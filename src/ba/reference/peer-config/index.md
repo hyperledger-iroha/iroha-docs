@@ -1,16 +1,16 @@
 ---
 translation_locale: ba
 translation_source: /reference/peer-config/index.md
-translation_source_hash: 5cc6ddf62a45f655d61a0ff3ebc7e20b939fe78c9d542087b717c2e17e19250d
+translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f29469aaf4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Iroha конфигурацияһы {#configuring-iroha}
 
-TOML файлдарҙа урындағы тиңдәш конфигурацияһы ҡуйылған. Был [`SetParameter`](/ba/blockchain/instructions.md#setparameter) күрһәтмәләре буйынса үҙгәртелгән сылбыр конфигурацияһынан айырыла. Производство тәртибе конфигурация файлында йәки сылбыр буйынса параметрҙа күрһәтергә тейеш; Тирә-яҡ мөхиттең үҙгәреүсәндәре функциялар ҡапҡалары түгел.
+TOML файлдарҙа урындағы пир конфигурацияһы ҡуйылған. Был [`SetParameter`](/ba/blockchain/instructions.md#setparameter) күрһәтмәләре буйынса үҙгәртелгән сылбыр конфигурацияһынан айырыла. Производство тәртибе конфигурация файлында йәки сылбыр буйынса параметрҙа күрһәтергә тейеш; Тирә-яҡ мөхиттең үҙгәреүсәндәре функциялар ҡапҡалары түгел.
 
-Конфигурация файлына юлды билдәләү өсөн [`--config`](../irohad-cli#arg-config)CLI аргументын файҙаланығыҙ.
+Конфигурация файлына юлды билдәләү өсөн [`--config`](../iroha3d-cli#arg-config)CLI аргументын файҙаланығыҙ.
 
 ## Һүрәт {#template}
 
@@ -65,4 +65,4 @@ max_content_len = 2048
 
 ## Проблемаларҙы хәл итеү {#troubleshooting}
 
-[`--trace-config`](../irohad-cli#arg-trace-config)CLI байрағын үткәреп, конфигурация нисек уҡыла һәм анализлана икәнен күрер өсөн.
+[`--trace-config`](../iroha3d-cli#arg-trace-config)CLI байрағын үткәреп, конфигурация нисек уҡыла һәм анализлана икәнен күрер өсөн.

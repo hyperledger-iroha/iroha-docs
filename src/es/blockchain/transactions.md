@@ -3,24 +3,24 @@ translation_locale: es
 translation_source: /blockchain/transactions.md
 translation_source_hash: 6381e93ada6191d15b11f7359e983e5c3dac49e69323b20da09959d5e04331f9
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Las transacciones {#transactions}
+# Transacciones {#transactions}
 
-Una transacción es una solicitud firmada para ejecutar el trabajo en la cadena de bloques. [instrucciones](./instructions.md), una llamada contractual, IVM código de byte, o una prueba IVM La ejecución. [Los contratos inteligentes](./smart-contracts.md) para el modelo actual de ejecución del contrato.
+Una transacción es una solicitud firmada para ejecutar trabajo en la blockchain. La carga ejecutable puede ser una secuencia ordenada de [instrucciones](./instructions.md), una llamada a contrato, IVM bytecode, o una ejecución IVM comprobada. Véase [Contratos Inteligentes](./smart-contracts.md) para el modelo actual de ejecución de contratos.
 
-Las transacciones realizan un trabajo de cambio de estado o ejecutable. La inspección sólo para lectura utiliza consultas firmadas o puntos finales públicos de lectura y no crea una transacción.
+Las transacciones realizan trabajos ejecutables o que cambian el estado. La inspección de solo lectura utiliza consultas firmadas o puntos finales públicos de lectura API y no crea una transacción.
 
-Una transacción admitida en un bloque comprometido se almacena con su resultado de ejecución, incluido un rechazo de ejecución. Las solicitudes rechazadas antes de la admisión del bloque, como un sobre inválido o una transacción rechazada por la cola, no se almacenan en un bloque.
+Una transacción admitida en un bloque comprometido se almacena con su resultado de ejecución, incluida una rechazo de ejecución. Las solicitudes rechazadas antes de la admisión en el bloque, como un contenedor de datos inválido o una transacción rechazada por la cola, no se almacenan en un bloque.
 
-Para el movimiento de activos que preservan la privacidad, véase [Transacciones Anónimas](./anonymous-transactions.md). Las transacciones anónimas utilizan notas de activos protegidas, compromisos, anuladores y pruebas de conocimiento cero en lugar de cambios del saldo entre cuentas públicas.
+Para el movimiento de activos que preserva la privacidad, vea [Transacciones anónimas](./anonymous-transactions.md). Las transacciones anónimas utilizan notas de activos protegidas, compromisos, anuladores y pruebas de conocimiento cero en lugar de cambios públicos de saldo de cuenta a cuenta.
 
-Para obtener pruebas sobre los efectos de ejecución transparentes seleccionados, véase [FastPQ](./fastpq.md). FastPQ consume testigos de ejecución después de la ejecución normal de transacciones y construye lotes de prueba determinista para las transiciones de estado soportadas.
+Para pruebas de evidencia sobre efectos de ejecución transparentes seleccionados, consulte [FastPQ](./fastpq.md). FastPQ consume testigos de ejecución después de la ejecución normal de la transacción y construye lotes de prueba deterministas para transiciones de estado compatibles.
 
 ## Pruébalo en Taira {#try-it-on-taira}
 
-Utilice las rutas exploradoras para inspeccionar los bloques públicos recientes y los estados de transacciones Taira sin una cuenta de firma:
+Usa las rutas del explorador para inspeccionar los bloques públicos recientes Taira y los estados de las transacciones sin una cuenta de firma:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/explorer/blocks?page=1&per_page=3' \
@@ -30,7 +30,7 @@ curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
   | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
-Para seguir una transacción que su aplicación envió antes, copie el `hash` de la lista e inspeccione la ruta detallada del explorador:
+Para seguir una transacción que su aplicación envió anteriormente, copie el `hash` de la lista e inspeccione la ruta de detalle del explorador:
 
 ```bash
 TX_HASH='<transaction-hash>'
@@ -39,9 +39,9 @@ curl -fsS "https://taira.sora.org/v1/explorer/transactions/$TX_HASH" \
   | jq '{hash, block, status, authority, executable}'
 ```
 
-El envío de una transacción requiere un sobre Norito firmado, una cadena correcta ID, metadatos de tarifas y una cuenta Taira financiada por grifo.
+Esto todavía es de solo lectura. Enviar una transacción requiere un contenedor de datos Norito firmado, un ID de cadena correcto, metadatos de tarifas y una cuenta Taira financiada en testnet.
 
-Para los ejemplos de pago de cuotas en Taira, salvo el ayudante del grifo de [Obtenga el Testnet XOR en el Taira](/es/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) como `taira_faucet_claim.py`, luego financie al firmante a través del grifo público primero:
+Para los ejemplos con tarifa en Taira, guarde el auxiliar de [Obtener XOR de prueba en Taira](/es/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) como `taira_faucet_claim.py` y financie primero al firmante mediante el dispensador público:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -55,9 +55,9 @@ iroha --config ./taira.client.toml ledger asset get \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-Si el rompecabezas del grifo o la ruta de reclamo devuelve `502`, espere y vuelva a intentar deshacerse de la transacción misma.
+Si el enigma del servicio de financiamiento de la red de prueba o la ruta de reclamación devuelve `502`, espere y vuelva a intentarlo antes de depurar la transacción en sí.
 
-A continuación, adjunta los metadatos del activo de cuota Taira al momento de presentar la transacción:
+Luego adjunte los metadatos del activo de tarifa Taira al enviar la transacción:
 
 ```bash
 printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
@@ -67,24 +67,24 @@ iroha --config ./taira.client.toml \
   ledger transaction ping --msg "faucet-funded taira transaction"
 ```
 
-## Transacciones fuera de línea {#offline-transactions}
+## Transacciones sin conexión {#offline-transactions}
 
 Iroha tiene dos flujos de trabajo de transacciones fuera de línea:
 
-- La firma fuera de línea crea una transacción firmada normal mientras el dispositivo firmante está desconectado. La transacción no se procesa hasta que un cliente en línea envíe el sobre firmado a Torii, por lo que todavía necesita la cadena correcta ID, autoridad, permisos, tarifas y vida útil de la transacción.
-- Kagemusha cash offline supera una billetera mientras está en línea, admite las entregas de billetera a billetera iniciadas por el receptor mientras ambas billeteras están fuera de línea y canjea el estado de la nota resultante cuando el destinatario vuelve en línea.
+- La firma fuera de línea crea una transacción firmada normal mientras el dispositivo de firma está desconectado. La transacción no se procesa hasta que un cliente en línea envía el contenedor de datos firmado a Torii, por lo que todavía necesita el ID de cadena correcto, el principal de autorización, los permisos y las tarifas, y la duración de la transacción.
+- El efectivo sin conexión de Kagemusha recarga una cartera mientras está en línea, admite transferencias de cartera a cartera iniciadas por el receptor mientras ambas carteras están sin conexión, y canjea el estado resultante de la nota cuando el destinatario vuelve a estar en línea.
 
-Torii expone el ciclo de vida completo del Kagemusha en `/v1/offline/*`:
+Torii expone el ciclo de vida completo de Kagemusha bajo `/v1/offline/*`:
 
-|Método y punto final |El propósito .|
+|Método y endpoint API|Propósito|
 | --- | --- |
-|`GET /v1/offline/readiness` |Evaluar la preparación de Kagemusha para una `asset_definition_id` |
-|`POST /v1/offline/receiver-lineage` |Resolver el linaje activo de registro con prueba para una solicitud firmada por el destinatario |
-|`POST /v1/offline/top-up` |Presentar una operación de recarga online-offline firmada |
-|`POST /v1/offline/redeem` |Presentar una operación de canje sin conexión firmada |
-|`GET /v1/offline/operations/{operation_id}` |Leer el estado canónico de una recarga o redención |
+| `GET /v1/offline/readiness` |Evaluar la preparación de Kagemusha para uno `asset_definition_id`|
+| `POST /v1/offline/receiver-lineage` |Resolver la línea de registro activa con prueba vinculante para una solicitud de receptor firmada|
+| `POST /v1/offline/top-up` |Enviar una operación de recarga en línea a fuera de línea firmada|
+| `POST /v1/offline/redeem` |Enviar una operación de canje fuera de línea firmada|
+| `GET /v1/offline/operations/{operation_id}` |Lea el estado canónico de una recarga o redención|
 
-Verifique la preparación del activo antes de construir una operación fuera de línea:
+Verifique la preparación del activo antes de construir una operación sin conexión:
 
 ```bash
 curl -fsS --get https://taira.sora.org/v1/offline/readiness \
@@ -92,18 +92,18 @@ curl -fsS --get https://taira.sora.org/v1/offline/readiness \
   | jq '{ready, blockers, artifact_set}'
 ```
 
-La preparación une la billetera al puente activo. ABI 21 y autenticado V4 El linaje, la composición y las solicitudes de redención utilizan `application/x-norito` Arquivos, recarga y reembolso `202 Accepted` con un `Location` encabezado que apunta al recurso de operación; la operación no cero integrada ID provee la llave de impotencia.
+La preparación vincula la billetera al puente activo ABI 21 y al conjunto de artefactos autenticados V4. Las solicitudes de linaje, recarga y redención utilizan archivos tipados `application/x-norito`. Devolución de recarga y redención `202 Accepted` con un encabezado `Location` que apunta al recurso de operación; el ID de operación no nulo incrustado proporciona la clave de idempotencia.
 
 El flujo típico es:
 
-1. Encuentra la preparación y deténgase si `ready` es falso o se aplica cualquier bloqueador.
-2. Utilice una cartera Swift o JVM mecanografiada para construir el archivo de recarga canónico, enviarlo y conservar tanto el estado de la nota de entrada como la operación ID hasta que la operación alcance un estado final de cadena.
-3. Resolver el linaje de registro del receptor cuando sea necesario, construir y verificar cada transmisión de pares localmente, y persistir en el estado de la nota cifrada antes de reconocer la transferencia.
-4. Cuando el destinatario esté en línea, construya el archivo canónico de redención, envíelo y encuesta su recurso operativo hasta la finalidad.
+1. Consulta la preparación y detente si `ready` es falso o si se aplica algún bloqueador.
+2. Utilice una billetera tipeada Swift o JVM para construir el archivo de recarga canónico, envíelo y conserve tanto el estado de la nota de entrada como el ID de la operación hasta que la operación alcance un estado final en la cadena.
+3. Resuelva la línea de registro del receptor cuando sea necesario, construya y verifique cada transferencia entre pares de la red localmente, y persista el estado de la nota cifrada antes de reconocer la transferencia.
+4. Cuando el destinatario esté en línea, construya el archivo de redención canónico, envíelo y consulte su recurso de operación hasta completarlo.
 
-El libro mayor no puede observar una transmisión en línea conflictiva hasta que el estado de la nota regrese a través del ciclo de vida en línea. Por consiguiente, la política de cartera y de operador debe hacer cumplir límites de valor, vencimiento, emisores aceptados, almacenamiento local duradero, y ventanas de reconciliación.
+El libro mayor de la blockchain no puede observar una transferencia fuera de línea conflictiva hasta que el estado de la nota regrese a través del ciclo de vida en línea. Por lo tanto, la política de billetera y operadora debe hacer cumplir límites de valor, vencimiento, emisores aceptados, almacenamiento local duradero y ventanas de reconciliación.
 
-Este es un ejemplo de la creación de una nueva transacción con `Grant` En esta transacción, Mouse le otorga a Alice el papel especificado (`role_id`El cheque . [el ejemplo completo](./permissions.md#register-a-new-role).
+Aquí hay un ejemplo de cómo crear una nueva transacción con la instrucción `Grant`. En esta transacción, Mouse está otorgando a Alice el rol especificado (`role_id`). Consulte [el ejemplo completo](./permissions.md#register-a-new-role).
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);

@@ -14,10 +14,10 @@ translation_engine: nllb-200-ct2
 
 - [I105 ანგარიშის მისამართის ფორმატი](/ka/reference/i105.md)
 - [Iroha ბინარებთან მუშაობა](/ka/reference/binaries.md)
-- [გენეზიის მითითება](/ka/reference/genesis.md)
-- [Torii საბოლოო წერტილები](/ka/reference/torii-endpoints.md)
-- [Torii API კონსოლი](/ka/reference/torii-api-console.md)
+- [ბლოკჩეინის გენეზისი რეფერენცია](/ka/reference/genesis.md)
+- [Torii API საბოლოო ნიშნები](/ka/reference/torii-endpoints.md)
+- [კონსოლი Torii API](/ka/reference/torii-api-console.md)
 - [Norito](/ka/reference/norito.md)
 - [შესაბამისობის მატრიცა](/ka/reference/compatibility-matrix.md)
 
-განხორციელების წყარო და კოდის მიმდებარე სპეციფიკაციების შესახებ იხილეთ [Iroha რეპოზიტორი ](https://github.com/hyperledger-iroha/iroha).
+დანერგვის წყარო და კოდის მიმდებარე სპეციფიკაციების შესახებ იხილეთ [Iroha რეჟისორი](https://github.com/hyperledger-iroha/iroha).

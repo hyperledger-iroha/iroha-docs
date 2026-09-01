@@ -3,40 +3,40 @@ translation_locale: uz
 translation_source: /guide/best-practices/index.md
 translation_source_hash: c463a3ca8fdef5c852746a7fdcfd6a1f7be5f95f88a5cf443c989ec0a458cd7d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Eng yaxshi amaliyotlar {#best-practices}
 
-Ushbu bo'lim Iroha dasturlari va tarmoqlar uchun ishlab chiqarishga yo'naltirilgan ko'rsatkichlarni to'playdi. Bu siz qabul qilishingiz kerak bo'lgan qarorga emas, uni amalga oshirish uchun sodir bo'ladigan xususiyatga qarab tashkil etiladi.
+Ushbu bo‘lim Iroha ilovalari va tarmoqlari uchun ishlab chiqarishga yo‘naltirilgan ko‘rsatmalarni to‘playdi. U amalga oshiradigan xususiyatga qarab emas, balki qilishingiz kerak bo‘lgan qarorga ko‘ra tashkil etilgan.
 
-O'zaro testnet mashg'ulotidan oldin, ishlab chiqarish ishga tushirishdan yoki katta mijozlarni ozod qilishdan oldin uni tekshiruv ro'yxati sifatida ishlating.
+Uni umumiy testnet mashqi, ishlab chiqarishga chiqarish yoki yirik mijoz uchun relizdan oldin nazorat ro‘yxati sifatida ishlating.
 
 ## Kategoriyalar {#categories}
 
-|Kategoriya |Eʼtibor bering .|
+|Kategoriya|Diqqat|
 | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| [Ilovalar rivojlanishi](./application-development.md) |Mijoz konfiguratsiyasi, tranzaksiyalarni taqdim etish, qayta urinish, voqealar, so'rovlar va agent yordamida ishlab chiqish |
-| [Ma'lumotlar modeli ](./data-modeling.md) |Domenlar, hisobotlar, aktivlar, NFTs, metadotlar, zanjirdan tashqari ma'lumotlar va nomlash konvensiyalari |
-| [Tarmoqni ishga tushirish](./network-deployment.md) |Ibtido, topologiya, tengdosh kalitlar, Torii ekspozitsiyasi, konsensus sozlamalari va atrof-muhit ajratish |
-| [Operatsiyalar](./operations.md) |kuzatish, ishga tushirish daftarlari, ehtiyot qismlar, o'zgarishlarni boshqarish, quvvatni tekshirish va hodisalarni hal qilish |
-| [Xavfsizlik va kirish ](./security-and-access.md) |Maxfiy ishlarni amalga oshirish, ruxsatnomalar, texnik hisobotlar, tarmoqga kirish va audit yo'llari |
-| [Bo'shash uchun tayyorlik ](./release-readiness.md) |Localnet, Taira, Minamoto, moslashuvchanlik tekshiruvlari, jonli tarmoqlarni himoya qilish va qaytish rejalashtirish |
+| [Ilova ishlab chiqish](./application-development.md) |Mijoz konfiguratsiyasi, tranzaksiya yuborilishi, qayta urinuvlar, voqealar, so‘rovlar va agent yordamidagi rivojlantirish|
+| [Ma'lumotlarni modellashtirish](./data-modeling.md)                     | Domenlar, hisoblar, aktivlar, NFTs, metadata, zanjir tashqari ma’lumotlar va nomlash konventsiyalari|
+| [Tarmoq joylashtirish](./network-deployment.md)           |blokcheyn genesi, topologiya, tarmoq tengdosh kalitlari, Torii ochiqligi, konsensus sozlamalari va muhitni ajratish|
+| [Operatsiyalar](./operations.md)                           |Kuzatish, ish qo'llanmalari, zaxira nusxalar, o'zgarishlarni boshqarish, quvvat tekshiruvlari va hodisalarni boshqarish|
+| [Xavfsizlik va kirish](./security-and-access.md)         |Sir saqlash, ruxsatlar, texnik hisoblar, tarmoqga kirish va audit izlari|
+| [Chiqarishga tayyorgarlik](./release-readiness.md)             |Localnet, Taira, Minamoto, moslik tekshiruvlari, jonli tarmoq xavfsizlik choralari va orqaga qaytarish rejalashtirish|
 
-## O'rtacha kesish qoidalari {#cross-cutting-rules}
+## Kesishuvchi Qoidalar {#cross-cutting-rules}
 
 - Mahalliy rivojlanish, umumiy test tarmog'i va ishlab chiqarish konfiguratsiyasini alohida saqlang.
-- Genesis, tengdoshlari topologiyasi, ijrochi siyosati va asosiy materiallarni nazorat qilingan joylashtirish artefaktlari sifatida ko'rib chiqish.
-- Modeldan ko'rinib turibdiki, uzoq muddatli katta ma'lumotlar uchun metadatalarni to'plam sifatida ishlatmang.
-- Ruxsatnomalarni rad etish, muddati o'tish, qayta urinish va kechiktirilgan holatni hal qilish mumkin bo'lgan idempotent ish oqimlari orqali taqdim eting.
-- Yengil ruxsatnomalar, maxsus texnik hisobotlar va aniq operatsion ishga tushirish daftarlari keng boshqaruvchining kirishidan ko'ra afzalroq.
-- Avval bir marta ishlatiladigan mahalliy tarmoqda xatti-harakatni isbotlang, so'ngra asosiy tarmoqlarni ishlatishdan oldin Taira yoki boshqa umumiy test tarmog'ida mashg'ul qiling.
+- Boshlang‘ich holat, tugunlar topologiyasi, bajaruvchi siyosati va kalit materialini boshqariladigan joylashtirish artefaktlari sifatida saqlang.
+- Model bardoshli blockchain daftar holatini bilib qo'ying. Katta, shaxsiy yoki tez-tez o'zgaradigan ma'lumotlarni saqlash uchun metadata maydonidan foydalanmang.
+- Rad etish, muddati o'tishi, qayta urinish va kechiktirilgan holatni boshqarishi mumkin bo'lgan idempotent ish jarayonlari orqali tranzaksiyalarni yuboring.
+- Keng administrator kirish huquqidan ko'ra tor ruxsatlarni, bag'ishlangan texnik hisoblarni va aniq operatsion qo'llanmalarni afzal ko'ring.
+- Avval xulq-atvorni birdan ishlatiladigan lokal tarmoqda sinab ko‘ring, keyin har qanday mainnet operatsiyasidan oldin Taira yoki boshqa ulashilgan testnetda mashq qiling.
 
-## Bogʻliq maʼlumotlar {#related-references}
+## Tegishli manbalar {#related-references}
 
-- [Konfiguratsiya va boshqaruv](/uz/guide/configure/overview.md)
+- [Sozlash va Boshqarish](/uz/guide/configure/overview.md)
 - [Xavfsizlik](/uz/guide/security/)
-- [Ishlab chiqarish va ko'rsatkichlar](/uz/guide/advanced/metrics.md)
-- [Qo'shish matrisi](/uz/reference/compatibility-matrix.md)
-- [Torii Oxirgi nuqtalar](/uz/reference/torii-endpoints.md)
-- [Ruxsat belgisi ](/uz/reference/permissions.md)
+- [Ijro etish va o‘lchovlar](/uz/guide/advanced/metrics.md)
+- [Moslik Matrisi](/uz/reference/compatibility-matrix.md)
+- [Torii API oxir nuqtalar](/uz/reference/torii-endpoints.md)
+- [Ruxsatnoma Tokenlari](/uz/reference/permissions.md)

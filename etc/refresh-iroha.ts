@@ -64,8 +64,13 @@ function generatedArtifact(artifact: CommandArtifact, sourceDirectory: string): 
     case 'iroha-cli':
     case 'kagami-cli':
       return Buffer.from(`${output.toString('utf8').trimEnd()}\n`)
-    case 'irohad-help':
-      return Buffer.from(`\`\`\`text\n${output.toString('utf8').trimEnd()}\n\`\`\`\n`)
+    case 'iroha3d-help': {
+      const help = output
+        .toString('utf8')
+        .replace(/[ \t]+$/gmu, '')
+        .trimEnd()
+      return Buffer.from(`\`\`\`text\n${help}\n\`\`\`\n`)
+    }
     default:
       throw new Error(`No trusted generator is registered for artifact ${artifact.id}`)
   }

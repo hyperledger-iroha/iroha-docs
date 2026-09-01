@@ -1,29 +1,29 @@
 ---
 translation_locale: uz
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: a81f6cc04befb0b92a0a01c2cb3c1ecbbc631ce1f2a923cb046241c295db7806
+translation_source_hash: 68ef931f3d37b9bd40fcf61c9a77313539ca0bd648405834d161a018debb491a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Query Ledger davlat {#query-ledger-state}
+# Reyestr holatini so‘rash {#query-ledger-state}
 
 ## Natija {#outcome}
 
-O'qish va ko'rsatish Taira JSON resurslar, so'ngra foydalanish bosilgan Iroha filtrlar bilan so'rovlar, mantiqiy sahifalashtirish, sinflash, olib chiqish o'lchamlari va faqat oldinga ko'tarilgan kursorni davom ettirish. Shuningdek , server yuborilgan ma'lumotni baholashdan oldin selektor proyeksiyasiga tayanishdan qochasiz . `--select` To'plang.
+O'qing va Taira JSON resurslarini proyeksiya qiling, so'ngra filtrlar, mantiqiy sahifalash, saralash, olish hajmlari va faqat oldinga kursor davomiyligi bilan yozilgan Iroha so'rovlaridan foydalaning. Shuningdek, siz server oldinga yuborilgan `--select` tupleni baholashdan oldin selektor proyeksiyasiga tayanishni oldini olasiz.
 
-## Oldingi shartlar {#prerequisites}
+## Oldingi talablar {#prerequisites}
 
 - `curl`, `jq`, Node.js 24, va joriy `iroha` CLI.
-- Faqat o'qish uchun Taira kirish.
-- Imzolangan tizilgan so'rovlar namunalari uchun Taira uchun mijoz konfiguratsiyasi yoki hosil qilingan mahalliy tarmoq.
-- Rust misolida maqsadli tarmoq bilan bir xil Iroha manba tekshiruviga bog'liq loyiha.
+- Taira’ga faqat o‘qish huquqi bilan kirish.
+- Imzolangan typed-query misollari uchun, Taira uchun mijoz konfiguratsiyasi yoki yaratilgan mahalliy tarmoq.
+- Rust misolida, maqsad tarmog‘i bilan bir xil Iroha manbaaviy versiyaga bog‘langan loyiha.
 
-## qadamlar {#steps}
+## Qadamlar {#steps}
 
-### 1. Umumiy Taira resursidan sahifa {#_1-page-through-a-public-taira-resource}
+### 1. Ommaviy Taira manbani ko'zdan kechirish {#_1-page-through-a-public-taira-resource}
 
-Resource yo'nalishlari dashboardlar va tutun tekshiruvlari uchun foydali. JSON so'rang, har bir sahifani bog'lang va javobni tekshirishdan keyin ilovaga kerak bo'lgan maydonlarni faqat ko'rsating.
+Resurs marshrutlari dashboardlar va shuningdek tezkor tekshiruvlar uchun foydalidir. JSON ni so'rang, har bir sahifaga bog'lang va javobni tekshirgandan so'ng faqatgina ilova uchun kerak bo'lgan maydonlarni loyihalang.
 
 ::: code-group
 
@@ -69,11 +69,11 @@ for (let offset = 0; ; offset += limit) {
 
 :::
 
-Ushbu HTTP yuzasida `limit` va `offset` ishlatiladi. Yo'nalishda arzonroq hisob-kitob rejimidan foydalangan bo'lsa, chetda qoldirilgan yoki chegaralashgan `total` ni normal tarzda ko'rib chiqish kerak.
+Bu HTTP sirt `limit` va `offset` dan foydalanadi. Agar yo'nalish arzonroq hisoblash rejimidan foydalansa, tashlab ketilgan yoki cheklangan `total` ni normal deb hisoblang.
 
-### 2. CLI so'rovini filtrlash va to'plash {#_2-filter-and-batch-a-typed-cli-query}
+### 2. Typlangan CLI so‘rovni filtrlash va guruhlash {#_2-filter-and-batch-a-typed-cli-query}
 
-CLI tizilgan takrorlanadigan so'rovni seriallashtiradi va serverning davom ettirish kursorlarini ichki ravishda kuzatib boradi. Bu erda mantiqiy natija bitta satr bilan cheklanadi, ammo `--fetch-size 1` har bir qaytarib olish uchun maksimal partiyani nazorat qiladi.
+CLI tiplangan iteratsiya qilinadigan so‘rovni serializatsiya qiladi va ichki tarzda server davomiy kursorlarini kuzatadi. Bu yerda mantiqiy natija bitta qatorda cheklangan, shu bilan birga `--fetch-size 1` har bir safar ishlov berishda olinadigan maksimal paketni nazorat qiladi.
 
 ```bash
 DOMAIN_PREDICATE='{"equals":[{"field":"id","value":"wonderland.universal"}]}'
@@ -85,11 +85,11 @@ iroha --config ./localnet/client.toml \
   --fetch-size 1
 ```
 
-Filtrlash sahifalashtirishdan oldin sodir bo'ladi. So'rovga mos tiplangan predikatlardan foydalaning; hisob yoki aktiv uchun predikat domen uchun xavfsiz qayta ishlatilishi mumkin emas.
+Filtrlash sahifalashdan oldin sodir bo‘ladi. So‘rovga xos typeli predikatlarni ishlating; hisob yoki aktiv uchun predikat domen uchun xavfsiz ravishda qayta ishlatilolmaydi.
 
-### 3. O'zgarmas metadata kalitini ko'rib chiqing {#_3-sort-by-a-stable-metadata-key}
+### 3. Barqaror metadata kaliti bo‘yicha saralash {#_3-sort-by-a-stable-metadata-key}
 
-Tiplangan so'rovni sinash bir metadata kalitining leksikografik bo'lib o'tadi. Ushbu kalitsiz elementlar ishga tushirish vaqtining belgilangan tartibiga mos keladi, shuning uchun to'plamda qat'iy ravishda to'plangan kalitdan foydalaning .
+Turlangan so‘rov bitta metama’lumot kaliti bo‘yicha leksikografik saralanadi. Bu kalitga ega bo‘lmagan elementlar bajarish muhiti belgilagan tartibda keladi, shuning uchun butun to‘plamda izchil to‘ldirilgan kalitdan foydalaning.
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -104,11 +104,11 @@ iroha --config ./localnet/client.toml \
   | jq '[.[] | {id, metadata}]'
 ```
 
-Checked-in CLI parses `--select` JSON va tanlovchi tuple yuboradi, lekin joriy engil so'rov DSL serverda bu tanlagich baholanmaydi. Bu atrofida hozircha proyektsiya shartnomasini qurmang Faqat maqsadli ish vaqti uni qo'llab-quvvatlaganidan so'ng SDK tizilgan proyeksiyadan foydalaning yoki yuqorida aytib o'tilganlarga ko'ra, tasdiqlangan natijalar mijoz tomonini `jq` yoki JavaScript bilan proyekt qiling.
+Ro‘yxatdan o‘tgan CLI `--select` JSON ni tahlil qiladi va tanlov tuple'ini uzatadi, lekin joriy yengil vaznli so‘rov DSL ushbu tanlovni serverda baholamaydi. Hali uning atrofida proyeksiya shartnomasini tuzmang. Typed SDK proyeksiyani faqat maqsad dasturiy ta'minot ijro muhiti uni qo‘llab-quvvatlagandan so‘ng ishlating, yoki yuqorida aytilganidek, tasdiqlangan natijani mijoz tomonida `jq` yoki JavaScript bilan proyeksiya qiling.
 
-### 4. Rust iteratorini shaffof bo'lmagan kursorlarga ergashtirsin. {#_4-let-the-rust-iterator-follow-opaque-cursors}
+### 4. Rust iteratordan shaffof bo‘lmagan kursorlarni kuzatishini ruxsat bering {#_4-let-the-rust-iterator-follow-opaque-cursors}
 
-`Pagination` mantiqiy natijalar to'plamini cheklaydi. `FetchSize` har bir server partiyasini boshqaradi. Qaytarib berilgan iterator server tomonidan yaratilgan kursordan foydalanib davom ettirish so'rovlarini shaffof ravishda yuboradi.
+`Pagination` mantiqiy natija to'plamini chegaralaydi. `FetchSize` har bir server paketini nazorat qiladi. Qaytarilgan iterator server tomonidan yaratilgan kursor yordamida davom ettirish so‘rovlarini shaffof tarzda yuboradi.
 
 ```rust
 use std::num::NonZeroU64;
@@ -132,11 +132,11 @@ for definition in definitions {
 }
 ```
 
-`ForwardCursor` vakolatga bog'liq, jarayon-lokal va faqat oldinga ko'ra ishlatiladi. Uni hech qachon tahlil qilmang, sintez qilmang, uni hokimiyatlar o'rtasida bo'lishmang yoki uni Torii holatlarida ko'rinadigan qayta tiklash belgisi sifatida saqlang. Agar u muddati tugagach, dastlabki so'rovni maqsadli dastur darajasidagi nazorat punkti bilan qayta ishga tushiring.
+A `ForwardCursor` vakolatga bog‘liq, jarayon-ga xos va faqat oldinga qarab ishlaydi. Hech qachon uni pars qilma, sintez qilma, vakolat egasi o‘rtasida ulashma yoki uni portable rezyume token sifatida Torii instansiyalari bo‘ylab saqlama. Agar muddati tugasa, asl so‘rovni maqsadli ilova darajasidagi nazorat nuqtasi bilan qayta boshlang.
 
 ## Tekshirish {#verify}
 
-To'g'ri domen filtrini faqat `wonderland.universal` qaytarish kerak. Faqatgina muvaffaqiyatli CLI chiqishni hisoblab chiqishdan ko'ra natijani tekshirib ko'ring:
+Aniq domen filtri faqat `wonderland.universal` ni qaytarishi kerak. Faqat muvaffaqiyatli CLI chiqishini hisoblash o‘rniga natijani tekshiring:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -146,23 +146,23 @@ iroha --config ./localnet/client.toml \
   | jq -e 'length == 1 and .[0] == "wonderland.universal"'
 ```
 
-Sahifalashtirilgan dastur so'rovlari uchun IDs sahifalar bo'ylab takrorlanmasligini, talab qilingan mantiqiy chegara hech qachon o'tkazib yuborilmasligini va muddati tugagandan keyin kursorni qayta ishga tushirishni tekshirish.
+Sahifalangan ilova so'rovlari uchun, IDlar sahifalar bo'ylab takrorlanmasligini, so'ralgan mantiqiy chegaradan oshmasligini va muddati o'tgan kursorni qayta urinish belgilangan nazorat nuqtasidan qayta boshlanishini ham sinab ko'ring.
 
-## Muammolarni hal qilish {#troubleshooting}
+## Muammolarni bartaraf etish {#troubleshooting}
 
-- Bir xil so'rov takrorlanadigan filtr, sinflash, sahifalashtirish yoki olish parametrlarini qabul qilmaydi. Ushbu nazoratlar zarur bo'lganda tegishli ro'yxat so'rovidan foydalaning.
-- `fetch_size` to'liq natija chegarasi emas, balki nol bo'lmagan partiya ko'rsatkichidir. Joriy andoza `100` hisoblanadi va ish vaqti o'z maksimalidan yuqori qiymatlarni rad etadi.
-- Noma'lum, o'tkazib yuborilgan yoki chet el kursoridan qasddan qayta foydalanish mumkin emas. So'rovni qaytadan boshlash; shaffof bo'lmagan qiymatni tuzatishga urinmang.
-- Metadatalarni sinchkovlik qilish umumiy maydonni sinchkovlashtirish emas. Agar har bir elementda tanlangan kalit mavjud bo'lmasa, yo'qolgan kalit tartibini hujjatlashtiring yoki boshqa strategiyani tanlang.
-- CLI `--select`ni tahlil qiladi va etkazib beradi, ammo joriy server yengil tanlovchi tupleni baholamaydi. Server tarafidagi tanlovchi qo'llab-quvvatlanishi ishga tushirilgan ish vaqti uchun tasdiqlangan bo'lmasa, mijoz tomoni proyeksiyasini qo'llash.
-- Keng cheklanmagan so'rovlar tengdoshlarning ishini, mijoz xotirasini va kursorning umrbod xavfini oshiradi. Iste'molchiga mos bo'lgan mantiqiy chegara va olish hajmini belgilash.
-- Umumiy JSON resurs parametrlari va imzolangan tiklangan so'rov parametrlari bir-biri bilan bog'liq, ammo almashtiriladigan sim formatlari emas. Tiklangan so'rovi qopqog'lari uchun SDK yoki CLI ni afzal ko'ring.
+- Yagona so'rov iterable filtr, tartiblash, sahifalash yoki olish parametrlarini qabul qilmaydi. Ushbu boshqaruvlar kerak bo'lganda mos keluvchi ro'yxat so'rovidan foydalaning.
+- `fetch_size` — natijalarning umumiy chegarasi emas, balki nol bo‘lmagan to‘plam hajmi ko‘rsatmasi. Joriy standart qiymat `100`; bajarish muhiti o‘z maksimumidan katta qiymatlarni rad etadi.
+- Noma'lum, muddati o'tgan yoki xorijiy kursor ataylab qayta ishlatilmaydi. So‘rovni qayta boshlang; shaffof bo‘lmagan qiymatni tuzatishga urinmang.
+- Metama'lumotlarni tartiblash umumiy maydon bo'yicha tartiblash emas. Agar har bir element tanlangan kalitni olib yurmasa, yetishmayotgan kalit buyurtmasini hujjatlashtiring yoki boshqa strategiyani tanlang.
+- CLI `--select` ni tahlil qiladi va uzatadi, lekin joriy server yengil vaznli selektor juftligini baholamaydi. O‘rnatilgan dasturiy ta’minot ish muhiti uchun server tomonidan selektor qo‘llab-quvvatlanishi tasdiqlanmaguncha, mijoz tomonidagi proyeksiyani qo‘llang.
+- Keng, chegaralanmagan so‘rovlar tugun ishini, mijoz xotirasi sarfini va kursor umrini oshiradi. Mantiqiy chegara va iste’molchiga mos olish hajmini belgilang.
+- Jamoat JSON resurs parametrlar va imzolanmış tipli so'rov parametrlar bog'liq, lekin o'zaro almashtiriladigan serialization formatlari emas. Tipli so'rov ma'lumot konteynerlari uchun SDK yoki CLI ni afzal ko'ring.
 
-## Manba va u bilan bog'liq hujjatlar {#source-and-related-docs}
+## Manba va tegishli hujjatlar {#source-and-related-docs}
 
-- [Kursor tomonidan qo'llab-quvvatlanadigan sahifalashtirish integratsiyasi testlari pinned commitda](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/pagination.rs)
-- [Query builder va selektor xatti-harakatlari pinned commitda](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/builder/mod.rs)
-- [Query parametrlari va kursor modeli pined commitda](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/parameters.rs)
+- [Kursorga asoslangan sahifalash integratsion testlari ilg‘or manba-kod reviziyasida](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs)
+- [So'rov quruvchisi va tanlovchi xatti-harakati pinlangan manba-kod reviziyasida](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs)
+- [So'rov parametrlari va kursor modeli belgilangan manba-kod tahririda](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs)
 - [So'rovlar](/uz/blockchain/queries.md)
-- [So'rov uchun ma'lumot](/uz/reference/queries.md)
+- [So‘rov havolasi](/uz/reference/queries.md)
 - [JavaScript va TypeScript](/uz/guide/tutorials/javascript.md)

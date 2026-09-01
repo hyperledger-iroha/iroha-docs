@@ -3,19 +3,19 @@ translation_locale: es
 translation_source: /blockchain/data-model.md
 translation_source_hash: 147562d2286bf11e60a941969e6d52bffc1534c3cfc04d440e0bcf78598a1ca7
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Modelo de datos {#data-model}
+# Modelo de Datos {#data-model}
 
-Iroha almacena el estado del libro mayor en el `World`. Su modelo de datos de primera publicación utiliza las siguientes identidades y entidades canónicas:
+Iroha almacena el estado del libro mayor de blockchain en el `World`. Su modelo de datos de primera versión utiliza las siguientes identidades y entidades canónicas:
 
-- los dominios están calificados para el espacio de datos, por ejemplo `payments.universal`
-- Las cuentas son canónicas y no tienen dominio; la cuenta ID se deriva del responsable del control de la cuenta
-- las definiciones de activos pueden mantener una proyección de dominio/nombre, pero su dirección textual canónica es un identificador Base58 opaco
-- activos son saldos mantenidos en cuentas de una definición específica de activo
-- NFTs son registros de propiedad única con dominio calificado IDs y contenido de metadatos.
-- RWAs se generan lotes de ID que representan activos fuera de la cadena con control del propietario actual, cantidad, procedencia, metadatos, retenciones, congelaciones y ciclo de vida
+- los dominios están calificados por espacio de datos, por ejemplo `payments.universal`
+- las cuentas son canónicas y sin dominio; la ID de la cuenta se deriva del controlador de la cuenta
+- las definiciones de activos pueden mantener una proyección de dominio/nombre, pero su dirección textual canónica es un identificador opaco en Base58
+- los activos son saldos que tienen las cuentas para una definición de activo específica
+- NFTs son registros de propiedad única con IDs calificados por dominio y contenido de metadatos
+- RWAs son lotes con ID generados que representan activos fuera de la cadena con propietario actual, cantidad, procedencia, metadatos, retenciones, congelamientos y controles de ciclo de vida
 
 ```mermaid
 classDiagram
@@ -85,7 +85,7 @@ Rwa --> Account : owned_by
 
 ## Ejemplo {#example}
 
-En una red Iroha 3, `wonderland.universal` es un dominio dentro del espacio de datos `universal`. Las cuentas canónicas en este ejemplo son controladas por sus claves o políticas y codificadas como cuenta I105 sin dominio IDs. Las etiquetas legibles tales como `alice@wonderland.universal` son alias separados vinculados a los IDs Una definición de activo proyectada aún puede construirse a partir de un dominio y nombre como `rose` en `wonderland.universal`, mientras que la dirección canónica de definición de activos utilizada en el cable es la dirección Base58 generada.
+En una red Iroha 3, `wonderland.universal` es un dominio dentro del espacio de datos `universal`. Las cuentas canónicas en este ejemplo están controladas por sus claves o políticas y codificadas como IDs de cuenta I105 sin dominio. Etiquetas legibles como `alice@wonderland.universal` son alias separados asociados a esos IDs. Una definición de activo proyectada todavía se puede construir a partir de un dominio y un nombre, como `rose` en `wonderland.universal`, mientras que la dirección de definición de activo canónica utilizada en la transmisión del protocolo es la dirección Base58 generada.
 
 ```mermaid
 classDiagram
@@ -112,34 +112,34 @@ account_alice --> asset_rose : holds balance
 account_rabbit --> asset_rose : may receive balance
 ```
 
-## Los alias {#aliases}
+## Alias {#aliases}
 
-Los alias son nombres dirigidos al ser humano superpuestos a capas sobre los identificadores de un libro mayor canónico. Son útiles en API, CLI, cartera y límites exploradores, pero el canónico IDs sigue siendo los identificadores estables almacenados en campos estrictos del libro mayor.
+Los alias son nombres orientados a humanos que se superponen sobre los identificadores canónicos del libro mayor de la blockchain. Son útiles en los límites de API, CLI, billetera y explorador, pero los IDs canónicos siguen siendo los identificadores estables almacenados en los campos estrictos del libro mayor de la blockchain.
 
-|Objetivo .|Objetivo canónico |Alias literalmente |Modelo de apoyo |
+|Objetivo|Objetivo canónico|Alias literal|Modelo de respaldo|
 | -------------- | --------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------- |
-|Cuenta de usuario |sin dominio `AccountId` codificado como dirección de I105 |`name@domain.dataspace` o `name@dataspace` |`AccountAlias`; el alias primario es `Account.label`, los alias adicionales son vinculantes |
-|Definición de activos |canónica `AssetDefinitionId` Dirección Base58 |`name#domain.dataspace` o `name#dataspace` |`AssetDefinitionAlias` vinculado a una definición de activo |
-|Contrato |canónica Bech32m `ContractAddress` |`name::domain.dataspace` o `name::dataspace` |`ContractAlias` ligado a una dirección de contrato desplegada |
-|Nombre de dominio |`DomainId` en el formulario `domain.dataspace` |`domain.dataspace` |SNS `domain` registro del espacio de nombres |
-|Nombre del espacio de datos |número `DataSpaceId` del catálogo activo de Nexus |Los alias de espacio de datos tales como `universal`, `paynet` o `zk` |SNS `dataspace` registro del espacio de nombres más el catálogo del espacio de datos activo |
+|Cuenta de usuario|sin dominio `AccountId` codificado como una dirección I105| `name@domain.dataspace` o `name@dataspace`            | `AccountAlias`; el alias principal es `Account.label`, los alias adicionales son enlaces |
+|Definición de activo|dirección Base58 canónica `AssetDefinitionId`| `name#domain.dataspace` o `name#dataspace`            | `AssetDefinitionAlias` vinculado a una definición de activo |
+|Contrato|Bech32m canónico `ContractAddress`| `name::domain.dataspace` o `name::dataspace`          | `ContractAlias` ligado a una dirección de contrato desplegada |
+|Nombre de dominio| `DomainId` en forma de `domain.dataspace`               | `domain.dataspace`                                    | SNS `domain` registro de espacio de nombres |
+|Nombre del espacio de datos| numérico `DataSpaceId` del catálogo activo Nexus |alias de espacio de datos como `universal`, `paynet` o `zk`| SNS `dataspace` registro de espacio de nombres más el catálogo de espacio de datos activo            |
 
-Los alias de cuentas son los nombres de las cuentas orientadas al usuario. sobreviven a la recreación de cuentas porque el alias apunta a la cuenta activa ID a través de índices de estados mundiales y registros de recreaciones de cuentas. Utilice `SetPrimaryAccountAlias` para la etiqueta primaria de la cuenta, `SetAccountAliasBinding` para los alias no primarios adicionales y `FindAccountByAlias` o `FindAliasesByAccountId` para las lecturas. Los alias de la cuenta normalmente requieren un contrato activo de arrendamiento de alias de cuentas SNS adquirido con `AcquireAccountAliasLease` y renovado con `RenewAccountAliasLease`.
+Los alias de cuenta son los nombres de cuenta visibles para el usuario. Sobreviven a la reconfiguración de la cuenta porque el alias apunta al ID de cuenta activo a través de índices del estado mundial y registros de reconfiguración de cuenta. Use `SetPrimaryAccountAlias` para la etiqueta principal de la cuenta, `SetAccountAliasBinding` para alias adicionales que no sean principales, y `FindAccountByAlias` o `FindAliasesByAccountId` para lecturas. Los alias de cuenta normalmente requieren un arrendamiento de alias de cuenta activo SNS adquirido con `AcquireAccountAliasLease` y renovado con `RenewAccountAliasLease`.
 
-Los alias de activos son las definiciones de activos, no los saldos de cuentas individuales. Los alias de activos y los alias de contratos son vínculos directos entre un nombre legible y un objetivo canónico existente. Los alias de activos se definen con: `SetAssetDefinitionAlias`; El segmento del nombre de alias debe coincidir con el nombre de visualización de la definición de activo o el nombre de la definición proyectada. `SetContractAlias`; El espacio de datos alias debe coincidir con el espacio de datos codificado en la dirección del contrato. Ambas obligaciones pueden llevar `lease_expiry_ms`; Después de la expiración, dejarán de resolver cuando transcurra la ventana de gracia y serán barridos de los índices de estados mundiales.
+Los alias de activos nombran definiciones de activos, no saldos individuales de cuentas. Los alias de activos y los alias de contratos son vinculaciones directas de un nombre legible a un destino canónico existente. Los alias de activos se configuran con `SetAssetDefinitionAlias`; el segmento del nombre del alias debe coincidir con el nombre para mostrar de la definición del activo o el nombre de la definición proyectada. Los alias de contrato se configuran con `SetContractAlias`; el alias dataspace debe coincidir con el dataspace codificado en la dirección del contrato. Ambos enlaces pueden llevar `lease_expiry_ms`; después de su vencimiento dejan de resolverse cuando se agota la ventana de gracia y se eliminan de los índices del estado mundial.
 
-Los dominios no tienen un objeto `DomainAlias` separado. Un identificador de dominio ya es un nombre calificado para el espacio de datos como `payments.universal`. SNS rastrea la propiedad del arrendamiento de nombres de dominio en el espacio de nombres `domain` y para los alias del espacio de datos en el espacio de nombres `dataspace`. El alias de espacio de datos reservado `universal` debe seguir siendo definido.
+Los dominios no tienen un objeto `DomainAlias` separado. Un identificador de dominio ya es un nombre calificado por el espacio de datos, como `payments.universal`. SNS realiza un seguimiento de la propiedad del arrendamiento para nombres de dominio en el espacio de nombres `domain` y para alias de espacio de datos en el espacio de nombres `dataspace`. El alias de espacio de datos reservado `universal` debe permanecer definido.
 
-## Documentación relacionada {#related-docs}
+## Documentos relacionados {#related-docs}
 
-|Tema |¿ A dónde ir ?|
+|Tema|A dónde ir|
 | -------------------------------------- | ------------------------------------------- |
-|Los dominios | [Los dominios ](/es/blockchain/domains.md) |
-|Cuentas | [Cuentas](/es/blockchain/accounts.md) |
-|Activos | [Activos](/es/blockchain/assets.md) |
-|NFTs | [NFTs](/es/blockchain/nfts.md) |
-|Activos del mundo real | [Activos en el mundo real](/es/blockchain/rwas.md) |
-|Metadatos | [Metadatos](/es/blockchain/metadata.md) |
-|Instrucciones de registro y transferencia | [Instrucciones](/es/blockchain/instructions.md) |
-|Los permisos de tiempo de ejecución | [Las autorizaciones ](/es/blockchain/permissions.md) |
-|Reglas de denominación | [Reglas de denominación](/es/reference/naming.md) |
+|Dominios| [Dominios](/es/blockchain/domains.md)           |
+|Cuentas|[Cuentas](/es/blockchain/accounts.md)|
+|Activos| [Activos](/es/blockchain/assets.md)             |
+| NFTs                                   | [NFTs](/es/blockchain/nfts.md)                 |
+|Activos del mundo real| [Activos del mundo real](/es/blockchain/rwas.md)    |
+|Metadatos| [Metadatos](/es/blockchain/metadata.md)         |
+|Instrucciones de registro y transferencia| [Instrucciones](/es/blockchain/instructions.md) |
+|permisos de tiempo de ejecución del software| [Permisos](/es/blockchain/permissions.md)   |
+|Reglas de nomenclatura| [Reglas de nomenclatura](/es/reference/naming.md)        |

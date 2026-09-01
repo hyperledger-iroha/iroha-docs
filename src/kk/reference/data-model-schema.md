@@ -1,13 +1,20 @@
 ---
 translation_locale: kk
 translation_source: /reference/data-model-schema.md
-translation_source_hash: 30235305046e4d9e7fd76b7dcf8859f9de0fe2182c61e1e96f455f6c5c4dbda6
+translation_source_hash: cf27b1f313a695b648ae450564a51120af0e3e39641ed140a187d128b930da97
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Деректер моделі схемасы {#data-model-schema}
 
-Бұл бетте `kagami advanced schema` қойылған [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) қайталанудан құжат жаңарту жұмыс ағыны жазылған. Өрнектелген слайд осы қоймаға тексеріледі, сондықтан әдеттегі құжаттама құрылыстарына Iroha көзін тексеру қажет емес.
+Интеграцияның мақсатты торабынан тікелей схеманы сұраңыз. Torii осы интерфейс қосылған кезде `GET /v1/schema` активті деректер моделінің схемасын ұсынады:
 
-<DataModelSchema />
+```bash
+export TORII_URL=http://127.0.0.1:8180
+
+curl -fsS -H 'Accept: application/json' "$TORII_URL/v1/schema" \
+  > iroha-data-model-schema.json
+```
+
+Провизия статусы күтілуде тұрған кезде тіркелген құжаттаманың үзіндісінен байланыстар жасамаңыз. Сол түйіннің компиляцияланған деректер моделі үшін тірі түйін жауапты болып табылады; оны интеграцияңызда қолданылатын түйін құралының қасында бекітілген күйде ұстаңыз.

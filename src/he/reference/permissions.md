@@ -26,10 +26,10 @@ translation_engine: nllb-200-ct2
 |`CanModifyAccountMetadata` |חשבון |לשנות מטא נתונים של חשבון. |
 |`CanUnregisterAssetDefinition` |הגדרה של נכסים |לא רשום תיאור נכס. |
 |`CanModifyAssetDefinitionMetadata` |הגדרה של נכסים |לשנות מטא-מידע על הגדרת נכסים. |
-|`CanMintAssetWithDefinition` |נכסים |נכסי מטבעות עבור הגדרה ספציפית. |
+|`CanMintAssetWithDefinition` |נכסים |להנפיק נכסים עבור הגדרה מסוימת. |
 |`CanBurnAssetWithDefinition` |נכסים |לשרוף נכסים עבור הגדרה ספציפית. |
 |`CanTransferAssetWithDefinition` |נכסים |העברת נכסים להגדרה ספציפית. |
-|`CanMintAsset` |נכסים |כותב סכום נכסים ספציפי. |
+|`CanMintAsset` |נכסים |להנפיק יתרת נכס מסוימת. |
 |`CanBurnAsset` |נכסים |לשרוף סכום נכסים ספציפי.|
 |`CanTransferAsset` |נכסים |להעביר סכום נכסים מסוים. |
 |`CanRegisterNft` |NFT |רשום NFT. |
@@ -38,11 +38,11 @@ translation_engine: nllb-200-ct2
 |`CanModifyNftMetadata` |NFT |לשנות NFT מטא נתונים. |
 |`CanSetParameters` |פרמטרים |להגדיר פרמטרים של ההסדרים על שרשרת. |
 |`CanManageRoles` |תפקידים |רשום, לא רשום, לתת או לבטל תפקידים. |
-|`CanRegisterTrigger` |תפעיל |רשום את ההדק.|
-|`CanExecuteTrigger` |תפעיל |להוציא לפועל את ההדק.|
-|`CanUnregisterTrigger` |תפעיל |תבטל את ההדק.|
-|`CanModifyTrigger` |תפעיל |שינו את הגדרת ההדק. |
-|`CanModifyTriggerMetadata` |תפעיל |שינו את הנתונים המפעילים. |
+|`CanRegisterTrigger` |טריגר |רישום טריגר.|
+|`CanExecuteTrigger` |טריגר |הפעלת טריגר.|
+|`CanUnregisterTrigger` |טריגר |הסרת טריגר מרישום.|
+|`CanModifyTrigger` |טריגר |שינוי הגדרת טריגר. |
+|`CanModifyTriggerMetadata` |טריגר |שינוי מטא־הנתונים של טריגר. |
 |`CanUpgradeExecutor` |יצרן |לשפר את המפעיל של זמן ההפעלה. |
 |`CanRegisterSmartContractCode` |חוזה חכם.|רשום קוד חוזה חכם. |
 |`CanUseFeeSponsor` |Nexus |כנסת דמי Nexus לחשבון ספונסר מסוים. |

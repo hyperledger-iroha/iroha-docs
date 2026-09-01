@@ -1,24 +1,24 @@
 ---
 translation_locale: ja
 translation_source: /cookbook/wallet-connect.md
-translation_source_hash: ab5b6c560ed8b0a208666e5854306ba6adce7af1210fc3c94b9c560d8e6eb686
+translation_source_hash: 81b370bdc73a40ff2dbb8df0f91547ab4c279ed94600bdd6df367f29a949ec71
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# 財布接続:資産移転を承認する {#wallet-connect-approve-an-asset-transfer}
+# ウォレット接続：資産の転送を承認 {#wallet-connect-approve-an-asset-transfer}
 
-## 成果 {#outcome}
+## 結果 {#outcome}
 
-Iroha 接続セッションをブラウザで作成し, I105 財布のアイデンティティに対する暗号化承認を取得し,その財布に Torii の正確な資産転送エスカファルドに署名するよう要求し,分離した署名を送信し,適用最終期間の待ち.
+ブラウザで Iroha Connect セッションを作成し、1 つの I105 ウォレットのIDについて暗号承認を取得し、そのウォレットに Torii の正確な資産転送生成スタータ構造に署名するよう依頼し、分離された署名を送信して、適用された確定を待ちます。
 
-## 必須条件 {#prerequisites}
+## 前提条件 {#prerequisites}
 
-- `@iroha/iroha-js`と HTTPS を使用するブラウザアプリケーション.
-- Iroha Connect v1 を実装し,単鍵 Ed25519 I105 アカウントを制御する財布.
-- 現在の Taira チェーン ID と鎖識別子,財布の登録された小文字 Ed25519 公钥ヘックス,所有する譲渡可能資産,および正規目的地 I105.
-- 現行の Taira faucet 応答で返済された料金資産 ID.この例は,その ID に対してライブ料金の配当を検証する;コピーされた資産識別子を組み込むことは決してありません.
-- 接続は選択された Torii で有効化する必要があります. QR または深いリンクを表示する前に確認してください:
+- `@iroha/iroha-js` と HTTPS を使用するブラウザアプリケーションです。
+- 単一鍵のEd25519 I105 アカウントを制御し、Iroha Connect v1 を実装するウォレット。
+- 現在の Taira チェーンIDとチェーン識別子、ウォレットに登録された小文字のEd25519公開鍵の16進数、所有する譲渡可能な資産、および標準の I105 宛先。
+- 現在の Taira テストネット資金提供サービスのレスポンスによって返される手数料資産ID。例では、そのIDに基づく実際の手数料価格の見積もりを検証します；コピーされた資産IDを埋め込むことは決してありません。
+- 選択された Torii で接続を有効にする必要があります。QR またはディープリンクを表示する前に確認してください:
 
 ```bash
 curl -fsS \
@@ -27,23 +27,23 @@ curl -fsS \
   jq -e '{enabled, sessions_active} | select(.enabled == true)'
 ```
 
-Taira が Connect を無効化または `404`/`503` を返信する場合は,Connect が有効化された生成されたローカルネットワークを使用します.通常の資産転送では,財布に十分な移転可能な量と手数料余分を持つ必要があります.
+もし Taira が Connect 無効を報告するか、`404`/`503` を返す場合は、Connect 有効の生成されたローカルネットワークを使用してください。通常の資産転送でも、ウォレットが十分な転送可能数量と手数料残高を所有している必要があります。
 
 ## ステップ {#steps}
 
-### 1. ウォレット発射制御を1つ提供する {#_1-provide-one-wallet-launch-control}
+### 1. 1つのウォレット起動コントロールを提供する {#_1-provide-one-wallet-launch-control}
 
-JavaScript は,この要素を申請ページに期待する.
+以下の JavaScript は、アプリケーションページでこの要素を期待しています:
 
 ```html
 <a id="wallet-connect" hidden>Open this request in my Iroha wallet</a>
 ```
 
-同じように URI のように QR 他のデバイスにある財布のコードです URI 財布に記録されたリレートークンを保持しているので,分析,ログ,レファレンス,またはクラッシュレポートに載せません.
+別のデバイスでウォレット用の QR コードとして同じ URI をレンダリングします。URI はウォレット専用のリレートークンを保持しているため、分析、ログ、リファラー、クラッシュレポートには含めないでください。
 
-### 2. 作成,承認,署名,提出 {#_2-create-approve-sign-and-submit}
+### 2. 作成、承認、署名、提出 {#_2-create-approve-sign-and-submit}
 
-このブラウザモジュールは,アプリケーションの状態から具体的な値を受け入れます.最初の `POST /v1/assets/transfer` は署名フィールドを省略し,引用されたバージョンのトランザクションエスカファルドを返します.第2は,同じ転送要求に財布の公開鍵と分離したサインのみを追加します.
+このブラウザモジュールは、アプリケーションの状態から具体的な値を受け取ります。最初の`POST /v1/assets/transfer`は署名フィールドを省略し、手数料の見積もり付きのバージョン付きトランザクションスタータ構造を返します。2つ目は、同じ転送リクエストにウォレットの公開鍵と分離署名のみを追加します。
 
 ```js
 import { AccountAddress } from '@iroha/iroha-js/address'
@@ -219,11 +219,11 @@ export async function transferWithWallet({
 }
 ```
 
-保持する `token_app`, `token_management`, そして `token_relay` アプリケーションのメモリで. ウォレット起動のみ URI 接続承認はアカウントのアイデンティティによって署名されます. X25519 `walletPublicKey` 承認には一時的な運輸鍵が含まれています アカウントのエド25519サインキーではありません
+`token_app`、`token_management`、および `token_relay` をアプリケーションのメモリに保持してください。ウォレットの起動 URI/トークン のみがウォレットに渡ります。接続の承認はアカウントの識別によって署名されます；承認内の X25519 `walletPublicKey` は一時的な輸送キーであり、アカウントの Ed25519 署名キーではありません。
 
-### 3. 財布実装で Rust フレームタイプを使用する {#_3-use-the-rust-frame-types-in-a-wallet-implementation}
+### 3. ウォレットの実装で Rust フレームタイプを使用する {#_3-use-the-rust-frame-types-in-a-wallet-implementation}
 
-Rust プロトコル表面は,ウォレットが要求されたトランザクションを解読し,その正確な意図,適用されたポリシーを表示し,承認されたアカウントキーで署名した後のみ署名をシールすることができます.このヘルパーはその認証された署名を受け入れます;それは1つを作らない:
+Rust プロトコル・サーフェスは、ウォレットが要求されたトランザクションをデコードし、その正確な意図を表示し、ポリシーを適用し、承認されたアカウントキーで署名した後にのみ署名を封印できます。このヘルパーは、その検証済み署名を受け入れます；作成することはありません：
 
 ```rust
 use iroha_crypto::{Algorithm, Signature};
@@ -251,11 +251,11 @@ fn seal_wallet_signature(
 }
 ```
 
-リポジトリの `connect_app` と `connect_wallet` の例は,プロトコル固定装置である.それらは決定的な輸送キーを使用し,輸出でトークンを暴露し,財布固定装置が偽署名を返します.それらをフレームのみを研究するために使用し,決して Taira 財布実装として使わない.
+リポジトリの `connect_app` と `connect_wallet` の例はプロトコルテストのアーティファクトです：これらは決定論的なトランスポートキーを使用し、出力にトークンを表示し、ウォレットのテストアーティファクトはダミー署名を返します。これらはフレームを学習するためだけに使用し、決して Taira のウォレット実装として使用しないでください。
 
 ## 確認する {#verify}
 
-返されたハッシュを保持し,公開保有者エンドポイントを通じて目的地のポストステートを確認する:
+返された暗号ハッシュを保持し、公開保有者 API エンドポイントを通じて宛先のポストステートを確認してください:
 
 ```bash
 curl -fsS -G \
@@ -266,24 +266,24 @@ curl -fsS -G \
   jq .
 ```
 
-検証は, JavaScript ウェイターが提出されたトランザクションハッシュについて `Applied` を観察し,目的地保有が転送を反映した場合のみに成功します. HTTP の受け入れまたは財布承認だけでは本簿最終的なものではない.
+検証は、JavaScript のウェイターが提出されたトランザクションの暗号ハッシュに対して`Applied`を観察し、送金先の保有が転送を反映した場合にのみ成功します。HTTP の承認やウォレットの承認だけでは、ブロックチェーン台帳の最終性にはなりません。
 
-## 問題を解く {#troubleshooting}
+## トラブルシューティング {#troubleshooting}
 
-- `404`, `503`,または`enabled: false`は,接続状態からそのノードでリレーセッションが作成できないことを意味します.有効なローカルネットに切り替える;アプリや管理トークンを自分で運ぶことに戻らないでください.
-- `USER_DENIED` は財布の決定です. 繰り返し承認提示を開く代わりに,端末ユーザの結果として保存します.
-- 承認アカウントの不一致または無効な承認署名がセッションを終了しなければならない.アイデンティティ結合が失敗した後,財布にサインするよう決して要求しないでください.
-- `public_key_hex does not control authority` は登録データと承認された I105 アイデンティティの異議を意味します.このフィールドでは,一時的な財布輸送キーは使用できません.
-- 署名またはエスカファルドの拒否は通常,準備と提出の間に変更されたリクエストフィールドやライブ料金表を表します.新しいリクエストを作成してください.古いサインを移植しないでください.
-- すでに承認された署名リクエストの正確な再生は無効です. タイムアウトを再開理由として扱う前に返済したトランザクションハッシュを查ります.
+- Connectステータスの`404`、`503`、または`enabled: false`は、そのノードでリレーセッションを作成できないことを意味します。有効なローカルネットに切り替えてください；アプリや管理トークンを自分でフォールバックして運ぶことはしないでください。
+- `USER_DENIED` はウォレットの決定です。繰り返し承認を求めるプロンプトを開くのではなく、端末ユーザーの結果として保存してください。
+- 承認アカウントの不一致や無効な承認署名がある場合、セッションは終了しなければなりません。IDのバインディングに失敗した後にウォレットに署名を求めてはいけません。
+- `public_key_hex does not control authority` は登録データを意味し、承認された I105 身元と一致しません。このフィールドでは、一時的なウォレット輸送キーを使用できません。
+- 署名または生成されたスターターストラクチャの拒否は、通常、準備と送信の間にリクエストフィールドやライブ手数料の見積もりが変更されたことを意味します。新しいリクエストを作成し、古い署名を移植してはいけません。
+- すでに受理された署名付きリクエストの正確なリプレイは冪等です。タイムアウトを理由に最初からやり直す前に、その返されたトランザクションの暗号ハッシュを照会してください。
 
 ## ソースおよび関連文書 {#source-and-related-docs}
 
-- [ブラウザ接続の実装は,ピンされたコミット](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/src/connect.browser.js) で
-- [ブラウザコネクトテストは,ピンされた commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/test/connect.browser.test.js) で
-- [Rust アプリフレームの例 ピンされた commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_app.rs)
-- [Rust 固定された commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_wallet.rs)の財布フレーム例
-- [ピン Torii OpenAPI スキーマ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/artifacts/openapi/torii.json)
+- [ピン留めされたソースコードのリビジョンでのブラウザ接続の実装](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/src/connect.browser.js)
+- [ブラウザ接続はピン留めされたソースコードのリビジョンでテストされます](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/test/connect.browser.test.js)
+- [Rust ピン留めされたソースコードのリビジョンでのアプリアフレームの例](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_app.rs)
+- [Rust ピン留めされたソースコードのリビジョンでのウォレットフレームの例](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_wallet.rs)
+- [固定された Torii OpenAPI スキーマ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/artifacts/openapi/torii.json)
 - [SORA Nexus サービス](/ja/blockchain/sora-nexus-services.md)
-- [浮動資産](./fungible-assets.md)
-- [取引を提出し確認する](./submit-and-verify-transactions.md)
+- [代替可能な資産](./fungible-assets.md)
+- [取引を提出して確認する](./submit-and-verify-transactions.md)

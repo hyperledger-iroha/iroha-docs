@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: 5772bf7175b693fbbed54b59304859a33c2e19fef0c402141b6f4ad4cfd6714f
+translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # ביצועים ומטריקות {#performance-and-metrics}
 
 ביצועים Iroha תלויים עומס העבודה, טופולוגיית המאשר, תנאי הרשת וההגדרות של הסכמה. לכן מספר TPS בודד הוא שימושי רק כאשר הוא קשור לרוץ מדף בדיקת עם תאורה קבועה.
@@ -21,20 +20,30 @@ translation_engine: nllb-200-ct2
 
 ## מה למדוד {#what-to-measure}
 
-מתחילים עם פני השטח של המפעיל חשופים על ידי Torii:
+התחל עם תמונת ההצלחה של הערך הציבורי ו-Prometheus scrape, ולאחר מכן השתמש ב CLI למצב הסכמה מאושרת על ידי המפעיל. מפתח המפעיל חייב להיות מורשה על ידי הערך היעד והוא מותקן רק בזמן הפעלה:
 
 ```bash
 export TORII=http://127.0.0.1:8180
+export OPERATOR_KEY_FILE=./secrets/operator.key
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
-curl -s -H 'Accept: application/json' "$TORII/v1/sumeragi/status" | jq .
-curl -s "$TORII/v1/sumeragi/phases" | jq .
-curl -s "$TORII/v1/sumeragi/rbc" | jq .
-curl -s "$TORII/v1/sumeragi/params" | jq .
 curl -s "$TORII/metrics" > metrics.prom
+
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi status
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi diagnostics
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi qc
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi params
 ```
 
-אתה יכול לנסות את אותו דפוס קריאה בלבד נגד ציבור Taira:
+פובליק Taira הוא שימושי ללימוד צורת תמונות מצב מיידית של קשרים אנונימיים. אבחון המפעיל שלו אינו זמין בכוונה ללא מפתח המפעיל Taira:
 
 ```bash
 TAIRA=https://taira.sora.org
@@ -42,59 +51,47 @@ TAIRA=https://taira.sora.org
 curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
-curl -fsS "$TAIRA/v1/time/status" \
-  | jq '{healthy: .health.healthy, peers, samples_used, rtt_count: .rtt.count}'
-
-curl -fsS "$TAIRA/metrics" \
-  | grep -E '^(block_height|queue_size|sumeragi_tx_queue_depth|txs|view_changes)' \
-  | head -n 20
+curl -fsS "$TAIRA/v1/time/now" \
+  | jq '{now_ms, offset_ms}'
 ```
 
-מדדים ציבוריים Taira הם שימושיים ללמוד את שמות האותות. אל תשתמשו בהם כמספרי יכולת הייצור לשימוש שלך.
+אל תשתמשו בתצפיות מרשת בדיקה ציבורית כנתוני קיבולת ייצור עבור הפריסה שלכם.
 
-תמונות ההסכמה אותן זמינות באמצעות CLI:
-
-```bash
-iroha --config ./localnet/client.toml --output-format text ops sumeragi status
-iroha --config ./localnet/client.toml --output-format text ops sumeragi phases
-iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
-iroha --config ./localnet/client.toml ops sumeragi params
-```
-
-ראיית הטלמטריה תלויה בפרופיל המוגדר. השתמש `extended` כאשר אתה צריך `/metrics`, ושימש `full` במהלך ניסויים כאשר אתה גם צריך את הדרכים הסודיות של מפעילים Sumeragi.
+נראות הטלמטריה תלויה בפרופיל שהוגדר. `operator` מפעיל תמונות מצב של status ושל diagnostics. ‏`extended` מוסיף `/metrics` ותזמונים יקרים, ואילו `developer` מוסיף תמונות מצב למפתחים, כגון leader, ‏QC, פרמטרים וראיות, בלי להפעיל את `/metrics`. השתמשו ב־`full` כאשר הרצה אחת זקוקה לשתי הקבוצות. `telemetry_profile` הוא מתג הטלמטריה היחיד של הגרסה הראשונה.
 
 ```toml
-telemetry_enabled = true
 telemetry_profile = "full"
 ```
 
-## חטיבות ביצועים {#performance-bands}
+## רמות ביצועים {#performance-bands}
 
-השתמשו ברצועות אלה עבור ריצה מתבצעת בקיבולת המטרה `Y` TPS תקציב לטיחות `L` מיליסעקונדים. תפעיל את עומס העבודה מספיק זמן כדי לכלול חימום, מצב יציב, ובתקופה אחת לפחות של עומס פסגה צפוי.
+השתמשו ברמות אלה עבור הרצה נצפית בקצב היעד `Y` TPS ובתקציב השהיה של `L` מילישניות. הריצו את עומס העבודה מספיק זמן כדי לכלול התחממות, מצב יציב ולפחות תקופה אחת של עומס שיא צפוי.
 
-|הלהקה|תנאים |משמעות |
+|רמה|תנאים |משמעות |
 | --- | --- | --- |
-|גבוה.|העוצמה המקובלת נמצאת ב- `Y` או מעל [PH000000, איחור הקבלה של p95 נמצא מתחת ל- `0.8 * L`, השורות נשארות מתחת ל-10% מהקapacity, ומספרים לשינוי תצוגה/התאוששות הם שטובים |המשלוח יש מקום למשאב העבודה הנדרש |
-|בינוני|ההפעלה המקובלת קרובה ל `Y`, העומס של p95 הוא מתחת ל `L`, השורות יציבות מתחת 50% מהקapacity, ושינויים בתצוגה נדירים |השיגור עובד, אבל יש סבולת פיצוץ מוגבלת |
-|נמוך.|המעבר המקובל הוא מתחת `Y`, העומס של p95 עולה על `L`, הזדרות גדלות במהלך ההפעלה, או מתפריטים לשינוי תצפית/לחץ לאחור גדלים ללא הרף |עומס העבודה הנדרש עולה לפחות על קווץ אחד |
+|גבוהה|קצב העסקאות שהתקבל הוא `Y` ומעלה, השהיית commit ב־p95 נמוכה מ־`0.8 * L`, התורים נשארים מתחת ל־10% מהקיבולת ומוני החלפת התצוגה/השחזור אינם משתנים |לפריסה יש מרווח לעומס העבודה המבוקש |
+|בינונית|קצב העסקאות שהתקבל קרוב ל־`Y`, השהיית commit ב־p95 נמוכה מ־`L`, התורים יציבים מתחת ל־50% מהקיבולת והחלפות תצוגה נדירות |הפריסה עובדת, אך סבילותה לעומסים מתפרצים מוגבלת |
+|נמוכה|קצב העסקאות שהתקבל נמוך מ־`Y`, השהיית commit ב־p95 גבוהה מ־`L`, התורים גדלים במהלך ההרצה או שמוני החלפת תצוגה/backpressure עולים ברציפות |עומס העבודה המבוקש חורג לפחות מצוואר בקבוק אחד |
 
-החוק המרכזי הוא כיוון השורה. אם הוצא TPS גדול יותר מההתחייב TPS והשורה ממשיכה לצמוח, ההתפעלת עומדת יתר על מידה גם אם דגימות קצרות נראות בריאותיות.
+הכלל המרכזי הוא כיוון התור. אם קצב ה־TPS שנשלח גבוה מקצב ה־TPS שעבר commit והתור ממשיך לגדול, הפריסה נמצאת בעומס יתר גם אם דגימות קצרות נראות תקינות.
 
-## סכום הערך והקואורום {#node-count-and-quorum}
+## מספר צמתים וקוורום {#node-count-and-quorum}
 
-יותר מתבטיחים משפרים את סובלנות הטעות אך מגדילים את הוצאות הקואורדינציה, החתימה ותוצאת הרשת. בהיישמת הנוכחית Sumeragi:
+מספר גדול יותר של validators משפר את העמידות לתקלות, אך מגדיל את עלויות התיאום, החתימות והפצת הרשת. הפרוטוקול של הגרסה הראשונה של Sumeragi דורש:
 
-- סכום האישור `n` מביא את התקציב של הפגם `f = floor((n - 1) / 3)`
-- עבור `n >= 4`, קוורום מחויבות הוא `2f + 1`
-- עבור `n <= 3`, כל המבטיחים נדרשים לקבוע
-- עמיתים מתבוננים בבלוקים אבל לא מצביעים, מציעים או אוספים
+- ועדת הצבעה מדויקת `n = 3f + 1`
+- `4 <= n <= 31`, כך שגודלים תקפים הם 4, 7, 10, וכן הלאה.
+- קוורום commit של `2f + 1`
+- עמיתי observer מסתנכרנים עם בלוקים, אך אינם מצביעים, מציעים או אוספים
 
 |מעודדים |תקציב טעויות |הקבע קוורום|הערה על היכולת |
 | --- | --- | --- | --- |
-|1 עד 3 |תופעה לא מקוונת מעשית|כל המאושרים|שימושי עבור פיתוח וניסויים קטנים; כל מעודד חסר יכול לעכב מחויבויות |
 | 4 | 1 | 3 |מינימום משותף לטיפול בתאונות אחת |
 | 7 | 2 | 5 |עמידות רבה יותר, עם יותר תנועה להצביע והתרחבות |
-| 10 | 3 | 7 |העלות הגבוהה יותר של שיתוף פעולה; חיזוק רשת וקטר חשוב יותר |
+| 10 | 3 | 7 |עלויות קואורדינציה גבוהים יותר; רשתות וריכוז סימון חשובים יותר |
+| 31 | 10 | 21 |הוועדה מקסימלית לשחרור ראשון; שיתוף פעולה של מדד דף ותשלום חתימה בקפידה |
+
+יצירת Genesis ואימות האתחול דוחים גדלים לא תקינים של הוועדה; אל תמדדו ביצועים של טופולוגיה שהגרסה אינה יכולה לקבל.
 
 בעת הערכת "נקודות ה-X", נפרדים מבקרי ההצבעה מהמתבוננים. הוספת מתבוננים בדרך כלל עולה פחות מאשר הוספת בדיקרים, אך המתבוננים עדיין צורכים בדיחות בלוק, סינכרון בלוק, דיסק ורוחב קו הרשת.
 
@@ -106,45 +103,48 @@ telemetry_profile = "full"
 
 - מספר ההוראות על העסקה
 - מספר חתימות ואלגוריתמים לחתום
-- גודל בייט העסקה וגודל המטען הפועל המפוצץ
+- גודל העסקה בבתים וגודל מטען הנתונים לאחר ביטול הדחיסה
 - יחס קריאה / כתיבה
-- גודל הנתונים המטאטאליים ופעילות נכסים
-- חוזה אינטליגנטי, תניע ועלות ביצוע IVM
-- עומס חיפוש פועל נגד אותם עמיתים
+- גודל המטא-נתונים ופעילות נכסים
+- עלות הביצוע של חוזים חכמים, טריגרים ו־IVM
+- עומס חיפוש פועל נגד אותם צמתים
 
-עסקאות העברה קטנות אינן מעצבות עבור עומסי עבודה כבדים של חוזים או metadata.
+עסקאות העברה קטנות אינן מדד מייצג לעומסי עבודה עתירי חוזים או מטא־נתונים.
 
-### זמן ההסכמה {#consensus-timing}
+### קדנס הסכמה {#consensus-cadence}
 
-זמן Sumeragi נשלט על ידי הפרמטרים הפועלים של Sumeragi:
+הצילום המהיר של הפרמטרים הפועלים Sumeragi מכיל את קדנסת הבלוק הבלתי משתנה החותמת ואת קו ההגירה עם שעון:
 
-- `block_time_ms`
-- `commit_time_ms`
-- `min_finality_ms`
-- `pacing_factor_bps`
-- תופעות שלב NPoS כאשר מצב NPoS מופעל
+- `block_cadence_ms`
+- `max_clock_drift_ms`
 
 תבדקו אותם עם:
 
 ```bash
-iroha --config ./localnet/client.toml ops sumeragi params
-curl -s "$TORII/v1/sumeragi/params" | jq .
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi params
 ```
 
-מטרות זמן נמוכות יותר יכולות לשפר את האיחור רק כאשר שכבות הרשת, האחסון והביצוע יכולים לעקוב אחר כך. ברגע שצופים בשינויים, מופיעים תוצאות של עומס תועלת חסרות, או מתרחשים לחצים חוזרים, הפחתת הזמנים בדרך כלל מחמירה את הביצועים.
+`block_cadence_ms` מבוצע על ידי גינזיס חתום ומקרר בהתחלה; זה לא כפתור טיון חי. להשוות רשתות עם סימנים שונים גיניסיס הכנסות רק כתצוגות דף נפרדים. ברגע שהשינויים נראים, משיכות של מטען חסרות, או לחץ אחראי מופיעים, קדנציה קצרה בדרך כלל הופכת את העומס יתר למראה יותר במקום להגדיל את ההפעלה התמידית.
 
-### קולקטור פנווט {#collector-fanout}
+### הגבלות על מועמדות וההכנסות {#candidate-and-ingress-bounds}
 
-הגדרות הקולקטור משפיעות על האופן שבו הצביעים המגיבים מתכנסים במהירות:
+הגבולות המקומיים של Sumeragi קובעים כמה עבודה מועמדת ושיקום יכול לאחסן מולידיטור:
 
-- `sumeragi.collectors.k` שולט כמה קולקטורים אוספים קולות לכל גובה.
-- `sumeragi.collectors.redundant_send_r` מפקח על ההצבעה הנוספת לאחר הפסקת זמן מקומית
-- `sumeragi.collectors.parallel_topology_fanout` מוסיף את הטופולוגיה לצד אספנים.
+- `sumeragi.block.max_transactions`
+- `sumeragi.block.max_payload_bytes`
+- `sumeragi.block.proposal_queue_scan_multiplier`
+- `sumeragi.queues.commands`
+- `sumeragi.queues.bodies` ו `sumeragi.queues.body_bytes`
+- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks`, ו `sumeragi.queues.ready_bodies`
 
-הגדילה של התצוגה יכולה להפחית את איטיות הזנב ברשתות גדולות או פחות אמינות, אך היא גם מגדלת את התנועה. השווא את זמינות הכוללת וטלמטריה הקולקטור עם מדרי האיטיות והלחץ האחורי לפני שינוי הערכים אלה:
+גבולות קטנים מדי יוצרים לחץ קו או חיזוק עומס מועיל; גבולות גדולים יותר מגדילים את הזיכרון המאוחסן וכמות העבודה הזמינה לצמתים התעלולים. השוואה את תמונת האבחנה עם זיכרון תהליך, ניהול הודעות, ומטריקים של גוף חסר לפני שינויים בגבול אחד בכל פעם:
 
 ```bash
-iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi diagnostics
 ```
 
 ### תנאי הרשת {#network-conditions}
@@ -153,18 +153,19 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 
 - RTT בין מוסמכים
 - זעם ואובדן חבילות
-- רוחב הקו עבור עומסים מועילים של כמות וחלקים של RBC
+- רוחב הקו עבור עומסים מועילים של כמות וחלקים חתומים RS16
 - קשרים לא סימטריים בין אזורים
-- NAT, קיר אש, או התנהגות מרחבת שמאחרת מחזיקת קשר עמיתים
+- NAT, קיר אש, או התנהגות מרחבת שמאחרת מחזיקת קשר צמתים
 
-כמשפט תכנון, להגדיר את תקציב העתקויות גבוה מספיק כדי לכסות מספר נסיעות הלוך ושוב של מולידיטור ועוד זמן ביצוע ושימוש בדיסק. אם רשת p95 RTT כבר קרובה לעתקיות התחייבויות p95 הרצויה, היעד אינו מציאותי.
+כמשפט תכנון, להגדיר את תקציב העתקויות גבוה מספיק כדי לכסות מספר נסיעות הלוך ושוב של מולידיטור ועוד זמן ביצוע ושימוש בדיסק. אם רשת p95 RTT כבר קרובה לעתקיות commit p95 הרצויה, היעד אינו מציאותי.
 
 ### שורות ומגבלות הכניסה {#queues-and-admission-limits}
 
-הגדרות הכניסה והצורה מגדירות כמה לחץ פריצה יכול לספוג עמידה:
+הגדרות הכניסה והצורה מגדירות כמה לחץ פריצה צומת יכול לספוג:
 
 - `queue.capacity`
 - `queue.capacity_per_user`
+- `queue.max_retained_bytes`
 - `queue.transaction_time_to_live_ms`
 - גבולות העסקה של הגנזה, כגון חתימות מקסימליות, הוראות, בייטים ובייטים מפורצים.
 - גבולות קווים p2p ומגבלות כניסה להסכמה
@@ -173,10 +174,10 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 
 ### חומרה ואחסון {#hardware-and-storage}
 
-למדוד כל מבטיח, לא רק את המנהיג:
+מדדו כל מאמת, לא רק את המנהיג:
 
 - CPU סיפוק במהלך אישור, ביקורת חתימה וביצוע
-- לחץ זיכרון מהצורות, תמונות מיידיות ופגישות RBC פעילות.
+- לחץ זיכרון מקיצבים, תמונות מצב ומחסנים לאחזור עומס מועיל.
 - דיסק כתיבת איחור עבור אחסון בלוק ופסוטים
 - רשת שידור / קבלת סיפוק
 - הגדרות אופציונליות להאיץ חומרה כאשר משמשת על ידי עומס העבודה
@@ -185,7 +186,7 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 
 ## סימנים של פרומתיוס {#prometheus-signals}
 
-שמות מטריקים יכולים להשתנות בהתאם לפרופיל של הבניין ומגוון התכונות. בדוק `/metrics` על הערך שלך קודם, ולאחר מכן הקים לוחי הנתונים סביב סדרת הזמינות.
+שמות מטריקים מגיעים מהקטלוג הטלמטריה הנבדק. זמינות סדרה ועיצוב עדיין תלויים בתכונות הבנייה `telemetry_profile`, אז לבדוק `/metrics` על הערך היעד לפני בניית לוח המעקב.
 
 סימנים נפוצים כוללים:
 
@@ -196,12 +197,12 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 |מחייב איחור.|`histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |השוואה של p95/p99 עם התקציב לטיחות |
 |עומק השורה |`queue_size`, `sumeragi_tx_queue_depth` |צריך להישאר מוגבל במהלך עוצמת עומס.|
 |סיפוק שורה |`sumeragi_tx_queue_saturated` |הערכים שאינם אפס קיימים הם המשמעות של עומס יתר |
-|צפו בשינויים |`view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |ערכי העלייה מצביעים על זמנים, טופולוגיה, עומס תועלת או בעיות ברשת |
+|צפו בשינויים |`view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |ערכי העלייה מצביעים על זמנים, טופולוגיה, מטען או בעיות ברשת |
 |הודעות שנפלו.|`dropped_messages`, `sumeragi_consensus_message_handling_total` |ירידה בזמן עומס בדרך כלל מסבירה ענקות באיחור.|
-|RBC לחץ |`sumeragi_rbc_store_pressure`, `sumeragi_rbc_backpressure_deferrals_total` |נקודות לחץ שאינן אפס לחיזוק מטען מועיל או קפיצות אחסון |
+|מטען וחיזוק DA | `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` |בקשות מתמשכות, גיל עולה, או שערות חוזרות DA מצביעות על בעיות רכישת גוף או חתיכה |
 |הקבע קוורום|`sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |חתימות ספורות צריכות להגיע במהירות לקורום הנדרש |
 
-כאשר מדד קיים רק ב `/v1/sumeragi/status`, לתפוס את התמונה המהירה של JSON באותו זוג חפצים כמו סחיטה Prometheus.
+כאשר מדד קיים רק ב `/v1/sumeragi/status`, לתפוס את תמונת המצב המהירה של JSON באותו זוג ארטיפקטים כמו סחיטה Prometheus.
 
 ## זרימת עבודה בהערכה {#estimation-workflow}
 
@@ -209,16 +210,24 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
    - מספר המבקיחים והמתבוננים
    - מצב הסכמה
    - מטרה TPS
-   - תקציבים לטיפול בהתחייבויות p95 ו-p99
+   - תקציבים לטיפול commit p95 ו-p99
    - שילוב העסקאות
    - רשת צפויה RTT, ג'יטר, ורוחב הקו
 2. רשום את הקונפיגורציה הפועלת:
 
    ```bash
-   iroha --config ./localnet/client.toml --output-format json ops sumeragi params \
+   iroha --config ./localnet/client.toml \
+     --operator-private-key-file "$OPERATOR_KEY_FILE" \
+     --output-format json ops sumeragi params \
      > artifacts/sumeragi-params.json
-   curl -s "$TORII/v1/sumeragi/collectors" \
-     > artifacts/sumeragi-collectors.json
+   iroha --config ./localnet/client.toml \
+     --operator-private-key-file "$OPERATOR_KEY_FILE" \
+     --output-format json ops sumeragi status \
+     > artifacts/sumeragi-status.json
+   iroha --config ./localnet/client.toml \
+     --operator-private-key-file "$OPERATOR_KEY_FILE" \
+     --output-format json ops sumeragi diagnostics \
+     > artifacts/sumeragi-diagnostics.json
    ```
 
 3. להפעיל את עומס העבודה על המטרה TPS.
@@ -230,10 +239,11 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 
 לפרסם מספרים של ביצועים רק בהקשר מספיק כדי לשחזר אותם:
 
-- Iroha דגלי מחויבות, שחרור ותכונות
+- Iroha דגלי commit, שחרור ותכונות
 - סכום האישור והצופה
-- מצב הסכמה ופרמטרים של Sumeragi
-- קלעקטור `k`, שליחת רידיונטית `r`, ו-topology fanout
+- מצב הסכמה, קדנציה בלוק חתומה, וארגון DA
+- הוועדה המדויקת `3f + 1`, הקוורום והרשימה של צופים
+- `sumeragi.block`, `sumeragi.queues`, `sumeragi.limits`, גבולות הכניסה לרשת והצורה של עסקאות.
 - פרופיל טלמטריה
 - פרטים על חומרה, אחסון ו OS
 - רשת RTT, הנחות של ג'יטר, אובדן ורחב הקו
@@ -242,7 +252,7 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 - מקובל/מסרב TPS
 - עיתוי קבלן p50/p95/p99
 - עומק השורה ומלאה
-- תצוגה של שינויים, הודעות נפטרות, לחץ RBC ומספרים של עומס חיוב חסר
+- תצוגה של שינויים, הודעות נעלמות, קביעות בלוק חסר, ומספרים של שער DA
 - CPU, זיכרון, דיסק ושימוש ברשת על מסמך
 
 ללא פרטים אלה, המספר TPS צריך להיות נחשב לאנקדוט.
@@ -252,4 +262,4 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 - [בדיקות כאוס עם Izanami](./chaos-testing.md)
 - [נקודות קצה Torii ](../../reference/torii-endpoints.md)
 - [פעל Iroha 3 באמצעות CLI ](../../get-started/operate-iroha-via-cli.md)
-- [דוגמה להגדרת עמיתים](../../reference/peer-config/params.md)
+- [דוגמה להגדרת צמתים](../../reference/peer-config/params.md)

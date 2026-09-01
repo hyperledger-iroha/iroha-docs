@@ -3,30 +3,30 @@ translation_locale: es
 translation_source: /reference/torii-api-console.md
 translation_source_hash: a277d8c03a3909eb80d124f0bfed7b78e7c3ed886e443c72effe007d454718bf
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 
 aside: false
 pageClass: torii-api-console-page
 ---
 
-# Con el uso de la consola Torii API {#torii-api-console}
+# Torii API Consola {#torii-api-console}
 
-Utilice el documento OpenAPI en vivo desde un punto final Torii en ejecución para inspeccionar las rutas, enviar solicitudes de prueba, copiar los comandos curl y generar código cliente.
+Utilice el documento en vivo OpenAPI de un endpoint en funcionamiento Torii API para inspeccionar rutas, enviar solicitudes de prueba, copiar comandos curl y generar código de cliente.
 
 <ToriiApiConsole />
 
 ## Requisitos {#requirements}
 
-- El punto final Torii deberá exponer el `/openapi.json`.
-- Las pruebas del navegador requieren CORS para permitir el origen de este documento.
-- El navegador debe ser capaz de llegar directamente al punto final.
-- La generación de código requiere Node.js, pnpm, y un tiempo de ejecución Java para el generador OpenAPI.
+- El endpoint Torii API debe exponer `/openapi.json`.
+- Las pruebas en el navegador requieren CORS para permitir este origen de documentos.
+- El navegador debe poder acceder al endpoint API directamente.
+- La generación de código requiere Node.js, pnpm y un entorno de ejecución de software Java para OpenAPI Generator.
 
-La consola se configura por defecto en `https://taira.sora.org`. El desarrollo local generalmente funciona con `http://127.0.0.1:8080` cuando ejecuta Torii en su máquina.
+La consola por defecto es `https://taira.sora.org`. El desarrollo local generalmente funciona con `http://127.0.0.1:8080` cuando ejecutas Torii en tu máquina.
 
-## Prueba primero Taira {#try-taira-first}
+## Prueba Taira primero {#try-taira-first}
 
-Antes de generar un cliente, compruebe si el documento público OpenAPI se puede acceder desde su máquina:
+Antes de generar un cliente, verifica que el documento público OpenAPI sea accesible desde tu máquina:
 
 ```bash
 curl -fsS https://taira.sora.org/openapi.json -o /tmp/taira-openapi.json
@@ -34,15 +34,15 @@ jq '{title: .info.title, version: .info.version, paths: (.paths | length)}' \
   /tmp/taira-openapi.json
 ```
 
-Luego ponga `https://taira.sora.org/openapi.json` en la consola y pruebe una ruta de sólo lectura como `GET /status`, `GET /v1/domains` o `GET /v1/assets/definitions`. Guarde transacciones firmadas y flujos de llaves privadas para un cliente SDK o CLI que cargue secretos de su entorno de tiempo de ejecución. .
+Luego pega `https://taira.sora.org/openapi.json` en la consola y prueba una ruta de solo lectura como `GET /status`, `GET /v1/domains` o `GET /v1/assets/definitions`. Guarda las transacciones firmadas y los flujos de clave privada para un cliente SDK o CLI que cargue secretos desde tu entorno de ejecución de software.
 
-## Los clientes generados {#generated-clients}
+## Clientes Generados {#generated-clients}
 
-El comando del generador utiliza el mismo documento en vivo OpenAPI que la consola carga. Esto es útil para el operador, explorador, aplicación y rutas de telemetría JSON.
+El comando del generador utiliza el mismo documento en vivo OpenAPI que carga la consola. Esto es útil para las rutas de operador, explorador, aplicación y telemetría JSON.
 
-Para las transacciones firmadas en el libro mayor, consultas firmadas, y Norito- las cargas útiles nativas, prefieren el oficial Iroha SDKs. OpenAPI Los clientes no reúnen firmas, gestionan llaves de cuenta o codifican. Norito los organismos de transacciones para usted.
+Para transacciones del libro mayor blockchain firmadas, consultas firmadas y cargas útiles nativas de Norito, prefiera el Iroha SDKs oficial. Los clientes OpenAPI no ensamblan firmas, ni gestionan claves de cuenta, ni codifican los cuerpos de transacción de Norito por usted.
 
-Para inspeccionar todos los generadores compatibles con el generador OpenAPI, ejecute:
+Para inspeccionar cada generador compatible con el Generador OpenAPI, ejecute:
 
 ```bash
 pnpm dlx @openapitools/openapi-generator-cli list

@@ -36,7 +36,7 @@ nexusPortal:
         link: /my/cookbook/submit-and-verify-transactions
       - title: "ဖောက်ထွင်းနိုင်သော အရင်းအမြစ်များကို ရွှေ့ပြောင်းခြင်း"
         link: /my/cookbook/fungible-assets
-      - title: "မေးမြန်းစာအုပ်အခြေအနေ"
+      - title: "မေးမြန်းချက် blockchain ledger အခြေအနေ"
         link: /my/cookbook/query-ledger-state
       - title: "Stream ဖြစ်ရပ်များ"
         link: /my/cookbook/stream-events
@@ -64,7 +64,7 @@ features:
       dark: /reference.svg
       light: /reference-light.svg
     title: "ရည်ညွှန်းချက်"
-    details: "လက်ရှိ binary, genesis, Torii နှင့် ကိုက်ညီမှု ရည်ညွှန်း စာမျက်နှာများကို ကြည့်ပါ။"
+    details: "လက်ရှိ binary, blockchain genesis, Torii နှင့် ကိုက်ညီမှု references စာမျက်နှာများကိုကြည့်ရှုပါ။"
     link: /my/reference/
 footer: true
 ---

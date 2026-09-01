@@ -6,29 +6,29 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Native Asset Escrow {#native-asset-escrow}
+# Mahalliy aktiv eskrousi {#native-asset-escrow}
 
-Native escrow - bu raqamli aktivlar uchun katta qog'oz bilan boshqariladigan saqlov mexanizmi. Dasturga tegishli hisobvaraqqa aktivlarni yuborish va ushbu hisobvaraqni himoya qilish uchun ariza kodini qo'llab-quvvatlash o'rniga, garov ISIs qiymatni deterministik protokol saqlov hisob raqamiga o'tkazadi va garovning hayotiy davrini jahon holatida qayd etadi.
+Mahalliy eskrou — raqamli aktivlar uchun reyestr boshqaradigan saqlov mexanizmi. Aktivlarni ilovaga tegishli hisobga yuborib, shu hisobni himoyalash mantiqini ilova kodida yuritish o‘rniga, eskrou ISIs qiymatni deterministik protokol saqlov hisobiga o‘tkazadi va eskrouning hayot siklini global holatda qayd etadi.
 
-Bozorda to'lash uchun mahalliy depozitdan foydalaning, Aitai uslubidagi zaryaddan tashqari to'lovlarni muvofiqlashtirish, muhim qadamlar qulflari va katta kitobga ko'rinadigan hayot davri holatiga ega bo'lgan himoyalangan depozit ish oqimlaridan foydalanish.
+Mahalliy eskroudan bozor hisob-kitoblari, Aitai uslubidagi zanjirdan tashqari to‘lovlarni muvofiqlashtirish, bosqichli qulflar hamda hayot sikli holati reyestrda ko‘rinishi kerak bo‘lgan himoyalangan eskrou jarayonlari uchun foydalaning.
 
-## Fikrlar {#concepts}
+## Tushunchalar {#concepts}
 
-|Konsepsiya |Tafsiri |
+|Tushuncha |Tavsifi |
 | --- | --- |
-|`EscrowId` |Qo'ng'iroq qiluvchi tomonidan tanlangan identifikator hashni o'rab oladi. U shaffof va nomsiz depozitlar bo'yicha yagona bo'lishi kerak. |
-|`AssetEscrowRecord` |Transparent raqamli aktivlar garov yoki qulf yozuvlari. |
-|`AnonymousAssetEscrowRecord` |Nulllashtiruvchilar, majburiyatlar va dalillar bilan ta'minlangan himoya qilingan depozit qaydnomasi. |
-|Himoya hisobi |Deterministik protokol hisobvarag'i ID, depozit ID va aktivni aniqlashdan kelib chiqdi. |
-|Koʻrinib turibdiki , |Dalil hashlari fakturalar, hukmlar, xabarlar, saqlash manifestlari yoki zanjirdan tashqari boshqa dalillarni aniqlashi mumkin. Dalil yukining o'zi depozitda saqlanmaydi. |
+|`EscrowId` |Chaqiruvchi tanlaydigan, xeshni o‘rab turuvchi identifikator. U shaffof va anonim eskroular bo‘ylab yagona bo‘lishi shart. |
+|`AssetEscrowRecord` |Shaffof raqamli aktiv eskrousi yoki qulf yozuvi. |
+|`AnonymousAssetEscrowRecord` |Nullifikatorlar, majburiyatlar va isbotlar bilan ta’minlangan himoyalangan eskrou yozuvi. |
+|Saqlov hisobi |Eskrou identifikatori va aktiv ta’rifidan hosil qilinadigan deterministik protokol hisobi. |
+|Dalil xeshi |Hisob-faktura, sud qarori, xabar, saqlov manifesti yoki zanjirdan tashqari boshqa dalilni belgilashi mumkin. Dalilning o‘zi eskrouda saqlanmaydi. |
 
-Transparent yozuvlarda sotuvchi, ixtiyoriy xaridor, aktivlar ta'rifi, umumiy miqdor, saqlov hisob raqami, hayot davomiyligi holati, xulq-atvor turi, qoldiq miqdori, ixtiyoriy chiqarilish vakolatlari, ixtiyorli muddati tugagan vaqt belgilari, dalillar hashlari, vaqt belgilari va ixtiyoriy yechim ma'lumotlari mavjud.
+Shaffof yozuvlar sotuvchi, ixtiyoriy xaridor, aktiv ta’rifi, umumiy miqdor, saqlov hisobi, hayot sikli holati, xatti-harakat turi, qolgan miqdor, ixtiyoriy chiqarish vakolati, ixtiyoriy amal qilish muddati, dalil xeshlari, vaqt belgilari va ixtiyoriy yechim ma’lumotlarini o‘z ichiga oladi.
 
-Garov summasi ijobiy raqamli aktiv miqdorlari bo'lishi kerak va aktiv ta'rifining raqamli tavsiflariga mos kelishi kerak. Garov yoki qulf faol bo'lsa-da, umumiy aktiv o'tkazmalari saqlov hisobini tozalay olmaydi; saqlashdan chiqish yo'llari quyida tasvirlangan garov ISIs hisoblanadi.
+Eskrou miqdori musbat raqamli aktiv miqdori bo‘lishi va aktiv ta’rifining raqamli xususiyatlariga mos kelishi shart. Eskrou yoki qulf faol ekan, oddiy aktiv o‘tkazmalari saqlov hisobini bo‘shata olmaydi; saqlovdan chiqishning yagona yo‘llari quyida ko‘rsatilgan eskrou ISIs hisoblanadi.
 
-## Bozordagi depozit {#marketplace-escrow}
+## Bozor eskrousi {#marketplace-escrow}
 
-Marketplace escrow sarmoyasi bo'yicha aktivni tashqaridagi to'lov yoki etkazib berish ish oqimi bilan birlashtiradi.
+Bozor eskrousi zanjirdagi aktivni zanjirdan tashqari to‘lov yoki yetkazib berish jarayoni bilan bog‘laydi.
 
 ```mermaid
 stateDiagram-v2
@@ -43,21 +43,21 @@ stateDiagram-v2
     Disputed --> Resolved: ResolveEscrowDispute
 ```
 
-|ISI |Uni kim taqdim etadi ?|Taʼsir|
+|ISI |Kim yuboradi |Ta’siri|
 | --- | --- | --- |
-|`OpenAssetEscrow` |Sotuvchi |Sotuvchining raqamli aktivini protokol saqlovida qulflaydi va `Open` bozor rekordini yaratadi. |
-|`AcceptAssetEscrow` |Xaridor |Xaridorni yozib oladi va `Open` ni `Accepted` ga o'tkazadi. Sotuvchi o'z garovini qabul qila olmaydi. |
-|`MarkEscrowPaymentSent` |Qabul qilingan xaridor |`Accepted` sotib oluvchining ro'yxatdan tashqari to'lovni yuborganidan keyin `PaymentSent` ga o'tadi. |
-|`ReleaseAssetEscrow` |Sotuvchi |`PaymentSent` ni `Released` ga o'tkazadi va to'liq hisoblangan summani xaridorga o'tkazib beradi. |
-|`CancelAssetEscrow` |Sotuvchi | Harakatlar `Open` yoki `Accepted` to `Cancelled` va to'lov belgilab qo'yilishidan oldin sotuvchiga qaytarish. |
-|`OpenEscrowDispute` |Sotuvchi yoki qabul qilingan xaridor |`Accepted` yoki `PaymentSent` ni `Disputed` ga ko'chirib, dalillar hashlarini qo'shadi. |
-|`ResolveEscrowDispute` |`CanResolveEscrowDispute` bilan hisob raqami |`Disputed` ni `Resolved` ga ko'chirib, summani sotib oluvchi va sotuvchi o'rtasida bo'linadi. |
+|`OpenAssetEscrow` |Sotuvchi |Sotuvchining raqamli aktivini protokol saqlovida qulflaydi va `Open` holatidagi bozor yozuvini yaratadi. |
+|`AcceptAssetEscrow` |Xaridor |Xaridorni qayd etib, `Open` holatini `Accepted` ga o‘tkazadi. Sotuvchi o‘z eskrousini qabul qila olmaydi. |
+|`MarkEscrowPaymentSent` |Qabul qilingan xaridor |Xaridor zanjirdan tashqari haqni yuborgach, `Accepted` holatini `PaymentSent` ga o‘tkazadi. |
+|`ReleaseAssetEscrow` |Sotuvchi |`PaymentSent` holatini `Released` ga o‘tkazadi va eskroudagi butun miqdorni xaridorga beradi. |
+|`CancelAssetEscrow` |Sotuvchi |`Open` yoki `Accepted` holatini `Cancelled` ga o‘tkazadi va haq yuborilgani belgilanmasidan oldin aktivni sotuvchiga qaytaradi. |
+|`OpenEscrowDispute` |Sotuvchi yoki qabul qilingan xaridor |`Accepted` yoki `PaymentSent` holatini `Disputed` ga o‘tkazib, dalil xeshlarini qo‘shadi. |
+|`ResolveEscrowDispute` |`CanResolveEscrowDispute` vakolatiga ega hisob |`Disputed` holatini `Resolved` ga o‘tkazadi va miqdorni xaridor bilan sotuvchi o‘rtasida taqsimlaydi. |
 
-nizolarni hal qilish miqdorlari salbiy bo'lmasligi kerak va `buyer_amount + seller_amount` garov miqdoriga teng bo'lishi kerak. nol qiymatli to'siqlarga ruxsat etiladi, ammo butun ajratma bloklangan balansni hisobga olishi kerak.
+Nizoni hal qilish miqdorlari manfiy bo‘lmasligi va `buyer_amount + seller_amount` eskrou miqdoriga teng bo‘lishi shart. Nol miqdorli ulushlarga ruxsat beriladi, biroq jami taqsimot qulflangan balansni to‘liq qoplashi kerak.
 
 ### Rust Misol {#rust-example}
 
-Ushbu misol, sotuvchi va xaridor hisobvaraqlari allaqachon mavjud bo'lganini, aktivning tavsifi raqamli sifatida ro'yxatdan o'tganini va sotuvchining etarlicha muvozanati borligini nazarda tutadi.
+Bu misolda sotuvchi va xaridor hisoblari allaqachon mavjud, aktiv ta’rifi raqamli sifatida ro‘yxatdan o‘tgan va sotuvchining balansi yetarli deb hisoblanadi.
 
 ```rust
 use iroha::{
@@ -98,18 +98,18 @@ fn release_marketplace_escrow(
 }
 ```
 
-## Umumiy aktivlar qulflari {#generic-asset-locks}
+## Umumiy aktiv qulflari {#generic-asset-locks}
 
-Asset locklar xuddi shu saqlov rekord turidan foydalanadi, ammo ular xaridor-sotuvchi takliflari emas. Ular maqsadli hisob uchun mablag'larni qulflaydilar va mablag'larni olib tashlash uchun alohida ruxsat berish organini talab qilishadi.
+Aktiv qulflari ayni saqlov yozuvi turidan foydalanadi, ammo ular xaridor va sotuvchi o‘rtasidagi takliflar emas. Ular belgilangan hisob uchun mablag‘ni qulflaydi va mablag‘ni yechish uchun alohida chiqarish vakolatini talab qiladi.
 
-|ISI |Uni kim taqdim etadi ?|Taʼsir |
+|ISI |Kim yuboradi |Ta’siri |
 | --- | --- | --- |
-|`OpenAssetLock` |Manba hisobi |Ijobiy miqdorni bloklaydi, yo'nalish joyini rekord xaridor sifatida qayd etadi va holatini `Locked` ga o'rnatadi. |
-|`DrawdownAssetLock` |Bo ' shatish huquqi yoki belgilangan joy bo ' lmasa , ruxsat berish huquqi |Qolgan qamoqni qisman yoki to'liq belgilangan joyga o'tkazadi. |
-|`CancelAssetLock` |Qotib ochuvchi |Aktiv qulfni bekor qiladi va qolgan miqdorni ochuvchiga qaytaradi. |
-|`ExpireAssetLock` |So ' nggi muddatdan keyin har qanday bitim hokimiyati |O'tmishda `expires_at_ms` bilan tuzilgan qulf muddati tugadi va qolgan miqdorni ochuvchiga qaytarib beradi. |
+|`OpenAssetLock` |Manba hisobi |Musbat miqdorni qulflaydi, maqsad hisobni yozuv xaridori sifatida qayd etadi va holatni `Locked` ga o‘rnatadi. |
+|`DrawdownAssetLock` |Chiqarish vakolati yoki u ko‘rsatilmagan bo‘lsa maqsad hisob |Qolgan saqlovni qisman yoki butunlay maqsad hisobga o‘tkazadi. |
+|`CancelAssetLock` |Qulfni ochgan hisob |Aktiv qulfini bekor qiladi va qolgan miqdorni uni ochgan hisobga qaytaradi. |
+|`ExpireAssetLock` |Muddat tugagach istalgan tranzaksiya vakolati |`expires_at_ms` vaqti o‘tgan qulfni tugatadi va qolgan miqdorni uni ochgan hisobga qaytaradi. |
 
-`DrawdownAssetLock` hisobni `Locked`da saqlaydi, ammo ba'zi miqdor qoladi. Qolgan miqdori nolga yetganda, status `DrawnDown` bo'ladi va rekord yopiladi.
+`DrawdownAssetLock` biror miqdor qolgan ekan, yozuvni `Locked` holatida saqlaydi. Qolgan miqdor nolga yetganda holat `DrawnDown` bo‘ladi va yozuv yopiladi.
 
 ```rust
 use iroha::{
@@ -174,11 +174,11 @@ fn drawdown_and_close_asset_locks(
 }
 ```
 
-Python hozirda generik qulflar uchun yuqori darajadagi yordamchilarni aniqlaydi: `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, va `expire_asset_lock`. Bozor va anonim depozit uchun Python, qo'llash kanonik `InstructionBox` JSON yo ' li bilan SDK Bu ... JSON qo'shish portlasi, yoki bir SDK bu esa birinchi darajali depozit quruvchilarni kashf etadi.
+Python hozir umumiy qulflar uchun yuqori darajali `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock` va `expire_asset_lock` yordamchilarini taqdim etadi. Python-da bozor yoki anonim eskrou yaratish uchun SDK-ning JSON o‘tish yo‘li orqali kanonik `InstructionBox` JSON qiymatidan foydalaning yoxud eskrou uchun birinchi darajali tuzuvchilarni taqdim etadigan SDK orqali yuboring.
 
-## Toʻqnashish {#disputes}
+## Nizolar {#disputes}
 
-Bozordagi depozit `Accepted` yoki `PaymentSent` dan nizo kiritishi mumkin. Faqatgina qayd etilgan sotuvchi yoki xaridor nizoni ochishi mumkin. Hal qilish uchun `CanResolveEscrowDispute` talab qilinadi, ya'ni bu to'g'ridan-to'g'ri hal qiluvchining hisob raqamiga beriladi yoki roli orqali meros bo'ladi.
+Bozor eskrousi `Accepted` yoki `PaymentSent` holatidan nizoga o‘tishi mumkin. Nizoni faqat qayd etilgan sotuvchi yoki xaridor ochadi. Uni hal qilish uchun yechuvchi hisobga bevosita berilgan yoki rol orqali meros bo‘lgan `CanResolveEscrowDispute` vakolati talab etiladi.
 
 ```rust
 use iroha::{
@@ -226,9 +226,9 @@ fn resolve_disputed_escrow(
 }
 ```
 
-## Anonim eskor {#anonymous-escrow}
+## Anonim eskrou {#anonymous-escrow}
 
-Anonim garov bozorda bir xil hayot davri bilan ishlaydi, ammo moliyalashtirish va yopish aktivlari harakatlari himoyalangan. Umumiy yozuvlarda hali ham sotuvchi, xaridor, status, dalillar hashlari, vaqt belgilari va hujjati bilan bog'liq harakatlarni saqlaydi. Qadoqlangan qog'ozlar ichidagi miqdorlar va oluvchilar majburiyatlar, bekor qilish qoidalari va tasdiqlovchi ilovalar bilan tasvirlanadi.
+Anonim eskrou bozor eskrousi bilan bir xil hayot siklidan foydalanadi, ammo uni moliyalashtirish va yopishdagi aktiv harakatlari himoyalangan. Ochiq yozuvda sotuvchi, xaridor, holat, dalil xeshlari, vaqt belgilari va isbotga bog‘langan harakat yozuvlari saqlanadi. Himoyalangan notalardagi miqdor va oluvchilar majburiyatlar, nullifikatorlar va isbot ilovalari bilan ifodalanadi.
 
 |Ochiq ISI |Anonim ISI |
 | --- | --- |
@@ -240,7 +240,7 @@ Anonim garov bozorda bir xil hayot davri bilan ishlaydi, ammo moliyalashtirish v
 |`OpenEscrowDispute` |`OpenAnonymousEscrowDispute` |
 |`ResolveEscrowDispute` |`ResolveAnonymousEscrowDispute` |
 
-Vallet yoki prover vositasi dalillar birikmasini va jamoat ma'lumotlarini yaratishi kerak. ochish bir depozit majburiyatini yaratadi. Bo'shatish, bekor qilish va anonim nizolarni hal etish to'g'ri bitta depozit majburiyatini sarflashi kerak va harakat talab qiladigan xaridor, sotuvchi yoki bo'linadigan mahsulot majburiyatlarini yaratadi.
+Hamyon yoki isbotlovchi vosita isbot ilovasi va ochiq kirishlarni yaratishi shart. Eskrouni ochish aynan bitta eskrou majburiyatini yaratadi. Chiqarish, bekor qilish va anonim nizoni hal etish aynan shu bitta majburiyatni sarflab, amal talabiga qarab xaridor, sotuvchi yoki taqsimlangan chiqish majburiyatlarini yaratishi kerak.
 
 ```rust
 use iroha::{
@@ -283,25 +283,25 @@ fn open_anonymous_escrow(
 }
 ```
 
-Asosiy himoyalangan tranzaksiya modeli uchun [Anonim tranzaksiyalar ](/uz/blockchain/anonymous-transactions.md)-ni ko'ring.
+Asosiy himoyalangan tranzaksiya modeli uchun [Anonim tranzaksiyalar](/uz/blockchain/anonymous-transactions.md) bo‘limiga qarang.
 
-## SDK Foydalanish {#sdk-usage}
+## SDK dan foydalanish {#sdk-usage}
 
-SDKs. Rust kanonik ma'lumotlar modelini o'z ichiga oladi. Python hozirda umumiy aktivlarni qulflash yordamchilarini oshkor qiladi. JavaScript va TypeScript Kotodama escrow hosting qo'ng'iroqlaridan foydalanadi. Kotlin/JVM va Swift bozorda o'rnatilgan foydalanish yukini ishlab chiqaruvchi va anonim depozitni taqdim etadi.
+Eskrou qo‘llab-quvvatlashi SDKs bo‘yicha turlicha taqdim etiladi. Rust kanonik tiplashtirilgan ma’lumotlar modeliga ega. Python hozircha umumiy aktiv qulfi yordamchilarini taqdim etadi. JavaScript va TypeScript Kotodama eskrou mezbon chaqiruvlaridan foydalanadi. Kotlin/JVM va Swift bozor hamda anonim eskrou uchun tiplashtirilgan foydali yuk tuzuvchilarini beradi.
 
-|SDK |Ushbu yuzani ishlating .|Maqsad |
+| SDK | Foydalaniladigan interfeys | Qamrov |
 | --- | --- | --- |
-| [Rust](#rust-sdk) |`iroha::data_model::isi::escrow` |Bozordagi eskor, umumiy qulflar, anonim eskor, so'rovlar va tadbirlar.|
-| [Python](#python-asset-locks) |`Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock` va mijozlarga `*_and_wait` yordamchilar |Jismoniy aktivlar qulflari. Bozor va anonim depozit yordamchilari hali birinchi darajali Python usullar emas. |
-| [JavaScript /TypeScript](#javascript-and-typescript-kotodama) |`compileKotodamaProgram` dan `@iroha/iroha-js/kotodama-compiler`|Kotodama shartnomalar ichida eskrov uyasi qo'ng'iroqlari. |
-| [Kotlin /JVM](#kotlin-and-jvm) |`InstructionTemplate` sinflarida `org.hyperledger.iroha.sdk.core.model.instructions` |Bozor va anonim depozit qo'riqlamalar namunalari. |
-| [Swift / iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders` va `IrohaSDK.build*Escrow*` yordamchilari |Bozor va anonim depozit Norito JSON yo'l-yo'riq yuklamalari. |
+| [Rust](#rust-sdk) | `iroha::data_model::isi::escrow` | Bozor eskrousi, umumiy qulflar, anonim eskrou, so‘rovlar va hodisalar. |
+| [Python](#python-asset-locks) | `Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock` va mijozdagi `*_and_wait` yordamchilari | Umumiy aktiv qulflari. Bozor va anonim eskrou yordamchilari hali birinchi darajali Python usullari emas. |
+| [JavaScript / TypeScript](#javascript-and-typescript-kotodama) | `@iroha/iroha-js/kotodama-compiler` dagi `compileKotodamaProgram` | Kotodama shartnomalari ichidagi eskrou mezbon chaqiruvlari. |
+| [Kotlin / JVM](#kotlin-and-jvm) | `org.hyperledger.iroha.sdk.core.model.instructions` dagi `InstructionTemplate` sinflari | Bozor va anonim eskrouning maxsus ko‘rsatma shablonlari. |
+| [Swift / iOS](#swift-and-ios) | `NativeEscrowInstructionBuilders` va `IrohaSDK.build*Escrow*` yordamchilari | Bozor va anonim eskrou uchun Norito JSON ko‘rsatma foydali yuklari. |
 
-Quyidagi misollarda ko'rsatmalar qurilishiga e'tibor qaratilmoqda. Hisob mablag'lari, imzolarni boshqarish va tranzaksiyalarni taqdim etish har bir SDK uchun normal oqimni kuzatadi.
+Quyidagi misollar ko‘rsatmalarni tuzishga qaratilgan. Hisobni mablag‘ bilan ta’minlash, imzolarni boshqarish va tranzaksiyani yuborish har bir SDK ning odatiy jarayoniga amal qiladi.
 
 ### Rust SDK {#rust-sdk}
 
-To'liq mahalliy qoplama yoki so'rov / tadbirni qo'llab-quvvatlash kerak bo'lganda Rust SDK dan foydalaning. Yuqoridagi misollarda bozorda chiqarilish, umumiy qulflash chegirmasi, nizolarni hal etish va `iroha::data_model::isi::escrow` bilan anonim depozit qurilishi ko'rsatilgan.
+Mahalliy imkoniyatlarning to‘liq qamrovi yoki so‘rov va hodisa qo‘llab-quvvatlashi kerak bo‘lsa, Rust SDK dan foydalaning. Yuqoridagi misollar `iroha::data_model::isi::escrow` yordamida bozor eskrousini bo‘shatish, umumiy qulfdan mablag‘ yechish, nizoni hal qilish va anonim eskrou tuzishni ko‘rsatadi.
 
 ```rust
 use iroha::{
@@ -326,9 +326,9 @@ fn open_and_read(
 }
 ```
 
-### Python Aktivlar qulflari {#python-asset-locks}
+### Python aktiv qulflari {#python-asset-locks}
 
-Python SDK umumiy aktivlar qulflari uchun birinchi darajali yordamchilarni kashf etadi. Ulardan maqsadli to'lovlar, ozod qilish organi tomonidan pul olishlar, ochuvchi tomonidan bekor qilish va muddati tugagan qaytarish uchun foydalaning.
+Python SDK umumiy aktiv qulflari uchun birinchi darajali yordamchilarni taqdim etadi. Ulardan bosqichma-bosqich to‘lovlar, bo‘shatish vakolati bajaradigan yechimlar, ochuvchining bekor qilishi va muddat tugagandagi qaytarishlar uchun foydalaning.
 
 ```python
 client.open_asset_lock_and_wait(
@@ -359,13 +359,13 @@ client.expire_asset_lock_and_wait(
 )
 ```
 
-Ikki tarafli qulf uchun `release_authority` o'chirib tashlang; so'ngra belgilangan hisobvaraq `drawdown_asset_lock`ni taqdim etishi mumkin.
+Ikki tomonli qulfda `release_authority` ni kiritmang; shunda maqsad hisob `drawdown_asset_lock` ni yuborishi mumkin.
 
 ### JavaScript va TypeScript Kotodama {#javascript-and-typescript-kotodama}
 
-JavaScript SDK hozirda to'g'ridan-to'g'ri mahalliy eskrov tranzaksiyalari tuzuvchilarini ochib bermaydi. Kotodama shartnomalarni ishga tushiradigan JavaScript yoki TypeScript dasturlar uchun Kotodama kompilyerida eskrov host qo'ng'iroqlarini yig'ish.
+JavaScript SDK hozir mahalliy eskrou tranzaksiyalarining bevosita tuzuvchilarini taqdim etmaydi. Kotodama shartnomalarini joylashtiradigan JavaScript yoki TypeScript ilovalarida eskrou mezbon chaqiruvlarini Kotodama kompilyatori bilan yig‘ing.
 
-Native escrow host qoʻngʻiroqlari aniq kirish maʼlumotlarini talab qiladi , chunki kompilyer shaffof boʻlmagan escrow uchun torroq kirish setlarini keltira olmaydi ISIs. Eksport qilingan kirish nuqtalarida qoʻllanma kartani ishlatish `escrow_*` qurilgan.
+Mahalliy eskrou mezbon chaqiruvlari aniq kirish ko‘rsatmalarini talab qiladi, chunki kompilyator yashirin eskrou ISIs uchun torroq kirish majmuasini hosil qila olmaydi. `escrow_*` ichki amallarini chaqiradigan eksport qilingan kirish nuqtalarida umumiy ko‘rsatmalardan foydalaning.
 
 ```js
 import { compileKotodamaProgram } from "@iroha/iroha-js/kotodama-compiler";
@@ -397,11 +397,11 @@ if (compiled.diagnostics.length > 0) {
 }
 ```
 
-nizolar uchun qo'llash `escrow_open_dispute(offer, evidence)` va `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`. Anonim garovli uy egasining qoʻngʻiroqlari qabul qilinadi Norito yordamchi yukni talab qilish bytlari, masalan `anonymous_escrow_open_offer(request)`.
+Nizolar uchun `escrow_open_dispute(offer, evidence)` va `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)` dan foydalaning. Anonim eskrou mezbon chaqiruvlari Norito so‘rov foydali yuki baytlarini qabul qiladi; masalan, `anonymous_escrow_open_offer(request)`.
 
 ### Kotlin va JVM {#kotlin-and-jvm}
 
-Kotlin/JVM SDK nativ escrowni maxsus ko'rsatma shablonlari sifatida namunalashtiradi. Har bir shablon talab qilinadigan maydonlarni tasdiqlaydi va tranzaksiya quruvchisi tomonidan ishlatiladigan kanonik argumentlar xaritasini aniqlaydi.
+Kotlin/JVM SDK mahalliy eskrouni maxsus ko‘rsatma shablonlari sifatida modellashtiradi. Har bir shablon majburiy maydonlarni tekshiradi va tranzaksiya tuzuvchisi ishlatadigan kanonik argumentlar xaritasini taqdim etadi.
 
 ```kotlin
 import org.hyperledger.iroha.sdk.core.model.escrow.NativeEscrowPermissions
@@ -431,11 +431,11 @@ println(open.arguments)
 println(NativeEscrowPermissions.CAN_RESOLVE_ESCROW_DISPUTE)
 ```
 
-Anonim namunalar quyidagicha mavjud `OpenAnonymousAssetEscrowInstruction`, `AcceptAnonymousAssetEscrowInstruction`, `MarkAnonymousEscrowPaymentSentInstruction`, `ReleaseAnonymousAssetEscrowInstruction`, `CancelAnonymousAssetEscrowInstruction`, `OpenAnonymousEscrowDisputeInstruction`, va `ResolveAnonymousEscrowDisputeInstruction`. Android Java qoʻngʻiroqchilari moslashishni ishlatishlari mumkin `NativeEscrowInstructions.*` qurilish ishchilari Android artefakt.
+Anonim shablonlar `OpenAnonymousAssetEscrowInstruction`, `AcceptAnonymousAssetEscrowInstruction`, `MarkAnonymousEscrowPaymentSentInstruction`, `ReleaseAnonymousAssetEscrowInstruction`, `CancelAnonymousAssetEscrowInstruction`, `OpenAnonymousEscrowDisputeInstruction` va `ResolveAnonymousEscrowDisputeInstruction` nomlari bilan mavjud. Android Java chaqiruvchilari Android artefaktidagi mos `NativeEscrowInstructions.*` tuzuvchilaridan foydalanishi mumkin.
 
 ### Swift va iOS {#swift-and-ios}
 
-Swift SDK eskoring ko'rsatmalarini Norito JSON faydali yuklar sifatida yaratadi. `NativeEscrowInstructionBuilders` dan to'g'ridan-to'g'ri foydalaning yoki dasturingizda allaqachon `IrohaSDK` namunasi mavjud bo'lganda ekvivalent `IrohaSDK.build*Escrow*` yordamchisini chaqiring.
+Swift SDK eskrou ko‘rsatmalarini Norito JSON foydali yuklari sifatida tuzadi. `NativeEscrowInstructionBuilders` dan bevosita foydalaning yoki ilovangizda `IrohaSDK` nusxasi mavjud bo‘lsa, unga teng `IrohaSDK.build*Escrow*` yordamchisini chaqiring.
 
 ```swift
 import IrohaSwift
@@ -463,27 +463,27 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 )
 ```
 
-Anonim Swift quruvchilar bekor qiluvchi ro'yxatlarni, ishlab chiqarish majburiyatlari ro'yxatlarini, dalillar lug'atini va ixtiyoriy ravishda `rootHint` Qiymatlar. nizolarni hal etish uchun ruxsatnoma belgisi quyidagicha mavjud: `NativeEscrowPermissions.canResolveEscrowDispute`.
+Anonim Swift tuzuvchilari nullifikatorlar ro‘yxati, natija majburiyatlari ro‘yxati, isbot lug‘ati va ixtiyoriy `rootHint` qiymatlarini qabul qiladi. Nizoni hal qiluvchi ruxsat tokeni `NativeEscrowPermissions.canResolveEscrowDispute` sifatida mavjud.
 
-## Savollar va voqealar {#queries-and-events}
+## So‘rovlar va hodisalar {#queries-and-events}
 
-Status sahifalari, yarashtirish ishlari va qo'llab-quvvatlash vositalari uchun depozit so'rovlaridan foydalaning:
+Holat sahifalari, solishtirish vazifalari va yordam vositalari uchun eskrou so‘rovlaridan foydalaning:
 
-|Savollar |Maqsad|
+| So‘rov | Vazifasi |
 | --- | --- |
-|`FindAssetEscrowById` |`EscrowId` bilan bitta shaffof depozit yoki qulfni o'qing. |
-|`FindAssetEscrows` |Ochiq depozit va qulf yozuvlarini ro'yxatdan o'tkazish. |
-|`FindAssetEscrowsBySeller` |Sotuvchi yoki qulfni ochuvchi tomonidan ochilgan yozuvlarni ro'yxatdan o'tkazish. |
-|`FindAssetEscrowsByBuyer` |Xaridor tomonidan qabul qilingan bozor depozitlarini ro'yxatga oling yoki maqsadga yo'naltirilgan qulflarni o'qing. |
-|`FindAssetEscrowsByStatus` |`AssetEscrowStatus` tomonidan ro'yxatga olingan hujjatlar. |
-|`FindAnonymousAssetEscrowById` |`EscrowId` tomonidan bitta anonim depozitni o'qing. |
-|`FindAnonymousAssetEscrows*` |Barcha yozuvlar, sotuvchi, xaridor yoki status bo'yicha anonim depozitlarni ro'yxatdan o'tkazing. |
+| `FindAssetEscrowById` | Bitta oshkora eskrou yoki qulfni `EscrowId` bo‘yicha o‘qish. |
+| `FindAssetEscrows` | Oshkora eskrou va qulf yozuvlarini ro‘yxatlash. |
+| `FindAssetEscrowsBySeller` | Sotuvchi yoki qulf ochuvchisi yaratgan yozuvlarni ro‘yxatlash. |
+| `FindAssetEscrowsByBuyer` | Xaridor qabul qilgan bozor eskroularini yoki maqsad hisobga yo‘naltirilgan qulflarni ro‘yxatlash. |
+| `FindAssetEscrowsByStatus` | Yozuvlarni `AssetEscrowStatus` bo‘yicha ro‘yxatlash. |
+| `FindAnonymousAssetEscrowById` | Bitta anonim eskrouni `EscrowId` bo‘yicha o‘qish. |
+| `FindAnonymousAssetEscrows*` | Anonim eskroularni barcha yozuvlar, sotuvchi, xaridor yoki holat bo‘yicha ro‘yxatlash. |
 
-`EscrowEventFilter` o'z navbatida ID, sotuvchi, xaridor, holati va tadbirlar to'g'risidagi maskara orqali shaffof mahalliy depozit va qulf tadbirlariga obuna bo'lishi mumkin. Tadbirlar oilasiga `Opened`, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed`, va `Resolved`. Anonim eskoryo yozuvlari anonim eskoryo so'rovlari orqali tekshirilgan.
+`EscrowEventFilter` eskrou identifikatori, sotuvchi, xaridor, holat va hodisalar majmuasi niqobi bo‘yicha oshkora mahalliy eskrou hamda qulf hodisalariga obuna bo‘la oladi. Hodisalar oilasiga `Opened`, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed` va `Resolved` kiradi. Anonim eskrou yozuvlari anonim eskrou so‘rovlari orqali tekshiriladi.
 
-## Operatsiya ma'lumotlari {#operational-notes}
+## Ishlatishga oid qaydlar {#operational-notes}
 
-- Katta fakturalar, chat loglari, hukmlar yoki audit to'plamlarini depozit hisobidan tashqarida saqlang va ularning hashlarini dalil sifatida qo'shing.
-- Ilovalarda barqaror `EscrowId` chizig'idan foydalaning, shuning uchun takroriy sinovlar bir xil taklif uchun ikki martalik depozitlarni yaratolmaydi.
-- `CanResolveEscrowDispute` nafaqat nizo jarayonini boshqaradigan hisobvaraqlar yoki vazifalarga beriladi.
-- To'lovlarni verifikatsiya qilishni ariza siyosati sifatida ko'rib chiqish. Iroha saqlash va hayot davri o'tishlarini qayd etadi; u fiat yoki tashqi to'lov yo'llarini o'zi tekshirmaydi.
+- Katta hisob-fakturalar, suhbat jurnallari, qarorlar yoki tekshiruv paketlarini eskrou yozuvidan tashqarida saqlang va ularning xeshlarini dalil sifatida biriktiring.
+- Ilovalarda `EscrowId` ni barqaror hosil qiling, shunda qayta urinishlar bitta taklif uchun takroriy eskrou yarata olmaydi.
+- `CanResolveEscrowDispute` ni faqat nizo jarayonini boshqaradigan hisoblar yoki rollarga bering.
+- Zanjirdan tashqari to‘lovni tekshirishni ilova siyosati deb hisoblang. Iroha saqlov va hayot davri o‘tishlarini qayd etadi; fiat yoki tashqi to‘lov tizimlarini o‘zi tekshirmaydi.

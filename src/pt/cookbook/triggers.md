@@ -1,22 +1,22 @@
 ---
 translation_locale: pt
 translation_source: /cookbook/triggers.md
-translation_source_hash: 93080591f5171c7ce25173eb1ef826d6f5ca661a17797be53e90aedab33ed0c3
+translation_source_hash: 5267fb9bb232d52d9df4bedee414d745ccc30dd52cbc30993df3c5b975a0bc38
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Trigas {#triggers}
+# Gatilhos {#triggers}
 
-## Resultados {#outcome}
+## Resultado {#outcome}
 
-Registre um gatilho de chamada final no Taira, execute-o uma vez, espere a finalidade aplicada e confirme sua conclusão bem sucedida do histórico de blocos comprometidos.
+Registre um gatilho de chamada finita em Taira, execute-o uma vez, aguarde a finalização aplicada e confirme sua conclusão bem-sucedida a partir do histórico de blocos confirmados.
 
 ## Pré-requisitos {#prerequisites}
 
-- Um assinante financiado, `taira.client.toml`, `taira.tx-metadata.json`, e `TAIRA_ACCOUNT_ID` de [Conectar-se a Taira](./connect-to-taira.md).
-- Taira Permissão para registrar um gatilho para `TAIRA_ACCOUNT_ID` E executar o gatilho resultante. `CanRegisterTrigger` abrangidos por: `authority` e `CanExecuteTrigger` abrangidos por: `trigger`.
-- Se essas subvenções não estiverem disponíveis, utilize uma rede local gerada e o seu cliente administrador. A autoridade do gatilho também precisa de todas as permissões exigidas pelas instruções que o gatilho irá executar.
+- Um signatário criptográfico financiado, `taira.client.toml`, `taira.tx-metadata.json` e `TAIRA_ACCOUNT_ID` de [Conectar-se a Taira](./connect-to-taira.md).
+- Taira permissão para registrar um gatilho para `TAIRA_ACCOUNT_ID` e executar o gatilho resultante. Os tokens relevantes são `CanRegisterTrigger` com escopo de `authority` e `CanExecuteTrigger` com escopo de `trigger`.
+- Se essas concessões não estiverem disponíveis, use uma rede local gerada e seu cliente administrador. O principal de autorização do gatilho também precisa de todas as permissões exigidas pelas instruções que o gatilho executará.
 
 ```bash
 CONFIG=./taira.client.toml
@@ -27,9 +27,9 @@ test -n "$TAIRA_ACCOUNT_ID"
 
 ## Passos {#steps}
 
-### 1. Registrar um gatilho com apoio de instrução {#_1-register-an-instruction-backed-trigger}
+### 1. Registrar um gatilho baseado em instrução {#_1-register-an-instruction-backed-trigger}
 
-`--instructions-stdin` aceita uma JSON Uma série de instruções. `Log` A instrução mantém este exemplo focado na autorização de desencadeamento em vez das permissões de um segundo objeto do livro maior.
+`--instructions-stdin` aceita um array JSON de instruções. Uma instrução `Log` mantém este exemplo focado na autorização de gatilho em vez das permissões de um segundo objeto do livro-razão da blockchain.
 
 ```bash
 printf '%s\n' \
@@ -45,20 +45,20 @@ printf '%s\n' \
     --filter execute
 ```
 
-O gatilho pode ser executado no máximo três vezes. Sua autoridade declarada, e não o chamador que acontece a executá-lo, autoriza as instruções dentro da ação.
+O gatilho pode ser executado no máximo três vezes. Seu principal de autorização declarado, e não o chamador que por acaso o executa, autoriza as instruções dentro da ação.
 
-### 2. Verificar a declaração antes da execução {#_2-inspect-the-declaration-before-execution}
+### 2. Inspecione a declaração antes da execução {#_2-inspect-the-declaration-before-execution}
 
 ```bash
 iroha --config "$CONFIG" ledger trigger get --id "$TRIGGER_ID"
 iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 ```
 
-Confirmar a autoridade I105, o filtro de execução, as repetições restantes e a instrução única `Log` antes de gastar outra taxa.
+Confirme o principal de autorização I105, o filtro de execução, as repetições restantes e a instrução única `Log` antes de gastar outra taxa.
 
-### 3. Execute e espere as duas camadas. {#_3-execute-and-wait-for-both-layers}
+### 3. Execute e aguarde ambas as camadas {#_3-execute-and-wait-for-both-layers}
 
-A transação de execução e a ação de desencadeamento têm evidências distintas. `--wait` aguarda a finalidade da transação aplicada; `--trace` também relata diagnósticos de conclusão do tempo de execução.
+A transação de execução e a ação de disparo possuem evidências distintas. `--wait` aguarda a finalização da transação aplicada; `--trace` também relata diagnósticos de conclusão do tempo de execução do software.
 
 ```bash
 iroha --config "$CONFIG" \
@@ -71,7 +71,7 @@ iroha --config "$CONFIG" \
   "$TRIGGER_ID"
 ```
 
-Os clientes Rust constroem as mesmas duas instruções tipografadas. Aqui `authority` é um `AccountId` e `client` sinais como essa conta:
+Rust clientes constroem as mesmas duas instruções tipadas. Aqui `authority` é um `AccountId` e `client` assina como essa conta:
 
 ```rust
 use iroha::data_model::{prelude::*, transaction::FeePaymentIntent};
@@ -93,7 +93,7 @@ client.submit_blocking(ExecuteTrigger::new(trigger_id), fee)?;
 
 ## Verificar {#verify}
 
-Escanar o histórico de blocos comprometidos para a conclusão e inspecionar a contagem de repetições decrementadas:
+Verifique o histórico de blocos confirmados para a conclusão e inspecione a contagem de repetições decrementada:
 
 ```bash
 iroha --config "$CONFIG" ledger trigger completed list \
@@ -104,21 +104,21 @@ iroha --config "$CONFIG" ledger trigger completed list \
 iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 ```
 
-Ao menos uma conclusão deve relatar sucesso. O gatilho deve permanecer ativo com duas execuções restantes. Uma submissão bem-sucedida sem a conclusão do gatilho com sucesso não é uma verificação suficiente.
+Pelo menos uma conclusão deve relatar sucesso. O gatilho deve permanecer ativo com duas execuções restantes. Uma submissão bem-sucedida sem uma conclusão de gatilho bem-sucedida não é verificação suficiente.
 
-## Resolução de problemas {#troubleshooting}
+## Solução de problemas {#troubleshooting}
 
-- Registro rejeitado como não permitido significa que o signatário carece de `CanRegisterTrigger` para a autoridade declarada. A execução exige o `CanExecuteTrigger` É um símbolo.
-- Uma transação pode chegar ao aplicado enquanto a ação de desencadeamento relata falha. Leia o resultado da conclusão e erro; em seguida, verifique as permissões da autoridade do desencadeamento para cada instrução incorporada.
-- O `trigger not found` pode significar que a transacção de registo foi rejeitada ou que uma configuração diferente da cadeia Torii/catena foi utilizada para a execução.
-- Quando as repetições atingem o zero, fazer mais repetições é uma outra escrita privilegiada. Não alterem silenciosamente esta receita para um gatilho indefinido.
-- Para a limpeza, `ledger trigger unregister --id "$TRIGGER_ID"` requer `CanUnregisterTrigger` para esse gatilho mais uma seleção explícita de taxa.
+- Registro rejeitado por não ser permitido significa que o signatário criptográfico não possui `CanRegisterTrigger` para o principal de autorização declarado. A execução requer o token `CanExecuteTrigger` de escopo separado.
+- Uma transação pode atingir Aplicado enquanto a ação do gatilho relata falha. Leia o resultado da conclusão e o erro; em seguida, verifique as permissões do principal de autorização do gatilho para cada instrução incorporada.
+- `trigger not found` pode significar que a transação de registro foi rejeitada ou que uma configuração diferente de Torii/cadeia foi usada para a execução.
+- Quando as repetições chegam a zero, emitir mais repetições é outra escrita privilegiada. Não altere silenciosamente esta receita para um gatilho indefinido.
+- Para a limpeza, `ledger trigger unregister --id "$TRIGGER_ID"` requer `CanUnregisterTrigger` para esse gatilho, além da seleção explícita de taxa.
 
 ## Fonte e documentos relacionados {#source-and-related-docs}
 
-- [Testes de integração do trigger de chamada indirecta no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/triggers/by_call_trigger.rs)
-- [Ensaios de integração do evento e do desencadeamento no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/events_and_triggers.rs)
-- [Execução de instruções de desencadeamento no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
-- [Trigores](/pt/blockchain/triggers.md)
-- [Exemplos de gatilhos ](/pt/blockchain/trigger-examples.md)
+- [Testes de integração de gatilho por chamada no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/triggers/by_call_trigger.rs)
+- [Testes de integração de eventos e gatilhos no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events_and_triggers.rs)
+- [Acionar a execução da instrução no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
+- [Gatilhos](/pt/blockchain/triggers.md)
+- [Exemplos de gatilho](/pt/blockchain/trigger-examples.md)
 - [Eventos](./stream-events.md)

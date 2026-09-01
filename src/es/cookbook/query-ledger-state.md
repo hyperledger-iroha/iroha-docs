@@ -1,29 +1,29 @@
 ---
 translation_locale: es
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: a81f6cc04befb0b92a0a01c2cb3c1ecbbc631ce1f2a923cb046241c295db7806
+translation_source_hash: 68ef931f3d37b9bd40fcf61c9a77313539ca0bd648405834d161a018debb491a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Encuesta del estado de los registros {#query-ledger-state}
+# Consultar el estado del libro mayor de blockchain {#query-ledger-state}
 
-## El resultado {#outcome}
+## Resultado {#outcome}
 
-Leer y proyectar los recursos Taira JSON, luego utilizar las consultas tipografadas Iroha con filtros, paginación lógica, clasificación, tamaños de búsqueda y continuación del cursor solo hacia adelante. También evitará confiar en la proyección del selector antes que el servidor evalúe el tuple `--select` reenviado.
+Lea y proyecte los recursos Taira JSON, luego use consultas tipeadas Iroha con filtros, paginación lógica, ordenamiento, tamaños de recuperación y continuación de cursor solo hacia adelante. También evitará depender de la proyección del selector antes de que el servidor evalúe la tupla `--select` reenviada.
 
-## Los requisitos previos {#prerequisites}
+## Requisitos previos {#prerequisites}
 
-- `curl`, `jq`, Node.js 24 y la corriente `iroha` CLI.
-- Acceso de sólo lectura Taira.
-- En el caso de los ejemplos de consultas firmadas, una configuración del cliente para Taira o una red local creada.
-- Para el ejemplo Rust, un proyecto fijado a la misma revisión de fuente Iroha que la red objetivo.
+- `curl`, `jq`, Node.js 24, y el actual `iroha` CLI.
+- Acceso de solo lectura Taira.
+- Para ejemplos de consultas tipadas firmadas, una configuración de cliente para Taira o una red local generada.
+- Para el ejemplo Rust, un proyecto fijado a la misma revisión de origen Iroha que la red objetivo.
 
-## Los pasos {#steps}
+## Pasos {#steps}
 
-### Una página a través de un recurso público Taira {#_1-page-through-a-public-taira-resource}
+### 1. Hoja a través de un recurso público Taira {#_1-page-through-a-public-taira-resource}
 
-Las rutas de recursos son útiles para los paneles de control y controles de humo. Pida JSON, enlace cada página, y proyecta solo los campos que la aplicación necesita después de verificar la respuesta.
+Las rutas de recursos son útiles para paneles y verificaciones rápidas. Solicita JSON, enlaza cada página y proyecta solo los campos que la aplicación necesita después de revisar la respuesta.
 
 ::: code-group
 
@@ -69,11 +69,11 @@ for (let offset = 0; ; offset += limit) {
 
 :::
 
-Esta superficie HTTP utiliza `limit` y `offset`. Tratar como normal un `total` omitido o limitado cuando la ruta usa un modo de conteo más barato.
+Esta superficie HTTP utiliza `limit` y `offset`. Trate un `total` omitido o limitado como normal cuando la ruta utiliza un modo de conteo más barato.
 
-### Filtrar y lotar una consulta CLI typada {#_2-filter-and-batch-a-typed-cli-query}
+### 2. Filtrar y agrupar una consulta tipeada CLI {#_2-filter-and-batch-a-typed-cli-query}
 
-El CLI serializa una consulta iterable mecanografiada y sigue los cursores de continuación del servidor internamente. Aquí el resultado lógico se limita a una fila, mientras que `--fetch-size 1` controla el lote máximo obtenido por ida y vuelta.
+El CLI serializa una consulta iterable tipada y sigue internamente los cursores de continuación del servidor. Aquí, el resultado lógico se limita a una fila, mientras que `--fetch-size 1` controla el lote máximo obtenido por viaje de ida y vuelta.
 
 ```bash
 DOMAIN_PREDICATE='{"equals":[{"field":"id","value":"wonderland.universal"}]}'
@@ -85,11 +85,11 @@ iroha --config ./localnet/client.toml \
   --fetch-size 1
 ```
 
-El filtro ocurre antes de la paginado. Utilice predicados tipados específicos para una consulta; un predicado para una cuenta o activo no puede ser reutilizado de forma segura para un dominio.
+El filtrado ocurre antes de la paginación. Use predicados tipados específicos de la consulta; un predicado para una cuenta o activo no puede reutilizarse de manera segura para un dominio.
 
-### 3. clasificar por una clave de metadatos estable {#_3-sort-by-a-stable-metadata-key}
+### 3. Ordenar por una clave de metadatos estable {#_3-sort-by-a-stable-metadata-key}
 
-La clasificación de la consulta tipográfica es lexicográfica sobre una clave de metadatos. Los elementos sin esa clave siguen el orden definido del tiempo de ejecución, por lo que use una clave poblada consistentemente en toda la colección.
+La ordenación de consultas escritas es lexicográfica sobre una clave de metadatos. Los elementos sin esa clave siguen el orden definido por el tiempo de ejecución del software, por lo que se debe usar una clave que esté poblada de manera consistente en toda la colección.
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -104,11 +104,11 @@ iroha --config ./localnet/client.toml \
   | jq '[.[] | {id, metadata}]'
 ```
 
-El CLI registrado analiza `--select` JSON y reenvía el tuple del selector, pero la consulta ligera actual DSL no evalúa ese selector en el servidor. Utilice una proyección SDK mecanografiada solo después de que el tiempo de ejecución objetivo la respalde, o proyecte el lado del cliente del resultado validado con `jq` o JavaScript como se indica anteriormente.
+El CLI registrado analiza `--select` JSON y reenvía la tupla del selector, pero la consulta ligera actual DSL no evalúa ese selector en el servidor. No construyas aún un contrato de proyección alrededor de él. Utilice una proyección tipada SDK solo después de que el tiempo de ejecución del software de destino la admita, o proyecte el resultado validado del lado del cliente con `jq` o JavaScript como se indicó anteriormente.
 
-### Deja que el iterador Rust siga los cursores opacos. {#_4-let-the-rust-iterator-follow-opaque-cursors}
+### 4. Dejar que el iterador Rust siga cursores opacos {#_4-let-the-rust-iterator-follow-opaque-cursors}
 
-`Pagination` limita el conjunto de resultados lógicos. `FetchSize` controla cada lote del servidor. El iterador devuelto envía transparentemente solicitudes de continuación utilizando el cursor generado por el servidor.
+`Pagination` delimita el conjunto de resultados lógicos. `FetchSize` controla cada lote de servidores. El iterador devuelto envía de manera transparente solicitudes de continuación usando el cursor generado por el servidor.
 
 ```rust
 use std::num::NonZeroU64;
@@ -132,11 +132,11 @@ for definition in definitions {
 }
 ```
 
-Un `ForwardCursor` está vinculado a la autoridad, es local en el proceso y solo se utiliza para avanzar. Nunca lo analice, lo sintetice, lo comparta entre las autoridades o lo persista como un token portátil de currículum en todas las instancias de Torii. Si expira, reinicie la consulta original con un punto de control deliberado a nivel de aplicación.
+Un `ForwardCursor` está ligado a la autoridad, es local del proceso y solo hacia adelante. Nunca lo analices, sintetices, compartas entre principales de autorización, ni lo guardes como un token de resumen portátil entre instancias de Torii. Si caduca, reinicia la consulta original con un punto de control deliberado a nivel de aplicación.
 
 ## Verificar {#verify}
 
-El filtro exacto del dominio debe devolver sólo `wonderland.universal`. Verifique el resultado en lugar de contar una salida exitosa CLI solo:
+El filtro de dominio exacto debería devolver solo `wonderland.universal`. Verifique el resultado en lugar de contar únicamente una salida exitosa CLI:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -146,23 +146,23 @@ iroha --config ./localnet/client.toml \
   | jq -e 'length == 1 and .[0] == "wonderland.universal"'
 ```
 
-Para las consultas de aplicaciones en páginas, también compruebe que IDs no se repite a través de páginas, nunca se excede el límite lógico solicitado y se vuelve a intentar después de un cursor expirado reiniciar desde un punto de control documentado.
+Para las consultas de aplicaciones con paginación, también pruebe que los IDs no se repitan entre páginas, que nunca se exceda el límite lógico solicitado y que al reintentar después de que un cursor haya expirado se reinicie desde un punto de control documentado.
 
 ## Solución de problemas {#troubleshooting}
 
-- Una consulta singular no acepta filtros iterables, clasificación, paginado o parámetros de búsqueda. Utilice la consulta de lista correspondiente cuando sean necesarios esos controles.
-- `fetch_size` es un indicio de lote no cero, no el límite total del resultado. El valor predeterminado actual es `100`, y el tiempo de ejecución rechaza valores por encima de su máximo.
-- Un cursor desconocido, expirado o extraño no es intencionalmente reutilizable. Reinicie la consulta; no intente reparar el valor opaco.
-- La clasificación de metadatos no es la clasificación general de campos. Si cada elemento no lleva la clave seleccionada, documente el orden de llaves faltantes o elija otra estrategia.
-- El CLI analiza y reenvía `--select`, pero el servidor actual no evalúa el tuple selector ligero. Aplique proyección del lado cliente a menos que se verifique el soporte del selector del lado del servidor para el tiempo de ejecución implementado.
-- Las consultas amplias y ilimitadas aumentan el trabajo de los pares, la memoria del cliente y el riesgo de vida útil del cursor.
-- Los parámetros de recursos públicos JSON y los parámetres firmados para la consulta tipada se relacionan, pero no son formatos intercambiables. Prefiere el SDK o CLI para envelopes de consulta tipadas.
+- Una consulta singular no acepta parámetros de filtro, orden, paginación o recuperación iterables. Use la consulta de lista correspondiente cuando se necesiten esos controles.
+- `fetch_size` es una sugerencia de lote diferente de cero, no el límite total de resultados. El valor predeterminado actual es `100`, y el tiempo de ejecución del software rechaza valores superiores a su máximo.
+- Un cursor desconocido, caducado o extranjero no es reutilizable intencionalmente. Reinicie la consulta; no intente reparar el valor opaco.
+- La clasificación por metadatos no es una clasificación general de campos. Si cada elemento no contiene la clave seleccionada, documente el orden de las claves faltantes o elija otra estrategia.
+- El CLI analiza y reenvía `--select`, pero el servidor actual no evalúa la tupla de selector ligera. Applique la proyección del lado del cliente a menos que se verifique el soporte del selector del lado del servidor para el entorno de ejecución de software desplegado.
+- Las consultas amplias y sin límites aumentan el trabajo de los pares de la red, la memoria del cliente y el riesgo de duración del cursor. Establezca un límite lógico y un tamaño de recuperación apropiado para el consumidor.
+- Los parámetros de recursos públicos JSON y los parámetros de consulta tipada firmados están relacionados pero no son formatos de serialización intercambiables. Prefiera SDK o CLI para contenedores de datos de consulta tipada.
 
 ## Fuente y documentos relacionados {#source-and-related-docs}
 
-- [Pruebas de integración de paginado respaldadas por el cursor en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/pagination.rs)
-- [El comportamiento del creador de consultas y el selector en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/builder/mod.rs)
-- [Parámetros de consulta y modelo del cursor en el comit fijado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/parameters.rs)
-- [Las consultas ](/es/blockchain/queries.md)
-- [Referencia de la consulta ](/es/reference/queries.md)
-- [JavaScript y TypeScript ](/es/guide/tutorials/javascript.md)
+- [Pruebas de integración de paginación con cursor en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs)
+- [Comportamiento del generador de consultas y del selector en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs)
+- [Parámetros de consulta y modelo de cursor en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs)
+- [Consultas](/es/blockchain/queries.md)
+- [Referencia de consulta](/es/reference/queries.md)
+- [JavaScript y TypeScript](/es/guide/tutorials/javascript.md)

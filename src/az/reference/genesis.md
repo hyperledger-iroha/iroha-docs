@@ -1,29 +1,29 @@
 ---
 translation_locale: az
 translation_source: /reference/genesis.md
-translation_source_hash: 6710e76508e6a38a6b68d274247cc1383de2472e74f10be85000b30f74cb04a6
+translation_source_hash: ac6bad693ed382dede0818132b8649fe14726283508da897a32eea417e5bbb28
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Qədim Mövzular {#genesis-reference}
+# blokçeyn başlanğıc istinadı {#genesis-reference}
 
-Hal-hazırda Iroha 3 iş axınında `genesis.json` manifestində şəbəkənin başlanğıcı zamanı tətbiq ediləcək ilk əməliyyatlar və parametrlər təsvir edilir.
+Mövcud Iroha 3 iş axınında, `genesis.json` texniki manifesto şəbəkə başladıqda tətbiq olunacaq ilk əməliyyatları və parametrləri təsvir edir.
 
-Tərəfdaşlara paylaşılan imzalanmış əşya Norito kodlu `.nrt` sənədidir ki, `kagami genesis sign` tərəfindən istehsal olunur.
+Şəbəkə həmkarlarına paylanan imzalanmış artefakt Norito kodlu `.nrt` fayldır və `kagami genesis sign` tərəfindən hazırlanıb.
 
-## Əsas sahələr {#main-fields}
+## Əsas Sahələr {#main-fields}
 
-Bir genesis manifestı müəyyən edə bilər:
+Bir blokçeyn genesis texniki manifesti aşağıdakıları təyin edə bilər:
 
-- `chain` silsilə kimliyi üçün
-- `executor` seçkin bir icraçı yüksəltmə bytecode yolu üçün
-- `ivm_dir` aktivləşdiricilər və yeniləmələr tərəfindən istifadə olunan IVM kitabxanaları üçün
-- `consensus_mode` manifestdə elan edilən ilkin rejim üçün
-- `transactions` sıralanmış parametrlər yeniləmələri, təlimatlar, tetikləyici və topologiya üçün
-- `crypto` ilk kripto görüntüsü üçün
+- `chain` zəncir identifikatoru üçün
+- `executor` ixtiyari icraçı təkmilləşdirmə bytecode yolu üçün
+- `ivm_dir` üçün IVM kitabxanaları tetikleyicilər və yeniləmələr tərəfindən istifadə olunur
+- `consensus_mode` texniki manifesto tərəfindən elan edilmiş ilkin rejim üçün
+- `transactions` sifariş edilmiş parametr yeniləmələri, təlimatlar, tetikleyicilər və topologiya üçün
+- `crypto` ilkin kripto nöqtə-vaxt məlumat baxışı üçün
 
-`transactions` daxilində topologiya girişləri bir-birinə bənzər idlər və PoPs birlikdə:
+`transactions` daxilində, topologiya qeydləri şəbəkə həmyaşıd id-lərini və PoPs birlikdə qoşur:
 
 ```json
 {
@@ -32,9 +32,9 @@ Bir genesis manifestı müəyyən edə bilər:
 }
 ```
 
-## Manifest yaratın {#generate-a-manifest}
+## Texniki manifest yaradın {#generate-a-manifest}
 
-Şablon yaratmaq üçün Kagami istifadə edin:
+Şablon yaratmaq üçün Kagami-dən istifadə edin:
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
@@ -43,23 +43,23 @@ cargo run -p iroha_kagami -- genesis generate \
   --genesis-public-key <PUBLIC_KEY> > genesis.json
 ```
 
-İctimai SORA Nexus məlumat sahəsi üçün, `npos` gözlənilən konsensus rejimidir. Digər Iroha 3 tətbiqlərində hədəf profilindən asılı olaraq icazəli və ya NPoS istifadə edilə bilər.
+İctimai SORA Nexus verilənlər məkanında, `npos` gözlənilən konsensus rejimidir. Digər Iroha 3 yerləşdirmələr hədəf profilindən asılı olaraq icazəli və ya NPoS istifadə edə bilər.
 
-## Manifestoya imza atın {#sign-the-manifest}
+## Texniki manifesti imzalayın {#sign-the-manifest}
 
-JSON-nin redaktə olunmasından və təsdiqlənməsindən sonra onu `.nrt` blokuna imzalayın:
+JSON redaktə edib təsdiqlədikdən sonra, onu yerləşdirilə bilən `.nrt` blokuna daxil edin:
 
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
-  --private-key <PRIVATE_KEY> \
+  --private-key-file <MODE_0600_PRIVATE_KEY_FILE> \
   --out-file genesis.signed.nrt
 ```
 
-`kagami genesis sign` manifestdən genesis ictimai açarını oxuyur və tətbiq edilə bilən imzalanmış blokun istehsalı üçün verilən xüsusi açar, toxum və alqoritmi istifadə edir. Nəticədə həmyaşıdları öz quruluşlarından istinad etməli olan fayl olurlar.
+`kagami genesis sign` texniki manifestdən blokçeyn başlanğıc açarını oxuyur və yerləşdirilə bilən imzalanmış bloku yaratmaq üçün sahib tərəfindən saxlanılan, tək bağlantılı adi fayldan şəxsi açardan istifadə edir. Fayl tək bir protokol-standartına uyğun xüsusi açar multihashini və onu izləyən yeni sətiri ehtiva etməlidir; Kagami simvolik keçidləri və `0600` istisna olmaqla digər modları rədd edir. Komanda sətrində xam xüsusi açarlar qəbul edilmir. Nəticə şəbəkə iştirakçılarının öz konfiqurasiyalarında istinad etməli olduqları fayldır.
 
-## Konfiqurasiya `irohad` {#configure-irohad}
+## `iroha3d` Tənzimləmək {#configure-iroha3d}
 
-Demonu imzalanmış Genesis blokuna yönəldin:
+Daimonu imzalanmış blokçeyn başlanğıc blokuna yönəldin:
 
 ```toml
 [genesis]
@@ -67,7 +67,7 @@ file = "genesis.signed.nrt"
 public_key = "<PUBLIC_KEY>"
 ```
 
-## Əlaqəli vasitələr {#related-tools}
+## Əlaqəli Alətlər {#related-tools}
 
 - `kagami genesis validate`
 - `kagami genesis normalize`
@@ -75,4 +75,4 @@ public_key = "<PUBLIC_KEY>"
 - `kagami localnet`
 - `cargo xtask kagami-profiles`
 
-Generatorun icrası və əmr detalları üçün [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_kagami/README.md) səhifəsini baxın.
+Generatorun icrası və əmrlərin təfərrüatları üçün [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md)-a baxın.

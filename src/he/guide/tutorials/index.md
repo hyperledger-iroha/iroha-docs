@@ -21,7 +21,7 @@ translation_engine: nllb-200-ct2
    - [Kotlin, Android, ו- Java](/he/guide/tutorials/kotlin-java.md)
    - [Swift ו-iOS](/he/guide/tutorials/swift.md)
 4. בדוק את אפליקציות הדוגמא [](/he/guide/tutorials/sample-apps.md) כאשר אתה רוצה תיקון שלם של יישום קלינט.
-5. השתמש [Embed Kaigi](/he/guide/tutorials/kaigi.md) כאשר אתה רוצה להוסיף פגישות אוודיו / וידאו תומכות בארנק שלך אפליקציה משלך.
+5. השתמש [הטמעת Kaigi](/he/guide/tutorials/kaigi.md) כאשר אתה רוצה להוסיף פגישות אוודיו / וידאו תומכות בארנק שלך אפליקציה משלך.
 6. השתמשו בקבוצות [Musubi ](/he/guide/tutorials/musubi.md) כאשר אתם צריכים ספריות מקורות Kotodama שניתן להשתמש בהן שוב עם תלונות רישום על שרשרת.
 
 ## דגימות {#samples}

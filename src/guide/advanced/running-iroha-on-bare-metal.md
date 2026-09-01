@@ -9,12 +9,15 @@ write matching genesis, peer configs, client config, and start/stop scripts.
 From the upstream Iroha workspace:
 
 ```bash
-cargo build --release -p irohad -p iroha_cli -p iroha_kagami
+cargo build --release \
+  -p irohad --bin iroha3d \
+  -p iroha_cli --bin iroha \
+  -p iroha_kagami --bin kagami
 ```
 
 This produces:
 
-- `target/release/irohad` for the peer daemon
+- `target/release/iroha3d` for the peer daemon
 - `target/release/iroha` for the CLI
 - `target/release/kagami` for key, genesis, and localnet generation
 
@@ -23,7 +26,7 @@ This produces:
 Generate a four-peer Iroha 3 localnet:
 
 ```bash
-target/release/kagami localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+target/release/kagami localnet --peers 4 --out-dir ./localnet
 ```
 
 The output directory contains the generated `genesis.json`,

@@ -3,43 +3,43 @@ translation_locale: es
 translation_source: /guide/security/password-security.md
 translation_source_hash: 093be5b91700b9a6f85b45dc873c8c29d90397d5c9e3c842a77bfb03e97b37da
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: bing-translator-llm
 ---
 
-# Seguridad de contraseñas {#password-security}
+# Seguridad de la contraseña {#password-security}
 
-Las contraseñas pueden proteger las consolas del operador, almacenes secretos, copias de seguridad y archivos de llaves locales. Una contraseña es sólo un control. Utilice junto con la custodia segura de claves, controles de acceso y autenticación multifactor cuando esté disponible.
+Las contraseñas pueden proteger las consolas de operador, los almacenes secretos, las copias de seguridad y los archivos de claves locales. Una contraseña es solo un control. Úsela junto con la custodia segura de claves, los controles de acceso y la autenticación multifactor donde esté disponible.
 
-## Usar contraseñas únicas y generadas {#use-unique-generated-passwords}
+## Usa contraseñas únicas y generadas {#use-unique-generated-passwords}
 
-- Generar una contraseña diferente para cada cuenta y entorno.
-- Use un administrador de contraseñas para crear y almacenar contraseñas largas al azar.
-- Utilizar una frase de contraseña de varias palabras solo cuando sus palabras se seleccionan al azar de una lista suficientemente grande.
-- Mantenga nombres, fechas, direcciones, citas, patrones de teclado y fragmentos reutilizados fuera de las contraseñas.
-- Utilice un token generado por el servicio o una clave criptográfica en lugar de una contraseña introducida por el hombre cuando el servicio admita ese método.
+- Genera una contraseña diferente para cada cuenta y entorno.
+- Usa un gestor de contraseñas para crear y almacenar contraseñas largas y aleatorias.
+- Usa una frase de contraseña de varias palabras solo cuando sus palabras sean seleccionadas al azar de una lista lo suficientemente grande.
+- Mantén los nombres, fechas, direcciones, citas, patrones de teclado y fragmentos reutilizados fuera de las contraseñas.
+- Utilice un token generado por el servicio o una clave criptográfica en lugar de una contraseña introducida por un humano cuando el servicio admita ese método.
 
-La longitud y la imprevisibilidad son más importantes que las sustituciones decorativas. Añadir un símbolo a una palabra predecible no hace que el resultado sea seguro.
+La longitud e imprevisibilidad importan más que las sustituciones decorativas. Agregar un símbolo a una palabra predecible no hace que el resultado sea seguro.
 
-## Proteja las cuentas basadas en contraseñas {#protect-password-based-accounts}
+## Proteger cuentas basadas en contraseña {#protect-password-based-accounts}
 
-- Habilitar la autenticación multifactorial resistente al phishing cuando esté disponible.
-- Aplicar límites de tarifas, política de bloqueo y alertas para fallas repetidas en la autenticación.
-- Envíe contraseñas sólo a través de canales autenticados y cifrados.
-- Mantenga contraseñas y códigos de recuperación fuera de registros, líneas de comandos, repositorios de origen, archivos de configuración, boletos y chat.
-- Almacenar los verificadores de contraseñas del lado del servidor con una función de hashing de contraseña salgada y dura en memoria y parámetros apropiados para la implementación.
+- Habilite la autenticación multifactor resistente al phishing donde esté disponible.
+- Aplicar límites de velocidad, política de bloqueo y alertas a los fallos de autenticación repetidos.
+- Envía contraseñas solo a través de canales autenticados y encriptados.
+- Mantenga las contraseñas y los códigos de recuperación fuera de los registros, líneas de comando, repositorios de código, archivos de configuración, tickets y chats.
+- Almacene los verificadores de contraseña del lado del servidor con una función de hash de contraseñas con sal y de difícil memoria, y con parámetros apropiados para la implementación.
 
-## Almacenamiento, recuperación y sustitución {#storage-recovery-and-replacement}
+## Almacenamiento, Recuperación y Reemplazo {#storage-recovery-and-replacement}
 
-- Utilizar un administrador de contraseñas auditado con copias de seguridad cifradas y probadas.
-- Almacenar los códigos de recuperación por separado del dispositivo que recuperen. Una copia protegida en papel fuera de línea puede ser adecuada para el material de recuperación.
-- Limitar el acceso a las exportaciones del gestor de contraseñas y a los medios de copia de seguridad.
-- Sustituye una contraseña después de la sospecha de exposición, reutilización no autorizada o un evento de política que requiera reemplazo.
-- Prueba de los procedimientos de recuperación de cuentas antes del lanzamiento de producción.
+- Utiliza un gestor de contraseñas auditado con copias de seguridad encriptadas y verificadas.
+- Almacene los códigos de recuperación por separado del dispositivo que recuperan. Una copia en papel protegida y fuera de línea puede ser adecuada como material de recuperación.
+- Limite el acceso a las exportaciones del administrador de contraseñas y a los medios de respaldo.
+- Reemplace una contraseña después de una exposición sospechada, reutilización no autorizada o un evento de política que requiera su reemplazo.
+- Pruebe los procedimientos de recuperación de cuentas antes del lanzamiento en producción.
 
 ::: warning
 
-Una contraseña que desbloquea una clave privada no puede hacer una copia expuesta de esa llave segura. En caso de sospecha de exposición a una clave privada, siga el procedimiento de reemplazo o revocación de la llave del despliegue.
+Una contraseña que desbloquea una clave privada no puede hacer que una copia expuesta de esa clave sea segura. Si se sospecha exposición de la clave privada, siga el procedimiento de reemplazo o revocación de claves del despliegue.
 
 :::
 
-Véase [Seguridad operativa](./operational-security.md) y [Cleves criptográficas de almacenamiento ](./storing-cryptographic-keys.md).
+Vea [Seguridad Operativa](./operational-security.md) y [Almacenamiento de Claves Criptográficas](./storing-cryptographic-keys.md).

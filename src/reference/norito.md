@@ -238,7 +238,7 @@ Norito so routing, billing, replay, and audit evidence stay reproducible.
 - Use Norito as the source of truth for signed, hashed, or persisted data. Use
   JSON projections for dashboards and manual inspection.
 - When adding a new typed Torii endpoint, document whether it accepts JSON,
-  Norito, or both, and expose the supported content types in `/openapi`.
+  Norito, or both, and expose the supported content types in `/openapi.json`.
 - Before enabling an accelerator, run parity tests against scalar output. If
   an accelerator fails, use the deterministic scalar fallback. Payload
   semantics must remain unchanged.
@@ -254,5 +254,5 @@ Norito so routing, billing, replay, and audit evidence stay reproducible.
 
 ## Upstream References
 
-- [Norito format specification](https://github.com/hyperledger-iroha/iroha/blob/main/norito.md)
-- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/norito/README.md)
+- [Norito format specification](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/norito.md)
+- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)

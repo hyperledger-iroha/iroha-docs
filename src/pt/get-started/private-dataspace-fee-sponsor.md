@@ -1,22 +1,22 @@
 ---
 translation_locale: pt
 translation_source: /get-started/private-dataspace-fee-sponsor.md
-translation_source_hash: 270e6705186d74efad6a8d2e6eeb432ab1b12649b66d4b11309e7da1e07b384f
+translation_source_hash: 37a2c29dccf3d2abacbbba16869d65b70b93545875a122470601194231c2263b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Tarifas de patrocínio para um espaço privado de dados {#sponsor-fees-for-a-private-dataspace}
+# Taxas de Patrocinador para um Espaço de Dados Privado {#sponsor-fees-for-a-private-dataspace}
 
-O patrocínio de taxas permite que os usuários enviem transações no espaço de dados privado sem manter XOR. O usuário ainda assina a transação. Os metadados da transação apontam para uma conta do patrocinador, e o runtime débite o saldo do patrocinado XOR pela taxa da rede.
+O patrocínio de taxas permite que os usuários enviem transações de espaço de dados privado sem possuir XOR. O usuário ainda assina a transação. Os metadados da transação apontam para uma conta patrocinadora, e o tempo de execução do software debita o saldo de XOR do patrocinador pela taxa de rede.
 
-A integração compõe-se de três partes móveis:
+A integração tem três partes móveis:
 
-1. O nó permite o patrocínio de taxas
-2. a conta do patrocinador existe e possui XOR
-3. Cada utilizador tem `CanUseFeeSponsor` para esse patrocinador.
+1. o nó permite patrocínio de taxas
+2. a conta patrocinadora existe e possui XOR
+3. cada usuário tem `CanUseFeeSponsor` para esse patrocinador
 
-Depois disso, cada transação de usuário patrocinado só precisa dos metadados:
+Depois disso, cada transação de usuário patrocinado precisa apenas destes metadados:
 
 ```json
 {
@@ -26,14 +26,14 @@ Depois disso, cada transação de usuário patrocinado só precisa dos metadados
 
 Esta página mostra dois padrões comuns:
 
-- O usuário livre escreve: o patrocinador paga XOR e o usuário não paga nada.
-- Taxas de tokens locais: o utilizador paga ao patrocinador em token de aplicativo e o patrocinador paga à rede em XOR.
+- Usuário gratuito escreve: o patrocinador paga XOR e o usuário não paga nada.
+- Taxas de token local: o usuário paga o patrocinador com um token do aplicativo, e o patrocinador paga a rede em XOR.
 
-Usar Taira ou uma rede de teste privada primeiro. Um novo espaço de dados privado é um operador e mudança de governança; não é criado por configuração do cliente.
+Use Taira ou uma rede de teste privada primeiro. Um novo espaço de dados privado é uma mudança de operador e governança; ele não é criado pela configuração do cliente.
 
-## Valores de exemplo {#example-values}
+## Valores de Exemplo {#example-values}
 
-Os comandos a seguir utilizam estes posicionadores:
+Os comandos abaixo usam estes espaços reservados:
 
 ```bash
 export DATASPACE="team"
@@ -50,11 +50,11 @@ export EMAIL_POLICY="email#team"
 export POLICY_OWNER="<IDENTIFIER_POLICY_OWNER_ACCOUNT_I105>"
 ```
 
-Use a conta canônica I105 IDs, a menos que a sua implantação tenha pseudónimos de conta ativa para as mesmas contas.
+Use IDs de conta canônicos I105 a menos que sua implantação tenha apelidos de conta ativos para as mesmas contas.
 
-## 1. Preparar o espaço de dados {#_1-prepare-the-dataspace}
+## 1. Prepare o Espaço de Dados {#_1-prepare-the-dataspace}
 
-Comece com o catálogo do espaço de dados privado e o trabalho de roteamento descrito em [Conect to SORA Nexus Dataspaces](/pt/get-started/sora-nexus-dataspaces.md#_8-provision-a-new-dataspace). Um fragmento orientado para o operador parece assim:
+Comece pelo catálogo de espaço de dados privado e pelo trabalho de roteamento descrito em [Conectar-se aos Dataspaces SORA Nexus](/pt/get-started/sora-nexus-dataspaces.md#_8-provision-a-new-dataspace). Um fragmento voltado para o operador se parece com isto:
 
 ```toml
 [[nexus.lane_catalog]]
@@ -79,23 +79,23 @@ account_prefix = "team."
 description = "Route team domains to the private dataspace"
 ```
 
-Antes de passar para as transacções do utilizador, verifique se:
+Antes de passar para as transações do usuário, verifique se:
 
-- A faixa privada aparece na resposta do nó `/status`
-- As contas de usuários são admitidas pelo seu fluxo privado de onboarding
-- existe a conta do patrocinador
-- O activo de taxa XOR e a conta de depósito de taxas são válidos na rede.
+- a via de execução privada aparece na resposta do nó `/status`
+- contas de usuário são admitidas pelo seu fluxo privado de integração
+- a conta do patrocinador existe
+- o ativo de taxa XOR e a conta de absorção de taxa são válidos na rede
 
-## 2. Registrar ativos no espaço de dados {#_2-register-assets-in-the-dataspace}
+## 2. Registrar Ativos no Espaço de Dados {#_2-register-assets-in-the-dataspace}
 
-Registre as definições de ativos que os usuários manterão dentro do espaço de dados privado antes de enviá-las para a lógica da aplicação. Para o padrão de taxa local, o tutorial usa `usage#billing.team`:
+Registre as definições de ativos que os usuários terão dentro do espaço de dados privado antes de conectá-las à lógica do aplicativo. Para o padrão de taxa de token local, o tutorial usa `usage#billing.team`:
 
 ```text
 <asset-name>#<domain>.<dataspace>
 usage#billing.team
 ```
 
-Primeiro configure o domínio e SNS arrendamento que possuem o espaço de nomes do ativo. Crie uma intenção livre de segredos `AliasSetupPlanRequestV1` para `$BILLING_DOMAIN`, incluindo o espaço de dados `team` numérico ID, proprietário canônico, prazo de arrendamento e guardador de citações atuais:
+Primeiro configure o domínio e SNS arrendamento que possui o namespace do ativo. Crie uma intenção `AliasSetupPlanRequestV1` sem segredo para `$BILLING_DOMAIN`, incluindo o ID do espaço de dados numérico `team`, proprietário canônico, prazo do arrendamento e o guardião de cotação atual:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -107,7 +107,7 @@ iroha --config ./operator.client.toml \
   app alias setup apply --plan-file ./billing-domain.plan.json
 ```
 
-O `--id` canônico é a definição de ativo de nível de rede ID. O alias é o que os desenvolvedores e os usuários finais devem usar no código do espaço de dados:
+Então registre a definição do ativo. O canônico `--id` é o ID da definição de ativo a nível de rede. O alias é o que desenvolvedores e usuários finais devem usar no código do dataspace:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -118,7 +118,7 @@ iroha --config ./operator.client.toml \
   --scale 0
 ```
 
-A moeda ou transferir o token local para um usuário durante a onboarding:
+emitir ou transferir o token local para um usuário durante a integração:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -128,7 +128,7 @@ iroha --config ./operator.client.toml \
   --quantity 100
 ```
 
-Verificar o saldo do utilizador:
+Verifique o saldo do usuário:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -137,13 +137,13 @@ iroha --config ./operator.client.toml \
   --account "$USER"
 ```
 
-Use o mesmo padrão para ativos de aplicativos no espaço de dados. Registre uma definição de ativo por token, dê a cada um um um alias de espaço de dados e faça referência ao alias do código SDK em vez da definição canônica de ativo IDs com codificação dura.
+Use o mesmo padrão para os ativos de aplicativo no espaço de dados. Registre uma definição de ativo por token, dê a cada uma um alias de espaço de dados e faça referência ao alias a partir do código SDK em vez de codificar os IDs das definições de ativos canônicos.
 
-## 3. Registrar os pseudónimos de utilizador {#_3-register-user-aliases}
+## 3. Registrar Apelidos de Usuário {#_3-register-user-aliases}
 
-As contas ainda são canônicas I105 conta IDs. Os nomes de usuários são pseudónimos de conta, e os pseudônimos devem ser manuais não sensíveis como `alice@team` ou `alice@members.team`. Não use números de telefone ou endereços de e-mail como pseudônimos.
+As contas ainda são IDs de conta canônicos I105. Nomes voltados para o usuário são apelidos de conta, e os apelidos devem ser identificadores não sensíveis, como `alice@team` ou `alice@members.team`. Não use números de telefone ou endereços de e-mail como apelidos. Eles pertencem ao fluxo de identificadores privados na próxima seção.
 
-A configuração do alias usa o mesmo planejador declarativo que a configuração de domínio. Faça com que o SDK ou serviço de onboarding criem uma intenção livre de segredos `AliasSetupPlanRequestV1` cujas metas de entrada do alias da conta `$USER`, selecione o papel primário, pinhe o espaço de dados numérico ID e carregue o guardador atual de citações de arrendamento. Então planeie e aplique-a como uma transação atômica:
+A configuração de alias usa o mesmo planejador declarativo que a configuração de domínio. Faça com que o serviço SDK ou de onboarding crie uma intenção `AliasSetupPlanRequestV1` sem segredo cujo registro de alias de conta alvo `$USER`, seleciona o papel principal, fixa o ID do espaço de dados numérico e mantém a proteção da cotação de leasing atual. Em seguida, planeje e aplique como uma única transação atômica:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -155,9 +155,9 @@ iroha --config ./operator.client.toml \
   app alias setup apply --plan-file ./user-alias.plan.json
 ```
 
-Se o utilizador não pagar XOR, utilize o serviço de embarque aprovado e consciente do patrocinador para construir e enviar a instalação Transacção. Não dividir a aquisição de arrendamento e os alias vinculativos em operações de aplicação independentes.
+Se o usuário não deve pagar XOR, use o serviço de integração aprovado ciente do patrocinador para construir e enviar a transação de configuração. Não divida a aquisição de aluguel e a vinculação de alias em transações de aplicação independentes.
 
-Após a ligação do alias, verifique-o com o CLI:
+Depois que o alias for vinculado, verifique-o a partir do CLI:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -169,21 +169,21 @@ iroha --config ./operator.client.toml \
   --dataspace "$DATASPACE"
 ```
 
-Para a criação de uma nova conta, prefira um serviço de onboarding que construa `NewAccount` com um estável `uaid` e, se necessário, um inicial `label`. O comando simples `ledger account register --id` apenas registra a conta canônica ID.
+Para a criação de uma nova conta, prefira um serviço de integração que construa `NewAccount` com um `uaid` estável e, se necessário, um `label` inicial. O simples comando `ledger account register --id` apenas registra o ID da conta canônica.
 
-## 4. Registar telefone e e-mail em privado com FHE {#_4-register-phone-and-email-privately-with-fhe}
+## 4. Registrar telefone e e-mail de forma privada com FHE {#_4-register-phone-and-email-privately-with-fhe}
 
-Use números de telefone e endereços de e-mail como reivindicações de identificadores privados, não pseudônimos públicos. O fluxo apoiado por FHE mantém os identificadores brutos fora dos pseudônimos da conta, dos metadados das transações e do estado mundial:
+Use números de telefone e endereços de e-mail como reivindicações de identificador privado, não como apelidos públicos. O fluxo suportado pelo FHE mantém os identificadores brutos fora dos apelidos de conta, metadados de transação e estado global:
 
-1. O operador registra uma política de programa [RAM-LFE/FHE ](/pt/blockchain/ram-lfe.md) para telefone e correio electrónico
-2. O operador registra políticas de identificação ativa, tais como `phone#team` e `email#team`
-3. A carteira normaliza o telefone ou e-mail localmente
-4. A carteira envia o valor criptografado para o resolutor
-5. O resolvedor retorna um `IdentifierResolutionReceipt`
-6. O utilizador apresenta `ClaimIdentifier` juntamente com o recibo.
-7. A cadeia armazena um hash opaco de identificação e recibo, não o valor do telefone bruto ou do email
+1. o operador registra um [RAM-LFE/FHE política do programa](/pt/blockchain/ram-lfe.md) para telefone e e-mail
+2. o operador registra políticas de identificador ativo, como `phone#team` e `email#team`
+3. a carteira normaliza o telefone ou e-mail localmente
+4. a carteira envia o valor criptografado para o resolvedor
+5. o resolvedor retorna um `IdentifierResolutionReceipt`
+6. o usuário envia `ClaimIdentifier` com o registro do resultado do protocolo
+7. a cadeia armazena um identificador opaco e o hash do recibo, não o telefone nem o e-mail sem processamento
 
-A configuração da política do operador é uma tarefa de SDK ou serviço. Construir e apresentar os seguintes pares de instruções para cada tipo de identificador:
+A configuração de política do lado do operador é uma tarefa SDK ou de serviço. Construa e envie esses pares de instruções para cada tipo de identificador:
 
 ```text
 RegisterRamLfeProgramPolicy(
@@ -206,7 +206,7 @@ RegisterIdentifierPolicy(
 ActivateIdentifierPolicy(policy_id = "$PHONE_POLICY")
 ```
 
-Repita para o e-mail com:
+Repita isso para e-mail com:
 
 ```text
 program_id = "email_team"
@@ -214,14 +214,14 @@ policy_id = "$EMAIL_POLICY"
 normalization = "EmailAddress"
 ```
 
-Durante o onboarding, a carteira ou backend devem normalizar-se localmente:
+Durante a integração, a carteira ou o backend deve normalizar localmente:
 
 ```text
 PhoneE164: "+15551234567"
 EmailAddress: "alice@example.com"
 ```
 
-Após o arquivo de metadados do patrocinador ser criado na etapa 8, apresentar uma instrução de reivindicação assinada pelo usuário com esses metadados:
+Após o arquivo de metadados do patrocinador ser criado na etapa 8, envie uma instrução de reivindicação assinada pelo usuário com esses metadados:
 
 ```text
 ClaimIdentifier(
@@ -239,7 +239,7 @@ ClaimIdentifier(
 )
 ```
 
-A corrente CLI não expõe comandos digitalizados para estas instruções de identidade. Gerar valores serializados `InstructionBox` com a SDK e enviá-los através da `ledger transaction stdin`:
+O atual CLI não expõe comandos tipados para essas instruções de identidade. Gere valores serializados `InstructionBox` com o SDK e envie-os através do `ledger transaction stdin`:
 
 ```bash
 printf '["<BASE64_CLAIM_IDENTIFIER_INSTRUCTION_BOX>"]\n' |
@@ -248,17 +248,17 @@ printf '["<BASE64_CLAIM_IDENTIFIER_INSTRUCTION_BOX>"]\n' |
     ledger transaction stdin
 ```
 
-Mantenha estes barris no serviço de embarque:
+Mantenha essas diretrizes no serviço de integração:
 
-- Os pseudónimos das contas são apenas manuais legíveis por humanos.
-- valores de telefone bruto e email nunca aparecem em alias, metadados, registros ou cargas úteis de transações
-- A conta tem um `uaid` antes de reclamar identificadores privados.
-- Receitas vinculadas `policy_id`, `opaque_id`, `uaid` e `account_id` e expiração
-- as chaves de resolução e os compromissos ocultos dos programas são controlados pela governança
+- apelidos de conta são apenas identificadores legíveis por humanos
+- valores brutos de telefone e e-mail nunca aparecem em apelidos, metadados, registros ou cargas de transações
+- a conta tem um `uaid` antes de reivindicar identificadores privados
+- protocolo resultados registros vincular `policy_id`, `opaque_id`, `uaid`, `account_id` e expiração
+- as chaves do resolvedor e os compromissos de programas ocultos são controlados pela governança
 
-## 5. Habilitar o patrocínio no nó {#_5-enable-sponsorship-on-the-node}
+## 5. Ativar Patrocínio no Nó {#_5-enable-sponsorship-on-the-node}
 
-O patrocínio por taxa é uma política de ponto/tempo de execução. Nexus Configuração de taxas:
+O patrocínio de taxas é uma política de nó/tempo de execução. Habilite-o na configuração de taxas Nexus:
 
 ```toml
 [nexus.fees]
@@ -272,21 +272,21 @@ sponsorship_enabled = true
 sponsor_max_fee = "0"
 ```
 
-`fee_asset_id` é o ativo da taxa de rede. Para SORA Nexus este é XOR. Use o alias ativo XOR ou a definição canônica de ativo XOR ID exposta pela sua rede.
+`fee_asset_id` é o ativo de taxa de rede. Para SORA Nexus, isso é XOR. Use o alias ativo XOR ou o ID de definição de ativo canônico XOR exposto pela sua rede.
 
-`sponsor_max_fee = "0"` significa que não há limite de patrocinador por transacção. Para produção, defina um limite não zero depois de conhecer o tamanho normal e o perfil de gás das suas transações do espaço de dados.
+`sponsor_max_fee = "0"` significa que não há limite do patrocinador por transação. Em produção, defina um limite diferente de zero depois de conhecer o tamanho normal e o perfil de gas das transações do espaço de dados.
 
-Reinicie ou rode esta configuração através do seu processo normal de operador.
+Reinicie ou aplique esta configuração através do seu processo normal de operação.
 
-## 6. Criar e financiar o patrocinador {#_6-create-and-fund-the-sponsor}
+## 6. Criar e Financiar o Patrocinador {#_6-create-and-fund-the-sponsor}
 
-Gerar um par de chaves do patrocinador, se necessário:
+Gere um par de chaves de patrocinador se necessário:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./fee-sponsor-key
 ```
 
-Converte a chave pública no formato da conta para a sua rede:
+Converta a chave pública para o formato de conta da sua rede:
 
 ```bash
 iroha tools address convert \
@@ -294,14 +294,14 @@ iroha tools address convert \
   <SPONSOR_ED25519_PUBLIC_KEY_HEX>
 ```
 
-Registre a conta do patrocinador através do seu fluxo privado de onboarding:
+Registre a conta do patrocinador através do seu fluxo de integração privado:
 
 ```bash
 iroha --config ./operator.client.toml \
   ledger account register --id "$SPONSOR"
 ```
 
-Financiar o patrocinador com XOR a partir de uma conta do tesouro, da conta de crédito ou de outra conta financiada:
+Financie o patrocinador com XOR de um tesouro, conta de reivindicação ou outra conta financiada:
 
 ```bash
 iroha --config ./treasury.client.toml \
@@ -312,7 +312,7 @@ iroha --config ./treasury.client.toml \
   --quantity 1000
 ```
 
-Para os ensaios Taira, salve o auxiliar da torneira a partir de [Obter Testnet XOR em Taira](/pt/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) como `taira_faucet_claim.py`, e então financiar o patrocinador com a torneira pública em vez de uma transferência do tesouro:
+Para os ensaios na Taira, salve o auxiliar de [Obter XOR de teste na Taira](/pt/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) como `taira_faucet_claim.py` e financie o patrocinador pelo dispensador público, em vez de fazer uma transferência do tesouro:
 
 ```bash
 export SPONSOR='<SPONSOR_TAIRA_I105_ACCOUNT_ID>'
@@ -326,7 +326,7 @@ iroha --config ./sponsor.client.toml \
   --account "$SPONSOR"
 ```
 
-Verificar o saldo do patrocinador XOR:
+Verifique o saldo do patrocinador XOR:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -335,11 +335,11 @@ iroha --config ./operator.client.toml \
   --account "$SPONSOR"
 ```
 
-## 7. Dar acesso a um usuário ao patrocinador {#_7-grant-a-user-access-to-the-sponsor}
+## 7. Conceder Acesso de um Usuário ao Patrocinador {#_7-grant-a-user-access-to-the-sponsor}
 
-O patrocinador deve conceder a cada utilizador permissão para cobrar taxas, o que impede os utilizadores de nomear contas arbitrárias do patrocinador.
+O patrocinador deve conceder a cada usuário permissão para cobrar taxas dele. A concessão é o que impede os usuários de nomearem contas de patrocinador arbitrárias.
 
-Executa isto como a conta do patrocinador, ou como uma conta operacional permitida pela sua política de tempo de execução:
+Execute isso como a conta patrocinadora, ou como uma conta operacional permitida pela política de tempo de execução do seu software:
 
 ```bash
 printf '{
@@ -352,14 +352,14 @@ printf '{
     ledger account permission grant --id "$USER"
 ```
 
-Para os serviços de embarque, faça disso um passo normal de fornecimento da conta e registar:
+Para serviços de integração, faça disso uma etapa normal de provisionamento de conta e registre:
 
-- Conta de utilizador
-- Conta do patrocinador
-- Espaço de dados ou aplicação
-- bilhete de aprovação ou decisão de governança
+- conta de usuário
+- conta patrocinadora
+- espaço de dados ou aplicativo
+- ticket de aprovação ou decisão de governança
 
-Para inspecionar os subsídios de um utilizador:
+Para inspecionar as permissões de um usuário:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -376,7 +376,7 @@ printf '{
 }\n' "$SPONSOR" > sponsored-fee.json
 ```
 
-Qualquer inscrição apresentada com estes metadados é cobrada ao patrocinador:
+Qualquer escrita enviada com esses metadados será cobrada ao patrocinador:
 
 ```bash
 iroha --config ./alice.client.toml \
@@ -384,26 +384,26 @@ iroha --config ./alice.client.toml \
   ledger transaction ping --msg "sponsored private-dataspace write"
 ```
 
-Para SDKs, anexe o mesmo objeto de metadados da transação à transação assinada. O usuário assina a transação com a chave do usuário. O patrocinador não assina todas as transações do usuário porque a concessão anterior `CanUseFeeSponsor` é a autorização.
+Para SDKs, anexe o mesmo objeto de metadados da transação à transação assinada. O usuário assina a transação com a chave do usuário. O patrocinador não assina cada transação do usuário porque a concessão anterior `CanUseFeeSponsor` é a autorização.
 
-## Modelo 1: Os utilizadores pagam sem taxas {#pattern-1-users-pay-no-fees}
+## Padrão 1: Usuários Não Pagam Taxas {#pattern-1-users-pay-no-fees}
 
-Utilizá-lo quando o aplicativo ou operador absorver todas as taxas de rede.
+Use isto quando o aplicativo ou operador absorver todas as taxas de rede.
 
-Lista de verificação dos desenvolvedores:
+Lista de verificação do desenvolvedor:
 
-1. Mantenha inalterada a carga útil normal das transações do utilizador.
-2. Adicionar os metadados de transação com `fee_sponsor`.
-3. Assine como usuário.
-4. Enviar através da rota do espaço de dados privado.
+1. Mantenha a carga útil normal de transação do usuário inalterada.
+2. Adicionar metadados da transação com `fee_sponsor`.
+3. Assine como o usuário.
+4. Envie através da rota de espaço de dados privada.
 
-A conta de utilizador não precisa de um saldo XOR; a conta do patrocinador deve manter o suficiente XOR para cobrir as taxas configuradas Nexus.
+A conta do usuário não precisa de saldo XOR. A conta patrocinadora deve manter saldo suficiente de XOR para cobrir as taxas configuradas de Nexus.
 
-## Modelo 2: Os usuários pagam um token local {#pattern-2-users-pay-a-local-token}
+## Padrão 2: Usuários Pagam com um Token Local {#pattern-2-users-pay-a-local-token}
 
-Use isso quando os usuários não devem ter XOR, mas o espaço de dados ainda quer uma taxa interna do aplicativo, gastos de crédito ou token de quota.
+Use isto quando os usuários não devem manter XOR, mas o espaço de dados ainda deseja uma taxa de aplicativo interna, gasto de crédito ou token de cota.
 
-Neste padrão, o token local é um pagamento de aplicativo. Não é o activo da taxa de rede. O patrocinador ainda paga a taxa de rede em XOR.
+Neste padrão, o token local é um pagamento de aplicativo. Ele não é o ativo da taxa de rede. O patrocinador ainda paga a taxa de rede em XOR.
 
 Por exemplo, use um token local no espaço de dados privado:
 
@@ -411,13 +411,13 @@ Por exemplo, use um token local no espaço de dados privado:
 usage#billing.team
 ```
 
-Os utilizadores de fundos com `usage#billing.team` durante a incorporação, renovação da assinatura ou atribuição de quotas.
+Financie os usuários com `usage#billing.team` durante o onboarding, renovação de assinatura ou alocação de cota. Em seguida, torne a transação do usuário atômica:
 
-1. Transferência de tokens locais do utilizador para o patrocinador
-2. Realizar a operação da aplicação solicitada
-3. incluir metadados `fee_sponsor` para que o patrocinador pague XOR;
+1. transferir tokens locais do usuário para o patrocinador
+2. executar a operação de aplicativo solicitada
+3. incluir metadados `fee_sponsor` para que o patrocinador pague XOR
 
-Uma prova mínima de fumo CLI é apenas a transferência local-token patrocinada por XOR:
+Um teste de fumaça mínimo CLI é apenas a transferência de token local patrocinada por XOR:
 
 ```bash
 iroha --config ./alice.client.toml \
@@ -429,35 +429,35 @@ iroha --config ./alice.client.toml \
   --quantity 1
 ```
 
-Para um aplicativo real, não envie o pagamento com token local como uma transação separada de melhor esforço. Construa uma transação assinada contendo tanto o pagamento quanto as instruções de negócio, ou expõe um ponto de entrada do contrato que coleta o token local antes de aplicar a operação comercial.
+Para um aplicativo real, não envie o pagamento com token local como uma transação separada de melhor esforço. Construa uma única transação assinada contendo tanto o pagamento quanto a instrução comercial, ou exponha um ponto de entrada de contrato que colete o token local antes de aplicar a operação comercial.
 
 Mantenha a política de conversão no seu aplicativo ou contrato:
 
-- que operação custa quantas unidades de tokens locais
-- como os mapas de entrada de tokens locais para patrocinar XOR top-ups
-- O que acontece quando o equilíbrio do usuário é muito baixo
-- O que acontece quando o saldo do patrocinador XOR é muito baixo
+- qual operação custa quantas unidades de token local
+- como o fluxo de tokens local se relaciona com os recarregamentos do patrocinador XOR
+- o que acontece quando o saldo do usuário está muito baixo
+- o que acontece quando o saldo do patrocinador XOR está muito baixo
 
 ::: warning
 
-Não utilize `gas_asset_id` para o padrão de "taxa local-token", a menos que você queira que o patrocinador também seja cobrado nesse ativo de gás. No tempo de execução atual, `fee_sponsor` também faz do patrocinador o pagador dos débitos configurados em activos de gasodutos. Para as taxas de utilizador de tokens locais, recolha o token explicitamente com uma regra de transferência ou contrato.
+Não use `gas_asset_id` no padrão de "taxa em token local", a menos que queira cobrar do patrocinador também esse ativo de gas. No ambiente de execução atual, `fee_sponsor` também torna o patrocinador responsável pelos débitos configurados do ativo de gas do pipeline. Para cobrar as taxas do usuário em token local, recolha o token explicitamente com uma transferência ou regra de contrato.
 
 :::
 
-## Debug de transações patrocinadas falhadas {#debug-failed-sponsored-transactions}
+## Falha na Depuração de Transações Patrocinadas {#debug-failed-sponsored-transactions}
 
-As razões comuns de rejeição geralmente apontam para uma etapa de configuração ausente:
+Motivos comuns de rejeição geralmente apontam para uma etapa de configuração ausente:
 
-|Texto de erro |O que verificar ?|
+| Texto de erro |O que verificar|
 | --- | --- |
-|`fee sponsorship is disabled` |O `nexus.fees.sponsorship_enabled` ainda está no `false`. |
-|`fee sponsor is not authorized` |O utilizador não dispõe de `CanUseFeeSponsor` para este patrocinador. |
-|`fee asset ... is missing` |O patrocinador não detém o ativo de taxas XOR configurado. |
-|`fee balance ... is insufficient` | Aponte o patrocinador. XOR equilíbrio. |
-|`fee exceeds sponsor_max_fee` |Aumentar `sponsor_max_fee` ou reduzir o tamanho/gás da transacção. |
-|`invalid nexus fee asset id` |Fix `nexus.fees.fee_asset_id` ou o alias de ativo XOR. |
+| `fee sponsorship is disabled` | `nexus.fees.sponsorship_enabled` ainda está `false` no nó. |
+| `fee sponsor is not authorized` |O usuário não possui `CanUseFeeSponsor` para este patrocinador.|
+| `fee asset ... is missing` |O patrocinador não possui o ativo de taxa configurado XOR.|
+| `fee balance ... is insufficient` |Recarregue o saldo do patrocinador XOR.|
+| `fee exceeds sponsor_max_fee` |Aumente `sponsor_max_fee` ou reduza o tamanho/gás da transação.|
+| `invalid nexus fee asset id` |Corrija `nexus.fees.fee_asset_id` ou o alias do ativo XOR.|
 
-Ao depurar o padrão 2, verifique ambos os equilíbrios:
+Ao depurar o padrão 2, verifique ambos os saldos:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -471,18 +471,18 @@ iroha --config ./operator.client.toml \
   --account "$USER"
 ```
 
-## Otimizar o Patrocinador {#operate-the-sponsor}
+## Operar o Patrocinador {#operate-the-sponsor}
 
-Tratar o patrocinador como uma conta do tesouro:
+Trate o patrocinador como uma conta do tesouro:
 
-- manter chaves de patrocínio separadas para testnet, stage e mainnet;
-- Alerta antes que o saldo do patrocinador XOR atinja o nível de admissão
-- Estabelecer um limite não-zero `sponsor_max_fee` uma vez que o tráfego é caracterizado
-- taxa-limite patrocinado escreve no seu pedido ou gateway
-- Revocar `CanUseFeeSponsor` quando os utilizadores deixarem o espaço de dados
-- reconciliar hashes de transações de usuários, pagamentos com tokens locais e débitos do patrocinador XOR
+- mantenha chaves de patrocinador separadas para testnet, staging e mainnet
+- alertar antes que o saldo do patrocinador XOR atinja o limite mínimo de admissão
+- defina um limite `sponsor_max_fee` diferente de zero uma vez que o tráfego seja caracterizado
+- limite a taxa de gravações patrocinadas em sua aplicação ou gateway
+- revogar `CanUseFeeSponsor` quando os usuários saírem do espaço de dados
+- reconciliar hashes das transações dos usuários, pagamentos com tokens locais e débitos de XOR do patrocinador
 
-Revocar o patrocínio para um utilizador:
+Revogar patrocínio de um usuário:
 
 ```bash
 printf '{
@@ -495,10 +495,10 @@ printf '{
     ledger account permission revoke --id "$USER"
 ```
 
-## Páginas relacionadas {#related-pages}
+## Páginas Relacionadas {#related-pages}
 
-- [Conectar-se a SORA Nexus Centros de dados](/pt/get-started/sora-nexus-dataspaces.md)
-- [Operar Iroha 3 através de CLI](/pt/get-started/operate-iroha-via-cli.md)
+- [Conectar-se aos Dataspaces SORA Nexus](/pt/get-started/sora-nexus-dataspaces.md)
+- [Operar Iroha 3 via CLI](/pt/get-started/operate-iroha-via-cli.md)
 - [Ativos](/pt/blockchain/assets.md)
 - [Permissões](/pt/blockchain/permissions.md)
-- [Tokens de autorização ](/pt/reference/permissions.md)
+- [Tokens de Permissão](/pt/reference/permissions.md)

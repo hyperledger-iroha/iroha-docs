@@ -1,20 +1,20 @@
 ---
 translation_locale: az
 translation_source: /reference/peer-config/index.md
-translation_source_hash: 5cc6ddf62a45f655d61a0ff3ebc7e20b939fe78c9d542087b717c2e17e19250d
+translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f29469aaf4
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Konfiqurasiya Iroha {#configuring-iroha}
+# Iroha Konfiqurasiya olunur {#configuring-iroha}
 
-Yerli həmyaşıd konfigurasiyası TOML fayllarında müəyyən edilir. Bu, [`SetParameter`](/az/blockchain/instructions.md#setparameter) təlimatları vasitəsilə dəyişdirilən zəncirdəki konfigurassiyadan fərqlənir. İstehsal davranışı bir konfigurassiya sənədində və ya zəncir üzərindəki parametrdə təmsil edilməlidir; ətraf mühit dəyişiklikləri xüsusiyyət qapıları deyil.
+Yerel şəbəkə əlaqə nöqtəsinin konfiqurasiyası təyin olunur TOML fayllar. Bu, zəncirdə konfiqurasiyanın dəyişdirilməsi ilə fərqlidir [`SetParameter`](/az/blockchain/instructions.md#setparameter) təlimatlar. İstehsal davranışı konfiqurasiyada əks etdirilməlidir fayl və ya zəncirdəki parametr; mühit dəyişənləri xüsusiyyət qapıları deyildir.
 
-Konfigurasiya faylına yol göstərmək üçün [`--config`](../irohad-cli#arg-config) CLI argumentindən istifadə edin.
+İstifadə et [`--config`](../iroha3d-cli#arg-config) CLI Konfiqurasiya faylının yolunu göstərmək üçün arqument.
 
 ## Şablon {#template}
 
-Hər bir parametr haqqında ətraflı məlumat üçün [Parameterlər ](./params.md) istinadına baxın.
+Hər bir parametrin ətraflı təsviri üçün zəhmət olmasa [Parametrlər](./params.md) istinadına baxın.
 
 ::: details `peer.template.toml`
 
@@ -24,7 +24,7 @@ Hər bir parametr haqqında ətraflı məlumat üçün [Parameterlər ](./params
 
 ## Konfiqurasiya fayllarını tərtib etmək {#composing-configuration-files}
 
-TOML konfiqurasiya faylları digər TOML fayllarını göstərən əlavə `extends` sahəsinə malikdirlər. Bu bir yol və ya çox yol ola bilər:
+TOML konfiqurasiya fayllarında əlavə `extends` sahəsi var, hansı ki digər TOML fayla(fayllara) işarə edir. Bu tək bir yol və ya birdən çox yol ola bilər:
 
 ::: code-group
 
@@ -38,7 +38,7 @@ extends = ["file1.toml", "file2.toml"]
 
 :::
 
-Iroha `extends` -də göstərilən bütün sənədləri təkrar oxuyacaq və onları qatlara tərtib edəcək, burada sonrakılar əvvəlkiləri parametr səviyyəsində üstələyəcək. Məsələn, əgər `config.toml` -də oxunan:
+Iroha `extends` ilə göstərilən bütün faylları rekursiv şəkildə oxuyacaq və onları qatlar şəklində birləşdirəcək, burada sonrakılar əvvəlkiləri parametr səviyyəsində üstələyəcək. Məsələn, əgər `config.toml` oxunursa:
 
 ::: code-group
 
@@ -61,8 +61,8 @@ max_content_len = 2048
 
 :::
 
-Nəticədə quruluş olacaq `chain` üçün `a.toml`, `max_content_len` üçün `b.toml`, və `torii.address` üçün `config.toml` (qeyri-müvafiq yazılar) `b.toml`).
+Nəticədə yaranan konfiqurasiya `a.toml`-dən `chain`, `b.toml`-dən `max_content_len` və `config.toml`-dən `torii.address` olacaq (`b.toml`-nı əvəz edir).
 
-## Problemlərin həlli {#troubleshooting}
+## Problemlərin aradan qaldırılması {#troubleshooting}
 
-Konfiqurasiyanın necə oxunması və təhlil edilməsinin izini görmək üçün [`--trace-config`](../irohad-cli#arg-trace-config) CLI bayrağını keç.
+Keçmək [`--trace-config`](../iroha3d-cli#arg-trace-config) CLI Konfiqurasiyanın necə oxunduğunu və təhlil edildiyini görmək üçün bayraq.

@@ -3,40 +3,40 @@ translation_locale: fr
 translation_source: /guide/best-practices/index.md
 translation_source_hash: c463a3ca8fdef5c852746a7fdcfd6a1f7be5f95f88a5cf443c989ec0a458cd7d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Les meilleures pratiques {#best-practices}
+# Meilleures pratiques {#best-practices}
 
-La présente section recueille des lignes directrices orientées vers la production pour les applications et réseaux Iroha. Elle est organisée par la décision que vous devez prendre, pas par la caractéristique qui arrive à la mettre en œuvre.
+Cette section rassemble des conseils orientés vers la production pour les applications et réseaux Iroha. Elle est organisée en fonction de la décision que vous devez prendre, et non pas en fonction de la fonctionnalité qui se trouve à la mettre en œuvre.
 
-Utilisez-le comme une liste de contrôle avant une répétition partagée du testnet, un lancement de production ou une sortie majeure pour le client.
+Utilisez-le comme liste de contrôle avant une répétition sur testnet partagé, un lancement en production ou une sortie importante pour un client.
 
-## Les catégories {#categories}
+## Catégories {#categories}
 
-|Catégorie |Concentrez-vous .|
+|Catégorie|Concentrer|
 | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| [Développement des applications ](./application-development.md) |Configuration du client, soumission de transaction, répétitions, événements, requêtes et développement assisté par l'agent |
-| [Modélisation des données ](./data-modeling.md) |Domaines, comptes, actifs, NFTs, métadonnées, données hors chaîne et conventions de dénomination |
-| [Déploiement du réseau ](./network-deployment.md) |Genèse, topologie, clés de pair, exposition Torii, réglages de consensus et séparation environnementale |
-| [Les opérations](./operations.md) |Observabilité, annuaires d'exécution, sauvegardes, gestion des changements, contrôle de la capacité et traitement des incidents |
-| [Sécurité et accès ](./security-and-access.md) |Traitement secret, permissions, comptes techniques, accès au réseau et pistes d'audit |
-| [Prêt à être libéré ](./release-readiness.md) |Localnet, Taira, Minamoto, vérification de la compatibilité, garanties du réseau en direct et planification du retour |
+| [Développement d'applications](./application-development.md) |Configuration du client, soumission de transactions, nouvelles tentatives, événements, requêtes et développement assisté par agent|
+| [Modélisation des données](./data-modeling.md)                     |Domaines, comptes, actifs, NFTs, métadonnées, données hors chaîne, et conventions de nommage|
+| [Déploiement du réseau](./network-deployment.md)           |genèse de la blockchain, topologie, clés des pairs du réseau, exposition Torii, paramètres de consensus et séparation des environnements|
+| [Opérations](./operations.md)                           |Observabilité, procédures opérationnelles, sauvegardes, gestion des changements, vérifications de capacité et gestion des incidents|
+| [Sécurité et accès](./security-and-access.md)         |Gestion des secrets, autorisations, comptes techniques, accès réseau et pistes d'audit|
+| [Préparation à la sortie](./release-readiness.md)             |Localnet, Taira, Minamoto, vérifications de compatibilité, mesures de sécurité du réseau en direct et planification du retour en arrière|
 
-## Règles en matière de coupe croisée {#cross-cutting-rules}
+## Règles transversales {#cross-cutting-rules}
 
-- Garder le développement local, le réseau de test partagé et la configuration de production séparés.
-- Traiter la génèse, la topologie des pairs, la politique de l'exécuteur et le matériel clé comme des artefacts de déploiement contrôlés.
-- Ne pas utiliser les métadonnées comme point de dumping pour des données volumineuses, privées ou à fort rendement.
-- Soumettez des transactions à travers des flux de travail idempotent qui peuvent gérer le rejet, l'expiration, les renouvellements et l'état retardé.
-- Préférer les autorisations étroites, les comptes techniques dédiés et les annuaires d'exploitation explicites à un large accès de l'administrateur.
-- Prouver d'abord le comportement sur un réseau local jetable, puis répéter sur Taira ou sur un autre réseau de test partagé avant toute opération du réseau principal.
+- Gardez séparées la configuration de développement local, celle du testnet partagé et celle de production.
+- Considérez la genèse de la blockchain, la topologie des pairs du réseau, la politique de l'exécuteur et le matériel clé comme des artefacts de déploiement contrôlés.
+- Modélisez intentionnellement l'état durable du grand livre blockchain. N'utilisez pas les métadonnées comme un dépotoir pour des données volumineuses, privées ou à fort renouvellement.
+- Soumettez des transactions via des flux de travail idempotents capables de gérer le rejet, l'expiration, les tentatives de nouvelle soumission et le statut différé.
+- Préférez des autorisations limitées, des comptes techniques dédiés et des guides opérationnels explicites plutôt qu'un accès administrateur étendu.
+- Prouvez le comportement sur un réseau local jetable d'abord, puis répétez sur Taira ou un autre testnet partagé avant toute opération sur le mainnet.
 
-## Références connexes {#related-references}
+## Références associées {#related-references}
 
-- [Configuration et gestion ](/fr/guide/configure/overview.md)
-- [La sécurité ](/fr/guide/security/)
-- [Performance et métriques](/fr/guide/advanced/metrics.md)
-- [Matrice de compatibilité ](/fr/reference/compatibility-matrix.md)
-- [Torii Points d'arrêt](/fr/reference/torii-endpoints.md)
-- [Des jetons d'autorisation ](/fr/reference/permissions.md)
+- [Configuration et gestion](/fr/guide/configure/overview.md)
+- [Sécurité](/fr/guide/security/)
+- [Performance et mesures](/fr/guide/advanced/metrics.md)
+- [Matrice de compatibilité](/fr/reference/compatibility-matrix.md)
+- [Torii API points de terminaison](/fr/reference/torii-endpoints.md)
+- [Jetons de permission](/fr/reference/permissions.md)

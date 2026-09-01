@@ -1,26 +1,26 @@
 ---
 translation_locale: zh-hans
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 9341b2404624dec2230bc294c3d60dc124ac9574a0a5803b9bba744f4c5e7f50
+translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 发射 Iroha 3 {#launch-iroha-3}
+# 启动 Iroha 3 {#launch-iroha-3}
 
 本页面通过使用上游存储库中的默认工作空间资产来查看 Iroha 3 的当前本地网络流动.
 
-## 1. 创建一个地方多同行网络 {#_1-generate-a-local-multi-peer-network}
+## 1. 创建一个地方多对等节点网络 {#_1-generate-a-local-multi-peer-network}
 
 从当前的 Kagami 代码生成一个四对子本地网络:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-输出目录包含相匹配的同行配置, `genesis.json`, `genesis.signed.nrt`, `client.toml`和辅助脚本.
+输出目录包含相匹配的对等节点配置, `genesis.json`, `genesis.signed.nrt`, `client.toml`和辅助脚本.
 
-在本地烟雾测试中,直接启动生成的同龄人:
+在本地冒烟测试中,直接启动生成的对等节点:
 
 ```bash
 ./localnet/start.sh
@@ -33,10 +33,10 @@ cargo run --bin kagami -- docker \
   --peers 4 \
   --config-dir ./localnet \
   --image hyperledger/iroha:dev \
-  --out-file ./localnet/docker-compose.yml \
+  --out-file ./docker-compose.yml \
   --force
 
-docker compose -f ./localnet/docker-compose.yml up
+docker compose -f ./docker-compose.yml up
 ```
 
 默认生成的堆曝光:
@@ -47,7 +47,7 @@ docker compose -f ./localnet/docker-compose.yml up
 
 ## 2. 检查网络是否开通 {#_2-verify-that-the-network-is-up}
 
-检查第一个同行状态终点:
+检查第一个对等节点状态端点:
 
 ```bash
 curl http://127.0.0.1:8080/status
@@ -69,10 +69,10 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 
 存储库还将一个以 SORA Nexus 为导向的配置资料发送到 `defaults/nexus/`.
 
-运行一个具有 Nexus 配置文件的原生同行:
+运行一个具有 Nexus 配置文件的原生对等节点:
 
 ```bash
-./target/release/irohad --sora --config ./defaults/nexus/config.toml
+./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
 ```
 
 使用 `defaults/nexus/client.toml`来获取 CLI 该配置文件.
@@ -88,7 +88,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 对于生成的Compose堆:
 
 ```bash
-docker compose -f ./localnet/docker-compose.yml down
+docker compose -f ./docker-compose.yml down
 ```
 
 网络运行后,继续使用 [通过 CLI](/zh-hans/get-started/operate-iroha-via-cli.md)运行 Iroha 3.

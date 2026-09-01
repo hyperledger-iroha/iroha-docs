@@ -3,51 +3,51 @@ translation_locale: uz
 translation_source: /guide/configure/metadata-and-store-assets.md
 translation_source_hash: b538b2cad11d4fd3b2b7d201a20882389049d3e4453f11baa6f854861bda6b51
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Metadatalar va Ledgerni saqlash variantlari {#metadata-and-ledger-storage-choices}
+# Metama'lumotlar va reyestrni saqlash tanlovlari {#metadata-and-ledger-storage-choices}
 
-Iroha 3 ma'lumotlar modeli har qanday key-value ma'lumotlari uchun alohida `Store` aktiv turiga ega emas. Quyidagi saqlash imkoniyatlaridan foydalaning:
+Iroha 3 ma'lumot modeli istalgan kalit-qiymat ma'lumotlari uchun alohida `Store` aktiv turiga ega emas. Quyidagi saqlash variantlaridan foydalaning.
 
-## Metadatalar {#metadata}
+## Metama'lumot {#metadata}
 
-[metadatalar ](/uz/blockchain/metadata.md) dan foydalanib, kattalik ob'ektiga tegishli kichik JSON maydonlari uchun:
+Reyestr ob'ektiga tegishli kichik JSON maydonlari uchun [metama'lumot](/uz/blockchain/metadata.md) dan foydalaning:
 
-- nomlar va etiketlarni ko'rsatish
-- integratsiya IDs
-- kichik siyosat bayroqlari
-- URIs, CIDs yoki SoraFS yo'nalishlari katta foydali yuklarga ishora qiladi.
+- ko‘rsatish nomlari va yorliqlari
+- integratsiya identifikatorlari
+- kichik siyosiy bayroqlar
+- kriptografik xeshlar, URIs, CIDs yoki SoraFS yo‘llar, ular kattaroq yuklamalarga ishora qiladi
 
-Metadotlar dunyo holatiga kiradi va uni egasi bo'lgan ob'ekt bilan qaytariladi. kalitlarni barqaror saqlang, qiymatlar kompak bo'lsin va ruxsatnomalar aniq bo'lsin. Katta hujjatlarni, jurnallarni yoki yuqori churnli ilova holatini to'g'ridan-to'g'ri metadatalarga saqlash kerak emas.
+Metama'lumotlar dunyo holatining bir qismi bo'lib, uni egallagan obyekt bilan birga qaytariladi. Kalitlarni barqaror saqlang, qiymatlarni ixcham qiling va ruxsatlarni aniq belgilang. Katta hujjatlar, jurnallar yoki tez-tez o'zgaradigan ilova holatini to'g'ridan-to'g'ri metama'lumotlarda saqlamang.
 
-## Raqamli aktivlar va NFTs {#numeric-assets-and-nfts}
+## Raqamli Aktivlar va NFTs {#numeric-assets-and-nfts}
 
-Davlat qiymatga ega bo'lganda [ aktsiyalardan ](/uz/blockchain/assets.md) va [NFTs](/uz/blockchain/nfts.md) foydalanish:
+Holat qiymatga ega bo‘lganda [aktivlar](/uz/blockchain/assets.md) va [NFTs](/uz/blockchain/nfts.md) dan foydalaning:
 
-- Fungible saldolar uchun raqamli aktivlar
+- fungible balanslar uchun raqamli aktivlar
 - NFTs yagona egalikdagi yozuvlar uchun
-- [RWAs](/uz/blockchain/rwas.md) va faol ma'lumotlar modeli ularni ochib berganda, boshqa domenga mos bo'lgan obyektlar
+- [RWAs](/uz/blockchain/rwas.md) va boshqa soha-ga xos obyektlar, faol maʼlumot modeli ularni ko‘rsatganda
 
-Assetlar va NFTs o'zlarining IDs, hayot davri voqealari, o'tkazish xatti-harakati va ruxsatnoma tekshiruvlariga ega. Ular egalik, kamchilik yoki o'tkazish tarixiga taalluqli bo'lganda metadatalardan yaxshiroqdir.
+Aktivlar va NFTs o‘z IDlariga, hayot davri hodisalariga, uzatish xatti-harakatlariga va ruxsat tekshiruvlariga ega. Ular egalik, noyoblik yoki uzatish tarixi muhim bo‘lganida metadatalardan yaxshiroqdir.
 
-## Xatchoʻpdan tashqari maʼlumotlar {#off-chain-data}
+## Zanjirdan tashqari ma'lumot {#off-chain-data}
 
-Katta yoki o'zgaruvchan foydali yuklar uchun zanjirdan tashqarida saqlashni ishlating.
+Katta yoki o‘zgarmaydigan bo‘lmagan ma’lumotlar uchun off-chain saqlashni ishlating. Zanjirda faqat barqaror havolani saqlang, masalan:
 
-- tarkibiy hash
+- kontent kriptografik xesh
 - a URI
-- SoraFS yo'nalishi yoki manifest ma'lumotnomasi
-- ilova guvohnomasiga ko'ra qo'llaniladigan qat'iy majburiyat
+- bir SoraFS yo‘l yoki manifest havolasi
+- ilova isboti tomonidan ishlatiladigan ixcham kriptografik majburiyat qiymati
 
-Shunday qilib, WSV kichik bo'lib qoladi va hali ham ilovalar zanjirdan tashqaridagi foydali yukning zanjirdagi ma'lumotga mos kelayotganini tekshirishlariga imkon beradi.
+Bu WSV ni kichik saqlaydi, shu bilan birga ilovalarga off-chain yuklamasi on-chain manbasi bilan mos kelishini tekshirish imkonini beradi.
 
-## Joyni tanlash {#choosing-a-location}
+## Joy tanlash {#choosing-a-location}
 
-Bu qoidaga amal qiling:
+Ushbu oddiy qoidadan foydalaning:
 
-- Agar bu kitob ob'ektining kompakt atributidan iborat bo'lsa, metadatalardan foydalaning.
-- Agar u qiymatga ega bo'lsa yoki o'tkazilishi mumkin bo'lsa, uni aktiv NFT yoki domen-mahsus ob'ekt sifatida namunalashtiring.
-- Agar u katta bo'lsa, ko'p ishlatiladigan yoki maxsus qo'llanilgan bo'lsa WSV tashqarisida saqlash va verifikatsiya qilinishi mumkin bo'lgan ma'lumotnoma zanjirga joylashtirish.
+- Agar bu reyestr ob’ektining ixcham atributi bo‘lsa, metadata-dan foydalaning.
+- Agar u qiymatga ega yoki uzatilishi mumkin bo'lsa, uni aktiv, NFT yoki domenga oid ob'ekt sifatida modellashtiring.
+- Agar u katta, yuqori aylanishli yoki ilova-ga xos bo'lsa, uni WSV tashqarisida saqlang va blokcheynda tasdiqlanishi mumkin bo‘lgan havolani joylashtiring.
 
-Metadatalarga ruxsatnomalar uchun [Ruxsat belgisi ](/uz/reference/permissions.md) ni ko'ring.
+Metama'lumot ruxsatnomalari uchun, [Ruxsat tokenlari](/uz/reference/permissions.md) ga qarang.

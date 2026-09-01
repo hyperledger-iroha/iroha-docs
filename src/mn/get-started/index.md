@@ -3,54 +3,54 @@ translation_locale: mn
 translation_source: /get-started/index.md
 translation_source_hash: 0c452291828ed262a2e9094c30def83e07f0b7b70060d47bbd0d32160559ac40
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Iroha 3 {#iroha-3}
 
-Iroha 3 нь анхны нэвтрүүлгийн Hyperledger Iroha платформ юм. Энэ нь бие даасан зохион байгуулалттай сүлжээ болон олон мэдээллийн орон тооны SORA Nexus ашиглалтын загварыг нэг тодорхойлох код үндсэн дээр дэмжинэ.
+Iroha 3 нь эхний ангийн Hyperledger Iroha платформ юм. Энэ нь өөрийн сервер дээр суурилсан сүлжээ болон нэг тодорхой кодны сангаас олон өгөгдлийн орон зай бүхий SORA Nexus суурилуулалтын загварыг дэмждэг.
 
-Iroha 3 нь өндөр түвшинд:
+Өндөр түвшинд, Iroha 3 нь дараах зүйлсийг хослуулдаг:
 
-- тодорхойлолттай гүйцэтгэх, хадгалах
-- Iroha Гар утасны гэрээний виртуал машины (IVM)
-- Norito нь хуулийн төмөрний хэлбэрээр
-- Torii үйлчлүүлэгчид, оператор болон аппликейшнүүдэд зориулсан APIs
-- Sumeragi мэдээллийн хэрэгсэл, найдвартай дамжуулалттай холбоотой тохиролцоо
-- Доменгүй, бие даасан холбогдсон хүний уншдаг цогцолборуудыг агуулсан санхүүгийн бүртгэл
+- тодорхой үр дүнтэй гүйцэтгэл ба хадгалалт
+- Iroha ухаалаг гэрээний зөөвөрлөж болох виртуал машин (IVM)
+- Norito нь ганц протокол-стандарт серилизацийн формат болгон
+- Torii үйлчлүүлэгч, оператор болон апп-д чиглэсэн APIs
+- Sumeragi заавал өгөгдөл авах боломжтой, найдвартай дамжуулалт бүхий зөвшилцөл
+- домэйнгүй нэг протокол-стандарт дансууд, тусад нь холбогдсон хүний уншиж болох нэрийг ашиглах өөр нэртэй
 
-## Удахгүй эхлэх {#quickstart}
+## Хурдан эхлэлт {#quickstart}
 
-Хэрэв та нураасаа эхэлж байгаа бол дараах хуудсуудыг дагаж үзээрэй:
+Хэрэв та бүхнийг шинээс эхэлж байгаа бол эдгээр хуудаснуудыг дарааллаар нь дагана уу:
 
-1. [Нөөц Iroha 3](/mn/get-started/install-iroha.md)
-2. [Iroha 3](/mn/get-started/launch-iroha.md)
-3. [Iroha 3 замаар үйл ажиллагаа явуулж байна CLI](/mn/get-started/operate-iroha-via-cli.md)
-4. [SORA Nexus мэдээллийн бүсэд холбогдсон](/mn/get-started/sora-nexus-dataspaces.md)
-5. [Шаардлагатай хувийн мэдээллийн орон зайн төлбөр](/mn/get-started/private-dataspace-fee-sponsor.md)
+1. [Суурилуулах Iroha 3](/mn/get-started/install-iroha.md)
+2. [Эхлүүлэх Iroha 3](/mn/get-started/launch-iroha.md)
+3. [CLI ашиглан Iroha 3 ажиллуулах](/mn/get-started/operate-iroha-via-cli.md)
+4. [SORA Nexus өгөгдлийн сангуудтай холбогдох](/mn/get-started/sora-nexus-dataspaces.md)
+5. [Хувийн өгөгдөл хадгалах сангийн төлбөрийг ивээн тэтгэх](/mn/get-started/private-dataspace-fee-sponsor.md)
 
 ## SDKs {#sdks}
 
-Энэ газарт бичигдсэн одоогийн SDK нэвтрэх цэгүүд нь:
+Энэ сайтанд баримтжуулсан одоогийн SDK оруулах оруулгууд нь:
 
 - [Rust](/mn/guide/tutorials/rust.md)
 - [Python](/mn/guide/tutorials/python.md)
 - [JavaScript / TypeScript](/mn/guide/tutorials/javascript.md)
-- [Kotlin, Android, Java](/mn/guide/tutorials/kotlin-java.md)
-- [Swift болон iOS](/mn/guide/tutorials/swift.md)
+- [Kotlin, Android, ба Java](/mn/guide/tutorials/kotlin-java.md)
+- [Swift ба iOS](/mn/guide/tutorials/swift.md)
 
-## Үйл ажиллагаа эрхлэгчдийн сэнслэл {#operator-references}
+## Үйл ажиллагааны лавлагаа {#operator-references}
 
-Сүлжээ ашиглахдаа хамгийн их хэрэглэх хуудсууд нь:
+Сүлжээг ажиллуулж байхдаа та хамгийн их ашиглах хуудсууд нь:
 
-- [Iroha двойны системүүдтэй ажиллах](/mn/reference/binaries.md)
-- [Эхлэл ](/mn/reference/genesis.md) нэвтрүүлэг
-- [Torii эцсийн цэгүүд](/mn/reference/torii-endpoints.md)
-- [SORA Nexus мэдээллийн бүсэд холбогдсон](/mn/get-started/sora-nexus-dataspaces.md)
-- [Шаардлагатай хувийн мэдээллийн орон зайн төлбөр](/mn/get-started/private-dataspace-fee-sponsor.md)
-- [Нөхцөл байдлын матриц](/mn/reference/compatibility-matrix.md)
+- [Iroha хоёртын файлуудтай ажиллах](/mn/reference/binaries.md)
+- [блокчэйн үүсгэж эхлэх лавлагаа](/mn/reference/genesis.md)
+- [Torii API төгсгөлийн цэгүүд](/mn/reference/torii-endpoints.md)
+- [SORA Nexus өгөгдлийн сангуудтай холбогдох](/mn/get-started/sora-nexus-dataspaces.md)
+- [Хувийн өгөгдөл хадгалах сангийн төлбөрийг ивээн тэтгэх](/mn/get-started/private-dataspace-fee-sponsor.md)
+- [Тохиромжийн матриц](/mn/reference/compatibility-matrix.md)
 
-## Дэлгэрэнгүй үзээрэй {#learn-more}
+## Дэлгэрэнгүйг үзэх {#learn-more}
 
-- [Iroha эх сурвалжийн хадгаламж](https://github.com/hyperledger-iroha/iroha)
-- [Документийн эх сурвалжийн хадгаламж](https://github.com/hyperledger-iroha/iroha-docs)
+- [Iroha эх сурвалжийн агуулах](https://github.com/hyperledger-iroha/iroha)
+- [Баримт бичгийн эх сурвалжийн хадгалах сан](https://github.com/hyperledger-iroha/iroha-docs)

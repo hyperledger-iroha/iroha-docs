@@ -217,22 +217,24 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha ops sumeragi leader`↴](#iroha-ops-sumeragi-leader)
 * [`iroha ops sumeragi params`↴](#iroha-ops-sumeragi-params)
 * [`iroha ops sumeragi qc`↴](#iroha-ops-sumeragi-qc)
-* [`iroha ops sumeragi pacemaker`↴](#iroha-ops-sumeragi-pacemaker)
-* [`iroha ops sumeragi phases`↴](#iroha-ops-sumeragi-phases)
-* [`iroha ops sumeragi telemetry`↴](#iroha-ops-sumeragi-telemetry)
 * [`iroha ops sumeragi evidence`↴](#iroha-ops-sumeragi-evidence)
 * [`iroha ops sumeragi evidence list`↴](#iroha-ops-sumeragi-evidence-list)
 * [`iroha ops sumeragi evidence count`↴](#iroha-ops-sumeragi-evidence-count)
-* [`iroha ops sumeragi evidence submit`↴](#iroha-ops-sumeragi-evidence-submit)
-* [`iroha ops sumeragi vrf-penalties`↴](#iroha-ops-sumeragi-vrf-penalties)
-* [`iroha ops sumeragi vrf-epoch`↴](#iroha-ops-sumeragi-vrf-epoch)
-* [`iroha ops sumeragi commit-qc`↴](#iroha-ops-sumeragi-commit-qc)
-* [`iroha ops sumeragi commit-qc get`↴](#iroha-ops-sumeragi-commit-qc-get)
 * [`iroha ops audit`↴](#iroha-ops-audit)
 * [`iroha ops audit witness`↴](#iroha-ops-audit-witness)
 * [`iroha ops connect`↴](#iroha-ops-connect)
 * [`iroha ops connect queue`↴](#iroha-ops-connect-queue)
 * [`iroha ops connect queue inspect`↴](#iroha-ops-connect-queue-inspect)
+* [`iroha ops bridge`↴](#iroha-ops-bridge)
+* [`iroha ops bridge emit-receipt`↴](#iroha-ops-bridge-emit-receipt)
+* [`iroha ops bridge sccp`↴](#iroha-ops-bridge-sccp)
+* [`iroha ops bridge sccp capabilities`↴](#iroha-ops-bridge-sccp-capabilities)
+* [`iroha ops bridge sccp registry`↴](#iroha-ops-bridge-sccp-registry)
+* [`iroha ops bridge sccp recent`↴](#iroha-ops-bridge-sccp-recent)
+* [`iroha ops bridge sccp bundle`↴](#iroha-ops-bridge-sccp-bundle)
+* [`iroha ops bridge sccp proof-request`↴](#iroha-ops-bridge-sccp-proof-request)
+* [`iroha ops bridge sccp submit-destination-proof`↴](#iroha-ops-bridge-sccp-submit-destination-proof)
+* [`iroha ops bridge sccp submit-native-message`↴](#iroha-ops-bridge-sccp-submit-native-message)
 * [`iroha app`↴](#iroha-app)
 * [`iroha app gov`↴](#iroha-app-gov)
 * [`iroha app gov deploy`↴](#iroha-app-gov-deploy)
@@ -244,23 +246,23 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha app gov proposal get`↴](#iroha-app-gov-proposal-get)
 * [`iroha app gov locks`↴](#iroha-app-gov-locks)
 * [`iroha app gov locks get`↴](#iroha-app-gov-locks-get)
-* [`iroha app gov council`↴](#iroha-app-gov-council)
 * [`iroha app gov unlock`↴](#iroha-app-gov-unlock)
 * [`iroha app gov unlock stats`↴](#iroha-app-gov-unlock-stats)
 * [`iroha app gov referendum`↴](#iroha-app-gov-referendum)
 * [`iroha app gov referendum get`↴](#iroha-app-gov-referendum-get)
 * [`iroha app gov tally`↴](#iroha-app-gov-tally)
 * [`iroha app gov tally get`↴](#iroha-app-gov-tally-get)
-* [`iroha app gov finalize`↴](#iroha-app-gov-finalize)
-* [`iroha app gov enact`↴](#iroha-app-gov-enact)
 * [`iroha app gov protected`↴](#iroha-app-gov-protected)
 * [`iroha app gov protected set`↴](#iroha-app-gov-protected-set)
 * [`iroha app gov protected apply`↴](#iroha-app-gov-protected-apply)
 * [`iroha app gov protected get`↴](#iroha-app-gov-protected-get)
+* [`iroha app gov parliament`↴](#iroha-app-gov-parliament)
+* [`iroha app gov parliament draft-attempt`↴](#iroha-app-gov-parliament-draft-attempt)
+* [`iroha app gov parliament draft-transition`↴](#iroha-app-gov-parliament-draft-transition)
+* [`iroha app gov parliament get-attempt`↴](#iroha-app-gov-parliament-get-attempt)
+* [`iroha app gov parliament finalize-opened-ballot`↴](#iroha-app-gov-parliament-finalize-opened-ballot)
 * [`iroha app zk`↴](#iroha-app-zk)
 * [`iroha app zk roots`↴](#iroha-app-zk-roots)
-* [`iroha app zk verify`↴](#iroha-app-zk-verify)
-* [`iroha app zk submit-proof`↴](#iroha-app-zk-submit-proof)
 * [`iroha app zk verify-batch`↴](#iroha-app-zk-verify-batch)
 * [`iroha app zk schema-hash`↴](#iroha-app-zk-schema-hash)
 * [`iroha app zk attachments`↴](#iroha-app-zk-attachments)
@@ -270,8 +272,6 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha app zk attachments delete`↴](#iroha-app-zk-attachments-delete)
 * [`iroha app zk attachments cleanup`↴](#iroha-app-zk-attachments-cleanup)
 * [`iroha app zk register-asset`↴](#iroha-app-zk-register-asset)
-* [`iroha app zk shield`↴](#iroha-app-zk-shield)
-* [`iroha app zk unshield`↴](#iroha-app-zk-unshield)
 * [`iroha app zk vk`↴](#iroha-app-zk-vk)
 * [`iroha app zk vk register`↴](#iroha-app-zk-vk-register)
 * [`iroha app zk vk update`↴](#iroha-app-zk-vk-update)
@@ -282,13 +282,6 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha app zk proofs get`↴](#iroha-app-zk-proofs-get)
 * [`iroha app zk proofs retention`↴](#iroha-app-zk-proofs-retention)
 * [`iroha app zk proofs prune`↴](#iroha-app-zk-proofs-prune)
-* [`iroha app zk prover`↴](#iroha-app-zk-prover)
-* [`iroha app zk prover reports`↴](#iroha-app-zk-prover-reports)
-* [`iroha app zk prover reports list`↴](#iroha-app-zk-prover-reports-list)
-* [`iroha app zk prover reports get`↴](#iroha-app-zk-prover-reports-get)
-* [`iroha app zk prover reports delete`↴](#iroha-app-zk-prover-reports-delete)
-* [`iroha app zk prover reports cleanup`↴](#iroha-app-zk-prover-reports-cleanup)
-* [`iroha app zk prover reports count`↴](#iroha-app-zk-prover-reports-count)
 * [`iroha app zk ivm`↴](#iroha-app-zk-ivm)
 * [`iroha app zk ivm derive`↴](#iroha-app-zk-ivm-derive)
 * [`iroha app zk ivm prove`↴](#iroha-app-zk-ivm-prove)
@@ -302,7 +295,6 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha app confidential create-keys`↴](#iroha-app-confidential-create-keys)
 * [`iroha app confidential gas`↴](#iroha-app-confidential-gas)
 * [`iroha app confidential gas get`↴](#iroha-app-confidential-gas-get)
-* [`iroha app confidential gas set`↴](#iroha-app-confidential-gas-set)
 * [`iroha app taikai`↴](#iroha-app-taikai)
 * [`iroha app taikai bundle`↴](#iroha-app-taikai-bundle)
 * [`iroha app taikai cek-rotate`↴](#iroha-app-taikai-cek-rotate)
@@ -337,6 +329,20 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha app nexus public-lane`↴](#iroha-app-nexus-public-lane)
 * [`iroha app nexus public-lane validators`↴](#iroha-app-nexus-public-lane-validators)
 * [`iroha app nexus public-lane stake`↴](#iroha-app-nexus-public-lane-stake)
+* [`iroha app nexus private-settlement`↴](#iroha-app-nexus-private-settlement)
+* [`iroha app nexus private-settlement availability-share`↴](#iroha-app-nexus-private-settlement-availability-share)
+* [`iroha app nexus private-settlement prepare-vote`↴](#iroha-app-nexus-private-settlement-prepare-vote)
+* [`iroha app nexus private-settlement commit-vote`↴](#iroha-app-nexus-private-settlement-commit-vote)
+* [`iroha app nexus private-settlement phase-certificate`↴](#iroha-app-nexus-private-settlement-phase-certificate)
+* [`iroha app nexus private-settlement phase-certificates`↴](#iroha-app-nexus-private-settlement-phase-certificates)
+* [`iroha app nexus private-settlement leg-upload`↴](#iroha-app-nexus-private-settlement-leg-upload)
+* [`iroha app nexus private-settlement leg-status`↴](#iroha-app-nexus-private-settlement-leg-status)
+* [`iroha app nexus private-settlement committee-proof`↴](#iroha-app-nexus-private-settlement-committee-proof)
+* [`iroha app nexus private-settlement audit-capsule`↴](#iroha-app-nexus-private-settlement-audit-capsule)
+* [`iroha app nexus private-settlement audit-approval`↴](#iroha-app-nexus-private-settlement-audit-approval)
+* [`iroha app nexus private-settlement bundle-submit`↴](#iroha-app-nexus-private-settlement-bundle-submit)
+* [`iroha app nexus private-settlement bundle-status`↴](#iroha-app-nexus-private-settlement-bundle-status)
+* [`iroha app nexus private-settlement bundle-receipt`↴](#iroha-app-nexus-private-settlement-bundle-receipt)
 * [`iroha app staking`↴](#iroha-app-staking)
 * [`iroha app staking register`↴](#iroha-app-staking-register)
 * [`iroha app staking rebind`↴](#iroha-app-staking-rebind)
@@ -388,6 +394,7 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha app kaigi create`↴](#iroha-app-kaigi-create)
 * [`iroha app kaigi quickstart`↴](#iroha-app-kaigi-quickstart)
 * [`iroha app kaigi register-relay`↴](#iroha-app-kaigi-register-relay)
+* [`iroha app kaigi unregister-relay`↴](#iroha-app-kaigi-unregister-relay)
 * [`iroha app kaigi set-relay-manifest`↴](#iroha-app-kaigi-set-relay-manifest)
 * [`iroha app kaigi join`↴](#iroha-app-kaigi-join)
 * [`iroha app kaigi leave`↴](#iroha-app-kaigi-leave)
@@ -483,9 +490,6 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha app sorafs transparency privacy-aggregate source-event`↴](#iroha-app-sorafs-transparency-privacy-aggregate-source-event)
 * [`iroha app sorafs transparency privacy-aggregate publish-due`↴](#iroha-app-sorafs-transparency-privacy-aggregate-publish-due)
 * [`iroha app sorafs transparency privacy-aggregate canary`↴](#iroha-app-sorafs-transparency-privacy-aggregate-canary)
-* [`iroha app sorafs transparency source-entry`↴](#iroha-app-sorafs-transparency-source-entry)
-* [`iroha app sorafs transparency source-entry submit`↴](#iroha-app-sorafs-transparency-source-entry-submit)
-* [`iroha app sorafs transparency source-entry canary`↴](#iroha-app-sorafs-transparency-source-entry-canary)
 * [`iroha app sorafs moderation`↴](#iroha-app-sorafs-moderation)
 * [`iroha app sorafs moderation ballots`↴](#iroha-app-sorafs-moderation-ballots)
 * [`iroha app sorafs moderation ballots list`↴](#iroha-app-sorafs-moderation-ballots-list)
@@ -597,6 +601,8 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha app settlement dvp`↴](#iroha-app-settlement-dvp)
 * [`iroha app settlement pvp`↴](#iroha-app-settlement-pvp)
 * [`iroha app settlement set-fx-corridor-policy`↴](#iroha-app-settlement-set-fx-corridor-policy)
+* [`iroha app settlement fund-fx-corridor-escrow`↴](#iroha-app-settlement-fund-fx-corridor-escrow)
+* [`iroha app settlement refund-fx-corridor-escrow`↴](#iroha-app-settlement-refund-fx-corridor-escrow)
 * [`iroha app settlement settle-fx-corridor`↴](#iroha-app-settlement-settle-fx-corridor)
 * [`iroha app settlement get-fx-corridor-policy`↴](#iroha-app-settlement-get-fx-corridor-policy)
 * [`iroha app settlement list-fx-corridor-policies`↴](#iroha-app-settlement-list-fx-corridor-policies)
@@ -652,10 +658,32 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha tools version`↴](#iroha-tools-version)
 * [`iroha taira`↴](#iroha-taira)
 * [`iroha taira doctor`↴](#iroha-taira-doctor)
+* [`iroha taira public-reset`↴](#iroha-taira-public-reset)
+* [`iroha taira public-reset preflight`↴](#iroha-taira-public-reset-preflight)
+* [`iroha taira public-reset apply`↴](#iroha-taira-public-reset-apply)
 * [`iroha taira write-canary`↴](#iroha-taira-write-canary)
+* [`iroha taira inrou-workspace`↴](#iroha-taira-inrou-workspace)
+* [`iroha taira inrou-stage`↴](#iroha-taira-inrou-stage)
+* [`iroha taira inrou-canary`↴](#iroha-taira-inrou-canary)
+* [`iroha taira inrou-check`↴](#iroha-taira-inrou-check)
 * [`iroha offline`↴](#iroha-offline)
 * [`iroha offline kagemusha`↴](#iroha-offline-kagemusha)
-* [`iroha offline kagemusha activate-release-v4`↴](#iroha-offline-kagemusha-activate-release-v4)
+* [`iroha offline kagemusha lifecycle-v4`↴](#iroha-offline-kagemusha-lifecycle-v4)
+* [`iroha offline kagemusha lifecycle-v4 prepare`↴](#iroha-offline-kagemusha-lifecycle-v4-prepare)
+* [`iroha offline kagemusha lifecycle-v4 sign-fee-quote`↴](#iroha-offline-kagemusha-lifecycle-v4-sign-fee-quote)
+* [`iroha offline kagemusha lifecycle-v4 finalize-fee-quote`↴](#iroha-offline-kagemusha-lifecycle-v4-finalize-fee-quote)
+* [`iroha offline kagemusha lifecycle-v4 sign-transaction`↴](#iroha-offline-kagemusha-lifecycle-v4-sign-transaction)
+* [`iroha offline kagemusha lifecycle-v4 assemble-transaction`↴](#iroha-offline-kagemusha-lifecycle-v4-assemble-transaction)
+* [`iroha offline kagemusha lifecycle-v4 submit-transaction`↴](#iroha-offline-kagemusha-lifecycle-v4-submit-transaction)
+* [`iroha offline kagemusha rollout-v4`↴](#iroha-offline-kagemusha-rollout-v4)
+* [`iroha offline kagemusha rollout-v4 create-expectations`↴](#iroha-offline-kagemusha-rollout-v4-create-expectations)
+* [`iroha offline kagemusha rollout-v4 submit`↴](#iroha-offline-kagemusha-rollout-v4-submit)
+* [`iroha offline kagemusha rollout-v4 finalize-receipt`↴](#iroha-offline-kagemusha-rollout-v4-finalize-receipt)
+* [`iroha offline kagemusha rollout-v4 create-canary-authorization`↴](#iroha-offline-kagemusha-rollout-v4-create-canary-authorization)
+* [`iroha offline kagemusha rollout-v4 submit-canary-authorization`↴](#iroha-offline-kagemusha-rollout-v4-submit-canary-authorization)
+* [`iroha offline kagemusha rollout-v4 submit-canary`↴](#iroha-offline-kagemusha-rollout-v4-submit-canary)
+* [`iroha offline kagemusha rollout-v4 finalize-canary-evidence`↴](#iroha-offline-kagemusha-rollout-v4-finalize-canary-evidence)
+* [`iroha offline kagemusha rollout-v4 finalize-validator-liveness`↴](#iroha-offline-kagemusha-rollout-v4-finalize-validator-liveness)
 * [`iroha offline petal`↴](#iroha-offline-petal)
 * [`iroha offline petal encode`↴](#iroha-offline-petal-encode)
 * [`iroha offline petal eval-capture`↴](#iroha-offline-petal-eval-capture)
@@ -669,9 +697,8 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha soracloud app dev`↴](#iroha-soracloud-app-dev)
 * [`iroha soracloud app build`↴](#iroha-soracloud-app-build)
 * [`iroha soracloud app simulate`↴](#iroha-soracloud-app-simulate)
+* [`iroha soracloud app preseed`↴](#iroha-soracloud-app-preseed)
 * [`iroha soracloud app release`↴](#iroha-soracloud-app-release)
-* [`iroha soracloud app deploy`↴](#iroha-soracloud-app-deploy)
-* [`iroha soracloud app upgrade`↴](#iroha-soracloud-app-upgrade)
 * [`iroha soracloud app status`↴](#iroha-soracloud-app-status)
 * [`iroha soracloud service`↴](#iroha-soracloud-service)
 * [`iroha soracloud service init`↴](#iroha-soracloud-service-init)
@@ -682,6 +709,7 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha soracloud service deploy-workspace`↴](#iroha-soracloud-service-deploy-workspace)
 * [`iroha soracloud service upgrade-workspace`↴](#iroha-soracloud-service-upgrade-workspace)
 * [`iroha soracloud service sync-manifests`↴](#iroha-soracloud-service-sync-manifests)
+* [`iroha soracloud service preseed`↴](#iroha-soracloud-service-preseed)
 * [`iroha soracloud service deploy`↴](#iroha-soracloud-service-deploy)
 * [`iroha soracloud service status`↴](#iroha-soracloud-service-status)
 * [`iroha soracloud service config-set`↴](#iroha-soracloud-service-config-set)
@@ -704,15 +732,10 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha soracloud model weight-promote`↴](#iroha-soracloud-model-weight-promote)
 * [`iroha soracloud model weight-rollback`↴](#iroha-soracloud-model-weight-rollback)
 * [`iroha soracloud model weight-status`↴](#iroha-soracloud-model-weight-status)
-* [`iroha soracloud model upload-encryption-recipient`↴](#iroha-soracloud-model-upload-encryption-recipient)
 * [`iroha soracloud model upload-register`↴](#iroha-soracloud-model-upload-register)
 * [`iroha soracloud model upload-status`↴](#iroha-soracloud-model-upload-status)
-* [`iroha soracloud model host-advertise`↴](#iroha-soracloud-model-host-advertise)
-* [`iroha soracloud model host-heartbeat`↴](#iroha-soracloud-model-host-heartbeat)
-* [`iroha soracloud model host-withdraw`↴](#iroha-soracloud-model-host-withdraw)
-* [`iroha soracloud model host-status`↴](#iroha-soracloud-model-host-status)
 * [`iroha soracloud hf`↴](#iroha-soracloud-hf)
-* [`iroha soracloud hf deploy`↴](#iroha-soracloud-hf-deploy)
+* [`iroha soracloud hf join`↴](#iroha-soracloud-hf-join)
 * [`iroha soracloud hf status`↴](#iroha-soracloud-hf-status)
 * [`iroha soracloud hf lease-leave`↴](#iroha-soracloud-hf-lease-leave)
 * [`iroha soracloud hf lease-renew`↴](#iroha-soracloud-hf-lease-renew)
@@ -728,7 +751,6 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha soracloud agent message-ack`↴](#iroha-soracloud-agent-message-ack)
 * [`iroha soracloud agent mailbox-status`↴](#iroha-soracloud-agent-mailbox-status)
 * [`iroha soracloud agent artifact-allow`↴](#iroha-soracloud-agent-artifact-allow)
-* [`iroha soracloud agent autonomy-run`↴](#iroha-soracloud-agent-autonomy-run)
 * [`iroha soracloud agent autonomy-status`↴](#iroha-soracloud-agent-autonomy-status)
 
 ## `iroha`
@@ -755,7 +777,10 @@ Iroha Client CLI provides a simple way to interact with the Iroha Web API
 
 * `-c`, `--config <PATH>` — Path to the configuration file.
 
-   By default, `iroha` reads `client.toml`; runtime commands require it to be present and readable.
+   By default, `iroha` reads `client.toml`; runtime commands require it to be present and readable. `taira doctor` and the runtime-authorized `taira public-reset` surface never read client configuration or ledger signing material.
+* `--operator-private-key-file <ABSOLUTE_PATH>` — Absolute path to an owner-only operator private-key file for operator reads.
+
+   This runtime-only credential is never inferred from the account key, environment, or client TOML. The selected node must allowlist its public key for the configured exact NetworkId.
 * `-v`, `--verbose` — Print configuration details to stderr
 * `-m`, `--metadata <PATH>` — Path to a JSON file for attaching transaction metadata (optional)
 * `-i`, `--input` — Reads instructions from stdin and appends new ones.
@@ -779,7 +804,7 @@ Iroha Client CLI provides a simple way to interact with the Iroha Web API
     Emit human-readable text when available
 
 * `--language <LANG>` — Language code for messages, overrides system language
-* `--machine` — Enable deterministic machine mode (no startup chatter, strict config loading)
+* `--machine` — Enable deterministic machine mode (no startup chatter; strict loading for commands that require client config)
 * `--fee-payer <FEE_PAYER>` — Required fee source for every submitted transaction
 
   Possible values:
@@ -1103,7 +1128,7 @@ Read the typed pipeline status of a submitted transaction
 ###### **Options:**
 
 * `-H`, `--hash <HASH>` — Hash of the signed transaction to inspect
-* `--scope <SCOPE>` — Explicit status routing scope. Omit with `--wait`, which selects the safe scope for the requested terminal states
+* `--scope <SCOPE>` — Explicit status routing scope for a one-shot read. `--wait` always uses exact global status and succeeds only on state-resolved Applied
 
   Possible values:
   - `local`:
@@ -1111,7 +1136,7 @@ Read the typed pipeline status of a submitted transaction
   - `global`:
     Permit Torii's global/fanout status lookup
 
-* `--wait` — Poll `/v1/pipeline/transactions/status` until the transaction reaches Applied finality
+* `--wait` — Poll exact global status until state-resolved Applied finality
 * `--submit-only` — Submit the transaction without waiting for finality
 * `--timeout-ms <TIMEOUT_MS>` — Maximum time to wait before failing
 
@@ -1119,10 +1144,6 @@ Read the typed pipeline status of a submitted transaction
 * `--poll-interval-ms <POLL_INTERVAL_MS>` — Poll interval used while waiting
 
   Default value: `500`
-* `--terminal-status <TERMINAL_STATUSES>` — Stop when the pipeline reaches any of these statuses instead of the default Applied finality
-
-  Possible values: `queued`, `approved`, `committed`, `applied`, `rejected`, `expired`
-
 
 
 
@@ -1797,15 +1818,6 @@ Register an asset definition
 * `--logo <LOGO>` — Optional logo URI. Must use `sorafs://...`
 * `-m`, `--mint-once` — Disables minting after the first instance
 * `-s`, `--scale <SCALE>` — Numeric scale of the asset. No value means unconstrained
-* `--confidential-mode <CONFIDENTIAL_MODE>` — Confidential policy mode for this asset definition
-
-  Default value: `transparent-only`
-
-  Possible values: `transparent-only`, `shielded-only`, `convertible`
-
-* `--confidential-vk-set-hash <CONFIDENTIAL_VK_SET_HASH>` — Hex-encoded hash summarising the expected verifying key set
-* `--confidential-poseidon-params <CONFIDENTIAL_POSEIDON_PARAMS>` — Poseidon parameter set identifier expected for confidential proofs
-* `--confidential-pedersen-params <CONFIDENTIAL_PEDERSEN_PARAMS>` — Pedersen parameter set identifier expected for confidential commitments
 
 
 
@@ -2909,7 +2921,7 @@ Execute a by-call trigger with optional JSON arguments
 
   Default value: `{}`
 * `--trace` — Include runtime completion and pipeline diagnostics from Torii after finality
-* `--wait` — Poll `/v1/pipeline/transactions/status` until the transaction reaches Applied finality
+* `--wait` — Poll exact global status until state-resolved Applied finality
 * `--submit-only` — Submit the transaction without waiting for finality
 * `--timeout-ms <TIMEOUT_MS>` — Maximum time to wait before failing
 
@@ -2917,10 +2929,6 @@ Execute a by-call trigger with optional JSON arguments
 * `--poll-interval-ms <POLL_INTERVAL_MS>` — Poll interval used while waiting
 
   Default value: `500`
-* `--terminal-status <TERMINAL_STATUSES>` — Stop when the pipeline reaches any of these statuses instead of the default Applied finality
-
-  Possible values: `queued`, `approved`, `committed`, `applied`, `rejected`, `expired`
-
 
 
 
@@ -2978,7 +2986,7 @@ List matching trigger completions from committed block history
   Default value: `10`
 * `--from-height <FROM_HEIGHT>` — First block height to scan. Defaults to the recent bounded window
 * `--to-height <TO_HEIGHT>` — Last block height to scan. Defaults to the current committed height
-* `--scan-limit-blocks <SCAN_LIMIT_BLOCKS>` — Maximum number of recent blocks to scan when --from-height is omitted
+* `--scan-limit-blocks <SCAN_LIMIT_BLOCKS>` — Hard cap on blocks scanned, including when --from-height is supplied
 
   Default value: `1000`
 
@@ -3112,7 +3120,7 @@ Read the typed pipeline status of a submitted transaction
 ###### **Options:**
 
 * `-H`, `--hash <HASH>` — Hash of the signed transaction to inspect
-* `--scope <SCOPE>` — Explicit status routing scope. Omit with `--wait`, which selects the safe scope for the requested terminal states
+* `--scope <SCOPE>` — Explicit status routing scope for a one-shot read. `--wait` always uses exact global status and succeeds only on state-resolved Applied
 
   Possible values:
   - `local`:
@@ -3120,7 +3128,7 @@ Read the typed pipeline status of a submitted transaction
   - `global`:
     Permit Torii's global/fanout status lookup
 
-* `--wait` — Poll `/v1/pipeline/transactions/status` until the transaction reaches Applied finality
+* `--wait` — Poll exact global status until state-resolved Applied finality
 * `--submit-only` — Submit the transaction without waiting for finality
 * `--timeout-ms <TIMEOUT_MS>` — Maximum time to wait before failing
 
@@ -3128,10 +3136,6 @@ Read the typed pipeline status of a submitted transaction
 * `--poll-interval-ms <POLL_INTERVAL_MS>` — Poll interval used while waiting
 
   Default value: `500`
-* `--terminal-status <TERMINAL_STATUSES>` — Stop when the pipeline reaches any of these statuses instead of the default Applied finality
-
-  Possible values: `queued`, `approved`, `committed`, `applied`, `rejected`, `expired`
-
 
 
 
@@ -3609,7 +3613,7 @@ Execute a by-call trigger with optional JSON arguments
 
   Default value: `{}`
 * `--trace` — Include runtime completion and pipeline diagnostics from Torii after finality
-* `--wait` — Poll `/v1/pipeline/transactions/status` until the transaction reaches Applied finality
+* `--wait` — Poll exact global status until state-resolved Applied finality
 * `--submit-only` — Submit the transaction without waiting for finality
 * `--timeout-ms <TIMEOUT_MS>` — Maximum time to wait before failing
 
@@ -3617,10 +3621,6 @@ Execute a by-call trigger with optional JSON arguments
 * `--poll-interval-ms <POLL_INTERVAL_MS>` — Poll interval used while waiting
 
   Default value: `500`
-* `--terminal-status <TERMINAL_STATUSES>` — Stop when the pipeline reaches any of these statuses instead of the default Applied finality
-
-  Possible values: `queued`, `approved`, `committed`, `applied`, `rejected`, `expired`
-
 
 
 
@@ -3678,7 +3678,7 @@ List matching trigger completions from committed block history
   Default value: `10`
 * `--from-height <FROM_HEIGHT>` — First block height to scan. Defaults to the recent bounded window
 * `--to-height <TO_HEIGHT>` — Last block height to scan. Defaults to the current committed height
-* `--scan-limit-blocks <SCAN_LIMIT_BLOCKS>` — Maximum number of recent blocks to scan when --from-height is omitted
+* `--scan-limit-blocks <SCAN_LIMIT_BLOCKS>` — Hard cap on blocks scanned, including when --from-height is supplied
 
   Default value: `1000`
 
@@ -3770,6 +3770,7 @@ Node and operator helpers
 * `sumeragi` — Sumeragi helpers (status)
 * `audit` — Audit helpers (debug endpoints)
 * `connect` — Connect diagnostics helpers (queue inspection, evidence export)
+* `bridge` — Bridge tools (feature: bridge)
 
 
 
@@ -3947,13 +3948,7 @@ Sumeragi helpers (status)
 * `leader` — Show leader index (and PRF context when available)
 * `params` — Show on-chain Sumeragi parameters snapshot
 * `qc` — Show HighestQC/LockedQC snapshot
-* `pacemaker` — Show pacemaker timers/config snapshot
-* `phases` — Show latest per-phase latencies (ms)
-* `telemetry` — Show aggregated telemetry snapshot (availability, QC, RBC, VRF)
-* `evidence` — Evidence helpers (list/count/submit)
-* `vrf-penalties` — Show VRF penalties for the given epoch
-* `vrf-epoch` — Show persisted VRF epoch snapshot (seed, participants, penalties)
-* `commit-qc` — Fetch commit QC (if present) for a block hash
+* `evidence` — Evidence audit helpers (list/count)
 
 
 
@@ -3997,33 +3992,9 @@ Show HighestQC/LockedQC snapshot
 
 
 
-## `iroha ops sumeragi pacemaker`
-
-Show pacemaker timers/config snapshot
-
-**Usage:** `iroha ops sumeragi pacemaker`
-
-
-
-## `iroha ops sumeragi phases`
-
-Show latest per-phase latencies (ms)
-
-**Usage:** `iroha ops sumeragi phases`
-
-
-
-## `iroha ops sumeragi telemetry`
-
-Show aggregated telemetry snapshot (availability, QC, RBC, VRF)
-
-**Usage:** `iroha ops sumeragi telemetry`
-
-
-
 ## `iroha ops sumeragi evidence`
 
-Evidence helpers (list/count/submit)
+Evidence audit helpers (list/count)
 
 **Usage:** `iroha ops sumeragi evidence <COMMAND>`
 
@@ -4031,7 +4002,6 @@ Evidence helpers (list/count/submit)
 
 * `list` — List persisted evidence entries
 * `count` — Show evidence count
-* `submit` — Submit hex-encoded evidence payload
 
 
 
@@ -4047,7 +4017,7 @@ List persisted evidence entries
 * `--offset <OFFSET>` — Offset into the evidence list
 * `--kind <KIND>` — Filter by evidence kind
 
-  Possible values: `double-prepare`, `double-commit`, `invalid-qc`, `invalid-proposal`
+  Possible values: `SumeragiV2Equivocation`
 
 
 
@@ -4057,67 +4027,6 @@ List persisted evidence entries
 Show evidence count
 
 **Usage:** `iroha ops sumeragi evidence count`
-
-
-
-## `iroha ops sumeragi evidence submit`
-
-Submit hex-encoded evidence payload
-
-**Usage:** `iroha ops sumeragi evidence submit [OPTIONS]`
-
-###### **Options:**
-
-* `--evidence-hex <EVIDENCE_HEX>` — Hex-encoded Norito evidence payload (0x optional)
-* `--evidence-hex-file <PATH>` — Path to file containing hex-encoded proof (whitespace ignored)
-
-
-
-## `iroha ops sumeragi vrf-penalties`
-
-Show VRF penalties for the given epoch
-
-**Usage:** `iroha ops sumeragi vrf-penalties --epoch <EPOCH>`
-
-###### **Options:**
-
-* `--epoch <EPOCH>` — Epoch index (decimal or 0x-prefixed hex)
-
-
-
-## `iroha ops sumeragi vrf-epoch`
-
-Show persisted VRF epoch snapshot (seed, participants, penalties)
-
-**Usage:** `iroha ops sumeragi vrf-epoch --epoch <EPOCH>`
-
-###### **Options:**
-
-* `--epoch <EPOCH>` — Epoch index (decimal or 0x-prefixed hex)
-
-
-
-## `iroha ops sumeragi commit-qc`
-
-Fetch commit QC (if present) for a block hash
-
-**Usage:** `iroha ops sumeragi commit-qc <COMMAND>`
-
-###### **Subcommands:**
-
-* `get` — Fetch commit QC (if present) for a block hash
-
-
-
-## `iroha ops sumeragi commit-qc get`
-
-Fetch commit QC (if present) for a block hash
-
-**Usage:** `iroha ops sumeragi commit-qc get --hash <HASH>`
-
-###### **Options:**
-
-* `--hash <HASH>` — Block hash for which the commit QC should be fetched
 
 
 
@@ -4153,7 +4062,7 @@ Fetch current execution witness snapshot from Torii debug endpoints
 * `--no-fastpq-batches` — Disable FASTPQ batches to shrink the decoded output
 * `--fastpq-parameter <NAME>` — Expected FASTPQ parameter set name; errors if batches use a different value
 
-  Default value: `fastpq-lane-balanced`
+  Default value: `fastpq-state-transition-stark-v1`
 
 
 
@@ -4204,6 +4113,145 @@ Inspect on-disk queue diagnostics for a Connect session
 
 
 
+## `iroha ops bridge`
+
+Bridge tools (feature: bridge)
+
+**Usage:** `iroha ops bridge <COMMAND>`
+
+###### **Subcommands:**
+
+* `emit-receipt` — Emit a bridge receipt as a typed event
+* `sccp` — Inspect the exact transfer-only SCCP registry and proof inputs
+
+
+
+## `iroha ops bridge emit-receipt`
+
+Emit a bridge receipt as a typed event
+
+**Usage:** `iroha ops bridge emit-receipt [OPTIONS] --lane <LANE> --direction <DIRECTION> --source-tx <SOURCE_TX> --amount <QUANTITY> --asset-id <ASSET_ID> --recipient <RECIPIENT>`
+
+###### **Options:**
+
+* `--lane <LANE>` — Bridge lane id (numeric)
+* `--direction <DIRECTION>` — Direction: lock|mint|burn|release
+* `--source-tx <SOURCE_TX>` — Source transaction hash (hex, 32 bytes)
+* `--amount <QUANTITY>` — Exact non-negative asset quantity
+* `--asset-id <ASSET_ID>` — Canonical Iroha asset id
+* `--recipient <RECIPIENT>` — Iroha account id or external address payload
+* `--dest-tx <DEST_TX>` — Optional destination transaction hash (hex, 32 bytes)
+* `--proof-hash <PROOF_HASH>` — Proof hash (hex, 32 bytes)
+
+
+
+## `iroha ops bridge sccp`
+
+Inspect the exact transfer-only SCCP registry and proof inputs
+
+**Usage:** `iroha ops bridge sccp <COMMAND>`
+
+###### **Subcommands:**
+
+* `capabilities` — Fetch the closed first-release SCCP HTTP surface
+* `registry` — Fetch the authoritative typed SCCP route registry
+* `recent` — Discover newest-first finalized SORA-origin messages
+* `bundle` — Fetch one finalized canonical SCCP message bundle
+* `proof-request` — Fetch the exact state-derived Groth16 prover request for one message
+* `submit-destination-proof` — Prepare or directly submit one closed destination-proof artifact
+* `submit-native-message` — Prepare or directly submit one protocol-native inbound proof
+
+
+
+## `iroha ops bridge sccp capabilities`
+
+Fetch the closed first-release SCCP HTTP surface
+
+**Usage:** `iroha ops bridge sccp capabilities`
+
+
+
+## `iroha ops bridge sccp registry`
+
+Fetch the authoritative typed SCCP route registry
+
+**Usage:** `iroha ops bridge sccp registry`
+
+
+
+## `iroha ops bridge sccp recent`
+
+Discover newest-first finalized SORA-origin messages
+
+**Usage:** `iroha ops bridge sccp recent [OPTIONS]`
+
+###### **Options:**
+
+* `--from <FROM>` — Inclusive block height through which to scan backwards
+* `--after-index <AFTER_INDEX>` — Last commitment index already consumed at `--from` (inclusive range `0..=511`)
+* `--limit <LIMIT>` — Maximum number of messages to return (inclusive range `1..=50`)
+
+
+
+## `iroha ops bridge sccp bundle`
+
+Fetch one finalized canonical SCCP message bundle
+
+**Usage:** `iroha ops bridge sccp bundle --message-id <HEX>`
+
+###### **Options:**
+
+* `--message-id <HEX>` — Nonzero SCCP message id (hex, 32 bytes)
+
+
+
+## `iroha ops bridge sccp proof-request`
+
+Fetch the exact state-derived Groth16 prover request for one message
+
+**Usage:** `iroha ops bridge sccp proof-request --message-id <HEX>`
+
+###### **Options:**
+
+* `--message-id <HEX>` — Nonzero SCCP message id (hex, 32 bytes)
+
+
+
+## `iroha ops bridge sccp submit-destination-proof`
+
+Prepare or directly submit one closed destination-proof artifact
+
+**Usage:** `iroha ops bridge sccp submit-destination-proof [OPTIONS] --artifact <PATH>`
+
+###### **Options:**
+
+* `--artifact <PATH>` — File containing one canonical Norito closed SCCP destination-proof envelope
+* `--transaction-payload-b64-file <PATH>` — File containing the exact canonical padded-base64 transaction payload returned by prepare
+* `--signature-b64-file <PATH>` — File containing one canonical padded-base64 detached signature over the prepared payload hash
+* `--creation-time-ms <CREATION_TIME_MS>` — Positive transaction creation timestamp in Unix milliseconds.
+
+   Direct submission must repeat the value returned by preparation.
+
+
+
+## `iroha ops bridge sccp submit-native-message`
+
+Prepare or directly submit one protocol-native inbound proof
+
+**Usage:** `iroha ops bridge sccp submit-native-message [OPTIONS] --proof <PATH> --replay-witness <PATH>`
+
+###### **Options:**
+
+* `--proof <PATH>` — File containing one canonical Norito protocol-native SCCP inbound proof
+* `--replay-witness <PATH>` — File containing one canonical Norito sparse replay non-membership witness
+* `--transaction-payload-b64-file <PATH>` — File containing the exact canonical padded-base64 transaction payload returned by prepare
+* `--signature-b64-file <PATH>` — File containing one canonical padded-base64 detached signature over the prepared payload hash
+* `--creation-time-ms <CREATION_TIME_MS>` — Positive transaction creation timestamp in Unix milliseconds.
+
+   Direct submission must repeat the value returned by preparation.
+
+
+
 ## `iroha app`
 
 App API helpers and product tooling
@@ -4246,16 +4294,14 @@ Governance helpers (app API convenience)
 ###### **Subcommands:**
 
 * `deploy` — Deployment helpers (propose/meta/audit). Propose deployment of IVM bytecode
-* `vote` — Submit a governance ballot; auto-detects referendum mode unless overridden
+* `vote` — Submit a standalone referendum ballot; auto-detects its mode unless overridden
 * `proposal` — Proposal helpers
 * `locks` — Lock helpers
-* `council` — Get the latest explicitly persisted council roster
-* `unlock` — Unlock helpers (expired lock stats)
+* `unlock` — Get the latest explicitly persisted council roster. Unlock helpers (expired lock stats)
 * `referendum` — Referendum helpers
 * `tally` — Tally helpers
-* `finalize` — Build a finalize transaction for a referendum (server returns instruction skeleton)
-* `enact` — Build an enactment transaction for an approved proposal
 * `protected` — Protected namespace helpers
+* `parliament` — Attempt-based private SORA Parliament helpers
 
 
 
@@ -4287,13 +4333,7 @@ Propose deployment of IVM bytecode by code/abi hash via governance (build-only; 
 * `--abi-hash <ABI_HASH>`
 * `--abi-version <ABI_VERSION>`
 
-  Default value: `v1`
-* `--window-lower <WINDOW_LOWER>` — Optional window lower bound (height)
-* `--window-upper <WINDOW_UPPER>` — Optional window upper bound (height)
-* `--mode <MODE>` — Optional voting mode for the referendum: Zk or Plain (defaults to server policy)
-
-  Possible values: `Zk`, `Plain`
-
+  Default value: `1`
 
 
 
@@ -4326,7 +4366,7 @@ Audit stored manifests against governance proposals and code storage
 
 ## `iroha app gov vote`
 
-Submit a governance ballot; auto-detects referendum mode unless overridden
+Submit a standalone referendum ballot; auto-detects its mode unless overridden
 
 **Usage:** `iroha app gov vote [OPTIONS] --referendum-id <REFERENDUM_ID>`
 
@@ -4345,7 +4385,8 @@ Submit a governance ballot; auto-detects referendum mode unless overridden
   - `zk`:
     Force zero-knowledge voting mode
 
-* `--proof-b64 <PROOF_B64>` — Base64-encoded proof for ZK voting mode
+* `--backend <BACKEND>` — Exact proof backend tag for ZK voting mode
+* `--envelope-b64 <ENVELOPE_B64>` — Base64-encoded proof envelope for ZK voting mode
 * `--public <PATH>` — Optional JSON file containing public inputs for ZK voting mode
 * `--owner <OWNER>` — Owner account id for plain voting mode (canonical I105 account literal; must equal transaction authority)
 * `--amount <AMOUNT>` — Locked amount for plain voting mode (string to preserve large integers)
@@ -4403,17 +4444,9 @@ Get locks for a referendum id
 
 
 
-## `iroha app gov council`
-
-Get the latest explicitly persisted council roster
-
-**Usage:** `iroha app gov council`
-
-
-
 ## `iroha app gov unlock`
 
-Unlock helpers (expired lock stats)
+Get the latest explicitly persisted council roster. Unlock helpers (expired lock stats)
 
 **Usage:** `iroha app gov unlock <COMMAND>`
 
@@ -4479,32 +4512,6 @@ Get a tally snapshot by referendum id
 
 
 
-## `iroha app gov finalize`
-
-Build a finalize transaction for a referendum (server returns instruction skeleton)
-
-**Usage:** `iroha app gov finalize --referendum-id <REFERENDUM_ID> --proposal-id <ID_HEX>`
-
-###### **Options:**
-
-* `--referendum-id <REFERENDUM_ID>` — Referendum id
-* `--proposal-id <ID_HEX>` — Proposal id (hex 64)
-
-
-
-## `iroha app gov enact`
-
-Build an enactment transaction for an approved proposal
-
-**Usage:** `iroha app gov enact [OPTIONS] --proposal-id <ID_HEX>`
-
-###### **Options:**
-
-* `--proposal-id <ID_HEX>` — Proposal id (hex 64)
-* `--apply` — Sign, submit, and wait for this exact server-drafted enactment instruction
-
-
-
 ## `iroha app gov protected`
 
 Protected namespace helpers
@@ -4551,6 +4558,76 @@ Get protected namespaces (custom parameter `gov_protected_namespaces`)
 
 
 
+## `iroha app gov parliament`
+
+Attempt-based private SORA Parliament helpers
+
+**Usage:** `iroha app gov parliament <COMMAND>`
+
+###### **Subcommands:**
+
+* `draft-attempt` — Draft one canonical attempt creation instruction
+* `draft-transition` — Draft one exact lifecycle transition instruction
+* `get-attempt` — Read one exact committed attempt projection
+* `finalize-opened-ballot` — Verify signer-peer shares and submit `FinalizeOpenedBallot` normally
+
+
+
+## `iroha app gov parliament draft-attempt`
+
+Draft one canonical attempt creation instruction
+
+**Usage:** `iroha app gov parliament draft-attempt [OPTIONS] --proposal-json <PATH>`
+
+###### **Options:**
+
+* `--proposal-json <PATH>` — JSON file containing one exact tagged `ProposalKind` value
+* `--attempt-sequence <ATTEMPT_SEQUENCE>` — Zero-based retry sequence for the exact proposal content
+
+  Default value: `0`
+
+
+
+## `iroha app gov parliament draft-transition`
+
+Draft one exact lifecycle transition instruction
+
+**Usage:** `iroha app gov parliament draft-transition --governance-attempt-id <GOVERNANCE_ATTEMPT_ID> --transition-json <PATH>`
+
+###### **Options:**
+
+* `--governance-attempt-id <GOVERNANCE_ATTEMPT_ID>` — Canonical lowercase identifier of the existing Parliament attempt
+* `--transition-json <PATH>` — JSON file containing one exact tagged lifecycle transition
+
+
+
+## `iroha app gov parliament get-attempt`
+
+Read one exact committed attempt projection
+
+**Usage:** `iroha app gov parliament get-attempt --governance-attempt-id <GOVERNANCE_ATTEMPT_ID>`
+
+###### **Options:**
+
+* `--governance-attempt-id <GOVERNANCE_ATTEMPT_ID>` — Canonical lowercase attempt identifier
+
+
+
+## `iroha app gov parliament finalize-opened-ballot`
+
+Verify signer-peer shares and submit `FinalizeOpenedBallot` normally
+
+**Usage:** `iroha app gov parliament finalize-opened-ballot --ballot-attempt-id <BALLOT_ATTEMPT_ID> --peer <TORII_URL>`
+
+###### **Options:**
+
+* `--ballot-attempt-id <BALLOT_ATTEMPT_ID>` — Canonical lowercase identifier of the ballot attempt in `Opening`
+* `--peer <TORII_URL>` — Root URL of one signer peer exposing release-context and partial-release routes.
+
+   Supply every configured signer peer. The coordinator sorts and bounds the URLs, verifies every public proof locally, de-duplicates equal seats, and combines the lowest canonical threshold of valid participant indices.
+
+
+
 ## `iroha app zk`
 
 Zero-knowledge helpers (roots, etc.)
@@ -4560,17 +4637,12 @@ Zero-knowledge helpers (roots, etc.)
 ###### **Subcommands:**
 
 * `roots` — Get recent shielded roots for an asset (JSON). Posts to /v1/zk/roots
-* `verify` — Verify a ZK proof by posting an `OpenVerifyEnvelope` (Norito) or a JSON DTO to /v1/zk/verify
-* `submit-proof` — Submit a ZK proof envelope for later reference/inspection. Posts to /v1/zk/submit-proof
 * `verify-batch` — Verify a batch of ZK `OpenVerify` envelopes (Norito vector) via /v1/zk/verify-batch
 * `schema-hash` — Compute the Blake2b-32 hash required for `public_inputs_schema_hash` and print it
 * `attachments` — Manage ZK attachments in the app API
 * `register-asset` — Register a ZK-capable asset (Hybrid mode) with policy and VK ids
-* `shield` — Shield public funds into a shielded ledger (demo flow)
-* `unshield` — Unshield funds from shielded ledger to public (demo flow)
-* `vk` — Verifying-key registry lifecycle (register/update/deprecate/get)
+* `vk` — Verifying-key registry lifecycle (register/update/get)
 * `proofs` — Inspect proof registry (list/count/get)
-* `prover` — Inspect background prover reports (list/get/delete)
 * `ivm` — IVM prove helpers (non-consensus, app API)
 * `vote` — ZK Vote helpers (tally)
 * `envelope` — Encode a confidential encrypted payload (memo) into Norito bytes/base64
@@ -4589,32 +4661,6 @@ Get recent shielded roots for an asset (JSON). Posts to /v1/zk/roots
 * `--max <MAX>` — Maximum number of roots to return (0 = server cap)
 
   Default value: `0`
-
-
-
-## `iroha app zk verify`
-
-Verify a ZK proof by posting an `OpenVerifyEnvelope` (Norito) or a JSON DTO to /v1/zk/verify
-
-**Usage:** `iroha app zk verify [OPTIONS]`
-
-###### **Options:**
-
-* `--norito <PATH>` — Path to Norito-encoded `OpenVerifyEnvelope` bytes (mutually exclusive with --json)
-* `--json <PATH>` — Path to a JSON DTO describing the proof (backend, proof, vk) (mutually exclusive with --norito)
-
-
-
-## `iroha app zk submit-proof`
-
-Submit a ZK proof envelope for later reference/inspection. Posts to /v1/zk/submit-proof
-
-**Usage:** `iroha app zk submit-proof [OPTIONS]`
-
-###### **Options:**
-
-* `--norito <PATH>` — Path to Norito-encoded proof envelope bytes (mutually exclusive with --json)
-* `--json <PATH>` — Path to a JSON DTO describing the proof (backend, proof, vk) (mutually exclusive with --norito)
 
 
 
@@ -4737,63 +4783,20 @@ Register a ZK-capable asset (Hybrid mode) with policy and VK ids
 ###### **Options:**
 
 * `--asset <ASSET_ID>` — Canonical unprefixed Base58 `AssetDefinitionId`
-* `--allow-shield` — Allow shielding from public to shielded (default: true)
-
-  Default value: `true`
-* `--allow-unshield` — Allow unshielding from shielded to public (default: true)
-
-  Default value: `true`
-* `--vk-transfer <BACKEND:NAME>` — Verifying key id for private transfers (format: `<backend>:<name>`, e.g., `halo2/ipa:vk_transfer`)
 * `--vk-unshield <BACKEND:NAME>` — Verifying key id for unshield proofs (format: `<backend>:<name>`)
-* `--vk-shield <BACKEND:NAME>` — Verifying key id for shield proofs (optional; format: `<backend>:<name>`)
-
-
-
-## `iroha app zk shield`
-
-Shield public funds into a shielded ledger (demo flow)
-
-**Usage:** `iroha app zk shield [OPTIONS] --asset <ASSET_ID> --from <ACCOUNT_ID> --amount <AMOUNT> --note-commitment <HEX32>`
-
-###### **Options:**
-
-* `--asset <ASSET_ID>` — Canonical unprefixed Base58 `AssetDefinitionId`
-* `--from <ACCOUNT_ID>` — Account identifier to debit (canonical I105 account literal)
-* `--amount <AMOUNT>` — Public amount to debit
-* `--note-commitment <HEX32>` — Output note commitment (hex, 64 chars)
-* `--enc-payload <PATH>` — Encrypted recipient payload envelope (Norito bytes). Optional; empty if not provided
-* `--ephemeral-pubkey <HEX32>` — Ephemeral public key for encrypted payload (hex, 64 chars)
-* `--nonce-hex <HEX24>` — XChaCha20-Poly1305 nonce for encrypted payload (hex, 48 chars)
-* `--ciphertext-b64 <BASE64>` — Ciphertext payload (base64). Includes Poly1305 authentication tag
-
-
-
-## `iroha app zk unshield`
-
-Unshield funds from shielded ledger to public (demo flow)
-
-**Usage:** `iroha app zk unshield [OPTIONS] --asset <ASSET_ID> --to <ACCOUNT_ID> --amount <AMOUNT> --inputs <HEX32[,HEX32,...]> --proof-json <PATH>`
-
-###### **Options:**
-
-* `--asset <ASSET_ID>` — Canonical unprefixed Base58 `AssetDefinitionId`
-* `--to <ACCOUNT_ID>` — Recipient account identifier to credit (canonical I105 account literal)
-* `--amount <AMOUNT>` — Public amount to credit
-* `--inputs <HEX32[,HEX32,...]>` — Spent nullifiers (comma-separated list of 64-hex strings)
-* `--proof-json <PATH>` — Proof attachment JSON file describing { backend, `proof_b64`, `vk_ref{backend,name}`, optional `vk_commitment_hex` }
-* `--root-hint <HEX32>` — Optional Merkle root hint (hex, 64 chars)
+* `--vk-shield <BACKEND:NAME>` — Canonical Kagemusha top-up shield verifying key id (format: `<backend>:<name>`)
 
 
 
 ## `iroha app zk vk`
 
-Verifying-key registry lifecycle (register/update/deprecate/get)
+Verifying-key registry lifecycle (register/update/get)
 
 **Usage:** `iroha app zk vk <COMMAND>`
 
 ###### **Subcommands:**
 
-* `register` — Register a verifying key record (signed transaction via Torii app API)
+* `register` — Register a verifying key record with the configured account and key
 * `update` — Update an existing verifying key record (version must increase)
 * `get` — Get a verifying key record by backend and name
 
@@ -4801,13 +4804,13 @@ Verifying-key registry lifecycle (register/update/deprecate/get)
 
 ## `iroha app zk vk register`
 
-Register a verifying key record (signed transaction via Torii app API)
+Register a verifying key record with the configured account and key
 
 **Usage:** `iroha app zk vk register --json <PATH>`
 
 ###### **Options:**
 
-* `--json <PATH>` — Path to a JSON DTO file for register (authority, `private_key`, backend, name, version, optional `vk_bytes` (base64) or `commitment_hex`). Optional `namespace` defaults to `core` and must be non-empty without leading or trailing whitespace
+* `--json <PATH>` — Path to a JSON DTO file for register (backend, name, version, optional `vk_bytes` (base64) or `commitment_hex`). The configured client account and key sign the transaction. Optional `namespace` defaults to `core` and must be non-empty without leading or trailing whitespace
 
 
 
@@ -4819,7 +4822,7 @@ Update an existing verifying key record (version must increase)
 
 ###### **Options:**
 
-* `--json <PATH>` — Path to a JSON DTO file for update (authority, `private_key`, backend, name, version, optional `vk_bytes` or `commitment_hex`). Optional `namespace` defaults to `core` and must be non-empty without leading or trailing whitespace
+* `--json <PATH>` — Path to a JSON DTO file for update (backend, name, version, optional `vk_bytes` or `commitment_hex`). The configured client account and key sign the transaction. Optional `namespace` defaults to `core` and must be non-empty without leading or trailing whitespace
 
 
 
@@ -4921,128 +4924,6 @@ Submit a pruning transaction to enforce proof retention immediately
 ###### **Options:**
 
 * `--backend <BACKEND>` — Restrict pruning to a single backend (e.g., `halo2/ipa`). Omit to prune all backends
-
-
-
-## `iroha app zk prover`
-
-Inspect background prover reports (list/get/delete)
-
-**Usage:** `iroha app zk prover <COMMAND>`
-
-###### **Subcommands:**
-
-* `reports` — Manage prover reports
-
-
-
-## `iroha app zk prover reports`
-
-Manage prover reports
-
-**Usage:** `iroha app zk prover reports <COMMAND>`
-
-###### **Subcommands:**
-
-* `list` — List available prover reports (JSON array)
-* `get` — Get a single prover report by id (JSON)
-* `delete` — Delete a prover report by id
-* `cleanup` — Cleanup reports in bulk (apply filters, delete matches)
-* `count` — Count reports matching filters (server-side)
-
-
-
-## `iroha app zk prover reports list`
-
-List available prover reports (JSON array)
-
-**Usage:** `iroha app zk prover reports list [OPTIONS]`
-
-###### **Options:**
-
-* `--summary` — Print a one-line summary per report (id, ok, `content_type`, `zk1_tags`)
-* `--ok-only` — Show only successful reports
-* `--failed-only` — Show only failed reports
-* `--errors-only` — Alias for failed-only (errors have ok=false)
-* `--id <ID>` — Filter by exact id (hex)
-* `--content-type <MIME>` — Filter by content-type substring (e.g., application/x-norito)
-* `--has-tag <TAG>` — Filter reports that contain a ZK1 tag (e.g., PROF, IPAK)
-* `--ids-only` — Return only ids (server-side projection)
-* `--messages-only` — Return only `{ id, error }` objects for failed reports (server-side projection)
-* `--fields <CSV>` — Project returned fields (client-side) from full objects, comma-separated (e.g., "`id,ok,content_type,processed_ms`"). Ignored with --summary/--ids-only/--messages-only
-* `--limit <N>` — Limit number of reports returned (server-side). Max 1000
-* `--since-ms <MS>` — Only reports with `processed_ms` >= this value (server-side)
-* `--before-ms <MS>` — Only reports with `processed_ms` <= this value (server-side)
-* `--order <ORDER>` — Result ordering: asc (default) or desc
-
-  Default value: `asc`
-* `--offset <N>` — Offset after ordering/filtering (server-side)
-* `--latest` — Return only the latest report after filters
-
-
-
-## `iroha app zk prover reports get`
-
-Get a single prover report by id (JSON)
-
-**Usage:** `iroha app zk prover reports get --id <ID>`
-
-###### **Options:**
-
-* `--id <ID>` — Report id (attachment id)
-
-
-
-## `iroha app zk prover reports delete`
-
-Delete a prover report by id
-
-**Usage:** `iroha app zk prover reports delete --id <ID>`
-
-###### **Options:**
-
-* `--id <ID>` — Report id (attachment id)
-
-
-
-## `iroha app zk prover reports cleanup`
-
-Cleanup reports in bulk (apply filters, delete matches)
-
-**Usage:** `iroha app zk prover reports cleanup [OPTIONS]`
-
-###### **Options:**
-
-* `--yes` — Proceed without confirmation (dangerous)
-* `--ok-only` — Show only successful reports
-* `--failed-only` — Show only failed reports
-* `--errors-only` — Alias for failed-only (errors have ok=false)
-* `--id <ID>` — Filter by exact id (hex)
-* `--content-type <MIME>` — Filter by content-type substring (e.g., application/x-norito)
-* `--has-tag <TAG>` — Filter reports that contain a ZK1 tag (e.g., PROF, IPAK)
-* `--limit <N>` — Limit number of reports returned (server-side). Max 1000
-* `--since-ms <MS>` — Only reports with `processed_ms` >= this value (server-side)
-* `--before-ms <MS>` — Only reports with `processed_ms` <= this value (server-side)
-* `--server` — Use server-side bulk deletion instead of client-side delete loop
-
-
-
-## `iroha app zk prover reports count`
-
-Count reports matching filters (server-side)
-
-**Usage:** `iroha app zk prover reports count [OPTIONS]`
-
-###### **Options:**
-
-* `--ok-only` — Show only successful reports
-* `--failed-only` — Show only failed reports
-* `--errors-only` — Alias for failed-only (errors have ok=false)
-* `--id <ID>` — Filter by exact id (hex)
-* `--content-type <MIME>` — Filter by content-type substring (e.g., application/x-norito)
-* `--has-tag <TAG>` — Filter reports that contain a ZK1 tag (e.g., PROF, IPAK)
-* `--since-ms <MS>` — Only reports with `processed_ms` >= this value (server-side)
-* `--before-ms <MS>` — Only reports with `processed_ms` <= this value (server-side)
 
 
 
@@ -5161,13 +5042,11 @@ Get election tally (JSON)
 
 Encode a confidential encrypted payload (memo) into Norito bytes/base64
 
-**Usage:** `iroha app zk envelope [OPTIONS] --ephemeral-pubkey <HEX32> --nonce-hex <HEX24> --ciphertext-b64 <BASE64>`
+**Usage:** `iroha app zk envelope [OPTIONS] --envelope-json <PATH>`
 
 ###### **Options:**
 
-* `--ephemeral-pubkey <HEX32>` — Ephemeral public key (hex, 64 chars)
-* `--nonce-hex <HEX24>` — XChaCha20-Poly1305 nonce (hex, 48 chars)
-* `--ciphertext-b64 <BASE64>` — Ciphertext payload (base64) including Poly1305 tag
+* `--envelope-json <PATH>` — Path to one typed `ConfidentialMemoEnvelopeV1` JSON object
 * `--output <PATH>` — Optional output path for Norito bytes
 * `--print-base64` — Print base64 of the encoded envelope (default when no output file is provided)
 
@@ -5190,7 +5069,7 @@ Confidential asset tooling helpers
 ###### **Subcommands:**
 
 * `create-keys` — Derive confidential key hierarchy (nk/ivk/ovk/fvk) from a spend key
-* `gas` — Inspect or update the confidential gas schedule
+* `gas` — Inspect the confidential gas schedule
 
 
 
@@ -5210,14 +5089,13 @@ Derive confidential key hierarchy (nk/ivk/ovk/fvk) from a spend key
 
 ## `iroha app confidential gas`
 
-Inspect or update the confidential gas schedule
+Inspect the confidential gas schedule
 
 **Usage:** `iroha app confidential gas <COMMAND>`
 
 ###### **Subcommands:**
 
 * `get` — Fetch the current confidential gas schedule
-* `set` — Update the confidential gas schedule
 
 
 
@@ -5226,22 +5104,6 @@ Inspect or update the confidential gas schedule
 Fetch the current confidential gas schedule
 
 **Usage:** `iroha app confidential gas get`
-
-
-
-## `iroha app confidential gas set`
-
-Update the confidential gas schedule
-
-**Usage:** `iroha app confidential gas set --proof-base <UNITS> --per-public-input <UNITS> --per-proof-byte <UNITS> --per-nullifier <UNITS> --per-commitment <UNITS>`
-
-###### **Options:**
-
-* `--proof-base <UNITS>`
-* `--per-public-input <UNITS>`
-* `--per-proof-byte <UNITS>`
-* `--per-nullifier <UNITS>`
-* `--per-commitment <UNITS>`
 
 
 
@@ -5657,7 +5519,7 @@ Fetch blobs via the multi-source orchestrator (thin wrapper over `sorafs fetch`)
 * `--transport-policy-override <POLICY>` — Force the orchestrator to stay on a specific transport stage (`soranet-first`, `soranet-strict`, or `direct-only`)
 * `--anonymity-policy-override <POLICY>` — Force the orchestrator to stay on an exact V1 anonymity policy
 * `--guard-cache <PATH>` — Path to the persisted guard cache (Norito-encoded guard set)
-* `--guard-cache-key <HEX>` — Optional 32-byte hex key used to tag guard caches when persisting to disk
+* `--guard-cache-key-file <PATH>` — Owner-private file containing the exact 32 raw bytes used to authenticate the guard cache
 * `--guard-directory <PATH>` — Path to a Norito guard directory snapshot used to refresh guard selections
 * `--guard-directory-digest <HEX>` — Trusted domain-separated BLAKE3 digest of the exact guard directory bytes
 * `--guard-target <COUNT>` — Target number of entry guards to pin (defaults to 3 when the guard directory is provided)
@@ -5761,9 +5623,7 @@ List DA commitments with optional filters
 * `--epoch <U64>` — Optional epoch filter (requires lane-id + sequence for direct lookup)
 * `--sequence <U64>` — Optional sequence filter (requires lane-id + epoch for direct lookup)
 * `--limit <U64>` — Optional list limit (`>0`)
-* `--offset <U64>` — Optional list offset
-
-  Default value: `0`
+* `--cursor-json <PATH>` — Path to a JSON cursor returned by a preceding list page
 
 
 
@@ -5780,9 +5640,7 @@ Build a DA commitment proof with optional filters
 * `--epoch <U64>` — Optional epoch filter (requires lane-id + sequence for direct lookup)
 * `--sequence <U64>` — Optional sequence filter (requires lane-id + epoch for direct lookup)
 * `--limit <U64>` — Optional list limit (`>0`)
-* `--offset <U64>` — Optional list offset
-
-  Default value: `0`
+* `--cursor-json <PATH>` — Path to a JSON cursor returned by a preceding list page
 
 
 
@@ -5813,9 +5671,7 @@ List DA pin intents with optional filters
 * `--epoch <U64>` — Optional epoch filter (requires lane-id + sequence for direct lookup)
 * `--sequence <U64>` — Optional sequence filter (requires lane-id + epoch for direct lookup)
 * `--limit <U64>` — Optional list limit (`>0`)
-* `--offset <U64>` — Optional list offset
-
-  Default value: `0`
+* `--cursor-json <PATH>` — Path to a JSON cursor returned by a preceding list page
 
 
 
@@ -5834,9 +5690,7 @@ Build a DA pin intent proof with optional filters
 * `--epoch <U64>` — Optional epoch filter (requires lane-id + sequence for direct lookup)
 * `--sequence <U64>` — Optional sequence filter (requires lane-id + epoch for direct lookup)
 * `--limit <U64>` — Optional list limit (`>0`)
-* `--offset <U64>` — Optional list offset
-
-  Default value: `0`
+* `--cursor-json <PATH>` — Path to a JSON cursor returned by a preceding list page
 
 
 
@@ -5848,7 +5702,7 @@ Verify a DA pin intent proof from a JSON file
 
 ###### **Options:**
 
-* `--proof-json <PATH>` — Path to a JSON-encoded `DaPinIntentWithLocation`
+* `--proof-json <PATH>` — Path to a JSON-encoded `DaPinIntentProof`
 
 
 
@@ -5932,6 +5786,7 @@ Nexus helpers (lanes, governance)
 
 * `lane-report` — Show governance manifest status per lane
 * `public-lane` — Inspect public-lane validator lifecycle and stake state
+* `private-settlement` — Coordinate and inspect atomic private cross-dataspace settlement
 
 
 
@@ -6000,6 +5855,199 @@ List bonded stake and pending unbonds for a public lane
 * `--summary` — Render a compact table instead of raw JSON
 
   Default value: `false`
+
+
+
+## `iroha app nexus private-settlement`
+
+Coordinate and inspect atomic private cross-dataspace settlement
+
+**Usage:** `iroha app nexus private-settlement <COMMAND>`
+
+###### **Subcommands:**
+
+* `availability-share` — Persist provisional material on one validator and request its availability share
+* `prepare-vote` — Ask one validator to verify, durably stage, and vote Prepare
+* `commit-vote` — Ask one validator to verify the complete Prepare barrier and vote Commit
+* `phase-certificate` — Persist one exact Prepare or Commit certificate on a validator
+* `phase-certificates` — Recover locally durable Prepare and Commit certificates as the sponsor
+* `leg-upload` — Upload one certified encrypted leg
+* `leg-status` — Read one authenticated redacted leg status
+* `committee-proof` — Fetch the restricted proof view as an exact committee identity
+* `audit-capsule` — Fetch the encrypted capsule as an exact governed auditor identity
+* `audit-approval` — Submit one purpose-separated auditor approval
+* `bundle-submit` — Submit the exact sponsor-signed global finalization carrier
+* `bundle-status` — Read the public bundle lifecycle
+* `bundle-receipt` — Read the public terminal receipt or pending marker
+
+
+
+## `iroha app nexus private-settlement availability-share`
+
+Persist provisional material on one validator and request its availability share
+
+**Usage:** `iroha app nexus private-settlement availability-share --endpoint <ENDPOINT> --material <PATH>`
+
+###### **Options:**
+
+* `--endpoint <ENDPOINT>` — Exact participant Torii root URL
+* `--material <PATH>` — Bounded Norito JSON `PrivateSettlementProvisionalLegMaterialV1` file
+
+
+
+## `iroha app nexus private-settlement prepare-vote`
+
+Ask one validator to verify, durably stage, and vote Prepare
+
+**Usage:** `iroha app nexus private-settlement prepare-vote --endpoint <ENDPOINT> --manifest <PATH> --payload-digest <PAYLOAD_DIGEST> --authority <PATH>`
+
+###### **Options:**
+
+* `--endpoint <ENDPOINT>` — Exact participant Torii root URL
+* `--manifest <PATH>` — Bounded Norito JSON `AtomicPrivateSettlementV1` file
+* `--payload-digest <PAYLOAD_DIGEST>` — Exact leg payload digest
+* `--authority <PATH>` — Bounded Norito JSON four-validator authority file
+
+
+
+## `iroha app nexus private-settlement commit-vote`
+
+Ask one validator to verify the complete Prepare barrier and vote Commit
+
+**Usage:** `iroha app nexus private-settlement commit-vote --endpoint <ENDPOINT> --payload-digest <PAYLOAD_DIGEST> --barrier <PATH> --authority <PATH>`
+
+###### **Options:**
+
+* `--endpoint <ENDPOINT>` — Exact participant Torii root URL
+* `--payload-digest <PAYLOAD_DIGEST>` — Exact leg payload digest
+* `--barrier <PATH>` — Bounded Norito JSON complete Prepare barrier file
+* `--authority <PATH>` — Bounded Norito JSON four-validator authority file
+
+
+
+## `iroha app nexus private-settlement phase-certificate`
+
+Persist one exact Prepare or Commit certificate on a validator
+
+**Usage:** `iroha app nexus private-settlement phase-certificate --endpoint <ENDPOINT> --manifest <PATH> --payload-digest <PAYLOAD_DIGEST> --certificate <PATH>`
+
+###### **Options:**
+
+* `--endpoint <ENDPOINT>` — Exact participant Torii root URL
+* `--manifest <PATH>` — Bounded Norito JSON `AtomicPrivateSettlementV1` file
+* `--payload-digest <PAYLOAD_DIGEST>` — Exact leg payload digest
+* `--certificate <PATH>` — Bounded Norito JSON Prepare or Commit certificate file
+
+
+
+## `iroha app nexus private-settlement phase-certificates`
+
+Recover locally durable Prepare and Commit certificates as the sponsor
+
+**Usage:** `iroha app nexus private-settlement phase-certificates [OPTIONS] --payload-digest <PAYLOAD_DIGEST>`
+
+###### **Options:**
+
+* `--endpoint <ENDPOINT>` — Optional participant Torii root; defaults to the configured Torii URL
+* `--payload-digest <PAYLOAD_DIGEST>` — Exact leg payload digest
+
+
+
+## `iroha app nexus private-settlement leg-upload`
+
+Upload one certified encrypted leg
+
+**Usage:** `iroha app nexus private-settlement leg-upload [OPTIONS] --request <PATH>`
+
+###### **Options:**
+
+* `--endpoint <ENDPOINT>` — Optional participant Torii root; defaults to the configured Torii URL
+* `--request <PATH>` — Bounded Norito JSON `PrivateSettlementLegUploadRequestV1` file
+
+
+
+## `iroha app nexus private-settlement leg-status`
+
+Read one authenticated redacted leg status
+
+**Usage:** `iroha app nexus private-settlement leg-status --payload-digest <PAYLOAD_DIGEST>`
+
+###### **Options:**
+
+* `--payload-digest <PAYLOAD_DIGEST>` — Exact leg payload digest
+
+
+
+## `iroha app nexus private-settlement committee-proof`
+
+Fetch the restricted proof view as an exact committee identity
+
+**Usage:** `iroha app nexus private-settlement committee-proof --payload-digest <PAYLOAD_DIGEST>`
+
+###### **Options:**
+
+* `--payload-digest <PAYLOAD_DIGEST>` — Exact leg payload digest
+
+
+
+## `iroha app nexus private-settlement audit-capsule`
+
+Fetch the encrypted capsule as an exact governed auditor identity
+
+**Usage:** `iroha app nexus private-settlement audit-capsule --payload-digest <PAYLOAD_DIGEST>`
+
+###### **Options:**
+
+* `--payload-digest <PAYLOAD_DIGEST>` — Exact leg payload digest
+
+
+
+## `iroha app nexus private-settlement audit-approval`
+
+Submit one purpose-separated auditor approval
+
+**Usage:** `iroha app nexus private-settlement audit-approval --payload-digest <PAYLOAD_DIGEST> --request <PATH>`
+
+###### **Options:**
+
+* `--payload-digest <PAYLOAD_DIGEST>` — Exact leg payload digest
+* `--request <PATH>` — Bounded Norito JSON `PrivateSettlementAuditApprovalRequestV1` file
+
+
+
+## `iroha app nexus private-settlement bundle-submit`
+
+Submit the exact sponsor-signed global finalization carrier
+
+**Usage:** `iroha app nexus private-settlement bundle-submit --request <PATH>`
+
+###### **Options:**
+
+* `--request <PATH>` — Bounded Norito JSON request file
+
+
+
+## `iroha app nexus private-settlement bundle-status`
+
+Read the public bundle lifecycle
+
+**Usage:** `iroha app nexus private-settlement bundle-status --bundle-id <BUNDLE_ID>`
+
+###### **Options:**
+
+* `--bundle-id <BUNDLE_ID>` — Exact public bundle identifier
+
+
+
+## `iroha app nexus private-settlement bundle-receipt`
+
+Read the public terminal receipt or pending marker
+
+**Usage:** `iroha app nexus private-settlement bundle-receipt --bundle-id <BUNDLE_ID>`
+
+###### **Options:**
+
+* `--bundle-id <BUNDLE_ID>` — Exact public bundle identifier
 
 
 
@@ -6106,12 +6154,11 @@ Manage subscription plans (asset definition metadata)
 
 Register a subscription plan on an asset definition
 
-**Usage:** `iroha app subscriptions plan create [OPTIONS] --authority <ACCOUNT_ID> --private-key <HEX> --plan-id <ASSET_DEF_ID>`
+**Usage:** `iroha app subscriptions plan create [OPTIONS] --authority <ACCOUNT_ID> --plan-id <ASSET_DEF_ID>`
 
 ###### **Options:**
 
 * `--authority <ACCOUNT_ID>` — Authority account identifier (canonical I105 account literal)
-* `--private-key <HEX>` — Hex-encoded private key for signing
 * `--plan-id <ASSET_DEF_ID>` — Asset definition id where the plan metadata is stored
 * `--plan-json <PATH>` — Path to JSON plan payload (reads stdin when omitted)
 
@@ -6157,12 +6204,11 @@ Manage subscriptions and billing actions
 
 Create a subscription and billing trigger
 
-**Usage:** `iroha app subscriptions subscription create [OPTIONS] --authority <ACCOUNT_ID> --private-key <HEX> --subscription-id <NFT_ID> --plan-id <ASSET_DEF_ID>`
+**Usage:** `iroha app subscriptions subscription create [OPTIONS] --authority <ACCOUNT_ID> --subscription-id <NFT_ID> --plan-id <ASSET_DEF_ID>`
 
 ###### **Options:**
 
 * `--authority <ACCOUNT_ID>` — Authority account identifier (canonical I105 account literal)
-* `--private-key <HEX>` — Hex-encoded private key for signing
 * `--subscription-id <NFT_ID>` — Subscription NFT id to register
 * `--plan-id <ASSET_DEF_ID>` — Subscription plan asset definition id
 * `--billing-trigger-id <BILLING_TRIGGER_ID>` — Optional billing trigger id to use
@@ -6209,13 +6255,12 @@ Fetch a subscription by id
 
 Pause billing for a subscription
 
-**Usage:** `iroha app subscriptions subscription pause [OPTIONS] --subscription-id <NFT_ID> --authority <ACCOUNT_ID> --private-key <HEX>`
+**Usage:** `iroha app subscriptions subscription pause [OPTIONS] --subscription-id <NFT_ID> --authority <ACCOUNT_ID>`
 
 ###### **Options:**
 
 * `--subscription-id <NFT_ID>` — Subscription NFT id
 * `--authority <ACCOUNT_ID>` — Authority account identifier (canonical I105 account literal)
-* `--private-key <HEX>` — Hex-encoded private key for signing
 * `--charge-at-ms <CHARGE_AT_MS>` — Optional charge time override in UTC milliseconds
 * `--cancel-at-period-end` — Cancel at the end of the current billing period (cancel only)
 
@@ -6225,13 +6270,12 @@ Pause billing for a subscription
 
 Resume billing for a subscription
 
-**Usage:** `iroha app subscriptions subscription resume [OPTIONS] --subscription-id <NFT_ID> --authority <ACCOUNT_ID> --private-key <HEX>`
+**Usage:** `iroha app subscriptions subscription resume [OPTIONS] --subscription-id <NFT_ID> --authority <ACCOUNT_ID>`
 
 ###### **Options:**
 
 * `--subscription-id <NFT_ID>` — Subscription NFT id
 * `--authority <ACCOUNT_ID>` — Authority account identifier (canonical I105 account literal)
-* `--private-key <HEX>` — Hex-encoded private key for signing
 * `--charge-at-ms <CHARGE_AT_MS>` — Optional charge time override in UTC milliseconds
 * `--cancel-at-period-end` — Cancel at the end of the current billing period (cancel only)
 
@@ -6241,13 +6285,12 @@ Resume billing for a subscription
 
 Cancel a subscription and remove its billing trigger
 
-**Usage:** `iroha app subscriptions subscription cancel [OPTIONS] --subscription-id <NFT_ID> --authority <ACCOUNT_ID> --private-key <HEX>`
+**Usage:** `iroha app subscriptions subscription cancel [OPTIONS] --subscription-id <NFT_ID> --authority <ACCOUNT_ID>`
 
 ###### **Options:**
 
 * `--subscription-id <NFT_ID>` — Subscription NFT id
 * `--authority <ACCOUNT_ID>` — Authority account identifier (canonical I105 account literal)
-* `--private-key <HEX>` — Hex-encoded private key for signing
 * `--charge-at-ms <CHARGE_AT_MS>` — Optional charge time override in UTC milliseconds
 * `--cancel-at-period-end` — Cancel at the end of the current billing period (cancel only)
 
@@ -6257,13 +6300,12 @@ Cancel a subscription and remove its billing trigger
 
 Undo a scheduled period-end cancellation
 
-**Usage:** `iroha app subscriptions subscription keep [OPTIONS] --subscription-id <NFT_ID> --authority <ACCOUNT_ID> --private-key <HEX>`
+**Usage:** `iroha app subscriptions subscription keep [OPTIONS] --subscription-id <NFT_ID> --authority <ACCOUNT_ID>`
 
 ###### **Options:**
 
 * `--subscription-id <NFT_ID>` — Subscription NFT id
 * `--authority <ACCOUNT_ID>` — Authority account identifier (canonical I105 account literal)
-* `--private-key <HEX>` — Hex-encoded private key for signing
 * `--charge-at-ms <CHARGE_AT_MS>` — Optional charge time override in UTC milliseconds
 * `--cancel-at-period-end` — Cancel at the end of the current billing period (cancel only)
 
@@ -6273,13 +6315,12 @@ Undo a scheduled period-end cancellation
 
 Execute billing immediately
 
-**Usage:** `iroha app subscriptions subscription charge-now [OPTIONS] --subscription-id <NFT_ID> --authority <ACCOUNT_ID> --private-key <HEX>`
+**Usage:** `iroha app subscriptions subscription charge-now [OPTIONS] --subscription-id <NFT_ID> --authority <ACCOUNT_ID>`
 
 ###### **Options:**
 
 * `--subscription-id <NFT_ID>` — Subscription NFT id
 * `--authority <ACCOUNT_ID>` — Authority account identifier (canonical I105 account literal)
-* `--private-key <HEX>` — Hex-encoded private key for signing
 * `--charge-at-ms <CHARGE_AT_MS>` — Optional charge time override in UTC milliseconds
 * `--cancel-at-period-end` — Cancel at the end of the current billing period (cancel only)
 
@@ -6289,13 +6330,12 @@ Execute billing immediately
 
 Record usage for a subscription usage plan
 
-**Usage:** `iroha app subscriptions subscription usage [OPTIONS] --subscription-id <NFT_ID> --authority <ACCOUNT_ID> --private-key <HEX> --unit-key <UNIT_KEY> --delta <DELTA>`
+**Usage:** `iroha app subscriptions subscription usage [OPTIONS] --subscription-id <NFT_ID> --authority <ACCOUNT_ID> --unit-key <UNIT_KEY> --delta <DELTA>`
 
 ###### **Options:**
 
 * `--subscription-id <NFT_ID>` — Subscription NFT id
 * `--authority <ACCOUNT_ID>` — Authority account identifier (canonical I105 account literal)
-* `--private-key <HEX>` — Hex-encoded private key for signing
 * `--unit-key <UNIT_KEY>` — Usage counter key to update
 * `--delta <DELTA>` — Non-negative usage increment
 * `--usage-trigger-id <USAGE_TRIGGER_ID>` — Optional usage trigger id override
@@ -6706,7 +6746,7 @@ Scaffold manifest/profile templates for a UAID + dataspace pair
 
 ###### **Options:**
 
-* `--uaid <UAID>` — Universal account identifier (`uaid:<hex>` or raw 64-hex digest, LSB=1)
+* `--uaid <UAID>` — Exact canonical universal account identifier (`uaid:<64-lowercase-hex>`, LSB=1)
 * `--dataspace <ID>` — Dataspace identifier the manifest targets
 * `--activation-epoch <EPOCH>` — Activation epoch recorded in the manifest
 * `--expiry-epoch <EPOCH>` — Optional expiry epoch recorded in the manifest
@@ -6783,6 +6823,7 @@ Kaigi session helpers
 * `create` — Create a new Kaigi session
 * `quickstart` — Bootstrap a Kaigi session for demos and shareable testing metadata
 * `register-relay` — Register or update a Kaigi relay descriptor
+* `unregister-relay` — Retire a Kaigi relay descriptor and its retained health feedback
 * `set-relay-manifest` — Replace or clear the relay manifest for an existing Kaigi session
 * `join` — Join a Kaigi session
 * `leave` — Leave a Kaigi session
@@ -6800,16 +6841,16 @@ Create a new Kaigi session
 
 ###### **Options:**
 
-* `--domain <DOMAIN-ID>` — Domain identifier hosting the call (e.g. `kaigi`)
+* `--domain <DOMAIN-ID>` — Domain identifier hosting the call (e.g. `kaigi.universal`)
 * `--call-name <NAME>` — Call name within the domain (e.g. `daily-sync`)
 * `--host <ACCOUNT-ID>` — Host account identifier responsible for the call (canonical I105 account literal)
 * `--title <TITLE>` — Optional human friendly title
 * `--description <DESCRIPTION>` — Optional description for participants
-* `--max-participants <U32>` — Maximum concurrent participants (excluding host)
+* `--max-participants <U32>` — Maximum concurrent participants excluding the host (1..=4096)
 * `--gas-rate-per-minute <U64>` — Gas rate charged per minute (defaults to 0)
 
   Default value: `0`
-* `--billing-account <ACCOUNT-ID>` — Optional billing account that will cover usage (canonical I105 account literal)
+* `--billing-account <ACCOUNT-ID>` — Optional host billing account that will cover usage (canonical I105 account literal). Third-party delegated billing is not supported in the first release
 * `--scheduled-start-ms <U64>` — Optional scheduled start timestamp (milliseconds since epoch)
 * `--privacy-mode <PRIVACY_MODE>` — Privacy mode for the session (defaults to `transparent`)
 
@@ -6826,9 +6867,9 @@ Create a new Kaigi session
 * `--relay-manifest <PATH>` — Path to a JSON file describing the relay manifest (optional)
 * `--metadata-json <PATH>` — Path to a JSON file providing additional metadata (object with string keys)
 * `--commitment-hex <HEX>` — Commitment hash (hex) for privacy mode creation
-* `--commitment-alias <COMMITMENT_ALIAS>` — Alias tag describing the host commitment (privacy mode)
+* `--commitment-alias <COMMITMENT_ALIAS>` — Reserved on-chain alias tag; must be omitted to avoid ledger disclosure
 * `--nullifier-hex <HEX>` — Nullifier hash (hex) preventing proof replay (privacy mode)
-* `--nullifier-issued-at-ms <U64>` — Nullifier issuance timestamp (milliseconds since epoch)
+* `--nullifier-issued-at-ms <U64>` — Reserved on-chain timing field; must be omitted or zero
 * `--roster-root-hex <HEX>` — Roster Merkle root bound into the proof transcript (privacy mode)
 * `--proof-hex <HEX>` — Proof bytes attesting ownership (hex encoding of raw bytes)
 
@@ -6844,7 +6885,7 @@ Bootstrap a Kaigi session for demos and shareable testing metadata
 
 * `--domain <DOMAIN-ID>` — Domain identifier hosting the call
 
-  Default value: `wonderland`
+  Default value: `wonderland.universal`
 * `--call-name <NAME>` — Call name within the domain (defaults to a timestamp-based identifier)
 * `--host <ACCOUNT-ID>` — Host account identifier responsible for the call (canonical I105 account literal)
 * `--privacy-mode <PRIVACY_MODE>` — Privacy mode for the session (defaults to `transparent`)
@@ -6861,11 +6902,7 @@ Bootstrap a Kaigi session for demos and shareable testing metadata
 
 * `--relay-manifest <PATH>` — Path to a JSON file describing the relay manifest (optional)
 * `--metadata-json <PATH>` — Path to a JSON file providing additional metadata (object with string keys)
-* `--auto-join-host` — Automatically join the host account immediately after creation
 * `--summary-out <PATH>` — File path where the JSON summary should be written (defaults to stdout only)
-* `--spool-hint <PATH>` — Root directory where `SoraNet` spool files are expected (informational only)
-
-  Default value: `storage/streaming/soranet_routes`
 
 
 
@@ -6877,9 +6914,21 @@ Register or update a Kaigi relay descriptor
 
 ###### **Options:**
 
-* `--relay <ACCOUNT-ID>` — Relay account identifier advertising relay capabilities (canonical I105 account literal)
+* `--relay <ACCOUNT-ID>` — Relay account identifier advertising relay capabilities (canonical I105 account literal). The account must have a live domain-qualified primary alias, which selects the governance domain where the descriptor is stored
 * `--hpke-public-key-b64 <BASE64>` — HPKE public key bytes advertised by the relay (base64-encoded raw bytes)
 * `--bandwidth-class <U8>` — Relative bandwidth class advertised by the relay
+
+
+
+## `iroha app kaigi unregister-relay`
+
+Retire a Kaigi relay descriptor and its retained health feedback
+
+**Usage:** `iroha app kaigi unregister-relay --relay <ACCOUNT-ID>`
+
+###### **Options:**
+
+* `--relay <ACCOUNT-ID>` — Relay account identifier whose descriptor should be retired
 
 
 
@@ -6910,9 +6959,9 @@ Join a Kaigi session
 * `--call-name <NAME>` — Call name within the domain
 * `--participant <ACCOUNT-ID>` — Participant account joining the call (canonical I105 account literal)
 * `--commitment-hex <HEX>` — Commitment hash (hex) for privacy mode joins
-* `--commitment-alias <COMMITMENT_ALIAS>` — Alias tag describing the commitment (privacy mode)
+* `--commitment-alias <COMMITMENT_ALIAS>` — Reserved on-chain alias tag; must be omitted to avoid ledger disclosure
 * `--nullifier-hex <HEX>` — Nullifier hash (hex) preventing duplicate joins (privacy mode)
-* `--nullifier-issued-at-ms <U64>` — Nullifier issuance timestamp (milliseconds since epoch)
+* `--nullifier-issued-at-ms <U64>` — Reserved on-chain timing field; must be omitted or zero
 * `--roster-root-hex <HEX>` — Roster Merkle root bound into the proof transcript (privacy mode)
 * `--proof-hex <HEX>` — Proof bytes attesting ownership (hex encoding of raw bytes)
 
@@ -6929,11 +6978,11 @@ Leave a Kaigi session
 * `--domain <DOMAIN-ID>` — Domain identifier hosting the call
 * `--call-name <NAME>` — Call name within the domain
 * `--participant <ACCOUNT-ID>` — Participant account leaving the call (canonical I105 account literal)
-* `--commitment-hex <HEX>` — Commitment hash (hex) identifying the participant in privacy mode
-* `--nullifier-hex <HEX>` — Nullifier hash (hex) preventing duplicate leaves (privacy mode)
-* `--nullifier-issued-at-ms <U64>` — Nullifier issuance timestamp (milliseconds since epoch)
-* `--roster-root-hex <HEX>` — Roster Merkle root bound into the proof transcript (privacy mode)
-* `--proof-hex <HEX>` — Proof bytes attesting ownership (hex encoding of raw bytes)
+* `--commitment-hex <HEX>` — Reserved privacy-leave commitment; must be omitted because privacy-mode leave is off-chain
+* `--nullifier-hex <HEX>` — Reserved privacy-leave nullifier; must be omitted because privacy-mode leave is off-chain
+* `--nullifier-issued-at-ms <U64>` — Reserved privacy-leave timing field; must be omitted
+* `--roster-root-hex <HEX>` — Reserved privacy-leave roster root; must be omitted
+* `--proof-hex <HEX>` — Reserved privacy-leave proof; must be omitted
 
 
 
@@ -6947,11 +6996,11 @@ End an active Kaigi session
 
 * `--domain <DOMAIN-ID>` — Domain identifier hosting the call
 * `--call-name <NAME>` — Call name within the domain
-* `--ended-at-ms <U64>` — Optional timestamp in milliseconds when the call ended
+* `--ended-at-ms <U64>` — Optional end timestamp between call creation and the current block time
 * `--commitment-hex <HEX>` — Commitment hash (hex) for privacy mode end requests
-* `--commitment-alias <COMMITMENT_ALIAS>` — Alias tag describing the host commitment (privacy mode)
+* `--commitment-alias <COMMITMENT_ALIAS>` — Reserved on-chain alias tag; must be omitted to avoid ledger disclosure
 * `--nullifier-hex <HEX>` — Nullifier hash (hex) preventing proof replay (privacy mode)
-* `--nullifier-issued-at-ms <U64>` — Nullifier issuance timestamp (milliseconds since epoch)
+* `--nullifier-issued-at-ms <U64>` — Reserved on-chain timing field; must be omitted or zero
 * `--roster-root-hex <HEX>` — Roster Merkle root bound into the proof transcript (privacy mode)
 * `--proof-hex <HEX>` — Proof bytes attesting ownership (hex encoding of raw bytes)
 
@@ -6991,7 +7040,7 @@ Report the health status of a relay used by a Kaigi session
 
   Possible values: `healthy`, `degraded`, `unavailable`
 
-* `--reported-at-ms <U64>` — Timestamp in milliseconds when the status was observed
+* `--reported-at-ms <U64>` — Observation timestamp in milliseconds, no later than the current block time
 * `--notes <NOTES>` — Optional notes capturing failure or recovery context
 
 
@@ -7048,9 +7097,21 @@ List manifests registered in the pin registry
 
 ###### **Options:**
 
-* `--status <STATUS>` — Optional status filter (pending, approved, retired)
-* `--limit <LIMIT>` — Maximum number of manifests to return
-* `--offset <OFFSET>` — Offset for pagination
+* `--status <STATUS>` — Optional closed lifecycle filter
+
+  Possible values:
+  - `pending`:
+    Manifests awaiting governance approval
+  - `approved`:
+    Approved manifests charged for replication
+  - `retired`:
+    Retired manifests retained as lifecycle evidence
+
+* `--limit <LIMIT>` — Maximum number of bounded summaries to return (1 through 256)
+* `--max-bytes <MAX_BYTES>` — Maximum canonical encoded page bytes (1024 through 262144)
+* `--after-digest-hex <HEX>` — Exact non-zero lowercase 32-byte exclusive manifest-digest cursor
+* `--expected-finalized-height <EXPECTED_FINALIZED_HEIGHT>` — Non-zero finalized block height anchoring this page
+* `--expected-finalized-block-hash-hex <HEX>` — Canonical lowercase finalized block hash anchoring this page
 
 
 
@@ -7062,7 +7123,7 @@ Fetch a single manifest, aliases, and replication orders
 
 ###### **Options:**
 
-* `--digest <HEX>` — Hex-encoded manifest digest
+* `--digest <HEX>` — Exact non-zero lowercase 32-byte manifest digest
 
 
 
@@ -7070,12 +7131,11 @@ Fetch a single manifest, aliases, and replication orders
 
 Register a manifest in the pin registry via Torii
 
-**Usage:** `iroha app sorafs pin register [OPTIONS] --manifest <PATH> --submitted-epoch <SUBMITTED_EPOCH>`
+**Usage:** `iroha app sorafs pin register [OPTIONS] --manifest <PATH>`
 
 ###### **Options:**
 
 * `--manifest <PATH>` — Path to the Norito-encoded manifest (`.to`) file
-* `--submitted-epoch <SUBMITTED_EPOCH>` — Epoch recorded when submitting the manifest
 * `--alias-namespace <ALIAS_NAMESPACE>` — Optional alias namespace to bind alongside the manifest
 * `--alias-name <ALIAS_NAME>` — Optional alias name to bind alongside the manifest
 * `--alias-proof <PATH>` — Optional path to the alias proof payload (binary)
@@ -7105,8 +7165,8 @@ List alias bindings exposed via Torii
 
 * `--limit <LIMIT>` — Maximum number of aliases to return
 * `--offset <OFFSET>` — Offset for pagination
-* `--namespace <NAMESPACE>` — Restrict aliases to a namespace (case-insensitive)
-* `--manifest-digest <HEX>` — Restrict aliases bound to a manifest digest (hex-encoded)
+* `--namespace <NAMESPACE>` — Restrict aliases to an exact canonical lowercase namespace
+* `--manifest-digest <HEX>` — Restrict aliases to an exact non-zero lowercase 32-byte manifest digest
 
 
 
@@ -7132,8 +7192,19 @@ List replication orders
 
 * `--limit <LIMIT>` — Maximum number of orders to return
 * `--offset <OFFSET>` — Offset for pagination
-* `--status <STATUS>` — Optional status filter (pending, completed, expired)
-* `--manifest-digest <HEX>` — Restrict to orders for a manifest digest (hex-encoded)
+* `--status <STATUS>` — Optional exact lifecycle filter
+
+  Possible values:
+  - `pending`:
+    Orders still awaiting their required provider completions
+  - `completed`:
+    Orders whose required provider completions are committed
+  - `cancelled`:
+    Orders cancelled when their target pin was retired
+  - `expired`:
+    Incomplete orders expired after their inclusive deadline
+
+* `--manifest-digest <HEX>` — Restrict orders to an exact non-zero lowercase 32-byte manifest digest
 
 
 
@@ -7704,12 +7775,10 @@ Update one or more `SoraNet` handshake parameters via `/v1/config`
 * `--sig-id <SIG_ID>` — Override the negotiated signature suite identifier
 * `--resume-hash <HEX>` — Override the resume hash advertised to peers (64 hex chars)
 * `--clear-resume-hash` — Clear the configured resume hash
-* `--pow-required` — Require proof-of-work tickets for admission
 * `--pow-difficulty <POW_DIFFICULTY>` — Override the proof-of-work difficulty
 * `--pow-max-future-skew <POW_MAX_FUTURE_SKEW>` — Override the maximum clock skew accepted on `PoW` tickets (seconds)
 * `--pow-min-ttl <POW_MIN_TTL>` — Override the minimum `PoW` ticket TTL (seconds)
 * `--pow-ttl <POW_TTL>` — Override the `PoW` ticket TTL (seconds)
-* `--pow-puzzle-enable` — Enable the Argon2 puzzle gate for handshake admission
 * `--pow-puzzle-memory <POW_PUZZLE_MEMORY>` — Override the puzzle memory cost (KiB)
 * `--pow-puzzle-time <POW_PUZZLE_TIME>` — Override the puzzle time cost (iterations)
 * `--pow-puzzle-lanes <POW_PUZZLE_LANES>` — Override the puzzle parallelism (lanes)
@@ -7736,7 +7805,7 @@ Admission token helpers (issuance, fingerprinting, revocation digests)
 
 Issue an ML-DSA admission token bound to a relay and transcript hash
 
-**Usage:** `iroha app sorafs handshake token issue [OPTIONS] --relay-id <HEX> --transcript-hash <HEX>`
+**Usage:** `iroha app sorafs handshake token issue [OPTIONS] --issuer-secret-key <PATH> --relay-id <HEX> --transcript-hash <HEX> --output <PATH>`
 
 ###### **Options:**
 
@@ -7746,8 +7815,9 @@ Issue an ML-DSA admission token bound to a relay and transcript hash
 
   Possible values: `mldsa44`, `mldsa65`, `mldsa87`
 
-* `--issuer-secret-key <PATH>` — Path to the issuer ML-DSA secret key (raw bytes)
-* `--issuer-secret-hex <HEX>` — Hex-encoded issuer ML-DSA secret key
+* `--issuer-secret-key <PATH>` — Path to the issuer ML-DSA secret key (raw bytes).
+
+   The file must be owner-private, single-link, and opened without following symbolic links. Secret key bytes are never accepted directly on argv.
 * `--issuer-public-key <PATH>` — Path to the issuer ML-DSA public key (raw bytes)
 * `--issuer-public-hex <HEX>` — Hex-encoded issuer ML-DSA public key
 * `--relay-id <HEX>` — Hex-encoded 32-byte relay identifier bound into the token
@@ -7756,7 +7826,9 @@ Issue an ML-DSA admission token bound to a relay and transcript hash
 * `--expires-at <RFC3339>` — RFC3339 expiry timestamp
 * `--ttl <SECONDS>` — Token lifetime in seconds (defaults to 600s when --expires-at is omitted)
 * `--flags <FLAGS>` — Token flags (reserved; must be 0 for v1 tokens)
-* `--output <PATH>` — Optional path to write the encoded token
+* `--output <PATH>` — New path to write the encoded token as an owner-private file.
+
+   Existing paths are never overwritten, and the bearer token is not printed to standard output.
 * `--token-encoding <TOKEN_ENCODING>` — Encoding used when writing the token to --output (base64, hex, binary)
 
   Default value: `base64`
@@ -7770,13 +7842,13 @@ Issue an ML-DSA admission token bound to a relay and transcript hash
 
 Compute the canonical revocation identifier for an admission token
 
-**Usage:** `iroha app sorafs handshake token id [OPTIONS]`
+**Usage:** `iroha app sorafs handshake token id --token <PATH>`
 
 ###### **Options:**
 
-* `--token <PATH>` — Path to the admission token frame (binary)
-* `--token-hex <HEX>` — Hex-encoded admission token frame
-* `--token-base64 <BASE64>` — Base64url-encoded admission token frame
+* `--token <PATH>` — Path to the admission token frame (binary).
+
+   The bearer token must be supplied through an owner-private, single-link file and is never accepted directly on argv.
 
 
 
@@ -8221,7 +8293,6 @@ Transparency ledger readback and source-entry ingest helpers
 * `tokens` — List published proof-token issuance summaries
 * `token-issuance` — Submit proof-token issuance feed payloads and rollout canaries
 * `privacy-aggregate` — Submit privacy aggregate source events and trigger configured due publication
-* `source-entry` — Submit typed transparency source entries for later publication
 
 
 
@@ -8422,45 +8493,6 @@ Probe deployed privacy aggregate producer/scheduler routes
 
 * `--source-event <PATH>` — Privacy aggregate source-event JSON payload path to submit
 * `--publish-due <PATH>` — Privacy aggregate publish-due JSON payload path to submit
-* `--out <PATH>` — Optional path where payload-free canary evidence JSON is written
-
-
-
-## `iroha app sorafs transparency source-entry`
-
-Submit typed transparency source entries for later publication
-
-**Usage:** `iroha app sorafs transparency source-entry <COMMAND>`
-
-###### **Subcommands:**
-
-* `submit` — Submit one typed source-entry JSON payload
-* `canary` — Probe deployed source-entry producer routes
-
-
-
-## `iroha app sorafs transparency source-entry submit`
-
-Submit one typed source-entry JSON payload
-
-**Usage:** `iroha app sorafs transparency source-entry submit --source-kind <TEXT> --payload <PATH>`
-
-###### **Options:**
-
-* `--source-kind <TEXT>` — Source kind accepted by Torii, for example `legal-hold-notice`
-* `--payload <PATH>` — JSON payload path
-
-
-
-## `iroha app sorafs transparency source-entry canary`
-
-Probe deployed source-entry producer routes
-
-**Usage:** `iroha app sorafs transparency source-entry canary [OPTIONS]`
-
-###### **Options:**
-
-* `--source-entry <KIND=PATH>` — Source-entry canary probe in `source-kind=payload.json` form
 * `--out <PATH>` — Optional path where payload-free canary evidence JSON is written
 
 
@@ -9295,7 +9327,7 @@ Orchestrate multi-provider chunk fetches via gateways
 * `--transport-policy-override <POLICY>` — Force the orchestrator to stay on a specific transport stage (`soranet-first`, `soranet-strict`, or `direct-only`)
 * `--anonymity-policy-override <POLICY>` — Force the orchestrator to stay on an exact V1 anonymity policy
 * `--guard-cache <PATH>` — Path to the persisted guard cache (Norito-encoded guard set)
-* `--guard-cache-key <HEX>` — Optional 32-byte hex key used to tag guard caches when persisting to disk
+* `--guard-cache-key-file <PATH>` — Owner-private file containing the exact 32 raw bytes used to authenticate the guard cache
 * `--guard-directory <PATH>` — Path to a Norito guard directory snapshot used to refresh guard selections
 * `--guard-directory-digest <HEX>` — Trusted domain-separated BLAKE3 digest of the exact guard directory bytes
 * `--guard-target <COUNT>` — Target number of entry guards to pin (defaults to 3 when the guard directory is provided)
@@ -10003,18 +10035,11 @@ Initiate or roll a repo agreement between two counterparties
 
 Unwind an active repo agreement (reverse repo leg)
 
-**Usage:** `iroha app repo unwind --agreement-id <AGREEMENT_ID> --initiator <INITIATOR> --counterparty <COUNTERPARTY> --cash-asset <CASH_ASSET> --cash-quantity <CASH_QUANTITY> --collateral-asset <COLLATERAL_ASSET> --collateral-quantity <COLLATERAL_QUANTITY> --settlement-timestamp-ms <SETTLEMENT_TIMESTAMP_MS>`
+**Usage:** `iroha app repo unwind --agreement-id <AGREEMENT_ID>`
 
 ###### **Options:**
 
-* `--agreement-id <AGREEMENT_ID>` — Stable identifier assigned to the repo agreement lifecycle
-* `--initiator <INITIATOR>` — Initiating account performing the unwind
-* `--counterparty <COUNTERPARTY>` — Counterparty receiving the unwind settlement
-* `--cash-asset <CASH_ASSET>` — Cash asset definition identifier
-* `--cash-quantity <CASH_QUANTITY>` — Cash quantity returned at unwind (integer or decimal)
-* `--collateral-asset <COLLATERAL_ASSET>` — Collateral asset definition identifier
-* `--collateral-quantity <COLLATERAL_QUANTITY>` — Collateral quantity released at unwind (integer or decimal)
-* `--settlement-timestamp-ms <SETTLEMENT_TIMESTAMP_MS>` — Unix timestamp (milliseconds) when the unwind was agreed
+* `--agreement-id <AGREEMENT_ID>` — Stable identifier to settle at maturity as any recorded participant
 
 
 
@@ -10087,6 +10112,8 @@ Delivery-versus-payment and payment-versus-payment helpers
 * `dvp` — Create a delivery-versus-payment instruction
 * `pvp` — Create a payment-versus-payment instruction
 * `set-fx-corridor-policy` — Register or replace a governed native FX corridor policy
+* `fund-fx-corridor-escrow` — Fund a corridor's isolated reserve from its immutable owner
+* `refund-fx-corridor-escrow` — Refund an inactive corridor reserve to its immutable owner
 * `settle-fx-corridor` — Execute one policy-backed native FX corridor settlement
 * `get-fx-corridor-policy` — Read one governed native FX corridor policy
 * `list-fx-corridor-policies` — Read the complete governed native FX corridor policy registry
@@ -10186,31 +10213,57 @@ Create a payment-versus-payment instruction
 
 Register or replace a governed native FX corridor policy
 
-**Usage:** `iroha app settlement set-fx-corridor-policy [OPTIONS] --policy-id <POLICY_ID> --revision <REVISION> --source-dataspace <SOURCE_DATASPACE> --source-mode <SOURCE_MODE> --source-asset <SOURCE_ASSET> --source-sink <SOURCE_SINK> --destination-dataspace <DESTINATION_DATASPACE> --destination-reserve <DESTINATION_RESERVE> --destination-asset <DESTINATION_ASSET> --allowed-destination-alias-domain <ALLOWED_DESTINATION_ALIAS_DOMAINS> --rate-numerator <RATE_NUMERATOR> --rate-denominator <RATE_DENOMINATOR>`
+**Usage:** `iroha app settlement set-fx-corridor-policy [OPTIONS] --policy-id <POLICY_ID> --revision <REVISION> --owner <OWNER> --source-dataspace <SOURCE_DATASPACE> --source-asset <SOURCE_ASSET> --destination-dataspace <DESTINATION_DATASPACE> --destination-asset <DESTINATION_ASSET> --allowed-destination-alias-domain <ALLOWED_DESTINATION_ALIAS_DOMAINS> --oracle-feed-id <ORACLE_FEED_ID> --max-oracle-age-ms <MAX_ORACLE_AGE_MS> --max-source-amount-per-settlement <MAX_SOURCE_AMOUNT_PER_SETTLEMENT> --max-destination-amount-per-settlement <MAX_DESTINATION_AMOUNT_PER_SETTLEMENT> --velocity-window-ms <VELOCITY_WINDOW_MS> --max-settlements-per-window <MAX_SETTLEMENTS_PER_WINDOW> --max-source-amount-per-window <MAX_SOURCE_AMOUNT_PER_WINDOW> --max-destination-amount-per-window <MAX_DESTINATION_AMOUNT_PER_WINDOW>`
 
 ###### **Options:**
 
 * `--policy-id <POLICY_ID>` — Stable policy identifier
 * `--revision <REVISION>` — Monotonic policy revision (first revision is 1)
+* `--owner <OWNER>` — Immutable owner that funds reserve liquidity and receives source currency
 * `--source-dataspace <SOURCE_DATASPACE>` — Private dataspace holding the source balance
-* `--source-mode <SOURCE_MODE>` — Select the source-account resolution policy
-
-  Possible values:
-  - `fixed-account`:
-    Debit one fixed policy account; that account must authorize settlement
-  - `transaction-authority`:
-    Debit the signed transaction authority without a corridor-settle grant
-
-* `--source-account <SOURCE_ACCOUNT>` — Fixed account funding the source leg (required only in fixed-account mode)
 * `--source-asset <SOURCE_ASSET>` — Source-currency asset definition
-* `--source-sink <SOURCE_SINK>` — Fixed account receiving collected source currency
 * `--destination-dataspace <DESTINATION_DATASPACE>` — Private dataspace holding the destination reserve
-* `--destination-reserve <DESTINATION_RESERVE>` — Fixed reserve funding destination payouts
 * `--destination-asset <DESTINATION_ASSET>` — Destination-currency asset definition
 * `--allowed-destination-alias-domain <ALLOWED_DESTINATION_ALIAS_DOMAINS>` — Allowed destination account-alias domain (repeat for each FI domain)
-* `--rate-numerator <RATE_NUMERATOR>` — Destination/source rate numerator
-* `--rate-denominator <RATE_DENOMINATOR>` — Destination/source rate denominator
+* `--oracle-feed-id <ORACLE_FEED_ID>` — Governed oracle feed supplying the destination/source rate
+* `--max-oracle-age-ms <MAX_ORACLE_AGE_MS>` — Maximum accepted oracle-event age in milliseconds
+* `--max-source-amount-per-settlement <MAX_SOURCE_AMOUNT_PER_SETTLEMENT>` — Maximum source amount per settlement
+* `--max-destination-amount-per-settlement <MAX_DESTINATION_AMOUNT_PER_SETTLEMENT>` — Maximum destination amount per settlement
+* `--velocity-window-ms <VELOCITY_WINDOW_MS>` — Fixed velocity-window length in milliseconds
+* `--max-settlements-per-window <MAX_SETTLEMENTS_PER_WINDOW>` — Maximum settlements per velocity window
+* `--max-source-amount-per-window <MAX_SOURCE_AMOUNT_PER_WINDOW>` — Maximum source amount per velocity window
+* `--max-destination-amount-per-window <MAX_DESTINATION_AMOUNT_PER_WINDOW>` — Maximum destination amount per velocity window
 * `--disabled` — Register the policy disabled
+
+
+
+## `iroha app settlement fund-fx-corridor-escrow`
+
+Fund a corridor's isolated reserve from its immutable owner
+
+**Usage:** `iroha app settlement fund-fx-corridor-escrow --policy-id <POLICY_ID> --expected-policy-revision <EXPECTED_POLICY_REVISION> --destination-asset <DESTINATION_ASSET> --amount <AMOUNT>`
+
+###### **Options:**
+
+* `--policy-id <POLICY_ID>` — Stable corridor policy identifier
+* `--expected-policy-revision <EXPECTED_POLICY_REVISION>` — Exact active policy revision
+* `--destination-asset <DESTINATION_ASSET>` — Exact destination asset from the active policy
+* `--amount <AMOUNT>` — Positive reserve quantity
+
+
+
+## `iroha app settlement refund-fx-corridor-escrow`
+
+Refund an inactive corridor reserve to its immutable owner
+
+**Usage:** `iroha app settlement refund-fx-corridor-escrow --policy-id <POLICY_ID> --expected-policy-revision <EXPECTED_POLICY_REVISION> --destination-asset <DESTINATION_ASSET> --amount <AMOUNT>`
+
+###### **Options:**
+
+* `--policy-id <POLICY_ID>` — Stable corridor policy identifier
+* `--expected-policy-revision <EXPECTED_POLICY_REVISION>` — Exact active policy revision
+* `--destination-asset <DESTINATION_ASSET>` — Exact destination asset from the active policy
+* `--amount <AMOUNT>` — Positive reserve quantity
 
 
 
@@ -10218,7 +10271,7 @@ Register or replace a governed native FX corridor policy
 
 Execute one policy-backed native FX corridor settlement
 
-**Usage:** `iroha app settlement settle-fx-corridor --policy-id <POLICY_ID> --expected-policy-revision <EXPECTED_POLICY_REVISION> --source-asset <SOURCE_ASSET> --destination-asset <DESTINATION_ASSET> --settlement-id <SETTLEMENT_ID> --recipient <RECIPIENT> --source-amount <SOURCE_AMOUNT>`
+**Usage:** `iroha app settlement settle-fx-corridor --policy-id <POLICY_ID> --expected-policy-revision <EXPECTED_POLICY_REVISION> --source-asset <SOURCE_ASSET> --destination-asset <DESTINATION_ASSET> --settlement-id <SETTLEMENT_ID> --recipient <RECIPIENT> --source-amount <SOURCE_AMOUNT> --expected-destination-amount <EXPECTED_DESTINATION_AMOUNT> --oracle-feed-id <ORACLE_FEED_ID> --oracle-feed-config-version <ORACLE_FEED_CONFIG_VERSION> --oracle-slot <ORACLE_SLOT> --oracle-request-hash <ORACLE_REQUEST_HASH> --oracle-event-hash <ORACLE_EVENT_HASH>`
 
 ###### **Options:**
 
@@ -10229,6 +10282,12 @@ Execute one policy-backed native FX corridor settlement
 * `--settlement-id <SETTLEMENT_ID>` — Globally unique settlement/replay identifier
 * `--recipient <RECIPIENT>` — Destination-currency recipient account or alias
 * `--source-amount <SOURCE_AMOUNT>` — Positive source-currency quantity
+* `--expected-destination-amount <EXPECTED_DESTINATION_AMOUNT>` — Exact destination amount expected from the selected oracle event
+* `--oracle-feed-id <ORACLE_FEED_ID>` — Exact oracle feed identifier
+* `--oracle-feed-config-version <ORACLE_FEED_CONFIG_VERSION>` — Exact active oracle feed configuration version
+* `--oracle-slot <ORACLE_SLOT>` — Exact oracle slot
+* `--oracle-request-hash <ORACLE_REQUEST_HASH>` — Exact oracle request hash
+* `--oracle-event-hash <ORACLE_EVENT_HASH>` — Typed hash of the complete retained oracle event
 
 
 
@@ -10264,7 +10323,7 @@ Contract app bundles, deploys, calls, and alias tooling
 * `dev` — First-release contract developer workflow
 * `code` — Contract code helpers
 * `alias` — Contract alias helpers
-* `derive-address` — Derive a canonical contract address locally from authority, deploy nonce, and dataspace
+* `derive-address` — Derive a canonical contract address locally from exact network identity, authority, nonce, and dataspace
 * `call` — Submit a contract call through Torii (POST /v1/contracts/call)
 * `view` — Execute a read-only contract view through Torii (POST /v1/contracts/view)
 * `debug-view` — Execute a read-only contract view locally against compiled bytecode and optional fixtures
@@ -10425,7 +10484,7 @@ Generate Markdown schema docs and sample payloads from interfaces
 
 Call a named manifest contract with typed payload validation
 
-**Usage:** `iroha contract dev call [OPTIONS] --contract <CONTRACT> --entrypoint <ENTRYPOINT>`
+**Usage:** `iroha contract dev call [OPTIONS] --contract <CONTRACT> --draft-intent-file <PATH> --entrypoint <ENTRYPOINT>`
 
 ###### **Options:**
 
@@ -10439,12 +10498,13 @@ Call a named manifest contract with typed payload validation
 * `--contract <CONTRACT>` — Manifest contract name, for example `dlmm.dlmm_pool`
 * `--authority <AUTHORITY>` — Authority account identifier. Defaults to the configured client authority
 * `--private-key <HEX>` — Hex-encoded private key override used to sign and submit the call directly
-* `--scaffold-only` — Request an unsigned transaction scaffold instead of direct submission
+* `--draft-only` — Request the exact unsigned transaction payload instead of direct submission
+* `--draft-intent-file <PATH>` — Secret-free JSON file containing the exact invocation and final metadata authorized for the unsigned draft
 * `--entrypoint <ENTRYPOINT>` — Contract entrypoint selector
 * `--gas-limit <GAS_LIMIT>` — Signature-bound gas limit. Defaults to the manifest profile value
 * `--payload-json <JSON>` — Inline Norito JSON payload object or value
 * `--payload-file <PATH>` — File containing a Norito JSON payload object or value
-* `--wait` — Poll `/v1/pipeline/transactions/status` until the transaction reaches Applied finality
+* `--wait` — Poll exact global status until state-resolved Applied finality
 * `--submit-only` — Submit the transaction without waiting for finality
 * `--timeout-ms <TIMEOUT_MS>` — Maximum time to wait before failing
 
@@ -10452,10 +10512,6 @@ Call a named manifest contract with typed payload validation
 * `--poll-interval-ms <POLL_INTERVAL_MS>` — Poll interval used while waiting
 
   Default value: `500`
-* `--terminal-status <TERMINAL_STATUSES>` — Stop when the pipeline reaches any of these statuses instead of the default Applied finality
-
-  Possible values: `queued`, `approved`, `committed`, `applied`, `rejected`, `expired`
-
 
 
 
@@ -10500,7 +10556,7 @@ Run smoke assertions declared by the manifest
 * `--zk` — Compile and validate with the explicit Kotodama ZK policy
 * `--authority <AUTHORITY>` — Authority account identifier used for smoke views/calls. Defaults to the profile client config
 * `--private-key <HEX>` — Hex-encoded private key override used for smoke call scenarios
-* `--wait` — Poll `/v1/pipeline/transactions/status` until the transaction reaches Applied finality
+* `--wait` — Poll exact global status until state-resolved Applied finality
 * `--submit-only` — Submit the transaction without waiting for finality
 * `--timeout-ms <TIMEOUT_MS>` — Maximum time to wait before failing
 
@@ -10508,10 +10564,6 @@ Run smoke assertions declared by the manifest
 * `--poll-interval-ms <POLL_INTERVAL_MS>` — Poll interval used while waiting
 
   Default value: `500`
-* `--terminal-status <TERMINAL_STATUSES>` — Stop when the pipeline reaches any of these statuses instead of the default Applied finality
-
-  Possible values: `queued`, `approved`, `committed`, `applied`, `rejected`, `expired`
-
 
 
 
@@ -10594,9 +10646,9 @@ Resolve an on-chain contract alias to its current canonical contract address
 
 ## `iroha contract derive-address`
 
-Derive a canonical contract address locally from authority, deploy nonce, and dataspace
+Derive a canonical contract address locally from exact network identity, authority, nonce, and dataspace
 
-**Usage:** `iroha contract derive-address [OPTIONS] --authority <AUTHORITY> --deploy-nonce <DEPLOY_NONCE>`
+**Usage:** `iroha contract derive-address [OPTIONS] --authority <AUTHORITY> --deploy-nonce <DEPLOY_NONCE> --network-id <NETWORK_ID>`
 
 ###### **Options:**
 
@@ -10605,8 +10657,9 @@ Derive a canonical contract address locally from authority, deploy nonce, and da
 
   Default value: `universal`
 * `--deploy-nonce <DEPLOY_NONCE>` — Successful deploy nonce consumed for address derivation
-* `--profile <PROFILE>` — Public network profile used for Bech32m contract-address derivation
-* `--chain-discriminant <CHAIN_DISCRIMINANT>` — Explicit chain discriminant used for Bech32m contract-address derivation
+* `--network-id <NETWORK_ID>` — Exact genesis-derived network identity committed into the contract address
+* `--profile <PROFILE>` — Public network profile used to decode the authority account literal
+* `--chain-discriminant <CHAIN_DISCRIMINANT>` — Explicit chain discriminant used to decode the authority account literal
 * `--dataspace-id <DATASPACE_ID>` — Optional numeric dataspace id override for non-default dataspaces
 
 
@@ -10621,7 +10674,8 @@ Submit a contract call through Torii (POST /v1/contracts/call)
 
 * `--authority <AUTHORITY>` — Authority account identifier. Defaults to the configured client authority
 * `--private-key <HEX>` — Hex-encoded private key override used to sign and submit the call directly
-* `--scaffold-only` — Request an unsigned transaction scaffold instead of direct submission
+* `--draft-only` — Request the exact unsigned transaction payload instead of direct submission
+* `--draft-intent-file <PATH>` — Secret-free JSON file containing the exact invocation and final metadata authorized for the unsigned draft
 * `--simulate` — Simulate the contract call locally on Torii without submitting a transaction
 * `--trace` — Run Torii simulation first and include the server-side execution trace in the submit response
 * `--entrypoint <ENTRYPOINT>` — Contract entrypoint selector
@@ -10632,7 +10686,7 @@ Submit a contract call through Torii (POST /v1/contracts/call)
 * `--contract-alias <CONTRACT_ALIAS>` — On-chain contract alias (`name::domain.dataspace` or `name::dataspace`)
 * `--payload-json <JSON>` — Inline Norito JSON payload object or value
 * `--payload-file <PATH>` — File containing a Norito JSON payload object or value
-* `--wait` — Poll `/v1/pipeline/transactions/status` until the transaction reaches Applied finality
+* `--wait` — Poll exact global status until state-resolved Applied finality
 * `--submit-only` — Submit the transaction without waiting for finality
 * `--timeout-ms <TIMEOUT_MS>` — Maximum time to wait before failing
 
@@ -10640,10 +10694,6 @@ Submit a contract call through Torii (POST /v1/contracts/call)
 * `--poll-interval-ms <POLL_INTERVAL_MS>` — Poll interval used while waiting
 
   Default value: `500`
-* `--terminal-status <TERMINAL_STATUSES>` — Stop when the pipeline reaches any of these statuses instead of the default Applied finality
-
-  Possible values: `queued`, `approved`, `committed`, `applied`, `rejected`, `expired`
-
 
 
 
@@ -11170,7 +11220,12 @@ SORA Taira public testnet diagnostics and canaries
 ###### **Subcommands:**
 
 * `doctor` — Check Taira read-side health and MCP route posture
-* `write-canary` — Onboard, faucet, submit, wait, and verify a signed ping canary
+* `public-reset` — Preflight or execute the strictly authorized compiled public reset
+* `write-canary` — Prepare, submit, or recover exactly one authorized public-reset child
+* `inrou-workspace` — Generate the canonical deploy-mode Inrou canary workspace from AArch64 guest assets
+* `inrou-stage` — Build the canonical offline artifact stage that operators preseed into all validators
+* `inrou-canary` — Register an exact preseeded stage, mutate explicitly, and verify the four-replica Inrou canary
+* `inrou-check` — Revalidate an exact retained stage and verify its live four-replica service without mutation
 
 
 
@@ -11189,27 +11244,212 @@ Check Taira read-side health and MCP route posture
 
 
 
+## `iroha taira public-reset`
+
+Preflight or execute the strictly authorized compiled public reset
+
+**Usage:** `iroha taira public-reset <COMMAND>`
+
+###### **Subcommands:**
+
+* `preflight` — Verify the signed reset inventory and pinned local inputs without contacting any host
+* `apply` — Execute the admitted reset with pinned SSH and runtime signing inputs
+
+
+
+## `iroha taira public-reset preflight`
+
+Verify the signed reset inventory and pinned local inputs without contacting any host
+
+**Usage:** `iroha taira public-reset preflight --inventory <PATH> --authorization <PATH> --trusted-public-key <PATH> --ssh-identity <PATH> --known-hosts <PATH>`
+
+###### **Options:**
+
+* `--inventory <PATH>` — Exact V1 executor inventory
+* `--authorization <PATH>` — Exact V1 authorization envelope
+* `--trusted-public-key <PATH>` — Separately trusted exact V1 authorization public-key file
+* `--ssh-identity <PATH>` — Runtime-only owner-private OpenSSH identity
+* `--known-hosts <PATH>` — Runtime-only owner-private pinned OpenSSH known-hosts file
+
+
+
+## `iroha taira public-reset apply`
+
+Execute the admitted reset with pinned SSH and runtime signing inputs
+
+**Usage:** `iroha taira public-reset apply [OPTIONS] --inventory <PATH> --authorization <PATH> --trusted-public-key <PATH> --ssh-identity <PATH> --known-hosts <PATH>`
+
+###### **Options:**
+
+* `--inventory <PATH>` — Exact V1 executor inventory
+* `--authorization <PATH>` — Exact V1 authorization envelope
+* `--trusted-public-key <PATH>` — Separately trusted exact V1 authorization public-key file
+* `--ssh-identity <PATH>` — Runtime-only owner-private OpenSSH identity
+* `--known-hosts <PATH>` — Runtime-only owner-private pinned OpenSSH known-hosts file
+* `--runtime-client-config <PATH>` — Owner-private signing config for forward work or read-only mutation recovery
+* `--validator-client-config <PATH>` — Four ordered validator read configs for forward work or RestartProof recovery
+* `--onboarding-token <PATH>` — Owner-private account-onboarding token required only for forward work
+* `--inrou-stage-dir <DIR>` — Exact deploy-mode Inrou stage directory required only for forward work
+
+
+
 ## `iroha taira write-canary`
 
-Onboard, faucet, submit, wait, and verify a signed ping canary
+Prepare, submit, or recover exactly one authorized public-reset child
 
-**Usage:** `iroha taira write-canary [OPTIONS] --onboarding-token-file <PATH>`
+**Usage:** `iroha taira write-canary [OPTIONS] --operation <OPERATION> --authorization-sha256 <AUTHORIZATION_SHA256> --authorization-nonce <AUTHORIZATION_NONCE> --mutation-phase <MUTATION_PHASE> --idempotency-key <IDEMPOTENCY_KEY> --execution-expires-at-unix-ms <EXECUTION_EXPIRES_AT_UNIX_MS> <--prepare-envelope|--submit-prepared-envelope-fd <FD>|--recover-prepared-envelope-fd <FD>>`
 
 ###### **Options:**
 
 * `--public-root <PUBLIC_ROOT>` — Public Torii root URL
 
   Default value: `https://taira.sora.org`
-* `--alias-prefix <ALIAS_PREFIX>` — Prefix used for the generated account alias
+* `--faucet-authority <FAUCET_AUTHORITY>` — Independently trusted faucet authority; required for the faucet child
+* `--faucet-asset-id <FAUCET_ASSET_ID>` — Independently trusted exact faucet asset definition; required for the faucet child
+* `--faucet-amount <FAUCET_AMOUNT>` — Independently trusted exact faucet transfer amount; required for the faucet child
+* `--onboarding-token-file <PATH>` — Owner-only onboarding token; required only while preparing or submitting the envelope
+* `--operation <OPERATION>` — Exact ordered child operation; each invocation handles one transaction only
 
-  Default value: `taira-rollout-canary`
-* `--faucet-asset-id <FAUCET_ASSET_ID>` — Faucet asset definition expected in the onboarding funding response
+  Possible values:
+  - `onboarding`:
+    Prepare, submit, or recover the sponsored account/alias onboarding transaction
+  - `faucet`:
+    Prepare, submit, or recover the faucet funding transaction
+  - `final-canary`:
+    Prepare, submit, or recover the final authority-signed log canary transaction
 
-  Default value: `6TEAJqbb8oEPmLncoNiMRbLEK6tw`
-* `--onboarding-token-file <PATH>` — Owner-only regular file containing the exact account-onboarding route token
-* `--write-config <PATH>` — Persist the runtime signer config to this explicit path
-* `--use-config-signer` — Use the signer from the loaded client config instead of an ephemeral signer
+* `--authorization-sha256 <AUTHORIZATION_SHA256>` — Exact admitted public-reset authorization digest
+* `--authorization-nonce <AUTHORIZATION_NONCE>` — Exact admitted public-reset authorization nonce
+* `--mutation-phase <MUTATION_PHASE>` — Exact write-canary phase (`pre_edge` or `post_edge`)
+* `--idempotency-key <IDEMPOTENCY_KEY>` — Exact lowercase SHA-256 idempotency key bound into the canary transaction
+* `--execution-expires-at-unix-ms <EXECUTION_EXPIRES_AT_UNIX_MS>` — Exact signed execution expiry; preparation and submission are barred at this instant
+* `--prepare-envelope` — Quote and sign one exact envelope without performing any ledger mutation
+* `--prepared-output-fd <FD>` — Inherited writable numeric descriptor receiving canonical envelope JSON
+* `--submit-prepared-envelope-fd <FD>` — Submit only exact bytes read from this inherited numeric envelope descriptor
+* `--recover-prepared-envelope-fd <FD>` — Read-only classify exact bytes read from this inherited numeric envelope descriptor
+* `--prerequisite-envelope-fd <FD>` — Inherited descriptor for the exact Applied predecessor envelope during preparation
 * `--json` — Emit a stable JSON receipt
+
+
+
+## `iroha taira inrou-workspace`
+
+Generate the canonical deploy-mode Inrou canary workspace from AArch64 guest assets
+
+**Usage:** `iroha taira inrou-workspace [OPTIONS] --kernel <PATH> --rootfs <PATH> --initrd <PATH> --output-dir <PATH>`
+
+###### **Options:**
+
+* `--kernel <PATH>` — Direct regular AArch64 kernel image prepared for PortableVM
+* `--rootfs <PATH>` — Direct regular AArch64 ext4 root filesystem image prepared for PortableVM
+* `--initrd <PATH>` — Direct regular AArch64 initrd image prepared for PortableVM
+* `--output-dir <PATH>` — Fresh owner-only directory to create with the exact canonical workspace layout
+* `--json` — Emit a stable JSON report
+
+
+
+## `iroha taira inrou-stage`
+
+Build the canonical offline artifact stage that operators preseed into all validators
+
+**Usage:** `iroha taira inrou-stage [OPTIONS] --mode <MODE> --container <PATH> --service <PATH> --bundle-file <PATH> --sorafs-retention-epoch <UNIX_SECONDS> --stage-dir <PATH> --bind-validator-config-dir <PATH>`
+
+###### **Options:**
+
+* `--mode <MODE>` — Build the exact deploy or upgrade revision; no mutation mode is inferred
+
+  Possible values:
+  - `deploy`:
+    Register a new canary service
+  - `upgrade`:
+    Replace an already-deployed canary revision
+
+* `--container <PATH>` — Path to the canonical strict-null, unpublished four-replica Inrou source manifest
+* `--service <PATH>` — Path to the matching public HttpService manifest
+* `--bundle-file <PATH>` — Canonical service bundle bytes to preseed
+* `--sorafs-retention-epoch <UNIX_SECONDS>` — Exact Unix-second SoraFS retention boundary embedded in both staged manifests. Retain and reuse this value when reproducing the same release stage
+* `--placement-target <VALIDATOR,PEER>` — Exact validator account and peer identity eligible for one staged replica. Supply exactly four `VALIDATOR,PEER` values matching the public-reset inventory
+* `--stage-dir <PATH>` — Fresh owner-only directory that will contain exact manifests and payloads
+* `--bind-validator-config-dir <PATH>` — Owner-private directory containing exactly peer0.toml through peer3.toml to bind
+* `--json` — Emit a stable JSON receipt
+
+
+
+## `iroha taira inrou-canary`
+
+Register an exact preseeded stage, mutate explicitly, and verify the four-replica Inrou canary
+
+**Usage:** `iroha taira inrou-canary [OPTIONS] --stage-dir <PATH> --mode <MODE> --operation <OPERATION> --authorization-sha256 <AUTHORIZATION_SHA256> --authorization-nonce <AUTHORIZATION_NONCE> --mutation-phase <MUTATION_PHASE> --idempotency-key <IDEMPOTENCY_KEY> --execution-expires-at-unix-ms <EXECUTION_EXPIRES_AT_UNIX_MS> <--prepare-envelope|--submit-prepared-envelope-fd <FD>|--recover-prepared-envelope-fd <FD>>`
+
+###### **Options:**
+
+* `--public-root <PUBLIC_ROOT>` — Public Torii root URL used for mutation, status, and route probes
+
+  Default value: `https://taira.sora.org`
+* `--stage-dir <PATH>` — Owner-only stage created by `iroha taira inrou-stage` and preseeded into all validators
+* `--mode <MODE>` — Submit an explicit deploy or upgrade mutation; conflicts are never retried as another mode
+
+  Possible values:
+  - `deploy`:
+    Register a new canary service
+  - `upgrade`:
+    Replace an already-deployed canary revision
+
+* `--operation <OPERATION>` — Exact ordered child operation; each invocation handles one transaction only
+
+  Possible values:
+  - `bundle-pin`:
+    Register the canonical service-bundle manifest
+  - `guest-pin`:
+    Register the canonical AArch64 guest-image manifest
+  - `discovery-pin`:
+    Register the canonical public-discovery manifest
+  - `service-mutation`:
+    Deploy or upgrade the service after all three manifests are Approved
+
+* `--authorization-sha256 <AUTHORIZATION_SHA256>` — Exact admitted public-reset authorization digest
+* `--authorization-nonce <AUTHORIZATION_NONCE>` — Exact admitted public-reset authorization nonce
+* `--mutation-phase <MUTATION_PHASE>` — Exact mutation phase; Inrou V1 is admitted only in `pre_edge`
+* `--idempotency-key <IDEMPOTENCY_KEY>` — Exact child-kind-derived idempotency key bound into the signed transaction
+* `--execution-expires-at-unix-ms <EXECUTION_EXPIRES_AT_UNIX_MS>` — Exact signed execution expiry; preparation and submission are barred at this instant
+* `--prepare-envelope` — Quote and sign one exact transaction envelope without submitting it
+* `--prepared-output-fd <FD>` — Inherited writable descriptor receiving canonical envelope JSON
+* `--submit-prepared-envelope-fd <FD>` — Submit only exact bytes read from this inherited descriptor
+* `--recover-prepared-envelope-fd <FD>` — Read-only classify exact bytes read from this inherited descriptor
+* `--prerequisite-envelope-fd <FD>` — Inherited exact Applied predecessor envelope, required only while preparing
+* `--timeout-secs <SECS>` — Maximum convergence time for adverts, placements, runtime health, and all four routes
+
+  Default value: `180`
+* `--json` — Emit a stable redacted JSON receipt
+
+
+
+## `iroha taira inrou-check`
+
+Revalidate an exact retained stage and verify its live four-replica service without mutation
+
+**Usage:** `iroha taira inrou-check [OPTIONS] --stage-dir <PATH> --mode <MODE>`
+
+###### **Options:**
+
+* `--public-root <PUBLIC_ROOT>` — Public Torii root URL used for network preflight and public route reads.
+
+   Signed Soracloud status reads continue to use the Torii URL from the selected client configuration so validator-specific restart checks cannot collapse onto the public edge.
+
+  Default value: `https://taira.sora.org`
+* `--stage-dir <PATH>` — Owner-only stage created by `iroha taira inrou-stage` and retained after deployment
+* `--mode <MODE>` — Exact revision mode encoded by the retained stage
+
+  Possible values:
+  - `deploy`:
+    Register a new canary service
+  - `upgrade`:
+    Replace an already-deployed canary revision
+
+* `--timeout-secs <SECS>` — Maximum convergence time for signed status and all four route identities
+
+  Default value: `180`
+* `--json` — Emit a stable JSON evidence receipt
 
 
 
@@ -11234,23 +11474,353 @@ Governed Kagemusha recursive-release operations
 
 ###### **Subcommands:**
 
-* `activate-release-v4` — Activate an authenticated ABI-21 release and its exact Eq/Ep verifier pair
+* `lifecycle-v4` — Prepare, independently sign, assemble, and submit one exact lifecycle transaction
+* `rollout-v4` — Execute the phase-separated, exact-byte Kagemusha V4 rollout corridor
 
 
 
-## `iroha offline kagemusha activate-release-v4`
+## `iroha offline kagemusha lifecycle-v4`
 
-Activate an authenticated ABI-21 release and its exact Eq/Ep verifier pair
+Prepare, independently sign, assemble, and submit one exact lifecycle transaction
 
-**Usage:** `iroha offline kagemusha activate-release-v4 --release-policy <PATH> --artifact-dir <DIR> --manifest-sha256 <LOWERCASE_HEX> --verifier-version <VERIFIER_VERSION> --device-attestation-policy <PATH>`
+**Usage:** `iroha offline kagemusha lifecycle-v4 <COMMAND>`
+
+###### **Subcommands:**
+
+* `prepare` — Prepare the exact ordinary transaction and a 60-second authenticated fee-quote draft
+* `sign-fee-quote` — Produce one detached member signature for the exact fee-quote request
+* `finalize-fee-quote` — Verify the fee-quote quorum, obtain the quote, and freeze the exact payload
+* `sign-transaction` — Produce one detached member signature for the exact frozen payload
+* `assemble-transaction` — Verify and assemble at least two detached signatures into exact transaction wire
+* `submit-transaction` — Submit the exact assembled wire without rebuilding or re-signing it
+
+
+
+## `iroha offline kagemusha lifecycle-v4 prepare`
+
+Prepare the exact ordinary transaction and a 60-second authenticated fee-quote draft
+
+**Usage:** `iroha offline kagemusha lifecycle-v4 prepare [OPTIONS] --kind <KIND> --governance-authority <I105_ACCOUNT> --instruction-json <PATH> --output <PATH>`
 
 ###### **Options:**
 
-* `--release-policy <PATH>` — Canonical Norito release-policy file configured on the target peers
-* `--artifact-dir <DIR>` — Authenticated catalog root configured on the target peers
-* `--manifest-sha256 <LOWERCASE_HEX>` — Canonical lowercase SHA-256 digest naming the release catalog directory
-* `--verifier-version <VERIFIER_VERSION>` — Next atomic Eq/Ep verifier version in consensus state
-* `--device-attestation-policy <PATH>` — Exact governed device-attestation policy to publish atomically with the release
+* `--kind <KIND>` — Required lifecycle kind; Stage maps to the native Activate instruction
+
+  Possible values:
+  - `stage`:
+    Stage the governed release (`ActivateKagemushaRecursiveReleaseV4` on wire)
+  - `enable`:
+    Enable issuance after the staged release closes its canary gates
+  - `cancel`:
+    Cancel a staged release
+  - `deactivate`:
+    Deactivate issuance for an enabled release
+
+* `--governance-authority <I105_ACCOUNT>` — Canonical I105 multisig account that authorizes the transition
+* `--trusted-anchor-height <HEIGHT>` — Already-finalized anchor height; required only for Stage to bind its receipt horizon
+* `--instruction-json <PATH>` — Kagami's exact JSON array containing one native lifecycle instruction
+* `--output <PATH>` — Absent destination for the canonical fee-quote draft; never replaced
+
+
+
+## `iroha offline kagemusha lifecycle-v4 sign-fee-quote`
+
+Produce one detached member signature for the exact fee-quote request
+
+**Usage:** `iroha offline kagemusha lifecycle-v4 sign-fee-quote --kind <KIND> --governance-authority <I105_ACCOUNT> --expected-network-id <NETWORK_ID> --expected-draft-sha256 <64_HEX> --draft <PATH> --output <PATH>`
+
+###### **Options:**
+
+* `--kind <KIND>` — Lifecycle kind expected in the draft
+
+  Possible values:
+  - `stage`:
+    Stage the governed release (`ActivateKagemushaRecursiveReleaseV4` on wire)
+  - `enable`:
+    Enable issuance after the staged release closes its canary gates
+  - `cancel`:
+    Cancel a staged release
+  - `deactivate`:
+    Deactivate issuance for an enabled release
+
+* `--governance-authority <I105_ACCOUNT>` — Independently expected canonical I105 multisig authority
+* `--expected-network-id <NETWORK_ID>` — Independently expected NetworkId embedded in the draft; does not consult client config
+* `--expected-draft-sha256 <64_HEX>` — Independently expected lowercase or uppercase 64-hex SHA-256 of the exact draft file
+* `--draft <PATH>` — Exact canonical fee-quote draft; stale or excessively future-dated drafts are rejected
+* `--output <PATH>` — Absent destination for this signer's canonical detached signature
+
+
+
+## `iroha offline kagemusha lifecycle-v4 finalize-fee-quote`
+
+Verify the fee-quote quorum, obtain the quote, and freeze the exact payload
+
+**Usage:** `iroha offline kagemusha lifecycle-v4 finalize-fee-quote [OPTIONS] --kind <KIND> --governance-authority <I105_ACCOUNT> --draft <PATH> --output <PATH>`
+
+###### **Options:**
+
+* `--kind <KIND>` — Lifecycle kind expected in the draft
+
+  Possible values:
+  - `stage`:
+    Stage the governed release (`ActivateKagemushaRecursiveReleaseV4` on wire)
+  - `enable`:
+    Enable issuance after the staged release closes its canary gates
+  - `cancel`:
+    Cancel a staged release
+  - `deactivate`:
+    Deactivate issuance for an enabled release
+
+* `--governance-authority <I105_ACCOUNT>` — Independently expected canonical I105 multisig authority
+* `--draft <PATH>` — Exact canonical fee-quote draft; all signatures and finalization must fit its 60-second window
+* `--signature <PATH>` — At least two independently produced fee-quote signatures
+* `--output <PATH>` — Absent destination for the exact quoted transaction payload
+
+
+
+## `iroha offline kagemusha lifecycle-v4 sign-transaction`
+
+Produce one detached member signature for the exact frozen payload
+
+**Usage:** `iroha offline kagemusha lifecycle-v4 sign-transaction --kind <KIND> --governance-authority <I105_ACCOUNT> --expected-network-id <NETWORK_ID> --expected-payload-sha256 <64_HEX> --payload <PATH> --output <PATH>`
+
+###### **Options:**
+
+* `--kind <KIND>` — Lifecycle kind expected in the payload
+
+  Possible values:
+  - `stage`:
+    Stage the governed release (`ActivateKagemushaRecursiveReleaseV4` on wire)
+  - `enable`:
+    Enable issuance after the staged release closes its canary gates
+  - `cancel`:
+    Cancel a staged release
+  - `deactivate`:
+    Deactivate issuance for an enabled release
+
+* `--governance-authority <I105_ACCOUNT>` — Independently expected canonical I105 multisig authority
+* `--expected-network-id <NETWORK_ID>` — Independently expected NetworkId embedded in the payload; does not consult client config
+* `--expected-payload-sha256 <64_HEX>` — Independently expected lowercase or uppercase 64-hex SHA-256 of the exact payload file
+* `--payload <PATH>` — Exact frozen TransactionPayload archive
+* `--output <PATH>` — Absent destination for this signer's canonical detached signature
+
+
+
+## `iroha offline kagemusha lifecycle-v4 assemble-transaction`
+
+Verify and assemble at least two detached signatures into exact transaction wire
+
+**Usage:** `iroha offline kagemusha lifecycle-v4 assemble-transaction [OPTIONS] --kind <KIND> --governance-authority <I105_ACCOUNT> --payload <PATH> --output <PATH>`
+
+###### **Options:**
+
+* `--kind <KIND>` — Lifecycle kind expected in the payload
+
+  Possible values:
+  - `stage`:
+    Stage the governed release (`ActivateKagemushaRecursiveReleaseV4` on wire)
+  - `enable`:
+    Enable issuance after the staged release closes its canary gates
+  - `cancel`:
+    Cancel a staged release
+  - `deactivate`:
+    Deactivate issuance for an enabled release
+
+* `--governance-authority <I105_ACCOUNT>` — Independently expected canonical I105 multisig authority
+* `--payload <PATH>` — Exact frozen TransactionPayload archive
+* `--signature <PATH>` — At least two independently produced transaction signatures
+* `--output <PATH>` — Absent destination for canonical versioned SignedTransaction wire
+
+
+
+## `iroha offline kagemusha lifecycle-v4 submit-transaction`
+
+Submit the exact assembled wire without rebuilding or re-signing it
+
+**Usage:** `iroha offline kagemusha lifecycle-v4 submit-transaction --kind <KIND> --governance-authority <I105_ACCOUNT> --transaction <PATH> --expected-receipt-signer <PUBLIC_KEY> --receipt-output <PATH> --write-authorized`
+
+###### **Options:**
+
+* `--kind <KIND>` — Lifecycle kind expected in the signed wire
+
+  Possible values:
+  - `stage`:
+    Stage the governed release (`ActivateKagemushaRecursiveReleaseV4` on wire)
+  - `enable`:
+    Enable issuance after the staged release closes its canary gates
+  - `cancel`:
+    Cancel a staged release
+  - `deactivate`:
+    Deactivate issuance for an enabled release
+
+* `--governance-authority <I105_ACCOUNT>` — Independently expected canonical I105 multisig authority
+* `--transaction <PATH>` — Exact canonical versioned SignedTransaction wire
+* `--expected-receipt-signer <PUBLIC_KEY>` — Independently pinned Torii receipt signer public key
+* `--receipt-output <PATH>` — Absent destination for the verified canonical submission receipt
+* `--write-authorized` — Explicit authorization for this production lifecycle write
+
+
+
+## `iroha offline kagemusha rollout-v4`
+
+Execute the phase-separated, exact-byte Kagemusha V4 rollout corridor
+
+**Usage:** `iroha offline kagemusha rollout-v4 <COMMAND>`
+
+###### **Subcommands:**
+
+* `create-expectations` — Root-sign and immutably publish pre-submission expectations
+* `submit` — Submit the exact transaction embedded in authenticated expectations
+* `finalize-receipt` — Collect finalized evidence and immutably publish the issuer-signed receipt
+* `create-canary-authorization` — Construct and controller-authorize one promotion-bound canary transaction
+* `submit-canary-authorization` — Finalize the on-chain reservation for the exact authorized canary transaction
+* `submit-canary` — Journal and submit the exact controller-authorized canary transaction
+* `finalize-canary-evidence` — Collect the canary's post-activation finality extension and publish full evidence
+* `finalize-validator-liveness` — Challenge all four qualified validators and publish issuer-signed liveness evidence
+
+
+
+## `iroha offline kagemusha rollout-v4 create-expectations`
+
+Root-sign and immutably publish pre-submission expectations
+
+**Usage:** `iroha offline kagemusha rollout-v4 create-expectations [OPTIONS] --promotion-controller <PUBLIC_KEY> --promotion-reservation <ABSOLUTE_PATH> --activation-transaction <ABSOLUTE_PATH> --trusted-finality-anchor <ABSOLUTE_PATH> --receipt-issuer <PUBLIC_KEY> --controller-private-key-file <ABSOLUTE_PATH> --output <ABSOLUTE_PATH>`
+
+###### **Options:**
+
+* `--promotion-controller <PUBLIC_KEY>` — Independently pinned promotion-controller public key
+* `--promotion-reservation <ABSOLUTE_PATH>` — Root-owned canonical promotion reservation
+* `--validator-seal <ABSOLUTE_PATH>` — Exactly four root-owned validator qualification seals
+* `--activation-transaction <ABSOLUTE_PATH>` — Complete, already-authorized versioned SignedTransaction wire
+* `--trusted-finality-anchor <ABSOLUTE_PATH>` — Independently governed, already-finalized anchor proof
+* `--receipt-issuer <PUBLIC_KEY>` — Independent durable-receipt issuer public key
+* `--controller-private-key-file <ABSOLUTE_PATH>` — Runtime-only owner-private promotion-controller key file
+* `--output <ABSOLUTE_PATH>` — Exact absent promotion-keyed expectations destination; it is never replaced
+
+
+
+## `iroha offline kagemusha rollout-v4 submit`
+
+Submit the exact transaction embedded in authenticated expectations
+
+**Usage:** `iroha offline kagemusha rollout-v4 submit --promotion-controller <PUBLIC_KEY> --promotion-reservation <ABSOLUTE_PATH> --expectations <ABSOLUTE_PATH> --write-authorized`
+
+###### **Options:**
+
+* `--promotion-controller <PUBLIC_KEY>` — Independently pinned promotion-controller public key
+* `--promotion-reservation <ABSOLUTE_PATH>` — Root-owned canonical promotion reservation
+* `--expectations <ABSOLUTE_PATH>` — Root-owned canonical activation expectations
+* `--write-authorized` — Explicit authorization for this network write
+
+
+
+## `iroha offline kagemusha rollout-v4 finalize-receipt`
+
+Collect finalized evidence and immutably publish the issuer-signed receipt
+
+**Usage:** `iroha offline kagemusha rollout-v4 finalize-receipt --promotion-controller <PUBLIC_KEY> --promotion-reservation <ABSOLUTE_PATH> --expectations <ABSOLUTE_PATH> --issuer-private-key-file <ABSOLUTE_PATH> --output <ABSOLUTE_PATH>`
+
+###### **Options:**
+
+* `--promotion-controller <PUBLIC_KEY>` — Independently pinned promotion-controller public key
+* `--promotion-reservation <ABSOLUTE_PATH>` — Root-owned canonical promotion reservation
+* `--expectations <ABSOLUTE_PATH>` — Root-owned canonical activation expectations
+* `--issuer-private-key-file <ABSOLUTE_PATH>` — Runtime-only owner-private receipt-issuer key file
+* `--output <ABSOLUTE_PATH>` — Exact absent promotion-keyed receipt destination; it is never replaced
+
+
+
+## `iroha offline kagemusha rollout-v4 create-canary-authorization`
+
+Construct and controller-authorize one promotion-bound canary transaction
+
+**Usage:** `iroha offline kagemusha rollout-v4 create-canary-authorization --promotion-controller <PUBLIC_KEY> --promotion-reservation <ABSOLUTE_PATH> --expectations <ABSOLUTE_PATH> --activation-receipt <ABSOLUTE_PATH> --canary-ttl-ms <MILLISECONDS> --canary-expires-at-height <HEIGHT> --controller-private-key-file <ABSOLUTE_PATH> --output <ABSOLUTE_PATH>`
+
+###### **Options:**
+
+* `--promotion-controller <PUBLIC_KEY>` — Independently pinned promotion-controller public key
+* `--promotion-reservation <ABSOLUTE_PATH>` — Root-owned canonical promotion reservation
+* `--expectations <ABSOLUTE_PATH>` — Root-owned canonical activation expectations
+* `--activation-receipt <ABSOLUTE_PATH>` — Exact immutable issuer-signed activation-finality receipt
+* `--canary-ttl-ms <MILLISECONDS>` — Short authorization lifetime; the transaction TTL reserves 30 seconds for construction
+* `--canary-expires-at-height <HEIGHT>` — Exact exclusive consensus-height expiry embedded in the canary transaction
+* `--controller-private-key-file <ABSOLUTE_PATH>` — Runtime-only owner-private promotion-controller key file
+* `--output <ABSOLUTE_PATH>` — Exact absent promotion-keyed authorization destination; it is never replaced
+
+
+
+## `iroha offline kagemusha rollout-v4 submit-canary-authorization`
+
+Finalize the on-chain reservation for the exact authorized canary transaction
+
+**Usage:** `iroha offline kagemusha rollout-v4 submit-canary-authorization --promotion-controller <PUBLIC_KEY> --promotion-reservation <ABSOLUTE_PATH> --expectations <ABSOLUTE_PATH> --activation-receipt <ABSOLUTE_PATH> --canary-authorization <ABSOLUTE_PATH> --write-authorized`
+
+###### **Options:**
+
+* `--promotion-controller <PUBLIC_KEY>` — Independently pinned promotion-controller public key
+* `--promotion-reservation <ABSOLUTE_PATH>` — Root-owned canonical promotion reservation
+* `--expectations <ABSOLUTE_PATH>` — Root-owned canonical activation expectations
+* `--activation-receipt <ABSOLUTE_PATH>` — Exact immutable issuer-signed activation-finality receipt
+* `--canary-authorization <ABSOLUTE_PATH>` — Exact controller-signed canary authorization to reserve on-chain
+* `--write-authorized` — Explicit authorization for this production reservation write
+
+
+
+## `iroha offline kagemusha rollout-v4 submit-canary`
+
+Journal and submit the exact controller-authorized canary transaction
+
+**Usage:** `iroha offline kagemusha rollout-v4 submit-canary --promotion-controller <PUBLIC_KEY> --promotion-reservation <ABSOLUTE_PATH> --expectations <ABSOLUTE_PATH> --activation-receipt <ABSOLUTE_PATH> --canary-authorization <ABSOLUTE_PATH> --write-authorized`
+
+###### **Options:**
+
+* `--promotion-controller <PUBLIC_KEY>` — Independently pinned promotion-controller public key
+* `--promotion-reservation <ABSOLUTE_PATH>` — Root-owned canonical promotion reservation
+* `--expectations <ABSOLUTE_PATH>` — Root-owned canonical activation expectations
+* `--activation-receipt <ABSOLUTE_PATH>` — Exact immutable issuer-signed activation-finality receipt
+* `--canary-authorization <ABSOLUTE_PATH>` — Exact controller-signed canary authorization
+* `--write-authorized` — Explicit authorization for this production canary network write
+
+
+
+## `iroha offline kagemusha rollout-v4 finalize-canary-evidence`
+
+Collect the canary's post-activation finality extension and publish full evidence
+
+**Usage:** `iroha offline kagemusha rollout-v4 finalize-canary-evidence --promotion-controller <PUBLIC_KEY> --promotion-reservation <ABSOLUTE_PATH> --expectations <ABSOLUTE_PATH> --activation-receipt <ABSOLUTE_PATH> --canary-authorization <ABSOLUTE_PATH> --issuer-private-key-file <ABSOLUTE_PATH> --output <ABSOLUTE_PATH>`
+
+###### **Options:**
+
+* `--promotion-controller <PUBLIC_KEY>` — Independently pinned promotion-controller public key
+* `--promotion-reservation <ABSOLUTE_PATH>` — Root-owned canonical promotion reservation
+* `--expectations <ABSOLUTE_PATH>` — Root-owned canonical activation expectations
+* `--activation-receipt <ABSOLUTE_PATH>` — Exact immutable issuer-signed activation-finality receipt
+* `--canary-authorization <ABSOLUTE_PATH>` — Exact controller-signed canary authorization
+* `--issuer-private-key-file <ABSOLUTE_PATH>` — Runtime-only owner-private receipt-issuer key file
+* `--output <ABSOLUTE_PATH>` — Exact absent promotion-keyed canary-evidence destination; it is never replaced
+
+
+
+## `iroha offline kagemusha rollout-v4 finalize-validator-liveness`
+
+Challenge all four qualified validators and publish issuer-signed liveness evidence
+
+**Usage:** `iroha offline kagemusha rollout-v4 finalize-validator-liveness [OPTIONS] --promotion-controller <PUBLIC_KEY> --promotion-reservation <ABSOLUTE_PATH> --expectations <ABSOLUTE_PATH> --activation-receipt <ABSOLUTE_PATH> --canary-authorization <ABSOLUTE_PATH> --canary-evidence <ABSOLUTE_PATH> --issuer-private-key-file <ABSOLUTE_PATH> --output <ABSOLUTE_PATH>`
+
+###### **Options:**
+
+* `--promotion-controller <PUBLIC_KEY>` — Independently pinned promotion-controller public key
+* `--promotion-reservation <ABSOLUTE_PATH>` — Root-owned canonical promotion reservation
+* `--expectations <ABSOLUTE_PATH>` — Root-owned canonical activation expectations
+* `--activation-receipt <ABSOLUTE_PATH>` — Exact immutable issuer-signed activation-finality receipt
+* `--canary-authorization <ABSOLUTE_PATH>` — Exact controller-signed canary authorization
+* `--canary-evidence <ABSOLUTE_PATH>` — Exact immutable issuer-signed canary evidence
+* `--validator <PEER_ID=HTTPS_ORIGIN>` — Four exact `PEER_ID=https://dns-origin[:port]` mappings
+* `--collection-ttl-ms <MILLISECONDS>` — Lifetime of the precommitted collection challenge, at most five minutes
+
+  Default value: `300000`
+* `--issuer-private-key-file <ABSOLUTE_PATH>` — Runtime-only owner-private receipt-issuer key file
+* `--output <ABSOLUTE_PATH>` — Exact absent promotion-keyed liveness-evidence destination
 
 
 
@@ -11562,7 +12132,7 @@ Soracloud app platform helpers
 * `app` — Scaffold and deploy multi-service Soracloud apps
 * `service` — Single-service Soracloud manifest and control-plane helpers
 * `model` — Soracloud model-training and model-registry helpers
-* `hf` — Shared Hugging Face lease-pool helpers
+* `hf` — Inert Hugging Face source metadata and shared storage-lease helpers
 * `agent` — Persistent Soracloud agent/apartment helpers
 
 
@@ -11581,9 +12151,8 @@ Scaffold and deploy multi-service Soracloud apps
 * `dev` — Run the manifest-adjacent local dev entrypoint for a scaffolded app workspace
 * `build` — Run the manifest-adjacent app build and manifest-sync entrypoint
 * `simulate` — Simulate a prod-like release locally without live Torii mutation
-* `release` — Build, sync, and then deploy or upgrade every service referenced by an app manifest
-* `deploy` — Deploy every service referenced by an app manifest
-* `upgrade` — Upgrade every service referenced by an app manifest
+* `preseed` — Qualify every hosted Inrou artifact offline and emit one durable app receipt
+* `release` — Build, validate, deploy, and live-verify every service referenced by an app manifest
 * `status` — Show app-scoped Soracloud service status from the control plane
 
 
@@ -11688,76 +12257,61 @@ Run the manifest-adjacent app build and manifest-sync entrypoint
 
 Simulate a prod-like release locally without live Torii mutation
 
-**Usage:** `iroha soracloud app simulate [OPTIONS]`
+**Usage:** `iroha soracloud app simulate [OPTIONS] --sorafs-retention-epoch <UNIX_SECONDS>`
 
 ###### **Options:**
 
 * `--manifest <PATH>` — Path to a `SoracloudAppManifestV1` JSON document
 
   Default value: `app_manifest.json`
+* `--sorafs-retention-epoch <UNIX_SECONDS>` — Exact Unix-second retention boundary used to reproduce release manifest identities
+
+
+
+## `iroha soracloud app preseed`
+
+Qualify every hosted Inrou artifact offline and emit one durable app receipt
+
+**Usage:** `iroha soracloud app preseed [OPTIONS] --sorafs-retention-epoch <UNIX_SECONDS> --receipt-out <PATH>`
+
+###### **Options:**
+
+* `--manifest <PATH>` — Path to a `SoracloudAppManifestV1` JSON document
+
+  Default value: `app_manifest.json`
+* `--sorafs-retention-epoch <UNIX_SECONDS>` — Exact Unix-second retention identity reused by the later online release
+* `--inrou-preseed-target <VALIDATOR,PEER,PATH>` — Exact validator account, active peer identity, and offline SoraFS store root
+* `--inrou-preseed-max-capacity-bytes <BYTES>` — Exact common configured capacity of every selected store
+* `--inrou-preseed-helper <PATH>` — Absolute path to the exact offline `sorafs-node` helper
+* `--inrou-preseed-helper-sha256 <HEX>` — Lowercase SHA-256 of the exact offline helper
+* `--receipt-out <PATH>` — Absolute owner-only output path for the immutable online qualification
+* `--timeout-secs <SECS>` — Positive helper readiness/release timeout
+
+  Default value: `10`
 
 
 
 ## `iroha soracloud app release`
 
-Build, sync, and then deploy or upgrade every service referenced by an app manifest
+Build, validate, deploy, and live-verify every service referenced by an app manifest
 
-**Usage:** `iroha soracloud app release [OPTIONS]`
+**Usage:** `iroha soracloud app release [OPTIONS] --sorafs-retention-epoch <UNIX_SECONDS>`
 
 ###### **Options:**
 
 * `--manifest <PATH>` — Path to a `SoracloudAppManifestV1` JSON document
 
   Default value: `app_manifest.json`
-* `--torii-url <URL>` — Torii base URL to execute deploy/upgrade against authoritative control-plane APIs
+* `--sorafs-retention-epoch <UNIX_SECONDS>` — Exact Unix-second retention boundary embedded in every SoraFS manifest in this release. Reuse the same value for every retry; it must remain ahead of consensus time
+* `--torii-url <URL>` — Torii base URL for the canonical app-infra release mutation
 * `--api-token <TOKEN>` — Optional API token sent as `x-api-token` when mutating live control-plane APIs
-* `--timeout-secs <SECS>` — HTTP timeout for Torii mutation requests
+* `--timeout-secs <SECS>` — Positive timeout for Torii requests
 
   Default value: `10`
-* `--skip-build` — Skip the manifest-adjacent root build-and-sync step
-
-  Default value: `false`
 * `--dry-run` — Print the resolved release plan without executing it
 
   Default value: `false`
-
-
-
-## `iroha soracloud app deploy`
-
-Deploy every service referenced by an app manifest
-
-**Usage:** `iroha soracloud app deploy [OPTIONS]`
-
-###### **Options:**
-
-* `--manifest <PATH>` — Path to a `SoracloudAppManifestV1` JSON document
-
-  Default value: `app_manifest.json`
-* `--torii-url <URL>` — Torii base URL to execute deploy/upgrade against authoritative control-plane APIs
-* `--api-token <TOKEN>` — Optional API token sent as `x-api-token` when mutating live control-plane APIs
-* `--timeout-secs <SECS>` — HTTP timeout for Torii mutation requests
-
-  Default value: `10`
-
-
-
-## `iroha soracloud app upgrade`
-
-Upgrade every service referenced by an app manifest
-
-**Usage:** `iroha soracloud app upgrade [OPTIONS]`
-
-###### **Options:**
-
-* `--manifest <PATH>` — Path to a `SoracloudAppManifestV1` JSON document
-
-  Default value: `app_manifest.json`
-* `--torii-url <URL>` — Torii base URL to execute deploy/upgrade against authoritative control-plane APIs
-* `--api-token <TOKEN>` — Optional API token sent as `x-api-token` when mutating live control-plane APIs
-* `--timeout-secs <SECS>` — HTTP timeout for Torii mutation requests
-
-  Default value: `10`
+* `--inrou-preseed-receipt <PATH>` — Absolute owner-only ingest qualification from `soracloud app preseed`
 
 
 
@@ -11796,6 +12350,7 @@ Single-service Soracloud manifest and control-plane helpers
 * `deploy-workspace` — Run the manifest-adjacent deploy entrypoint for a single service workspace
 * `upgrade-workspace` — Run the manifest-adjacent upgrade entrypoint for a single service workspace
 * `sync-manifests` — Recompute Soracloud manifest hashes after local edits or bundle rebuilds
+* `preseed` — Qualify exact Inrou artifacts in offline validator stores and emit a durable receipt
 * `deploy` — Validate manifests and register a new service deployment
 * `status` — Show authoritative Soracloud service state (all services or one service)
 * `config-set` — Record or replace an authoritative service config entry
@@ -11805,7 +12360,7 @@ Single-service Soracloud manifest and control-plane helpers
 * `secret-delete` — Delete an authoritative service secret entry
 * `secret-status` — Query authoritative service secret state
 * `upgrade` — Validate manifests and upgrade an existing deployed service
-* `rollback` — Roll back a deployed service to a previous (or specified) version
+* `rollback` — Roll back a deployed service to an explicitly selected admitted version
 * `rollout` — Advance or fail a rollout step using health-gated canary controls
 
 
@@ -11874,7 +12429,7 @@ Validate one service pair locally and print the local runtime/workspace plan
 
 ###### **Options:**
 
-* `--container <PATH>` — Path to a `SoraContainerManifestV1` JSON document
+* `--container <PATH>` — Path to an unpublished Soracloud container workspace JSON document
 
   Default value: `fixtures/soracloud/sora_container_manifest_v1.json`
 * `--service <PATH>` — Path to a `SoraServiceManifestV1` JSON document
@@ -11891,7 +12446,7 @@ Run the manifest-adjacent local dev entrypoint for a single service workspace
 
 ###### **Options:**
 
-* `--container <PATH>` — Path to a `SoraContainerManifestV1` JSON document
+* `--container <PATH>` — Path to an unpublished Soracloud container workspace JSON document
 
   Default value: `fixtures/soracloud/sora_container_manifest_v1.json`
 * `--service <PATH>` — Path to a `SoraServiceManifestV1` JSON document
@@ -11911,7 +12466,7 @@ Run the manifest-adjacent build and sync entrypoint for a single service workspa
 
 ###### **Options:**
 
-* `--container <PATH>` — Path to a `SoraContainerManifestV1` JSON document
+* `--container <PATH>` — Path to an unpublished Soracloud container workspace JSON document
 
   Default value: `fixtures/soracloud/sora_container_manifest_v1.json`
 * `--service <PATH>` — Path to a `SoraServiceManifestV1` JSON document
@@ -11927,16 +12482,17 @@ Run the manifest-adjacent build and sync entrypoint for a single service workspa
 
 Run the manifest-adjacent deploy entrypoint for a single service workspace
 
-**Usage:** `iroha soracloud service deploy-workspace [OPTIONS]`
+**Usage:** `iroha soracloud service deploy-workspace [OPTIONS] --sorafs-retention-epoch <UNIX_SECONDS>`
 
 ###### **Options:**
 
-* `--container <PATH>` — Path to a `SoraContainerManifestV1` JSON document
+* `--container <PATH>` — Path to an unpublished Soracloud container workspace JSON document
 
   Default value: `fixtures/soracloud/sora_container_manifest_v1.json`
 * `--service <PATH>` — Path to a `SoraServiceManifestV1` JSON document
 
   Default value: `fixtures/soracloud/sora_service_manifest_v1.json`
+* `--sorafs-retention-epoch <UNIX_SECONDS>` — Exact Unix-second retention boundary forwarded unchanged to the workspace release script. Reuse the same value for every retry of one release
 * `--initial-configs <PATH>` — Optional JSON file containing a map of inline config values committed atomically with deploy or upgrade
 * `--initial-secrets <PATH>` — Optional JSON file containing a map of inline secret envelopes committed atomically with deploy or upgrade
 * `--torii-url <URL>` — Torii base URL forwarded to the workspace entrypoint through `TORII_URL`
@@ -11954,16 +12510,17 @@ Run the manifest-adjacent deploy entrypoint for a single service workspace
 
 Run the manifest-adjacent upgrade entrypoint for a single service workspace
 
-**Usage:** `iroha soracloud service upgrade-workspace [OPTIONS]`
+**Usage:** `iroha soracloud service upgrade-workspace [OPTIONS] --sorafs-retention-epoch <UNIX_SECONDS>`
 
 ###### **Options:**
 
-* `--container <PATH>` — Path to a `SoraContainerManifestV1` JSON document
+* `--container <PATH>` — Path to an unpublished Soracloud container workspace JSON document
 
   Default value: `fixtures/soracloud/sora_container_manifest_v1.json`
 * `--service <PATH>` — Path to a `SoraServiceManifestV1` JSON document
 
   Default value: `fixtures/soracloud/sora_service_manifest_v1.json`
+* `--sorafs-retention-epoch <UNIX_SECONDS>` — Exact Unix-second retention boundary forwarded unchanged to the workspace release script. Reuse the same value for every retry of one release
 * `--initial-configs <PATH>` — Optional JSON file containing a map of inline config values committed atomically with deploy or upgrade
 * `--initial-secrets <PATH>` — Optional JSON file containing a map of inline secret envelopes committed atomically with deploy or upgrade
 * `--torii-url <URL>` — Torii base URL forwarded to the workspace entrypoint through `TORII_URL`
@@ -11986,7 +12543,7 @@ Recompute Soracloud manifest hashes after local edits or bundle rebuilds
 ###### **Options:**
 
 * `--app-manifest <PATH>` — Path to a `SoracloudAppManifestV1` JSON document. When set, every referenced service manifest pair is synchronized
-* `--container <PATH>` — Path to a `SoraContainerManifestV1` JSON document
+* `--container <PATH>` — Path to an unpublished Soracloud container workspace JSON document
 
   Default value: `fixtures/soracloud/sora_container_manifest_v1.json`
 * `--service <PATH>` — Path to a `SoraServiceManifestV1` JSON document
@@ -11996,25 +12553,55 @@ Recompute Soracloud manifest hashes after local edits or bundle rebuilds
 
 
 
-## `iroha soracloud service deploy`
+## `iroha soracloud service preseed`
 
-Validate manifests and register a new service deployment
+Qualify exact Inrou artifacts in offline validator stores and emit a durable receipt
 
-**Usage:** `iroha soracloud service deploy [OPTIONS]`
+**Usage:** `iroha soracloud service preseed [OPTIONS] --bundle-file <PATH> --sorafs-retention-epoch <UNIX_SECONDS> --receipt-out <PATH>`
 
 ###### **Options:**
 
-* `--container <PATH>` — Path to a `SoraContainerManifestV1` JSON document
+* `--container <PATH>` — Path to an unpublished Soracloud container workspace JSON document
 
   Default value: `fixtures/soracloud/sora_container_manifest_v1.json`
 * `--service <PATH>` — Path to a `SoraServiceManifestV1` JSON document
 
   Default value: `fixtures/soracloud/sora_service_manifest_v1.json`
+* `--bundle-file <PATH>` — Canonical service bundle bytes to qualify in every target store
+* `--sorafs-retention-epoch <UNIX_SECONDS>` — Exact Unix-second retention identity reused by the later online publication
+* `--inrou-preseed-target <VALIDATOR,PEER,PATH>` — Exact validator account, active peer identity, and offline SoraFS store root
+* `--inrou-preseed-max-capacity-bytes <BYTES>` — Exact common configured capacity of every selected store
+* `--inrou-preseed-helper <PATH>` — Absolute path to the exact offline `sorafs-node` helper
+* `--inrou-preseed-helper-sha256 <HEX>` — Lowercase SHA-256 of the exact offline helper
+* `--receipt-out <PATH>` — Absolute owner-only output path for the immutable online qualification
+* `--timeout-secs <SECS>` — Positive helper readiness/release timeout
+
+  Default value: `10`
+
+
+
+## `iroha soracloud service deploy`
+
+Validate manifests and register a new service deployment
+
+**Usage:** `iroha soracloud service deploy [OPTIONS] --bundle-file <PATH> --sorafs-retention-epoch <UNIX_SECONDS>`
+
+###### **Options:**
+
+* `--container <PATH>` — Path to an unpublished Soracloud container workspace JSON document
+
+  Default value: `fixtures/soracloud/sora_container_manifest_v1.json`
+* `--service <PATH>` — Path to a `SoraServiceManifestV1` JSON document
+
+  Default value: `fixtures/soracloud/sora_service_manifest_v1.json`
+* `--bundle-file <PATH>` — Canonical service bundle bytes to publish before submitting the deployment
+* `--sorafs-retention-epoch <UNIX_SECONDS>` — Exact Unix-second retention boundary embedded in every SoraFS manifest in this release. Reuse the same value for every retry; it must remain ahead of consensus time
 * `--initial-configs <PATH>` — Optional JSON file containing a map of inline config values committed atomically with deploy
 * `--initial-secrets <PATH>` — Optional JSON file containing a map of inline secret envelopes committed atomically with deploy
+* `--inrou-preseed-receipt <PATH>` — Absolute owner-only ingest qualification produced by `soracloud service preseed`
 * `--torii-url <URL>` — Torii base URL to execute deploy against authoritative control-plane APIs
 * `--api-token <TOKEN>` — Optional API token sent as `x-api-token` when mutating live control-plane APIs
-* `--timeout-secs <SECS>` — HTTP timeout for Torii mutation requests
+* `--timeout-secs <SECS>` — Positive timeout for each Torii request; the durable Inrou qualification is reread before online side effects
 
   Default value: `10`
 
@@ -12029,7 +12616,7 @@ Show authoritative Soracloud service state (all services or one service)
 ###### **Options:**
 
 * `--service-name <NAME>` — Optional service name filter
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to resolve the service filter
+* `--container <PATH>` — Optional unpublished Soracloud container workspace used to resolve the service filter
 * `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to resolve the service filter
 * `--torii-url <URL>` — Torii base URL (for example `http://127.0.0.1:8080/`) to query `/v1/soracloud/status` from the authoritative control plane
 * `--api-token <TOKEN>` — Optional API token sent as `x-api-token` when querying Torii
@@ -12048,7 +12635,7 @@ Record or replace an authoritative service config entry
 ###### **Options:**
 
 * `--service-name <NAME>` — Service name owning the config entry
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to resolve the service name
+* `--container <PATH>` — Optional unpublished Soracloud container workspace used to resolve the service name
 * `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to resolve the service name
 * `--config-name <NAME>` — Stable service-scoped config name
 * `--value-json <JSON>` — Inline JSON value for the config entry
@@ -12070,7 +12657,7 @@ Delete an authoritative service config entry
 ###### **Options:**
 
 * `--service-name <NAME>` — Service name owning the config entry
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to resolve the service name
+* `--container <PATH>` — Optional unpublished Soracloud container workspace used to resolve the service name
 * `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to resolve the service name
 * `--config-name <NAME>` — Stable service-scoped config name
 * `--torii-url <URL>` — Torii base URL for authoritative `service/config/delete`
@@ -12090,7 +12677,7 @@ Query authoritative service config state
 ###### **Options:**
 
 * `--service-name <NAME>` — Service name owning the config entries
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to resolve the service name
+* `--container <PATH>` — Optional unpublished Soracloud container workspace used to resolve the service name
 * `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to resolve the service name
 * `--config-name <NAME>` — Optional config name filter
 * `--torii-url <URL>` — Torii base URL for authoritative `service/config/status`
@@ -12110,7 +12697,7 @@ Record or replace an authoritative service secret entry
 ###### **Options:**
 
 * `--service-name <NAME>` — Service name owning the secret entry
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to resolve the service name
+* `--container <PATH>` — Optional unpublished Soracloud container workspace used to resolve the service name
 * `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to resolve the service name
 * `--secret-name <NAME>` — Stable service-scoped secret name
 * `--secret-file <PATH>` — Path to a `SecretEnvelopeV1` JSON document
@@ -12131,7 +12718,7 @@ Delete an authoritative service secret entry
 ###### **Options:**
 
 * `--service-name <NAME>` — Service name owning the secret entry
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to resolve the service name
+* `--container <PATH>` — Optional unpublished Soracloud container workspace used to resolve the service name
 * `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to resolve the service name
 * `--secret-name <NAME>` — Stable service-scoped secret name
 * `--torii-url <URL>` — Torii base URL for authoritative `service/secret/delete`
@@ -12151,7 +12738,7 @@ Query authoritative service secret state
 ###### **Options:**
 
 * `--service-name <NAME>` — Service name owning the secret entries
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to resolve the service name
+* `--container <PATH>` — Optional unpublished Soracloud container workspace used to resolve the service name
 * `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to resolve the service name
 * `--secret-name <NAME>` — Optional secret name filter
 * `--torii-url <URL>` — Torii base URL for authoritative `service/secret/status`
@@ -12166,21 +12753,24 @@ Query authoritative service secret state
 
 Validate manifests and upgrade an existing deployed service
 
-**Usage:** `iroha soracloud service upgrade [OPTIONS]`
+**Usage:** `iroha soracloud service upgrade [OPTIONS] --bundle-file <PATH> --sorafs-retention-epoch <UNIX_SECONDS>`
 
 ###### **Options:**
 
-* `--container <PATH>` — Path to a `SoraContainerManifestV1` JSON document
+* `--container <PATH>` — Path to an unpublished Soracloud container workspace JSON document
 
   Default value: `fixtures/soracloud/sora_container_manifest_v1.json`
 * `--service <PATH>` — Path to a `SoraServiceManifestV1` JSON document
 
   Default value: `fixtures/soracloud/sora_service_manifest_v1.json`
+* `--bundle-file <PATH>` — Canonical service bundle bytes to publish before submitting the upgrade
+* `--sorafs-retention-epoch <UNIX_SECONDS>` — Exact Unix-second retention boundary embedded in every SoraFS manifest in this release. Reuse the same value for every retry; it must remain ahead of consensus time
 * `--initial-configs <PATH>` — Optional JSON file containing a map of inline config values committed atomically with upgrade
 * `--initial-secrets <PATH>` — Optional JSON file containing a map of inline secret envelopes committed atomically with upgrade
+* `--inrou-preseed-receipt <PATH>` — Absolute owner-only ingest qualification produced by `soracloud service preseed`
 * `--torii-url <URL>` — Torii base URL to execute upgrade against authoritative control-plane APIs
 * `--api-token <TOKEN>` — Optional API token sent as `x-api-token` when mutating live control-plane APIs
-* `--timeout-secs <SECS>` — HTTP timeout for Torii mutation requests
+* `--timeout-secs <SECS>` — Positive timeout for each Torii request; the durable Inrou qualification is reread before online side effects
 
   Default value: `10`
 
@@ -12188,16 +12778,16 @@ Validate manifests and upgrade an existing deployed service
 
 ## `iroha soracloud service rollback`
 
-Roll back a deployed service to a previous (or specified) version
+Roll back a deployed service to an explicitly selected admitted version
 
-**Usage:** `iroha soracloud service rollback [OPTIONS]`
+**Usage:** `iroha soracloud service rollback [OPTIONS] --target-version <VERSION>`
 
 ###### **Options:**
 
 * `--service-name <NAME>` — Service name to roll back
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to resolve the service name
+* `--container <PATH>` — Optional unpublished Soracloud container workspace used to resolve the service name
 * `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to resolve the service name
-* `--target-version <VERSION>` — Optional target version. When omitted, rolls back to the previous version
+* `--target-version <VERSION>` — Already-admitted target version to restore
 * `--torii-url <URL>` — Torii base URL to execute rollback against authoritative control-plane APIs
 * `--api-token <TOKEN>` — Optional API token sent as `x-api-token` when mutating live control-plane APIs
 * `--timeout-secs <SECS>` — HTTP timeout for Torii mutation requests
@@ -12214,9 +12804,9 @@ Advance or fail a rollout step using health-gated canary controls
 
 ###### **Options:**
 
-* `--service-name <NAME>` — Service name with an active rollout
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to resolve the service name
-* `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to resolve the service name
+* `--service-name <NAME>` — Deterministic IVM service name with an active rollout
+* `--container <PATH>` — Optional unpublished deterministic IVM workspace used to resolve the service name
+* `--service <PATH>` — Optional path to its `SoraServiceManifestV1` JSON document
 * `--rollout-handle <HANDLE>` — Rollout handle emitted by `upgrade` output (`rollout_handle`)
 * `--health <HEALTH>` — Health signal for this rollout step
 
@@ -12224,9 +12814,9 @@ Advance or fail a rollout step using health-gated canary controls
 
   Possible values: `healthy`, `unhealthy`
 
-* `--promote-to-percent <PERCENT>` — Optional target traffic percentage for healthy promotions
+* `--promote-to-percent <PERCENT>` — Explicit target traffic percentage; required for healthy steps and forbidden otherwise
 * `--governance-tx-hash <HASH>` — Governance transaction hash linked to this rollout action
-* `--torii-url <URL>` — Torii base URL to execute rollout against authoritative control-plane APIs
+* `--torii-url <URL>` — Torii base URL to execute a deterministic IVM rollout against authoritative control-plane APIs
 * `--api-token <TOKEN>` — Optional API token sent as `x-api-token` when mutating live control-plane APIs
 * `--timeout-secs <SECS>` — HTTP timeout for Torii mutation requests
 
@@ -12252,13 +12842,8 @@ Soracloud model-training and model-registry helpers
 * `weight-promote` — Promote a model weight version in live Torii control-plane mode
 * `weight-rollback` — Roll back a model weight version in live Torii control-plane mode
 * `weight-status` — Query model weight status in live Torii control-plane mode
-* `upload-encryption-recipient` — Fetch the active uploaded-model encryption recipient from Torii
 * `upload-register` — Register a SoraFS-backed uploaded-model bundle into the model registry
 * `upload-status` — Query SoraFS-backed uploaded-model storage and registry status
-* `host-advertise` — Advertise validator-host capabilities for authoritative HF placement
-* `host-heartbeat` — Refresh the heartbeat TTL for an advertised model host
-* `host-withdraw` — Withdraw an advertised model host capability
-* `host-status` — Query authoritative model-host capability adverts
 
 
 
@@ -12271,7 +12856,7 @@ Start a distributed training job in live Torii control-plane mode
 ###### **Options:**
 
 * `--service-name <NAME>` — Service name that owns the training job
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to resolve the service name
+* `--container <PATH>` — Optional unpublished Soracloud container workspace used to resolve the service name
 * `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to resolve the service name
 * `--model-name <NAME>` — Model name for the training job
 * `--job-id <ID>` — Deterministic training job identifier
@@ -12279,7 +12864,7 @@ Start a distributed training job in live Torii control-plane mode
 
   Default value: `1`
 * `--target-steps <STEPS>` — Target number of steps to complete the training job
-* `--checkpoint-interval-steps <STEPS>` — Step cadence for checkpoint creation
+* `--checkpoint-interval-steps <STEPS>`
 * `--max-retries <COUNT>` — Maximum allowed retries for the training job
 
   Default value: `3`
@@ -12303,7 +12888,7 @@ Record a training checkpoint in live Torii control-plane mode
 ###### **Options:**
 
 * `--service-name <NAME>` — Service name that owns the training job
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to resolve the service name
+* `--container <PATH>` — Optional unpublished Soracloud container workspace used to resolve the service name
 * `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to resolve the service name
 * `--job-id <ID>` — Training job identifier
 * `--completed-step <STEP>` — Completed step represented by this checkpoint
@@ -12326,7 +12911,7 @@ Submit a training retry request in live Torii control-plane mode
 ###### **Options:**
 
 * `--service-name <NAME>` — Service name that owns the training job
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to resolve the service name
+* `--container <PATH>` — Optional unpublished Soracloud container workspace used to resolve the service name
 * `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to resolve the service name
 * `--job-id <ID>` — Training job identifier
 * `--reason <TEXT>` — Human-readable retry reason recorded in audit logs
@@ -12347,7 +12932,7 @@ Query training job status in live Torii control-plane mode
 ###### **Options:**
 
 * `--service-name <NAME>` — Service name that owns the training job
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to resolve the service name
+* `--container <PATH>` — Optional unpublished Soracloud container workspace used to resolve the service name
 * `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to resolve the service name
 * `--job-id <ID>` — Training job identifier
 * `--torii-url <URL>` — Torii base URL for live control-plane query
@@ -12367,7 +12952,7 @@ Register model-artifact metadata in live Torii control-plane mode
 ###### **Options:**
 
 * `--service-name <NAME>` — Service name that owns the model
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to resolve the service name
+* `--container <PATH>` — Optional unpublished Soracloud container workspace used to resolve the service name
 * `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to resolve the service name
 * `--model-name <NAME>` — Model name
 * `--training-job-id <ID>` — Training job identifier backing this artifact registration
@@ -12393,7 +12978,7 @@ Query model-artifact status in live Torii control-plane mode
 ###### **Options:**
 
 * `--service-name <NAME>` — Service name that owns the model artifact
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to resolve the service name
+* `--container <PATH>` — Optional unpublished Soracloud container workspace used to resolve the service name
 * `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to resolve the service name
 * `--training-job-id <ID>` — Training job identifier associated with the artifact
 * `--torii-url <URL>` — Torii base URL for live control-plane query
@@ -12413,7 +12998,7 @@ Register a model weight version in live Torii control-plane mode
 ###### **Options:**
 
 * `--service-name <NAME>` — Service name that owns the model
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to resolve the service name
+* `--container <PATH>` — Optional unpublished Soracloud container workspace used to resolve the service name
 * `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to resolve the service name
 * `--model-name <NAME>` — Model name
 * `--weight-version <VERSION>` — New weight version identifier
@@ -12441,7 +13026,7 @@ Promote a model weight version in live Torii control-plane mode
 ###### **Options:**
 
 * `--service-name <NAME>` — Service name that owns the model
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to resolve the service name
+* `--container <PATH>` — Optional unpublished Soracloud container workspace used to resolve the service name
 * `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to resolve the service name
 * `--model-name <NAME>` — Model name
 * `--weight-version <VERSION>` — Weight version to promote
@@ -12464,7 +13049,7 @@ Roll back a model weight version in live Torii control-plane mode
 ###### **Options:**
 
 * `--service-name <NAME>` — Service name that owns the model
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to resolve the service name
+* `--container <PATH>` — Optional unpublished Soracloud container workspace used to resolve the service name
 * `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to resolve the service name
 * `--model-name <NAME>` — Model name
 * `--target-version <VERSION>` — Target version to roll back to
@@ -12486,29 +13071,11 @@ Query model weight status in live Torii control-plane mode
 ###### **Options:**
 
 * `--service-name <NAME>` — Service name that owns the model
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to resolve the service name
+* `--container <PATH>` — Optional unpublished Soracloud container workspace used to resolve the service name
 * `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to resolve the service name
 * `--model-name <NAME>` — Model name
 * `--torii-url <URL>` — Torii base URL for live control-plane query
 * `--api-token <TOKEN>` — Optional API token sent as `x-api-token`
-* `--timeout-secs <SECS>` — HTTP timeout for live control-plane query
-
-  Default value: `10`
-
-
-
-## `iroha soracloud model upload-encryption-recipient`
-
-Fetch the active uploaded-model encryption recipient from Torii
-
-**Usage:** `iroha soracloud model upload-encryption-recipient [OPTIONS]`
-
-###### **Options:**
-
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to project the local service plan
-* `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to project the local service plan
-* `--torii-url <URL>` — Torii base URL for authoritative `model/upload/encryption-recipient`
-* `--api-token <TOKEN>` — Optional API token sent as `x-api-token` when querying Torii
 * `--timeout-secs <SECS>` — HTTP timeout for live control-plane query
 
   Default value: `10`
@@ -12526,7 +13093,7 @@ Register a SoraFS-backed uploaded-model bundle into the model registry
 * `--bundle-file <PATH>` — Path to a `SoraUploadedModelBundleV1` JSON document with an approved SoraFS digest
 * `--request-file <PATH>` — Path to an `UploadedModelFinalizePayload` JSON document describing registry metadata
 * `--service-name <NAME>` — Service name that owns the uploaded model
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to resolve the service name
+* `--container <PATH>` — Optional unpublished Soracloud container workspace used to resolve the service name
 * `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to resolve the service name
 * `--torii-url <URL>` — Torii base URL for authoritative `model/upload/register`
 * `--api-token <TOKEN>` — Optional API token sent as `x-api-token`
@@ -12545,7 +13112,7 @@ Query SoraFS-backed uploaded-model storage and registry status
 ###### **Options:**
 
 * `--service-name <NAME>` — Service name that owns the uploaded model
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to resolve the service name
+* `--container <PATH>` — Optional unpublished Soracloud container workspace used to resolve the service name
 * `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to resolve the service name
 * `--weight-version <VERSION>` — Uploaded-model pinned weight version
 * `--model-id <ID>` — Optional uploaded-model identifier
@@ -12559,130 +13126,43 @@ Query SoraFS-backed uploaded-model storage and registry status
 
 
 
-## `iroha soracloud model host-advertise`
-
-Advertise validator-host capabilities for authoritative HF placement
-
-**Usage:** `iroha soracloud model host-advertise [OPTIONS] --peer-id <PEER_ID> --max-model-bytes <BYTES> --max-disk-cache-bytes <BYTES> --max-ram-bytes <BYTES> --max-concurrent-resident-models <COUNT> --host-class <CLASS> --heartbeat-expires-at-ms <UNIX_MS>`
-
-###### **Options:**
-
-* `--peer-id <PEER_ID>` — Peer identifier used for Soracloud routing
-* `--backends <BACKENDS>` — Supported backend families
-
-  Possible values: `transformers`, `gguf`
-
-* `--formats <FORMATS>` — Supported model formats
-
-  Possible values: `safetensors`, `pytorch`, `gguf`
-
-* `--max-model-bytes <BYTES>` — Maximum canonical model bytes accepted by this host
-* `--max-disk-cache-bytes <BYTES>` — Maximum disk cache bytes reserved for resident models
-* `--max-ram-bytes <BYTES>` — Maximum system RAM bytes reserved for resident models
-* `--max-vram-bytes <BYTES>` — Maximum accelerator VRAM bytes reserved for resident models
-
-  Default value: `0`
-* `--max-concurrent-resident-models <COUNT>` — Maximum concurrent resident-model slots
-* `--host-class <CLASS>` — Governance-defined host class used for compute tariff lookup
-* `--heartbeat-expires-at-ms <UNIX_MS>` — Heartbeat expiry timestamp (unix ms) for this advert
-* `--torii-url <URL>` — Torii base URL for authoritative `model-host/advertise`
-* `--api-token <TOKEN>` — Optional API token sent as `x-api-token` when mutating live control-plane APIs
-* `--timeout-secs <SECS>` — HTTP timeout for live control-plane mutations
-
-  Default value: `10`
-
-
-
-## `iroha soracloud model host-heartbeat`
-
-Refresh the heartbeat TTL for an advertised model host
-
-**Usage:** `iroha soracloud model host-heartbeat [OPTIONS] --heartbeat-expires-at-ms <UNIX_MS>`
-
-###### **Options:**
-
-* `--heartbeat-expires-at-ms <UNIX_MS>` — Heartbeat expiry timestamp (unix ms) for this advert
-* `--torii-url <URL>` — Torii base URL for authoritative `model-host/heartbeat`
-* `--api-token <TOKEN>` — Optional API token sent as `x-api-token` when mutating live control-plane APIs
-* `--timeout-secs <SECS>` — HTTP timeout for live control-plane mutations
-
-  Default value: `10`
-
-
-
-## `iroha soracloud model host-withdraw`
-
-Withdraw an advertised model host capability
-
-**Usage:** `iroha soracloud model host-withdraw [OPTIONS]`
-
-###### **Options:**
-
-* `--torii-url <URL>` — Torii base URL for authoritative `model-host/withdraw`
-* `--api-token <TOKEN>` — Optional API token sent as `x-api-token` when mutating live control-plane APIs
-* `--timeout-secs <SECS>` — HTTP timeout for live control-plane mutations
-
-  Default value: `10`
-
-
-
-## `iroha soracloud model host-status`
-
-Query authoritative model-host capability adverts
-
-**Usage:** `iroha soracloud model host-status [OPTIONS]`
-
-###### **Options:**
-
-* `--validator-account-id <ACCOUNT>` — Optional validator account identifier filter
-* `--torii-url <URL>` — Torii base URL for authoritative `model-host/status`
-* `--api-token <TOKEN>` — Optional API token sent as `x-api-token` when querying live control-plane APIs
-* `--timeout-secs <SECS>` — HTTP timeout for live control-plane queries
-
-  Default value: `10`
-
-
-
 ## `iroha soracloud hf`
 
-Shared Hugging Face lease-pool helpers
+Inert Hugging Face source metadata and shared storage-lease helpers
 
 **Usage:** `iroha soracloud hf <COMMAND>`
 
 ###### **Subcommands:**
 
-* `deploy` — Join or create a shared Hugging Face lease pool in live Torii control-plane mode
-* `status` — Query shared Hugging Face lease pool status in live Torii control-plane mode
-* `lease-leave` — Leave a shared Hugging Face lease pool in live Torii control-plane mode
-* `lease-renew` — Renew an expired or drained shared Hugging Face lease pool window
+* `join` — Register immutable source metadata and join or create its shared storage lease
+* `status` — Query immutable source metadata and shared storage-lease status
+* `lease-leave` — Leave an immutable source's shared storage lease
+* `lease-renew` — Renew an immutable source's expired or drained shared storage-lease window
 
 
 
-## `iroha soracloud hf deploy`
+## `iroha soracloud hf join`
 
-Join or create a shared Hugging Face lease pool in live Torii control-plane mode
+Register immutable source metadata and join or create its shared storage lease
 
-**Usage:** `iroha soracloud hf deploy [OPTIONS] --repo-id <REPO> --lease-term-ms <MS> --lease-asset-definition <ASSET> --base-fee <QUANTITY>`
+**Usage:** `iroha soracloud hf join [OPTIONS] --repo-id <REPO> --revision <COMMIT_OID> --storage-class <STORAGE_CLASS> --lease-term-ms <MS> --lease-asset-definition <ASSET> --base-fee <QUANTITY>`
 
 ###### **Options:**
 
 * `--repo-id <REPO>` — Hugging Face repository identifier (for example `openai/gpt-oss`)
-* `--revision <REVISION>` — Optional Hugging Face revision. Defaults to `main` when omitted
-* `--model-name <NAME>` — Optional local model label. Defaults to the repo slug
-* `--service-name <NAME>` — Soracloud service name bound to this lease membership
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to resolve the service name
+* `--revision <COMMIT_OID>` — Full 40-character lowercase Hugging Face commit OID
+* `--service-name <NAME>` — Soracloud service name recorded as inert lease-membership metadata
+* `--container <PATH>` — Optional unpublished Soracloud container workspace used to resolve the service name
 * `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to resolve the service name
-* `--apartment-name <NAME>` — Optional agent apartment name bound to this lease membership
+* `--apartment-name <NAME>` — Optional agent apartment name recorded as inert lease-membership metadata
 * `--storage-class <STORAGE_CLASS>` — Shared-lease storage tier
-
-  Default value: `warm`
 
   Possible values: `hot`, `warm`, `cold`
 
 * `--lease-term-ms <MS>` — Shared-lease window length in milliseconds
 * `--lease-asset-definition <ASSET>` — Settlement asset definition identifier
 * `--base-fee <QUANTITY>` — Exact, positive base lease fee in the settlement asset
-* `--torii-url <URL>` — Torii base URL for authoritative `hf/deploy`
+* `--torii-url <URL>` — Torii base URL for authoritative `hf/lease/join`
 * `--api-token <TOKEN>` — Optional API token sent as `x-api-token` when mutating live control-plane APIs
 * `--timeout-secs <SECS>` — HTTP timeout for live control-plane mutations
 
@@ -12692,25 +13172,23 @@ Join or create a shared Hugging Face lease pool in live Torii control-plane mode
 
 ## `iroha soracloud hf status`
 
-Query shared Hugging Face lease pool status in live Torii control-plane mode
+Query immutable source metadata and shared storage-lease status
 
-**Usage:** `iroha soracloud hf status [OPTIONS] --repo-id <REPO> --lease-term-ms <MS>`
+**Usage:** `iroha soracloud hf status [OPTIONS] --repo-id <REPO> --revision <COMMIT_OID> --storage-class <STORAGE_CLASS> --lease-term-ms <MS>`
 
 ###### **Options:**
 
 * `--repo-id <REPO>` — Hugging Face repository identifier (for example `openai/gpt-oss`)
-* `--revision <REVISION>` — Optional Hugging Face revision. Defaults to `main` when omitted
+* `--revision <COMMIT_OID>` — Full 40-character lowercase Hugging Face commit OID
 * `--storage-class <STORAGE_CLASS>` — Shared-lease storage tier
-
-  Default value: `warm`
 
   Possible values: `hot`, `warm`, `cold`
 
 * `--lease-term-ms <MS>` — Shared-lease window length in milliseconds
 * `--account-id <ACCOUNT>` — Optional account filter for membership-specific status
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to project the local service plan
+* `--container <PATH>` — Optional unpublished Soracloud container workspace used to project the local service plan
 * `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to project the local service plan
-* `--torii-url <URL>` — Torii base URL for authoritative `hf/status`
+* `--torii-url <URL>` — Torii base URL for authoritative `hf/lease/status`
 * `--api-token <TOKEN>` — Optional API token sent as `x-api-token` when querying live control-plane APIs
 * `--timeout-secs <SECS>` — HTTP timeout for live control-plane queries
 
@@ -12720,25 +13198,23 @@ Query shared Hugging Face lease pool status in live Torii control-plane mode
 
 ## `iroha soracloud hf lease-leave`
 
-Leave a shared Hugging Face lease pool in live Torii control-plane mode
+Leave an immutable source's shared storage lease
 
-**Usage:** `iroha soracloud hf lease-leave [OPTIONS] --repo-id <REPO> --lease-term-ms <MS>`
+**Usage:** `iroha soracloud hf lease-leave [OPTIONS] --repo-id <REPO> --revision <COMMIT_OID> --storage-class <STORAGE_CLASS> --lease-term-ms <MS>`
 
 ###### **Options:**
 
 * `--repo-id <REPO>` — Hugging Face repository identifier
-* `--revision <REVISION>` — Optional Hugging Face revision. Defaults to `main` when omitted
+* `--revision <COMMIT_OID>` — Full 40-character lowercase Hugging Face commit OID
 * `--storage-class <STORAGE_CLASS>` — Shared-lease storage tier
-
-  Default value: `warm`
 
   Possible values: `hot`, `warm`, `cold`
 
 * `--lease-term-ms <MS>` — Shared-lease window length in milliseconds
-* `--service-name <NAME>` — Optional service binding to include in the signed leave request
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to resolve the service name
+* `--service-name <NAME>` — Optional inert service association to include in the signed leave request
+* `--container <PATH>` — Optional unpublished Soracloud container workspace used to resolve the service name
 * `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to resolve the service name
-* `--apartment-name <NAME>` — Optional apartment binding to include in the signed leave request
+* `--apartment-name <NAME>` — Optional inert apartment association to include in the signed leave request
 * `--torii-url <URL>` — Torii base URL for authoritative `hf/lease/leave`
 * `--api-token <TOKEN>` — Optional API token sent as `x-api-token` when mutating live control-plane APIs
 * `--timeout-secs <SECS>` — HTTP timeout for live control-plane mutations
@@ -12749,22 +13225,19 @@ Leave a shared Hugging Face lease pool in live Torii control-plane mode
 
 ## `iroha soracloud hf lease-renew`
 
-Renew an expired or drained shared Hugging Face lease pool window
+Renew an immutable source's expired or drained shared storage-lease window
 
-**Usage:** `iroha soracloud hf lease-renew [OPTIONS] --repo-id <REPO> --lease-term-ms <MS> --lease-asset-definition <ASSET> --base-fee <QUANTITY>`
+**Usage:** `iroha soracloud hf lease-renew [OPTIONS] --repo-id <REPO> --revision <COMMIT_OID> --storage-class <STORAGE_CLASS> --lease-term-ms <MS> --lease-asset-definition <ASSET> --base-fee <QUANTITY>`
 
 ###### **Options:**
 
 * `--repo-id <REPO>` — Hugging Face repository identifier
-* `--revision <REVISION>` — Optional Hugging Face revision. Defaults to `main` when omitted
-* `--model-name <NAME>` — Optional local model label. Defaults to the repo slug
-* `--service-name <NAME>` — Soracloud service name bound to the renewed lease membership
-* `--container <PATH>` — Optional path to a `SoraContainerManifestV1` JSON document used to resolve the service name
+* `--revision <COMMIT_OID>` — Full 40-character lowercase Hugging Face commit OID
+* `--service-name <NAME>` — Soracloud service name recorded as inert renewed-membership metadata
+* `--container <PATH>` — Optional unpublished Soracloud container workspace used to resolve the service name
 * `--service <PATH>` — Optional path to a `SoraServiceManifestV1` JSON document used to resolve the service name
-* `--apartment-name <NAME>` — Optional agent apartment name bound to the renewed lease membership
+* `--apartment-name <NAME>` — Optional agent apartment name recorded as inert renewed-membership metadata
 * `--storage-class <STORAGE_CLASS>` — Shared-lease storage tier
-
-  Default value: `warm`
 
   Possible values: `hot`, `warm`, `cold`
 
@@ -12798,7 +13271,6 @@ Persistent Soracloud agent/apartment helpers
 * `message-ack` — Acknowledge (consume) a mailbox message from an apartment queue
 * `mailbox-status` — Inspect mailbox queue state for an apartment
 * `artifact-allow` — Add an artifact hash (and optional provenance hash) to autonomy allowlist
-* `autonomy-run` — Approve an autonomous run under allowlist/provenance/budget guardrails
 * `autonomy-status` — Show autonomous-run policy state for an apartment
 
 
@@ -12887,11 +13359,12 @@ Show authoritative apartment runtime status
 
 Submit an apartment wallet spend request under policy guardrails
 
-**Usage:** `iroha soracloud agent wallet-spend [OPTIONS] --apartment-name <NAME> --asset-definition <ASSET> --amount <QUANTITY>`
+**Usage:** `iroha soracloud agent wallet-spend [OPTIONS] --apartment-name <NAME> --request-id <REQUEST> --asset-definition <ASSET> --amount <QUANTITY>`
 
 ###### **Options:**
 
 * `--apartment-name <NAME>` — Apartment name issuing the spend request
+* `--request-id <REQUEST>` — Caller-selected unique wallet request identifier committed by the signed V1 request
 * `--asset-definition <ASSET>` — Asset definition identifier (canonical unprefixed Base58 address)
 * `--amount <QUANTITY>` — Exact, positive spend amount
 * `--torii-url <URL>` — Torii base URL for authoritative `agent/wallet/spend`
@@ -12911,7 +13384,7 @@ Approve a pending apartment wallet spend request
 ###### **Options:**
 
 * `--apartment-name <NAME>` — Apartment name owning the request
-* `--request-id <REQUEST>` — Wallet request identifier emitted by `agent wallet-spend`
+* `--request-id <REQUEST>` — Caller-selected wallet request identifier supplied to the original `agent wallet-spend`
 * `--torii-url <URL>` — Torii base URL for authoritative `agent/wallet/approve`
 * `--api-token <TOKEN>` — Optional API token sent as `x-api-token` when mutating live control-plane APIs
 * `--timeout-secs <SECS>` — HTTP timeout for live control-plane mutations
@@ -13008,29 +13481,6 @@ Add an artifact hash (and optional provenance hash) to autonomy allowlist
 * `--artifact-hash <HASH>` — Artifact hash identifier
 * `--provenance-hash <HASH>` — Optional provenance hash required for this artifact
 * `--torii-url <URL>` — Torii base URL for authoritative `agent/autonomy/allow`
-* `--api-token <TOKEN>` — Optional API token sent as `x-api-token` when mutating live control-plane APIs
-* `--timeout-secs <SECS>` — HTTP timeout for live control-plane mutations
-
-  Default value: `10`
-
-
-
-## `iroha soracloud agent autonomy-run`
-
-Approve an autonomous run under allowlist/provenance/budget guardrails
-
-**Usage:** `iroha soracloud agent autonomy-run [OPTIONS] --apartment-name <NAME> --artifact-hash <HASH> --budget-units <UNITS> --run-label <LABEL>`
-
-###### **Options:**
-
-* `--apartment-name <NAME>` — Apartment name requesting autonomous execution
-* `--artifact-hash <HASH>` — Artifact hash identifier
-* `--provenance-hash <HASH>` — Optional provenance hash for this run request
-* `--budget-units <UNITS>` — Budget units requested for this run
-* `--run-label <LABEL>` — Human-readable run label
-* `--workflow-input-json <JSON>` — Optional canonical JSON body to forward to the generated HF `/infer` handler
-* `--workflow-input-json-file <PATH>` — Optional path to a JSON file forwarded to the generated HF `/infer` handler
-* `--torii-url <URL>` — Torii base URL for authoritative `agent/autonomy/run`
 * `--api-token <TOKEN>` — Optional API token sent as `x-api-token` when mutating live control-plane APIs
 * `--timeout-secs <SECS>` — HTTP timeout for live control-plane mutations
 

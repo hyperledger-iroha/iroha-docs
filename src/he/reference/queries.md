@@ -1,23 +1,23 @@
 ---
 translation_locale: he
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# שאלות {#queries}
+# שאילתות {#queries}
 
 דרישות Iroha קוראים את מצב הספר הגדול ללא שינוי בו. מודל הנתונים הנוכחי חושף שני צורות חיפוש רחבות:
 
-- שאילות ייחודיות, שבהן חוזרות אובייקט אחד או ערך אחד
-- שאלות חוזרות, אשר מחזרות זרם או אוסף ויכולים להיות משולבים עם פילטר, סורטינג, פרויקציה ופגינציה כאשר סוג המשאל תומך בו
+- **שאילתות יחידניות**, המחזירות אובייקט אחד או ערך אחד
+- **שאילתות איטרטיביות**, המחזירות זרם או אוסף ואפשר לשלב אותן עם סינון, מיון, projection ועימוד כאשר סוג השאילתה תומך בכך
 
-שימוש SDK הבניינים הטייפדים או CLI במקום לבנות מעטפות בקשת יד. שמות למטה הם סוגים של בקשות הנוכחיים `iroha_data_model::query`.
+השתמשו בבוני SDK בעלי טיפוס או ב־CLI במקום להרכיב מעטפות שאילתה ידנית. השמות להלן הם טיפוסי השאילתה הנוכחיים מתוך `iroha_data_model::query`.
 
 ## זמן ההפעלה וההסדר {#runtime-and-configuration}
 
-|שאלה |מטרה.|
+|שאילתה |מטרה.|
 | --- | --- |
 |`FindAbiVersion` |תחזירו את הגרסה של ABI. |
 |`FindExecutorDataModel` |תחזיר את תיאור דגם הנתונים של המוציא לפועל. |
@@ -25,7 +25,7 @@ translation_engine: nllb-200-ct2
 
 ## חשבונות ורישיון {#accounts-and-permissions}
 
-|שאלה |מטרה.|
+|שאילתה |מטרה.|
 | --- | --- |
 |`FindAccountById` |תמצא חשבון אחד לפי חשבון קנוני ID. |
 |`FindAccountByAlias` |לפתור חשבון בשם חשבון. |
@@ -40,9 +40,9 @@ translation_engine: nllb-200-ct2
 |`FindRolesByAccountId` |רשימה של תפקידים שניתנו לחשבון. |
 |`FindPermissionsByAccountId` |רשימה של הרשויות שניתנו לחשבון. |
 
-## דומנים ושותפים {#domains-and-peers}
+## דומיינים וצמתים {#domains-and-peers}
 
-|שאלה |מטרה.|
+|שאילתה |מטרה.|
 | --- | --- |
 |`FindDomainById` |תמצא תחום אחד ב `DomainId`. |
 |`FindDomains` |רשימה של תחומים רשומים. |
@@ -50,11 +50,11 @@ translation_engine: nllb-200-ct2
 |`FindDomainEndorsements` |רשום רישומי אישור תחום. |
 |`FindDomainEndorsementPolicy` |תחזיר את מדיניות אישור הדומיין. |
 |`FindDomainCommittee` |תחזיר את ועדת הדומיין.|
-|`FindPeers` |רשימה של עמיתים אמינים ידועים בספר. |
+|`FindPeers` |רשימה של צמתים אמינים ידועים בספר. |
 
 ## נכסים, NFTs, ו RWAs {#assets-nfts-and-rwas}
 
-|שאלה |מטרה.|
+|שאילתה |מטרה.|
 | --- | --- |
 |`FindAssets` |רשימה של סולציות נכסים. |
 |`FindAssetsDefinitions` |רשימה של הגדרות נכסים. |
@@ -65,30 +65,30 @@ translation_engine: nllb-200-ct2
 |`FindNftsByAccountId` |רשימה NFTs בבעלות חשבון. |
 |`FindRwas` |רשימה רשומה של נכסים אמיתיים. |
 
-## רישומי אבטחה וראיות {#escrow-and-proof-records}
+## רשומות נאמנות והוכחה {#escrow-and-proof-records}
 
-בקשות אבטחה בודקות את הרשומות שנוצרו על ידי [ אבטחת נכסים מקומיים ISIs](/he/blockchain/escrow.md), כולל אבטחות בשוק, סגרות נכסים גנריות ורישומים אבטחים אנונימיים.
+שאילתות נאמנות בודקות את הרשומות שנוצרו על ידי [ה־ISIs של נאמנות מובנית לנכסים](/he/blockchain/escrow.md), ובהן נאמנויות של זירת מסחר, נעילות נכסים כלליות ורשומות נאמנות אנונימיות.
 
-|שאלה |מטרה.|
+|שאילתה |מטרה.|
 | --- | --- |
-|`FindAssetEscrows` |רשום רישומי אבטחת נכסים. |
-|`FindAssetEscrowById` |תמצאו מאבטחת נכסים אחת עד ID. |
-|`FindAssetEscrowsBySeller` |רשימה של אבטחות נכסים לפי מוכר. |
-|`FindAssetEscrowsByBuyer` |רשימה של נכסים על ידי קונה. |
-|`FindAssetEscrowsByStatus` |רשימה של נכסים על פי מצבם. |
-|`FindAnonymousAssetEscrows` |רשום רישומי אבטחה של נכסים אנונימיים.|
-|`FindAnonymousAssetEscrowById` |תמצא מאבטח נכסים אנונימי אחד על ידי ID. |
-|`FindAnonymousAssetEscrowsBySeller` |רשימה של אבטחות אנונימיות על ידי מוכר.|
-|`FindAnonymousAssetEscrowsByBuyer` |רשימה של אבטחות אנונימיות על ידי קונה.|
-|`FindAnonymousAssetEscrowsByStatus` |רשימה של מאבטחים אנונימיים לפי מצבם. |
-|`FindProofRecordById` |מצא רישום ראיות אחד על ידי ID. |
-|`FindProofRecords` |רשום רישומי ראיות.|
-|`FindProofRecordsByBackend` |רשום רישומים של הוכחה ל-backend ראיה. |
-|`FindProofRecordsByStatus` |רשימה רשומות הוכחה לפי מצב. |
+|`FindAssetEscrows` |מציג רשומות נאמנות לנכסים. |
+|`FindAssetEscrowById` |מוצא נאמנות נכסים אחת לפי ID. |
+|`FindAssetEscrowsBySeller` |מציג נאמנויות נכסים לפי מוכר. |
+|`FindAssetEscrowsByBuyer` |מציג נאמנויות נכסים לפי קונה. |
+|`FindAssetEscrowsByStatus` |מציג נאמנויות נכסים לפי מצב. |
+|`FindAnonymousAssetEscrows` |מציג רשומות נאמנות אנונימית לנכסים.|
+|`FindAnonymousAssetEscrowById` |מוצא נאמנות אנונימית אחת לנכסים לפי ID. |
+|`FindAnonymousAssetEscrowsBySeller` |מציג נאמנויות אנונימיות לפי מוכר.|
+|`FindAnonymousAssetEscrowsByBuyer` |מציג נאמנויות אנונימיות לפי קונה.|
+|`FindAnonymousAssetEscrowsByStatus` |מציג נאמנויות אנונימיות לפי מצב. |
+|`FindProofRecordById` |מוצא רשומת הוכחה אחת לפי ID. |
+|`FindProofRecords` |מציג רשומות הוכחה.|
+|`FindProofRecordsByBackend` |מציג רשומות הוכחה עבור מנגנון הוכחה. |
+|`FindProofRecordsByStatus` |מציג רשומות הוכחה לפי מצב. |
 
 ## Nexus, זמינות הנתונים וארכיבים {#nexus-data-availability-and-packages}
 
-|שאלה |מטרה.|
+|שאילתה |מטרה.|
 | --- | --- |
 |`FindRepoAgreements` |רשימה של הסכמי אחסון שמוצאים על שרשרת. |
 |`FindTwitterBindingByHash` |לפתור קישור טוויטר באמצעות האש. |
@@ -99,23 +99,30 @@ translation_engine: nllb-200-ct2
 |`FindLaneRelayEnvelopeByRef` |תמצא מעטפה מאושרת.|
 |`FindSorafsProviderOwner` |לפתור את הבעלים של ספק SoraFS. |
 |`FindDataspaceNameOwnerById` |לפתור בעל שמות חלל נתונים. |
-|`FindMusubiReleaseByRef` |תמצאו Musubi שחרור באמצעות התייחסות. |
-|`FindMusubiPackageVersions` |רשימה של גרסאות עבור חבילת Musubi. |
-|`FindMusubiPackageReleases` |פרש רשימות עבור חבילת Musubi. |
-|`FindMusubiShortAliasByName` |לפתור שם שמה קצר Musubi. |
+|`FindMusubiExactPackageV1` |קראו רישום מסגר מדויק אחד ושינויים הנוכחיים בו. |
+|`FindMusubiExactReleaseV1` |קורא תמונת מצב מדויקת אחת של הפצה.|
+|`FindMusubiProviderBundleAttestationV1` |קראו את תעודת האריכיון של ספקית אחת. |
+|`FindMusubiResolverIndexV1` |דף האינדקס של הגורם הסופי. |
+|`FindMusubiVersionsV1` |דף גרסאות סופיות עבור חבילת אחת. |
+|`FindMusubiMaintainersV1` |דף קיבל מחזיקים וזמנות ממתינות. |
+|`FindMusubiArchiveLocationsV1` |דף סיים את מקומות SoraFS לארכיון אחד. |
+|`FindMusubiArchiveRetentionV1` |דף רשומות אחסון ארכיון. |
+|`FindMusubiAliasV1` |קראו את המטרה הנוכחית וההפכה של שם גלובלי. |
+|`FindMusubiAliasHistoryV1` |תפרסם את ההיסטוריה הבלתי משתנה של התכלית העולמית. |
+|`FindMusubiOrderedPrefixV1` |חבילות עמודים תחת תצוגה מבוצעת אחת. |
 
 ## גורמים, חוזים, עסקאות ובלוקים {#triggers-contracts-transactions-and-blocks}
 
-|שאלה |מטרה.|
+|שאילתה |מטרה.|
 | --- | --- |
-|`FindActiveTriggerIds` |רשום את המפעיל הפעיל IDs. |
-|`FindTriggers` |רשימת גורמים. |
-|`FindTriggerById` |מצא תפעיל אחד ב ID. |
+|`FindActiveTriggerIds` |מציג IDs של טריגרים פעילים. |
+|`FindTriggers` |מציג טריגרים. |
+|`FindTriggerById` |מוצא טריגר אחד לפי ID. |
 |`FindContractManifestByCodeHash` |מצא מסמך חוזים חכמים על ידי קוד האש.|
-|`FindTransactions` |רשימה של עסקאות מחויבות. |
+|`FindTransactions` |רשימה של עסקאות commit. |
 |`FindBlocks` |בלוקים של רשימה.|
 |`FindBlockHeaders` |רשימה כותרות בלוק. |
 
 ## סינון ושידור עמודים {#filtering-and-pagination}
 
-שאילתות משוחרות יכולות לחשוף תמיכה בעובדה ובבחור. השתמשו בפילטרים מדפוסים ספציפיים למשאלה מ- SDK כך שהכניסת הסידור מתאימה לסוג יצירתו של השאלת. עבור קבוצות התוצאות גדולות, השתמשו בפרמטרים של השאלות כגון כורסר והגבול במקום לקבל כל שורה בו זמנית.
+שאילתות איטרטיביות יכולות לתמוך ב-predicate וב-selector. השתמשו במסננים בעלי טיפוסים הייחודיים לשאילתה מתוך ה-SDK, כדי שקלט המסנן יתאים לסוג הפלט של השאילתה. עבור קבוצות תוצאות גדולות, השתמשו בפרמטרי שאילתה כגון cursor ו-limit במקום לאחזר את כל השורות בבת אחת.

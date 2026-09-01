@@ -1,20 +1,19 @@
 ---
 translation_locale: zh-hans
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: ab8f3bf6d2259dc1ea649273e695429a992108b936475b263fe9d1fae59e8766
+translation_source_hash: c070c86b715b36079a7b6a47de2e31144187d7ebc6309f294a346be61a372660
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 通过 CLI 运行 Iroha 3 {#operate-iroha-3-via-cli}
 
-`iroha`二进制是 Iroha 3 的命令行客户端. 使用它查询账本状态,提交交易和检查操作员终点.
+`iroha`二进制是 Iroha 3 的命令行客户端. 使用它查询账本状态,提交交易和检查操作员端点.
 
 ## 1.先决条件 {#_1-prerequisites}
 
 首先启动一个本地网络:
 
-- [发射 Iroha 3](./launch-iroha.md)
+- [启动 Iroha 3](./launch-iroha.md)
 
 在 [启动 Iroha 3](./launch-iroha.md)中创建的本地网络中生成的客户端配置:
 
@@ -34,7 +33,7 @@ CLI 分为以下最高级别指挥组:
 
 - `account` 针对账户指导的快捷方式
 - `tx` 对于交易级助理
-- `ledger`用于账本阅读和写作
+- `ledger`用于链上读取和写入
 - `ops` 用于操作员诊断
 - `app`用于应用程序的 API 助手
 - `contract` 关于合同部署和调用
@@ -47,7 +46,7 @@ CLI 分为以下最高级别指挥组:
 
 ## 3. 尝试公共测试网 Taira {#_3-try-the-public-taira-testnet}
 
-在运行本地同行或创建签名器之前,您可以尝试仅阅读的 Taira 检查.这些命令使用公共的 Torii JSON 路线,并且不使用测试网 XOR.
+在运行本地对等节点或创建签名器之前,您可以尝试仅阅读的 Taira 检查.这些命令使用公共的 Torii JSON 路线,并且不使用测试网 XOR.
 
 检查 Taira 的状态:
 
@@ -76,7 +75,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=10' \
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-仅在准备测试签署命令时创建 `taira.client.toml`.查看[连接到 SORA Nexus 数据库](/zh-hans/get-started/sora-nexus-dataspaces.md)为配置,龙头和加拿大流量.直到账户通过龙头费资产融资之前,不要对 Taira 进行写字命令.
+仅在准备测试签署命令时创建 `taira.client.toml`.查看[连接到 SORA Nexus 数据空间](/zh-hans/get-started/sora-nexus-dataspaces.md)为配置,水龙头和 canary 流程.直到账户通过水龙头费资产融资之前,不要对 Taira 进行写入命令.
 
 对于任何付费 Taira CLI 例如,拯救水龙头辅助器 [获取测试网 XOR 在 Taira](/zh-hans/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) 作为 `taira_faucet_claim.py`, 然后索赔测试网 XOR 首先:
 
@@ -112,7 +111,7 @@ iroha --config ./taira.client.toml \
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 ```
 
-常规域名创建使用声明别名计划器; `ledger domain` 命令没有 `register` 准备一个无秘密的机器. `AliasSetupPlanRequestV1` 目的 `docs.universal` 和你的 SDK 或安装服务,然后规划并应用:
+普通域名创建使用声明别名计划器; `ledger domain` 命令没有 `register` 准备一个无秘密的机器. `AliasSetupPlanRequestV1` 目的 `docs.universal` 和你的 SDK 或安装服务,然后规划并应用:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml \
@@ -124,7 +123,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml \
   app alias setup apply --plan-file ./docs-domain.plan.json
 ```
 
-意图键是数据空间 ID,常规所有者帐户,租期限和当前报价保护.计划器验证现实状态并返回提交的精确原子`EnsureAlias`计划.不要手动复制其他网络的保护值.
+意图键是数据空间 ID,规范所有者帐户,租期限和当前报价保护.计划器验证现实状态并返回提交的精确原子`EnsureAlias`计划.不要手动复制其他网络的保护值.
 
 发送一个简单的ping交易:
 
@@ -141,36 +140,50 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 
 ## 5. 操作员指挥 {#_5-operator-commands}
 
-意见共识状态:
+共识操作员命令需要一个允许列出的运行时密钥.将其保持在 `client.toml`之外,并明确传递仅限所有者读取的文件:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi status
+: "${OPERATOR_KEY_FILE:=./secrets/operator.key}"
+
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi status
 ```
 
-一阶段延迟快照:
+无权威排队,管道,选举和通道诊断:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi phases
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi diagnostics
 ```
 
-可用性,收藏器, RBC 后期记录和 VRF 快照:
+最高和最密封的定数证书:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi telemetry
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi qc
 ```
 
 链上共识参数:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ops sumeragi params
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi params
 ```
 
 ## 6. 接下来要去哪里 {#_6-where-to-go-next}
 
 - [SDK 教程](/zh-hans/guide/tutorials/)
-- [Torii 终端点](/zh-hans/reference/torii-endpoints.md)
+- [Torii 端点](/zh-hans/reference/torii-endpoints.md)
 - [与 Iroha 二进制](/zh-hans/reference/binaries.md) 合作
-- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_cli/README.md)
+- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/README.md)
 
 为了从源检查中恢复一个完整的Markdown帮助快照,运行:
 

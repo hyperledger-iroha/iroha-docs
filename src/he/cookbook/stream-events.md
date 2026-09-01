@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /cookbook/stream-events.md
-translation_source_hash: 1267a7e22bb6601674557f349e4fc5c6b883ce83b7dc62115ea2b8c3a0c39261
+translation_source_hash: 96f0a26000530fee15d121f815f9f5717a535dc3836cff9a2a447b1e5b70c41c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 ## התוצאה {#outcome}
 
-לצרוך אירועי צינור חי Taira מעל אירועים ששלחו על ידי השרת (SSE), להתחבר מחדש עם backup מוגבל, ולהחדש את מצב קבוע לאחר שזרם החלפה פתוחה. מכיוון שבנקודת הסיום אין כורסר חזרה, לטפל באירועים כמו הודעות ולא היסטורית מלאה.
+צרכו אירועים חיים משרשרת העיבוד העיבוד של Taira באמצעות אירועים שנשלחים מהשרת (SSE), התחברו מחדש עם השהיה מעריכית מוגבלת ורעננו את המצב העמיד לאחר פתיחת הזרם החלופי. מאחר שה־endpoint אינו מספק סמן replay, התייחסו לאירועים כהתראות ולא כהיסטוריה מלאה.
 
 ## תנאים מוקדמים {#prerequisites}
 
@@ -160,15 +160,15 @@ await follow()
 node ./stream-taira.mjs
 ```
 
-SSE תגובות דופק הלב לשמור על חיבורים חסרי תועלת בחיים, אבל לא לקבוע סדר של ספריה. להשתמש גובה בלוק, השיס העסקאות, ושאלות ספריה כאשר הסדר או השלמות חשובים.
+הערות heartbeat של SSE משאירות חיבורים לא פעילים פתוחים, אך אינן קובעות את הסדר בספר החשבונות. כאשר הסדר או השלמות חשובים, השתמשו ב־block heights, ב־transaction hashes ובשאילתות של ספר החשבונות.
 
-בקשה האחרונה של 25 חוקרים היא רק אבחון ציבורי. צרכן ייצור חייב להחליף או להרחיב `reconcile()` עם חקירות עבור משאבי היישום המתמשכים שלו וקבילת התאוששות גדולה מספיק עבור נקודת הביקור שלה. תמונת הזריקה המוגבלת לבדה לא יכולה להוכיח כי אף אירוע לא נעלמה.
+בקשה האחרונה של 25 חוקרים היא רק אבחון ציבורי. צרכן ייצור חייב להחליף או להרחיב `reconcile()` עם שאילתות עבור משאבי היישום המתמשכים שלו וקבילת התאוששות גדולה מספיק עבור נקודת הביקור שלה. תמונת הזריקה המוגבלת לבדה לא יכולה להוכיח כי אף אירוע לא נעלמה.
 
 ב-Pinned commit, `ToriiClient.streamEvents()` שולח רק `Accept: text/event-stream`; חי Taira דוחה את הכותרת הנמוכה יותר עם `406`. השתמש בצילום Fetch הגורם למעלה עד ש SDK והנקודת סוף ציבורית יוועדו על אותם סוגים של מדיה.
 
 ## לאמת {#verify}
 
-בטרמינל אחד, להפעיל את הצרכן JavaScript.
+בטרמינל אחד, הפעילו את צרכן ה-JavaScript. בטרמינל אחר, קראו את תמונת המצב הציבורית של העסקאות:
 
 ```bash
 curl -fsS \
@@ -177,22 +177,22 @@ curl -fsS \
   jq .
 ```
 
-עבור כל אירוע עסקאות שאתה מעוניין בו, למצוא את האש שלה בתצלום או לשאול אותו ישירות. ולהתחיל מחדש את הצרכן: הוא חייב להתחבר שוב מבלי לספק אירוע ID ולדפיס אבחון חדש לאחר שזרימת החלפה נפתחה.
+לכל אירוע עסקה שמעניין אתכם, אתרו את ה-hash שלו בתצלום המצב או בצעו עליו שאילתה ישירה. הדף המוגבל עלול להשמיט עסקאות ישנות יותר. לאחר מכן עצרו והפעילו מחדש את הצרכן: עליו להתחבר מחדש בלי לספק event ID ולהדפיס אבחון חדש לאחר פתיחת הזרם החלופי.
 
 ## פתרון בעיות {#troubleshooting}
 
-- קישור עם הערות של דופק הלב אבל אין אירועים נתונים הוא בריא; מצב הצינור הנבחר עשוי פשוט להיות שקט.
+- חיבור שמקבל הערות heartbeat אך אינו מקבל אירועי נתונים הוא תקין; ייתכן שמצב שרשרת עיבוד העיבוד שנבחר פשוט אינו מפיק אירועים.
 - `406 Not Acceptable` בשידור חי Taira פירושו בדרך כלל את בקשה המפורסמת רק `text/event-stream`. לשלוח `text/event-stream, application/json` בדיוק כפי שנראה למעלה.
 - אירוע `stream_error` מצביע על כך שהשרת זיהה עיכוב או מצב זרם טרמינל אחר. Torii שולח את האירוע הזה פעם אחת ומסגר את הזרם; מקושר לפני חיבור מחדש.
-- פרוקסי יכול להזיז את SSE גם כאשר Torii לא. תבטל את ההזיזת והתחפיסה של התגובה בפרוקסי, ותשמור על `curl -N` בדיאгностиקה.
-- לעולם אל תמלא פער בהפסקת חיבור על ידי הנחה כי האירוע הבא עוקב אחרי הקודם. בנקודת הסיום אין קורסר שיחזור; במקום זאת, תשאלו את מצב הספר הגדול הנוכחי.
+- פרוקסי יכול להזיז את SSE גם כאשר Torii לא. תבטל את ההזיזת והתחפיסה של התגובה בפרוקסי, ותשמור על `curl -N` באבחון.
+- לעולם אל תמלאו פער שנוצר עקב ניתוק בהנחה שהאירוע הבא ממשיך את הקודם. לנקודת הקצה אין סמן replay; במקום זאת בצעו שאילתה על מצב ה-ledger הנוכחי.
 
 ## מקור ומסמכים קשורים {#source-and-related-docs}
 
-- [JavaScript טקסט זרימה ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/recipes/streaming.mjs)
-- [ניסויים של אינטגרציה SSE בביצוע ההתחייבויות הקשורות ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/events/sse_smoke.rs)
-- [המנתח Torii FilterExpr בקיומו הוסתר](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/src/filter.rs)
-- [סיבוב אירוע Torii ב- commit ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/src/routing.rs)
+- [JavaScript טקסט זרימה ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs)
+- [ניסויים של אינטגרציה SSE בביצוע commit הקשורות ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs)
+- [המנתח Torii FilterExpr בקיומו הוסתר](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs)
+- [סיבוב אירוע Torii ב- commit ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
 - [אירועים](/he/blockchain/events.md)
 - [נקודות קצה Torii ](/he/reference/torii-endpoints.md)
-- [מצב ספריה המשאלות](./query-ledger-state.md)
+- [שאילתת מצב ספר החשבונות](./query-ledger-state.md)

@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /cookbook/submit-and-verify-transactions.md
-translation_source_hash: e07cc42a3fd5579db312bfbfbb8010f473062edebe0141eb9bb8c2a0e7faa4da
+translation_source_hash: 98e5c7e9db1ba8468cfd5409409b0e8d02251311dc85492f7b71675e983dc4fd
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 ## 结果 {#outcome}
 
-预先进行 Taira 交易,接受准确的收费报价,签署并提交它,等待应用最终性,并通过哈希验证承诺的交易.
+预先进行 Taira 交易,接受准确的收费报价,签署并提交它,等待应用最终性,并通过哈希验证提交的交易.
 
 ## 预先条件 {#prerequisites}
 
@@ -20,9 +20,9 @@ translation_engine: nllb-200-ct2
 
 ## 步骤 {#steps}
 
-### 1. 预先确定终点,权力和费用平衡 {#_1-preflight-the-endpoint-authority-and-fee-balance}
+### 1. 预先确定端点,权力和费用余额 {#_1-preflight-the-endpoint-authority-and-fee-balance}
 
-首先阅读队列快照,然后证明该机构的费用余额可见. 从连接配方生成的元数据中阅读Base58资产定义 ID.
+首先阅读队列快照,然后证明该机构的费用余额可见. 从连接操作指南生成的元数据中阅读Base58资产定义 ID.
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -38,9 +38,9 @@ iroha --config ./taira.client.toml ledger asset get \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-如果账户或费用余额缺席,则停止. 当其当局无法支付时,有效的指令不能通过收取费用.
+如果账户或费用余额缺席,则停止. 当其权限主体无法支付时,有效的指令不能通过收取费用.
 
-### 2. 引用,签署和提交一次 {#_2-quote-sign-and-submit-once}
+### 2. 报价,签署和提交一次 {#_2-quote-sign-and-submit-once}
 
 其他 CLI 发送准确的未签署的有效载荷,以收费报价,将接受的付款意图绑定到交易中,签署并提交. JSON 模式将交易哈希,签署的交易和被接受的报价一起返回.
 
@@ -56,7 +56,7 @@ jq '{hash, fee_quote}' taira-submission.json
 TAIRA_TX_HASH="$(jq -er '.hash' taira-submission.json)"
 ```
 
-在此食谱中不要使用 `--no-wait`.命令在写出成功收据之前等待确认.
+在此操作指南中不要使用 `--no-wait`.命令在写出成功收据之前等待确认.
 
 ### 3. 等待终端管道状态 {#_3-wait-for-terminal-pipeline-state}
 
@@ -97,7 +97,7 @@ curl -fsS -H 'Accept: application/json' \
   | jq '{hash, block, status, authority, executable}'
 ```
 
-为了改变状态的指令,完成一个被突变的对象的查询. [元数据](./metadata.md), [性资产](./fungible-assets.md)和 [NFTs](./nfts.md)的配方包括后状态读取.
+为了改变状态的指令,完成一个被突变的对象的查询. [元数据](./metadata.md), [性资产](./fungible-assets.md)和 [NFTs](./nfts.md)的操作指南包括后状态读取.
 
 ## 验证 {#verify}
 
@@ -117,16 +117,16 @@ curl -fsS -H 'Accept: application/json' \
 ## 解决问题 {#troubleshooting}
 
 - HTTP `202`或排队状态只证明录取. 继续对输入状态进行投票,直到应用,拒绝,过期或截止时间.
-- 如果提交时间结束后返回一个哈希,在创建另一个交易之前查询该哈希.盲目重新提交会产生新的引用和签署的有效负载.
+- 如果提交时间结束后返回一个哈希,在创建另一个交易之前查询该哈希.盲目重新提交会产生新的报价和签署的有效负载.
 - 在签署之前,可以拒绝收费报价. 检查 `--fee-payer authority`, `gas_asset_id`,机构的余额和网络链 ID.
-- `Rejected`通常表示指令验证,许可证,费用或陈旧状态. 它是未能执行的承诺证明,不应重新归类为运输重试.
+- `Rejected` 通常表示指令验证、权限、费用或过时状态。它是已提交的失败执行证据，不应重新分类为传输重试。
 - 在应用程序后,一个探测器 `404` 可以将索引滞后. 再次尝试阅读;不要重新提交交易.
 - 如果一个特权命令在生成的本地网络上运行,但 Taira 拒绝它,请获得准确的 Taira 许可或规定的命名空间分配.本地结果不授予公共网络权力.
 
 ## 来源及相关文件 {#source-and-related-docs}
 
-- [在固定承诺](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/main_shared.rs)中提交交易和执行费率配额
-- [在固定承诺](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha/tests/tx_confirmation.rs)中进行交易确认测试
+- [在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)中提交交易和执行费率配额
+- [固定 commit 上的交易确认实现与测试](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/src/client.rs)
 - [交易](/zh-hans/blockchain/transactions.md)
 - [CLI 指南](/zh-hans/get-started/operate-iroha-via-cli.md)
-- [Torii 终端点](/zh-hans/reference/torii-endpoints.md)
+- [Torii 端点](/zh-hans/reference/torii-endpoints.md)

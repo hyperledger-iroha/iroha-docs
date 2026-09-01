@@ -1,45 +1,44 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/rwas.md
-translation_source_hash: cbdc6d766fb90bea7e68dc67f2c705bb1638340feeb2fca9f2dd43a727ac03e7
+translation_source_hash: 8d64a9a17c93f60306c279e8656e6edde8ce5dd024e742218bfb9572b7438bb0
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
+# Haqiqiy dunyo aktivlari {#real-world-assets}
 
-# Chindan ham mavjud bo'lgan aktivlar {#real-world-assets}
+Haqiqiy dunyo aktivlari (RWAs) egaligi yoki boshqaruvi zanjirda kuzatiladigan zanjirdan tashqari aktivlarni modellashtiradi. Iroha da RWA — hosil qilingan identifikator, egasi hisobi, miqdor, biznes metama’lumotlari, kelib chiqish tarixi va ixtiyoriy hayot davri boshqaruviga ega ro‘yxatdan o‘tgan reyestr lotidir.
 
-Haqiqiy dunyo aktivlari (RWAs) zanjirdan tashqari aktivlar modeli bo'lib, ularning mulkdorligi yoki nazorati zanjirda kuzatiladi. Iroha da RWA - bu yaratilgan identifikator, egasining hisob raqami, miqdor, biznes metadatalari, kelib chiqishi va hayot davri nazoratlarini o'z ichiga olgan ro'yxatga olingan katta daftar lotidir .
+RWAs sonli aktiv qoldiqlaridan farq qiladi:
 
-RWAs raqamli aktivlar saldi bilan farq qiladi:
+- sonli aktiv — hisobda saqlanadigan o‘zaro almashinadigan qoldiq;
+- NFT — bitta egaga ega noyob zanjirdagi yozuv;
+- RWA — biznes metama’lumotlari, miqdor, bandlar, muzlatish holati, muomaladan chiqarish holati, kelib chiqish tarixi va nazoratchi siyosatini olib yurishi mumkin bo‘lgan lot.
 
-- raqamli aktiv - hisobda saqlanayotgan tangible balans;
-- NFT - bitta egasiga ega bo'lgan yagona zanjirdagi yozuv
-- RWA - bu biznes metadatalarini, miqdorni, saqlovlarni, muzlatishni, to'lov holatini, kelib chiqishini va nazoratchi siyosatini olib borishi mumkin bo'lgan partiyadir
+Reyestr faqat o‘zaro almashinadigan qoldiqni emas, zanjirdan tashqari muayyan lotni ifodalashi kerak bo‘lsa, RWAs dan foydalaning.
 
-RWAs dan foydalaning, agar katta ro'yxat faqat shov-shuv bilan bog'liq bo'lmagan lotni ifodalashi kerak bo'lsa.
+## RWA loti {#rwa-lot}
 
-## RWA Lot {#rwa-lot}
+RWA loti quyidagilarni o‘z ichiga oladi:
 
-RWA partiyasida quyidagilar mavjud:
+- `id`: `<hash>$<domain>` ko‘rinishida chiqariladigan, hosil qilingan kanonik RWA identifikatori;
+- `owned_by`: hozir lotga egalik qiladigan hisob;
+- `quantity`: lot ifodalaydigan muomaladagi miqdor;
+- `spec`: o‘nlik masshtab kabi miqdor spetsifikatsiyasi;
+- `primary_reference`: zanjirdan tashqari asosiy kvitansiya, sertifikat, hisob-faktura yoki reyestr havolasi;
+- `status`: ixtiyoriy biznes holati matni;
+- `metadata`: biznes mazmuni va indekslash uchun ishlatiladigan ixcham JSON maydonlari;
+- `parents`: ushbu lotni hosil qilishda ishlatilgan manba lotlar;
+- `controls`: nazoratchi hisoblar, nazoratchi rollari va yoqilgan nazoratchi amallari;
+- `is_frozen` va `held_quantity`: bajarish muhiti ta’minlaydigan hayot davri holati.
 
-- `id`: hosil qilingan kanonik RWA identifikatori, `<hash>$<domain>` sifatida ko'rsatiladi.
-- `owned_by`: partiyani hozirda egallagan hisob raqamlari
-- `quantity`: partiya tomonidan ko'rsatilgan to'liq miqdor
-- `spec`: miqdorni belgilash, masalan, o'nlik baravar
-- `primary_reference`: zanjirdan tashqaridagi asosiy rasit, sertifikat, faktura yoki reyestr ma'lumotnomasi.
-- `status`: ishbilarmonlik holati matni;
-- `metadata`: biznes kontekstida va indekslashda ishlatiladigan kompakt JSON maydonlari
-- `parents`: ushbu partiyani olish uchun ishlatilgan manba lotlari
-- `controls`: nazoratchi hisobvaraqlari, nazoratchining vazifasi va ruxsat etilgan nazoratchi operatsiyalari;
-- `is_frozen` va `held_quantity`: ish vaqti bilan qo'llab-quvvatlanadigan hayot davri holati
-
-Zilziladagi foydali yukni kompak saqlang. Katta huquqiy hujjatlar, inspeksiya hisobotlari va audit to'plamlarini WSV tashqarisida saqlash, so'ngra URI, SoraFS yo'li yoki RWA metadatalariga ma'lumotlar bilan bog'lash.
+Zanjirdagi foydali yukni ixcham saqlang. Katta huquqiy hujjatlar, tekshiruv hisobotlari va nazorat dalillari to‘plamlarini WSV tashqarisida saqlab, RWA metama’lumotlariga dayjest, URI, SoraFS yo‘li yoki manifest havolasini kiriting.
 
 ## Identifikatorlar {#identifiers}
 
-`RegisterRwa` qo'ng'iroq qiluvchi tomonidan tanlangan `id` so'zini qabul qilmaydi va `owner` maydonini ham qabul qilmaydi. Transaksiya organi dastlabki `owned_by` hisob raqamiga aylanadi, ish vaqti esa maqsadli domendagi `RwaId` so'zni hosil qiladi.
+`RegisterRwa` chaqiruvchi tanlagan `id` ni ham, `owner` maydonini ham qabul qilmaydi. Tranzaksiya vakolati dastlabki `owned_by` hisobiga aylanadi, bajarish muhiti esa maqsad domenda `RwaId` ni hosil qiladi.
 
-RWA ID ning matn shakli quyidagicha:
+RWA identifikatorining matn ko‘rinishi quyidagicha:
 
 ```text
 <generated-hash>$<domain>
@@ -51,39 +50,39 @@ Masalan:
 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef$commodities.universal
 ```
 
-Talabnomalar o'z biznes identifikatorini `primary_reference` yoki `metadata` da saqlashlari kerak, so'ngra `RwaEvent::Created`, `FindRwas`, `/v1/rwas` dan hosil bo'lgan `RwaId` yoki tranzaksiya majburiyatlaridan keyin aniqlangan qidiruvchining yo'nalishini aniqlashlari lozim.
+Ilovalar o‘z biznes identifikatorini `primary_reference` yoki `metadata` da saqlashi, tranzaksiya yakunlangach esa hosil qilingan `RwaId` ni `RwaEvent::Created`, `FindRwas`, `/v1/rwas` yoki kuzatuvchi yo‘nalishlari majmuasidan aniqlashi kerak.
 
 ## Hayot davri {#lifecycle}
 
-RWA umumiy ish oqimlari quyidagilarni o'z ichiga oladi:
+Odatdagi RWA ish jarayonlari quyidagilarni o‘z ichiga oladi:
 
-|Operatsiya |Amalga oshirilgan xatti-harakatlar |
+| Amal | Joriy xatti-harakat |
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
-|`RegisterRwa` |ID lotini domenida yarating; bitim hokimiyati `owned_by`ga aylanadi. |
-|`TransferRwa` |Ko'plikni boshqa hisob raqamiga o'tkazing. To'liq o'tkazish `owned_by` o'zgartirishi mumkin. qisman o'tkazilish ID hosil bo'lgan alohida bola lotini yaratadi. |
-|`HoldRwa` |ehtiyot miqdori. Konfiguratsiya qilingan nazoratchi va `hold_enabled` kerak. |
-|`ReleaseRwa` |Qo'llanilgan miqdorni olib tashlash. Konfiguratsiya qilingan boshqaruvchini va `hold_enabled` talab qiladi. |
-|`FreezeRwa` |Oddiy egasining operatsiyalarini bloklash. Konfiguratsiyalangan boshqaruvchini va `freeze_enabled` talab qiladi. |
-|`UnfreezeRwa` |Oddiy egasi operatsiyalarini qayta qo'llash. Konfiguratsiyalangan boshqaruvchini va `freeze_enabled` talab qiladi. |
-|`RedeemRwa` |Muvaffaqiyatdan doimiy ravishda miqdorni tortib olish. Egasi yoki nazoratchi `redeem_enabled` to'g'ri bo'lganda uni taqdim qilishi mumkin. |
-|`MergeRwas` |Bir xil domenga ega bo'lgan ota-ona partiyalarining miqdorlarini birlashtirib, hosil qilingan bola partiyasiga aylantiring. |
-|`ForceTransferRwa` |Ko'plikni nazoratchi oqimi orqali ko'chirish. Konfiguratsiya qilingan nazoratchini va `force_transfer_enabled` talab qiladi. |
-|`SetRwaControls` |Partiya nazoratini o'zgartirish uchun mulkdor yoki nazoratchi kerak.|
-|`SetKeyValue<Rwa>` / `RemoveKeyValue<Rwa>` |Lot metadatalarini yangilash. Egasini yoki nazoratchini talab qiladi; muzlatilgan lotlarga nazoratchi kerak. |
+| `RegisterRwa` | Domenda hosil qilingan identifikatorli lot yaratadi; tranzaksiya vakolati `owned_by` bo‘ladi. |
+| `TransferRwa` | Miqdorni boshqa hisobga o‘tkazadi. To‘liq o‘tkazish `owned_by` ni o‘zgartirishi mumkin. Qisman o‘tkazish hosil qilingan identifikatorli alohida hosila lot yaratadi. |
+| `HoldRwa` | Miqdorni band qiladi. Sozlangan nazoratchi va `hold_enabled` talab qilinadi. |
+| `ReleaseRwa` | Band qilingan miqdorni bo‘shatadi. Sozlangan nazoratchi va `hold_enabled` talab qilinadi. |
+| `FreezeRwa` | Eganing odatiy amallarini bloklaydi. Sozlangan nazoratchi va `freeze_enabled` talab qilinadi. |
+| `UnfreezeRwa` | Eganing odatiy amallarini qayta yoqadi. Sozlangan nazoratchi va `freeze_enabled` talab qilinadi. |
+| `RedeemRwa` | Miqdorni muomaladan doimiy ayiradi. `redeem_enabled` yoqilgan bo‘lsa, uni ega yoki nazoratchi yuborishi mumkin. |
+| `MergeRwas` | Bir xil domen va spetsifikatsiyaga ega asos lotlar miqdorini hosil qilingan identifikatorli bitta hosila lotga birlashtiradi. |
+| `ForceTransferRwa` | Miqdorni nazoratchi jarayoni orqali ko‘chiradi. Sozlangan nazoratchi va `force_transfer_enabled` talab qilinadi. |
+| `SetRwaControls` | Lot boshqaruv siyosatini almashtiradi. Ega yoki nazoratchi bo‘lishi talab qilinadi. |
+| `SetKeyValue<Rwa>` / `RemoveKeyValue<Rwa>` | Lot metama’lumotlarini yangilaydi. Ega yoki nazoratchi bo‘lishi talab qilinadi; muzlatilgan lotda nazoratchi kerak. |
 
-Joriy kodda `UnregisterRwa` ko'rsatmasi yo'q. Belgilangan miqdor yetkazib berilgan, iste'mol qilingan, hisobdan chiqarilgan yoki boshqa tarzda muomaladan olib tashlanganda, zanjirdagi lotni `RedeemRwa` bilan doimiy ravishda muomaladan chiqaring.
+Joriy kodda `UnregisterRwa` ko‘rsatmasi yo‘q. Ifodalangan miqdor yetkazib berilgan, iste’mol qilingan, hisob-kitob qilingan yoki boshqa tarzda muomaladan olinganida zanjirdan tashqari lotni `RedeemRwa` bilan muomaladan chiqaring.
 
-## Metadotlar va nazoratlar {#metadata-and-controls}
+## Metama’lumotlar va boshqaruv {#metadata-and-controls}
 
-Ilovalarni lotni aniqlash va tasdiqlash uchun kompakt faktlar uchun metadatalardan foydalaning:
+Ilovalarga lotni aniqlash va tekshirishda yordam beradigan ixcham faktlar uchun metama’lumotlardan foydalaning:
 
-- aktivlar sinflari, emitentlar, depozitorlar yoki reyestr ma'lumotlari
-- ombor, vaft, ISIN, faktura yoki sertifikat identifikatorlari
-- attestatsiyalar va huquqiy hujjatlar uchun tarkib hashlari
-- SoraFS ko'proq dalillar to'plamlari uchun yo'nalishlar yoki ma'lumotlar ma'lumotlari
-- zaryaddan tashqaridagi xizmatlar tomonidan ishlatiladigan muddati, vakolat yoki muvofiqlik belgilari
+- aktiv sinfi, emitent, saqlovchi yoki reyestr havolasi;
+- ombor, seyf, ISIN, hisob-faktura yoki sertifikat identifikatorlari;
+- attestatsiyalar va huquqiy hujjatlarning kontent xeshlari;
+- kattaroq dalillar to‘plamlari uchun SoraFS yo‘llari yoki manifest havolalari;
+- zanjirdan tashqari xizmatlar ishlatadigan muddat, yurisdiksiya yoki muvofiqlik teglari.
 
-Amalga oshirilgan `RwaControlPolicy` ga quyidagi maydonlar kiradi:
+Amalga oshirilgan `RwaControlPolicy` quyidagi maydonlarga ega:
 
 ```json
 {
@@ -96,45 +95,45 @@ Amalga oshirilgan `RwaControlPolicy` ga quyidagi maydonlar kiradi:
 }
 ```
 
-Boshqaruvchining hisoblari va rollari faqat tegishli boolean bayroqlar tomonidan qo'llanilgan operatsiyalarni amalga oshirishi mumkin. Hozirgi boshqaruv yuklamasida nazoratchi kimligi va operatsion bayroqlar mavjud. O'tkazish ruxsatnomalari ro'yxatlari va uyushtirilgan `transfers` qoidalari ushbu foydali yuklamadan tashqarida joylashgan.
+Nazoratchi hisoblar va rollar faqat tegishli mantiqiy bayroqlar yoqqan amallarni bajarishi mumkin. Joriy boshqaruv foydali yukida nazoratchi identifikatorlari va amal bayroqlari bor. O‘tkazish ruxsat ro‘yxatlari va ichma-ich `transfers` qoidalari bu foydali yuk tarkibiga kirmaydi.
 
-## Savollar, hodisalar va APIs {#queries-events-and-apis}
+## So‘rovlar, hodisalar va APIs {#queries-events-and-apis}
 
-Foydalanish [`FindRwas`](/uz/reference/queries.md#assets-nfts-and-rwas) ro'yxatga olingan RWA To'g'ridan-to'g'ri yangilanishlar kerak bo'lgan dasturlar [`Rwa` ma'lumotlar hodisalari](/uz/blockchain/filters.md#data-event-filters) yaratilgan, mulkdorini o'zgartirgan, bo'linadigan, birlashtirilgan, sotib olingan, muzlatilgan, muzlatmagan, O'tkazilgan, chiqarilgan, kuch bilan o'tkaziladigan, nazoratni o'zgartirgan va metadata hodisalari.
+Ro‘yxatdan o‘tgan RWA lotlarini sanash uchun [`FindRwas`](/uz/reference/queries.md#assets-nfts-and-rwas) dan foydalaning. Jonli yangilanishlarga muhtoj ilovalar yaratish, egani o‘zgartirish, bo‘lish, birlashtirish, muomaladan chiqarish, muzlatish, muzdan tushirish, band qilish, bo‘shatish, majburiy o‘tkazish, boshqaruvni o‘zgartirish va metama’lumot hodisalari uchun [`Rwa` ma’lumot hodisalariga](/uz/blockchain/filters.md#data-event-filters) obuna bo‘lishi mumkin.
 
-Torii zaryad holati yo'nalishlarini aniqlaydi: `/v1/rwas` va `/v1/rwas/query`, qo'shimcha tadqiqotchi yo'nalishlari: `/v1/explorer/rwas` va `/v1/explorer/rwas/{rwa_id}` yaratilgan mijozlar jonli o'rnatish [`/openapi`](/uz/reference/torii-endpoints.md#common-endpoints) bir nod tomonidan aniq javob shakli uchun hujjat.
+Torii `/v1/rwas` va `/v1/rwas/query` kabi zanjir holati yo‘nalishlarini, tegishli yo‘nalishlar oilasi yoqilganda esa `/v1/explorer/rwas` va `/v1/explorer/rwas/{rwa_id}` kabi kuzatuvchi yo‘nalishlarini taqdim etadi. Hosil qilingan mijozlar tugun taqdim etadigan aniq javob shaklini bilish uchun jonli [`/openapi.json`](/uz/reference/torii-endpoints.md#common-endpoints) hujjatini asos qilib olishi kerak.
 
-### Taira bilan sinab ko'ring. {#try-it-on-taira}
+### Taira da sinab ko‘rish {#try-it-on-taira}
 
-Taira tomonidan hozirda RWA lotlar ro'yxatdan o'tkazilganligini tekshirish:
+Ochiq Taira tarmog‘ida hozir ro‘yxatdan o‘tgan RWA lotlari bor-yo‘qligini tekshiring:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/rwas?limit=5' \
   | jq '{total, rwa_ids: [.items[].id]}'
 ```
 
-jonli Taira OpenAPI hujjatida ko'rsatilgan RWA yo'nalishlarini ro'yxatdan o'tkazish:
+Jonli Taira OpenAPI hujjati taqdim etadigan RWA yo‘nalishlarini sanang:
 
 ```bash
 curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/rwas") or startswith("/v1/explorer/rwas"))'
 ```
 
-Umumiy lotlar hali ro'yxatdan o'tmagan bo'lsa, bo'sh `items` chiqarilishi kutilmoqda. Ro'yxatga olish, o'tkazish, saqlash, muzlatish va sotib olish imzolangan bitimlar hisoblanadi.
+Hali ochiq lotlar ro‘yxatdan o‘tmagan bo‘lsa, `items` bo‘sh chiqishi odatiy. Ro‘yxatdan o‘tkazish, o‘tkazish, band qilish, muzlatish va muomaladan chiqarish imzolangan tranzaksiyalardir.
 
-## Buni sinab koʻring . {#try-it}
+## Sinab ko‘rish {#try-it}
 
-Quyida keltirilgan misollarda Python SDK [ Shared Setup](/uz/guide/tutorials/python.md#shared-setup) ning yuzalaridan foydalaniladi. Transaksiyani taqdim etishdan oldin hisob raqami IDs, xususiy kalitlar va hosil qilingan lot IDs ni o'zingizning tarmoqingizdagi qiymatlar bilan almashtiring.
+Quyidagi misollar [Umumiy sozlash](/uz/guide/tutorials/python.md#shared-setup) bo‘limidagi Python SDK interfeyslaridan foydalanadi. Tranzaksiyani yuborishdan oldin hisob identifikatorlari, maxfiy kalitlar va hosil qilingan lot identifikatorlarini o‘z tarmog‘ingizdagi qiymatlarga almashtiring.
 
 ### RWA API yo'nalishlarini kashf etish {#discover-rwa-api-routes}
 
-Ushbu faqat o'qishga mo'ljallangan misol Torii uzuni so'raydi, qaysi dasturga qaraydigan RWA yo'nalishlari qo'llanilgan:
+Faqat o‘qishga mo‘ljallangan bu misol ishlayotgan Torii tugunidan ilovaga mo‘ljallangan qaysi RWA yo‘nalishlari yoqilganini so‘raydi:
 
 ```python
 from iroha_python import create_torii_client
 
 client = create_torii_client("https://taira.sora.org")
-openapi = client.request_json("GET", "/openapi", expected_status=(200,))
+openapi = client.request_json("GET", "/openapi.json", expected_status=(200,))
 
 rwa_paths = sorted(
     path for path in openapi.get("paths", {}) if path.startswith("/v1/rwas")
@@ -144,11 +143,11 @@ for path in rwa_paths:
     print(path)
 ```
 
-Agar ro'yxat bo'sh bo'lsa, nod hali ham RWA ko'rsatmalarini va boshqa Torii APIs orqali so'rovlarni qo'llab-quvvatlashi mumkin, ammo u JSON yo'nalishining fakultativ oilasi bilan bog'liq emas.
+Ro‘yxat bo‘sh bo‘lsa, tugun boshqa Torii APIs orqali RWA ko‘rsatmalari va so‘rovlarini hanuz qo‘llashi mumkin, ammo ixtiyoriy JSON yo‘nalishlar oilasini taqdim etmayapti.
 
-### Omborxona qudratini ro'yxatga olish {#register-a-warehouse-receipt}
+### Ombor kvitansiyasini ro‘yxatdan o‘tkazish {#register-a-warehouse-receipt}
 
-Bir biznes-harakat bir imzolangan tranzaksiyaga aylanishi kerak bo'lganda loyiha usulidan foydalaning. `primary_reference`; katta kitob ID Transaksiya majburiyatlaridan so'ng hosil bo'ladi.
+Bitta biznes amali bitta imzolangan tranzaksiyaga aylanishi kerak bo‘lsa, qoralama usulidan foydalaning. Biznes kvitansiyasi raqami `primary_reference` ga yoziladi; reyestr identifikatori tranzaksiya yakunlangach hosil qilinadi.
 
 ```python
 from iroha_python import TransactionConfig, TransactionDraft
@@ -189,7 +188,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Transaksiya qo'yilganidan so'ng, ro'yxat RWA IDs hosil bo'ladi. Zilzi davlat yo'nalishlari kanonik IDs ni ochadi; voqealar yoki kashfiyotchining batafsil yo'nalishlaridan foydalanib, agar siz ID bilan `primary_reference` yoki metadatalarga qaytishingiz kerak bo'lganda:
+Tranzaksiya yakunlangach, hosil qilingan RWA identifikatorlarini sanang. Zanjir holati yo‘nalishlari kanonik identifikatorlarni ko‘rsatadi; identifikatorni `primary_reference` yoki metama’lumot bilan bog‘lash kerak bo‘lsa, hodisalar yoki kuzatuvchining batafsil yo‘nalishlaridan foydalaning:
 
 ```python
 page = client.list_rwas_typed(limit=20, offset=0)
@@ -198,7 +197,7 @@ for lot in page.items:
     print(lot.id)
 ```
 
-Eksploratorni qo'llab-quvvatlaydigan nodlar ham boyroq proyeksiyalarni qaytarishi mumkin:
+Kuzatuvchi yoqilgan tugunlar yanada boy ko‘rinishlarni ham qaytarishi mumkin:
 
 ```python
 page = client.list_explorer_rwas_typed(domain="commodities.universal")
@@ -207,9 +206,9 @@ for lot in page.items:
     print(lot.id, lot.primary_reference, lot.owned_by, lot.quantity)
 ```
 
-### Vaqtinchalik to'xtatish bilan ko'chirish {#transfer-with-a-temporary-hold}
+### Vaqtinchalik band bilan o‘tkazish {#transfer-with-a-temporary-hold}
 
-Xatcho'p tomonidan qaytarilgan hosil qilingan RWA ID dan foydalaning. Ushbu misolda `alice` ega bo'lishini nazarda tutadi va u `hold_enabled` bilan nazoratchi sifatida ham moslanadi.
+Zanjir qaytargan hosil qilingan RWA identifikatoridan foydalaning. Bu misolda `alice` ega hamda `hold_enabled` yoqilgan nazoratchi sifatida sozlangan deb olinadi.
 
 ```python
 warehouse_lot_id = (
@@ -228,7 +227,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Zilziladan tashqari jarayon muvaffaqiyatli bo'lganidan so'ng `ReleaseRwa` taqdim etiladi:
+Zanjirdan tashqari jarayon muvaffaqiyatli tugagach, `ReleaseRwa` ni yuboring:
 
 ```python
 draft = TransactionDraft(
@@ -240,9 +239,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### Nazorat va audit meta ma'lumotlarini qo'shish {#add-controls-and-audit-metadata}
+### Boshqaruv va tekshiruv metama’lumotlarini qo‘shish {#add-controls-and-audit-metadata}
 
-Nazoratlar va metadotlar alohida hisoblanadi. Nazoratchilar siyosati uchun nazoratlardan va arizalar yoki auditorlar ko'rsatishi kerak bo'lgan faktlar uchun metadotlardan foydalaning:
+Boshqaruv va metama’lumotlar alohida tushunchalardir. Nazoratchi siyosati uchun boshqaruvdan, ilovalar yoki auditorlar ko‘rsatishi kerak bo‘lgan faktlar uchun esa metama’lumotlardan foydalaning:
 
 ```python
 draft = TransactionDraft(
@@ -271,9 +270,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### To'lov yoki pensiya miqdori {#redeem-or-retire-quantity}
+### Miqdorni muomaladan chiqarish {#redeem-or-retire-quantity}
 
-Joʻnatish `RedeemRwa` ta'minlangan zanjirdan tashqaridagi aktiv yetkazib berilganidan, iste'mol qilinganidan, pensiyaga olinganidan yoki boshqa tarzda aylanishdan chiqarilganidan keyin. Bu partiyadan taqdim etilgan miqdorni doimiy ravishda chiqarib tashlaydi. `redeem_enabled`. Imzolovchi mulkdor yoki nazoratchi bo'lishi kerak.
+Taʼminlangan zanjirdan tashqaridagi aktiv yetkazib berilganidan, isteʼmol qilinganidan, muomaladan chiqarilganidan yoki boshqa tarzda aylanishdan olib tashlanganidan keyin `RedeemRwa`ni yuboring. Bu lotdan yuborilgan miqdorni doimiy ravishda ayiradi. Lotda `redeem_enabled` yoqilgan bo‘lishi kerak. Imzolovchi mulkdor yoki nazoratchi bo‘lishi kerak.
 
 ```python
 draft = TransactionDraft(
@@ -285,9 +284,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### Qoʻllanishni tekshirish paytida toʻxtatish {#freeze-during-compliance-review}
+### Muvofiqlik tekshiruvida muzlatish {#freeze-during-compliance-review}
 
-`FreezeRwa` ro'yxati tashqaridagi ko'rib chiqish odatdagi mulkdorlarning operatsiyalarini blokirovka qilishi kerak bo'lganda taqdim etilsin. imzo qo'ygan shaxs nazoratchi bo'lishi kerak. Lot `freeze_enabled` bo'lishi shart.
+Zanjirdan tashqari tekshiruv eganing odatiy amallarini bloklashi kerak bo‘lsa, `FreezeRwa` ni yuboring. Imzolovchi nazoratchi bo‘lishi va lotda `freeze_enabled` yoqilgan bo‘lishi shart.
 
 ```python
 draft = TransactionDraft(
@@ -308,7 +307,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Tekshirish o'tganidan so'ng `UnfreezeRwa`ni taqdim etish:
+Tekshiruv muvaffaqiyatli tugagach, `UnfreezeRwa` ni yuboring:
 
 ```python
 draft = TransactionDraft(
@@ -325,9 +324,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### Hisobvaraqning olinishi {#invoice-receivable}
+### Debitorlik hisob-fakturasi {#invoice-receivable}
 
-Hisobvaraqni RWA partiyasi sifatida `primary_reference` raqami va metadatalarni saqlash orqali ifodalash. Ro'yxatdan o'tgandan so'ng, o'tkazish va to'lov uchun hosil qilingan ID faylini ishlating.
+Hisob-faktura raqamini `primary_reference` va metama’lumotlarda saqlab, hisob-fakturani RWA loti sifatida ifodalang. Ro‘yxatdan o‘tkazilgach, o‘tkazish va muomaladan chiqarish uchun hosil qilingan identifikatordan foydalaning.
 
 ```python
 draft = TransactionDraft(
@@ -363,7 +362,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-To'lov mablag'lari moliyalashtirilgan yoki to'langan bo'lsa, hosil qilingan faktura lotidan foydalanish ID:
+Debitorlik moliyalashtirilsa yoki to‘lansa, hosila hisob-faktura loti ID-sidan foydalaning:
 
 ```python
 invoice_lot_id = (
@@ -380,7 +379,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Xatchoʻpdan tashqarida hisob-kitob qilinganidan soʻng aks ettirilgan miqdorni sotib olish:
+Zanjirdan tashqari hisob-kitob tugagach, ifodalangan miqdorni muomaladan chiqaring:
 
 ```python
 draft = TransactionDraft(
@@ -392,9 +391,9 @@ envelope = draft.sign_with_keypair(bob_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### Karbon kreditlari pensiyasi {#carbon-credit-retirement}
+### Karbon kreditlarini muomaladan chiqarish {#carbon-credit-retirement}
 
-E'lon qilingan karbonat kreditlarini aylanmadan olib tashlash uchun `RedeemRwa`ni taqdim eting. Xizmatdan tashqari sertifikat yoki ro'yxatdan o'tgan hujjatni metadatalarda saqlash:
+Talab qilingan uglerod kreditlarini muomaladan olish uchun `RedeemRwa` ni yuboring. Zanjirdan tashqari sertifikat yoki reyestr isbotini metama’lumotlarda saqlang:
 
 ```python
 carbon_lot_id = (
@@ -416,9 +415,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### Ikki to'pni birlashtiring {#merge-two-lots}
+### Ikki lotni birlashtirish {#merge-two-lots}
 
-Ikki zanjirdan tashqari pozitsiyalar biriktirilganda lotlarni birlashtiring. Ota-onalar bir xil domendagi bo'lishi va bir xil miqdorni qo'llashlari kerak. Ish vaqti bola lotini hosil qiladi ID.
+Zanjirdan tashqari ikki pozitsiya birlashtirilganda lotlarni qo‘shing. Asos lotlar bir domenda bo‘lishi va bir xil miqdor spetsifikatsiyasidan foydalanishi kerak. Bajarish muhiti hosila lot identifikatorini yaratadi.
 
 ```python
 warehouse_lot_id_2 = (
@@ -450,12 +449,12 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Python tranzaksiyasining to'liq namunasi uchun [Real-World Assets](/uz/guide/tutorials/python.md#real-world-assets)-ni ko'ring.
+To‘liq Python tranzaksiya namunasi uchun [Haqiqiy dunyo aktivlari](/uz/guide/tutorials/python.md#real-world-assets) bo‘limiga qarang.
 
 ## Bogʻliq hujjatlar {#related-docs}
 
 - [Aktivlar](/uz/blockchain/assets.md)
-- [Metadatalar](/uz/blockchain/metadata.md)
-- [Iroha Maxsus yo'l-yo'riqlar](/uz/blockchain/instructions.md)
+- [Metama’lumotlar](/uz/blockchain/metadata.md)
+- [Iroha maxsus ko‘rsatmalari](/uz/blockchain/instructions.md)
 - [So'rovlar](/uz/reference/queries.md#assets-nfts-and-rwas)
-- [Torii oxirgi nuqtalari](/uz/reference/torii-endpoints.md#app-and-sora-route-families)
+- [Torii so‘nggi nuqtalari](/uz/reference/torii-endpoints.md#app-and-sora-route-families)

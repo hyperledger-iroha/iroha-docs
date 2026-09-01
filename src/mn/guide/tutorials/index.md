@@ -3,44 +3,44 @@ translation_locale: mn
 translation_source: /guide/tutorials/index.md
 translation_source_hash: 4fee7425a237d2781745025c9cd240fbc9df84f07f7427ff19c4bd8212d628e3
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # SDK Сургалтууд {#sdk-tutorials}
 
-Эдгээр хуудсууд Iroha 3 үйлчлүүлэгчдийн ажлын хэсгээс шилжүүлсэн нэвтрэх цэгүүдийг товчлуулж байна, тэр дундаа санхүүгийн багцын нэрүүд, суурилтын замыг болон хамгийн бага эхлэлийн цэгүүд.
+Эдгээр хуудас нь үндсэн ажлын талбараас илгээгдсэн Iroha 3 клиентийн нэвтрэх цэгүүдийг, үүнд нэг протоколын стандарт багцын нэрс, суулгах замууд, ба хамгийн бага эхлэх цэгүүдийг хураангуйлан үзүүлнэ.
 
-## Зөвлөмжтэй захирамж {#recommended-order}
+## Зөвлөсөн захиалга {#recommended-order}
 
-1. [Нөөц Iroha 3](/mn/get-started/install-iroha.md)
-2. [Iroha 3](/mn/get-started/launch-iroha.md)
-3. SDK гэж сонгох:
+1. [Суурилуулна уу Iroha 3](/mn/get-started/install-iroha.md)
+2. [Эхлүүлэх Iroha 3](/mn/get-started/launch-iroha.md)
+3. Нэг SDK сонгоно уу:
    - [Rust](/mn/guide/tutorials/rust.md)
    - [Python](/mn/guide/tutorials/python.md)
    - [JavaScript / TypeScript](/mn/guide/tutorials/javascript.md)
-   - [Kotlin, Android, Java](/mn/guide/tutorials/kotlin-java.md)
-   - [Swift болон iOS](/mn/guide/tutorials/swift.md)
-4. Хэрэглэгчийн хэрэгслийн бүрэн сүлжээг хүсвэл [ үлгэрийн аппликейшнүүд](/mn/guide/tutorials/sample-apps.md)-ийг шалгаарай.
-5. [Эмбейд Kaigi](/mn/guide/tutorials/kaigi.md)-ийг ашиглан өөрийн аппликейшн дээр хөрөнгийн дэмжлэгтэй аудио/видео уулзалт нэмэх болно.
-6. [Musubi багц](/mn/guide/tutorials/musubi.md)-г ашиглах боломжтой Kotodama эх сурвалжийн номын санд зангилааны бүртгэлийн хамааралтай байх шаардлагатай үед хэрэглэж болно.
+   - [Kotlin, Android, ба Java](/mn/guide/tutorials/kotlin-java.md)
+   - [Swift ба iOS](/mn/guide/tutorials/swift.md)
+4. Бүтэн клиент програмын лавлах хүсвэл [туршилтын аппликейшнүүд](/mn/guide/tutorials/sample-apps.md)-ыг нягтална уу.
+5. Өөрийн апп-д түрийвчээр баталгаажсан аудио/видео уулзалтуудыг нэмэхийг хүсвэл [Оруулах Kaigi](/mn/guide/tutorials/kaigi.md)-г ашиглаарай.
+6. Давтан ашиглах боломжтой Kotodama эх сурвалжын сангуудыг дотоод бүртгэлд тодорхойлогдсон хамааралттайгаар ашиглах хэрэгтэй бол [Musubi багц](/mn/guide/tutorials/musubi.md) хэрэглэх.
 
-## Үргэлт {#samples}
+## Дээжүүд {#samples}
 
-Өмнөговь ажлын орон нутагт JavaScript рецепт, Swift/iOS үлгэрийн төсөл байдаг. Android-ийн хувьд Kotlin SDK модул болон тэдгээрийн туршилтыг эхлүүлээрэй.
+Дээд түвшний ажлын талбар нь JavaScript жор болон Swift/iOS жишээ төслүүдийг агуулсан. Android-ийн хувьд Kotlin SDK модулиуд болон тэдгээрийн туршилтаас эхэл.
 
-- [Судалгааны загварын үзлэг](/mn/guide/tutorials/sample-apps.md)
-- [Kaigi-ийг JavaScript -ийн хэрэгслийн ](/mn/guide/tutorials/kaigi.md) дотор багтаасан
+- [Жишээ аппликейшнүүдийн тойм](/mn/guide/tutorials/sample-apps.md)
+- [Эмбед Kaigi-ийг JavaScript апп-д оруулах](/mn/guide/tutorials/kaigi.md)
 
-## Үнэний эх үүсвэр {#source-of-truth}
+## Үнэнийн эх сурвалж {#source-of-truth}
 
-Бүх SDK хуудсууд одоогийн эргэлтийн ажлын хэсгээс гаралтай:
+Энд байгаа бүх SDK хуудас нь одоогийн дээд түвшний ажлын орчноос гаралтай:
 
 - `crates/iroha`
 - `python/iroha_python`
 - `javascript/iroha_js`
 - `kotlin`
-- `java/iroha_android` (Java дэлгэц нь Kotlin-ний анхны Android гадаргуу)
+- `java/iroha_android` (Kotlin-р Android гадаргуугийн Java толь)
 - `IrohaSwift`
 - `crates/musubi`
 
-Хэрэв эргэлзэж байгаа бол README болон багцын метадэтгэлийг эдгээр захиалгуудад аваарай; тэдгээр нь та барьж буй эх үүсвэрийн шинэчлэлийг тодорхойлдог.
+Та эргэлзэж байвал тэндхүү директоруудын README болон пакетны метадатаг илүүд үзээрэй; тэд таны бүтээж буй эх эх хувилбарыг тайлбарладаг.

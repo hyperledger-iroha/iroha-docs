@@ -1,28 +1,28 @@
 ---
 translation_locale: ja
 translation_source: /cookbook/nfts.md
-translation_source_hash: f34043c1940b556439c23de7decc5e79f198f52eca8517dd8a9a5892d997e211
+translation_source_hash: db99dab483d4e2fb3fd84be84f6e4ef9f8373f0c16eb2f34952f1232c4587561
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # NFTs {#nfts}
 
-## 成果 {#outcome}
+## 結果 {#outcome}
 
-検査 Taira NFT 記録し,更新し,転送し,検索する NFT ローカルネットワークで生成される. ワークフローは完全に資格のある `name$domain.dataspace` NFT ID そして聖典 I105 持ち主 IDs.
+生成されたローカルネットワーク上で Taira NFT の状態を検査し、その後、ユニークな NFT を登録、更新、転送、照会します。このワークフローでは、完全修飾された`name$domain.dataspace` NFT IDと標準的な I105 所有者IDを使用します。
 
-## 必須条件 {#prerequisites}
+## 前提条件 {#prerequisites}
 
-- `curl`,`jq`, Python 3.11またはそれ以降,および電流 `iroha` CLI.
-- Taira 読み込みのみアクセス
-- 作成されたローカルネットワークから [打ち上げ Iroha](/ja/get-started/launch-iroha.md), と `./localnet/client.toml` そして Torii について `http://127.0.0.1:8080`.
+- `curl`、`jq`、Python 3.11以降、および現在の `iroha` CLI。
+- 読み取り専用 Taira アクセス。
+- 書き込みの場合、[Iroha を起動](/ja/get-started/launch-iroha.md) から生成されたローカルネットワークで、`http://127.0.0.1:8080` 上の `./localnet/client.toml` と Torii があります。
 
 ## ステップ {#steps}
 
-### 1. 公衆のコレクション Taira を検査する {#_1-inspect-the-public-taira-collection}
+### 1. 公開 Taira のコレクションを確認する {#_1-inspect-the-public-taira-collection}
 
-空のページは,読み上げに成功する:それは要求されたページには目に見える NFTs が存在しないことを意味します.
+空のページは正常に読み取られたことを意味します：要求されたページには表示可能な NFTs が存在しないことを意味します。
 
 ```bash
 curl -fsS -H 'Accept: application/json' \
@@ -30,11 +30,11 @@ curl -fsS -H 'Accept: application/json' \
   | jq '{total, nfts: [.items[] | {id, owned_by, content}]}'
 ```
 
-NFTs は,数値のバランスではなく,ユニークな記録である.それらは ID,1人の所有者,およびコンパクトな `content` メタデータマップを持っています.
+NFTs は一意のレコードであり、数値残高ではありません。それらには ID、1 人の所有者、そしてコンパクトな `content` メタデータマップがあります。
 
-### 2. 地元の所有者を準備する IDs {#_2-prepare-local-owner-ids}
+### 2. ローカル所有者IDを準備する {#_2-prepare-local-owner-ids}
 
-書き込み例では,チェックインされた `wonderland.universal` ドメインを使用します.個人鍵を公開せずに設定した権限を誘導し,転送目的地として別の登録アカウントを選択してください.
+書き込みの例では、チェックインされた `wonderland.universal` ドメインを使用します。プライベートキーを公開せずに設定された認証プリンシパルを導出し、次に別の登録済みアカウントを転送先として選択します。
 
 ```bash
 LOCAL_ROOT='http://127.0.0.1:8080'
@@ -59,11 +59,11 @@ NEW_OWNER="$(
 )"
 ```
 
-`$`分離器は, NFT テキストフォームに属します.完全な `wonderland.universal` ドメインとデータスペースのサフィックスを保持してください.
+`$` セパレーターは NFT テキスト形式に属します。`wonderland.universal` ドメインおよびデータスペースのサフィックスを完全に保持してください。
 
-### 3. 初期内容を持つ NFT を登録する {#_3-register-the-nft-with-initial-content}
+### 3. 初期内容で NFT を登録する {#_3-register-the-nft-with-initial-content}
 
-CLI は標準入力から最初の JSON オブジェクトを読み取ります.現在の当局は所有者になります.
+その CLI 最初の文字を読む JSON 標準入力からオブジェクト。現在の認証主体が所有者になります。
 
 ```bash
 printf '%s\n' \
@@ -73,9 +73,9 @@ printf '%s\n' \
       ledger nft register --id "$NFT_ID"
 ```
 
-### 4. 内容地図を更新する {#_4-update-the-content-map}
+### 4. コンテンツマップを更新する {#_4-update-the-content-map}
 
-メタデータ値は JSON. 鍵を挿入するか,その1つの入力に置き換える.それは全 NFT レコードを置き換えることはありません.
+メタデータの値は JSON です。キーを設定すると、その1つのエントリが挿入または置き換えられます。これにより、NFT 全体のレコードが置き換えられるわけではありません。
 
 ```bash
 printf '%s\n' '{"color":"blue","version":1}' \
@@ -87,9 +87,9 @@ iroha --config "$LOCAL_CONFIG" ledger nft meta get \
   --id "$NFT_ID" --key traits
 ```
 
-### 5. 譲渡所有権 {#_5-transfer-ownership}
+### 5. 所有権を移転する {#_5-transfer-ownership}
 
-供給は両立する I105 口座 IDs. 仮名は,使用前に解決する必要があります. `--from` または `--to`.
+両方の標準的な I105 アカウントIDを提供してください。エイリアスは、`--from`または`--to`として使用される前に解決される必要があります。
 
 ```bash
 iroha --config "$LOCAL_CONFIG" \
@@ -100,13 +100,13 @@ iroha --config "$LOCAL_CONFIG" \
   --to "$NEW_OWNER"
 ```
 
-::: warning 許可制限
+::: warning 許可境界
 
-オン Taira, すべての書き込みも必要 `--metadata ./taira.tx-metadata.json` 登録,転送,削除,およびメタデータ更新は,アクティブランタイムによって確認されます (`CanRegisterNft`, `CanTransferNft`, `CanUnregisterNft`, そして `CanModifyNftMetadata` アプリケーションに割り当てられたドメインを使用するか,ローカルネットでこのウォークアウトを保持します.
+Taira では、すべての書き込みには`--metadata ./taira.tx-metadata.json`と明示的な手数料支払者も必要です。登録、転送、削除、およびメタデータの更新は、アクティブなソフトウェアによってチェックされます。ランタイム（デフォルトのパーミッションサーフェスにある `CanRegisterNft`、`CanTransferNft`、`CanUnregisterNft`、および `CanModifyNftMetadata`）。アプリケーションに割り当てられたドメインを使用するか、このウォークスルーをローカルネットに保持してください。
 
 :::
 
-契約所有のワークフローの場合, Kotodama は NFT ホスト通話を入力した状態に示します. 以下は,ピンされた IVM ドキュメンテーションテストによって作成され実行される正確なライフサイクル固定値です:
+契約所有のワークフローの場合、Kotodama は型付きの NFT ホスト関数呼び出しを公開します。以下は、ピン留めされた IVM ドキュメントテストによってコンパイルされ、実行された正確なライフサイクルテストアーティファクトです：
 
 ```kotodama
 seiyaku NftFlow {
@@ -134,11 +134,11 @@ seiyaku NftFlow {
 }
 ```
 
-固定された2つの値 I105 は,上流試験装置であり,ハネスは実行前に目的地を記録する.それらは `CURRENT_OWNER` と `NEW_OWNER` でなく, CLI の通路からである.アプリケーション契約については,実際のカノニカルアカウントを提供し,その後 [スマートコントラクト](./smart-contracts.md)を通じてコンパイル・テスト・デプロイ・および呼び出ししてください.未レビューバイトコードを Taira に提出しないでください.そして,契約の実行はまだランタイム認証を通過することを忘れないでください
+2つの固定された I105 値は上流のテストアーティファクトです。テストランナーは実行前に宛先を登録します。それらは CLI ウォークスルーの`CURRENT_OWNER`および`NEW_OWNER`ではありません。アプリケーション契約の場合、その実際の標準アカウントを提供し、次に [スマートコントラクト](./smart-contracts.md) を通じてコンパイル、テスト、デプロイ、および呼び出しを行ってください。未審査のバイトコードを Taira に提出しないでください。また、契約の実行は依然としてソフトウェアの実行時認可を通過することを忘れないでください。
 
 ## 確認する {#verify}
 
-NFT を直接読んで,その内容が付属している間に所有者が変更されたことを確認してください.
+NFT を直接読み取り、その内容が保持されたまま所有者が変更されたことを確認します:
 
 ```bash
 iroha --config "$LOCAL_CONFIG" --machine ledger nft get --id "$NFT_ID" \
@@ -149,22 +149,22 @@ jq -e --arg owner "$NEW_OWNER" \
   cookbook-nft.json
 ```
 
-CLI が記録を出力封筒に包装する場合は,一度 JSON を検査し,その主張を含まれている NFT オブジェクトに適用します.権威のあるインバリアントは `id`, `owned_by`,および `content`.
+もし CLI がレコードを出力データコンテナにラップする場合、JSON を一度確認し、含まれている NFT オブジェクトにアサーションを適用します。権威ある不変条件は`id`、`owned_by`、および`content`です。
 
-## 問題を解く {#troubleshooting}
+## トラブルシューティング {#troubleshooting}
 
-- `name$domain`は,一部のパーサーの汎用データスペースにデフォルトで設定できますが,クックブックとアプリケーション IDs は明示的な `name$domain.dataspace` 形式を使用する必要があります.
-- 同じ NFT ID の繰り返し登録は拒否されます.新しいローカルネットを使用するか,別々の記録のために安定した新しい ID を選択してください.
-- メタデータ入力は標準入力で有効である JSON 必要があります. JSON を引用しないシェル文字列はメタデータ値ではありません.
-- 現在の所有者以外のアカウントが署名した転送には,正確な許可が必要です. `--from` を変更することは,署名者を変更しません.
-- 移転後,元のクライアントは NFT を変異したり登録解除したりすることは許されない.新しい所有者の署名者または権限のあるコントローラーを使用します.
-- Taira 無駄に返せる NFT コレクション 治療しないでください `items: []` 証拠として NFT 指示は出ない
+- `name$domain` は一部のパーサでデフォルトでユニバーサルデータスペースに設定できますが、クックブックやアプリケーションのIDは明示的な `name$domain.dataspace` 形式を使用する必要があります。
+- 同じ NFT ID の再登録は拒否されます。新しいローカルネットを使用するか、別のレコード用に安定した新しい ID を選択してください。
+- メタデータ入力は標準入力で有効でなければなりません JSON。引用なしのシェル文字列はメタデータ値ではありません JSON。
+- 現在の所有者以外のアカウントによって署名された譲渡には、正確な許可が必要です。`--from`を変更しても暗号署名者は変わりません。
+- 譲渡後、元のクライアントはもはや NFT を変更したり登録解除したりすることができない場合があります。新しい所有者の暗号署名者または認可されたコントローラーを使用してください。
+- Taira は空の NFT コレクションを返すことがあります。`items: []` を NFT の指示が利用できない証拠として扱わないでください。
 
-## ソースおよび関連文書 {#source-and-related-docs}
+## ソースと関連ドキュメント {#source-and-related-docs}
 
-- [NFT 固定されたコミットで統合試験](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/nft.rs)
-- [Kotodama NFT 固定されたコミットでホスト呼び出しテスト](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
-- [固定されたコミット](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/ivm/docs/examples/12_nft_flow.ko)で正確な Kotodama NFT ライフサイクル固定
+- [NFT ピン留めされたソースコードのリビジョンでの統合テスト](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/nft.rs)
+- [Kotodama NFT ピン留めされたソースコードのリビジョンでのホスト技術的呼び出しテスト](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
+- [固定されたソースコードのリビジョンでの正確な Kotodama NFT ライフサイクルテストアーティファクト](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko)
 - [NFTs](/ja/blockchain/nfts.md)
 - [メタデータ](/ja/blockchain/metadata.md)
 - [指示](/ja/blockchain/instructions.md)

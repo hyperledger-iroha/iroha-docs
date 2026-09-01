@@ -1,25 +1,25 @@
 ---
 translation_locale: dz
 translation_source: /guide/tutorials/python.md
-translation_source_hash: a87e8db2b77fa4952689276ae538e65b3b51070749dd0938a9e18d3a6a3dc5e4
+translation_source_hash: d0ecbade221ceba455730e80c6e12db930c65a4cbcf9e643c1c2d4cba47b0940
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: human-reviewed
 ---
-
 # Python {#python}
 
 ཡར་ཐུག་ལུ་ལཱ་འབད་སའི་ས་ཁོངས་ནང་ལུ་ Python SDK འདི་ `iroha-python`ཨིན། དང་པ་ར་ Iroha 3 པར་སྐྲུན་འབད་ནི་འདི་གིས་ ད་ལྟོའི་ Torii དང་ Norito ས་ཁུདཔ་ཚུ་ལུ་ དམིགས་གཏད་བསྐྱེད་དོ་ཡོདཔ་ཨིན། ཁྱོད་ཀྱིས་མཉམ་འབྲེལ་འབད་བའི་ཐོག་ལས་ལག་ལེན་འཐབ་མི་ ཕབ་ལེནཌ་གི་འགྱུར་སྒྲིག་ ཡང་ན་ གཞི་རྟེན་བསྐྱར་བཅོས་འདི་ ཨེབ་གཏང་འབད། དེ་བཟུམ་སྦེ་ SDK དང་ མཚམས་སྦྱོར་དེ་ ཀི་རིཌ་བཟོ་རིམ་བསྐྱར་བཅོས་ཅིག་ཁར་སྡོད་འོང་།
 
-འོག་གི་དཔེ་ཆ་ཚུ་ ཀློག་རྐྱང་སྦེ་ བརྟག་ཞིབ་འབད་ཡོདཔ་ད་ མི་མང་གིས་ Taira འདི་ནང་ལུ་ `https://taira.sora.org`. བསྒྱུར་བཅོས་འབད་ནིའི་དཔེ་འདི་ ཕྱིར་ཚོང་གྱི་ ཐོ་བཀོད་ཚུ་ཨིན། འདི་གི་དོན་ལུ་ real Taira ཚད་འཛིན་དང་ སྒེར་གྱི་ལྡེ་མིག་ དེ་ལས་ ས་སྣུམ་མེ་ཊ་ཌའི་ཊཱག་ཚུ་ བཏབ་མ་ཚར་བའི་ཧེ་མར་ འགྲོ་འགྲུལ་ལམ་གྱི་དོན་ལུ་ དགོས་མཁོ་ཅན་གྱི་ ལག་ལེན་པ་གི་བརྡ་དོན་ཚུ་ཨིན།
+གནད་དོན་ངོ་མ་འདི་ Taira ཌའི་ལོག་གི་ཁ་ཐུག་ལས་ `https://taira.sora.org` ལུ་ཨིན། རུ་ཊི་དེ་ལྷག་ཐངས་རྐྱངམ་ཅིག་འབད་ཚུགས་ནི་ཨིནམ་མ་ཚད་ འདི་ཡང་ ཀན་ནོ་ཀཱན་གྱི་རྩིས་ཐོ་དང་ ཡང་ཅིན་ ཡོངས་འབྲེལ་འཛིན་སྐྱོང་པ་ཚུ་གི་མིང་རྟགས་ཚུ་ དགོས་མཁོ་ཅན་ཨིན། དཔེ་ཆ་དེ་ཚུ་སོ་སོར་སྦེ་བཀོད་ཡོདཔ་ཨིན། བསྒྱུར་བཅོས་འབད་ནིའི་དཔེ་གཞི་འདི་ ཕྱིར་ཚོང་གི་ ཐོ་བཀོད་དང་འབྲེལ་བའི་ གནད་དོན་ཚུ་ཨིན། འདི་གི་དོན་ལུ་ ཁྱད་ལྡན་ Taira དབང་ཚད་, སྒེར་གྱི་ལྡེ་མིག་, རྩིས་ཐོ་སྤྲོད་ནི་གི་དམིགས་གཏད་, གྲུབ་འབྲས་བརྟག་དཔྱད་ (བརྟག་དཔྱད་དྲ་རྒྱ) ལེ་ཤ་ XOR དེ་ལས་ དམིགས་གཏད་ལམ་གྱིས་ དགོས་མཁོ་ཅན་གྱི་ བདེན་ཁུངས་དེ་ བཏང་དགོཔ་ཨིན།
 
-དཔེ་འདི་ འ་ནི་རིམ་ནང་ལུ་ལག་ལེན་འཐབ་དགོ།
+དཔེ་མཚོན་ཚུ་གོ་རིམ་འདི་ནང་ལག་ལེན་འཐབ།
 
-|རིམ་པ་ |མི་མང་གི་ Taira ལུ་ དོ་འགྲན་འབད་ནི་? |ཁྱོད་ལུ་དགོ་མི་ཚུ་|
-| --- | --- | --- |
-|ཀློག་ཐེངསམ་རྐྱངམ་ཅིག་ བརྒྱུད་འཕྲིན་འབད།|ཨིན་ལགས་ |Python སྦ་སྒོར་དང་ མཐུད་འབྲེལ་ཐོ་བཀོད་འབད་ |
-|ས་གནས་ཀྱི་བརྡ་བཀོད་དང་བསླབ་བྱ་བཟོ་མི་ |`submit()`ཚུན་ཚོད་ འགྲུལ་འཕྲིན་བརྡ་སྤྲོད་འབད་ནི་མེད། |རང་ལུགས་ཀྱི་ཁྱབ་སྒྲགས་དང་ ཁྱོད་ཀྱི་གདམ་ཁ་ཅན་གྱི་རྫས་ |
-|བསྒྱུར་བཅོས་ཀྱི་ཞལ་འདེབས་དང་ ཞབས་ཏོག་གི་ཅ་ལ་ཚུ་|ཁྱོད་རའི་རྩིས་ཁྲ་ནང་རྐྱངམ་ཅིག་ དངུལ་རྐྱང་རྐྱང་བཙུགས་ཏེ་ |ཁྲལ་འཛིན་སྐྱོང་གི་རྩིས་ཁྲ་, སྒེར་གྱི་ལྡེ་མིག་, ལྕགས་ཐག་ ID, དངུལ་ཕོགས་ཀྱི་བརྡ་དོན་, དངུལ་ཕོགས་གི་རྒྱུ་དངོས་ལྷག་ལུས་དང་ རྒྱང་ལམ་ཐིག་ཁྲ། |
-|སྒྲིག་གཞི་ codecs མཐུད་སྦྲེལ་, crypto, དང་ GPU གྲོགས་རམ་ |ས་གནས་རྐྱངམ་གཅིག་ |རང་ལུགས་ཀྱི་ཁྱབ་སྒྲགས་; GPU གྲོགས་རམ་འབད་མི་ཚུ་ལུ་ཡང་ CUDA-ནུས་ཅན་ backend དགོཔ་ཨིན། |
+|རིམ་པ་ |Taira མི་མང་གི་རྒྱབ་འགལ་ནང་འགྲན་བསྡུར་རྐྱབ་ནི་? |ཁྱོད་ལུ་དགོ་མི་འདི་|
+| --------------------------------------------- | ------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+|རྣམ་རྟོག་ཅན་ཚུ་གིས་ ཀློག་ཐེངསམ་ཨིན།|ཨིན་ལགས་ |Python ཆ་ཚན་དང་ མཐུད་འབྲེལ་ཐོ་བཀོད་འབད་ |
+|རྩིས་ཐོ་དང་ ལག་ལེན་པ་གིས་ བདེན་ཁུངས་བསྐྱེལ་ཐངས་ཚུ་ |ཁྱོད་རང་གི་ངོ་རྟགས་ངོ་མ་ལུ་ཆ་བཞག་པ་ཅིན་རྐྱངམ་གཅིག་ཨིན།|འདི་བཟུམ་སྦེ་ Taira `NetworkId`དང་འབྲེལ་བའི་རྩིས་ཐོ་ཡང་ན་ ལས་འཛིན་གྱི་ལྡེ་མིག་ཚུ་ |
+|ས་གནས་ཀྱི་བརྡ་བཀོད་དང་བསླབ་བྱ་བཟོ་མི་ |`submit()`ཚུན་ཚོད་ འགྲུལ་འཕྲིན་ཁ་ཐོ་བཀོད་འབད་ནི་མེད། |ནང་སྐྱེས རྒྱ་བསྐྱེད དང་ ཁྱོད་ཀྱི་གཙོ་ཅན་རྫས་ |
+|བསྒྱུར་བཅོས་ཀྱི་ཞལ་འདེབས་དང་ ཞབས་ཏོག་གི་ཅ་ལ་ཚུ་|ཁྱོད་རང་གི་རྩིས་ཐོ་ནང་ལས་རྐྱངམ་ཅིག་ དངུལ་བཏོན་ཚུགས།|ཁྲལ་འཛིན་སྐྱོང་གི་རྩིས་ཐོ་, སྒེར་གྱི་ལྡེ་མིག་, ངོ་མ་ Taira `NetworkId`, ཐོ་བཀོད་ཅན་གྱི་གླ་ཆ་ཀྱི་དམིགས་གཏད་, གླ་འཐུས་དངུལ་ཀྲམ་ལྷག་ལུས་དང་ རྒྱང་བསྒྲགས་ལམ་རྟགས་ཚུ་ |
+|སྒྲིག་གཞི་ ཨང་སྒྱུར་ཚུ མཐུད་སྦྲེལ་, གསང་བཟོ, དང་ GPU གྲོགས་རམ་ |ས་གནས་རྐྱངམ་གཅིག་ |ནང་སྐྱེས རྒྱ་བསྐྱེད; GPU གྲོགས་རམ་འབད་མི་ཚུ་ལུ་ཡང་ CUDA-ནུས་ཅན་ རྒྱབ་རིམ དགོཔ་ཨིན། |
 
 ## སེལ་འཐུ་འབད། {#install}
 
@@ -29,7 +29,7 @@ translation_engine: nllb-200-ct2
 python -m pip install /path/to/iroha_python-*.whl
 ```
 
-ཁྱོད་ཀྱིས་ ལས་འགུལ་འདི་ ཡར་ཐུག་ལུ་ལཱ་འབད་སའི་ས་སྒོ་ཚུ་ ཐད་ཀར་དུ་ལག་ལེན་འཐབ་པ་ཅིན་ Python འབྲེལ་བ་གཞི་བཙུགས་འབད་ཞིནམ་ལས་ native extension བཟོ་ནི་དེ་ ལག་ལེན་འཐབ་པའི་ཧེ་མར་ `Instruction`, `TransactionDraft`, signing, crypto, SoraFS native helpers, GPU helpers, ཡང་ན་ Connect framework codecs ལག་ལེན་འཐབ་མི་དཔེ་སྟོན་ཚུ་ལག་ལེན་འཐབ་དགོ། ཡར་ཐུག་ལུ་ `python/iroha_python/README.md` ལས་བཟོ་གོང་གི་བཀའ་རྒྱ་ལག་ལེན་འཐབ་ཞིནམ་ལས་ རང་བཞིན་གྱི་ཕྱིར་ཚོང་འཐབ་ནིའི་འགན་ཁུར་དེ་ བརྟག་དཔྱད་འབད་:
+ཁྱོད་ཀྱིས་ ལས་འགུལ་འདི་ ཡར་ཐུག་ལུ་ལཱ་འབད་སའི་ས་སྒོ་ཚུ་ ཐད་ཀར་དུ་ལག་ལེན་འཐབ་པ་ཅིན་ Python འབྲེལ་བ་གཞི་བཙུགས་འབད་ཞིནམ་ལས་ ཡུལ༌མི༌ དར་ཁྱབ་ བཟོ་ནི་དེ་ ལག་ལེན་འཐབ་པའི་ཧེ་མར་ `Instruction`, `TransactionDraft`, མིང་རྟགས, གསང་བཟོ, SoraFS ཡུལ༌མི༌ རོགས་པ་ཚུ, GPU རོགས་པ་ཚུ, ཡང་ན་ མཐུད་སྦྲེལ བཀོད་ཁྲམ་ ཨང་སྒྱུར་ཆས ལག་ལེན་འཐབ་མི་དཔེ་སྟོན་ཚུ་ལག་ལེན་འཐབ་དགོ། ཡར་ཐུག་ལུ་ `python/iroha_python/README.md` ལས་བཟོ་གོང་གི་བཀའ་རྒྱ་ལག་ལེན་འཐབ་ཞིནམ་ལས་ ཡུལ༌མི༌ ཕྱིར་འདྲེན ཚུ་འཇུག་ཐངས་འདི་ བརྟག་དཔྱད་འབད་:
 
 ```bash
 cd python/iroha_python
@@ -41,9 +41,9 @@ print(generate_ed25519_keypair().public_key.hex())
 PY
 ```
 
-གལ་སྲིད་ `create_torii_client` ནང་འདྲེན་འབད་རུང་ `Instruction` ཡང་ན་ `generate_ed25519_keypair` འདི་མ་གྲུབ་པ་ཅིན་ ཕབ་ལེནམ་གཙང་མའི་ Python ཨིན། དེ་འབདཝ་ད་ རང་བཞིན་གྱི་རྒྱ་བསྐྱེད་འདི་མེད་འོང་།
+གལ་སྲིད་ `create_torii_client` ནང་འདྲེན་འབད་རུང་ `Instruction` ཡང་ན་ `generate_ed25519_keypair` འདི་མ་གྲུབ་པ་ཅིན་ ཕབ་ལེནམ་གཙང་མའི་ Python ཨིན། དེ་འབདཝ་ད་ ནང་སྐྱེས རྒྱ་བསྐྱེད འདི་མེད་འོང་།
 
-## Quickstart {#quickstart}
+## མགྱོགས་མྱུར་འགོ་འཛུགས། {#quickstart}
 
 མི་མང་གི་ལྷག་ཐིག་རྐྱངམ་གཅིག་ Taira མཇུག་མཐའན་མཇུག་གི་སྒོ་ཚུ་ནང་ལས་འགོ་བཙུགས་ནི།
 
@@ -65,21 +65,29 @@ for account in accounts.items:
 
 ## མཉམ་འབྲེལ་མཐུན་རྐྱེན་ {#shared-setup}
 
-བསྒྱུར་བཅོས་འབད་ཐངས་ཚུ་གི་དོན་ལུ་ འ་ནི་ གཞི་སྒྲིག་འདི་ལག་ལེན་འཐབ་ སྦྲེལ་མཐུད་འབད་ཐངས་འདི་མ་བཙུགས་པའི་ཧེ་མར་ ས་གནས་འཛིན་པ་རེ་ལུ་ Taira དབང་འཛིན་, སྒེར་གྱི་ལྡེ་མིག་, ཐོ་ཀིན་དང་ རྒྱུ་དངོས་/རྩིས་ཁྲ་ IDs སྦེ་བགོ་བཀྲམ་འབད་དགོ།
+བསྒྱུར་བཅོས་འབད་ཐངས་ཚུ་གི་དོན་ལུ་ འ་ནི་ གཞི་སྒྲིག་འདི་ལག་ལེན་འཐབ་ སྦྲེལ་མཐུད་འབད་ཐངས་འདི་མ་བཙུགས་པའི་ཧེ་མར་ ས་གནས་འཛིན་པ་རེ་ལུ་ Taira དབང་འཛིན་, སྒེར་གྱི་ལྡེ་མིག་, ཐོ་ཀིན་དང་ རྒྱུ་དངོས་/རྩིས་ཐོ་ IDs སྦེ་བགོ་བཀྲམ་འབད་དགོ།
 
-`authority` འདི་ཚོང་འབྲེལ་གུ་ མཚན་རྟགས་བཀོད་མི་རྩིས་ཨིན། `private_key` དེ་རྩིས་དང་འདྲན་འདྲ་བཟོ་དགོཔ་ཨིན་པ། `CHAIN_ID` གིས་ དམིགས་གཏད་གི་དྲ་ལམ་དང་འདྲན་འདྲན་འདྲ་འབད་དགོཔ་ཨིན། དེ་ལས་ `TX_METADATA` གིས་ ལས་འཛིན་གྱིས་རེ་བ་བསྐྱེད་མི་འཐུས་གྱི་ས་ཁོངས་ཚུ་རྩིས་དགོ། འོག་གི་ས་ཆ་འཆང་མི་ཚུ་གིས་ ཐབས་ཤེས་མེད་པར་ ཆ་མེད་གཏང་དོ་ཡོདཔ་ལས་ རྐྱེན་ངན་ཐོག་ལས་ བཏང་མི་ཚུགས།
+`authority` ཚོང་འབྲེལ་གྱི་མིང་རྟགས་བཀོད་མི་རྩིས་དེ་ཨིན། `private_key` འདི་དང་བསྟུན་འབད་དགོཔ་ཨིན། འབྲེལ་བ་འཐབ་ནི་ཚུ་ Taira ཡོངས་འབྲེལ་འབྱུང་ཁུངས་ལས་ འབྱུང་ཡོདཔ་ཨིན། `NetworkId`; ལྕགས་ཐག་ UUID ཐོ་བཀོད་གི་མིང་ཐོ་འདི་ ལག་ལེན་གྱི་ངོ་རྟགས་མེན་ དངུལ་སྤྲོད་ཀྱི་དམིགས་ཡུལ་དང་ ཕྲང་བའི་གནས་གོང་ཚུ་ལག་ལེན་འཐབ་ཨིན། རྩིས་ཐོ་དང་ལྡནམ་སྦེ་ གནས་སྡུད་འཛིན་བཟུང་ འོག་གི་ཤོག་ལེབ་ཚུ་ དམིགས་བསལ་དུ་ ཆ་མེད་བཏང་ཡོདཔ་ལས་ དེ་ཚུ་ རྐྱེན་ངན་གྱི་ཐོག་ལས་ བཏང་མི་ཨིན།
+
+འོག་གི་ཡི་གུ་འདི་ ད་ལྟོའི་ལྡེ་མིག་ Taira ཇི་ནེསི་སི་གི་ངོ་རྟགས་ཨིན། བརྟག་དཔྱད་སླར་སྒྲིག་འདི་གིས་ འདི་ལུ་བསྒྱུར་བཅོས་འབད་ཚུགས། འདི་འབདཝ་ལས་ ཐོ་བཀོད་ཅན་གྱི་ལག་ལེན་འཐབ་ནིའི་ཡིག་གཟུགས་ནང་ལས་ གསར་བསྐྲུན་འབད། དེ་ལས་ UUID ལྕགས་ཐག་ལས་གཏན་འབེབས་མ་འབད་བར་བཞག་དགོ།
 
 ```python
 from iroha_python import (
     Ed25519KeyPair,
     Instruction,
+    LocalSigningContext,
+    NetworkId,
+    ToriiClient,
+    ToriiCanonicalRequestAuth,
     TransactionConfig,
     TransactionDraft,
-    create_torii_client,
+    authority_fee_payment,
 )
 
 TORII_URL = "https://taira.sora.org"
-CHAIN_ID = "fc56984b-2be7-431d-840e-21514d1883f0"
+TAIRA_NETWORK_ID = NetworkId.parse(
+    "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+)
 AUTH_TOKEN = None
 
 # Replace these placeholders with the real signing keys for your accounts.
@@ -90,68 +98,83 @@ bob_pair = Ed25519KeyPair.from_private_key(bytes.fromhex("<bob-private-key-hex>"
 alice = "<alice-account-id>"
 bob = "<bob-account-id>"
 
+canonical_auth = ToriiCanonicalRequestAuth(
+    network_id=TAIRA_NETWORK_ID.literal,
+    account_id=alice,
+    signer=alice_pair.sign,
+)
+
 ROSE_DEFINITION = "rose#wonderland"
 ROSE_ASSET = "<rose-asset-id>"
 BADGE_NFT = "badge$wonderland"
 
-TX_METADATA = {
-    # Public Taira fee asset. Use the configured XOR asset on your network.
-    "gas_asset_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
-}
+APP_METADATA = {"source": "python-docs"}
+# Torii replaces the empty maxima with an exact, validated live fee quote before
+# anything is signed. The payer remains the transaction authority.
+BASE_FEE_PAYMENT = authority_fee_payment(charge_limits=[])
 
-client = create_torii_client(TORII_URL, auth_token=AUTH_TOKEN)
+client = ToriiClient(
+    TORII_URL,
+    local_signing_context=LocalSigningContext(TAIRA_NETWORK_ID),
+    canonical_request_auth=canonical_auth,
+    auth_token=AUTH_TOKEN,
+)
 
 
 def submit(*instructions):
-    # This is the network boundary: build, sign, submit, and wait for status.
-    return client.build_and_submit_transaction(
-        chain_id=CHAIN_ID,
-        authority=alice,
-        private_key=alice_pair.private_key,
-        instructions=list(instructions),
-        metadata=TX_METADATA,
-        wait=True,
+    draft = TransactionDraft(
+        TransactionConfig(
+            network_id=TAIRA_NETWORK_ID,
+            authority=alice,
+            fee_payment=BASE_FEE_PAYMENT,
+            metadata=APP_METADATA,
+        )
     )
+    draft.extend_instructions(instructions)
+
+    # Freeze one payload, obtain its exact fee limits, and sign that same payload.
+    envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
+    status = client.submit_transaction_envelope_and_wait(envelope)
+    return envelope, fee_quote, status
 ```
 
-`Instruction.*` གིས་ བཟོ་སྐྲུན་གྱི་བསླབ་བྱ་གི་ ཁེ་ཕན་གྱི་ཅ་ལ་ཚུ་རྐྱངམ་གཅིག་འབོ་ཨིན། `submit()` འདི་ SDK གིས་ ཚོང་འབྲེལ་གུ་ མཚན་རྟགས་བཀོད་ཞིནམ་ལས་ Torii ལུ་བཏང་སྟེ་ གནས་སྟངས་ཅིག་གི་དོན་ལུ་སྒུག་སྡོད་སའི་གནས་སྐབས་ཨིན།
+`Instruction.*` གིས་བཟོ་ནིའི་བསླབ་བྱ་གི་ནང་དོན་གནད་སྡུད་གྱི་ཅ་ལ་ཚུ་རྐྱངམ་གཅིག་འབོ་ཨིན། `submit()` འདི་ SDK གིས་ ཕྲང་བའི་གླ་སྤྲོད་ལེན་འབད་ཞིནམ་ལས་ ཐོ་བཀོད་ཅན་གྱི་ནང་དོན་གནད་སྡུད་ཀྱི་ཅ་ལ་གུ་ མཚན་རྟགས་བཙུགས་ཏེ་ Torii ལུ་བཏང་ཞིནམ་ལས་ གནས་སྟངས་ཅིག་གི་དོན་ལུ་བསྒུག་བཞགཔ་ཨིན།
 
 ## ཁྲལ་དང་ གློག་སྣུམ་གྱི་འཐུས་ {#fees-and-gas}
 
-ཚོང་འབྲེལ་ཡིག་འབྲུ་ལུ་འཐུས་ཀྱི་བརྡ་དོན་དང་ དངུལ་རྐྱང་གི་རྩིས་ཁྲ་ཚུ་ དགོཔ་ཨིན། Taira ལུ་, དངུལ་རྐྱང་གྱི་རྩིས་ཁྲ་དེ་ མི་མང་གི་ཐབ་ཁུག་ལས་མ་དངུལ་ཨིནམ་ད་ ཕྱིར་ཚོང་གི་བརྡ་དོན་ནང་ `gas_asset_id` བཅའ་མར་གཏོགས་དགོཔ་ཨིན།Minamoto ལུ་, དངུལ་ཕོགས་འདི་ real XOR དང་རྒྱུ་དངོས་ ID ལས་འབྱུང་དོ་ཡོདཔ་ཨིན། འདི་བཟུམ་གྱི་དྲ་ལམ་གི་སྒྲིག་གཞི་ལས་ཨིན།
+ཡིག་འབྲུ་གི་ཞལ་འདེབས་འདི་ `FeePaymentIntent` དང་ དངུལ་ཕོགས་སྤྲོད་མི་ཁྲལ་གྱི་ རྒྱུ་དངོས་ལྷག་ལུས་ཅིག་ དགོཔ་ཨིན། Taira ལུ་, མི་མང་བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག་དངུལ་བརྟག་དཔྱད་ དྲ་རྒྱ XOR ཨིན། Python SDK གིས་གཏན་འཁེལ་འབད་མ་ཚུགས་པའི་བརྡ་འཕྲིན་ཚུ་གཏང་འོང་། ཟད་འགྲོ་བཏང་མི་ཁྲལ་གྱི་ཐོ་ཡིག་འདི་ Torii ལུ་བཙུགས་ཞིནམ་ལས་ ཏི་རུ་སྤྲོད་མི་ ཡང་ན་ ཏི་རུ་འབག་མི་ཁྲལ་དེ་ བསྒྱུར་བཅོས་འབད་མ་ཚུགསཔ་སྦེ་ ངོས་འཛིན་འབད་ཞིནམ་ལས་ ཐོ་བཀོད་འབད་ཡོད་པའི་དམིགས་དོན་ལུ་ མཚན་རྟགས་རྐྱབས་ཨིན། དངུལ་རྩིས་ཀྱི་གདམ་ཁ་དེ་ ཕྱིར་ཚོང་གི་ གནད་སྡུད་ཚུ་ནང་མ་བཙུགས་པར་བཞག་དགོ།
 
-ཟད་འགྲོ་བཏང་མི་ ཌེ་ཊའི་ཊཱག་དེ་ རིམ་རྐྱང་གི་བཀོད་རྒྱ་ལས་མེན་རུང་ བསྡུ་ལེན་གྱི་དོན་ལུ་ཨིན། གོང་ལུ་ `submit()` རྒྱབ་སྐྱོར་འདི་གིས་ `TX_METADATA` སྒྲིག་འཇུག་བྱས་ཚད། ཐེངས་ 1 ལས་ཉུང་བ། ཐོན་རིམ་ 5.7.1 ནང་དུ་ཚོད་ལྟ་བྱས་ཟིན། ལོ 6 སྔོན་ལ་གསར་བཅོས་བྱས།
+གོང་འཁོད་ཀྱི་ `submit()` གྲོགས་རམ་འདི་ དབང་ཚད་སྤྲོད་ཡོད་པའི་ དམིགས་ཡུལ་དང་གཅིག་ཁར་འགོ་བཙུགསཔ་ཨིན་ དེ་གི་གླ་ཆ་ཚད་གཞི་ཚུ་ བསམ་ཞིབ་འབད་དེ་སྟོངམ་ཨིན། `quote_and_sign()` གིས་ མིང་རྟགས་མ་བཀོད་པའི་ཧེ་མ་ ཐད་རི་བ་རི་ ཚིག་བརྗོད་ལས་ བཀངམ་ཨིན།
 
 ```python
-TX_METADATA = {
-    # Taira expects the fee asset definition in transaction metadata.
-    "gas_asset_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
-}
-
-envelope, status = client.build_and_submit_transaction(
-    chain_id=CHAIN_ID,
-    authority=alice,
-    private_key=alice_pair.private_key,
-    # Fee metadata is attached to the transaction, not the instruction.
-    instructions=[
-        Instruction.set_account_key_value(
-            alice,
-            "python_fee_example",
-            "ready",
-        )
-    ],
-    metadata=TX_METADATA,
-    wait=True,
+draft = TransactionDraft(
+    TransactionConfig(
+        network_id=TAIRA_NETWORK_ID,
+        authority=alice,
+        fee_payment=authority_fee_payment(charge_limits=[]),
+        metadata={"source": "python-fee-example"},
+    )
 )
+draft.add_instruction(
+    Instruction.set_account_key_value(
+        alice,
+        "python_fee_example",
+        "ready",
+    )
+)
+envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
+status = client.submit_transaction_envelope_and_wait(envelope)
+
+for limit in fee_quote["intent"]["value"]["charge_limits"]:
+    print(limit["asset_definition_id"], limit["max_amount"])
 ```
 
-འབྲི་ཤོག་ཚུ་བཏང་བའི་ཧེ་མར་ གཞུང་གི་རྩིས་ཁྲ་ལུ་འཐུས་དངུལ་གྱི་ རྒྱུ་དངོས་དག་པ་ཅིག་ཡོད་མི་འདི་ བརྟག་ཞིབ་འབད་གི། ཐབ་ཤིང་དང་རྒྱུ་དངོས་ ID འདི་ཐད་ཀར་དུ་ ཁྱད་ཅན་ཨིན། འ་ནི་འདི་ Taira བཟོ་བཀོད་ཨིན།
+འབྲི་ཤོག་ཚུ་བཏང་བའི་ཧེ་མར་ དབང་འཛིན་གྱི་རྩིས་ཐོ་ལུ་ འཐུས་དངུལ་གྱི་རྒྱུ་དངོས་ལྡང་ངེས་ཡོད་མི་འདི་ བརྟག་ཞིབ་འབད། བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག་དང་རྒྱུ་དངོས་ ID འདི་འབྲེལ་མཐུད་རེ་རེར་ཁྱད་པར་ཡོདཔ་ཨིན། འ་ནི་འདི་ Taira བཟོ་བཀོད་ཨིན།
 
 ```python
 FEE_ASSET_DEFINITION = "6TEAJqbb8oEPmLncoNiMRbLEK6tw"
 # The faucet returns the concrete account asset ID to check here.
 FEE_ASSET_ID = "<fee-asset-id-from-faucet-response>"
-TX_METADATA = {"gas_asset_id": FEE_ASSET_DEFINITION}
 
 # Fail before submitting if the signer cannot pay gas.
 fee_assets = client.list_account_assets_typed(
@@ -163,29 +186,28 @@ if not fee_assets.items:
     raise RuntimeError("fund the authority account with the Taira fee asset first")
 ```
 
-འབུབ་འདི་གིས་ བཀྲིས་ཏོང་ཏོ་ལོག་གཏངམ་ཨིན། `asset_id` བརྒྱ་ཆ་བསྡོམས་བརྟག་དཔྱད་འབད་ནིའི་དོན་ལུ་ ལག་ལེན་འཐབ་ནི་ཨིན། `gas_asset_id` metadata field གིས་ fee asset definition འདི་ལག་ལེན་འཐབ་ཨིན། ID.
+བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག་འདི་གིས་ ལྷག་ལུས་ཞིབ་དཔྱད་ཀྱི་དོན་ལུ་ལག་ལེན་འཐབ་ནི་ལུ་ ངེས་གཏན་ `asset_id` སླར་ལོག་འབདཝ་ཨིན། དངོས་ཡོད་ཚིག་བརྗོད་ཀྱི་གླ་ཆ་ `FEE_ASSET_DEFINITION` བདེན་དཔྱད་འབད། བརྗེ་སོར་འདི་གིས་ མེ་ཊ་ཌེ་ཊ་བརྒྱུད་དེ་ རྒྱུ་དངོས་དེ་སེལ་འཐུ་མི་འབད།
 
-ལག་ལེན་གྱི་ metadata འདི་འཐུས་ཀྱི་ metadata ལས་སོ་སོར་སྦེ་ བཞག་ནི་ཨིནམ་ད་ ཁྱོད་ཀྱིས་ཚོང་འབྲེལ་བཟོ་སྐབས་ mappings ཚུ་སྤེལ་ཐོག་ལས་:
+གློག་རིམ་མེ་ཊ་ཌེ་ཊ་འདི་གདམ་ཁ་ཅན་ཨིནམ་དང་ འཐུས་ཡིག་བརྡ་མེདཔ་ཨིན།
 
 ```python
 APP_METADATA = {"source": "python-docs"}
-# Merge app metadata with required fee metadata before building the draft.
-metadata = {**TX_METADATA, **APP_METADATA}
 
 draft = TransactionDraft(
     TransactionConfig(
-        chain_id=CHAIN_ID,
+        network_id=TAIRA_NETWORK_ID,
         authority=alice,
-        metadata=metadata,
+        fee_payment=BASE_FEE_PAYMENT,
+        metadata=APP_METADATA,
     )
 )
 ```
 
-གལ་སྲིད་ ཁྱོད་ཀྱིས་འཐུས་ཀྱི་བརྡ་དོན་ཚུ་ བརྗོད་མ་བཏུབ་པ་ཅིན་ ཟད་འགྲོ་གི་རྒྱུ་དངོས་མ་བདེཝ་སྦེ་ ལག་ལེན་འཐབ་སྟེ་ ཡང་ན་ དངུལ་འབྲེལ་མ་དངུལ་པའི་རྩིས་ཁྲ་དང་གཅིག་ཁར་ ཐོ་བཀོད་འབད་བ་ཅིན་ ཕྲང་ལམ་གྱི་དྲ་རྒྱ་ཅིག་གིས་ གནད་དོན་འདི་ ཆ་མེད་གཏང་དགོཔ་ཨིན་རུང་ ལམ་སྟོན་གྱི་ཁེ་ཕན་དེ་ ཆ་མེད་སོང་ཡོདཔ་ཨིན།
+ཁྱོད་ཀྱིས་ འཐུས་ཀྱི་ དམིགས་ཡུལ་འདི་ བཏོན་བཏང་པ་ཅིན་ རེ་བ་མེད་པའི་རྒྱུ་དངོས་ཅིག་གི་དོན་ལུ་ ཚིག་བརྗོད་ཅིག་ ངོས་ལེན་འབད་བ་ཅིན་ ཚིག་བརྗོད་བཀོད་པའི་ཤུལ་ལས་ དངུལ་ཕོགས་འདི་ བསྒྱུར་བཅོས་འབད་བ་ཅིན་ ཡང་ན་ མ་དངུལ་མེད་པའི་རྩིས་ཐོ་ཅིག་དང་གཅིག་ཁར་ མཚན་རྟགས་བཀོད་པ་ཅིན་ ཚོང་འབྲེལ་འདི་ བཙུགས་མི་ཆོག།
 
-## Taira-བརྟག་ཞིབ་འབད་མི་ ཀློག་རྐྱང་ བརྒྱུད་འཕྲིན་ཚུ་ {#taira-checked-read-only-calls}
+## མིང་མ་ཤེསཔ་ Taira ཀློག་ཐེངས། {#anonymous-taira-reads}
 
-འ་ནི་ཁ་འབུབ་འདི་ མི་མང་ལུ་ Taira ཕྱིར་འཐེན་འབད་ཡོདཔ་ཨིན།
+བརྒྱུད་འཕྲིན་འདི་ཚུ་གིས་ Taira ཕྲང་ལམ་ཚུ་ལག་ལེན་འཐབ་དོ་ཡོདཔ་ད་ ཡིག་སྡེབ་ཀྱི་མཐའ་མཚམས་ལུ་ མིང་མ་ཤེསཔ་སྦེ་ ཀློག་ཐེངསམ་ཨིན།
 
 ```python
 client = create_torii_client("https://taira.sora.org")
@@ -197,22 +219,18 @@ parameters = client.request_json("GET", "/v1/parameters", expected_status=(200,)
 # Typed helpers parse pagination and records into dataclasses.
 accounts = client.list_accounts_typed(limit=1)
 domains = client.list_domains_typed(limit=1)
-definitions = client.query_asset_definitions_typed(limit=1)
+definitions = client.list_asset_definitions_typed(limit=1)
 
 # These calls inspect live node subsystems without mutating state.
-time_now = client.get_time_now_typed()
-time_status = client.get_time_status_typed()
-sumeragi = client.get_sumeragi_status_typed()
-connect = client.get_connect_status_typed()
+time_now = client.get_time_now()
 
 print(status["build"]["version"])
-print(parameters["sumeragi"]["block_time_ms"])
+print(parameters["sumeragi"]["block_cadence_ms"])
 print(accounts.total, domains.total, definitions.total)
-print(time_now.now_ms, len(time_status.samples), sumeragi.leader_index)
-print(connect.enabled, connect.sessions_active)
+print(time_now.now_ms)
 ```
 
-རྒྱང་ལམ་ཚུ་ དཔེར་ན་ `/v1/status`, སྤྱིར་བཏང་གི་གྲོགས་རམ་གྱི་ཐོ་ཡིག་ཚུ་ Sumeragi RBC བརྟག་ཞིབ་འབད་ཐབས། node admins snapshots དང་ Connect app ཐོ་བཀོད་ཡིག་ཚང་འཛིན་སྐྱོང་ཚུ་ publicly not available on Taira བརྟག་དཔྱད་འབད་བའི་སྐབས་ལུ་ ལག་ལེན་འཐབ་དགོ། `request_json("GET", "/status")` public node status གི་ཁེ་ཕན་གྱི་དོན་ལུ་ Taira.
+`/v1/time/status` དང་ `/v1/sumeragi/*` བཀོལ་སྤྱོད་པའི་དུས་ཚོད་ཀྱི་གནད་སྡུད་མཐོང་སྣང་རེ་རེ་ལུ་ གནས་སྟངས་འགྱུར་བཅོས་མ་འབད་རུང་ ཡོངས་འབྲེལ་བཀོལ་སྤྱོད་པའི་མིང་རྟགས་ངེས་བདེན་དགོཔ་ཨིན། མིང་མེད་མཛུབ་གནོན་གནས་རིམ་ནང་དོན་གནད་སྡུད་དང་ མོས་མཐུན་ཡང་ན་མཛུབ་གནོན་-ཉེ་གནས་ཆུ་ཚོད་བརྟག་དཔྱད་ཀྱི་དོན་ལུ་ འོག་གི་བཀོལ་སྤྱོད་གཞི་སྒྲིག་གི་དོན་ལུ་ `request_json("GET", "/status")` ལག་ལེན་འཐབ། མཐུད་ལཱ་ཡུན་གནས་ཚད་འདི་ མཐུན་འབྲེལ་ལམ་ལུགས་སོ་སོ་ཅིག་ཨིནམ་དང་ ལཱ་ཡུན་དེ་གི་འཛིན་སྐྱོང་བརྡ་མཚོན་དགོཔ་ཨིན།
 
 ## རིག་རྩལ་བཟོ་སྐྲུན་འབད་མི་ {#instruction-builders}
 
@@ -221,25 +239,25 @@ SDK གིས་ སྤྱིར་བཏང་གི་བརྡ་སྟོན
 ཐོ་བཀོད་ཅན་གྱི་བརྡ་སྟོན་འདི་ ལག་ལེན་འཐབ་ནི་དེ་ ལེགས་ཤོམ་ཨིན། Python ཚད་གཞི་ཚུ་ རང་བཞིན་གནས་གོང་བཟོ་སྟེ་ཡོད་མི་ཚུ་དང་ མ་བདེན་པའི་རྣམ་གཞག་ཚུ་ ཧེ་མ་ལས་མ་གྲུབ་པར་འགྱོ་དོ་ཡོདཔ་ཨིན། ཁྱོད་ཀྱིས་ `Instruction.from_json` འདི་ལག་ལེན་འབད་དགོཔ་ད་རྐྱངམ་གཅིག་ ཁྱོད་ཀྱིས་ བརྡ་སྟོན་གྱི་རྣམ་འགྱུར་ཅིག་ དགོས་མཁོ་ཡོདཔ་ཨིན་རུང་ ད་ལྟོ་ཡང་ Python རྒྱབ་སྐྱོར་མེད་པ་ཅིན་ ལག་ལེན་འཐབ་ཚུགས།
 
 |སློབ་སྟོན་གྱི་བཟའ་ཚང་ |Python ས་ཁོངས།|
-| --- | --- |
-|ཐོ་བཀོད་འབད་ | `register_account`, `register_asset_definition_numeric`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` genesis/bootstrap toolingགི་དོན་ལུ་བཞག་ཡོདཔ་ཨིན། |
-|ཐོ་བཀོད་མ་རྐྱབས་ |`unregister_trigger` ལག་ལེན་འཐབ་ནི་ `Instruction.from_json` ལས་སྣ་གཞན་ཚུ་གི་དོན་ལུ་ |
-|Mint/Burn |`mint_asset_numeric`,`burn_asset_numeric`, `mint_trigger_repetitions`, `burn_trigger_repetitions` |
+| | ------------------------------------------------------------------------------------------- ------------------------------------------------------------------------------ |
+| ཐོ་བཀོད་འབད། | `register_account`, `register_asset_definition_numeric`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` འདི་ རིགས་མཚན་/བུཊི་སི་ཊརཔ་ལག་ཆས་ཚུ་གི་དོན་ལུ་ བཀག་བཞག་ཡོདཔ་ཨིན། |
+| ཐོ་བཀོད་འབད་མ་བཏུབ། | `unregister_trigger`; དབྱེ་བ་གཞན་ཚུ་གི་དོན་ལུ་ `Instruction.from_json` ལག་ལེན་འཐབ། |
+| མིན་ཊི་/བརན་ | `mint_asset_numeric`, `burn_asset_numeric`, `mint_trigger_repetitions`, `burn_trigger_repetitions` |
 |བསྒྱུར་བཅོས་ |`transfer_asset_numeric`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa` |
-|metadata དང་ controls |`set_account_key_value`, `remove_account_key_value`,`set_rwa_controls`, `set_rwa_key_value`, `remove_rwa_key_value` |
-|RWA ཚེ་སྲོག་འཁོར་ |`merge_rwas`, `redeem_rwa`, `freeze_rwa`, `unfreeze_rwa`, `hold_rwa`, `release_rwa` |
+| མེ་ཊ་ཌེ་ཊ་དང་ཚད་འཛིན་ཚུ་ | `set_account_key_value`, `remove_account_key_value`, `set_rwa_controls`, `set_rwa_key_value`, `remove_rwa_key_value` |
+| RWA མི་ཚེ་འཁོར་རིམ། | `merge_rwas`, `redeem_rwa`, `freeze_rwa`, `unfreeze_rwa`, `hold_rwa`, `release_rwa` |
 |ExecuteTrigger |`execute_trigger` |
 |གནས་སྤོ་/གནས་སྤོ་ཚུ་ རྒྱ་སྐྱེད་འབད་ནི།|`repo_initiate`, `repo_unwind`,`repo_margin_call`, `settlement_dvp`, `settlement_pvp` |
-|རང་བཞིན་གྱི་ རྒྱུ་དངོས་གི་ལྡེ་མིག་ཚུ་ |`open_asset_lock`, `drawdown_asset_lock`,`cancel_asset_lock`, `expire_asset_lock` དེ་ལས་རྒྱབ་སྐྱོར་འབད་མི་མགྲོན་པ་ `*_and_wait` |
-|Grant/Revocate, SetParameter, Log, Custom, Upgrade དེ་ལས་ ཐོ་བཀོད་འབད་མ་བཏུབ་པའི་ འདྲ་བཤུས་ཚུ་ |`Instruction.from_json` ཡང་ན་ `TransactionBuilder.add_instruction_json` དང་གཅིག་ཁར་ ཀ་ནོ་ནི་ཀཱན་གྱི་ `InstructionBox` JSON |
+|ནང་སྐྱེས རྒྱུ་དངོས་བཀག་སྡོམ་ཚུ་ |`open_asset_lock`, `drawdown_asset_lock`,`cancel_asset_lock`, `expire_asset_lock` དེ་ལས་རྒྱབ་སྐྱོར་འབད་མི་མགྲོན་པ་ `*_and_wait` |
+|གནང་བ་སྤྲོད/ཕྱིར་བསྡུ, SetParameter, དྲན་ཐོ, རང་སྒྲིག, རིམ་སྤར དེ་ལས་ ཐོ་བཀོད་འབད་མ་བཏུབ་པའི་ འདྲ་བཤུས་ཚུ་ |`Instruction.from_json` ཡང་ན་ `TransactionBuilder.add_instruction_json` དང་གཅིག་ཁར་ ཚད་ལྡན་གྱི་ `InstructionBox` JSON |
 
-སྦ་སྒོར་གྱི་རྣམ་ཐངས་ཀྱི་ གནས་སྟངས་ཅན་གྱི་སྤྲོད་ལེན་ཚུ་གི་དོན་ལུ་ [Native Asset Escrow](/dz/blockchain/escrow.md#python-asset-locks) ལུ་གཟིགས་དགོ། Python གིས་ ད་རེས་ནངས་པར་ ཨང་དང་པ་གི་རོགས་རམ་འབད་མི་ཚུ་ལུ་ སྤྱིར་བཏང་ནོར་རྫས་བཀག་སྡོམ་འབད་ནི་གི་ གོ་སྐབས་བྱིན་དོ་ཡོདཔ་ཨིན། ཚོང་ལམ་དང་མིང་མ་ཤེསཔ་གི་སྦ་སྒོའི་རོགས་རམ་འབད་མི་ཚུ་ ད་ལྟོ་ཡང་ ཨང་དང་པ་ཨིན་མི་ ཐབས་ལམ་ཚུ་ Python ཨིན་མས།
+ཆ་ཚན་གྱི་རྣམ་ཐངས་ཀྱི་ གནས་སྟངས་ཅན་གྱི་སྤྲོད་ལེན་ཚུ་གི་དོན་ལུ་ [རང་སའི་རྒྱུ་དངོས་བཅོལ་ཉར](/dz/blockchain/escrow.md#python-asset-locks) ལུ་གཟིགས་དགོ། Python གིས་ ད་རེས་ནངས་པར་ ཨང་དང་པ་གི་རོགས་རམ་འབད་མི་ཚུ་ལུ་ སྤྱིར་བཏང་ནོར་རྫས་བཀག་སྡོམ་འབད་ནི་གི་ གོ་སྐབས་བྱིན་དོ་ཡོདཔ་ཨིན། ཚོང་ལམ་དང་མིང་མ་ཤེསཔ་གི་སྦ་སྒོའི་རོགས་རམ་འབད་མི་ཚུ་ ད་ལྟོ་ཡང་ ཨང་དང་པ་ཨིན་མི་ ཐབས་ལམ་ཚུ་ Python ཨིན་མས།
 
-### Domain གཞི་བཙུགས་འབད་ དེ་ལས་རྩིས་ཁྲ་དང་ རྒྱུ་དངོས་ཚུ་ ཐོ་བཀོད་འབདཝ་ཨིན། {#set-up-domains-then-register-accounts-and-assets}
+### མངའ་ཁོངས གཞི་བཙུགས་འབད་ དེ་ལས་རྩིས་ཐོ་དང་ རྒྱུ་དངོས་ཚུ་ ཐོ་བཀོད་འབདཝ་ཨིན། {#set-up-domains-then-register-accounts-and-assets}
 
-སྤྱིར་བཏང་ domain བཟོ་སྐྲུན་འདི་ declarative alias planner གྱི་ཐོག་ལས་འགྱོ་དོ་ འདི་གིས་འབད་ SNS ཁང་གླ་དང་ ཇོ་བདག་གི་ལྕོགས་གྲུབ་ ཚད་འཛིན་སྲུང་སྐྱོབ་ དེ་ལས་ ས་ཁོངས་ཀྱི་གནས་སྟངས་ཚུ་ གཅིག་ཁར་བརྟག་དཔྱད་འབད་ཡོདཔ་ཨིན། གསང་བའི་ཐོག་ལས་ `AliasSetupPlanRequestV1` ཁྱོད་ཀྱི་འཆར་གཞི་ SDK ཡང་ན་ འཛུལ་ཞུགས་ཞབས་ཏོག་དང་ཕྱདཔ་ད་ལག་ལེན་འཐབ་ `iroha app alias setup plan` དང་ `iroha app alias setup apply`. བཏང་མི་དགོ་ `Instruction.register_domain` ལས་འགུལ་གྱི་ལག་ལེན་ལས་ཨིན། འདི་བཟོ་མི་དེ་ genesis/bootstrap tooling གི་དོན་ལུ་ར་ བཞག་ཡོདཔ་ཨིན།
+སྤྱིར་བཏང་ མངའ་ཁོངས བཟོ་སྐྲུན་འདི་ གསལ་བསྒྲགས་ཅན མིང་གཞན འཆར་བཀོད་པ གྱི་ཐོག་ལས་འགྱོ་དོ་ འདི་གིས་འབད་ SNS ཁང་གླ་དང་ ཇོ་བདག་གི་ལྕོགས་གྲུབ་ ཚད་འཛིན་སྲུང་སྐྱོབ་ དེ་ལས་ ས་ཁོངས་ཀྱི་གནས་སྟངས་ཚུ་ གཅིག་ཁར་བརྟག་དཔྱད་འབད་ཡོདཔ་ཨིན། གསང་བའི་ཐོག་ལས་ `AliasSetupPlanRequestV1` ཁྱོད་ཀྱི་འཆར་གཞི་ SDK ཡང་ན་ འཛུལ་ཞུགས་ཞབས་ཏོག་དང་ཕྱདཔ་ད་ལག་ལེན་འཐབ་ `iroha app alias setup plan` དང་ `iroha app alias setup apply`. བཏང་མི་དགོ་ `Instruction.register_domain` ལས་འགུལ་གྱི་ལག་ལེན་ལས་ཨིན། འདི་བཟོ་མི་དེ་ འགོ་ཐོག/འགོ་སྒྲིག ལག་ཆས གི་དོན་ལུ་ར་ བཞག་ཡོདཔ་ཨིན།
 
-ཌོ་मेन གཞི་བཙུགས་འཆར་གཞི་དེ་ བརྩོན་ཤུགས་བསྐྱེད་པའི་ཤུལ་ལས་, ཌོ་เมནགྱི་དབང་འོག་གི་དངོས་རྫས་ཚུ་ ཐོ་བཀོད་འབད། Taira བཟུམ་ཅིག་སྦེ་བགོ་བཤའ་རྐྱབ་མི་དྲ་ལམ་ནང་ལུ་ ཁྱོད་ཀྱིས་ཐོབ་ཡོད་པའི་ ཌོ་મેནདང་རྩིས་མིང་སྟོང་འདི་ལག་ལེན་འཐབ་དགོ།
+ཌོ་མེན གཞི་བཙུགས་འཆར་གཞི་དེ་ བརྩོན་ཤུགས་བསྐྱེད་པའི་ཤུལ་ལས་, ཌོ་མེནགྱི་དབང་འོག་གི་དངོས་རྫས་ཚུ་ ཐོ་བཀོད་འབད། Taira བཟུམ་ཅིག་སྦེ་བགོ་བཤའ་རྐྱབ་མི་དྲ་ལམ་ནང་ལུ་ ཁྱོད་ཀྱིས་ཐོབ་ཡོད་པའི་ ཌོ་མེན་དང་་རྩིས་མིང་སྟོང་འདི་ལག་ལེན་འཐབ་དགོ།
 
 ```python
 # The domain and its SNS lease already exist before this transaction.
@@ -257,11 +275,11 @@ submit(
 )
 ```
 
-`mintable` གིས་ `Infinitely`, `Once`, `Not` ཡང་ན་ `Limited(n)` ཚད་གཞི་ཚུ་ཆ་བཞག་ཡོདཔ་ད་ གནད་སྡུད་དཔེ་རིམ་གྱིས་ ཆ་འཇོག་འབད་ཡོདཔ་ཨིན། ཨང་གྲངས་ཀྱི་བཅའ་ཁྲིམས་མེད་པའི་ རྒྱུ་དངོས་གི་དོན་ལུ་ `scale` བཏོན་གཏང་།
+`mintable` གིས་ གནད་སྡུད་དཔེ་ཚད་ཀྱིས་ངོས་ལེན་འབད་མི་ `Infinitely`, `Once`, `Not`, ཡང་ན་ `Limited(n)` གནས་གོང་ཚུ་ངོས་ལེན་འབདཝ་ཨིན། བཀག་ཆ་མེད་པའི་ཨང་གྲངས་རྒྱུ་དངོས་ཅིག་གི་དོན་ལུ་ `scale` བཏོན་གཏང་།
 
 ### བཟོ་སྐྲུན་འབད་ནིའི་ རྒྱུ་དངོས་དང་ ཅ་ཆས་ཚུ་ {#mint-burn-and-transfer-assets}
 
-འ་ནི་ཅ་ལ་ཚུ་གིས་ ཧེ་མ་ལས་ཡོད་པའི་ རྒྱུ་དངོས་ལག་ལེན་འཐབ་དོ་ཡོདཔ་ཨིན། ID. སྔོན་དུ་ རྒྱུ་དངོས་གི་འགྲེལ་བཤད་བཀོད་དེ་ ཐོ་བཀོད་འབད་ཞིནམ་ལས་ འབྲེལ་ཡོད་རྒྱུ་དངོས་བཟོ་ནི། ID རྒྱུ་དངོས་གི་བདག་འཛིན་འཐབ་མི་རྩིས་ཁྲ་གི་དོན་ལུ་ཨིན།
+འབོད་བརྡ་འདི་ཚུ་གིས་ ད་ལྟོ་ཡོད་པའི་རྒྱུ་དངོས་ཨའི་ཌི་ཅིག་ལག་ལེན་འཐབ་ཨིན། དང་པ་ རྒྱུ་དངོས་ངེས་ཚིག་འདི་ཐོ་བཀོད་འབད་ཞིནམ་ལས་ རྒྱུ་དངོས་འདི་གི་བདག་དབང་འབད་མི་རྩིས་ཐོ་གི་དོན་ལུ་ ངེས་གཏན་རྒྱུ་དངོས་ཨའི་ཌི་འདི་བཟོ་བསྐྲུན་འབད།
 
 ```python
 # Increase the account's asset balance.
@@ -287,7 +305,7 @@ submit(Instruction.transfer_nft(alice, BADGE_NFT, bob))
 
 ### མེ་ཊ་ཌའི་ཊ་ཚུ་ གཞི་བཙུགས་དང་བཏོན་གཏང་། {#set-and-remove-metadata}
 
-metadata གནས་གོང་འདི་ JSON - serialisable འབད་ནི་ཨིན། ཁྱོད་ཀྱིས་ `TransactionDraft` ལག་ལེན་འཐབ་པའི་སྐབས་ལུ་ `TransactionConfig` ནང་གི་དབང་འཛིན་དེ་ དམིགས་གཏད་རྩིས་ངོ་མ་ལུ་འགྱུར་འོང་།
+མེ་ཊ་ཌེ་ཊ་གནས་གོང་ཚུ་ JSON-རིམ་སྒྲིག་འབད་བཏུབ་དགོ། ཁྱོད་ཀྱིས་ `TransactionDraft` ལག་ལེན་འཐབ་པའི་སྐབས་ `TransactionConfig` ནང་གི་གནང་བ་གཙོ་བོ་འདི་ སྔོན་སྒྲིག་དམིགས་གཏད་རྩིས་ཐོ་ལུ་འགྱུརཝ་ཨིན།
 
 ```python
 # Values are encoded as JSON metadata under the target account.
@@ -303,11 +321,16 @@ submit(
 submit(Instruction.remove_account_key_value(alice, "profile"))
 ```
 
-གནས་ཚད་མཐོ་ཤོས་ཀྱི་ གྲོགས་རམ་གྱི་འཆར་གཞི་འདི་ ཌེ་པཱོལ་ཐོག་ལས་ ཚོང་འབྲེལ་དབང་འཛིན་ལུ་ དམིགས་གཏད་བསྐྱེད་དོ་ཡོདཔ་ཨིན།
+མཐོ་རིམ་ཟིན་བྲིས་གྲོགས་རམ་པ་གིས་ སྔོན་སྒྲིག་གིས་ བརྗེ་སོར་དབང་འཛིན་ལུ་དམིགས་གཏད་འབདཝ་ཨིན།
 
 ```python
 draft = TransactionDraft(
-    TransactionConfig(chain_id=CHAIN_ID, authority=alice, metadata=TX_METADATA)
+    TransactionConfig(
+        network_id=TAIRA_NETWORK_ID,
+        authority=alice,
+        fee_payment=BASE_FEE_PAYMENT,
+        metadata=APP_METADATA,
+    )
 )
 # With a draft, account metadata methods default to the draft authority.
 draft.set_account_key_value("nickname", "Queen Alice")
@@ -316,11 +339,16 @@ draft.remove_account_key_value("nickname")
 
 ### གནས་སྟངས་ངོ་མ་གི་ རྒྱུ་དངོས་ཚུ་ {#real-world-assets}
 
-RWA གྲོགས་རམ་མི་ཚུ་གིས་ རྒྱུ་དངོས་གི་དམིགས་བསལ་གྱི་ metadata, provenance དང་ controller སྲིད་བྱུས་གི་དོན་ལུ་ JSON-serializable payloads ལག་ལེན་འཐབ་དོ་ཡོདཔ་ཨིན། `register_rwa` གིས་ `id` ཡང་ན་ `owner` མ་ལེན་: runtimeགིས་ `RwaId` ཐོན་སྐྱེད་འབད་ཡོདཔ་ད་ ཕྱིར་ཚོང་འཐབ་ནིའི་དབང་འཛིན་དེ་ འགོ་ཐོག་གི་བདག་འཛིན་པ་ལུ་འགྱུར་ནུག
+RWA གྲོགས་རམ་འབད་མི་ཚུ་གིས་ རྒྱུ་དངོས་དམིགས་བསལ་གྱི་མེ་ཊ་ཌེ་ཊ་དང་ འབྱུང་ཁུངས་ དེ་ལས་ ཚད་འཛིན་སྲིད་བྱུས་ཚུ་གི་དོན་ལུ་ JSON རིམ་སྒྲིག་རུང་བ ནང་དོན་གནད་སྡུད་ཚུ ལག་ལེན་འཐབ་ཨིན། `register_rwa` གིས་ `id` ཡང་ན་ `owner` ངོས་ལེན་མི་འབད་: རན་ཊའིམ་གྱིས་ `RwaId` བཟོ་བཏོན་འབདཝ་ཨིནམ་དང་ བརྗེ་སོར་དབང་འཛིན་འདི་ འགོ་ཐོག་ཇོ་བདག་ལུ་འགྱུརཝ་ཨིན།
 
 ```python
 draft = TransactionDraft(
-    TransactionConfig(chain_id=CHAIN_ID, authority=alice, metadata=TX_METADATA)
+    TransactionConfig(
+        network_id=TAIRA_NETWORK_ID,
+        authority=alice,
+        fee_payment=BASE_FEE_PAYMENT,
+        metadata=APP_METADATA,
+    )
 )
 
 # Register the lot in a domain. Store business identifiers in primary_reference
@@ -349,7 +377,7 @@ draft.register_rwa(
 )
 ```
 
-ཐོ་བཀོད་གྱི་ཞལ་འདེབས་བཀོད་པའི་ཤུལ་ལས་ `FindRwas`, `/v1/rwas`, RWA བྱུང་རྐྱེན་ཚུ་དང་ ཡང་ན་ ཐོན་སྐྱེད་འབད་མི་ ID འཚོལ་ཞིབ་འབད་ནིའི་ལམ་སྟོན་ཚུ་ལག་ལེན་འཐབ་དགོ།
+ཐོ་བཀོད་ཚོང་འབྲེལ་ཁས་བླངས་འབད་བའི་ཤུལ་ལས་ `FindRwas`, `/v1/rwas`, RWA བྱུང་ལས་ ཡང་ན་ འཚོལ་ཞིབ་འགྲུལ་ལམ་གཞི་སྒྲིག་འབད་དེ་ བཟོ་བཏོན་འབད་ཡོད་པའི་ཨའི་ཌི་འདི་འཚོལ་ཞིབ་འབད་ནི་ལུ་ལག་ལེན་འཐབ།
 
 ```python
 page = client.list_rwas_typed(limit=20, offset=0)
@@ -358,7 +386,7 @@ for lot in page.items:
     print(lot.id)
 ```
 
-མཐའན་མཇུག་གི་ལཱ་ཚུ་ནང་ལུ་ ཐོན་སྐྱེད་འབད་མི་དེ་ `hash$domain` ID:
+ཤུལ་མམ་གྱི་བཀོལ་སྤྱོད་ཚུ་གིས་ བཟོ་བཏོན་འབད་ཡོད་པའི་ `hash$domain` ID ལག་ལེན་འཐབ་ཨིན།
 
 ```python
 registered_rwa_id = (
@@ -367,7 +395,12 @@ registered_rwa_id = (
 )
 
 draft = TransactionDraft(
-    TransactionConfig(chain_id=CHAIN_ID, authority=alice, metadata=TX_METADATA)
+    TransactionConfig(
+        network_id=TAIRA_NETWORK_ID,
+        authority=alice,
+        fee_payment=BASE_FEE_PAYMENT,
+        metadata=APP_METADATA,
+    )
 )
 
 # Transfer, hold, release, freeze, and redeem model the lot lifecycle.
@@ -423,11 +456,11 @@ draft.force_transfer_rwa(
 )
 ```
 
-ཡོངས་ཁྱབ་གནས་སྤེལ་དེ་ `owned_by`ལུ་འགྱུར་བཅོས་འབད་ཚུགས་ཡོདཔ་ཨིན། གནས་སྤེལ་དང་ མཉམ་འབྲེལ་གྱི་ཆ་ཤས་ཚུ་གིས་ ཨ་ལོ་གི་གནས་སྤེལ་ཚུ་འབྱུང་འོང་།
+སྤོ་བཤུད་ཆ་ཚང་གིས་ ད་ལྟོ་ཡོད་པའི་ས་ཁོངས་ནང་ `owned_by` བསྒྱུར་བཅོས་འབད་ཚུགས། ཆ་ཤས་སྤོ་བཤུད་དང་མཉམ་བསྡོམས་ཚུ་གིས་ བཟོ་བཏོན་འབད་ཡོད་པའི་ཨ་ལོའི་ལོཊི་ཚུ་གསར་བསྐྲུན་འབདཝ་ཨིན།
 
 ### ཐིག་ཁྲམ་ཚུ་ {#triggers}
 
-འགོ་བཙུགས་ཐོ་བཀོད་གྲོགས་རམ་ཚུ་ ལག་ལེན་འཐབ་ནི་ད་ལྟོའི་ལག་ལེན་འདི་ བརྡ་བཀོད་གི་རིམ་པ་གཞན་ཨིན།
+ལག་ལེན་འཐབ་བཏུབ་མི་འདི་ བཀོད་རྒྱ་གོ་རིམ་གཞན་ཅིག་ཨིན་པའི་སྐབས་ ཊི་གར་ཐོ་བཀོད་གྲོགས་རམ་འབད་མི་ཚུ་ལག་ལེན་འཐབ།
 
 ```python
 # The trigger executable is just another instruction payload.
@@ -462,7 +495,7 @@ submit(Instruction.burn_trigger_repetitions("hourly_reward", 1))
 submit(Instruction.unregister_trigger("hourly_reward"))
 ```
 
-Torii འདི་ཡང་ REST ཕྱིར་འབུད་ཀྱི་ཐོ་ཡིག་གི་དོན་ལུ་ རྒྱབ་སྐྱོར་འབད་མི་ཚུ་ལུ་ གསལ་སྟོན་འབདཝ་ཨིན།
+Torii གིས་ རྐྱེན་སློང་ཐོ་གཞུང་གི་དོན་ལུ་ REST རོགས་ལས་རིམ་ཡང་གསལ་སྟོན་འབདཝ་ཨིན།
 
 ```python
 # Inventory helpers are reads; they do not unregister or execute triggers.
@@ -473,11 +506,11 @@ for trigger in registered.items:
 details = client.get_trigger_typed("precommit_reward")
 ```
 
-trigger inventory calls འབད། ཐིག་ཁྲམ་ཚུ་ལྷག་སྟེ་བལྟ་ནི་དང་ བརྟག་དཔྱད་འབད་ནི་རྐྱངམ་གཅིག་ཨིན། ཐོ་བཀོད་འབད་ནི་དང་ བཏོན་གཏང་ནི་ དེ་ལས་ ལོག་བསྒྱུར་བཅོས་འབད་ནི་དང་ ཐོ་བཀོད་ཀྱི་མ་སྤེལ་ནི་ཚུ་ བྱ་རིམ་འགྱུར་ལྡོག་ཅན་ཅིག་ཨིན།
+སྐུལ་རྟེན ཐོ་གཞུང ལས་རིམ་འབོད་ཚུ འབད། ཐིག་ཁྲམ་ཚུ་ལྷག་སྟེ་བལྟ་ནི་དང་ བརྟག་དཔྱད་འབད་ནི་རྐྱངམ་གཅིག་ཨིན། ཐོ་བཀོད་འབད་ནི་དང་ བཏོན་གཏང་ནི་ དེ་ལས་ ལོག་བསྒྱུར་བཅོས་འབད་ནི་དང་ ཐོ་བཀོད་ཀྱི་མ་སྤེལ་ནི་ཚུ་ བྱ་རིམ་འགྱུར་ལྡོག་ཅན་ཅིག་ཨིན།
 
 ### སྐྱིན་འགྲུལ་བསྐྱོད་དང་ ཟད་འགྲོ་བཏང་ནིའི་བསླབ་བྱ་ཚུ་ {#repo-and-settlement-instructions}
 
-Repoདང་ bilateral settlement helpers གིས་ ལག་ལེན་ཐོག་ལས་བཟོ་མི་ Norito payloads ཚུ་མེད་པར་ domain-specific instruction variants མཐུད་སྦྲེལ་འབདཝ་ཨིན།
+མཛོདདང་ གཉིས་ཕྱོགས རྩིས་རྒྱག རོགས་ལས་རིམ་ཚུ གིས་ ལག་ལེན་ཐོག་ལས་བཟོ་མི་ Norito ནང་དོན་གནད་སྡུད་ཚུ ཚུ་མེད་པར་ མངའ་ཁོངས་དམིགས་བསལ བཀོད་རྒྱ འགྱུར་རྣམ མཐུད་སྦྲེལ་འབདཝ་ཨིན།
 
 ```python
 from iroha_python import (
@@ -491,11 +524,12 @@ from iroha_python import (
 )
 
 config = TransactionConfig(
-    chain_id=CHAIN_ID,
+    network_id=TAIRA_NETWORK_ID,
     authority=alice,
+    fee_payment=BASE_FEE_PAYMENT,
     # Keep repo and settlement examples bounded by a short TTL.
     ttl_ms=120_000,
-    metadata=TX_METADATA,
+    metadata=APP_METADATA,
 )
 draft = TransactionDraft(config)
 
@@ -520,14 +554,8 @@ draft.repo_initiate(
     governance=governance,
 )
 draft.repo_margin_call("daily_repo")
-draft.repo_unwind(
-    agreement_id="daily_repo",
-    initiator=alice,
-    counterparty=bob,
-    cash_leg=cash,
-    collateral_leg=collateral,
-    settlement_timestamp_ms=1_704_086_400_000,
-)
+# Unwind uses the immutable counterparties, legs, and maturity stored on-chain.
+draft.repo_unwind("daily_repo")
 
 # DVP/PVP settlement plans encode ordering and atomicity for both legs.
 delivery = SettlementLeg(
@@ -561,16 +589,16 @@ draft.settlement_pvp(
     counter_leg=delivery,
 )
 
-envelope = draft.sign_with_keypair(alice_pair)
+envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### JSON Escape Hatch {#json-escape-hatch}
+### JSON གི་འཕྲལ་ཐོན་ལམ་ {#json-escape-hatch}
 
-ག་དེམ་ཅིག་སྦེ་ a Python གྲོགས་རམ་འབད་མི་འདི་ ད་ལྟོ་མ་ཐོན་པར་ཡོདཔ་ལས་ སྟོན་ཐངས་ཀྱི་ བརྡ་དོན་དཔེ་ཚུགས། `InstructionBox` JSON ནང་འཁོད་ལུ་ `Instruction.from_json` ཡང་ན་ ཐད་ཀར་དུ་ `TransactionBuilder.add_instruction_json`. འདི་གི་དོན་ལུ་ གྲོས་ཐག་ཆོད་པའི་ལམ་འདི་ཨིན། `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, འདྲན་འདྲ་/འགན་ཁུར་/NFT ཐོ་བཀོད་དང་ non-trigger ཕྱིར་ཐོ་བཀོད་འབད་མ་བཏུབ་པའི་འགྱུར་ཁྱད་ཚུ་ འདི་གི་དོན་ལུ་ རྒྱབ་སྐྱོར་ཚུ་ ཨེབ་གཏང་མ་འབད་ཚུན་ཚོད་ཨིན།
+ག་དེམ་ཅིག་སྦེ་ a Python གྲོགས་རམ་འབད་མི་མེད་, སྟོན་ཐངས་ཡིག་རྒྱུན་གྱི་ གནད་སྡུད་དཔེ་ཚད `InstructionBox` JSON ནང་འཁོད་ལུ་ `Instruction.from_json`. འདི་གི་དོན་ལུ་ གྲོས་ཐག་ཆོད་པའི་ལམ་འདི་ཨིན། `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, མཐུད་མཚམས་/འགན་ཁུར་/NFT ཐོ་བཀོད་དང་ མེན་པ-སྐུལ་རྟེན ཕྱིར་ཐོ་བཀོད་འབད་མ་བཏུབ་པའི་འགྱུར་ཁྱད་ཚུ་ འདི་གི་དོན་ལུ་ རྒྱབ་སྐྱོར་ཚུ་ ཨེབ་གཏང་མ་འབད་ཚུན་ཚོད་ཨིན།
 
 ```python
-from iroha_python import Instruction, TransactionBuilder
+from iroha_python import Instruction
 
 # Copy this payload from Rust/CLI tooling or from a pinned data-model schema.
 instruction_box_json = """
@@ -583,16 +611,11 @@ instruction_box_json = """
 
 instruction = Instruction.from_json(instruction_box_json)
 submit(instruction)
-
-# Use TransactionBuilder when you need lower-level control than TransactionDraft.
-builder = TransactionBuilder(CHAIN_ID, alice)
-builder.set_metadata(TX_METADATA)
-builder.add_instruction_json(instruction_box_json)
-envelope = builder.sign(alice_pair.private_key)
-client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-གློག་ཐག་ར་བ་ཚུ་ བསྡུ་བསྒྱོམ་འབད་ནིའི་ལམ་སྟོན་ ཡང་ན་ གསལ་ཏོག་ཏོ་མེད་པའི་ལམ་སྟོན་ཚུ་གི་དོན་ལུ་ མཐུད་སྦྲགས་མ་བཞག་པའི་ཧེ་མར་ JSON ནང་ལས་ཕར་དང་ཚུར་འགྱོ་ནི་:
+ཡིག་དཔར་རྐྱབས་ཡོད་པའི་ཟིན་བྲིས་འགྲུལ་ལམ་འདི་ བརྗེ་སོར་མཚམས་ལུ་བཞག: དེ་གིས་ `NetworkId` དང་ འཐུས་སྤྲོད་དགོ་པའི་དམིགས་ཡུལ་ དེ་ལས་ མིང་རྟགས་མ་བཀོད་པའི་ཧེ་མ་ འགྱུར་མེད་ཀྱི་ཚིག་བརྗོད་ཚུ་ ངེས་བདེན་སྦེ་ ཉམས་སྲུང་འབདཝ་ཨིན། ཐད་ཀར་ `TransactionBuilder` ལག་ལེན་འཐབ་ནི་ལུ་ གནས་གོང་ཅོག་འཐདཔ་ཚུ་དང་ ཐད་རི་བ་རི་ཚིག་བརྗོད་ཅིག་གི་ གསལ་ཏོག་ཏོ་བདེན་དཔྱད་དགོཔ་ལས་ འདི་གློག་རིམ་ཨང་རྟགས་ཀྱི་དོན་ལུ་ མགྱོགས་ཐབས་ཅིག་མེན།
+
+བཟོ་བཏོན་འབད་ཡོདཔ་ཡང་ན་ གསལ་ཏོག་ཏོ་མེད་པའི་བཀོད་རྒྱ་ཚུ་གི་དོན་ལུ་ སྒྲིག་ཆས་ཚུ་གསོག་འཇོག་མ་འབད་བའི་ཧེ་མ་ JSON བརྒྱུད་དེ་ སྐོར་རྒྱབ་འབད།
 
 ```python
 # Round trips are useful for validating fixtures generated by another tool.
@@ -603,39 +626,42 @@ print(same_instruction.as_dict())
 
 ## ཚོང་འབྲེལ་གྱི་ལཱ་ལམ་ལུགས་ཚུ་ {#transaction-workflows}
 
-ལག་ལེན་འཐབ་ནི་ `TransactionDraft` ལག་ལེན་ནང་ལུ་བཀོད་རྒྱ་མང་རབས་ཅིག་བཟོ་བཀོད་འབད་ཞིནམ་ལས་ ཐོ་བཀོད་མ་འབད་བའི་ཧེ་མར་ འབྲི་ཤོག་ཅིག་གིས་ ཁྱོད་ཀྱིས་ གནད་དོན་གྱི་གནས་ཚད་གི་སྒྲིག་གཞི་ཚུ་ དཔེར་ན་ `ttl_ms`, `nonce`, དང་ metadata གནས་གཅིག་ནང་བཙུགས་ཞིནམ་ལས་ ཐོ་བཀོད་ཚར་གཅིག་འབད་:
+མིང་རྟགས་མ་བཀོད་པའི་ཧེ་མ་ བཀོད་རྒྱ་སྣ་ཚོགས་བཟོ་བསྐྲུན་འབད་མི་གློག་རིམ་ཚུ་གི་དོན་ལུ་ `TransactionDraft` ལག་ལེན་འཐབ། ཟིན་བྲིས་ཅིག་གིས་ ཁྱོད་ལུ་ `ttl_ms`, `nonce`, དང་ མེ་ཊ་ཌེ་ཊ་བཟུམ་གྱི་ བརྗེ་སོར་གནས་རིམ་སྒྲིག་སྟངས་ཚུ་ ས་གནས་གཅིག་ནང་བཞག་བཅུགཔ་ཨིན་ དེ་ལས་ ཚར་གཅིག་མིང་རྟགས་བཀོད།
 
 ```python
 config = TransactionConfig(
-    chain_id=CHAIN_ID,
+    network_id=TAIRA_NETWORK_ID,
     authority=alice,
+    fee_payment=BASE_FEE_PAYMENT,
     # TTL and nonce are transaction-level properties shared by all instructions.
     ttl_ms=120_000,
     nonce=1,
-    metadata={**TX_METADATA, "source": "python-docs"},
+    metadata=APP_METADATA,
 )
 
 draft = TransactionDraft(config)
 # Draft methods append instructions but do not submit anything yet. Domain
 # setup is a separate alias-planner flow and has already committed here.
 draft.register_account(bob, metadata={"role": "user"})
-draft.register_asset_definition_numeric(
+draft.register_asset_definition(
     ROSE_DEFINITION,
-    owner=alice,
+    owning_domain=None,
+    balance_scope_policy="Global",
+    name="Rose",
     scale=2,
     mintable="Infinitely",
 )
-draft.mint_asset_numeric(ROSE_ASSET, "100")
-draft.transfer_asset_numeric(ROSE_ASSET, "25", destination=bob)
+draft.mint_asset_quantity(ROSE_ASSET, "100")
+draft.transfer_asset_quantity(ROSE_ASSET, "25", bob)
 
-# Signing freezes the draft into an envelope ready for Torii.
-envelope = draft.sign_with_keypair(alice_pair)
+# Quoting freezes the draft, validates exact fee limits, and signs that payload.
+envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 receipt = client.submit_transaction_envelope(envelope)
 status = client.wait_for_transaction_status(envelope.hash_hex(), timeout=30)
 print(receipt, status)
 ```
 
-བསྐྱར་ཞིབ་འབད་ནི་དང་ བསྐྱར་ཞིབ་འབད་ནིའི་དོན་ལུ་ ཡང་ན་དངུལ་ཁུག་སྤྲོད་ནི་གི་དོན་ལུ་ དོ་འགྲན་ཅན་གྱི་ཡིག་གུ་ཅིག་ཕྱིར་བཏོན་:
+བསྐྱར་ཞིབ་དང་རྩིས་ཞིབ་ ཡང་ན་ དངུལ་ཁུག་སྤྲོད་ནིའི་དོན་ལུ་ གཏན་འབེབས་ཅན་གྱི་གསལ་བསྒྲགས་ཅིག་ཕྱིར་འདྲེན་འབད།
 
 ```python
 import json
@@ -651,7 +677,7 @@ Path("transaction_manifest.json").write_text(
 )
 ```
 
-ཐོ་བཀོད་མ་ཚར་བའི་ཧེ་མར་ ཕྲང་ལམ་གྱི་གསང་སྤྱོད་བརྟག་དཔྱད་ཚུ་ བསྡུ་སྒྲིག་འབད་དགོཔ་ཨིན།
+དམིགས་གཏད་ལམ་ལུ་དགོཔ་ད་ མིང་རྟགས་མ་བཀོད་པའི་ཧེ་མ་ ལམ་གྱི་སྒེར་གསང་བདེན་ཁུངས་ཅིག་མཉམ་སྦྲགས་འབད།
 
 ```python
 # Attach the proof before signing so it is covered by the transaction hash.
@@ -659,12 +685,12 @@ draft.add_lane_privacy_merkle_proof(
     commitment_id=7,
     leaf=bytes.fromhex("aa" * 32),
     leaf_index=3,
-    audit_path=[bytes.fromhex("bb" * 32), None, bytes.fromhex("cc" * 32)],
+    audit_path=[bytes.fromhex("bb" * 32), bytes.fromhex("cc" * 32)],
     proof_backend="halo2/ipa",
     proof_bytes=b"...proof bytes...",
-    verifying_key_bytes=b"...verifying key bytes...",
+    verifying_key_name="lane_privacy_vk",
 )
-envelope = draft.sign_with_keypair(alice_pair)
+envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 ```
 
 ## དྲི་བཀོད་ཚུ་ {#queries}
@@ -678,19 +704,26 @@ for account in accounts.items:
     print(account.id, account.metadata)
 
 domains = client.list_domains_typed(limit=10)
-definitions = client.query_asset_definitions_typed(limit=10)
+definitions = client.list_asset_definitions_typed(limit=10)
 print(domains.total, definitions.total)
 ```
 
-ཁྱོད་ཀྱིས་ Torii ཚད་མཇུག་གི་ཐིག་ཁྲམ་ནང་ ཐོ་བཀོད་འབད་མི་སྒྲོམ་མེད་པ་ཅིན་ སྤྱིར་བཏང་ཞུ་ཡིག་ལག་ལེན་ཚུ་ ལག་ལེན་འཐབ་དགོ།
+Torii མཐའ་མཚམས ལུ་ དབྱེ་བ་ཅན ཕྱི་སྐོགས མེད་པ་ཅིན་ སྤྱིར་བཏང་ཞུ་ཡིག་རོགས་རམ་ཚུ་ལག་ལེན་འཐབ།
 
 ```python
+from urllib.request import Request, urlopen
+
 # Drop to raw JSON when you need an endpoint before a typed helper exists.
 payload = client.request_json("GET", "/v1/parameters", expected_status=(200,))
-metrics = client.get_metrics(as_text=True)
+
+# Prometheus exposition is served at `/metrics` when telemetry is `extended`
+# or `full`; it is text, not a `/v1` JSON resource.
+request = Request(f"{TORII_URL}/metrics", headers={"Accept": "text/plain"})
+with urlopen(request, timeout=5) as response:
+    metrics = response.read().decode("utf-8")
 ```
 
-Account inventory assistants གིས་ SDK གི་ normaliserགིས་ ངོས་འཛིན་འབད་ཡོད་པའི་ account ID དགོཔ་ཨིན། canonical I105 account IDs ཡང་ན་ chain-on aliases ལག་ལེན་འཐབ་། གལ་སྲིད་ block explorer ཡང་ན་ raw endpoint གིས་ ID འདི་ལོག་གཏངམ་ད་ SDK འདི་མ་བཏུབ་པ་ཅིན་ གྲོས་བསྟུན་འབད་ཞིནམ་ལས་ ཌོག་ཊར་ཚུ་འབོ་པའི་ཧེ་མ་ canonical account ID ལུ་ བཏོན་གཏང་དགོ།
+རྩིས་ཐོའི་ཐོ་གཞུང་ལས་རོགས་ཚུ་ལུ་ SDK གི་སྤྱིར་བཏང་བཟོ་བྱེད་ཀྱིས་ངོས་ལེན་འབད་མི་རྩིས་ཐོའི་ངོས་འཛིན་དགོ། ཚད་ལྡན་ I105 རྩིས་ཐོ་ ID ཡང་ན་ རྒྱུན་ཐག་གུ་ཡོད་པའི་མིང་གཞན་ལག་ལེན་འཐབ། སྡེབ་ཚན་འཚོལ་ཞིབ་ལས་རིམ་ཡང་ན་ API མཐའ་མཚམས་ངོ་མ་གིས་ SDK གིས་ཆ་མེད་གཏང་མི་ ID ཅིག་ལོག་བྱིན་པ་ཅིན་ ལས་རོགས་འདི་ཚུ་མ་འབོ་པའི་ཧེ་མར་ ཚད་ལྡན་རྩིས་ཐོ་ ID ལུ་སེལ།
 
 ```python
 # These helpers expect a canonical account ID or an alias the SDK can normalize.
@@ -703,10 +736,10 @@ print(len(assets.items), len(transactions.items), len(permissions.items))
 
 ## འབྱུང་རྐྱེན་ཚུ་ {#events}
 
-JSON རྒྱུན་འགྲུལ་འཐབ་མི་ལས་རོགས་འདི་གིས་ ཕན་ཐོགས་ཅན་གྱི་ཅ་ལ་ཚུ་ རྩ་སྒྲིག་འབད་བཏུབ་ཨིན། ཁྱོད་ཀྱིས་ SSE ལས་རིམ་གི་མིང་དང་ ID དགོཔ་ད་ `with_metadata=True` བཏོན་གཏང་། སླར་ཡང་བརྟག་དཔྱད་རྐྱབས། དེ་ལས་ གྲུབ་འབྲས་ཀྱི་ཅ་ལ་ཨེབ་གཏང་འབད། ད་ལྟོའི་དུས་སྟོན་གྱི་ ID བཞག་ནིའི་དོན་ལུ་ `EventCursor` དང་གཅིག་ཁར་ རྒྱུན་འགྲུལ་འབད་ཚུགས། འདི་བཟུམ་གྱི་དཔེ་སྟོན་ཚུ་ ཐད་ཀར་དུ་བྱུང་རྐྱེན་ཚུ་གི་དོན་ལུ་ སྒུག་སྡོད་དོ་ཡོདཔ་ལས་ དེ་ཚུ་ འོས་འབབ་ཅན་གྱི་བྱུང་རྐྱེན་རྒྱུན་འགྲུལ་འཐབ་ཚུགས་ཏེ་ བྱ་བ་སྤྱོད་ཚུགསཔ་བཟོ་ཡོད་པའི་ཨེབ་གཏང་འབད་དགོ།
+གློག་ཐག་ར་བ་ལུ་ རྒྱབ་སྐྱོར་འབད་མི་ཚུ་ རྩ་སྒྲིག་འབདཝ་ཨིན། JSON ནང་དོན་གནད་སྡུད་གྱི་ཁེ་རྒུད་ཚུ་ སྔོན་སྒྲིག་འབདཝ་ཨིན། མཐར༌འཁྱོལ༌ `with_metadata=True` ཁྱོད་ཀྱིས་ དགོས་མཁོ་ཡོདཔ་ད་ SSE འབྱུང་རྐྱེན་གྱི་མིང་དང་ ངོས་འཛིན་ དེ་ལས་ བརྟག་དཔྱད་བསྐྱར་འབད་ནིའི་བརྡ་སྟོན་ དེ་ལས་ གྲུབ་འབྲས་ཚུ་ `/v1/events/sse` བཀྲམ་སྟོན་ནི་དེ་ ཕྲང་ལམ་རྐྱངམ་གཅིག་ཨིན། འདི་ཡང་ ལོག་བཏང་མི་ཚུགས། IDs འདི་འབདཝ་ལས་ རྒྱབ་སྐྱོར་ཚུ་གིས་ ཀེར་སོརཌ་དང་ བསྐྱར་གསོ་མ་འབད་བར་ བཞག་ཚུགས། གྲོས་བསྡུར་འབདཝ་ཨིན། སླར་ལོག་མཐུད་དེ་ཅིག་གིས་ ཐོ་བཀོད་གསརཔ་འགོ་བཙུགས་ཏེ་ གྱོང་ལྡོག་འབྱུང་ཚུགས་ཨིན། `/v1/blocks/stream` ཡོངས་གྲགས་ཅན་གྱི་མཐོ་ཚད་ལས་ ཡོངས་ཁྱབ་གི་ཐོ་ཡིག་ལོ་རྒྱུས་འདི་ དགོཔ་ཨིན། འ་ནི་དཔེ་རྙིཊ་ཚུ་ འབྱུང་རྐྱེན་ངོ་མ་གི་དོན་ལུ་སྒུག་སྡོད་དོ་ཡོདཔ་ཨིན། འདི་འབདཝ་ལས་ རྒྱུན་འདི་ འགོ་བཙུགས་ཏེ་ བྱ་སྤྱོད་འབད་སའི་ཨེབ་ཐག་ཅིག་ལུ་ བཏོན་གཏང་དགོ།
 
 ```python
-from iroha_python import DataEventFilter, EventCursor
+from iroha_python import DataEventFilter, SseStreamError
 
 # Narrow the stream to proof events with the expected backend and proof hash.
 proof_filter = DataEventFilter.proof(
@@ -714,18 +747,14 @@ proof_filter = DataEventFilter.proof(
     proof_hash_hex="deadbeef" * 8,
 )
 
-# Persist the latest SSE id so a reconnect can resume from the same point.
-cursor = EventCursor()
-for event in client.stream_events(
-    filter=proof_filter,
-    cursor=cursor,
-    resume=True,
-    with_metadata=True,
-):
-    print(event.id, event.event, event.data)
-    break
+try:
+    for event in client.stream_events(filter=proof_filter, with_metadata=True):
+        print(event.id, event.event, event.data)
+        break
+except SseStreamError as error:
+    print(error.code, error.dropped_messages, error.replay_available)
 
-for event in client.stream_trigger_events(trigger_id="hourly_reward", resume=True):
+for event in client.stream_trigger_events(trigger_id="hourly_reward"):
     print(event)
     break
 
@@ -736,7 +765,7 @@ for tx_event in client.stream_pipeline_transactions(status="Queued"):
 
 ## ཁ་བྱང་དང་ཁ་བྱང་ཚུ་ {#keys-and-addresses}
 
-SDK གིས་ native extension ནང་བཀོད་ཡོད་པའི་ signature algorithm གི་དོན་ལུ་ ས་གནས་ཀྱི་ signing assistants གསལ་སྟོན་འབདཝ་ཨིན། འ་ནི་ assistants ཚུ་གིས་ Taira ལུ་འབོ་མི་མེད་རུང་ they do require the native extension:
+SDK གིས་ ནང་སྐྱེས རྒྱ་བསྐྱེད ནང་ སྒྱུར་བཟོ འབད་མི་ མིང་རྟགས རྩིས་ཐབས རེ་རེའི་དོན་ལུ་ ས་གནས མིང་རྟགས་འགོད་ནི རོགས་ལས་རིམ ཚུ་སྟོནམ་ཨིན། རོགས་ལས་རིམ འདི་ཚུ་གིས་ Taira ལུ་འབོ་མི་བཏང་རུང་ ནང་སྐྱེས རྒྱ་བསྐྱེད དགོཔ་ཨིན།
 
 ```python
 from iroha_python import (
@@ -766,7 +795,7 @@ print(confidential.as_hex())
 print(hash_blake2b_32(b"payload").hex())
 ```
 
-ཁྱོད་ཀྱིས་ `supported_crypto_algorithms()` ལག་ལེན་འཐབ་སྟེ་ཁྱོད་ཀྱི་འཁོར་ལོའི་ རྒྱབ་སྐྱོར་འབད་མི་འདི་མཐོང་ཚུགས། སྤྱིར་བཏང་གྲོགས་རམ་འདི་ ཀ་ནོ་ནི་ཀཱན་གྱི་ ཨལ་གེ་རི་ཏིམ་གི་མིང་ཐོ་ཚུ་ལག་ལེན་འཐབ་སྟེ་ Ed25519, secp256k1, ML-DSA, GOST, BLS དེ་ལས་ SM2 གི་དོན་ལུ་ལཱ་འབདཝ་ཨིན།
+ཁྱོད་ཀྱི་འཁོར་ལོ་འདི་གིས་ ག་ཅི་ལུ་རྒྱབ་སྐྱོར་འབདཝ་ཨིན་ན་ `supported_crypto_algorithms()` ལག་ལེན་འཐབ། སྤྱིར་བཏང་གྲོགས་རམ་འབད་མི་ཚུ་གིས་ ཚད་ལྡན་ཨཱལ་གོ་རི་དམ་ཁ་ཡིག་ཚུ་ལག་ལེན་འཐབ་སྟེ་ Ed25519, secp256k1, ML-DSA, GOST, BLS, དང་ SM2 ཚུ་གི་དོན་ལུ་ལཱ་འབདཝ་ཨིན།
 
 ```python
 from iroha_python import (
@@ -838,7 +867,7 @@ from iroha_python import (
     verify_sm2,
 )
 
-capabilities = client.get_node_capabilities_typed()
+capabilities = client.get_node_capabilities_typed(canonical_auth=canonical_auth)
 sm = capabilities.crypto.sm if capabilities.crypto else None
 # Use the node's default SM2 distinguishing ID when the node advertises one.
 distid = sm.sm2_distid_default if sm else SM2_DEFAULT_DISTINGUISHED_ID
@@ -861,10 +890,10 @@ print(pair.public_key_sec1_hex)
 print(pair.public_key_multihash)
 ```
 
-`crypto.sm.enabled` གིས་ node གིས་ SM བཟའ་ཚང་གི་གློག་རིག་ཚུ་ ངོས་ལེན་འབད་ཡོདཔ་ཨིན་ན་མེན་ཟེར་ གསལ་སྟོན་འབདཝ་ཨིན། འདི་དང་འདྲན་འདྲ་བའི་གསལ་བསྒྲགས་འདི་ནང་ SM hash སྲིད་བྱུས་དང་ མགྱོགས་སྒྲིལ་གནས་སྟངས་ཡང་ཡོདཔ་ཨིན། འདི་གིས་ SM2-specific flows འབད་ནི་ཨིན་ན་མིན་འདུག་གམ་མེད་ཐག་གཅོད་སྐབས་ཕན་ཐོགས་ཅན་ཨིན།
+`crypto.sm.enabled` གིས་ མཐུད་མཚམས གིས་ SM བཟའ་ཚང་གི་གློག་རིག་ཚུ་ ངོས་ལེན་འབད་ཡོདཔ་ཨིན་ན་མེན་ཟེར་ གསལ་སྟོན་འབདཝ་ཨིན། འདི་དང་འདྲན་འདྲ་བའི་གསལ་བསྒྲགས་འདི་ནང་ SM བསྡུས་རྟགས སྲིད་བྱུས་དང་ མགྱོགས་སྒྲིལ་གནས་སྟངས་ཡང་ཡོདཔ་ཨིན། འདི་གིས་ SM2 དམིགས་བསལ བྱ་རིམ འབད་ནི་ཨིན་ན་མིན་འདུག་གམ་མེད་ཐག་གཅོད་སྐབས་ཕན་ཐོགས་ཅན་ཨིན།
 
 ```python
-capabilities = client.get_node_capabilities_typed()
+capabilities = client.get_node_capabilities_typed(canonical_auth=canonical_auth)
 
 # `enabled` is the submit-time policy flag, not just local SDK support.
 if capabilities.crypto and capabilities.crypto.sm.enabled:
@@ -876,11 +905,11 @@ else:
     print("SM crypto is not enabled by this node")
 ```
 
-མི་མང་ Taira གིས་བརྟག་དཔྱད་འབད་བའི་སྐབས་ལུ་ SM གི་ལྕོགས་གྲུབ་ཀྱི་གསལ་བསྒྲགས་འདི་བཏོན་ཡོདཔ་ཨིན་རུང་ SM གི་རྟགས་བཀོད་དེ་ འདི་ནང་ལུ་ བཀག་ཆ་འབད་ཡོདཔ་ཨིན། ཁོ་གི་བརྡ་སྟོན་ཅན་གྱི་རྟགས་བཀོད་ཨལ་གོར་ཆིམ་འདི་ `ed25519`, `secp256k1`དང་ `bls_normal`ཨིན་མས། འདི་འབདཝ་ལས་ SM2 གིས་ཡི་གུ་བཀོད་མི་ཞལ་འདེབས་ཚུ་ བསྒྱུར་བཅོས་འབད་མ་ཚུགསཔ་ལས་ ལག་ལེན་གྱི་འགན་ཁུར་དེ་ བསྒྱུར་བཅོས་མ་འབད་བར་ བཞག་དགོ།
+བཀྲམ་སྤེལ་འབད་ཡོད་པའི་མཐུད་མཚམས་དོན་ལུ་ བདེན་བཤད་འབད་ཡོད་པའི་ལྕོགས་གྲུབ་ཀྱི་ ནང་དོན་གནད་སྡུད་འདི་ དབང་ཚད་ཅན་སྦེ་ བརྩི་འཇོག་འབད། `crypto.sm.enabled` འདི་བདེན་པ་དང་ ཁྱབ་བསྒྲགས་འབད་ཡོད་པའི་མིང་རྟགས་བཀོད་ནི་གི་སྲིད་བྱུས་འདི་གིས་ ངོས་ལེན་མ་འབད་ཚུན་ཚོད་ SM2-མཚན་རྟགས་བཀོད་ཡོད་པའི་ཚོང་འབྲེལ་འདི་ མ་བཙུགས།
 
 ### GOST དང་ ཀི་བཱེན་ཌའི་ལོག་ལྡེ་མིག་ཚུ་ {#gost-and-post-quantum-keys}
 
-GOST R 34.10-2012 ཚད་འཇལ་ཐངས་དང་ ML-DSA (`ml-dsa`) གི་རྒྱབ་ལས་ ཀི་བཱའིན་ཊ་གི་རྟགས་མཚན་ཚུ་གི་དོན་ལུ་ སྤྱིར་བཏང་ཀིཔཀྲོ་ API ལག་ལེན་འཐབ་ཨིན། Key-pair འདི་བཟུམ་སྦེ་ Signing, Verification, and Multihash Export འདི་ཡང་ལག་ལེན་འབདཝ་ཨིན།
+GOST R 34.10-2012 ཚད་བཟུང ཆ་ཚན དང་ ML-DSA (`ml-dsa`) གི་ ཀོའན་ཊམ་ཤུལ་གྱི རྟགས་གི་དོན་ལུ་ གསང་བཟོ API སྤྱིར་བཏང་ལག་ལེན་འཐབ། ལྡེ་མིག-ཆ དངོས་པོ གཅིག་གིས་རྟགས་བཀོད་ བརྟག་ཞིབ་དང་ multihash ཕྱིར་འདྲེན ཚུ་འབདཝ་ཨིན།
 
 ```python
 from iroha_python import (
@@ -944,18 +973,15 @@ print(post_quantum_address.to_i105(CHAIN_DISCRIMINANT))
 print(mldsa_keypair.prefixed_public_key_multihash)
 ```
 
-Gate GOST དང་ post-quantum flows འདི་ node གི་བརྡ་སྤྲོད་འབད་ཡོད་པའི་ signing algorithms ནང་ལུ་ཨིན། སྔོན་སྒྲིག་འབད་བཏུབ་པའི་ algorithm མིང་གི་དོན་ལུ་ raw capability payload ལག་ལེན་འཐབ་:
+གཱེཊ་ GOST དང་ མཐུད་མཚམས་ཀྱི་བདེན་དཔང་འབད་ཡོད་པའི་ ཡིག་དཔར་རྐྱབ་ཡོད་པའི་ ལྕོགས་གྲུབ་ཁྱབ་བསྒྲགས་གུ་ པོསཊ་ཀོན་ཊམ་རྒྱུན་འབབ་ཚུ།
 
 ```python
-capabilities = client.request_json(
-    "GET",
-    "/v1/node/capabilities",
-    expected_status=(200,),
+capabilities = client.get_node_capabilities_typed(
+    canonical_auth=canonical_auth,
 )
-crypto = capabilities.get("crypto", {})
-sm = crypto.get("sm", {})
+sm = capabilities.crypto.sm if capabilities.crypto else None
 # Nodes advertise the signing algorithms they will accept for transactions.
-allowed = set(sm.get("allowed_signing", []))
+allowed = set(sm.allowed_signing if sm else ())
 
 GOST_ALGORITHMS = {
     "gost3410-2012-256-paramset-a",
@@ -968,16 +994,16 @@ GOST_ALGORITHMS = {
 # Local support is not enough; submit only when the node advertises support.
 supports_gost = bool(allowed & GOST_ALGORITHMS)
 supports_post_quantum = "ml-dsa" in allowed
-supports_sm2 = "sm2" in allowed and bool(sm.get("enabled", False))
+supports_sm2 = "sm2" in allowed and bool(sm and sm.enabled)
 
 print(supports_gost, supports_post_quantum, supports_sm2)
 ```
 
-གལ་སྲིད་ node ཅིག་གིས་ ཁྱོད་ལུ་དགོ་པའི་ algorithm གསལ་བསྒྲགས་མ་འབད་བ་ཅིན་ keyའདི་ local ཡང་ན་ offline workflows གི་དོན་ལུ་རྐྱངམ་གཅིག་ལག་ལེན་འཐབ་དགོ། འདི་གི་དོན་ལུ་ algorithm གིས་ཡིག་གུ་བཀོད་མི་ transactions འདི་ node ལུ་མ་གཏང་། མི་མང་གི་ Taira ཚོད་བལྟ་འབད་བའི་སྐབས་ལུ་ GOST དང་ ML-DSA འདི་ SDK ཀི་རིཊ་གྲོགས་རམ་སྦེ་ ཡར་ཐུག་ལུ་ཡོད་པའི་ Python དཔེ་མཛོད་ནང་ལུ་བཙུགསཔ་ཡོད་རུང་ ཚོང་འབྲེལ་གྱི་རྟགས་བཀོད་འབད་ནིའི་དོན་ལུ་ མཚམས་འཇོག་འབད་མ་ཚུགསཔ་ཨིན་མས།
+གལ་སྲིད་ མཐུད་མཚམས་ཅིག་གིས་ ཁྱོད་ལུ་དགོ་པའི་ཨཱལ་གོ་རི་དམ་འདི་ཁྱབ་བསྒྲགས་མ་འབད་བ་ཅིན་ ལྡེ་མིག་འདི་ ཉེ་གནས་ཡང་ན་ ཨོཕ་ལ་ཡིན་ལཱ་གི་རྒྱུན་རིམ་ཚུ་གི་དོན་ལུ་རྐྱངམ་ཅིག་ལག་ལེན་འཐབ། མཐུད་མཚམས་དེ་ལུ་ཨཱལ་གོ་རི་དམ་དེ་དང་གཅིག་ཁར་མིང་རྟགས་བཀོད་ཡོད་པའི་ཚོང་འབྲེལ་ཚུ་མ་བཙུགས། མི་མང་ Taira ཞིབ་དཔྱད་ཀྱི་སྐབས་ GOST དང་ ML-DSA ཡར་འཕར་ Python དཔེ་མཛོད་ནང་ SDK ཀིརིཔ་ཊོ་གྲོགས་རམ་པ་སྦེ་ཐོབ་ཚུགས་རུང་ ཚོང་འབྲེལ་མིང་རྟགས་བཀོད་ནིའི་དོན་ལུ་ མཐུད་མཚམས་ཀྱིས་ ཁྱབ་བསྒྲགས་མ་འབད་བས།
 
-## Config-Aware Client བཟོ་སྐྲུན་འབདཝ་ཨིན། {#config-aware-client-creation}
+## རིམ་སྒྲིག་ཤེས་པའི་མགྲོན་པོ་བཟོ་ནི་ {#config-aware-client-creation}
 
-ཁྱོད་ཀྱིས་ `resolve_torii_client_config` ལག་ལེན་འཐབ་དོ་ཡོདཔ་ད་ ཁྱོད་ཀྱི་ལག་ལེན་གྱིས་ཡིག་སྣོད་ནང་ལས་ མཚམས་འཇོག་འབད་ཐངས་ཚུ་ ཀློག་སྟེ་ཡོད་རུང་ གནས་སྟངས་དང་ བརྟག་དཔྱད་ལུ་ འབྲེལ་བ་ཡོད་པའི་ ཨེབ་ར་ཌི་ཚུ་ still དགོཔ་ཨིན།
+ཁྱོད་ཀྱི་ལག་ལེན་མཉེན་ཆས་ཀྱིས་ ཡིག་སྣོད་ཅིག་ལས་ མཐུད་མཚམས་སྒྲིག་གཞི་ཚུ་ལྷག་རུང་ མཐའ་འཁོར་ཡང་ན་ བརྟག་དཔྱད་ལ་དམིགས་བསལ་གྱི་ཚབ་བཙུགས་གནས་གོང་དགོ་པའི་སྐབས་ `resolve_torii_client_config` ལག་ལེན་འཐབ།
 
 ```python
 import json
@@ -1001,7 +1027,7 @@ client = create_torii_client(
 
 ## Kagemusha གྲ་སྒྲིག་འབད་ནི་ {#kagemusha-readiness}
 
-Python SDK གིས་ current JSON གྲ་སྒྲིག་གི་ལམ་བརྒྱུད་དེ་ its generic Torii request helper གྱི་ཐོག་ལས་འདྲི་དཔྱད་འབད་ཚུགས།
+Python SDK གིས་ ད་ལྟོའི་ JSON གྲ་སྒྲིག་ལམ་ལུགས་འདི་ དེ་གི་སྤྱིར་བཏང་ Torii ཞུ་བ་གྲོགས་རམ་པ་བརྒྱུད་དེ་ འདྲི་དཔྱད་འབད་ཚུགས།
 
 ```python
 ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
@@ -1021,7 +1047,7 @@ Python གིས་ Kagemusha ཡིག་སྣོད་ལོག་བཏབ�
 
 ## ཐོ་བཀོད་ཚུ་ {#subscriptions}
 
-subscription helpers འདི་ `iroha_python.ToriiClient` གིས་ལག་ལེན་འཐབ་མི་ shared Torii clientལས་ཐོབ་པའི་ ཞབས་ཏོག་གི་ཅ་ལ་ཚུ་འགྱུར་བཅོས་འབདཝ་ཨིན། ཁྱོད་ཀྱིས་དམིགས་གཏད་འབད་མིའི་ཁ་ཐུག་ལུ་ཡོད་པའི་ IDs དང་ assets ལག་ལེན་འཐབ་ཨིན།
+མཁོ་མངགས ལྷག དང་ ཟིན་བྲིས་ཚུ བཟོ་བྱེད འདི་ Torii ཞབས་ཏོག་ལེན་མི གིས་ལག་ལེན་འཐབ་མི་ བརྗེ་སོར་འབད་ཡོདཔ `iroha_python.ToriiClient` ལས་བགོ་བཤའ་རྐྱབ་ཡོདཔ་ཨིན། བཟོ་བཀོད་བསྒྱུར་བཅོས་ཆ་མཉམ་འདི་ ནང་དོན བཅིངས ཚད་ལྡན རྩིས་ཐོ མིང་རྟགས དང་གཅིག་ཁར་ འཛུལ་ཆོག ཡིན། དེ་ལས་ མཚན་རྟགས་མེད ཚོང་འབྲེལ ཟིན་བྲིས སླར་ལོག་འབདཝ་ཨིན། Torii གིས་ནམ་ཡང་ སྒེར༌ ལྡེ་མིག མེདཔ་བཟོཝ་མ་ཚད་ ཁྱོད་ཀྱིས་ ཟིན་བྲིས བཏང་མ་ཚུགས།
 
 ```python
 # The plan defines billing cadence, retry policy, and usage pricing.
@@ -1047,61 +1073,69 @@ usage_plan = {
     },
 }
 
-# The provider signs plan creation.
-client.create_subscription_plan(
+# The provider authorizes preparation of a plan-registration draft.
+plan_draft = client.create_subscription_plan(
     authority=alice,
-    private_key=alice_pair.private_key_hex,
     plan_id="compute#wonderland",
     plan=usage_plan,
+    canonical_auth=canonical_auth,
 )
 
-# The subscriber signs subscription creation.
-client.create_subscription(
+bob_canonical_auth = ToriiCanonicalRequestAuth(
+    network_id=TAIRA_NETWORK_ID.literal,
+    account_id=bob,
+    signer=bob_pair.sign,
+)
+
+# The subscriber authorizes preparation of a subscription-creation draft.
+subscription_draft = client.create_subscription(
     authority=bob,
-    private_key=bob_pair.private_key_hex,
     subscription_id="sub-001",
     plan_id="compute#wonderland",
+    canonical_auth=bob_canonical_auth,
 )
 
-# Usage is recorded by the provider and then charged on demand.
-client.record_subscription_usage(
+# Usage and charge-now operations also return unsigned transaction drafts.
+usage_draft = client.record_subscription_usage(
     "sub-001",
     authority=alice,
-    private_key=alice_pair.private_key_hex,
     unit_key="compute_ms",
     delta="3600000",
+    canonical_auth=canonical_auth,
 )
-client.charge_subscription_now(
+charge_draft = client.charge_subscription_now(
     "sub-001",
     authority=alice,
-    private_key=alice_pair.private_key_hex,
+    canonical_auth=canonical_auth,
 )
+
+for draft in (plan_draft, subscription_draft, usage_draft, charge_draft):
+    assert draft.submitted is False
+    print(draft.transaction_payload_b64, draft.signing_message_b64)
 ```
+
+གནས་སྡུད་དང་མཚན་རྟགས་བརྡ་འཕྲིན་ཏག་ཏག་རེ་རེ་ འབྲེལ་ཡོད་རྩིས་ཐོའི་ས་གནས་ཀྱི་དངུལ་ཁུག་ལུ་བྱིན། དེ་ནང་ཞུ་བའི་བཀོལ་སྤྱོད་བདེན་དཔྱད་འབད་ མཚན་རྟགས་ཅན་གྱི་ཚོང་འབྲེལ་བསྡུ་སྒྲིག་འབད་ དེ་ལས་ སྤྱིར་བཏང་ཚོང་འབྲེལ་རྒྱུན་རིམ་བརྒྱུད་དེ་ཕུལ། Python SDK གིས་ མཚན་རྟགས་བརྡ་འཕྲིན་འདི་ ལོག་ཐོབ་པའི་གནས་སྡུད་ཀྱི་ཚད་ལྡན་ཧེཤ་ཨིནམ་བདེན་དཔྱད་འབད་རུང་ དངུལ་ཁུག་ལུ་ མཚན་རྟགས་མ་བཀོད་པའི་ཧེ་མར་ ཚོང་འབྲེལ་གསང་བཤད་དང་ངོས་ལེན་འབད་ནིའི་འགན་ཁུར་ཡོད།
 
 ## འབྲེལ་མཐུད་འབད་ {#connect}
 
-Connect URIs བཟོ་ནི་དང་ བརྟག་ཞིབ་འབད་ཞིནམ་ལས་ Taira གིས་ གསལ་སྟོན་འབད་མི་ མི་མང་གི་ Connect གནས་སྟངས་དེ་ ཀློག་དགོ།
+ཉེ་གནས་ལུ་མཐུད་ URIs བཟོ་བསྐྲུན་དང་དབྱེ་དཔྱད་འབད། མཐུད་ལམ་ངོ་རྟགས་ཅིག་གིས་ SID འདི་ ངེས་བདེན་ `NetworkId` དང་ གློག་རིམ་མི་མང་ལྡེ་མིག་ དེ་ལས་ གསང་ཡིག་ནོནསི་གནས་གོང་ལུ་ བསྡམ་བཞགཔ་ཨིན།
 
 ```python
-from iroha_python.connect import ConnectUri, build_connect_uri, parse_connect_uri
+from iroha_python.connect import create_connect_session_preview, parse_connect_uri
 
-# Connect URIs are what an app hands to a wallet to start a session.
-uri = build_connect_uri(
-    ConnectUri(
-        sid="base64url-session-id",
-        chain_id=CHAIN_ID,
-        node="taira.sora.org",
-    )
+# Generate consistent SID, key, nonce, and URI values as one bundle.
+preview = create_connect_session_preview(
+    network_id=TAIRA_NETWORK_ID,
+    node="taira.sora.org",
 )
-parsed = parse_connect_uri(uri)
-# Status tells you whether the node currently exposes Connect.
-status = client.get_connect_status_typed()
+parsed = parse_connect_uri(preview.wallet_uri)
 
-assert parsed.chain_id == CHAIN_ID
-print(status.enabled, status.sessions_active)
+assert parsed.sid == preview.sid_base64url
+assert parsed.network_id.literal == TAIRA_NETWORK_ID.literal
+assert parsed.app_public_key == preview.app_key_pair.public_key
 ```
 
-Frame codecs དང་ session key འབྱུང་ཁུངས་དང་ session creation འདི་ལུ་ native extension དང་ Connect session route enable དགོཔ་ཨིན།
+དམིགས་གཏད་མཛུབ་གནོན་འདི་གིས་ མཐུད་ལམ་འདི་ གསལ་སྟོན་འབད་བའི་སྐབས་རྐྱངམ་ཅིག་ སྔོན་ལྟ་ངེས་བདེན་དེ་ ཐོ་བཀོད་འབད། ལཱ་ཡུན་གསར་བསྐྲུན་འདི་གིས་ འགན་ཁུར་དམིགས་བསལ་འབག་མི་ཊོ་ཀེན་བཞི་སླར་ལོག་འབདཝ་ཨིན། ལཱ་ཡུན་རེ་རེ་གི་གནས་ཚད་འགྲུལ་ལམ་ལུ་ འཛིན་སྐྱོང་བརྡ་མཚོན་དགོཔ་ཨིན། བསྡོམས་ཚད གནས་ཚད འདི་ བཀོལ་སྤྱོད་པའི་འགྲུལ་ལམ་ཅིག་ཨིན།
 
 ```python
 from iroha_python import (
@@ -1110,40 +1144,56 @@ from iroha_python import (
     ConnectDirection,
     ConnectFrame,
     ConnectPermissions,
+    bootstrap_connect_preview_session,
     decode_connect_frame,
     encode_connect_frame,
-    generate_connect_keypair,
 )
 
-# The app keypair is separate from the account key used for transactions.
-connect_pair = generate_connect_keypair()
-info = client.create_connect_session_info(
-    {"role": "app", "sid": connect_pair.public_key.hex()}
+bootstrap = bootstrap_connect_preview_session(
+    client,
+    network_id=TAIRA_NETWORK_ID,
+    node="taira.sora.org",
 )
-print(info.app_uri, info.wallet_token, info.expires_at)
+info = bootstrap.session
+tokens = bootstrap.tokens
+assert info is not None and tokens is not None
+
+session_status = client.request_json(
+    "GET",
+    "/v1/connect/status",
+    params={"sid": info.sid},
+    headers={"Authorization": f"Bearer {tokens.management}"},
+    expected_status=(200,),
+)
+print(info.app_uri, session_status)
 
 # Control frames negotiate permissions before encrypted messages are sent.
 frame = ConnectFrame(
-    sid=bytes.fromhex("01" * 32),
+    sid=bootstrap.preview.sid_bytes,
     direction=ConnectDirection.APP_TO_WALLET,
     sequence=1,
     control=ConnectControlOpen(
-        app_public_key=connect_pair.public_key,
-        chain_id=CHAIN_ID,
+        app_public_key=bootstrap.preview.app_key_pair.public_key,
+        network_id=TAIRA_NETWORK_ID,
         permissions=ConnectPermissions(methods=["SIGN_REQUEST_TX"], events=[]),
     ),
 )
 payload = encode_connect_frame(frame)
 assert decode_connect_frame(payload) == frame
 
-# Closing the control channel is explicit and carries a reason code.
-client.send_connect_control_frame(
-    "base64url-session-id",
-    ConnectControlClose(role="App", code=4100, reason="finished", retryable=False),
+# Closing the control channel is explicit and also travels as a frame.
+close_frame = ConnectFrame(
+    sid=bootstrap.preview.sid_bytes,
+    direction=ConnectDirection.APP_TO_WALLET,
+    sequence=2,
+    control=ConnectControlClose(
+        role="App", code=4100, reason="finished", retryable=False
+    ),
 )
+close_payload = encode_connect_frame(close_frame)
 ```
 
-ངོས་ལེན་འབད་བའི་ཤུལ་ལུ་ བརྡ་འཕྲིན་ཚུ་ གནས་སྐབས་ཀྱི་བརྡ་དོན་དང་གཅིག་ཁར་ ཨེབ་གཏང་འབད།
+ཆ་འཇོག་འབད་བའི་ཤུལ་ལས་ འཕྲིན་དོན་ཚུ་ གནས་སྟངས་ཅན་གྱི་ལཱ་ཡུན་དང་གཅིག་ཁར་ གསང་བཟོ་འབད།
 
 ```python
 from iroha_python import (
@@ -1173,59 +1223,54 @@ print(encrypted.sequence, state)
 
 ## སྲིད་སྐྱོང་, དུས་རྒྱུན་དང་ འཛིན་སྐྱོང་ས་ཁོངས་ཚུ་ {#governance-runtime-and-admin-surfaces}
 
-འ་ནི་ ཀློག་རྐྱང་གི་ཅ་ལ་ཚུ་ མི་མང་ལུ་ Taira ལུ་ལོག་གཏངམ་ད་ གྲུབ་འབྲས་ཐོན་ཡོདཔ་ཨིན།
+སྲིད་སྐྱོང་ཐོ་བཀོད་ཚུ་རྩིས་ཐོ་གིས་བདེན་འཛིན་འབད་ཡོདཔ་ཨིན། [མཉམ་འབྲེལ་མཐུན་རྐྱེན་](#shared-setup) ལས་དབང་ཤུགས་དང་ལྡནམ་ལག་ལེན་འཐབ་སྟེ་ གྲོགས་རམ་ཨེབ་གཏང་མི་རེ་ལུ་ Taira གི་ ཡོངས་འབྲེལ་འབྱུང་ཁུངས། `NetworkId` ལུ་བསྡམས་:
 
 ```python
-client = create_torii_client("https://taira.sora.org")
-
 # Governance reads return either current settings or typed not-found wrappers.
-protected = client.get_protected_namespaces()
-referendum = client.get_governance_referendum_typed("ref-1")
-tally = client.get_governance_tally_typed("ref-1")
-locks = client.get_governance_locks_typed("ref-1")
-unlock_stats = client.get_governance_unlock_stats_typed()
+protected = client.get_protected_namespaces(canonical_auth=canonical_auth)
+referendum = client.get_governance_referendum_typed(
+    "ref-1", canonical_auth=canonical_auth
+)
+tally = client.get_governance_tally_typed("ref-1", canonical_auth=canonical_auth)
+locks = client.get_governance_locks_typed("ref-1", canonical_auth=canonical_auth)
+unlock_stats = client.get_governance_unlock_stats_typed(
+    canonical_auth=canonical_auth
+)
 
 print(protected, referendum.found)
 print(tally.approve, list(locks.locks), unlock_stats.expired_locks_now)
 
-# Runtime reads expose the active ABI and any pending upgrade records.
-abi = client.get_runtime_abi_active_typed()
+# Account-authenticated runtime reads use the same canonical request proof.
+abi = client.get_runtime_abi_active_typed(canonical_auth=canonical_auth)
+# The ABI hash itself is a public read.
 abi_hash = client.get_runtime_abi_hash_typed()
-runtime_metrics = client.get_runtime_metrics_typed()
-upgrades = client.list_runtime_upgrades_typed()
-capabilities = client.get_node_capabilities_typed()
+runtime_metrics = client.get_runtime_metrics_typed(canonical_auth=canonical_auth)
+capabilities = client.get_node_capabilities_typed(canonical_auth=canonical_auth)
 
 print(abi, abi_hash, runtime_metrics)
-print(upgrades.total, capabilities.abi_version)
+print(capabilities.abi_version)
 ```
 
-Runtime ཡར་དྲག་གཏང་ནི་གི་ རྒྱབ་སྐྱོར་ཚུ་གིས་ runtime upgrade API གིས་ལག་ལེན་འཐབ་མི་ manifest form ཚུ་ཆ་འཛིན་འབད་དོ་ཡོདཔ་ཨིན། འདི་གི་དོན་ལུ་ operator actions འདི་འབདཝ་ལས་ཁྱོད་ཀྱི་རྩིས་ཁྲ་དང་ tokens ཆ་འཇོག་གྲུབ་ཡོད་པའི་ node གི་ཐད་ལུ་རྐྱངམ་གཅིག་ ལག་ལེན་འཐབ་ཨིན།
+ལས་འཛིན་གྱི་བཀླགས་ཐོ་བཀོད་གི་དོན་ལུ་ ཁྱད་པར་ཅན་ལག་ལེན་པ་ཅིག་བཟོ། རྒྱུན་འགྲུལ་འབད་བའི་དུས་ཚོད་ལུ་ ཆོག་ཐོར་བཀོད་ཡོད བཀོལ་སྤྱོད་པ ལྡེ་མིག འདི་ཨེབ་གཏང་འབད་ཞིནམ་ལས་ Taira གི་བདེན་པའི་ `NetworkId` ལུ་བཅིངས་འབད། ལག་ལེན་པ་གི་རྟགས་མཚན་དང་ `x-api-token` གིས་ འ་ནི་ཡིག་འབྲུ་འདི་ཚབ་མ་བཙུགས་:
 
 ```python
-admin = create_torii_client(
+import os
+
+from iroha_python import Ed25519KeyPair, NetworkId, OperatorSigningContext
+
+operator_pair = Ed25519KeyPair.from_private_key(
+    bytes.fromhex(os.environ["IROHA_OPERATOR_PRIVATE_KEY_HEX"])
+)
+operator_client = create_torii_client(
     TORII_URL,
-    auth_token="admin-token",
-api_token="torii-token",
+    operator_signing_context=OperatorSigningContext(
+        TAIRA_NETWORK_ID,
+        operator_pair,
+    ),
 )
-
-# Propose creates the upgrade instructions; activation/cancel are operator actions.
-upgrade = admin.propose_runtime_upgrade(
-    {
-        "name": "Refresh runtime provenance",
-        "description": "Schedules a no-ABI-change runtime rollout.",
-        "abi_version": 1,
-        "abi_hash": "00" * 32,
-        "added_syscalls": [],
-        "added_pointer_types": [],
-        "start_height": 1_500_000,
-        "end_height": 1_500_256,
-    }
-)
-print(upgrade["tx_instructions"])
-
-admin.activate_runtime_upgrade("deadbeef" * 4)
-admin.cancel_runtime_upgrade("feedface" * 4)
 ```
+
+དུས་ཡུན་ཡར་དྲག་གཏང་ནིའི་ལམ་ཚུ་ ལག་ལེན་པ་གིས་ བདེན་ཁུངས་བཀོད་མི་ བརྡ་སྟོན་བཟོ་སྐྲུན་འབད་མི་ཚུ་ཨིན། གྲུབ་འབྲས་ཅན་ཅིག་གིས་ གྲོས་འདེབས་ལོག་གཏང་། སླར་ལོག་འབད་ནི་དང་ ཡང་ན་ ཆ་མེད་གཏང་ནི་ `tx_instructions`; འདི་ཡང་ ད་ལྟོའི་གནས་གོང་འདི་ བསྒྱུར་བཅོས་འབད་མ་ཚུགསཔ་ཨིན། ཟུར་ཤོག་འདི་ རང་བཞིན་གྱི་བཀོད་སྒྲིག་གི་ཐོག་ལས་དང་ གཞུང་སྐྱོང་ལམ་བརྒྱུད་དེ་གཏང་དགོ། Python ཐབས་ལམ་ཚུ་ `propose_runtime_upgrade`, `activate_runtime_upgrade`, དང་ `cancel_runtime_upgrade` ད་ལྟོའི་བར་ན་ཡང་ མགྲིན་ཚབ་ཀྱི་ཞུ་ཡིག་ཚུ་ལག་ལེན་གྱི་ཚབ་ལུ་ རང་བཞིན་གྱི་ཞུ་ཡིག་ཚུ་སྤྲོད་ནི་ཨིན་མས། `OperatorSigningContext`, འདི་འབདཝ་ལས་ འ་ནི་ལྷབ་སྦྱང་འདི་ ལཱ་འབད་ཐངས་ཀྱི་ལག་ལེན་པ་ཅིག་སྦེ་སྟོན་མི་ཚུགས།
 
 ## གནས་གོང་དང་ གྲོས་འཆམ་ དེ་ལས་ འགྲུལ་འཕྲིན་འཕྲུལ་ཆས་ཚུ་ {#status-consensus-and-network-telemetry}
 
@@ -1234,15 +1279,22 @@ admin.cancel_runtime_upgrade("feedface" * 4)
 status = client.request_json("GET", "/status", expected_status=(200,))
 print(status["blocks"], status["txs_approved"])
 
-# Sumeragi and time endpoints expose consensus and clock diagnostics.
-sumeragi = client.get_sumeragi_status_typed()
-print(sumeragi.highest_qc.height, sumeragi.tx_queue.saturated)
+# Sumeragi and time-status endpoints use the operator client configured above.
+sumeragi = operator_client.get_sumeragi_status_typed()
+diagnostics = operator_client.get_sumeragi_diagnostics_typed()
+print(sumeragi.last_committed_height, diagnostics.tx_queue_saturated)
 
-time_now = client.get_time_now_typed()
-time_status = client.get_time_status_typed()
+time_now = client.get_time_now()
+time_status = operator_client.get_time_status()
 for sample in time_status.samples:
     print(sample.peer, sample.last_offset_ms, sample.last_rtt_ms)
 print(time_now.now_ms)
+
+# Connect aggregate status is operator-authenticated. Individual sessions use
+# `/v1/connect/status?sid=...` with their management bearer token instead.
+connect_status = operator_client.get_connect_status_typed()
+if connect_status is not None:
+    print(connect_status.enabled, connect_status.sessions_active)
 ```
 
 ## SoraFS, UAID དང་ Kaigi གྲོགས་རམ་འབད་མི་ {#sorafs-uaid-and-kaigi-helpers}
@@ -1264,25 +1316,28 @@ manifests = client.list_space_directory_manifests_typed(
 )
 print(len(bindings.dataspaces), len(manifests.manifests))
 
-# Kaigi health summarizes relay availability when the route is enabled.
-health = client.get_kaigi_relays_health_typed()
+# Kaigi relay health is an operator snapshot, even though it is read-only.
+health = operator_client.get_kaigi_relays_health_typed()
 print(health.healthy_total, health.failovers_total)
 ```
 
 ## Norito RPC དང་ GPU གྲོགས་རམ་འབད་མི་ {#norito-rpc-and-gpu-helpers}
 
-ཁྱོད་ཀྱིས་ `NoritoRpcClient` ལག་ལེན་འཐབ་པའི་སྐབས་ ཁྱོད་ཀྱིས་ Norito བའི་ཊི་ཚུ་ཡོད་པའི་ཁར་ ཌའི་ལོག་གི་མཐའ་མཚམས་ (endpoint) Torii ལུ་འབོ་དགོཔ་ཨིན། དཔེ་འདི་ སྔོན་བྱོན་གྱི་ཅ་ཆས་བཟོ་རྣམ་ནང་ལས་ ཐོ་བཀོད་འབད་ཡོད་པའི་ཁེབས་ཅིག་ དགོཔ་ཨིན་མས།
+ཁྱོད་ཀྱིས་ `NoritoRpcClient` ལག་ལེན་འཐབ་པའི་སྐབས་ ཁྱོད་ཀྱིས་ Norito བའི་ཊི་ཚུ་ཡོད་པའི་ཁར་ ཌའི་ལོག་གི་མཐའ་མཚམས་ (API མཐའ་མཚམས) Torii ལུ་འབོ་དགོཔ་ཨིན། དཔེ་འདི་ སྔོན་བྱོན་གྱི་ཅ་ཆས་བཟོ་རྣམ་ནང་ལས་ ཐོ་བཀོད་འབད་ཡོད་པའི་ཁེབས་ཅིག་ དགོཔ་ཨིན་མས།
 
 ```python
 from iroha_python import NoritoRpcClient, NoritoRpcConfig
 
 # Use the binary RPC client for endpoints that expect Norito bytes.
 with NoritoRpcClient(NoritoRpcConfig(TORII_URL, timeout=5.0)) as rpc:
-    response_bytes = rpc.call("/v1/transaction", envelope.signed_transaction_versioned)
+    response_bytes = rpc.call(
+        "/v1/pipeline/transactions",
+        envelope.signed_transaction_versioned,
+    )
     print(len(response_bytes))
 ```
 
-CUDA གྲོགས་རམ་མི་ཚུ་གིས་ backend མ་ཐོབ་པའི་སྐབས་ལུ་ `None` སླར་ལོག་འབདཝ་ཨིན། འདི་འབདཝ་ལས་ applications ཚུ་ scalar implementations ལུ་ལོག་འགྱོ་ཚུགས།:
+CUDA གྲོགས་རམ་འབད་མི་ཚུ་གིས་ རྒྱབ་གཞི་འདི་འཐོབ་མ་ཚུགས་པའི་སྐབས་ `None` སླར་ལོག་འབདཝ་ལས་ གློག་རིམ་ཚུ་ ཨིསི་ཀེ་ལར་ལག་ལེན་འཐབ་མི་ཚུ་ལུ་ ལོག་འགྱོ་ཚུགས།
 
 ```python
 from iroha_python import bn254_add_cuda, cuda_available, poseidon2_cuda
@@ -1293,18 +1348,18 @@ if cuda_available():
     print(bn254_add_cuda((1, 0, 0, 0), (2, 0, 0, 0)))
 ```
 
-## ད་ལྟོའི་ཁེ་ཕན་ {#current-coverage}
+## ད་ལྟོའི་ཁྱབ་ཚད་ {#current-coverage}
 
 Python SDK གིས་ ད་ལྟོའི་བར་ན་ཡང་ རྒྱབ་སྐྱོར་འབད་མི་ཚུ་ཡང་ ཡོདཔ་ཨིན།
 
 - Torii བཏང་ཐོ་བཀོད་, གནས་གོང་, དྲི་བཀོད་དང་ འཛིན་སྐྱོང་ཐོ་བཀོད།
 - ISI དང་ ཌོ་མ་ནེསི་རྐྱང་གི་ཁྱབ་སྒྲགས་ཚུ་གི་དོན་ལུ་ བརྡ་བཀོད་བཀོད་བཟོ་སྐྲུན་འབད་མི་ཚུ་
-- ཚོང་འབྲེལ་གྱི་འཆར་གཞི་ཚུ་དང་ འཛིན་སྐྱོང་ཡིག་ཆ། ཐོ་བཀོད་དང་མིང་ཐོ་བཀོད་འབད་མི་ ཚོང་འབྲེལ་གི་ཁེབས་ཀྱི་ ལཱ་འབད་ཐངས་
-- གློག་ཐག་ར་བ་གི་བྱུང་རྐྱེན་དང་ ཕི་ལཱཊར་ཚུ་ དེ་ལས་ ལོག་སྤྱོད་འབད་ཚུགས་པའི་ ཀུར་སོར་ཚུ་
-- སྤྱིར་བཏང་ Kagemusha གྲ་སྒྲིག་འབད་ནིའི་གོ་སྐབས་དང་ Torii subscription assistants; typeed top-up and redemption builders are not exposed.
-- རྩིས་ཁྲ་གི་ཁ་བྱང་། ཨལ་ག་རི་ཏེམ་ཡོངས་འབྲེལ་གྱི་བརྡ་དོན་འབྲི་སའི་ལས་བྱེདཔ་ཚུ། མང་ཤོས་ཀྱི་ཧེཤ་དང་ ཕར་དང་ཚུར་ འགྲོ་འགྲུལ་འབད་ SM2, GOST, ML-DSA, BLS དེ་ལས་ གསང་བའི་ལྡེ་མིག་ལག་ལེན་འཐབ་ཐབས།
+- ཚོང་འབྲེལ་ཟིན་བྲིས་དང་ གསལ་བསྒྲགས་ མིང་རྟགས་བཀོད་མི་ དེ་ལས་ མིང་རྟགས་བཀོད་ཡོད་པའི་ཚོང་འབྲེལ་ཡིག་ཤུབས་ཀྱི་ ལཱ་གི་རྒྱུན་རིམ་ཚུ་
+- ཐད་གཏོང་བྱུང་རིམ་གྱི་རྒྱུན་ལམ་དང་ཡིག་དཔར་རྐྱབས་ཡོད་པའི་ཚགས་མ་ཚུ། ཁས་བླངས་འབད་ཡོད་པའི་སྡེབ་ཚན་རྒྱུན་ལམ་ཚུ་གིས་ བྱུང་རབས་ཆ་ཚང་བྱིནམ་ཨིན།
+- སྤྱིར་བཏང་ Kagemusha གྲ་སྒྲིག་འཛུལ་སྤྱོད་དང་ Torii མཁོ་སྒྲུབ་རོགས་སྐྱོར། ཡིག་དཔར་རྐྱབ་ཡོད་པའི་ མཐོ་ཚད་དང་ བསྐྱར་ལེན་བཟོ་བསྐྲུན་པ་ཚུ་ ཕྱི་ཁར་མ་བཏོན་པས།
+- རྩིས་ཐོ་གི་ཁ་བྱང་། ཨལ་ག་རི་ཏེམ་ཡོངས་འབྲེལ་གྱི་བརྡ་དོན་འབྲི་སའི་ལས་བྱེདཔ་ཚུ། མང་ཤོས་ཀྱི་ཧེཤ་དང་ ཕར་དང་ཚུར་ འགྲོ་འགྲུལ་འབད་ SM2, GOST, ML-DSA, BLS དེ་ལས་ གསང་བའི་ལྡེ་མིག་ལག་ལེན་འཐབ་ཐབས།
 - URIs མཐུད་སྦྲེལ་འབད་ཐབས། གྲོས་བསྡུར་ཚུ་, ཐེམ་ཕེརམསི་, ཨེབ་གཏང་ནིའི་རོགས་དང་ ཐོ་བཀོད་འཛིན་སྐྱོང་པ་
-- གཞུང་སྐྱོང་, runtime upgrade, Sumeragi, node-admin, SoraFS, UAID,དང་ Kaigi ཚད་མཇུག་གི་སྒོ་སྒྲིག་ཚུ་ནང་ལུ་ node གིས་ཁྱད་ཆོས་འདི་གསལ་སྟོན་འབད་ཡོདཔ་ཨིན།
+- མཐུད་མཚམས གིས་ཁྱད་ཆོས་དེ་ཚུ་བྱིན་པའི་སྐབས་ གཞུང་སྐྱོང, ལག་བསྟར་མཉེན་ཆས རིམ་སྤར, Sumeragi, མཐུད་མཚམས བདག་སྐྱོང་, SoraFS, UAID དང་ Kaigi API མཐའ་མཚམས ཚུ་གི་ གློག་རིག་མཉེན་ཆས མཐུད་ཆས ཚུ
 
 ## གཙོ་རིམ་གོང་མའི་ཁ་བྱང་ཚུ་ {#upstream-references}
 

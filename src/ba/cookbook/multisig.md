@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/multisig.md
-translation_source_hash: 7090228c4fea7321c93fe0d2c67ef6de842de95bc3befa11d83c12b9f15b4752
+translation_source_hash: e1b57e1c4310dd0db8be8d9f5a15e1d4f693abb90b634772857eb4b1e86e4baf
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ Taira иҫәбендә өс кешенән торған күп һанлы иҫә
 
 - Өс каноник I105 ҡултамғалаусы IDs үҙ эсенә `SIGNER_A`, `SIGNER_B`, һәм `SIGNER_C`.
 - A һәм C ҡултамғасылары өсөн финансланған Taira конфигурациялар. Тәҡдим итеүсе һәм һәр раҫлаусы үҙ транзакцияһы өсөн түләй.
-- `taira.tx-metadata.json` хәҙерге кран яуаптан яһалған, бер ҡасан да күсергән түләү активтан ID.
+- `taira.tx-metadata.json` хәҙерге faucet яуаптан яһалған, бер ҡасан да күсергән түләү активтан ID.
 - А Rust клиент проекты шул уҡ Iroha сығанаҡ ревизияһы Taira һуңғараҡ тәҡдим һәм раҫлау этаптарында ҡулланыу CLI.
 - Хәҙерге башҡарыусының күп миҡдарлы функцияһы булдырылған. Регистрация ябай иҫәптәр өсөн алдан билдәләнгән ваҡытта Iroha 3 эшләй, әммә Taira сәйәсәте һәм түләү ҡабул итеүе һаман да ғәмәлдә; әгәр йәмәғәт ҡулланыу уны инҡар итһә, localnet ҡулланығыҙ.
 
@@ -141,7 +141,7 @@ iroha --config "$SIGNER_A_CONFIG" ledger multisig list all \
 
 ### 4. ҡултамға ҡуйыусы C тип раҫлау. {#_4-approve-as-signer-c}
 
-A-ның ауырлығы 1 плюс C-ҙың ауырлығы 2 3-сө кворумға барып етә һәм тәҡдим ителгән күрһәтмәләрҙе күп һанлы иҫәп иҫәбенә ҡуя.
+A-ның 1 ауырлығы менән C-ның 2 ауырлығы quorum 3-кә етә һәм тәҡдим ителгән instruction-ды multisig account исеменән үтәй.
 
 ```bash
 iroha --config "$SIGNER_C_CONFIG" \
@@ -202,8 +202,8 @@ iroha --config "$SIGNER_A_CONFIG" ledger multisig inspect \
 
 ## Сығанаҡ һәм уның менән бәйле документтар {#source-and-related-docs}
 
-- [Пинк commit-та Multisig интеграция һынауҙары](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/multisig.rs)
-- [Пинк commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_executor_data_model/src/isi.rs) буйынса Multisig мәғлүмәт моделе
-- [CLI ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/main_shared.rs) буйынса multisig тормошҡа ашырыу
+- [Пинк commit-та Multisig интеграция һынауҙары](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/multisig.rs)
+- [Пинк commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/isi.rs) буйынса Multisig мәғлүмәт моделе
+- [CLI ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs) буйынса multisig тормошҡа ашырыу
 - [Транзакциялар](/ba/blockchain/transactions.md)
 - [Рөхсәт һәм ролдәр](./permissions-and-roles.md)

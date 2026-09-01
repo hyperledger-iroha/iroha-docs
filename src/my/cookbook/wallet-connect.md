@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /cookbook/wallet-connect.md
-translation_source_hash: ab5b6c560ed8b0a208666e5854306ba6adce7af1210fc3c94b9c560d8e6eb686
+translation_source_hash: 81b370bdc73a40ff2dbb8df0f91547ab4c279ed94600bdd6df367f29a949ec71
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,14 +10,14 @@ translation_engine: nllb-200-ct2
 
 ## ရလဒ် {#outcome}
 
-Iroha Connect session ကို browser ထဲမှာဖန်တီးပြီး I105 wallet ID တစ်ခုအတွက် cryptographic approval ကိုရယူပါ၊ အဲဒီ wallet ကို Torii ရဲ့ တိကျတဲ့ asset transfer scaffold ကို လက်မှတ်ထိုးဖို့ တောင်းဆို၊ သီးခြားလက်မှတ်ကိုတင်ပြီး Applied finality ကိုစောင့်ပါ။
+Iroha Connect session ကို browser တစ်ခုမှာ ဖန်တီးပြီး I105 wallet ID တစ်ခုအတွက် cryptographic ခွင့်ပြုချက် ရယူပါ၊ အဲဒီ wallet ကို Torii ရဲ့ asset transfer-generated starter structure ကို လက်မှတ်ထိုးဖို့ တောင်းဆို၊ သီးခြားလက်မှတ်တင်ပြီး Applied finality ကို စောင့်ပါ။
 
 ## လိုအပ်ချက်များ {#prerequisites}
 
 - `@iroha/iroha-js` နှင့် HTTPS ကို အသုံးပြုသော ရှာဖွေရေးစနစ်။
 - Iroha Connect v1 ကို အကောင်အထည်ဖော်ပြီး Ed25519 I105 account တစ်ခုတည်းသောဖုန်းကို ထိန်းချုပ်တဲ့ ပိုက်ဆံအိတ်တစ်ခု။
-- လက်ရှိ Taira ကွင်းဆက် ID နှင့် ကွင်းဆက်ခွဲခြားချက်၊ ပိုက်ဆံအိတ်၏ မှတ်ပုံတင်ထားသော စာလုံးငယ် Ed25519 အများသုံး သော့ဝဲ hex, ပိုင်ဆိုင်သည့် လွှဲပြောင်းနိုင်သော အရင်းအမြစ်တစ်ခုနှင့် တရားဝင် I105 ရည်မှန်းချက်ဖြစ်သည်။
-- လက်ရှိ Taira faucet တုံ့ပြန်မှုဖြင့်ပြန်လည်ပေးပို့ထားသော အခွန်လက်မှတ် ID။ ဥပမာသည် ID နှင့်သက်ဆိုင်သည့် တိုက်ရိုက်ခွန် quote ကိုစစ်ဆေးသည်။ ၎င်းသည်တစ်ခါမှ ကူးယူထားသော အရင်းအမြစ်အသိကို မပါ ၀ င်ပါ။
+- လက်ရှိ Taira ကွင်းဆက် ID နှင့် ကွင်းဆက်ခွဲခြားချက်၊ ပိုက်ဆံအိတ်၏ မှတ်ပုံတင်ထားသော အက္ခရာငယ် Ed25519 အများသုံးကီး hex, ပိုင်ဆိုင်သည့် လွှဲပြောင်းနိုင်သော အရင်းအမြစ်တစ်ခုနှင့် တစ်ခုတည်းသော ပရိုတိုကောစံညွှန်း I105 ရည်ရွယ်ချက်ဖြစ်သည်။
+- လက်ရှိ Taira testnet ငွေကြေးထောက်ပံ့မှု ဝန်ဆောင်မှု တုံ့ပြန်ချက်မှ ပြန်လည်ပေးပို့ထားသော အခွန်အရင်းအမြစ် ID။ ဥပမာသည် ထို ID နှင့် တိုက်ရိုက်ခွန်စျေးနှုန်းခန့်မှန်းချက်ကို စစ်ဆေးသည်။ ၎င်းမှာ ဘယ်တော့မှ ကူးယူထားတဲ့ အရင်းအမြစ်အသိမှတ်ပြုမှုကို ထည့်သွင်းခြင်း မရှိပါ။
 - Connect ကိုရွေးချယ်ထားသော Torii တွင်ဖွင့်နိုင်ရမည်။ QR သို့မဟုတ် နက်ရှိုင်းသော link ကိုပြရန်မတိုင်မီ စစ်ဆေးပါ။
 
 ```bash
@@ -43,7 +43,7 @@ QR ကို အခြားကိရိယာတစ်ခုပေါ်က င
 
 ### (၂) ဖန်တီးခြင်း၊ အတည်ပြုခြင်း၊ လက်မှတ်ရေးထိုးခြင်းနှင့် တင်ပြခြင်း၊ {#_2-create-approve-sign-and-submit}
 
-ဤ browser module သည်သင်၏ application state မှအဓိကတန်ဖိုးများကိုလက်ခံသည်။ ပထမ `POST /v1/assets/transfer` သည် လက်မှတ်ရေးထိုးမှု ကွင်းများကိုဖယ်ရှားပြီး ကိုးကားထားသော၊ ဗားရှင်းထုတ်လုပ်ထားသော ငွေပေးချေမှု စင်္ကြံကိုပြန်ပို့သည်။ ဒုတိယသည်တူညီသော transfer request သို့ wallet ၏ အများသုံးပုန်းနှင့် သီးခြားလက်မှတ်ကိုသာထည့်သွင်းသည်။
+ဤ browser module သည်သင်၏ application state မှအဓိကတန်ဖိုးများကိုလက်ခံသည်။ ပထမ `POST /v1/assets/transfer` သည် လက်မှတ်ရေးထိုးမှုနယ်ပယ်များကိုဖယ်ရှားပြီး အခွန်စျေးနှုန်းခန့်မှန်းချက်နှင့်အတူဗားရှင်းထုတ်ရောင်းချမှုစတင်တည်ဆောက်မှုကိုပြန်ပေးသည်။ ဒုတိယသည်တူညီသောလွှဲပြောင်းခြင်းတောင်းဆိုချက်သို့တော့ Wallet ၏ အများသုံးပုန်းနှင့် သီးခြားလက်မှတ်ကိုသာထည့်သွင်းသည်။
 
 ```js
 import { AccountAddress } from '@iroha/iroha-js/address'
@@ -251,11 +251,11 @@ fn seal_wallet_signature(
 }
 ```
 
-`connect_app` နှင့် `connect_wallet` ၏ဥပမာများမှာ ပရိုတိုကောဖစ်ချ်များဖြစ်သည်- ၎င်းတို့သည် deterministic transport key များကိုအသုံးပြုပြီး output တွင် tokens များကို ဖော်ပြကာ wallet fixtures သည် dummy လက်မှတ်တစ်ခု ပြန်လည်ပေးသည်။ ၎င်းတို့ကို ဖေ့ခ်များသာ လေ့လာရန် အသုံးပြု၍ ဘယ်တော့မှ Taira wallet အကောင်အထည်ဖော်မှုအဖြစ်မသုံးပါ။
+Repository ၏ `connect_app` နှင့် `connect_wallet` နမူနာများသည် ပရိုတိုကော စမ်းသပ်မှု လက်ရာများဖြစ်သည် - ၎င်းတို့သည် deterministic transport key များကိုအသုံးပြုပြီး output တွင် tokens ကိုဖေါ်ပြကြပြီး wallet test လက်ရာသည် dummy လက်မှတ်တစ်ခုပြန်လည်ပေးသည်။ ၎င်းတို့ကို frame များကိုသာ လေ့လာရန် အသုံးပြု၍ ဘယ်တော့မှ Taira wallet implementation အဖြစ်မသုံးပါ။
 
 ## စစ်ဆေးပါ {#verify}
 
-ပြန်ပို့တဲ့ hash ကို သိမ်းထားပြီး အများပြည်သူ ပိုင်ရှင်များအဆုံးမှတ်မှတစ်ဆင့် ရည်ရွယ်ချက်ရဲ့ post-state ကို အတည်ပြုပါ။
+ပြန်ပို့သော cryptographic hash ကိုထိန်းသိမ်းပြီး အများပြည်သူပိုင်ရှင်များ API အဆုံးမှတ်မှတစ်ဆင့် ရည်ရွယ်ချက်၏ post-state ကိုအတည်ပြုပါ။
 
 ```bash
 curl -fsS -G \
@@ -266,7 +266,7 @@ curl -fsS -G \
   jq .
 ```
 
-စစ်ဆေးမှုဟာ JavaScript ဝန်ထမ်းက တင်ပြထားတဲ့ ငွေပေးချေမှု ဟက်ရှ်အတွက် `Applied` ကို သတိထားမိပြီး ရည်ရွယ်ချက်ပိုင်ဆိုင်မှုက လွှဲပြောင်းမှုကို ထင်ဟပ်တဲ့အခါသာ အောင်မြင်ပါတယ်။ HTTP လက်ခံခြင်း (သို့) ပိုက်ဆံအိတ် ခွင့်ပြုချက်တစ်ခုတည်းဟာ စာရင်းအင်းရဲ့ အပြီးသတ်မှုမဟုတ်ဘူး။
+စစ်ဆေးမှုက JavaScript စားပွဲထိုးက တင်သွင်းထားတဲ့ ငွေကြေးဆိုင်ရာ cryptographic hash အတွက် `Applied` ကို စောင့်ကြည့်ပြီး ရည်မှန်းချက် holding က လွှဲပြောင်းမှုကို ထင်ဟပ်တဲ့အခါသာ အောင်မြင်ပါတယ်။ HTTP လက်ခံခြင်း (သို့မဟုတ်) Wallet ခွင့်ပြုချက်တစ်ခုတည်းဟာ blockchain ledger ရဲ့ အဆုံးသတ်မှု မဟုတ်ဘူး။
 
 ## ပြဿနာဖြေရှင်းခြင်း {#troubleshooting}
 
@@ -274,16 +274,16 @@ curl -fsS -G \
 - `USER_DENIED` ဟာ ငွေကြေးအစီအစဉ်ပါ။ ထပ်တလဲလဲ ခွင့်ပြုချက် အချက်ပြမှုတွေကို ဖွင့်မယ့်အစား terminal user ရလဒ်အဖြစ် ထိန်းသိမ်းပါ။
 - ခွင့်ပြုချက်စာရင်းနဲ့ မလိုက်ဖက်မှု (သို့) လက်မှတ်လက်မှတ်အမှားက အစည်းအဝေးကို ပိတ်ပစ်ရပါမယ်။ လက္ခဏာ ချည်နှောင်မှု ကျရှုံးသွားပြီးနောက် ငွေကြေးဝယ်သူထံ လက်မှတ်ထိုးဖို့ ဘယ်တော့မှ မေတ္တာရပ်ခံပါ။
 - `public_key_hex does not control authority` ဆိုသည်မှာ မှတ်ပုံတင် အချက်အလက်များနှင့် ခွင့်ပြုထားသော I105 ကိုယ်စားလှယ်လက္ခဏာ သဘောမတူခြင်း ဖြစ်သည်။
-- လက်မှတ် (သို့) စကဖော့ဒ် ပယ်ချခြင်းဆိုသည်မှာ ပြင်ဆင်ပြီး တင်ပြမှုအကြား ပြောင်းလဲသော request field သို့မဟုတ် live fee quote ကို ဆိုလိုသည်။ တောင်းဆိုချက်အသစ်တစ်ခု တည်ဆောက်ပါ။ လက်မှတ်ဟောင်းကို ဘယ်တော့မှ အစားထိုးမလုပ်ပါ။
-- လက်မှတ်ထိုးပြီးသား တောင်းဆိုချက်ရဲ့ တိကျတဲ့ ပြန်လည်ရိုက်ကူးမှုက idempotent ပါ။ အချိန်ကာလကို စဖို့ အကြောင်းပြချက်အဖြစ် မသုံးခင် ပြန်လာတဲ့ ငွေပေးချေမှု hash ကို မေးမြန်းပါ။
+- လက်မှတ်တစ်ခု (သို့) ထုတ်ပေးထားတဲ့ စtarter ဖွဲ့စည်းမှု ငြင်းပယ်ခြင်းဆိုသည်မှာ ပြင်ဆင်ပြီး တင်သွင်းကြားတွင် ပြောင်းလဲသော request field သို့မဟုတ် live fee ကုန်ကျစရိတ်ခန့်မှန်းချက်ကို ဆိုလိုသည်။ တောင်းဆိုချက်အသစ်တစ်ခုကို တည်ဆောက်ပါ။ အဟောင်းလက်မှတ်ကို ဘယ်တော့မှ အစားထိုးမလုပ်ပါ။
+- လက်မှတ်ထိုးပြီးသား တောင်းဆိုချက်တစ်ခုရဲ့ တိကျတဲ့ ပြန်လည်ဖြည့်စွက်မှုက idempotent ပါ။ အချိန်ကာလကို အသစ်စဖို့ အကြောင်းပြချက်အဖြစ် မယူဆခင်ပြန်လာတဲ့ ငွေချေးမှုအတွက် cryptographic hash ကိုမေးပါ။
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [ပိတ်ထားသော commit တွင် Browser Connect အကောင်အထည်ဖော်ခြင်း](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/src/connect.browser.js)
-- [ပိတ်ထားသော commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/test/connect.browser.test.js) တွင် Browser Connect စမ်းသပ်မှုများ
-- [Rust app frame နမူနာကို pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_app.rs) တွင်
-- [Rust ချိတ်ဆက်ထားသော commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_wallet.rs) မှာ wallet frame နမူနာ
-- [ပိတ်ထားခြင်း Torii OpenAPI အစီအစဉ်](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/artifacts/openapi/torii.json)
-- [SORA Nexus ဝန်ဆောင်မှုများ](/my/blockchain/sora-nexus-services.md)
-- [ငွေကြေးအထောက်အပံ့များ ](./fungible-assets.md)
+- [ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှုမှာ Browser Connect အကောင်အထည်ဖော်ခြင်း](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/src/connect.browser.js)
+- [Browser Connect ကို ပိတ်ထားသော Source-code ပြင်ဆင်မှုတွင် စမ်းသပ်ခြင်း](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/test/connect.browser.test.js)
+- [Rust app frame နမူနာကို pinned source code revision ကို](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_app.rs)
+- [Rust ပိုက်ဆံအိတ်ဖောင်ဒေးရှင်း နမူနာမှာပိတ်ထားတဲ့ source code ပြန်လည်ဆန်းစစ်ခြင်း](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_wallet.rs)
+- [Pinned Torii OpenAPI အစီအစဉ်](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/artifacts/openapi/torii.json)
+- [SORA Nexus ဝန်ဆောင်မှု](/my/blockchain/sora-nexus-services.md)
+- [ငွေကြေးအထောက်အပံ့များ](./fungible-assets.md)
 - [ငွေပေးချေမှုများကို တင်ပြခြင်း၊ စစ်ဆေးခြင်း](./submit-and-verify-transactions.md)

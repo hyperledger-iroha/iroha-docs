@@ -3,32 +3,32 @@ translation_locale: am
 translation_source: /blockchain/escrow.md
 translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e217bc6ac9
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# የአገር ውስጥ ንብረት ማስከበሪያ {#native-asset-escrow}
+# ቤተኛ ንብረት Escrow {#native-asset-escrow}
 
-Native escrow ለቁጥር ንብረቶች በመዝገብ የሚተዳደር የማከማቻ ዘዴ ነው። ንብረቶችን ወደ ትግበራ ባለቤትነት ባለው ሂሳብ ከመላክ ይልቅ እና ያንን ሂሳብ ለመጠበቅ በአፕሊኬሽን ኮድ ላይ በመተማመን ፣ ኤስሮው ISIs ዋጋውን ወደ ተወሰነ ፕሮቶኮል ጥበቃ ሂሳብ ያስተላልፋል እና የኤስሮው የሕይወት ዑደት በዓለም ሁኔታ ውስጥ ይመዝግባል።
+ቤተኛ escrow በብሎክቼይን መዝገብ ለሚተዳደሩ የቁጥር ንብረቶች የጥበቃ ዘዴ ነው። ንብረቶችን ወደ መተግበሪያው ባለቤትነት የተያዘ መለያ ከመላክ እና በ ላይ ከመተማመን ይልቅ ያንን መለያ ለመጠበቅ የመተግበሪያ ኮድ፣ escrow ISIs እሴትን ወደ ዲተርሚኒስቲክ የፕሮቶኮል ጥበቃ መለያ ያንቀሳቅሱ እና በአለም ሁኔታ ውስጥ ያለውን የ escrow የሕይወት ዑደት ይመዝግቡ።
 
-ለገበያ ቦታ የማስተካከያ ፣ የአይታይ ዘይቤ ከሰንሰለት ውጭ የክፍያ ማስተባበሪያ ፣ የእግረኞች ቁልፎች እና በሊጅ ውስጥ የሚታዩ የሕይወት ዑደት ሁኔታዎችን የሚጠይቁ የተጠበቁ የኤስኮሮ ሥራ ፍሰቶችን ለመጠቀም ።
+በብሎክቼይን መዝገብ ውስጥ የሚታይ የህይወት ኡደት ሁኔታን የሚጠይቁ ለገበያ ቦታ የፋይናንሺያል ግብይት ማጠናቀቂያ፣ የአይታይ አይነት ከሰንሰለት ውጪ የክፍያ ቅንጅት፣ ወሳኝ መቆለፊያዎች እና የተከለሉ የዋስትና የስራ ፍሰቶች ቤተኛ escrow ይጠቀሙ።
 
-## ጽንሰ ሐሳቦች {#concepts}
+## ጽንሰ-ሐሳቦች {#concepts}
 
-|ጽንሰ ሐሳብ|መግለጫ |
+|ጽንሰ-ሐሳብ|መግለጫ|
 | --- | --- |
-|`EscrowId` |በተጠቃሚው የተመረጠው መታወቂያ ሃሽን በማሸግ ላይ። ግልጽ እና የማይታወቁ ኤስሮዎች መካከል ልዩ መሆን አለበት ። |
-|`AssetEscrowRecord` |ግልፅ የቁጥር ንብረቶች ማስከበሪያ ወይም መቆለፊያ መዝገብ።|
-|`AnonymousAssetEscrowRecord` |በከንቱነት, ግዴታዎች, እና ማስረጃ ማያዣዎች የተደገፈ የተጠበቀ የሂሳብ መዝገብ. |
-|የጥበቃ ሂሳብ |ከሰንሰለት ID ፣ ኤስሮው ID እና የንብረት ትርጉም የተወሰደ የፍቺ ፕሮቶኮል ሂሳብ። |
-|ማስረጃዎች |የምስክር ወረቀቶች ሂሳቦችን ፣ ፍርዶችን ፣ መልዕክቶችን ፣ የማከማቻ ማኒፌሶችን ወይም ሌሎች ከሰንሰለት ውጭ ያሉ ማስረጃዎችን መለየት ይችላሉ ። የመረጃ ጭነት ራሱ በኤስሮው መዝገብ ውስጥ አይቀመጥም። |
+|`EscrowId`|ምስጠራ ሃሽ የሚያጠቃልል በደንበኛ የተመረጠ መለያን መጠየቅ። ግልጽ እና ማንነታቸው ባልታወቁ escrows ላይ ልዩ መሆን አለበት።|
+|`AssetEscrowRecord`|ግልጽ የቁጥር ንብረት ማስያዣ ወይም የመቆለፊያ መዝገብ።|
+|`AnonymousAssetEscrowRecord`|በናሊፋየሮች፣ በክሪፕቶግራፊያዊ ኮሚትመንቶች እና በማረጋገጫ አባሪዎች የተደገፈ የተከለለ የማስያዣ መዝገብ።|
+|የማሳደጊያ መለያ|ከሰንሰለት መታወቂያ፣ የዋስትና መታወቂያ እና የንብረት ፍቺ የተገኘ ዲተርሚኒስቲክ ፕሮቶኮል መለያ።|
+|ማስረጃ ምስጠራ ሃሽዎች|ማስረጃ ምስጠራ ሃሽ ደረሰኞችን፣ ፍርዶችን፣ መልዕክቶችን፣ የማከማቻ ቴክኒካል ማኒፌስቶችን ወይም ሌሎች ከሰንሰለት ውጪ ማስረጃዎችን መለየት ይችላል። የማስረጃው ጭነት ራሱ በ escrow መዝገብ ውስጥ አይከማችም።|
 
-ግልፅ መዝገቦች ሻጩን ፣ አማራጭ ገዢን ፣ የንብረትን ትርጉም ፣ ጠቅላላ መጠን ፣ የጥበቃ ሂሳብ ፣ የሕይወት ዑደት ሁኔታ ፣ ባህሪ ዓይነት ፣ የቀረው መጠን ፣ አማራጭ የመልቀቂያ ስልጣን ፣ አማራጭ የማጠናቀቂያ ጊዜ ማህተም ፣ የምስክር ወረቀት ሃሽዎች ፣ የጊዜ ማህተሞች እና አማራጭ የውሳኔ ሃሳብ ዝርዝሮችን ይይዛሉ።
+ግልጽ መዝገቦች ሻጩን፣ አማራጭ ገዢውን፣ የንብረት ፍቺን፣ ጠቅላላ መጠን፣ የጥበቃ ሂሳብን፣ የህይወት ኡደት ሁኔታን፣ የባህሪ አይነትን፣ የቀረውን መጠን፣ አማራጭ የመልቀቂያ ፍቃድ ርእሰ መምህራን፣ አማራጭ የማብቂያ ጊዜ ማህተም፣ ማስረጃ ምስጠራ ሃሽዎችን፣ የጊዜ ማህተሞችን እና አማራጭ የመፍትሄ ዝርዝሮችን ይይዛሉ።
 
-የኤስሮው መጠኖች አዎንታዊ ቁጥራዊ የንብረት መጠን መሆን አለባቸው እና በንብረት ትርጓሜ ውስጥ ከቁጥር ዝርዝሩ ጋር ይጣጣማሉ። ኤስሮው ወይም መቆለፊያ በሚሠራበት ጊዜ አጠቃላይ የንብረት ዝውውሮች የመጠባበቂያ ሂሳቡን ሊያጠፉ አይችሉም; የመጠባበቂያው መውጫ መንገዶች ከዚህ በታች የተገለጹት ኤስሮ ISIs ናቸው ።
+የማስያዣ መጠኖች አወንታዊ የቁጥር ንብረት መጠኖች መሆን አለባቸው እና ከንብረቱ ፍቺ የቁጥር ዝርዝር መግለጫ ጋር መዛመድ አለባቸው። ማስያዣ ወይም መቆለፊያ ንቁ በሚሆንበት ጊዜ፣ አጠቃላይ የንብረት ዝውውሮች የጥበቃ ሂሳቡን ማፍሰስ አይችሉም። የጥበቃ መውጫ መንገዶች ከዚህ በታች የተገለጹት escrow ISIs ናቸው።
 
-## የገበያ ቦታ ኤስኮር {#marketplace-escrow}
+## የገበያ ቦታ Escrow {#marketplace-escrow}
 
-የገበያ ቦታ ኤስሮ በሰንሰለት ላይ ያለውን ንብረት መለቀቅ ከሰንሰለት ውጭ ካለው የክፍያ ወይም የመላኪያ ሥራ ፍሰት ጋር ያስተባብራል ።
+የገበያ ቦታ escrow በሰንሰለት ላይ ያለውን የንብረት መለቀቅ ከሰንሰለት ውጪ ክፍያ ወይም የመላኪያ የስራ ሂደት ጋር ያስተባብራል።
 
 ```mermaid
 stateDiagram-v2
@@ -43,21 +43,21 @@ stateDiagram-v2
     Disputed --> Resolved: ResolveEscrowDispute
 ```
 
-|ISI |ማን ያቀረበው ?|ውጤቱ|
+|ISI|ማን ያቀርበዋል|ውጤት|
 | --- | --- | --- |
-|`OpenAssetEscrow` |ሻጭ |የሽያጩን ቁጥራዊ ንብረት በፕሮቶኮል ጥበቃ ውስጥ ይዘጋል እናም `Open` የገበያ መዝገብ ይፈጥራል ። |
-|`AcceptAssetEscrow` |ገዢ |ገዢውን በመመዝገብ `Open` ወደ `Accepted` ይዛ ይሄዳል፤ ሻጩ የራሱን ዋስትና መቀበል አይችልም። |
-|`MarkEscrowPaymentSent` |ተቀባይነት ያለው ገዢ |`Accepted` ወደ `PaymentSent` የሚዛወረው ገዢው ከሰንሰለት ውጭ ክፍያ ከተላከ በኋላ ነው። |
-|`ReleaseAssetEscrow` |ሻጭ |`PaymentSent` ወደ `Released` የሚዛወር ሲሆን ሙሉውን የተከፈለ ገንዘብ ለገዢው ያስተላልፋል። |
-|`CancelAssetEscrow` |ሻጭ |`Open` ወይም `Accepted` ወደ `Cancelled` ይዛወራል እና ክፍያ ከመታወቁ በፊት ለሻጩ ተመላሽ ያደርጋል። |
-|`OpenEscrowDispute` |ሻጭ ወይም ተቀባይነት ያለው ገዢ |`Accepted` ወይም `PaymentSent` ወደ `Disputed` ይዛወራል እና የምስክርነት ሃሽዎችን ያክላል ። |
-|`ResolveEscrowDispute` |ከ `CanResolveEscrowDispute` ጋር ያለው ሂሳብ|`Disputed` ወደ `Resolved` ይንቀሳቀሳል እናም በገዢ እና በሽያጭ መካከል የሚከፈልበትን መጠን ይከፍላል ። |
+|`OpenAssetEscrow`|ሻጭ|የሻጩን የቁጥር ንብረት በፕሮቶኮል ጥበቃ ውስጥ ይቆልፋል እና `Open` የገበያ ቦታ መዝገብ ይፈጥራል።|
+|`AcceptAssetEscrow`|ገዢ|ገዢውን ይመዘግባል እና `Open` ወደ `Accepted` ይንቀሳቀሳል። ሻጩ የራሱን መያዣ መቀበል አይችልም።|
+|`MarkEscrowPaymentSent`|ተቀባይነት ያለው ገዢ|ገዢው ከሰንሰለት ውጪ ክፍያውን ከላከ በኋላ `Accepted` ወደ `PaymentSent` ይንቀሳቀሳል።|
+|`ReleaseAssetEscrow`|ሻጭ|`PaymentSent` ወደ `Released` ያንቀሳቅሳል እና ሙሉውን የተያዘውን መጠን ለገዢው ያስተላልፋል።|
+|`CancelAssetEscrow`|ሻጭ|`Open` ወይም `Accepted` ወደ `Cancelled` ይንቀሳቀሳል እና ክፍያ ምልክት ከመደረጉ በፊት ሻጩን ይመልሳል።|
+|`OpenEscrowDispute`|ሻጭ ወይም ተቀባይነት ያለው ገዢ|`Accepted` ወይም `PaymentSent` ወደ `Disputed` ያንቀሳቅሳል እና ማስረጃ ምስጠራ hashs ያያይዛል።|
+|`ResolveEscrowDispute`|መለያ ከ `CanResolveEscrowDispute`|`Disputed` ወደ `Resolved` ያንቀሳቅሳል እና መጠኑን በገዢ እና በሻጭ መካከል ይከፋፍላል።|
 
-የክርክር መፍቻ መጠኖች አሉታዊ ያልሆኑ መሆን አለባቸው ፣ እና `buyer_amount + seller_amount` የመጠባበቂያ መጠን ጋር እኩል መሆን አለበት ። ዜሮ ዋጋ ያላቸው እግሮች ይፈቀዳሉ ፣ ግን መላው ክፍፍል የተቆለፈውን ቀሪ ሂሳብ ማካተት አለበት።
+የክርክር አፈታት መጠኖች አሉታዊ ያልሆኑ መሆን አለባቸው፣ እና `buyer_amount + seller_amount` ከ escrow መጠን ጋር እኩል መሆን አለበት። ዜሮ ዋጋ ያላቸው የፋይናንስ ማስተላለፊያ ክፍሎች ይፈቀዳሉ፣ ነገር ግን አጠቃላይ ክፍፍሉ የተቆለፈውን ቀሪ ሂሳብ ግምት ውስጥ ማስገባት አለበት።
 
 ### Rust ምሳሌ {#rust-example}
 
-ይህ ምሳሌ የሽያጭ እና የገዢ ሂሳቦች ቀድሞውኑ መኖራቸውን ፣ የአክሲዮን ትርጉሙ በቁጥር ተመዝግቧል ፣ እናም ሻጩ በቂ ሚዛን አለው የሚል ግምት ይሰጣል ።
+ይህ ምሳሌ የሻጩ እና የገዢ መለያዎች ቀድሞውኑ እንዳሉ ይገምታል፣ የንብረቱ ፍቺ እንደ ቁጥር ተመዝግቧል፣ እና ሻጩ በቂ ቀሪ ሂሳብ አለው።
 
 ```rust
 use iroha::{
@@ -98,18 +98,18 @@ fn release_marketplace_escrow(
 }
 ```
 
-## አጠቃላይ ሀብት መቆለፊያዎች {#generic-asset-locks}
+## አጠቃላይ የንብረት መቆለፊያዎች {#generic-asset-locks}
 
-የንብረት መቆለፊያዎች ተመሳሳይ የጥበቃ መዝገብ ዓይነት ይጠቀማሉ ፣ ግን እነሱ ገዢ-ሸማች ቅናሾች አይደሉም ። ለወደፊት ሂሳብ ገንዘብን ያቆልፋሉ እና አማራጭም ገንዘብ ለመውሰድ የተለየ የመልቀቂያ ባለስልጣን ይጠይቃል።
+የንብረት መቆለፊያዎች አንድ አይነት የጥበቃ መዝገብ አይነት ይጠቀማሉ፣ ነገር ግን የገዢ-ሻጭ ቅናሾች አይደሉም። ለመድረሻ መለያ ገንዘቦችን ይቆልፋሉ እና እንደ አማራጭ ገንዘቦችን ወደ ታች ለማውጣት የተለየ የመልቀቂያ የፈቃድ ባለቤት ያስፈልጋቸዋል።
 
-|ISI |ማን ያቀረበው ?|ውጤቱ|
+|ISI|ማን ያቀርበዋል|ውጤት|
 | --- | --- | --- |
-|`OpenAssetLock` |ምንጭ መለያ |አዎንታዊ መጠን ይዘጋል ፣ መድረሻውን እንደ መዝገብ ገዢ ይመዘግባል ፣ እና ሁኔታውን ወደ `Locked` ያዘጋጃል።|
-|`DrawdownAssetLock` |የመልቀቂያ ባለሥልጣን ወይም የመድረሻ ቦታ ምንም ዓይነት የመልቀቅ ባለስልጣን ካልተቀመጠ |ቀሪውን ጥበቃ ሙሉ በሙሉ ወይም በከፊል ወደ መድረሻው ያስተላልፋል።|
-|`CancelAssetLock` |መቆለፊያ መክፈቻ |ንቁ መቆለፊያ ይሰርዛል እና ቀሪውን መጠን ለከፈቱት ይመልሳል ። |
-|`ExpireAssetLock` |ማንኛውም የግብይት ባለስልጣን ከጊዜ ገደቡ በኋላ |ያለፈውን `expires_at_ms` መዝጊያ ያበቃል እና ቀሪውን መጠን ለከፊተኛው ተመላሽ ያደርጋል። |
+|`OpenAssetLock`|የምንጭ መለያ|አወንታዊ መጠንን ይቆልፋል፣ መድረሻውን እንደ ሪከርድ ገዢ ይመዘግባል እና ሁኔታን ወደ `Locked` ያዘጋጃል።|
+|`DrawdownAssetLock`|የመልቀቂያ ፈቃድ ዋና ወይም መድረሻ ምንም የመልቀቂያ ፍቃድ ዋና ካልተዘጋጀ|የቀረውን የጥበቃ ክፍል ወይም በሙሉ ወደ መድረሻው ያስተላልፋል።|
+|`CancelAssetLock`|የመቆለፊያ መክፈቻ|ገባሪ መቆለፊያን ይሰርዛል እና የቀረውን መጠን ወደ መክፈቻው ይመልሳል።|
+|`ExpireAssetLock`|ማንኛውም የግብይት ፈቃድ ከቀነ-ገደቡ በኋላ ዋና|ከዚህ በፊት ከ `expires_at_ms` ጋር መቆለፊያ ጊዜው ያበቃል እና የቀረውን ገንዘብ ወደ መክፈቻው ይመልሳል።|
 
-`DrawdownAssetLock` መዝገቡን በ `Locked` ውስጥ ይይዛል ፣ የተወሰነ መጠን ይቀራል ። የቀረው መጠን ዜሮ ሲደርስ ፣ ሁኔታው `DrawnDown` ይሆናል እናም መዝገብ ይዘጋል።
+`DrawdownAssetLock` የተወሰነ መጠን ሲቀር መዝገቡን በ `Locked` ውስጥ ያስቀምጣል። ቀሪው መጠን ዜሮ ሲደርስ ሁኔታው `DrawnDown` ይሆናል እና መዝገቡ ይዘጋል።
 
 ```rust
 use iroha::{
@@ -174,11 +174,11 @@ fn drawdown_and_close_asset_locks(
 }
 ```
 
-Python በአሁኑ ጊዜ ለጄኔሪክ መቆለፊያዎች ከፍተኛ ደረጃ ያላቸው ረዳቶችን ያጋልጣል- `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, እና `expire_asset_lock`. ለገበያ ቦታ እና ለስም አልባ ዋስትና ከ Python, አጠቃቀም ካኖኒካል `InstructionBox` JSON በ SDK እሱ ነው JSON ማምለጫ በር, ወይም አንድ በኩል ማስገባት SDK ይህም የመጀመሪያ ደረጃ የዋስትና ገንቢዎችን ያጋልጣል.
+Python በአሁኑ ጊዜ ከፍተኛ ደረጃ ረዳቶችን ለአጠቃላይ መቆለፊያዎች ያጋልጣል `open_asset_lock`፣ `drawdown_asset_lock`፣ `cancel_asset_lock` እና `expire_asset_lock`። ለገበያ ቦታ እና ስም-አልባ ማስያዣ ከ Python፣ ነጠላ ፕሮቶኮል-ስታንዳርድ `InstructionBox` JSON በ SDK JSON የማምለጫ መፈልፈያ ይጠቀሙ ወይም አንደኛ ደረጃ escrow ግንበኞችን በሚያጋልጥ SDK በኩል ያስገቡ።
 
-## አለመግባባት {#disputes}
+## አለመግባባቶች {#disputes}
 
-የገበያ ቦታ ዋስትና `Accepted` ወይም `PaymentSent` ላይ ክርክር ማስገባት ይችላል ። ክርክሩን መክፈት የሚችለው የተመዘገበ ሻጭ ወይም ገዢ ብቻ ነው። መፍትሄው በቀጥታ ወደ ተሟጋች ሂሳብ የተሰጠው ወይም በተወሳሰበ ሚና በኩል የተወረሰው `CanResolveEscrowDispute` ይጠይቃል ።
+የገበያ ቦታ ማስያዣ ከ`Accepted` ወይም `PaymentSent` ክርክር ውስጥ ሊገባ ይችላል። አለመግባባቱን መክፈት የሚችለው የተመዘገበው ሻጭ ወይም ገዢ ብቻ ነው። መፍትሄው `CanResolveEscrowDispute`ን ይጠይቃል፣ ወይ በቀጥታ ለመፍትሔው መለያ የተሰጠ ወይም በሚና የተወረሰ።
 
 ```rust
 use iroha::{
@@ -226,21 +226,21 @@ fn resolve_disputed_escrow(
 }
 ```
 
-## አናኒም ኤስኮር {#anonymous-escrow}
+## ስም-አልባ Escrow {#anonymous-escrow}
 
-አናኒም ኤስሮው ተመሳሳይ የገበያ የሕይወት ዑደት ይጠቀማል ፣ ግን የፋይናንስ እና የመዝጊያ ንብረት እንቅስቃሴ የተጠበቀ ነው ። የህዝብ መዝገብ አሁንም ሻጩን ፣ ገዢውን ፣ ሁኔታን ፣ የምስክር ወረቀቶችን ሃሽዎችን ፣ የጊዜ ማህተሞችን እና ከመስክሮች ጋር የተገናኙትን የእንቅስቃሴ መዝገቦችን ያስቀምጣል ። በተጠበቁ ማስታወሻዎች ውስጥ ያሉ መጠኖችና ተቀባዮች በቃል ኪዳኔዎች፣ በማጣቀሻዎች እና በምስክርነት ማያዣዎች የተወከሉ ናቸው።
+ስም-አልባ escrow ተመሳሳይ የገበያ ቦታ የሕይወት ዑደት ይጠቀማል፣ ነገር ግን የገንዘብ ድጋፍ እና የመዝጊያ ንብረት እንቅስቃሴ የተጠበቀ ነው። የህዝብ መዝገብ አሁንም ሻጭ፣ ገዢ፣ ሁኔታ፣ ማስረጃ ምስጠራ ሃሽዎች፣ የጊዜ ማህተሞች እና ከማረጋገጫ ጋር የተገናኙ የእንቅስቃሴ መዝገቦች። በተከለሉ ማስታወሻዎች ውስጥ ያሉ መጠኖች እና ተቀባዮች በክሪፕቶግራፊያዊ ኮሚትመንቶች፣ ናሊፋየሮች እና በማረጋገጫ አባሪዎች ይወከላሉ።
 
-|ግልጽነት ISI |ስም አልባ ISI |
+|ግልጽ ISI|ስም የለሽ ISI|
 | --- | --- |
-|`OpenAssetEscrow` |`OpenAnonymousAssetEscrow` |
-|`AcceptAssetEscrow` |`AcceptAnonymousAssetEscrow` |
-|`MarkEscrowPaymentSent` |`MarkAnonymousEscrowPaymentSent` |
-|`ReleaseAssetEscrow` |`ReleaseAnonymousAssetEscrow` |
-|`CancelAssetEscrow` |`CancelAnonymousAssetEscrow` |
-|`OpenEscrowDispute` |`OpenAnonymousEscrowDispute` |
-|`ResolveEscrowDispute` |`ResolveAnonymousEscrowDispute` |
+|`OpenAssetEscrow`|`OpenAnonymousAssetEscrow`|
+|`AcceptAssetEscrow`|`AcceptAnonymousAssetEscrow`|
+|`MarkEscrowPaymentSent`|`MarkAnonymousEscrowPaymentSent`|
+|`ReleaseAssetEscrow`|`ReleaseAnonymousAssetEscrow`|
+|`CancelAssetEscrow`|`CancelAnonymousAssetEscrow`|
+|`OpenEscrowDispute`|`OpenAnonymousEscrowDispute`|
+|`ResolveEscrowDispute`|`ResolveAnonymousEscrowDispute`|
 
-Wallet ወይም prover መሳሪያ ማስረጃ ማያዣ እና የህዝብ ግብዓቶች መገንባት አለባቸው። መክፈቻ አንድ ኤስሮ ግዴታ ይፈጥራል ። መለቀቅ ፣ መሰረዝ እና ማንነት የጎደለው አለመግባባት መፍታት በትክክል አንድ ኤስሮም ግዴታ ማውጣት እና በድርጊቱ የሚፈለገውን ገዢ ፣ ሻጭ ወይም የተከፋፈሉ የውጤት ግዴታዎች መፍጠር አለባቸው ።
+የኪስ ቦርሳ ወይም የማረጋገጫ መሳሪያዎች የማረጋገጫ አባሪ እና የህዝብ ግብዓቶችን መገንባት አለባቸው። መክፈት አንድ የ escrow ክሪፕቶግራፊያዊ ኮሚትመንት ይፈጥራል። መልቀቅ፣ መሰረዝ፣ እና ስም-አልባ የክርክር አፈታት በትክክል አንድ የ escrow cryptographic ኮሚትመንት ማውጣት እና በድርጊቱ የሚፈለጉትን ገዢ፣ ሻጭ ወይም የተከፈለ የውጤት ክሪፕቶግራፊያዊ ኮሚትመንቶችን መፍጠር አለበት።
 
 ```rust
 use iroha::{
@@ -283,25 +283,25 @@ fn open_anonymous_escrow(
 }
 ```
 
-ስለ ዋናው የተጠበቀ የግብይት ሞዴል [Anonymous Transactions ](/am/blockchain/anonymous-transactions.md) ይመልከቱ።
+ለመሠረታዊው የተከለለ ግብይት ሞዴል [ስም-አልባ ግብይቶች](/am/blockchain/anonymous-transactions.md)ን ይመልከቱ።
 
 ## SDK አጠቃቀም {#sdk-usage}
 
-የኤስክሮው ድጋፎች በመላው ዓለም በተለያየ ሁኔታ ይገለጻሉ SDKs. Rust በካኖኒካል የተጻፈ የመረጃ ሞዴል አለው. Python በአሁኑ ጊዜ አጠቃላይ የንብረት መቆለፊያ ረዳቶችን ያጋልጣል ። JavaScript እና TypeScript አጠቃቀም Kotodama የድር አስተናጋጅ ጥሪዎችን ያስቀምጡ. Kotlin/JVM እና Swift ለገበያ ቦታ እና ስም አልባ ኤስሮው የሚሆን የተጻፈ የፍጆታ ጭነት ገንቢዎችን ያቅርቡ.
+የ Escrow ድጋፍ በ SDKs ላይ በተለየ መንገድ ተጋልጧል። Rust ነጠላ ፕሮቶኮል-መደበኛ የተተየበ የውሂብ ሞዴል አለው።. Python በአሁኑ ጊዜ አጠቃላይ የንብረት-መቆለፊያ ረዳቶችን ያጋልጣል. JavaScript እና TypeScript Kotodama escrow አስተናጋጅ-ተግባር ጥሪዎችን ይጠቀማሉ። Kotlin/JVM እና Swift ለገበያ ቦታ እና ስም-አልባ escrow የተተየቡ ጭነት ግንበኞችን ያቀርባሉ።
 
-|SDK |ይህንን ገጽ ይጠቀሙ ።|ተደራሽነት|
+|SDK|ይህን ገጽ ተጠቀም|አድማስ|
 | --- | --- | --- |
-| [Rust](#rust-sdk) |`iroha::data_model::isi::escrow` |የገበያ ቦታ ማስከበሪያ፣ አጠቃላይ መቆለፊያዎች፣ የማይታወቁ ማስከበሪያዎች፣ መጠይቆች እና ክስተቶች።|
-| [Python](#python-asset-locks) |`Instruction.open_asset_lock` ፣ `TransactionDraft.open_asset_lock`፣ እና የደንበኛ `*_and_wait` ረዳቶች |የገበያ ቦታ እና የማይታወቁ የኤስሮይ ረዳቶች ገና የመጀመሪያ ደረጃ Python ዘዴዎች አይደሉም ። |
-| [JavaScript /TypeScript ](#javascript-and-typescript-kotodama) |`compileKotodamaProgram` ከ `@iroha/iroha-js/kotodama-compiler` |Kotodama ኮንትራቶች ውስጥ የኤስኮር አስተናጋጅ ጥሪዎችን.|
-| [Kotlin /JVM ](#kotlin-and-jvm) |`InstructionTemplate` ክፍሎች በ `org.hyperledger.iroha.sdk.core.model.instructions` |የገበያ ቦታ እና የማይታወቁ የኤስሮው ብጁ መመሪያ አብነቶች።|
-| [Swift / iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders` እና `IrohaSDK.build*Escrow*` ረዳት |የገበያ ቦታ እና የማይታወቁ ኤስሮ Norito JSON መመሪያ ጥቅማጥቅሞች። |
+|[Rust](#rust-sdk)|`iroha::data_model::isi::escrow`|የገበያ ቦታ escrow፣ አጠቃላይ መቆለፊያዎች፣ ስም-አልባ escrow፣ መጠይቆች እና ክስተቶች።|
+|[Python](#python-asset-locks)|`Instruction.open_asset_lock`፣ `TransactionDraft.open_asset_lock` እና ደንበኛ `*_and_wait` ረዳቶች|አጠቃላይ የንብረት መቆለፊያዎች። የገበያ ቦታ እና ማንነታቸው ያልታወቁ የዋስትና ረዳቶች ገና አንደኛ ደረጃ Python ዘዴዎች አይደሉም።|
+|[JavaScript / TypeScript](#javascript-and-typescript-kotodama)|`compileKotodamaProgram` ከ `@iroha/iroha-js/kotodama-compiler`|በ Kotodama ኮንትራቶች ውስጥ የማስያዣ አስተናጋጅ-ተግባር ጥሪዎች።|
+|[Kotlin / JVM](#kotlin-and-jvm)|`InstructionTemplate` ክፍሎች በ `org.hyperledger.iroha.sdk.core.model.instructions`|የገበያ ቦታ እና ስም-አልባ escrow ብጁ መመሪያ አብነቶች።|
+|[Swift / iOS](#swift-and-ios)|`NativeEscrowInstructionBuilders` እና `IrohaSDK.build*Escrow*` ረዳቶች|የገበያ ቦታ እና ስም-አልባ escrow Norito JSON የመመሪያ ጭነቶች።|
 
-ከዚህ በታች የተጠቀሱት ምሳሌዎች በትምህርቶች ግንባታ ላይ ያተኩራሉ ። የሂሳብ ፋይናንስ ፣ ፊርማ አስተዳደር እና የግብይት አቅርቦት ለእያንዳንዱ SDK መደበኛ ፍሰት ይከተላሉ ።
+ከዚህ በታች ያሉት ምሳሌዎች በመመሪያ ግንባታ ላይ ያተኩራሉ. የመለያ የገንዘብ ድጋፍ፣ የፊርማ አስተዳደር እና የግብይት ማስረከብ ለእያንዳንዱ SDK መደበኛውን ፍሰት ይከተላሉ።
 
 ### Rust SDK {#rust-sdk}
 
-ሙሉ ተወላጅ ሽፋን ወይም ጥያቄ / ክስተት ድጋፍ በሚፈልጉበት ጊዜ Rust SDK ን ይጠቀሙ። ከላይ ያሉት ምሳሌዎች የገበያ ልቀት ፣ አጠቃላይ መቆለፊያ ማውጣት ፣ አለመግባባት መፍታት እና የማይታወቁ የኤስኮር ግንባታ ከ `iroha::data_model::isi::escrow` ጋር ያሳያሉ።
+ሙሉ ቤተኛ ሽፋን ወይም የጥያቄ/የክስተት ድጋፍ ሲፈልጉ Rust SDK ን ይጠቀሙ። ከላይ ያሉት ምሳሌዎች የገበያ ቦታ መለቀቅ፣ አጠቃላይ የመቆለፊያ መውደቅ፣ የክርክር አፈታት እና ስም-አልባ የዋስትና ግንባታ ከ`iroha::data_model::isi::escrow` ጋር ያሳያሉ።
 
 ```rust
 use iroha::{
@@ -328,7 +328,7 @@ fn open_and_read(
 
 ### Python የንብረት መቆለፊያዎች {#python-asset-locks}
 
-Python SDK ለጄኔሪክ ሀብት መቆለፊያዎች የመጀመሪያ ደረጃ ረዳቶችን ያጋልጣል ። እነሱን ለመድረክ ክፍያዎች ፣ በመልቀቂያ ባለሥልጣን የሚወሰዱትን ገንዘብ ማውጣት ፣ በከፊተኛው የተሰረዙትን እና የማጠናቀቂያ ጊዜ ተመላሽ ገንዘብ ለማግኘት ይጠቀሙባቸው።
+Python SDK ለአጠቃላይ የንብረት መቆለፊያዎች አንደኛ ደረጃ ረዳቶችን ይሰጣል። ለወሳኝ ክፍያዎች፣ ለመልቀቂያ የፈቃድ ባለቤት ውድቀቶች፣ በመክፈቻው መሰረዝ እና ጊዜው ያለፈበት ተመላሽ ገንዘብ ይጠቀሙባቸው።
 
 ```python
 client.open_asset_lock_and_wait(
@@ -359,13 +359,13 @@ client.expire_asset_lock_and_wait(
 )
 ```
 
-ለሁለት ወገን መቆለፊያ `release_authority` ያስወግዱ፤ ከዚያም የመድረሻ ሂሳብ `drawdown_asset_lock` ማቅረብ ይችላል።
+ለሁለት ወገን መቆለፊያ `release_authority`ን ይተዉት; የመድረሻ መለያው `drawdown_asset_lock` ማስገባት ይችላል።
 
 ### JavaScript እና TypeScript Kotodama {#javascript-and-typescript-kotodama}
 
-JavaScript SDK በአሁኑ ጊዜ ቀጥተኛ ተወላጅ የኤስሮው ግብይት ገንቢዎችን አያጋልጥም ። Kotodama ኮንትራቶችን የሚያሰማሩ ለ JavaScript ወይም TypeScript መተግበሪያዎች ፣ በ Kotodama ማጠናከሪያ አማካኝነት ኤስሮው አስተናጋጅ ጥሪዎችን ያዘጋጁ።
+የ JavaScript SDK በአሁኑ ጊዜ ቀጥተኛ ቤተኛ escrow ግብይት ገንቢዎችን አያጋልጥም። ለ JavaScript ወይም TypeScript የሚያሰማሩ መተግበሪያዎች Kotodama ኮንትራቶች፣ የ ESCROW አስተናጋጅ-ተግባር ጥሪዎችን ከ ጋር ያጠናቅቁ Kotodama አቀናባሪ።
 
-የአገር ውስጥ ኤስኮር አስተናጋጅ ጥሪዎች ግልፅ የመዳረሻ ፍንጮችን ይጠይቃሉ ምክንያቱም ተሰብሳቢው ለማይታዩ ኤስኮሮች ISIs ጠባብ መዳረሻ ስብስቦችን ማመንጨት አይችልም ። ወደ ውጭ በሚላኩ መግቢያ ነጥቦች ላይ `escrow_*` ገንብሮችን የሚጠሩ የዊልድ ካርድ ፍንጮቶችን ይጠቀሙ።
+ቤተኛ የማስያዣ አስተናጋጅ-ተግባር ጥሪዎች ግልጽ የመዳረሻ ፍንጮችን ይፈልጋሉ ምክንያቱም አቀናባሪው ግልጽ ያልሆነ escrow ISIs ጠባብ የመዳረሻ ስብስቦችን ማግኘት አይችልም። ቴክኒካል ጥሪ `escrow_*` አብሮገነብ በሚላኩ የመግቢያ ነጥቦች ላይ የዱር ካርድ ፍንጮችን ይጠቀሙ።
 
 ```js
 import { compileKotodamaProgram } from "@iroha/iroha-js/kotodama-compiler";
@@ -397,11 +397,11 @@ if (compiled.diagnostics.length > 0) {
 }
 ```
 
-ለክርክር አጠቃቀም `escrow_open_dispute(offer, evidence)` እና `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`. የማይታወቁ ኤስሮው አስተናጋጅ ጥሪዎችን ይቀበላሉ Norito ለምሳሌ የፍጆታ ጭነት ባይቶችን ይጠይቁ `anonymous_escrow_open_offer(request)`.
+ለአለመግባባቶች፣ `escrow_open_dispute(offer, evidence)` እና `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)` ይጠቀሙ። ስም-አልባ የማስያዣ አስተናጋጅ-ተግባር ጥሪዎች Norito የጭነት ባይት ጥያቄን ይቀበላሉ፣ ለምሳሌ `anonymous_escrow_open_offer(request)`።
 
 ### Kotlin እና JVM {#kotlin-and-jvm}
 
-የ Kotlin/JVM SDK ሞዴሎች ተወላጅ ማስከበሪያ እንደ ብጁ መመሪያ አብነቶች. እያንዳንዱ አብነት የሚፈለገውን መስኮች ያረጋግጣል እና የግብይት ገንቢ ጥቅም ላይ የዋለውን የካኖኒካል የአርግመንት ካርታ ያሳያል.
+የ Kotlin/JVM SDK ቤተኛ escrow እንደ ብጁ መመሪያ አብነቶች ሞዴሎች። እያንዳንዱ አብነት የሚፈለጉትን መስኮች ያረጋግጣል እና በግብይት ገንቢው ጥቅም ላይ የሚውለውን ነጠላ ፕሮቶኮል-መደበኛ የክርክር ካርታ ያጋልጣል።
 
 ```kotlin
 import org.hyperledger.iroha.sdk.core.model.escrow.NativeEscrowPermissions
@@ -431,11 +431,11 @@ println(open.arguments)
 println(NativeEscrowPermissions.CAN_RESOLVE_ESCROW_DISPUTE)
 ```
 
-የማይታወቁ አብነቶች እንደ `OpenAnonymousAssetEscrowInstruction`, `AcceptAnonymousAssetEscrowInstruction`, `MarkAnonymousEscrowPaymentSentInstruction`, `ReleaseAnonymousAssetEscrowInstruction`, `CancelAnonymousAssetEscrowInstruction`, `OpenAnonymousEscrowDisputeInstruction`, እና `ResolveAnonymousEscrowDisputeInstruction`. Android የጃቫ ጥሪዎችን ማመሳሰል መጠቀም ይችላሉ `NativeEscrowInstructions.*` የግንባታ ከ Android የጥንት ዕቃ።
+ማንነታቸው ያልታወቁ አብነቶች እንደ `OpenAnonymousAssetEscrowInstruction`፣ `AcceptAnonymousAssetEscrowInstruction`፣ `MarkAnonymousEscrowPaymentSentInstruction`፣ `ReleaseAnonymousAssetEscrowInstruction`፣ `CancelAnonymousAssetEscrowInstruction`፣ `OpenAnonymousEscrowDisputeInstruction` እና `ResolveAnonymousEscrowDisputeInstruction` ይገኛሉ። Android ጃቫ ደንበኞችን የሚጠይቁ ተጓዳኝ `NativeEscrowInstructions.*` ግንበኞችን ከ Android አርቲፋክት መጠቀም ይችላሉ።
 
 ### Swift እና iOS {#swift-and-ios}
 
-የ Swift SDK የኤስኮር መመሪያዎችን እንደ Norito JSON አጠቃቀም `NativeEscrowInstructionBuilders` በቀጥታ፣ ወይም ተመጣጣኝ ጥሪ `IrohaSDK.build*Escrow*` የእርስዎ መተግበሪያ ቀድሞውኑ አንድ ይዟል ጊዜ ረዳት `IrohaSDK` ምሳሌ።
+የ Swift SDK የዋስትና መመሪያዎችን እንደ Norito JSON ጭነቶች ይገነባል። `NativeEscrowInstructionBuilders`ን በቀጥታ ይጠቀሙ ወይም መተግበሪያዎ አስቀድሞ የ`IrohaSDK` ምሳሌ ሲይዝ ተመጣጣኝ `IrohaSDK.build*Escrow*` ረዳት ይጥራ።
 
 ```swift
 import IrohaSwift
@@ -463,27 +463,27 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 )
 ```
 
-የማይታወቁ Swift ገንቢዎች የማጣቀሻ ዝርዝሮችን ፣ የውጤት ግዴታ ዝርዝሮችን፣ የማረጋገጫ መዝገበ ቃላት እና አማራጭ `rootHint` እሴቶችን ይወስዳሉ። የግጭት መፍቻ ፈቃድ ምልክት እንደ `NativeEscrowPermissions.canResolveEscrowDispute` ይገኛል ።
+ስም-አልባ Swift ግንበኞች የዋጋ ዝርዝሮችን፣ የውጤት ክሪፕቶግራፊያዊ ኮሚትመንት ዝርዝሮችን፣ የማረጋገጫ መዝገበ ቃላትን እና አማራጭ `rootHint` እሴቶችን ይወስዳሉ። የክርክር ፈቺ ፍቃድ ቶከን እንደ `NativeEscrowPermissions.canResolveEscrowDispute` ይገኛል።
 
-## ጥያቄዎችና ክስተቶች {#queries-and-events}
+## ጥያቄዎች እና ኩነቶች {#queries-and-events}
 
-የደረጃ ገጾችን፣ የማመቻቸት ስራዎችን እና የመደገፍ መሳሪያዎችን ለማግኘት የኤስሮው ጥያቄዎችን ይጠቀሙ:
+ለሁኔታ ገፆች፣ የማስታረቅ ስራዎች እና የድጋፍ መሳሪያዎች የዋስትና መጠይቆችን ይጠቀሙ -
 
-|ጥያቄ |ዓላማ|
+|መጠይቅ|ዓላማ|
 | --- | --- |
-|`FindAssetEscrowById` |`EscrowId` ላይ አንድ ግልፅ ዋስትና ወይም መቆለፊያ ያንብቡ. |
-|`FindAssetEscrows` |ግልፅ የሆነ የዋስትና እና የመቆለፊያ መዝገቦችን ጻፍ። |
-|`FindAssetEscrowsBySeller` |አንድ ሻጭ ወይም መቆለፊያ መክፈቻ በመክፈት የተከፈቱ መዝገቦችን ይዘርዝሩ።|
-|`FindAssetEscrowsByBuyer` |በገዢ ተቀባይነት ያላቸውን የገበያ ማስከበሪያዎችን ወይም ወደ መድረሻ የሚመሩ መዝጊያዎችን ይዘርዝሩ። |
-|`FindAssetEscrowsByStatus` |የዝርዝር መዝገቦች በ `AssetEscrowStatus`። |
-|`FindAnonymousAssetEscrowById` |በ `EscrowId` በኩል አንድ ስም አልባ ዋስትና ያንብቡ.|
-|`FindAnonymousAssetEscrows*` |ሁሉንም መዝገቦች፣ ሻጭ፣ ገዢ ወይም ሁኔታ መሠረት ስም አልባ አስከሬኖችን ጻፍ። |
+|`FindAssetEscrowById`|አንድ ግልጽ escrow ወይም መቆለፊያ በ`EscrowId` ያንብቡ።|
+|`FindAssetEscrows`|ግልጽ የ ማስያዣ እና የመቆለፊያ መዝገቦችን ይዘርዝሩ።|
+|`FindAssetEscrowsBySeller`|በሻጭ ወይም በመቆለፊያ መክፈቻ የተከፈቱ መዝገቦችን ይዘርዝሩ።|
+|`FindAssetEscrowsByBuyer`|በገዢ ተቀባይነት ያላቸውን የገበያ ቦታ ማስያዣዎች ወይም መድረሻን ያነጣጠሩ መቆለፊያዎችን ይዘርዝሩ።|
+|`FindAssetEscrowsByStatus`|መዝገቦችን በ `AssetEscrowStatus` ይዘርዝሩ።|
+|`FindAnonymousAssetEscrowById`|አንድ ማንነቱ ያልታወቀ ማስያዣ በ`EscrowId` ያንብቡ።|
+|`FindAnonymousAssetEscrows*`|በሁሉም መዝገቦች፣ ሻጭ፣ ገዢ ወይም ሁኔታ ማንነታቸው ያልታወቁ escrows ይዘርዝሩ።|
 
-`EscrowEventFilter` ለግልፅ ተወላጅ ኤስኮር እና በኤስኮር ዝግጅቶች መመዝገብ ይችላሉ ID, ሻጭ፣ ገዢ፣ ሁኔታ እና ክስተት ስብስብ ጭምብል። `Opened`, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed`, እና `Resolved`. የማይታወቁ የኤስኮር መዝገቦች በማይታወቁ ኤስኮር መጠይቆች በኩል ይመረመራሉ ።
+`EscrowEventFilter` ለግልጽ ቤተኛ ማስያዣ መመዝገብ እና ክስተቶችን በ escrow መታወቂያ፣ ሻጭ፣ ገዢ፣ ሁኔታ እና በክስተት ስብስብ ጭንብል መመዝገብ ይችላል። የክስተቱ ቤተሰብ `Opened`ን ያካትታል። `Accepted`፣ `PaymentSent`፣ `Released`፣ `Cancelled`፣ `Expired`፣ `Disputed` እና `Resolved`። ማንነታቸው ያልታወቁ የ escrow መዝገቦች በማይታወቁ የ escrow መጠይቆች በኩል ይመረመራሉ።
 
-## የስራ ማስታወሻዎች {#operational-notes}
+## የአሠራር ማስታወሻዎች {#operational-notes}
 
-- ትላልቅ ደረሰኞችን፣ የውይይት መዝገቦችን፣ የፍርድ ውሳኔዎችን ወይም የኦዲት ጥቅሎችን ከኤስሮው መዝገብ ውጭ ያስቀምጡ እና እንደ ማስረጃ የእነሱን ሃሽዎች ያያይዙ።
-- በተግባሮች ውስጥ የተረጋጋ `EscrowId` ማመንጨት ይጠቀሙ ስለዚህ በድጋሚ ሙከራዎች ለተመሳሳይ አቅርቦት ሁለት እጥፍ ዋስትናዎችን መፍጠር አይችሉም።
-- `CanResolveEscrowDispute` የክርክር ሂደቱን ለሚያስተዳድሩ አካውንቶች ወይም ሚናዎች ብቻ የሚሰጥ ነው።
-- ከሰንሰለት ውጭ የክፍያ ማረጋገጫ እንደ መተግበሪያ ፖሊሲ ይይዛል። Iroha የጥበቃ እና የሕይወት ዑደት ሽግግሮችን ይመዘግባል; በራሱ የፊያት ወይም የውጭ ክፍያ መስመርን አያረጋግጥም.
+- ትላልቅ ደረሰኞችን፣ የውይይት ምዝግብ ማስታወሻዎችን፣ ፍርዶችን ወይም የኦዲት ጥቅሎችን ከ escrow መዝገብ ውጭ ያከማቹ እና ምስጠራ ሃሽዎቻቸውን እንደ ማስረጃ ያያይዙ።
+- በመተግበሪያዎች ውስጥ የተረጋጋ `EscrowId` አመጣጥን ይጠቀሙ ስለዚህ ድጋሚ ሙከራዎች ለተመሳሳይ አቅርቦት የተባዙ escrows መፍጠር አይችሉም።
+- `CanResolveEscrowDispute` የክርክር ሂደቱን ለሚያካሂዱ መለያዎች ወይም ሚናዎች ብቻ ይስጡ።
+- ከሰንሰለት ውጪ የክፍያ ማረጋገጫን እንደ ማመልከቻ ፖሊሲ ይያዙ። Iroha የጥበቃ እና የህይወት ኡደት ሽግግሮችን ይመዘግባል; የ fiat ወይም የውጭ ክፍያ ሀዲዶችን በራሱ አያረጋግጥም።

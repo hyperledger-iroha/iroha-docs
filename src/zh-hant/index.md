@@ -9,11 +9,11 @@ layout: home
 
 hero:
   name: Hyperledger Iroha 3
-  text: "文件"
-  tagline: "對 SORA Nexus, SDKs 和運營商工作流程的確定性區塊鏈平臺"
+  text: "說明文件"
+  tagline: "面向 SORA Nexus、SDKs 與營運方工作流程的確定性區塊鏈平台"
   image:
     src: /icon.svg
-    alt: "Hyperledger Iroha 3號標誌"
+    alt: "Hyperledger Iroha 3 標誌"
   #actions:
   #- theme: alt
   #  text: View on GitHub
@@ -21,53 +21,53 @@ hero:
 
 nexusPortal:
   eyebrow: SORA Nexus
-  title: "建立在 Iroha 3 / SORA Nexus 上"
-  details: "開始使用 Taira 測試網絡,瞭解當前的交易流量,並使用專注的食譜來構建準備生產的應用程序."
+  title: "以 Iroha 3 / SORA Nexus 建置"
+  details: "從 Taira 測試網路開始，了解目前的交易流程，並透過聚焦的操作手冊建置可投入正式環境的應用程式。"
   primaryAction:
-    text: "在 Taira 開始"
+    text: "開始使用 Taira"
     link: /zh-hant/get-started/sora-nexus-dataspaces
   secondaryAction:
-    text: "瀏覽廚師書"
+    text: "瀏覽操作手冊"
     link: /zh-hant/cookbook/
   recipes:
-    title: "熱門的食譜"
+    title: "熱門操作指南"
     items:
       - title: "提交和驗證交易"
         link: /zh-hant/cookbook/submit-and-verify-transactions
-      - title: "移動可的資產"
+      - title: "移轉同質化資產"
         link: /zh-hant/cookbook/fungible-assets
-      - title: "查詢賬本狀態"
+      - title: "查詢帳本狀態"
         link: /zh-hant/cookbook/query-ledger-state
-      - title: "流動事件"
+      - title: "串流事件"
         link: /zh-hant/cookbook/stream-events
 
 features:
   - icon:
       dark: /start.svg
       light: /start-light.svg
-    title: "開始"
-    details: "建立當前的工作空間,啓動本地網絡,並開始使用 Iroha 3 CLI"
+    title: "快速開始"
+    details: "建置目前的工作區、啟動本機網路，並開始使用 Iroha 3 CLI"
     link: /zh-hant/get-started/
   - icon:
       dark: /build.svg
       light: /build-light.svg
     title: "指南"
-    details: "找到 SDKs,最佳實踐,配置,安全和操作員工作流程"
+    details: "查閱 SDKs、最佳實務、設定、安全性和營運方工作流程"
     link: /zh-hant/guide/
   - icon:
       dark: /explained.svg
       light: /explained-light.svg
-    title: "建築"
-    details: "瞭解 Torii,Sumeragi, Norito, IVM 和 Nexus 的數據空間模型"
+    title: "架構"
+    details: "了解 Torii、Sumeragi、Norito、IVM 與 Nexus 的資料空間模型"
     link: /zh-hant/blockchain/iroha-explained
   - icon:
       dark: /reference.svg
       light: /reference-light.svg
     title: "參考"
-    details: "查看當前的二進制,基因, Torii,和兼容性參考頁面"
+    details: "查看目前的二進位檔、創世設定、Torii 與相容性參考頁面"
     link: /zh-hant/reference/
 footer: true
 ---
 
 <hr style="margin-top: 3rem;">
-<p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha 是 <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a>的一部分. 更多信息請訪問 <a href="https://iroha.tech/" target="_blank">iroha.tech</a>.</p>
+<p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha 是 <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a> 的一部分。更多資訊請造訪 <a href="https://iroha.tech/" target="_blank">iroha.tech</a>。</p>

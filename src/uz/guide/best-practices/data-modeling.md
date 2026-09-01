@@ -3,51 +3,51 @@ translation_locale: uz
 translation_source: /guide/best-practices/data-modeling.md
 translation_source_hash: 423f8c17d5d7072d1733ccac2337d70243f6e725f7786e9f2fc7052b0dc7444d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Ma'lumotlar modeli {#data-modeling}
+# Ma'lumotlarni modellashtirish {#data-modeling}
 
-Ledger ma'lumotlari mulkdorlik, o'tkazish xatti-harakatlari, ruxsat cheklovlari va so'rovlar uslublariga asoslangan bo'lishi kerak. Auditing va deterministik ijroni qo'llab-quvvatlaydigan eng kichik zanjirdagi ifoda tanlang.
+reyestr ma'lumotlari egalik, uzatish xatti-harakati, ruxsat chegaralari va so'rov naqshlari atrofida modellanishi kerak. Audit qilish va deterministik bajarilishni qo'llab-quvvatlay oladigan eng kichik on-chain ifodani tanlang.
 
-## Domenlar va hisob raqamlari {#domains-and-accounts}
+## Domenlar va Hisoblar {#domains-and-accounts}
 
 - Ma'muriy va siyosat chegaralarini ifodalash uchun domenlardan foydalaning. Domen nomlarini barqaror saqlang, chunki ular hisob va aktiv identifikatorlarida paydo bo'ladi.
-- Birgina hisobda bog'liq bo'lmagan mas'uliyatlarni ortiqcha yuklashdan qoching. Foydalanuvchilar, xizmatlar, triggerlar, operatorlar va to'lov sponsorlari uchun alohida hisoblardan foydalaning.
-- Konfiguratsiya va sinovlarda kanonik hisob va domen identifikatorlaridan foydalaning. Iroha nomlari kanonik tahlildan so'ng holatga mos keladi.
-- Sinov va ishlab chiqarish identifikatsiyalarini ismlar, domenlar va konfiguratsiya fayl yo'nalishlari bo'yicha ko'rinishda alohida saqlang.
+- Bitta hisobni aloqasiz vazifalar bilan ortiqcha yuklamang. Foydalanuvchilar, xizmatlar, triggerlar, operatorlar va to‘lov homiylari uchun alohida hisoblardan foydalaning.
+- Konfiguratsiya va testlarda kanonik hisob va domen identifikatorlaridan foydalaning. Kanonik tahlildan keyin Iroha nomlari katta-kichik harflarga sezgirdir.
+- Test va ishlab chiqarish identifikatorlarini nomlarda, domenlarda va konfiguratsiya fayllari yo‘llarida ko‘rinadigan darajada farq qiladigan qilib saqlang.
 
-Qarang [Domainlar](/uz/blockchain/domains.md), [Hisobotlar](/uz/blockchain/accounts.md) va [Name](/uz/reference/naming.md).
+Qarang [Domenlar](/uz/blockchain/domains.md), [Hisoblar](/uz/blockchain/accounts.md), va [Ismlash](/uz/reference/naming.md).
 
-## Moddiy mablag'lar va NFTs {#assets-and-nfts}
+## Aktivlar va NFTs {#assets-and-nfts}
 
-- Fungible balanslar va o'tkazilishi mumkin bo'lgan miqdorlar uchun raqamli aktivlardan foydalaning.
-- Yolg'iz egalikdagi yozuvlar uchun NFTs yoki domenga oid ob'ektlardan foydalaning.
-- Faqat metadatalarda qiymatga ega bo'lgan holatni kodlashdan qoching. Assetlar va NFTs o'zlarining hayot davrida sodir bo'ladigan voqealarni, semantikani o'tkazishni va metadatalarga tegishli bo'lmagan ruxsatnomalarni tekshiradi.
-- Aktivni ilovalarga qo'yishdan oldin aniqlik, ta'minot siyosati, emitentning javobgarligi va yoqish/quruvchi organlarini belgilash.
+- Oʻzgartirilishi mumkin boʻlgan balanslar va uzatiladigan miqdorlar uchun raqamli aktivlardan foydalaning.
+- Yagona egalik hujjatlari uchun NFTs yoki soha-specific obyektlardan foydalaning.
+- Qiymatga ega bo‘lgan holatni faqat metadata ichida kodlamaslik kerak. Resurslar va NFTs metadata qilmaydigan hayot davri voqealarini, uzatish semantikasini va ruxsat tekshiruvlarini taqdim etadi.
+- Aktivni ilovalarga taqdim etishdan oldin aniqlik, ta’minot siyosati, chiqaruvchi mas’uliyati va kuyirish/mintlash vakolatlari prinsipi bilan tanishtiring.
 
-Koʻring [Moddiy aktivlar](/uz/blockchain/assets.md), [NFTs](/uz/blockchain/nfts.md), va [RWAs](/uz/blockchain/rwas.md).
+Qarang [Aktivlar](/uz/blockchain/assets.md), [NFTs](/uz/blockchain/nfts.md), va [RWAs](/uz/blockchain/rwas.md).
 
-## Metadatalar {#metadata}
+## Metama'lumot {#metadata}
 
-- Katalog ob'ektlarining kompakt atributlari uchun metadatalardan foydalanish, masalan, etiketlar, integratsiya IDs, siyosat bayroqlari, hashlar, URIs yoki tarkibga doir ma'lumotlarga murojaat qilish.
-- Metadata kalitlarini barqaror va hujjatli saqlang. Mijozlarga bog'liq bo'lganidan keyin kalit nomini o'zgartirish migratsiya muammosi yaratadi.
-- Katta hujjatlarni, loglarni, xususiy foydalanuvchi ma'lumotlarini yoki yuqori churnli ilovalar holatini to'g'ridan-to'g'ri metadatalarga saqlamang.
-- Metama'lumotlar zanjirdan tashqari ma'lumotlarga ishora qilganda, tarkib hash, URI, SoraFS yo'li, manifest referensiya yoki kompakt majburiyat kabi tekshirish mumkin bo'lgan ma'lumotni saqlang.
+- Blokcheyn ledjer obyektlarining ixcham atributlari uchun metadata-dan foydalaning, masalan, yorliqlar, integratsiya IDlari, siyosat bayroqlari, kriptografik xeshlar, URIs yoki kontentga yo'naltirilgan havolalar.
+- Metama'lumotlar kalitlarini barqaror va hujjatlangan holda saqlang. Mijozlar ularga tayanib qolganidan keyin kalit nomlarini o'zgartirish migratsiya muammosini yaratadi.
+- Katta hujjatlarni, jurnal yozuvlarini, foydalanuvchining shaxsiy ma’lumotlarini yoki tez-tez o‘zgaradigan ilova holatini metama’lumotlarga to‘g‘ridan-to‘g‘ri saqlamang.
+- Metadata off-chain ma'lumotlarga ishora qilganda, tasdiqlanishi mumkin bo'lgan havolani saqlang, masalan, kontentning kriptografik xashi, URI, SoraFS yo'li, manifestga havola yoki kompakt kriptografik majburiyat qiymati.
 
-[Metadata va Ledger saqlash variantlarini](/uz/guide/configure/metadata-and-store-assets.md) va [Metadatalarni](/uz/blockchain/metadata.md) ko'ring.
+Buni [Metama'lumotlar va reyestrni saqlash tanlovlari](/uz/guide/configure/metadata-and-store-assets.md) va [Metama'lumot](/uz/blockchain/metadata.md) ko‘ring.
 
-## Model bo'yicha ruxsatnomalar {#permissions-by-model}
+## Model bo‘yicha ruxsatlar {#permissions-by-model}
 
-- Amalga oshirish qulayliklari bilan emas, balki biznes operatsiyalari bilan bog'liq dizayn vazifalari. O'yin yoki xizmat nomidan nomlangan vazifa keng texnik qobiliyat nomidan nomlanadigan lavozimdan ko'ra audit qilish osonroqdir.
-- Ish oqimini qondiradigan eng kichik ob'ektga ruxsatnoma belgisini ko'rsatish.
-- Mining, yonish, tengdoshlarni boshqarish, ijrochi o'zgarishlari, qo'zg'atuvchilarni boshqarish va metadata mutatsiyasi uchun ruxsatnomalarni yuqori ta'sirli ruxsatnomalar sifatida qabul qiling.
-- Vaqtinchalik ruxsatnomalar uchun aniq bekor qilish va aylanish tartib-taomillarini qo'shing.
+- Rollarni biznes operatsiyalari atrofida shakllantiring, amalga oshirish qulayliklari atrofida emas. Bir ish yoki xizmat nomi bilan atalgan rol keng texnik imkoniyat nomi bilan atalgan roldan ko'ra osonroq tekshiriladi.
+- Ruxsat tokenlarini ish jarayonini qondiradigan eng kichik obyektga cheklang.
+- Berish, yo‘q qilish, tarmoq tengdoshlarini boshqarish, ijrochi o‘zgarishlari, triggerlarni boshqarish va metadata o‘zgartirish ruxsatlarini yuqori ta’sirga ega ruxsatlar sifatida ko‘ring.
+- Vaqtinchalik ruxsatlar uchun aniq bekor qilish va aylantirish protseduralarini qo'shing.
 
-Qarang [Izohlar](/uz/blockchain/permissions.md) va [Izoh tokenlari](/uz/reference/permissions.md).
+Buni [Ruxsatlar](/uz/blockchain/permissions.md) va [Ruxsat tokenlari](/uz/reference/permissions.md) ko‘ring.
 
-## Soʻrov shakli {#query-shape}
+## So‘rov shakli {#query-shape}
 
-- Ilova ko'pincha kerak bo'lgan so'rovlarni qo'llab-quvvatlaydigan identifikatorlar va metadata kalitlarini tanlang.
-- Katta natijalar to'plamini sahifalashtiring va odatdagi harakatlar uchun cheklanmagan kitob bo'ylab skanerlarni talab qiladigan foydalanuvchi interfeyslaridan qoching.
-- Xatcho'pdan tashqaridagi indekslarni katta ma'lumotlar va hodisalardan qayta tiklanishi mumkin bo'lgan holda saqlang, ular kritik dastur xatti-harakati uchun ishlatiladi.
+- Ilovangiz eng ko‘p ehtiyoj sezadigan so‘rovlarni qo‘llab-quvvatlaydigan identifikatorlar va metadata kalitlarini tanlang.
+- Keng natija toʻplamlarini sahifalash va oddiy harakatlar uchun butun reyestrni cheklovsiz skanerlashni talab qiladigan foydalanuvchi interfeyslaridan qoching.
+- Muhim dastur xatti-harakatlari uchun ishlatilganda, reyestrdagi ma’lumotlar va hodisalardan tashqari indekslarni qayta tiklanadigan holatda saqlamang.

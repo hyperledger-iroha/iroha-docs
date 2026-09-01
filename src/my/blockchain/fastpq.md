@@ -1,20 +1,20 @@
 ---
 translation_locale: my
 translation_source: /blockchain/fastpq.md
-translation_source_hash: f1dc55e4b2146de009203e19adb5cc1e9ce5302bc0ee27fe0b442693c5112c22
+translation_source_hash: d8dd61390f5df3dae09b70399e04e8f71716a912ef5dea9010feaf60573ed261
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # FastPQ {#fastpq}
 
-FastPQ သည် Iroha ၏ ရွေးချယ်သော အကောင်အထည်ဖော်မှု သက်ရောက်မှုများအတွက် STARK သက်သေခံလမ်းကြောင်းဖြစ်သည်။ ၎င်းသည် ပုံမှန်ဆောင်ရွက်မှု အကောင်အ ထည်ဖော်ခြင်း သို့မဟုတ် သဘောတူညီမှုကို အစားထိုးခြင်းမရှိပါ။ ငွေကြေးလုပ်ငန်းများသည် အစဉ်အလာအတိုင်း ISI, IVM နှင့် Sumeragi တို့မှတစ်ဆင့် ဆက်လက်လုပ်ဆောင်နေဆဲဖြစ်ပါသည်။ FastPQ က deterministic execution witness ကို စားသုံးပြီး supported effects တွေကို proof batches အဖြစ် ပြောင်းပေးပါတယ်။
+FastPQ သည် Iroha ၏ ရွေးချယ်သော အကောင်အထည်ဖော်မှု သက်ရောက်မှုများအတွက် STARK သက်သေခံလမ်းကြောင်းဖြစ်သည်။ ၎င်းသည် ပုံမှန် ငွေကြေးဆောင်ရွက်မှု သို့မဟုတ် သဘောတူညီချက်ကို အစားထိုးခြင်းမဟုတ်ပါ။ ငွေကြေးဆက်သွယ်မှုများ ISI, IVM နဲ့ Sumeragi တို့ကို ပုံမှန်အတိုင်း ဖြတ်သန်းပါ။ FastPQ က deterministic execution witness ကို စားသုံးပြီး supported effects တွေကို proof batches အဖြစ် ပြောင်းပါတယ်။
 
 လက်ရှိ host integration မှာ အဓိကလမ်းကြောင်း သုံးခုရှိပါတယ်။
 
 - ဘလော့ချ် အကောင်အထည်ဖော်မှုအတွင်း မှတ်တမ်းတင်ထားသော ပမာဏအရ အရင်းအမြစ် လွှဲပြောင်းမှုများ
-- Nexus verified lane relays whose AXT proof envelope carries a binding FastPQ
-- SCCP ပွင့်လင်းတဲ့ စစ်ဆေးမှုအဖုံးတစ်ခုမှာ FastPQ အထောက်အထားကို ဖုံးအုပ်ထားတဲ့ ပွင့်လင်းမြင်သာတဲ့ သတင်းအချက်အလက် သက်သေခံ အကူများ
+- Nexus verified execution lane relays whose AXT proof data container carries a FastPQ binding
+- SCCP ပွင့်လင်းတဲ့ စစ်ဆေးမှု ဒေတာအိုးထဲမှာ FastPQ အထောက်အထားကို ထုပ်ပိုးထားတဲ့ သတင်းအချက်အလက် သက်သေခံ အကူများ။
 
 ## သက်သေခံလမ်းကို လွှဲပြောင်းခြင်း {#transfer-witness-path}
 
@@ -22,20 +22,20 @@ FastPQ သည် Iroha ၏ ရွေးချယ်သော အကောင်�
 
 - အရင်းအမြစ်စာရင်း၊ ရည်ရွယ်ချက်စာရင်း၊ ပိုင်ဆိုင်မှု သတ်မှတ်ချက်နှင့် ပမာဏ
 - လွှဲပြောင်းခြင်းမတိုင်မီနှင့် နောက်ပိုင်းတွင် ပေးပို့သူနှင့် လက်ခံသူ၏ ငွေကြေးညီမျှမှု
-- အစုလိုက်အပြုံလိုက် hash အဖြစ် အသုံးပြုသော transaction entry point hash
-- တင်ပြသည့်စာရင်းမှ ရယူထားသော အာဏာပိုင် စာရင်း
-- Single-delta transcripts အတွက် Poseidon digest တစ်ခုပါ။
+- အစုလိုက်အပြုံလိုက် cryptographic hash အဖြစ် အသုံးပြုသော transaction entry point cryptographic Hash ကို
+- ခွင့်ပြုချက်ထုတ်လွှင့်သူစာရင်းမှ ရယူထားသော အဓိက cryptographic digest တန်ဖိုး
+- Single-delta transcripts တွေအတွက် Poseidon cryptographic digest value တစ်ခု
 
-Batch transfer တွေမှာ ဒယ်လ်တာပေါင်းများစွာပါတဲ့ transcript တစ်ခုကို သုံးပါတယ်။ ဒီကိစ္စထဲမှာ single-delta Poseidon digest က ပျောက်နေတာပါ။
+Batch transfer တွေမှာ delta အမျိုးမျိုးပါတဲ့ transcript တစ်ခုကို သုံးပါတယ်။ ဒီကိစ္စထဲမှာ single-delta Poseidon cryptographic digest value က မရှိပါဘူး။
 
-Iroha သည် ဤစာသားများကို entrypoint hash ဖြင့်စုစည်းပေးသည်။ အကောင်အထည်ဖော်မှုသက်သေသည်နောက်တွင်မူလစာသားပူးတွဲများနှင့် Prover အတွက်ပြင်ဆင်ထားသော FastPQ ကူးပြောင်းမှုဗားရှင်းများကိုပါ သယ်ဆောင်သည်။
+Iroha သည် ဤစာသားများကို entrypoint cryptographic hash ဖြင့်စုစည်းပေးသည်။ အကောင်အထည်ဖော်မှုသက်သေသည်နောက်တွင်မူလစာသားပူးတွဲများနှင့် Prover အတွက်ပြင်ဆင်ထားသော FastPQ ကူးပြောင်းမှုဗားရှင်းများကို သယ်ဆောင်ပါမည်။
 
 Transfer delta တစ်ခုချင်းစီဟာ ကူးပြောင်းမှု အတန်းနှစ်ခုဖြစ်လာတယ်။
 
 |အတန်း |သော့ပုံစံ|ကြိုတင်တန်ဖိုး |တန်ဖိုးအပြီး |
 | --------------- | ------------------------------------------------ | ----------------------- | ---------------------- |
 |ပေးပို့သူ ချေးငွေ|`asset/<asset-definition>/<source-account>` |အရင်က ပေးပို့သူ ဘန်လန်|ပေးပို့သူစာရင်းအင်းနောက်|
-|လက်ခံရရှိသူ ခရက်ဒစ် |`asset/<asset-definition>/<destination-account>` |receiver balance ကို အရင်က|လက်ခံရရှိသူရဲ့ ငွေကြေးပမာဏ |
+|လက်ခံရရှိသူကွင်းငွေ |`asset/<asset-definition>/<destination-account>` |receiver balance ကို အရင်က|လက်ခံရရှိသူရဲ့ ငွေကြေးပမာဏ |
 
 ကိန်းဂဏန်းတန်ဖိုးများကို အလုံးစုံသက်သေ ယူနစ်များအဖြစ် ပုံမှန်သတ်မှတ်ထားပါသည်။ FastPQ အပျက်သဘောမဟုတ်ဘဲ ကိုယ်စားပြုလို့မရဘူးဆိုပါစို့ `u64` ရွေးချယ်ထားတဲ့ ဒသမကိန်းအတိုင်းအတာမှာပါ။
 
@@ -49,10 +49,10 @@ FastPQ ကူးပြောင်းမှုအစုတိုင်းမှ�
 |`slot` |ဘလော့ဖန်တီးမှု အချိန်ကို နာနိုစက္ကန့်များသို့ ပြောင်းလဲ |
 |`old_root` |အဖမ်းခံရသူရဲ့ မျက်မြင်ကနေ ရလာတဲ့ မိဘပြည်နယ် အမြစ်|
 |`new_root` |ပြည်နယ်နောက်ပိုင်း အမြစ်က သေနတ်သတ်ဖြတ်ခံရသူရဲ့ သက်သေကနေရတာပါ။|
-|`perm_root` |Active Role ခွင့်ပြုချက်တွေအပေါ် Poseidon ရဲ့ ရည်စူးမှု |
-|`tx_set_hash` |hash over sorted transaction and time-trigger entry point hashs ကို နှိုင်းယှဉ်လိုက်ပါ|
+|`perm_root` |Poseidon cryptographic commitment value ကို Active Role ခွင့်ပြုချက်တွေထက် တန်ဖိုးထားတယ်။ |
+|`tx_set_hash` |ဂဏန်းဝှက် hash ကို sorted transaction နှင့် time-trigger entrypoint ဂဏန်း၀ှက် hash များအပေါ် |
 
-အိမ်ရှင်က `fastpq-lane-balanced` ကို ဒီအစုအတွက် သတ်မှတ်ထားတဲ့ ကန်နီကလစ် ပမာဏအဖြစ်သုံးတယ်။
+host က `fastpq-lane-balanced` ကို ဒီဆော့ချက်တွေအတွက် သတ်မှတ်ထားတဲ့ Single Protocol Standard Parameter အဖြစ်သုံးတယ်။
 
 ## သင်္ချာပုံစံ {#mathematical-model}
 
@@ -62,7 +62,7 @@ $$
 F = \mathbb{F}_p,\qquad p = 2^{64} - 2^{32} + 1
 $$
 
-FastPQ Poseidon2 ကို သုံးတယ်။ `F` နယ်မြေဆိုင်ရာ တာဝန်ယူမှုအတွက်ပါ။ ဆုပ်ကွေးဟာ ကျယ်ပြန့်ပါတယ်။ `t = 3`, ငွေကြေးနှုန်း `r = 2`, အရည်အသွေး `1`. hash က rate-2 blocks ထဲက field element တွေကို စုပ်ယူပြီး field element တစ်ခုတည်းကို ချိတ်ဆက်ပေးပါတယ်။ `1` နောက်ဆုံး permutation မတိုင်ခင်:
+FastPQ ကွင်း cryptographic commitment တန်ဖိုးများအတွက် Poseidon2 over `F` ကိုအသုံးပြုသည်။ စုပ်သည်အလျား `t = 3`၊နှုန်း `r = 2` နှင့်စွမ်းအား `1` ရှိသည်။ cryptographic hash သည် rate-2 ဘလော့များတွင်ကွင်း element များကိုစုပ်ယူပြီး နောက်ဆုံး permutation မတိုင်မီ field element တစ်ခုတည်း `1` ကိုထည့်သွင်းပေးသည်။
 
 $$
 H_F(x_0,\ldots,x_{m-1}) =
@@ -76,7 +76,7 @@ $$
 \sum_{i=0}^{6} b_{7j+i}2^{8i},\qquad 0 \leq \operatorname{pack}(b)_j < p
 $$
 
-Domain-separated field hashs တွေကို အောက်ပါအတိုင်း ဖော်ပြထားပါတယ်-
+Domain-separated field cryptographic hashs တွေကို အောက်ပါအတိုင်း ဖော်ပြထားပါတယ်
 
 $$
 H_D(m) =
@@ -86,18 +86,18 @@ H_F(
 )
 $$
 
-Byte-domain digests ကနေစတဲ့ hash တွေအတွက် FastPQ က ပထမ ၈ ခုကို field ထဲမှာ mapped လုပ်ပေးပါတယ်။
+FastPQ သည် byte-domain cryptographic digests မှစ၍ cryptographic hash များအတွက် ပထမရှစ် little-endian bytes ကို field ထဲသို့ မြေပုံထုတ်ပေးသည်။
 
 $$
 \operatorname{seed}(D)=
 \operatorname{le64}(\operatorname{Hash}(D)[0..8])\bmod p
 $$
 
-ဒီမှာ `Hash` ဆိုတာက Iroha ရဲ့ `iroha_crypto::Hash::new` ကိုဆိုပါစို့၊ ၃၂ ဘိုက် Blake2bVar digest တစ်ခုပါ၊ Formula တစ်ခုမှာ Poseidon2 သို့မဟုတ် SHA-256 ဆိုတဲ့ အမည်ကို ရှင်းလင်းစွာ မဖော်ပြဘူးဆိုရင်ပေါ့။
+ဒီနေရာမှာ `Hash` ဆိုသည်မှာ Iroha ရဲ့ `iroha_crypto::Hash::new` ကိုဆိုလိုရာ၊ ဘိုင် ၃၂ ဘိုက် Blake2bVar ပရိုဂရမ် Digest တန်ဖိုးကိုဆိုလိုပါက၊ Formula တစ်ခုတွင် Poseidon2 သို့မဟုတ် SHA-256 ကို ရှင်းလင်းစွာ အမည်မပေးခဲ့ဘူး ဆိုပါစို့။
 
 ### နယ်မြေ သင်္ချာ {#field-arithmetic}
 
-Rust ကုဒ်သည် `[0,p)` တွင် Canonical `u64` တန်ဖိုးများအဖြစ် field element များကို ကိုယ်စားပြုသည်။
+Rust ကုဒ်သည် `[0,p)` တွင် တစ်ခုတည်းသော ပရိုတိုကောစံညွှန်း `u64` တန်ဖိုးများအဖြစ် ကွင်းအပိုင်းများကို ကိုယ်စားပြုသည်။
 
 $$
 a +_F b = (a+b)\bmod p
@@ -135,7 +135,7 @@ $$
 \pmod p
 $$
 
-အကောင်အထည်ဖော်ခြင်းသည် ရလဒ်သည် ကန်နီကယ်မတိုင်မီ `p` ကို စည်းကမ်းချက်အရ ပေါင်းထည့် (သို့) လျှော့ချသည်။ လက်မှတ်ထိုးထားတဲ့ အလုံးစုံဂဏန်းများ၊ balance deltas ကဲ့သို့သော ဂဏန်းများကို အောက်ပါအတိုင်း ထည့်သွင်းထားသည် -
+အကောင်အထည်ဖော်မှုသည် စည်းကမ်းချက်အရ `p` ကို ပေါင်းထည့်ခြင်း (သို့မဟုတ်) လျှော့ချခြင်းဖြင့် ရလဒ်တစ်ခုတည်းသော ပရိုတိုကုတ်စံညွှန်းဖြစ်သည်အထိဖြစ်သည်။ လက်မှတ်ထိုး integers များ၊ balance deltas ကဲ့သို့သောအခြားအရာများတွင်:
 
 $$
 \operatorname{field}(x)=x\bmod p,\qquad 0\leq\operatorname{field}(x)<p
@@ -179,7 +179,7 @@ x_2+c_{r,2}
 \end{bmatrix}
 $$
 
-ပေါင်းထည့်ခြင်း (သို့) မြှောက်ခြင်းအားလုံးသည် `F` တွင်ရှိသည်။ တရားဝင် MDS မေထရစ်မှာ:
+ပေါင်းထည့်ခြင်းနှင့် မြှောက်မှုအားလုံးသည် `F` တွင်ရှိသည်။ Single Protocol-standard MDS matrix သည်:
 
 $$
 M=
@@ -190,7 +190,7 @@ M=
 \end{bmatrix}
 $$
 
-ကွင်း hash ကို သုညအခြေအနေမှစသည်။ တစ်စုံတစ်ရာနှုန်း-2 ဘလော့က `(u,v)` အတွက်:
+ကွင်း cryptographic hash သည် သုညအခြေအနေမှစသည်။ ပြည့်စုံသော rate-2 ဘလော့တစ်ခုစီအတွက် `(u,v)`:
 
 $$
 (x_0,x_1,x_2)\leftarrow
@@ -199,7 +199,7 @@ $$
 
 နောက်ဆုံး ဘလော့က `1` padding element ကို နောက်ဆုံး permutation တစ်ခုမတိုင်ခင် ချိတ်ဆက်ပေးတယ်။ ထုတ်ကုန်ကတော့ `x_0` ပါ။
 
-### အများပြည်သူဝင်ငွေကို ချုပ်ဆိုခြင်း {#public-input-binding}
+### အများပြည်သူဝင်ငွေ ချုပ်ဆိုမှု {#public-input-binding}
 
 host သည် `u64` တန်ဖိုးကို 16-byte ကွင်း၏ ပထမရှစ် little-endian byte များသို့ရေးခြင်းဖြင့် data space id ကို encodes လုပ်သည်။
 
@@ -216,7 +216,7 @@ $$
 (\operatorname{creation\_time\_ms},1{,}000{,}000)
 $$
 
-Transaction-set hash သည် sorted entrypoint hash များအပေါ် byte-domain hash တစ်ခုဖြစ်သည်။
+Transaction-set cryptographic hash သည် sorted entrypoint cryptographic Hash များအပေါ် byte-domain cryptographic hashtag ဖြစ်ပါသည်။
 
 $$
 \operatorname{tx\_set\_hash} =
@@ -225,7 +225,7 @@ $$
 )
 $$
 
-where `h_i` are sorted transaction and time-trigger entry point hashes. proof public IO မှာ `perm_root` သို့မဟုတ် `tx_set_hash` အားလုံး သုညဖြစ်ပါက prover က fallback value တွေကိုဖြည့်ပေးပါတယ်။
+where `h_i` are sorted transaction and time-trigger entrypoint cryptographic hashes. proof public IO တွင်, `perm_root` သို့မဟုတ် `tx_set_hash` သည် သုညဖြစ်ပါက, prover သည် fallback တန်ဖိုးများကိုဖြည့်သည်:
 
 $$
 \operatorname{perm\_root} =
@@ -241,9 +241,9 @@ $$
 \operatorname{Hash}(\texttt{fastpq:v1:tx\_set}\|\operatorname{ordering\_hash})
 $$
 
-### ကိန်းဂဏန်းဆိုင်ရာ ပုံမှန်ဖြစ်စဉ် {#numeric-normalization}
+### ကိန်းဂဏန်း Normalization {#numeric-normalization}
 
-လွှဲပြောင်းမှုဒယ်လ်တာတစ်ခုစီအတွက် ရည်မှန်းချက် ဒသမကိန်းက ပမာဏအနှံ့ အမြင့်ဆုံး ဖြတ်တောက်ထားတဲ့ အကွာအဝေးဖြစ်ပြီး နှစ်ခုစလုံးရဲ့ ဟန်ချက်ညီတဲ့ snapshots တွေပါ။
+လွှဲပြောင်းမှုဒယ်လ်တာတစ်ခုစီအတွက် ရည်မှန်းချက် ဒသမကိန်းက ပမာဏအနှံ့ အမြင့်ဆုံး ဖြတ်တောက်ထားတဲ့ စကေးဖြစ်ပြီး နှစ်ခုစလုံးမှာ အချိန်ကာလ အချက်အလက် ကြည့်ရှုမှုကို ဟန်ချက်ညီစေတယ်။
 
 $$
 s =
@@ -264,7 +264,7 @@ $$
 
 ပုံမှန်ပြုလုပ်ထားသော ရလဒ်သည် `u64` သို့ထည့်သွင်းရမည်။
 
-### ကနွန်နီကလစ် အမိန့် {#canonical-ordering}
+### တစ်ခုတည်းသော ပရိုတိုကုတ်စံညွှန်း အမိန့်ချမှတ်ခြင်း {#canonical-ordering}
 
 Trace Construction မလုပ်ခင် အစုကို ကူးပြောင်းရေး သော့၊ လုပ်ဆောင်မှု အဆင့်နဲ့ မူလထည့်သွင်းချက်အညွှန်းအရ ခွဲခြားထားတယ်။
 
@@ -277,7 +277,7 @@ r(\operatorname{RoleRevoke})=4,\quad
 r(\operatorname{MetaSet})=5
 $$
 
-အမိန့်ချမှတ်မှု ကတိကဏ္ဍမှာ `fastpq:v1:ordering` ဒိုမင်နှင့် Norito ကုဒ်သွင်းခြင်းအပေါ် Poseidon2 နယ်ပယ် hash ဖြစ်သည်:
+အမိန့်ချမှတ်ရေး cryptographic commitment တန်ဖိုးသည် Poseidon2 ကွင်း cryptographic hash ကို domain `fastpq:v1:ordering` နှင့် sorted transitions များ၏ Norito encoding ပေါ်တွင်ဖြစ်ပါသည်။
 
 $$
 \operatorname{ordering\_hash} =
@@ -288,7 +288,7 @@ $$
 
 `P` သည် 7-byte packaging ဖြစ်ပါက, `E` သည် Norito ကို encoding ဖြစ်ပါသည်; `D_o` သည် `fastpq:v1:ordering` ဖြစ်ပါသည်နှင့် `T*` သည် sorted transition list ပါ။
 
-### လွှဲပြောင်းခြင်း ညီမျှခြင်း {#transfer-equations}
+### Transfer Equations များ {#transfer-equations}
 
 Transfer amount `a`, sender balance `f` နှင့် receiver balance `t` တို့အတွက်, FastPQ သည် trace build မလုပ်မီ normalized witness values များကို validates:
 
@@ -320,7 +320,7 @@ $$
 \delta_i = (\operatorname{post}_i - \operatorname{pre}_i)\bmod p
 $$
 
-ရွေးချယ်စရာ single-delta transfer digest က ကုဒ်သွင်းထားတဲ့ transfer preimage ကို commit လုပ်တယ်။
+ရွေးချယ်စရာ single-delta transfer cryptographic digest value က ကုဒ်သွင်းထားတဲ့ transfer preimage ကို ပြီးဆုံးစေပါတယ်။
 
 $$
 d_{\text{transfer}} =
@@ -329,9 +329,9 @@ E(\text{from})\|E(\text{to})\|E(\text{asset})\|E(a)\|\text{batch\_hash}
 )
 $$
 
-multi-delta transfer transcripts တွေအတွက်တော့ လက်ရှိပုံစံက ဒီအထိပ်ဆုံးအဆင့် digest မရှိဖို့ လိုပါတယ်။
+Multi-delta transfer transcripts တွေအတွက် လက်ရှိပုံစံက အဆင့်မြင့် cryptographic digest value ကို မရှိဖို့ လိုအပ်ပါတယ်။
 
-လွှဲပြောင်းရေး စာရွက်စာတမ်းများအတွက် လက်ခံအာဏာပိုင်ရဲ့ သောက်သုံးမှုမှာ-
+Transfer transcripts အတွက် host authorization ရဲ့ အဓိက cryptographic digest value ကတော့
 
 $$
 d_{\text{authority}} =
@@ -384,7 +384,7 @@ R_i(a)=R_{i-1}(a)+\delta_i
 \quad\text{for transfer, mint, and burn rows of asset }a
 $$
 
-မင်တာနဲ့ မီးရှို့တဲ့ အတန်းတွေပဲ ထောက်ပံ့ရေး ကိန်းဂဏန်းကို update လုပ်ပေးကြတာပါ။
+ဖြည့်စွက်ရေးတွက်စက်ကို Update လုပ်ပေးပြီး ဖျက်ပစ်တဲ့ စာတန်းတွေပဲ ထုတ်ပေးပါ။
 
 $$
 S_i(a)=S_{i-1}(a)+
@@ -394,7 +394,7 @@ S_i(a)=S_{i-1}(a)+
 \end{cases}
 $$
 
-Metadata နှင့် dataspace trace columns တို့သည် row materialization မတိုင်မီမှရယူထားသော field hash များဖြစ်ပါသည်။
+metadata နှင့် dataspace trace columns တို့သည် row materialization မတိုင်မီမှ ရယူထားသော field cryptographic hash များဖြစ်ပါသည်။
 
 $$
 \operatorname{metadata\_hash} =
@@ -408,7 +408,7 @@ $$
 \operatorname{dsid\_trace}=H_D(\operatorname{public\_input\_dsid})
 $$
 
-metadata hash, dataspace hash နှင့် slot တို့သည်အနီးစပ်သော trace row များတွင်တည်ငြိမ်သည်။
+metadata cryptographic hash, dataspace cryptographic Hash နှင့် slot တို့သည်အနီးကပ်သော trace row များတွင်တည်ငြိမ်သည်။
 
 $$
 \operatorname{metadata\_hash}_i=\operatorname{metadata\_hash}_{i+1}
@@ -478,9 +478,9 @@ $$
 \end{cases}
 $$
 
-### ခွင့်ပြုချက် Hashs {#permission-hashes}
+### ခွင့်ပြုချက် cryptographic hashes {#permission-hashes}
 
-Role grant နှင့် revoke rows များမှာ permission witness ကို hash လုပ်ထားသည်
+Role grant and revoke rows cryptographic hash ခွင့်ပြုချက်သက်သေကို:
 
 $$
 h_{\text{perm}} =
@@ -500,9 +500,9 @@ $$
 
 Odd-width level တွေက နောက်ဆုံး element ကို duplicate လုပ်တယ်။
 
-### ခြေရာခံမှု ကတိပေးခြင်း {#trace-commitment}
+### Trace cryptographic commitment value ကိုရှာဖွေပါ။ {#trace-commitment}
 
-trace column တစ်ခုစီအတွက် `c` အတွက်, FastPQ က trace domain ပေါ်က column values တွေကို ပထမဆုံး interpolates လုပ်ပြီး coefficient vector ကို hashs လုပ်ပါတယ်။
+ခြေရာခံမှုတိုင်တစ်ခုစီအတွက် `c`, FastPQ ပထမဆုံး Trace Domain ပေါ်က Column Value တွေကို Interpolates လုပ်ပြီး Coefficient vector ကို cryptographic hashs လုပ်ပေးပါတယ်။
 
 $$
 C_c =
@@ -512,13 +512,13 @@ H_F(
 )
 $$
 
-Trace Root က Column commits ပေါ်မှာ Poseidon2 Merkle Root ပါ။
+Trace Root က Column cryptographic commitment values တွေထက် Poseidon2 Merkle root တစ်ခုပါ။
 
 $$
 R_{\text{trace}} = \operatorname{MerkleRoot}(C_0,\ldots,C_{m-1})
 $$
 
-နောက်ဆုံး trace commitment က domain, parameter set, trace shape, column digests နဲ့ trace root တို့အပေါ် byte hash ဖြစ်ပါတယ်-
+နောက်ဆုံး trace cryptographic commitment value သည် domain, parameter set, trace shape, column cryptographic digests နှင့် trace root တို့ပေါ်တွင် byte cryptographic hash ဖြစ်ပါသည်။
 
 $$
 \operatorname{commitment} =
@@ -595,7 +595,7 @@ $$
 \operatorname{slot}_i-\operatorname{slot}_{i+1}
 $$
 
-စစ်ဆေးသူသည် နမူနာထုတ်ယူထားသော row openings များအတွက် `A_i` ကို ပြန်လည် တွက်ချက်ပြီး AIR composition Merkle root ဖြင့် ချုပ်ဆိုထားသည့် ပေါင်းစပ်မှုတန်ဖိုးနှင့် နှိုင်းယှဉ်စစ်ဆေးသည်။
+စစ်ဆေးသူက `A_i` ကို နမူနာထုတ်ယူထားသော row openings များအတွက် ပြန်လည် တွက်ချက်ပြီး AIR composition Merkle root အောက်တွင် cryptographically ချိတ်ဆက်ထားတဲ့ ပေါင်းစပ်မှုတန်ဖိုးနှင့်စစ်ဆေးတယ်။
 
 ### ရှာဖွေရေး ထုတ်ကုန် {#lookup-product}
 
@@ -683,16 +683,16 @@ $$
 \omega_{\ell}=\omega_{\max}^{2^{k_{\max}-\ell}}
 $$
 
-### Row နှင့် Leaf Hash များ {#row-and-leaf-hashes}
+### Row နှင့် Leaf cryptographic hashes များ {#row-and-leaf-hashes}
 
-LDE အပြီးမှာ FastPQ သည် LDE ကော်လံများအနှံ့တွင် row တစ်ခုစီကို hash လုပ်ပေးသည်။ `m` ကော်လံများကို:
+LDE အပြီးမှာ FastPQ သည် LDE ကော်လံများအနှံ့တွင် row တစ်ခုချင်းစီကို cryptographic hashs လုပ်သည်။ `m` ကော်လံအတွက်:
 
 $$
 r_i =
 H_F(i,m,x_{i,0},x_{i,1},\ldots,x_{i,m-1})
 $$
 
-စာတန်း hash တွေက အကဲဖြတ်မှု domain ထက် trace domain မှာရှိသေးတယ်ဆိုရင် prover က အဲဒီ single row-hash column ကို same coset LDE process နဲ့ interpolates လုပ်ပြီး ဖြန့်ဖြူးပါတယ်။
+Row cryptographic hashs တွေက အကဲဖြတ်မှု domain ထက် trace domain မှာ ရှိနေသေးတယ်ဆိုရင် prover က အဲဒီ single row-hash column ကို same coset LDE process နဲ့ interpolates လုပ်ပြီး တိုးချဲ့ပေးပါတယ်။
 
 ### Merkle Openings များ {#merkle-openings}
 
@@ -768,7 +768,7 @@ $$
 
 ### FRI ခေါက်ခြင်း {#fri-folding}
 
-FRI ကတိပြုသည် AIR ပေါင်းစပ်မှု အကဲဖြတ်ချက်များ `l`, Transcript နမူနာတွေကို စိန်ခေါ်မှုတစ်ခု `beta_l`. အလွှာကို နောက်ဆုံးတန်ဖိုးကို ထပ်ခါပြောခြင်းဖြင့် arity ၏ အမြောက်အမြားသို့ ဖြည့်ပေးသည်။ arity အရွယ်အစား အုပ်စုတစ်ခုစီသည် အောက်ပါအတိုင်း ခေါက်ထားသည်။
+FRI cryptographically binds to AIR ပေါင်းစပ်မှု အကဲဖြတ်ချက်များ `l`, Transcript နမူနာတွေကို စိန်ခေါ်မှုတစ်ခု `beta_l`. အလွှာကို နောက်ဆုံးတန်ဖိုးကို ထပ်ခါပြောခြင်းဖြင့် arity ၏ အမြောက်အမြားသို့ ဖြည့်ပေးသည်။ arity အရွယ်အစား အုပ်စုတစ်ခုစီသည် အောက်ပါအတိုင်း ခေါက်ထားသည်။
 
 $$
 y_{l+1,j} =
@@ -787,7 +787,7 @@ $$
 
 ### Fiat-Shamir စာရွက်စာတမ်း {#fiat-shamir-transcript}
 
-Canonical Parameter Catalogue က transcript hash ကို SHA3-256 အဖြစ် သတ်မှတ်ထားသည်။ လက်ရှိ prover နှင့် verifier အကောင်အထည်ဖော်မှုသည် challenge bytes များကို `iroha_crypto::Hash::new` ဖြင့် ထုတ်ယူသည်၊ ဒါက 32-byte Blake2bVar digest ဖြစ်ပြီး ပထမရှစ် little-endian byte များကို `F` သို့ လျှော့ချပေးသည်:
+Single Protocol Standard Parameters Catalogue က transcript cryptographic hash ကို SHA3-256 လို့ တံဆိပ်တပ်ထားတယ်။ လက်ရှိ Prover နဲ့ Verifier အကောင်အထည်ဖော်ခြင်း `iroha_crypto::Hash::new` နဲ့ စိန်ခေါ်မှု byte တွေကို ထုတ်ယူတယ်၊ ဒါက 32-byte Blake2bVar cryptographic digest value ဖြစ်ပြီး ပထမ ၈ little-endian byte ကို `F` အဖြစ် လျှော့ချတယ်။
 
 $$
 \chi(\text{tag}) =
@@ -795,7 +795,7 @@ $$
 \bmod p
 $$
 
-စိန်ခေါ်မှုဖုန်းတွေဟာ transcript အနေအထားမှာ အပြည့်အဝ digest ကိုထည့်ပါ။ ပြန်လည်ဖြန့်ချိခြင်း အစီအစဉ်က:
+စိန်ခေါ်တန်ဖိုးကို တွက်ချက်သည့် ခေါ်ဆိုမှုများက ဟက်ရှ်အနှစ်ချုပ်တန်ဖိုး အပြည့်အစုံကို မှတ်တမ်းအခြေအနေထဲသို့ နောက်ဆက်တွဲ ပေါင်းထည့်သည်။ ပြန်လည်လုပ်ဆောင်သည့် အစီအစဉ်မှာ အောက်ပါအတိုင်းဖြစ်သည်-
 
 1. အများပြည်သူ IO, protocol version, parameter version, and parameter name
 2. LDE root နှင့် trace root
@@ -806,7 +806,7 @@ $$
 7. FRI အလွှာ အမြစ်များနှင့် `beta_l` စိန်ခေါ်မှုများ
 8. နမူနာထုတ်ယူထားသော မေးမြန်းမှု အညွှန်းကိန်းများ
 
-query sampling က 32-byte challenge digests တွေကို ဆွဲပြီး requested number of unique indices ကိုရတဲ့အထိ `u64` အပိုင်းလေးတွေအဖြစ်ဖတ်တယ်။
+query sampling က 32-byte challenge cryptographic digests တွေကို ဆွဲယူပြီး requested number of unique indices ကိုရတဲ့အထိ `u64` အပိုင်းလေးတွေအဖြစ်ဖတ်တယ်။
 
 $$
 q = \operatorname{le64}(\text{digest chunk})\bmod N_{\text{eval}}
@@ -816,7 +816,7 @@ $$
 
 ### Verifier ကို ပြန်လည်ကစားရန် {#verifier-replay}
 
-စစ်ဆေးသူက ပထမအနေနဲ့ အစုလိုက်အပြုံလိုက် ကတိပေးမှုကို ပြန်လည် တွက်ချက်တယ်။
+စစ်ဆေးသူက ပထမအကြိမ် အစုအဝေး cryptographic commitment value ကို ပြန်လည်တွက်ချက်တယ်။
 
 $$
 \operatorname{commitment}_{expected}
@@ -897,31 +897,31 @@ FastPQ Prover သည် trace ကိုတည်ဆောက်ရန်မတ�
 - ပေးပို့သူ balance ကို underflow မဖြစ်သင့်ပါ။
 - `sender_after` သည် `sender_before - amount` နှင့်ညီရမည်။
 - `receiver_after` သည် `receiver_before + amount` နှင့်ညီရမည်။
-- စာရွက်စာတမ်းက ကောက်ကြောင်းထဲက လွှဲပြောင်းရေး အတန်းတိုင်းကို ဖုံးအုပ်ရပါမယ်။
-- ဒယ်လ်တာတစ်ခုတည်းပါ Poseidon digest တစ်ခုရှိရင် Transcript preimage နဲ့ ကိုက်ညီဖို့လိုပါတယ်။
+- စာရွက်စာတမ်းက အလှူအတန်းတစ်ခုစီကို ဖုံးအုပ်ရပါမယ်။
+- Single-delta Poseidon cryptographic digest value ရှိပါက transcript preimage နဲ့ ကိုက်ညီရပါမယ်။
 - စပါး-Merkle proofs တွေကို version 1 အဖြစ် decode လုပ်ရပါမယ်။ ပျောက်နေတဲ့ paths တွေကို deterministic synthetic proofs တွေနဲ့ဖြည့်ထားတယ်။
 
-Trace တွင် transfer, mint, burn, role grant, role revoke, metadata set နှင့် permission search row များအတွက် selector columns များပါဝင်သည်။ နံပါတ်ပိုင်း operation အတန်းများတွင်လည်း လက်မှတ်ထိုးထားသော delta များ၊ အရင်းအမြစ်တစ်ခုချင်း delta များနှင့် supply counters များကို ပြသသည်။
+Trace တွင် transfer, issue, destroy, role grant, role revoke, metadata set နှင့် permission search row များအတွက် selector columns များပါဝင်သည်။ numeric operation rows များတွင်လည်း လက်မှတ်ထိုးထားသော delta များ၊ asset-per-asset delta များနှင့် supply counters တို့ပါ ၀ င်သည်။
 
-## Prover Lane {#prover-lane}
+## Prover စီမံခန့်ခွဲမှုလမ်းကြောင်း {#prover-lane}
 
-`irohad` သည် FastPQ prover lane ကိုစတင်ချိန်တွင် စေလွှတ်နိုင်ပါက prover backend ကို အစပျိုးနိုင်သည်။လမ်းကြောင်းသည်သတ်မှတ်ထားသောအတန်းနှင့်အတူနောက်ခံလုပ်ဆောင်ချက်ဖြစ်သည်။ ဘလော့က အကောင်အထည်ဖော်သက်သေကိုထုတ်လုပ်ပြီးနောက် commit path က block hash၊ အမြင့်, view နှင့် witness ကိုပါဝင်သည့် prover အလုပ်ကိုတင်ပြသည်။
+`iroha3d` သည် FastPQ prover execution lane ကို startup တွင်စတင်ပါက prover backend ကို အစပျိုးနိုင်သည်။ အကောင်အထည်ဖော်ရေး lane သည်သတ်မှတ်ထားသော queue နှင့်အတူနောက်ခံအလုပ်ဖြစ်သည်။ ဘလော့က အကောင်အထည်ဖော်မှု သက်သေကိုထုတ်ပြီးနောက် သဘောတူညီချက် အဆုံးသတ်ခြင်းလမ်းကြောင်းသည် ဘလော့က crypto hash, အမြင့်, view နှင့် witness ကိုပါ ၀ င်သော prover အလုပ်ကိုတင်ပြသည်။
 
-trajectory ကို run မလုပ်ဘူးဆိုရင် (သို့) queue ကပြည့်နေရင် အလုပ်ကို skip လုပ်ပြီး ပုံမှန် block processing ဆက်ဖြစ်သွားပါတယ်။ ဆိုလိုတာက background prover trajectory ဟာ transaction admit or consensus gate မဟုတ်ဘူး။ ဒါက state over proof-production path ဖြစ်ပြီး လုပ်ဆောင်ပြီးသားပါ။
+အကောင်အထည်ဖော်ရေးလမ်းကြောင်းသည် မပြေးနေပါက (သို့) တန်းဖြည့်ထားပါက, အလုပ်ကို skip လုပ်ပြီး ပုံမှန် block processing ဆက်လက်ဖြစ်ပေါ်သည်။ ဆိုလိုသည်မှာနောက်ခံ prover အကောင်အ ထည်ဖော်ရေး လမ်းကြောင်းသည် transaction admission သို့မဟုတ် consensus gate မဟုတ်ပေ။ ၎င်းသည်လုပ်ဆောင်ပြီးသားအခြေအနေတစ်ခုအပေါ် proof-production path ဖြစ်ပါသည်။
 
-ဒီလမ်းကြောင်းမှာ prover တစ်ခုကို ဆောက်လုပ်တယ်။
+အကောင်အထည်ဖော်ရေးလမ်းကြောင်းမှာ အောက်ပါအချက်အလက်များပါဝင်တဲ့ prover တစ်ခုကို တည်ဆောက်ထားတယ်။
 
 ```text
 parameter = "fastpq-lane-balanced"
-execution_mode = auto | cpu | gpu
-poseidon_mode = auto | cpu | gpu
+execution_mode = cpu | gpu
+poseidon_mode = cpu | gpu
 ```
 
-`auto` Prover က ရနိုင်တဲ့ backend ကို ရွေးခွင့်ပေးတယ်။ `cpu` pin execution ကို CPU. `gpu` အနှစ်သက်ဆုံး GPU အကောင်အထည်ဖော်ခြင်း CPU backend က requested kernel တွေကို သုံးလို့မရတဲ့ fallback။
+အဆိုပါ settings နှစ်ခုစလုံး default ကို `cpu`. ရွေးချယ်ခြင်း `gpu` ပြတ်သားပြီး ကျရှုံးမှုမရှိသော တောင်းဆိုချက်တစ်ခုဖြစ်ပါသည်- GPU ထောက်ပံ့မှုစုစည်းခြင်း သို့မဟုတ် တောင်းဆိုခြင်း မရှိပါ။ GPU backend က pre-flight ကျရှုံးသွားတယ်၊ Prover execution lane ဟာ မသန်စွမ်းနေတုန်းပါ။ ပထမ release မှာတော့ `auto` တန်ဖိုးရှိပြီး တောင်းဆိုချက်ကနေ နောက်ပြန်မကျဘူး။ GPU mode ကို CPU.
 
 ## စစ်ဆေးခြင်း {#verification}
 
-FastPQ proof verification သည် Canonical batch commitment ကို ပြန်လည်တည်ဆောက်ပြီး အများပြည်သူ transcript ကိုပြန်လည်ဖြည့်ဆည်းပေးသည်။ စစ်ဆေးသူသည် ပရိုတိုကောဗားရှင်း၊ သတ်မှတ်သတ်မှတ်ချက်များရှိ ဗားရှင်း၊ ပြန်လည်ဖြည့်စွက်မှု ကန့်သတ်ချက်များ၊ ခြေရာခံမှုဆိုင်ရာ တာဝန်ယူမှု၊ အများပြည်သူဝင်ငွေများ၊ နမူနာ Merkle openings များ၊ AIR openings များနှင့် FRI query chain များကိုစစ်ဆေးသည်။
+FastPQ proof verification က single protocol standard batch cryptographic commitment value ကို ပြန်လည်တည်ဆောက်ပြီး public transcript ကိုပြန်လည်ထည့်သွင်းပါတယ်။ verifier က protocol ကိုစစ်တယ်။ version, parameter-set version, replay limits, trace cryptographic commitment value, public inputs, sample Merkle openings, AIR openings, and FRI query chain.
 
 Default playback ကန့်သတ်ချက်များမှာ:
 
@@ -930,29 +930,29 @@ Default playback ကန့်သတ်ချက်များမှာ:
 |အပြောင်းအလဲတန်းများ |     256 |
 |အစုလိုက်အပြုံလိုက် ဝန်ဆောင်မှု အရွယ်အစား |၂၅၆ KiB|
 |FRI အလွှာများ |      16 |
-|မေးမြန်းမှုဖွင့်ပွဲများ |     128 |
+|မေးမြန်းမှု ဖွင့်ပွဲများ |     128 |
 
 ## Nexus စစ်ဆေးသော Relay များ {#nexus-verified-relays}
 
-Nexus AXT အထောက်အထားအဖုံးများမှာ `AxtFastpqBinding`. ဘယ်အချိန်မှာ `RegisterVerifiedLaneRelay` အကောင်အထည်ဖော်တယ်။ Iroha:
+Nexus AXT သက်သေခံဒေတာ ကွန်တိန်နာများတွင် `AxtFastpqBinding` ကိုထည့်သွင်းနိုင်သည်။ `RegisterVerifiedLaneRelay` လုပ်တဲ့အခါမှာ, Iroha:
 
-1. လမ်းကြောင်းဆက်သွယ်ရေးအဖုံးနဲ့ FastPQ အထောက်အထားကို စစ်ဆေးတယ်။
-2. ဒေတာနေရာနှင့် manifest root ကိုစစ်ဆေးသည်
-3. AXT အထောက်အထားအဖုံးကို ဖေါ်ထုတ်ပေးသည်
+1. အကောင်အထည်ဖော်ရေးလမ်းကြောင်း Relay Data Container နဲ့ FastPQ proof material ကို စစ်ဆေးပါတယ်။
+2. ဒေတာနေရာနှင့် နည်းပညာထုတ်ပြန်ချက် root ကို စစ်ဆေးသည်
+3. AXT proof data container ကို decodes လုပ်ပေးတယ်။
 4. `fastpq_binding` ကို လိုအပ်ပါသည်။
 5. FastPQ ကောက်ကြောင်းကို ပြန်လည်တည်ဆောက်ပေးသည်
 6. Embedded proof FastPQ ကို decodes လုပ်ပါ။
-7. FastPQ စစ်ဆေးသူအား ပြန်လည်ဆောက်လုပ်ထားသော အစုနှင့် သက်သေခံချက်များကို ခေါ်ယူပါ။
+7. FastPQ verifier ကို ပြန်လည်တည်ဆောက်ထားတဲ့ batch နဲ့ proof ပေါ်မှာ ခေါ်ယူတယ်။
 
-စစ်ဆေးမှု အောင်မြင်ခဲ့လျှင် Iroha သည် `VerifiedLaneRelayRecord` ကို သိုလှောင်ထားပြီး ရေလွှမ်းမိုးချက်၊ မူလအဖုံး၊ သက်သေခံ အသုံးဝင် ဝန်ဆောင်မှု ဟက်ရှ်၊ စစ်ဆေးမှု အမြင့်၊ manifest root နှင့် FastPQ ချည်နှောင်မှုကို ပါရှိသည်။
+စစ်ဆေးမှု အောင်မြင်ခဲ့လျှင် Iroha သည် `VerifiedLaneRelayRecord` ကို သိုလှောင်ထားပြီး ရေလွှမ်းမိုးချက်၊ မူရင်းဒေတာ ကွန်တိန်နာ၊ သက်သေခံ အသုံးအဆောင် သင်္ကေတ hash၊ စစ်ဆေးမှု အမြင့်၊ နည်းပညာ manifest root နှင့် FastPQ ချည်နှောင်ခြင်းတို့ပါဝင်သည်။
 
-Lane relay envelopes တွေမှာလည်း Compact ပါတယ် FastPQ အထောက်အထား ပစ္စည်းဟာ လမ်းကြောင်း ID, ဒေတာနေရာ ID, ဘလော့က အမြင့်, စစ်ဆေးမှုအမြင့်, ဘလော့ခေါင်းစဉ် hash, settlement hash နဲ့ manifest root တို့ပါ။ Relay တစ်ခုဟာ နှစ်ခုစလုံးပါတဲ့ အချိန်မှာပဲ ပေါင်းစပ်ခွင့်ရှိတာပါ။ QC အတည်ပြုချက် FastPQ သက်သေခံပစ္စည်း။
+execution lane relay data containers တွေမှာလည်း FastPQ proof material ကပ်ထားတယ်။ ဒီပစ္စည်းဟာ execution lane id, dataspace id, block height, verification height တို့ထက် cryptographic digest value တစ်ခုပါ။ Block header cryptographic hash, financial transaction settlement cryptographic Hash, and technical manifest root. a relay ကို QC နှင့် valid FastPQ proof material နှစ်ခုစလုံးရှိပါကသာ ပေါင်းစပ်ခွင့်ပြုသည်။
 
 ### AXT ချုပ်ကိုင်တဲ့ သင်္ချာ {#axt-binding-math}
 
-အတွက် Nexus AXT ဖုံးအုပ်များ၊ `AxtFastpqBinding` proof replay မလုပ်ခင် canonicalized လုပ်ထားပါတယ် `fastpq-lane-balanced`; empty verifier id နှင့် version ကို default လုပ်ရန် `fastpq` နှင့် `v1`; အဆိုပြုချက်အမျိုးအစားကို ဖြတ်တောက်ပြီး နှိမ့်ချထားတယ်။
+Nexus AXT ဒေတာအိုးများအတွက်, `AxtFastpqBinding` ကို သက်သေပြမှုပြန်လည်ကစားခြင်းမတိုင်မီ canonicalized လုပ်ထားသည်. အလွတ် parameter တန်ဖိုးများကို default ကို `fastpq-lane-balanced`; empty verifier id နှင့် version ကို default ကို `fastpq` နှင့် `v1`; claim အမျိုးအစားကို trimmed နှင့် lowercased ဖြစ်ပါသည်။
 
-AXT FastPQ အများပြည်သူ input တွေဟာ deterministic byte hash တွေပါ။
+AXT FastPQ အများပြည်သူ input တွေဟာ deterministic byte cryptographic hash တွေပါ။
 
 $$
 \operatorname{dsid}=\operatorname{dsid\_bytes}(\operatorname{source\_dsid})
@@ -1051,7 +1051,7 @@ $$
 \operatorname{Hash}(\operatorname{label}\|\operatorname{entropy})[0..32]
 $$
 
-Transfer batch hash ကို:
+Transfer batch cryptographic hash ကတော့:
 
 $$
 \operatorname{batch\_hash} =
@@ -1063,7 +1063,7 @@ $$
 )
 $$
 
-AXT အစုအပြုံလိုက် သရုပ်ဖော်ချက် အရည်အသွေးသည် SHA-256 ကိုင်တွယ်ခြင်း၏ Norito ကုဒ်ပေါ်တွင် ရှိသည်။
+AXT batch technical manifest cryptographic digest value သည် single protocol-standard binding ၏ Norito ကုဒ်သွင်းမှုအပေါ် SHA-256 ဖြစ်ပါသည်။
 
 $$
 \operatorname{manifest\_digest} =
@@ -1072,11 +1072,11 @@ $$
 
 ## SCCP ပွင့်လင်းမြင်သာသော သတင်းအချက်အလက် သက်သေခံချက်များ {#sccp-transparent-message-proofs}
 
-SCCP အကူအကူသေတ္တာမှာလည်း ပွင့်လင်းမြင်သာတဲ့ ကွင်းဆက်ဖြတ် သတင်းအချက်အလက် သက်သေခံမှုအတွက် FastPQ ကို အသုံးပြုပါတယ်။ ဒီလမ်းကြောင်းဟာ `irohad` နောက်ခံ prover lane မှ သီးခြားပါ။ SCCP သတင်းအချက်အလက် အထောက်အထား ဘက်ဒရယ်နဲ့ မော်နီဖစ်ကနေ တိုက်ရိုက် FastPQ အစုကို တည်ဆောက်ပြီး ရလာတဲ့ အထောက်အထားကို ပွင့်လင်းတဲ့ စစ်ဆေးမှုအတွက် ဖုံးလွှမ်းတယ်။
+SCCP အကူအကူ ဆော့ဖ်ဝဲပက်ကတ်မှာ ပွင့်လင်းမြင်သာတဲ့ ကွင်းဆက်ဆန့်ကျင် သတင်းအချက်အလက် သက်သေခံမှုအတွက်လည်း FastPQ ကို အသုံးပြုပါတယ်။ ဒီလမ်းကြောင်းဟာ `iroha3d` နောက်ခံ prover လုပ်ဆောင်ရေးလမ်းကြောင်းကနေ သီးခြားပါ။ SCCP သတင်းအချက်အလက် အထောက်အထားအစုနှင့် နည်းပညာထုတ်ပြန်ချက်များမှ တိုက်ရိုက် FastPQ အုပ်စုကို တည်ဆောက်ပြီး ရလဒ်ရရှိသော အထောက်အထားကို ဖွင့်လှစ်စစ်ဆေးရန် ပိတ်ထားသည်။
 
 SCCP အုပ်စုမှာ `fastpq-lane-balanced` နဲ့ metadata အပြောင်းအလဲ သုံးခုကိုသုံးပါတယ်။
 
-|သော့|လုပ်ဆောင်ချက် |
+|သော့|လုပ်ဆောင်ချက်|
 | ------------------------------- | --------- |
 |`sccp:transparent:v1:statement` |`MetaSet` |
 |`sccp:transparent:v1:context` |`MetaSet` |
@@ -1086,14 +1086,14 @@ SCCP အုပ်စုမှာ `fastpq-lane-balanced` နဲ့ metadata အ�
 
 |FastPQ input ကို|SCCP မူရင်း |
 | ------------- | ---------------------------------------------------------- |
-|`dsid` |Blake2b ရဲ့ ပထမ ၁၆ ဘိုက်တာဟာ statement hash မှာ|
+|`dsid` |ပထမ ၁၆ ဘိုက် Blake2b cryptographic digest တန်ဖိုးကို statement ကို cryptographic hash ထက်|
 |`slot` |အပြီးသတ်မှု အမြင့်|
-|`old_root` |အသုံးဝင်မှု hash |
-|`new_root` |ရည်စူးမှု အမြစ်|
-|`perm_root` |နောက်ဆုံးသတ်မှတ်ချက် ဟက်ရှ် |
-|`tx_set_hash` |ထုတ်ပြန်ချက် hash |
+|`old_root` |အသုံးဝင်သော ထိုးသွင်းမှု cryptographic hash |
+|`new_root` |cryptographic commitment value root |
+|`perm_root` |Finality Block ကို cryptographic hash လုပ်ပေးပါ။|
+|`tx_set_hash` |ကြေညာချက် cryptographic hash |
 
-SCCP Canonical encoders များတွင် integer များကို small-endian အဖြစ်ရေးသားပြီး variable length byte array များကို အောက်ပါအတိုင်း encode လုပ်ထားပါသည်။
+SCCP single protocol-standard encoders တွေက integer တွေကို small-endian နဲ့ ရေးပြီး variable length byte arrays တွေကို အောက်ပါအတိုင်း encode လုပ်ပါတယ်။
 
 $$
 \operatorname{vec}(x)=\operatorname{le32}(|x|)\|x
@@ -1112,7 +1112,7 @@ P =
 \operatorname{finality\_block\_hash}
 $$
 
-Transparent statement bytes တွေမှာ version, chain family, local and counterparty domains, security model, anchor governance, account codec, finality model, verifier target, verifier backend family, length-prefixed chain/backend/manifest fields, destination binding hash တို့ပါ။ Account codec key, payload type, public input bytes, and payload hash. statement hash ကတော့:
+Transparent statement bytes များမှာ version, chain family, local and counterparty domains, security model, anchor governance, account codec, finality model, verifier target, verifier backend family, length-prefixed chain/backend/manifest fields တို့ကို ပေါင်းစည်းထားခြင်းဖြစ်သည်။ destination binding cryptographic hash, account codec key, payload type, public input bytes, and payload cryptographic Hash တို့ကို သတ်မှတ်ထားပါသည်။
 
 $$
 \operatorname{statement\_hash} =
@@ -1121,7 +1121,7 @@ $$
 )
 $$
 
-ဒီသက်သေလမ်းကြောင်းအတွက် FastPQ ဒေတာနေရာ ID သည် Blake2b digest တစ်ခုရဲ့ ပထမ ၁၆ ဘိုက်တာပါ။
+ဤအထောက်အထားလမ်းကြောင်းအတွက် FastPQ ဒေတာနေရာ id သည် Blake2b cryptographic digest value တစ်ခု၏ပထမ ၁၆ ဘိုက်များဖြစ်သည်။
 
 $$
 \operatorname{dsid} =
@@ -1146,7 +1146,7 @@ $$
 
 အဲဒီနောက်မှာ FastPQ မှာယူတဲ့ စည်းကမ်းအတိုင်း စီစဉ်ပေးတယ်။
 
-OpenVerify verifier commitment သည် SHA-256 ကို SCCP သတင်းအချက်အလက်နောက်ခံအမည်နှင့် ကန်နီကလစ် FastPQ verifier သရုပ်ဖော်ချက်အပေါ်ပြုလုပ်ထားသည်။
+နိုင်ငံတကာ OpenVerify verifier cryptographic commitment value ကတော့ SHA-256 အပေါ်က SCCP Message backend နာမည်နှင့် Single Protocol စံနှုန်း FastPQ verifier descriptor:
 
 $$
 \operatorname{vk\_hash} =
@@ -1155,16 +1155,16 @@ $$
 )
 $$
 
-အသားအရေ FastPQ အထောက်အထားက Norito- ကုဒ်သွင်းထားတဲ့ `StarkFriOpenProofV1`, ပြီးရင် တစ်ထည်ထဲ ဝိုင်းထားတယ်။ `OpenVerifyEnvelope` backend နဲ့ `Stark`. SCCP စစ်ဆေးရေးက ပြန်လည်တည်ဆောက်တယ်။ FastPQ အစုနဲ့ manifesto ကနေ batch ကို စစ်ဆေးပြီး ဖွင့်ထားတဲ့ verification envelope metadata တွေကိုစစ်ပြီး FastPQ ပြန်လည်တည်ဆောက်ထားတဲ့ အလှူအတန်းနဲ့ အထောက်အထားကို စစ်ဆေးသူပါ။
+မူကြမ်း FastPQ အထောက်အထားကို Norito ကို `StarkFriOpenProofV1` အဖြစ် ကုဒ်သွင်းပြီး နောက်ပိုင်းမှာ backend `Stark` ရှိတဲ့ `OpenVerifyEnvelope` ကို ဖုံးအုပ်လိုက်ပါတယ်။ SCCP စစ်ဆေးချက်က အလားတူပဲ ပြန်လည်တည်ဆောက်တယ်။ FastPQ batch from the bundle and technical manifest, checks the open verification data container metadata, and invokes the FastPQ verifier on the reconstructed batch and proof (ပြန်လည်တည်ဆောက်ထားတဲ့ batch နဲ့ သက်သေခံ)
 
 ## Parameters Sets များ {#parameter-sets}
 
-Canonical Parameter Catalogue မှာ parameters set နှစ်ခုကို ဖော်ပြထားပါတယ်။ host prover lane က လက်ရှိမှာ `fastpq-lane-balanced` ကို အသုံးပြုပါတယ်။
+Single Protocol Standard Parameter Catalogue မှာ parameters set နှစ်ခုကို ဖော်ပြထားပါတယ်။ host prover execution lane က လက်ရှိမှာ `fastpq-lane-balanced` ကို သုံးပါတယ်။
 
-|Parameter ကို|ရည်ရွယ်ချက်|ကွင်း |ဟက်ရှ်များ|FRI |
+|Parameter ကို|ရည်ရွယ်ချက်|ကွင်း |cryptographic hashes များ|FRI |
 | ---------------------- | -------------------------- | ------------------------------ | ------------------------------------------- | ------------------------------- |
-|`fastpq-lane-balanced` |ဟန်ချက်ညီသော Prover ထုတ်ကုန်များ |Goldilocks quadratic extension ကို|Poseidon2 ကတိကဝတ်များ၊ စာရင်း SHA3 လိပ်စာ |Arity 8, blowup 8, 46 မေးခွန်းများ |
-|`fastpq-lane-latency` |နှောင့်နှေးမှု ထိခိုက်လွယ်တဲ့ လမ်းကြောင်းများ |Goldilocks quadratic extension ကို|Poseidon2 ကတိကဝတ်များ၊ စာရင်း SHA3 လိပ်စာ |Arity 16, blowup 16, 34 မေးခွန်းများ |
+|`fastpq-lane-balanced` |ဟန်ချက်ညီသော ဆာဗာ ဖြတ်သန်းမှု |Goldilocks quadratic extension ကို|Poseidon2 cryptographic commitment values, catalogue SHA3 label |အခန်း ၈၊ ပေါက်ကွဲမှု ၈၊ ၄၆ မေးခွန်း|
+|`fastpq-lane-latency` |latency ထိခိုက်လွယ်တဲ့ အကောင်အထည်ဖော်ရေးလမ်းကြောင်းများ |Goldilocks quadratic extension ကို|Poseidon2 cryptographic commitment values, catalogue SHA3 label |Arity 16, blowup 16, 34 မေးခွန်းများ |
 
 နှစ်ခုစလုံးသည် 128-bit လုံခြုံမှုကိုရည်ရွယ်ပြီး `2^16` ၏ ခြေရာ domain အရွယ်အစားကိုအသုံးပြုသည်။ Rust V1 စာသားပြန်လည်ဖြည့်သွင်းရေးကုဒ်သည် လက်ရှိတွင် Fiat-Shamir စိန်ခေါ်မှု bytes ကို `iroha_crypto::Hash::new` ဖြင့် တိုက်ရိုက်ဖေါ်ထုတ်ခြင်းထက်သာ၍ SHA3-256 ကို ထုတ်ယူသည်။
 
@@ -1192,8 +1192,8 @@ FastPQ configuration ကို `zk.fastpq` အောက်မှာ nested ထ�
 
 ```toml
 [zk.fastpq]
-execution_mode = "auto"
-poseidon_mode = "auto"
+execution_mode = "cpu"
+poseidon_mode = "cpu"
 
 # Optional telemetry labels.
 device_class = "apple-m4"
@@ -1210,14 +1210,14 @@ metal_debug_enum = false
 metal_debug_fused = false
 ```
 
-`irohad` မှတူညီသော အကောင်အထည်ဖော်မှုနှင့် တယ်လီမီတာ တံဆိပ်များကို လွှဲပြောင်းနိုင်သည်
+`iroha3d` မှတူညီသော အကောင်အထည်ဖော်မှုနှင့် တယ်လီမီတာ တံဆိပ်များကို လွှဲပြောင်းနိုင်သည်
 
 ```shell
-irohad --fastpq-execution-mode auto
-irohad --fastpq-poseidon-mode cpu
-irohad --fastpq-device-class apple-m4
-irohad --fastpq-chip-family m4
-irohad --fastpq-gpu-kind integrated
+iroha3d --fastpq-execution-mode gpu
+iroha3d --fastpq-poseidon-mode cpu
+iroha3d --fastpq-device-class apple-m4
+iroha3d --fastpq-chip-family m4
+iroha3d --fastpq-gpu-kind integrated
 ```
 
 ပြင်ဆင်မှု ကွင်းများအတွက် ပတ်ဝန်းကျင် ကိန်းရှင်များကိုလည်း ထောက်ပံ့ထားသည်။ FastPQ အတွက် သီးသန့် ကိန်းရှင်များသည် အောက်ပါအတိုင်းဖြစ်သည်။
@@ -1237,25 +1237,25 @@ irohad --fastpq-gpu-kind integrated
 
 ## မက်ထရစ်များ {#metrics}
 
-FastPQ က Backend ရွေးချယ်မှုနဲ့ Metal Runtime အပြုအမူအတွက် မက်ထရစ်တွေကို Export လုပ်ပေးပါတယ်။
+FastPQ က Backend ရွေးချယ်ခြင်းနှင့် Metal Software အကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင် အပြုအမူအတွက် မက်ထရစ်များကို တင်ပို့သည်။
 
 |မက်ထရစ် |အဓိပ္ပါယ်|
 | --------------------------------- | --------------------------------------------------------------------------- |
 |`fastpq_execution_mode_total` |requested and resolved execution mode by backend and device labels  နောက်ဆက်တွဲအဆုံးနှင့်ကိရိယာလိပ်များဖြင့်တောင်းဆိုထားသောနှင့်ဖြေရှင်းထားသော လုပ်ဆောင်မှုပုံစံ|
-|`fastpq_poseidon_pipeline_total` |မေးမြန်းပြီး ဖြေရှင်းထားတဲ့ Poseidon Pipeline လမ်းကြောင်း |
+|`fastpq_poseidon_pipeline_total` |requested and resolved Poseidon software processing workflow path ကိုရှာဖွေပြီး ဖြေရှင်းခဲ့ပါတယ် |
 |`fastpq_metal_queue_depth` |သတ္တုတန်းကန့်သတ်ချက်၊ အမြင့်ဆုံး လေယာဉ်ခရီးစဉ်အရေအတွက်၊ ပို့ဆောင်မှုအရေအတွက်နဲ့ နမူနာယူခြင်း ပြတင်းပေါက် |
 |`fastpq_metal_queue_ratio` |သံမဏိလိုင်း အလုပ်ရှုပ်ပြီး အပြန်အလှန် ကွဲပြားမှုနှုန်းများ |
 |`fastpq_zero_fill_duration_ms` |Metal Run များအတွက် Host သုညဖြည့်ခြင်းသက်တမ်း |
 |`fastpq_zero_fill_bandwidth_gbps` |Derived zero-fill bandwidth ကို |
 
-ယေဘုယျ စွမ်းဆောင်ရည်ခွဲခြားမှုအတွက် [ Performance နှင့် Metrics ](/my/guide/advanced/metrics.md) တွင်စာရင်းသွင်းထားသော သဘောတူညီချက်နှင့် တန်းစီအချက်ပြများနှင့်အတူသုံးပါ။
+ယေဘုယျ စွမ်းဆောင်ရည်ခွဲခြားမှုအတွက် [စွမ်းဆောင်ရည်နှင့် မက်ထရစ်များ](/my/guide/advanced/metrics.md) တွင်စာရင်းသွင်းထားသော သဘောတူညီချက်နှင့် တန်းစီအချက်ပြများနှင့်အတူ သုံးပါ။
 
 ## ဆက်စပ်သော ရည်ညွှန်းချက် {#related-reference}
 
-- [ထုတ်ပေးသော အမျိုးအစား အသေးစိတ်များအတွက် Data Model Schema](/my/reference/data-model-schema.md)
+- [ဒေတာပုံစံ အစီအစဉ်](/my/reference/data-model-schema.md) node-authoritative type point-in-time data view အတွက်
 - `FastpqTransitionBatch`
 - `FastpqPublicInputs`
 - `TransferTranscript`
 - `AxtFastpqBinding`
 - `LaneFastpqProofMaterial`
-- [`irohad` FastPQ ရွေးချယ်စရာများ](/my/reference/irohad-cli.md#arg-fastpq-execution-mode)
+- [`iroha3d` FastPQ ရွေးချယ်စရာများ](/my/reference/iroha3d-cli.md#fastpq-overrides)

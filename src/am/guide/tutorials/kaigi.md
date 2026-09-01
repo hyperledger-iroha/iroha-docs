@@ -1,35 +1,36 @@
 ---
 translation_locale: am
 translation_source: /guide/tutorials/kaigi.md
-translation_source_hash: e55c7aebc89c39edb8e7077db2414a6d432aafb05aff8df04c248fce444d7dea
+translation_source_hash: 7a9f03e45a17ecbc4a2d7182d4c9aff88d5f6f0b77e0ecfde86bed56d0ddebba
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# የተቀላቀለ Kaigi በ JavaScript መተግበሪያ {#embed-kaigi-in-a-javascript-app}
+# Kaigi ን በ JavaScript መተግበሪያ ውስጥ መክተት {#embed-kaigi-in-a-javascript-app}
 
-Kaigi አንድ መተግበሪያ በኪስ ቦርሳ የተደገፉ የኦዲዮ / ቪዲዮ ስብሰባዎችን እንዲፈጥር ያስችለዋል ፣ የእነሱ የሕይወት ዑደት በ Iroha በኩል ይመዘገባል። አሳሹ አሁንም ሚዲያውን በ WebRTC ያስተናግዳል ፣ Torii እና Kaigi መመሪያዎችም ዘላቂ የመሰብሰቢያ መዝገብን ይሰጣሉ ፣ የተመሰጠረ የምልክት ሜታዳታ ፣ የግል ዝርዝር ድጋፍ እና አጠቃቀም ክስተቶች.
+Kaigi አሳሹ ኦዲዮ እና ቪዲዮን በ WebRTC ሲያስተላልፍ የስብሰባውን የህይወት ኡደት በ Iroha ይመዘግባል። የብሎክቼይን መዝገብ ጥሪውን፣ በስም ዝርዝር ላይ የተደረጉ ለውጦችን፣ የተመሰጠረ የምልክት ሜታዳታ እና የመጨረሻ ሁኔታን ያከማቻል። የሚዲያ ቅብብል አይደለም።
 
-ይህ መመሪያ በ [Iroha ዴሞ JavaScript](https://github.com/soramitsu/iroha-demo-javascript) መተግበሪያ ጥቅም ላይ የዋለውን አነስተኛ ውህደት ንድፍ ያሳያል:
+ይህ አጋዥ ስልጠና የአሁኑን [Iroha JavaScript ቅንጭብ ማሳያ](https://github.com/soramitsu/iroha-demo-javascript) ይከተላል። ማሳያው አንድ የመጀመሪያ ልቀት መተግበሪያ መገለጫ ተግባራዊ ያደርጋል -
 
-- አስተላላፊው WebRTC አቅርቦቶችን እና መልሶችን ይፈጥራል ።
-- አንድ ማመልከቻ ድልድይ ይለያል እና Kaigi ግብይቶች ያቀርባል
-- የታመሙ የግብዣ አገናኞች ጥሪውን ID ብቻ ይሸከማሉ እና የግብዣ ምስጢራዊ ነው
-- አስተናጋጅ Torii ለተሳታፊዎች የተደበዘዙ መልሶች የሚከታተል
+- አንድ አስተናጋጅ እና አንድ እንግዳ
+- `transparent` Kaigi የግላዊነት ሁነታ
+- `authenticated` የክፍል ፖሊሲ
+- `RevealAfterJoin` የአውታረ መረብ አቻ መለያ ባህሪ
+- በጥሪ ሜታዳታ ውስጥ የተመሰጠረ አቅርቦት እና በተጠናቀቀው የግብይት ሜታዳታ ውስጥ የተመሰጠረ መልስ
 
-ምሳሌዎቹ TypeScript ን ይጠቀማሉ እናም በኤሌክትሮን ፣ ደህንነቱ የተጠበቀ የጀርባ አወጣጥ ካለው አሳሽ ወይም Wallet ማራዘሚያ ካለው የድር መተግበሪያ ውስጥ ሊሠሩ እንዲችሉ ተጽፈዋል ።
+የ Kaigi ፕሮቶኮልም `zk-roster-v1`ን ይገልፃል፣ ነገር ግን አሁን ያለው ማሳያ ያንን የማረጋገጫ ፍሰት አያመነጭም ወይም አያቀርብም። ድልድይዎ ሙሉውን የአሁኑን የማረጋገጫ ውል ካልተተገበረ በስተቀር የግል ሁነታ መቆጣጠሪያን አያቅርቡ።
 
 ## ቅድመ ሁኔታዎች {#prerequisites}
 
-አንተ ያስፈልግሃል:
+ትፈልጋለህ:
 
-- አንድ Kaigi-አቅም ያለው Torii መጨረሻ ነጥብ
-- የአስተናጋጁ እና የእንግዳው መለያ
-- ደህንነቱ የተጠበቀ የመተግበሪያ ድልድይ ወይም የኪስ ቦርሳ በኩል ወደ እያንዳንዱ መለያ ፊርማ ቁልፍ መዳረሻ
-- የአሳሽ ካሜራ/ማይክሮፎን ፍቃዶች
-- Node.js 20+ የሚጠቀሙ ከሆነ JavaScript ዲሞ ወይም ተወላጅ `@iroha/iroha-js` በቀጥታ የሚጣበቅ
+- Node.js 20 ወይም ከዚያ በላይ እና Rust የመሳሪያ ሰንሰለት
+- Kaigi የሚችል Torii API የመጨረሻ ነጥብ
+- የተለየ የገንዘብ ድጋፍ የተደረገላቸው አስተናጋጅ እና የእንግዳ መለያዎች
+- የእያንዳንዱ መለያ የፊርማ ቁልፍ በልዩ የኪስ ቦርሳ ወይም የመተግበሪያ ድልድይ ውስጥ
+- በሁለቱም የአሳሽ አውዶች ውስጥ የካሜራ እና የማይክሮፎን ፍቃድ
 
-ለሙሉ የሥራ ማጣቀሻ ከ Iroha ምንጭ ቼክ አጠገብ ያለውን ማሳያ ቅጅ:
+ማሳያው `@iroha/iroha-js`ን በአጎራባች ጥገኝነት `file:../iroha/javascript/iroha_js` በኩል ይጠቀማል። ማሳያውን ከመጫንዎ በፊት SDKን ከ Iroha ምንጭ የሥራ ቅጂ ይገንቡ፦
 
 ```bash
 mkdir iroha-wallet-workspace
@@ -47,612 +48,211 @@ npm install
 npm run dev
 ```
 
-የ ማሳያውን ይጠቀሙ [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js) ከወንድም Iroha ምንጭ ማከማቻ. `file:` ተወላጅ ተያያዥነት በቀጥታ ያ ቼክአውት ይፈታል. `iroha/javascript/iroha_js`; ንጹህ የፓኬጅ ማውጫ በ Cargo የሚፈለገውን የሥራ ቦታ አይይዝም `npm run build:native`.
+ንፁህ SDK ጥቅሉ የሚፈለገውን የጭነት የስራ ቦታ አያካትትም። `npm run build:native`, ስለዚህ በ ውስጥ እንደገና ይገንቡት Iroha ምንጭ-ኮድ የስራ ቅጂ በኋላ SDK ለውጦች. በሰነድ የተመዘገበው SDK ምንጩ በ ላይ ተሰክቷል [`javascript/iroha_js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js).
 
-በ TAIRA ላይ የቀጥታ ስብሰባ ከማካሄድዎ በፊት ማሳያው የሚመረኮዝበትን የህዝብ ገጽ Torii ይፈትሹ:
+## የ API የመጨረሻ ነጥብ ያረጋግጡ {#check-the-endpoint}
+
+ለህዝብ Taira የሙከራ መረብ፣ መጀመሪያ Torii ተደራሽነትን ያረጋግጡ -
 
 ```bash
 TAIRA=https://taira.sora.org
 curl -fsS "$TAIRA/health"
-curl -fsS "$TAIRA/v1/kaigi/relays"
-curl -fsS "$TAIRA/v1/kaigi/relays/health"
+curl -fsS "$TAIRA/openapi.json" >/dev/null
 ```
 
-እነዚህ ትዕዛዞች እንደሚያረጋግጡ TAIRA በሕይወት ነው እና ይህ Kaigi ተለጣፊ ቴሌሜትሪ ይገኛል. Kaigi ግብይቶች. `CreateKaigi` ወይም `JoinKaigi` የሙከራ ፍላጎቶች የገንዘብ ድጋፍ TAIRA ሂሳቦች እና በዴሞው ድልድይ ወይም ሌላ የኪስ ቦርሳ የተደገፈ ድልድይ በኩል ፊርማ ማድረግ.
+እነዚህ ጥያቄዎች የሚያሳዩት Torii እና የማስታወቂያው API ሰነድ ሊደረስበት እንደሚችል ብቻ ነው። አንድ የተወሰነ Kaigi ጥሪ እንዳለ ወይም የኪስ ቦርሳዎ ግብይቶችን ማስገባት እንደሚችል አያሳዩም።
 
-## ሥነ ሕንፃ {#architecture}
+`/v1/kaigi/relays`፣ `/v1/kaigi/relays/{relay_id}` ወይም `/v1/kaigi/relays/health` ባልተፈረሙ `curl` ጥያቄዎች አይፈትሹ። እነዚያ ሶስት መንገዶች የተፈቀደ የተዘረዘረ ኦፕሬተር ፊርማ ያስፈልጋቸዋል። የማስተላለፊያ ክስተት ዥረቱ አንድ ፕሮቶኮል-ደረጃውን የጠበቀ ትክክለኛ የአውታረ መረብ መለያ ፊርማ ያስፈልገዋል።
 
-የ Kaigi ውህደት በሦስት ንብርብሮች ይከፈላል:
+በማሳያው ውስጥ ቅንብሮችን ይክፈቱ ፣ ያስገቡ Torii URL, እና ፍቀድ API የመጨረሻ ነጥብ ግኝት ሰንሰለቱን ይጫኑ UUID, ትክክለኛ `NetworkId`, እና የአውታረ መረብ ቅድመ ቅጥያ. የመፃፍ ድልድይ ሶስቱንም እሴቶች ከተመረጠው ጋር ማያያዝ አለበት API የመጨረሻ ነጥብ; በጭራሽ አይገነቡ ሀ `NetworkId` ከሰንሰለቱ UUID ወይም ቅድመ ቅጥያ።
 
-|ሽፋን |ኃላፊነት |
-| --- | --- |
-|UI |የመለያ ምርጫ፣ የስብሰባ ቅጽ፣ የጥሪ አገናኝ ማሳያ፣ የመገናኛ ብዙሃን መቆጣጠር |
-|WebRTC |`RTCPeerConnection`፣ አካባቢያዊ ሚዲያዎች፣ አቅርቦትና መልስ መግለጫዎች |
-|Iroha ድልድይ|ፊርማ፣ `CreateKaigi`, `JoinKaigi`, `EndKaigi`፣ የምልክት ምርጫ |
+## የመንገድ እና የማረጋገጫ ሞዴል {#route-and-authentication-model}
 
-የመተግበሪያው ድልድይ የኤሌክትሮን ቅድመ ጭነት API ፣ የኪስ ቦርሳ ማራዘሚያ ወይም የጀርባ መጨረሻ ነጥብ ሊሆን ይችላል። አነስተኛ ወለል ለ UI ሊያጋልጥ ይገባል-
+Kaigi የመጻፍ ክዋኔዎች በተለመደው የተጠቀሱ እና የተፈረሙ ግብይቶች ውስጥ መመሪያዎች ናቸው።. በ `POST /v1/pipeline/transactions` በኩል ያስገቡ እና የተጠናቀቀውን የብሎክ ማስረጃ ይጠብቁ.
+
+ማመልከቻው የሚከተሉት ናቸው -
+
+|መንገድ|ማረጋገጫ|
+| ----------------------------------- | --------------------------------------- |
+|`/v1/kaigi/calls/{call_id}`|የህዝብ|
+|`/v1/kaigi/calls/{call_id}/signals`|ነጠላ ፕሮቶኮል-መደበኛ ትክክለኛ-አውታረ መረብ መለያ ጥያቄ|
+|`/v1/kaigi/calls/{call_id}/events`|ነጠላ ፕሮቶኮል-መደበኛ ትክክለኛ-አውታረ መረብ መለያ ጥያቄ|
+
+JavaScript SDK እነዚህን እንደ `getKaigiCall` እና `listKaigiCallSignals` ያጋልጣል። የሲግናል ዝርዝሩ ትክክለኛ የጠቋሚ ገጽ ይጠቀማል። የተመለሰውን ጠቋሚ ሳይለወጥ እንደገና ይጠቀሙ; በማካካሻ ወይም በጊዜ ማህተምፕ-ብቻ ቀጣይነት አይተኩት።
+
+## ከአቅራቢው ውጭ መፈረምዎን ይቀጥሉ {#keep-signing-outside-the-renderer}
+
+ውህደቱን በሦስት ድንበሮች ይከፋፍሉት
+
+|ድንበር|ኃላፊነት|
+| ----------------- | -------------------------------------------------------------------- |
+|አቅራቢ|የስብሰባ ቅጽ፣ የግብዣ አገናኝ፣ የሚዲያ ቁጥጥሮች፣ WebRTC ቅናሾች እና መልሶች|
+|ልዩ ድልድይ|ቁልፍ መዳረሻ፣ የክፍያ ዋጋ ግምት፣ የመመሪያ ግንባታ፣ ፊርማ፣ የመጨረሻነት ይጠብቃል።|
+|Torii|የጥሪ መዝገብ፣ የተጠናቀቀ የሲግናል ንባቦች፣ የግብይት ማቅረቢያ|
+
+ወደ አቅራቢው የሚመለከት ድልድይ የ API የመጨረሻ ነጥብ ማንነትን በግልፅ መቀበል እና የግል ቁልፍ ቁሳቁስ ከድንበሩ ጀርባ ማስቀመጥ አለበት። የአሁኑ የማሳያ ወለል ከዚህ የተቀነሰ ውል ጋር እኩል ነው -
 
 ```ts
-type KaigiMeetingPrivacy = "private" | "transparent";
-type KaigiPeerIdentityReveal = "Hidden" | "RevealAfterJoin";
+type ConnectionIdentity = {
+  toriiUrl: string
+  chainId: string
+  networkId: string
+  networkPrefix: number
+}
 
 type KaigiSignalKeyPair = {
-  publicKeyBase64Url: string;
-  privateKeyBase64Url: string;
-};
-
-type KaigiDescription = {
-  type: "offer" | "answer";
-  sdp: string;
-};
+  publicKeyBase64Url: string
+  privateKeyBase64Url: string
+}
 
 type KaigiMeeting = {
-  callId: string;
-  meetingCode: string;
-  title?: string;
-  hostAccountId?: string;
-  hostDisplayName?: string;
-  hostParticipantId?: string;
-  hostKaigiPublicKeyBase64Url: string;
-  scheduledStartMs: number;
-  expiresAtMs: number;
-  live: boolean;
-  ended: boolean;
-  privacyMode: KaigiMeetingPrivacy;
-  peerIdentityReveal: KaigiPeerIdentityReveal;
-  rosterRootHex: string;
-  offerDescription: { type: "offer"; sdp: string };
-};
+  callId: string
+  meetingCode: string
+  hostAccountId?: string
+  hostKaigiPublicKeyBase64Url: string
+  scheduledStartMs: number
+  expiresAtMs: number
+  createdAtMs: number
+  live: boolean
+  ended: boolean
+  privacyMode: 'transparent'
+  peerIdentityReveal: 'RevealAfterJoin'
+  offerDescription: { type: 'offer'; sdp: string }
+}
 
-type KaigiSignal = {
-  entrypointHash: string;
-  callId: string;
-  participantId: string;
-  participantName: string;
-  createdAtMs: number;
-  answerDescription: { type: "answer"; sdp: string };
-};
+type KaigiSignalPage = {
+  items: Array<{
+    entrypointHash: string
+    callId: string
+    participantId: string
+    participantName: string
+    createdAtMs: number
+    answerDescription: { type: 'answer'; sdp: string }
+  }>
+  nextCursor?: string
+}
 
 type KaigiBridge = {
-  generateKaigiSignalKeyPair(): KaigiSignalKeyPair;
+  generateKaigiSignalKeyPair(): KaigiSignalKeyPair
 
-  createKaigiMeeting(input: {
-    toriiUrl: string;
-    chainId: string;
-    hostAccountId: string;
-    callId: string;
-    title?: string;
-    scheduledStartMs: number;
-    meetingCode: string;
-    inviteSecretBase64Url: string;
-    hostDisplayName: string;
-    hostParticipantId: string;
-    hostKaigiPublicKeyBase64Url: string;
-    offerDescription: { type: "offer"; sdp: string };
-    privacyMode: KaigiMeetingPrivacy;
-    peerIdentityReveal: KaigiPeerIdentityReveal;
-  }): Promise<{ hash: string }>;
+  createKaigiMeeting(
+    input: ConnectionIdentity & {
+      hostAccountId: string
+      callId: string
+      title?: string
+      scheduledStartMs: number
+      meetingCode: string
+      inviteSecretBase64Url: string
+      hostDisplayName: string
+      hostParticipantId: string
+      hostKaigiPublicKeyBase64Url: string
+      offerDescription: { type: 'offer'; sdp: string }
+    },
+  ): Promise<{ hash: string }>
 
   getKaigiCall(input: {
-    toriiUrl: string;
-    callId: string;
-    inviteSecretBase64Url: string;
-  }): Promise<KaigiMeeting>;
+    toriiUrl: string
+    callId: string
+    inviteSecretBase64Url: string
+  }): Promise<KaigiMeeting>
 
-  joinKaigiMeeting(input: {
-    toriiUrl: string;
-    chainId: string;
-    participantAccountId: string;
-    callId: string;
-    hostAccountId?: string;
-    hostKaigiPublicKeyBase64Url: string;
-    participantId: string;
-    participantName: string;
-    walletIdentity?: string;
-    roomId: string;
-    privacyMode: KaigiMeetingPrivacy;
-    rosterRootHex: string;
-    answerDescription: { type: "answer"; sdp: string };
-  }): Promise<{ hash: string }>;
+  joinKaigiMeeting(
+    input: ConnectionIdentity & {
+      participantAccountId: string
+      callId: string
+      inviteSecretBase64Url: string
+      participantId: string
+      participantName: string
+      answerDescription: { type: 'answer'; sdp: string }
+    },
+  ): Promise<{ hash: string }>
 
   pollKaigiMeetingSignals(input: {
-    toriiUrl: string;
-    accountId: string;
-    callId: string;
-    hostKaigiKeys: KaigiSignalKeyPair;
-    afterTimestampMs?: number;
-  }): Promise<KaigiSignal[]>;
+    toriiUrl: string
+    networkId: string
+    networkPrefix: number
+    accountId: string
+    callId: string
+    hostKaigiKeys: KaigiSignalKeyPair
+    limit?: number
+    cursor?: string
+  }): Promise<KaigiSignalPage>
 
-  watchKaigiCallEvents(
-    input: { toriiUrl: string; callId: string },
-    onEvent: (event: { kind: string; callId: string }) => void | Promise<void>,
-  ): Promise<string>;
-
-  endKaigiMeeting(input: {
-    toriiUrl: string;
-    chainId: string;
-    hostAccountId: string;
-    callId: string;
-    endedAtMs?: number;
-  }): Promise<{ hash: string }>;
-};
-```
-
-በማሳያ መተግበሪያ ውስጥ እነዚህ ድልድይ ዘዴዎች በ `@iroha/iroha-js`, አካባቢያዊ ፊርማ, የተመሰጠረ Kaigi ሜታዳታ, እና Torii ጥሪዎች ይተገበራሉ.
-
-## ረዳቶችን ይጋብዙ {#invite-helpers}
-
-Torii-ተኳሃኝ ጥሪ IDs በ `domain.dataspace:meeting` ቅጽ ይጠቀሙ። ማሳያው ለተፈጠሩ ስብሰባዎች `kaigi.universal:<call-name>` ይጠቀማል.
-
-```ts
-const KAIGI_WINDOW_MS = 24 * 60 * 60 * 1000;
-
-const base64Url = (bytes: Uint8Array): string =>
-  btoa(String.fromCharCode(...bytes))
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/g, "");
-
-export function createInviteSecret(): string {
-  const bytes = new Uint8Array(24);
-  crypto.getRandomValues(bytes);
-  return base64Url(bytes);
-}
-
-export function createMeetingCode(): string {
-  const bytes = new Uint8Array(8);
-  crypto.getRandomValues(bytes);
-  return base64Url(bytes).toLowerCase();
-}
-
-export function buildKaigiCallId(domain: string, meetingCode: string): string {
-  const qualifiedDomain = domain.includes(".") ? domain : `${domain}.universal`;
-  const safeCode = meetingCode
-    .toLowerCase()
-    .replace(/[^a-z0-9-]+/g, "-")
-    .replace(/^-|-$/g, "");
-  return `${qualifiedDomain}:kaigi-${safeCode || "meeting"}`;
-}
-
-export function buildInviteLink(input: {
-  callId: string;
-  inviteSecretBase64Url: string;
-}): string {
-  const call = encodeURIComponent(input.callId);
-  const secret = encodeURIComponent(input.inviteSecretBase64Url);
-  return `iroha://kaigi/join?call=${call}&secret=${secret}`;
-}
-
-export function parseInviteLink(link: string): {
-  callId: string;
-  inviteSecretBase64Url: string;
-} {
-  const url = new URL(link);
-  const callId = url.searchParams.get("call")?.trim();
-  const inviteSecretBase64Url = url.searchParams.get("secret")?.trim();
-  if (!callId || !inviteSecretBase64Url) {
-    throw new Error("Kaigi invite link is missing call or secret.");
-  }
-  return { callId, inviteSecretBase64Url };
-}
-```
-
-## WebRTC ረዳቶች {#webrtc-helpers}
-
-አስተናጋጁ አንድ ቅናሽ ይፈጥራል ፣ በ `CreateKaigi` በኩል ያከማቻል ፣ እና የእንግዳውን መልስ ተግባራዊ ለማድረግ መስኮቱን ክፍት ይይዛል። እንግዱ የተመሰጠረውን ቅናሽ ይወስዳል ፣ መልስ ይፈጥራል እና መልሱን በ `JoinKaigi` ይለጥፋል ።
-
-```ts
-const rtcConfig: RTCConfiguration = {
-  iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
-};
-
-export async function openLocalMedia(): Promise<MediaStream> {
-  return navigator.mediaDevices.getUserMedia({
-    audio: true,
-    video: {
-      width: { ideal: 1280 },
-      height: { ideal: 720 },
-      frameRate: { ideal: 24, max: 30 },
+  endKaigiMeeting(
+    input: ConnectionIdentity & {
+      hostAccountId: string
+      callId: string
+      endedAtMs?: number
     },
-  });
-}
-
-export function createPeer(localStream: MediaStream): RTCPeerConnection {
-  const peer = new RTCPeerConnection(rtcConfig);
-  for (const track of localStream.getTracks()) {
-    peer.addTrack(track, localStream);
-  }
-  return peer;
-}
-
-async function waitForIceGathering(peer: RTCPeerConnection): Promise<void> {
-  if (peer.iceGatheringState === "complete") {
-    return;
-  }
-  await new Promise<void>((resolve) => {
-    const done = () => {
-      if (peer.iceGatheringState === "complete") {
-        peer.removeEventListener("icegatheringstatechange", done);
-        resolve();
-      }
-    };
-    peer.addEventListener("icegatheringstatechange", done);
-  });
-}
-
-export async function createOfferDescription(
-  peer: RTCPeerConnection,
-): Promise<{ type: "offer"; sdp: string }> {
-  const offer = await peer.createOffer();
-  await peer.setLocalDescription(offer);
-  await waitForIceGathering(peer);
-  const local = peer.localDescription;
-  if (!local?.sdp || local.type !== "offer") {
-    throw new Error("WebRTC offer was not created.");
-  }
-  return { type: "offer", sdp: local.sdp };
-}
-
-export async function createAnswerDescription(
-  peer: RTCPeerConnection,
-  offer: { type: "offer"; sdp: string },
-): Promise<{ type: "answer"; sdp: string }> {
-  await peer.setRemoteDescription(offer);
-  const answer = await peer.createAnswer();
-  await peer.setLocalDescription(answer);
-  await waitForIceGathering(peer);
-  const local = peer.localDescription;
-  if (!local?.sdp || local.type !== "answer") {
-    throw new Error("WebRTC answer was not created.");
-  }
-  return { type: "answer", sdp: local.sdp };
+  ): Promise<{ hash: string }>
 }
 ```
 
-ዥረቶችን በ UI መደበኛ የቪዲዮ አካላት ጋር ያያይዙ:
+ትክክለኛው የማሳያ ውጤት የተጠናቀቀ የብሎክ ማስረጃ እና ማንኛውንም የተጠቀሰ ክፍያን ያካትታል። የግብይት ምስጠራ ሃሽ ብቻውን እንደ ስኬት አይቁጠሩት።
 
-```ts
-export function attachKaigiMedia(input: {
-  peer: RTCPeerConnection;
-  localStream: MediaStream;
-  localVideo: HTMLVideoElement;
-  remoteVideo: HTMLVideoElement;
-}): void {
-  input.localVideo.srcObject = input.localStream;
+## የግብዣ ውል {#invite-contract}
 
-  const remoteStream = new MediaStream();
-  input.remoteVideo.srcObject = remoteStream;
+የጥሪ መታወቂያን በትክክለኛው `domain.dataspace:meeting` ቅጽ ይጠቀሙ። ማሳያው በ`kaigi.universal` ስር ጥሪዎችን ያመነጫል እና ባለ 24-ባይት ምስጠራ የዘፈቀደ ግብዣ ሚስጥር እንደ 32 ያልተሸፈኑ base64url ቁምፊዎች ይጠቀማል።
 
-  input.peer.addEventListener("track", (event) => {
-    if (event.streams[0]) {
-      input.remoteVideo.srcObject = event.streams[0];
-      return;
-    }
-    remoteStream.addTrack(event.track);
-  });
-}
+ነጠላ ፕሮቶኮል-መደበኛ ግብዣ በትክክል አንድ `call` እና አንድ `secret` መለኪያ ይዟል
+
+```text
+iroha://kaigi/join?call=kaigi.universal%3Akaigi-<meeting>&secret=<base64url>
 ```
 
-## አስተናጋጅ፦ የስብሰባ አገናኝ ይፍጠሩ {#host-create-a-meeting-link}
+የውስጠ-መተግበሪያ ተተኪ አማራጭ በ ላይ ተመሳሳይ ትክክለኛ ጥያቄ ነው `#/kaigi`. የተባዙ፣ ያልታወቁ፣ ባዶ፣ የታሸጉ ወይም ነጠላ ያልሆኑ ፕሮቶኮል-መደበኛ መለኪያዎችን ውድቅ ያድርጉ። ማሳያው ስብሰባው ከ24 ሰአታት በኋላ እንዲያበቃ ያዘጋጃል `scheduledStartMs`.
 
-አስተናጋጅ ፍሰት:
+የግብዣው ሚስጥር የአስተናጋጁን አቅርቦት ሜታዳታ ዲክሪፕት ያደርገዋል። ተሸካሚ ሚስጥር ነው አይመዝግቡት፣ በመተንተን ውስጥ አያስቀምጡት ወይም በብሎክቼይን መዝገብ ሜታዳታ ውስጥ አያስቀምጡት። የአስተናጋጁ የተለየ X25519 ቁልፍ ጥንድ የእንግዳ መልስ ምልክቶችን ዲክሪፕት ያደርገዋል እና ለአስተናጋጁ ክፍለ ጊዜ በአካባቢው መቆየት አለበት።
 
-1. ክፍት ካሜራ እና ማይክሮፎን
-2. አንድ Kaigi ምልክት ቁልፍ ጥንድ ይፍጠሩ
-3. የ WebRTC ቅናሽ ያድርጉ
-4. `CreateKaigi` ማቅረብ
-5. የታመቀ የግብዣ አገናኝ ያጋሩ
+## ስብሰባ የሕይወት ዑደት {#meeting-lifecycle}
 
-```ts
-type AccountContext = {
-  accountId: string;
-  displayName: string;
-};
+### አስተናጋጅ {#host}
 
-type KaigiContext = {
-  bridge: KaigiBridge;
-  toriiUrl: string;
-  chainId: string;
-};
+1. የተመረጠው የኪስ ቦርሳ መታወቂያ ከ API የመጨረሻ ነጥብ ሰንሰለት UUID፣ ትክክለኛ `NetworkId` እና ቅድመ ቅጥያ ጋር የሚዛመድ መሆኑን ያረጋግጡ።
+2. የሀገር ውስጥ ሚዲያዎችን ይክፈቱ እና `RTCPeerConnection` ይፍጠሩ።
+3. SDP ቅናሽ ይፍጠሩ እና ICE ስብሰባ እስኪጠናቀቅ ድረስ ይጠብቁ።
+4. የግብዣውን ሚስጥር ይፍጠሩ እና አስተናጋጅ Kaigi የምልክት ቁልፍ ጥንድ።
+5. ቅናሹን በግብዣው ሚስጥር ኢንክሪፕት ያድርጉት።
+6. የክፍያ ዋጋ ግምት ያግኙ እና `CreateKaigi` የያዘ ግብይት ግልጽ በሆነ የተረጋገጠ ሁነታ ይፈርሙ።
+7. ግብዣውን እንደ ቀጥታ ከማሳየትዎ በፊት የተጠናቀቀውን የብሎክ ማስረጃ ይጠብቁ።
 
-export async function hostKaigiMeeting(input: {
-  context: KaigiContext;
-  account: AccountContext;
-  title?: string;
-  privacyMode?: KaigiMeetingPrivacy;
-}): Promise<{
-  callId: string;
-  inviteLink: string;
-  peer: RTCPeerConnection;
-  localStream: MediaStream;
-  hostKaigiKeys: KaigiSignalKeyPair;
-  createdAtMs: number;
-}> {
-  const { bridge, toriiUrl, chainId } = input.context;
-  const privacyMode = input.privacyMode ?? "private";
-  const scheduledStartMs = Date.now();
-  const meetingCode = createMeetingCode();
-  const callId = buildKaigiCallId("kaigi", meetingCode);
-  const inviteSecretBase64Url = createInviteSecret();
-  const hostKaigiKeys = bridge.generateKaigiSignalKeyPair();
+የአስተናጋጁን ክፍለ ጊዜ ክፍት ያድርጉት። የሲግናል መንገዱን በአስተናጋጅ መለያው ነጠላ ፕሮቶኮል-መደበኛ የጥያቄ ፊርማ ይመርጡ፣ የመጀመሪያውን ትክክለኛ መልስ በአስተናጋጅ ሲግናል ቁልፍ ዲክሪፕት ያድርጉ እና በ`setRemoteDescription` ይተግብሩ። ተጨማሪ ገፆች ሲገኙ በትክክል `nextCursor`ን ወደ ፊት ይውሰዱ።
 
-  const localStream = await openLocalMedia();
-  const peer = createPeer(localStream);
-  const offerDescription = await createOfferDescription(peer);
+### እንግዳ {#guest}
 
-  await bridge.createKaigiMeeting({
-    toriiUrl,
-    chainId,
-    hostAccountId: input.account.accountId,
-    callId,
-    title: input.title,
-    scheduledStartMs,
-    meetingCode,
-    inviteSecretBase64Url,
-    hostDisplayName: input.account.displayName,
-    hostParticipantId: "host",
-    hostKaigiPublicKeyBase64Url: hostKaigiKeys.publicKeyBase64Url,
-    offerDescription,
-    privacyMode,
-    peerIdentityReveal: "Hidden",
-  });
+1. ትክክለኛውን ግብዣ ይተንትኑ እና ያረጋግጡ።
+2. የህዝብ ጥሪ መዝገቡን ይዘው ይምጡ እና ቅናሹን በግብዣው ሚስጥር ዲክሪፕት ያድርጉት።
+3. ያለቀው፣ ጊዜው ያለፈበት፣ ቀጥታ ያልሆነ ወይም ግልጽ ያልሆነውን ስብሰባ ውድቅ ያድርጉ።
+4. የሀገር ውስጥ ሚዲያን ይክፈቱ፣ ቅናሹን ይተግብሩ፣ SDP መልስ ይፍጠሩ እና ICE መሰብሰብን ይጨርሱ።
+5. ለአስተናጋጁ Kaigi የህዝብ ቁልፍ መልሱን ኢንክሪፕት ያድርጉ።
+6. የክፍያ ዋጋ ግምት ያግኙ እና `JoinKaigi` እና ነጠላ ፕሮቶኮል-መደበኛ መልስ ሜታዳታ የያዘ ግብይት ይፈርሙ።
+7. እንግዳውን እንደተቀላቀለ ከማሳየትዎ በፊት የተጠናቀቀውን የብሎክ ማስረጃ ይጠብቁ።
 
-  return {
-    callId,
-    inviteLink: buildInviteLink({ callId, inviteSecretBase64Url }),
-    peer,
-    localStream,
-    hostKaigiKeys,
-    createdAtMs: scheduledStartMs,
-  };
-}
-```
+### መጨረሻ {#end}
 
-`inviteLink` በእርስዎ UI ውስጥ ማሳየት. ተጠቃሚው መገልበጥ ይችላል, ሌላ ቦርሳ ውስጥ መክፈት, ወይም የመሳሰሉ መተግበሪያ መንገድ መለወጥ:
+አስተናጋጁ ብቻ `EndKaigi` ማስገባት ይችላል። የአውታረ መረብ አቻ ግንኙነትን እና የሚዲያ ትራኮችን ይዝጉ፣ የተፈረመውን መመሪያ ያስገቡ እና የመጨረሻውን ይጠብቁ። ግልጽ አንድ ተሳታፊ `LeaveKaigi` ሊጠቀም ይችላል; የ`zk-roster-v1` መነሳት በመጀመሪያ የተለቀቀው ፕሮቶኮል ውስጥ ከሰንሰለት ውጪ ነው፣ እና ቤተኛ መመሪያው የግላዊነት-ፈቃድ አርቲፋክቶችን ውድቅ ያደርጋል።
 
-```ts
-export function inviteRoute(inviteLink: string): string {
-  const invite = parseInviteLink(inviteLink);
-  return `/kaigi?call=${encodeURIComponent(invite.callId)}&secret=${encodeURIComponent(
-    invite.inviteSecretBase64Url,
-  )}`;
-}
-```
+## በእጅ የሚደረግ WebRTC ተተኪ አማራጭ {#manual-webrtc-fallback}
 
-## እንግዳ፦ በስብሰባው ላይ ተገኝ {#guest-join-a-meeting}
+ማሳያው ለአካባቢያዊ ልማት የላቀ የምልክት መንገድን ይይዛል። በብሎክቼይን መዝገብ የተደገፈ አውቶማቲክ ምልክት በማይገኝበት ጊዜ አስተናጋጁ እና እንግዳው ጥሬው WebRTC ቅናሽ እና መልስ እንዲሰጡ ያስችላቸዋል።
 
-የእንግዳው ፍሰት:
+ይህንን እንደ የተለየ ሁነታ ይያዙት። Kaigi መዝገብ አይፈጥርም፣ አይቀላቀልም ወይም አያበቃም፣ የግብይት ፍጻሜውን አይሰጥም እና በሰንሰለት ፍሰት ላይ ካለው ፍሰት ጋር እኩል ሆኖ መቅረብ የለበትም።
 
-1. ግብዣውን ይመረምሩ
-2. ከ Torii የተመሰጠረ የጥሪ አቅርቦትን ያግኙ።
-3. የ WebRTC መልስ ይፍጠሩ
-4. `JoinKaigi` ከተመሰጠረ መልስ ሜታዳታ ጋር ያቅርቡ
+## ውህደቱን ይፈትሹ {#test-the-integration}
 
-```ts
-export async function joinKaigiMeetingFromInvite(input: {
-  context: KaigiContext;
-  account: AccountContext;
-  inviteLink: string;
-}): Promise<{
-  callId: string;
-  peer: RTCPeerConnection;
-  localStream: MediaStream;
-}> {
-  const { bridge, toriiUrl, chainId } = input.context;
-  const { callId, inviteSecretBase64Url } = parseInviteLink(input.inviteLink);
-
-  const meeting = await bridge.getKaigiCall({
-    toriiUrl,
-    callId,
-    inviteSecretBase64Url,
-  });
-
-  if (meeting.ended) {
-    throw new Error("This Kaigi meeting has already ended.");
-  }
-  if (Date.now() > meeting.expiresAtMs) {
-    throw new Error("This Kaigi invite has expired.");
-  }
-
-  const localStream = await openLocalMedia();
-  const peer = createPeer(localStream);
-  const answerDescription = await createAnswerDescription(
-    peer,
-    meeting.offerDescription,
-  );
-
-  await bridge.joinKaigiMeeting({
-    toriiUrl,
-    chainId,
-    participantAccountId: input.account.accountId,
-    callId: meeting.callId,
-    hostAccountId: meeting.hostAccountId,
-    hostKaigiPublicKeyBase64Url: meeting.hostKaigiPublicKeyBase64Url,
-    participantId: "guest",
-    participantName: input.account.displayName,
-    roomId: meeting.callId,
-    privacyMode: meeting.privacyMode,
-    rosterRootHex: meeting.rosterRootHex,
-    answerDescription,
-  });
-
-  return { callId: meeting.callId, peer, localStream };
-}
-```
-
-ስብሰባው ግልፅ ከሆነ በመቀላቀል ጥያቄ ውስጥ የኪስ ቦርሳ ማሳያ ገመድ ማካተት ይችላሉ። ተጠቃሚው በግል ለመግለጽ ካልመረጠ በስተቀር ለግል ስብሰባዎች `walletIdentity` ን ያግኙ።
-
-## አስተናጋጅ፦ እንግዳው የሚሰጠውን መልስ ተግባራዊ አድርግ {#host-apply-the-guest-answer}
-
-ቀጥታ ስብሰባ ከተፈጠረ በኋላ አስተናጋጁ Kaigi ክስተቶችን መመልከት እና የተመሰጠረ የምላሽ ምልክቶች ምርጫ ማድረግ አለበት ። የመጀመሪያውን ትክክለኛ መልስ ለአስተናጋጁ የእኩዮች ግንኙነት ያድርጉ።
-
-```ts
-export async function watchForKaigiAnswer(input: {
-  context: KaigiContext;
-  hostAccountId: string;
-  callId: string;
-  hostKaigiKeys: KaigiSignalKeyPair;
-  createdAtMs: number;
-  peer: RTCPeerConnection;
-  onParticipant?: (signal: KaigiSignal) => void;
-}): Promise<string | null> {
-  const { bridge, toriiUrl } = input.context;
-  const seenSignals = new Set<string>();
-  let lastSignalAtMs = input.createdAtMs;
-
-  const checkSignals = async (): Promise<boolean> => {
-    const signals = await bridge.pollKaigiMeetingSignals({
-      toriiUrl,
-      accountId: input.hostAccountId,
-      callId: input.callId,
-      hostKaigiKeys: input.hostKaigiKeys,
-      afterTimestampMs: lastSignalAtMs,
-    });
-
-    const next = signals.find(
-      (signal) => !seenSignals.has(signal.entrypointHash),
-    );
-    if (!next) {
-      return false;
-    }
-
-    seenSignals.add(next.entrypointHash);
-    lastSignalAtMs = Math.max(lastSignalAtMs, next.createdAtMs);
-    await input.peer.setRemoteDescription(next.answerDescription);
-    input.onParticipant?.(next);
-    return true;
-  };
-
-  if (await checkSignals()) {
-    return null;
-  }
-
-  return bridge.watchKaigiCallEvents(
-    { toriiUrl, callId: input.callId },
-    async (event) => {
-      if (event.kind !== "ended") {
-        await checkSignals();
-      }
-    },
-  );
-}
-```
-
-የተመለሰውን የደንበኝነት ምዝገባ ID ያስቀምጡ ስለዚህ አስተናጋጁ ሲዘግይ ወይም ሲሄድ UI ተቆጣጣሪውን ሊያቆም ይችላል ።
-
-## ስብሰባው ያበቃል {#end-the-meeting}
-
-ጥሪውን ከፈጠረው ተመሳሳይ አስተናጋጅ መለያ አቁሙ:
-
-```ts
-export async function endKaigi(input: {
-  context: KaigiContext;
-  hostAccountId: string;
-  callId: string;
-  peer?: RTCPeerConnection;
-  localStream?: MediaStream;
-}): Promise<void> {
-  input.peer?.close();
-  input.localStream?.getTracks().forEach((track) => track.stop());
-
-  await input.context.bridge.endKaigiMeeting({
-    toriiUrl: input.context.toriiUrl,
-    chainId: input.context.chainId,
-    hostAccountId: input.hostAccountId,
-    callId: input.callId,
-    endedAtMs: Date.now(),
-  });
-}
-```
-
-## የግል የገንዘብ ድጋፍ {#private-mode-funding}
-
-የግል Kaigi መፍጠር ፣ መቀላቀል እና ማጠናቀቅ ሥራዎች ለግል የመግቢያ ነጥብ ክፍያ መከላከያ XOR ሊያስፈልጋቸው ይችላል ። መተግበሪያዎ ያንን ስህተት መያዝ አለበት እና እንደገና ከመሞከርዎ በፊት የራስ-መከላከያ እርምጃ መስጠት አለበት።
-
-```ts
-type PrivateKaigiFundingBridge = KaigiBridge & {
-  getPrivateKaigiConfidentialXorState(input: {
-    toriiUrl: string;
-    accountId: string;
-  }): Promise<{
-    shieldedBalance: string | null;
-    transparentBalance: string;
-    canSelfShield: boolean;
-    message?: string;
-  }>;
-
-  selfShieldPrivateKaigiXor(input: {
-    toriiUrl: string;
-    chainId: string;
-    accountId: string;
-    amount: string;
-  }): Promise<{ hash: string }>;
-};
-
-export async function selfShieldForPrivateKaigi(input: {
-  context: Omit<KaigiContext, "bridge"> & {
-    bridge: PrivateKaigiFundingBridge;
-  };
-  accountId: string;
-  amount: string;
-}): Promise<void> {
-  const { bridge, toriiUrl, chainId } = input.context;
-  const state = await bridge.getPrivateKaigiConfidentialXorState({
-    toriiUrl,
-    accountId: input.accountId,
-  });
-
-  if (!state.canSelfShield) {
-    throw new Error(
-      state.message || "This account cannot self-shield XOR for private Kaigi.",
-    );
-  }
-
-  await bridge.selfShieldPrivateKaigiXor({
-    toriiUrl,
-    chainId,
-    accountId: input.accountId,
-    amount: input.amount,
-  });
-}
-```
-
-ማሳያ ውስጥ, UI ተጠቃሚው ራሱን ለመከላከል ይጠይቃል ከዚያም የመጀመሪያውን መፍጠር ወይም መቀላቀል እርምጃ እንደገና ይሞክራል.
-
-## የእጅ መውደቅ {#manual-fallback}
-
-አውቶማቲክ ምልክት በቀጥታ የኪስ ቦርሳ, Kaigi-ነክ Torii መስመሮች, እና የግል ሁነታ ውስጥ ማስረጃ ማመንጨት ላይ የተመሠረተ ነው. ለልማት እና ለተገደቡ አካባቢዎች በእጅ ወደ ኋላ ይያዙ:
-
-- `CreateKaigi` ካልተሳካለት፣ አቅርቦቱን የያዘውን የእጅ ግብዣ አሳይ።
-- `JoinKaigi` ካልተሳካ አንድ ጥሬ መልስ ፓኬጅ ያሳዩ
-- አስተናጋጁ የምላሽ ጥቅሉን እንዲለጠፍ እና `setRemoteDescription` ን ይደውሉ ።
-
-በእጅ ወደ ኋላ መመለስ WebRTC ለማስተካከል ጠቃሚ ነው ፣ ግን እንደ የቀጥታ Kaigi ፍሰት ተመሳሳይ የግል ሰንሰለት ላይ የምልክት ዋስትና አይሰጥም ።
-
-## የሙከራ ፍተሻ ዝርዝር {#test-checklist}
-
-ለአንድነት ሙከራዎች ፣ ድልድዩን ይንቁ እና የእርስዎ UI የሚጠበቁትን Kaigi ጠቃሚ ጭነቶች የሚያልፍ መሆኑን ያረጋግጡ:
-
-- አስተናጋጅ አካባቢያዊ ሚዲያዎችን ይፈጥራል እና `createKaigiMeeting` ያቀርባል
-- አስተናጋጅ `iroha://kaigi/join?call=...&secret=...` ግብዣ ያሳያል
-- እንግዳው ግብዣውን ይመረምራል፣ ወደ `getKaigiCall` ይደውላል እንዲሁም `joinKaigiMeeting` ያቀርባል
-- ለምላሽ ምልክቶች አስተናጋጅ የሕዝብ አስተያየት መስጫዎች ወይም ሰዓቶች እና መልሱን ይተግብራል
-- XOR በተከላከለበት ጊዜ ራስን ለመከላከል የግል ሁነታ ማሳሰቢያዎች ይጠፋሉ
-- የቀጥታ ምልክት በማይገኝበት ጊዜ በእጅ ወደኋላ መመለስ ይታያል።
-
-የተሟላ የማጣቀሻ የሙከራ ስብስብ ለማግኘት የዴሞ መተግበሪያው Kaigi እይታ እና ቅድመ ጭነት ድልድይ ሙከራዎችን ይመልከቱ:
+በአሁኑ ጊዜ ያተኮሩ የማሳያ ስብስቦችን ያሂዱ -
 
 ```bash
-npm test -- tests/kaigiView.spec.ts tests/preloadKaigiBridge.spec.ts
-npm run e2e:ui
+npm test -- \
+  tests/kaigiView.spec.ts \
+  tests/kaigi.spec.ts \
+  tests/kaigiCrypto.spec.ts \
+  tests/kaigiInvite.spec.ts \
+  tests/kaigiStore.spec.ts
+
+npm run verify
 ```
 
-የ UI ጭስ ሙከራው `/kaigi` መንገድ እንደሚሰራ ያረጋግጣል ። እውነተኛ ሚዲያ ሙከራ አሁንም ሁለት የገንዘብ ቦርሳዎች እና ሁለት መስኮቶች ወይም መሣሪያዎች ያስፈልገዋል ምክንያቱም የግብይት ፊርማ ፣ ካሜራ ፣ ማይክሮፎን እና WebRTC ፍቃዶች በሂደት ጊዜ ስለሚለያዩ።
+ፈተናዎቹ የአሁኑን ግልጽ መገለጫ፣ ጥብቅ የግብዣ ትንተና፣ ኢንክሪፕት የተደረገ ምልክት፣ የአካባቢ ክፍለ ጊዜ ጽናት እና በእጅ ተተኪ አማራጩን ይሸፍናሉ። እውነተኛ የሚዲያ ሙከራ አሁንም ሁለት የገንዘብ ድጋፍ የተደረገላቸው የኪስ ቦርሳዎች እና ሁለት መስኮቶች ወይም መሳሪያዎች ያስፈልገዋል; የተሳለቁ WebRTC እና የአቅራቢ ሙከራዎች ካሜራ፣ ማይክሮፎን፣ NAT መሻገሪያ፣ ነጠላ ፕሮቶኮል-መደበኛ የጥያቄ ማረጋገጫ ወይም የቀጥታ ግብይት መጨረሻውን አያረጋግጡም።
 
-በ TAIRA ላይ ምርመራ እያደረጉ ከሆነ እና ለጥሪው የተወሰነ መንገድ `404` የሚመለስ ከሆነ ፣ በመጀመሪያ አስተናጋጅ ቦርሳ በተሳካ ሁኔታ `CreateKaigi` እንደተላከ ያረጋግጡ ። ማንኛውም የተወሰነ ጥሪ ከመከሰቱ በፊት የስርጭት ጤና መጨረሻ ነጥቦች ሊገኙ ይችላሉ።
-
-## ቀጣይ እርምጃዎች {#next-steps}
-
-- በመተግበሪያዎ ውስጥ አስተማማኝ የክፍለ ጊዜ ቆይታ ሂሳብ ሲኖር `RecordKaigiUsage` ጋር የአጠቃቀም ቀረፃን ያክል።
-- በ `/v1/kaigi/relays` በኩል ሪሌዎችን በመመዝገብ እና በመከታተል የሪሌ ማሳያዎችን በሚጠቀሙበት ጊዜ።
-- በኦፕሬተር ዳሽቦርድዎ ውስጥ ያሉ የላይኛው `KaigiRosterSummary`, `KaigiUsageSummary` እና `KaigiRelayHealthUpdated` ክስተቶች።
+ለተሟላው API የመጨረሻ ነጥብ ማትሪክስ እና CLI የሕይወት ዑደት፣ [Torii API የመጨረሻ ነጥቦች Kaigi ክፍለ-ጊዜዎች](/am/reference/torii-endpoints.md#kaigi-sessions) ይመልከቱ።

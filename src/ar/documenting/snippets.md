@@ -1,37 +1,37 @@
 ---
 translation_locale: ar
 translation_source: /documenting/snippets.md
-translation_source_hash: e188082e05db85d5e514b782f93648fb402a09740840c9201e47db353f2192f5
+translation_source_hash: 48d6670f100c7c6368fa03f163c9ff9e0322d36e51c22f89562b23b0e2ee2a2f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# مقطوعات الرمز {#code-snippets}
+# مقتطفات الشيفرة {#code-snippets}
 
-يحتفظ المقطوعات التي يتم إنشاؤها بأمثلة مرتبطة بالرمز والتكوين والخطط من إصدار Iroha الذي أنتجه.
+تُبقي المقاطع المُولَّدة الأمثلة مرتبطة بالشيفرة والتكوين والمخططات من النسخة Iroha التي أنتجتها.
 
-## القطع الأثرية المتجددة Iroha {#refreshing-iroha-artifacts}
+## تحديث التحف Iroha {#refreshing-iroha-artifacts}
 
-يتم التحقق من المقطوعات المستمدة من Iroha بحيث لا تتطلب بناء مواقع عادي الوصول إلى الشبكة أو مخزن شقيق. قم بتجديدها صراحة:
+يتم التحقق من المقاطع المستمدة من Iroha حتى لا تتطلب عمليات بناء الموقع العادية الوصول إلى الشبكة أو مستودع شقيق. قم بتحديثها صراحة:
 
 ```bash
 pnpm refresh:iroha --source /path/to/iroha
 ```
 
-المسجلين [`etc/refresh-iroha.ts`](https://github.com/hyperledger-iroha/iroha-docs/blob/main/etc/refresh-iroha.ts) تدفق العمل يتحقق من التحقق من المصدر النظيف مقابل `provenance/iroha.json`, يتجدد `/src/snippets` و Torii OpenAPI صورة سريعة، وتحديثات SHA-256 تغييرات المحتوى والإصدار معا. تركيب الاعتماد العادي و VitePress تستهلك الملفات المسجلة دون الحصول على فرع قابل للتغيير.
+يتحقق سير العمل `etc/refresh-iroha.ts` المُسجَّل من نظافة عملية استخراج المصدر مقابل `provenance/iroha.json`، ويُعيد توليد `/src/snippets` و Torii OpenAPI عرض البيانات عند نقطة زمنية معينة، وتقوم بتحديث SHA-256 التجزئات التشفيرية. راجع التغييرات في المحتوى والأصل معًا. تثبيت الاعتمادات العادي و VitePress الإنشاءات تستخدم الملفات المدرجة بدون جلب فرع قابل للتغيير.
 
-## بما في ذلك المقطوعات {#including-snippets}
+## بما في ذلك المقاطع {#including-snippets}
 
-استخدم [VitePress صيغة اقتباسات الشفرة ](https://vitepress.dev/guide/markdown#import-code-snippets) لإدراج المصدر المولود أو المحلي:
+استخدم [VitePress تركيب شيفرة مقتطف](https://vitepress.dev/guide/markdown#import-code-snippets) لتضمين المصدر المُنشأ أو المحلي:
 
 ```md
 <<< @/snippets/client.template.toml
 ```
 
-يمكن إدراج منطقة رمزية مسمومة عن طريق إضافة اسم المنطقة:
+يمكن تضمين منطقة رمز مسماة عن طريق إلحاق اسم المنطقة الخاص بها:
 
 ```md
 <<< @/example_code/lorem.rs#ipsum
 ```
 
-الحفاظ على الأمثلة المكتوبة يدوياً صغيرة. تفضل الأدوات المصدرية المتجددة للواجهات العامة، وشكلات التكوين، والخطط التي تم إنشاؤها، وإصدار الأوامر.
+حافظ على الأمثلة المكتوبة بخط اليد صغيرة. فضل الحصول على المواد المصدرية المحدثة للواجهات العامة، قوالب التكوين، المخططات المولدة، ومخرجات الأوامر.

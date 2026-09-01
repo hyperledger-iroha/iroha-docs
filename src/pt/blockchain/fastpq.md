@@ -1,82 +1,82 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/fastpq.md
-translation_source_hash: f1dc55e4b2146de009203e19adb5cc1e9ce5302bc0ee27fe0b442693c5112c22
+translation_source_hash: d8dd61390f5df3dae09b70399e04e8f71716a912ef5dea9010feaf60573ed261
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # FastPQ {#fastpq}
 
-FastPQ é Iroha O que é ? STARK Proof path para efeitos de execução selecionados. Não substitui a execução normal da transacção ou o consenso. As transacções continuam a ser executadas ISI, IVM, e Sumeragi Como de costume; FastPQ Consuma o testemunho de execução determinista e transforma os efeitos apoiados em lotes de prova.
+FastPQ é o caminho de prova STARK de Iroha para os efeitos de execução selecionados. Ele não substitui a execução normal de transações ou o consenso. As transações ainda execute ISI, IVM e Sumeragi como de costume; FastPQ consome a prova de execução determinística e transforma efeitos suportados em lotes de prova.
 
-A integração do anfitrião atual tem três principais caminhos:
+A integração atual do host possui três caminhos principais:
 
-- Transferências numéricas transparentes de ativos registadas durante a execução do bloco
-- Relais de faixa Nexus verificados cujo envelope de prova AXT contém uma ligação FastPQ
-- Auxiliares transparentes de prova de mensagem SCCP que envolvem uma prova FastPQ em um envelope aberto de verificação
+- transferências numéricas de ativos transparentes registradas durante a execução do bloco
+- Nexus relés de faixa de execução verificados cujo contêiner de dados de prova AXT carrega uma ligação FastPQ
+- SCCP auxiliares de prova de mensagem transparente que envolvem uma prova FastPQ em um contêiner de dados de verificação aberta
 
-## Transferir o caminho da testemunha {#transfer-witness-path}
+## Caminho da Testemunha de Transferência {#transfer-witness-path}
 
-Transferências numéricas transparentes criam uma transcrição de transferência estruturada quando a instrução muda os balanços.
+Transferências numéricas transparentes criam uma transcrição de transferência estruturada quando a instrução altera os saldos. A transcrição registra:
 
-- a conta de origem, a conta de destino, a definição do ativo e o montante
-- Saldos do remetente e do destinatário antes e depois da transferência
-- o hash do ponto de entrada da transação utilizado como hash do lote
-- Digest de autoridade derivado da conta de apresentação
-- uma digestão de Poseidon para transcrições em delta único
+- a conta de origem, a conta de destino, a definição do ativo e o valor
+- saldos do remetente e do destinatário antes e depois da transferência
+- o hash criptográfico do ponto de entrada da transação usado como o hash criptográfico do lote
+- um valor principal de resumo criptográfico de autorização derivado da conta que está enviando
+- um valor de resumo criptográfico Poseidon para transcrições de delta único
 
-As transferências de lote utilizam uma transcrição com múltiplos deltas. Nesse caso, a digestão Poseidon de delta único está ausente.
+Transferências em lotes usam uma transcrição com múltiplos deltas. Nesse caso, o valor do resumo criptográfico Poseidon de delta único está ausente.
 
-Na finalização do bloco, Iroha agrupa essas transcrições por hash de ponto de entrada. A testemunha de execução então carrega tanto os pacotes de transcrição originais quanto os lotes de transição FastPQ preparados para o prover.
+Na finalização do bloco, Iroha agrupa essas transcrições pelo hash criptográfico de entrada. A testemunha de execução então carrega tanto os pacotes de transcrições originais quanto os lotes de transição FastPQ preparados para o provador.
 
-Cada delta de transferência torna-se em duas linhas de transição:
+Cada delta de transferência se torna duas linhas de transição:
 
-|Em fila .|Forma da chave|Pre-valor |Pós-valor |
+|Linha|Formato da chave|Pré-valor|Pós-valor|
 | --------------- | ------------------------------------------------ | ----------------------- | ---------------------- |
-|Emissor de débito |`asset/<asset-definition>/<source-account>` |balanço do remetente antes |saldo do remetente após |
-|Crédito do destinatário |`asset/<asset-definition>/<destination-account>` |Balanço do destinatário antes |saldo do destinatário após |
+|Débito do remetente| `asset/<asset-definition>/<source-account>`      |saldo do remetente antes|saldo do remetente após|
+|Crédito do receptor| `asset/<asset-definition>/<destination-account>` |saldo do receptor antes|saldo do receptor após|
 
-Os valores numéricos são normalizados em unidades inteiras testemunhas. Um valor é rejeitado para lotes FastPQ se não puder ser representado como um `u64` não negativo na escala decimal selecionada.
+Valores numéricos são normalizados em unidades testemunhas inteiras. Um valor é rejeitado para o lote FastPQ se não puder ser representado como um `u64` não negativo na escala decimal selecionada.
 
-## Contribuições públicas {#public-inputs}
+## Entradas Públicas {#public-inputs}
 
-Cada lote de transição FastPQ contém entradas públicas que vinculam a prova ao contexto do bloco e da execução:
+Cada lote de transição FastPQ carrega entradas públicas que vinculam a prova ao bloco e ao contexto de execução:
 
-|Introdução|Que significa ?|
+|Entrada|Significado|
 | ------------- | --------------------------------------------------------------- |
-|`dsid` |Identificador de espaço de dados codificado como bytes de pequeno índice |
-|`slot` |Tempo de criação do bloco convertido em nanossegundos |
-|`old_root` |Raiz do estado dos pais derivada da testemunha de execução |
-|`new_root` |A raiz pós-estado derivada da testemunha de execução .|
-|`perm_root` |O compromisso de Poseidon com as autorizações para o papel ativo |
-|`tx_set_hash` |Hash sobre transacção ordenada e hashes de ponto de entrada do time-trigger |
+| `dsid`        |Identificador de espaço de dados codificado como bytes em little-endian|
+| `slot`        |Tempo de criação do bloco convertido para nanossegundos|
+| `old_root`    |Raiz do estado pai derivada da testemunha de execução|
+| `new_root`    |Raiz pós-estado derivada da testemunha de execução|
+| `perm_root`   |Compromisso de Poseidon sobre permissões de funções ativas|
+| `tx_set_hash` |hash criptográfico sobre transação ordenada e entrada de acionamento por tempo hashes criptográficos|
 
-O anfitrião utiliza `fastpq-lane-balanced` como o parâmetro canônico definido para esses lotes.
+O host usa `fastpq-lane-balanced` como o conjunto de parâmetros canônicos para esses lotes.
 
-## Modelo matemático {#mathematical-model}
+## Modelo Matemático {#mathematical-model}
 
-Esta seção descreve a aritmética implementada pelo provador e verificador Rust atual. Todas as operações de campo abaixo são sobre o campo prime Goldilocks:
+Esta seção descreve a aritmética implementada pelo atual provador e verificador Rust. Todas as operações de campo abaixo são sobre o campo primo Goldilocks:
 
 $$
 F = \mathbb{F}_p,\qquad p = 2^{64} - 2^{32} + 1
 $$
 
-FastPQ usa Poseidon2 em vez de `F` para compromissos de campo. A esponja tem largura `t = 3`, taxa `r = 2` e capacidade `1`. O hash absorve elementos de campo em blocos de taxa-2 e anexa um único elemento de campo `1` antes da permutação final:
+FastPQ usa Poseidon2 em vez de `F` para compromissos de campo. A esponja tem largura `t = 3`, taxa `r = 2` e capacidade `1`. O hash criptográfico absorve elementos de campo em blocos de taxa 2 e adiciona um único elemento de campo `1` antes da permutação final:
 
 $$
 H_F(x_0,\ldots,x_{m-1}) =
 \operatorname{Poseidon2}_F(x_0,\ldots,x_{m-1},1)
 $$
 
-As cordas de byte são empacotadas em membros pequenos endianos de 7 bytes para que cada membro seja estritamente inferior a `p`:
+As sequências de bytes são agrupadas em segmentos little-endian de 7 bytes, todos estritamente menores que `p`:
 
 $$
 \operatorname{pack}(b)_j =
 \sum_{i=0}^{6} b_{7j+i}2^{8i},\qquad 0 \leq \operatorname{pack}(b)_j < p
 $$
 
-Os hashes de campo separados por domínio são representados como:
+Hashes criptográficos de campo separados por domínio são representados como:
 
 $$
 H_D(m) =
@@ -86,18 +86,18 @@ H_F(
 )
 $$
 
-Para hashes que começam a partir de digestões em byte-domain, FastPQ mapeia os primeiros oito bytes do pequeno endian no campo:
+Para hashes derivados de resumos no domínio de bytes, FastPQ mapeia os primeiros oito bytes little-endian para o campo:
 
 $$
 \operatorname{seed}(D)=
 \operatorname{le64}(\operatorname{Hash}(D)[0..8])\bmod p
 $$
 
-Aqui `Hash` significa o `iroha_crypto::Hash::new` de Iroha, um digesto Blake2bVar de 32 bytes, a menos que uma fórmula nomee explícitamente Poseidon2 ou SHA-256.
+Aqui, `Hash` significa o `iroha_crypto::Hash::new` da Iroha: um resumo Blake2bVar de 32 bytes, salvo quando uma fórmula mencionar explicitamente Poseidon2 ou SHA-256.
 
-### Aritmética de campo {#field-arithmetic}
+### Aritmética de Campo {#field-arithmetic}
 
-O código Rust representa os elementos de campo como valores canônicos `u64` no `[0,p)`.
+O código Rust representa elementos de campo como valores `u64` canônicos em `[0,p)`. A adição e subtração são:
 
 $$
 a +_F b = (a+b)\bmod p
@@ -107,13 +107,13 @@ $$
 a -_F b = (a-b)\bmod p
 $$
 
-A multiplicação calcula primeiro o produto de 128 bits:
+A multiplicação primeiro calcula o produto de 128 bits:
 
 $$
 a\cdot b = \operatorname{lo} + 2^{64}\operatorname{hi}
 $$
 
-A redução de Goldilocks utiliza então a identidade:
+A redução Goldilocks então usa a identidade:
 
 $$
 2^{64}\equiv2^{32}-1\pmod p
@@ -125,7 +125,7 @@ $$
 \operatorname{hi}=\operatorname{hi}_{lo}+2^{32}\operatorname{hi}_{hi}
 $$
 
-Em seguida, o redutor calcula:
+então o redutor calcula:
 
 $$
 \operatorname{lo}
@@ -135,27 +135,27 @@ $$
 \pmod p
 $$
 
-A implementação adiciona ou subtrai condicionalmente `p` até que o resultado seja canônico. Os números inteiros assinados, tais como os deltas do balanço, são incorporados por:
+A implementação adiciona ou subtrai condicionalmente `p` até que o resultado seja canônico. Inteiros com sinal, como deltas de saldo, são incorporados por:
 
 $$
 \operatorname{field}(x)=x\bmod p,\qquad 0\leq\operatorname{field}(x)<p
 $$
 
-### Poseidon2 Permutação {#poseidon2-permutation}
+### Permutação Poseidon2 {#poseidon2-permutation}
 
-O estado de permutação Poseidon2 é:
+O estado da permutação Poseidon2 é:
 
 $$
 \mathbf{x}=(x_0,x_1,x_2)\in F^3
 $$
 
-A sua caixa S é:
+Sua S-box é:
 
 $$
 S(x)=x^5
 $$
 
-FastPQ utiliza quatro rodadas completas, cinquenta e sete rodadas parciais, em seguida, mais quatro rodadas. Uma rodada completa com constantes redondas `c_r = (c_{r,0}, c_{r,1}, c_{r,2})`:
+FastPQ usa quatro rodadas completas, cinquenta e sete rodadas parciais, e depois mais quatro rodadas completas. Uma rodada completa com constantes de rodada `c_r = (c_{r,0}, c_{r,1}, c_{r,2})` é:
 
 $$
 \mathbf{x}' =
@@ -179,7 +179,7 @@ x_2+c_{r,2}
 \end{bmatrix}
 $$
 
-Todas as adições e multiplicações são em `F`. A matriz canónica MDS é:
+Todas as adições e multiplicações estão em `F`. A matriz canônica MDS é:
 
 $$
 M=
@@ -190,18 +190,18 @@ M=
 \end{bmatrix}
 $$
 
-O hash do campo começa a partir do estado zero. Para cada bloco de taxa completa-2 `(u,v)`:
+O campo hash criptográfico começa a partir do estado zero. Para cada bloco completo de taxa-2 `(u,v)`:
 
 $$
 (x_0,x_1,x_2)\leftarrow
 \operatorname{Poseidon2}(x_0+u,x_1+v,x_2)
 $$
 
-O bloco final acrescenta o `1` Elemento de enchimento antes de uma última permutação. `x_0`.
+O bloco final adiciona o elemento de preenchimento `1` antes de uma última permutação. A saída é `x_0`.
 
-### A entrada pública é obrigatória {#public-input-binding}
+### Vinculação de Entrada Pública {#public-input-binding}
 
-O host codifica uma identificação de espaço de dados escrevendo seu valor `u64` nos primeiros oito bytes do campo de 16bytes:
+O host codifica um ID de espaço de dados escrevendo seu valor `u64` nos primeiros oito bytes little-endian do campo de 16 bytes:
 
 $$
 \operatorname{dsid\_bytes}(d)[0..8]=\operatorname{le64}(d),
@@ -209,14 +209,14 @@ $$
 \operatorname{dsid\_bytes}(d)[8..16]=0
 $$
 
-O tempo de criação do bloco é convertido de milissegundos em nanosegundos:
+O tempo de criação do bloco é convertido de milissegundos para nanossegundos:
 
 $$
 \operatorname{slot}=\operatorname{saturating\_mul}
 (\operatorname{creation\_time\_ms},1{,}000{,}000)
 $$
 
-O hash do conjunto de transações é um hash de domínio de byte sobre os hashes do ponto de entrada ordenados:
+O hash do conjunto de transações é calculado no domínio de bytes a partir dos hashes dos pontos de entrada ordenados:
 
 $$
 \operatorname{tx\_set\_hash} =
@@ -225,7 +225,7 @@ $$
 )
 $$
 
-onde `h_i` são classificados hashes de transações e pontos de entrada do time-trigger. Na prova pública IO, se `perm_root` ou `tx_set_hash` for tudo zero, o prover preenche os valores de fallback:
+onde `h_i` são hashes criptográficas de transações ordenadas e de pontos de entrada acionados por tempo. Na prova pública IO, se `perm_root` ou `tx_set_hash` forem todos zeros, o provador preenche valores de contingência:
 
 $$
 \operatorname{perm\_root} =
@@ -241,9 +241,9 @@ $$
 \operatorname{Hash}(\texttt{fastpq:v1:tx\_set}\|\operatorname{ordering\_hash})
 $$
 
-### Normalização numérica {#numeric-normalization}
+### Normalização Numérica {#numeric-normalization}
 
-Para cada delta de transferência, a escala decimal-alvo é a escala máxima cortada ao longo da quantidade e ambos os instantâneos de equilíbrio:
+Para cada delta de transferência, a escala decimal alvo é a escala aparada máxima entre o valor e ambas as visualizações de dados de saldo no ponto no tempo:
 
 $$
 s =
@@ -256,17 +256,17 @@ s =
 )
 $$
 
-A. `Numeric` Valor com mantissa `m` e escala `q` só é aceita quando `m >= 0` e `q <= s`. O seu FastPQ O valor do testemunho é:
+Um valor `Numeric` com mantissa `m` e escala `q` é aceito apenas quando `m >= 0` e `q <= s`. Seu valor de testemunho FastPQ é:
 
 $$
 \operatorname{norm}_s(m,q)=m\cdot10^{s-q}
 $$
 
-O resultado normalizado deve corresponder a `u64`.
+O resultado normalizado deve caber em `u64`.
 
-### Ordenamento canônico {#canonical-ordering}
+### Ordenação Canônica {#canonical-ordering}
 
-Antes da construção do rastro, o lote é classificado por chave de transição, grau de operação e índice de inserção original:
+Antes da construção do traço, o lote é ordenado pela chave de transição, pela classificação da operação e pelo índice de inserção original:
 
 $$
 r(\operatorname{Transfer})=0,\quad
@@ -277,7 +277,7 @@ r(\operatorname{RoleRevoke})=4,\quad
 r(\operatorname{MetaSet})=5
 $$
 
-O compromisso de encomenda é um hash do campo Poseidon2 sobre o domínio `fastpq:v1:ordering` e a codificação Norito das transições ordenadas:
+O compromisso de ordenação é um hash criptográfico de campo do Poseidon2 sobre o domínio `fastpq:v1:ordering` e a codificação Norito das transições ordenadas:
 
 $$
 \operatorname{ordering\_hash} =
@@ -286,11 +286,11 @@ H_F(
 )
 $$
 
-onde `P` é embalagem de 7 bytes, `E` é Norito codificação, `D_o` é `fastpq:v1:ordering`, e `T*` É a lista de transição ordenada.
+onde `P` é empacotamento de 7 bytes, `E` é codificação Norito, `D_o` é `fastpq:v1:ordering`, e `T*` é a lista de transições ordenada.
 
-### Equações de transferência {#transfer-equations}
+### Equações de Transferência {#transfer-equations}
 
-Para um montante de transferência `a`, saldo do remetente `f` e saldo do destinatário `t`, FastPQ valida os valores normalizados dos testemunhos antes da construção do rastreamento:
+Para um valor de transferência `a`, saldo do remetente `f` e saldo do destinatário `t`, FastPQ valida os valores normalizados da testemunha antes de construir o rastreamento:
 
 $$
 f_0 \geq a
@@ -314,13 +314,13 @@ $$
 \Delta_{\text{receiver}} = t_1 - t_0 = a
 $$
 
-No interior do rastro, os deltas assinados são reduzidos para `F`:
+Dentro do rastreamento, os deltas assinados são reduzidos em `F`:
 
 $$
 \delta_i = (\operatorname{post}_i - \operatorname{pre}_i)\bmod p
 $$
 
-A digestão opcional de transferência single-delta compromete a pré-imagem de transferência codificada:
+O resumo opcional da transferência com delta único vincula a pré-imagem codificada da transferência:
 
 $$
 d_{\text{transfer}} =
@@ -329,24 +329,24 @@ E(\text{from})\|E(\text{to})\|E(\text{asset})\|E(a)\|\text{batch\_hash}
 )
 $$
 
-Para transcrições de transferência multi-delta, o formato atual exige que este digestamento de nível superior esteja ausente.
+Para transcrições de transferência multi-delta, o formato atual exige que este valor de resumo criptográfico de nível superior esteja ausente.
 
-A digestão da autoridade de acolhimento para transcrições de transferência é:
+O valor do resumo criptográfico principal de autorização do host para transferências de transcrição é:
 
 $$
 d_{\text{authority}} =
 \operatorname{Hash}(\texttt{iroha:fastpq:v1:authority|}\|E(\text{authority\_account}))
 $$
 
-### Linhas de rastreamento {#trace-rows}
+### Rastrear Linhas {#trace-rows}
 
-Deixe a lista de transição ordenada conter `n` linhas reais. O comprimento do rastro é o próximo poder de dois:
+Deixe a lista de transição ordenada conter `n` linhas reais. O comprimento do traço é a próxima potência de dois:
 
 $$
 N = 2^{\lceil\log_2(\max(1,n))\rceil}
 $$
 
-As filas `0..n-1` são ativas; as fileiras `n..N-1` são fileiras de enchimento. Cada linha real possui um conjunto de selectores de operação:
+As linhas `0..n-1` estão ativas; as linhas `n..N-1` são linhas de preenchimento. Cada linha real tem um seletor de operação definido:
 
 $$
 s_{\text{active}} =
@@ -358,33 +358,33 @@ s_{\text{role\_revoke}}+
 s_{\text{meta\_set}}
 $$
 
-Todas as colunas de selector são booleanas:
+Todas as colunas de seletor são Booleanas:
 
 $$
 s(s-1)=0
 $$
 
-As linhas de pesquisa de permissão são exatamente as linhas de atribuição e revogação de funções:
+As linhas de pesquisa de permissão são exatamente linhas de concessão de função e revogação de função:
 
 $$
 s_{\text{perm}} =
 s_{\text{role\_grant}} + s_{\text{role\_revoke}}
 $$
 
-Para as linhas de operação numérica:
+Para linhas de operação numérica:
 
 $$
 \delta_i = \operatorname{value\_new}_{i,0} - \operatorname{value\_old}_{i,0}
 $$
 
-O construtor acompanha também os delta por ativo:
+O construtor também acompanha os deltas por ativo em execução:
 
 $$
 R_i(a)=R_{i-1}(a)+\delta_i
 \quad\text{for transfer, mint, and burn rows of asset }a
 $$
 
-Só as filas de menta e queimadura atualizam o contador de abastecimento:
+Apenas emitir e queimar linhas atualiza o contador de suprimentos:
 
 $$
 S_i(a)=S_{i-1}(a)+
@@ -394,7 +394,7 @@ S_i(a)=S_{i-1}(a)+
 \end{cases}
 $$
 
-Metadados e colunas de rastreamento do espaço de dados são hashes de campo derivados antes da materialização de linha:
+Colunas de rastreamento de metadados e dataspace são hashes criptográficos de campo derivados antes da materialização da linha:
 
 $$
 \operatorname{metadata\_hash} =
@@ -408,7 +408,7 @@ $$
 \operatorname{dsid\_trace}=H_D(\operatorname{public\_input\_dsid})
 $$
 
-O hash de metadados, o hash do espaço de dados e o slot são estáveis em linhas adjacentes de traços:
+O hash dos metadados, o do espaço de dados e o slot permanecem estáveis entre linhas adjacentes do traço:
 
 $$
 \operatorname{metadata\_hash}_i=\operatorname{metadata\_hash}_{i+1}
@@ -422,11 +422,11 @@ $$
 \operatorname{slot}_i=\operatorname{slot}_{i+1}
 $$
 
-### Transferir colunas de Merkle {#transfer-merkle-columns}
+### Colunas de Merkle de Transferência {#transfer-merkle-columns}
 
-As linhas de transferência carregam um caminho Merkle escasso de 32 níveis. Se uma prova host estiver faltando, o prover sintetiza um caminho determinista a partir da chave de linha, pré-equilíbrio e se a linha é o lado do remetente ou do receptor.
+As linhas de transferência carregam um caminho de Merkle esparso de 32 níveis. Se uma prova do host estiver faltando, o provador sintetiza um caminho determinístico a partir da chave da linha, saldo prévio e se a linha é do lado do remetente ou do destinatário.
 
-Para os caminhos sintéticos, o sal de sabor é `fastpq:smt:from` para as linhas de remetente e `fastpq:smt:to` para as linhagens de receptor:
+Para caminhos sintéticos, o sal de sabor é `fastpq:smt:from` para linhas de remetente e `fastpq:smt:to` para linhas de receptor:
 
 $$
 K =
@@ -450,7 +450,7 @@ s_\ell =
 )
 $$
 
-As folhas sintéticas e os nós internos são:
+A folha sintética e os nós internos são:
 
 $$
 L = \operatorname{Hash}(
@@ -468,7 +468,7 @@ N_{\ell+1} =
 )
 $$
 
-O rastreamento registra o pedaço `b_l`, irmãos `s_l`, nó de entrada `x_l`, e nó de saída `x_{l+1}` Em todos os níveis. Com a convenção do ramo do código:
+O rastreamento registra o bit `b_l`, o irmão `s_l`, o nó de entrada `x_l` e o nó de saída `x_{l+1}` em cada nível. Com a convenção de ramificação do código:
 
 $$
 (\operatorname{left}_\ell,\operatorname{right}_\ell)=
@@ -478,16 +478,16 @@ $$
 \end{cases}
 $$
 
-### Hashes de permissão {#permission-hashes}
+### Permissão de hashes criptográficos {#permission-hashes}
 
-As linhas de atribuição e revogação da função hash o testemunho de permissão:
+Conceder e revogar funções linhas hash criptográfico a permissão de testemunha:
 
 $$
 h_{\text{perm}} =
 H_F(P(\operatorname{role\_id}\|\operatorname{permission\_id}\|\operatorname{epoch}_{le}))
 $$
 
-A tabela de permissão host classifica as entradas por bytes de papel, bytes de permissões e bytes de época, então constrói uma árvore de Poseidon2 Merkle:
+A tabela de permissões do host root classifica as entradas por bytes de função, bytes de permissão e bytes de época, e então constrói uma árvore Merkle Poseidon2:
 
 $$
 M_0[j]=h_{\text{perm},j}
@@ -498,11 +498,11 @@ M_{k+1}[j] =
 H_F(\operatorname{seed}(\texttt{fastpq:v1:poseidon\_node}),M_k[2j],M_k[2j+1])
 $$
 
-Os níveis de largura ímpar duplicam o elemento final.
+Níveis de largura ímpar duplicam o último elemento.
 
-### O compromisso de rastrear {#trace-commitment}
+### Rastrear Compromisso {#trace-commitment}
 
-Para cada coluna de traços `c`, FastPQ primeiro interpola os valores da coluna sobre o domínio de traços e hashes o vetor do coeficiente:
+Para cada coluna de traço `c`, FastPQ, primeiro interpola os valores da coluna sobre o domínio do traço e calcula o hash criptográfico do vetor de coeficientes:
 
 $$
 C_c =
@@ -512,13 +512,13 @@ H_F(
 )
 $$
 
-A raiz de rastreamento é uma raiz de Poseidon2 Merkle sobre compromissos de coluna:
+A raiz de rastreamento é uma raiz Merkle Poseidon2 sobre compromissos de coluna:
 
 $$
 R_{\text{trace}} = \operatorname{MerkleRoot}(C_0,\ldots,C_{m-1})
 $$
 
-O compromisso de rastreamento final é um hash em byte sobre o domínio, conjunto de parâmetros, forma do rastreamento, digestões de colunas e raiz do rastreador:
+O compromisso final do traço é um hash de bytes do domínio, do conjunto de parâmetros, do formato do traço, dos resumos das colunas e da raiz do traço:
 
 $$
 \operatorname{commitment} =
@@ -531,9 +531,9 @@ $$
 
 onde `D_c` é `fastpq:v1:trace_commitment`.
 
-### Composição AIR {#air-composition}
+### AIR Composição {#air-composition}
 
-O valor de composição V1 AIR é uma combinação linear de resíduos locais em filas. A transcrição mostra dois desafios:
+O valor de composição V1 AIR é uma combinação linear de resíduos locais por linha. A transcrição amostra dois desafios:
 
 $$
 \alpha_0,\alpha_1 \in F
@@ -545,7 +545,7 @@ $$
 A_i=\sum_j \alpha_{j\bmod2}\rho_{i,j}
 $$
 
-Os resíduos `rho` são, na ordem do código:
+Os resíduos `rho` são, em ordem de código:
 
 $$
 \rho=s(s-1)
@@ -569,7 +569,7 @@ $$
 s_{\text{active},i+1}(1-s_{\text{active},i})
 $$
 
-Para as linhas com colunas numéricas:
+Para linhas com colunas numéricas:
 
 $$
 \rho =
@@ -578,7 +578,7 @@ $$
 ((\operatorname{value\_new}_{0}-\operatorname{value\_old}_{0})-\delta)
 $$
 
-E para colunas de contexto de lote estável:
+E para colunas de contexto de lote estáveis:
 
 $$
 \rho =
@@ -595,11 +595,11 @@ $$
 \operatorname{slot}_i-\operatorname{slot}_{i+1}
 $$
 
-O verificador recalcula o `A_i` para as aberturas de filas recolhidas na amostra e verifica-o em relação ao valor da composição comprometido no âmbito da raiz Merkle da composição AIR.
+O verificador recalcula `A_i` para aberturas de linha amostradas e verifica-o em relação ao valor de composição comprometido sob a raiz Merkle de composição AIR.
 
-### Produto de pesquisa {#lookup-product}
+### Consultar Produto {#lookup-product}
 
-O acumulador de pesquisa de permissões utiliza o desafio Fiat-Shamir `gamma`. Nas avaliações de extensão de baixo grau de `s_perm` e `perm_hash`, o produto em execução é:
+O acumulador de verificação de permissões usa o desafio Fiat-Shamir `gamma`. Sobre as avaliações da extensão de baixo grau de `s_perm` e `perm_hash`, o produto em execução é:
 
 $$
 z_0=1
@@ -613,41 +613,41 @@ z_i,& s_{\text{perm},i}=0
 \end{cases}
 $$
 
-Os registos de prova:
+O registro da prova:
 
 $$
 \operatorname{lookup\_grand\_product}=H_F(z_0,z_1,\ldots)
 $$
 
-### Extensão de baixo grau {#low-degree-extension}
+### Extensão de Baixo Grau {#low-degree-extension}
 
-Que `omega_T` seja o gerador de domínio de rastreamento, `omega_E` o gerador do domínio de avaliação e `g` a compensação dos cosetos configurados. Para uma coluna de rastreio com valores `v_i`, a interpolação produz coeficientes `a_j` tais que:
+Seja `omega_T` o gerador do domínio de traço, `omega_E` o gerador do domínio de avaliação e `g` o deslocamento de coset configurado. Para uma coluna de traço com valores `v_i`, a interpolação produz coeficientes `a_j` tais que:
 
 $$
 f(\omega_T^i)=v_i
 $$
 
-A extensão de baixo grau evalua o mesmo polinômio no coseto:
+A extensão de baixo grau avalia o mesmo polinômio no cosseno:
 
 $$
 \operatorname{LDE}_f(i)=f(g\cdot\omega_E^i)
 $$
 
-A implementação calcula isto multiplicando os coeficientes por poderes do coset compensado antes de FFT:
+A implementação calcula isso multiplicando os coeficientes pelas potências do deslocamento do coset antes de FFT:
 
 $$
 a'_j = a_j g^j
 $$
 
-e, em seguida, a avaliação `a'` no domínio de avaliação.
+e então avaliando `a'` no domínio de avaliação.
 
-A Comissão CPU FFT é uma transformação iterativa de radix-2 Cooley-Tukey sobre entradas invertidas em bits. `L`, Meio comprimento `H=L/2`, e raiz de estágio:
+O CPU FFT é uma transformada iterativa radix-2 de Cooley-Tukey sobre entradas com bits invertidos. No comprimento do estágio `L`, metade do comprimento `H=L/2`, e raiz do estágio:
 
 $$
 \omega_L=\omega^{N/L}
 $$
 
-Cada borboleta calcula:
+cada borboleta calcula:
 
 $$
 u=x_j
@@ -661,13 +661,13 @@ $$
 x_j'=u+v,\qquad x_{j+H}'=u-v
 $$
 
-O inverso FFT realiza a mesma transformação com o `omega^{-1}` e escala pelo tamanho do domínio inverso:
+O inverso FFT executa a mesma transformação com `omega^{-1}` e escala pelo tamanho do domínio inverso:
 
 $$
 \operatorname{IFFT}(x)=N^{-1}\cdot\operatorname{FFT}_{\omega^{-1}}(x)
 $$
 
-As raízes do catálogo devem ser validadas antes da utilização:
+As raízes do catálogo são validadas antes do uso:
 
 $$
 \omega^{2^k}=1
@@ -683,26 +683,26 @@ $$
 \omega_{\ell}=\omega_{\max}^{2^{k_{\max}-\ell}}
 $$
 
-### Haches de filas e folhas {#row-and-leaf-hashes}
+### Hashes criptográficos de linha e folha {#row-and-leaf-hashes}
 
-Após LDE, FastPQ hashes de cada linha em todos LDE Colunas. para `m` Colunas:
+Após LDE, FastPQ faz hash criptográfico de cada linha em todas as LDE colunas. Para `m` colunas:
 
 $$
 r_i =
 H_F(i,m,x_{i,0},x_{i,1},\ldots,x_{i,m-1})
 $$
 
-Se os hashes de linha ainda estiverem no domínio trace, em vez do domínio de avaliação, o prover interpola e estende essa coluna de hash de linha única com o mesmo processo coset LDE.
+Se os hashes criptográficos de linha ainda estiverem no domínio do traço em vez do domínio de avaliação, o provador interpola e estende essa coluna de hash de linha única com o mesmo processo de coset LDE.
 
 ### Aberturas de Merkle {#merkle-openings}
 
-Os valores LDE são agrupados em pedaços de:
+Os valores LDE são agrupados em blocos de:
 
 $$
 B_{\text{lde}}=8\cdot\operatorname{fri\_arity}
 $$
 
-Cada pedaço de folha é:
+Cada folha de pedaço é:
 
 $$
 L_j=H_D(j\|v_{jB}\|\cdots\|v_{jB+B-1})
@@ -715,9 +715,9 @@ P_j =
 H_F(\operatorname{seed}(\texttt{fastpq:v1:trace:node}),L_{2j},L_{2j+1})
 $$
 
-Níveis ímpares duplicam o último nó. Os caminhos de consulta são verificados por hashing à esquerda ou à direita de acordo com a paridade do índice da folha de consulta em cada nível.
+Níveis ímpares duplicam o último nó. Caminhos de consulta são verificados calculando o hash à esquerda ou à direita de acordo com a paridade do índice da folha da consulta em cada nível.
 
-Para uma folha com índice `i`, o caminho `(s_0,\ldots,s_{d-1})` é verificado contra a raiz `R` pela recorrência:
+Para uma folha no índice `i`, um caminho `(s_0,\ldots,s_{d-1})` verifica-se em relação à raiz `R` pela recorrência:
 
 $$
 y_0=L_i
@@ -733,26 +733,26 @@ H_F(\operatorname{seed}(\texttt{fastpq:v1:trace:node}),s_k,y_k),
 \end{cases}
 $$
 
-O cheque só é aprovado quando:
+A verificação passa apenas quando:
 
 $$
 y_d=R
 $$
 
-As folhas de linha AIR são:
+AIR as folhas de traço são:
 
 $$
 L^{\text{air}}_i =
 H_D(i\|m\|x_{i,0}\|\cdots\|x_{i,m-1})
 $$
 
-As folhas de composição AIR são:
+AIR folhas de composição são:
 
 $$
 L^{\text{comp}}_i = H_D(i\|A_i)
 $$
 
-A abertura da consulta LDE também verifica se o valor aberto no índice de avaliação `i` está presente na sua peça autenticada:
+A abertura da consulta LDE também verifica se o valor aberto no índice de avaliação `i` está presente em seu bloco autenticado:
 
 $$
 \operatorname{chunk\_index}=\left\lfloor\frac{i}{B_{\text{lde}}}\right\rfloor
@@ -766,16 +766,16 @@ $$
 \operatorname{chunk}[\operatorname{chunk\_offset}]=v_i
 $$
 
-### FRI Pulsão {#fri-folding}
+### FRI Dobrando {#fri-folding}
 
-FRI compromete-se a AIR Avaliações da composição. `l`, As amostras de transcrição são um desafio `beta_l`. A camada é empolhada para um múltiplo da aridade repetindo o último valor. Cada grupo de tamanho da aridade se dobra para:
+FRI se compromete com as avaliações de composição de AIR. Para cada rodada `l`, a transcrição amostra um desafio `beta_l`. A camada é preenchida até um múltiplo da aridade repetindo o último valor. Cada grupo do tamanho da aridade se dobra para:
 
 $$
 y_{l+1,j} =
 \sum_{k=0}^{a-1} y_{l,ja+k}\beta_l^k
 $$
 
-onde `a` é a aridade de FRI. O verificador verifica, para cada cadeia de consultas amostrada, que:
+onde `a` é a aridade FRI. O verificador verifica, para cada cadeia de consulta amostrada, que:
 
 $$
 y_{l+1,\lfloor i/a\rfloor}
@@ -783,11 +783,11 @@ y_{l+1,\lfloor i/a\rfloor}
 \sum_{k=0}^{a-1} y_{l,\lfloor i/a\rfloor a+k}\beta_l^k
 $$
 
-e autentica cada grupo FRI aberto contra a raiz de camada FRI correspondente.
+e autentica cada grupo FRI aberto contra a raiz da camada FRI correspondente.
 
-### Transcrição de Fiat-Shamir {#fiat-shamir-transcript}
+### Transcrição Fiat-Shamir {#fiat-shamir-transcript}
 
-O catálogo de parâmetros canônicos rotula o hash da transcrição como SHA3-256. A implementação atual do prover e verificador deriva bytes de desafio com `iroha_crypto::Hash::new`, que é um digesto Blake2bVar de 32 bytes, depois reduz os primeiros oito bytes de pequena endea para `F`:
+O catálogo de parâmetros canônicos rotula o hash criptográfico da transcrição como SHA3-256. A implementação atual do provador e verificadora deriva os bytes de desafio com `iroha_crypto::Hash::new`, que é um valor de digest criptográfico Blake2bVar de 32 bytes, então reduz os primeiros oito bytes em little-endian para `F`:
 
 $$
 \chi(\text{tag}) =
@@ -795,28 +795,28 @@ $$
 \bmod p
 $$
 
-As chamadas de desafio adicionam o texto completo ao estado da transcrição.
+Chamadas de desafio adicionam o valor completo do resumo criptográfico ao estado da transcrição. A ordem de repetição é:
 
-1. público IO, versão de protocolo, versão de parâmetro e nome do parâmetre
-2. LDE raiz e raiz de rastro
+1. público IO, versão do protocolo, versão do parâmetro e nome do parâmetro
+2. LDE raiz e rastro da raiz
 3. `gamma`
-4. Desafios de composição AIR `alpha_0`, `alpha_1`
-5. Raiz de traço AIR e raiz de composição AIR
-6. lookup grande produto
-7. Roteiras de camadas FRI e desafios `beta_l`
-8. índices de consulta tomados em amostra
+4. AIR desafios de composição `alpha_0`, `alpha_1`
+5. AIR raíz de rastreamento e AIR raíz de composição
+6. procurar produto principal
+7. FRI camadas de raízes e `beta_l` desafios
+8. índices de consulta amostrados
 
-A amostragem de consulta continua a desenhar digestões de desafio de 32 bytes e a lê-las como pequenos fragmentos `u64` até obter o número solicitado de índices únicos:
+A amostragem de consulta continua gerando resumos criptográficos de desafio de 32 bytes e lendo-os como blocos little-endian `u64` até que tenha o número solicitado de índices únicos:
 
 $$
 q = \operatorname{le64}(\text{digest chunk})\bmod N_{\text{eval}}
 $$
 
-O conjunto de amostras é devolvido em ordem ordenada.
+O conjunto amostrado é retornado em ordem classificada.
 
-### Reprodução do verificador {#verifier-replay}
+### Repetição do Verificador {#verifier-replay}
 
-O verificador recalcula, em primeiro lugar, o compromisso do lote:
+O verificador primeiro recalcula o compromisso do lote:
 
 $$
 \operatorname{commitment}_{expected}
@@ -830,7 +830,7 @@ $$
 =\operatorname{proof.trace\_commitment}
 $$
 
-Reconstrui também o público IO:
+Também reconstrói o público IO:
 
 $$
 \operatorname{PublicIO}=
@@ -840,7 +840,7 @@ $$
 \operatorname{permission\_hashes})
 $$
 
-Cada campo deve corresponder ao público da prova IO byte-for-byte. O verificador reconstrui a mesma transcrição e obtém a mesma:
+Cada campo deve corresponder, byte a byte, ao IO público da prova. O verificador então reconstrói a mesma transcrição e deriva o mesmo:
 
 $$
 \gamma,\quad \alpha_0,\alpha_1,\quad
@@ -848,7 +848,7 @@ $$
 q_0,\ldots,q_{t-1}
 $$
 
-Para cada consulta tomada pela amostra `q`, verifica-se:
+Para cada consulta amostrada `q`, ele verifica:
 
 $$
 \operatorname{MerkleVerify}(
@@ -886,73 +886,73 @@ A_q =
 )
 $$
 
-A Comissão AIR A abertura da composição deve ser autenticada no `R_air_composition`. A Comissão FRI A cadeia começa a partir da mesma `A_q` e deve terminar num final autenticado FRI Folha debaixo do terminal FRI A raiz.
+A abertura da composição AIR deve ser autenticada sob `R_air_composition`. A cadeia FRI então começa a partir do mesmo `A_q` e deve terminar em uma folha final FRI autenticada sob a raiz terminal FRI.
 
-## O que o Provérbio verifica {#what-the-prover-checks}
+## O Que o Verificador Confere {#what-the-prover-checks}
 
-Antes de construir o rastreamento, o provador FastPQ canoniza a ordem do lote por chave de transição, grau de operação e ordem de inserção. As linhas de transferência também exigem metadados transcritos.
+Antes de construir o rastreamento, o provador FastPQ canoniciza a ordem do lote por chave de transição, classificação da operação e ordem de inserção. As linhas de transferência também exigem metadados da transcrição. Um lote com linhas de transferência mas sem transcrições de transferência é inválido.
 
-Para as transcrições de transferência, os controlos no lado do provedor incluem:
+Para a transferência de históricos escolares, as verificações do lado do provedor incluem:
 
-- O saldo do remetente não deve fluir para baixo
+- o saldo do remetente não deve ficar negativo
 - `sender_after` deve ser igual a `sender_before - amount`
 - `receiver_after` deve ser igual a `receiver_before + amount`
-- A transcrição deve abranger todas as linhas de transferência do lote.
-- uma digestão de Poseidon com um único delta, quando presente, deve corresponder à imagem prévia da transcrição
-- desde que as provas de Merckle raras sejam decodificadas como versão 1; os caminhos faltantes são preenchidos com provas sintéticas deterministas.
+- a transcrição deve cobrir cada linha de transferência no lote
+- um resumo Poseidon de delta único, quando presente, deve corresponder à pré-imagem da transcrição
+- provas de Merkle esparsas fornecidas devem decodificar como versão 1; caminhos ausentes são preenchidos com provas sintéticas determinísticas
 
-O rastreamento contém colunas de selector para transferência, moeda, queima, atribuição de papéis, revogação de papéis , conjunto de metadados e linhas de pesquisa de permissões.
+O rastreamento contém colunas de seletor para transferência, emissão, queima, concessão de função, revogação de função, definição de metadados e linhas de consulta de permissão. As linhas de operação numérica também carregam deltas com sinal, deltas acumulados por ativo e contadores de suprimento.
 
-## Provérbio Lane {#prover-lane}
+## Prover pista de execução {#prover-lane}
 
-`irohad` inicia a faixa de prover FastPQ na inicialização se o backend do prover pode ser iniciado. A faixa é uma tarefa de fundo com uma fila limitada. Depois que um bloco produz um testemunho de execução, o caminho de commit apresenta um trabalho de prover contendo o hash do bloco, altura, vista e testemunho.
+`iroha3d` inicia a linha de execução do provador FastPQ na inicialização se o backend do provador puder ser inicializado. A linha de execução é uma tarefa em segundo plano com uma fila limitada. Após um bloco produzir uma prova de execução, o caminho de confirmação envia um trabalho de provador contendo o hash criptográfico do bloco, altura, visualização e prova.
 
-Se a faixa não estiver em execução ou a fila estiver cheia, o trabalho é ignorado e o processamento normal do bloco continua. Isso significa que a faixa de verificação de fundo não é uma entrada de transação ou um portal de consenso. É um caminho de produção de prova sobre estado que já foi executado.
+Se a fila de execução não estiver funcionando ou a fila estiver cheia, o trabalho é ignorado e o processamento normal do bloco continua. Isso significa que a fila de execução do provedor de background não é um portão de admissão de transações ou de consenso. É um caminho de produção de provas sobre um estado que já foi executado.
 
-A faixa constrói um provedor com:
+A pista de execução constrói um verificador com:
 
 ```text
 parameter = "fastpq-lane-balanced"
-execution_mode = auto | cpu | gpu
-poseidon_mode = auto | cpu | gpu
+execution_mode = cpu | gpu
+poseidon_mode = cpu | gpu
 ```
 
-`auto` Deixa o provador escolher o backend disponível. `cpu` Execução de pins para o CPU. `gpu` preferências GPU Execução, com CPU fallback em que o backend não pode utilizar os kernels solicitados.
+Ambas as configurações padrão para `cpu`. Selecionar `gpu` é uma solicitação explícita de falha segura: se o suporte a GPU não estiver compilado ou um backend GPU solicitado falha na verificação prévia, a linha de execução do provador permanece desativada. A primeira versão não possui valor `auto` e não retorna de um modo GPU solicitado para CPU.
 
 ## Verificação {#verification}
 
-A verificação de prova FastPQ reconstitui o compromisso canônico do lote e repõe a transcrição pública. O verificador verifica a versão do protocolo, a versão definida por parâmetros, os limites de reprodução, o compromisso de rastreamento, as entradas públicas, as aberturas Merkle da amostra, as abertura AIR e a cadeia de consultas FRI.
+FastPQ a verificação da prova reconstrói o compromisso de lote canônico e reproduz a transcrição pública. O verificador verifica a versão do protocolo, a versão do conjunto de parâmetros, os limites de reprodução, o compromisso de rastreamento, as entradas públicas, as aberturas de Merkle amostradas, AIR aberturas e a cadeia de consultas FRI.
 
-Os limites de repetição por defeito incluem:
+Os limites padrão de repetição incluem:
 
-|Limite .|Default .|
+|Limite|Padrão|
 | ------------------ | ------: |
-|Linhas de transição |     256 |
-|Tamanho da carga útil do lote |256 KiB |
-|FRI camadas |      16 |
-|Questões abertas |     128 |
+|Linhas de transição|     256 |
+|Tamanho da carga do lote|256 KiB|
+| FRI camadas         |      16 |
+|Aberturas de consulta|     128 |
 
-## Nexus Relais verificados {#nexus-verified-relays}
+## Nexus Relés Verificados {#nexus-verified-relays}
 
-Nexus AXT Os envelopes de prova podem incorporar um `AxtFastpqBinding`. Quando `RegisterVerifiedLaneRelay` Executa, Iroha:
+Nexus AXT os contêineres de dados de prova podem incorporar um `AxtFastpqBinding`. Quando `RegisterVerifiedLaneRelay` é executado, Iroha:
 
-1. Verifica o envelope de relevo da faixa e o material de prova FastPQ
-2. verifica o espaço de dados e a raiz do manifesto
-3. Decodifica o envelope de prova AXT
-4. Requer um `fastpq_binding`
-5. Reconstrui o lote FastPQ a partir dessa ligação.
-6. Decodifica a prova embutida FastPQ
-7. liga ao verificador FastPQ sobre o lote e a prova reconstruídos
+1. verifica o contêiner de dados do relé da pista de execução e o material de prova FastPQ
+2. verifica o espaço de dados e o root do manifesto técnico
+3. decodifica o contêiner de dados de prova AXT
+4. requer um `fastpq_binding`
+5. reconstrói o lote FastPQ a partir dessa vinculação
+6. decodifica a prova incorporada FastPQ
+7. chama o verificador FastPQ no lote reconstruído e na prova
 
-Se a verificação for bem-sucedida, Iroha armazena um `VerifiedLaneRelayRecord` contendo a referência do relevo, o envelope original, o hash da carga útil de prova, a altura da verificação, a raiz do manifesto e a ligação à FastPQ.
+Se a verificação for bem-sucedida, Iroha armazena um `VerifiedLaneRelayRecord` contendo a referência do relé, o contêiner de dados original, o hash criptográfico da carga de prova, a altura de verificação, a raiz do manifesto técnico e a vinculação FastPQ.
 
-Os envelopes de relevo de faixa também carregam material de prova compacto FastPQ. O material é um digesto sobre o ID da faixa, id do espaço de dados, altura do bloco, altura de verificação, hash de cabeçalho de bloco, hash de liquidação e raiz do manifesto. Um relevo só é admissível quando contém um material de prova QC e válido FastPQ.
+Os envelopes de retransmissão das vias também transportam material compacto de prova FastPQ. Esse material resume o ID da via, o ID do espaço de dados, a altura do bloco, a altura de verificação, o hash do cabeçalho do bloco, o hash de liquidação e a raiz do manifesto. Uma retransmissão só pode ser mesclada quando contém um QC e material de prova FastPQ válido.
 
-### AXT Matemática vinculativa {#axt-binding-math}
+### AXT Vinculação Matemática {#axt-binding-math}
 
-Para os envelopes Nexus AXT, `AxtFastpqBinding` é canonizado antes da repetição de prova. Valores padrão do parâmetro vazio para `fastpq-lane-balanced`; id e versão padrão de verificador vazio para`fastpq` e `v1`; o tipo de reivindicação é recortado e reduzido.
+Para os contêineres de dados Nexus AXT, `AxtFastpqBinding` é normalizado em forma canônica antes da repetição da prova. Valores de parâmetros vazios usam `fastpq-lane-balanced` por padrão; identificador e versão vazios do verificador usam `fastpq` e `v1`; o tipo de declaração é aparado e convertido para minúsculas.
 
-As entradas públicas AXT FastPQ são hashes de byte deterministas:
+Os AXT FastPQ inputs públicos são hashes criptográficos de bytes determinísticos:
 
 $$
 \operatorname{dsid}=\operatorname{dsid\_bytes}(\operatorname{source\_dsid})
@@ -1002,14 +1002,14 @@ $$
 )
 $$
 
-As chaves de transição AXT são:
+AXT as chaves de transição são:
 
 $$
 \operatorname{key}(\operatorname{prefix},x,y)=
 \operatorname{prefix}\|\texttt{/}\|x\|\texttt{/}\|y
 $$
 
-No pedido de `authorization` é inserida uma linha relativa à concessão de títulos:
+A reivindicação `authorization` insere uma linha de concessão de função:
 
 $$
 \operatorname{role\_id}=\operatorname{claim\_digest}
@@ -1024,9 +1024,9 @@ $$
 \operatorname{le64}(\operatorname{policy\_commitment}[0..8])
 $$
 
-A reivindicação `compliance` inserir duas linhas de metadados: uma para a política e outra para os espaços de dados alvo.
+e uma linha de metadados vinculando a política de autorização. A reivindicação `compliance` insere duas linhas de metadados: uma para a política e outra para os dataspaces de destino.
 
-Para `tx_predicate` e `value_conservation`, é utilizado um valor de efeito explícito quando a ligação contém uma quantidade fonte ou destino positiva. Caso contrário, o código deriva um valor determinístico limitado:
+Para `tx_predicate` e `value_conservation`, um valor explícito de efeito é usado quando a vinculação contém um valor de origem ou destino positivo. Caso contrário, o código deriva um valor determinístico limitado:
 
 $$
 \operatorname{bounded}(d,\min,\operatorname{span})
@@ -1034,7 +1034,7 @@ $$
 \min + (\operatorname{le64}(d[0..8])\bmod\max(\operatorname{span},1))
 $$
 
-Em seguida, usam-se as mesmas equações de transferência:
+Então as mesmas equações de transferência são usadas:
 
 $$
 \operatorname{sender\_after}=\operatorname{sender\_before}-a
@@ -1044,14 +1044,14 @@ $$
 \operatorname{receiver\_after}=\operatorname{receiver\_before}+a
 $$
 
-Os IDs de conta do remetente e do destinatário sintéticos são gerados a partir de sementes-chave:
+Os IDs de conta do remetente e do destinatário sintéticos são gerados a partir de sementes de chave:
 
 $$
 \operatorname{seed}=
 \operatorname{Hash}(\operatorname{label}\|\operatorname{entropy})[0..32]
 $$
 
-O hash do lote de transferência é:
+O hash criptográfico do lote de transferência é:
 
 $$
 \operatorname{batch\_hash} =
@@ -1063,43 +1063,43 @@ $$
 )
 $$
 
-O manifesto de lote AXT é digestado por SHA-256 sobre a codificação Norito da ligação canônica:
+O valor do resumo criptográfico do manifesto técnico do lote AXT é SHA-256 sobre a codificação Norito da vinculação canônica:
 
 $$
 \operatorname{manifest\_digest} =
 \operatorname{SHA256}(E(\operatorname{canonical\_binding}))
 $$
 
-## SCCP Prova de mensagem transparente {#sccp-transparent-message-proofs}
+## SCCP Provas de Mensagem Transparente {#sccp-transparent-message-proofs}
 
-A caixa auxiliar SCCP também usa FastPQ para provas transparentes de mensagens transversais. Este caminho é separado da faixa de provedor de fundo `irohad`. Ele constrói um lote FastPQ diretamente a partir de um pacote e manifesto de prova de mensagem SCCP, em seguida, enrola a prova resultante para verificação aberta.
+O pacote de software auxiliar SCCP também utiliza FastPQ para provas de mensagem entre cadeias de forma transparente. Este caminho é separado da linha de execução do provedor de fundo `iroha3d`. Ele cria um lote FastPQ diretamente a partir de um pacote de prova de mensagem SCCP e manifesto técnico, e então embala a prova resultante para verificação aberta.
 
-O lote SCCP utiliza o `fastpq-lane-balanced` e três transições de metadados:
+O lote SCCP usa `fastpq-lane-balanced` e três transições de metadados:
 
-|A chave .|Operação |
+|Tecla|Operação|
 | ------------------------------- | --------- |
-|`sccp:transparent:v1:statement` |`MetaSet` |
-|`sccp:transparent:v1:context` |`MetaSet` |
-|`sccp:transparent:v1:payload` |`MetaSet` |
+| `sccp:transparent:v1:statement` | `MetaSet` |
+| `sccp:transparent:v1:context`   | `MetaSet` |
+| `sccp:transparent:v1:payload`   | `MetaSet` |
 
-As suas entradas públicas são derivadas da prova interna transparente SCCP:
+Seus insumos públicos são derivados da prova interna transparente SCCP:
 
-|Introdução FastPQ |SCCP fonte |
+| FastPQ entrada | SCCP fonte                                                |
 | ------------- | ---------------------------------------------------------- |
-|`dsid` |Os primeiros 16 bytes de uma digestão Blake2b sobre a declaração hash |
-|`slot` |Altura da finalidade |
-|`old_root` |Hash de carga útil |
-|`new_root` |Raiz de compromisso |
-|`perm_root` |O bloqueio de finalidade hash |
-|`tx_set_hash` |Hash de declaração |
+| `dsid`        |Primeiros 16 bytes de um valor de resumo criptográfico Blake2b sobre o resumo criptográfico da declaração|
+| `slot`        |Altura de Finalidade|
+| `old_root`    |Hash criptográfico da carga útil|
+| `new_root`    |Raiz do compromisso|
+| `perm_root`   |Hash criptográfico do bloco de finalização|
+| `tx_set_hash` |Declaração de hash criptográfico|
 
-Os codificadores canônicos SCCP escrevem números inteiros pequenos e codificam matrizes de bytes de comprimento variável como:
+Os codificadores canônicos SCCP escrevem inteiros em little-endian e codificam arrays de bytes de comprimento variável como:
 
 $$
 \operatorname{vec}(x)=\operatorname{le32}(|x|)\|x
 $$
 
-A cadeia de byte de entrada pública transparente é:
+A sequência de bytes de entrada pública transparente é:
 
 $$
 P =
@@ -1112,7 +1112,7 @@ P =
 \operatorname{finality\_block\_hash}
 $$
 
-Os bytes de declaração transparentes são a concatenação da versão, família de cadeias, domínios locais e contrapartes, modelo de segurança, governança de âncora, codec de conta, modelo de finalidade, alvo do verificador, família de backend do verificador; campos de cadeia/backend/manifesto prefixados em comprimento; hash vinculativo de destino; A chave de codec da conta, tipo de carga útil, bytes de entrada pública e hash da carga útil.
+Os bytes da declaração transparente são a concatenação de versão, família da cadeia, domínios local e da contraparte, modelo de segurança, governança da âncora, codec da conta, modelo de finalização, alvo do verificador, família do backend do verificador, campos de cadeia/backend/manifestações com comprimento prefixado, vinculação de destino, hash criptográfico, chave de codec da conta, tipo de carga útil, bytes de entrada pública e hash criptográfico da carga útil. O hash criptográfico da declaração é:
 
 $$
 \operatorname{statement\_hash} =
@@ -1121,7 +1121,7 @@ $$
 )
 $$
 
-O id do espaço de dados FastPQ para este caminho de prova é os primeiros dezesseis bytes de outro digestão Blake2b pré-fixado:
+O identificador de espaço de dados FastPQ desse caminho de prova corresponde aos primeiros dezesseis bytes de outro resumo Blake2b prefixado:
 
 $$
 \operatorname{dsid} =
@@ -1130,7 +1130,7 @@ $$
 )[0..16]
 $$
 
-O lote de SCCP FastPQ é exatamente:
+O lote SCCP FastPQ é exatamente:
 
 $$
 (\texttt{sccp:transparent:v1:statement},\varnothing,\operatorname{statement},\operatorname{MetaSet})
@@ -1144,9 +1144,9 @@ $$
 (\texttt{sccp:transparent:v1:payload},\varnothing,\operatorname{canonical\_payload},\operatorname{MetaSet})
 $$
 
-em seguida, ordenado pela mesma regra de encomenda FastPQ.
+então ordenados pela mesma regra de ordenação FastPQ.
 
-O compromisso com o verificador OpenVerify é SHA-256 em relação ao nome do backend da mensagem SCCP e ao descritivo canônico do verificador FastPQ:
+O compromisso do verificador OpenVerify é SHA-256 sobre o nome do backend da mensagem SCCP e o descritor canônico do verificador FastPQ:
 
 $$
 \operatorname{vk\_hash} =
@@ -1155,45 +1155,45 @@ $$
 )
 $$
 
-O crudo FastPQ A prova é Norito- codificado em um `StarkFriOpenProofV1`, em seguida, embrulhado em um `OpenVerifyEnvelope` com backend `Stark`. SCCP A verificação reconstrói a mesma FastPQ a colheita do pacote e do manifesto, verifica os metadados do envelope de verificação aberto e chama o FastPQ Verificador e prova do lote reconstruído.
+A prova bruta FastPQ é codificada em Norito em um `StarkFriOpenProofV1`, depois envolvida em um `OpenVerifyEnvelope` com backend `Stark`. A verificação SCCP reconstrói o mesmo FastPQ lote do pacote e manifesto técnico, verifica os metadados do contêiner de dados de verificação aberto e chama o verificador FastPQ no lote reconstruído e na prova.
 
-## Setos de parâmetros {#parameter-sets}
+## Conjuntos de Parâmetros {#parameter-sets}
 
-O catálogo dos parâmetros canônicos expõe dois conjuntos de parâmetres. `fastpq-lane-balanced`.
+O catálogo canônico de parâmetros expõe dois conjuntos de parâmetros. O canal de execução do provador anfitrião atualmente usa `fastpq-lane-balanced`.
 
-|Parâmetro |Propósito |Campo |Hashes |FRI |
+|Parâmetro|Propósito|Campo                          |hashes criptográficos| FRI                             |
 | ---------------------- | -------------------------- | ------------------------------ | ------------------------------------------- | ------------------------------- |
-|`fastpq-lane-balanced` |transmissão de provedor equilibrada |Goldilocks extensão quadrática |Compromissos de Poseidon2, catálogo SHA3 etiqueta |Arity 8, blowup 8, 46 consultas |
-|`fastpq-lane-latency` |rotas sensíveis à latência |Goldilocks extensão quadrática |Compromissos de Poseidon2, catálogo SHA3 etiqueta |Arity 16, explosão 16, 34 consultas |
+| `fastpq-lane-balanced` |throughput equilibrado do provedor|Extensão quadrática de Cachinhos Dourados|Compromissos do Poseidon2, catálogo SHA3 etiqueta|aritidade 8, explosão 8, 46 consultas|
+| `fastpq-lane-latency`  |linhas de execução sensíveis à latência|Extensão quadrática de Cachinhos Dourados|Compromissos do Poseidon2, catálogo SHA3 etiqueta|aritmética 16, explosão 16, 34 consultas|
 
-Ambos visam segurança de 128-bit e usam um tamanho de domínio rastreado de `2^16`. O código de repetição da transcrição Rust V1 atualmente deriva bytes de desafio Fiat-Shamir com `iroha_crypto::Hash::new` em vez de invocar diretamente SHA3-256.
+Ambos têm como alvo segurança de 128 bits e usam um tamanho de domínio de rastreamento de `2^16`. O código de reprodução de transcrição Rust V1 atualmente deriva bytes de desafio Fiat-Shamir com `iroha_crypto::Hash::new` em vez de invocar diretamente SHA3-256.
 
-As constantes exatas do catálogo utilizadas pelo provador Rust são:
+As constantes de catálogo exatas usadas pelo provador Rust são:
 
-|Constantemente .|`fastpq-lane-balanced` |`fastpq-lane-latency` |
+|Constante| `fastpq-lane-balanced` | `fastpq-lane-latency` |
 | -------------------- | ---------------------: | --------------------: |
-|`target_security` |                    128 |                   128 |
-|`grinding_bits` |                     23 |                    21 |
-|`trace_log_size` |                     16 |                    16 |
-|`trace_root` |`0x002a247f81c6f850` |`0x6a9f4eb38fb9b892` |
-|`lde_log_size` |                     19 |                    20 |
-|`lde_root` |`0x60263388dbbf9b2a` |`0x9c9c3a571b6f89ac` |
-|`permutation_size` |                 65,536 |                65,536 |
-|`lookup_log_size` |                     19 |                    20 |
-|`omega_coset` |`0x6af325e825ad5c18` |`0x3a5fd4171e3c3a4d` |
-|`fri_arity` |                      8 |                    16 |
-|`fri_blowup` |                      8 |                    16 |
-|`fri_max_reductions` |                      8 |                     6 |
-|`fri_queries` |                     46 |                    34 |
+| `target_security`    |                    128 |                   128 |
+| `grinding_bits`      |                     23 |                    21 |
+| `trace_log_size`     |                     16 |                    16 |
+| `trace_root`         |   `0x002a247f81c6f850` |  `0x6a9f4eb38fb9b892` |
+| `lde_log_size`       |                     19 |                    20 |
+| `lde_root`           |   `0x60263388dbbf9b2a` |  `0x9c9c3a571b6f89ac` |
+| `permutation_size`   |                 65,536 |                65,536 |
+| `lookup_log_size`    |                     19 |                    20 |
+| `omega_coset`        |   `0x6af325e825ad5c18` |  `0x3a5fd4171e3c3a4d` |
+| `fri_arity`          |                      8 |                    16 |
+| `fri_blowup`         |                      8 |                    16 |
+| `fri_max_reductions` |                      8 |                     6 |
+| `fri_queries`        |                     46 |                    34 |
 
 ## Configuração {#configuration}
 
-A configuração FastPQ está inserida em `zk.fastpq`.
+A configuração FastPQ está aninhada sob `zk.fastpq`.
 
 ```toml
 [zk.fastpq]
-execution_mode = "auto"
-poseidon_mode = "auto"
+execution_mode = "cpu"
+poseidon_mode = "cpu"
 
 # Optional telemetry labels.
 device_class = "apple-m4"
@@ -1210,17 +1210,17 @@ metal_debug_enum = false
 metal_debug_fused = false
 ```
 
-Os mesmos rótulos de execução e telemetria podem ser substituídos a partir do `irohad`:
+Os mesmos rótulos de execução e telemetria podem ser substituídos a partir de `iroha3d`:
 
 ```shell
-irohad --fastpq-execution-mode auto
-irohad --fastpq-poseidon-mode cpu
-irohad --fastpq-device-class apple-m4
-irohad --fastpq-chip-family m4
-irohad --fastpq-gpu-kind integrated
+iroha3d --fastpq-execution-mode gpu
+iroha3d --fastpq-poseidon-mode cpu
+iroha3d --fastpq-device-class apple-m4
+iroha3d --fastpq-chip-family m4
+iroha3d --fastpq-gpu-kind integrated
 ```
 
-As variáveis ambientais são também suportadas para os campos de configuração. FastPQ- as variáveis específicas incluem:
+Variáveis de ambiente também são suportadas para os campos de configuração. As variáveis específicas do FastPQ incluem:
 
 - `FASTPQ_EXECUTION_MODE`
 - `FASTPQ_POSEIDON_MODE`
@@ -1237,25 +1237,25 @@ As variáveis ambientais são também suportadas para os campos de configuraçã
 
 ## Métricas {#metrics}
 
-Quando a telemetria está habilitada, FastPQ exporta métricas para seleção de backend e comportamento de execução do Metal:
+Quando a telemetria é habilitada, FastPQ exporta métricas para a seleção de backend e o comportamento do tempo de execução do software Metal:
 
-|Metrica .|Que significa ?|
+|Métrica|Significado|
 | --------------------------------- | --------------------------------------------------------------------------- |
-|`fastpq_execution_mode_total` |Modo de execução solicitado e resolvido por backend e rótulos do dispositivo |
-|`fastpq_poseidon_pipeline_total` |Pedido e resolvido caminho do oleoduto de Poseidon |
-|`fastpq_metal_queue_depth` |Limite de fila de metal, contagem máxima no voo, número de expedição e janela de amostragem |
-|`fastpq_metal_queue_ratio` |As filas de metais ocupadas e as proporções de sobreposição |
-|`fastpq_zero_fill_duration_ms` |Durada de enchimento zero para corridas de Metal |
-|`fastpq_zero_fill_bandwidth_gbps` |Largura de banda derivada zero-fill |
+| `fastpq_execution_mode_total`     |Modo de execução solicitado e resolvido por rótulos de back-end e dispositivo|
+| `fastpq_poseidon_pipeline_total`  |Caminho da linha de processamento do Poseidon solicitado e resolvido|
+| `fastpq_metal_queue_depth`        |Limite de fila de metal, contagem máxima em voo, contagem de despacho e janela de amostragem|
+| `fastpq_metal_queue_ratio`        |Fila de metal ocupada e taxas de sobreposição|
+| `fastpq_zero_fill_duration_ms`    |Duração de preenchimento com zeros do host para execuções Metal|
+| `fastpq_zero_fill_bandwidth_gbps` |Largura de banda derivada com preenchimento de zeros|
 
-Para triagem geral de desempenho, utilize-as com os sinais de consenso e filas listados em [Performance and Metrics ](/pt/guide/advanced/metrics.md).
+Para a triagem geral de desempenho, use estes com os sinais de consenso e de fila listados em [Desempenho e Métricas](/pt/guide/advanced/metrics.md).
 
-## Referência relacionada {#related-reference}
+## Referência Relacionada {#related-reference}
 
-- [Esquema de modelo de dados ](/pt/reference/data-model-schema.md) para os detalhes do tipo gerados
+- [Esquema do Modelo de Dados](/pt/reference/data-model-schema.md) para a visualização de dados ponto no tempo do tipo autoritativo do nó
 - `FastpqTransitionBatch`
 - `FastpqPublicInputs`
 - `TransferTranscript`
 - `AxtFastpqBinding`
 - `LaneFastpqProofMaterial`
-- [Opções `irohad` FastPQ ](/pt/reference/irohad-cli.md#arg-fastpq-execution-mode)
+- [`iroha3d` FastPQ opções](/pt/reference/iroha3d-cli.md#fastpq-overrides)

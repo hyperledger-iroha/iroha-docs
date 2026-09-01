@@ -21,6 +21,6 @@ translation_engine: nllb-200-ct2
 
 大多数问题是由于无法匹配的密钥而产生的. 这就是为什么我们建议遵循这个规则:如果有问题,首先检查键.
 
-这里有一个简单的解释:当同行密钥不与可信任同行数组中的密钥相匹配时,无法区分出现的错误信息.因此,如果您有通过环境变量定义的密钥的Helm图表或Kubernetes部署,在调查更高层次故障之前,请比较配置的 [`public_key`](/zh-hans/reference/peer-config/params.md#param-public-key),[`private_key`](/zh-hans/reference/peer-config/params.md#param-private-key)和 [`trusted_peers`](/zh-hans/reference/peer-config/params.md#param-trusted-peers)等值.
+这里有一个简单的解释:当对等节点密钥不与可信任对等节点数组中的密钥相匹配时,无法区分出现的错误信息.因此,如果您有通过环境变量定义的密钥的Helm图表或Kubernetes部署,在调查更高层次故障之前,请比较配置的 [`public_key`](/zh-hans/reference/peer-config/params.md#param-public-key),[`private_key`](/zh-hans/reference/peer-config/params.md#param-private-key)和 [`trusted_peers`](/zh-hans/reference/peer-config/params.md#param-trusted-peers)等值.
 
 如果有疑问, [生成一个新的钥匙对](/zh-hans/guide/security/generating-cryptographic-keys.md).

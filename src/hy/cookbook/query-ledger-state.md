@@ -1,12 +1,12 @@
 ---
 translation_locale: hy
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: a81f6cc04befb0b92a0a01c2cb3c1ecbbc631ce1f2a923cb046241c295db7806
+translation_source_hash: 68ef931f3d37b9bd40fcf61c9a77313539ca0bd648405834d161a018debb491a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Հարցազրույց Գրիչային պետություն {#query-ledger-state}
+# Query անել գրանցամատյանի վիճակը {#query-ledger-state}
 
 ## Արդյունքը {#outcome}
 
@@ -132,7 +132,7 @@ for definition in definitions {
 }
 ```
 
-`ForwardCursor` -ը լիազորությունների վրա է հիմնված, գործընթացային տեղական եւ միայն հետագա: Երբեք մի վերլուծեք այն, սինթեզիրացրեք այն, կիսեք այն իշխանությունների միջեւ կամ պահպանեք այն որպես բեռնունակ վերարտադրման տոքեր Torii դեպքերում: Եթե այն ավարտվում է, վերսկսեք սկզբնական հարցումը ծրագրային մակարդակի դիտավորյալ ստուգման կետով:
+`ForwardCursor` -ը լիազորությունների վրա է հիմնված, գործընթացային տեղական եւ միայն հետագա: Երբեք մի վերլուծեք այն, սինթեզիրացրեք այն, կիսեք այն լիազոր հաշիվների միջեւ կամ պահպանեք այն որպես բեռնունակ վերարտադրման տոքեր Torii դեպքերում: Եթե այն ավարտվում է, վերսկսեք սկզբնական հարցումը ծրագրային մակարդակի դիտավորյալ ստուգման կետով:
 
 ## Փորձարկել {#verify}
 
@@ -155,14 +155,14 @@ iroha --config ./localnet/client.toml \
 - Անհայտ, ժամկետով անցած կամ օտար կուրսորը դիտավորյալ չի կարող կրկնակի օգտագործվել: Վերագործարկեք հարցումը. Մի փորձեք վերականգնել անչափահաս արժեքը:
 - Մետադատայի դասակարգումը ընդհանուր դաշտային դասակարգում չէ: Եթե յուրաքանչյուր կետ չի պարունակում ընտրված բանալին, փաստաթղթագրեք բացակայում է բանալին կարգը կամ ընտրեք այլ ռազմավարություն:
 - CLI-ը վերլուծում եւ փոխանցում է `--select`, բայց ներկայիս սերվերը չի գնահատում թեթեւ ընտրիչի թուպլին: կիրառեք հաճախորդի կողմից նախագծումը, քանի դեռ սերվերի կողմից ընտրողի աջակցությունը հաստատված չէ տեղակայված վազման ժամանակի համար:
-- Տարածաշրջանային անսահմանափակ հարցումները մեծացնում են գործընկերների աշխատանքը, հաճախորդի հիշողությունը եւ կուրսորի կյանքի ռիսկը: Սահմանեք տրամաբանական սահման եւ գնել չափը համապատասխան սպառողի համար.
-- Հանրային JSON ռեսուրսային պարամետրերը եւ ստորագրված տիպավորված հարցման պարամետրները կապված են, բայց չեն փոխանակելի հեռախոսային ձեւաչափեր: Տիպավորված հարցումների փաթեթների համար նախընտրեք SDK կամ CLI:
+- Տարածաշրջանային անսահմանափակ հարցումները մեծացնում են հանգույցների աշխատանքը, հաճախորդի հիշողությունը եւ կուրսորի կյանքի ռիսկը: Սահմանեք տրամաբանական սահման եւ գնել չափը համապատասխան սպառողի համար.
+- Հանրային JSON ռեսուրսային պարամետրերը եւ ստորագրված տիպավորված հարցման պարամետրները կապված են, բայց չեն փոխանակելի ցանցային ձևաչափեր: Տիպավորված հարցումների փաթեթների համար նախընտրեք SDK կամ CLI:
 
 ## Աղբյուրը եւ դրա հետ կապված փաստաթղթերը {#source-and-related-docs}
 
-- [Cursor-backed pagination ինտեգրման փորձարկումները pinned commit- ում](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/pagination.rs)
-- [Հարցազրույցի ստեղծողի եւ ընտրողի վարքագիծը փակված հանձնաժողովում](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/builder/mod.rs)
-- [Հարցման պարամետրերը եւ կուրսորի մոդելը փինված commit- ում](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/parameters.rs):
-- [Հարցեր](/hy/blockchain/queries.md)
+- [Cursor-backed pagination ինտեգրման փորձարկումները pinned commit- ում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs)
+- [Հարցման ստեղծողի եւ ընտրողի վարքագիծը փակված commit-ում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs)
+- [Հարցման պարամետրերը եւ կուրսորի մոդելը փինված commit- ում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs):
+- [Հարցումներ](/hy/blockchain/queries.md)
 - [Հարցման հղում](/hy/reference/queries.md)
 - [JavaScript եւ TypeScript](/hy/guide/tutorials/javascript.md)

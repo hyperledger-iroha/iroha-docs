@@ -1,22 +1,22 @@
 ---
 translation_locale: ja
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 49e1a29243151fec1ada2729c315378455a8502811e1ae124e5917a88d59b55d
+translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# 設置 Iroha 3 {#install-iroha-3}
+# Iroha 3 をインストールする {#install-iroha-3}
 
-このページは,上流 `hyperledger-iroha/iroha` 作業空間を使用した Iroha 3 ツールチェーンの現在のインストールワークフローとバイナリーをカバーする.
+このページでは、上流の`hyperledger-iroha/iroha`ワークスペースを使用した Iroha 3 ツールチェーンとバイナリの現在のインストールワークフローについて説明します。
 
-## 1. 必須条件 {#_1-prerequisites}
+## 1. 前提条件 {#_1-prerequisites}
 
-まずはこれらをインストールする
+まずこれらをインストールしてください：
 
-- [rustup](https://www.rust-lang.org/tools/install)では,固定された `rust-toolchain.toml`ツールチェーン (`1.93.1`) が自動的にインストールされます.
+- [rustup](https://www.rust-lang.org/tools/install)、そのため固定された`rust-toolchain.toml`ツールチェーン(`1.93.1`)が自動的にインストールされます
 - `git`
-- Docker と Docker Compose を選択して,ローカル・マルチペア 快スタート
+- 任意で、ローカルマルチピアクイックスタート用の Docker と Docker Compose
 
 ## 2. ワークスペースをクローンする {#_2-clone-the-workspace}
 
@@ -25,41 +25,46 @@ git clone https://github.com/hyperledger-iroha/iroha.git
 cd iroha
 ```
 
-## 3. 作業場 を 建設 する {#_3-build-the-workspace}
+## 3. 作業スペースを作る {#_3-build-the-workspace}
 
-すべてを建設する
+すべてを構築する:
 
 ```bash
 cargo build --workspace
 ```
 
-小規模なオペレーターに焦点を当てたビルドでは,主要なバイナリーのみをまとめます:
+より小規模でオペレーター向けのビルドの場合、メインのバイナリだけをコンパイルします:
 
 ```bash
-cargo build --release -p irohad -p iroha_cli -p iroha_kagami
+cargo build --release \
+  -p irohad --bin iroha3d --bin iroha3d_taira \
+  -p iroha_cli --bin iroha \
+  -p iroha_kagami --bin kagami
 ```
 
-結果のバイナリは `target/debug/` または `target/release/` に書き込まれます.
+生成されたバイナリは `target/debug/` または `target/release/` に書き込まれます。
 
-## 4. 設置された道具を確認する {#_4-verify-the-installed-tools}
+## 4. インストールされたツールを確認する {#_4-verify-the-installed-tools}
 
 ```bash
-cargo run --bin irohad -- --help
+cargo run -p irohad --bin iroha3d -- --help
+cargo run -p irohad --bin iroha3d_taira -- --help
 cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
 
-通常使用する3つのバイナリーは:
+通常使用する4つのバイナリは次の通りです:
 
-- `irohad` ピアダイモン
-- `iroha` に関する CLI アクセス Torii 操作者のエンドポイント
-- `kagami` 鍵,創始表およびローカルネットプロファイル
+- `iroha3d` 標準ネットワークピアデーモン用
+- `iroha3d_taira` の標準的な Taira バリデータランチャー用
+- CLI が Torii およびオペレーター API エンドポイントにアクセスするための`iroha`
+- `kagami` キー、ブロックチェーンジェネシス技術マニフェスト、およびローカルネットプロファイル用
 
-## 5. オプションローカルネットと Docker パス {#_5-optional-localnet-and-docker-path}
+## 5. 任意のローカルネットと Docker パス {#_5-optional-localnet-and-docker-path}
 
-現在のソースサポートのローカルネットフローは Kagami によって生成されます. 同級構成,ジェネシスアーティファクト,クライアント構成,ヘルパースクリプトおよびチェックアウトされたコードに一致するオプションのコンポーズファイルを作成します:
+現在のソースバック付きローカルネットフローは Kagami によって生成されます。これはネットワークピアの設定、ブロックチェーンのジェネシスアーティファクト、クライアント設定、ヘルパースクリプト、およびチェックアウトされたコードに一致するオプションのComposeファイルを書き込みます:
 
-- `kagami localnet` オリジナル・ローカル・ペアスクリプト
-- ローカルネットディレクトリから生成された Docker Compose に対する `kagami docker`
+- `kagami localnet` ネイティブのローカルネットワークピアスクリプト用
+- Docker Compose のための `kagami docker` がローカルネットディレクトリから生成されました
 
-[開始 Iroha 3](/ja/get-started/launch-iroha.md)を継続する.
+[Iroha 3 を起動](/ja/get-started/launch-iroha.md)を続けてください。

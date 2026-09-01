@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 91dfd38597028531ec579eeb97dcd5acbfcdf6d27ba51991ca96a2d40077aaef
+translation_source_hash: f2411fec1cc35b1bf7795a7ab5a0eb7a8eb6b60b4799ebf3db47208b902f87e6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -77,4 +77,4 @@ Kotlin SDK үҙ эсенә:
 - Android клавиатура һәм ҡоролмалар телеметрияһы интеграциялары
 - Android офлайн QR, Яҡын һәм NFC транспорты
 
-[Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/main/kotlin/README.md) өсөн модуль-специфик APIs һәм аныҡ төҙөү командалары ҡарағыҙ.
+[Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md) өсөн модуль-специфик APIs һәм аныҡ төҙөү командалары ҡарағыҙ.

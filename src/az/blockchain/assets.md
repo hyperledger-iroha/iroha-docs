@@ -3,66 +3,66 @@ translation_locale: az
 translation_source: /blockchain/assets.md
 translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Varlıqlar {#assets}
+# Aktivlər {#assets}
 
-Iroha aktiv bir hesabda saxlanılan rəqəmsal balansdır. Hər konkret balans `AssetDefinition` -a işarə edir və tərif həmin aktivin necə adlandırıla biləcəyini, çəkilə biləcəyini, göstəriləcəyini və bölünəcəyini təsvir edir.
+Bir Iroha aktiv hesab tərəfindən saxlanılan rəqəmsal balansdır. Hər bir konkret balans `AssetDefinition`-a işarə edir və tərif bu aktivin necə adlana, buraxıla, göstərilə və bölünə biləcəyini izah edir.
 
-## Mülkiyyətin təyinatı {#asset-definition}
+## Aktivin Tərifi {#asset-definition}
 
-`AssetDefinition` aşağıdakıları ehtiva edir:
+Bir `AssetDefinition` aşağıdakılardan ibarətdir:
 
-- `id`: qanuni aktivlərin təyinatının ünvanı
-- `name`: insan tərəfindən oxunula bilən bir ekran adı
-- `description`: İnsana oxunması üçün seçməli təsvir
-- `alias`: `<name>#<domain>.<dataspace>` və ya `<name>#<dataspace>` formasında seçmə adları:
-- `spec`: balanslar üçün rəqəmsal dəqiqlik və məhdudluqlar
-- `mintable`: istintaq qabiliyyəti siyasəti
-- `logo`: seçim yolu ilə `SoraFS` URI
-- `metadata`: key-value metadataları
-- `balance_scope_policy`: balansların qlobal olub-olmaması və ya məlumat sahəsi ilə məhdudlaşdırılmış olması
-- `owned_by`: tərifni qeydiyyatdan keçirən və ya sahibi olan hesab
-- `total_quantity`: buraxılmış ümumi miqdar
-- `confidential_policy`: mühafizə olunmuş aktiv əməliyyatları siyasəti
+- `id`: tək protokol-standart aktiv təyinat ünvanı
+- `name`: insan tərəfindən oxuna bilən göstərilən ad
+- `description`: isteğe bağlı insan tərəfindən oxuna bilən təsvir
+- `alias`: `<name>#<domain>.<dataspace>` və ya `<name>#<dataspace>` formasında istəyə bağlı təxəllüs
+- `spec`: balanslar üçün rəqəmsal dəqiqlik və məhdudiyyətlər
+- `mintable`: aktivlərin buraxılış siyasəti siyasəti
+- `logo`: isteğe bağlı `SoraFS` URI
+- `metadata`: ixtiyari açar-dəyər metadatası
+- `balance_scope_policy`: balansların qlobal yoxsa məlumat sahəsi ilə məhdudlaşdırılıb-məhdudlaşdırılmadığı
+- `owned_by`: təyinatı qeydiyyatdan keçirən və ya ona sahib olan hesab
+- `total_quantity`: ümumi buraxılmış miqdar
+- `confidential_policy`: qorunan aktiv əməliyyatları üçün siyasət
 
-Əset tərifləri IDs kanonik qeyri-aşkar ünvanlardır. Bir tərif bir domen və addan qurulduqda, Iroha o domen / ad proyeksiyasını UX və suallar üçün saxlaya bilər, lakin kanoniki mətn forması istehsal olunan ünvandır.
+Aktiv tərifi identifikatorları tək protokol-standart opak ünvanlardır. Bir tərif bir domen və ad əsasında qurulduqda, Iroha həmin domen/ad proyeksiyasını UX və sorğular üçün saxlaya bilər, lakin tək protokol-standart mətn forması yaradılmış ünvandır.
 
-## Mülkiyyət balansı {#asset-balance}
+## Aktiv Balansı {#asset-balance}
 
-`Asset` aşağıdakıları ehtiva edir:
+Bir `Asset` aşağıdakılardan ibarətdir:
 
-- `id`: aktivin tərifini, sahibinin hesabını və seçmə balansının məkanını birləşdirən `AssetId`;
-- `value`: `Numeric` balansı
+- `id`: bir `AssetId`, hansı ki, aktivin tərifini, sahibinin hesabını və əlavə aktiv balansı sahəsini birləşdirir
+- `value`: bir `Numeric` balans
 
-Hökumət hesabı kanonik və domensizdir. Əşya təyinatı, məsələn `payments.universal` məlumat məkanına uyğun bir domen altında proqnozlaşdırıla bilər.
+Hesab sahibi tək protokol-standartlı və domeni olmayan şəxsdir. Aktiv tərifi, məsələn `payments.universal` kimi dataspace-səlahiyyətli bir domen altında layihələndirilə bilər.
 
-## Yükləmə qabiliyyəti {#mintability}
+## Aktivlərin buraxılması siyasəti {#mintability}
 
-Mülkiyyət tərifləri bu mintabilitə rejimlərini dəstəkləyir:
+Aktiv tərifləri bu aktiv buraxılışı siyasət rejimlərini dəstəkləyir:
 
-|Modu |Məna|
+|Rejim|Mənası|
 | ------------ | ----------------------------------------------------------------- |
-|`Infinitely` |Elastik təchizat. Varlıq dəfələrlə silinə və yandırıla bilər. |
-|`Once` |Qeydiyyatlı təchizat əlamətidir, bir dəfə çəkilə və sonra yandırıla bilər.|
-|`Not` |Yandırıla bilən, lakin yenidən silinməyən sabit təchizat simvolu. |
-|`Limited(n)` |Siyasət, məhdud sayda əlavə əməliyyatlarda yeni aktiv birləşmələrinin buraxılmasına imkan verir. |
+| `Infinitely` |Elastik təklif. Aktiv təkrar-təkrar buraxıla və məhv edilə bilər.|
+| `Once`       |Sabit tədarüklü token. O, bir dəfə buraxıla bilər və sonra məhv edilə bilər.|
+| `Not`        |Sabit təchizatlı token, yox edilə bilər, amma yenidən buraxıla bilməz.|
+| `Limited(n)` |Siyasət yeni aktiv vahidlərinin məhdud sayı əlavə əməliyyatlarda buraxılmasına imkan verir.|
 
-Normal elastik aktivlər üçün `Infinitely` və sabit tədarük və ya məhdud tədarük aktivləri üçün `Once` və ya `Limited(n)` istifadə edin. Əməl tədarükü artıq təsdiqlənmədiyi təqdirdə `Not` ilkin siyasət kimi istifadə etməyin
+Normal elastik aktivlər üçün `Infinitely` istifadə edin və sabit təchizatlı və ya məhdud təchizatlı aktivlər üçün `Once` və ya `Limited(n)` istifadə edin. Aktiv təchizatı artıq müəyyən olunmayıbsa, ilkin siyasət kimi `Not`-dən istifadə etməyin.
 
-## Tərəflər arasındakı balans {#balance-scope}
+## Aktiv balansının sahəsi {#balance-scope}
 
-`balance_scope_policy` balansların necə saxlanıldığını idarə edir:
+`balance_scope_policy` balansların necə bölünməsini idarə edir:
 
-- `Global`: hesab və aktiv təyinatına görə bir balans qabı
-- `DataspaceRestricted`: balanslar məlumat məkanının kontekstinə görə bölünür
+- `Global`: hər hesab və aktiv tərifi üçün bir balans bölməsi
+- `DataspaceRestricted`: balanslar verilənlər məkanı konteksti üzrə bölünür
 
-Məlumat sahəsi ilə məhdudlaşdırılmış balanslar, eyni aktiv tərifi bir neçə Nexus məlumat bazasında istifadə edildikdə faydalıdır, lakin balanslar ayrı qalmalıdır.
+Məlumat sahəsi ilə məhdudlaşdırılmış balanslar, eyni aktiv təyinatı bir neçə Nexus məlumat sahəsində istifadə olunduqda faydalıdır, lakin balanslar izolyasiya edilmiş qalmalıdır.
 
-## Taira üzərində sınayın. {#try-it-on-taira}
+## Bu iş axınını Taira üzərində işə sal {#try-it-on-taira}
 
-Bu yalnız oxunma zənglər ictimai Taira testnetdə real aktiv təriflərini göstərir:
+Bu yalnız oxumaq üçün API sorğular ictimai Taira testnetində real aktiv təriflərini göstərir:
 
 ```bash
 TAIRA_ROOT=https://taira.sora.org
@@ -71,7 +71,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=10" \
   | jq -r '.items[] | [.id, .name, .mintable, .total_quantity] | @tsv'
 ```
 
-Hazırda Taira XOR ödəniş aktivinin təyinatını tapın:
+Cari Taira XOR haqqı aktiv tərifini tapın:
 
 ```bash
 curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
@@ -80,7 +80,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, total_quantity, mintable, confidential_policy: .confidential_policy.mode}'
 ```
 
-Metadata sahib olan təriflərə baxın:
+Metaməlumat daşıyan tərifləri axtarın:
 
 ```bash
 curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
@@ -89,9 +89,9 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-Hər üç nümunə oxunur. Taira-dəki aktivləri çap etmək, yandırmaq və ya köçürmək üçün faucet maliyyələşdirilmiş hesabdan və [da qorunan axınından istifadə edin SORA Nexus Verilənlər bazasına bağlanın](/az/get-started/sora-nexus-dataspaces.md) .
+Üç nümunənin hamısı oxumalardır. Taira-də aktivləri vermək, məhv etmək və ya köçürmək üçün testnet-ə maliyyələşdirilmiş hesabdan və [SORA Nexus Məlumat Məkanlarına qoşul](/az/get-started/sora-nexus-dataspaces.md)-dakı qorunan axından istifadə edin.
 
-Ödəniş ödəyən Taira aktiv nümunəsi üçün faucet köməkçisini [-dən saxlayın Testnet XOR-i Taira](/az/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) -də `taira_faucet_claim.py` kimi əldə edin, sonra əvvəlcə faucet aktivini tələb edin və onu əməliyyat qazı aktiv olaraq istifadə edin:
+Ödənişli Taira aktiv nümunəsi üçün testnet maliyyələşdirmə köməkçisini [Taira üzərində Testnet XOR əldə edin](/az/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) bölməsindən `taira_faucet_claim.py` adı ilə saxlayın. Əvvəlcə testnet maliyyələşdirmə xidmətindən aktivi alın, sonra onu əməliyyatın gas aktivi kimi istifadə edin:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -101,22 +101,22 @@ python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
 printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
 ```
 
-Sonra `ledger asset mint`, `ledger asset burn` və `ledger asset transfer` əmrlərində `--metadata ./taira.tx-metadata.json` daxil edin.
+Sonra `ledger asset mint`, `ledger asset burn` və `ledger asset transfer` əmrlərində `--metadata ./taira.tx-metadata.json`-ı daxil edin.
 
 ## Təlimatlar {#instructions}
 
-Əmlaklar Iroha Xüsusi Təlimatlarla qeydiyyatdan keçirilə bilər, silinə bilər, yandırılır və köçürülə bilər:
+Aktivlər Iroha Təlimat əməliyyatları ilə qeydiyyatdan keçirilə, buraxıla, məhv edilə və köçürülə bilər:
 
 - [`Register` və `Unregister`](/az/blockchain/instructions.md#un-register)
 - [`Mint` və `Burn`](/az/blockchain/instructions.md#mint-burn)
 - [`Transfer`](/az/blockchain/instructions.md#transfer)
 - [`SetKeyValue` və `RemoveKeyValue`](/az/blockchain/instructions.md#setkeyvalue-removekeyvalue)
 
-Həmçinin bax:
+Bax həmçinin:
 
-- [CLI rəhbərliyi](/az/get-started/operate-iroha-via-cli.md)
-- [Rust təlimatı](/az/guide/tutorials/rust.md)
-- [Python təlimatı](/az/guide/tutorials/python.md)
-- [JavaScript/TypeScript təlimat](/az/guide/tutorials/javascript.md)
+- [CLI bələdçi](/az/get-started/operate-iroha-via-cli.md)
+- [Rust dərsliyi](/az/guide/tutorials/rust.md)
+- [Python dərsliyi](/az/guide/tutorials/python.md)
+- [JavaScript/TypeScript dərsliyi](/az/guide/tutorials/javascript.md)
 - [Məlumat modeli](/az/blockchain/data-model.md)
 - [NFTs](/az/blockchain/nfts.md)

@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /cookbook/multisig.md
-translation_source_hash: 7090228c4fea7321c93fe0d2c67ef6de842de95bc3befa11d83c12b9f15b4752
+translation_source_hash: e1b57e1c4310dd0db8be8d9f5a15e1d4f693abb90b634772857eb4b1e86e4baf
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ Taira پر تین رکنی متوازن multisig اکاؤنٹ رجسٹر کری�
 
 - تین کینونیکل I105 دستخط کنندہ IDs میں `SIGNER_A`, `SIGNER_B`, اور `SIGNER_C`.
 - دستخط کرنے والوں A اور C کے لئے مالی اعانت یافتہ Taira تشکیلات۔ تجویز دہندہ اور ہر منظوری دینے والے اپنے ہی لین دین کی ادائیگی کرتے ہیں۔
-- `taira.tx-metadata.json` موجودہ نل جواب سے بنایا گیا، کبھی بھی ایک کاپی شدہ فیس اثاثہ ID سے نہیں.
+- `taira.tx-metadata.json` موجودہ فوسیٹ جواب سے بنایا گیا، کبھی بھی ایک کاپی شدہ فیس اثاثہ ID سے نہیں.
 - ایک Rust کلائنٹ کے منصوبے کو اسی پر منسلک Iroha ماخذ کی نظر ثانی Taira رجسٹریشن کے مرحلے کے لئے. بعد میں تجویز اور منظوری کے مراحل CLI.
 - موجودہ عملدرآمد کنندہ کی ملٹی سگ فیچر فعال ہے۔ رجسٹریشن ڈیفالٹ Iroha 3 رن ٹائم میں عام اکاؤنٹس کے لئے دستیاب ہے ، حالانکہ Taira پالیسی اور فیس داخل کرنا اب بھی قابل اطلاق ہے۔ لوکل نیٹ کا استعمال کریں اگر عوامی تعیناتی اس سے انکار کرتی ہے۔
 
@@ -33,7 +33,7 @@ test -n "$SIGNER_C"
 
 ### 1۔ ایک وزن شدہ پالیسی درج کریں {#_1-register-a-weighted-policy}
 
-سگنل سی کا وزن 2 ہے؛ A اور B کا وزن 1 ہے۔ لہذا 3 کے ایک کووروم کے لئے C یا A یا B کی ضرورت ہوتی ہے۔ رجسٹریشن سے پہلے اس عین مطابق پالیسی سے کینونیکل اکاؤنٹ اخذ کریں ، پھر اسی قدر کو `MultisigRegister::with_account` پر منتقل کریں:
+دستخط کنندہ C کا وزن 2 ہے؛ A اور B میں سے ہر ایک کا وزن 1 ہے۔ اس لیے 3 کے quorum کے لیے C کے ساتھ A یا B میں سے کسی ایک کی ضرورت ہوتی ہے۔ رجسٹریشن سے پہلے اسی عین policy سے canonical account اخذ کریں، پھر وہی قدر `MultisigRegister::with_account` کو دیں:
 
 ```rust
 use std::{collections::BTreeMap, num::{NonZeroU16, NonZeroU64}};
@@ -202,8 +202,8 @@ iroha --config "$SIGNER_A_CONFIG" ledger multisig inspect \
 
 ## ماخذ اور متعلقہ دستاویزات {#source-and-related-docs}
 
-- [پنڈ commit پر multisig انٹیگریشن ٹیسٹ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/multisig.rs)
-- [پنڈ commit پر multisig ڈیٹا ماڈل](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_executor_data_model/src/isi.rs)
-- [CLI پنڈ commit پر multisig لاگو کرنا](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/main_shared.rs)
+- [پنڈ commit پر multisig انٹیگریشن ٹیسٹ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/multisig.rs)
+- [پنڈ commit پر multisig ڈیٹا ماڈل](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/isi.rs)
+- [CLI پنڈ commit پر multisig لاگو کرنا](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
 - [لین دین](/ur/blockchain/transactions.md)
 - [اجازت اور کردار](./permissions-and-roles.md)

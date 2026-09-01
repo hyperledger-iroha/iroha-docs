@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /cookbook/connect-to-taira.md
-translation_source_hash: a7347a7e8ea055fd5bab9a34b6124ea19ef6f355f9beef9e9488794d9c6e3202
+translation_source_hash: e14be7d9314f26f40f6aa30678fddcfcfea39eda9b98016f1b2f84838203c548
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,12 +10,12 @@ translation_engine: nllb-200-ct2
 
 ## 结果 {#outcome}
 
-确认 Taira 是可访问的,从本地客户端配置中提取正规 I105 帐户 ID,用测试网 XOR 资助签署者,并提交一笔费率上报价的加拿大货币交易.该配方永远不会向 Minamoto 发送信件.
+确认 Taira 可访问，从本地客户端配置中提取规范 I105 账户 ID，用测试网 XOR 为签名者注资，并提交一笔带费用报价的 canary 交易。此操作指南绝不会向 Minamoto 发送写入。
 
 ## 预先条件 {#prerequisites}
 
 - `curl`,`jq`, Python 3.11或后期,以及当前的 `iroha`和 `kagami`二进制.
-- 使用 Taira 链,终端点,账户配置文件和专门的测试网键创建`taira.client.toml`. 按照 [创建一个 Taira 客户端配置](/zh-hans/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config)并保持文件不受源控制.
+- 使用 Taira 链,端点,账户配置文件和专门的测试网键创建`taira.client.toml`. 按照 [创建一个 Taira 客户端配置](/zh-hans/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config)并保持文件不受源控制.
 - 准备运行的 `taira_faucet_claim.py` 来自 [获取测试网 XOR 在 Taira](/zh-hans/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira), 保存在客户端配置旁边.
 
 ## 步骤 {#steps}
@@ -34,7 +34,7 @@ curl -sS -H 'Accept: application/json' \
   -w '\nHTTP %{http_code}\n' https://taira.sora.org/readyz
 ```
 
-只需使用 `/livez`来决定该过程是否响应. 使用 `/readyz`进行交通入口,并检查其 JSON 阻塞器细节,然后将 `503`视为停机.
+仅使用 `/livez` 判断进程是否有响应。使用 `/readyz` 进行流量准入；在将 `503` 视为服务中断之前，先检查其 JSON blocker 详细信息。
 
 ### 2. 开展公共诊断 {#_2-run-the-public-diagnostics}
 
@@ -44,7 +44,7 @@ curl -sS -H 'Accept: application/json' \
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-当医生报告一个硬 DNS, TLS,链或终点失败时,不要继续写信.一个和的公众队列是过渡性的;等待再尝试一个有限的政策.
+当医生报告一个硬 DNS, TLS,链或端点失败时,不要继续执行写入操作.一个和的公众队列是过渡性的;等待再尝试一个有限的政策.
 
 ### 3. 在不打印密码的情况下取出 Taira 账户 ID {#_3-derive-the-taira-account-id-without-printing-a-secret}
 
@@ -65,11 +65,11 @@ export TAIRA_ACCOUNT_ID="$(
 printf '%s\n' "$TAIRA_ACCOUNT_ID"
 ```
 
-输出是一个无域名的正规地址 I105.像 `wallet@payments.universal`这样的名称是称,必须在严格账户领域使用之前解决.
+输出是一个无域名的规范地址 I105.像 `wallet@payments.universal`这样的名称是称,必须在严格账户领域使用之前解决.
 
 ### 4. 索赔当前费用资产 Taira {#_4-claim-the-current-taira-fee-asset}
 
-收费资产定义的真相来源是龙头响应.保留返回 Base58 ID 而不是从另一个网络或旧运行中复制 ID.
+收费资产定义的真相来源是水龙头响应.保留返回 Base58 ID 而不是从另一个网络或旧运行中复制 ID.
 
 ```bash
 python3 ./taira_faucet_claim.py "$TAIRA_ACCOUNT_ID" \
@@ -80,7 +80,7 @@ jq -n --arg gas_asset_id "$TAIRA_FEE_ASSET" \
   '{gas_asset_id: $gas_asset_id}' > taira.tx-metadata.json
 ```
 
-最多一个分钟的余额查询. 在融资交易可见之前,龙头可以返回 `202 Accepted`.
+最多一个分钟的余额查询. 在融资交易可见之前,水龙头可以返回 `202 Accepted`.
 
 ```bash
 funded=false
@@ -125,17 +125,17 @@ iroha --config ./taira.client.toml \
 
 ## 解决问题 {#troubleshooting}
 
-- `/livez`在要求 JSON 时返回`406`,因为该终端点是 `text/plain`.如上所示,发送 `Accept: text/plain`.
+- `/livez`在要求 JSON 时返回`406`,因为该端点是 `text/plain`.如上所示,发送 `Accept: text/plain`.
 - `/health`或`/readyz`可以用机器可读的阻塞器返回 `503`,即使在 `/livez`和 `/status`工作期间. 固定或等待该阻塞器;再生键不会改变节点准备性.
 - 一个水龙头 `502`,时间休息,或过时的证明工作是公共服务失败.
 - 一个 I105 前置错误意味着公钥被错误的配置文件编码. 再运行 `iroha tools address convert --profile taira`.
 - 收费率的拒绝通常意味着该机构没有获得资金,收费资产元数据已经过时,或者没有明确的收费者被选中.
-- 在这个鱼成功后,还可以拒绝注册,造或命名空间管理. 这些操作需要单独的运行时间许可; 练习它们.如果没有授予 Taira 访问,则生成的本地网络.
+- 即使此金丝雀测试成功，注册、铸造或命名空间管理操作仍可能被拒绝。这些操作需要各自的运行时权限；如果尚未获得 Taira 访问权限，请在生成的本地网络上演练。
 
 ## 来源及相关文件 {#source-and-related-docs}
 
-- [Taira CLI 诊断和鱼源在固定提交](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/taira.rs)
-- [显而易见的费用选择和提交源 CLI 在固定承诺](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/main_shared.rs)
+- [Taira CLI 诊断和 canary 源代码在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/taira.rs)
+- [显而易见的费用选择和提交源 CLI 在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
 - [Taira 账户和水龙头指南](/zh-hans/get-started/sora-nexus-dataspaces.md)
 - [客户端配置](/zh-hans/guide/configure/client-configuration.md)
 - [交易](/zh-hans/blockchain/transactions.md)

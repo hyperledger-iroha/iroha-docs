@@ -1,24 +1,24 @@
 ---
 translation_locale: az
 translation_source: /cookbook/wallet-connect.md
-translation_source_hash: ab5b6c560ed8b0a208666e5854306ba6adce7af1210fc3c94b9c560d8e6eb686
+translation_source_hash: 81b370bdc73a40ff2dbb8df0f91547ab4c279ed94600bdd6df367f29a949ec71
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Cüzdan Connect: Mülk köçürməsini təsdiqləyin {#wallet-connect-approve-an-asset-transfer}
+# Cüzdan Bağlantısı: Aktiv Transferini Təsdiqləyin {#wallet-connect-approve-an-asset-transfer}
 
 ## Nəticə {#outcome}
 
-Bir brauzerdə Iroha Connect sessiyası yaratın, bir I105 cüzdanı kimliyi üçün kriptografik təsdiq əldə edin, bu cüzdanın Torii-nin tam aktiv köçürülməsi planşetini imzalamasını xahiş edin, ayrılmış imzanı təqdim edin və tətbiq olunmuş yekunlaşmanı gözləyin.
+Brauzerdə Iroha Connect sessiyası yaradın, bir I105 cib pul kisəsi identifikasiyası üçün kriptoqrafik təsdiq əldə edin, həmin cib pul kisəsindən Torii-in dəqiq aktiv-transfer yaradılmış başlanğıc strukturunu imzalamağı xahiş edin, ayrılmış imzanı göndərin və Tətbiq edilmiş sonluğu gözləyin.
 
-## Əvvəlki şərtlər {#prerequisites}
+## Tələb olunan əvvəlcədən biliklər {#prerequisites}
 
-- `@iroha/iroha-js` və HTTPS istifadə edən bir brauzer tətbiqi.
-- Iroha Connect v1-i tətbiq edən və bir açarlı Ed25519 I105 hesabını idarə edən cüzdan.
-- Mövcud Taira zəncir ID və zəncir ayırdçısı, cüzdanın qeydiyyatda olan kiçik əlifba Ed25519 ictimai açarlı hex, mülkiyyətdə olan köçürülə bilən aktiv və kanonik I105 istiqaməti.
-- İndiki Taira faucet cavabı ilə geri qaytarılan ödəniş aktivini ID. nümunə canlı ödəniş qiymətinin bu ID ilə müqayisədə təsdiqlənməsini təmin edir; heç vaxt kopyalanmış bir aktiv identifikatoru daxil etmir.
-- Bağlantı seçilmiş Torii üzərində aktivləşdirilməlidir. QR və ya dərin bağlantı göstərmədən əvvəl yoxlayın:
+- Bir veb brauzer tətbiqi `@iroha/iroha-js` və HTTPS istifadə edir.
+- Iroha Connect v1-i tətbiq edən və tək açarlı Ed25519 I105 hesabını idarə edən bir pul kisəsi.
+- Cari Taira zəncir ID və zəncir fərqləndiricisi, cüzdanın qeydiyyatdan keçmiş kiçik hərfli Ed25519 ictimai açar hex-i, sahib olunan ötürülə bilən aktiv və tək bir protokol-standart I105 təyinatı.
+- Cari Taira testnet maliyyələşdirmə xidməti cavabında qaytarılan ödəniş aktivinin ID-si. Nümunə canlı ödəniş qiymət təxminini həmin ID ilə yoxlayır; heç vaxt kopyalanmış aktiv identifikatorunu daxil etmir.
+- Seçilmiş Torii üzərində Qoşulma aktiv olmalıdır. QR və ya dərin əlaqəni göstərmədən əvvəl yoxlayın:
 
 ```bash
 curl -fsS \
@@ -27,23 +27,23 @@ curl -fsS \
   jq -e '{enabled, sessions_active} | select(.enabled == true)'
 ```
 
-Taira Connect-i məhdudlaşdırdığını bildirirsə və ya `404`/`503` -ni qaytarırsa, Connect aktivləşdirilmiş yerli şəbəkədən istifadə edin. Adi bir aktiv köçürülməsi həmçinin cüzdanın kifayət qədər köçürülə bilən miqdar və ödəniş balansına sahib olmasını tələb edir.
+Əgər Taira Connect bağlanmış olduğunu bildirirsə və ya `404`/`503` qaytarırsa, Connect aktivləşdirilmiş yaradılmış yerli şəbəkədən istifadə edin. Adi aktiv köçürməsi üçün də cüzdanın kifayət qədər köçürülə bilən miqdara və ödəniş balansına sahib olması tələb olunur.
 
-## Dərslər {#steps}
+## Addımlar {#steps}
 
-### 1. Bir cüzdanın buraxılış nəzarətini təmin edin {#_1-provide-one-wallet-launch-control}
+### 1. Bir pulqabı işə salma nəzarəti təmin edin {#_1-provide-one-wallet-launch-control}
 
-Aşağıdakı JavaScript bu elementin müraciət səhifəsində olmasını gözləyir:
+Aşağıdakı JavaScript bu elementi tətbiq səhifəsində gözləyir:
 
 ```html
 <a id="wallet-connect" hidden>Open this request in my Iroha wallet</a>
 ```
 
-Başqa bir cihazdakı cüzdan üçün eyni URI kodunu QR verin. URI cüzdan ölçülmüş relay tokenini saxlayır, buna görə onu analitiklərə, jurnallara, istinadçılara və ya qəza hesabatlarına qoymayın.
+Eyni URI-ı başqa bir cihazdakı cüzdan üçün QR kodu kimi təqdim edin. URI cüzdan səviyyəli relay tokeni saxlayır, buna görə onu analizlərdə, qeydlərdə, istinadçılarda və ya qəza hesabatlarında yerləşdirməyin.
 
-### 2. Yaradın, təsdiqləyin, imzalayın və təqdim edin {#_2-create-approve-sign-and-submit}
+### 2. Yaratmaq, təsdiqləmək, imzalamaq və təqdim etmək {#_2-create-approve-sign-and-submit}
 
-Bu brauzer modulu tətbiqinizin vəziyyətindən konkret dəyərləri qəbul edir. Birinci `POST /v1/assets/transfer` imzalanma sahələrini buraxır və qeyd edilmiş, versiyalaşdırılmış bir əməliyyat planşetini qaytarır. İkincisi yalnız cüzdanın ictimai açarı və ayrı imzaları eyni köçürmə tələbinə əlavə edir.
+Bu brauzer modulu tətbiq vəziyyətinizdən konkret dəyərləri qəbul edir. Birinci `POST /v1/assets/transfer` imzalama sahələrini kənarlaşdırır və ödəniş qiymət təxminli versiyalı əməliyyat başlatma strukturunu qaytarır. İkinci isə eyni köçürmə sorğusuna yalnız cüzdanın açıq açarını və ayrılmış imzasını əlavə edir.
 
 ```js
 import { AccountAddress } from '@iroha/iroha-js/address'
@@ -219,11 +219,11 @@ export async function transferWithWallet({
 }
 ```
 
-Qalan. `token_app`, `token_management`, və `token_relay` Yalnız cüzdanın açılması üçün URI Connect təsdiqinin hesab kimliyi ilə imzalanması; X25519 `walletPublicKey` Rəsmiləşdirmədə hesabın Ed25519 imza açarı yox, müvəqqəti bir nəqliyyat açarı yerləşir.
+Tətbiq yaddaşında `token_app`, `token_management` və `token_relay` saxlayın. Yalnız cüzdanın işə salınması URI/token cüzdana keçir. Connect təsdiqi hesab şəxsiyyəti tərəfindən imzalanır; təsdiqdəki X25519 `walletPublicKey` müvəqqəti ötürmə açarıdır, hesabın Ed25519 imza açarı deyil.
 
-### 3. Cüzdan tətbiqində Rust çərçivə növlərindən istifadə edin. {#_3-use-the-rust-frame-types-in-a-wallet-implementation}
+### 3. Pul kisəsi tətbiqində Rust çərçivə növlərindən istifadə edin {#_3-use-the-rust-frame-types-in-a-wallet-implementation}
 
-Rust protokol səthində imzalanma yalnız cüzdanın tələb olunan əməliyyatı dekodladıqdan sonra möhürlənə bilər, dəqiq niyyətini göstərir, tətbiq edilən siyasəti göstərir və təsdiq edilmiş hesab açarı ilə imzalayır. Bu köməkçi bu təsdiqlənmiş imzanı qəbul edir; heç birini düzəltmir:
+Rust protokol səthi imzanı yalnız cüzdan tələb olunan əməliyyatı deşifr etdikdən, onun dəqiq məqsədini göstərdikdən, siyasəti tətbiq etdikdən və təsdiqlənmiş hesab açarı ilə imzaladıqdan sonra möhürləyə bilər. Bu köməkçi təsdiqlənmiş imzanı qəbul edir; onu saxtalaşdırmır:
 
 ```rust
 use iroha_crypto::{Algorithm, Signature};
@@ -251,11 +251,11 @@ fn seal_wallet_signature(
 }
 ```
 
-Repozitoriyin `connect_app` və `connect_wallet` nümunələri protokol qurğularıdır: onlar deterministik nəqliyyat açarlarından istifadə edir, çıxışı tokenləri ortaya qoyur və cüzdan qurğusu saxta imza qaytarır. Onları yalnız çərçivələri öyrənmək üçün istifadə edin, heç vaxt Taira cüzdan tətbiqi kimi.
+Anbarın `connect_app` və `connect_wallet` nümunələri protokol test artefaktlarıdır: onlar deterministik daşınma açarlarından istifadə edir, çıxışda tokenləri göstərir və cüzdan test artefaktı saxta imza qaytarır. Onlardan yalnız çərçivələri öyrənmək üçün istifadə edin, heç vaxt Taira cüzdan implementasiyası kimi istifadə etməyin.
 
-## Tətbiq edin {#verify}
+## Yoxla {#verify}
 
-Geri qaytarılan hash saxlayın və ictimai sahiblərin son nöqtəsi vasitəsilə istiqamət post-dövlətini təsdiqləyin:
+Qaytarılan kriptoqrafik xəşi saxlayın və təyinatın son vəziyyətini ictimai sahiblər API son nöqtəsi vasitəsilə təsdiqləyin:
 
 ```bash
 curl -fsS -G \
@@ -266,24 +266,24 @@ curl -fsS -G \
   jq .
 ```
 
-Verifikasiya yalnız JavaScript garsonunun təqdim edilmiş əməliyyat həşi üçün `Applied` nəzərə aldığı və istiqamət saxlama transferi əks etdirdiyi zaman uğurla həyata keçirilir. HTTP qəbulu və ya cüzdanın təsdiqlənməsi təkcə kitabxana nizamnaməsi deyil.
+Təsdiq yalnız JavaScript ofisiant `Applied`-i təqdim edilmiş əməliyyat kriptoqrafik hash üçün müşahidə etdikdə və təyinat hesabında köçürmə əks olunduqda uğurla baş verir. HTTP qəbul edilməsi və ya cüzdan təsdiqi blockhain dəftər sonluğu hesab olunmur.
 
-## Problemlərin həlli {#troubleshooting}
+## Problemlərin aradan qaldırılması {#troubleshooting}
 
-- `404`, `503` və ya `enabled: false` Connect statusundan bu düyündə heç bir relay seansı yaradıla bilməz deməkdir. Mümkün olan lokal şəbəkəyə keçin; tətbiqləri və ya idarəetmə nömrələrini özünüz daşınmağa qayıtmayın.
-- `USER_DENIED` bir cüzdan qərarıdır. Dəfələrlə təsdiqləmə istintaqlarını açmaq əvəzinə terminal istifadəçinin nəticəsi olaraq saxlayın.
-- Təsdiqləmə hesabının uyğunsuzluğu və ya etibarsız təsdiq imzası seansı bağlamalıdır. Kimlik bağlanmasının pozulmasından sonra heç vaxt cüzdanın imzalanmasını istəməyin.
-- `public_key_hex does not control authority` qeydiyyat məlumatları və təsdiq edilmiş I105 şəxsiyyət anlaşmazlığı deməkdir. Bu sahədə müvəffəqiyyətli cüzdan nəqliyyat açarı istifadə edilə bilməz.
-- İmzalanma və ya qurğunun rədd edilməsi adətən hazırlamaq və təqdim etmək arasında dəyişdirilən tələb sahəsi və ya canlı ödəniş qiyməti deməkdir. Yeni bir müraciət edin; heç vaxt köhnə imzanı transplant etməyin.
-- Artıq qəbul edilmiş imzalanmış bir xahişin dəqiq təkrarlanması idempotentdir. Yenidən başlamaq üçün bir səbəb olaraq vaxt məhdudlaşmasını müalicə etmədən əvvəl geri qaytarılmış əməliyyat hashini soruşun.
+- `404`, `503` və ya `enabled: false` Bağlanış statusu bu nodda heç bir relə sessiyasının yaradılmayacağı deməkdir. Aktiv edilmiş bir localnet-ə keçin; tətbiq və ya idarəetmə tokenlərini özünüz daşıma halına düşməyin.
+- `USER_DENIED` bir pul kisəsi qərarıdır. Təkrar təsdiq pəncərələrini açmaq əvəzinə bunu terminal istifadəçi nəticəsi kimi qoruyun.
+- Təsdiq və hesab uyğunsuzluğu və ya etibarsız təsdiq imzası sessiyanı bağlamalıdır. Kimliyin bağlanması uğursuz olduqdan sonra heç vaxt cüzdanı imzalamağa çağırmayın.
+- `public_key_hex does not control authority` qeydiyyat məlumatlarını və təsdiqlənmiş I105 şəxsiyyətini uyğunsuz göstərir. Müvəqqəti cüzdan ötürmə açarından bu sahədə istifadə etmək olmaz.
+- İmzalanmış və ya yaradılmış başlanğıc strukturunun rədd edilməsi adətən sorğu sahəsinin və ya canlı ödəniş qiymətinin hazırlanma və göndərilmə mərhələləri arasında dəyişdiyini göstərir. Yeni bir sorğu yaradın; köhnə imzanı heç vaxt köçürməyin.
+- Artıq qəbul edilmiş imzalı sorğunun dəqiq təkrarı idempotentdir. Yenidən başlama səbəbi kimi vaxt bitməsini qəbul etməzdən əvvəl qaytarılan əməliyyatın kriptoqrafik xəşini sorğu edin.
 
 ## Mənbə və əlaqəli sənədlər {#source-and-related-docs}
 
-- [Browser Connect tətbiqi sabitləşdirilmiş komitdə ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/src/connect.browser.js)
-- [Browser Connect testləri bağlanmış commit-də](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/test/connect.browser.test.js)
-- [Rust tətbiq çərçivəsi nümunəsi bağlanmış komitdə](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_app.rs)
-- [Rust cüzdan çərçivəsi nümunəsi bağlanmış komitdə](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_wallet.rs)
-- [Torii OpenAPI sxeması ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/artifacts/openapi/torii.json)
+- [Sabitlənmiş mənbə kodu revisiyasında Brauzer Bağlantısı tətbiqi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/src/connect.browser.js)
+- [Brauzer Connect pinlənmiş mənbə kodu versiyasında testlər aparır](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/test/connect.browser.test.js)
+- [Rust pinlənmiş mənbə kodu redaksiyasında tətbiq çərçivəsi nümunəsi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_app.rs)
+- [Rust pinlənmiş mənbə kodu redaksiyasında pulqabı çərçivəsi nümunəsi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_wallet.rs)
+- [Sabitləşdirilmiş Torii OpenAPI sxem](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/artifacts/openapi/torii.json)
 - [SORA Nexus xidmətləri](/az/blockchain/sora-nexus-services.md)
-- [Fungible assets](./fungible-assets.md)
-- [Əməliyyatların təqdim edilməsi və yoxlanılması](./submit-and-verify-transactions.md)
+- [Mübadilə edilə bilən aktivlər](./fungible-assets.md)
+- [Əməliyyatları göndərin və təsdiqləyin](./submit-and-verify-transactions.md)

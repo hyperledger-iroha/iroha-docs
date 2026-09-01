@@ -14,13 +14,13 @@ translation_engine: nllb-200-ct2
 
 函数是一个相当抽象的实体,虽然大多数语言都同意一个函数应该做什么,此外,在某些语言中,例如: Rust, 呼叫函数的后果和它被允许做的事情也不同. Rust APIs 需要从另一个语言或不同的接待环境中调用, Iroha 使用外部函数接口 (FFI) 为平衡竞争环境.
 
-今天使用的主要标准是C应用程序二进制接口.它简单,广泛可用和稳定.原则上,你可以手动完成所有事情,但 Iroha 提供了`iroha_ffi` 箱来生成 FFI-合适的函数从现有的 Rust API.
+今天使用的主要标准是C应用程序二进制接口.它简单,广泛可用和稳定.原则上,你可以手动完成所有事情,但 Iroha 提供了`iroha_ffi` crate来生成 FFI-合适的函数从现有的 Rust API.
 
-当然,你可以按照自己的方式做到这一点. `iroha_ffi` 盒子只能生成你需要生成的代码.每个在 FFI 边界上的函数调用都是`unsafe`,可能导致未定义的行为.我们设法解决它的方法,围绕着使用强大的 `repr(C)`类型.
+当然，您也可以按自己的方式实现。`iroha_ffi` crate 只会生成无论如何都得编写的代码。手动编写必要的样板代码需要相当程度的谨慎与自律。跨越 FFI 边界的每次函数调用都是 `unsafe`，可能造成未定义行为。我们通过使用**稳健的** `repr(C)` 类型解决了这个问题。
 
 ::: info
 
-唯一的例外是指针.无效检查和有效性不能在全球范围内执行,因此原始指标 (如往常) 只应用于特殊情况下. 由于我们提供了几乎每一个对象的包装在 Iroha 数据模型中,你根本不需要使用原始指针.
+唯一的例外是指针.无效检查和有效性不能在全球范围内执行,因此原始指标 (如往常) 只应用于特殊情况下. 由于我们提供了几乎每一个对象的封装器在 Iroha 数据模型中,你根本不需要使用原始指针.
 
 :::
 
@@ -70,12 +70,12 @@ pub extern fn DaysSinceEquinox__update_value(handle: *mut DaysSinceEquinox, a: *
 
 请注意,除了不透明的指标类型外,对 FFI 没有所有权转移.所有其他拥有所有权的类型,如 `Vec<T>`,都被克隆.
 
-### 姓名Mangling {#name-mangling}
+### 名称修饰 {#name-mangling}
 
 注意 FFI 对象的生成名称中使用双重凸点:
 
 - 对于 `StructName`结构上定义的`inherent_fn`方法,FFI 名称将是`StructName__inherent_fn`.
-- 为了 `MethodName` 这种方法 `TraitName` 中的特征 `StructName` 结构, FFI 这个名字是 `StructNameTraitNameMethodName`.
+- 为了 `MethodName` 这种方法 `TraitName` 中的特征 `StructName` 结构, FFI 这个名字是 `StructName__TraitName__MethodName`.
 - 为设置 `field_name` 在该领域 `StructName` 结构, FFI 函数的名称将是 `StructName__set_field_name`.
 - 为了得到 `field_name` 在该领域 `StructName` 结构, FFI 函数的名称将是 `StructName__field_name`.
 - 为了在 `StructName`结构中获得可变的 `field_name` 字段,函数名称 FFI 将是 `StrucuName__field_name_mut`.

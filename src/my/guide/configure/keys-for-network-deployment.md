@@ -1,33 +1,33 @@
 ---
 translation_locale: my
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 17ffd2979e2ff7a0e0c3f5c9f1457a5eb630713bba40fca0246afc0c2f7fd5e4
+translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # ကွန်ရက် ဖြန့်ချိခြင်းအတွက် သော့ချက်များ {#keys-for-network-deployment}
 
-ကွန်ရက်တိုင်းမှာ ဖောက်သည်များ၊ တူညီသူများအတွက် သီးခြားသော အဓိကပစ္စည်းတွေ လိုအပ်ပြီး NPoS (သို့) Nexus ပရိုဖိုင်တွေအတွက်လည်း BLS validator identities တွေလိုပါတယ်။
+ကွန်ရက်တိုင်းမှာ ဖောက်သည်များ၊ ကွန်ယက်တူညီသူများအတွက် သီးခြားသော အဓိကပစ္စည်းတွေ လိုအပ်တယ်၊ blockchain genesis လက်မှတ်ထိုးခြင်း၊ NPoS သို့မဟုတ် Nexus ပရိုဖိုင်တွေအတွက်တော့ BLS အတည်ပြုသူ လက္ခဏာတွေပါ။
 
 ## သော့များ အသုံးပြုရာ {#where-keys-are-used}
 
 - ဖောက်သည် လက်မှတ်ရေးထိုးသော သော့များကို `client.toml` တွင် `[account]` အောက်တွင် သိမ်းထားပါသည်။
-- တူညီသူတစ်ဦးရဲ့ လိပ်စာကို တူညီသူတိုင်း `config.toml` မှာ `public_key` နဲ့ `private_key` အဖြစ် သိမ်းထားတယ်။
-- Peer discovery က `trusted_peers` မှာ peer တစ်ခုစီရဲ့ public key ကို သုံးပါတယ်။
+- Network peer identity keys များကို network peer `config.toml` တစ်ခုစီတွင် `public_key` နှင့် `private_key` အဖြစ် သိမ်းထားပါသည်။
+- Network peer discovery မှာ `trusted_peers` ထဲမှာ network peer တစ်ခုစီရဲ့ public key ကို အသုံးပြုပါတယ်။
 - BLS validator NPoS profile များအတွက် ပိုင်ဆိုင်မှုသက်သေများကို `trusted_peers_pop` တွင် သိမ်းဆည်းထားပါသည်။
-- Genesis လက်မှတ်ရေးထိုးရာတွင် `[genesis].public_key` ကို peer configuration တွင် အသုံးပြုပြီး ပြက္ခဒိန်ကို လက်မှတ်ရေးဆွဲရာတွင် လိုက်ဖက်သော private key ကို အသုံးပြုသည်။
+- blockchain genesis လက်မှတ်ရေးထိုးခြင်းသည် `[genesis].public_key` ကိုကွန်ရက် peer config တွင်အသုံးပြုပြီး Technical Manifesto ကိုလက်မှတ်ရေးထိုးရာတွင်အဆင်ပြေသော Private Key ကိုသုံးသည်။
 
 ဒေသတွင်း (သို့) စမ်းသပ်မှု ဖြန့်ချိချက်များအတွက် Kagami သည် ဤဖိုင်အားလုံးကို စုပေါင်းထုတ်လုပ်ပါ:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 ရှိနေတဲ့ ကွန်ရက် (သို့) ပရိုဖိုင်အတွက် guide flow ကိုသုံးပါ။
 
 ```bash
-cargo run --bin kagami -- wizard --profile nexus
+cargo run --bin kagami -- wizard
 ```
 
 ## ပုဂ္ဂိုလ်ရေး သော့စုံများ ဖန်တီးခြင်း {#generate-individual-key-pairs}
@@ -35,23 +35,25 @@ cargo run --bin kagami -- wizard --profile nexus
 `kagami keys` ကို standalone key material အတွက် အသုံးပြုပါ။
 
 ```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --json
+cargo run --bin kagami -- keys --algorithm ed25519 \
+  --out-dir ./client-key
 ```
 
 BLS အတည်ပြုပစ္စည်းအတွက် ပိုင်ဆိုင်မှု သက်သေခံစာကို ထည့်သွင်းပါ။
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./validator-key
 ```
 
-`--seed` ကို ပြန်လည်ဖန်တီးနိုင်သော ဖွံ့ဖြိုးရေး ကိရိယာများအတွက်သာ အသုံးပြုပါ။ ထုတ်လုပ်မှု ဖြန့်ချိရန်အတွက် အသစ်သော့များကို ဖန်တီးပြီး သီးသန့်သော့များကို သိုလှောင်ထားပါ။
+`--seed-hex` ကို ပြန်လည်ဖန်တီးနိုင်သော ဖွံ့ဖြိုးတိုးတက်ရေးကိရိယာများအတွက် တိကျတဲ့ 32-byte hexadecimal လျှို့ဝှက်ချက်နှင့်သာအသုံးပြုပါ။ ထုတ်လုပ်မှု ဖြန့်ချိရန်အတွက် Kagami သည် operating-system randomness ကိုသုံး၍ ခွင့်ပြုထားသည့် ထိန်းသိမ်းမှု နယ်နိမိတ်သို့ မကုဒ်သွင်းသေးသော private key တင်ပို့မှုကို ရွှေ့ပါ။ အမိန့်က ပုဂ္ဂလိက သော့တွေကို ဘယ်တော့မှ ပုံနှိပ်မပေးဘူး။
 
-## အတန်းတူညီမှု {#peer-consistency}
+## Network peer ကိုညီညွတ်မှု {#peer-consistency}
 
-အတည်ပြုသူအားလုံးက အလားတူ genesis transaction, topology, trusted peer public keys နှင့် validator PoPs ကို သဘောတူဖို့လိုပါတယ်။ ပျောက်နေတဲ့ (သို့) မသင့်တော်တဲ့ peer key တစ်ခုတည်းက ကွန်ရက်ကိုစတင်ခြင်း သို့မဟုတ် သဘောတူညီမှုရဖို့ တားဆီးနိုင်သည်။
+အတည်ပြုသူအားလုံးသည် blockchain ပင်မကုန်သွယ်မှု, topology, trusted network peer public keys နှင့် validator PoPs တို့အပေါ် သဘောတူညီရမည်ဖြစ်သည်။ ပျောက်နေသော (သို့မဟုတ်) မလိုက်ဖက်သည့် ကွန်ရက် peer key တစ်ခုတည်းကွန်ရက်ကိုစတင်ခြင်း သို့မဟုတ်သဘောတူညီချက်ရရှိခြင်းကို တားဆီးနိုင်သည်။
 
-အနည်းဆုံး Byzantine fault-tolerant deployment အတွက် အနည်းဆုံး peer လေးခုကို အသုံးပြုပါ။ peer တစ်ခုစီမှာ ကိုယ်ပိုင် private key ရှိဖို့လိုပေမဲ့ peer configuration တစ်ခုစီအတွက်တော့ ယုံကြည်မှုရှိတဲ့ peer set တစ်မျိုးတည်းလိုအပ်ပါတယ်။
+အနည်းဆုံး Byzantine fault-tolerant deployment အတွက် network peer လေးခုလောက် သုံးပါ။ network peer တစ်ခုစီမှာ ကိုယ်ပိုင် private key ရှိဖို့လိုပါတယ်။ ဒါပေမဲ့ network peer configuration တစ်ခုချင်းအတွက်တော့ အလားတူ trusted network peer set လိုပါတယ်။
 
 ## ဖောက်သည်စာရင်းများ {#client-accounts}
 
-`client.toml` တွင်ရှိသော ဖောက်သည်အကောင့်သည် ချိတ်ဆက်ထားပြီးသားဖြစ်ရမည်။ ၎င်းကို genesis manifest သို့မဟုတ် နောက်ပိုင်း ငွေချေးမှုဖြင့် မှတ်ပုံတင်နိုင်သည်။ genesis လက်မှတ်ရေးထိုးလက္ခဏာကို သက်တမ်းရှည်လျှောက်လွှာအကောင့်အဖြစ်အသုံးပြုခြင်းရှောင်ပါ။ genesis privileges တွေဟာ genesis round မှာသာ သက်ရောက်ပြီး ထုတ်လုပ်ရေး ဖောက်သည်တွေဟာ သူတို့ကိုယ်ပိုင် အကောင့်တွေနဲ့ အခန်းကဏ္ဍတွေကို သုံးသင့်ပါတယ်။
+`client.toml` ထဲက ဖောက်သည်စာရင်းဟာ ချိတ်ဆက်မှုမှာ ရှိပြီးသား ဖြစ်ရပါမယ်။ ဒါကို blockchain Genesis Technical Manifesto သို့မဟုတ် နောက်ပိုင်း ငွေပေးချေမှုဖြင့် မှတ်ပုံတင်နိုင်သည်။ blockchain genesis လက်မှတ်ရေးထိုးတဲ့ ကိုယ်ပိုင်လက္ခဏာကို သက်တမ်းရှည် အက်ပ်အကောင့်အဖြစ် အသုံးပြုခြင်းကနေ ရှောင်ရှားပါ။ blockchain genesis အခွင့်အရေးတွေဟာ blockchain genesis round အတွင်းမှာသာ သက်ရောက်ပြီး ထုတ်လုပ်မှု ဖောက်သည်တွေက သူတို့ကိုယ်ပိုင် အကောင့်တွေနဲ့ အခန်းကဏ္ဍတွေကို သုံးသင့်ပါတယ်။

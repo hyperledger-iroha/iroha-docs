@@ -1,89 +1,89 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/rwas.md
-translation_source_hash: cbdc6d766fb90bea7e68dc67f2c705bb1638340feeb2fca9f2dd43a727ac03e7
+translation_source_hash: 8d64a9a17c93f60306c279e8656e6edde8ce5dd024e742218bfb9572b7438bb0
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# リアル・ワールド アセット {#real-world-assets}
+# 実物資産 {#real-world-assets}
 
-リアルワールド・アセット (RWAs) は,チェーン上で所有または制御が追跡されるオフチェーンの資産モデルである. Iroha では, RWA は生成された識別子,オーナーアカウント,数量,ビジネスメタデータ,起源,およびオプションライフサイクルコントロールを持つ登録レジスタンスです.
+実世界の資産（RWAs）は、その所有権または管理がオンチェーンで追跡されるオフチェーン資産をモデル化します。Iroha では、RWA は、生成された識別子、所有者アカウント、数量、ビジネスメタデータ、出所、そして任意のライフサイクル制御を持つ登録されたブロックチェーン台帳ロットです。
 
-RWAs は,数値資産の余剰とは異なる.
+RWAs は数値の資産残高とは異なります:
 
-- 数値資産は,口座に保有されている浮動余分である
-- NFT は,単一の所有者による連鎖上の記録である.
-- RWA は,ビジネスメタデータ,数量,保有物,凍結,償還状態,出産,およびコントローラポリシーを搭載できるパットである.
+- 数値資産とは、アカウントが保有する代替可能な残高です
+- 「NFT」は、1人の所有者を持つユニークなオンチェーン記録です
+- 一つの RWA ビジネスメタデータ、数量、保有、凍結、償還状態、出所、および管理方針を運ぶことができる多くのものです
 
-RWAs を使えば,レジスタは単にフンギブルなバランスではなく,特定のチェーン外のロットを表示する必要がある.
+ブロックチェーンの台帳が単なる代替可能な残高だけでなく、特定のオフチェーンのロットを表す必要がある場合は、RWAs を使用してください。
 
 ## RWA ロット {#rwa-lot}
 
-RWA ラットは以下のものを含む.
+1つの RWA ロットには以下が含まれます:
 
-- `id`:生成された法定識別子 RWA は, `<hash>$<domain>`として表示されます.
-- `owned_by`:現時点でパトルを保有する口座
-- `quantity`: 配合で表される残存量
-- `spec`:数値仕様,例えば10度スケール
-- `primary_reference`:主要連鎖外領収書,証明書,請求書,または登録参照
-- `status`:オプションの事業状況テキスト
-- `metadata`:ビジネス・コンテキストとインデックスに使用されるコンパクトのフィールド JSON
-- `parents`:この配合を抽出するために使用されたソース・ロット
-- `controls`:コントローラ口座,コントローラの役割,および有効なコントローラ操作
-- `is_frozen`と `held_quantity`:実行時間によって執行されるライフサイクル状態
+- `id`：生成された標準的な RWA 識別子で、`<hash>$<domain>`として表示されます
+- `owned_by`：現在その区画を所有しているアカウント
+- `quantity`：ロットによって表される未処理数量
+- `spec`：数量の指定、例えば小数のスケール
+- `primary_reference`：主なオフチェーンプロトコル結果記録、証明書、請求書、または登録参照
+- `status`：オプションの事業状況テキスト
+- `metadata`：ビジネスコンテキストおよびインデックス作成に使用されるコンパクトな JSON フィールド
+- `parents`：このロットを導出するために使用された元のロット
+- `controls`: コントローラーアカウント、コントローラーロール、有効なコントローラー操作
+- `is_frozen` と `held_quantity`：ソフトウェアランタイムによって強制されるライフサイクル状態
 
-チェーン上の用荷をコンパクトにしておく WSV の外に大きな法律文書,検査報告および監査パックを保管する それから,それを消化して URI, SoraFS 経路,または明示的な参照 RWA メタデータ
+オンチェーンのペイロードをコンパクトに保ちます。大きな法的文書、検査報告書、および監査バンドルは WSV の外に保存し、暗号学的ダイジェスト値、URI、SoraFS パス、または技術的マニフェスト参照を RWA メタデータに入れます。
 
 ## 識別子 {#identifiers}
 
-`RegisterRwa` は,呼び出し者によって選択された `id` を受け入れず, `owner` フィールドを認めない.トランザクション当局は初期 `owned_by` アカウントとなり,実行時間は目標ドメインで `RwaId` を生成する.
+`RegisterRwa` は要求元クライアントが選択した `id` を受け入れず、`owner` フィールドも受け入れません。トランザクション認証の主体は初期の `owned_by` アカウントとなり、ソフトウェアの実行時にターゲットドメインで `RwaId` が生成されます。
 
-RWA ID のテキスト形式は,次のとおりです.
+RWA IDの文字形式は次の通りです:
 
 ```text
 <generated-hash>$<domain>
 ```
 
-例えば:
+例えば：
 
 ```text
 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef$commodities.universal
 ```
 
-`RwaEvent::Created`,`FindRwas`, `/v1/rwas`,または取引のコミットメント後に設定された探査者経路から生成された `RwaId` を発見する際に,アプリケーションはその事業識別子を `primary_reference` または `metadata` に保管すべきである.
+アプリケーションは、自社の識別子を `primary_reference` または `metadata` に保存し、その後、`RwaEvent::Created`、`FindRwas`、`/v1/rwas`、またはトランザクション完了後に設定されたエクスプローラルートから生成された `RwaId` を検出する必要があります。
 
 ## ライフサイクル {#lifecycle}
 
-一般的な RWA ワークフローは,以下のとおりです.
+一般的な RWA ワークフローには次のものがあります:
 
-|作戦|実行された行動|
+|操作|実装された動作|
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
-|`RegisterRwa`|ドメインで生成された ID パットを作成し,取引権限は `owned_by` になります. |
-|`TransferRwa`|額を別のアカウントに移す.完全な転送は `owned_by` を変更することができます.部分的な転送では,生成された ID の子供ラウンドが作成されます. |
-|`HoldRwa`|備蓄量.設定されたコントローラーと `hold_enabled`が必要です. |
-|`ReleaseRwa`|設定されたコントローラーと `hold_enabled` を必要とする.|
-|`FreezeRwa`|設定されたコントローラーと `freeze_enabled` を必要とする. |
-|`UnfreezeRwa`|設定されたコントローラーと `freeze_enabled` を必要とする.|
-|`RedeemRwa`|`redeem_enabled`が真実である場合,所有者または管理者がそれを提出することができる. |
-|`MergeRwas`|同じドメインとスペックを持つ親 Lotの量を組み合わせ,生成した子供 Lotにします. |
-|`ForceTransferRwa`|制御器の流れを介して量移動する.設定された制御器と `force_transfer_enabled` を要求します. |
-|`SetRwaControls`|パートコントロールのポリシーを交換する オーナーやコントローラが必要です|
-|`SetKeyValue<Rwa>` / `RemoveKeyValue<Rwa>` |パートメタデータを更新する. オーナーやコントローラを必要とする. 凍結されたパットにはコントローラーが必要です. |
+| `RegisterRwa`                              |ドメイン内に生成IDロットを作成します。取引承認の主体は `owned_by` になります。|
+| `TransferRwa`                              |数量を別のアカウントに移動します。全額の転送は `owned_by` を変更できます。部分的な転送は、生成されたIDを持つ別の子ロットを作成します。|
+| `HoldRwa`                                  |予約数量。設定済みのコントローラーと`hold_enabled`が必要です。|
+| `ReleaseRwa`                               |保持されている数量を削除します。設定されたコントローラーと`hold_enabled`が必要です。|
+|`FreezeRwa`                                |通常の所有者操作をブロックします。構成されたコントローラーと`freeze_enabled`が必要です。|
+| `UnfreezeRwa`                              |通常のオーナー操作を再有効化します。構成済みのコントローラーと`freeze_enabled`が必要です。|
+|`RedeemRwa`                                |流通量から数量を恒久的に差し引くこと。所有者または管理者は、`redeem_enabled` が真であるときにこれを提出できます。|
+|`MergeRwas`                                |同じドメインと仕様を持つ親ロットの数量を組み合わせ、生成された子ロットにまとめる。|
+| `ForceTransferRwa`                         |コントローラーフローを通じて数量を移動します。構成されたコントローラーと`force_transfer_enabled`が必要です。|
+| `SetRwaControls`                           |ロット管理ポリシーを置き換えます。所有者または管理者が必要です。|
+| `SetKeyValue<Rwa>` / `RemoveKeyValue<Rwa>` |ロットのメタデータを更新します。所有者またはコントローラーが必要です；凍結されたロットはコントローラーが必要です。|
 
-現行のコードには `UnregisterRwa` の指示はありません.表示された量は配送,消費,決済または他の方法で流通から取り除かれたとき,鎖外のパットを `RedeemRwa` で撤回します.
+現在のコードには`UnregisterRwa`の指示はありません。表された数量が納品、消費、決済、またはその他の方法で流通から除かれたときに、`RedeemRwa`でオフチェーンのロットを廃止してください。
 
-## メタデータと制御 {#metadata-and-controls}
+## メタデータとコントロール {#metadata-and-controls}
 
-コンパクトな事実のためにメタデータを使用し,アプリケーションがパットを特定して検証するのを助けます:
+メタデータを使用して、アプリケーションがロットを識別および検証するのに役立つ簡潔な情報を提供します:
 
-- 資産クラス,発行者,保管人,または登録参照
-- 倉庫,保管庫, ISIN,請求書または証明書の識別子
-- 証明書および法文書の内容ハッシュ
-- SoraFS より大きな証拠パネルのための経路またはマニュメント参照
-- オフチェーンサービスで使用される期限,管轄権,またはコンプライアンスタグ
+- 資産クラス、発行者、保管機関、または登録リファレンス
+- 倉庫、金庫、ISIN、請求書、または証明書の識別子
+- 証明書および法的文書のためのコンテンツ暗号ハッシュ
+- SoraFS より大きな証拠バンドルのためのパスまたは技術マニフェスト参照
+- オフチェーンサービスによって使用される成熟度、法域、またはコンプライアンスタグ
 
-実施された `RwaControlPolicy` には,以下のフィールドがあります.
+実装された `RwaControlPolicy` には次のフィールドがあります:
 
 ```json
 {
@@ -96,45 +96,45 @@ RWA ID のテキスト形式は,次のとおりです.
 }
 ```
 
-コントローラーアカウントと役割は,対応するブールフラッグによって有効化された操作のみを実行できます.現在のコントロールパイルロードにはコントローラーアイデンティティとオペレーションフラグが含まれています.転送許可リストおよび嵌まった `transfers`ルールはこのパイルロードの外です.
+コントローラーのアカウントと役割は、対応するブールフラグによって有効になっている操作のみを実行できます。現在のコントロールペイロードには、コントローラーの識別情報と操作フラグが含まれています。転送の許可リストとネストされた `transfers` ルールは、このペイロードの外にあります。
 
-## APIs に関する質問,イベント {#queries-events-and-apis}
+## クエリ、イベント、および APIs {#queries-events-and-apis}
 
-使用 [`FindRwas`](/ja/reference/queries.md#assets-nfts-and-rwas) 登録されたリストへ RWA ライブアップデートが必要なアプリケーションは, [`Rwa` データイベント](/ja/blockchain/filters.md#data-event-filters) 作成,所有者変更,分割,合併,代償,凍結,解凍,開催,リリース,強制移転,制御変更,およびメタデータ事件.
+使う [`FindRwas`](/ja/reference/queries.md#assets-nfts-and-rwas) 登録済みを一覧表示する RWA たくさん。ライブ更新が必要なアプリケーションは購読することができます [`Rwa` データイベント](/ja/blockchain/filters.md#data-event-filters) 作成済み、所有者変更済み、分割済み、統合済み、償還済み、凍結済み、解除済み、 保持、解放、力の転送、制御の変更、およびメタデータのイベント。
 
-Torii は,そのルートファミリーが有効である場合, `/v1/rwas` と `/v1/rwas/query` のようなチェーン状態の経路をさらし, `/v1/explorer/rwas` と`/v1/explorer/rwas/{rwa_id}` などの探査者経路をさらにさらす.生成されたクライアントはノードによって暴露される正確な応答形よりも,ライブ [`/openapi`](/ja/reference/torii-endpoints.md#common-endpoints) 文書を好むべきである.
+Torii チェーンステートルートなどを公開する `/v1/rwas` そして `/v1/rwas/query`, プラス探索ルートなど `/v1/explorer/rwas` そして `/v1/explorer/rwas/{rwa_id}` そのルートファミリーが有効になっているとき。生成されたクライアントはライブを優先するべきです [`/openapi.json`](/ja/reference/torii-endpoints.md#common-endpoints) ノードによって公開される正確な応答の形状のためのドキュメント。
 
-### Taira で試してみてください {#try-it-on-taira}
+### Taira でこのワークフローを実行してください {#try-it-on-taira}
 
-公開 Taira が現在 RWA 配分を登録しているかどうかを確認する:
+現在、公開されている Taira に RWA ロットが登録されているか確認してください：
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/rwas?limit=5' \
   | jq '{total, rwa_ids: [.items[].id]}'
 ```
 
-ライブ Taira OpenAPI ドキュメントで暴露されている RWA ルートをリストする.
+ライブの Taira OpenAPI ドキュメントによって公開されている RWA ルートを一覧表示してください:
 
 ```bash
 curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/rwas") or startswith("/v1/explorer/rwas"))'
 ```
 
-公開物件はまだ登録されていない場合,空き出力 `items` が予想されます.登録,移転,保持,凍結および償還は署名された取引です.
+公開ロットがまだ登録されていない場合、空の `items` 出力が予想されます。登録、譲渡、保留、凍結、および償還は署名された取引です。
 
-## やってみよう {#try-it}
+## 試してみて {#try-it}
 
-以下の例では, Python [共有セットアップ](/ja/guide/tutorials/python.md#shared-setup) の SDK 表面を使用します.トランザクションを提出する前に,アカウント IDs,プライベートキー,および生成されたロット IDs を自分のネットワークからの値で置き換えます.
+以下の例では、[共通設定](/ja/guide/tutorials/python.md#shared-setup) の Python SDK サーフェスを使用しています。トランザクションを送信する前に、アカウントID、秘密鍵、および生成されたロットIDを自分のネットワークの値に置き換えてください。
 
-### RWA API 経路を発見する {#discover-rwa-api-routes}
+### RWA API ルートを発見する {#discover-rwa-api-routes}
 
-この読み込みのみの例では,実行中の Torii ノードに,アプリ向きの RWA ルートが有効になっていることを要求します.
+この読み取り専用の例は、実行中の Torii ノードに、どのアプリ向け RWA ルートが有効になっているかを尋ねます:
 
 ```python
 from iroha_python import create_torii_client
 
 client = create_torii_client("https://taira.sora.org")
-openapi = client.request_json("GET", "/openapi", expected_status=(200,))
+openapi = client.request_json("GET", "/openapi.json", expected_status=(200,))
 
 rwa_paths = sorted(
     path for path in openapi.get("paths", {}) if path.startswith("/v1/rwas")
@@ -144,11 +144,11 @@ for path in rwa_paths:
     print(path)
 ```
 
-リストが空いている場合,ノードは依然として他の Torii APIs で RWA の指示と查询をサポートするが,選択的な JSON ルートファミリーを暴露していない.
+リストが空の場合でも、ノードは他の Torii APIs を通じて RWA の命令やクエリをサポートする可能性がありますが、オプションの JSON ルートファミリーは公開していません。
 
-### 倉庫領収書を登録する {#register-a-warehouse-receipt}
+### 倉庫プロトコル結果記録を登録する {#register-a-warehouse-receipt}
 
-ビジネス・アクションが1つの署名されたトランザクションになる場合,草案を使用します.事業領収書の番号は `primary_reference`;取引がコミットした後にレジスタ ID が生成されます.
+1つのビジネスアクションが1つの署名済みトランザクションになる場合は、ドラフトを使用してください。ビジネスプロトコルの結果記録番号は`primary_reference`に入力します；ブロックチェーン台帳IDはトランザクションが確定した後に生成されます。
 
 ```python
 from iroha_python import TransactionConfig, TransactionDraft
@@ -189,7 +189,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-トランザクションのコミット後に,生成されたリスト RWA IDs. 鎖状態の経路は,聖典を暴露する IDs; イベントや探検器の詳細路線を使用します ID 戻る `primary_reference` またはメタデータ:
+取引が完了した後、生成された RWA ID を一覧表示します。チェーンステートルートは正規の ID を公開します。ID を `primary_reference` やメタデータに戻して照合する必要がある場合は、イベントやエクスプローラーの詳細ルートを使用してください。
 
 ```python
 page = client.list_rwas_typed(limit=20, offset=0)
@@ -198,7 +198,7 @@ for lot in page.items:
     print(lot.id)
 ```
 
-エクスプローラーが有効なノードは,より豊かな予測も返せる:
+エクスプローラー対応ノードは、より詳細なプロジェクションも返すことができます:
 
 ```python
 page = client.list_explorer_rwas_typed(domain="commodities.universal")
@@ -207,9 +207,9 @@ for lot in page.items:
     print(lot.id, lot.primary_reference, lot.owned_by, lot.quantity)
 ```
 
-### 暫定 の 留守 を 持っ て 移転 する {#transfer-with-a-temporary-hold}
+### 一時保留付きで転送 {#transfer-with-a-temporary-hold}
 
-生成された RWA ID この例では, `alice` 管理者であり,また制御器として構成されている `hold_enabled`.
+チェーンによって返された生成された RWA IDを使用してください。この例では`alice`がオーナーであり、`hold_enabled`とともにコントローラーとしても設定されていると仮定しています。
 
 ```python
 warehouse_lot_id = (
@@ -228,7 +228,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-チェーン外プロセスが成功した後, `ReleaseRwa` を提出する.
+オフチェーンプロセスが成功した後、`ReleaseRwa` を提出してください:
 
 ```python
 draft = TransactionDraft(
@@ -240,9 +240,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### 制御と監査メタデータを追加する {#add-controls-and-audit-metadata}
+### コントロールと監査メタデータを追加 {#add-controls-and-audit-metadata}
 
-コントロールとメタデータは別です. 管理者ポリシーにコントロールを使用し,アプリケーションまたは監査者が表示する必要がある事実にメタデータを使用します:
+コントロールとメタデータは別です。コントロールはコントローラーポリシーに使用し、メタデータはアプリケーションや監査人が表示する必要のある事実に使用します:
 
 ```python
 draft = TransactionDraft(
@@ -271,9 +271,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### 償還または退職金量 {#redeem-or-retire-quantity}
+### 数量を引き換えるまたは廃止する {#redeem-or-retire-quantity}
 
-`RedeemRwa` を提出する.代表されたチェーン外資産が交付,消費,退役,または他の方法で流通から取り除かれた後.これは永久に入荷した量をlottから引く.lottには `redeem_enabled` がなければならない.署名者は所有者またはコントローラである必要があります.
+代表されるオフチェーン資産が配送、消費、廃止、またはその他の方法で流通から除外された後、`RedeemRwa`を提出してください。これにより、提出された数量がロットから恒久的に差し引かれます。ロットは`redeem_enabled`を持っている必要があります。暗号署名者は所有者または管理者でなければなりません。
 
 ```python
 draft = TransactionDraft(
@@ -285,9 +285,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### 遵守審査中に凍結する {#freeze-during-compliance-review}
+### コンプライアンス審査中に凍結 {#freeze-during-compliance-review}
 
-`FreezeRwa`を提出すると,チェーン外のレビューが通常の所有者の業務を阻止しなければならない.署名者はコントローラーである必要があります. 配合品には `freeze_enabled`がある必要があります.
+オフチェーンのレビューが通常のオーナー操作をブロックする必要がある場合は、`FreezeRwa` を提出してください。暗号署名者はコントローラーでなければなりません。ロットには `freeze_enabled` が必要です。
 
 ```python
 draft = TransactionDraft(
@@ -308,7 +308,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-`UnfreezeRwa` を,審査が通過した後で提出する.
+レビューが通過した後に `UnfreezeRwa` を提出してください:
 
 ```python
 draft = TransactionDraft(
@@ -325,9 +325,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### 請求書 {#invoice-receivable}
+### 売掛金 {#invoice-receivable}
 
-請求書を RWA のラットとして表現し,請求書の番号を `primary_reference` と メタデータに保存する.登録後,転送および償還のために生成された ID を使用します.
+請求書番号を`primary_reference`およびメタデータに保存することで、請求書を RWA ロットとして表現します。登録後、生成されたIDを転送および償還に使用します。
 
 ```python
 draft = TransactionDraft(
@@ -363,7 +363,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-領収が資金調達または支払われる場合,生成された請求書 ID を使用する.
+売掛金が資金化されるか支払われる場合、生成された請求書ロットIDを使用してください:
 
 ```python
 invoice_lot_id = (
@@ -380,7 +380,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-チェーン外決済後に表示された金額を償う:
+オフチェーンの金融取引清算後に、表示された金額を引き換える:
 
 ```python
 draft = TransactionDraft(
@@ -392,9 +392,9 @@ envelope = draft.sign_with_keypair(bob_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### 炭素クレジット 退職金 {#carbon-credit-retirement}
+### カーボンクレジットの償却 {#carbon-credit-retirement}
 
-`RedeemRwa` を提出し,請求された炭素クレジットを循環から削除する. チェーン外証明書またはレジストリ証明書をメタデータに保存します:
+請求されたカーボンクレジットを流通から除外するために `RedeemRwa` を提出してください。オフチェーン証明書または登録証明をメタデータに保存してください：
 
 ```python
 carbon_lot_id = (
@@ -416,9 +416,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### 二つを融合する {#merge-two-lots}
+### 2つのロットを統合する {#merge-two-lots}
 
-2つのオフチェーンのポジションが統合されたとき,ロットを合併する.両親は同じ領域にあり,同じ量スペックを使用しなければならない.実行時間は子供ロット ID を生成します.
+オフチェーンのポジションが2つ統合されるときにロットを統合します。親は同じドメインにあり、同じ数量仕様を使用している必要があります。ソフトウェアの実行時に子ロットIDが生成されます。
 
 ```python
 warehouse_lot_id_2 = (
@@ -450,12 +450,12 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Python 取引の完全な例については, [Real-World Assets](/ja/guide/tutorials/python.md#real-world-assets)を参照してください.
+完全な Python トランザクションの例については、[実物資産](/ja/guide/tutorials/python.md#real-world-assets)を参照してください。
 
-## 関連文書 {#related-docs}
+## 関連ドキュメント {#related-docs}
 
 - [資産](/ja/blockchain/assets.md)
 - [メタデータ](/ja/blockchain/metadata.md)
-- [Iroha 特別指示](/ja/blockchain/instructions.md)
-- [問い合わせ](/ja/reference/queries.md#assets-nfts-and-rwas)
-- [Torii エンドポイント](/ja/reference/torii-endpoints.md#app-and-sora-route-families)
+- [Iroha 命令操作](/ja/blockchain/instructions.md)
+- [クエリ](/ja/reference/queries.md#assets-nfts-and-rwas)
+- [Torii API エンドポイント](/ja/reference/torii-endpoints.md#app-and-sora-route-families)

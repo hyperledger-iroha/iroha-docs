@@ -3,30 +3,30 @@ translation_locale: fr
 translation_source: /reference/ffi.md
 translation_source_hash: 2df23722cea2f918874f0109b31b24bb3d8dbd7f95c00d1d6d1568c5f81f68bc
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Interfaces de fonction extérieures (FFI) {#foreign-function-interfaces-ffi}
+# Interfaces de fonction étrangère (FFI) {#foreign-function-interfaces-ffi}
 
-Les États membres `iroha_ffi` la caisse fournit des macros et des traits pour générer C ABI des obligations de Rust APIs. Elle est utilisée lorsque: Iroha les types doivent traverser un FFI limite, par exemple par SDK les liaisons ou les intégrations d'hôte.
+Le package logiciel `iroha_ffi` fournit des macros et des traits pour générer des liaisons C ABI à partir de Rust APIs. Il est utilisé lorsque les types Iroha doivent franchir une frontière FFI, par exemple via des liaisons SDK ou des intégrations hôtes.
 
 ## Pourquoi FFI {#why-ffi}
 
-Une fonction est une entité plutôt abstraite, et alors que la plupart des langues sont d'accord sur ce qu'une fonction devrait faire, la façon dont les fonctions sont représentées est très différente. En outre, dans certaines langues, comme Rust, les conséquences d'appeler une fonction et les choses qu'elle est autorisée à faire sont également différentes. Lorsque Rust APIs doit être appelé depuis une autre langue ou un environnement hôte différent, Iroha utilise une interface de fonction étrangère (FFI) pour équilibrer les conditions de jeu.
+Une fonction est une entité assez abstraite, et bien que la plupart des langages s'accordent sur ce qu'une fonction devrait faire, la manière dont les fonctions sont représentées est très différente. De plus, dans certaines langues, telles que Rust, les conséquences d'appeler une fonction et les choses qu'elle est autorisée à faire sont également différentes. Lorsque Rust APIs doit être appelé depuis un autre langage ou un environnement hôte différent, Iroha utilise une interface de fonction étrangère (FFI) pour égaliser les chances.
 
-La principale norme utilisée aujourd'hui est l'interface binaire d'application C. Elle est simple, largement disponible et stable. En principe, vous pouvez tout faire manuellement, mais Iroha fournit la boîte `iroha_ffi` pour générer des fonctions conformes à FFI à partir d'une fonction existante Rust API.
+La principale norme utilisée aujourd'hui est l'interface binaire d'application C. Elle est simple, largement disponible et stable. En principe, vous pourriez tout faire manuellement, mais Iroha fournit le package logiciel `iroha_ffi` pour générer des fonctions conformes à FFI à partir d'un(e) Rust API existant(e).
 
-Vous pouvez, bien sûr, le faire à votre guise. La boîte `iroha_ffi` génère simplement le code que vous auriez besoin de générer de toute façon. Chaque appel de fonction au-delà de la limite FFI est `unsafe` avec le potentiel de causer un comportement indéfini. La méthode par laquelle nous avons réussi à le résoudre, tourne autour de l'utilisation de robustes types `repr(C)`.
+Vous pouvez, bien sûr, faire cela à votre manière. Le paquet logiciel `iroha_ffi` se contente de générer le code que vous auriez de toute façon besoin de générer. Écrire le code de modèle répétitif nécessaire demande beaucoup de diligence et de discipline. Chaque appel de fonction au-delà de la frontière FFI est `unsafe` avec un potentiel de provoquer un comportement indéfini. La méthode par laquelle nous avons réussi à le résoudre tourne autour de l'utilisation de types `repr(C)` robustes.
 
 ::: info
 
-La vérification de nullité et la validité ne peuvent être appliquées à l'échelle mondiale, de sorte que les pointeurs bruts (comme toujours) ne sont utilisés que dans des cas exceptionnels. Étant donné que nous fournissons des enveloppes autour de presque toutes les instances d'un objet dans le modèle de données Iroha, vous ne devriez pas avoir à utiliser des pointeurs bruts du tout.
+La seule exception concerne les pointeurs. La vérification de nullité et la validité ne peuvent pas être appliquées globalement, donc les pointeurs bruts (comme toujours) ne sont utilisés que dans des cas exceptionnels. Étant donné que nous fournissons des adaptateurs logiciels autour de presque chaque instance d’un objet dans le modèle de données Iroha, vous ne devriez pas avoir à utiliser des pointeurs bruts du tout.
 
 :::
 
 ## Exemple {#example}
 
-Voici un exemple de génération d'une liaison:
+Voici un exemple de génération d'une liaison :
 
 ```rust
 #[derive(FfiType)]
@@ -40,7 +40,7 @@ impl DaysSinceEquinox {
 }
 ```
 
-L'exemple ci-dessus génère la liaison suivante avec `DaysSinceEquinox` représentée comme un pointeur opaque:
+L'exemple ci-dessus générera la liaison suivante avec `DaysSinceEquinox` représenté comme un pointeur opaque :
 
 ```rust
 pub extern fn DaysSinceEquinox__update_value(handle: *mut DaysSinceEquinox, a: *const u8) -> FfiReturn {
@@ -48,39 +48,39 @@ pub extern fn DaysSinceEquinox__update_value(handle: *mut DaysSinceEquinox, a: *
 }
 ```
 
-## FFI Génération obligatoire {#ffi-binding-generation}
+## FFI Génération de liaison {#ffi-binding-generation}
 
-La boîte `iroha_ffi` est utilisée pour générer des fonctions qui peuvent être appelées par l'intermédiaire de FFI. Compte tenu des structures et méthodes `Rust`, elles génèrent le code `unsafe` dont vous auriez besoin pour franchir la limite de liaison.
+Le package logiciel `iroha_ffi` est utilisé pour générer des fonctions qui peuvent être appelées via FFI. Étant donné les structures et méthodes `Rust`, ils génèrent le code `unsafe` dont vous auriez besoin pour franchir la limite de liaison.
 
-Une Rust le type est converti en un robuste `repr(C)` type qui peut traverser le FFI la frontière avec `FfiType::into_ffi`. C'est aussi le contraire: FFI `ReprC` le type est converti en un `Rust` type via `FfiType::try_from_ffi`.
+Un type Rust est converti en un type robuste `repr(C)` qui peut traverser la frontière FFI avec `FfiType::into_ffi`. Cela fonctionne aussi dans l'autre sens : le type FFI `ReprC` est converti en un type `Rust` via `FfiType::try_from_ffi`.
 
 ::: warning
 
-Notez que la conversion opposée est faillible et peut entraîner un comportement indéfini. Bien que nous puissions faire de notre mieux pour éviter les erreurs les plus évidentes, vous devez veiller à l'exactitude du programme sur votre part.
+Notez que la conversion inverse est faillible et peut provoquer un comportement indéfini. Bien que nous puissions faire de notre mieux pour éviter les erreurs les plus évidentes, vous devez assurer la correction du programme de votre côté.
 
 :::
 
-Les principales caractéristiques qui permettent la génération de liaison sont `ReprC`, `FfiType` et `FfiConvert`.
+Les principaux traits qui permettent la génération de liaisons sont `ReprC`, `FfiType` et `FfiConvert`.
 
-|Un trait .|La description |
+|Trait|Description|
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|`ReprC` |Ce trait représente un type robuste qui se conforme à C ABI. Le type peut être partagé en toute sécurité sur les frontières de FFI. |
-|`FfiType` | Ce trait définit une correspondance `ReprC` type pour une donnée `Rust` type. le défini `ReprC` le type est utilisé à la place du `Rust` type dans le API du produit généré FFI fonction. |
-|`FfiConvert` |Cette caractéristique définit deux méthodes `into_ffi` et `try_from_ffi` qui sont utilisées pour effectuer la conversion du type `Rust` en ou à partir du type `ReprC`. |
+| `ReprC`      |Cette caractéristique représente un type robuste qui est conforme à C ABI. Le type peut être partagé en toute sécurité à travers les frontières FFI.|
+| `FfiType`    |Ce trait définit un type `ReprC` correspondant pour un type `Rust` donné. Le type `ReprC` défini est utilisé à la place du type `Rust` dans le API de la fonction FFI générée.|
+| `FfiConvert` |Ce trait définit deux méthodes `into_ffi` et `try_from_ffi` qui sont utilisées pour effectuer la conversion du type `Rust` vers ou depuis le type `ReprC`.|
 
-Notez qu'il n'y a pas de transfert de propriété sur FFI à l'exception des types de pointeurs opaques. Tous les autres types portant la propriété, tels que `Vec<T>`, sont clonés.
+Notez qu'il n'y a pas de transfert de propriété sur FFI sauf pour les types de pointeurs opaques. Tous les autres types qui impliquent la propriété, comme `Vec<T>`, sont clonés.
 
-### Nom Mangling {#name-mangling}
+### Broyage de noms {#name-mangling}
 
-Notez l'utilisation de deux sous-titres dans les noms générés d'objets FFI:
+Remarquez l'utilisation de doubles underscores dans les noms générés des objets FFI :
 
-- Pour la méthode `inherent_fn` définie sur la structure `StructName`, le nom de FFI serait `StructName__inherent_fn`.
-- Pour la méthode `MethodName` à partir de la caractéristique `TraitName` dans l'structure `StructName`, le nom de FFI serait `StructNameTraitNameMethodName`.
+- Pour la méthode `inherent_fn` définie sur la structure `StructName`, le nom FFI serait `StructName__inherent_fn`.
+- Pour la méthode `MethodName` du trait `TraitName` dans la structure `StructName`, le nom FFI serait `StructName__TraitName__MethodName`.
 - Pour définir le champ `field_name` dans la structure `StructName`, le nom de la fonction FFI serait `StructName__set_field_name`.
 - Pour obtenir le champ `field_name` dans la structure `StructName`, le nom de la fonction FFI serait `StructName__field_name`.
-- Pour obtenir le champ `field_name` mutable dans la structure `StructName`, le nom de la fonction FFI serait `StrucuName__field_name_mut`.
-- Pour le `module_name::fn_name` indépendant, la dénomination de FFI serait `module_name::__fn_name`.
-- Pour les caractéristiques qui ne sont pas génériques et permettent de partager leur mise en œuvre dans le FFI (voir `Clone` ci-dessous), la dénomination FFI serait `module_name::__clone`.
+- Pour obtenir le champ mutable `field_name` dans la structure `StructName`, le nom de la fonction FFI serait `StrucuName__field_name_mut`.
+- Pour le `module_name::fn_name` autonome, le nom FFI serait `module_name::__fn_name`.
+- Pour les traits qui ne sont pas génériques et permettent de partager leur implémentation dans le FFI (voir `Clone` ci-dessous), le nom FFI serait `module_name::__clone`.
 
   ```rust
   impl Clone for Type1 {

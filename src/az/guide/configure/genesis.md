@@ -1,34 +1,34 @@
 ---
 translation_locale: az
 translation_source: /guide/configure/genesis.md
-translation_source_hash: d3c04386c8d6e2778e53477e8f717a04247a66714cfed2c25ca84fbfb3871813
+translation_source_hash: a6b8b2b02e0074e6c90d9aa9337af3e2496a02beb2f57f575dc0780014df04b2
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Müqəddəs Kitab {#genesis}
+# blokçeyn genesis {#genesis}
 
-Genesis başlanğıc silsilə vəziyyətini təyin edir. Düzenlənə bilən mənbə JSON manifestidir və Iroha 3 düyün imzalanmış Norito əməliyyat faylini istehlak edir.
+blokçeyn genesis ilkin zəncir vəziyyətini müəyyən edir. Redaktə edilə bilən mənbə JSON texniki manifestdir və Iroha 3 node imzalanmış Norito əməliyyat faylını istifadə edir.
 
-::: details Default genesis manifestı
+::: details Defolt blockchain genesis texniki manifesti
 
 <<< @/snippets/genesis.json
 
 :::
 
-## Dosyalar {#files}
+## Fayllar {#files}
 
-Upstream repository default manifestini `defaults/genesis.json` ünvanına göndərir. Kagami tərəfindən istehsal olunan şəbəkələr öz manifesti və imzalanmış əməliyyatlarını çıxışı dizaynına yazırlar:
+Yuxarı axın anbarı `defaults/genesis.json` ünvanında standart texniki manifest təqdim edir. Kagami-tərəfindən yaradılmış şəbəkələr öz texniki manifestlərini və imzalanmış əməliyyatlarını çıxış qovluğuna yazır:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-Bu dizaynda yaradılan `README.md` seçilmiş profil üçün dəqiq faylları və başlatma əmrlərini qeyd edir.
+Həmin kataloqda yaradılan `README.md` seçilmiş profil üçün dəqiq faylları və işə salma əmrlərini qeyd edir.
 
-## Tərəflər arasındakı seçim {#peer-configuration}
+## şəbəkə tərəfdaşının Konfiqurasiyası {#peer-configuration}
 
-`config.toml` `[genesis]` bölməsində imzalanmış genesis əməliyyatı ilə əlaqəli rəfiqələr:
+şəbəkə həmkarları `config.toml` bölməsindəki `[genesis]` hissəsində imzalanmış blokçeyn başlanğıc əməliyyatını göstərir:
 
 ```toml
 [genesis]
@@ -36,22 +36,23 @@ file = "./genesis.signed.nrt"
 public_key = "ed0120..."
 ```
 
-Şəbəkədəki bütün həmyaşıdlar imzalanmış genesis əməliyyatı və genesis ictimai açarı barədə razılığa gəlməlidirlər.
+Şəbəkədəki bütün şəbəkə iştirakçıları, imzalanmış blokzincir başlanğıc əməliyyatı və blokzincir başlanğıc açarı ilə razılaşmalıdır.
 
-## Qədim Mövzunun imzalanması {#signing-genesis}
+## Blokçeyn başlanğıcının imzalanması {#signing-genesis}
 
-Manifesti əl ilə redaktə edirsinizsə, həmyaşıdları başlamadan əvvəl təsdiqləyin və imzalayın:
+Əgər texniki sənədi əl ilə redaktə edirsinizsə, şəbəkə tərəfdaşlarını başlatmazdan əvvəl onu yoxlayın və imzalayın:
 
 ```bash
 cargo run --bin kagami -- genesis validate ./genesis.json
 cargo run --bin kagami -- genesis sign ./genesis.json \
-  --private-key "$GENESIS_PRIVATE_KEY_HEX" \
-  --algorithm ed25519 \
+  --private-key-file "$GENESIS_PRIVATE_KEY_FILE" \
   --out-file ./genesis.signed.nrt
 ```
 
-NPoS və ya Nexus profilləri üçün topoloji və BLS Yaradılmış profil tərəfindən tələb olunan mülkiyyət sübutları daxil edin. Kagami `localnet`, `wizard` və profil istehsalı əmrləri həmin detalları avtomatik olaraq idarə edir.
+`GENESIS_PRIVATE_KEY_FILE` sahibi-ələ keçirilmiş rejim-`0600`, tək-bağlantılı adi fayl olmalıdır və bir tək protokol-standart özəl açar çoxhashı və sonuncu yeni sətiri ehtiva etməlidir. Kagami simvolik bağlantıları rədd edir və heç vaxt kommanda sətrində xam blokçeyn başlanğıc özəl açarını qəbul etmir.
 
-## Yaradılışın yenidən qurulması {#recommitting-genesis}
+NPoS və ya Nexus profilləri üçün, yaradılmış profil tərəfindən tələb olunan topologiya və BLS Sahibliyin Sübutlarını daxil edin. Kagami `localnet`, `wizard` və profil yaradılması komandaları bu detalları avtomatik idarə edir.
 
-Bir həmyaşıd yalnız saxlama boş olduğu zaman genesi həyata keçirir.Birbaşa istifadə edilə bilən lokal şəbəkədə yeni bir genesi sınaqdan keçirmək üçün həmyaşıdıları dayandırın, istehsal olunan dövlət dizini çıxarın və yeni imzalanmış genesisdən başlayın. Hər təsdiqçi eyni miqrasiyanı əlaqələndirmədiyi təqdirdə işləyən şəbəkədə genesi əvəz etməyin.
+## Blok zəncirinin başlanğıcını yenidən təsdiqləmək {#recommitting-genesis}
+
+Şəbəkə qoşqusu yalnız onun yaddaşı boş olduqda blokçeyn başlanğıcını yekunlaşdırır. Tullantı yerli şəbəkədə yeni blokçeyn başlanğıcını sınamaq üçün, şəbəkə qoşqusunu dayandırın, yaratdıqları vəziyyət kataloqunu silin və yeni imzalanmış blokçeyn başlanğıcından başlayın. Heç bir təsdiqləyici eyni miqrasiyanı koordinasiya etmədikcə işləyən bir şəbəkədə blokçeyn başlanğıcını əvəz etməyin.

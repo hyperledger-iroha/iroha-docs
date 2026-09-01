@@ -3,71 +3,71 @@ translation_locale: es
 translation_source: /blockchain/triggers.md
 translation_source_hash: 9443b139623544fd3c54b324e54b7e06f57820c70ffd0856f05aacac9f7591a3
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Los desencadenantes {#triggers}
+# Desencadenantes {#triggers}
 
-Los desencadenantes unen un filtro de eventos a una acción ejecutable. Cuando un evento coincide con el filtro del activador, Iroha evalúa la acción del activador como parte de la ejecución del bloque.
+Los activadores vinculan un filtro de eventos a una acción ejecutable. Cuando un evento coincide con el filtro del activador, Iroha evalúa la acción del activador como parte de la ejecución del bloque.
 
-## La estructura {#structure}
+## Estructura {#structure}
 
 Un `Trigger` registrado contiene:
 
-- `id`: un envase de `TriggerId` con un embalaje de `Name`
-- `action`: el ejecutable, la autoridad, el filtro, la política de repetición, la política del retiro y los metadatos.
+- `id`: un `TriggerId` que encapsula un `Name`
+- `action`: el ejecutable, principal de autorización, filtro, política de repetición, política de reintento y metadatos
 
-La acción incluye:
+La acción contiene:
 
-- `executable`: `Instructions`, `ContractCall`, `Ivm`, o `IvmProved`
+- `executable`: `Instructions`, `ContractCall`, `Ivm` o `IvmProved`
 - `repeats`: `Indefinitely` o `Exactly(n)`
-- `authority`: la cuenta que invoque el ejecutable
+- `authority`: la cuenta que invoca el ejecutable
 - `filter`: un `EventFilterBox`
-- `retry_policy`: comportamiento de retoma opcional para los desencadenantes del tiempo programado
-- `metadata`: metadatos del desencadenante arbitrarios
+- `retry_policy`: comportamiento opcional de reintento para activadores de tiempo programado
+- `metadata`: metadatos de activación arbitrarios
 
-## Los filtros de eventos {#event-filters}
+## Filtros de eventos {#event-filters}
 
-Las condiciones de activación utilizan el mismo modelo de filtro de eventos que las suscripciones. El filtro de evento de nivel superior puede coincidir con:
+Las condiciones del disparador utilizan el mismo modelo de filtro de eventos que las suscripciones. El filtro de eventos de nivel superior puede coincidir con:
 
-- acontecimientos de la tubería
+- eventos de la canalización de procesamiento
 - eventos de datos
-- acontecimientos del tiempo
+- eventos de tiempo
 - desencadenar eventos de ejecución
-- desencadenar los eventos de finalización
+- activar eventos de finalización
 
-Preferimos el filtro más estrecho que coincida con el flujo de trabajo. Los filtros amplios son útiles para el diagnóstico, pero aumentan el trabajo durante la ejecución del bloque.
+Prefiere el filtro más estrecho que coincida con el flujo de trabajo. Los filtros amplios son útiles para diagnósticos, pero aumentan el trabajo durante la ejecución del bloque.
 
-Véase [Filtros](/es/blockchain/filters.md) para las familias de filtros actuales.
+Vea [Filtros](/es/blockchain/filters.md) para las familias de filtros actuales.
 
-## El tiempo desencadena {#time-triggers}
+## Disparadores de tiempo {#time-triggers}
 
-Los desencadenantes de tiempo utilizan un filtro de eventos de tiempo. Cuando la vista del estado mundial alcanza una condición de tiempo correspondiente, Iroha ejecuta la acción de desencadenante bajo la autoridad del desencadenador.
+Los disparadores de tiempo utilizan un filtro de evento temporal. Cuando la vista del estado del mundo alcanza una condición de tiempo coincidente, Iroha ejecuta la acción del disparador bajo el principal de autorización del disparador. Los disparadores de tiempo son el tipo de disparador que puede usar la política de reintento descrita a continuación.
 
-## La repetición {#repetition}
+## Repetición {#repetition}
 
-`Repeats::Indefinitely` mantiene un gatillo activo hasta que no esté registrado.
+`Repeats::Indefinitely` mantiene un desencadenador activo hasta que se desregistre.
 
-`Repeats::Exactly(n)` permite al gatillo disparar un número fijo de veces. Cuando el recuento se agota, registre un nuevo gatillo si se requiere el mismo comportamiento de nuevo.
+`Repeats::Exactly(n)` permite que el disparador se active un número fijo de veces. Cuando se agote el conteo, registre un nuevo disparador si se necesita el mismo comportamiento nuevamente.
 
-## Autoridad y permisos {#authority-and-permissions}
+## autorización principal y permisos {#authority-and-permissions}
 
-La autoridad de activación es la cuenta utilizada para invocar el ejecutable. Utilice una cuenta técnica dedicada para los activadores de larga duración para que los permisos requeridos sean explícitos y aislados de la cuenta personal de un operador.
+El principio de autorización del disparador es la cuenta utilizada para invocar el ejecutable. Utilice una cuenta técnica dedicada para disparadores de larga duración de modo que los permisos requeridos sean explícitos y estén aislados de la cuenta personal de un operario.
 
-La autoridad necesita los permisos requeridos por las instrucciones ejecutables o la llamada de contrato.La cuenta que registra el gatillo también necesita permiso para registrar gatillos bajo el validador activo del tiempo de ejecución.
+El principal de autorización necesita los permisos requeridos por las instrucciones ejecutables o la llamada al contrato. La cuenta que registra el disparador también necesita permiso para registrar disparadores bajo el validador de tiempo de ejecución de software activo.
 
-## Política de retraso {#retry-policy}
+## Política de reintento {#retry-policy}
 
-Los desencadenantes de tiempo pueden optar por una política de retoma. Una política de retama establece:
+Los desencadenadores de tiempo pueden optar por una política de reintento. Una política de reintento establece:
 
-- `max_retries`: cuántos intentos de retiro se permiten después de un disparo inicial fallido.
-- `retry_after_ms`: cuánto tiempo espera Iroha antes de que un nuevo ensayo sea elegible
+- `max_retries`: cuántos intentos de reintento están permitidos después de un disparo inicial fallido
+- `retry_after_ms`: cuánto tiempo espera Iroha antes de que un reintento sea elegible
 
-Cuando el presupuesto para volver a intentarlo se agota, el gatillo no está registrado.
+Cuando se agota el presupuesto de reintentos, el disparador se da de baja.
 
-## Las consultas {#queries}
+## Consultas {#queries}
 
-Utilice las consultas actuales del gatillo para inspeccionar el estado del gatillo:
+Utilice las consultas de activación actuales para inspeccionar el estado del activador:
 
 - [`FindTriggers`](/es/reference/queries.md#triggers-contracts-transactions-and-blocks)
 - [`FindActiveTriggerIds`](/es/reference/queries.md#triggers-contracts-transactions-and-blocks)
@@ -75,7 +75,7 @@ Utilice las consultas actuales del gatillo para inspeccionar el estado del gatil
 
 Véase también:
 
-- [Ejemplo de desencadenante del evento](/es/blockchain/trigger-examples.md)
-- [Eventos ](/es/blockchain/events.md)
-- [Las instrucciones ](/es/blockchain/instructions.md)
-- [Las autorizaciones ](/es/blockchain/permissions.md)
+- [Ejemplo de activador de evento](/es/blockchain/trigger-examples.md)
+- [Eventos](/es/blockchain/events.md)
+- [Instrucciones](/es/blockchain/instructions.md)
+- [Permisos](/es/blockchain/permissions.md)

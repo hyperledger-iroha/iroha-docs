@@ -12,7 +12,7 @@ translation_engine: nllb-200-ct2
 
 公共区块链和私人区块链在用户获得的许可方面存在差异.在公共区块链中,大多数账户都有相同的权限.在私人区块链中,大多数账户被认为不能做任何事情.在授予他们权限之外,除非明确授予相关许可.
 
-持有某事许可证意味着账户具有相应的 `Permission`.许可证可以直接或通过 [`Role`](#permission-groups-roles),允许使用 `Grant` 指令授予权限.许可证和角色不会过期,请用 `Revoke` 指令删除它们.
+拥有执行某项操作的权限，表示账户具有对应的 `Permission`。权限可以直接授予，也可以通过将一组权限汇总在一起的 [`Role`](#permission-groups-roles) 授予。权限使用 `Grant` instruction 授予。Permissions 和 roles 不会过期；请使用 `Revoke` instruction 移除它们。
 
 ## 许可证代码 {#permission-tokens}
 
@@ -56,7 +56,7 @@ translation_engine: nllb-200-ct2
 
 ### 登记一个新角色 {#register-a-new-role}
 
-让我们注册一个新的角色, 当授予时,将允许另一个帐户访问 [元数据](/zh-hans/blockchain/metadata.md) 在鼠标的账户:
+让我们注册一个新的角色, 当授予时,将允许另一个帐户访问 [元数据](/zh-hans/blockchain/metadata.md) 在 Mouse 的账户:
 
 ```rust
 let role_id = RoleId::from_str("ACCESS_TO_MOUSE_METADATA")?;
@@ -69,7 +69,7 @@ let register_role = Register::role(role);
 
 ### 给一个角色 {#grant-a-role}
 
-在这个角色被注册后,鼠标可以授予阿丽丝:
+在这个角色被注册后,Mouse 可以授予 Alice:
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
@@ -84,16 +84,16 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 
 默认验证器表面按账本区分组合:
 
-- 同行管理
+- 对等节点管理
 - 域名和账户
-- 资产, NFTs,以及保证金
+- 资产, NFTs,以及托管
 - 触发器
 - 角色和权限
-- 执行器/运行时间,证据,桥梁和 SORA/Nexus 模块
+- 执行器/运行时,证明,桥梁和 SORA/Nexus 模块
 
 准确的代币列表在 [Permission Tokens引用](/zh-hans/reference/permissions.md)中得到源支持.
 
-### 运行时间验证器 {#runtime-validators}
+### 运行时验证器 {#runtime-validators}
 
 允许检查由主动执行器执行.默认执行器提供内置的权限验证器和代币定义,网络可以通过升级使用的执行器来改变政策.
 

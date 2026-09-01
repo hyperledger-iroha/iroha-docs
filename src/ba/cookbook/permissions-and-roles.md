@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/permissions-and-roles.md
-translation_source_hash: 734437b8530ad0efb9ddd83b24cb90c30dc29843a03753babd8dca5e86a3f91d
+translation_source_hash: 8d6fd7101094ba21cfc2c5fb9a89d2acd7e67f13ff47b9f8c8e01bbbd7bf2836
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 - Taira финансланған клиент һәм түләү метамәғлүмәттәре [нан Taira](./connect-to-taira.md) менән бәйләнешкә инеү.
 - `TARGET_ACCOUNT` һәм `DELEGATE_ACCOUNT` каноникаға ҡуйылған I105 иҫәбенә IDs.
-- Ҡул ҡуйыу иҫәбенә маҡсатлы рөхсәт һәм ролдәр менән идара итеүгә мөмкинлек бирергә кәрәк. Taira буйынса был рөхсәт менән сикләнгән административ операция; `CanManageRoles` һәм тәғәйенләнгән рөхсәт биреү өсөн кәрәкле власть алыу, йәки рецептты генерацияланған урындағы селтәрҙә файҙаланыу.
+- Ҡул ҡуйыу иҫәбенә маҡсатлы рөхсәт һәм ролдәр менән идара итеүгә мөмкинлек бирергә кәрәк. Taira буйынса был рөхсәт менән сикләнгән административ операция; `CanManageRoles` һәм тәғәйенләнгән рөхсәт биреү өсөн кәрәкле вәкәләтле иҫәп алыу, йәки рецептты генерацияланған урындағы селтәрҙә файҙаланыу.
 
 ```bash
 CONFIG=./taira.client.toml
@@ -36,7 +36,7 @@ DELEGATE_CONFIG=./taira.delegate.toml
 
 ### 1. Буш роль яҙыу {#_1-register-an-empty-role}
 
-Һәр дәүләтте үҙгәртеүсе CLI командаһы түләүҙе түләүсене асыҡтан-асыҡ атай. Метамәғлүмәттәр файлында хәҙерге Taira түләү активы бар, ул кранға яуап биреүҙән алынған.
+Һәр торошто үҙгәртеүсе CLI командаһы түләүсене асыҡтан-асыҡ атай. Метамәғлүмәттәр файлында faucet яуабынан алынған ағымдағы Taira түләү активы бар.
 
 ```bash
 iroha --config "$CONFIG" \
@@ -69,7 +69,7 @@ iroha --config "$CONFIG" \
   --role "$ROLE_ID"
 ```
 
-Ролдәр һәм уларҙың гранттары тамамланмай, уларға инеү кәрәк булмағас, уларҙы асыҡтан-асыҡ алып ташларға.
+Ролдәр һәм уларҙың бирелгән рөхсәттәре тамамланмай, уларға инеү кәрәк булмағас, уларҙы асыҡтан-асыҡ алып ташларға.
 
 ### 4. Делегацияланған рөхсәт менән файҙаланығыҙ {#_4-exercise-the-delegated-permission}
 
@@ -124,17 +124,17 @@ iroha --config "$CONFIG" ledger account meta get \
 
 ## Проблемаларҙы хәл итеү {#troubleshooting}
 
-- `Not permitted` теркәгәндә, редакциялағанда йәки ролде бүлгәндә ҡул ҡуйған кешегә тейешле Taira вәкәләт етмәй. Объектлы токенды глобаль токен менән алмаштырмағыҙ; аныҡ грантты һорағыҙ йәки localnet-ты ҡулланығыҙ.
+- `Not permitted` теркәгәндә, редакциялағанда йәки ролде бүлгәндә ҡул ҡуйған кешегә тейешле Taira вәкәләт етмәй. Объектлы токенды глобаль токен менән алмаштырмағыҙ; аныҡ рөхсәтте һорағыҙ йәки localnet-ты ҡулланығыҙ.
 - `payload` янында `account` урынлаштырылған, I105 урынына ID исеме бирелгән, йәки JSON хаҡы ике тапҡыр күрһәтелгән.
-- Бурыстан баш тартыу шул аҙымды тапшырған ҡул ҡуйған кешегә ҡарай. Менеджерҙы финанслау һәм үҙаллы рәүештә йөкмәтеү, шулай уҡ краннан алынған түләү активтары метамәғлүмәттәре һаҡлана.
+- Бурыстан баш тартыу шул аҙымды тапшырған ҡул ҡуйған кешегә ҡарай. Менеджерҙы финанслау һәм үҙаллы рәүештә йөкмәтеү, шулай уҡ faucetнан алынған түләү активтары метамәғлүмәттәре һаҡлана.
 - Уңышлы роль биреү уның токендарында кодланған киңлек өҫтөнлөк итмәй. Был роль рөхсәт йөкләмәһендә исемләнгән иҫәпте генә үҙгәртә ала.
 - Таҙартыу өсөн `ledger account role revoke`, һуңынан `ledger role permission revoke` һәм, ниһайәт, `ledger role unregister` эшләй; һәр береһе айырым яҙыу булып тора һәм `--fee-payer authority` һәм түләү метамәғлүмәттәре булырға тейеш.
 
 ## Сығанаҡ һәм уның менән бәйле документтар {#source-and-related-docs}
 
-- [Роль интеграцияһына һынауҙар ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/roles.rs)
-- [Ирекле интеграция һынауҙары ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/permissions.rs)
-- [Пинк commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_executor_data_model/src/permission.rs) ҡуйылған рөхсәт мәғлүмәттәр моделендә төҙөлгән
+- [Роль интеграцияһына һынауҙар ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/roles.rs)
+- [Ирекле интеграция һынауҙары ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/permissions.rs)
+- [Пинк commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/permission.rs) ҡуйылған рөхсәт мәғлүмәттәр моделендә төҙөлгән
 - [Рөхсәт һәм ролдәр](/ba/blockchain/permissions.md)
 - [Рөхсәт биреү билдәһе шиғыры](/ba/reference/permissions.md)
 - [Метамәғлүмәттәре](./metadata.md)

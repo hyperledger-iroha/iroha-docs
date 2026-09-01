@@ -1,65 +1,70 @@
 ---
 translation_locale: mn
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 49e1a29243151fec1ada2729c315378455a8502811e1ae124e5917a88d59b55d
+translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Iroha 3 байгууламж {#install-iroha-3}
+# Суурилуулна уу Iroha 3 {#install-iroha-3}
 
-Энэ хуудас нь Iroha 3 төхөөрөмжийн сүлжээ болон `hyperledger-iroha/iroha` урсгалын өмнө ажиллах талбайг ашиглаж байгаа бинарын одоогийн монтажтын ажлын урсгалг хамардаг.
+Энэ хуудас нь `hyperledger-iroha/iroha` ажлын орчныг ашиглан Iroha 3 хэрэгслийн багц ба бинаруудыг одоогийн суулгах ажлын урсгалыг хамардаг.
 
-## 1.Өргөдлийн шаардлага {#_1-prerequisites}
+## 1. Урьдач нөхцөл {#_1-prerequisites}
 
-Хамгийн түрүүнд тэдгээрийг байлгаарай:
+Эдгээрийг эхлээд суулгана уу:
 
-- [rustup](https://www.rust-lang.org/tools/install), тиймээс тавигдсан `rust-toolchain.toml` хэрэгслийн сүлжээ (`1.93.1`) нь автоматжуулалтад оршино
+- [rustup](https://www.rust-lang.org/tools/install), тэгэхээр холбоотой `rust-toolchain.toml` хэрэгслийн сүлжээ (`1.93.1`) автоматаар суурилагдсан байна
 - `git`
-- Docker болон Docker Compose нь орон нутгийн олон түвшний хурдны шуурхай хөдөлгөөн
+- сонголтоор, орон нутгийн олон түншийн хурдан эхлүүлэхэд Docker болон Docker Compose
 
-## 2. Үйлдвэрлэлийн орон замыг клоонлах {#_2-clone-the-workspace}
+## 2. Ажлын орчныг хуулбарлах {#_2-clone-the-workspace}
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
 cd iroha
 ```
 
-## 3. Ажлын байр бариарай {#_3-build-the-workspace}
+## 3. Ажлын орчныг байгуулах {#_3-build-the-workspace}
 
-Бүх зүйлийг бариарай:
+Бүх зүйлийг барь
 
 ```bash
 cargo build --workspace
 ```
 
-Операторуудад төвлөрсөн жижиг бүтээн байгуулалтын хувьд зөвхөн үндсэн бинардыг оруулах:
+Жижиг оператор төвтэй хувилбарын хувьд зөвхөн гол бинаруудыг эвлүүлнэ үү:
 
 ```bash
-cargo build --release -p irohad -p iroha_cli -p iroha_kagami
+cargo build --release \
+  -p irohad --bin iroha3d --bin iroha3d_taira \
+  -p iroha_cli --bin iroha \
+  -p iroha_kagami --bin kagami
 ```
 
-Энэ нь `target/debug/` эсвэл `target/release/` дугаарт бичигддэг байна.
+Үр дүнд гарсан хоёртын файлууд `target/debug/` эсвэл `target/release/` дээр бичигдэнэ.
 
-## 4. Тавигдсан хэрэгслийг шалгаарай. {#_4-verify-the-installed-tools}
+## 4. Суулгасан хэрэгслүүдийг баталгаажуулна уу {#_4-verify-the-installed-tools}
 
 ```bash
-cargo run --bin irohad -- --help
+cargo run -p irohad --bin iroha3d -- --help
+cargo run -p irohad --bin iroha3d_taira -- --help
 cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
 
-Та ихэвчлэн ашигладаг гурван бинар нь:
+Та ерөнхийдөө ашиглах дөрвөн хоёртын файл нь:
 
-- `irohad` өрсөлдөгч даймон
-- `iroha` нь CLI-ийн Torii болон үйл ажиллагаа эрхлэгчдийн төгсгөлийн цэг дээр .
-- `kagami` нөөц, генезисийн тэмдэг болон локалийн сүлжээний хувилбар
+- `iroha3d` стандарт сүлжээний хамтрагч дэвлийн хувьд
+- `iroha3d_taira` ганц протокол-стандарт Taira баталгаажуулагч эхлүүлэгчийн хувьд
+- `iroha` нь Torii болон оператор API төгсгөлийн цэгүүдэд CLI нэвтрэх эрхтэй
+- `kagami` түлхүүрүүд, блокчэйн үүсгэл техникийн нотолгоо, болон локалнет профайлд зориулсан
 
-## 5. Локалийн сүлжээ болон Docker замыг сонгох боломжтой {#_5-optional-localnet-and-docker-path}
+## 5. Сонголтоор Localnet ба Docker Зам {#_5-optional-localnet-and-docker-path}
 
-Одоогийн эх үүсвэрийн дэмжлэгтэй lokalnet урсгалыг Kagami бий болгодог. Энэ нь ижил төстэй конфигурац, генез артефакт, үйлчлүүлэгч конфигураци, туслах скрипт болон шалгарсан кодтой нийцсэн сонголттой Compose файл бичдэг:
+Одоогийн эх сурвалжаар дэмжигдсэн локалнет урсгалыг Kagami үүсгэж байна. Энэ нь сүлжээний түншийн тохиргоонууд, блокчейн генерацын бүтээлүүд, клиент тохиргоо, туслах скриптүүд, болон шалгасан кодтой таарах үүрэгтэй Compose файлыг бичдэг:
 
-- `kagami localnet` орон нутгийн өргөн зохиолд зориулсан
-- `kagami docker` нь Docker Compose-ийн хувьд локалийн сүлжээний захиалгаас үүссэн
+- `kagami localnet` нутгийн орон нутгийн сүлжээний түнш скриптүүдэд
+- `kagami docker` нь Docker Compose -аас localnet директороос үүсгээгдсэн
 
-[Иргүүлэлт Iroha 3](/mn/get-started/launch-iroha.md)-ийг үргэлжлүүлээрэй.
+[Эхлүүлэх Iroha 3](/mn/get-started/launch-iroha.md) хэсгийг үргэлжлүүлнэ үү.

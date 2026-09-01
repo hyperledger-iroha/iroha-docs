@@ -1,32 +1,32 @@
 ---
 translation_locale: uz
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 0185b6a341ee90ed6cd52fb9f510549b20592468abe6627d3efa639c3b67d1fd
+translation_source_hash: 576e03924f19b63681cdfafa641b996672e35a992478fc9eaf5b83f0e7baa6da
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Native Asset Escrow {#native-asset-escrow}
+# Mahalliy aktiv eskrousi {#native-asset-escrow}
 
 ## Natija {#outcome}
 
-Bozordagi depozit va manzilga bog'liq aktivni qulflash o'rtasida tanlang, Rust yoki Python bilan joriy yozib olingan hayot davomini bajaring, har bir qulfning qayta urinishini siz amalda kuzatgan qolgan miqdorga bog'lang va JavaScript dan asl Kotodama depozit yuzasini yig'ing.
+Bozor eskrousi bilan manzilga bog‘langan aktiv qulfi orasidan tanlang, joriy turlangan hayotiy siklni Rust yoki Python orqali bajaring, qulf bo‘yicha har bir qayta urinishni o‘zingiz kuzatgan qoldiq miqdoriga bog‘lang va mahalliy Kotodama eskrou sathini JavaScript orqali kompilyatsiya qiling.
 
-## Oldindan talablar {#prerequisites}
+## Oldindan shartlar {#prerequisites}
 
-- Raqamli aktiv ta'rifi va etarli miqdorda egalik qiluvchi ochuvchi/sotuvchi.
-- Har bir qadamni taqdim etadigan tomon uchun moliyalashtirilgan, bitta kalitli I105 mijozlardan foydalaning. To'lov aktivlari joriy Taira kran javoblariga mos bo'lgan jonli hokimiyat tomonidan to'lanadigan `fee_payment` niyatidan foydalaning; hujjatlardan ID aktivini o'rnatmang.
-- Rust yoki Python SDK sohasi Iroha bilan bog'liq bo'lgan majburiyat `bc7114ed1c7f265a156d2100ff09e851cc95702c`.
-- O ' zbekiston Respublikasining JavaScript yig'uvchi namuna, Node.js 24 va mahalliy ishlab chiqarilgan `@iroha/iroha-js` to'plam va uning natijasi `iroha_js_host`; qoʻllash [JavaScript SDK manba konstruksiyalarini o'rnatish](/uz/guide/tutorials/javascript.md#build-from-source). Brauzerni yaratish uchun `compilerUrl` o'rniga mahalliy uy egasini yuklab olish.
-- Taira aktivlarni o'tkazish va depozit qo'yish yo'l-yo'riqlarini qabul qilishi kerak. Asset egalari oddiy hayot davridan foydalanishi mumkin, agar ularning aktiv siyosati bunga ruxsat beradi; nizolarni hal qilish uchun global `CanResolveEscrowDispute` ruxsati talab etiladi. Kerakli ommaviy tarmoq hokimiyati mavjud bo'lmaganida hosil qilingan mahalliy tarmoqdan foydalanish.
+- Raqamli aktiv ta’rifi va yetarli miqdorga ega ochuvchi/sotuvchi.
+- Har bir bosqichni yuboradigan tomon uchun mablag‘ bilan ta’minlangan, bitta kalitli I105 mijoz. To‘lov aktivi joriy Taira krani javobiga mos keladigan, vakolat hisobi to‘laydigan amaldagi `fee_payment` niyatidan foydalaning; hujjatlardan ko‘chirilgan aktiv identifikatorini kiritmang.
+- Iroha’ning `0010c5a70039eac101a4846499ba9ceaf43eb65c` commitidagi joriy Rust yoki Python SDK.
+- JavaScript kompilyatori misoli uchun Node.js 24, mahalliy qurilgan `@iroha/iroha-js` paketi va uning mahalliy `iroha_js_host` komponenti; [JavaScript SDK ni manbadan qurish sozlamasi](/uz/guide/tutorials/javascript.md#build-from-source) bo‘yicha ishlang. Brauzer qurilmalari mahalliy xostni yuklash o‘rniga `compilerUrl` berishi kerak.
+- Taira aktiv o‘tkazish va eskrou ko‘rsatmalarini qabul qilishi kerak. Aktiv siyosati ruxsat bersa, aktiv egalari oddiy hayotiy sikldan foydalana oladi; nizoni hal qilish uchun global `CanResolveEscrowDispute` ruxsati kerak. Ochiq tarmoqda zarur vakolat bo‘lmasa, yaratilgan mahalliy tarmoqdan foydalaning.
 
-Marketplace escrow modellari sotuvchi, xaridor, zaryaddan tashqarida to'lov va chiqarilgan. Ochiq qulflar manzilni va tanlov bo'yicha alohida chiqarilish vakolatini nomlaydi; ular qisman tortib olish, bekor qilish va muddati tugagani qo'llab-quvvatlaydi.
+Bozor eskrousi sotuvchi, xaridor, reyestrdan tashqari to‘lov va mablag‘ni chiqarishni modellashtiradi. Umumiy qulflar manzilni ko‘rsatadi va ixtiyoriy ravishda alohida chiqarish vakolatini belgilaydi; ular qisman yechish, bekor qilish va muddat tugashini qo‘llab-quvvatlaydi.
 
-## qadamlar {#steps}
+## Qadamlar {#steps}
 
-### 1. Rust bilan bozor depozitini to'ldiring. {#_1-complete-a-marketplace-escrow-with-rust}
+### 1. Rust bilan bozor eskrousini yakunlash {#_1-complete-a-marketplace-escrow-with-rust}
 
-Ushbu funktsiya haqiqiy IDs va mijozlarni qabul qiladi. U 40 birlikni ochadi, xaridorga zanjirdan tashqari to'lovni qabul qilish va belgilash imkonini beradi, so'ngra sotuvchiga vasiyatxonani ozod qilishga imkon beradi. Har bir taqdimnoma `FeePaymentIntent` orqali hokimiyat to'lovi to'lovchi nomi bilan nomlanadi.
+Bu funksiya haqiqiy turlangan identifikatorlar va mijozlarni oladi. U 40 birlik uchun eskrou ochadi, xaridorga uni qabul qilish va reyestrdan tashqari to‘lov yuborilganini belgilash imkonini beradi, so‘ng sotuvchi saqlovdagi mablag‘ni chiqaradi. Har bir yuborish `FeePaymentIntent` orqali vakolat hisobini to‘lovchi sifatida ko‘rsatadi.
 
 ```rust
 use eyre::{Result, ensure};
@@ -70,11 +70,11 @@ fn complete_marketplace_escrow(
 }
 ```
 
-Himoya hisobi katta kitob tomonidan boshqariladi. Oddiy aktivni o'tkazish belgisini berish aktsiyalarning hayot davri tashqarisida faol ehtiyotxonalarni tozalash imkonini bermaydi.
+Saqlov hisobini reyestr boshqaradi. Oddiy aktiv o‘tkazish tokenini berish faol saqlovdan eskrou hayotiy sikli tashqarisida mablag‘ yechish imkonini bermaydi.
 
-### 2. Python bilan umumiy qulfni oching va qisman chizing. {#_2-open-and-partially-draw-a-generic-lock-with-python}
+### 2. Python bilan umumiy qulfni ochish va qisman yechish {#_2-open-and-partially-draw-a-generic-lock-with-python}
 
-Bo'shatish organi imzolangan tug'ma hujjatni olib tashlashdan oldin so'raydi. To'g'ri `remaining_amount` o'tkazib yuborish optimizmli bir vaqtning o'zidalikni ta'minlaydi: qaramog'ini ikki marta debitatsiya qilishning o'rniga, eski parallel talab rad qilinadi.
+Chiqarish vakolati mablag‘ni yechishdan oldin imzolangan mahalliy yozuvni so‘raydi. Aynan shu `remaining_amount` ni uzatish optimistik parallel bajarishni ta’minlaydi: eskirgan parallel so‘rov saqlovdan ikki marta yechish o‘rniga rad etiladi.
 
 ```python
 import secrets
@@ -145,9 +145,9 @@ def open_and_draw_lock(
     return escrow_id, after
 ```
 
-Python SDK `expected_remaining_amount` qoldirilganda avtomatik ravishda so'rov berishi mumkin, ammo kuzatilgan qiymatni o'tkazib yuborish imzolangan iqtisodiy oldindan ko'rinadigan shartni ariza kodida ko'rish uchun imkon beradi.
+`expected_remaining_amount` berilmasa, Python SDK uni avtomatik so‘rashi mumkin; ammo kuzatilgan qiymatni uzatish imzolangan iqtisodiy shartni ilova kodida yaqqol ko‘rsatadi.
 
-Rust qulf oqimlari uchun joriy konstruktorlar, shuningdek, kuzatilgan miqdorni talab qiladi:
+Rust qulf oqimlarida ham joriy konstruktorlar kuzatilgan miqdorni talab qiladi:
 
 ```rust
 let before = opener.query_single(FindAssetEscrowById::new(lock_id))?;
@@ -167,13 +167,13 @@ opener.submit_blocking(
 )?;
 ```
 
-`DrawdownAssetLock::new` uchta qiymatni oladi; `CancelAssetLock::new` ikkitani oladi. kutilayotgan qolgan miqdorni chiqarib tashlash eski, xavfsiz bo'lmagan qo'ng'iroq shaklini tasvirlaydi.
+`DrawdownAssetLock::new` uchta qiymat, `CancelAssetLock::new` esa ikkita qiymat oladi. Kutilayotgan qoldiq miqdorini bermaslik eski va xavfsiz bo‘lmagan chaqiruv shaklini anglatadi.
 
-### 3. Kotodama depozit yuzasini JavaScript dan yig'ish. {#_3-compile-the-kotodama-escrow-surface-from-javascript}
+### 3. Kotodama eskrou sathini JavaScript orqali kompilyatsiya qilish {#_3-compile-the-kotodama-escrow-surface-from-javascript}
 
-JavaScript untyped nativ ko'rsatmalarni ixtiro qilish shart emas. Hozirgi kompilatorda katta qog'oz eshrovi o'rnatilgan Kotodama; ishga tushirish va qo'ng'iroqlar keyinchalik [Build va smart kontraktni ishga tushirish](./smart-contracts.md) .
+JavaScript turlanmagan mahalliy ko‘rsatmalarni o‘zi tuzishi shart emas. Joriy kompilyator reyestr eskrousining ichki funksiyalarini Kotodama’ga taqdim etadi; joylashtirish va chaqiruvlar esa [Aqlli shartnomani yaratish va joylashtirish](./smart-contracts.md) bo‘yicha bajariladi.
 
-Buni `native_escrow.ko` deb saqlang:
+Buni `native_escrow.ko` sifatida saqlang:
 
 ```kotodama
 seiyaku NativeEscrowAitai {
@@ -196,7 +196,7 @@ seiyaku NativeEscrowAitai {
 }
 ```
 
-Quyidagilarni `compile-native-escrow.mjs` sifatida saqlash va ushbu aniq manbani Node.js dan to'plash uchun ishlatish:
+Quyidagini `compile-native-escrow.mjs` nomi bilan saqlang va aynan shu manbani Node.js orqali kompilyatsiya qilish uchun ishlating:
 
 ```js
 import { readFile } from 'node:fs/promises'
@@ -216,7 +216,7 @@ console.log({
 })
 ```
 
-Uni dastlabki shartlarda tavsiflangan manbaga moslashtirilgan paket muhitidan ishga tushiring:
+Uni oldindan shartlarda ta’riflangan, manbadan qurilgan paket muhitida ishga tushiring:
 
 ```bash
 node ./compile-native-escrow.mjs
@@ -224,7 +224,7 @@ node ./compile-native-escrow.mjs
 
 ## Tekshirish {#verify}
 
-Bozor joyidagi depozit uchun `FindAssetEscrowById` va ikkala tomonning ham aktivlarini chiqarilgandan keyin so'rang. Hisobot `Released` bo'lishi kerak, qabul qiluvchi sotib oluvchining nomi ko'rsatiladi va qolmagani ko'rsatilmaydi. Yuqorida keltirilgan Python qulfining uchun qaytarib berilgan ID ni saqlang va imzolangan so'rovni takrorlang:
+Bozor eskrousi uchun chiqarishdan keyin `FindAssetEscrowById` va ikkala tomonning aktiv qoldiqlarini so‘rang. Yozuv `Released` bo‘lishi, qabul qilgan xaridorni ko‘rsatishi va saqlovda qoldiq yo‘qligini bildirishi kerak. Yuqoridagi Python qulfi uchun qaytarilgan identifikatorni saqlang va imzolangan so‘rovni takrorlang:
 
 ```python
 record = client.get_asset_escrow(
@@ -236,23 +236,23 @@ assert escrow_status(record) == "Locked"
 assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 ```
 
-Shuningdek, manzilning aktivlari saqlanishini so'rang va ular to'rt nafarga oshganligini tasdiqlang. Garov qaydnomasi va yo'nalish bo'yicha poststatsiz tranzaksiya tasdig'i to'liq tekshirilmagan.
+Manzildagi aktiv qoldig‘ini ham so‘rang va u to‘rt birlikka oshganini tasdiqlang. Eskrou yozuvi va manzilning amaldan keyingi holatisiz tranzaksiya kvitansiyasi to‘liq tekshiruv emas.
 
-## Muammolarni hal qilish {#troubleshooting}
+## Muammolarni bartaraf etish {#troubleshooting}
 
-- `Not permitted` ochilganda odatda bu organ tanlangan aktivni nazoratga olishi mumkin emasligini anglatadi. nizolarni hal etish uchun alohida global `CanResolveEscrowDispute` darvozasi mavjud.
-- `expected remaining amount` rad etish - bu optimist-tashkilot ziddiyati. Hisobotni qayta so'rang, boshqa to'lov/to'xtatish rejalashtirilganmi yoki yo'qligini hal qiling va faqat yangi holat qabul qilinishi mumkin bo'lganda yangi ko'rsatma imzolang.
-- Faqatgina konfiguratsiyalangan ruxsat berish hokimiyati ishonchli qulf chizishi mumkin. Yo'nalish faqat pulni olishi uchun uni ozod qilish mumkin emas.
-- Bozorda chiqarilish faqat qabul qilish va to'lovni jo'natish holatidan so'ng haqiqiy bo'ladi; bekor qilish avvalgi hayot davomiyligi holatlariga cheklanadi.
-- Vaqt o'tishi (expiry) sahifa hisobida vaqtni ishlatadi. `ExpireAssetLock` o'tishini tasdiqlovchi dalil sifatida mahalliy devor soati vaqtini ko'rsatmang.
-- To'lov bo'lmaganligi ushbu hayot davri bosqichini taqdim etgan tomonga tegishli. Jamg'arma sotib oluvchi, sotuvchi / ochuvchi va Taira da mustaqil ravishda ozod qilish vakolatlari.
+- Ochish paytidagi `Not permitted` odatda vakolat hisobi tanlangan aktivni saqlovga o‘tkaza olmasligini anglatadi. Nizoni hal qilish alohida global `CanResolveEscrowDispute` ruxsati bilan himoyalangan.
+- `expected remaining amount` rad etilishi optimistik parallel bajarish ziddiyatidir. Yozuvni qayta so‘rang, boshqa yechish yoki bekor qilish mo‘ljallanganligini aniqlang va yangi holat maqbul bo‘lsagina yangi ko‘rsatmani imzolang.
+- Ishonchli qulfdan faqat sozlangan chiqarish vakolati mablag‘ yecha oladi. Manzil mablag‘ni olishi uning qulfni chiqarishiga vakolat bermaydi.
+- Bozor eskrousidagi chiqarish faqat qabul qilish va to‘lov yuborilgan holatidan keyin yaroqli; bekor qilish oldingi hayotiy sikl holatlari bilan cheklanadi.
+- Muddat tugashi reyestrning ishonchli vaqtiga asoslanadi. Mahalliy tizim soatidagi taymautni `ExpireAssetLock` o‘tishining isboti deb qabul qilmang.
+- To‘lov xatosi o‘sha hayotiy sikl bosqichini yuborayotgan tomonga tegishli. Taira’da xaridor, sotuvchi/ochuvchi va chiqarish vakolatini alohida-alohida mablag‘ bilan ta’minlang.
 
-## Manba va u bilan bog'liq hujjatlar {#source-and-related-docs}
+## Manba va tegishli hujjatlar {#source-and-related-docs}
 
-- [Native escrow yo'l-yo'riq modeli ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/isi/escrow.rs) biriktirilgan commitda
-- [Native escrow integratsiyasi testlari ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/native_escrow.rs) to'xtatilgan majburiyatda
-- [Python garovga ega bo'lgan mijozlarning to'g'ri yo'l-yo'riqlari qo'yilgan majburiyatlarda](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama tug'ma depozit namunasini qo'lga kiritilgan majburiyatlarda](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/native_escrow.ko)
-- [Asosiy aktivlar garovi](/uz/blockchain/escrow.md)
-- [O'zgaruvchan aktivlar](./fungible-assets.md)
-- [Ruxsatlar va vazifalar ](./permissions-and-roles.md)
+- [Mahkamlangan commitdagi mahalliy eskrou ko‘rsatmalari modeli](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
+- [Mahkamlangan commitdagi mahalliy eskrou integratsiya sinovlari](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
+- [Mahkamlangan commitdagi Python eskrou mijoz usullari](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Mahkamlangan commitdagi Kotodama mahalliy eskrou namunasi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [Mahalliy aktiv eskrousi](/uz/blockchain/escrow.md)
+- [Almashtiriladigan aktivlar](./fungible-assets.md)
+- [Ruxsatlar va rollar](./permissions-and-roles.md)

@@ -8,13 +8,13 @@ translation_engine: nllb-200-ct2
 
 # Iroha 3 {#iroha-3}
 
-Iroha 3 - birinchi chiqarilgan Hyperledger Iroha platformasi. U o'z-o'zini uyushtirgan tarmoqlarni va bir deterministik kod bazasidan ko'p ma'lumotlar maydonida SORA Nexus ishga tushirish modelini qo'llab-quvvatlaydi.
+Iroha 3 - birinchi chiqarilgan Hyperledger Iroha platformasi. U o'z-o'zini uyushtirgan tarmoqlarni va bir deterministik kod bazasidan ko'p ma’lumotlar makonida SORA Nexus ishga tushirish modelini qo'llab-quvvatlaydi.
 
 Yuqori darajada Iroha 3 quyidagilarni birlashtiradi:
 
 - Deterministik ijro etish va saqlash
 - portativ aqlli shartnomalar uchun Iroha Virtual mashina (IVM)
-- Norito kanonik simlar formatida
+- Norito kanonik serializatsiya formati sifatida
 - Torii mijoz, operator va ilovalarga ko'ra APIs uchun
 - Sumeragi majburiy ma'lumotlarning mavjudligi va ishonchli etkazib berish bo'yicha kelishuv
 - Inson o'qishi mumkin bo'lgan alohida bog'langan aliaslar bilan domensiz kanonik hisobotlar
@@ -35,7 +35,7 @@ Ushbu saytda qayd etilgan SDK joriy kirish punktlari quyidagilardir:
 
 - [Rust](/uz/guide/tutorials/rust.md)
 - [Python](/uz/guide/tutorials/python.md)
-- [JavaScript /TypeScript ](/uz/guide/tutorials/javascript.md)
+- [JavaScript / TypeScript](/uz/guide/tutorials/javascript.md)
 - [Kotlin, Android va Java](/uz/guide/tutorials/kotlin-java.md)
 - [Swift va iOS](/uz/guide/tutorials/swift.md)
 

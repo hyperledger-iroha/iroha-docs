@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /reference/genesis.md
-translation_source_hash: 6710e76508e6a38a6b68d274247cc1383de2472e74f10be85000b30f74cb04a6
+translation_source_hash: ac6bad693ed382dede0818132b8649fe14726283508da897a32eea417e5bbb28
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -17,11 +17,11 @@ translation_engine: nllb-200-ct2
 Генезис манифесты билдәләй ала:
 
 - `chain` өсөн сылбыр идентификаторы
-- `executor` өсөн факультатив үтәүсе яңыртыу байткод юлы
+- `executor` өсөн факультатив үтәүсе яңыртыу байтек коды юлы
 - `ivm_dir` өсөн IVM китапханалары триггерҙар һәм яңыртыуҙар менән ҡулланыла
 - `consensus_mode` манифеста иғлан ителгән тәүге режим өсөн
 - `transactions` тәртиптәге параметрҙар яңыртыуҙары, инструкциялар, ҡуҙғатыуҙар һәм топология өсөн
-- `crypto` тәүге крипто фотоһүрәт өсөн
+- `crypto` тәүге crypto snapshot өсөн
 
 `transactions` эсендә топологияға индереүҙәр бер-береһенә тиң идентификаторҙар һәм PoPs менән бергә:
 
@@ -51,13 +51,13 @@ JSON-ны мөхәррирләгәндән һәм раҫлағандан һуң,
 
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
-  --private-key <PRIVATE_KEY> \
+  --private-key-file <MODE_0600_PRIVATE_KEY_FILE> \
   --out-file genesis.signed.nrt
 ```
 
-`kagami genesis sign` манифесттан генезис асыҡ асҡысын уҡый һәм ебәрелгән шәхси асҡысты, орлоҡто һәм алгоритмды ҡулланып ҡуйылтылырға мөмкин булған ҡул ҡуйылған блок сығара.
+`kagami genesis sign` манифесттан генезис асыҡ асҡысын уҡый һәм ҡулланыу мөмкин булған ҡул ҡуйылған блокты булдырыу өсөн хужаһы ҡараған, бер сылтамалы даими файлдың шәхси асҡысын ҡуллана. Файлда бер каноник шәхси асҡыслы мультихаш булырға тейеш, уның артынан яңы линия килә; Kagami символик бәйләнештәрҙе һәм `0600` булмаған режимдарҙы кире ҡаға. Сей шәхси асҡыстар команда юлында ҡабул ителмәй. Һөҙөмтәлә алынған файлға пирҙар үҙ конфигурацияларынан һылтанырға тейеш.
 
-## `irohad` конфигурацияһы {#configure-irohad}
+## `iroha3d` конфигурацияһы {#configure-iroha3d}
 
 Демонды ҡул ҡуйылған генез блогына йүнәлтегеҙ:
 
@@ -75,4 +75,4 @@ public_key = "<PUBLIC_KEY>"
 - `kagami localnet`
 - `cargo xtask kagami-profiles`
 
-Генераторҙы ғәмәлгә ашырыу һәм команда мәғлүмәттәре өсөн [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_kagami/README.md) ҡарағыҙ.
+Генераторҙы ғәмәлгә ашырыу һәм команда мәғлүмәттәре өсөн [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md) ҡарағыҙ.

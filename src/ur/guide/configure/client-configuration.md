@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /guide/configure/client-configuration.md
-translation_source_hash: 0d897a79e6118de2e7e88a45f1daf1444b515fd35e7b2562f7c1cc18ed0a83b4
+translation_source_hash: 6da8a0abddc9723b16477a935a3953ebd497300f02eadd635e4e38027a11d095
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -35,7 +35,7 @@ private_key = "802620..."
 - `[account].domain` کو CLI شارٹ کٹس اور ایڈریس سلیکٹر کوڈنگ کے ذریعہ استعمال کیا جاتا ہے۔ کینونیکل `AccountId` خود ڈومین لیس ہے۔
 - `[account].public_key` اور `[account].private_key` ٹرانزیکشنز پر دستخط کریں۔
 
-اکاؤنٹ پہلے ہی آن لائن ہونا ضروری ہے۔ ڈیفالٹ لوکل نیٹ ورک کے ل this یہ بنڈل جینس مینفیس کی طرف سے سنبھالا جاتا ہے۔
+اکاؤنٹ پہلے ہی on-chain موجود ہونا چاہیے۔ ڈیفالٹ مقامی نیٹ ورک میں bundled genesis manifest یہ کام کرتا ہے۔
 
 ::: info کیس کی حساسیت
 
@@ -45,7 +45,7 @@ Iroha نام کینونیکل تجزیہ کے بعد کیس حساس ہیں۔ م
 
 ## بنیادی تصدیق {#basic-authentication}
 
-اختیاری `[basic_auth]` سیکشن کلائنٹ کی درخواستوں میں ایک HTTP `Authorization` ہیڈر شامل کرتا ہے۔ Iroha ہم مرتبہ ان اسناد کو براہ راست تشریح نہیں کرتے ہیں۔ جب Torii Nginx جیسے ریورس پراکسی کے پیچھے ہوتا ہے تو ان کا استعمال کریں۔
+اختیاری `[basic_auth]` سیکشن کلائنٹ کی درخواستوں میں ایک HTTP `Authorization` ہیڈر شامل کرتا ہے۔ Iroha نیٹ ورک نوڈ ان اسناد کو براہ راست تشریح نہیں کرتے ہیں۔ جب Torii Nginx جیسے ریورس پراکسی کے پیچھے ہوتا ہے تو ان کا استعمال کریں۔
 
 ```toml
 [basic_auth]
@@ -84,7 +84,7 @@ queue_root = "./queue"
 disposable مقامی نیٹ ورکس کے لئے، Kagami ترجیح دیتے ہیں کیونکہ یہ میچنگ Iroha 3 configs لکھتا ہے، ابتداء، اسکرپٹس، اور ایک README:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 CLI کے ساتھ پیدا ہونے والی `./localnet/client.toml` کا استعمال کریں:

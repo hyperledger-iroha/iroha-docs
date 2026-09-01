@@ -1,73 +1,80 @@
 ---
 translation_locale: am
 translation_source: /reference/binaries.md
-translation_source_hash: fd9cefe7c0f5ee2f273a06b453d11d0e9bb896a35f872297276f5e052912a035
+translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# ከ Iroha ባነሪዎች ጋር መሥራት {#working-with-iroha-binaries}
+# ከ Iroha ሁለትዮሽ ጋር በመስራት ላይ {#working-with-iroha-binaries}
 
-የ Iroha 3 ኦፕሬተር የስራ ፍሰት በሦስት ዋና ባናሪዎች ዙሪያ ይሽከረከራል።
+የ Iroha 3 ኦፕሬተር የስራ ፍሰት በአራት ዋና ዋና ሁለትዮሽ ዙሪያ ያጠነጠነ ነው -
 
-- [`irohad`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/irohad) የእኩዮችን ዳይሞን ለማስኬድ
-- [ለ CLI እና ለኦፕሬተር ትዕዛዞች `iroha`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_cli)
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/main/crates/iroha_kagami) ለቁልፎች ፣ ለጀኔዝስ ፣ ለአካባቢያዊ አውታረ መረቦች እና ለመገለጫዎች
+- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) የአውታረ መረብ አቻ ዴሞንን ለማስኬድ
+- `iroha3d_taira` ለነጠላ ፕሮቶኮል-ስታንዳርድ Taira አረጋጋጭ አስጀማሪ
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli) ለ CLI እና የኦፕሬተር ትዕዛዞች
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) ለቁልፎች፣ Blockchain Genesis፣ Localnets እና መገለጫዎች
 
-## ምንጭን በመመርኮዝ መገንባት {#build-from-source}
+## ከምንጩ ይገንቡ {#build-from-source}
 
-ከስራ ቦታው ስርጭት:
+ከላይ ካለው የስራ ቦታ ሥር -
 
 ```bash
-cargo build --release -p irohad -p iroha_cli -p iroha_kagami
+cargo build --release \
+  -p irohad --bin iroha3d --bin iroha3d_taira \
+  -p iroha_cli --bin iroha \
+  -p iroha_kagami --bin kagami
 ```
 
-ከዚያ በኋላ የተለቀቁ ባናሪዎች በ `target/release/` ይገኛሉ ።
+የመልቀቂያ ሁለትዮሽ በ `target/release/` ውስጥ ይገኛሉ።
 
-የመቆጣጠሪያውን ወለል ለመመርመር:
+የትእዛዝ ወለልን ለመመርመር -
 
 ```bash
-./target/release/irohad --help
+./target/release/iroha3d --help
+./target/release/iroha3d_taira --help
 ./target/release/iroha --help
 ./target/release/kagami --help
 ```
 
-## በቀጥታ ከመደብር ይሂዱ {#run-directly-from-the-repository}
+## በቀጥታ ከማከማቻው ያሂዱ {#run-directly-from-the-repository}
 
-ምንም ነገር በዓለም አቀፍ ደረጃ መጫን የማይፈልጉ ከሆነ `cargo run` ን ይጠቀሙ:
+በአለምአቀፍ ደረጃ ምንም ነገር መጫን ካልፈለጉ `cargo run` ይጠቀሙ -
 
 ```bash
-cargo run --bin irohad -- --help
+cargo run -p irohad --bin iroha3d -- --help
+cargo run -p irohad --bin iroha3d_taira -- --help
 cargo run --bin iroha -- --help
 cargo run --bin kagami -- --help
 ```
 
 ## Docker ምስል {#docker-image}
 
-የስራ ቦታ አጠቃቀሞች `kagami localnet` እና `kagami docker` ለማመንጨት Docker Compose ከተረጋገጠው ኮድ ጋር የሚዛመዱ ፋይሎች። `hyperledger/iroha:dev` ምስሉ ከእነዚያ የተፈጠሩ ፋይሎች ጋር ጥቅም ላይ ሊውል ይችላል።
+የላይኛው ተፋሰስ የስራ ቦታ `kagami localnet` እና `kagami docker` ከተፈተሸው ኮድ ጋር የሚዛመዱ Docker Compose ፋይሎችን ለማመንጨት ይጠቀማል። የ `hyperledger/iroha:dev` ምስል ከእነዚያ የመነጩ ፋይሎች ጋር መጠቀም ይቻላል።
 
-CLI በአንድ መያዣ ውስጥ ይጫኑ:
+CLI ን በእቃ መያዥያ ውስጥ ያሂዱ -
 
 ```bash
 docker run -t hyperledger/iroha:dev iroha --help
 ```
 
-Kagami በአንድ መያዣ ውስጥ ይሂዱ:
+በ መያዣ ውስጥ Kagami ያሂዱ -
 
 ```bash
 docker run -t hyperledger/iroha:dev kagami --help
 ```
 
-ለባልደረባ ጅምር, አንድ አካባቢያዊኔት ማመንጨት እና በመጀመሪያ ፋይል ያጠናቅቁ:
+ለአውታረ መረብ አቻ ጅምር መጀመሪያ localnet ይፍጠሩ እና ፋይል ያዘጋጁ -
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
-## የትኛውን ባናሪ መጠቀም አለብኝ? {#which-binary-should-i-use}
+## የትኛውን ሁለትዮሽ መጠቀም አለብኝ? {#which-binary-should-i-use}
 
-- የእኩዮቻችሁን ሥራ ሲጀምሩ ወይም ሲያከናውኑ `irohad` ይጠቀሙ።
-- መለያውን ለመጠየቅ፣ ግብይቶችን ለማቅረብ ወይም የኦፕሬተሩ መጨረሻ ነጥቦችን ለመፈተሽ በሚፈልጉበት ጊዜ `iroha` ይጠቀሙ።
-- ቁልፎችን፣ የጄኔሲስ መገለጫዎችን፣ የመገለጫ ጥቅሎችን ወይም አካባቢያዊ ኔት ንብረቶችን በሚፈልጉበት ጊዜ `kagami` ይጠቀሙ።
+- ከህዝብ Taira አረጋጋጭ ልቀት ውጭ የአውታረ መረብ እኩዮችን ሲጀምሩ ወይም ሲሰሩ `iroha3d` ይጠቀሙ።
+- `iroha3d_taira --sora`ን ለአንድ ፕሮቶኮል-ስታንዳርድ Taira አረጋጋጭ ማሰማራት ብቻ ይጠቀሙ። የ Taira ሰንሰለት፣ ማከማቻ እና የአሂድ ጊዜ ፈራሚ መገለጫን ያስፈጽማል።
+- የብሎክቼይን መዝገብን መጠየቅ፣ ግብይቶችን ማስገባት ወይም ኦፕሬተርን API የመጨረሻ ነጥቦችን መመርመር ሲፈልጉ `iroha` ይጠቀሙ።
+- ቁልፎች፣ የጀነሲስ ማኒፌስቶች፣ የመገለጫ ጥቅሎች ወይም የ localnet ንብረቶች ሲያስፈልጉ `kagami`ን ይጠቀሙ።

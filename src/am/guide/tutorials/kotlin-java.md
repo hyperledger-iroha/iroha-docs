@@ -1,31 +1,31 @@
 ---
 translation_locale: am
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 91dfd38597028531ec579eeb97dcd5acbfcdf6d27ba51991ca96a2d40077aaef
+translation_source_hash: f2411fec1cc35b1bf7795a7ab5a0eb7a8eb6b60b4799ebf3db47208b902f87e6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Kotlin ፣ Android እና ጃቫ {#kotlin-android-and-java}
+# Kotlin፣ Android እና ጃቫ {#kotlin-android-and-java}
 
-Kotlin SDK ለ JVM እና Android መተግበሪያዎች ነባሪ የደንበኛ ክምችት ነው ። በ Iroha መዝገብ ውስጥ ከ `kotlin/` በታች የሚኖር ሲሆን በመድረክ የተከፋፈለ ስለሆነ ተንቀሳቃሽ ኮድ የ Android ጥገኛነት አያገኝም።
+የ Kotlin SDK ለ JVM እና Android መተግበሪያዎች ነባሪ የደንበኛ ቁልል ነው። በ`kotlin/` በ Iroha ማከማቻ ውስጥ ይኖራል እና ተንቀሳቃሽ ኮድ Android ጥገኞችን እንዳያገኝ በመድረክ የተከፈለ ነው።
 
 ## ሞጁሎች {#modules}
 
-|አርቲፊኬት |አይነት |አጠቃቀም|
+|አርቲፊኬሽን|ዓይነት|ጥቅም|
 | --- | --- | --- |
-|`org.hyperledger.iroha.sdk:core-jvm` |JAR |ንጹህ Kotlin/JVM Norito፣ የውሂብ ሞዴል፣ ምስጠራ፣ ግብይት፣ Torii፣ እና ፕሮቶኮል ኮድ |
-|`org.hyperledger.iroha.sdk:client-android` |AAR |Android የቁልፍ ማከማቻ ፣ የመሣሪያ ቴሌሜትሪ እና JNI የተደገፉ የደንበኛ ውህደቶች |
-|`org.hyperledger.iroha.sdk:offline-wallet-android` |AAR |Android በ `client-android` ላይ የተገነባው ከመስመር ውጭ የኪስ ቦርሳ መጓጓዣ እና ውህደት |
+|`org.hyperledger.iroha.sdk:core-jvm`|JAR|ንፁህ Kotlin/JVM Norito፣ የውሂብ ሞዴል፣ crypto፣ ግብይት፣ Torii እና የፕሮቶኮል ኮድ|
+|`org.hyperledger.iroha.sdk:client-android`|AAR|Android የቁልፍ ማከማቻ፣ የመሣሪያ ቴሌሜትሪ እና JNI የሚደገፉ የደንበኛ ውህደቶች|
+|`org.hyperledger.iroha.sdk:offline-wallet-android`|AAR|Android ከመስመር ውጭ የኪስ ቦርሳ መጓጓዣዎች እና ውህደት በ `client-android` ላይ የተገነባ|
 
-እቃዎቹ ገና በማቨን ሴንትራል አልተለጠፉም ። ከታሸገ Iroha ምንጭ ማሻሻያ አካባቢያዊ በሆነ መንገድ ይገንቡ እና ያትሟቸው:
+አርቲፋክቶቹ ገና ወደ Maven Central አልታተሙም። ከተሰካው Iroha ምንጭ ክለሳ በአገር ውስጥ ይገንቡ እና ያትሙ -
 
 ```bash
 cd kotlin
 ./gradlew publishToMavenLocal
 ```
 
-ከዚያም ማመልከቻዎ የሚፈልገውን መሣሪያ ብቻ ይምረጡ:
+ከዚያ መተግበሪያዎ የሚፈልገውን አርቲፋክት ብቻ ይምረጡ -
 
 ```kotlin
 repositories {
@@ -41,40 +41,40 @@ dependencies {
 }
 ```
 
-`core-jvm` ምንም የ Android ጥገኛነት የለውም. Android ደንበኛ እና ቁልፍ ማከማቻ ኮድ በ `client-android` ውስጥ ይያዙ, እና ለ Android ብቻ ከመስመር ውጭ ቦርሳ እና ለ JNI ዥረቶች `offline-wallet-android` ይጠቀሙ.
+`core-jvm` ምንም Android ጥገኞች አልያዘም። የ Android ደንበኛ እና የቁልፍ ማከማቻ ኮድ በ`client-android` ውስጥ ያስቀምጡ እና `offline-wallet-android`ን ለ Android ብቻ ከመስመር ውጭ የኪስ ቦርሳ እና JNI ፍሰቶች ይጠቀሙ።
 
-## Kotlin እና የጃቫ ተኳሃኝነት {#kotlin-and-java-compatibility}
+## Kotlin እና የጃቫ ተኳኋኝነት {#kotlin-and-java-compatibility}
 
-ህዝቡ API ነው Kotlin-በመጀመሪያ እና የጃቫ interop ያቀርባል JVM ተመጣጣኝ ለውጦች የሚመለከቱት በተዛማጅ `java/` አዲሱ Android ውህደቶች በ Kotlin ከላይ ያሉት ቅርሶች።
+ህዝቡ API Kotlin-መጀመሪያ ነው እና JVM ደንበኞችን የሚጠይቁበት የጃቫ መስተጋብር ያቀርባል። ተመጣጣኝ ለውጦች በተዛማጅ `java/` አተገባበር ውስጥ ይንጸባረቃሉ። አዲስ Android ውህደቶች ከላይ ባሉት Kotlin አርቲፋክቶች መጀመር አለባቸው።
 
-ሁሉም Kotlin ሞጁሎች ማስከበር JDK 8 API በኮምፒዩተር ጊዜ ከ `-Xjdk-release=8`, ምንም እንኳን የግንባታ መሳሪያ ሰንሰለት ራሱ የሚጠቀም ቢሆንም JDK 21. አይጠቀሙ JDK 9+ APIs ውስጥ SDK ኮድ.
+ሁሉም የ Kotlin ሞጁሎች JDK 8 API ተኳሃኝነትን ከ `-Xjdk-release=8` ጋር በማጠናቀር ጊዜ ያስፈጽማሉ፣ ምንም እንኳን የግንባታ መሳሪያው ራሱ JDK 21 ቢጠቀምም። በ SDK ኮድ ውስጥ JDK 9+ APIs አይጠቀሙ።
 
-## መገንባትና መሞከር {#build-and-test}
+## ይገንቡ እና ይፈትሹ {#build-and-test}
 
-ተንቀሳቃሽ JVM ሙከራዎችን ያካሂዱ:
+ተንቀሳቃሽ የ JVM ሙከራዎችን ያሂዱ
 
 ```bash
 cd kotlin
 ./gradlew :core-jvm:test --console=plain
 ```
 
-የ Android ዕቃዎች መገንባት
+የ Android አርቲፋክቶችን ይገንቡ -
 
 ```bash
 ./gradlew :client-android:assembleRelease \
   :offline-wallet-android:assembleRelease --quiet
 ```
 
-## ወቅታዊ ሽፋን {#current-coverage}
+## የአሁኑ ሽፋን {#current-coverage}
 
-Kotlin SDK የሚከተሉትን ያካትታል:
+Kotlin SDK የሚከተሉትን ያጠቃልላል
 
 - Norito ኢንኮዲንግ እና ዲኮዲንግ
-- የካኖኒክ ሂሳብ እና የንብረቶች አድራሻ አያያዝ
-- የግብይት ግንባታ, ፊርማ እና ከመስመር ውጪ ያሉ ፖስታዎች
+- ነጠላ ፕሮቶኮል-መደበኛ መለያ እና የንብረት አድራሻ አያያዝ
+- የግብይት ግንባታ፣ መፈረም እና ከመስመር ውጭ የውሂብ መያዣዎች
 - Torii HTTP፣ WebSocket እና SSE ደንበኞች
-- ባለብዙ ፊርማ ፣ የደንበኝነት ምዝገባ፣ SoraFS ፣ Nexus እና Connect ሞዴሎች
-- Android የቁልፍ ማከማቻ እና የመሣሪያ ቴሌሜትሪ ውህዶች
-- Android ከመስመር ውጭ QR ፣ በአቅራቢያ እና NFC መጓጓዣ
+- ባለብዙ ፊርማ፣ የደንበኝነት ምዝገባ፣ SoraFS፣ Nexus እና ሞዴሎችን ያገናኙ
+- Android የቁልፍ መደብር እና የመሣሪያ ቴሌሜትሪ ውህደቶች
+- Android ከመስመር ውጭ QR፣ በአቅራቢያ እና NFC ማጓጓዣዎች
 
-ለሞጁል-ተኮር APIs እና ትክክለኛ የግንባታ ትዕዛዞች በ [Kotlin SDK README ](https://github.com/hyperledger-iroha/iroha/blob/main/kotlin/README.md) ውስጥ ይመልከቱ።
+ለሞጁል-ተኮር APIs እና ትክክለኛ የግንባታ ትዕዛዞችን [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md) ይመልከቱ።

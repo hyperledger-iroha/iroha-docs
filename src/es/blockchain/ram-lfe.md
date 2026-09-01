@@ -1,130 +1,130 @@
 ---
 translation_locale: es
 translation_source: /blockchain/ram-lfe.md
-translation_source_hash: 69c4dc0e01539f3ab1ffffaf9aee4859a7cdd507c42f78e6f10237678ac0b43f
+translation_source_hash: 66436bfdcdfea9bcd52834436dc8b6abe9812549583e6bfca06cbe73d5f75d35
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # RAM-LFE {#ram-lfe}
 
-RAM-LFE La evaluación de la función lacónica de la máquina de acceso aleatorio. Iroha, Es la capa genérica de función oculta para programas cuya política pública está en cadena pero cuya lógica evaluadora, secreto, No se debe escribir a los estados del mundo, es utilizado por SORA Nexus flujos de identificadores, como la búsqueda por teléfono privado o correo electrónico, y también pueden ser expuestos como un genérico Torii auxiliar de ejecución del programa cuando un perfil de nodo habilita las rutas orientadas a la aplicación.
+RAM-LFE significa Evaluación de Funciones Lacónicas de Máquina de Acceso Aleatorio. En Iroha, es la capa genérica de funciones ocultas para programas cuya política pública está en la cadena, pero cuya lógica de evaluador, secreta, o entrada en bruto no debe escribirse en el estado mundial. Se utiliza en los flujos de identificador SORA Nexus, como la búsqueda de teléfono o correo electrónico privado, y también puede exponerse como un ayudante genérico de ejecución de programas Torii cuando un perfil de nodo habilita las rutas orientadas a la aplicación.
 
-La cadena almacena los metadatos de compromiso de la política y verificación de recibos. Un resolver o Torii runtime evalúa el programa oculto, devuelve solo la salida permitida y adjunta un recibo que los clientes, herramientas de soporte o instrucciones del libro mayor pueden verificar con respecto a la política registrada.
+La cadena almacena el compromiso de la política y los metadatos de verificación del registro de resultados del protocolo. Un resolutor o Torii tiempo de ejecución de software evalúa el programa oculto, solo devuelve la salida permitida y adjunta un registro de resultado del protocolo que los clientes, las herramientas de soporte o las instrucciones del libro mayor de la blockchain pueden verificar contra la política registrada.
 
-## Nombramiento {#naming}
+## Nombrando {#naming}
 
-La división de nombres es importante:
+La división de nombres importa:
 
-|Término |El significado .|
+|Término|Significado|
 | --- | --- |
-|`ram_lfe` |La abstracción externa de las funciones ocultas: políticas del programa, compromisos, recibos de ejecución y modo de verificación de recibo. |
-|`BFV` |El esquema de cifrado homórfico Brakerski/Fan-Vercauteren utilizado por los retrocesos de entrada encriptada RAM-LFE. |
-|`ram_fhe_profile` |Metadatos específicos de BFV para la máquina de ejecución codificada programada. No es un segundo nombre de RAM-LFE. |
+| `ram_lfe` |La abstracción de función oculta externa: políticas del programa, compromisos, registros de resultados del protocolo de ejecución y modo de verificación de registros de resultados del protocolo.|
+| `BFV` |El esquema de cifrado homomórfico Brakerski/Fan-Vercauteren utilizado por los backends de entrada cifrada RAM-LFE.|
+| `ram_fhe_profile` |Metadatos específicos de BFV para la máquina de ejecución encriptada programada. No es un segundo nombre para RAM-LFE.|
 
-En el modelo de datos, `RamLfeProgramPolicy` y `RamLfeExecutionReceipt` son los tipos RAM-LFE. Los parámetros BFV, envelopes de texto cifrado y el perfil oculto del programa RAM-FHE pertenecen al backend de ejecución cifrada utilizado por una política.
+En el modelo de datos, `RamLfeProgramPolicy` y `RamLfeExecutionReceipt` son tipos RAM-LFE. Los parámetros BFV, los contenedores de datos cifrados y el perfil de programa RAM-FHE oculto pertenecen al backend de ejecución cifrada utilizado por una política.
 
-## Lo que registra {#what-it-records}
+## Lo que graba {#what-it-records}
 
-Una política del programa RAM-LFE está registrada en todo el mundo por `program_id`.
+Una política del programa RAM-LFE está registrada a nivel mundial por `program_id`. La política contiene:
 
-- la cuenta del propietario que puede activar, desactivar o cambiar de otra manera la política.
+- la cuenta del propietario que puede activar, desactivar o de otro modo modificar la política
 - el backend anunciado a los clientes
-- el modo de verificación del recibo, `signed` o `proof`.
+- el modo de verificación del registro de resultados del protocolo, ya sea `signed` o `proof`
 - un compromiso con los metadatos del programa oculto y el secreto del evaluador
-- la clave pública del resolver para los recibos firmados
-- Metadatos públicos encriptados de entrada opcionales, como los parámetros BFV y `ram_fhe_profile`
-- una bandera `active` que controle si la póliza puede emitir nuevos recibos;
+- la clave pública del resolvedor para los registros de resultados de protocolo firmados
+- metadatos opcionales de entrada cifrada pública, como parámetros BFV y `ram_fhe_profile`
+- una bandera `active` que controla si la política puede emitir nuevos registros de resultados del protocolo
 
-El secreto oculto, el valor del identificador de texto en blanco y el cuerpo del programa oculto no se almacenan en estado mundial. Los clientes deben tratar los compromisos, hashes opacos, hashes de recibo, textos cifrados y digestos de programas como valores de protocolo opacos.
+El secreto oculto, el identificador en texto plano y el cuerpo oculto del programa no se almacenan en el estado mundial. Los clientes deben tratar los compromisos, los hashes opacos, los hashes de recibos, los textos cifrados y los resúmenes del programa como valores opacos del protocolo.
 
-## Los retrospectivos {#backends}
+## Backends {#backends}
 
-El soporte actual de RAM-LFE se centra en tres identificadores backend:
+El soporte actual RAM-LFE se centra en tres identificadores de backend:
 
-|El retroceso .|Usar |
+|Backend|Usar|
 | --- | --- |
-|`hkdf-sha3-512-prf-v1` |Evaluación vinculada al compromiso PRF. |
-|`bfv-affine-sha3-256-v1` |BFV respaldado por la evaluación de afines secretos sobre las ranuras de identificadores cifradas. |
-|`bfv-programmed-sha3-256-v1` |BFV respaldado ejecución programada a través de registros cifrados y vías de memoria.|
+| `hkdf-sha3-512-prf-v1` |Evaluación vinculada al compromiso PRF.|
+| `bfv-affine-sha3-256-v1` |BFV-respaldada evaluación afín secreta sobre espacios de identificadores cifrados.|
+| `bfv-programmed-sha3-256-v1` |BFV-respaldo de ejecución programada sobre registros encriptados y carriles de ejecución de memoria.|
 
-Para las políticas de identificadores, el backend programado BFV es el camino moderno importante. Permite a las billeteras cifrar entradas normalizadas localmente, permite al resolver evaluar sin ver un identificador público en la transacción, y devuelve un recibo que une el hash de salida a la política del programa registrado.
+Para las políticas de identificador, el backend programado BFV es el camino moderno importante. Permite que las billeteras cifren la entrada normalizada localmente, permite que el resolvedor evalúe sin ver un identificador público en la transacción, y devuelve un registro de resultado del protocolo que vincula el hash criptográfico de salida con la política del programa registrado.
 
-## Las matemáticas {#math}
+## Matemáticas {#math}
 
-Esta sección describe el álgebra de nivel de implementación utilizada por el código actual RAM-LFE. No es una prueba de seguridad; es la transcripción determinista y el modelo de evaluación encriptada que las políticas, recibos y clientes deben acordar.
+Esta sección describe el álgebra a nivel de implementación utilizada por el código actual RAM-LFE. No es una prueba de seguridad; es la transcripción determinista y el modelo de evaluación cifrada con los que las políticas, los registros de resultados del protocolo y los clientes deben estar de acuerdo.
 
 ### Notación {#notation}
 
-Deje que:
+Sea:
 
-- \(H(m)\) ser Iroha `Hash::new(m)`: Blake2b-32 sobre `m`, con el bit menos significativo del byte final obligado a `1`.
-- \(N(x)\) debe ser la codificación canónica Norito de `x`.
-- \(a \parallel b\) significa concatenación de cadenas en byte.
-- \(\operatorname{le64}(i)\) sea la codificación de 8 bytes de un número entero sin firmar.
-- \(s\) ser el resolver secreto que se mantiene fuera del estado mundial.
+- \(H(m)\) ser Iroha `Hash::new(m)`: Blake2b-32 sobre `m`, con el bit menos significativo del byte final forzado a `1`.
+- \(N(x)\) sea la codificación canónica Norito de `x`.
+- \(a \parallel b\) significa concatenación de cadenas de bytes.
+- \(\operatorname{le64}(i)\) sea la codificación en little-endian de 8 bytes de un número entero sin signo.
+- \(s\) sea el secreto del resolutor guardado fuera del estado mundial.
 - \(P\) ser parámetros de política pública.
-- \(A\) se solicitarán los datos asociados.
-- \(x\) pueden ser bytes de entrada normalizados o un envase de entrada cifrado codificado con Norito, según el backend.
+- \(A\) solicitar datos asociados.
+- \(x\) puede ser bytes de entrada normalizados o un contenedor de datos de entrada cifrada codificado en Norito, dependiendo del backend.
 
-RAM-LFE utiliza hashes separados por dominio. Las fórmulas a continuación nombran los dominios por propósito; sus cadenas de byte actuales son:
+RAM-LFE utiliza hashes criptográficos separados por dominio. Las fórmulas a continuación nombran los dominios según su propósito; sus cadenas de bytes actuales son:
 
-|Símbolo .|La cadena de dominio |
+|Símbolo| Cadena de dominio |
 | --- | --- |
-|\(D_{\mathrm{policy}}\) |`iroha.ram_lfe.policy.hkdf_sha3_512_prf.v1` |
-|\(D_{\mathrm{secret}}\) |`iroha.ram_lfe.policy_secret.hkdf_sha3_512_prf.v1` |
-|\(D_{\mathrm{salt}}\) |`iroha.ram_lfe.hkdf_salt.hkdf_sha3_512_prf.v1` |
-|\(D_{\mathrm{hkdf\_opaque}}\) |`iroha.ram_lfe.opaque_info.hkdf_sha3_512_prf.v1` |
-|\(D_{\mathrm{hkdf\_receipt}}\) |`iroha.ram_lfe.receipt_info.hkdf_sha3_512_prf.v1` |
-|\(D_{\mathrm{opaque}}\) |`iroha.ram_lfe.opaque_hash.hkdf_sha3_512_prf.v1` |
-|\(D_{\mathrm{receipt}}\) |`iroha.ram_lfe.receipt_hash.hkdf_sha3_512_prf.v1` |
-|\(D_{\mathrm{affine\_circuit}}\) |`iroha.ram_lfe.bfv_affine.circuit.v1` |
-|\(D_{\mathrm{affine\_opaque}}\) |`iroha.ram_lfe.bfv_affine.opaque_hash.v1` |
-|\(D_{\mathrm{affine\_receipt}}\) |`iroha.ram_lfe.bfv_affine.receipt_hash.v1` |
-|\(D_{\mathrm{program\_memory}}\) |`iroha.ram_lfe.bfv_program.memory.v1` |
-|\(D_{\mathrm{program\_opaque}}\) |`iroha.ram_lfe.bfv_program.opaque_hash.v1` |
-|\(D_{\mathrm{program\_receipt}}\) |`iroha.ram_lfe.bfv_program.receipt_hash.v1` |
-|\(D_{\mathrm{program\_digest}}\) |`iroha.ram_lfe.bfv_program.digest.v1` |
-|\(D_{\mathrm{output}}\) |`iroha.ram_lfe.output_hash.v1` |
-|\(D_{\mathrm{id\_opaque}}\) |`iroha.ram_lfe.identifier.opaque_hash.v1` |
-|\(D_{\mathrm{id\_receipt}}\) |`iroha.ram_lfe.identifier.receipt_hash.v1` |
-|\(D_{\mathrm{bfv\_keygen}}\) |`iroha.crypto.fhe.bfv.keygen.v1` |
-|\(D_{\mathrm{bfv\_encrypt}}\) |`iroha.crypto.fhe.bfv.encrypt.v1` |
-|\(D_{\mathrm{id\_keygen}}\) |`iroha.crypto.fhe.bfv.identifier.keygen.v1` |
-|\(D_{\mathrm{id\_slot}}\) |`iroha.crypto.fhe.bfv.identifier.slot.v1` |
+| \(D_{\mathrm{policy}}\) | `iroha.ram_lfe.policy.hkdf_sha3_512_prf.v1` |
+| \(D_{\mathrm{secret}}\) | `iroha.ram_lfe.policy_secret.hkdf_sha3_512_prf.v1` |
+| \(D_{\mathrm{salt}}\) | `iroha.ram_lfe.hkdf_salt.hkdf_sha3_512_prf.v1` |
+| \(D_{\mathrm{hkdf\_opaque}}\) | `iroha.ram_lfe.opaque_info.hkdf_sha3_512_prf.v1` |
+| \(D_{\mathrm{hkdf\_receipt}}\) | `iroha.ram_lfe.receipt_info.hkdf_sha3_512_prf.v1` |
+| \(D_{\mathrm{opaque}}\) | `iroha.ram_lfe.opaque_hash.hkdf_sha3_512_prf.v1` |
+| \(D_{\mathrm{receipt}}\) | `iroha.ram_lfe.receipt_hash.hkdf_sha3_512_prf.v1` |
+| \(D_{\mathrm{affine\_circuit}}\) | `iroha.ram_lfe.bfv_affine.circuit.v1` |
+| \(D_{\mathrm{affine\_opaque}}\) | `iroha.ram_lfe.bfv_affine.opaque_hash.v1` |
+| \(D_{\mathrm{affine\_receipt}}\) | `iroha.ram_lfe.bfv_affine.receipt_hash.v1` |
+| \(D_{\mathrm{program\_memory}}\) | `iroha.ram_lfe.bfv_program.memory.v1` |
+| \(D_{\mathrm{program\_opaque}}\) | `iroha.ram_lfe.bfv_program.opaque_hash.v1` |
+| \(D_{\mathrm{program\_receipt}}\) | `iroha.ram_lfe.bfv_program.receipt_hash.v1` |
+| \(D_{\mathrm{program\_digest}}\) | `iroha.ram_lfe.bfv_program.digest.v1` |
+| \(D_{\mathrm{output}}\) | `iroha.ram_lfe.output_hash.v1` |
+| \(D_{\mathrm{id\_opaque}}\) | `iroha.ram_lfe.identifier.opaque_hash.v1` |
+| \(D_{\mathrm{id\_receipt}}\) | `iroha.ram_lfe.identifier.receipt_hash.v1` |
+| \(D_{\mathrm{bfv\_keygen}}\) | `iroha.crypto.fhe.bfv.keygen.v1` |
+| \(D_{\mathrm{bfv\_encrypt}}\) | `iroha.crypto.fhe.bfv.encrypt.v1` |
+| \(D_{\mathrm{id\_keygen}}\) | `iroha.crypto.fhe.bfv.identifier.keygen.v1` |
+| \(D_{\mathrm{id\_slot}}\) | `iroha.crypto.fhe.bfv.identifier.slot.v1` |
 
-### Compromiso político {#policy-commitment}
+### Compromiso de la política {#policy-commitment}
 
-Un compromiso político une los parámetros públicos y resolver secreto oculto a un backend. primero, el secreto se compromete por separado:
+Un compromiso de política vincula los parámetros públicos y el secreto del resolver oculto a un backend. Primero, el secreto se compromete por separado:
 
 $$
 C_s = H(D_{\mathrm{secret}} \parallel s)
 $$
 
-Luego se codifica la transcripción completa de las políticas:
+Luego se codifica la transcripción completa de la política:
 
 $$
 T_{\mathrm{policy}} = N(\mathrm{backend}, P, C_s)
 $$
 
-y el hash de política publicado es:
+y el hash criptográfico de la política publicada es:
 
 $$
 \mathrm{policy\_hash} =
 H(D_{\mathrm{policy}} \parallel T_{\mathrm{policy}})
 $$
 
-El `PolicyCommitment` en cadena es:
+El `PolicyCommitment` en la cadena es:
 
 $$
 (\mathrm{backend}, \mathrm{policy\_hash}, P)
 $$
 
-La evaluación recalcula el mismo valor del secreto de tiempo de ejecución. Si el hash recalculado difiere, la evaluación falla con una incompatibilidad de compromiso.
+La evaluación recalcula el mismo valor a partir del secreto en tiempo de ejecución del software. Si el hash criptográfico recalculado difiere, la evaluación falla con un desajuste de compromiso.
 
-### HKDF-SHA3-512 Retroceso {#hkdf-sha3-512-backend}
+### Motor HKDF-SHA3-512 {#hkdf-sha3-512-backend}
 
-Para `hkdf-sha3-512-prf-v1`, la salida es la entrada normalizada en sí misma, pero el identificador opaco y el hash de recibo son las salidas PRF vinculadas secretamente.
+Para `hkdf-sha3-512-prf-v1`, la salida es la propia entrada normalizada, pero el identificador opaco y el registro de resultados del protocolo con el hash criptográfico están vinculados a secretos PRF.
 
 La transcripción de la solicitud es:
 
@@ -133,7 +133,7 @@ T_{\mathrm{req}} =
 N(\mathrm{policy\_hash}, P, A, x)
 $$
 
-La llave HKDF de sal y pseudorandom son:
+La sal HKDF y la clave pseudorrandom son:
 
 $$
 \mathrm{salt} = D_{\mathrm{salt}} \parallel \mathrm{policy\_hash}
@@ -144,7 +144,7 @@ $$
 (\mathrm{salt}, s)
 $$
 
-El material opaco se expande y se hacha:
+El material opaco se expande y se dispersa:
 
 $$
 m_o =
@@ -157,7 +157,7 @@ $$
 H(D_{\mathrm{opaque}} \parallel m_o)
 $$
 
-El material del recibo también une la identificación opaca:
+el registro de resultado del protocolo material además vincula el id opaco:
 
 $$
 m_r =
@@ -179,70 +179,70 @@ $$
 = (x, \mathrm{opaque\_id}, \mathrm{receipt\_hash})
 $$
 
-### BFV Primer {#bfv-primer}
+### Introducción a BFV {#bfv-primer}
 
-BFV es un esquema de encriptación homomorfa basado en una red. "Homomorfo" significa que un programa puede agregar y multiplicar valores cifrados y, después de la descifrada, obtener el mismo resultado que si hubiera realizado las adiciones y multiplicaciones en los valores del texto plano.
+BFV es un esquema de cifrado homomórfico basado en retículos. "Homomórfico" significa que un programa puede sumar y multiplicar valores cifrados y, después de la descifrado, obtener el mismo resultado como si hubiera realizado las sumas y multiplicaciones sobre los valores en texto plano.
 
-Para RAM-LFE, BFV se utiliza como mecanismo de entrada encriptado:
+Para RAM-LFE, BFV se utiliza como un mecanismo de entrada cifrada:
 
 1. Una billetera normaliza un valor privado, como un número de teléfono o una dirección de correo electrónico.
-2. La billetera convierte los bytes en pequeñas ranuras de números enteros.
-3. Cada ranura está cifrada con la clave pública BFV del resolver.
-4. El tiempo de ejecución del resolver evalúa el programa oculto sobre esos textos codificados.
-5. El tiempo de ejecución sólo descifre la salida del programa oculto y señala o prueba un recibo.
+2. La billetera convierte los bytes en pequeños espacios de enteros.
+3. Cada ranura está encriptada con la clave pública BFV del resolvedor.
+4. El tiempo de ejecución del software del resolver evalúa el programa oculto sobre esos textos cifrados.
+5. El tiempo de ejecución del software descifra solo la salida del programa oculta y firma o prueba un registro de resultado de protocolo.
 
-BFV es la aritmética exacta de números enteros, no aritmética aproximada. Es por eso que es más adecuado para los bytes identificadores y pequeños módulos En el caso de las computadoras, los resultados son más claros. Iroha La corriente . BFV uso, cada ranura cifrada tiene un valor escalar modulo \(t\), generalmente un byte o un campo de longitud de un byte. el texto cifrado en sí vive modulo un número entero mucho mayor \(q\). La brecha entre \(q\) y \(t\) da espacio de descifrado al ruido que introducen el cifrado y las operaciones homórficas.
+BFV es aritmética de enteros exacta, no aritmética aproximada. Por eso es más adecuada para identificar bytes y realizar cálculos modulares pequeños que para la inferencia de modelos de punto flotante. En el uso actual de BFV de Iroha, cada ranura cifrada contiene un valor escalar módulo \(t\), usualmente un byte o un campo de longitud de byte. El propio texto cifrado vive módulo a un número entero mucho mayor \(q\). La diferencia entre \(q\) y \(t\) da espacio de descifrado para el ruido que la encriptación y las operaciones homomórficas introducen.
 
-Un texto de cifrado BFV tiene dos componentes polinomial:
+Un texto cifrado BFV tiene dos componentes polinómicas:
 
 $$
 c=(c_0,c_1)
 $$
 
-La clave secreta es otro polinomio \(s_k\). El descifrado combina los componentes:
+La clave secreta es otro polinomio \(s_k\). La descifrado combina los componentes:
 
 $$
 v = c_0 + c_1s_k
 $$
 
-Si el texto de cifrado se formó correctamente y el ruido es todavía lo suficientemente pequeño, \(v\) está cerca del texto plano a escala. El redondeo recupera el coeficiente de texto plano modulo \(t\). La propiedad útil es que las operaciones de texto cifrado conservan esta estructura:
+Si el texto cifrado se formó correctamente y el ruido todavía es lo suficientemente pequeño, \(v\) está cerca del texto plano escalado. El redondeo recupera el coeficiente del texto plano módulo \(t\). La propiedad útil es que las operaciones con el texto cifrado preservan esta estructura:
 
-|Operación simple |Operación de cifrado de texto |
+|Operación sencilla|Operación de texto cifrado|
 | --- | --- |
-|\(m+n\) |Añadir componentes de texto cifrado. |
-|\(m+\alpha\) |Añadir una constante de texto en blanco escalada a \(c_0\). |
-|\(\alpha m\) |Escala los dos componentes del texto cifrado por \(\alpha\). |
-|\(mn\) |Multiplica los polinomios de texto cifrado, recalque y luego relinea. |
+| \(m+n\) |Agregar componentes de texto cifrado.|
+| \(m+\alpha\) |Agregue una constante de texto sin formato escalada en \(c_0\).|
+| \(\alpha m\) |Escale ambos componentes del texto cifrado por \(\alpha\).|
+| \(mn\) |Multiplica los polinomios cifrados, reescala y luego relineariza.|
 
-La multiplicación es una operación costosa. Un producto de dos textos cifrados de dos componentes crea naturalmente un texto cifrado de tres componentes que se descifra con \(1\), \(s_k\) y \(s_k^2\). La relinarización utiliza una clave de evaluación publicada para doblar el término \(s_k^2\) de nuevo en un texto cifrado normal de dos componentes. Eso mantiene adiciones y multiplicaciones posteriores utilizando la misma forma del texto cifrada.
+La multiplicación es la operación costosa. El producto de dos cifrados de dos componentes crea naturalmente un cifrado de tres componentes que se descifra con \(1\), \(s_k\) y \(s_k^2\). La relinearización utiliza una clave de evaluación publicada para plegar el término \(s_k^2\) de nuevo en un cifrado normal de dos componentes. Eso mantiene las sumas y multiplicaciones posteriores usando la misma forma de cifrado.
 
-BFV también es "nivelado": cada operación cifrada consume algún presupuesto de ruido. Esta implementación no inicializa los textos cifrados para actualizar ese presupuesto. En su lugar, RAM-LFE publica un pequeño `ram_fhe_profile` y acepta solo una forma oculta del programa limitada. Esto mantiene la evaluación dentro de la profundidad admitida del conjunto de parámetros. El perfil programado actual permite un recuento fijo del registro, el recuento fijado de vías de memoria y, como máximo, una multiplicación del texto cifrado-cifrado por paso programado.
+BFV también está "nivelado": cada operación cifrada consume parte del presupuesto de ruido. Esta implementación no reinicia los cifrados para renovar ese presupuesto. En su lugar, RAM-LFE publica un pequeño `ram_fhe_profile` y acepta solo una forma de programa oculta limitada. Eso mantiene la evaluación dentro de la profundidad soportada por el conjunto de parámetros. El perfil programado actual permite un número fijo de registros, un número fijo de canales de memoria y como máximo una multiplicación de texto cifrado por texto cifrado por paso programado.
 
-En esto RAM-LFE el diseño, BFV oculta la entrada del cliente de los datos del libro mayor público y de los observadores que sólo ven la carga útil de la transacción o de la ruta. No significa que la cadena ejecute por sí misma programas cifrados arbitrarios. Torii Resolver runtime todavía posee el BFV material secreto, evalúa el programa oculto configurado, descifre la salida permitida y atestigua el resultado. El libro mayor luego verifica la certificación contra el compromiso de política en cadena y resuelve los metadatos de llave pública o prueba.
+En este diseño RAM-LFE, BFV oculta la entrada del cliente de los datos del libro mayor público de la blockchain y de los observadores que solo ven la transacción o la carga del recorrido. No significa que la cadena ejecute programas cifrados arbitrarios por sí misma. El tiempo de ejecución del software resolutor Torii todavía posee el material secreto BFV, evalúa el programa oculto configurado, descifra la salida permitida, y certifica el resultado. Luego, el libro mayor de la blockchain verifica la certificación contra el compromiso de política en la cadena y la clave pública del resolutor o los metadatos de prueba.
 
-El caso de uso del identificador elige a propósito una representación simple. Una cadena normalizada se codifica como:
+El caso de uso del identificador elige una representación simple a propósito. Una cadena normalizada se codifica como:
 
 ```text
 [length, byte_0, byte_1, ..., byte_n, 0, 0, ...]
 ```
 
-Cada elemento está encriptado como su propio BFV texto de cifrado escalar. Esa forma hace que la normalización y la validación del sobre sean explícitas, permite a las billeteras construir solicitudes cifradas a partir de parámetros públicos y permite al resolver canonizar entradas cifradas equivalentes en una transcripción estable de recibo.
+Cada elemento se cifra como su propio texto cifrado escalar BFV. Esa forma hace que la normalización y la validación del contenedor de datos sean explícitas, y permite que las billeteras construyan solicitudes encriptadas a partir de parámetros públicos, y permite que el resolvedor canonice entradas encriptadas equivalentes en una transcripción de registro de resultados del protocolo estable.
 
-### Modelo de anillo BFV {#bfv-ring-model}
+### BFV Modelo de Anillo {#bfv-ring-model}
 
-Los respaldos BFV utilizan el anillo polinómico negaciclo:
+Los backends BFV utilizan el anillo de polinomios negaciclico:
 
 $$
 R_q = \mathbb{Z}_q[X] / (X^n + 1)
 $$
 
-y anillo de texto simple:
+y anillo de texto plano:
 
 $$
 R_t = \mathbb{Z}_t[X] / (X^n + 1)
 $$
 
-donde:
+dónde:
 
 - \(n\) es `polynomial_degree`, una potencia de dos
 - \(q\) es `ciphertext_modulus`
@@ -251,19 +251,19 @@ donde:
 - \(\Delta = q/t\)
 - \(B = 2^{\mathrm{decomposition\_base\_log}}\)
 
-Los vectores de coeficientes de texto en blanco se codifican mediante la escalación de cada coeficiente:
+Los vectores de coeficientes en texto plano se codifican escalando cada coeficiente:
 
 $$
 \operatorname{EncPlain}(m)_i = \Delta m_i \bmod q
 $$
 
-El descifrador central eleva cada coeficiente de:
+El centro de descifrado eleva cada coeficiente de:
 
 $$
 v = c_0 + c_1 s_k \in R_q
 $$
 
-a continuación, lo redondea en \(R_t\):
+luego lo redondea de nuevo a \(R_t\):
 
 $$
 \operatorname{Dec}(c)_i =
@@ -271,26 +271,26 @@ $$
 \right\rceil \bmod t
 $$
 
-Aquí \(s_k\) es el polinomio de llave secreta BFV, no el secreto del resolver externo RAM-LFE \(s\).
+Aquí \(s_k\) está el polinomio de clave secreta BFV, no el secreto del resolutor exterior RAM-LFE \(s\).
 
-### BFV Generación clave {#bfv-key-generation}
+### BFV Generación de Claves {#bfv-key-generation}
 
-Para la entrada de un identificador cifrado, el material clave BFV es determinista por resolver y los datos secretos asociados:
+Para la entrada de identificador encriptado, el material clave BFV es determinista por el secreto del resolvedor y los datos asociados:
 
 $$
 \sigma_{\mathrm{id}} =
 H(D_{\mathrm{id\_keygen}} \parallel A \parallel s)
 $$
 
-El BFV RNG se siembra en la siguiente forma:
+El BFV RNG se siembra como:
 
 $$
 \operatorname{ChaCha20Rng}(H(D_{\mathrm{bfv\_keygen}} \parallel \sigma_{\mathrm{id}}))
 $$
 
-Las muestras de los generadores clave:
+Las muestras del generador de claves:
 
-- \(s_k \in \{-1,0,1\}^n\), representado en el módulo \(q\)
+- \(s_k \in \{-1,0,1\}^n\), representado módulo \(q\)
 - \(a \leftarrow R_q\) uniformemente
 - \(e \in \{-1,0,1\}^n\)
 
@@ -300,24 +300,24 @@ $$
 \mathrm{pk}=(b,a),\qquad b = -a s_k - e \pmod q
 $$
 
-Para la relinearización, permita que \(s_k^2\) sea el producto del anillo en \(R_q\). Para cada base-\(B\) dígito \(j\), muestre \(a_j\) de forma uniforme y \(e_j\) de la pequeña distribución, luego publique:
+Para la relinearización, sea \(s_k^2\) el producto de anillo en \(R_q\). Para cada dígito en base-\(B\) \(j\), muestree \(a_j\) uniformemente y \(e_j\) de la distribución pequeña, luego publique:
 
 $$
 \mathrm{rlk}_j=(b_j,a_j),\qquad
 b_j = -a_j s_k - e_j + B^j s_k^2 \pmod q
 $$
 
-El público BFV Los metadatos de la política contienen \((n,q,t,B)\), la clave pública y `max_input_bytes`. El Consejo BFV La clave secreta y la llave de redireccionamiento permanecen en el tiempo de ejecución del resolver.
+Los metadatos de la política pública BFV contienen \((n,q,t,B)\), la clave pública, y `max_input_bytes`. La clave secreta BFV y la clave de relinearización permanecen en el tiempo de ejecución del software del resolvedor.
 
-### Encriptación y operaciones BFV {#bfv-encryption-and-operations}
+### BFV Cifrado y Operaciones {#bfv-encryption-and-operations}
 
-Para cifrar un polinomio de texto simple \(m\), la implementación emitió otro ChaCha20 RNG de:
+Para encriptar un polinomio en texto plano \(m\), la implementación inicializa otro ChaCha20 RNG desde:
 
 $$
 H(D_{\mathrm{bfv\_encrypt}} \parallel \mathrm{seed})
 $$
 
-Se muestran \(u,e_1,e_2 \in \{-1,0,1\}^n\) y se calculan:
+Toma muestras de \(u,e_1,e_2 \in \{-1,0,1\}^n\) y calcula:
 
 $$
 c_0 = b u + e_1 + \operatorname{EncPlain}(m) \pmod q
@@ -327,27 +327,27 @@ $$
 c_1 = a u + e_2 \pmod q
 $$
 
-El texto en cifrado es \(c=(c_0,c_1)\).
+El texto cifrado es \(c=(c_0,c_1)\).
 
-La adición homórfica es en función de los componentes:
+La adición homomórfica es componente por componente:
 
 $$
 c+d=(c_0+d_0,\ c_1+d_1)\pmod q
 $$
 
-Añadir un escalar de texto claro \(\alpha\) al coeficiente de cambios cero solamente \(c_0\):
+Agregar un escalar de texto plano \(\alpha\) al coeficiente cero cambia solo \(c_0\):
 
 $$
 c+\alpha = (c_0 + \Delta\alpha,\ c_1)\pmod q
 $$
 
-Multiplicando por un escalar de texto plano \(\alpha\) las escalas de los dos componentes:
+Multiplicar por un escalar en texto plano \(\alpha\) escala ambos componentes:
 
 $$
 \alpha c = (\alpha c_0,\ \alpha c_1)\pmod q
 $$
 
-Para dos textos cifrados \(c=(c_0,c_1)\) y \(d=(d_0,d _1)\), la multiplicación del texto cifrado primero calcula un texto de cifrado de tres dimensiones y escala cada coeficiente de nuevo por \(t/q\):
+Para dos textos cifrados \(c=(c_0,c_1)\) y \(d=(d_0,d_1)\), la multiplicación de textos cifrados primero calcula un texto cifrado de tamaño tres y escala cada coeficiente nuevamente por \(t/q\):
 
 $$
 \tilde c_0 = \left\lfloor \frac{t(c_0 d_0)}{q} \right\rceil \bmod q
@@ -362,13 +362,13 @@ $$
 \tilde c_2 = \left\lfloor \frac{t(c_1 d_1)}{q} \right\rceil \bmod q
 $$
 
-Todos los productos anteriores son productos de anillos negaciclicos en \(R_q\). Luego, \(\tilde c_2\) se descomponen en polinomios base-\(B\):
+Todos los productos anteriores son productos de anillo negaciclico en \(R_q\). Luego, \(\tilde c_2\) se descompone en polinomios en base-\(B\):
 
 $$
 \tilde c_2 = \sum_j B^j u_j
 $$
 
-y redireccionado:
+y relinearizado:
 
 $$
 c'_0 = \tilde c_0 + \sum_j u_j b_j \pmod q
@@ -378,11 +378,11 @@ $$
 c'_1 = \tilde c_1 + \sum_j u_j a_j \pmod q
 $$
 
-El resultado es otra vez un texto cifrado de dos componentes BFV.
+El resultado es nuevamente un cifrado BFV de dos componentes.
 
-### Identificador Envase de texto cifrado {#identifier-ciphertext-envelope}
+### Contenedor de datos de identificador cifrado {#identifier-ciphertext-envelope}
 
-Una cadena de byte de entrada del identificador:
+Una cadena de bytes de entrada de identificador:
 
 $$
 x=(x_0,\ldots,x_{\ell-1})
@@ -398,27 +398,27 @@ $$
 m_{i+1}=x_i,\qquad 0 \le i < \ell
 $$
 
-y todas las ranuras restantes son cero hasta `max_input_bytes + 1`. Cada ranura escalar está cifrada como el polinomio de texto en blanco con coeficiente cero \([m_i]\). La semilla de cifrado por ranura es:
+y todos los espacios restantes son cero hasta `max_input_bytes + 1`. Cada espacio escalar está cifrado como el polinomio de texto plano de coeficiente cero \([m_i]\). La semilla de cifrado por espacio es:
 
 $$
 \sigma_i =
 H(D_{\mathrm{id\_slot}} \parallel \mathrm{seed} \parallel \operatorname{le64}(i))
 $$
 
-El envase del identificador cifrado es:
+El contenedor de datos de identificador cifrado es:
 
 $$
 (\operatorname{BFV.Enc}_{\mathrm{pk}}([m_0];\sigma_0),\ldots,
 \operatorname{BFV.Enc}_{\mathrm{pk}}([m_M];\sigma_M))
 $$
 
-donde \(M=\mathrm{max\_input\_bytes}\).
+dónde \(M=\mathrm{max\_input\_bytes}\).
 
-### BFV Afine Backend {#bfv-affine-backend}
+### BFV Backend Afin {#bfv-affine-backend}
 
-Para `bfv-affine-sha3-256-v1`, el tiempo de ejecución primero deriva el material clave BFV de \(s\) y \(A\). Los parámetros públicos derivados deben coincidir exactamente con los parámetres públicos comprometidos en la cadena.
+Para `bfv-affine-sha3-256-v1`, el tiempo de ejecución del software primero deriva el material clave BFV a partir de \(s\) y \(A\). Los parámetros públicos derivados deben coincidir exactamente con los parámetros públicos comprometidos en la cadena.
 
-La semilla del circuito afino es:
+La semilla del circuito afín es:
 
 $$
 \sigma_{\mathrm{affine}} =
@@ -426,20 +426,20 @@ H(D_{\mathrm{affine\_circuit}} \parallel s
 \parallel \mathrm{policy\_hash} \parallel A)
 $$
 
-A partir de esta semilla las muestras de tiempo de ejecución, modulo \(t\), un circuito afino de 32 filas:
+A partir de esta semilla, el tiempo de ejecución del software toma muestras, módulo \(t\), de un circuito afín de 32 filas:
 
 $$
 y_j = b_j + \sum_i w_{j,i} m_i \pmod t,
 \qquad 0 \le j < 32
 $$
 
-donde \(m_i\) son las ranuras de identificador descifradas. Homomorfamente, calcula el mismo valor en los textos cifrados:
+donde \(m_i\) son las ranuras de identificador descifradas. Homomórficamente, calcula el mismo valor sobre los cifrados:
 
 $$
 C_j = b_j + \sum_i w_{j,i} C_i
 $$
 
-El resolver descifre cada \(C_j\), requiere que todos los coeficientes de texto en blanco posteriores sean cero, convierte los valores del coeficiente-cero en bytes y forma:
+El resolutor descifra cada \(C_j\), requiere que todos los coeficientes de texto plano restantes sean cero, convierte los valores de coeficientes cero a bytes y forma:
 
 $$
 O=(y_0,\ldots,y_{31})
@@ -460,27 +460,27 @@ H(D_{\mathrm{affine\_receipt}}
 \parallel \mathrm{opaque\_id})
 $$
 
-### BFV Programación de Backend {#bfv-programmed-backend}
+### BFV Backend Programado {#bfv-programmed-backend}
 
-Para `bfv-programmed-sha3-256-v1`, los parámetros públicos incluyen el parámetro de encriptación del identificador BFV más un digesto de programa oculto:
+Para `bfv-programmed-sha3-256-v1`, los parámetros públicos incluyen los parámetros de encriptación del identificador BFV más un valor de resumen criptográfico de programa oculto:
 
 $$
 \mathrm{program\_digest}
 = H(D_{\mathrm{program\_digest}} \parallel N(\mathrm{program}))
 $$
 
-El perfil actual RAM-FHE es el siguiente:
+El perfil actual RAM-FHE es:
 
-|El campo |El valor |
+|Campo|Valor|
 | --- | --- |
-|`profile_version` | `1` |
-|`register_count` | `4` |
-|`memory_lane_count` | `32` |
-|`ciphertext_mul_per_step` | `1` |
-|`encrypted_input_mode` |`resolver_canonicalized_envelope_v1` |
-|`min_ciphertext_modulus` | \(2^{52}\) |
+| `profile_version` | `1` |
+| `register_count` | `4` |
+| `memory_lane_count` | `32` |
+| `ciphertext_mul_per_step` | `1` |
+| `encrypted_input_mode` | `resolver_canonicalized_envelope_v1` |
+| `min_ciphertext_modulus` | \(2^{52}\) |
 
-La entrada de texto en blanco presentada a Torii se cifrará en el mismo sobre BFV antes de su ejecución. La semilla determinista para ese cifrado en el lado del servidor es:
+La entrada de texto sin formato enviada a Torii se cifra en el mismo contenedor de datos BFV antes de la ejecución. La semilla determinista para ese cifrado del lado del servidor es:
 
 $$
 H(
@@ -489,9 +489,9 @@ H(
 )
 $$
 
-Para las entradas cifradas suministradas externamente, el resolver descifre la envoltura del identificador y lo vuelve a cifrar en este Esta canonización mantiene los hashes de recibo estables a través de semánticamente igual BFV los textos cifrados.
+Para la entrada cifrada suministrada externamente, el resolvedor descifra el contenedor de datos del identificador y lo vuelve a cifrar en este contenedor de datos determinista antes de ejecutar. Esa normalización canónica mantiene estables los hashes criptográficos de los registros de resultados del protocolo entre textos cifrados BFV semánticamente equivalentes.
 
-Las vías de memoria inicialmente cifradas se derivan de:
+Las líneas de ejecución de memoria cifrada inicial se derivan de:
 
 $$
 \sigma_{\mathrm{mem}} =
@@ -500,30 +500,30 @@ H(D_{\mathrm{program\_memory}} \parallel s
 \parallel \operatorname{le64}(0))
 $$
 
-Para cada uno de los 32 carriles, las muestras de tiempo de ejecución \(r_j \in [0,t)\) y almacena un texto cifrado BFV encriptando \(r_j\). El programa oculto luego se ejecuta sobre registros cifrados y memoria encriptada:
+Para cada una de las 32 líneas de ejecución, el tiempo de ejecución del software muestrea \(r_j \in [0,t)\) y almacena un texto cifrado BFV que encripta \(r_j\). El programa oculto luego se ejecuta sobre registros cifrados y memoria cifrada:
 
-|Instrucciones |Algebra .|
+|Instrucción|Álgebra|
 | --- | --- |
-|`LoadInput(dst, i)` |\(R_{\mathrm{dst}} \leftarrow C_i\) |
-|`LoadState(dst, j)` |\(R_{\mathrm{dst}} \leftarrow S_j\) |
-|`StoreState(j, src)` |\(S_j \leftarrow R_{\mathrm{src}}\) |
-|`LoadConst(dst, a)` |\(R_{\mathrm{dst}} \leftrow \operatorname{Enc}(a) \) |
-|`Add(dst, a, b)` |\(R_{\mathrm{dst}} \leftarrow R_a + R_b\) |
-|`AddPlain(dst, src, a)` |\(R_{\mathrm{dst}} \leftarrow R_{\mathrm{src}} + a\) |
-|`SubPlain(dst, src, a)` |\(R_{\mathrm{dst}} \leftarrow R_{\mathrm{src}} - a\) |
-|`MulPlain(dst, src, a)` |\(R_{\mathrm{dst}} \leftarrow aR_{\mathrm{src}}\) |
-|`Mul(dst, a, b)` |\(R_{\mathrm{dst}} \leftarrow R_aR_b\), luego volver a alinear |
-|`SelectEqZero(dst, cond, z, nz)` |Descifrar \(R_{\mathrm{cond}}\); elegir \(R_z\) cuando es cero, de lo contrario \(R_{nz}\). |
-|`Output(src)` |Añadir \(R_{\mathrm{src}}\) a la lista de registros de salida. |
+| `LoadInput(dst, i)` | \(R_{\mathrm{dst}} \leftarrow C_i\) |
+| `LoadState(dst, j)` | \(R_{\mathrm{dst}} \leftarrow S_j\) |
+| `StoreState(j, src)` | \(S_j \leftarrow R_{\mathrm{src}}\) |
+| `LoadConst(dst, a)` | \(R_{\mathrm{dst}} \leftarrow \operatorname{Enc}(a)\) |
+| `Add(dst, a, b)` | \(R_{\mathrm{dst}} \leftarrow R_a + R_b\) |
+| `AddPlain(dst, src, a)` | \(R_{\mathrm{dst}} \leftarrow R_{\mathrm{src}} + a\) |
+| `SubPlain(dst, src, a)` | \(R_{\mathrm{dst}} \leftarrow R_{\mathrm{src}} - a\) |
+| `MulPlain(dst, src, a)` | \(R_{\mathrm{dst}} \leftarrow aR_{\mathrm{src}}\) |
+| `Mul(dst, a, b)` | \(R_{\mathrm{dst}} \leftarrow R_aR_b\), luego volver a linearizar |
+| `SelectEqZero(dst, cond, z, nz)` |Descifra \(R_{\mathrm{cond}}\); elige \(R_z\) cuando sea cero, de lo contrario \(R_{nz}\).|
+| `Output(src)` |Agregue \(R_{\mathrm{src}}\) a la lista del registro de salida.|
 
-Después de que finalice la cinta de instrucciones, el resolver descifrará cada registro de salida, convertirá el coeficiente cero en un byte y concatenará esos bytes:
+Después de que la cinta de instrucciones termina, el resolver descifra cada registro de salida, convierte el coeficiente cero en un byte y concatena esos bytes:
 
 $$
 O = \operatorname{bytes}(\operatorname{Dec}(R_{o_0})_0,\ldots,
 \operatorname{Dec}(R_{o_k})_0)
 $$
 
-Los hashes de backend programados genéricos son:
+Los hashes criptográficos de backend programados genéricamente son:
 
 $$
 \mathrm{opaque\_hash} =
@@ -538,7 +538,7 @@ H(D_{\mathrm{program\_receipt}}
 \parallel \mathrm{opaque\_hash})
 $$
 
-La cinta de identificación programada por defecto tiene 64 ranuras de entrada. Para cada ranura \(i\), carga la ranura de entrada, carga el carril de memoria \(i \bmod 32\), las agrega y da el resultado:
+La cinta identificadora programada por defecto tiene 64 ranuras de entrada. Para cada ranura \(i\), carga la ranura de entrada, carga la línea de ejecución de memoria \(i \bmod 32\), las suma y produce el resultado:
 
 $$
 R_0 \leftarrow C_i,\qquad
@@ -547,16 +547,16 @@ R_2 \leftarrow R_0 + R_1,\qquad
 \operatorname{Output}(R_2)
 $$
 
-### Los hashes y recibos de salida {#output-hashes-and-receipts}
+### Generar registros de resultados de protocolo y hashes criptográficos {#output-hashes-and-receipts}
 
-El recibo de ejecución genérico RAM-LFE no firma la salida en bruto, sino el hash de salida:
+El registro de resultados del protocolo de ejecución genérico RAM-LFE no firma la salida sin procesar. Firma el hash criptográfico de la salida:
 
 $$
 \mathrm{output\_hash} =
 H(D_{\mathrm{output}} \parallel O)
 $$
 
-Para los recibos de ejecución Torii RAM-LFE, los datos asociados son los bytes canónicos del identificador de programa:
+Para los registros de resultados del protocolo de ejecución Torii RAM-LFE, los datos asociados son los bytes del identificador canónico del programa:
 
 $$
 A = N(\mathrm{program\_id})
@@ -566,7 +566,7 @@ $$
 \mathrm{associated\_data\_hash}=H(A)
 $$
 
-La carga útil del recibo firmado es:
+La carga útil del registro de resultados del protocolo firmado es:
 
 $$
 R =
@@ -587,7 +587,7 @@ $$
 \operatorname{Sign}_{\mathrm{resolver}}(N(R))
 $$
 
-La verificación comprobará la firma con `resolver_public_key` y rechazará el recibo a menos que todas estas equivalencias sean:
+La verificación comprueba la firma con `resolver_public_key` y rechaza el registro de resultado del protocolo a menos que se cumplan todas estas igualdades:
 
 $$
 R.\mathrm{program\_id} = \mathrm{policy.program\_id}
@@ -611,20 +611,20 @@ R.\mathrm{associated\_data\_hash} =
 H(N(\mathrm{policy.program\_id}))
 $$
 
-En caso de que el solicitante entregue `output_hex`, el verificador también comprueba:
+Si el llamante proporciona `output_hex`, el verificador también verifica:
 
 $$
 H(D_{\mathrm{output}} \parallel \operatorname{bytes}(\mathrm{output\_hex}))
 = R.\mathrm{output\_hash}
 $$
 
-Para el modo `proof`, la certificación lleva un sobre de prueba en lugar de una firma. La verificación comprueba que el backend de prueba, el id del circuito, el hash de esquema de entrada pública, el hash con clave de verificación y las instancias públicas expuestas coinciden con los metadatos del verificador de pruebas y el hash codificado de recibo-carga útil.
+Para el modo `proof`, la atestación contiene un contenedor de datos de prueba en lugar de una firma. La verificación comprueba que el backend de prueba, el id del circuito, el esquema de entrada pública hash criptográfico, hash criptográfico de clave de verificación y las instancias públicas expuestas coinciden con los metadatos del verificador de pruebas y el hash criptográfico del contenido del recibo codificado. Sea:
 
 $$
 h_R = H(N(R)) = (h_0,\ldots,h_{31})
 $$
 
-Las instancias públicas previstas son cuatro columnas de un elemento. La columna \(j\) contiene bytes \(h_{8j}\ldots h_{8j+7}\) seguidas por 24 bytes cero:
+Se esperan cuatro instancias públicas de una sola columna. La columna \(j\) contiene bytes \(h_{8j}\ldots h_{8j+7}\) seguidos de 24 bytes cero:
 
 $$
 \mathrm{instance}_j =
@@ -632,9 +632,9 @@ h_{8j}\parallel\cdots\parallel h_{8j+7}\parallel 0^{24},
 \qquad 0 \le j < 4
 $$
 
-### Proyección del identificador {#identifier-projection}
+### Proyección de identificador {#identifier-projection}
 
-La resolución del identificador no utiliza el backend genérico `opaque_hash` como el identificador opaco de la cuenta para el usuario. Proyecta el hash de salida RAM-LFE a través de dominios específicos del identificador:
+La resolución de identificadores no utiliza el backend genérico `opaque_hash` como el identificador de cuenta opaco visible para el usuario. Proyecta el hash criptográfico de salida RAM-LFE a través de dominios específicos del identificador:
 
 $$
 \mathrm{opaque\_id}_{\mathrm{id}} =
@@ -651,7 +651,7 @@ H(D_{\mathrm{id\_receipt}}
 \parallel \mathrm{opaque\_id}_{\mathrm{id}})
 $$
 
-Una `IdentifierResolutionReceipt` firmará una carga útil de nivel superior:
+Un `IdentifierResolutionReceipt` firma una carga útil de nivel superior:
 
 $$
 I =
@@ -663,26 +663,26 @@ R,
 \mathrm{account\_id})
 $$
 
-Para los recibos de identificación firmados:
+Para registros de resultados de protocolo de identificador firmado:
 
 $$
 \mathrm{attestation} =
 \operatorname{Sign}_{\mathrm{resolver}}(N(I))
 $$
 
-`ClaimIdentifier` sólo acepta el recibo cuando la firma o prueba sea válida, la carga útil de ejecución incrustada en RAM-LFE coincida con la política del programa a que se hace referencia, y los `uaid` y `account_id` son el vinculante que se reclama.
+`ClaimIdentifier` acepta el registro de resultado del protocolo solo cuando la firma o prueba es válida, la carga útil de ejecución RAM-LFE incorporada coincide con la política del programa referenciada, y `uaid` y `account_id` son el vínculo que se está reclamando.
 
 ## Flujo de ejecución {#execution-flow}
 
-Una ejecución genérica RAM-LFE tiene la siguiente forma:
+Una ejecución genérica RAM-LFE sigue esta forma:
 
-1. Registro de gobierno o de un operador `RamLfeProgramPolicy`.
+1. La gobernanza o un operador registra `RamLfeProgramPolicy`.
 2. El propietario activa la póliza.
-3. El cliente lee los metadatos de las políticas públicas en Torii.
-4. El cliente envía exactamente un formulario de entrada al resolver: texto simple `input_hex` o una envoltura de entrada cifrada BFV.
-5. El tiempo de ejecución evalúa el programa oculto y devuelve `output_hex`, `output_hash`, `opaque_hash`, `receipt_hash` y un `RamLfeExecutionReceipt`.
-6. El cliente o el backend verifica el recibo con arreglo a la política publicada, verificando opcionalmente que el `output_hex` devuelto se ajusta al `output_hash` del recibo.
-7. Una instrucción de nivel superior, como `ClaimIdentifier`, puede incorporar el recibo certificado en lugar de incorporar la entrada en bruto.
+3. El cliente lee los metadatos de la política pública de Torii.
+4. El cliente envía exactamente un formulario de entrada al resolvedor: datos de entrada en texto plano `input_hex` o un contenedor de datos de entrada cifrado BFV.
+5. El tiempo de ejecución del software evalúa el programa oculto y devuelve `output_hex`, `output_hash`, `opaque_hash`, `receipt_hash` y un `RamLfeExecutionReceipt`.
+6. El cliente o el backend verifica el recibo según la política publicada y, si lo desea, comprueba que el `output_hex` devuelto produzca el `output_hash` del recibo.
+7. Una instrucción de nivel superior, como `ClaimIdentifier`, puede incrustar el registro de resultados del protocolo certificado en lugar de incrustar la entrada sin procesar.
 
 ```mermaid
 flowchart LR
@@ -695,9 +695,9 @@ flowchart LR
     verify --> claim["Use receipt in higher-level flow"]
 ```
 
-## Políticas de identificación {#identifier-policies}
+## Políticas de identificador {#identifier-policies}
 
-Las políticas de identificación son un uso concreto de RAM-LFE. Añaden un espacio de nombres de negocios y una regla de normalización encima de una política de programa genérica:
+Las políticas de identificador son un uso concreto de RAM-LFE. Añaden un espacio de nombres empresarial y una regla de normalización encima de una política de programa genérica:
 
 ```text
 RegisterRamLfeProgramPolicy(
@@ -720,50 +720,50 @@ RegisterIdentifierPolicy(
 ActivateIdentifierPolicy(policy_id = "phone#team")
 ```
 
-La capa de identificación utiliza el recibo RAM-LFE para vincular:
+La capa identificadora utiliza el registro de resultados del protocolo RAM-LFE para vincular:
 
 - `policy_id`
-- el identificador opaco derivado de la función oculta
-- la determinación `receipt_hash`
-- la cuenta es UAID
-- el canónico `account_id`
+- el identificador opaco derivado por la función oculta
+- el determinista `receipt_hash`
+- la cuenta UAID
+- el `account_id` canónico
 - la carga útil de ejecución genérica RAM-LFE
 
-Para la incorporación orientada al usuario, mantenga los alias de cuenta separados de los identificadores privados. Los alias son nombres públicos; números de teléfono, direcciones de correo electrónico y valores similares deben fluir a través de las políticas de identificación y recibos.
+Para la incorporación de usuarios, mantenga los alias de cuenta separados de los identificadores privados. Los alias son nombres públicos; los números de teléfono, direcciones de correo electrónico y valores similares deben seguir las políticas de identificación y los registros de resultados del protocolo.
 
-## Las rutas Torii {#torii-routes}
+## Torii Rutas {#torii-routes}
 
-Cuando esté habilitada la familia de rutas orientadas a las aplicaciones, Torii expone RAM-LFE y los auxiliares de identificación:
+Cuando la familia de rutas orientada a la aplicación está habilitada, Torii expone RAM-LFE y auxiliares de identificador:
 
-|Rutas |El propósito .|
+|Ruta|Propósito|
 | --- | --- |
-|`GET /v1/ram-lfe/program-policies` |Enumera las políticas del programa RAM-LFE activas e inactivas y los metadatos de ejecución pública. |
-|`POST /v1/ram-lfe/programs/{program_id}/execute` |Ejecutar un programa de `input_hex` o `encrypted_input` y devolver los hashes de salida más un recibo sin estado. |
-|`POST /v1/ram-lfe/receipts/verify` |Verifique un `RamLfeExecutionReceipt` con respecto a la política publicada y, opcionalmente, compare el `output_hex` con el `output_hash`.|
-|`GET /v1/identifier-policies` |Enumera las políticas de identificación, los modos de normalización, las claves del resolver y los metadatos de entrada cifrados. |
-|`POST /v1/accounts/{account_id}/identifiers/claim-receipt` |Emitir el recibo que un usuario pueda incrustar en `ClaimIdentifier`. |
-|`POST /v1/identifiers/resolve` |Resolver una entrada de identificador normalizado a la cuenta vinculada cuando existe un reclamo activo. |
-|`GET /v1/identifiers/receipts/{receipt_hash}` |Busque una reclamación persistente de identificación mediante un hash de recibo para herramientas de auditoría y apoyo. |
+| `GET /v1/ram-lfe/program-policies` |Enumere las políticas de programas RAM-LFE activas e inactivas y los metadatos de ejecución pública.|
+| `POST /v1/ram-lfe/programs/{program_id}/execute` |Ejecute un programa de `input_hex` o `encrypted_input` y devuelva los hashes de salida junto con un recibo sin estado.|
+| `POST /v1/ram-lfe/receipts/verify` |Verifique un `RamLfeExecutionReceipt` según la política publicada y, opcionalmente, compare `output_hex` con `output_hash`.|
+| `GET /v1/identifier-policies` |Enumere las políticas de identificador, los modos de normalización, las claves del resolutor y los metadatos de entrada cifrada.|
+| `POST /v1/accounts/{account_id}/identifiers/claim-receipt` |Emita el registro de resultado del protocolo que un usuario puede insertar en `ClaimIdentifier`.|
+| `POST /v1/identifiers/resolve` |Resuelva una entrada de identificador normalizado a la cuenta vinculada cuando exista un reclamo activo.|
+| `GET /v1/identifiers/receipts/{receipt_hash}` |Consulta una declaración de identificador persistente mediante el hash del recibo para tareas de auditoría y soporte.|
 
-Siempre revise el documento `/openapi` o `/openapi.json` del nodo objetivo antes de construir contra estas rutas. La disponibilidad depende de la construcción del nodo y del perfil de red.
+Siempre verifica el documento `/openapi.json` del nodo de destino antes de construir con estas rutas. La disponibilidad depende de la construcción del nodo y del perfil de la red.
 
-## Tiempo de ejecución del nodo {#node-runtime}
+## Entorno de ejecución de software Node {#node-runtime}
 
-Torii Está en proceso . RAM-LFE el tiempo de ejecución está configurado en `torii.ram_lfe.programs[*]`, teclado por `program_id`. Cada programa configurado debe coincidir con el compromiso de la política en cadena y debe proporcionar el material necesario para evaluar y Las rutas de identificación reutilican este mismo tiempo de ejecución; no requieren una superficie de configuración separada del identificador-resolvente.
+El tiempo de ejecución del software RAM-LFE en proceso de Torii está configurado bajo `torii.ram_lfe.programs[*]`, con clave `program_id`. Cada programa configurado debe coincidir con el compromiso de la política en cadena y debe proporcionar el material de tiempo de ejecución de software necesario para evaluar y certificar los registros de resultados del protocolo. Las rutas de identificador reutilizan este mismo tiempo de ejecución de software; no requieren una superficie de configuración de resolutor de identificador separada.
 
-El registro de una política en cadena no es suficiente por sí solo. Un nodo objetivo también debe exponer la familia de rutas y tener el material de tiempo de ejecución correspondiente para los programas que se espera ejecutar.
+Registrar una política en la cadena no es suficiente por sí mismo. Un nodo objetivo también debe exponer la familia de rutas y tener material de ejecución de software coincidente para los programas que se espera que ejecute.
 
-## Carrillas de vigilancia operativas {#operational-guardrails}
+## Directrices Operativas {#operational-guardrails}
 
-- Registre las políticas inactivas, verifique los metadatos públicos y luego activelos.
-- Mantenga ocultos los secretos del evaluador, las claves de firma de resolver y el material secreto BFV fuera de los documentos, registros, transacciones y paquetes de clientes.
-- No coloque identificadores crudos en los alias de cuentas, metadatos de transacciones, eventos o campos de estado mundial.
-- Verificar los recibos del lado del cliente antes de enviar instrucciones de nivel superior cuando el SDK expone un verificador.
-- Utilice campos de vencimiento en los que los recibos obsoletos no deben permanecer válidos para siempre.
-- Rotate registrando un nuevo programa o una nueva política de identificación, migrando clientes y desactivando la vieja política una vez que fluyen nuevos recibos
+- Las políticas del registro están inactivas, verifique los metadatos públicos y luego actívelas.
+- Mantenga los secretos ocultos del evaluador, las claves de firma del resolutor y el material secreto BFV fuera de documentos, registros, transacciones y paquetes de clientes.
+- No coloque identificadores sin procesar en alias de cuentas, metadatos de transacciones, eventos o campos del estado mundial.
+- Verifica los registros de resultados del protocolo del lado del cliente antes de enviar instrucciones de nivel superior cuando el SDK expone un verificador.
+- Use campos de caducidad para impedir que los recibos obsoletos sigan siendo válidos indefinidamente.
+- Gire registrando un nuevo programa o política de identificador, migrando clientes y desactivando la política antigua una vez que los registros de resultados del nuevo protocolo estén fluyendo.
 
 ## Temas relacionados {#related-topics}
 
-- [Tarifas de patrocinio para un espacio de datos privado ](/es/get-started/private-dataspace-fee-sponsor.md#_4-register-phone-and-email-privately-with-fhe)
-- [Torii Puntos finales](/es/reference/torii-endpoints.md#app-and-sora-route-families)
-- [Las transacciones anónimas ](/es/blockchain/anonymous-transactions.md)
+- [Tarifas de patrocinador para un espacio de datos privado](/es/get-started/private-dataspace-fee-sponsor.md#_4-register-phone-and-email-privately-with-fhe)
+- [Torii API puntos finales](/es/reference/torii-endpoints.md#app-and-sora-route-families)
+- [Transacciones anónimas](/es/blockchain/anonymous-transactions.md)

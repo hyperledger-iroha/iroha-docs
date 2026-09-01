@@ -3,40 +3,40 @@ translation_locale: pt
 translation_source: /guide/best-practices/index.md
 translation_source_hash: c463a3ca8fdef5c852746a7fdcfd6a1f7be5f95f88a5cf443c989ec0a458cd7d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Melhores Práticas {#best-practices}
 
-Esta secção recolhe orientações orientadas para a produção para aplicações e redes Iroha. É organizado pela decisão que você precisa tomar, não pelo recurso que acontece para implementá-lo.
+Esta seção coleta orientações voltadas para a produção para aplicações e redes Iroha. Ela está organizada pela decisão que você precisa tomar, e não pelo recurso que por acaso a implementa.
 
-Usá-lo como uma lista de verificação antes de um ensaio compartilhado da rede de testes, um lançamento de produção ou um grande lançamento do cliente.
+Use-o como uma lista de verificação antes de um ensaio de testnet compartilhado, um lançamento de produção ou uma grande liberação para clientes.
 
 ## Categorias {#categories}
 
-|Categoria |Concentra-te .|
+|Categoria|Foco|
 | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| [Desenvolvimento de aplicações ](./application-development.md) |Configuração do cliente, submissão de transações, retestes, eventos, consultas e desenvolvimento assistido por agentes |
-| [Modelagem de dados ](./data-modeling.md) |Domínios, contas, ativos, NFTs, metadados, dados fora da cadeia e convenções de denominação |
-| [Implementação da rede ](./network-deployment.md) |Gênesis, topologia, teclas peer, exposição a Torii, configurações de consenso e separação do ambiente |
-| [Operações](./operations.md) |Observabilidade, runbooks, backups, gestão de mudanças, verificações de capacidade e manejo de incidentes |
-| [Segurança e Acesso ](./security-and-access.md) |Tratamento secreto, permissões, contas técnicas, acesso à rede e vias de auditoria |
-| [Preparação de liberação ](./release-readiness.md) |Localnet, Taira, Minamoto, verificações de compatibilidade, salvaguardas da rede ao vivo e planejamento do retrocesso |
+| [Desenvolvimento de Aplicativos](./application-development.md) |Configuração do cliente, envio de transações, tentativas, eventos, consultas e desenvolvimento assistido por agente|
+| [Modelagem de Dados](./data-modeling.md)                     |Domínios, contas, ativos, NFTs, metadados, dados fora da cadeia e convenções de nomenclatura|
+| [Implantação de Rede](./network-deployment.md)           |gênese da blockchain, topologia, chaves de pares da rede, exposição Torii, configurações de consenso e separação de ambientes|
+| [Operações](./operations.md)                           |Observabilidade, runbooks, backups, gerenciamento de mudanças, verificações de capacidade e manejo de incidentes|
+| [Segurança e Acesso](./security-and-access.md)         |Manuseio de segredos, permissões, contas técnicas, acesso à rede e trilhas de auditoria|
+| [Preparação para Lançamento](./release-readiness.md)             |Localnet, Taira, Minamoto, verificações de compatibilidade, salvaguardas da rede ao vivo e planejamento de reversão|
 
-## Regras de corte cruzado {#cross-cutting-rules}
+## Regras Transversais {#cross-cutting-rules}
 
-- Mantenha o desenvolvimento local, a rede de testes compartilhada e a configuração da produção separados.
-- Tratar a gênese, topologia de pares, política do executor e material-chave como artefatos de implantação controlada.
-- Não utilize metadados como ponto de dumping para dados grandes, privados ou com alto rendimento.
-- Enviar transações por meio de fluxos de trabalho idempotent que podem lidar com rejeição, expiração, retrospectivas e estado atrasado.
-- Preferir permissões estreitas, contas técnicas dedicadas e runbooks operacionais explícitos ao longo de um acesso administrador amplo.
-- Prove primeiro o comportamento numa rede local descartável, em seguida ensaie-se na Taira ou noutra rede de teste compartilhada antes de qualquer operação da rede principal.
+- Mantenha a configuração de desenvolvimento local, testnet compartilhada e produção separadas.
+- Trate o gênese da blockchain, a topologia de pares da rede, a política do executor e o material de chave como artefatos de implantação controlados.
+- Modele intencionalmente o estado do livro-razão blockchain durável. Não use metadados como um depósito para dados grandes, privados ou de alta rotatividade.
+- Envie transações através de fluxos de trabalho idempotentes que possam lidar com rejeição, expiração, tentativas e status atrasado.
+- Prefira permissões restritas, contas técnicas dedicadas e manuais operacionais explícitos em vez de acesso amplo de administrador.
+- Prove o comportamento em uma rede local descartável primeiro, depois ensaie em Taira ou em outro testnet compartilhado antes de qualquer operação na mainnet.
 
 ## Referências Relacionadas {#related-references}
 
-- [Configuração e Gestão ](/pt/guide/configure/overview.md)
+- [Configuração e Gerenciamento](/pt/guide/configure/overview.md)
 - [Segurança](/pt/guide/security/)
-- [Desempenho e métricas](/pt/guide/advanced/metrics.md)
-- [Matriz de compatibilidade ](/pt/reference/compatibility-matrix.md)
-- [Torii Pontos finais](/pt/reference/torii-endpoints.md)
-- [Tokens de autorização ](/pt/reference/permissions.md)
+- [Desempenho e Métricas](/pt/guide/advanced/metrics.md)
+- [Matriz de Compatibilidade](/pt/reference/compatibility-matrix.md)
+- [Torii API pontos de extremidade](/pt/reference/torii-endpoints.md)
+- [Tokens de Permissão](/pt/reference/permissions.md)

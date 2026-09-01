@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /cookbook/metadata.md
-translation_source_hash: 07b065b28eca44939a92b40a81a47b57178de4539abb0daf51913969e34eced7
+translation_source_hash: bb486994faabb29fb48609a886862e44e565148be4800ec1244218ef37e2e54b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 ## התוצאה {#outcome}
 
-לקרוא מטא נתונים על Taira, להגדיר ולבדוק את ערך המטא נתונים של חשבון אחד עם עסקאות ששילמתם באופן מפורש עמלה, ולהסיר את הערך שוב. אתה תשאיר מטא נתוני אובייקט ספריה נפרדים מהמטא נתונים לתשלום עסקה.
+קראו metadata ב־Taira, הגדירו ואמתו ערך metadata אחד של חשבון באמצעות עסקה שמשלמת עמלה במפורש, ואז הסירו אותו. השאירו metadata של אובייקט בספר החשבונות בנפרד מ־metadata של עמלת העסקה.
 
 ## תנאים מוקדמים {#prerequisites}
 
@@ -36,7 +36,7 @@ curl -fsS -H 'Accept: application/json' \
   | jq '.items[] | select((.metadata // {} | length) > 0)'
 ```
 
-השתמשו בתנתונים מטאטא עבור שדות תיאוריים או אינדקסינג קטנים. תורידו את עומס המיועד הגדולים מהמספר ותחזיקו דייטש, URI, או SoraFS מקובל במקום.
+השתמשו בתמטא-נתונים עבור שדות תיאוריים או אינדקסינג קטנים. תורידו את עומס המיועד הגדולים מהמספר ותחזיקו דייטש, URI, או SoraFS מקובל במקום.
 
 ### 2. להוציא את החשבון המטרה {#_2-derive-the-target-account}
 
@@ -71,7 +71,7 @@ printf '%s\n' \
       --key cookbook_profile
 ```
 
-CLI ציטוט את המחיר, חותם, מספק וממתין בד default. אל תוסיף `--no-wait` כאשר הפעולה הבאה תלויה הערך הזה. .
+ה־CLI מצטט את העמלה, חותם, מגיש וממתין כברירת מחדל. אל תוסיפו `--no-wait` כאשר הפעולה הבאה תלויה בערך זה.
 
 ::: warning גבולת היתר
 
@@ -100,7 +100,7 @@ iroha --config ./taira.client.toml \
   --key cookbook_profile
 ```
 
-עבור יישומים Python, הבניינים המתאימים בטייפים הם `Instruction.set_account_key_value` ו `Instruction.remove_account_key_value`; מסרו אותם עם מטא נתוני העסקה ועוזר מחכה מהטוריאלי [Python ](/he/guide/tutorials/python.md#shared-setup).
+ביישומי Python, הבונים המקבילים בעלי הטיפוס הם `Instruction.set_account_key_value` ו־`Instruction.remove_account_key_value`; שלחו אותם עם מטא־נתוני העסקה ועם מסייע ההמתנה מתוך [המדריך ל־Python](/he/guide/tutorials/python.md#shared-setup).
 
 ## לאמת {#verify}
 
@@ -126,16 +126,16 @@ fi
 
 - הכניסה הסטנדרטית חייבת להכיל ערך אחד תקף JSON. קווים צריכים ציטוטים JSON; אובייקטים ומערכות חייבים להיות נוצרות היטב.
 - מפתחות הנתונים המטאטא הם ערכים `Name` והם רגישים למקרה לאחר ניתוח. לשמור על מילולת מפתח יציבה במקום ליצור מפתחות גרסאות לכל שינוי של התכנית.
-- `--metadata` הוא מטא נתונים של עסקאות; הוא אינו מקין מטא נתוני אובייקטים של ספריה. השתמש ב- `meta set` של הארגון עבור האחרון.
-- העברת מוצלחת בעקבות קריאה ישנה עשויה להיות עיכוב ההתרחבות. חכו לסיום יישום ולנסו שוב את השאלת לפני שתעשו מחדש.
+- `--metadata` הוא metadata של העסקה; הוא אינו מגדיר metadata של אובייקט בספר החשבונות. עבור האפשרות השנייה השתמשו בתת־הפקודה `meta set` של הישות.
+- הגשה מוצלחת שאחריה קריאה ישנה עשויה לנבוע מעיכוב propagation. המתינו ל-finality מסוג Applied ונסו שוב את השאילתה לפני הגשה מחדש.
 - סירוב אישור מזהה את אובייקט היעד ואת גבול הסמכות. למדוד באופן מקומי או לבקש את הסימן המדויק; לא להעביר נתונים יישום פרטיים לתוך שדה מטא-מידע ציבורי כדי להימנע מפיקוח גישה.
-- לעולם אל תחזיקו מפתחות פרטיות, מזהים אישיים חומריים, סימני גישה או מסמכים גדולים בתנתונים מטא.
+- לעולם אל תחזיקו מפתחות פרטיות, מזהים אישיים חומריים, סימני גישה או מסמכים גדולים במטא-נתונים.
 
 ## מקור ומסמכים קשורים {#source-and-related-docs}
 
-- [בדיקות אינטגרציה של בקשת נתונים מטאטא ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/queries/metadata.rs)
-- [Python SDK בונים עסקאות בהתחייבויות קשורות ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/README.md)
-- [נתונים מטאטא](/he/blockchain/metadata.md)
-- [אפשרויות אחסון נתונים מטאטא ומספרים ](/he/guide/configure/metadata-and-store-assets.md)
+- [בדיקות אינטגרציה של בקשת מטא-נתונים ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/queries/metadata.rs)
+- [Python SDK בונים עסקאות commit קשורות ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/README.md)
+- [מטא-נתונים](/he/blockchain/metadata.md)
+- [אפשרויות אחסון מטא-נתונים ומספרים ](/he/guide/configure/metadata-and-store-assets.md)
 - [תיקון הוראות ](/he/reference/instructions.md)
 - [סימני רשיון ](/he/reference/permissions.md)

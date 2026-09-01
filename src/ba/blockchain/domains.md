@@ -23,13 +23,13 @@ domain.dataspace
 - `id`: мәғлүмәт киңлеге буйынса квалификациялы `DomainId`
 - `logo`: домен логотибы өсөн факультатив `SoraFS` URI
 - `metadata`: үҙаллы төп мәғәнәле метамәғлүмәт
-- `owned_by`: домен хужаһы иҫәбенә, ғәҙәттә уны теркәгән иҫәпкә
+- `owned_by`: доменға хужа булған иҫәп, ғәҙәттә уны теркәгән иҫәп
 
 Бутстрап файҙалы йөкләмәһе ҡулланылған материализация домен `NewDomain`. Ул ташый `id`, факультатив `logo`, һәм башланғыс `metadata`. Йүгереү ваҡыты тулы `owned_by` ябай клиенттар был файҙалы йөкләмәне туранан-тура тапшыра алмай.
 
 ## Регистрация {#registration}
 
-Ғәҙәти домен булдырыу декларатив ҡушамат ҡоролошо ағымын ҡуллана. Был SNS лизинг килешеүен, хужа мөмкинлектәрен, цитата һаҡсыһын һәм домен рәтен бер атом `EnsureAlias` транзакцияһында тота. `Register::Domain` генез/bootstrap өҫкө йөҙө булып ҡала, ә `ledger domain` командаһының `register` аҫты командаһы юҡ.
+Ғәҙәти домен булдырыу декларатив ҡушамат ҡоролошо ағымын ҡуллана. Был SNS лизинг килешеүен, хужа мөмкинлектәрен, комиссия иҫәбе һаҡсыһын һәм домен рәтен бер атом `EnsureAlias` транзакцияһында тота. `Register::Domain` генез/bootstrap өҫкө йөҙө булып ҡала, ә `ledger domain` командаһының `register` аҫты командаһы юҡ.
 
 SDK йәки инеү сервисы менән йәшерен булмаған `AliasSetupPlanRequestV1` ниәтен булдырығыҙ, һуңынан CLI уны тере торошҡа ҡаршы планлаштырығыҙ һәм шул уҡ планын тапшырығыҙ:
 
@@ -45,7 +45,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-Ниәт `payments.universal`, уның һанлы мәғлүмәттәр киңлеге, каноник I105 хужаһы, ҡуртымға алыу срогы һәм ағымдағы сәйәсәт / түләү цитатаһы һаҡсыһын асыҡлай. планерҙың һуңғы нөктәһе `POST /v1/aliases/setup/plan`; кире ҡайтарылған планы сылбырлы, властьлы, дәүләт һәм сроклы. Доменды алып ташлау һаман да [`Unregister`](/ba/blockchain/instructions.md#un-register) ҡуллана.
+Ниәт `payments.universal`, уның һанлы мәғлүмәттәр киңлеге, каноник I105 хужаһы, ҡуртымға алыу срогы һәм ағымдағы сәйәсәт / түләү комиссия иҫәбе һаҡсыһын асыҡлай. планерҙың һуңғы нөктәһе `POST /v1/aliases/setup/plan`; кире ҡайтарылған планы сылбырлы, вәкәләтле иҫәп менән бәйле, дәүләт һәм сроклы. Доменды алып ташлау һаман да [`Unregister`](/ba/blockchain/instructions.md#un-register) ҡуллана.
 
 Доменды булдырыу йәки алып ташлау өсөн домен менән идара итеүгә тейешле рөхсәт кәрәк. Домен метамәғлүмәттәре [`SetKeyValue` һәм `RemoveKeyValue`](/ba/blockchain/instructions.md#setkeyvalue-removekeyvalue) менән яңыртыла ала, әгәр хакимиәт был доменды үҙгәртергә рөхсәткә эйә булһа.
 
@@ -69,7 +69,7 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
 
 Домендың бармы-юҡмы икәнен тикшереү өсөн беренсе команданы ҡулланығыҙ. Мәғлүмәт киңлеге асыҡ, сикләнгән йәки төп юл артында ҡалғанын раҫларға кәрәк булғанда трасса каталогын ҡулланығыҙ.
 
-Домен булдырыу өсөн түләүле яҙыу. Taira, кран ярҙамсыһын һаҡларға [Testnet-ты алығыҙ XOR тураһында Taira](/ba/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) тип `taira_faucet_claim.py`, Ҡулланыусыны дәүләт фонды аша финанслау һәм түләү метамәғлүмәттәрен ҡушыу:
+Domain setup — fee-paying write. Taira-ла уны һынағанға тиклем [Taira-ла Testnet XOR алыу](/ba/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) бүлегендәге faucet helper-ҙы `taira_faucet_claim.py` итеп һаҡлағыҙ, signer-ҙы public faucet аша финанслағыҙ һәм fee metadata ҡушығыҙ:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -88,7 +88,7 @@ iroha --config ./taira.client.toml \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 
-Үҙенсәлекле домен исеме өсөн ниәт төҙөргә ҡабатланған тест селтәрҙәрендә эшләй, һәм ҡулланырға Taira ғәмәлдәге сәйәсәт һәм түләү-актив котировкаһы һаҡлай. Minamoto.
+Ҡабатланған testnet эшләтеүҙәрендә уникаль домен исеме өсөн intent төҙөгөҙ һәм Taira-ның ғәмәлдәге policy һәм fee-asset quote guard-ын ҡулланығыҙ. localnet йәки Minamoto өсөн төҙөлгән plan-ды ҡабат ҡулланмағыҙ.
 
 ## Башҡа субъекттар менән мөнәсәбәттәр {#relationship-to-other-entities}
 

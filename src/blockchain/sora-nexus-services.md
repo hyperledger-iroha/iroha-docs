@@ -5,17 +5,19 @@ are not separate ledgers. They are anchored by Iroha world state, Norito
 manifests, governance records, and Torii route families.
 
 Availability depends on the node build and network profile. Use
-[`/openapi`](/reference/torii-endpoints.md#app-and-sora-route-families) on
-the target node as the authoritative list of enabled routes.
+[`/openapi.json`](/reference/torii-endpoints.md#app-and-sora-route-families)
+to discover generated app-API routes on the target node. Public local
+SoraFS CID and well-known routes are mounted outside that generated
+document, so probe those routes directly when checking a deployment.
 
 ## Component Map
 
 | Component              | Role                                                                                                                                        | Main surfaces                                                                            |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| Soracloud              | Application deployment, hosted services, private model/runtime state, and service lifecycle control.                                        | `/v1/soracloud/*`, `/api/*`, `iroha app soracloud ...`                                   |
+| Soracloud              | Application deployment, hosted services, private model/runtime state, and service lifecycle control.                                        | `/v1/soracloud/*`, `/api/*`, `iroha soracloud service ...`                                   |
 | Inrou                  | Soracloud hosted HTTP runtime for service revisions that need a live HTTP plane.                                                            | Soracloud runtime config, host capability adverts, replica runtime state                 |
 | SoraNet                | Privacy and transport overlay for circuits, relay traffic, VPN, Connect sessions, and streaming routes.                                     | `/v1/connect/*`, `/v1/vpn/*`, SoraNet route metadata                                     |
-| Data Availability (DA) | Availability evidence, commitment, and pin-intent layer for payloads that are referenced by Nexus lanes, SoraFS manifests, and proof flows. | `/v1/da/*`, `FindDaPinIntent*`, `[sumeragi.da]`                                          |
+| Data Availability (DA) | Availability evidence, commitment, and pin-intent layer for payloads that are referenced by Nexus lanes, SoraFS manifests, and proof flows. | `/v1/da/*`, `FindDaPinIntent*`, `[nexus.da]`                                             |
 | SoraFS                 | Content-addressed storage fabric for manifests, CAR payloads, pinned content, gateway fetches, and proof-of-retrievability flows.           | `/v1/sorafs/*`, `/sorafs/*`, `FindSorafsProviderOwner`                                   |
 | SoraDNS                | Deterministic naming and resolver-attestation layer for SORA-hosted services and content.                                                   | `/v1/soradns/*`, `/soradns/*`, resolver directory events                                 |
 | Aitai                  | App-level fiat and asset settlement corridor backed by native escrow records, not by a separate ledger.                                     | `OpenAssetEscrow`, `FindAssetEscrow*`, `EscrowEventFilter`, Kotodama `escrow_*` builtins |
@@ -109,7 +111,7 @@ events, and Rust examples, see
 | Aitai surface                                                                                                                                                 | Use it for                                                                                |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`                                                    | Transparent numeric asset offers, including XOR-denominated settlement flows.             |
-| `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`       | Shielded offers use proof attachments for funding and closing movements.                   |
+| `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`       | Shielded offers use proof attachments for funding and closing movements.                  |
 | `OpenEscrowDispute`, `ResolveEscrowDispute`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute`                                                    | Dispute entry and court-style resolution.                                                 |
 | `FindAssetEscrowById`, `FindAssetEscrowsBySeller`, `FindAssetEscrowsByBuyer`, `FindAssetEscrowsByStatus`                                                      | App status pages, reconciliation jobs, and support tooling.                               |
 | `EscrowEventFilter`                                                                                                                                           | Live transparent escrow subscriptions by escrow id, seller, buyer, status, or event kind. |
@@ -134,14 +136,16 @@ curl -fsS "$TORII_URL/openapi.json" \
 curl -fsS -H 'Accept: application/json' "$TORII_URL/status" | jq .
 ```
 
-If `/openapi.json` is not exposed by the profile, try `/openapi`. Exact
-route availability depends on build features and network configuration.
+`/openapi.json` is the canonical OpenAPI endpoint. Exact route availability
+depends on build features and network configuration. The document does not
+enumerate the public local SoraFS CID and well-known routes; check those
+endpoints directly as described below.
 
 ### Taira Read-Only Smoke Checks
 
 The public Taira endpoint is useful for read-side checks, but do not use it
 for mutating examples unless you are operating an authorized account and
-intend to change live state.
+intend to change public testnet state.
 
 ```bash
 export TORII_URL=https://taira.sora.org
@@ -149,22 +153,20 @@ export TORII_URL=https://taira.sora.org
 curl -fsS -H 'Accept: application/json' "$TORII_URL/status" \
   | jq '{version: .build.version, peers, blocks, lanes: (.teu_lane_commit | length)}'
 
-curl -fsS "$TORII_URL/v1/connect/status" | jq '{enabled, sessions_active}'
-
 curl -fsS "$TORII_URL/v1/vpn/profile" \
   | jq '{available, relay_endpoint, supported_exit_classes}'
 
-curl -fsS "$TORII_URL/v1/sorafs/storage/state" \
-  | jq '{bytes_capacity, bytes_used, pin_queue_depth, por_inflight}'
+curl -fsS "$TORII_URL/v1/sorafs/storage/peers?limit=4" \
+  | jq '{gateway_base_url, pin_torii_urls}'
 
 curl -fsS -H 'Accept: application/json' "$TORII_URL/v1/soracloud/status" \
   | jq '.control_plane | {service_count, services: [.services[] | {service_name, current_version}]}'
 ```
 
 Taira may expose deployment-specific control-plane routes that are not
-listed in the OpenAPI path map. Treat `/openapi` as the primary generated
-API contract, then confirm any deployment-specific route directly before
-documenting it as live.
+listed in the OpenAPI path map. Treat `/openapi.json` as the generated
+contract for the routes it contains, then confirm deployment-specific and
+public local SoraFS routes directly before documenting them as available.
 
 ## Soracloud
 
@@ -192,46 +194,69 @@ The split-app template creates a static frontend plus one hosted live API
 and one deterministic vault/API service:
 
 ```bash
-iroha app soracloud app init \
+iroha soracloud app init \
   --template split-app \
   --app-name solswap_indexer \
   --app-version 0.1.0 \
   --public-host solswap-indexer.sora \
   --output-dir ./apps/solswap-indexer
 
-iroha app soracloud app local-plan \
+iroha soracloud app plan \
   --manifest ./apps/solswap-indexer/app_manifest.json
 
-iroha app soracloud app doctor \
+iroha soracloud app doctor \
   --manifest ./apps/solswap-indexer/app_manifest.json
 ```
 
-`local-plan` prints the route split, child service manifests, workspace
-script paths, and the expected frontend publication mode. `doctor`
-validates the local release contract before you involve Torii.
+`plan` prints the route split, child service manifests, workspace script
+paths, and the expected frontend publication mode. `doctor` validates the
+local release contract before you involve Torii.
 
 ### Deploy and Inspect App State
 
+Reuse one future SoraFS retention epoch for every retry of the release.
+Because the split-app template contains an Inrou service, qualify its exact
+artifact in the selected offline provider stores before the online
+mutation:
+
 ```bash
 export SORACLOUD_TORII_URL=https://<soracloud-enabled-torii>
+export SORAFS_RETENTION_EPOCH=<future-unix-seconds>
 
-iroha app soracloud app deploy \
+iroha soracloud app preseed \
   --manifest ./apps/solswap-indexer/app_manifest.json \
+  --sorafs-retention-epoch "$SORAFS_RETENTION_EPOCH" \
+  --inrou-preseed-target <validator-account,peer-id,absolute-store-path> \
+  --inrou-preseed-max-capacity-bytes <bytes> \
+  --inrou-preseed-helper /absolute/path/to/sorafs-node \
+  --inrou-preseed-helper-sha256 <lowercase-sha256> \
+  --receipt-out /absolute/path/to/solswap-inrou-preseed.json
+
+iroha soracloud app release \
+  --manifest ./apps/solswap-indexer/app_manifest.json \
+  --sorafs-retention-epoch "$SORAFS_RETENTION_EPOCH" \
+  --inrou-preseed-receipt /absolute/path/to/solswap-inrou-preseed.json \
   --torii-url "$SORACLOUD_TORII_URL"
 
-iroha app soracloud app status \
+iroha soracloud app status \
   --manifest ./apps/solswap-indexer/app_manifest.json \
   --torii-url "$SORACLOUD_TORII_URL"
 ```
+
+Repeat `--inrou-preseed-target` for every provider store required by the
+deployment policy. `release` builds and synchronizes the manifests, runs
+the app doctor, submits one canonical app-infrastructure mutation,
+reconciles authoritative status, and verifies the declared live targets. A
+preseed receipt is not optional when the app contains Inrou artifacts.
 
 For an already deployed service, use service-scoped commands:
 
 ```bash
-iroha app soracloud status \
+iroha soracloud service status \
   --service-name solswap_indexer_live \
   --torii-url "$SORACLOUD_TORII_URL"
 
-iroha app soracloud rollback \
+iroha soracloud service rollback \
   --service-name solswap_indexer_live \
   --target-version 0.1.0 \
   --torii-url "$SORACLOUD_TORII_URL"
@@ -244,13 +269,13 @@ state. Deploy, upgrade, and rollback fail closed when required config or
 secret bindings are missing or inconsistent with the active manifests.
 
 ```bash
-iroha app soracloud config-set \
+iroha soracloud service config-set \
   --service-name solswap_indexer_live \
   --config-name indexer/public_config \
   --value-file ./config/public-config.json \
   --torii-url "$SORACLOUD_TORII_URL"
 
-iroha app soracloud secret-set \
+iroha soracloud service secret-set \
   --service-name solswap_indexer_live \
   --secret-name indexer/api_key \
   --secret-file ./secrets/api-key.envelope.json \
@@ -260,8 +285,8 @@ iroha app soracloud secret-set \
 Use the CLI help for the exact credential flags required by your profile:
 
 ```bash
-iroha app soracloud config-set --help
-iroha app soracloud secret-set --help
+iroha soracloud service config-set --help
+iroha soracloud service secret-set --help
 ```
 
 ## Inrou
@@ -413,26 +438,56 @@ tickets or viewer identity before bridging to Torii or a hosted service.
 ### SoraNet-Aware SoraFS Fetch
 
 The SoraFS fetch CLI can emit a local proxy manifest and spool SoraNet
-route metadata for browser extensions or SDK adapters:
+route metadata for browser extensions or SDK adapters. The orchestrator
+JSON must define `local_proxy` with `"emit_browser_manifest": true`, and
+the CLI must be built with `local-quic-proxy` support. On Taira, inspect
+the admitted provider catalog at the public testnet root, then populate the
+protected provider tuple issued for that provider:
 
 ```bash
-sorafs_cli fetch \
-  --plan artifacts/payload_plan.json \
-  --manifest-id 7bb2...9d31 \
-  --provider name=alpha,provider-id=9f5c...73aa,base-url=https://gw-alpha.example.org/,stream-token="$(cat alpha.token)" \
-  --output artifacts/payload.bin \
-  --json-out artifacts/fetch_summary.json \
-  --local-proxy-manifest-out artifacts/proxy_manifest.json \
-  --local-proxy-mode bridge \
-  --local-proxy-norito-spool storage/streaming/soranet_routes \
-  --local-proxy-kaigi-spool storage/streaming/soranet_routes \
-  --local-proxy-kaigi-policy authenticated \
+export TAIRA_ROOT=https://taira.sora.org
+curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
+
+: "${TAIRA_SORAFS_PROVIDER_ID:?set the admitted provider ID from Taira discovery}"
+: "${TAIRA_SORAFS_GATEWAY_KEY:?set the provider gateway key}"
+: "${TAIRA_SORAFS_PROVIDER_URL:?set the advertised provider base URL}"
+: "${TAIRA_SORAFS_STREAM_TOKEN_FILE:?set the issued stream-token file}"
+
+cargo run -p sorafs_orchestrator --features=local-quic-proxy --bin=sorafs_cli -- \
+  fetch \
+  --plan=artifacts/payload_plan.json \
+  --manifest-id=<manifest-digest-hex> \
+  --orchestrator-config=artifacts/orchestrator.json \
+  --provider=name=taira,provider-id="$TAIRA_SORAFS_PROVIDER_ID",gateway-key="$TAIRA_SORAFS_GATEWAY_KEY",base-url="$TAIRA_SORAFS_PROVIDER_URL",stream-token="$(cat "$TAIRA_SORAFS_STREAM_TOKEN_FILE")" \
+  --output=artifacts/payload.bin \
+  --json-out=artifacts/fetch_summary.json \
+  --local-proxy-manifest-out=artifacts/proxy_manifest.json \
+  --local-proxy-mode=bridge \
+  --local-proxy-norito-spool=storage/streaming/soranet_routes \
+  --local-proxy-kaigi-spool=storage/streaming/soranet_routes \
+  --local-proxy-kaigi-policy=authenticated \
   --max-peers=2 \
   --retry-budget=4
 ```
 
 The summary records provider reports, chunk receipts, local proxy metadata,
 and the effective route settings used for the fetch.
+
+### Relay Incentive Verifier Roster
+
+Relay incentive ingestion is fail-closed. When `incentives.enable` is true,
+`incentives.trusted_verifier_ids` must contain at least one canonical
+account ID. The roster must never exceed 64 entries, even while incentives
+are disabled. The runtime stores it as a deterministic ordered set, and
+rejects invalid roster geometry during relay startup.
+
+Each `RelayBandwidthProofV1` is decoded under a fixed frame/allocation
+budget and must consume the complete frame. The proof's verifier account
+must be present in the configured roster, and
+`RelayBandwidthProofV1::verify_signature()` must succeed, before the relay
+locks or changes its performance accumulator. An untrusted signer or a
+signature-invalid/tampered proof therefore contributes no measurement and
+cannot produce an incentive snapshot.
 
 ## Data Availability (DA)
 
@@ -483,48 +538,52 @@ A typical DA-backed publication flow is:
 
 ### Algorithmic Model
 
-DA turns a payload into a signed, replay-protected, block-indexed commitment.
-The important algorithms are deterministic so validators and gateways can
-recompute the same digests from the same bytes.
+DA turns a payload into a signed, replay-protected, block-indexed
+commitment. The important algorithms are deterministic so validators and
+gateways can recompute the same digests from the same bytes.
 
-1. **Canonicalize the submitted payload.** Torii accepts an ingest request with
-   `(lane_id, epoch, sequence)`, payload bytes, compression metadata, chunk
-   size, erasure profile, retention policy, and submitter signature. The node
-   decompresses gzip, deflate, or Zstandard payloads when requested, then
-   verifies that the canonical byte length equals `total_size`.
+1. **Canonicalize the submitted payload.** Torii accepts an ingest request
+   with `(lane_id, epoch, sequence)`, payload bytes, compression metadata,
+   chunk size, erasure profile, retention policy, and submitter signature.
+   The node decompresses gzip, deflate, or Zstandard payloads when
+   requested, then verifies that the canonical byte length equals
+   `total_size`.
 2. **Validate lane and chunk parameters.** The lane must exist in the Nexus
    lane catalog. `chunk_size` must be a non-zero power of two, at least two
-   bytes, and no larger than the configured maximum. The erasure profile must
-   include data shards and at least two parity shards. The lane catalog selects
-   the proof scheme, either `merkle_sha256` or `kzg_bls12_381`.
-3. **Apply network policy.** The node enforces the configured replication and
-   retention baseline for the blob class. Public metadata must stay plaintext;
-   governance-only metadata is encrypted with the node's configured governance
-   metadata key before it is written into the manifest.
+   bytes, and no larger than the configured maximum. The erasure profile
+   must include data shards and at least two parity shards. The lane
+   catalog selects the proof scheme, either `merkle_sha256` or
+   `kzg_bls12_381`.
+3. **Apply network policy.** The node enforces the configured replication
+   and retention baseline for the blob class. Public metadata must stay
+   plaintext; governance-only metadata is encrypted with the node's
+   configured governance metadata key before it is written into the
+   manifest.
 4. **Chunk and commit.** The canonical payload is chunked with a fixed-size
-   profile derived from `chunk_size`. Torii computes the payload digest, the
-   proof-of-retrievability tree root, and per-chunk commitments. Data chunks
-   carry BLAKE3 commitments over their bytes.
+   profile derived from `chunk_size`. Torii computes the payload digest,
+   the proof-of-retrievability tree root, and per-chunk commitments. Data
+   chunks carry BLAKE3 commitments over their bytes.
 5. **Add erasure commitments.** Chunks are grouped into stripes of
-   `data_shards`. Missing cells in the final stripe are zero padded for parity
-   calculation. RS(16) parity creates row/global parity shards; optional
-   `row_parity_stripes` add column-style stripe parity across the matrix.
-   Parity shard commitments are BLAKE3 digests of little-endian `u16` symbols.
-6. **Build the manifest.** `DaManifestV1` records the lane, epoch, blob class,
-   codec, payload digest, chunk root, chunk size, erasure profile, retention
-   policy, rent quote, chunk commitments, optional IPA commitment, metadata,
-   and issue time. The storage ticket is deterministic: the node first hashes a
-   manifest template with an empty ticket, then writes that fingerprint back as
-   the final `storage_ticket`.
+   `data_shards`. Missing cells in the final stripe are zero padded for
+   parity calculation. RS(16) parity creates row/global parity shards;
+   optional `row_parity_stripes` add column-style stripe parity across the
+   matrix. Parity shard commitments are BLAKE3 digests of little-endian
+   `u16` symbols.
+6. **Build the manifest.** `DaManifestV1` records the lane, epoch, blob
+   class, codec, payload digest, chunk root, chunk size, erasure profile,
+   retention policy, rent quote, chunk commitments, optional IPA
+   commitment, metadata, and issue time. The storage ticket is
+   deterministic: the node first hashes a manifest template with an empty
+   ticket, then writes that fingerprint back as the final `storage_ticket`.
 7. **Reject replay conflicts.** The replay key is
    `(lane_id, epoch, sequence, manifest_fingerprint)`. A duplicate with the
-   same fingerprint is idempotent. A stale sequence or the same sequence with a
-   different fingerprint is rejected.
+   same fingerprint is idempotent. A stale sequence or the same sequence
+   with a different fingerprint is rejected.
 8. **Emit signed artifacts.** Torii computes a PDP commitment, signs a
-   `DaIngestReceipt`, builds a `DaCommitmentRecord`, and writes spool artifacts
-   for the manifest, PDP commitment, commitment record, commitment schedule,
-   pin intent, receipt file, and receipt log. The receipt cursor advances
-   monotonically per `(lane_id, epoch)`.
+   `DaIngestReceipt`, builds a `DaCommitmentRecord`, and writes spool
+   artifacts for the manifest, PDP commitment, commitment record,
+   commitment schedule, pin intent, receipt file, and receipt log. The
+   receipt cursor advances monotonically per `(lane_id, epoch)`.
 
 Commitment records are what blocks carry. A record binds:
 
@@ -537,78 +596,74 @@ Commitment records are what blocks carry. A record binds:
 - retention class and storage ticket
 - Torii DA acknowledgement signature
 
-Before a block embeds DA records, the block assembly path validates the bundle:
+Before a block embeds DA records, the block assembly path validates the
+bundle:
 
 - `(lane_id, epoch, sequence)` must be unique inside the bundle.
 - Manifest hashes must be non-zero and unique inside the bundle.
 - The commitment proof scheme must match the configured lane policy.
 - Merkle lanes reject KZG commitments; KZG lanes require a non-zero KZG
   commitment.
-- Pin intents are canonicalized, sorted, and filtered by lane, manifest hash,
-  storage ticket, owner account, and alias-collision rules.
+- Pin intents are canonicalized, sorted, and filtered by lane, manifest
+  hash, storage ticket, owner account, and alias-collision rules.
 
 The block header stores hashes for DA proof policies, commitments, and pin
 intents. For membership proofs, the commitment bundle also exposes a Merkle
 root whose leaves are hashes of canonical Norito-encoded
-`DaCommitmentRecord` values. Parent nodes hash the concatenation of left and
-right children; an odd leaf is promoted unchanged to the next layer.
+`DaCommitmentRecord` values. Parent nodes hash the concatenation of left
+and right children; an odd leaf is promoted unchanged to the next layer.
 
 ### Proof Verification
 
-`/v1/da/commitments/prove` can produce a proof for one commitment in a block.
-The proof contains the commitment, block height, index in the bundle, bundle
-hash, bundle length, Merkle root, and sibling path. Verification checks:
+`/v1/da/commitments/prove` can produce a proof for one commitment in a
+block. The proof contains the commitment, block height, index in the
+bundle, bundle hash, bundle length, Merkle root, and sibling path.
+Verification checks:
 
 1. The proof bundle hash matches the block header's DA commitment hash.
 2. The proof block height matches the referenced block header.
-3. The index is in bounds and the commitment equals the bundle entry at that
-   index.
+3. The index is in bounds and the commitment equals the bundle entry at
+   that index.
 4. The lane proof policy accepts the commitment.
-5. Folding the sibling path from the commitment leaf reconstructs the supplied
-   root.
+5. Folding the sibling path from the commitment leaf reconstructs the
+   supplied root.
 6. The reconstructed root equals the bundle root.
 
-This proves that a specific availability commitment was included in a specific
-block payload; it does not prove that every replica is currently online. Live
-retrievability is checked separately through SoraFS provider fetches, PDP/PoTR
-checks, or profile-specific availability evidence.
+This proves that a specific availability commitment was included in a
+specific block payload; it does not prove that every replica is currently
+online. Live retrievability is checked separately through SoraFS provider
+fetches, PDP/PoTR checks, or profile-specific availability evidence.
 
 ### Consensus Interaction
 
-DA is coupled to Sumeragi through reliable broadcast (RBC), but it is not a
-second finality protocol. RBC disseminates and recovers proposal payloads:
-the proposer announces a session for `(height, view, payload_hash)`, peers
-exchange chunks, and `READY`/`DELIVER` signals track whether enough validators
-observed the same payload.
+Consensus payload availability is mandatory, but it is not a second
+finality protocol. The leader broadcasts a signed `PayloadManifest` to the
+complete `3f + 1` committee. The first body and RS16 chunk occurrence
+targets Set A, whose `2f + 1` members include the leader and proxy tail. A
+bounded same-view retransmission expands body and chunk service to the
+whole committee.
 
-In Iroha 3, a peer considers the pending block payload available when either:
+A manifest or partial shard set is not enough to vote. Before Prepare, each
+validator must authenticate the chunks, reconstruct the complete canonical
+body, verify its length, chunk root, and body hash, persist that body, and
+finish deterministic block validation. The validator retains the exact body
+through CommitQC application or certified recovery.
 
-- the local pending block bytes hash to the expected payload hash, or
-- RBC has recovered a payload matching the block hash, height, view, and
-  payload hash.
-
-If neither condition holds, the peer records `missing_local_data`, keeps trying
-to recover the payload through RBC or block sync, and reports the DA gate in
-status and telemetry. In the current implementation these DA signals are
-advisory for finality: a block still finalizes from the commit certificate plus
-the matching local payload, not from a separate DA quorum certificate.
-
-DA timing widens recovery windows. The effective DA quorum timeout is derived
-from the configured block and commit timings, then multiplied by
-`sumeragi.advanced.da.quorum_timeout_multiplier`. The availability timeout is
-`max(quorum_timeout, availability_timeout_floor_ms) * availability_timeout_multiplier`.
-Before that availability timeout expires, the node favors payload recovery and
-avoids premature rescheduling; after it expires, normal recovery and
-view-change paths can proceed.
+When a peer learns a certificate before it has the body, it first requests
+authenticated chunks or the canonical body from certificate signers, then
+expands recovery to the frozen committee. Every response remains bound to
+the exact height context, proposal round, manifest, and body subject. The
+block is applied only after the locally reconstructed body matches the
+certificate.
 
 ### Operator Notes
 
-Iroha 3 consensus profiles include RBC-backed payload dissemination, manifest
-guards, DA bundle validation, and recovery telemetry. The peer
-template exposes `[sumeragi.da]` limits for commitments and proof openings per
-block, plus `[sumeragi.advanced.da]` timeout multipliers for quorum and
-availability behavior. Keep these settings consistent across validators in one
-network profile.
+Iroha 3 consensus profiles always include signed manifest and RS16 payload
+dissemination, full-body-before-Prepare validation, DA bundle validation,
+and bounded recovery telemetry. The layout and protocol bounds are frozen
+into the signed height context; there is no local switch or timeout profile
+that can disable or redefine them. Node-local block and queue bounds still
+need to fit the deployment's signed layout and workload.
 
 For route discovery, start with the node's OpenAPI document:
 
@@ -620,8 +675,9 @@ curl -fsS "$TORII_URL/openapi.json" \
 Use the
 [query reference](/reference/queries.md#nexus-data-availability-and-packages)
 for the current DA query names, and the
-[peer configuration template](/reference/peer-config/) for the local
-`[sumeragi.da]` knobs exposed by your build.
+[peer configuration template](/reference/peer-config/) for
+application-level `[nexus.da]` ingest, sampling, audit, and recovery bounds
+plus the local Sumeragi block and queue limits.
 
 ## SoraFS
 
@@ -638,84 +694,245 @@ bundles. The Iroha data model exposes SoraFS gateway events and a
 [`FindSorafsProviderOwner`](/reference/queries.md#nexus-data-availability-and-packages)
 query for provider ownership resolution.
 
-### Pack, Manifest, Sign, and Submit
+### Taira Testnet Profile
 
-```bash
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  car pack \
-  --input ./dist \
-  --car-out artifacts/site.car \
-  --plan-out artifacts/site.chunk-plan.json \
-  --summary-out artifacts/site.car-summary.json
+Taira is the canonical public SoraFS testnet. Its checked-in validator
+profile uses chain `fc56984b-2be7-431d-840e-21514d1883f0` and chain
+discriminant `369`. The `NetworkId` below is the exact identity of the
+current pinned Taira genesis. A Taira reset can change that hash while
+retaining the chain label, so refresh it from the current signed deployment
+profile and never derive it from the chain UUID. Taira's effective SoraFS
+settings are:
 
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  manifest build \
-  --summary artifacts/site.car-summary.json \
-  --manifest-out artifacts/site.manifest.to \
-  --manifest-json-out artifacts/site.manifest.json \
-  --pin-min-replicas=3 \
-  --pin-storage-class=warm \
-  --pin-retention-epoch=42
+- network ID:
+  `hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94`
+- gateway base URL: `https://taira.sora.org`
+- pin Torii URLs: `https://taira-validator-1.sora.org` through
+  `https://taira-validator-4.sora.org`
+- discovery capabilities: `torii_gateway`, `chunk_range_fetch`, and
+  `potr_mldsa`
+- isolated content origin: `https://{cid}.sorafs.taira.sora.org/{path}`
+- public pin policy: permissionless and fee-gated, with
+  `require_council_signatures = false`
 
-SIGSTORE_ID_TOKEN=$(oidc-client fetch-token) \
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  manifest sign \
-  --manifest artifacts/site.manifest.to \
-  --bundle-out artifacts/site.manifest.bundle.json \
-  --signature-out artifacts/site.manifest.sig
+```toml
+[sorafs.storage]
+enabled = false
+max_capacity_bytes = 13743895347
 
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  manifest submit \
-  --manifest artifacts/site.manifest.to \
-  --chunk-plan artifacts/site.chunk-plan.json \
-  --torii-url "$TORII_URL" \
-  --resolve-submitted-epoch=true \
-  --authority=<i105-account-id> \
-  --private-key-file ./secrets/authority.ed25519 \
-  --summary-out artifacts/site.manifest.submit.json \
-  --response-out artifacts/site.manifest.submit.body
+[sorafs.discovery]
+discovery_enabled = true
+known_capabilities = ["torii_gateway", "chunk_range_fetch", "potr_mldsa"]
+
+[sorafs.discovery.admission]
+envelopes_dir = "configs/soranexus/taira/sorafs_admission"
+trusted_council_keys = ["REPLACE_WITH_TAIRA_SORAFS_COUNCIL_PUBLIC_KEY"]
+signature_threshold = "REPLACE_WITH_TAIRA_SORAFS_COUNCIL_SIGNATURE_THRESHOLD"
+
+[sorafs.discovery.publish]
+gateway_base_url = "https://taira.sora.org"
+pin_torii_urls = [
+  "https://taira-validator-1.sora.org",
+  "https://taira-validator-2.sora.org",
+  "https://taira-validator-3.sora.org",
+  "https://taira-validator-4.sora.org",
+]
+
+[sorafs.gateway]
+require_manifest_envelope = true
+enforce_admission = true
+enforce_capabilities = true
+
+[sorafs.gateway.untrusted_hosting]
+enabled = true
+path_gateway_redirect = true
+redirect_html_only = true
+
+[sorafs.gateway.untrusted_hosting.cid_host_suffixes]
+live = "sorafs.sora.org"
+taira = "sorafs.taira.sora.org"
+
+[sorafs.repair]
+enabled = false
+claim_ttl_secs = 900
+heartbeat_interval_secs = 60
+max_attempts = 3
+worker_concurrency = 4
+
+[sorafs.gc]
+enabled = false
+interval_secs = 900
+max_deletions_per_run = 500
+retention_grace_secs = 86400
+
+[gov.sorafs_pin_policy]
+require_council_signatures = false
 ```
 
-If `/v1/sorafs/pin/register` is not routed on the target node, the CLI can
-fall back to a signed `/transaction` submission and wait for a terminal
-pipeline status.
+The three top-level gateway values are inherited fail-closed defaults; all
+other values in the excerpt are explicit in Taira's checked-in profile. An
+operator must replace the discovery-admission placeholders with the signed
+deployment material. Every served request must carry a manifest envelope,
+pass provider admission, and use an advertised capability.
+
+The Taira validators have embedded SoraFS storage, repair, and garbage
+collection disabled. Their configured capacity remains part of the
+validator disk-budget check; it does not mean that the validator is a
+storage provider. Use `GET /v1/sorafs/storage/peers?limit=4` to read the
+current configured gateway and pin destinations before a test.
+
+Taira's schema config accepts both the `live` and `taira` CID-host suffix
+keys. Public-testnet manifests, origin checks, and browser tests should use
+`sorafs.taira.sora.org` so their origin is visibly bound to Taira; do not
+treat the accepted `live` key as a recommendation to publish testnet
+content under a production-looking origin. Other deployments must use their
+own network identity, governance keys, provider admission material, pin
+endpoints, and capacity/repair policy.
+
+### Public Local CID and Site Gateways
+
+Every SoraFS-enabled Torii node mounts these anonymous public routes even
+when the optional app API is not built:
+
+| Method and endpoint                | Purpose                                                              |
+| ---------------------------------- | -------------------------------------------------------------------- |
+| `GET /.well-known/sorafs/manifest` | Return the manifest selected by the canonical request host           |
+| `GET /v1/sorafs/cid/{cid}`         | Return bounded local manifest metadata and file entries for one CID  |
+| `GET /sorafs/cid/{cid}`            | Serve the root document for one local content-addressed site         |
+| `GET /sorafs/cid/{cid}/{*path}`    | Serve one normalized path, or one bounded byte range, under that CID |
+
+These routes never accept `x-sorafs-stream-token` or `x-sorafs-token-id`.
+Presence of either header is a bad request. A canonical manifest already
+present in the node's authoritative local store is the public read
+capability; a cache miss does not authorize remote-provider hydration.
+Protected provider CAR and chunk routes remain separate authenticated
+protocol surfaces.
+
+Before reading bytes, Torii validates the local manifest's canonical
+encoding, semantic constraints, digest, and root CID. It then requires the
+authoritative local provider identity, governance admission, and governed
+compliance for the manifest, CID, and provider. Gateway rate/ban policy
+uses the effective client address, honoring forwarded addresses only
+through configured trusted proxies. Missing policy, compliance, identity,
+or admission state fails closed.
+
+One request holds an end-to-end public-gateway permit; the process-wide
+limit is 64 concurrent reads, with excess requests returning
+`503 Service Unavailable` and `Retry-After: 1`. Manifest responses are
+capped at 16 MiB, file listings default to 50 entries and return at most
+500, and a full file or single byte range is capped at 8 MiB. Query parsing
+depends on the build. The shipping `app_api` build accepts a decoded
+unsigned 32-bit `limit`, ignores other query keys, lets the last repeated
+`limit` win, and clamps the value into `1..=500`. A feature-minimal build
+without `app_api` accepts only one canonical `limit=1..500` pair and
+rejects unknown, repeated, percent-encoded, or non-canonical forms. Send
+exactly one `limit=<1..500>` pair for behavior that is portable across
+builds. CIDs, hosts, paths, and range headers remain canonical and
+single-valued in both builds. Active HTML, CSS, JavaScript, SVG, XML, PDF,
+or Wasm content is served only from a configured CID-derived isolated
+origin (or redirected there), preventing a shared path-gateway origin from
+executing untrusted content.
+
+### Pack, Build, and Submit
+
+The following mutation example uses the current pinned Taira `NetworkId`,
+pin endpoint, replication floor, and governance policy. Use a funded
+testnet account and a disposable owner-only key file. Taira admits
+permissionless pins without council signatures, but still charges the
+governed fee.
+
+```bash
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  car pack \
+  --input=./dist \
+  --car-out=artifacts/site.car \
+  --plan-out=artifacts/site.chunk-plan.json \
+  --summary-out=artifacts/site.car-summary.json
+
+: "${TAIRA_AUTHORITY:?set a funded Taira I105 account}"
+export TAIRA_NETWORK_ID='hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94'
+export TAIRA_PIN_TORII_URL=https://taira-validator-1.sora.org
+export TAIRA_PRIVATE_KEY_FILE="${TAIRA_PRIVATE_KEY_FILE:-./secrets/taira-authority.ed25519}"
+export TAIRA_RETENTION_EPOCH=$(( $(date -u +%s) + 86400 ))
+
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  manifest build \
+  --summary=artifacts/site.car-summary.json \
+  --manifest-out=artifacts/site.manifest.to \
+  --manifest-json-out=artifacts/site.manifest.json \
+  --pin-min-replicas=1 \
+  --pin-storage-class=warm \
+  --pin-retention-epoch="$TAIRA_RETENTION_EPOCH"
+
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  manifest submit \
+  --manifest=artifacts/site.manifest.to \
+  --chunk-plan=artifacts/site.chunk-plan.json \
+  --torii-url="$TAIRA_PIN_TORII_URL" \
+  --network-id="$TAIRA_NETWORK_ID" \
+  --authority="$TAIRA_AUTHORITY" \
+  --private-key-file="$TAIRA_PRIVATE_KEY_FILE" \
+  --summary-out=artifacts/site.manifest.submit.json \
+  --response-out=artifacts/site.manifest.submit.body
+```
+
+`manifest submit` requires `/v1/sorafs/pin/register`. If the target node
+does not route it, the command fails; the first-release CLI does not fall
+back to the generic `/transaction` endpoint.
 
 ### Verify and Fetch
 
-```bash
-cargo run -p sorafs_car --features cli --bin sorafs_cli -- \
-  proof verify \
-  --manifest artifacts/site.manifest.to \
-  --car artifacts/site.car \
-  --chunk-plan artifacts/site.chunk-plan.json \
-  --summary-out artifacts/site.verify.json
+The protected fetch tuple is provider-specific. Obtain its provider ID and
+advertised base URL from Taira's provider catalog, and obtain the gateway
+key and stream token through that provider's admission flow. These values
+are not validator-storage settings. The checked-in Taira validators have
+embedded storage disabled, so do not substitute a validator pin URL for a
+provider URL.
 
-sorafs_cli fetch \
-  --plan artifacts/site.chunk-plan.json \
-  --manifest-id <manifest-digest-hex> \
-  --provider name=primary,provider-id=<provider-id-hex>,base-url=https://gateway.example.org/,stream-token="$(cat provider.token)" \
-  --output artifacts/site.fetch.tar \
-  --json-out artifacts/site.fetch.json
+```bash
+export TAIRA_ROOT=https://taira.sora.org
+curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
+
+: "${TAIRA_SORAFS_PROVIDER_ID:?set the admitted provider ID from Taira discovery}"
+: "${TAIRA_SORAFS_GATEWAY_KEY:?set the provider gateway key}"
+: "${TAIRA_SORAFS_PROVIDER_URL:?set the advertised provider base URL}"
+: "${TAIRA_SORAFS_STREAM_TOKEN_FILE:?set the issued stream-token file}"
+
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  proof verify \
+  --manifest=artifacts/site.manifest.to \
+  --car=artifacts/site.car \
+  --chunk-plan=artifacts/site.chunk-plan.json \
+  --summary-out=artifacts/site.verify.json
+
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  fetch \
+  --plan=artifacts/site.chunk-plan.json \
+  --manifest-id=<manifest-digest-hex> \
+  --provider=name=taira,provider-id="$TAIRA_SORAFS_PROVIDER_ID",gateway-key="$TAIRA_SORAFS_GATEWAY_KEY",base-url="$TAIRA_SORAFS_PROVIDER_URL",stream-token="$(cat "$TAIRA_SORAFS_STREAM_TOKEN_FILE")" \
+  --output=artifacts/site.fetch.tar \
+  --json-out=artifacts/site.fetch.json
 ```
 
 ### Proof-of-Retrievability Checks
 
-Operators can inspect and trigger proof checks for storage providers:
+Operators can inspect, export, and report proof-of-retrievability results.
+Challenges are scheduled by the network's proof pipeline; the CLI surfaces
+their results.
 
 ```bash
-sorafs_cli por status \
-  --torii-url "$TORII_URL" \
-  --manifest <manifest-digest-hex> \
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  por status \
+  --torii-url="$TAIRA_PIN_TORII_URL" \
+  --manifest=<manifest-digest-hex> \
   --status=failed \
   --limit=20
 
-sorafs_cli por trigger \
-  --torii-url "$TORII_URL" \
-  --manifest <manifest-digest-hex> \
-  --provider <provider-id-hex> \
-  --reason=latency_probe \
-  --samples=48 \
-  --auth-token artifacts/challenge_token.to
+cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
+  por report \
+  --torii-url="$TAIRA_PIN_TORII_URL" \
+  --week=<YYYY-Www> \
+  --format=json
 ```
 
 ## SoraDNS
@@ -733,12 +950,12 @@ origin.
 
 ### Host Forms
 
-| Form | Example | Purpose |
-| --- | --- | --- |
-| Vanity origin | `https://<fqdn>/<path>` | Canonical app URL recorded in manifests and release notes |
-| Taira browser gateway | `https://<fqdn>.mon.taira.sora.net/<path>` | Public browser gateway for an active alias |
-| Torii fallback path | `https://taira.sora.org/soradns/<fqdn>/<path>` | Torii debug and fallback route for an active alias |
-| Canonical hash gateway | `<base32(blake3(name))>.gw.sora.id` | Deterministic gateway identity and GAR verification |
+| Form                   | Example                                        | Purpose                                                   |
+| ---------------------- | ---------------------------------------------- | --------------------------------------------------------- |
+| Vanity origin          | `https://<fqdn>/<path>`                        | Canonical app URL recorded in manifests and release notes |
+| Taira browser gateway  | `https://<fqdn>.mon.taira.sora.net/<path>`     | Public browser gateway for an active alias                |
+| Torii fallback path    | `https://taira.sora.org/soradns/<fqdn>/<path>` | Torii debug and fallback route for an active alias        |
+| Canonical hash gateway | `<base32(blake3(name))>.gw.sora.id`            | Deterministic gateway identity and GAR verification       |
 
 The `/soradns/<alias>/...` fallback is not the preferred public URL.
 Tooling, app manifests, and frontend configuration should prefer the vanity
@@ -877,9 +1094,9 @@ Relevant Torii surfaces include:
 - `/v1/accounts/{uaid}/portfolio`
 - `/v1/space-directory/uaids/{uaid}`
 - `/v1/space-directory/uaids/{uaid}/manifests`
-- `/v1/soracloud/model/run-private`
-- `/v1/soracloud/model/run-private/finalize`
-- `/v1/soracloud/model/decrypt-output`
+- `/v1/soracloud/fhe/job/run`
+- `/v1/soracloud/ciphertext/query`
+- `/v1/soracloud/decrypt/request`
 
 The public metadata boundary is explicit in the schemas: UAID bindings,
 opaque identifier records, manifest lifecycle, state-key digests,
@@ -891,8 +1108,9 @@ records.
 
 ## Operational Checklist
 
-- Confirm enabled service families with `/openapi` on the target Torii
-  node.
+- Confirm generated service families with `/openapi.json` on the target
+  Torii node, and probe public local SoraFS CID and well-known routes
+  directly.
 - Treat Soracloud deployment manifests, SoraFS manifests, SoraDNS resolver
   directory records, SoraNet relay directory records, and DA pin intents or
   availability commitments as governance-sensitive artifacts.
@@ -901,10 +1119,10 @@ records.
 - Keep Inrou root and shared lease volumes in manifests instead of relying
   on ad hoc node-local paths.
 - Use SoraFS proof verification before promoting content aliases.
-- Monitor SoraNet handshake failures, DA quorum or availability timeouts,
-  SoraFS gateway refusals, SoraDNS RAD freshness, and Soracloud rollout
-  health.
-- For public Taira or Minamoto usage, start with
+- Monitor SoraNet handshake failures, Sumeragi body state and
+  missing-payload recovery, SoraFS gateway refusals, SoraDNS RAD freshness,
+  and Soracloud rollout health.
+- For public testnet usage, use the Taira profile and start with
   [Connect to SORA Nexus dataspaces](/get-started/sora-nexus-dataspaces.md).
 
 See also:
@@ -912,3 +1130,4 @@ See also:
 - [Torii endpoints](/reference/torii-endpoints.md)
 - [Data event filters](/blockchain/filters.md#data-event-filters)
 - [Query reference](/reference/queries.md#nexus-data-availability-and-packages)
+- [Canonical Taira validator configuration at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/configs/soranexus/taira/config.toml)

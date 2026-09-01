@@ -1,121 +1,128 @@
 ---
 translation_locale: uz
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Savollar {#queries}
+# So'rovlar {#queries}
 
-Iroha so'rovlar kitob holatini mutatsiya qilmasdan o'qiydi. Hozirgi ma'lumotlar modeli ikkita keng so'rov shakllarini aniqlaydi:
+Iroha so‘rovlari reyestr holatini o‘zgartirmasdan o‘qiydi. Joriy ma’lumot modeli ikki keng so‘rov shaklini taqdim etadi:
 
-- bir ob'ekt yoki bitta qiymatni qaytaradigan singular so'rovlar
-- qayta tiklanishi mumkin bo'lgan so'rovlar, ular oqim yoki to'plamni qaytaradi va so'rov turi uni qo'llab-quvvatlagan holda filtrlash, sinflash, proyeksiya qilish va sahifalashtirish bilan birlashtirilishi mumkin.
+- bir obyekt yoki bitta qiymatni qaytaradigan yagona so‘rovlar
+- iterable so‘rovlar, ular oqim yoki to‘plamni qaytaradi va agar so‘rov turi qo‘llab-quvvatlasa filtratsiya, saralash, projektsiya va sahifalash bilan birlashtirilishi mumkin
 
-Foydalanish SDK o'rnatilgan qurilmalar yoki CLI so'rovlarni qo'lda qurishdan ko'ra. Quyidagi nomlar `iroha_data_model::query`.
+SDK tipidagi quruvchilar yoki CLI dan foydalaning, so‘rov ma’lumotlari konteynerlarini qo‘lda qurish o‘rniga. Quyida keltirilgan nomlar `iroha_data_model::query` tomonidan taqdim etilgan joriy so‘rov turlari hisoblanadi.
 
-## Ish vaqti va sozlash {#runtime-and-configuration}
+## dasturiy ta'minotni bajarish muhiti va sozlamalar {#runtime-and-configuration}
 
-|Savollar |Maqsad|
+|So'rov| Maqsad |
 | --- | --- |
-|`FindAbiVersion` |ABI ijrochi versiyasini qaytaring. |
-|`FindExecutorDataModel` |Amalga oshiruvchi ma'lumotlar modelining tavsifini qaytarish. |
-|`FindParameters` |Zilziladagi ijrochi konfiguratsiya parametrlarini qaytarish. |
+| `FindAbiVersion` |Ijrochi ABI versiyasini qaytaring.|
+| `FindExecutorDataModel` |Ijrochi ma'lumot modeli tavsifini qaytaring.|
+| `FindParameters` |Zanjir ustidagi ijrochi sozlamalari parametrlarini qaytaring.|
 
-## Hisobvaraqlar va ruxsatnomalar {#accounts-and-permissions}
+## Hisoblar va Ruxsatlar {#accounts-and-permissions}
 
-|Savollar |Maqsad|
+|So'rov| Maqsad |
 | --- | --- |
-|`FindAccountById` |Kanonik hisobdan ID bitta hisobni toping. |
-|`FindAccountByAlias` |Hisobga alias sifatida hisobni hal qiling. |
-|`FindAccounts` |Ro'yxatga olingan hisobvaraqlarni ro'yxatdan o'tkazing. |
-|`FindAccountIds` |Ro'yxatga olingan hisob raqamlari IDs. |
-|`FindAccountsWithAsset` |Ma'lum bir aktiv tavsifini o'z ichiga olgan hisobvaraqlarni ro'yxatga oling. |
-|`FindAliasesByAccountId` |Hisobga bog'liq bo'lgan aliaslarni ro'yxatdan o'tkazing. |
-|`FindAccountRecoveryPolicyByAlias` |O'z aliasi uchun tiklash siyosatini toping.|
-|`FindAccountRecoveryRequestByAlias` |Ilmiy nom uchun tiklash talabini toping. |
-|`FindRoles` |Rolilarni ro'yxatga oling. |
-|`FindRoleIds` |roli IDs. |
-|`FindRolesByAccountId` |Hisobvaraqqa berilgan vazifalarni ro'yxatdan o'tkazish. |
-|`FindPermissionsByAccountId` |Hisobga berilgan ruxsatnomalarni ro'yxatdan o'tkazing. |
+| `FindAccountById` |Bitta protokol-standart hisob identifikatori bilan bitta hisobni toping.|
+| `FindAccountByAlias` |Hisob aliasini hisobga aniqlash.|
+| `FindAccounts` |Ro‘yxatga olingan hisoblarni ko‘rsatish.|
+| `FindAccountIds` |Ro‘yxatga olingan hisob raqamlarini ko‘rsating.|
+| `FindAccountsWithAsset` |Berilgan aktiv ta'rifiga ega hisoblarni ro'yxatlang.|
+| `FindAliasesByAccountId` |Hisobga bog‘langan laqamlarni ro‘yxatlang.|
+| `FindAccountRecoveryPolicyByAlias` |Alias uchun tiklash siyosatini toping.|
+| `FindAccountRecoveryRequestByAlias` |Alias uchun tiklash so‘rovini toping.|
+| `FindRoles` |Rollarni ro'yxatlang.|
+| `FindRoleIds` |Rol IDlarini ro'yxatlang.|
+| `FindRolesByAccountId` |Hisobga berilgan rollarni ro'yxatlash.|
+| `FindPermissionsByAccountId` |Hisobga berilgan ruxsatlarni ro'yxatlang.|
 
-## Domenlar va tengdoshlar {#domains-and-peers}
+## Domenlar va tarmoq tengdoshlar {#domains-and-peers}
 
-|Savollar |Maqsad|
+|So'rov| Maqsad |
 | --- | --- |
-|`FindDomainById` |`DomainId` bilan bitta domenni toping. |
-|`FindDomains` |Ro'yxatdan o'tgan domenlar ro'yxati. |
-|`FindDomainsByAccountId` |Hisobga ega bo'lgan domenlarni ro'yxatdan o'tkazish. |
-|`FindDomainEndorsements` |Domenlarni tasdiqlash yozuvlarini ro'yxatga oling. |
-|`FindDomainEndorsementPolicy` |Domenlarni tasdiqlash siyosatini qaytaring. |
-|`FindDomainCommittee` |Domen qo'mitasini qaytaring. |
-|`FindPeers` |Kitobda ma'lum bo'lgan ishonchli tengdoshlarni ro'yxatga oling. |
+| `FindDomainById` |`DomainId` orqali bitta domenni toping.|
+| `FindDomains` |Ro‘yxatga olingan domenlarni ko‘rsatish.|
+| `FindDomainsByAccountId` |Hisobga tegishli domenlarni ro'yxatlang.|
+| `FindDomainEndorsements` | Domenni qo‘llab-quvvatlash yozuvlarini ro‘yxatlang. |
+| `FindDomainEndorsementPolicy` |Domen qo‘llab-quvvatlash siyosatini qaytaring.|
+| `FindDomainCommittee` | Domen qo'mitasini qaytaring. |
+| `FindPeers` |Blockchain daftariga ma'lum bo'lgan ishonchli tarmoq hamkasblarini ro'yxatini tuzing.|
 
-## NFTs va RWAs {#assets-nfts-and-rwas}
+## Aktivlar, NFTs, va RWAs {#assets-nfts-and-rwas}
 
-|Savollar |Maqsad|
+|So'rov| Maqsad |
 | --- | --- |
-|`FindAssets` |Aktivlar saldolarini ro'yxatga oling. |
-|`FindAssetsDefinitions` |Assetning ta'riflarini ro'yxatdan o'tkazish. |
-|`FindAssetsByAccountId` |Hisobotda saqlangan aktivlarni ro'yxatdan o'tkazish. |
-|`FindAssetById` |`AssetId` bilan bir aktiv balansini toping. |
-|`FindAssetDefinitionById` |ID bilan bitta aktivni aniqlash. |
-|`FindNfts` |Ro'yxat NFTs. |
-|`FindNftsByAccountId` |NFTs hisob raqamiga egalik qiladigan ro'yxat. |
-|`FindRwas` |Ro'yxatga olingan real-dunyo aktivlari. |
+| `FindAssets` |Aktiv balanslarini ro'yxatlang.|
+| `FindAssetsDefinitions` |Aktiv ta'riflarini ro'yxatlang.|
+| `FindAssetsByAccountId` |Hisobda saqlanayotgan aktivlarni ro'yxatlang.|
+| `FindAssetById` |`AssetId` bo‘yicha bitta aktiv balansini toping.|
+| `FindAssetDefinitionById` |ID bo‘yicha bitta aktiv ta’rifini toping.|
+| `FindNfts` | Roʻyxat NFTs. |
+| `FindNftsByAccountId` |Hisobga tegishli NFTs roʻyxati.|
+| `FindRwas` |Ro‘yxatga olingan real dunyo aktivlari partiyalarini ko‘rsatish.|
 
-## Hisobvaraq va tasdiqlovchi hujjatlar {#escrow-and-proof-records}
+## Depozit va Dalillar Qaydnomalari {#escrow-and-proof-records}
 
-Eskrov so'rovlari [native asset escrow ISIs](/uz/blockchain/escrow.md) tomonidan yaratilgan yozuvlarni, shu jumladan bozordagi eskrovlar, umumiy aktiv qulflarini va anonim eskrov yozuvlarini tekshiradi.
+Escrow soʻrovlari [mahalliy aktiv depozit ISIs](/uz/blockchain/escrow.md) tomonidan yaratilgan yozuvlarni, jumladan, bozor escrowlarini, umumiy aktiv qulfini va anonim escrow yozuvlarini tekshiradi.
 
-|Savollar |Maqsad|
+|So'rov| Maqsad |
 | --- | --- |
-|`FindAssetEscrows` |Asset escrow rekordlarini ro'yxatdan o'tkazing. |
-|`FindAssetEscrowById` |ID gacha bitta aktivni depozitda toping. |
-|`FindAssetEscrowsBySeller` |Sotuvchi tomonidan saqlanadigan aktivlarni ro'yxatdan o'tkazish. |
-|`FindAssetEscrowsByBuyer` |Xaridor tomonidan saqlanadigan aktivlarni ro'yxatdan o'tkazish. |
-|`FindAssetEscrowsByStatus` |Moddiy aktivlarni status bo'yicha ro'yxatdan o'tkazing. |
-|`FindAnonymousAssetEscrows` |Nomukammal aktivlar hisobini ro'yxatdan o'tkazing. |
-|`FindAnonymousAssetEscrowById` |ID orqali bitta nomsiz aktivni depozitga olish. |
-|`FindAnonymousAssetEscrowsBySeller` |Sotuvchi bo'yicha anonim depozitlarni ro'yxatdan o'tkazing. |
-|`FindAnonymousAssetEscrowsByBuyer` |Sotuvchi bo'yicha anonim depozitlarni ro'yxatdan o'tkazing. |
-|`FindAnonymousAssetEscrowsByStatus` |Anonim eskorlarni maqomiga koʻra roʻyxatdan oʻtkazing. |
-|`FindProofRecordById` |ID orqali bitta dalilni toping. |
-|`FindProofRecords` |Ishonchli hujjatlarni ro'yxatga oling. |
-|`FindProofRecordsByBackend` |Proof backend uchun dalillarni ro'yxatga oling. |
-|`FindProofRecordsByStatus` |Sertifikatlarni status boʻyicha roʻyxatga oling. |
+| `FindAssetEscrows` |Aktivlarni ishonch hisobvarag‘i yozuvlarini ro‘yxatlang.|
+| `FindAssetEscrowById` |ID bo‘yicha bitta aktiv eskrouni toping.|
+| `FindAssetEscrowsBySeller` |Aktivlarni sotuvchi bo‘yicha ro‘yxatlang.|
+| `FindAssetEscrowsByBuyer` |Mijoz bo‘yicha aktivlarni garovga ro‘yxatlang.|
+| `FindAssetEscrowsByStatus` |Aktivlarni garov holatiga ko'ra ro‘yxatlang.|
+| `FindAnonymousAssetEscrows` |Anonim aktivlar omonat yozuvlarini ro'yxatlang.|
+| `FindAnonymousAssetEscrowById` |ID orqali bitta anonim aktiv eskrou toping.|
+| `FindAnonymousAssetEscrowsBySeller` |Sotuvchi bo‘yicha anonim eskroularni ro‘yxatlang.|
+| `FindAnonymousAssetEscrowsByBuyer` |Xaridor bo‘yicha anonim omonatlarni ro‘yxatlang.|
+| `FindAnonymousAssetEscrowsByStatus` |Anonim eskrolarni holatiga ko‘ra ro‘yxatlang.|
+| `FindProofRecordById` |ID bo‘yicha bitta tasdiqlash yozuvini toping.|
+| `FindProofRecords` |Isbot yozuvlarini ro‘yxatlang.|
+| `FindProofRecordsByBackend` |Isbot orqa tizimi uchun isbot yozuvlarini roʻyxatlash.|
+| `FindProofRecordsByStatus` |Dalil yozuvlarini holatga ko‘ra ro‘yxatlang.|
 
-## Nexus, Ma'lumotlar mavjudligi va paketlar {#nexus-data-availability-and-packages}
+## Nexus, Ma'lumotlarning mavjudligi va Paketlar {#nexus-data-availability-and-packages}
 
-|Savollar |Maqsad|
+|So'rov| Maqsad |
 | --- | --- |
-|`FindRepoAgreements` |Zilzilab saqlangan depozit shartnomalari ro'yxatini ko'rsatish. |
-|`FindTwitterBindingByHash` |Twitter bilan bog'lanishni hash orqali hal qiling. |
-|`FindDaPinIntentByTicket` |Chipta orqali ma'lumotlar uchun pin niyatini toping. |
-|`FindDaPinIntentByManifest` |Nishoncha ko'rsatgich orqali pin niyatini toping. |
-|`FindDaPinIntentByAlias` |O'z nomi bilan pin niyatini toping.|
-|`FindDaPinIntentByLaneEpochSequence` |Yo'nalish, davr va ketma-ketligi bo'yicha pin niyatini toping. |
-|`FindLaneRelayEnvelopeByRef` |Verifikatsiya qilingan yo'nalish relayini toping. |
-|`FindSorafsProviderOwner` |SoraFS provayderining egasini hal qilish. |
-|`FindDataspaceNameOwnerById` |Ma'lumotlar maydonining nomi egasini hal qiling. |
-|`FindMusubiReleaseByRef` |Musubi ko'rsatkichini ma'lumotnoma orqali toping. |
-|`FindMusubiPackageVersions` |Musubi paketining versiyalarini ro'yxatdan o'tkazing. |
-|`FindMusubiPackageReleases` |Musubi paketi uchun ro'yxatdan o'tkazish. |
-|`FindMusubiShortAliasByName` |Musubi qisqacha aliasni hal qiling. |
+| `FindRepoAgreements` |Zanjirda saqlangan ombor kelishuvlarini roʻyxatlang.|
+| `FindTwitterBindingByHash` |Kriptografik xesh orqali Twitter bog‘lanishini hal qiling.|
+| `FindDaPinIntentByTicket` |Chipta orqali ma'lumot mavjudligi pin ni toping.|
+| `FindDaPinIntentByManifest` |Manifest havolasiga ko‘ra pin niyatini toping.|
+| `FindDaPinIntentByAlias` |Alias orqali pin maqsadini toping.|
+| `FindDaPinIntentByLaneEpochSequence` |Ishga tushirish yo‘lagi, davr va ketma-ketlik bo‘yicha pin ni toping.|
+| `FindLaneRelayEnvelopeByRef` |Tekshirilgan yo‘l-relay ma’lumot konteynerini toping.|
+| `FindSorafsProviderOwner` |SoraFS provayderining egasini aniqlang.|
+| `FindDataspaceNameOwnerById` |Dataspace-nomi egasini aniqlash.|
+| `FindMusubiExactPackageV1` |Bir aniq paket yozuvini va uning joriy tahririyatlarini o'qing.|
+| `FindMusubiExactReleaseV1` |Bir aniq chiqarilgan snapshotni o'qing.|
+| `FindMusubiProviderBundleAttestationV1` |Bir provayderning arxiv-paket tasdig'ini o'qing.|
+| `FindMusubiResolverIndexV1` | Yakunlangan rezolyutor indeksini sahifalang.|
+| `FindMusubiVersionsV1` |Bir paket uchun sahifa yakunlangan versiyalari.|
+| `FindMusubiMaintainersV1` |Sahifa qabul qilingan saqlovchilar va kutayotgan takliflarni ko‘rsatadi.|
+| `FindMusubiArchiveLocationsV1` |Bitta arxiv uchun SoraFS joylar sahifasi yakunlandi.|
+| `FindMusubiArchiveRetentionV1` |Sahifa arxiv-saqlash yozuvlari.|
+| `FindMusubiAliasV1` |Global aliasning joriy maqsadi va tahririni o‘qing.|
+| `FindMusubiAliasHistoryV1` | Butun dunyo aliasining o'zgarmas qayta yo'naltirish tarixini sahifalang.|
+| `FindMusubiOrderedPrefixV1` |Sahifa paketlari bitta tartiblangan struktural prefiks ostida.|
 
-## Ishtirokchilar, shartnomalar, bitimlar va bloklar {#triggers-contracts-transactions-and-blocks}
+## Trig‘gerlar, Shartnomalar, Tranzaksiyalar va Bloklar {#triggers-contracts-transactions-and-blocks}
 
-|Savollar |Maqsad|
+|So'rov| Maqsad |
 | --- | --- |
-|`FindActiveTriggerIds` |Aktiv triggerni IDs ro'yxatga oling. |
-|`FindTriggers` |Ishtirokchilarni ro'yxatga oling. |
-|`FindTriggerById` |ID bilan bitta qo'zg'atuvchini toping. |
-|`FindContractManifestByCodeHash` |Smart-kontraktni kod hash bilan toping. |
-|`FindTransactions` |Bajarilgan operatsiyalar ro'yxati. |
-|`FindBlocks` |Ro'yxat bloklari. |
-|`FindBlockHeaders` |Blokning boshliqlarini ro'yxatga oling. |
+| `FindActiveTriggerIds` |Faol trigger identifikatorlarini ro'yxatlang.|
+| `FindTriggers` |Tetiklagichlarni ro'yxatlash.|
+| `FindTriggerById` |Bitta triggerni ID bo‘yicha toping.|
+| `FindContractManifestByCodeHash` |Kodning kriptografik xeshiga ko‘ra aqlli shartnoma manifestini toping.|
+| `FindTransactions` |Yakunlangan tranzaksiyalar ro'yxatini tuzing.|
+| `FindBlocks` |Bloklarni ro'yxatlash.|
+| `FindBlockHeaders` |Blok sarlavhalarini ro'yxatlang.|
 
-## Filtrlash va sahifalashtirish {#filtering-and-pagination}
+## Filtrlash va sahifalash {#filtering-and-pagination}
 
-Iterable so'rovlar predikat va selektorni qo'llab-quvvatlashi mumkin. SDK dan so'rovga moslashtirilgan filtrlardan foydalaning, shunda filter kirish so'rov chiqish turi bilan mos keladi. Katta natija to'plamlari uchun har bir satrni bir vaqtning o'zida olishning o'rniga kursor va limit kabi so'rov parametrlaridan foydalaning.
+Takrorlanuvchi so‘rovlar predikat va selektor qo‘llab-quvvatlashini ko‘rsatishi mumkin. Filtrlash kirishi so‘rov natijasining turiga mos kelishi uchun SDK dan so‘rovga xos turdagi filtrlardan foydalaning. Katta natija to‘plamlari uchun har bir qatorni bir vaqtning o‘zida olish o‘rniga kursor va limit kabi so‘rov parametrlaridan foydalaning.

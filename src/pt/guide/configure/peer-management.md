@@ -3,59 +3,59 @@ translation_locale: pt
 translation_source: /guide/configure/peer-management.md
 translation_source_hash: f085fa1587595414f95705bbe2cd285752b0fe12cffb9ef29a33399f9a1f3f86
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Gerenciamento entre pares {#peer-management}
+# Gerenciamento de pares de rede {#peer-management}
 
-Se você seguiu qualquer um dos guias específicos da língua, agora tem uma rede bem funcionando que as pessoas vão querer juntar-se.
+Se você seguiu qualquer um dos guias específicos de idioma, agora você tem uma rede bem funcional que as pessoas vão querer entrar.
 
-## Blockchain Pública {#public-blockchain}
+## Blockchain Público {#public-blockchain}
 
-Em uma rede aberta, a admissão de pares ainda é uma decisão de política de cadeia. Um nó pode executar o software correto e se conectar a Torii, mas só participa do consenso depois que a rede admite sua identidade de pares.
+Em uma rede aberta, a admissão de pares de rede ainda é uma decisão de política da cadeia. Um nó pode executar o software correto e se conectar a Torii, mas só participa do consenso depois que a rede admite sua identidade de par de rede.
 
-## Blockchain privada {#private-blockchain}
+## Blockchain Privada {#private-blockchain}
 
-Em um ambiente bancário, permitir que todos se juntem ao seu tempo livre é um risco de segurança. Para a segurança, as implementações privadas Iroha geralmente definem a topologia peer em configuração e gênese em vez de confiar na descoberta aberta.
+Em um ambiente bancário, permitir que todos participem à vontade é um risco de segurança. Para segurança, implantações privadas Iroha geralmente fixam a topologia dos pares da rede na configuração e no gênese do blockchain em vez de confiar na descoberta aberta.
 
-### Registo de pares {#registering-peers}
+### Registrando pares de rede {#registering-peers}
 
-Para adicionar um peer à rede, deve ser registrado manualmente. Vamos discutir os passos que devem ser tomados para completar este processo.
+Para adicionar um par à rede, registre-o manualmente. Veja a seguir as etapas necessárias para concluir esse processo.
 
-#### 1. Conceder permissões ao usuário {#_1-grant-the-user-permissions}
+#### 1. Conceda permissões ao usuário {#_1-grant-the-user-permissions}
 
-A conta que registra o peer deve ter a correspondente `Permission`, que pode ser concedida através de uma `Role` ou como autorização direta.
+A conta que registra o par de rede deve ter o `Permission` apropriado. Isso pode ser concedido através de um `Role` ou como uma concessão direta de permissão.
 
-Concede um papel quando uma conta gerenciar pares ao longo do tempo. Use uma autorização direta para um registro único por uma conta que não gerencia pares de outra forma.
+Conceda uma função quando uma conta gerenciar pares de rede ao longo do tempo. Use uma concessão de permissão direta para um registro único por uma conta que não gerencia pares de rede de outra forma.
 
 ::: info
 
-O executor padrão utiliza o token de permissão `CanManagePeers` para registrar e não registrar pares.
+O executor padrão usa o token de permissão `CanManagePeers` para registrar e desregistrar pares de rede.
 
 :::
 
-Discutiremos as permissões e os papéis com mais detalhes em um capítulo separado [ ](/pt/blockchain/permissions.md).
+Discutimos permissões e funções com mais detalhes em um [capítulo separado](/pt/blockchain/permissions.md).
 
-#### 2. Criar um grupo de colegas {#_2-set-up-a-peer}
+#### 2. Configurar um par de rede {#_2-set-up-a-peer}
 
-Depois de um novo colega ter recebido as permissões, deve ser criado.
+Após um novo par de rede receber permissões, ele deve ser configurado.
 
-Requer a configuração de pares atual antes de admitir um nó. Torii expõe o parâmetro do nó e os pontos finais da capacidade para esse fim. Peer bootstrap Não negocia estes valores automaticamente: os operadores devem verificar que as temporadas, os tamanhos dos lotes e outras configurações de consenso correspondem à rede.
+Solicite a configuração atual de pares da rede antes de admitir um nó. Torii expõe o parâmetro do nó e os endpoints de capacidade API para esse propósito. A inicialização do par de rede não negocia esses valores automaticamente: os operadores devem verificar se os tempos limite, tamanhos de lote e outras configurações relevantes para o consenso correspondem à rede.
 
-Para simplificar o processo, pode solicitar ao administrador da rede uma versão editada do `config.toml`, que exclui informações privilegiadas, como chaves privadas de pares.
+Para simplificar o processo, você pode pedir ao administrador da rede uma versão editada de `config.toml`, que exclui informações privilegiadas, como chaves privadas de pares da rede.
 
 #### 3. Enviar a instrução {#_3-submit-the-instruction}
 
-Depois que o seu colega estiver a correr, deve apresentar a instrução para o registro. O colega irá passar pelo processo de aperto de mão e começar a conversar com a rede.
+Depois que seu par de rede estiver em execução, você deve enviar a instrução de registro do par. O par de rede passará pelo processo de handshake e começará a se comunicar com a rede.
 
 ::: tip
 
-A apresentação de uma instrução de registo por pares não (e não pode) iniciar um novo processo por pares.
+Enviar uma instrução de registro de par de rede não cria (e não pode criar) um novo processo de par de rede.
 
 :::
 
-### Pessoas sem registo {#unregistering-peers}
+### Cancelando o registro de pares de rede {#unregistering-peers}
 
-Por razões de segurança, este processo é unilateral. A rede chega ao consenso de que quer remover um peer, mas o próprio peer não sabe muito sobre por que ninguém está falando com ele.
+E quanto a cancelar o registro de pares de rede? Por razões de segurança, esse processo é unilateral. A rede chega a um consenso de que quer remover um par de rede, mas o próprio par de rede não sabe muito sobre por que ninguém está falando com ele.
 
-Na maioria das circunstâncias, se você quiser desinscrever um colega, quer fazê-lo porque é uma falha bizantina. O simples "fantasma" deste colega torna a vida do ator malicioso da rede mais difícil.
+Na maioria das circunstâncias, se você quer cancelar o registro de um par de rede, você quer fazer isso porque ele é uma falha bizantina. Apenas 'ignorar' este par de rede torna a vida do ator malicioso na rede mais difícil.

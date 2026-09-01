@@ -1,45 +1,45 @@
 ---
 translation_locale: az
 translation_source: /blockchain/rwas.md
-translation_source_hash: cbdc6d766fb90bea7e68dc67f2c705bb1638340feeb2fca9f2dd43a727ac03e7
+translation_source_hash: 8d64a9a17c93f60306c279e8656e6edde8ce5dd024e742218bfb9572b7438bb0
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Əsl dünya aktivləri {#real-world-assets}
+# Həqiqi Dünyada Aktivlər {#real-world-assets}
 
-Əsl dünya aktivləri (RWAs) zəncirdən kənar aktivlər modelidir ki, onların mülkiyyəti və ya nəzarəti zəncirdə izlənilir. Iroha da RWA yaradılmış bir identifikator, sahib hesabı, miqdar, iş metadataları, mənşəyi və seçim yolu ilə həyat dövrü nəzarətləri olan qeydiyyata alınmış kitabxana lotudur.
+Həqiqi dünya aktivləri (RWAs) mülkiyyəti və ya nəzarəti zəncirdə izlənilən off-chain aktivləri modelləşdirir. Iroha-də, bir RWA yaradılmış identifikator, sahiblərin hesabı, miqdar, biznes metadatasi, mənşəyi və istəyə bağlı həyat dövrü nəzarətləri olan qeydiyyatdan keçmiş bir blokçeyn dəftər lotudur.
 
-RWAs sayısal aktiv qalıqlarından fərqlənir:
+RWAs rəqəmsal aktiv balanslarından fərqlidir:
 
-- rəqəmsal aktiv hesabda saxlanılan fungib balansdır
-- NFT bir sahibi olan unikal bir zəncirlə bağlı qeyddir.
-- RWA - biznes metadataları, miqdarı, saxlamaları, dondurmalarını, geri qaytarılma vəziyyətini, mənşəyini və nəzarətçi siyasətini daşıya bilən bir lotdur.
+- rəqəmsal aktiv hesab tərəfindən saxlanılan dəyişdirilə bilən balansdır
+- bir NFT tək sahibli unikal bir on-chain qeyddir
+- bir RWA biznes metadatasını, miqdarı, həlləri, dondurmaları, geri alım vəziyyətini, mənşəyi və idarəçi siyasətini daşıya bilən bir lotdur
 
-RWAs istifadə edərək, nəşrin əsas hissəsinin yalnız funksiyalı balans əvəzinə müəyyən bir zəncirdən kənar partiyanı təmsil etməsi lazım olduqda.
+Blockchain qeydiyyatı yalnız dəyişən balansı deyil, müəyyən bir off-chain lotu göstərməli olduqda RWAs istifadə edin.
 
 ## RWA Lot {#rwa-lot}
 
-RWA partiyası aşağıdakıları ehtiva edir:
+Bir RWA lotu ehtiva edir:
 
-- `id`: `<hash>$<domain>` kimi göstərilən yaradılmış kanonik RWA identifikatoru
-- `owned_by`: partiyanın hal-hazırda sahibi olan hesab
-- `quantity`: partiya ilə təmsil olunan pulsuz miqdar
-- `spec`: miqdar təyinatı, məsələn, desimal miqyası
-- `primary_reference`: əsas silsilədən kənar rəsm, sertifikat, faktura və ya qeydiyyat istinadı
-- `status`: istənilən müəssisə statusuna uyğun bir mətn
-- `metadata`: iş kontekstində və indeksləşdirilmədə istifadə olunan kompakt JSON sahələri
-- `parents`: bu partiyanı əldə etmək üçün istifadə olunan mənbə lotları
-- `controls`: nəzarətçi hesabları, nəzarətçinin vəzifələri və icazə verilən nəzarətçilərin əməliyyatları
-- `is_frozen` və `held_quantity`: iş vaxtı ilə tətbiq olunan həyat dövrü vəziyyəti
+- `id`: yaradılmış tək protokol-standart RWA identifikatoru, `<hash>$<domain>` kimi göstərilib
+- `owned_by`: hazırda torpaq sahəsinə sahib olan hesab
+- `quantity`: lot tərəfindən təmsil olunan qalan miqdar
+- `spec`: miqdar spesifikasiyası, məsələn, onluq miqyas
+- `primary_reference`: əsas off-chain protokol nəticə qeydi, sertifikat, faktura və ya reyestr istinadı
+- `status`: isteğe bağlı biznes statusu mətni
+- `metadata`: biznes konteksti və indekləmə üçün istifadə olunan kompakt JSON sahələr
+- `parents`: bu lotu çıxarmaq üçün istifadə olunan mənbə lotları
+- `controls`: idarəçi hesablar, idarəçi rolları və aktiv idarəçi əməliyyatları
+- `is_frozen` və `held_quantity`: proqram icra mühiti tərəfindən tətbiq edilən həyat dövrü vəziyyəti
 
-Zəngindəki payload kompakt saxlayın. böyük hüquqi sənədlər, yoxlama hesabatları və audit paketləri WSV, Sonra bir həzm edin. URI, SoraFS yol, və ya açıq istinad RWA Metadata.
+Zəncir üstü məlumat yükləməsini kompakt saxlayın. Böyük hüquqi sənədləri, yoxlama hesabatlarını və audit paketlərini WSV xaricində saxlayın, sonra RWA metadatasında kriptoqrafik həzm dəyəri, URI, SoraFS yolu və ya texniki manifesto istinadını yerləşdirin.
 
-## Kimliklər {#identifiers}
+## Identifikatorlar {#identifiers}
 
-`RegisterRwa` çağırıcının seçdiyi `id` hesabını qəbul etmir və `owner` sahəsini də qəbul etmir. Əməliyyat orqanı ilkin `owned_by` hesabına çevrilir və iş vaxtı hədəf domenində `RwaId` əmələ gətirir.
+`RegisterRwa` sorğu göndərən müştəri tərəfindən seçilmiş `id`-i qəbul etmir və `owner` sahəsini qəbul etmir. Əməliyyatın icazə prinsipi ilkin `owned_by` hesabına çevrilir və proqram təminatı icra mühiti hədəf sahədə `RwaId`-i yaradır.
 
-RWA ID mətni forması aşağıdakılardır:
+RWA ID-nin mətn forması belədir:
 
 ```text
 <generated-hash>$<domain>
@@ -51,39 +51,39 @@ Məsələn:
 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef$commodities.universal
 ```
 
-Tələblər öz iş identifikatorunu `primary_reference` və ya `metadata` ədədlərində saxlayıb, sonra `RwaEvent::Created`, `FindRwas` və `/v1/rwas` vasitəsilə əməliyyatdan sonra müəyyən edilmiş kəşfiyyatçı marşrutundan əldə edilən `RwaId` tapmalıdırlar.
+Tətbiqlər öz iş identifikatorlarını `primary_reference` və ya `metadata`-də saxlamalı, sonra `RwaEvent::Created`, `FindRwas`, `/v1/rwas` və ya əməliyyat tamamlandıqdan sonra təyin edilmiş kəşfiyyat marşrutu vasitəsilə yaradılan `RwaId`-ni tapmalıdırlar.
 
 ## Həyat dövrü {#lifecycle}
 
-Ümumi RWA iş axınları aşağıdakılardır:
+Ümumi RWA iş axınlarına daxildir:
 
-|Əməliyyat |tətbiq edilmiş davranış |
+|Əməliyyat|Tətbiq edilmiş davranış|
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
-|`RegisterRwa` |Bir domenində ID topluğunu yaratmaq; əməliyyat orqanı `owned_by` olur. |
-|`TransferRwa` |Əmlakı başqa hesabına köçürmək. Tam ötürmə `owned_by` dəyişə bilər. qismən ötürmə yaradılmış bir ID ilə ayrı uşaq partiyası yaradır. |
-|`HoldRwa` |Qeydiyyat miqdarı. Konfiqurasiyalı bir idarəetmə və `hold_enabled` tələb edir. |
-|`ReleaseRwa` |Qalan miqdarı çıxarın. Konfiqurasiyalı bir idarəetmə və `hold_enabled` tələb edir. |
-|`FreezeRwa` |Normal sahibinin əməliyyatlarını bloklayın. Konfiqurasiya edilmiş bir idarəetmə və `freeze_enabled` tələb edir. |
-|`UnfreezeRwa` |Adətən sahibinin əməliyyatlarını yenidən aktivləşdirmək. Konfiqurasiya edilmiş bir idarəetmə və `freeze_enabled` tələb edir.|
-|`RedeemRwa` |Daimi olaraq dövriyyədən miqdarı çıxarın. sahib və ya nəzarətçi `redeem_enabled` doğru olduqda onu təqdim edə bilər. |
-|`MergeRwas` |Eyni domenə malik valideyn lotlarından olan miqdarları birləşdirin və xüsusiyyətləri yaranmış uşaq lotuna çevirin. |
-|`ForceTransferRwa` |Nəzarətçi axını vasitəsilə miqdarı köçürmək. Konfiqurasiya edilmiş nəzarətçi və `force_transfer_enabled` tələb edir. |
-|`SetRwaControls` |Satış nəzarəti siyasətini əvəz edin. sahibinin və ya nəzarətçinin tələb olunur.|
-|`SetKeyValue<Rwa>` / `RemoveKeyValue<Rwa>` |Parça metadataları yeniləmək. sahibini və ya nəzarətçini tələb edir; dondurulmuş parçalara nəzarətçi lazımdır. |
+| `RegisterRwa`                              |Bir domen daxilində yaradılmış-ID lotu yaradın; əməliyyatın icazə prinsipi `owned_by` olur.|
+| `TransferRwa`                              |Miqdarı başqa hesabın üzərinə köçürün. Tam transfer `owned_by`-i dəyişə bilər. Qismən transfer yaradılmış ID ilə ayrıca uşaq lotu yaradır.|
+| `HoldRwa`                                  |Ehtiyat miqdarı. Konfiqurasiya edilmiş idarəediciyə və `hold_enabled` tələb olunur.|
+| `ReleaseRwa`                               |Saxlanılmış miqdarı silin. Konfiqurasiya edilmiş nəzarətçi və `hold_enabled` tələb olunur.|
+| `FreezeRwa`                                |Adi sahib əməliyyatlarını bloklayın. Konfiqurasiya edilmiş idarəediciyə və `freeze_enabled` tələb olunur.|
+| `UnfreezeRwa`                              |Adi sahib əməliyyatlarını yenidən aktiv edin. Konfiqurasiya edilmiş nəzarətçi və `freeze_enabled` tələb olunur.|
+| `RedeemRwa`                                |Daimi olaraq miqdarı dövriyyədən çıxarın. Sahibi və ya idarəçi `redeem_enabled` doğru olduqda onu təqdim edə bilər.|
+| `MergeRwas`                                |Eyni domen və spesifikasiyaya malik valideyn lotlarından miqdarları birləşdirərək yaradılmış uşaq lotuna daxil edin.|
+| `ForceTransferRwa`                         |Miqdarı bir idarəetmə axını vasitəsilə hərəkət etdirin. Konfiqurasiya edilmiş idarəedicini və `force_transfer_enabled` tələb edir.|
+| `SetRwaControls`                           |Lot nəzarət siyasətini dəyişdirin. Sahibdən və ya nəzarətçidən tələb olunur.|
+| `SetKeyValue<Rwa>` / `RemoveKeyValue<Rwa>` |Lot metadatasını güncəlləyin. Sahib və ya idarəçi tələb olunur; dondurulmuş lotlar üçün idarəçi tələb olunur.|
 
-Mövcud kodda `UnregisterRwa` göstərici yoxdur. Təmsil olunan miqdar çatdırıldıqda, istehlak edildikdə, ödəndikdə və ya başqa bir şəkildə dövriyyədən çıxarıldıqda `RedeemRwa` ilə zəncirdən kənar bir partiyanı geri çəkin.
+Cari kodda `UnregisterRwa` təlimatı yoxdur. Təmsil olunan miqdar çatdırıldıqda, istifadə edildikdə, tənzimləndikdə və ya başqa şəkildə dövriyyədən çıxarıldıqda `RedeemRwa` ilə off-chain lotu ləğv edin.
 
-## Metadatalar və nəzarətlər {#metadata-and-controls}
+## Metaməlumat və Nəzarətlər {#metadata-and-controls}
 
-Tətbiqlərin partiyanı müəyyənləşdirməsinə və təsdiqləməsinə kömək edən kompakt faktlar üçün meta məlumatlardan istifadə edin:
+Lotu müəyyən etməyə və yoxlamağa kömək edən kompakt faktlar üçün metadatalardan istifadə edin:
 
-- aktivlər sinifi, emitent, depozit və ya qeydiyyat istinadları
-- anbar, sığınacaq, ISIN, faktura və ya sertifikat identifikatorları
-- Səsvermələr və hüquqi sənədlər üçün məzmun hashları
-- SoraFS daha böyük sübut dəstləri üçün yollar və ya açıq istinadlar
-- zəncirdən kənar xidmətlər tərəfindən istifadə olunan meyarlıq, yurisdiksiya və ya uyğunluq etiketləri
+- aktiv sinfi, buraxan, depozitçi və ya reyestr istinadı
+- anbar, seyf, ISIN, faktura və ya sertifikat identifikatorları
+- təsdiqlər və hüquqi sənədlər üçün məzmun kriptoqrafik xəşləri
+- SoraFS daha böyük sübut paketləri üçün yollar və ya texniki manifesta istinadları
+- zəka, yurisdiksiya və ya off-chain xidmətlər tərəfindən istifadə olunan uyğunluq etiketləri
 
-Əməliyyat olunmuş `RwaControlPolicy` aşağıdakı sahələrə malikdir:
+Tətbiq edilmiş `RwaControlPolicy`-ın bu sahələri var:
 
 ```json
 {
@@ -96,45 +96,45 @@ Tətbiqlərin partiyanı müəyyənləşdirməsinə və təsdiqləməsinə köm�
 }
 ```
 
-Nəzarətçilərin hesabları və rolları yalnız müvafiq Boolean bayraqları ilə təmin olunan əməliyyatları həyata keçirə bilər. Hal-hazırda idarəetmə yükü nəzarətçi kimliklərini və əməliyyat bayraqlarını ehtiva edir. Transfer icazə siyahıları və yerləşdirilmiş `transfers` qaydaları bu faydalı yükdən kənarda yerləşirlər.
+Kontroller hesabları və rolları yalnız müvafiq boolean bayraqları ilə aktiv edilmiş əməliyyatları icra edə bilər. Cari nəzarət məlumat dəsti kontrollerlərin kimliklərini və əməliyyat bayraqlarını ehtiva edir. Transfer icazə siyahıları və iç-içə `transfers` qaydaları bu məlumat dəstinin xaricindədir.
 
-## Soruşmalar, hadisələr və APIs {#queries-events-and-apis}
+## Sorğular, Hadisələr və APIs {#queries-events-and-apis}
 
-İstifadə [`FindRwas`](/az/reference/queries.md#assets-nfts-and-rwas) qeydiyyatdan keçmiş siyahıya RWA canlı yeniləmələrə ehtiyacı olan tətbiqlər paylaşa bilər [`Rwa` məlumat hadisələri](/az/blockchain/filters.md#data-event-filters) yaradılmış, sahibini dəyişdirilmiş, parçalanmış, birləşmiş, satın alınmış, dondurulmuş, dondurulamamış, saxlanılan, buraxılmış, güc köçürülmüş, nəzarət dəyişdirilmiş və metadata hadisələri.
+İstifadə et [`FindRwas`](/az/reference/queries.md#assets-nfts-and-rwas) qeydiyyatdan keçmişləri siyahıya almaq RWA çox. Canlı yeniləmələrə ehtiyacı olan tətbiqlər abunə ola bilər [`Rwa` veri hadisələri](/az/blockchain/filters.md#data-event-filters) yaradılan, sahib dəyişdirilən, bölünmüş, birləşdirilmiş, geri alınmış, dondurulmuş, dondurulması açılmış, saxlanılmış, buraxılmış, qüvvə ilə köçürülmüş, nəzarəti dəyişdirilmiş və metadatalar hadisələri.
 
-Torii `/v1/rwas` və `/v1/rwas/query` kimi zəncir-dövlət yollarını, habelə bu marşrut ailəsinin aktivləşdirildiyi zaman `/v1/explorer/rwas` və `/v1/explorer/rwas/{rwa_id}` kimi kəşfçi yollarını aşkar edir. Yaradılan müştərilər bir düyün tərəfindən aşkar edilmiş dəqiq cavab forması üçün canlı [`/openapi`](/az/reference/torii-endpoints.md#common-endpoints) sənədinə üstünlük verməlidirlər.
+Torii zəncir-dövlət marşrutlarını belə aşkar edir `/v1/rwas` və `/v1/rwas/query`, eləcə də kəşfiyyat marşrutları kimi `/v1/explorer/rwas` və `/v1/explorer/rwas/{rwa_id}` o marşrut ailəsi aktiv olduqda. Yaradılan müştərilər canlıyı üstün tutmalıdır [`/openapi.json`](/az/reference/torii-endpoints.md#common-endpoints) bir node tərəfindən göstərilən dəqiq cavab formasını sənədləşdirmək.
 
-### Taira üzərində sınayın. {#try-it-on-taira}
+### Bu iş axınını Taira üzərində işə sal {#try-it-on-taira}
 
-Hal-hazırda Taira ictimaiyyətinin RWA partiyaları qeydiyyata alıb-almadığını yoxlayın:
+Yoxlayın ki, ictimai Taira hazırda qeydiyyatdan keçmiş RWA lotlara sahibdir:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/rwas?limit=5' \
   | jq '{total, rwa_ids: [.items[].id]}'
 ```
 
-Yaşayış Taira OpenAPI sənədində aşkar edilmiş RWA marşrutlarını göstərin:
+Canlı Taira OpenAPI sənədində göstərilən RWA marşrutlarını siyahıya alın:
 
 ```bash
 curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/rwas") or startswith("/v1/explorer/rwas"))'
 ```
 
-Hələ ictimai partiyalar qeydiyyatdan keçirilmədikdə boş `items` çıxışı gözlənilir. Qeydiyyat, köçürmə, saxlama, dondurma və ödəniş imzalanmış əməliyyatlardır.
+Heç bir ictimai lot hələ qeydiyyatdan keçmədikdə boş `items` çıxışı gözlənilir. Qeydiyyat, köçürmə, saxlama, dondurma və geri alım imzalanmış əməliyyatlardır.
 
-## Bunu sınayın. {#try-it}
+## Cəhd et {#try-it}
 
-Aşağıdakı nümunələrdə Python SDK səthlərindən istifadə olunur [ Paylaşılan Quruluş](/az/guide/tutorials/python.md#shared-setup). Bir əməliyyat göndərməzdən əvvəl hesabı IDs, özəl açarları və istehsal olunan partiyanı IDs öz şəbəkənizdən dəyərlərlə əvəz edin.
+Aşağıdakı nümunələr [Paylaşılan Quraşdırma](/az/guide/tutorials/python.md#shared-setup) saytından Python SDK səthlərini istifadə edir. Əməliyyatı təqdim etmədən əvvəl hesab ID-lərini, şəxsi açarları və yaradılmış lot ID-lərini öz şəbəkənizdən olan dəyərlərlə əvəz edin.
 
-### RWA API Yolları kəşf edin {#discover-rwa-api-routes}
+### RWA API Marşrutlarını Kəşf Et {#discover-rwa-api-routes}
 
-Bu yalnız oxunma nümunəsi işləyən Torii qovuşdan tələb edir ki, hansı tətbiqə yönəlmiş RWA marşrutları aktivləşdirilmişdir:
+Bu yalnız oxumaq üçün nümunə, işləyən Torii node-dan hansı app-üzlü RWA marşrutların aktiv olduğunu soruşur:
 
 ```python
 from iroha_python import create_torii_client
 
 client = create_torii_client("https://taira.sora.org")
-openapi = client.request_json("GET", "/openapi", expected_status=(200,))
+openapi = client.request_json("GET", "/openapi.json", expected_status=(200,))
 
 rwa_paths = sorted(
     path for path in openapi.get("paths", {}) if path.startswith("/v1/rwas")
@@ -144,11 +144,11 @@ for path in rwa_paths:
     print(path)
 ```
 
-Əgər siyahı boşdursa, qovşaq hələ də RWA təlimatlarını və digər Torii APIs vasitəsilə sorğuları dəstəkləyə bilər, lakin seçim yolu ailəsi JSON açıqlanmır.
+Əgər siyahı boşdursa, node hələ də digər Torii APIs vasitəsilə RWA təlimatlarını və sorğuları dəstəkləyə bilər, lakin o, könüllü JSON marşrut ailəsini açmır.
 
-### Qazanlıq rəsmiləşdirməsini qeyd edin {#register-a-warehouse-receipt}
+### Anbar protokolunun nəticə qeydini qeydiyyatdan keçirin {#register-a-warehouse-receipt}
 
-Bir iş aksiyası bir imzalanmış əməliyyat olmaq üçün bir layihə istifadə edin. Ticarət rüsum nömrəsi `primary_reference` daxil olur; kitabxana ID əməliyyatın öhdəliklərindən sonra yaradılır.
+Bir biznes əməliyyatı bir imzalanmış əməliyyata çevrilməli olduqda layihədən istifadə edin. Biznes protokolu nəticə qeydiyyat nömrəsi `primary_reference` yerinə daxil edilir; blokçeyn ledger identifikatoru əməliyyat tamamlandıqdan sonra yaradılır.
 
 ```python
 from iroha_python import TransactionConfig, TransactionDraft
@@ -189,7 +189,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Transaksiya öhdəliklərini yerinə yetirdikdən sonra, yaradılan siyahı RWA IDs. Zəngin-dövlət yolları kanonik IDs; Tədbirlər və ya kəşfiyyatçı detal yolları istifadə etmək üçün bir ID geri dönmək `primary_reference` və ya metadata:
+Əməliyyat tamamlandıqdan sonra yaradılmış RWA ID-ləri siyahıya alın. Zəncir-vəziyyət marşrutları tək protokol-standart ID-ləri göstərir; bir ID-ni `primary_reference` və ya metadata ilə uyğunlaşdırmaq lazım olduqda hadisələrdən və ya tədqiqatçı detalları marşrutlarından istifadə edin:
 
 ```python
 page = client.list_rwas_typed(limit=20, offset=0)
@@ -198,7 +198,7 @@ for lot in page.items:
     print(lot.id)
 ```
 
-Eksplorator imkanı olan qovşaqlar daha zəngin proqnozları da qaytarır:
+Explorer-aktiv edilmiş düyünlər həmçinin daha zəngin proqnozlar verə bilər:
 
 ```python
 page = client.list_explorer_rwas_typed(domain="commodities.universal")
@@ -207,9 +207,9 @@ for lot in page.items:
     print(lot.id, lot.primary_reference, lot.owned_by, lot.quantity)
 ```
 
-### Müvəqqəti saxlama ilə köçürülmək {#transfer-with-a-temporary-hold}
+### Müvəqqəti Saxlama ilə Köçürmə {#transfer-with-a-temporary-hold}
 
-Zəncir tərəfindən geri qaytarılan RWA ID istifadə edin. Bu nümunə `alice` sahibini ehtimal edir və həmçinin nəzarətçi olaraq `hold_enabled` ilə konfiqurasiya olunur.
+Zəncir tərəfindən qaytarılan yaradılmış RWA ID-dən istifadə edin. Bu nümunə `alice`-ın sahibi olduğunu və həmçinin `hold_enabled` ilə nəzarətçi kimi konfiqurasiya olunduğunu nəzərdə tutur.
 
 ```python
 warehouse_lot_id = (
@@ -228,7 +228,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Zəncirdən kənar proses uğurla baş tutduqdan sonra `ReleaseRwa` təqdim edin:
+Off-chain prosesi uğurla başa çatdıqdan sonra `ReleaseRwa` təqdim edin:
 
 ```python
 draft = TransactionDraft(
@@ -240,9 +240,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### Nəzarət və Audit Metadataları əlavə edin {#add-controls-and-audit-metadata}
+### Nəzarətləri və Audit Metadatasını Əlavə Et {#add-controls-and-audit-metadata}
 
-Nəzarətlər və metadatalar ayrıdır. Nəzarətçilərin siyasəti üçün nəzarətlərdən istifadə edin, tətbiqlərin və ya auditorların göstərmələri lazım olan faktlar üçün isə metadatalardan:
+Nəzarət və metadata ayrı-ayrıdır. Nəzarəti kontroller siyasəti üçün, metadatanı isə tətbiqlərin və ya auditorların göstərməsi lazım olan faktlar üçün istifadə edin:
 
 ```python
 draft = TransactionDraft(
@@ -271,9 +271,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### Qazan və ya təqaüdə alınma miqdarı {#redeem-or-retire-quantity}
+### Miqdarı geri al və ya ləğv et {#redeem-or-retire-quantity}
 
-Göndərmək `RedeemRwa` təmsil olunan zəncirdən kənar aktiv çatdırıldıqdan, istehlak edildikdən, geri çəkildikdən və ya başqa bir şəkildə dövriyyədən çıxarıldıqdan sonra. Bu, təqdim edilmiş miqdarı partiyadan daimi olaraq çıxarır. `redeem_enabled`. İmzaçı sahibi və ya nəzarətçi olmalıdır.
+Nümayiş olunan off-chain aktiv çatdırıldıqdan, istifadə edildikdən, ləğv edildikdən və ya başqa şəkildə dövriyyədən çıxarıldıqdan sonra `RedeemRwa`-ı təqdim edin. Bu, təqdim olunan miqdarı daimi olaraq lotdan çıxarır. Lotda `redeem_enabled` olmalıdır. Kriptoqrafik imzalayan sahibi və ya nəzarətçi olmalıdır.
 
 ```python
 draft = TransactionDraft(
@@ -285,9 +285,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### Müvafiqliyi araşdırarkən dondurma {#freeze-during-compliance-review}
+### Uyğunluq Yoxlaması Zamanı Dondurulma {#freeze-during-compliance-review}
 
-`FreezeRwa` silsilədən kənar bir araşdırmanın sıradan sahibkar əməliyyatlarını maneə törətməsi lazım olduqda təqdim olun. İmzaçı nəzarətçi olmalıdır. Lotda `freeze_enabled` olmalıdır.
+Zəncir kənarı icmal adi sahib əməliyyatlarını bloklamalı olduqda `FreezeRwa` təqdim edin. Kriptoqrafik imzalayan bir nəzarətçi olmalıdır. Lotda `freeze_enabled` olmalıdır.
 
 ```python
 draft = TransactionDraft(
@@ -308,7 +308,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Tədqiqatdan keçdikdən sonra `UnfreezeRwa` təqdim edin:
+Yoxlamadan keçdikdən sonra `UnfreezeRwa` təqdim edin:
 
 ```python
 draft = TransactionDraft(
@@ -325,9 +325,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### Hesablama vəsaitləri {#invoice-receivable}
+### Alınacaq Faktura {#invoice-receivable}
 
-Bir fakturanı bir RWA partiya faktura nömrəsini saxlayaraq `primary_reference` qeydiyyatdan sonra istehsal olunmuş ID köçürülməsi və geri qaytarılması üçün.
+Fakturanı RWA lotu kimi təqdim edin, faktura nömrəsini `primary_reference` və metadatalarda saxlayaraq. Qeydiyyatdan sonra, köçürmə və geri ödəniş üçün yaradılmış ID-dən istifadə edin.
 
 ```python
 draft = TransactionDraft(
@@ -363,7 +363,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Tələb olunmuş pul vəsaitinin maliyyələşdirildiyi və ya ödənildiyi təqdirdə, istehsal edilmiş faktura partiyasından istifadə edin ID:
+Alınacaq məbləğ maliyyələşdirildikdə və ya ödənildikdə, yaradılmış faktura lot ID-sindən istifadə edin:
 
 ```python
 invoice_lot_id = (
@@ -380,7 +380,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Təmsil olunan məbləği zəncirdən kənar hesablamalardan sonra ödəmək:
+Zəncirdən kənar maliyyə əməliyyatının həllindən sonra göstərilən məbləği geri alın:
 
 ```python
 draft = TransactionDraft(
@@ -392,9 +392,9 @@ envelope = draft.sign_with_keypair(bob_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### Karbon kredit pensiya {#carbon-credit-retirement}
+### Karbon kreditinin dövriyyədən çıxarılması {#carbon-credit-retirement}
 
-Təsdiqlənmiş karbon kreditlərini dövriyyədən çıxarmaq üçün `RedeemRwa` təqdim edin. Zəncirdən kənarda olan sertifikatı və ya qeydiyyat sübutunu metadata saxlayın:
+Dələduz olaraq iddia olunan karbon kreditlərini dövriyyədən çıxarmaq üçün `RedeemRwa`-i təqdim edin. Off-chain sertifikatını və ya qeydiyyat sübutunu metadatalarda saxlayın:
 
 ```python
 carbon_lot_id = (
@@ -416,9 +416,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### İki qrup birləşsin {#merge-two-lots}
+### İki Lotu Birləşdir {#merge-two-lots}
 
-İki zəncirdən kənar mövqelərin birləşdirildiyi zaman toplanın. Valideynlər eyni sahədə olmalıdırlar və eyni miqdar xüsusiyyətindən istifadə etməlidirlər. İndirmə vaxtı uşağın toplanmasını ID yaradır.
+İki off-chain mövqe birləşdirildikdə lotları birləşdirin. Valideynlər eyni domen olmalı və eyni miqdar spesifikasiyasından istifadə etməlidir. Proqram icra mühiti uşaq lot ID-sini yaradır.
 
 ```python
 warehouse_lot_id_2 = (
@@ -450,12 +450,12 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Python əməliyyatının tam nümunəsi üçün [Real-World Assets](/az/guide/tutorials/python.md#real-world-assets) -ə baxın.
+Tam Python əməliyyat nümunəsi üçün [Həqiqi Dünyada Aktivlər](/az/guide/tutorials/python.md#real-world-assets)-a baxın.
 
 ## Əlaqəli sənədlər {#related-docs}
 
-- [Əmlaklar](/az/blockchain/assets.md)
-- [Metadata](/az/blockchain/metadata.md)
-- [Iroha Xüsusi təlimatlar](/az/blockchain/instructions.md)
-- [Suallar](/az/reference/queries.md#assets-nfts-and-rwas)
-- [Torii bitki nöqtələri](/az/reference/torii-endpoints.md#app-and-sora-route-families)
+- [Aktivlər](/az/blockchain/assets.md)
+- [Metaməlumat](/az/blockchain/metadata.md)
+- [Iroha Təlimat əməliyyatları](/az/blockchain/instructions.md)
+- [Sorğular](/az/reference/queries.md#assets-nfts-and-rwas)
+- [Torii API son nöqtələr](/az/reference/torii-endpoints.md#app-and-sora-route-families)

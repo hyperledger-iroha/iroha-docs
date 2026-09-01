@@ -10,10 +10,10 @@ layout: home
 hero:
   name: Hyperledger Iroha 3
   text: "Hujjatlar"
-  tagline: "SORA Nexus, SDKs va operator ish oqimlari uchun deterministik blokchaina platformasi"
+  tagline: "SORA Nexus, SDKs va operator ish jarayonlari uchun deterministik blokcheyn platformasi"
   image:
     src: /icon.svg
-    alt: "Hyperledger Iroha 3 logotip"
+    alt: "Hyperledger Iroha 3 logotipi"
   #actions:
   #- theme: alt
   #  text: View on GitHub
@@ -21,53 +21,53 @@ hero:
 
 nexusPortal:
   eyebrow: SORA Nexus
-  title: "Iroha 3 / SORA Nexus ustida quring"
-  details: "Taira sinov tarmog'idan boshlang, joriy tranzaksiya oqimini o'rganing va ishlab chiqarish uchun tayyor dasturlarni yaratish uchun aniq retseptlardan foydalaning."
+  title: "Iroha 3 / SORA Nexus uchun yarating"
+  details: "Taira sinov tarmog‘idan boshlang, joriy tranzaksiya jarayonini o‘rganing va ishlab chiqarishga tayyor ilovalar yaratish uchun maqsadli retseptlardan foydalaning."
   primaryAction:
-    text: "Taira bilan boshlang"
+    text: "Taira-da boshlang"
     link: /uz/get-started/sora-nexus-dataspaces
   secondaryAction:
-    text: "Oziq-ovqat kitobini koʻrish"
+    text: "Amaliy retseptlarni ko‘rish"
     link: /uz/cookbook/
   recipes:
     title: "Ommabop retseptlar"
     items:
-      - title: "Transaksionni taqdim etish va tasdiqlash"
+      - title: "Tranzaksiyani yuborish va tekshirish"
         link: /uz/cookbook/submit-and-verify-transactions
-      - title: "Fungible aktivlarni koʻchirish"
+      - title: "O‘zaro almashtiriladigan aktivlarni o‘tkazish"
         link: /uz/cookbook/fungible-assets
-      - title: "Soʻrovlar daftarining holati"
+      - title: "Reyestr holatini so‘rash"
         link: /uz/cookbook/query-ledger-state
-      - title: "O ' tkazish hodisalari"
+      - title: "Hodisalarni oqimda olish"
         link: /uz/cookbook/stream-events
 
 features:
   - icon:
       dark: /start.svg
       light: /start-light.svg
-    title: "Boshlaning"
-    details: "Joriy ish maydonini yaratish, mahalliy tarmoqni ishga tushirish va Iroha 3 CLI"
+    title: "Ishni boshlash"
+    details: "Joriy ish maydonini yig‘ing, mahalliy tarmoqni ishga tushiring va Iroha 3 CLI-dan foydalanishni boshlang"
     link: /uz/get-started/
   - icon:
       dark: /build.svg
       light: /build-light.svg
     title: "Qo'llanma"
-    details: "SDKs, eng yaxshi amaliyotlar, konfiguratsiya, xavfsizlik va operator ish oqimlarini toping"
+    details: "SDKs, ilg‘or amaliyotlar, sozlama, xavfsizlik va operator ish jarayonlarini toping"
     link: /uz/guide/
   - icon:
       dark: /explained.svg
       light: /explained-light.svg
     title: "Arxitektura"
-    details: "Torii, Sumeragi, Norito, IVM va Nexus ma'lumotlar maydoni modelini tushuning"
+    details: "Torii, Sumeragi, Norito, IVM va Nexus ma’lumotlar makoni modelini tushuning"
     link: /uz/blockchain/iroha-explained
   - icon:
       dark: /reference.svg
       light: /reference-light.svg
-    title: "Ma'lumotlar"
-    details: "Joriy ikkilamchi, boshlanish, Torii va moslashuvchanlik ma'lumot sahifalariga qarang."
+    title: "Ma’lumotnoma"
+    details: "Joriy bajariluvchi fayllar, genezis, Torii va muvofiqlik ma’lumotnoma sahifalariga qarang"
     link: /uz/reference/
 footer: true
 ---
 
 <hr style="margin-top: 3rem;">
-<p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha bir qismi hisoblanadi <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a>. Koʻproq maʼlumot olish <a href="https://iroha.tech/" target="_blank">iroha.tech</a>.</p>
+<p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a> tarkibiga kiradi. Batafsil ma’lumot: <a href="https://iroha.tech/" target="_blank">iroha.tech</a>.</p>

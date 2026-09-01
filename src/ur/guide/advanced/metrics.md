@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: 5772bf7175b693fbbed54b59304859a33c2e19fef0c402141b6f4ad4cfd6714f
+translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # کارکردگی اور پیمائش {#performance-and-metrics}
 
 Iroha کارکردگی ورک لوڈ ، توثیق کنندہ ٹاپولوجی ، نیٹ ورک کے حالات اور اتفاق رائے کی ترتیبات پر منحصر ہے۔ لہذا ایک واحد TPS نمبر صرف اس وقت مفید ہے جب یہ فکسڈ ترتیب والے بینچ مارک رن سے منسلک ہوتا ہے۔
@@ -21,20 +20,30 @@ Iroha کارکردگی ورک لوڈ ، توثیق کنندہ ٹاپولوجی �
 
 ## کیا ناپنا ہے {#what-to-measure}
 
-Torii کی طرف سے نمائش کے ساتھ آپریٹر سطحوں کے ساتھ شروع کریں:
+پبلک نوڈ اسنیپ شاٹ اور پرومیتھوس سکریپ سے شروع کریں ، پھر آپریٹر کی تصدیق شدہ اتفاق رائے ریاست کے لئے CLI کا استعمال کریں۔ ہدف نوڈ کی طرف سے آپریٹر کلید کی اجازت ہونی چاہئے اور صرف رن ٹائم میں بھری ہوئی ہے:
 
 ```bash
 export TORII=http://127.0.0.1:8180
+export OPERATOR_KEY_FILE=./secrets/operator.key
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
-curl -s -H 'Accept: application/json' "$TORII/v1/sumeragi/status" | jq .
-curl -s "$TORII/v1/sumeragi/phases" | jq .
-curl -s "$TORII/v1/sumeragi/rbc" | jq .
-curl -s "$TORII/v1/sumeragi/params" | jq .
 curl -s "$TORII/metrics" > metrics.prom
+
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi status
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi diagnostics
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi qc
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi params
 ```
 
-آپ عوامی Taira کے مقابلے میں ایک ہی پڑھنے کے لئے صرف پیٹرن کی کوشش کر سکتے ہیں:
+عوامی Taira گڑھے کے گمنام سنیپ شاٹس کی شکل سیکھنے کے لئے مفید ہے۔ اس کے آپریٹر کی تشخیص جان بوجھ کر ایک Taira آپریٹر کلید کے بغیر دستیاب نہیں ہے:
 
 ```bash
 TAIRA=https://taira.sora.org
@@ -42,29 +51,15 @@ TAIRA=https://taira.sora.org
 curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
-curl -fsS "$TAIRA/v1/time/status" \
-  | jq '{healthy: .health.healthy, peers, samples_used, rtt_count: .rtt.count}'
-
-curl -fsS "$TAIRA/metrics" \
-  | grep -E '^(block_height|queue_size|sumeragi_tx_queue_depth|txs|view_changes)' \
-  | head -n 20
+curl -fsS "$TAIRA/v1/time/now" \
+  | jq '{now_ms, offset_ms}'
 ```
 
-عوامی Taira میٹرکس سگنل کے ناموں کو سیکھنے کے لئے مفید ہیں۔ اپنے تعیناتی کے لئے ان کا استعمال پیداواری صلاحیت نمبر کے طور پر نہ کریں۔
+اپنے تعیناتی کے لیے عوامی ٹیسٹ نیٹ کی مشاہدات کو پیداواری صلاحیت کے اعداد و شمار کے طور پر استعمال نہ کریں۔
 
-CLI کے ذریعے ایک ہی اتفاق رائے کی فوری تصاویر دستیاب ہیں:
-
-```bash
-iroha --config ./localnet/client.toml --output-format text ops sumeragi status
-iroha --config ./localnet/client.toml --output-format text ops sumeragi phases
-iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
-iroha --config ./localnet/client.toml ops sumeragi params
-```
-
-ٹیلی میٹری کی نمائش ترتیب شدہ پروفائل پر منحصر ہے۔ جب آپ کو `/metrics` کی ضرورت ہو تو `extended` کا استعمال کریں ، اور ٹیسٹ رن کے دوران `full` کا استعمال کریں جب آپ کو تفصیلی Sumeragi آپریٹر راستوں کی بھی ضرورت ہو۔
+ٹیلی میٹری کی نمائش ترتیب شدہ پروفائل پر منحصر ہے. `operator` حیثیت اور تشخیص کے سنیپ شاٹس کو قابل بناتا ہے۔ `extended` `/metrics` اور مہنگی ٹائمنگ شامل کرتا ہے، جبکہ `developer` لیڈر ، QC ، پیرامیٹرز ، اور ثبوت جیسے ڈویلپر اسنیپ شاٹس کو شامل کرتا ہے `/metrics` کو فعال کیے بغیر۔ جب ایک رن میں دونوں سیٹ کی ضرورت ہو تو `full` کا استعمال کریں۔ `telemetry_profile` پہلی ریلیز ٹیلی میٹری سوئچ واحد ہے۔
 
 ```toml
-telemetry_enabled = true
 telemetry_profile = "full"
 ```
 
@@ -82,19 +77,21 @@ telemetry_profile = "full"
 
 ## نوڈ گنتی اور کووروم {#node-count-and-quorum}
 
-زیادہ توثیق کنندہ غلطی کی برداشت کو بہتر بناتے ہیں لیکن ہم آہنگی، دستخط اور نیٹ ورک آؤٹ لاگت میں اضافہ کرتے ہیں۔ موجودہ Sumeragi لاگو کرنے میں:
+زیادہ توثیق کنندہ غلطی کی رواداری کو بہتر بناتے ہیں لیکن ہم آہنگی ، دستخط اور نیٹ ورک آؤٹ لاگت میں اضافہ کرتے ہیں۔ پہلی ریلیز Sumeragi پروٹوکول کے لئے ضروری ہے:
 
-- تصدیق کنندہ کا شمار `n` غلطی کے بجٹ `f = floor((n - 1) / 3)` سے اخذ کرتا ہے
-- `n >= 4` کے لئے، کمیٹی کووروم `2f + 1` ہے
-- `n <= 3` کے لئے، مصروفیت کے لئے تمام تصدیق کرنے والوں کی ضرورت ہے.
+- ایک درست `n = 3f + 1` ووٹنگ کمیٹی
+- `4 <= n <= 31`، تو درست سائز 4، 7، 10 اور اسی طرح ہیں
+- `2f + 1` کا کمیٹی کووروم
 - مبصرین کے ہم منصب بلوک کو مطابقت پذیر کرتے ہیں لیکن ووٹ نہیں دیتے، تجویز نہیں دیتے یا جمع نہیں کرتے
 
 |تصدیق کرنے والے |غلط بجٹ |کمیٹ کووروم |صلاحیت کا نوٹ |
 | --- | --- | --- | --- |
-|1 سے 3 |0 عملی آف لائن لاک |تمام تصدیق کنندہ |ترقی اور چھوٹے ٹیسٹ کے لئے مفید؛ کسی بھی لاپتہ تصدیق کنندہ commits روک سکتا ہے |
 | 4 | 1 | 3 |ایک غلطی کی برداشت کے لئے کم سے کم مشترکہ |
 | 7 | 2 | 5 |زیادہ لچکدار، زیادہ ووٹ اور تبلیغاتی ٹریفک کے ساتھ |
-| 10 | 3 | 7 |اعلی ہم آہنگی کی لاگت؛ نیٹ ورک اور کلکٹر ٹوننگ زیادہ اہم ہے |
+| 10 | 3 | 7 |اعلی ہم آہنگی کی لاگت؛ نیٹ ورک اور انگریز ٹوننگ زیادہ اہم ہے |
+| 31 | 10 | 21 |پہلے ریلیز کمیٹی کی زیادہ سے زیادہ حد؛ بینچ مارک کوآرڈینیشن اور دستخط لاگت احتیاط سے |
+
+جنیس نسل اور اسٹارٹ اپ کی توثیق غیر متفقہ کمیٹی سائز کو مسترد کرتی ہے۔ ایسی ٹاپولوجی کا حوالہ نہ دیں جو ریلیز میں قبول نہیں کیا جاسکتا۔
 
 "ایکس نوڈس" کا اندازہ کرتے وقت ، ووٹنگ کی توثیق کرنے والوں کو مبصرین سے الگ کریں۔ مبصرین کو شامل کرنا عام طور پر توثیق کنندگان کو شامل کرنے سے کم لاگت آتی ہے ، لیکن مبصرین اب بھی بلاک گپ شپ ، بلاک ہم آہنگی ، ڈسک اور نیٹ ورک بینڈوتھ استعمال کرتے ہیں۔
 
@@ -106,45 +103,48 @@ telemetry_profile = "full"
 
 - ہر ٹرانزیکشن پر ہدایات کی تعداد
 - دستخطوں کی گنتی اور دستخط کرنے کے الگورتھم
-- ٹرانزیکشن بائٹ سائز اور کمپیکٹ شدہ مفید بوجھ سائز۔
+- ٹرانزیکشن بائٹ سائز اور کمپیکٹ شدہ پے لوڈ سائز۔
 - پڑھنے/لکھنے کا تناسب
 - میٹا ڈیٹا کا سائز اور اثاثوں کی کارروائی
 - سمارٹ معاہدہ ، ٹرگر اور IVM عمل درآمد کی لاگت۔
-- ایک ہی ہم مرتبہ کے خلاف چل رہا استفسار بوجھ
+- ایک ہی نیٹ ورک نوڈ کے خلاف چل رہا استفسار بوجھ
 
 چھوٹی ٹرانسفر ٹرانزیکشنز معاہدہ بھاری یا میٹا ڈیٹا بھاری کام کے بوجھ کے لئے ایک پراکسی نہیں ہیں.
 
-### اتفاق رائے کا وقت {#consensus-timing}
+### اتفاق رائے کی ترتیب {#consensus-cadence}
 
-Sumeragi ٹائمنگ کو مؤثر Sumeragi پیرامیٹرز کے ذریعہ کنٹرول کیا جاتا ہے:
+مؤثر Sumeragi پیرامیٹر سنیپ شاٹ میں دستخط شدہ ناقابل تبدیل بلاک کیڈینس اور گھڑی کے بہاؤ کا پابند شامل ہے:
 
-- `block_time_ms`
-- `commit_time_ms`
-- `min_finality_ms`
-- `pacing_factor_bps`
-- NPoS فیز ٹائم آؤٹ جب NPoS موڈ فعال ہو
+- `block_cadence_ms`
+- `max_clock_drift_ms`
 
 ان کا معائنہ کریں:
 
 ```bash
-iroha --config ./localnet/client.toml ops sumeragi params
-curl -s "$TORII/v1/sumeragi/params" | jq .
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi params
 ```
 
-کم ٹائمنگ کے اہداف صرف اس وقت تاخیر کو بہتر بناسکتے ہیں جب نیٹ ورک ، اسٹوریج اور عملدرآمد کی پرتوں کو برقرار رکھا جاسکتا ہے۔ ایک بار تبدیلیاں دیکھنے کے بعد ، لاپتہ پے لوڈ لینے یا بیک پریشر ظاہر ہونے کے بعد ، ٹائمرز کو کم کرنا عام طور پر کارکردگی کو خراب کرتا ہے.
+`block_cadence_ms` دستخط شدہ جینیس کے ذریعہ انجام دیا جاتا ہے اور اسٹارٹ اپ پر منجمد ہوتا ہے۔ یہ ایک لائیو ٹوننگ بٹن نہیں ہے۔ مختلف دستخط شدہ جینس ان پٹس والے نیٹ ورکوں کا موازنہ صرف الگ الگ benchmark سناریو کے طور پر کریں. ایک بار جب تبدیلیاں نظر آتی ہیں، غائب پے لوڈ یا بیک پریشر ظاہر ہوتا ہے تو، عام طور پر زیادہ سے زیادہ بوجھ کو پائیدار پیداوار میں اضافے کے بجائے زیادہ مشاہدہ کیا جاتا ہے.
 
-### جمع کرنے والا فانوٹ {#collector-fanout}
+### امیدوار اور داخلے کی حدود {#candidate-and-ingress-bounds}
 
-کلکٹر کی ترتیبات پر اثر انداز ہوتا ہے کہ کس طرح فوری طور پر نامزد ووٹوں کے قریب آتے ہیں:
+نوڈ لوکل Sumeragi حدود کا تعین کرتے ہیں کہ ایک تصدیق کنندہ کتنا امیدوار اور بازیابی کام برقرار رکھ سکتا ہے:
 
-- `sumeragi.collectors.k` کنٹرول کرتا ہے کہ کتنے جمع کرنے والے ہر اونچائی پر ووٹ جمع کرتے ہیں
-- `sumeragi.collectors.redundant_send_r` مقامی ٹائم آؤٹ کے بعد اضافی ووٹنگ کا کنٹرول کرتا ہے
-- `sumeragi.collectors.parallel_topology_fanout` مجموعہ جات کے ساتھ ٹاپولوجی فانوٹ شامل کرتا ہے
+- `sumeragi.block.max_transactions`
+- `sumeragi.block.max_payload_bytes`
+- `sumeragi.block.proposal_queue_scan_multiplier`
+- `sumeragi.queues.commands`
+- `sumeragi.queues.bodies` اور `sumeragi.queues.body_bytes`
+- `sumeragi.queues.body_source_bytes` ، `sumeragi.queues.chunks`، اور `sumeragi.queues.ready_bodies`
 
-بڑھتے ہوئے fanout بڑے یا کم قابل اعتماد نیٹ ورکس میں دم تاخیر کو کم کر سکتا ہے ، لیکن یہ ٹریفک بھی بڑھا دیتا ہے۔ ان اقدار کو تبدیل کرنے سے پہلے مجموعی دستیابی اور کلکٹر ٹیلی میٹری کا موازنہ کریں:
+بہت چھوٹی حدیں قطار یا پے لوڈ کی بازیابی کا دباؤ پیدا کرتی ہیں۔ زیادہ سائز کی حدیں برقرار رکھنے والی میموری اور بدسلوکی نیٹ ورک نوڈ کے لئے دستیاب کام کی مقدار میں اضافہ کرتی ہیں۔ ایک بار میں ایک حد کو تبدیل کرنے سے پہلے تشخیصی اسنیپ شاٹ کو پروسیس میموری ، پیغام ہینڈلنگ ، اور لاپتہ جسم کی پیمائش کے ساتھ موازنہ کریں:
 
 ```bash
-iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi diagnostics
 ```
 
 ### نیٹ ورک کی شرائط {#network-conditions}
@@ -153,18 +153,19 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 
 - RTT تصدیق کنندہ کے درمیان
 - گھبراہٹ اور پیکٹ کا نقصان
-- بلاک پےلوڈ اور RBC ٹکڑوں کے لئے بینڈوڈتھ
+- بلاک پےلوڈ اور دستخط شدہ RS16 ٹکڑوں کے لئے بینڈوڈتھ
 - علاقوں کے درمیان غیر متوازن روابط
-- NAT ، فائر وال، یا ریلے کا رویہ جو ہم مرتبہ کنکشن میں تاخیر کرتا ہے
+- NAT ، فائر وال، یا ریلے کا رویہ جو نیٹ ورک نوڈ کنکشن میں تاخیر کرتا ہے
 
 منصوبہ بندی کے اصول کے طور پر ، تاخیر کے بجٹ کو متعدد توثیق کاروں کے دورے اور پلس عملدرآمد اور ڈسک کمیٹ ٹائم کو پورا کرنے کے لئے کافی زیادہ مقرر کریں۔ اگر p95 نیٹ ورک RTT پہلے ہی مطلوبہ p95 کمیٹ لیٹینسی کے قریب ہے تو ، ہدف حقیقت پسندانہ نہیں ہے۔
 
 ### قطاریں اور داخلے کی حد {#queues-and-admission-limits}
 
-داخلہ اور قطار کی ترتیبات میں وضاحت کی جاتی ہے کہ ایک ہم مرتبہ کس حد تک دھماکے کا دباؤ جذب کرسکتا ہے:
+داخلہ اور قطار کی ترتیبات میں وضاحت کی جاتی ہے کہ ایک نیٹ ورک نوڈ کس حد تک دھماکے کا دباؤ جذب کرسکتا ہے:
 
 - `queue.capacity`
 - `queue.capacity_per_user`
+- `queue.max_retained_bytes`
 - `queue.transaction_time_to_live_ms`
 - جنیسس ٹرانزیکشن کی حدیں جیسے زیادہ سے زیادہ دستخط ، ہدایات ، بائٹس اور ڈکامپریسڈ بائٹس
 - پی 2 پی قطار کی حدیں اور اتفاق رائے میں داخل ہونے کی حدود
@@ -176,7 +177,7 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 ہر تصدیق کنندہ کی پیمائش کریں، نہ صرف لیڈر:
 
 - CPU توثیق، دستخط کی تصدیق اور عملدرآمد کے دوران saturation
-- صفوں، سنیپ شاٹس اور فعال RBC سیشن سے میموری پریشر۔
+- قطاروں ، اسنیپ شاٹس اور پے لوڈ ریکوری بفر سے میموری پریشر۔
 - بلاک اسٹوریج اور اسنیپ شاٹس کے لئے ڈسک لکھنے کی تاخیر
 - نیٹ ورک ٹرانسمیشن / وصول saturation
 - جب کام کے بوجھ میں استعمال کیا جاتا ہے تو اختیاری ہارڈ ویئر کی رفتار کی ترتیبات
@@ -185,7 +186,7 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 
 ## Prometeus سگنل {#prometheus-signals}
 
-میٹرکس کے نام تعمیر پروفائل اور خصوصیت سیٹ کے مطابق مختلف ہوسکتے ہیں۔ پہلے اپنے نوڈ پر `/metrics` کا معائنہ کریں ، پھر دستیاب سیریز کے گرد ڈیش بورڈ بنائیں۔
+میٹرک نام چیک ان ٹیلی میٹری کیٹلاگ سے آتے ہیں۔ سیریز کی دستیابی اور نمونے لینے اب بھی تعمیر کی خصوصیات اور `telemetry_profile` پر منحصر ہے ، لہذا ڈیش بورڈ بنانے سے پہلے ہدف کے نوڈ پر `/metrics` کا معائنہ کریں.
 
 عام سگنل میں شامل ہیں:
 
@@ -196,9 +197,9 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 |تاخیر کا پابند |`histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |تاخیر کے بجٹ کے ساتھ p95/p99 کا موازنہ کریں |
 |قطار کی گہرائی |`queue_size`، `sumeragi_tx_queue_depth` |چوٹی لوڈ کے دوران محدود رہنا چاہئے |
 |قطار کی سیر |`sumeragi_tx_queue_saturated` |برقرار رکھنے والے غیر صفر اقدار کا مطلب ہے کہ زیادہ بوجھ |
-|تبدیلیاں دیکھیں |`view_changes` ، `sumeragi_view_change_suggest_total`، `sumeragi_view_change_install_total` |بڑھتے ہوئے اقدار ٹائمنگ، ٹاپولوجی، پائل لوڈ یا نیٹ ورک کی خرابی کی نشاندہی کرتے ہیں۔ |
+|منظر کی تبدیلیاں |`view_changes`، `sumeragi_view_change_suggest_total`، `sumeragi_view_change_install_total` |بڑھتی ہوئی اقدار، وقت بندی، topology، پے لوڈ یا نیٹ ورک کی خرابی کی نشاندہی کرتی ہیں۔ |
 |ڈراپ شدہ پیغامات |`dropped_messages`، `sumeragi_consensus_message_handling_total` |لوڈ کے دوران کمی عام طور پر تاخیر کی چوٹیوں کی وضاحت |
-|RBC دباؤ |`sumeragi_rbc_store_pressure`، `sumeragi_rbc_backpressure_deferrals_total` |استعمال شدہ بوجھ کی بازیابی یا اسٹوریج کے لیے غیر صفر دباؤ پوائنٹس |
+|payload اور DA وصولی | `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` |مسلسل درخواستوں، بڑھتی ہوئی عمر، یا بار بار DA گیٹس جسم یا ٹکڑا حصول کے مسائل کی نشاندہی |
 |کمیٹ کووروم |`sumeragi_commit_signatures_counted`، `sumeragi_commit_signatures_required` |گنتی شدہ دستخطوں کو فوری طور پر مطلوبہ تعداد تک پہنچنا چاہئے۔|
 
 جب ایک میٹرک صرف `/v1/sumeragi/status` میں موجود ہے، تو JSON اسنیپ شاٹ کو پرومیٹیئس سکریپ کے طور پر اسی رن آرٹیفیکٹس میں قبضہ کریں.
@@ -215,10 +216,18 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 2. مؤثر ترتیب کو ریکارڈ کریں:
 
    ```bash
-   iroha --config ./localnet/client.toml --output-format json ops sumeragi params \
+   iroha --config ./localnet/client.toml \
+     --operator-private-key-file "$OPERATOR_KEY_FILE" \
+     --output-format json ops sumeragi params \
      > artifacts/sumeragi-params.json
-   curl -s "$TORII/v1/sumeragi/collectors" \
-     > artifacts/sumeragi-collectors.json
+   iroha --config ./localnet/client.toml \
+     --operator-private-key-file "$OPERATOR_KEY_FILE" \
+     --output-format json ops sumeragi status \
+     > artifacts/sumeragi-status.json
+   iroha --config ./localnet/client.toml \
+     --operator-private-key-file "$OPERATOR_KEY_FILE" \
+     --output-format json ops sumeragi diagnostics \
+     > artifacts/sumeragi-diagnostics.json
    ```
 
 3. کام کا بوجھ ہدف TPS پر چلائیں.
@@ -232,17 +241,18 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 
 - Iroha کمیٹی، ریلیز اور فیچر پرچم
 - تصدیق کنندہ اور ناظرین کی گنتی
-- اتفاق رائے کا موڈ اور Sumeragi پیرامیٹرز
-- جمع کرنے والا `k` ، ریڈینڈنٹ بھیجنے والا `r`، اور ٹاپولوجی fanout
+- اتفاق رائے کا موڈ، دستخط شدہ بلاک کیڈنسی، اور DA ترتیب
+- درست `3f + 1` کمیٹی، کووروم اور مبصرین کی فہرست
+- `sumeragi.block` ، `sumeragi.queues`، `sumeragi.limits`، نیٹ ورک میں داخلے اور لین دین کی قطار کی حدیں
 - ٹیلی میٹری پروفائل
 - ہارڈویئر، اسٹوریج اور OS کی تفصیلات
 - نیٹ ورک RTT، jitter، نقصان، اور بینڈوڈتھ مفروضے
-- ٹرانزیکشن مکس اور مفید بوجھ کے سائز
+- ٹرانزیکشن مکس اور پے لوڈ کے سائز
 - پیش کردہ TPS اور چلانے کی مدت
 - قبول / مسترد TPS
 - p50/p95/p99 commit latency
 - قطار کی گہرائی اور تناؤ
-- تبدیلیاں دیکھیں، پیغامات چھوڑ دیں، RBC دباؤ، اور لاپتہ مفید بوجھ کاؤنٹرز
+- تبدیلیاں دیکھیں، چھوڑ دیئے گئے پیغامات، لاپتہ بلاک کی وصولی، اور DA گیٹ کاؤنٹر
 - CPU ، میموری، ڈسک اور نیٹ ورک کا استعمال فی ویلیڈیٹر
 
 ان تفصیلات کے بغیر، TPS نمبر کو غیر معمولی سمجھا جانا چاہئے.

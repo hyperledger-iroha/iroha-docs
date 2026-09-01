@@ -3,23 +3,23 @@ translation_locale: uz
 translation_source: /help/installation-issues.md
 translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c054c85a2a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Oʻrnatish muammolarini hal qilish {#troubleshooting-installation-issues}
+# O'rnatish muammolarini bartaraf etish {#troubleshooting-installation-issues}
 
-Ushbu bo'limda Iroha 3 o'rnatish uchun muammolarni hal qilish maslahatlari mavjud. Agar siz duch kelayotgan muammo bu erda tasvirlanmagan bo'lsa, biz bilan [Telegram](https://t.me/hyperledgeriroha) orqali bog'lanishingiz mumkin.
+Ushbu bo‘lim Iroha 3 o‘rnatishda muammolarni hal qilish bo‘yicha maslahatlarni taklif qiladi. Agar siz duch kelayotgan muammo bu yerda tasvirlanmagan bo‘lsa, biz bilan [Telegram](https://t.me/hyperledgeriroha) orqali bog‘laning.
 
-## Tezkor tekshirishlar {#quick-checks}
+## Tezkor tekshiruvlar {#quick-checks}
 
-Ko'pgina o'rnatish muvaffaqiyatsizliklari to'rtta joydan kelib chiqadi:
+O'rnatishdagi ko'pchilik muvaffaqiyatsizliklar to'rtta joydan biridan kelib chiqadi:
 
-- Rust asbob-uskunalar zanjirini yuqori tomonga ishlaydigan ish maydonida o'rnatilgan versiyadan kattaroqroq
-- `cargo` yoki `rustc` o'zgartirilgan qurilmalarga o'xshash `rustup`
-- `pkg-config` yoki CMake kabi mavjud bo'lmagan tizim qurilishi vositalari
-- manbai o'zgartirilganidan so'ng oldindan hosil bo'lgan qisqartmalar yoki mahalliy qurilmalar
+- yuqori darajadagi ish joyi tomonidan belgilangan versiyadan eski Rust vosita zanjiri
+- `cargo` yoki `rustc` `rustup` dan boshqacha o‘rnatishga olib kelmoqda
+- C kompilyatori, `pkg-config` yoki CMake kabi tizim qurilish vositalari yo‘q
+- manba o‘zgarishlarini o‘zgartirgandan so‘ng eskirgan yaratilgan parchalar yoki mahalliy qurilish artefaktlari
 
-Iroha manbai hisobidan quyidagilardan boshlanadi:
+Iroha manba-kod ishchi nusxasidan boshlang:
 
 ```bash
 rustup show
@@ -28,21 +28,21 @@ rustc --version
 cargo metadata --no-deps
 ```
 
-Agar `cargo metadata` muvaffaqiyatsiz tugasa, `pnpm refresh:iroha --source /path/to/iroha` ishga tushirishdan oldin mahalliy asbob-uskunalar zanjirini tuzating, chunki yangilanish joriy ma'lumotlar modeli sxemasini yaratish uchun Kagami ni ilova qilishi mumkin.
+Agar `cargo metadata` muvaffaqiyatsiz bo‘lsa, `pnpm refresh:iroha --source /path/to/iroha` ni ishga tushirishdan oldin mahalliy vosita zanjirini tuzating, chunki yangilash joriy ma’lumot-modeli sxemasini yaratish uchun Kagami ni ishga tushirishi mumkin.
 
-## Muammoni hal qilish Rust asboblar to'plami {#troubleshooting-rust-toolchain}
+## Muammolarni bartaraf etish Rust Vositalar zanjiri {#troubleshooting-rust-toolchain}
 
-Ba'zan, narsalar rejalashtirilganiday bo'lmaydi. Ayniqsa agar siz `rust` bir muncha vaqt oldin tizimingizda, lekin yangilanmagan. Python: XKCD bu qanday ko'rinishi mumkinligi haqida mashhur misol bor:
+Ba’zan, narsalar rejalashtirilgani kabi bo‘lmaydi. Ayniqsa, agar siz bir oz vaqt oldin tizimingizda `rust` bo‘lgan bo‘lsa, lekin yangilamagan bo‘lsangiz. Shunga o‘xshash muammo Python da yuz berishi mumkin: XKCD ning buni qanday ko‘rinishi mumkinligiga mashhur misoli mavjud:
 
 <div class="flex justify-center">
 
-![Python atrof muhitda muammolarni hal qilish komiks](/img/install-troubles.png)
+![Python atrof-muhit bilan bog‘liq muammolarni aniqlash komiksi](/img/install-troubles.png)
 
 </div>
 
 ### Rust versiyasini tekshiring {#check-rust-version}
 
-Sizning va bizning aqlimizni saqlab qolish manfaatini ko'zlab, ishonch hosil qilingki, sizda to'g'ri versiyasi `cargo` to'g'ri versiyasi bilan juftlangan `rustc`. Joriy yuqori darajadagi ish o ' rinlari `rust-version = "1.92"` va asbob-uskunalar zanjirini oʻrnatadi `rust-toolchain.toml`. Tarjimalarni ko'rsatish uchun,
+O'zingizning va bizning aqlimizni saqlash maqsadida, `cargo`ning to'g'ri versiyasi `rustc`ning to'g'ri versiyasi bilan juft ekanligiga ishonch hosil qiling. Joriy upstream ish maydoni `rust-version = "1.92"`ni e'lon qiladi va `rust-toolchain.toml`da vosita kanali pin qiladi. Versiyalarni ko'rsatish uchun, qil
 
 ```bash
 $ cargo -V
@@ -56,24 +56,24 @@ $ rustc --version
 $ rustc 1.93.1 (...)
 ```
 
-Agar sizda yuqori versiyalar bo'lsa, yaxshi. Agar sizda pastroq versiyalar bo'lsa , uni yangilash uchun quyidagi buyruqni bajarishingiz mumkin:
+Agar sizda yuqori versiyalar bo'lsa, hammasi yaxshi. Agar sizda past versiyalar bo'lsa, uni yangilash uchun quyidagi buyruqni bajarishingiz mumkin:
 
 ```bash
 $ rustup toolchain update stable
 ```
 
-### Oʻrnatish joyini tekshirish {#check-installation-location}
+### O'rnatish joyini tekshiring {#check-installation-location}
 
-Agar siz kamroq versiya raqamlarini olsangiz va vositalar zanjirini yangilagan bo'lsangiz va u ishlamagan bo'lsa... aytsak, bu umumiy muammo, lekin uning umumiy yechimlari yo'q.
+Agar siz pastroq versiya raqamlarini olsangiz va siz vosita zanjirini yangilagan bo‘lsangiz va u ishlamagan bo‘lsa… aytaylik, bu umumiy muammo, lekin uning umumiy yechimi yo‘q.
 
-Birinchidan, siz foydalanmoqchi bo'lgan versiya qaysi joyda o'rnatilganini aniqlang:
+Birinchidan, siz ishlatmoqchi bo‘lgan versiya qayerga o‘rnatilganini aniqlab olishingiz kerak:
 
 ```bash
 $ rustup which rustc
 $ rustup which cargo
 ```
 
-Asboblar zanjirlarining foydalanuvchi o'rnatishlari odatda `~/.rustup/toolchains/stable-*/bin/`. Agar shunday bo'lsa,
+Foydalanuvchi tomonidan o‘rnatilgan asboblar zanjirlari odatda `~/.rustup/toolchains/stable-*/bin/` da bo‘ladi. Agar shunday bo‘lsa, siz ishlata olishingiz kerak
 
 ```bash
 $ rustup toolchain update stable
@@ -81,73 +81,73 @@ $ rustup toolchain update stable
 
 va bu sizning muammolaringizni hal qilishi kerak.
 
-### Rust andoza versiyasini tekshiring {#check-the-default-rust-version}
+### Standart Rust versiyasini tekshiring {#check-the-default-rust-version}
 
-Boshqa variant shundaki, sizda `stable` asboblar zanjiri mavjud, ammo u andoza sifatida belgilanmagan.
+Boshqa variant shundaki, sizda yangilangan `stable` asboblar to'plami mavjud, lekin u standart sifatida o'rnatilmagan. Quyidagini ishga tushiring:
 
 ```bash
 $ rustup default stable
 ```
 
-`nightly` versiyasini o'rnatish yoki keyinchalik uni bekor qilmasdan aniq Rust versiyasini sozlash ushbu muammoga sabab bo'lishi mumkin.
+`nightly` versiyasini o‘rnatish yoki keyinroq bekor qilmasdan ma’lum bir Rust versiyasini belgilash bu muammoning yuzaga kelishiga sabab bo‘lishi mumkin.
 
-### Boshqa Rust versiyalari mavjudligini tekshirish {#check-if-there-are-other-rust-versions}
+### Boshqa Rust versiyalari bor-yo'qligini tekshiring {#check-if-there-are-other-rust-versions}
 
-Turmush o'rtog'ining muammolarini hal qilishda davom etayotganimizda, biz shell aliaslari bo'lishi mumkin:
+Muammo aniqlashning chuqur yo‘lidan davom etib, bizda shell aliaslari bo‘lishi mumkin:
 
 ```bash
 $ type rustc
 $ type cargo
 ```
 
-Agar bular `rustup which *` ishga tushirganingizda ko'rgan joylardan boshqa joylarga ishora qilsa, unda sizda muammo bor. Shuni yodda tutingki, bunday aliaslarni qo'shish yetarli emas:
+Agar bu nuqtalar `rustup which *`ni ishga tushirganingizda ko‘rgan joydan boshqalarga ishora qilsa, unda muammo bor. Shu kabi laqablarnio‘rnatish yetarli emasligini unutmang:
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
 $ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
 ```
 
-Ichki mantiqa hali ham shell aliaslarini qanday tuzatishingizdan qat'iy nazar buzilishi mumkin.
+Ichki mantiq shaley aliaslaringizni qanday joylashtirishingizdan qat'i nazar, baribir buzilishi mumkin.
 
-Eng sodda yechim - foydalanmagan versiyalarni olib tashlashdir.
+Eng oddiy yechim foydalanmaydigan versiyalarni o'chirib tashlash bo'ladi.
 
-Biroq, bu aytish osonroq, chunki u rustup ning barcha o'rnatilgan va siz uchun mavjud bo'lgan versiyalarini kuzatib borishni anglatadi. Odatda, faqat ikkita: Ushbu qo'llanma boshida buyruqni ishga tushirganingizda sizning uy jildingizdagi standart joyga o'rnatilgan va tizim paketi menejeri versiyasi. Ilk qism uchun (Linux) tarqatish qo'llanmasiga murojaat qiling, (`apt remove rust`).
+Biroq, bu qilishdan ko‘ra aytish osonroq, chunki bu sizga o‘rnatilgan va mavjud bo‘lgan rustup ning barcha versiyalarini kuzatishni talab qiladi. Odatda, faqat ikkita mavjud: tizim paket menejeri versiyasi va darslikning boshida buyrug‘ni ishga tushirganingizda uyingiz papkasidagi standart joyga o‘rnatilgan versiya. Birinchisi uchun, (Linux) tarqatmangizning qo‘llanmasiga murojaat qiling, (`apt remove rust`). Ikkinchisi uchun, quyidagilarni bajaring:
 
 ```bash
 $ rustup toolchain list
 ```
 
-Va keyin, har bir `<toolchain>` uchun (bo'sh burchaklarsiz, albatta):
+Va shundan so‘ng, har bir `<toolchain>` uchun (albatta burchak qavslarisiz):
 
 ```bash
 $ rustup remove <toolchain>
 ```
 
-Asboblar zanjirlarini olib tashlaganidan so'ng, bu buyruq topilmagan buyruq xatosi haqida xabar berishi kerak:
+Vositalar zanjirini olib tashlagandan so'ng, bu buyruq buyruq-topilmadi xatosini ko‘rsatishi kerak:
 
 ```bash
 $ cargo --help
 ```
 
-Ushbu xato Rust aktiv asboblar zanjirini o'rnatilmaganligini tasdiqlaydi. Keyin:
+U xato hech qanday faol Rust vositalar to'plami o'rnatilmaganligini tasdiqlaydi. Keyin quyidagini ishga tushiring:
 
 ```bash
 $ rustup toolchain install stable
 ```
 
-## Python asboblar zanjirini xatolarga yo'l qo'yish {#troubleshooting-python-toolchain}
+## Muammolarni bartaraf etish Python toolchain {#troubleshooting-python-toolchain}
 
-Oʻrnatilganda Python Pipoda ishlatiladigan velosiped paketlari [Python mijozlarni oʻrnatish](/uz/guide/tutorials/python.md), siz "iroha" kabi xatoga duch kelishingiz mumkin_Piton-*.whl bu platformada qo'llab-quvvatlanadigan velosiped emas".
+Siz [Python mijoz sozlamalari](/uz/guide/tutorials/python.md) vaqtida pip yordamida Python Wheel paketini o‘rnatganingizda, quyidagi xatoga duch kelishingiz mumkin: "iroha_python-*.whl bu platformada qo‘llab-quvvatlanadigan wheel emas".
 
-Ushbu xato pip eskirganligini anglatadi, shuning uchun uni yangilash kerak. Birinchidan, OS yangilanishlarini tekshirish va tizimni yangilash tavsiya etiladi.
+Bu xato pip eskirganligini anglatadi, shuning uchun uni yangilashingiz kerak. Avvalo, OS ni yangilanishlar uchun tekshirish va tizimni yangilash tavsiya etiladi.
 
-Agar bu ishlamasa, foydalanuvchi direktoriyangiz uchun `pip` ni yangilashni sinab ko'rishingiz mumkin.
+Agar bu ishlamasa, foydalanuvchi katalogingiz uchun `pip` ni yangilashga urinib ko‘rishingiz mumkin.
 
 `python -m pip install --upgrade pip`
 
-O'zingizning uy direktoriyangizda `pip` o'rnatilganligiga ishonch hosil qiling. Buni qilish uchun `whereis pip`ni ishga tushiring va `/home/username/.local/bin/pip` yo'llar orasida bo'ladimi-yo'qligini tekshiring. Agar yo'q bo'lsa, shellingizning `PATH` o'zgaruvchini yangilang.
+Uy papkangizga o'rnatilgan `pip` ga ishonch hosil qiling. Buni qilish uchun `whereis pip` ni ishlating va `/home/username/.local/bin/pip` yo'llar orasida borligini tekshiring. Agar yo'q bo'lsa, shellingizning `PATH` o'zgaruvchisini yangilang.
 
-Agar muammo davom etsa, iltimos [ bizga ](/uz/help/) murojaat qilib, natijalarni xabar qiling.
+Agar muammo davom etsa, iltimos [biz bilan bog'laning](/uz/help/) qilishingiz va natijalarni xabar qilishingizni so‘raymiz.
 
 ```
 python --version

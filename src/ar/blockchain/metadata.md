@@ -3,17 +3,17 @@ translation_locale: ar
 translation_source: /blockchain/metadata.md
 translation_source_hash: 20e78492bf757147f2c9afed2d3b51639bc79913d3d8e4351193b6011f5469c2
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# البيانات الأساسية {#metadata}
+# البيانات الوصفية {#metadata}
 
-البيانات المعدنية هي خريطة قيمة مفتاح معتمدة على كائنات دفتر التسجيل. مفاتيح هي `Name` القيم والقيم هي JSON (`Json`) الحمولات المفيدة.
+البيانات الوصفية هي خريطة مفتاح-قيمة تم التحقق منها مرتبطة بكائنات دفتر الأستاذ البلوكشين. المفاتيح هي قيم `Name` والقيم هي حمولات JSON (`Json`).
 
-الكائنات التالية يمكن أن تحمل البيانات الوصفية:
+يمكن للكائنات التالية حمل بيانات وصفية:
 
-- المجالات
-- الحسابات
+- النطاقات
+- حسابات
 - الأصول
 - تعريفات الأصول
 - NFTs
@@ -21,13 +21,13 @@ translation_engine: nllb-200-ct2
 - المحفزات
 - المعاملات
 
-استخدم البيانات الأساسية لحقول وصفية أو فهرسة صغيرة تنتمي إلى حالة الكتب الرئيسية. يجب تخزين الأحمال المفيدة الكبيرة خارج WSV ومشار إليها بواسطة مسار هضم ، URI ، أو SoraFS.
+استخدم البيانات الوصفية للحقول الصغيرة الوصفية أو الفهارس التي تنتمي إلى حالة دفتر الأستاذ في البلوكشين. يجب تخزين الحمولات الكبيرة خارج WSV والإشارة إليها بواسطة قيمة ملخص تشفيرية، URI، أو مسار SoraFS.
 
-للحصول على إرشادات بشأن اختيار البيانات المعدنية، الأصول NFTs، RWAs، أو التخزين خارج السلسلة، انظر [اختيارات تخزين البيانات المتعددة وتخزين الكدولة ](/ar/guide/configure/metadata-and-store-assets.md).
+للحصول على إرشادات حول اختيار الميتاداتا، الأصول، NFTs، RWAs، أو التخزين خارج السلسلة، انظر [البيانات الوصفية وخيارات تخزين سجل البلوكشين](/ar/guide/configure/metadata-and-store-assets.md).
 
-## جربوا ذلك على Taira {#try-it-on-taira}
+## جرّبه على Taira {#try-it-on-taira}
 
-البيانات المعدنية مرئية من خلال قراءة الموارد العادية. هذه الأوامر تدرج تعريفات الأصول Taira التي تحتوي حاليًا على البيانات المتعددة:
+البيانات الوصفية مرئية من خلال قراءة الموارد العادية. هذا الأمر يسرد تعريفات الأصول Taira التي تحتوي حالياً على بيانات وصفية:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
@@ -36,7 +36,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
     | {id, name, metadata}'
 ```
 
-استخدم نفس النمط للمناطق والحسابات:
+استخدم نفس النمط للنطاقات والحسابات:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
@@ -46,20 +46,20 @@ curl -fsS 'https://taira.sora.org/v1/accounts?limit=20' \
   | jq '.items[] | select((.metadata // {} | length) > 0)'
 ```
 
-تعتبر الخروج الفارغ نتيجة صالحة. يعني الصفحة الحالية من Taira الأشياء لا تحتوي على البيانات الضخمة، وليس أن نقطة النهاية فشلت.
+اعتبر المخرجات الفارغة نتيجة صالحة. هذا يعني أن الصفحة الحالية من كائنات Taira لا تحتوي على بيانات وصفية، وليس أن نقطة النهاية API قد فشلت.
 
-## تحديث البيانات المتعددة {#updating-metadata}
+## تحديث البيانات الوصفية {#updating-metadata}
 
-يتم تغيير البيانات الوصفية بواسطة Iroha التعليمات الخاصة:
+يتم تغيير البيانات الوصفية باستخدام عمليات التعليمات Iroha:
 
-- [`SetKeyValue`](/ar/blockchain/instructions.md#setkeyvalue-removekeyvalue) إدخال مفتاح أو استبداله.
-- [`RemoveKeyValue`](/ar/blockchain/instructions.md#setkeyvalue-removekeyvalue) إزالة مفتاح
+- [`SetKeyValue`](/ar/blockchain/instructions.md#setkeyvalue-removekeyvalue) يُدرج أو يستبدل مفتاحًا
+- [`RemoveKeyValue`](/ar/blockchain/instructions.md#setkeyvalue-removekeyvalue) يزيل مفتاحًا
 
-يجب أن يكون لدى السلطة التي تقدم المعاملة الإذن المطلوب من قبل مؤكّد الوقت التشغيلي النشط. بالنسبة إلى سطح الإذن الافتراضي، انظر [رموز الإذن](/ar/reference/permissions.md).
+يجب أن يكون للجهة المخوَّلة التي تقدم المعاملة الإذن المطلوب من قِبل مدقق وقت تشغيل البرنامج النشط. بالنسبة لسطح الإذن الافتراضي، انظر [رموز الإذن](/ar/reference/permissions.md).
 
 ## الأحداث {#events}
 
-يتم إصدار أحداث البيانات عند تغيير البيانات الوصفية. الحدث العام هو `MetadataChanged<Id>`:
+يتم إصدار أحداث البيانات عندما تتغير البيانات الوصفية. الحمولة العامة للحدث هي `MetadataChanged<Id>`:
 
 ```mermaid
 classDiagram
@@ -81,10 +81,10 @@ MetadataChanged --> AssetDefinitionMetadataChanged
 MetadataChanged --> DomainMetadataChanged
 ```
 
-استخدم مرشحات حدث البيانات [](/ar/blockchain/filters.md#data-event-filters) للتسجيل فقط في أحداث البيانات المعدنية لنوع الكيان أو كائن ID الذي يهم التكامل.
+استخدم [مرشحات أحداث البيانات](/ar/blockchain/filters.md#data-event-filters) للاشتراك فقط في أحداث الميتاداتا لنوع الكيان أو معرف الكائن الذي يهم التكامل.
 
-## الأسئلة {#queries}
+## استفسارات {#queries}
 
-يتم إرجاع البيانات الأساسية كجزء من الكائن المطلوب. على سبيل المثال، استخدام [`FindAccountById`](/ar/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/ar/reference/queries.md#domains-and-peers), أو [`FindAssetDefinitionById`](/ar/reference/queries.md#assets-nfts-and-rwas). الاستخدام [`FindNfts`](/ar/reference/queries.md#assets-nfts-and-rwas) أو [`FindNftsByAccountId`](/ar/reference/queries.md#assets-nfts-and-rwas) لـ NFTs, و [`FindRwas`](/ar/reference/queries.md#assets-nfts-and-rwas) لـ RWA ثم قراءة حقل البيانات المعدنية للشيء. NFT استجابات السؤال تعرض NFT `content` خريطة كميتاء البيانات المسجلة
+يتم إرجاع البيانات الوصفية كجزء من الكائن المستعلم عنه. على سبيل المثال، استخدم [`FindAccountById`](/ar/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/ar/reference/queries.md#domains-and-peers), أو [`FindAssetDefinitionById`](/ar/reference/queries.md#assets-nfts-and-rwas). استخدم [`FindNfts`](/ar/reference/queries.md#assets-nfts-and-rwas) أو [`FindNftsByAccountId`](/ar/reference/queries.md#assets-nfts-and-rwas) لـ NFTs, و [`FindRwas`](/ar/reference/queries.md#assets-nfts-and-rwas) لـ RWA الكثير. ثم اقرأ حقل بيانات التعريف للكائن. NFT استجابات الاستعلام تكشف NFT `content` الخريطة كبيانات وصفية للسجل.
 
-مفاتيح البيانات المعدنية هي جزء من حالة دفتر التسجيل، لذلك حافظ عليها مستقرة وتجنب تشفير إصدار محدد للتطبيق في اسم المفتاح عندما يمكن أن تحمل قيمة JSON هذا الإصدار صراحة.
+مفاتيح البيانات الوصفية هي جزء من حالة سجل البلوكتشين، لذا احتفظ بها مستقرة وتجنب تشفير تغييرات إصدار محددة للتطبيق في اسم المفتاح عندما يمكن لقيمة JSON أن تحمل هذا الإصدار بشكل صريح.

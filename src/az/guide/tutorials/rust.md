@@ -3,24 +3,24 @@ translation_locale: az
 translation_source: /guide/tutorials/rust.md
 translation_source_hash: 98b0c3a193c6dfe8b266bcc498d7016426cf2f838a7bf7ebfbef145ffdcc7944
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Rust {#rust}
 
-Rust tətbiqi əsas iş məkanında yaşayır və Iroha 3 kod bazası ilə işləmək üçün ən birbaşa yol olaraq qalır.
+Rust tətbiqi əsas iş sahəsində yerləşir və Iroha 3 kod bazası ilə işləməyin ən birbaşa yolu olaraq qalır.
 
-## Nə əldə edəcəksən {#what-you-get}
+## Nələr əldə edirsiniz {#what-you-get}
 
-Hazırda yuxarı axın repositoriyası aşağıdakıları açıqlayır:
+Yuxarı axın anbarı hazırda bu məlumatları göstərir:
 
-- `iroha` Rust müştəri qutusu
-- `iroha` CLI ən tam istinad müştəri olaraq
-- SDK qatı tərəfindən istifadə olunan paylaşılan məlumat modeli, kripto və Norito qutuları
+- `iroha` Rust müştəri proqram təminatı paketi
+- `iroha` CLI-i ən tam istinad müştəri olaraq
+- paylaşılan məlumat modeli, kripto və Norito proqram paketləri SDK təbəqəsi tərəfindən istifadə olunur
 
-## Tələb olunan başlanğıc nöqtəsi {#recommended-starting-point}
+## Tövsiyə olunan Başlanğıc Nöqtəsi {#recommended-starting-point}
 
-Layihənin hazırkı vəziyyəti üçün CLI və iş sahəsinin özü ilə başlayın:
+Layihənin cari vəziyyəti üçün CLI istinadını və öz iş sahəsini istifadə edərək başlayın:
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
@@ -28,15 +28,15 @@ cd iroha
 cargo build --workspace
 ```
 
-Referensiyalı müştərini verilişi olan standart müştəri konfiqurasiyası ilə icra edin:
+Yoxlanılmış standart müştəri konfiqurasiyası ilə referans müştərini işə salın:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-## Taira Yalnız oxumaq üçün cəhd edin {#try-taira-read-only}
+## Sına Taira Yalnız Oxuma {#try-taira-read-only}
 
-Eyni iş məkanında yoxlama vasitəsilə Taira diaqnostik köməkçisini sınayın:
+Eyni iş sahəsindən çıxış edib, ictimai Taira diaqnostika köməkçisini sınayın:
 
 ```bash
 cargo run --bin iroha -- taira doctor \
@@ -44,7 +44,7 @@ cargo run --bin iroha -- taira doctor \
   --json
 ```
 
-Marşrut səviyyəsində yoxlamalar üçün Torii'nın JSON API ünvanını birbaşa istifadə edin:
+Marşrut səviyyəsində yoxlamalar üçün, Torii'ın JSON API'sini birbaşa istifadə edin:
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -54,26 +54,26 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-`taira.client.toml` yaratdıqdan sonra, eyni ikili Taira ilə imzalanmış kanary əmrlərini icra edə bilər. Bunları adi vahid testlərdən ayırın, çünki faucet maliyyələşdirilmiş hesab və canlı test şəbəkəsinin mövcudluğu tələb olunur.
+Siz `taira.client.toml` yaratdıqdan sonra, eyni ikilik fayl imzalanmış kanarya əmrlərini Taira-ə qarşı işlədə bilər. Bunları adi vahid testlərdən ayırın, çünki onlar testnet-də maliyyələşən hesab və canlı testnet mövcudluğu tələb edir.
 
-## Rust müştəri qutusunun istifadəsi {#using-the-rust-client-crate}
+## Rust Müştəri proqram təminat paketindən istifadə {#using-the-rust-client-crate}
 
-Şəbəkənizdə istifadə olunan Iroha Git tənzimləməsini bağlayın:
+Şəbəkəniz tərəfindən istifadə olunan Iroha Git dəyişiklikini bağlayın:
 
 ```toml
 [dependencies]
 iroha = { git = "https://github.com/hyperledger-iroha/iroha.git", rev = "<IROHA_COMMIT>", package = "iroha" }
 ```
 
-Rust səthlərinin praktikada necə istifadə edildiyinə dair ən tam nümunələr lazımdırsa, yoxlayın:
+Əgər sizə Rust səthlərin praktikada necə istifadə olunduğuna dair ən tam nümunələr lazımdırsa, baxın:
 
 - `crates/iroha_cli`
 - `crates/iroha/README.md`
 - `crates/iroha_cli/README.md`
 
-Kitabda idarə olunan escrow iş axınları üçün [Native Asset Escrow](/az/blockchain/escrow.md#rust-sdk)-ə baxın. Rust məlumat modeli hazırda bazar escrow, ümumi aktivlər qapanələri, anonim escrow, sorğu və hadisələr üçün ən tam tiplənmiş əhatə dairəsinə malikdir.
+Blokçeyn dəftər hesabı vasitəsilə idarə olunan kirayə iş axınları üçün baxın [Yerli Aktiv Depoziti](/az/blockchain/escrow.md#rust-sdk). Rust məlumat modeli hal-hazırda bazar kirayəsi, ümumi aktiv kilidləri, anonim kirayə, sorğular və hadisələr üçün ən tam növ əhatəsini təmin edir.
 
-Yerli CLI kömək snapshot bərpa edə bilərsiniz:
+Siz lokal CLI kömək nöqtəsi-vaxt məlumat baxışını aşağıdakıla yenidən yarada bilərsiniz:
 
 ```bash
 cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md
@@ -81,5 +81,5 @@ cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/Com
 
 ## Qeydlər {#notes}
 
-- CLI hazırda müstəqil qutu sənədlərinə nisbətən daha yaxşı bir əhatə təmin edir.
-- Operator üslubunda axınlar üçün ən aktual mənbə CLI sənədləşmədir.
+- CLI hazırda müstəqil proqram paketi sənədlərindən daha yaxşı əhatə təmin edir.
+- Operator üslublu axınlar üçün CLI sənədləri ən aktual mənbədir.

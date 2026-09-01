@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: ccbb076ef3e2ba45d074ad3394ac354d0c2233cdd4286c5fa7a77f0d1c413988
+translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
@@ -12,39 +12,25 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 
 ## 基本使用 {#basic-usage}
 
-在 Iroha 源代码检出目录中运行：
-
-```bash
-cargo run --bin kagami -- keys --algorithm ed25519
-```
-
-JSON 输出通常最便于复制到 TOML 或用于自动化：
-
-```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --json
-```
-
-该命令会打印一个公钥和一个暴露的私钥。必须将私钥视为秘密材料；不得把生成的生产密钥提交到版本控制中。
-
-若要在受支持的 Unix 平台上进行安全的本地导出或保管交接，应将新密钥对写入一个仅所有者可访问的空目录，而不是打印私钥：
+在 Iroha 源码检出目录中：
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-父目录必须已经存在。目标目录必须是新目录，或已经由当前用户所有；其模式必须为 `0700`，不得包含符号链接，并且必须为空。`kagami` 会以 `0600` 模式写入 `public.key` 和 `private.key`，且不会打印私钥。使用 `--pop` 时还会写入 `pop.hex`。
+父目录必须已存在。目标目录必须是新目录或已归当前用户所有，权限模式为 `0700`，不含符号链接且为空。`kagami` 以 `0600` 模式写入 `public.key` 和 `private.key`，并且不会打印密钥材料。使用 `--pop` 时，它还会写入 `pop.hex`。
 
-在 Kagami 无法强制执行这些仅所有者文件系统规则的平台上，`--out-dir` 会安全地拒绝执行。私钥文件是未加密的导出文件，并非硬件签名器或不可导出的生产签名器。应将其导入获批的保管边界，再按照部署流程删除该导出文件。
+如果 Kagami 无法在某个平台上强制执行这些仅限所有者访问的文件系统规则，`--out-dir` 会以安全关闭方式拒绝操作。私钥文件是未加密的导出副本，并非硬件签名器或不可导出的生产签名器。请将其导入获准的托管边界，并按照部署规程删除该导出副本。
 
 ## 算法 {#algorithms}
 
 常用算法包括：
 
-- `ed25519`：用于客户端账户和流式身份。
-- `secp256k1`：客户端账户需要 secp256k1 身份时使用。
-- `bls_normal`：构建启用 BLS 支持时，每个节点或对等节点的共识身份都使用此算法。
+- `ed25519`：用于客户端账户和流式传输身份。
+- `secp256k1`：用于需要 secp256k1 身份的客户端账户。
+- `bls_normal`：用于每个节点或对等节点的共识身份。
 
-使用以下命令检查当前构建确切支持的算法：
+使用以下命令查看当前构建确切支持的算法：
 
 ```bash
 cargo run --bin kagami -- keys --help
@@ -52,35 +38,36 @@ cargo run --bin kagami -- keys --help
 
 ## 确定性开发密钥 {#deterministic-development-keys}
 
-为了得到可复现的夹具，可传入一个编码为 64 个十六进制字符的 32 字节种子。也可以带 `0x` 前缀：
+对于可复现的测试数据，请传入一个 32 字节的种子，并将其编码为 64 个十六进制字符。可以带上可选的 `0x` 前缀：
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 \
   --seed-hex 1111111111111111111111111111111111111111111111111111111111111111 \
-  --json
+  --out-dir ./fixture-client-key
 ```
 
-种子属于私钥材料。确定性种子只能用于本地开发和测试。生成生产密钥时应省略 `--seed-hex`，由操作系统随机源生成密钥。
+种子属于私钥材料。确定性种子只能用于本地开发和测试。生成生产密钥时请省略 `--seed-hex`，以使用操作系统的随机源。
 
 ## BLS 共识密钥和持有证明 {#bls-consensus-keys-and-proofs-of-possession}
 
-Iroha 3 的节点和对等节点共识身份使用 BLS-normal 密钥。使用以下命令生成 BLS-normal 密钥和持有证明（PoP）：
+Iroha 3 的节点和对等节点共识身份使用 BLS-normal 密钥。使用以下命令生成 BLS-normal 密钥和持有证明 (PoP)：
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./validator-key
 ```
 
-`--pop` 只能与 `bls_normal` 一起使用。JSON 输出包含 `pop_hex`。已签名的创世配置要求每个投票验证器都提供匹配的 PoP。在对等节点配置中，非空的 `trusted_peers_pop` 映射会选定验证器子集；未列入该非空映射的可信对等节点是观察者。如果映射为空，所有使用 BLS-normal 的可信对等节点都会进入引导候选集，但投票者 PoPs 仍必须由已签名的创世配置提供。
+`--pop` 仅可与 `bls_normal` 一起使用；它会在托管目录中添加 `pop.hex`。签名的创世配置要求每个投票验证器都有匹配的 PoP。在对等节点配置中，非空的 `trusted_peers_pop` 映射用于选择验证器子集；未列入该非空映射的受信任对等节点是观察者。如果映射为空，所有使用 BLS-normal 的受信任对等节点都会进入引导候选集，而投票者的 PoPs 仍由签名的创世配置提供。
 
-## 输出格式 {#output-formats}
+## 托管输出 {#custody-output}
 
-终端检查使用默认输出，自动化使用 `--json`；当其他脚本需要按行排列的纯文本值时使用 `--compact`：
+`kagami keys` 要求提供 `--out-dir`，并且绝不会将私钥材料写入标准输出。请从生成的目录读取 `public.key`、`private.key` 以及可选的 `pop.hex`。每个文件都包含一个规范值，后跟一个换行符，因此可以直接实现显式的文件自动化：
 
 ```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --compact
+PUBLIC_KEY=$(tr -d '\n' < ./client-key/public.key)
 ```
 
-要生成完整的 Kagami 帮助文档，请运行：
+要获取完整生成的 Kagami 帮助：
 
 ```bash
 cargo run -p iroha_kagami -- advanced markdown-help > crates/iroha_kagami/CommandLineHelp.md

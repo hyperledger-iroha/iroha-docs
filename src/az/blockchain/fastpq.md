@@ -1,82 +1,82 @@
 ---
 translation_locale: az
 translation_source: /blockchain/fastpq.md
-translation_source_hash: f1dc55e4b2146de009203e19adb5cc1e9ce5302bc0ee27fe0b442693c5112c22
+translation_source_hash: d8dd61390f5df3dae09b70399e04e8f71716a912ef5dea9010feaf60573ed261
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # FastPQ {#fastpq}
 
-FastPQ seçilmiş icra effektləri üçün Iroha'ın STARK sübut yoludır. Normal əməliyyat icrasını və ya konsensusunu əvəz etmir. Əməliyyatlar hələ də normal olaraq ISI, IVM və Sumeragi vasitəsilə aparılır; FastPQ deterministik icra şahidini istehlak edir və dəstəklənmiş təsirləri sübut partiyalarına çevirir.
+FastPQ seçilmiş icra təsirləri üçün Iroha-ın STARK sübut yoludur. Bu, normal əməliyyat icrasını və ya konsensusu əvəz etmir. Əməliyyatlar hələ də adətən olduğu kimi ISI, IVM və Sumeragi üzərindən keçin; FastPQ deterministik icra şahidini istifadə edir və dəstəklənən təsirləri sübut paketlərinə çevirir.
 
-Hal-hazırda aparıcı inteqrasiya üçün üç əsas yol var:
+Cari host inteqrasiyasının üç əsas yolu var:
 
-- Blok icrası zamanı qeydə alınmış şəffaf rəqəmli aktiv köçürülməsi
-- AXT sübut qovusunda FastPQ bağlayıcı olan Nexus təsdiqlənmiş zolaq relələri
-- SCCP açıq yoxlama zarfında bir FastPQ sübutu əhatə edən şəffaf mesajı təsdiqləyən köməkçilər
+- blok icrası zamanı qeydə alınan şəffaf rəqəmsal aktiv köçürmələri
+- Nexus təsdiqlənmiş icra zolağı releləri, hansının ki AXT sübut məlumat konteyneri FastPQ bağlaması daşıyır
+- SCCP açıq yoxlama məlumat konteynerində FastPQ sübutunu bükən şəffaf mesaj sübut köməkçiləri
 
-## Şahidlik yolunun köçürülməsi {#transfer-witness-path}
+## Şahid Transferi Yolu {#transfer-witness-path}
 
-Şəffaf rəqəmsal köçürmələr göstərici balansları mutasiya edərkən strukturlaşdırılmış köçürmə transkriptini yaratır.
+Şəffaf ədədi köçürmələr, təlimat balansları dəyişdirdikdə strukturlaşdırılmış köçürmə transkripti yaradır. Transkript aşağıdakıları qeyd edir:
 
-- mənbə hesabı, hədəf hesabı, aktivlərin təyinatı və məbləği
-- ötürülmədən əvvəl və sonra göndərən və qəbul edənlərin balansları
-- Satış giriş nöqtəsi hash kimi istifadə edilən hash
-- təqdim olunan hesabdan alınan səlahiyyətli şəxslər siyahısı
-- Single-delta transkripsiyaları üçün bir Poseidon digest
+- mənbə hesabı, təyinat hesabı, aktiv təsviri və məbləğ
+- köçürmədən əvvəl və sonra göndərən və alan balansları
+- toplu kriptoqrafik xəş kimi istifadə olunan əməliyyat giriş nöqtəsi kriptoqrafik xəş
+- tələb edən hesabdan götürülmüş icazə əsaslı kriptoqrafik xülasə dəyəri
+- tək-delta transkriptlər üçün Poseidon kriptoqrafik xülasə dəyəri
 
-Satış transferləri bir transkriptdən ibarətdir, bu halda Poseydonun tək-deltalı həzminin olmaması mümkündür.
+Toplu köçürmələr bir neçə delta ilə bir transkript istifadə edir. Bu halda tək-delta Poseidon kriptoqrafik xülasə dəyəri yoxdur.
 
-Block finallaşdırıldıqda, Iroha bu transkripsiyaları giriş nöqtəsi hash ilə qruplaşır. İcraçı şahid sonra həm orijinal transkript paketlərini, həm də prover üçün hazırlanmış FastPQ keçid partiyalarını daşıyır.
+Blokun yekunlaşması zamanı, Iroha bu transkriptləri giriş nöqtəsinin kriptoqrafik xəşinə görə qruplaşdırır. İcra şahidi sonra həm orijinal transkript paketlərini, həm də sübutçu üçün hazırlanmış FastPQ keçid paketlərini daşıyır.
 
-Hər bir transfer delta iki keçid xətti olur:
+Hər bir köçürmə deltası iki keçid sətrinə çevrilir:
 
-|Sətir |Əsas forma |Əvvəlki qiymət|Qiymətdən sonra |
+|Sətir|Açar forması|Əvvəlcədən dəyər|Göndərilmiş dəyər|
 | --------------- | ------------------------------------------------ | ----------------------- | ---------------------- |
-|Göndəricilərin ödənişi |`asset/<asset-definition>/<source-account>` |göndəricinin balansı əvvəl |göndərən balansdan sonra |
-|Alıcı kreditləri |`asset/<asset-definition>/<destination-account>` |əvvəlki alıcı balansı |receiver balansı |
+|Göndərən debet| `asset/<asset-definition>/<source-account>`      |göndərən balansı əvvəl|göndərənin qalıq məbləği sonra|
+|Qəbul edən kredit| `asset/<asset-definition>/<destination-account>` |qəbul edənin balansı əvvəl|qəbul edənin balansı sonra|
 
-Rəqəmsal dəyərlər tam say şahid vahidlərinə normallaşdırılır. Seçilmiş onluq miqyasında mənfi olmayan `u64` olaraq təmsil edilə bilmədiyi təqdirdə bir qiymət FastPQ seriyası üçün rədd edilir.
+Rəqəmsal dəyərlər tam ədəd şahid vahidlərinə normallaşdırılır. Seçilmiş onluq miqyasında qeyri-mənfi `u64` kimi təmsil oluna bilmirsə, dəyər FastPQ partiyalaması üçün rədd edilir.
 
-## İctimai girişlər {#public-inputs}
+## İctimai Girişlər {#public-inputs}
 
-Hər bir FastPQ keçid partiyasında sübutun blok və icra kontekstinə bağlanmasını təmin edən ictimai girişlər var:
+Hər FastPQ keçid partiyası bloka və icra kontekstinə sübutu bağlayan ictimai girişləri daşıyır:
 
-|Giriş |Məna|
+|Giriş|Mənası|
 | ------------- | --------------------------------------------------------------- |
-|`dsid` |Məlumat sahəsinin identifikatoru kiçik bayt kimi kodlanmışdır |
-|`slot` |Block yaratma vaxtı nanosecondlara çevrildi |
-|`old_root` |Valideyn dövlətinin kökü icra şahidindən alınmışdır .|
-|`new_root` |Dövlətdən sonra işgəncə şahidindən alınan kök .|
-|`perm_root` |Poseidonun aktiv rol icazələri ilə bağlı öhdəliyi |
-|`tx_set_hash` |İşləmə və giriş nöqtələrinin hashləri üçün vaxt aktivləşdirilməsi .|
+| `dsid`        |Kiçik sonlu baytlar kimi kodlaşdırılmış Dataspace identifikatoru|
+| `slot`        |Blok yaradılma vaxtı nanosaniyələrə çevrildi|
+| `old_root`    |İcraya dair şahidlikdən götürülmüş əsas dövlət kökü|
+| `new_root`    |İcraya dair şahidlikdən törəyən post-dövlət kökü|
+| `perm_root`   |Poseidon kriptoqrafik öhdəlik dəyəri üzərində aktiv rol icazələri|
+| `tx_set_hash` |sıralanmış əməliyyat və zaman-tetikləyici giriş nöqtəsi kriptoqrafik xəşləri üzərində kriptoqrafik xəş|
 
-Ev sahibi bu partiyalar üçün `fastpq-lane-balanced` kanonik parametr olaraq istifadə edir.
+Host bu partiyalar üçün tək protokol-standart parametr dəsti olaraq `fastpq-lane-balanced`-dan istifadə edir.
 
-## Riyaziyyat modeli {#mathematical-model}
+## Riyazi Model {#mathematical-model}
 
-Bu bölmədə mövcud Rust proveri və təsdiqçisi tərəfindən tətbiq olunan aritmetika təsvir olunur. Aşağıdakı bütün sahə əməliyyatları Goldilocks ilk sahəsi üzərindədir:
+Bu bölmə, hazırkı Rust sübutçu və yoxlayıcı tərəfindən həyata keçirilən riyaziyyatı təsvir edir. Aşağıdakı bütün sahə əməliyyatları Goldilocks ilkin sahəsi üzərindədir:
 
 $$
 F = \mathbb{F}_p,\qquad p = 2^{64} - 2^{32} + 1
 $$
 
-FastPQ sahə öhdəlikləri üçün Poseidon2-dən `F` istifadə edir. süngerin eni `t = 3`, dərəcəsi `r = 2` və qabiliyyəti `1` var. Haş-2 bloklarında sahə elementlərini ələ alır və son permutasiyadan əvvəl bir sahə elementi `1` əlavə edir:
+FastPQ sahə kriptoqrafik öhdəlik dəyərləri üçün `F` üzərində Poseidon2 istifadə edir. Süngərin eni `t = 3`, sürəti `r = 2` və tutumu `1`-dür. Kriptoqrafik həş sahə elementlərini sürət-2 bloklarında udur və son permutasiyadan əvvəl tək bir sahə elementi `1` əlavə edir:
 
 $$
 H_F(x_0,\ldots,x_{m-1}) =
 \operatorname{Poseidon2}_F(x_0,\ldots,x_{m-1},1)
 $$
 
-Bayt silsilələri 7 bayt kiçik ədəd ədədlərinə paketlənir, belə ki hər bir ədəd `p` -dən aşağıdır:
+Bayt sətirləri 7 baytlıq kiçik sonluqdan ibarət hissələr şəklində yığılır, belə ki, hər bir hissə mütləq `p`-dan aşağıdır:
 
 $$
 \operatorname{pack}(b)_j =
 \sum_{i=0}^{6} b_{7j+i}2^{8i},\qquad 0 \leq \operatorname{pack}(b)_j < p
 $$
 
-Domen bölünmüş sahə hashləri aşağıdakı kimi təmsil olunur:
+Domenlə ayrılmış sahə kriptoqrafik xəşləri kimi təmsil olunur:
 
 $$
 H_D(m) =
@@ -86,18 +86,18 @@ H_F(
 )
 $$
 
-Byte-domain digestlərindən başlayan hashlər üçün, FastPQ ilk səkkiz kiçik indian bytesini sahəyə xəritələyir:
+Bayt domeni kriptoqrafik xülasələrindən başlayan kriptoqrafik hash-lər üçün, FastPQ ilk səkkiz little-endian baytı sahəyə uyğunlaşdırır:
 
 $$
 \operatorname{seed}(D)=
 \operatorname{le64}(\operatorname{Hash}(D)[0..8])\bmod p
 $$
 
-Burada `Hash` Iroha-nin `iroha_crypto::Hash::new` 32-bayt Blake2bVar digestini ifadə edir, əgər formula açıq şəkildə Poseidon2 və ya SHA-256 adlarını göstərməsə.
+Burada `Hash` Iroha-nin `iroha_crypto::Hash::new` mənasını verir, 32 baytlıq Blake2bVar kriptoqrafik çöl dəyəri, əgər bir formul açıq şəkildə Poseidon2 və ya SHA-256-ü göstərmirsə.
 
-### Sahə aritmetikası {#field-arithmetic}
+### Sahə Riyaziyyatı {#field-arithmetic}
 
-Rust kodu sahə elementlərini `[0,p)` kanonik `u64` dəyərləri kimi təmsil edir. Əlavə və azalma aşağıdakılardır:
+Rust kodu sahə elementlərini `[0,p)`-də vahid protokol-standartı `u64` kimi təmsil edir. Toplama və çıxarma belədir:
 
 $$
 a +_F b = (a+b)\bmod p
@@ -107,13 +107,13 @@ $$
 a -_F b = (a-b)\bmod p
 $$
 
-Əksiləmə əvvəlcə 128 bit məhsulu hesablayır:
+Vurma əvvəlcə 128-bitlik hasilatı hesablayır:
 
 $$
 a\cdot b = \operatorname{lo} + 2^{64}\operatorname{hi}
 $$
 
-Goldilocks azaldılması sonra kimliyi istifadə edir:
+Sonra Goldilocks azaldılması bu identifikasiyanı istifadə edir:
 
 $$
 2^{64}\equiv2^{32}-1\pmod p
@@ -125,7 +125,7 @@ $$
 \operatorname{hi}=\operatorname{hi}_{lo}+2^{32}\operatorname{hi}_{hi}
 $$
 
-O zaman azaldıcı hesablayır:
+sonra azaldıcı hesablayır:
 
 $$
 \operatorname{lo}
@@ -135,7 +135,7 @@ $$
 \pmod p
 $$
 
-Əməliyyat şərti olaraq `p` əlavə və ya çıxarır, nəticə kanonik olana qədər. İmzalanmış tam rəqəmlər, məsələn balans deltaları:
+İcra şərti olaraq nəticə tək protokol-standart olana qədər `p` əlavə edir və ya çıxarır. Balans fərqləri kimi imzalı tam ədədlər aşağıdakı qaydada daxil edilir:
 
 $$
 \operatorname{field}(x)=x\bmod p,\qquad 0\leq\operatorname{field}(x)<p
@@ -143,19 +143,19 @@ $$
 
 ### Poseidon2 Permutasiyası {#poseidon2-permutation}
 
-Poseidon2 permutasiyasının vəziyyəti belədir:
+Poseidon2 permutasiya vəziyyəti belədir:
 
 $$
 \mathbf{x}=(x_0,x_1,x_2)\in F^3
 $$
 
-Onun "S-box"u:
+Onun S-qutusu belədir:
 
 $$
 S(x)=x^5
 $$
 
-FastPQ dörd tam mərhələ, 57 qismli mərhələ və sonra daha 4 tam mərhələnin istifadə edilməsi. `c_r = (c_{r,0}, c_{r,1}, c_{r,2})` aşağıdakılardır:
+FastPQ dörd tam dövr, əlli yeddi qismən dövr istifadə edir, sonra isə dörd tam dövr daha. `c_r = (c_{r,0}, c_{r,1}, c_{r,2})` dövr sabitləri ilə tam dövr belədir:
 
 $$
 \mathbf{x}' =
@@ -167,7 +167,7 @@ S(x_2+c_{r,2})
 \end{bmatrix}
 $$
 
-Ayrı mərhələ:
+Qismən dairə belədir:
 
 $$
 \mathbf{x}' =
@@ -179,7 +179,7 @@ x_2+c_{r,2}
 \end{bmatrix}
 $$
 
-Bütün əlavələr və qatlamalar `F` ilədir. Kanonik MDS matris:
+Bütün toplama və vurma əməliyyatları `F` daxilindədir. Tək protokol-standart MDS matrisi belədir:
 
 $$
 M=
@@ -190,18 +190,18 @@ M=
 \end{bmatrix}
 $$
 
-sahə hash sıfır vəziyyətdən başlayır. hər tam dərəcə-2 blok üçün `(u,v)`:
+Sahə kriptoqrafik xəş başdan sıfır vəziyyətindən başlayır. Hər tam sürət-2 bloku `(u,v)` üçün:
 
 $$
 (x_0,x_1,x_2)\leftarrow
 \operatorname{Poseidon2}(x_0+u,x_1+v,x_2)
 $$
 
-Son blok `1` döşəmə elementini son bir dəyişiklikdən əvvəl əlavə edir. Nəticə `x_0`.
+Son blok bir son permutasiyadan əvvəl `1` doldurma elementini əlavə edir. Çıxış `x_0`-dir.
 
-### İctimaiyyət girişinin bağlanması {#public-input-binding}
+### İctimai Giriş Bağlantısı {#public-input-binding}
 
-Ev sahibi `u64` dəyərini 16-bayt sahəsinin ilk səkkiz kiçik indian baytlarına yazaraq məlumat məkanı idini kodlayır:
+Ev sahibi, bir verilənlər sahəsi ID-sini 16 baytlıq sahənin ilk səkkiz kiçik-endian baytına onun `u64` dəyərini yazaraq kodlayır:
 
 $$
 \operatorname{dsid\_bytes}(d)[0..8]=\operatorname{le64}(d),
@@ -209,14 +209,14 @@ $$
 \operatorname{dsid\_bytes}(d)[8..16]=0
 $$
 
-Blokun yaradılması vaxtı millisekundlardan nanosekundlara çevrilmişdir:
+Blokun yaradılma vaxtı millisaniyələrdən nanosaniyələrə çevrilir:
 
 $$
 \operatorname{slot}=\operatorname{saturating\_mul}
 (\operatorname{creation\_time\_ms},1{,}000{,}000)
 $$
 
-Transaction-set hash sıralanmış giriş nöqtəsi hashləri üzərində byte-domain hashidir:
+Əməliyyat dəsti kriptoqrafik xəşi, sıralanmış giriş nöqtəsi kriptoqrafik xəşləri üzərində bayt-domayn kriptoqrafik xəşidir:
 
 $$
 \operatorname{tx\_set\_hash} =
@@ -225,7 +225,7 @@ $$
 )
 $$
 
-`h_i` sıralanmış əməliyyat və vaxt tetikləyici giriş nöqtəsi hashləri olduğu yerdə. İctimai sübutda IO, əgər `perm_root` və ya `tx_set_hash` hamısı sıfırdırsa, prover geri dönüş dəyərlərini doldurur:
+burada `h_i` sıralanmış əməliyyat və zaman-tetik giriş nöqtəsi kriptoqrafik xesləridir. İctimai sübutda IO, əgər `perm_root` və ya `tx_set_hash` sıfırdırsa, sübut edən alternativ dəyərləri doldurur:
 
 $$
 \operatorname{perm\_root} =
@@ -241,9 +241,9 @@ $$
 \operatorname{Hash}(\texttt{fastpq:v1:tx\_set}\|\operatorname{ordering\_hash})
 $$
 
-### Rəqəmsal normallaşdırma {#numeric-normalization}
+### Rəqəmsal Normallaşma {#numeric-normalization}
 
-Hər bir transfer deltası üçün hədəf onluq miqdarı məbləğin və hər iki balans sürətləndirilməsi üzrə maksimum kəsilmiş miqdardır:
+Hər bir köçürmə deltası üçün hədəf onluq miqyas, məbləğ və hər iki balans nöqtəsindəki məlumat görünüşləri üzrə maksimum qısaldılmış miqyasdır:
 
 $$
 s =
@@ -256,17 +256,17 @@ s =
 )
 $$
 
-A `Numeric` mantissa ilə qiymət `m` və ölçüsü `q` yalnız qəbul edilir `m >= 0` və `q <= s`. Onun FastPQ şahid dəyəri:
+Yalnız `m >= 0` və `q <= s` olduqda mantissası `m` və miqyası `q` olan `Numeric` dəyəri qəbul edilir. Onun FastPQ şahid dəyəri:
 
 $$
 \operatorname{norm}_s(m,q)=m\cdot10^{s-q}
 $$
 
-Normallaşdırılmış nəticə `u64` ilə uyğunlaşmalıdır.
+Normallaşdırılmış nəticə `u64`-a uyğun olmalıdır.
 
-### Kanonik əmrlər {#canonical-ordering}
+### tək protokol-standart Sifariş {#canonical-ordering}
 
-İzləmə quruluşundan əvvəl partiya keçid açarı, əməliyyat rütbəsi və orijinal yerləşdirmə indeksinə görə sıralanır:
+İz tikintisindən əvvəl partiya keçid açarı, əməliyyat sırası və orijinal daxil etmə indeksi üzrə sıralanır:
 
 $$
 r(\operatorname{Transfer})=0,\quad
@@ -277,7 +277,7 @@ r(\operatorname{RoleRevoke})=4,\quad
 r(\operatorname{MetaSet})=5
 $$
 
-S sortlama öhdəliyi, `fastpq:v1:ordering` domeninin və Norito sıralanmış keçidlərin kodlaşdırılması üzərində Poseidon2 sahə hashidir:
+Sifariş kriptoqrafik öhdəlik dəyəri, domen `fastpq:v1:ordering` üzərində və sıralanmış keçidlərin Norito kodlaması üzərində Poseidon2 sahə kriptoqrafik xəşidir:
 
 $$
 \operatorname{ordering\_hash} =
@@ -286,11 +286,11 @@ H_F(
 )
 $$
 
-`P` 7 baytlıq paketləşmə, `E` Norito kodlaşması, `D_o` `fastpq:v1:ordering` və `T*` sıralanmış keçid siyahısı olduğu yerlərdə.
+burada `P` 7-baytlıq paketdir, `E` Norito kodlamasıdır, `D_o` `fastpq:v1:ordering` və `T*` sıralanmış keçid siyahısıdır.
 
-### Transfer tənlikləri {#transfer-equations}
+### Keçid Tənlikləri {#transfer-equations}
 
-Transfer məbləği üçün `a`, göndəricinin balansı `f`, və alıcı balansı `t`, FastPQ izini qurmadan əvvəl normallaşdırılmış şahid dəyərlərini təsdiqləyir:
+Köçürmə məbləği `a`, göndərənin balansı `f` və alıcının balansı `t` üçün, FastPQ traceni yaratmazdan əvvəl normalizə olunmuş şahid dəyərlərini təsdiqləyir:
 
 $$
 f_0 \geq a
@@ -304,7 +304,7 @@ $$
 t_1 = t_0 + a
 $$
 
-O zaman keçid sıraları kodlaşdırılır:
+Dəyişiklik sətrləri sonra belə kodlaşdırılır:
 
 $$
 \Delta_{\text{sender}} = f_1 - f_0 = -a
@@ -314,13 +314,13 @@ $$
 \Delta_{\text{receiver}} = t_1 - t_0 = a
 $$
 
-Ardından, imzalanmış delta `F` olaraq azaltılır:
+İz daxilində, imzalı deltalər `F` kimi azaldılır:
 
 $$
 \delta_i = (\operatorname{post}_i - \operatorname{pre}_i)\bmod p
 $$
 
-Qeyri-müəyyən single-delta transfer digest kodlaşdırılmış köçürülmə preimage edir:
+İxtiyari tək-delta ötürmə kriptoqrafik xülasə dəyəri kodlaşdırılmış ötürmə əvvəlcədən görünüşünü yekunlaşdırır:
 
 $$
 d_{\text{transfer}} =
@@ -329,24 +329,24 @@ E(\text{from})\|E(\text{to})\|E(\text{asset})\|E(a)\|\text{batch\_hash}
 )
 $$
 
-Mülti-delta köçürmə transkripsiyaları üçün mövcud formatda bu ən yüksək səviyyəli məzmunun olmaması tələb olunur.
+Çox-delta ötürmə transkriptləri üçün mövcud format bu ən yüksək səviyyəli kriptoqrafik xülasə dəyərinin olmamasını tələb edir.
 
-Ödəniş transkripsiyaları üçün ev sahibi səlahiyyətli şəxslər aşağıdakılardır:
+Transfer transkriptləri üçün host avtorizasiyası prinsipi kriptoqrafik xülasə dəyəri:
 
 $$
 d_{\text{authority}} =
 \operatorname{Hash}(\texttt{iroha:fastpq:v1:authority|}\|E(\text{authority\_account}))
 $$
 
-### İzləmə sıraları {#trace-rows}
+### Sətirləri İzlə {#trace-rows}
 
-Sortlaşdırılmış keçid siyahısında real sıralar `n` olsun.
+Təsnif edilmiş keçid siyahısı `n` real sətri əhatə etsin. İz uzunluğu növbəti iki qüvvətinə bərabərdir:
 
 $$
 N = 2^{\lceil\log_2(\max(1,n))\rceil}
 $$
 
-`0..n-1` sətirləri aktivdir; `n..N-1` sətirləri doldurma sətiridir. Hər real sətirdə bir əməliyyat seçicisi seti vardır:
+Sətirlər `0..n-1` aktivdir; sətirlər `n..N-1` dolgu sətirləridir. Hər bir real sətirdə bir əməliyyat seçicisi təyin edilib:
 
 $$
 s_{\text{active}} =
@@ -358,33 +358,33 @@ s_{\text{role\_revoke}}+
 s_{\text{meta\_set}}
 $$
 
-Bütün seçicisi sütunları Boolean:
+Bütün seçici sütunlar Boolean-dir:
 
 $$
 s(s-1)=0
 $$
 
-İzin axtarış sətirləri rol verilməsi və rol ləğv edilməsi sətiridir:
+İcazə axtarış sətrləri tam olaraq rol vermə və rol ləğv etmə sətrləridir:
 
 $$
 s_{\text{perm}} =
 s_{\text{role\_grant}} + s_{\text{role\_revoke}}
 $$
 
-Rəqəmli əməliyyat sətirləri üçün:
+Riyazi əməliyyat sıraları üçün:
 
 $$
 \delta_i = \operatorname{value\_new}_{i,0} - \operatorname{value\_old}_{i,0}
 $$
 
-İnşaatçı həmçinin hər aktiv üçün işləyən deltaları izləyir:
+Təmirçi həmçinin hər bir aktiv üzrə mövcud deltalara nəzarət edir:
 
 $$
 R_i(a)=R_{i-1}(a)+\delta_i
 \quad\text{for transfer, mint, and burn rows of asset }a
 $$
 
-Yalnız mint və yanma sıraları təchizat hesabını yeniləyir:
+Yalnız göndərmə və silmə sətrləri ehtiyat sayğacını yeniləyir:
 
 $$
 S_i(a)=S_{i-1}(a)+
@@ -394,7 +394,7 @@ S_i(a)=S_{i-1}(a)+
 \end{cases}
 $$
 
-Metadata və məlumat məkanının iz sütunları sətir materiallaşmadan əvvəl alınan sahə hashləridir:
+Metaməlumat və məlumatlar sahəsi iz sütunları sıra materializasiyasından əvvəl əldə edilən sahə kriptoqrafik xeslərdir:
 
 $$
 \operatorname{metadata\_hash} =
@@ -408,7 +408,7 @@ $$
 \operatorname{dsid\_trace}=H_D(\operatorname{public\_input\_dsid})
 $$
 
-Metadata hash, məlumat məkanı hash və boşluq bitişik iz sıralarında sabitdir:
+Metaməlumat kriptoqrafik hash, məlumat sahəsi kriptoqrafik hash və yuva qonşu iz sətirləri arasında sabitdir:
 
 $$
 \operatorname{metadata\_hash}_i=\operatorname{metadata\_hash}_{i+1}
@@ -422,11 +422,11 @@ $$
 \operatorname{slot}_i=\operatorname{slot}_{i+1}
 $$
 
-### Merkle sütunlarını köçürmək {#transfer-merkle-columns}
+### Transfer Merkle Sütunları {#transfer-merkle-columns}
 
-Transfer sətirləri 32 səviyyəli nadir Merkle yolunu daşıyır. Əgər bir host sübutı yoxdursa, prover sətir açarından, pre-balansdan və sətirin göndərən və ya qəbul edən tərəfdən olub olmadığını müəyyənləşdirən bir yolun sintezini aparır.
+Transfer sətirləri 32-səviyyəli seyrek Merkle yolunu daşıyır. Əgər host sübutu yoxdursa, sübut edici sətir açarından, əvvəlki balansdan və sətirin göndərən və ya alıcı tərəfi olub-olmamasından deterministik yol sintez edir.
 
-Sentetik yollar üçün ləzzət duzları `fastpq:smt:from` göndərən sətirlər və `fastpq:smt:to` qəbul edən sətirlər üçün:
+Süni yollar üçün, dad duzu göndərən sətirlər üçün `fastpq:smt:from` və qəbul edən sətirlər üçün `fastpq:smt:to` dir:
 
 $$
 K =
@@ -450,7 +450,7 @@ s_\ell =
 )
 $$
 
-Sentetik yarpaq və daxili düyünlər aşağıdakılardır:
+Sintetik yarpaq və daxili düyünlər bunlardır:
 
 $$
 L = \operatorname{Hash}(
@@ -468,7 +468,7 @@ N_{\ell+1} =
 )
 $$
 
-İz bitini qeyd edir. `b_l`, qardaşı `s_l`, Giriş nodu `x_l`, və çıxış dərəcəsi `x_{l+1}` Kodun şöbə konvensiyası ilə:
+Iz qeydiyyatı hər səviyyədə bit `b_l`, qardaş `s_l`, giriş düyünü `x_l` və çıxış düyünü `x_{l+1}` qeyd edir. Kodun filial konvensiyası ilə:
 
 $$
 (\operatorname{left}_\ell,\operatorname{right}_\ell)=
@@ -478,16 +478,16 @@ $$
 \end{cases}
 $$
 
-### Rəsmi hashlar {#permission-hashes}
+### İcazə kriptoqrafik xeşlər {#permission-hashes}
 
-Rolu verilən və ləğv olunan sətirlər icazə şahidini hash edir:
+Rol təyin etmək və ləğv etmək sətirləri kriptoqrafik xəş icazə şahidi:
 
 $$
 h_{\text{perm}} =
 H_F(P(\operatorname{role\_id}\|\operatorname{permission\_id}\|\operatorname{epoch}_{le}))
 $$
 
-Qonaq icazəsi cədvəlinin kökü girişləri rol baytları, icazə baytları və epox baytları üzrə sıralayır, sonra Poseidon2 Merkle ağacını qurur:
+Ev sahibi icazə cədvəli kök girişləri rol baytları, icazə baytları və epoxa baytlarına görə sıralayır, sonra Poseidon2 Merkle ağacı yaradır:
 
 $$
 M_0[j]=h_{\text{perm},j}
@@ -498,11 +498,11 @@ M_{k+1}[j] =
 H_F(\operatorname{seed}(\texttt{fastpq:v1:poseidon\_node}),M_k[2j],M_k[2j+1])
 $$
 
-Odd-width səviyyələri son elementini təkrarlayır.
+Tək enli səviyyələr son elementi təkrarlayır.
 
-### İzləmə öhdəliyi {#trace-commitment}
+### Kriptoqrafik öhdəlik dəyərini izləyin {#trace-commitment}
 
-Hər bir iz sütunu üçün `c`, FastPQ əvvəlcə iz domeni üzərində sütun dəyərlərini interpolayır və koefitsiyent vektorunu hash edir:
+Hər bir iz sütunu `c`, FastPQ üçün əvvəlcə sütun dəyərlərini iz domeni üzrə interpolə edir və koeffisiyent vektorunu kriptoqrafik olaraq hash edir:
 
 $$
 C_c =
@@ -512,13 +512,13 @@ H_F(
 )
 $$
 
-İz kökləri sütun öhdəlikləri üzərində Poseidon2 Merkle köküdür:
+İz kökü, sütun kriptoqrafik öhdəlik dəyərləri üzərində Poseidon2 Merkle köküdür:
 
 $$
 R_{\text{trace}} = \operatorname{MerkleRoot}(C_0,\ldots,C_{m-1})
 $$
 
-Son izləmə öhdəliyi domen, parametrlər dəstinin, iz şəklinin, sütun həzmlərinin və iz kökünün üzərində bir bayt hashidir:
+Son iz kriptoqrafik öhdəlik dəyəri domen, parametr dəsti, iz şəkli, sütun kriptoqrafik xülasələri və iz kökü üzərində bayt kriptoqrafik xəşdir.
 
 $$
 \operatorname{commitment} =
@@ -529,23 +529,23 @@ n\|N\|m\|C_0\|\cdots\|C_{m-1}\|R_{\text{trace}}
 )
 $$
 
-`D_c` - `fastpq:v1:trace_commitment` olduğu yerdə.
+harada `D_c` `fastpq:v1:trace_commitment`-dir.
 
-### AIR tərkibi {#air-composition}
+### AIR Tərkib {#air-composition}
 
-V1 AIR tərkibi qiyməti sətir lokal qalıqların xətti bir kombinasiyadır. Transkript nümunələri iki çətinlik çəkir:
+V1 AIR tərkib dəyəri sətir-yerli qalıqların xətti birləşməsidir. Yazı iki çağırış nümunəsini götürür:
 
 $$
 \alpha_0,\alpha_1 \in F
 $$
 
-Hər bir qonşu sıra cütlüyü üçün `(i,i+1)`, prover hesablayır:
+Hər qonşu sıra cütlüyü `(i,i+1)` üçün, sübutçu hesablama aparır:
 
 $$
 A_i=\sum_j \alpha_{j\bmod2}\rho_{i,j}
 $$
 
-Qalanlar `rho`, kod sırası ilə:
+Qalıqlar `rho` kod sırası ilə bunlardır:
 
 $$
 \rho=s(s-1)
@@ -569,7 +569,7 @@ $$
 s_{\text{active},i+1}(1-s_{\text{active},i})
 $$
 
-Rəqəmli sütunlu sətirlər üçün:
+Rəqəmsal sütunları olan sətirlər üçün:
 
 $$
 \rho =
@@ -595,11 +595,11 @@ $$
 \operatorname{slot}_i-\operatorname{slot}_{i+1}
 $$
 
-Təyinatçı `A_i` nümunə alınan sətir açılışları üçün yenidən hesablayır və onu AIR tərkibi Merkle kökü ilə öhdəlik götürən kompozisiya dəyəri ilə müqayisə edir.
+Yoxlayıcı seçilmiş sıra açılışları üçün `A_i` dəyərini yenidən hesablayır və bunu AIR tərkib Merklə kökündə kriptoqrafik olaraq bağlı olan tərkib dəyərlə yoxlayır.
 
-### axtarış məhsulu {#lookup-product}
+### Məhsulu axtar {#lookup-product}
 
-Rəsmi axtarış akkumulyatorunda Fiat-Shamir çətinliyi `gamma` istifadə olunur. `s_perm` və `perm_hash` nisbətən aşağı dərəcəli uzantı qiymətləndirmələri zamanı, işləyən məhsul:
+İcazə axtarış yığıcısı Fiat-Shamir çətinliyindən istifadə edir `gamma`. `s_perm` və `perm_hash` aşağı dərəcəli genişləndirmə qiymətləndirmələri üzrə, işləyən məhsul belədir:
 
 $$
 z_0=1
@@ -613,41 +613,41 @@ z_i,& s_{\text{perm},i}=0
 \end{cases}
 $$
 
-Əldə edilən sənədlər:
+Sübut qeyd edir:
 
 $$
 \operatorname{lookup\_grand\_product}=H_F(z_0,z_1,\ldots)
 $$
 
-### Düşük dərəcəli genişlənmə {#low-degree-extension}
+### Aşağı Dərəcəli Genişlənmə {#low-degree-extension}
 
-`omega_T` iz domeninin generatoru, `omega_E` qiymətləndirmə domeninin jeneratoru və `g` konfiqurasiyalı coset offseti olsun. `v_i` dəyərləri olan iz sütunu üçün interpolassiya `a_j` koeffitsiyentlərini belə verir:
+Gəlin `omega_T` treys-domen generatoru, `omega_E` qiymətləndirmə-domen generatoru və `g` konfiqurasiya edilmiş koset yerdəyişməsi olsun. Dəyərləri `v_i` olan bir treys sütunu üçün interpolasiya belə əmsallar `a_j` istehsal edir ki:
 
 $$
 f(\omega_T^i)=v_i
 $$
 
-Aşağı dərəcəli uzantı kosetdə eyni polinomiyanı qiymətləndirir:
+Aşağı dərəcəli genişləndirmə kosetdə eyni polinomu qiymətləndirir:
 
 $$
 \operatorname{LDE}_f(i)=f(g\cdot\omega_E^i)
 $$
 
-Tədbir bunu FFT əvvəllər koset kompensasiyasının səlahiyyətləri ilə koefitsiyentlərin qatılması ilə hesablayır:
+İcra bunu FFT-dən əvvəl əmsalları kəsik ofsetinin qüvvələri ilə vurmaqla hesablayır:
 
 $$
 a'_j = a_j g^j
 $$
 
-və sonra qiymətləndirmə sahəsində `a'` qiymətləndirilməsi.
+və sonra qiymətləndirmə domenində `a'`-ı qiymətləndirmək.
 
-İndiki CPU FFT bit-inversed giriş üzərində bir iterativ radix-2 Cooley-Tukey transformasıdır. `L`, Yarım uzunluq `H=L/2`, və mərhələ kök:
+CPU FFT bit-əks verilənlər üzərində iterativ radix-2 Cooley-Tukey transformudur. Səviyyə uzunluğu `L`, yarım uzunluğu `H=L/2` və səviyyə kökü:
 
 $$
 \omega_L=\omega^{N/L}
 $$
 
-Hər bir kəpənək hesablayır:
+hər bir kəpənək hesablayır:
 
 $$
 u=x_j
@@ -661,13 +661,13 @@ $$
 x_j'=u+v,\qquad x_{j+H}'=u-v
 $$
 
-Əksinə FFT `omega^{-1}` ilə eyni transformasiyanı həyata keçirir və əks domen ölçüsünə görə ölçelir:
+Tərs FFT eyni transformu `omega^{-1}` ilə işlədib tərs domen ölçüsü ilə miqyaslayır:
 
 $$
 \operatorname{IFFT}(x)=N^{-1}\cdot\operatorname{FFT}_{\omega^{-1}}(x)
 $$
 
-Kataloq kökləri istifadədən əvvəl təsdiqlənir:
+Kataloq kökləri istifadə edilməzdən əvvəl təsdiqlənir:
 
 $$
 \omega^{2^k}=1
@@ -677,26 +677,26 @@ $$
 \omega^{2^{k-1}}\ne1\qquad(k>0)
 $$
 
-Kataloq kökündən alınan daha kiçik domenlər üçün generator:
+Kataloq kökündən törədilmiş kiçik domenlər üçün generator:
 
 $$
 \omega_{\ell}=\omega_{\max}^{2^{k_{\max}-\ell}}
 $$
 
-### Sətir və yarpaq həşləri {#row-and-leaf-hashes}
+### Sətir və Yarpaq kriptoqrafik həşlər {#row-and-leaf-hashes}
 
-LDE-dən sonra, FastPQ bütün LDE sütunlarında hər bir satırı hash edir. `m` sütunları üçün:
+LDE-dən sonra, FastPQ hər bir sətri bütün LDE sütunlarda kriptoqrafik xeşlər edir. `m` sütunlar üçün:
 
 $$
 r_i =
 H_F(i,m,x_{i,0},x_{i,1},\ldots,x_{i,m-1})
 $$
 
-Əgər sətir hashləri qiymətləndirmə sahəsi əvəzinə iz domenindədirsə, prover eyni coset LDE prosesi ilə həmin tək sətir-hash sütununu interpolasiya edir və uzadır.
+Əgər sıradakı kriptoqrafik hashlər hələ də qiymətləndirmə domeni əvəzinə iz domenindədirsə, sübut edən şəxs həmin tək sıra-hash sütununu eyni koset LDE prosesi ilə interpolasiya edir və uzadır.
 
-### Merkle açılışları {#merkle-openings}
+### Merkle Açılışları {#merkle-openings}
 
-LDE qiymətləri aşağıdakı hissələrə bölünür:
+LDE qiymətləri aşağıdakı bloklara bölünür:
 
 $$
 B_{\text{lde}}=8\cdot\operatorname{fri\_arity}
@@ -708,16 +708,16 @@ $$
 L_j=H_D(j\|v_{jB}\|\cdots\|v_{jB+B-1})
 $$
 
-Merkle valideynləri:
+Merkle valideynləri bunlardır:
 
 $$
 P_j =
 H_F(\operatorname{seed}(\texttt{fastpq:v1:trace:node}),L_{2j},L_{2j+1})
 $$
 
-Odd səviyyələr son nodu təkrarlayır. Sorğu yolları hər bir səviyyədə sorğunun yarpaq indeksinin paritəsinə görə sol və ya sağ hashlə yoxlanılır.
+Tək səviyyələr son node-u təkrarlayır. Sorğu yolları hər səviyyədə sorğu yarpaq indeksinin tək və ya cüt olmasına görə sol və ya sağ tərəfi hash-ləməklə yoxlanılır.
 
-İndeksdə olan bir yarpaq üçün `i`, bir yol `(s_0,\ldots,s_{d-1})` təkrarlanma ilə köklə `R` müqayisədə yoxlanır:
+İndeks `i` olan yarpaq üçün, `(s_0,\ldots,s_{d-1})` yolu `R` kökü ilə aşağıdakı təkrarlama vasitəsilə yoxlanılır:
 
 $$
 y_0=L_i
@@ -733,26 +733,26 @@ H_F(\operatorname{seed}(\texttt{fastpq:v1:trace:node}),s_k,y_k),
 \end{cases}
 $$
 
-Çek yalnız aşağıdakı hallarda qəbul edilir:
+Yoxlama yalnız aşağıdakı hallarda keçir:
 
 $$
 y_d=R
 $$
 
-AIR iz xəttinin yarpaqları:
+AIR iz sətiri yarpaqları bunlardır:
 
 $$
 L^{\text{air}}_i =
 H_D(i\|m\|x_{i,0}\|\cdots\|x_{i,m-1})
 $$
 
-AIR tərkibi olan yarpaqlar:
+AIR kompozisiya yarpaqları bunlardır:
 
 $$
 L^{\text{comp}}_i = H_D(i\|A_i)
 $$
 
-LDE sorğusunun açılışı həmçinin qiymətləndirmə indeksində `i` açılan dəyərin təsdiqlənmiş hissəsində olduğunu yoxlayır:
+LDE sorğusunun açılması həmçinin qiymətin qiymətləndirmə indeksində `i` açıldığını və onun təsdiqlənmiş parçasında mövcud olduğunu yoxlayır:
 
 $$
 \operatorname{chunk\_index}=\left\lfloor\frac{i}{B_{\text{lde}}}\right\rfloor
@@ -766,16 +766,16 @@ $$
 \operatorname{chunk}[\operatorname{chunk\_offset}]=v_i
 $$
 
-### FRI Dəyişdirilməsi {#fri-folding}
+### FRI Qatlanma {#fri-folding}
 
-FRI öhdəsindən gəlir AIR tərkibi qiymətləndirmələr. `l`, transkripsiya nümunələri bir çətinlik `beta_l`. Döş qatı son qiyməti təkrarlayaraq aritənin bir dəfəsinə qədər doldurulur.
+FRI kriptoqrafik olaraq AIR kompozisiya qiymətləndirmələrinə bağlanır. Hər bir `l` raundu üçün transkript bir `beta_l` çağırışını nümunələşdirir. Lay arity-nin bir çoxluğu qədər son dəyəri təkrarlayaraq doldurulur. Hər bir arity ölçülü qrup aşağıdakı kimi qatlanır:
 
 $$
 y_{l+1,j} =
 \sum_{k=0}^{a-1} y_{l,ja+k}\beta_l^k
 $$
 
-`a` FRI ariti olduğu yerdə. təsdiqləyici hər bir nümunə götürülmüş sorğu zəncirinə görə yoxlayır ki,
+harda `a` FRI aritidir. Yoxlayıcı hər götürülmüş sorğu zənciri üçün aşağıdakıları yoxlayır:
 
 $$
 y_{l+1,\lfloor i/a\rfloor}
@@ -783,11 +783,11 @@ y_{l+1,\lfloor i/a\rfloor}
 \sum_{k=0}^{a-1} y_{l,\lfloor i/a\rfloor a+k}\beta_l^k
 $$
 
-və hər açılan FRI qrupunu müvafiq FRI qat kökündən təsdiqləyir.
+və hər açılmış FRI qrupunu müvafiq FRI qat kökü ilə autentifikasiya edir.
 
-### Fiat-Shamir transkripti {#fiat-shamir-transcript}
+### Fiat-Şamir Transkripti {#fiat-shamir-transcript}
 
-Kanonik parametrlər kataloqu transkript hashini SHA3-256 kimi etiketləyir. Hal-hazırda prov və yoxlayıcı tətbiqi `iroha_crypto::Hash::new` ilə çağırış baytlarını çıxarır, bu da 32-bayt Blake2bVar digestidir, sonra ilk səkkiz kiçik indian baytını `F` -ə endirir:
+Tək protokol-standart parametr kataloqu transkriptin kriptoqrafik xəşini SHA3-256 kimi etiketlədir. Cari sübutçu və yoxlayıcı tətbiqi 32 baytlıq Blake2bVar kriptoqrafik həzm dəyəri olan `iroha_crypto::Hash::new` ilə çağırış baytlarını çıxarır, sonra ilk səkkiz little-endian baytı `F` ə çevirir:
 
 $$
 \chi(\text{tag}) =
@@ -795,28 +795,28 @@ $$
 \bmod p
 $$
 
-Çətinlik çağırışları transkript vəziyyətinə tam həzm əlavə edin.
+Texniki çağırışlar tam kriptoqrafik xülasə dəyərini transkript vəziyyətinə əlavə edir. Təkrarlama sırası belədir:
 
 1. ictimai IO, protokol versiyası, parametr versiyası və parametr adı
-2. LDE kök və iz kökləri
+2. LDE kök və iz kökü
 3. `gamma`
-4. AIR tərkibi ilə bağlı çətinliklər `alpha_0`, `alpha_1`
-5. AIR iz kök və AIR tərkibi kök
-6. baxış böyük məhsul
-7. FRI qat kökləri və `beta_l` çətinlikləri
-8. nümunə götürülmüş sorğu indeksləri
+4. AIR tərkib çətinlikləri `alpha_0`, `alpha_1`
+5. AIR iz kökü və AIR tərkib kökü
+6. böyük məhsulu axtar
+7. FRI qatın kökləri və `beta_l` çağırışlar
+8. nümunələnmiş sorğu indeksləri
 
-Sorğu nümunələri tələb olunan unikal indekslərin sayına çatana qədər 32 baytlıq çağırış qruplarını çəkir və onları kiçik həcmli `u64` parçalar kimi oxuyur:
+Sorğu nümunəsi 32 baytlıq çətinlik kriptoqrafik xülasələri davamlı olaraq götürür və onları little-endian `u64` parçaları kimi oxuyur, ta ki tələb olunan sayda unikal indeks toplanana qədər:
 
 $$
 q = \operatorname{le64}(\text{digest chunk})\bmod N_{\text{eval}}
 $$
 
-nümunə götürülmüş dəst sıralama sırası ilə qaytarılır.
+Seçilmiş dəst sıraya salınmış qaydada qaytarılır.
 
-### Verifikasiyaçı Yenidən oynat {#verifier-replay}
+### Təsdiqləyici Yenidən Oynatma {#verifier-replay}
 
-Verifikatçı ilk növbədə partiya öhdəliklərini yenidən hesablayır:
+Təsdiqləyici əvvəlcə partiya kriptoqrafik öhdəlik dəyərini yenidən hesablayır:
 
 $$
 \operatorname{commitment}_{expected}
@@ -830,7 +830,7 @@ $$
 =\operatorname{proof.trace\_commitment}
 $$
 
-O, həmçinin IO ictimaiyyətinin yenidən qurulmasını təmin edir:
+O, həmçinin ictimai IO-i yenidən qurur:
 
 $$
 \operatorname{PublicIO}=
@@ -840,7 +840,7 @@ $$
 \operatorname{permission\_hashes})
 $$
 
-Hər bir sahə sübutun ictimai IO byte-for-byte ilə uyğun olmalıdır. Verifikatçı sonra eyni transkripti yenidən qurur və eyni nəticəni çıxarır:
+Hər bir sahə dəlilin ictimai IO bayt-by-bayt uyğun olmalıdır. Sonra yoxlayıcı eyni transkripti bərpa edir və eyni nəticəni çıxarır:
 
 $$
 \gamma,\quad \alpha_0,\alpha_1,\quad
@@ -848,7 +848,7 @@ $$
 q_0,\ldots,q_{t-1}
 $$
 
-Hər bir nümunə alınan sorğu üçün `q` yoxlayır:
+Hər bir seçilmiş sorğu `q` üçün yoxlayır:
 
 $$
 \operatorname{MerkleVerify}(
@@ -886,73 +886,73 @@ A_q =
 )
 $$
 
-AIR kompozisiyasının açılışı `R_air_composition` altında təsdiqlənməlidir. FRI zəncir daha sonra eyni `A_q`-dən başlayır və terminal FRI kökünün altındakı təsdiqlənmiş son FRI yarpaqda bitməlidir.
+AIR tərkibinin açılışı `R_air_composition` altında autentifikasiya edilməlidir. Sonra FRI zənciri eyni `A_q`-dən başlayır və terminal FRI kök altında autentifikasiya olunmuş son FRI yarpaqda bitməlidir.
 
-## Süleymanın nələri yoxlayır {#what-the-prover-checks}
+## Doğrulayıcının Yoxladığı Nədir {#what-the-prover-checks}
 
-İzləmə qurmadan əvvəl, FastPQ proveri seriya sifarişini keçid açarı, əməliyyat rütbəsi ilə kanonikləşdirir, və yerləşdirmə sırası. Transfer sıraları da transkripsiya metadata tələb edir. Transfer sətirləri olan, lakin transfer transkripsiyaları olmayan bir partiya etibarsızdır.
+İz izlərini qurmazdan əvvəl, FastPQ sübutçusu partiya sırasını keçid açarı, əməliyyat sırasi və yerləşdirmə sırasına görə kanonikləşdirir. Transfer sıraları həmçinin transkript metadata tələb edir. Transfer sıraları olan, lakin transfer transkriptləri olmayan bir partiya etibarsızdır.
 
-Transfer transkripsiyaları üçün verilişdən sonra yoxlamalar aşağıdakıları əhatə edir:
+Transfer transkriptləri üçün, sübut verən tərəfin yoxlamaları bunlardır:
 
-- göndərici balansı aşağı axın etməməlidir.
-- `sender_after` `sender_before - amount` bərabər olmalıdır.
-- `receiver_after` `receiver_before + amount` bərabər olmalıdır.
-- transkript partiyadakı hər bir köçürmə xəttini əhatə etməlidir.
-- "Poseidon"un tək-delta dijesinin mövcud olduğu zaman transkriptin əvvəlki görüntüsünə uyğun olmalıdır.
-- Qeyri-Merkle sübutları versiya 1 kimi dekodlaşdırılmalıdır; yox olan yollar deterministik sintetik sübutlarla doldurulur.
+- göndərənin balansı mənfi olmamalıdır
+- `sender_after` `sender_before - amount`-ə bərabər olmalıdır
+- `receiver_after` `receiver_before + amount`-ə bərabər olmalıdır
+- transkript partiyadakı hər bir köçürmə sətrini əhatə etməlidir
+- tək-delta Poseidon kriptoqrafik xülasə dəyəri mövcud olduqda, transkript ön şəklinə uyğun olmalıdır
+- təqdim edilmiş sparse-Merkle sübutları versiya 1 kimi deşifrə edilməlidir; əskik yollar determinist sintetik sübutlarla doldurulur
 
-İz transfer, mint, burn, rol verilməsi, rol ləğvi, metadata seti və icazə axtarış sətirləri üçün seçicilərdən ibarətdir. Rəqəmsal əməliyyat sətirləri də imzalanmış deltaları, hər aktiv üzrə deltaları və təchizat hesablamalarını da əhatə edir.
+İz seçici sütunları ilə transfer, çıxarış, məhv etmə, rol vermə, rol ləğv etmə, metadata təyin etmə və icazə yoxlama sətirlərini ehtiva edir. Rəqəmsal əməliyyat sətirləri həmçinin işarəli dəyişikliklər, aktiv üzrə davam edən dəyişikliklər və təchizat sayğaclarını da daşıyır.
 
-## Prover Lane {#prover-lane}
+## Təsdiq yürütmə zolağı {#prover-lane}
 
-`irohad` start zamanı FastPQ prover zolağını başlayır, əgər prov backend başlanğıclandırıla bilərsə. Lane sərhədlənmiş bir sıra ilə bir arxa plan vəzifəsidir. Bir blok icra şahidini istehsal etdikdən sonra commit yolu blok hash, hündürlük, görünüş və şahidini ehtiva edən prov işini təqdim edir.
+`iroha3d` provayder arxa ucunu başlada bilsə, başlanğıcda FastPQ dəlil yürütmə xəttini işə salır. İcra xətti məhdud növbəsi olan fon tapşırığıdır. Bir blok icra şahidi yaratdıqdan sonra, konsensus bitirmə yolu blokun kriptoqrafik xəşini, hündürlüyünü, baxışını və şahidini ehtiva edən bir provasiyonu təqdim edir.
 
-Əgər zolaq işləmirsə və ya növbə doludursa, iş buraxılır və normal blok işlənməsi davam edir. Bu o deməkdir ki, arxa plan profer yolu əməliyyat qəbul və ya razılaşma qapısı deyil. Bu, artıq icra olunmuş bir dövlət üzərində sübut-təsərrüfat yoludır.
+Əgər icra zolağı işləmirsə və ya növbə doludursa, iş keçilir və normal blok işlənməsi davam edir. Bu o deməkdir ki, fon provayderinin icra zolağı əməliyyat qəbul etmə və ya konsensus qapısı deyil. Bu, artıq icra olunmuş vəziyyət üzərində sübut istehsal edən bir yoldur.
 
-Şəbəkədə aşağıdakılardan ibarət bir prover qurulur:
+İcra zolağı belə bir sübutçunu qurur:
 
 ```text
 parameter = "fastpq-lane-balanced"
-execution_mode = auto | cpu | gpu
-poseidon_mode = auto | cpu | gpu
+execution_mode = cpu | gpu
+poseidon_mode = cpu | gpu
 ```
 
-`auto` proverə mövcud backend seçməyə imkan verir. `cpu` pinlərin icrası CPU-dən üstünlük təşkil edir. `gpu` tələb olunan kernellərdən istifadə edə bilməyən CPU fallback ilə, GPU icrasını üstün tutur.
+Hər iki parametrin defolt dəyəri `cpu` olaraq təyin edilib. `gpu`-i seçmək açıq şəkildə qapalı-fail tələbi deməkdir: əgər GPU dəstəyi kompilyasiya olunmayıbsa və ya tələb olunan GPU backend preflight uğursuz olur, prover icra xətti deaktiv qalır. İlk buraxılışın heç bir `auto` dəyəri yoxdur və tələb olunan GPU rejimindən CPU rejiminə geri dönmür.
 
-## Verifikasiya {#verification}
+## Təsdiqləmə {#verification}
 
-FastPQ sübut yoxlaması kanonik partiya öhdəliyini yenidən qurur və ictimai transkripti əvəz edir. Verifikatçı protokol versiyasını, parametrlər təyin edilmiş versiyanı, yenidən oynatma həddlərini, iz öhdəliyi, ictimai girişləri, nümunəvi Merkle açılışları, AIR açılışları və FRI sorğu zincirini yoxlayır.
+FastPQ sübut təsdiqi tək protokol-standart toplu kriptoqrafik öhdəlik dəyərini bərpa edir və ictimai transkripti yenidən işlədir. Yoxlayıcı protokolu yoxlayır versiya, parametr dəsti versiyası, təkrar oynatma məhdudiyyətləri, iz kriptoqrafik öhdəlik dəyəri, açıq məlumatlar, seçilmiş Merkle açılışları, AIR açılışları və FRI sorğu zənciri.
 
-Default play limitləri aşağıdakılardır:
+Standart cavab limitlərinə daxildir:
 
-|Sərhəd|Default |
+|Hədd|Varsayılan|
 | ------------------ | ------: |
-|Keçid sıraları |     256 |
-|Satış yükünün ölçüsü |256 KiB |
-|FRI qatlar |      16 |
-|Sual açılışları |     128 |
+|Keçid sətirləri|     256 |
+|Toplu yük ölçüsü|256 KiB|
+| FRI qatlar         |      16 |
+|Sorğu açılışları|     128 |
 
-## Nexus Verifikasiya edilmiş relaylar {#nexus-verified-relays}
+## Nexus Yoxlanılmış Keçidlər {#nexus-verified-relays}
 
-Nexus AXT sübut qovşaqları bir `AxtFastpqBinding` daxil edə bilər. `RegisterVerifiedLaneRelay` icra edərkən, Iroha:
+Nexus AXT sübut məlumat konteynerləri `AxtFastpqBinding` yerləşdirə bilər. `RegisterVerifiedLaneRelay` icra olunduqda, Iroha:
 
-1. Lənət relay qovusunu və FastPQ sübut materialını yoxlayır.
-2. məlumat sahəsini və manifest kökünü yoxlayır.
-3. AXT sübut müqaviləsini dekod edir.
-4. `fastpq_binding` tələb olunur.
-5. FastPQ partiyasını bu bağdan yenidən qurur.
-6. əhatə edilmiş FastPQ sübutunu dekodlaşdırır
-7. Yenidən qurulan partiyanın və sübutun FastPQ yoxlanıcısını çağırır
+1. icra yolu rele məlumat konteynerini və FastPQ sübut materialını təsdiqləyir
+2. dataspace və texniki manifest kökünü yoxlayır
+3. AXT sübut məlumat konteynerini deşifr edir
+4. bir `fastpq_binding` tələb edir
+5. o bağlamadan FastPQ partiyasını yenidən qurur
+6. gizlədilmiş FastPQ sübutu deşifr edir
+7. yenidən qurulmuş partiya və sübut üzərində FastPQ yoxlayıcısını çağırır
 
-Verifikasiya uğurlu olarsa, Iroha relye istinadını, orijinal qabığı, sübut pay yükü hashini, verifikasiya hündürlüyünü, manifest kökünü və FastPQ bağlamasını ehtiva edən `VerifiedLaneRelayRecord` bir [PH000000) saxlayır.
+Əgər yoxlama uğurlu olarsa, Iroha keçid istinadı, orijinal məlumat konteyneri, sübut yükləmə kriptoqrafik xəşi, yoxlama hündürlüyü, texniki manifest kökü və FastPQ bağlamasını ehtiva edən `VerifiedLaneRelayRecord`-ı saxlayır.
 
-Lane relay zarfları həmçinin kompakt FastPQ sübut materialı daşıyır. Material yol ID, məlumat məkanı id, blok hündürlüyü, yoxlama hündürlüyü, blok başlığı hash, həll hash və manifest kökü üzərində bir həzmdir. Bir relay yalnız QC və etibarlı FastPQ sübut materialına malik olduğu təqdirdə birləşməyə icazə verir.
+icra zolağı ötürücü məlumat konteynerləri həmçinin kompakt FastPQ sübut materialını da daşıyır. Material icra zolağı identifikatoru, məlumat sahəsi identifikatoru, blok hündürlüyü, yoxlama hündürlüyü üzərində kriptoqrafik xülasə dəyəridir, blok başlığı kriptoqrafik xəş, maliyyə əməliyyatlarının tənzimlənməsi kriptoqrafik xəşi və texniki manifest kökü. Bir relenin birləşmə üçün uyğun olması üçün həm QC, həm də etibarlı FastPQ sübut materialına malik olması lazımdır.
 
-### AXT Məhdudlaşdırıcı riyaziyyat {#axt-binding-math}
+### AXT Tətbiq olunan Riyaziyyat {#axt-binding-math}
 
-Nexus AXT zarfları üçün, `AxtFastpqBinding` sübut yenidən oynamaqdan əvvəl kanonikləşdirilmişdir. Boş parametr dəyərləri standart olaraq `fastpq-lane-balanced`; boş təsdiqləyici id və versiyası standart olaraq `fastpq` və `v1`; iddia növü kəsilmiş və aşağı dərəcəli edilmişdir.
+Nexus AXT məlumat konteynerləri üçün, `AxtFastpqBinding` sübutu təkrar oynatmadan əvvəl kanonikləşdirilir. Boş parametr dəyərləri `fastpq-lane-balanced`-ə görə təyin olunur; boş yoxlayıcı identifikatoru və versiyası `fastpq` və `v1`-ə görə təyin olunur; tələb növü qısaldılır və kiçik hərflərə çevrilir.
 
-AXT FastPQ ictimaiyyət girişləri deterministik bayt hashləridir:
+AXT FastPQ ictimai girişləri deterministik bayt kriptoqrafik xəşlərdir:
 
 $$
 \operatorname{dsid}=\operatorname{dsid\_bytes}(\operatorname{source\_dsid})
@@ -1002,14 +1002,14 @@ $$
 )
 $$
 
-AXT keçid açarları:
+AXT keçid düymələri bunlardır:
 
 $$
 \operatorname{key}(\operatorname{prefix},x,y)=
 \operatorname{prefix}\|\texttt{/}\|x\|\texttt{/}\|y
 $$
 
-`authorization` tələbində rolu təmin edən sətir yerləşdirilmişdir:
+`authorization` iddiası rol-vermə sətrini əlavə edir:
 
 $$
 \operatorname{role\_id}=\operatorname{claim\_digest}
@@ -1024,9 +1024,9 @@ $$
 \operatorname{le64}(\operatorname{policy\_commitment}[0..8])
 $$
 
-`compliance` tələbi iki metadata sətirini daxil edir: birini siyasət üçün və digərini hədəf verilən yerlər üçün.
+və avtorizasiya siyasətini bağlayan bir metadata sətri. `compliance` iddiası iki metadata sətri əlavə edir: biri siyasət üçün, biri isə hədəf məlumat sahələri üçün.
 
-`tx_predicate` və `value_conservation` üçün bağlama müsbət mənbə və ya istiqamət məbləğini ehtiva edirsə, bir açıq təsir məbləği istifadə olunur. Əks halda kod sərhədli müəyyənləşdirici məbləğin alınması:
+`tx_predicate` və `value_conservation` üçün, bağlama müsbət mənbə və ya təyinat məbləği ehtiva edərkən açıq təsir məbləği istifadə olunur. Əks halda, kod məhdudlaşdırılmış deterministik məbləği çıxarır:
 
 $$
 \operatorname{bounded}(d,\min,\operatorname{span})
@@ -1034,7 +1034,7 @@ $$
 \min + (\operatorname{le64}(d[0..8])\bmod\max(\operatorname{span},1))
 $$
 
-Sonra eyni köçürmə tənlikləri istifadə olunur:
+Sonra eyni ötürmə tənlikləri istifadə olunur:
 
 $$
 \operatorname{sender\_after}=\operatorname{sender\_before}-a
@@ -1044,14 +1044,14 @@ $$
 \operatorname{receiver\_after}=\operatorname{receiver\_before}+a
 $$
 
-Sentetik göndərici və alıcı hesabı şəxsiyyətləri açar toxumlardan əldə edilir:
+Sintetik göndərən və qəbul edən hesab identifikatorları açar toxumlarından yaradılır:
 
 $$
 \operatorname{seed}=
 \operatorname{Hash}(\operatorname{label}\|\operatorname{entropy})[0..32]
 $$
 
-Transfer partiyası hash:
+Köçürmə partiyası kriptoqrafik xəşi belədir:
 
 $$
 \operatorname{batch\_hash} =
@@ -1063,43 +1063,43 @@ $$
 )
 $$
 
-AXT partiya manifestinin həzm edilməsi kanonik bağlamanın SHA-256 kodlaşdırılması üzərindəki Norito
+AXT seriyası texniki manifestin kriptoqrafik xülasə dəyəri SHA-256-dir, tək protokol-standart bağlamanın Norito kodlaması üzrə:
 
 $$
 \operatorname{manifest\_digest} =
 \operatorname{SHA256}(E(\operatorname{canonical\_binding}))
 $$
 
-## SCCP Şəffaf mesaj sübutları {#sccp-transparent-message-proofs}
+## SCCP Şəffaf Mesaj Sübutları {#sccp-transparent-message-proofs}
 
-SCCP köməkçi qutu, şəffaf çarşı silsilə mesajı sübutları üçün də FastPQ istifadə edir. Bu yol `irohad` arxa plan prowver zolağından ayrıdır. SCCP mesaj sübut qutusundan və manifestindən birbaşa FastPQ partiyasını qurur, sonra nəticələnən sübutı açıq yoxlama üçün bağlayır.
+SCCP köməkçi proqram paketi həmçinin şəffaf zəncirlərarası mesaj sübutları üçün FastPQ-dən istifadə edir. Bu yol `iroha3d` fon provayder icra xəttindən ayrıdır. O, SCCP mesaj sübut paketindən və texniki manifestdən birbaşa FastPQ partiya yaradır, sonra əldə edilən sübutu açıq yoxlama üçün qablaşdırır.
 
-SCCP partiyasında `fastpq-lane-balanced` və üç metadata keçid istifadə olunur:
+SCCP partiyası `fastpq-lane-balanced`-dan və üç metadata keçidindən istifadə edir:
 
-|Anahtar |Əməliyyat |
+|Açar|Əməliyyat|
 | ------------------------------- | --------- |
-|`sccp:transparent:v1:statement` |`MetaSet` |
-|`sccp:transparent:v1:context` |`MetaSet` |
-|`sccp:transparent:v1:payload` |`MetaSet` |
+| `sccp:transparent:v1:statement` | `MetaSet` |
+| `sccp:transparent:v1:context` | `MetaSet` |
+| `sccp:transparent:v1:payload` | `MetaSet` |
 
-Onun ictimai girişləri SCCP şəffaf daxili sübutdan alınır:
+Onun ictimai girişləri SCCP şəffaf daxili sübutundan əldə edilir:
 
-|FastPQ giriş |SCCP mənbə |
+| FastPQ giriş | SCCP mənbə                                                |
 | ------------- | ---------------------------------------------------------- |
-|`dsid` |Bir Blake2b digestinin ilk 16 baytı hash ifadəsi üzərində .|
-|`slot` |Sonluq hündürlüyü |
-|`old_root` |Faydalı yük hash |
-|`new_root` |Məşğulluq kökü |
-|`perm_root` |Son bloklar hash |
-|`tx_set_hash` |Bəyanat hash |
+| `dsid`        |Bəyanatın kriptoqrafik xəşini üzərində Blake2b kriptoqrafik xəş dəyərinin ilk 16 baytı|
+| `slot`        |Sonluq hündürlüyü|
+| `old_root`    |Yük kriptoqrafik xəş|
+| `new_root`    |kriptovalyuta öhdəlik dəyəri kökü|
+| `perm_root` |Sonluq bloku kriptoqrafik həş|
+| `tx_set_hash` |Bəyanat kriptoqrafik xəş|
 
-SCCP kanonik kodlaşdırıcılar tam rəqəmləri kiçik ədəd yazır və dəyişən uzunluqda olan bayt dizaynlarını aşağıdakı kimi kodlayır:
+SCCP tək protokol-standart kodlayıcılar ədədləri little-endian formatında yazır və dəyişkən uzunluqlu bayt massivlərini belə kodlayır:
 
 $$
 \operatorname{vec}(x)=\operatorname{le32}(|x|)\|x
 $$
 
-Şəffaf ictimai giriş bayt silsiləsi aşağıdakılardır:
+Şəffaf ictimai giriş bayt sətiri:
 
 $$
 P =
@@ -1112,7 +1112,7 @@ P =
 \operatorname{finality\_block\_hash}
 $$
 
-Şəffaf bəyanat baytları versiya, zəncir ailəsi, yerli və əks tərəflər domenləri, təhlükəsizlik modeli, bağlayıcı idarəetmə, hesab kodeksi, yekunluq modeli, təsdiqçi hədəfi, təsdiqçinin arxası ailəsi, uzunluqda prefiks edilmiş zəncir / arxası / manifest sahələri, məqsədə bağlı hashdir. Hesab kodek açarı, payload növü, ictimai giriş baytları və payload hash.
+Şəffaf bəyanat baytları versiya, zəncir ailəsi, yerli və qarşı tərəf domenləri, təhlükəsizlik modeli, ankra idarəetməsi, hesab kodeki, sonluq modeli, yoxlayıcı hədəfi, yoxlayıcı arxa plan ailəsi, uzunluğu əvvəlcədən verilmiş zəncir/arxa plan/manifest sahələrinin birləşməsidir, təyinat bağlayıcı kriptoqrafik həş, hesab kodek açarı, yük növü, ictimai giriş baytları və yük kriptoqrafik həşi. Bəyannamə kriptoqrafik həş belədir:
 
 $$
 \operatorname{statement\_hash} =
@@ -1121,7 +1121,7 @@ $$
 )
 $$
 
-Bu sübut yolu üçün FastPQ məlumat məkanı id başqa bir prefixed Blake2b digest ilk on altı baytdır:
+Bu sübut yolunun FastPQ verilənlər sahəsi identifikatoru başqa bir prefiksli Blake2b kriptoqrafik həzm dəyərinin ilk on altı baytıdır:
 
 $$
 \operatorname{dsid} =
@@ -1130,7 +1130,7 @@ $$
 )[0..16]
 $$
 
-SCCP FastPQ partiyası tam olaraq:
+SCCP FastPQ partiyası dəqiq belədir:
 
 $$
 (\texttt{sccp:transparent:v1:statement},\varnothing,\operatorname{statement},\operatorname{MetaSet})
@@ -1144,9 +1144,9 @@ $$
 (\texttt{sccp:transparent:v1:payload},\varnothing,\operatorname{canonical\_payload},\operatorname{MetaSet})
 $$
 
-sonra eyni FastPQ sifariş qaydalarına əsasən sıralanır.
+sonra eyni FastPQ sıralama qaydasına görə çeşidlənir.
 
-OpenVerify yoxlayıcı öhdəliyi SHA-256 üzərindəki SCCP mesaj arxa məntəqəsi adı və kanonik FastPQ yoxlayıcı təsvirçisi ilə:
+OpenVerify yoxlayıcısının kriptoqrafik öhdəlik dəyəri SHA-256-dir SCCP mesaj backend adı və tək protokol-standart FastPQ yoxlayıcı deskriptoru üzərində:
 
 $$
 \operatorname{vk\_hash} =
@@ -1155,45 +1155,45 @@ $$
 )
 $$
 
-Qırmızı FastPQ sübutları Norito-lə `StarkFriOpenProofV1` kodlaşdırılır, sonra `OpenVerifyEnvelope` ilə bir `Stark` -lə bağlanır. SCCP yoxlaması eyni FastPQ partiyasını qrupdan və manifestdən yenidən qurur, açıq yoxlama qabı metadatalarını yoxlayır, Yenidən qurulmuş partiyanın və sübutun FastPQ yoxlanıcısını çağırır.
+Xam FastPQ sübutu Norito ilə `StarkFriOpenProofV1`-ə kodlanır, sonra `Stark` arxa ucu ilə `OpenVerifyEnvelope`-ə bükülür. SCCP yoxlaması eyni şeyi yenidən qurur FastPQ paketini dəstədən və texniki manifestdən götürür, açıq yoxlama məlumat konteynerinin metadatasını yoxlayır və yenidən qurulmuş paket və sübut üzərində FastPQ təsdiqləyicisini işə salır.
 
-## Parametrlər dəstləri {#parameter-sets}
+## Parametr dəstləri {#parameter-sets}
 
-Kanonik parametrlər kataloqu iki parametr dəstini açıqlayır. Host prover lane hazırda `fastpq-lane-balanced`.
+Tək protokol-standart parametr kataloqu iki parametr dəstini göstərir. Ev sahibi sübutçu icra xətti hazırda `fastpq-lane-balanced` istifadə edir.
 
-|Parametr |Məqsəd|sahə |Haşlar |FRI |
+|Parametr|Məqsəd|Sahə|kriptografik həşlər| FRI                             |
 | ---------------------- | -------------------------- | ------------------------------ | ------------------------------------------- | ------------------------------- |
-|`fastpq-lane-balanced` |balanslaşdırılmış təchizatçı ötürülməsi |Goldilocks kvadrat uzantısı |Poseidon2 öhdəlikləri, katalog SHA3 etiketi |Arity 8, blowup 8, 46 sorğu |
-|`fastpq-lane-latency` |gecikmə həssas yollar |Goldilocks kvadrat uzantısı |Poseidon2 öhdəlikləri, katalog SHA3 etiketi |arity 16, blowup 16, 34 sorğu |
+| `fastpq-lane-balanced` |tarazlı doğrulayıcı ötürmə qabiliyyəti|Qızıl saçlı kvadratik genişlənmə|Poseidon2 kriptoqrafik öhdəlik dəyərləri, kataloq SHA3 etiketi|arıtmiya 8, partlayış 8, 46 sorğu|
+| `fastpq-lane-latency` |güc gecikməsinə həssas icra zolaqları|Qızıl saçlı kvadratik genişlənmə|Poseidon2 kriptoqrafik öhdəlik dəyərləri, kataloq SHA3 etiketi|ərity 16, partlayış 16, 34 sorğu|
 
-Hər ikisi 128-bit təhlükəsizliyi hədəfləyir və `2^16` ölçülü bir domen ölçüsünü istifadə edir. Rust V1 transkript yenidən oynatma kodu hazırda Fiat-Shamir çağırış baytlarını `iroha_crypto::Hash::new` ilə çıxarır, əvəzinə birbaşa SHA3-256 çağırır.
+Hər ikisi 128-bit təhlükəsizliyi hədəfləyir və `2^16` ölçülü iz domenindən istifadə edir. Rust V1 transkriptin təkrar oynadılması kodu hazırda Fiat-Shamir çağırış baytlarını birbaşa SHA3-256-ü çağırmaq əvəzinə `iroha_crypto::Hash::new`-dən törədir.
 
-Rust proveri tərəfindən istifadə olunan dəqiq kataloq sabitləri:
+Rust sübutçusu tərəfindən istifadə olunan dəqiq kataloq sabitləri bunlardır:
 
-|Daimi |`fastpq-lane-balanced` |`fastpq-lane-latency` |
+|Daimi| `fastpq-lane-balanced` | `fastpq-lane-latency` |
 | -------------------- | ---------------------: | --------------------: |
-|`target_security` |                    128 |                   128 |
-|`grinding_bits` |                     23 |                    21 |
-|`trace_log_size` |                     16 |                    16 |
-|`trace_root` |`0x002a247f81c6f850` |`0x6a9f4eb38fb9b892` |
-|`lde_log_size` |                     19 |                    20 |
-|`lde_root` |`0x60263388dbbf9b2a` |`0x9c9c3a571b6f89ac` |
-|`permutation_size` |                 65,536 |                65,536 |
-|`lookup_log_size` |                     19 |                    20 |
-|`omega_coset` |`0x6af325e825ad5c18` |`0x3a5fd4171e3c3a4d` |
-|`fri_arity` |                      8 |                    16 |
-|`fri_blowup` |                      8 |                    16 |
-|`fri_max_reductions` |                      8 |                     6 |
-|`fri_queries` |                     46 |                    34 |
+| `target_security`    |                    128 |                   128 |
+| `grinding_bits`      |                     23 |                    21 |
+| `trace_log_size`     |                     16 |                    16 |
+| `trace_root`         |   `0x002a247f81c6f850` |  `0x6a9f4eb38fb9b892` |
+| `lde_log_size`       |                     19 |                    20 |
+| `lde_root`           |   `0x60263388dbbf9b2a` |  `0x9c9c3a571b6f89ac` |
+| `permutation_size` |                 65,536 |                65,536 |
+| `lookup_log_size`    |                     19 |                    20 |
+| `omega_coset`        |   `0x6af325e825ad5c18` |  `0x3a5fd4171e3c3a4d` |
+| `fri_arity`          |                      8 |                    16 |
+| `fri_blowup`         |                      8 |                    16 |
+| `fri_max_reductions` |                      8 |                     6 |
+| `fri_queries`        |                     46 |                    34 |
 
 ## Konfiqurasiya {#configuration}
 
-FastPQ konfigurasiyası `zk.fastpq` altında yerləşdirilir.
+FastPQ konfiqurasiyası `zk.fastpq` altında yerləşdirilib.
 
 ```toml
 [zk.fastpq]
-execution_mode = "auto"
-poseidon_mode = "auto"
+execution_mode = "cpu"
+poseidon_mode = "cpu"
 
 # Optional telemetry labels.
 device_class = "apple-m4"
@@ -1210,17 +1210,17 @@ metal_debug_enum = false
 metal_debug_fused = false
 ```
 
-Eyni icra və telemetriya etiketləri `irohad` ilə ləğv edilə bilər:
+Eyni icra və telemetriya etiketi `iroha3d` tərəfindən dəyişdirilə bilər:
 
 ```shell
-irohad --fastpq-execution-mode auto
-irohad --fastpq-poseidon-mode cpu
-irohad --fastpq-device-class apple-m4
-irohad --fastpq-chip-family m4
-irohad --fastpq-gpu-kind integrated
+iroha3d --fastpq-execution-mode gpu
+iroha3d --fastpq-poseidon-mode cpu
+iroha3d --fastpq-device-class apple-m4
+iroha3d --fastpq-chip-family m4
+iroha3d --fastpq-gpu-kind integrated
 ```
 
-Konfiqurasiya sahələri üçün ətraf mühit dəyişənləri də dəstəklənilir. FastPQ xüsusi dəyişənlər aşağıdakılardır:
+Konfiqurasiya sahələri üçün ətraf mühit dəyişənləri də dəstəklənir. FastPQ-xüsusi dəyişənlər bunlardır:
 
 - `FASTPQ_EXECUTION_MODE`
 - `FASTPQ_POSEIDON_MODE`
@@ -1237,25 +1237,25 @@ Konfiqurasiya sahələri üçün ətraf mühit dəyişənləri də dəstəkləni
 
 ## Metriklər {#metrics}
 
-Telemetriya aktivləşdirildiyi zaman FastPQ arxa plan seçimi və Metal runtime davranışı üçün ölçmələri ixrac edir:
+Telemetriya aktiv olduqda, FastPQ backend seçimi və Metal proqram təminatı icra mühiti davranışı üçün ölçüləri ixrac edir:
 
-|Metrik |Məna|
+|Metrik|Mənası|
 | --------------------------------- | --------------------------------------------------------------------------- |
-|`fastpq_execution_mode_total` |İstənilən və həll olunmuş icra rejimi arxaüstü və cihaz etiketləri ilə |
-|`fastpq_poseidon_pipeline_total` |İstənilən və həll edilmiş Poseidon boru kəmərinin yolu |
-|`fastpq_metal_queue_depth` |Metal növbənin məhdudluğu, uçuşda maksimum sayım, göndərmə sayı və nümunə götürmə pəncərəsi |
-|`fastpq_metal_queue_ratio` |Metal növbəsində məşğul və üst-üstə düşən nisbətlər |
-|`fastpq_zero_fill_duration_ms` |Metal işləri üçün sıfır doldurma müddəti |
-|`fastpq_zero_fill_bandwidth_gbps` |Null doldurma bant genişliyi |
+| `fastpq_execution_mode_total`     |Arxa plan və cihaz etiketləri tərəfindən tələb olunan və həll edilmiş icra rejimi|
+| `fastpq_poseidon_pipeline_total` |Tələb olunan və həll olunan Poseidon proqram təminatı emal iş prosesi yolu|
+| `fastpq_metal_queue_depth`        |Metal növbə limiti, maksimum uçuşda olan say, göndəriş sayı və nümunə götürmə pəncərəsi|
+| `fastpq_metal_queue_ratio`        |Metal növbəsi məşğul və örtüşmə nisbətləri|
+| `fastpq_zero_fill_duration_ms`    |Metal işləri üçün ev sahibi sıfır-doldurma müddəti|
+| `fastpq_zero_fill_bandwidth_gbps` |Törədilmiş sıfır-doldurulmuş bant genişliyi|
 
-Ümumi performans triajı üçün [ Performance və Metrics ](/az/guide/advanced/metrics.md)-də göstərilən konsensus və sıra siqnalları ilə istifadə edin.
+Ümumi performans triajı üçün bunları [Performans və Ölçülər](/az/guide/advanced/metrics.md)-da göstərilən konsensus və növbə siqnalları ilə istifadə edin.
 
-## Əlaqəli istinad {#related-reference}
+## Əlaqəli İstinad {#related-reference}
 
-- [Yaradılan növ detalları üçün məlumat modelləri sxemi ](/az/reference/data-model-schema.md)
+- [Məlumat Modeli SXeması](/az/reference/data-model-schema.md) node-səlahiyyətli tipli nöqtə-vaxt məlumat baxışı üçün
 - `FastpqTransitionBatch`
 - `FastpqPublicInputs`
 - `TransferTranscript`
 - `AxtFastpqBinding`
 - `LaneFastpqProofMaterial`
-- [`irohad` FastPQ variantları](/az/reference/irohad-cli.md#arg-fastpq-execution-mode)
+- [`iroha3d` FastPQ seçimlər](/az/reference/iroha3d-cli.md#fastpq-overrides)

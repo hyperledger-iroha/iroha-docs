@@ -1,45 +1,45 @@
 ---
 translation_locale: kk
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 2c71e6c135d862d626d3b184eef3cbed350f1353d7dee78cc129092e7b857924
+translation_source_hash: 96505bdba910beb902c399004f5cd24f5e5b0773f01df9cdcfdb49d019830d03
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Docker контейнердегі ыстық қайта жүктеу Iroha {#hot-reload-iroha-in-a-docker-container}
+# Ыстық қайта жүктеу Iroha Docker контейнерінде {#hot-reload-iroha-in-a-docker-container}
 
-Тек жергілікті дебэглеу үшін ыстық қайта жүктеуді қолданыңыз. Әдеттегі жергілікті даму үшін суретті қайта құруды немесе жаңа Kagami топтамасынан шығарылған Docker Compose ұяшығын қалпына келтіруді таңдаңыз.
+Жергілікті отладка үшін ғана жылдам қайта жүктеуді пайдаланыңыз. Қалыпты жергілікті даму үшін кескінді қайта жасауға немесе жаңадан жасалған Kagami бандлынан пайда болған Docker Compose стекті қайта қосуға артықшылық беріңіз.
 
-## Бір-бірімен қос параметрлерді алмастыру {#replace-the-peer-binary}
+## Желідегі әріптес Binary-ді ауыстыру {#replace-the-peer-binary}
 
-Жоғарыдағы жұмыс кеңістігінен Linux-қа үйлесімді дәймонды бинарлық құру:
+Үстіңгі жұмыс кеңістігінен Linux-пен сәйкес келетін демондық бинарлық файл жасаңыз:
 
 ```bash
-cargo build --release -p irohad --target x86_64-unknown-linux-musl
+cargo build --release -p irohad --bin iroha3d --target x86_64-unknown-linux-musl
 ```
 
-Оны жұмыс істеп тұрған теңгерім контейнеріне көшіріп, содан кейін контейнерді қайта бастаңыз:
+Оны жұмыс істеп тұрған желі әріптес контейнеріне көшіріп, содан кейін сол контейнерді қайта іске қосыңыз:
 
 ```bash
-docker cp target/x86_64-unknown-linux-musl/release/irohad <container>:/usr/local/bin/irohad
+docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/local/bin/iroha3d
 docker restart <container>
 ```
 
-Контейнердің атауын растау үшін `docker ps` қолданыңыз. Жаратылған ұяда теңгермелі контейнерлер `./localnet/docker-compose.yml` деп анықталады.
+`docker ps` контейнердің атын растау үшін қолданыңыз. Жасалған стекде желідегі әріптес контейнерлер `./docker-compose.yml` арқылы анықталады.
 
-## Жаратылыс тармағын бір жолға шығаратын желіде қайта қосу {#recommit-genesis-in-a-disposable-network}
+## Бір реттік желідегі блокчейннің генезисін қайта орындау {#recommit-genesis-in-a-disposable-network}
 
-Пайдаланушы тек оның сақтау орны бос болған кезде ғана генезиске кіріседі. Біржолғы Docker желісі үшін, тізімді тоқтатып, пайдаланған күйін алып тастаңыз, қол қойылған генезистік топтаманы қалпына келтіріңіз немесе ауыстырыңыз және қайта бастаңыз:
+Желілік түйін блокчейннің бастамасын тек оның сақтау орны бос болған кезде аяқтайды. Бір реттік Docker желі үшін стек өзгертпей тұрып тоқтатыңыз, жасалған күйді жойыңыз, қол қойылған блокчейн бастамасының пакетін қайта жасаңыз немесе ауыстырыңыз, және қайтадан іске қосыңыз:
 
 ```bash
-docker compose -f ./localnet/docker-compose.yml down
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+docker compose -f ./docker-compose.yml down
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
-Тұрақтылығы сақталуға тиіс желідегі туындыны алмастыруға болмайды.
+Жалпы жағдайын сақтау қажет желіде блокчейнгенезисті алмастырмаңыз.
 
-## Әдеттегі конфигурацияны қолдану {#use-custom-configuration}
+## Теңшелген баптауларды пайдалану {#use-custom-configuration}
 
-Қазiргi замандас конфигурациясы TOML. Жаратылған `config.toml`, `genesis.signed.nrt` және байланысты кілттер файлдарын суретте күтiлетiн контейнер жолдарына байлаңыз немесе көшіріп алыңыз, содан кейін допты қайта іске қосыңыз. Жаратылған файлдарды біріктіру; әртүрлі Kagami орындарынан файлдарды араластыру десеряландыру немесе консенсус қателерін туғыза алады.
+Ағымдағы желі серіктесінің конфигурациясы TOML. Жаратылған `config.toml`, `genesis.signed.nrt` және байланысты кілт файлдарын контейнер күтілетін жолдарға байлау немесе көшіру сурет, содан кейін желі әріптесін қайта жүктеңіз. Жасалған файлдарды бірге сақтаңыз; әртүрлі Kagami іске қосулардан алынған файлдарды араластыру десериализация немесе консенсус қателіктерін тудыруы мүмкін.

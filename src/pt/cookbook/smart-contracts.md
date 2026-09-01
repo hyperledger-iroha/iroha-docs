@@ -1,23 +1,23 @@
 ---
 translation_locale: pt
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: 4fe9b19fc4d13cfc71d9b9558fe7cdb1d14bd88c2d20f4d23c66313ba3ddd4b6
+translation_source_hash: f1ea542f7a710830cd32465d141db8452e6418d426500995b9df7c9c4e1fd597
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Construir e implementar um contrato inteligente {#build-and-deploy-a-smart-contract}
+# Construir e Implantar um Contrato Inteligente {#build-and-deploy-a-smart-contract}
 
-## Resultados {#outcome}
+## Resultado {#outcome}
 
-Verificar e compilar um contrato Kotodama V1, executar o seu ponto de entrada público localmente, implantar o artefato verificado IVM, simular o ponto de entrada implantado e apresentá-lo com uma taxa explicitamente cotada pela autoridade.
+Verifique e compile um contrato Kotodama V1, execute seu ponto de entrada público localmente, implante o artefato IVM verificado, simule o ponto de entrada implantado e envie-o com uma taxa paga pela autoridade e cotada explicitamente.
 
 ## Pré-requisitos {#prerequisites}
 
-- Um checkout de fonte Iroha em commit `bc7114ed1c7f265a156d2100ff09e851cc95702c`, Rust e Cargo.
-- O cliente atual `iroha` CLI mais um cliente financiado Taira de [Conecta-se a Taira ](./connect-to-taira.md).
-- Caminhos absolutos em `IROHA_CONFIG` e `IROHA_PRIVATE_KEY_FILE`. O arquivo-chave deve ser um arquivo regular de ligação única com o modo `0600`, mantido pelo proprietário; o auxiliar de implantação não tem intencionalmente nenhum argumento de chave privada.
-- Autorização do operador Taira. O registro de código de contrato requer `CanRegisterSmartContractCode`, e as implantações protegidas podem exigir atribuição e promulgação de governança. Se Taira não tiver concedido esse acesso, execute a implantação em uma rede local gerada cuja genética concede a permissão.
+- Uma cópia funcional do código-fonte Iroha no commit `0010c5a70039eac101a4846499ba9ceaf43eb65c`, Rust, e Cargo.
+- O atual `iroha` CLI mais um cliente Taira financiado de [Conectar-se a Taira](./connect-to-taira.md).
+- Caminhos absolutos em `IROHA_CONFIG` e `IROHA_PRIVATE_KEY_FILE`. O arquivo de chave deve ser um arquivo regular de link único mantido pelo proprietário com modo `0600`; o auxiliar de implantação intencionalmente não possui argumento de chave privada em linha.
+- Taira aprovação do operador. O registro do código do contrato requer `CanRegisterSmartContractCode`, e implantações protegidas podem exigir atribuição e execução de governança. Se Taira não concedeu esse acesso, execute a implantação em uma rede local gerada cujo gênese da blockchain concede a permissão.
 
 ```bash
 TORII_URL=https://taira.sora.org
@@ -40,9 +40,9 @@ PY
 
 ## Passos {#steps}
 
-### 1. Copia de um contrato conhecido de bom Kotodama V1 {#_1-copy-a-known-good-kotodama-v1-contract}
+### 1. Copie um contrato Kotodama V1 conhecido por estar bom {#_1-copy-a-known-good-kotodama-v1-contract}
 
-Trabalhe dentro do checkout Iroha fixado e copie a amostra de retorno duplo do compilador para que a fonte e a cadeia de ferramentas permaneçam no mesmo commit.
+Trabalhe dentro do checkout fixado Iroha e copie o exemplo de retorno de tupla do compilador para que o código-fonte e a cadeia de ferramentas permaneçam no mesmo commit.
 
 ```bash
 cd "$IROHA_SOURCE"
@@ -51,7 +51,7 @@ cp ./crates/kotodama_lang/src/samples/tuple_return_demo.ko \
   ./contracts/tuple_return_demo.ko
 ```
 
-A fonte completa é pequena e utiliza a sintaxe `seiyaku`/`kotoage` atual:
+O código-fonte completo é pequeno e usa a sintaxe atual `seiyaku`/`kotoage`:
 
 ```kotodama
 seiyaku TupleReturnDemo {
@@ -67,9 +67,9 @@ seiyaku TupleReturnDemo {
 }
 ```
 
-A Kotodama destina-se à máquina virtual Iroha e à sua corrente ABI. Não é uma linguagem de origem WASM ou EVM.
+Kotodama tem como alvo a Máquina Virtual Iroha e seu ABI atual. Não é uma linguagem de origem WASM ou EVM.
 
-### 2. Verificar, construir e verificar o artefato. {#_2-check-build-and-verify-the-artifact}
+### 2. Verificar, construir e validar o artefato {#_2-check-build-and-verify-the-artifact}
 
 ```bash
 cargo run -p ivm --bin koto -- \
@@ -89,11 +89,11 @@ cargo run -p ivm --bin koto -- \
   ./contracts/tuple_return_demo.ko
 ```
 
-A primeira construção publica o artefato e os sidecars autenticados. A segunda executa em modo apenas de leitura `--verify` e falha se qualquer saída existente não corresponder exatamente à fonte atual. Trata o arquivo `.to` e seu manifesto como uma saída revisada da construção.
+A primeira compilação publica o artefato e os sidecars autenticados. A segunda funciona no modo somente leitura `--verify` e falha se qualquer saída existente não corresponder exatamente à fonte atual. Trate o arquivo `.to` e seu manifesto técnico como uma única saída de compilação revisada.
 
-### 3. Exibir o código de byte localmente. {#_3-run-the-bytecode-locally}
+### 3. Execute o bytecode localmente {#_3-run-the-bytecode-locally}
 
-`compute` é um ponto de entrada público `kotoage`. Execute-o com `debug-call`, que executa contra dispositivos locais sem apresentar ou pagar uma transação.
+`compute` é um ponto de entrada público de `kotoage`. Execute-o com `debug-call`, que é executado contra artefatos de teste locais sem enviar ou pagar por uma transação.
 
 ```bash
 iroha --config "$IROHA_CONFIG" --machine contract debug-call \
@@ -105,11 +105,11 @@ jq -e '.ok == true and .result == ["3", "5"]' \
   ./build/local-call.json
 ```
 
-Os números inteiros Kotodama são representados como cordas JSON, de modo que o tuple decodificado é `["3", "5"]`.
+Kotodama inteiros são representados como JSON cadeias, então a tupla decodificada é `["3", "5"]`.
 
-### 4. Envolver através do auxiliar nativo {#_4-deploy-through-the-native-helper}
+### 4. Implantar através do assistente nativo {#_4-deploy-through-the-native-helper}
 
-O ajudante carrega bits de código, registra o manifesto assinado e envia uma operação `CommitContractDeployment`. Ele cita taxas em cada transação e recusa uma cotação que mude o pagador selecionado ou gas bond.
+O assistente envia os blocos de bytecode, registra o manifesto técnico assinado e envia uma operação `CommitContractDeployment`. Ele fornece cotações de taxa para cada transação e recusa uma cotação que altere o pagador selecionado ou o limite de custo de execução da transação.
 
 ```bash
 printf '%s\n' \
@@ -131,11 +131,11 @@ jq '{contract_address, code_hash_hex, final, fee_quotes}' \
   ./build/deployment.json
 ```
 
-O pedido vazio `charge_limits` não é um identificador de ativo copiado: o ajudante aceita a cotação exata ao vivo antes de assinar. Compare o ativo de cobrança devolvido com a resposta atual da torneira. Não anexe os metadados legais `gas_asset_id` às chamadas de contrato.
+O pedido com `charge_limits` vazio não contém um identificador de ativo copiado: o auxiliar aceita a cotação ativa exata antes de assinar. Compare o ativo cobrado retornado com a resposta atual do dispensador. As chamadas de contrato só aceitam a seleção de taxas pela cotação ativa tipada; os metadados de transação `gas_asset_id` não fazem parte do contrato da primeira versão.
 
-### 5. Simulação e chamada do ponto de entrada implantado. {#_5-simulate-and-call-the-deployed-entrypoint}
+### 5. Simular e chamar o ponto de entrada implantado {#_5-simulate-and-call-the-deployed-entrypoint}
 
-A simulação executa o ponto de entrada público em Torii sem submissão. A chamada a seguir é uma transação e, portanto, seleciona explicitamente o pagador da taxa de autoridade.
+A simulação executa o ponto de entrada público no Torii sem enviá-lo. A chamada seguinte é uma transação e, portanto, seleciona explicitamente a autoridade como pagadora da taxa. Ambos os comandos fixam o limite de gas em 1.500.000.
 
 ```bash
 iroha --config "$IROHA_CONFIG" --machine contract call \
@@ -164,7 +164,7 @@ jq -e '.terminal_kind == "Applied"' ./build/deployed-call.json
 
 ## Verificar {#verify}
 
-Resolver o alias, buscar o manifesto na cadeia com o hash de código devolvido e simular o mesmo ponto de entrada público por endereço canônico:
+Resolva o alias, busque o manifesto técnico on-chain pelo hash criptográfico do código retornado e simule o mesmo ponto de entrada público pelo endereço canônico:
 
 ```bash
 CODE_HASH="$({ jq -er '.code_hash_hex' ./build/deployment.json; })"
@@ -191,23 +191,23 @@ jq -e '.ok == true and .result == ["3", "5"]' \
   ./build/address-simulation.json
 ```
 
-A implantação é completa somente quando o alias se resolve para o endereço devolvido, o manifesto é legível sob o mesmo código hash, a devolução de simulações locais e Torii `["3", "5"]`, e a chamada enviada atinge `Applied`.
+A implantação só está concluída quando o alias resolve para o endereço retornado, o manifesto é legível sob o mesmo hash do código, as simulações locais e da Torii retornam `["3", "5"]` e a chamada enviada chega a `Applied`.
 
-## Resolução de problemas {#troubleshooting}
+## Solução de problemas {#troubleshooting}
 
-- As falhas `CanRegisterSmartContractCode` exigem uma concessão ao operador Taira ou uma alteração de gênese/bootstrap na localnet. Uma conta normal não pode conceder essa permissão após o fato.
-- Governança ou rejeição de linha protegida significa que a implantação precisa da atribuição exata de aprovação exigida por essa rede. Coordinar a lista de aprovadores; não inventar conta IDs.
-- Um manifesto ou ABI desajuste significa que o código de byte, manifesto e tempo de execução do nó não descrevem o mesmo artefato. Reconstruir no commit fixado com `--verify`.
-- `fee quote changed ... gas bound` significa o desacordo entre a intenção digitada solicitada e a cotação em directo.
-- O assistente de implantação rejeita as chaves inline, os modos permissivos de arquivo de chave, os links simbólicos e a multiplicação dos arquivos vinculados antes da submissão da rede.
-- Um erro de ponto de entrada apenas para visualização significa que `compute` foi encaminhado através da família de comandos errada. Esta amostra declara `kotoage`, por isso use simulação de chamada ou submissão.
-- As chamadas contratuais exigem um limite de gás tipado positivo. Foram rejeitados os metadados sobre o gás ou ativos legais de nível superior.
+- `CanRegisterSmartContractCode` falhas exigem uma concessão de operador Taira ou uma alteração de gênese/bootstrap na localnet. Uma conta normal não pode se auto-conceder essa permissão após o fato.
+- A rejeição de governança ou de faixa protegida significa que a implantação precisa da atribuição exata de aprovador exigida por essa rede. Coordene a lista de aprovadores; não invente IDs de conta.
+- Um manifesto técnico ou ABI incompatível significa que o bytecode, o manifesto técnico e o tempo de execução do software do nó não descrevem o mesmo artefato. Recompile no commit fixado com `--verify`.
+- `fee quote changed ... gas bound` significa que a intenção digitada solicitada e a cotação ao vivo não coincidem. Faça uma nova verificação antes de modificar uma transação assinada.
+- O assistente de implantação rejeita chaves em linha, modos permissivos de arquivo de chave, links simbólicos e arquivos com múltiplos links antes do envio pela rede.
+- Um erro de ponto de entrada somente para visualização significa que `compute` foi direcionado pela família de comandos errada. Este exemplo declara `kotoage`, então use simulação de chamada ou envio.
+- As chamadas de contrato exigem um limite de gas tipado e positivo. O contrato de chamada da primeira versão rejeita gas no nível superior e metadados do ativo de taxa.
 
 ## Fonte e documentos relacionados {#source-and-related-docs}
 
-- [Kotodama V1 Implementação do comando no compromisso fixado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/ivm/src/bin/koto.rs)
-- [Amostra de fonte dupla-retorno no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
-- [Auxiliar de implantação nativo no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [Ensaios de integração de contratos no compromisso fixado ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/contracts.rs)
+- [Kotodama V1 implementação do comando no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
+- [Exemplo de código com retorno de tupla no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
+- [Assistente de implantação nativo no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
+- [Testes de integração de contrato no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
 - [Contratos inteligentes](/pt/blockchain/smart-contracts.md)
-- [Referência CLI](/pt/get-started/operate-iroha-via-cli.md)
+- [CLI referência](/pt/get-started/operate-iroha-via-cli.md)

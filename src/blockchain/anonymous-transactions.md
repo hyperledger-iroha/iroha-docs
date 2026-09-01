@@ -35,8 +35,8 @@ The main instructions are:
   policy through governance.
 
 An asset definition also carries an
-[`AssetConfidentialPolicy`](/reference/data-model-schema.md).
-The policy mode controls which flows are valid:
+[`AssetConfidentialPolicy`](/reference/data-model-schema.md). The policy
+mode controls which flows are valid:
 
 | Mode              | Meaning                                                          |
 | ----------------- | ---------------------------------------------------------------- |
@@ -97,18 +97,12 @@ iroha app zk envelope \
   --output note-envelope.bin
 ```
 
-Shield public funds into the asset's shielded ledger:
+The CLI prepares the asset policy, verifying-key references, and encrypted
+note envelope. It does not expose `shield` or `unshield` transaction
+subcommands. Build those instructions with an SDK and submit them as an
+ordinary quoted, signed transaction.
 
-```bash
-iroha app zk shield \
-  --asset <asset-definition-id> \
-  --from <account-id> \
-  --amount 1000 \
-  --note-commitment ABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABABAB \
-  --enc-payload note-envelope.bin
-```
-
-Unshield with a proof attachment JSON:
+An unshield proof attachment has this shape:
 
 ```bash
 cat > unshield-proof.json <<'JSON'
@@ -121,13 +115,6 @@ cat > unshield-proof.json <<'JSON'
   }
 }
 JSON
-
-iroha app zk unshield \
-  --asset <asset-definition-id> \
-  --to <account-id> \
-  --amount 1000 \
-  --inputs DEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF \
-  --proof-json unshield-proof.json
 ```
 
 ## SDK Example

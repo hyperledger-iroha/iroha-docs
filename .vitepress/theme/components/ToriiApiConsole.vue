@@ -128,7 +128,11 @@ function getInitialToriiUrl(): string {
 
 function normalizeToriiBaseUrl(value: string): string {
   const trimmed = value.trim() || DEFAULT_TORII_URL
-  const withoutOpenApi = trimmed.replace(/\/+$/u, '').replace(/\/openapi(?:\.json)?$/u, '')
+  const normalized = trimmed.replace(/\/+$/u, '')
+  const openApiSuffix = '/openapi.json'
+  const withoutOpenApi = normalized.endsWith(openApiSuffix)
+    ? normalized.slice(0, -openApiSuffix.length)
+    : normalized
   const hasProtocol = /^[a-z][a-z0-9+.-]*:\/\//iu.test(withoutOpenApi)
 
   return (hasProtocol ? withoutOpenApi : `http://${withoutOpenApi}`).replace(/\/+$/u, '')

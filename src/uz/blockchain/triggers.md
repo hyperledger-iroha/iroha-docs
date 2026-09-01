@@ -6,68 +6,68 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Ishtirokchilar {#triggers}
+# Triggerlar {#triggers}
 
-Ishtirokchilar hodisa filtrini bajarilishi mumkin bo'lgan harakat bilan bog'laydi. Agar hodisa ishtirokchining filterga mos kelsa, Iroha blok ijroining bir qismi sifatida ishtirokchini baholashdir.
+Trigger hodisa filtrini bajariladigan amal bilan bog‘laydi. Hodisa trigger filtriga mos kelganda Iroha trigger amalini blok bajarilishining bir qismi sifatida baholaydi.
 
-## Tashkilot {#structure}
+## Tuzilishi {#structure}
 
-Ro'yxatga olingan `Trigger` tarkibida quyidagilar mavjud:
+Ro‘yxatdan o‘tgan `Trigger` quyidagilarni o‘z ichiga oladi:
 
-- `id`: a `TriggerId` qadoqlanishi `Name`
-- `action`: bajarilishi mumkin bo'lgan, vakolat, filtr, takrorlash siyosati, qayta urinish siyosati va metadatalar
+- `id`: `Name` ni o‘rab turuvchi `TriggerId`;
+- `action`: bajariladigan amal, vakolat, filtr, takrorlash siyosati, qayta urinish siyosati va metama’lumot.
 
 Ushbu harakat quyidagilarni o'z ichiga oladi:
 
 - `executable`: `Instructions`, `ContractCall`, `Ivm` yoki `IvmProved`;
 - `repeats`: `Indefinitely` yoki `Exactly(n)`
-- `authority`: ijro etilishi mumkin bo'lgan hisobvaraqni chaqirayotgan hisobot
-- `filter`: bir `EventFilterBox`
-- `retry_policy`: rejalashtirilgan vaqt qo'zg'atuvchilari uchun ko'rsatkichlarni o'rnatish;
-- `metadata`: o'zboshimchalik bilan qo'zg'atadigan metadatalar
+- `authority`: bajariladigan amalni chaqiradigan hisob;
+- `filter`: `EventFilterBox`;
+- `retry_policy`: rejalashtirilgan vaqt triggerlari uchun ixtiyoriy qayta urinish xatti-harakati;
+- `metadata`: triggerning ixtiyoriy metama’lumoti.
 
-## Oʻzgarishlar filtrlari {#event-filters}
+## Hodisa filtrlari {#event-filters}
 
-Trigger shartlari obunalar bilan bir xil hodisa filtr modelidan foydalanadi. Eng yuqori darajadagi hodisa filtrlari quyidagilarga mos keladi:
+Qo‘zg‘atuvchi shartlari obunalar bilan bir xil hodisa filtri modelidan foydalanadi. Yuqori darajadagi hodisa filtri quyidagilarga mos kelishi mumkin:
 
-- pipeline hodisalari
+- konveyer hodisalari
 - ma'lumotlar hodisalari
 - vaqt hodisalari
-- ijro etish hodisalarini ishga tushirish
-- tugallanish hodisalarini qoʻzgʻatadi
+- triggerni bajarish hodisalari
+- trigger tugashi hodisalari
 
-Ish oqimlariga mos keladigan eng tor filtrni afzal ko'rasiz. Keng filtrlar diagnostika uchun foydali, ammo ular bloklarni bajarish paytida ishni oshiradi.
+Ish jarayoniga mos eng tor filtrni tanlang. Keng filtrlar diagnostika uchun foydali, ammo blok bajarilishi paytidagi ishni oshiradi.
 
-Joriy filtrlar oilalari uchun [Filterlar](/uz/blockchain/filters.md)-ni ko'ring.
+Joriy filtr oilalari uchun [Filtrlar](/uz/blockchain/filters.md) bo‘limiga qarang.
 
-## Vaqtni qoʻzgʻatuvchilar {#time-triggers}
+## Vaqt triggerlari {#time-triggers}
 
-Vaqt qo'zg'atuvchilari vaqt hodisalari filtridan foydalanadi. Dunyo holati ko'rinishi moslashtirilgan vaqt holatga yetganda, Iroha qo'zgʻatuvchi amalni qo'zg 'atuvchining hokimiyati ostida amalga oshiradi. Vaqti qo'ng'atuvchilar quyida tasvirlangan qayta urinish siyosatini ishlatadigan qo'zg'.
+Vaqt triggerlari vaqt hodisasi filtridan foydalanadi. Global holat ko‘rinishi mos vaqt shartiga yetganda Iroha trigger amalini trigger vakolati ostida bajaradi. Quyida bayon qilingan qayta urinish siyosatidan aynan vaqt triggerlari foydalanishi mumkin.
 
 ## Takrorlash {#repetition}
 
-`Repeats::Indefinitely` o'chirgich ro'yxatdan o'tgunga qadar faol saqlanadi.
+`Repeats::Indefinitely` qo‘zg‘atuvchini ro‘yxatdan chiqarilguncha faol saqlaydi.
 
-`Repeats::Exactly(n)` qo'zg'atgich o'chirib ko'p marotaba qo'yadi. Hisob-kitob tugasa, agar aynan o'sha xatti-harakat kerak bo'lsa, yangi qo'zg'atuvchini yozing.
+`Repeats::Exactly(n)` triggerning qat’iy miqdorda ishga tushishiga ruxsat beradi. Sanoq tugagach ayni xatti-harakat yana kerak bo‘lsa, yangi trigger ro‘yxatdan o‘tkazing.
 
-## Mamlakat va ruxsatnomalar {#authority-and-permissions}
+## Vakolat va ruxsatlar {#authority-and-permissions}
 
-O'chirib qo'yish huquqi ijro etilishini chaqirish uchun ishlatiladigan hisob hisoblanadi. Uzoq muddatli tetiklar uchun maxsus texnik hisobdan foydalaning, shunda kerakli ruxsatnomalar aniq va operatorning shaxsiy hisobidan ajratilgan bo'ladi.
+Trigger vakolati bajariladigan amalni chaqiradigan hisobdir. Uzoq muddatli triggerlar uchun alohida texnik hisobdan foydalaning, shunda kerakli ruxsatlar aniq va operatorning shaxsiy hisobidan ajratilgan bo‘ladi.
 
-Ma'muriyatga ijro etilishi mumkin bo'lgan ko'rsatmalar yoki shartnoma qo'ng'iroqlari uchun talab qilingan ruxsatlar kerak. Ishtirokchini ro'yxatdan o'tkazadigan hisobvaraqning faol ishga tushirish vaqtini tasdiqlash vositasi ostida ishtirokilarni ro'yxatga olish uchun ruxsatnoma ham kerak.
+Vakolat bajariladigan ko‘rsatmalar yoki shartnoma chaqiruvi talab qiladigan ruxsatlarga ega bo‘lishi kerak. Triggerni ro‘yxatdan o‘tkazadigan hisobga faol bajarish muhiti tekshiruvchisi ostida triggerlarni ro‘yxatdan o‘tkazish ruxsati ham kerak.
 
 ## Qayta sinab koʻrish siyosati {#retry-policy}
 
-Vaqtni ishga tushiruvchilar qayta sinovdan o'tish siyosatini tanlashi mumkin.
+Vaqt triggerlari qayta urinish siyosatini tanlashi mumkin. Bu siyosat quyidagilarni belgilaydi:
 
-- `max_retries`: dastlabki muvaffaqiyatsiz o'chirilgandan so'ng necha marta qayta urinishlarga ruxsat beriladi
-- `retry_after_ms`: qayta sinovdan o'tish uchun Iroha qancha vaqt kutadi;
+- `max_retries`: dastlabki muvaffaqiyatsiz ishga tushishdan keyin nechta qayta urinishga ruxsat berilishi;
+- `retry_after_ms`: qayta urinishga ruxsat berilguncha Iroha qancha kutishi.
 
-Qayta sinovdan o'tish uchun mablag' to'liq bo'lganda, qo'zg'atuvchi ro'yxatga olinmagan.
+Qayta urinish budjeti tugagach, trigger ro‘yxatdan chiqariladi.
 
-## Savollar {#queries}
+## So'rovlar {#queries}
 
-Trigger holatini tekshirish uchun joriy trigger soʻrovlaridan foydalaning:
+Qo‘zg‘atuvchi holatini tekshirish uchun joriy so‘rovlardan foydalaning:
 
 - [`FindTriggers`](/uz/reference/queries.md#triggers-contracts-transactions-and-blocks)
 - [`FindActiveTriggerIds`](/uz/reference/queries.md#triggers-contracts-transactions-and-blocks)
@@ -75,7 +75,7 @@ Trigger holatini tekshirish uchun joriy trigger soʻrovlaridan foydalaning:
 
 Shuningdek qarang:
 
-- [O'zgarishlarni qo'zg'atuvchi misol](/uz/blockchain/trigger-examples.md)
-- [O'zgarishlar](/uz/blockchain/events.md)
+- [Hodisa triggeri misoli](/uz/blockchain/trigger-examples.md)
+- [Hodisalar](/uz/blockchain/events.md)
 - [Ko'rsatmalar](/uz/blockchain/instructions.md)
 - [Ruxsatnomalar](/uz/blockchain/permissions.md)

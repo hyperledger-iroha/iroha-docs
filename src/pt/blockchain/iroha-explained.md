@@ -1,77 +1,77 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/iroha-explained.md
-translation_source_hash: 3fdd22338e826b1ce335ebf5e4e850cf3deb9415c36a0c8d21ad63c397cec8c0
+translation_source_hash: ba591b2c1aa819837177625b1ae457b5fa492197576dc690b19ca2897562a436
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Iroha Explicado {#iroha-explained}
 
-Iroha 3 é a plataforma de primeira versão Hyperledger Iroha. O mesmo núcleo suporta redes auto-hospedadas e o modelo de execução SORA Nexus para espaços de dados e roteamento multilaneal.
+Iroha 3 é a plataforma Hyperledger Iroha de primeira versão. O mesmo núcleo suporta redes auto-hospedadas e o modelo de execução SORA Nexus para espaços de dados e roteamento multi-pista.
 
-## Blocos de construção centrais {#core-building-blocks}
+## Blocos de Construção Principais {#core-building-blocks}
 
-- `irohad` corre pares
-- Torii é o portão de entrada do cliente e do operador
-- Sumeragi lida com o consenso
-- O Norito é o formato binário canônico [](/pt/reference/norito.md)
-- IVM executa contratos portáteis inteligentes e código de byte
-- O Kotodama compõe os contratos de alto nível `.ko` para o código de byte IVM `.to`
-- Kagami prepara chaves, gênese, perfis e redes locais
-- SORA Nexus aviões de serviço adicionar Soracloud, Inrou, SoraNet, SoraFS, e SoraDNS para hospedagem de aplicativos, transporte de privacidade, armazenamento e nomeação
+- `iroha3d` executa pares de rede
+- Torii é o gateway do cliente e do operador
+- Sumeragi lida com consenso
+- Norito é o [formato binário canônico](/pt/reference/norito.md)
+- IVM executa contratos inteligentes portáteis e bytecode
+- Kotodama compila contratos `.ko` de alto nível para bytecode `.to` IVM
+- Kagami prepara chaves, gênesis da blockchain, perfis e redes locais
+- SORA Nexus planos de serviço adicionam Soracloud, Inrou, SoraNet, SoraFS e SoraDNS para hospedagem de aplicativos, transporte de privacidade, armazenamento e nomenclatura
 
-## Modelo de execução {#execution-model}
+## Modelo de Execução {#execution-model}
 
-Todas as mudanças no estado mundial ainda ocorrem através de transações. As transações carregam instruções ou IVM código de byte, e Torii é a principal maneira como os clientes enviam ou observam seus efeitos.
+Cada mudança no estado do mundo ainda acontece por meio de transações. As transações carregam instruções ou bytecode IVM, e Torii é a principal forma como os clientes as enviam ou observam seus efeitos.
 
-- As configurações Nexus conscientes podem definir várias pistas.
-- Espaços de dados isolam cargas de trabalho enquanto continuam a fazer parte do mesmo modelo de contabilidade
-- A política de roteamento decide qual faixa e espaço de dados lidar com uma classe de trabalho
+- Configurações conscientes de Nexus podem definir múltiplas faixas de execução
+- os espaços de dados isolam cargas de trabalho sem deixar de fazer parte do mesmo modelo de livro-razão
+- A política de roteamento decide qual pista de execução e espaço de dados lidam com uma classe de trabalho
 
-## Arquitetura do espaço de dados multi- {#multi-dataspace-architecture}
+## Arquitetura Multi-Espaço de Dados {#multi-dataspace-architecture}
 
-Um espaço de dados é um limite de roteamento e namespace, não um blockchain separado. O tempo de execução ainda tem um `World`, um modelo de transação e um pipeline de consenso. Nexus adiciona catálogos que dizem ao nó como particionar o trabalho entre linhas e como nomear os espaços de dados que essas linhas servem.
+Um espaço de dados é uma fronteira de roteamento e namespace, não uma blockchain separada. O tempo de execução do software ainda possui um `World`, um modelo de transação e um consenso pipeline de processamento. Nexus adiciona catálogos que informam ao nó como particionar o trabalho entre as linhas de execução e como nomear os espaços de dados que essas linhas de execução atendem.
 
-No tempo de execução, um espaço de dados é representado por um metadados numérico `DataSpaceId` e catálogo. `DataSpaceId::UNIVERSAL` é reservado como `0`; o catálogo padrão contém o espaço de dados `universal`. Cada espaço de dados configurado tem:
+Em tempo de execução do software, um espaço de dados é representado por um número `DataSpaceId` e metadados de catálogo. `DataSpaceId::UNIVERSAL` é reservado como `0`; o catálogo padrão contém o espaço de dados `universal`. Cada espaço de dados configurado possui:
 
-- Um número único ID
-- um alias único, como `universal`, `governance` ou `zk`;
-- Uma descrição opcional para as superfícies do operador
-- um valor não zero `fault_tolerance` utilizado para dimensionar os comitês de relevo.
+- um identificador numérico único
+- um alias único como `universal`, `governance` ou `zk`
+- uma descrição opcional para superfícies do operador
+- um valor `fault_tolerance` diferente de zero usado para dimensionar comitês de retransmissão
 
-Lanes são as rotas de execução e armazenamento ligadas a esses espaços de dados. Uma entrada em linha contém um `LaneId`, o `DataSpaceId` que serve, um alias, visibilidade (`public` ou `restricted`), perfil de armazenamento (`full_replica`, `commitment_only`, ou `split_replica`), esquema de prova e governança opcional, liquidação, O tempo de execução deriva a geometria de armazenamento por faixa deste catálogo, incluindo os nomes dos segmentos Kura e os prefixos das chaves deterministas.
+as pistas de execução são as rotas de execução e armazenamento vinculadas a esses espaços de dados. Uma entrada de pista de execução carrega um `LaneId`, o `DataSpaceId` que ela serve, um alias, visibilidade (`public` ou `restricted`), perfil de armazenamento (`full_replica`, `commitment_only` ou `split_replica`), esquema de prova e governança opcional, assentamento e metadados do agendador. O tempo de execução do software deriva a geometria de armazenamento por faixa a partir deste catálogo, incluindo nomes de segmentos Kura e prefixos de chave determinísticos.
 
 O caminho de roteamento é:
 
-1. Configuração constrói um validado `DataSpaceCatalog`, `LaneCatalog`, e `LaneRoutingPolicy`. Múltiples pistas, múltiplos espaços de dados ou roteamento não padrão exigem `nexus.enabled = true`.
-2. A fila de transações solicita ao roteador da faixa ativa um `RoutingDecision` contendo uma faixa ID e espaço de dados ID.
-3. Regras explícitas de roteamento podem corresponder por autoridade/conto ou por rótulo de instrução. Sem uma regra de correspondência, o roteador pode derivar o espaço de dados a partir do domínio IDs, projeções de definição de ativo, permissões dimensionadas pelo espaço de dados, pernas de liquidação ou o escopo da conta vinculada da entidade.
-4. A rota resolvida é verificada em relação a ambos os catálogos. Linhas desconhecidas, espaços de dados desconhecidos e desajustes de linha/espaço de dados são erros deterministas de envio. Se uma transação for encaminhada para dois alvos diferentes do espaço de dados, é rejeitada como uma rota conflitante; a liquidação entre espaços de dados DVP/PVP é encaminhada através da faixa do coordenador universal.
-5. Sumeragi e telemetria mantêm a atribuição visível como atividade de faixa e espaço de dados, backlog e snapshots do compromisso.
+1. A configuração constrói um `DataSpaceCatalog`, `LaneCatalog` e `LaneRoutingPolicy` validados. Várias pistas de execução, múltiplos espaços de dados ou roteamento não padrão requerem `nexus.enabled = true`.
+2. A fila de transações solicita ao roteador da pista de execução ativa um `RoutingDecision` contendo um ID da pista de execução e um ID do espaço de dados.
+3. Regras de roteamento explícitas podem corresponder por autoridade/conta ou por rótulo de instrução. Sem uma regra correspondente, o roteador pode derivar o espaço de dados a partir de IDs de domínio, projeções de definição de ativo, permissões com escopo de espaço de dados, partes de transferência de liquidação ou do escopo de conta vinculado ao principal de autorização.
+4. A rota resolvida é verificada em ambos os catálogos. Faixas de execução desconhecidas, espaços de dados desconhecidos e incompatibilidades entre faixa/espaço de dados são erros de roteamento determinísticos. Se uma transação escreve em dois alvos de espaço de dados diferentes, ela é rejeitada como uma rota conflitante; a liquidação entre espaços de dados DVP/PVP é direcionada pela via de execução do coordenador universal.
+5. Sumeragi e a telemetria mantêm a atribuição visível como faixa de execução e atividade do espaço de dados, instantâneos de backlog e comprometimento.
 
-É por isso que os identificadores de objetos importam. Os domínios incluem o alias de espaço de dados em seu ID, por exemplo `payments.universal`, para que as gravações com escala de domínio possam ser encaminhadas. As contas permanecem canônicas e sem domínio, então a mesma conta pode ser ligada a diferentes escopes de aplicação sem alterar sua `AccountId`. As definições de ativos podem conter uma projeção de domínio/espaço de dados, o que permite que as operações de ativos herdem a rota correta do espaço de dados.
+É por isso que os identificadores de objetos são importantes. Os domínios incluem o alias do espaço de dados em seu ID, por exemplo `payments.universal`, para que gravações com escopo de domínio possam ser roteadas. As contas permanecem canônicas e sem domínio, para que a mesma conta possa ser vinculada a diferentes escopos de aplicação sem alterar seu `AccountId`. As definições de ativos podem carregar uma projeção de domínio/espaco de dados, o que permite que as operações de ativos herdem a rota correta do espaço de dados.
 
-Sem Nexus sobrepassados, o nó usa uma única faixa e o espaço de dados `universal`. O perfil SORA agrupado substitui esse por um catálogo de três faixas: `core` para a faixa pública universal, `governance` para o tráfego de governança e `zk` para o tráfico de ligação com conhecimento zero e de implantação por contrato.
+Sem os substitutos Nexus, o nó utiliza uma única pista de execução e o espaço de dados `universal`. O perfil SORA incluído substitui isso por um catálogo de três pistas: `core` para a pista de execução pública universal, `governance` para o tráfego de governança e `zk` para o tráfego de anexos e implantação de contratos com zero conhecimento.
 
-Esses três padrões existem para classes de carga de trabalho separadas:
+Esses três padrões existem para separar classes de carga de trabalho:
 
-|Espaço de dados |Lane .|Por que existe ?|
+|Espaço de dados|pista de execução|Por que existe|
 | ------------ | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-|`universal` |`core` |Espaço de dados padrão reservado (`DataSpaceId::UNIVERSAL == 0`) para o tráfego de contabilidade pública ordinário e roteamento de volta. |
-|`governance` |`governance` |Estrada restrita para governança e tráfego parlamentar, por isso a atividade no plano de controle não é misturada com aplicações gerais. |
-|`zk` |`zk` |Faixa restrita para provas de conhecimento zero, anexos e roteamento de implantação de contrato, mantendo fluxos de trabalho pesados em prova separados dos escritos normais. |
+| `universal`  | `core`       |Espaço de dados padrão reservado (`DataSpaceId::UNIVERSAL == 0`) para tráfego comum de livro-razão de blockchain público e roteamento de reserva.|
+| `governance` | `governance` |Faixa de execução restrita para tráfego de governança e parlamento, para que a atividade do plano de controle não seja misturada com gravações de aplicativos gerais.|
+| `zk`         | `zk`         |Faixa de execução restrita para provas de conhecimento zero, anexos e roteamento de implantação de contratos, mantendo os fluxos de trabalho pesados em provas separados das gravações normais.|
 
-Apenas `universal` é a linha de base reservada. `governance` e `zk` são as opções de perfil SORA codificadas no catálogo em conjunto e na política de roteamento; os operadores podem definir um catálogo diferente quando precisam de diferentes limites do espaço de dados.
+Apenas `universal` é a linha de base reservada. `governance` e `zk` são escolhas de perfil SORA codificadas no catálogo incluído e na política de roteamento; os operadores podem definir um catálogo diferente quando precisarem de limites de espaço de dados diferentes.
 
-Sumeragi utiliza sempre a disponibilidade de dados e uma transmissão confiável. Estes caminhos fazem parte do protocolo de consenso Iroha 3 e não podem ser desativados por um perfil de implantação.
+Sumeragi sempre usa disponibilidade de dados e transmissão confiável. Esses caminhos fazem parte do protocolo de consenso Iroha 3 e não podem ser desativados por um perfil de implantação.
 
-O comportamento do tempo de execução é obtido a partir de arquivos de configuração e parâmetros na cadeia.
+O comportamento em tempo de execução do software é originado de arquivos de configuração e parâmetros on-chain. Variáveis de ambiente não são portões de recurso de produção.
 
-## Leia Próximo {#read-next}
+## Leia Em Seguido {#read-next}
 
-- [Serviços SORA Nexus](/pt/blockchain/sora-nexus-services.md)
-- [Lançamento Iroha 3](/pt/get-started/launch-iroha.md)
-- [Mundo, WSV e armazenamento Kura ](/pt/blockchain/world.md)
-- [Referência de Gênesis](/pt/reference/genesis.md)
-- [Pontos finais Torii](/pt/reference/torii-endpoints.md)
+- [SORA Nexus serviços](/pt/blockchain/sora-nexus-services.md)
+- [Iniciar Iroha 3](/pt/get-started/launch-iroha.md)
+- [Mundo, WSV, e armazenamento Kura](/pt/blockchain/world.md)
+- [referência de gênese da blockchain](/pt/reference/genesis.md)
+- [Torii API pontos de extremidade](/pt/reference/torii-endpoints.md)

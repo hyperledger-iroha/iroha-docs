@@ -21,7 +21,7 @@ translation_engine: nllb-200-ct2
    - [Kotlin،Android، اور جاوا ](/ur/guide/tutorials/kotlin-java.md)
    - [Swift اور iOS](/ur/guide/tutorials/swift.md)
 4. مکمل کلائنٹ ایپلی کیشن ریفرنس چاہتے ہیں تو [ نمونہ ایپس](/ur/guide/tutorials/sample-apps.md) کا جائزہ لیں.
-5. [Embed Kaigi](/ur/guide/tutorials/kaigi.md) کا استعمال کریں جب آپ اپنے ایپ میں بٹوے کے ساتھ آڈیو / ویڈیو میٹنگز شامل کرنا چاہتے ہیں۔
+5. [Kaigi کو ضم کریں](/ur/guide/tutorials/kaigi.md) کا استعمال کریں جب آپ اپنے ایپ میں بٹوے کے ساتھ آڈیو / ویڈیو میٹنگز شامل کرنا چاہتے ہیں۔
 6. [Musubi پیکجوں](/ur/guide/tutorials/musubi.md) کا استعمال کریں جب آپ کو دوبارہ قابل استعمال Kotodama سورس لائبریریوں کی ضرورت ہو جس میں منسلک آن چین رجسٹری انحصار ہوتا ہے۔
 
 ## نمونے {#samples}

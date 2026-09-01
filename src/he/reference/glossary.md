@@ -1,163 +1,163 @@
 ---
 translation_locale: he
 translation_source: /reference/glossary.md
-translation_source_hash: fe3bc2d62ca81b5e6e30023407f3c900eb4026b6668f0d422728a8eedd436148
+translation_source_hash: ab484310e7e0b0662c1d4bb133e7ae337c71b09b5fdc8e678581234d74ee9b29
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# גלוסרי <!-- omit in toc --> {#glossary}
+# מילון מונחים <!-- omit in toc --> {#glossary}
 
-כאן אתה יכול למצוא הגדרות של כל יחידות הקשורות Iroha.
+כאן תוכלו למצוא הגדרות של ישויות ומונחים הקשורים ל־Iroha.
 
-- [עמיתים](#peer)
+- [עמית](#peer)
 - [נכס](#asset)
 - [סובלנות פגמים ביזנטית (BFT) ](#byzantine-fault-tolerance-bft)
-- [Iroha מרכיבים](#iroha-components)
+- [רכיבי Iroha](#iroha-components)
   - [Sumeragi (קיסר)](#sumeragi-emperor)
   - [Torii (שער) ](#torii-gate)
   - [Kura (מחסן) ](#kura-warehouse)
-  - [Kagami(מורה ודוגמא ו/או מראה)](#kagami-teacher-and-exemplar-and-or-looking-glass)
-  - [עץ מרקל (עץ האש) ](#merkle-tree-hash-tree)
+  - [Kagami (מורה, דוגמה ו/או מראה)](#kagami-teacher-and-exemplar-and-or-looking-glass)
+  - [עץ Merkle (עץ גיבוב)](#merkle-tree-hash-tree)
   - [חוזים חכמים](#smart-contracts)
-  - [תפעילים](#triggers)
-  - [תורגם](#versioning)
-  - [היג'ירי (מערכת המוניטין של עמיתים) ](#hijiri-peer-reputation-system)
-- [Iroha מודולים](#iroha-modules)
-- [Iroha הוראות מיוחדות (ISI) ](#iroha-special-instructions-isi)
-  - [שימוש Iroha הוראות מיוחדות](#utility-iroha-special-instructions)
-  - [הליבה Iroha הוראות מיוחדות](#core-iroha-special-instructions)
-  - [ספציפית לתחום Iroha הוראות מיוחדות](#domain-specific-iroha-special-instructions)
-  - [מנהג Iroha הוראה מיוחדת](#custom-iroha-special-instruction)
-- [Iroha שאלת](#iroha-query)
-- [שינוי הצגה](#view-change)
-- [תצפית המדינה העולמית (WSV) ](#world-state-view-wsv)
+  - [Triggers](#triggers)
+  - [ניהול גרסאות](#versioning)
+  - [Hijiri (מערכת המוניטין של עמיתים)](#hijiri-peer-reputation-system)
+- [מודולי Iroha](#iroha-modules)
+- [הוראות מיוחדות של Iroha ‏(ISI)](#iroha-special-instructions-isi)
+  - [הוראות מיוחדות מסייעות של Iroha](#utility-iroha-special-instructions)
+  - [הוראות מיוחדות ליבה של Iroha](#core-iroha-special-instructions)
+  - [הוראות מיוחדות תלויות־תחום של Iroha](#domain-specific-iroha-special-instructions)
+  - [הוראה מיוחדת מותאמת אישית של Iroha](#custom-iroha-special-instruction)
+- [שאילתת Iroha](#iroha-query)
+- [החלפת תצוגה](#view-change)
+- [תצוגת מצב העולם (WSV)](#world-state-view-wsv)
 - [מנהיג](#leader)
 
-## ספרי ה-blockchain {#blockchain-ledgers}
+## ספר החשבונות של הבלוקצ'יין {#blockchain-ledgers}
 
-ספרי ה-blockchain הם מערכות רישום דיגיטליות שמשתמשות בטכנולוגיית blockchain כדי לשמור רשומות פיננסיות. אלה נקראים על שם ספרים ישנים שימשו עבור רשומות פיננסים כגון מחירים, חדשות ומידע עסקאות.
+ספרי חשבונות של blockchain הם מערכות דיגיטליות לניהול רשומות, המשתמשות בטכנולוגיית blockchain לשמירת מידע פיננסי. שמם נגזר מספרי החשבונות המסורתיים ששימשו לרישום מחירים, חדשות ופרטי עסקאות.
 
-בימי הביניים, ספרים גדולים היו פתוחים לצפייה ציבורית ובדיקת מדויקת. הרעיון הזה משתקף במערכות המבוססות על blockchain שיכולות לבדוק את החשיבות של הנתונים המאוחסנים.
+בימי הביניים היו ספרי חשבונות פתוחים לעיון הציבור ולאימות דיוקם. רעיון זה משתקף במערכות מבוססות blockchain, היכולות לבדוק את תקינות הנתונים השמורים.
 
-## משותפים {#peer}
+## עמית {#peer}
 
-משותף ב Iroha הוא אינסטנציה של תהליך Iroha שאליה ניתן להתחבר תהליכים אחרים ויישומים לקלינט Iroha. מכונה אחת יכולה לארח מספר משותפים Iroha. עמיתים שווים מבחינת משאביהם ויכולותיהם, עם יוצא מן הכלל חשוב: רק אחד מהעמיתים מפעיל את הבלוק הגנזית בשלב ההתחלה של הרשת Iroha .
+עמית ב־Iroha הוא מופע של תהליך Iroha שאליו יכולים להתחבר תהליכי Iroha אחרים ויישומי לקוח. מכונה אחת יכולה לארח כמה עמיתי Iroha. העמיתים שווים במשאביהם וביכולותיהם, למעט חריג חשוב: בשלב ה־bootstrap של רשת Iroha רק אחד העמיתים מריץ את בלוק Genesis.
 
-שרשראות בלוק אחרות עשויות להתייחס לאותו מושג כמו קשר או מעודד.
+רשתות blockchain אחרות עשויות לכנות אותו מושג node או validator.
 
-משותף יכול להיות תהליך במערכת המארח שלה. הוא יכול גם להיות מכוסה בקונtejnר Docker ובקוד Kubernetes.
+עמית יכול לפעול כתהליך במערכת המארחת. הוא יכול גם לפעול בתוך קונטיינר Docker או pod של Kubernetes.
 
 ## נכסים {#asset}
 
-בהקשר של blockchain, נכס הוא ייצוג של אובייקט בעל ערך על blockchain.
+בהקשר של blockchain, נכס הוא ייצוג בשרשרת של אובייקט בעל ערך.
 
-מידע נוסף על נכסים זמין [כאן ](/he/blockchain/assets.md).
+מידע נוסף על נכסים זמין [כאן](/he/blockchain/assets.md).
 
-### נכסים פונגיליים {#fungible-assets}
+### נכסים בני־חליפין {#fungible-assets}
 
-נכסים כאלה ניתן להחליף בקלות עם נכסים אחרים של אותו סוג מכיוון שהם משתנים.
+אפשר להחליף נכסים כאלה בקלות בנכסים אחרים מאותו סוג משום שהם שקולים זה לזה.
 
-לדוגמה, כל יחידות של אותה מטבע שווה ערך וניתן להשתמש בהם לרכישת סחורות. בדרך כלל, נכסים פוגביבים זהים במראה, מלבד התעללות של כרטיסי בנק ומכספים.
+לדוגמה, כל היחידות של אותו מטבע שוות בערכן ואפשר להשתמש בהן לרכישת מוצרים. בדרך כלל נכסים בני־חליפין זהים במראם, למעט הבלאי של שטרות ומטבעות.
 
-### נכסים שאינם פוגנים {#non-fungible-assets}
+### נכסים שאינם בני־חליפין {#non-fungible-assets}
 
-נכסים שאינם פוגלים הם ייחודיים וערוניים בשל המאפיינים הספציפיים שלהם ומדירותם; הערך שלהם אינו ניתן להשוות עם נכסים אחרים .
+נכסים שאינם בני־חליפין הם ייחודיים ובעלי ערך בזכות מאפייניהם המסוימים ונדירותם; אי אפשר להשוות את ערכם ישירות לנכסים אחרים.
 
 - הערך של ציור יכול להשתנות בהתאם לאמן, לתקופה שבה הוא צייר, והעניין הציבור בו.
-- שתי בתים באותו רחוב עשויים להיות בעלי רמות שונות של תחזוקה.
+- שני בתים באותו רחוב עשויים להיות במצבי תחזוקה שונים.
 - יצרני תכשיטים מציעים בדרך כלל מגוון של עיצובים שונים.
 
-### נכסים שעלולים להימנע מהם {#mintable-assets}
+### נכסים הניתנים להנפקה {#mintable-assets}
 
-נכס ניתן להפיק אם ניתן להוציא יותר מאותו סוג.
+נכס ניתן להנפקה אם אפשר להנפיק כמות נוספת מאותו סוג.
 
-### נכסים שאינם ניתנים לחיסול {#non-mintable-assets}
+### נכסים שאינם ניתנים להנפקה {#non-mintable-assets}
 
-אם הסכום הראשוני של נכס נקבע פעם אחת ואינו משתנה, הוא נחשב לא ניתן להפריד.
+אם הכמות הראשונית של נכס נקבעת פעם אחת ואינה משתנה, הוא נחשב לנכס שאינו ניתן להנפקה.
 
 בלוק [Genesis](/he/guide/configure/genesis.md) קובע את המידע הזה עבור הקונפיגורציה של Iroha.
 
 ## סובלנות פגמים ביזנטית (BFT) {#byzantine-fault-tolerance-bft}
 
-המאפיין של יכולת לתפקד כראוי עם רשת המכילה אחוז מסוים של שחקנים מזיקים. Iroha הוא מסוגל לתפקד עם עד 33% של שחקני מזיקים ברשת הדמיון שלו.
+היכולת לפעול כראוי ברשת הכוללת שיעור מסוים של גורמים זדוניים. Iroha מסוגל לפעול כאשר עד 33% מהגורמים ברשת peer-to-peer שלו זדוניים.
 
-## Iroha מרכיבים {#iroha-components}
+## רכיבי Iroha {#iroha-components}
 
-Rust מודולים המכילים פונקציונליות Iroha.
+מודולי Rust המכילים את הפונקציונליות של Iroha.
 
 ### Sumeragi (קיסר) {#sumeragi-emperor}
 
-מודול Iroha האחראי על הסכמה.
+מודול Iroha האחראי לקונצנזוס.
 
 ### Torii (שער) {#torii-gate}
 
-מודול עם ההיגיון לניהול בקשות נכנסות עבור [ peer](#peer). הוא משמש לקבלת, קבלת ומסלול הוראות נכנסות, ובקריאות HTTP, כמו גם עדכונים בסטנדרטים של זמן ההפעלה.
+מודול המכיל את לוגיקת הטיפול בבקשות נכנסות עבור [העמית](#peer). הוא מקבל ומנתב הוראות ושאילתות HTTP נכנסות, וכן עדכוני תצורה של סביבת הריצה.
 
-### Kura (סדרון) {#kura-warehouse}
+### Kura (מחסן) {#kura-warehouse}
 
-אחסון בלוק קבוע. Kura חנויות בלוקים חתומים, בלאק האשיזים, אינדיקסים של גובה, סיידקרות התאוששות, ו- commit-roster metadata [תפיסת העולם על המצב](#world-state-view-wsv) הוא נבנה מחדש מ Kura בלוקים כאשר תמונה של מצב אינה זמינה או מאחורי חנות הבלוק המקומית. ראה [Kura אחסון](/he/blockchain/world.md#kura-storage).
+אחסון מתמשך לבלוקים. Kura שומר בדיסק בלוקים חתומים, גיבובי בלוקים, אינדקסי גובה, קובצי sidecar לשחזור ומטא־נתונים של רשימת commit. [תצוגת מצב העולם](#world-state-view-wsv) נבנית מחדש מבלוקי Kura כאשר תמונת מצב אינה זמינה או מפגרת אחרי מאגר הבלוקים המקומי. ראו [אחסון Kura](/he/blockchain/world.md#kura-storage).
 
-### Kagami(מורה ודוגמא ו/או מראה) {#kagami-teacher-and-exemplar-and-or-looking-glass}
+### Kagami (מורה, דוגמה ו/או מראה) {#kagami-teacher-and-exemplar-and-or-looking-glass}
 
-גנרטור עבור נתונים משמשים באופן נפוץ. הוא יכול ליצור זוגות מפתחות קריפטוגרפיות, בלוקי דגימה, מסמכים וכו'.
+מחולל לנתונים נפוצים. הוא יכול ליצור זוגות מפתחות קריפטוגרפיים, בלוקי Genesis, תיעוד ועוד.
 
-### עץ מרקל (עץ האש) {#merkle-tree-hash-tree}
+### עץ Merkle (עץ גיבוב) {#merkle-tree-hash-tree}
 
-מבנה נתונים המשמש לאמת ולבחון את המצב בגובה כל בלוק. יישום הנוכחי של Iroha הוא עץ בינארי. ראה [וויקיפדיה](https://en.wikipedia.org/wiki/Merkle_tree) לפרטים נוספים.
+מבנה נתונים המשמש לאימות המצב בכל גובה בלוק. המימוש הנוכחי של Iroha הוא עץ בינארי. לפרטים נוספים ראו [ויקיפדיה](https://en.wikipedia.org/wiki/Merkle_tree).
 
 ### חוזים חכמים {#smart-contracts}
 
-חוזים חכמים הם תוכניות מבוססות ב-blockchain אשר פועלות כאשר קבוצה ספציפית של תנאים מופגשים. ב Iroha חוזים חוכמים מתבצעים באמצעות [core Iroha הוראות מיוחדות ](#core-iroha-special-instructions).
+חוזים חכמים הם תוכניות מבוססות blockchain הפועלות כאשר מתקיימת קבוצת תנאים מסוימת. ב־Iroha חוזים חכמים ממומשים באמצעות [הוראות הליבה המיוחדות של Iroha](#core-iroha-special-instructions).
 
-### תפעילים {#triggers}
+### טריגרים {#triggers}
 
-סוג של אירוע המאפשר להזכיר הוראה מיוחדת Iroha בביצוע בלוק ספציפי, זמן (עם כמה caveats), וכו' מידע נוסף על גורמים לטיגור [כאן](/he/blockchain/triggers.md).
+סוג אירוע המאפשר להפעיל הוראה מיוחדת של Iroha בעת commit של בלוק מסוים, בזמן מסוים, בכפוף לכמה הסתייגויות, ועוד. מידע נוסף על טריגרים זמין [כאן](/he/blockchain/triggers.md).
 
-### תרגום {#versioning}
+### ניהול גרסאות {#versioning}
 
-כל בקשה מסומנת עם הגרסה API שהיא שייכת אליה. היא מאפשרת שילוב של גרסאות בינאריות שונות של תוכנה קלינט/שחר Iroha לפעול זה בזה, מה שבטח מאפשר עדכונים לתוכנה ברשת Iroha.
+כל בקשה מסומנת בגרסת ה־API שאליה היא שייכת. כך גרסאות בינאריות שונות של תוכנת לקוח/עמית של Iroha יכולות לפעול זו עם זו, ואפשר לשדרג תוכנה ברשת Iroha.
 
-### היג'ירי (מערכת המוניטין של עמיתים) {#hijiri-peer-reputation-system}
+### Hijiri (מערכת המוניטין של עמיתים) {#hijiri-peer-reputation-system}
 
-Iroha מערכת המוניטין היא מאפשרת לקבוע עדיפות [משותפים](#peer) שיש להם שיא טוב, ולהפחית את הנזק שיכול להיגרם על ידי [משותפים](#peer).
+מערכת המוניטין של Iroha. היא מאפשרת להעדיף תקשורת עם [עמיתים](#peer) בעלי היסטוריה טובה ולהפחית את הנזק שעלולים לגרום [עמיתים](#peer) זדוניים.
 
-## Iroha מודולים {#iroha-modules}
+## מודולי Iroha {#iroha-modules}
 
-הרחבות של צד שלישי ל- Iroha המספקות פונקציונליות מותאמות.
+הרחבות צד שלישי ל־Iroha המספקות פונקציונליות מותאמת אישית.
 
-## Iroha הוראות מיוחדות (ISI) {#iroha-special-instructions-isi}
+## הוראות מיוחדות של Iroha ‏(ISI) {#iroha-special-instructions-isi}
 
-ספרייה של חוזים חכמים Iroha. ניתן לבקש את זה באמצעות עסקאות או מקשי אירועים רשומים. ISI [כאן.](/he/blockchain/instructions.md).
+ספרייה של חוזים חכמים המסופקת עם Iroha. אפשר להפעיל אותם באמצעות עסקאות או מאזיני אירועים רשומים. מידע נוסף על ISI זמין [כאן](/he/blockchain/instructions.md).
 
-#### שימוש Iroha הוראות מיוחדות {#utility-iroha-special-instructions}
+#### הוראות מיוחדות מסייעות של Iroha {#utility-iroha-special-instructions}
 
-קבוצה זו של [isi](#iroha-special-instructions-isi) מכילה הוראות לוגיות כמו `If`, I/O קשורת כמו `Notify` ומרכיבים כמו `Sequence`. הם משמשים בעיקר כ- [הוראות מותאמות ](#custom-iroha-special-instruction).
+קבוצה זו של [ISI](#iroha-special-instructions-isi) כוללת הוראות לוגיות כגון `If`, הוראות I/O כגון `Notify` והרכבות כגון `Sequence`. הן משמשות בעיקר בתוך [הוראות מותאמות אישית](#custom-iroha-special-instruction).
 
-### הנחיות המיוחדות Iroha {#core-iroha-special-instructions}
+### הוראות מיוחדות ליבה של Iroha {#core-iroha-special-instructions}
 
-[הוראות מיוחדות ](#iroha-special-instructions-isi) המוצעות עם כל פיתוח Iroha. אלה כוללים כמה [תרחובות ספציפיות ](#domain-specific-iroha-special-instructions), כמו גם הוראות שימוש [ ](#utility-iroha-special-instructions).
+[הוראות מיוחדות](#iroha-special-instructions-isi) המסופקות בכל פריסת Iroha. הן כוללות הוראות [תלויות־תחום](#domain-specific-iroha-special-instructions) וכן [הוראות מסייעות](#utility-iroha-special-instructions).
 
-### הוראות מיוחדות ספציפיות לתחום Iroha {#domain-specific-iroha-special-instructions}
+### הוראות מיוחדות תלויות־תחום של Iroha {#domain-specific-iroha-special-instructions}
 
-הוראות הקשורות לפעילויות ספציפיות לתחום: נכסים, חשבונות, תחומים, ניהול עמיתים). אלה מספקים את הכלים הדרושים כדי לבצע שינויים בתצפית המדינה העולמית [ ](#world-state-view-wsv) באופן בטוח ובטוח.
+הוראות הקשורות לפעילויות תלויות־תחום: נכסים, חשבונות, domains וניהול peers. הן מספקות את הכלים הדרושים לשינוי [תצוגת מצב העולם](#world-state-view-wsv) באופן מאובטח ובטוח.
 
-### הוראות מיוחדות Iroha {#custom-iroha-special-instruction}
+### הוראה מיוחדת מותאמת אישית של Iroha {#custom-iroha-special-instruction}
 
-הוראות המוצעות ב- [Iroha מודולים](#iroha-modules), על ידי לקוחות או צדדים שלישיים. אלה יכולים להיות בנויים רק באמצעות [ההוראות המרכזיות](#core-iroha-special-instructions). פורק ושינוי של Iroha קוד המקור אינו מומלץ, כי הוראות מיוחדות לא הסכימו על ידי [משותפים](#peer) ב- Iroha השיגור יטופל כפגמים, כך [משותפים](#peer) אם אתה מפעיל אינסטנציה מוגדרת, גישה שלהם תיבטל.
+הוראות המסופקות ב[מודולי Iroha](#iroha-modules) בידי לקוחות או צדדים שלישיים. אפשר לבנות אותן רק באמצעות [הוראות הליבה](#core-iroha-special-instructions). לא מומלץ לבצע fork ולשנות את קוד המקור של Iroha: הוראות מיוחדות שלא הוסכמו בידי [העמיתים](#peer) בפריסת Iroha ייחשבו לתקלות, ולכן גישתם של [עמיתים](#peer) המריצים מופע ששונה תבוטל.
 
-## שאלה Iroha {#iroha-query}
+## שאילתת Iroha {#iroha-query}
 
-בקשה לקרוא את תצפית המצב העולמי מבלי לשנות את התצפית. [כאן.](/he/blockchain/queries.md).
+בקשה לקרוא את תצוגת מצב העולם בלי לשנות אותה. מידע נוסף על שאילתות זמין [כאן](/he/blockchain/queries.md).
 
-## תצפית שינוי {#view-change}
+## החלפת תצוגה {#view-change}
 
-תהליך שמתקיים במקרה של ניסיון נכשל בהסכמה. בדרך כלל זה כרוך בבחירת מנהיג חדש [](#leader).
+תהליך המתרחש כאשר ניסיון להגיע לקונצנזוס נכשל. בדרך כלל הוא כולל בחירת [מנהיג](#leader) חדש.
 
-## תצפית המדינה העולמית (WSV) {#world-state-view-wsv}
+## תצוגת מצב העולם (WSV) {#world-state-view-wsv}
 
-ייצוג בזיכרון של מצב ה-blockchain הנוכחי. WSV מכיל את `World`, חשישים בלוק מחויבים, אינדיקסים של עסקאות, טופולוגיה של הסכמה ואינדיקסים נגזרים המשמשים בשאלות . הוא מעודכן רק באמצעות בלוקים מחויבים וניתן לבנות אותו מחדש מ- [Kura](#kura-warehouse). ראה [ World State View ](/he/blockchain/world.md#world-state-view-wsv).
+ייצוג בזיכרון של מצב ה־blockchain הנוכחי. ה־WSV מכיל את `World`, גיבובים של בלוקים שעברו commit, אינדקסי עסקאות, טופולוגיית קונצנזוס ואינדקסים נגזרים המשמשים שאילתות. הוא מתעדכן רק באמצעות בלוקים שעברו commit, ואפשר לבנות אותו מחדש מתוך [Kura](#kura-warehouse). ראו [תצוגת מצב העולם](/he/blockchain/world.md#world-state-view-wsv).
 
 ## מנהיג {#leader}
 
-ברשת Iroha, עמית נבחר באופן אקראי וניתן לו את הזכות המיוחדת ליצור את הבלוק הבא . זכות זו יכולה להיות מבוטלת ברשתות שמשיגו [טורלנס פגום ביזנטי](#byzantine-fault-tolerance-bft) דרך [שינוי תצפית](#view-change).
+ברשת Iroha נבחר צומת עמית באקראי ומקבל הרשאה מיוחדת ליצור את הבלוק הבא. ברשתות המשיגות [עמידות לתקלות ביזנטיות](#byzantine-fault-tolerance-bft), אפשר לבטל הרשאה זו באמצעות [שינוי תצוגה](#view-change).

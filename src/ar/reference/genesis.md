@@ -1,29 +1,29 @@
 ---
 translation_locale: ar
 translation_source: /reference/genesis.md
-translation_source_hash: 6710e76508e6a38a6b68d274247cc1383de2472e74f10be85000b30f74cb04a6
+translation_source_hash: ac6bad693ed382dede0818132b8649fe14726283508da897a32eea417e5bbb28
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# الإشارة إلى سفر التكوين {#genesis-reference}
+# مرجع بدء سلسلة الكتل {#genesis-reference}
 
-في سير العمل الحالي Iroha 3، يصف بيان `genesis.json` أول المعاملات والمعايير التي سيتم تطبيقها عند بدء الشبكة.
+في سير العمل الحالي Iroha 3، يصف بيان تقني `genesis.json` أولى المعاملات والمعايير التي سيتم تطبيقها عند بدء الشبكة.
 
-القطع الأثرية الموقعة التي تم توزيعها على أقرانها هي ملف Norito مرموز `.nrt` الناتج عن `kagami genesis sign`.
+الأثر الموقع الموزع على نظراء الشبكة هو ملف `.nrt` مشفر بـ Norito تم إنتاجه بواسطة `kagami genesis sign`.
 
 ## الحقول الرئيسية {#main-fields}
 
-ويمكن أن يحدد إشارة التكوين:
+يمكن لوثيقة البداية التقنية للبلوكشين أن تحدد:
 
-- `chain` للتعرف على السلسلة
-- `executor` لمرحلة تطوير بايت كود تنفيذية اختيارية
-- `ivm_dir` لمكتبات IVM المستخدمة من خلال محفزات وتحديثات
-- `consensus_mode` للطريقة الابتدائية التي يتم الإعلان عنها في المذكرة
-- `transactions` للتحديثات المرتبة للمعلمات والإرشادات والتحفيزات والتوبولوجيا
-- `crypto` لقطة العملات الرقمية الأولى
+- `chain` لمعرف السلسلة
+- `executor` لمسار بايت كود ترقية منفذ اختياري
+- `ivm_dir` للمكتبات IVM المستخدمة بواسطة المشغلات والترقيات
+- `consensus_mode` للوضع الأولي المعلن عنه بواسطة البيان الفني
+- `transactions` لتحديثات المعلمات المطلوبة، التعليمات، المشغلات، والطوبولوجيا
+- `crypto` لعرض بيانات التشفير الأولية في نقطة زمنية محددة
 
-داخل `transactions` ، إدخالات التوبولوجيات تتزامن مع هويات الأقران و PoPs معاً:
+داخل `transactions`، تربط مدخلات الطوبولوجيا معرفات أقران الشبكة و PoPs معًا:
 
 ```json
 {
@@ -32,9 +32,9 @@ translation_engine: nllb-200-ct2
 }
 ```
 
-## إنشأ إشارة {#generate-a-manifest}
+## إنشاء بيان تقني {#generate-a-manifest}
 
-استخدم Kagami لتوليد نموذج:
+استخدم Kagami لإنشاء قالب:
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
@@ -43,23 +43,23 @@ cargo run -p iroha_kagami -- genesis generate \
   --genesis-public-key <PUBLIC_KEY> > genesis.json
 ```
 
-بالنسبة لمجال البيانات العام SORA Nexus، `npos` هو وضع الإجماع المتوقع. قد تستخدم تنفيذات Iroha 3 الأخرى المسموح بها أو NPoS اعتمادًا على ملف الهدف.
+بالنسبة لمساحة البيانات العامة SORA Nexus، `npos` هو وضع الإجماع المتوقع. قد تستخدم منشآت Iroha 3 الأخرى وضع الإذن أو NPoS اعتمادًا على الملف الشخصي المستهدف.
 
-## التوقيع على الإعلان {#sign-the-manifest}
+## وقع البيان الفني {#sign-the-manifest}
 
-بعد تحرير وتصديق JSON، وقم بتوقيعه في كتلة `.nrt` قابلة للتنفيذ:
+بعد تحرير والتحقق من JSON، قم بتوقيعه ليصبح كتلة `.nrt` قابلة للنشر:
 
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
-  --private-key <PRIVATE_KEY> \
+  --private-key-file <MODE_0600_PRIVATE_KEY_FILE> \
   --out-file genesis.signed.nrt
 ```
 
-`kagami genesis sign` يقرأ مفتاح الجينس العام من المخطط ويستخدم مفتاح خاص، البذور، والخوارزمية المقدمة لإنتاج الكتلة الموقعة القابلة للتنفيذ. النتيجة هي الملف الذي يجب أن يشير إليه الأقران من إعداداتهم.
+`kagami genesis sign` يقرأ مفتاح البداية العام للبلوكشين من البيان الفني ويستخدم المفتاح الخاص من ملف عادي ذو ارتباط واحد مملوك للمالك لإنتاج الكتلة الموقعة القابلة للنشر. يجب أن يحتوي الملف على مفتاح خاص واحد بصيغة multihash الكانونية متبوعًا بسطر جديد؛ Kagami يرفض الروابط الرمزية والأنماط غير `0600`. لا يتم قبول المفاتيح الخاصة الخام في سطر الأوامر. النتيجة هي الملف الذي يجب أن يشير إليه أقران الشبكة من خلال إعداداتهم.
 
-## إعداد `irohad` {#configure-irohad}
+## تكوين `iroha3d` {#configure-iroha3d}
 
-اشير الـ (دايمون) إلى كتلة التكوين الموقع:
+وجّه الخدمة الخفية إلى كتلة الجينيسيس الموقعة في البلوكشين:
 
 ```toml
 [genesis]
@@ -67,7 +67,7 @@ file = "genesis.signed.nrt"
 public_key = "<PUBLIC_KEY>"
 ```
 
-## الأدوات ذات الصلة {#related-tools}
+## أدوات ذات صلة {#related-tools}
 
 - `kagami genesis validate`
 - `kagami genesis normalize`
@@ -75,4 +75,4 @@ public_key = "<PUBLIC_KEY>"
 - `kagami localnet`
 - `cargo xtask kagami-profiles`
 
-للحصول على تفاصيل تنفيذ المولد والإرشادات، انظر [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_kagami/README.md).
+للتنفيذ الخاص بالمولّد وتفاصيل الأوامر، انظر [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md).

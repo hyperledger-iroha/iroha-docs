@@ -42,4 +42,4 @@ translation_engine: nllb-200-ct2
 
 :::
 
-იხილეთ [ოპერაციული უსაფრთხოება](./operational-security.md) და [კრიპტოგრაფიული გასაღები შესანახი ](./storing-cryptographic-keys.md).
+იხილეთ [ოპერაციული უსაფრთხოება](./operational-security.md) და [კრიპტოგრაფიული გასაღების შენახვა](./storing-cryptographic-keys.md).

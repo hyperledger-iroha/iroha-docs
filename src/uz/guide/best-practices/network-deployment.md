@@ -1,55 +1,55 @@
 ---
 translation_locale: uz
 translation_source: /guide/best-practices/network-deployment.md
-translation_source_hash: 312f9cb3c6fd937b3e7c30ea27d1876ea7901cfa79eced352611db99bbca4a70
+translation_source_hash: 7839268b8c1f6700b0c26652e3308fa4e8acef4717d8527c609b6f30fb8c84ab
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Tarmoqni ishga tushirish {#network-deployment}
+# Tarmoq joylashtirish {#network-deployment}
 
-Iroha tarmog'iga muvofiqlashtirilgan tizim kabi munosabatda bo'ling. Tarmoq bloklarni boshlash va yakunlashni davom ettirishdan oldin, tasdiqlovchilar kelib chiqishi, topologiya, ishonchli tengdoshlar va konsensusga bog'liq konfiguratsiyalarga kelishib olishlari kerak.
+Iroha tarmog‘ini muvofiqlashtirilgan tizim sifatida qabul qiling. Validatorlar tarmoq boshlanishi va bloklarni yakuniylashtirishni davom ettirishdan oldin blokcheyn genesisini, topologiyasini, ishonchli tarmoq hamkasblarini va konsensusga oid konfiguratsiyani ma’qullashlari kerak.
 
-## atrof-muhit bo'linishi {#environment-separation}
+## Muhitni ajratish {#environment-separation}
 
-- Mahalliy rivojlanish, test tarmog'i bo'lish, bosqichlashtirish va ishlab chiqarish uchun alohida konfiguratsiya paketlarini saqlash.
-- Har bir birdan chiqarib tashlanmaydigan muhit uchun yangi kalitlarni ishlab chiqarish. Taira ishlab chiqarishdagi asosiy material.
-- Tengdosh konfig, mijoz konfig, imzolangan genesis, skriptlar va ishga tushirish notlarini versiyalashtirilgan chiqarilish artefakti sifatida birga saqlang.
-- Xususiy kalitlarni omborlar va joylashtirish namunalaridan tashqarida saqlash.
+- Mahalliy rivojlantirish, umumiy testnet, staging va ishlab chiqarish uchun alohida konfiguratsiya to‘plamlarini saqlang.
+- Har bir ishlatilmaydigan bo‘lmagan muhit uchun yangi kalitlar yaratish. Ishlab chiqarishda localnet yoki Taira kalit materialini qayta ishlatmang.
+- Tugun konfiguratsiyasi, mijoz konfiguratsiyasi, imzolangan boshlang‘ich holat, skriptlar va joylashtirish qaydlarini bitta versiyalangan reliz artefakti sifatida saqlang.
+- Maxfiy kalitlarni repozitoriyalar va joylashtirish shablonlaridan tashqarida saqlang.
 
-[Tijtimoiy tarmoqlarni ishga tushirish uchun kalitlar ](/uz/guide/configure/keys-for-network-deployment.md)
+Buni [Tarmoqni joylashtirish uchun kalitlar](/uz/guide/configure/keys-for-network-deployment.md) ko‘ring.
 
-## Ibtido va topologiya {#genesis-and-topology}
+## blokcheyn januzi va Topologiya {#genesis-and-topology}
 
-- Har bir tasdiqlovchi xuddi shu imzolangan genesis tranzaksiyasidan, ishonchli tengdoshlar to'plamidan, topologiyadan va tasdiqlashchining Profiliga kerak bo'lganda egalik guvohnomasidan foydalansin.
-- Bizans xatolariga chidamli bo'lish uchun kamida to'rtta tasdiqlovchidan foydalaning.
-- Kuchlilikni rejalashtirishda kuzatuvchilardan alohida tasdiqlovchilarni ajrating. kuzatuvchilar ovoz bermaydilar, taklif qilmaydilar yoki to'plamaydilar, ammo ular hali ham saqlash, blok sinxronizatsiyasini va tarmoq lentli kengligini iste'mol qiladilar.
-- Bir tekis tahrirlar o'rniga, genesis, ijrochi va topologiya o'zgarishlarini muvofiqlashtirilgan migratsiyalar sifatida muomala qiling.
+- Profil talab qilsa, har bir tasdiqlovchi ayni imzolangan boshlang‘ich tranzaksiya, ishonchli tugunlar to‘plami, topologiya va tasdiqlovchi egalik dalillaridan foydalansin.
+- Kamida to‘rt validatorni kamida Bizans nuqsoniga chidamli joylashtirish uchun ishlating.
+- Qobiliyat rejalashtirishda validatorlarni kuzatuvchilardan ajrating. Kuzatuvchilar ovoz bermaydi, taklif kiritsa yoki yig‘maydi, lekin ular hali ham xotirani, blok sinxronizatsiyasini va tarmoq kengligini iste’mol qiladi.
+- Blokcheyn boshlanishi, ijrochisi va topologiya o‘zgarishlarini yagona ishtirokchi tahrirlari sifatida emas, balki muvofiqlashtirilgan migratsiyalar sifatida ko‘ring.
 
-Qarang [Ibtido](/uz/reference/genesis.md), [ Tengdoshlar boshqaruvi](/uz/guide/configure/peer-management.md) va [ Ishlab chiqarish va metrikalar ](/uz/guide/advanced/metrics.md#node-count-and-quorum).
+Qarang [blokcheyn genesis](/uz/reference/genesis.md), [tarmoq tengdosh boshqaruvi](/uz/guide/configure/peer-management.md), va [Ijro etish va o‘lchovlar](/uz/guide/advanced/metrics.md#node-count-and-quorum).
 
-## Torii va tarmoqga kirish {#torii-and-network-access}
+## Torii va Tarmoqga Kirish {#torii-and-network-access}
 
-- Torii uy egasi yoki xususiy tarmoqdan tashqarida bo'lganda, qaytarib o'tish proxy yoki firewall ortida qo'ying.
-- TLS ni tugatish va ularni ishga tushirish uchun zarur bo'lganda asosiy autentifikatsiya, tezlikni cheklash va so'rov o'lchamlarini nazorat qilish qo'llanilishini tugatish.
-- Faqatgina atrof-muhit uchun zarur bo'lgan oxirgi nuqtalarni e'lon qilish. Operator va telemetriya yo'nalishlari faqat o'qishga mo'ljallangan ommaviy yo'nalishlardan ko'ra kamroq cheklanishi kerak.
-- Tengdoshlar masofaviy trafikni to'g'ridan-to'g'ri qabul qilmasliklari kerak bo'lganda tinglovchining manzillarini uy egasi lokal interfeyslariga bog'lash.
+- Torii ni mezbon yoki shaxsiy tarmoqdan tashqarida ochiq bo‘lganda teskari proksi yoki devor ortida joylashtiring.
+- TLS ni tugating va joylashuv talab qilganda edge da asosiy autentifikatsiya, tezlik cheklovlari va so‘rov o‘lchami nazoratlarini qo‘llang.
+- Atrof-muhit tomonidan talab qilinadigan faqat API endpointlarni nashr eting. Operator va telemetriya yo‘llari jamoat faqat o‘qish uchun mo‘ljallangan yo‘llardan ko‘ra cheklangan bo‘lishi kerak.
+- Tarmoq tengdoshlarining masofaviy trafikni to'g'ridan-to'g'ri qabul qilmasligi kerak bo'lganda, tinglovchi manzillarni host-lokal interfeyslarga bog'lang.
 
-Qarang [Torii Oxirgi nuqtalar](/uz/reference/torii-endpoints.md) va [ Virtual xususiy tarmoqlar ](/uz/guide/security/vpn.md).
+Buni [Torii API oxir nuqtalar](/uz/reference/torii-endpoints.md) va [Virtual Shaxsiy Tarmoqlar](/uz/guide/security/vpn.md) ko‘ring.
 
-## Konsens va quvvat {#consensus-and-capacity}
+## Konsensus va salohiyat {#consensus-and-capacity}
 
-- Konsensus vaqtini sozlashdan oldin ishga tushirishni o'lchash. Kichik vaqtlar tarmoq, saqlash va ijro qatlamlari bilan birga bo'lgandagina kechikishni kamaytirishi mumkin.
-- To'plamning qisqacha namunalari emas, balki navbat yo'nalishini kuzating. To'g'ri yuklanish paytida ortib boradigan navbat tarmoqni ortiqcha yuklangan deb anglatadi.
-- Har bir ko'rsatkich uchun samarali Sumeragi parametrlari, telemetriya profili, validatorlar soni, tarmoq RTT, ish yukining shakli va asbob-uskuna to'g'risidagi tafsilotlarni qayd etish.
-- Faqat kechikish, trafik va qarshi bosim signallarini taqqoslaganingizdan so'ng to'plamni ko'paytiring.
+- Konsensus taymerlarini sozlashdan oldin joylashtirishni o‘lchang. Vaqtni qisqartirish faqat tarmoq, saqlash va bajarish qatlamlari yetib boradigan bo‘lsa, kechikishni kamaytirishi mumkin.
+- Faqat o'tkazuvchanlikning qisqa namunalari bilan cheklanmay, navbat yo'nalishini kuzating. Barqaror yuk ostida navbat o'sishi tarmoqning ortiqcha yuklanganini bildiradi.
+- Har bir benchmark uchun samarali Sumeragi parametrlarni, telemetriya profilini, validatorlar sonini, tarmoq RTT, ish yukining shaklini va apparat tafsilotlarini yozib oling.
+- Bir vaqtning o‘zida bitta chegaralangan navbat yoki payloadni tiklash limitini o‘zgartiring va oldingi va keyingi kechikish, trafik, xotira va orqa bosim dalillarini saqlang.
 
-[Ishlab chiqarish va ma'lumotlar ](/uz/guide/advanced/metrics.md) ni ko'ring.
+Buni [Ijro va Mezonlar](/uz/guide/advanced/metrics.md) ko‘ring.
 
-## Yolg'iz metall va jarayonlarni boshqarish {#bare-metal-and-process-management}
+## Bare-Metal va Jarayon Boshqaruvi {#bare-metal-and-process-management}
 
-- Har bir tengdoshining `config.toml`, shaxsiy kalitining, saqlash direktoriyasining va portlarining alohida saqlang.
-- systemd kabi jarayon menejerlarini aniq qayta ishga tushirish, ro'yxatdan o'tkazish va resurslar siyosati bilan ishlating.
-- Sinov topologiyasini boshqarilgan xostlarga tarjima qilishda README hosil bo'lgan va Kagami lokalnet to'plamlaridan qo'yilgan buyruqlarni saqlash.
+- Har bir tarmoq hamkasbining `config.toml`, shaxsiy kaliti, saqlash katalogi va portlarini alohida saqlang.
+- Aniq qayta ishga tushirish, jurnal yozish va resurs siyosatlari bilan systemd kabi jarayon menejerlaridan foydalaning.
+- Sinov topologiyasini boshqariladigan hostlarga tarjima qilganingizda, yaratilgan README va Kagami localnet paketlaridagi start buyruqlarini saqlang.
 
-[Bars metalda Iroha ishlaydigan ](/uz/guide/advanced/running-iroha-on-bare-metal.md) ko'rish.
+Buni [Bare Metal-da Iroha ni ishga tushirish](/uz/guide/advanced/running-iroha-on-bare-metal.md) ko‘ring.

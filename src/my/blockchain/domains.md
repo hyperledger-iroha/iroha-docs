@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # ဒိုမင်များ {#domains}
 
-Domain တွေကို `World` မှာ မှတ်ပုံတင်ထားတဲ့ Name Spaces လို့ခေါ်ပါတယ်။ လက်ရှိ Iroha 3 ဒေတာမော်ဒယ်မှာ domain တစ်ခုဟာ ၎င်းရဲ့ မူလ dataspace ကနေ သတ်မှတ်ထားတာပါ။ ဒီတော့ Canonical ID ကိုတော့:
+Domain တွေကို `World` မှာ မှတ်ပုံတင်ထားတဲ့ Name Spaces လို့ခေါ်ပါတယ်။ လက်ရှိ Iroha 3 ဒေတာမော်ဒယ်မှာ domain တစ်ခုဟာ ၎င်းရဲ့ မူလ data space ကနေ သတ်မှတ်ထားတာပါ။ ဒီတော့ Single Protocol Standard Identifier ကတော့:
 
 ```text
 domain.dataspace
@@ -25,11 +25,11 @@ domain.dataspace
 - `metadata`: key value ကို အလိုလို metadata လုပ်ပါ။
 - `owned_by`: domain ကိုပိုင်ဆိုင်သူစာရင်း၊ ပုံမှန်အားဖြင့် domain ကိုမှတ်ပုံတင်သူစာရင်း
 
-Domain တစ်ခုကို ရုပ်လုံးဖေါ်ဖို့ အသုံးပြုတဲ့ bootstrap payload ကတော့ `NewDomain`. ၎င်းဟာ `id`, ရွေးချယ်မှု `logo`, အစောပိုင်း `metadata`. Runtime က ဖြည့်ဆည်းတယ်။ `owned_by` သာမန်ဖောက်သည်တွေဟာ ဒီ အသုံးဝင်ဝန်ပိုးကို တိုက်ရိုက် မတင်ကြဘူး။
+Domain တစ်ခုကို ရုပ်လုံးဖေါ်ဖို့ အသုံးပြုတဲ့ bootstrap payload ကတော့ `NewDomain`. ၎င်းဟာ `id`, ရွေးချယ်မှု `logo`, အစောပိုင်း `metadata`. ဆော့ဖ်ဝဲ အကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင်က ဖြည့်စွက် `owned_by` သာမန်ဖောက်သည်တွေက ဒီအသုံးဝင်ဝန်ဆောင်မှုကို တိုက်ရိုက်တင်ပို့တာမဟုတ်ဘူး။
 
 ## မှတ်ပုံတင်ခြင်း {#registration}
 
-သာမန်ဒိုမင်ဖန်တီးခြင်းသည်ကြေညာချက် alias setup flow ကိုအသုံးပြုသည်။ ဤသည်မှာ SNS ငှားရမ်းစာချုပ်၊ ပိုင်ရှင်စွမ်းဆောင်ရည်များ၊ အဆိုပြုချက်စောင့်ရှောက်မှုနှင့် ဒိုမင်တန်းကို အက်တမ် `EnsureAlias` ငွေလဲလှယ်မှုတစ်ခုတွင် ထိန်းသိမ်းထားသည်။ `Register::Domain` သည်ဗီဇ / bootstrap မျက်နှာပြင်တစ်ခုဖြစ်နေဆဲဖြစ်ပြီး `ledger domain` အမိန့်မှာ `register` လက်အောက်အမိန့်မရှိပါ။
+သာမန်ဒိုမင်ဖန်တီးမှုသည် ကြေညာချက် alias setup flow ကိုအသုံးပြုသည်။ ဤသည်မှာ SNS ငှားရမ်းစာချုပ်၊ ပိုင်ရှင်စွမ်းဆောင်ရည်များ၊ အခွန်စျေးအတည်ပြုစောင့်ရှောက်ရေးနှင့် ဒိုမင်တန်းကို အက်တမ် `EnsureAlias` ငွေပေးချေမှုတစ်ခုတည်းတွင် ထိန်းသိမ်းထားပါသည်။ `Register::Domain` သည် genesis/bootstrap မျက်နှာပြင်တစ်ခုဖြစ်နေဆဲဖြစ်ပြီး `ledger domain` command တွင် `register` subcommand မရှိပါ။
 
 SDK (သို့) Onboarding ဝန်ဆောင်မှုတစ်ခုနဲ့ လျှို့ဝှက်ချက်မဲ့ `AliasSetupPlanRequestV1` ရည်ရွယ်ချက်ကို ဖန်တီးပြီး CLI အစီအစဉ်ကို live state နဲ့ ဆန့်ကျင်ပြီး တိကျတဲ့ အစီအစဉ်ကို တင်ပြပါ။
 
@@ -45,11 +45,11 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-ရည်ရွယ်ချက်က `payments.universal`, ၎င်းရဲ့ ကိန်းဂဏန်း ဒေတာနေရာ, Canonical I105 ပိုင်ရှင်, လေလံဝယ်ယူမှုသက်တမ်းနှင့်လက်ရှိမူဝါဒ / ငွေပေးချေမှု quote guard ကိုရှာဖွေပါတယ်။ Planner အဆုံးသတ်မှတ်ချက်သည် `POST /v1/aliases/setup/plan` ဖြစ်သည်။ ၎င်း၏ပြန်လည်ပေးပို့ထားသောစီမံကိန်းသည်ကွင်းဆက်၊ အာဏာ၊ ပြည်နယ်နှင့် နောက်ဆုံးရက်များဖြင့် ချိတ်ဆက်ထားသည်။ ဒိုမိုင်းဖယ်ရှားမှုသည် [`Unregister` ](/my/blockchain/instructions.md#un-register) ကိုအသုံးပြုနေဆဲဖြစ်သည်။
+ရည်ရွယ်ချက်ကို ဖော်ထုတ် `payments.universal`, ၎င်းရဲ့ ကိန်းဂဏန်း ဒေတာနေရာ၊ Single Protocol Standard I105 ပိုင်ရှင်၊ ငှားရမ်းဝယ်ယူမှု သက်တမ်းနှင့် လက်ရှိ မူဝါဒ/ပေးချေမှုခများ-စျေးနှုန်း အတည်ပြုစောင့်ရှောက်သူ။ စီမံကိန်းဆွဲသူ API အဆုံးသတ်မှတ်ချက်က `POST /v1/aliases/setup/plan`; ပြန်ပို့တဲ့ အစီအစဉ်က ချုပ်ဆက်၊ ငွေပေးချေမှု ခွင့်ပြုချက်နဲ့ ချည်နှောင်နေတာပါ။ အမည်၊ blockchain ledger အခြေအနေနဲ့ နောက်ဆုံးရက်။ Domain ကိုဖယ်ရှားခြင်းသည် [`Unregister`](/my/blockchain/instructions.md#un-register).
 
-Domain တစ်ခုကို ဖန်တီးရန် သို့မဟုတ် ဖယ်ရှားရန်အတွက် Active Runtime Validator အောက်တွင် domain-management ခွင့်ပြုချက် လိုအပ်ပါသည်။ Domain metadata များကို [`SetKeyValue` နှင့် `RemoveKeyValue`](/my/blockchain/instructions.md#setkeyvalue-removekeyvalue) ဖြင့် update လုပ်နိုင်သည်။
+Domain တစ်ခုကို ဖန်တီးရန် (သို့) ဖယ်ရှားရန်အတွက် Active software execution environment validator ကို အသုံးပြုပြီး Domain metadata တွေကို update လုပ်နိုင်ပါတယ်။ [`SetKeyValue` နှင့် `RemoveKeyValue`](/my/blockchain/instructions.md#setkeyvalue-removekeyvalue) ခွင့်ပြုချက်ပေးသူက ဒီဒိုမင်ကို ပြင်ဆင်ဖို့ ခွင့်ပြုချက်ကိုရတဲ့အခါမှာ
 
-## Taira မှာ စမ်းကြည့်ပါ။ {#try-it-on-taira}
+## Taira တွင် ဤအလုပ်ခွင်ကို run လုပ်ပါ။ {#try-it-on-taira}
 
 အများပြည်သူ Taira testnet မှာ လက်ရှိ မြင်ရတဲ့ domain တွေကို စာရင်းပေးပါ။
 
@@ -58,7 +58,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
   | jq -r '.items[].id'
 ```
 
-ပြည်သူ့လမ်းကြောင်းစာရင်းကို ဒေတာနေရာ အမည်မဖော်လိုရာသို့ ပြန်ညွှန်းပါ။
+အများပြည်သူ အကောင်အထည်ဖော်မှုလမ်းကြောင်းစာရင်းကို ဒေတာနေရာ အမည်မဲ့များသို့ ပြန်ညွှန်းပါ:
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -67,9 +67,9 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
     | @tsv'
 ```
 
-App တစ်ခုက domain ရှိမရှိ စစ်ဆေးဖို့ ပထမအမိန့်ကို အသုံးပြုပါ။ ဒေတာနေရာတစ်ခုဟာ အများပြည်သူ၊ ကန့်သတ်ထားတယ်၊ (သို့) core lane နောက်ကျနေလားဆိုတာ အတည်ပြုဖို့လိုတဲ့အခါ Lane Catalog ကိုသုံးပါ။
+App တစ်ခုမှာ domain ရှိမရှိ စစ်ဆေးဖို့ ပထမအမိန့်ကို အသုံးပြုပါ။ ဒေတာနေရာတစ်ခုဟာ အများပြည်သူ၊ ကန့်သတ်ထားတယ်၊ ဒါမှမဟုတ် core execution lane နောက်ကျနေလားဆိုတာ အတည်ပြုဖို့ အကောင်အထည်ဖော်လမ်းကြောင်းစာရင်းကို သုံးပါ။
 
-Domain setup က fee ပေးတဲ့ စာရေးခြင်းပါ။ Taira, ရေနံရေချိုးစက်မှ ကယ်တင် [Testnet ကို ရယူပါ။ XOR အပေါ် Taira](/my/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) သို့ဖြစ်သည် `taira_faucet_claim.py`, လက်မှတ်ရေးထိုးသူကို အများပြည်သူ ရေပိုက်ကနေ ငွေကြေးထောက်ပံ့ပေးပြီး အခွန်မီတာဒေတာတွေကို ချိတ်ဆက်ပေးပါ-
+Taira မှာမကြိုးစားခင် testnet ဘဏ္ဍာရေး ဝန်ဆောင်မှု အကူအညီကို [Testnet XOR ကို Taira သို့ခေါ်ယူပါ။](/my/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) မှ `taira_faucet_claim.py` အဖြစ် သိမ်းဆည်းပြီး အများပြည်သူ testnet ဘဏ်ငွေပေးချေမှု ဝန်ဆောင်မှုမှတစ်ဆင့် cryptographic လက်မှတ်ထိုးမှုကို ဘဏ္ဍာပြုပြီး အခွန်ဒေတာများကို ချိတ်ဆက်ပါ:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -88,15 +88,15 @@ iroha --config ./taira.client.toml \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 
-ထပ်တလဲလဲ testnet run တွေမှာ ထူးခြားတဲ့ domain name တစ်ခုအတွက် ရည်ရွယ်ချက်ကို တည်ဆောက်ပြီး Taira ရဲ့ လက်ရှိ မူဝါဒနဲ့ fee-asset quote guard ကို အသုံးပြုပါ။ localnet သို့မဟုတ် Minamoto အတွက် ထုတ်လုပ်ထားတဲ့ အစီအစဉ်ကို ပြန်မသုံးပါနဲ့။
+ထပ်တလဲလဲ testnet run တွေမှာ ထူးခြားတဲ့ domain name တစ်ခုအတွက် ရည်ရွယ်ချက်ကို တည်ဆောက်ပြီး Taira ရဲ့ လက်ရှိ မူဝါဒနဲ့ fee-asset fee-price validation guard ကို အသုံးပြုပါ။ localnet သို့မဟုတ် Minamoto အတွက်ထုတ်လုပ်ထားတဲ့ အစီအစဉ်ကို ပြန်မသုံးပါ။
 
 ## အခြားအဖွဲ့အစည်းများနှင့် ဆက်ဆံရေး {#relationship-to-other-entities}
 
-Domain များကို အုပ်စုအုပ်ချုပ်ရေးအရာဝတ္ထုများနှင့် domain-scoped ဒေတာအတွက်နာမည်နေရာကိုပေးသည်။ Asset အဓိပ္ပါယ်ဖွင့်ဆိုချက်များသည် domain-qualified identifiers ကိုအသုံးပြုပြီး query များသည် domain များကိုစာရင်းတင်နိုင်သည် သို့မဟုတ်ရှာဖွေနိုင်သည်။ Account တွေဟာ လက်ရှိ Data Model ထဲမှာ domainless ဖြစ်ကြပေမဲ့ account တွေက domain တွေကို ပိုင်ဆိုင်နိုင်ပြီး Domain တွေအောက်မှာ အဓိပ္ပါယ်ဖွင့်ဆိုချက်တွေ ရှိတဲ့ Assets ကို သိမ်းဆည်းနိုင်ပါတယ်။
+Domain များသည် blockchain ledger အရာဝတ္ထုများကိုစုစည်းပြီး domain-scoped ဒေတာများအတွက် နာမည်နေရာကိုပေးသည်။ Asset အဓိပ္ပါယ်ဖွင့်ဆိုချက်များသည် domain-qualified identifiers ကိုအသုံးပြုပြီး မေးမြန်းမှုများသည် domain များသို့မဟုတ် Account တွေဟာ လက်ရှိ Data Model မှာ domainless ဖြစ်ပေမဲ့ account တွေက domain တွေကို ပိုင်ဆိုင်နိုင်ပြီး Domain တွေအောက်မှာ အဓိပ္ပါယ်ဖွင့်ဆိုချက်တွေ ရှိတဲ့ Assets တွေကို သိမ်းထားနိုင်ပါတယ်။
 
 အောက်ပါအတိုင်းလည်း ကြည့်ပါ။
 
 - [ကမ္ဘာကြီး](/my/blockchain/world.md)
-- [အရင်းအမြစ်များ](/my/blockchain/assets.md)
-- [metadata](/my/blockchain/metadata.md)
-- [အမည်ပေးခြင်း စည်းမျဉ်းများ ](/my/reference/naming.md)
+- [ပိုက်ဆံများ](/my/blockchain/assets.md)
+- [မီတာဒေတာ](/my/blockchain/metadata.md)
+- [အမည်ပေးခြင်းဆိုင်ရာ စည်းမျဉ်းများ](/my/reference/naming.md)

@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: 5772bf7175b693fbbed54b59304859a33c2e19fef0c402141b6f4ad4cfd6714f
+translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Эшмәкәрлек һәм күрһәткестәр {#performance-and-metrics}
 
 Iroha һөҙөмтәлелеге эш йөкләмәһенә, валидатор топологияһына, селтәр шарттары һәм консенсус көйләүҙәренә бәйле. TPS Шуға күрә был һан тик билдәләнгән конфигурация менән күрһәтелгән эталонға бәйләнгән осраҡта ғына файҙалы.
@@ -13,7 +12,7 @@ Iroha һөҙөмтәлелеге эш йөкләмәһенә, валидатор
 Капитализмды планлаштырыу өсөн, һөҙөмтәлелек менән эш итеүҙе үҙ эсенә алырға кәрәк:
 
 - селтәр талап ителгән транзакция ставкаһын ҡабул итә
-- маҡсатлы бюджет эсендә тороу ваҡытын йөкмәтергә
+- маҡсатлы бюджет эсендә тороу ваҡытын commit итергә
 - транзакция сираттары сикләнгән
 - консенсус ҡабатланған ҡарау үҙгәрештәренә йәки тергеҙеү юлдары нигеҙендә түгел
 
@@ -21,20 +20,30 @@ Iroha һөҙөмтәлелеге эш йөкләмәһенә, валидатор
 
 ## Ниндәй өлгөләргә кәрәк? {#what-to-measure}
 
-Torii менән асыҡланған оператор өҫкө йөҙҙәренән башлана:
+Йәмәғәт узелы снайпшоты һәм Prometheus һыҙма менән башларға, һуңынан оператор раҫланған консенсус торошо өсөн CLI ҡулланырға. Оператор асҡысын маҡсатлы узел рөхсәт итергә тейеш һәм ул бары тик загружается ваҡытта:
 
 ```bash
 export TORII=http://127.0.0.1:8180
+export OPERATOR_KEY_FILE=./secrets/operator.key
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
-curl -s -H 'Accept: application/json' "$TORII/v1/sumeragi/status" | jq .
-curl -s "$TORII/v1/sumeragi/phases" | jq .
-curl -s "$TORII/v1/sumeragi/rbc" | jq .
-curl -s "$TORII/v1/sumeragi/params" | jq .
 curl -s "$TORII/metrics" > metrics.prom
+
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi status
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi diagnostics
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi qc
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi params
 ```
 
-Һеҙ шул уҡ уҡырға ғына өлгөһөн асыҡ Taira менән һынап ҡарарға мөмкин:
+Йәмәғәт Taira аноним узел снайпшот формаһын өйрәнеү өсөн файҙалы. Уның операторы диагностикаһы Taira операторы асҡысы булмаһа ла, был маҡсатҡа ярашлы булмай:
 
 ```bash
 TAIRA=https://taira.sora.org
@@ -42,29 +51,15 @@ TAIRA=https://taira.sora.org
 curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
-curl -fsS "$TAIRA/v1/time/status" \
-  | jq '{healthy: .health.healthy, peers, samples_used, rtt_count: .rtt.count}'
-
-curl -fsS "$TAIRA/metrics" \
-  | grep -E '^(block_height|queue_size|sumeragi_tx_queue_depth|txs|view_changes)' \
-  | head -n 20
+curl -fsS "$TAIRA/v1/time/now" \
+  | jq '{now_ms, offset_ms}'
 ```
 
-Сигнал исемдәрен өйрәнеү өсөн асыҡ Taira метрикалары файҙалы. Уларҙы үҙ урынлаштырыу өсөн етештереү ҡеүәтенең һандары итеп ҡулланырға ярамай.
+Йәмәғәт тест селтәрендәге күҙәтеүҙәрҙе үҙ файҙаланыуығыҙ өсөн етештереү ҡеүәте һандары итеп ҡулланырға ярамай.
 
-CLI аша шундай уҡ консенсуслы фотоһүрәттәр бар:
-
-```bash
-iroha --config ./localnet/client.toml --output-format text ops sumeragi status
-iroha --config ./localnet/client.toml --output-format text ops sumeragi phases
-iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
-iroha --config ./localnet/client.toml ops sumeragi params
-```
-
-Телеметрия күреүсәнлеге конфигурацияланған профилгә бәйле. `/metrics` кәрәк саҡта `extended` ҡулланығыҙ, ә һынау барышында `full` ҡулланығыҙ, әгәр һеҙгә шулай уҡ Sumeragi операторы маршруттары ла кәрәк икән.
+Телеметрия күреүсәнлеге конфигурацияланған профилгә бәйле. `operator` статусты һәм диагностика һынылыштарын булдыра. `extended` өҫтәй `/metrics` һәм ҡиммәтле ваҡыттар, шул уҡ ваҡытта `developer` leader, QC, параметрҙар һәм иҫбатлау кеүек разработчик слайдтарын өҫтәй, ә `/metrics` ҡеүәтләнмәй. бер этапҡа ике комплект кәрәк булғанда `full` ҡулланығыҙ. `telemetry_profile` - беренсе тапҡыр сығарылған телеметрия коммутаторы.
 
 ```toml
-telemetry_enabled = true
 telemetry_profile = "full"
 ```
 
@@ -74,27 +69,29 @@ telemetry_profile = "full"
 
 |Тамаша |Шарттар |Мәғәнәһе |
 | --- | --- | --- |
-|Юғары |Ҡабул ителгән үтеүсәнлек `Y` йәки унан юғарыраҡ, p95 commit latency `0.8 * L` аҫтында, сираттар 10% ҡеүәтенән түбәнерәк булып ҡала, һәм күреүҙе үҙгәртеү / тергеҙеү счетчиктары тигеҙ.|Ҡунаҡланыуҙа талап ителгән эш йөкләмәһе өсөн урын бар |
+|Юғары |Ҡабул ителгән үтеүсәнлек `Y` йәки унан юғарыраҡ, p95 commit latency `0.8 * L` аҫтында, сираттар 10% ҡеүәтенән түбәнерәк булып ҡала, һәм күреүҙе үҙгәртеү / тергеҙеү счетчиктары тигеҙ.|Ҡунаҡланыуҙа талап ителгән эш commit өсөн урын бар |
 |Уртаса |Ҡабул ителгән тапшырыу тиҙлеге яҡын `Y`, p95 commit latency түбән `L`, сираттары тотороҡло 50% ҡеүәтенән түбәнерәк, һәм ҡарау үҙгәрештәр һирәк |Ойоштороу эшләй, әммә шартлау толерантлығы сикләнгән |
-|Түбәнге |Ҡабул ителгән үтеүсәнлек `Y` аҫтында, p95 commit latency exceeds `L`, queues grow during the run, or view-change / backpressure counters rise continuously |Һорауланған эш йөкләмәһе , кәм тигәндә , бер bottleneck-тан ашыу |
+|Түбәнге |Ҡабул ителгән үткәреүсәнлек `Y`-тан түбән, p95 commit latency `L`-дан юғары, эш барышында сираттар үҫә йәки view-change/backpressure иҫәпләгестәре туҡтауһыҙ арта |Һоралған эш commit кәм тигәндә бер bottleneck сигенән аша |
 
-Төп ҡағиҙә - сират йүнәлеше. Әгәр тапшырылған TPS йөкмәтелгәндән ҙурыраҡ булһа TPS һәм сират арта бара икән, ҡыҫҡа өлгөләр сәләмәт булып күренһә лә, күсереү артыҡ көсөргәнешле буласаҡ.
+Төп ҡағиҙә - сират йүнәлеше. Әгәр тапшырылған TPS commit ителгәндән ҙурыраҡ булһа TPS һәм сират арта бара икән, ҡыҫҡа өлгөләр сәләмәт булып күренһә лә, күсереү артыҡ көсөргәнешле буласаҡ.
 
 ## Кнопкалар һаны һәм кворум {#node-count-and-quorum}
 
-Күберәк validators яңылышлыҡ толерантлығын яҡшыртыу, әммә координация, ҡултамға һәм селтәр өсөн сығымдар арттыра. Sumeragi ғәмәлгә ашырыу:
+Күберәк валидаторҙар хаталарға тотороҡлолоҡто яҡшырта, әммә координация, ҡултамға һәм селтәр fanout сығымдарын арттыра. Беренсе релиздағы Sumeragi протоколы түбәндәгеләрҙе талап итә:
 
-- раҫлаусы иҫәбе `n` хата бюджеты `f = floor((n - 1) / 3)` алып сыға.
-- `n >= 4` өсөн комиссия кворумы - `2f + 1`
-- `n <= 3` өсөн бөтә валидаторҙар йөкләмәне үтәргә тейеш
-- күҙәтеүсе тиңдәштәре блоктарҙы синхронизациялай, әммә тауыш бирмәйҙәр, тәҡдим итмәйҙәр һәм йыйымайҙар.
+- `n = 3f + 1` тауыш биреү комитеты
+- `4 <= n <= 31`, тимәк, ғәмәлдәге ҙурлыҡтар 4, 7, 10 һ.б.
+- `2f + 1` комитеты кворумы
+- күҙәтеүсе пирҙары блоктарҙы синхронизациялай, әммә тауыш бирмәйҙәр, тәҡдим итмәйҙәр һәм йыйымайҙар.
 
 |Валидаторҙар |Файҙаһыҙ бюджет |Кворумға килегеҙ |Ҡеүәтлелек белеме |
 | --- | --- | --- | --- |
-|1 - 3 |0 ғәмәли офлайн бушлай |бөтә раҫлаусылар |Үҫеш һәм ҙур булмаған һынауҙар өсөн файҙалы; ниндәй ҙә булһа юғалған validator commits ҡаҡшатырға мөмкин |
 | 4 | 1 | 3 |Бер хаталылыҡ толерантлығы өсөн дөйөм минималь |
 | 7 | 2 | 5 |Күберәк тотороҡло, күберәк тауыш биреү һәм пропаганда трафигы менән |
-| 10 | 3 | 7 |Күберәк координация хаҡы; селтәр һәм коллектор көйләү мәсьәләһе күберәк |
+| 10 | 3 | 7 |Күберәк координация хаҡы; селтәр һәм инеү көйләү мәсьәләһе күберәк |
+| 31 | 10 | 21 |Максималь беренсе сығарыу комитеты; сағыштырыуҙар координацияһы һәм ҡултамғалар хаҡы ентекле |
+
+Генезис генерацияһы һәм старт-валидациялау буйынса комитеттарҙың үлсәмдәрен кире ҡаҡмайҙар; релиз ҡабул итә алмай торған топологияны сағыштырмағыҙ.
 
 "X узелдарын" баһалағанда тауыш биреүҙе раҫлаусыларҙы күҙәтеүселәрҙән айырырға кәрәк. Күҙәтеүселәрҙе өҫтәү, ғәҙәттә, раҫлаусылар менән сағыштырғанда, арзаныраҡ тора, әммә күҙәтеүселәр барыбер блок гайбаһын, блок синхронлаштырыуҙы, дискты һәм селтәр бүлкәт киңлеген ҡуллана.
 
@@ -114,37 +111,40 @@ telemetry_profile = "full"
 
 Кесе күсереү операциялары контрактлы йәки метамәғлүмәтле эш йөкләмәләре өсөн сәбәп түгел.
 
-### Консенсус ваҡыты {#consensus-timing}
+### Консенсус Каденс {#consensus-cadence}
 
-Sumeragi ваҡытын ғәмәлдәге Sumeragi параметрҙары менән билдәләйҙәр:
+һөҙөмтәле Sumeragi параметры фажиғәһе ҡул ҡуйылған үҙгәрешһеҙ блок-каденцияһын һәм сәғәт менән хәрәкәт итеү сиген үҙ эсенә ала:
 
-- `block_time_ms`
-- `commit_time_ms`
-- `min_finality_ms`
-- `pacing_factor_bps`
-- NPOS режимы ҡуйылғанда NPoS фазаһы ваҡыт сығыу ваҡыты
+- `block_cadence_ms`
+- `max_clock_drift_ms`
 
 Уларҙы тикшерегеҙ:
 
 ```bash
-iroha --config ./localnet/client.toml ops sumeragi params
-curl -s "$TORII/v1/sumeragi/params" | jq .
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi params
 ```
 
-Үҙгәрештәрҙе ҡарағандан һуң, юғалған тейәү йөкмәткеһен йыйып алыу йәки кире баҫым барлыҡҡа килгәндән һуң, ваҡытты кәметеү йыш ҡына һөҙөмтәлелектең насарауына килтерә.
+`block_cadence_ms` ҡул ҡуйылған генез менән башҡарыла һәм стартапта туңдырыла; ул тере көйләү төймәһе түгел. Төрлө ҡул ҡуйылған генес инеүҙәре булған селтәрҙәрҙе айырым эталон сценарийҙары булараҡ ғына сағыштырығыҙ. Үҙгәрештәрҙе күргәс, юғалған файҙалы commit йә кире баҫым барлыҡҡа килгәндән һуң, ҡыҫҡартылған каденс ғәҙәттә өҫтәмә йөкләнештең тотороҡло сығыуын арттырыу урынына анығыраҡ күренеп ҡала.
 
-### Коллектор Фанут {#collector-fanout}
+### Кандидат һәм ҡабул итеү сикләүҙәре {#candidate-and-ingress-bounds}
 
-Коллектор көйләүҙәре йөкләмәләр буйынса тауыш биреүселәрҙең ни тиклем тиҙ килеүенә йоғонто яһай:
+Нод-локаль Sumeragi сиктәре билдәләй, күпме кандидат һәм тергеҙеү эше менән валидатор һаҡлай ала:
 
-- `sumeragi.collectors.k` бейеклек буйынса тауыш йыйыусылар һаны менән идара итә.
-- `sumeragi.collectors.redundant_send_r` урындағы ваҡытлы сираттан һуң өҫтәмә тауыш биреүҙе контролдә тота
-- `sumeragi.collectors.parallel_topology_fanout` коллекторҙар менән бер рәттән топологияһын өҫтәй.
+- `sumeragi.block.max_transactions`
+- `sumeragi.block.max_payload_bytes`
+- `sumeragi.block.proposal_queue_scan_multiplier`
+- `sumeragi.queues.commands`
+- `sumeragi.queues.bodies` һәм `sumeragi.queues.body_bytes`
+- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks` һәм `sumeragi.queues.ready_bodies`
 
-Өҫтәмә fanout ҙур йәки аҙ ышаныслы селтәрҙәрҙә ҡойроҡ latency кәметергә мөмкин, әммә был шулай уҡ трафик арттыра. Был ҡиммәттәрҙе үҙгәртер алдынан тупланма доступность һәм коллектор телеметрияһын latency һәм backpressure метрикалары менән сағыштырығыҙ:
+Өҫтәмә ҙурлыҡтағы сикләүҙәр сиратҡа йәки файҙалы йөк менән ҡайтарыу баҫымына килтерә; артыҡ ҙурлыҡтәге сикләүҙәр һаҡланған хәтерҙе һәм йәберләүсе пирына эш күләмен арттырыу. Диагностика снапшотын процесстар иҫтәлеге, хәбәрҙәр менән эш итеү менән сағыштырығыҙ. һәм бер-бер артлы һыҙатты үҙгәрткәнгә тиклем юғалған кәүҙә күрһәткестәре:
 
 ```bash
-iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi diagnostics
 ```
 
 ### Сеть шарттары {#network-conditions}
@@ -153,11 +153,11 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 
 - RTT validatorҙар араһында
 - ығы-зығы һәм пакеттар юғалтыу
-- Блок файҙалы йөкләмәләр һәм RBC киҫәктәр өсөн полоса киңлеге
+- Блок файҙалы йөкләмәләр һәм ҡул ҡуйылған RS16 киҫәктәр өсөн полоса киңлеге.
 - төбәктәр араһындағы асимметрик бәйләнештәр
 - NAT, бер-береһе менән бәйләнеште кисектереүсе һаҡланыу стенаһы йәки эстафета тәртибе.
 
-Планлау ҡағиҙәһе булараҡ, бер нисә валидаторҙың әйлән-бәйләнешен һәм башҡарыу һәм дискҡа йөкмәтеү ваҡытын ҡаплай торған тиклем оҙайлылыҡ бюджетын ҡуйығыҙ. p95 селтәре RTT инде теләгән p95 commit latency яҡын булһа, маҡсат ысынбарлыҡҡа тап килмәй.
+Планлау ҡағиҙәһе булараҡ, бер нисә валидаторҙың әйлән-бәйләнешен һәм башҡарыу һәм дискҡа commit итеү ваҡытын ҡаплай торған тиклем оҙайлылыҡ бюджетын ҡуйығыҙ. p95 селтәре RTT инде теләгән p95 commit latency яҡын булһа, маҡсат ысынбарлыҡҡа тап килмәй.
 
 ### Сираттар һәм инеү сикләүҙәре {#queues-and-admission-limits}
 
@@ -165,19 +165,20 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 
 - `queue.capacity`
 - `queue.capacity_per_user`
+- `queue.max_retained_bytes`
 - `queue.transaction_time_to_live_ms`
 - генезис транзакция лимиттары, мәҫәлән, максималь ҡултамғалар, инструкциялар, байттар һәм декомпрессланған байттар.
 - p2p сираттағы сикләүҙәр һәм консенсусҡа инеү сикләүҙәре
 
-Юғары сират күләмдәре бер аҙ ваҡытҡа артыҡ йөкләнеүҙе йәшереп ҡала ала, әммә ул тотороҡло етештереүсәнлекте арттырмай.
+Юғары queue capacity артыҡ йөкләнеүҙе бер аҙға йәшерә ала, ләкин sustainable throughput-ты арттырмай. Тотороҡло queue — healthy; үҫеп барған queue — backlog.
 
 ### Һауыт-һаба һәм һаҡлау {#hardware-and-storage}
 
 Һәр раҫлаусыны үлсәгеҙ, тик лидерҙы ғына түгел:
 
 - CPU раҫлау, ҡултамғаларҙы тикшереү һәм үтәү ваҡытында ҡәнәғәтләндереү
-- сираттар, фотоһүрәттәр һәм актив RBC сеанстарҙан килгән хәтер баҫымы
-- блок һаҡлау һәм фотоһүрәттәр өсөн диск яҙыу задержкаһы
+- сираттарҙан, снапшоттарҙан һәм файҙалы йөкләмәләрҙе ҡайтарыу буферҙарынан хәтер баҫымы
+- блок һаҡлау һәм снапшоттар өсөн диск яҙыу задержкаһы
 - селтәрҙең тапшырыу / ҡабул итеү тығыҙлығы
 - Эш мәшәҡәте менән ҡулланылған осраҡта аппараттың тиҙләтеү параметрҙары
 
@@ -185,7 +186,7 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 
 ## Прометей сигналдары {#prometheus-signals}
 
-Метрик исемдәре профиль төҙөү һәм функциялар йыйылмаһы буйынса үҙгәреүе мөмкин. Тәүҙә узелығыҙҙа `/metrics` тикшерегеҙ, һуңынан бар булған сериялар тирәләй панелдәр төҙөгөҙ.
+Метрик исемдәре теркәлгән телеметрия каталогынан килә. Сериалдың доступность һәм өлгө алыу һаман да төҙөлөш үҙенсәлектәренә һәм `telemetry_profile` бәйле, шуға күрә Dashboard төҙөгәнсе маҡсатлы узел буйынса `/metrics` тикшерегеҙ.
 
 Ҡайһы бер сигналдар түбәндәгеләрҙе индерә:
 
@@ -193,12 +194,12 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 | --- | --- | --- |
 |Ҡабул ителгән тапшырыу |`sum(rate(txs{type="accepted"}[5m]))` |Стационар хәлдә маҡсатлы TPS бурысын үтәү йәки уны арттырыу |
 |Ҡурҡҡандар |`sum(rate(txs{type="rejected"}[5m]))` |Был һынау планы менән аңлатылырға тейеш.|
-|Задержәне йөкмәтергә |`histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |p95/p99-ны латенция бюджеты менән сағыштырығыҙ |
+|Задержәне commit итергә |`histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |p95/p99-ны латенция бюджеты менән сағыштырығыҙ |
 |Көҙгө тәрәнлеге |`queue_size`, `sumeragi_tx_queue_depth` |Иң юғары йөкләнеш ваҡытында сикләүҙәр һаҡланырға тейеш .|
 |Кәрәкле сираттың тығыҙлығы |`sumeragi_tx_queue_saturated` |Тотороҡло булмаған нуль кимәлендәге уртаса йөкләмә |
 |Үҙгәрештәрҙе ҡара |`view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |Үҫешле ҡиммәттәр ваҡытлыса, топология, файҙалы йөкләмә йәки селтәр проблемаһын күрһәтә. |
 |Ҡалған хәбәрҙәр |`dropped_messages`, `sumeragi_consensus_message_handling_total` |Йыш ҡына йөкләнеү ваҡытында түбән төшөүе latency spikes аңлата . |
-|RBC баҫым |`sumeragi_rbc_store_pressure`, `sumeragi_rbc_backpressure_deferrals_total` |Яҡшы йөк ташыуҙы тергеҙеү һәм һаҡланыу өсөн нуль булмаған баҫым нөктәләре |
+|Файҙалы йөк һәм DA теркәү |`sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` |Бер туҡтауһыҙ һорауҙар, үҫә торған йәше йәки ҡабатланған DA ҡапҡалар организмды йәки киҫәктәрҙе һатып алыу проблемаһын күрһәтә .|
 |Кворумға килегеҙ |`sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |Иҫәпләнгән ҡултамғалар тиҙ арала кәрәкле кворумға етергә тейеш .|
 
 Әгәр метрика бары тик `/v1/sumeragi/status` эсендә булһа, JSON экземплярҙы Prometheus һыртыуы менән бер үк артефакттарҙа төшөрөп ҡуйығыҙ.
@@ -215,10 +216,18 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 2. Эшмәкәр конфигурацияны яҙығыҙ:
 
    ```bash
-   iroha --config ./localnet/client.toml --output-format json ops sumeragi params \
+   iroha --config ./localnet/client.toml \
+     --operator-private-key-file "$OPERATOR_KEY_FILE" \
+     --output-format json ops sumeragi params \
      > artifacts/sumeragi-params.json
-   curl -s "$TORII/v1/sumeragi/collectors" \
-     > artifacts/sumeragi-collectors.json
+   iroha --config ./localnet/client.toml \
+     --operator-private-key-file "$OPERATOR_KEY_FILE" \
+     --output-format json ops sumeragi status \
+     > artifacts/sumeragi-status.json
+   iroha --config ./localnet/client.toml \
+     --operator-private-key-file "$OPERATOR_KEY_FILE" \
+     --output-format json ops sumeragi diagnostics \
+     > artifacts/sumeragi-diagnostics.json
    ```
 
 3. Эш йөкләмәһен маҡсатҡа TPS ҡуйығыҙ.
@@ -230,10 +239,11 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 
 Эшмәкәрлек һандарын уларҙы ҡабатлау өсөн етерлек контекст менән генә баҫтырығыҙ:
 
-- Iroha йөкләмә, сығарыу һәм билдәләр флагтары
+- Iroha commit, сығарыу һәм билдәләр флагтары
 - раҫлаусы һәм күҙәтеүсе иҫәптәре
-- консенсус режимы һәм Sumeragi параметрҙары
-- коллектор `k`, артыҡ ебәреү `r`, һәм топология fanout
+- консенсус режимы, ҡул ҡуйылған блок-каденс һәм DA пластинка
+- `3f + 1` комитеты, кворум һәм күҙәтеүсе исемлеге
+- `sumeragi.block`, `sumeragi.queues`, `sumeragi.limits`, селтәргә инеү һәм транзакция сираттағы сикләүҙәре
 - телеметрия профиле
 - ҡорамалдар, һаҡлау һәм OS мәғлүмәттәре
 - селтәр RTT, jitter, юғалтыу һәм биҙәк киңлеге фараздары
@@ -242,7 +252,7 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 - ҡабул ителгән/ҡабул ителмәгән TPS
 - p50/p95/p99 commit latency
 - сират тәрәнлеге һәм тығыҙлығы
-- үҙгәрештәрҙе күрһәтеү, хәбәрҙәрҙе төшөрөү, RBC баҫым һәм юғалған файҙалы йөк менән иҫәпләүселәр
+- үҙгәрештәрҙе ҡарау, хәбәрҙәрҙе төшөрөү, юғалған блоктарҙы йыйыу һәм DA ҡапҡа иҫәпләүселәре
 - CPU, иҫтәлек, диск һәм селтәрҙе файҙаланыу бер validator
 
 Был мәғлүмәттәр булмаһа, TPS һанды анекдотик тип һанарға кәрәк.
@@ -252,4 +262,4 @@ iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetr
 - [Izanami менән Хаос һынауҙары](./chaos-testing.md)
 - [Torii сикләү пункттары](../../reference/torii-endpoints.md)
 - [Iroha 3 аша хәрәкәт итеү CLI ](../../get-started/operate-iroha-via-cli.md)
-- [Тиҫтерҙәр менән конфигурация буйынса референс](../../reference/peer-config/params.md)
+- [Пирҙар менән конфигурация буйынса референс](../../reference/peer-config/params.md)

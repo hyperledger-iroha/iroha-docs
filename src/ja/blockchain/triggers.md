@@ -3,79 +3,79 @@ translation_locale: ja
 translation_source: /blockchain/triggers.md
 translation_source_hash: 9443b139623544fd3c54b324e54b7e06f57820c70ffd0856f05aacac9f7591a3
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# 触発機 {#triggers}
+# トリガー {#triggers}
 
-トリガーはイベントフィルタを実行可能なアクションに結合します. イベントがトリガーのフィルターと一致すると, Iroha はブロック実行の一環としてトリガーの行動を評価します.
+トリガーはイベントフィルターを実行可能なアクションに結び付けます。イベントがトリガーのフィルターに一致すると、Iroha はブロック実行の一部としてトリガーアクションを評価します。
 
 ## 構造 {#structure}
 
-登録された `Trigger` には:
+登録された`Trigger`には以下が含まれます:
 
-- `id`: a `TriggerId` 包装する `Name`
-- `action`:実行可能,権限,フィルター,繰り返す方針,再試策,メタデータ
+- `id`：`TriggerId`が`Name`をカプセル化している
+- `action`：実行可能ファイル、認可主体、フィルター、繰り返しポリシー、リトライポリシー、およびメタデータ
 
-行動には以下が含まれます:
+アクションには以下が含まれます:
 
-- `executable`: `Instructions`,`ContractCall`, `Ivm`,または `IvmProved`
-- `repeats`: `Indefinitely`または`Exactly(n)`
-- `authority`: 実行可能なものを呼び出すアカウント
-- `filter`: a `EventFilterBox`
-- `retry_policy`:予定時間触発機のオプション再試行動作
-- `metadata`:任意の触発メタデータ
+- `executable`： `Instructions`、`ContractCall`、`Ivm`、または `IvmProved`
+- `repeats`： `Indefinitely` または `Exactly(n)`
+- `authority`：実行可能ファイルを呼び出すアカウント
+- `filter`：1つの`EventFilterBox`
+- `retry_policy`：スケジュールされた時間トリガーのオプションの再試行動作
+- `metadata`：任意のトリガーのメタデータ
 
 ## イベントフィルター {#event-filters}
 
-トリガー条件は,サブスクリプションと同じイベントフィルターモデルを使用します.トップレベルのイベントフィルタは:
+トリガー条件は、サブスクリプションと同じイベントフィルターモデルを使用します。トップレベルのイベントフィルターは次の条件と一致する場合があります:
 
-- パイプライン事件
+- ソフトウェアの処理ワークフローイベント
 - データイベント
-- 時間の出来事
-- 実行イベントを誘発する
-- 引き起こす完了イベント
+- 時間ベースのイベント通知
+- 実行イベントをトリガーする
+- 完了イベントをトリガーする
 
-ワークフローに一致する最も狭いフィルターを好みます. 広いフィルターは診断のために有用ですが,ブロック実行中に作業を増やします.
+ワークフローに合った最も狭いフィルターを優先してください。広いフィルターは診断には役立ちますが、ブロックの実行中の作業量を増やします。
 
-[フィルター](/ja/blockchain/filters.md)については,現在のフィルタファミリーを参照.
+現在のフィルターファミリーについては、[フィルター](/ja/blockchain/filters.md) を参照してください。
 
-## 時間 の 引き起こす {#time-triggers}
+## 時間トリガー {#time-triggers}
 
-タイムトリガーは時間イベントフィルタを使用します.世界状態ビューが一致する時間条件に達すると, Iroha はトリガー権限の下でのトリガーアクションを実行します.時間トリガーは以下のリトライポリシーを使用できるトリガータイプです.
+時間トリガーは時間イベントフィルターを使用します。ワールドステートビューが一致する時間条件に達すると、Iroha はトリガー認可プリンシパルの下でトリガーアクションを実行します。時間トリガーは、以下に説明する再試行ポリシーを使用できるトリガーの種類です。
 
-## 繰り返す {#repetition}
+## 繰り返し {#repetition}
 
-`Repeats::Indefinitely` は,登録されていないまで触発機を活性化させます.
+`Repeats::Indefinitely` は、登録解除されるまでトリガーをアクティブに保ちます。
 
-`Repeats::Exactly(n)` は,トリガーが固定された数回発射することを可能にします. カウントが尽きると,同じ動作を再び必要とする場合は新しいトリガーを登録してください.
+`Repeats::Exactly(n)` は、トリガーを固定回数だけ発生させることを可能にします。カウントが使い果たされた場合、同じ動作が再度必要な場合は、新しいトリガーを登録してください。
 
-## 権限と許可 {#authority-and-permissions}
+## 認可主体と権限 {#authority-and-permissions}
 
-触発権限は実行可能なものを呼び出すために使用されるアカウントです.長持ちの触発器のために専用技術的なアカウントを使用します そのため必要な許可は,操作者の個人アカウントから明示的に分離されます.
+トリガー承認のプリンシパルは、実行可能ファイルを呼び出すために使用されるアカウントです。長期間有効なトリガーには専用の技術アカウントを使用し、必要な権限が明確であり、オペレーターの個人アカウントとは分離されるようにしてください。
 
-当局は実行可能な指示または契約呼び出しで要求される許可を必要とします.トリガーを登録するアカウントはまた,アクティブランタイム検証器の下でトリガーを登録するための許可が必要です.
+認可主体は、実行可能な命令または契約の技術的呼び出しに必要な権限を持つ必要があります。トリガーを登録するアカウントも、アクティブなソフトウェアランタイムバリデータの下でトリガーを登録する権限が必要です。
 
-## 復試方針 {#retry-policy}
+## 再試行ポリシー {#retry-policy}
 
-タイムトリガーは再試のポリシーに選択できます. 再試の方針は:
+時間トリガーは、再試行ポリシーにオプトインすることができます。再試行ポリシーでは以下を設定します:
 
-- `max_retries`:最初の失敗した発射後,再試行が許容される数
-- `retry_after_ms`: いつまで Iroha 再試される前に待機する
+- `max_retries`：最初の発射が失敗した後、何回の再試行が許可されていますか
+- `retry_after_ms`：再試行が可能になる前に Iroha がどれくらい待つか
 
-再び試す予算が尽きると トイガーが登録されない.
+リトライ予算が使い果たされると、トリガーは登録解除されます。
 
-## 質問 {#queries}
+## クエリ {#queries}
 
-現在のトリガークエリを使用してトリガー状態を確認します:
+現在のトリガークエリを使用してトリガーの状態を確認してください：
 
 - [`FindTriggers`](/ja/reference/queries.md#triggers-contracts-transactions-and-blocks)
 - [`FindActiveTriggerIds`](/ja/reference/queries.md#triggers-contracts-transactions-and-blocks)
 - [`FindTriggerById`](/ja/reference/queries.md#triggers-contracts-transactions-and-blocks)
 
-参照:
+参照：
 
-- [事件トリガー例](/ja/blockchain/trigger-examples.md)
-- [事件](/ja/blockchain/events.md)
+- [イベントトリガーの例](/ja/blockchain/trigger-examples.md)
+- [イベント](/ja/blockchain/events.md)
 - [指示](/ja/blockchain/instructions.md)
-- [許可](/ja/blockchain/permissions.md)
+- [権限](/ja/blockchain/permissions.md)

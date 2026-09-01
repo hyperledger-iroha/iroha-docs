@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /reference/peer-config/params.md
-translation_source_hash: d9fa3775e65b26b4eda726b27e54d167097b8bbd5bb766c27d7eeefdbc7ef10b
+translation_source_hash: 027486a17e7624cc301f939429baf9ea9ed1259564c3b99b8dc63cce17a7b26e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 
@@ -22,7 +22,7 @@ import ParamTable from './ParamTable.vue';
 
 چین ID جو ہر ٹرانزیکشن میں شامل ہونا ضروری ہے۔ دوبارہ کھیلنے کے حملوں کو روکنے کے لئے استعمال کیا جاتا ہے۔
 
-ری پلے حملے ایک درست ٹرانزیکشن کو اس سے مختلف نیٹ ورک میں جمع کرنے کی کوشش ہے جس کے لئے یہ ارادہ کیا گیا تھا۔ چونکہ `chain` دستخط شدہ لین دین کے مفید بوجھ کا حصہ ہے ، لہذا ایک سلسلہ کے لئے دستخط کردہ لین دین کو دوسرے چین ID کا استعمال کرنے والے ہم مرتبہ رد کرتے ہیں۔
+ری پلے حملے ایک درست ٹرانزیکشن کو اس سے مختلف نیٹ ورک میں جمع کرنے کی کوشش ہے جس کے لئے یہ ارادہ کیا گیا تھا۔ چونکہ `chain` دستخط شدہ لین دین کی پے لوڈ کا حصہ ہے ، لہذا ایک سلسلہ کے لئے دستخط شدہ ٹرانزیکشن کو دوسرے سلسلہ کا استعمال کرتے ہوئے نیٹ ورک نوڈ رد کردیتے ہیں۔ ID.
 
 <param-table type=string env=CHAIN />
 
@@ -40,7 +40,7 @@ CHAIN="00000000-0000-0000-0000-000000000000"
 
 ### `public_key` <Badge text="required" /> {#param-public-key}
 
-ہم منصب کی عوامی کلید۔ اتفاق رائے کے تصدیق کنندہ ہم منصبوں کو BLS-معمولی چابیاں استعمال کرنا ضروری ہے۔
+نیٹ ورک نوڈ کی عوامی کلید۔ اتفاقِ رائے کے توثیق کنندہ نوڈز کو BLS-Normal کلیدیں استعمال کرنا ضروری ہے۔
 
 <param-table type="public-key" env="PUBLIC_KEY" />
 
@@ -58,7 +58,7 @@ PUBLIC_KEY="ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7
 
 ### `private_key` <Badge text="required" /> {#param-private-key}
 
-پیئر کی نجی کلید۔ اسے `public_key` سے ملنا چاہئے؛ اتفاق رائے کے تصدیق کنندہ پیئرز کو BLS-معمولی چابیاں استعمال کرنا چاہئیں۔
+نیٹ ورک نوڈ کی نجی کلید۔ اسے `public_key` سے مماثل ہونا چاہیے؛ اتفاقِ رائے کے توثیق کنندہ نوڈز کو BLS-Normal کلیدیں استعمال کرنا ضروری ہے۔
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
@@ -76,14 +76,14 @@ PRIVATE_KEY="8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E9029
 
 ### `trusted_peers` {#param-trusted-peers}
 
-قابل اعتماد ہم عمر افراد کی فہرست
+قابل اعتماد نیٹ ورک نوڈز کی فہرست
 
-اتفاق رائے کی توثیق کرنے والوں کو BLS-معمولی ہم مرتبہ چابیاں استعمال کرنا چاہئیں۔ ہر توثیق کنندہ کے لئے ، ایک مماثل [`trusted_peers_pop`](#param-trusted-peers-pop) اندراج بھی فراہم کریں۔
+اتفاقِ رائے کے توثیق کنندہ نوڈز کو BLS-Normal کلیدیں استعمال کرنا ضروری ہے۔ ہر توثیق کنندہ کے لیے مماثل [`trusted_peers_pop`](#param-trusted-peers-pop) اندراج بھی فراہم کریں۔
 
 <param-table env="TRUSTED_PEERS">
 <template #type>
 
-پیئر سٹرنگز کی صف۔ `PUBLIC_KEY@ADDRESS` کا استعمال کریں جب P2P ایڈریس معلوم ہو؛ خالی `PUBLIC_KEY` بھی قبول کیا جاتا ہے اور اس سے پیئر ایڈریس کو گپ شپ سے دریافت کیا جاسکتا ہے۔
+پیئر سٹرنگز کی صف۔ `PUBLIC_KEY@ADDRESS` کا استعمال کریں جب P2P ایڈریس معلوم ہو؛ خالی `PUBLIC_KEY` بھی قبول کیا جاتا ہے اور اس سے پیئر ایڈریس کو گپ شپ سے پتہ چلتا ہے۔
 
 </template>
 </param-table>
@@ -109,7 +109,7 @@ TRUSTED_PEERS='[
 
 ### `trusted_peers_pop` {#param-trusted-peers-pop}
 
-BLS تصدیق کنندہ کے قابل اعتماد ہم مرتبہ کے لئے ثبوت کے اندراجات.
+BLS تصدیق کنندہ کے قابل اعتماد نیٹ ورک نوڈ کے لئے ثبوت کے اندراجات.
 
 <param-table env="TRUSTED_PEERS_POP">
 <template #type>
@@ -142,7 +142,7 @@ TRUSTED_PEERS_POP='[
 
 ### `genesis.file` {#param-genesis-file}
 
-`kagami genesis sign` کی طرف سے پیدا کردہ دستخط شدہ جینس بلاک کے مفید بوجھ تک فائل کا راستہ۔ جنریٹڈ پروفائلز عام طور پر اسے Norito `.nrt` فائل کے طور پر لکھتے ہیں۔
+`kagami genesis sign` کی طرف سے پیدا کردہ دستخط شدہ جینس بلاک کے پے لوڈ تک فائل کا راستہ۔ جنریٹڈ پروفائلز عام طور پر اسے Norito `.nrt` فائل کے طور پر لکھتے ہیں۔
 
 <param-table type="file-path" env="GENESIS" />
 
@@ -201,9 +201,9 @@ P2P_ADDRESS=0.0.0.0:1337
 
 ### `network.public_address` <Badge text="required" /> {#param-network-public-address}
 
-ہم مرتبہ سے ہم مرتبہ ایڈریس (بیرونی، جیسا کہ دوسرے ہم مرتبہ دیکھتے ہیں) ۔
+نیٹ ورک نوڈ سے نیٹ ورک نوڈ ایڈریس (بیرونی، جیسا کہ دوسرے نیٹ ورک نوڈ دیکھتے ہیں) ۔
 
-وہ اپنے ہم عمر ساتھیوں کے ساتھ گپ شپ کریں گے تاکہ وہ دوسرے ہم عمر افراد کو بھی گپ شپ کر سکیں۔
+وہ اپنے نیٹ ورک نوڈ نوڈز کے ساتھ gossip کریں گے تاکہ دوسرے نیٹ ورک نوڈ نوڈز بھی یہ معلومات آگے پھیلا سکیں۔
 
 <param-table type="socket-addr" env="P2P_PUBLIC_ADDRESS" />
 
@@ -237,7 +237,7 @@ block_gossip_size = 256
 
 ### `network.block_gossip_period_ms` {#param-network-block-gossip-period-ms}
 
-تازہ ترین بلاک کے لئے ہم مرتبہ کی درخواستوں کے درمیان وقت کا وقفہ۔
+تازہ ترین بلاک کے لئے نیٹ ورک نوڈ کی درخواستوں کے درمیان وقت کا وقفہ۔
 
 زیادہ کثرت سے گپ شپ کرنے سے ہم آہنگی کا وقت کم ہوجاتا ہے، لیکن یہ نیٹ ورک پر بوجھ ڈال سکتا ہے۔
 
@@ -271,7 +271,7 @@ transaction_gossip_size = 256
 
 ### `network.transaction_gossip_period_ms` {#param-network-transaction-gossip-period-ms}
 
-ہم عمر افراد کے درمیان ٹرانزیکشن کے منتظر گپ شپنگ کی مدت۔
+نیٹ ورک نوڈز کے درمیان ٹرانزیکشن کے منتظر گپ شپنگ کی مدت۔
 
 زیادہ کثرت سے گپ شپ کرنے سے ہم آہنگی کا وقت کم ہوجاتا ہے، لیکن یہ نیٹ ورک پر بوجھ ڈال سکتا ہے۔
 
@@ -288,7 +288,7 @@ transaction_gossip_period_ms = 5_000
 
 ### `network.idle_timeout_ms` {#param-network-idle-timeout-ms}
 
-وقت کی مدت جس کے بعد ہم مرتبہ کے ساتھ رابطہ ختم ہو جاتا ہے اگر ہم مرتبہ بیکار ہے۔
+وقت کی مدت جس کے بعد نیٹ ورک نوڈ کے ساتھ رابطہ ختم ہو جاتا ہے اگر نیٹ ورک نوڈ بیکار ہے۔
 
 <param-table type=millis default-value=300_000 default-note="5 minutes" />
 
@@ -352,7 +352,7 @@ max_content_len = 64_000_000
 
 ### `torii.query_idle_time_ms` {#param-torii-query-idle-time-ms}
 
-اس وقت جب اسٹور میں کوئی استفسار باقی رہ سکتا ہے اگر تک رسائی حاصل نہیں کی گئی ہو۔
+اس وقت جب کوئی استفسار اسٹور میں رہ سکتا ہے اگر اسے رسائی حاصل نہ ہو تو۔
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
@@ -367,7 +367,7 @@ query_idle_time_ms = 10_000
 
 ### `torii.query_store_capacity` {#param-torii-query-store-capacity}
 
-براہ راست سوالات کی تعداد کی اوپری حد۔
+براہ راست استفسارات کی تعداد کی اوپری حد۔
 
 <param-table type=number default-value=128 />
 
@@ -382,7 +382,7 @@ query_store_capacity = 128
 
 ### `torii.query_store_capacity_per_user` {#param-torii-query-store-capacity-per-user}
 
-ایک ہی صارف کے لیے براہ راست سوالات کی تعداد کی اوپری حد۔
+ایک ہی صارف کے لیے براہ راست استفسارات کی تعداد کی اوپری حد۔
 
 <param-table type=number default-value=128 />
 
@@ -443,7 +443,7 @@ LOG_LEVEL=INFO
 <param-table type=string env=LOG_FILTER>
 <template #type>
 
-سٹرنگ، ایک یا زیادہ کوما سے الگ کردہ ہدایات پر مشتمل ہے۔ ہر ہدایت میں متعلقہ زیادہ سے زیادہ لفظی سطح ہوسکتی ہے جو (مثال کے طور پر ، منتخب کرتا ہے) اس سے ملنے والے دوروں اور واقعات کی اجازت دیتی ہے۔ Iroha کم خصوصی سطحوں (جیسے `trace` یا `info`) کو زیادہ خصوصی سطحوں کی نسبت زیادہ لفظی سمجھتا ہے (جیسا کہ `error` یا `warn`).
+سٹرنگ، ایک یا زیادہ کوما سے الگ ہدایات پر مشتمل ہے. ہر ہدایت میں متعلقہ زیادہ سے زیادہ لفظی سطح ہوسکتی ہے جو (مثال کے طور پر ، منتخب کرتا ہے) اس سے ملنے والے دوروں اور واقعات کی اجازت دیتا ہے۔ Iroha کم خصوصی سطحوں (جیسے `trace` یا `info`) کو زیادہ خصوصی سطحوں کی نسبت زیادہ لفظی سمجھتا ہے (جیسا کہ `error` یا `warn`).
 
 ایک اعلی سطح پر، ہدایات کے لئے نحو کئی حصوں پر مشتمل ہے:
 
@@ -470,11 +470,11 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 
 :::
 
-::: info [`logger.level`](#param-logger-level) کے ساتھ مطابقت.
+::: info [`logger.level`](#param-logger-level) کے ساتھ مشترکہ استعمال
 
 `logger.filter` [`logger.level`](#param-logger-level) کے ساتھ مل کر کام کرتا ہے اور کوئی بھی دوسرے کو اوور رائٹ نہیں کرتا ہے۔
 
-مثال کے طور پر، اگر `logger.level` کو `INFO` پر مقرر کیا گیا ہے اور `logger.filter` کو `iroha_core=debug` پر مقرر کیا جاتا ہے تو، نتیجہ فلٹر سیٹ `info,iroha_core=debug` ہو جائے گا (یعنی تمام ماڈیولز کے لئے `info`، `debug` کے لئے `iroha_core`).
+مثال کے طور پر، `logger.level` مقرر کیا گیا ہے `INFO` اور `logger.filter` مقرر کیا گیا ہے `iroha_core=debug`, حاصل فلٹر سیٹ ہو جائے گا `info,iroha_core=debug` (یعنی `info` تمام ماڈیولز کے لئے، `debug` کے لئے `iroha_core`).
 
 :::
 
@@ -495,7 +495,7 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 
 - `full`: ڈیفالٹ فارمیٹر۔ یہ واقع ہونے والے ہر واقعہ کے لئے انسان پڑھنے کے قابل ، سنگل لائن لاگس جاری کرتا ہے ، جس میں واقعے کی فارمیٹڈ نمائندگی سے پہلے موجودہ اسپین سیاق و سباق دکھایا جاتا ہے۔
 - `compact`: ڈیفالٹ فارمیٹر کا ایک متغیر ، مختصر لائن کی لمبائی کے لئے بہتر بنایا گیا ہے۔ موجودہ اسپین سیاق و سباق سے کھیتوں کو فارمیٹ کردہ واقعہ کے کھیتوں میں شامل کیا جاتا ہے ، اور اسپین نام نہیں دکھائے جاتے ہیں۔ لفظی سطح کو ایک ہی حروف تک کم کردیا گیا ہے۔
-- `pretty`: بہت خوبصورت، کثیر سطر کے نوشتہ جات جاری کرتا ہے، انسان کی پڑھنے کی صلاحیت کے لئے بہتر بنایا گیا. یہ بنیادی طور پر مقامی ترقی اور ڈیبگنگ میں استعمال کرنے کے لئے تیار کیا جاتا ہے، یا کمانڈ لائن ایپلی کیشنز کے لئے، جہاں لاگ کے خودکار تجزیہ اور کمپیکٹ اسٹوریج کو پڑھنے کی صلاحیت اور بصری اپیل سے زیادہ ترجیح نہیں دی جاتی ہے۔
+- `pretty`: زیادہ سے زیادہ خوبصورت، کثیر لائن لاگس جاری کرتا ہے، انسان کی پڑھنے کے قابل ہونے کے لئے بہتر بنایا گیا ہے۔ یہ بنیادی طور پر مقامی ترقی میں استعمال کرنے کا ارادہ رکھتا ہے اور ڈیبگنگ، یا کمانڈ لائن ایپلی کیشنز کے لئے، جہاں لاگس کا خودکار تجزیہ اور کمپیکٹ اسٹوریج پڑھنے کی اہمیت اور بصری اپیل سے کم ہے.
 - `json`: آؤٹ پٹ newline-delimited JSON لکڑی۔ یہ نظاموں کے ساتھ پیداواری استعمال کے لئے موزوں ہے جہاں ساختہ لکڑیوں کو بطور JSON تجزیہ اور دیکھنے کے اوزار کی طرف سے. JSON پیداوار انسانی پڑھنے کی صلاحیت کے لئے بہتر نہیں ہے.
 
 مزید تفصیلات اور نمونہ آؤٹ پٹ کے لئے، [`tracing-subscriber` دستاویزات ](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/index.html) دیکھیں.
@@ -543,15 +543,21 @@ KURA_BLOCKS_IN_MEMORY=1024
 
 ### `kura.init_mode` {#param-kura-init-mode}
 
-Kura شروع کرنے کا طریقہ
+Kura شروع کرنے کا موڈ۔ `strict` معمول اور ڈیفالٹ موڈ ہے: یہ نوڈ فعال ہونے سے پہلے کینونیکل ہسٹری ، بازیافت آرٹیفیکٹس ، معاون انڈیکس ، اور اسٹوریج اکاؤنٹنگ کی توثیق کرتی ہے۔
 
-<param-table  default-value=strict env=KURA_INIT_MODE>
+`fast` ایک ہنگامی، محدود خدمت کا موڈ ہے جو اس وقت عملی مشاہدہ بحال کرتا ہے جب آغاز کا مکمل آڈٹ بندش کا خطرہ بن جائے۔ اس کے لیے ایسا اسٹوریج درکار ہے جسے پہلے `strict` نے شروع کیا ہو اور موجودہ snapshot generation میں عین پانچ artifacts ہوں: `snapshot.data`، `snapshot.sha256`، `snapshot.sig`، `snapshot.fast.norito` اور `snapshot.merkle.json`۔ ڈومین سے جدا آپریٹر دستخط مشتہر پے لوڈ digest اور محدود مینی فیسٹ کو باندھتا ہے؛ مینی فیسٹ پے لوڈ کی لمبائی، chain/network شناخت، آخری height/hash، SCCP پالیسی ہیش اور bootstrap lineage کی موجودگی کو باندھتا ہے۔ Fast ایسی bootstrap lineage رد کرتا ہے اور پائیدار Kura سے عین وہی marker/count/tip حد درکار کرتا ہے۔ پہلی ریلیز کے نوڈ صرف انہی پانچ artifacts کو قبول اور کسی دوسری artifact تعداد یا فائل ناموں کے مجموعے کو رد کرتے ہیں۔
+
+Fast ان پانچ ناموں کی فہرست بناتا اور پے لوڈ و Merkle فائلیں میٹا ڈیٹا سے باندھتا ہے، مگر ان کا مواد پڑھتا، ہیش، parse یا decode نہیں کرتا۔ یہ دستخط شدہ مینی فیسٹ سے کم سے کم World/Nexus بناتا، Kura کا عین hash prefix صرف پڑھنے کے لیے map کرتا اور snapshot World، block-hash array، ٹرانزیکشن history، derived indexes اور پائیدار recovery journals کھولتا نہیں۔ Merkle، کینونیکل اور معنوی snapshot audits، تاریخی block/finality/SCCP reconciliation، Sumeragi active-height recovery، merge اور query journals، lane manifest/compliance sources، Kura-backed SoraFS archives، recursive storage accounting اور اختیاری service reconcilers مؤخر رہتے ہیں۔ مقامی ٹرانزیکشن admission، proposals، voting، کینونیکل writes اور معاون producers غیر فعال رہتے ہیں۔ Kura خود writer startup اور پائیدار تبدیلیاں رد کرتا ہے؛ pipeline اور FASTPQ persistence queues کام محفوظ یا encode کرنے کے بجائے فوراً رد کرتی ہیں۔ Kura read APIs مرمت اور durability-sync بھی بند رکھتے ہیں: عارضی ضمنی ریکارڈ promote نہیں ہوتے، غائب lane artifacts شائع نہیں ہوتے اور progress barriers کو fsync نہیں کیا جاتا۔ Sumeragi اور ٹرانزیکشن gossip شروع نہیں ہوتے۔ Torii صرف health، liveness، readiness، peer اور configuration operations ظاہر کرتا ہے؛ API-version، status، metrics اور تمام معمول کے state/history راستے دستیاب نہیں ہوتے۔ `strict` کے ساتھ دوبارہ آغاز تک readiness دستیاب نہیں رہتی۔
+
+`fast` صرف کسی واقعے کے دوران استعمال کریں۔ خدمت مستحکم ہونے پر نوڈ روکیں، `strict` بحال کریں اور دوبارہ آغاز کریں تاکہ پیداوار بحال ہونے سے پہلے ہر مؤخر جانچ اور اشاریے کی تعمیرِ نو چل جائے۔ Fast موڈ کو مؤخر merge log درکار نہیں اور وہ کینونیکل اسٹوریج بناتا، مرمت، مختصر یا درآمد نہیں کرتا؛ غیر شائع شدہ suffixes اور زیرِ التوا معاون recovery stages کو پڑھے یا بدلے بغیر نظر انداز کر کے Strict recovery کے لیے چھوڑ دیتا ہے۔ درآمد شدہ، صرف ہیش پر مشتمل snapshot lineage دستیاب نہیں رہتی۔ موجودہ snapshot غائب یا نامعتبر ہو تو آغاز فوراً ناکام ہوتا ہے؛ Fast کبھی خالی world یا تاریخی replay rebuild پر واپس نہیں جاتا۔
+
+<param-table default-value=strict>
 <template #type>
 
 سٹرنگ، ممکنہ اقدار:
 
-- `strict`: تمام بلاکس کی سختی سے تصدیق
-- `fast`: صرف بنیادی چیک کے ساتھ تیز رفتار آغاز
+- `strict`: مکمل تصدیق اور معمول کی پیداوار
+- `fast`: پیداوار کو سختی سے دوبارہ شروع ہونے تک قرنطینہ میں رکھنے کے ساتھ محدود ہنگامی آغاز
 
 </template>
 </param-table>
@@ -561,10 +567,6 @@ Kura شروع کرنے کا طریقہ
 ```toml [Config File]
 [kura]
 init_mode = "fast"
-```
-
-```shell [Environment]
-KURA_INIT_MODE=fast
 ```
 
 :::
@@ -662,7 +664,7 @@ transaction_time_to_live_ms = 43_200_000
 
 ### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
 
-Sumeragi سافٹ فورک ہینڈلنگ کے راستوں کی مشق کے لئے صرف ڈیبگ سوئچ۔ اس کو کنٹرول شدہ ٹیسٹوں سے باہر غیر فعال کردیں؛ اسے چلانے والے پروڈکشن نیٹ ورک پر تبدیل کرنے سے ہم مرتبہ اتفاق رائے کے رویے کے بارے میں متفق نہیں ہوسکتے ہیں۔
+Sumeragi سافٹ فورک ہینڈلنگ کے راستوں کی مشق کے لئے صرف ڈیبگ سوئچ۔ اس کو کنٹرول شدہ ٹیسٹوں سے باہر غیر فعال کردیں؛ اسے چلنے والے پروڈکشن نیٹ ورک پر تبدیل کرنے سے نیٹ ورک نوڈ اتفاق رائے کے رویے کے بارے میں متفق نہیں ہوسکتے ہیں۔
 
 <param-table type=bool default-value=false />
 
@@ -675,15 +677,25 @@ force_soft_fork = true
 
 :::
 
-## تصویر {#snapshot}
+## Nexus ایٹمی نجی تصفیہ {#nexus-atomic-private-settlement}
+
+`[nexus.atomic_private_settlement]` علیحدہ `AtomicPrivateSettlementV1` راستے کو کنٹرول کرتا ہے۔ یہ بطور ڈیفالٹ غیر فعال ہے۔ `enabled = true` مقرر کرنے کے لیے `activation_height` بھی درکار ہے؛ اگر on-chain capability، نوٹس کی مدت، fixed proof profile اور pool/audit گورننس فعال نہ ہوں تو admission پھر بھی fail closed ہوتا ہے۔
+
+اہم حدود یہ ہیں `max_participants`, `max_expiry_blocks`, `audit_timeout_blocks`, `prepare_timeout_blocks`, `commit_timeout_blocks`, `max_proof_bytes`, `max_capsule_bytes`, `max_carrier_bytes`, `sidecar_retention_blocks`, `sidecar_max_records`, اور `sidecar_max_total_bytes`. `capsule_padding_classes_bytes` کو سختی سے بڑھتی ہوئی ذیلی سیٹ ہونا ضروری ہے V1 پیڈنگ کلاسز. `permitted_policy_versions` صرف قبول کرتا ہے V1.
+
+`max_capsule_bytes` مکمل `PrivateSettlementAuditCapsuleV1` کے کینونیکل Norito بائٹس کی پیمائش کرتا ہے، بشمول AAD ، نونس، شفر ٹیکسٹ، ویکٹر فریمنگ، اور ہر آڈیٹر کو لپیٹ دیا گیا-DEK صف؛ یہ صرف شفرٹیکسٹ حد نہیں ہے. ہر فعال بھرنے والے طبقے کو کم از کم `default_min_auditor_approvals` آڈیٹرز کے لئے قدامت پسند پورے کیپسول لفافہ میں فٹ ہونا چاہئے۔ یہ منظوری کی ترتیب بھی ایک زیر انتظام منزل ہے: Torii کم `min_approvals` قدر کے ساتھ ایک نئے منظور شدہ پالیسی کو مسترد کرتا ہے اور کسی بھی حقیقی کیپسول کو منسوخ کر دیتا ہے جو کینونیکل بائٹ کی حد سے زیادہ ہے۔
+
+ان ترتیبات میں کوئی پیداوار کے ماحول متغیر سرگرمی بائی پاس نہیں ہے. [ایٹمی نجی کراس ڈیٹا اسپیس سیٹ اپ چلائیں](/ur/get-started/atomic-private-settlement) مکمل ترتیب کی مثال اور آپریشنل ضروریات کے لئے. راستہ پیداوار کے لئے اہل نہیں ہے جب تک کہ دستاویزی بیرونی ریلیز گیٹس گزر نہ جائیں۔
+
+## اسنیپ شاٹ {#snapshot}
 
 یہ ماڈیول [ ورلڈ اسٹیٹ ویو ](/ur/blockchain/world#world-state-view-wsv) کے سنیپ شاٹس کو پڑھنے اور لکھنے کے لئے ذمہ دار ہے۔
 
-اسنیپ شاٹس ورلڈ اسٹیٹ ویو کے ایک سلسلہ بندی شدہ چیک پوائنٹ کو اسٹور کرتی ہیں تاکہ پیئر Kura سے ہر بلاک کو دوبارہ کھیلنے کے بغیر دوبارہ شروع کرسکے۔ Kura بلیک کی دیرپا تاریخ اور دوبارہ چلانے کے لئے سچائی کا ذریعہ رہتا ہے۔ اسنیپشاٹس تیز رفتار راستہ ہیں۔ اسٹارٹ اپ پر ، Iroha ترتیب شدہ سلسلہ اور ذخیرہ شدہ بلاکس کے ساتھ سنیپ شاٹ میٹا ڈیٹا کو چیک کرتا ہے اس سے پہلے کہ فیصلہ کیا جائے کہ آیا اسنیپ شاٹ لوڈ کرنا ہے یا دوبارہ چلانے کے لئے واپس جانا ہے۔
+اسنیپ شاٹس ورلڈ اسٹیٹ ویو کے ایک سلسلہ بندی شدہ چیک پوائنٹ کو اسٹور کرتی ہیں تاکہ پیئر Kura سے ہر بلاک کو دوبارہ کھیلنے کے بغیر دوبارہ شروع کرسکے۔ Kura باقی رہتی ہے دیرپا بلاک کی تاریخ اور ریپلے کے لئے سچائی کا ذریعہ؛ اسنیپشاٹس تیز رفتار راستہ ہیں۔ اسٹارٹ اپ پر ، Iroha ترتیب شدہ سلسلہ اور ذخیرہ شدہ بلاکس کے ساتھ سنیپ شاٹ میٹا ڈیٹا کو چیک کرتا ہے اس سے پہلے کہ فیصلہ کیا جائے کہ آیا اسنیپ شاٹ لوڈ کرنا ہے یا دوبارہ چلانے کے لئے واپس جانا ہے۔
 
 ::: tip اسنیپ شاٹس مٹائیں
 
-اگر اسنیپ شاٹس سسٹم میں کچھ غلط ہے، اور آپ ایک خالی صفحے سے شروع کرنا چاہتے ہیں (اسنیپ شاٹ کے لحاظ سے) ، آپ [`snapshot.store_dir`](#param-snapshot-store-dir) کی طرف سے مخصوص ڈائرکٹری کو ہٹا سکتے ہیں.
+اگر اسنیپ شاٹس سسٹم میں کچھ غلط ہے ، اور آپ ایک خالی صفحے سے شروع کرنا چاہتے ہیں (اسنیپ شاٹ کے لحاظ سے) ، تو آپ [`snapshot.store_dir`](#param-snapshot-store-dir) کی طرف سے مخصوص ڈائرکٹری کو ہٹا سکتے ہیں۔
 
 :::
 
@@ -696,7 +708,7 @@ force_soft_fork = true
 
 سٹرنگ، ممکنہ اقدار:
 
-- `read_write`: Iroha ایک مدت کے ساتھ اسنیپ شاٹس بناتا ہے جس کی وضاحت [`snapshot.create_every_ms`](#param-snapshot-create-every-ms) کرتا ہے۔ اسٹارٹ اپ پر ، Iroha ایک موجودہ اسنیپشاٹ (اگر کوئی ہو) پڑھتا ہے اور تصدیق کرتا ہے کہ یہ بلاکس اسٹوریج کے ساتھ تازہ ترین ہے.
+- `read_write`: Iroha ایک مدت کے ساتھ اسنیپ شاٹس تخلیق کرتا ہے جس کی وضاحت [`snapshot.create_every_ms`](#param-snapshot-create-every-ms). اسٹارٹ اپ پر ، Iroha ایک موجودہ اسنیپشاٹ (اگر کوئی ہو) پڑھتا ہے اور تصدیق کرتا ہے کہ یہ بلاکس اسٹوریج کے ساتھ تازہ ترین ہے.
 - `readonly`: `read_write` کی طرح لیکن Iroha کسی بھی سنیپ شاٹس پیدا نہیں کرتا.
 - `disabled`: Iroha نہ ہی نئے سنیپ شاٹس بناتا ہے اور نہ ہی اسٹارٹ اپ پر ایک موجودہ کو پڑھتا ہے۔
 
@@ -754,15 +766,15 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 ## ٹیلی میٹری {#telemetry}
 
-ٹیلی میٹری بیرونی ٹیلی میٹری مجموعہ میں ہم مرتبہ تشخیص برآمد کرتا ہے۔ `telemetry.name` اور `telemetry.url` دونوں کو ترتیب دیں جب ہم مرتبہ کو ایک جمع کرنے والے کو رپورٹ کرنا چاہئے۔ جب ٹیلی میٹر استعمال نہیں کیا جاتا ہے تو سیکشن کو خارج کردیں.
+ٹیلی میٹری بیرونی ٹیلی میٹری مجموعہ میں نیٹ ورک نوڈ تشخیص برآمد کرتا ہے۔ `telemetry.name` اور `telemetry.url` دونوں کو ترتیب دیں جب ایک نیٹ ورک نوڈ کو جمع کرنے والے کو رپورٹ کرنا چاہئے۔ جب ٹیلی میٹر استعمال نہیں کیا جاتا ہے تو سیکشن کو چھوڑ دیں.
 
 `name` اور `url` کو جوڑا ہونا چاہئے۔
 
-تمام `telemetry` سیکشن اختیاری ہے۔
+تمام `telemetry` سیکشن اختیاری ہے.
 
 ### `telemetry.name` {#param-telemetry-name}
 
-نوڈ کا نام ٹیلی میٹری پر دکھایا جائے۔
+ٹیلی میٹری پر نوڈ کا نام ظاہر کیا جائے۔
 
 <param-table type=string />
 

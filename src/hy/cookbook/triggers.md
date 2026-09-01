@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /cookbook/triggers.md
-translation_source_hash: 93080591f5171c7ce25173eb1ef826d6f5ca661a17797be53e90aedab33ed0c3
+translation_source_hash: 5267fb9bb232d52d9df4bedee414d745ccc30dd52cbc30993df3c5b975a0bc38
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,13 +10,13 @@ translation_engine: nllb-200-ct2
 
 ## Արդյունքը {#outcome}
 
-Taira -ում գրանցեք վերջնական զանգի գործարկիչը, մեկ անգամ կատարեք այն, սպասեք կիրառված ավարտին եւ հաստատեք դրա հաջող ավարտը պարտավոր բլոկի պատմությունից:
+Taira -ում գրանցեք վերջնական զանգի գործարկիչը, մեկ անգամ կատարեք այն, սպասեք կիրառված ավարտին եւ հաստատեք դրա հաջող ավարտը հաստատված բլոկի պատմությունից:
 
 ## Նախադրյալներ {#prerequisites}
 
 - ֆինանսավորված ստորագրող, `taira.client.toml`, `taira.tx-metadata.json`, եւ `TAIRA_ACCOUNT_ID` _ ից [Կապակցեք Taira](./connect-to-taira.md).
 - Taira թույլտվությունը գրանցել `TAIRA_ACCOUNT_ID` գործարկիչը եւ իրականացնել արդյունքում առաջացած գործարկիչ: համապատասխան տոքերները `CanRegisterTrigger` են, որոնք ընդգրկված են `authority` եւ `CanExecuteTrigger`՝ `trigger`:
-- Եթե այդ դրամաշնորհները հասանելի չեն, օգտագործեք ստեղծված տեղական ցանց եւ դրա կառավարիչ հաճախորդը: Աջնորդի իշխանությունը նաեւ պետք է ունենա բոլոր թույլտվությունները, որոնք պահանջվում են հրահանգների կողմից, որոնք գործարկում է աջնորդը:
+- Եթե այդ թույլտվությունները հասանելի չեն, օգտագործեք ստեղծված տեղական ցանցը և դրա ադմինիստրատոր հաճախորդը։ Trigger-ի իրավասությունը պետք է ներառի նաև իր կատարած հրահանգների պահանջած բոլոր թույլտվությունները։
 
 ```bash
 CONFIG=./taira.client.toml
@@ -54,7 +54,7 @@ iroha --config "$CONFIG" ledger trigger get --id "$TRIGGER_ID"
 iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 ```
 
-Հաստատեք I105 իշխանությունը, իրականացրեք ֆիլտրը, մնացած կրկնությունները եւ մեկ `Log` հրահանգը, նախքան լրացուցիչ վճար ծախսելը:
+Հաստատեք I105 լիազոր հաշիվը, իրականացրեք ֆիլտրը, մնացած կրկնությունները եւ մեկ `Log` հրահանգը, նախքան լրացուցիչ վճար ծախսելը:
 
 ### 3. Կատարեք եւ սպասեք երկու շերտերի: {#_3-execute-and-wait-for-both-layers}
 
@@ -108,17 +108,17 @@ iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 
 ## Խնդիրների լուծում {#troubleshooting}
 
-- Անթույլատրված գրանցումը նշանակում է, որ ստորագրողին բացակայում է `CanRegisterTrigger` հայտարարված իշխանության համար: Գործարկման համար անհրաժեշտ է առանձին շրջանակով սահմանված `CanExecuteTrigger` տոքերը.
-- Գործարքը կարող է հասնել Applied- ին, մինչ գործարկող գործողությունը հաղորդում է ձախողման մասին: Կարդացեք ավարտի արդյունքը եւ սխալը. ապա ստուգեք գործարկողի իշխանության թույլտվությունները յուրաքանչյուր ներկառուցված հրահանգի համար:
+- Անթույլատրված գրանցումը նշանակում է, որ ստորագրողին բացակայում է `CanRegisterTrigger` հայտարարված լիազոր հաշվի համար: Գործարկման համար անհրաժեշտ է առանձին շրջանակով սահմանված `CanExecuteTrigger` տոքերը.
+- Գործարքը կարող է հասնել Applied- ին, մինչ գործարկող գործողությունը հաղորդում է ձախողման մասին: Կարդացեք ավարտի արդյունքը եւ սխալը. ապա ստուգեք գործարկողի լիազոր հաշվի թույլտվությունները յուրաքանչյուր ներկառուցված հրահանգի համար:
 - `trigger not found`-ը կարող է նշանակել, որ գրանցման գործարքը մերժվել է կամ իրականացման համար օգտագործվել է այլ Torii/շղթանային կարգավորում:
 - Երբ կրկնությունը հասնում է զրոյին, ավելի շատ կրկնություններ պատրաստելը եւս մեկ առանձնահատկություն է գրելու համար: Մի արմատապես փոխեք այս բաղադրատոմսը անսահմանափակ դահլիճով:
 - Մաքրման համար `ledger trigger unregister --id "$TRIGGER_ID"` պահանջում է `CanUnregisterTrigger` այդ գործարկիչի եւ բացարձակ վճարային ընտրության համար:
 
 ## Աղբյուրը եւ դրա հետ կապված փաստաթղթերը {#source-and-related-docs}
 
-- [Բաժանորդագրված զանգի հետ կապված ներգրավման փորձարկումները փակված հանձնաժողովում ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/triggers/by_call_trigger.rs)
-- [Հանդիպման եւ գործարկման ինտեգրման փորձարկումները փակված հանձնաժողովում](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/events_and_triggers.rs)
-- [Trigger- ի հրահանգների կատարումը փակված commit- ում ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
+- [Բաժանորդագրված զանգի հետ կապված ներգրավման փորձարկումները փակված commit-ում ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/triggers/by_call_trigger.rs)
+- [Հանդիպման եւ գործարկման ինտեգրման փորձարկումները փակված commit-ում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events_and_triggers.rs)
+- [Trigger- ի հրահանգների կատարումը փակված commit- ում ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
 - [Գործարկիչներ](/hy/blockchain/triggers.md)
 - [Աջնորդների օրինակներ](/hy/blockchain/trigger-examples.md)
 - [Տեղեկատվություն](./stream-events.md)

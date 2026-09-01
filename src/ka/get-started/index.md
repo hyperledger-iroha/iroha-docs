@@ -10,14 +10,14 @@ translation_engine: nllb-200-ct2
 
 Iroha 3 არის პირველი გამოშვების Hyperledger Iroha პლატფორმა. იგი მხარს უჭერს თვითმმართველ ქსელებს და მრავალდატანილი მონაცემთა სივრცის SORA Nexus განთავსების მოდელს ერთი დეტერმინისტური კოდის ბაზიდან.
 
-მაღალი დონის Iroha 3 აერთიანებს:
+მაღალი დონის შემთხვევაში Iroha 3 აერთიანებს:
 
 - დეტერმინისტური შესრულება და შენახვა
 - Iroha ვირტუალური მანქანა (IVM) პორტატული ჭკვიანი ხელშეკრულებებისათვის
-- Norito როგორც კანონიკური ფორმატი
+- Norito როგორც კანონიკური სერიალიზაციის ფორმატი
 - Torii კლიენტისთვის, ოპერატორისა და აპლიკაციის მიმართულებისთვის APIs
 - Sumeragi კონსენსუსი სავალდებულო მონაცემების ხელმისაწვდომობისა და საიმედო მაუწყებლობის შესახებ
-- დომენების გარეშე კანონიკური ანგარიშები, რომლებიც ცალკე კავშირშია ადამიანის მიერ წაკითხული ალექსიებით
+- დომენის გარეშე ერთიანი პროტოკოლური სტანდარტული ანგარიშები, რომლებიც ცალკე კავშირშია ადამიანის მიერ წაკითხული ალიასით
 
 ## სწრაფი დასაწყისი {#quickstart}
 
@@ -26,7 +26,7 @@ Iroha 3 არის პირველი გამოშვების Hyperl
 1. [დამონტაჟება Iroha 3](/ka/get-started/install-iroha.md)
 2. [გაშვება Iroha 3](/ka/get-started/launch-iroha.md)
 3. [ოპერირება Iroha 3 მეშვეობით CLI](/ka/get-started/operate-iroha-via-cli.md)
-4. [დაკავშირება SORA Nexus მონაცემთა ბაზებთან](/ka/get-started/sora-nexus-dataspaces.md)
+4. [დაკავშირება SORA Nexus მონაცემთა სივრცეებთან](/ka/get-started/sora-nexus-dataspaces.md)
 5. [სპონსორი კერძო მონაცემთა სივრცის გადასახადები](/ka/get-started/private-dataspace-fee-sponsor.md)
 
 ## SDKs {#sdks}
@@ -44,9 +44,9 @@ Iroha 3 არის პირველი გამოშვების Hyperl
 გვერდები, რომლებიც ყველაზე ხშირად გამოიყენებთ ქსელის მართვის დროს:
 
 - [Iroha ბინარებთან მუშაობა](/ka/reference/binaries.md)
-- [გენეზიის მითითება](/ka/reference/genesis.md)
-- [Torii საბოლოო წერტილები](/ka/reference/torii-endpoints.md)
-- [დაკავშირება SORA Nexus მონაცემთა ბაზებთან](/ka/get-started/sora-nexus-dataspaces.md)
+- [ბლოკჩეინის გენეზისი რეფერენცია](/ka/reference/genesis.md)
+- [Torii API საბოლოო ნიშნები](/ka/reference/torii-endpoints.md)
+- [დაკავშირება SORA Nexus მონაცემთა სივრცეებთან](/ka/get-started/sora-nexus-dataspaces.md)
 - [სპონსორი კერძო მონაცემთა სივრცის გადასახადები](/ka/get-started/private-dataspace-fee-sponsor.md)
 - [შესაბამისობის მატრიცა](/ka/reference/compatibility-matrix.md)
 

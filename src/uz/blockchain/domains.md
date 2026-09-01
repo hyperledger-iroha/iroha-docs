@@ -8,30 +8,30 @@ translation_engine: nllb-200-ct2
 
 # Domenlar {#domains}
 
-Domenlar `World` da ro'yxatdan o'tgan nom maydonlari deb ataladi. Hozirgi Iroha 3 ma'lumotlar modelida domen ona ma'lumot maydonlari bilan kvalifikatsiya qilinadi, shuning uchun kanonik identifikator quyidagicha:
+Domenlar — `World` da ro‘yxatdan o‘tgan nomlar makonlari. Joriy Iroha 3 ma’lumotlar modelida domen ota ma’lumotlar makoni bilan aniqlashtiriladi, shu sabab kanonik identifikator quyidagicha:
 
 ```text
 domain.dataspace
 ```
 
-Misol uchun, `payments.universal` `payments` domenining `universal` ma'lumotlar maydonidagi nomlari.
+Masalan, `payments.universal` — `universal` ma’lumotlar makonidagi `payments` domeni.
 
-## Tashkilot {#structure}
+## Tuzilishi {#structure}
 
-Ro'yxatga olingan `Domain` tarkibida quyidagilar mavjud:
+Ro‘yxatdan o‘tkazilgan `Domain` quyidagilarni o‘z ichiga oladi:
 
-- `id`: ma'lumotlar maydonida malakali bo'lgan `DomainId`
-- `logo`: domen logotipi uchun `SoraFS` URI ko'rsatkich
-- `metadata`: o'zboshimchalik bilan kalit qiymatli metadotlar
-- `owned_by`: domeniga ega bo'lgan hisob raqamlari, odatda uni ro'yxatdan o'tkazgan hisob raqami
+- `id`: ma’lumotlar makoni bilan aniqlashtirilgan `DomainId`;
+- `logo`: domen logotipi uchun ixtiyoriy `SoraFS` URI;
+- `metadata`: ixtiyoriy kalit-qiymat metama’lumotlari;
+- `owned_by`: domenga egalik qiladigan hisob, odatda uni ro‘yxatdan o‘tkazgan hisob.
 
-Domenni materiallashtirish uchun ishlatiladigan bootstrap payload: `NewDomain`. U o ' z ichiga `id`, ko'rsatkich `logo`, va dastlabki `metadata`. Ish vaqti toʻldirilgan `owned_by` Oddiy mijozlar bu yukni to'g'ridan-to'g'ri topshirmaydilar.
+Domenni yaratish uchun ishlatiladigan boshlang‘ich foydali yuk `NewDomain` dir. U `id`, ixtiyoriy `logo` va dastlabki `metadata` ni o‘z ichiga oladi. Bajarish muhiti `owned_by` qiymatini vakolat hisobidan oladi. Oddiy mijozlar bu foydali yukni bevosita yubormaydi.
 
-## Ro'yxatdan o'tish {#registration}
+## Ro‘yxatdan o‘tkazish {#registration}
 
-Oddiy domen yaratish deklarativ alias o'rnatish oqimini ishlatadi. Bu SNS ijara shartnomasini, egalik qilish qobiliyatlarini, narxlarni himoya qilishni va domen qatorini bitta atomik `EnsureAlias` muomalada saqlaydi. `Register::Domain` genesis / bootstrap yuzasi bo'lib qoladi va `ledger domain` buyruqida `register` kichik buyruq yo'q.
+Oddiy domen yaratishda deklarativ taxallus sozlash jarayoni ishlatiladi. U SNS ijarasi, egaga tegishli imkoniyatlar, narx taklifi himoyasi va domen yozuvini bitta atomik `EnsureAlias` tranzaksiyasida saqlaydi. `Register::Domain` genezis va dastlabki yuklashga xos yuza bo‘lib qoladi; `ledger domain` buyrug‘ida `register` quyi buyrug‘i yo‘q.
 
-SDK yoki onboarding xizmati bilan sirsiz `AliasSetupPlanRequestV1` niyatni yaratish, so'ngra CLI uni jonli holatga qarshi rejalashtirish va to'g'ri rejani taqdim etish uchun:
+SDK yoki foydalanuvchini qabul qilish xizmati orqali sirsiz `AliasSetupPlanRequestV1` niyatini tuzing, keyin CLI yordamida uni jonli holatga nisbatan rejalashtirib, hosil bo‘lgan aniq rejani yuboring:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -45,20 +45,20 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-Niyat `payments.universal`, uning raqamli ma'lumotlar maydoni, kanonik I105 egasi, ijara shartnomasini sotib olish muddati va joriy siyosat / to'lov quote qo'riqchisi aniqlanadi. rejalashtiruvchining oxirgi nuqtasi `POST /v1/aliases/setup/plan`; uning qaytarilgan rejasi zanjir, vakolat, davlat va muddatga bog'liq. Domain olib tashlash hali ham [`Unregister`](/uz/blockchain/instructions.md#un-register)dan foydalanadi.
+Niyat `payments.universal`, uning raqamli ma’lumotlar makoni, kanonik I105 egasi, ijara muddati va joriy siyosat/haq narxi himoyasini belgilaydi. Rejalashtiruvchi yo‘nalishi — `POST /v1/aliases/setup/plan`; u qaytargan reja zanjir, vakolat, holat va oxirgi muddatga bog‘langan. Domenni olib tashlash uchun hamon [`Unregister`](/uz/blockchain/instructions.md#un-register) ishlatiladi.
 
-Domeni yaratish yoki olib tashlash uchun aktiv ishga tushirish vaqtini tasdiqlash vositasida tegishli domen boshqaruv ruxsatnomasi kerak. [`SetKeyValue` va `RemoveKeyValue`](/uz/blockchain/instructions.md#setkeyvalue-removekeyvalue) bilan domen metadatalari yangilanishi mumkin, agar hokimiyat ushbu domenni o'zgartirishga ruxsatnomaga ega bo'lsa.
+Domen yaratish yoki olib tashlash uchun faol bajarish muhiti tekshiruvchisi belgilagan tegishli domen boshqaruv ruxsati kerak. Vakolat shu domenni o‘zgartirish ruxsatiga ega bo‘lsa, domen metama’lumotini [`SetKeyValue` va `RemoveKeyValue`](/uz/blockchain/instructions.md#setkeyvalue-removekeyvalue) bilan yangilash mumkin.
 
-## Taira bilan sinab ko'ring. {#try-it-on-taira}
+## Taira da sinab ko‘rish {#try-it-on-taira}
 
-Hozirda ommaviy Taira testnetda ko'rinadigan domenlarni ro'yxatga oling:
+Ochiq Taira sinov tarmog‘ida hozir ko‘rinadigan domenlarni sanang:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
   | jq -r '.items[].id'
 ```
 
-Jamoat yoʻli katalogini maʼlumotlar maydonining aliaslariga qaytarish:
+Ochiq yo‘lak katalogini ma’lumotlar makoni taxalluslari bilan birga oling:
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -67,9 +67,9 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
     | @tsv'
 ```
 
-Ilova domen mavjudligini tekshirish uchun birinchi buyruqdan foydalaning. Ma'lumotlar maydonining ommaviy, cheklangan yoki asosiy yo'nalish orqasida qolganligini tasdiqlash uchun yo'l katalogidan foydalanishingiz kerak.
+Domen mavjudligini tekshirish uchun birinchi buyruqdan foydalaning. Ma’lumotlar makoni ochiq, cheklangan yoki asosiy yo‘lakdan ortda qolganini tekshirish uchun yo‘lak katalogidan foydalaning.
 
-Domenni o'rnatish - bu pul to'lanadigan yozish. Taira, faucet yordamchisini qutqarish [Testnetni olish XOR bilan Taira](/uz/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) koʻrsatilgan `taira_faucet_claim.py`, imzochiga ommaviy kran orqali mablag' ajratish va to'lov metadatalarini qo'shish:
+Domenni sozlash haq talab qiladigan yozish amalidir. Uni Taira-da sinashdan oldin [Taira-da sinov tarmog‘i XOR aktivini olish](/uz/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) bo‘limidagi yordamchini `taira_faucet_claim.py` sifatida saqlang, imzolovchini ochiq sinov mablag‘i xizmati orqali moliyalashtiring va haq metama’lumotini biriktiring:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -88,15 +88,15 @@ iroha --config ./taira.client.toml \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 
-Tekroriy testnet ishlarida noyob domen nomi uchun niyatni yaratish va foydalanish Taira amaldagi siyosat va to'lov aktivlari quote himoya. lokalnet yoki Minamoto.
+Sinov tarmog‘ini takroran ishlatishda yagona domen nomi uchun niyat yarating va Taira-ning joriy siyosati hamda haq aktivi narxi himoyasidan foydalaning. Mahalliy tarmoq yoki Minamoto uchun yaratilgan rejani qayta ishlatmang.
 
 ## Boshqa subyektlar bilan munosabatlar {#relationship-to-other-entities}
 
-Domenlar guruhi ob'ektlarini guruhlaydi va domen ko'rsatkichli ma'lumotlar uchun nom maydonini taqdim etadi. Asset ta'riflari domenlarga mos identifikatorlardan foydalanadi, so'rovlar domenlarni ro'yxatga olish yoki topish mumkin Obyektlar mavjud ma'lumotlar modelida domensiz hisoblanadi, lekin hisoblar domenlarga ega bo'lishi mumkin va ularning ta'riflari domenlar ostida yashaydigan aktivlarni saqlashi mumkin.
+Domenlar reyestr obyektlarini guruhlaydi va domen doirasidagi ma’lumot uchun nomlar makonini taqdim etadi. Aktiv ta’riflari domen bilan aniqlashtirilgan identifikatorlardan foydalanadi; so‘rovlar domenlarni ro‘yxatlash yoki muayyan domen doirasidagi obyektlarni topishi mumkin. Joriy ma’lumotlar modelida hisoblarning o‘zi domensiz, biroq hisoblar domenlarga egalik qilishi va ta’rifi domen ostida joylashgan aktivlarni saqlashi mumkin.
 
 Shuningdek qarang:
 
-- [Jahon](/uz/blockchain/world.md)
+- [Global holat](/uz/blockchain/world.md)
 - [Aktivlar](/uz/blockchain/assets.md)
-- [Metadatalar](/uz/blockchain/metadata.md)
+- [Metama’lumotlar](/uz/blockchain/metadata.md)
 - [Nomlash qoidalari](/uz/reference/naming.md)

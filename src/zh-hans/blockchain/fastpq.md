@@ -1,32 +1,31 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/fastpq.md
-translation_source_hash: f1dc55e4b2146de009203e19adb5cc1e9ce5302bc0ee27fe0b442693c5112c22
+translation_source_hash: d8dd61390f5df3dae09b70399e04e8f71716a912ef5dea9010feaf60573ed261
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # FastPQ {#fastpq}
 
-FastPQ 是 Iroha 对选定的执行效果的 STARK 证明路径.它不取代正常的交易执行或共识.通过 ISI,IVM 和 Sumeragi 进行正常运行; FastPQ 消耗了确定性执行证据,并将支持的效果转化为证明批次.
+FastPQ 是 Iroha 对选定的执行效果的 STARK 证明路径.它不取代正常的交易执行或共识.通过 ISI,IVM 和 Sumeragi 进行正常运行; FastPQ 消耗了确定性执行证明,并将支持的效果转化为证明批次.
 
 目前的主机集成有三个主要途径:
 
 - 在区块执行期间记录的透明数值资产转移
-- Nexus 经过验证的车道继电器,其 AXT 证明包装载有 FastPQ 绑定
-- SCCP 透明信息证明辅助器,将 FastPQ 证据包装在一个开放的验证封面中
+- Nexus 经过验证的通道继电器,其 AXT 证明包装载有 FastPQ 绑定
+- SCCP 透明信息证明辅助器,将 FastPQ 证明包装在一个开放的验证封装中
 
 ## 转移证人的路径 {#transfer-witness-path}
 
-当指令突变平衡时,透明的数值转移会产生结构化转移记录. 转录记录:
+当指令突变余额时,透明的数值转移会产生结构化转移记录. 转录记录:
 
 - 来源账户,目的地账户,资产定义和金额
 - 转移前和后的发送者和接收者的余额
 - 作为批量哈希所使用的交易入口点哈希
-- 从提交账户中获取的权威信息
-- 一个多尔塔转录的Poseidon消化器
+- 从提交账户中获取的授权主体信息
+- 一个多尔塔转录的Poseidon摘要
 
-批量转移使用多个海域的转录. 在这种情况下,一个海域的波西登消化器是缺失的.
+批量转移使用多个海域的转录. 在这种情况下,一个海域的波西登摘要是缺失的.
 
 在区块完成时, Iroha 将这些转录按输入点哈希组分.执行证人然后携带原始转录捆绑和为检测器准备的 FastPQ 过渡批次.
 
@@ -34,7 +33,7 @@ FastPQ 是 Iroha 对选定的执行效果的 STARK 证明路径.它不取代正�
 
 |排列|关键形状|预估值|后值|
 | --------------- | ------------------------------------------------ | ----------------------- | ---------------------- |
-|发送人借款|`asset/<asset-definition>/<source-account>`|之前的发送人平衡|之后的发送人余额|
+|发送人借款|`asset/<asset-definition>/<source-account>`|之前的发送人余额|之后的发送人余额|
 |收件人信贷|`asset/<asset-definition>/<destination-account>`|之前的收件人余额|接收者余额之后|
 
 数值将正常化为整数目击单位.如果不能在选定的十分数尺度中表示为非负的 `u64`,则对 FastPQ 批量来说,一个值被拒绝
@@ -86,18 +85,18 @@ H_F(
 )
 $$
 
-对于从字节域消化开始的哈希, FastPQ 将第八个小字节在该领域内映射:
+对于从字节域摘要开始的哈希, FastPQ 将第八个小字节在该领域内映射:
 
 $$
 \operatorname{seed}(D)=
 \operatorname{le64}(\operatorname{Hash}(D)[0..8])\bmod p
 $$
 
-在此 `Hash` 意思是 Iroha 的`iroha_crypto::Hash::new`,一个32字节的Blake2bVar消化器,除非公式明确命名Poseidon2或 SHA-256.
+在此 `Hash` 意思是 Iroha 的`iroha_crypto::Hash::new`,一个32字节的Blake2bVar摘要,除非公式明确命名Poseidon2或 SHA-256.
 
 ### 字段算法 {#field-arithmetic}
 
-Rust 代码表示`[0,p)`中的范式元素是加值和减值的正规 `u64`值:
+Rust 代码表示`[0,p)`中的范式元素是加值和减值的规范 `u64`值:
 
 $$
 a +_F b = (a+b)\bmod p
@@ -135,7 +134,7 @@ $$
 \pmod p
 $$
 
-实现的条件是添加或减去 `p`直到结果成为正义.签署的整数,如平衡德尔塔等,由:
+实现的条件是添加或减去 `p`直到结果成为正义.签署的整数,如余额德尔塔等,由:
 
 $$
 \operatorname{field}(x)=x\bmod p,\qquad 0\leq\operatorname{field}(x)<p
@@ -179,7 +178,7 @@ x_2+c_{r,2}
 \end{bmatrix}
 $$
 
-所有添加和乘法都在 `F`.正规的 MDS 矩阵为:
+所有添加和乘法都在 `F`.规范的 MDS 矩阵为:
 
 $$
 M=
@@ -225,7 +224,7 @@ $$
 )
 $$
 
-在 `h_i`是分类的交易和时间触发器入口点哈希.在证据公开 IO 中,如果`perm_root`或 `tx_set_hash`全部为零,则检测器填写了倒退值:
+在 `h_i`是分类的交易和时间触发器入口点哈希.在证明公开 IO 中,如果`perm_root`或 `tx_set_hash`全部为零,则检测器填写了倒退值:
 
 $$
 \operatorname{perm\_root} =
@@ -243,7 +242,7 @@ $$
 
 ### 数字正常化 {#numeric-normalization}
 
-对于每个转移三角形,目标十进制尺度是对数量和两个平衡快照的最大剪切尺度:
+对于每个转移三角形,目标十进制尺度是对数量和两个余额快照的最大剪切尺度:
 
 $$
 s =
@@ -256,7 +255,7 @@ s =
 )
 $$
 
-一个 `Numeric` 价值与 mantissa `m` 和规模 `q` 只有在 `m >= 0` 和 `q <= s`. 它的 FastPQ 证人价值为:
+一个 `Numeric` 价值与 mantissa `m` 和规模 `q` 只有在 `m >= 0` 和 `q <= s`. 它的 FastPQ 见证数据价值为:
 
 $$
 \operatorname{norm}_s(m,q)=m\cdot10^{s-q}
@@ -266,7 +265,7 @@ $$
 
 ### 规范性命令 {#canonical-ordering}
 
-在跟踪施工之前,按过渡键,操作级别和原始插入指数进行分类:
+在轨迹构造之前,按过渡键,操作级别和原始插入索引进行分类:
 
 $$
 r(\operatorname{Transfer})=0,\quad
@@ -290,7 +289,7 @@ $$
 
 ### 转移方程 {#transfer-equations}
 
-对于转移金额 `a`, 发送者余额 `f`, 和收件人余额 `t`, FastPQ 在构建痕迹之前验证了正常化的证人值:
+对于转移金额 `a`, 发送者余额 `f`, 和收件人余额 `t`, FastPQ 在构建痕迹之前验证了正常化的见证数据值:
 
 $$
 f_0 \geq a
@@ -320,7 +319,7 @@ $$
 \delta_i = (\operatorname{post}_i - \operatorname{pre}_i)\bmod p
 $$
 
-可选的单-德尔塔转移消化将编码的转移预图提交:
+可选的单-德尔塔转移摘要将编码的转移预图提交:
 
 $$
 d_{\text{transfer}} =
@@ -329,9 +328,9 @@ E(\text{from})\|E(\text{to})\|E(\text{asset})\|E(a)\|\text{batch\_hash}
 )
 $$
 
-对于多德尔塔传输转录,当前格式要求此顶级消化不存在.
+对于多德尔塔传输转录,当前格式要求此顶级摘要不存在.
 
-接待机关对转移记录的消化器是:
+接待机关对转移记录的摘要是:
 
 $$
 d_{\text{authority}} =
@@ -340,7 +339,7 @@ $$
 
 ### 追踪行列 {#trace-rows}
 
-让分类过渡列表包含 `n` 的真行.
+令排序后的转换列表包含 `n` 个实际数据行。跟踪长度是下一个 2 的幂次：
 
 $$
 N = 2^{\lceil\log_2(\max(1,n))\rceil}
@@ -377,14 +376,14 @@ $$
 \delta_i = \operatorname{value\_new}_{i,0} - \operatorname{value\_old}_{i,0}
 $$
 
-施工商还追踪每资产的运行地带:
+构建器还追踪每资产的运行地带:
 
 $$
 R_i(a)=R_{i-1}(a)+\delta_i
 \quad\text{for transfer, mint, and burn rows of asset }a
 $$
 
-只有薄荷和燃烧行更新供应计量器:
+只有铸造和销毁行更新供应计量器:
 
 $$
 S_i(a)=S_{i-1}(a)+
@@ -424,7 +423,7 @@ $$
 
 ### 转移Merkle列 {#transfer-merkle-columns}
 
-传输行带有32级稀疏的Merkle路径.如果缺少主机证明,检测器从行键合成一个确定性路径,预平衡,以及该行是否是发送者或接收者的侧面.
+传输行带有32级稀疏的Merkle路径.如果缺少主机证明,检测器从行键合成一个确定性路径,预余额,以及该行是否是发送者或接收者的侧面.
 
 对于合成路径,口味盐为发送行 `fastpq:smt:from`和接收行 `fastpq:smt:to`:
 
@@ -518,7 +517,7 @@ $$
 R_{\text{trace}} = \operatorname{MerkleRoot}(C_0,\ldots,C_{m-1})
 $$
 
-最后的跟踪承诺是对域,参数集,跟踪形状,列消化和跟踪根的字节哈希:
+最后的跟踪承诺是对域,参数集,跟踪形状,列摘要和跟踪根的字节哈希:
 
 $$
 \operatorname{commitment} =
@@ -613,7 +612,7 @@ z_i,& s_{\text{perm},i}=0
 \end{cases}
 $$
 
-证据记录:
+证明记录:
 
 $$
 \operatorname{lookup\_grand\_product}=H_F(z_0,z_1,\ldots)
@@ -621,7 +620,7 @@ $$
 
 ### 较低程度的扩展 {#low-degree-extension}
 
-让我们 `omega_T` 成为追踪域生成器, `omega_E` 评估域生成器,以及 `g` 对于具有值的跟踪列, `v_i`, 插射产生系数 `a_j` 这样:
+令 `omega_T` 为 trace-domain generator、`omega_E` 为 evaluation-domain generator，且 `g` 为已配置的 coset offset。对于值为 `v_i` 的 trace column，插值会产生系数 `a_j`，使得：
 
 $$
 f(\omega_T^i)=v_i
@@ -641,7 +640,7 @@ $$
 
 然后对 `a'`进行评估.
 
-其他 CPU FFT 是一个反转基因-2的Cooley-Tukey变化,在位逆输入. `L`, 半长度 `H=L/2`, 和阶段根:
+其他 CPU FFT 是一个迭代式基数-2的Cooley-Tukey变化,在位逆输入. `L`, 半长度 `H=L/2`, 和阶段根:
 
 $$
 \omega_L=\omega^{N/L}
@@ -717,7 +716,7 @@ $$
 
 奇数级别复制了最后一个节点.查询路径通过按每个级别的查询叶索引等值进行左或右哈希验证.
 
-在指数 `i` 的叶子中,一个路径 `(s_0,\ldots,s_{d-1})`通过重复验证对根 `R`:
+在索引 `i` 的叶子中,一个路径 `(s_0,\ldots,s_{d-1})`通过重复验证对根 `R`:
 
 $$
 y_0=L_i
@@ -752,7 +751,7 @@ $$
 L^{\text{comp}}_i = H_D(i\|A_i)
 $$
 
-在 LDE 查询开放时,还检查在评估指数 `i` 上打开的值是否存在于其验证部分中:
+在 LDE 查询开放时,还检查在求值索引 `i` 上打开的值是否存在于其验证部分中:
 
 $$
 \operatorname{chunk\_index}=\left\lfloor\frac{i}{B_{\text{lde}}}\right\rfloor
@@ -787,7 +786,7 @@ $$
 
 ### 菲亚特-沙米尔转录 {#fiat-shamir-transcript}
 
-常规参数目录标记转录哈希为 SHA3-256.当前的检查器和验证器实现将挑战字节从 `iroha_crypto::Hash::new`中导出,这是一个32字节的Blake2bVar消化,然后将第八个小字节缩小到`F`:
+规范参数目录标记转录哈希为 SHA3-256.当前的检查器和验证器实现将挑战字节从 `iroha_crypto::Hash::new`中导出,这是一个32字节的Blake2bVar摘要,然后将第八个小字节缩小到`F`:
 
 $$
 \chi(\text{tag}) =
@@ -795,7 +794,7 @@ $$
 \bmod p
 $$
 
-挑战呼叫将全文添加到转录状态.
+每次 challenge 调用都会把完整 digest 追加到 transcript state。重放顺序如下：
 
 1. 公开 IO,协议版本,参数版本和参数名称
 2. LDE 根和痕迹根
@@ -804,7 +803,7 @@ $$
 5. AIR 痕迹根和 AIR 组成根
 6. 搜索大产品
 7. FRI 层根和`beta_l`挑战
-8. 采样查询指数
+8. 采样查询索引
 
 查询采样将继续绘制32字节的挑战摘录,并将其读取为小单元 `u64` 分片,直到获得所需数量的独特索引:
 
@@ -840,7 +839,7 @@ $$
 \operatorname{permission\_hashes})
 $$
 
-每个字段都必须与证据的公开 IO 字节对字节相匹配.然后验证器重建相同的转录并得出相同的:
+每个字段都必须与证明的公开 IO 字节对字节相匹配.然后验证器重建相同的转录并得出相同的:
 
 $$
 \gamma,\quad \alpha_0,\alpha_1,\quad
@@ -894,34 +893,34 @@ $$
 
 转移记录时,检查人员的检查包括:
 
-- 发送器的余额不能下流
+- 发送者余额不得发生下溢
 - `sender_after` 必须等于 `sender_before - amount`
 - `receiver_after` 必须等于 `receiver_before + amount`
 - 转录必须涵盖分批中的每一行转移
-- 一个多尔塔波西登消化器,当存在时,必须与转录前图相匹配
+- 一个多尔塔波西登摘要,当存在时,必须与转录前图相匹配
 - 条件是稀疏的Merkle证明必须被解码为版本 1;缺失的路径由确定性合成证明填充
 
-追踪包含转移,硬币,燃烧,角色授予,角色撤销,元数据集和权限搜索行的选择列. 数字操作行还载有签名的分数,每个资产的分数以及供应计数.
+追踪包含转移,铸造,销毁,角色授予,角色撤销,元数据集和权限搜索行的选择列. 数字操作行还载有签名的分数,每个资产的分数以及供应计数.
 
 ## 经验者林 {#prover-lane}
 
-`irohad`在启动时启动 FastPQ 检查路径,如果可以初始化检查后端.该路径是一个带有界限的队列的背景任务.一个区块生成执行证人后,提交路径会提交包含区块哈希,高度,视图和证人的检查路程.
+`iroha3d`在启动时启动 FastPQ 检查路径,如果可以初始化检查后端.该路径是一个带有界限的队列的背景任务.一个区块生成执行证人之后,提交路径会提交包含区块哈希,高度,视图和证人的检查路程.
 
-如果车道没有运行或排队满,工作将被跳过,正常的区块处理继续.这意味着背景检查车道不是一个交易录取或共识门.它是一个已经执行的状态上的证明生产路径.
+如果通道没有运行或排队满,工作将被跳过,正常的区块处理继续.这意味着背景检查通道不是一个交易录取或共识门.它是一个已经执行的状态上的证明生产路径.
 
-车道构建一个具有:
+通道构建一个具有:
 
 ```text
 parameter = "fastpq-lane-balanced"
-execution_mode = auto | cpu | gpu
-poseidon_mode = auto | cpu | gpu
+execution_mode = cpu | gpu
+poseidon_mode = cpu | gpu
 ```
 
-`auto` 让检查员选择可用的后端. `cpu` 执行 pins到 CPU. `gpu` 喜欢的 GPU 执行, CPU 后端无法使用所需的内核.
+两个设置均默认为 `cpu`。选择 `gpu` 是显式的 fail-closed 请求：如果未编译 GPU 支持，或所请求的 GPU 后端未通过预检，证明器通道将保持禁用。首个版本没有 `auto` 值，也不会从请求的 GPU 模式回退到 CPU。
 
 ## 验证 {#verification}
 
-FastPQ 证据验证重建了常规批量承诺,并重复了公开转录.验证器检查了协议版本,参数设置版本,重播限制,追踪承诺,公开输入,采样的Merkle打开口,AIR 打开口和 FRI 查询链.
+FastPQ 证明验证重建了规范批量承诺,并重复了公开转录.验证器检查了协议版本,参数设置版本,重播限制,追踪承诺,公开输入,采样的Merkle打开口,AIR 打开口和 FRI 查询链.
 
 默认重播限制包括:
 
@@ -934,23 +933,23 @@ FastPQ 证据验证重建了常规批量承诺,并重复了公开转录.验证�
 
 ## Nexus 经过验证的继电器 {#nexus-verified-relays}
 
-Nexus AXT 证明包裹可以嵌入一个 `AxtFastpqBinding`.当 `RegisterVerifiedLaneRelay`执行时, Iroha:
+Nexus AXT 证明封装可以嵌入一个 `AxtFastpqBinding`.当 `RegisterVerifiedLaneRelay`执行时, Iroha:
 
-1. 验证车道继电器包裹和 FastPQ 防材料
-2. 检查数据空间和表格根
-3. 清除 AXT 证据包裹
+1. 验证通道继电器封装和 FastPQ 防材料
+2. 检查数据空间和清单根
+3. 清除 AXT 证明封装
 4. 需要一个 `fastpq_binding`
 5. 从该绑定中重建 FastPQ 批量
-6. 解码嵌入式证据 FastPQ
+6. 解码嵌入式证明 FastPQ
 7. 调用 FastPQ 验证器对重建的批量和证明
 
-如果验证成功, Iroha 将存储一个包含继电器参考,原始包裹,证明有效载荷哈希,验证高度,表格根和 FastPQ 绑定的 `VerifiedLaneRelayRecord`.
+如果验证成功, Iroha 将存储一个包含继电器参考,原始封装,证明有效载荷哈希,验证高度,清单根和 FastPQ 绑定的 `VerifiedLaneRelayRecord`.
 
-车道继电信封面还载有紧的 FastPQ 证明材料.该材料是对车道ID,数据空间ID,区块高度,验证高度进行测试,区块标题哈希,结算哈希和表格根.如果连接器具有 QC 和有效的 FastPQ 证明材料,则只能合并.
+Lane relay envelope 还携带紧凑的 FastPQ 证明材料。该材料是根据 lane ID、dataspace ID、区块高度、验证高度、区块头哈希、结算哈希和 manifest root 计算的摘要。只有同时具有 QC 和有效 FastPQ 证明材料的 relay 才允许合并。
 
 ### AXT 绑定数学 {#axt-binding-math}
 
-对于 Nexus AXT 封,在验证重播之前,`AxtFastpqBinding`被加нони化.空参数默认值为 `fastpq-lane-balanced`;空验证器 id 和版本默认值是 `fastpq`和 `v1`;索赔类型被剪切并降级.
+对于 Nexus AXT 封,在验证重播之前,`AxtFastpqBinding`被规范化.空参数默认值为 `fastpq-lane-balanced`;空验证器 id 和版本默认值是 `fastpq`和 `v1`;索赔类型被剪切并降级.
 
 AXT FastPQ 公共输入是确定性字节哈希:
 
@@ -1063,7 +1062,7 @@ $$
 )
 $$
 
-AXT 批量表格消化是 SHA-256 加上法定结合的 Norito 编码:
+AXT 批量清单摘要是对规范绑定的 Norito 编码计算出的 SHA-256：
 
 $$
 \operatorname{manifest\_digest} =
@@ -1072,7 +1071,7 @@ $$
 
 ## SCCP 透明信息证明 {#sccp-transparent-message-proofs}
 
-SCCP 辅助箱还使用 FastPQ 用于透明的跨链信息证明.该路径与`irohad`背景检查器分开.它直接从 SCCP 信息证明捆绑和表格中构建 FastPQ 批量,然后将结果的证据包装为开放验证.
+SCCP 辅助crate还使用 FastPQ 用于透明的跨链信息证明.该路径与`iroha3d`背景检查器分开.它直接从 SCCP 信息证明捆绑和清单中构建 FastPQ 批量,然后将结果的证明包装为开放验证.
 
 SCCP 批量使用`fastpq-lane-balanced`和三个元数据过渡:
 
@@ -1086,11 +1085,11 @@ SCCP 批量使用`fastpq-lane-balanced`和三个元数据过渡:
 
 |FastPQ 输入 |SCCP 来源|
 | ------------- | ---------------------------------------------------------- |
-|`dsid`|布莱克2B的第16个字节通过声明哈希.|
-|`slot`|终点高度|
+|`dsid`|语句哈希的 Blake2b 摘要的前 16 个字节|
+|`slot`|端点高度|
 |`old_root`|有效载荷哈希|
 |`new_root`|承诺的根|
-|`perm_root`|终点区块哈希|
+|`perm_root`|端点区块哈希|
 |`tx_set_hash`|陈述哈希|
 
 SCCP 法规编码器写成数小数,并将变长字节阵列编码为:
@@ -1146,7 +1145,7 @@ $$
 
 然后按相同的 FastPQ 订单规则进行排序.
 
-OpenVerify 验证器的承诺是 SHA-256 对 SCCP 消息后端名称和正规的 FastPQ 验证器描述符:
+OpenVerify 验证器的承诺是 SHA-256 对 SCCP 消息后端名称和规范的 FastPQ 验证器描述符:
 
 $$
 \operatorname{vk\_hash} =
@@ -1155,16 +1154,16 @@ $$
 )
 $$
 
-原料 FastPQ 证据是 Norito- 编码成一个 `StarkFriOpenProofV1`, 然后包裹在一个 `OpenVerifyEnvelope` 有后端 `Stark`. SCCP 验证重建相同的 FastPQ 检查开放的验证包元数据,并调用了 FastPQ 在重建批量上的验证器和证明.
+原料 FastPQ 证明是 Norito- 编码成一个 `StarkFriOpenProofV1`, 然后封装在一个 `OpenVerifyEnvelope` 有后端 `Stark`. SCCP 验证重建相同的 FastPQ 检查开放的验证包元数据,并调用了 FastPQ 在重建批量上的验证器和证明.
 
 ## 参数组件 {#parameter-sets}
 
-常规参数目录揭示了两个参数集合. 主机供应路由目前使用 `fastpq-lane-balanced`.
+规范参数目录揭示了两个参数集合. 主机供应路由目前使用 `fastpq-lane-balanced`.
 
 |参数|目的|领域|子|FRI|
 | ---------------------- | -------------------------- | ------------------------------ | ------------------------------------------- | ------------------------------- |
-|`fastpq-lane-balanced`|均衡的供应器吞吐量|黄金的方形延伸|西顿2承诺,目录 SHA3 标签 |8,爆发8,46个问题|
-|`fastpq-lane-latency`|对于延迟敏感的车道|黄金的方形延伸|西顿2承诺,目录 SHA3 标签 |第十六节,第16节,第34节.|
+|`fastpq-lane-balanced`|平衡的证明器吞吐量|Goldilocks 二次扩展|Poseidon2 commitments、目录 SHA3 标签|arity 8、blowup 8、46 queries|
+|`fastpq-lane-latency`|延迟敏感的 lane|Goldilocks 二次扩展|Poseidon2 commitments、目录 SHA3 标签|arity 16、blowup 16、34 queries|
 
 这两个目标是128位的安全性,并且使用了 `2^16` 的追踪域大小.目前 Rust V1 转录重播代码采用`iroha_crypto::Hash::new`而不是直接调用 SHA3-256 来提取Fiat-Shamir挑战字节.
 
@@ -1192,8 +1191,8 @@ FastPQ 配置嵌入`zk.fastpq`下方.
 
 ```toml
 [zk.fastpq]
-execution_mode = "auto"
-poseidon_mode = "auto"
+execution_mode = "cpu"
+poseidon_mode = "cpu"
 
 # Optional telemetry labels.
 device_class = "apple-m4"
@@ -1210,14 +1209,14 @@ metal_debug_enum = false
 metal_debug_fused = false
 ```
 
-同样的执行和远程测量标签可以在 `irohad` 中取消:
+同样的执行和远程测量标签可以在 `iroha3d` 中取消:
 
 ```shell
-irohad --fastpq-execution-mode auto
-irohad --fastpq-poseidon-mode cpu
-irohad --fastpq-device-class apple-m4
-irohad --fastpq-chip-family m4
-irohad --fastpq-gpu-kind integrated
+iroha3d --fastpq-execution-mode gpu
+iroha3d --fastpq-poseidon-mode cpu
+iroha3d --fastpq-device-class apple-m4
+iroha3d --fastpq-chip-family m4
+iroha3d --fastpq-gpu-kind integrated
 ```
 
 环境变量也支持配置字段. FastPQ 特定的变量包括:
@@ -1237,13 +1236,13 @@ irohad --fastpq-gpu-kind integrated
 
 ## 计量 {#metrics}
 
-在启用远程测量时, FastPQ 将对后端选择和金属运行时间行为进行出口:
+在启用远程测量时, FastPQ 将对后端选择和金属运行时行为进行出口:
 
 |计量|这意味着|
 | --------------------------------- | --------------------------------------------------------------------------- |
 |`fastpq_execution_mode_total`|根据后端和设备标签的要求和解决执行模式 |
 |`fastpq_poseidon_pipeline_total`|索取和解决了Poseidon管道的路径|
-|`fastpq_metal_queue_depth`|金属队列限制,飞行中最多的数量,发送数量和样本抽取窗口|
+|`fastpq_metal_queue_depth`|Metal 队列限制、最大并发数、调度数量和采样窗口|
 |`fastpq_metal_queue_ratio`|金属队列繁忙和重叠比例 |
 |`fastpq_zero_fill_duration_ms`|为金属运行提供零填充持续时间 |
 |`fastpq_zero_fill_bandwidth_gbps`|产生的零填充带宽|
@@ -1252,10 +1251,10 @@ irohad --fastpq-gpu-kind integrated
 
 ## 相关参考 {#related-reference}
 
-- [生成的类型细节数据模型方案](/zh-hans/reference/data-model-schema.md)
+- [节点授权类型快照数据模型方案](/zh-hans/reference/data-model-schema.md)
 - `FastpqTransitionBatch`
 - `FastpqPublicInputs`
 - `TransferTranscript`
 - `AxtFastpqBinding`
 - `LaneFastpqProofMaterial`
-- [`irohad` FastPQ 的选项](/zh-hans/reference/irohad-cli.md#arg-fastpq-execution-mode)
+- [`iroha3d` FastPQ 的选项](/zh-hans/reference/iroha3d-cli.md#fastpq-overrides)

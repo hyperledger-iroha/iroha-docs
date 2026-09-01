@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /cookbook/stream-events.md
-translation_source_hash: 1267a7e22bb6601674557f349e4fc5c6b883ce83b7dc62115ea2b8c3a0c39261
+translation_source_hash: 96f0a26000530fee15d121f815f9f5717a535dc3836cff9a2a447b1e5b70c41c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -160,7 +160,7 @@ Taira پر کم از کم ایک لین دین `Approved` تک پہنچنے تک
 node ./stream-taira.mjs
 ```
 
-SSE دل کی دھڑکن کے تبصرے غیر فعال کنکشن کو زندہ رکھتے ہیں لیکن لیجر آرڈرنگ قائم نہیں کرتے ہیں۔ جب حکم یا مکملیت کا معاملہ ہوتا ہے تو بلاک اونچائیوں ، ٹرانزیکشن ہیشز اور لیجر کے سوالات کا استعمال کریں۔
+SSE دل کی دھڑکن کے تبصرے غیر فعال کنکشن کو زندہ رکھتے ہیں لیکن لیجر آرڈرنگ قائم نہیں کرتے ہیں۔ جب حکم یا مکملیت کا معاملہ ہوتا ہے تو بلاک اونچائیوں ، ٹرانزیکشن ہیشز اور لیجر کے استفسارات کا استعمال کریں۔
 
 تازہ ترین 25 ایکسپلورر کی درخواست صرف عوامی تشخیص ہے۔ ایک پروڈکشن صارف کو `reconcile()` کو اپنی پائیدار ایپلیکیشن وسائل کے لئے استفسارات اور اس کے چیک پوائنٹ کے لئے کافی بڑی بازیابی کا پابند کرکے تبدیل یا بڑھانا ہوگا۔ محدود سنیپ شاٹ اکیلے ہی یہ ثابت نہیں کرسکتا ہے کہ کوئی واقعہ غائب نہیں ہوا۔
 
@@ -177,7 +177,7 @@ curl -fsS \
   jq .
 ```
 
-ہر ٹرانزیکشن ایونٹ کے لئے آپ کو پرواہ ہے، اس کی ہیش شاٹ میں تلاش کریں یا اسے براہ راست استفسار کریں. حد بندی والے صفحے پرانے ٹرانزیکشنز کو خارج کر سکتے ہیں. پھر روک اور صارفین کو دوبارہ شروع کریں: اسے واقعہ ID کی فراہمی کے بغیر دوبارہ رابطہ کرنا ہوگا اور متبادل سلسلہ کھولنے کے بعد ایک نیا تشخیصی اشاعت شائع کرنا ہوگی۔
+ہر ٹرانزیکشن ایونٹ کے لئے آپ کو پرواہ ہے، اس کی ہیش شاٹ میں تلاش کریں یا اسے براہ راست استفسار کریں. حد بstream والے صفحے پرانے ٹرانزیکشنز کو خارج کر سکتے ہیں. پھر روک اور صارفین کو دوبارہ شروع کریں: اسے واقعہ ID کی فراہمی کے بغیر دوبارہ رابطہ کرنا ہوگا اور متبادل سلسلہ کھولنے کے بعد ایک نیا تشخیصی اشاعت شائع کرنا ہوگی۔
 
 ## خرابی کا سراغ لگانا {#troubleshooting}
 
@@ -189,10 +189,10 @@ curl -fsS \
 
 ## ماخذ اور متعلقہ دستاویزات {#source-and-related-docs}
 
-- [JavaScript پنڈل commit پر سٹریمنگ ہدایت](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/recipes/streaming.mjs)
-- [SSE پنڈ commit پر انٹیگریشن ٹیسٹ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/events/sse_smoke.rs)
-- [Torii FilterExpr پینڈ کمیٹ پر تجزیہ کار](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/src/filter.rs)
-- [Torii پنڈ commit پر واقعہ روٹنگ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/src/routing.rs)
+- [JavaScript پنڈل commit پر سٹریمنگ ہدایت](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs)
+- [SSE پنڈ commit پر انٹیگریشن ٹیسٹ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs)
+- [Torii FilterExpr پینڈ کمیٹ پر تجزیہ کار](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs)
+- [Torii پنڈ commit پر واقعہ روٹنگ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
 - [واقعات](/ur/blockchain/events.md)
 - [Torii اختتام پوائنٹس](/ur/reference/torii-endpoints.md)
 - [استفسار لیجر کی حالت](./query-ledger-state.md)

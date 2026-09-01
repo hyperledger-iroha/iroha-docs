@@ -1,16 +1,16 @@
 ---
 translation_locale: ar
 translation_source: /guide/configure/client-configuration.md
-translation_source_hash: 0d897a79e6118de2e7e88a45f1daf1444b515fd35e7b2562f7c1cc18ed0a83b4
+translation_source_hash: 6da8a0abddc9723b16477a935a3953ebd497300f02eadd635e4e38027a11d095
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # تكوين العميل {#client-configuration}
 
-Iroha CLI و SDK العملاء يستخدمون TOML التكوين. المستودع يرسل الوضع الافتراضي الحالي إلى `defaults/client.toml`; الشبكات المحلية التي تم إنشاؤها أيضا كتابة مطابقة `client.toml` في دليل الإخراجات الخاصة بهم.
+يستخدم العملاء Iroha و CLI و SDK تكوين TOML. تقوم المستودعات بشحن الافتراضي الحالي في `defaults/client.toml`؛ كما تقوم الشبكات المحلية المولدة أيضًا بكتابة `client.toml` المطابق في دليل الإخراج الخاص بها.
 
-::: details نموذج تشكيل العميل
+::: details قالب إعدادات العميل
 
 <<< @/snippets/client.template.toml
 
@@ -18,7 +18,7 @@ Iroha CLI و SDK العملاء يستخدمون TOML التكوين. المست
 
 ## الحقول الأساسية {#core-fields}
 
-على الأقل، تشكيل العميل يحدد السلسلة، Torii نقطة نهاية، والحساب التوقيعي:
+على الأقل، تحدد تهيئة العميل السلسلة، ونقطة النهاية Torii API، وحساب التوقيع:
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000000"
@@ -30,22 +30,22 @@ public_key = "ed0120..."
 private_key = "802620..."
 ```
 
-- يختار `chain` السلسلة التي تنتمي إليها المعاملات المقدمة.
-- `torii_url` نقاط في الزميل Torii HTTP API.
-- `[account].domain` يستخدمها اختصارات CLI وتشفير اختيار العناوين؛ القنوية `AccountId` نفسها بلا مجال.
-- `[account].public_key` و `[account].private_key` توقيع المعاملات.
+- `chain` يحدد السلسلة التي تنتمي إليها المعاملات المقدمة.
+- `torii_url` يشير إلى نظيره في الشبكة Torii HTTP API.
+- `[account].domain` يُستخدم بواسطة اختصارات CLI وترميز محدد العنوان؛ المعيار البروتوكولي الوحيد `AccountId` نفسه بلا نطاق.
+- `[account].public_key` و `[account].private_key` يوقّعان المعاملات.
 
-يجب أن يكون الحساب موجودًا بالفعل على السلسلة. بالنسبة للشبكة المحلية الافتراضية يتم التعامل مع هذا من خلال بيان التكوين المجمّع.
+يجب أن يكون الحساب موجودًا مسبقًا على السلسلة. وفي الشبكة المحلية الافتراضية، يتولى بيان genesis المضمّن ذلك.
 
-::: info حساسية الحالة
+::: info حساسية حالة الأحرف
 
-أسماء Iroha حساسة للحالة بعد التحليل القنوني. على سبيل المثال، `wonderland.universal` ، `Wonderland.universal` ، و `looking_glass.universal` هي حرفيات نطاق مختلفة.
+أسماء Iroha حساسة لحالة الأحرف بعد التحليل المعياري للبروتوكول الفردي. على سبيل المثال، `wonderland.universal`، `Wonderland.universal`، و `looking_glass.universal` هي ثوابت نطاق متميزة.
 
 :::
 
-## التصديق الأساسي {#basic-authentication}
+## المصادقة الأساسية {#basic-authentication}
 
-الاختياري `[basic_auth]` القسم يضيف: HTTP `Authorization` عنوان طلبات العميل. Iroha الأقران لا يفسرون هذه الإثباتات مباشرة؛ استخدموها عندما Torii وراء الوكيل العكسي مثل Nginx.
+يضيف القسم الاختياري `[basic_auth]` رأس HTTP `Authorization` لطلبات العميل. لا يقوم نظراء الشبكة Iroha بتفسير هذه الاعتماديات مباشرة؛ استخدمها عندما يكون Torii خلف وكيل عكسي مثل Nginx.
 
 ```toml
 [basic_auth]
@@ -55,7 +55,7 @@ password = "ilovetea"
 
 ## إعدادات المعاملة {#transaction-settings}
 
-يتم تشكيل سلوك المعاملات مع قسم `[transaction]`:
+يتم تكوين سلوك المعاملة باستخدام القسم `[transaction]`:
 
 ```toml
 [transaction]
@@ -64,30 +64,30 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-- `time_to_live_ms` هو عمر المعاملة في الميلي ثانية.
-- `status_timeout_ms` يسيطر على مدى انتظار العميل لحالة المعاملة.
-- `nonce = true` يطلب من العميل إدراج عبارة غير متكررة حتى تنتج المعاملات المختلفة.
+- `time_to_live_ms` هو عمر المعاملة بالمللي ثانية.
+- `status_timeout_ms` يتحكم في المدة التي ينتظرها العميل لمعرفة حالة المعاملة.
+- `nonce = true` يطلب من العميل تضمين قيمة أعداد عشوائية مشفرة بحيث تنتج المعاملات المتكررة تجزئات مشفرة مختلفة.
 
-## ربط إعدادات الصف {#connect-queue-settings}
+## إعدادات قائمة الانتظار للاتصال {#connect-queue-settings}
 
-يمكن لعملاء Iroha الحاليين أيضا استخدام القسم الاختياري `[connect]` لحالة الصف المحلي:
+يمكن للعملاء الحاليين Iroha أيضًا استخدام القسم الاختياري `[connect]` لحالة قائمة الانتظار المحلية:
 
 ```toml
 [connect]
 queue_root = "./queue"
 ```
 
-استخدم هذا عندما تحتاج سير العمل إلى تخزين طويل الأمد على جانب العميل.
+استخدم هذا عندما يحتاج سير العمل إلى تخزين قائمة انتظار على جانب العميل بشكل دائم.
 
-## توليد الإعدادات {#generating-configurations}
+## توليد التكوينات {#generating-configurations}
 
-بالنسبة للشبكات المحلية القابلة للتفريغ، تفضل Kagami لأنه يكتب مطابقة Iroha 3 التكوينات، الجنيس، النصوص، و README: .
+لشبكات محلية قابلة للاستخدام مرة واحدة، يفضل استخدام Kagami لأنه يكتب تكوينات Iroha 3 المطابقة، منشأ البلوكشين، السكربتات، و README:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-استخدم `./localnet/client.toml` المولد مع CLI:
+استخدم `./localnet/client.toml` الذي تم إنشاؤه مع CLI:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all

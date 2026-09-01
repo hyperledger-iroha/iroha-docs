@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 9341b2404624dec2230bc294c3d60dc124ac9574a0a5803b9bba744f4c5e7f50
+translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,12 +15,12 @@ translation_engine: nllb-200-ct2
 လက်ရှိ Kagami ကုဒ်မှ ၄- peer localnet ကိုထုတ်လုပ်ပါ
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-Output directory ထဲမှာ `genesis.json`, `genesis.signed.nrt`, `client.toml` နဲ့ helper script တွေ ပါပါတယ်။
+Output directory မှာ Network peer config တွေနဲ့ ကိုက်ညီတဲ့ `genesis.json`, `genesis.signed.nrt`, `client.toml` နဲ့ helper script တွေ ပါပါတယ်။
 
-ဒေသတွင်း မီးခိုးစမ်းသပ်မှုအတွက် ထုတ်လုပ်ထားတဲ့ အဖော်တွေကို တိုက်ရိုက်စတင်ပါ။
+ဒေသတွင်း မီးခိုးစမ်းသပ်မှုအတွက် ဖန်တီးထားတဲ့ ကွန်ရက်တူညီသူတွေကို တိုက်ရိုက်စတင်ပါ။
 
 ```bash
 ./localnet/start.sh
@@ -33,21 +33,21 @@ cargo run --bin kagami -- docker \
   --peers 4 \
   --config-dir ./localnet \
   --image hyperledger/iroha:dev \
-  --out-file ./localnet/docker-compose.yml \
+  --out-file ./docker-compose.yml \
   --force
 
-docker compose -f ./localnet/docker-compose.yml up
+docker compose -f ./docker-compose.yml up
 ```
 
 အလိုအလျောက်ဖန်တီးထားတဲ့ stack က:
 
-- peer P2P ဆိပ်ကမ်းများ `1337` မှ `1340`
+- Network peer P2P ports `1337` to `1340` ကို အသုံးပြုရန်
 - Torii HTTP ဆိပ်ကမ်း `8080` သို့ `8083`
 - `./localnet/client.toml` အမည်ဖြင့် အသင့်ရှိသော Client Config
 
 ## (၂) ကွန်ရက်ကို ဖွင့်ထားတာကို စစ်ဆေးပါ။ {#_2-verify-that-the-network-is-up}
 
-အဆင့်သတ်မှတ်ချက်ကို ပထမအဆင့်မှာ စစ်ကြည့်ပါ။
+အဆင့် API အဆုံးမှတ်ကို ပထမဆုံးကွန်ရက် peer မှာစစ်ပါ။
 
 ```bash
 curl http://127.0.0.1:8080/status
@@ -69,10 +69,10 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 
 SORA Nexus ကို ဦးတည်တဲ့ config profile တစ်ခုကိုလည်း `defaults/nexus/` အောက်မှာ တင်ပေးပါတယ်။
 
-Nexus profile နဲ့ native peer ကို run လုပ်ဖို့-
+Nexus profile နဲ့ native network peer ကို run လုပ်ဖို့:
 
 ```bash
-./target/release/irohad --sora --config ./defaults/nexus/config.toml
+./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
 ```
 
 CLI သို့ ဝင်ရောက်ရန်အတွက် `defaults/nexus/client.toml` ကို အသုံးပြုပါ။
@@ -88,7 +88,7 @@ CLI သို့ ဝင်ရောက်ရန်အတွက် `defaults/nexu
 ထုတ်လုပ်သော Compose stack အတွက်:
 
 ```bash
-docker compose -f ./localnet/docker-compose.yml down
+docker compose -f ./docker-compose.yml down
 ```
 
-ကွန်ရက်အလုပ်လုပ်ပြီးနောက် [ကို ဆက်လုပ်ပါ Iroha 3 ကို CLI](/my/get-started/operate-iroha-via-cli.md) မှတစ်ဆင့် လုပ်ဆောင်ပါ။
+ကွန်ရက်အလုပ်လုပ်ပြီးနောက် [Iroha 3 ကို CLI မှတစ်ဆင့် လည်ပတ်ပါ။](/my/get-started/operate-iroha-via-cli.md) ကို ဆက်လုပ်ပါ။

@@ -3,23 +3,23 @@ translation_locale: am
 translation_source: /help/installation-issues.md
 translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c054c85a2a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# የመጫን ችግሮች {#troubleshooting-installation-issues}
+# የመጫን ችግሮችን መላ መፈለግ {#troubleshooting-installation-issues}
 
-በዚህ ክፍል ውስጥ ለ Iroha 3 መጫን የችግር መፍታት ምክሮችን ይሰጣል። እርስዎ የሚያጋጥሟቸው ችግሮች እዚህ ካልተገለጹ በ [ቴሌግራም ](https://t.me/hyperledgeriroha) በኩል እኛን ያነጋግሩን።
+ይህ ክፍል ለ Iroha 3 ጭነት የመላ መፈለጊያ ምክሮችን ይሰጣል። እያጋጠመዎት ያለው ችግር እዚህ ካልተገለጸ፣ በ[ቴሌግራም](https://t.me/hyperledgeriroha) በኩል ያግኙን።
 
-## ፈጣን ምርመራዎች {#quick-checks}
+## ፈጣን ፍተሻዎች {#quick-checks}
 
-አብዛኛዎቹ የመጫኛ ውድቀቶች ከአራት ቦታዎች በአንዱ ይመጣሉ-
+አብዛኛዎቹ የመጫኛ ውድቀቶች ከአራት ቦታዎች ከአንዱ ይመጣሉ -
 
-- የ Rust መሳሪያ ሰንሰለት ከስራ ቦታው አናት ላይ ከተቀመጠው ስሪት የበለጠ ዕድሜ ያለው
-- `cargo` ወይም `rustc` ከ `rustup` በተለየ ተከላ ውስጥ የሚፈታ
-- እንደ C ኮምፓይለር ፣ `pkg-config` ወይም CMake ያሉ የጎደሉ የስርዓት ግንባታ መሳሪያዎች
-- የመረጃ ምንጭ ማሻሻያዎችን ከተቀየሩ በኋላ የቆዩ የተፈጠሩ ቁርጥራጮች ወይም አካባቢያዊ የግንባታ ዕቃዎች
+- በላይኛው የስራ ቦታ ከተሰካው ስሪት የቆየ Rust የመሳሪያ ሰንሰለት
+- `cargo` ወይም `rustc` ከ `rustup` የተለየ ጭነት መፍታት
+- እንደ C compiler፣ `pkg-config` ወይም CMake ያሉ የስርዓት ግንባታ መሳሪያዎች ይጎድላሉ
+- የምንጭ ክለሳዎችን ከቀየሩ በኋላ የቆዩ ቅንጥቦች ወይም የአካባቢ ግንባታ አርቲፋክቶች
 
-ከ Iroha ምንጭ ካሳ ጀምሮ የሚከተሉትን ይጀምሩ:
+ከ Iroha ምንጭ-ኮድ የስራ ቅጂ፣ በሚከተሉት ይጀምሩ -
 
 ```bash
 rustup show
@@ -28,35 +28,35 @@ rustc --version
 cargo metadata --no-deps
 ```
 
-`cargo metadata` ካልተሳካ `pnpm refresh:iroha --source /path/to/iroha` ከመሮጥዎ በፊት አካባቢያዊውን የመሣሪያ ሰንሰለት ያስተካክሉ ፣ ምክንያቱም ማዘመን የአሁኑን የውሂብ ሞዴል መርሃግብር ለማመንጨት Kagami መጠየቅ ይችላል ።
+`cargo metadata` ካልተሳካ፣ `pnpm refresh:iroha --source /path/to/iroha` ከማስኬድዎ በፊት የአካባቢውን የመሳሪያ ሰንሰለት ያስተካክሉ፣ ምክንያቱም ማደሱ የአሁኑን የውሂብ-ሞዴል እቅድ ለማመንጨት Kagami ሊጠራ ይችላል።
 
-## ችግሮችን መፍታት Rust የመሳሪያ ሰንሰለት {#troubleshooting-rust-toolchain}
+## መላ መፈለግ Rust የመሳሪያ ሰንሰለት {#troubleshooting-rust-toolchain}
 
-አንዳንድ ጊዜ ነገሮች እንደታሰበው አይሄዱም. በተለይ ከጊዜ በፊት በስርዓትዎ ላይ `rust` ካለዎት, ነገር ግን ማሻሻል አላደረጉም. ተመሳሳይ ችግር በ Python ውስጥ ሊከሰት ይችላል: XKCD ምን እንደሚመስል አንድ ታዋቂ ምሳሌ አለው
+አንዳንድ ጊዜ ነገሮች እንደታቀደው አይሄዱም። በተለይ ከጥቂት ጊዜ በፊት በስርዓትዎ ላይ `rust` ካለዎት ነገር ግን ካላሻሻሉ። ተመሳሳይ ችግር በ Python ውስጥ ሊከሰት ይችላል XKCD ምን ሊመስል እንደሚችል ታዋቂ ምሳሌ አለው -
 
 <div class="flex justify-center">
 
-![Python አካባቢ ችግር መፍታት አስቂኝ](/img/install-troubles.png)
+![Python የአካባቢ መላ መፈለጊያ አስቂኝ](/img/install-troubles.png)
 
 </div>
 
-### የ Rust ስሪት ይመልከቱ {#check-rust-version}
+### Rust ስሪትን ያረጋግጡ {#check-rust-version}
 
-የእርስዎን እና የእኛን ጤናማ አእምሮ ለመጠበቅ ሲሉ, ትክክለኛውን ስሪት ያላቸው መሆኑን ያረጋግጡ `cargo` ከትክክለኛው ስሪት ጋር አብሮ `rustc`. የአሁኑ የስራ ቦታ አቃፊዎች `rust-version = "1.92"` እና መሳሪያ ሰንሰለት ሰርጥ ውስጥ ያጣሉ `rust-toolchain.toml`. ስሪቶች ለማሳየት, ማድረግ
+ሁለቱንም እና የኛን ጤንነት ለመጠበቅ ሲባል፣ ትክክለኛው የ`cargo` ስሪት ከትክክለኛው የ`rustc` ስሪት ጋር የተጣመረ መሆኑን ያረጋግጡ። የአሁኑ የላይኛው ተፋሰስ የስራ ቦታ `rust-version = "1.92"` ያውጃል እና የመሳሪያ ሰንሰለት ቻናሉን በ `rust-toolchain.toml` ውስጥ ይሰካዋል። ስሪቶቹን ለማሳየት ያድርጉ
 
 ```bash
 $ cargo -V
 $ cargo 1.93.1 (...)
 ```
 
-ከዚያም
+እና ከዚያ
 
 ```bash
 $ rustc --version
 $ rustc 1.93.1 (...)
 ```
 
-ከፍ ያሉ ስሪቶች ካሉዎት ደህና ነዎት። ዝቅተኛ ስሪቶች ካለዎት እሱን ለማዘመን የሚከተለውን ትዕዛዝ ማሄድ ይችላሉ-
+ከፍ ያሉ ስሪቶች ካሉዎት ደህና ነዎት። ዝቅተኛ ስሪቶች ካሉዎት እሱን ለማዘመን የሚከተለውን ትዕዛዝ ማሄድ ይችላሉ።
 
 ```bash
 $ rustup toolchain update stable
@@ -64,90 +64,90 @@ $ rustup toolchain update stable
 
 ### የመጫኛ ቦታን ያረጋግጡ {#check-installation-location}
 
-የዝቅተኛ ስሪት ቁጥሮች ማግኘት እና መሳሪያ ሰንሰለት ዘምኗል ከሆነ እና  አይሰራም... እስቲ ብቻ እንበል አንድ የተለመደ ችግር ነው, ነገር ግን አንድ የተለመደው መፍትሔ የለም.
+ዝቅተኛ የስሪት ቁጥሮችን ካገኙ እና የመሳሪያ ሰንሰለቱን ካዘመኑ እና ካልሰራ... የተለመደ ችግር ነው እንበል ግን የጋራ መፍትሄ የለውም።
 
-በመጀመሪያ, መጠቀም የሚፈልጉት ስሪት የት እንደተጫነ መወሰን አለብዎት:
+በመጀመሪያ ፣ ሊጠቀሙበት የሚፈልጉት ስሪት የት እንደተጫነ መወሰን አለብዎት -
 
 ```bash
 $ rustup which rustc
 $ rustup which cargo
 ```
 
-የመሳሪያ ሰንሰለቶች የተጠቃሚ መጫን አብዛኛውን ጊዜ በ `~/.rustup/toolchains/stable-*/bin/` ውስጥ ነው.
+የመሳሪያ ሰንሰለቶች የተጠቃሚ ጭነቶች ብዙውን ጊዜ በ `~/.rustup/toolchains/stable-*/bin/` ውስጥ ናቸው. ጉዳዩ ይህ ከሆነ, መሮጥ መቻል አለብዎት
 
 ```bash
 $ rustup toolchain update stable
 ```
 
-ይህ ደግሞ ችግሮቻችሁን ሊፈታ ይገባል።
+እና ያ ችግሮችዎን ማስተካከል አለበት.
 
 ### ነባሪውን Rust ስሪት ያረጋግጡ {#check-the-default-rust-version}
 
-ሌላ አማራጭ የዘመነ `stable` የመሳሪያ ሰንሰለት አለዎት, ነገር ግን እንደ ነባሪው አልተቀመጠም. ይሮጡ:
+ሌላው አማራጭ የዘመነው `stable` የመሳሪያ ሰንሰለት እንዳለህ ነው፣ ነገር ግን እንደ ነባሪ አልተዋቀረም። አሂድ
 
 ```bash
 $ rustup default stable
 ```
 
-`nightly` ስሪት መጫን ወይም በኋላ ላይ ሳትሰርዝ የተወሰነ Rust ስሪት ማዘጋጀት ይህንን ችግር ሊያስከትል ይችላል ።
+የ`nightly` ስሪት መጫን ወይም የተወሰነ Rust ስሪት ማቀናበር በኋላ ላይ ሳያዋቅር ይህንን ችግር ሊያስከትል ይችላል።
 
-### ሌሎች Rust ስሪቶች መኖራቸውን ያረጋግጡ {#check-if-there-are-other-rust-versions}
+### ሌሎች Rust ስሪቶች ካሉ ያረጋግጡ {#check-if-there-are-other-rust-versions}
 
-ችግሮችን ለመፍታት ቀጣይነት ያለው የዕሾች ቀዳዳ, እኛ shell ቅጽል መጠሪያ ሊኖረው ይችላል:
+የመላ መፈለጊያ ጥንቸል ጉድጓድ በመቀጠል፣ የሼል ተለዋጭ ስሞች ሊኖረን ይችላል -
 
 ```bash
 $ type rustc
 $ type cargo
 ```
 
-እነዚህ `rustup which *` በሚሄድበት ጊዜ ያየኸው ሌላ ቦታን የሚያመለክቱ ከሆነ, ችግር አለህ. እንደነዚህ ያሉ ቅጽል ስሞችን ማከል በቂ እንዳልሆነ ልብ በሉ:
+እነዚህ `rustup which *` ሲያሄዱ ካዩት ቦታ ውጪ የሚያመለክቱ ከሆነ ችግር አለብዎት። እንደነዚህ ያሉ ተለዋጭ ስሞችን ማከል በቂ እንዳልሆነ ልብ ይበሉ -
 
 ```bash
 $ alias rustc "~/.rustup/toolchains/stable-*/bin/rustc"
 $ alias cargo "~/.rustup/toolchains/stable-*/bin/cargo"
 ```
 
-ውስጣዊ አመክንዮ አሁንም ቢሆን የሻል ስሞችዎን እንዴት እንዳደራጁ ምንም ይሁን ምን ሊሰበር ይችላል.
+የሼል ተለዋጭ ስሞችዎን እንዴት ቢያዘጋጁ ውስጣዊ አመክንዮ አሁንም ሊሰበር ይችላል።
 
-በጣም ቀላልው መፍትሔ እርስዎ የማይጠቀሙባቸውን ስሪቶች ማስወገድ ነው።
+በጣም ቀላሉ መፍትሔ እርስዎ የማይጠቀሙባቸውን ስሪቶች ማስወገድ ነው.
 
-ሆኖም ግን ከተደረገ ይልቅ ለመናገር ቀላል ነው ፣ ምክንያቱም የተጫኑትን እና ለእርስዎ የሚገኙትን የ rustup ሁሉንም ስሪቶች መከታተል ያስከትላል ። ብዙውን ጊዜ ሁለት ብቻ አሉ የስርዓት ፓኬጅ አስተዳዳሪ ስሪት እና በቤትዎ አቃፊ ውስጥ ባለው መደበኛ ቦታ ላይ የተጫነውን በዚህ ትምህርት መጀመሪያ ላይ ትዕዛዙን ሲሮጡ ። ለቀድሞው ፣ የ (ሊኑክስ) ስርጭት መመሪያዎን ይመልከቱ ፣ (`apt remove rust`። ለኋለኛው ፣ ይሂዱ:
+ነገር ግን ሁሉንም የተጫኑትን እና ለእርስዎ የሚገኙትን የ rustup ስሪቶች መከታተልን ስለሚያካትት ከመናገር ይልቅ ቀላል ነው። ብዙውን ጊዜ ሁለት ብቻ አሉ - በዚህ አጋዥ ስልጠና መጀመሪያ ላይ ትዕዛዙን ሲያሄዱ የስርዓት ጥቅል አስተዳዳሪ ስሪት እና በቤትዎ አቃፊ ውስጥ ወደ መደበኛው ቦታ የተጫነው። ለቀድሞው፣ የእርስዎን (ሊኑክስ) ስርጭት መመሪያ (`apt remove rust`) ያማክሩ። ለኋለኛው ያሂዱ -
 
 ```bash
 $ rustup toolchain list
 ```
 
-እና ከዚያም, ለእያንዳንዱ `<toolchain>` (በእርግጥ ማዕዘን ክፈፎች ያለ):
+እና ከዚያ፣ ለእያንዳንዱ `<toolchain>` (ያለ የማዕዘን ቅንፎች በእርግጥ)
 
 ```bash
 $ rustup remove <toolchain>
 ```
 
-የመሳሪያ ሰንሰለቶችን ካስወገዱ በኋላ ይህ ትዕዛዝ አልተገኘም የሚል ስህተት ሪፖርት ማድረግ አለበት-
+የመሳሪያ ሰንሰለቶችን ካስወገዱ በኋላ ይህ ትዕዛዝ ያልተገኘ ስህተት ማሳየት አለበት -
 
 ```bash
 $ cargo --help
 ```
 
-ይህ ስህተት ምንም ንቁ Rust መሣሪያ ሰንሰለት አልተጫነም መሆኑን ያረጋግጣል. ከዚያም ይሂዱ:
+ያ ስህተት ምንም ንቁ Rust የመሳሪያ ሰንሰለት እንደተጫነ ያረጋግጣል። ከዚያ አሂድ -
 
 ```bash
 $ rustup toolchain install stable
 ```
 
-## የመሳሪያ ሰንሰለት Python የችግር መፍታት {#troubleshooting-python-toolchain}
+## መላ መፈለግ Python የመሳሪያ ሰንሰለት {#troubleshooting-python-toolchain}
 
-በ [Python የደንበኛ ማዋቀር ](/am/guide/tutorials/python.md) ወቅት ፒፕን በመጠቀም የ Python ጎማ ጥቅልን በሚጭኑበት ጊዜ "iroha_python-*.whl በዚህ መድረክ ላይ የሚደገፍ ጎማ አይደለም" የሚል ስህተት ሊያጋጥምዎት ይችላል ።
+በ[Python የደንበኛ ማዋቀር](/am/guide/tutorials/python.md) ጊዜ ፒፕን በመጠቀም የ Python ዊል ጥቅልን ሲጭኑ እንደ "iroha_python-*.whl በዚህ መድረክ ላይ የሚደገፍ ጎማ አይደለም" የሚል ስህተት ሊያጋጥምዎት ይችላል።
 
-ይህ ስህተት pip ጊዜ ያለፈበት ነው ማለት ነው, ስለዚህ እሱን ማዘመን አለብዎት. በመጀመሪያ ደረጃ, የእርስዎን OS ዝማኔዎች ለመፈተሽ እና የስርዓት ማሻሻያ ለማከናወን ይመከራል.
+ይህ ስህተት ፒፕ ጊዜው ያለፈበት ነው ማለት ነው, ስለዚህ ማዘመን ያስፈልግዎታል. በመጀመሪያ ደረጃ, የእርስዎን OS ለዝማኔዎች ለመፈተሽ እና የስርዓት ማሻሻያ እንዲያደርጉ ይመከራል.
 
-ይህ አይሰራም ከሆነ, የእርስዎን ተጠቃሚ ማውጫ `pip` ለማዘመን መሞከር ይችላሉ.
+ይህ የማይሰራ ከሆነ ለተጠቃሚ ማውጫዎ `pip`ን ለማዘመን መሞከር ይችላሉ።
 
 `python -m pip install --upgrade pip`
 
-ያረጋግጡ `pip` ይህን ለማድረግ, አሂድ `whereis pip` እና `/home/username/.local/bin/pip` ከመንገዶቹ መካከል ነው. ካልሆነ, የእርስዎ shell ዘምኗል `PATH` ተለዋዋጭ።
+`pip` በቤትዎ ማውጫ ውስጥ መጫኑን ያረጋግጡ። ይህንን ለማድረግ `whereis pip`ን ያሂዱ እና `/home/username/.local/bin/pip` ከመንገዶቹ መካከል መሆኑን ያረጋግጡ። ካልሆነ፣ የሼልዎን `PATH` ተለዋዋጭ ያዘምኑ።
 
-ችግሩ ከቀጠለ እባክዎ [ እኛን ](/am/help/) ያነጋግሩን እና ውጤቱን ሪፖርት ያድርጉ።
+ጉዳዩ ከቀጠለ፣ እባክዎን [ያነጋግሩን](/am/help/) እና ውጤቶቹን ሪፖርት ያድርጉ።
 
 ```
 python --version

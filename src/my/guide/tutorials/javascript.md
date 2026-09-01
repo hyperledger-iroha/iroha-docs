@@ -73,7 +73,7 @@ for (const asset of assets.items) {
 node taira-readonly.mjs
 ```
 
-လက်မှတ်ထိုးထားသော SDK ဖုန်းခေါ်ဆိုမှုများကို ဤဖတ်ခြင်းသာ စစ်ဆေးချက်များ အလုပ်ဖြစ်ပြီးနောက်မှသာ ရွှေ့ပါ။ အများပြည်သူ Taira သည် satiated queue သို့မဟုတ် gateway error ကို ယာယီပြန်ပို့နိုင်သည်၊ ထို့ကြောင့် တိုက်ရိုက်ကွန်ရက် စမ်းသပ်မှုများ opt-in ကို CI တွင်ထိန်းသိမ်းပါ။
+လက်မှတ်ထိုးထားသော SDK နည်းပညာခေါ်ဆိုချက်များကို ဒီဖတ်မှုသာ စစ်ဆေးမှုများ အလုပ်ဖြစ်ပြီးနောက်မှသာ ပြောင်းပါ။ အများပြည်သူ Taira သည် ယာယီအပြည့်အဝတန်း (သို့) ဂိတ်တံခါးအမှားကိုပြန်ပို့နိုင်သည်၊ ထို့ကြောင့် တိုက်ရိုက်ကွန်ရက်စမ်းသပ်မှုများကို opt-in ကို CI တွင်ထိန်းသိမ်းပါ။
 
 အသုံးဝင်တဲ့ အပိုလမ်းကြောင်း တင်သွင်းမှု
 
@@ -87,7 +87,7 @@ Browser-only Connect bootstrap အတွက် Node-first `ToriiClient` မျ�
 
 ## Native Escrow {#native-escrow}
 
-JavaScript နှင့် TypeScript Applications များသည် native escrow ကိုအသုံးပြုနိုင်သည်။ Kotodama လက်မှတ်ထိုးထားတဲ့ စာချုပ်တွေကို စုစည်းပါ။ `@iroha/iroha-js/kotodama-compiler`; Direct native escrow transaction builders တွေကို လက်ရှိမှာ JavaScript SDK. ကြည့်ပါ။ [Native Asset Escrow](/my/blockchain/escrow.md#javascript-and-typescript-kotodama) Escrow host-call နမူနာအတွက်ပါ။
+JavaScript နှင့် TypeScript Applications များသည် native escrow ကိုအသုံးပြုနိုင်သည်။ Kotodama စာချုပ်များ - အီလက်ထရောနစ် `@iroha/iroha-js/kotodama-compiler`; Direct native escrow transaction builders တွေကို လက်ရှိမှာ JavaScript SDK. ကြည့်ပါ။ [Native Asset Escrow](/my/blockchain/escrow.md#javascript-and-typescript-kotodama) အငှားလက်ခံနည်းပညာခေါ်ဆိုမှုဥပမာအတွက်။
 
 ## လက်ရှိအကာအကွယ် {#current-coverage}
 
@@ -95,7 +95,7 @@ SDK သည် အောက်ပါအချက်များအပေါ် �
 
 - Torii HTTP နှင့် WebSocket အကူအညီပေးသူများ
 - Norito ငွေပေးချေခြင်းနှင့် ညွှန်ကြားချက် တည်ဆောက်သူများ
-- Kotodama compilation၊ escrow host-call builds အပါအဝင်
+- Kotodama compilation၊ escrow host-technical invocation builds အပါအဝင်
 - Ed25519 လက်မှတ်ရေးထိုးခြင်းနှင့် key generation
 - စာမျက်နှာပြုပြင်ခြင်းနှင့် ပြန်လည်စမ်းသပ်မှု အကူအညီများ
 - Browser bootstrap အကူများကို ချိတ်ဆက်ပါ

@@ -8,9 +8,9 @@ translation_engine: nllb-200-ct2
 
 # Swift 和iOS {#swift-and-ios}
 
-其他 Swift SDK 由上游工作空间发送的是 `IrohaSwift` Swift 下面的包装 `IrohaSwift/`. 它的包邮说明书定义了三个图书馆产品`IrohaSwift`, `IrohaSwiftMobileTransports`, 和 `IrohaSwiftTransferUI`并且针对iOS 15+和macOS 12+ Swift 工具 5.9.
+上游工作区提供的 Swift SDK 是 `IrohaSwift/` 下的 `IrohaSwift` Swift 包。其包清单定义了三个库产品：`IrohaSwift`、`IrohaSwiftMobileTransports` 和 `IrohaSwiftTransferUI`，并使用 Swift 5.9 工具面向 iOS 15+ 和 macOS 12+。
 
-包 depends on the native `NoritoBridge` binary target. 包分辨率在构建之前验证`../dist/NoritoBridge.xcframework`,当本地符号不加载时,交易或连接加密路径会抛出桥式不可用的错误.
+该包依赖原生的 `NoritoBridge` 二进制目标.包解析在构建之前验证`../dist/NoritoBridge.xcframework`,当本地符号不加载时,交易或连接加密路径会抛出桥式不可用的错误.
 
 ## Swift 包装经理 {#swift-package-manager}
 
@@ -30,7 +30,7 @@ targets: [
 ]
 ```
 
-调整应用程序的路径.不要复制当前的 `examples/ios/ConnectMinimalApp`路径,该表格将 `../../IrohaSwift` 分解为 `examples/IrohaSwift`.
+调整应用程序的路径.不要复制当前的 `examples/ios/ConnectMinimalApp`路径,该形式将 `../../IrohaSwift` 分解为 `examples/IrohaSwift`.
 
 在解决包之前,请确保桥梁存在于工作空间根点:
 
@@ -65,7 +65,7 @@ if #available(iOS 15.0, macOS 12.0, *) {
 
 ## 试看 Taira 只阅读 {#try-taira-read-only}
 
-开始一个简单的 HTTP 探测器,以确认设备或模拟器可以达到公众的 Taira 终点:
+开始一个简单的 HTTP 探测器,以确认设备或模拟器可以达到公众的 Taira 端点:
 
 ```swift
 import Foundation
@@ -107,11 +107,11 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-`TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest`, 和 `UnshieldRequest` 验证法典账户 IDs 基本资产的定义 IDs 在签署之前.
+`TransferRequest`、`MintRequest`、`BurnRequest`、`ShieldRequest` 和 `UnshieldRequest` 会在签名前验证规范账户 IDs 和规范的无前缀 Base58 资产定义 IDs。
 
 ## 产业保险 {#native-escrow}
 
-Swift 通过 `NativeEscrowInstructionBuilders`或同等 `IrohaSDK.build*Escrow*`助手构建市场和匿名保证指令,作为 Norito JSON 的有效载荷.参见 [本土资产保证](/zh-hans/blockchain/escrow.md#swift-and-ios)为示例,匿名证明字段和争端解决权限代币.
+Swift 通过 `NativeEscrowInstructionBuilders` 或等效的 `IrohaSDK.build*Escrow*` 辅助程序，将市场和匿名托管指令构建为 Norito JSON 负载。有关示例、匿名证明字段和争议解决者权限令牌，请参阅[原生资产托管](/zh-hans/blockchain/escrow.md#swift-and-ios)。
 
 ## 签字 {#signing}
 
@@ -148,20 +148,20 @@ let session = ConnectSession(sessionID: sessionID, client: client)
 let keyPair = try ConnectCrypto.generateKeyPair()
 ```
 
-`ConnectSession`处理打开和关闭控制,加密封筒阅读,方向键,流量控制,事件流,平衡流和诊断日志.
+`ConnectSession`处理打开和关闭控制,加密封装阅读,方向键,流量控制,事件流,余额流和诊断日志.
 
 ## 目前覆盖范围 {#current-coverage}
 
 目前 Swift 来源包括:
 
-- `ToriiClient` HTTP 对账户,资产,姓氏,探索者页面, RWA,合同,多签证,管理,订阅,数据可用性,机密资产,节点/运行时间状态,健康,指标和 SSE 流的辅助员
-- `IrohaSDK`交易构建者和提交/投票助手转移,硬币,烧伤,盾牌,无盾牌,ZK 转移, ZK 资产登记,元数据,识别索赔,多签名登记以及管理说明
+- `ToriiClient` HTTP 对账户,资产,别名,探索者页面, RWA,合同,多签证,管理,订阅,数据可用性,机密资产,节点/运行时状态,健康,指标和 SSE 流的辅助员
+- `IrohaSDK`交易构建者和提交/投票助手转移、铸造、销毁,盾牌,无盾牌,ZK 转移, ZK 资产登记,元数据,识别索赔,多签名登记以及管理说明
 - 通过 `PendingTransactionQueue`和 `FilePendingTransactionQueue`等待的交易队列支持
 - 通过 `AccountAddress`和 `AccountId`的账户地址和 I105 助手.
 - Ed25519, secp256k1, ML-DSA, BLS,GOST 和 SM2 的签字表面,在需要时具有原生桥梁支
-- 产地保证指令用货物构建商和匿名保证
+- 用于市场型和匿名托管的原生托管指令载荷构建器
 - 连接 WebSocket,框架,加密,会议,排队,重播和诊断辅助器
-- 卡盖穆沙准备,打字补充和赎回,运营状态,笔记,同行捆绑,收据和 QR 流模型
+- 卡盖穆沙准备,打字补充和赎回,运营状态,笔记,对等节点捆绑,收据和 QR 流模型
 - SoraFS,数据可用性和验证附件辅助器
 
 ## API 举例 {#api-examples}

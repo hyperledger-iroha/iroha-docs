@@ -3,35 +3,35 @@ translation_locale: az
 translation_source: /blockchain/domains.md
 translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Domenlər {#domains}
 
-Domainlər ad sahələrində qeydə alınmış `World`. Hazırda Iroha 3 məlumat modeli bir domen ana məlumat məkanı ilə təsnif olunur, buna görə kanonik identifikator:
+Domenlər `World`-da qeydiyyatdan keçmiş adlandırılmış ad sahələridir. Hazırkı Iroha 3 məlumat modeli üzrə bir domen onun valideyn məlumat sahəsi ilə təyin olunur, buna görə tək protokol-standart identifikator belədir:
 
 ```text
 domain.dataspace
 ```
 
-Məsələn, `payments.universal` `payments` domeninin `universal` məlumat sahəsindəki adlarını göstərir.
+Məsələn, `payments.universal` `universal` məlumat sahəsinin içərisindəki `payments` domenini adlandırır.
 
-## Struktura {#structure}
+## Struktur {#structure}
 
-qeydiyyatdan keçmiş `Domain` əlamətləri aşağıdakılardır:
+Qeydiyyatdan keçmiş `Domain` aşağıdakıları ehtiva edir:
 
-- `id`: məlumat məkanına uyğun olan `DomainId`
-- `logo`: bir domen logosu üçün seçim yolu ilə `SoraFS` URI
-- `metadata`: key-value metadataları
-- `owned_by`: domenin sahibi hesabı, ümumiyyətlə onu qeydiyyatdan keçirən hesab.
+- `id`: məlumat məkanına uyğun `DomainId`
+- `logo`: bir domen loqosu üçün isteğe bağlı `SoraFS` URI
+- `metadata`: ixtiyari açar-dəyər metadatası
+- `owned_by`: domenin sahib olduğu hesab, adətən onu qeydiyyatdan keçirən hesab
 
-Bir domenin materiallaşdırılması üçün istifadə olunan bootstrap pay yükü: `NewDomain`. O, `id`, istisna olmaqla `logo`, və ilkin `metadata`. Döyüş vaxtı doldurulur `owned_by` Ümumi müştərilər bu pay yükünü birbaşa təqdim etmirlər.
+Bir domeni həyata keçirmək üçün istifadə olunan bootstrap yükü `NewDomain`-dir. O, `id`-i, isteğe bağlı `logo`-i və ilkin `metadata`-ü daşıyır. Proqramın icra mühiti `owned_by`-ü səlahiyyət prinsiplərindən doldurur. Adi müştərilər bu yükü birbaşa təqdim etmirlər.
 
-## qeydiyyat {#registration}
+## Qeydiyyat {#registration}
 
-Adi domen yaradılması deklarativ alias setup axını istifadə edir. Bu, SNS icarəsini, sahibkarlıq imkanlarını, quote qoruyucuğunu və bir atom `EnsureAlias` əməliyyatında domen sətirini saxlayır. `Register::Domain` bir genesis / bootstrap səth olaraq qalır və `ledger domain` komandanın heç bir `register` alt komandanı yoxdur.
+Adi domen yaradılması deklarativ ləqəb quruluşu axınından istifadə edir. Bu, SNS icarəni, sahibin imkanlarını, ödəniş qiymətinin təsdiq qoruyucusunu və domen sətrini bir atomik `EnsureAlias` əməliyyatında saxlayır. `Register::Domain` hələ də bir başlanğıc/bootstrap səthidir və `ledger domain` əmri heç bir `register` alt əmri yoxdur.
 
-Sirrsiz bir yaradın `AliasSetupPlanRequestV1` məqsədi SDK və ya yükləmə xidməti, sonra CLI Bunu canlı vəziyyətlə qarşı planlaşdırın və dəqiq planı təqdim edin:
+Gizli olmayan `AliasSetupPlanRequestV1` niyyəti SDK və ya onboarding xidməti ilə yaradın, sonra CLI-nin onu canlı vəziyyətə qarşı planlaşdırmasını və həmin planı təqdim etməsini təmin edin:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -45,20 +45,20 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-Məqsəd `payments.universal`, onun rəqəmsal məlumat sahəsi, kanonik I105 sahibi, icarə satın alma müddəti və cari siyasət / ödəniş qiymətləndirmə mühafizəsini müəyyən edir. planlaşdırıcı son nöqtəsi `POST /v1/aliases/setup/plan`; geri qaytarılan planı zəncir, səlahiyyət, dövlət və müddətə bağlıdır. Domen aradan qaldırılması hələ də [`Unregister`](/az/blockchain/instructions.md#un-register) istifadə edir.
+Niyyət müəyyən edir `payments.universal`, rəqəmsal məlumat sahəsi, tək protokol-standart I105 sahib, icarə əldə etmə müddəti və mövcud siyasət/ödəmə haqqı-qiymət təsdiqi qoruyucusu. Planlayıcı API son nöqtədir `POST /v1/aliases/setup/plan`; qaytarılan plan zəncirlə bağlıdır, əməliyyatın təsdiqi şəxsiyyət, blok zənciri dəftər vəziyyəti və son tarix. Domenin silinməsi hələ də istifadə edir [`Unregister`](/az/blockchain/instructions.md#un-register).
 
-Bir domenin yaradılması və ya çıxarılması aktiv icra vaxtı təsdiqçisi altında müvafiq domen idarəetmə icazəsi tələb edir. Domen metadataları [`SetKeyValue` və `RemoveKeyValue`](/az/blockchain/instructions.md#setkeyvalue-removekeyvalue) ilə yenilənə bilər.
+Bir domen yaratmaq və ya silmək üçün uyğun domen idarəetmə icazəsi tələb olunur aktiv proqram təminatının icra mühiti yoxlayıcısı. Domen metadata məlumatları ilə yenilənə bilər [`SetKeyValue` və `RemoveKeyValue`](/az/blockchain/instructions.md#setkeyvalue-removekeyvalue) icazə verən əsasın həmin domeni dəyişdirmək icazəsi olduğu zaman.
 
-## Taira üzərində sınayın. {#try-it-on-taira}
+## Bu iş axınını Taira üzərində işə sal {#try-it-on-taira}
 
-Hal-hazırda ictimai Taira test şəbəkəsində görünən domenlərin siyahısını göstərin:
+İctimai Taira testnet-də hazırda görünən domenləri siyahıya alın:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
   | jq -r '.items[].id'
 ```
 
-İctimai zolaq kataloqunu məlumat məkanı aliaslarına qaytarın:
+İctimai edam zolağı kataloqunu məlumat sahəsi ləqəblərinə geri xəritələyin:
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -67,9 +67,9 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
     | @tsv'
 ```
 
-Bir tətbiq bir domenin mövcud olub olmadığını yoxlamaq üçün ilk əmrdən istifadə edin. Bir məlumat sahəsinin ictimai, məhdud və ya əsas zolaqdan geri qalıb-qalmadığını təsdiq etmək üçün yol kataloqundan istifadə edin.
+Tətbiq bir domenin mövcud olub olmadığını yoxlamalı olduğu zaman ilk əmrdən istifadə edin. Bir dataspace-in ictimai, məhdud və ya əsas icra xəttindən geridə olub olmadığını təsdiqləmək lazım olduqda icra xətti kataloqundan istifadə edin.
 
-Domain qurulması ödənişli bir yazıdır. Taira-də sınamaqdan əvvəl, faucet köməkçisini [-dən saxlayın Testnet XOR-i Taira](/az/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)-də `taira_faucet_claim.py` olaraq əldə edin, imzalananı ictimai faucet vasitəsilə maliyyələşdirin və ödəniş metadataları əlavə edin:
+Domen qurulması ödənişli yazıdır. Taira-də sınamadan əvvəl, testnet maliyyələşdirmə xidmət köməkçisini [Taira üzərində Testnet XOR əldə edin](/az/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)-dən `taira_faucet_claim.py` kimi saxlayın, kriptoqrafik imzalayıcıyı ictimai testnet maliyyələşdirmə xidməti vasitəsilə maliyyələşdirin və ödəniş metadatasını əlavə edin:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -88,15 +88,15 @@ iroha --config ./taira.client.toml \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 
-Təkrarlanan test şəbəkələrin icrasında unikal bir domen adının niyyətini qurun və istifadə edin Taira localnet üçün hazırlanmış bir planı yenidən istifadə etməyin və ya Minamoto.
+Təkrarlanan testnet icra zamanı unikal domen adı üçün məqsəd qurun və Taira-ın mövcud siyasətini və ödəniş-aktiv ödəniş qiyməti yoxlama mühafizəsini istifadə edin. Localnet və ya Minamoto üçün hazırlanmış planı yenidən istifadə etməyin.
 
-## Digər subyektlərlə münasibətlər {#relationship-to-other-entities}
+## Digər qurumlarla münasibət {#relationship-to-other-entities}
 
-Domains qrup ledger obyektləri və domen ölçülü məlumatlar üçün bir ad məkanı təmin edir. Əsasyyət tərifləri domen təsnifatlı identifikatorlardan istifadə edir, suallar domenlərin siyahısı və ya tapmaq olar. Hesabların özləri mövcud məlumat modellərində domensizdirlər, lakin hesablar domenlərə sahib ola bilər və tərifləri domenlərin altında yaşayan aktivləri saxlaya bilər.
+Domenlər blokçeyn dəftər obyektlərini qruplaşdırır və domenlə məhdudlaşdırılmış məlumat üçün ad sahəsi təmin edir. Aktiv tərifləri domenə uyğun identifikatorlardan istifadə edir və sorğular domenləri siyahıya ala bilər və ya domenə aid edilən obyektləri tapın. Hazırki məlumat modelində hesablar özləri domenə aid deyil, lakin hesablar domenlərə sahib ola bilər və tərifləri domenlərin altında olan aktivləri saxlaya bilər.
 
-Həmçinin bax:
+Bax həmçinin:
 
 - [Dünya](/az/blockchain/world.md)
-- [Əmlaklar](/az/blockchain/assets.md)
-- [Metadata](/az/blockchain/metadata.md)
+- [Aktivlər](/az/blockchain/assets.md)
+- [Metaməlumat](/az/blockchain/metadata.md)
 - [Adlandırma qaydaları](/az/reference/naming.md)

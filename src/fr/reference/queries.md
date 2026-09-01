@@ -1,121 +1,128 @@
 ---
 translation_locale: fr
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Questions posées {#queries}
+# Requêtes {#queries}
 
-Les requêtes Iroha lisent l'état du registre sans le modifier. Le modèle de données actuel expose deux formes générales de requête:
+Iroha interroge l'état du grand livre blockchain sans le modifier. Le modèle de données actuel expose deux grandes formes de requêtes :
 
-- les requêtes singulières, qui renvoient un objet ou une valeur
-- requêtes itératives, qui renvoient un flux ou une collection et peuvent être combinées avec le filtrage, le tri, la projection et la pagination où le type de requête le prend en charge
+- requêtes singulières, qui renvoient un objet ou une valeur
+- requêtes itérables, qui renvoient un flux ou une collection et peuvent être combinées avec le filtrage, le tri, la projection et la pagination lorsque le type de requête le prend en charge
 
-Utilisation SDK des constructeurs de type ou les CLI Les noms ci-dessous sont les types de requêtes actuels exposés par `iroha_data_model::query`.
+Utilisez les constructeurs typés SDK ou le CLI au lieu de construire manuellement des conteneurs de données de requête. Les noms ci-dessous sont les types de requête actuellement exposés par `iroha_data_model::query`.
 
-## Temps d'exécution et configuration {#runtime-and-configuration}
+## Exécution et configuration logicielle {#runtime-and-configuration}
 
-|Une question .|Objectif |
+|Requête|But|
 | --- | --- |
-|`FindAbiVersion` |Retourner la version de l'exécuteur ABI. |
-|`FindExecutorDataModel` |Retourner la description du modèle de données d'exécuteur. |
-|`FindParameters` |Retourner les paramètres de configuration de l'exécuteur en chaîne. |
+| `FindAbiVersion` |Retourner la version de l'exécuteur ABI.|
+| `FindExecutorDataModel` |Retournez la description du modèle de données de l'exécuteur.|
+| `FindParameters` |Retourner les paramètres de configuration de l'exécuteur sur la chaîne.|
 
 ## Comptes et autorisations {#accounts-and-permissions}
 
-|Une question .|Objectif |
+|Requête|But|
 | --- | --- |
-|`FindAccountById` |Trouver un compte par compte canonique ID. |
-|`FindAccountByAlias` |Résolvez un compte sous le pseudonyme de compte. |
-|`FindAccounts` |Liste des comptes enregistrés. |
-|`FindAccountIds` |Liste du compte enregistré IDs. |
-|`FindAccountsWithAsset` |Liste des comptes qui contiennent une définition d'actif donnée. |
-|`FindAliasesByAccountId` |Liste des pseudonymes liés à un compte. |
-|`FindAccountRecoveryPolicyByAlias` |Trouvez la police de récupération pour un alias. |
-|`FindAccountRecoveryRequestByAlias` |Trouvez la demande de récupération pour un alias. |
-|`FindRoles` |Liste des rôles. |
-|`FindRoleIds` |Le rôle de la liste IDs. |
-|`FindRolesByAccountId` |Liste des rôles attribués à un compte. |
-|`FindPermissionsByAccountId` |Liste des autorisations accordées à un compte. |
+| `FindAccountById` |Trouvez un compte par identifiant de compte canonique.|
+| `FindAccountByAlias` |Résoudre un alias de compte en un compte.|
+| `FindAccounts` |Lister les comptes enregistrés.|
+| `FindAccountIds` |Lister les identifiants de compte enregistrés.|
+| `FindAccountsWithAsset` |Lister les comptes qui détiennent une définition d'actif donnée.|
+| `FindAliasesByAccountId` |Lister les alias associés à un compte.|
+| `FindAccountRecoveryPolicyByAlias` |Trouvez la politique de récupération pour un alias.|
+| `FindAccountRecoveryRequestByAlias` |Trouvez la demande de récupération pour un alias.|
+| `FindRoles` |Lister les rôles.|
+| `FindRoleIds` |Lister les identifiants de rôle.|
+| `FindRolesByAccountId` |Lister les rôles attribués à un compte.|
+| `FindPermissionsByAccountId` |Lister les permissions accordées à un compte.|
 
-## Domaines et pairs {#domains-and-peers}
+## Domaines et pairs réseau {#domains-and-peers}
 
-|Une question .|Objectif |
+|Requête|But|
 | --- | --- |
-|`FindDomainById` |Trouver un domaine par `DomainId`. |
-|`FindDomains` |Liste des domaines enregistrés. |
-|`FindDomainsByAccountId` |Liste des domaines appartenant à un compte. |
-|`FindDomainEndorsements` |Liste des enregistrements d'approbation du domaine. |
-|`FindDomainEndorsementPolicy` |Retournez la politique d'approbation du domaine. |
-|`FindDomainCommittee` |Retournez le comité de domaine.|
-|`FindPeers` |Liste des pairs de confiance connus dans le registre. |
+| `FindDomainById` |Trouvez un domaine par `DomainId`.|
+| `FindDomains` |Lister les domaines enregistrés.|
+| `FindDomainsByAccountId` |Lister les domaines possédés par un compte.|
+| `FindDomainEndorsements` |Lister les enregistrements d'approbation de domaine.|
+| `FindDomainEndorsementPolicy` |Retournez la politique d'approbation de domaine.|
+| `FindDomainCommittee` |Retournez le comité de domaine.|
+| `FindPeers` |Lister les pairs réseau de confiance connus du registre blockchain.|
 
-## Les actifs, NFTs et RWAs {#assets-nfts-and-rwas}
+## Actifs, NFTs, et RWAs {#assets-nfts-and-rwas}
 
-|Une question .|Objectif |
+|Requête|But|
 | --- | --- |
-|`FindAssets` |Liste des soldes d'actifs |
-|`FindAssetsDefinitions` |Liste des définitions d'actifs. |
-|`FindAssetsByAccountId` |Liste des actifs détenus par un compte. |
-|`FindAssetById` |Trouver un solde d'actif par `AssetId`. |
-|`FindAssetDefinitionById` |Trouver une définition de l'actif par ID. |
-|`FindNfts` |Liste NFTs. |
-|`FindNftsByAccountId` |Liste NFTs détenue par un compte. |
-|`FindRwas` |Liste des actifs enregistrés dans le monde réel. |
+| `FindAssets` |Lister les soldes des actifs.|
+| `FindAssetsDefinitions` |Lister les définitions d'actifs.|
+| `FindAssetsByAccountId` |Lister les actifs détenus par un compte.|
+| `FindAssetById` |Trouvez le solde d'un actif par `AssetId`.|
+| `FindAssetDefinitionById` |Trouver une définition d’actif par ID.|
+| `FindNfts` |Liste NFTs.|
+| `FindNftsByAccountId` |Liste NFTs détenue par un compte.|
+| `FindRwas` |Lister les lots d’actifs réels enregistrés.|
 
-## Enregistreurs de dépôt et de preuve {#escrow-and-proof-records}
+## Compte séquestre et dossiers de preuve {#escrow-and-proof-records}
 
-Les requêtes d'escroquerie examinent les registres créés par [native asset escrow ISIs](/fr/blockchain/escrow.md), y compris les enregistrements de marché en escroquerie, les verrouillages génériques des actifs et les enregistrements anonymes en escrow.
+Les requêtes d'entiercement inspectent les enregistrements créés par [séquestre d’actif natif ISIs](/fr/blockchain/escrow.md), y compris les séquestres de marché, les verrouillages d'actifs génériques et les enregistrements d'entiercement anonymes.
 
-|Une question .|Objectif |
+|Requête|But|
 | --- | --- |
-|`FindAssetEscrows` |Liste des dossiers de dépôt d'actifs.|
-|`FindAssetEscrowById` |Trouvez un escrow d'actifs à ID. |
-|`FindAssetEscrowsBySeller` |Liste des garanties d'actifs par vendeur. |
-|`FindAssetEscrowsByBuyer` |Liste des garanties d'actifs par acheteur. |
-|`FindAssetEscrowsByStatus` |Liste des garanties d'actif par statut. |
-|`FindAnonymousAssetEscrows` |Faites une liste d'enregistrements anonymes des actifs. |
-|`FindAnonymousAssetEscrowById` |Trouvez une garantie anonyme d'actifs par ID. |
-|`FindAnonymousAssetEscrowsBySeller` |Liste des garanties anonymes par vendeur. |
-|`FindAnonymousAssetEscrowsByBuyer` |Liste des garanties anonymes par acheteur. |
-|`FindAnonymousAssetEscrowsByStatus` |Liste des déposants anonymes par statut. |
-|`FindProofRecordById` |Trouvez un enregistrement de preuve par ID. |
-|`FindProofRecords` |Faites la liste des preuves. |
-|`FindProofRecordsByBackend` |Liste des dossiers de preuve pour un arrière-plan de preuve. |
-|`FindProofRecordsByStatus` |Listez les documents de preuve par état. |
+| `FindAssetEscrows` |Lister les registres d'entiercement des actifs.|
+| `FindAssetEscrowById` |Trouver un séquestre d'actif par ID.|
+| `FindAssetEscrowsBySeller` |Lister les séquestres d'actifs par vendeur.|
+| `FindAssetEscrowsByBuyer` |Lister les séquestres d'actifs par acheteur.|
+| `FindAssetEscrowsByStatus` |Lister les séquestres d'actifs par statut.|
+| `FindAnonymousAssetEscrows` |Lister les dossiers d'entiercement d'actifs anonymes.|
+| `FindAnonymousAssetEscrowById` |Trouvez un séquestre d'actif anonyme par ID.|
+| `FindAnonymousAssetEscrowsBySeller` |Lister les séquestres anonymes par vendeur.|
+| `FindAnonymousAssetEscrowsByBuyer` |Lister les séquestres anonymes par acheteur.|
+| `FindAnonymousAssetEscrowsByStatus` |Lister les séquestres anonymes par statut.|
+| `FindProofRecordById` |Trouver un enregistrement de preuve par ID.|
+| `FindProofRecords` |Lister les dossiers de preuve.|
+| `FindProofRecordsByBackend` |Lister les enregistrements de preuve pour un backend de preuve.|
+| `FindProofRecordsByStatus` |Lister les dossiers de preuve par statut.|
 
-## Nexus, Disponibilité des données et emballages {#nexus-data-availability-and-packages}
+## Nexus, Disponibilité des données et packages {#nexus-data-availability-and-packages}
 
-|Une question .|Objectif |
+|Requête|But|
 | --- | --- |
-|`FindRepoAgreements` |Liste des accords de référentiel stockés en chaîne. |
-|`FindTwitterBindingByHash` |Résolvez un lien Twitter par hash. |
-|`FindDaPinIntentByTicket` |Trouvez l'intention du pin de disponibilité des données par billet. |
-|`FindDaPinIntentByManifest` |Trouvez l'intention de la broche par référence manifeste. |
-|`FindDaPinIntentByAlias` |Trouvez l'intention de pin par alias.|
-|`FindDaPinIntentByLaneEpochSequence` |Trouvez l'intention d'une broche par voie, époque et séquence. |
-|`FindLaneRelayEnvelopeByRef` |Trouvez une enveloppe vérifiée pour le relais.|
-|`FindSorafsProviderOwner` |Résoudre le propriétaire d'un fournisseur SoraFS. |
-|`FindDataspaceNameOwnerById` |Résolvez un propriétaire de l'espace de données. |
-|`FindMusubiReleaseByRef` |Trouver une libération Musubi en référence. |
-|`FindMusubiPackageVersions` |Liste des versions d'un forfait Musubi. |
-|`FindMusubiPackageReleases` |Listes publiées pour un forfait Musubi. |
-|`FindMusubiShortAliasByName` |Résolvez un Musubi surnom court. |
+| `FindRepoAgreements` |Lister les accords de dépôt stockés sur la chaîne.|
+| `FindTwitterBindingByHash` |Résoudre une liaison Twitter par hachage cryptographique.|
+| `FindDaPinIntentByTicket` |Trouvez une intention de broche de disponibilité des données par ticket.|
+| `FindDaPinIntentByManifest` |Trouver une intention de pin par référence au manifeste technique.|
+| `FindDaPinIntentByAlias` |Trouver une intention d'épingle par alias.|
+| `FindDaPinIntentByLaneEpochSequence` |Trouvez une intention d'épingle par voie d'exécution, époque et séquence.|
+| `FindLaneRelayEnvelopeByRef` |Trouvez un conteneur de données de relais de voie vérifié.|
+| `FindSorafsProviderOwner` |Résoudre le propriétaire d'un fournisseur SoraFS.|
+| `FindDataspaceNameOwnerById` |Résoudre un propriétaire de nom d'espace de données.|
+| `FindMusubiExactPackageV1` |Lisez un enregistrement de package exact et ses révisions actuelles.|
+| `FindMusubiExactReleaseV1` |Lire un instantané de version exact.|
+| `FindMusubiProviderBundleAttestationV1` |Lisez l'attestation du lot d'archives d'un fournisseur.|
+| `FindMusubiResolverIndexV1` |Parcourez l'index finalisé du résolveur.|
+| `FindMusubiVersionsV1` |Pages des versions finalisées pour un paquet.|
+| `FindMusubiMaintainersV1` |Page des mainteneurs acceptés et des invitations en attente.|
+| `FindMusubiArchiveLocationsV1` |Page finalisée SoraFS des emplacements pour une archive.|
+| `FindMusubiArchiveRetentionV1` |Page des dossiers de conservation des archives.|
+| `FindMusubiAliasV1` |Lire la cible actuelle et la révision d'un alias global.|
+| `FindMusubiAliasHistoryV1` |Pagez l'historique de retargeting immuable d'un alias global.|
+| `FindMusubiOrderedPrefixV1` |Page des packages sous un préfixe structuré ordonné.|
 
-## Les déclencheurs, les contrats, les transactions et les blocs {#triggers-contracts-transactions-and-blocks}
+## Déclencheurs, Contrats, Transactions et Blocs {#triggers-contracts-transactions-and-blocks}
 
-|Une question .|Objectif |
+|Requête|But|
 | --- | --- |
-|`FindActiveTriggerIds` |Liste du déclencheur actif IDs. |
-|`FindTriggers` |Liste des déclencheurs. |
-|`FindTriggerById` |Trouvez un déclencheur à ID. |
-|`FindContractManifestByCodeHash` |Trouver un manifeste de contrat intelligent par code hash. |
-|`FindTransactions` |Liste des transactions engagées. |
-|`FindBlocks` |Les blocs de liste.|
-|`FindBlockHeaders` |Liste des en-têtes de bloc. |
+| `FindActiveTriggerIds` |Lister les ID de déclencheurs actifs.|
+| `FindTriggers` |Lister les déclencheurs.|
+| `FindTriggerById` |Trouvez un déclencheur par ID.|
+| `FindContractManifestByCodeHash` |Trouvez un manifeste technique de contrat intelligent par hachage cryptographique de code.|
+| `FindTransactions` |Lister les transactions validées.|
+| `FindBlocks` |Lister les blocs.|
+| `FindBlockHeaders` |Lister les en-têtes de bloc.|
 
-## Le filtrage et la pagination {#filtering-and-pagination}
+## Filtrage et pagination {#filtering-and-pagination}
 
-Les requêtes itérables peuvent exposer le support du prédicateur et du sélecteur. Utilisez des filtres typés spécifiques à la requête de la SDK afin que l'entrée du filtre correspond au type de sortie de la requête. Pour les grands ensembles de résultats, utilisez des paramètres de requête tels que le curseur et la limite au lieu de récupérer chaque rangée en même temps.
+Les requêtes itérables peuvent exposer le support des prédicats et des sélecteurs. Utilisez des filtres typés spécifiques à la requête à partir du SDK afin que l'entrée du filtre corresponde au type de sortie de la requête. Pour les grands ensembles de résultats, utilisez des paramètres de requête tels que cursor et limit au lieu de récupérer toutes les lignes à la fois.

@@ -1,20 +1,20 @@
 ---
 translation_locale: ar
 translation_source: /reference/peer-config/index.md
-translation_source_hash: 5cc6ddf62a45f655d61a0ff3ebc7e20b939fe78c9d542087b717c2e17e19250d
+translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f29469aaf4
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# تشكيل Iroha {#configuring-iroha}
+# تكوين Iroha {#configuring-iroha}
 
-يتم تعيين تشكيل الأقران المحلي TOML الملفات. هذا يختلف عن التكوين على السلسلة تغيرت من خلال [`SetParameter`](/ar/blockchain/instructions.md#setparameter) التعليمات. يجب أن يتم تمثيل سلوك الإنتاج في ملف تشكيل أو معايير داخل السلسلة. المتغيرات البيئية ليست بوابات الميزة.
+يتم إعداد تكوين النظير في الشبكة المحلية في TOML الملفات. هذا يختلف عن التكوين على السلسلة الذي تم تغييره من خلال [`SetParameter`](/ar/blockchain/instructions.md#setparameter) التعليمات. يجب تمثيل سلوك الإنتاج في تكوين ملف أو معلمة على السلسلة؛ متغيرات البيئة ليست بوابات ميزات.
 
-استخدم [`--config`](../irohad-cli#arg-config) CLI الحجة لتحديد المسار إلى ملف التكوين.
+استخدم [`--config`](../iroha3d-cli#arg-config) CLI حجة لتحديد مسار ملف التكوين.
 
-## النموذج {#template}
+## نموذج {#template}
 
-للحصول على وصف مفصل لكل معايير، يرجى الرجوع إلى [معايير ](./params.md) المرجعية.
+للحصول على وصف مفصل لكل معلمة، يرجى الرجوع إلى المرجع [المعلمات](./params.md).
 
 ::: details `peer.template.toml`
 
@@ -22,9 +22,9 @@ translation_engine: nllb-200-ct2
 
 :::
 
-## إعداد ملفات التكوين {#composing-configuration-files}
+## كتابة ملفات الإعداد {#composing-configuration-files}
 
-يحتوي ملفات التكوين TOML على حقل إضافي `extends` ، يشير إلى ملفات أخرى TOML. يمكن أن تكون مسارًا واحدًا أو العديد من المسارات:
+ملفات التكوين TOML تحتوي على حقل إضافي `extends` يشير إلى ملف(ملفات) TOML أخرى. يمكن أن يكون مسارًا واحدًا أو مسارات متعددة:
 
 ::: code-group
 
@@ -38,7 +38,7 @@ extends = ["file1.toml", "file2.toml"]
 
 :::
 
-Iroha سوف تقرأ بشكل متكرر جميع الملفات المحددة في `extends` وتقوم بتجميعها إلى طبقات، حيث تقوم هذه الأخيرة بإعادة كتابة الملفات السابقة على مستوى المعايير. على سبيل المثال، إذا كانت القراءة في `config.toml`:
+Iroha سيقوم بقراءة جميع الملفات المحددة في `extends` بشكل متكرر وتجميعها في طبقات، حيث تقوم الطبقات اللاحقة بالكتابة فوق الطبقات السابقة على مستوى المعاملات. على سبيل المثال، إذا تم قراءة `config.toml`:
 
 ::: code-group
 
@@ -61,8 +61,8 @@ max_content_len = 2048
 
 :::
 
-التكوين الناتج سيكون `chain` من `a.toml`, `max_content_len` من `b.toml`, و `torii.address` من `config.toml` (تم إعادة الكتابة) `b.toml`).
+التكوين الناتج سيكون `chain` من `a.toml`، `max_content_len` من `b.toml`، و `torii.address` من `config.toml` (يحل محل `b.toml`).
 
-## حل المشاكل {#troubleshooting}
+## استكشاف الأخطاء وإصلاحها {#troubleshooting}
 
-مرر [`--trace-config`](../irohad-cli#arg-trace-config) CLI العلامة لرؤية آثار كيفية قراءة التكوين وتحليل.
+اجتاز [`--trace-config`](../iroha3d-cli#arg-trace-config) CLI علم لرؤية أثر كيفية قراءة التكوين وتحليله.

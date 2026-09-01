@@ -8,19 +8,19 @@ translation_engine: nllb-200-ct2
 
 # NFTs {#nfts}
 
-Iroha NFT 是一個具有一個所有者的獨特賬本對象. 使用 NFTs 當記錄需要自己的身份,元數據,生命週期事件和所有權轉移語義時,但不需要數字平衡時.
+Iroha NFT 是一個具有一個所有者的獨特賬本物件. 使用 NFTs 當記錄需要自己的身份,後設資料,生命週期事件和所有權轉移語義時,但不需要數字餘額時.
 
-與數值 [資產](/zh-hant/blockchain/assets.md)不同,一個 NFT 沒有精度,可選性或每賬戶的數量. NFT 存在爲一個註冊對象,所有權直接追蹤該對象.
+與數值 [資產](/zh-hant/blockchain/assets.md)不同,一個 NFT 沒有精度,可選性或每帳戶的數量. NFT 存在為一個註冊物件,所有權直接追蹤該物件.
 
 ## 結構 {#structure}
 
 已註冊的 `Nft` 包含:
 
 - `id`:一個 `NftId`
-- `content`:描述 NFT 的元數據
-- `owned_by`:持有 NFT 的賬戶
+- `content`:描述 NFT 的後設資料
+- `owned_by`:持有 NFT 的帳戶
 
-`content`字段是`Metadata`地圖.保持緊:存儲描述字段,穩定引用,哈希, URIs 或 SoraFS 路徑在那裏.存儲大型文件,媒體或高率的應用狀態離鏈,並只在 NFT 上保存可驗證的參考.
+`content` 欄位是 `Metadata` 映射。應保持精簡：在其中儲存描述性欄位、穩定引用、雜湊、URIs 或 SoraFS 路徑。大型文件、媒體或頻繁變動的應用狀態應儲存在鏈下，NFT 上只保留可驗證的引用。
 
 ## 在 Taira 試看. {#try-it-on-taira}
 
@@ -31,40 +31,40 @@ curl -fsS 'https://taira.sora.org/v1/nfts?limit=5' \
   | jq '{total, nft_ids: [.items[].id]}'
 ```
 
-查看節點暴露的 NFT 路線的現場 OpenAPI 文檔:
+檢視節點暴露的 NFT 路線的現場 OpenAPI 文件:
 
 ```bash
 curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/nfts") or startswith("/v1/explorer/nfts"))'
 ```
 
-虛空的 `items`陣列是公共測試網上的有效響應.這意味着當前頁面中沒有 NFTs,而不是說 NFT 指令不可用.
+虛空的 `items`陣列是公共測試網上的有效響應.這意味著當前頁面中沒有 NFTs,而不是說 NFT 指令不可用.
 
 ## NFT IDs {#nft-ids}
 
-`NftId`使用以下文本表格:
+`NftId`使用以下文字形式:
 
 ```text
 name$domain
 name$domain.dataspace
 ```
 
-例如, `badge$docs.universal` 在 `docs.universal` 域中識別`badge` NFT.如果遺漏數據空間,當前的解析器使用`universal` 數據空間,因此 `badge$docs` 解決爲`badge$docs.universal`.
+例如, `badge$docs.universal` 在 `docs.universal` 域中識別`badge` NFT.如果遺漏資料空間,當前的解析器使用`universal` 資料空間,因此 `badge$docs` 解決為`badge$docs.universal`.
 
-使用 NFT IDs 的穩定名稱. ID 是指令,查詢,權限,事件過器和應用參考所使用的對象身份.
+使用 NFT IDs 的穩定名稱. ID 是指令,查詢,許可權,事件過濾器和應用參考所使用的物件身份.
 
 ## 生命週期 {#lifecycle}
 
 NFT 生命週期運營使用 Iroha 特殊指示:
 
-- [`Register`](/zh-hant/blockchain/instructions.md#un-register)創建 NFT 的初始 `content`.
+- [`Register`](/zh-hant/blockchain/instructions.md#un-register)建立 NFT 的初始 `content`.
 - [`Unregister`](/zh-hant/blockchain/instructions.md#un-register)刪除了 NFT.
 - [`Transfer`](/zh-hant/blockchain/instructions.md#transfer)`owned_by`的變化
-- [`SetKeyValue`和 `RemoveKeyValue`](/zh-hant/blockchain/instructions.md#setkeyvalue-removekeyvalue)更新的 NFT 元數據.
+- [`SetKeyValue`和 `RemoveKeyValue`](/zh-hant/blockchain/instructions.md#setkeyvalue-removekeyvalue)更新的 NFT 後設資料.
 
 ## 在本地試看 {#try-it-locally}
 
-這些例子假設您已經啓動了本地網絡,並從 [CLI 指南](/zh-hant/get-started/operate-iroha-via-cli.md)生成的客戶端配置:
+這些例子假設您已經啟動了本地網路,並從 [CLI 指南](/zh-hant/get-started/operate-iroha-via-cli.md)生成的客戶端配置:
 
 ```bash
 export IROHA_CONFIG=./localnet/client.toml
@@ -72,7 +72,7 @@ export NFT_DOMAIN=wonderland.universal
 export NFT_ID='badge_intro$wonderland.universal'
 ```
 
-生成的本地網絡已經設置了 `wonderland.universal` 和其 SNS 要使用不同的域名,首先用聲明符創建一個域名 `app alias setup plan` 和 `app alias setup apply` 工作流程 [域名](/zh-hant/blockchain/domains.md#registration).
+生成的本地網路已經設定了 `wonderland.universal` 和其 SNS 要使用不同的域名,首先用宣告符建立一個域名 `app alias setup plan` 和 `app alias setup apply` 工作流程 [域名](/zh-hant/blockchain/domains.md#registration).
 
 註冊一個 NFT.註冊從標準輸入中讀取初始內容 JSON:
 
@@ -92,7 +92,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft list all --verbose
 ```
 
-添加一個元數據鍵,然後再次讀取 NFT:
+新增一個後設資料鍵,然後再次讀取 NFT:
 
 ```bash
 printf '{"color":"blue","rarity":"tutorial"}\n' |
@@ -103,14 +103,14 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft get --id "$NFT_ID"
 ```
 
-刪除元數據密鑰:
+刪除後設資料金鑰:
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
-選擇地轉移 NFT.使用`ledger nft get`來讀取當前所有者從 `owned_by`,並使用`ledger account list all`找到目的地賬戶 ID.
+選擇地轉移 NFT.使用`ledger nft get`來讀取當前所有者從 `owned_by`,並使用`ledger account list all`找到目的地帳戶 ID.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -123,29 +123,29 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
-通過後刪除例 NFT. 如果您將其轉移,則要麼將它轉移回來,要麼提交與當前所有者帳戶配置的非註冊命令.
+透過後刪除例 NFT. 如果您將其轉移,則要麼將它轉移回來,要麼提交與當前所有者帳戶配置的非註冊命令.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft unregister --id "$NFT_ID"
 ```
 
-## 問題和事件 {#queries-and-events}
+## 查詢和事件 {#queries-and-events}
 
-使用[`FindNfts`](/zh-hant/reference/queries.md#assets-nfts-and-rwas)列出 NFTs 和[`FindNftsByAccountId`](/zh-hant/reference/queries.md#assets-nfts-and-rwas)列出由賬戶所有的 NFTs.
+使用[`FindNfts`](/zh-hant/reference/queries.md#assets-nfts-and-rwas)列出 NFTs 和[`FindNftsByAccountId`](/zh-hant/reference/queries.md#assets-nfts-and-rwas)列出由帳戶所有的 NFTs.
 
-NFT 註冊,刪除,傳輸和元數據更新發出 NFT 數據事件. 訂閱本書變更或構建反應 NFT 生命週期事件時使用`Nft`數據事件過器.
+NFT 註冊,刪除,傳輸和後設資料更新發出 NFT 資料事件. 訂閱帳本變更或構建反應 NFT 生命週期事件時使用`Nft`資料事件過濾器.
 
 ## 許可證 {#permissions}
 
-默認授權表面包括 NFT 特定的代幣:
+預設授權表面包括 NFT 特定的代幣:
 
 - `CanRegisterNft`
 - `CanUnregisterNft`
 - `CanTransferNft`
 - `CanModifyNftMetadata`
 
-通過活躍的運行時間驗證器執行許可檢查,因此一個網絡可通過升級執行器來定製授權. [許可證代碼](/zh-hant/reference/permissions.md) 對於當前默認代幣列表.
+透過活躍的執行階段驗證器執行許可檢查,因此一個網路可透過升級執行器來定製授權. [許可證程式碼](/zh-hant/reference/permissions.md) 對於當前預設代幣列表.
 
 ## 選擇 NFTs {#choosing-nfts}
 
@@ -153,14 +153,14 @@ NFT 註冊,刪除,傳輸和元數據更新發出 NFT 數據事件. 訂閱本書�
 
 - 證書,章,許可證和證明
 - 成員身份或訪問記錄
-- 身份相關或賬戶所有的申請記錄
-- 鏈外媒體,文檔或公佈的引用
+- 身份相關或帳戶所有的申請記錄
+- 鏈外媒體,文件或公佈的引用
 
-使用數值資產用於可存餘額,並且使用簡單的 [元數據](/zh-hant/blockchain/metadata.md),當數據只是現有賬本對象的一種緊屬性.
+使用數值資產用於可存餘額,並且使用簡單的 [後設資料](/zh-hant/blockchain/metadata.md),當資料只是現有賬本物件的一種緊屬性.
 
 此外,請參見:
 
 - [資產](/zh-hant/blockchain/assets.md)
-- [超值數據](/zh-hant/blockchain/metadata.md)
+- [超值資料](/zh-hant/blockchain/metadata.md)
 - [指示](/zh-hant/blockchain/instructions.md)
 - [查詢](/zh-hant/blockchain/queries.md)

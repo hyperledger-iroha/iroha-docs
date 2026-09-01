@@ -16,8 +16,8 @@ translation_engine: nllb-200-ct2
 
 |اجازت ٹوکن |زمرہ |آپریشن |
 | --- | --- | --- |
-|`CanManagePeers` |ہم عمر |رجسٹر، غیر رجسٹریشن، یا دوسری صورت میں ہم عمروں کا انتظام. |
-|`CanManageLaneRelayEmergency` |ہم عمر |ہنگامی لین ریلے کنٹرولز کا انتظام کریں. |
+|`CanManagePeers` |نیٹ ورک نوڈ |رجسٹر، غیر رجسٹریشن، یا دوسری صورت میں نیٹ ورک نوڈز کا انتظام. |
+|`CanManageLaneRelayEmergency` |نیٹ ورک نوڈ |ہنگامی لین ریلے کنٹرولز کا انتظام کریں. |
 |`CanRegisterDomain` |ڈومین |ایک ڈومین رجسٹر. |
 |`CanUnregisterDomain` |ڈومین |ایک ڈومین کو غیر رجسٹر کریں۔ |
 |`CanModifyDomainMetadata` |ڈومین |ڈومین میٹا ڈیٹا میں ترمیم کریں۔ |
@@ -30,7 +30,7 @@ translation_engine: nllb-200-ct2
 |`CanBurnAssetWithDefinition` |اثاثہ |مخصوص تعریف کے لیے اثاثے جلا دیں۔ |
 |`CanTransferAssetWithDefinition` |اثاثہ |ایک مخصوص تعریف کے لیے اثاثے منتقل کریں۔ |
 |`CanMintAsset` |اثاثہ |ایک مخصوص اثاثہ بیلنس بنانا۔ |
-|`CanBurnAsset` |اثاثہ |ایک مخصوص اثاثہ توازن جلانے. |
+|`CanBurnAsset` |اثاثہ |ایک مخصوص اثاثہ بیلنس جلانے. |
 |`CanTransferAsset` |اثاثہ |ایک مخصوص اثاثہ بیلنس منتقل کریں۔ |
 |`CanRegisterNft` |NFT |ایک NFT رجسٹر کریں۔ |
 |`CanUnregisterNft` |NFT |NFT کو غیر رجسٹر کریں۔ |

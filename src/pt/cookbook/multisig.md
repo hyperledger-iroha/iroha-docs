@@ -1,24 +1,24 @@
 ---
 translation_locale: pt
 translation_source: /cookbook/multisig.md
-translation_source_hash: 7090228c4fea7321c93fe0d2c67ef6de842de95bc3befa11d83c12b9f15b4752
+translation_source_hash: e1b57e1c4310dd0db8be8d9f5a15e1d4f693abb90b634772857eb4b1e86e4baf
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Multisig ponderado {#weighted-multisig}
+# Multisig Ponderado {#weighted-multisig}
 
-## Resultados {#outcome}
+## Resultado {#outcome}
 
-Registre uma conta multisig ponderada de três membros na Taira, propor uma instrução de metadados, aprová-la com peso suficiente para atender ao quórum e verificar a execução do estado da conta multisig.
+Registre uma conta multisig ponderada de três membros em Taira, proponha uma instrução de metadados, aprove-a com peso suficiente para atingir o quórum e verifique a execução a partir do estado da conta multisig.
 
 ## Pré-requisitos {#prerequisites}
 
-- Três canônicos I105 signatário IDs em `SIGNER_A`, `SIGNER_B`, e `SIGNER_C`.
-- Configurações financiadas Taira para os signatários A e C. O proponente e cada homologador pagam a sua própria transacção.
-- `taira.tx-metadata.json` construído a partir da resposta atual à torneira, nunca a partir de um ativo de taxa copiado ID.
-- A. Rust Projeto cliente fixado para o mesmo Iroha Revisão da fonte como Taira Os passos posteriores de proposta e aprovação utilizam os seguintes elementos: CLI.
-- A função multisig do executor atual foi ativada. O registro está disponível para contas ordinárias no tempo de execução padrão Iroha 3, embora a política e a admissão de taxas Taira ainda se apliquem; use localnet se a implantação pública o negar.
+- Três IDs de signatário canônicos I105 em `SIGNER_A`, `SIGNER_B` e `SIGNER_C`.
+- Configurou Taira para os signatários criptográficos A e C. O proponente e cada aprovador pagam por sua própria transação.
+- `taira.tx-metadata.json` construído a partir da resposta do serviço de financiamento da testnet atual, nunca a partir de um ID de ativo de taxa copiado.
+- Um projeto de cliente Rust fixado na mesma revisão de origem Iroha que Taira para a etapa de registro. As etapas posteriores de proposta e aprovação usam o CLI.
+- O recurso multisig do executor atual está habilitado. O registro está disponível para contas comuns no ambiente de execução de software padrão Iroha 3, embora a política Taira e a cobrança de taxas ainda se apliquem; use a rede local se a implantação pública a negar.
 
 ```bash
 SIGNER_A_CONFIG=./taira.signer-a.toml
@@ -31,9 +31,9 @@ test -n "$SIGNER_C"
 
 ## Passos {#steps}
 
-### 1. Registrar uma política ponderada {#_1-register-a-weighted-policy}
+### 1. Registre uma política ponderada {#_1-register-a-weighted-policy}
 
-O signer C tem peso 2; A e B têm peso 1 cada. Um quórum de 3 requer, portanto, C mais ou menos A ou B. Derivar a conta canônica dessa política exata antes do registo, em seguida, passar o mesmo valor para `MultisigRegister::with_account`:
+o signatário criptográfico C tem peso 2; A e B têm peso 1 cada. Um quórum de 3, portanto, requer C mais A ou B. Derive a conta canônica a partir dessa política exata antes do registro, em seguida passe o mesmo valor para `MultisigRegister::with_account`:
 
 ```rust
 use std::{collections::BTreeMap, num::{NonZeroU16, NonZeroU64}};
@@ -84,18 +84,18 @@ registrar.submit_blocking::<InstructionBox>(
 println!("{}", multisig_account.canonical_i105()?);
 ```
 
-Salvar o valor impresso para as etapas CLI:
+Salve o valor impresso para os passos CLI:
 
 ```bash
 MULTISIG_ACCOUNT='<POLICY_DERIVED_I105_ACCOUNT_ID>'
 test -n "$MULTISIG_ACCOUNT"
 ```
 
-No comit fixado, o comando de registo CLI imprime a sua semente temporária antes que o tempo de execução a reinicie. Não reutilize essa semente como controlador. Não existe a chave privada do controlador: a autoridade multisig vem apenas de propostas aprovadas.
+No commit fixado, o comando de registro CLI imprime sua semente temporária antes que o tempo de execução do software a recodifique. Não reutilize essa semente como o controlador. Não há chave privada do controlador: o principal de autorização multisig vem apenas de propostas aprovadas.
 
-### 2. Construa uma instrução sem enviá-la. {#_2-build-one-instruction-without-submitting-it}
+### 2. Construa uma instrução sem enviá-la {#_2-build-one-instruction-without-submitting-it}
 
-O interruptor global `-o` serializa um conjunto de instruções para saída padrão. Não apresenta uma transacção e, por conseguinte, não gasta nenhuma taxa.
+O switch global `-o` serializa um array de instruções para a saída padrão. Ele não envia uma transação e, portanto, não gera nenhuma taxa.
 
 ```bash
 printf '"approved"\n' |
@@ -108,9 +108,9 @@ printf '"approved"\n' |
 jq . multisig-instructions.json
 ```
 
-### 3. Propõe como assinante A {#_3-propose-as-signer-a}
+### 3. Propor como signatário criptográfico A {#_3-propose-as-signer-a}
 
-O proponente contribui automaticamente com seu próprio peso. Capture o hash exato de instrução impresso pelo CLI; aprovações ligam a esse hash.
+O proponente contribui automaticamente com seu próprio peso. Capture o hash criptográfico da instrução exata impresso pelo CLI; aprovações se vinculam a esse hash criptográfico.
 
 ```bash
 PROPOSE_OUTPUT="$({
@@ -132,16 +132,16 @@ INSTRUCTIONS_HASH="$({
 test -n "$INSTRUCTIONS_HASH"
 ```
 
-Listar a proposta ainda pendente com um selector finito explícito:
+Liste a proposta ainda pendente com um seletor finito explícito:
 
 ```bash
 iroha --config "$SIGNER_A_CONFIG" ledger multisig list all \
   --multisig-selector "$MULTISIG_ACCOUNT"
 ```
 
-### 4. Aprovar como signatário C {#_4-approve-as-signer-c}
+### 4. Aprovar como signatário criptográfico C {#_4-approve-as-signer-c}
 
-O peso de A 1 mais o peso de C 2 atinge o quórum 3 e executa a instrução proposta como a conta multisig.
+O peso 1 de A mais o peso 2 de C atingem o quórum 3 e executam a instrução proposta como a conta multisig.
 
 ```bash
 iroha --config "$SIGNER_C_CONFIG" \
@@ -152,7 +152,7 @@ iroha --config "$SIGNER_C_CONFIG" \
   --instructions-hash "$INSTRUCTIONS_HASH"
 ```
 
-O cliente Rust pode prosseguir com a mesma conta derivada da política e as duas instruções do ciclo de vida usadas acima:
+O cliente Rust pode continuar com a mesma conta derivada da política e as duas instruções de ciclo de vida usadas acima:
 
 ```rust
 let instructions = vec![SetKeyValue::account(
@@ -173,7 +173,7 @@ signer_c_client.submit_blocking::<InstructionBox>(
 
 ## Verificar {#verify}
 
-Leia o pós-estado e confirme que a proposta não está mais pendente:
+Leia o estado pós e confirme que a proposta não está mais pendente:
 
 ```bash
 iroha --config "$SIGNER_A_CONFIG" ledger account meta get \
@@ -189,21 +189,21 @@ iroha --config "$SIGNER_A_CONFIG" ledger multisig inspect \
   jq .
 ```
 
-O valor dos metadados deve ser `"approved"`, o hash de instrução capturado não deve mais aparecer pendente e o controlador inspeccionado deve mostrar os pesos `1, 1, 2` com quorum `3`.
+O valor dos metadados deve ser `"approved"`, o hash criptográfico da instrução capturada não deve mais aparecer como pendente, e o controlador inspecionado deve mostrar os pesos `1, 1, 2` com quórum `3`.
 
-## Resolução de problemas {#troubleshooting}
+## Solução de problemas {#troubleshooting}
 
-- `signatory is not part of multisig` significa que o cliente que propõe ou aprova não corresponde a um dos I105 IDs registados na apólice.
-- Uma aprovação final pode ser rejeitada quando a conta multisig não tem permissão para executar as instruções propostas. Concede autoridade à conta multisig, não apenas aos seus assinantes individuais, e depois deixe que um signatário restante tente novamente.
-- Uma proposta pendente faltante pode significar que o quórum já foi alcançado, o TTL expirou ou o hash/selector de conta de instrução errado foi usado.
-- As homologações duplicadas não adicionam peso, cada signatário registrado contribui com o seu peso configurado no máximo uma vez.
-- A assinatura direta de uma transacção normal como o controlador é proibido. `MultisigPropose` e `MultisigApprove`.
-- Se os comandos posteriores não conseguirem encontrar a conta impressa durante o registro CLI, você capturou a semente temporária. Derive a conta canônica da política ordenada e registre com esse valor como mostrado acima.
+- `signatory is not part of multisig` significa que o cliente proponente ou aprovador não corresponde a um dos IDs I105 registrados na apólice.
+- Uma aprovação final pode ser rejeitada quando a conta multisig não tem permissão para executar as instruções propostas. Conceda o principal de autorização à conta multisig, não apenas aos seus signatários criptográficos individuais, e então permita que um signatário criptográfico restante tente novamente.
+- Uma proposta pendente ausente pode significar que o quórum já foi alcançado, que o TTL expirou ou que o hash de instrução/selecionador de conta errado foi usado. Consulte o estado posterior antes de propor novamente.
+- Aprovações duplicadas não adicionam peso. Cada signatário registrado contribui com seu peso configurado no máximo uma vez.
+- Assinar diretamente uma transação normal como o controlador é proibido. Sempre use `MultisigPropose` e `MultisigApprove`.
+- Se comandos posteriores não conseguirem encontrar a conta impressa durante o registro CLI, você capturou a semente temporária. Derive a conta canônica a partir da política ordenada e registre-se com esse valor conforme mostrado acima.
 
 ## Fonte e documentos relacionados {#source-and-related-docs}
 
-- [Testes de integração multisig no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/multisig.rs)
-- [Modelo de dados multisig no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_executor_data_model/src/isi.rs)
-- [Implementação multisig CLI no compromisso fixado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/main_shared.rs)
-- [Transações ](/pt/blockchain/transactions.md)
-- [Permissões e funções ](./permissions-and-roles.md)
+- [Testes de integração Multisig no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/multisig.rs)
+- [Modelo de dados multisig no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/isi.rs)
+- [CLI implementação multisig no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
+- [Transações](/pt/blockchain/transactions.md)
+- [Permissões e funções](./permissions-and-roles.md)

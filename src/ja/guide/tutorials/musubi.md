@@ -1,171 +1,212 @@
 ---
 translation_locale: ja
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 6b33c687fd1d81d931b932d38908d9a87e9c619e5aca5714d09d892160a6b704
+translation_source_hash: 621d1795fd1c3cc62462a9a91af68fe684c0ff5293f5e77801420dc8318bac38
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Musubi Kotodama パッケージ {#musubi-kotodama-packages}
 
-Musubi は Kotodama ソースパッケージのパケットマネージャーである.開発者に対して,構成可能な Kotodama 機能を共有するための Cargo のようなワークフローを提供し,グローバル・ファースト・カム・ネームテーブルではなく, SORA と Iroha 名前空間にパッケージアイデンティティを結びつけておく.
+Musubi は Kotodama ソースパッケージの初回リリース用パッケージマネージャーです。これは正確なオンチェーン依存関係グラフを解決し、SoraFS を認証します。ソースをアーカイブし、選択したワークスペースをコンパイルしてテストし、標準的な CAR アーカイブを作成し、Iroha を通じて不変のリリースを公開します。
 
-必要な場合 Musubi を使用する.
+次のような場合に Musubi を使用してください:
 
-- 再利用可能な Kotodama ソースライブラリを公開する
-- `Musubi.lock`で正確な移行源依存点
-- 検証された SoraFS アーカイブコミットメントから依存源を再構築する
-- パッケージネームスペースを同じネームスペースの dapp 契約名前のと接続する
-- チェーン内レジストリを通じてパッケージを検査,公開,抽出,または偽名
+- 再利用可能な Kotodama 関数ライブラリを公開する
+- `Musubi.lock`に正確な有向グラフを固定する
+- 最終化された SoraFS アーカイブ暗号コミットメント値から依存元を再構築する
+- 1つのパッケージまたは複数パッケージのワークスペースを構築してテストする
+- オンチェーンレジストリを通じてパッケージを検査、公開、削除、維持、またはエイリアスする
 
 ## パッケージ名 {#package-names}
 
-カノニカルパッケージIDの使用:
+標準パッケージセレクターは使用します:
 
 ```text
 namespace/package
 ```
 
-正確なリリース参照の使用:
+正確なリリース識別子にバージョンを追加する：
 
 ```text
 namespace/package@version
 ```
 
-名前空間の前には先頭 `@` がありません. `@` 分離符はバージョンサフイックスに留められています.
+名前空間の前に先行する `@` はありません。名前空間は、`universal` のようなデータスペースのルートか、`dex.universal` のようなドメインが指定されたデータスペースのいずれかです。ブロックチェーン台帳は、パッケージが請求される前に、その構造上の名前空間を1つの安定したホームデータスペースに結びつけます。
 
-名前空間セグメントは, Kotodama dapp契約のニックネームで使用されるサフィックスに一致する:
+## 技術的マニフェストとロックファイル {#manifest-and-lockfile}
 
-|パッケージID |関連契約の名前形|
-| ------------------------- | ---------------------------- |
-|`universal/math`|`router::universal`|
-|`dex.universal/swap-core`|`router::dex.universal`|
-
-名前空間には `<dataspace>` または `<domain>.<dataspace>` の形式があります.パッケージに dapp リンクがある場合, Musubi はすべてのリンクされた契約のニックネームがパケットと同じ名前空間サフィキスを使用していることを確認します.
-
-## 明らかに {#manifest}
-
-包装は `Musubi.toml` で始まる.
+パッケージは閉鎖された初回リリース `Musubi.toml` スキーマを使用します。技術マニフェストは `manifest-version = 1`、Kotodama 版 `"1"`、および IVM ABI バージョン `1` を宣言する必要があります。代替の技術マニフェストや ABI モードはありません。
 
 ```toml
+manifest-version = 1
+
 [package]
 namespace = "dex.universal"
 name = "swap-core"
 version = "0.1.0"
+edition = "1"
+abi-version = 1
+
+[lib]
+source-dir = "src"
+exports = ["quote"]
 
 [dependencies.math]
 package = "std.universal/math"
 version = "^1.0.0"
-
-[exports]
-functions = ["quote"]
-
-[dapp]
-namespace = "dex.universal"
-contracts = ["router::dex.universal"]
 ```
 
-依存は正確なバージョン,ケア要件,ティルド要求, `1.*`などのワイルドカードまたは `>=1.0.0,<2.0.0`のような比較リストを使用することができる.
+依存関係は、正確なバージョン、キャレットまたはチルダの要件、`1.*` のようなワイルドカード、`>=1.0.0,<2.0.0` のようなカンマ区切りの比較子セットを使用できます。依存関係テーブルのキーは親ローカルのインポートエイリアスです。`package` は常に正規のレジストリセレクターです。
 
-`Musubi.lock`は,オンチェーンレジストリから選択したトランシティブグラフを記録する.各ロックされたノードは,そのカノンिकलパッケージ ref,選択された要件, SoraFS マネスティック・ダイジェスト,ソースアーカイブハッシュ,バイトカウント,ファイルカウント,輸出関数,決定的ソースアーカイブのプラン,および依存性アライスを保存します.ロックファイルに入れる前に 略称が解決されます.
+`Musubi.lock` はグラフを正確なジェネシス由来の `NetworkId` と最終化されたレジストリスナップショットにバインドします。選択されたワークスペースルートと不変のリリースノードを記録します。リリース、ソース、インターフェース、アーカイブ、ABI、および正確な依存エッジ暗号コミットメント値を含む。解決されたグラフがそれらを必要とする場合、並列バージョンが許可されます。
 
-## 地元のワークフロー {#local-workflow}
+## Taira SoraFS を取得するように設定 {#configure-taira-sorafs-fetching}
 
-上向きの Iroha ワークスペースルーツから, Musubi を Cargo で実行します:
+Taira これはこのワークフローのパブリックテストネットです。から始めてください Taira チェックインされたチェーンおよび現在固定されたジェネシス派生ネットワーク識別子を使用したクライアント構成、 次に、プロバイダー固有の認証済みフェッチバインディングを下に追加します。A Taira リセットは〜を変えることができる `NetworkId`; 安定したチェーンから推測するのではなく、署名済みのデプロイメントプロファイルからそれを更新する UUID. アカウント署名用の資料およびプロバイダ運用者キーは、オーナー専用のソフトウェア実行ファイルに保持されなければなりません。
+
+```toml
+torii_url = "https://taira.sora.org/"
+chain = "fc56984b-2be7-431d-840e-21514d1883f0"
+network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+
+[musubi.fetch]
+network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+client_id = "musubi-taira"
+request_timeout_ms = 30000
+
+[[musubi.fetch.provider_gateways]]
+provider_id = "REPLACE_WITH_ADMITTED_PROVIDER_ID_HEX"
+url = "REPLACE_WITH_ADVERTISED_PROVIDER_HTTPS_ORIGIN"
+operator_public_key = "REPLACE_WITH_PROVIDER_AUTHORIZED_OPERATOR_PUBLIC_KEY"
+operator_private_key_file = "./secrets/taira-sorafs-provider.key"
+```
+
+パブリックテストネットのルートから Taira の認定プロバイダーを確認してください:
 
 ```bash
-cargo run -p musubi -- init --namespace dex.universal --name swap-core --dapp
-cargo run -p musubi -- add std.universal/math --version '^1.0.0' --alias math
-cargo run -p musubi -- install --config client.toml
-cargo run -p musubi -- build src/lib.ko --manifest-out target/lib.contract.json
-cargo run -p musubi -- pack \
-  --car-out source.car \
-  --sorafs-manifest-out manifest.norito \
-  --source-plan-out source-plan.norito
+export TAIRA_ROOT=https://taira.sora.org
+curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
 ```
 
-`install --offline` を使用して,ノードを問わずに正確なバージョン依存度のために未解決のロックファイルを書きます. CI で `install --locked` を使用して,古いロックファイルを拒否します.
+プロバイダカタログはプロバイダの識別情報と公開された API エンドポイントを提供します。選択したプロバイダから一致するオペレーター認証を取得してください。ソフトウェアランタイムはそのキーを使用して制限付きストリームトークンを要求します。トークンは CLI 引数でもロックファイルの内容でもありません。
 
-`build`は, `math::add()` などの呼び出しを決定的な内部 Kotodama 関数名に書き換えることでキャッシュされた依存源をリンクします. 依存が輸出していない関数への呼び出しを拒絶します.Musubi v1 ライブラリは機能のみである:状態宣言,トリガー,コトバブロック,コンスタンタまたは他の非機能契約項目を含む依存源が拒否されます.
+Taira バリデータピン URL を `url` として使用しないでください。チェックインされたバリデータには埋め込み SoraFS ストレージが無効になっています。それらの `https://taira-validator-{1,2,3,4}.sora.org` API エンドポイントはピン登録を受け入れますが、アーカイブの読み取りは選択された承認プロバイダの HTTPS オリジンを使用します。
 
-## 源を入手するアーカイブ {#fetching-source-archives}
+## ローカルワークフロー {#local-workflow}
 
-Musubi は,キャッシュのサブコマンドで解決する際にまたは後に欠落した依存源を取得することができます:
+上流の Iroha ワークスペースのルートから、パッケージディレクトリを作成するか移動し、Cargo を使って Musubi を実行します:
 
 ```bash
-cargo run -p musubi -- install --config client.toml --fetch \
-  --provider-payload math.payload
+mkdir -p examples/swap-core
+cd examples/swap-core
 
-cargo run -p musubi -- cache import math --source-root ../math
-cargo run -p musubi -- cache fetch math --provider-payload math.payload
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  init . --namespace dex.universal --name swap-core --export quote
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  add std.universal/math --version '^1.0.0' --rename math
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- fetch --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- check --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- build --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- test --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- package --config client.toml
 ```
 
-SoraFS ゲートウェイプロバイダの仕様を1つまたは複数の場合を使用する.
+`fetch` は最終的なレジストリグラフを解決し、許可されている場合に `Musubi.lock` を更新し、認証された SoraFS の場所から変更不可能なローカルキャッシュを埋めます。`check`、`build`、`test`、および `package` は、それぞれの作業を行う前に同じグラフとキャッシュのチェックを実行します。
+
+`--locked`を使用して、ロックファイルの変更を拒否します。`--offline`は、レジストリインデックスとすべての必要なアーカイブがすでにキャッシュされている場合にのみ使用してください。`--frozen`はこれら二つの制約を組み合わせます。オフラインキャッシュでミスが発生すると失敗します。Musubi は、未解決のロックファイルを書き込むことは決してありません。
+
+依存元は、`math::add()` のような修飾された技術的呼び出しを決定論的な内部 Kotodama 名に書き換えることによってリンクされます。依存技術未エクスポート関数への呼び出しは拒否されます。インポートされたライブラリは関数を公開します。ローカルの `[[contract]]` および `[[test]]` ターゲットは明示的なパッケージターゲットのままです。
+
+## キャッシュの検証と修復 {#cache-verification-and-repair}
+
+パブリックキャッシュコマンドは、レジストリに公開された不変のアーカイブ上で動作します。
 
 ```bash
-cargo run -p musubi -- install --config client.toml --fetch \
-  --gateway-provider 'name=hot-a,provider-id=1111111111111111111111111111111111111111111111111111111111111111,base-url=https://gw.example,stream-token=BASE64,package=math'
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache verify --all --config client.toml
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache repair --config client.toml
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache prune --dry-run --config client.toml
 ```
 
-プロバイダー・ペイロードファイルとゲートウェイプロバイダーは,一つのフリッチオペレーションで相互に除外されます.複数のロックされたパケットが欠けている場合は, `package=<dependency-alias>`, `package=<namespace/package@version>`,`package=<namespace/package>`または `manifest=<64-hex SoraFS manifest digest>`というゲートウェイプロバイダを対象とします.
+`cache repair` は信頼された子孫を隔離して破損させ、確定プロバイダーの証拠が許すときに正確なアーカイブを再取得します。プルーニングは、ライブの空でないミューテーションに対して意図的にフェイルクローズです。`--dry-run` を使用して機密候補を検査してください。
 
-ゲートウェイ `base-url` そして `privacy-url` 値を使用しなければならない `https://` ローカルテストゲートウェイは使用できます `http://localhost`, `http://127.0.0.1`, または `http://[::1]` とのみ `--gateway-allow-insecure-localhost`. ストリームトークンはランタイム認証で, `Musubi.lock`.
+## パッケージ化と公開 {#packaging-and-publishing}
 
-## 出版 {#publishing}
-
-`pack` は,決定的な BLAKE3-256 ソースアーカイブハッシュと源バイトとファイルカウントを計算する. `--car-out`, `--sorafs-manifest-out`,または `--source-plan-out` が供給されたとき,また決定的な SoraFS CAR の有用な負荷, SoraFS マネスティックを作成します.そして Musubi のソースアーカイブプランは,同じソースファイルセットから.
-
-公開前に乾燥したランを使用します:
+アーカイブを書く前にクリーンなポジティブファイルセットを検査し、その後、標準パッケージを作成します:
 
 ```bash
-cargo run -p musubi -- publish --config client.toml --dry-run
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  package --list --locked --config client.toml
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  package --locked --config client.toml
 ```
 
-無駄で `--dry-run`, `publish` の下にデフォルトアーティファクトを書き込みます `.musubi/dist/<namespace>/<name>/<version>/`, 選択的にマニフェストとペイルロードをアップロードする Torii やってるんだ SoraFS ストレージピン端点 `--upload`, 生成されたデータを記録する SoraFS ピンと提出する `PublishMusubiRelease` 設定された Iroha 顧客です
+`package` は `target/package/<namespace>-<name>-<version>.car` を書きます。CAR は標準パッケージ技術マニフェスト、セマンティックリリース技術マニフェスト、正確な検証ロック、ソースツリーにバインドします。インターフェースの暗号学的ダイジェスト値、および SoraFS アーカイブ暗号学的コミットメント値。初回リリースの CLI には、個別の`pack`、`--car-out`、`--sorafs-manifest-out`、または`--source-plan-out`コマンドはありません。
 
-公開されたリリースには,以下の内容が含まれなければならない.
-
-- 無駄な法典的なソースアーカイブ
-- 決定的なソースアーカイブプラン
-- 輸出された少なくとも1つの Kotodama 関数
-- 引っ張られた放出を選択しない依存記録
-- パッケージ名空間に一致する契約のニックネームがある場合,dappリンク
-
-## 登録に関する質問とライフサイクル {#registry-queries-and-lifecycle}
-
-登録を検索し,検査する
+公開は署名済みで再開可能なネットワークワークフローです。選択された `client.toml` には、必要な `[musubi.publication]` バインディングおよびアカウントと Taira ネットワーク構成が含まれている必要があります。ワークスペースメンバーを正確に1つパッケージしてください:
 
 ```bash
-cargo run -p musubi -- search swap --config client.toml
-cargo run -p musubi -- versions dex.universal/swap-core --config client.toml
-cargo run -p musubi -- alias resolve swap --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  publish -p dex.universal/swap-core --locked --config client.toml
 ```
 
-Yanking は新しい解像度からリリースを隠しますが,既存のロックファイルの再生が可能です.
+操作ジャーナルとシード侵入境界が耐久性があることを確認するために `--detach` を使用してください。耐久性のある操作を `publish --resume <operation-id> --config client.toml` で続行します。より狭い `--recover <operation-id>` パスは再構築のみを行います未使用のプリイングレスジャーナル用の変更不可の補助記録が不足しています。公開 `--dry-run` や一般公開のアップロード代替はありません。ローカルプレフライトのために `package --list` と `package` を実行してください。
+
+## レジストリクエリとライフサイクル {#registry-queries-and-lifecycle}
+
+同じ Taira クライアント構成で、最終的なレジストリを検索して確認してください：
 
 ```bash
-cargo run -p musubi -- yank dex.universal/swap-core@0.1.0 \
-  --reason "bad archive" \
-  --config client.toml \
-  --dry-run
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  search swap --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  info dex.universal/swap-core --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  versions dex.universal/swap-core --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  alias resolve swap --config client.toml
 ```
 
-Musubi は `namespace/package` をカノニカルなパッケージ名とすることで,グローバル・ネームクォッティングを回避します.名前空間への公開は,その Kotodama dapp 名前空間に使用された同じ所有者または授權モデルによって許可されなければならない.キュレーティングされたグローバルショートアライズはパッケージ所有権とは別である. `SetMusubiShortAlias` は `CanSetMusubiShortAlias` の許可を必要とし,ターゲットパケットには既に少なくとも1つのアクティブリリースが必要です.
+ヤンキングは、新しい解決策から不変のリリースを除外しますが、既存の正確なロックは再現可能なままです。まず現在のヤンクリビジョンを読み取り、その後、比較・設定ミューテーションを送信します。
+
+```bash
+: "${EXPECTED_YANK_REVISION:?set the current non-zero yank revision}"
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  yank dex.universal/swap-core 0.1.0 \
+  --expected-revision="$EXPECTED_YANK_REVISION" \
+  --reason="bad archive" \
+  --config client.toml
+```
+
+同じパッケージ、バージョン、そして新たに読み込まれたリビジョンで `unyank` を使用してその状態を逆にします。パッケージの所有権とメンテナの役割が、公開、取り下げ、メタデータを制御します、およびアーカイブ場所の権限。グローバルエイリアスには独自の価格付き登録、リターゲット履歴、比較・設定リビジョンがあり、パッケージ所有権のショートカットではありません。
 
 ## Iroha 表面 {#iroha-surfaces}
 
-Musubi は,最初のクラス Iroha の指示と問い合わせを使用します.
+Musubi は初回リリースの V1 の指示とクエリを使用します:
 
 |表面|目的|
-| ---------------------------- | -------------------------------------------------- |
-|`PublishMusubiRelease`|変更できないパッケージを公開する.|
-|`YankMusubiRelease`|既存のリリースを引っ張られたようにマークします.|
-|`SetMusubiShortAlias`|パッケージID に キュレーションされたグローバル・ショートアライスを結びつけます.|
-|`AssertMusubiReleaseExists`|具体的なパッケージバージョンが必要である.|
-|`FindMusubiReleaseByRef`|包装の正確な参照でリリースを入手してください.|
-|`FindMusubiPackageVersions`|パッケージIDのバージョンをリストする. |
-|`FindMusubiPackageReleases`|パッケージIDのリリース概要をリストする. |
-|`SearchMusubiPackages`|名前空間とテキストによってパッケージの概要を検索する. |
-|`FindMusubiShortAliasByName`|キュレーティングされた短名を解決する|
+| ---------------------------------------------------- | -------------------------------------------------------------- |
+| `RegisterMusubiNamespaceBindingV1`                   |ネームスペースをその安定したホームデータスペースにバインドします。|
+| `RegisterMusubiArchiveV1`                            |変更不可能な認証済みソースアーカイブ暗号化コミットメント値を登録する。|
+|`AddMusubiArchiveLocationV1`|実績のある SoraFS アーカイブの場所を追加または更新する。|
+| `PublishMusubiReleaseV1`                             |パッケージを請求または更新し、1つの不変のリリースを公開する。|
+| `SetMusubiReleaseYankV1`                             |正確なリリースの引き抜かれた状態を比較して設定する。|
+|`InviteMusubiPackageMaintainerV1`|明示的なパッケージの役割招待フローを開始します。|
+| `RegisterMusubiAliasV1` / `RetargetMusubiAliasV1`    |管理されたグローバルエイリアスを登録または再ターゲットします。|
+|`AssertMusubiReleaseDigestV1`|正確で不変のリリース暗号ダイジェスト値を主張してください。|
+|`FindMusubiExactPackageV1`|正確なパッケージとその改訂版を1つ読む。|
+| `FindMusubiExactReleaseV1`                           |正確なリリーススナップショットを1つ読み取る。|
+| `FindMusubiResolverIndexV1` / `FindMusubiVersionsV1` |解決するか、最終リリース候補を一覧表示する。|
+| `FindMusubiArchiveLocationsV1`                       |確定したプロバイダ支援のアーカイブ場所を読み取ります。|
+| `FindMusubiAliasV1` / `FindMusubiAliasHistoryV1`     |現在のエイリアスのターゲットまたはその不変の履歴を読み取ります。|
 
-Torii 明らかにする Musubi HTTP 経路ファミリー `/v1/musubi/`. 代理人向け MCP 道具は, `iroha.musubi.` 偽名です [Torii エンドポイント](/ja/reference/torii-endpoints.md) そして [查询参照](/ja/reference/queries.md) 広範囲に API 地図
+Torii は `/v1/musubi/*` の下でアプリルートファミリーを公開します。MCP ツールは現在の `iroha.musubi.queries.*` および `iroha.musubi.instructions.*` の名前を使用します。[Torii API エンドポイント](/ja/reference/torii-endpoints.md) および [問い合わせ参照](/ja/reference/queries.md) を参照して、より広範な API マップをご覧ください。

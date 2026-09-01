@@ -1,72 +1,72 @@
 ---
 translation_locale: zh-hant
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
+translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # 建立在 SORA 3:Taira 和 Minamoto 上 {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3是基於 Iroha 3 和 SORA Nexus 構建的應用面向公衆部署軌道. 首先在 Taira 上構建和練習,然後將相同的客戶端形狀移動到 Minamoto,只有當您有單獨的主網鑰匙時,費用爲真實 XOR 和生產批准.
+SORA 3是基於 Iroha 3 和 SORA Nexus 構建的應用面向公眾部署軌道. 首先在 Taira 上構建和練習,然後將相同的客戶端形狀移動到 Minamoto,只有當您有單獨的主網鑰匙時,費用為真實 XOR 和生產批准.
 
-這本教程展示瞭如何配置一個 Iroha 客戶端爲公共的 SORA 3個網絡:
+這本教程展示瞭如何配置一個 Iroha 客戶端為公共的 SORA 3個網路:
 
 - Taira 測試網在 `https://taira.sora.org`
 - Minamoto 主網在 `https://minamoto.sora.org`
 
-使用 Taira 用於集成測試,用水龍頭資助的寫作運行器和部署練習.只使用 Minamoto 用於生產準備的主網活動.兩個網絡都在 XOR 收取費用:
+使用 Taira 進行整合測試、由水龍頭資助的寫入 canary 測試和部署演練.只使用 Minamoto 用於生產準備的主網活動.兩個網路都在 XOR 收取費用:
 
 - Taira 使用公共水龍頭的測試網 XOR.
-- Minamoto 使用真實的 XOR.沒有 Minamoto 龍頭.
+- Minamoto 使用真實的 XOR.沒有 Minamoto 水龍頭.
 
 ## 建設者之路 {#builder-path}
 
 |步驟|Taira 測試網|Minamoto 主要網|
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|開始閱讀網絡狀態|查詢 `/status` 沒有鑰匙|查詢 `/status` 沒有鑰匙|
-|選擇一個數據空間|使用公開 `universal` 除非您的應用程序需要一個受監管的路徑|僅在主網批准後使用相同的數據空間|
-|獲得費用資產.|使用公衆的 Taira 龍頭|從資助的 Minamoto 賬戶或經批准的財政流通中獲得 XOR|
-|測試寫道|使用水龍頭資助的測試 XOR |不要使用測試工具; 寫實用費 XOR |
+|開始閱讀網路狀態|查詢 `/status` 沒有鑰匙|查詢 `/status` 沒有鑰匙|
+|選擇一個資料空間|使用公開 `universal` 除非您的應用程式需要一個受監管的路徑|僅在主網批准後使用相同的資料空間|
+|獲得費用資產.|使用公眾的 Taira 水龍頭|從資助的 Minamoto 帳戶或經批准的財政流通中獲得 XOR|
+|測試寫入|使用水龍頭資助的測試 XOR |不要使用測試工具; 寫入會耗用真正的 XOR |
 |促進|繼續嘗試邏輯,監測和簽名處理|使用單獨的鑰匙,資金和釋放控制|
 
 實際流程是:
 
-1. 建立客戶端與 Taira 相反,並使用公開的 `universal`數據空間.
-2. 添加一個簽字者,並用 Taira 龍頭資助它.
-3. 運行應用程序的邏輯與 Taira 相比,直到故障無聊和可觀察.
-4. 創建一個單獨的 Minamoto 簽字器,用真實 XOR 資助它,並將相同的經過驗證的運算轉移到主網.
+1. 建立客戶端與 Taira 相反,並使用公開的 `universal`資料空間.
+2. 新增一個簽字者,並用 Taira 水龍頭資助它.
+3. 執行應用程式的邏輯與 Taira 相比,直到故障無聊和可觀察.
+4. 建立一個獨立的 Minamoto 簽署者，以真實 XOR 為其提供資金，並且只將同樣經過驗證的操作移至主網。
 
-## 繼續使用食譜 {#continue-with-the-cookbook}
+## 繼續使用操作指南 {#continue-with-the-cookbook}
 
-使用此指南來選擇網絡,配置簽名器和資金費用.然後繼續使用與您想要構建的應用程序行爲相匹配的食譜:
+使用此指南來選擇網路,配置簽名器和資金費用.然後繼續使用與您想要構建的應用程式行為相匹配的操作指南:
 
-|目標|配方|
+|目標|操作指南|
 | --- | --- |
-|檢查 Taira 和配置一個客戶端 | [連接到 Taira](/zh-hant/cookbook/connect-to-taira.md)|
-|發送一個第一次寫下來,驗證結果| [提交和驗證交易](/zh-hant/cookbook/submit-and-verify-transactions.md) |
-|登記,硬幣和移動值| [性資產](/zh-hant/cookbook/fungible-assets.md) |
+|檢查 Taira 和配置一個客戶端 | [連線到 Taira](/zh-hant/cookbook/connect-to-taira.md)|
+|傳送一個第一次寫下來,驗證結果| [提交和驗證交易](/zh-hant/cookbook/submit-and-verify-transactions.md) |
+|註冊、鑄造和轉移價值| [性資產](/zh-hant/cookbook/fungible-assets.md) |
 |閱讀過的申請狀態| [查詢賬本狀態](/zh-hant/cookbook/query-ledger-state.md) |
-|應對承諾的變化反應| [流動事件](/zh-hant/cookbook/stream-events.md) |
+|應對提交的變化反應| [流動事件](/zh-hant/cookbook/stream-events.md) |
 
-書籍將每個工作流程集中,並在需要 Taira 資金或 SORA Nexus 網絡環境時鏈接到此處.
+書籍將每個工作流程集中,並在需要 Taira 資金或 SORA Nexus 網路環境時連結到此處.
 
 ## 1. 瞭解你設定的目標 {#_1-understand-what-you-are-setting-up}
 
-在 SORA Nexus 中,一個數據空間是網絡軌道和路由目錄的一部分.客戶端不僅僅通過更改`client.toml`來創建新的公共數據空間. 客戶端設置可以做兩件事:
+在 SORA Nexus 中,一個資料空間是網路通道和路由目錄的一部分.客戶端不僅僅透過更改`client.toml`來建立新的公共資料空間. 客戶端設定可以做兩件事:
 
 1. 向客戶指向右端點 Torii
-2. 選擇域名和數據空間路由文本爲其常規帳戶
+2. 選擇域名和資料空間路由文字為其規範帳戶
 
-`AccountId`始終是正規的,無域名. `client.toml`中的`[account].domain`值提供了路由和稱語境;它不會成爲帳戶身份的一部分.對於大多數應用程序來說,從公開的 `universal`數據空間開始.域名文本使用`domain.dataspace`形式,例如:
+`AccountId`始終是規範的,無域名. `client.toml`中的`[account].domain`值提供了路由和稱語境;它不會成為帳戶身份的一部分.對於大多數應用程式來說,從公開的 `universal`資料空間開始.域名文字使用`domain.dataspace`形式,例如:
 
 ```text
 wonderland.universal
 ```
 
-如果您需要一個新的組織數據空間,請編制一份目錄和路由建議,而不是試圖從普通客戶端帳戶註冊. 查看下面[提供新數據空間](#_8-provision-a-new-dataspace).
+如果您需要一個新的組織資料空間,請編制一份目錄和路由建議,而不是試圖從普通客戶端帳戶註冊. 檢視下面[提供新資料空間](#_8-provision-a-new-dataspace).
 
-## 2. 檢查公衆 Torii 終點 {#_2-check-the-public-torii-endpoint}
+## 2. 檢查公眾 Torii 端點 {#_2-check-the-public-torii-endpoint}
 
 在配置簽名器之前,請檢查目標終端直播.
 
@@ -86,7 +86,7 @@ curl -fsS https://minamoto.sora.org/status \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
-檢查節點暴露的數據空間和路徑視圖:
+檢查節點暴露的資料空間和路徑檢視:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -98,16 +98,16 @@ curl -fsS https://taira.sora.org/status \
 
 ## Taira MCP 用於代理人 {#taira-mcp-for-agents}
 
-Taira 也揭示了一個 Torii-本地模型文本議定書 (MCP 當一個代理需要現場測試網時使用它,編寫的診斷,或嚴格審查的寫作練習, Torii 首先是客戶.
+Taira 還為代理執行階段公開了一個 Torii 原生的模型內容協定（MCP）橋。當代理需要即時 testnet 讀取、指令碼化診斷或經過嚴格審查的寫入演練，而又不想先建置自訂 Torii 使用者端時，請使用它。
 
-|設置|價值|
+|設定|價值|
 | --- | --- |
-|MCP 終點 |`https://taira.sora.org/v1/mcp`|
-|網絡根|`https://taira.sora.org`|
-|預期使用|Taira 測試網閱讀和水龍頭資助的寫作練習.|
-|產量等價| 不要將此條目指向 Minamoto 除了主網外 MCP 終端點和釋放控制明確批准 |
+|MCP 端點 |`https://taira.sora.org/v1/mcp`|
+|網路根|`https://taira.sora.org`|
+|預期使用|Taira 測試網讀取和水龍頭資助的寫入演練.|
+|產量等價| 不要將此條目指向 Minamoto 除了主網外 MCP 端點和釋放控制明確批准 |
 
-在添加簽字材料之前,檢查橋樑的元數據:
+在新增簽字材料之前,檢查橋樑的後設資料:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
@@ -115,30 +115,30 @@ curl -fsS https://taira.sora.org/v1/mcp \
   | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
 ```
 
-設置 URL 作爲一個用戶本地 MCP 服務器在代理運行時間. MCP 配置, API 代幣,轉發的作者標題, `authority`, 或 `private_key` 在此文檔 repo 或應用程序 repo 中的值.
+在代理執行階段中，將該 URL 設定為使用者本機 MCP 伺服器。不要將代理 MCP 設定、API 權杖、轉送的驗證標頭、`authority` 或 `private_key` 值提交到此檔案儲存庫或應用程式儲存庫。
 
 代理提示規則與 Taira 工作良好:
 
-- 在打電話之前,從 MCP 服務器中發現工具;如果服務器報告 `listChanged`,重新發現.
-- 寧願選用 `iroha.`工具,而不是原始的 `torii.`.
-- 開始僅閱讀:在提出筆記之前檢查狀態,賬戶,資產,號,區塊,治理狀態和交易狀態.
-- 在實時測試網絡突變之前,需要明確的人類指示.對於預先簽署的交易包裹,請使用 `iroha.transactions.submit_and_wait`,以便代理只等待結果而不是僅提交.
-- 在代理響應中總結交易哈希,最終狀態和服務器驗證錯誤.
+- 在呼叫之前,從 MCP 伺服器中發現工具;如果伺服器報告 `listChanged`,重新發現.
+- 寧願選用 `iroha.*`工具,而不是原始的 `torii.*`.
+- 開始僅閱讀:在提出筆記之前檢查狀態,帳戶,資產,號,區塊,治理狀態和交易狀態.
+- 在實時測試網路突變之前,需要明確的人類指示.對於預先簽署的交易封裝,請使用 `iroha.transactions.submit_and_wait`,以便代理只等待結果而不是僅提交.
+- 在代理響應中總結交易雜湊,最終狀態和伺服器驗證錯誤.
 
 ### 開發工作流程與代理人 {#development-workflow-with-agents}
 
-使用代理作爲 Iroha 客戶端,交易構建者,診斷腳本和測試網運行簿的開發助手.它可以檢查代碼,讀取 Taira 狀態,提出更改和運行本地測試, 但它不應該轉變一個活躍的網絡直到人類批准準確的操作.
+使用代理作為 Iroha 客戶端,交易構建者,診斷指令碼和測試網執行簿的開發助手.它可以檢查程式碼,讀取 Taira 狀態,提出更改和執行本地測試, 但它不應該轉變一個活躍的網路直到人類批准準確的操作.
 
 實際的工作流程是:
 
-1. 在編寫代碼之前,請代理檢查相關的文件, SDK 代碼, CLI 命令或 MCP 工具計劃.
-2. 讓代理先寫出最小的客戶端路徑:狀態檢查,賬戶搜索,號分辨率或平衡搜索.
-3. 只有在僅閱讀通話對 Taira 工作後,只添加交易構建代碼.
-4. 保持現實網絡測試的選擇,例如在 `TAIRA_LIVE=1` 後面,以便正常的單元測試運行從來不花費測試網資金或取決於網絡可用性.
-5. 要求經紀人在提交任何交易之前報告網絡根,鏈,權威賬戶,說明總結,費用資產和預期狀態變化.
-6. 在將其推廣到 CI 或主網絡工作流程之前,檢查生成的祕密處理,重新嘗試行爲,無權和拒絕處理代碼.
+1. 在編寫程式碼之前,請代理檢查相關的檔案, SDK 程式碼, CLI 命令或 MCP 工具計劃.
+2. 讓代理先寫出最小的客戶端路徑:狀態檢查,帳戶搜尋,號解析度或餘額搜尋.
+3. 只有在僅閱讀通話對 Taira 工作後,只新增交易構建程式碼.
+4. 保持現實網路測試的選擇,例如在 `TAIRA_LIVE=1` 後面,以便正常的單元測試執行從來不花費測試網資金或取決於網路可用性.
+5. 要求經紀人在提交任何交易之前報告網路根,鏈,授權主體帳戶,說明總結,費用資產和預期狀態變化.
+6. 在將產生的程式碼推廣到 CI 或主網路工作流程之前，請檢查其秘密處理、重試行為、冪等性和拒絕處理。
 
-只有閱讀的有用 MCP 開發工具包括賬戶資產查找,別名解析,區塊查詢,交易查找,交易列表,在提交任何簽署的有效載荷之前,使用這些來建立信心.
+只有閱讀的有用 MCP 開發工具包括帳戶資產查詢,別名解析,區塊查詢,交易查詢,交易列表,在提交任何簽署的有效載荷之前,使用這些來建立信心.
 
 ```text
 Use Taira MCP as a read-only inspector while developing this Iroha feature.
@@ -149,29 +149,29 @@ say "submit this transaction".
 
 ### 經過代理人的交易工作流程 {#transaction-workflow-through-agents}
 
-MCP 橋樑可以提交簽署的 Iroha 交易,但它不刪除正常的交易要求. 交易仍然需要正確的權威,許可證,費用資金,鏈 ID,元數據和簽名.
+MCP 橋樑可以提交簽署的 Iroha 交易,但它不刪除正常的交易要求. 交易仍然需要正確的授權主體,許可證,費用資金,鏈 ID,後設資料和簽名.
 
-對於原始 Iroha 交易,先用 SDK 或 CLI 編寫和簽署交易包裹,然後只向代理提供正規的文件.簽署的交易字節編碼爲 `body_base64`.代理人可以用 `iroha.transactions.submit_and_wait`提交封面,或用 `iroha.transactions.submit`提交調查和 `iroha.transactions.wait`提交調查.
+對於原始 Iroha 交易,先用 SDK 或 CLI 編寫和簽署交易封裝,然後只向代理提供規範的檔案.簽署的交易位元組編碼為 `body_base64`.代理人可以用 `iroha.transactions.submit_and_wait`提交封裝,或用 `iroha.transactions.submit`提交輪詢和 `iroha.transactions.wait`提交輪詢.
 
-不要將私鑰粘貼到代理提示中. 如果一個代理需要構建交易,請把它指向加載用戶運行時間的祕密的地方代碼.經紀人永遠不應該將關鍵材料寫入Markdown,Fixtures,Logs或 commit.
+不要將私鑰貼上到代理提示中. 如果一個代理需要構建交易,請把它指向載入使用者執行階段的秘密的地方程式碼.經紀人永遠不應該將金鑰材料寫入Markdown、測試資料、日誌或 commit.
 
 在提交交易之前,請讓代理人編寫一個簡短的交易計劃:
 
 - `network`:Taira 測試網根和鏈 ID
-- `authority`:簽署和支付費用的賬戶
-- `instructions`:註冊,貨幣交易,燃燒,轉移,元數據,許可或合同調用總結
+- `authority`:簽署和支付費用的帳戶
+- `instructions`：註冊、鑄造、銷毀、轉移,後設資料,許可或合同呼叫總結
 - `fee asset`:將對 Taira 徵收資產
-- `preflight reads`:已進行的賬戶,資產餘額,許可證,代名或區塊檢查
+- `preflight reads`:已進行的帳戶,資產餘額,許可證,代名或區塊檢查
 - `expected result`:確認後應該可見的狀態
-- `idempotency`:如果重新審覈同樣的請求,會發生什麼?
+- `idempotency`：重試相同要求時會發生什麼？
 
-提交後,讓代理等待終端狀態,然後通過讀取查詢驗證狀態變化.有用的完成報告包括:
+提交後,讓代理等待終端狀態,然後透過讀取查詢驗證狀態變化.有用的完成報告包括:
 
-- 交易哈希
+- 交易雜湊
 - 終端狀態如 `Committed`, `Applied`, `Rejected`或`Expired`
 - 在可用時,區塊或探險器細節
 - 驗證閱讀結果
-- 拒絕消息和失敗是否像許可證,費用,驗證,陳舊狀態或終端可用性.
+- 拒絕訊息和失敗是否像許可證,費用,驗證,陳舊狀態或終端可用性.
 
 舉個例子:
 
@@ -183,7 +183,7 @@ expected post-state. Wait for my explicit "submit" message before calling
 iroha.transactions.submit_and_wait.
 ```
 
-當已準備簽署的包裹時:
+當已準備簽署的封裝時:
 
 ```text
 Submit this pre-signed Taira transaction envelope with
@@ -193,11 +193,11 @@ state with read-only iroha.* tools and report the hash, status, and
 verification result.
 ```
 
-處理 Taira MCP 作爲公共測試網控制表面. Taira 鍵,測試網 XOR,水龍頭賬戶和印儀是可一次性使用的,必須與 Minamoto 鑰匙和生產釋放工作流程保持分離.
+處理 Taira MCP 作為公共測試網控制表面. Taira 鍵,測試網 XOR,水龍頭帳戶和 canary 簽署者是可一次性使用的,必須與 Minamoto 鑰匙和生產釋放工作流程保持分離.
 
 ## 你現在可以試玩具的例子 {#toy-examples-you-can-try-now}
 
-這些示例只能閱讀,除非註明.它們在你生成密鑰之前工作,並且可以安全地對付兩個公共網絡.
+這些示例只能閱讀,除非註明.它們在你生成金鑰之前工作,並且可以安全地對付兩個公共網路.
 
 比較 Taira 測試網和 Minamoto 主網的健康:
 
@@ -211,7 +211,7 @@ for network in taira minamoto; do
 done
 ```
 
-列出 Taira 所曝光的公共數據空間路徑:
+列出 Taira 所曝光的公共資料空間路徑:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -221,7 +221,7 @@ curl -fsS https://taira.sora.org/status \
     | @tsv'
 ```
 
-當您需要主網視圖時,運行同樣的命令對 Minamoto:
+當您需要主網檢視時,執行同樣的命令對 Minamoto:
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
@@ -231,7 +231,7 @@ curl -fsS https://minamoto.sora.org/status \
     | @tsv'
 ```
 
-爲儀表板,機器人或部署檢查建立一個小的 Node.js 狀態探測器:
+為儀錶板,機器人或部署檢查建立一個小的 Node.js 狀態探測器:
 
 ```bash
 node --input-type=module <<'EOF'
@@ -256,17 +256,17 @@ for (const [name, root] of Object.entries(roots)) {
 EOF
 ```
 
-首個寫邊玩具應該是 Taira 龍頭索賠.它使用測試網 XOR,並且永遠不應指向 Minamoto.
+首個寫入側練習應該是 Taira 水龍頭索賠.它使用測試網 XOR,並且永遠不應指向 Minamoto.
 
-## 3. 創建一個 Taira 客戶端配置. {#_3-create-a-taira-client-config}
+## 3. 建立一個 Taira 客戶端配置. {#_3-create-a-taira-client-config}
 
 如果您還沒有一個鍵組,生成鍵組:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 ```
 
-創建 `taira.client.toml`:
+建立 `taira.client.toml`:
 
 ```toml
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
@@ -284,7 +284,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-頂級層次 `chain` 是確切的 Taira 交易鏈 ID. 其他 `[account].profile = "taira"` 設置獨立選擇 Taira I105 連鎖區分劑. ID 沒有選擇帳戶配置文件.
+頂級層次 `chain` 是確切的 Taira 交易鏈 ID. 其他 `[account].profile = "taira"` 設定獨立選擇 Taira I105 連鎖區分劑. ID 沒有選擇帳戶配置檔案.
 
 執行僅閱讀的檢查:
 
@@ -292,15 +292,15 @@ nonce = false
 iroha --config ./taira.client.toml --output-format text ops sumeragi status
 ```
 
-在寫作測試之前,執行公開的 Taira 診斷:
+在寫入測試之前,執行公開的 Taira 診斷:
 
 ```bash
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-在運行費用筆記之前,通過龍頭來資助 Taira 賬戶.直接的龍頭流程是在 [Get Testnet XOR 上 Taira](#_4-get-testnet-xor-on-taira).
+在執行費用筆記之前,透過水龍頭來資助 Taira 帳戶.直接的水龍頭流程是在 [Get Testnet XOR 上 Taira](#_4-get-testnet-xor-on-taira).
 
-在接收水龍頭索賠和資助賬戶之後, Taira 魚是可選的寫煙測試:
+在接收水龍頭索賠和資助帳戶之後, Taira canary 測試是可選的冒煙測試:
 
 ```bash
 iroha --config ./taira.client.toml taira write-canary \
@@ -309,9 +309,9 @@ iroha --config ./taira.client.toml taira write-canary \
   --json
 ```
 
-魚提交了一個簽名的 ping,等待確認, `--write-config` 提供. Taira 即使水龍頭本身工作時,也可能會導致簽署的ping失敗. `taira doctor` 報告過度排列或魚回報 `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`, 等待再嘗試,然後把它視爲客戶端配置錯誤.
+金絲雀測試會提交已簽署的 ping、等待確認，並在提供 `--write-config` 時寫入執行階段簽署者設定。Taira 是公共測試網，因此即使水龍頭本身正常，佇列飽和也可能導致已簽署的 ping 失敗。如果 `taira doctor` 回報佇列飽和，或金絲雀測試傳回 `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`，請先等待並重試，再將其視為用戶端設定錯誤。
 
-對於無監督煙霧測試,將魚包裹在一個有限的重複測試循環中:
+對於無監督冒煙測試,將 canary 放入有界重試迴圈中:
 
 ```bash
 ok=false
@@ -327,60 +327,60 @@ done
 test "$ok" = true
 ```
 
-如果 `iroha taira doctor` 顯示出嚴重失敗,停止重新試驗.排隊和收費拒絕是公共測試網絡的過渡條件;DNS, TLS 或 `status = "fail"`診斷不是.
+如果 `iroha taira doctor` 顯示出嚴重失敗,停止重新試驗.排隊和收費拒絕是公共測試網路的過渡條件;DNS, TLS 或 `status = "fail"`診斷不是.
 
-## 創建一個 SORA Nexus 帳戶 ID {#generate-a-sora-nexus-account-id}
+## 建立一個 SORA Nexus 帳戶 ID {#generate-a-sora-nexus-account-id}
 
-SORA Nexus 賬戶 ID 是一個源於帳戶公鑰和目標網絡前的常規 I105 地址,而不是客戶端 TOML 中的`[account].domain`值.同樣的公共密鑰在 Taira 和 Minamoto 上對不同的 IDs 進行編碼,生產用戶應該爲 Minamoto 生成單獨的密鑰組.
+SORA Nexus 帳戶 ID 是一個源於帳戶公鑰和目標網路前的規範 I105 地址,而不是客戶端 TOML 中的`[account].domain`值.同樣的公共金鑰在 Taira 和 Minamoto 上對不同的 IDs 進行編碼,生產使用者應該為 Minamoto 生成單獨的金鑰組.
 
-創建或加載將控制帳戶的Ed25519鍵組:
+建立或載入將控制帳戶的Ed25519鍵組:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./nexus-account-key
 ```
 
-轉換公鑰爲 Taira 賬戶 ID:
+轉換公鑰為 Taira 帳戶 ID:
 
 ```bash
 iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 ```
 
-轉換一個 Minamoto 公共密鑰,使用主網前:
+轉換一個 Minamoto 公共金鑰,使用主網前:
 
 ```bash
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-在 Nexus API 或 CLI 命令要求一個法典帳戶 ID 的情況下,使用結果的賬號 ID 例如 Taira 龍頭 `account_id`,在您的客戶端配置中保存匹配的私鑰,並選擇相同的公共網絡以 `[account].profile = "taira"`或 `[account].profile = "minamoto"`.
+在 Nexus API 或 CLI 命令要求一個規範帳戶 ID 的情況下,使用結果的賬號 ID 例如 Taira 水龍頭 `account_id`,在您的客戶端配置中儲存匹配的私鑰,並選擇相同的公共網路以 `[account].profile = "taira"`或 `[account].profile = "minamoto"`.
 
-生成 ID 本身並不能創建一個資助的連鎖賬戶.在 Taira 上,龍頭可以創建和資助測試網寫帳戶.在 Minamoto 上,使用已批准的主網安裝或財政流程.
+生成 ID 本身並不能建立一個資助的連鎖帳戶.在 Taira 上,水龍頭可以建立和資助測試網寫帳戶.在 Minamoto 上,使用已批准的主網安裝或財政流程.
 
-### 關鍵存儲和備份 {#key-storage-and-backup}
+### 關鍵儲存和備份 {#key-storage-and-backup}
 
-賬戶 ID 和公鑰可以共享.相匹配的私鑰,密碼短語,種子和恢復材料必須被保密.
+帳戶 ID 和公鑰可以共享.相匹配的私鑰,密碼短語,種子和恢復材料必須被保密.
 
-在 SORA Nexus 賬戶中使用這些實踐:
+在 SORA Nexus 帳戶中使用這些實踐:
 
-- 存儲私鑰在加密密碼管理器,硬件支持的關鍵存儲器或專用簽字服務中.不要將密鑰交給源控制,也不要把生產密鑰留在 Shell 歷史記錄,日誌,聊天,門票或未加密備份中.
-- 使用每個保險櫃或生產簽名器的獨特高密碼. 存儲密碼在密碼管理器或分類保管過程中,而不是與加密私鑰相同的文件或備份捆綁中.
-- 保持 Taira 和 Minamoto 的密鑰分開,把 Taira 的密鑰作爲一次性測試網材料和 Minamoto 的密鑰當作生產資金權威.
-- 備份私鑰,公鑰,帳戶 ID,賬戶配置文件以及任何需要恢復簽署者的帳戶恢復或存儲記錄.在恢復過程中很容易濫用沒有網絡文本的私鑰.
+- 儲存私鑰在加密密碼管理器,硬體支援的關鍵儲存器或專用簽字服務中.不要將金鑰交給源控制,也不要把生產金鑰留在 Shell 歷史記錄,日誌,聊天,門票或未加密備份中.
+- 使用每個保險櫃或生產簽名器的獨特高密碼. 儲存密碼在密碼管理器或分類保管過程中,而不是與加密私鑰相同的檔案或備份捆綁中.
+- 保持 Taira 和 Minamoto 的金鑰分開,把 Taira 的金鑰作為一次性測試網材料和 Minamoto 的金鑰當作生產資金授權主體.
+- 備份私鑰,公鑰,帳戶 ID,帳戶配置檔案以及任何需要恢復簽署者的帳戶恢復或儲存記錄.在恢復過程中很容易濫用沒有網路文字的私鑰.
 - 保持至少一個加密的離線備份和一個地理位置分開的加密備份,用於生產簽名器.在依賴備份之前測試恢復,只需進行小型讀取操作.
 - 如果私鑰,密碼短語,備份媒體或簽名主機可能被曝光,請旋轉或更換籤名器.
 
-詳細見 [存儲密碼密鑰](/zh-hant/guide/security/storing-cryptographic-keys.md)和 [密碼安全](/zh-hant/guide/security/password-security.md).
+詳細見 [儲存密碼金鑰](/zh-hant/guide/security/storing-cryptographic-keys.md)和 [密碼安全](/zh-hant/guide/security/password-security.md).
 
 ## 4. 獲取測試網 XOR 在 Taira {#_4-get-testnet-xor-on-taira}
 
 直接使用公共水龍頭,流量是:
 
-1. 創建或加載簽字符,並計算其常規賬戶 Taira ID.
+1. 建立或載入簽字元,並計算其規範帳戶 Taira ID.
 2. 帶來當前的水龍頭拼圖.
 3. 如果 `difficulty_bits` 超過 `0` 則解決題.
 4. 提交水龍頭申請.
-5. 在發送付費信之前,等到賬戶或資產餘額顯現.
+5. 在傳送付費寫入操作之前,等到帳戶或資產餘額顯現.
 
-將公鑰轉換到 Taira I105 賬戶 ID 中,該龍頭預期:
+將公鑰轉換到 Taira I105 帳戶 ID 中,該水龍頭預期:
 
 ```bash
 iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
@@ -394,7 +394,7 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
   | jq .
 ```
 
-如果拼圖或索賠終點返回 `502`,截止時間,或者其他網關級別錯誤,請等待再嘗試,然後更改鍵或客戶端配置.
+水龍頭是公共測試網服務。如果謎題或領取端點傳回 `502`、逾時或其他閘道層級錯誤，請先等待並重試，再變更金鑰或用戶端設定。
 
 答案是這樣的:
 
@@ -412,7 +412,7 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
 }
 ```
 
-當 `difficulty_bits`爲 `0`時,只提交 ID 的賬戶:
+當 `difficulty_bits`為 `0`時,只提交 ID 的帳戶:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
@@ -438,25 +438,25 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
   | jq .
 ```
 
-題算法是:
+題演算法是:
 
-1. 構建挑戰爲 SHA-256:
-   - `iroha:accounts:faucet:pow:v2`的字節
-   - UTF-8 的賬戶 ID
-   - `anchor_height`作爲一個大子 `u64`
-   - `anchor_block_hash_hex`被解碼爲字節
-   - `challenge_salt_hex`在存在時被解碼爲字節
-2. 試用 `u64` 非符號編碼爲大數值8字節.
-3. 對於每一個nonce,運行腳本:
-   - 密碼:是8字節的
-   - 鹽:32字節的挑戰
+1. 構建挑戰為 SHA-256:
+   - `iroha:accounts:faucet:pow:v2`的位元組
+   - UTF-8 的帳戶 ID
+   - `anchor_height`作為一個大子 `u64`
+   - `anchor_block_hash_hex`被解碼為位元組
+   - `challenge_salt_hex`在存在時被解碼為位元組
+2. 試用 `u64` nonce編碼為大數值8位元組.
+3. 對於每一個nonce,執行指令碼:
+   - 密碼：8 位元組 nonce
+   - 鹽:32位元組的挑戰
    - `N = 2^scrypt_log_n`
    - `r = scrypt_r`
    - `p = scrypt_p`
-   - 輸出長度: 32 字節
-4. 獲勝的無數是第一個以至少 `difficulty_bits`爲首的零位的消化.
+   - 輸出長度: 32 位元組
+4. 獲勝的 nonce是第一個以至少 `difficulty_bits`為首的零位的摘要.
 
-管道響應包括資產資金和排列交易哈希:
+管道響應包括資產資金和排列交易雜湊:
 
 ```json
 {
@@ -483,9 +483,9 @@ iroha --config ./taira.client.toml ledger asset get \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
-如果頭索賠被接受,但賬戶或資產尚未可見,交易仍在公共測試網隊列處理後. 在發送寫信之前等待再嘗試閱讀.
+如果頭索賠被接受,但帳戶或資產尚未可見,交易仍在公共測試網佇列處理後. 在傳送寫入操作之前等待再嘗試閱讀.
 
-對於準備運行的直接檢查 API,將此存儲爲 `taira_faucet_claim.py`並通過 Taira I105 帳戶 ID:
+對於準備執行的直接檢查 API,將此儲存為 `taira_faucet_claim.py`並透過 Taira I105 帳戶 ID:
 
 ```python
 #!/usr/bin/env python3
@@ -551,13 +551,13 @@ with urllib.request.urlopen(request) as res:
     print(json.dumps(json.load(res), indent=2))
 ```
 
-龍頭僅適用於 Taira 測試網資金.在 Minamoto 流動中,不要使用測試網 XOR,龍頭賬戶或 Taira 加拿大簽名器.
+水龍頭僅適用於 Taira 測試網資金.在 Minamoto 流動中,不要使用測試網 XOR,水龍頭帳戶或 Taira canary 簽署者.
 
-## 5. 創建一個 Minamoto 客戶端配置. {#_5-create-a-minamoto-client-config}
+## 5. 建立一個 Minamoto 客戶端配置. {#_5-create-a-minamoto-client-config}
 
 使用 Minamoto 單獨的鍵組.不要重複使用 Taira 關鍵在主網上.
 
-創建 `minamoto.client.toml`:
+建立 `minamoto.client.toml`:
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000753"
@@ -575,39 +575,39 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-頂級層次 `chain` 是電流 Nexus 主網鏈 ID. `[account].profile = "minamoto"` 選擇了 Minamoto I105 鏈區分器;終端點主機名稱和鏈 ID 不要隱含地選擇它.
+頂級層次 `chain` 是電流 Nexus 主網鏈 ID. `[account].profile = "minamoto"` 選擇了 Minamoto I105 鏈區分器;端點主機名稱和鏈 ID 不要隱含地選擇它.
 
-將 Minamoto 公共密鑰轉換爲其常規的 I105 賬戶 ID,並附上主網前:
+將 Minamoto 公共金鑰轉換為其規範的 I105 帳戶 ID,並附上主網前:
 
 ```bash
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-在賬戶通過主網上登錄或管理流程提供儲備和資金之前,僅進行閱讀側檢查:
+在帳戶透過主網上登入或管理流程提供儲備和資金之前,僅進行閱讀側檢查:
 
 ```bash
 iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
 ```
 
-不要將 Taira 龍頭或寫法輔助器與 Minamoto 打開.
+切勿針對 Minamoto 執行 Taira 水龍頭或 write-canary 輔助工具.
 
-## 6. 在 XOR 中資助 Minamoto 賬戶. {#_6-fund-a-minamoto-account-with-xor}
+## 6. 在 XOR 中資助 Minamoto 帳戶. {#_6-fund-a-minamoto-account-with-xor}
 
-Minamoto 費用由生產 XOR 支付,而 Minamoto 沒有公共水龍頭.通過批准的主網登錄或財政轉賬來資助配置的帳戶,或者從現有資助的 Minamoto 賬戶中獲得 XOR.
+Minamoto 費用由生產 XOR 支付,而 Minamoto 沒有公共水龍頭.透過批准的主網登入或財政轉賬來資助配置的帳戶,或者從現有資助的 Minamoto 帳戶中獲得 XOR.
 
-在提交筆記之前,請檢查常規賬戶 ID 和資金使用僅閱讀檢查. 作爲生產資金,將 Minamoto XOR 視爲生產資金:先在 Taira 上練習同樣的操作,保留單獨的生產密鑰,不要假設可以重置主網交易.
+在提交筆記之前,請檢查規範帳戶 ID 和資金使用僅閱讀檢查. 作為生產資金,將 Minamoto XOR 視為生產資金:先在 Taira 上練習同樣的操作,保留單獨的生產金鑰,不要假設可以重置主網交易.
 
 Taira XOR 不能支付 Minamoto 費用.測試網餘額和水龍頭索賠不會轉移到 Minamoto.
 
-## 7. 在現有的數據空間內工作 {#_7-work-inside-an-existing-dataspace}
+## 7. 在現有的資料空間內工作 {#_7-work-inside-an-existing-dataspace}
 
-使用在數據空間內居住的賬本對象的完全合格域名.例如,公共數據空間中的項目域名應該使用:
+使用在資料空間內居住的賬本物件的完全合格域名.例如,公共資料空間中的專案域名應該使用:
 
 ```text
 apps.universal
 ```
 
-在您的帳戶獲得所需權限後,爲域名創建一個無祕密的 `AliasSetupPlanRequestV1` 意圖,並使用聲明計劃器:
+在您的帳戶獲得所需許可權後,為域名建立一個無秘密的 `AliasSetupPlanRequestV1` 意圖,並使用宣告計劃器:
 
 ```bash
 iroha --config ./taira.client.toml \
@@ -620,7 +620,7 @@ iroha --config ./taira.client.toml \
   app alias setup apply --plan-file ./taira-apps-domain.plan.json
 ```
 
-對於 Minamoto,生成並批准單獨的主網意圖和計劃.計劃與其鏈,權威,現實狀態和截止日期有關,因此不能推廣或重播 Taira 計劃:
+對於 Minamoto,生成並批准單獨的主網意圖和計劃.計劃與其鏈,授權主體,現實狀態和截止日期有關,因此不能推廣或重播 Taira 計劃:
 
 ```bash
 iroha --config ./minamoto.client.toml \
@@ -632,18 +632,18 @@ iroha --config ./minamoto.client.toml \
   app alias setup apply --plan-file ./minamoto-apps-domain.plan.json
 ```
 
-帳戶號使用相同的數據空間後音:
+帳戶號使用相同的資料空間後音:
 
 ```text
 alice@apps.universal
 alice@universal
 ```
 
-嚴格賬戶字段仍然使用常規 I105 帳戶 IDs.將姓氏視爲可以讀取的人類的綁定,並解決常規賬戶 IDs.
+嚴格帳戶欄位仍然使用規範 I105 帳戶 IDs.將別名視為可以讀取的人類的繫結,並解決規範帳戶 IDs.
 
-## 8. 提供新的數據空間 {#_8-provision-a-new-dataspace}
+## 8. 提供新的資料空間 {#_8-provision-a-new-dataspace}
 
-一個新的數據區是一個運營商和治理變化.公衆 Torii 終端點可以將流量導向配置的數據區,但它會拒絕未知的數據區別姓氏.
+一個新的資料區是一個運營商和治理變化.公眾 Torii 端點可以將流量導向配置的資料區,但它會拒絕未知的資料區別別名.
 
 在準備更改之前,捕捉當前的現場目錄:
 
@@ -653,24 +653,24 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-對於運營商賬戶,請檢查車道表姿勢:
+對於運營商帳戶,請檢查通道表姿勢:
 
 ```bash
 iroha --config ./operator.client.toml app nexus lane-report --summary
 ```
 
-除非行徑 ID,數據空間 ID,驗證器設置,故障耐受性,表格,路由規則和運營所有者一起經過審查,否則不得推廣新的號.一個正常的用戶帳戶,具有所需權限,可以通過代號規劃器在現有數據空間內獲得域名和其 SNS 租;它不能安全地添加新的公共數據空間.
+除非通道 ID,資料空間 ID,驗證器設定,故障耐受性,清單,路由規則和運營所有者一起經過審查,否則不得推廣新的號.一個正常的使用者帳戶,具有所需許可權,可以透過代號規劃器在現有資料空間內獲得域名和其 SNS 租;它不能安全地新增新的公共資料空間.
 
-對於私人或組織數據空間,編制一項目錄變更,包括:
+對於私人或組織資料空間,編制一專案錄變更,包括:
 
-- 唯一的數據空間別名和數字 `id`
-- 一個相匹配的車道入口或現有車道分配
-- 數據空間 `fault_tolerance`
+- 唯一的資料空間別名和數字 `id`
+- 一個相匹配的通道入口或現有通道分配
+- 資料空間 `fault_tolerance`
 - 路由指令或帳戶範圍的規則,應在此登陸
-- 空間目錄表或相等的部署證據,當數據區暴露 UAID 功能時
+- 空間目錄表或相等的部署證據,當資料區暴露 UAID 功能時
 - 對驗證器,合規性,結算和監測政策的治理批准
 
-一個可查看的配置片段是這樣的:
+一個可檢視的配置片段是這樣的:
 
 ```toml
 [[nexus.lane_catalog]]
@@ -697,11 +697,11 @@ description = "Route payments domains to the payments dataspace"
 
 運營商的接受應包括以下門戶:
 
-- `irohad --sora --config <config.toml> --trace-config` 傳輸已解決的節點配置
-- 生成或檢查的表格是用哈希和簽名存檔的
-- 在任何 Minamoto 促銷之前,煙霧測試通過 Taira
-- 變更後的目錄 `/status` 表示預期的車道和數據空間
-- `iroha app nexus lane-report --summary` 沒有報告缺失所需的表格
+- `iroha3d --sora --config <config.toml> --trace-config` 傳輸已解決的節點配置
+- 生成或檢查的清單是用雜湊和簽名存檔的
+- 在任何 Minamoto 促銷之前,冒煙測試透過 Taira
+- 變更後的目錄 `/status` 表示預期的通道和資料空間
+- `iroha app nexus lane-report --summary` 沒有報告缺失所需的清單
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -709,12 +709,12 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 
-只有在 Taira 部署,煙霧測試,監控和治理證據完成後才能將相同的數據空間推廣到 Minamoto.
+只有在 Taira 部署,冒煙測試,監控和治理證據完成後才能將相同的資料空間推廣到 Minamoto.
 
 ## 相關頁面 {#related-pages}
 
 - [安裝 Iroha 3](/zh-hant/get-started/install-iroha.md)
-- [通過 CLI](/zh-hant/get-started/operate-iroha-via-cli.md)運行 Iroha 3
-- [對私人數據空間的贊助費用](/zh-hant/get-started/private-dataspace-fee-sponsor.md)
-- [Torii 終端點](/zh-hant/reference/torii-endpoints.md)
+- [透過 CLI](/zh-hant/get-started/operate-iroha-via-cli.md)執行 Iroha 3
+- [對私人資料空間的贊助費用](/zh-hant/get-started/private-dataspace-fee-sponsor.md)
+- [Torii 端點](/zh-hant/reference/torii-endpoints.md)
 - [創世記引用](/zh-hant/reference/genesis.md)

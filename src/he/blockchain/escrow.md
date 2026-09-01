@@ -6,29 +6,29 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# אבטחה של נכסים מקומיים {#native-asset-escrow}
+# נאמנות נכסים מובנית {#native-asset-escrow}
 
-אבטחה מקומית היא מנגנון אחסון של נכסים מספרים שמנהל בספר. במקום לשלוח נכסים לחשבון בבעלות יישום ולהתבסס על קוד היישום כדי להגן על החשבון, הסקרו ISIs להעביר את הערך לחשבון אחסון פרוטוקול דטרמיניסטי וירשום את מחזור החיים של הסקרו במצב העולם.
+נאמנות מובנית היא מנגנון משמורת לנכסים מספריים שמנוהל בידי ספר החשבונות. במקום לשלוח נכסים לחשבון שבבעלות יישום ולהסתמך על קוד היישום שיגן עליו, הוראות הנאמנות (ISIs) מעבירות את הערך לחשבון משמורת דטרמיניסטי של הפרוטוקול ומתעדות את מחזור חיי הנאמנות במצב העולם.
 
-השתמשו ב-escrow המקומי עבור הסדר בשוק, תיאום תשלומים מחוץ לשרשרת בסגנון אייטאי, מנעולים של אבני דרך, ותנועות עבודה ב-escro מוגנות שדורשות מצב מחזור חיים נראים במספרים.
+השתמשו בנאמנות המובנית להסדרי שוק, לתיאום תשלומים מחוץ לשרשרת בסגנון Aitai, לנעילות לפי אבני דרך ולתהליכי נאמנות מוגנים שצריכים מצב מחזור חיים גלוי בספר החשבונות.
 
 ## תפיסות {#concepts}
 
 |הרעיון|תיאור |
 | --- | --- |
-|`EscrowId` |זיהוי נבחר על ידי המתקשר שמסובב חשיש. הוא חייב להיות ייחודי בין אבטחים שקופים ואנונימיים. |
-|`AssetEscrowRecord` |רישום אבטחת נכסים מספרים שקופים או סגור. |
-|`AnonymousAssetEscrowRecord` |רישום מאבטח מוגן, מבוסס על ביטול, מחויבויות ותיקומים של הוכחה. |
-|חשבון שמירה |חשבון פרוטוקול דטרמיניסטי המוצא מרשת ID, מאבטחה ID, והגדרה של נכסים. |
-|ראיות השטויות |ה-Hashes של ראיות יכולים לזהות חשבונות, משפטים, הודעות, מוניסטים של אחסון או ראיות אחרות מחוץ למגוון.|
+|`EscrowId` |מזהה שבוחר המתקשר ועוטף גיבוב. עליו להיות ייחודי בכל רשומות הנאמנות השקופות והאנונימיות. |
+|`AssetEscrowRecord` |רשומת נאמנות או נעילה שקופה של נכס מספרי. |
+|`AnonymousAssetEscrowRecord` |רשומת נאמנות מוגנת הנשענת על nullifiers, התחייבויות וצרופות הוכחה. |
+|חשבון משמורת |חשבון פרוטוקול דטרמיניסטי הנגזר ממזהה השרשרת (ID), ממזהה הנאמנות (ID) ומהגדרת הנכס. |
+|גיבובי ראיות |גיבובי ראיות יכולים לזהות חשבוניות, פסקי דין, הודעות, מניפסטים של אחסון או ראיות אחרות מחוץ לשרשרת. מטען הראיה עצמו אינו נשמר ברשומת הנאמנות. |
 
-רישומים שקופים מכילים את המוכר, הקונה אופציונלי, הגדרה של נכס, סכום הכולל, חשבון אחסון, מצב מחזור החיים, סוג התנהגות, הסכום הנותר, סמכות השחרור אופציונלית, חותמת זמן גמרת אופציונליים, חותמות ראיות, חותמים זמן ופרטים על פתרון אופציונלים.
+רשומות שקופות כוללות את המוכר, קונה אופציונלי, הגדרת הנכס, הסכום הכולל, חשבון המשמורת, מצב מחזור החיים, סוג ההתנהגות, הסכום שנותר, סמכות שחרור אופציונלית, חותמת זמן תפוגה אופציונלית, גיבובי ראיות, חותמות זמן ופרטי פתרון אופציונליים.
 
-סכומי אבטחה חייבים להיות כמות נכסים מספרית חיובית וצפויה להתאים לתאריך המספרי של הגדרת נכס. בעוד אבטחה או נעול פעיל, העברת נכסים גנרית לא יכולה לספיק את חשבון השמורות; נתיבי היציאה מהשמורות הם האבטחה ISIs המתוארת בהמשך.
+סכומי נאמנות חייבים להיות כמויות חיוביות של נכס מספרי ולהתאים למפרט המספרי של הגדרת הנכס. כל עוד נאמנות או נעילה פעילות, העברות נכסים כלליות אינן יכולות לרוקן את חשבון המשמורת; היציאה מן המשמורת נעשית רק באמצעות ה־ISIs של הנאמנות המתוארות להלן.
 
-## משכנתא בשוק {#marketplace-escrow}
+## נאמנות בשוק {#marketplace-escrow}
 
-שוק הבטחון מתואם את השחרור של נכסים בתוך שרשרת עם זרימת עבודה של תשלומים או משלוחים מחוץ לרשת.
+נאמנות בשוק מתאמת שחרור נכס בשרשרת עם תהליך תשלום או מסירה מחוץ לשרשרת.
 
 ```mermaid
 stateDiagram-v2
@@ -45,19 +45,19 @@ stateDiagram-v2
 
 |ISI |מי מגיש את זה?|השפעה |
 | --- | --- | --- |
-|`OpenAssetEscrow` |מוכר |מנעול את הנכס המספרי של המוכר בשמורת הפרוטוקול ויוצר רישום שוק `Open`. |
-|`AcceptAssetEscrow` |קונה |רשום את הקונה ומעביר `Open` ל `Accepted`. המוכר לא יכול לקבל את הבטחון שלו. |
-|`MarkEscrowPaymentSent` |קונה מקובל |עובר `Accepted` ל `PaymentSent` לאחר שקונה שולח את התשלום מחוץ למשרשרת. |
-|`ReleaseAssetEscrow` |מוכר |מעביר את `PaymentSent` ל `Released` ומעביר את הסכום המובטח במלואו למקונה |
-|`CancelAssetEscrow` |מוכר |עובר `Open` או `Accepted` ל `Cancelled` ומחזיר את המוכר לפני שהשלם מסומן. |
-|`OpenEscrowDispute` |מוכר או קונה מקובל |מזיז `Accepted` או `PaymentSent` ל `Disputed` ומוסיף חישוב ראיות. |
-|`ResolveEscrowDispute` |חשבון עם `CanResolveEscrowDispute` |עובר `Disputed` ל `Resolved` ומחלק את הסכום בין הקונה למכר. |
+|`OpenAssetEscrow` |מוכר |נועל את הנכס המספרי של המוכר במשמורת הפרוטוקול ויוצר רשומת שוק במצב `Open`. |
+|`AcceptAssetEscrow` |קונה |מתעד את הקונה ומעביר מ־`Open` ל־`Accepted`. המוכר אינו יכול לקבל את הנאמנות של עצמו. |
+|`MarkEscrowPaymentSent` |הקונה שהתקבל |מעביר מ־`Accepted` ל־`PaymentSent` לאחר שהקונה שולח את התשלום מחוץ לשרשרת. |
+|`ReleaseAssetEscrow` |מוכר |מעביר מ־`PaymentSent` ל־`Released` ומעביר לקונה את מלוא הסכום שהופקד בנאמנות. |
+|`CancelAssetEscrow` |מוכר |מעביר מ־`Open` או `Accepted` ל־`Cancelled` ומחזיר את הכספים למוכר לפני סימון התשלום. |
+|`OpenEscrowDispute` |המוכר או הקונה שהתקבל |מעביר מ־`Accepted` או `PaymentSent` ל־`Disputed` ומצרף גיבובי ראיות. |
+|`ResolveEscrowDispute` |חשבון בעל `CanResolveEscrowDispute` |מעביר מ־`Disputed` ל־`Resolved` ומחלק את הסכום בין הקונה למוכר. |
 
-סכומי פתרון מחלוקות חייבים להיות לא שליליים, ו `buyer_amount + seller_amount` חייב להיות שווה לסכום הבטחון. רגל בעלת ערך אפס מותרת, אך כל ההפצה חייבת להיות נתונה על הירי המנעול.
+הסכומים בפתרון מחלוקת חייבים להיות לא־שליליים, והסכום `buyer_amount + seller_amount` חייב להיות שווה לסכום הנאמנות. מותר שאחד החלקים יהיה אפס, אך החלוקה כולה חייבת לכסות את היתרה הנעולה.
 
 ### Rust דוגמה {#rust-example}
 
-דוגמה זו מניחה כי חשבונות המוכר והקונה קיימים כבר, ההגדרה של נכס נרשמת כמספרית, והמכר יש איזון מספיק.
+הדוגמה מניחה שחשבונות המוכר והקונה כבר קיימים, שהגדרת הנכס רשומה כמספרית ושיש למוכר יתרה מספקת.
 
 ```rust
 use iroha::{
@@ -98,18 +98,18 @@ fn release_marketplace_escrow(
 }
 ```
 
-## מנעולים נכסים כלליים {#generic-asset-locks}
+## נעילות נכסים כלליות {#generic-asset-locks}
 
-מנעולים נכסים משתמשים באותו סוג של רשומות אחסון, אבל הם אינם הצעות קונה-מכר. הם מנעולים כספים לחשבון יעד ואפשרותך דורשים סמכות שחרור נפרדת כדי למשוך כספים.
+נעילות נכסים משתמשות באותו סוג של רשומת משמורת, אך אינן הצעות בין קונה למוכר. הן נועלות כספים עבור חשבון יעד, ויכולות לדרוש סמכות שחרור נפרדת למשיכת הכספים.
 
 |ISI |מי מגיש את זה?|השפעה |
 | --- | --- | --- |
-|`OpenAssetLock` |חשבון מקור |מנעול סכום חיובי, רשום את היעד כקונה הקובץ ומסביר את מצבו ל `Locked`. |
-|`DrawdownAssetLock` |סמכות השחרור, או יעד כאשר לא נקבע סמכות שחרור |מעבירים חלק או את כל המאסר הנותר אל היעד. |
-|`CancelAssetLock` |פתיחת המנעול|מבטל מנעול פעיל ומחזיר את הסכום הנותר לפתיחת. |
-|`ExpireAssetLock` |כל סמכות עסקאות לאחר המועד האחרון |תקופת סגר עם `expires_at_ms` בעבר ומחזיר את הסכום הנותר לפתיחת. |
+|`OpenAssetLock` |חשבון המקור |נועל סכום חיובי, מתעד את היעד כקונה ברשומה ומגדיר את המצב `Locked`. |
+|`DrawdownAssetLock` |סמכות השחרור, או היעד אם לא הוגדרה סמכות שחרור |מעביר חלק מן המשמורת שנותרה או את כולה אל היעד. |
+|`CancelAssetLock` |פותח הנעילה |מבטל נעילה פעילה ומחזיר את הסכום שנותר לפותח. |
+|`ExpireAssetLock` |כל סמכות עסקה לאחר המועד האחרון |מסיים נעילה שהערך `expires_at_ms` שלה נמצא בעבר ומחזיר את הסכום שנותר לפותח. |
 
-`DrawdownAssetLock` שומר את הקלטה ב `Locked` בזמן שחלק מהסכומים נשארים. כאשר הסכום הנותר מגיע לאפס, המצב הופך ל `DrawnDown` והקלט נסגר.
+`DrawdownAssetLock` משאיר את הרשומה במצב `Locked` כל עוד נותר סכום כלשהו. כאשר הסכום שנותר מגיע לאפס, המצב הופך ל־`DrawnDown` והרשומה נסגרת.
 
 ```rust
 use iroha::{
@@ -174,11 +174,11 @@ fn drawdown_and_close_asset_locks(
 }
 ```
 
-Python כיום חשוף עוזרים ברמה גבוהה למנעולים גנטיים: `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, ו `expire_asset_lock`. למקומות השוק ולשמורת אנונימית Python, שימוש קאנוני `InstructionBox` JSON דרך SDK זה... JSON פתח בריחה, או להגיש דרך SDK זה חושף את הבניינים של אבטחה מדרגה ראשונה.
+Python מספק כיום עזרים עיליים לנעילות נכסים כלליות: `open_asset_lock`, ‏`drawdown_asset_lock`, ‏`cancel_asset_lock` ו־`expire_asset_lock`. עבור נאמנות שוק ונאמנות אנונימית ב־Python, השתמשו ב־JSON קנוני של `InstructionBox` דרך נתיב המילוט ל־JSON של ה־SDK, או שלחו באמצעות SDK שמספק בוני נאמנות ייעודיים.
 
 ## מחלוקות {#disputes}
 
-סגור בשוק יכול להגיש מחלוקת מ- `Accepted` או `PaymentSent`. רק המוכר רשום או הקונה יכולים לפתוח את המחלוקת. פתרון דורש `CanResolveEscrowDispute`, בין אם ניתן ישירות לחשבון הגורם או מורשת דרך תפקיד.
+אפשר לפתוח מחלוקת על נאמנות שוק במצב `Accepted` או `PaymentSent`. רק המוכר הרשום או הקונה יכולים לפתוח אותה. פתרון המחלוקת דורש `CanResolveEscrowDispute`, בין שההרשאה הוענקה ישירות לחשבון הפועל ובין שהתקבלה בירושה מתפקיד.
 
 ```rust
 use iroha::{
@@ -226,11 +226,11 @@ fn resolve_disputed_escrow(
 }
 ```
 
-## אסקרו אנונימי {#anonymous-escrow}
+## נאמנות אנונימית {#anonymous-escrow}
 
-אבטחה אנונימית משתמשת באותו מחזור החיים של השוק, אך תנועת המימון והסגירת נכסים מוגן. רישום הציבורי עדיין מאחסן מוכר, קונה, מעמד, ראיות האשיזים, חותמות זמן ורשומות תנועה מקושרות לתוכנות. סכומים ומקבלים בתוך הערות מובטחות מתייצגים על ידי מחויבויות, ביטוליות, ותיקומי הוכחה.
+נאמנות אנונימית משתמשת באותו מחזור חיים של נאמנות השוק, אך תנועות המימון והסגירה של הנכסים מוגנות. הרשומה הציבורית עדיין שומרת את המוכר, הקונה, המצב, גיבובי הראיות, חותמות הזמן ורשומות התנועה המקושרות להוכחות. סכומים ונמענים בתוך פתקים מוגנים מיוצגים באמצעות התחייבויות, nullifiers וצרופות הוכחה.
 
-|שקוף ISI |אנונימי ISI |
+|ISI שקוף |ISI אנונימי |
 | --- | --- |
 |`OpenAssetEscrow` |`OpenAnonymousAssetEscrow` |
 |`AcceptAssetEscrow` |`AcceptAnonymousAssetEscrow` |
@@ -240,7 +240,7 @@ fn resolve_disputed_escrow(
 |`OpenEscrowDispute` |`OpenAnonymousEscrowDispute` |
 |`ResolveEscrowDispute` |`ResolveAnonymousEscrowDispute` |
 
-כלי הארנק או סבר חייבים לבנות את קישור ההוכחה ואת הכנסות הציבוריות. פתיחת יוצרת מחויבות מאובטח אחת. השחרור, ביטול ופיתרון מחלוקת אנונימי צריכים להשקיע בדיוק מחויבות מובטח אחד ויצאו את הקונה, המוכר, או מחויבות יציר חלקית הנדרשות על ידי הפעולה.
+כלי הארנק או כלי ההוכחה חייבים לבנות את צרופת ההוכחה ואת הקלטים הציבוריים. פתיחה יוצרת התחייבות נאמנות אחת. שחרור, ביטול ופתרון מחלוקת אנונימית חייבים לצרוך בדיוק התחייבות נאמנות אחת וליצור את התחייבויות הפלט לקונה, למוכר או לחלוקה, לפי דרישת הפעולה.
 
 ```rust
 use iroha::{
@@ -283,25 +283,25 @@ fn open_anonymous_escrow(
 }
 ```
 
-עבור מודל העסקאות המסתתנים הבסיסי, ראה [העסקות אנונימיות ](/he/blockchain/anonymous-transactions.md).
+למודל העסקאות המוגנות שבבסיס המנגנון, ראו [עסקאות אנונימיות](/he/blockchain/anonymous-transactions.md).
 
-## SDK שימוש {#sdk-usage}
+## שימוש בערכות SDK {#sdk-usage}
 
-תמיכה בנקודת אבטחה נחשפת באופן שונה בכל רחבי SDKs. Rust יש את מודל הנתונים הטייפד קנוני. Python חושף כיום עוזרים גנטיים לחסום נכסים. JavaScript ו TypeScript משתמשים Kotodama בקריאות מארח אבטחה. Kotlin/JVM ו Swift מספקים בניית מטען מועיל עם טופס עבור שוק ושמורת אנונימית.
+התמיכה בנאמנות נחשפת באופן שונה בין ה־SDKs. ל־Rust יש את מודל הנתונים הקנוני בעל הטיפוסים המוגדרים. Python מספקת כיום עזרים לנעילות נכסים כלליות. JavaScript ו־TypeScript משתמשות בקריאות המארח לנאמנות של Kotodama. ‏Kotlin/JVM ו־Swift מספקות בונים בעלי טיפוס מוגדר למטעני נאמנות בשוק ולנאמנות אנונימית.
 
 |SDK |השתמשו על פני השטח הזה.|טווח|
 | --- | --- | --- |
-| [Rust](#rust-sdk) |`iroha::data_model::isi::escrow` |מאבטחה בשוק, מנעולים גנטיים, מאבטחת אנונימית, שאלות ואירועים. |
-| [Python](#python-asset-locks) |`Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock`, ועוזרי הלקוח `*_and_wait` |סגרות נכסים גנריות. השוק ועוזרי אבטחה אנונימיים אינם עדיין שיטות Python מעמד ראשון. |
+| [Rust](#rust-sdk) |`iroha::data_model::isi::escrow` |נאמנות שוק, נעילות כלליות, נאמנות אנונימית, שאילתות ואירועים. |
+| [Python](#python-asset-locks) |`Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock`, ועזרי הלקוח `*_and_wait` |נעילות נכסים כלליות. עזרי marketplace ו־escrow אנונימי עדיין אינם שיטות Python מובנות. |
 | [JavaScript / TypeScript ](#javascript-and-typescript-kotodama) |`compileKotodamaProgram` מ- `@iroha/iroha-js/kotodama-compiler` |קריאות מארח אסקרו בתוך Kotodama חוזים. |
-| [Kotlin / JVM ](#kotlin-and-jvm) |סוגי `InstructionTemplate` ב- `org.hyperledger.iroha.sdk.core.model.instructions` |שוק וטמבלים אנונימיים של הוראות אישית. |
-| [Swift / iOS](#swift-and-ios) |עוזרים `NativeEscrowInstructionBuilders` ו `IrohaSDK.build*Escrow*` |שוק ומעובדים אנונימיים של הוראות Norito JSON. |
+| [Kotlin / JVM ](#kotlin-and-jvm) |מחלקות `InstructionTemplate` ב־`org.hyperledger.iroha.sdk.core.model.instructions` |תבניות של הוראות מותאמות לנאמנות שוק ולנאמנות אנונימית. |
+| [Swift / iOS](#swift-and-ios) |הבונים `NativeEscrowInstructionBuilders` ועזרי `IrohaSDK.build*Escrow*` |מטעני הוראות Norito JSON לנאמנות שוק ולנאמנות אנונימית. |
 
-הדוגמאות הבאות מתמקדות בבניית ההוראות. מימון חשבונות, ניהול חתימות ושלוח עסקאות עוקבים אחרי הזרימה הרגילה עבור כל אחד SDK.
+הדוגמאות הבאות מתמקדות בבניית ההוראות. מימון חשבונות, ניהול חתימות ושליחת עסקאות נעשים בתהליך הרגיל של כל ערכת SDK.
 
 ### Rust SDK {#rust-sdk}
 
-השתמש Rust SDK כאשר אתה צריך כיסוי מקומי מלא או חיפוש / אירוע תמיכה. הדוגמאות לעיל מראות שחרור בשוק, קבלת נעילה גנרית, פתרון מחלוקת, ובנייה מאבטחה אנונימית עם `iroha::data_model::isi::escrow`.
+השתמשו ב־Rust SDK כאשר אתם צריכים כיסוי מובנה מלא או תמיכה בשאילתות ובאירועים. הדוגמאות לעיל מציגות שחרור של נאמנות שוק, משיכה מנעילה כללית, פתרון מחלוקת ובניית נאמנות אנונימית באמצעות `iroha::data_model::isi::escrow`.
 
 ```rust
 use iroha::{
@@ -326,9 +326,9 @@ fn open_and_read(
 }
 ```
 
-### Python מנעולים נכסים {#python-asset-locks}
+### נעילות נכסים ב־Python {#python-asset-locks}
 
-Python SDK חושף עוזרים מדרגה ראשונה למנעולים נכסים גנטיים. השתמש בהם עבור תשלומים של אבני דרך, משיכות על ידי רשות שחרור, ביטול על ידי הפתיחה, ותחזות סגירת תקופה.
+Python SDK מספקת עזרים ייעודיים לנעילות נכסים כלליות. השתמשו בהם לתשלומים לפי אבני דרך, למשיכות בידי סמכות שחרור, לביטול בידי פותח הנעילה ולהחזרים בעת תפוגה.
 
 ```python
 client.open_asset_lock_and_wait(
@@ -359,13 +359,13 @@ client.expire_asset_lock_and_wait(
 )
 ```
 
-עבור מנעול משתי צדדים, השאירו `release_authority`; חשבון היעד יכול לאחר מכן לשלוח `drawdown_asset_lock`.
+בנעילה בין שני צדדים, השמיטו את `release_authority`; לאחר מכן חשבון היעד יוכל לשלוח `drawdown_asset_lock`.
 
 ### JavaScript ו TypeScript Kotodama {#javascript-and-typescript-kotodama}
 
-JavaScript SDK לא חושף כיום את הבניינים המקומיים של עסקאות מאבטחה ישירות. עבור יישומים של JavaScript או TypeScript שמפיצים חוזים של Kotodama, תארו שיחות מארחת מאבטחים עם מתאסוף Kotodama.
+JavaScript SDK אינה מספקת כיום בוני עסקאות ישירים לנאמנות מובנית. ביישומי JavaScript או TypeScript שפורסים חוזי Kotodama, הידרו את קריאות המארח לנאמנות באמצעות המהדר של Kotodama.
 
-שיחות מארח אבטחה מקומית דורשות רמזות גישה מפורסות כי הקאמפילור לא יכול להוציא קבוצות גישה צר יותר עבור אבטחה בלתי ברורה ISIs. השתמשו ברמזים של קלפים חיצוניים על נקודות כניסה שנוצאו שמקורות ב- `escrow_*` מבוססים.
+קריאות המארח לנאמנות מובנית דורשות רמזי גישה מפורשים, מפני שהמהדר אינו יכול להסיק קבוצות גישה מצומצמות יותר ל־ISIs אטומות של נאמנות. השתמשו ברמזי wildcard בנקודות כניסה מיוצאות שקוראות לפונקציות המובנות `escrow_*`.
 
 ```js
 import { compileKotodamaProgram } from "@iroha/iroha-js/kotodama-compiler";
@@ -397,11 +397,11 @@ if (compiled.diagnostics.length > 0) {
 }
 ```
 
-עבור מחלוקות, השתמשו ב- `escrow_open_dispute(offer, evidence)` ו- `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`. טלפונים anonymizes escrow host מקבלים ב- Norito בקשות של מטען מועיל, למשל `anonymous_escrow_open_offer(request)`
+למחלוקות השתמשו ב־`escrow_open_dispute(offer, evidence)` וב־`escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`. קריאות המארח לנאמנות אנונימית מקבלות בתים של מטען בקשה מסוג Norito, לדוגמה `anonymous_escrow_open_offer(request)`.
 
 ### Kotlin ו JVM {#kotlin-and-jvm}
 
-הטמבל Kotlin/JVM SDK מודלים אבטחה מקומית כטמבלים של הוראות מותאם. כל טמבל מעודד את השדות הנדרשים ומחשף את המפה הקנוניקה של הטיעונים המשמשת על ידי בונה העסקאות.
+Kotlin/JVM SDK מייצגת נאמנות מובנית כתבניות של הוראות מותאמות. כל תבנית מאמתת את שדות החובה וחושפת את מפת הארגומנטים הקנונית שבה משתמש בונה העסקאות.
 
 ```kotlin
 import org.hyperledger.iroha.sdk.core.model.escrow.NativeEscrowPermissions
@@ -431,11 +431,11 @@ println(open.arguments)
 println(NativeEscrowPermissions.CAN_RESOLVE_ESCROW_DISPUTE)
 ```
 
-תבניות אנונימיות זמינות: `OpenAnonymousAssetEscrowInstruction`, `AcceptAnonymousAssetEscrowInstruction`, `MarkAnonymousEscrowPaymentSentInstruction`, `ReleaseAnonymousAssetEscrowInstruction`, `CancelAnonymousAssetEscrowInstruction`, `OpenAnonymousEscrowDisputeInstruction`, ו `ResolveAnonymousEscrowDisputeInstruction`. Android טלפנים של ג'אווה יכולים להשתמש בהתאם `NativeEscrowInstructions.*` הבניינים מ Android ארטיפקט.
+התבניות האנונימיות הזמינות הן `OpenAnonymousAssetEscrowInstruction`, ‏`AcceptAnonymousAssetEscrowInstruction`, ‏`MarkAnonymousEscrowPaymentSentInstruction`, ‏`ReleaseAnonymousAssetEscrowInstruction`, ‏`CancelAnonymousAssetEscrowInstruction`, ‏`OpenAnonymousEscrowDisputeInstruction` ו־`ResolveAnonymousEscrowDisputeInstruction`. קוד Java ב־Android יכול להשתמש בבוני `NativeEscrowInstructions.*` המתאימים מן הארטיפקט של Android.
 
 ### Swift ו-iOS {#swift-and-ios}
 
-ה- Swift SDK מבנה הוראות אבטחה כ Norito JSON מטענים מועילים. `NativeEscrowInstructionBuilders` ישירות, או להתקשר למשקל המקביל `IrohaSDK.build*Escrow*` עוזר כאשר האפליקציה שלך כבר מחזיקה `IrohaSDK` דוגמה.
+Swift SDK בונה הוראות נאמנות כמטעני Norito JSON. השתמשו ישירות ב־`NativeEscrowInstructionBuilders`, או קראו לעזר המקביל `IrohaSDK.build*Escrow*` כאשר היישום כבר מחזיק מופע `IrohaSDK`.
 
 ```swift
 import IrohaSwift
@@ -463,27 +463,27 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 )
 ```
 
-אנונימי. Swift הבניינים לוקחים רשימות ביטול, רשימות מחויבות יצירה, מילון הוכחה, ואופנציאליים `rootHint` הערכים. סימן רשות פתרון מחלוקת זמין כ: `NativeEscrowPermissions.canResolveEscrowDispute`.
+בוני Swift האנונימיים מקבלים רשימות nullifiers, רשימות של התחייבויות פלט, מילון הוכחה וערכי `rootHint` אופציונליים. אסימון ההרשאה לפתרון מחלוקת זמין בשם `NativeEscrowPermissions.canResolveEscrowDispute`.
 
-## שאלות ואירועים {#queries-and-events}
+## שאילתות ואירועים {#queries-and-events}
 
-השתמשו בשאלות אבטחה עבור דפים של מצב, עבודות פיצוי, וכלי תמיכה:
+השתמשו בשאילתות הנאמנות לדפי מצב, למשימות התאמה ולכלי תמיכה:
 
-|שאלה |מטרה.|
+|שאילתה |מטרה.|
 | --- | --- |
-|`FindAssetEscrowById` |קראו אבטחה חיונית אחת או סגור על ידי `EscrowId`. |
-|`FindAssetEscrows` |רשום רישומי אבטחה ונעלי שקופים. |
-|`FindAssetEscrowsBySeller` |רשימה של רשומות שנפתחו על ידי מוכר או פותח מנעולים. |
-|`FindAssetEscrowsByBuyer` |רשימה של מאבטחות שוק מקובלות על ידי קונה או מנעולים המתמקדים ביעד. |
-|`FindAssetEscrowsByStatus` |רשימת רשומות עד `AssetEscrowStatus`. |
-|`FindAnonymousAssetEscrowById` |קראו מאבטח אנונימי אחד על ידי `EscrowId`. |
-|`FindAnonymousAssetEscrows*` |רשימה של מאבטחים אנונימיים לפי כל הרשומות, מוכר, קונה או מצב. |
+|`FindAssetEscrowById` |קוראת נאמנות שקופה או נעילה אחת לפי `EscrowId`. |
+|`FindAssetEscrows` |מציגה רשומות נאמנות ונעילה שקופות. |
+|`FindAssetEscrowsBySeller` |מציגה רשומות שפתח מוכר או פותח נעילה. |
+|`FindAssetEscrowsByBuyer` |מציגה נאמנויות שוק שקונה קיבל או נעילות המיועדות ליעד. |
+|`FindAssetEscrowsByStatus` |מציגה רשומות לפי `AssetEscrowStatus`. |
+|`FindAnonymousAssetEscrowById` |קוראת נאמנות אנונימית אחת לפי `EscrowId`. |
+|`FindAnonymousAssetEscrows*` |מציגה נאמנויות אנונימיות לפי כל הרשומות, המוכר, הקונה או המצב. |
 
-`EscrowEventFilter` יכול לחתום על אירועי אבטחה מקומית שקופים ומנעולים באמצעות אבטחה ID, מוכר, קונה, מעמד, ומסכת אירוע. `Opened`, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed`, ו `Resolved`. רישומי אבטחה אנונימיים מבוקשים באמצעות שאלונות אבטחת אנונימית.
+`EscrowEventFilter` יכול להירשם לאירועי נאמנות מובנית שקופה ולנעילות לפי מזהה נאמנות (ID), מוכר, קונה, מצב ומסכת קבוצת אירועים. משפחת האירועים כוללת `Opened`, ‏`Accepted`, ‏`PaymentSent`, ‏`Released`, ‏`Cancelled`, ‏`Expired`, ‏`Disputed` ו־`Resolved`. רשומות נאמנות אנונימיות נבדקות באמצעות שאילתות הנאמנות האנונימית.
 
 ## הערות הפעילות {#operational-notes}
 
-- שמור חשבונות גדולים, רישומי שיחות, משפטים או חבילות בדיקה מחוץ לרשימת הבטוחים ותתקין את ה-hashes שלהם כראיות.
-- השתמשו בהשוואה יציבה `EscrowId` בתביעות, כך שבניסיון חוזר לא ניתן ליצור מאבטחים כפולים עבור אותה הצעה.
-- תוספת `CanResolveEscrowDispute` רק לחשבונות או תפקידים המפעילים את תהליך העימות.
-- Iroha מתעד את המעברים של מעצר ותיקום חיים; הוא אינו בודק את מסלול התשלומים הפוטנציאליים או החיצוניים בעצמו.
+- שמרו חשבוניות גדולות, יומני שיחות, פסקי דין או חבילות ביקורת מחוץ לרשומת הנאמנות, וצרפו את הגיבובים שלהם כראיות.
+- גזרו `EscrowId` באופן יציב ביישומים, כדי שניסיונות חוזרים לא ייצרו נאמנויות כפולות לאותה הצעה.
+- העניקו `CanResolveEscrowDispute` רק לחשבונות או לתפקידים שמפעילים את תהליך המחלוקת.
+- התייחסו לאימות תשלום מחוץ לשרשרת כמדיניות יישום. Iroha מתעד משמורת ומעברי מחזור חיים; הוא אינו מאמת בעצמו מסילות תשלום fiat או חיצוניות.

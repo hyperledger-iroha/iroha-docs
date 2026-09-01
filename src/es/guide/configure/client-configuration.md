@@ -1,24 +1,24 @@
 ---
 translation_locale: es
 translation_source: /guide/configure/client-configuration.md
-translation_source_hash: 0d897a79e6118de2e7e88a45f1daf1444b515fd35e7b2562f7c1cc18ed0a83b4
+translation_source_hash: 6da8a0abddc9723b16477a935a3953ebd497300f02eadd635e4e38027a11d095
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Configuración del cliente {#client-configuration}
 
-Iroha CLI y SDK los clientes utilizan TOML Configuración. El repositorio envía el estado predeterminado actual a `defaults/client.toml`; las redes locales generadas también escriben una correspondencia `client.toml` en su directorio de salida.
+Los clientes Iroha, CLI y SDK utilizan la configuración TOML. El repositorio incluye el valor predeterminado actual en `defaults/client.toml`; las redes locales generadas también escriben un `client.toml` correspondiente en su directorio de salida.
 
-::: details Modelo de configuración del cliente
+::: details Plantilla de configuración del cliente
 
 <<< @/snippets/client.template.toml
 
 :::
 
-## Los campos centrales {#core-fields}
+## Campos principales {#core-fields}
 
-Por lo menos, una configuración de cliente identifica la cadena, el punto final Torii y la cuenta de firma:
+Como mínimo, una configuración de cliente identifica la cadena, el endpoint Torii API y la cuenta de firma:
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000000"
@@ -30,22 +30,22 @@ public_key = "ed0120..."
 private_key = "802620..."
 ```
 
-- `chain` selecciona la cadena a la que pertenecen las operaciones presentadas.
-- `torii_url` puntos en el punto de comparación Torii HTTP API.
-- `[account].domain` es utilizado por los atajos CLI y la codificación del seleccionador de direcciones; el canónico `AccountId` en sí mismo es sin dominio.
-- `[account].public_key` y `[account].private_key` firmarán las transacciones.
+- `chain` selecciona la cadena a la que pertenecen las transacciones enviadas.
+- `torii_url` apunta al par de red Torii HTTP API.
+- `[account].domain` es utilizado por los atajos de CLI y la codificación del selector de direcciones; el `AccountId` canónico en sí mismo no tiene dominio.
+- `[account].public_key` y `[account].private_key` firman transacciones.
 
-La cuenta debe ya existir en la cadena. Para la red local predeterminada esto es manejado por el manifiesto de génesis agrupado.
+La cuenta ya debe existir en la cadena. Para la red local predeterminada, esto se maneja mediante el manifiesto técnico de génesis de blockchain incluido.
 
-::: info Sensibilidad del caso
+::: info Sensibilidad a mayúsculas y minúsculas
 
-Los nombres Iroha son sensibles a los casos después del análisis canónico. Por ejemplo, `wonderland.universal`, `Wonderland.universal` y `looking_glass.universal` son dominios literales distintos.
+Iroha los nombres distinguen entre mayúsculas y minúsculas después del análisis canónico. Por ejemplo, `wonderland.universal`, `Wonderland.universal` y `looking_glass.universal` son literales de dominio distintos.
 
 :::
 
 ## Autenticación básica {#basic-authentication}
 
-La sección `[basic_auth]` opcional agrega un encabezado HTTP `Authorization` a las solicitudes del cliente. Los pares Iroha no interpretan estas credenciales directamente; uselas cuando Torii está detrás de una proxy inversa como Nginx.
+La sección opcional `[basic_auth]` agrega un encabezado HTTP `Authorization` a las solicitudes del cliente. Los pares de red Iroha no interpretan estas credenciales directamente; úselas cuando Torii está detrás de un proxy inverso como Nginx.
 
 ```toml
 [basic_auth]
@@ -53,7 +53,7 @@ web_login = "mad_hatter"
 password = "ilovetea"
 ```
 
-## Configuración de las transacciones {#transaction-settings}
+## Configuración de transacciones {#transaction-settings}
 
 El comportamiento de la transacción se configura con la sección `[transaction]`:
 
@@ -64,30 +64,30 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-- `time_to_live_ms` es el período de vida de la transacción en milisegundos.
-- `status_timeout_ms` controla cuánto tiempo espera el cliente para el estado de la transacción.
-- `nonce = true` pide al cliente que incluya un nonce para que las transacciones repetidas produzcan diferentes hashes.
+- `time_to_live_ms` es la duración de la transacción en milisegundos.
+- `status_timeout_ms` controla cuánto tiempo espera el cliente por el estado de la transacción.
+- `nonce = true` solicita al cliente que incluya un nonce para que las transacciones repetidas produzcan hashes distintos.
 
-## Conectar la configuración de cola {#connect-queue-settings}
+## Configuración de la cola de conexión {#connect-queue-settings}
 
-Los clientes Iroha actuales también pueden utilizar la sección opcional `[connect]` para el estado de cola local:
+Los clientes actuales Iroha también pueden usar la sección opcional `[connect]` para el estado de la cola local:
 
 ```toml
 [connect]
 queue_root = "./queue"
 ```
 
-Use esto cuando un flujo de trabajo necesita almacenamiento duradero en la cola del lado del cliente.
+Use esto cuando un flujo de trabajo necesite almacenamiento de cola duradero en el lado del cliente.
 
-## Generación de configuraciones {#generating-configurations}
+## Generando configuraciones {#generating-configurations}
 
-Para las redes locales desechables, prefiere Kagami porque escribe configuras, génesis, scripts y un README que coincidan con Iroha 3:
+Para redes locales desechables, prefiera Kagami porque escribe configuraciones coincidentes Iroha 3, génesis de blockchain, scripts y un README:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-Utilice el `./localnet/client.toml` generado con el CLI:
+Usa el `./localnet/client.toml` generado con el CLI:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all

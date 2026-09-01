@@ -1,37 +1,37 @@
 ---
 translation_locale: pt
 translation_source: /documenting/snippets.md
-translation_source_hash: e188082e05db85d5e514b782f93648fb402a09740840c9201e47db353f2192f5
+translation_source_hash: 48d6670f100c7c6368fa03f163c9ff9e0322d36e51c22f89562b23b0e2ee2a2f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Snippets de código {#code-snippets}
+# Trechos de Código {#code-snippets}
 
-Os fragmentos gerados mantêm exemplos ligados ao código, configuração e esquemas da revisão Iroha que os produziram.
+Os trechos gerados mantêm os exemplos vinculados ao código, configuração e esquemas da revisão Iroha que os produziu.
 
-## Artifactos refrescantes Iroha {#refreshing-iroha-artifacts}
+## Atualizando Iroha Artefatos {#refreshing-iroha-artifacts}
 
-Os fragmentos derivados de Iroha são verificados para que as edificações comuns do site não necessitem de acesso à rede ou um repositório irmão.
+Trechos derivados de Iroha são verificados para que compilações comuns do site não precisem de acesso à rede ou de um repositório irmão. Atualize-os explicitamente:
 
 ```bash
 pnpm refresh:iroha --source /path/to/iroha
 ```
 
-O check-in [`etc/refresh-iroha.ts`](https://github.com/hyperledger-iroha/iroha-docs/blob/main/etc/refresh-iroha.ts) fluxo de trabalho verifica o checkout da fonte limpa em relação ao `provenance/iroha.json`, Regeneração `/src/snippets` e o Torii OpenAPI Instantánea e atualizações SHA-256 hashes. Revisar o conteúdo e as mudanças de proveniência juntos. VitePress construções consomem os arquivos registrados sem obter um ramo mutável.
+O fluxo de trabalho `etc/refresh-iroha.ts` verificado verifica o checkout de origem limpo contra `provenance/iroha.json`, regenera `/src/snippets` e a visualização de dados de ponto no tempo Torii OpenAPI, e atualiza os hashes criptográficos SHA-256. Revise o conteúdo e as alterações de proveniência juntos. A instalação normal de dependências e as compilações VitePress consomem os arquivos validados sem buscar um branch mutável.
 
-## Incluindo Snippets {#including-snippets}
+## Incluindo Trechos {#including-snippets}
 
-Use a sintaxe [VitePress código-snippet](https://vitepress.dev/guide/markdown#import-code-snippets) para incluir fonte gerada ou local:
+Use o [VitePress sintaxe de trecho de código](https://vitepress.dev/guide/markdown#import-code-snippets) para incluir a origem gerada ou local:
 
 ```md
 <<< @/snippets/client.template.toml
 ```
 
-Uma região de código com nome pode ser incluída adicionando o seu nome de região:
+Uma região de código nomeada pode ser incluída adicionando seu nome de região:
 
 ```md
 <<< @/example_code/lorem.rs#ipsum
 ```
 
-Mantenha os exemplos escritos à mão pequenos. Prefira artefatos de fonte atualizados para interfaces públicas, modelos de configuração, esquemas gerados e saída de comando.
+Mantenha os exemplos manuscritos pequenos. Prefira artefatos de origem atualizados para interfaces públicas, modelos de configuração, esquemas gerados e saída de comandos.

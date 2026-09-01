@@ -47,15 +47,18 @@ After editing and validating the JSON, sign it into a deployable `.nrt` block:
 
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
-  --private-key <PRIVATE_KEY> \
+  --private-key-file <MODE_0600_PRIVATE_KEY_FILE> \
   --out-file genesis.signed.nrt
 ```
 
 `kagami genesis sign` reads the genesis public key from the manifest and uses
-the supplied private key, seed, and algorithm to produce the deployable signed
-block. The result is the file that peers should reference from their config.
+the private key from an owner-held, single-link regular file to produce the
+deployable signed block. The file must contain one canonical private-key
+multihash followed by a newline; Kagami rejects symbolic links and modes other
+than `0600`. Raw private keys are not accepted on the command line. The result
+is the file that peers should reference from their config.
 
-## Configure `irohad`
+## Configure `iroha3d`
 
 Point the daemon at the signed genesis block:
 
@@ -74,4 +77,4 @@ public_key = "<PUBLIC_KEY>"
 - `cargo xtask kagami-profiles`
 
 For the generator implementation and command details, see the
-[Kagami README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_kagami/README.md).
+[Kagami README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md).

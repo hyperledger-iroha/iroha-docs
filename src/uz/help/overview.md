@@ -3,24 +3,24 @@ translation_locale: uz
 translation_source: /help/overview.md
 translation_source_hash: d0e20c3784c9456f74a68821530920043b0ed5d65890e97d488be304c1249f3b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Muammolarni hal qilish {#troubleshooting}
+# Muammolarni bartaraf etish {#troubleshooting}
 
-Ushbu bo'lim Iroha bilan ishlayotganingizda muammolarga duch kelsangiz yordam berish uchun mo'ljallangan. Agar biror narsa noto'g'ri kechsa, iltimos, avval [ kalitlarini](#check-the-keys) tekshiring. Agar bu yordam bermasa, har bir bosqichning muammoni hal qilish ko'rsatmalariga qarang:
+Ushbu bo‘lim Iroha bilan ishlashda muammolarga duch kelsangiz yordam berish maqsadida mo‘ljallangan. Agar biror narsa noto‘g‘ri bo‘lsa, iltimos, avvalo [tugmalarni tekshiring](#check-the-keys) qilishingiz kerak. Agar bu yordam bermasa, har bir bosqich uchun nosozliklarni tuzatish ko‘rsatmalarini tekshiring:
 
-- [O'rnatish muammolari](./installation-issues.md)
-- [Konfiguratsiya muammolari](./configuration-issues.md)
-- [Ishlab chiqarish masalalari](./deployment-issues.md)
-- [Integratsiya masalalari](./integration-issues.md)
+- [O‘rnatish muammolari](./installation-issues.md)
+- [Sozlama muammolari](./configuration-issues.md)
+- [Joylashtirish muammolari](./deployment-issues.md)
+- [Integratsiya muammolari](./integration-issues.md)
 
-Agar siz boshdan kechirayotgan muammo bu erda tasvirlanmagan bo'lsa, [Telegram ](https://t.me/hyperledgeriroha) orqali biz bilan bog'laning.
+Agar siz duch kelayotgan muammo bu yerda tavsiflanmagan bo'lsa, biz bilan [Telegram](https://t.me/hyperledgeriroha) orqali bog'laning.
 
-## Kalitalarni tekshiring . {#check-the-keys}
+## Kalitlarni tekshiring {#check-the-keys}
 
-Aksariyat muammolar tengsiz kalitlar natijasida yuzaga keladi. Shuning uchun biz ushbu qoidaga rioya qilishni tavsiya etamiz: agar biron narsa noto'g'ri bo'lsa, avval kalitlarni tekshiring.
+Ko'pgina muammolar mos kelmaydigan kalitlar natijasida yuzaga keladi. Shu sababli biz quyidagi qoidalarga amal qilishni tavsiya qilamiz: Agar biror narsa noto'g'ri ketsa, avvalo kalitlarni tekshiring.
 
-Bu erda tez tushuntirish: tengdoshlarning kalitlari ishonchli tengdoshlar qatoridagi kalitlarga mos kelganda paydo bo'ladigan xato xabarlarini farqlash mumkin emas, chunki bu tengdoshlarining ommaviy kalitini oshkor etadi. Shunday qilib, agar sizda muhit o'zgaruvchilari orqali aniqlangan kalitlarga ega bo'lgan Helm grafiklari yoki Kubernetes dasturlari mavjud bo'lsa, yuqori darajadagi xatolarni tekshirishdan oldin konfiguratsiya qilingan [`public_key`](/uz/reference/peer-config/params.md#param-public-key), [`private_key`](/uz/reference/peer-config/params.md#param-private-key) va [`trusted_peers`](/uz/reference/peer-config/params.md#param-trusted-peers) qiymatlarini taqqoslang.
+Mana tezkor tushuntirish: Tarmoq tengdoshlari kalitlari mos kelmaganda yuzaga keladigan xato xabarlarini ajratib ko‘rsatish mumkin emas ishonchli tarmoq hamkorlari massividagi kalitlarni mos keltiring, chunki bu tarmoq hamkorlarining ochiq kalitini oshkor qilardi. Shunday qilib, agar sizda atrof muhit o'zgaruvchilari orqali belgilangan kalitlarga ega Helm chartlari yoki Kubernetes joylashtirishlari bo'lsa, sozlanganini solishtiring [`public_key`](/uz/reference/peer-config/params.md#param-public-key), [`private_key`](/uz/reference/peer-config/params.md#param-private-key), va [`trusted_peers`](/uz/reference/peer-config/params.md#param-trusted-peers) yuqori darajadagi nosozliklarni tekshirishdan oldin qiymatlarni.
 
-Agar shubha bo'lsa, [ yangi kalitlar juftligini ](/uz/guide/security/generating-cryptographic-keys.md) ishlab chiqaradi.
+Agar shubha bo‘lsa, [yangi kalit juftligini yarating](/uz/guide/security/generating-cryptographic-keys.md).

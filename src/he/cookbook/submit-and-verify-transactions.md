@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /cookbook/submit-and-verify-transactions.md
-translation_source_hash: e07cc42a3fd5579db312bfbfbb8010f473062edebe0141eb9bb8c2a0e7faa4da
+translation_source_hash: 98e5c7e9db1ba8468cfd5409409b0e8d02251311dc85492f7b71675e983dc4fd
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,19 +10,19 @@ translation_engine: nllb-200-ct2
 
 ## התוצאה {#outcome}
 
-קבעו מראש עסקאות Taira, קבלו ציטוט דמי מדויק, חתמו ושלחו אותו, חכו לסיום המבוצע, ותבדקו את העסקה המחוייבת באמצעות האש.
+קבעו מראש עסקאות Taira, קבלו תמחור דמי מדויק, חתמו ושלחו אותו, חכו לסיום המבוצע, ותבדקו את העסקה המחוייבת באמצעות האש.
 
 ## תנאים מוקדמים {#prerequisites}
 
 - מימון `taira.client.toml`, `taira.tx-metadata.json`, ו `TAIRA_ACCOUNT_ID` מיוצר על ידי: [להתחבר Taira](./connect-to-taira.md).
 - הזרם `iroha` CLI ו`jq`.
-- חותם חד פעמי Taira. אל תחזרו להשתמש במפתח שלו או בכתיבה של פקודות אלה ב- Minamoto.
+- חותם Taira חד־פעמי. אל תשתמשו מחדש במפתח שלו או בפקודות כתיבה אלה ב־Minamoto.
 
 ## צעדים {#steps}
 
 ### 1. לקדם את נקודת הסיום, הסמכות והמשקל על עמלות {#_1-preflight-the-endpoint-authority-and-fee-balance}
 
-קראו תחילה את תמונת הצורה, ולאחר מכן הוכיחו שמרבית הוצאות הרשויות נראים. קראו את ההגדרה של נכס Base58 ID מנתונים מטאטא שנוצרו על ידי מרשם החיבור.
+קראו תחילה את תמונת הצורה, ולאחר מכן הוכיחו שמרבית הוצאות הרשויות נראים. קראו את ההגדרה של נכס Base58 ID ממטא-נתונים שנוצרו על ידי מרשם החיבור.
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -40,9 +40,9 @@ iroha --config ./taira.client.toml ledger asset get \
 
 עצור אם חשבון או סכום תשלום הוא חסר. הוראה תקפה לא יכול לעבור הכניסה לתשלום כאשר סמכותו אינה יכולה לשלם.
 
-### 2. ציטוט, לחתום ולהגיש פעם אחת. {#_2-quote-sign-and-submit-once}
+### 2. תמחור, לחתום ולהגיש פעם אחת. {#_2-quote-sign-and-submit-once}
 
-ה CLI שולח את המטען הפועל המדויק ללא חתימה עבור ציטוט תשלום, מחבר את כוונת התשלום המקובלת למבצע, חותם ומגיש. מצב JSON חוזר על האש של העסקה, העסקה חתומה וציטוט מקובל ביחד.
+ה CLI שולח את מטען הנתונים המדויק ללא חתימה עבור תמחור תשלום, מחבר את כוונת התשלום המקובלת למבצע, חותם ומגיש. מצב JSON חוזר על האש של העסקה, העסקה חתומה ותמחור מקובל ביחד.
 
 ```bash
 iroha --config ./taira.client.toml \
@@ -58,7 +58,7 @@ TAIRA_TX_HASH="$(jq -er '.hash' taira-submission.json)"
 
 אל תשתמש `--no-wait` במתכון הזה. הפקודה מחכה לאישור לפני שהיא כותבת קבלה מוצלחת.
 
-### 3. לחכות למצב של הצינור הסופי. {#_3-wait-for-terminal-pipeline-state}
+### 3. המתינו למצב סופי של שרשרת עיבוד העיבוד {#_3-wait-for-terminal-pipeline-state}
 
 השתמשו בעוזר הסטטוס הדפוסים במקום להסיק את ההצלחה על ידי קבלת HTTP או הכניסה בתור. עם `--wait`, תחום הנתיב הבטוח נבחר באופן אוטומטי והמטרה המקובלת היא סיום יישום.
 
@@ -78,7 +78,7 @@ jq . taira-final-status.json
 
 ### תקרא את העסקה המאוחדת. {#_4-read-the-stored-transaction}
 
-מצב הצינור עונה אם העיבוד נגמר. שאלת העסקה מאשרת כי העסקה הוסמעת מאוחסן תחת אותו האש .
+מצב שרשרת עיבוד העיבוד מציין אם העיבוד הסתיים. שאילתת עסקה מוודאת שהעסקה שהתקבלה נשמרה תחת אותו hash.
 
 ```bash
 iroha --config ./taira.client.toml \
@@ -89,7 +89,7 @@ iroha --config ./taira.client.toml \
 jq . taira-transaction.json
 ```
 
-המחקרי הוא שטח תצפית שנייה, רק קריאה. זה יכול לעכב זמן קצר מאחור של סיום הצינור.
+ה־explorer הוא ממשק תצפית שני לקריאה בלבד. הוא עשוי לפגר לזמן קצר אחרי הסופיות של שרשרת עיבוד העיבוד.
 
 ```bash
 curl -fsS -H 'Accept: application/json' \
@@ -97,7 +97,7 @@ curl -fsS -H 'Accept: application/json' \
   | jq '{hash, block, status, authority, executable}'
 ```
 
-עבור הוראות לשינוי מצב, לסיים עם חיפוש של האובייקט ששתנה. [מטאדאטה](./metadata.md), [נכסים פונגביים](./fungible-assets.md), ו [NFTs](./nfts.md) המתכונים כוללים את הקריאה לאחר המדינה.
+עבור הוראות שמשנות מצב, סיימו בשאילתה של האובייקט שהשתנה. המתכונים של [Metadata](./metadata.md), [נכסים בני־חליפין](./fungible-assets.md) ו־[NFTs](./nfts.md) כוללים קריאות post-state אלה.
 
 ## לאמת {#verify}
 
@@ -117,16 +117,16 @@ curl -fsS -H 'Accept: application/json' \
 ## פתרון בעיות {#troubleshooting}
 
 - HTTP `202` או סטטוס בתור מוכיח רק הכניסה. תמשיכו לבקר את הסטטוס הטייפד עד שהתחיל, נדחה, נגמרה, או התקופה מוגבלת.
-- אם הזמן של הגשת לאחר החזרת האש, שאל את האש לפני הקמת עסקאות נוספות. הגשת עיוורת יוצרת עומס nytt ציטוטות וחתום.
+- אם מועד ההגשה פג לאחר שהוחזר hash, בצעו שאילתה על ה-hash לפני בניית עסקה נוספת. הגשה חוזרת עיוורת יוצרת מטען חדש עם הצעת עמלה וחתימה.
 - הצעת תשלום ניתן לסרב לפני חתימה. בדקו `--fee-payer authority`, `gas_asset_id`, הירידה של הרשות ואת שרשרת הרשת ID.
-- `Rejected` בדרך כלל מצביע על אישור הוראות, רשיונות, דמי או מצב חלש. זה הוא הוכחה מחויבת של ביצוע נכשל ולא צריך להיות מסווג מחדש כניסיון תחבורה מחדש.
+- `Rejected` מציין בדרך כלל אימות הוראות, הרשאות, עמלות או מצב מיושן. זו ראיה שנרשמה בבלוק לביצוע שנכשל, ואין לסווג אותה מחדש כניסיון transport retry.
 - חוקר `404` מיד לאחר Applied יכול להדפיס מאחור. לנסות את הקריאה; לא להגיש מחדש את העסקת.
-- אם הוראה בעלת זכויות יוצרות עובדת על רשת מקומית שנוצרה אך Taira דוחה אותה, קבלו את הרשות המדויקת Taira או מיתוי חלל שמות מנוהל. התוצאה המקומית אינה מעניקה סמכות לרשת ציבורית .
+- אם הוראה מורשית פועלת ברשת מקומית שנוצרה אך Taira דוחה אותה, השיגו את הרשאת Taira המדויקת או הקצאה של מרחב שמות שנקבעה בממשל. התוצאה המקומית אינה מעניקה סמכות ברשת הציבורית.
 
 ## מקור ומסמכים קשורים {#source-and-related-docs}
 
-- [הגשת עסקאות וביצוע ציטוט תשלום בהתחייבויות קבועות ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/main_shared.rs)
-- [בדיקות אישור עסקאות בהתחייבויות מחוברות ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha/tests/tx_confirmation.rs)
+- [הגשת עסקאות וביצוע תמחור תשלום commit קבועות ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
+- [מימוש ובדיקות של אישור עסקאות ב־commit המקובע](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/src/client.rs)
 - [עסקים](/he/blockchain/transactions.md)
 - [מדריך CLI](/he/get-started/operate-iroha-via-cli.md)
 - [נקודות קצה Torii ](/he/reference/torii-endpoints.md)

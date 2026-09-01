@@ -1,20 +1,20 @@
 ---
 translation_locale: my
 translation_source: /get-started/private-dataspace-fee-sponsor.md
-translation_source_hash: 270e6705186d74efad6a8d2e6eeb432ab1b12649b66d4b11309e7da1e07b384f
+translation_source_hash: 37a2c29dccf3d2abacbbba16869d65b70b93545875a122470601194231c2263b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # ပုဂ္ဂလိက ဒေတာနေရာအတွက် ထောက်ပံ့မှုခများ {#sponsor-fees-for-a-private-dataspace}
 
-အခွန်ထောက်ပံ့မှုသည်အသုံးပြုသူများအနေဖြင့် XOR ကိုမကိုင်တွယ်ဘဲ ပုဂ္ဂလိကဒေတာနေရာဆိုင်ရာ ငွေကြေးပေးချေမှုများကိုတင်သွင်းနိုင်သည်။ အသုံးပြုသူသည် ယင်းငွေကြေးကို လက်မှတ်ရေးထိုးနေဆဲဖြစ်သည်။ ငွေကြေးဆောင်ရွက်မှု metadata သည် sponsor အကောင့်တွင်မှတ်သားထားပြီး runtime သည် network fee အတွက် sponsor ၏ balance XOR ကို debit ဖြစ်စေသည်။
+အခွန်ထောက်ခံမှုသည် အသုံးပြုသူများအား XOR ကိုမကိုင်တွယ်ဘဲ သီးသန့်ဒေတာနေရာမှ ငွေပေးချေမှုများတင်သွင်းနိုင်စေသည်။ သုံးစွဲသူသည် ယင်းငွေပေးချေမှုကို လက်မှတ်ရေးထိုးနေဆဲဖြစ်သည်။ ငွေပေးချေးမှု metadata သည် sponsor အကောင့်တစ်ခုသို့ ညွှန်ပြထားပြီး ဆော့ဝဲအကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင်က network fee အတွက် sponsor ၏ balance XOR ကို debit ပြုလုပ်သည်။
 
 ပေါင်းစပ်မှုမှာ ရွေ့လျားနေတဲ့ အစိတ်အပိုင်း သုံးခုရှိပါတယ်။
 
 1. node က fee sponsor လုပ်ခွင့်ပေးတယ်
 2. ပံ့ပိုးသူစာရင်းရှိပြီး XOR ရှိသည်။
-3. သုံးစွဲသူတိုင်းအတွက် `CanUseFeeSponsor` ရှိသည်။
+3. သုံးစွဲသူတိုင်းအတွက် `CanUseFeeSponsor` ရှိသည်
 
 အဲဒီနောက်မှာ ထောက်ပံ့တဲ့ သုံးစွဲသူတိုင်းရဲ့ ငွေပေးချေမှုအတွက် ဒီမီတာဒေတာတွေပဲ လိုပါတယ်။
 
@@ -29,7 +29,7 @@ translation_engine: nllb-200-ct2
 - အခမဲ့ အသုံးပြုသူ ရေးသားသည်မှာ: ပံ့ပိုးပေးသူက XOR ပေးပြီး သုံးစွဲသူက ဘာမှမပေးပါ။
 - Local Token Fees: သုံးစွဲသူက Sponsor ကို App Token ဖြင့် ပေးဆပ်ပြီး Sponsor က Network ကို XOR ဖြင့်ပေးဆပ်ပါတယ်။
 
-Taira သို့မဟုတ် ပုဂ္ဂလိက စမ်းသပ်ရေးကွန်ရက်ကို ပထမဦးဆုံး အသုံးပြုပါ။ ပုဂ္ဂလိক ဒေတာစေးသစ်သည် လုပ်ငန်းရှင်နှင့် အုပ်ချုပ်မှု ပြောင်းလဲမှုတစ်ခုဖြစ်ပြီး ဖောက်သည် ညွှန်ကြားချက်ဖြင့် ဖန်တီးခြင်းမဟုတ်ပါ။
+Taira သို့မဟုတ် ပုဂ္ဂလိက စမ်းသပ်ရေးကွန်ရက်ကို ပထမဦးဆုံး အသုံးပြုပါ။ ပုဂ္ဂလိက ဒေတာစေးသစ်သည် လုပ်ငန်းရှင်နှင့် အုပ်ချုပ်မှု ပြောင်းလဲမှုတစ်ခုဖြစ်ပြီး ဖောက်သည် ညွှန်ကြားချက်ဖြင့် ဖန်တီးခြင်းမဟုတ်ပါ။
 
 ## ဥပမာ တန်ဖိုးများ {#example-values}
 
@@ -50,11 +50,11 @@ export EMAIL_POLICY="email#team"
 export POLICY_OWNER="<IDENTIFIER_POLICY_OWNER_ACCOUNT_I105>"
 ```
 
-သင့်ရဲ့ ဖြန့်ချိမှုမှာ တူညီတဲ့ အကောင့်တွေအတွက် တက်ကြွတဲ့ အကောင့် အမည်မပါက Canonical I105 account IDs ကိုသုံးပါ။
+ပရိုတိုကော တစ်ခုတည်းသော စံ I105 အကောင့် ID များကို အသုံးပြုပါ။ သင့်ရဲ့ ဖြန့်ချိမှုမှာ အလားတူ အကောင့်များအတွက် တက်ကြွတဲ့ အကောင့် အမည်မပါဘဲနဲ့။
 
 ## (၁) ဒေတာနေရာကို ပြင်ဆင်ပါ။ {#_1-prepare-the-dataspace}
 
-[ တွင်ဖော်ပြထားသော ပုဂ္ဂလိကဒေတာနေရာစာရင်းနှင့် လမ်းညွှန်ရေးအလုပ်များမှစ၍ SORA Nexus ဒေတာနေရာများသို့ ချိတ်ဆက်ပါ ](/my/get-started/sora-nexus-dataspaces.md#_8-provision-a-new-dataspace) အော်ပရေတာကို မျက်နှာမူသည့်အပိုင်းအစသည် အောက်ပါအတိုင်းဖြစ်ပါသည်။
+[SORA Nexus ဒေတာနေရာများနှင့် ချိတ်ဆက်ခြင်း](/my/get-started/sora-nexus-dataspaces.md#_8-provision-a-new-dataspace) တွင်ဖော်ပြထားသော ပုဂ္ဂလိကဒေတာနေရာစာရင်းနှင့် လမ်းညွှန်ရေးအလုပ်များမှစပါ။ အော်ပရေတာကို မျက်နှာမူသည့်အပိုင်းတစ်ပိုင်းသည် ဒီလိုပုံပေါက်သည်။
 
 ```toml
 [[nexus.lane_catalog]]
@@ -81,7 +81,7 @@ description = "Route team domains to the private dataspace"
 
 User Transactions ကို မပြောင်းခင်:
 
-- Private lane ကို node `/status` တုံ့ပြန်မှုမှာတွေ့ရမှာပါ။
+- private execution lane ကို node `/status` တုံ့ပြန်မှုမှာတွေ့ရမှာပါ။
 - သုံးစွဲသူအကောင့်တွေကို သင့်ရဲ့ ပုဂ္ဂလိက Onboarding စီးဆင်းမှုကနေ ဝင်ခွင့်ပြုပါတယ်။
 - Sponsor account ရှိတယ်
 - XOR အခွန်အရင်းအမြစ်နှင့် အခွန်အကောင့်သည် ကွန်ရက်တွင် သက်ဝင်သည်။
@@ -95,7 +95,7 @@ User Transactions ကို မပြောင်းခင်:
 usage#billing.team
 ```
 
-ပထမ domain ကို set up လုပ်ပြီး SNS အရင်းအမြစ်အမည်နေရာကိုပိုင်ဆိုင်တဲ့ ငှားရမ်းမှု။ လျှို့ဝှက်ချက်မဲ့ `AliasSetupPlanRequestV1` ရည်ရွယ်ချက် `$BILLING_DOMAIN`, အပါအဝင် ကိန်းဂဏန်း `team` ဒေတာနေရာ ID, Canonical ပိုင်ရှင်၊ ငှားရမ်းမှုသက်တမ်းနဲ့ လက်ရှိ quote guard:
+ပထမ domain ကို set up လုပ်ပြီး SNS အရင်းအမြစ်အမည်နေရာကိုပိုင်ဆိုင်တဲ့ ငှားရမ်းခြင်း။ လျှို့ဝှက်ချက်မဲ့ `AliasSetupPlanRequestV1` ရည်ရွယ်ချက် `$BILLING_DOMAIN`, အပါအဝင် ကိန်းဂဏန်း `team` ဒေတာနေရာ ID၊ Single Protocol Standard ပိုင်ရှင်၊ ငှားရမ်းမှုသက်တမ်းနဲ့ လက်ရှိ quote guard:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -107,7 +107,7 @@ iroha --config ./operator.client.toml \
   app alias setup apply --plan-file ./billing-domain.plan.json
 ```
 
-`--id` သည်ကွန်ရက်အဆင့်အရင်းအမြစ်အဓိပ္ပါယ်ဖွင့်ဆိုချက် ID ဖြစ်သည်။ ဆောက်လုပ်သူများနှင့် နောက်ဆုံးအသုံးပြုသူများသည်ဒေတာနေရာကုဒ်တွင် အသုံးပြုသင့်သော alias ဖြစ်ပါသည်။
+ထို့နောက် Asset Definition ကိုမှတ်ပုံတင်ပါ။ Single Protocol-Standard `--id` သည်ကွန်ရက်အဆင့် Asset Definition ID ဖြစ်သည်။ ဆောက်လုပ်သူများနှင့် နောက်ဆုံးအသုံးပြုသူများသည်ဒေတာနေရာကုဒ်တွင်သုံးသင့်သော alias ဖြစ်သည်:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -118,7 +118,7 @@ iroha --config ./operator.client.toml \
   --scale 0
 ```
 
-Onboarding လုပ်နေစဉ်မှာ ဒေသတွင်း token ကို အသုံးပြုသူဆီ လွှဲပြောင်းပေးပါ
+Onboarding လုပ်နေစဉ် သုံးစွဲသူကို Local Token ကို ထုတ်ပေးရန် သို့မဟုတ် လွှဲပြောင်းပေးရန်:
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -137,13 +137,13 @@ iroha --config ./operator.client.toml \
   --account "$USER"
 ```
 
-ဒေတာနေရာတွင် application assets များအတွက်လည်း အလားတူပုံစံကို အသုံးပြုပါ။ Token တစ်ခုလျှင် asset definition ကို မှတ်ပုံတင်ပါ၊ တစ်ခုစီအား datapace alias ပေးပြီး hard-coding canonical asset definition IDs အစား SDK code မှ alias ကို reference လုပ်ပါ။
+ဒေတာနေရာတွင် application assets များအတွက် အလားတူပုံစံကိုအသုံးပြုပါ။ Token တစ်ခုစီအတွက် asset definition ကိုမှတ်ပုံတင်ပြီး datapace alias တစ်ခုစီပေးပြီး hard-coding single protocol-standard asset definition IDs အစား SDK code မှ alias ကို reference လုပ်လိုက်ပါ။
 
 ## သုံးစွဲသူ အမည်တွေကို မှတ်ပုံတင်ပါ။ {#_3-register-user-aliases}
 
-စာရင်းတွေက တရားဝင်ပဲ I105 အကောင့် IDs. User-facing name တွေဟာ account aliases ဖြစ်ပြီး aliases တွေက non-sensitive handle တွေဖြစ်သင့်ပါတယ် `alice@team` ဒါမှမဟုတ် `alice@members.team`. ဖုန်းနံပါတ် (သို့) အီးမေးလ်လိပ်စာတွေကို အမည်မဖော်လိုပါနဲ့။ ဒါတွေဟာ နောက်ပိုင်းမှာရှိတဲ့ ပုဂ္ဂလိက မှတ်သားရေး အရည်အချင်းထဲ ပါဝင်ပါတယ်။
+အကောင့်များသည် တစ်ခုတည်းသော ပရိုတိုကုတ်စံညွှန်း I105 အကောင့် ID များဖြစ်နေဆဲဖြစ်သည်။ အသုံးပြုသူနှင့်ဆိုင်သောနာမည်များသည် အကောင့်အမည်များဖြစ်ပြီး အမည်မဖော်လိုသည့် နာမည်များသည် အာရုံခံမှုမရှိသော လက်ကိုင်များ ဖြစ်သင့်သည်။ `alice@team` သို့မဟုတ် `alice@members.team` ကဲ့သို့သော အမည်မဲ့အမည်များအဖြစ် ဖုန်းနံပါတ်များ (သို့) အီးမေးလ်လိပ်စာများကို မသုံးပါနဲ့။ ၎င်းတို့သည် နောက်ပိုင်းတွင်ရှိသည့် ပုဂ္ဂလိက မှတ်သားရေး အရည်အသွေး flux တွင် ပါဝင်သည်။
 
-alias setup မှာ domain setup နဲ့အတူ declarative planner ကိုပဲ သုံးပါတယ်။ SDK (သို့) Onboarding ဝန်ဆောင်မှုကို လျှို့ဝှက်မှုမရှိတဲ့ `AliasSetupPlanRequestV1` ရည်ရွယ်ချက်၊ စာရင်းဝင်ရန် ရည်မှန်းချက်များ `$USER`, အဓိကအခန်းကဏ္ဍကို ရွေးချယ်ပြီး ကိန်းဂဏန်းဒေတာနေရာကို Pin လုပ်ပေးတယ်။ ID, လက်ရှိ ငှားရမ်းမှု quote guard ကို သယ်ဆောင်ပြီး နောက်မှာ စီစဉ်ပြီး အက်တမ် ငွေပေးချေမှုတစ်ခုအဖြစ် အသုံးချပါ။
+alias setup သည် domain setup နှင့်အတူတူသော declarative planner ကိုအသုံးပြုသည်။ SDK သို့မဟုတ် onboarding ဝန်ဆောင်မှုသည် secret-free `AliasSetupPlanRequestV1` ရည်ရွယ်ချက်တစ်ခု ဖန်တီးပါမည်သူ၏ account alias ဝင်ရောက်ရန်ရည်မှန်းချက်များ `$USER` က အဓိကအခန်းကဏ္ဍကို ရွေးချယ်ပြီး ကိန်းဂဏန်းဒေတာနေရာ ID ကို ပိုက်လိုက်ကာ လက်ရှိငှားရမ်းစရိတ်-စျေး တန်ဖိုးသတ်မှတ်မှုစောင့်ရှောက်မှုကို သယ်ဆောင်တယ်။ ပြီးရင် စီစဉ်ပြီး အက်တမ်ဆိုင်ရာ ငွေပေးချေမှုတစ်ခုအဖြစ် အသုံးချပါ။
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -169,19 +169,19 @@ iroha --config ./operator.client.toml \
   --dataspace "$DATASPACE"
 ```
 
-Account အသစ်တစ်ခု ဖန်တီးဖို့ build လုပ်တဲ့ Onboarding ဝန်ဆောင်မှုကို ပိုနှစ်သက်ပါ။ `NewAccount` စခန်းတစ်ခုနဲ့ `uaid` လိုအပ်ပါက အစောပိုင်း `label`. ရိုးရှင်းတဲ့ `ledger account register --id` command က Canonical account ကိုပဲ မှတ်ပုံတင်ပေးတယ် ID.
+အကောင့်သစ်ဖန်တီးရန်အတွက် `NewAccount` ကို တည်ငြိမ်သော `uaid` နှင့် လိုအပ်ပါက အစောပိုင်း `label` ဖြင့်တည်ဆောက်သည့် Onboarding ဝန်ဆောင်မှုကို ဦးစားပေးပါ။ ရိုးရှင်းသော `ledger account register --id` command သည် single protocol-standard account ID ကိုသာ မှတ်ပုံတင်သည်။
 
-## (၄) FHE တွင် ဖုန်းနှင့် အီးမေးလ်ကို သီးသန့် မှတ်ပုံတင်ပါ။ {#_4-register-phone-and-email-privately-with-fhe}
+## FHE တွင် ဖုန်းနှင့် အီးမေးလ်ကို သီးသန့် မှတ်ပုံတင်ပါ။ {#_4-register-phone-and-email-privately-with-fhe}
 
 ဖုန်းနံပါတ်များနှင့် အီးမေးလ်လိပ်စာများကို အများပြည်သူအမည်မဖော်လိုဘဲ ပုဂ္ဂလိကအမည်ဖော်လိုသူများအဖြစ် အသုံးပြုပါ။ FHE အားထောက်ပံ့သော စီးဆင်းမှုသည် အကောင့်အမည်၊ ငွေလွှဲပြောင်းမှု metadata နှင့်ကမ္ဘာအခြေအနေမှ raw identifiers များကို ပယ်ရှားထားသည်။
 
-1. ဖုန်းနဲ့ အီးမေးလ်အတွက် [RAM-LFE/FHE အစီအစဉ် မူဝါဒ](/my/blockchain/ram-lfe.md) ကို operator က မှတ်ပုံတင်ပေးတယ်။
+1. ဖုန်းနဲ့ အီးမေးလ်အတွက် operator က [RAM-LFE/FHE အစီအစဉ် မူဝါဒ](/my/blockchain/ram-lfe.md) ကို မှတ်ပုံတင်ပေးတယ်။
 2. လုပ်ငန်းရှင်သည် `phone#team` နှင့် `email#team` ကဲ့သို့သော Active Identifier Policies များကို မှတ်ပုံတင်သည်။
 3. ပိုက်ဆံအိတ်က ဖုန်း (သို့) အီးမေးလ်ကို ဒေသတွင်းမှာ ပုံမှန်လုပ်ပေးတယ်။
 4. ပိုက်ဆံအိတ်က Encrypted Value ကို Resolver ကိုပို့ပေးတယ်။
-5. Resolver က `IdentifierResolutionReceipt` ကို ပြန်ပို့တယ်။
-6. သုံးစွဲသူက လက်မှတ်နှင့်အတူ `ClaimIdentifier` ကို တင်ပြသည်။
-7. ကွင်းဆက်မှာ ပွင့်လင်းမြင်သာမှုမရှိတဲ့ ID နဲ့ လက်မှတ် hash ကို သိုလှောင်ထားတယ်၊ ဆန်ဖုန်း (သို့) အီးမေးလ် တန်ဖိုးမဟုတ်ဘူး။
+5. Resolver က `IdentifierResolutionReceipt` ကိုပြန်ပို့တယ်။
+6. အသုံးပြုသူသည် `ClaimIdentifier` ကို ပရိုတိုကောလစ် ရလဒ် မှတ်တမ်းနှင့်အတူ တင်ပြသည်။
+7. ကွင်းဆက်မှာ ပွင့်လင်းမြင်သာမှုမရှိတဲ့ ID နဲ့ Protocol ရလဒ် မှတ်တမ်း cryptographic hash ကို သိမ်းထားပြီး raw phone (သို့) email value မဟုတ်ပါ။
 
 Operator Side Policy Setup က SDK (သို့) ဝန်ဆောင်မှု တာဝန်ပါ။ အထောက်အထားအမျိုးအစားတိုင်းအတွက် ဒီညွှန်ကြားချက်စုံကို တည်ဆောက်ပြီး တင်ပြပါ:
 
@@ -253,10 +253,10 @@ printf '["<BASE64_CLAIM_IDENTIFIER_INSTRUCTION_BOX>"]\n' |
 - Account aliases တွေက လူဖတ်လို့ရတဲ့ လက်ကိုင်တွေပဲ
 - raw phone နဲ့ email values တွေကို aliases, metadata, logs, or transaction payloads တွေမှာ ဘယ်တော့မှ မပေါ်ပါဘူး။
 - ငွေစာရင်းမှာ `uaid` ရှိပြီး private identifier တွေကို မတောင်းဆိုခင်
-- လက်မှတ်များ `policy_id`, `opaque_id`, `uaid`၊ `account_id` နှင့် သက်တမ်းကုန်ဆုံးခြင်း
-- resolver key တွေနဲ့ hidden-program commits တွေကို governance က ထိန်းချုပ်တယ်။
+- ပရိုတိုကောလ် ရလဒ် မှတ်တမ်းများ `policy_id`, `opaque_id`, `uaid`, `account_id` နှင့် သက်တမ်းကုန်ဆုံး
+- resolver key တွေနဲ့ hidden-program cryptographic commitment values တွေကို governance က ထိန်းချုပ်ပေးတယ်။
 
-## (၅) Node မှာ Sponsorship ကို Activate လုပ်ပါ။ {#_5-enable-sponsorship-on-the-node}
+## (၅) Node တွင် Sponsorship ကို Activate လုပ်ပါ။ {#_5-enable-sponsorship-on-the-node}
 
 အခကြေးထောက်ပံ့မှုသည် node/runtime မူဝါဒတစ်ခုဖြစ်သည်။ Nexus အခကြေး configuration တွင်ဖွင့်ပါ:
 
@@ -272,9 +272,9 @@ sponsorship_enabled = true
 sponsor_max_fee = "0"
 ```
 
-`fee_asset_id` network fee asset ဖြစ်ပါတယ် SORA Nexus ဒါကတော့ XOR. Active ကို အသုံးပြုပါ။ XOR အမည်မဖော်လိုသူ (သို့) တရားဝင် XOR အရင်းအမြစ် သတ်မှတ်ချက် ID သင့်ကွန်ရက်ကနေ ပွင့်လင်းမြင်သာလာခဲ့တယ်။
+`fee_asset_id` သည်ကွန်ရက်ကြေးအရင်းအမြစ်ဖြစ်သည်။ SORA Nexus အတွက်ဆိုသည်မှာ XOR ဖြစ်သည်။ သင့်ကွန်ရက်မှ ဖော်ပြထားသော active XOR alias သို့မဟုတ် single protocol-standard XOR asset definition ID ကို အသုံးပြုပါ။
 
-`sponsor_max_fee = "0"` ဆိုတာက ငွေပေးချေမှုတစ်ခုအတွက် ပံ့ပိုးသူထိပ်တန်းမရှိဘူးဆိုတာပါ။ ထုတ်ကုန်အတွက်တော့ သင့်ဒေတာစင်တာရယူမှုတွေရဲ့ ပုံမှန်အရွယ်အစားနဲ့ ဓာတ်ငွေ့ပရိုဖိုင်ကို သိပြီးနောက် သုညမဟုတ်တဲ့ထိပ်တန်း သတ်မှတ်ပါ။
+`sponsor_max_fee = "0"` ဆိုတာက ကုန်သွယ်မှုတစ်ခုအတွက် ပံ့ပိုးသူထိပ်သတ်မှတ်ချက်မရှိဘူးဆိုတာပါ။ ထုတ်ကုန်အတွက်တော့ သင့်ရဲ့ ဒေတာနေရာရောင်းဝယ်မှုရဲ့ ပုံမှန်အရွယ်အစားနဲ့ ကုန်သွယ်မှု အကောင်အထည်ဖော်မှု ကုန်ကျစရိတ်ပရိုဖိုင်ကို သိပြီးနောက် သုညမဟုတ်တဲ့ထိပ်သတ်သတ်မှတ်ချက်ကို သတ်မှတ်ပါ။
 
 ပုံမှန် Operator ဖြစ်စဉ်ကို ပြန်လည်စတင် (သို့) Roll လုပ်ပါ။
 
@@ -283,7 +283,7 @@ sponsor_max_fee = "0"
 လိုအပ်ရင် sponsor key pair ကို ဖန်တီးပါ။
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./fee-sponsor-key
 ```
 
 အများသုံး သော့ကို သင့်ကွန်ရက်အတွက် အကောင့်ပုံစံသို့ ပြောင်းပါ။
@@ -312,7 +312,7 @@ iroha --config ./treasury.client.toml \
   --quantity 1000
 ```
 
-Taira လေ့ကျင့်ခန်းများအတွက်၊ faucet အကူအညီကို [ မှ သိမ်းထားပါ။ Testnet XOR ကို Taira](/my/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) တွင် `taira_faucet_claim.py` အဖြစ်ရယူပြီး ငွေကြေးလွှဲပြောင်းမှုအစား အများပြည်သူ faucet ဖြင့် ပံ့ပိုးပေးသူအား ရန်ပုံငွေပေးပါ။
+Taira လေ့ကျင့်ခန်းများအတွက် testnet ငွေကြေးထောက်ပံ့ရေး ဝန်ဆောင်မှု အကူအညီကို [Testnet XOR ကို Taira သို့ခေါ်ယူပါ။](/my/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) မှ `taira_faucet_claim.py` သို့ သိမ်းထားပြီး နောက်မှ ပံ့ပိုးသူအား ဘဏ္ဍာငွေလွှဲပြောင်းမှုအစား အများပြည်သူ testnet ငွေချေးမှုဝန်ဆောင်မှုဖြင့် ငွေကြေးပေးချေပါ။
 
 ```bash
 export SPONSOR='<SPONSOR_TAIRA_I105_ACCOUNT_ID>'
@@ -335,11 +335,11 @@ iroha --config ./operator.client.toml \
   --account "$SPONSOR"
 ```
 
-## (၇) သုံးစွဲသူအား Sponsor သို့ ဝင်ရောက်ခွင့်ပေးပါ။ {#_7-grant-a-user-access-to-the-sponsor}
+## (၇) သုံးစွဲသူကို Sponsor သို့ ဝင်ရောက်ခွင့်ပေးပါ။ {#_7-grant-a-user-access-to-the-sponsor}
 
 Sponsor က သုံးစွဲသူတိုင်းကို အခွန်ကောက်ခံဖို့ ခွင့်ပြုချက်ပေးဖို့လိုတယ်။ ထောက်ပံ့မှုက သုံးစွဲသူတွေကို အလိုလို ပံ့ပိုးတဲ့ အကောင့်တွေကို နာမည်မပေးတာ တားဆီးပါတယ်။
 
-ဒါကို ပံ့ပိုးသူ အကောင့်အဖြစ် (သို့) သင့်ရဲ့ Runtime မူဝါဒက ခွင့်ပြုတဲ့ လုပ်ငန်းခွင် အကောင့်အဖြစ် ပြသပါ။
+ဒါကို Sponsor Account အဖြစ် (သို့) သင့်ရဲ့ Software Execution Environment မူဝါဒက ခွင့်ပြုထားတဲ့ Operational Account အဖြစ် Run လုပ်ပါ။
 
 ```bash
 printf '{
@@ -357,9 +357,9 @@ Onboarding ဝန်ဆောင်မှုအတွက် ဒါကို ပ�
 - အသုံးပြုသူစာရင်း
 - ပံ့ပိုးသူစာရင်း
 - ဒေတာနေရာ (သို့) အသုံးချမှု
-- အတည်ပြုလက်မှတ် (သို့) အုပ်ချုပ်ရေး ဆုံးဖြတ်ချက်
+- ခွင့်ပြုချက်လက်မှတ် (သို့) အုပ်ချုပ်ရေး ဆုံးဖြတ်ချက်
 
-သုံးစွဲသူရဲ့ ထောက်ပံ့ငွေတွေကို စစ်ဆေးဖို့:
+သုံးစွဲသူရဲ့ ထောက်ပံ့ငွေတွေကို စစ်ဆေးဖို့-
 
 ```bash
 iroha --config ./operator.client.toml \
@@ -388,12 +388,12 @@ SDKs အတွက် လက်မှတ်ထိုးထားတဲ့ ငွ�
 
 ## ပုံစံ (၁) သုံးစွဲသူများက အခွန်မပေးကြပါ။ {#pattern-1-users-pay-no-fees}
 
-ဒီနည်းကို အသုံးပြုပါ Application (သို့) Operator က Network Fees အားလုံးကို စုပ်ယူတဲ့အခါမှာပါ။
+ဒီစနစ်ကို အသုံးပြုပါက အက်ပ် (သို့) အော်ပရေတာဟာ ကွန်ရက် အခကြေးတွေအားလုံးကို စုပ်ယူပေးပါတယ်။
 
-ဖွံ့ဖြိုးရေး စာရင်း:
+ဆောက်လုပ်သူ စစ်ဆေးစာရင်း:
 
 1. သုံးစွဲသူရဲ့ ပုံမှန် ငွေပေးချေမှု ကုန်ကျစရိတ်ကို မပြောင်းလဲစေပါ။
-2. `fee_sponsor` ဖြင့် ငွေပေးချေမှု metadata ကိုထည့်သွင်းပါ။
+2. `fee_sponsor` ဖြင့် ငွေပေးချေမှု metadata ကိုထည့်ပါ။
 3. အသုံးပြုသူအဖြစ် လက်မှတ်ရေးထိုးပါ။
 4. ပုဂ္ဂလိက ဒေတာနေရာလမ်းကြောင်းမှတဆင့် တင်ပါ။
 
@@ -405,7 +405,7 @@ XOR ကို သုံးစွဲသူတွေ မကိုင်ထား�
 
 ဤပုံစံတွင်, ဒေသတွင်း token သည် application payment ဖြစ်သည်။ ၎င်းသည် net fee asset မဟုတ်ပါ။ sponsor က XOR တွင် net fee ကိုသာပေးသည်။
 
-ဥပမာ၊ ပုဂ္ဂလိက ဒေတာနေရာတွင် ဒေသတွင်း token ကို အသုံးပြုပါ။
+ဥပမာ၊ ပုဂ္ဂလိက ဒေတာနေရာတွင် ဒေသတွင်း token ကို အသုံးပြုပါ-
 
 ```text
 usage#billing.team
@@ -413,7 +413,7 @@ usage#billing.team
 
 `usage#billing.team` ကို Onboarding၊ Subscription Renewal သို့မဟုတ် Quota Allocation လုပ်နေစဉ်မှာ ရင်းနှီးမြှုပ်နှံသူတွေကို ငွေကြေးပေးပါ။
 
-1. ဒေသတွင်း tokens ကို အသုံးပြုသူမှ sponsor သို့ လွှဲပြောင်းပေးရန်
+1. သုံးစွဲသူမှ ပံ့ပိုးသူသို့ ဒေသတွင်း tokens ကို လွှဲပြောင်းပေးရန်
 2. requested app operation ကို ပြုလုပ်ပါ။
 3. `fee_sponsor` metadata ကို ထည့်သွင်းပြီး sponsor က XOR ပေးဆပ်ပေးတယ်။
 
@@ -431,7 +431,7 @@ iroha --config ./alice.client.toml \
 
 တကယ့် app အတွက်တော့ Local Token payment ကို သီးခြား Best-effort Transaction အဖြစ် မတင်ပါနဲ့။ Payment နဲ့ Business Instruction နှစ်ခုစလုံးပါဝင်တဲ့ လက်မှတ်ထိုးထားတဲ့ Transaction တစ်ခုကို ဆောက်လုပ်ပါ၊ (သို့) Business Operation ကို အသုံးမပြုမီမှာ Local token ကို ကောက်ယူတဲ့ Contract Entry Point ကို ဖော်ပြပါ။
 
-သင့်ရဲ့ app (သို့) စာချုပ်မှာ ငွေလွှဲပြောင်းမှု မူဝါဒကို သိမ်းထားပါ။
+သင့်ရဲ့ app (သို့) စာချုပ်မှာ ငွေလွှဲပြောင်းရေး မူဝါဒကို သိမ်းထားပါ။
 
 - ဘယ်လုပ်ငန်းက ဘယ်လောက် ဒေသတွင်း token ယူနစ်တွေ ကုန်ကျသလဲ
 - XOR top-up တွေကို ထောက်ပံ့ဖို့ ဒေသတွင်း token inflow မြေပုံတွေကို ဘယ်လိုလုပ်ရမလဲ။
@@ -440,7 +440,7 @@ iroha --config ./alice.client.toml \
 
 ::: warning
 
-`gas_asset_id` ကို "ဒေသတွင်းအမှတ်တံဆိပ်ခ" ပုံစံအတွက် မသုံးပါနဲ့ သင်က ပံ့ပိုးသူကို ဒီဓာတ်ငွေ့လက်ဝယ်မှာလည်း စရိတ်ကောက်ခံစေချင်တာမဟုတ်ရင်ပေါ့၊ လက်ရှိ runtime မှာ `fee_sponsor` ကလည်း ပံ့ပိုးမှုကို configured pipeline-gas asset debit တွေအတွက် ပေးသွင်းသူဖြစ်စေတယ်။ Local Token သုံးစွဲသူ အခွန်များအတွက် ငွေလွှဲပြောင်းမှု (သို့) စာချုပ်စည်းမျဉ်းတစ်ခုဖြင့် ပွင့်လင်းစွာ Token ကိုကောက်ယူပါ။
+`gas_asset_id` ကို "ဒေသတွင်းအမှတ်တံဆိပ်ခ" ပုံစံအတွက် မသုံးပါနဲ့ သင်က ပံ့ပိုးသူကို transaction execution cost asset ထဲမှာလည်း စရိတ်ကောက်ခံစေချင်တာမဟုတ်ရင်ပေါ့ လက်ရှိ software execution မှာ Environment, `fee_sponsor` ကလည်း ပံ့ပိုးသူကို configured pipeline-gas asset debit များအတွက် ပေးသွင်းသူဖြစ်စေတယ်။ ဒေသတွင်း token သုံးစွဲသူစရိတ်များအတွက် transfer သို့မဟုတ် contract rule ဖြင့် token ကို ရှင်းလင်းစွာကောက်ယူပါ။
 
 :::
 
@@ -453,7 +453,7 @@ iroha --config ./alice.client.toml \
 |`fee sponsorship is disabled` | `nexus.fees.sponsorship_enabled` ဆက်ရှိနေဆဲပါ။ `false` node မှာပါ။ |
 |`fee sponsor is not authorized` |သုံးစွဲသူမှာ `CanUseFeeSponsor` မရှိပါဘူး။|
 |`fee asset ... is missing` |Sponsor သည် configured fee asset XOR ကို မပိုင်ဆိုင်ပါ။ |
-|`fee balance ... is insufficient` |ပံ့ပိုးသူရဲ့ XOR ငွေကြေးငွေကို ထပ်ဖြည့်ပေးပါ။ |
+|`fee balance ... is insufficient` |ပံ့ပိုးသူရဲ့ XOR ငွေကြေးငွေကို ထပ်ဖြည့်ပါ။ |
 |`fee exceeds sponsor_max_fee` |`sponsor_max_fee` မြှင့်တင်ခြင်း (သို့မဟုတ်) ငွေပေးချေမှု အရွယ်အစား/ဓာတ်ငွေ့ကို လျှော့ချခြင်း။ |
 |`invalid nexus fee asset id` |Fix `nexus.fees.fee_asset_id` သို့မဟုတ် XOR အရင်းအမြစ်အမည်များ။ |
 
@@ -480,7 +480,7 @@ iroha --config ./operator.client.toml \
 - သုညမဟုတ်တဲ့ ကိန်းကို သတ်မှတ် `sponsor_max_fee` Traffic ကို characterization လုပ်ပြီးတာနဲ့ cap
 - သင့်ရဲ့ လျှောက်လွှာ (သို့) ဂိတ်ဝေ့စ်မှာ ငွေကြေး အကန့်အသတ် ထောက်ပံ့စာရေးသားချက်များ
 - `CanUseFeeSponsor` ကို ဖျက်သိမ်းရန် အသုံးပြုသူများက ဒေတာနေရာမှ ထွက်ခွာသောအခါ
-- user transaction hashes များ၊ local token payments များနှင့် sponsor debits XOR တို့ကို ပေါင်းစပ်ပေးရန်။
+- user transaction cryptographic hashes များ၊ local token payments များနှင့် sponsor XOR debit များကို ပေါင်းစပ်ပေးရန်။
 
 သုံးစွဲသူအတွက် ပံ့ပိုးမှု ဖျက်သိမ်းခြင်း
 
@@ -497,8 +497,8 @@ printf '{
 
 ## ဆက်စပ် စာမျက်နှာများ {#related-pages}
 
-- [SORA Nexus ဒေတာနေရာများ](/my/get-started/sora-nexus-dataspaces.md) သို့ ချိတ်ဆက်ပါ။
-- [လည်ပတ်မှု Iroha 3 မှတဆင့် CLI](/my/get-started/operate-iroha-via-cli.md)
-- [အရင်းအမြစ်များ](/my/blockchain/assets.md)
+- [SORA Nexus ဒေတာနေရာများနှင့် ချိတ်ဆက်ခြင်း](/my/get-started/sora-nexus-dataspaces.md)
+- [Iroha 3 ကို CLI မှတစ်ဆင့် လည်ပတ်ပါ။](/my/get-started/operate-iroha-via-cli.md)
+- [ပိုက်ဆံများ](/my/blockchain/assets.md)
 - [ခွင့်ပြုချက်များ](/my/blockchain/permissions.md)
-- [ခွင့်ပြုချက် လက်မှတ်များ ](/my/reference/permissions.md)
+- [ခွင့်ပြုချက် လက်မှတ်များ](/my/reference/permissions.md)

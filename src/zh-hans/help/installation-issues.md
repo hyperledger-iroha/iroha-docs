@@ -17,7 +17,7 @@ translation_engine: nllb-200-ct2
 - 一个 Rust 工具链比上游工作空间固定的版本更老
 - `cargo`或`rustc`分离到一个不同于 `rustup`的装置
 - 缺失的系统构建工具,如C编译器, `pkg-config`,或CMake
-- 经过变更源改后生成过时的摘录或本地构建文物
+- 经过变更源改后生成过时的摘录或本地构建构件
 
 从 Iroha 来源清算中,开始:
 
@@ -42,7 +42,7 @@ cargo metadata --no-deps
 
 ### 检查 Rust 版本 {#check-rust-version}
 
-为了维护您和我们的智力,请确保您拥有正确的版本 `cargo`与正确的版 `rustc`.目前上游的工作空间声明 `rust-version = "1.92"`并将工具链道插入`rust-toolchain.toml`.
+为避免彼此困扰，请确认正确版本的 `cargo` 与正确版本的 `rustc` 配对使用。当前的上游 workspace 声明 `rust-version = "1.92"`，并在 `rust-toolchain.toml` 中锁定 toolchain channel。若要显示版本，请执行：
 
 ```bash
 $ cargo -V
@@ -93,7 +93,7 @@ $ rustup default stable
 
 ### 检查是否有其他版本 Rust {#check-if-there-are-other-rust-versions}
 
-继续解决问题子洞,我们可能会有子的姓氏:
+继续解决问题子洞,我们可能会有子的别名:
 
 ```bash
 $ type rustc

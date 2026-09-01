@@ -3,49 +3,49 @@ translation_locale: uz
 translation_source: /guide/best-practices/operations.md
 translation_source_hash: de9e8129467b1111a58cee07acf43382d6cf3c352211a1511659ced422b46778
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Operatsiyalar {#operations}
 
-Operatsiyaviy tayyorlik tarmog'ini tekshirish, o'zgartirish, qo'llab-quvvatlash va tiklash mumkinligini tasdiqlovchi hostlarga tasodifan kirishdan tashqari anglatadi.
+Operatsion tayyorlik — tasdiqlovchi xostlariga favqulodda kirishga tayanmasdan tarmoqni kuzatish, o‘zgartirish, zaxiralash va tiklay olishdir.
 
-## Ko'rib chiqish imkoniyati {#observability}
+## Kuzatiluvchanlik {#observability}
 
-- Telemetriya profillarini qasddan faollashtiring. `extended` dan `/metrics` kerak bo'lganda va `full` dan Sumeragi operator yo'nalishlaridan iborat batafsil ma'lumotlarga muhtoj sinovlarda foydalaning.
-- Dashboard qabul qilingan o'sish, rad etilgan o'sishi, qo'yilgan kechikish vaqti, navbat chuqurligi, navbat to'ldirilishi, ko'rinish o'zgarishlari, konsensus xabarlari tushirilgan va saqlash bosimi.
-- Status fotosuratlarini, metriklar tarqatuvlarini, jurnallarni va joylashtirish konfiguratsiyasini bir xil hodisa yoki ma'lumotlar artifakti to'plamida saqlash.
-- O'z navbatida o'sish, kutilmagan rad etish ko'tarilishi, blokning balandligi to'xtab qolishi, nuqtai nazar o'zgarishi va tengdoshlar sog'lig'idagi o'zgarishlar haqida ogohlantirish.
+- Telemetriya profillarini ataylab yoqing. `/metrics` kerak bo'lganda `extended` ni va batafsil Sumeragi operator marshrutlarini talab qiladigan test ishlari davomida `full` ni ishlating.
+- Dashboard qabul qilingan o'tkazuvchanlik, rad etilgan o'tkazuvchanlik, protokol yakunlanishi kechikishi, navbat chuqurligi, navbat to'yinganligi, ko'rinish o'zgarishlari, tushirilgan konsensus xabarlari va saqlash bosimi ko'rsatadi.
+- Status nuqtai nazaridagi ma’lumotlar koʻrinishlari, metrikalarni yigʻish, loglar va joylashtirish konfiguratsiyasini bir xil hodisa yoki benchmark artefaktlar toʻplamida saqlang.
+- Doimiy navbat o‘sishi, kutilmagan rad etish cho‘qqilari, blok balandligining to‘xtashi, ko‘rish-o‘zgartirish o‘zgarishlari va tarmoq tengdoshlarining salomatligi o‘zgarishlari haqida ogohlantirish.
 
-[Ishlab chiqarish va ma'lumotlar ](/uz/guide/advanced/metrics.md) ni ko'ring.
+Buni [Ijro va Mezonlar](/uz/guide/advanced/metrics.md) ko‘ring.
 
-## Yo'llanmalar {#runbooks}
+## Ish yuritish qo'llanmalari {#runbooks}
 
-- Tengdoshlarni qayta ishga tushirish, Torii pasayishi, kalitni buzish, ruxsat etish xatolari, to'lov sponsorining kamayishi, to'xtatilgan navbatlar va tarmoq partitsiyasi alomatlari uchun ish daftarlarini yozing.
-- Yozish operatsiyalaridan oldin faqat o'qish uchun aniq tekshiruvlarni, ayniqsa tengdoshlar ro'yxatidan o'tish, ruxsat berish va parametrlar o'zgarishi uchun kiriting.
-- Xavfsizlik kontaktlari va kuchaytirish qoidalari shaxsiy operatsion ma'lumotlarni o'z ichiga olgan hujjatlar repolaridan tashqarida saqlansin.
-- Har bir hodisa, repetitsiya yoki katta yangilanishdan so'ng kitoblarni ko'rib chiqing.
+- Tarmoq tengdoshini qayta ishga tushirish, Torii pasayishi, kalit buzilishi, ruxsat xatolari, to'lov homiysi tugashi, tiqilib qolgan navbatlar va tarmoq bo'linishi simptomlari uchun ish kitoblarini yozing.
+- Yozish operatsiyalaridan oldin aniq faqat-o‘qish tekshiruvlarini qo‘shing, ayniqsa tarmoq hamkori ro‘yxatdan o‘tishi, ruxsat berish va parametr o‘zgarishlari uchun.
+- Agar shaxsiy operatsion ma'lumotlarni o'z ichiga olsa, favqulodda aloqa va eskalatsiya qoidalarini hujjatlar reposidan tashqarida saqlang.
+- Har bir hodisa, mashq yoki katta yangilanishdan so'ng runbuklarni ko'rib chiqing.
 
-Qarang [Operatsiyaviy xavfsizlik](/uz/guide/security/operational-security.md).
+Buni [Operatsion Xavfsizlik](/uz/guide/security/operational-security.md) ko‘ring.
 
-## Noto'g'rilik va tiklanish {#backups-and-recovery}
+## Zaxira nusxalar va tiklash {#backups-and-recovery}
 
-- Tarqatish uchun zarur bo'lgan tiklash nuqtasiga ko'ra tengdoshlari saqlashni qo'llab-quvvatlash. Ishlab chiqarish bo'lmagan uy egalari uchun tiklashlarni tasdiqlang.
-- Imzolangan genesisni saqlash, metadatalarni chiqarish, tengdoshlar konfiguratsiyasi va kalitlarni saqlab qolish yozuvlarini qayta tiklash mumkin bo'lsa ham, agar tasdiqlash host mavjud bo'lmasa ham.
-- Qayta tiklash jarayoni paydo bo'lganidan qayta tiklanadimi, fotosuratdan tiklanadimi yoki muvaffaqiyatsiz tengdoshni yangi kimlik bilan almashtiradimi-yo'qligini hujjatlashtiring.
-- Ishlab chiqarish hodisasi paytida hech qachon birinchi marta tiklash tartib-taomillarini sinab ko'rmang.
+- Tarmoq hamkasbi saqlashini joylashtirish talab qiladigan tiklash nuqtasiga ko‘ra zaxiralang. Tiklashlarni ishlab chiqarish bo‘lmagan mezonlarda tekshiring.
+- Tasdiqlovchi xosti ishlamasa ham, imzolangan boshlang‘ich holat, reliz metama’lumotlari, tugun konfiguratsiyasi va kalit saqlovi qaydlarini tiklash mumkin bo‘lsin.
+- Tiklash jarayoni boshlang‘ich holatdan qayta quradimi, oniy nusxani tiklaydimi yoki ishlamay qolgan tugunni yangi identifikator bilan almashtiradimi — hujjatlashtiring.
+- Hech qachon tiklash tartiblarini birinchi marta ishlab chiqarish hodisasi paytida sinab ko‘rmang.
 
 ## Oʻzgarishlarni boshqarish {#change-management}
 
-- Zaryaddagi konfiguratsiya o'zgarishlarini qayta ko'rib chiqish, parvozdan oldin o'qish, ruxsat berish va o'zgartirishdan keyin tekshirishni talab qiladigan bitimlar sifatida qabul qiling.
-- Tengdoshlar bilan ikkilamchi yangilanishlarni muvofiqlik rejasi va qaytish qarori punkti bilan ishga tushiring.
-- Agar migratsiya rejasi buni talab qilmasa, tengdoshlari topologiyasini, konsensus vaqtini va dastur ish yukini bir xil saqlash oynasida o'zgartirishdan qoching.
-- Operativ o'zgarishlar uchun muomala hashlari va blok balandliklari qayd etilsin.
+- Zanjir ustidagi sozlamalar o‘zgarishlarini ko‘rib chiqishni, oldindan o‘qishni, ruxsat berishni va o‘zgarishdan keyingi tekshiruvni talab qiladigan tranzaksiyalar sifatida ko‘ring.
+- Tarmoq hamkasbi dasturiy ta'minotini yangilashni moslik rejasi va qaytarish qarori nuqtasi bilan amalga oshiring.
+- Agar ko'chirish rejasi buni talab qilmasa, bir xil texnik xizmat oynasida tarmoq tengdoshlarining topologiyasini, konsensus vaqtini va ilova ish yukini o'zgartirishdan saqlaning.
+- Operatsion o‘zgarishlar uchun tranzaksiya kriptografik xeshlarini va blok balandliklarini yozib qo‘ying.
 
-Koʻring [Issiq qayta yuklash](/uz/guide/advanced/hot-reload.md) va [Qo'shish matrisi](/uz/reference/compatibility-matrix.md).
+Buni [Issiq Qayta Yuklash](/uz/guide/advanced/hot-reload.md) va [Moslik Matrisi](/uz/reference/compatibility-matrix.md) ko‘ring.
 
-## Imkoniyatni qayta ko'rib chiqish {#capacity-reviews}
+## Quvvatni ko'rib chiqish {#capacity-reviews}
 
-- Valitatorlar soni, asbob-uskunalar, tarmoq joylashuvi, ish yuklari aralashmasi yoki konsensus parametrlari o'zgarganda yukni qayta tekshiring.
-- Qisqa, eng yaxshi holatda o'tkazib yuborilgan namunaga tayanishning o'rniga issiqlikni, barqaror holatni va kutilayotgan yuqori yukni o'lchash.
-- Qabul qilingan o'tkazib yuborishni belgilangan o'tkazish va navbat chuqurligi bilan taqqoslang. Agar taqdim etilgan TPS belgilangan TPS dan ortiq bo'lsa va navbatlar ko'paysa, tarmoq o'zining barqaror qamrovidan o'tdi.
+- Validatorlar soni, apparat, tarmoq joylashuvi, yuk aralashmasi yoki konsensus parametrlari o'zgarganda yuk tekshiruvlarini qayta bajarish.
+- Qisqa eng yaxshi holatdagi o'tkazuvchanlik namunasiga tayanish o'rniga, isitish, barqaror holat va kutilayotgan maksimal yukni o'lchang.
+- Qabul qilingan o'tkazuvchanlikni yakunlangan o'tkazuvchanlik va navbat chuqurligi bilan solishtiring. Agar yuborilgan TPS yakunlangan TPS dan oshsa va navbatlar o'ssa, tarmoq barqaror ishlash chegarasidan oshgan bo'ladi.

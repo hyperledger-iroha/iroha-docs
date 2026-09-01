@@ -10,21 +10,21 @@ translation_engine: nllb-200-ct2
 import WarningFatQuery from './WarningFatQuery.vue'
 </script>
 
-# Savollar {#queries}
+# So‘rovlar {#queries}
 
-Tadbirlar abonentlari va filtrlari blokcheyn holatidagi o'zgarishlarni kuzatishlari mumkin. Joriy holatni to'g'ridan-to'g'ri ko'rish kerak bo'lganda so'rovdan foydalaning.
+Hodisa obunalari va filtrlar blokcheyn holatidagi o‘zgarishlarni kuzata oladi. Joriy holatni bevosita ko‘rish kerak bo‘lsa, so‘rovdan foydalaning.
 
-So'rovlar kichik ko'rsatmalarga o'xshash ob'ektlardir. Iroha hozirgi dunyoga bo'lgan nuqtai nazaridan tafsilotlarni olish uchun tengdoshlar.
+So‘rovlar ko‘rsatmalarga o‘xshash kichik obyektlardir. Tugunning joriy global holat ko‘rinishidan ma’lumot olish uchun so‘rovni Iroha tuguniga yuboring.
 
-Tarmoq boshqa ma'lumotlarni oshkor qilishi mumkin. Qidirilishi mumkin bo'lgan dunyo davlatlari ma'lumotlar har bir Iroha tarmog'ida mavjud bo'lishi kafolatlangan yagona tur hisoblanadi.
+Tarmoq boshqa ma’lumotlarni ham taqdim etishi mumkin. So‘raladigan global holat ma’lumoti — har bir Iroha tarmog‘ida mavjudligi kafolatlangan yagona ma’lumot turi.
 
-Iroha ning har bir ishga tushirilishi uchun boshqa ma'lumotlar mavjud bo'lishi mumkin. Masalan, telemetriya ma'lumotlarining mavjudligi tarmoq boshqaruvchilariga bog'liq. Ular taqsimlashni xohlashadimi yoki yo'qmi, bu ularning qarori. Ishni amalga oshirish uchun uni ishlatishning o'rniga ishni kuzatish uchun qayta ishlash quvvati. Boshqa tomondan, ba'zi funktsiyalar har doim kerak bo'ladi, masalan, hisob raqamingizga kirish huquqi.
+Har bir Iroha joylashtirishida boshqa ma’lumotlar ham mavjud bo‘lishi mumkin. Masalan, telemetriya ma’lumotlarini taqdim etish tarmoq ma’murlariga bog‘liq: hisoblash quvvatini asosiy ishga emas, uni kuzatishga ajratish-ajratmaslikni ular hal qiladi. Hisob balansini ko‘rish kabi ayrim imkoniyatlar esa doim talab qilinadi.
 
-So'rovlarning natijalari bir vaqtning o'zida [](#sorting), [paginated](#pagination) va [filtered](#filters) peer-side bilan tartibga solinadi. Sorting metadata kalitlarida lexikografik ravishda amalga oshiriladi. Filtrlash turli xil tamoyillarga ko'ra amalga oshirilishi mumkin, domenga mos (shaxsiy IP manzil filtrlari maskasi) dan `begins_with` kabi sub-satrning usullariga qadar mantiqiy operatsiyalarni qo'shish.
+So‘rov natijalarini tugun tomonida bir vaqtning o‘zida [tartiblash](#sorting), [sahifalash](#pagination) va [filtrlash](#filters) mumkin. Tartiblash metama’lumot kalitlari bo‘yicha leksikografik bajariladi. Filtrlash domen uchun maxsus mezonlardan, masalan IP manzil niqobidan, mantiqiy amallar bilan birlashtirilgan `begins_with` kabi quyi satr usullarigacha turli tamoyillarga asoslanishi mumkin.
 
-## Taira bilan sinab ko'ring. {#try-it-on-taira}
+## Taira-da sinab ko‘rish {#try-it-on-taira}
 
-Taira umumiy manbalar uchun faqat o'qiladigan so'rov yordamchilarini JSON orqali ochib beradi. SDK kodlashdan oldin sahifalashtirish va javoblarni boshqarish mashg'ulotlari uchun ulardan foydalaning:
+Taira odatiy resurslar uchun JSON orqali faqat o‘qiladigan so‘rov yordamchilarini taqdim etadi. SDK-ni ulashdan avval sahifalash va javoblarni qayta ishlashni mashq qilish uchun ulardan foydalaning:
 
 ```bash
 TAIRA_ROOT=https://taira.sora.org
@@ -39,30 +39,30 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=3" \
   | jq '{total, assets: [.items[] | {id, name, total_quantity}]}'
 ```
 
-Ilova diagnostikasi uchun ushbu tutun tekshiruvlarini imzolangan tranzaksiya sinovlaridan ajratib qo'ying. Faqat o'qishga mo'ljallangan so'rov muvaffaqiyatsizligi odatda imzolashchining o'rnatilishini ko'rsatishdan oldin oxirgi nuqtalar mavjudligiga, tarmoqlarga erishish imkoniyatiga yoki yo'nalish moslashtirilishiga ishora qiladi.
+Ilovani tekshirishda bu tezkor sinovlarni imzolangan tranzaksiya sinovlaridan alohida tuting. Faqat o‘qiladigan so‘rovning xatosi odatda imzolovchi sozlamasidan avval so‘nggi nuqta mavjudligi, tarmoqqa ulanish yoki yo‘nalish mosligi muammosini ko‘rsatadi.
 
 ## Soʻrovni yaratish {#create-a-query}
 
-SDK yoki CLI fayllaridan tiklangan so'rovlarni yaratish vositalaridan foydalaning. Misol uchun, joriy ma'lumotlar modeli `FindAccounts` ni ro'yxatga olish hisob raqamlari uchun aniqlaydi:
+SDK yoki CLI-ning tiplashtirilgan so‘rov quruvchilaridan foydalaning. Masalan, joriy ma’lumotlar modeli hisoblarni ro‘yxatlash uchun `FindAccounts` ni taqdim etadi:
 
 ```rust
 let query = FindAccounts;
 ```
 
-Mana Alisning mol-mulkini topgan so'rovning misoli:
+Quyida Alice aktivlarini topadigan so‘rov misoli keltirilgan:
 
 ```rust
 let alice_id = load_canonical_account_id_from_client_config()?;
 let query = FindAssetsByAccountId::new(alice_id);
 ```
 
-## Sahifalar {#pagination}
+## Sahifalash {#pagination}
 
-Bitta so'rov va kichik takrorlanadigan so'rovlar uchun siz `client.request` dan foydalanib, so'rovni yuborishingiz va natijani bir marta olishingiz mumkin.
+Bitta natijali va kichik takrorlanuvchi so‘rovlarni `client.request` orqali yuborib, natijani bir martada olish mumkin.
 
-Biroq, keng takrorlanishi mumkin bo'lgan savollar: `FindAccounts`, `FindAssets`, yoki `FindBlocks` katta natija setlarini qaytarishi mumkin. Tengdoshlar va mijozlarga yukni kamaytirish uchun sahifalashdan foydalanish.
+Biroq `FindAccounts`, `FindAssets` yoki `FindBlocks` kabi keng takrorlanuvchi so‘rovlar katta natija majmuasini qaytarishi mumkin. Tugun va mijoz yukini kamaytirish uchun sahifalashdan foydalaning.
 
-`Pagination`ni yaratish uchun siz `client.request_with_pagination(query, pagination)` raqamiga qo'ng'iroq qilishingiz kerak, u yerda `pagination` quyidagicha qurilgan:
+`Pagination` yaratish uchun `client.request_with_pagination(query, pagination)` ni chaqiring; `pagination` quyidagicha tuziladi:
 
 ```rust
 let starting_result: u32 = _;
@@ -70,20 +70,20 @@ let limit: u32 = _;
 let pagination = Pagination::new(Some(starting_result), Some(limit));
 ```
 
-## Filterlar {#filters}
+## Filtrlar {#filters}
 
-So'rovni yaratganingizda filtrdan faqat belgilangan filterga mos bo'lgan natijalarni qaytarish uchun foydalanishingiz mumkin.
+So‘rov yaratishda faqat belgilangan filtrga mos natijalarni qaytarish uchun filtrdan foydalanish mumkin.
 
-Filterlar so'rovlarga mos. Misol uchun, hisob so'rovlari hisobning identifikatsiyasi yoki metadatiga qarab tortilishi mumkin, aktiv so'rovlarini esa aktivga ko'ra tortilishi kerak SDK ning yozilgan so'rov quriluvchilaridan iloji bo'lganda foydalaning, shunda filtr turi so'rovni chiqarish turi bilan mos keladi.
+Filtrlar so‘rovga xosdir. Masalan, hisob so‘rovlarini hisob identifikatori yoki metama’lumot bo‘yicha, aktiv so‘rovlarini esa aktiv ta’rifi, egasi bo‘lgan hisob yoki domen proyeksiyasi bo‘yicha toraytirish mumkin. Filtr turi so‘rov natijasi turiga mos bo‘lishi uchun imkon qadar SDK-ning tiplashtirilgan so‘rov quruvchilaridan foydalaning.
 
-## Sortlash {#sorting}
+## Tartiblash {#sorting}
 
-Iroha so'rovni qurishda tartiblash uchun kalitni taqdim etsangiz, [ metadata](/uz/blockchain/metadata.md) bilan obʼektlarni leksikografik ravishda tartibga solishi mumkin. Oddiy foydalanuv holatlari hisoblar uchun `registered-on` metadata kirimi boʻlishi kerak.
+So‘rov tuzilayotganda tartiblash kaliti berilsa, Iroha obyektlarni [metama’lumot](/uz/blockchain/metadata.md) bo‘yicha leksikografik tartiblashi mumkin. Odatdagi misolda hisoblarda `registered-on` metama’lumot yozuvi bo‘ladi; u bo‘yicha tartiblash hisoblarni ro‘yxatdan o‘tkazish tarixini ko‘rsatadi.
 
-Sortlash faqat [ metadatalarga ega bo'lgan entitetlar uchun qo'llaniladi ](/uz/blockchain/metadata.md), chunki so'rov natijalarini sinchkovlik qilish uchun metadata kalitidan foydalanish kerak.
+Tartiblash faqat [metama’lumotga ega obyektlarga](/uz/blockchain/metadata.md) qo‘llanadi, chunki so‘rov natijalari metama’lumot kaliti bo‘yicha tartiblanadi.
 
-Sortlashni sahifalashtirish va filtrlar bilan birlashtirishingiz mumkin. Shuni yodda tutingki, sortlash tanlov xususiyati bo'lib, sahifalashtirishdagi so'rovlarning aksariyati unga muhtoj emas.
+Tartiblashni sahifalash va filtrlar bilan birlashtirish mumkin. Tartiblash ixtiyoriy imkoniyatdir; sahifalanadigan so‘rovlarning aksariyatiga u kerak bo‘lmaydi.
 
-## Ma'lumotnoma {#reference}
+## Ma’lumotnoma {#reference}
 
-Ular haqida batafsil ma'lumot olish uchun [ mavjud so'rovlar ro'yxatini ](/uz/reference/queries.md) tekshiring.
+Batafsil ma’lumot uchun [mavjud so‘rovlar ro‘yxatiga](/uz/reference/queries.md) qarang.

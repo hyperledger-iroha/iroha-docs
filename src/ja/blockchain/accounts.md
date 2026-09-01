@@ -3,32 +3,32 @@ translation_locale: ja
 translation_source: /blockchain/accounts.md
 translation_source_hash: 015a85d81c44b7ef7f13cdafb2ed8e493ef512b94dc500939655c70285eac3bd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# 口座 {#accounts}
+# アカウント {#accounts}
 
-口座は,トランザクションを署名し,本簿状態を持つ権威である.現在の Iroha 3 データモデルでは, `AccountId` はカノニカルでありドメインなしです:それはアカウント管理者から派生され,カノニック的に [I105](/ja/reference/i105.md) として暗号化されています.人に読めるドメインとデータスペースのコンテキストは,別々のアカウント・アリア結合に属します.
+アカウントは、トランザクションに署名し、ブロックチェーン台帳の状態を所有できる認可主体です。現在の Iroha 3 データモデルでは、`AccountId`が正規です、そしてドメインレス：これはアカウントコントローラーから派生しており、標準的に[I105](/ja/reference/i105.md)として符号化されます。人間が読み取れるドメインとデータスペースのコンテキストは、別のアカウントエイリアスのバインディングに属します。
 
 ## 構造 {#structure}
 
-登録された `Account` には:
+登録された`Account`には以下が含まれます:
 
-- `id`:法典的な`AccountId`
-- `metadata`:任意の口座メタデータ
-- `label`:オプションの安定型アライス
-- `uaid`:オプションのユニバーサルアカウント ID で使用される Nexus フロー
-- `opaque_ids`:口座の UAID に縛られた不透明な識別子
+- `id`：標準的な`AccountId`
+- `metadata`：任意のアカウントメタデータ
+- `label`：オプションの安定したエイリアス
+- `uaid`：Nexus フローで使用されるオプションのユニバーサルアカウントID
+- `opaque_ids`：アカウントの UAID に紐付けられた不透明な識別子
 
-アカウントを作成するために使用されるトランザクションの有用な負荷は `NewAccount`.登録アカウントが使用する同一のアイデンティティ,メタデータ,ラベル, UAID および不透明の ID フィールドを含みます.
+アカウント作成に使用されるトランザクションペイロードは`NewAccount`です。これは、登録されたアカウントで使用されるのと同じ識別子、メタデータ、ラベル、UAID、および不透明IDフィールドを含んでいます。
 
-`uaid` カノニカルを補完する `AccountId`; 代わるものではなく, Nexus サービスにはデータスペスの間で安定したユーザーまたは組織管理が必要であり,プライバシーを守る登録が必要です.ランタイムは1対1の UAID アカウントインデックスでは,不透明な識別子が UAID, 複製または衝突する不透明な識別子を拒否します. [FHE そして UAID](/ja/blockchain/sora-nexus-services.md#fhe-and-uaid) について Nexus サービス層流.
+`uaid` は標準の `AccountId` を補完します。それを置き換えるものではありません。Nexus サービスでデータスペース間で安定したユーザーまたは組織のハンドルが必要な場合、プライバシー保護された登録、またはサービス機能の検索を行う場合に使用してください。ソフトウェアランタイムは、1対1の UAID-アカウントインデックスを保持し、不透明な識別子を UAID を通じて添付する必要があり、重複または衝突する不透明な識別子を拒否します。[FHE と UAID](/ja/blockchain/sora-nexus-services.md#fhe-and-uaid)で Nexus サービス層のフローを参照してください。
 
-## 口座管理者 {#account-controllers}
+## アカウントコントローラー {#account-controllers}
 
-コントローラーは,アカウントがアクションをどのように許可するかを定義します.デフォルトクライアントフローはEd25519キーペアを使用しますが,データモデルはマルチサインポリシーコントローラなどのより豊かなコントローラーもサポートしています.
+コントローラーはアカウントがどのようにアクションを認証するかを定義します。デフォルトのクライアントフローはEd25519キー・ペアを使用しますが、データモデルはマルチシグネチャポリシーコントローラーのようなより高度なコントローラーもサポートしています。
 
-クライアントコンフィギュレーションは,署名権限をピアコンフィギューレーションから別々に保存します.
+クライアント構成は、ネットワークピア構成とは別に署名認可主体を保存します:
 
 ```toml
 [account]
@@ -36,18 +36,18 @@ public_key = "ed0120..."
 private_key = { digest_function = "ed25519", payload = "..." }
 ```
 
-[クライアント設定](/ja/guide/configure/client-configuration.md)と [キー生成](/ja/guide/security/generating-cryptographic-keys.md)を参照してください.
+現在のキー形式については、[クライアント設定](/ja/guide/configure/client-configuration.md) および [鍵生成](/ja/guide/security/generating-cryptographic-keys.md) を参照してください。
 
-## Taira で試してみてください {#try-it-on-taira}
+## Taira でこのワークフローを実行してください {#try-it-on-taira}
 
-公共のテストネット Taira の数々のカノニカルアカウント IDs をリストする.
+パブリック Taira テストネットからいくつかの標準的なアカウントIDをリストしてください:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
   | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
 ```
 
-口座資産を検査するには,最初の呼び出しからアカウント ID をコピーし,パスに入れる前に URL にコード化します.この Python スニペットでは,最初に登録されたアカウントに対して同じことをします:
+アカウントの資産を確認するには、最初の技術的呼び出しからアカウントIDをコピーし、パスに配置する前に URL でエンコードします。この Python スニペットは、最初にリストされたアカウントに対してそれを行います:
 
 ```bash
 python3 - <<'PY'
@@ -67,33 +67,33 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-口座の作成や更新は署名された取引であり, Taira 設定は, [接続する SORA Nexus データベース](/ja/get-started/sora-nexus-dataspaces.md).
+これらは公開読み取りです。アカウントの作成または更新は署名済みトランザクションであり、[SORA Nexus データスペースに接続](/ja/get-started/sora-nexus-dataspaces.md) に記載されたテストネット資金付きの Taira 設定が必要です。
 
-## 登録および許可 {#registration-and-permissions}
+## 登録と許可 {#registration-and-permissions}
 
-アカウントは,通用 [`Register`および `Unregister`](/ja/blockchain/instructions.md#un-register)の指示で登録され,登録されていない.アクティブランタイム検証者は,誰がアカウントを作成できるか,どの許可トークンまたは役割が必要かを決定します.
+アカウントはジェネリックで登録および登録解除されます [`Register` そして `Unregister`](/ja/blockchain/instructions.md#un-register) 指示。アクティブなソフトウェア実行時バリデータが誰ができるかを決定します アカウントを作成し、どの権限トークンまたはロールが必要かを確認します。
 
-登録後,アカウントは:
+登録後、アカウントは次のことができます：
 
-- 取引をサインする
-- 保有資産
-- 独自の領域
-- ロールと許可トークンを受信する
-- 貯蔵するメタデータ
-- これらの機能が有効である場合,アライス,レイケイ,リリカバリ,および Nexus アイデンティティフローに参加する
+- トランザクションに署名する
+- 資産を保有する
+- 自分のドメイン
+- ロールと権限トークンを受け取る
+- メタデータを保存する
+- これらの機能が有効になっている場合、エイリアス、再鍵設定、リカバリー、および Nexus IDフローに参加する
 
-## アイデンティティのトラブルシューティング {#troubleshooting-identity-issues}
+## アイデンティティの問題のトラブルシューティング {#troubleshooting-identity-issues}
 
-取引が予期せぬ形で拒否される場合,次のことを確認してください.
+取引が予期せず拒否された場合は、以下を確認してください:
 
-- クライアント公開鍵は署名に使用されたプライベート鍵と一致する
-- 口座は創世記または約束された取引によって登録されました
-- 当局は指示によって要求される許可を有している
-- 厳格なアカウントフィールドは,カノニカル I105 アカウント ID を使用し,読み取れる名前は,アクティブのアカウント・アライスバインドで解決されます.
+- クライアントの公開鍵が署名に使用された秘密鍵と一致する
+- そのアカウントはブロックチェーンのジェネシスで登録されたか、完了したトランザクションによって登録された
+- 認可主体は命令に必要な権限を持っています
+- 厳密なアカウントフィールドは標準の I105 アカウントID を使用し、読みやすい名前はアクティブなアカウントエイリアスのバインディングを通じて解決されます
 
-参照:
+参照：
 
-- [許可](/ja/blockchain/permissions.md)
+- [権限](/ja/blockchain/permissions.md)
 - [メタデータ](/ja/blockchain/metadata.md)
-- [クライアントの設定](/ja/guide/configure/client-configuration.md)
-- [SORA Nexus データスペス](/ja/get-started/sora-nexus-dataspaces.md)
+- [クライアント設定](/ja/guide/configure/client-configuration.md)
+- [SORA Nexus データスペース](/ja/get-started/sora-nexus-dataspaces.md)

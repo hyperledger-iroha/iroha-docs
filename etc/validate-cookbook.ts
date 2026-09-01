@@ -1,8 +1,7 @@
 import { readFile, readdir } from 'node:fs/promises'
 import path from 'node:path'
 import { pathToFileURL } from 'node:url'
-
-export const IROHA_SOURCE_COMMIT = 'bc7114ed1c7f265a156d2100ff09e851cc95702c'
+import { readProvenance } from './provenance'
 
 export const COOKBOOK_ROUTES = [
   'accounts-and-aliases.md',
@@ -67,6 +66,12 @@ export async function validateCookbook(repositoryRoot: string): Promise<string[]
   }
 
   const issues: string[] = []
+  let sourceCommit: string | undefined
+  try {
+    sourceCommit = (await readProvenance(repositoryRoot)).source.commit
+  } catch (error) {
+    issues.push(`provenance/iroha.json: ${error instanceof Error ? error.message : String(error)}`)
+  }
   const expectedRoutes = [...COOKBOOK_ROUTES].sort()
   for (const missing of expectedRoutes.filter((route) => !actualRoutes.includes(route))) {
     issues.push(`src/cookbook: missing route ${missing}`)
@@ -84,8 +89,8 @@ export async function validateCookbook(repositoryRoot: string): Promise<string[]
     if (!/^```[^\n]*\n[\s\S]+?^```/mu.test(source)) {
       issues.push(`${route}: recipe must include at least one fenced example`)
     }
-    if (!source.includes(IROHA_SOURCE_COMMIT)) {
-      issues.push(`${route}: recipe must cite pinned Iroha source commit ${IROHA_SOURCE_COMMIT}`)
+    if (sourceCommit && !source.includes(sourceCommit)) {
+      issues.push(`${route}: recipe must cite pinned Iroha source commit ${sourceCommit}`)
     }
     for (const forbidden of FORBIDDEN_CONTENT) {
       if (forbidden.pattern.test(source)) issues.push(`${route}: contains ${forbidden.label}`)

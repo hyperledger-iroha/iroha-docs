@@ -1,78 +1,88 @@
 ---
 translation_locale: uz
 translation_source: /help/deployment-issues.md
-translation_source_hash: 6f35ac59053e312f56a716810c8f0b625752500d1fc64b27d93cbd8317b6cc19
+translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Oʻrnatish muammolarini hal qilish {#troubleshooting-deployment-issues}
+# Joylashtirish muammolarini bartaraf etish {#troubleshooting-deployment-issues}
 
-Ushbu bo'limda Iroha 3 ishga tushirishlar uchun muammolarni hal qilish maslahatlari mavjud. Agar siz duch kelayotgan muammo bu erda tasvirlanmagan bo'lsa, biz bilan [Telegram](https://t.me/hyperledgeriroha) orqali bog'lanishingiz mumkin.
+Ushbu bo‘lim Iroha 3 joylashtirishlari uchun muammo yechish bo‘yicha maslahatlarni taklif qiladi. Agar siz duch kelayotgan muammo bu yerda tasvirlanmagan bo‘lsa, biz bilan [Telegram](https://t.me/hyperledgeriroha) orqali bog‘laning.
 
-## Yaratilgan asarlar bilan boshlang . {#start-with-generated-artifacts}
+## Yaratilgan artefaktlardan boshlang {#start-with-generated-artifacts}
 
-Mahalliy va sinov dasturlari uchun Kagami tomonidan yaratilgan artefaktlar qo'lda yozilgan tengdoshlari fayllaridan ko'ra afzalroq:
-
-```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-```
-
-Yaratilgan direktoriyada tengdoshlari, genesis materiallari, boshlang'ich skriptlar va README qurilish liniyasi uchun Iroha 3 mavjud.
-
-## Tengdoshlar boshlang'ich emas {#peer-does-not-start}
-
-Avvalambor , ushbu narsalarni tekshirib koʻring:
-
-- `irohad --config <path>` ko'rsatkichlar tengdoshning o'zi TOML faylida.
-- `public_key` va `private_key` tengdoshlari konfiguratsiyasida bir xil kalit juftligidan iborat.
-- `genesis.public_key` genesis tranzaksiyasini imzolash uchun ishlatilgan kalitga mos keladi.
-- validator tengi identifikatsiyalari BLS-Normal kalitlardan foydalanadi, va `trusted_peers_pop` mahalliy kalit va ishonchli tengi uchun egalik to'g'risidagi hujjatni o'z ichiga oladi.
-- Torii va P2P uchun portlar allaqachon boshqa jarayon bilan bog'liq emas.
-- Kura do'kon direktoriyasi bir xil zanjirga tegishli bo'lib, boshqa tarmoq profilidan nusxa olingan emas.
-
-Daemon birdan ko'proq TOML qatlamni o'qiganida konfiguratsiya izlashidan foydalaning:
+Mahalliy va sinov joylashtirishlarida qo‘lda yozilgan tugun fayllari o‘rniga Kagami yaratgan artefaktlardan foydalaning:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --trace-config
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-## Docker va tarkib {#docker-and-compose}
+Yaratilgan katalogda tarmoq hamkasblari konfiguratsiyalari, blokcheyn boshlang‘ich materiali, ishga tushirish skriptlari va Iroha 3 qurilish liniyasi uchun README mavjud.
 
-Generate Hozirgi Kagami lokalnet chiqishidan qo'shish, shunda buyruq satridagi argumentlar va konfiguratsiya fayllari checked-out kodga mos keladi:
+## tarmoq qo‘shnisi ishga tushmayapti {#peer-does-not-start}
+
+Avvalo ushbu narsalarni tekshiring:
+
+- `iroha3d --config <path>` tarmoq hamkasbining o‘z TOML faylini ko‘rsatadi.
+- Tugun konfiguratsiyasidagi `public_key` va `private_key` ayni kalit juftligiga tegishli.
+- `genesis.public_key` blokcheyn boshlang‘ich tranzaksiyasini imzolash uchun ishlatilgan kalitga mos keladi.
+- Tasdiqlovchi tugun identifikatorlari BLS-Normal kalitlaridan foydalanadi; `trusted_peers_pop` mahalliy kalit va ishonchli tugunlarning egalik dalillarini o‘z ichiga oladi.
+- Torii va P2P portlari allaqachon boshqa jarayon tomonidan bog‘lanmagan.
+- Kura do'kon katalogi bir xil tarmoqqa tegishli va boshqa tarmoq profilidan nusxalanmagan.
+
+Daemon bir nechta TOML qatlamini o‘qisa, konfiguratsiya izini kuzatishdan foydalaning:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 ```
 
-Agar kompozitni ishga tushirish boshlansa va keyin to'xtasa, daemonlar jurnallarini tekshirib ko'ring:
+## Docker va Tahrirlash {#docker-and-compose}
 
-- mos kelmagan `chain`
-- bitta tengdoshi boshqacha genesis transaksiyasi yoki manifestidan foydalangan holda
-- reklama qilingan P2P manzillari faqat konteynerlar tarmog'ida ishlaydi
-- genesis qayta tiklanganidan so'ng mahalliy hajmni qayta ishlatish
+Joriy Kagami localnet chiqishidan Compose yaratish, shunda komandani satr argumentlari va konfiguratsiya fayllari tekshirilgan kodga mos keladi:
 
-Yangi genesisni sinovdan o'tkazganingizda, to'plamni qayta boshlashdan oldin eski Kura hajmlarni olib tashlang. Eski bloklarni yangi genesis bilan saqlash o'yinni muvaffaqiyatsiz qoldiradi.
+```bash
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
+```
+
+Agar compose joylashtirish boshlansa va keyin to'xtab qolsa, daemon jurnallarini tekshiring:
+
+- mos kelmaydigan `chain`
+- bitta tarmoq ishtirokchisi boshqa blokcheyn boshlang‘ich tranzaksiyasi yoki manifestdan foydalanmoqda
+- reklama qilingan P2P manzillar faqat konteyner tarmog‘i ichida ishlaydi
+- blokcheyn boshlang'ichini qayta yaratgandan keyin mahalliy hajmni qayta ishlatish
+
+Yangi blockchain genesisini sinovdan o'tkazganda, stekni qayta ishga tushirishdan oldin eski Kura hajmlarini olib tashlang. Eski blok saqlashni yangi blockchain genesis bilan saqlash replayning muvaffaqiyatsiz bo‘lishiga olib keladi.
 
 ## Kubernetes {#kubernetes}
 
-Kubernetes uchun har bir validatorni davlatli infratuzilma sifatida qabul qiling:
+Kubernetes uchun har bir tasdiqlovchini holatli infratuzilma sifatida ko‘ring:
 
-- har bir tengdoshga barqaror identifikatsiya kalitini va barqaror doimiy hajmni berish
-- P2P boshqa tengdoshlar klaster ichidan hal qilishlari mumkin bo'lgan manzillarni ochish
-- konfiguratsiya va genesis fayllarini ishga tushirish uchun oʻzgarmas konfiguratsiya sifatida mount qilish
-- barcha genesis yoki topologiya o'zgarishlarini avtomatik ravishda konfiguratsiya xaritasi yangilanishi sifatida emas, balki bila turib joriy etish
+- har bir tarmoq ishtirokchisiga barqaror identifikatsiya kaliti va barqaror doimiy hajm bering
+- klaster ichida boshqa tarmoq qatnashchilari echishi mumkin bo‘lgan P2P manzillarni ochib berish
+- konfiguratsiya va blokcheyn genesis fayllarini rollout uchun o'zgarmas konfiguratsiya sifatida o'rnating
+- barcha blokcheyn boshlang‘ich yoki topologiya o‘zgarishlarini ongli ravishda amalga oshiring, avtomatik config-map yangilanishi sifatida emas
 
-Agar pod takror-takror qayta ishga tushirilsa, poddagi o'rnatilgan konfiguratsiyani kutilayotgan [`peer.template.toml`](/uz/reference/peer-config/index.md#template) bilan taqqoslang va tengdoshi eski Kura ma'lumotlarni takrorlayapti yoki yo'qmi tekshirib ko'ring.
+Agar pod takror-takror qayta ishga tushsa, poddagi render qilingan konfiguratsiyani kutilgan bilan solishtiring [`peer.template.toml`](/uz/reference/peer-config/index.md#template) va tarmoq qo‘shnisi eski ma’lumotlarni qayta yuborayotganini tekshiring Kura ma'lumot.
 
 ## Sora profili {#sora-profile}
 
-Nexus, SoraFS yoki ko'p yo'nalishdagi oqimlardan foydalanuvchi Iroha 3 ishga tushirishlar Sora profilini qo'llab-quvvatlagan holda daemonni boshlash kerak:
+Maxfiy yoki mahalliy Iroha 3 joylashtirishlar, Nexus, SoraFS yoki ko‘p yo‘nalishli oqimlardan foydalangan holda, Sora profili yoqilgan holda standart daemonni ishga tushirishi kerak:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --sora
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora
 ```
 
-Bir xil tarmoqdagi tasdiqlovchilarda bir xil profildan muntazam foydalanish.
+Xuddi shu profilni bir xil tarmoqdagi validatorlar bo‘ylab doimiy ravishda ishlating.
+
+Jamoat Taira validatorlari maxsus launcherdan foydalanadi, bu Taira'ning aniq zanjiri, ro‘yxati, o‘chirilgan embedded-SoraFS xotirasi va ishga tushiruvchi imzolovchi profilini ta’minlaydi. Ishga tushirishdan oldin render qilingan Taira konfiguratsiyani tekshiring:
+
+```bash
+iroha3d_taira --sora \
+  --config /etc/iroha/taira/config.toml \
+  --check-config
+```
+
+Ochiq Taira tasdiqlovchi tugunini oddiy `iroha3d` bilan ishga tushirmang; majburiy profil uchun [`iroha3d` CLI ma’lumotnomasiga](/uz/reference/iroha3d-cli.md) qarang.

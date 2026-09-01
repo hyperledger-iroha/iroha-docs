@@ -3,51 +3,51 @@ translation_locale: az
 translation_source: /guide/best-practices/security-and-access.md
 translation_source_hash: f0163734d618d91337b437da703743014d01c57c4cb603fbc2e66316f3654779
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Təhlükəsizlik və giriş {#security-and-access}
+# Təhlükəsizlik və Giriş {#security-and-access}
 
-Iroha təhlükəsizlik təcrübəsi məhdud səlahiyyətlərə, nəzarət edilən açarların saxlanılmasına, açıq şəbəkə məruz qalmasına və yoxlana bilən dəyişikliklərə əsaslanmalıdır.
+Iroha üzrə təhlükəsizlik təcrübəsi dar icazə prinsipi, idarə olunan açar saxlanması, açıq şəbəkə açıqlığı və audit edilə bilən dəyişikliklər əsasında qurulmalıdır.
 
-## Mütəxəssislər {#key-custody}
+## Açarın saxlanması {#key-custody}
 
-- İstehsalat dərəcəsi entropiyası olan istehsal açarlarını istehsal edin və xüsusi açarları anbarların xaricində saxlayın, izləyicilər, tələbatlar, söhbət qeydləri və CI çıxışı yayın.
-- Müştərilər, həmyaşıdlar, genesis imzalanması, təsdiqçilər, ödəniş sponsorları və texniki hesablar üçün ayrı bir açar materialdan istifadə edin.
-- Bir yazılı prosesə uyğun olaraq açarları fırlatın və canlı hadisədən əvvəl bərpa təcrübəsi edin.
-- Yüksək dəyərli imza açarları üçün donanımlı və ya əməliyyat sistemi ilə dəstəklənmiş saxlama istifadə edin, əgər tətbiq riski bunu əsaslandırırsa.
+- İstehsal səviyyəli entropiyaya malik istehsal açarları yaradın və şəxsi açarları repozitoriyalardan, məsələ izləyicilərindən, istəklərdən, söhbət qeydlərindən və CI çıxışından kənarda saxlayın.
+- Müştərilər, şəbəkə həmkarları, blokçeyn genesis imzalaması, təsdiqləyicilər, ödəniş sponsoru və texniki hesablar üçün ayrı açar materialından istifadə edin.
+- Açarları yazılı prosesə uyğun fırladın və canlı hadisədən əvvəl bərpa etməyi məşq edin.
+- Yüksək dəyərli imzalama açarları üçün, yerləşdirmə riski bunu əsaslandırdıqda, aparat dəstəyi ilə və ya əməliyyat sistemi dəstəyi ilə saxlamadan istifadə edin.
 
-Bax [Kriptografik açarların yaradılması](/az/guide/security/generating-cryptographic-keys.md) və [Storing Cryptographic Keys](/az/guide/security/storing-cryptographic-keys.md).
+Baxın [Kriptoqrafik Açarların Yaradılması](/az/guide/security/generating-cryptographic-keys.md) və [Kriptoqrafik Açarların Saxlanması](/az/guide/security/storing-cryptographic-keys.md).
 
-## İzinlər {#permissions}
+## İcazələr {#permissions}
 
-- İş axınına dəstək verən ən kiçik icazə simvolu və ya rolu verin.
-- Xidmətlər, triggerlər, agentlər və avtomatlaşdırma üçün xüsusi texniki hesabları üstün tuturlar. Şəxsi operator hesabı vasitəsilə uzun ömürlü avtomatlaşdırma işindən çəkinin.
-- Tərəfdaş idarəetməsinə, metadata mutasiyasına, mintəməyə, yandırmaya, tetikləyici qeydiyyatına, icraçı dəyişikliyinə və SORA/Nexus idarəetməyə icazələri istehsalın başlanmasından əvvəl nəzərdən keçirin.
-- Müvəqqəti icazələri saxlama pəncərəsindən sonra və ya onları tələb edən köçürülmədən sonra ləğv edin.
+- İş axışını dəstəkləyən ən kiçik icazə tokenini və ya rolu verin.
+- Xidmətlər, tetikleyicilər, agentlər və avtomatlaşdırma üçün xüsusi texniki hesabları üstün tutun. Uzunmüddətli avtomatlaşdırmanı şəxsi operator hesabı vasitəsilə işlətməkdən çəkinin.
+- İstehsal buraxılışından əvvəl şəbəkə bərabərinin idarə olunması, metadata dəyişiklikləri, buraxılış, məhv etmə, tetik qeydiyyatı, icraçı dəyişiklikləri və SORA/Nexus idarəçiliyi üçün icazələri nəzərdən keçirin.
+- Müvəqqəti icazələri onlara ehtiyac olan texniki xidmət pəncərəsindən və ya köçürmədən sonra ləğv edin.
 
-Bax [İzinlər](/az/blockchain/permissions.md) və [İzin simvolları ](/az/reference/permissions.md).
+Baxın [İcazələr](/az/blockchain/permissions.md) və [İcazə Jetonları](/az/reference/permissions.md).
 
-## Şəbəkə məruz qalması {#network-exposure}
+## Şəbəkə İfşası {#network-exposure}
 
-- Ətraf mühitə uyğun olaraq peer-to-peer, Torii, telemetriya və operator marşrutlarını məhdudlaşdırın. İctimaiyyət oxumaq imkanı ictimaiyyəti yazmaq və ya operatorun girişini nəzərdə tutmur.
-- VPNs, yanğın divarları, geri proxylər, TLS ləğvləri və tətbiq üçün lazımi hallarda dərəcə limitlərindən istifadə edin.
-- Əsas müəllif təsnifatlarını, proxy tokenlərini və ötürülmüş başlıqları etibarlı konfiqurasiyalardan kənar tutun.
-- Rəsmi olmayan müştərilərin məhdud marşrutlara çatmadığını yoxlayın.
+- Mühitə uyğun olaraq həmyaşıdlarla, Torii, telemetriya və operator marşrutlarını məhdudlaşdırın. İctimai oxuma girişi ictimai yazma və ya operator girişini ifadə etmir.
+- Quraşdırma üçün uyğun olan yerlərdə VPNs, firewall-lar, tərs proksi serverlər, TLS dayandırılması və sürət məhdudiyyətlərindən istifadə edin.
+- Əsas autentifikasiya məlumatlarını, proksi tokenlərini və göndərilən başlıqları mənbə nəzarətində saxlanılan konfiqurasiyadan kənarda saxlayın.
+- Səlahiyyətsiz müştərilərin məhdudlaşdırılmış marşrutlara çata bilmədiyini yoxlayın.
 
-[Virtual Xüsusi Şəbəkələr](/az/guide/security/vpn.md) və [ Torii Son nöqtələri ](/az/reference/torii-endpoints.md) bax.
+Baxın [Virtual Özəl Şəbəkələr](/az/guide/security/vpn.md) və [Torii API son nöqtələr](/az/reference/torii-endpoints.md).
 
-## Xəyanətkarlıq və sui-istifadənin nəzarəti {#fraud-and-abuse-monitoring}
+## Fırıldaqçılıq və Sui-istifadə Nəzarəti {#fraud-and-abuse-monitoring}
 
-- Başlıq hadisələrini və gözlənilməz aktivlərin hərəkəti, icazə verilməsi, başlatma dəyişiklikləri, həmyaşıd dəyişiklikləri və təkrar rədd edilmiş əməliyyatlar üçün əməliyyat siqnallarını izləyin.
-- Əməliyyat həşləri, blok hündürlüyü, hadisə qeydləri, jurnallar və status sürətləri ilə sübutları saxlayın.
-- Təhlükəsizlik, əməliyyatlar və təsirlənmiş aktivlər və ya iş axınları üçün məsuliyyət daşıyan sahibkarlara yol xəbərdarlıqları.
+- Blockchain jurnal hadisələrini və əməliyyat siqnallarını gözlənilməz aktiv hərəkətləri, icazə verilmələri, trigger dəyişikliklərini, şəbəkə tərəfdaş dəyişikliklərini və təkrar rədd edilmiş əməliyyatları izləmək üçün monitorinq edin.
+- Əməliyyat kriptoqrafik xəşləri, blok hündürlüklərini, hadisə qeydlərini, jurnalları və vəziyyət şəkillərini qoruyun.
+- Marşrut xəbərdarlıqları, təsirlənmiş aktivlərdən və ya iş axınlarından məsul olan təhlükəsizlik, əməliyyat və iş sahiblərinə göndərilir.
 
-Bax [Xalçaqmalçılığın nəzarəti ](/az/guide/security/fraud-monitoring.md).
+Bax [Fırıldaqçılığın Monitorinqi](/az/guide/security/fraud-monitoring.md).
 
-## Agent və avtomatlaşdırma qoruyucuları {#agent-and-automation-guardrails}
+## Agent və Avtomatlaşdırma Təhlükəsizlik Qaydaları {#agent-and-automation-guardrails}
 
-- Otomatlaşdırma yalnız oxunma icazələri ilə başlayın və iş axını nəzərdən keçildikdən sonra yazma səlahiyyətini əlavə edin.
-- Otomatlaşdırma məqsədyönlü istehsal xidməti olmadığı təqdirdə canlı şəbəkə mutasiyaları üçün açıq insan təsdiqini tələb etmək.
-- Xüsusi açarları agent təzyiqlərinə açıqlamayın. Ətraf mühit dəyişikliklərindən, açar silsilələrindən, aparat imzalılarından və ya qurğu fayllarından gizli məlumatlar yükləyən yerli koddan istifadə edin.
-- Məlumatların gizli materialı sızdırılmadan yoxlamaları dəstəkləyən bir şəkildə qeyd avtomatizasiyası qərarları.
+- Avtomatlaşdırmaya yalnız oxuma icazələri ilə başlayın və yazma səlahiyyəti əsasını yalnız iş axını nəzərdən keçirildikdən sonra əlavə edin.
+- Canlı şəbəkə dəyişiklikləri üçün açıq insan təsdiqi tələb olunur, istisna olaraq avtomatlaşdırma qəsdən yerləşdirilmiş istehsal xidməti olduqda.
+- Şəxsi açarları agent istemlərinə göstərməyin. Məxfiləri mühit dəyişənlərindən, açar kirayəçilərindən, aparat kriptoqrafik imzalayıcılarından və ya nəzərə alınmayan konfiqurasiya fayllarından yükləyən yerli koddan istifadə edin.
+- Auditləri dəstəkləyəcək şəkildə, gizli material sızdırmadan loqavtomatlaşdırma qərarlarını qeyd edin.

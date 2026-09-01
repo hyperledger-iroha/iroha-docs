@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /reference/glossary.md
-translation_source_hash: fe3bc2d62ca81b5e6e30023407f3c900eb4026b6668f0d422728a8eedd436148
+translation_source_hash: ab484310e7e0b0662c1d4bb133e7ae337c71b09b5fdc8e678581234d74ee9b29
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,53 +10,53 @@ translation_engine: nllb-200-ct2
 
 在此,您可以找到所有與 Iroha 有關的實體的定義.
 
-- [同行](#peer)
+- [對等節點](#peer)
 - [資產](#asset)
 - [拜占庭的故障耐受性 (BFT) ](#byzantine-fault-tolerance-bft)
-- [Iroha 組件](#iroha-components)
+- [Iroha 元件](#iroha-components)
   - [Sumeragi (皇帝)](#sumeragi-emperor)
   - [Torii (門)](#torii-gate)
   - [Kura (倉庫)](#kura-warehouse)
   - [Kagami(教師和模範和/或鏡子)](#kagami-teacher-and-exemplar-and-or-looking-glass)
   - [梅克爾樹 (哈什樹)](#merkle-tree-hash-tree)
-  - [智能合同](#smart-contracts)
+  - [智慧合同](#smart-contracts)
   - [觸發器](#triggers)
   - [版本](#versioning)
-  - [希吉里 (同行聲譽系統) ](#hijiri-peer-reputation-system)
-- [Iroha 模塊](#iroha-modules)
+  - [希吉里 (對等節點聲譽系統) ](#hijiri-peer-reputation-system)
+- [Iroha 模組](#iroha-modules)
 - [Iroha 特別指示 (ISI)](#iroha-special-instructions-isi)
   - [實用性 Iroha 特殊指令](#utility-iroha-special-instructions)
   - [核心 Iroha 特殊指示](#core-iroha-special-instructions)
   - [域名特定的 Iroha 特殊指令](#domain-specific-iroha-special-instructions)
   - [關稅 Iroha 特別說明](#custom-iroha-special-instruction)
 - [Iroha 查詢](#iroha-query)
-- [查看變更](#view-change)
+- [檢視變更](#view-change)
 - [世界狀態觀 (WSV) ](#world-state-view-wsv)
 - [領導者](#leader)
 
 ## 區塊鏈賬本 {#blockchain-ledgers}
 
-區塊鏈賬本是使用區塊鏈技術保存財務記錄的數字記錄系統.這些名字源於用於價格,新聞和交易信息等金融記錄的古老書籍.
+區塊鏈賬本是使用區塊鏈技術儲存財務記錄的數字記錄系統.這些名字源於用於價格,新聞和交易資訊等金融記錄的古老書籍.
 
-在中世紀期間,賬本開放以供公衆查看和驗證準確性.這種想法反映在基於區塊鏈的系統中,可以檢查存儲的數據是否有效.
+在中世紀期間,賬本開放以供公眾檢視和驗證準確性.這種想法反映在基於區塊鏈的系統中,可以檢查儲存的資料是否有效.
 
-## 同齡人 {#peer}
+## 對等節點 {#peer}
 
-在 Iroha 中的同行是指其他 Iroha 進程和客戶端應用程序可以連接到的 Iroha 過程實例. 一臺機器可以容納多個 Iroha 同行.同齡人在資源和能力方面是平等的,但有一個重要例外:只有一個同齡人在 Iroha 網絡啓動階段運行基因塊.
+在 Iroha 中的對等節點是指其他 Iroha 程序和客戶端應用程式可以連線到的 Iroha 過程例項. 一臺機器可以容納多個 Iroha 對等節點.對等節點在資源和能力方面是平等的,但有一個重要例外:只有一個對等節點在 Iroha 網路啟動階段執行創世塊.
 
 其他區塊鏈可能與節點或驗證符相同的概念.
 
-一個同行可以是其主機系統上的過程. 它也可以包含在一個 Docker 容器和 Kubernetes 子中.
+一個對等節點可以是其主機系統上的過程. 它也可以包含在一個 Docker 容器和 Kubernetes 子中.
 
 ## 資產 {#asset}
 
 在區塊鏈的背景下,資產是對區塊鏈上的有價值物體的表示.
 
-關於資產的額外信息可在 [上找到](/zh-hant/blockchain/assets.md).
+關於資產的額外資訊可在 [上找到](/zh-hant/blockchain/assets.md).
 
 ### 性資產 {#fungible-assets}
 
-這些資產可以很容易地換成同類型的其他資產,因爲它們是可互換的.
+這些資產可以很容易地換成同型別的其他資產,因為它們是可互換的.
 
 例如,同一貨幣的所有單位的價值均等,並且可以用於購買商品.通常,可形資產外觀相同,除了紙幣和硬幣的磨損.
 
@@ -64,71 +64,71 @@ translation_engine: nllb-200-ct2
 
 由於其特殊特徵和稀有性,非形資產是獨特的和有價值的;它們的價值與其他資產無法比較.
 
-- 一幅畫的價值可以根據藝術家,繪畫時間以及公衆對其感興趣而變化.
+- 一幅畫的價值可以根據藝術家,繪畫時間以及公眾對其感興趣而變化.
 - 一條街上的兩個房子可能有不同的維護水平.
 - 珠寶製造商通常提供各種不同的設計.
 
-### 可存儲的資產 {#mintable-assets}
+### 可鑄造資產 {#mintable-assets}
 
-如果可以發行更多相同類型的資產,該資產是可創建的.
+如果可以發行更多相同型別的資產，該資產就是可鑄造的。
 
-### 不可提現的資產 {#non-mintable-assets}
+### 不可鑄造資產 {#non-mintable-assets}
 
-如果資產的初始金額被指定一次,並且沒有變化,則將其視爲不可取消.
+如果資產的初始數量只指定一次且不再變更，該資產就被視為不可鑄造。
 
-[Genesis塊](/zh-hant/guide/configure/genesis.md)爲 Iroha 配置設置了此信息.
+[Genesis塊](/zh-hant/guide/configure/genesis.md)為 Iroha 配置設定了此資訊.
 
 ## 拜占庭的故障耐受性 (BFT) {#byzantine-fault-tolerance-bft}
 
-能夠在包含一定比例的惡意行爲者網絡中正常運行的特性.Iroha 能夠與其同等網絡中最多33%的惡意行爲者進行操作.
+能夠在包含一定比例的惡意行為者網路中正常執行的特性.Iroha 能夠與其同等網路中最多33%的惡意行為者進行操作.
 
-## Iroha 組件 {#iroha-components}
+## Iroha 元件 {#iroha-components}
 
-包含 Iroha 功能的 Rust 模塊.
+包含 Iroha 功能的 Rust 模組.
 
 ### Sumeragi (皇帝) {#sumeragi-emperor}
 
-負責共識的 Iroha 模塊.
+負責共識的 Iroha 模組.
 
 ### Torii (門) {#torii-gate}
 
-該模塊爲 [peer](#peer)的輸入請求處理邏輯. 它用於接收,接受和路由輸入指示,以及 HTTP 查詢,以及運行時間配置更新.
+包含[對等節點](#peer)傳入要求處理邏輯的模組。它用於接收、接受和路由傳入的指令及 HTTP 查詢，也用於處理執行階段設定更新。
 
 ### Kura (倉庫) {#kura-warehouse}
 
-一個持續的塊存儲. Kura 存儲簽名區塊,區塊哈希,高度指數,恢復側車和在磁盤上提交列表的元數據. [世界狀況的看法](#world-state-view-wsv) 是從 Kura 當狀態快照不可或在本地區塊商店後面. [Kura 存儲](/zh-hant/blockchain/world.md#kura-storage).
+一個持續的塊儲存. Kura 儲存簽名區塊,區塊雜湊,高度索引,恢復輔助記錄和在磁碟上提交列表的後設資料. [世界狀況的看法](#world-state-view-wsv) 是從 Kura 當狀態快照不可或在本地區塊商店後面. [Kura 儲存](/zh-hant/blockchain/world.md#kura-storage).
 
 ### Kagami(教師和示範者及/或鏡子) {#kagami-teacher-and-exemplar-and-or-looking-glass}
 
-通常使用的數據生成器. 它可以生成加密密鑰對,創始區塊,文檔等.
+通常使用的資料生成器. 它可以生成加密金鑰對,創世區塊,文件等.
 
 ### 梅克爾樹 (樹) {#merkle-tree-hash-tree}
 
-一個用於驗證和驗證每個區塊高度狀態的數據結構. Iroha 目前的實現是二進制樹.查看[Wikipedia](https://en.wikipedia.org/wiki/Merkle_tree)詳細信息.
+一個用於驗證和驗證每個區塊高度狀態的資料結構. Iroha 目前的實現是二進位制樹.檢視[Wikipedia](https://en.wikipedia.org/wiki/Merkle_tree)詳細資訊.
 
-### 智能合同 {#smart-contracts}
+### 智慧合同 {#smart-contracts}
 
-智能合同是基於區塊鏈的程序,在滿足特定條件時運行. 在 Iroha 中,智能合約使用[核心 Iroha 特殊指令](#core-iroha-special-instructions)實現.
+智慧合同是基於區塊鏈的程式,在滿足特定條件時執行. 在 Iroha 中,智慧合約使用[核心 Iroha 特殊指令](#core-iroha-special-instructions)實現.
 
 ### 觸發器 {#triggers}
 
-事件類型,允許調用一個 Iroha 具體區塊提交,時間 (含有一些警告) 等方面的特殊指示. [在這裏](/zh-hant/blockchain/triggers.md).
+事件型別,允許呼叫一個 Iroha 具體區塊提交,時間 (含有一些警告) 等方面的特殊指示. [在這裡](/zh-hant/blockchain/triggers.md).
 
 ### 版本化 {#versioning}
 
-每個請求都標記着它屬於的 API 版本. 它允許 Iroha 客戶端/同行軟件的不同二進制版本的組合相互操作,這反過來可以在 Iroha 網絡中進行軟件升級.
+每個請求都標記著它屬於的 API 版本. 它允許 Iroha 客戶端/對等節點軟體的不同二進製版本的組合相互操作,這反過來可以在 Iroha 網路中進行軟體升級.
 
-### 希吉里 (同行聲譽系統) {#hijiri-peer-reputation-system}
+### 希吉里 (對等節點聲譽系統) {#hijiri-peer-reputation-system}
 
-Iroha 的聲譽系統.它允許優先與具有良好的軌跡記錄的[同行](#peer)進行溝通,並減少惡意的[同行](#peer)造成的傷害.
+Iroha 的聲譽系統.它允許優先與具有良好的軌跡記錄的[對等節點](#peer)進行溝通,並減少惡意的[對等節點](#peer)造成的傷害.
 
-## Iroha 模塊 {#iroha-modules}
+## Iroha 模組 {#iroha-modules}
 
-Iroha 的第三方擴展,提供了定製功能.
+Iroha 的第三方擴充套件,提供了定製功能.
 
 ## Iroha 特殊指示 (ISI) {#iroha-special-instructions-isi}
 
-提供 Iroha 的智能合同庫. 這些可以通過交易或註冊活動聽衆來調用.更多信息在 ISI [這裏](/zh-hant/blockchain/instructions.md).
+提供 Iroha 的智慧合同庫. 這些可以透過交易或註冊活動聽眾來呼叫.更多資訊在 ISI [這裡](/zh-hant/blockchain/instructions.md).
 
 #### 實用性 Iroha 特殊指示 {#utility-iroha-special-instructions}
 
@@ -140,24 +140,24 @@ Iroha 的第三方擴展,提供了定製功能.
 
 ### 特定領域的特殊指示 Iroha {#domain-specific-iroha-special-instructions}
 
-與特定領域的活動相關的指令:資產,賬戶,域名,同行管理).這些指令提供了安全和安全的方式對[世界狀態視圖](#world-state-view-wsv)進行變更所需的工具.
+與特定領域的活動相關的指令:資產,帳戶,域名,對等節點管理).這些指令提供了安全和安全的方式對[世界狀態檢視](#world-state-view-wsv)進行變更所需的工具.
 
 ### 關稅 Iroha 特殊指示 {#custom-iroha-special-instruction}
 
-提供指令 [Iroha 模塊](#iroha-modules), 通過客戶或第三方. [核心指令](#core-iroha-special-instructions). 叉和修改 Iroha 源代碼不建議,因爲特別指示未經同意的 [同齡人](#peer) 在一個 Iroha 部署將被視爲故障,因此 [同齡人](#peer) 運行修改實例將被取消訪問權限.
+由 [Iroha 模組](#iroha-modules)、使用者端或第三方提供的指令。這些指令只能使用[核心指令](#core-iroha-special-instructions)建置。不建議分叉和修改 Iroha 原始碼，因為 Iroha 部署中的[對等節點](#peer)未達成一致的特殊指令會被視為故障，因此執行修改例項的[對等節點](#peer)將被撤銷存取權。
 
 ## Iroha 查詢 {#iroha-query}
 
-要求閱讀世界狀況視圖而不修改該視圖.更多關於查詢 [在](/zh-hant/blockchain/queries.md).
+要求閱讀世界狀況檢視而不修改該檢視.更多關於查詢 [在](/zh-hant/blockchain/queries.md).
 
-## 查看變化 {#view-change}
+## 檢視變化 {#view-change}
 
 一個在未能達成共識的情況下進行的過程. 通常,這涉及選舉一個新的 [領導人](#leader).
 
 ## 世界狀態的視角 (WSV) {#world-state-view-wsv}
 
-目前的區塊鏈狀態在內存中表示. WSV 包含了 `World`, 已承諾的區塊哈希,交易指數,共識拓和被查詢所使用的衍生指數.它只有通過承諾的區塊更新,可以從 [Kura](#kura-warehouse). 查看 [世界狀況的看法](/zh-hant/blockchain/world.md#world-state-view-wsv).
+目前的區塊鏈狀態在記憶體中表示. WSV 包含了 `World`, 已提交的區塊雜湊,交易索引,共識拓和被查詢所使用的派生索引.它只有透過提交的區塊更新,可以從 [Kura](#kura-warehouse). 檢視 [世界狀況的看法](/zh-hant/blockchain/world.md#world-state-view-wsv).
 
 ## 領導者 {#leader}
 
-在Iroha網絡中,一個同行被隨機選擇並獲得特殊特權.這種特權可以被撤銷在實現 [拜占庭的故障度](#byzantine-fault-tolerance-bft) 通過 [視圖的變化](#view-change).
+在 Iroha 網路中，系統會隨機選出一個對等節點，並賦予其建立下一個區塊的特殊權限。在達成[拜占庭容錯](#byzantine-fault-tolerance-bft)的網路中，可透過[檢視變更](#view-change)撤銷此權限。

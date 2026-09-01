@@ -1,28 +1,28 @@
 ---
 translation_locale: es
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 6b50c995afaf9f46df6fdaab31add40b106cfa12fdaa31dabbb74448486f87f9
+translation_source_hash: 29f2bdb390fc93b97f8ed9108634f70e21ba747c8606fb84093d37e9586516c1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Activos fúngicos {#fungible-assets}
+# Activos fungibles {#fungible-assets}
 
-## El resultado {#outcome}
+## Resultado {#outcome}
 
-Inspeccionar en vivo las definiciones de activos Taira y completar un flujo de registro, moneda, transferencia, quema y verificación del saldo en una red local generada. la receta utiliza una definición de activo base58 canónica sin prefijos IDs, alias calificados para dominios, cuenta sin dominio I105 IDs y pago explícito de cuotas.
+Inspeccione las definiciones de activos en vivo Taira y complete un registro, emisión, transferencia, quema y flujo de verificación de saldo en una red local generada. La receta utiliza IDs de definición de activos Base58 canónicas sin prefijo, alias calificados por dominio, IDs de cuenta I105 sin dominio, y el pago explícito de tarifas.
 
-## Los requisitos previos {#prerequisites}
+## Requisitos previos {#prerequisites}
 
-- `curl`, `jq`, Python 3.11 o más tarde, Node.js 24 y la corriente `iroha` CLI.
-- Acceso de sólo lectura Taira.
-- Para el proceso de escritura, se genera una red local desde [Lanzamiento Iroha](/es/get-started/launch-iroha.md), con `./localnet/client.toml` y Torii en `http://127.0.0.1:8080`.
+- `curl`, `jq`, Python 3.11 o posterior, Node.js 24, y el actual `iroha` CLI.
+- Acceso de solo lectura Taira.
+- Para la guía de escritura, una red local generada a partir de [Lanzar Iroha](/es/get-started/launch-iroha.md), con `./localnet/client.toml` y Torii en `http://127.0.0.1:8080`.
 
-## Los pasos {#steps}
+## Pasos {#steps}
 
-### 1. Inspectar las definiciones Taira sin firmante. {#_1-inspect-taira-definitions-without-a-signer}
+### 1. Inspeccionar las definiciones Taira sin un firmante criptográfico {#_1-inspect-taira-definitions-without-a-signer}
 
-Las definiciones de activos tienen una Base58 opaca ID, nombre de visualización, Política de capacidad, escala numérica, alias opcionales, propietario y cantidad total. El saldo concreto incluye también su cuenta del titular y el alcance opcional del espacio de datos.
+Las definiciones de activos llevan un ID opaco en Base58, un nombre para mostrar, la política de emisión de activos, una escala numérica, un alias opcional, propietario y cantidad total. El balance concreto también incluye la cuenta del titular y un alcance opcional del espacio de datos.
 
 ::: code-group
 
@@ -54,11 +54,11 @@ for (const definition of items) {
 
 :::
 
-Ejecutar el formulario JavaScript con `node taira-assets.mjs`. Los activos públicos IDs son valores de Base58 desnudos; un valor legible como `cookbook_credit#wonderland.universal` es un alias que se resuelve a uno de esos IDs.
+Ejecute el formulario JavaScript con `node taira-assets.mjs`. Los ID de activos públicos son valores Base58 puros; un valor legible como `cookbook_credit#wonderland.universal` es un alias que se resuelve a uno de esos ID.
 
-### 2. Preparar a la autoridad local y al destino {#_2-prepare-the-local-authority-and-destination}
+### 2. Prepare el principal de autorización local y el destino {#_2-prepare-the-local-authority-and-destination}
 
-Derivar la autoridad local de la clave pública en la configuración generada y elegir otra cuenta registrada como destinatario. No se imprime llave privada.
+Derive el principal de autorización local a partir de la clave pública en la configuración generada y elija otra cuenta registrada como destinatario. No se imprime la clave privada.
 
 ```bash
 LOCAL_ROOT='http://127.0.0.1:8080'
@@ -84,7 +84,7 @@ DESTINATION_ACCOUNT="$(
 
 ### 3. Registrar una definición numérica {#_3-register-a-numeric-definition}
 
-Este local-solo ID es una dirección válida sin prefijo de la definición de activos Base58. El alias proporciona la proyección humana legible `domain.dataspace`. La escala `2` permite dos dígitos fraccionarios; omitir `--mint-once` mantiene la política predeterminada `Infinitely`.
+Este ID local únicamente es una dirección de definición de activo Base58 válida sin prefijo. El alias proporciona la proyección legible por humanos `domain.dataspace`. La escala `2` permite dos dígitos fraccionarios; omitir `--mint-once` mantiene la política predeterminada `Infinitely`.
 
 ```bash
 ASSET_DEFINITION_ID='66owaQmAQMuHxPzxUN3bqZ6FJfDa'
@@ -101,11 +101,11 @@ iroha --config "$LOCAL_CONFIG" \
   --scale 2
 ```
 
-No vuelva a utilizar ID en Taira. El registro de la red pública requiere un nuevo canónico ID, un dominio/alias asignado a su solicitud, financiación de tarifas y el permiso de registro de activos del tiempo de ejecución.
+No reutilice ese ID en Taira. El registro en la red pública requiere un ID canónico nuevo, un dominio/alias asignado a su aplicación, financiación de tarifas y el permiso de registro de activos del entorno de ejecución del software.
 
-### 4. La menta, el traslado y la quema {#_4-mint-transfer-and-burn}
+### 4. emitir, transferir y quemar {#_4-mint-transfer-and-burn}
 
-Todos los comandos de escritura seleccionan explícitamente a la autoridad como pagador de honorarios. CLI cita la transacción exacta antes de firmar y espera por defecto.
+Todos los comandos de escritura seleccionan explícitamente al principal de autorización como pagador de tarifas. El CLI cotiza la transacción exacta antes de firmar y espera por defecto.
 
 ```bash
 iroha --config "$LOCAL_CONFIG" \
@@ -131,17 +131,17 @@ iroha --config "$LOCAL_CONFIG" \
   --quantity 10.00
 ```
 
-Después de la quema, espere el saldo de la fuente `64.50`, el balance de destino `25.50` y la cantidad total `90.00`.
+Después de la quema, espere el saldo de origen `64.50`, el saldo de destino `25.50` y la cantidad total `90.00`.
 
-::: warning Límites de los permisos
+::: warning Límite de permisos
 
-En Taira, adjunta el `taira.tx-metadata.json` derivado del grifo y usa `--fee-payer authority` para cada escritura. El registro y la acuñación requieren los permisos del validador activo; la transferencia y quemadura requieren autoridad sobre el saldo de origen. Una cuenta financiada por un grifo no es automáticamente un emisor.
+En Taira, adjunta el `taira.tx-metadata.json` derivado del grifo y usa `--fee-payer authority` para cada escritura. El registro y la emisión requieren los permisos del validador activo; la transferencia y la quema requieren el principal de autorización sobre el saldo de origen. Una cuenta financiada por testnet no es automáticamente un emisor.
 
 :::
 
 ## Verificar {#verify}
 
-Lea tanto los equilibrios concretos como la definición. Estas consultas posteriores al estado son el criterio de éxito; un recibo de presentación por sí mismo no lo es.
+Lea ambos saldos concretos y luego la definición. Estas consultas de estado posterior son el criterio de éxito; un registro de resultado del protocolo de presentación por sí solo no lo es.
 
 ```bash
 iroha --config "$LOCAL_CONFIG" ledger asset get \
@@ -156,22 +156,22 @@ iroha --config "$LOCAL_CONFIG" ledger asset definition get \
   --id "$ASSET_DEFINITION_ID"
 ```
 
-Las afirmaciones de aplicación deben comparar los valores numéricos como decimales de punto fijo, no como valores binarios de puntos flotantes, y deben verificar la definición ID así como la cuenta.
+Las afirmaciones de la aplicación deben comparar valores numéricos como decimales de punto fijo, no como valores de punto flotante binario, y deben verificar el ID de definición así como la cuenta.
 
 ## Solución de problemas {#troubleshooting}
 
-- Un ID que contiene `#` es un alias o balance de concreto literal, no una definición canónica del activo ID. Utilice el valor Base58 desnudo con `--definition`, o pase un alias vinculado con `--definition-alias`.
+- Un ID que contiene `#` es un alias o un literal de balance concreto, no un ID de definición de activo canónico. Use el valor Base58 desnudo con `--definition`, o pase un alias vinculado con `--definition-alias`.
 - Los errores `Scale` significan que una cantidad tiene más dígitos fraccionarios de los que permite la definición.
-- Rechazo `Mintability` significa que la política de `Once`, `Not` o `Limited(n)` ha agotado o prohibido la acuñación. No reescriba el historial; use la política devuelta por la consulta de definición.
-- El paso 2 elige deliberadamente una cuenta de destino registrada.Si la admisión de activos es `ExplicitOnly`, provee el saldo de destino a través de un flujo antes de la transferencia. El guardia con el mismo nombre CLI no registra una cuenta ni un saldo; aborta en lugar de añadir otra instrucción.
-- El rechazo de la tarifa ocurre antes del éxito normal de la instrucción. Seleccione el pagador, utilice los metadatos del activo de la tarifa de la red y verifique su saldo.
-- Si la definición local fija ya existe desde una ejecución anterior, inicie una red local recién generada o continúe con su estado existente. Nunca sustituya a una cadena aleatoria malformada por la Base58 ID.
+- `Mintability` rechazo significa que la política `Once`, `Not` o `Limited(n)` ha sido agotada o se ha denegado su emisión. No reescribas la historia; usa la política devuelta por la consulta de definición.
+- El Paso 2 elige deliberadamente una cuenta de destino registrada. Si la admisión de activos es `ExplicitOnly`, proporcione el saldo de destino a través de un autorizado flujo antes de transferir. La guarda de nombre similar CLI no registra una cuenta ni un saldo; en su lugar, aborta en lugar de agregar otra instrucción.
+- Una rechazo de tarifa ocurre antes del éxito normal de la instrucción. Seleccione el pagador, use los metadatos del activo de tarifa de la red y verifique su saldo.
+- Si la definición local fija ya existe de una ejecución anterior, inicia una nueva red local generada o continúa con su estado existente. Nunca sustituyas una cadena aleatoria malformada por el ID Base58.
 
 ## Fuente y documentos relacionados {#source-and-related-docs}
 
-- [Pruebas de integración del ciclo de vida del activo en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/asset.rs)
-- [Rust ejemplos de la construcción de activos en el compromiso fijado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha/examples/tutorial.rs)
-- [Activos ](/es/blockchain/assets.md)
-- [Las instrucciones ](/es/blockchain/instructions.md)
-- [Los tokens de autorización ](/es/reference/permissions.md)
-- [JavaScript y TypeScript ](/es/guide/tutorials/javascript.md)
+- [Pruebas de integración del ciclo de vida del activo en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/asset.rs)
+- [Rust ejemplos de construcción de activos en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/examples/tutorial.rs)
+- [Activos](/es/blockchain/assets.md)
+- [Instrucciones](/es/blockchain/instructions.md)
+- [Tokens de permiso](/es/reference/permissions.md)
+- [JavaScript y TypeScript](/es/guide/tutorials/javascript.md)

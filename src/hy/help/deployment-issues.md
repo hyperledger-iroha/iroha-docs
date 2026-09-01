@@ -1,11 +1,10 @@
 ---
 translation_locale: hy
 translation_source: /help/deployment-issues.md
-translation_source_hash: 6f35ac59053e312f56a716810c8f0b625752500d1fc64b27d93cbd8317b6cc19
+translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Տեղադրման խնդիրների լուծումը {#troubleshooting-deployment-issues}
 
 Այս բաժինը առաջարկում է խնդիրների լուծման խորհուրդներ Iroha 3 տեղակայումների համար: Եթե խնդիրը չի նկարագրվել այստեղ, կապվեք մեզ հետ [Telegram](https://t.me/hyperledgeriroha).
@@ -15,42 +14,42 @@ translation_engine: nllb-200-ct2
 Տեղական եւ փորձարկման տեղակայման համար նախընտրեք Kagami կողմից ստեղծված արվեստի գործիքներ ձեռքով գրված զուգահեռ ֆայլերի փոխարեն.
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-Ստեղծված ցուցակը պարունակում է զուգընկերների կոնֆիգներ, գենեզի նյութեր, սկիզբային գրառումներ եւ README ՝ Iroha 3 կառուցման գծի համար:
+Ստեղծված ցուցակը պարունակում է հանգույցների կոնֆիգներ, գենեզի նյութեր, սկիզբային գրառումներ եւ README ՝ Iroha 3 կառուցման գծի համար:
 
-## Դեռահասները չեն սկսում {#peer-does-not-start}
+## Հանգույցը չի գործարկվում {#peer-does-not-start}
 
 Նախ ստուգեք հետեւյալ կետերը.
 
-- `irohad --config <path>` կետերը, որոնք գտնվում են գործընկերոջ սեփական TOML ֆայլում:
-- `public_key` եւ `private_key` զուգընկերային կոնֆիգում պատկանում են նույն բանալիների զույգին:
+- `iroha3d --config <path>` կետերը, որոնք գտնվում են հանգույցի սեփական TOML ֆայլում:
+- `public_key` եւ `private_key` հանգույցային կոնֆիգում պատկանում են նույն բանալիների զույգին:
 - `genesis.public_key` համապատասխանում է գենեզիսային գործարքի ստորագրման համար օգտագործված բանալին:
-- վավերացնող զուգընկերների ինքնությունները օգտագործում են BLS-նորմալ բանալիներ, եւ `trusted_peers_pop` պարունակում է տեղական բանալի եւ վստահելի զուգընկերի սեփականության ապացույցի գրառումներ:
+- վավերացնող հանգույցների ինքնությունները օգտագործում են BLS-նորմալ բանալիներ, եւ `trusted_peers_pop` պարունակում է տեղական բանալի եւ վստահելի հանգույցի սեփականության ապացույցի գրառումներ:
 - Torii եւ P2P նավահանգիստները դեռեւս չեն կապված այլ գործընթացի հետ:
 - Kura խանութների ցուցակը պատկանում է նույն շղթայի եւ չի կրկնվել մեկ այլ ցանցային պրոֆիլից:
 
 Օգտագործեք config tracing, երբ daemon- ը կարդում է ավելի քան մեկ TOML շերտ.
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --trace-config
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 ```
 
 ## Docker եւ Համադրում {#docker-and-compose}
 
-Generate Compose from the current Kagami localnet output so that the command-line arguments and config files match the checked-out code: Ստեղծեք կազմել ներկա localnet ելքից, որպեսզի հրամանատարի գծի փաստարկները եւ կոնֆիգերի ֆայլերը համապատասխանում են ստուգված կոդին.
+Compose-ը ստեղծեք Kagami-ի ընթացիկ localnet ելքից, որպեսզի հրամանի տողի փաստարկներն ու կոնֆիգուրացիայի ֆայլերը համապատասխանեն ստուգված կոդին․
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
 Եթե կոմպոզատոր տեղադրումը սկսվում է, ապա կանգ է առնում, ստուգեք դեյմոնների օրագրերը ՝
 
 - անհամապատասխան `chain`
-- մեկ զուգընկեր, որը օգտագործում է այլ գենեզի գործարք կամ դրսեւորում
+- մեկ հանգույց, որը օգտագործում է այլ գենեզի գործարք կամ դրսեւորում
 - գովազդված P2P հասցեներ, որոնք գործում են միայն կոնտեյներային ցանցում:
 - տեղական ծավալի վերաօգտագործումը վերականգնումից հետո
 
@@ -58,21 +57,31 @@ docker compose -f ./localnet/docker-compose.yml up
 
 ## Կուբերնետներ {#kubernetes}
 
-Kubernetes- ի համար, յուրաքանչյուր վավերացնողին վերաբերվեք որպես պետական ենթակառուցվածք.
+Kubernetes-ի դեպքում յուրաքանչյուր վավերացնող դիտարկեք որպես վիճակ պահպանող ենթակառուցվածք։
 
-- տալ յուրաքանչյուր զուգընկերին կայուն ինքնության բանալին եւ կայուն մշտական ծավալ:
-- բաց թողնել P2P հասցեները, որոնք այլ գործընկերներ կարող են լուծել կլաստերի ներսից:
+- տալ յուրաքանչյուր հանգույցին կայուն ինքնության բանալին եւ կայուն մշտական ծավալ:
+- բաց թողնել P2P հասցեները, որոնք այլ հանգույցներ կարող են լուծել կլաստերի ներսից:
 - տեղադրել config եւ genesis ֆայլերը որպես անփոխարինելի config հանելու համար
 - գործարկել բոլոր գենեզի կամ տոպոլոգիայի փոփոխությունները կանխամտածված, ոչ թե որպես ավտոմատ ձեւավորման քարտեզի թարմացում:
 
-Եթե պոդը վերսկսվում է բազմիցս, համեմատեք պոդում ներկայացված կոնֆիգը սպասվող [`peer.template.toml`](/hy/reference/peer-config/index.md#template)-ի հետ եւ ստուգեք, թե արդյոք զուգընկերն կրկնում է հին Kura տվյալները:
+Եթե պոդը վերսկսվում է բազմիցս, համեմատեք պոդում ներկայացված կոնֆիգը սպասվող [`peer.template.toml`](/hy/reference/peer-config/index.md#template)-ի հետ եւ ստուգեք, թե արդյոք հանգույցն կրկնում է հին Kura տվյալները:
 
 ## Սորայի պրոֆիլ {#sora-profile}
 
-Iroha 3 տեղակայումները, որոնք օգտագործում են Nexus, SoraFS կամ բազմակողմանի հոսքեր, պետք է սկսեն դեյմոնը՝ Սորա պրոֆիլն ակտիվացնելով.
+Հատուկ կամ տեղական Iroha 3 տեղակայումները, որոնք օգտագործում են Nexus, SoraFS կամ բազմակողմանի հոսքերը, պետք է սկսեն ստանդարտ դեյմոնը՝ Սորա պրոֆիլը հնարավորություն տալով.
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --sora
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora
 ```
 
 Օգտագործեք նույն պրոֆիլը միեւնույն ցանցի վավերացողների միջեւ:
+
+Հանրային Taira վավերացողները օգտագործում են հատուկ գործարկիչը, որը պարտադիր է Taira Ճշգրիտ շղթա, ցուցակ, հաշմանդամություն ներմուծված...SoraFS պահեստավորման եւ վազման ժամանակի ստորագրողի պրոֆիլը: Վավերացրեք Taira Սկսելուց առաջ կազմվածք:
+
+```bash
+iroha3d_taira --sora \
+  --config /etc/iroha/taira/config.toml \
+  --check-config
+```
+
+Հանրային Taira վավերացնողը մի գործարկեք ընդհանուր `iroha3d`-ով. պարտադրվող պրոֆիլի համար տե՛ս [`iroha3d` CLI տեղեկանքը](/hy/reference/iroha3d-cli.md)։

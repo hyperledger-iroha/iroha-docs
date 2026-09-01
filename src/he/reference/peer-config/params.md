@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /reference/peer-config/params.md
-translation_source_hash: d9fa3775e65b26b4eda726b27e54d167097b8bbd5bb766c27d7eeefdbc7ef10b
+translation_source_hash: 027486a17e7624cc301f939429baf9ea9ed1259564c3b99b8dc63cce17a7b26e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 
@@ -20,9 +20,9 @@ import ParamTable from './ParamTable.vue';
 
 ### `chain` <Badge text="required" /> {#param-chain-id}
 
-שרשרת ID שחייבת להיות מובילה בכל עסקאות.
+מזהה השרשרת (chain ID) שחייב להיכלל בכל עסקה. הוא משמש למניעת מתקפות שידור חוזר.
 
-מתקפה חוזרת היא ניסיון להגיש עסקאות תקיימות לרשת שונה מאלה שנועדו אליה. מכיוון ש`chain` הוא חלק מהחוב מועיל של העסקה חתומה, עסקה חתומה עבור שרשרת אחת נדחה על ידי עמידים שמשתמשים בשורה אחרת ID .
+מתקפת replay היא ניסיון להגיש טרנזקציה תקפה לרשת שונה מזו שאליה יועדה. מכיוון ש-`chain` הוא חלק מה-payload החתום של הטרנזקציה, peers המשתמשים ב-chain ID אחר דוחים טרנזקציה שנחתמה עבור chain אחד.
 
 <param-table type=string env=CHAIN />
 
@@ -40,7 +40,7 @@ CHAIN="00000000-0000-0000-0000-000000000000"
 
 ### `public_key` <Badge text="required" /> {#param-public-key}
 
-מפתח ציבורי של השותף. משותפים בדיקת הסכמה חייבים להשתמש BLS - מפתחות נורמליות.
+מפתח ציבורי של הצומת. צמתים מאמתי קונצנזוס חייבים להשתמש BLS - מפתחות נורמליות.
 
 <param-table type="public-key" env="PUBLIC_KEY" />
 
@@ -58,7 +58,7 @@ PUBLIC_KEY="ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7
 
 ### `private_key` <Badge text="required" /> {#param-private-key}
 
-מפתח פרטי של השותף. הוא חייב להתאים `public_key`; משותפים בדיקת ההסכמה חייבים להשתמש BLS-מפתחות נורמליות.
+מפתח פרטי של הצומת. הוא חייב להתאים `public_key`; צמתים מאמתי קונצנזוס חייבים להשתמש BLS-מפתחות נורמליות.
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
@@ -76,14 +76,14 @@ PRIVATE_KEY="8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E9029
 
 ### `trusted_peers` {#param-trusted-peers}
 
-רשימה של עמיתים אמינים מוגדרו מראש.
+רשימה של צומתי אמון מוגדרת מראש.
 
-בדיקות הסכמה צריכות להשתמש BLS-נורמליות מפתחות שווים. עבור כל מבדיקת, גם לספק כתיבה מתאימה [`trusted_peers_pop`](#param-trusted-peers-pop).
+מאמתי קונצנזוס חייבים להשתמש במפתחות צומת BLS-Normal. עבור כל מאמת יש לספק גם רשומת [`trusted_peers_pop`](#param-trusted-peers-pop) תואמת.
 
 <param-table env="TRUSTED_PEERS">
 <template #type>
 
-סדרה של חוטים משותפים. השתמש `PUBLIC_KEY@ADDRESS` כאשר הכתובת P2P ידועה; נטול `PUBLIC_KEY` גם מקובל ומאפשר לכתובת השותף להיות מופגנת מהשמוח.
+מערך של מחרוזות צמתים. השתמש `PUBLIC_KEY@ADDRESS` כאשר הכתובת P2P ידועה; נטול `PUBLIC_KEY` גם מקובל ומאפשר לכתובת הצומת להיות מופגנת מהשמועות.
 
 </template>
 </param-table>
@@ -109,7 +109,7 @@ TRUSTED_PEERS='[
 
 ### `trusted_peers_pop` {#param-trusted-peers-pop}
 
-BLS רשומות של הוכחת רכוש עבור עמיתים אמינים לבדיקן.
+BLS רשומות של הוכחת רכוש עבור צמתים אמינים לבדיקן.
 
 <param-table env="TRUSTED_PEERS_POP">
 <template #type>
@@ -201,9 +201,9 @@ P2P_ADDRESS=0.0.0.0:1337
 
 ### `network.public_address` <Badge text="required" /> {#param-network-public-address}
 
-כתובת משותף לשותף (חוץ, כפי שנראה על ידי עמינים אחרים).
+כתובת צומת-לצומת (חוץ, כפי שנראה על ידי צמתים אחרים).
 
-הם יתווכחו לעמיתיהם הקשורים כדי שהם יוכלו להתווכחים על זה לעמיתים אחרים.
+הם יתווכחו להצמתים שלהם הקשורים כדי שהם יוכלו להתווכחים על זה לצמתים אחרים.
 
 <param-table type="socket-addr" env="P2P_PUBLIC_ADDRESS" />
 
@@ -237,9 +237,9 @@ block_gossip_size = 256
 
 ### `network.block_gossip_period_ms` {#param-network-block-gossip-period-ms}
 
-הפער הזמן בין בקשות לעמיתים על הבלוק האחרון.
+הפער הזמן בין בקשות לצמתים על הבלוק האחרון.
 
-בדיחות תכופות יותר מקצרות את הזמן להתקשר, אבל זה יכול להטיל עומס על הרשת.
+בדיחות תכופות יותר מקצרות את הזמן להתקשר, אבל זה יכול לפחז את הרשת.
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
@@ -271,7 +271,7 @@ transaction_gossip_size = 256
 
 ### `network.transaction_gossip_period_ms` {#param-network-transaction-gossip-period-ms}
 
-תקופה של דברי רודפים עד עסקה בין עמיתים.
+תקופה של דברי רודפים עד עסקה בין צמתים.
 
 בדיחות תכופות יותר מקצרות את הזמן להתקשר, אבל זה יכול לפחז את הרשת.
 
@@ -288,7 +288,7 @@ transaction_gossip_period_ms = 5_000
 
 ### `network.idle_timeout_ms` {#param-network-idle-timeout-ms}
 
-משך הזמן שאחריו הקשר עם השותף יפסק אם השותף אינו עובד.
+משך הזמן שאחריו הקשר עם הצומת יפסק אם הצומת אינו עובד.
 
 <param-table type=millis default-value=300_000 default-note="5 minutes" />
 
@@ -352,7 +352,7 @@ max_content_len = 64_000_000
 
 ### `torii.query_idle_time_ms` {#param-torii-query-idle-time-ms}
 
-זמן שאלת יכולה להישאר בחנות אם לא ניתן לגשת אליה.
+זמן שאילתת יכולה להישאר בחנות אם לא ניתן לגשת אליה.
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
@@ -404,7 +404,7 @@ query_store_capacity_per_user = 128
 <param-table default-value=INFO env=LOG_LEVEL>
 <template #type>
 
-חוטים, ערכים אפשריים:
+מחרוזת; ערכים אפשריים:
 
 - `TRACE`: כל האירועים, כולל פעולות ברמה נמוכה.
 - `DEBUG`: הודעות ברמת תיקון, שימושיות לדיאגנסטיקה.
@@ -412,7 +412,7 @@ query_store_capacity_per_user = 128
 - `WARN`: אזהרות המראות בעיות פוטנציאליות.
 - `ERROR`: טעויות המפריעות לתפקוד נורמלי אך מאפשרות את המשך הפעולה.
 
-בחר את הרמה המתאימה ביותר למקרה השימוש שלך. ראה [Stack Overflow](https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels) עבור פרטים נוספים על איך להשתמש ברמות רישום שונות.
+בחר את הרמה המתאימה ביותר למקרה השימוש שלך. ראה [Stack Overflow](https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels) לקבלת פרטים נוספים על איך להשתמש ברמות רישום שונות.
 
 </template>
 </param-table>
@@ -443,7 +443,7 @@ LOG_LEVEL=INFO
 <param-table type=string env=LOG_FILTER>
 <template #type>
 
-רצועה, מורכבת ממנחיות אחת או יותר נפרדות על ידי קומות. לכל הנחיה יכולה להיות רמה מקסימלית של דבריות מתאימה המאפשרת (למשל, בוחרת עבור) טווח ואירועים המתאימים. Iroha מחשיב רמות פחות בלעדיות (כגון `trace` או `info`) להיות יותר דבריות מאשר רמות יותר בלעדיויות (כגון`error` או `warn`).
+רצועה, מורכבת ממנחיות אחת או יותר נפרדות מקומות. לכל הנחיה יכולה להיות רמה מקסימלית של דבריות מתאימה המאפשרת (למשל, בוחרת עבור) טווח ואירועים המתאימים. Iroha מחשיב רמות פחות בלעדיות (כגון `trace` או `info`) להיות יותר דבריות מאשר רמות יותר בלעדיויות (כגון`error` או `warn`).
 
 ברמה גבוהה, סינטקסת ההנחיות מורכבת ממספר חלקים:
 
@@ -470,11 +470,11 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 
 :::
 
-::: info התאמה עם [`logger.level`](#param-logger-level)
+::: info שילוב עם [`logger.level`](#param-logger-level)
 
 `logger.filter` עובדת יחד עם [`logger.level` ](#param-logger-level) ואף אחד מהם לא כותב את השני.
 
-לדוגמה, אם `logger.level` נקבע ל `INFO` ו `logger.filter` נקבע ל`iroha_core=debug`, קבוצת הגלגלים הנוצרת תהיה `info,iroha_core=debug` (כלומר, `info` עבור כל המודולים, `debug` עבור `iroha_core`).
+לדוגמה, אם `logger.level` הוא מוגדר ל `INFO` ו `logger.filter` הוא מוגדר ל `iroha_core=debug`, קבוצת המסננים הנוצרת תהיה: `info,iroha_core=debug` (כלומר, `info` עבור כל המודלים, `debug` עבור `iroha_core`).
 
 :::
 
@@ -486,17 +486,17 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 
 ### `logger.format` {#param-logger-format}
 
-צורת היומן.
+פורמט היומן.
 
 <param-table default-value=full env=LOG_FORMAT>
 <template #type>
 
-חוטים, ערכים אפשריים:
+מחרוזת; ערכים אפשריים:
 
-- `full`: פורמייטר מקובל. זה משחרר רישומי קו אחד קריאים על ידי אדם עבור כל אירוע שקורה, עם ההקשר הנוכחי של טווח הוצג לפני ייצוג הפורמט של האירוע.
-- `compact`: וריאנט של פורמייטר מקובל, מאופטימי עבור אורך שורות קצרים. שדות מהקשר הקבוע הנוכחי מתוספים לשדות של האירוע המפורמט, ושמות הקבוע אינם מוצגים; רמת מילוליות מצטמצמה לעד אות אחד.
-- `pretty`: יוצר רישומים יפים מדי, רב קו, מותאמים לקריאה אנושית. זה מיועד בעיקר לשימוש לפיתוח מקומי וחיזוק, או עבור יישומים בקו פקודות, כאשר ניתוח אוטומטי ואחסון קומפקטי של רישומים הוא פחות עדיפות מאשר קריאתם והמשתעה החזותית.
-- `json`: מוצרים של רישומים חדשים מוגבלים JSON. זה מיועד לשימוש הייצור עם מערכות שבהן רישומים מבוססים נצרכים כ- JSON באמצעות כלי ניתוח וראייה. ההוצא של JSON אינו אופטימי עבור קריאת אנוש.
+- `full`: פורמייטר מקובל. זה משחרר רישומי קו אחד קריאים על ידי אדם עבור כל אירוע שמתרחש, עם ההקשר הנוכחי של טווח מופיע לפני הצגת הפורמט של האירוע.
+- `compact`: גרסה של פורמטור מקובל, מאופטימיזת לעומק קווים קצר. שדות מהקשר הקבוע הנוכחי מוספים לשדות של האירוע המפורסם, ושמות הקבועים אינם מוצגים; רמת מילוליות מצטמצמת לאות אחת.
+- `pretty`: שולטת בלוגים יפים מדי, רב קו, מותאמים לקריאה אנושית. זה נועד בעיקר לשימוש בהתפתחות מקומית תיקון חירום, או עבור יישומים בקו הפקודה, כאשר ניתוח אוטומטי וחסוך קומפקטי של רשומות הם פחות עדיפות מאשר קריאה ויזואלית פנייה.
+- `json`: מוצרים של רישומים חדשים מוגבלים JSON. זה מיועד לשימוש הייצור עם מערכות שבהן רישומים מבוססים נצרכים כ- JSON באמצעות כלי ניתוח וראייה. ההוצאת של JSON אינה אופטימית לקריאה אנושית.
 
 לקבלת פרטים נוספים ותוצאות הדגימות, ראה [`tracing-subscriber` תיעוד ](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/index.html).
 
@@ -518,11 +518,11 @@ LOG_FORMAT=json
 
 ## Kura {#kura}
 
-Kura הוא מנוע אחסון מתמשך של Iroha (יפני עבור מחסן).
+Kura הוא מנוע אחסון מתמשך של Iroha (יפנית עבור מחסן).
 
 ### `kura.blocks_in_memory` {#param-kura-blocks-in-memory}
 
-לכל הפחות N בלוקים האחרונים ייחסנו בזיכרון.
+לכל היותר N מהבלוקים האחרונים יישמרו בזיכרון.
 
 בלוקים ישנים יפולו מהזיכרון ויהצאו מהדיסק אם הם נדרשים.
 
@@ -543,15 +543,21 @@ KURA_BLOCKS_IN_MEMORY=1024
 
 ### `kura.init_mode` {#param-kura-init-mode}
 
-מצב ההתחילה Kura
+מצב האתחול של Kura. ‏`strict` הוא המצב הרגיל וברירת המחדל: הוא מאמת את ההיסטוריה הקנונית, ארטיפקטים לשחזור, אינדקסים מסייעים וחשבונאות אחסון לפני שהצומת נעשה פעיל.
 
-<param-table  default-value=strict env=KURA_INIT_MODE>
+`fast` הוא מצב חירום עם שירות מצומצם, שנועד להשיב נראות תפעולית כאשר ביקורת אתחול מלאה עלולה לגרום להשבתה. הוא דורש אחסון שאותחל קודם לכן באמצעות `strict` ודור נוכחי של תמונת מצב המכיל בדיוק חמישה ארטיפקטים: `snapshot.data`, ‏`snapshot.sha256`, ‏`snapshot.sig`, ‏`snapshot.fast.norito` ו־`snapshot.merkle.json`. חתימת מפעיל המופרדת לפי תחום קושרת את תקציר המטען שפורסם ואת המניפסט המוגבל; המניפסט קושר את אורך המטען, זהות השרשרת/הרשת, גובה וגיבוב הקצה, גיבוב מדיניות SCCP ונוכחות שושלת bootstrap. מצב Fast דוחה שושלת bootstrap ודורש את אותו גבול מדויק של marker/count/tip מתוך Kura העמיד. צמתים של הגרסה הראשונה מקבלים בדיוק את חמשת הארטיפקטים האלה ודוחים כל מספר אחר של ארטיפקטים או כל קבוצת שמות קבצים אחרת.
+
+מצב `fast` סוקר את חמשת שמות הקבצים האלה וקושר באמצעות metadata את קובצי ה־payload וה־Merkle, אך אינו קורא, מגבב, מנתח או מפענח את תוכנם. הוא בונה World/Nexus מזערי מן ה־manifest החתום, ממפה לקריאה בלבד את קידומת הגיבובים המדויקת של Kura, ומשאיר סגורים את World שבתמונת המצב, מערך גיבובי הבלוקים, היסטוריית העסקאות, האינדקסים הנגזרים ויומני ההתאוששות העמידים. ביקורות Merkle וביקורות קנוניות וסמנטיות של תמונת המצב, יישוב היסטורי של בלוקים/סופיות/SCCP, התאוששות Sumeragi בגובה הפעיל, יומני merge ושאילתות, מקורות manifest/compliance של lanes, ארכיוני SoraFS המגובים ב־Kura, חשבונאות אחסון רקורסיבית ומיישבי שירות אופציונליים — כולם נדחים למועד מאוחר יותר. קבלת עסקאות מקומיות, הצעות, הצבעה, כתיבות קנוניות ומפיקי עזר נשארים מושבתים. Kura עצמו דוחה הפעלת writer ושינויים עמידים; תורי ההתמדה של pipeline ושל FASTPQ דוחים עבודה מיד במקום לשמור או לקודד אותה. Kura read APIs משביתים גם תיקון וסנכרון עמידות: sidecars זמניים אינם מקודמים, ארטיפקטים חסרים של lane אינם מתפרסמים ומחסומי התקדמות אינם עוברים fsync. ‏Sumeragi והפצת עסקאות אינם מופעלים. Torii חושף רק פעולות health, liveness, readiness, peers ותצורה; נתיבי גרסת API, סטטוס, metrics וכל נתיבי המצב/ההיסטוריה הרגילים נשארים בלתי זמינים. גם readiness נשאר בלתי זמין עד הפעלה מחדש במצב `strict`.
+
+השתמשו ב־`fast` רק בזמן אירוע. לאחר שהשירות מתייצב, עצרו את הצומת, החזירו את `strict` והפעילו מחדש, כדי שכל הבדיקות ובניות האינדקסים שנדחו יושלמו לפני החזרת הייצור. מצב Fast אינו דורש את יומן המיזוג שנדחה ואינו יוצר, מתקן, מקצץ או מייבא אחסון קנוני; סיומות שלא פורסמו ושלבי שחזור מסייעים ממתינים נזנחים בלי לקרוא או לשנות אותם, ונשארים לשחזור Strict. שושלת מיובאת של תמונות מצב הכוללות גיבובים בלבד נשארת בלתי זמינה. תמונת מצב נוכחית חסרה או לא תקינה נכשלת מיד; מצב Fast לעולם אינו נסוג לעולם ריק או לבנייה מחדש באמצעות replay היסטורי.
+
+<param-table default-value=strict>
 <template #type>
 
-חוטים, ערכים אפשריים:
+מחרוזת; ערכים אפשריים:
 
-- `strict`: אישור קפדני של כל הבלוקים
-- `fast`: חיזוק מהיר עם בדיקות בסיסיות בלבד
+- `strict`: אישור מלא וייצור רגיל.
+- `fast`: תחילת מצב חירום מוגבלת עם הייצור מובטח עד התחלת מחדש קפדנית
 
 </template>
 </param-table>
@@ -563,15 +569,11 @@ KURA_BLOCKS_IN_MEMORY=1024
 init_mode = "fast"
 ```
 
-```shell [Environment]
-KURA_INIT_MODE=fast
-```
-
 :::
 
 ### `kura.store_dir` {#param-kura-store-dir}
 
-קובע את התיקון [^paths] בו הבלוקים מאוחסנים.
+קובע את התיקון [^paths] שבו הבלוקים מאוחסנים.
 
 ראה גם: [ `snapshot.store_dir`](#param-snapshot-store-dir).
 
@@ -592,7 +594,7 @@ KURA_STORE_DIR=/path/to/storage
 
 ### `kura.debug.output_new_blocks` <Badge type="warning" text="debug" /> {#param-kura-debug-output-new-blocks}
 
-דגל כדי לאפשר את הדפסה של בלוקים חדשים לקונסול.
+דגל כדי לאפשר את הדפוס של בלוקים חדשים לקונסול.
 
 <param-table env=KURA_DEBUG_OUTPUT_NEW_BLOCKS type=bool default-value=false />
 
@@ -613,7 +615,7 @@ KURA_DEBUG_OUTPUT_NEW_BLOCKS=true
 
 ### `queue.capacity` {#param-queue-capacity}
 
-הגבול העליון של מספר העסקאות המתמודדות בתור.
+הגבול העליון של מספר העסקים שמחכים בתור.
 
 <param-table type=number default-value=65_536 />
 
@@ -662,7 +664,7 @@ transaction_time_to_live_ms = 43_200_000
 
 ### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
 
-כפתור תיקון בלבד לטיפול בנתיבי ניהול צנבת רכה Sumeragi. השאירו את זה מונע מחוץ לבדיקות נשלטות; שינוי אותו ברשת הייצור פועלת יכול לגרום לעמיתים לא להסכים על התנהגות הסכמה.
+כפתור תיקון בלבד לטיפול בנתיבי ניהול פורק רך Sumeragi. השאירו את זה מוגבל מחוץ לבדיקות נשלטות; שינוי אותו ברשת ייצור פועל יכול לגרום לצמתים לא להסכים על התנהגות הסכמה.
 
 <param-table type=bool default-value=false />
 
@@ -675,15 +677,25 @@ force_soft_fork = true
 
 :::
 
-## תמונה מיידית {#snapshot}
+## סליקה פרטית אטומית ב־Nexus {#nexus-atomic-private-settlement}
 
-מודול זה אחראי לקריאה וכתבת תמונות של [תפיסת העולם על המצב](/he/blockchain/world#world-state-view-wsv).
+`[nexus.atomic_private_settlement]` שולט בנתיב הנפרד `AtomicPrivateSettlementV1`. הוא מושבת כברירת מחדל. הגדרת `enabled = true` דורשת גם `activation_height`; הקבלה עדיין נכשלת באופן בטוח אלא אם היכולת בשרשרת, תקופת ההודעה, פרופיל ההוכחה הקבוע וממשל המאגר והביקורת פעילים.
 
-תמונות מייצגות מאחסנות נקודת מבט סדרתית של World State View כך ששותף יכול להתחיל מחדש מבלי לנגן מחדש כל בלוק מ Kura. Kura נשארת ההיסטוריה של הבלוק המתמשכת ומקור האמת לשחזור; תמונות מיידית הם מסלול מאיץ. בעת ההתחלה, Iroha בודק נתונים מטאטא של תמונה מהירה נגד שרשרת המוגדרת והבלוקים המאוחסנים לפני שהוא מחליט אם לטעין תמונה מהיר או לחזור לנגן.
+המגבלות העיקריות הן `max_participants`, ‏`max_expiry_blocks`, ‏`audit_timeout_blocks`, ‏`prepare_timeout_blocks`, ‏`commit_timeout_blocks`, ‏`max_proof_bytes`, ‏`max_capsule_bytes`, ‏`max_carrier_bytes`, ‏`sidecar_retention_blocks`, ‏`sidecar_max_records` ו־`sidecar_max_total_bytes`. הערך `capsule_padding_classes_bytes` חייב להיות תת־קבוצה עולה ממש של מחלקות הריפוד ב־V1. ‏`permitted_policy_versions` מקבל את V1 בלבד.
 
-::: tip לחיקוי תמונות
+`max_capsule_bytes` מודד את בתי Norito הקנוניים של `PrivateSettlementAuditCapsuleV1` השלמה, לרבות AAD, ‏nonce, טקסט מוצפן, מסגור הווקטור וכל שורת DEK עטופה של מבקר; זו אינה מגבלה על הטקסט המוצפן בלבד. כל מחלקת ריפוד פעילה חייבת להתאים למעטפת השמרנית של הקפסולה השלמה עבור לפחות `default_min_auditor_approvals` מבקרים. הגדרת האישורים הזאת היא גם סף הנשלט בממשל: Torii דוחה מדיניות חדשה שבה הערך `min_approvals` נמוך יותר, ודוחה כל קפסולה ממשית שחורגת ממגבלת הבתים הקנונית.
 
-במקרה שמשהו לא בסדר עם מערכת ההצלחות, ואתה רוצה להתחיל בעמוד ריק (במונחים של תמונות), אתה יכול להסיר את התיקון המפורט על ידי [`snapshot.store_dir`](#param-snapshot-store-dir).
+הגדרות אלה אינן יכולות לעקוף את ההפעלה של משתנים סביבת הייצור. ראו [הפעלת הסדר אטומי פרטי בין מרחבי נתונים](/he/get-started/atomic-private-settlement) עבור דוגמה מלאה להגדיר ותחומי הפעלת. הנתיב אינו מוסמך לייצור עד שהשערים החיצוניים המסמכים עוברים.
+
+## תמונת מצב {#snapshot}
+
+מודול זה אחראי לקריאה וכתבת תמונות מצב של [תפיסת העולם על המצב](/he/blockchain/world#world-state-view-wsv).
+
+תמונות מצב חתיכות מאחסנות נקודת מבט סדרתית של World State View כך שצומת יכול להפעיל מחדש מבלי לשחזר כל בלוק מ Kura. Kura נשארת ההיסטוריה הקבועה של הבלוק ומקור האמת לשחזור; תמונות מצב הן מסלול מאיץ. בעת ההתחלה, Iroha בודק מטא-נתונים של תמונת מצב נגד שרשרת המוגדרת והבלוקים המאוחסנים לפני שהוא מחליט אם לטעין תמונת מצב או לחזור לנגן.
+
+::: tip לחיקוי תמונות מצב
+
+במקרה אם משהו לא בסדר עם מערכת ההצלחות, ואתה רוצה להתחיל בעמוד ריק (במונחים של תמונות מצב), אתה יכול להסיר את התיקון המפורט על ידי [ `snapshot.store_dir`](#param-snapshot-store-dir).
 
 :::
 
@@ -694,11 +706,11 @@ force_soft_fork = true
 <param-table default-value=read_write env=SNAPSHOT_MODE>
 <template #type>
 
-חוטים, ערכים אפשריים:
+מחרוזת; ערכים אפשריים:
 
-- `read_write`: Iroha יוצר תמונות מיידיות עם תקופה מוגדרת על ידי [`snapshot.create_every_ms`](#param-snapshot-create-every-ms). בעת ההתחלקה, Iroha קורא תמונה מיידית קיימת (אם בכלל) ומבחינת שהיא מעודכנת עם אחסון הבלוקים.
-- `readonly`: דומה ל- `read_write` אבל Iroha לא יוצר תמונות מיידיות.
-- `disabled`: Iroha לא יוצר תמונות מיידיות או קורא תמונות קיימות בעת ההתחלה.
+- `read_write`: Iroha יוצר תמונות מצב עם תקופה מוגדרת על ידי [`snapshot.create_every_ms`](#param-snapshot-create-every-ms). בעת ההתחלה, Iroha קורא תמונת מצב קיימת (אם בכלל) ומבחינת שהיא מעודכנת עם אחסון הבלוקים.
+- `readonly`: דומה ל- `read_write` אבל Iroha לא יוצר תמונות מצב.
+- `disabled`: Iroha לא יוצר תמונות מצב או קורא תמונות מצב קיימות בעת ההתחלה.
 
 </template>
 </param-table>
@@ -718,7 +730,7 @@ SNAPSHOT_MODE=readonly
 
 ### `snapshot.create_every_ms` {#param-snapshot-create-every-ms}
 
-תדירות תמונות.
+תדירות תמונות מצב.
 
 <param-table type=millis default-value=600_000 default-note="10 minutes" />
 
@@ -733,7 +745,7 @@ create_every_ms = 60_000
 
 ### `snapshot.store_dir` {#param-snapshot-store-dir}
 
-תיק שבו לאחסן תמונות.
+תיק שבו לאחסן תמונות מצב.
 
 ראה גם: [`kura.store_dir`](#param-kura-store-dir)
 
@@ -754,7 +766,7 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 ## טלמטריה {#telemetry}
 
-טלמטריה מייצרת אבחון עמיתים לקולקטור טלמטרי חיצוני. להגדיר את `telemetry.name` ו `telemetry.url` כאשר עמיתים צריכים להודיע לקולקטר; השאירו את החלק כאשר הטלמטריה אינה משמשת.
+טלמטריה מייצרת אבחון צמתים לקולקטור טלמטרי חיצוני. להגדיר את `telemetry.name` ו `telemetry.url` כאשר צמתים צריכים להודיע לקולקטר; השאירו את החלק כשלא משתמשים בטלמטריה.
 
 `name` ו `url` חייבים להיות משותפים.
 
@@ -777,7 +789,7 @@ name = "iroha"
 
 ### `telemetry.url` {#param-telemetry-url}
 
-WebSocket URL של קולקטור הטלמטריה.
+WebSocket URL של אספן הטלמטריה.
 
 <param-table type=string />
 

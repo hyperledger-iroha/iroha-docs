@@ -1,45 +1,45 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/rwas.md
-translation_source_hash: cbdc6d766fb90bea7e68dc67f2c705bb1638340feeb2fca9f2dd43a727ac03e7
+translation_source_hash: 8d64a9a17c93f60306c279e8656e6edde8ce5dd024e742218bfb9572b7438bb0
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Ativos do mundo real {#real-world-assets}
+# Ativos do Mundo Real {#real-world-assets}
 
-Ativos do mundo real (RWAs) modelo de ativos fora da cadeia cuja propriedade ou controle é rastreado na cadeia. Em Iroha, um RWA é um lote registrado no livro maior com um identificador gerado, uma conta do proprietário, uma quantidade, metadados comerciais, proveniência e controles opcionais do ciclo de vida.
+Ativos do mundo real (RWAs) modelam ativos off-chain cuja propriedade ou controle é rastreado on-chain. Em Iroha, um RWA é um lote registrado em um livro-razão blockchain com um identificador gerado, uma conta de proprietário, uma quantidade, metadados de negócios, proveniência e controles de ciclo de vida opcionais.
 
-Os RWAs são diferentes dos saldos numéricos de activos:
+RWAs são diferentes dos saldos de ativos numéricos:
 
-- Um ativo numérico é um saldo fungível detido por uma conta
-- Um NFT é um registro único na cadeia com um só proprietário.
-- Um RWA é um lote que pode conter metadados comerciais, quantidade, reservas, congelamento, estado de resgate, proveniência e política do controlador.
+- um ativo numérico é um saldo fungível mantido por uma conta
+- um NFT é um registro único na blockchain com um proprietário
+- um RWA é um lote que pode carregar metadados de negócios, quantidade, retenções, congelamentos, estado de resgate, proveniência e política do controlador
 
-Usar RWAs quando o livro de conta precisar representar um lote específico fora da cadeia em vez de apenas um saldo fungível.
+Use RWAs quando o livro-razão da blockchain precisar representar um lote específico fora da cadeia em vez de apenas um saldo fungível.
 
-## Lot RWA {#rwa-lot}
+## RWA Lote {#rwa-lot}
 
-Um lote de RWA contém:
+Um lote RWA contém:
 
-- `id`: o identificador canônico RWA gerado, indicado como `<hash>$<domain>`;
-- `owned_by`: a conta que detém atualmente o lote;
-- `quantity`: a quantidade pendente representada pelo lote;
-- `spec`: especificação de quantidade, tal como escala decimal
-- `primary_reference`: o principal recibo, certificado, fatura ou referência de registro fora da cadeia;
-- `status`: texto opcional sobre o estado da empresa
-- `metadata`: campos compactos JSON utilizados para o contexto empresarial e a indexação
-- `parents`: lotes de origem utilizados para a obtenção deste lote
-- `controls`: contas do controlador, funções do controlador e operações de controlo habilitadas.
-- `is_frozen` e `held_quantity`: estado do ciclo de vida aplicado pelo tempo de execução.
+- `id`: o identificador canônico gerado RWA, exibido como `<hash>$<domain>`
+- `owned_by`: a conta que atualmente possui o lote
+- `quantity`: a quantidade pendente representada pelo lote
+- `spec`: especificação de quantidade, como escala decimal
+- `primary_reference`: o principal registro de resultado do protocolo off-chain, certificado, fatura ou referência de registro
+- `status`: texto opcional sobre o status do negócio
+- `metadata`: campos compactos JSON usados para contexto de negócios e indexação
+- `parents`: lotes de origem usados para derivar este lote
+- `controls`: contas de controlador, funções de controlador e operações de controlador habilitadas
+- `is_frozen` e `held_quantity`: estado do ciclo de vida imposto pelo tempo de execução do software
 
-Mantenha a carga útil na cadeia compacta. Armazenar grandes documentos legais, relatórios de inspeção e pacotes de auditoria fora do WSV, em seguida, coloque um digest, URI, SoraFS caminho, ou referência manifesto nos metadados RWA.
+Mantenha a carga útil na cadeia compacta. Armazene grandes documentos jurídicos, relatórios de inspeção e pacotes de auditoria fora do WSV, depois coloque um valor de resumo criptográfico, URI, caminho SoraFS ou referência de manifesto técnico nos metadados RWA.
 
 ## Identificadores {#identifiers}
 
-O `RegisterRwa` não aceita uma chamada escolhida pelo chamador `id` e não aceita um campo `owner`. A autoridade de transacção torna-se a conta inicial `owned_by`, e o runtime gera o `RwaId` no domínio alvo.
+`RegisterRwa` não aceita um `id` escolhido pelo chamador, e não aceita um campo `owner`. O principal de autorização de transação se torna a conta `owned_by` inicial, e o tempo de execução do software gera o `RwaId` no domínio de destino.
 
-A forma textual de um RWA ID é:
+A forma textual de um ID RWA é:
 
 ```text
 <generated-hash>$<domain>
@@ -51,39 +51,39 @@ Por exemplo:
 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef$commodities.universal
 ```
 
-Os aplicativos devem armazenar o seu identificador de negócio em `primary_reference` ou `metadata`, e depois descobrir a `RwaId` gerada a partir de `RwaEvent::Created`, `FindRwas`, `/v1/rwas`, ou da rota exploradora definida após as autorizações da transação.
+As aplicações devem armazenar seu identificador de negócio em `primary_reference` ou `metadata`, e então descobrir o `RwaId` gerado a partir de `RwaEvent::Created`, `FindRwas`, `/v1/rwas`, ou da rota do explorador definida após a confirmação da transação.
 
 ## Ciclo de vida {#lifecycle}
 
-Os fluxos de trabalho comuns RWA incluem:
+Fluxos de trabalho comuns RWA incluem:
 
-|Operação |Comportamento implementado |
+|Operação|Comportamento implementado|
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
-|`RegisterRwa` |Crie um lote gerado- ID em um domínio; a autoridade de transação torna-se `owned_by`. |
-|`TransferRwa` |Mover a quantidade para outra conta. Uma transferência completa pode alterar `owned_by`. Uma transferência parcial cria um lote de filhos separado com uma gerada ID. |
-|`HoldRwa` |Quantidade de reserva: requer um controlador configurado e `hold_enabled`. |
-|`ReleaseRwa` |Remover a quantidade mantida. Requer um controlador configurado e `hold_enabled`. |
-|`FreezeRwa` |Bloquear operações do proprietário comum. Requer um controlador configurado e `freeze_enabled`. |
-|`UnfreezeRwa` |Reactiva as operações de proprietário comum. Requer um controlador configurado e `freeze_enabled`. |
-|`RedeemRwa` |Subtrair permanentemente a quantidade da circulação. O proprietário ou um controlador pode submetê-la quando `redeem_enabled` for verdadeira. |
-|`MergeRwas` |Combinar quantidades de lotes parentais com o mesmo domínio e especificação em um lote infantil gerado. |
-|`ForceTransferRwa` |Movimento de quantidade através de um fluxo de controlador. Requer um controlador configurado e `force_transfer_enabled`. |
-|`SetRwaControls` |Substituir a política de controlo do lote. Requer o proprietário ou um controlador. |
-|`SetKeyValue<Rwa>` / `RemoveKeyValue<Rwa>` |Actualizar os metadados do lote. Requer o proprietário ou um controlador; lotes congelados exigem um controlador. |
+| `RegisterRwa`                              |Criar um lote de ID gerado em um domínio; o principal de autorização de transação se torna `owned_by`.|
+| `TransferRwa`                              |Mover a quantidade para outra conta. Uma transferência completa pode alterar `owned_by`. Uma transferência parcial cria um lote filho separado com um ID gerado.|
+| `HoldRwa`                                  |Reservar quantidade. Requer um controlador configurado e `hold_enabled`.|
+| `ReleaseRwa`                               |Remover quantidade retida. Requer um controlador configurado e `hold_enabled`.|
+| `FreezeRwa`                                |Bloquear operações normais do proprietário. Requer um controlador configurado e `freeze_enabled`.|
+| `UnfreezeRwa`                              |Reativar operações normais do proprietário. Requer um controlador configurado e `freeze_enabled`.|
+| `RedeemRwa`                                |Subtrair permanentemente a quantidade de circulação. O proprietário ou um controlador pode enviá-la quando `redeem_enabled` for verdadeiro.|
+| `MergeRwas`                                |Combine quantidades de lotes principais com o mesmo domínio e especificação em um lote filho gerado.|
+| `ForceTransferRwa`                         |Mover quantidade através de um fluxo de controlador. Requer um controlador configurado e `force_transfer_enabled`.|
+| `SetRwaControls`                           |Substitua a política de controle de lote. Requer o proprietário ou um controlador.|
+| `SetKeyValue<Rwa>` / `RemoveKeyValue<Rwa>` |Atualizar metadados do lote. Requer o proprietário ou um controlador; lotes congelados exigem um controlador.|
 
-Não há instrução `UnregisterRwa` no código atual. Retirar um lote fora da cadeia com `RedeemRwa` quando a quantidade representada for entregue, consumida, liquidada ou removida de qualquer outra forma da circulação.
+Não há instrução `UnregisterRwa` no código atual. descomissionar um lote off-chain com `RedeemRwa` quando a quantidade representada for entregue, consumida, liquidada ou de outra forma removida de circulação.
 
-## Metadados e controles {#metadata-and-controls}
+## Metadados e Controles {#metadata-and-controls}
 
-Usar metadados para fatos compactos que ajudem as aplicações a identificar e verificar o lote:
+Use metadados para fatos compactos que ajudam os aplicativos a identificar e verificar o lote:
 
-- Referência de classe de ativos, emissor, custodiador ou registro
-- Identificadores de armazenamento, cofre, ISIN, fatura ou certificado
-- Hashes de conteúdo para atestados e documentos legais
-- SoraFS caminhos ou referências de manifesto para agrupamentos maiores de evidências
-- Marcas de vencimento, jurisdição ou conformidade usadas por serviços fora da cadeia
+- classe de ativo, emissor, custodiante ou referência de registro
+- armazém, cofre, ISIN, fatura ou identificadores de certificado
+- hashes criptográficos de conteúdo para atestados e documentos legais
+- SoraFS caminhos ou referências de manifesto técnico para pacotes de evidências maiores
+- maturidade, jurisdição ou etiquetas de conformidade usadas por serviços fora da cadeia
 
-O `RwaControlPolicy` implementado possui os seguintes campos:
+O `RwaControlPolicy` implementado possui estes campos:
 
 ```json
 {
@@ -96,45 +96,45 @@ O `RwaControlPolicy` implementado possui os seguintes campos:
 }
 ```
 
-As contas e funções do controlador só podem executar as operações habilitadas pelas respectivas bandeiras booleanas. A carga útil de controle atual contém identidades do controlador e bandeiras de operação. `transfers` As regras estão fora desta carga útil.
+Contas e funções do controlador podem realizar apenas as operações habilitadas pelas flags booleanas correspondentes. O payload de controle atual contém identidades de controladores e flags de operação. Listas de permissão de transferência e regras aninhadas `transfers` estão fora deste payload.
 
-## Perguntas, Eventos e APIs {#queries-events-and-apis}
+## Consultas, Eventos e APIs {#queries-events-and-apis}
 
-Utilização [`FindRwas`](/pt/reference/queries.md#assets-nfts-and-rwas) para a lista registada RWA As aplicações que necessitam de actualizações ao vivo podem subscrever-se a [`Rwa` Eventos de dados](/pt/blockchain/filters.md#data-event-filters) para a criação, mudança de proprietário, divisão, fusão, resgate, congelação, descongelação, Eventos realizados, liberados, transferidos por força, alterados de controlo e metadatos.
+Usar [`FindRwas`](/pt/reference/queries.md#assets-nfts-and-rwas) listar registrado RWA muitos. Aplicativos que precisam de atualizações em tempo real podem se inscrever em [`Rwa` eventos de dados](/pt/blockchain/filters.md#data-event-filters) para criado, proprietário-alterado, dividido, mesclado, resgatado, congelado, descongelado, eventos de mantido, liberado, transferido por força, controle alterado e metadados.
 
-Torii expõe rotas de estado de cadeia como `/v1/rwas` e `/v1/rwas/query`, além de rotas exploradoras como `/v1/explorer/rwas` e `/v1/explorer/rwas/{rwa_id}` quando essa família de rotas está habilitada. Os clientes gerados devem preferir o documento ao vivo [`/openapi`](/pt/reference/torii-endpoints.md#common-endpoints) para a forma exata da resposta exposta por um nó.
+Torii expõe rotas do estado da cadeia, tais como `/v1/rwas` e `/v1/rwas/query`, mais explorar rotas como `/v1/explorer/rwas` e `/v1/explorer/rwas/{rwa_id}` quando essa família de rotas estiver habilitada. Os clientes gerados devem preferir a versão ao vivo [`/openapi.json`](/pt/reference/torii-endpoints.md#common-endpoints) documento para o formato exato de resposta exposto por um nó.
 
-### Tente em Taira {#try-it-on-taira}
+### Experimente em Taira {#try-it-on-taira}
 
-Verifique se o Taira público já registrou lotes RWA:
+Verifique se o público Taira atualmente possui lotes registrados RWA:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/rwas?limit=5' \
   | jq '{total, rwa_ids: [.items[].id]}'
 ```
 
-Listar as rotas RWA expostas no documento Taira OpenAPI em directo:
+Liste as rotas RWA expostas pelo documento Taira OpenAPI ao vivo:
 
 ```bash
 curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/rwas") or startswith("/v1/explorer/rwas"))'
 ```
 
-Espera-se uma saída vazia `items` quando ainda não tiverem sido registados lotes públicos. Registo, transferência, retenção, congelamento e resgate são transações assinadas.
+A saída vazia `items` é esperada quando nenhum lote público foi registrado ainda. Registro, transferência, retenção, congelamento e resgate são transações assinadas.
 
-## Tenta. {#try-it}
+## Experimente {#try-it}
 
-Os exemplos a seguir usam o Python SDK superfícies de [Configuração compartilhada](/pt/guide/tutorials/python.md#shared-setup). Substituir a conta IDs, Chaves privadas, e lote gerado IDs com valores da sua própria rede antes de apresentar uma transacção.
+Os exemplos abaixo usam as superfícies Python SDK de [Configuração Compartilhada](/pt/guide/tutorials/python.md#shared-setup). Substitua os IDs de conta, chaves privadas e IDs de lote gerados por valores da sua própria rede antes de enviar uma transação.
 
-### Descubra as rotas RWA API {#discover-rwa-api-routes}
+### Descubra as Rotas RWA API {#discover-rwa-api-routes}
 
-Este exemplo de somente leitura pede a um nó Torii em execução que as rotas RWA voltadas para o aplicativo são habilitadas:
+Este exemplo somente leitura pergunta a um nó Torii em execução quais rotas RWA voltadas para o aplicativo estão habilitadas:
 
 ```python
 from iroha_python import create_torii_client
 
 client = create_torii_client("https://taira.sora.org")
-openapi = client.request_json("GET", "/openapi", expected_status=(200,))
+openapi = client.request_json("GET", "/openapi.json", expected_status=(200,))
 
 rwa_paths = sorted(
     path for path in openapi.get("paths", {}) if path.startswith("/v1/rwas")
@@ -144,11 +144,11 @@ for path in rwa_paths:
     print(path)
 ```
 
-Se a lista estiver vazia, o nó pode ainda suportar instruções e consultas RWA através de outras Torii APIs, mas não está expondo a família de rotas opcionais JSON.
+Se a lista estiver vazia, o nó ainda pode suportar instruções e consultas RWA através de outros Torii APIs, mas não está expondo a família de rotas opcional JSON.
 
-### Registre um recibo de armazém {#register-a-warehouse-receipt}
+### Registrar um registro de resultado de protocolo de armazém {#register-a-warehouse-receipt}
 
-Usar um esboço quando uma ação comercial deve se tornar uma transacção assinada. O número do recibo de negócios entra em `primary_reference`; o livro-razão ID é gerado após a transacção comprometer-se.
+Use um rascunho quando uma ação comercial deve se tornar uma transação assinada. O número do registro do resultado do protocolo comercial vai em `primary_reference`; o ID do livro razão do blockchain é gerado após a confirmação da transação.
 
 ```python
 from iroha_python import TransactionConfig, TransactionDraft
@@ -189,7 +189,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Após os compromissos da transação, a lista é gerada RWA IDs. As rotas de estado de cadeia expõem o canônico IDs; use eventos ou explorador detalhe rotas quando você precisa combinar um ID de volta para `primary_reference` ou metadados:
+Após a transação ser confirmada, liste os IDs gerados RWA. As rotas do estado da cadeia expõem os IDs canônicos; use eventos ou rotas de detalhes do explorador quando precisar corresponder um ID de volta para `primary_reference` ou metadados:
 
 ```python
 page = client.list_rwas_typed(limit=20, offset=0)
@@ -198,7 +198,7 @@ for lot in page.items:
     print(lot.id)
 ```
 
-Os nós habilitados para exploradores também podem retornar projeções mais ricas:
+Nós com suporte ao Explorer também podem retornar projeções mais ricas:
 
 ```python
 page = client.list_explorer_rwas_typed(domain="commodities.universal")
@@ -207,9 +207,9 @@ for lot in page.items:
     print(lot.id, lot.primary_reference, lot.owned_by, lot.quantity)
 ```
 
-### Transferência com retenção temporária {#transfer-with-a-temporary-hold}
+### Transferência com Retenção Temporária {#transfer-with-a-temporary-hold}
 
-Use o gerado RWA ID devolvido pela cadeia. Este exemplo assume que `alice` é o proprietário e também é configurado como um controlador com `hold_enabled`.
+Use o ID gerado RWA retornado pela cadeia. Este exemplo assume que `alice` é o proprietário e também está configurado como um controlador com `hold_enabled`.
 
 ```python
 warehouse_lot_id = (
@@ -228,7 +228,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Enviar `ReleaseRwa` após o êxito do processo fora da cadeia:
+Envie `ReleaseRwa` após o processo off-chain ser bem-sucedido:
 
 ```python
 draft = TransactionDraft(
@@ -240,9 +240,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### Adicionar Metadados de Controle e Auditoria {#add-controls-and-audit-metadata}
+### Adicionar Controles e Metadados de Auditoria {#add-controls-and-audit-metadata}
 
-Os controles e os metadados são separados. Use controles para a política do controlador, e metadados para fatos que as aplicações ou auditores precisam exibir:
+Controles e metadados são separados. Use controles para a política do controlador e metadados para fatos que aplicativos ou auditores precisam exibir:
 
 ```python
 draft = TransactionDraft(
@@ -271,9 +271,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### Quantidade de resgate ou aposentadoria {#redeem-or-retire-quantity}
+### Resgatar ou desativar Quantidade {#redeem-or-retire-quantity}
 
-Submeter `RedeemRwa` depois que o ativo fora da cadeia representado for entregue, consumido, retirado ou removido de outra forma da circulação. Isto subtrai permanentemente a quantidade enviada do lote. O lote deve ter `redeem_enabled`.
+Envie `RedeemRwa` após o ativo off-chain representado ser entregue, consumido, descomissionado ou removido de circulação. Isso subtrai permanentemente a quantidade enviada do lote. O lote deve ter `redeem_enabled`. O signatário criptográfico deve ser o proprietário ou um controlador.
 
 ```python
 draft = TransactionDraft(
@@ -285,9 +285,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### Congelamento durante a revisão da conformidade {#freeze-during-compliance-review}
+### Congelar Durante Revisão de Conformidade {#freeze-during-compliance-review}
 
-Submeter `FreezeRwa` quando uma revisão fora da cadeia deve bloquear as operações ordinárias do proprietário. O assinante deve ser um controlador. O lote deve ter `freeze_enabled`.
+Envie `FreezeRwa` quando uma revisão off-chain deve bloquear operações normais do proprietário. O signatário criptográfico deve ser um controlador. O lote deve ter `freeze_enabled`.
 
 ```python
 draft = TransactionDraft(
@@ -308,7 +308,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Submeter `UnfreezeRwa` após a aprovação da revisão:
+Envie `UnfreezeRwa` após a aprovação da revisão:
 
 ```python
 draft = TransactionDraft(
@@ -325,9 +325,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### Recebimento da fatura {#invoice-receivable}
+### Fatura a Receber {#invoice-receivable}
 
-Representa uma fatura como um lote RWA, armazenando o número da fatura em `primary_reference` e os metadados. Após o registo, utilize a ID gerada para transferência e resgate.
+Represente uma fatura como um lote RWA armazenando o número da fatura em `primary_reference` e os metadados. Após o registro, use o ID gerado para transferência e resgate.
 
 ```python
 draft = TransactionDraft(
@@ -363,7 +363,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Quando o crédito for financiado ou pago, use a parte da fatura gerada ID:
+Quando o recebível for financiado ou pago, use o ID do lote de fatura gerado:
 
 ```python
 invoice_lot_id = (
@@ -380,7 +380,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Redenção do montante representado após liquidação fora da cadeia:
+Resgatar o valor representado após a liquidação fora da cadeia:
 
 ```python
 draft = TransactionDraft(
@@ -392,9 +392,9 @@ envelope = draft.sign_with_keypair(bob_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### Pensionamento de Crédito a Carbono {#carbon-credit-retirement}
+### Cancelamento de créditos de carbono {#carbon-credit-retirement}
 
-Enviar `RedeemRwa` para remover os créditos de carbono reivindicados da circulação. Armazenar o certificado ou a prova de registo fora da cadeia em metadados:
+Envie `RedeemRwa` para remover créditos de carbono reivindicados da circulação. Armazene o certificado fora da cadeia ou a prova de registro nos metadados:
 
 ```python
 carbon_lot_id = (
@@ -416,9 +416,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### Combinar dois lotes {#merge-two-lots}
+### Mesclar Dois Lotes {#merge-two-lots}
 
-Merger lotes quando duas posições fora da cadeia são consolidadas. Os pais devem estar no mesmo domínio e usar a mesma especificação de quantidade. O tempo de execução gera o lote filho ID.
+Combine lotes quando duas posições off-chain são consolidadas. Os pais devem estar no mesmo domínio e usar a mesma especificação de quantidade. O tempo de execução do software gera o ID do lote filho.
 
 ```python
 warehouse_lot_id_2 = (
@@ -450,12 +450,12 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Para obter o exemplo completo da transação Python, ver [Ativos do mundo real ](/pt/guide/tutorials/python.md#real-world-assets).
+Para o exemplo completo de transação Python, veja [Ativos do Mundo Real](/pt/guide/tutorials/python.md#real-world-assets).
 
-## Documentos relacionados {#related-docs}
+## Documentos Relacionados {#related-docs}
 
 - [Ativos](/pt/blockchain/assets.md)
-- [Metadados ](/pt/blockchain/metadata.md)
-- [Iroha Instruções especiais](/pt/blockchain/instructions.md)
-- [Questões](/pt/reference/queries.md#assets-nfts-and-rwas)
-- [Pontos finais Torii](/pt/reference/torii-endpoints.md#app-and-sora-route-families)
+- [Metadados](/pt/blockchain/metadata.md)
+- [Iroha Operações de instrução](/pt/blockchain/instructions.md)
+- [Consultas](/pt/reference/queries.md#assets-nfts-and-rwas)
+- [Torii API pontos de extremidade](/pt/reference/torii-endpoints.md#app-and-sora-route-families)

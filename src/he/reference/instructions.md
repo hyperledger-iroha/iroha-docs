@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /reference/instructions.md
-translation_source_hash: e300187da832a8f82258a36b7c4aaebf505adc09c771de5b0c7ab8fb0052d3db
+translation_source_hash: 9999816502505026fb35d2ddaf4033f54768be697ca5b03550e1cf5949ada36c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -14,23 +14,24 @@ translation_engine: nllb-200-ct2
 | --- | --- |
 | [`RegisterBox`](/he/blockchain/instructions.md#un-register) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Role`, `Trigger`, `RegisterPeerWithPop` |
 | [`UnregisterBox`](/he/blockchain/instructions.md#un-register) | `Peer`, `Domain`, `Account`, `AssetDefinition`, `Nft`, `Role`, `Trigger` |
-| [`MintBox`](/he/blockchain/instructions.md#mint-burn) |מספר `Asset`, תפעיל חוזרים |
-| [`BurnBox`](/he/blockchain/instructions.md#mint-burn) |מספר `Asset`, תפעיל חוזרים |
+| [`MintBox`](/he/blockchain/instructions.md#mint-burn) |`Asset` מספרי, חזרות של טריגר |
+| [`BurnBox`](/he/blockchain/instructions.md#mint-burn) |`Asset` מספרי, חזרות של טריגר |
 | [`TransferBox`](/he/blockchain/instructions.md#transfer) |`Domain`, `AssetDefinition`, מספרים `Asset`, `Nft` |
-| [`SetKeyValueBox`](/he/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` נתונים מטאטא |
-| [`RemoveKeyValueBox`](/he/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` נתונים מטאטא |
+| [`SetKeyValueBox`](/he/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` מטא-נתונים |
+| [`RemoveKeyValueBox`](/he/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` מטא-נתונים |
 | [`GrantBox`](/he/blockchain/instructions.md#grant-revoke) |`Permission` (`Grant<Permission, Account>`), `Role` (`Grant<RoleId, Account>`), `RolePermission` (`Grant<Permission, Role>`) |
 | [`RevokeBox`](/he/blockchain/instructions.md#grant-revoke) |`Permission` (`Revoke<Permission, Account>`), `Role` (`Revoke<RoleId, Account>`), `RolePermission` (`Revoke<Permission, Role>`) |
 | [`SetParameter`](/he/blockchain/instructions.md#setparameter) |עדכון הפרמטרים של שרשרת |
 | [`ExecuteTrigger`](/he/blockchain/instructions.md#executetrigger) |תפעול ההוצאה .|
 | [`Upgrade`](/he/blockchain/instructions.md#other-instructions) |העדכון של מבצע |
 | [`Log`](/he/blockchain/instructions.md#other-instructions) |הכניסה ללוג המבצעים |
-| [`CustomInstruction`](/he/blockchain/instructions.md#other-instructions) |מטען מועיל ספציפי למבצע JSON |
-| [אבטחה של נכסים מקומיים ](/he/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
-| [סגרות נכסים גנריות ](/he/blockchain/escrow.md#generic-asset-locks) |`OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
-| [אבטחה נכסים אנונימית ](/he/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
+| [`CustomInstruction`](/he/blockchain/instructions.md#other-instructions) |מטען נתונים ספציפי למבצע JSON |
+| [נאמנות מובנית לנכסים](/he/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
+| [נעילות נכסים כלליות](/he/blockchain/escrow.md#generic-asset-locks) |`OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
+| [נאמנות אנונימית לנכסים](/he/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
+| [סליקה פרטית אטומית](/he/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
-מודולים נוספים Iroha 3 עשויים לרשום סוגים של הוראות ספציפיות לתחום באמצעות רישום ההוראות. עבור רשימת רמת התוכנית שנוצרה מעץ המקור הנוכחי, ראה [סכמה מודל הנתונים](./data-model-schema.md).
+מודולים נוספים Iroha 3 עשויים לרשום סוגים של הוראות ספציפיות לתחום באמצעות רישום ההוראות. לסכמה שמספק הצומת ולפקודה המשמשת לשמירתה, ראו [סכמת מודל הנתונים](./data-model-schema.md).
 
 ::: details דיאגרם: הוראות בסיסיות למשפחות
 

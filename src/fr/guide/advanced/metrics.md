@@ -1,40 +1,50 @@
 ---
 translation_locale: fr
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: 5772bf7175b693fbbed54b59304859a33c2e19fef0c402141b6f4ad4cfd6714f
+translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Les performances et les mesures {#performance-and-metrics}
+# Performance et mesures {#performance-and-metrics}
 
-Les performances de Iroha dépendent de la charge de travail, de la topologie du validateur, des conditions du réseau et des paramètres de consensus. Un seul numéro TPS n'est donc utile que lorsqu'il est lié à une mise en œuvre de référence avec une configuration fixe.
+La performance de Iroha dépend de la charge de travail, de la topologie des validateurs, des conditions du réseau et des paramètres de consensus. Un seul chiffre TPS n'est donc utile que lorsqu'il est lié à un test de référence avec une configuration fixe.
 
-Pour la planification des capacités, considérer le rendement comme une enveloppe opérationnelle:
+Pour la planification de la capacité, considérez la performance comme un conteneur de données opérationnelles :
 
-- le réseau accepte le taux de transaction demandé;
-- engager des séjours de latence dans le budget cible
-- Les files d'attente de transaction restent limitées
-- Le consensus ne repose pas sur des modifications répétées de la vue ou des voies de récupération.
+- le réseau accepte le taux de transaction demandé
+- la latence de commit reste dans le budget cible
+- les files d'attente des transactions restent limitées
+- le consensus ne repose pas sur des changements de vue répétés ou des chemins de récupération
 
-Utilisez cette page pour estimer si un déploiement est dans un état de performances élevées, moyennes ou faibles pour un nombre donné de nœuds, le seuil de latence du réseau et la cible TPS.
+Utilisez cette page pour estimer si un déploiement se trouve dans un état de performance élevé, moyen ou faible pour un nombre de nœuds donné, un seuil de latence réseau et un TPS cible.
 
 ## Ce qu'il faut mesurer {#what-to-measure}
 
-Commencez par les surfaces de l'opérateur exposées par Torii:
+Commencez avec la vue des données du point dans le temps du nœud public et la récupération Prometheus, puis utilisez le CLI pour l'état de consensus authentifié par l'opérateur. La clé de l'opérateur doit être autorisée par le nœud cible et est chargée uniquement au moment de l'exécution du logiciel :
 
 ```bash
 export TORII=http://127.0.0.1:8180
+export OPERATOR_KEY_FILE=./secrets/operator.key
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
-curl -s -H 'Accept: application/json' "$TORII/v1/sumeragi/status" | jq .
-curl -s "$TORII/v1/sumeragi/phases" | jq .
-curl -s "$TORII/v1/sumeragi/rbc" | jq .
-curl -s "$TORII/v1/sumeragi/params" | jq .
 curl -s "$TORII/metrics" > metrics.prom
+
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi status
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi diagnostics
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi qc
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi params
 ```
 
-Vous pouvez essayer le même schéma de lecture uniquement contre public Taira:
+Public Taira est utile pour apprendre la forme des instantanés de nœuds anonymes. Ses diagnostics d'opérateur sont intentionnellement indisponibles sans une clé d'opérateur Taira :
 
 ```bash
 TAIRA=https://taira.sora.org
@@ -42,214 +52,215 @@ TAIRA=https://taira.sora.org
 curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
-curl -fsS "$TAIRA/v1/time/status" \
-  | jq '{healthy: .health.healthy, peers, samples_used, rtt_count: .rtt.count}'
-
-curl -fsS "$TAIRA/metrics" \
-  | grep -E '^(block_height|queue_size|sumeragi_tx_queue_depth|txs|view_changes)' \
-  | head -n 20
+curl -fsS "$TAIRA/v1/time/now" \
+  | jq '{now_ms, offset_ms}'
 ```
 
-Les mesures publiques Taira sont utiles pour apprendre les noms des signaux. Ne les utilisez pas comme numéros de capacité de production pour votre propre déploiement.
+Ne pas utiliser les observations du testnet public comme chiffres de capacité de production pour votre propre déploiement.
 
-Les mêmes instantanés de consensus sont disponibles via le CLI:
-
-```bash
-iroha --config ./localnet/client.toml --output-format text ops sumeragi status
-iroha --config ./localnet/client.toml --output-format text ops sumeragi phases
-iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
-iroha --config ./localnet/client.toml ops sumeragi params
-```
-
-La visibilité de la télémétrie dépend du profil configuré. Utilisez `extended` lorsque vous avez besoin de `/metrics`, et utilisez `full` pendant les essais lorsque vous avez également besoin des routes détaillées de l'opérateur Sumeragi.
+La visibilité de la télémétrie dépend du profil configuré. `operator` active les instantanés de statut et de diagnostics. `extended` ajoute `/metrics` et des minuteries coûteuses, tandis que `developer` ajoute des vues de données à un moment donné pour les développeurs telles que leader, QC, paramètres et preuves sans activer `/metrics`. Utilisez `full` lorsqu'une exécution nécessite les deux ensembles. `telemetry_profile` est le seul interrupteur de télémétrie de première version.
 
 ```toml
-telemetry_enabled = true
 telemetry_profile = "full"
 ```
 
-## Bandes de performance {#performance-bands}
+## Plages de performance {#performance-bands}
 
-Utilisez ces bandes pour une exécution observée à un débit cible `Y` TPS et un budget de latence `L` millisecondes. Exécutez la charge de travail assez longtemps pour inclure le réchauffement, l'état stable et au moins une période de charge maximale attendue.
+Utilisez ces bandes pour une exécution observée à un débit cible `Y` TPS et à un budget de latence `L` millisecondes. Exécutez la charge de travail suffisamment longtemps pour inclure la montée en température, l'état stable et au moins une période de charge maximale prévue.
 
-|La bande |Conditions |Le sens .|
+|Bande|Conditions|Signification|
 | --- | --- | --- |
-|Très haut .|Le débit accepté est de `Y` ou supérieur, la latence d'engagement p95 est inférieure à `0.8 * L`, les files d'attente restent inférieures à 10% de la capacité et les compteurs de changement de vue/récupération sont plats.|Le déploiement dispose d'espace pour la charge de travail demandée |
-|Moyenne|Le débit accepté est proche de `Y`, la latence d'engagement p95 est inférieure à `L`, les files d'attente sont stables en dessous de 50% de la capacité et les changements de vue sont rares. |Le déploiement fonctionne, mais il y a une tolérance d'explosion limitée |
-|Faible .|Le débit accepté est inférieur à `Y`, la latence de commande p95 dépasse `L`, les files d'attente augmentent au cours de l'exécution ou les compteurs de changement de vue/de pression arrière augmentent continuellement.|La charge de travail demandée dépasse au moins un goulot d' évier |
+|Haut|Le débit accepté est égal ou supérieur à `Y`, la latence de commit p95 est inférieure à `0.8 * L`, les files d'attente restent en dessous de 10 % de la capacité, et les compteurs de changement de vue/récupération sont stables|Le déploiement dispose de marge pour la charge de travail demandée|
+|moyenne|Le débit accepté est proche de `Y`, la latence de commit p95 est inférieure à `L`, les files d'attente sont stables en dessous de 50 % de la capacité, et les changements de vue sont rares|Le déploiement fonctionne, mais il y a une tolérance limitée aux pics|
+|basse|Le débit accepté est inférieur à `Y`, la latence de commit p95 dépasse `L`, les files d'attente augmentent pendant l'exécution, ou les compteurs de changement de vue/rétropression augmentent continuellement|La charge de travail demandée dépasse au moins un goulot d'étranglement|
 
-La règle clé est la direction de la file d'attente. Si le TPS soumis est supérieur au TPS engagé et que la file continue de croître, le déploiement est surchargé même si les échantillons courts semblent sains.
+La règle clé est la direction de la file d'attente. Si le nombre soumis TPS est supérieur au nombre engagé TPS et que la file d'attente continue de croître, le déploiement est surchargé même si de courts échantillons semblent sains.
 
-## Le nombre et le quorum des nœuds {#node-count-and-quorum}
+## Nombre de nœuds et quorum {#node-count-and-quorum}
 
-De plus en plus de validateurs améliorent la tolérance aux défauts, mais augmentent les coûts de coordination, de signature et de mise en réseau. Sumeragi mise en œuvre:
+Plus de validateurs améliorent la tolérance aux pannes, mais augmentent les coûts de coordination, de signature et de propagation sur le réseau. Le protocole de première version Sumeragi nécessite :
 
-- Le nombre de validateurs `n` dérive du budget des défauts `f = floor((n - 1) / 3)`
-- pour `n >= 4`, le quorum du comité est `2f + 1`
-- pour `n <= 3`, tous les validateurs sont requis pour l'engagement
-- Les pairs d'observateurs synchronisent des blocs mais ne votent pas, ne proposent pas ou ne collectent pas
+- un comité de vote exact `n = 3f + 1`
+- `4 <= n <= 31`, donc les tailles valides sont 4, 7, 10, et ainsi de suite
+- un quorum de validation de `2f + 1`
+- les pairs du réseau observateur synchronisent les blocs mais ne votent pas, ne proposent pas et ne collectent pas
 
-|Vérificateurs |Budget défectueux |Compromettre le quorum |Note de capacité |
+|Validateurs|Budget de défaut|Quorum de commit|Note de capacité|
 | --- | --- | --- | --- |
-|1 à 3 |0 laissez-passer pratique hors ligne |tous les validateurs |Utilisée pour le développement et les petits essais; tout validateur manquant peut retarder les engagements |
-| 4 | 1 | 3 |Minimum commun pour la tolérance à une seule faute |
-| 7 | 2 | 5 |Plus résilient, avec plus de trafic de vote et de propagande |
-| 10 | 3 | 7 |Un coût de coordination plus élevé; l'ajustement des réseaux et des collecteurs est plus important |
+| 4 | 1 | 3 |Minimum commun pour une tolérance à une faute|
+| 7 | 2 | 5 |Plus résilient, avec plus de trafic de votes et de propagation|
+| 10 | 3 | 7 |Coût de coordination plus élevé ; le réglage du réseau et de l'entrée importe davantage|
+| 31 | 10 | 21 |Comité de première publication maximum ; coordination de référence et coût de signature avec soin|
 
-L'ajout d'observateurs coûte généralement moins cher que l'ajout de validateurs, mais les observateurs consomment toujours des bavardages de bloc, une synchronisation de bloc, un disque et une bande passante réseau.
+la génération et la validation initiale de la blockchain rejettent les tailles de comité non conformes ; ne pas évaluer une topologie que la version ne peut pas accepter.
 
-## Les facteurs qui influencent le rendement {#factors-that-influence-performance}
+Lors de l'évaluation des « nœuds X », séparez les validateurs votants des observateurs. Ajouter des observateurs coûte généralement moins cher que d'ajouter des validateurs, mais les observateurs consomment toujours la propagation des blocs, la synchronisation des blocs, l'espace disque et la bande passante réseau.
 
-### Forme de charge de travail {#workload-shape}
+## Facteurs qui influencent la performance {#factors-that-influence-performance}
 
-Le même TPS peut être bon marché ou coûteux en fonction de ce que chaque transaction fait.
+### Forme de la charge de travail {#workload-shape}
+
+Le même TPS peut être bon marché ou cher selon ce que fait chaque transaction. Enregistrer :
 
 - nombre d'instructions par transaction
-- le nombre de signatures et les algorithmes de signature
-- la taille des octets de transaction et la taille de la charge utile décompressée
-- Le ratio lecture/écriture
-- Taille des métadonnées et opérations d'actifs
-- le coût de l'exécution du contrat intelligent, du déclencheur et IVM
-- charge de requête en cours d'exécution contre les mêmes pairs
+- nombre de signatures et algorithmes de signature
+- taille en octets de la transaction et taille de la charge utile décompressée
+- ratio lecture/écriture
+- taille des métadonnées et opérations sur les ressources
+- contrat intelligent, déclencheur et coût d'exécution de IVM
+- requête en cours d'exécution contre les mêmes pairs du réseau
 
-Les petites opérations de transfert ne sont pas un prétexte pour des charges de travail lourdes en termes de contrats ou de métadonnées.
+Les petites transactions de transfert ne sont pas un indicateur des charges de travail riches en contrats ou en métadonnées.
 
-### Timing du consensus {#consensus-timing}
+### Cadence de consensus {#consensus-cadence}
 
-Le temps Sumeragi est contrôlé par les paramètres effectifs Sumeragi:
+La vue des données à un instant donné du paramètre Sumeragi effectif contient la cadence de bloc immuable signée et la limite de dérive de l'horloge :
 
-- `block_time_ms` Il est nécessaire d'effectuer une vérification.
-- `commit_time_ms`
-- `min_finality_ms`
-- `pacing_factor_bps`
-- Temps de sortie des phases NPoS lorsque le mode NPoS est activé
+- `block_cadence_ms`
+- `max_clock_drift_ms`
 
-Inspectez-les avec:
+Inspectez-les avec :
 
 ```bash
-iroha --config ./localnet/client.toml ops sumeragi params
-curl -s "$TORII/v1/sumeragi/params" | jq .
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi params
 ```
 
-Les objectifs de synchronisation inférieure ne peuvent améliorer la latence que pendant que les couches réseau, de stockage et d'exécution peuvent suivre le rythme. Une fois que des modifications sont vues, qu'une charge utile manquante est récupérée ou que des contraintes apparaissent, la réduction du temps rend généralement les performances pires.
+`block_cadence_ms` est engagé par la genèse de la blockchain signée et figé au démarrage ; ce n’est pas un réglage actif. Comparez les réseaux avec différents inputs de genèse de blockchain signés uniquement comme des scénarios de référence séparés. Une fois que des changements de vue, des récupérations de charge utile manquante ou une contre-pression apparaissent, une cadence plus courte rend généralement la surcharge plus visible plutôt que d'augmenter le débit durable.
 
-### Le collectionneur Fanout {#collector-fanout}
+### Candidat et limites d'entrée {#candidate-and-ingress-bounds}
 
-Les paramètres du collecteur influent sur la rapidité avec laquelle les votes d'engagement convergent:
+Les limites locales au nœud Sumeragi déterminent combien de travaux candidats et de récupération un validateur peut conserver :
 
-- `sumeragi.collectors.k` contrôle le nombre de collecteurs qui rassemblent des voix par hauteur
-- `sumeragi.collectors.redundant_send_r` contrôle le vote additionnel après un délai local
-- `sumeragi.collectors.parallel_topology_fanout` ajoute une topologie à côté des collectionneurs
+- `sumeragi.block.max_transactions`
+- `sumeragi.block.max_payload_bytes`
+- `sumeragi.block.proposal_queue_scan_multiplier`
+- `sumeragi.queues.commands`
+- `sumeragi.queues.bodies` et `sumeragi.queues.body_bytes`
+- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks` et `sumeragi.queues.ready_bodies`
 
-L'augmentation de la diffusion peut réduire la latence des filets dans les réseaux plus grands ou moins fiables, mais elle augmente également le trafic. Comparer la disponibilité globale et la télémétrie collectrice avec les mesures de latence et de contre-pression avant de changer ces valeurs:
+Des limites trop petites créent une pression sur la file d'attente ou la récupération des charges utiles ; des limites surdimensionnées augmentent la mémoire retenue et la quantité de travail disponible pour un réseau abusif pair. Comparez la vue des données diagnostics à un instant donné avec la mémoire du processus, la gestion des messages et les métriques du corps manquant avant de modifier une limite à la fois :
 
 ```bash
-iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi diagnostics
 ```
 
 ### Conditions du réseau {#network-conditions}
 
-Les performances consensuelles sont sensibles à:
+La performance du consensus est sensible à :
 
-- RTT entre les validateurs
-- nervosité et perte de paquets
-- largeur de bande pour les charges utiles à bloc et RBC pièces
-- des liens asymétriques entre les régions
-- NAT, pare-feu ou comportement de relais qui retarde la connectivité par les pairs
+- RTT entre validateurs
+- gigue et perte de paquets
+- bande passante pour les charges utiles de blocs et les segments signés RS16
+- liens asymétriques entre les régions
+- NAT, pare-feu ou comportement de relais qui retarde la connectivité des pairs sur le réseau
 
-En règle de planification, fixez le budget de latence suffisamment élevé pour couvrir plusieurs voyages aller-retour du validateur plus l'exécution et le temps d'engagement sur disque. Si le réseau p95 RTT est déjà proche de la latence d'engaissement p95 souhaitée, l'objectif n'est pas réaliste.
+Comme règle de planification, fixez le budget de latence suffisamment élevé pour couvrir plusieurs allers-retours du validateur plus le temps d'exécution et de validation sur le disque. Si le p95 du réseau RTT est déjà proche de la latence de validation p95 souhaitée, l'objectif n'est pas réaliste.
 
-### Les files d'attente et les limites de l'entrée {#queues-and-admission-limits}
+### Files d'attente et limites d'admission {#queues-and-admission-limits}
 
-Les paramètres d'admission et de file d'attente définissent la quantité de pression d'éclatement qu'un groupe peut absorber:
+Les paramètres d'admission et de file d'attente définissent combien de pression de rafale un pair du réseau peut absorber :
 
 - `queue.capacity`
 - `queue.capacity_per_user`
+- `queue.max_retained_bytes`
 - `queue.transaction_time_to_live_ms`
-- limites de transaction génèse telles que la signature maximale, les instructions, les octets et les octets décomprimés.
-- Caps de file d'attente p2p et limites d'entrée par consensus
+- limites des transactions de genèse, comme le nombre maximal de signatures, d’instructions, d’octets et d’octets décompressés
+- plafonds de file d'attente p2p et limites d'entrée de consensus
 
-Une haute capacité de file d'attente peut cacher une surcharge pendant un certain temps, mais elle n'augmente pas le débit durable.
+Une grande capacité de file d'attente peut cacher une surcharge pendant un certain temps, mais elle n'augmente pas le débit durable. Une file stable est saine ; une file en croissance est un retard accumulé.
 
-### Le matériel et le stockage {#hardware-and-storage}
+### Matériel et Stockage {#hardware-and-storage}
 
-Mesurer tous les validateurs, pas seulement le leader:
+Mesurez chaque validateur, pas seulement le leader :
 
 - CPU saturation pendant la validation, la vérification de la signature et l'exécution
-- pression de mémoire des files d'attente, des instantanés et des sessions actives RBC
-- la latence d'écriture de disque pour le stockage des blocs et les instantanés
-- saturation du réseau de transmission / réception
-- réglages d'accélération matérielle optionnels lorsqu'ils sont utilisés par la charge de travail
+- pression mémoire provenant des files d'attente, des vues de données à un instant donné et des tampons de récupération de charges utiles
+- latence d'écriture disque pour le stockage en blocs et les vues de données ponctuelles
+- saturation de transmission/réception réseau
+- paramètres d'accélération matérielle optionnels lorsqu'ils sont utilisés par la charge de travail
 
-Le validateur de vote le plus lent peut déterminer la latence du réseau.
+Le validateur votant le plus lent peut déterminer la latence en bout de réseau.
 
-## Les signaux de Prométhée {#prometheus-signals}
+## Signaux de Prométhée {#prometheus-signals}
 
-Les noms métriques peuvent varier selon le profil de construction et l'ensemble des fonctionnalités. Inspect `/metrics` sur votre nœud d'abord, puis construire des tableaux de bord autour des séries disponibles.
+Les noms des métriques proviennent du catalogue de télémétrie enregistré. La disponibilité des séries et l'échantillonnage dépendent toujours des fonctionnalités de construction et de `telemetry_profile`, donc inspectez `/metrics` sur le nœud cible avant de créer un tableau de bord.
 
-Les signaux communs sont les suivants:
+Les signaux courants incluent :
 
-|Le signal .|Les exemples de Prometheus |Qu' est-ce qu' il faut regarder ?|
+|Signal|Exemples de Prometheus|Que regarder|
 | --- | --- | --- |
-|Le débit accepté |`sum(rate(txs{type="accepted"}[5m]))` |Devaient atteindre ou dépasser l' objectif TPS en état de stabilité |
-|Réjections |`sum(rate(txs{type="rejected"}[5m]))` |Il devrait être expliqué par le plan d'essai |
-|Committez la latence |`histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |Comparer p95/p99 avec le budget de latence |
-|La profondeur de la queue | `queue_size`, `sumeragi_tx_queue_depth` |Il doit rester confiné pendant le pic de charge |
-|saturation de la file d'attente |`sumeragi_tx_queue_saturated` |Les valeurs non zéro maintenues sont des moyennes de surcharge |
-|Afficher les changements |`view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |Les valeurs en hausse indiquent le timing, la topologie, la charge utile ou les problèmes de réseau |
-|Les messages sont abandonnés | `dropped_messages`, `sumeragi_consensus_message_handling_total` |La baisse de la charge explique généralement les pics de latence |
-|La pression RBC | `sumeragi_rbc_store_pressure`, `sumeragi_rbc_backpressure_deferrals_total` |Points de pression non zéro pour la récupération des charges utiles ou les embouteillages de stockage |
-|Compromettre le quorum | `sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |Les signatures comptées devraient rapidement atteindre le quorum requis .|
+|Débit accepté| `sum(rate(txs{type="accepted"}[5m]))` |Doit atteindre ou dépasser l'objectif TPS à l'état stable|
+|Rejets| `sum(rate(txs{type="rejected"}[5m]))` |Devrait pouvoir être expliqué par le plan de test|
+|Latence de validation| `histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |Comparer p95/p99 avec le budget de latence|
+|Profondeur de la file d'attente| `queue_size`, `sumeragi_tx_queue_depth` |Doit rester limité pendant la charge de pointe|
+|Saturation de la file| `sumeragi_tx_queue_saturated` |Des valeurs non nulles soutenues signifient une surcharge|
+|Changements de vue| `view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |Une hausse signale des problèmes de temporisation, de topologie, de charge utile ou de réseau|
+|Messages perdus| `dropped_messages`, `sumeragi_consensus_message_handling_total` |Les baisses pendant la charge expliquent généralement les pics de latence|
+|Charge utile et récupération DA| `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` |Des demandes persistantes, un âge croissant ou des portes DA répétées indiquent des problèmes d'acquisition de corps ou de morceaux|
+|Quorum de commit| `sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |Les signatures comptées devraient atteindre rapidement le quorum requis|
 
-Lorsqu'une métrique n'existe que dans `/v1/sumeragi/status`, capturer l'instantané JSON dans les mêmes objets de course que le rayonnement Prometheus.
+Lorsqu’une métrique n’existe que dans `/v1/sumeragi/status`, capturez la vue des données à un instant donné JSON dans les mêmes artefacts de l’exécution que le scrape de Prometheus.
 
-## Estimation du flux de travail {#estimation-workflow}
+## Flux de travail d'estimation {#estimation-workflow}
 
-1. Définissez le scénario:
-   - le nombre de validateurs et d'observateurs
+1. Définir le scénario :
+   - nombre de validateurs et nombre d'observateurs
    - mode de consensus
-   - l'objectif TPS
-   - Les budgets pour les engagements de latence p95 et p99
-   - mélange de transactions
-   - Réseau prévu RTT, jitter et bande passante
-2. Enregistrer la configuration effective:
+   - cible TPS
+   - budgets de latence des commits p95 et p99
+   - composition des transactions
+   - réseau prévu RTT, gigue et bande passante
+2. Enregistrez la configuration effective :
 
    ```bash
-   iroha --config ./localnet/client.toml --output-format json ops sumeragi params \
+   iroha --config ./localnet/client.toml \
+     --operator-private-key-file "$OPERATOR_KEY_FILE" \
+     --output-format json ops sumeragi params \
      > artifacts/sumeragi-params.json
-   curl -s "$TORII/v1/sumeragi/collectors" \
-     > artifacts/sumeragi-collectors.json
+   iroha --config ./localnet/client.toml \
+     --operator-private-key-file "$OPERATOR_KEY_FILE" \
+     --output-format json ops sumeragi status \
+     > artifacts/sumeragi-status.json
+   iroha --config ./localnet/client.toml \
+     --operator-private-key-file "$OPERATOR_KEY_FILE" \
+     --output-format json ops sumeragi diagnostics \
+     > artifacts/sumeragi-diagnostics.json
    ```
 
-3. Exécuter la charge de travail à l'objectif TPS.
-4. Capture de l'état et des métriques au début, au milieu et à la fin de la course.
-5. Classifier la course avec le tableau des bandes de performance.
-6. Si la bande est moyenne ou basse, modifiez un facteur à la fois et répétez.
+3. Exécutez la charge de travail sur la cible TPS.
+4. Capturez le statut et les métriques au début, au milieu et à la fin de l'exécution.
+5. Classez l’exécution à l’aide du tableau des plages de performance.
+6. Si la bande est Moyenne ou Basse, changez un facteur à la fois et répétez.
 
-## Template de rapport de référence {#benchmark-report-template}
+## Modèle de rapport de référence {#benchmark-report-template}
 
-Publier des numéros de performance uniquement dans un contexte suffisant pour les reproduire:
+Publiez les chiffres de performance uniquement avec suffisamment de contexte pour les reproduire :
 
-- Iroha drapeaux d'engagement, de délivrance et de caractéristiques
-- le nombre de validateurs et d'observateurs
-- Mode de consensus et paramètres Sumeragi
-- le collecteur `k`, l'envoi redondant `r`, et la finition de topologie
+- Iroha valider, publier et indicateurs de fonctionnalité
+- comptes de validateurs et d'observateurs
+- mode de consensus, cadence des blocs signés et disposition DA
+- comité exact `3f + 1`, quorum et liste des observateurs
+- `sumeragi.block`, `sumeragi.queues`, `sumeragi.limits`, limites d'entrée du réseau et de la file d'attente des transactions
 - profil de télémétrie
-- le matériel, le stockage et les détails OS
-- Réseau RTT, hypothèses de jitter, de perte et de bande passante
-- taille du mélange des transactions et de la charge utile
-- offert TPS et durée de fonctionnement
-- accepté ou rejeté TPS
-- P50/p95/p99 latence d'engagement
+- matériel, stockage et détails OS
+- réseau RTT, gigue, perte et hypothèses de bande passante
+- répartition des transactions et tailles des charges
+- offert TPS et durée d'exécution
+- accepté/rejeté TPS
+- latence de commit p50/p95/p99
 - profondeur de file d'attente et saturation
-- voir les modifications, les messages abandonnés, la pression RBC et les compteurs de charge utile manquants
+- voir les modifications, les messages abandonnés, les récupérations de blocs manquants et les compteurs DA-gate
 - CPU, utilisation de la mémoire, du disque et du réseau par validateur
 
 Sans ces détails, un numéro TPS devrait être considéré comme anecdotique.
 
-## Pages connexes {#related-pages}
+## Pages liées {#related-pages}
 
-- [Les tests de chaos avec Izanami ](./chaos-testing.md)
-- [points d'extrémité Torii](../../reference/torii-endpoints.md)
-- [L'opération Iroha 3 est effectuée par l'intermédiaire de CLI ](../../get-started/operate-iroha-via-cli.md)
-- [Référence de configuration par rapport aux pairs ](../../reference/peer-config/params.md)
+- [Test de Chaos avec Izanami](./chaos-testing.md)
+- [Torii API points de terminaison](../../reference/torii-endpoints.md)
+- [Faire fonctionner Iroha 3 via CLI](../../get-started/operate-iroha-via-cli.md)
+- [référence de configuration des pairs réseau](../../reference/peer-config/params.md)

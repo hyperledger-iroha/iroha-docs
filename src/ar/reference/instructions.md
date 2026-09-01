@@ -1,38 +1,39 @@
 ---
 translation_locale: ar
 translation_source: /reference/instructions.md
-translation_source_hash: e300187da832a8f82258a36b7c4aaebf505adc09c771de5b0c7ab8fb0052d3db
+translation_source_hash: 9999816502505026fb35d2ddaf4033f54768be697ca5b03550e1cf5949ada36c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Iroha تعليمات خاصة {#iroha-special-instructions}
+# Iroha عمليات التعليمات {#iroha-special-instructions}
 
-نموذج البيانات الحالي يكشف عن هذه العائلات التدريبية المدمجة:
+يعرض نموذج البيانات الحالي عائلات التعليمات المدمجة هذه:
 
-|التعليمات |الإختلافات|
+|تعليمات|الأنواع|
 | --- | --- |
-| [`RegisterBox`](/ar/blockchain/instructions.md#un-register) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Role`, `Trigger`, `RegisterPeerWithPop` |
-| [`UnregisterBox`](/ar/blockchain/instructions.md#un-register) | `Peer`, `Domain`, `Account`, `AssetDefinition`, `Nft`, `Role`, `Trigger` |
-| [`MintBox`](/ar/blockchain/instructions.md#mint-burn) |الرقمية `Asset` ، تسبب التكرار |
-| [`BurnBox`](/ar/blockchain/instructions.md#mint-burn) |الرقمية `Asset` ، تسبب التكرار |
-| [`TransferBox`](/ar/blockchain/instructions.md#transfer) |`Domain`، `AssetDefinition`، العدد `Asset`، `Nft` |
-| [`SetKeyValueBox`](/ar/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` البيانات الأساسية |
-| [`RemoveKeyValueBox`](/ar/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` البيانات الأساسية |
+| [`RegisterBox`](/ar/blockchain/instructions.md#un-register) | `Domain`، `Account`، `AssetDefinition`، `Nft`، `Role`، `Trigger`، `RegisterPeerWithPop` |
+| [`UnregisterBox`](/ar/blockchain/instructions.md#un-register) | `Peer`، `Domain`، `Account`، `AssetDefinition`، `Nft`، `Role`، `Trigger` |
+| [`MintBox`](/ar/blockchain/instructions.md#mint-burn) |رقمي `Asset`، تكرار المحفزات|
+| [`BurnBox`](/ar/blockchain/instructions.md#mint-burn) |رقمي `Asset`، تكرار المحفزات|
+| [`TransferBox`](/ar/blockchain/instructions.md#transfer) | `Domain`، `AssetDefinition`، رقمي `Asset`، `Nft` |
+| [`SetKeyValueBox`](/ar/blockchain/instructions.md#setkeyvalue-removekeyvalue) |البيانات الوصفية `Domain`، `Account`، `AssetDefinition`، `Nft`، `Trigger`|
+| [`RemoveKeyValueBox`](/ar/blockchain/instructions.md#setkeyvalue-removekeyvalue) |البيانات الوصفية `Domain`، `Account`، `AssetDefinition`، `Nft`، `Trigger`|
 | [`GrantBox`](/ar/blockchain/instructions.md#grant-revoke) | `Permission` (`Grant<Permission, Account>`), `Role` (`Grant<RoleId, Account>`), `RolePermission` (`Grant<Permission, Role>`) |
 | [`RevokeBox`](/ar/blockchain/instructions.md#grant-revoke) | `Permission` (`Revoke<Permission, Account>`), `Role` (`Revoke<RoleId, Account>`), `RolePermission` (`Revoke<Permission, Role>`) |
-| [`SetParameter`](/ar/blockchain/instructions.md#setparameter) |تحديث معايير سلسلة |
-| [`ExecuteTrigger`](/ar/blockchain/instructions.md#executetrigger) |التنفيذ المحفز|
-| [`Upgrade`](/ar/blockchain/instructions.md#other-instructions) |تحديث المنفذ |
-| [`Log`](/ar/blockchain/instructions.md#other-instructions) |إدخال سجل التنفيذ |
-| [`CustomInstruction`](/ar/blockchain/instructions.md#other-instructions) |الحمل المفيد المحدد للجهاز التنفيذي JSON |
-| [الاحتفاظ بالأصول الأصلية ](/ar/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
-| [مقفلات الأصول العامة ](/ar/blockchain/escrow.md#generic-asset-locks) |`OpenAssetLock`، `DrawdownAssetLock`، `CancelAssetLock`، `ExpireAssetLock` |
-| [الاحتفاظ بالأصول المجهولة ](/ar/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
+| [`SetParameter`](/ar/blockchain/instructions.md#setparameter) |تحديث معلمة السلسلة|
+| [`ExecuteTrigger`](/ar/blockchain/instructions.md#executetrigger) |تنفيذ المحفز|
+| [`Upgrade`](/ar/blockchain/instructions.md#other-instructions) |ترقية المنفذ|
+| [`Log`](/ar/blockchain/instructions.md#other-instructions) |إدخال سجل المنفذ|
+| [`CustomInstruction`](/ar/blockchain/instructions.md#other-instructions) |الحمولة الخاصة بالمنفذ التنفيذي JSON|
+| [حساب ضمان للأصل الأصلي](/ar/blockchain/escrow.md) | `OpenAssetEscrow`، `AcceptAssetEscrow`، `MarkEscrowPaymentSent`، `ReleaseAssetEscrow`، `CancelAssetEscrow`، `OpenEscrowDispute`، `ResolveEscrowDispute` |
+| [أقفال الأصول العامة](/ar/blockchain/escrow.md#generic-asset-locks) | `OpenAssetLock`، `DrawdownAssetLock`، `CancelAssetLock`، `ExpireAssetLock` |
+| [حساب ضمان للأصول المجهولة](/ar/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`، `AcceptAnonymousAssetEscrow`، `MarkAnonymousEscrowPaymentSent`، `ReleaseAnonymousAssetEscrow`، `CancelAnonymousAssetEscrow`، `OpenAnonymousEscrowDispute`، `ResolveAnonymousEscrowDispute` |
+| [التسوية الخاصة الذرية](/ar/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`، `RotatePrivateSettlementPoolPolicyV1`، `FinalizeAtomicPrivateSettlementV1`، `AbortAtomicPrivateSettlementV1` |
 
-يمكن أن تسجل وحدات Iroha 3 إضافية أنواع تعليمات محددة للمجال من خلال سجل التعليمات. للحصول على قائمة مستوى الخطة التي تم إنشاؤها من شجرة المصدر الحالية ، انظر [نموذج البيانات Schema](./data-model-schema.md).
+قد تقوم وحدات Iroha 3 الإضافية بتسجيل أنواع تعليمات خاصة بالنطاق من خلال سجل التعليمات. بالنسبة لمخطط العقدة المخول والأمر الذي يلتقطه، انظر [مخطط نموذج البيانات](./data-model-schema.md).
 
-::: details الرسم البياني: التعليم الأساسي للعائلات
+::: details مخطط: عائلات التعليمات الأساسية
 
 ```mermaid
 classDiagram

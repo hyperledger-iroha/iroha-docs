@@ -1,171 +1,212 @@
 ---
 translation_locale: ka
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 6b33c687fd1d81d931b932d38908d9a87e9c619e5aca5714d09d892160a6b704
+translation_source_hash: 621d1795fd1c3cc62462a9a91af68fe684c0ff5293f5e77801420dc8318bac38
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Musubi Kotodama შეფუთვები {#musubi-kotodama-packages}
 
-Musubi არის პაკეტის მენეჯერი Kotodama წყარო პაკეტებისთვის. იგი აძლევს დეველოპერებს Cargo-ს მსგავს სამუშაო პროცესს კომპოზიციური Kotodama ფუნქციების გასაზიარებლად, ხოლო პაკეტის იდენტობის შენარჩუნება დაკავშირებულია SORA და Iroha სახელის სივრცეებთან, ნაცვლად გლობალური სახელითა ცხრილის.
+Musubi არის პირველი გამოშვების პაკეტის მენეჯერი Kotodama წყარო პაკეტებისთვის. იგი გადაწყვეტს ზუსტ გრაფიკას დამოკიდებულების ქსელზე, აuthenticates SoraFS წყარო არქივები, შედგება და ტესტირებს შერჩეულ სამუშაო სივრცეს, ქმნის ერთპიროვნულ პროტოკოლურ სტანდარტზე CAR არსებულ არქივებს და აქვეყნებს შეუცვლელ რელიზებს Iroha საშუალებით.
 
 გამოიყენეთ Musubi, როდესაც საჭიროა:
 
-- გამოაქვეყნოს განმეორებით გამოსაყენებელი Kotodama წყარო ბიბლიოთეკები
-- პინი ზუსტი გარდამავალი წყაროზე დამოკიდებულებები `Musubi.lock`
-- რეკონსტრუქცია დამოკიდებულების წყარო დადასტურებული SoraFS არქივის ვალდებულებების მიხედვით
-- დაკავშირება პაკეტის სახელის სივრცე dapp კონტრაქტის aliases იმავე სახელების სივრცე
-- შეამოწმოს, გამოაქვეყნოს, ამოიღოს ან ალიას პაკეტები ქსელში არსებული რეესტრის მეშვეობით
+- გამოაქვეყნეთ განმეორებადი ფუნქციის ბიბლიოთეკები Kotodama
+- დააკვეთეთ ზუსტი გარდამავალი გრაფიკი `Musubi.lock`
+- რეკონსტრუქცია დამოკიდებულების წყარო განსაზღვრული SoraFS არქივის კრიპტოგრაფიული ვალდებულებების ღირებულებებიდან
+- შექმნა და გამოცდა ერთი პაკეტის ან მრავალპაკეტის სამუშაო სივრცეში
+- შეამოწმოს, გამოაქვეყნოს, ამოიღოს, შეინარჩუნოს ან ალიას პაკეტები ქსელზე არსებული რეესტრის საშუალებით
 
 ## პაკეტის სახელები {#package-names}
 
-კანონიკური შეფუთვის ID-ების გამოყენება:
+კანონიკური პაკეტის სელექტორები იყენებენ:
 
 ```text
 namespace/package
 ```
 
-ზუსტი გამოშვების მითითებების გამოყენება:
+ზუსტი გამოშვების იდენტიფიკატორები დამატება ვერსია:
 
 ```text
 namespace/package@version
 ```
 
-სახელის სივრცის წინ არ არის მითითებული `@`. `@` გამყოფი განკუთვნილია ვერსიის სათავეში.
+სახელის სივრცეში არ არსებობს ლიდერი `@`. სახელების სივრცე ან არის მონაცემთა სივრცის ფესვი, როგორიცაა `universal` ან დომენის კვალიფიცირებული მონაცემთა სიახლე, როგორიცაა `dex.universal`. ბლოკჩეინის რეესტრი ამავე სტრუქტურულ სახელების სიფართოს ერთ სტაბილურ საწყისი მონაცემთა სიფართოზე აკავშირებს სანამ პაკეტი შეიძლება მოითხოვონ.
 
-დასახელების სივრცის სეგმენტი შეესაბამება Kotodama dapp ხელშეკრულების ანალიზის გამოყენებულ საკვანძო სიტყვებს:
+## ტექნიკური მანიფესტი და დაბლოკვის ფაილი {#manifest-and-lockfile}
 
-|პაკეტის იდენტიფიკაცია |დაკავშირებული ხელშეკრულების ალიას ფორმა |
-| ------------------------- | ---------------------------- |
-|`universal/math` |`router::universal` |
-|`dex.universal/swap-core` |`router::dex.universal` |
-
-დასახელების სივრცეებს აქვთ ან `<dataspace>` ან `<domain>.<dataspace>` ფორმა. როდესაც პაკეტს აქვს dapp ბმული, Musubi აამოწმებს, რომ ყველა დაკავშირებული ხელშეკრულების alias იყენებს იგივე სახელის სივრცის სათავე როგორც პაკეტი.
-
-## გამოცხადება {#manifest}
-
-შეფუთვა იწყება `Musubi.toml`:
+პაკეტში გამოყენებულია დახურული პირველი გამოშვება `Musubi.toml` სქემა. ტექნიკური მანიფესტში უნდა გამოცხადდეს: `manifest-version = 1`, Kotodama გამოცემა `"1"`, და IVM ABI ვერსია `1`; არ არსებობს ალტერნატიული ტექნიკური მანიფესტი; ან ABI რეჟიმი.
 
 ```toml
+manifest-version = 1
+
 [package]
 namespace = "dex.universal"
 name = "swap-core"
 version = "0.1.0"
+edition = "1"
+abi-version = 1
+
+[lib]
+source-dir = "src"
+exports = ["quote"]
 
 [dependencies.math]
 package = "std.universal/math"
 version = "^1.0.0"
-
-[exports]
-functions = ["quote"]
-
-[dapp]
-namespace = "dex.universal"
-contracts = ["router::dex.universal"]
 ```
 
-დამოკიდებულებამ შეიძლება გამოიყენოს ზუსტი ვერსიები, ფრთხილობის მოთხოვნები, ტილდის მოთხოვნებია, გარეგნული ბარათები, როგორიცაა `1.*`, ან შედარების სიები, როგორიც არის `>=1.0.0,<2.0.0`.
+დამოკიდებულებამ შეიძლება გამოიყენოს ზუსტი ვერსიები, მოთხოვნები ზრუნვა ან tilde, ჯოკერები როგორიცაა `1.*`, და კომა-განცალკევებული შედარების ნაკრები, როგორიცაა `>=1.0.0,<2.0.0`. დამოკიდებულება ცხრილის გასაღები არის მშობლიური ადგილობრივი იმპორტის ალიასი; `package` ყოველთვის კანონიკური რეესტრის სელექტორია.
 
-`Musubi.lock` აღნიშნავს შერჩეულ ტრანზიტულ გრაფიკს ქსელის რეესტრიდან. თითოეული ჩაკეტილი კვანძი ინახავს მის კანონიკურ პაკეტს, შეირჩილებულ მოთხოვნას, SoraFS მანიფესტის დიგესტს, წყარო არქივის ჰეში, ბაიტების რაოდენობა, ფაილების რაოდენობა, ექსპორტირებული ფუნქციები, დეტერმინისტური წყარო არქივის გეგმა და დამოკიდებულების საიდუმლოებები. მოკლე საიდუმლოს გადაჭრა ხდება სანამ ისინი შედიან საკეტი ფაილში.
+`Musubi.lock` უკავშირებს გრაფიკს ზუსტად გენეზისიდან გამომდინარე `NetworkId` და საბოლოო რეესტრის სურათს. ის აღნიშნავს შერჩეულ სამუშაო სივრცის ფესვებს და შეუცვლელ გათავისუფლების კვანძებს, გათავისუფლება, წყარო, ინტერფეისი, არქივი, ABI და ზუსტი დამოკიდებულების საზღვრის კრიპტოგრაფიული ვალდებულება. პარალელური ვერსიები დასაშვებია მაშინ, როდესაც გადაჭრილი გრაფიკი მათ საჭიროებს.
+
+## კონფიგურაცია Taira SoraFS მოზიდვა {#configure-taira-sorafs-fetching}
+
+Taira არის ამ სამუშაო პროცესის საჯარო ტესტნეტი. დაიწყეთ კონფიგურაციაზე Taira კლიენტი ჩანახული ჯაჭვი და მიმდინარე ჩაკეტილი გენეზისიდან გამომდინარე ქსელის იდენტურობით, შემდეგ დაამატეთ მომწოდებლის სპეციფიკური ავთენტური მოძიების კავშირები ქვემოთ. Taira განახლება შეუძლია შეცვალოს `NetworkId`; განაახლოს იგი ხელმოწერილი განთავსების პროფილისგან, ნაცვლად იმისა, რომ ეს გამოიყოს სტაბილური ჯაჭვიდან UUID. ანგარიშის ხელმოწერის მასალა და მომწოდებლის ოპერატორის გასაღები უნდა დარჩეს მხოლოდ მფლობელის შესრულების გარემოს ფაილებში.
+
+```toml
+torii_url = "https://taira.sora.org/"
+chain = "fc56984b-2be7-431d-840e-21514d1883f0"
+network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+
+[musubi.fetch]
+network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+client_id = "musubi-taira"
+request_timeout_ms = 30000
+
+[[musubi.fetch.provider_gateways]]
+provider_id = "REPLACE_WITH_ADMITTED_PROVIDER_ID_HEX"
+url = "REPLACE_WITH_ADVERTISED_PROVIDER_HTTPS_ORIGIN"
+operator_public_key = "REPLACE_WITH_PROVIDER_AUTHORIZED_OPERATOR_PUBLIC_KEY"
+operator_private_key_file = "./secrets/taira-sorafs-provider.key"
+```
+
+აღმოაჩინეთ Taira-ის დაშვებული პროვაიდერები საჯარო ტესტნეტის ფესვიდან:
+
+```bash
+export TAIRA_ROOT=https://taira.sora.org
+curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
+```
+
+პროვაიდერის კატალოგი უზრუნველყოფს პროვაიდორის ვინაობას და რეკლამირებულ API საბოლოო წერტილებს. მიიღეთ შესაბამისი ოპერატორის ავტორიზაცია შერჩეული პროვაიდერიდან. შესრულების გარემო იყენებს ამ გასაღებას, რათა მოითხოვოს შეზღუდული ნაკადის ტოკენები; ტოკენი არ არის არც CLI არგუმენტები და არც საკეტი ფაილების შინაარსი.
+
+არ გამოიყენოთ Taira დამტკიცების პინი URL როგორც `url`. შემოწმებულმა ვალიდატორებმა ჩაშალეს: SoraFS შეზღუდული შენახვა. მათი `https://taira-validator-{1,2,3,4}.sora.org` API საბოლოო წერტილები იღებენ პინი რეგისტრაციას, ხოლო არქივის წაკითხვები იყენებენ შერჩეულ დაშვებულ პროვაიდერს HTTPS წარმოშობა.
 
 ## ადგილობრივი სამუშაო პროცესები {#local-workflow}
 
-აღმავალი Iroha სამუშაო სივრცის ფესვიდან, გაუშვით Musubi Cargo- ში:
+აღმავალი Iroha სამუშაო სივრცის ფესვიდან, შექმენით ან შეიყვანეთ პაკეტის დირექტორი და განახორციელეთ Musubi Cargo- ით:
 
 ```bash
-cargo run -p musubi -- init --namespace dex.universal --name swap-core --dapp
-cargo run -p musubi -- add std.universal/math --version '^1.0.0' --alias math
-cargo run -p musubi -- install --config client.toml
-cargo run -p musubi -- build src/lib.ko --manifest-out target/lib.contract.json
-cargo run -p musubi -- pack \
-  --car-out source.car \
-  --sorafs-manifest-out manifest.norito \
-  --source-plan-out source-plan.norito
+mkdir -p examples/swap-core
+cd examples/swap-core
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  init . --namespace dex.universal --name swap-core --export quote
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  add std.universal/math --version '^1.0.0' --rename math
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- fetch --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- check --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- build --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- test --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- package --config client.toml
 ```
 
-გამოიყენეთ `install --offline` ზუსტი ვერსიის დამოკიდებულებებისათვის გადაუწყვეტლივ საკეტო ფაილისთვის დაწერისთვის, ბმულის გამოკითხვის გარეშე. გამოიყენეთ `install --locked` CI-ში მოძველებული საკეტების ფაილის უარყოფისთვის.
+`fetch` ხსნის საბოლოო რეესტრის გრაფიკას, განახლებაებს `Musubi.lock`, როდესაც ამის საშუალება აქვს, და სავსებს შეუცვლელ ადგილობრივ კეშს ავთენტიფიცირებული SoraFS ადგილმდებარეობიდან. `check`, `build`, `test` და `package` ასრულებენ იმავე გრაფიკასა და კეშის შემოწმებას საკუთარი მუშაობის წინ .
 
-`build` უკავშირდება განთავსებული დამოკიდებულების წყაროები, გადაწერით მოწოდებები, როგორიცაა `math::add()` დეტერმინისტური შიდა Kotodama ფუნქციის სახელებს. იგი უარყოფს მოწოდებებს იმ ფუნქციებზე, რომლებიც დამოკიდებულება არ ექსპორტირებულა. Musubi v1 ბიბლიოთეკები არის მხოლოდ ფუნქციური: დამოკიდებულების წყაროები, რომლებიც შეიცავს სახელმწიფო დეკლარაციებს, triggers, kotoba ბლოკები, კონსტანტები, ან სხვა non-ფუნქცია ხელშეკრულების ელემენტები უარყოფითად.
+გამოიყენეთ `--locked` ნებისმიერი საკეტის ფაილში ცვლილების უარყოფისთვის. გამოიყენეთ `--offline` მხოლოდ მაშინ, როდესაც რეესტრის ინდექსი და ყველა საჭირო არქივი უკვე დაცულია. `--frozen` აერთიანებს ამ ორ შეზღუდვას. ოფლაინ კეიფი წარუმატებელია; Musubi არასოდეს წერს გაურკვეველ საკეტს ფაილზე.
 
-## წყაროს მიღება Archives {#fetching-source-archives}
+დამოკიდებულების წყაროები დაკავშირებულია გადაწერით კვალიფიციური ტექნიკური მოწოდებები, როგორიცაა `math::add()` დეტერმინისტური შიდა Kotodama სახელებს. დამოკიდებულების ტექნიკური არექსპორტირებულ ფუნქციაზე გამოძახება უარყოფითია. იმპორტირებული ბიბლიოთეკები ამჟღავნებენ ფუნქციებს; ადგილობრივი `[[contract]]` და `[[test]]` სამიზნეები კვლავ რჩებიან პაკეტის მკაფიო მიზნებად.
 
-Musubi შეუძლია მოიპოვოს დაკარგული დამოკიდებულების წყაროები, როდესაც გადაწყვეტს ან მოგვიანებით კეიშის ქვებრძანებების მეშვეობით:
+## კეიშის შემოწმება და გამოსწორება {#cache-verification-and-repair}
+
+საჯარო კეიშის ბრძანებები მუშაობს უცვლელზე, რომელიც გამოქვეყნებულია რეესტრის არქივში:
 
 ```bash
-cargo run -p musubi -- install --config client.toml --fetch \
-  --provider-payload math.payload
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache verify --all --config client.toml
 
-cargo run -p musubi -- cache import math --source-root ../math
-cargo run -p musubi -- cache fetch math --provider-payload math.payload
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache repair --config client.toml
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache prune --dry-run --config client.toml
 ```
 
-პირდაპირი კარიბჭეების მიღება იყენებს ერთ ან მეტ SoraFS კარიბხელის პროვაიდერის სპეციფიკაციას:
+`cache repair` კარანტინი კორუმფირებს საიმედო შთამომავლებს და ახდენს ზუსტი არქივების გადამოწმებას, როდესაც ამის საშუალებას აძლევს საბოლოო პროვაიდერის მტკიცებულებები. გადაჭრა მიზანმიმართულად ჩაკეტულია ცოცხალი არაცარიელი მუტაციის გამო; გამოიყენეთ `--dry-run` კლასიფიცირებული კანდიდატების შესამოწმებლად.
+
+## შეფუთვა და გამოცემა {#packaging-and-publishing}
+
+შეამოწმეთ სუფთა დადებითი ფაილის ნაკრები არქივის დაწერამდე, შემდეგ შექმენით კანონიკური პაკეტი:
 
 ```bash
-cargo run -p musubi -- install --config client.toml --fetch \
-  --gateway-provider 'name=hot-a,provider-id=1111111111111111111111111111111111111111111111111111111111111111,base-url=https://gw.example,stream-token=BASE64,package=math'
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  package --list --locked --config client.toml
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  package --locked --config client.toml
 ```
 
-მომწოდებლის სასარგებლო ტვირთის ფაილები და კარიბჭეების პროვაიდერები ერთმანეთისგან გამორიცხულია ერთი შეძენის ოპერაციისთვის. თუ გააჩნია ერთზე მეტი ჩაკეტილი პაკეტი, თითოეული კარიბხელის პროვაიდერი უნდა იყოს `package=<dependency-alias>`, `package=<namespace/package@version>`, `package=<namespace/package>` ან `manifest=<64-hex SoraFS manifest digest>`.
+`package` დაწერს `target/package/<namespace>-<name>-<version>.car`. CAR აკავშირებს კანონიკური პაკეტის ტექნიკურ მანიფესტს, სემანტიკური გათავისუფლების ტექნიკური მანიფესიტს, ზუსტ შემოწმების საკეტს, წყარო ხეს, ინტერფეისის კრიპტოგრაფიული დიჯესტი და SoraFS არქივის კრიპტოგრაფიული ვალდებულება. პირველ გამოცემაში CLI არ არსებობს ცალკეული ბრძანებები `pack`, `--car-out`, `--sorafs-manifest-out` ან `--source-plan-out` .
 
-კარები. `base-url` და `privacy-url` ღირებულებები უნდა გამოიყენოს `https://` დეფოლუტურად. ადგილობრივი ტესტირების კარიბჭეები შეიძლება გამოიყენოს `http://localhost`, `http://127.0.0.1`, ან `http://[::1]` მხოლოდ `--gateway-allow-insecure-localhost`. ნაკადი tokens არის runtime credentials და არ არიან ჩაწერილი `Musubi.lock`.
-
-## გამოცემა {#publishing}
-
-`pack` ითვლება დეტერმინისტური BLAKE3-256 წყარო არქივის ჰეში პლუს წყარო ბაიტი და ფაილი ითვლება. როდესაც `--car-out`, `--sorafs-manifest-out` ან `--source-plan-out` არის მიწოდებული, ის ასევე აშენებს დეტერმინისტურ SoraFS CAR სასარგებლო ტვირთს, SoraFS მანიფესტს და Musubi წყარო არქივის გეგმას იმავე წყარო ფაილების კომპლექსიდან.
-
-გამოქვეყნებამდე გამოიყენეთ მშრალი გაშვება:
+გამოქვეყნება არის ხელმოწერილი, განახლებადი ქსელის სამუშაო მიმდინარეობა. შერჩეული `client.toml` უნდა შეიცავდეს საჭირო `[musubi.publication]` კავშირებს, ასევე ანგარიშს და Taira ქსელის კონფიგურაციას. შეავსეთ ზუსტად ერთი სამუშაო სივრცის წევრი:
 
 ```bash
-cargo run -p musubi -- publish --config client.toml --dry-run
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  publish -p dex.universal/swap-core --locked --config client.toml
 ```
 
-გარეშე `--dry-run`, `publish` დაწერს ნორმატიული არტეფაქტები ქვემოთ `.musubi/dist/<namespace>/<name>/<version>/`, optional ატვირთავს manifesto და სასარგებლო ტვირთი მეშვეობით Torii აჟიოტაჟი SoraFS სათავსო პინის საბოლოო წერტილი `--upload`, რეგისტრირებს წარმოქმნილ SoraFS pin, და წარუდგენს `PublishMusubiRelease` კონფიგურირებული Iroha კლიენტი.
-
-გამოქვეყნებული ცნობები უნდა შეიცავდეს:
-
-- არა ცარიელი კანონიკური წყარო არქივი
-- დეტერმინისტური წყარო არქივის გეგმა
-- მინიმუმ ერთი ექსპორტირებული Kotodama ფუნქცია
-- დამოკიდებულების ჩანაწერები, რომლებიც არ ირჩევენ გაშლილ განთავისუფლებებს
-- dapp ბმული, თუ არსებობს, რომლის სახელწოდებაც შეთანხმებით შეესაბამება პაკეტის სახელის სივრცეს
+გამოიყენეთ `--detach` ოპერაციის ჟურნალის და თესლის შესვლის საზღვრის გამძლეობის შემდეგ დაბრუნებისათვის. განაგრძეთ მდგრადი ოპერაცია `publish --resume <operation-id> --config client.toml`-ით. უფრო ვიწრო გზა `--recover <operation-id>` მხოლოდ რეკონსტრუქციებს არ არის გამოქვეყნებული `--dry-run` ან ზოგადი საჯარო ატვირთების ჩამორთმევა; გაუშვით `package --list` და `package` ადგილობრივი ფრენის წინასწარი.
 
 ## რეგისტრაციის კითხვები და სიცოცხლის ციკლი {#registry-queries-and-lifecycle}
 
-მოძებნეთ და შეამოწმეთ რეესტრი:
+ძებნა და შემოწმება დასრულებული რეესტრის იგივე Taira კლიენტის კონფიგურაცია:
 
 ```bash
-cargo run -p musubi -- search swap --config client.toml
-cargo run -p musubi -- versions dex.universal/swap-core --config client.toml
-cargo run -p musubi -- alias resolve swap --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  search swap --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  info dex.universal/swap-core --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  versions dex.universal/swap-core --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  alias resolve swap --config client.toml
 ```
 
-იანკინგი მალავს გათავისუფლებას ახალი რეზოლუციისგან, მაგრამ ინარჩუნებს არსებულ ჩაკეტვის ფაილებს განახლებად:
+იანკინგი გამორიცხავს ახალი რეზოლუციების შეუცვლელ გამოშვებას, მაშინ როდესაც არსებული ზუსტი საკეტები კვლავ განახლებადია. ჯერ წაიკითხეთ მიმდინარე იანკის გადახედვა და შემდეგ წარადგინეთ შედარება-დაყენება მუტაცია:
 
 ```bash
-cargo run -p musubi -- yank dex.universal/swap-core@0.1.0 \
-  --reason "bad archive" \
-  --config client.toml \
-  --dry-run
+: "${EXPECTED_YANK_REVISION:?set the current non-zero yank revision}"
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  yank dex.universal/swap-core 0.1.0 \
+  --expected-revision="$EXPECTED_YANK_REVISION" \
+  --reason="bad archive" \
+  --config client.toml
 ```
 
-Musubi თავიდან აიცილებს გლობალურ სახელების შეკრებას, რომ გააკეთოს `namespace/package` კანონიკური პაკეტის სახელი. სახელის სივრცეში გამოქვეყნება უნდა იყოს ავტორიზებული იმავე მფლობელის ან დელეგირებული ნებართვის მოდელის მიერ, რომელიც გამოიყენება იმ Kotodama dapp სახელების სივრცესთვის . კურირებული გლობალური მოკლე საიდუმლოები განცალკევებულია პაკეტის მფლობელობისგან: `SetMusubiShortAlias` საჭიროებს `CanSetMusubiShortAlias` ნებართვას, ხოლო სამიზნე პაკეტს უკვე უნდა ჰქონდეს მინიმუმ ერთი აქტიური გამოშვება.
+ამ მდგომარეობის შესაბრუნებლად `unyank` იმავე პაკეტით, ვერსიითა და ახლად წაკითხული რევიზიით გამოიყენეთ. პაკეტის მფლობელობა და მომვლელის როლები გამოქვეყნების, გამოხმობის, მეტამონაცემებისა და არქივის მდებარეობის ნებართვებს აკონტროლებს. გლობალურ ალიასებს საკუთარი ფასიანი რეგისტრაცია, სამიზნის შეცვლის ისტორია და შედარება-დაყენების რევიზიები აქვს; ისინი პაკეტის მფლობელობის შემოვლითი გზა არ არის.
 
 ## Iroha ზედაპირები {#iroha-surfaces}
 
-Musubi გამოიყენება პირველი კლასის Iroha ინსტრუქციები და შეკითხვები:
+Musubi იყენებს V1 ინსტრუქციას და შეკითხვებს პირველი გამოშვების შესახებ:
 
 |ზედაპირი |მიზანი |
-| ---------------------------- | -------------------------------------------------- |
-|`PublishMusubiRelease` |გამოაქვეყნეთ შეუცვლელი პაკეტის განთავსება. |
-|`YankMusubiRelease` |ვ ჟჲბჲქთ ჲეჟსკვნარაჲრჲ.|
-|`SetMusubiShortAlias` |კურირებული გლობალური მოკლე ანალიზი შეაერთეთ პაკეტის ID- სთან. |
-|`AssertMusubiReleaseExists` |საჭიროა კონკრეტული პაკეტის ვერსიის არსებობა. |
-|`FindMusubiReleaseByRef` |ოჲჱნავეთ ჟლვევრაჲ ჱა ოპვრთნარაჲ. |
-|`FindMusubiPackageVersions` |პაკეტის ID- ის ვერსიების ჩამონათვალი. |
-|`FindMusubiPackageReleases` |ჩამოთვალეთ შეჯამებები, რომლებიც გამოქვეყნდება პაკეტის ID- ისთვის. |
-|`SearchMusubiPackages` |ძებნა პაკეტის შეჯამებები სახელის სივრცე და ტექსტით. |
-|`FindMusubiShortAliasByName` |ოჲჟლვევ ეა ჟვ ოპაგთმ ჟრფა.|
+| ---------------------------------------------------- | -------------------------------------------------------------- |
+|`RegisterMusubiNamespaceBindingV1` |ბმული სახელის სივრცე მისი სტაბილური საშინაო მონაცემთა სივრცე. |
+|`RegisterMusubiArchiveV1` |რეგისტრირება შეუცვლელი ავთენტიფიცირებული წყარო არქივის კრიპტოგრაფიული ვალდებულება. |
+|`AddMusubiArchiveLocationV1` |დამატება ან განახლება დამტკიცებული SoraFS არქივის ადგილმდებარეობა. |
+|`PublishMusubiReleaseV1` |მოითხოვეთ ან განახორციელეთ პაკეტი და გამოაქვეყნეთ ერთი შეუცვლელი გამოშვება. |
+|`SetMusubiReleaseYankV1` |შეადარეთ და დააყენეთ ზუსტი გათავისუფლების მოზიდული მდგომარეობა. |
+|`InviteMusubiPackageMaintainerV1` |დაიწყეთ საპაკეტო როლების ზეპირი მოწვევის ნაკადი. |
+|`RegisterMusubiAliasV1` / `RetargetMusubiAliasV1` |დარეგისტრირეთ ან განახორციელეთ რეგისტრირებული გლობალური ალიასი სახელი. |
+|`AssertMusubiReleaseDigestV1` |ადასტურეთ ზუსტი უცვლელი გათავისუფლების კრიპტოგრაფიული დიჯესტი. |
+|`FindMusubiExactPackageV1` |წაიკითხეთ ერთი ზუსტი პაკეტი და მისი რევიზიები. |
+|`FindMusubiExactReleaseV1` |წაკითხეთ ერთი ზუსტი გამოსვლის სურათი. |
+|`FindMusubiResolverIndexV1` / `FindMusubiVersionsV1` |გადაწყვიტეთ ან ჩამოთვალეთ დასრულებული გამოშვების კანდიდატები. |
+|`FindMusubiArchiveLocationsV1` |წაიკითხეთ განსაზღვრული პროვაიდერის მიერ მხარდაჭერილი არქივის ადგილები. |
+|`FindMusubiAliasV1` / `FindMusubiAliasHistoryV1` |წაკითხეთ ამჟამინდელი ალიასი ნიშანი ან მისი უცვლელი ისტორია. |
 
-Torii აჩვენებს: Musubi HTTP გზის ოჯახი ქვემოთ `/v1/musubi/`. სააგენტოს მიმართ MCP ინსტრუმენტები გამოფენილია, როგორც `iroha.musubi.` ალიანსები. იხილეთ [Torii საბოლოო წერტილები](/ka/reference/torii-endpoints.md) და [შეკითხვის რეფერენცია](/ka/reference/queries.md) უფრო ფართოდ API რუკა.
+Torii აჩვენებს აპლიკაციის მარშრუტის ოჯახს ქვემოთ: `/v1/musubi/*`. MCP ინსტრუმენტები იყენებენ მიმდინარე `iroha.musubi.queries.*` და `iroha.musubi.instructions.*` სახელები. იხილეთ [Torii API საბოლოო წერტილები](/ka/reference/torii-endpoints.md) და [შეკითხვის რეფერენცია](/ka/reference/queries.md) უფრო ფართოზე API რუკა.

@@ -1,29 +1,29 @@
 ---
 translation_locale: zh-hans
 translation_source: /reference/genesis.md
-translation_source_hash: 6710e76508e6a38a6b68d274247cc1383de2472e74f10be85000b30f74cb04a6
+translation_source_hash: ac6bad693ed382dede0818132b8649fe14726283508da897a32eea417e5bbb28
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 创世记的引用 {#genesis-reference}
+# 创世记参考 {#genesis-reference}
 
-在当前的 Iroha 3 工作流中,一个 `genesis.json`说明描述了网络启动时将应用的第一笔交易和参数.
+在当前 Iroha 3 工作流程，一个 `genesis.json` 清单描述了第一个 网络启动时将应用的事务和参数。
 
-分发给同行的签名文物是 Norito 编码的`.nrt`文件,由 `kagami genesis sign`制作.
+分发给同级的签名工件是 Norito-编码的 `.nrt` 文件 生产者 `kagami genesis sign`.
 
 ## 主要领域 {#main-fields}
 
-一个基因表可以定义:
+创世清单可以定义：
 
-- `chain`用于链标识符
-- `executor` 对于可选执行器升级字节码路径
-- `ivm_dir`用于触发器和升级所使用的 IVM 库
-- `consensus_mode` 在公告中宣传的初始模式
-- `transactions` 对有序的参数更新,说明,触发器和拓
-- `crypto` 对于最初的加密快照
+- `chain` 对于链标识符
+- `executor` 对于可选的执行程序升级字节码路径
+- `ivm_dir` 为了 IVM 触发器和升级使用的库
+- `consensus_mode` 对于清单所公布的初始模式
+- `transactions` 用于有序参数更新、指令、触发器和拓扑
+- `crypto` 对于初始加密快照
 
-在 `transactions` 里,拓类目录将同等标识和 PoPs 结合在一起:
+之内 `transactions`, 拓扑条目对对等 ID 和 PoPs 一起：
 
 ```json
 {
@@ -32,9 +32,9 @@ translation_engine: nllb-200-ct2
 }
 ```
 
-## 创造一个表现 {#generate-a-manifest}
+## 生成清单 {#generate-a-manifest}
 
-使用 Kagami 来生成一个模板:
+使用 Kagami 生成模板：
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
@@ -43,23 +43,23 @@ cargo run -p iroha_kagami -- genesis generate \
   --genesis-public-key <PUBLIC_KEY> > genesis.json
 ```
 
-对于公共 SORA Nexus 数据空间,`npos`是预期共识模式.其他 Iroha 3 部署可能根据目标配置文件使用授权或NPoS.
+对于公众 SORA Nexus 数据空间， `npos` 是预期的共识模式。 其他 Iroha 3 根据目标，部署可以使用许可或 NPoS 轮廓。
 
-## 签署公告 {#sign-the-manifest}
+## 签署舱单 {#sign-the-manifest}
 
-在编辑和验证 JSON 后,将其签署到可部署的 `.nrt` 区块中:
+编辑并验证后 JSON, 将其签名到可部署的 `.nrt` 堵塞：
 
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
-  --private-key <PRIVATE_KEY> \
+  --private-key-file <MODE_0600_PRIVATE_KEY_FILE> \
   --out-file genesis.signed.nrt
 ```
 
-`kagami genesis sign`从表格中读取创始公钥,并使用提供的私钥,种子和算法来生成可部署的签名区块.结果是同行应该从他们的配置引用的文件.
+`kagami genesis sign` 从清单读取创世公钥，并使用由所有者保管、硬链接数为 1 的普通文件中的私钥来生成可部署的签名区块。该文件必须包含一个规范的私钥 multihash，后接一个换行符；Kagami 拒绝符号链接以及权限模式不是 `0600` 的文件。命令行不接受原始私钥。生成的文件就是对等节点应在配置中引用的文件。
 
-## 配置 `irohad` {#configure-irohad}
+## 配置 `iroha3d` {#configure-iroha3d}
 
-指向了签署的基因块:
+将守护进程指向已签名的创世块：
 
 ```toml
 [genesis]
@@ -75,4 +75,4 @@ public_key = "<PUBLIC_KEY>"
 - `kagami localnet`
 - `cargo xtask kagami-profiles`
 
-对于发电机的实现和命令详情,请参阅 [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_kagami/README.md).
+有关生成器的实现和命令详细信息，请参阅 [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md).

@@ -3,24 +3,24 @@ translation_locale: ja
 translation_source: /help/overview.md
 translation_source_hash: d0e20c3784c9456f74a68821530920043b0ed5d65890e97d488be304c1249f3b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# 問題を解く {#troubleshooting}
+# トラブルシューティング {#troubleshooting}
 
-このセクションは, Iroha で作業する際に問題が発生した場合に役立ちます.何か問題が起きた場合,まず [ のキー](#check-the-keys) を確認してください.それが役に立たない場合は,各段階のトラブルシューティング指示を確認してください.
+このセクションは、Iroha を使用中に問題が発生した場合に役立つことを目的としています。何か問題が発生した場合は、まず [鍵を確認する](#check-the-keys) を行ってください。それでも解決しない場合は、各ステージのトラブルシューティング手順を確認してください。
 
-- [設置問題](./installation-issues.md)
-- [構成問題](./configuration-issues.md)
-- [部署問題](./deployment-issues.md)
-- [統合問題](./integration-issues.md)
+- [インストールの問題](./installation-issues.md)
+- [設定の問題](./configuration-issues.md)
+- [展開の問題](./deployment-issues.md)
+- [統合の問題](./integration-issues.md)
 
-あなたが経験している問題はここで説明されていない場合は, [テレグラム](https://t.me/hyperledgeriroha)で連絡してください.
+もしあなたが経験している問題がここに記載されていない場合は、[テレグラム](https://t.me/hyperledgeriroha) を通じてお問い合わせください。
 
-## 鍵をチェック {#check-the-keys}
+## 鍵を確認してください {#check-the-keys}
 
-ほとんどの 問題 は 匹敵 し ない 鍵 の 結果 に なり ます.それゆえ,この 規則 を 遵守 する こと が お勧め さ れ て い ます.何か が 間違っ たら,先 で 鍵 を チェック する.
+ほとんどの問題は、キーが一致していないことが原因で発生します。これが理由で、私たちはこのルールに従うことをお勧めします：何か問題が起きた場合は、まずキーを確認してください。
 
-素早く説明します. 同僚の鍵が信頼性の高い同級者の鍵と一致しないときに発生するエラーメッセージを区別することは不可能です なぜなら,同類の公開鍵が暴露されるからですしたがって,環境変数によって定義されたキーを持つヘルムチャートまたはKubernetesデプロイメントがある場合は,より高いレベルでの故障を調査する前に設定した [`public_key`](/ja/reference/peer-config/params.md#param-public-key),[`private_key`](/ja/reference/peer-config/params.md#param-private-key),および [`trusted_peers`](/ja/reference/peer-config/params.md#param-trusted-peers)の値を比較してください.
+簡単な説明はこちらです：ネットワークピアのキーが一致しない場合に発生するエラーメッセージを区別することはできません 信頼できるネットワークピアの配列内のキーと照合すると、ネットワークピアの公開鍵が公開されてしまうためです。 したがって、もし Helm チャートや環境変数を通じてキーが定義された Kubernetes デプロイメントを持っている場合、構成された内容を比較してください [`public_key`](/ja/reference/peer-config/params.md#param-public-key), [`private_key`](/ja/reference/peer-config/params.md#param-private-key), そして [`trusted_peers`](/ja/reference/peer-config/params.md#param-trusted-peers) より高次の障害を調査する前に、値を確認すること。
 
-疑いの場合は, [ が新しいキーペア](/ja/guide/security/generating-cryptographic-keys.md) を生成する.
+迷ったら、[新しい鍵のペアを生成する](/ja/guide/security/generating-cryptographic-keys.md)。

@@ -1,38 +1,39 @@
 ---
 translation_locale: pt
 translation_source: /reference/instructions.md
-translation_source_hash: e300187da832a8f82258a36b7c4aaebf505adc09c771de5b0c7ab8fb0052d3db
+translation_source_hash: 9999816502505026fb35d2ddaf4033f54768be697ca5b03550e1cf5949ada36c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Instruções especiais Iroha {#iroha-special-instructions}
+# Iroha Operações de instrução {#iroha-special-instructions}
 
-O modelo de dados atual expõe estas famílias de instruções embutidas:
+O modelo de dados atual expõe essas famílias de instruções incorporadas:
 
-|Instrução |Variantes .|
+|Instrução|Variantes|
 | --- | --- |
 | [`RegisterBox`](/pt/blockchain/instructions.md#un-register) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Role`, `Trigger`, `RegisterPeerWithPop` |
 | [`UnregisterBox`](/pt/blockchain/instructions.md#un-register) | `Peer`, `Domain`, `Account`, `AssetDefinition`, `Nft`, `Role`, `Trigger` |
-| [`MintBox`](/pt/blockchain/instructions.md#mint-burn) |Numérico `Asset`, provoca repetições |
-| [`BurnBox`](/pt/blockchain/instructions.md#mint-burn) |Numérico `Asset`, provoca repetições |
-| [`TransferBox`](/pt/blockchain/instructions.md#transfer) |`Domain`, `AssetDefinition`, numérico `Asset`, `Nft` |
-| [`SetKeyValueBox`](/pt/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` Metadados |
-| [`RemoveKeyValueBox`](/pt/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` Metadados |
-| [`GrantBox`](/pt/blockchain/instructions.md#grant-revoke) |`Permission` (`Grant<Permission, Account>`), `Role` (`Grant<RoleId, Account>`), `RolePermission` (`Grant<Permission, Role>`) |
-| [`RevokeBox`](/pt/blockchain/instructions.md#grant-revoke) |`Permission` (`Revoke<Permission, Account>`), `Role` (`Revoke<RoleId, Account>`), `RolePermission` (`Revoke<Permission, Role>`) |
-| [`SetParameter`](/pt/blockchain/instructions.md#setparameter) |atualização de parâmetros da cadeia |
-| [`ExecuteTrigger`](/pt/blockchain/instructions.md#executetrigger) |Trigger execução |
-| [`Upgrade`](/pt/blockchain/instructions.md#other-instructions) |atualização do executor |
-| [`Log`](/pt/blockchain/instructions.md#other-instructions) |registo de registro do executor |
-| [`CustomInstruction`](/pt/blockchain/instructions.md#other-instructions) |Carga útil JSON específica para o executor |
-| [Ativos nativos em garantia ](/pt/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
-| [Ativos genéricos ](/pt/blockchain/escrow.md#generic-asset-locks) |`OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
-| [Ativos anônimos em garantia](/pt/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
+| [`MintBox`](/pt/blockchain/instructions.md#mint-burn) |numérico `Asset`, acionar repetições|
+| [`BurnBox`](/pt/blockchain/instructions.md#mint-burn) |numérico `Asset`, acionar repetições|
+| [`TransferBox`](/pt/blockchain/instructions.md#transfer) | `Domain`, `AssetDefinition`, numérico `Asset`, `Nft` |
+| [`SetKeyValueBox`](/pt/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` metadados |
+| [`RemoveKeyValueBox`](/pt/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` metadados |
+| [`GrantBox`](/pt/blockchain/instructions.md#grant-revoke) | `Permission` (`Grant<Permission, Account>`), `Role` (`Grant<RoleId, Account>`), `RolePermission` (`Grant<Permission, Role>`) |
+| [`RevokeBox`](/pt/blockchain/instructions.md#grant-revoke) | `Permission` (`Revoke<Permission, Account>`), `Role` (`Revoke<RoleId, Account>`), `RolePermission` (`Revoke<Permission, Role>`) |
+| [`SetParameter`](/pt/blockchain/instructions.md#setparameter) |atualização do parâmetro da cadeia|
+| [`ExecuteTrigger`](/pt/blockchain/instructions.md#executetrigger) |acionar execução|
+| [`Upgrade`](/pt/blockchain/instructions.md#other-instructions) |atualização do executor|
+| [`Log`](/pt/blockchain/instructions.md#other-instructions) |entrada de log do executor|
+| [`CustomInstruction`](/pt/blockchain/instructions.md#other-instructions) |carga útil específica do executor JSON|
+| [Depósito em garantia de ativo nativo](/pt/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
+| [Trancas de ativos genéricos](/pt/blockchain/escrow.md#generic-asset-locks) | `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
+| [Depósito fiduciário de ativos anônimo](/pt/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
+| [Liquidação privada atômica](/pt/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
-Os módulos adicionais Iroha 3 podem registrar tipos de instruções específicos do domínio através do registro de instruções. Para a lista de nível de esquema gerada a partir da árvore fonte atual, consulte [Data Model Schema](./data-model-schema.md).
+Módulos adicionais Iroha 3 podem registrar tipos de instrução específicos do domínio através do registro de instruções. Para o esquema com autoridade do nó e um comando que o captura, veja [Esquema do Modelo de Dados](./data-model-schema.md).
 
-::: details Diagrama: Famílias de instrução básica
+::: details Diagrama: Famílias de Instruções Principais
 
 ```mermaid
 classDiagram

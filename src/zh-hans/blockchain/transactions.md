@@ -8,13 +8,13 @@ translation_engine: nllb-200-ct2
 
 # 交易 {#transactions}
 
-交易是一个签署的请求来执行在区块链上的工作.可执行的有效载荷可以是有序的序列 [指令](./instructions.md), 一个合同调用, IVM 字节代码,或一个被证明的 IVM 执行死刑. [智能合同](./smart-contracts.md) 对于当前的合同执行模式.
+交易是执行区块链操作的已签名请求。可执行载荷可以是有序的[指令](./instructions.md)序列、合约调用、IVM 字节码或经证明的 IVM execution。有关当前合约执行模型，请参阅[智能合约](./smart-contracts.md)。
 
-交易执行状态变化或可执行的工作.仅阅读检查使用签署的查询或公开阅读终端点,并不会创建交易.
+交易执行状态变化或可执行的工作.仅阅读检查使用签署的查询或公开阅读端点,并不会创建交易.
 
-已提交的区块中被录取的交易与其执行结果,包括执行拒绝存储.在区块录取之前被拒绝的请求,如无效包裹或排队拒绝的交易,不会存储在区块中.
+已提交的区块中被录取的交易与其执行结果,包括执行拒绝存储.在区块录取之前被拒绝的请求,如无效封装或排队拒绝的交易,不会存储在区块中.
 
-关于保护隐私的资产流动,请参见 [匿名交易](./anonymous-transactions.md).匿名交易使用屏蔽的资产纸币,承诺,取消符号和零知识证明,而不是公开账户到账户余额变化.
+关于保护隐私的资产流动,请参见 [匿名交易](./anonymous-transactions.md).匿名交易使用屏蔽的资产票据,承诺,取消符号和零知识证明,而不是公开账户到账户余额变化.
 
 对于选择透明执行效果的证据,请参见 [FastPQ](./fastpq.md). FastPQ 在正常交易执行后消耗了执行见证人,并为支持状态过渡构建了确定性证明批量.
 
@@ -39,7 +39,7 @@ curl -fsS "https://taira.sora.org/v1/explorer/transactions/$TX_HASH" \
   | jq '{hash, block, status, authority, executable}'
 ```
 
-提交交易需要签署的 Norito 包裹,正确的链接 ID,费用元数据和一个头资助的 Taira 账户.
+这仍然是只读操作。提交交易需要已签名的 Norito 封包、正确的链 ID、费用元数据，以及通过水龙头获得资金的 Taira 账户。
 
 对于支付费用的例子 Taira, 拯救水龙头助手 [获取测试网 XOR 在 Taira](/zh-hans/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) 作为 `taira_faucet_claim.py`, 然后通过公共水龙头来资助签署者:
 
@@ -71,20 +71,20 @@ iroha --config ./taira.client.toml \
 
 Iroha 有两种离线交易工作流程:
 
-- 在线签字创建一个正常的签名交易,而签名设备被断开.在网上客户端向 Torii 提交签名包裹之前,该交易不会进行处理,因此它仍然需要正确的链接 ID,权威,许可证,费用和交易寿命.
-- 在网上时,Kagemusha在线现金充满钱包,支持接收者启动的钱包到钱包交付,同时两者都当收件人返回网上时,收取结果的笔记状态.
+- **离线签名**会在签名设备断开连接时创建普通的已签名交易。在在线客户端将已签名封包提交给 Torii 之前，交易不会被处理，因此它仍需正确的链 ID、权限主体、权限、费用和交易生命周期。
+- **Kagemusha 离线现金**会在钱包在线时充值，支持两个钱包均离线时由接收方发起的钱包间交接，并在接收方恢复在线后赎回生成的票据状态。
 
-Torii 将整个Kagemusha生命周期暴露在`/v1/offline/*`下:
+Torii 通过 `/v1/offline/*` 提供完整的 Kagemusha 生命周期：
 
-|方法和终点|目的|
+| 方法和端点 | 用途 |
 | --- | --- |
-|`GET /v1/offline/readiness`|评估 Kagemusha 的准备性 `asset_definition_id` |
-|`POST /v1/offline/receiver-lineage`|解决签署的收件人请求的有效登记谱系|
-|`POST /v1/offline/top-up`|提交已签署的在线到离线补充操作|
-|`POST /v1/offline/redeem`|提交一个签署的离线赎回操作|
-|`GET /v1/offline/operations/{operation_id}`|阅读补充或赎回的法规状态|
+| `GET /v1/offline/readiness` | 评估一个 `asset_definition_id` 的 Kagemusha 就绪状态 |
+| `POST /v1/offline/receiver-lineage` | 为已签名的接收方请求解析带证明的有效注册谱系 |
+| `POST /v1/offline/top-up` | 提交已签名的在线转离线充值操作 |
+| `POST /v1/offline/redeem` | 提交已签名的离线赎回操作 |
+| `GET /v1/offline/operations/{operation_id}` | 读取充值或赎回的规范状态 |
 
-在构建离线运营之前,检查资产的准备性:
+构建离线操作前，请检查该资产的就绪状态：
 
 ```bash
 curl -fsS --get https://taira.sora.org/v1/offline/readiness \
@@ -92,18 +92,18 @@ curl -fsS --get https://taira.sora.org/v1/offline/readiness \
   | jq '{ready, blockers, artifact_set}'
 ```
 
-准备将钱包连接到活跃的桥梁. ABI 21 证实 V4 后代,补充和赎回请求使用输入 `application/x-norito` 存档,补充和赎回 `202 Accepted` 有一个 `Location` 标题指向操作资源;嵌入式非零操作 ID 提供了无权的钥匙.
+就绪检查会将钱包绑定到当前启用的桥接 ABI 21 和已认证的 V4 工件集。注册谱系、充值和赎回请求使用类型化的 `application/x-norito` 归档。充值和赎回会返回 `202 Accepted`，其 `Location` 标头指向操作资源；其中嵌入的非零操作 ID 用作幂等键。
 
-典型的流量是:
+典型流程如下：
 
-1. 如果 `ready` 是假的或任何阻塞器适用,请查询准备性和停止.
-2. 使用打字的 Swift 或 JVM 钱包构建常规补充档案,提交它,并保留输入笔记状态和操作 ID,直到操作达到最终链状态.
-3. 在需要时解决接收者注册后代,本地构建和验证每个同行传递,并在确认转移之前保持加密的笔记状态.
-4. 当接收者在网上时,建立了法典赎回档案,提交,并对其运营资源进行调查.
+1. 查询就绪状态；如果 `ready` 为 false 或存在任何阻断项，则停止。
+2. 使用类型安全的 Swift 或 JVM 钱包构建规范充值归档并提交；在操作达到最终链上状态前，保留输入票据状态和操作 ID。
+3. 必要时解析接收方注册谱系，在本地构建并验证每次点对点交接；确认转移前，持久保存加密的票据状态。
+4. 接收方上线后，构建并提交规范赎回归档，然后轮询其操作资源，直到达到最终状态。
 
-在网上生命周期中,笔记本无法观察到相互矛盾的离线转移.因此,钱包和运营商政策应强制执行价值限制,过期期限,接受发行人,可持续的本地存储和和解窗口.
+在票据状态通过在线生命周期回传之前，账本无法发现相互冲突的离线交接。因此，钱包和运营方策略应强制执行价值上限、到期时间、获准发行方、持久化本地存储和对账时限。
 
-以下是使用 `Grant` 指令创建新交易的一个例子. 在此交易中,鼠标正在赋予爱丽丝指定的角色 (`role_id`).查看 [完整例](./permissions.md#register-a-new-role).
+以下示例使用 `Grant` 指令创建新交易。在该交易中，Mouse 将指定角色（`role_id`）授予 Alice。请参阅[完整示例](./permissions.md#register-a-new-role)。
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);

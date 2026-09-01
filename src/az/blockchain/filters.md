@@ -3,12 +3,12 @@ translation_locale: az
 translation_source: /blockchain/filters.md
 translation_source_hash: 36c99c1db78e357ea9fe0ca8ab9b79c9e2b20da08d329c563f1f33ff2bf8c288
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Filtrlər {#filters}
 
-Hadisə axınlarını daraldır və tetiklənmə şərtlərini filtrləyir. Hal-hazırda ən yüksək səviyyəli hadisələr filtri `EventFilterBox`, bu hadisə ailələrinə uyğunlaşa bilər:
+Filtrlər hadisə axınlarını daraldır və tetik şərtlərini işə salır. Cari ən yüksək səviyyəli hadisə filtri `EventFilterBox`-dir və bu, bu hadisə ailələri ilə uyğunlaşa bilər:
 
 - `Pipeline`
 - `Data`
@@ -16,66 +16,66 @@ Hadisə axınlarını daraldır və tetiklənmə şərtlərini filtrləyir. Hal-
 - `ExecuteTrigger`
 - `TriggerCompleted`
 
-İş axınına uyğun olan ən dar filtrdən istifadə edin. `DataEventFilter::Any` kimi geniş filtrlər diaqnozlaşdırma üçün faydalıdır, lakin hər bir hadisənin tetikləyici və ya abunəçi uyğunlaşmasının xərclərini ödəməsini təmin edirlər.
+İş axınına uyğun gələn ən dar filtrlərdən istifadə edin. `DataEventFilter::Any` kimi geniş filtrlər diaqnostika üçün faydalıdır, lakin onlar hər hadisənin trigger və ya abunəçi uyğunluğunun ödənişini ödəməsinə səbəb olur.
 
-## Məlumat hadisələri filtrləri {#data-event-filters}
+## Məlumat Hadisə Filtrləri {#data-event-filters}
 
-`DataEventFilter` nəşriyyat məlumatları hadisələri ilə uyğundur. Onun mövcud variantları aşağıdakılardır:
+`DataEventFilter` blokçeyn dəftər məlumat hadisələrinə uyğundur. Onun mövcud variantlarına daxildir:
 
-|Variant |Tədbir ailəsi |
+|Variant|Tədbir ailəsi|
 | --- | --- |
-|`Any` |Hər hansı bir məlumat hadisəsi |
-|`Peer` |Tərəfdaşların həyat dövrü hadisələri |
-|`Domain` |Domenin həyat dövrü və metadata hadisələri |
-|`Account` |Hesabın həyat dövrü, metadatalar, alias və şəxsiyyət hadisələri |
-|`Asset` |Mülkiyyət balansı və metadata hadisələri |
-|`AssetDefinition` |Aktivlərin təyinatı həyat dövrü, siyasət və metadata hadisələri |
-|`Nft` |NFT həyat dövrü və metadata hadisələri |
-|`Rwa` |Real dünya aktivlərin həyat dövrü hadisələri |
-|`Trigger` |Trigger lifecycle və metadata hadisələri |
-|`Role` |Role lifecycle hadisələri |
-|`Configuration` |Zəncirdəki konfiqurasiya hadisələri |
-|`Executor` |Runtime icraçı hadisələri |
-|`Proof` |Proof verifikasiya həyat dövrü hadisələri |
-|`Confidential` |Məşhur aktiv hadisələri |
-|`VerifyingKey` |Verifikasiya açarları qeydiyyat hadisələri |
-|`RuntimeUpgrade` |İndirmə vaxtının yüksəlməsi tədbirləri |
-|`Soradns` |Qeydiyyat idarəetmə hadisələrini həll edin |
-|`Sorafs` |SoraFS Gateway uyğunluq hadisələri |
-|`SpaceDirectory` |Space Directory manifest həyat dövrü hadisələri |
-|`Escrow` |Şəffaf yerli aktivlərin həyati dövrü hadisələri |
-|`Offline` |Offline hesablama tədbirləri |
-|`Oracle` |Oracle feed hadisələri |
-|`Social` |Viral təşviq hadisələri |
-|`Bridge` |Köprü tədbirləri |
-|`Governance` |İdarəetmə xüsusiyyəti aktivləşdirildiyi zaman idarəetmə tədbirləri |
+| `Any` |Hər hansı bir məlumat hadisəsi|
+| `Peer` |şəbəkə həmkarının həyat dövrü hadisələri|
+| `Domain` |Domenin həyat dövrü və metadatanın hadisələri|
+| `Account` |Hesabın həyat dövrü, metadatalar, ləqəb və şəxsiyyət hadisələri|
+| `Asset` |Aktiv balansı və metadana hadisələri|
+| `AssetDefinition` |Aktiv tərifi həyat dövrü, siyasət və metadata hadisələri|
+| `Nft` |NFT həyat dövrü və metadata hadisələri|
+| `Rwa` |Real dünya aktivlərinin həyat dövrü hadisələri|
+| `Trigger` |Həyat dövrü və metadata hadisələrini tetikleyin|
+| `Role` |Rolun həyat dövrü hadisələri|
+| `Configuration` |Zəncirdaxili konfiqurasiya hadisələri|
+| `Executor` |proqram icra mühiti icraçı hadisələr|
+| `Proof` |Sübutun yoxlanılması həyat dövrü hadisələri|
+| `Confidential` |Gizli aktiv hadisələri|
+| `VerifyingKey` |Doğrulama açarı qeydiyyatı hadisələri|
+| `RuntimeUpgrade` |proqram icra mühiti yeniləmə hadisələri|
+| `Soradns` |Həll edici qovluq idarəetmə hadisələri|
+| `Sorafs` |SoraFS keçid uyğunluq hadisələri|
+| `SpaceDirectory` |Kosmik Qovluq texniki manifest həyat dövrü hadisələri|
+| `Escrow` |Şəffaf yerli aktiv etibarnamə həyat dövrü hadisələri|
+| `Offline` |Offline maliyyə əməliyyatı hesablaşma hadisələri|
+| `Oracle` |Oracle xəbər feedləri|
+| `Social` |Viruslu təşviq tədbirləri|
+| `Bridge` |Körpü tədbirləri|
+| `Governance` |İdarəetmə xüsusiyyəti aktiv olduqda idarəetmə hadisələri|
 
-Əksər beton filtrləri ayrıca bir ID uyğunlaşdırıcı və hadisə quruluşu maskasına imkan verir. Məsələn, bir aktiv filtri bir aktivə və ya bir asset hadisələri sinfinə uyğunlaşdıra bilər, trigger filter isə bir trigger ID və trigger hadisə dəstinə uyğunlaşa bilər.
+Əksər konkret filtrlər həmçinin isteğe bağlı ID uyğunlaşdırıcısı və hadisə dəsti maskasına imkan verir. Məsələn, aktiv filtri bir aktiv və ya aktiv hadisələrinin bir sinifinə uyğunlaşa bilər, trigger filtri isə bir trigger ID-sinə və trigger hadisə dəstinə uyğunlaşa bilər.
 
-## Pipeline Filterləri {#pipeline-filters}
+## proqram təminatı işləmə iş axını Filtrlər {#pipeline-filters}
 
-Pipeline filtrləri blok, əməliyyat, birləşmə və şahid hadisələri kimi işlənmə hadisələrinə uyğunlaşır. Onları əməliyyat abunəçiliyi, blok işlənməsi taxtaları və başlıq məlumat obyektlərinin əvəzinə pipeline vəziyyətinə reaksiya verən tetikləyicilər üçün istifadə edin.
+Proqram təminatı emal iş axını filtrləri blok, əməliyyat, birləşdirmə və şahid kimi emal tədbirləri ilə uyğunlaşır. Onları əməliyyat abunəlikləri, blok-emal paneli və blokçeyn dəftər məlumat obyektləri əvəzinə proqram təminatı emal iş axını vəziyyətinə reaksiya verən tetikleyicilər üçün istifadə edin.
 
-## Trigger Filterləri {#trigger-filters}
+## Tətik Filtrləri {#trigger-filters}
 
-Triggerlər öz vəziyyətini `EventFilterBox` olaraq saxlayır. Trigger aksiyası ayrıca:
+Tetikləyicilər vəziyyətlərini `EventFilterBox` kimi saxlayır. Bir tetikleyici əməliyyatı da saxlayır:
 
-- icra edilən
+- icra edilə bilən
 - təkrarlama siyasəti
-- həkim hesabı
-- istənilən vaxt tetikləyici yenidən sınaqdan keçirmə siyasəti
-- metadata
+- səlahiyyət verən əsas hesab
+- isteğe bağlı zaman tetikleyicili təkrar sınaq siyasəti
+- metaməlumat
 
-Başlatıcı orqanı icra edilə bilən icazələrə malik olmalıdır. Uzun ömürlü başlatıcılar üçün xüsusi texniki hesabları üstün tuturlar.
+Tetikleyici icazə prinsipi icra edilə bilən faylın tələb etdiyi icazələrə sahib olmalıdır. Uzun müddətli tetikleyicilər üçün xüsusi texniki hesabları üstün tutun.
 
 ## Sorğu Filtrləri {#query-filters}
 
-Sorğu filtrləri hadisələr filtrlərindən ayrıdır. Yeniləməli sorğular predikat və seçicilər dəstəyini ortaya qoya bilər. SDK -dən sorğu xüsusi tiplənmiş filtrlərdən istifadə edin ki, filter giriş sorğu çıxış növünə uyğunlaşsın.
+Sorğu filtrləri hadisə filtrlərindən ayrıdır. Təkrarlana bilən sorğular predicate və selector dəstəyini göstərə bilər. Filtr girişinin sorğu çıxış tipi ilə uyğun gəlməsi üçün SDK tərəfindən təmin edilmiş sorğuya xas tipli filtrləri istifadə edin.
 
-Həmçinin bax:
+Bax həmçinin:
 
 - [Hadisələr](/az/blockchain/events.md)
-- [Native Asset Escrow ](/az/blockchain/escrow.md#queries-and-events)
-- [Triggerlər](/az/blockchain/triggers.md)
-- [Suallar](/az/blockchain/queries.md)
-- [Məlumat istintaq](/az/reference/queries.md)
+- [Yerli Aktiv Əmanət](/az/blockchain/escrow.md#queries-and-events)
+- [Səbəblər](/az/blockchain/triggers.md)
+- [Sorğular](/az/blockchain/queries.md)
+- [Sorğu istinadı](/az/reference/queries.md)

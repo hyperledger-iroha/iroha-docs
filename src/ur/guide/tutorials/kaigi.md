@@ -1,35 +1,35 @@
 ---
 translation_locale: ur
 translation_source: /guide/tutorials/kaigi.md
-translation_source_hash: e55c7aebc89c39edb8e7077db2414a6d432aafb05aff8df04c248fce444d7dea
+translation_source_hash: 7a9f03e45a17ecbc4a2d7182d4c9aff88d5f6f0b77e0ecfde86bed56d0ddebba
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Kaigi کو ایک JavaScript ایپ میں شامل کیا گیا {#embed-kaigi-in-a-javascript-app}
 
-Kaigi ایک ایپلی کیشن کو بٹوے کے ذریعہ بیکڈ ون ٹو ون آڈیو / ویڈیو میٹنگز تخلیق کرنے دیتا ہے جس کا لائف سائیکل Iroha کے ذریعے ریکارڈ کیا جاتا ہے۔ براؤزر اب بھی میڈیا کو WebRTC کے ساتھ سنبھالتا ہے ، جبکہ Torii اور Kaigi ہدایات دیرپا میٹنگ ریکارڈ فراہم کرتی ہیں ، خفیہ کردہ سگنلنگ میٹا ڈیٹا۔ نجی فہرست کی حمایت، اور استعمال کے واقعات.
+Kaigi ایک اجلاس کی زندگی کا دورانیہ ریکارڈ Iroha جبکہ براؤزر آڈیو اور ویڈیو پر لیتا ہے WebRTC. لیجر کال، لسٹری تغیرات، خفیہ کردہ سگنلنگ میٹا ڈیٹا، اور حتمی حیثیت کو ذخیرہ کرتا ہے؛ یہ میڈیا ریلے نہیں ہے۔
 
-اس سبق میں [Iroha ڈیمو JavaScript](https://github.com/soramitsu/iroha-demo-javascript) ایپ کی طرف سے استعمال کردہ کم از کم انٹیگریشن پیٹرن دکھایا گیا ہے:
+یہ ٹیوٹوریل موجودہ [Iroha JavaScript ڈیمو](https://github.com/soramitsu/iroha-demo-javascript) کی پیروی کرتا ہے۔ ڈیمو ایک پہلی ریلیز کی درخواست پروفائل کو نافذ کرتا ہے:
 
-- رینڈر WebRTC کی پیشکش اور جوابات تیار کرتا ہے
-- ایک درخواست پل پر دستخط کرتا ہے اور Kaigi ٹرانزیکشن پیش کرتا ہے۔
-- کمپیکٹ دعوت لنکس صرف کال ID پر مشتمل ہیں اور خفیہ دعوت دیتے ہیں۔
-- میزبان Torii خفیہ کردہ شرکاء کے جوابات کی نگرانی کرتا ہے۔
+- ایک میزبان اور ایک مہمان
+- `transparent` Kaigi رازداری کا موڈ
+- `authenticated` کمرے کی پالیسی
+- `RevealAfterJoin` نیٹ ورک نوڈ کی شناخت کا رویہ
+- کال میٹا ڈیٹا میں خفیہ کردہ پیش کش اور پابند ٹرانزیکشن میٹا ڈیٹا پر خفیہ جواب۔
 
-مثالیں TypeScript کا استعمال کرتی ہیں اور اس طرح لکھے گئے ہیں کہ وہ الیکٹران ، ایک محفوظ بیک اینڈ والے براؤزر میں چل سکتے ہیں ، یا پرس کی توسیع والی ویب ایپلیکیشن۔ پیداوار میں نجی چابیاں غیر قابل اعتماد رینڈر کوڈ سے باہر رکھیں۔
+Kaigi پروٹوکول بھی `zk-roster-v1` کی وضاحت کرتا ہے ، لیکن موجودہ ڈیمو اس ثبوت کے بہاؤ کو پیدا یا پیش نہیں کرتا ہے۔ جب تک کہ آپ کا پل مکمل موجودہ ثبوت کا معاہدہ نافذ نہ کرے تو نجی موڈ کنٹرول پیش نہ کریں۔
 
 ## لازمی شرائط {#prerequisites}
 
 آپ کو ضرورت ہے:
 
+- Node.js 20 یا اس سے زیادہ اور ایک Rust ٹول چین
 - ایک Kaigi قابل Torii اختتامی نقطہ
-- میزبان اور مہمان کا حساب
-- ایک محفوظ ایپ پل یا بٹوے کے ذریعے ہر اکاؤنٹ کی دستخط کلید تک رسائی۔
-- براؤزر کیمرہ / مائکروفون کی اجازتیں
-- اگر آپ Node.js ڈیمو یا مقامی `@iroha/iroha-js` بائنڈنگ براہ راست استعمال کررہے ہیں تو JavaScript 20+
+- میزبان اور مہمانوں کے الگ الگ اکاؤنٹس
+- خصوصی پرس یا ایپلی کیشن پل میں ہر اکاؤنٹ کی دستخط کی کلید
+- دونوں براؤزر کے تناظر میں کیمرے اور مائکروفون کی اجازت
 
-مکمل کام کرنے والے حوالہ کے لئے، Iroha ذریعہ چیک آؤٹ کے ساتھ ڈیمو کلون کریں:
+ڈیمو `file:../iroha/javascript/iroha_js` بہن بھائی کی انحصار کے ذریعے `@iroha/iroha-js` کا استعمال کرتا ہے۔ ڈیمو انسٹال کرنے سے پہلے Iroha ماخذ چیک آؤٹ سے SDK بنائیں:
 
 ```bash
 mkdir iroha-wallet-workspace
@@ -47,612 +47,211 @@ npm install
 npm run dev
 ```
 
-Iroha سورس ریپوزٹری سے [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js) کے ساتھ ڈیمو کا استعمال کریں۔ اس کی `file:` انحصار براہ راست چیک آؤٹ کو حل کرتی ہے۔ اگر مقامی پابندیاں تبدیل ہوجاتی ہیں تو ، اسے `iroha/javascript/iroha_js` کے تحت دوبارہ بنائیں۔ ایک صاف پیکج ڈائرکٹری میں کارگو ورک اسپیس نہیں ہوتا ہے جس کی ضرورت ہے `npm run build:native` .
+صاف SDK پیکج میں کارگو ورک اسپیس شامل نہیں ہے جس کی ضرورت ہے `npm run build:native`, تو اس کی تعمیر نو میں Iroha ماخذ کی جانچ پڑتال کے بعد SDK تبدیلیاں۔ دستاویزی SDK ماخذ بند کر دیا گیا ہے [`javascript/iroha_js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js).
 
-TAIRA پر براہ راست میٹنگ چلانے سے پہلے، عوامی سطح Torii کو چیک کریں جس پر ڈیمو انحصار کرتا ہے:
+## اختتامی نقطہ چیک کریں {#check-the-endpoint}
+
+عوامی Taira ٹیسٹ نیٹ ورک کے لئے، سب سے پہلے Torii کی دستیابی کی تصدیق کریں:
 
 ```bash
 TAIRA=https://taira.sora.org
 curl -fsS "$TAIRA/health"
-curl -fsS "$TAIRA/v1/kaigi/relays"
-curl -fsS "$TAIRA/v1/kaigi/relays/health"
+curl -fsS "$TAIRA/openapi.json" >/dev/null
 ```
 
-یہ کمانڈ اس بات کی تصدیق کرتے ہیں کہ TAIRA براہ راست ہے اور Kaigi ریلے ٹیلی میٹری دستیاب ہے۔ وہ Kaigi ٹرانزیکشنز پیش نہیں کرتے ہیں۔ ایک حقیقی `CreateKaigi` یا `JoinKaigi` ٹیسٹ کے لئے TAIRA اکاؤنٹس کو فنڈ کرنے اور ڈیمو کے پل یا کسی دوسرے پرس کے ذریعے دستخط کرنے کی ضرورت ہوتی ہے۔
+یہ درخواستیں صرف اس بات کی تصدیق کرتی ہیں کہ Torii اور اس کے اشتہار کردہ API دستاویز تک رسائی حاصل ہے. وہ ثابت نہیں کرتے ہیں کہ ایک خاص Kaigi کال موجود ہے یا آپ کا پرس لین دین جمع کر سکتا ہے۔
 
-## فن تعمیر {#architecture}
+غیر دستخط شدہ `curl` درخواستوں کے ساتھ `/v1/kaigi/relays` ، `/v1/kaigi/relays/{relay_id}` ، یا `/v1/kaigi/relays/health` کی جانچ نہ کریں۔ ان تینوں راستوں میں اجازت نامے پر مشتمل آپریٹر کی دستخط کی ضرورت ہوتی ہے۔ ریلے ایونٹ اسٹریم کو کینونیکل عین مطابق نیٹ ورک اکاؤنٹ کی دستخط درکار ہوتی ہے۔
 
-Kaigi انٹیگریشن کو تین تہوں میں تقسیم کریں:
+ڈیمو میں ، ترتیبات کھولیں ، Torii URL درج کریں ، اور اختتامی نقطہ دریافت کو سلسلہ UUID ، عین مطابق `NetworkId` ، اور نیٹ ورک پریفیکس لوڈ کرنے دیں۔ ایک لکھنے کا پل منتخب کردہ اختتامی پوائنٹ سے تینوں اقدار کو باندھنا ضروری ہے۔ کبھی بھی `NetworkId` کی تعمیر نہ کریں UUID یا چین سے پہلے.
 
-|پرت |ذمہ داری |
-| --- | --- |
-|UI |اکاؤنٹ کا انتخاب، میٹنگ فارم، دعوت نامہ لنک ڈسپلے، میڈیا کنٹرول |
-|WebRTC |`RTCPeerConnection` ، مقامی میڈیا، پیشکش اور جواب کی تفصیلات |
-|Iroha پل |دستخط، `CreateKaigi`، `JoinKaigi`، `EndKaigi`، سگنل پولنگ |
+## راستہ اور تصدیق کا ماڈل {#route-and-authentication-model}
 
-ایپ پل ایک الیکٹران پری لوڈ ہوسکتا ہے API ، پرس کی توسیع ، یا بیک اینڈ اختتام پوائنٹ۔ اس سے ایک چھوٹی سی سطح کو UI کے سامنے رکھنا چاہئے:
+Kaigi لکھتا ہے عام کوٹیڈ اور دستخط شدہ لین دین کے اندر ہدایات ہیں. انہیں `POST /v1/pipeline/transactions` کے ذریعے جمع کروائیں اور حتمی بلاک ثبوت کا انتظار کریں.
+
+درخواست کے طور پر پڑھتا ہے:
+
+|راستہ |تصدیق |
+| ----------------------------------- | --------------------------------------- |
+|`/v1/kaigi/calls/{call_id}` |عوامی |
+|`/v1/kaigi/calls/{call_id}/signals` |صحیح نیٹ ورک اکاؤنٹ کی درخواست |
+|`/v1/kaigi/calls/{call_id}/events` |صحیح نیٹ ورک اکاؤنٹ کی درخواست |
+
+JavaScript SDK ان کو `getKaigiCall` اور `listKaigiCallSignals` کے طور پر ظاہر کرتا ہے۔ سگنل لسٹ میں کرسر کی عین مطابق صفحہ بندی کا استعمال کیا جاتا ہے۔ واپس آنے والے کرسر کو غیر تبدیل شدہ طور پر دوبارہ استعمال کریں؛ اسے آفسیٹ یا صرف ٹائم اسٹیمپ کے ساتھ متبادل نہ کریں۔
+
+## دینے والے کے باہر دستخط جاری رکھیں {#keep-signing-outside-the-renderer}
+
+انضمام کو تین حدود میں تقسیم کریں:
+
+|سرحد |ذمہ داری |
+| ----------------- | -------------------------------------------------------------------- |
+|رینڈر |اجلاس کا فارم، دعوت نامہ لنک، میڈیا کنٹرولز، WebRTC آفرز اور جوابات |
+|اعزازی پل |کلیدی رسائی، فیس کا حوالہ، ہدایات کی تعمیر، دستخط، حتمی طور پر انتظار |
+|Torii |کال ریکارڈ، مصروف سگنل کی تلاوت، ٹرانزیکشن جمع کرانے |
+
+رینڈر کی طرف پل واضح طور پر اختتامی نقطہ کی شناخت کو قبول کرنا چاہئے اور نجی کلید مواد کو حدود کے پیچھے رکھنا چاہئے۔ موجودہ ڈیمو سطح اس کم معاہدے کے مترادف ہے:
 
 ```ts
-type KaigiMeetingPrivacy = "private" | "transparent";
-type KaigiPeerIdentityReveal = "Hidden" | "RevealAfterJoin";
+type ConnectionIdentity = {
+  toriiUrl: string
+  chainId: string
+  networkId: string
+  networkPrefix: number
+}
 
 type KaigiSignalKeyPair = {
-  publicKeyBase64Url: string;
-  privateKeyBase64Url: string;
-};
-
-type KaigiDescription = {
-  type: "offer" | "answer";
-  sdp: string;
-};
+  publicKeyBase64Url: string
+  privateKeyBase64Url: string
+}
 
 type KaigiMeeting = {
-  callId: string;
-  meetingCode: string;
-  title?: string;
-  hostAccountId?: string;
-  hostDisplayName?: string;
-  hostParticipantId?: string;
-  hostKaigiPublicKeyBase64Url: string;
-  scheduledStartMs: number;
-  expiresAtMs: number;
-  live: boolean;
-  ended: boolean;
-  privacyMode: KaigiMeetingPrivacy;
-  peerIdentityReveal: KaigiPeerIdentityReveal;
-  rosterRootHex: string;
-  offerDescription: { type: "offer"; sdp: string };
-};
+  callId: string
+  meetingCode: string
+  hostAccountId?: string
+  hostKaigiPublicKeyBase64Url: string
+  scheduledStartMs: number
+  expiresAtMs: number
+  createdAtMs: number
+  live: boolean
+  ended: boolean
+  privacyMode: 'transparent'
+  peerIdentityReveal: 'RevealAfterJoin'
+  offerDescription: { type: 'offer'; sdp: string }
+}
 
-type KaigiSignal = {
-  entrypointHash: string;
-  callId: string;
-  participantId: string;
-  participantName: string;
-  createdAtMs: number;
-  answerDescription: { type: "answer"; sdp: string };
-};
+type KaigiSignalPage = {
+  items: Array<{
+    entrypointHash: string
+    callId: string
+    participantId: string
+    participantName: string
+    createdAtMs: number
+    answerDescription: { type: 'answer'; sdp: string }
+  }>
+  nextCursor?: string
+}
 
 type KaigiBridge = {
-  generateKaigiSignalKeyPair(): KaigiSignalKeyPair;
+  generateKaigiSignalKeyPair(): KaigiSignalKeyPair
 
-  createKaigiMeeting(input: {
-    toriiUrl: string;
-    chainId: string;
-    hostAccountId: string;
-    callId: string;
-    title?: string;
-    scheduledStartMs: number;
-    meetingCode: string;
-    inviteSecretBase64Url: string;
-    hostDisplayName: string;
-    hostParticipantId: string;
-    hostKaigiPublicKeyBase64Url: string;
-    offerDescription: { type: "offer"; sdp: string };
-    privacyMode: KaigiMeetingPrivacy;
-    peerIdentityReveal: KaigiPeerIdentityReveal;
-  }): Promise<{ hash: string }>;
+  createKaigiMeeting(
+    input: ConnectionIdentity & {
+      hostAccountId: string
+      callId: string
+      title?: string
+      scheduledStartMs: number
+      meetingCode: string
+      inviteSecretBase64Url: string
+      hostDisplayName: string
+      hostParticipantId: string
+      hostKaigiPublicKeyBase64Url: string
+      offerDescription: { type: 'offer'; sdp: string }
+    },
+  ): Promise<{ hash: string }>
 
   getKaigiCall(input: {
-    toriiUrl: string;
-    callId: string;
-    inviteSecretBase64Url: string;
-  }): Promise<KaigiMeeting>;
+    toriiUrl: string
+    callId: string
+    inviteSecretBase64Url: string
+  }): Promise<KaigiMeeting>
 
-  joinKaigiMeeting(input: {
-    toriiUrl: string;
-    chainId: string;
-    participantAccountId: string;
-    callId: string;
-    hostAccountId?: string;
-    hostKaigiPublicKeyBase64Url: string;
-    participantId: string;
-    participantName: string;
-    walletIdentity?: string;
-    roomId: string;
-    privacyMode: KaigiMeetingPrivacy;
-    rosterRootHex: string;
-    answerDescription: { type: "answer"; sdp: string };
-  }): Promise<{ hash: string }>;
+  joinKaigiMeeting(
+    input: ConnectionIdentity & {
+      participantAccountId: string
+      callId: string
+      inviteSecretBase64Url: string
+      participantId: string
+      participantName: string
+      answerDescription: { type: 'answer'; sdp: string }
+    },
+  ): Promise<{ hash: string }>
 
   pollKaigiMeetingSignals(input: {
-    toriiUrl: string;
-    accountId: string;
-    callId: string;
-    hostKaigiKeys: KaigiSignalKeyPair;
-    afterTimestampMs?: number;
-  }): Promise<KaigiSignal[]>;
+    toriiUrl: string
+    networkId: string
+    networkPrefix: number
+    accountId: string
+    callId: string
+    hostKaigiKeys: KaigiSignalKeyPair
+    limit?: number
+    cursor?: string
+  }): Promise<KaigiSignalPage>
 
-  watchKaigiCallEvents(
-    input: { toriiUrl: string; callId: string },
-    onEvent: (event: { kind: string; callId: string }) => void | Promise<void>,
-  ): Promise<string>;
-
-  endKaigiMeeting(input: {
-    toriiUrl: string;
-    chainId: string;
-    hostAccountId: string;
-    callId: string;
-    endedAtMs?: number;
-  }): Promise<{ hash: string }>;
-};
-```
-
-ڈیمو ایپ میں ، یہ پل کے طریقے `@iroha/iroha-js` ، مقامی دستخط ، خفیہ کردہ Kaigi میٹا ڈیٹا ، اور Torii کالز کے ساتھ نافذ کیے جاتے ہیں۔
-
-## مدد کرنے والوں کو مدعو کریں {#invite-helpers}
-
-Torii کے ساتھ ہم آہنگ کال IDs کو `domain.dataspace:meeting` فارم میں استعمال کریں۔ ڈیمو میں پیدا ہونے والی ملاقاتوں کے لئے `kaigi.universal:<call-name>` کا استعمال کیا جاتا ہے۔
-
-```ts
-const KAIGI_WINDOW_MS = 24 * 60 * 60 * 1000;
-
-const base64Url = (bytes: Uint8Array): string =>
-  btoa(String.fromCharCode(...bytes))
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/g, "");
-
-export function createInviteSecret(): string {
-  const bytes = new Uint8Array(24);
-  crypto.getRandomValues(bytes);
-  return base64Url(bytes);
-}
-
-export function createMeetingCode(): string {
-  const bytes = new Uint8Array(8);
-  crypto.getRandomValues(bytes);
-  return base64Url(bytes).toLowerCase();
-}
-
-export function buildKaigiCallId(domain: string, meetingCode: string): string {
-  const qualifiedDomain = domain.includes(".") ? domain : `${domain}.universal`;
-  const safeCode = meetingCode
-    .toLowerCase()
-    .replace(/[^a-z0-9-]+/g, "-")
-    .replace(/^-|-$/g, "");
-  return `${qualifiedDomain}:kaigi-${safeCode || "meeting"}`;
-}
-
-export function buildInviteLink(input: {
-  callId: string;
-  inviteSecretBase64Url: string;
-}): string {
-  const call = encodeURIComponent(input.callId);
-  const secret = encodeURIComponent(input.inviteSecretBase64Url);
-  return `iroha://kaigi/join?call=${call}&secret=${secret}`;
-}
-
-export function parseInviteLink(link: string): {
-  callId: string;
-  inviteSecretBase64Url: string;
-} {
-  const url = new URL(link);
-  const callId = url.searchParams.get("call")?.trim();
-  const inviteSecretBase64Url = url.searchParams.get("secret")?.trim();
-  if (!callId || !inviteSecretBase64Url) {
-    throw new Error("Kaigi invite link is missing call or secret.");
-  }
-  return { callId, inviteSecretBase64Url };
-}
-```
-
-## WebRTC مددگار {#webrtc-helpers}
-
-میزبان ایک پیش کش تخلیق کرتا ہے ، اسے `CreateKaigi` کے ذریعے اسٹور کرتا ہے ، اور کھڑکی کو کھلا رکھتا ہے تاکہ وہ مہمان کا جواب لاگو کرسکے۔ مہمان خفیہ کردہ پیش کش کو لے جاتا ہے ، جواب تیار کرتا ہے اور اس کا جواب `JoinKaigi` کے ساتھ پوسٹ کرتا ہے۔
-
-```ts
-const rtcConfig: RTCConfiguration = {
-  iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
-};
-
-export async function openLocalMedia(): Promise<MediaStream> {
-  return navigator.mediaDevices.getUserMedia({
-    audio: true,
-    video: {
-      width: { ideal: 1280 },
-      height: { ideal: 720 },
-      frameRate: { ideal: 24, max: 30 },
+  endKaigiMeeting(
+    input: ConnectionIdentity & {
+      hostAccountId: string
+      callId: string
+      endedAtMs?: number
     },
-  });
-}
-
-export function createPeer(localStream: MediaStream): RTCPeerConnection {
-  const peer = new RTCPeerConnection(rtcConfig);
-  for (const track of localStream.getTracks()) {
-    peer.addTrack(track, localStream);
-  }
-  return peer;
-}
-
-async function waitForIceGathering(peer: RTCPeerConnection): Promise<void> {
-  if (peer.iceGatheringState === "complete") {
-    return;
-  }
-  await new Promise<void>((resolve) => {
-    const done = () => {
-      if (peer.iceGatheringState === "complete") {
-        peer.removeEventListener("icegatheringstatechange", done);
-        resolve();
-      }
-    };
-    peer.addEventListener("icegatheringstatechange", done);
-  });
-}
-
-export async function createOfferDescription(
-  peer: RTCPeerConnection,
-): Promise<{ type: "offer"; sdp: string }> {
-  const offer = await peer.createOffer();
-  await peer.setLocalDescription(offer);
-  await waitForIceGathering(peer);
-  const local = peer.localDescription;
-  if (!local?.sdp || local.type !== "offer") {
-    throw new Error("WebRTC offer was not created.");
-  }
-  return { type: "offer", sdp: local.sdp };
-}
-
-export async function createAnswerDescription(
-  peer: RTCPeerConnection,
-  offer: { type: "offer"; sdp: string },
-): Promise<{ type: "answer"; sdp: string }> {
-  await peer.setRemoteDescription(offer);
-  const answer = await peer.createAnswer();
-  await peer.setLocalDescription(answer);
-  await waitForIceGathering(peer);
-  const local = peer.localDescription;
-  if (!local?.sdp || local.type !== "answer") {
-    throw new Error("WebRTC answer was not created.");
-  }
-  return { type: "answer", sdp: local.sdp };
+  ): Promise<{ hash: string }>
 }
 ```
 
-UI کو عام ویڈیو عناصر کے ساتھ سلسلہ جات منسلک کریں:
+حقیقی ڈیمو نتیجہ میں حتمی بلاک ثبوت اور کسی بھی قیمت درج کی فیس بھی شامل ہے۔ ٹرانزیکشن ہیش کو اکیلے کامیابی کے طور پر نہ سمجھیں۔
 
-```ts
-export function attachKaigiMedia(input: {
-  peer: RTCPeerConnection;
-  localStream: MediaStream;
-  localVideo: HTMLVideoElement;
-  remoteVideo: HTMLVideoElement;
-}): void {
-  input.localVideo.srcObject = input.localStream;
+## دعوت نامہ معاہدہ {#invite-contract}
 
-  const remoteStream = new MediaStream();
-  input.remoteVideo.srcObject = remoteStream;
+ایک کال ID کا استعمال کریں بالکل `domain.dataspace:meeting` فارم میں۔ ڈیمو `kaigi.universal` کے تحت کالیں پیدا کرتا ہے اور 24 بائٹ کی خفیہ طور پر بے ترتیب دعوت نامے کا استعمال کرتا ہے جو 32 غیر پیڈ شدہ بیس 64url حروف کے طور پر کوڈ کیا جاتا ہے۔
 
-  input.peer.addEventListener("track", (event) => {
-    if (event.streams[0]) {
-      input.remoteVideo.srcObject = event.streams[0];
-      return;
-    }
-    remoteStream.addTrack(event.track);
-  });
-}
+ایک کینونیکل دعوت میں بالکل ایک `call` اور ایک `secret` پیرامیٹر شامل ہے:
+
+```text
+iroha://kaigi/join?call=kaigi.universal%3Akaigi-<meeting>&secret=<base64url>
 ```
 
-## میزبان: ایک ملاقات کا لنک بنائیں {#host-create-a-meeting-link}
+ایپ کے اندر fallback، `#/kaigi` پر بالکل یہی query ہے۔ نقل، نامعلوم، خالی، padded یا non-canonical پیرامیٹرز مسترد کریں۔ ڈیمو میٹنگ کی میعاد `scheduledStartMs` کے 24 گھنٹے بعد مقرر کرتا ہے۔
 
-میزبان بہاؤ:
+دعوت نامہ خفیہ میزبان کی پیشکش میٹا ڈیٹا کو ڈیکرپٹ کرتا ہے۔ یہ ایک حاملہ راز ہے: اسے ریکارڈ نہ کریں ، تجزیات میں ڈالیں ، یا اسے لیجر میٹا ڈیٹا میں ذخیرہ کریں۔ میزبان کا علیحدہ X25519 کلیدی جوڑا مہمان کے جواب سگنل کو ڈریکپٹ کرتا ہے اور اسے مقامی طور پر میزبان سیشن میں رہنا ہوگا۔
 
-1. کھلی کیمرہ اور مائکروفون
-2. ایک Kaigi سگنل کلیدی جوڑی بنائیں
-3. ایک WebRTC پیشکش بنائیں
-4. `CreateKaigi` جمع کروانا
-5. ایک جامع دعوت لنک کا اشتراک کریں
+## میٹنگ لائف سائیکل {#meeting-lifecycle}
 
-```ts
-type AccountContext = {
-  accountId: string;
-  displayName: string;
-};
+### میزبان {#host}
 
-type KaigiContext = {
-  bridge: KaigiBridge;
-  toriiUrl: string;
-  chainId: string;
-};
+1. تصدیق کریں کہ منتخب کردہ پرس کی شناخت اختتامی نقطہ UUID کے سلسلے، عین مطابق `NetworkId` اور پریفیکس سے ملتی ہے.
+2. مقامی میڈیا کھولیں اور ایک `RTCPeerConnection` بنائیں۔
+3. ایک SDP پیشکش بنائیں اور ICE جمع کرنے کے لئے انتظار کریں.
+4. دعوت خفیہ اور میزبان Kaigi سگنل کی کلید جوڑی پیدا کریں.
+5. دعوت نامے کے راز کے ساتھ پیشکش کو خفیہ کریں.
+6. `CreateKaigi` پر مشتمل ٹرانزیکشن کو شفاف، تصدیق شدہ موڈ میں حوالہ دیں اور اس پر دستخط کریں۔
+7. براہ راست دعوت نامہ دکھانے سے پہلے حتمی بلاک ثبوت کا انتظار کریں.
 
-export async function hostKaigiMeeting(input: {
-  context: KaigiContext;
-  account: AccountContext;
-  title?: string;
-  privacyMode?: KaigiMeetingPrivacy;
-}): Promise<{
-  callId: string;
-  inviteLink: string;
-  peer: RTCPeerConnection;
-  localStream: MediaStream;
-  hostKaigiKeys: KaigiSignalKeyPair;
-  createdAtMs: number;
-}> {
-  const { bridge, toriiUrl, chainId } = input.context;
-  const privacyMode = input.privacyMode ?? "private";
-  const scheduledStartMs = Date.now();
-  const meetingCode = createMeetingCode();
-  const callId = buildKaigiCallId("kaigi", meetingCode);
-  const inviteSecretBase64Url = createInviteSecret();
-  const hostKaigiKeys = bridge.generateKaigiSignalKeyPair();
+میزبان سیشن کو کھلا رکھیں۔ میزبان اکاؤنٹ کی کینونیکل درخواست دستخط کے ساتھ سگنل روٹ کا سروے کریں ، میزبان سگنل کلید کے ذریعہ پہلا درست جواب ڈسکرپٹ کریں ، اور اسے `setRemoteDescription` کے ساتھ لاگو کریں۔ جب مزید صفحات دستیاب ہوں تو بالکل `nextCursor` آگے بڑھائیں۔
 
-  const localStream = await openLocalMedia();
-  const peer = createPeer(localStream);
-  const offerDescription = await createOfferDescription(peer);
+### مہمان {#guest}
 
-  await bridge.createKaigiMeeting({
-    toriiUrl,
-    chainId,
-    hostAccountId: input.account.accountId,
-    callId,
-    title: input.title,
-    scheduledStartMs,
-    meetingCode,
-    inviteSecretBase64Url,
-    hostDisplayName: input.account.displayName,
-    hostParticipantId: "host",
-    hostKaigiPublicKeyBase64Url: hostKaigiKeys.publicKeyBase64Url,
-    offerDescription,
-    privacyMode,
-    peerIdentityReveal: "Hidden",
-  });
+1. دعوت نامہ کو درست کریں اور اس کی تصدیق کریں۔
+2. عوامی کال ریکارڈ حاصل کریں اور دعوت نامے کے راز کے ساتھ اس کی پیشکش کو ڈیکرپٹ.
+3. اختتام پذیر، ختم ہونے والی، غیر براہ راست یا غیر شفاف میٹنگ کو مسترد کریں۔
+4. مقامی میڈیا کھولیں، پیشکش کو لاگو کریں، ایک SDP جواب بنائیں، اور ICE جمع کروائیں.
+5. میزبان کی Kaigi عوامی کلید کے جواب کو خفیہ کریں۔
+6. `JoinKaigi` کے ساتھ ایک ٹرانزیکشن کا حوالہ دیں اور اس پر دستخط کریں جس میں میٹا ڈیٹا شامل ہے.
+7. مہمان کو شامل ہونے سے پہلے حتمی بلاک ثبوت کا انتظار کریں.
 
-  return {
-    callId,
-    inviteLink: buildInviteLink({ callId, inviteSecretBase64Url }),
-    peer,
-    localStream,
-    hostKaigiKeys,
-    createdAtMs: scheduledStartMs,
-  };
-}
-```
+### اختتام {#end}
 
-`inviteLink` کو اپنے UI میں دکھائیں۔ صارف اسے کاپی کرسکتا ہے ، اسے کسی دوسرے بٹوے میں کھول سکتا ہے ، یا اسے ایپ کے راستے میں تبدیل کرسکتا ہے جیسے:
+صرف میزبان `EndKaigi` جمع کروا سکتا ہے۔ نیٹ ورک نوڈ کنکشن اور میڈیا ٹریک بند کریں ، دستخط شدہ ہدایات جمع کرائیں ، اور حتمی ہونے کا انتظار کریں۔ شفاف شریک `LeaveKaigi` استعمال کرسکتا ہے۔ `zk-roster-v1` روانگی پہلی ریلیز کے پروٹوکول میں غیر منسلک ہے اور مقامی ہدایات رازداری کو چھوڑنے والے دستاویزات کو مسترد کرتی ہیں.
 
-```ts
-export function inviteRoute(inviteLink: string): string {
-  const invite = parseInviteLink(inviteLink);
-  return `/kaigi?call=${encodeURIComponent(invite.callId)}&secret=${encodeURIComponent(
-    invite.inviteSecretBase64Url,
-  )}`;
-}
-```
+## دستی WebRTC فال بیک {#manual-webrtc-fallback}
 
-## مہمان: ایک اجلاس میں شرکت کریں {#guest-join-a-meeting}
+ڈیمو مقامی ترقی کے لئے ایک اعلی درجے کی سگنلنگ کا راستہ برقرار رکھتا ہے۔ یہ میزبان اور مہمان کو خام WebRTC پیش کش اور جواب پیکجوں کی کاپی کرنے دیتا ہے جب خودکار لیجر بیکڈ سگنلنگ دستیاب نہیں ہوتی ہے۔
 
-مہمانوں کا بہاؤ:
+اس کو ایک مختلف موڈ کے طور پر علاج کریں۔ یہ Kaigi ریکارڈ نہیں بناتا ، شامل نہیں کرتا یا ختم نہیں کرتا ، لین دین کی حتمی شکل فراہم نہیں کرتا ہے ، اور اسے آن چین فلو کے مساوی کے طور پر پیش نہیں کیا جاسکتا۔
 
-1. دعوت نامے کا تجزیہ کریں
-2. Torii سے خفیہ کردہ کال کی پیش کش حاصل کریں۔
-3. ایک WebRTC جواب بنائیں
-4. `JoinKaigi` کو خفیہ کردہ جواب میٹا ڈیٹا کے ساتھ جمع کروائیں۔
+## انضمام کی جانچ کریں {#test-the-integration}
 
-```ts
-export async function joinKaigiMeetingFromInvite(input: {
-  context: KaigiContext;
-  account: AccountContext;
-  inviteLink: string;
-}): Promise<{
-  callId: string;
-  peer: RTCPeerConnection;
-  localStream: MediaStream;
-}> {
-  const { bridge, toriiUrl, chainId } = input.context;
-  const { callId, inviteSecretBase64Url } = parseInviteLink(input.inviteLink);
-
-  const meeting = await bridge.getKaigiCall({
-    toriiUrl,
-    callId,
-    inviteSecretBase64Url,
-  });
-
-  if (meeting.ended) {
-    throw new Error("This Kaigi meeting has already ended.");
-  }
-  if (Date.now() > meeting.expiresAtMs) {
-    throw new Error("This Kaigi invite has expired.");
-  }
-
-  const localStream = await openLocalMedia();
-  const peer = createPeer(localStream);
-  const answerDescription = await createAnswerDescription(
-    peer,
-    meeting.offerDescription,
-  );
-
-  await bridge.joinKaigiMeeting({
-    toriiUrl,
-    chainId,
-    participantAccountId: input.account.accountId,
-    callId: meeting.callId,
-    hostAccountId: meeting.hostAccountId,
-    hostKaigiPublicKeyBase64Url: meeting.hostKaigiPublicKeyBase64Url,
-    participantId: "guest",
-    participantName: input.account.displayName,
-    roomId: meeting.callId,
-    privacyMode: meeting.privacyMode,
-    rosterRootHex: meeting.rosterRootHex,
-    answerDescription,
-  });
-
-  return { callId: meeting.callId, peer, localStream };
-}
-```
-
-اگر میٹنگ شفاف ہے تو ، آپ جوائن کی درخواست میں پرس ڈسپلے سٹرنگ شامل کرسکتے ہیں۔ نجی ملاقاتوں کے ل `walletIdentity` کو غیر ترتیب دیں جب تک کہ صارف واضح طور پر اس کا انکشاف کرنے کا انتخاب نہ کریں۔
-
-## میزبان: مہمانوں کے جواب پر عمل کریں {#host-apply-the-guest-answer}
-
-ایک لائیو میٹنگ بنانے کے بعد ، میزبان کو Kaigi واقعات دیکھنا چاہئے اور خفیہ کردہ جواب سگنل کے لئے سروے کرنا چاہئے۔ میزبان کے ہم مرتبہ کنکشن پر پہلا درست جواب لاگو کریں۔
-
-```ts
-export async function watchForKaigiAnswer(input: {
-  context: KaigiContext;
-  hostAccountId: string;
-  callId: string;
-  hostKaigiKeys: KaigiSignalKeyPair;
-  createdAtMs: number;
-  peer: RTCPeerConnection;
-  onParticipant?: (signal: KaigiSignal) => void;
-}): Promise<string | null> {
-  const { bridge, toriiUrl } = input.context;
-  const seenSignals = new Set<string>();
-  let lastSignalAtMs = input.createdAtMs;
-
-  const checkSignals = async (): Promise<boolean> => {
-    const signals = await bridge.pollKaigiMeetingSignals({
-      toriiUrl,
-      accountId: input.hostAccountId,
-      callId: input.callId,
-      hostKaigiKeys: input.hostKaigiKeys,
-      afterTimestampMs: lastSignalAtMs,
-    });
-
-    const next = signals.find(
-      (signal) => !seenSignals.has(signal.entrypointHash),
-    );
-    if (!next) {
-      return false;
-    }
-
-    seenSignals.add(next.entrypointHash);
-    lastSignalAtMs = Math.max(lastSignalAtMs, next.createdAtMs);
-    await input.peer.setRemoteDescription(next.answerDescription);
-    input.onParticipant?.(next);
-    return true;
-  };
-
-  if (await checkSignals()) {
-    return null;
-  }
-
-  return bridge.watchKaigiCallEvents(
-    { toriiUrl, callId: input.callId },
-    async (event) => {
-      if (event.kind !== "ended") {
-        await checkSignals();
-      }
-    },
-  );
-}
-```
-
-واپس کی گئی رکنیت ID کو ذخیرہ کریں تاکہ آپ کا UI میزبان بند ہونے یا دور جانے پر ناظرین کو روک سکے۔
-
-## میٹنگ کا اختتام {#end-the-meeting}
-
-اسی میزبان اکاؤنٹ سے کال کو ختم کریں جس نے اسے بنایا تھا:
-
-```ts
-export async function endKaigi(input: {
-  context: KaigiContext;
-  hostAccountId: string;
-  callId: string;
-  peer?: RTCPeerConnection;
-  localStream?: MediaStream;
-}): Promise<void> {
-  input.peer?.close();
-  input.localStream?.getTracks().forEach((track) => track.stop());
-
-  await input.context.bridge.endKaigiMeeting({
-    toriiUrl: input.context.toriiUrl,
-    chainId: input.context.chainId,
-    hostAccountId: input.hostAccountId,
-    callId: input.callId,
-    endedAtMs: Date.now(),
-  });
-}
-```
-
-## پرائیویٹ موڈ میں فنڈنگ {#private-mode-funding}
-
-نجی Kaigi تخلیق ، شمولیت اور اختتامی آپریشنز کو نجی انٹری پوائنٹ فیس کے ل shielded XOR کی ضرورت پڑسکتی ہے۔ آپ کی ایپ کو اس غلطی کو پکڑنا چاہئے اور دوبارہ کوشش کرنے سے پہلے خود شیلڈ کارروائی پیش کرنا چاہئے۔
-
-```ts
-type PrivateKaigiFundingBridge = KaigiBridge & {
-  getPrivateKaigiConfidentialXorState(input: {
-    toriiUrl: string;
-    accountId: string;
-  }): Promise<{
-    shieldedBalance: string | null;
-    transparentBalance: string;
-    canSelfShield: boolean;
-    message?: string;
-  }>;
-
-  selfShieldPrivateKaigiXor(input: {
-    toriiUrl: string;
-    chainId: string;
-    accountId: string;
-    amount: string;
-  }): Promise<{ hash: string }>;
-};
-
-export async function selfShieldForPrivateKaigi(input: {
-  context: Omit<KaigiContext, "bridge"> & {
-    bridge: PrivateKaigiFundingBridge;
-  };
-  accountId: string;
-  amount: string;
-}): Promise<void> {
-  const { bridge, toriiUrl, chainId } = input.context;
-  const state = await bridge.getPrivateKaigiConfidentialXorState({
-    toriiUrl,
-    accountId: input.accountId,
-  });
-
-  if (!state.canSelfShield) {
-    throw new Error(
-      state.message || "This account cannot self-shield XOR for private Kaigi.",
-    );
-  }
-
-  await bridge.selfShieldPrivateKaigiXor({
-    toriiUrl,
-    chainId,
-    accountId: input.accountId,
-    amount: input.amount,
-  });
-}
-```
-
-ڈیمو میں ، UI صارف کو خود بچانے کی ترغیب دیتا ہے اور پھر اصل تخلیق یا شمولیت کا دوبارہ کوشش کرتا ہے۔
-
-## مینوئل فال بیک {#manual-fallback}
-
-خود کار طریقے سے سگنلنگ ایک زندہ بٹوے، Kaigi کے قابل Torii راستوں اور نجی موڈ میں ثبوت کی پیداوار پر منحصر ہے. ترقی اور محدود ماحول کے لئے دستی پسماندہ رکھیں:
-
-- اگر `CreateKaigi` ناکام ہو جائے تو، پیشکش پر مشتمل دستی دعوت نامہ دکھائیں
-- اگر `JoinKaigi` ناکام ہو جائے تو، خام جواب پیکج دکھائیں
-- میزبان کو جواب پیکٹ چسپاں کرنے دیں اور `setRemoteDescription` پر کال کریں۔
-
-دستی فال بیک ڈیبگنگ WebRTC کے لئے مفید ہے، لیکن یہ Kaigi براہ راست بہاؤ کے طور پر نجی آن چین سگنلنگ کی ضمانت نہیں دیتا.
-
-## ٹیسٹ چیک لسٹ {#test-checklist}
-
-یونٹ ٹیسٹوں کے لئے، پل کا مذاق اڑائیں اور اس بات کی تصدیق کریں کہ آپ UI متوقع Kaigi مفید بوجھ سے گزرتا ہے:
-
-- میزبان مقامی میڈیا تخلیق کرتا ہے اور `createKaigiMeeting` جمع کراتا ہے۔
-- میزبان ایک `iroha://kaigi/join?call=...&secret=...` دعوت ظاہر کرتا ہے
-- مہمان دعوت کو تجزیہ کرتا ہے، `getKaigiCall` پر کال کرتا ہے اور `joinKaigiMeeting` جمع کراتا ہے.
-- میزبان سروے یا جواب کے اشارے کے لئے گھڑیاں اور جواب کا اطلاق کرتا ہے
-- جب حفاظتی XOR غائب ہو تو پرائیویٹ موڈ میں خود بچانے کے لئے اشارے۔
-- جب براہ راست سگنلنگ دستیاب نہیں ہے تو دستی فال بیک ظاہر ہوتا ہے۔
-
-ایک مکمل ریفرنس ٹیسٹ سویٹ کے لئے، ڈیمو ایپ کی Kaigi نقطہ نظر اور پری لوڈ پل ٹیسٹ دیکھیں:
+موجودہ توجہ مرکوز ڈیمو سوئٹس چلائیں:
 
 ```bash
-npm test -- tests/kaigiView.spec.ts tests/preloadKaigiBridge.spec.ts
-npm run e2e:ui
+npm test -- \
+  tests/kaigiView.spec.ts \
+  tests/kaigi.spec.ts \
+  tests/kaigiCrypto.spec.ts \
+  tests/kaigiInvite.spec.ts \
+  tests/kaigiStore.spec.ts
+
+npm run verify
 ```
 
-UI دھواں ٹیسٹ اس بات کی تصدیق کرتا ہے کہ `/kaigi` راستہ انجام دیتا ہے۔ ایک حقیقی میڈیا ٹیسٹ کو ابھی بھی دو فنڈ والے بٹوے اور دو کھڑکیوں یا آلات کی ضرورت ہوتی ہے کیونکہ ٹرانزیکشن دستخط ، کیمرہ ، مائکروفون ، اور WebRTC اجازتاں رن ٹائم کے لحاظ سے مختلف ہیں۔
+ٹیسٹ موجودہ شفاف پروفائل ، سخت دعوت تجزیہ ، خفیہ کردہ سگنلنگ ، مقامی سیشن کی مستقل مزاجی ، اور دستی فال بیک کو ڈھکتے ہیں۔ ایک حقیقی میڈیا ٹیسٹ کے لئے ابھی بھی دو فنڈ والے پرسوں اور دو ونڈوز یا آلات کی ضرورت ہوتی ہے۔ مضحکہ خیز WebRTC اور رینڈر ٹیسٹ کیمرے ، مائکروفون ، NAT کراسنگ ، کینونیکل درخواست کی توثیق ، یا لائیو ٹرانزیکشن کے حتمی ہونے کا ثبوت نہیں دیتے ہیں۔
 
-اگر آپ TAIRA کے مقابلے میں ٹیسٹ کر رہے ہیں اور کال مخصوص روٹ `404` لوٹاتا ہے تو ، پہلے اس بات کی تصدیق کریں کہ میزبان بٹوے کو کامیابی سے جمع کرایا گیا ہے `CreateKaigi`. ریلے صحت کے اختتامی پوائنٹس کسی خاص کال کے وجود سے پہلے دستیاب ہوسکتے ہیں۔
-
-## اگلے اقدامات {#next-steps}
-
-- `RecordKaigiUsage` کے ساتھ استعمال ریکارڈنگ شامل کریں جب آپ کی ایپ میں سیشن کی مدت کا قابل اعتماد اکاؤنٹنگ ہو۔
-- ریلے مینفیس کا استعمال کرتے ہوئے `/v1/kaigi/relays` کے ذریعے رلیوں کو رجسٹر اور مانیٹر کریں۔
-- آپریٹر ڈیش بورڈ میں سطح `KaigiRosterSummary` ، `KaigiUsageSummary`، اور `KaigiRelayHealthUpdated` واقعات.
+مکمل اختتامی پوائنٹ میٹرکس اور CLI لائف سائیکل کے لئے، دیکھیں [Torii اختتامی مقامات: Kaigi سیشنز](/ur/reference/torii-endpoints.md#kaigi-sessions).

@@ -29,20 +29,20 @@ Joriy TOML maydonlari uchun [Klientning konfiguratsiyasi](/uz/guide/configure/cl
 
 Transaksiya mexanikasini ko'rish uchun [Transaksiyalar](/uz/blockchain/transactions.md)
 
-## Savollar va voqealar {#queries-and-events}
+## So'rovlar va voqealar {#queries-and-events}
 
 - Oʻzgarishlarni bildirish uchun joriy holat va hodisalar oqimlari soʻrovlaridan foydalaning. O'yinlarni qayta-qayta keng so'rovlar bilan almashtirishdan qoching.
 - Hisob, aktiv va blok ro'yxatlari kabi keng takrorlanishi mumkin bo'lgan so'rovlarni sahifalashtirish.
 - Subscriptions va trigger uchun tor filtrlarni afzal ko'rish. keng filtrlar diagnostika uchun foydali, lekin zaruriy bo'lmagan ijro va mijoz tomoni qayta ishlash qo'shishi mumkin.
 - Oxirgi nuqtalar mavjudligini aniqlash osonroq bo'lishi uchun, faqat o'qiladigan tutun tekshiruvlarini imzolangan bitim sinovlaridan ajratib qo'ying.
 
-Qarang [Savollar](/uz/blockchain/queries.md), [Havf-havoyatlar](/uz/blockchain/events.md) va [Filterlar](/uz/blockchain/filters.md).
+Qarang [So'rovlar](/uz/blockchain/queries.md), [Havf-havoyatlar](/uz/blockchain/events.md) va [Filterlar](/uz/blockchain/filters.md).
 
 ## Agentlar yordamida rivojlanish {#agent-assisted-development}
 
 - Agentlardan tranzaksiya kodini yozishni so'rashdan oldin hujjatlarni, SDK kodini va faqat o'qish uchun tarmoq holatini tekshiringlar.
 - `TAIRA_LIVE=1` kabi atrof muhit bayrog'i ortida jonli tarmoq sinovlarini o'tkazing.
-- Xususiy kalitlarni, hisobni tiklash materialini, API tokenlarini yoki yo'naltirilgan muallif sarlavhalarini ko'rsatkichlarga qo'ymang.
+- Xususiy kalitlarni, hisobni tiklash materialini, API tokenlarini yoki yo'naltirilgan autentifikatsiya sarlavhalarini ko'rsatkichlarga qo'ymang.
 - Har qanday agent jonli testnet tranzaksiyasini taqdim etishdan oldin muomala rejasi talab qilinadi. rejada tarmoq, vakolat, ko'rsatmalar, to'lov aktivlari, parvozdan oldingi o'qishlar, kutilayotgan natija va qayta urinish xatti-harakatlari nomlanishi kerak.
 
 Taira MCP ish oqimi uchun [ni ko'rish: SORA 3: Taira va Minamoto](/uz/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents).

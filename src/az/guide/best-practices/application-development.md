@@ -3,52 +3,52 @@ translation_locale: az
 translation_source: /guide/best-practices/application-development.md
 translation_source_hash: f95261b0416abfcd87881135ceb9b604a1cdde2dd1afc79fecf9c113a256a8c7
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Tətbiqi inkişafı {#application-development}
+# Tətbiq İnkişafı {#application-development}
 
-Iroha tətbiqləri əməliyyat davranışını açıq şəkildə göstərməlidir, imzalanma vəziyyətini saxlamalı və sorğu və hadisələrdən istehsalda müşahidə edilməsi asan olan yollarla istifadə etməlidir.
+Iroha tətbiqləri əməliyyat davranışını açıq şəkildə göstərməli, imzalama vəziyyətini daxildə saxlamalı və sorğularla hadisələrdən istehsalda müşahidə etmək asan olan yollarla istifadə etməlidir.
 
-## Müştəri quruluşu {#client-setup}
+## Müştəri Quraşdırması {#client-setup}
 
-- Tətbiq mənbə kodundan kənarda müştəri konfigurasiyasını saxlayın. Zəngini yükləyin ID, Torii URL, imza hesabı və əməliyyat parametrləri ətraf mühitə aid quruluşdan.
-- `client.toml` fayllarını localnet, Taira, Minamoto və özəl şəbəkələr üçün ayrı saxlayın. Kopyalaşdırılmış testnet imzalanıcısı heç vaxt əsas şəbəkə imzalançısı olmamalıdır.
-- Transaction ömrünü və status vaxtlarını bilə-bilə təyin edin. Çox qısa bir ömrü normal şəbəkə narahatlığı altında sona çata bilər, çox uzun biri isə ikiqat təqdimatları daha çətinləşdirə bilər. Məntiq haqqında.
-- `nonce = true` yalnız təkrarlanan əməliyyatların ayrı-ayrı hashləri olması lazım olduqda istifadə edin. İdempotent iş əməliyyatları üçün bir tətbiq tələbini saxlayın və yenidən istifadə edin ID belə ki, yenidən cəhdlər izləyə bilər.
+- Müştəri konfiqurasiyasını tətbiq mənbə kodundan kənarda saxlayın. Zəncir ID-sini, Torii URL, imzalama hesabını və əməliyyat parametrlərini mühitə xüsusi konfiqurasiyadan yükləyin.
+- Yerəl şəbəkə, Taira, Minamoto və özəl şəbəkələr üçün `client.toml` fayllarını ayrı saxlayın. Kopyalanmış testnet kriptoqrafik imzalayıcı heç vaxt mainnet kriptoqrafik imzalayıcı olmamalıdır.
+- Əməliyyatın ömür müddətlərini və vəziyyət zaman aşımını diqqətlə təyin edin. Çox qısa ömür müddəti normal şəbəkə tələskənliyində bitə bilər, çox uzun ömür müddəti isə təkrar göndərişləri başa düşməyi çətinləşdirə bilər.
+- `nonce = true`-dan yalnız təkrarlanan əməliyyatların fərqli kriptoqrafik xeshlərə malik olması lazım olduqda istifadə edin. İdempotent biznes əməliyyatları üçün, yenidən cəhdlərin izlənə bilməsi üçün tətbiq sorğu ID-sini saxlayın və təkrar istifadə edin.
 
-Mövcud TOML sahələri üçün [Müxfilik Konfigurasiyası](/az/guide/configure/client-configuration.md)-ə baxın.
+Cari TOML sahələri üçün [Müştəri Konfiqurasiyası](/az/guide/configure/client-configuration.md)-a baxın.
 
 ## Əməliyyatlar {#transactions}
 
-- Mümkün olduğu təqdirdə xam JSON və ya silsilə ilə yığılmış pay yükləri əvəzinə SDK tiplənmiş təlimatlardan əməliyyatları qur.
-- Preflight vacib yalnız oxunma sualları ilə yazır: hesabın mövcudluğu, aktiv balansları, icazə statusu, ödəniş aktivlərinin mövcudluğu və hədəf obyektinin statusu.
-- Ödəniş hashini, səlahiyyətli hesabı, təlimatların ümumiləşdirilməsini və təqdim etməzdən əvvəl gözlənilən vəziyyət dəyişikliyini qeyd edin.
-- `Rejected`, `Expired` ilə müalicə olun və vaxt məhdudlaşdırma nəticələri fərqli olsun. Timeout, müştərinin son vəziyyətə əməl etmədiyini göstərir; bu şəbəkənin əməliyyatı görmədiyini sübut etmir.
-- Müvəffəqiyyətlə yazıldıqdan sonra, nəticədə olan vəziyyəti iş əməliyyatına uyğun bir sorğu və ya hadisə yoxlama nöqtəsi ilə təsdiqləyin.
+- Xam JSON və ya sətir yığılmış yükləmələr əvəzinə, mümkün olduqda yazılmış SDK təlimatlardan əməliyyatlar qurun.
+- Oxunmağı yalnız sorğularla edilən preflight önəmli yazılar: hesabın mövcudluğu, aktiv balansları, icazə vəziyyəti, ödəniş aktivinin mövcudluğu və hədəf obyektinin vəziyyəti.
+- Əməliyyatı təqdim etməzdən əvvəl kriptoqrafik hash-i, səlahiyyətli əsas hesabı, təlimat xülasəsini və gözlənilən vəziyyət dəyişikliklərini qeyd edin.
+- `Rejected`, `Expired` və vaxt aşımı nəticələrini fərqli şəkildə müalicə edin. Vaxt aşımı o deməkdir ki, müştəri son statusu müşahidə etməyib; bu isə şəbəkənin əməliyyatı görməməzlikdən gəldiyini sübut etmir.
+- Uğurlu yazmadan sonra, əməliyyatın nəticəsini biznes əməliyyatına uyğun bir sorğu və ya hadisə yoxlama nöqtəsi ilə təsdiqləyin.
 
-Əməliyyat mexanikası üçün [Əməliyyatları ](/az/blockchain/transactions.md) baxın.
+Əməliyyat mexanikası üçün baxın [Əməliyyatlar](/az/blockchain/transactions.md).
 
-## Suallar və hadisələr {#queries-and-events}
+## Sorğular və Tədbirlər {#queries-and-events}
 
-- Dəyişiklik bildirişləri üçün mövcud vəziyyət və hadisə axınları ilə bağlı sorğulardan istifadə edin.
-- Hesab, aktiv və blok siyahıları kimi geniş təkrarlana bilən sorğuların səhifələrini açın.
-- Təsdiqlər və tetikçilər üçün dar filtrləri üstün tuturlar. Geniş filterlər diaqnozlaşdırma üçün faydalıdır, lakin lazımsız icra və müştəri tərəfi işlənməsini əlavə edə bilər.
-- Yalnız oxumaq üçün tütün yoxlamalarını imzalanmış əməliyyat testlərindən ayırın ki, son nöqtələrin mövcudluğu daha asan diaqnozlaşdırılsın.
+- Cari vəziyyət üçün sorğulardan və dəyişiklik bildirişləri üçün hadisə axınlarından istifadə edin. Hadisə idarəsini təkrarlanan geniş sorğularla əvəz etməkdən çəkinin.
+- Hesab, aktiv və blok siyahıları kimi geniş təkrarlana bilən sorğuları səhifələyin.
+- Abunəliklər və tetikleyicilər üçün dar süzgəcləri seçin. Geniş süzgəclər diaqnostika üçün faydalıdır, lakin əlavə icra və müştəri tərəfi emalına səbəb ola bilər.
+- Yalnız oxumaq üçün tüstü yoxlamalarını imzalanmış əməliyyat testlərindən ayrı saxlayın ki, API son nöqtəsinin mövcudluğunu diaqnoz etmək daha asan olsun.
 
-Bax [Soruşmalar](/az/blockchain/queries.md), [Hələliklər](/az/blockchain/events.md) və [Filterlər](/az/blockchain/filters.md).
+Baxın [Sorğular](/az/blockchain/queries.md), [Tədbirlər](/az/blockchain/events.md) və [Filtrlər](/az/blockchain/filters.md).
 
-## Agentlərin köməyi ilə inkişaf {#agent-assisted-development}
+## Agent Dəstəyi ilə İnkişaf {#agent-assisted-development}
 
-- Agentlərdən əməliyyat kodunu yazmalarını istəmədən əvvəl sənədləri, SDK kodu və yalnız oxuma şəbəkə vəziyyətini yoxlamalarına icazə verin.
-- `TAIRA_LIVE=1` kimi bir ətraf mühit bayrağı arxasında canlı şəbəkə sınaqları aparmaq üçün seçin.
-- Xüsusi açarları, hesabın bərpası materialını, API nömrələrini və ya ötürülmüş müəllif başlıqlarını istəklərə qoyma.
-- Hər hansı bir agent canlı testnet əməliyyatını təqdim etməzdən əvvəl bir əməliyyat planı tələb edin. Plan şəbəkənin, səlahiyyətlilərin, təlimatların, ödəniş aktivlərinin, uçuşdan əvvəl oxumalarının, gözlənilən nəticənin və yenidən cəhd davranışının adını verməlidir.
+- Agentlərdən əməliyyat kodunu yazmağı xahiş etməzdən əvvəl sənədləri, SDK kodunu və yalnız oxuma rejimli şəbəkə vəziyyətini yoxlamasına icazə verin.
+- Canlı şəbəkə testlərini `TAIRA_LIVE=1` kimi bir mühit bayrağı arxasında könüllü olaraq saxlayın.
+- Xahiş edirəm göstərişlərə şəxsi açarları, hesab bərpa materiallarını, API tokenlərini və ya ötürülmüş avtorizasiya başlıqlarını yapışdırmayın.
+- Hər hansı bir agent canlı testnet əməliyyatı göndərmədən əvvəl əməliyyat planı tələb edin. Plan şəbəkəni, səlahiyyət prinsipi, təlimatları, ödəniş aktivini, əvvəlcədən oxumaları, gözlənilən nəticəni və təkrar davranışı göstərməlidir.
 
-İcra Hakimiyyəti Taira MCP iş axını, bax [Üstəlik, SORA 3: Taira və Minamoto](/az/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents).
+Taira MCP iş axını üçün [SORA 3 üzərində qurun: Taira və Minamoto](/az/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents)-a baxın.
 
-## SDK Higiena {#sdk-hygiene}
+## SDK Gigiyena {#sdk-hygiene}
 
-- Pin SDK və ikili versiyalar birlikdə [ uyğunluq matrisindən istifadə edərək](/az/reference/compatibility-matrix.md).
-- Yaradılan müştəri kodunu, hissələri və nümunələrini yuxarı axın iş məkanının tənzimlənməsi ilə sinxronlaşdırın.
-- Tətbiqinizdən asılı olan ən kiçik oxumaq və yazmaq yolları üçün əməliyyat qurma kodu və inteqrasiya testləri üçün vahid sınaqlar əlavə edin.
+- Pin SDK və ikili versiyaları birlikdə [Uyğunluq Matrisi](/az/reference/compatibility-matrix.md) istifadə edərək.
+- Yaradılmış müştəri kodunu, parçaları və nümunələri sabitləşdirilmiş yuxarı axın iş sahəsinin versiyası ilə sinxron saxlayın.
+- Əməliyyat qurumu kodu üçün vahid testləri və tətbiqinizin asılı olduğu ən kiçik oxuma və yazma yolları üçün inteqrasiya testləri əlavə edin.

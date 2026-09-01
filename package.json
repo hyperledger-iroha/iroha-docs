@@ -18,8 +18,9 @@
     "validate:content": "tsx etc/validate-content-policy.ts",
     "validate:cookbook": "tsx etc/validate-cookbook.ts",
     "validate:i18n": "tsx etc/validate-i18n.ts",
+    "validate:i18n-audit": "tsx etc/audit-i18n-scripts.ts && tsx etc/audit-i18n-scripts.ts --english-runs && tsx etc/audit-i18n-scripts.ts --link-labels",
     "validate:provenance": "tsx etc/validate-provenance.ts",
-    "validate": "pnpm validate:content && pnpm validate:cookbook && pnpm validate:i18n && pnpm validate:provenance",
+    "validate": "pnpm validate:content && pnpm validate:cookbook && pnpm validate:i18n && pnpm validate:i18n-audit && pnpm validate:provenance",
     "test": "VITE_CJS_IGNORE_WARNING=true vitest run",
     "cli": "tsx etc/cli"
   },
@@ -59,6 +60,7 @@
     "vite-svg-loader": "^5.1.0",
     "vitepress": "1.6.4",
     "vitest": "^2.1.4",
+    "vue-eslint-parser": "^9.4.3",
     "yargs": "^17.6.2"
   },
   "dependencies": {

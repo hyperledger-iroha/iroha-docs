@@ -3,55 +3,55 @@ translation_locale: pt
 translation_source: /reference/permissions.md
 translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Tokens de Permissão {#permission-tokens}
 
-Esta página lista os tipos padrão de tokens de permissão expostos pelo atual modelo de dados do executor Iroha. Para o guia conceitual de funções e permissões, veja [Permissões](/pt/blockchain/permissions.md).
+Esta página lista os tipos de token de permissão padrão expostos pelo modelo de dados do executor atual Iroha. Para o guia conceitual sobre funções e permissões, veja [Permissões](/pt/blockchain/permissions.md).
 
-As verificações de autorização são executadas pelo validador ativo do tempo de execução. Os nomes dos tipos de tokens abaixo descrevem a superfície de política padrão, mas uma rede pode personalizar a validação do runtime atualizando o Executor.
+As verificações de permissão são impostas pelo validador de tempo de execução de software ativo. Os nomes dos tipos de token abaixo descrevem a superfície de política padrão, mas uma rede pode personalizar a validação de tempo de execução de software atualizando o executor.
 
-## Tokens padrão {#default-tokens}
+## Tokens Padrão {#default-tokens}
 
-|Token de permissão|Categoria |Operação |
+|Token de permissão|Categoria|Operação|
 | --- | --- | --- |
-|`CanManagePeers` |Peer |Registre, desinscreva ou administre outros pares. |
-|`CanManageLaneRelayEmergency` |Peer |Gerenciar os controles de relevo de emergência. |
-|`CanRegisterDomain` |Domínio .|Registre um domínio. |
-|`CanUnregisterDomain` |Domínio .|Desinscrição de um domínio.|
-|`CanModifyDomainMetadata` |Domínio .|Modificar os metadados do domínio. |
-|`CanRegisterAccount` |Conta |Registre uma conta. |
-|`CanUnregisterAccount` |Conta |Desinscreva uma conta. |
-|`CanModifyAccountMetadata` |Conta |Modificar os metadados da conta. |
-|`CanUnregisterAssetDefinition` |Definição de activos |Não registar uma definição de ativo. |
-|`CanModifyAssetDefinitionMetadata` |Definição de activos |Modificar os metadados da definição do ativo. |
-|`CanMintAssetWithDefinition` |Ativos |Ativos de moeda para uma definição específica. |
-|`CanBurnAssetWithDefinition` |Ativos |Combustão de activos para uma definição específica. |
-|`CanTransferAssetWithDefinition` |Ativos |Transferência de activos para uma definição específica. |
-|`CanMintAsset` |Ativos |Tenta um saldo específico de activos. |
-|`CanBurnAsset` |Ativos |Queimar um saldo específico de ativos.|
-|`CanTransferAsset` |Ativos |Transferir um saldo de activos específico. |
-|`CanRegisterNft` |NFT |Registrar um NFT. |
-|`CanUnregisterNft` |NFT |Desinscrição de um NFT. |
-|`CanTransferNft` |NFT |Transferir um NFT. |
-|`CanModifyNftMetadata` |NFT |Modificar os metadados de NFT. |
-|`CanSetParameters` |Parâmetros |Defina os parâmetros de configuração na cadeia. |
-|`CanManageRoles` |Funções |Registro, desregisto, concessão ou revogação de funções. |
-|`CanRegisterTrigger` |Trigger |Regista um gatilho.|
-|`CanExecuteTrigger` |Trigger |Executa um gatilho.|
-|`CanUnregisterTrigger` |Trigger .|Desinscreva um gatilho.|
-|`CanModifyTrigger` |Trigger .|Modificar a configuração do gatilho. |
-|`CanModifyTriggerMetadata` |Trigger .|Modificar os metadados do gatilho. |
-|`CanUpgradeExecutor` |Execução |Avaliar o executor de tempo de execução. |
-|`CanRegisterSmartContractCode` |Contrato inteligente .|Registre o código do contrato inteligente. |
-|`CanUseFeeSponsor` |Nexus |Imposto de taxas Nexus para uma conta do patrocinador especificada. |
+| `CanManagePeers` |par de rede|Registrar, cancelar registro ou gerenciar pares de rede de outra forma.|
+| `CanManageLaneRelayEmergency` |par de rede|Gerenciar controles de relé da faixa de emergência.|
+| `CanRegisterDomain` |Domínio|Registrar um domínio.|
+| `CanUnregisterDomain` |Domínio|Cancelar o registro de um domínio.|
+| `CanModifyDomainMetadata` |Domínio|Modificar metadados do domínio.|
+| `CanRegisterAccount` |Conta|Registrar uma conta.|
+| `CanUnregisterAccount` |Conta|Cancelar o registro de uma conta.|
+| `CanModifyAccountMetadata` |Conta|Modificar metadados da conta.|
+| `CanUnregisterAssetDefinition` |Definição de ativo|Cancelar o registro de uma definição de ativo.|
+| `CanModifyAssetDefinitionMetadata` |Definição de ativo|Modificar metadados da definição de ativo.|
+| `CanMintAssetWithDefinition` |Ativo|emitir ativos para uma definição específica.|
+| `CanBurnAssetWithDefinition` |Ativo|Queimar ativos para uma definição específica.|
+| `CanTransferAssetWithDefinition` |Ativo|Transferir ativos para uma definição específica.|
+| `CanMintAsset` |Ativo|emitir um saldo específico de ativo.|
+| `CanBurnAsset` |Ativo|Queime um saldo de ativo específico.|
+| `CanTransferAsset` |Ativo|Transferir um saldo de ativo específico.|
+| `CanRegisterNft` | NFT |Registrar um NFT.|
+| `CanUnregisterNft` | NFT |Cancelar o registro de um NFT.|
+| `CanTransferNft` | NFT |Transferir um NFT.|
+| `CanModifyNftMetadata` | NFT |Modificar os metadados de NFT.|
+| `CanSetParameters` |Parâmetros|Defina os parâmetros de configuração on-chain.|
+| `CanManageRoles` |Funções|Registrar, cancelar registro, conceder ou revogar funções.|
+| `CanRegisterTrigger` |Gatilho|Registrar um gatilho.|
+| `CanExecuteTrigger` |Gatilho|Execute um gatilho.|
+| `CanUnregisterTrigger` |Gatilho|Cancelar o registro de um gatilho.|
+| `CanModifyTrigger` |Gatilho|Modificar configuração do gatilho.|
+| `CanModifyTriggerMetadata` |Gatilho|Modificar metadados do gatilho.|
+| `CanUpgradeExecutor` |Executor|Atualize o executor de tempo de execução do software.|
+| `CanRegisterSmartContractCode` |Contrato inteligente|Registrar código de contrato inteligente.|
+| `CanUseFeeSponsor` | Nexus |Cobrar taxas Nexus de uma conta de patrocinador especificada.|
 
 ## Propriedade {#ownership}
 
-Os tokens de permissão sensíveis ao proprietário devem referir-se ao objeto canônico IDs usado pelo modelo de dados atual. Por exemplo, as permissões da conta se referem à conta canônica sem domínio IDs, as permisões do domínio se referem ao domínio `domain.dataspace` IDs, e as autorizações de ativos referem-se à definição canônica de ativos ou ativos IDs.
+Os tokens de permissão sensíveis ao proprietário devem fazer referência aos IDs de objetos canônicos usados pelo modelo de dados atual. Por exemplo, as permissões de conta se referem aos IDs de conta canônicos sem domínio, as permissões de domínio se referem aos IDs de domínio `domain.dataspace`. e permissões de ativos referem-se à definição canônica de ativos ou IDs de ativos.
 
 Quando uma transação falha com um erro de autorização, verifique ambos os lados:
 
-- A conta de assinatura da transação é a conta canónica prevista.
-- O token ou o papel de autorização foi concedido para o objeto exato ID utilizado na instrução
+- a conta que está assinando a transação é a conta canônica esperada
+- o token de permissão ou função foi concedido para o ID de objeto exato usado na instrução

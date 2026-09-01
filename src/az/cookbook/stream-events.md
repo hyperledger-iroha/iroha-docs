@@ -1,28 +1,28 @@
 ---
 translation_locale: az
 translation_source: /cookbook/stream-events.md
-translation_source_hash: 1267a7e22bb6601674557f349e4fc5c6b883ce83b7dc62115ea2b8c3a0c39261
+translation_source_hash: 96f0a26000530fee15d121f815f9f5717a535dc3836cff9a2a447b1e5b70c41c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Hadisələr axını {#stream-events}
+# Axın Hadisələri {#stream-events}
 
 ## Nəticə {#outcome}
 
-Server tərəfindən göndərilən hadisələr (SSE) üzərində canlı Taira boru xətti hadisələrini istehlak edin, sərhədli backoff ilə yenidən qoşulun və əvəz axını açıldıqdan sonra davamlı vəziyyətə yeniləyin. Son nöqtədə təkrarlama kursoruna malik olmadığı üçün hadisələri tam tarix deyil, bildirişlər kimi qəbul edin.
+Server tərəfindən göndərilən hadisələr (SSE) üzərindən canlı Taira proqram təminatı işləmə iş axını hadisələrini istehlak edin, məhdud geri çəkilmə ilə yenidən qoşulun və davamlı vəziyyəti yeniləyin dəyişdirilmə axını açıq olduqdan sonra. Çünki API son nöqtənin təkrar oynatma göstəricisi yoxdur, hadisələri tam tarixçə kimi deyil, bildirişlər kimi qəbul edin.
 
-## Əvvəlki şərtlər {#prerequisites}
+## Tələb olunan əvvəlcədən biliklər {#prerequisites}
 
-- `curl` ictimai tüstü testinə görə.
-- Node.js 24 istehlakçı üçün JavaScript.
-- İmzaçı tələb olunmur. `https://taira.sora.org/v1/events/sse` ictimai, yalnız oxunma axınıdır; bu resept heç bir Minamoto və ya Taira yazısını yerinə yetirmir.
+- `curl` ictimai test üçün.
+- Node.js JavaScript istehlakçı üçün 24.
+- Heç bir kriptoqrafik imzalayıcı tələb olunmur. `https://taira.sora.org/v1/events/sse` ictimai, yalnız oxunan bir axındır; bu resept heç bir Minamoto və ya Taira yazısı icra etmir.
 
-## Dərslər {#steps}
+## Addımlar {#steps}
 
-### 1. SSE cavabını təsdiqləyin {#_1-confirm-the-sse-response}
+### 1. SSE cavabı təsdiqləyin {#_1-confirm-the-sse-response}
 
-Taira hal-hazırda bu marşrutdan yalnız `Accept` başlığı seçilən hadisə axını və JSON geri çəkilməsini əhatə edərkən danışır. curl tamponu söndürün. Komanda 15 saniyədən sonra başa çatır; sakit bir dövrdə yalnız ürək döyüşləri şərhlərini qəbul etmək etibarlıdır.
+Taira hazırda bu marşrutu yalnız `Accept` başlığı həm üstünlük verilmiş hadisə axını, həm də JSON ehtiyatını daxil etdikdə danışıqlar aparır. curl tamponlamasını söndürün. Əmr 15 saniyədən sonra bitir; səssiz bir dövrdə yalnız ürək döyüntüsü şərhlərini qəbul etmək düzgündür.
 
 ```bash
 curl -sS -N --max-time 15 \
@@ -30,11 +30,11 @@ curl -sS -N --max-time 15 \
   https://taira.sora.org/v1/events/sse
 ```
 
-Göndərməyin `Last-Event-ID`. Torii Bu ... SSE Son nöqtəsi canlı fan-out axınıdır, yenidən oynamaq logu deyil və yenidən oynatma istəklərini rədd edir.
+`Last-Event-ID` göndərməyin. Torii-in SSE API ucu canlı fan-out axınıdır, yenidən oynatma qeydi deyil və yenidən oynatma sorğularını rədd edir.
 
-### 2. Filtrlənmiş JavaScript istehlakçı əlavə edin. {#_2-add-a-filtered-javascript-consumer}
+### 2. Filtrlənmiş JavaScript istehlakçını əlavə edin {#_2-add-a-filtered-javascript-consumer}
 
-Aşağıdakıları qeyd edin: `stream-taira.mjs`. Bu birbaşa Fetch istifadə edir ki, müraciət göndərə bilər Taira məmulat tələb olunur . `Accept` Başlıq. `FilterExpr` təsdiq edilmiş əməliyyat hadisələrini seçir və analizçi istehlak edir. SSE Yenidən oynatma kursoruna sahib olmayan kadrlar.
+Aşağıdakıları `stream-taira.mjs` kimi yadda saxlayın. Bu, sorğunu birbaşa Fetch vasitəsilə göndərir, beləliklə sorğu Taira-ün tələb olunan qarışıq `Accept` başlığını göndərə bilər. Hazırkı `FilterExpr` təsdiqlənmiş əməliyyat hadisələrini seçir və analizator SSE çərçivələrini təkrar oynatma göstəricisi olmadan istifadə edir.
 
 ```js
 const baseUrl = 'https://taira.sora.org'
@@ -154,21 +154,21 @@ async function follow() {
 await follow()
 ```
 
-Taira-də ən azı bir əməliyyat `Approved`ə çatana qədər icra edin:
+Bunu ən azı bir əməliyyat Taira-də `Approved`-a çatana qədər işlədin:
 
 ```bash
 node ./stream-taira.mjs
 ```
 
-SSE ürək döyüntüsü şərhləri boş əlaqələri canlı saxlayır, lakin kitabın sifarişini təsis etmirlər. Sifariş və ya tamlıq məsələlərində blok hündürlüyü, əməliyyat həşləri və kitabın sorğularından istifadə edin.
+SSE ürək döyüntüsü şərhləri boş bağlantıları aktiv saxlayır, lakin blokçeyn dəftər sifarişini qurmaz. Sıra və ya tamlıq əhəmiyyətli olduqda blok hündürlüklərindən, əməliyyat kriptoqrafik xəşlərindən və blokçeyn dəftər sorğularından istifadə edin.
 
-Son 25 kəşfçi tələbi yalnız ictimai diaqnozdur. İstehsalat istehlakçısı `reconcile()` -ni davamlı tətbiq resursları və yoxlama nöqtəsi üçün kifayət qədər böyük bir bərpa bağı ilə əvəz etməlidir və ya uzatmalıdır. Yalnız məhdud sürət görüntüsü heç bir hadisənin qaçırılmadığını sübut edə bilməz.
+Son-25 tədqiqat tələbi yalnız ictimai diaqnostikadır. İstehsal istehlakçısı `reconcile()`-ı onun davamlı tətbiq resursları üçün sorğularla və yoxlama nöqtəsi üçün kifayət qədər böyük bir bərpa sərhədi ilə əvəz etməli və ya genişləndirməlidir. Yalnız məhdudlaşdırılmış zaman nöqtəsində olan məlumat görünüşü heç bir hadisənin qaçırılmadığını sübut edə bilməz.
 
-Qeyri-hüquqlu bir işdə, `ToriiClient.streamEvents()` yalnız göndərir `Accept: text/event-stream`; canlı Taira bu dar başlığı rədd edir `406`. Yuxarıda göstərilən xam Fetch formasını istifadə edin SDK və ictimai son nöqtələr eyni media növləri danışıqlar aparır.
+Sabitləşdirilmiş mənbə kodu reviziyasında, `ToriiClient.streamEvents()` yalnız `Accept: text/event-stream` göndərir; canlı Taira həmin dar başlığı `406` ilə rədd edir. Yuxarıdakı xam Fetch formasından SDK və ictimai API endpoint eyni media növlərini razılaşdırana qədər istifadə edin.
 
-## Tətbiq edin {#verify}
+## Yoxla {#verify}
 
-Bir terminalda JavaScript istehlakçını çalışdırın, digərində isə ictimaiyyət əməliyyatının sürətli görünüşünü oxuyun:
+Bir terminalda JavaScript istehlakçısını işə salın. Başqa bir terminalda isə ictimai əməliyyat nöqtəsində vaxt məlumat baxışını oxuyun:
 
 ```bash
 curl -fsS \
@@ -177,22 +177,22 @@ curl -fsS \
   jq .
 ```
 
-Hər bir əməliyyat hadisəsi üçün maraqlanırsınız, onun hashini sürətli görüntülərdə tapın və ya doğrudan sorğu verin. Sərhədli səhifə köhnə əməliyyatlar istisna edə bilər. və istehlakçını yenidən başlatmaq: o, hadisə ID təqdim etmədən yenidən bağlanmalıdır və əvəz axını açıldıqdan sonra yeni bir diaqnostik çap etməlidir.
+Diqqət etdiyiniz hər bir əməliyyat hadisəsi üçün onun kriptoqrafik xəşini zaman nöqtəsi məlumat baxışında tapın və ya birbaşa sorğu edin. Məhdud səhifə köhnə əməliyyatları buraxa bilər. Sonra dayandırın və istehlakçını yenidən başladın: o, hadisə ID-si təqdim etmədən yenidən qoşulmalı və əvəzləmə axını açıldıqdan sonra yeni bir diaqnostik çap etməlidir.
 
-## Problemlərin həlli {#troubleshooting}
+## Problemlərin aradan qaldırılması {#troubleshooting}
 
-- Ürək döyüntüsü şərhləri ilə əlaqə, lakin heç bir məlumat hadisələri sağlamdır; seçilmiş boru xəttinin statusu sadəcə sakit ola bilər.
-- `406 Not Acceptable` canlı yayında Taira adətən yalnız reklam edilən tələb deməkdir `text/event-stream`. Göndər `text/event-stream, application/json` yuxarıda göstərildiyi kimi.
-- `stream_error` hadisəsi, serverin gecikmə və ya digər terminal axını vəziyyətini aşkar etdiyini göstərir. Torii bu hadisəni bir dəfə göndərir və axını bağlayır; yenidən qoşulmadan əvvəl uyğunlaşdırın.
-- Bir proxy SSE buffer edə bilər, hətta Torii olmasa da. Proxy-də cavab buffering və sıxılma söndürün və diaqnostikada `curl -N` saxlayın.
-- Sonrakı hadisənin əvvəlki hadisədən sonra baş verəcəyini güman edərək heç vaxt bağlanmadan boşluğu doldurmayın. Son nöqtədə yenidən oynatma kursoru yoxdur; bunun əvəzinə cari kitabın vəziyyətini soruşun.
+- Yalnız ürək döyüntüsü şərhləri olan, amma məlumat hadisələri olmayan bir əlaqə sağlamdır; seçilmiş proqram təminatı işləmə iş axını vəziyyəti sadəcə səssiz ola bilər.
+- `406 Not Acceptable` canlıda Taira adətən yalnız `text/event-stream` üçün elan edilmiş sorğunu nəzərdə tutur. `text/event-stream, application/json`-ni yuxarıda göstərildiyi kimi göndərin.
+- Bir `stream_error` hadisəsi serverin gecikmə və ya başqa bir son nöqtə axını vəziyyətini aşkar etdiyini göstərir. Torii həmin hadisəni bir dəfə göndərir və axını bağlayır; yenidən qoşulmazdan əvvəl uzlaşma aparın.
+- Bir proksi, Torii etmədikdə belə SSE-ni tamponlaya bilər. Proksidə cavab tamponlamasını və sıxılmanı deaktiv edin və `curl -N`-ı diaqnostikada saxlayın.
+- Heç vaxt ayrılmış boşluğu növbəti hadisənin əvvəlkindən sonra gələcəyini fərz edərək doldurmayın. API son nöqtənin təkrar oynatma göstəricisi yoxdur; bunun əvəzinə mövcud blokçeyn dəftər vəziyyətini sorğu edin.
 
 ## Mənbə və əlaqəli sənədlər {#source-and-related-docs}
 
-- [JavaScript pinning commit-də axın resepti](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/recipes/streaming.mjs)
-- [SSE bağlanmış komitdə inteqrasiya testləri](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/events/sse_smoke.rs)
-- [Torii FilterExpr parser at pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/src/filter.rs)
-- [Torii bağlanmış komitdə hadisə yönümləməsi](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/src/routing.rs)
-- [Hadisələr](/az/blockchain/events.md)
-- [Torii son nöqtələri](/az/reference/torii-endpoints.md)
-- [Ərizə kitabının vəziyyəti](./query-ledger-state.md)
+- [JavaScript pinlənmiş mənbə kodu reviziyasında axın resepti](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs)
+- [SSE pin edilmiş mənbə kodu reviziyasında inteqrasiya testləri](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs)
+- [Torii FilterExpr parser pinlənmiş mənbə kodu reviziyasında](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs)
+- [Torii hadisə marşrutlaşdırılması təyin olunmuş mənbə kodu reviziyasında](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
+- [Tədbirlər](/az/blockchain/events.md)
+- [Torii API son nöqtələr](/az/reference/torii-endpoints.md)
+- [Blokçeyn dəftər vəziyyətini sorğu et](./query-ledger-state.md)

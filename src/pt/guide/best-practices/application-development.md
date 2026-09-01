@@ -3,52 +3,52 @@ translation_locale: pt
 translation_source: /guide/best-practices/application-development.md
 translation_source_hash: f95261b0416abfcd87881135ceb9b604a1cdde2dd1afc79fecf9c113a256a8c7
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Desenvolvimento de aplicações {#application-development}
+# Desenvolvimento de Aplicativos {#application-development}
 
-As aplicações Iroha devem tornar o comportamento das transações explícito, manter o estado da assinatura contido e usar consultas e eventos de forma fácil de observar na produção.
+Iroha as aplicações devem tornar o comportamento de transação explícito, manter o estado de assinatura contido e usar consultas e eventos de maneiras que sejam fáceis de observar em produção.
 
-## Configuração do cliente {#client-setup}
+## Configuração do Cliente {#client-setup}
 
-- Armazenar a configuração do cliente fora do código-fonte da aplicação. Carregar a cadeia ID, Torii URL, conta de assinatura e configurações de transação a partir de configuração específica do ambiente.
-- Mantenha os arquivos `client.toml` separados para as redes localnet, Taira, Minamoto e privadas. Um assinante de testnet copiado nunca deve se tornar um assinante da mainet.
-- Estabelecer vidas de transações e temporadas de status deliberadamente. Uma vida muito curta pode expirar sob nervosismo normal da rede, enquanto uma muito longa pode tornar as apresentações duplicadas mais difíceis de raciocinar.
-- Usar `nonce = true` apenas quando as transações repetidas devem ter hashes distintos. Para operações de negócios idempotentes, armazenar e reutilizar uma solicitação de aplicação ID para que as recorrências possam ser rastreáveis.
+- Armazene a configuração do cliente fora do código-fonte da aplicação. Carregue o ID da cadeia, Torii URL, a conta de assinatura e as configurações de transação a partir da configuração específica do ambiente.
+- Mantenha os arquivos `client.toml` separados para localnet, Taira, Minamoto e redes privadas. Um signatário criptográfico do testnet copiado nunca deve se tornar um signatário criptográfico do mainnet.
+- Defina os tempos de vida das transações e os tempos limite de status deliberadamente. Um tempo de vida muito curto pode expirar com oscilações normais da rede, enquanto um muito longo pode dificultar a compreensão de envios duplicados.
+- Use `nonce = true` apenas quando transações repetidas devem ter hashes criptográficos distintos. Para operações comerciais idempotentes, armazene e reutilize um ID de solicitação de aplicativo para que as tentativas possam ser rastreadas.
 
-Ver [Configuração do cliente](/pt/guide/configure/client-configuration.md) para os campos atuais TOML.
+Consulte [Configuração do Cliente](/pt/guide/configure/client-configuration.md) para os campos atuais de TOML.
 
 ## Transações {#transactions}
 
-- Construa transações a partir de instruções tipografadas SDK, sempre que possível, em vez das cargas úteis brutas JSON ou montadas com cordas.
-- Preflight importante escreve com consultas somente para leitura: existência da conta, saldos de ativos, estado de permissão, disponibilidade de ativos de taxas e estado do objeto alvo.
-- Registre o hash da transação, a conta de autoridade, o resumo das instruções e as mudanças esperadas no estado antes de enviar.
-- Tratar `Rejected`, `Expired`, e os resultados do prazo são diferentes. Um prazo significa que o cliente não observou um status final; não prova que a rede ignorou a transação.
-- Após uma escrita bem-sucedida, verifique o estado resultante com um ponto de verificação de consulta ou evento que corresponda à operação do negócio.
+- Construa transações a partir de instruções digitadas SDK sempre que possível, em vez de cargas JSON brutas ou montadas em strings.
+- Preflight importante escreve com consultas somente de leitura: existência da conta, saldos de ativos, estado de permissão, disponibilidade de ativo de taxa e estado do objeto alvo.
+- Registre o hash criptográfico da transação, a conta principal de autorização, o resumo da instrução e a mudança de estado esperada antes de enviar.
+- Trate `Rejected`, `Expired` e resultados de tempo esgotado de maneira diferente. Um tempo esgotado significa que o cliente não observou um status final; isso não prova que a rede ignorou a transação.
+- Após uma gravação bem-sucedida, verifique o estado resultante com uma consulta ou ponto de verificação de evento que corresponda à operação comercial.
 
-Para a mecânica das transações, ver [Transações](/pt/blockchain/transactions.md).
+Para a mecânica da transação, veja [Transações](/pt/blockchain/transactions.md).
 
-## Perguntas e Eventos {#queries-and-events}
+## Consultas e Eventos {#queries-and-events}
 
-- Use consultas para os fluxos de estado e eventos atuais para notificações de mudança. Evite substituir a manipulação de eventos por consultas repetidas amplas.
-- Paginear consultas iteráveis amplas, como contas, ativos e listagens de blocos.
-- Preferem filtros estreitos para assinaturas e gatilhos. filtros largos são úteis para diagnóstico, mas podem adicionar execução desnecessária e processamento do lado cliente.
-- Mantenha as verificações de fumo apenas para leitura separadas dos testes de transação assinados, para que a disponibilidade do ponto final seja mais fácil de diagnosticar.
+- Use consultas para o estado atual e fluxos de eventos para notificações de mudança. Evite substituir o tratamento de eventos por consultas amplas repetidas.
+- Paginar consultas iteráveis amplas, como listagens de contas, ativos e blocos.
+- Prefira filtros estreitos para assinaturas e gatilhos. Filtros amplos são úteis para diagnóstico, mas podem adicionar execução desnecessária e processamento no lado do cliente.
+- Mantenha as verificações rápidas somente leitura separadas dos testes de transações assinadas para facilitar o diagnóstico da disponibilidade do endpoint da API.
 
-Ver [Perguntas](/pt/blockchain/queries.md), [Eventos](/pt/blockchain/events.md) e [Filtros ](/pt/blockchain/filters.md).
+Veja [Consultas](/pt/blockchain/queries.md), [Eventos](/pt/blockchain/events.md) e [Filtros](/pt/blockchain/filters.md).
 
-## Desenvolvimento Assistido por Agentes {#agent-assisted-development}
+## Desenvolvimento Assistido por Agente {#agent-assisted-development}
 
-- Deixe os agentes inspecionar documentos, código SDK, e estado de rede apenas para leitura antes de pedir-lhes para escrever o código da transação.
-- Manter os testes de rede ao vivo opt-in atrás de uma bandeira ambiental, como `TAIRA_LIVE=1`.
-- Não colar chaves privadas, material de recuperação de contas, tokens API ou cabeçalhos de autores encaminhados em instruções.
-- Exigir um plano de transação antes que qualquer agente envie uma transação da rede de testes ao vivo. O plano deve nomear a rede, autoridade, instruções, ativo de taxas, leituras pré-voio, resultado esperado e comportamento de retest.
+- Permita que os agentes inspecionem documentos, código SDK e o estado da rede apenas leitura antes de pedir que escrevam código de transação.
+- Mantenha os testes em rede ao vivo como opt-in atrás de uma flag de ambiente, como `TAIRA_LIVE=1`.
+- Não cole chaves privadas, material de recuperação de conta, tokens API ou cabeçalhos de autenticação encaminhados nos prompts.
+- Exigir um plano de transação antes que qualquer agente envie uma transação de teste ao vivo na testnet. O plano deve nomear a rede, o principal de autorização, as instruções, o ativo de taxa, as leituras prévias, o resultado esperado e o comportamento de nova tentativa.
 
-Para o fluxo de trabalho Taira MCP ver [Construir sobre SORA 3: Taira e Minamoto](/pt/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents).
+Para o fluxo de trabalho Taira MCP, veja [Construir em SORA 3: Taira e Minamoto](/pt/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents).
 
 ## SDK Higiene {#sdk-hygiene}
 
-- Pin SDK e versões binárias juntas usando a Matriz de Compatibilidade [ ](/pt/reference/compatibility-matrix.md).
-- Mantenha o código do cliente gerado, fragmentos e exemplos sincronizados com a revisão de espaço de trabalho upstream afixada.
-- Adicione testes unitários para a construção de código de transações e testes de integração para os menores caminhos de leitura e escrita dos quais o seu aplicativo depende.
+- Fixe SDK e versões binárias juntas usando o [Matriz de Compatibilidade](/pt/reference/compatibility-matrix.md).
+- Mantenha o código do cliente gerado, trechos e exemplos sincronizados com a revisão de workspace upstream fixada.
+- Adicione testes de unidade para o código de construção de transações e testes de integração para os menores caminhos de leitura e escrita dos quais sua aplicação depende.

@@ -3,12 +3,12 @@ translation_locale: pt
 translation_source: /blockchain/domains.md
 translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Domínios {#domains}
 
-Os domínios são nomeados espaços de nomes registados no `World`. No atual modelo de dados Iroha 3 um domínio é qualificado pelo seu espaço de dados-mãe, por isso o identificador canônico é:
+Domínios são namespaces nomeados registrados no `World`. No modelo de dados atual do Iroha 3, um domínio é qualificado pelo seu dataspace pai, então o identificador canônico é:
 
 ```text
 domain.dataspace
@@ -18,20 +18,20 @@ Por exemplo, `payments.universal` nomeia o domínio `payments` dentro do espaço
 
 ## Estrutura {#structure}
 
-Um `Domain` registado contém:
+Um `Domain` registrado contém:
 
-- `id`: o espaço de dados qualificado `DomainId`
-- `logo`: um `SoraFS` opcional para um logotipo de domínio URI
-- `metadata`: metadados arbitrários de valor-chave
-- `owned_by`: a conta de propriedade do domínio, normalmente a conta que o registrou
+- `id`: o `DomainId` qualificado pelo espaço de dados
+- `logo`: um `SoraFS` URI opcional para um logotipo de domínio
+- `metadata`: metadados de chave-valor arbitrários
+- `owned_by`: a conta que possui o domínio, normalmente a conta que o registrou
 
-A carga útil do bootstrap usada para materializar um domínio é `NewDomain`. Ele carrega a `id`, opcional `logo` e inicial `metadata`. O tempo de execução preenche `owned_by` da autoridade.
+O payload de inicialização usado para materializar um domínio é `NewDomain`. Ele carrega o `id`, o `logo` opcional e o `metadata` inicial. O tempo de execução do software preenche `owned_by` a partir do principal de autorização. Clientes comuns não enviam este payload diretamente.
 
 ## Registro {#registration}
 
-A criação de domínios ordinários utiliza o fluxo de configuração do alias declarativo. SNS contrato de arrendamento, capacidades do proprietário, guarda de citação e linha de domínio em um atômico `EnsureAlias` Transacção. `Register::Domain` permanece uma superfície de gênesis/bootstrap, e o `ledger domain` O comando não tem `register` Subcomandante.
+A criação de domínio comum utiliza o fluxo declarativo de configuração de alias. Isso mantém o arrendamento SNS, as capacidades do proprietário, o proteção da cotação e a linha do domínio em uma única transação atômica `EnsureAlias`. `Register::Domain` permanece uma superfície de gênese/bootstrap, e o comando `ledger domain` não possui subcomando `register`.
 
-Crie uma intenção `AliasSetupPlanRequestV1` livre de segredos com um SDK ou serviço de embarque, depois faça com que o CLI planeje contra o estado ao vivo e apresente esse plano exato:
+Crie uma intenção `AliasSetupPlanRequestV1` sem segredo com um serviço SDK ou de integração, depois faça com que o CLI a planeje contra o estado ativo e envie exatamente esse plano:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -45,20 +45,20 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-A intenção identifica `payments.universal`, o seu espaço de dados numérico, o proprietário canônico I105, o prazo da aquisição do arrendamento e a política/cotação de pagamento corrente. O ponto final do planejador é `POST /v1/aliases/setup/plan`; seu plano devolvido é limitado a cadeia, autoridade, estado e prazo. A remoção de domínio ainda usa [`Unregister`](/pt/blockchain/instructions.md#un-register).
+A intenção identifica `payments.universal`, seu espaço de dados numérico, canônico I105 proprietário, prazo de aquisição do contrato de arrendamento e cota de pagamento/política atual de proteção. O planejador API endpoint é `POST /v1/aliases/setup/plan`; Seu plano retornado está vinculado à cadeia, à autoridade, ao Estado e ao prazo. A remoção de domínio ainda usa [`Unregister`](/pt/blockchain/instructions.md#un-register).
 
-A criação ou remoção de um domínio requer a permissão apropriada de gerenciamento de domínio sob o validador ativo de tempo de execução. Os metadados do domínio podem ser atualizados com [`SetKeyValue` e `RemoveKeyValue`](/pt/blockchain/instructions.md#setkeyvalue-removekeyvalue) quando a autoridade tiver permissão para modificar esse domínio.
+Criar ou remover um domínio requer a gestão de domínio apropriada permissão sob o validador de tempo de execução de software ativo. Os metadados do domínio podem ser atualizados com [`SetKeyValue` e `RemoveKeyValue`](/pt/blockchain/instructions.md#setkeyvalue-removekeyvalue) quando o titular da autorização tem permissão para modificar esse domínio.
 
-## Tente em Taira {#try-it-on-taira}
+## Experimente em Taira {#try-it-on-taira}
 
-Listar os domínios atualmente visíveis na rede de teste pública Taira:
+Liste os domínios atualmente visíveis na testnet pública Taira:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
   | jq -r '.items[].id'
 ```
 
-Mapear o catálogo de faixa pública de volta para os alias do espaço de dados:
+Mapeie o catálogo de pista de execução pública de volta para os aliases do espaço de dados:
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -67,9 +67,9 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
     | @tsv'
 ```
 
-Use o primeiro comando quando um aplicativo precisa verificar se existe um domínio. Use o catálogo de faixas quando você precisa confirmar se um espaço de dados é público, restringido ou está atrasado para trás da faixa principal.
+Use o primeiro comando quando um aplicativo precisar verificar se um domínio existe. Use o catálogo da linha de execução quando precisar confirmar se um espaço de dados é público, restrito ou está atrasado em relação à linha de execução principal.
 
-A configuração de domínio é uma escrita paga. Antes de tentá-lo em Taira, salve o auxiliar da torneira a partir de [Consiga Testnet XOR na Taira](/pt/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) como `taira_faucet_claim.py`, financie o assinante através da torneira pública e anexe os metadados das taxas:
+Configurar um domínio é uma gravação sujeita a taxa. Antes de testá-la na Taira, salve o auxiliar de [Obter XOR de teste na Taira](/pt/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) como `taira_faucet_claim.py`, financie o signatário pelo dispensador público e anexe os metadados da taxa:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -88,15 +88,15 @@ iroha --config ./taira.client.toml \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 
-Construa a intenção de um nome de domínio único em testes repetidos da rede, e use a política atual Taira e o guardador de cotizações dos ativos. Não reutilize um plano produzido para localnet ou Minamoto.
+Construa a intenção para um nome de domínio único em execuções repetidas na testnet, e use a política atual e o protetor de cotação do ativo de taxa de Taira. Não reutilize um plano produzido para a localnet ou Minamoto.
 
-## Relações com outras entidades {#relationship-to-other-entities}
+## Relação com outras entidades {#relationship-to-other-entities}
 
-Os domínios agrupam objetos do livro-razão e fornecem um espaço de nomes para dados dimensionados por domínio. As definições de ativos usam identificadores qualificados por domínio, e as consultas podem listar domínios ou encontrar As contas em si são sem domínio no modelo de dados atual, mas as contas podem possuir domínios e manter ativos cujas definições vivem sob domínios.
+Os domínios agrupam objetos do livro-razão da blockchain e fornecem um namespace para dados com escopo de domínio. As definições de ativos usam identificadores qualificados por domínio, e consultas podem listar domínios ou encontrar objetos com escopo em um domínio. As contas em si não têm domínio no modelo de dados atual, mas as contas podem possuir domínios e manter ativos cujas definições estão sob domínios.
 
 Veja também:
 
 - [Mundo](/pt/blockchain/world.md)
 - [Ativos](/pt/blockchain/assets.md)
-- [Metadados ](/pt/blockchain/metadata.md)
-- [Regras de nomeação](/pt/reference/naming.md)
+- [Metadados](/pt/blockchain/metadata.md)
+- [Regras de nomenclatura](/pt/reference/naming.md)

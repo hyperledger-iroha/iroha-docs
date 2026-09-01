@@ -3,6 +3,8 @@ import { Dialog, DialogPanel, DialogTitle, DialogDescription } from '@headlessui
 import { computed, ref } from 'vue'
 import { usePromise, wheneverFulfilled, wheneverRejected } from '@vue-kakuyaku/core'
 import { mande } from 'mande'
+import { useData } from 'vitepress'
+import { localeForLanguage } from '../../../etc/locales'
 import IconClose from './icons/IconClose.vue'
 import IconFeedback from './icons/IconFeedback.vue'
 import IconCheck from './icons/IconCheck.vue'
@@ -15,16 +17,18 @@ const props = defineProps<{
   feedbackUrl: string
 }>()
 
+const { lang } = useData()
+const labels = computed(() => localeForLanguage(lang.value).feedback)
 const openModal = ref(false)
 
+const KINDS = ['bug', 'suggestion', 'other'] as const
 type FeedbackKind = (typeof KINDS)[number]
 
-const KINDS = ['bug', 'suggestion', 'other'] as const
-const KINDS_LABELS: Record<FeedbackKind, string> = {
-  suggestion: 'Suggestion ✨',
-  bug: 'Bug 🐞',
-  other: 'Other',
-}
+const kindLabels = computed<Record<FeedbackKind, string>>(() => ({
+  suggestion: labels.value.suggestion,
+  bug: labels.value.bug,
+  other: labels.value.other,
+}))
 
 const feedbackKind = ref<null | FeedbackKind>(null)
 const feedbackText = ref('')
@@ -33,9 +37,9 @@ const contact = ref('')
 const feedbackTextPlaceholder = computed<string>(() => {
   switch (feedbackKind.value) {
     case 'bug':
-      return 'Report any bugs or issues you found in the Iroha 3 documentation'
+      return labels.value.bugPlaceholder
     default:
-      return 'What can we do to improve the overall documentation browsing experience?'
+      return labels.value.generalPlaceholder
   }
 })
 
@@ -69,11 +73,11 @@ function doSubmit() {
 
 <template>
   <VBtnPrimary
-    class="inline-flex items-center space-x-2"
+    class="inline-flex items-center gap-2"
     @click="openModal = true"
   >
     <IconFeedback />
-    <span>Share feedback</span>
+    <span>{{ labels.shareFeedback }}</span>
   </VBtnPrimary>
 
   <Dialog
@@ -89,11 +93,12 @@ function doSubmit() {
       <DialogPanel class="feedback-card shadow-lg flex flex-col">
         <div class="feedback-card_header flex items-center">
           <DialogTitle class="feedback-card_title flex-1">
-            Share feedback
+            {{ labels.shareFeedback }}
           </DialogTitle>
 
           <VBtnSecondary
             class="text-base p-2 -m-2"
+            :aria-label="labels.close"
             @click="openModal = false"
           >
             <IconClose />
@@ -101,14 +106,14 @@ function doSubmit() {
         </div>
 
         <template v-if="success">
-          <div class="p-4 flex items-center space-x-4">
+          <div class="p-4 flex items-center gap-4">
             <IconCheck class="text-3xl feedback-card_check" />
-            <div>Thank you for sharing your feedback!</div>
+            <div>{{ labels.thankYou }}</div>
           </div>
 
-          <div class="flex flex-row-reverse p-4">
+          <div class="flex justify-end p-4">
             <VBtnSecondary @click="openModal = false">
-              Close
+              {{ labels.close }}
             </VBtnSecondary>
           </div>
         </template>
@@ -119,19 +124,19 @@ function doSubmit() {
         >
           <div class="p-4 space-y-4">
             <DialogDescription class="text-sm">
-              Please take a moment to help us improve the Iroha 3 documentation. We take your input very seriously.
+              {{ labels.description }}
             </DialogDescription>
 
             <div>
               <fieldset class="space-y-1">
                 <legend class="field-label">
-                  Feedback type*
+                  {{ labels.feedbackType }}*
                 </legend>
 
                 <div
                   v-for="value of KINDS"
                   :key="value"
-                  class="flex space-x-2 items-center"
+                  class="flex gap-2 items-center"
                 >
                   <input
                     :id="`feedback-kind-${value}`"
@@ -144,7 +149,7 @@ function doSubmit() {
                   <label
                     :for="`feedback-kind-${value}`"
                     class="flex-1 text-sm"
-                  >{{ KINDS_LABELS[value] }}</label>
+                  >{{ kindLabels[value] }}</label>
                 </div>
               </fieldset>
             </div>
@@ -153,7 +158,7 @@ function doSubmit() {
               <label
                 for="feedback-input-text"
                 class="field-label"
-              >Feedback*</label>
+              >{{ labels.feedbackLabel }}*</label>
 
               <textarea
                 id="feedback-input-text"
@@ -167,12 +172,14 @@ function doSubmit() {
               <label
                 for="feedback-input-contact"
                 class="field-label"
-              > <i>(optional)</i> Contact information </label>
+              >
+                <i>({{ labels.optional }})</i> {{ labels.contactInformation }}
+              </label>
 
               <input
                 id="feedback-input-contact"
                 v-model="contact"
-                placeholder="Email address, Discord, or Telegram"
+                :placeholder="labels.contactPlaceholder"
               >
             </div>
           </div>
@@ -181,19 +188,18 @@ function doSubmit() {
             v-if="action.state.rejected"
             class="px-4 text-xs"
           >
-            Unable to send feedback
+            {{ labels.unableToSendFeedback }}
           </div>
 
-          <div class="flex p-4 items-center space-x-2">
-            <div class="flex-1" />
+          <div class="flex p-4 items-center justify-end gap-2">
             <VBtnSecondary @click="openModal = false">
-              Cancel
+              {{ labels.cancel }}
             </VBtnSecondary>
             <VBtnPrimary
               :disabled="!feedbackText || !feedbackKind || action.state.pending"
               @click="doSubmit"
             >
-              Submit
+              {{ action.state.pending ? labels.sending : labels.submit }}
             </VBtnPrimary>
           </div>
         </div>

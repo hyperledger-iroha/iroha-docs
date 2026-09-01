@@ -9,18 +9,18 @@ fresh Kagami bundle.
 Build a Linux-compatible daemon binary from the upstream workspace:
 
 ```bash
-cargo build --release -p irohad --target x86_64-unknown-linux-musl
+cargo build --release -p irohad --bin iroha3d --target x86_64-unknown-linux-musl
 ```
 
 Copy it into a running peer container, then restart that container:
 
 ```bash
-docker cp target/x86_64-unknown-linux-musl/release/irohad <container>:/usr/local/bin/irohad
+docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/local/bin/iroha3d
 docker restart <container>
 ```
 
 Use `docker ps` to confirm the container name. In the generated stack the peer
-containers are defined by `./localnet/docker-compose.yml`.
+containers are defined by `./docker-compose.yml`.
 
 ## Recommit Genesis in a Disposable Network
 
@@ -29,10 +29,10 @@ network, stop the stack, remove generated state, regenerate or replace the
 signed genesis bundle, and start again:
 
 ```bash
-docker compose -f ./localnet/docker-compose.yml down
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+docker compose -f ./docker-compose.yml down
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
 Do not replace genesis on a network whose state must be preserved.

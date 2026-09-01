@@ -36,7 +36,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
   | jq -r '.items[].id'
 ```
 
-אם פקודות אלה נכשלו עם `502`, TLS, DNS או טעויות זמן, לתקן את הגישה לרשת או לחכות לנקודת הסיום של הרשת המבחנית הציבורית לפני הגדרת מפתחות חשבונות או מטענים שימושיים של עסקאות.
+אם פקודות אלה נכשלות עם `502`, ‏TLS, ‏DNS או שגיאות timeout, תקנו את הגישה לרשת או המתינו לנקודת הקצה של רשת הבדיקה הציבורית לפני איתור תקלות במפתחות חשבון או במטעני עסקאות.
 
 ## עסקים נדחו. {#transactions-are-rejected}
 
@@ -53,7 +53,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
 cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ledger transaction ping --msg "hello"
 ```
 
-## שאלונות מחזירים תוצאות ריקות {#queries-return-empty-results}
+## שאילתות מחזירות תוצאות ריקות {#queries-return-empty-results}
 
 תוצאות חיפוש ריקות לא תמיד פירושו כי החיפוש נכשל. לבדוק:
 
@@ -62,7 +62,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml --output-format text le
 - עמודי דף או פילטר לא שולחים את השורה הנציפית
 - הלקוח מחובר לרשת המיועדת, לא רשת מקומית אחרת
 
-עבור בדיקות תחום, להתחיל עם השאלת הרחבה ביותר:
+עבור בדיקות domain, התחילו בשאילתה הרחבה ביותר:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all

@@ -1,24 +1,24 @@
 ---
 translation_locale: uz
 translation_source: /cookbook/wallet-connect.md
-translation_source_hash: ab5b6c560ed8b0a208666e5854306ba6adce7af1210fc3c94b9c560d8e6eb686
+translation_source_hash: 81b370bdc73a40ff2dbb8df0f91547ab4c279ed94600bdd6df367f29a949ec71
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Wallet Connect: Assetlarni oʻtkazish uchun ruxsat berish {#wallet-connect-approve-an-asset-transfer}
+# Wallet Connect: aktiv o‘tkazishni tasdiqlash {#wallet-connect-approve-an-asset-transfer}
 
 ## Natija {#outcome}
 
-Brauzerda Iroha Connect seansini yaratish, bitta I105 hamyonasi uchun kriptografik ruxsat olish, ushbu hamyonani Torii ning to'g'ri aktivlarni o'tkazish asbob-uskunalarini imzolashni so'rash, ajratilgan imzoni taqdim etish va qo'llaniladigan yakunni kutish.
+Brauzerda Iroha Connect seansini yarating, I105 hamyon identifikatori uchun kriptografik tasdiq oling, o‘sha hamyondan Torii tayyorlagan aniq aktiv o‘tkazish karkasini imzolashni so‘rang, ajratilgan imzoni yuboring va `Applied` yakuniyligini kuting.
 
-## Oldingi shartlar {#prerequisites}
+## Oldindan shartlar {#prerequisites}
 
-- `@iroha/iroha-js` va HTTPS foydalangan brauzer ilovalari.
-- Iroha Connect v1-ni amalga oshiradigan va bitta kalitli Ed25519 I105 hisobini nazorat qiladigan hamyoz.
-- Joriy Taira zanjir ID va zanjirni farqlovchi, pulmonaning ro'yxatdan o'tgan kichik harfli Ed25519 ommaviy kalit hexasi, mulkdagi o'tkazilishi mumkin bo'lgan aktiv va kanonik I105 yo'nalishi.
-- To'lov aktivini ID joriy Taira faucet javob bilan qaytaradi. Misol uchun, jonli to'lov narxini ushbu ID bilan taqqoslaydi; u hech qachon nusxa ko'chirilgan aktiv identifikatorini o'rnatmaydi.
-- Tanlangan Torii da ulanish qo'llanilishi kerak. QR yoki chuqur bog'lamani ko'rsatishdan oldin tekshirib ko'ring:
+- `@iroha/iroha-js` va HTTPS dan foydalanadigan brauzer ilovasi.
+- Bitta kalitli Ed25519 I105 hisobini boshqaradigan va Iroha Connect v1 ni amalga oshiradigan hamyon.
+- Joriy Taira zanjir identifikatori va zanjir farqlovchisi, hamyonning ro‘yxatdan o‘tgan kichik harfli Ed25519 ochiq kaliti hex ko‘rinishida, egalik qilinadigan o‘tkaziluvchi aktiv hamda kanonik I105 manzili.
+- Joriy Taira krani javtargan to‘lov aktivi identifikatori. Misol jonli to‘lov narxini shu identifikator bilan tekshiradi; ko‘chirilgan aktiv identifikatorini hech qachon kiritmaydi.
+- Tanlangan Torii’da Connect yoqilgan bo‘lishi kerak. QR kod yoki chuqur havolani ko‘rsatishdan oldin buni tekshiring:
 
 ```bash
 curl -fsS \
@@ -27,23 +27,23 @@ curl -fsS \
   jq -e '{enabled, sessions_active} | select(.enabled == true)'
 ```
 
-Agar Taira Connect-ni o'chirib qo'ygan yoki `404`/`503`-ni qaytargan bo'lsa, Connect-ni qo'llab-quvvatlagan holda yaratilgan mahalliy tarmoqdan foydalaning. Oddiy aktivlarni o'tkazish ham pulpukaga etarlicha o'tkazilishi mumkin bo'lgan miqdor va to'lov balansini egalik qilish kerak.
+Taira Connect o‘chirilganini xabar qilsa yoki `404`/`503` qaytarsa, Connect yoqilgan yaratilgan mahalliy tarmoqdan foydalaning. Oddiy aktiv o‘tkazishda ham hamyonda yetarli o‘tkaziluvchi miqdor va to‘lov qoldig‘i bo‘lishi kerak.
 
-## qadamlar {#steps}
+## Qadamlar {#steps}
 
-### 1. Bir martalik portfelni ishga tushirish nazoratini taqdim etish {#_1-provide-one-wallet-launch-control}
+### 1. Hamyonni ochish uchun bitta boshqaruv elementi berish {#_1-provide-one-wallet-launch-control}
 
-Quyidagi JavaScript talabnoma sahifasida ushbu elementni kutadi:
+Quyidagi JavaScript ushbu elementni ilova sahifasida kutmoqda:
 
 ```html
 <a id="wallet-connect" hidden>Open this request in my Iroha wallet</a>
 ```
 
-Boshqa qurilmada pulka uchun QR kodidan o'xshash URI kodni bering. URI pulka ko'rsatilgan relay tokenini ushlab turadi, shuning uchun uni analitika, jurnallar, ma'lumotnomalar yoki crash hisobotlariga qo'ymang.
+Boshqa qurilmadagi hamyon uchun ayni URI ni QR kod sifatida ko‘rsating. URI hamyonga tegishli uzatish tokenini o‘z ichiga oladi, shuning uchun uni tahlil tizimlari, jurnallar, referrerlar yoki xato hisobotlariga kiritmang.
 
-### 2. Yaratish, tasdiqlash, imzolash va taqdim etish {#_2-create-approve-sign-and-submit}
+### 2. Yaratish, tasdiqlash, imzolash va yuborish {#_2-create-approve-sign-and-submit}
 
-Ushbu brauzer moduli sizning dasturingiz holatidan aniq qiymatlarni qabul qiladi. Birinchi `POST /v1/assets/transfer` imzolash maydonlarini qoldiradi va ko'rsatilgan, versiyalangan tranzaksiya asbob-uskunalarini qaytarib beradi. Ikkinchisi faqat walletning ochiq kalitini va alohida imzosini bir xil o'tkazish so'roviga qo'shadi.
+Bu brauzer moduli ilovangiz holatidan aniq qiymatlarni oladi. Birinchi `POST /v1/assets/transfer` imzo maydonlarini bermaydi va jonli to‘lov narxi bilan versiyalangan tranzaksiya karkasini qaytaradi. Ikkinchi so‘rov xuddi shu o‘tkazish so‘roviga faqat hamyonning ochiq kaliti va ajratilgan imzosini qo‘shadi.
 
 ```js
 import { AccountAddress } from '@iroha/iroha-js/address'
@@ -219,11 +219,11 @@ export async function transferWithWallet({
 }
 ```
 
-saqlab qoling `token_app`, `token_management`, va `token_relay` dastur xotirasida. Faqat pulka ishga tushirish URI/token portfeli bilan o'tadi. Connect-ning tasdiqlanishi hisob raqami kimligi bilan imzolangan; X25519 `walletPublicKey` to'lovda ko'p vaqtli transport kaliti mavjud, hisobning Ed25519 imzo kalitini emas.
+`token_app`, `token_management` va `token_relay` ni ilova xotirasida saqlang. Hamyonni ochishda unga faqat URI/token o‘tadi. Connect tasdig‘i hisob identifikatori bilan imzolanadi; tasdiqdagi X25519 `walletPublicKey` vaqtinchalik transport kaliti bo‘lib, hisobning Ed25519 imzolash kaliti emas.
 
-### 3. Pulka implementatsiyasida Rust ramka turlaridan foydalaning {#_3-use-the-rust-frame-types-in-a-wallet-implementation}
+### 3. Hamyon amalga oshirishida Rust freym turlaridan foydalanish {#_3-use-the-rust-frame-types-in-a-wallet-implementation}
 
-Rust protokol yuzasida imzo faqat pulka so'ragan operatsiyani dekodlaganidan, aniq niyatini ko'rsatganidan, qo'llaniladigan siyosatni ko'rsatgandan va tasdiqlangan hisob kalit bilan imzolanganidan keyin muhrlanishi mumkin. Ushbu yordamchi ushbu tasdiqlangan imzonani qabul qiladi; u hech qandayni yaratmaydi:
+Rust protokol qatlami imzoni faqat hamyon so‘ralgan tranzaksiyani dekodlagach, uning aniq maqsadini ko‘rsatgach, siyosatni qo‘llagach va tasdiqlangan hisob kaliti bilan imzolagach muhrlashi mumkin. Bu yordamchi tekshirilgan imzoni oladi; uni o‘zi yaratmaydi:
 
 ```rust
 use iroha_crypto::{Algorithm, Signature};
@@ -251,11 +251,11 @@ fn seal_wallet_signature(
 }
 ```
 
-Repozitoriyaning `connect_app` va `connect_wallet` namunalari protokol o'rnatishlaridan iborat: ular deterministik transport kalitlaridan foydalanadi, chiqishda belgini oshkor qiladilar va hamyofasiz imzo qaytaradi. ularni faqat ramkalarni o'rganish uchun ishlating, hech qachon Taira hamyofadan amalga oshirish sifatida ishlatmang.
+Repozitoriydagi `connect_app` va `connect_wallet` misollari protokol sinov artefaktlaridir: ular deterministik transport kalitlaridan foydalanadi, tokenlarni chiqishda oshkor qiladi va hamyon sinov namunasi soxta imzo qaytaradi. Ulardan faqat freymlarni o‘rganish uchun foydalaning, hech qachon Taira hamyonini amalga oshirish sifatida ishlatmang.
 
 ## Tekshirish {#verify}
 
-Qaytarib berilgan hashni saqlab qoling va destinatsiyaning keyingi holatini ommaviy egalarning oxirgi nuqtasi orqali tasdiqlang:
+Qaytarilgan tranzaksiya xeshini saqlang va manzilning amaldan keyingi holatini ochiq egalar API yakuniy nuqtasi orqali tasdiqlang:
 
 ```bash
 curl -fsS -G \
@@ -266,24 +266,24 @@ curl -fsS -G \
   jq .
 ```
 
-Tekshirish faqat JavaScript xizmatkor kuzatadi `Applied` taqdim etilgan tranzaksiya uchun hash va yo'nalish xo'jaligi o'tkazilishni aks ettiradi. HTTP Faqatgina qabul qilish yoki qopqoqning ma'qullanishi katta qog'ozlarning yakuniyligi emas.
+Tekshiruv faqat JavaScript kutuvchisi yuborilgan tranzaksiya xeshi uchun `Applied` ni va manzil hisobidagi o‘zgarishni kuzatganda muvaffaqiyatli bo‘ladi. HTTP orqali qabul qilinish yoki hamyon tasdig‘ining o‘zi reyestr yakuniyligini anglatmaydi.
 
-## Muammolarni hal qilish {#troubleshooting}
+## Muammolarni bartaraf etish {#troubleshooting}
 
-- `404`, `503` yoki `enabled: false` Connect holatidan bu nodda relay seanslari yaratilmasligi mumkinligini anglatadi. O'rnatilgan lokal tarmoqga o'ting; dasturni yoki boshqaruv tokenlarini o'zingiz transport qilishga qaytmang.
-- `USER_DENIED` pulparastlik qaroridir. Uni qayta-qayta ruxsat berishdan ko'ra, terminal foydalanuvchisi natijasi sifatida saqlang.
-- To'g'ri yo'ldan o'tmagan yoki haqiqiy bo'lmagan ruxsatnoma imzosi majlisni tugatishi kerak. Kimlik bog'lash muvaffaqiyatsizlikka uchraganidan so'ng pulparastdan imzolashni hech qachon so'ramang.
-- `public_key_hex does not control authority` - ro'yxatdan o'tish ma'lumotlari va tasdiqlangan I105 kimlik kelishmovchiligi; bu sohada vaqtinchalik hamyon transport kalitidan foydalanish mumkin emas.
-- Imzo yoki asfaltni rad etish odatda tayyorlanish va taqdim etish o'rtasida o'zgartirilgan so'rov maydoni yoki haqiqiy to'lov taklifini anglatadi. Yangi so'rovni yaratish; hech qachon eski imzani transplantatsiya qilmang.
-- Oldindan qabul qilingan imzolangan so'rovning aniq takrorlanishi idempotent hisoblanadi. Vaqtni qayta boshlash uchun sabab sifatida ko'rib chiqishdan oldin qaytarib berilgan muomala hashini so'rang.
+- Connect holatidagi `404`, `503` yoki `enabled: false` shu tugunda uzatish seansini yaratib bo‘lmasligini anglatadi. Connect yoqilgan mahalliy tarmoqqa o‘ting; transport, ilova yoki boshqaruv tokenlarini o‘zingiz o‘ylab topmang.
+- `USER_DENIED` bu hamyon qaroridir. Uni takroriy tasdiqlash oynalarini ochish o‘rniga terminal foydalanuvchisi natijasi sifatida saqlang.
+- Tasdiq va hisob mos kelmasa yoki tasdiq imzosi yaroqsiz bo‘lsa, seans yopilishi kerak. Shaxsni bog‘lash muvaffaqiyatsiz tugagach hamyondan hech qachon imzo so‘ramang.
+- `public_key_hex does not control authority` ro‘yxatga olish ma’lumotlari bilan tasdiqlangan I105 identifikatori mos emasligini anglatadi. Bu maydonda vaqtinchalik hamyon transport kalitini ishlatib bo‘lmaydi.
+- Imzo yoki karkas rad etilishi odatda so‘rov maydoni yoxud jonli to‘lov narxi tayyorlash bilan yuborish orasida o‘zgarganini bildiradi. Yangi so‘rov tuzing; eski imzoni hech qachon ko‘chirmang.
+- Oldin qabul qilingan imzolangan so‘rovning aynan takrorlanishi idempotentdir. Taymautni qayta boshlash sababi deb qabul qilishdan oldin qaytarilgan tranzaksiya xeshini so‘rang.
 
-## Manba va u bilan bog'liq hujjatlar {#source-and-related-docs}
+## Manba va tegishli hujjatlar {#source-and-related-docs}
 
-- [Browser Connect-ni o'rnatilgan commit-da amalga oshirish ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/src/connect.browser.js)
-- [Browser Connect testlari pinlangan commitda](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/test/connect.browser.test.js)
-- [Rust qo'llanma ramka namunasida pinning commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_app.rs)
-- [Rust bog'langan commit-dagi portfeli ramka namunasi](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_wallet.rs)
-- [Pinned Torii OpenAPI sxema](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/artifacts/openapi/torii.json)
+- [Mahkamlangan commitdagi Browser Connect amalga oshirishi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/src/connect.browser.js)
+- [Mahkamlangan commitdagi Browser Connect sinovlari](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/test/connect.browser.test.js)
+- [Mahkamlangan commitdagi Rust ilova freymi namunasi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_app.rs)
+- [Mahkamlangan commitdagi Rust hamyon freymi namunasi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_wallet.rs)
+- [Mahkamlangan Torii OpenAPI sxemasi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/artifacts/openapi/torii.json)
 - [SORA Nexus xizmatlari](/uz/blockchain/sora-nexus-services.md)
-- [O'zgaruvchan aktivlar](./fungible-assets.md)
-- [Transaksiyalarni taqdim etish va tekshirish ](./submit-and-verify-transactions.md)
+- [Almashtiriladigan aktivlar](./fungible-assets.md)
+- [Tranzaksiyalarni yuborish va tasdiqlash](./submit-and-verify-transactions.md)

@@ -25,7 +25,7 @@ domain.dataspace
 - `metadata`: تعمیری کلیدی قدر میٹا ڈیٹا۔
 - `owned_by`: اکاؤنٹ جو ڈومین کا مالک ہے، عام طور پر اس اکاؤنٹ جس نے اسے رجسٹر کیا
 
-ایک ڈومین کی حقیقت بنانے کے لئے استعمال کیا بوٹسٹریپ payload ہے `NewDomain`. یہ لے جاتا ہے `id`, اختیاری `logo`, اور ابتدائی `metadata`. رن ٹائم بھرتا ہے `owned_by` حکام کی طرف سے. عام گاہکوں کو براہ راست اس مفید بوجھ پیش نہیں کرتے ہیں.
+ایک ڈومین کی حقیقت بنانے کے لئے استعمال کیا بوٹسٹریپ payload ہے `NewDomain`. یہ لے جاتا ہے `id`, اختیاری `logo`, اور ابتدائی `metadata`. رن ٹائم بھرتا ہے `owned_by` مجاز اکاؤنٹس کی طرف سے. عام گاہکوں کو براہ راست اس پے لوڈ پیش نہیں کرتے ہیں.
 
 ## رجسٹریشن {#registration}
 
@@ -69,7 +69,7 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
 
 پہلا کمانڈ استعمال کریں جب کسی ایپ کو یہ چیک کرنے کی ضرورت ہو کہ آیا ڈومین موجود ہے یا نہیں۔ لین کیٹلاگ کا استعمال کریں جب آپ کو اس بات کی تصدیق کرنے کی ضرورت ہو۔ ڈیٹا اسپیس پبلک ، محدود یا بنیادی لین کے پیچھے پیچھے ہے۔
 
-ڈومین سیٹ اپ ایک فیس ادا کرنے کی تحریر ہے. Taira, سے نل کے مددگار کو بچانے [ٹیسٹ نیٹ حاصل کریں XOR پر Taira](/ur/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) کے طور `taira_faucet_claim.py`, دستخط کنندہ کو عوامی نل کے ذریعے فنڈ دیں ، اور فیس میٹا ڈیٹا شامل کریں:
+Domain setup فیس ادا کرنے والی write ہے۔ اسے Taira پر آزمانے سے پہلے [Taira پر Testnet XOR حاصل کریں](/ur/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) سے faucet helper کو `taira_faucet_claim.py` کے نام سے محفوظ کریں، public faucet کے ذریعے signer کو فنڈ دیں، اور fee metadata منسلک کریں:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -92,7 +92,7 @@ iroha --config ./taira.client.toml \
 
 ## دیگر اداروں کے ساتھ تعلقات {#relationship-to-other-entities}
 
-ڈومینز گروپ لجر اشیاء اور ڈومین سکپڈ ڈیٹا کے لئے ایک نام کی جگہ فراہم کرتے ہیں۔ اثاثہ تعریفیں ڈومین کوالیفائیڈ شناختی کارڈ استعمال کرتی ہیں ، اور سوالات ڈومینوں کی فہرست یا تلاش کرسکتے ہیں۔ ایک ڈومین کے لئے scoped اشیاء. اکاؤنٹس خود موجودہ ڈیٹا ماڈل میں ڈومینلیس ہیں، لیکن اکاؤنٹس ڈومینز کا مالک اور اثاثے رکھ سکتے ہیں جن کی تعریفیں ڈومینوں کے تحت رہتے ہیں.
+domains، ledger objects کو گروپ کرتے اور domain-scoped data کے لیے namespace فراہم کرتے ہیں۔ asset definitions، domain-qualified identifiers استعمال کرتی ہیں، اور استفسارات domains کی فہرست دے سکتے یا کسی domain تک محدود objects تلاش کر سکتے ہیں۔ موجودہ data model میں accounts خود domainless ہیں، لیکن accounts domains کے مالک اور ایسے assets رکھ سکتے ہیں جن کی definitions domains کے تحت موجود ہوں۔
 
 یہ بھی ملاحظہ کریں:
 

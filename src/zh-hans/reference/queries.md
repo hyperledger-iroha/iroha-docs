@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hans
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2
 ---
 
 # 查询 {#queries}
@@ -13,7 +13,7 @@ Iroha 查询可以读取账本状态而不对其进行更改。当前数据模�
 - **单项查询**：返回一个对象或一个值
 - **可迭代查询**：返回数据流或集合；如果查询类型支持，还可以结合筛选、排序、投影和分页
 
-请使用 SDK 的强类型构建器或 CLI，不要手动构造查询信封。以下名称是 `iroha_data_model::query` 当前公开的查询类型。
+请使用 SDK 的强类型构建器或 CLI，不要手动构造查询封装。以下名称是 `iroha_data_model::query` 当前公开的查询类型。
 
 ## 运行时与配置 {#runtime-and-configuration}
 
@@ -96,13 +96,20 @@ Iroha 查询可以读取账本状态而不对其进行更改。当前数据模�
 | `FindDaPinIntentByManifest` | 按清单引用查找固定意图。 |
 | `FindDaPinIntentByAlias` | 按别名查找固定意图。 |
 | `FindDaPinIntentByLaneEpochSequence` | 按通道、纪元和序号查找固定意图。 |
-| `FindLaneRelayEnvelopeByRef` | 查找经过验证的通道中继信封。 |
+| `FindLaneRelayEnvelopeByRef` | 查找经过验证的通道中继封装。 |
 | `FindSorafsProviderOwner` | 解析 SoraFS 提供商的所有者。 |
 | `FindDataspaceNameOwnerById` | 解析数据空间名称的所有者。 |
-| `FindMusubiReleaseByRef` | 按引用查找 Musubi 发行版。 |
-| `FindMusubiPackageVersions` | 列出 Musubi 包的版本。 |
-| `FindMusubiPackageReleases` | 列出 Musubi 包的发行版。 |
-| `FindMusubiShortAliasByName` | 解析 Musubi 短别名。 |
+|`FindMusubiExactPackageV1`|阅读一个精确的包装记录及其当前修订.|
+|`FindMusubiExactReleaseV1`|阅读一个准确的释放快照.|
+|`FindMusubiProviderBundleAttestationV1`|阅读一个供应商的档案包证书.|
+|`FindMusubiResolverIndexV1`|页面已完成的解决器索引.|
+|`FindMusubiVersionsV1`|页面为一个包完成版本. |
+|`FindMusubiMaintainersV1`|页面接受了维护人员和等待的邀请.|
+|`FindMusubiArchiveLocationsV1`|页面最终确定了一个档案的 SoraFS 位置.|
+|`FindMusubiArchiveRetentionV1`|页面档案存储记录.|
+|`FindMusubiAliasV1`|阅读当前目标和全球名的修改.|
+|`FindMusubiAliasHistoryV1`|页面是全球名的不可改变的重定目标历史.|
+|`FindMusubiOrderedPrefixV1`|在一个顺序结构前下列页面包. |
 
 ## 触发器、合约、交易与区块 {#triggers-contracts-transactions-and-blocks}
 

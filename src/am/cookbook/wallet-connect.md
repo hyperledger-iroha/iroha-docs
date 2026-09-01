@@ -1,24 +1,24 @@
 ---
 translation_locale: am
 translation_source: /cookbook/wallet-connect.md
-translation_source_hash: ab5b6c560ed8b0a208666e5854306ba6adce7af1210fc3c94b9c560d8e6eb686
+translation_source_hash: 81b370bdc73a40ff2dbb8df0f91547ab4c279ed94600bdd6df367f29a949ec71
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Wallet Connect: የንብረት ማስተላለፍን ማጽደቅ {#wallet-connect-approve-an-asset-transfer}
+# Wallet ግንኙነት የንብረት ማስተላለፍን ያጽድቁ {#wallet-connect-approve-an-asset-transfer}
 
-## ውጤቱ {#outcome}
+## ውጤት {#outcome}
 
-አንድ ይፍጠሩ Iroha በአሳሽ ውስጥ የውይይት ክፍለ ጊዜን ያገናኙ, ለአንድ የክሪፕቶግራፊ ማጽደቅን ያግኙ I105 የኪስ ቦርሳ ማንነት፣ ያንን ኪስ እንዲፈርም ጠይቅ Torii የንብረት ማስተላለፍ ትክክለኛውን መሰኪያ ፣ የተለዩ ፊርማዎችን ያቅርቡ እና ለተተገበረው የመጨረሻነት ይጠብቁ ።
+በአሳሽ ውስጥ የ Iroha የግንኙነት ክፍለ ጊዜ ይፍጠሩ፣ ለአንድ I105 የኪስ ቦርሳ ማንነት ምስጠራ ፍቃድ ያግኙ፣ ያ የኪስ ቦርሳ የ Torii ትክክለኛ የንብረት ማስተላለፍ የመነጨ ጀማሪ መዋቅር እንዲፈርም ይጠይቁ፣ የተነጠለውን ፊርማ ያስገቡ እና የተተገበረውን የመጨረሻነት ይጠብቁ።
 
 ## ቅድመ ሁኔታዎች {#prerequisites}
 
-- `@iroha/iroha-js` እና HTTPS የሚጠቀም አሳሽ መተግበሪያ።
-- Iroha Connect v1 የሚተገበርና የአንድ ቁልፍ Ed25519 I105 መለያ የሚቆጣጠር የኪስ ቦርሳ።
-- የአሁኑ Taira ሰንሰለት ID እና ሰንሰለት ልዩነት ፣ የኪስ ቦርሳው የተመዘገበ አነስተኛ ፊደላት Ed25519 የህዝብ ቁልፍ hex ፣ ባለቤትነት ያለው ተንቀሳቃሽ ንብረት እና ቀኖናዊ I105 መድረሻ።
-- የአሁኑ Taira faucet ምላሽ የተመለሰው የክፍያ ንብረቱ ID። ምሳሌው የቀጥታ ክፍያ ዋጋን ከ ID ጋር ያረጋግጣል; እሱ በጭራሽ የተገለጸ የንብረት መታወቂያ አያካትትም.
-- በተመረጠው Torii ላይ ማገናኘት መቻል አለበት። አንድ QR ወይም ጥልቅ አገናኝ ከማሳየትዎ በፊት ያረጋግጡ
+- `@iroha/iroha-js` እና HTTPS የሚጠቀም የአሳሽ መተግበሪያ።
+- Iroha v1ን ያገናኙ እና ባለ አንድ ቁልፍ Ed25519 I105 መለያን የሚቆጣጠር የኪስ ቦርሳ።
+- የአሁኑ Taira ሰንሰለት መታወቂያ እና ሰንሰለት መለያ፣ የኪስ ቦርሳው የተመዘገበው ትንሽ ሆሄያት Ed25519 የህዝብ ቁልፍ ሄክስ፣ በባለቤትነት ሊተላለፍ የሚችል ንብረት እና ነጠላ ፕሮቶኮል-ደረጃ I105 መድረሻ።
+- አሁን ባለው Taira የቴስትኔት የገንዘብ ድጋፍ አገልግሎት ምላሽ የተመለሰው የክፍያ ንብረት መታወቂያ። ምሳሌው የቀጥታ ክፍያ ዋጋ ግምት በዚያ መታወቂያ ላይ ያረጋግጣል; የተቀዳ የንብረት መለያን በጭራሽ አያካትትም።
+- ግንኙነት በተመረጠው Torii ላይ መንቃት አለበት። QR ወይም ጥልቅ አገናኝ ከማሳየትዎ በፊት ያረጋግጡ -
 
 ```bash
 curl -fsS \
@@ -27,23 +27,23 @@ curl -fsS \
   jq -e '{enabled, sessions_active} | select(.enabled == true)'
 ```
 
-Taira የግንኙነት ማሰናከል ወይም `404`/`503` ሪፖርቶችን የሚያመለክት ከሆነ, Connect የተፈጠረውን አካባቢያዊ አውታረመረብ ይጠቀሙ. መደበኛ የንብረት ማስተላለፍ ደግሞ ቦርሳው በቂ የማስተላለፊያ መጠን እና ክፍያ ሚዛን እንዲይዝ ይጠይቃል.
+Taira ማገናኘት ተሰናክሏል ወይም `404`/`503` ከመለሰ፣ ኮኔክሽን የነቃ የመነጨ የአካባቢ አውታረ መረብ ይጠቀሙ። ተራ የንብረት ማስተላለፍ የኪስ ቦርሳው በቂ የሚተላለፍ መጠን እና የክፍያ ቀሪ ሂሳብ እንዲኖረው ይጠይቃል።
 
 ## እርምጃዎች {#steps}
 
 ### 1. አንድ የኪስ ቦርሳ ማስጀመሪያ መቆጣጠሪያ ያቅርቡ {#_1-provide-one-wallet-launch-control}
 
-ከታች ያለው JavaScript ይህ ንጥረ ነገር በማመልከቻው ገጽ ላይ ይጠበቃል-
+ከታች ያለው JavaScript ይህንን አካል በማመልከቻው ገጽ ላይ ይጠብቃል -
 
 ```html
 <a id="wallet-connect" hidden>Open this request in my Iroha wallet</a>
 ```
 
-ተመሳሳይ ያድርጉ URI እንደ አንድ QR በሌላ መሣሪያ ላይ ላለው የኪስ ቦርሳ ኮድ። URI የኪስ ቦርሳ-ተኮር ሪሌይ ምልክት ይዟል, ስለዚህ ትንታኔዎች ውስጥ ማስቀመጥ አይደለም, መዝገቦች, አመልካቾች, ወይም የአደጋ ሪፖርቶች.
+በሌላ መሳሪያ ላይ ላለው የኪስ ቦርሳ ከ QR ኮድ ጋር ተመሳሳይ URI ይስጡ። URI በኪስ ቦርሳ ወሰን ያለው የማስተላለፊያ ቶከን ቶከን ይይዛል፣ ስለዚህ በመተንተን፣ ምዝግብ ማስታወሻዎች፣ ማጣቀሻዎች ወይም የብልሽት ሪፖርቶች ውስጥ አያስቀምጡት።
 
-### 2. ይፍጠሩ፣ ያፀድቁ፣ ይፈርሙ እና ያቅርቡ {#_2-create-approve-sign-and-submit}
+### 2. ይፍጠሩ፣ ያጽድቁ፣ ይፈርሙ እና ያስገቡ {#_2-create-approve-sign-and-submit}
 
-ይህ የአሳሽ ሞጁል ከመተግበሪያዎ ሁኔታ የተወሰኑ እሴቶችን ይቀበላል ። የመጀመሪያው `POST /v1/assets/transfer` የፊርማ መስኮችን ያስወግዳል እና የተጠቀሰ ፣ ስሪት ያለው የትራንስክሽን መሰንጠቂያ ይመልሳል ። ሁለተኛው በተመሳሳይ የማስተላለፊያ ጥያቄ ላይ የኪስ ቦርሳውን የህዝብ ቁልፍ እና ገለልተኛ ፊርማ ብቻ ይጨምራል።
+ይህ የአሳሽ ሞጁል ከማመልከቻ ሁኔታዎ ተጨባጭ እሴቶችን ይቀበላል። የመጀመሪያው `POST /v1/assets/transfer` የመፈረም መስኮችን ትቶ የተስተካከለ የግብይት ማስጀመሪያ መዋቅር ከክፍያ ዋጋ ግምት ጋር ይመልሳል። ሁለተኛው ለተመሳሳይ የዝውውር ጥያቄ የኪስ ቦርሳውን የህዝብ ቁልፍ እና የተነጠለ ፊርማ ብቻ ይጨምራል።
 
 ```js
 import { AccountAddress } from '@iroha/iroha-js/address'
@@ -219,11 +219,11 @@ export async function transferWithWallet({
 }
 ```
 
-ይቀጥሉ `token_app`, `token_management`, እና `token_relay` በመተግበሪያው ማህደረ ትውስታ ውስጥ። URI/token ወደ ቦርሳው ይሻገራል። የ Connect ማጽደቅ በመለያ መታወቂያ የተፈረመ ነው; X25519 `walletPublicKey` በመፈቃደሪያው ውስጥ ጊዜያዊ የትራንስፖርት ቁልፍ ነው እንጂ የሂሳቡ ኤድ 25519 ፊርማ ቁልፍ አይደለም ።
+`token_app`፣ `token_management` እና `token_relay`ን በመተግበሪያ ማህደረ ትውስታ ውስጥ ያስቀምጡ። የኪስ ቦርሳው ማስጀመሪያ URI/ቶከን ብቻ ወደ ቦርሳው ይሻገራል። የግንኙነት ማጽደቁ በመለያው ማንነት የተፈረመ ነው; በማጽደቁ ውስጥ ያለው X25519 `walletPublicKey` ጊዜያዊ የመጓጓዣ ቁልፍ እንጂ የመለያው Ed25519 ፊርማ ቁልፍ አይደለም።
 
-### 3. በኪስ ቦርሳ ትግበራ ውስጥ የ Rust ክፈፍ አይነቶችን ይጠቀሙ {#_3-use-the-rust-frame-types-in-a-wallet-implementation}
+### 3. በኪስ ቦርሳ ትግበራ ውስጥ የ Rust የፍሬም ዓይነቶችን ይጠቀሙ {#_3-use-the-rust-frame-types-in-a-wallet-implementation}
 
-የ Rust ፕሮቶኮል ወለል ፊርማውን መዘጋት የሚችለው የኪስ ቦርሳው የተጠየቀውን ግብይት ከገለጸ በኋላ ብቻ ነው ፣ ትክክለኛ ዓላማውን ያሳያል ፣ ፖሊሲውን ተግባራዊ ያደርጋል ፣ እና ከተፈቀደለት የመለያ ቁልፍ ጋር ይፈርማል ። ይህ ረዳት ያንን የተረጋገጠ ፊርማ ይቀበላል ፤ አንድን አይሠራም-
+የ Rust ፕሮቶኮል ወለል ፊርማ ማተም የሚችለው የኪስ ቦርሳው የተጠየቀውን ግብይት ዲኮድ ካደረገ፣ ትክክለኛውን አላማ ካሳየ፣ ፖሊሲውን ከተተገበረ እና በተፈቀደው የመለያ ቁልፍ ከተፈረመ በኋላ ብቻ ነው። ይህ ረዳት ያንን የተረጋገጠ ፊርማ ይቀበላል; አንዱን አይፈጥርም -
 
 ```rust
 use iroha_crypto::{Algorithm, Signature};
@@ -251,11 +251,11 @@ fn seal_wallet_signature(
 }
 ```
 
-የመረጃ ቋቱ `connect_app` እና `connect_wallet` ምሳሌዎች የፕሮቶኮል ማያዣዎች ናቸው-የምርጫ ትራንስፖርት ቁልፎችን ይጠቀማሉ ፣ በውጤት ውስጥ ቶከኖችን ያጋልጣሉ ፣ እናም የኪስ ቦርሳ ማያዣው የእንቆቅልሽ ፊርማ ይመልሳል ። ፍሬሞችን ለማጥናት ብቻ ይጠቀሙባቸው ፣ በጭራሽ እንደ Taira Wallet ትግበራ አይጠቀሙም ።
+የማከማቻው `connect_app` እና `connect_wallet` ምሳሌዎች የፕሮቶኮል የሙከራ አብነቶች ናቸው ዲተርሚኒስቲክ የመጓጓዣ ቁልፎችን ይጠቀማሉ፣ በውፅዓት ውስጥ ቶከኖችን ያጋልጣሉ፣ እና የኪስ ቦርሳ የሙከራ አብነት የዱሚ ፊርማ ይመልሳል። ክፈፎችን ብቻ ለማጥናት ይጠቀሙባቸው፣ በጭራሽ እንደ Taira የኪስ ቦርሳ ትግበራ።
 
-## ያረጋግጡ {#verify}
+## አረጋግጥ {#verify}
 
-የተመለሰውን ሃሽ ያስቀምጡ እና በሕዝብ ባለቤቶች መጨረሻ ነጥብ በኩል የመድረሻውን የወደፊት ሁኔታ ያረጋግጡ።
+የተመለሰውን ምስጠራ ሃሽ ያስቀምጡ እና የመድረሻውን ድህረ-ሁኔታ በሕዝብ ባለቤቶች API የመጨረሻ ነጥብ ያረጋግጡ -
 
 ```bash
 curl -fsS -G \
@@ -266,24 +266,24 @@ curl -fsS -G \
   jq .
 ```
 
-ማረጋገጫ የሚሳካው JavaScript አገልጋይ ለተቀረበው የግብይት ሃሽ `Applied` ሲመለከት እና የመድረሻ ባለቤትነት ዝውውሩን በሚያንፀባርቅበት ጊዜ ብቻ ነው። HTTP ተቀባይነት ወይም የኪስ ቦርሳ ማጽደቅ ብቻውን መቁጠሪያ የመጨረሻነት አይደለም.
+ማረጋገጫው የሚሳካው JavaScript አስተናጋጁ ለቀረበው ግብይት ምስጠራ ሃሽ `Applied` ሲመለከት እና የመድረሻ መያዣው ዝውውሩን ሲያንፀባርቅ ብቻ ነው። HTTP መቀበል ወይም የኪስ ቦርሳ ማፅደቅ ብቻውን የብሎክቼይን መዝገብ ፍጻሜ አይደለም።.
 
-## ችግሮችን መፍታት {#troubleshooting}
+## መላ ፍለጋ {#troubleshooting}
 
-- `404`, `503`, ወይም `enabled: false` ከግንኙነት ሁኔታ ማለት በዚያ አንጓ ላይ ምንም ተለጣፊ ክፍለ ጊዜ ሊፈጠር አይችልም. ወደ ተቀባይነት ያለው አካባቢያዊ አውታረመረብ ይቀይሩ; መተግበሪያዎችን ወይም የማኔጅመንት ቶኮኖችን በራስዎ ለማስተላለፍ አይመለሱ ።
-- `USER_DENIED` አንድ የኪስ ቦርሳ ውሳኔ ነው. በተደጋጋሚ ማጽደቂያ ትዕዛዞች ከመክፈት ይልቅ እንደ ተርሚናል ተጠቃሚ ውጤት ይጠብቁ.
-- የማረጋገጫ-ሂሳብ አለመመሳሰል ወይም ልክ ያልሆነ የምስክርነት ፊርማ ክፍለ ጊዜውን ያቆማል ። መታወቂያ ማያያዝ ከከሸፈ በኋላ የኪስ ቦርሳው እንዲፈርም በጭራሽ አይጠይቁ።
-- `public_key_hex does not control authority` ማለት የምዝገባ መረጃ እና የተረጋገጠ I105 መታወቂያ አለመግባባት ነው.
-- አንድ ፊርማ ወይም መሰኪያ ውድቅ አብዛኛውን ጊዜ ጥያቄ መስክ ወይም በቀጥታ ክፍያ ዋጋ በመዘጋጀት እና በማቅረብ መካከል ተለውጧል ማለት ነው. አዲስ ጥያቄ ይገንቡ; አሮጌውን ፊርማ በጭራሽ አትተክሉ.
-- ቀደም ሲል ተቀባይነት ያገኘውን የተፈረመ ጥያቄ ትክክለኛ መልሶ ማጫወት የማይቻል ነው። የጊዜ ገደቡን እንደ አዲስ ለመጀመር ምክንያት ከማድረግዎ በፊት የተመለሰውን ግብይት ሃሽ መጠየቅ ።
+- `404`፣ `503` ወይም `enabled: false` በግንኙነት ሁኔታ ውስጥ በዚያ ኖድ ላይ ምንም የማስተላለፊያ ክፍለ ጊዜ ሊፈጠር አይችልም ማለት ነው። ወደ ነቃ localnet ቀይር; መተግበሪያን ወይም የአስተዳደር ቶከኖችን እራስዎ ለማጓጓዝ አይመለሱ።
+- `USER_DENIED` የኪስ ቦርሳ ውሳኔ ነው።. ተደጋጋሚ የማጽደቅ ጥያቄዎችን ከመቀስቀስ ይልቅ እንደ የመጨረሻ ተጠቃሚ ውጤት ያቆዩት።
+- የማጽደቅ-መለያ አለመመጣጠን ወይም ልክ ያልሆነ የማጽደቅ ፊርማ ክፍለ-ጊዜውን መዝጋት አለበት። የማንነት ማሰር ካልተሳካ በኋላ የኪስ ቦርሳው እንዲፈርም በጭራሽ አይጠይቁ።
+- `public_key_hex does not control authority` ማለት የምዝገባ ውሂብ እና የጸደቀው I105 ማንነት አይዛመዱም ማለት ነው። ጊዜያዊ የኪስ ቦርሳ ማጓጓዣ ቁልፍ በዚህ መስክ መጠቀም አይቻልም።
+- ፊርማ ወይም የመነጨ የጀማሪ መዋቅር አለመቀበል ማለት ብዙውን ጊዜ የጥያቄ መስክ ወይም የቀጥታ ክፍያ ዋጋ ግምት በማዘጋጀት እና በማስገባት መካከል ተቀይሯል። አዲስ ጥያቄ ይገንቡ; የድሮውን ፊርማ በጭራሽ አይተክሉ።
+- ቀደም ሲል ተቀባይነት ያለው የተፈረመ ጥያቄ ትክክለኛ ድጋሚ ማጫወት አይደምፖተንት ነው። የጊዜ ማብቂያውን እንደገና ለመጀመር እንደ ምክንያት ከመያዝዎ በፊት የተመለሰውን የግብይት ምስጠራ ሃሽ ይጠይቁ።
 
 ## ምንጭ እና ተዛማጅ ሰነዶች {#source-and-related-docs}
 
-- [በፒን የተቀመጠው ተልእኮ ላይ የአሳሽ አገናኝ ትግበራ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/src/connect.browser.js)
-- [የአሳሽ አገናኝ ሙከራዎች በተሰቀለበት ተልእኮ ላይ ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/test/connect.browser.test.js)
-- [Rust በተሰቀለ ኮሚቴ ላይ የመተግበሪያ ክፈፍ ምሳሌ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_app.rs)
-- [Rust የኪስ ቦርሳ ክፈፍ ምሳሌ በፒን የተቀመጠ ኮሚት](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_wallet.rs) ላይ
-- [የተጣራ Torii OpenAPI መርሃግብር](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/artifacts/openapi/torii.json)
+- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የአሳሽ አገናኝ ትግበራ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/src/connect.browser.js)
+- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የአሳሽ አገናኝ ሙከራዎችን](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/test/connect.browser.test.js)
+- [Rust የመተግበሪያ ፍሬም ምሳሌ በተሰካው የምንጭ-ኮድ ክለሳ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_app.rs)
+- [Rust የኪስ ቦርሳ ፍሬም ምሳሌ በተሰካው የምንጭ-ኮድ ክለሳ ላይ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_wallet.rs)
+- [ተሰክቷል Torii OpenAPI እቅድ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/artifacts/openapi/torii.json)
 - [SORA Nexus አገልግሎቶች](/am/blockchain/sora-nexus-services.md)
-- [ተንቀሳቃሽ ሀብቶች](./fungible-assets.md)
-- [ግብይቶችን ማስገባት እና ማረጋገጥ ](./submit-and-verify-transactions.md)
+- [ፈንገስ ሊሆኑ የሚችሉ ንብረቶች](./fungible-assets.md)
+- [ግብይቶችን ያስገቡ እና ያረጋግጡ](./submit-and-verify-transactions.md)

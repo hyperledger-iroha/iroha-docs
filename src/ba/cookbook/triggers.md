@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/triggers.md
-translation_source_hash: 93080591f5171c7ce25173eb1ef826d6f5ca661a17797be53e90aedab33ed0c3
+translation_source_hash: 5267fb9bb232d52d9df4bedee414d745ccc30dd52cbc30993df3c5b975a0bc38
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ Taira менән сикләнгән саҡырыу ҡуҙғатҡысын тер
 
 - Яҡшылыҡ күрһәтеүсе, `taira.client.toml`, `taira.tx-metadata.json`, һәм `TAIRA_ACCOUNT_ID` от [Ҡатнашыу Taira](./connect-to-taira.md).
 - Taira өсөн ҡуҙғытыусы теркәлергә рөхсәт `TAIRA_ACCOUNT_ID` һәм һөҙөмтәле аккумулятор үтәй. `CanRegisterTrigger` күләмдә `authority` һәм `CanExecuteTrigger` күләмдә `trigger`.
-- Әгәр был гранттар юҡ икән, локаль селтәр һәм уның администратор клиентын файҙаланығыҙ. Шулай уҡ ҡуҙғытыусы хакимиәтенә ҡуҙғатыусының үтәйәсәк күрһәтмәләре буйынса бөтә рөхсәт кәрәк.
+- Әгәр был бирелгән рөхсәттәр юҡ икән, локаль селтәр һәм уның администратор клиентын файҙаланығыҙ. Шулай уҡ ҡуҙғытыусы хакимиәтенә ҡуҙғатыусының үтәйәсәк күрһәтмәләре буйынса бөтә рөхсәт кәрәк.
 
 ```bash
 CONFIG=./taira.client.toml
@@ -45,7 +45,7 @@ printf '%s\n' \
     --filter execute
 ```
 
-Ҡурсаусы иң күп өс тапҡыр эшләй ала. Уның раҫланған власы, уны үтәгән шылтыратыусы түгел, ә хәрәкәттәге күрһәтмәләргә рөхсәт бирә.
+Ҡурсаусы иң күп өс тапҡыр эшләй ала. Уның раҫланған власы, уны үтәгән саҡырыусы түгел, ә хәрәкәттәге күрһәтмәләргә рөхсәт бирә.
 
 ### 2. Ҡотҡарылыу алдынан декларацияны тикшерегеҙ {#_2-inspect-the-declaration-before-execution}
 
@@ -104,7 +104,7 @@ iroha --config "$CONFIG" ledger trigger completed list \
 iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 ```
 
-Һәр хәлдә, бер тамамланыу уңышлы булырға тейеш. Ҡойоштороусы ике тапҡыр язалап үлтерелгәндән һуң да әүҙем булырға тейеш. Уңышлы тапшырыу, уңышлы ҡуҙғатыу тамамланмайынса, етерлек тикшереү түгел.
+Кәм тигәндә бер тамамланыу уңыш тураһында хәбәр итергә тейеш. Trigger ике үтәлеше ҡалған килеш әүҙем булып ҡалырға тейеш. Trigger-ҙың уңышлы тамамланыуы булмаған уңышлы submission етерлек тикшереү түгел.
 
 ## Проблемаларҙы хәл итеү {#troubleshooting}
 
@@ -116,9 +116,9 @@ iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 
 ## Сығанаҡ һәм уның менән бәйле документтар {#source-and-related-docs}
 
-- [](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/triggers/by_call_trigger.rs) ҡуйылған commit-та ҡушымта ярҙамында интеграция һынауҙары
-- [Кисә һәм ҡуҙғатыу интеграцияһы һынауҙар ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/events_and_triggers.rs)
-- [Триггер инструкцияһын ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs) буйынса үтәү
+- [](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/triggers/by_call_trigger.rs) ҡуйылған commit-та ҡушымта ярҙамында интеграция һынауҙары
+- [Кисә һәм ҡуҙғатыу интеграцияһы һынауҙар ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events_and_triggers.rs)
+- [Триггер инструкцияһын ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs) буйынса үтәү
 - [Триггерҙар](/ba/blockchain/triggers.md)
 - [Триггерҙар миҫалдары](/ba/blockchain/trigger-examples.md)
 - [ваҡиғалар](./stream-events.md)

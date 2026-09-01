@@ -12,16 +12,16 @@ translation_engine: nllb-200-ct2
 
 假设一个网络有:
 
-- 一个由爱丽丝的钥匙控制的法典帐户
-- 一个由疯狂帽子师的钥匙控制的法典帐户
+- 一个由 Alice 的钥匙控制的规范帐户
+- 一个由 Mad Hatter 的钥匙控制的规范帐户
 - 预测为 `tea` 的资产定义在 `wonderland.universal`
 - 每个账户所持有的该资产的余额
 
-目标是注册一个触发器,观察爱丽丝的茶叶平衡,在发出相匹配数据事件时,从疯狂帽子帐户转移.
+目标是注册一个触发器,观察Alice 的茶叶余额,在发出相匹配数据事件时,从 Mad Hatter 帐户转移.
 
 ## 1. 准备账户和资产 {#_1-prepare-accounts-and-assets}
 
-首先注册参与账户和资产定义.在当前 Iroha 中,帐户 IDs 来自账户控制者,而预测域名使用`domain.dataspace`表格:
+首先注册参与账户和资产定义.在当前 Iroha 中,帐户 IDs 来自账户控制者,而预测域名使用`domain.dataspace`形式:
 
 ```text
 domain: wonderland.universal
@@ -39,7 +39,7 @@ holder accounts: AccountId(controller=alice_key), AccountId(controller=mad_hatte
 
 ## 3. 定义可执行的 {#_3-define-the-executable}
 
-当事件过器匹配时,触发器提交的命令序列是可执行的.在这个例子中,它包含一个传输:
+当事件过滤器匹配时,触发器提交的命令序列是可执行的.在这个例子中,它包含一个传输:
 
 ```text
 Transfer(
@@ -51,9 +51,9 @@ Transfer(
 
 使用 SDK 避免硬编码的旧文本, IDs 在触发码中;解析或查询标准 IDs 在构建执行器之前.
 
-## 4. 定义事件过器 {#_4-define-the-event-filter}
+## 4. 定义事件过滤器 {#_4-define-the-event-filter}
 
-使用数据事件过器,将事件缩小到你关心的对象:
+使用数据事件过滤器,将事件缩小到你关心的对象:
 
 ```text
 EventFilterBox::Data(
@@ -62,7 +62,7 @@ EventFilterBox::Data(
 )
 ```
 
-一个 `AcceptAll` 过器是用于调试,但它使每一个匹配事件都支付了触发评估的成本.
+请让 filter 尽可能具体。`AcceptAll` filter 适合调试，但它会让每个匹配的 event 都承担 trigger evaluation 的成本。
 
 ## 5. 登记触发器 {#_5-register-the-trigger}
 
@@ -72,7 +72,7 @@ EventFilterBox::Data(
 - 可执行的指令序列
 - `Repeats::Indefinitely`或`Repeats::Exactly(n)`
 - 技术账户
-- 事件过器
+- 事件过滤器
 - 任意的元数据
 
 触发器登记本身是一个正常的交易,因此注册帐户需要许可才能登记触发器.技术账户需要触发器执行所需的权限.
@@ -83,7 +83,7 @@ EventFilterBox::Data(
 
 1. 通常的交易指令首先运行.
 2. 根据这些指令生成的数据事件被收集.
-3. 发射器的过器和这些事件相匹配.
+3. 触发器的过滤器和这些事件相匹配.
 4. 在区块执行管道中处理触发器产生的效应,而不允许无限的递归触发器执行.
 
 如果触发器使用 `Repeats::Exactly(n)`,当数量耗尽,并且需要再次执行相同的行为时,请注册新的触发器.

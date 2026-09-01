@@ -1,23 +1,23 @@
 ---
 translation_locale: az
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: af3e0b8698f877c035ccd3bb71926cea14d1029fc2eb73e23756d57357935f0e
+translation_source_hash: 4979ab2c52eba4040d7f003f3da73dbc333fa7e047b0259816d0d34f97377749
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Nümunə və reseptlər {#samples-and-recipes}
+# Nümunələr və Reseptlər {#samples-and-recipes}
 
-Iroha mənbə anbarında SDK reseptləri və test dəstləri var ki, onlar düyünlə eyni tənzimlənməni izləyirlər.
+Iroha mənbə deposu, nod ilə eyni reviziya üzrə izləyən SDK reseptlər və test dəstlərini ehtiva edir.
 
-## JavaScript Reçetlər {#javascript-recipes}
+## JavaScript Reseptlər {#javascript-recipes}
 
-[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js/recipes) Deterministik əməliyyat qruplaşması üçün diqqət mərkəzində olan nümunələri ehtiva edir. Nexus tətbiqlərin köçürülməsi, NFT və hesabların təkrarlanması, ISO körpü axınları və Torii Hər resept offline işləyir və ya canlı bir video tələb edir Torii son nöqtə.
+[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes) deterministik əməliyyat paketlənməsi üçün fokuslanmış nümunələri ehtiva edir, Nexus tətbiq köçürmələri, NFT və hesab təkrarı, ISO körpü axır və Torii axın. Hər bir reseptin oflayn işləyib-işləmədiyi və ya canlı bağlantıya ehtiyacı olub-olmadığı qeyd olunur Torii API son nöqtə.
 
 ## Swift və iOS {#swift-and-ios}
 
-İstifadə `IrohaSwift/Tests/IrohaSwiftTests` gediş-gəlişi ilə təsdiqlənmiş nümunələr üçün Swift SDK. Baxın. [Swift və iOS](/az/guide/tutorials/swift.md) paket və körpü quraşdırılması üçün.
+Mövcud Swift SDK-ə qarşı təsdiqlənmiş nümunələr üçün `IrohaSwift/Tests/IrohaSwiftTests`-dən istifadə edin. Paket və körpü qurğusu üçün [Swift və iOS](/az/guide/tutorials/swift.md)-ə baxın.
 
 ## Android {#android}
 
-Yeni Android işləri üçün Kotlin-birincisi `core-jvm`, `client-android` və `offline-wallet-android` modullarından istifadə edin [Kotlin, Android və Java](/az/guide/tutorials/kotlin-java.md). Kotlin SDK Android istehlakçıları üçün kanonik başlanğıc nöqtəsidir.
+Yeni Android işi üçün [Kotlin, Android və Java](/az/guide/tutorials/kotlin-java.md)-də təsvir olunan Kotlin-ilk `core-jvm`, `client-android` və `offline-wallet-android` modullarından istifadə edin. Kotlin SDK Android istehlakçıları üçün yeganə protokol-standart başlanğıc nöqtəsidir.

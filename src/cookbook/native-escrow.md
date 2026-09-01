@@ -16,7 +16,7 @@ Kotodama escrow surface from JavaScript.
   current Taira faucet response; do not embed an asset ID from
   documentation.
 - The current Rust or Python SDK from Iroha commit
-  `bc7114ed1c7f265a156d2100ff09e851cc95702c`.
+  `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
 - For the JavaScript compiler example, Node.js 24 plus a locally built
   `@iroha/iroha-js` package and its native `iroha_js_host`; follow the
   [JavaScript SDK source-build setup](/guide/tutorials/javascript.md#build-from-source).
@@ -288,10 +288,10 @@ post-state is incomplete verification.
 
 ## Source and related docs
 
-- [Native escrow instruction model at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/isi/escrow.rs)
-- [Native escrow integration tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/native_escrow.rs)
-- [Python escrow client methods at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama native escrow sample at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [Native escrow instruction model at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
+- [Native escrow integration tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
+- [Python escrow client methods at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama native escrow sample at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [Native asset escrow](/blockchain/escrow.md)
 - [Fungible assets](./fungible-assets.md)
 - [Permissions and roles](./permissions-and-roles.md)

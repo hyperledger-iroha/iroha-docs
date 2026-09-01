@@ -3,14 +3,14 @@ translation_locale: kk
 translation_source: /index.md
 translation_source_hash: 3b2ad4ee285a821b56c9cf6fd3f4a8431f1cfa478e88082b45788765d68ed833
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 
 layout: home
 
 hero:
   name: Hyperledger Iroha 3
-  text: "Құжаттар"
-  tagline: "SORA Nexus, SDKs және оператордың жұмыс барысы үшін блокчейн платформасы"
+  text: "Құжаттама"
+  tagline: "Қатыгез блокчейн платформасы SORA Nexus, SDKs және оператор жұмыс процестері үшін"
   image:
     src: /icon.svg
     alt: "Hyperledger Iroha 3 логотип"
@@ -21,53 +21,53 @@ hero:
 
 nexusPortal:
   eyebrow: SORA Nexus
-  title: "Iroha 3 / SORA Nexus бойынша құрылыс"
-  details: "Taira сынақ желісінен бастаңыз, ағымдағы транзакция ағынын біліңіз және өндіріске дайын қолданбаларды құру үшін мақсатты рецепттерді қолданыңыз."
+  title: "Iroha 3 / SORA Nexus негізінде құру"
+  details: "Taira тест желісінен бастаңыз, ағымдағы транзакция ағынын үйреніңіз және өндірістік деңгейді қосымшаларды құру үшін бағытталған рецепттерді пайдаланыңыз."
   primaryAction:
-    text: "Taira"
+    text: "Taira бастап"
     link: /kk/get-started/sora-nexus-dataspaces
   secondaryAction:
-    text: "Дастарханды қараңыз"
+    text: "Ас үй кітабын шолу"
     link: /kk/cookbook/
   recipes:
-    title: "Халықтық рецепттер"
+    title: "Танымал рецепттер"
     items:
-      - title: "Транзакцияны тапсыру және тексеру"
+      - title: "Транзакцияны жіберу және тексеру"
         link: /kk/cookbook/submit-and-verify-transactions
-      - title: "Қатты активтерді жылжыту"
+      - title: "Ауыстырылатын активтерді жылжыту"
         link: /kk/cookbook/fungible-assets
-      - title: "Сұрау салу бухгалтерлік кітапшасының күйі"
+      - title: "Блокчейн регистрінің күйін сұрау"
         link: /kk/cookbook/query-ledger-state
-      - title: "Ағымдағы оқиғалар"
+      - title: "Оқиғаларды тікелей трансляциялау"
         link: /kk/cookbook/stream-events
 
 features:
   - icon:
       dark: /start.svg
       light: /start-light.svg
-    title: "Бастаңыз"
-    details: "Ағымдағы жұмыс кеңістігін құру, жергілікті желіді іске қосу және Iroha 3 CLI пайдалануды бастау"
+    title: "Бастау"
+    details: "Ағымдағы жұмыс кеңістігін құрып, жергілікті желіні іске қосып, Iroha 3 CLI пайдалана бастаңыз"
     link: /kk/get-started/
   - icon:
       dark: /build.svg
       light: /build-light.svg
-    title: "Кіріспе"
-    details: "SDKs, үздік тәжірибелерді, конфигурацияны, қауіпсіздікті және оператордың жұмыс барысын табу"
+    title: "Нұсқаулық"
+    details: "SDKs, үздік тәжірибелер, баптау, қауіпсіздік және оператор жұмыс процестерін табыңыз"
     link: /kk/guide/
   - icon:
       dark: /explained.svg
       light: /explained-light.svg
-    title: "Архитектура"
-    details: "Torii, Sumeragi, Norito, IVM және Nexus деректер кеңістігінің үлгісін түсіну"
+    title: "Кәсіптік құрылыс өнері"
+    details: "Torii, Sumeragi, Norito, IVM және Nexus деректер кеңістігі моделін түсіну"
     link: /kk/blockchain/iroha-explained
   - icon:
       dark: /reference.svg
       light: /reference-light.svg
-    title: "Анықтама"
-    details: "Қазіргі бинарлық, генезис, Torii және үйлесімділік анықтама парақтарын қараңыз."
+    title: "Сілтеме"
+    details: "Ағымдағы бинарлық файлға, блокчейн негізіне, Torii және үйлесімділік сілтеме беттеріне қараңыз"
     link: /kk/reference/
 footer: true
 ---
 
 <hr style="margin-top: 3rem;">
-<p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha кіреді <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a>. Біліп алыңыздар <a href="https://iroha.tech/" target="_blank">iroha.tech</a>.</p>
+<p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a>-тың бір бөлігі болып табылады. Толығырақ мәліметті мына жерде біліңіз: <a href="https://iroha.tech/" target="_blank">iroha.tech</a>.</p>

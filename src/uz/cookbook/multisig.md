@@ -1,24 +1,24 @@
 ---
 translation_locale: uz
 translation_source: /cookbook/multisig.md
-translation_source_hash: 7090228c4fea7321c93fe0d2c67ef6de842de95bc3befa11d83c12b9f15b4752
+translation_source_hash: e1b57e1c4310dd0db8be8d9f5a15e1d4f693abb90b634772857eb4b1e86e4baf
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Oʻlchovli multisig {#weighted-multisig}
+# Og‘irlikli ko‘p imzo {#weighted-multisig}
 
 ## Natija {#outcome}
 
-Taira da uch a'zoga tenglashtirilgan multisig hisobini ro'yxatdan o'tkazing, metadatalarga oid yo'l-yo'riqlarni taklif qiling, uni quorumga ega bo'lish uchun etarlicha og'irlik bilan tasdiqlang va multisig hisobining holatidan bajarilishini tekshiring.
+Taira’da uch a’zoli og‘irlikli ko‘p imzoli hisobni ro‘yxatdan o‘tkazing, metama’lumot ko‘rsatmasini taklif qiling, uni kvorum uchun yetarli og‘irlik bilan tasdiqlang va bajarilganini ko‘p imzoli hisob holatidan tekshiring.
 
-## Oldingi shartlar {#prerequisites}
+## Oldindan shartlar {#prerequisites}
 
-- Uch ta kanonik I105 imzochi IDs yo'nalishi `SIGNER_A`, `SIGNER_B`, va `SIGNER_C`.
-- imzochi A va C uchun mablag' bilan ta'minlangan Taira konfiguratsiyalari. Taqdim qiluvchi va har bir tasdiqlovchi o'z tranzaksiyasi uchun to'laydi.
-- `taira.tx-metadata.json` joriy kran javobidan qurilgan, hech qachon nusxalashtirilgan to'lov aktividan ID.
-- A Rust mijoz loyihasi bir xil Iroha manbalarni qayta koʻrib chiqish Taira So'nggi taklif va tasdiqlash bosqichlarida CLI.
-- Joriy ijrochining multisig xususiyati qo'lga kiritilgan. Ro'yxatdan o'tish Iroha 3 andoza ish vaqti bilan oddiy hisobvaraqlar uchun mavjud, garchi Taira siyosati va to'lovni qabul qilish hali ham amalda bo'lsa-da; agar jamoatchilik tarqatishi uni rad qilsa, localnetdan foydalaning.
+- `SIGNER_A`, `SIGNER_B` va `SIGNER_C` o‘zgaruvchilarida uchta kanonik I105 imzolovchi identifikatori.
+- A va C imzolovchilarining moliyalashtirilgan Taira sozlamalari. Taklifchi va har bir tasdiqlovchi o‘z tranzaksiyasi uchun to‘laydi.
+- Joriy kran javobidan yaratilgan `taira.tx-metadata.json`; ko‘chirilgan to‘lov aktivi ID-sidan emas.
+- Ro‘yxatdan o‘tkazish bosqichi uchun Taira bilan ayni Iroha commitiga mahkamlangan Rust mijoz loyihasi. Keyingi taklif va tasdiqlash bosqichlari CLI-dan foydalanadi.
+- Ko‘p imzo imkoniyati yoqilgan joriy ijrochi. Taira siyosati va to‘lov qoidalari amal qilsa ham, standart Iroha 3 bajarish muhiti odatiy hisoblarni ro‘yxatdan o‘tkazishga imkon beradi; ommaviy joylashtirish rad etsa, mahalliy tarmoqdan foydalaning.
 
 ```bash
 SIGNER_A_CONFIG=./taira.signer-a.toml
@@ -29,11 +29,11 @@ test -n "$SIGNER_B"
 test -n "$SIGNER_C"
 ```
 
-## qadamlar {#steps}
+## Qadamlar {#steps}
 
-### 1. Tugatilgan siyosatni ro'yxatdan o'tkazish {#_1-register-a-weighted-policy}
+### 1. Og‘irlikli siyosatni ro‘yxatdan o‘tkazish {#_1-register-a-weighted-policy}
 
-C belgisi 2 og'irlikka ega; A va B har biri 1 og'irligiga ega. Shuning uchun 3 dan iborat quorum uchun C qo'shimcha yoki A yoki B kerak bo'ladi. Ro'yxatdan o'tishdan oldin ushbu aniq siyosatdan kanonik hisobni chiqarish, so'ngra bir xil qiymatni `MultisigRegister::with_account` ga o'tkazish:
+C imzolovchining og‘irligi 2, A va B ning har biri 1. Shu sabab 3 kvorumiga erishish uchun C bilan birga A yoki B dan biri kerak. Yuborishdan oldin aynan shu siyosatdan kanonik hisobni hosil qiling, so‘ng ayni qiymatni `MultisigRegister::with_account` ga bering:
 
 ```rust
 use std::{collections::BTreeMap, num::{NonZeroU16, NonZeroU64}};
@@ -84,18 +84,18 @@ registrar.submit_blocking::<InstructionBox>(
 println!("{}", multisig_account.canonical_i105()?);
 ```
 
-CLI qadamlari uchun bosib chiqarilgan qiymatni saqlash:
+Chiqarilgan qiymatni CLI bosqichlari uchun saqlang:
 
 ```bash
 MULTISIG_ACCOUNT='<POLICY_DERIVED_I105_ACCOUNT_ID>'
 test -n "$MULTISIG_ACCOUNT"
 ```
 
-O'rnatilgan qo'yishda CLI ro'yxatga olish komandasi o'z vaqtinchalik urug'ini ishga tushirish vaqti uni qayta tiklashdan oldin bosib chiqaradi. U urug'ni nazoratchi sifatida qayta ishlatmang. Boshqaruvchining xususiy kaliti yo'q: multisig hokimiyati faqat tasdiqlangan takliflardan kelib chiqadi.
+Mahkamlangan commitda CLI ro‘yxatdan o‘tkazish buyrug‘i bajarish muhiti hisob kalitini almashtirishidan oldingi vaqtinchalik boshlang‘ich qiymatni chiqaradi. Uni boshqaruvchi sifatida qayta ishlatmang. Boshqaruvchining maxfiy kaliti mavjud emas: ko‘p imzoli vakolat faqat tasdiqlangan takliflardan keladi.
 
-### 2. Uni taqdim etmasdan, bitta yo'l-yo'riq tuzish {#_2-build-one-instruction-without-submitting-it}
+### 2. Yubormasdan bitta ko‘rsatma tuzish {#_2-build-one-instruction-without-submitting-it}
 
-Global `-o` switch ko'rsatmalar jadvalini standart chiqish uchun seriallashtiradi. U tranzaksiyalarni taqdim etmaydi va shuning uchun hech qanday to'lovni sarflamaydi.
+Global `-o` parametri ko‘rsatmalar massivini standart chiqishga ketma-ketlashtiradi. U tranzaksiyani yubormaydi, shu sabab to‘lov sarflamaydi.
 
 ```bash
 printf '"approved"\n' |
@@ -108,9 +108,9 @@ printf '"approved"\n' |
 jq . multisig-instructions.json
 ```
 
-### 3. Imzolash uchun A-ni taklif qiling. {#_3-propose-as-signer-a}
+### 3. A imzolovchi sifatida taklif qilish {#_3-propose-as-signer-a}
 
-Taklif qiluvchi o'z og'irligini avtomatik ravishda qo'shadi. CLI tomonidan bosib chiqarilgan aniq ko'rsatma hashini olish; ruxsatnomalar ushbu hashga bog'lanadi.
+Taklifchi o‘z og‘irligini avtomatik qo‘shadi. CLI chiqargan aniq ko‘rsatmalar xeshini yozib oling; tasdiqlar shu xeshga bog‘lanadi.
 
 ```bash
 PROPOSE_OUTPUT="$({
@@ -132,16 +132,16 @@ INSTRUCTIONS_HASH="$({
 test -n "$INSTRUCTIONS_HASH"
 ```
 
-Toʻxtatilmayotgan taklifni aniq cheklangan tanlovchi bilan roʻyxatdan oʻtkazish:
+Aniq doiradagi tanlovchi bilan kutilayotgan taklifni ro‘yxatlang:
 
 ```bash
 iroha --config "$SIGNER_A_CONFIG" ledger multisig list all \
   --multisig-selector "$MULTISIG_ACCOUNT"
 ```
 
-### 4. Imzolovchi sifatida tasdiqlansin C {#_4-approve-as-signer-c}
+### 4. C imzolovchi sifatida tasdiqlash {#_4-approve-as-signer-c}
 
-A og'irligi 1 qo'shimcha C og'irligini 2 quorum 3 ga yetadi va taklif qilingan ko'rsatmani multisig hisob sifatida bajaradi.
+A ning 1 va C ning 2 og‘irligi 3 kvorumiga yetadi hamda taklif qilingan ko‘rsatmani ko‘p imzoli hisob nomidan bajaradi.
 
 ```bash
 iroha --config "$SIGNER_C_CONFIG" \
@@ -152,7 +152,7 @@ iroha --config "$SIGNER_C_CONFIG" \
   --instructions-hash "$INSTRUCTIONS_HASH"
 ```
 
-Rust mijozi xuddi shu siyosatdan kelib chiqadigan hisobda va yuqorida ishlatilgan ikkita hayot davomiyligi ko'rsatmalarida davom etishi mumkin:
+Rust mijozi siyosatdan hosil qilingan o‘sha hisob va yuqorida ishlatilgan ikkita hayotiy sikl ko‘rsatmasi bilan davom etishi mumkin:
 
 ```rust
 let instructions = vec![SetKeyValue::account(
@@ -173,7 +173,7 @@ signer_c_client.submit_blocking::<InstructionBox>(
 
 ## Tekshirish {#verify}
 
-So'nggi xabarni o'qing va taklif endi davom etmayotganini tasdiqlang:
+Amaldan keyingi holatni o‘qing va taklif endi kutilayotganlar qatorida emasligini tasdiqlang:
 
 ```bash
 iroha --config "$SIGNER_A_CONFIG" ledger account meta get \
@@ -189,21 +189,21 @@ iroha --config "$SIGNER_A_CONFIG" ledger multisig inspect \
   jq .
 ```
 
-Metadata qiymati `"approved"` bo'lishi kerak, tushirilgan yo'l-yo'riqlar hashini ko'rinishda ko'rsatmaslik kerak va tekshirilgan nazoratchi `1, 1, 2` og'irliklarini quorum bilan `3` ko'rsatishi kerak.
+Metama’lumot qiymati `"approved"` bo‘lishi, yozib olingan ko‘rsatma xeshi endi kutilayotganlar qatorida ko‘rinmasligi va tekshirilgan boshqaruvchi `3` kvorumi bilan `1, 1, 2` og‘irliklarini ko‘rsatishi kerak.
 
-## Muammolarni hal qilish {#troubleshooting}
+## Muammolarni bartaraf etish {#troubleshooting}
 
-- `signatory is not part of multisig` - taklif qiluvchi yoki tasdiqlovchi mijoz siyosatda ro'yxatdan o'tgan I105 IDs mijozlaridan biriga mos kelmaganligini anglatadi.
-- Agar multisig hisobida taklif qilingan ko'rsatmalarni bajarish uchun ruxsat yo'q bo'lsa, yakuniy tasdiqlash rad etilishi mumkin. Multisig hisob raqamiga vakolat bering, faqat uning har bir imzolashiga emas, so'ngra qolgan imzolashuvchini yana sinab ko'ring.
-- To'xtatilmayotgan taklif allaqachon quorumga erishilgan, TTL muddati tugagan yoki noto'g'ri ko'rsatma hash/hisob tanlagichidan foydalanganligini anglatishi mumkin.
-- Ikkilamchi ruxsatnomalar og'irlikni qo'shmaydi. Har bir ro'yxatdan o'tgan imzochi o'zining konfiguratsiya qilingan og'irligini ko'proq bir marta kiritadi.
-- Oddiy operatsiyalarni nazoratchi sifatida to'g'ridan-to'g'ri imzolash taqiqlanadi. Har doim `MultisigPropose` va `MultisigApprove` dan foydalaning
-- Agar keyingi buyruqlar CLI ro'yxatdan o'tishda bosilgan hisobni topolmasa, siz vaqtincha urug'ni ushlab olgansiz. Kanonik hisobni buyurtma qilingan siyosatdan olib tashlang va yuqorida ko'rsatilgandek ushbu qiymat bilan ro'yxatga oling.
+- `signatory is not part of multisig` taklif qiluvchi yoki tasdiqlovchi mijoz siyosatda ro‘yxatga olingan I105 identifikatorlaridan biriga mos kelmasligini anglatadi.
+- Ko‘p imzoli hisobda taklif qilingan ko‘rsatmalarni bajarish vakolati bo‘lmasa, so‘nggi tasdiq rad etilishi mumkin. Vakolatni alohida imzolovchilargagina emas, ko‘p imzoli hisobning o‘ziga bering, so‘ng qolgan imzolovchilardan biri qayta urinib ko‘rsin.
+- Kutilayotgan taklif topilmasa, kvorumga allaqachon erishilgan, TTL muddati tugagan yoki noto‘g‘ri ko‘rsatma xeshi yoxud hisob tanlagichi ishlatilgan bo‘lishi mumkin. Qayta taklif yuborishdan oldin amaldan keyingi holatni so‘rang.
+- Takroriy tasdiqlar og‘irlik qo‘shmaydi. Har bir ro‘yxatdan o‘tgan imzolovchi sozlangan og‘irligini ko‘pi bilan bir marta qo‘shadi.
+- Oddiy tranzaksiyani boshqaruvchi sifatida to‘g‘ridan-to‘g‘ri imzolash taqiqlanadi. Har doim `MultisigPropose` va `MultisigApprove` dan foydalaning.
+- Keyingi buyruqlar CLI ro‘yxatdan o‘tkazish paytida chiqargan hisobni topa olmasa, vaqtinchalik boshlang‘ich qiymatni yozib olgansiz. Kanonik hisobni tartiblangan siyosatdan hosil qiling va yuqorida ko‘rsatilganidek shu qiymat bilan ro‘yxatdan o‘tkazing.
 
-## Manba va u bilan bog'liq hujjatlar {#source-and-related-docs}
+## Manba va tegishli hujjatlar {#source-and-related-docs}
 
-- [Pinned commit-da multisig integratsiya sinovlari](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/multisig.rs)
-- [Pinned commit-da multisig ma'lumotlar modeli](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_executor_data_model/src/isi.rs)
-- [CLI ko'p belgisi qo'llanilishi biriktirilgan commitda](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/main_shared.rs)
-- [Operatsiyalar](/uz/blockchain/transactions.md)
-- [Ruxsatlar va vazifalar ](./permissions-and-roles.md)
+- [Mahkamlangan commitdagi ko‘p imzo integratsiya sinovlari](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/multisig.rs)
+- [Mahkamlangan commitdagi ko‘p imzo ma’lumotlar modeli](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/isi.rs)
+- [Mahkamlangan commitdagi CLI ko‘p imzo amalga oshirishi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
+- [Tranzaksiyalar](/uz/blockchain/transactions.md)
+- [Ruxsatlar va rollar](./permissions-and-roles.md)

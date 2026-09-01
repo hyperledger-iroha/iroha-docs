@@ -10,14 +10,14 @@ translation_engine: nllb-200-ct2
 
 本页面列出了当前曝光的默认权限符号类型 Iroha 对于角色和权限的概念指南,请见 [许可证](/zh-hans/blockchain/permissions.md).
 
-通过活跃的运行时间验证器执行许可证检查.下面的代码类型名称描述了标准政策表面,但 网络可以通过升级执行器来定制运行时间验证.
+通过活跃的运行时验证器执行许可证检查.下面的代码类型名称描述了标准政策表面,但 网络可以通过升级执行器来定制运行时验证.
 
 ## 默认的代币 {#default-tokens}
 
 |许可证符号|类别|行动|
 | --- | --- | --- |
-|`CanManagePeers`|同龄人|登记,撤销或以其他方式管理同龄人.|
-|`CanManageLaneRelayEmergency`|同龄人|管理紧急车道连接控制.|
+|`CanManagePeers`|对等节点|登记,撤销或以其他方式管理对等节点.|
+|`CanManageLaneRelayEmergency`|对等节点|管理紧急通道连接控制.|
 |`CanRegisterDomain`|域名|登记一个域名.|
 |`CanUnregisterDomain`|域名|取消注册域名.|
 |`CanModifyDomainMetadata`|域名|修改域名的元数据.|
@@ -26,11 +26,11 @@ translation_engine: nllb-200-ct2
 |`CanModifyAccountMetadata`|账户|修改帐户的元数据.|
 |`CanUnregisterAssetDefinition`|资产定义|取消资产定义的注册.|
 |`CanModifyAssetDefinitionMetadata`|资产定义|修改资产定义的元数据.|
-|`CanMintAssetWithDefinition`|资产|硬币资产的具体定义. |
-|`CanBurnAssetWithDefinition`|资产|为了一个特定的定义,燃烧资产.|
+|`CanMintAssetWithDefinition`|资产|铸造特定定义的资产. |
+|`CanBurnAssetWithDefinition`|资产|为了一个特定的定义,销毁资产.|
 |`CanTransferAssetWithDefinition`|资产|转移资产以特定的定义.|
 |`CanMintAsset`|资产|一个特定的资产余额. |
-|`CanBurnAsset`|资产|燃烧一个特定的资产余额.|
+|`CanBurnAsset`|资产|销毁一个特定的资产余额.|
 |`CanTransferAsset`|资产|转移特定的资产余额.|
 |`CanRegisterNft`|NFT|登记一个 NFT.|
 |`CanUnregisterNft`|NFT|取消 NFT 的登记.|
@@ -43,15 +43,15 @@ translation_engine: nllb-200-ct2
 |`CanUnregisterTrigger`|触发器|解除触发器的记录.|
 |`CanModifyTrigger`|触发器|修改触发器配置.|
 |`CanModifyTriggerMetadata`|触发器|修改触发器元数据.|
-|`CanUpgradeExecutor`|执行者|升级运行时间执行器.|
+|`CanUpgradeExecutor`|执行者|升级运行时执行器.|
 |`CanRegisterSmartContractCode`|智能合同|登记智能合同代码.|
 |`CanUseFeeSponsor`|Nexus|征收 Nexus 费用到指定赞助商账户. |
 
 ## 拥有权 {#ownership}
 
-对于所有者敏感的权限令牌必须引用当前数据模型所使用的正规对象 IDs.例如,帐户权限指的是正规的无域名账户 IDs,域名权限指的是 `domain.dataspace`域名 IDs,资产权限指是正规的资产定义或资产 IDs.
+对于所有者敏感的权限令牌必须引用当前数据模型所使用的规范对象 IDs.例如,帐户权限指的是规范的无域名账户 IDs,域名权限指的是 `domain.dataspace`域名 IDs,资产权限指是规范的资产定义或资产 IDs.
 
-当一个交易失败时,请验证双方:
+当交易因授权错误而失败时，请检查双方：
 
-- 签署交易的账户是预期的法典帐户
+- 签署交易的账户是预期的规范帐户
 - 在指令中使用的确切对象 ID 上,授权符号或角色已被授予

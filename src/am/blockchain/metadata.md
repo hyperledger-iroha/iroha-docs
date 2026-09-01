@@ -3,31 +3,31 @@ translation_locale: am
 translation_source: /blockchain/metadata.md
 translation_source_hash: 20e78492bf757147f2c9afed2d3b51639bc79913d3d8e4351193b6011f5469c2
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# ሜታዳታ {#metadata}
+# ሜዳዳታ {#metadata}
 
-ሜታዳታ በሪጀር ዕቃዎች ላይ የተያያዘ የተረጋገጠ ቁልፍ-ዋጋ ካርታ ነው። ቁልፎች የ `Name` እሴቶች እና እሴቶች የ JSON (`Json`) ጥቅማጥቅሞች ናቸው።
+ሜታዳታ ከብሎክቼይን መዝገብ ነገሮች ጋር የተያያዘ የተፈተሸ የቁልፍ እሴት ካርታ ነው። ቁልፎች `Name` እሴቶች እና እሴቶች JSON (`Json`) ጭነቶች ናቸው።
 
-የሚከተሉት ዕቃዎች ሜታዳታ ሊይዙ ይችላሉ-
+የሚከተሉት እቃዎች ሜታዳታ ሊይዙ ይችላሉ
 
 - ጎራዎች
-- ሂሳቦች
+- መለያዎች
 - ንብረቶች
-- የአክሲዮን ትርጉሞች
+- የንብረት ፍቺዎች
 - NFTs
 - RWAs
-- ማነቃቂያዎች
+- ቀስቅሴዎች
 - ግብይቶች
 
-በመዝገብ ሁኔታ ውስጥ ለሚገኙ ትናንሽ መግለጫ ወይም ኢንዴክስ መስኮች ሜታዳታ ይጠቀሙ WSV በተቃራኒው የተጠቀሰበት፣ URI, ወይም SoraFS መንገድ.
+በብሎክቼይን መዝገብ ሁኔታ ውስጥ ላሉ ትናንሽ ገላጭ ወይም መረጃ ጠቋሚ መስኮች ሜታዳታ ይጠቀሙ። ትላልቅ ጭነቶች ከ WSV ውጭ መቀመጥ እና በምስጠራ ዳይጀስት እሴት፣ URI ወይም SoraFS መንገድ መጠቀስ አለባቸው።
 
-ሜታዳታዎችን፣ ንብረቶችን, NFTs, RWAs, ወይም ከሰንሰለት ውጭ ማከማቻ ፣ ተመልከት [ሜታዳታ እና መቁጠሪያ ማከማቻ አማራጮች](/am/guide/configure/metadata-and-store-assets.md).
+ሜታዳታ፣ ንብረቶች፣ NFTs፣ RWAs ወይም ከሰንሰለት ውጪ ማከማቻን ስለመምረጥ መመሪያ ለማግኘት [ሜታዳታ እና blockchain መዝገብ ማከማቻ ምርጫዎች](/am/guide/configure/metadata-and-store-assets.md) ይመልከቱ።
 
-## Taira ላይ ይሞክሩት {#try-it-on-taira}
+## ይህንን የስራ ፍሰት በ Taira ላይ ያሂዱ {#try-it-on-taira}
 
-ሜታዳታ በተለመደው የመረጃ ምንጭ ንባብ በኩል ይታያል ። ይህ ትዕዛዝ በአሁኑ ጊዜ ሜታዳታ ያላቸው Taira ንብረቶች ትርጓሜዎችን ያቀርባል:
+ሜታዳታ በመደበኛ የሃብት ንባብ በኩል ይታያል። ይህ ትዕዛዝ በአሁኑ ጊዜ ሜታዳታ ያላቸውን Taira የንብረት ፍቺዎችን ይዘረዝራል -
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
@@ -36,7 +36,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
     | {id, name, metadata}'
 ```
 
-ጎራዎች እና መለያዎች ተመሳሳይ ንድፍ ይጠቀሙ:
+ለጎራዎች እና መለያዎች ተመሳሳይ ስርዓተ-ጥለት ይጠቀሙ -
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
@@ -46,20 +46,20 @@ curl -fsS 'https://taira.sora.org/v1/accounts?limit=20' \
   | jq '.items[] | select((.metadata // {} | length) > 0)'
 ```
 
-ባዶ ውፅዓት እንደ ትክክለኛ ውጤት ይቆጥቡ. ይህ ማለት የአሁኑ ገጽ Taira ዕቃዎች ሜታዳታ የላቸውም ማለት ነው, የመጨረሻው ነጥብ አልተሳካም ማለት አይደለም.
+ባዶ ውፅዓትን እንደ ትክክለኛ ውጤት ይያዙ። ይህ ማለት የአሁኑ የ Taira ነገሮች ገጽ ሜታዳታ አይይዝም እንጂ የ API የመጨረሻ ነጥብ አልተሳካም ማለት አይደለም።
 
-## ሜታዳታዎችን ማዘመን {#updating-metadata}
+## ሜታዳታ በማዘመን ላይ {#updating-metadata}
 
-ሜታዳታ በ Iroha ልዩ መመሪያ ተለውጧል
+ሜታዳታ በ Iroha ተቀይሯል የመመሪያ ስራዎች -
 
-- [`SetKeyValue`](/am/blockchain/instructions.md#setkeyvalue-removekeyvalue) ቁልፍን ያስገባል ወይም ይተካል።
-- [`RemoveKeyValue`](/am/blockchain/instructions.md#setkeyvalue-removekeyvalue) አንድ ቁልፍ ያስወግዳል
+- [`SetKeyValue`](/am/blockchain/instructions.md#setkeyvalue-removekeyvalue) ቁልፍ ማስገቢያ ወይንም ይተካል
+- [`RemoveKeyValue`](/am/blockchain/instructions.md#setkeyvalue-removekeyvalue) ቁልፍ ያስወግዳል
 
-ግብይቱን የሚያቀርብ ባለሥልጣን በ Active Runtime Validator የሚጠየቀው ፈቃድ ሊኖረው ይገባል። ለነባሪ ፍቃድ ገጽ, [Permission Tokens](/am/reference/permissions.md) ን ይመልከቱ።
+ግብይቱን የሚያቀርበው የፈቃድ ባለቤት በነቃ የሶፍትዌር ማስፈጸሚያ አካባቢ አረጋጋጭ የሚፈለገው ፈቃድ ሊኖረው ይገባል። ለነባሪው የፍቃድ ገጽ፣ [የፍቃድ ቶከኖች](/am/reference/permissions.md) ይመልከቱ።
 
 ## ክስተቶች {#events}
 
-የመረጃ ክስተቶች የሚለቀቁት ሜታዳታ ሲለወጥ ነው። የጄኔሪክ ክስተት ተጠቃሚነት `MetadataChanged<Id>`:
+ሜታዳታ ሲቀየር የውሂብ ክስተቶች ይለቀቃሉ። አጠቃላይ የክስተት ጭነት `MetadataChanged<Id>` ነው -
 
 ```mermaid
 classDiagram
@@ -81,10 +81,10 @@ MetadataChanged --> AssetDefinitionMetadataChanged
 MetadataChanged --> DomainMetadataChanged
 ```
 
-[የመረጃ ክስተት ማጣሪያዎችን ](/am/blockchain/filters.md#data-event-filters) በመጠቀም ለአንድ ውህደት አስፈላጊ ለሆነው የድርጅት አይነት ወይም ነገር ID ሜታዳታ ክስተቶችን ብቻ ለመመዝገብ።
+ለውህደት አስፈላጊ ለሆነው የአካል አካል አይነት ወይም የነገር መታወቂያ ለሜታዳታ ክስተቶች ብቻ ለመመዝገብ [የውሂብ ክስተት ማጣሪያዎች](/am/blockchain/filters.md#data-event-filters)ን ይጠቀሙ።
 
-## ጥያቄዎች {#queries}
+## መጠይቆች {#queries}
 
-ለምሳሌ [`FindAccountById`](/am/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/am/reference/queries.md#domains-and-peers)፣ ወይም [`FindAssetDefinitionById`](/am/reference/queries.md#assets-nfts-and-rwas) ይጠቀሙ. [`FindNfts`](/am/reference/queries.md#assets-nfts-and-rwas) ወይም [`FindNftsByAccountId`](/am/reference/queries.md#assets-nfts-and-rwas) ን ለ NFTs ይጠቀሙ ፣ እና [`FindRwas`](/am/reference/queries.md#assets-nfts-and-rwas) ን ለ RWA ጭነቶች ይጠቀሙ። ከዚያ የዕቃውን ሜታዳታ መስክ ያንብቡ። NFT የጥያቄ ምላሾች የ NFT `content` ካርታን እንደ መዝገብ ሜታዳታ ያሳያሉ ።
+ሜታዳታ ይመለሳል እንደ የተጠየቀው እቃ አካል ለምሳሌ ይጠቀሙ [`FindAccountById`](/am/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/am/reference/queries.md#domains-and-peers), ወይም [`FindAssetDefinitionById`](/am/reference/queries.md#assets-nfts-and-rwas). ጥቅም [`FindNfts`](/am/reference/queries.md#assets-nfts-and-rwas) ወይም [`FindNftsByAccountId`](/am/reference/queries.md#assets-nfts-and-rwas) ለ NFTs, እና [`FindRwas`](/am/reference/queries.md#assets-nfts-and-rwas) ለ RWA ብዙ። ከዚያ የእቃውን ሜታዳታ መስክ ያንብቡ። NFT የጥያቄ ምላሾች ያጋልጣሉ NFT `content` ካርታው እንደ መዝገብ ሜታዳታ።
 
-የሜታዳታ ቁልፎች የመጽሐፉ ሁኔታ አካል ናቸው ፣ ስለሆነም ያንን ስሪት በግልፅ ሊይዝ በሚችልበት ጊዜ JSON ዋጋ ወደ ቁልፍ ስም በመተግበሪያ-ተኮር ስሪት ኮድ ከማድረግ ይቆጠቡ ።
+የሜታዳታ ቁልፎች የብሎክቼይን መዝገብ ሁኔታ አካል ናቸው፣ ስለዚህ የተረጋጉ ያቆዩዋቸው እና የ JSON እሴት ያንን ስሪት በግልፅ ሊሸከም በሚችልበት ጊዜ መተግበሪያ-ተኮር የስሪት ለውጦችን ወደ ቁልፍ ስም ከመቀየርን ያስወግዱ።

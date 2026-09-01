@@ -3,59 +3,59 @@ translation_locale: az
 translation_source: /guide/configure/modes.md
 translation_source_hash: 3f6c2d84c7b6d325d76fb1b1a3ec0efb75381521f7fc69e7924a96532679bc61
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: bing-translator-llm
 ---
 
-# İctimai və özəl blokçeynlər {#public-and-private-blockchains}
+# İctimai və Özəl Blokçeynlər {#public-and-private-blockchains}
 
-Iroha müxtəlif qurğularda işləyə bilər. Öz şəbəkənizin administratorı olaraq hansı icraçı və icazə siyasəti bir əməliyyatın qəbul edilməsini müəyyənləşdirir.
+Iroha müxtəlif konfiqurasiyalarda işləyə bilər. Şəbəkənizin administratoru olaraq, hansı icraçının və icazə siyasətinin bir əməliyyatın qəbul ediləcəyini müəyyən edəcəyinə qərar verirsiniz.
 
-Ümumi profillər özəl icazəli şəbəkələr və daha açıq ictimai şəbəkələrdir. Hər ikisi ayrı-ayrı qovşaq binarları ilə deyil, genezis vəziyyəti və icraçı siyasəti ilə konfiqurasiya edilir.
+Ümumi profillər xüsusi icazəli şəbəkələr və daha açıq ictimai şəbəkələrdir. Hər ikisi ayrıca node ikililəri vasitəsilə deyil, blockchain başlanğıc vəziyyəti və icraçı siyasəti vasitəsilə tənzimlənir.
 
-Aşağıda bu iki istifadə hallarında əsas fərqləri göstəririk.
+Aşağıda bu iki istifadə halındakı əsas fərqləri qeyd edirik.
 
-## İzinlər {#permissions}
+## İcazələr {#permissions}
 
-İctimai blokçeyndə hesabların əksəriyyəti eyni icazələr dəstinə malikdir. Özəl blokçeyndə hər hesab yalnız ona açıq şəkildə verilmiş icazələri alır.
-
-::: info
-
-Referensiya [icazələr haqqında xüsusi bölmə](/az/blockchain/permissions.md) Daha ətraflı məlumat üçün.
-
-:::
-
-## Həmyaşıdlar {#peers}
-
-İctimai blokçeyndə həmyaşıdların qəbulu zəncir siyasətinin bir hissəsidir. Özəl blokçeyn üçün yerləşdirmələr adətən etibarlı həmyaşıdlar dəstini konfiqurasiyada və genezisdə sabitləyir.
+İctimai blokçeyndə, əksər hesabların eyni icazə dəsti olur. Özəl blokçeyndə isə hər bir hesab yalnız öz açıq icazələrini alır.
 
 ::: info
 
-Daha ətraflı məlumat üçün [həmyaşıdların idarə edilməsinə](peer-management.md) baxın.
+Əlavə məlumat üçün [icazələrə həsr olunmuş bölmə](/az/blockchain/permissions.md)-a baxın.
 
 :::
 
-## Hesabların qeydiyyata alınması {#registering-accounts}
+## şəbəkə əlaqəliləri {#peers}
 
-İstifadənizi necə qurmaq qərarına gəldikdən asılı olaraq [genesis blok (`genesis.json`)](genesis.md), Hesabı qeydiyyatdan keçirmək üçün iki yoldan biri ola bilər. Bunun səbəbini anlamaq üçün əvvəlcə icazə haqqında danışaq.
-
-Seçilmiş icraçı hansı icazə yoxlamaları tətbiq olunduğunu təyin edir. Özəl, administrator tərəfindən idarə olunan şəbəkə və ya daha açıq bir şəbəkəni formalaşdırmaq üçün əvvəlcədən verilən [ icazə nömrələrini ](/az/blockchain/permissions.md) əldə edə bilərsiniz. Bu icazələr aktiv olduqda, hesabların qeydiyyatı prosesi fərqli olur.
-
-İctimai və özəl qeydiyyat siyasətləri ümumiyyətlə fərqlənir:
-
-- İctimai qeydiyyat siyasəti hər hansı uyğun istifadəçidən hesab qeydiyyatlarını qəbul edir[^1]. İstifadəçiyə uyğun bir müştəri, dəstəklənmiş bir alqoritm üçün xüsusi açar və siyasət tərəfindən qəbul edilən qeydiyyat tələbləri lazımdır.
-
-- Özəl qeydiyyat siyasəti bir hesabın və ya bir ağıllı müqavilənin qeydiyyat təqdim etməsinə icazə verə bilər. Xüsusi siyasət qeydiyyatı müəyyən vaxt pəncərəsi ilə məhdudlaşdıra bilər. O, həmçinin təqdim edəndən təchizatı sabit olan bir token xərcləməyi tələb edə bilər, çünki heç bir səlahiyyətli tərəfin əlavə token buraxmaq icazəsi yoxdur.
-
-- Özəl şəbəkə modelində mövcud hesab hər yeni hesab üçün qeydiyyat təqdim edir.
-
-Varsayılan icazə təsdiqləyiciləri tipik özəl blok zinciri istifadə vəziyyətini əhatə edir.
+İctimai blokçeyndə, şəbəkə iştirakçılarının qəbulu zəncir siyasətinin bir hissəsidir. Özəl blokçeyndə isə tətbiqlər adətən etibarlı şəbəkə iştirakçı dəstini konfiqurasiyada və blokçeyn başlanğıcında (genesis) müəyyən edirlər.
 
 ::: info
 
-İctimai və özəl rejimlər icraçı və genezis siyasəti seçimləridir. Hər ikisi eyni qovşaq binarından istifadə edir. Açıq şəbəkəni işə salmazdan əvvəl seçilmiş icraçını və genezis icazələrini nəzərdən keçirin.
+Ətraflı məlumat üçün [şəbəkə tərəfdaşının idarə edilməsi](peer-management.md)-a baxın.
 
 :::
 
-`Register<Account>` təlimatları haqqında daha ətraflı məlumat üçün [ təlimatlarının ](/az/blockchain/instructions.md#un-register) bölməsinə baxın.
+## Hesabların qeydiyyatı {#registering-accounts}
 
-[^1]: `Register<Account>` kanonik, domensiz `AccountId` üçün reyestr vəziyyəti yaradır; domen marşrutlaşdırması və ləqəblər ayrıca idarə olunur.
+Siz necə qurmağa qərar verdiyinizdən asılı olaraq [blok zənciri başlanğıc bloku (`genesis.json`)](genesis.md), Hesab qeydiyyatı prosesi iki yoldan biriylə gedə bilər. Niyəsini anlamaq üçün əvvəlcə icazədən danışaq.
+
+Seçilmiş icraçı hansı icazə yoxlamalarının tətbiq olunacağını müəyyən edir. Şəxsi, administrator tərəfindən idarə olunan bir şəbəkə və ya daha açıq bir şəbəkə yaratmaq üçün blockchain genesis-də standart [icazə jetonları](/az/blockchain/permissions.md) icazəsini verə bilərsiniz. Bu icazələr aktiv olduqda, hesabların qeydiyyat prosesi fərqlidir.
+
+İctimai və özəl qeydiyyat siyasətləri adətən fərqlənir:
+
+- İctimai qeydiyyat siyasəti hər hansı uyğun istifadəçidən hesab qeydiyyatını qəbul edir[^1]. İstifadəçi uyğun bir müştəriyə, dəstəklənən alqoritm üçün şəxsi açara və siyasət tərəfindən qəbul edilən qeydiyyat sorğusuna ehtiyac duyur.
+
+- Şəxsi qeydiyyat siyasəti bir hesabın və ya bir ağıllı müqavilənin qeydiyyat təqdim etməsinə icazə verə bilər. Xüsusi siyasət qeydiyyatı müəyyən bir zaman pəncərəsi ilə məhdudlaşdıra bilər. Həmçinin, təqdim edənin bir simvol xərcləməsini tələb edə bilər ki, onun təklifi sabitdir, çünki heç bir icazə prinsipi daha çox buraxmağa icazəsi yoxdur.
+
+- Varsayılan özəl şəbəkə nümunəsi ilə mövcud hesab hər yeni hesab üçün qeydiyyatı təqdim edir.
+
+Varsayılan icazə yoxlayıcıları tipik özəl blokçeyn istifadə halını əhatə edir.
+
+::: info
+
+İctimai və xüsusi rejimlər icraçı və blokçeyn başlanğıc siyasəti seçimləridir. Hər ikisi eyni node binar faylını istifadə edir. Açıq şəbəkəni işə salmadan əvvəl seçilmiş icraçı və blokçeyn başlanğıc icazələrini nəzərdən keçirin.
+
+:::
+
+Əlavə məlumat üçün `Register<Account>` təlimatları haqqında [təlimatlar](/az/blockchain/instructions.md#un-register) bölməsinə müraciət edin.
+
+[^1]: `Register<Account>` tək protokol-standart, domeni olmayan `AccountId` üçün blokçeyn dəftər vəziyyəti yaradır; domen yönləndirməsi və ləqəblər ayrıca idarə olunur.

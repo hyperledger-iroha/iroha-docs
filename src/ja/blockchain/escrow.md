@@ -3,32 +3,32 @@ translation_locale: ja
 translation_source: /blockchain/escrow.md
 translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e217bc6ac9
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# 国産資産のエスクロー {#native-asset-escrow}
+# ネイティブ資産エスクロー {#native-asset-escrow}
 
-Native escrow は,数値資産の保管メカニズムです. アプリケーションが所有するアカウントに資産を送信し,そのアカウントを保護するためにアプリケーションコードに頼る代わりに,エスクロー ISIs は,価値を決定的なプロトコル保管口座に移動し,世界状態でエスクローのライフサイクルを記録する.
+ネイティブエスクローは、数値資産のためのブロックチェーン台帳による管理されたカストディ機構です。資産をアプリケーション所有のアカウントに送信し、依存する代わりにそのアカウントを保護するためのアプリケーションコード、エスクロー ISIs の値を決定論的プロトコル管理アカウントに移動し、エスクローのライフサイクルをワールドステートに記録します。
 
-市場決済のためにネイティブエスクローを使用し,Aitai様式のオフチェーンの支払い調整,マイルストーンロックおよびレジスタに可視生命周期状態を必要とする保護されたエスクローワークフローを使用します.
+マーケットプレイスの金融取引決済にはネイティブエスクローを使用し、Aitaiスタイルのオフチェーン支払い調整、マイルストーンロック、ブロックチェーン台帳のライフサイクル状態で可視化が必要なシールド付きエスクローワークフローを使用します。
 
 ## 概念 {#concepts}
 
-|概念|記述|
+|コンセプト|説明|
 | --- | --- |
-|`EscrowId`|呼び出し者によって選択された識別子はハッシュを包み込みます.透明で匿名なエスクロー間でユニークである必要があります.|
-|`AssetEscrowRecord`|透明な数値資産保管またはロック記録. |
-|`AnonymousAssetEscrowRecord`|破棄者,コミットメント,証明書による保証記録が保護されています.|
-|保管口座|チェーン ID,エスクロー ID,および資産定義から派生した決定的プロトコル口座. |
-|証拠はハッシュだ|証拠ハッシュは,請求書,判定,メッセージ,保管マニフェスト,または他のチェーン外の証拠を特定することができます.証拠用荷物はエスクロー記録に保存されません. |
+| `EscrowId` |暗号化ハッシュをカプセル化するクライアント選択の識別子を要求しています。それは、透過的および匿名のエスクロー全体で一意でなければなりません。|
+| `AssetEscrowRecord` |透明な数値資産のエスクローまたはロック記録。|
+| `AnonymousAssetEscrowRecord` |無効化子、暗号化コミットメント値、および証明添付ファイルによって裏付けられた保護付きエスクロー記録。|
+|カストディ口座|チェーンID、エスクローID、資産定義から派生した決定論的プロトコルアカウント。|
+|証拠の暗号ハッシュ|証拠としての暗号ハッシュは、請求書、判決、メッセージ、ストレージ技術マニフェスト、またはその他のオフチェーン証拠を識別できる。証拠のペイロード自体は、エスクロー記録には保存されない。|
 
-透明な記録には売り手,オプション購入者,資産定義,総額,保管口座,ライフサイクルの状態,行動種類,残る金額,オプションのリリース権限,オプションの有効期限スタンプ,証拠ハッシュ,タイムスタンプ,およびオプションの解決詳細が含まれています.
+透明な記録には、売り手、任意の買い手、資産の定義、合計額、カストディアカウント、ライフサイクルステータス、行動の種類、残高、任意の解放権限者、任意の有効期限タイムスタンプ、証拠の暗号ハッシュ、タイムスタンプ、および任意の解決詳細が含まれます。
 
-エスクローの金額は正数的な資産量であり,資産定義の数値仕様に対応しなければならない.エスクローまたはロックが有効である間は,一般的な資産転送は保管口座を枯渇させることはできません;保管出口経路は以下のescrow ISIs です.
+エスクロー金額は正の数値資産量でなければならず、資産定義の数値仕様と一致している必要があります。エスクローやロックが有効な間、汎用資産の転送はカストディ口座を消費することはできません。カストディ口座からの退出の経路は、下記に示すエスクロー ISIs です。
 
-## 市場エスクロー {#marketplace-escrow}
+## マーケットプレイス エスクロー {#marketplace-escrow}
 
-市場のエスクローは,チェーン上の資産のリリースとオフ・チェーンの支払いまたは配達ワークフローを調整します.
+マーケットプレイスのエスクローは、オフチェーンの支払いまたは配送ワークフローとオンチェーンの資産リリースを調整します。
 
 ```mermaid
 stateDiagram-v2
@@ -43,21 +43,21 @@ stateDiagram-v2
     Disputed --> Resolved: ResolveEscrowDispute
 ```
 
-|ISI|誰が提出する?|影響|
+| ISI |誰がそれを提出しますか|効果|
 | --- | --- | --- |
-|`OpenAssetEscrow`|販売者|販売者の数値資産をプロトコル保管にロックし, `Open`市場記録を作成する. |
-|`AcceptAssetEscrow`|購入者|購入者を記録し, `Open` を `Accepted` に移動する.売り手は自分の保証書を受け入れることはできません. |
-|`MarkEscrowPaymentSent`|受け入れられた買い手|`Accepted` を `PaymentSent` に移動する 購入者が無鎖の支払いを送信した後. |
-|`ReleaseAssetEscrow`|販売者|`PaymentSent` を `Released` に移動し,全額の保証金を買い手に譲渡する. |
-|`CancelAssetEscrow`|販売者|`Open`または`Accepted`を `Cancelled`に移動し,支払いがマークされる前に売り者に返済します. |
-|`OpenEscrowDispute`|販売者または受付された買い手|`Accepted`または`PaymentSent`を `Disputed`に移動し,証拠ハッシュを追加する. |
-|`ResolveEscrowDispute`|`CanResolveEscrowDispute`の口座|`Disputed` から `Resolved` に移動し,購入者と販売者間で金額を分割する. |
+| `OpenAssetEscrow` |販売者|売り手の数値資産をプロトコルのカストディにロックし、`Open` マーケットプレイスの記録を作成します。|
+| `AcceptAssetEscrow` |購入者|購入者を記録し、`Open` を `Accepted` に移動します。売り手は自分自身のエスクローを受け入れることはできません。|
+| `MarkEscrowPaymentSent` |承認済みの購入者|購入者がオフチェーンでの支払いを送信した後、`Accepted` を `PaymentSent` に移動します。|
+| `ReleaseAssetEscrow` |販売者|`PaymentSent` を `Released` に移動し、エスクローに預けられた全額を購入者に転送します。|
+| `CancelAssetEscrow` |販売者|支払いがマークされる前に、`Open` または `Accepted` を `Cancelled` に移動し、販売者に返金します。|
+| `OpenEscrowDispute` |売り手または受諾された買い手|`Accepted` または `PaymentSent` を `Disputed` に移動し、証拠の暗号化ハッシュを追加します。|
+| `ResolveEscrowDispute` |`CanResolveEscrowDispute` の口座|`Disputed` を `Resolved` に移動し、金額を買い手と売り手の間で分割します。|
 
-紛争解決金額は負でないもので, `buyer_amount + seller_amount` は保証金額に等しくなければならない.ゼロ価値の足が許容されているが,全体の分割はロックされた余分を考慮しなければならない.
+紛争解決金額は非負でなければならず、`buyer_amount + seller_amount` はエスクロー金額と等しくなければなりません。値がゼロの金融転送部分は許可されますが、全体の分割はロックされた残高を考慮しなければなりません。
 
 ### Rust 例 {#rust-example}
 
-この例では,売り手と買い手の口座が既に存在し,資産定義は数値として登録され,売り手は十分な余分を有すると仮定する.
+この例では、売り手と買い手のアカウントがすでに存在し、資産の定義が数値として登録されており、売り手が十分な残高を持っていることを前提としています。
 
 ```rust
 use iroha::{
@@ -98,18 +98,18 @@ fn release_marketplace_escrow(
 }
 ```
 
-## 汎用資産ロック {#generic-asset-locks}
+## ジェネリック資産ロック {#generic-asset-locks}
 
-アセットロックは同じ保管記録タイプを使用しますが,買い手-売り手のオファーではありません. 目的地アカウントのための資金をロックし,オプションとして資金を引き出すために別々のリリース当局を必要とします.
+資産ロックは同じカストディ記録タイプを使用しますが、買い手と売り手のオファーではありません。これらは資金を送金先アカウントにロックし、任意で資金を引き出すために別のリリース承認主体を必要とする場合があります。
 
-|ISI|誰が提出する?|影響|
+| ISI |誰がそれを提出しますか|効果|
 | --- | --- | --- |
-|`OpenAssetLock`|ソースアカウント|ポジティブな金額をロックし,目的地を記録購入者として記録し,状態を `Locked` に設定します. |
-|`DrawdownAssetLock`|放出権限が設定されていない場合,放出権限または目的地|残りの保管の一部または全部を目的地に転送する. |
-|`CancelAssetLock`|鍵開機|アクティブロックを取り消し,残る金額を開機者に返します.|
-|`ExpireAssetLock`|期限を過ぎたすべての取引当局|過去の `expires_at_ms` のロックが終了し,残りの金額を開機者に返還します. |
+| `OpenAssetLock` |送金元アカウント|正の金額をロックし、宛先を記録として購入者として記録し、ステータスを`Locked`に設定します。|
+| `DrawdownAssetLock` |リリース承認の責任者、またはリリース承認の責任者が設定されていない場合の宛先|残りの管理権の一部または全部を目的地に譲渡します。|
+| `CancelAssetLock` |鍵開け器|アクティブなロックをキャンセルし、残りの金額を開設者に返金します。|
+| `ExpireAssetLock` |期限後のすべての取引承認の原則|過去に `expires_at_ms` のロックを期限切れにし、残りの金額を開設者に返金します。|
 
-`DrawdownAssetLock`は,いくつかの金額が残っている間,記録を`Locked`で保持する.残りの額がゼロに達すると,状態は `DrawnDown`となり,記録は終了します.
+`DrawdownAssetLock`は、残高がある間、`Locked`に記録を保持します。残高がゼロになると、ステータスは`DrawnDown`になり、記録はクローズされます。
 
 ```rust
 use iroha::{
@@ -174,11 +174,11 @@ fn drawdown_and_close_asset_locks(
 }
 ```
 
-Python 現在,ジェネリックロック用のハイレベルヘルパーを暴露している. `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, そして `expire_asset_lock`. 市場および匿名保証人向け Python, 使う法典 `InstructionBox` JSON 経由で SDK やってる JSON エスケープ・ラッチか, SDK ファーストクラスのエスクロービルダーを暴露する
+Python は現在、汎用ロック用の高レベルヘルパーを公開しています：`open_asset_lock`、`drawdown_asset_lock`、`cancel_asset_lock`、および `expire_asset_lock`。マーケットプレイスおよび匿名エスクロー用の Python、SDK の JSON 脱出ハッチを通じて正規の`InstructionBox`JSON を使用するか、ファーストクラスのエスクロービルダーを公開している SDK を通じて提出してください。
 
-## 論争 {#disputes}
+## 紛争 {#disputes}
 
-`Accepted`または `PaymentSent`から紛争を入力することができる.登録された売り手または購入者だけが争いを開くことができる.解決は,直接決済口座に譲渡されるか,役割を通じて継承されるかを要求する`CanResolveEscrowDispute`.
+マーケットプレイスのエスクローは`Accepted`または`PaymentSent`から紛争を開始できます。紛争を開くことができるのは記録された販売者または購入者のみです。解決には`CanResolveEscrowDispute`が必要であり、直接解決者アカウントに付与されるか、ロールを通じて継承されます。
 
 ```rust
 use iroha::{
@@ -226,21 +226,21 @@ fn resolve_disputed_escrow(
 }
 ```
 
-## アノニマス・エスクロー {#anonymous-escrow}
+## 匿名エスクロー {#anonymous-escrow}
 
-アノニマス・エスクローは同じ市場ライフサイクルを使用しますが,資金調達と閉鎖資産の動きは保護されています.公開記録ではまだ売り手,購入者,ステータス,証拠ハッシュ,タイムスタンプ,証明リンクされた移動記録が保存されます.封印された紙幣の内にある金額と受領者は,約束書,無効化書,証明書添付書で表記されています.
+匿名のエスクローは同じマーケットプレイスライフサイクルを使用しますが、資金の移動と契約完了時の資産移動は保護されます。公開記録には依然として売り手、買い手、ステータスが保存されます、証拠として暗号化ハッシュ、タイムスタンプ、証明にリンクされた移動記録がある。シールドノート内の金額と受取人は、暗号的コミットメント値、ヌリファイア、および証明添付によって表される。
 
-|透明性 ISI|匿名 ISI|
+|透明 ISI|匿名 ISI|
 | --- | --- |
-|`OpenAssetEscrow`|`OpenAnonymousAssetEscrow`|
-|`AcceptAssetEscrow`|`AcceptAnonymousAssetEscrow`|
-|`MarkEscrowPaymentSent`|`MarkAnonymousEscrowPaymentSent`|
-|`ReleaseAssetEscrow`|`ReleaseAnonymousAssetEscrow`|
-|`CancelAssetEscrow`|`CancelAnonymousAssetEscrow`|
-|`OpenEscrowDispute`|`OpenAnonymousEscrowDispute`|
-|`ResolveEscrowDispute`|`ResolveAnonymousEscrowDispute`|
+| `OpenAssetEscrow` | `OpenAnonymousAssetEscrow` |
+| `AcceptAssetEscrow` | `AcceptAnonymousAssetEscrow` |
+| `MarkEscrowPaymentSent` | `MarkAnonymousEscrowPaymentSent` |
+| `ReleaseAssetEscrow` | `ReleaseAnonymousAssetEscrow` |
+| `CancelAssetEscrow` | `CancelAnonymousAssetEscrow` |
+| `OpenEscrowDispute` | `OpenAnonymousEscrowDispute` |
+| `ResolveEscrowDispute` | `ResolveAnonymousEscrowDispute` |
 
-ウォレットまたはプロバーツリングは証明付属と公開入力を構築する必要があります.開設はエスクローコミットメントを作成します.解放,キャンセル,および匿名紛争解決はエスクロコミットメントを正確に1つ費やし,購入者,売り手,またはアクションによって要求される分割輸出コミットメントを作成する必要があります.
+ウォレットまたは証明者ツールは、証明の添付ファイルと公開入力を作成する必要があります。オープンは1つのエスクロー暗号コミットメント値を作成します。リリース、キャンセル、そして、匿名の紛争解決は、正確に1つのエスクロ暗号化コミットメント値を費やし、アクションで要求される買い手、売り手、または分割出力の暗号化コミットメント値を作成しなければなりません。
 
 ```rust
 use iroha::{
@@ -283,25 +283,25 @@ fn open_anonymous_escrow(
 }
 ```
 
-基礎となる保護された取引モデルについては, [匿名取引](/ja/blockchain/anonymous-transactions.md)を参照してください.
+基礎となるシールド取引モデルについては、[匿名取引](/ja/blockchain/anonymous-transactions.md)を参照してください。
 
-## SDK 使用 {#sdk-usage}
+## SDK 使用方法 {#sdk-usage}
 
-エスクローサポートは SDKs 全体で異なる形で暴露されています. Rust にはカノニカル型データモデルがあります. Python は現在,一般的な資産ロックヘルパーを暴露しています. JavaScript と TypeScript は Kotodama エスクローホスト電話を使用します.Kotlin/JVM と Swift は,市場向けにタイプされた有用な荷物の構築者および匿名の保証人を提供している.
+エスクローサポートは、SDKs によって異なる方法で公開されています。Rust は標準的な型付きデータモデルを持っています。Python は現在、汎用の資産ロックヘルパーを公開しています。JavaScript と TypeScript は Kotodama エスクロー ホスト機能呼び出しを使用します。 Kotlin/JVM と Swift は、マーケットプレイスおよび匿名エスクロー用の型指定ペイロードビルダーを提供します。
 
-|SDK|この表面を使う|範囲|
+| SDK |この面を使用してください|範囲|
 | --- | --- | --- |
-| [Rust](#rust-sdk) |`iroha::data_model::isi::escrow`|市場エスクロー,通用ロック,匿名のエスクロー 查询,イベント|
-| [Python](#python-asset-locks) |`Instruction.open_asset_lock`,`TransactionDraft.open_asset_lock`,およびクライアント `*_and_wait`の支援者 |市場や匿名のエスクロー助手はまだファーストクラス Python の方法ではない. |
-| [JavaScript / TypeScript](#javascript-and-typescript-kotodama) |`compileKotodamaProgram` から `@iroha/iroha-js/kotodama-compiler` |Kotodama 契約内のエスクローホストの電話です. |
-| [Kotlin / JVM](#kotlin-and-jvm) |`InstructionTemplate`クラスで `org.hyperledger.iroha.sdk.core.model.instructions` |市場と匿名のエスクローのカスタム指示テンプレート|
-| [Swift /iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders` と `IrohaSDK.build*Escrow*` の助手 |市場および匿名のエスクロー Norito JSON の指示用荷物. |
+| [Rust](#rust-sdk) | `iroha::data_model::isi::escrow` |マーケットプレイスのエスクロー、一般的なロック、匿名エスクロー、クエリ、そしてイベント。|
+| [Python](#python-asset-locks) | `Instruction.open_asset_lock`、`TransactionDraft.open_asset_lock`、およびクライアント `*_and_wait` のヘルパー |汎用資産ロック。マーケットプレイスおよび匿名エスクローヘルパーは、まだファーストクラスの Python メソッドではありません。|
+| [JavaScript / TypeScript](#javascript-and-typescript-kotodama) | `compileKotodamaProgram` から `@iroha/iroha-js/kotodama-compiler` |Kotodama コントラクト内のエスクロー ホスト関数の呼び出し。|
+| [Kotlin / JVM](#kotlin-and-jvm) |`org.hyperledger.iroha.sdk.core.model.instructions`の`InstructionTemplate`クラス|マーケットプレイスおよび匿名エスクローのカスタム指示テンプレート。|
+| [Swift / iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders` と `IrohaSDK.build*Escrow*` ヘルパー|マーケットプレイスおよび匿名エスクロー Norito JSON 指示ペイロード。|
 
-下記の例は,指示の構築に焦点を当てています.口座資金提供,署名管理,取引提出は各 SDK の通常の流れに従います.
+以下の例は指示の作成に焦点を当てています。口座資金の提供、署名管理、および取引の送信は、それぞれの SDK の通常の手順に従います。
 
 ### Rust SDK {#rust-sdk}
 
-Rust SDK を使用する場合は,完全なネイティブ・カバーやクエリ/イベントサポートが必要になります.上記の例では,市場公開,通用ロック引き下げ,紛争解決,および匿名のエスクロー構築が `iroha::data_model::isi::escrow` で示されています.
+完全なネイティブのカバレッジやクエリ／イベントサポートが必要な場合は、Rust SDK を使用してください。上記の例は、マーケットプレイスのリリース、一般的なロックの引き下げ、紛争解決、および `iroha::data_model::isi::escrow` を使用した匿名エスクローの構築を示しています。
 
 ```rust
 use iroha::{
@@ -326,9 +326,9 @@ fn open_and_read(
 }
 ```
 
-### Python アセットロック {#python-asset-locks}
+### Python 資産ロック {#python-asset-locks}
 
-Python SDK は,ジェネリック・アセットロックに対するファーストクラスヘルパーを暴露します. 里程碑式の支払い,リリース当局による引き出物,開設者によるキャンセル,および期限後払い戻しのためにそれらを使用します.
+Python SDK は、汎用資産ロックのための一流のヘルパーを提供します。これらは、マイルストーン支払い、リリース承認者による支払いの引き出し、開設者によるキャンセル、および期限切れの払い戻しに使用できます。
 
 ```python
 client.open_asset_lock_and_wait(
@@ -359,13 +359,13 @@ client.expire_asset_lock_and_wait(
 )
 ```
 
-双方のロックの場合, `release_authority` を省略する.その後,目的地アカウントは `drawdown_asset_lock` を提出することができます.
+二者間ロックの場合、`release_authority`を省略してください。その後、宛先アカウントは`drawdown_asset_lock`を提出できます。
 
 ### JavaScript と TypeScript Kotodama {#javascript-and-typescript-kotodama}
 
-労働組合 JavaScript SDK 現在,直接のネイティブ エスクロー取引構築者を暴露していない. JavaScript または TypeScript 展開するアプリケーション Kotodama 契約,エスクローホストの呼び出しを Kotodama 編集者
+現在、JavaScript SDK は直接的なネイティブエスクロートランザクションビルダーを公開していません。Kotodama コントラクトをデプロイする JavaScript または TypeScript アプリケーションの場合、Kotodama コンパイラーを使用してエスクローのホスト関数呼び出しをコンパイルしてください。
 
-Native escrow host の呼び出しは,コンパイラが不透明な escrow に対してより狭いアクセスセットを導き出すことができないため,明示的なアクセスヒントを必要とします. ISIs. 呼び出しする輸出入口にワイルドカードヒントを使用します `escrow_*` 建築物だ
+ネイティブのエスクロー・ホスト呼び出しでは、不透明なエスクロー ISIs からコンパイラーがより狭いアクセス集合を導出できないため、明示的なアクセスヒントが必要です。`escrow_*` ビルトインを呼び出す公開エントリーポイントには、ワイルドカードのヒントを使用してください。
 
 ```js
 import { compileKotodamaProgram } from "@iroha/iroha-js/kotodama-compiler";
@@ -397,11 +397,11 @@ if (compiled.diagnostics.length > 0) {
 }
 ```
 
-紛争の場合, `escrow_open_dispute(offer, evidence)` と `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)` を使用する.匿名のエスクローホスト呼び出しは,例えば `anonymous_escrow_open_offer(request)` の役に立たない負荷バイトを Norito に受け入れます.
+紛争の場合は、`escrow_open_dispute(offer, evidence)` および `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)` を使用してください。匿名のエスクローホスト機能の呼び出しは Norito リクエストペイロードのバイトを受け入れます。例えば `anonymous_escrow_open_offer(request)` です。
 
 ### Kotlin と JVM {#kotlin-and-jvm}
 
-Kotlin/JVM SDK は,ネイティブ・エスクローをカスタム指示テンプレートとしてモデル化します.各テンプレートは必要なフィールドを検証し,トランザクションビルダーが使用するカノニカルアグメントマップを公開します.
+Kotlin/JVM SDK は、ネイティブエスクローをカスタム指示テンプレートとしてモデル化します。各テンプレートは必須フィールドを検証し、トランザクションビルダーで使用される標準引数マップを公開します。
 
 ```kotlin
 import org.hyperledger.iroha.sdk.core.model.escrow.NativeEscrowPermissions
@@ -431,11 +431,11 @@ println(open.arguments)
 println(NativeEscrowPermissions.CAN_RESOLVE_ESCROW_DISPUTE)
 ```
 
-匿名テンプレートは, `OpenAnonymousAssetEscrowInstruction`, `AcceptAnonymousAssetEscrowInstruction`, `MarkAnonymousEscrowPaymentSentInstruction`, `ReleaseAnonymousAssetEscrowInstruction`, `CancelAnonymousAssetEscrowInstruction`, `OpenAnonymousEscrowDisputeInstruction`, そして `ResolveAnonymousEscrowDisputeInstruction`. Android Java の 呼び出し は,マッチング を 使用 する `NativeEscrowInstructions.*` 建設業者は Android 芸術品だ
+匿名テンプレートは `OpenAnonymousAssetEscrowInstruction`、`AcceptAnonymousAssetEscrowInstruction`、`MarkAnonymousEscrowPaymentSentInstruction`、`ReleaseAnonymousAssetEscrowInstruction`、`CancelAnonymousAssetEscrowInstruction`、`OpenAnonymousEscrowDisputeInstruction`、および `ResolveAnonymousEscrowDisputeInstruction` として利用可能です。Android Java クライアントは、Android アーティファクトから対応する `NativeEscrowInstructions.*` ビルダーを使用できます。
 
-### Swift およびiOS {#swift-and-ios}
+### Swift と iOS {#swift-and-ios}
 
-Swift SDK は,エスクロー指示を Norito JSON の役に立たない負荷として構築します. `NativeEscrowInstructionBuilders` を直接使用するか,アプリケーションが既に `IrohaSDK` インスタンスを保有している場合,対応する `IrohaSDK.build*Escrow*` 支援者を呼びましょう.
+Swift SDK は、Norito JSON ペイロードとしてエスクローの指示を構築します。`NativeEscrowInstructionBuilders` を直接使用するか、アプリがすでに `IrohaSDK` のインスタンスを保持している場合は、同等の `IrohaSDK.build*Escrow*` ヘルパーを呼び出してください。
 
 ```swift
 import IrohaSwift
@@ -463,27 +463,27 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 )
 ```
 
-匿名の Swift 構築者は無効化リスト,出力コミットメントリスト,証明辞書,およびオプションの `rootHint` 値を取り出す.紛争解決許可トークンは `NativeEscrowPermissions.canResolveEscrowDispute` として利用可能である.
+匿名の Swift ビルダーは、無効化リスト、暗号化コミットメント値リスト、証明辞書、およびオプションの `rootHint` 値を取得します。紛争解決者の許可トークンは `NativeEscrowPermissions.canResolveEscrowDispute` として利用可能です。
 
-## 疑問と出来事 {#queries-and-events}
+## クエリとイベント {#queries-and-events}
 
-ステータスページ,和解作業およびサポートツールのためのエスクロークエリを使用します:
+ステータスページ、照合ジョブ、サポートツールにはエスクロークエリを使用してください:
 
-|疑問です|目的|
+|クエリ|目的|
 | --- | --- |
-|`FindAssetEscrowById`|`EscrowId`で透明なエスクローまたはロックを読み取る. |
-|`FindAssetEscrows`|透明なエスクロー・ロック記録をリストする.|
-|`FindAssetEscrowsBySeller`|売り手やロック開く者が開いた記録をリストする.|
-|`FindAssetEscrowsByBuyer`|購入者によって受け入れられた市場エスクローをリストし,目的地に向けたロック. |
-|`FindAssetEscrowsByStatus`|`AssetEscrowStatus`までの記録をリストする|
-|`FindAnonymousAssetEscrowById`|`EscrowId` で 1 つの匿名の保証書を読み取ってください.|
-|`FindAnonymousAssetEscrows*`|すべての記録,売り手,購入者,またはステータスによって匿名の保証人をリストする. |
+| `FindAssetEscrowById` |`EscrowId`によって、透過型のエスクローまたはロックを1つ読む。|
+| `FindAssetEscrows` |透明なエスクローとロックの記録を一覧表示します。|
+| `FindAssetEscrowsBySeller` |販売者またはロック開閉者によって開かれた記録を一覧表示します。|
+| `FindAssetEscrowsByBuyer` |購入者に受け入れられるマーケットプレイスのエスクローや、目的地をターゲットにしたロックの一覧。|
+| `FindAssetEscrowsByStatus` |`AssetEscrowStatus`でレコードを一覧表示する。|
+| `FindAnonymousAssetEscrowById` | `EscrowId`による匿名のエスクローを1つ読む。|
+| `FindAnonymousAssetEscrows*` |すべての記録、売り手、買い手、または状態別に匿名エスクローを一覧表示します。|
 
-`EscrowEventFilter` 透明なネイティブ・エスクローとエスクローによるロックイベントを登録できます ID, 販売者,買い手,状態,イベントセットマスク. イベントファミリーには `Opened`, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed`, そして `Resolved`. アノニマス・エスクロー記録は,匿名 エスクローの問い合わせを通して検査されます.
+`EscrowEventFilter` 透明なネイティブエスクローおよびエスクローIDによるロックイベントに購読できます, 販売者、購入者、ステータス、そしてイベントセットマスク。イベントファミリーには含まれます `Opened`, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed`, そして `Resolved`. 匿名のエスクロー記録は、匿名のエスクロー照会を通じて確認されます。
 
-## 運用記号 {#operational-notes}
+## 運用ノート {#operational-notes}
 
-- 大きな請求書,チャットログ,判断,または監査バンドをエスクロー記録の外に保管し,証拠としてハッシュを添付します.
-- アプリケーションでは安定した `EscrowId` 派生を使用するので,リトープで同じオファーのデュピート・エスクローを作成することはできません.
-- `CanResolveEscrowDispute`は,紛争手続きを運営する口座や役割のみに与えられる.
-- 申請方針としてオフチェーン決済検証を扱う. Iroha は保管とライフサイクルの移行を記録し,フィアットまたは外部決済ラインを単独で検証しません.
+- 大きな請求書、チャットログ、判決、または監査バンドルをエスクロー記録の外に保存し、それらの暗号ハッシュを証拠として添付します。
+- アプリケーションで安定した`EscrowId`導出を使用して、再試行によって同じオファーに対して重複したエスクローが作成されないようにします。
+- 紛争プロセスを操作するアカウントまたはロールにのみ `CanResolveEscrowDispute` を付与します。
+- オフチェーンの支払い確認はアプリケーションの方針として扱ってください。Iroha は保管およびライフサイクルの移行を記録しますが、それ自体で法定通貨や外部の支払い経路を検証するものではありません。

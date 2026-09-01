@@ -21,6 +21,6 @@ translation_engine: nllb-200-ct2
 
 Күпселек мәсьәләләр тиңдәшһеҙ асҡыстар һөҙөмтәһендә барлыҡҡа килә. Шуға күрә был ҡағиҙәгә буйһонорға кәңәш итәбеҙ: берәй нәмә килеп сыҡһа, иң тәүҙә асҡыстарҙы тикшерегеҙ.
 
-Бына тиҙ аңлатма: тиҫтерҙәрҙең асҡыстары  ышаныслы тиҫтерҙәр араһындағы асҡыстар, сөнки ул тиҫтерҙең асыҡ асҡысын асасаҡ. Шулай итеп, әгәр һеҙҙә бар Helm диаграммалары йәки Kubernetes урынлаштырыуҙар менән асҡыстар билдәләнгән тирә-яҡ мөхит үҙгәреүсәндәре аша, [`public_key`](/ba/reference/peer-config/params.md#param-public-key), [`private_key`](/ba/reference/peer-config/params.md#param-private-key), һәм [`trusted_peers`](/ba/reference/peer-config/params.md#param-trusted-peers) юғары кимәлдәге уңышһыҙлыҡтарҙы тикшергәнгә тиклемге баһалар.
+Бына тиҙ аңлатма: пирҙарҙың асҡыстары  ышаныслы пирҙар араһындағы асҡыстар, сөнки ул пирҙың асыҡ асҡысын асасаҡ. Шулай итеп, әгәр һеҙҙә бар Helm диаграммалары йәки Kubernetes урынлаштырыуҙар менән асҡыстар билдәләнгән тирә-яҡ мөхит үҙгәреүсәндәре аша, [`public_key`](/ba/reference/peer-config/params.md#param-public-key), [`private_key`](/ba/reference/peer-config/params.md#param-private-key), һәм [`trusted_peers`](/ba/reference/peer-config/params.md#param-trusted-peers) юғары кимәлдәге уңышһыҙлыҡтарҙы тикшергәнгә тиклемге баһалар.
 
 Шик булғанда, [ яңы асҡыс парын](/ba/guide/security/generating-cryptographic-keys.md) барлыҡҡа килтерегеҙ.

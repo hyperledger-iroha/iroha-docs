@@ -1,78 +1,78 @@
 ---
 translation_locale: az
 translation_source: /cookbook/index.md
-translation_source_hash: cdcfb3549506a65a7dbd1c37672893956a0252153a4075c82333804674aa07b6
+translation_source_hash: 58f5247ece30d3755c38d4d24ae4553a35e0d0437476092d568a1be5c8a2ed28
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Iroha 3 Ərizə mətbəxi {#iroha-3-application-cookbook}
+# Iroha 3 Tətbiq Resept Kitabı {#iroha-3-application-cookbook}
 
-Taira test şəbəkəsindən başlayan kiçik, yoxlana bilən reseptlərlə Iroha 3 qarşı qurun və Minamoto əsas şəbəkəsini yalnız oxumaq üçün saxlayın. Hər bir resept bunun ictimai oxunması, normal maliyyələşdirilmiş hesab yazılması və ya icazə qapalı əməliyyat olub olmadığını göstərir. Komandalar mövcud I105 hesabı IDs, açıq ödəniş seçimi və Iroha ünvanında yoxlanılan davranışdan istifadə edir [ `bc7114ed1c7f265a156d2100ff09e851cc95702c`](https://github.com/hyperledger-iroha/iroha/tree/bc7114ed1c7f265a156d2100ff09e851cc95702c).
+Əleyhinə qurmaq Iroha 3 kiçik, təsdiqlənə bilən reseptlərlə başlayır Taira testnet və saxlamaq Minamoto əsas şəbəkə yalnız-oxu. Hər bir resept onun ictimai oxu olub-olmadığını bildirir, normal maliyyələşdirilmiş hesab yazısı və ya icazə ilə məhdudlaşdırılmış əməliyyat. Əmrlər cari vəziyyəti istifadə edir I105 hesab identifikatorları, açıq rüsum seçimi və daxil edilmiş davranış Iroha protokolun yekunlaşdırılması [`0010c5a70039eac101a4846499ba9ceaf43eb65c`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c).
 
-[ ilə başlayın Taira](./connect-to-taira.md). O, müştərinin konfigurasiyasını və ödəniş metadatalarını yaratır. Komand xətti reseptləri tərəfindən yenidən istifadə olunur. Bu sənəddən heç vaxt bir ödəniş aktivini ID kopyalamayın: onu cari Taira faucet cavabından çıxarın.
+[Taira-ə qoşul](./connect-to-taira.md) ilə başlayın. Bu, komanda xətti reseptləri tərəfindən təkrar istifadə olunan müştəri konfiqurasiyasını və ödəniş metadatayı yaradır. Heç vaxt bu sənədləşmədən ödəniş aktivinin ID-sini kopyalamayın: onu hazırki Taira testnet maliyyələşdirmə xidməti cavabından əldə edin.
 
 ## Giriş səviyyələri {#access-levels}
 
-- İctimaiyyət  İmzaçı və ya şəbəkə icazəsi tələb olunmur.
-- Yazı hazırlığı  maliyyələşdirilmiş Taira sınaq hesabından, açıq bir ödəniş haqqından və faucet tərəfindən qaytarılan cari ödəniş aktivindən istifadə edin.
-- İzin tələb olunur  Taira adı verilən icra müddəti icazəsi və ya idarə olunan ad məkanı verməlidir. Bu yardım mövcud olmadıqda yaradılmış yerli şəbəkədən istifadə edin; lokal uğur Taira səlahiyyətini vermir.
+- İctimai — heç bir kriptoqrafik imzalayan və ya şəbəkə icazəsi tələb edilmir.
+- Yazmağa hazır — maliyyələşdirilmiş Taira test hesabından, açıq ödəniş edən şəxsindən və testnet maliyyələşdirmə xidmətinin qaytardığı cari ödəniş aktivindən istifadə edin.
+- İcazə tələb olunur — Taira adlı proqram icra mühitinə və ya idarə olunan ad məkanına icazə verməlidir. Bu icazə mövcud olmadıqda yaradılmış yerli şəbəkədən istifadə edin; yerli uğur Taira avtorizasiya əsasını təmin etmir.
 
-Heç bir mətbəx kitabı resepti Minamoto ünvanına yazılma göndərmir.
+Heç bir aşpaz kitabı resepti Minamoto ünvanına yazı göndərmir.
 
-## Başlamaq və təqdim etmək {#start-and-submit}
+## Başla və təqdim et {#start-and-submit}
 
-|Resept |Taira giriş |Nə ilə bitirirsən?|
+|Resept|Taira giriş|Sən nə ilə bitirirsən|
 | --------------------------------------------------------------------- | ------------ | -------------------------------------------------------------------- |
-| [Taira](./connect-to-taira.md) ilə əlaqə saxlayın. |Yazı hazırdır.|Maliyyələşdirilmiş I105 imzaçı, canlı ödəniş aktivləri və tətbiq edilmiş kanar əməliyyatı |
-| [Əməliyyatların təqdim edilməsi və yoxlanması ](./submit-and-verify-transactions.md) |Yazı hazırdır.|Qiymətləndirilmiş əməliyyat, terminal boru kəmərinin nəticəsi və saxlanan qəbulu |
+| [Taira-ə qoşul](./connect-to-taira.md)                             |Yazmağa hazır|Maliyyələşdirilmiş I105 kriptoqrafik imzalayıcı, canlı ödəniş aktivləri və tətbiq edilmiş kanare əməliyyatı|
+| [Əməliyyatları göndərin və təsdiqləyin](./submit-and-verify-transactions.md) |Yazmağa hazır|Ödəniş qiyməti təxmininə, terminal proqram təminatı işləmə iş axışı nəticəsinə və saxlanmış protokol nəticə qeydinə malik əməliyyat|
 
-## Ledger vəziyyəti {#ledger-state}
+## blokçeyn dəftər vəziyyəti {#ledger-state}
 
-|Resept|Taira giriş |Nə ilə bitirirsən?|
+|Resept| Taira giriş|Sən nə ilə bitirirsən|
 | ------------------------------------------------- | ------------------------------------------------------------ | -------------------------------------------------------------- |
-| [Hesablar və ləqəblər](./accounts-and-aliases.md) |İzin tələb olunur |I105 hesabı və həll edilə bilən, insan tərəfindən oxuna bilən bir alias |
-| [Fungible assets](./fungible-assets.md) |İzin tələb olunur |Qeydiyyatda qeydə alınmış bir tərif, hesablanmış balans və təsdiq edilmiş köçürmə |
-| [NFTs](./nfts.md) |İzin tələb olunur |qeydiyyatdan keçmiş NFT, mülkiyyətin ötürülməsi və dövlətdən sonrakı sorğu |
-| [Metadata](./metadata.md) |Mülki obyektlər üçün hazır yazılır; başqa cür icazə tələb olunur |Metadata yazılması və sonra dəqiq oxunması.|
-| [Sorğu kitabının vəziyyəti](./query-ledger-state.md) |İctimai dövlət üçün ictimai |Saytlaşdırılmış və sifariş edilmiş nəticələr yazılmadan |
+| [Hesablar və təxəllüslər](./accounts-and-aliases.md) |İcazə tələb olunur| Bir I105 hesabı və həll edilə bilən insan tərəfindən oxuna bilən ləqəb |
+| [Mübadilə edilə bilən aktivlər](./fungible-assets.md)           |İcazə tələb olunur|Qeydiyyatdan keçmiş təyinat, verilmiş balans və təsdiqlənmiş köçürmə|
+| [NFTs](./nfts.md)                                 |İcazə tələb olunur|Qeydiyyatdan keçmiş NFT, mülkiyyət ötürülüb və dövlət sonrası sorğu|
+| [Metaməlumat](./metadata.md)                         |Sahib olduğunuz obyektlər üçün yazmağa hazır; əks halda icazə tələb olunur|Dəqiq oxumağı izləyən metadata yazısı|
+| [Blokçeyn dəftər vəziyyətini sorğu et](./query-ledger-state.md)     |İctimai dövlət üçün ictimai|Səhifələnmiş və yazı olmadan süzülmüş nəticələr|
 
 ## Giriş və avtomatlaşdırma {#access-and-automation}
 
-|Resept|Taira giriş |Nə ilə bitirirsən?|
+|Resept| Taira giriş        |Sən nə ilə bitirirsən|
 | --------------------------------------------------- | ------------------- | -------------------------------------------------------------- |
-| [İzinlər və rollar](./permissions-and-roles.md) |İzin tələb olunur |Yenidən istifadə edilə bilən bir rolda toplanan həcmli icazə |
-| [Axın hadisələri](./stream-events.md) |İctimai |Yenidən bağlanan SSE istehlakçı , bağlantı kəsildikdən sonra birləşir |
-| [Triggerlər](./triggers.md) |İzin tələb olunur |Qeydiyyat çağırışının başlatılması, icraatın alınması və yekunlaşdırma hadisəsi |
-| [Multisig](./multisig.md) |Yazı hazırdır.|Əsas hesabı və quorumla təsdiq edilmiş təklif |
+| [İcazələr və rollar](./permissions-and-roles.md) |İcazə tələb olunur|Təkrar istifadə oluna bilən rolda toplanmış məhdudlaşdırılmış icazə|
+| [Axın hadisələri](./stream-events.md)                 |İctimai|Kəsilmədən sonra uzlaşan təkrar qoşulan SSE istifadəçi|
+| [Səbəblər](./triggers.md)                           |İcazə tələb olunur|Texniki çağırış tetikleyicisi, icra protokolu nəticəsi qeydi və tamamlanma hadisəsi|
+| [Çoximzalı](./multisig.md)                           |Yazmağa hazır|Çəkiyə əsaslanan çox imzalı hesab və kvorum tərəfindən təsdiqlənmiş təklif|
 
 ## Tətbiq nümunələri {#application-patterns}
 
-|Resept|Taira giriş |Nə ilə bitirirsən?|
+|Resept| Taira giriş|Sən nə ilə bitirirsən|
 | --------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| [Ağıllı müqavilələr](./smart-contracts.md) |İzin tələb olunur |Kotodama bayt kodu, yerləşdirmə artefaktları və müqavilə çağırışı yoxlanıldı |
-| [Wallet Connect](./wallet-connect.md) |Connect aktivləşdirildiyi zaman yazmağa hazırdır |Cüzdanın təsdiqlənmiş aktiv köçürülməsi və uyğunlaşdırılmış əməliyyat hashı |
-| [Vətəndaş vəsiqəsi ](./native-escrow.md) |Əmlak sahibləri üçün yazılı hazırdır; mübahisənin həlli icazə tələb edir |İstənilən son vəziyyətə malik olan yerli kilid və ya bazar əmanəti |
+| [Ağıllı müqavilələr](./smart-contracts.md) |İcazə tələb olunur|Yoxlanıldı Kotodama batkod, yerləşdirmə artefaktları və müqavilənin texniki çağırışı|
+| [Wallet Connect](./wallet-connect.md) |Bağlantı aktiv olduqda yazmağa hazır|Cüzdan tərəfindən təsdiqlənmiş aktiv köçürməsi və uzlaşdırılmış əməliyyat kriptoqrafik xəşi|
+| [Yerli depozit](./native-escrow.md)     |Əmlak sahibləri üçün yazmağa hazır; mübahisələrin həlli icazə tələb edir|Sorğulanan son vəziyyətlə yerli blok və ya bazar yeri depoziti|
 
-## Verifikasiya edilmiş nümunə səthləri {#verified-example-surfaces}
+## Yoxlanılmış nümunə səthləri {#verified-example-surfaces}
 
-Aşağıdakı markalar hər reseptdə işləyə bilən nümunələri təsvir edir, xüsusiyyətə daxil ola bilən hər SDK deyil.
+Aşağıdakı işarələr hər bir reseptdə icra edilə bilən nümunələri təsvir edir, xüsusiyyəti əldə edə biləcək hər SDK deyil.
 
-|Resept|HTTP / curl |CLI |Rust |JavaScript |Python |Kotodama |
+|Resept| HTTP / curl | CLI | Rust | JavaScript | Python | Kotodama |
 | --------------------- | :---------: | :-: | :--: | :--------: | :----: | :------: |
-|Taira ilə əlaqə saxlayın. |      ✓      |  ✓  |  —   |     —      |   —    |    —     |
-|Göndərmək və yoxlamaq |      ✓      |  ✓  |  —   |     —      |   —    |    —     |
-|Hesablar və ləqəblər |      ✓      |  ✓  |  —   |     —      |   —    |    —     |
-|Fungible aktivlər |      ✓      |  ✓  |  —   |     ✓      |   —    |    —     |
-|NFTs |      ✓      |  ✓  |  —   |     —      |   —    |    ✓     |
-|Metadata |      ✓      |  ✓  |  —   |     —      |   —    |    —     |
-|Məlumat kitabının vəziyyəti |      ✓      |  ✓  |  ✓   |     ✓      |   —    |    —     |
-|icazələr və rollar |      —      |  ✓  |  ✓   |     —      |   —    |    —     |
-|Tədbirlər axını |      ✓      |  —  |  —   |     ✓      |   —    |    —     |
-|Triggerlər |      —      |  ✓  |  ✓   |     —      |   —    |    —     |
-|Multisig |      —      |  ✓  |  ✓   |     —      |   —    |    —     |
+|Taira ilə əlaqə qurun|      ✓      |  ✓  |  —   |     —      |   —    |    —     |
+|Təqdim et və təsdiqlə|      ✓      |  ✓  |  —   |     —      |   —    |    —     |
+|Hesablar və ləqəblər|      ✓      |  ✓  |  —   |     —      |   —    |    —     |
+|Mübadilə edilə bilən aktivlər|      ✓      |  ✓  |  —   |     ✓      |   —    |    —     |
+| NFTs                  |      ✓      |  ✓  |  —   |     —      |   —    |    ✓     |
+|Metaməlumat|      ✓      |  ✓  |  —   |     —      |   —    |    —     |
+|Blok zənciri dəftər vəziyyətini sorğulamaq|      ✓      |  ✓  |  ✓   |     ✓      |   —    |    —     |
+|İcazələr və rollar|      —      |  ✓  |  ✓   |     —      |   —    |    —     |
+|Hadisələri yayımla|      ✓      |  —  |  —   |     ✓      |   —    |    —     |
+|Tətiklər|      —      |  ✓  |  ✓   |     —      |   —    |    —     |
+|Çox imzalı|      —      |  ✓  |  ✓   |     —      |   —    |    —     |
 |Ağıllı müqavilələr|      —      |  ✓  |  —   |     —      |   —    |    ✓     |
-|Cüzdan Bağlantısı |      ✓      |  —  |  ✓   |     ✓      |   —    |    —     |
-|Native escrow |      —      |  —  |  ✓   |     ✓      |   ✓    |    ✓     |
+|Cüzdan əlaqəsi|      ✓      |  —  |  ✓   |     ✓      |   —    |    —     |
+|Yerli depozit|      —      |  —  |  ✓   |     ✓      |   ✓    |    ✓     |
 
-Hər resept istehsal arxitekturasına, əməliyyatlara, SDK və API təlimatlarına keçid verir. Reseptin özü uğurlu bir yol göstərir. Bu, nəticəni sübut etmək üçün lazım olan yoxlamaları da əhatə edir.
+Hər resept istehsal memarlığına, əməliyyatlara, SDK və API təlimatlarına bağlantı verir. Resept özü bir uğurlu yolu göstərir. Həmçinin nəticəni sübut etmək üçün lazım olan yoxlamaları da ehtiva edir.

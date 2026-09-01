@@ -17,7 +17,7 @@ translation_engine: nllb-200-ct2
 
 ## 管道事件 {#pipeline-events}
 
-一个管道事件包含以下信息:导致事件 (交易或区块) 的实体类型,其哈希和状态.状态可以是 `Validating` (正在进行验证), `Rejected`,或 `Committed`.如果实体被拒绝,则提供拒绝的理由.
+当交易被提交、执行或写入已提交区块时，会发出流水线事件。流水线事件包含以下信息：引发事件的实体（交易或区块）类型、其哈希及状态。状态可以是 `Validating`（正在验证）、`Rejected` 或 `Committed`。如果实体被拒绝，还会提供拒绝原因。
 
 ### 在 Taira 试看. {#try-it-on-taira}
 
@@ -45,11 +45,11 @@ curl -fsS -N https://taira.sora.org/v1/events/sse
 
 ## 数据事件 {#data-events}
 
-数据事件在与账本数据相关的变化发生时发行,如同类,域名,帐户,资产,资产定义, NFTs,触发因素,角色等,链上配置,执行状态,证据,机密资产,桥梁或 SORA/Nexus 特定对象.这些类型的事件用于[数据事件过器](./filters.md#data-event-filters).
+当账本数据发生相关变化时，系统会发出数据事件，例如对等节点、域、账户、资产、资产定义、NFTs、触发器、角色、链上配置、执行器状态、证明、机密资产、桥接或 SORA/Nexus 特有对象的变化。这些事件类型用于[数据事件过滤器](./filters.md#data-event-filters)。
 
 ## 时间事件 {#time-events}
 
-当世界状态视图准备好处理 [时间触发器](./triggers.md#time-triggers)时,时间事件会发射.
+当世界状态视图准备处理[时间触发器](./triggers.md#time-triggers)时，系统会发出时间事件。
 
 ## 引发执行事件 {#trigger-execution-events}
 

@@ -3,31 +3,31 @@ translation_locale: mn
 translation_source: /blockchain/metadata.md
 translation_source_hash: 20e78492bf757147f2c9afed2d3b51639bc79913d3d8e4351193b6011f5469c2
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Мэдээлэл мэдээлэл {#metadata}
+# Метадата {#metadata}
 
-Metadata нь томоохон бүртгэлийн объектуудад холбогдсон хяналтын түлхний үнэ цэнэтэй газрын зураг юм. Хяналт нь `Name` хэмжээнүүд бөгөөд үнэ цэнэ нь JSON (`Json`) ашиг ачааллууд юм.
+Метадата бол блокчейн хослол бичгийн объектуудад холбоотой шалгагдсан түлхүүр-үнэлгээний газрын зураг юм. Түлхүүрүүд нь `Name` утгууд бөгөөд утгууд нь JSON (`Json`) агуулга юм.
 
-Дараах объектүүд метадэтгэлийг тээвэрлэж болно:
+Дараах объектууд нь мета өгөгдөл авч явж чадна:
 
-- доменүүд
-- санхүүжилт
-- хөрөнгө
-- хөрөнгийн тодорхойлолт
+- доменууд
+- дансууд
+- эзэмшил
+- мөнгөн хөрөнгийн тодорхойлолт
 - NFTs
 - RWAs
-- түлхүүжүүлэг
-- гүйлгээ
+- түлхүүрүүд
+- үйлдлүүд
 
-Тодруулбал, томоохон бүртгэлийн байранд ордог жижиг дүрслэх болон индексирүүлэх талбайд метабараа ашиглах. Томоохон ачаалал нь WSV Энэ нь тухайн хүнтэй холбоотой. URI, эсвэл SoraFS Замаар.
+Блокчэйн сангийн төлөвийн жижиг тайлбарлах эсвэл индекс хийх талбаруудад мета өгөгдөл ашиглана. Том хэмжээний өгөгдлийг WSV-аас гадна хадгалаад криптографийн дайджест утга, URI эсвэл SoraFS замаар лавлана.
 
-Metadata, хөрөнгийн сонгон шалгаруулалтын талаар зөвлөгөө авах, NFTs, RWAs, эсвэл зах зээлийн гадна хадгалах, үзнэ үү [Metadata болон Ledger хадгалах сонголтууд](/mn/guide/configure/metadata-and-store-assets.md).
+Мета өгөгдөл, хөрөнгө, NFTs, RWAs эсвэл офф-чейн хадгалалтыг сонгох талаар заавар авахыг хүсвэл [Мета өгөгдөл ба блокчэйн бүртгэл хадгалах сонголтууд](/mn/guide/configure/metadata-and-store-assets.md)-г үзнэ үү.
 
-## Taira дээр туршиж үзээрэй. {#try-it-on-taira}
+## Энэ урсгалыг Taira-д ажиллуулна уу {#try-it-on-taira}
 
-Metadata нь хэвийн нөөцийн уншлын дамжуулан харагдана. Энэ команд нь Taira хөрөнгөний тодорхойлолт, одоогийн байдлаар метадататай байна:
+Метадата нь энгийн нөөц уншлагуудаар харагдана. Энэ тушаал нь одоогоор метадататай байгаа Taira хөрөнгийн тодорхойлолтуудыг жагсаадаг:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
@@ -36,7 +36,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
     | {id, name, metadata}'
 ```
 
-Домен, дансны хувьд ижил загварыг ашиглах:
+Домэйн болон аккаунтуудын хувьд ижил загварыг ашигла:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
@@ -46,20 +46,20 @@ curl -fsS 'https://taira.sora.org/v1/accounts?limit=20' \
   | jq '.items[] | select((.metadata // {} | length) > 0)'
 ```
 
-Энэ нь Taira объектын одоогийн хуудсанд метадэт мэдээлэл байхгүй гэсэн үг биш, төгсгөлийн цэг алдаатай гэсэн үг биш юм.
+Хоосон гарцыг хүчинтэй үр дүн гэж үз. Энэ нь Taira объектуудын одоогийн хуудсанд метадата агуулаагүй байгаа бөгөөд API төгсгөлийн цэг алдаа гаргасан гэсэн үг биш юм.
 
-## Metadataг шинэчлэх {#updating-metadata}
+## Мета өгөгдлийг шинэчилж байна {#updating-metadata}
 
-Metadata нь Iroha тусгай зааварчилгаагаар өөрчлөгдөж байна:
+Метаг өгөгдлийг Iroha зааврын үйлдлүүдээр өөрчилдөг:
 
-- [`SetKeyValue`](/mn/blockchain/instructions.md#setkeyvalue-removekeyvalue) товчлогыг оруулж, солиод байна
-- [`RemoveKeyValue`](/mn/blockchain/instructions.md#setkeyvalue-removekeyvalue) нь мөрийг устгана.
+- [`SetKeyValue`](/mn/blockchain/instructions.md#setkeyvalue-removekeyvalue) түлхүүрийг оруулж эсвэл солих
+- [`RemoveKeyValue`](/mn/blockchain/instructions.md#setkeyvalue-removekeyvalue) түлхүүрийг авдаг
 
-Транзакцийг өргөн мэдүүлсэн эрх баригч нь идэвхтэй гүйлгээний цаг хугацааны баталгаажуулагчаар шаарддаг зөвшөөрөлтэй байх ёстой. Дашрамд дурдах зөвшөөрлийн талбайн талаар [Хэрэглэх токенүүд](/mn/reference/permissions.md)-ийг үзнэ үү.
+Лавлагаа илгээж буй эрхийг баталгаажуулах үндсэн этгээд нь идэвхитэй програм хангамжийн гүйцэтгэх орчны баталгаажуулагчийн шаарддаг зөвшөөрлийг эзэмшиж байх ёстой. Анхдагч зөвшөөрлийн давхаргыг харах бол [Өөрт нь зөвшөөрөл өгөх тэмдэг](/mn/reference/permissions.md)-г үзнэ үү.
 
-## Үргэлт {#events}
+## Арга хэмжээ {#events}
 
-Мэдээллийн үйл явц нь метадэтгэлийн өөрчлөлтийн үед дамжуулагдана. `MetadataChanged<Id>`:
+Мэдээллийн үйл явдлууд метадата өөрчлөгдөхөд үүсдэг. Ерөнхий үйл явдлын агуулга нь `MetadataChanged<Id>` байна:
 
 ```mermaid
 classDiagram
@@ -81,10 +81,10 @@ MetadataChanged --> AssetDefinitionMetadataChanged
 MetadataChanged --> DomainMetadataChanged
 ```
 
-[ мэдээллийн үйл явдлын филтрүүд ](/mn/blockchain/filters.md#data-event-filters)-ийг ашиглан зөвхөн нэгжлэлтэд чухал ач холбогдол бүхий этгээдийн төрөл эсвэл объект ID-ийн мета өгөгдөлний үйл явдлыг бүртгэж болно.
+Интеграцад чухал тустай ороомог эсвэл объектын ID-д зориулсан зөвхөн метадатын үйл явдлуудад захиалахдаа [өгөгдлийн үйл явдлын шүүлтүүр](/mn/blockchain/filters.md#data-event-filters)-г ашигла.
 
-## Судалгаа {#queries}
+## Асуултууд {#queries}
 
-Мэдээлэл өгөгдлийг асуусан объектын нэг хэсэг болгон буцааж өгдөг. Жишээлбэл, [`FindAccountById`](/mn/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/mn/reference/queries.md#domains-and-peers), эсвэл [`FindAssetDefinitionById`](/mn/reference/queries.md#assets-nfts-and-rwas) ашиглана. [`FindNfts`](/mn/reference/queries.md#assets-nfts-and-rwas) эсвэл [`FindNftsByAccountId`](/mn/reference/queries.md#assets-nfts-and-rwas)-ийг NFTs болон [`FindRwas`](/mn/reference/queries.md#assets-nfts-and-rwas)-г RWA хэсгүүдээр ашигла. Дараа нь объектын метад мэдээллийн талбайг уншина уу. NFT асуултын хариулт нь NFT `content` газрын зургийг бүртгэлийн метад мэдээллээр илрүүлнэ.
+Мета өгөгдлийг асуусан объектийн нэг хэсэг болгон буцаадаг. Жишээлбэл, ашиглах [`FindAccountById`](/mn/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/mn/reference/queries.md#domains-and-peers), эсвэл [`FindAssetDefinitionById`](/mn/reference/queries.md#assets-nfts-and-rwas). Хэрэглэх [`FindNfts`](/mn/reference/queries.md#assets-nfts-and-rwas) эсвэл [`FindNftsByAccountId`](/mn/reference/queries.md#assets-nfts-and-rwas) тиймээс NFTs, болон [`FindRwas`](/mn/reference/queries.md#assets-nfts-and-rwas) ийн тулд RWA олон зүйл. Дараа нь объектын мета өгөгдлийн талбарыг уншина. NFT асуултын хариултуудыг илчилдэг NFT `content` мета өгөгдөл маягаар газрын зураг.
 
-Metadata түлхүүр нь томоохон бүртгэлийн байдлын нэг хэсэг тул тэдгээрийг тогтвортой байлгаж, JSON үнэ цэнэ нь тухайн хувилбарыг тодорхой илэрхийлж чаддаг бол хэрэгслийн тусгай хувилбарын кодлогыг нэрийн нэрт оруулж болохгүй.
+Мета өгөгдлийн түлхүүрүүд нь блокчэйн бүртгэлийн төлөвийн нэг хэсэг тул тэдгээрийг тогтвортой байлгаж, тодорхой нэг програмын хувилбарын өөрчлөлтийг түлхүүрийн нэрэнд шифрлэхээс зайлсхий, учир нь JSON утга нь тухайн хувилбарыг илэрхий харуулах боломжтой.

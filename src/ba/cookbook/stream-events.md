@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/stream-events.md
-translation_source_hash: 1267a7e22bb6601674557f349e4fc5c6b883ce83b7dc62115ea2b8c3a0c39261
+translation_source_hash: 96f0a26000530fee15d121f815f9f5717a535dc3836cff9a2a447b1e5b70c41c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,11 +10,11 @@ translation_engine: nllb-200-ct2
 
 ## Һөҙөмтә {#outcome}
 
-Тере Taira торбаһы ваҡиғаларын сервер ебәргән ваҡиғалар аша ҡулланыу (SSE), сикләнгән backkoff менән яңынан тоташтырыу, һәм алмаштырыу ағымы асылғандан һуң оҙайлы торошонда яңыртыу. Һуңғы нөктәлә ҡабатлау курсоры булмағанға күрә, ваҡиғаларҙы тулы тарих түгел, ә хәбәрҙәр итеп ҡарағыҙ.
+Тере Taira pipeline ваҡиғаларын сервер ебәргән ваҡиғалар аша ҡулланыу (SSE), сикләнгән backkoff менән яңынан тоташтырыу, һәм алмаштырыу ағымы асылғандан һуң оҙайлы торошонда яңыртыу. Һуңғы нөктәлә ҡабатлау курсоры булмағанға күрә, ваҡиғаларҙы тулы тарих түгел, ә хәбәрҙәр итеп ҡарағыҙ.
 
 ## Шарттар {#prerequisites}
 
-- `curl` асыҡ тәмәке һынау өсөн.
+- `curl` асыҡ smoke test өсөн.
 - Node.js 24 JavaScript ҡулланыусы өсөн.
 - Ҡул ҡуйыусы талап ителмәй. `https://taira.sora.org/v1/events/sse` - асыҡ, уҡырға ғына тапшырылған ағым; был рецепт бер ниндәй ҙә Minamoto йәки Taira яҙмаһын үтәй.
 
@@ -160,15 +160,15 @@ Taira буйынса бер генә транзакция ла `Approved`ҡа е
 node ./stream-taira.mjs
 ```
 
-SSE Йөрәк тибеш комментарийҙары буш бәйләнештәрҙе тере килеш һаҡлай, әммә иҫәп яҙмаһын тәртипкә һала алмай. Блок бейеклектәрен, транзакция хэштегтарын һәм иҫәп-хисап ҡағыҙҙары һорауҙарын тәртип йәки тулылыҡ мәсьәләләрен ҡулланыу.
+SSE Йөрәк тибеш комментарийҙары буш бәйләнештәрҙе тере килеш һаҡлай, әммә иҫәп яҙмаһын тәртипкә һала алмай. Блок бейеклектәрен, транзакция хештарын һәм иҫәп-хисап ҡағыҙҙары һорауҙарын тәртип йәки тулылыҡ мәсьәләләрен ҡулланыу.
 
 Һуңғы 25 Explorer һорауы тик асыҡ диагностика. етештереү ҡулланыусыһы алмаштырырға йәки киңәйтергә тейеш `reconcile()` уның оҙайлы ҡушымта ресурстары өсөн һорауҙар һәм бойомға ашырыу сикләнгән үҙ контроль пункты өсөн етерлек ҙур. сикләнгән мгновеньшот ғына иҫбат итә алмай, бер ниндәй ҙә ваҡиғалар юғалтылған.
 
-`ToriiClient.streamEvents()` тик `Accept: text/event-stream` ебәрә; тере Taira был тарраҡ башлыҡты `406` менән кире ҡаға. Үҫемле Fetch формаһын ҡулланып, SDK һәм йәмәғәт һуңғы нөктәһе шул уҡ медиа типтары менән һөйләшеүҙәр алып барғансы ҡулланығыҙ.
+pinned commit-та `ToriiClient.streamEvents()` тик `Accept: text/event-stream` ебәрә; live Taira был тарыраҡ header-ҙы `406` менән кире ҡаға. SDK һәм public endpoint бер үк media type-тар тураһында килешкәнсе өҫтәге raw Fetch формаһын ҡулланығыҙ.
 
 ## Тикшереү {#verify}
 
-Бер терминалда JavaScript ҡулланыусы эшләй, икенсеһендә - асыҡ транзакция фотоһүрәтен уҡый:
+Бер терминалда JavaScript ҡулланыусы эшләй, икенсеһендә - асыҡ транзакция снапшотын уҡый:
 
 ```bash
 curl -fsS \
@@ -189,10 +189,10 @@ curl -fsS \
 
 ## Сығанаҡ һәм уның менән бәйле документтар {#source-and-related-docs}
 
-- [JavaScript ҡағыҙланған commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/recipes/streaming.mjs) буйынса трансляция рецепты
-- [SSE интеграция һынауҙары ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/events/sse_smoke.rs)
-- [Torii FilterExpr финированный commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/src/filter.rs) буйынса аналитик
-- [Torii ваҡиғалар маршруты ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/src/routing.rs)
+- [JavaScript ҡағыҙланған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs) буйынса трансляция рецепты
+- [SSE интеграция һынауҙары ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs)
+- [Torii FilterExpr финированный commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs) буйынса аналитик
+- [Torii ваҡиғалар маршруты ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
 - [ваҡиғалар](/ba/blockchain/events.md)
 - [Torii сикләү пункттары](/ba/reference/torii-endpoints.md)
 - [Һорауҙар яҙмаһының торошо](./query-ledger-state.md)

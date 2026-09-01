@@ -10,70 +10,70 @@ translation_engine: nllb-200-ct2
 
 `World`是包含其他實體的全球實體. `World`由:
 
-- Iroha [配置參數](/zh-hant/guide/configure/client-configuration.md)
-- 已註冊的同齡人
+- Iroha [配置引數](/zh-hant/guide/configure/client-configuration.md)
+- 已註冊的對等節點
 - 已註冊域名
 - 已註冊的[觸發器](/zh-hant/blockchain/triggers.md)
 - 註冊的 [角色](/zh-hant/blockchain/permissions.md#permission-groups-roles)
 - 已註冊的 [許可證代幣定義](/zh-hant/blockchain/permissions.md#permission-tokens)
-- 所有賬戶的權限代幣
-- [運行時間驗證器鏈](/zh-hant/blockchain/permissions.md#runtime-validators)
+- 所有帳戶的許可權代幣
+- [執行階段驗證器鏈](/zh-hant/blockchain/permissions.md#runtime-validators)
 
-當域名,同行或角色已註冊或未註冊時, `World` 是 (非) 註冊 [指示](/zh-hant/blockchain/instructions.md)的目標.
+當域名,對等節點或角色已註冊或未註冊時, `World` 是 (非) 註冊 [指示](/zh-hant/blockchain/instructions.md)的目標.
 
 ## 世界狀況觀 (WSV) {#world-state-view-wsv}
 
-世界狀態視圖是當前區塊鏈狀態的內存表示.它包括`World`,已承諾的區塊哈希,交易指數和當前時代選出的同行.從 Kura rather than duplicated as mutable WSV 數據中提供完整的區塊有效載荷.
+世界狀態檢視是當前區塊鏈狀態的記憶體表示.它包括`World`,已提交的區塊雜湊,交易索引和當前時代選出的對等節點.完整區塊酬載由 Kura 提供，而不是重複儲存為可變的 WSV 資料.
 
-WSV 是查詢讀取和區塊執行發生突變的狀態.它本身不是永恆的真理來源.永恆的歷史存儲在[Kura](#kura-storage),和 WSV 可以從 Kura 塊中重建或從狀態快照中加載,然後通過重新播放更新的 Kura 塊來捕捉.
+WSV 是查詢讀取和區塊執行發生突變的狀態.它本身不是永恆的真理來源.永恆的歷史儲存在[Kura](#kura-storage),和 WSV 可以從 Kura 塊中重建或從狀態快照中載入,然後透過重新播放更新的 Kura 塊來捕捉.
 
 ### 什麼是 WSV 的痕跡 {#what-the-wsv-tracks}
 
-WSV 比`World`對象更廣泛,實際上它包含:
+WSV 比`World`物件更廣泛,實際上它包含:
 
-- `World`:參數,同行,域名,帳戶,資產, NFTs,角色,權限,觸發器,執行數據和其他註冊數據模型對象.
-- 已承諾的區塊哈希和最新已承諾的高度
-- 在查詢和收據中使用的交易到區塊指數
-- 通過共識使用的當前和以前的承諾拓
-- 從承諾區塊中獲得的內存索引,例如數據可用性承諾,收件緩衝器,印意圖和查詢投影標記
-- 對於確定性區塊執行所需的運行時間配置快照,例如加密,治理,管道,內容,結算和 Nexus 設置
+- `World`:引數,對等節點,域名,帳戶,資產, NFTs,角色,許可權,觸發器,執行資料和其他註冊資料模型物件.
+- 已提交的區塊雜湊和最新已提交的高度
+- 在查詢和收據中使用的交易到區塊索引
+- 透過共識使用的當前和以前的提交拓
+- 從承諾區塊中獲得的記憶體索引,例如資料可用性承諾,回執緩衝器,釘選意圖和查詢投影標記
+- 對於確定性區塊執行所需的執行階段配置快照,例如加密,治理,管道,內容,結算和 Nexus 設定
 
-查詢通常在這些結構上只能讀取 `StateView`.一個視圖是查詢執行的一致的快照;它不允許直接突變 WSV.
+查詢通常在這些結構上只能讀取 `StateView`.一個檢視是查詢執行的一致的快照;它不允許直接突變 WSV.
 
 ### WSV 如何變化 {#how-the-wsv-changes}
 
-WSV 區塊執行創建了一個區塊範圍的狀態覆蓋,每個接受的交易都將其指令應用於交易範圍覆蓋層中.這些交易所調用的數據觸發器運行在相同的區塊中.在區塊的交易效應之後,時間觸發器進行評估.
+WSV 變更會在提交前暫存。區塊執行會建立區塊範圍的狀態覆蓋層，每筆被接受的交易則在交易範圍的覆蓋層中套用其指令。這些交易呼叫的資料觸發器在同一區塊內容中執行。時間觸發器在該區塊的交易效果之後求值。
 
-在共識提交一個區塊後,同行首先在 Kura 中排列承諾的區塊.如果此次排列步驟失敗, WSV 不會進行推進,並且共識循環會重新嘗試或排列區塊有效載荷.當區塊被接受到 Kura 的隊列中時,Iroha 將執行後的區塊效果應用,更新衍生索引,並在狀態視圖鎖下進行階段化 WSV 變更. 這使讀者無法觀察部分承諾的區塊.
+在共識提交一個區塊後,對等節點首先在 Kura 中排列提交的區塊.如果此次排列步驟失敗, WSV 不會進行推進,並且共識迴圈會重新嘗試或排列區塊有效載荷.當區塊被接受到 Kura 的佇列中時,Iroha 將執行後的區塊效果應用,更新衍生索引,並在狀態檢視鎖下進行階段化 WSV 變更. 這使讀者無法觀察部分提交的區塊.
 
-共識關鍵規則是,同行必須從相同的承諾區塊中達到相同的 WSV.直接將本地編輯到 WSV 數據繞過指令,並且在驗證或重播期間會導致同行不同意義.
+共識的關鍵規則是，對等節點必須從相同的已提交區塊得到相同的 WSV。直接在本機編輯 WSV 資料會繞過指令，並使對等節點在驗證或重播期間產生分歧。
 
-### 啓動和重播 {#startup-and-replay}
+### 啟動和重播 {#startup-and-replay}
 
-在啓動時, Iroha 首先初始化 Kura 並學習存儲的區塊高度.然後試圖加載狀態快照.如果沒有快照,或如果一個快照被拒絕作爲可回收的時, Iroha 創建了一個初始狀態,並從 Kura 中重新播放承諾塊. 如果一個快照是有效的,但落後於 Kura,只有缺失的高度範圍纔會再播放.
+在啟動時, Iroha 首先初始化 Kura 並學習儲存的區塊高度.然後試圖載入狀態快照.如果沒有快照,或如果一個快照被拒絕作為可回收的時, Iroha 建立了一個初始狀態,並從 Kura 中重新播放提交塊. 如果一個快照是有效的,但落後於 Kura,只有缺失的高度範圍才會再播放.
 
-再播驗證每個存儲的區塊,重建該高度的提交列表,將區塊效應應用到 WSV,並提交結果狀態.這意味着 Kura 是 WSV 的恢復路徑,而快照則是一種優化,以避免整個鏈接重播.
+再播驗證每個儲存的區塊,重建該高度的提交列表,將區塊效應應用到 WSV,並提交結果狀態.這意味著 Kura 是 WSV 的恢復路徑,而快照則是一種最佳化,以避免整個連結重播.
 
-## Kura 存儲 {#kura-storage}
+## Kura 儲存 {#kura-storage}
 
-Kura 是 Iroha 的持久區塊存儲.它存儲簽署的區塊和恢復元數據.它不存儲 WSV 的第二份可變拷貝.
+Kura 是 Iroha 的持久區塊儲存.它儲存簽署的區塊和恢復後設資料.它不儲存 WSV 的第二份可變複製.
 
-Kura 存儲器根植於[`kura.store_dir`](/zh-hant/reference/peer-config/params.md#param-kura-store-dir).在該根內,區塊數據被分爲行徑或段.一個段的主要文件是:
+Kura 儲存器根植於[`kura.store_dir`](/zh-hant/reference/peer-config/params.md#param-kura-store-dir).在該根內,區塊資料被分為通道或段.一個段的主要檔案是:
 
 |路徑|目的|
 | --- | --- |
-|`blocks/<segment>/blocks.data`|連接式 Norito 框架的簽署區塊有效載荷. |
-|`blocks/<segment>/blocks.index`|固定尺寸的 `(start, length)`輸入,該地圖塊高度爲 `blocks.data` 中的字節.|
-|`blocks/<segment>/blocks.hashes`|爲快速查找和啓動驗證,按高度阻止哈希.|
-|`blocks/<segment>/blocks.count.norito`|具有耐用性的提交標記,記錄了安全使用的區塊指數輸入. |
-|`blocks/<segment>/da_blocks/`|當磁盤預算執法將舊屍體從熱文件中移動時,被排除在 `blocks.data`之外的塊實用載荷. |
-|`blocks/<segment>/pipeline/sidecars.norito`和 `sidecars.index` |按區塊高度調節的管道恢復側車. |
-|`blocks/<segment>/pipeline/roster_sidecars.norito`和 `roster_sidecars.index` |在區塊同步和重播中使用的近期提交列表側車.|
-|`merge_ledger/<segment>.log`|結合賬本的條目與承諾區塊一致.|
-|`commit-rosters.norito`|保留近期區塊的承諾證書和驗證器檢查站. |
+|`blocks/<segment>/blocks.data`|連線式 Norito 框架的簽署區塊有效載荷. |
+|`blocks/<segment>/blocks.index`|固定尺寸的 `(start, length)`輸入,該地圖塊高度為 `blocks.data` 中的位元組.|
+|`blocks/<segment>/blocks.hashes`|為快速查詢和啟動驗證,按高度阻止雜湊.|
+|`blocks/<segment>/blocks.count.norito`|具有耐用性的提交標記,記錄了安全使用的區塊索引項. |
+|`blocks/<segment>/da_blocks/`|當磁碟預算執法將舊區塊體從熱檔案中移動時,被排除在 `blocks.data`之外的塊實用載荷. |
+|`blocks/<segment>/pipeline/sidecars.norito`和 `sidecars.index` |按區塊高度調節的管道恢復輔助記錄. |
+|`blocks/<segment>/pipeline/roster_sidecars.norito`和 `roster_sidecars.index` |在區塊同步和重播中使用的近期提交列表輔助記錄.|
+|`merge_ledger/<segment>.log`|結合賬本的條目與提交區塊一致.|
+|`commit-rosters.norito`|保留近期區塊的提交證書和驗證器檢查站. |
 
-Kura 爲鏈保持一個緊的內存向量:每個高度都有區塊哈希和,可選的是,區塊體.最新的 [`kura.blocks_in_memory`](/zh-hant/reference/peer-config/params.md#param-kura-blocks-in-memory)非基因塊將其身體存儲在記憶中.如果需要的話,舊塊體會從記憶中丟棄並從 Kura 文件中重新加載.
+Kura 為鏈維護一個緊湊的記憶體向量：每個高度都包含區塊雜湊，並可選地包含區塊體。創世區塊始終保留在快取中，最近的 [`kura.blocks_in_memory`](/zh-hant/reference/peer-config/params.md#param-kura-blocks-in-memory) 個非創世區塊會將其區塊體保留在記憶體中。較舊的區塊體會從記憶體中移除，並在需要時從 Kura 檔案重新載入。
 
-在啓動過程中, `strict` 模式驗證存儲的區塊從區塊有效載荷和重寫哈希文件如果需要. `fast` 模式從存儲開始.如果 Kura 檢測到損壞的尾巴,它將存儲量調整至最後一個驗證區塊.
+在啟動過程中, `strict` 模式驗證儲存的區塊從區塊有效載荷和重寫雜湊檔案如果需要. `fast` 模式從儲存開始.如果 Kura 檢測到損壞的尾巴,它將儲存量調整至最後一個驗證區塊.
 
-Kura 通過背景編寫器編寫新區塊. 作者添加區塊有效載荷,哈希和索引輸入,然後根據配置的fsync政策推進持久計數標記.當磁盤預算執行活動時, Kura 可以清除已退休的部分或驅逐舊區塊體進入 `da_blocks/`,同時保持哈希和索引輸入可驗證和搜索.
+Kura 透過背景編寫器編寫新區塊. 作者新增區塊有效載荷,雜湊和索引輸入,然後根據配置的fsync政策推進持久計數標記.當磁碟預算執行活動時, Kura 可以清除已停用的分段或將舊區塊體移入 `da_blocks/`,同時保留雜湊和索引項以供驗證和搜尋.

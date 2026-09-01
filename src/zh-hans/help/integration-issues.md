@@ -12,7 +12,7 @@ translation_engine: nllb-200-ct2
 
 ## 客户端无法连接 {#client-cannot-connect}
 
-检查客户端配置是否指向同行的 Torii 地址:
+检查客户端配置是否指向对等节点的 Torii 地址:
 
 ```toml
 torii_url = "http://127.0.0.1:8080/"
@@ -24,9 +24,9 @@ torii_url = "http://127.0.0.1:8080/"
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 ```
 
-如果同行走进 Docker 或Kubernetes,使用客户端进程可访问的主机或服务地址. `127.0.0.1` 在容器内,不是主机.
+如果对等节点走进 Docker 或Kubernetes,使用客户端进程可访问的主机或服务地址. `127.0.0.1` 在容器内,不是主机.
 
-对于公共测试 Taira,开始使用未签名的终点探测器:
+对于公共测试 Taira,开始使用未签名的端点探测器:
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -43,8 +43,8 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
 大多数交易失败是由身份或授权不匹配造成的:
 
 - 客户端配置中的帐户公钥不匹配签名所使用的私钥
-- 账户没有在创始或之前的交易中注册
-- 账户缺乏运行时间验证器所要求的许可令牌或角色
+- 账户没有在创世或之前的交易中注册
+- 账户缺乏运行时验证器所要求的许可令牌或角色
 - 一个域名 ID 缺乏其数据空间资格,例如 `domain.dataspace`
 
 使用 `--output-format text` 在调试 CLI 命令时,以便更容易读取错误:
@@ -58,8 +58,8 @@ cargo run --bin iroha -- --config ./localnet/client.toml --output-format text le
 查询结果并不总是意味着查询失败.
 
 - 应创建对象的交易已发生
-- 被查询的域名,资产定义或账户 ID 是法定.
-- 页面化或过器不排除预期行
+- 查询所用的域、资产定义或账户 ID 符合规范。
+- 页面化或过滤器不排除预期行
 - 客户端连接到预期网络,而不是另一个本地网
 
 对于域名检查,请从最广泛的查询开始:
@@ -70,7 +70,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 
 ## 事件或区块流早点停止 {#event-or-block-streams-stop-early}
 
-区块和事件流的示例依赖于 Torii 流媒体终端点. 检查同行仍然运行,然后使用时间限测试:
+区块和事件流的示例依赖于 Torii 流媒体端点. 检查对等节点仍然运行,然后使用时间限测试:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger blocks 1 --timeout 30s

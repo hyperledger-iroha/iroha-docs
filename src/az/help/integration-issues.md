@@ -3,30 +3,30 @@ translation_locale: az
 translation_source: /help/integration-issues.md
 translation_source_hash: c5f169e423806fa2a9e9d198971588d1aa0b199a28d64e8b089b9f81727550a5
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Integrasiya problemlərinin həlli {#troubleshooting-integration-issues}
+# İnteqrasiya Problemlərinin Həlli {#troubleshooting-integration-issues}
 
-Bu bölmədə problemlərin aradan qaldırılması üçün məsləhətlər təqdim olunur Iroha 3 İnteqrasiya. Əgər yaşadığınız problem burada təsvir olunmursa, bizə müraciət edin: [Teleqram](https://t.me/hyperledgeriroha).
+Bu bölmə Iroha 3 inteqrasiyası üçün problem həll etmə məsləhətləri təklif edir. Əgər yaşadığınız problem burada təsvir edilməyibsə, bizə [Telegram](https://t.me/hyperledgeriroha) vasitəsilə müraciət edin.
 
-## Müştəri əlaqə qura bilmir. {#client-cannot-connect}
+## Müştəri əlaqə qura bilmir {#client-cannot-connect}
 
-Müştərinin konfiqurasiyasının həmyaşıdların Torii ünvanına yönəldiyini yoxlayın:
+Müştəri konfiqurasiyasının şəbəkə iştirakçısının Torii ünvanına işarə etdiyini yoxlayın:
 
 ```toml
 torii_url = "http://127.0.0.1:8080/"
 ```
 
-CLI yoxlamaları üçün eyni faylı açıq şəkildə keçin:
+CLI yoxlamaları üçün eyni faylı açıq şəkildə göndərin:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 ```
 
-Əgər həmyaşıdlar daxil olarsa... Docker və ya Kubernetes, müştəri prosesi ilə əldə edilə bilən host və ya xidmət ünvanından istifadə edin. `127.0.0.1` bir konteynerin içindəki ev sahibi maşın deyil.
+Əgər şəbəkə tərəfdaşı Docker və ya Kubernetes-də işləyirsə, müştəri prosesindən əlçatan olan host və ya xidmət ünvanından istifadə edin. Konteyner içində `127.0.0.1` host maşın deyil.
 
-İctimai Taira sınaqlar üçün imzalanmamış son nöqtə sondası ilə başlayın:
+İctimai Taira testlər üçün, imzasız API son nöqtə sındırma cihazından başlayın:
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -36,33 +36,33 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
   | jq -r '.items[].id'
 ```
 
-Əgər bu əmrlər `502`, TLS, DNS və ya vaxt məhdudlaşdırma səhvləri ilə uğursuz olarsa, hesab açarlarını və ya əməliyyat pay yüklərini düzəltmədən əvvəl şəbəkə əlçatanlığını tənzimləyin və ya ictimai testnet son nöqtəsini gözləyin.
+Əgər bu əmrlər `502`, TLS, DNS və ya zaman aşımı xətaları ilə uğursuz olarsa, şəbəkəyə çıxışı düzəldin və ya hesab açarlarını və ya əməliyyat yükünü düzəltməkdən əvvəl ictimai testnet API son nöqtəsini gözləyin.
 
 ## Əməliyyatlar rədd edilir {#transactions-are-rejected}
 
-Əksər əməliyyat uğursuzluğunun səbəbi şəxsiyyət və ya icazə uyğunsuzluğudır:
+Əksər əməliyyat uğursuzluqlarına şəxsiyyət və ya səlahiyyət uyğunsuzluğu səbəb olur:
 
-- Müştəri konfiqurasiyasında hesabın ictimai açarı imzalanmaq üçün istifadə olunan özəl açarı ilə uyğun deyil.
-- Hesabın başlanğıc və ya əvvəlki əməliyyatla qeydiyyatdan keçirilməməsi
-- Hesabın icra vaxtının təsdiqçisi tərəfindən tələb olunan icazə nömrəsi və ya rolu yoxdur.
-- bir domenin ID məlumat sahəsi təsnifatı yoxdur, məsələn, `domain.dataspace`
+- Müştəri konfiqurasiyasında olan hesabın açıq açarı imzalamaq üçün istifadə olunan şəxsi açarla uyğun gəlmir
+- hesab blockchain genesis-də və ya əvvəlki əməliyyat tərəfindən qeydiyyatdan keçməyib
+- hesabda proqramın icra mühiti doğrulayıcısı tərəfindən tələb olunan icazə tokeni və ya rol yoxdur
+- bir domen ID-si öz məlumatlar sahəsi kvalifikasiyasını itirib, məsələn `domain.dataspace`
 
-`--output-format text` əmrlərini debug edərkən CLI istifadə edin ki, səhvləri oxumaq daha asan olsun:
+Xətaları oxumağı asanlaşdırmaq üçün CLI əmrlərini ayıklayarkən `--output-format text` istifadə edin:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ledger transaction ping --msg "hello"
 ```
 
-## Suallar boş nəticələr verir {#queries-return-empty-results}
+## Sorğular boş nəticələr verir {#queries-return-empty-results}
 
-Boş sorğu nəticələri həmişə sorğunun uğursuz olduğu anlamına gəlmir.
+Boş sorğu nəticələri həmişə sorğunun uğursuz olduğunu göstərmir. Yoxlayın:
 
-- obyektin yaradılmasına səbəb olan əməliyyat həyata keçirilib
-- İstəilən domen, aktiv təyinatı və ya hesab ID kanonikdir.
-- Saytlaşdırma və ya filtrlər gözlənilən sıra istisna etmir.
-- müştəri nəzərdə tutulan şəbəkəyə qoşulmuşdur, başqa bir yerli şəbəkə deyil
+- obyekti yaratmalı olan əməliyyat yekunlaşdırıldı
+- sorğulanan domen, aktiv tərifi və ya hesab ID-si tək protokol-standartdır
+- səhifələmə və ya filtrlər gözlənilən sətri istisna etmir
+- müştəri nəzərdə tutulan şəbəkəyə qoşulub, başqa yerli şəbəkəyə yox
 
-Domen yoxlamaları üçün ən geniş sorğu ilə başlayın:
+Domain yoxlamaları üçün ən geniş sorğu ilə başlayın:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
@@ -70,11 +70,11 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 
 ## Hadisə və ya blok axınları erkən dayandırılır {#event-or-block-streams-stop-early}
 
-Bloq və hadisə axını nümunələri Torii axın son nöqtələrindən asılıdır. Tərəfdaşın hələ də çalışdığını yoxlayın, sonra vaxt məhdudluğu ilə sınayın:
+Blok və hadisə axını nümunələri Torii axın API son nöqtələrinə əsaslanır. Şəbəkə qohumunun hələ işlədiyini yoxlayın, sonra zaman aşımı ilə test edin:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger blocks 1 --timeout 30s
 cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 ```
 
-HTTP inteqrasiyaları üçün son nöqtə yollarını hazırkı [Torii son nöqtələrinin istinadına](/az/reference/torii-endpoints.md) müqayisə edin.
+HTTP inteqrasiyaları üçün, API son nöqtə yollarınızı mövcud [Torii API nöqtə sonu istinadı](/az/reference/torii-endpoints.md) ilə müqayisə edin.

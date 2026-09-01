@@ -1,37 +1,37 @@
 ---
 translation_locale: am
 translation_source: /documenting/snippets.md
-translation_source_hash: e188082e05db85d5e514b782f93648fb402a09740840c9201e47db353f2192f5
+translation_source_hash: 48d6670f100c7c6368fa03f163c9ff9e0322d36e51c22f89562b23b0e2ee2a2f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # የኮድ ቅንጥቦች {#code-snippets}
 
-የተፈጠሩ ቁርጥራጮች ከተዘጋጁት Iroha ማሻሻያ ጋር ከኮድ ፣ ከመዋቅር እና ከሥርዓቶች ጋር የተገናኙ ምሳሌዎችን ይይዛሉ ።
+የመነጩ ቅንጥቦች ምሳሌዎችን ካመነጫቸው የ Iroha ክለሳ ኮድ፣ ውቅር እና ስኪማዎች ጋር እንደተያያዙ ያቆያሉ።
 
-## የአድማጭ Iroha ዕቃዎች {#refreshing-iroha-artifacts}
+## መንፈስን የሚያድስ Iroha አርቲፋክቶች {#refreshing-iroha-artifacts}
 
-Iroha የተወሰዱ ቁርጥራጮች በተለመደው የጣቢያ ግንባታዎች ውስጥ ይመረመራሉ የአውታረ መረብ መዳረሻ ወይም የወንድማማች ማከማቻ አያስፈልጋቸውም ። በግልፅ ያድሱት:
+መደበኛ የጣቢያ ግንባታዎች የአውታረ መረብ መዳረሻ ወይም የወንድም ወይም እህት ማከማቻ እንዳያስፈልጋቸው Iroha የተገኙ ቅንጥቦች ተመዝግበዋል።. በግልፅ ያድሷቸው -
 
 ```bash
 pnpm refresh:iroha --source /path/to/iroha
 ```
 
-የተመዘገቡት [`etc/refresh-iroha.ts`](https://github.com/hyperledger-iroha/iroha-docs/blob/main/etc/refresh-iroha.ts) የስራ ፍሰት ንፁህ ምንጭ ማረጋገጫን ከ `provenance/iroha.json`, ይለወጣል `/src/snippets` እና Torii OpenAPI ቅጽበታዊ ገጽ እይታ እና ዝማኔዎች SHA-256 ሃሽስ. ይዘቱን እና የመነሻ ለውጦችን አብረው ይመልከቱ. መደበኛ ጥገኛነት መጫን እና VitePress ገንቢዎች ተቀባይነት ያላቸውን ቅርንጫፎች ሳያገኙ የተቀናጀውን ፋይል ይበላሉ።
+የተመዘገበው `etc/refresh-iroha.ts` የስራ ሂደት የንፁህ ምንጭ ፍተሻውን ከ`provenance/iroha.json` ጋር ያረጋግጣል፣ `/src/snippets` እና Torii OpenAPI ነጥብ-በ-ጊዜ ውሂብ እይታን ያድሳል፣ እና SHA-256 ምስጠራ ሃሾችን ያዘምናል። ይዘቱን እና የምንጩ ለውጦችን አንድ ላይ ይገምግሙ። መደበኛ ጥገኝነት መጫን እና VitePress ግንባታዎች ተለዋዋጭ ቅርንጫፍ ሳያመጡ ተመዝግበው የገቡ ፋይሎችን ይጠቀማሉ።
 
-## ቁርጥራጮችን ጨምሮ {#including-snippets}
+## ቅንጥቦችን ጨምሮ {#including-snippets}
 
-የተፈጠረውን ወይም አካባቢያዊ ምንጭ ለማካተት የ [VitePress ኮድ-ስኒፕት አገባብ ](https://vitepress.dev/guide/markdown#import-code-snippets) ይጠቀሙ:
+የመነጨ ወይም የአካባቢ ምንጭን ለማካተት [VitePress ኮድ-ቅንጭብ አገባብ](https://vitepress.dev/guide/markdown#import-code-snippets) ን ይጠቀሙ -
 
 ```md
 <<< @/snippets/client.template.toml
 ```
 
-አንድ የተሰየመ ኮድ ክልል ከክልሉ ስም ጋር በመደመር ሊካተት ይችላል:
+የተሰየመ ኮድ ክልል የክልሉን ስም በማያያዝ ሊካተት ይችላል -
 
 ```md
 <<< @/example_code/lorem.rs#ipsum
 ```
 
-በእጅ የተጻፉትን ምሳሌዎች አነስተኛ ያድርጉ። ለሕዝብ በይነገጾች ፣ ለቅጥያ አብነቶች ፣ ለተፈጠሩ መርሃግብሮች እና ለትእዛዝ ውፅዓት የታደሱ ምንጭ ቅርፀቶችን ይመርጣሉ ።
+በእጅ የተጻፉ ምሳሌዎችን ትንሽ ያድርጉት። ለህዝብ በይነገጾች፣ ለማዋቀሪያ አብነቶች፣ ለተፈጠሩ መርሃግብሮች እና ለትዕዛዝ ውፅዓት የታደሱ የምንጭ አርቲፋክቶችን ይምረጡ።

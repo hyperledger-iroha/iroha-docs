@@ -199,7 +199,6 @@
   | Field name | Field value |
   | --: | :-- |
   | `account` | [`Account`](#account) |
-  | `domain` | [`DomainId`](#domainid) |
 
 ## `AccountDomainLinkChanged` {#accountdomainlinkchanged}
 
@@ -222,16 +221,15 @@
   | --: | :-- | --- |
   | `Created` | [`AccountCreated`](#accountcreated) | 0 |
   | `Deleted` | [`AccountId`](#accountid) | 1 |
-  | `Asset` | [`AssetEvent`](#assetevent) | 2 |
-  | `ControllerReplaced` | [`AccountControllerReplaced`](#accountcontrollerreplaced) | 3 |
-  | `PermissionAdded` | [`AccountPermissionChanged`](#accountpermissionchanged) | 4 |
-  | `PermissionRemoved` | [`AccountPermissionChanged`](#accountpermissionchanged) | 5 |
-  | `RoleGranted` | [`AccountRoleChanged`](#accountrolechanged) | 6 |
-  | `RoleRevoked` | [`AccountRoleChanged`](#accountrolechanged) | 7 |
-  | `MetadataInserted` | [`MetadataChanged<AccountId>`](#metadatachanged-accountid) | 8 |
-  | `MetadataRemoved` | [`MetadataChanged<AccountId>`](#metadatachanged-accountid) | 9 |
-  | `Recovery` | [`AccountRecoveryEvent`](#accountrecoveryevent) | 10 |
-  | `Repo` | [`RepoAccountEvent`](#repoaccountevent) | 11 |
+  | `ControllerReplaced` | [`AccountControllerReplaced`](#accountcontrollerreplaced) | 2 |
+  | `PermissionAdded` | [`AccountPermissionChanged`](#accountpermissionchanged) | 3 |
+  | `PermissionRemoved` | [`AccountPermissionChanged`](#accountpermissionchanged) | 4 |
+  | `RoleGranted` | [`AccountRoleChanged`](#accountrolechanged) | 5 |
+  | `RoleRevoked` | [`AccountRoleChanged`](#accountrolechanged) | 6 |
+  | `MetadataInserted` | [`MetadataChanged<AccountId>`](#metadatachanged-accountid) | 7 |
+  | `MetadataRemoved` | [`MetadataChanged<AccountId>`](#metadatachanged-accountid) | 8 |
+  | `Recovery` | [`AccountRecoveryEvent`](#accountrecoveryevent) | 9 |
+  | `Repo` | [`RepoAccountEvent`](#repoaccountevent) | 10 |
 
 ## `AccountEventFilter` {#accounteventfilter}
 
@@ -256,16 +254,15 @@
   | --: | :-- |
   | `Created` | `0x1` |
   | `Deleted` | `0x2` |
-  | `AnyAsset` | `0x4` |
-  | `ControllerReplaced` | `0x8` |
-  | `PermissionAdded` | `0x10` |
-  | `PermissionRemoved` | `0x20` |
-  | `RoleGranted` | `0x40` |
-  | `RoleRevoked` | `0x80` |
-  | `MetadataInserted` | `0x100` |
-  | `MetadataRemoved` | `0x200` |
-  | `AnyRecovery` | `0x400` |
-  | `AnyRepo` | `0x800` |
+  | `ControllerReplaced` | `0x4` |
+  | `PermissionAdded` | `0x8` |
+  | `PermissionRemoved` | `0x10` |
+  | `RoleGranted` | `0x20` |
+  | `RoleRevoked` | `0x40` |
+  | `MetadataInserted` | `0x80` |
+  | `MetadataRemoved` | `0x100` |
+  | `AnyRecovery` | `0x200` |
+  | `AnyRepo` | `0x400` |
 
 ## `AccountId` {#accountid}
 
@@ -401,6 +398,7 @@
   | `active_account_id_at_proposal` | [`AccountId`](#accountid) |
   | `proposed_controller` | [`AccountController`](#accountcontroller) |
   | `approvals` | [`SortedVec<AccountId>`](#sortedvec-accountid) |
+  | `invalidated_multisig_proposal_hashes` | [`Vec<HashOf<Vec<InstructionBox>>>`](#vec-hashof-vec-instructionbox) |
   | `proposed_by` | [`AccountId`](#accountid) |
   | `execute_after_ms` | `u64` |
   | `status` | [`AccountRecoveryStatus`](#accountrecoverystatus) |
@@ -467,62 +465,18 @@
   | `BlsNormal` | &mdash; | 2 |
   | `BlsSmall` | &mdash; | 3 |
   | `MlDsa` | &mdash; | 4 |
+  | `Gost3410_2012_256ParamSetA` | &mdash; | 5 |
+  | `Gost3410_2012_256ParamSetB` | &mdash; | 6 |
+  | `Gost3410_2012_256ParamSetC` | &mdash; | 7 |
+  | `Gost3410_2012_512ParamSetA` | &mdash; | 8 |
+  | `Gost3410_2012_512ParamSetB` | &mdash; | 9 |
   | `Sm2` | &mdash; | 10 |
 
-## `AnonymousAssetEscrowProofRecord` {#anonymousassetescrowproofrecord}
+## `ArchiveId` {#archiveid}
 
-**Type:** Struct
+**Type:** Alias
 
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `nullifiers` | [`Vec<Array<u8, 32>>`](#vec-array-u8-32) |
-  | `output_commitments` | [`Vec<Array<u8, 32>>`](#vec-array-u8-32) |
-  | `proof_hash` | [`Array<u8, 32>`](#array-u8-32) |
-  | `envelope_hash` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
-  | `root_hint` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
-  | `recorded_at_ms` | `u64` |
-
-## `AnonymousAssetEscrowRecord` {#anonymousassetescrowrecord}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `id` | [`EscrowId`](#escrowid) |
-  | `seller` | [`AccountId`](#accountid) |
-  | `buyer` | [`Option<AccountId>`](#option-accountid) |
-  | `asset_definition` | [`AssetDefinitionId`](#assetdefinitionid) |
-  | `escrow_commitment` | [`Array<u8, 32>`](#array-u8-32) |
-  | `status` | [`AssetEscrowStatus`](#assetescrowstatus) |
-  | `evidence_hashes` | [`Vec<Hash>`](#vec-hash) |
-  | `opening` | [`AnonymousAssetEscrowProofRecord`](#anonymousassetescrowproofrecord) |
-  | `release` | [`Option<AnonymousAssetEscrowProofRecord>`](#option-anonymousassetescrowproofrecord) |
-  | `cancellation` | [`Option<AnonymousAssetEscrowProofRecord>`](#option-anonymousassetescrowproofrecord) |
-  | `created_at_ms` | `u64` |
-  | `accepted_at_ms` | [`Option<u64>`](#option-u64) |
-  | `payment_sent_at_ms` | [`Option<u64>`](#option-u64) |
-  | `disputed_at_ms` | [`Option<u64>`](#option-u64) |
-  | `closed_at_ms` | [`Option<u64>`](#option-u64) |
-  | `resolution` | [`Option<AnonymousAssetEscrowResolution>`](#option-anonymousassetescrowresolution) |
-
-## `AnonymousAssetEscrowResolution` {#anonymousassetescrowresolution}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `resolver` | [`AccountId`](#accountid) |
-  | `buyer_output_commitments` | [`Vec<Array<u8, 32>>`](#vec-array-u8-32) |
-  | `seller_output_commitments` | [`Vec<Array<u8, 32>>`](#vec-array-u8-32) |
-  | `proof` | [`AnonymousAssetEscrowProofRecord`](#anonymousassetescrowproofrecord) |
-  | `evidence_hashes` | [`Vec<Hash>`](#vec-hash) |
-  | `resolved_at_ms` | `u64` |
+**To:** [`Array<u8, 32>`](#array-u8-32)
 
 ## `Array<u16, 8>` {#array-u16-8}
 
@@ -726,6 +680,7 @@
   | `logo` | [`Option<SorafsUri>`](#option-sorafsuri) |
   | `metadata` | [`Metadata`](#metadata) |
   | `balance_scope_policy` | [`AssetBalancePolicy`](#assetbalancepolicy) |
+  | `owning_domain` | [`Option<DomainId>`](#option-domainid) |
   | `owned_by` | [`AccountId`](#accountid) |
   | `total_quantity` | [`Quantity`](#quantity) |
   | `confidential_policy` | [`AssetConfidentialPolicy`](#assetconfidentialpolicy) |
@@ -735,6 +690,18 @@
 **Type:** Alias
 
 **To:** `String`
+
+## `AssetDefinitionAliasPermissionScope` {#assetdefinitionaliaspermissionscope}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `domain` | [`DomainId`](#domainid) | 0 |
+  | `dataspace` | [`DataSpaceId`](#dataspaceid) | 1 |
+  | `alias` | [`ResolvedAssetDefinitionAliasV1`](#resolvedassetdefinitionaliasv1) | 2 |
 
 ## `AssetDefinitionEvent` {#assetdefinitionevent}
 
@@ -792,7 +759,6 @@
   | Field name | Field value |
   | --: | :-- |
   | `aid_bytes` | [`Array<u8, 16>`](#array-u8-16) |
-  | `projection` | [`Option<AssetDefinitionProjection>`](#option-assetdefinitionprojection) |
 
 ## `AssetDefinitionMintabilityChanged` {#assetdefinitionmintabilitychanged}
 
@@ -816,17 +782,6 @@
   | --: | :-- |
   | `asset_definition` | [`AssetDefinitionId`](#assetdefinitionid) |
   | `new_owner` | [`AccountId`](#accountid) |
-
-## `AssetDefinitionProjection` {#assetdefinitionprojection}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `domain` | [`DomainId`](#domainid) |
-  | `name` | [`Name`](#name) |
 
 ## `AssetDefinitionTotalQuantityChanged` {#assetdefinitiontotalquantitychanged}
 
@@ -995,6 +950,7 @@
 
   | Field name | Field value |
   | --: | :-- |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
   | `scope` | [`Vec<String>`](#vec-string) |
   | `subject` | [`HandleSubject`](#handlesubject) |
   | `budget` | [`HandleBudget`](#handlebudget) |
@@ -1006,6 +962,8 @@
   | `manifest_view_root` | [`Array<u8, 32>`](#array-u8-32) |
   | `expiry_slot` | `u64` |
   | `max_clock_skew_ms` | [`Option<u32>`](#option-u32) |
+  | `issuer_context` | [`AxtHandleIssuerContextV1`](#axthandleissuercontextv1) |
+  | `issuer_signature` | [`Signature`](#signature) |
 
 ## `AssetId` {#assetid}
 
@@ -1066,7 +1024,7 @@
   | Field name | Field value |
   | --: | :-- |
   | `version` | `u8` |
-  | `chain_id_hash` | [`Hash`](#hash) |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
   | `epoch` | `u64` |
   | `lane_id` | [`LaneId`](#laneid) |
   | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
@@ -1153,6 +1111,7 @@
   | `verifier_version` | `String` |
   | `target_dsids` | [`Vec<u64>`](#vec-u64) |
   | `effect_binding` | [`Option<AxtEffectBinding>`](#option-axteffectbinding) |
+  | `remote_spend_intent_commitments` | [`Vec<Array<u8, 32>>`](#vec-array-u8-32) |
 
 ## `AxtHandleFragment` {#axthandlefragment}
 
@@ -1167,6 +1126,23 @@
   | `proof` | [`Option<ProofBlob>`](#option-proofblob) |
   | `amount` | [`Option<Quantity>`](#option-quantity) |
   | `amount_commitment` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
+
+## `AxtHandleIssuerContextV1` {#axthandleissuercontextv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `asset_dsid` | [`DataSpaceId`](#dataspaceid) |
+  | `asset_definition_incarnation` | [`Hash`](#hash) |
+  | `issuer` | [`UniversalAccountId`](#universalaccountid) |
+  | `issuer_manifest_root` | [`Array<u8, 32>`](#array-u8-32) |
+  | `code_root` | [`Array<u8, 32>`](#array-u8-32) |
+  | `abi_version` | `u16` |
+  | `abi_hash` | [`Array<u8, 32>`](#array-u8-32) |
 
 ## `AxtPolicyBinding` {#axtpolicybinding}
 
@@ -1189,8 +1165,8 @@
   | --: | :-- |
   | `manifest_root` | [`Array<u8, 32>`](#array-u8-32) |
   | `target_lane` | [`LaneId`](#laneid) |
-  | `min_handle_era` | `u64` |
-  | `min_sub_nonce` | `u64` |
+  | `active_handle_era` | `u64` |
+  | `next_handle_counter` | `u64` |
   | `current_slot` | `u64` |
 
 ## `AxtPolicySnapshot` {#axtpolicysnapshot}
@@ -1228,8 +1204,8 @@
   | `lane` | [`Option<LaneId>`](#option-laneid) |
   | `snapshot_version` | [`Option<u64>`](#option-u64) |
   | `detail` | `String` |
-  | `next_min_handle_era` | [`Option<u64>`](#option-u64) |
-  | `next_min_sub_nonce` | [`Option<u64>`](#option-u64) |
+  | `active_handle_era` | [`Option<u64>`](#option-u64) |
+  | `next_handle_counter` | [`Option<u64>`](#option-u64) |
 
 ## `AxtRejectReason` {#axtrejectreason}
 
@@ -1286,6 +1262,29 @@
   | `Halo2IpaPasta` | &mdash; | 0 |
   | `Stark` | &mdash; | 1 |
 
+## `BallotAttemptId` {#ballotattemptid}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `BallotAttemptStatusV1` {#ballotattemptstatusv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Registration` | &mdash; | 0 |
+  | `SurvivorFreeze` | &mdash; | 1 |
+  | `TimedCommitment` | &mdash; | 2 |
+  | `AwaitingRelease` | &mdash; | 3 |
+  | `Opening` | &mdash; | 4 |
+  | `Finalized` | &mdash; | 5 |
+  | `NoResult` | &mdash; | 6 |
+  | `Superseded` | &mdash; | 7 |
+
 ## `BigInt` {#bigint}
 
 **Type:** Struct
@@ -1335,6 +1334,7 @@
   | `external` | [`Vec<ExternalExecutionContext>`](#vec-externalexecutioncontext) |
   | `autonomous_lane_payloads` | [`Vec<AutonomousLanePayloadEnvelopeV1>`](#vec-autonomouslanepayloadenvelopev1) |
   | `lane_payload_ownerships` | [`Vec<SumeragiLanePayloadOwnership>`](#vec-sumeragilanepayloadownership) |
+  | `queue_plan_admissions` | [`Vec<Vec<u8>>`](#vec-vec-u8) |
   | `merge_entry` | [`Option<CertifiedMergeLedgerReference>`](#option-certifiedmergeledgerreference) |
 
 ## `BlockHeader` {#blockheader}
@@ -1352,7 +1352,6 @@
   | `da_proof_policies_hash` | [`Option<HashOf<DaProofPolicyBundle>>`](#option-hashof-daproofpolicybundle) |
   | `da_commitments_hash` | [`Option<HashOf<DaCommitmentBundle>>`](#option-hashof-dacommitmentbundle) |
   | `da_pin_intents_hash` | [`Option<HashOf<DaPinIntentBundle>>`](#option-hashof-dapinintentbundle) |
-  | `prev_roster_evidence_hash` | [`Option<HashOf<PreviousRosterEvidence>>`](#option-hashof-previousrosterevidence) |
   | `npos_effects_hash` | [`Option<HashOf<NposConsensusEffects>>`](#option-hashof-nposconsensuseffects) |
   | `sccp_commitment_root` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
   | `creation_time_ms` | `u64` |
@@ -1395,12 +1394,10 @@
   | Field name | Field value |
   | --: | :-- |
   | `header` | [`BlockHeader`](#blockheader) |
-  | `transactions` | [`Vec<SignedTransaction>`](#vec-signedtransaction) |
   | `external_entrypoints` | [`Vec<TransactionEntrypoint>`](#vec-transactionentrypoint) |
   | `da_commitments` | [`Option<DaCommitmentBundle>`](#option-dacommitmentbundle) |
   | `da_proof_policies` | [`Option<DaProofPolicyBundle>`](#option-daproofpolicybundle) |
   | `da_pin_intents` | [`Option<DaPinIntentBundle>`](#option-dapinintentbundle) |
-  | `previous_roster_evidence` | [`Option<PreviousRosterEvidence>`](#option-previousrosterevidence) |
   | `npos_consensus_effects` | [`Option<NposConsensusEffects>`](#option-nposconsensuseffects) |
   | `execution_context` | [`Option<BlockExecutionContextBundle>`](#option-blockexecutioncontextbundle) |
 
@@ -1445,7 +1442,6 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `external_entrypoints` | [`Vec<TransactionEntrypoint>`](#vec-transactionentrypoint) |
   | `time_triggers` | [`Vec<TimeTriggerEntrypoint>`](#vec-timetriggerentrypoint) |
   | `merkle` | [`MerkleTree<TransactionEntrypoint>`](#merkletree-transactionentrypoint) |
   | `result_merkle` | [`MerkleTree<TransactionResult>`](#merkletree-transactionresult) |
@@ -1455,6 +1451,8 @@
   | `axt_envelopes` | [`Vec<AxtEnvelopeRecord>`](#vec-axtenveloperecord) |
   | `trigger_completions` | [`Vec<TriggerCompletedEvent>`](#vec-triggercompletedevent) |
   | `axt_policy_snapshot` | [`AxtPolicySnapshot`](#axtpolicysnapshot) |
+  | `axt_transitioned_dataspaces` | [`SortedVec<DataSpaceId>`](#sortedvec-dataspaceid) |
+  | `lane_finality_statements` | [`Vec<LaneFinalityStatement>`](#vec-lanefinalitystatement) |
 
 ## `BlockSignature` {#blocksignature}
 
@@ -1499,6 +1497,31 @@
 
 **To:** [`NonZero<u64>`](#nonzero-u64)
 
+## `BodyInstanceId` {#bodyinstanceid}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `BodyInstanceStatusV1` {#bodyinstancestatusv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `AwaitingSortition` | &mdash; | 0 |
+  | `AcceptingInvitations` | &mdash; | 1 |
+  | `RosterSealed` | &mdash; | 2 |
+  | `Deliberating` | [`DeliberationPhaseV1`](#deliberationphasev1) | 3 |
+  | `Balloting` | &mdash; | 4 |
+  | `Approved` | &mdash; | 5 |
+  | `Rejected` | &mdash; | 6 |
+  | `NoQuorum` | &mdash; | 7 |
+  | `NoResult` | &mdash; | 8 |
+  | `Superseded` | &mdash; | 9 |
+
 ## `BridgeEvent` {#bridgeevent}
 
 **Type:** Enum
@@ -1508,6 +1531,7 @@
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
   | `Emitted` | [`BridgeReceipt`](#bridgereceipt) | 0 |
+  | `ReplayDelta` | [`SccpReplayDeltaEventV1`](#sccpreplaydeltaeventv1) | 1 |
 
 ## `BridgeEventFilter` {#bridgeeventfilter}
 
@@ -1531,6 +1555,7 @@
   | Field name | Field value |
   | --: | :-- |
   | `Emitted` | `0x1` |
+  | `ReplayDelta` | `0x2` |
 
 ## `BridgeHashFunction` {#bridgehashfunction}
 
@@ -1568,7 +1593,7 @@
   | `ethereum_beacon_v1` | &mdash; | 0 |
   | `bsc_parlia_v1` | &mdash; | 1 |
   | `tron_dpos_v1` | &mdash; | 2 |
-  | `solana_agave_v1` | &mdash; | 3 |
+  | `ton_masterchain_v1` | &mdash; | 3 |
 
 ## `BridgeNativeProtocolProofV1` {#bridgenativeprotocolproofv1}
 
@@ -1656,7 +1681,7 @@
   | --: | :-- | --- |
   | `evm_groth16_bn254_v1` | &mdash; | 0 |
   | `tron_groth16_bn254_v1` | &mdash; | 1 |
-  | `solana_groth16_bn254_v1` | &mdash; | 2 |
+  | `ton_groth16_bls12381_v1` | &mdash; | 2 |
 
 ## `BridgeSccpDestinationProofV1` {#bridgesccpdestinationproofv1}
 
@@ -1692,6 +1717,7 @@
   | --: | :-- |
   | `version` | `String` |
   | `git_commit_sha` | `String` |
+  | `dpn_validator_release_commit` | `String` |
   | `cargo_features` | `String` |
   | `target_triple` | `String` |
 
@@ -1725,6 +1751,26 @@
   | --: | :-- |
   | `trigger` | [`TriggerId`](#triggerid) |
 
+## `CanManageAssetDefinitionAlias` {#canmanageassetdefinitionalias}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `scope` | [`AssetDefinitionAliasPermissionScope`](#assetdefinitionaliaspermissionscope) |
+
+## `CanManageAssetDefinitionConfidentialPolicy` {#canmanageassetdefinitionconfidentialpolicy}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_definition` | [`AssetDefinitionId`](#assetdefinitionid) |
+
 ## `CanManageLaneRelayEmergency` {#canmanagelanerelayemergency}
 
 **Type:** Zero-Size Type (unit type, null type)
@@ -1737,7 +1783,7 @@
 
 **Type:** Zero-Size Type (unit type, null type)
 
-## `CanMintAsset` {#canmintasset}
+## `CanMintAssetToAccount` {#canmintassettoaccount}
 
 **Type:** Struct
 
@@ -1745,7 +1791,8 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `asset` | [`AssetId`](#assetid) |
+  | `asset_definition` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `account` | [`AccountId`](#accountid) |
 
 ## `CanMintAssetWithDefinition` {#canmintassetwithdefinition}
 
@@ -1855,6 +1902,10 @@
   | --: | :-- |
   | `authority` | [`AccountId`](#accountid) |
 
+## `CanSetHijiriParameters` {#cansethijiriparameters}
+
+**Type:** Zero-Size Type (unit type, null type)
+
 ## `CanSetParameters` {#cansetparameters}
 
 **Type:** Zero-Size Type (unit type, null type)
@@ -1953,6 +2004,65 @@
   | --: | :-- |
   | `code_hash` | [`Hash`](#hash) |
 
+## `CanonicalHistoryError` {#canonicalhistoryerror}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `HeightOutsideSnapshot` | [`CanonicalHistorySnapshotHeightSchema`](#canonicalhistorysnapshotheightschema) | 0 |
+  | `HashOnlyBodyUnavailable` | [`CanonicalHistoryHeightHashSchema`](#canonicalhistoryheighthashschema) | 1 |
+  | `BodyUnavailable` | [`CanonicalHistoryHeightHashSchema`](#canonicalhistoryheighthashschema) | 2 |
+  | `BlockHashMismatch` | [`CanonicalHistoryHashMismatchSchema`](#canonicalhistoryhashmismatchschema) | 3 |
+  | `BlockHeightMismatch` | [`CanonicalHistoryHeightMismatchSchema`](#canonicalhistoryheightmismatchschema) | 4 |
+
+## `CanonicalHistoryHashMismatchSchema` {#canonicalhistoryhashmismatchschema}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `height` | `u64` |
+  | `expected_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `actual_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+
+## `CanonicalHistoryHeightHashSchema` {#canonicalhistoryheighthashschema}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `height` | `u64` |
+  | `expected_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+
+## `CanonicalHistoryHeightMismatchSchema` {#canonicalhistoryheightmismatchschema}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `height` | `u64` |
+  | `actual_height` | `u64` |
+
+## `CanonicalHistorySnapshotHeightSchema` {#canonicalhistorysnapshotheightschema}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `height` | `u64` |
+  | `committed_height` | `u64` |
+
 ## `CapacityDisputeId` {#capacitydisputeid}
 
 **Type:** Alias
@@ -2019,12 +2129,6 @@
   | `entrypoint_merkle_root` | [`HashOf<MerkleTree<TransactionEntrypoint>>`](#hashof-merkletree-transactionentrypoint) |
   | `result_merkle_root` | [`HashOf<MerkleTree<TransactionResult>>`](#hashof-merkletree-transactionresult) |
 
-## `ChainId` {#chainid}
-
-**Type:** Alias
-
-**To:** `String`
-
 ## `ChunkerProfileHandle` {#chunkerprofilehandle}
 
 **Type:** Struct
@@ -2061,28 +2165,6 @@
   | --: | :-- |
   | `storage_class` | [`StorageClass`](#storageclass) |
   | `rent_per_gib_month` | [`XorQuantity`](#xorquantity) |
-
-## `CommitStakeSnapshot` {#commitstakesnapshot}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `validator_set_hash` | [`HashOf<Vec<PeerId>>`](#hashof-vec-peerid) |
-  | `entries` | [`Vec<CommitStakeSnapshotEntry>`](#vec-commitstakesnapshotentry) |
-
-## `CommitStakeSnapshotEntry` {#commitstakesnapshotentry}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `peer_id` | [`PeerId`](#peerid) |
-  | `stake` | [`Quantity`](#quantity) |
 
 ## `CommittedTransaction` {#committedtransaction}
 
@@ -2207,43 +2289,6 @@
   | `id` | [`Name`](#name) |
   | `duration_ms` | [`NonZero<u64>`](#nonzero-u64) |
 
-## `ConfidentialEvent` {#confidentialevent}
-
-**Type:** Enum
-
-**Variants:**
-
-  | Variant name | Variant value | Discriminant |
-  | --: | :-- | --- |
-  | `Shielded` | [`ConfidentialShielded`](#confidentialshielded) | 0 |
-  | `Transferred` | [`ConfidentialTransferred`](#confidentialtransferred) | 1 |
-  | `Unshielded` | [`ConfidentialUnshielded`](#confidentialunshielded) | 2 |
-
-## `ConfidentialEventFilter` {#confidentialeventfilter}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `asset_matcher` | [`Option<AssetDefinitionId>`](#option-assetdefinitionid) |
-  | `event_set` | [`ConfidentialEventSet`](#confidentialeventset) |
-
-## `ConfidentialEventSet` {#confidentialeventset}
-
-**Type:** Bitmap
-
-**Repr:** u32
-
-**Masks:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `Shielded` | `0x1` |
-  | `Transferred` | `0x2` |
-  | `Unshielded` | `0x4` |
-
 ## `ConfidentialFeatureDigest` {#confidentialfeaturedigest}
 
 **Type:** Struct
@@ -2284,21 +2329,6 @@
   | `transition_id` | [`Hash`](#hash) |
   | `conversion_window` | [`Option<u64>`](#option-u64) |
 
-## `ConfidentialShielded` {#confidentialshielded}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `asset_definition` | [`AssetDefinitionId`](#assetdefinitionid) |
-  | `account` | [`AccountId`](#accountid) |
-  | `commitment` | [`Array<u8, 32>`](#array-u8-32) |
-  | `root_before` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
-  | `root_after` | [`Array<u8, 32>`](#array-u8-32) |
-  | `call_hash` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
-
 ## `ConfidentialStatus` {#confidentialstatus}
 
 **Type:** Enum
@@ -2310,40 +2340,6 @@
   | `Proposed` | &mdash; | 0 |
   | `Active` | &mdash; | 1 |
   | `Withdrawn` | &mdash; | 2 |
-
-## `ConfidentialTransferred` {#confidentialtransferred}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `asset_definition` | [`AssetDefinitionId`](#assetdefinitionid) |
-  | `nullifiers` | [`Vec<Array<u8, 32>>`](#vec-array-u8-32) |
-  | `outputs` | [`Vec<Array<u8, 32>>`](#vec-array-u8-32) |
-  | `root_before` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
-  | `root_after` | [`Array<u8, 32>`](#array-u8-32) |
-  | `proof_hash` | [`Array<u8, 32>`](#array-u8-32) |
-  | `envelope_hash` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
-  | `call_hash` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
-
-## `ConfidentialUnshielded` {#confidentialunshielded}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `asset_definition` | [`AssetDefinitionId`](#assetdefinitionid) |
-  | `account` | [`AccountId`](#accountid) |
-  | `public_amount` | [`Quantity`](#quantity) |
-  | `nullifiers` | [`Vec<Array<u8, 32>>`](#vec-array-u8-32) |
-  | `root_hint` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
-  | `proof_hash` | [`Array<u8, 32>`](#array-u8-32) |
-  | `envelope_hash` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
-  | `call_hash` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
 
 ## `ConfigurationEvent` {#configurationevent}
 
@@ -2408,12 +2404,6 @@
 
 **To:** `String`
 
-## `ContractAlias` {#contractalias}
-
-**Type:** Alias
-
-**To:** `String`
-
 ## `ContractArgumentRecord` {#contractargumentrecord}
 
 **Type:** Alias
@@ -2443,6 +2433,59 @@
   | `removed_by` | [`AccountId`](#accountid) |
   | `reason` | [`Option<String>`](#option-string) |
 
+## `ContractDeploymentOriginV1` {#contractdeploymentoriginv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Direct` | [`DirectContractDeploymentOriginV1`](#directcontractdeploymentoriginv1) | 0 |
+  | `Parliament` | [`ParliamentContractDeploymentOriginV1`](#parliamentcontractdeploymentoriginv1) | 1 |
+
+## `ContractEmergencyHoldPlaced` {#contractemergencyholdplaced}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `contract_address` | [`ContractAddress`](#contractaddress) |
+  | `hold` | [`ContractEmergencyHoldV1`](#contractemergencyholdv1) |
+  | `revision` | `u64` |
+  | `lifecycle` | [`ContractLifecycleControlV1`](#contractlifecyclecontrolv1) |
+
+## `ContractEmergencyHoldRetrospectiveCompleted` {#contractemergencyholdretrospectivecompleted}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `contract_address` | [`ContractAddress`](#contractaddress) |
+  | `prior_hold` | [`ContractEmergencyHoldV1`](#contractemergencyholdv1) |
+  | `retrospective_finding_root` | [`Array<u8, 32>`](#array-u8-32) |
+  | `revision` | `u64` |
+  | `lifecycle` | [`ContractLifecycleControlV1`](#contractlifecyclecontrolv1) |
+
+## `ContractEmergencyHoldV1` {#contractemergencyholdv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `incident_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `proposal_content_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `governance_attempt_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `reason` | `String` |
+  | `imposed_at_height` | `u64` |
+  | `expires_at_height` | `u64` |
+
 ## `ContractErrorCodeDescriptor` {#contracterrorcodedescriptor}
 
 **Type:** Struct
@@ -2466,6 +2509,7 @@
   | `contract_address` | [`ContractAddress`](#contractaddress) |
   | `code_hash` | [`Hash`](#hash) |
   | `activated_by` | [`AccountId`](#accountid) |
+  | `lifecycle` | [`ContractLifecycleControlV1`](#contractlifecyclecontrolv1) |
 
 ## `ContractInstanceDeactivated` {#contractinstancedeactivated}
 
@@ -2479,6 +2523,7 @@
   | `previous_code_hash` | [`Hash`](#hash) |
   | `deactivated_by` | [`AccountId`](#accountid) |
   | `reason` | [`Option<String>`](#option-string) |
+  | `lifecycle` | [`ContractLifecycleControlV1`](#contractlifecyclecontrolv1) |
 
 ## `ContractInvocation` {#contractinvocation}
 
@@ -2492,6 +2537,34 @@
   | `expected_code_hash` | [`Hash`](#hash) |
   | `entrypoint` | `String` |
   | `arguments` | [`Option<ContractArgumentRecord>`](#option-contractargumentrecord) |
+
+## `ContractLifecycleControlV1` {#contractlifecyclecontrolv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u16` |
+  | `origin` | [`ContractDeploymentOriginV1`](#contractdeploymentoriginv1) |
+  | `owner` | [`ContractLifecycleOwnerV1`](#contractlifecycleownerv1) |
+  | `pending_owner` | [`Option<ContractLifecycleOwnerV1>`](#option-contractlifecycleownerv1) |
+  | `parliament_delegation` | [`ContractParliamentDelegationV1`](#contractparliamentdelegationv1) |
+  | `active_code_hash` | [`Option<Hash>`](#option-hash) |
+  | `revision` | `u64` |
+  | `emergency_hold` | [`Option<ContractEmergencyHoldV1>`](#option-contractemergencyholdv1) |
+
+## `ContractLifecycleOwnerV1` {#contractlifecycleownerv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Account` | [`AccountId`](#accountid) | 0 |
+  | `Parliament` | &mdash; | 1 |
 
 ## `ContractManifest` {#contractmanifest}
 
@@ -2512,6 +2585,72 @@
   | `error_codes` | [`Option<Vec<ContractErrorCodeDescriptor>>`](#option-vec-contracterrorcodedescriptor) |
   | `kotoba` | [`Option<Vec<KotobaTranslationEntry>>`](#option-vec-kotobatranslationentry) |
   | `provenance` | [`Option<ManifestProvenance>`](#option-manifestprovenance) |
+
+## `ContractOwnershipTransferCancelled` {#contractownershiptransfercancelled}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `contract_address` | [`ContractAddress`](#contractaddress) |
+  | `owner` | [`ContractLifecycleOwnerV1`](#contractlifecycleownerv1) |
+  | `revision` | `u64` |
+  | `lifecycle` | [`ContractLifecycleControlV1`](#contractlifecyclecontrolv1) |
+
+## `ContractOwnershipTransferOffered` {#contractownershiptransferoffered}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `contract_address` | [`ContractAddress`](#contractaddress) |
+  | `current_owner` | [`ContractLifecycleOwnerV1`](#contractlifecycleownerv1) |
+  | `pending_owner` | [`ContractLifecycleOwnerV1`](#contractlifecycleownerv1) |
+  | `revision` | `u64` |
+  | `lifecycle` | [`ContractLifecycleControlV1`](#contractlifecyclecontrolv1) |
+
+## `ContractOwnershipTransferred` {#contractownershiptransferred}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `contract_address` | [`ContractAddress`](#contractaddress) |
+  | `previous_owner` | [`ContractLifecycleOwnerV1`](#contractlifecycleownerv1) |
+  | `new_owner` | [`ContractLifecycleOwnerV1`](#contractlifecycleownerv1) |
+  | `revision` | `u64` |
+  | `lifecycle` | [`ContractLifecycleControlV1`](#contractlifecyclecontrolv1) |
+
+## `ContractParliamentDelegationChanged` {#contractparliamentdelegationchanged}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `contract_address` | [`ContractAddress`](#contractaddress) |
+  | `delegation` | [`ContractParliamentDelegationV1`](#contractparliamentdelegationv1) |
+  | `changed_by` | [`AccountId`](#accountid) |
+  | `revision` | `u64` |
+  | `lifecycle` | [`ContractLifecycleControlV1`](#contractlifecyclecontrolv1) |
+
+## `ContractParliamentDelegationV1` {#contractparliamentdelegationv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `None` | &mdash; | 0 |
+  | `Lifecycle` | &mdash; | 1 |
 
 ## `ContractRejection` {#contractrejection}
 
@@ -2603,11 +2742,39 @@
   | `manifest_hash` | [`ManifestDigest`](#manifestdigest) |
   | `proof_scheme` | [`DaProofScheme`](#daproofscheme) |
   | `chunk_root` | [`Hash`](#hash) |
-  | `kzg_commitment` | [`Option<KzgCommitment>`](#option-kzgcommitment) |
   | `proof_digest` | [`Option<Hash>`](#option-hash) |
   | `retention_class` | [`RetentionPolicy`](#retentionpolicy) |
   | `storage_ticket` | [`StorageTicketId`](#storageticketid) |
   | `acknowledgement_sig` | [`Signature`](#signature) |
+
+## `DaIngestAuthorizationV1` {#daingestauthorizationv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `owner` | [`AccountId`](#accountid) |
+  | `lane_id` | [`LaneId`](#laneid) |
+  | `epoch` | `u64` |
+  | `sequence` | `u64` |
+  | `payload_hash` | [`BlobDigest`](#blobdigest) |
+  | `payload_bytes` | `u64` |
+  | `request_content_hash` | [`Hash`](#hash) |
+  | `signatures` | [`Vec<DaIngestSignatureV1>`](#vec-daingestsignaturev1) |
+
+## `DaIngestSignatureV1` {#daingestsignaturev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `signer` | [`PublicKey`](#publickey) |
+  | `signature` | [`Signature`](#signature) |
 
 ## `DaPinIntent` {#dapinintent}
 
@@ -2623,7 +2790,8 @@
   | `storage_ticket` | [`StorageTicketId`](#storageticketid) |
   | `manifest_hash` | [`ManifestDigest`](#manifestdigest) |
   | `alias` | [`Option<String>`](#option-string) |
-  | `owner` | [`Option<AccountId>`](#option-accountid) |
+  | `authorization` | [`DaIngestAuthorizationV1`](#daingestauthorizationv1) |
+  | `pin_scope_authorization` | [`DaPinScopeAuthorizationV1`](#dapinscopeauthorizationv1) |
 
 ## `DaPinIntentBundle` {#dapinintentbundle}
 
@@ -2646,6 +2814,46 @@
   | --: | :-- |
   | `intent` | [`DaPinIntent`](#dapinintent) |
   | `location` | [`DaCommitmentLocation`](#dacommitmentlocation) |
+
+## `DaPinScopeAuthorizationV1` {#dapinscopeauthorizationv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `scope` | [`DaPinScopeV1`](#dapinscopev1) |
+  | `signatures` | [`Vec<DaPinScopeSignatureV1>`](#vec-dapinscopesignaturev1) |
+
+## `DaPinScopeSignatureV1` {#dapinscopesignaturev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `signer` | [`PublicKey`](#publickey) |
+  | `signature` | [`Signature`](#signature) |
+
+## `DaPinScopeV1` {#dapinscopev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `owner` | [`AccountId`](#accountid) |
+  | `request_authorization_digest` | [`Hash`](#hash) |
+  | `lane_id` | [`LaneId`](#laneid) |
+  | `epoch` | `u64` |
+  | `sequence` | `u64` |
+  | `storage_ticket` | [`StorageTicketId`](#storageticketid) |
+  | `manifest_hash` | [`ManifestDigest`](#manifestdigest) |
+  | `alias` | [`Option<String>`](#option-string) |
 
 ## `DaProofPolicy` {#daproofpolicy}
 
@@ -2681,7 +2889,6 @@
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
   | `MerkleSha256` | &mdash; | 0 |
-  | `KzgBls12_381` | &mdash; | 1 |
 
 ## `DaReceiptCursorStatus` {#dareceiptcursorstatus}
 
@@ -2720,24 +2927,26 @@
   | --: | :-- | --- |
   | `Peer` | [`PeerEvent`](#peerevent) | 0 |
   | `Domain` | [`DomainEvent`](#domainevent) | 1 |
-  | `AssetDefinitionStandalone` | [`StandaloneAssetDefinitionEvent`](#standaloneassetdefinitionevent) | 2 |
-  | `Trigger` | [`TriggerEvent`](#triggerevent) | 3 |
-  | `Role` | [`RoleEvent`](#roleevent) | 4 |
-  | `Configuration` | [`ConfigurationEvent`](#configurationevent) | 5 |
-  | `Executor` | [`ExecutorEvent`](#executorevent) | 6 |
-  | `Proof` | [`ProofEvent`](#proofevent) | 7 |
-  | `Confidential` | [`ConfidentialEvent`](#confidentialevent) | 8 |
-  | `VerifyingKey` | [`VerifyingKeyEvent`](#verifyingkeyevent) | 9 |
-  | `RuntimeUpgrade` | [`RuntimeUpgradeEvent`](#runtimeupgradeevent) | 10 |
-  | `SmartContract` | [`SmartContractEvent`](#smartcontractevent) | 11 |
-  | `Soradns` | [`SoradnsDirectoryEvent`](#soradnsdirectoryevent) | 12 |
-  | `Sorafs` | [`SorafsGatewayEvent`](#sorafsgatewayevent) | 13 |
-  | `SpaceDirectory` | [`SpaceDirectoryEvent`](#spacedirectoryevent) | 14 |
-  | `Escrow` | [`EscrowEvent`](#escrowevent) | 15 |
-  | `Oracle` | [`OracleEvent`](#oracleevent) | 16 |
-  | `Governance` | [`GovernanceEvent`](#governanceevent) | 17 |
-  | `Social` | [`SocialEvent`](#socialevent) | 18 |
-  | `Bridge` | [`BridgeEvent`](#bridgeevent) | 19 |
+  | `Account` | [`AccountEvent`](#accountevent) | 2 |
+  | `Asset` | [`AssetEvent`](#assetevent) | 3 |
+  | `AssetDefinition` | [`AssetDefinitionEvent`](#assetdefinitionevent) | 4 |
+  | `Trigger` | [`TriggerEvent`](#triggerevent) | 5 |
+  | `Role` | [`RoleEvent`](#roleevent) | 6 |
+  | `Configuration` | [`ConfigurationEvent`](#configurationevent) | 7 |
+  | `Executor` | [`ExecutorEvent`](#executorevent) | 8 |
+  | `Proof` | [`ProofEvent`](#proofevent) | 9 |
+  | `VerifyingKey` | [`VerifyingKeyEvent`](#verifyingkeyevent) | 10 |
+  | `RuntimeUpgrade` | [`RuntimeUpgradeEvent`](#runtimeupgradeevent) | 11 |
+  | `SmartContract` | [`SmartContractEvent`](#smartcontractevent) | 12 |
+  | `Soradns` | [`SoradnsDirectoryEvent`](#soradnsdirectoryevent) | 13 |
+  | `Sorafs` | [`SorafsGatewayEvent`](#sorafsgatewayevent) | 14 |
+  | `Musubi` | [`MusubiEvent`](#musubievent) | 15 |
+  | `SpaceDirectory` | [`SpaceDirectoryEvent`](#spacedirectoryevent) | 16 |
+  | `Escrow` | [`EscrowEvent`](#escrowevent) | 17 |
+  | `Oracle` | [`OracleEvent`](#oracleevent) | 18 |
+  | `Governance` | [`GovernanceEvent`](#governanceevent) | 19 |
+  | `Social` | [`SocialEvent`](#socialevent) | 20 |
+  | `Bridge` | [`BridgeEvent`](#bridgeevent) | 21 |
 
 ## `DataEventFilter` {#dataeventfilter}
 
@@ -2760,11 +2969,11 @@
   | `Configuration` | [`ConfigurationEventFilter`](#configurationeventfilter) | 10 |
   | `Executor` | [`ExecutorEventFilter`](#executoreventfilter) | 11 |
   | `Proof` | [`ProofEventFilter`](#proofeventfilter) | 12 |
-  | `Confidential` | [`ConfidentialEventFilter`](#confidentialeventfilter) | 13 |
-  | `VerifyingKey` | [`VerifyingKeyEventFilter`](#verifyingkeyeventfilter) | 14 |
-  | `RuntimeUpgrade` | [`RuntimeUpgradeEventFilter`](#runtimeupgradeeventfilter) | 15 |
-  | `Soradns` | [`SoradnsDirectoryEventFilter`](#soradnsdirectoryeventfilter) | 16 |
-  | `Sorafs` | [`SorafsGatewayEventFilter`](#sorafsgatewayeventfilter) | 17 |
+  | `VerifyingKey` | [`VerifyingKeyEventFilter`](#verifyingkeyeventfilter) | 13 |
+  | `RuntimeUpgrade` | [`RuntimeUpgradeEventFilter`](#runtimeupgradeeventfilter) | 14 |
+  | `Soradns` | [`SoradnsDirectoryEventFilter`](#soradnsdirectoryeventfilter) | 15 |
+  | `Sorafs` | [`SorafsGatewayEventFilter`](#sorafsgatewayeventfilter) | 16 |
+  | `Musubi` | [`MusubiEventFilter`](#musubieventfilter) | 17 |
   | `SpaceDirectory` | [`SpaceDirectoryEventFilter`](#spacedirectoryeventfilter) | 18 |
   | `Escrow` | [`EscrowEventFilter`](#escroweventfilter) | 19 |
   | `Oracle` | [`OracleEventFilter`](#oracleeventfilter) | 20 |
@@ -2863,6 +3072,32 @@
   | `slot` | `u64` |
   | `request_hash` | [`Hash`](#hash) |
   | `field` | `String` |
+
+## `DeliberationPhaseV1` {#deliberationphasev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Orientation` | &mdash; | 0 |
+  | `Evidence` | &mdash; | 1 |
+  | `Questions` | &mdash; | 2 |
+  | `Responses` | &mdash; | 3 |
+  | `Deliberation` | &mdash; | 4 |
+  | `Reflection` | &mdash; | 5 |
+  | `Vote` | &mdash; | 6 |
+
+## `DirectContractDeploymentOriginV1` {#directcontractdeploymentoriginv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `deployer` | [`AccountId`](#accountid) |
 
 ## `DirectoryDraftSubmittedEventV1` {#directorydraftsubmittedeventv1}
 
@@ -3046,22 +3281,25 @@
   | --: | :-- | --- |
   | `Created` | [`Domain`](#domain) | 0 |
   | `Deleted` | [`DomainId`](#domainid) | 1 |
-  | `AssetDefinition` | [`AssetDefinitionEvent`](#assetdefinitionevent) | 2 |
-  | `Nft` | [`NftEvent`](#nftevent) | 3 |
-  | `Rwa` | [`RwaEvent`](#rwaevent) | 4 |
-  | `Account` | [`AccountEvent`](#accountevent) | 5 |
-  | `AccountLinked` | [`AccountDomainLinkChanged`](#accountdomainlinkchanged) | 6 |
-  | `AccountUnlinked` | [`AccountDomainLinkChanged`](#accountdomainlinkchanged) | 7 |
-  | `MetadataInserted` | [`MetadataChanged<DomainId>`](#metadatachanged-domainid) | 8 |
-  | `MetadataRemoved` | [`MetadataChanged<DomainId>`](#metadatachanged-domainid) | 9 |
-  | `OwnerChanged` | [`DomainOwnerChanged`](#domainownerchanged) | 10 |
-  | `KaigiRosterSummary` | [`KaigiRosterSummary`](#kaigirostersummary) | 11 |
-  | `KaigiRelayRegistered` | [`KaigiRelayRegistrationSummary`](#kaigirelayregistrationsummary) | 12 |
-  | `KaigiRelayManifestUpdated` | [`KaigiRelayManifestSummary`](#kaigirelaymanifestsummary) | 13 |
-  | `KaigiUsageSummary` | [`KaigiUsageSummary`](#kaigiusagesummary) | 14 |
-  | `KaigiRelayHealthUpdated` | [`KaigiRelayHealthSummary`](#kaigirelayhealthsummary) | 15 |
-  | `StreamingTicketReady` | [`StreamingTicketReady`](#streamingticketready) | 16 |
-  | `StreamingTicketRevoked` | [`StreamingTicketRevoked`](#streamingticketrevoked) | 17 |
+  | `AssetDefinition` | [`ScopedAssetDefinition`](#scopedassetdefinition) | 2 |
+  | `Asset` | [`ScopedAsset`](#scopedasset) | 3 |
+  | `Nft` | [`NftEvent`](#nftevent) | 4 |
+  | `Rwa` | [`RwaEvent`](#rwaevent) | 5 |
+  | `Account` | [`ScopedAccount`](#scopedaccount) | 6 |
+  | `AccountLinked` | [`AccountDomainLinkChanged`](#accountdomainlinkchanged) | 7 |
+  | `AccountUnlinked` | [`AccountDomainLinkChanged`](#accountdomainlinkchanged) | 8 |
+  | `MetadataInserted` | [`MetadataChanged<DomainId>`](#metadatachanged-domainid) | 9 |
+  | `MetadataRemoved` | [`MetadataChanged<DomainId>`](#metadatachanged-domainid) | 10 |
+  | `OwnerChanged` | [`DomainOwnerChanged`](#domainownerchanged) | 11 |
+  | `KaigiRosterSummary` | [`KaigiRosterSummary`](#kaigirostersummary) | 12 |
+  | `KaigiRelayRegistered` | [`KaigiRelayRegistrationSummary`](#kaigirelayregistrationsummary) | 13 |
+  | `KaigiRelayManifestUpdated` | [`KaigiRelayManifestSummary`](#kaigirelaymanifestsummary) | 14 |
+  | `KaigiUsageSummary` | [`KaigiUsageSummary`](#kaigiusagesummary) | 15 |
+  | `KaigiRelayHealthUpdated` | [`KaigiRelayHealthSummary`](#kaigirelayhealthsummary) | 16 |
+  | `StreamingTicketReady` | [`StreamingTicketReady`](#streamingticketready) | 17 |
+  | `StreamingTicketRevoked` | [`StreamingTicketRevoked`](#streamingticketrevoked) | 18 |
+  | `KaigiRelayUnregistered` | [`KaigiRelayUnregistrationSummary`](#kaigirelayunregistrationsummary) | 19 |
+  | `KaigiStatusChanged` | [`KaigiStatusSummary`](#kaigistatussummary) | 20 |
 
 ## `DomainEventFilter` {#domaineventfilter}
 
@@ -3086,22 +3324,25 @@
   | --: | :-- |
   | `Created` | `0x1` |
   | `Deleted` | `0x2` |
-  | `AnyAssetDefinition` | `0x4` |
-  | `AnyNft` | `0x8` |
-  | `AnyRwa` | `0x10` |
-  | `AnyAccount` | `0x20` |
-  | `AccountLinked` | `0x40` |
-  | `AccountUnlinked` | `0x80` |
-  | `MetadataInserted` | `0x100` |
-  | `MetadataRemoved` | `0x200` |
-  | `OwnerChanged` | `0x400` |
-  | `KaigiRosterSummary` | `0x800` |
-  | `KaigiRelayRegistered` | `0x1000` |
-  | `KaigiRelayManifestUpdated` | `0x2000` |
-  | `KaigiUsageSummary` | `0x4000` |
-  | `KaigiRelayHealthUpdated` | `0x8000` |
-  | `StreamingTicketReady` | `0x10000` |
-  | `StreamingTicketRevoked` | `0x20000` |
+  | `AssetDefinition` | `0x4` |
+  | `Asset` | `0x8` |
+  | `AnyNft` | `0x10` |
+  | `AnyRwa` | `0x20` |
+  | `Account` | `0x40` |
+  | `AccountLinked` | `0x80` |
+  | `AccountUnlinked` | `0x100` |
+  | `MetadataInserted` | `0x200` |
+  | `MetadataRemoved` | `0x400` |
+  | `OwnerChanged` | `0x800` |
+  | `KaigiRosterSummary` | `0x1000` |
+  | `KaigiRelayRegistered` | `0x2000` |
+  | `KaigiRelayManifestUpdated` | `0x4000` |
+  | `KaigiUsageSummary` | `0x8000` |
+  | `KaigiRelayHealthUpdated` | `0x10000` |
+  | `StreamingTicketReady` | `0x20000` |
+  | `StreamingTicketRevoked` | `0x40000` |
+  | `KaigiRelayUnregistered` | `0x80000` |
+  | `KaigiStatusChanged` | `0x100000` |
 
 ## `DomainId` {#domainid}
 
@@ -3504,6 +3745,9 @@
   | `native_amx_application_manifest_version` | `u16` |
   | `native_amx_application_manifest_root` | [`Hash`](#hash) |
   | `native_amx_application_manifest_count` | `u32` |
+  | `lane_finality_manifest` | [`Option<MerkleTreeCommitment<LaneFinalityStatement>>`](#option-merkletreecommitment-lanefinalitystatement) |
+  | `merge_carrier` | [`Option<MergeCarrierCommitmentV1>`](#option-mergecarriercommitmentv1) |
+  | `executed_block_wire_len` | `u64` |
   | `executed_block_wire_hash` | [`Hash`](#hash) |
 
 ## `ExecutionStep` {#executionstep}
@@ -3624,12 +3868,8 @@
 
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
-  | `Transfer` | &mdash; | 0 |
-  | `Mint` | &mdash; | 1 |
-  | `Burn` | &mdash; | 2 |
-  | `RoleGrant` | [`FastpqRolePermissionDelta`](#fastpqrolepermissiondelta) | 3 |
-  | `RoleRevoke` | [`FastpqRolePermissionDelta`](#fastpqrolepermissiondelta) | 4 |
-  | `MetaSet` | &mdash; | 5 |
+  | `Transfer` | &mdash; | 16 |
+  | `MetaSet` | &mdash; | 17 |
 
 ## `FastpqPublicInputs` {#fastpqpublicinputs}
 
@@ -3645,18 +3885,6 @@
   | `new_root` | [`Array<u8, 32>`](#array-u8-32) |
   | `perm_root` | [`Array<u8, 32>`](#array-u8-32) |
   | `tx_set_hash` | [`Array<u8, 32>`](#array-u8-32) |
-
-## `FastpqRolePermissionDelta` {#fastpqrolepermissiondelta}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `role_id` | [`Vec<u8>`](#vec-u8) |
-  | `permission_id` | [`Vec<u8>`](#vec-u8) |
-  | `epoch` | `u64` |
 
 ## `FastpqStateTransition` {#fastpqstatetransition}
 
@@ -3738,6 +3966,7 @@
   | Field name | Field value |
   | --: | :-- |
   | `id` | [`FeeSponsorProgramId`](#feesponsorprogramid) |
+  | `payout_account` | [`AccountId`](#accountid) |
   | `lifecycle` | [`FeeSponsorProgramLifecycle`](#feesponsorprogramlifecycle) |
   | `active_revision` | [`Option<u64>`](#option-u64) |
   | `staged_revision` | [`Option<u64>`](#option-u64) |
@@ -3855,6 +4084,7 @@
   | Field name | Field value |
   | --: | :-- |
   | `event` | [`FeedEvent`](#feedevent) |
+  | `recorded_at_ms` | `u64` |
   | `evidence_hashes` | [`Vec<Hash>`](#vec-hash) |
 
 ## `FeedId` {#feedid}
@@ -3895,6 +4125,26 @@
   | `code_hash` | [`Hash`](#hash) |
   | `total_size` | `u64` |
   | `chunk_count` | `u32` |
+
+## `FinalizedGlobalThresholdBeaconPulseV1` {#finalizedglobalthresholdbeaconpulsev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u16` |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `session_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `roster_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `transcript_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `height` | `u64` |
+  | `round` | `u64` |
+  | `finalized_chain_anchor` | [`GlobalThresholdBeaconChainAnchorV1`](#globalthresholdbeaconchainanchorv1) |
+  | `signature` | [`Array<u8, 48>`](#array-u8-48) |
+  | `seed` | [`Array<u8, 32>`](#array-u8-32) |
+  | `pulse_id` | [`Array<u8, 32>`](#array-u8-32) |
 
 ## `FinalizedNextEpochSnapshot` {#finalizednextepochsnapshot}
 
@@ -3967,16 +4217,6 @@
   | `id` | [`AccountId`](#accountid) |
   | `dataspace` | [`Option<String>`](#option-string) |
   | `domain` | [`Option<String>`](#option-string) |
-
-## `FindAnonymousAssetEscrowById` {#findanonymousassetescrowbyid}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `escrow_id` | [`EscrowId`](#escrowid) |
 
 ## `FindAssetById` {#findassetbyid}
 
@@ -4158,21 +4398,25 @@
   | `SorafsPopRevocation` | [`Array<u8, 32>`](#array-u8-32) | 37 |
   | `SorafsPopAuditDigest` | `u64` | 38 |
   | `SorafsPopRegistryStatus` | &mdash; | 39 |
-  | `SorafsRepairTask` | `String` | 40 |
-  | `SorafsRepairStatus` | &mdash; | 41 |
-  | `SorafsProofOutcome` | [`SorafsProofOutcomeFindErrorV1`](#sorafsproofoutcomefinderrorv1) | 42 |
-  | `SorafsReputationJournalAuthorityPolicy` | &mdash; | 43 |
-  | `SorafsReputationJournalEvent` | [`ReputationJournalSourceIdV1`](#reputationjournalsourceidv1) | 44 |
-  | `SorafsModerationPolicy` | &mdash; | 45 |
-  | `SorafsModerationAppeal` | `String` | 46 |
-  | `SorafsModerationJurorEligibility` | `String` | 47 |
-  | `SorafsModerationCase` | `String` | 48 |
-  | `SorafsModerationCommit` | `String` | 49 |
-  | `SorafsModerationReveal` | `String` | 50 |
-  | `SorafsModerationChallenge` | `String` | 51 |
-  | `SorafsModerationOutcome` | `String` | 52 |
-  | `SorafsModerationNoShow` | `String` | 53 |
-  | `SorafsModerationStatus` | &mdash; | 54 |
+  | `SorafsCitizenBond` | [`Array<u8, 32>`](#array-u8-32) | 40 |
+  | `SorafsCitizenBondSnapshot` | &mdash; | 41 |
+  | `SorafsAnonymousServiceEscrow` | [`Array<u8, 32>`](#array-u8-32) | 42 |
+  | `SorafsRepairTask` | `String` | 43 |
+  | `SorafsRepairStatus` | &mdash; | 44 |
+  | `SorafsProofOutcome` | [`SorafsProofOutcomeFindErrorV1`](#sorafsproofoutcomefinderrorv1) | 45 |
+  | `SorafsReputationJournalAuthorityPolicy` | &mdash; | 46 |
+  | `SorafsReputationJournalEvent` | [`ReputationJournalSourceIdV1`](#reputationjournalsourceidv1) | 47 |
+  | `SorafsModerationPolicy` | &mdash; | 48 |
+  | `SorafsModerationAppeal` | `String` | 49 |
+  | `SorafsModerationJurorEligibility` | `String` | 50 |
+  | `SorafsAnonymousJurorCandidacy` | [`Array<u8, 32>`](#array-u8-32) | 51 |
+  | `SorafsModerationCase` | `String` | 52 |
+  | `SorafsModerationCommit` | `String` | 53 |
+  | `SorafsModerationReveal` | `String` | 54 |
+  | `SorafsModerationChallenge` | `String` | 55 |
+  | `SorafsModerationOutcome` | `String` | 56 |
+  | `SorafsModerationNoShow` | `String` | 57 |
+  | `SorafsModerationStatus` | &mdash; | 58 |
 
 ## `FindExecutorDataModel` {#findexecutordatamodel}
 
@@ -4222,7 +4466,7 @@
   | --: | :-- |
   | `key` | [`DefiOracleAttestationKey`](#defioracleattestationkey) |
 
-## `FindMusubiPackageReleases` {#findmusubipackagereleases}
+## `FindMusubiAliasHistoryV1` {#findmusubialiashistoryv1}
 
 **Type:** Struct
 
@@ -4230,20 +4474,9 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `package` | [`MusubiPackageId`](#musubipackageid) |
-  | `include_yanked` | `bool` |
+  | `request` | [`MusubiAliasQueryV1`](#musubialiasqueryv1) |
 
-## `FindMusubiPackageVersions` {#findmusubipackageversions}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `package` | [`MusubiPackageId`](#musubipackageid) |
-
-## `FindMusubiReleaseByRef` {#findmusubireleasebyref}
+## `FindMusubiAliasV1` {#findmusubialiasv1}
 
 **Type:** Struct
 
@@ -4251,9 +4484,9 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `package` | [`MusubiPackageRef`](#musubipackageref) |
+  | `request` | [`MusubiAliasQueryV1`](#musubialiasqueryv1) |
 
-## `FindMusubiShortAliasByName` {#findmusubishortaliasbyname}
+## `FindMusubiArchiveLocationsV1` {#findmusubiarchivelocationsv1}
 
 **Type:** Struct
 
@@ -4261,7 +4494,87 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `alias` | [`Name`](#name) |
+  | `request` | [`MusubiArchiveLocationQueryV1`](#musubiarchivelocationqueryv1) |
+
+## `FindMusubiArchiveRetentionV1` {#findmusubiarchiveretentionv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `request` | [`MusubiArchiveRetentionQueryV1`](#musubiarchiveretentionqueryv1) |
+
+## `FindMusubiExactPackageV1` {#findmusubiexactpackagev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `request` | [`MusubiExactPackageQueryV1`](#musubiexactpackagequeryv1) |
+
+## `FindMusubiExactReleaseV1` {#findmusubiexactreleasev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `request` | [`MusubiExactReleaseQueryV1`](#musubiexactreleasequeryv1) |
+
+## `FindMusubiMaintainersV1` {#findmusubimaintainersv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `request` | [`MusubiPackagePageQueryV1`](#musubipackagepagequeryv1) |
+
+## `FindMusubiOrderedPrefixV1` {#findmusubiorderedprefixv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `request` | [`MusubiOrderedPrefixQueryV1`](#musubiorderedprefixqueryv1) |
+
+## `FindMusubiProviderBundleAttestationV1` {#findmusubiproviderbundleattestationv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `key` | [`MusubiProviderBundleAttestationKeyV1`](#musubiproviderbundleattestationkeyv1) |
+
+## `FindMusubiResolverIndexV1` {#findmusubiresolverindexv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `request` | [`MusubiResolverIndexQueryV1`](#musubiresolverindexqueryv1) |
+
+## `FindMusubiVersionsV1` {#findmusubiversionsv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `request` | [`MusubiPackagePageQueryV1`](#musubipackagepagequeryv1) |
 
 ## `FindNftById` {#findnftbyid}
 
@@ -4326,6 +4639,40 @@
   | Field name | Field value |
   | --: | :-- |
   | `id` | [`ProofId`](#proofid) |
+
+## `FindSorafsAnonymousJurorCandidacy` {#findsorafsanonymousjurorcandidacy}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `action_digest` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `FindSorafsAnonymousServiceEscrowById` {#findsorafsanonymousserviceescrowbyid}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `escrow_id` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `FindSorafsCitizenBondBySerialCommitment` {#findsorafscitizenbondbyserialcommitment}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `serial_commitment` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `FindSorafsCitizenBondSnapshot` {#findsorafscitizenbondsnapshot}
+
+**Type:** Zero-Size Type (unit type, null type)
 
 ## `FindSorafsModerationAppeal` {#findsorafsmoderationappeal}
 
@@ -4582,6 +4929,20 @@
   | --: | :-- |
   | `digest` | [`ManifestDigest`](#manifestdigest) |
   | `expected_finalized_cursor` | [`Option<PinManifestFinalizedCursorV1>`](#option-pinmanifestfinalizedcursorv1) |
+
+## `FindSorafsPinManifests` {#findsorafspinmanifests}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `expected_finalized_cursor` | [`Option<PinManifestFinalizedCursorV1>`](#option-pinmanifestfinalizedcursorv1) |
+  | `status` | [`Option<PinStatusKindV1>`](#option-pinstatuskindv1) |
+  | `after_digest` | [`Option<ManifestDigest>`](#option-manifestdigest) |
+  | `limit` | `u32` |
+  | `max_bytes` | `u32` |
 
 ## `FindSorafsPopAuditDigestBySequence` {#findsorafspopauditdigestbysequence}
 
@@ -4871,16 +5232,20 @@
   | --: | :-- |
   | `policy_id` | [`Name`](#name) |
   | `revision` | `u64` |
+  | `owner` | [`AccountId`](#accountid) |
   | `source_dataspace` | [`DataSpaceId`](#dataspaceid) |
-  | `source` | [`FxCorridorSource`](#fxcorridorsource) |
   | `source_asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
-  | `source_sink` | [`AccountId`](#accountid) |
   | `destination_dataspace` | [`DataSpaceId`](#dataspaceid) |
-  | `destination_reserve` | [`AccountId`](#accountid) |
   | `destination_asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
   | `allowed_destination_alias_domains` | [`SortedVec<DomainId>`](#sortedvec-domainid) |
-  | `rate_numerator` | `u64` |
-  | `rate_denominator` | `u64` |
+  | `oracle_feed_id` | [`FeedId`](#feedid) |
+  | `max_oracle_age_ms` | `u64` |
+  | `max_source_amount_per_settlement` | [`Quantity`](#quantity) |
+  | `max_destination_amount_per_settlement` | [`Quantity`](#quantity) |
+  | `velocity_window_ms` | `u64` |
+  | `max_settlements_per_window` | `u64` |
+  | `max_source_amount_per_window` | [`Quantity`](#quantity) |
+  | `max_destination_amount_per_window` | [`Quantity`](#quantity) |
   | `enabled` | `bool` |
 
 ## `FxCorridorPolicyRegistry` {#fxcorridorpolicyregistry}
@@ -4892,8 +5257,39 @@
   | Field name | Field value |
   | --: | :-- |
   | `policies` | [`SortedMap<Name, FxCorridorPolicy>`](#sortedmap-name-fxcorridorpolicy) |
+  | `usage` | [`SortedMap<Name, FxCorridorUsage>`](#sortedmap-name-fxcorridorusage) |
 
-## `FxCorridorSource` {#fxcorridorsource}
+## `FxCorridorUsage` {#fxcorridorusage}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `window_start_ms` | `u64` |
+  | `settlements` | `u64` |
+  | `source_amount` | [`Quantity`](#quantity) |
+  | `destination_amount` | [`Quantity`](#quantity) |
+
+## `GlobalThresholdBeaconChainAnchorV1` {#globalthresholdbeaconchainanchorv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `height` | `u64` |
+  | `block_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+
+## `GovernanceAttemptId` {#governanceattemptid}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `GovernanceAttemptStatusV1` {#governanceattemptstatusv1}
 
 **Type:** Enum
 
@@ -4901,8 +5297,12 @@
 
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
-  | `fixed_account` | [`AccountId`](#accountid) | 0 |
-  | `transaction_authority` | &mdash; | 1 |
+  | `Active` | &mdash; | 0 |
+  | `Certified` | &mdash; | 1 |
+  | `Rejected` | &mdash; | 2 |
+  | `Enacted` | &mdash; | 3 |
+  | `Superseded` | &mdash; | 4 |
+  | `ExecutionFailed` | &mdash; | 5 |
 
 ## `GovernanceBallotAccepted` {#governanceballotaccepted}
 
@@ -4937,6 +5337,12 @@
   | --: | :-- |
   | `referendum_id` | `String` |
   | `reason` | `String` |
+
+## `GovernanceCertificateId` {#governancecertificateid}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
 
 ## `GovernanceCitizenRegistered` {#governancecitizenregistered}
 
@@ -5010,13 +5416,22 @@
   | `LockUnlocked` | [`GovernanceLockUnlocked`](#governancelockunlocked) | 10 |
   | `CouncilPersisted` | [`GovernanceCouncilPersisted`](#governancecouncilpersisted) | 11 |
   | `ParliamentSelected` | [`GovernanceParliamentSelected`](#governanceparliamentselected) | 12 |
-  | `ParliamentApprovalRecorded` | [`GovernanceParliamentApprovalRecorded`](#governanceparliamentapprovalrecorded) | 13 |
-  | `ParliamentBallotRecorded` | [`GovernanceParliamentBallotRecorded`](#governanceparliamentballotrecorded) | 14 |
-  | `LockSlashed` | [`GovernanceLockSlashed`](#governancelockslashed) | 15 |
-  | `LockRestituted` | [`GovernanceLockRestituted`](#governancelockrestituted) | 16 |
-  | `CitizenRegistered` | [`GovernanceCitizenRegistered`](#governancecitizenregistered) | 17 |
-  | `CitizenRevoked` | [`GovernanceCitizenRevoked`](#governancecitizenrevoked) | 18 |
-  | `CitizenServiceRecorded` | [`GovernanceCitizenServiceRecorded`](#governancecitizenservicerecorded) | 19 |
+  | `ParliamentAttemptCreated` | [`GovernanceParliamentAttemptCreated`](#governanceparliamentattemptcreated) | 13 |
+  | `ParliamentLifecycleTransitionApplied` | [`GovernanceParliamentLifecycleTransitionApplied`](#governanceparliamentlifecycletransitionapplied) | 14 |
+  | `ParliamentAttemptTransitioned` | [`GovernanceParliamentAttemptTransitioned`](#governanceparliamentattempttransitioned) | 15 |
+  | `ParliamentBodyTransitioned` | [`GovernanceParliamentBodyTransitioned`](#governanceparliamentbodytransitioned) | 16 |
+  | `ParliamentBallotTransitioned` | [`GovernanceParliamentBallotTransitioned`](#governanceparliamentballottransitioned) | 17 |
+  | `ParliamentConcentrationWarning` | [`GovernanceParliamentConcentrationWarning`](#governanceparliamentconcentrationwarning) | 18 |
+  | `ParliamentAggregateFinalized` | [`GovernanceParliamentAggregateFinalized`](#governanceparliamentaggregatefinalized) | 19 |
+  | `ThresholdKeyLifecycleApplied` | [`GovernanceThresholdKeyLifecycleAppliedV1`](#governancethresholdkeylifecycleappliedv1) | 20 |
+  | `ParliamentCertificateIssued` | [`GovernanceParliamentCertificateIssued`](#governanceparliamentcertificateissued) | 21 |
+  | `ParliamentApprovalRecorded` | [`GovernanceParliamentApprovalRecorded`](#governanceparliamentapprovalrecorded) | 22 |
+  | `LockSlashed` | [`GovernanceLockSlashed`](#governancelockslashed) | 23 |
+  | `LockRestituted` | [`GovernanceLockRestituted`](#governancelockrestituted) | 24 |
+  | `CitizenRegistered` | [`GovernanceCitizenRegistered`](#governancecitizenregistered) | 25 |
+  | `CitizenRevoked` | [`GovernanceCitizenRevoked`](#governancecitizenrevoked) | 26 |
+  | `CitizenServiceRecorded` | [`GovernanceCitizenServiceRecorded`](#governancecitizenservicerecorded) | 27 |
+  | `ReferendumDecided` | [`GovernanceReferendumDecided`](#governancereferendumdecided) | 28 |
 
 ## `GovernanceEventFilter` {#governanceeventfilter}
 
@@ -5053,13 +5468,55 @@
   | `LockUnlocked` | `0x400` |
   | `CouncilPersisted` | `0x800` |
   | `ParliamentSelected` | `0x1000` |
-  | `ParliamentApprovalRecorded` | `0x2000` |
-  | `ParliamentBallotRecorded` | `0x4000` |
-  | `LockSlashed` | `0x8000` |
-  | `LockRestituted` | `0x10000` |
-  | `CitizenRegistered` | `0x20000` |
-  | `CitizenRevoked` | `0x40000` |
-  | `CitizenServiceRecorded` | `0x80000` |
+  | `ParliamentAttemptCreated` | `0x2000` |
+  | `ParliamentLifecycleTransitionApplied` | `0x4000` |
+  | `ParliamentAttemptTransitioned` | `0x8000` |
+  | `ParliamentBodyTransitioned` | `0x10000` |
+  | `ParliamentBallotTransitioned` | `0x20000` |
+  | `ParliamentConcentrationWarning` | `0x40000` |
+  | `ParliamentAggregateFinalized` | `0x80000` |
+  | `ThresholdKeyLifecycleApplied` | `0x100000` |
+  | `ParliamentCertificateIssued` | `0x200000` |
+  | `ParliamentApprovalRecorded` | `0x400000` |
+  | `LockSlashed` | `0x800000` |
+  | `LockRestituted` | `0x1000000` |
+  | `CitizenRegistered` | `0x2000000` |
+  | `CitizenRevoked` | `0x4000000` |
+  | `CitizenServiceRecorded` | `0x8000000` |
+  | `ReferendumDecided` | `0x10000000` |
+
+## `GovernanceExpectedHeadAbsentV1` {#governanceexpectedheadabsentv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `subject_id` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `GovernanceExpectedHeadPresentV1` {#governanceexpectedheadpresentv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `subject_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `version` | `u64` |
+  | `head_root` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `GovernanceExpectedHeadV1` {#governanceexpectedheadv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Absent` | [`GovernanceExpectedHeadAbsentV1`](#governanceexpectedheadabsentv1) | 0 |
+  | `Present` | [`GovernanceExpectedHeadPresentV1`](#governanceexpectedheadpresentv1) | 1 |
 
 ## `GovernanceLockCreated` {#governancelockcreated}
 
@@ -5170,6 +5627,23 @@
   | `satisfied` | `u64` |
   | `rejected` | `u64` |
 
+## `GovernanceParliamentAggregateFinalized` {#governanceparliamentaggregatefinalized}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `proposal_content_id` | [`ProposalContentId`](#proposalcontentid) |
+  | `governance_attempt_id` | [`GovernanceAttemptId`](#governanceattemptid) |
+  | `body_instance_id` | [`BodyInstanceId`](#bodyinstanceid) |
+  | `ballot_attempt_id` | [`BallotAttemptId`](#ballotattemptid) |
+  | `tally` | [`ParliamentAggregateTallyV1`](#parliamentaggregatetallyv1) |
+  | `outcome` | [`ParliamentAggregateOutcomeV1`](#parliamentaggregateoutcomev1) |
+  | `requires_confirmation` | `bool` |
+  | `at_height` | `u64` |
+
 ## `GovernanceParliamentApprovalRecorded` {#governanceparliamentapprovalrecorded}
 
 **Type:** Struct
@@ -5184,7 +5658,7 @@
   | `approvals` | `u32` |
   | `required` | `u32` |
 
-## `GovernanceParliamentBallotRecorded` {#governanceparliamentballotrecorded}
+## `GovernanceParliamentAttemptCreated` {#governanceparliamentattemptcreated}
 
 **Type:** Struct
 
@@ -5192,14 +5666,97 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `proposal_id` | [`Array<u8, 32>`](#array-u8-32) |
-  | `epoch` | `u64` |
+  | `proposal_content_id` | [`ProposalContentId`](#proposalcontentid) |
+  | `governance_attempt_id` | [`GovernanceAttemptId`](#governanceattemptid) |
+  | `attempt_sequence` | `u32` |
+  | `risk_tier` | [`RiskTierV1`](#risktierv1) |
+  | `policy_version` | `u64` |
+  | `effect_preimage_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `expected_head` | [`GovernanceExpectedHeadV1`](#governanceexpectedheadv1) |
+  | `at_height` | `u64` |
+
+## `GovernanceParliamentAttemptTransitioned` {#governanceparliamentattempttransitioned}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `proposal_content_id` | [`ProposalContentId`](#proposalcontentid) |
+  | `governance_attempt_id` | [`GovernanceAttemptId`](#governanceattemptid) |
+  | `stage` | [`GovernanceStageV1`](#governancestagev1) |
+  | `status` | [`GovernanceAttemptStatusV1`](#governanceattemptstatusv1) |
+  | `at_height` | `u64` |
+
+## `GovernanceParliamentBallotTransitioned` {#governanceparliamentballottransitioned}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `body_instance_id` | [`BodyInstanceId`](#bodyinstanceid) |
+  | `ballot_attempt_id` | [`BallotAttemptId`](#ballotattemptid) |
+  | `status` | [`BallotAttemptStatusV1`](#ballotattemptstatusv1) |
+  | `at_height` | `u64` |
+
+## `GovernanceParliamentBodyTransitioned` {#governanceparliamentbodytransitioned}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `governance_attempt_id` | [`GovernanceAttemptId`](#governanceattemptid) |
+  | `body_instance_id` | [`BodyInstanceId`](#bodyinstanceid) |
   | `body` | [`ParliamentBody`](#parliamentbody) |
-  | `decision` | [`ParliamentDecision`](#parliamentdecision) |
-  | `approvals` | `u32` |
-  | `rejections` | `u32` |
-  | `abstentions` | `u32` |
-  | `required` | `u32` |
+  | `status` | [`BodyInstanceStatusV1`](#bodyinstancestatusv1) |
+  | `at_height` | `u64` |
+
+## `GovernanceParliamentCertificateIssued` {#governanceparliamentcertificateissued}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `certificate_id` | [`GovernanceCertificateId`](#governancecertificateid) |
+  | `proposal_content_id` | [`ProposalContentId`](#proposalcontentid) |
+  | `governance_attempt_id` | [`GovernanceAttemptId`](#governanceattemptid) |
+  | `certified_at_height` | `u64` |
+  | `enact_at_height` | `u64` |
+
+## `GovernanceParliamentConcentrationWarning` {#governanceparliamentconcentrationwarning}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `warning` | [`ParliamentConcentrationWarningV1`](#parliamentconcentrationwarningv1) |
+  | `at_height` | `u64` |
+
+## `GovernanceParliamentLifecycleTransitionApplied` {#governanceparliamentlifecycletransitionapplied}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `proposal_content_id` | [`ProposalContentId`](#proposalcontentid) |
+  | `governance_attempt_id` | [`GovernanceAttemptId`](#governanceattemptid) |
+  | `transition_kind` | [`ParliamentLifecycleTransitionKindV1`](#parliamentlifecycletransitionkindv1) |
+  | `no_result_kind` | [`Option<ParliamentNoResultKindV1>`](#option-parliamentnoresultkindv1) |
+  | `automatic_outcome` | [`Option<ParliamentAutomaticExecutionOutcomeV1>`](#option-parliamentautomaticexecutionoutcomev1) |
+  | `transition_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `certificate_id` | [`Option<GovernanceCertificateId>`](#option-governancecertificateid) |
+  | `at_height` | `u64` |
 
 ## `GovernanceParliamentSelected` {#governanceparliamentselected}
 
@@ -5231,9 +5788,10 @@
   | Field name | Field value |
   | --: | :-- |
   | `proposed` | `u64` |
-  | `approved` | `u64` |
   | `rejected` | `u64` |
   | `enacted` | `u64` |
+  | `superseded` | `u64` |
+  | `execution_failed` | `u64` |
 
 ## `GovernanceProposalEnacted` {#governanceproposalenacted}
 
@@ -5290,6 +5848,20 @@
   | `id` | `String` |
   | `at_height` | `u64` |
 
+## `GovernanceReferendumDecided` {#governancereferendumdecided}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `referendum_id` | `String` |
+  | `approve` | `u128` |
+  | `reject` | `u128` |
+  | `abstain` | `u128` |
+  | `approved` | `bool` |
+
 ## `GovernanceReferendumOpened` {#governancereferendumopened}
 
 **Type:** Struct
@@ -5316,6 +5888,28 @@
   | `Manual` | &mdash; | 3 |
   | `Restitution` | &mdash; | 4 |
 
+## `GovernanceStageV1` {#governancestagev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Qualification` | &mdash; | 0 |
+  | `Rules` | &mdash; | 1 |
+  | `Agenda` | &mdash; | 2 |
+  | `Interest` | &mdash; | 3 |
+  | `Review` | &mdash; | 4 |
+  | `Coordination` | &mdash; | 5 |
+  | `Mpc` | &mdash; | 6 |
+  | `Fma` | &mdash; | 7 |
+  | `Oversight` | &mdash; | 8 |
+  | `PolicyJury` | &mdash; | 9 |
+  | `ConfirmationJury` | &mdash; | 10 |
+  | `Certification` | &mdash; | 11 |
+  | `Enactment` | &mdash; | 12 |
+
 ## `GovernanceStatus` {#governancestatus}
 
 **Type:** Struct
@@ -5338,6 +5932,19 @@
 **Type:** Alias
 
 **To:** `String`
+
+## `GovernanceThresholdKeyLifecycleAppliedV1` {#governancethresholdkeylifecycleappliedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `action` | [`ThresholdKeyLifecycleActionV1`](#thresholdkeylifecycleactionv1) |
+  | `session_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `transcript_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `effective_height` | `u64` |
 
 ## `GroupBinding` {#groupbinding}
 
@@ -5441,7 +6048,19 @@
 
 **To:** [`Hash`](#hash)
 
+## `HashOf<LaneFinalityStatement>` {#hashof-lanefinalitystatement}
+
+**Type:** Alias
+
+**To:** [`Hash`](#hash)
+
 ## `HashOf<MergeLedgerEntry>` {#hashof-mergeledgerentry}
+
+**Type:** Alias
+
+**To:** [`Hash`](#hash)
+
+## `HashOf<MerkleTree<LaneFinalityStatement>>` {#hashof-merkletree-lanefinalitystatement}
 
 **Type:** Alias
 
@@ -5466,12 +6085,6 @@
 **To:** [`Hash`](#hash)
 
 ## `HashOf<ObservationBody>` {#hashof-observationbody}
-
-**Type:** Alias
-
-**To:** [`Hash`](#hash)
-
-## `HashOf<PreviousRosterEvidence>` {#hashof-previousrosterevidence}
 
 **Type:** Alias
 
@@ -5521,7 +6134,7 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `chain_id` | [`ChainId`](#chainid) |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
   | `protocol_version` | `u16` |
   | `height` | `u64` |
   | `epoch` | `u64` |
@@ -5533,6 +6146,7 @@
   | `roster` | [`Vec<ValidatorPower>`](#vec-validatorpower) |
   | `quorum` | [`DualQuorum`](#dualquorum) |
   | `nexus_amx_context_hash` | [`Hash`](#hash) |
+  | `execution_policy_hash` | [`Hash`](#hash) |
   | `da_layout` | [`DataAvailabilityLayout`](#dataavailabilitylayout) |
   | `leader_seed` | [`Array<u8, 32>`](#array-u8-32) |
 
@@ -5736,28 +6350,6 @@
   | `domain_id` | [`DomainId`](#domainid) |
   | `call_name` | [`Name`](#name) |
 
-## `KaigiParticipantCommitment` {#kaigiparticipantcommitment}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `commitment` | [`Hash`](#hash) |
-  | `alias_tag` | [`Option<String>`](#option-string) |
-
-## `KaigiParticipantNullifier` {#kaigiparticipantnullifier}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `digest` | [`Hash`](#hash) |
-  | `issued_at_ms` | `u64` |
-
 ## `KaigiPrivacyMode` {#kaigiprivacymode}
 
 **Type:** Enum
@@ -5789,33 +6381,11 @@
 
   | Field name | Field value |
   | --: | :-- |
+  | `domain` | [`DomainId`](#domainid) |
   | `call` | [`KaigiId`](#kaigiid) |
   | `relay` | [`AccountId`](#accountid) |
   | `status` | [`KaigiRelayHealthStatus`](#kaigirelayhealthstatus) |
   | `reported_at_ms` | `u64` |
-
-## `KaigiRelayHop` {#kaigirelayhop}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `relay_id` | [`AccountId`](#accountid) |
-  | `hpke_public_key` | [`Vec<u8>`](#vec-u8) |
-  | `weight` | `u8` |
-
-## `KaigiRelayManifest` {#kaigirelaymanifest}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `hops` | [`Vec<KaigiRelayHop>`](#vec-kaigirelayhop) |
-  | `expiry_ms` | `u64` |
 
 ## `KaigiRelayManifestSummary` {#kaigirelaymanifestsummary}
 
@@ -5842,16 +6412,16 @@
   | `bandwidth_class` | `u8` |
   | `hpke_fingerprint` | [`Hash`](#hash) |
 
-## `KaigiRoomPolicy` {#kaigiroompolicy}
+## `KaigiRelayUnregistrationSummary` {#kaigirelayunregistrationsummary}
 
-**Type:** Enum
+**Type:** Struct
 
-**Variants:**
+**Declarations:**
 
-  | Variant name | Variant value | Discriminant |
-  | --: | :-- | --- |
-  | `Public` | &mdash; | 0 |
-  | `Authenticated` | &mdash; | 1 |
+  | Field name | Field value |
+  | --: | :-- |
+  | `domain` | [`DomainId`](#domainid) |
+  | `relay` | [`AccountId`](#accountid) |
 
 ## `KaigiRosterSummary` {#kaigirostersummary}
 
@@ -5867,6 +6437,29 @@
   | `commitment_count` | `u32` |
   | `nullifier_count` | `u32` |
   | `roster_root` | [`Option<Hash>`](#option-hash) |
+
+## `KaigiStatus` {#kaigistatus}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Active` | &mdash; | 0 |
+  | `Ended` | &mdash; | 1 |
+
+## `KaigiStatusSummary` {#kaigistatussummary}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `call` | [`KaigiId`](#kaigiid) |
+  | `status` | [`KaigiStatus`](#kaigistatus) |
+  | `ended_at_ms` | [`Option<u64>`](#option-u64) |
 
 ## `KaigiUsageSummary` {#kaigiusagesummary}
 
@@ -5913,12 +6506,6 @@
   | --: | :-- |
   | `msg_id` | `String` |
   | `translations` | [`Vec<KotobaTranslation>`](#vec-kotobatranslation) |
-
-## `KzgCommitment` {#kzgcommitment}
-
-**Type:** Alias
-
-**To:** [`Array<u8, 48>`](#array-u8-48)
 
 ## `LaneBlockCommitment` {#laneblockcommitment}
 
@@ -6097,7 +6684,7 @@
   | Field name | Field value |
   | --: | :-- |
   | `version` | `u8` |
-  | `chain_id_digest` | [`Hash`](#hash) |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
   | `lane_id` | [`LaneId`](#laneid) |
   | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
   | `lane_incarnation` | [`Hash`](#hash) |
@@ -6146,6 +6733,40 @@
   | `proof_digest` | [`Hash`](#hash) |
   | `verified_at_height` | `u64` |
 
+## `LaneFinalityAuthorityV1` {#lanefinalityauthorityv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u8` |
+  | `global_block_height` | `u64` |
+  | `finality_artifact_hash` | [`HashOf<V2FinalityArtifact>`](#hashof-v2finalityartifact) |
+  | `statement_proof` | [`MerkleProof<LaneFinalityStatement>`](#merkleproof-lanefinalitystatement) |
+
+## `LaneFinalityStatement` {#lanefinalitystatement}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u8` |
+  | `lane_id` | [`LaneId`](#laneid) |
+  | `lane_incarnation` | [`Hash`](#hash) |
+  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
+  | `block_height` | `u64` |
+  | `block_header_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `da_commitment_hash` | [`Option<HashOf<DaCommitmentBundle>>`](#option-hashof-dacommitmentbundle) |
+  | `lane_block_descriptor_hash` | [`Hash`](#hash) |
+  | `manifest_root` | [`Array<u8, 32>`](#array-u8-32) |
+  | `settlement_commitment` | [`LaneBlockCommitment`](#laneblockcommitment) |
+  | `settlement_hash` | [`HashOf<LaneBlockCommitment>`](#hashof-laneblockcommitment) |
+  | `rbc_bytes_total` | `u64` |
+
 ## `LaneId` {#laneid}
 
 **Type:** Alias
@@ -6173,7 +6794,7 @@
   | Field name | Field value |
   | --: | :-- |
   | `version` | `u8` |
-  | `chain_id_hash` | [`Hash`](#hash) |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
   | `epoch` | `u64` |
   | `lane_id` | [`LaneId`](#laneid) |
   | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
@@ -6234,17 +6855,6 @@
   | `commitment_id` | [`LaneCommitmentId`](#lanecommitmentid) |
   | `witness` | [`LanePrivacyWitness`](#laneprivacywitness) |
 
-## `LanePrivacySnarkWitness` {#laneprivacysnarkwitness}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `public_inputs` | [`Vec<u8>`](#vec-u8) |
-  | `proof` | [`Vec<u8>`](#vec-u8) |
-
 ## `LanePrivacyWitness` {#laneprivacywitness}
 
 **Type:** Enum
@@ -6254,7 +6864,6 @@
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
   | `merkle` | [`LanePrivacyMerkleWitness`](#laneprivacymerklewitness) | 0 |
-  | `snark` | [`LanePrivacySnarkWitness`](#laneprivacysnarkwitness) | 1 |
 
 ## `LaneRelayEnvelope` {#lanerelayenvelope}
 
@@ -6269,7 +6878,7 @@
   | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
   | `block_height` | `u64` |
   | `block_header` | [`BlockHeader`](#blockheader) |
-  | `qc` | [`Option<Qc>`](#option-qc) |
+  | `finality_authority` | [`Option<LaneFinalityAuthorityV1>`](#option-lanefinalityauthorityv1) |
   | `da_commitment_hash` | [`Option<HashOf<DaCommitmentBundle>>`](#option-hashof-dacommitmentbundle) |
   | `lane_block_descriptor_hash` | [`Option<Hash>`](#option-hash) |
   | `settlement_commitment` | [`LaneBlockCommitment`](#laneblockcommitment) |
@@ -6288,8 +6897,8 @@
   | --: | :-- |
   | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
   | `lane_id` | [`LaneId`](#laneid) |
+  | `lane_incarnation` | [`Hash`](#hash) |
   | `block_height` | `u64` |
-  | `settlement_hash` | [`HashOf<LaneBlockCommitment>`](#hashof-laneblockcommitment) |
 
 ## `LaneSettlementReceipt` {#lanesettlementreceipt}
 
@@ -6427,6 +7036,17 @@
   | `max_cycles` | `u64` |
   | `upper_bound` | `u64` |
 
+## `MergeCarrierCommitmentV1` {#mergecarriercommitmentv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u16` |
+  | `entry_hash` | [`HashOf<MergeLedgerEntry>`](#hashof-mergeledgerentry) |
+
 ## `MergeExecutionBatch` {#mergeexecutionbatch}
 
 **Type:** Struct
@@ -6478,7 +7098,7 @@
   | `prepare_qc` | [`LaneBlockQcV1`](#laneblockqcv1) |
   | `commit_qc` | [`LaneBlockQcV1`](#laneblockqcv1) |
   | `signer_proofs` | [`Vec<MergeLaneSignerProof>`](#vec-mergelanesignerproof) |
-  | `autonomous_chain_id_hash` | [`Hash`](#hash) |
+  | `autonomous_network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
   | `autonomous_epoch` | `u64` |
   | `autonomous_payload_hash` | [`Hash`](#hash) |
   | `entrypoint_hashes` | [`Vec<Hash>`](#vec-hash) |
@@ -6490,6 +7110,17 @@
   | `results` | [`Vec<TransactionResult>`](#vec-transactionresult) |
   | `settlement_commitment` | [`LaneBlockCommitment`](#laneblockcommitment) |
   | `settlement_hash` | [`HashOf<LaneBlockCommitment>`](#hashof-laneblockcommitment) |
+  | `fastpq_transcripts` | [`MergeLaneFastpqTranscripts`](#mergelanefastpqtranscripts) |
+
+## `MergeLaneFastpqTranscripts` {#mergelanefastpqtranscripts}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `fastpq_transcripts` | [`Vec<TransferTranscriptBundle>`](#vec-transfertranscriptbundle) |
 
 ## `MergeLaneSignerProof` {#mergelanesignerproof}
 
@@ -6541,7 +7172,6 @@
   | `merge_qc` | [`MergeQuorumCertificate`](#mergequorumcertificate) |
   | `execution_batch` | [`Option<MergeExecutionBatch>`](#option-mergeexecutionbatch) |
   | `lane_drain_certificates` | [`Vec<LaneDrainCertificateV1>`](#vec-lanedraincertificatev1) |
-  | `queue_plan_admissions` | [`Vec<Vec<u8>>`](#vec-vec-u8) |
 
 ## `MergeLedgerEvent` {#mergeledgerevent}
 
@@ -6575,7 +7205,7 @@
   | `epoch_id` | `u64` |
   | `carrier_height` | `u64` |
   | `carrier_parent_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
-  | `chain_id_digest` | [`Hash`](#hash) |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
   | `validator_set_hash_version` | `u16` |
   | `validator_set_hash` | [`HashOf<Vec<PeerId>>`](#hashof-vec-peerid) |
   | `validator_set` | [`Vec<PeerId>`](#vec-peerid) |
@@ -6606,6 +7236,17 @@
   | `leaf_index` | `u32` |
   | `audit_path` | [`Vec<Option<HashOf<Array<u8, 32>>>>`](#vec-option-hashof-array-u8-32) |
 
+## `MerkleProof<LaneFinalityStatement>` {#merkleproof-lanefinalitystatement}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `leaf_index` | `u32` |
+  | `audit_path` | [`Vec<Option<HashOf<LaneFinalityStatement>>>`](#vec-option-hashof-lanefinalitystatement) |
+
 ## `MerkleProof<TransactionEntrypoint>` {#merkleproof-transactionentrypoint}
 
 **Type:** Struct
@@ -6630,21 +7271,32 @@
 
 ## `MerkleTree<SignedTransaction>` {#merkletree-signedtransaction}
 
-**Type:** Vec
+**Type:** Tuple
 
-**Value:** [`HashOf<SignedTransaction>`](#hashof-signedtransaction)
+**Values:** (`u8`, [`Vec<HashOf<SignedTransaction>>`](#vec-hashof-signedtransaction))
 
 ## `MerkleTree<TransactionEntrypoint>` {#merkletree-transactionentrypoint}
 
-**Type:** Vec
+**Type:** Tuple
 
-**Value:** [`HashOf<TransactionEntrypoint>`](#hashof-transactionentrypoint)
+**Values:** (`u8`, [`Vec<HashOf<TransactionEntrypoint>>`](#vec-hashof-transactionentrypoint))
 
 ## `MerkleTree<TransactionResult>` {#merkletree-transactionresult}
 
-**Type:** Vec
+**Type:** Tuple
 
-**Value:** [`HashOf<TransactionResult>`](#hashof-transactionresult)
+**Values:** (`u8`, [`Vec<HashOf<TransactionResult>>`](#vec-hashof-transactionresult))
+
+## `MerkleTreeCommitment<LaneFinalityStatement>` {#merkletreecommitment-lanefinalitystatement}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `root` | [`HashOf<MerkleTree<LaneFinalityStatement>>`](#hashof-merkletree-lanefinalitystatement) |
+  | `leaf_count` | [`NonZero<u64>`](#nonzero-u64) |
 
 ## `Metadata` {#metadata}
 
@@ -6736,44 +7388,6 @@
   | `key` | [`Name`](#name) |
   | `value` | [`Json`](#json) |
 
-## `MicropaymentCreditSnapshot` {#micropaymentcreditsnapshot}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `deterministic_charge` | [`Quantity`](#quantity) |
-  | `credit_generated` | [`Quantity`](#quantity) |
-  | `credit_applied` | [`Quantity`](#quantity) |
-  | `credit_carry` | [`Quantity`](#quantity) |
-  | `outstanding` | [`Quantity`](#quantity) |
-
-## `MicropaymentSampleStatus` {#micropaymentsamplestatus}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `provider_id_hex` | `String` |
-  | `credits` | [`MicropaymentCreditSnapshot`](#micropaymentcreditsnapshot) |
-  | `tickets` | [`MicropaymentTicketCounters`](#micropaymentticketcounters) |
-
-## `MicropaymentTicketCounters` {#micropaymentticketcounters}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `processed` | `u64` |
-  | `won` | `u64` |
-  | `duplicate` | `u64` |
-
 ## `MintabilityError` {#mintabilityerror}
 
 **Type:** Enum
@@ -6846,7 +7460,8 @@
   | `registration_deadline_unix_ms` | `u64` |
   | `acceptance_deadline_unix_ms` | `u64` |
   | `commit_deadline_unix_ms` | `u64` |
-  | `challenge_deadline_unix_ms` | `u64` |
+  | `challenge_submission_deadline_unix_ms` | `u64` |
+  | `challenge_resolution_deadline_unix_ms` | `u64` |
   | `reveal_deadline_unix_ms` | `u64` |
   | `policy_digest` | [`Array<u8, 32>`](#array-u8-32) |
 
@@ -6923,7 +7538,8 @@
   | `jurors` | [`Vec<AccountId>`](#vec-accountid) |
   | `quorum` | `u16` |
   | `commit_deadline_unix_ms` | `u64` |
-  | `challenge_deadline_unix_ms` | `u64` |
+  | `challenge_submission_deadline_unix_ms` | `u64` |
+  | `challenge_resolution_deadline_unix_ms` | `u64` |
   | `reveal_deadline_unix_ms` | `u64` |
   | `policy_digest` | [`Array<u8, 32>`](#array-u8-32) |
 
@@ -6938,6 +7554,22 @@
   | `open` | &mdash; | 0 |
   | `challenged` | &mdash; | 1 |
   | `finalized` | &mdash; | 2 |
+
+## `ModerationChallengeBondV1` {#moderationchallengebondv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `amount` | [`Quantity`](#quantity) |
+  | `escrow_account` | [`AccountId`](#accountid) |
+  | `slash_receiver_account` | [`AccountId`](#accountid) |
+  | `refunded_amount` | [`Quantity`](#quantity) |
+  | `slashed_amount` | [`Quantity`](#quantity) |
+  | `settled_at_unix_ms` | [`Option<u64>`](#option-u64) |
 
 ## `ModerationChallengeDecisionV1` {#moderationchallengedecisionv1}
 
@@ -6983,6 +7615,7 @@
   | `evidence_digest` | [`Array<u8, 32>`](#array-u8-32) |
   | `reason` | `String` |
   | `raised_at_unix_ms` | `u64` |
+  | `bond` | [`ModerationChallengeBondV1`](#moderationchallengebondv1) |
   | `decision` | [`Option<ModerationChallengeDecisionV1>`](#option-moderationchallengedecisionv1) |
   | `resolved_by` | [`Option<AccountId>`](#option-accountid) |
   | `resolved_at_unix_ms` | [`Option<u64>`](#option-u64) |
@@ -7163,6 +7796,12 @@
   | `version` | `u16` |
   | `revision` | `u64` |
   | `predecessor_policy_digest` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
+  | `challenge_voting_asset_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `challenge_bond_amount` | [`Quantity`](#quantity) |
+  | `challenge_escrow_account` | [`AccountId`](#accountid) |
+  | `challenge_slash_receiver_account` | [`AccountId`](#accountid) |
+  | `challenge_rejected_slash_bps` | `u16` |
+  | `challenge_resolution_grace_ms` | `u64` |
   | `max_panel_size` | `u16` |
   | `max_candidate_pool_size` | `u16` |
   | `max_waitlist_size` | `u16` |
@@ -7347,6 +7986,17 @@
   | `Propose` | [`MultisigPropose`](#multisigpropose) | 1 |
   | `Approve` | [`MultisigApprove`](#multisigapprove) | 2 |
   | `Cancel` | [`MultisigCancel`](#multisigcancel) | 3 |
+  | `InvalidateOutstanding` | [`MultisigInvalidateOutstanding`](#multisiginvalidateoutstanding) | 4 |
+
+## `MultisigInvalidateOutstanding` {#multisiginvalidateoutstanding}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `account` | [`AccountId`](#accountid) |
 
 ## `MultisigMember` {#multisigmember}
 
@@ -7442,7 +8092,7 @@
   | `quorum` | [`NonZero<u16>`](#nonzero-u16) |
   | `transaction_ttl_ms` | [`NonZero<u64>`](#nonzero-u64) |
 
-## `MusubiArchiveRef` {#musubiarchiveref}
+## `MusubiAbiBindingV1` {#musubiabibindingv1}
 
 **Type:** Struct
 
@@ -7450,12 +8100,21 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `sorafs_manifest` | [`ManifestDigest`](#manifestdigest) |
-  | `archive_hash_blake3_256` | [`Array<u8, 32>`](#array-u8-32) |
-  | `source_bytes` | `u64` |
-  | `source_file_count` | `u32` |
+  | `abi_version` | `u16` |
+  | `abi_hash` | [`Array<u8, 32>`](#array-u8-32) |
 
-## `MusubiDappLink` {#musubidapplink}
+## `MusubiAliasHistoryActionV1` {#musubialiashistoryactionv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Registered` | &mdash; | 0 |
+  | `ParliamentRetarget` | &mdash; | 1 |
+
+## `MusubiAliasHistoryEntryV1` {#musubialiashistoryentryv1}
 
 **Type:** Struct
 
@@ -7463,10 +8122,342 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `namespace` | [`MusubiNamespace`](#musubinamespace) |
-  | `contracts` | [`Vec<ContractAlias>`](#vec-contractalias) |
+  | `alias` | [`MusubiAliasNameV1`](#musubialiasnamev1) |
+  | `revision` | `u64` |
+  | `action` | [`MusubiAliasHistoryActionV1`](#musubialiashistoryactionv1) |
+  | `previous_target` | [`Option<MusubiPackageIdV1>`](#option-musubipackageidv1) |
+  | `target` | [`MusubiPackageIdV1`](#musubipackageidv1) |
+  | `governance_action` | [`Option<MusubiGovernanceActionDigestV1>`](#option-musubigovernanceactiondigestv1) |
+  | `finalized_height` | `u64` |
 
-## `MusubiDependency` {#musubidependency}
+## `MusubiAliasHistoryPageV1` {#musubialiashistorypagev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `query` | [`MusubiAliasQueryV1`](#musubialiasqueryv1) |
+  | `items` | [`Vec<MusubiAliasHistoryEntryV1>`](#vec-musubialiashistoryentryv1) |
+  | `next_cursor` | [`Option<MusubiFinalizedCursorV1>`](#option-musubifinalizedcursorv1) |
+  | `snapshot` | [`MusubiRegistrySnapshotV1`](#musubiregistrysnapshotv1) |
+
+## `MusubiAliasNameV1` {#musubialiasnamev1}
+
+**Type:** Alias
+
+**To:** `String`
+
+## `MusubiAliasQueryV1` {#musubialiasqueryv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `alias` | [`MusubiAliasNameV1`](#musubialiasnamev1) |
+  | `page` | [`MusubiPageRequestV1`](#musubipagerequestv1) |
+
+## `MusubiAliasRecordV1` {#musubialiasrecordv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `alias` | [`MusubiAliasNameV1`](#musubialiasnamev1) |
+  | `target` | [`MusubiPackageIdV1`](#musubipackageidv1) |
+  | `registered_by` | [`AccountId`](#accountid) |
+  | `pricing_revision` | `u64` |
+  | `paid_xor` | `u64` |
+  | `registered_at_height` | `u64` |
+  | `history_revision` | `u64` |
+
+## `MusubiArchiveAvailabilityV1` {#musubiarchiveavailabilityv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `archive_id` | [`ArchiveId`](#archiveid) |
+  | `availability` | [`MusubiStorageAvailabilityV1`](#musubistorageavailabilityv1) |
+  | `healthy_replicas` | `u16` |
+  | `active_locations` | `u8` |
+  | `finalized_height` | `u64` |
+  | `finalized_block_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `index_revision` | `u64` |
+
+## `MusubiArchiveCommitmentV1` {#musubiarchivecommitmentv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `root_cid` | [`ManifestRootCid`](#manifestrootcid) |
+  | `chunker` | [`ChunkerProfileHandle`](#chunkerprofilehandle) |
+  | `chunk_plan_digest` | [`MusubiContentDigestV1`](#musubicontentdigestv1) |
+  | `por_root` | [`MusubiContentDigestV1`](#musubicontentdigestv1) |
+  | `content_length` | `u64` |
+  | `car_digest` | [`MusubiContentDigestV1`](#musubicontentdigestv1) |
+  | `car_size` | `u64` |
+  | `bundle_digest` | [`MusubiContentDigestV1`](#musubicontentdigestv1) |
+  | `source_tree_digest` | [`MusubiContentDigestV1`](#musubicontentdigestv1) |
+  | `descriptor_digest` | [`MusubiContentDigestV1`](#musubicontentdigestv1) |
+  | `file_count` | `u32` |
+  | `chunk_count` | `u32` |
+
+## `MusubiArchiveLocationEventV1` {#musubiarchivelocationeventv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `location` | [`MusubiArchiveLocationKeyV1`](#musubiarchivelocationkeyv1) |
+  | `pin_manifest` | [`ManifestDigest`](#manifestdigest) |
+  | `replication_order` | [`ReplicationOrderId`](#replicationorderid) |
+  | `provider_attestation_set_digest` | [`MusubiProviderBundleAttestationSetDigestV1`](#musubiproviderbundleattestationsetdigestv1) |
+  | `provider_count` | `u8` |
+  | `transition` | [`MusubiArchiveLocationTransitionV1`](#musubiarchivelocationtransitionv1) |
+  | `state` | [`MusubiArchiveLocationStateV1`](#musubiarchivelocationstatev1) |
+  | `revision` | `u64` |
+  | `finalized_height` | `u64` |
+
+## `MusubiArchiveLocationIdV1` {#musubiarchivelocationidv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `MusubiArchiveLocationKeyV1` {#musubiarchivelocationkeyv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `archive_id` | [`ArchiveId`](#archiveid) |
+  | `location_id` | [`MusubiArchiveLocationIdV1`](#musubiarchivelocationidv1) |
+
+## `MusubiArchiveLocationPageV1` {#musubiarchivelocationpagev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `archive` | [`MusubiArchiveRecordV1`](#musubiarchiverecordv1) |
+  | `items` | [`Vec<MusubiArchiveLocationV1>`](#vec-musubiarchivelocationv1) |
+  | `next_cursor` | [`Option<MusubiFinalizedCursorV1>`](#option-musubifinalizedcursorv1) |
+  | `snapshot` | [`MusubiRegistrySnapshotV1`](#musubiregistrysnapshotv1) |
+
+## `MusubiArchiveLocationQueryV1` {#musubiarchivelocationqueryv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `archive_id` | [`ArchiveId`](#archiveid) |
+  | `page` | [`MusubiPageRequestV1`](#musubipagerequestv1) |
+
+## `MusubiArchiveLocationStateV1` {#musubiarchivelocationstatev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Pending` | &mdash; | 0 |
+  | `Healthy` | &mdash; | 1 |
+  | `Degraded` | &mdash; | 2 |
+  | `Retired` | &mdash; | 3 |
+
+## `MusubiArchiveLocationTransitionV1` {#musubiarchivelocationtransitionv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Added` | &mdash; | 0 |
+  | `Renewed` | &mdash; | 1 |
+  | `Retired` | &mdash; | 2 |
+  | `EvidenceRefreshed` | &mdash; | 3 |
+
+## `MusubiArchiveLocationV1` {#musubiarchivelocationv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `location_id` | [`MusubiArchiveLocationIdV1`](#musubiarchivelocationidv1) |
+  | `archive_id` | [`ArchiveId`](#archiveid) |
+  | `pin_manifest` | [`ManifestDigest`](#manifestdigest) |
+  | `replication_order` | [`ReplicationOrderId`](#replicationorderid) |
+  | `providers` | [`Vec<ProviderId>`](#vec-providerid) |
+  | `provider_attestation_set_digest` | [`MusubiProviderBundleAttestationSetDigestV1`](#musubiproviderbundleattestationsetdigestv1) |
+  | `renew_after_epoch` | `u64` |
+  | `expires_at_epoch` | `u64` |
+  | `finalized_height` | `u64` |
+  | `revision` | `u64` |
+  | `state` | [`MusubiArchiveLocationStateV1`](#musubiarchivelocationstatev1) |
+
+## `MusubiArchiveRecordV1` {#musubiarchiverecordv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `archive_id` | [`ArchiveId`](#archiveid) |
+  | `commitment` | [`MusubiArchiveCommitmentV1`](#musubiarchivecommitmentv1) |
+  | `staging_receipt` | [`MusubiSeedIngressReceiptV1`](#musubiseedingressreceiptv1) |
+  | `registered_by` | [`AccountId`](#accountid) |
+  | `registered_at_height` | `u64` |
+  | `location_revision` | `u64` |
+  | `location_ids` | [`Vec<MusubiArchiveLocationIdV1>`](#vec-musubiarchivelocationidv1) |
+
+## `MusubiArchiveRegisteredEventV1` {#musubiarchiveregisteredeventv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `archive_id` | [`ArchiveId`](#archiveid) |
+  | `registered_by` | [`AccountId`](#accountid) |
+  | `location_revision` | `u64` |
+  | `finalized_height` | `u64` |
+
+## `MusubiArchiveRetentionDecisionV1` {#musubiarchiveretentiondecisionv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `archive_id` | [`ArchiveId`](#archiveid) |
+  | `disposition` | [`MusubiArchiveRetentionDispositionV1`](#musubiarchiveretentiondispositionv1) |
+  | `active_releases` | `u16` |
+  | `yanked_releases` | `u16` |
+  | `taken_down_releases` | `u16` |
+  | `storage` | [`Option<MusubiArchiveAvailabilityV1>`](#option-musubiarchiveavailabilityv1) |
+
+## `MusubiArchiveRetentionDispositionV1` {#musubiarchiveretentiondispositionv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `RetainUnknown` | &mdash; | 0 |
+  | `RetainReferenced` | &mdash; | 1 |
+  | `PruneUnreferenced` | &mdash; | 2 |
+  | `PruneGovernedTakedown` | &mdash; | 3 |
+
+## `MusubiArchiveRetentionPageV1` {#musubiarchiveretentionpagev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `items` | [`Vec<MusubiArchiveRetentionDecisionV1>`](#vec-musubiarchiveretentiondecisionv1) |
+  | `snapshot` | [`MusubiRegistrySnapshotV1`](#musubiregistrysnapshotv1) |
+  | `finalized_time_ms` | `u64` |
+
+## `MusubiArchiveRetentionQueryV1` {#musubiarchiveretentionqueryv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `archive_ids` | [`Vec<ArchiveId>`](#vec-archiveid) |
+  | `expected_snapshot` | [`Option<MusubiRegistrySnapshotV1>`](#option-musubiregistrysnapshotv1) |
+
+## `MusubiArtifactGovernanceStateV1` {#musubiartifactgovernancestatev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Available` | &mdash; | 0 |
+  | `TakenDown` | [`MusubiArtifactTakedownV1`](#musubiartifacttakedownv1) | 1 |
+
+## `MusubiArtifactTakedownEventV1` {#musubiartifacttakedowneventv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `release` | [`MusubiReleaseIdV1`](#musubireleaseidv1) |
+  | `archive_id` | [`ArchiveId`](#archiveid) |
+  | `action_digest` | [`MusubiGovernanceActionDigestV1`](#musubigovernanceactiondigestv1) |
+  | `governance_revision` | `u64` |
+  | `finalized_height` | `u64` |
+
+## `MusubiArtifactTakedownV1` {#musubiartifacttakedownv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `action_digest` | [`MusubiGovernanceActionDigestV1`](#musubigovernanceactiondigestv1) |
+  | `reason` | [`MusubiReasonV1`](#musubireasonv1) |
+  | `applied_at_height` | `u64` |
+
+## `MusubiComparatorOpV1` {#musubicomparatoropv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Greater` | &mdash; | 0 |
+  | `GreaterOrEqual` | &mdash; | 1 |
+  | `Less` | &mdash; | 2 |
+  | `LessOrEqual` | &mdash; | 3 |
+  | `Equal` | &mdash; | 4 |
+
+## `MusubiContentDigestV1` {#musubicontentdigestv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `MusubiDependencyReqV1` {#musubidependencyreqv1}
 
 **Type:** Struct
 
@@ -7475,74 +8466,22 @@
   | Field name | Field value |
   | --: | :-- |
   | `alias` | [`Name`](#name) |
-  | `package` | [`MusubiPackageRef`](#musubipackageref) |
+  | `package` | [`MusubiPackageIdV1`](#musubipackageidv1) |
+  | `requirement` | [`MusubiVersionReqV1`](#musubiversionreqv1) |
 
-## `MusubiNamespace` {#musubinamespace}
-
-**Type:** Alias
-
-**To:** `String`
-
-## `MusubiPackageId` {#musubipackageid}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `namespace` | [`MusubiNamespace`](#musubinamespace) |
-  | `name` | [`MusubiPackageName`](#musubipackagename) |
-
-## `MusubiPackageName` {#musubipackagename}
+## `MusubiDescriptionV1` {#musubidescriptionv1}
 
 **Type:** Alias
 
 **To:** `String`
 
-## `MusubiPackageRef` {#musubipackageref}
+## `MusubiDocumentRefV1` {#musubidocumentrefv1}
 
-**Type:** Struct
+**Type:** Alias
 
-**Declarations:**
+**To:** `String`
 
-  | Field name | Field value |
-  | --: | :-- |
-  | `package` | [`MusubiPackageId`](#musubipackageid) |
-  | `version` | [`MusubiVersion`](#musubiversion) |
-
-## `MusubiPackageSummary` {#musubipackagesummary}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `package` | [`MusubiPackageId`](#musubipackageid) |
-  | `latest_active` | [`Option<MusubiVersion>`](#option-musubiversion) |
-  | `release_count` | `u32` |
-  | `yanked_count` | `u32` |
-
-## `MusubiRelease` {#musubirelease}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `package` | [`MusubiPackageRef`](#musubipackageref) |
-  | `archive` | [`MusubiArchiveRef`](#musubiarchiveref) |
-  | `source_archive_plan` | [`Option<MusubiSourceArchivePlan>`](#option-musubisourcearchiveplan) |
-  | `dependencies` | [`Vec<MusubiDependency>`](#vec-musubidependency) |
-  | `exports` | [`Vec<Name>`](#vec-name) |
-  | `dapp` | [`Option<MusubiDappLink>`](#option-musubidapplink) |
-  | `published_by` | [`AccountId`](#accountid) |
-  | `published_at_ms` | `u64` |
-  | `status` | [`MusubiReleaseStatus`](#musubireleasestatus) |
-
-## `MusubiReleaseStatus` {#musubireleasestatus}
+## `MusubiEvent` {#musubievent}
 
 **Type:** Enum
 
@@ -7550,40 +8489,28 @@
 
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
-  | `Active` | &mdash; | 0 |
-  | `Yanked` | [`MusubiYankInfo`](#musubiyankinfo) | 1 |
+  | `NamespaceBound` | [`MusubiNamespaceBindingV1`](#musubinamespacebindingv1) | 0 |
+  | `PackageClaimed` | [`MusubiPackageClaimedEventV1`](#musubipackageclaimedeventv1) | 1 |
+  | `ReleasePublished` | [`MusubiReleasePublishedEventV1`](#musubireleasepublishedeventv1) | 2 |
+  | `ReleaseYankChanged` | [`MusubiReleaseYankEventV1`](#musubireleaseyankeventv1) | 3 |
+  | `PackageMetadataChanged` | [`MusubiPackageMetadataRecordV1`](#musubipackagemetadatarecordv1) | 4 |
+  | `MaintainerInvited` | [`MusubiMaintainerInvitationV1`](#musubimaintainerinvitationv1) | 5 |
+  | `MaintainerAccepted` | [`MusubiPackageMemberV1`](#musubipackagememberv1) | 6 |
+  | `MaintainerInvitationExpired` | [`MusubiMaintainerInvitationLifecycleEventV1`](#musubimaintainerinvitationlifecycleeventv1) | 7 |
+  | `MaintainerInvitationRevoked` | [`MusubiMaintainerInvitationLifecycleEventV1`](#musubimaintainerinvitationlifecycleeventv1) | 8 |
+  | `MaintainerRoleChanged` | [`MusubiPackageMemberV1`](#musubipackagememberv1) | 9 |
+  | `MaintainerRemoved` | [`MusubiPackageMemberRemovedEventV1`](#musubipackagememberremovedeventv1) | 10 |
+  | `PackageRecovered` | [`MusubiPackageRecoveredEventV1`](#musubipackagerecoveredeventv1) | 11 |
+  | `AliasRegistered` | [`MusubiAliasHistoryEntryV1`](#musubialiashistoryentryv1) | 12 |
+  | `AliasRetargeted` | [`MusubiAliasHistoryEntryV1`](#musubialiashistoryentryv1) | 13 |
+  | `ArchiveRegistered` | [`MusubiArchiveRegisteredEventV1`](#musubiarchiveregisteredeventv1) | 14 |
+  | `ProviderBundleAttestationRegistered` | [`MusubiProviderBundleAttestationRegisteredEventV1`](#musubiproviderbundleattestationregisteredeventv1) | 15 |
+  | `ArchiveLocationChanged` | [`MusubiArchiveLocationEventV1`](#musubiarchivelocationeventv1) | 16 |
+  | `ArchiveAvailabilityChanged` | [`MusubiArchiveAvailabilityV1`](#musubiarchiveavailabilityv1) | 17 |
+  | `ArtifactTakenDown` | [`MusubiArtifactTakedownEventV1`](#musubiartifacttakedowneventv1) | 18 |
+  | `RegistryPolicyChanged` | [`MusubiRegistryPolicyEventV1`](#musubiregistrypolicyeventv1) | 19 |
 
-## `MusubiReleaseSummary` {#musubireleasesummary}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `package` | [`MusubiPackageRef`](#musubipackageref) |
-  | `archive` | [`MusubiArchiveRef`](#musubiarchiveref) |
-  | `status` | [`MusubiReleaseStatus`](#musubireleasestatus) |
-  | `exports` | [`Vec<Name>`](#vec-name) |
-  | `published_by` | [`AccountId`](#accountid) |
-  | `published_at_ms` | `u64` |
-
-## `MusubiSourceArchivePlan` {#musubisourcearchiveplan}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `payload_hash_blake3_256` | [`Array<u8, 32>`](#array-u8-32) |
-  | `content_length` | `u64` |
-  | `car_hash_blake3_256` | [`Array<u8, 32>`](#array-u8-32) |
-  | `car_size` | `u64` |
-  | `chunks` | [`Vec<MusubiSourceChunkPlan>`](#vec-musubisourcechunkplan) |
-  | `files` | [`Vec<MusubiSourceFilePlan>`](#vec-musubisourcefileplan) |
-
-## `MusubiSourceChunkPlan` {#musubisourcechunkplan}
+## `MusubiEventFilter` {#musubieventfilter}
 
 **Type:** Struct
 
@@ -7591,11 +8518,43 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `offset` | `u64` |
-  | `length` | `u32` |
-  | `digest_blake3_256` | [`Array<u8, 32>`](#array-u8-32) |
+  | `package_matcher` | [`Option<MusubiPackageIdV1>`](#option-musubipackageidv1) |
+  | `archive_matcher` | [`Option<ArchiveId>`](#option-archiveid) |
+  | `alias_matcher` | [`Option<MusubiAliasNameV1>`](#option-musubialiasnamev1) |
+  | `event_set` | [`MusubiEventSet`](#musubieventset) |
 
-## `MusubiSourceFilePlan` {#musubisourcefileplan}
+## `MusubiEventSet` {#musubieventset}
+
+**Type:** Bitmap
+
+**Repr:** u32
+
+**Masks:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `NamespaceBound` | `0x1` |
+  | `PackageClaimed` | `0x2` |
+  | `ReleasePublished` | `0x4` |
+  | `ReleaseYankChanged` | `0x8` |
+  | `PackageMetadataChanged` | `0x10` |
+  | `MaintainerInvited` | `0x20` |
+  | `MaintainerAccepted` | `0x40` |
+  | `MaintainerInvitationExpired` | `0x80` |
+  | `MaintainerInvitationRevoked` | `0x100` |
+  | `MaintainerRoleChanged` | `0x200` |
+  | `MaintainerRemoved` | `0x400` |
+  | `PackageRecovered` | `0x800` |
+  | `AliasRegistered` | `0x1000` |
+  | `AliasRetargeted` | `0x2000` |
+  | `ArchiveRegistered` | `0x4000` |
+  | `ProviderBundleAttestationRegistered` | `0x8000` |
+  | `ArchiveLocationChanged` | `0x10000` |
+  | `ArchiveAvailabilityChanged` | `0x20000` |
+  | `ArtifactTakenDown` | `0x40000` |
+  | `RegistryPolicyChanged` | `0x80000` |
+
+## `MusubiExactPackageQueryV1` {#musubiexactpackagequeryv1}
 
 **Type:** Struct
 
@@ -7603,18 +8562,97 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `path` | [`Vec<String>`](#vec-string) |
-  | `first_chunk` | `u32` |
-  | `chunk_count` | `u32` |
-  | `size` | `u64` |
+  | `package` | [`MusubiPackageIdV1`](#musubipackageidv1) |
 
-## `MusubiVersion` {#musubiversion}
+## `MusubiExactReleaseQueryV1` {#musubiexactreleasequeryv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `release` | [`MusubiReleaseIdV1`](#musubireleaseidv1) |
+
+## `MusubiExactReleaseSnapshotV1` {#musubiexactreleasesnapshotv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `snapshot` | [`MusubiRegistrySnapshotV1`](#musubiregistrysnapshotv1) |
+  | `home_release` | [`MusubiReleaseRecordV1`](#musubireleaserecordv1) |
+  | `universal_release` | [`MusubiResolverReleaseRowV1`](#musubiresolverreleaserowv1) |
+
+## `MusubiFinalizedCursorV1` {#musubifinalizedcursorv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `snapshot` | [`MusubiRegistrySnapshotV1`](#musubiregistrysnapshotv1) |
+  | `query_hash` | [`MusubiQueryHashV1`](#musubiqueryhashv1) |
+  | `last_key` | `String` |
+  | `caller` | [`Option<AccountId>`](#option-accountid) |
+
+## `MusubiGovernanceActionDigestV1` {#musubigovernanceactiondigestv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `MusubiInvitationStateV1` {#musubiinvitationstatev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Pending` | &mdash; | 0 |
+  | `Accepted` | &mdash; | 1 |
+  | `Revoked` | &mdash; | 2 |
+  | `Expired` | &mdash; | 3 |
+
+## `MusubiInviteIdV1` {#musubiinviteidv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `MusubiKeywordV1` {#musubikeywordv1}
 
 **Type:** Alias
 
 **To:** `String`
 
-## `MusubiYankInfo` {#musubiyankinfo}
+## `MusubiKotodamaEditionV1` {#musubikotodamaeditionv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `V1` | &mdash; | 0 |
+
+## `MusubiMaintainerDirectoryEntryV1` {#musubimaintainerdirectoryentryv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Accepted` | [`MusubiPackageMemberV1`](#musubipackagememberv1) | 0 |
+  | `PendingInvitation` | [`MusubiMaintainerInvitationV1`](#musubimaintainerinvitationv1) | 1 |
+
+## `MusubiMaintainerInvitationLifecycleEventV1` {#musubimaintainerinvitationlifecycleeventv1}
 
 **Type:** Struct
 
@@ -7622,8 +8660,778 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `reason` | `String` |
-  | `yanked_at_ms` | `u64` |
+  | `package` | [`MusubiPackageIdV1`](#musubipackageidv1) |
+  | `invite_id` | [`MusubiInviteIdV1`](#musubiinviteidv1) |
+  | `invited_account` | [`AccountId`](#accountid) |
+  | `governance_revision` | `u64` |
+  | `finalized_height` | `u64` |
+
+## `MusubiMaintainerInvitationV1` {#musubimaintainerinvitationv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `invite_id` | [`MusubiInviteIdV1`](#musubiinviteidv1) |
+  | `package` | [`MusubiPackageIdV1`](#musubipackageidv1) |
+  | `invited_by` | [`AccountId`](#accountid) |
+  | `invited_account` | [`AccountId`](#accountid) |
+  | `role` | [`MusubiPackageRoleV1`](#musubipackagerolev1) |
+  | `expected_governance_revision` | `u64` |
+  | `expires_at_height` | `u64` |
+  | `state` | [`MusubiInvitationStateV1`](#musubiinvitationstatev1) |
+
+## `MusubiMaintainerPageV1` {#musubimaintainerpagev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `query` | [`MusubiPackagePageQueryV1`](#musubipackagepagequeryv1) |
+  | `items` | [`Vec<MusubiMaintainerDirectoryEntryV1>`](#vec-musubimaintainerdirectoryentryv1) |
+  | `next_cursor` | [`Option<MusubiFinalizedCursorV1>`](#option-musubifinalizedcursorv1) |
+  | `snapshot` | [`MusubiRegistrySnapshotV1`](#musubiregistrysnapshotv1) |
+
+## `MusubiMaintainerPermissionsV1` {#musubimaintainerpermissionsv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `publish` | `bool` |
+  | `yank` | `bool` |
+  | `metadata` | `bool` |
+  | `archive_locations` | `bool` |
+
+## `MusubiMinorWildcardV1` {#musubiminorwildcardv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `major` | `u64` |
+  | `minor` | `u64` |
+
+## `MusubiNamespaceBindingDigestV1` {#musubinamespacebindingdigestv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `MusubiNamespaceBindingV1` {#musubinamespacebindingv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `namespace` | [`MusubiNamespaceV1`](#musubinamespacev1) |
+  | `home_dataspace` | [`DataSpaceId`](#dataspaceid) |
+  | `scope` | [`MusubiPackageScopeV1`](#musubipackagescopev1) |
+  | `generation` | `u64` |
+
+## `MusubiNamespaceV1` {#musubinamespacev1}
+
+**Type:** Alias
+
+**To:** `String`
+
+## `MusubiOrderedPackageEntryV1` {#musubiorderedpackageentryv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `selector` | [`MusubiPackageSelectorV1`](#musubipackageselectorv1) |
+  | `package` | [`MusubiPackageIdV1`](#musubipackageidv1) |
+  | `latest_selectable` | [`Option<MusubiVersionV1>`](#option-musubiversionv1) |
+  | `metadata_revision` | `u64` |
+  | `index_revision` | `u64` |
+
+## `MusubiOrderedPackagePageV1` {#musubiorderedpackagepagev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `query` | [`MusubiOrderedPrefixQueryV1`](#musubiorderedprefixqueryv1) |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `namespace_binding` | [`MusubiNamespaceBindingV1`](#musubinamespacebindingv1) |
+  | `items` | [`Vec<MusubiOrderedPackageEntryV1>`](#vec-musubiorderedpackageentryv1) |
+  | `next_cursor` | [`Option<MusubiFinalizedCursorV1>`](#option-musubifinalizedcursorv1) |
+  | `snapshot` | [`MusubiRegistrySnapshotV1`](#musubiregistrysnapshotv1) |
+
+## `MusubiOrderedPrefixQueryV1` {#musubiorderedprefixqueryv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `prefix` | [`MusubiOrderedPrefixV1`](#musubiorderedprefixv1) |
+  | `page` | [`MusubiPageRequestV1`](#musubipagerequestv1) |
+
+## `MusubiOrderedPrefixV1` {#musubiorderedprefixv1}
+
+**Type:** Alias
+
+**To:** `String`
+
+## `MusubiPackageClaimedEventV1` {#musubipackageclaimedeventv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `package` | [`MusubiPackageIdV1`](#musubipackageidv1) |
+  | `namespace` | [`MusubiNamespaceV1`](#musubinamespacev1) |
+  | `claimed_by` | [`AccountId`](#accountid) |
+  | `governance_revision` | `u64` |
+  | `finalized_height` | `u64` |
+
+## `MusubiPackageIdV1` {#musubipackageidv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `home_dataspace` | [`DataSpaceId`](#dataspaceid) |
+  | `scope` | [`MusubiPackageScopeV1`](#musubipackagescopev1) |
+  | `name` | [`MusubiPackageNameV1`](#musubipackagenamev1) |
+
+## `MusubiPackageMemberRemovedEventV1` {#musubipackagememberremovedeventv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `package` | [`MusubiPackageIdV1`](#musubipackageidv1) |
+  | `account` | [`AccountId`](#accountid) |
+  | `previous_role` | [`MusubiPackageRoleV1`](#musubipackagerolev1) |
+  | `governance_revision` | `u64` |
+  | `finalized_height` | `u64` |
+
+## `MusubiPackageMemberV1` {#musubipackagememberv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `package` | [`MusubiPackageIdV1`](#musubipackageidv1) |
+  | `account` | [`AccountId`](#accountid) |
+  | `role` | [`MusubiPackageRoleV1`](#musubipackagerolev1) |
+  | `accepted_at_height` | `u64` |
+  | `governance_revision` | `u64` |
+
+## `MusubiPackageMetadataRecordV1` {#musubipackagemetadatarecordv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `package` | [`MusubiPackageIdV1`](#musubipackageidv1) |
+  | `metadata` | [`MusubiReleaseMetadataV1`](#musubireleasemetadatav1) |
+  | `revision` | `u64` |
+  | `changed_by` | [`AccountId`](#accountid) |
+  | `changed_at_height` | `u64` |
+
+## `MusubiPackageNameV1` {#musubipackagenamev1}
+
+**Type:** Alias
+
+**To:** `String`
+
+## `MusubiPackagePageQueryV1` {#musubipackagepagequeryv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `package` | [`MusubiPackageIdV1`](#musubipackageidv1) |
+  | `page` | [`MusubiPageRequestV1`](#musubipagerequestv1) |
+
+## `MusubiPackageRecordV1` {#musubipackagerecordv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `package` | [`MusubiPackageIdV1`](#musubipackageidv1) |
+  | `claimed_namespace` | [`MusubiNamespaceV1`](#musubinamespacev1) |
+  | `claimed_namespace_binding` | [`MusubiNamespaceBindingDigestV1`](#musubinamespacebindingdigestv1) |
+  | `owners` | [`Vec<AccountId>`](#vec-accountid) |
+  | `member_accounts` | [`Vec<AccountId>`](#vec-accountid) |
+  | `claimed_at_height` | `u64` |
+  | `revisions` | [`MusubiPackageRevisionsV1`](#musubipackagerevisionsv1) |
+
+## `MusubiPackageRecoveredEventV1` {#musubipackagerecoveredeventv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `package` | [`MusubiPackageIdV1`](#musubipackageidv1) |
+  | `action_digest` | [`MusubiGovernanceActionDigestV1`](#musubigovernanceactiondigestv1) |
+  | `owner_count` | `u8` |
+  | `governance_revision` | `u64` |
+  | `finalized_height` | `u64` |
+
+## `MusubiPackageRevisionsV1` {#musubipackagerevisionsv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `governance` | `u64` |
+  | `metadata` | `u64` |
+  | `archive_locations` | `u64` |
+
+## `MusubiPackageRoleV1` {#musubipackagerolev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Owner` | &mdash; | 0 |
+  | `Maintainer` | [`MusubiMaintainerPermissionsV1`](#musubimaintainerpermissionsv1) | 1 |
+
+## `MusubiPackageScopeV1` {#musubipackagescopev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `DataspaceRoot` | &mdash; | 0 |
+  | `Domain` | [`Name`](#name) | 1 |
+
+## `MusubiPackageSelectorV1` {#musubipackageselectorv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `namespace` | [`MusubiNamespaceV1`](#musubinamespacev1) |
+  | `name` | [`MusubiPackageNameV1`](#musubipackagenamev1) |
+
+## `MusubiPageRequestV1` {#musubipagerequestv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `limit` | `u32` |
+  | `cursor` | [`Option<MusubiFinalizedCursorV1>`](#option-musubifinalizedcursorv1) |
+
+## `MusubiPrereleaseIdentifierV1` {#musubiprereleaseidentifierv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Numeric` | `u64` | 0 |
+  | `AlphaNumeric` | `String` | 1 |
+
+## `MusubiProviderBundleAttestationDigestV1` {#musubiproviderbundleattestationdigestv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `MusubiProviderBundleAttestationKeyV1` {#musubiproviderbundleattestationkeyv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `archive_id` | [`ArchiveId`](#archiveid) |
+  | `replication_order` | [`ReplicationOrderId`](#replicationorderid) |
+  | `provider_id` | [`ProviderId`](#providerid) |
+
+## `MusubiProviderBundleAttestationRecordV1` {#musubiproviderbundleattestationrecordv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `key` | [`MusubiProviderBundleAttestationKeyV1`](#musubiproviderbundleattestationkeyv1) |
+  | `attestation_digest` | [`MusubiProviderBundleAttestationDigestV1`](#musubiproviderbundleattestationdigestv1) |
+  | `attestation` | [`MusubiProviderBundleVerificationAttestationV1`](#musubiproviderbundleverificationattestationv1) |
+  | `registered_by` | [`AccountId`](#accountid) |
+  | `registered_at_height` | `u64` |
+
+## `MusubiProviderBundleAttestationRegisteredEventV1` {#musubiproviderbundleattestationregisteredeventv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `key` | [`MusubiProviderBundleAttestationKeyV1`](#musubiproviderbundleattestationkeyv1) |
+  | `attestation_digest` | [`MusubiProviderBundleAttestationDigestV1`](#musubiproviderbundleattestationdigestv1) |
+  | `registered_by` | [`AccountId`](#accountid) |
+  | `finalized_height` | `u64` |
+
+## `MusubiProviderBundleAttestationSetDigestV1` {#musubiproviderbundleattestationsetdigestv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `MusubiProviderBundleVerificationApprovalV1` {#musubiproviderbundleverificationapprovalv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `public_key` | [`PublicKey`](#publickey) |
+  | `signature` | [`SignatureOf<MusubiProviderBundleVerificationPayloadV1>`](#signatureof-musubiproviderbundleverificationpayloadv1) |
+
+## `MusubiProviderBundleVerificationAttestationV1` {#musubiproviderbundleverificationattestationv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `payload` | [`MusubiProviderBundleVerificationPayloadV1`](#musubiproviderbundleverificationpayloadv1) |
+  | `approvals` | [`Vec<MusubiProviderBundleVerificationApprovalV1>`](#vec-musubiproviderbundleverificationapprovalv1) |
+
+## `MusubiProviderBundleVerificationBindingV1` {#musubiproviderbundleverificationbindingv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `provider_id` | [`ProviderId`](#providerid) |
+  | `completed_by` | [`AccountId`](#accountid) |
+  | `completion_authority` | [`ProviderIngestCompletionAuthorityV1`](#provideringestcompletionauthorityv1) |
+  | `replication_order` | [`ReplicationOrderId`](#replicationorderid) |
+  | `assignment_revision` | `u64` |
+  | `completion_epoch` | `u64` |
+  | `finalized_anchor` | [`ProviderIngestFinalizedAnchorV1`](#provideringestfinalizedanchorv1) |
+  | `archive_id` | [`ArchiveId`](#archiveid) |
+  | `bundle_digest` | [`MusubiContentDigestV1`](#musubicontentdigestv1) |
+  | `descriptor_digest` | [`MusubiContentDigestV1`](#musubicontentdigestv1) |
+  | `semantic_release_manifest_digest` | [`MusubiSemanticReleaseDigestV1`](#musubisemanticreleasedigestv1) |
+  | `verification_lock_digest` | [`MusubiVerificationLockDigestV1`](#musubiverificationlockdigestv1) |
+  | `source_tree_digest` | [`MusubiContentDigestV1`](#musubicontentdigestv1) |
+
+## `MusubiProviderBundleVerificationPayloadV1` {#musubiproviderbundleverificationpayloadv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u8` |
+  | `binding` | [`MusubiProviderBundleVerificationBindingV1`](#musubiproviderbundleverificationbindingv1) |
+
+## `MusubiQueryHashV1` {#musubiqueryhashv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `MusubiReasonV1` {#musubireasonv1}
+
+**Type:** Alias
+
+**To:** `String`
+
+## `MusubiRegistryAdmissionModeV1` {#musubiregistryadmissionmodev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Closed` | &mdash; | 0 |
+  | `Allowlisted` | &mdash; | 1 |
+  | `Open` | &mdash; | 2 |
+
+## `MusubiRegistryPolicyEventV1` {#musubiregistrypolicyeventv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `revision` | `u64` |
+  | `mode` | [`MusubiRegistryAdmissionModeV1`](#musubiregistryadmissionmodev1) |
+  | `alias_pricing_revision` | `u64` |
+  | `allowlisted_dataspaces` | `u16` |
+  | `action_digest` | [`MusubiGovernanceActionDigestV1`](#musubigovernanceactiondigestv1) |
+  | `finalized_height` | `u64` |
+
+## `MusubiRegistrySnapshotV1` {#musubiregistrysnapshotv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `finalized_height` | `u64` |
+  | `finalized_block_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `index_revision` | `u64` |
+
+## `MusubiReleaseDigestV1` {#musubireleasedigestv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `MusubiReleaseIdV1` {#musubireleaseidv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `package` | [`MusubiPackageIdV1`](#musubipackageidv1) |
+  | `version` | [`MusubiVersionV1`](#musubiversionv1) |
+
+## `MusubiReleaseManifestV1` {#musubireleasemanifestv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `release` | [`MusubiReleaseIdV1`](#musubireleaseidv1) |
+  | `edition` | [`MusubiKotodamaEditionV1`](#musubikotodamaeditionv1) |
+  | `abi` | [`MusubiAbiBindingV1`](#musubiabibindingv1) |
+  | `dependencies` | [`Vec<MusubiDependencyReqV1>`](#vec-musubidependencyreqv1) |
+  | `exports` | [`Vec<Name>`](#vec-name) |
+  | `interface_digest` | [`MusubiContentDigestV1`](#musubicontentdigestv1) |
+  | `metadata` | [`MusubiReleaseMetadataV1`](#musubireleasemetadatav1) |
+  | `archive_id` | [`ArchiveId`](#archiveid) |
+  | `verification_lock_digest` | [`MusubiVerificationLockDigestV1`](#musubiverificationlockdigestv1) |
+
+## `MusubiReleaseMetadataV1` {#musubireleasemetadatav1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `description` | [`Option<MusubiDescriptionV1>`](#option-musubidescriptionv1) |
+  | `readme` | [`Option<MusubiDocumentRefV1>`](#option-musubidocumentrefv1) |
+  | `license` | [`Option<MusubiDocumentRefV1>`](#option-musubidocumentrefv1) |
+  | `repository` | [`Option<MusubiDocumentRefV1>`](#option-musubidocumentrefv1) |
+  | `keywords` | [`Vec<MusubiKeywordV1>`](#vec-musubikeywordv1) |
+
+## `MusubiReleasePublishedEventV1` {#musubireleasepublishedeventv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `release` | [`MusubiReleaseIdV1`](#musubireleaseidv1) |
+  | `release_digest` | [`MusubiReleaseDigestV1`](#musubireleasedigestv1) |
+  | `archive_id` | [`ArchiveId`](#archiveid) |
+  | `published_by` | [`AccountId`](#accountid) |
+  | `finalized_height` | `u64` |
+
+## `MusubiReleaseRecordV1` {#musubireleaserecordv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `manifest` | [`MusubiReleaseManifestV1`](#musubireleasemanifestv1) |
+  | `release_digest` | [`MusubiReleaseDigestV1`](#musubireleasedigestv1) |
+  | `published_by` | [`AccountId`](#accountid) |
+  | `published_at_height` | `u64` |
+  | `yank` | [`MusubiReleaseYankV1`](#musubireleaseyankv1) |
+  | `artifact_governance` | [`MusubiArtifactGovernanceStateV1`](#musubiartifactgovernancestatev1) |
+  | `revisions` | [`MusubiReleaseRevisionsV1`](#musubireleaserevisionsv1) |
+
+## `MusubiReleaseRevisionsV1` {#musubireleaserevisionsv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `yank` | `u64` |
+  | `artifact_governance` | `u64` |
+
+## `MusubiReleaseSelectionStateV1` {#musubireleaseselectionstatev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `yank` | [`MusubiReleaseYankV1`](#musubireleaseyankv1) |
+  | `storage` | [`MusubiArchiveAvailabilityV1`](#musubiarchiveavailabilityv1) |
+  | `governance` | [`MusubiArtifactGovernanceStateV1`](#musubiartifactgovernancestatev1) |
+
+## `MusubiReleaseYankEventV1` {#musubireleaseyankeventv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `yank` | [`MusubiReleaseYankV1`](#musubireleaseyankv1) |
+  | `archive_id` | [`ArchiveId`](#archiveid) |
+
+## `MusubiReleaseYankV1` {#musubireleaseyankv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `release` | [`MusubiReleaseIdV1`](#musubireleaseidv1) |
+  | `yanked` | `bool` |
+  | `reason` | [`MusubiReasonV1`](#musubireasonv1) |
+  | `changed_by` | [`AccountId`](#accountid) |
+  | `changed_at_height` | `u64` |
+  | `revision` | `u64` |
+
+## `MusubiResolverIndexPageV1` {#musubiresolverindexpagev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `query` | [`MusubiResolverIndexQueryV1`](#musubiresolverindexqueryv1) |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `items` | [`Vec<MusubiResolverReleaseRowV1>`](#vec-musubiresolverreleaserowv1) |
+  | `next_cursor` | [`Option<MusubiFinalizedCursorV1>`](#option-musubifinalizedcursorv1) |
+  | `snapshot` | [`MusubiRegistrySnapshotV1`](#musubiregistrysnapshotv1) |
+
+## `MusubiResolverIndexQueryV1` {#musubiresolverindexqueryv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `package` | [`MusubiPackageIdV1`](#musubipackageidv1) |
+  | `requirement` | [`Option<MusubiVersionReqV1>`](#option-musubiversionreqv1) |
+  | `page` | [`MusubiPageRequestV1`](#musubipagerequestv1) |
+
+## `MusubiResolverReleaseRowV1` {#musubiresolverreleaserowv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `release` | [`MusubiReleaseIdV1`](#musubireleaseidv1) |
+  | `release_digest` | [`MusubiReleaseDigestV1`](#musubireleasedigestv1) |
+  | `archive_id` | [`ArchiveId`](#archiveid) |
+  | `source_digest` | [`MusubiContentDigestV1`](#musubicontentdigestv1) |
+  | `interface_digest` | [`MusubiContentDigestV1`](#musubicontentdigestv1) |
+  | `abi` | [`MusubiAbiBindingV1`](#musubiabibindingv1) |
+  | `dependencies` | [`Vec<MusubiDependencyReqV1>`](#vec-musubidependencyreqv1) |
+  | `selection` | [`MusubiReleaseSelectionStateV1`](#musubireleaseselectionstatev1) |
+  | `index_revision` | `u64` |
+
+## `MusubiSeedIngressReceiptApprovalV1` {#musubiseedingressreceiptapprovalv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `public_key` | [`PublicKey`](#publickey) |
+  | `signature` | [`SignatureOf<MusubiSeedIngressReceiptPayloadV1>`](#signatureof-musubiseedingressreceiptpayloadv1) |
+
+## `MusubiSeedIngressReceiptBindingV1` {#musubiseedingressreceiptbindingv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `publisher` | [`AccountId`](#accountid) |
+  | `ingress_broker` | [`AccountId`](#accountid) |
+  | `seed_provider` | [`ProviderId`](#providerid) |
+  | `semantic_release_manifest_digest` | [`MusubiSemanticReleaseDigestV1`](#musubisemanticreleasedigestv1) |
+  | `archive_id` | [`ArchiveId`](#archiveid) |
+  | `car_body_digest` | [`MusubiContentDigestV1`](#musubicontentdigestv1) |
+  | `car_body_length` | `u64` |
+  | `nonce` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `MusubiSeedIngressReceiptPayloadV1` {#musubiseedingressreceiptpayloadv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u8` |
+  | `binding` | [`MusubiSeedIngressReceiptBindingV1`](#musubiseedingressreceiptbindingv1) |
+  | `issued_at_ms` | `u64` |
+  | `expires_at_ms` | `u64` |
+
+## `MusubiSeedIngressReceiptV1` {#musubiseedingressreceiptv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `payload` | [`MusubiSeedIngressReceiptPayloadV1`](#musubiseedingressreceiptpayloadv1) |
+  | `approvals` | [`Vec<MusubiSeedIngressReceiptApprovalV1>`](#vec-musubiseedingressreceiptapprovalv1) |
+
+## `MusubiSemanticReleaseDigestV1` {#musubisemanticreleasedigestv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `MusubiStorageAvailabilityV1` {#musubistorageavailabilityv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Selectable` | &mdash; | 0 |
+  | `BelowQuorum` | &mdash; | 1 |
+  | `Unavailable` | &mdash; | 2 |
+
+## `MusubiVerificationLockDigestV1` {#musubiverificationlockdigestv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `MusubiVersionComparatorV1` {#musubiversioncomparatorv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `op` | [`MusubiComparatorOpV1`](#musubicomparatoropv1) |
+  | `version` | [`MusubiVersionV1`](#musubiversionv1) |
+
+## `MusubiVersionPageV1` {#musubiversionpagev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `query` | [`MusubiPackagePageQueryV1`](#musubipackagepagequeryv1) |
+  | `items` | [`Vec<MusubiVersionV1>`](#vec-musubiversionv1) |
+  | `next_cursor` | [`Option<MusubiFinalizedCursorV1>`](#option-musubifinalizedcursorv1) |
+  | `snapshot` | [`MusubiRegistrySnapshotV1`](#musubiregistrysnapshotv1) |
+
+## `MusubiVersionReqV1` {#musubiversionreqv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Any` | &mdash; | 0 |
+  | `Caret` | [`MusubiVersionV1`](#musubiversionv1) | 1 |
+  | `Tilde` | [`MusubiVersionV1`](#musubiversionv1) | 2 |
+  | `MajorWildcard` | `u64` | 3 |
+  | `MinorWildcard` | [`MusubiMinorWildcardV1`](#musubiminorwildcardv1) | 4 |
+  | `Exact` | [`MusubiVersionV1`](#musubiversionv1) | 5 |
+  | `Comparators` | [`Vec<MusubiVersionComparatorV1>`](#vec-musubiversioncomparatorv1) | 6 |
+
+## `MusubiVersionV1` {#musubiversionv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `major` | `u64` |
+  | `minor` | `u64` |
+  | `patch` | `u64` |
+  | `prerelease` | [`Vec<MusubiPrereleaseIdentifierV1>`](#vec-musubiprereleaseidentifierv1) |
 
 ## `Name` {#name}
 
@@ -7676,7 +9484,7 @@
   | --: | :-- |
   | `round` | [`ConsensusRound`](#consensusround) |
   | `epoch` | `u64` |
-  | `chain_id_hash` | [`Hash`](#hash) |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
   | `source_id` | [`Array<u8, 32>`](#array-u8-32) |
   | `tx_entrypoint_hash` | [`HashOf<TransactionEntrypoint>`](#hashof-transactionentrypoint) |
   | `plan_digest` | [`Hash`](#hash) |
@@ -7754,7 +9562,7 @@
   | --: | :-- |
   | `version` | `u16` |
   | `source_id` | [`Array<u8, 32>`](#array-u8-32) |
-  | `chain_id_hash` | [`Hash`](#hash) |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
   | `plan_digest` | [`Hash`](#hash) |
   | `lane_id` | [`LaneId`](#laneid) |
   | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
@@ -7838,6 +9646,18 @@
   | `per_byte_fee` | [`Quantity`](#quantity) |
   | `per_instruction_fee` | [`Quantity`](#quantity) |
   | `per_gas_unit_fee` | [`Quantity`](#quantity) |
+
+## `NexusLaneManifestValidatorBindingStatus` {#nexuslanemanifestvalidatorbindingstatus}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `validator` | `String` |
+  | `peer_id` | `String` |
+  | `torii_url` | [`Option<String>`](#option-string) |
 
 ## `NexusLaneRuntimeUpgradeHookStatus` {#nexuslaneruntimeupgradehookstatus}
 
@@ -7928,6 +9748,7 @@
   | `scheduler_starvation_bound_override` | [`Option<u64>`](#option-u64) |
   | `manifest_path` | [`Option<String>`](#option-string) |
   | `manifest_validators` | [`Vec<String>`](#vec-string) |
+  | `manifest_validator_bindings` | [`Vec<NexusLaneManifestValidatorBindingStatus>`](#vec-nexuslanemanifestvalidatorbindingstatus) |
   | `manifest_quorum` | [`Option<u32>`](#option-u32) |
   | `manifest_protected_namespaces` | [`Vec<String>`](#vec-string) |
   | `manifest_runtime_upgrade` | [`Option<NexusLaneRuntimeUpgradeHookStatus>`](#option-nexuslaneruntimeupgradehookstatus) |
@@ -8079,7 +9900,7 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `vrf_epoch_seals` | [`Vec<VrfEpochRecord>`](#vec-vrfepochrecord) |
+  | `finalized_global_beacon_pulse` | [`Option<FinalizedGlobalThresholdBeaconPulseV1>`](#option-finalizedglobalthresholdbeaconpulsev1) |
   | `v2_evidence_admissions` | [`Vec<SumeragiV2EquivocationEvidence>`](#vec-sumeragiv2equivocationevidence) |
   | `penalty_actions` | [`Vec<NposPenaltyAction>`](#vec-npospenaltyaction) |
 
@@ -8110,17 +9931,6 @@
   | `evidence_key` | [`Vec<u8>`](#vec-u8) |
   | `height` | `u64` |
 
-## `NposMarkVrfPenaltiesAppliedAction` {#nposmarkvrfpenaltiesappliedaction}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `epoch` | `u64` |
-  | `height` | `u64` |
-
 ## `NposPenaltyAction` {#npospenaltyaction}
 
 **Type:** Enum
@@ -8129,25 +9939,8 @@
 
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
-  | `vrf_jail` | [`NposVrfJailAction`](#nposvrfjailaction) | 0 |
-  | `consensus_slash` | [`NposConsensusSlashAction`](#nposconsensusslashaction) | 1 |
-  | `mark_vrf_penalties_applied` | [`NposMarkVrfPenaltiesAppliedAction`](#nposmarkvrfpenaltiesappliedaction) | 2 |
-  | `mark_consensus_evidence_applied` | [`NposMarkConsensusEvidenceAppliedAction`](#nposmarkconsensusevidenceappliedaction) | 3 |
-
-## `NposVrfJailAction` {#nposvrfjailaction}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `epoch` | `u64` |
-  | `signer` | `u32` |
-  | `peer_id` | [`PeerId`](#peerid) |
-  | `lane_id` | [`LaneId`](#laneid) |
-  | `validator` | [`AccountId`](#accountid) |
-  | `reason` | `String` |
+  | `consensus_slash` | [`NposConsensusSlashAction`](#nposconsensusslashaction) | 0 |
+  | `mark_consensus_evidence_applied` | [`NposMarkConsensusEvidenceAppliedAction`](#nposmarkconsensusevidenceappliedaction) | 1 |
 
 ## `Numeric` {#numeric}
 
@@ -8195,77 +9988,6 @@
   | `mantissa` | [`i128`](#i128) |
   | `scale` | `u32` |
 
-## `OfflineActiveTransferVerifier` {#offlineactivetransferverifier}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `id` | [`OfflineVerifierId`](#offlineverifierid) |
-  | `version` | `u32` |
-  | `circuit_id` | `String` |
-  | `commitment` | `String` |
-  | `public_inputs_schema_hash` | `String` |
-  | `max_proof_bytes` | `u32` |
-  | `activation_height` | `u64` |
-  | `withdrawal_height` | [`Option<u64>`](#option-u64) |
-
-## `OfflineAuthenticatedArtifactSet` {#offlineauthenticatedartifactset}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `generation` | `String` |
-  | `manifest_sha256` | `String` |
-  | `release_policy_sha256` | `String` |
-  | `release_attestation_sha256` | `String` |
-  | `activation_height` | `u64` |
-  | `withdrawal_height` | `u64` |
-  | `max_proof_bytes` | `u32` |
-  | `asset_scale` | `u32` |
-
-## `OfflineReadiness` {#offlinereadiness}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `cash_handoff_capability` | `String` |
-  | `required_bridge_abi_version` | `u32` |
-  | `max_hops` | `u32` |
-  | `asset_definition_id` | `String` |
-  | `asset_scale` | [`Option<u32>`](#option-u32) |
-  | `evaluated_block_height` | `u64` |
-  | `evaluated_block_hash` | `String` |
-  | `active_transfer_verifier` | [`Option<OfflineActiveTransferVerifier>`](#option-offlineactivetransferverifier) |
-  | `active_topup_shield_verifier` | [`Option<OfflineActiveTransferVerifier>`](#option-offlineactivetransferverifier) |
-  | `active_unshield_verifier` | [`Option<OfflineActiveTransferVerifier>`](#option-offlineactivetransferverifier) |
-  | `active_recursive_step_eq_verifier` | [`Option<OfflineActiveTransferVerifier>`](#option-offlineactivetransferverifier) |
-  | `active_recursive_step_ep_verifier` | [`Option<OfflineActiveTransferVerifier>`](#option-offlineactivetransferverifier) |
-  | `artifact_set` | [`Option<OfflineAuthenticatedArtifactSet>`](#option-offlineauthenticatedartifactset) |
-  | `proof_backend_available` | `bool` |
-  | `recursive_lineage_supported` | `bool` |
-  | `ready` | `bool` |
-  | `blockers` | [`Vec<OfflineReadinessBlocker>`](#vec-offlinereadinessblocker) |
-
-## `OfflineReadinessBlocker` {#offlinereadinessblocker}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `code` | `String` |
-  | `message` | `String` |
-
 ## `OfflineStatus` {#offlinestatus}
 
 **Type:** Struct
@@ -8274,24 +9996,10 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `mandatory` | `bool` |
   | `cash_handoff_capability` | `String` |
   | `required_bridge_abi_version` | `u32` |
   | `max_hops` | `u32` |
   | `ready` | `bool` |
-  | `assets` | [`Vec<OfflineReadiness>`](#vec-offlinereadiness) |
-  | `blockers` | [`Vec<OfflineReadinessBlocker>`](#vec-offlinereadinessblocker) |
-
-## `OfflineVerifierId` {#offlineverifierid}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `backend` | `String` |
-  | `name` | `String` |
 
 ## `OpaqueAccountId` {#opaqueaccountid}
 
@@ -8323,17 +10031,11 @@
 
 **Some:** [`AccountId`](#accountid)
 
-## `Option<AnonymousAssetEscrowProofRecord>` {#option-anonymousassetescrowproofrecord}
+## `Option<ArchiveId>` {#option-archiveid}
 
 **Type:** Option
 
-**Some:** [`AnonymousAssetEscrowProofRecord`](#anonymousassetescrowproofrecord)
-
-## `Option<AnonymousAssetEscrowResolution>` {#option-anonymousassetescrowresolution}
-
-**Type:** Option
-
-**Some:** [`AnonymousAssetEscrowResolution`](#anonymousassetescrowresolution)
+**Some:** [`ArchiveId`](#archiveid)
 
 ## `Option<Array<u8, 32>>` {#option-array-u8-32}
 
@@ -8352,12 +10054,6 @@
 **Type:** Option
 
 **Some:** [`AssetDefinitionId`](#assetdefinitionid)
-
-## `Option<AssetDefinitionProjection>` {#option-assetdefinitionprojection}
-
-**Type:** Option
-
-**Some:** [`AssetDefinitionProjection`](#assetdefinitionprojection)
 
 ## `Option<AssetEscrowResolution>` {#option-assetescrowresolution}
 
@@ -8419,12 +10115,6 @@
 
 **Some:** [`CertifiedMergeTransactionInclusion`](#certifiedmergetransactioninclusion)
 
-## `Option<CommitStakeSnapshot>` {#option-commitstakesnapshot}
-
-**Type:** Option
-
-**Some:** [`CommitStakeSnapshot`](#commitstakesnapshot)
-
 ## `Option<ConditionalEscrowAttestation>` {#option-conditionalescrowattestation}
 
 **Type:** Option
@@ -8454,6 +10144,18 @@
 **Type:** Option
 
 **Some:** [`ContractArgumentRecord`](#contractargumentrecord)
+
+## `Option<ContractEmergencyHoldV1>` {#option-contractemergencyholdv1}
+
+**Type:** Option
+
+**Some:** [`ContractEmergencyHoldV1`](#contractemergencyholdv1)
+
+## `Option<ContractLifecycleOwnerV1>` {#option-contractlifecycleownerv1}
+
+**Type:** Option
+
+**Some:** [`ContractLifecycleOwnerV1`](#contractlifecycleownerv1)
 
 ## `Option<DaCommitmentBundle>` {#option-dacommitmentbundle}
 
@@ -8515,6 +10217,12 @@
 
 **Some:** [`FeedId`](#feedid)
 
+## `Option<FinalizedGlobalThresholdBeaconPulseV1>` {#option-finalizedglobalthresholdbeaconpulsev1}
+
+**Type:** Option
+
+**Some:** [`FinalizedGlobalThresholdBeaconPulseV1`](#finalizedglobalthresholdbeaconpulsev1)
+
 ## `Option<FinalizedNextEpochSnapshot>` {#option-finalizednextepochsnapshot}
 
 **Type:** Option
@@ -8526,6 +10234,12 @@
 **Type:** Option
 
 **Some:** [`ForwardCursor`](#forwardcursor)
+
+## `Option<GovernanceCertificateId>` {#option-governancecertificateid}
+
+**Type:** Option
+
+**Some:** [`GovernanceCertificateId`](#governancecertificateid)
 
 ## `Option<Hash>` {#option-hash}
 
@@ -8569,6 +10283,12 @@
 
 **Some:** [`HashOf<DaProofPolicyBundle>`](#hashof-daproofpolicybundle)
 
+## `Option<HashOf<LaneFinalityStatement>>` {#option-hashof-lanefinalitystatement}
+
+**Type:** Option
+
+**Some:** [`HashOf<LaneFinalityStatement>`](#hashof-lanefinalitystatement)
+
 ## `Option<HashOf<MerkleTree<TransactionEntrypoint>>>` {#option-hashof-merkletree-transactionentrypoint}
 
 **Type:** Option
@@ -8586,12 +10306,6 @@
 **Type:** Option
 
 **Some:** [`HashOf<NposConsensusEffects>`](#hashof-nposconsensuseffects)
-
-## `Option<HashOf<PreviousRosterEvidence>>` {#option-hashof-previousrosterevidence}
-
-**Type:** Option
-
-**Some:** [`HashOf<PreviousRosterEvidence>`](#hashof-previousrosterevidence)
 
 ## `Option<HashOf<SignedTransaction>>` {#option-hashof-signedtransaction}
 
@@ -8611,23 +10325,11 @@
 
 **Some:** [`HashOf<TransactionResult>`](#hashof-transactionresult)
 
-## `Option<KaigiRelayManifest>` {#option-kaigirelaymanifest}
-
-**Type:** Option
-
-**Some:** [`KaigiRelayManifest`](#kaigirelaymanifest)
-
 ## `Option<KeyedHash>` {#option-keyedhash}
 
 **Type:** Option
 
 **Some:** [`KeyedHash`](#keyedhash)
-
-## `Option<KzgCommitment>` {#option-kzgcommitment}
-
-**Type:** Option
-
-**Some:** [`KzgCommitment`](#kzgcommitment)
 
 ## `Option<LaneBlockProposalPayloadHintV1>` {#option-laneblockproposalpayloadhintv1}
 
@@ -8646,6 +10348,12 @@
 **Type:** Option
 
 **Some:** [`LaneFastpqProofMaterial`](#lanefastpqproofmaterial)
+
+## `Option<LaneFinalityAuthorityV1>` {#option-lanefinalityauthorityv1}
+
+**Type:** Option
+
+**Some:** [`LaneFinalityAuthorityV1`](#lanefinalityauthorityv1)
 
 ## `Option<LaneId>` {#option-laneid}
 
@@ -8695,11 +10403,23 @@
 
 **Some:** [`ManifestProvenance`](#manifestprovenance)
 
+## `Option<MergeCarrierCommitmentV1>` {#option-mergecarriercommitmentv1}
+
+**Type:** Option
+
+**Some:** [`MergeCarrierCommitmentV1`](#mergecarriercommitmentv1)
+
 ## `Option<MergeExecutionBatch>` {#option-mergeexecutionbatch}
 
 **Type:** Option
 
 **Some:** [`MergeExecutionBatch`](#mergeexecutionbatch)
+
+## `Option<MerkleTreeCommitment<LaneFinalityStatement>>` {#option-merkletreecommitment-lanefinalitystatement}
+
+**Type:** Option
+
+**Some:** [`MerkleTreeCommitment<LaneFinalityStatement>`](#merkletreecommitment-lanefinalitystatement)
 
 ## `Option<ModerationChallengeDecisionV1>` {#option-moderationchallengedecisionv1}
 
@@ -8743,29 +10463,65 @@
 
 **Some:** [`MultisigSignatures`](#multisigsignatures)
 
-## `Option<MusubiDappLink>` {#option-musubidapplink}
+## `Option<MusubiAliasNameV1>` {#option-musubialiasnamev1}
 
 **Type:** Option
 
-**Some:** [`MusubiDappLink`](#musubidapplink)
+**Some:** [`MusubiAliasNameV1`](#musubialiasnamev1)
 
-## `Option<MusubiNamespace>` {#option-musubinamespace}
-
-**Type:** Option
-
-**Some:** [`MusubiNamespace`](#musubinamespace)
-
-## `Option<MusubiSourceArchivePlan>` {#option-musubisourcearchiveplan}
+## `Option<MusubiArchiveAvailabilityV1>` {#option-musubiarchiveavailabilityv1}
 
 **Type:** Option
 
-**Some:** [`MusubiSourceArchivePlan`](#musubisourcearchiveplan)
+**Some:** [`MusubiArchiveAvailabilityV1`](#musubiarchiveavailabilityv1)
 
-## `Option<MusubiVersion>` {#option-musubiversion}
+## `Option<MusubiDescriptionV1>` {#option-musubidescriptionv1}
 
 **Type:** Option
 
-**Some:** [`MusubiVersion`](#musubiversion)
+**Some:** [`MusubiDescriptionV1`](#musubidescriptionv1)
+
+## `Option<MusubiDocumentRefV1>` {#option-musubidocumentrefv1}
+
+**Type:** Option
+
+**Some:** [`MusubiDocumentRefV1`](#musubidocumentrefv1)
+
+## `Option<MusubiFinalizedCursorV1>` {#option-musubifinalizedcursorv1}
+
+**Type:** Option
+
+**Some:** [`MusubiFinalizedCursorV1`](#musubifinalizedcursorv1)
+
+## `Option<MusubiGovernanceActionDigestV1>` {#option-musubigovernanceactiondigestv1}
+
+**Type:** Option
+
+**Some:** [`MusubiGovernanceActionDigestV1`](#musubigovernanceactiondigestv1)
+
+## `Option<MusubiPackageIdV1>` {#option-musubipackageidv1}
+
+**Type:** Option
+
+**Some:** [`MusubiPackageIdV1`](#musubipackageidv1)
+
+## `Option<MusubiRegistrySnapshotV1>` {#option-musubiregistrysnapshotv1}
+
+**Type:** Option
+
+**Some:** [`MusubiRegistrySnapshotV1`](#musubiregistrysnapshotv1)
+
+## `Option<MusubiVersionReqV1>` {#option-musubiversionreqv1}
+
+**Type:** Option
+
+**Some:** [`MusubiVersionReqV1`](#musubiversionreqv1)
+
+## `Option<MusubiVersionV1>` {#option-musubiversionv1}
+
+**Type:** Option
+
+**Some:** [`MusubiVersionV1`](#musubiversionv1)
 
 ## `Option<Name>` {#option-name}
 
@@ -8815,18 +10571,6 @@
 
 **Some:** [`NposConsensusEffects`](#nposconsensuseffects)
 
-## `Option<OfflineActiveTransferVerifier>` {#option-offlineactivetransferverifier}
-
-**Type:** Option
-
-**Some:** [`OfflineActiveTransferVerifier`](#offlineactivetransferverifier)
-
-## `Option<OfflineAuthenticatedArtifactSet>` {#option-offlineauthenticatedartifactset}
-
-**Type:** Option
-
-**Some:** [`OfflineAuthenticatedArtifactSet`](#offlineauthenticatedartifactset)
-
 ## `Option<OfflineStatus>` {#option-offlinestatus}
 
 **Type:** Option
@@ -8875,6 +10619,18 @@
 
 **Some:** [`OrderbookSettlementChannelStatusV1`](#orderbooksettlementchannelstatusv1)
 
+## `Option<ParliamentAutomaticExecutionOutcomeV1>` {#option-parliamentautomaticexecutionoutcomev1}
+
+**Type:** Option
+
+**Some:** [`ParliamentAutomaticExecutionOutcomeV1`](#parliamentautomaticexecutionoutcomev1)
+
+## `Option<ParliamentNoResultKindV1>` {#option-parliamentnoresultkindv1}
+
+**Type:** Option
+
+**Some:** [`ParliamentNoResultKindV1`](#parliamentnoresultkindv1)
+
 ## `Option<PeerId>` {#option-peerid}
 
 **Type:** Option
@@ -8893,11 +10649,11 @@
 
 **Some:** [`PinManifestFinalizedCursorV1`](#pinmanifestfinalizedcursorv1)
 
-## `Option<PreviousRosterEvidence>` {#option-previousrosterevidence}
+## `Option<PinStatusKindV1>` {#option-pinstatuskindv1}
 
 **Type:** Option
 
-**Some:** [`PreviousRosterEvidence`](#previousrosterevidence)
+**Some:** [`PinStatusKindV1`](#pinstatuskindv1)
 
 ## `Option<ProofAttachmentList>` {#option-proofattachmentlist}
 
@@ -8940,18 +10696,6 @@
 **Type:** Option
 
 **Some:** [`ProviderId`](#providerid)
-
-## `Option<Qc>` {#option-qc}
-
-**Type:** Option
-
-**Some:** [`Qc`](#qc)
-
-## `Option<QcRef>` {#option-qcref}
-
-**Type:** Option
-
-**Some:** [`QcRef`](#qcref)
 
 ## `Option<Quantity>` {#option-quantity}
 
@@ -9151,12 +10895,6 @@
 
 **Some:** [`UniversalAccountId`](#universalaccountid)
 
-## `Option<ValidatorElectionOutcome>` {#option-validatorelectionoutcome}
-
-**Type:** Option
-
-**Some:** [`ValidatorElectionOutcome`](#validatorelectionoutcome)
-
 ## `Option<Vec<Array<u8, 32>>>` {#option-vec-array-u8-32}
 
 **Type:** Option
@@ -9216,18 +10954,6 @@
 **Type:** Option
 
 **Some:** [`ViralCampaignBudget`](#viralcampaignbudget)
-
-## `Option<VrfCommitProof>` {#option-vrfcommitproof}
-
-**Type:** Option
-
-**Some:** [`VrfCommitProof`](#vrfcommitproof)
-
-## `Option<VrfRevealProof>` {#option-vrfrevealproof}
-
-**Type:** Option
-
-**Some:** [`VrfRevealProof`](#vrfrevealproof)
 
 ## `Option<bool>` {#option-bool}
 
@@ -9972,6 +11698,66 @@
   | --: | :-- |
   | `certificate` | [`Option<QuorumCertificate>`](#option-quorumcertificate) |
 
+## `ParliamentAggregateOutcomeV1` {#parliamentaggregateoutcomev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Approved` | &mdash; | 0 |
+  | `Rejected` | &mdash; | 1 |
+  | `NoQuorum` | &mdash; | 2 |
+  | `NoResult` | &mdash; | 3 |
+
+## `ParliamentAggregateTallyV1` {#parliamentaggregatetallyv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `original_seats` | `u32` |
+  | `accepted_ballots` | `u32` |
+  | `aye` | `u32` |
+  | `nay` | `u32` |
+  | `abstain` | `u32` |
+
+## `ParliamentAutomaticExecutionFailedV1` {#parliamentautomaticexecutionfailedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `effect_preimage_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `failure_root` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `ParliamentAutomaticExecutionOutcomeV1` {#parliamentautomaticexecutionoutcomev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Enacted` | &mdash; | 0 |
+  | `Superseded` | [`ParliamentAutomaticSupersededV1`](#parliamentautomaticsupersededv1) | 1 |
+  | `ExecutionFailed` | [`ParliamentAutomaticExecutionFailedV1`](#parliamentautomaticexecutionfailedv1) | 2 |
+
+## `ParliamentAutomaticSupersededV1` {#parliamentautomaticsupersededv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `observed_head` | [`GovernanceExpectedHeadV1`](#governanceexpectedheadv1) |
+
 ## `ParliamentBodies` {#parliamentbodies}
 
 **Type:** Struct
@@ -9995,11 +11781,41 @@
   | `AgendaCouncil` | &mdash; | 1 |
   | `InterestPanel` | &mdash; | 2 |
   | `ReviewPanel` | &mdash; | 3 |
-  | `PolicyJury` | &mdash; | 4 |
-  | `OversightCommittee` | &mdash; | 5 |
+  | `CoordinationCouncil` | &mdash; | 4 |
+  | `MpcCommittee` | &mdash; | 5 |
   | `FmaCommittee` | &mdash; | 6 |
+  | `OversightCommittee` | &mdash; | 7 |
+  | `PolicyJury` | &mdash; | 8 |
+  | `ConfirmationJury` | &mdash; | 9 |
 
-## `ParliamentDecision` {#parliamentdecision}
+## `ParliamentConcentrationWarningV1` {#parliamentconcentrationwarningv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `body_instance_id` | [`BodyInstanceId`](#bodyinstanceid) |
+  | `body` | [`ParliamentBody`](#parliamentbody) |
+  | `target_seats` | `u32` |
+  | `sealed_seats` | `u32` |
+  | `eligible_candidates` | `u32` |
+  | `cross_body_assignment_cap` | `u32` |
+
+## `ParliamentContractDeploymentOriginV1` {#parliamentcontractdeploymentoriginv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `proposer` | [`AccountId`](#accountid) |
+  | `proposal_content_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `governance_attempt_id` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `ParliamentLifecycleTransitionKindV1` {#parliamentlifecycletransitionkindv1}
 
 **Type:** Enum
 
@@ -10007,9 +11823,49 @@
 
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
-  | `Approve` | &mdash; | 0 |
-  | `Reject` | &mdash; | 1 |
-  | `Abstain` | &mdash; | 2 |
+  | `EscalateRisk` | &mdash; | 0 |
+  | `CompleteQualification` | &mdash; | 1 |
+  | `RegisterSortitionRequest` | &mdash; | 2 |
+  | `ConsumeSortitionPulseBatch` | &mdash; | 3 |
+  | `BeginInvitationAcceptance` | &mdash; | 4 |
+  | `FailBodyElectionNoRoster` | &mdash; | 5 |
+  | `SealBodyRoster` | &mdash; | 6 |
+  | `AdvanceBodyPhase` | &mdash; | 7 |
+  | `RecordAttemptAbsence` | &mdash; | 8 |
+  | `EndorsePublicFinding` | &mdash; | 9 |
+  | `RegisterBallotAttempt` | &mdash; | 10 |
+  | `CloseBallotRegistration` | &mdash; | 11 |
+  | `FreezeBallotSurvivors` | &mdash; | 12 |
+  | `FreezeTimedOvnCorpus` | &mdash; | 13 |
+  | `BeginBallotOpeningBatch` | &mdash; | 14 |
+  | `FailBallotNoResult` | &mdash; | 15 |
+  | `FinalizeOpenedBallot` | &mdash; | 16 |
+  | `MarkEnacted` | &mdash; | 17 |
+  | `MarkSuperseded` | &mdash; | 18 |
+  | `MarkExecutionFailed` | &mdash; | 19 |
+  | `RecordInvitationResponse` | &mdash; | 20 |
+  | `RegisterBallotParticipant` | &mdash; | 21 |
+  | `RecordBallotDropout` | &mdash; | 22 |
+  | `FailPublicFindingNoResult` | &mdash; | 23 |
+
+## `ParliamentNoResultKindV1` {#parliamentnoresultkindv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `PublicFindingQuorumUnreachable` | &mdash; | 0 |
+  | `PublicFindingDeadlineExpired` | &mdash; | 1 |
+  | `BallotRegistrationDeadlineExpired` | &mdash; | 2 |
+  | `BallotSurvivorDeadlineExpired` | &mdash; | 3 |
+  | `BallotCommitmentDeadlineExpired` | &mdash; | 4 |
+  | `BallotReleasePulseUnavailable` | &mdash; | 5 |
+  | `BallotOpeningDeadlineExpired` | &mdash; | 6 |
+  | `SortitionRetriesExhausted` | &mdash; | 7 |
+  | `ConfirmationJuryCapacityUnavailable` | &mdash; | 8 |
+  | `RandomnessRedrawBudgetExhausted` | &mdash; | 9 |
 
 ## `ParliamentRoster` {#parliamentroster}
 
@@ -10034,8 +11890,7 @@
 
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
-  | `plain` | &mdash; | 0 |
-  | `reed_solomon16` | &mdash; | 1 |
+  | `reed_solomon16` | &mdash; | 0 |
 
 ## `PayloadManifest` {#payloadmanifest}
 
@@ -10191,6 +12046,20 @@
   | `finalized_cursor` | [`PinManifestFinalizedCursorV1`](#pinmanifestfinalizedcursorv1) |
   | `manifest` | [`PinManifestRecord`](#pinmanifestrecord) |
 
+## `PinManifestPageV1` {#pinmanifestpagev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `finalized_cursor` | [`PinManifestFinalizedCursorV1`](#pinmanifestfinalizedcursorv1) |
+  | `charged_usage` | [`PinResourceUsage`](#pinresourceusage) |
+  | `manifests` | [`Vec<PinManifestSummaryV1>`](#vec-pinmanifestsummaryv1) |
+  | `has_more` | `bool` |
+  | `next_after_digest` | [`Option<ManifestDigest>`](#option-manifestdigest) |
+
 ## `PinManifestRecord` {#pinmanifestrecord}
 
 **Type:** Struct
@@ -10208,6 +12077,7 @@
   | `policy` | [`PinPolicy`](#pinpolicy) |
   | `submitted_by` | [`AccountId`](#accountid) |
   | `submitted_epoch` | `u64` |
+  | `approved_epoch` | [`Option<u64>`](#option-u64) |
   | `alias` | [`Option<ManifestAliasBinding>`](#option-manifestaliasbinding) |
   | `successor_of` | [`Option<ManifestDigest>`](#option-manifestdigest) |
   | `metadata` | [`Metadata`](#metadata) |
@@ -10215,6 +12085,23 @@
   | `retirement_reason` | [`Option<String>`](#option-string) |
   | `council_envelope_digest` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
   | `pin_fee_payment` | [`Option<PinFeePayment>`](#option-pinfeepayment) |
+
+## `PinManifestSummaryV1` {#pinmanifestsummaryv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `digest` | [`ManifestDigest`](#manifestdigest) |
+  | `submitted_by` | [`AccountId`](#accountid) |
+  | `submitted_epoch` | `u64` |
+  | `approved_epoch` | [`Option<u64>`](#option-u64) |
+  | `content_length` | `u64` |
+  | `retention_epoch` | `u64` |
+  | `status` | [`PinStatus`](#pinstatus) |
+  | `successor_of` | [`Option<ManifestDigest>`](#option-manifestdigest) |
 
 ## `PinPolicy` {#pinpolicy}
 
@@ -10228,6 +12115,17 @@
   | `storage_class` | [`StorageClass`](#storageclass) |
   | `retention_epoch` | `u64` |
 
+## `PinResourceUsage` {#pinresourceusage}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `manifest_count` | `u64` |
+  | `content_bytes` | `u64` |
+
 ## `PinStatus` {#pinstatus}
 
 **Type:** Enum
@@ -10239,6 +12137,18 @@
   | `Pending` | &mdash; | 0 |
   | `Approved` | `u64` | 1 |
   | `Retired` | `u64` | 2 |
+
+## `PinStatusKindV1` {#pinstatuskindv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `pending` | &mdash; | 0 |
+  | `approved` | &mdash; | 1 |
+  | `retired` | &mdash; | 2 |
 
 ## `PipelineEventBox` {#pipelineeventbox}
 
@@ -10557,125 +12467,6 @@
   | `gateway_error` | &mdash; | 3 |
   | `client_cancelled` | &mdash; | 4 |
 
-## `PreviousRosterEvidence` {#previousrosterevidence}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `height` | `u64` |
-  | `block_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
-  | `validator_checkpoint` | [`ValidatorSetCheckpoint`](#validatorsetcheckpoint) |
-  | `stake_snapshot` | [`Option<CommitStakeSnapshot>`](#option-commitstakesnapshot) |
-
-## `PrivateCreateKaigi` {#privatecreatekaigi}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `call` | [`PrivateKaigiTemplate`](#privatekaigitemplate) |
-
-## `PrivateEndKaigi` {#privateendkaigi}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `call_id` | [`KaigiId`](#kaigiid) |
-  | `ended_at_ms` | [`Option<u64>`](#option-u64) |
-
-## `PrivateJoinKaigi` {#privatejoinkaigi}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `call_id` | [`KaigiId`](#kaigiid) |
-
-## `PrivateKaigiAction` {#privatekaigiaction}
-
-**Type:** Enum
-
-**Variants:**
-
-  | Variant name | Variant value | Discriminant |
-  | --: | :-- | --- |
-  | `Create` | [`PrivateCreateKaigi`](#privatecreatekaigi) | 0 |
-  | `Join` | [`PrivateJoinKaigi`](#privatejoinkaigi) | 1 |
-  | `End` | [`PrivateEndKaigi`](#privateendkaigi) | 2 |
-
-## `PrivateKaigiArtifacts` {#privatekaigiartifacts}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `commitment` | [`KaigiParticipantCommitment`](#kaigiparticipantcommitment) |
-  | `nullifier` | [`KaigiParticipantNullifier`](#kaigiparticipantnullifier) |
-  | `roster_root` | [`Hash`](#hash) |
-  | `proof` | [`Vec<u8>`](#vec-u8) |
-
-## `PrivateKaigiFeeSpend` {#privatekaigifeespend}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
-  | `anchor_root` | [`Hash`](#hash) |
-  | `nullifiers` | [`Vec<Array<u8, 32>>`](#vec-array-u8-32) |
-  | `output_commitments` | [`Vec<Array<u8, 32>>`](#vec-array-u8-32) |
-  | `encrypted_change_payloads` | [`Vec<Vec<u8>>`](#vec-vec-u8) |
-  | `proof` | [`Vec<u8>`](#vec-u8) |
-
-## `PrivateKaigiTemplate` {#privatekaigitemplate}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `id` | [`KaigiId`](#kaigiid) |
-  | `title` | [`Option<String>`](#option-string) |
-  | `description` | [`Option<String>`](#option-string) |
-  | `max_participants` | [`Option<u32>`](#option-u32) |
-  | `gas_rate_per_minute` | `u64` |
-  | `metadata` | [`Metadata`](#metadata) |
-  | `scheduled_start_ms` | [`Option<u64>`](#option-u64) |
-  | `privacy_mode` | [`KaigiPrivacyMode`](#kaigiprivacymode) |
-  | `room_policy` | [`KaigiRoomPolicy`](#kaigiroompolicy) |
-  | `relay_manifest` | [`Option<KaigiRelayManifest>`](#option-kaigirelaymanifest) |
-
-## `PrivateKaigiTransaction` {#privatekaigitransaction}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `chain` | [`ChainId`](#chainid) |
-  | `creation_time_ms` | `u64` |
-  | `nonce` | [`Option<NonZero<u32>>`](#option-nonzero-u32) |
-  | `metadata` | [`Metadata`](#metadata) |
-  | `action` | [`PrivateKaigiAction`](#privatekaigiaction) |
-  | `artifacts` | [`PrivateKaigiArtifacts`](#privatekaigiartifacts) |
-  | `fee_spend` | [`PrivateKaigiFeeSpend`](#privatekaigifeespend) |
-
 ## `ProofAttachment` {#proofattachment}
 
 **Type:** Struct
@@ -10979,6 +12770,12 @@
   | `justification` | [`ProposalJustification`](#proposaljustification) |
   | `signature` | [`Vec<u8>`](#vec-u8) |
 
+## `ProposalContentId` {#proposalcontentid}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
 ## `ProposalJustification` {#proposaljustification}
 
 **Type:** Enum
@@ -11048,6 +12845,41 @@
 
 **To:** [`Array<u8, 32>`](#array-u8-32)
 
+## `ProviderIngestCompletionAuthorityV1` {#provideringestcompletionauthorityv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `provider_owner` | [`AccountId`](#accountid) |
+  | `signer_policy` | [`ProviderIngestCompletionSignerPolicyV1`](#provideringestcompletionsignerpolicyv1) |
+
+## `ProviderIngestCompletionSignerPolicyV1` {#provideringestcompletionsignerpolicyv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `policy_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `revision` | `u64` |
+  | `predecessor_digest` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
+  | `policy_digest` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `ProviderIngestFinalizedAnchorV1` {#provideringestfinalizedanchorv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `height` | `u64` |
+  | `block_hash` | [`Array<u8, 32>`](#array-u8-32) |
+
 ## `PublicKey` {#publickey}
 
 **Type:** Struct
@@ -11058,55 +12890,6 @@
   | --: | :-- |
   | `algorithm` | [`Algorithm`](#algorithm) |
   | `payload` | [`Vec<u8>`](#vec-u8) |
-
-## `Qc` {#qc}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `phase` | [`CertPhase`](#certphase) |
-  | `subject_block_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
-  | `parent_state_root` | [`Hash`](#hash) |
-  | `post_state_root` | [`Hash`](#hash) |
-  | `height` | `u64` |
-  | `view` | `u64` |
-  | `epoch` | `u64` |
-  | `chain_order_hash` | [`Hash`](#hash) |
-  | `rechain_seq` | `u64` |
-  | `mode_tag` | `String` |
-  | `highest_qc` | [`Option<QcRef>`](#option-qcref) |
-  | `validator_set_hash` | [`HashOf<Vec<PeerId>>`](#hashof-vec-peerid) |
-  | `validator_set_hash_version` | `u16` |
-  | `validator_set` | [`Vec<PeerId>`](#vec-peerid) |
-  | `aggregate` | [`QcAggregate`](#qcaggregate) |
-
-## `QcAggregate` {#qcaggregate}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `signers_bitmap` | [`Vec<u8>`](#vec-u8) |
-  | `bls_aggregate_signature` | [`Vec<u8>`](#vec-u8) |
-
-## `QcRef` {#qcref}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `height` | `u64` |
-  | `view` | `u64` |
-  | `epoch` | `u64` |
-  | `subject_block_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
-  | `phase` | [`CertPhase`](#certphase) |
 
 ## `Quantity` {#quantity}
 
@@ -11127,16 +12910,17 @@
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
   | `Find` | [`FindError`](#finderror) | 0 |
-  | `Conversion` | `String` | 1 |
-  | `NotFound` | &mdash; | 2 |
-  | `CursorMismatch` | &mdash; | 3 |
-  | `CursorDone` | &mdash; | 4 |
-  | `FetchSizeTooBig` | &mdash; | 5 |
-  | `GasBudgetExceeded` | &mdash; | 6 |
-  | `InvalidSingularParameters` | &mdash; | 7 |
-  | `CapacityLimit` | &mdash; | 8 |
-  | `Expired` | &mdash; | 9 |
-  | `AuthorityQuotaExceeded` | &mdash; | 10 |
+  | `CanonicalHistory` | [`CanonicalHistoryError`](#canonicalhistoryerror) | 1 |
+  | `Conversion` | `String` | 2 |
+  | `NotFound` | &mdash; | 3 |
+  | `CursorMismatch` | &mdash; | 4 |
+  | `CursorDone` | &mdash; | 5 |
+  | `FetchSizeTooBig` | &mdash; | 6 |
+  | `GasBudgetExceeded` | &mdash; | 7 |
+  | `InvalidSingularParameters` | &mdash; | 8 |
+  | `CapacityLimit` | &mdash; | 9 |
+  | `Expired` | &mdash; | 10 |
+  | `AuthorityQuotaExceeded` | &mdash; | 11 |
 
 ## `QueryOutput` {#queryoutput}
 
@@ -11203,9 +12987,8 @@
   | `TwitterBindingRecord` | [`Vec<TwitterBindingRecord>`](#vec-twitterbindingrecord) | 41 |
   | `DefiOracleAttestation` | [`Vec<DefiOracleAttestation>`](#vec-defioracleattestation) | 42 |
   | `AssetEscrowRecord` | [`Vec<AssetEscrowRecord>`](#vec-assetescrowrecord) | 43 |
-  | `AnonymousAssetEscrowRecord` | [`Vec<AnonymousAssetEscrowRecord>`](#vec-anonymousassetescrowrecord) | 44 |
-  | `FeeSponsorProgram` | [`Vec<FeeSponsorProgram>`](#vec-feesponsorprogram) | 45 |
-  | `FeeSponsorProgramId` | [`Vec<FeeSponsorProgramId>`](#vec-feesponsorprogramid) | 46 |
+  | `FeeSponsorProgram` | [`Vec<FeeSponsorProgram>`](#vec-feesponsorprogram) | 44 |
+  | `FeeSponsorProgramId` | [`Vec<FeeSponsorProgramId>`](#vec-feesponsorprogramid) | 45 |
 
 ## `QueryOutputBatchBoxTuple` {#queryoutputbatchboxtuple}
 
@@ -11249,7 +13032,11 @@
 
   | Field name | Field value |
   | --: | :-- |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
   | `authority` | [`AccountId`](#accountid) |
+  | `creation_time_ms` | `u64` |
+  | `time_to_live_ms` | [`NonZero<u64>`](#nonzero-u64) |
+  | `nonce` | [`Array<u8, 32>`](#array-u8-32) |
   | `request` | [`QueryRequest`](#queryrequest) |
 
 ## `QueryResponse` {#queryresponse}
@@ -11589,6 +13376,12 @@
   | `instruction` | [`InstructionType`](#instructiontype) |
   | `id` | [`IdBox`](#idbox) |
 
+## `ReplicationOrderId` {#replicationorderid}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
 ## `RepoAccountEvent` {#repoaccountevent}
 
 **Type:** Enum
@@ -11669,12 +13462,15 @@
   | `counterparty` | [`AccountId`](#accountid) |
   | `custodian` | [`Option<AccountId>`](#option-accountid) |
   | `cash_leg` | [`RepoCashLeg`](#repocashleg) |
+  | `cash_source` | [`AssetId`](#assetid) |
   | `collateral_leg` | [`RepoCollateralLeg`](#repocollateralleg) |
+  | `collateral_custody_asset` | [`AssetId`](#assetid) |
   | `rate_bps` | `u16` |
   | `maturity_timestamp_ms` | `u64` |
   | `initiated_timestamp_ms` | `u64` |
   | `last_margin_check_timestamp_ms` | `u64` |
   | `governance` | [`RepoGovernance`](#repogovernance) |
+  | `settlement_timestamp_ms` | [`Option<u64>`](#option-u64) |
 
 ## `RepoAgreementId` {#repoagreementid}
 
@@ -12176,6 +13972,18 @@
   | `credit_line_cap_bps` | [`Option<u32>`](#option-u32) |
   | `interest_apr_bps` | `u16` |
 
+## `ResolvedAssetDefinitionAliasV1` {#resolvedassetdefinitionaliasv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `canonical_name` | [`AssetDefinitionAlias`](#assetdefinitionalias) |
+  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+
 ## `Result<Vec<DataTriggerStep>, TransactionRejectionReason>` {#result-vec-datatriggerstep-transactionrejectionreason}
 
 **Type:** Result
@@ -12209,6 +14017,19 @@
   | `Low` | &mdash; | 0 |
   | `Medium` | &mdash; | 1 |
   | `High` | &mdash; | 2 |
+
+## `RiskTierV1` {#risktierv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Routine` | &mdash; | 0 |
+  | `Standard` | &mdash; | 1 |
+  | `Constitutional` | &mdash; | 2 |
+  | `Emergency` | &mdash; | 3 |
 
 ## `Role` {#role}
 
@@ -12561,15 +14382,11 @@
 
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
-  | `sora_taira` | &mdash; | 1 |
-  | `ethereum_mainnet` | &mdash; | 2 |
-  | `ethereum_sepolia` | &mdash; | 3 |
-  | `bsc_mainnet` | &mdash; | 4 |
-  | `bsc_testnet` | &mdash; | 5 |
-  | `tron_mainnet` | &mdash; | 10 |
-  | `tron_nile` | &mdash; | 11 |
-  | `tron_shasta` | &mdash; | 12 |
-  | `solana_testnet` | &mdash; | 13 |
+  | `sora_taira` | &mdash; | 64 |
+  | `ethereum_mainnet` | &mdash; | 65 |
+  | `bsc_mainnet` | &mdash; | 66 |
+  | `tron_mainnet` | &mdash; | 67 |
+  | `ton_mainnet` | &mdash; | 68 |
 
 ## `SccpRegistryChanged` {#sccpregistrychanged}
 
@@ -12599,6 +14416,69 @@
   | `InitializeLaneTrustAnchor` | &mdash; | 3 |
   | `AdvanceLaneTrustAnchor` | &mdash; | 4 |
   | `RemoveStagedRoute` | &mdash; | 5 |
+
+## `SccpReplayAccumulatorIdV1` {#sccpreplayaccumulatoridv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `route_key` | [`SccpRouteKeyV1`](#sccproutekeyv1) |
+  | `boundary` | [`SccpReplayBoundaryV1`](#sccpreplayboundaryv1) |
+
+## `SccpReplayBoundaryV1` {#sccpreplayboundaryv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `SoraOutboundLock` | &mdash; | 1 |
+  | `SoraInboundRelease` | &mdash; | 2 |
+  | `EvmSourceBurn` | &mdash; | 16 |
+  | `EvmDestinationMint` | &mdash; | 17 |
+  | `TronSourceBurn` | &mdash; | 32 |
+  | `TronDestinationMint` | &mdash; | 33 |
+  | `TonBridgeInboundMint` | &mdash; | 48 |
+  | `TonBridgeOutboundBurn` | &mdash; | 49 |
+  | `TonMasterMint` | &mdash; | 50 |
+  | `TonMasterBurn` | &mdash; | 51 |
+  | `TonWalletMintCredit` | &mdash; | 52 |
+  | `TonWalletBurnDebit` | &mdash; | 53 |
+  | `TonWalletRefundDebit` | &mdash; | 54 |
+  | `TonWalletRefundCredit` | &mdash; | 55 |
+
+## `SccpReplayDeltaEventV1` {#sccpreplaydeltaeventv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `lane` | [`LaneId`](#laneid) |
+  | `accumulator_id` | [`SccpReplayAccumulatorIdV1`](#sccpreplayaccumulatoridv1) |
+  | `delta` | [`SccpReplayDeltaV1`](#sccpreplaydeltav1) |
+
+## `SccpReplayDeltaV1` {#sccpreplaydeltav1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `domain_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `shard` | `u8` |
+  | `key` | [`Array<u8, 32>`](#array-u8-32) |
+  | `record_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `old_root` | [`Array<u8, 32>`](#array-u8-32) |
+  | `new_root` | [`Array<u8, 32>`](#array-u8-32) |
+  | `leaf_count` | `u64` |
+  | `update_sequence` | `u64` |
 
 ## `SccpRouteKeyV1` {#sccproutekeyv1}
 
@@ -12634,6 +14514,39 @@
   | --: | :-- |
   | `buckets` | [`Array<u64, 8>`](#array-u64-8) |
 
+## `ScopedAccount` {#scopedaccount}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `domain` | [`DomainId`](#domainid) |
+  | `event` | [`AccountEvent`](#accountevent) |
+
+## `ScopedAsset` {#scopedasset}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `domain` | [`DomainId`](#domainid) |
+  | `event` | [`AssetEvent`](#assetevent) |
+
+## `ScopedAssetDefinition` {#scopedassetdefinition}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `domain` | [`DomainId`](#domainid) |
+  | `event` | [`AssetDefinitionEvent`](#assetdefinitionevent) |
+
 ## `SealedTransactionCommitmentPayload` {#sealedtransactioncommitmentpayload}
 
 **Type:** Struct
@@ -12642,7 +14555,7 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `chain_id` | [`ChainId`](#chainid) |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
   | `authority` | [`AccountId`](#accountid) |
   | `commitment` | [`Hash`](#hash) |
   | `reveal_after_height` | `u64` |
@@ -12661,20 +14574,6 @@
   | `signed_transaction` | [`SignedTransaction`](#signedtransaction) |
   | `salt` | [`Array<u8, 32>`](#array-u8-32) |
 
-## `SearchMusubiPackages` {#searchmusubipackages}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `namespace` | [`Option<MusubiNamespace>`](#option-musubinamespace) |
-  | `query` | `String` |
-  | `include_yanked` | `bool` |
-  | `offset` | `u32` |
-  | `limit` | `u32` |
-
 ## `Signature` {#signature}
 
 **Type:** Struct
@@ -12686,6 +14585,18 @@
   | `payload` | [`Vec<u8>`](#vec-u8) |
 
 ## `SignatureOf<BlockHeader>` {#signatureof-blockheader}
+
+**Type:** Alias
+
+**To:** [`Signature`](#signature)
+
+## `SignatureOf<MusubiProviderBundleVerificationPayloadV1>` {#signatureof-musubiproviderbundleverificationpayloadv1}
+
+**Type:** Alias
+
+**To:** [`Signature`](#signature)
+
+## `SignatureOf<MusubiSeedIngressReceiptPayloadV1>` {#signatureof-musubiseedingressreceiptpayloadv1}
 
 **Type:** Alias
 
@@ -12775,27 +14686,27 @@
   | `FindAssetById` | [`FindAssetById`](#findassetbyid) | 9 |
   | `FindAssetDefinitionById` | [`FindAssetDefinitionById`](#findassetdefinitionbyid) | 10 |
   | `FindAssetEscrowById` | [`FindAssetEscrowById`](#findassetescrowbyid) | 11 |
-  | `FindAnonymousAssetEscrowById` | [`FindAnonymousAssetEscrowById`](#findanonymousassetescrowbyid) | 12 |
-  | `FindTriggerById` | [`FindTriggerById`](#findtriggerbyid) | 13 |
-  | `FindTwitterBindingByHash` | [`FindTwitterBindingByHash`](#findtwitterbindingbyhash) | 14 |
-  | `FindOracleFeedById` | [`FindOracleFeedById`](#findoraclefeedbyid) | 15 |
-  | `FindOracleDisputeById` | [`FindOracleDisputeById`](#findoracledisputebyid) | 16 |
-  | `FindOracleChangeById` | [`FindOracleChangeById`](#findoraclechangebyid) | 17 |
-  | `FindOracleProviderStatsByKey` | [`FindOracleProviderStatsByKey`](#findoracleproviderstatsbykey) | 18 |
-  | `FindLatestDefiOracleAttestation` | [`FindLatestDefiOracleAttestation`](#findlatestdefioracleattestation) | 19 |
-  | `FindDomainEndorsements` | [`FindDomainEndorsements`](#finddomainendorsements) | 20 |
-  | `FindDomainEndorsementPolicy` | [`FindDomainEndorsementPolicy`](#finddomainendorsementpolicy) | 21 |
-  | `FindDomainCommittee` | [`FindDomainCommittee`](#finddomaincommittee) | 22 |
-  | `FindDaPinIntentByTicket` | [`FindDaPinIntentByTicket`](#finddapinintentbyticket) | 23 |
-  | `FindDaPinIntentByManifest` | [`FindDaPinIntentByManifest`](#finddapinintentbymanifest) | 24 |
-  | `FindDaPinIntentByAlias` | [`FindDaPinIntentByAlias`](#finddapinintentbyalias) | 25 |
-  | `FindDaPinIntentByLaneEpochSequence` | [`FindDaPinIntentByLaneEpochSequence`](#finddapinintentbylaneepochsequence) | 26 |
-  | `FindLaneRelayEnvelopeByRef` | [`FindLaneRelayEnvelopeByRef`](#findlanerelayenvelopebyref) | 27 |
-  | `FindFeeSponsorProgramById` | [`FindFeeSponsorProgramById`](#findfeesponsorprogrambyid) | 28 |
-  | `FindFxCorridorPolicyRegistry` | [`FindFxCorridorPolicyRegistry`](#findfxcorridorpolicyregistry) | 29 |
-  | `FindFxCorridorPolicyById` | [`FindFxCorridorPolicyById`](#findfxcorridorpolicybyid) | 30 |
-  | `FindSorafsProviderOwner` | [`FindSorafsProviderOwner`](#findsorafsproviderowner) | 31 |
-  | `FindSorafsPinManifest` | [`FindSorafsPinManifest`](#findsorafspinmanifest) | 32 |
+  | `FindTriggerById` | [`FindTriggerById`](#findtriggerbyid) | 12 |
+  | `FindTwitterBindingByHash` | [`FindTwitterBindingByHash`](#findtwitterbindingbyhash) | 13 |
+  | `FindOracleFeedById` | [`FindOracleFeedById`](#findoraclefeedbyid) | 14 |
+  | `FindOracleDisputeById` | [`FindOracleDisputeById`](#findoracledisputebyid) | 15 |
+  | `FindOracleChangeById` | [`FindOracleChangeById`](#findoraclechangebyid) | 16 |
+  | `FindOracleProviderStatsByKey` | [`FindOracleProviderStatsByKey`](#findoracleproviderstatsbykey) | 17 |
+  | `FindLatestDefiOracleAttestation` | [`FindLatestDefiOracleAttestation`](#findlatestdefioracleattestation) | 18 |
+  | `FindDomainEndorsements` | [`FindDomainEndorsements`](#finddomainendorsements) | 19 |
+  | `FindDomainEndorsementPolicy` | [`FindDomainEndorsementPolicy`](#finddomainendorsementpolicy) | 20 |
+  | `FindDomainCommittee` | [`FindDomainCommittee`](#finddomaincommittee) | 21 |
+  | `FindDaPinIntentByTicket` | [`FindDaPinIntentByTicket`](#finddapinintentbyticket) | 22 |
+  | `FindDaPinIntentByManifest` | [`FindDaPinIntentByManifest`](#finddapinintentbymanifest) | 23 |
+  | `FindDaPinIntentByAlias` | [`FindDaPinIntentByAlias`](#finddapinintentbyalias) | 24 |
+  | `FindDaPinIntentByLaneEpochSequence` | [`FindDaPinIntentByLaneEpochSequence`](#finddapinintentbylaneepochsequence) | 25 |
+  | `FindLaneRelayEnvelopeByRef` | [`FindLaneRelayEnvelopeByRef`](#findlanerelayenvelopebyref) | 26 |
+  | `FindFeeSponsorProgramById` | [`FindFeeSponsorProgramById`](#findfeesponsorprogrambyid) | 27 |
+  | `FindFxCorridorPolicyRegistry` | [`FindFxCorridorPolicyRegistry`](#findfxcorridorpolicyregistry) | 28 |
+  | `FindFxCorridorPolicyById` | [`FindFxCorridorPolicyById`](#findfxcorridorpolicybyid) | 29 |
+  | `FindSorafsProviderOwner` | [`FindSorafsProviderOwner`](#findsorafsproviderowner) | 30 |
+  | `FindSorafsPinManifest` | [`FindSorafsPinManifest`](#findsorafspinmanifest) | 31 |
+  | `FindSorafsPinManifests` | [`FindSorafsPinManifests`](#findsorafspinmanifests) | 32 |
   | `FindSorafsOrderbookPolicy` | [`FindSorafsOrderbookPolicy`](#findsorafsorderbookpolicy) | 33 |
   | `FindSorafsOrderbookOrderById` | [`FindSorafsOrderbookOrderById`](#findsorafsorderbookorderbyid) | 34 |
   | `FindSorafsOrderbookCancellationByOrderId` | [`FindSorafsOrderbookCancellationByOrderId`](#findsorafsorderbookcancellationbyorderid) | 35 |
@@ -12823,36 +14734,46 @@
   | `FindSorafsPopRevocationByNonceCommitment` | [`FindSorafsPopRevocationByNonceCommitment`](#findsorafspoprevocationbynoncecommitment) | 57 |
   | `FindSorafsPopAuditDigestBySequence` | [`FindSorafsPopAuditDigestBySequence`](#findsorafspopauditdigestbysequence) | 58 |
   | `FindSorafsPopRegistryStatus` | [`FindSorafsPopRegistryStatus`](#findsorafspopregistrystatus) | 59 |
-  | `FindSorafsRepairTask` | [`FindSorafsRepairTask`](#findsorafsrepairtask) | 60 |
-  | `FindSorafsRepairTasks` | [`FindSorafsRepairTasks`](#findsorafsrepairtasks) | 61 |
-  | `FindSorafsRepairStatus` | [`FindSorafsRepairStatus`](#findsorafsrepairstatus) | 62 |
-  | `FindSorafsRepairEvents` | [`FindSorafsRepairEvents`](#findsorafsrepairevents) | 63 |
-  | `FindSorafsProofOutcome` | [`FindSorafsProofOutcome`](#findsorafsproofoutcome) | 64 |
-  | `FindSorafsProofOutcomeEvents` | [`FindSorafsProofOutcomeEvents`](#findsorafsproofoutcomeevents) | 65 |
-  | `FindSorafsReputationJournalAuthorityPolicy` | [`FindSorafsReputationJournalAuthorityPolicy`](#findsorafsreputationjournalauthoritypolicy) | 66 |
-  | `FindSorafsReputationJournalEventBySourceId` | [`FindSorafsReputationJournalEventBySourceId`](#findsorafsreputationjournaleventbysourceid) | 67 |
-  | `FindSorafsReputationJournalEvents` | [`FindSorafsReputationJournalEvents`](#findsorafsreputationjournalevents) | 68 |
-  | `FindSorafsModerationPolicy` | [`FindSorafsModerationPolicy`](#findsorafsmoderationpolicy) | 69 |
-  | `FindSorafsModerationAppeal` | [`FindSorafsModerationAppeal`](#findsorafsmoderationappeal) | 70 |
-  | `FindSorafsModerationJurorEligibility` | [`FindSorafsModerationJurorEligibility`](#findsorafsmoderationjuroreligibility) | 71 |
-  | `FindSorafsModerationCase` | [`FindSorafsModerationCase`](#findsorafsmoderationcase) | 72 |
-  | `FindSorafsModerationCommit` | [`FindSorafsModerationCommit`](#findsorafsmoderationcommit) | 73 |
-  | `FindSorafsModerationReveal` | [`FindSorafsModerationReveal`](#findsorafsmoderationreveal) | 74 |
-  | `FindSorafsModerationChallenge` | [`FindSorafsModerationChallenge`](#findsorafsmoderationchallenge) | 75 |
-  | `FindSorafsModerationOutcome` | [`FindSorafsModerationOutcome`](#findsorafsmoderationoutcome) | 76 |
-  | `FindSorafsModerationNoShow` | [`FindSorafsModerationNoShow`](#findsorafsmoderationnoshow) | 77 |
-  | `FindSorafsModerationStatus` | [`FindSorafsModerationStatus`](#findsorafsmoderationstatus) | 78 |
-  | `FindSorafsModerationSnapshot` | [`FindSorafsModerationSnapshot`](#findsorafsmoderationsnapshot) | 79 |
-  | `FindSorafsModerationEvents` | [`FindSorafsModerationEvents`](#findsorafsmoderationevents) | 80 |
-  | `FindDataspaceNameOwnerById` | [`FindDataspaceNameOwnerById`](#finddataspacenameownerbyid) | 81 |
-  | `FindMusubiReleaseByRef` | [`FindMusubiReleaseByRef`](#findmusubireleasebyref) | 82 |
-  | `FindMusubiPackageVersions` | [`FindMusubiPackageVersions`](#findmusubipackageversions) | 83 |
-  | `FindMusubiPackageReleases` | [`FindMusubiPackageReleases`](#findmusubipackagereleases) | 84 |
-  | `SearchMusubiPackages` | [`SearchMusubiPackages`](#searchmusubipackages) | 85 |
-  | `FindMusubiShortAliasByName` | [`FindMusubiShortAliasByName`](#findmusubishortaliasbyname) | 86 |
-  | `FindAccountByAlias` | [`FindAccountByAlias`](#findaccountbyalias) | 87 |
-  | `FindDomainById` | [`FindDomainById`](#finddomainbyid) | 88 |
-  | `FindNftById` | [`FindNftById`](#findnftbyid) | 89 |
+  | `FindSorafsCitizenBondBySerialCommitment` | [`FindSorafsCitizenBondBySerialCommitment`](#findsorafscitizenbondbyserialcommitment) | 60 |
+  | `FindSorafsCitizenBondSnapshot` | [`FindSorafsCitizenBondSnapshot`](#findsorafscitizenbondsnapshot) | 61 |
+  | `FindSorafsAnonymousServiceEscrowById` | [`FindSorafsAnonymousServiceEscrowById`](#findsorafsanonymousserviceescrowbyid) | 62 |
+  | `FindSorafsRepairTask` | [`FindSorafsRepairTask`](#findsorafsrepairtask) | 63 |
+  | `FindSorafsRepairTasks` | [`FindSorafsRepairTasks`](#findsorafsrepairtasks) | 64 |
+  | `FindSorafsRepairStatus` | [`FindSorafsRepairStatus`](#findsorafsrepairstatus) | 65 |
+  | `FindSorafsRepairEvents` | [`FindSorafsRepairEvents`](#findsorafsrepairevents) | 66 |
+  | `FindSorafsProofOutcome` | [`FindSorafsProofOutcome`](#findsorafsproofoutcome) | 67 |
+  | `FindSorafsProofOutcomeEvents` | [`FindSorafsProofOutcomeEvents`](#findsorafsproofoutcomeevents) | 68 |
+  | `FindSorafsReputationJournalAuthorityPolicy` | [`FindSorafsReputationJournalAuthorityPolicy`](#findsorafsreputationjournalauthoritypolicy) | 69 |
+  | `FindSorafsReputationJournalEventBySourceId` | [`FindSorafsReputationJournalEventBySourceId`](#findsorafsreputationjournaleventbysourceid) | 70 |
+  | `FindSorafsReputationJournalEvents` | [`FindSorafsReputationJournalEvents`](#findsorafsreputationjournalevents) | 71 |
+  | `FindSorafsModerationPolicy` | [`FindSorafsModerationPolicy`](#findsorafsmoderationpolicy) | 72 |
+  | `FindSorafsModerationAppeal` | [`FindSorafsModerationAppeal`](#findsorafsmoderationappeal) | 73 |
+  | `FindSorafsModerationJurorEligibility` | [`FindSorafsModerationJurorEligibility`](#findsorafsmoderationjuroreligibility) | 74 |
+  | `FindSorafsAnonymousJurorCandidacy` | [`FindSorafsAnonymousJurorCandidacy`](#findsorafsanonymousjurorcandidacy) | 75 |
+  | `FindSorafsModerationCase` | [`FindSorafsModerationCase`](#findsorafsmoderationcase) | 76 |
+  | `FindSorafsModerationCommit` | [`FindSorafsModerationCommit`](#findsorafsmoderationcommit) | 77 |
+  | `FindSorafsModerationReveal` | [`FindSorafsModerationReveal`](#findsorafsmoderationreveal) | 78 |
+  | `FindSorafsModerationChallenge` | [`FindSorafsModerationChallenge`](#findsorafsmoderationchallenge) | 79 |
+  | `FindSorafsModerationOutcome` | [`FindSorafsModerationOutcome`](#findsorafsmoderationoutcome) | 80 |
+  | `FindSorafsModerationNoShow` | [`FindSorafsModerationNoShow`](#findsorafsmoderationnoshow) | 81 |
+  | `FindSorafsModerationStatus` | [`FindSorafsModerationStatus`](#findsorafsmoderationstatus) | 82 |
+  | `FindSorafsModerationSnapshot` | [`FindSorafsModerationSnapshot`](#findsorafsmoderationsnapshot) | 83 |
+  | `FindSorafsModerationEvents` | [`FindSorafsModerationEvents`](#findsorafsmoderationevents) | 84 |
+  | `FindDataspaceNameOwnerById` | [`FindDataspaceNameOwnerById`](#finddataspacenameownerbyid) | 85 |
+  | `FindMusubiExactPackageV1` | [`FindMusubiExactPackageV1`](#findmusubiexactpackagev1) | 86 |
+  | `FindMusubiExactReleaseV1` | [`FindMusubiExactReleaseV1`](#findmusubiexactreleasev1) | 87 |
+  | `FindMusubiProviderBundleAttestationV1` | [`FindMusubiProviderBundleAttestationV1`](#findmusubiproviderbundleattestationv1) | 88 |
+  | `FindMusubiResolverIndexV1` | [`FindMusubiResolverIndexV1`](#findmusubiresolverindexv1) | 89 |
+  | `FindMusubiVersionsV1` | [`FindMusubiVersionsV1`](#findmusubiversionsv1) | 90 |
+  | `FindMusubiMaintainersV1` | [`FindMusubiMaintainersV1`](#findmusubimaintainersv1) | 91 |
+  | `FindMusubiArchiveLocationsV1` | [`FindMusubiArchiveLocationsV1`](#findmusubiarchivelocationsv1) | 92 |
+  | `FindMusubiArchiveRetentionV1` | [`FindMusubiArchiveRetentionV1`](#findmusubiarchiveretentionv1) | 93 |
+  | `FindMusubiAliasV1` | [`FindMusubiAliasV1`](#findmusubialiasv1) | 94 |
+  | `FindMusubiAliasHistoryV1` | [`FindMusubiAliasHistoryV1`](#findmusubialiashistoryv1) | 95 |
+  | `FindMusubiOrderedPrefixV1` | [`FindMusubiOrderedPrefixV1`](#findmusubiorderedprefixv1) | 96 |
+  | `FindAccountByAlias` | [`FindAccountByAlias`](#findaccountbyalias) | 97 |
+  | `FindDomainById` | [`FindDomainById`](#finddomainbyid) | 98 |
+  | `FindNftById` | [`FindNftById`](#findnftbyid) | 99 |
 
 ## `SingularQueryOutputBox` {#singularqueryoutputbox}
 
@@ -12876,21 +14797,21 @@
   | `Asset` | [`Asset`](#asset) | 11 |
   | `AssetDefinition` | [`AssetDefinition`](#assetdefinition) | 12 |
   | `AssetEscrowRecord` | [`AssetEscrowRecord`](#assetescrowrecord) | 13 |
-  | `AnonymousAssetEscrowRecord` | [`AnonymousAssetEscrowRecord`](#anonymousassetescrowrecord) | 14 |
-  | `Trigger` | [`Trigger`](#trigger) | 15 |
-  | `TwitterBindingRecord` | [`TwitterBindingRecord`](#twitterbindingrecord) | 16 |
-  | `OracleFeedConfig` | [`FeedConfig`](#feedconfig) | 17 |
-  | `OracleDispute` | [`OracleDispute`](#oracledispute) | 18 |
-  | `OracleChangeProposal` | [`OracleChangeProposal`](#oraclechangeproposal) | 19 |
-  | `OracleProviderStats` | [`OracleProviderStats`](#oracleproviderstats) | 20 |
-  | `DefiOracleAttestation` | [`DefiOracleAttestation`](#defioracleattestation) | 21 |
-  | `DomainEndorsements` | [`Vec<DomainEndorsementRecord>`](#vec-domainendorsementrecord) | 22 |
-  | `DomainEndorsementPolicy` | [`DomainEndorsementPolicy`](#domainendorsementpolicy) | 23 |
-  | `DomainCommittee` | [`DomainCommittee`](#domaincommittee) | 24 |
-  | `DaPinIntent` | [`DaPinIntentWithLocation`](#dapinintentwithlocation) | 25 |
-  | `VerifiedLaneRelayRecord` | [`VerifiedLaneRelayRecord`](#verifiedlanerelayrecord) | 26 |
-  | `FeeSponsorProgram` | [`FeeSponsorProgram`](#feesponsorprogram) | 27 |
-  | `SorafsPinManifest` | [`PinManifestFinalizedRecordV1`](#pinmanifestfinalizedrecordv1) | 28 |
+  | `Trigger` | [`Trigger`](#trigger) | 14 |
+  | `TwitterBindingRecord` | [`TwitterBindingRecord`](#twitterbindingrecord) | 15 |
+  | `OracleFeedConfig` | [`FeedConfig`](#feedconfig) | 16 |
+  | `OracleDispute` | [`OracleDispute`](#oracledispute) | 17 |
+  | `OracleChangeProposal` | [`OracleChangeProposal`](#oraclechangeproposal) | 18 |
+  | `OracleProviderStats` | [`OracleProviderStats`](#oracleproviderstats) | 19 |
+  | `DefiOracleAttestation` | [`DefiOracleAttestation`](#defioracleattestation) | 20 |
+  | `DomainEndorsements` | [`Vec<DomainEndorsementRecord>`](#vec-domainendorsementrecord) | 21 |
+  | `DomainEndorsementPolicy` | [`DomainEndorsementPolicy`](#domainendorsementpolicy) | 22 |
+  | `DomainCommittee` | [`DomainCommittee`](#domaincommittee) | 23 |
+  | `DaPinIntent` | [`DaPinIntentWithLocation`](#dapinintentwithlocation) | 24 |
+  | `VerifiedLaneRelayRecord` | [`VerifiedLaneRelayRecord`](#verifiedlanerelayrecord) | 25 |
+  | `FeeSponsorProgram` | [`FeeSponsorProgram`](#feesponsorprogram) | 26 |
+  | `SorafsPinManifest` | [`PinManifestFinalizedRecordV1`](#pinmanifestfinalizedrecordv1) | 27 |
+  | `SorafsPinManifestPage` | [`PinManifestPageV1`](#pinmanifestpagev1) | 28 |
   | `SorafsOrderbookPolicy` | [`OrderbookAdmissionPolicyRecord`](#orderbookadmissionpolicyrecord) | 29 |
   | `SorafsOrderbookOrder` | [`OrderbookOrderRecord`](#orderbookorderrecord) | 30 |
   | `SorafsOrderbookCancellation` | [`OrderbookCancellationRecord`](#orderbookcancellationrecord) | 31 |
@@ -12918,37 +14839,47 @@
   | `SorafsPopRevocation` | [`PopRevocationRecordV1`](#poprevocationrecordv1) | 53 |
   | `SorafsPopAuditDigest` | [`PopRegistryAuditDigestRecordV1`](#popregistryauditdigestrecordv1) | 54 |
   | `SorafsPopRegistryStatus` | [`PopRegistryStatusV1`](#popregistrystatusv1) | 55 |
-  | `SorafsRepairTask` | [`RepairFinalizedTaskV1`](#repairfinalizedtaskv1) | 56 |
-  | `SorafsRepairTaskPage` | [`RepairLedgerTaskPageV1`](#repairledgertaskpagev1) | 57 |
-  | `SorafsRepairStatus` | [`RepairFinalizedStatusV1`](#repairfinalizedstatusv1) | 58 |
-  | `SorafsRepairEventPage` | [`RepairFinalizedEventPageV1`](#repairfinalizedeventpagev1) | 59 |
-  | `SorafsProofOutcome` | [`ProofOutcomeFinalizedRecordV1`](#proofoutcomefinalizedrecordv1) | 60 |
-  | `SorafsProofOutcomeEventPage` | [`ProofOutcomeFinalizedEventPageV1`](#proofoutcomefinalizedeventpagev1) | 61 |
-  | `SorafsReputationJournalAuthorityPolicy` | [`ReputationJournalAuthorityPolicyRecordV1`](#reputationjournalauthoritypolicyrecordv1) | 62 |
-  | `SorafsReputationJournalEvent` | [`ReputationJournalFinalizedEventV1`](#reputationjournalfinalizedeventv1) | 63 |
-  | `SorafsReputationJournalEventPage` | [`ReputationJournalFinalizedEventPageV1`](#reputationjournalfinalizedeventpagev1) | 64 |
-  | `SorafsModerationPolicy` | [`ModerationLedgerPolicyRecord`](#moderationledgerpolicyrecord) | 65 |
-  | `SorafsModerationAppeal` | [`ModerationAppealRecordV1`](#moderationappealrecordv1) | 66 |
-  | `SorafsModerationJurorEligibility` | [`ModerationJurorEligibilityRecordV1`](#moderationjuroreligibilityrecordv1) | 67 |
-  | `SorafsModerationCase` | [`ModerationCaseRecordV1`](#moderationcaserecordv1) | 68 |
-  | `SorafsModerationCommit` | [`ModerationCommitRecordV1`](#moderationcommitrecordv1) | 69 |
-  | `SorafsModerationReveal` | [`ModerationRevealRecordV1`](#moderationrevealrecordv1) | 70 |
-  | `SorafsModerationChallenge` | [`ModerationChallengeRecordV1`](#moderationchallengerecordv1) | 71 |
-  | `SorafsModerationOutcome` | [`ModerationOutcomeRecordV1`](#moderationoutcomerecordv1) | 72 |
-  | `SorafsModerationNoShow` | [`ModerationNoShowRecordV1`](#moderationnoshowrecordv1) | 73 |
-  | `SorafsModerationStatus` | [`ModerationLedgerStatusV1`](#moderationledgerstatusv1) | 74 |
-  | `SorafsModerationSnapshot` | [`ModerationFinalizedLedgerSnapshotV1`](#moderationfinalizedledgersnapshotv1) | 75 |
-  | `SorafsModerationEventPage` | [`ModerationFinalizedEventPageV1`](#moderationfinalizedeventpagev1) | 76 |
-  | `FxCorridorPolicyRegistry` | [`FxCorridorPolicyRegistry`](#fxcorridorpolicyregistry) | 77 |
-  | `FxCorridorPolicy` | [`FxCorridorPolicy`](#fxcorridorpolicy) | 78 |
-  | `MusubiRelease` | [`MusubiRelease`](#musubirelease) | 79 |
-  | `MusubiVersions` | [`Vec<MusubiVersion>`](#vec-musubiversion) | 80 |
-  | `MusubiReleaseSummaries` | [`Vec<MusubiReleaseSummary>`](#vec-musubireleasesummary) | 81 |
-  | `MusubiPackageSummaries` | [`Vec<MusubiPackageSummary>`](#vec-musubipackagesummary) | 82 |
-  | `MusubiPackageId` | [`MusubiPackageId`](#musubipackageid) | 83 |
-  | `AccountId` | [`AccountId`](#accountid) | 84 |
-  | `Domain` | [`Domain`](#domain) | 85 |
-  | `Nft` | [`Nft`](#nft) | 86 |
+  | `SorafsCitizenBond` | [`SorafsCitizenBondV1`](#sorafscitizenbondv1) | 56 |
+  | `SorafsCitizenBondSnapshot` | [`SorafsCitizenBondSnapshotV1`](#sorafscitizenbondsnapshotv1) | 57 |
+  | `SorafsAnonymousServiceEscrow` | [`SorafsAnonymousServiceEscrowV1`](#sorafsanonymousserviceescrowv1) | 58 |
+  | `SorafsRepairTask` | [`RepairFinalizedTaskV1`](#repairfinalizedtaskv1) | 59 |
+  | `SorafsRepairTaskPage` | [`RepairLedgerTaskPageV1`](#repairledgertaskpagev1) | 60 |
+  | `SorafsRepairStatus` | [`RepairFinalizedStatusV1`](#repairfinalizedstatusv1) | 61 |
+  | `SorafsRepairEventPage` | [`RepairFinalizedEventPageV1`](#repairfinalizedeventpagev1) | 62 |
+  | `SorafsProofOutcome` | [`ProofOutcomeFinalizedRecordV1`](#proofoutcomefinalizedrecordv1) | 63 |
+  | `SorafsProofOutcomeEventPage` | [`ProofOutcomeFinalizedEventPageV1`](#proofoutcomefinalizedeventpagev1) | 64 |
+  | `SorafsReputationJournalAuthorityPolicy` | [`ReputationJournalAuthorityPolicyRecordV1`](#reputationjournalauthoritypolicyrecordv1) | 65 |
+  | `SorafsReputationJournalEvent` | [`ReputationJournalFinalizedEventV1`](#reputationjournalfinalizedeventv1) | 66 |
+  | `SorafsReputationJournalEventPage` | [`ReputationJournalFinalizedEventPageV1`](#reputationjournalfinalizedeventpagev1) | 67 |
+  | `SorafsModerationPolicy` | [`ModerationLedgerPolicyRecord`](#moderationledgerpolicyrecord) | 68 |
+  | `SorafsModerationAppeal` | [`ModerationAppealRecordV1`](#moderationappealrecordv1) | 69 |
+  | `SorafsModerationJurorEligibility` | [`ModerationJurorEligibilityRecordV1`](#moderationjuroreligibilityrecordv1) | 70 |
+  | `SorafsAnonymousJurorCandidacy` | [`SorafsAnonymousJurorCandidacyRecordV1`](#sorafsanonymousjurorcandidacyrecordv1) | 71 |
+  | `SorafsModerationCase` | [`ModerationCaseRecordV1`](#moderationcaserecordv1) | 72 |
+  | `SorafsModerationCommit` | [`ModerationCommitRecordV1`](#moderationcommitrecordv1) | 73 |
+  | `SorafsModerationReveal` | [`ModerationRevealRecordV1`](#moderationrevealrecordv1) | 74 |
+  | `SorafsModerationChallenge` | [`ModerationChallengeRecordV1`](#moderationchallengerecordv1) | 75 |
+  | `SorafsModerationOutcome` | [`ModerationOutcomeRecordV1`](#moderationoutcomerecordv1) | 76 |
+  | `SorafsModerationNoShow` | [`ModerationNoShowRecordV1`](#moderationnoshowrecordv1) | 77 |
+  | `SorafsModerationStatus` | [`ModerationLedgerStatusV1`](#moderationledgerstatusv1) | 78 |
+  | `SorafsModerationSnapshot` | [`ModerationFinalizedLedgerSnapshotV1`](#moderationfinalizedledgersnapshotv1) | 79 |
+  | `SorafsModerationEventPage` | [`ModerationFinalizedEventPageV1`](#moderationfinalizedeventpagev1) | 80 |
+  | `FxCorridorPolicyRegistry` | [`FxCorridorPolicyRegistry`](#fxcorridorpolicyregistry) | 81 |
+  | `FxCorridorPolicy` | [`FxCorridorPolicy`](#fxcorridorpolicy) | 82 |
+  | `MusubiPackage` | [`MusubiPackageRecordV1`](#musubipackagerecordv1) | 83 |
+  | `MusubiRelease` | [`MusubiExactReleaseSnapshotV1`](#musubiexactreleasesnapshotv1) | 84 |
+  | `MusubiProviderBundleAttestation` | [`MusubiProviderBundleAttestationRecordV1`](#musubiproviderbundleattestationrecordv1) | 85 |
+  | `MusubiResolverIndexPage` | [`MusubiResolverIndexPageV1`](#musubiresolverindexpagev1) | 86 |
+  | `MusubiVersionPage` | [`MusubiVersionPageV1`](#musubiversionpagev1) | 87 |
+  | `MusubiMaintainerPage` | [`MusubiMaintainerPageV1`](#musubimaintainerpagev1) | 88 |
+  | `MusubiArchiveLocationPage` | [`MusubiArchiveLocationPageV1`](#musubiarchivelocationpagev1) | 89 |
+  | `MusubiArchiveRetentionPage` | [`MusubiArchiveRetentionPageV1`](#musubiarchiveretentionpagev1) | 90 |
+  | `MusubiAlias` | [`MusubiAliasRecordV1`](#musubialiasrecordv1) | 91 |
+  | `MusubiAliasHistoryPage` | [`MusubiAliasHistoryPageV1`](#musubialiashistorypagev1) | 92 |
+  | `MusubiOrderedPackagePage` | [`MusubiOrderedPackagePageV1`](#musubiorderedpackagepagev1) | 93 |
+  | `AccountId` | [`AccountId`](#accountid) | 94 |
+  | `Domain` | [`Domain`](#domain) | 95 |
+  | `Nft` | [`Nft`](#nft) | 96 |
 
 ## `SmartContractEvent` {#smartcontractevent}
 
@@ -12962,6 +14893,12 @@
   | `CodeRemoved` | [`ContractCodeRemoved`](#contractcoderemoved) | 1 |
   | `InstanceActivated` | [`ContractInstanceActivated`](#contractinstanceactivated) | 2 |
   | `InstanceDeactivated` | [`ContractInstanceDeactivated`](#contractinstancedeactivated) | 3 |
+  | `ParliamentDelegationChanged` | [`ContractParliamentDelegationChanged`](#contractparliamentdelegationchanged) | 4 |
+  | `OwnershipTransferOffered` | [`ContractOwnershipTransferOffered`](#contractownershiptransferoffered) | 5 |
+  | `OwnershipTransferCancelled` | [`ContractOwnershipTransferCancelled`](#contractownershiptransfercancelled) | 6 |
+  | `OwnershipTransferred` | [`ContractOwnershipTransferred`](#contractownershiptransferred) | 7 |
+  | `EmergencyHoldPlaced` | [`ContractEmergencyHoldPlaced`](#contractemergencyholdplaced) | 8 |
+  | `EmergencyHoldRetrospectiveCompleted` | [`ContractEmergencyHoldRetrospectiveCompleted`](#contractemergencyholdretrospectivecompleted) | 9 |
 
 ## `SmartContractParameter` {#smartcontractparameter}
 
@@ -12974,6 +14911,8 @@
   | `Fuel` | [`NonZero<u64>`](#nonzero-u64) | 0 |
   | `Memory` | [`NonZero<u64>`](#nonzero-u64) | 1 |
   | `ExecutionDepth` | `u8` | 2 |
+  | `MaxOutputItems` | [`NonZero<u64>`](#nonzero-u64) | 3 |
+  | `MaxOutputBytes` | [`NonZero<u64>`](#nonzero-u64) | 4 |
 
 ## `SmartContractParameters` {#smartcontractparameters}
 
@@ -12986,6 +14925,8 @@
   | `fuel` | [`NonZero<u64>`](#nonzero-u64) |
   | `memory` | [`NonZero<u64>`](#nonzero-u64) |
   | `execution_depth` | `u8` |
+  | `max_output_items` | [`NonZero<u64>`](#nonzero-u64) |
+  | `max_output_bytes` | [`NonZero<u64>`](#nonzero-u64) |
 
 ## `SnapshotBootstrapAnchor` {#snapshotbootstrapanchor}
 
@@ -13142,6 +15083,136 @@
   | `ReleaseSignerAdded` | `0x10` |
   | `ReleaseSignerRemoved` | `0x20` |
   | `PolicyUpdated` | `0x40` |
+
+## `SorafsAnonymousJurorCandidacyRecordV1` {#sorafsanonymousjurorcandidacyrecordv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `case_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `juror_tag` | [`Array<u8, 32>`](#array-u8-32) |
+  | `session_public_key` | [`Array<u8, 32>`](#array-u8-32) |
+  | `citizen_nullifier` | [`Array<u8, 32>`](#array-u8-32) |
+  | `service_note_commitment` | [`Array<u8, 32>`](#array-u8-32) |
+  | `service_note_nullifier` | [`Array<u8, 32>`](#array-u8-32) |
+  | `fee_tag` | [`Array<u8, 32>`](#array-u8-32) |
+  | `citizen_snapshot_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `action_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `escrow_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `registered_at_finalized_height` | `u64` |
+  | `expiry_finalized_height` | `u64` |
+
+## `SorafsAnonymousServiceEscrowStateV1` {#sorafsanonymousserviceescrowstatev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `reserved` | &mdash; | 0 |
+  | `refunded` | [`SorafsAnonymousServiceRefundV1`](#sorafsanonymousservicerefundv1) | 1 |
+  | `slashed` | [`SorafsAnonymousServiceSlashV1`](#sorafsanonymousserviceslashv1) | 2 |
+
+## `SorafsAnonymousServiceEscrowV1` {#sorafsanonymousserviceescrowv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `escrow_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `case_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `action_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `juror_tag` | [`Array<u8, 32>`](#array-u8-32) |
+  | `note_commitment` | [`Array<u8, 32>`](#array-u8-32) |
+  | `note_nullifier` | [`Array<u8, 32>`](#array-u8-32) |
+  | `fee_tag` | [`Array<u8, 32>`](#array-u8-32) |
+  | `penalty_sink` | [`AccountId`](#accountid) |
+  | `reserved_at_height` | `u64` |
+  | `state` | [`SorafsAnonymousServiceEscrowStateV1`](#sorafsanonymousserviceescrowstatev1) |
+
+## `SorafsAnonymousServiceRefundV1` {#sorafsanonymousservicerefundv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `refund_note_commitment` | [`Array<u8, 32>`](#array-u8-32) |
+  | `finalized_height` | `u64` |
+
+## `SorafsAnonymousServiceSlashV1` {#sorafsanonymousserviceslashv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `evidence_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `adjudication_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `finalized_height` | `u64` |
+
+## `SorafsCitizenBondExitPendingV1` {#sorafscitizenbondexitpendingv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `requested_at_height` | `u64` |
+  | `unlock_height` | `u64` |
+
+## `SorafsCitizenBondSnapshotV1` {#sorafscitizenbondsnapshotv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `frozen_policy_root` | [`Array<u8, 32>`](#array-u8-32) |
+  | `active_membership_root` | [`Array<u8, 32>`](#array-u8-32) |
+  | `finalized_height` | `u64` |
+  | `active_bond_count` | `u64` |
+
+## `SorafsCitizenBondStateV1` {#sorafscitizenbondstatev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `active` | &mdash; | 0 |
+  | `exit_pending` | [`SorafsCitizenBondExitPendingV1`](#sorafscitizenbondexitpendingv1) | 1 |
+
+## `SorafsCitizenBondV1` {#sorafscitizenbondv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u16` |
+  | `serial_commitment` | [`Array<u8, 32>`](#array-u8-32) |
+  | `authorization_commitment` | [`Array<u8, 32>`](#array-u8-32) |
+  | `authorization_revision` | `u64` |
+  | `locked_value_commitment` | [`Array<u8, 32>`](#array-u8-32) |
+  | `bond_asset` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `bond_atomic_units` | `u128` |
+  | `frozen_policy_root` | [`Array<u8, 32>`](#array-u8-32) |
+  | `bonded_at_height` | `u64` |
+  | `exit_delay_blocks` | `u64` |
+  | `state` | [`SorafsCitizenBondStateV1`](#sorafscitizenbondstatev1) |
 
 ## `SorafsGarPolicy` {#sorafsgarpolicy}
 
@@ -13521,6 +15592,14 @@
 
 **Value:** [`FxCorridorPolicy`](#fxcorridorpolicy)
 
+## `SortedMap<Name, FxCorridorUsage>` {#sortedmap-name-fxcorridorusage}
+
+**Type:** Map
+
+**Key:** [`Name`](#name)
+
+**Value:** [`FxCorridorUsage`](#fxcorridorusage)
+
 ## `SortedMap<Name, Json>` {#sortedmap-name-json}
 
 **Type:** Map
@@ -13564,6 +15643,12 @@
 **Type:** Vec
 
 **Value:** [`BlockSignature`](#blocksignature)
+
+## `SortedVec<DataSpaceId>` {#sortedvec-dataspaceid}
+
+**Type:** Vec
+
+**Value:** [`DataSpaceId`](#dataspaceid)
 
 ## `SortedVec<DomainId>` {#sortedvec-domainid}
 
@@ -13681,6 +15766,7 @@
 
   | Field name | Field value |
   | --: | :-- |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
   | `kind` | `String` |
   | `from` | `String` |
   | `to` | `String` |
@@ -13720,16 +15806,6 @@
   | `pool_fallback_total` | `u64` |
   | `budget_hit_total` | `u64` |
 
-## `StandaloneAssetDefinitionEvent` {#standaloneassetdefinitionevent}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `event` | [`AssetDefinitionEvent`](#assetdefinitionevent) |
-
 ## `StateDescriptor` {#statedescriptor}
 
 **Type:** Struct
@@ -13768,7 +15844,6 @@
   | `last_non_empty_block_committed_at_ms` | `u64` |
   | `time_since_last_block_ms` | `u64` |
   | `time_since_last_non_empty_block_ms` | `u64` |
-  | `da_reschedule_total` | `u64` |
   | `crypto` | [`CryptoStatus`](#cryptostatus) |
   | `stack` | [`StackStatus`](#stackstatus) |
   | `offline` | [`Option<OfflineStatus>`](#option-offlinestatus) |
@@ -13779,7 +15854,6 @@
   | `dataspace_catalog` | [`Vec<NexusDataspaceCatalogStatus>`](#vec-nexusdataspacecatalogstatus) |
   | `nexus` | [`Option<NexusStatus>`](#option-nexusstatus) |
   | `tx_gossip` | [`TxGossipSnapshot`](#txgossipsnapshot) |
-  | `sorafs_micropayments` | [`Vec<MicropaymentSampleStatus>`](#vec-micropaymentsamplestatus) |
   | `taikai_alias_rotations` | [`Vec<TaikaiAliasRotationStatus>`](#vec-taikaialiasrotationstatus) |
   | `taikai_ingest` | [`Vec<TaikaiIngestStatus>`](#vec-taikaiingeststatus) |
   | `da_receipt_cursors` | [`Vec<DaReceiptCursorStatus>`](#vec-dareceiptcursorstatus) |
@@ -14053,7 +16127,6 @@
   | `commit_qc_epoch` | `u64` |
   | `commit_qc_signatures_total` | `u64` |
   | `commit_qc_validator_set_len` | `u64` |
-  | `gossip_fallback_total` | `u64` |
   | `block_created_dropped_by_lock_total` | `u64` |
   | `block_created_hint_mismatch_total` | `u64` |
   | `block_created_proposal_mismatch_total` | `u64` |
@@ -14072,15 +16145,6 @@
   | `prf_epoch_seed` | [`Option<String>`](#option-string) |
   | `prf_height` | `u64` |
   | `prf_view` | `u64` |
-  | `da_reschedule_total` | `u64` |
-  | `rbc_deliver_defer_ready_total` | `u64` |
-  | `rbc_deliver_defer_chunks_total` | `u64` |
-  | `rbc_store_sessions` | `u64` |
-  | `rbc_store_bytes` | `u64` |
-  | `rbc_store_pressure_level` | `u8` |
-  | `rbc_store_backpressure_deferrals_total` | `u64` |
-  | `rbc_store_persist_drops_total` | `u64` |
-  | `rbc_store_evictions_total` | `u64` |
   | `view_change_proof_accepted_total` | `u64` |
   | `view_change_proof_stale_total` | `u64` |
   | `view_change_proof_rejected_total` | `u64` |
@@ -14256,6 +16320,19 @@
   | `last_live_edge_drift_ms` | [`Option<i32>`](#option-i32) |
   | `error_counts` | [`Vec<TaikaiIngestErrorCounter>`](#vec-taikaiingesterrorcounter) |
 
+## `ThresholdKeyLifecycleActionV1` {#thresholdkeylifecycleactionv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `install_global_beacon_key` | &mdash; | 0 |
+  | `retire_global_beacon_key` | &mdash; | 1 |
+  | `install_parliament_tle_key` | &mdash; | 2 |
+  | `retire_parliament_tle_key` | &mdash; | 3 |
+
 ## `TicketBodyV1` {#ticketbodyv1}
 
 **Type:** Struct
@@ -14408,6 +16485,28 @@
   | `read` | [`Vec<String>`](#vec-string) |
   | `write` | [`Vec<String>`](#vec-string) |
 
+## `TransactionAdmissionIntent` {#transactionadmissionintent}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `ordinary` | &mdash; | 0 |
+  | `queue_plan_synced` | &mdash; | 1 |
+
+## `TransactionDomain` {#transactiondomain}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `network` | [`HashOf<BlockHeader>`](#hashof-blockheader) | 0 |
+  | `genesis` | &mdash; | 1 |
+
 ## `TransactionEntrypoint` {#transactionentrypoint}
 
 **Type:** Enum
@@ -14419,8 +16518,7 @@
   | `External` | [`SignedTransaction`](#signedtransaction) | 0 |
   | `SealedCommitment` | [`SignedSealedTransactionCommitment`](#signedsealedtransactioncommitment) | 1 |
   | `SealedReveal` | [`SealedTransactionReveal`](#sealedtransactionreveal) | 2 |
-  | `PrivateKaigi` | [`PrivateKaigiTransaction`](#privatekaigitransaction) | 3 |
-  | `Time` | [`TimeTriggerEntrypoint`](#timetriggerentrypoint) | 4 |
+  | `Time` | [`TimeTriggerEntrypoint`](#timetriggerentrypoint) | 3 |
 
 ## `TransactionEvent` {#transactionevent}
 
@@ -14504,13 +16602,14 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `chain` | [`ChainId`](#chainid) |
+  | `domain` | [`TransactionDomain`](#transactiondomain) |
   | `authority` | [`AccountId`](#accountid) |
   | `creation_time_ms` | `u64` |
   | `instructions` | [`Executable`](#executable) |
   | `time_to_live_ms` | [`Option<NonZero<u64>>`](#option-nonzero-u64) |
   | `nonce` | [`Option<NonZero<u32>>`](#option-nonzero-u32) |
   | `fee_payment` | [`FeePaymentIntent`](#feepaymentintent) |
+  | `admission_intent` | [`TransactionAdmissionIntent`](#transactionadmissionintent) |
   | `metadata` | [`Metadata`](#metadata) |
   | `attachments` | [`Option<ProofAttachmentList>`](#option-proofattachmentlist) |
 
@@ -14948,40 +17047,6 @@
   | `TooComplex` | &mdash; | 6 |
   | `InternalError` | &mdash; | 7 |
 
-## `ValidatorElectionOutcome` {#validatorelectionoutcome}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `epoch` | `u64` |
-  | `snapshot_height` | `u64` |
-  | `seed` | [`Array<u8, 32>`](#array-u8-32) |
-  | `candidates_total` | `u32` |
-  | `validator_set` | [`Vec<PeerId>`](#vec-peerid) |
-  | `validator_set_hash` | [`HashOf<Vec<PeerId>>`](#hashof-vec-peerid) |
-  | `params` | [`ValidatorElectionParameters`](#validatorelectionparameters) |
-  | `rejection_reason` | [`Option<String>`](#option-string) |
-  | `tie_break` | [`Vec<ValidatorTieBreak>`](#vec-validatortiebreak) |
-
-## `ValidatorElectionParameters` {#validatorelectionparameters}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `max_validators` | `u32` |
-  | `min_self_bond` | [`Quantity`](#quantity) |
-  | `min_nomination_bond` | [`Quantity`](#quantity) |
-  | `max_nominator_concentration_pct` | `u8` |
-  | `seat_band_pct` | `u8` |
-  | `max_entity_correlation_pct` | `u8` |
-  | `finality_margin_blocks` | `u64` |
-
 ## `ValidatorPower` {#validatorpower}
 
 **Type:** Struct
@@ -14992,39 +17057,6 @@
   | --: | :-- |
   | `validator` | [`PeerId`](#peerid) |
   | `power` | `u64` |
-
-## `ValidatorSetCheckpoint` {#validatorsetcheckpoint}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `height` | `u64` |
-  | `view` | `u64` |
-  | `block_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
-  | `parent_state_root` | [`Hash`](#hash) |
-  | `post_state_root` | [`Hash`](#hash) |
-  | `chain_order_hash` | [`Hash`](#hash) |
-  | `rechain_seq` | `u64` |
-  | `validator_set_hash` | [`HashOf<Vec<PeerId>>`](#hashof-vec-peerid) |
-  | `validator_set_hash_version` | `u16` |
-  | `validator_set` | [`Vec<PeerId>`](#vec-peerid) |
-  | `signers_bitmap` | [`Vec<u8>`](#vec-u8) |
-  | `bls_aggregate_signature` | [`Vec<u8>`](#vec-u8) |
-  | `expires_at_height` | [`Option<u64>`](#option-u64) |
-
-## `ValidatorTieBreak` {#validatortiebreak}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `peer_id` | [`PeerId`](#peerid) |
-  | `score` | [`Array<u8, 32>`](#array-u8-32) |
 
 ## `Vec<Account>` {#vec-account}
 
@@ -15056,11 +17088,11 @@
 
 **Value:** [`Algorithm`](#algorithm)
 
-## `Vec<AnonymousAssetEscrowRecord>` {#vec-anonymousassetescrowrecord}
+## `Vec<ArchiveId>` {#vec-archiveid}
 
 **Type:** Vec
 
-**Value:** [`AnonymousAssetEscrowRecord`](#anonymousassetescrowrecord)
+**Value:** [`ArchiveId`](#archiveid)
 
 ## `Vec<Array<u8, 32>>` {#vec-array-u8-32}
 
@@ -15158,12 +17190,6 @@
 
 **Value:** [`ClassRentRate`](#classrentrate)
 
-## `Vec<CommitStakeSnapshotEntry>` {#vec-commitstakesnapshotentry}
-
-**Type:** Vec
-
-**Value:** [`CommitStakeSnapshotEntry`](#commitstakesnapshotentry)
-
 ## `Vec<CommittedTransaction>` {#vec-committedtransaction}
 
 **Type:** Vec
@@ -15175,12 +17201,6 @@
 **Type:** Vec
 
 **Value:** [`ConditionalEscrowConditionState`](#conditionalescrowconditionstate)
-
-## `Vec<ContractAlias>` {#vec-contractalias}
-
-**Type:** Vec
-
-**Value:** [`ContractAlias`](#contractalias)
 
 ## `Vec<ContractErrorCodeDescriptor>` {#vec-contracterrorcodedescriptor}
 
@@ -15194,11 +17214,23 @@
 
 **Value:** [`DaCommitmentRecord`](#dacommitmentrecord)
 
+## `Vec<DaIngestSignatureV1>` {#vec-daingestsignaturev1}
+
+**Type:** Vec
+
+**Value:** [`DaIngestSignatureV1`](#daingestsignaturev1)
+
 ## `Vec<DaPinIntent>` {#vec-dapinintent}
 
 **Type:** Vec
 
 **Value:** [`DaPinIntent`](#dapinintent)
+
+## `Vec<DaPinScopeSignatureV1>` {#vec-dapinscopesignaturev1}
+
+**Type:** Vec
+
+**Value:** [`DaPinScopeSignatureV1`](#dapinscopesignaturev1)
 
 ## `Vec<DaProofPolicy>` {#vec-daproofpolicy}
 
@@ -15380,6 +17412,12 @@
 
 **Value:** [`HashOf<BlockHeader>`](#hashof-blockheader)
 
+## `Vec<HashOf<SignedTransaction>>` {#vec-hashof-signedtransaction}
+
+**Type:** Vec
+
+**Value:** [`HashOf<SignedTransaction>`](#hashof-signedtransaction)
+
 ## `Vec<HashOf<TransactionEntrypoint>>` {#vec-hashof-transactionentrypoint}
 
 **Type:** Vec
@@ -15392,6 +17430,12 @@
 
 **Value:** [`HashOf<TransactionResult>`](#hashof-transactionresult)
 
+## `Vec<HashOf<Vec<InstructionBox>>>` {#vec-hashof-vec-instructionbox}
+
+**Type:** Vec
+
+**Value:** [`HashOf<Vec<InstructionBox>>`](#hashof-vec-instructionbox)
+
 ## `Vec<InstructionBox>` {#vec-instructionbox}
 
 **Type:** Vec
@@ -15403,12 +17447,6 @@
 **Type:** Vec
 
 **Value:** [`Json`](#json)
-
-## `Vec<KaigiRelayHop>` {#vec-kaigirelayhop}
-
-**Type:** Vec
-
-**Value:** [`KaigiRelayHop`](#kaigirelayhop)
 
 ## `Vec<KotobaTranslation>` {#vec-kotobatranslation}
 
@@ -15427,6 +17465,12 @@
 **Type:** Vec
 
 **Value:** [`LaneDrainCertificateV1`](#lanedraincertificatev1)
+
+## `Vec<LaneFinalityStatement>` {#vec-lanefinalitystatement}
+
+**Type:** Vec
+
+**Value:** [`LaneFinalityStatement`](#lanefinalitystatement)
 
 ## `Vec<LaneSettlementReceipt>` {#vec-lanesettlementreceipt}
 
@@ -15469,12 +17513,6 @@
 **Type:** Vec
 
 **Value:** [`Metadata`](#metadata)
-
-## `Vec<MicropaymentSampleStatus>` {#vec-micropaymentsamplestatus}
-
-**Type:** Vec
-
-**Value:** [`MicropaymentSampleStatus`](#micropaymentsamplestatus)
 
 ## `Vec<ModerationChallengeRecordV1>` {#vec-moderationchallengerecordv1}
 
@@ -15542,41 +17580,89 @@
 
 **Value:** [`MultisigSignature`](#multisigsignature)
 
-## `Vec<MusubiDependency>` {#vec-musubidependency}
+## `Vec<MusubiAliasHistoryEntryV1>` {#vec-musubialiashistoryentryv1}
 
 **Type:** Vec
 
-**Value:** [`MusubiDependency`](#musubidependency)
+**Value:** [`MusubiAliasHistoryEntryV1`](#musubialiashistoryentryv1)
 
-## `Vec<MusubiPackageSummary>` {#vec-musubipackagesummary}
-
-**Type:** Vec
-
-**Value:** [`MusubiPackageSummary`](#musubipackagesummary)
-
-## `Vec<MusubiReleaseSummary>` {#vec-musubireleasesummary}
+## `Vec<MusubiArchiveLocationIdV1>` {#vec-musubiarchivelocationidv1}
 
 **Type:** Vec
 
-**Value:** [`MusubiReleaseSummary`](#musubireleasesummary)
+**Value:** [`MusubiArchiveLocationIdV1`](#musubiarchivelocationidv1)
 
-## `Vec<MusubiSourceChunkPlan>` {#vec-musubisourcechunkplan}
-
-**Type:** Vec
-
-**Value:** [`MusubiSourceChunkPlan`](#musubisourcechunkplan)
-
-## `Vec<MusubiSourceFilePlan>` {#vec-musubisourcefileplan}
+## `Vec<MusubiArchiveLocationV1>` {#vec-musubiarchivelocationv1}
 
 **Type:** Vec
 
-**Value:** [`MusubiSourceFilePlan`](#musubisourcefileplan)
+**Value:** [`MusubiArchiveLocationV1`](#musubiarchivelocationv1)
 
-## `Vec<MusubiVersion>` {#vec-musubiversion}
+## `Vec<MusubiArchiveRetentionDecisionV1>` {#vec-musubiarchiveretentiondecisionv1}
 
 **Type:** Vec
 
-**Value:** [`MusubiVersion`](#musubiversion)
+**Value:** [`MusubiArchiveRetentionDecisionV1`](#musubiarchiveretentiondecisionv1)
+
+## `Vec<MusubiDependencyReqV1>` {#vec-musubidependencyreqv1}
+
+**Type:** Vec
+
+**Value:** [`MusubiDependencyReqV1`](#musubidependencyreqv1)
+
+## `Vec<MusubiKeywordV1>` {#vec-musubikeywordv1}
+
+**Type:** Vec
+
+**Value:** [`MusubiKeywordV1`](#musubikeywordv1)
+
+## `Vec<MusubiMaintainerDirectoryEntryV1>` {#vec-musubimaintainerdirectoryentryv1}
+
+**Type:** Vec
+
+**Value:** [`MusubiMaintainerDirectoryEntryV1`](#musubimaintainerdirectoryentryv1)
+
+## `Vec<MusubiOrderedPackageEntryV1>` {#vec-musubiorderedpackageentryv1}
+
+**Type:** Vec
+
+**Value:** [`MusubiOrderedPackageEntryV1`](#musubiorderedpackageentryv1)
+
+## `Vec<MusubiPrereleaseIdentifierV1>` {#vec-musubiprereleaseidentifierv1}
+
+**Type:** Vec
+
+**Value:** [`MusubiPrereleaseIdentifierV1`](#musubiprereleaseidentifierv1)
+
+## `Vec<MusubiProviderBundleVerificationApprovalV1>` {#vec-musubiproviderbundleverificationapprovalv1}
+
+**Type:** Vec
+
+**Value:** [`MusubiProviderBundleVerificationApprovalV1`](#musubiproviderbundleverificationapprovalv1)
+
+## `Vec<MusubiResolverReleaseRowV1>` {#vec-musubiresolverreleaserowv1}
+
+**Type:** Vec
+
+**Value:** [`MusubiResolverReleaseRowV1`](#musubiresolverreleaserowv1)
+
+## `Vec<MusubiSeedIngressReceiptApprovalV1>` {#vec-musubiseedingressreceiptapprovalv1}
+
+**Type:** Vec
+
+**Value:** [`MusubiSeedIngressReceiptApprovalV1`](#musubiseedingressreceiptapprovalv1)
+
+## `Vec<MusubiVersionComparatorV1>` {#vec-musubiversioncomparatorv1}
+
+**Type:** Vec
+
+**Value:** [`MusubiVersionComparatorV1`](#musubiversioncomparatorv1)
+
+## `Vec<MusubiVersionV1>` {#vec-musubiversionv1}
+
+**Type:** Vec
+
+**Value:** [`MusubiVersionV1`](#musubiversionv1)
 
 ## `Vec<Name>` {#vec-name}
 
@@ -15614,6 +17700,12 @@
 
 **Value:** [`NexusFeeReceipt`](#nexusfeereceipt)
 
+## `Vec<NexusLaneManifestValidatorBindingStatus>` {#vec-nexuslanemanifestvalidatorbindingstatus}
+
+**Type:** Vec
+
+**Value:** [`NexusLaneManifestValidatorBindingStatus`](#nexuslanemanifestvalidatorbindingstatus)
+
 ## `Vec<NexusLaneTeuStatus>` {#vec-nexuslaneteustatus}
 
 **Type:** Vec
@@ -15650,18 +17742,6 @@
 
 **Value:** [`Numeric`](#numeric)
 
-## `Vec<OfflineReadiness>` {#vec-offlinereadiness}
-
-**Type:** Vec
-
-**Value:** [`OfflineReadiness`](#offlinereadiness)
-
-## `Vec<OfflineReadinessBlocker>` {#vec-offlinereadinessblocker}
-
-**Type:** Vec
-
-**Value:** [`OfflineReadinessBlocker`](#offlinereadinessblocker)
-
 ## `Vec<OpaqueAccountId>` {#vec-opaqueaccountid}
 
 **Type:** Vec
@@ -15673,6 +17753,12 @@
 **Type:** Vec
 
 **Value:** [`Option<HashOf<Array<u8, 32>>>`](#option-hashof-array-u8-32)
+
+## `Vec<Option<HashOf<LaneFinalityStatement>>>` {#vec-option-hashof-lanefinalitystatement}
+
+**Type:** Vec
+
+**Value:** [`Option<HashOf<LaneFinalityStatement>>`](#option-hashof-lanefinalitystatement)
 
 ## `Vec<Option<HashOf<TransactionEntrypoint>>>` {#vec-option-hashof-transactionentrypoint}
 
@@ -15770,6 +17856,12 @@
 
 **Value:** [`Permission`](#permission)
 
+## `Vec<PinManifestSummaryV1>` {#vec-pinmanifestsummaryv1}
+
+**Type:** Vec
+
+**Value:** [`PinManifestSummaryV1`](#pinmanifestsummaryv1)
+
 ## `Vec<PipelineEventBox>` {#vec-pipelineeventbox}
 
 **Type:** Vec
@@ -15799,6 +17891,12 @@
 **Type:** Vec
 
 **Value:** [`ProofRecord`](#proofrecord)
+
+## `Vec<ProviderId>` {#vec-providerid}
+
+**Type:** Vec
+
+**Value:** [`ProviderId`](#providerid)
 
 ## `Vec<PublicKey>` {#vec-publickey}
 
@@ -15919,12 +18017,6 @@
 **Type:** Vec
 
 **Value:** [`SignedBlock`](#signedblock)
-
-## `Vec<SignedTransaction>` {#vec-signedtransaction}
-
-**Type:** Vec
-
-**Value:** [`SignedTransaction`](#signedtransaction)
 
 ## `Vec<StateDescriptor>` {#vec-statedescriptor}
 
@@ -16058,35 +18150,11 @@
 
 **Value:** [`ValidatorPower`](#validatorpower)
 
-## `Vec<ValidatorTieBreak>` {#vec-validatortiebreak}
-
-**Type:** Vec
-
-**Value:** [`ValidatorTieBreak`](#validatortiebreak)
-
 ## `Vec<Vec<u8>>` {#vec-vec-u8}
 
 **Type:** Vec
 
 **Value:** [`Vec<u8>`](#vec-u8)
-
-## `Vec<VrfEpochRecord>` {#vec-vrfepochrecord}
-
-**Type:** Vec
-
-**Value:** [`VrfEpochRecord`](#vrfepochrecord)
-
-## `Vec<VrfLateRevealRecord>` {#vec-vrflaterevealrecord}
-
-**Type:** Vec
-
-**Value:** [`VrfLateRevealRecord`](#vrflaterevealrecord)
-
-## `Vec<VrfParticipantRecord>` {#vec-vrfparticipantrecord}
-
-**Type:** Vec
-
-**Value:** [`VrfParticipantRecord`](#vrfparticipantrecord)
 
 ## `Vec<u32>` {#vec-u32}
 
@@ -16129,6 +18197,10 @@
   | `relay_envelope` | [`LaneRelayEnvelope`](#lanerelayenvelope) |
   | `proof_payload_hash` | [`Hash`](#hash) |
   | `fastpq_statement_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `lane_finality_statement_hash` | [`Hash`](#hash) |
+  | `fastpq_old_root` | [`Array<u8, 32>`](#array-u8-32) |
+  | `fastpq_new_root` | [`Array<u8, 32>`](#array-u8-32) |
+  | `fastpq_tx_set_hash` | [`Array<u8, 32>`](#array-u8-32) |
   | `fastpq_proof_digest` | [`Hash`](#hash) |
   | `verified_at_height` | `u64` |
   | `manifest_root` | [`Array<u8, 32>`](#array-u8-32) |
@@ -16342,87 +18414,6 @@
   | `execution_commitment` | [`ExecutionCommitment`](#executioncommitment) |
   | `signer` | `u32` |
   | `signature` | [`Vec<u8>`](#vec-u8) |
-
-## `VrfCommitProof` {#vrfcommitproof}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `epoch` | `u64` |
-  | `commitment` | [`Array<u8, 32>`](#array-u8-32) |
-  | `signer` | `u32` |
-  | `signature` | [`Vec<u8>`](#vec-u8) |
-  | `observed_at_height` | `u64` |
-
-## `VrfEpochRecord` {#vrfepochrecord}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `epoch` | `u64` |
-  | `seed` | [`Array<u8, 32>`](#array-u8-32) |
-  | `epoch_length` | `u64` |
-  | `commit_deadline_offset` | `u64` |
-  | `reveal_deadline_offset` | `u64` |
-  | `roster_len` | `u32` |
-  | `finalized` | `bool` |
-  | `updated_at_height` | `u64` |
-  | `participants` | [`Vec<VrfParticipantRecord>`](#vec-vrfparticipantrecord) |
-  | `late_reveals` | [`Vec<VrfLateRevealRecord>`](#vec-vrflaterevealrecord) |
-  | `committed_no_reveal` | [`Vec<u32>`](#vec-u32) |
-  | `no_participation` | [`Vec<u32>`](#vec-u32) |
-  | `penalties_applied` | `bool` |
-  | `penalties_applied_at_height` | [`Option<u64>`](#option-u64) |
-  | `validator_election` | [`Option<ValidatorElectionOutcome>`](#option-validatorelectionoutcome) |
-
-## `VrfLateRevealRecord` {#vrflaterevealrecord}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `signer` | `u32` |
-  | `reveal` | [`Array<u8, 32>`](#array-u8-32) |
-  | `reveal_proof` | [`Option<VrfRevealProof>`](#option-vrfrevealproof) |
-  | `noted_at_height` | `u64` |
-
-## `VrfParticipantRecord` {#vrfparticipantrecord}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `signer` | `u32` |
-  | `commitment` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
-  | `reveal` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
-  | `commit_proof` | [`Option<VrfCommitProof>`](#option-vrfcommitproof) |
-  | `reveal_proof` | [`Option<VrfRevealProof>`](#option-vrfrevealproof) |
-  | `last_updated_height` | `u64` |
-
-## `VrfRevealProof` {#vrfrevealproof}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `epoch` | `u64` |
-  | `reveal` | [`Array<u8, 32>`](#array-u8-32) |
-  | `signer` | `u32` |
-  | `vrf_proof` | [`Vec<u8>`](#vec-u8) |
-  | `signature` | [`Vec<u8>`](#vec-u8) |
-  | `observed_at_height` | `u64` |
 
 ## `WitnessEventFilter` {#witnesseventfilter}
 

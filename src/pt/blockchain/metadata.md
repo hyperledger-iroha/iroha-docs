@@ -3,31 +3,31 @@ translation_locale: pt
 translation_source: /blockchain/metadata.md
 translation_source_hash: 20e78492bf757147f2c9afed2d3b51639bc79913d3d8e4351193b6011f5469c2
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Metadados {#metadata}
 
-Metadados é um mapa de valor-chave verificado anexado a objetos do livro maior. Chaves são valores `Name` e valores são cargas úteis JSON (`Json`).
+Metadados são um mapa de chave-valor verificado anexado a objetos do registro blockchain. As chaves são valores `Name` e os valores são cargas JSON (`Json`).
 
-Os seguintes objetos podem transportar metadados:
+Os seguintes objetos podem conter metadados:
 
-- Domínios
-- Contas
-- Ativos
-- Definições de activos
+- domínios
+- contas
+- ativos
+- definições de ativos
 - NFTs
 - RWAs
-- desencadeadores
-- Transações
+- gatilhos
+- transações
 
-Usar metadados para pequenos campos de descrição ou indexação que pertencem ao estado do livro-razão. As grandes cargas úteis devem ser armazenadas fora da WSV e referenciadas por um digest, URI, ou SoraFS caminho.
+Use metadados para pequenos campos descritivos ou de indexação que pertencem ao estado do livro-razão da blockchain. Grandes cargas úteis devem ser armazenadas fora do WSV e referenciadas por um valor de resumo criptográfico, URI, ou caminho SoraFS.
 
-Para obter orientações sobre a escolha de metadados, ativos NFTs, RWAs ou armazenamento fora da cadeia, ver [Opções de armazenamento de metadatos e ledger ](/pt/guide/configure/metadata-and-store-assets.md).
+Para saber quando usar metadados, ativos, NFTs, RWAs ou armazenamento externo, consulte [Opções de metadados e armazenamento do livro-razão](/pt/guide/configure/metadata-and-store-assets.md).
 
-## Tente em Taira {#try-it-on-taira}
+## Experimente em Taira {#try-it-on-taira}
 
-Metadados são visíveis através de leituras normais de recursos. Este comando lista as definições de ativos Taira que atualmente possuem metadados:
+Os metadados são visíveis através de leituras normais de recursos. Este comando lista definições de ativos Taira que atualmente possuem metadados:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
@@ -36,7 +36,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
     | {id, name, metadata}'
 ```
 
-Usar o mesmo padrão para domínios e contas:
+Use o mesmo padrão para domínios e contas:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
@@ -46,20 +46,20 @@ curl -fsS 'https://taira.sora.org/v1/accounts?limit=20' \
   | jq '.items[] | select((.metadata // {} | length) > 0)'
 ```
 
-Tratar a saída vazia como um resultado válido. Significa que a página atual dos objetos Taira não contém metadados, não significa que o ponto final falhou.
+Trate a saída vazia como um resultado válido. Isso significa que a página atual de objetos Taira não possui metadados, e não que o endpoint API falhou.
 
-## Atualização de Metadados {#updating-metadata}
+## Atualizando Metadados {#updating-metadata}
 
-Os metadados são alterados com as instruções especiais Iroha:
+Os metadados são alterados com operações de instrução Iroha:
 
-- [`SetKeyValue`](/pt/blockchain/instructions.md#setkeyvalue-removekeyvalue) inserir ou substituir uma chave.
+- [`SetKeyValue`](/pt/blockchain/instructions.md#setkeyvalue-removekeyvalue) insere ou substitui uma chave
 - [`RemoveKeyValue`](/pt/blockchain/instructions.md#setkeyvalue-removekeyvalue) remove uma chave
 
-A autoridade que apresenta a transação deve ter a permissão exigida pelo validador ativo de tempo de execução. Para a superfície de permissão padrão, ver [Permission Tokens](/pt/reference/permissions.md).
+O principal de autorização que está submetendo a transação deve ter a permissão exigida pelo validador de tempo de execução de software ativo. Para a superfície de permissão padrão, veja [Tokens de Permissão](/pt/reference/permissions.md).
 
 ## Eventos {#events}
 
-Os eventos de dados são emitidos quando os metadados mudam. A carga útil do evento genérico é `MetadataChanged<Id>`:
+Eventos de dados são emitidos quando os metadados mudam. O payload genérico do evento é `MetadataChanged<Id>`:
 
 ```mermaid
 classDiagram
@@ -81,10 +81,10 @@ MetadataChanged --> AssetDefinitionMetadataChanged
 MetadataChanged --> DomainMetadataChanged
 ```
 
-Use os filtros de eventos de dados [ ](/pt/blockchain/filters.md#data-event-filters) para subscrever apenas os eventos de metadados para o tipo ou objeto da entidade ID que são importantes para uma integração.
+Use [filtros de evento de dados](/pt/blockchain/filters.md#data-event-filters) para assinar apenas eventos de metadados para o tipo de entidade ou ID do objeto que importa para uma integração.
 
-## Questões {#queries}
+## Consultas {#queries}
 
-Metadados são devolvidos como parte do objeto consultado. Por exemplo, use [`FindAccountById`](/pt/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/pt/reference/queries.md#domains-and-peers), ou [`FindAssetDefinitionById`](/pt/reference/queries.md#assets-nfts-and-rwas). Utilização [`FindNfts`](/pt/reference/queries.md#assets-nfts-and-rwas) ou [`FindNftsByAccountId`](/pt/reference/queries.md#assets-nfts-and-rwas) para NFTs, e [`FindRwas`](/pt/reference/queries.md#assets-nfts-and-rwas) para RWA Leia o campo de metadados do objeto. NFT Respostas de consulta expõem o NFT `content` Mapa como os metadados dos registos.
+Metadados são retornados como parte do objeto consultado. Por exemplo, use [`FindAccountById`](/pt/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/pt/reference/queries.md#domains-and-peers), ou [`FindAssetDefinitionById`](/pt/reference/queries.md#assets-nfts-and-rwas). Usar [`FindNfts`](/pt/reference/queries.md#assets-nfts-and-rwas) ou [`FindNftsByAccountId`](/pt/reference/queries.md#assets-nfts-and-rwas) para NFTs, e [`FindRwas`](/pt/reference/queries.md#assets-nfts-and-rwas) para RWA muitos. Em seguida, leia o campo de metadados do objeto. NFT respostas de consulta expõem o NFT `content` mapear como os metadados do registro.
 
-As chaves de metadados fazem parte do estado do livro, por isso mantenha-as estáveis e evite a codificação da versão específica da aplicação para o nome da chave quando um valor JSON pode carregar essa versão explicitamente.
+As chaves de metadados fazem parte do estado do livro razão da blockchain, portanto mantenha-as estáveis e evite codificar alterações de versão específicas do aplicativo no nome da chave quando um valor JSON pode conter essa versão explicitamente.

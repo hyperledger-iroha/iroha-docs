@@ -3,68 +3,68 @@ translation_locale: am
 translation_source: /blockchain/nfts.md
 translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # NFTs {#nfts}
 
-Iroha NFT አንድ ባለቤት ያለው ልዩ መቁጠሪያ ዕቃ ነው። መዝገብ የራሱ ማንነት ፣ ሜታዳታ ፣ የሕይወት ዑደት ክስተቶች እና የባለቤትነት ማስተላለፍ ትርጓሜዎች ሲያስፈልጋቸው ግን የቁጥር ሚዛን የማይፈልጉበት ጊዜ NFTs ይጠቀሙ።
+አንድ Iroha NFT አንድ ባለቤት ያለው ልዩ የብሎክቼይን መዝገብ ነገር ነው። አንድ መዝገብ የራሱ ማንነት፣ ሜታዳታ፣ የህይወት ኡደት ክስተቶች እና የባለቤትነት ማስተላለፊያ ትርጓሜዎች ሲፈልግ NFTs ን ይጠቀሙ፣ ነገር ግን የቁጥር ቀሪ ሒሳብ አያስፈልገውም።
 
-ከቁጥር [ ሀብት ](/am/blockchain/assets.md) በተቃራኒው NFT ትክክለኛነት ፣ የማጣራት ችሎታ ወይም በሂሳብ ብዛት የለውም ። NFT እንደ አንድ የተመዘገበ ንጥረ ነገር ይኖራል ፣ እና ባለቤትነት በቀጥታ በዚያ ንጥረ ነገር ላይ ተከትሏል ።
+ከቁጥር [ንብረት](/am/blockchain/assets.md) በተለየ፣ NFT ትክክለኛነት፣ የንብረት አሰጣጥ ፖሊሲ ወይም የመለያ መጠን የለውም። NFT እንደ አንድ የተመዘገበ ነገር አለ፣ እና ባለቤትነት በቀጥታ በዚያ ነገር ላይ ክትትል ይደረግበታል።
 
 ## መዋቅር {#structure}
 
-የተመዘገበ `Nft` የሚከተሉትን ያካትታል፦
+የተመዘገበ `Nft` የሚከተሉትን ያጠቃልላል -
 
-- `id`: አንድ `NftId`
-- `content`: የ NFT ን የሚገልጽ ሜታዳታ
-- `owned_by`: የ NFT ባለቤት የሆነበት ሂሳብ
+- `id` አንድ `NftId`
+- `content` NFT የሚገልፅ ሜታዳታ
+- `owned_by` የ NFT
 
-የ `content` መስክ አንድ `Metadata` ካርታ ነው. የታመቀ ያድርጉት: የመግለጫ መስኮችን, የተረጋጋ ማጣቀሻዎችን, ሃሽስ, URIs ወይም SoraFS መንገዶችን እዚያ ያስቀምጡ. ትላልቅ ሰነዶችን, ሚዲያዎችን, ወይም ከፍተኛ-ጥንካሬ አፕሊኬሽን ሁኔታን ከሰንሰለት ውጭ ያስቀምጡ እና በ NFT ላይ ብቻ የሚረጋገጥ ማጣቀቂያ ይያዙ.
+የ`content` መስክ የ`Metadata` ካርታ ነው። የታመቀ ያድርጉት ገላጭ መስኮችን፣ የተረጋጉ ማጣቀሻዎችን፣ ምስጠራ ሃሽዎችን፣ URIs ወይም SoraFS መንገዶችን እዚያ ያከማቹ። ትላልቅ ሰነዶችን፣ ሚዲያዎችን ወይም ከፍተኛ-ጩኸት የመተግበሪያ ሁኔታን ከሰንሰለት ውጪ ያከማቹ እና በ NFT ላይ ሊረጋገጥ የሚችል ማጣቀሻ ብቻ ያስቀምጡ።
 
-## Taira ላይ ይሞክሩት {#try-it-on-taira}
+## ይህንን የስራ ፍሰት በ Taira ላይ ያሂዱ {#try-it-on-taira}
 
-የህዝብ Taira የሙከራ ኔትወርክ በአሁኑ ጊዜ NFT መዝገቦችን እንዳለው ያረጋግጡ:
+የህዝብ Taira የሙከራ መረብ በአሁኑ ጊዜ NFT መዝገቦች እንዳሉት ያረጋግጡ -
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/nfts?limit=5' \
   | jq '{total, nft_ids: [.items[].id]}'
 ```
 
-የ NFT ጎዳናዎች በኖዱ የተጋለጡበትን የቀጥታ OpenAPI ሰነድ ይመልከቱ:
+በኖድ ለተጋለጡ NFT መንገዶች የቀጥታ OpenAPI ሰነዱን ያረጋግጡ -
 
 ```bash
 curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/nfts") or startswith("/v1/explorer/nfts"))'
 ```
 
-ባዶ የሆነ `items` ቅደም ተከተል በአደባባይ የሙከራ አውታረመረብ ላይ ትክክለኛ ምላሽ ነው ። ይህ ማለት አሁን ባለው ገጽ ውስጥ ምንም NFTs የለም ማለት አይደለም ፣ የ NFT መመሪያዎች አይገኙም ።
+ባዶ `items` ድርድር በይፋዊ የሙከራ መረብ ላይ ትክክለኛ ምላሽ ነው። አሁን ባለው ገጽ ላይ ምንም NFTs የለም ማለት ነው, NFT መመሪያዎች አይገኙም ማለት አይደለም.
 
-## NFT IDs {#nft-ids}
+## NFT መታወቂያዎች {#nft-ids}
 
-`NftId` የሚከተለውን ጽሑፍ ይጠቀማል፦
+`NftId` ይህን የጽሑፍ ቅጽ ይጠቀማል -
 
 ```text
 name$domain
 name$domain.dataspace
 ```
 
-ለምሳሌ፣ `badge$docs.universal` የሚያመለክተው `badge` NFT በ `docs.universal` የውሂብ ቦታው ካልተወገደ፣ የአሁኑ አሳሽ የ `universal` የውሂብ ቦታ, ስለዚህ `badge$docs` የሚወስነው `badge$docs.universal`.
+ለምሳሌ፣ `badge$docs.universal` በ`docs.universal` ጎራ ውስጥ ያለውን `badge` NFT ይለያል። የውሂብ ክፍተቱ ከተተወ፣ የአሁኑ ተንታኝ የ `universal` ዳታ ቦታን ይጠቀማል፣ ስለዚህ `badge$docs` ወደ `badge$docs.universal` ይፈታል።
 
-ለ NFT IDs የተረጋጋ ስሞችን ይጠቀሙ። ID መመሪያዎችን ፣ መጠይቆችን ፣ ፍቃዶችን ፣ ክስተት ማጣሪያዎችን እና የመተግበሪያ ማጣቀሻዎችን የሚያገለግል የንጥረ ነገር ማንነት ነው.
+ለ NFT መታወቂያዎች የተረጋጋ ስሞችን ተጠቀም። መታወቂያው በመመሪያዎች፣ መጠይቆች፣ ፈቃዶች፣ የክስተት ማጣሪያዎች እና የመተግበሪያ ማጣቀሻዎች ጥቅም ላይ የሚውለው የነገር ማንነት ነው።
 
 ## የሕይወት ዑደት {#lifecycle}
 
-NFT የህይወት ዑደት ስራዎች አጠቃቀም Iroha ልዩ መመሪያዎች:
+NFT የሕይወት ዑደት ክዋኔዎች ይጠቀሙ Iroha የመመሪያ ስራዎች
 
-- [`Register`](/am/blockchain/instructions.md#un-register) የመጀመሪያውን `content` ጋር NFT ይፈጥራል.
-- [`Unregister`](/am/blockchain/instructions.md#un-register) የ NFT ን ያስወግዳል.
+- [`Register`](/am/blockchain/instructions.md#un-register) ይፈጥራል NFT ከመጀመሪያው ጋር `content`.
+- [`Unregister`](/am/blockchain/instructions.md#un-register) ያስወግዳል NFT.
 - [`Transfer`](/am/blockchain/instructions.md#transfer) ለውጦች `owned_by`.
-- [`SetKeyValue` እና `RemoveKeyValue`](/am/blockchain/instructions.md#setkeyvalue-removekeyvalue) የዘመነ NFT ሜታዳታ።
+- [`SetKeyValue` እና `RemoveKeyValue`](/am/blockchain/instructions.md#setkeyvalue-removekeyvalue) አዘምን NFT ሜታዳታ.
 
-## በአካባቢህ ሞክር {#try-it-locally}
+## በአገር ውስጥ ይሞክሩት {#try-it-locally}
 
-እነዚህ ምሳሌዎች እርስዎ አካባቢያዊ አውታረ መረብ ጀምረዋል እና ከ [CLI መመሪያ ](/am/get-started/operate-iroha-via-cli.md) የተፈጠረ የደንበኛ ውቅር አላቸው ይገምታሉ:
+እነዚህ ምሳሌዎች የአካባቢ አውታረ መረብ እንደጀመሩ እና የመነጨውን የደንበኛ ውቅር ከ[CLI መመሪያ](/am/get-started/operate-iroha-via-cli.md) እንዳለዎት ያስባሉ -
 
 ```bash
 export IROHA_CONFIG=./localnet/client.toml
@@ -72,9 +72,9 @@ export NFT_DOMAIN=wonderland.universal
 export NFT_ID='badge_intro$wonderland.universal'
 ```
 
-የተፈጠረው አካባቢያዊ አውታረመረብ ቀድሞውኑ ይዘጋጃል `wonderland.universal` እና የእሱ SNS ለየት ያለ ጎራ ለመጠቀም በመጀመሪያ በመግለጫው `app alias setup plan` እና `app alias setup apply` የስራ ፍሰት በ [ጎራዎች](/am/blockchain/domains.md#registration).
+የተፈጠረው አካባቢያዊ መረብ አስቀድሞ `wonderland.universal` እና SNS የሊዝ ውሉን አዘጋጅቷል። የተለየ ጎራ ለመጠቀም በመጀመሪያ በ[ጎራዎች](/am/blockchain/domains.md#registration) ውስጥ በተገለጸው ገላጭ `app alias setup plan` እና `app alias setup apply` የስራ ፍሰት ይፍጠሩት።
 
-አንድ NFT ይመዝገቡ። ምዝገባው ከመደበኛ ግብዓት የመጀመሪያውን ይዘት JSON ያነባል-
+NFT ይመዝገቡ። ምዝገባ የመጀመሪያውን ይዘት JSON ከመደበኛ ግቤት ያነባል -
 
 ```bash
 printf '{"kind":"badge","level":"intro","issuer":"docs"}\n' |
@@ -82,7 +82,7 @@ printf '{"kind":"badge","level":"intro","issuer":"docs"}\n' |
   ledger nft register --id "$NFT_ID"
 ```
 
-NFT ን በቀጥታ ይፈትሹ እና ከዚያ ሁሉንም NFTs ሙሉ ማስታወሻዎችን ያቅርቡ:
+NFT ን በቀጥታ ይፈትሹ እና ከዚያ ሁሉንም NFTs ከሙሉ ግቤቶች ጋር ይዘርዝሩ -
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -92,7 +92,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft list all --verbose
 ```
 
-አንድ ሜታዳታ ቁልፍ ይጨምሩ እና NFT ን እንደገና ያንብቡ:
+ሜታዳታ ቁልፍ ያክሉ እና NFT ን እንደገና ያንብቡ -
 
 ```bash
 printf '{"color":"blue","rarity":"tutorial"}\n' |
@@ -103,14 +103,14 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft get --id "$NFT_ID"
 ```
 
-የሜታዳታ ቁልፍን ያስወግዱ:
+የሜታዳታ ቁልፉን ያስወግዱ
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
-በፈቃደኝነት የ NFT. አጠቃቀም `ledger nft get` የአሁኑ ባለቤት ማንበብ `owned_by`, እና አጠቃቀም `ledger account list all` የመድረሻ ሂሳብ ለማግኘት ID.
+እንደ አማራጭ NFT ን ያስተላልፉ። የአሁኑን ባለቤት ከ`owned_by` ለማንበብ `ledger nft get`ን ይጠቀሙ እና የመድረሻ መለያ መታወቂያ ለማግኘት `ledger account list all`ን ይጠቀሙ።
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -123,44 +123,44 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
-ምሳሌውን NFT ከመንቀሳቀስ በኋላ ያስወግዱ. ከተሰጡት, ወደ ኋላ ይተላለፉ ወይም የአሁኑ ባለቤት መለያ ውቅር ጋር ያልተመዘገቡ ትዕዛዙን ያቅርቡ.
+መመሪያውን ከጨረሱ በኋላ የምሳሌውን NFT ያስወግዱ። ካስተላለፉት ወደ ነበረበት ይመልሱት ወይም የአሁኑን ባለቤት መለያ ውቅር ተጠቅመው የምዝገባ-ማስወገጃ ትዕዛዙን ያስገቡ።
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft unregister --id "$NFT_ID"
 ```
 
-## ጥያቄዎችና ክስተቶች {#queries-and-events}
+## ጥያቄዎች እና ኩነቶች {#queries-and-events}
 
-[`FindNfts`](/am/reference/queries.md#assets-nfts-and-rwas) በመጠቀም NFTs እና [`FindNftsByAccountId`](/am/reference/queries.md#assets-nfts-and-rwas) ለመጠቀም መለያ ባለቤት የሆኑትን NFTs ለመዘርዘር.
+ጥቅም [`FindNfts`](/am/reference/queries.md#assets-nfts-and-rwas) ለመዘርዘር NFTs እና [`FindNftsByAccountId`](/am/reference/queries.md#assets-nfts-and-rwas) ለመዘርዘር NFTs በመለያ ባለቤትነት የተያዘ።
 
-NFT ምዝገባ, መሰረዝ, ዝውውር እና ሜታዳታ ዝማኔዎች NFT የውሂብ ክስተቶችን ያወጣሉ. ለፕሮግራም መለያ ለውጦች ሲመዘገቡ ወይም ለ NFT የሕይወት ዑደት ክስተቶች ምላሽ የሚሰጡ የግንባታ ማነቃቂያዎችን በሚጠቀሙበት ጊዜ የ `Nft` የመረጃ ክስተት ማጣሪያ ይጠቀሙ.
+NFT ምዝገባ፣ መሰረዝ፣ ማስተላለፍ እና ሜታዳታ ዝመናዎች NFT የውሂብ ክስተቶችን ያመነጫሉ። ለblockchain መዝገብ ለውጦች ሲመዘገቡ ወይም ለ NFT የህይወት ኡደት ክስተቶች ምላሽ የሚሰጡ ቀስቅሴዎችን ሲገነቡ የ`Nft` የውሂብ ክስተት ማጣሪያን ይጠቀሙ።
 
-## ፍቃዶች {#permissions}
+## ፈቃዶች {#permissions}
 
-ነባሪ ፍቃድ ገጽ የ NFT ልዩ ምልክቶችን ያካትታል:
+ነባሪው የፍቃድ ገጽ NFT -ተኮር ቶከኖችን ያካትታል -
 
 - `CanRegisterNft`
 - `CanUnregisterNft`
 - `CanTransferNft`
 - `CanModifyNftMetadata`
 
-የፍቃድ ፍተሻዎች በንቃት የሂደት ጊዜ ማረጋገጫ አማካኝነት ይፈጸማሉ ፣ ስለሆነም አውታረመረብ አስፈፃሚውን በማሻሻል ፈቃድ ማበጀት ይችላል ። ለአሁኑ ነባሪ ምልክት ዝርዝር [ፍቃድ ቶከኖችን ](/am/reference/permissions.md) ይመልከቱ።
+የፍቃድ ፍተሻዎች የሚተገበሩት በነቃ የሶፍትዌር ማስፈጸሚያ አካባቢ አረጋጋጭ ነው፣ ስለዚህ አውታረ መረብ አስፈፃሚውን በማሻሻል ፍቃድን ማበጀት ይችላል። ለአሁኑ ነባሪ ቶከን ዝርዝር [የፍቃድ ቶከኖች](/am/reference/permissions.md) ይመልከቱ።
 
-## NFTs መምረጥ {#choosing-nfts}
+## NFTs ን መምረጥ {#choosing-nfts}
 
-ልዩነት እና ባለቤትነት አስፈላጊ በሆነባቸው መዝገቦች ላይ NFT ይጠቀሙ
+ልዩነት እና ባለቤትነት አስፈላጊ ለሆኑ መዝገቦች NFT ይጠቀሙ -
 
-- የምስክር ወረቀቶች፣ አርማዎች፣ ፈቃዶችና ማረጋገጫዎች
+- የምስክር ወረቀቶች፣ ባጆች፣ ፈቃዶች እና ማረጋገጫዎች
 - የአባልነት ወይም የመዳረሻ መዝገቦች
-- ማንነት የታሰረ ወይም በሂሳብ የተያዘ የመልዕክት መዝገብ
-- ከሰንሰለት ውጭ ለሚገኙ ሚዲያዎች፣ ሰነዶች ወይም ማኒፌሶች የሚያመለክቱት
+- ከማንነት ጋር የተያያዙ ወይም በመለያ የተያዙ የመተግበሪያ መዝገቦች
+- ከሰንሰለት ውጪ ሚዲያዎች፣ ሰነዶች ወይም ቴክኒካዊ ማገለጫዎች ማጣቀሻዎች
 
-ለፈንጂቢል ሚዛኖች የቁጥር ንብረትን ይጠቀሙ ፣ እና ውሂቡ ነባር መቁጠሪያ ዕቃ የተዋሃደ ባህሪ ብቻ በሚሆንበት ጊዜ ቀላል [ ሜታዳታ ](/am/blockchain/metadata.md) ይጠቀሙ ።
+ለፈንገስ ቀሪ ሒሳቦች የቁጥር ንብረትን ይጠቀሙ እና ውሂቡ የነባር የብሎክቼይን መዝገብ ነገር የታመቀ ባህሪ ብቻ ሲሆን ግልጽ [ሜታዳታ](/am/blockchain/metadata.md) ይጠቀሙ።
 
-በተጨማሪም ተመልከት።
+በተጨማሪ አንብበው
 
 - [ንብረቶች](/am/blockchain/assets.md)
-- [ሜታ መረጃዎች](/am/blockchain/metadata.md)
+- [ሜዳዳታ](/am/blockchain/metadata.md)
 - [መመሪያዎች](/am/blockchain/instructions.md)
-- [ጥያቄዎች](/am/blockchain/queries.md)
+- [መጠይቆች](/am/blockchain/queries.md)

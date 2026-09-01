@@ -3,28 +3,27 @@ translation_locale: pt
 translation_source: /reference/torii-api-console.md
 translation_source_hash: a277d8c03a3909eb80d124f0bfed7b78e7c3ed886e443c72effe007d454718bf
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 
 aside: false
-pageClass: torii-api-console-page
 ---
 
-# Torii API Consola {#torii-api-console}
+# Ferramenta interativa da API Torii {#torii-api-console}
 
-Use o documento OpenAPI ao vivo de um endpoint Torii em execução para inspecionar as rotas, enviar pedidos de teste, copiar os comandos curl e gerar código do cliente.
+Use o documento ao vivo OpenAPI de um endpoint Torii API em execução para inspecionar rotas, enviar solicitações de teste, copiar comandos curl e gerar código do cliente.
 
 <ToriiApiConsole />
 
 ## Requisitos {#requirements}
 
-- O ponto final Torii deve exponer o `/openapi.json`.
-- Os testes de navegador exigem CORS para permitir a origem deste documento.
-- O navegador deve ser capaz de atingir directamente o ponto final.
-- A geração de código requer Node.js, pnpm, e um tempo de execução Java para o gerador OpenAPI.
+- O endpoint Torii API deve expor `/openapi.json`.
+- O teste de navegador requer CORS para permitir esta origem de documentos.
+- O navegador deve ser capaz de alcançar o endpoint API diretamente.
+- A geração de código requer Node.js, pnpm e um tempo de execução de software Java para o OpenAPI Generator.
 
-O console é padrão para `https://taira.sora.org`. Desenvolvimento local geralmente funciona com `http://127.0.0.1:8080` quando você executa Torii em sua máquina.
+O console padrão é `https://taira.sora.org`. O desenvolvimento local geralmente funciona com `http://127.0.0.1:8080` quando você executa Torii na sua máquina.
 
-## Tente Taira Primeiro. {#try-taira-first}
+## Tente Taira primeiro {#try-taira-first}
 
 Antes de gerar um cliente, verifique se o documento público OpenAPI é acessível a partir da sua máquina:
 
@@ -34,15 +33,15 @@ jq '{title: .info.title, version: .info.version, paths: (.paths | length)}' \
   /tmp/taira-openapi.json
 ```
 
-Em seguida, coloque `https://taira.sora.org/openapi.json` no console e tente uma rota de somente leitura como `GET /status`, `GET /v1/domains` ou `GET /v1/assets/definitions`. Salve transações assinadas e fluxos de chaves privadas para um cliente SDK ou CLI que carrega segredos do seu ambiente de execução.
+Então cole `https://taira.sora.org/openapi.json` no console e tente uma rota apenas de leitura, como `GET /status`, `GET /v1/domains` ou `GET /v1/assets/definitions`. Salve transações assinadas e fluxos de chave privada para um cliente SDK ou CLI que carregue segredos a partir do seu ambiente de execução de software.
 
-## Clientes gerados {#generated-clients}
+## Clientes Gerados {#generated-clients}
 
-O comando do gerador usa o mesmo ao vivo OpenAPI O documento que o console carrega. JSON operadores, exploradores, aplicativos e rotas de telemetria.
+O comando do gerador usa o mesmo documento ao vivo OpenAPI que o console carrega. Isso é útil para JSON operador, explorador, aplicativo e rotas de telemetria.
 
-Para transações de contabilidade assinadas, consultas assinadas e cargas úteis nativas Norito, prefira-se o oficial Iroha SDKs. Os clientes OpenAPI não montam assinaturas, gerenciam chaves de contas ou codificam corpos de transação Norito para você.
+Para transações de livro-razão blockchain assinadas, consultas assinadas e cargas nativas Norito, prefira o Iroha SDKs oficial. Clientes OpenAPI não montam assinaturas, não gerenciam chaves de conta, nem codificam corpos de transação Norito para você.
 
-Para inspeccionar todos os geradores suportados pelo gerador OpenAPI, executar:
+Para inspecionar todos os geradores suportados pelo Gerador OpenAPI, execute:
 
 ```bash
 pnpm dlx @openapitools/openapi-generator-cli list

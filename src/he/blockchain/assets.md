@@ -27,14 +27,14 @@ translation_engine: nllb-200-ct2
 - `total_quantity`: כמות המונית הכוללת
 - `confidential_policy`: מדיניות על פעולות נכסים מוגנים
 
-הגדרה של נכסים IDs הם כתובות קנוניות לא ברורות. כאשר הגדרת נבנה ממגזר ושם, Iroha יכול לשמור את תחזית הדומיין/שם עבור UX ושאלות, אך צורת הטקסט הקנוני היא הכתובת המורכבת.
+הגדרה של נכסים IDs הם כתובות קנוניות לא ברורות. כאשר הגדרת נבנה ממגזר ושם, Iroha יכול לשמור את תחזית הדומיין/שם עבור UX ושאילתות, אך צורת הטקסט הקנוני היא הכתובת המורכבת.
 
 ## סכום נכסים {#asset-balance}
 
 `Asset` מכיל:
 
 - `id`: `AssetId`, אשר משלב את ההגדרה של הנכסים, חשבון הבעלים ואת טווח הסלון בחירה
-- `value`: איזון של `Numeric`
+- `value`: יתרה של `Numeric`
 
 חשבון הבעלים הוא קנוני ובלתי דומיין. הגדרת הנכסים עשויה להיות מתוכננת תחת דומיין מוסמך למרחב נתונים, למשל `payments.universal`.
 
@@ -44,9 +44,9 @@ translation_engine: nllb-200-ct2
 
 |מצב |משמעות |
 | ------------ | ----------------------------------------------------------------- |
-|`Infinitely` |אספקת גמישה, הנכס יכול להידפד ולשרוף שוב ושוב.|
-|`Once` |סימן אספקה קבועה, ניתן להכין אותו פעם אחת ולאחר מכן לשרוף אותו.|
-|`Not` |סימן של אספקה קבועה שאפשר לשרוף אבל לא לחתוך שוב.|
+|`Infinitely` |אספקה גמישה; אפשר להנפיק ולשרוף את הנכס שוב ושוב.|
+|`Once` |אספקה קבועה; אפשר להנפיק את הנכס פעם אחת ולאחר מכן לשרוף אותו.|
+|`Not` |אספקה קבועה שאפשר לשרוף אך לא להנפיק שוב.|
 |`Limited(n)` |המדיניות מאפשרת להוציא את יחידות נכסים חדשים במספר מוגבל של פעולות נוספות. |
 
 השתמש `Infinitely` עבור נכסים רגילים גמישים ו `Once` או `Limited(n)` עבור נכסים עם אספקת קבועה או אספקת מוגבלת. אל השתמשו `Not` כמדיניות ראשונית אלא אם אספקת הנכסים כבר נקבעה.
@@ -62,7 +62,7 @@ translation_engine: nllb-200-ct2
 
 ## נסה את זה על Taira {#try-it-on-taira}
 
-שיחות קריאה בלבד אלה מציגות הגדרות נכסים אמיתיות ברשת הבדיקת ציבורית Taira:
+קריאות קריאה בלבד אלה מציגות הגדרות נכסים אמיתיות ברשת הבדיקת ציבורית Taira:
 
 ```bash
 TAIRA_ROOT=https://taira.sora.org
@@ -80,7 +80,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, total_quantity, mintable, confidential_policy: .confidential_policy.mode}'
 ```
 
-חפשו הגדרות שיש בה נתונים מטאטא:
+חפשו הגדרות שיש בה מטא-נתונים:
 
 ```bash
 curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
@@ -89,9 +89,9 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-כל שלושת הדוגמאות הן קריאות. כדי להדפיס, לשרוף או להעביר נכסים על Taira, השתמשו בחשבון המומלץ בנקודת המשאב והזרם המאובטח ב [תחבר לתאונות נתונים SORA Nexus ](/he/get-started/sora-nexus-dataspaces.md).
+כל שלוש הדוגמאות הן פעולות קריאה. כדי להנפיק, לשרוף או להעביר נכסים ב-Taira, השתמשו בחשבון שמומן מה-faucet ובתהליך הארנק המאובטח שב-[התחברות למרחבי הנתונים של SORA Nexus](/he/get-started/sora-nexus-dataspaces.md).
 
-לדוגמה של נכס Taira ששילם תשלום, שמור את עוזר המנקה מ [Get Testnet XOR ב Taira](/he/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) כ- `taira_faucet_claim.py`, ואז תדרוש קודם את נכס המנקה ותשתמש בו כמכשיר הגז העסקי:
+לדוגמה של נכס Taira ששילם תשלום, שמור את עוזר ה-faucet מ [Get Testnet XOR ב Taira](/he/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) כ- `taira_faucet_claim.py`, ואז תדרוש קודם את נכס ה-faucet ותשתמש בו כמכשיר הגז העסקי:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -105,7 +105,7 @@ printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
 
 ## הוראות {#instructions}
 
-נכסים יכולים להירשם, להתפרק, לשרוף ולהעביר עם הוראות מיוחדות Iroha:
+אפשר לרשום, להנפיק, לשרוף ולהעביר נכסים באמצעות ההוראות המיוחדות של Iroha:
 
 - [`Register` ו `Unregister`](/he/blockchain/instructions.md#un-register)
 - [`Mint` ו `Burn`](/he/blockchain/instructions.md#mint-burn)

@@ -3,7 +3,7 @@ translation_locale: fr
 translation_source: /guide/tutorials/rust.md
 translation_source_hash: 98b0c3a193c6dfe8b266bcc498d7016426cf2f838a7bf7ebfbef145ffdcc7944
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Rust {#rust}
@@ -12,15 +12,15 @@ L'implémentation Rust se trouve dans l'espace de travail principal et reste le 
 
 ## Ce que vous obtenez {#what-you-get}
 
-Le référentiel en amont expose actuellement:
+Le dépôt en amont expose actuellement :
 
-- la caisse du client `iroha` Rust
-- Le `iroha` CLI en tant que client de référence le plus complet
-- Modèle de données partagé, crypto et boîtes Norito utilisées par la couche SDK
+- le package logiciel client `iroha` Rust
+- le `iroha` CLI en tant que client de référence le plus complet
+- modèle de données partagé, crypto, et packages logiciels Norito utilisés par la couche SDK
 
 ## Point de départ recommandé {#recommended-starting-point}
 
-Pour l'état actuel du projet, commencez par la référence CLI et l'espace de travail lui-même:
+Pour l'état actuel du projet, commencez par la référence CLI et l'espace de travail lui-même :
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
@@ -28,15 +28,15 @@ cd iroha
 cargo build --workspace
 ```
 
-Exécutez le client de référence avec la configuration par défaut du client enregistrée:
+Exécutez le client de référence avec la configuration client par défaut enregistrée :
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-## Essayez Taira En lisant seulement {#try-taira-read-only}
+## Essayer Taira Lecture seule {#try-taira-read-only}
 
-Dans le même espace de travail, essayez l'aide publique Taira aux diagnostics:
+Depuis le même espace de travail, essayez l'assistant de diagnostic public Taira :
 
 ```bash
 cargo run --bin iroha -- taira doctor \
@@ -44,7 +44,7 @@ cargo run --bin iroha -- taira doctor \
   --json
 ```
 
-Pour les contrôles au niveau de l'itinéraire, utilisez directement JSON de Torii API:
+Pour les vérifications au niveau de l'itinéraire, utilisez directement le JSON API de Torii :
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -54,26 +54,26 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-Après avoir créé `taira.client.toml`, le même binaire peut exécuter des commandes canaries signées contre Taira. Gardez ces commandes séparées des tests unitaires ordinaires car elles nécessitent un compte financé par les robinets et une disponibilité en direct du testnet.
+Après avoir créé `taira.client.toml`, le même binaire peut exécuter des commandes canari signées contre Taira. Gardez-les séparés des tests unitaires ordinaires car ils nécessitent un compte financé sur le testnet et la disponibilité du testnet en direct.
 
-## Utilisation de la caisse du client Rust {#using-the-rust-client-crate}
+## Utilisation du logiciel Client Rust {#using-the-rust-client-crate}
 
-Fixer la révision de Git Iroha utilisée par votre réseau:
+Épingler la révision Git Iroha utilisée par votre réseau :
 
 ```toml
 [dependencies]
 iroha = { git = "https://github.com/hyperledger-iroha/iroha.git", rev = "<IROHA_COMMIT>", package = "iroha" }
 ```
 
-Si vous avez besoin des exemples les plus complets de la manière dont les surfaces Rust sont utilisées en pratique, consultez:
+Si vous avez besoin des exemples les plus complets sur la façon dont les surfaces Rust sont utilisées en pratique, inspectez :
 
 - `crates/iroha_cli`
 - `crates/iroha/README.md`
 - `crates/iroha_cli/README.md`
 
-Pour les flux de travail d'escrow gérés par le registre, voir [Native Asset Escrow](/fr/blockchain/escrow.md#rust-sdk). Le modèle de données Rust a actuellement la couverture typique la plus complète pour l'escrow du marché, les verrouillages génériques des actifs, l'escroquerie anonyme, les requêtes et les événements.
+Pour les flux de travail d'entiercement gérés par grand livre, voir [Compte séquestre d'actifs natifs](/fr/blockchain/escrow.md#rust-sdk). Le modèle de données Rust possède actuellement la couverture typée la plus complète pour l'entiercement de marché, les verrous d'actifs génériques, l'entiercement anonyme, les requêtes et les événements.
 
-Vous pouvez régénérer un instantané d'aide local CLI en utilisant:
+Vous pouvez régénérer une vue de données locale CLI à un instant donné avec :
 
 ```bash
 cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md
@@ -81,5 +81,5 @@ cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/Com
 
 ## Notes {#notes}
 
-- Le CLI fournit actuellement une meilleure couverture que les dossiers de caisse autonomes.
-- En ce qui concerne les flux de type opérateur, la documentation CLI est la source la plus courante.
+- Le CLI offre actuellement une meilleure couverture que les documents du logiciel autonome.
+- Pour les flux de type opérateur, la documentation CLI est la source la plus récente.

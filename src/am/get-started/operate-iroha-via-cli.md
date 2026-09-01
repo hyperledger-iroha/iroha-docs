@@ -1,22 +1,22 @@
 ---
 translation_locale: am
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: ab8f3bf6d2259dc1ea649273e695429a992108b936475b263fe9d1fae59e8766
+translation_source_hash: c070c86b715b36079a7b6a47de2e31144187d7ebc6309f294a346be61a372660
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Iroha 3 በ CLI በኩል ይሠራል {#operate-iroha-3-via-cli}
+# Iroha 3 በ CLI በኩል ያሂዱ {#operate-iroha-3-via-cli}
 
-የ `iroha` ባይናሪ ለ Iroha 3 የትእዛዝ መስመር ደንበኛ ነው. የመረጃ ቋት ሁኔታን ለመጠየቅ, ግብይቶችን ለማቅረብ እና የአሠራር መጨረሻ ነጥቦችን ለመፈተሽ ይጠቀሙበት.
+የ`iroha` ሁለትዮሽ ለ Iroha 3 የትእዛዝ መስመር ደንበኛ ነው። የብሎክቼይን መዝገብ ሁኔታን ለመጠየቅ፣ ግብይቶችን ለማስገባት እና ኦፕሬተርን API የመጨረሻ ነጥቦችን ለመመርመር ይጠቀሙበት።
 
 ## 1. ቅድመ ሁኔታዎች {#_1-prerequisites}
 
-በመጀመሪያ አካባቢያዊ አውታረ መረብ ይጀምሩ:
+መጀመሪያ የአካባቢ አውታረ መረብ ይጀምሩ -
 
-- [ማስጀመሪያ Iroha 3](./launch-iroha.md)
+- [አስጀምር Iroha 3](./launch-iroha.md)
 
-የሚከተሉት ምሳሌዎች [Launch Iroha 3](./launch-iroha.md) ውስጥ ከተፈጠረው አካባቢያዊ አውታረ መረብ የተፈጠረውን የደንበኛ ውቅር ይገምታሉ:
+ከዚህ በታች ያሉት ምሳሌዎች በ[አስጀምር Iroha 3](./launch-iroha.md) ውስጥ ከተፈጠረው localnet የመነጨውን የደንበኛ ውቅር ይገምታሉ -
 
 ```bash
 ./localnet/client.toml
@@ -24,61 +24,61 @@ translation_engine: nllb-200-ct2
 
 ## 2. መሰረታዊ CLI ማዋቀር {#_2-basic-cli-setup}
 
-ከፍተኛውን ደረጃ እርዳታ አሳይ:
+የከፍተኛ ደረጃ እገዛን አሳይ
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml --help
 ```
 
-CLI በእነዚህ ከፍተኛ ደረጃ ትዕዛዞች ቡድኖች የተደራጀ ነው:
+CLI በእነዚህ ከፍተኛ ደረጃ የትዕዛዝ ቡድኖች የተደራጀ ነው -
 
-- `account` ለሂሳብ-ተኮር አቋራጭ መንገዶች
+- `account` መለያ-ተኮር አቋራጮች
 - `tx` ለግብይት ደረጃ ረዳቶች
-- `ledger` ለሊነር ማንበብና መጻፍ
-- `ops` ለኦፕሬተር ምርመራዎች
-- `app` ለአፕሊኬሽኖች API ረዳቶች
-- `contract` ለውል ማሰማራት እና ጥሪ
-- `tools` ለዲጂኖስቲክስ እና ለገንቢ አገልግሎት ሰጪዎች
+- `ledger` በብሎክቼይን መዝገብ ላይ ለማንበብ እና ለመጻፍ
+- `ops` ለኦፕሬተር ምርመራ
+- `app` ለመተግበሪያ API ረዳቶች
+- `contract` ለኮንትራት ማሰማራት እና ቴክኒካዊ ጥሪዎች
+- `tools` ለምርመራ እና ለገንቢ መገልገያዎች
 - `taira` ለ Taira እና Nexus ተኮር የስራ ፍሰቶች
 
-የ `ledger` ቡድን እንደ `ledger transaction` ያሉ የጎራ-ተኮር የግብይት ረዳቶችን ያካትታል ።
+የ`ledger` ቡድን እንደ `ledger transaction` ያሉ ጎራ-ተኮር የግብይት ረዳቶችንም ይዟል።
 
-ለሰው ሊነበብ የሚችል የኦፕሬተር ውፅዓት `--output-format text` እና ጥብቅ አውቶማቲክ ሁነታ `--machine` ን ይጠቀሙ።
+በሰው ሊነበብ ለሚችል ኦፕሬተር ውፅዓት `--output-format text` እና `--machine` ለጥብቅ አውቶሜሽን ሁነታ ይጠቀሙ።
 
-## 3. የህዝብ Taira የሙከራ ኔትውን ይሞክሩ {#_3-try-the-public-taira-testnet}
+## 3. ይፋዊውን ይሞክሩ Taira Testnet {#_3-try-the-public-taira-testnet}
 
-አንድ አካባቢያዊ እኩዮች ማስኬድ ወይም ፊርማ ለመፍጠር በፊት ማንበብ ብቻ Taira ፍተሻዎችን መሞከር ይችላሉ. እነዚህ ትዕዛዞች የህዝብ Torii JSON መስመሮችን ይጠቀማሉ እና የሙከራ ኔት XOR አይጠቀሙም.
+የአካባቢ አውታረ መረብ አቻ ከማስኬድዎ በፊት ወይም ምስጠራ ፈራሚ ከመፍጠርዎ በፊት ተነባቢ-ብቻ Taira ቼኮችን መሞከር ይችላሉ። እነዚህ ትዕዛዞች ይፋዊ Torii JSON መንገዶችን ይጠቀማሉ እና ቴስትኔት XOR አያወጡም።
 
-የ Taira ሁኔታ ይፈትሹ:
+Taira ሁኔታን ያረጋግጡ -
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-`universal` የውሂብ ቦታ ውስጥ የሕዝብ ጎራዎችን ይዘርዝሩ:
+ይዘርዝሩ ይፋዊ ጎራዎች በ `universal` የውሂብ ቦታ ውስጥ
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
   | jq -r '.items[].id'
 ```
 
-አንዳንድ የአክሲዮን ትርጉሞች እና ወቅታዊ አቅርቦታቸው ተዘርዝረዋል:
+ጥቂት የንብረት ትርጓሜዎችን እና የአሁኑን አቅርቦታቸውን ይዘርዝሩ -
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=10' \
   | jq -r '.items[] | [.id, .name, .mintable, .total_quantity] | @tsv'
 ```
 
-የአሁኑ `iroha` ባይንሪ ካለዎት የ Taira የምርመራ ረዳት ይሂዱ:
+የአሁኑ `iroha` ሁለትዮሽ ካለዎት የ Taira የምርመራ አጋዥን ያሂዱ -
 
 ```bash
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-ይፍጠሩ `taira.client.toml` የተፈረሙትን ትዕዛዞች ለመፈተሽ ዝግጁ ከሆንክ ብቻ። [ጋር ይገናኙ SORA Nexus የመረጃ ቋቶች](/am/get-started/sora-nexus-dataspaces.md) ለኮንፊግ, ቧንቧ እና የካናሪ ፍሰት. Taira ሂሳቡ በቧንቧ ክፍያ አክሲዮን እስከሚከፈል ድረስ።
+የተፈረሙ ትዕዛዞችን ለመሞከር ዝግጁ ሲሆኑ ብቻ `taira.client.toml`ን ይፍጠሩ። ለማዋቀር፣ ለቴስትኔት የገንዘብ ድጋፍ አገልግሎት እና ለካናሪ ፍሰት [ከ SORA Nexus የውሂብ ቦታዎች ጋር ይገናኙ](/am/get-started/sora-nexus-dataspaces.md)ን ይመልከቱ። መለያው በቴስትኔት የገንዘብ ድጋፍ አገልግሎት ክፍያ ንብረት እስኪደገፍ ድረስ በ Taira ላይ የመጻፍ ክዋኔ ትዕዛዞችን አያሂዱ።
 
-ለማንኛውም ክፍያ የሚከፈልበት Taira CLI ምሳሌ ፣ የቧንቧ ረዳቱን ከ [ ውስጥ ያስቀምጡ Testnet XOR በ Taira ](/am/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ላይ እንደ `taira_faucet_claim.py` ያግኙ ፣ ከዚያ በመጀመሪያ የሙከራ ኔት XOR ን ይጠይቁ:
+ለማንኛውም ክፍያ የሚከፈል Taira CLI ምሳሌ፣ የቴስትኔት የገንዘብ ድጋፍ አገልግሎት አጋዥን ከ[Testnet XOR ን በ Taira ያግኙ](/am/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) እንደ `taira_faucet_claim.py` ያስቀምጡ፣ ከዚያ መጀመሪያ ቴስትኔት XOR ይጠይቁ -
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -92,9 +92,9 @@ iroha --config ./taira.client.toml ledger asset get \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-የቧንቧ እንቆቅልሽ ወይም የይገባኛል ጥያቄ መንገድ `502` የሚመለስ ከሆነ ይጠብቁ እና እንደገና ይሞክሩ. ይህ የህዝብ የሙከራ አውታረመረብ ተደራሽነት ችግር ነው, የመለያ ቁልፎችን ለማደስ ምልክት አይደለም.
+የቴስትኔት የገንዘብ ድጋፍ አገልግሎት እንቆቅልሽ ወይም የይገባኛል ጥያቄ መንገድ ከተመለሰ `502`፣ ይጠብቁ እና እንደገና ይሞክሩ። ያ የህዝብ ቴስትኔት ተገኝነት ጉዳይ እንጂ የመለያ ቁልፎችን እንደገና ለማደስ ምልክት አይደለም።
 
-ሚዛኑ ከተገለጠ በኋላ የክፍያ ንብረቱን ሜታዳታ ይጨምሩ እንዲህ ይላል:
+ቀሪ ሂሳቡ ከታየ በኋላ የክፍያውን የንብረት ሜታዳታ ለመጻፍ ያያይዙ -
 
 ```bash
 printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
@@ -104,15 +104,15 @@ iroha --config ./taira.client.toml \
   ledger transaction ping --msg "hello from faucet-funded taira"
 ```
 
-## 4. መሠረታዊ የመቁጠሪያ ትዕዛዞች {#_4-basic-ledger-commands}
+## 4. መሰረታዊ የብሎክቼይን መዝገብ ትዕዛዞች {#_4-basic-ledger-commands}
 
-ሁሉንም ጎራዎች ጻፍ:
+ሁሉንም ጎራዎች ይዘርዝሩ
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 ```
 
-የተለመደው ጎራ መፍጠር የዲክላረቲቭ ስያሜ ዕቅድ አውጪን ይጠቀማል; የ `ledger domain` ትዕዛዝ ምንም `register` ንዑስ ትዕዛዝ የለውም. ለ `docs.universal` ምስጢራዊ ያልሆነ `AliasSetupPlanRequestV1` ዓላማ በ SDK ወይም በመጫኛ አገልግሎትዎ ያዘጋጁ, ከዚያ እቅድ እና ተግባራዊ ያድርጉት:
+ተራ ጎራ መፍጠር ገላጭ ተለዋጭ ስም እቅድ አውጪን ይጠቀማል; የ`ledger domain` ትዕዛዝ `register` ንዑስ ትዕዛዝ የለውም። ከእርስዎ SDK ወይም ከመሳፈሪያ አገልግሎት ጋር ለ`docs.universal` ከሚስጥር ነፃ የሆነ `AliasSetupPlanRequestV1` ዓላማ ያዘጋጁ፣ ከዚያ ያቅዱ እና ይተግብሩ -
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml \
@@ -124,15 +124,15 @@ cargo run --bin iroha -- --config ./localnet/client.toml \
   app alias setup apply --plan-file ./docs-domain.plan.json
 ```
 
-ዓላማው የመረጃ ቦታውን ID ፣ የካኖኒካል ባለቤት ሂሳብን ፣ የኪራይ አዋጁን ጊዜ እና የአሁኑን ጥቅስ መጠበቂያ ያጣራል ። ፕላነሩ የቀጥታ ሁኔታን ያረጋግጣል እና ለማቅረብ ትክክለኛውን አቶሚክ `EnsureAlias` ዕቅድ ይመልሳል ። የሌላ አውታረመረብ የጥበቃ እሴቶችን በእጅ አይገልፁ።
+ዓላማው የውሂብ ቦታ መታወቂያውን፣ ነጠላ ፕሮቶኮል-ደረጃውን የጠበቀ የባለቤት መለያ፣ የሊዝ ውል እና የአሁኑን የክፍያ-ዋጋ ማረጋገጫ ጠባቂ ይሰካል። እቅድ አውጪው የቀጥታ ሁኔታን ያረጋግጣል እና ለማስገባት ትክክለኛውን የአቶሚክ `EnsureAlias` እቅድ ይመልሳል። የጥበቃ እሴቶችን ከሌላ አውታረ መረብ በእጅ አይቅዱ።
 
-አንድ ቀላል ፒንግ ግብይት ላክ:
+ቀላል የፒንግ ግብይት ይላኩ -
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger transaction ping --msg "hello from iroha"
 ```
 
-የቅርብ ጊዜውን ብሎክ ያንብቡ ወይም የብሎክ ክስተቶችን ይመዝገቡ:
+የቅርብ ጊዜ ብሎክን ያንብቡ ወይም ክስተቶችን ለማገድ ይመዝገቡ -
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger blocks 1 --timeout 30s
@@ -141,38 +141,52 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 
 ## 5. የኦፕሬተር ትዕዛዞች {#_5-operator-commands}
 
-የስምምነት ሁኔታ:
+የጋራ ስምምነት ኦፕሬተር ትዕዛዞች የተፈቀደ የሶፍትዌር ማስፈጸሚያ አካባቢ ቁልፍ ያስፈልጋቸዋል። ከ`client.toml` ያስወግዱት እና የባለቤቱን ብቻ ፋይል በግልፅ ያስተላልፉ -
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi status
+: "${OPERATOR_KEY_FILE:=./secrets/operator.key}"
+
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi status
 ```
 
-የደረጃ መዘግየት ቅጽበታዊ ገጽ እይታ:
+ስልጣን የሌለው ወረፋ፣ የሶፍትዌር ማቀነባበሪያ የስራ ሂደት፣ ምርጫ እና የማስፈጸሚያ መስመር ምርመራዎች -
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi phases
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi diagnostics
 ```
 
-ተደራሽነት, ሰብሳቢ, RBC የኋላ መለያ እና VRF ቅጽበታዊ ገጽ እይታ:
+ከፍተኛ እና የተቆለፈ የጋራ ስምምነት ምልአተ ጉባኤ የምስክር ወረቀቶች -
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi telemetry
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi qc
 ```
 
-በሰንሰለት ላይ የጋራ ስምምነት መለኪያዎች:
+በሰንሰለት ላይ የጋራ መግባባት መለኪያዎች -
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ops sumeragi params
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi params
 ```
 
-## 6. ቀጥሎ የት መሄድ አለብን? {#_6-where-to-go-next}
+## 6. ቀጥሎ የት መሄድ እንዳለበት {#_6-where-to-go-next}
 
-- [SDK ትምህርቶች](/am/guide/tutorials/)
-- [Torii መጨረሻ ነጥቦች](/am/reference/torii-endpoints.md)
-- [በ Iroha ባይናሪዎች ላይ መሥራት ](/am/reference/binaries.md)
-- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_cli/README.md)
+- [SDK አጋዥ ስልጠናዎች](/am/guide/tutorials/)
+- [Torii API የመጨረሻ ነጥቦች](/am/reference/torii-endpoints.md)
+- [ከ Iroha ሁለትዮሽ ጋር በመስራት ላይ](/am/reference/binaries.md)
+- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/README.md)
 
-ሙሉውን የ Markdown እርዳታ ቅጽበታዊ ገጽ እይታ ከ ምንጭ ማረጋገጫ ለማደስ የሚከተለውን ይሮጡ:
+ከምንጭ-ኮድ የስራ ቅጂ ሙሉ የማርክዳውን የእገዛ ነጥብ-በጊዜ ውሂብ እይታን እንደገና ለማደስ ያሂዱ -
 
 ```bash
 cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md

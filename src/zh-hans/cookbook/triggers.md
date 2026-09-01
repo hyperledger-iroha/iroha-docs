@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /cookbook/triggers.md
-translation_source_hash: 93080591f5171c7ce25173eb1ef826d6f5ca661a17797be53e90aedab33ed0c3
+translation_source_hash: 5267fb9bb232d52d9df4bedee414d745ccc30dd52cbc30993df3c5b975a0bc38
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 - 一个资助签署者, `taira.client.toml`, `taira.tx-metadata.json`和 `TAIRA_ACCOUNT_ID`从 [连接到 Taira](./connect-to-taira.md).
 - Taira 允许注册`TAIRA_ACCOUNT_ID`的触发器,并执行所产生的触发器.相关代币是`CanRegisterTrigger`由 `authority`和`CanExecuteTrigger`由 `trigger`进行的.
-- 如果这些补贴无法获得,请使用生成的本地网络及其管理员客户端. 触发器权威还需要执行触发器将执行的指令所要求的所有许可.
+- 如果这些授权无法获得,请使用生成的本地网络及其管理员客户端. 触发器授权主体还需要执行触发器将执行的指令所要求的所有许可.
 
 ```bash
 CONFIG=./taira.client.toml
@@ -45,7 +45,7 @@ printf '%s\n' \
     --filter execute
 ```
 
-触发器最多可以运行三次. 它的声明权威,而不是电话打来执行它的人,授权了操作内部的指示.
+触发器最多可以运行三次. 它的声明授权主体,而不是执行它的调用者,授权了操作内部的指示.
 
 ### 2. 在执行前检查声明 {#_2-inspect-the-declaration-before-execution}
 
@@ -54,7 +54,7 @@ iroha --config "$CONFIG" ledger trigger get --id "$TRIGGER_ID"
 iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 ```
 
-在支付额外费用之前,确认 I105 权限,执行过器,剩余的重复和单一 `Log`指令.
+在支付额外费用之前,确认 I105 权限,执行过滤器,剩余的重复和单一 `Log`指令.
 
 ### 3. 执行并等待两层 {#_3-execute-and-wait-for-both-layers}
 
@@ -108,17 +108,17 @@ iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 
 ## 解决问题 {#troubleshooting}
 
-- 被拒绝注册意味着签署者缺乏 `CanRegisterTrigger` 声明的权威机构.执行需要单独设定范围的 `CanExecuteTrigger`代币.
-- 一个交易可以到达应用程序,而触发动作报告失败.阅读完成结果和错误;然后检查触发权威的许可证每个嵌入式指令.
+- 被拒绝注册意味着签署者缺乏 `CanRegisterTrigger` 声明的授权主体机构.执行需要单独设定范围的 `CanExecuteTrigger`代币.
+- 一个交易可以到达应用程序,而触发动作报告失败.阅读完成结果和错误;然后检查触发授权主体的许可证每个嵌入式指令.
 - `trigger not found`可能意味着注册交易被拒绝,或者用于执行的不同 Torii/链配置.
-- 当重复达到零时, 造更多的重复是另一个特权的写法.不要默默地把这个食谱改为无限的触发器.
+- 当重复达到零时, 造更多的重复是另一项特权写入.不要默默地把这个操作指南改为无限的触发器.
 - 为了清理, `ledger trigger unregister --id "$TRIGGER_ID"`需要 `CanUnregisterTrigger`用于该触发器加上明确的费用选择.
 
 ## 来源及相关文件 {#source-and-related-docs}
 
-- [在固定 commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/triggers/by_call_trigger.rs)上进行的随机调用触发器集成测试
-- [在固定的 commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/events_and_triggers.rs)上进行事件和触发集成测试
-- [在固定 commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)中执行触发器指令
+- [在固定 commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/triggers/by_call_trigger.rs)上进行的随机调用触发器集成测试
+- [在固定的 commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events_and_triggers.rs)上进行事件和触发集成测试
+- [在固定 commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)中执行触发器指令
 - [触发器](/zh-hans/blockchain/triggers.md)
 - [触发器的示例](/zh-hans/blockchain/trigger-examples.md)
 - [事件](./stream-events.md)

@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /cookbook/stream-events.md
-translation_source_hash: 1267a7e22bb6601674557f349e4fc5c6b883ce83b7dc62115ea2b8c3a0c39261
+translation_source_hash: 96f0a26000530fee15d121f815f9f5717a535dc3836cff9a2a447b1e5b70c41c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,13 +10,13 @@ translation_engine: nllb-200-ct2
 
 ## ရလဒ် {#outcome}
 
-Taira pipeline events ကို server-sent events (SSE) ပေါ်မှာ တိုက်ရိုက်သုံးစွဲခြင်း၊ bounded backoff ဖြင့် ပြန်လည်ဆက်သွယ်ခြင်းနှင့် replacement stream ဖွင့်ပြီးနောက် ရေရှည်တည်တံ့သောအခြေအနေကို refresh လုပ်ခြင်း။ endpoint တွင် replay cursor မရှိတာကြောင့်ဖြစ်ရပ်များကိုအပြည့်အဝသမိုင်းမဟုတ်ဘဲ အသိပေးချက်များအဖြစ် မှတ်ယူပါ။
+တိုက်ရိုက် Taira ဆော့ဖ်ဝဲ processing workflow အဖြစ်အပျက်များကို server ပေးပို့သောအဖြစ်အပျက်များ (SSE) ကိုသုံးစွဲခြင်း၊ အကန့်အသတ် backkoff နှင့်ပြန်လည်ဆက်သွယ်ခြင်းနှင့်သက်တမ်းရှည်အခြေအနေ refresh API အပြီးသတ်မှတ်ချက်မှာ replay cursor မရှိတာကြောင့်၊ ဖြစ်ရပ်တွေကို သတင်းအချက်အလက်တွေအဖြစ် မှတ်တမ်းတင်ပေးရန် မလိုပါ။
 
 ## လိုအပ်ချက်များ {#prerequisites}
 
 - အများပြည်သူ မီးခိုးစမ်းသပ်မှုအတွက် `curl`.
 - Node.js 24 အတွက် JavaScript စားသုံးသူ။
-- `https://taira.sora.org/v1/events/sse` သည် အများပြည်သူ၊ ဖတ်နိုင်သော ရေစီးကြောင်းတစ်ခုဖြစ်သည်။ ဤနည်းပြချက်သည် Minamoto သို့မဟုတ် Taira ရေးသားခြင်းမရှိပါ။
+- `https://taira.sora.org/v1/events/sse` သည် အများပြည်သူ၊ ဖတ်နိုင်မှုသာရှိသော စီးကြောင်းတစ်ခုဖြစ်သည်။ ဤနည်းပြသည် Minamoto သို့မဟုတ် Taira ရေးသားခြင်းများကို မလုပ်ဆောင်ပါ။
 
 ## ခြေလှမ်း {#steps}
 
@@ -30,7 +30,7 @@ curl -sS -N --max-time 15 \
   https://taira.sora.org/v1/events/sse
 ```
 
-မပို့ပါနဲ့ `Last-Event-ID`. Torii ဒါက SSE endpoint က live fan-out stream တစ်ခုဖြစ်ပြီး replay log မဟုတ်ဘဲ replay request တွေကို ပယ်ချပါတယ်။
+မပို့ပါနဲ့ `Last-Event-ID`. Torii ဒါက SSE API endpoint က live fan-out stream တစ်ခုဖြစ်ပြီး replay log မဟုတ်ဘဲ replay request တွေကို ပယ်ချပါတယ်။
 
 ### 2. filtered JavaScript စားသုံးသူကိုထည့်ပါ။ {#_2-add-a-filtered-javascript-consumer}
 
@@ -160,15 +160,15 @@ Taira တွင် အနည်းဆုံး ငွေပေးချေမှ
 node ./stream-taira.mjs
 ```
 
-SSE နှလုံးခုန်ချက် မှတ်ချက်တွေက အလွတ်ချိတ်ဆက်မှုတွေကို အသက်ရှင်စေပေမဲ့ Ledger မှာယူမှုကို မတည်ဆောက်ဘူး။ စီစဉ်မှု (သို့) ပြီးပြည့်စုံမှု အရေးပါတဲ့အခါ ဘလော့အမြင့်တွေ၊ ငွေပေးချေမှု ဟက်ရှ်တွေနဲ့ Ledger မေးမြန်းမှုတွေ သုံးပါ။
+SSE နှလုံးခုန်ချက် မှတ်ချက်တွေက အလွတ်ချိတ်ဆက်မှုတွေကို အသက်ရှင်စေပေမဲ့ blockchain ledger မှာယူမှုကို မတည်ဆောက်ပါ။ စီစဉ်မှု (သို့) ပြီးပြည့်စုံမှု အရေးပါတဲ့အခါ ဘလော့ခ်အမြင့်တွေ၊ ငွေပေးချေမှု cryptographic hashes တွေနဲ့ blockchain ledger မေးမြန်းမှုတွေ သုံးတယ်။
 
-နောက်ဆုံး ၂၅ စူးစမ်းရှာဖွေသူတောင်းဆိုချက်သည် အများပြည်သူရဲ့ ရောဂါစစ်ဆေးမှုတစ်ခုသာဖြစ်သည်။ ထုတ်ကုန်သုံးစွဲသူသည် `reconcile()` ကို ၎င်း၏ ရေရှည်တည်တံ့သော အသုံးစရိတ်အရင်းအမြစ်များအတွက် မေးမြန်းမှုများနှင့် စစ်ဆေးရေးဂိတ်အတွက် လုံလောက်စွာကြီးမားသော ပြန်လည်ထူထောင်ခြင်းဖြင့် ဖြန့်ဖြူးရန်လိုအပ်သည်။ ကန့်သတ်ထားတဲ့ snapshot တစ်ခုတည်းက မည်သည့်ဖြစ်ရပ်မှ လွတ်မြောက်ခြင်းမရှိကြောင်း သက်သေပြနိုင်ခြင်းမဟုတ်ပါ။
+နောက်ဆုံး 25 စူးစမ်းရှာဖွေသူတောင်းဆိုချက်သည် အများပြည်သူရဲ့ ရောဂါစစ်ဆေးမှုတစ်ခုသာဖြစ်သည်။ ထုတ်လုပ်သူသုံးစွဲသူသည် `reconcile()` ကို ၎င်း၏ ရေရှည်တည်တံ့သော အသုံးအဆောင်အရင်းအမြစ်များအတွက် မေးမြန်းမှုများနှင့် စစ်ဆေးရေးဂိတ်အတွက် လုံလောက်စွာကြီးမားသည့် ပြန်လည်ထူထောင်ရေးဘောင်ဖြင့် အစားထိုးရန် (သို့) ဖြန့်ဖြူးရန်လိုအပ်သည်။ ကန့်သတ်ထားတဲ့ point-in-time ဒေတာအမြင်တစ်ခုတည်းက ဘယ်ဖြစ်ရပ်မှ လွတ်သွားတာ သက်သေမပြနိုင်ဘူး။
 
-pinned commit မှာ `ToriiClient.streamEvents()` ကသာ `Accept: text/event-stream` ကိုပို့ပေးတယ်။ live Taira ကတော့ `406` နဲ့ ကျဉ်းမြောင်းတဲ့ ခေါင်းစဉ်ကို ပယ်ချပါတယ်။ SDK နှင့် အများပြည်သူအဆုံးသတ်မှတ်ချက်က တူညီတဲ့ မီဒီယာအမျိုးအစားတွေကို ညှိနှိုင်းမချင်း အထက်ပါ raw Fetch ပုံစံကိုအသုံးပြုပါ။
+pinned source-code revision တွင် `ToriiClient.streamEvents()` သည်သာ `Accept: text/event-stream` ကိုပို့ပေးသည်; live Taira သည် `406` နှင့်အတူ ကျဉ်းမြောင်းသော ခေါင်းစဉ်ကို ပယ်ချသည်။ SDK နှင့် အများပြည်သူ API အဆုံးသတ်မှတ်ချက်သည်တူညီသောမီဒီယာအမျိုးအစားများကို ညှိနှိုင်းမချင်းအထက်တွင် raw Fetch ပုံစံကိုအသုံးပြုပါ။
 
 ## စစ်ဆေးပါ {#verify}
 
-terminal တစ်ခုမှာ JavaScript သုံးစွဲသူကို run လုပ်ပါ။ နောက်တစ်ခုမှာ အများပြည်သူ ငွေပေးချေမှု snapshot ကိုဖတ်ပါ။
+terminal တစ်ခုမှာ JavaScript သုံးစွဲသူကို run လုပ်ပါ။ နောက်တစ်ခုမှာတော့ public transaction point-in-time data view ကို ဖတ်လိုက်ပါ။
 
 ```bash
 curl -fsS \
@@ -177,22 +177,22 @@ curl -fsS \
   jq .
 ```
 
-သင် ဂရုစိုက်တဲ့ ငွေပေးချေမှုဖြစ်ရပ်တိုင်းအတွက် snapshot မှာ hash ကိုရှာဖွေပါ (သို့) တိုက်ရိုက်မေးမြန်းပါ။ ကန့်သတ်ထားတဲ့ စာမျက်နှာက ပိုမိုဟောင်းသော ငွေလဲလှယ်မှုကို လျစ်လျူရှုနိုင်သည်။ ထို့နောက်ရပ်ပါ။ နောက်ပြီး စားသုံးသူကို ပြန်လည်စတင်ပေးပါက ID အဖြစ်အပျက်တစ်ခု မဖြည့်ဘဲ ပြန်လည်ဆက်သွယ်ရပြီး အစားထိုးစီးကြောင်းဖွင့်ပြီးနောက် ရောဂါစစ်ဆေးမှုအသစ်တစ်ခုကို ပုံနှိပ်ရပါမယ်။
+သင် ဂရုစိုက်တဲ့ ငွေပေးချေမှု ဖြစ်ရပ်တိုင်းအတွက် Point-in-time ဒေတာအမြင်မှာ ၎င်းရဲ့ cryptographic hash ကိုရှာဖွေပါ၊ (သို့) တိုက်ရိုက် မေးမြန်းပါ။ ကန့်သတ်ထားတဲ့ စာမျက်နှာက ပိုဟောင်းတဲ့ ငွေကြေးကို ရှောင်ရှားနိုင်သည်။ အဲဒီနောက်မှာ စားသုံးသူကို ရပ်ပြီး ပြန်စတင်ပေးရပါမယ်၊ ၎င်းဟာ ဖြစ်ရပ် ID ကို မပေးဘဲ ပြန်လည်ဆက်သွယ်ဖို့လိုပြီး အစားထိုးမှု စီးကြောင်း ဖွင့်ပြီးတဲ့ နောက်မှာ ရောဂါရှာဖွေရေး အသစ်တစ်ခုကို ပုံနှိပ်ရမယ်။
 
 ## ပြဿနာဖြေရှင်းခြင်း {#troubleshooting}
 
-- နှလုံးခုန်ချက် မှတ်ချက်တွေနဲ့ ဆက်နွယ်မှုတစ်ခုရှိပေမဲ့ ဒေတာဖြစ်ရပ်တွေမရှိတာ ကျန်းမာတယ်။ ရွေးချယ်ထားတဲ့ pipeline အခြေအနေက တိတ်ဆိတ်နေလောက်တယ်။
+- နှလုံးခုန်တဲ့ မှတ်ချက်တွေနဲ့ ဆက်နွယ်မှုတစ်ခုရှိပေမဲ့ ဒေတာဖြစ်ရပ်မရှိတာ ကျန်းမာတယ်။ ရွေးချယ်ထားတဲ့ ဆော့ဖ်ဝဲ စီမံခန့်ခွဲရေး အလုပ်ခွင်အခြေအနေက တိတ်ဆိတ်လောက်တယ်။
 - `406 Not Acceptable` တိုက်ရိုက် Taira ပုံမှန်ဆိုလိုတာက ကြော်ငြာထားတဲ့ တောင်းဆိုချက်ကိုပဲ ဆိုလိုတာပါ။ `text/event-stream`. ပို့ပေးပါ။ `text/event-stream, application/json` အထက်က ပြထားသလိုပါပဲ။
 - `stream_error` ဖြစ်ရပ်က ဆာဗာက နောက်ဆုတ်မှု (သို့) အခြား terminal stream အခြေအနေတစ်ခုကို ရှာဖွေတွေ့ရှိထားတာကို ညွှန်ပြတယ်။ Torii သည် ဒီအဖြစ်အပျက်ကို တစ်ကြိမ်ပို့ပြီး စီးကြောင်းကိုပိတ်လိုက်တယ်၊ ပြန်လည်ဆက်သွယ်ခြင်းမတိုင်ခင် ငြိမ်းအောင်လုပ်ပါ။
 - Torii မလုပ်တဲ့အခါမှာတောင် Proxy က SSE ကို buffer လုပ်နိုင်တယ်။ Proxy ထဲက တုံ့ပြန်မှု buffering နဲ့ compression တွေကို Disable လုပ်ပြီး `curl -N` ကို diagnostics မှာ ထားပါ။
-- နောက်ဖြစ်ရပ်က ယခင်ဖြစ်ရပ်နောက်ဆက်သွားမယ်လို့ ယူဆခြင်းဖြင့် ချိတ်ဆက်မှု ကွာဟချက်ကို ဘယ်တော့မှ မဖြည့်ပါ။ အဆုံးအသတ်မှတ်တိုင်မှာ ပြန်လည်ပြသရေး ညွှန်ကြားချက်မရှိဘဲ လက်ရှိစာအုပ်အခြေအနေကို မေးမြန်းပါ။
+- API အဆုံးသတ်မှတ်ချက်မှာ ပြန်လည်ပြသမှု ညွှန်ကြားချက်မရှိဘူး၊ ဒီအစား လက်ရှိ blockchain ledger အခြေအနေကို မေးမြန်းပါ။
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [JavaScript ချိတ်ဆက်ထားသော commit မှာ streaming recipe ကို](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/recipes/streaming.mjs)
-- [SSE ချိတ်ဆက်ထားသော commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/events/sse_smoke.rs) တွင် ပေါင်းစပ်မှု စမ်းသပ်မှုများ။
-- [Torii FilterExpr parser at the pinned commit ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/src/filter.rs)
-- [Torii event routing at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/src/routing.rs)
+- [JavaScript ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်ချက်မှာ streaming recipe](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs)
+- [SSE ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှုတွင် ပေါင်းစပ်မှု စမ်းသပ်မှုများ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs)
+- [Torii FilterExpr စာမေးပွဲကို ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှုမှာ စစ်ဆေးတယ်။](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs)
+- [Torii event routing at the pinned source code revision](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
 - [ဖြစ်ရပ်များ](/my/blockchain/events.md)
-- [Torii အဆုံးသတ်မှတ်ချက်များ](/my/reference/torii-endpoints.md)
-- [မေးမြန်းချက်စာအုပ်အခြေအနေ ](./query-ledger-state.md)
+- [Torii API အဆုံးသတ်မှတ်ချက်များ](/my/reference/torii-endpoints.md)
+- [မေးမြန်းချက် blockchain ledger အခြေအနေ](./query-ledger-state.md)

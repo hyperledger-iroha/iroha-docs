@@ -1,50 +1,35 @@
 ---
 translation_locale: dz
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: ccbb076ef3e2ba45d074ad3394ac354d0c2233cdd4286c5fa7a77f0d1c413988
+translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: human-reviewed
 ---
-
 # ཨེབ་ལྡེ་མིག་ཚུ་ བཟོ་སྐྲུན་འབདཝ་ཨིན། {#generating-cryptographic-keys}
 
-`kagami keys` ལག་ལེན་འཐབ་སྟེ་ Iroha 3 གི་དོན་ལུ་ client, peer, and validator key ཐོན་སྐྱེད་འབད་ཚུགས།
+Iroha 3 གི་དོན་ལུ་ མཁོ་སྤྲོད་འབད་མི་དང་ མཉམ་རོགས་ དེ་ལས་ བདེན་དཔྱད་འབད་མི་ལྡེ་མིག་རྒྱུ་ཆ་ཚུ་ བཟོ་བཏོན་འབད་ནི་ལུ་ `kagami keys` ལག་ལེན་འཐབ།
 
 ## གཞི་རྟེན་ལག་ལེན་ {#basic-usage}
 
-Iroha གི་ source checkout ནང་ལས་:
-
-```bash
-cargo run --bin kagami -- keys --algorithm ed25519
-```
-
-JSON ཕྱིར་བཏོན་འདི་ TOML ཡང་ན་ རང་བཞིན་བཟོ་བཀོད་ནང་ལུ་ ཨེབ་གཏང་འབད་ནི་དེ་འཇམ་ཤོས་ཨིན།
-
-```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --json
-```
-
-བཀའ་རྒྱ་འདི་གིས་ public key དང་ གསང་སྲུང་མེད་པའི་ private key གཉིས་ཀྱི་གྲུབ་འབྲས་བཏོནམ་ཨིན། private key འདི་ secret material སྦེ་བཞག་དགོ། བཟོ་སྐྲུན་གྱི་ production key ཚུ་ repository ནང་ commit འབད་ནི་མི་འོང་།
-
-རྒྱབ་སྐྱོར་ཡོད་པའི་ Unix platform གུ་ secure local export ཡང་ན་ custody handoff འབདཝ་ད་ private key འདི་གྲུབ་འབྲས་ནང་མ་བཏོན་པར་ key pair གསརཔ་འདི་ owner-only གི་ directory སྟོངམ་ནང་བྲིས་:
+Iroha འབྱུང་ཁུངས་ འབྱུང་ཁུངས་ཕབ་ལེན ནང་ལས།
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-Parent directory འདི་ཧེ་མ་ལས་ཡོད་དགོ། Target directory འདི་གསརཔ་ ཡང་ན་ current user གྱི་བདག་དབང་ནང་ཡོད་མི་ mode `0700`, symbolic link མེད་མི་དང་ སྟོངམ་ཨིན་དགོ། `kagami` གིས་ `public.key` དང་ `private.key` འདི་ mode `0600` ནང་བྲིས་ཏེ་ private key འདི་གྲུབ་འབྲས་ནང་མི་བཏོན། `--pop` ཡོད་པ་ཅིན་ `pop.hex` ཡང་འབྲི་འོང་།
+ཕ་མའི་སྣོད་ཐོ་འདི་ཧེ་མ་ལས་རང་ཡོདཔ་དགོ། དམིགས་གཏད་འདི་ ད་ལྟོའི་ལག་ལེན་པ་གིས་ གསརཔ་ཡང་ན་ ཧེ་མ་ལས་རང་ བདག་དབང་འབད་ཡོདཔ་ཨིན་ ཐབས་ལམ་ `0700` བརྡ་མཚོན་འབྲེལ་ལམ་ཚུ་མེདཔ་ དེ་ལས་ སྟོངམ་ཨིན། `kagami` གིས་ `public.key` དང་ `private.key` ཐབས་ལམ་ `0600` དང་གཅིག་ཁར་བྲིས་ཏེ་ ལྡེ་མིག་རྒྱུ་ཆ་དཔར་བསྐྲུན་མི་འབད། `--pop` དང་ཅིག་ཁར་ འདི་གིས་ `pop.hex` ཡང་འབྲིཝ་ཨིན།
 
-Kagami གིས་ owner-only filesystem rules ཚུ་ངེས་པར་ལག་ལེན་འཐབ་མ་ཚུགས་པའི་ platform གུ་ `--out-dir` འདི་ fail closed འབད་དེ་འཛོལ་བ་སྟོན་འོང་། private-key file འདི་ unencrypted export ཨིན་པ་ལས་ hardware signer ཡང་ན་ non-exportable production signer མེན། འདི་ approved custody boundary ནང་ནང་འདྲེན་འབད་ཞིནམ་ལས་ deployment procedure དང་འཁྲིལ་ཏེ་ export file འདི་བཏོན་གཏང་།
+`--out-dir` འདི་ Kagami གིས་ ཇོ་བདག་རྐྱངམ་ཅིག་གི་ཡིག་སྣོད་རིམ་ལུགས་ལམ་ལུགས་འདི་ཚུ་ བསྟར་སྤྱོད་འབད་མ་ཚུགས་པའི་ སྟེགས་བུ་ཚུ་གུ་ཁ་བསྡམ་མ་ཚུགས། སྒེར་གྱི་ལྡེ་མིག་ཡིག་སྣོད་འདི་གསང་བཟོ་མ་འབད་བའི་ཕྱིར་འདྲེན་ཨིན་ མཐུན་རྐྱེན་ཡང་ན་ཕྱིར་འདྲེན་འབད་མ་བཏུབ་པའི་ཐོན་སྐྱེད་གསང་ཡིག་བརྡ་རྟགས་བཀོད་མི་མེན། ཆ་འཇོག་འབད་ཡོད་པའི་ བཀག་འཛིན་མཚམས་ནང་ ནང་འདྲེན་འབད་ཞིནམ་ལས་ བཀྲམ་སྤེལ་གྱི་བྱ་རིམ་དང་འཁྲིལ་ཏེ་ ཕྱིར་འདྲེན་བཏོན་གཏང་།
 
 ## ཨལ་ག་རི་ཏམ་ཚུ་ {#algorithms}
 
-སྤྱིར་བཏང་གི་ ཨལ་ག་རི་ཏིམ་ཚུ་འདི་ཨིན།
+སྤྱིར་བཏང་གི་ཨཱལ་གོ་རི་དམ་ཚུ་ཨིན།
 
-- Client account དང་ streaming identity གི་དོན་ལུ་ `ed25519`།
-- Client account ལུ་ secp256k1 identity དགོཔ་ད་ `secp256k1`།
-- Build གིས་ BLS support འབད་མི་ད་ node ཡང་ན་ peer consensus identity རེ་རེའི་དོན་ལུ་ `bls_normal`།
+- `ed25519` མཁོ་སྤྲོད་འབད་མི་རྩིས་ཐོ་དང་ རྒྱུན་སྤེལ་ངོ་རྟགས་ཚུ་གི་དོན་ལུ་ཨིན།
+- `secp256k1` མཁོ་སྤྲོད་འབད་མི་རྩིས་ཐོ་ཅིག་ལུ་ secp256k1 ངོ་རྟགས་དགོཔ་ད་ལུ།
+- `bls_normal` མཐུད་མཚམས་རེ་རེ་ཡང་ན་ མཉམ་རོགས་མོས་མཐུན་ངོ་རྟགས་ཀྱི་དོན་ལུ་ཨིན།
 
-ཁྱོད་ཀྱི་ build གིས་རྒྱབ་སྐྱོར་འབད་མི་ algorithm ངེས་ཏིག་ཚུ་འདི་གིས་བརྟག་དཔྱད་འབད་:
+ཁྱོད་རའི་བཟོ་བསྐྲུན་གྱིས་རྒྱབ་སྐྱོར་འབད་མི་ཨཱལ་གོ་རི་དམ་ངེས་བདེན་འདི་ འདི་དང་གཅིག་ཁར་ཞིབ་དཔྱད་འབད།
 
 ```bash
 cargo run --bin kagami -- keys --help
@@ -52,35 +37,36 @@ cargo run --bin kagami -- keys --help
 
 ## དངོས་གྲུབ་ཅན་གྱི་གོང་འཕེལ་གྱི་ལྡེ་མིག་ཚུ་ {#deterministic-development-keys}
 
-Reproducible fixture གི་དོན་ལུ་ 32-byte seed འདི་ hexadecimal character 64 སྦེ་བཀོད་དེ་བྱིན། Optional `0x` prefix འདི་བཏུབ་ཨིན།
+བསྐྱར་བཟོ་འབད་བཏུབ་པའི་སྒྲིག་བཀོད་ཚུ་གི་དོན་ལུ་ ༦༤ ཧེག་ས་ཌི་སི་མཱལ་ཡིག་འབྲུ་སྦེ་ ཨེན་ཀོ་ཌི་འབད་ཡོད་པའི་ ༣༢ བཱའིཊི་སོན་ཅིག་སྤྲོད། གདམ་ཁ་ཅན་གྱི་ `0x` སྔོན་སྒྲིག་འདི་ངོས་ལེན་འབད་ཡོདཔ་ཨིན།
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 \
   --seed-hex 1111111111111111111111111111111111111111111111111111111111111111 \
-  --json
+  --out-dir ./fixture-client-key
 ```
 
-Seed འདི་ private-key material ཨིན། Deterministic seed འདི་ local development དང་ test གི་དོན་ལུ་རྐྱངམ་ཅིག་ལག་ལེན་འཐབ། Production key འདི་ operating-system randomness ལས་བཟོ་ནིའི་དོན་ལུ་ `--seed-hex` མ་བྱིན།
+ས་བོན འདི་ སྒེར-ལྡེ་མིག གི་ནང་དོན་ཨིན། གཏན་འཁེལ་ཅན ས་བོན ཚུ་ ས་གནས གསར་སྤེལ དང་ བརྟག་དཔྱད་ཚུ གི་དོན་ལུ་རྐྱངམ་ཅིག་ལག་ལེན་འཐབ། བཀོལ་སྤྱོད་རིམ་ལུགས གང་བྱུང་ཚད ལས་ ཐོན་སྐྱེད་ལྡེ་མིག་ བཟོ་ནིའི་དོན་ལུ་ `--seed-hex` མ་བཙུགས།
 
 ## BLS ངོས་ལེན་གྱི་ལྡེ་མིག་དང་ བདག་དབང་གི་ཁུངས་ཚུ་ {#bls-consensus-keys-and-proofs-of-possession}
 
-Iroha 3 node དང་ peer consensus identities གིས་ BLS-normal keys ལག་ལེན་འཐབ་ཨིན། BLS-normal key དང་ possessive proof (PoP) བཟོ་ནི་འདི་:
+Iroha 3 མཐུད་མཚམས དང་ མཉམ་རོགས གྲོས་མཐུན ངོ་རྟགས ཚུ་གིས་ BLS-སྤྱིར་བཏང ལྡེ་མིག་ཚུ ལག་ལེན་ འཐབ་ཨིན། BLS-སྤྱིར་བཏང ལྡེ་མིག དང་ བདག་དབང་བདེན་ཁུངས (PoP) འདི་གིས་བཟོ།
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./validator-key
 ```
 
-`--pop` འདི་ `bls_normal` དང་གཅིག་ཁར་རྐྱངམ་ཅིག་ཆ་གནས་ཡོད། JSON output ནང་ `pop_hex` ཡོད། Signed genesis གིས་ voting validator རེ་རེའི་དོན་ལུ་ matching PoP དགོ། Peer configuration ནང་ non-empty `trusted_peers_pop` map གིས་ validator subset གདམ་ཁ་རྐྱབ་ཨིན། དེ་ནང་མེད་པའི་ trusted peer ཚུ་ observer ཨིན། Map སྟོངམ་ཨིན་པ་ཅིན་ BLS-normal trusted peer ཆ་མཉམ་ bootstrap candidate set ནང་འཛུལ་འོང་། Voting PoPs ཚུ་ signed genesis གིས་རང་བྱིན་འོང་།
+`--pop` འདི་ `bls_normal` དང་གཅིག་ཁར་རྐྱངམ་ཅིག་ཆ་གནས་ཡོད། འདི་གིས་ `pop.hex` ཉེན་སྲུང་བཞག་སའི་ ཐོ་གཞུང ནང་ཁ་སྐོང་རྐྱབ་ཨིན། མིང་རྟགས་བཀོད་པའི་ འགོ་ཐོག་གནས་སྟངས ལུ་ཚོགས་རྒྱན་བཙུགས་མི་ བདེན་དཔྱད་པ རེ་ལུ་ མཐུན་པའི་ PoP དགོ། མཉམ་རོགས རིམ་སྒྲིག ནང་སྟོངམ་མེན་པའི་ `trusted_peers_pop` སྦྲེལ་སྒྲིག གིས་ བདེན་དཔྱད་པ ཡན་ལག་ཚན གདམ་ཁ་རྐྱབ་ཨིན། སྦྲེལ་སྒྲིག སྟོངམ་ མེན་མི་འདི་ནང་མ་བཙུགས་པའི་ བློ་གཏད་ཅན མཉམ་རོགས ཚུ་ ལྟ་རྟོག་པ ཨིན། སྦྲེལ་སྒྲིག འདི་སྟོངམ་ཨིན་པ་ཅིན་ BLS-normal བློ་གཏད་ཅན མཉམ་རོགས ག་ར་ འགོ་སྒྲིག གདམ་ག སྡེ༌ཚན༌ ནང་འཛུལཝ་ཨིནམ་དང་ ཚོགས་རྒྱན་བཙུགས་མིའི་ PoPs ཚུ་ད་རུང་ཡང་ མིང་རྟགས་བཀོད་པའི་ འགོ་ཐོག་གནས་སྟངས གིས་བྱིནམ་ཨིན།
 
-## ཐོན་སྐྱེད་བཟོ་རྣམ་ཚུ་ {#output-formats}
+## ཉེན་སྲུང་བཞག་སའི་གྲུབ་འབྲས་ {#custody-output}
 
-Terminal inspection གི་དོན་ལུ་ default output, automation གི་དོན་ལུ་ `--json`, script གཞན་ལུ་ line-oriented values དགོ་པ་ཅིན་ `--compact` ལག་ལེན་འཐབ་:
+`kagami keys` དགོཔ་ `--out-dir` དང་ ཚད་ལྡན་ཐོན་འབྲས་ལུ་ སྒེར་གྱི་ལྡེ་མིག་རྒྱུ་ཆ་ཚུ་ ནམ་ཡང་མི་བྲིས། བཟོ་བཏོན་འབད་ཡོད་པའི་སྣོད་ཐོ་ལས་ `public.key`, `private.key`, དང་གདམ་ཁ་ཅན་ `pop.hex` ལྷག། ཡིག་སྣོད་རེ་རེ་ནང་ གྲལ་ཐིག་གསརཔ་ཅིག་གི་ཤུལ་ལས་ ཚད་ལྡན་གནས་གོང་གཅིག་ཡོདཔ་ཨིན་ དེ་གིས་ ཡིག་སྣོད་གཞི་བཞག་པའི་རང་བཞིན་འདི་ ཕྲང་ཏང་ཏ་བཟོཝ་ཨིན།
 
 ```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --compact
+PUBLIC_KEY=$(tr -d '\n' < ./client-key/public.key)
 ```
 
-ཡོངས་ཁྱབ་ཐོན་སྐྱེད་འབད་ནིའི་དོན་ལུ་ Kagami གྲོགས་རམ་:
+Kagami གིས་བཟོ་བའི་ གྲོགས་རམ ཆ་ཚང་གི་དོན་ལུ།
 
 ```bash
 cargo run -p iroha_kagami -- advanced markdown-help > crates/iroha_kagami/CommandLineHelp.md

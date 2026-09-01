@@ -22,7 +22,7 @@ npm run build:native
 npm run build:dist
 ```
 
-Тыуған ерҙәрҙәге ҡоролмалар `cargo build -p iroha_js_host` һәм ҡулланылған платформаға специфик тикшереү суммаһын теркәп SDK башланғыс. сығанаҡ төҙөү урындары, тип раҫланған хост `native/`. Ҡуйылған `IROHA_JS_NATIVE_DIR` тик айырым төҙөлгән, сумма буйынса тикшерелгән хост менән тәьмин иткәндә генә. ESM- бары тик; CommonJS, ҡулланыу динамикаһы `import()`.
+Native төҙөлөш `cargo build -p iroha_js_host` командаһын урай һәм SDK эш башлағанда ҡулланылған платформаға хас checksum-ды теркәй. Сығанаҡтан төҙөлөш тикшерелгән host-ты `native/` эсенә ҡуя. `IROHA_JS_NATIVE_DIR`-ҙы тик айырым төҙөлгән һәм checksum-ы тикшерелгән host-ты аңлы рәүештә биргәндә генә көйләгеҙ. Пакет ESM өсөн генә; CommonJS-та динамик `import()` ҡулланығыҙ.
 
 ## Тиҙерәк старт {#quickstart}
 
@@ -73,7 +73,7 @@ for (const asset of assets.items) {
 node taira-readonly.mjs
 ```
 
-SDK ҡул ҡуйылған шылтыратыуҙарға бары тик был уҡып ҡына тикшереүҙәр эшләгәндән һуң ғына күсергә мөмкин. Йәмәғәт Taira ваҡытлыса туйынған сиратты йәки шлюз ҡағиҙәһен кире ҡайтара ала, шуға күрә тере селтәрҙәге һынауҙарҙы opt-in CI менән үткәреүҙе дауам ит.
+SDK ҡул ҡуйылған саҡырыуҙарға бары тик был уҡып ҡына тикшереүҙәр эшләгәндән һуң ғына күсергә мөмкин. Йәмәғәт Taira ваҡытлыса туйынған сиратты йәки шлюз ҡағиҙәһен кире ҡайтара ала, шуға күрә тере селтәрҙәге һынауҙарҙы opt-in CI менән үткәреүҙе дауам ит.
 
 Файҙалы аҫты юл импорты:
 
@@ -85,9 +85,9 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 Бары тик браузер менән генә тоташтырыу старт-страп өсөн `@iroha/iroha-js/connect-browser` ҡулланырға, урынына индереү Node-первый `ToriiClient` өҫкө йөҙө.
 
-## Тыуған эскровы {#native-escrow}
+## Протоколға индерелгән эскроу {#native-escrow}
 
-JavaScript һәм TypeScript ғаризалар ҡулланырға мөмкин урындағы депозит аша Kotodama контракттар. Эскроу хост шылтыратыуҙар `@iroha/iroha-js/kotodama-compiler`; тура урындағы эскроу транзакция төҙөүселәр әлеге ваҡытта JavaScript SDK. Күрәһегеҙме [Туған активтар иҫәбенә кредит](/ba/blockchain/escrow.md#javascript-and-typescript-kotodama) Эскроу хостинг саҡырыу миҫалы өсөн.
+JavaScript һәм TypeScript ҡушымталары Kotodama contracts аша native escrow ҡуллана ала. Escrow host calls-ты `@iroha/iroha-js/kotodama-compiler` менән compile итегеҙ; JavaScript SDK әлегә direct native escrow transaction builders тәҡдим итмәй. Escrow host-call миҫалын [JavaScript һәм TypeScript Kotodama](/ba/blockchain/escrow.md#javascript-and-typescript-kotodama) бүлегендә ҡарағыҙ.
 
 ## Хәҙерге яҡтыртыу {#current-coverage}
 

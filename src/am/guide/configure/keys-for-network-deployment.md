@@ -1,57 +1,59 @@
 ---
 translation_locale: am
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 17ffd2979e2ff7a0e0c3f5c9f1457a5eb630713bba40fca0246afc0c2f7fd5e4
+translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# የአውታረ መረብ አተገባበር ቁልፎች {#keys-for-network-deployment}
+# ለአውታረመረብ ማሰማራት ቁልፎች {#keys-for-network-deployment}
 
-እያንዳንዱ አውታረመረብ ለደንበኞች ፣ ለአቻዎች ፣ ለጄኔሲስ ፊርማ እና ለ NPoS ወይም Nexus መገለጫዎች የተለየ ቁልፍ ቁሳቁስ ይፈልጋል ፣ BLS ማረጋገጫ ማንነት ።
+እያንዳንዱ አውታረ መረብ ለደንበኞች፣ ለአውታረ መረብ እኩዮች፣ ለብሎክቼይን ጀነሲስ ፊርማ እና ለNPoS ወይም Nexus መገለጫዎች፣ BLS አረጋጋጭ ማንነቶች የተለየ ቁልፍ ቁሳቁስ ያስፈልገዋል።
 
-## ቁልፎችን የሚጠቀሙባቸው ቦታዎች {#where-keys-are-used}
+## ቁልፎች ጥቅም ላይ የሚውሉባቸው ቦታዎች {#where-keys-are-used}
 
-- የደንበኛው ፊርማ ቁልፎች በ `client.toml` ውስጥ `[account]` ስር ይቀመጣሉ ።
-- የእኩዮች መታወቂያ ቁልፎች በእያንዳንዱ እኩያ `config.toml` ውስጥ እንደ `public_key` እና `private_key` ይቀመጣሉ ።
-- የእኩዮች ግኝት በእያንዳንዱ እኩያ `trusted_peers` ውስጥ የሕዝብ ቁልፍን ይጠቀማል.
-- BLS ማረጋገጫ ባለቤትነት ማስረጃዎች ለ NPoS መገለጫዎች በ `trusted_peers_pop` ውስጥ ይቀመጣሉ.
-- የዘፍጥረት ፊርማ በማኒፊስት ሲፈርም `[genesis].public_key` በባልደረባ ውቅር እና የሚዛመደው የግል ቁልፍ ይጠቀማል.
+- የደንበኛ ፊርማ ቁልፎች በ`client.toml` በ`[account]` ስር ተቀምጠዋል።
+- የአውታረ መረብ አቻ መለያ ቁልፎች በእያንዳንዱ የአውታረ መረብ አቻ `config.toml` እንደ `public_key` እና `private_key` ተከማችተዋል።
+- የአውታረ መረብ አቻ ግኝት የእያንዳንዱን የአውታረ መረብ አቻ የህዝብ ቁልፍ በ`trusted_peers` ይጠቀማል።
+- BLS አረጋጋጭ የይዞታ ማረጋገጫዎች በ `trusted_peers_pop` ውስጥ ለNPoS መገለጫዎች ተከማችተዋል።
+- የብሎክቼይን ጀነሲስ ፊርማ ቴክኒካል ማኒፌስት ሲፈርሙ `[genesis].public_key` በኔትወርክ አቻ ውቅር እና ተዛማጅ የግል ቁልፍን ይጠቀማል።
 
-ለአካባቢያዊ ወይም የሙከራ ትግበራዎች, Kagami እነዚህን ፋይሎች ሁሉ በአንድ ላይ ያመነጫል:
-
-```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-```
-
-ለአንድ ነባር አውታረመረብ ወይም መገለጫ መመሪያ ፍሰት ይጠቀሙ:
+ለአካባቢያዊ ወይም ለሙከራ ማሰማራት፣ Kagami እነዚህን ሁሉ ፋይሎች አንድ ላይ ያመነጩ -
 
 ```bash
-cargo run --bin kagami -- wizard --profile nexus
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-## የግለሰብ ቁልፍ ባልና ሚስት ይፍጠሩ {#generate-individual-key-pairs}
-
-ለግል ቁልፍ ቁሳቁስ `kagami keys` ይጠቀሙ:
+ለነባር አውታረ መረብ ወይም መገለጫ፣ የሚመራውን ፍሰት ይጠቀሙ -
 
 ```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --json
+cargo run --bin kagami -- wizard
 ```
 
-ለ BLS ማረጋገጫ ቁሳቁስ የባለቤትነት ማስረጃን ያካትቱ
+## የግለሰብ ቁልፍ ጥንዶችን ይፍጠሩ {#generate-individual-key-pairs}
+
+ለግል ቁልፍ ቁሳቁስ `kagami keys` ይጠቀሙ -
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm ed25519 \
+  --out-dir ./client-key
 ```
 
-`--seed` መጠቀም የሚቻለው ለትራንስፎርሜሽን መሣሪያዎች ብቻ ነው። ለምርቱ ማሰማራት አዲስ ቁልፎችን ያመነጩ እና የግል ቁልፎቹን ከማከማቻው ውጭ ያስቀምጡ ።
+ለ BLS አረጋጋጭ ቁሳቁስ፣ የይዞታ ማረጋገጫ ያካትቱ -
 
-## የእኩዮች ተኳሃኝነት {#peer-consistency}
+```bash
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./validator-key
+```
 
-ሁሉም ማረጋገጫ ሰጪዎች በተመሳሳይ የጄኔሲስ ግብይት ፣ ቶፖሎጂ ፣ የታመኑ የእኩዮች በይፋ ቁልፎች እና የማረጋገጫ ሰጭ PoPs ላይ መግባባት አለባቸው። አንድ ነጠላ የጎደለው ወይም የማይጣጣም የእኩዮች ቁልፍ አውታረመረብ እንዳይጀምር ወይም ስምምነት ላይ እንዳይደርስ ሊያግደው ይችላል።
+`--seed-hex`ን በትክክለኛው ባለ 32-ባይት ሄክሳዴሲማል ሚስጥር ብቻ ይጠቀሙ ሊደገሙ ለሚችሉ የልማት ሙከራ ውሂቦች። ለምርት ማሰማራት፣ Kagami የክወና ስርዓት ዘፈቀደነትን እንዲጠቀም ይተዉት፣ ከዚያ ያልተመሰጠረውን የግል ቁልፍ ወደ ውጭ መላክ ወደ ተፈቀደው የጥበቃ ወሰን ያንቀሳቅሱት። ትዕዛዙ የግል ቁልፎችን በጭራሽ አያትምም።
 
-ለቢዛንታይን ስህተት መቻቻል ቢያንስ ለአራት እኩዮች ይጠቀሙ። እያንዳንዱ እኩያ የራሱ የሆነ የግል ቁልፍ ሊኖረው ይገባል ፣ ግን እያንዳንዱ የእኩያ ውቅር ተመሳሳይ የታመነ የእኩይ ስብስብ ይፈልጋል።
+## የአውታረ መረብ አቻ ወጥነት {#peer-consistency}
 
-## የደንበኞች መለያዎች {#client-accounts}
+ሁሉም አረጋጋጮች በተመሳሳዩ የብሎክቼይን ጀነሲስ ግብይት፣ ቶፖሎጂ፣ የታመኑ የአውታረ መረብ አቻ የህዝብ ቁልፎች እና አረጋጋጭ PoPs ላይ መስማማት አለባቸው። አንድ የጎደለ ወይም ያልተዛመደ የአውታረ መረብ አቻ ቁልፍ አውታረ መረቡ እንዳይጀምር ወይም መግባባት ላይ እንዳይደርስ ይከለክላል።
 
-በ `client.toml` ውስጥ ያለው የደንበኛ መለያ ቀድሞውኑ በመስመር ላይ መኖር አለበት ። በጄኔዚስ ማኒፌስት ወይም በኋላ ባለው ግብይት ሊመዘገብ ይችላል ። እንደ ረጅም ጊዜ የሚቆይ የመተግበሪያ መለያ ሆኖ የጄኔሲስ ፊርማ ማንነትን ከመጠቀም ይቆጠቡ; የጄኔሲስ መብቶች የሚተገበሩት በጀኔሲስ ዙር ወቅት ብቻ ሲሆን የምርት ደንበኞች የራሳቸውን ሂሳብ እና ሚና መጠቀም አለባቸው።
+ለቢያንስ የባይዛንታይን ስህተትን የሚቋቋም ማሰማራት፣ ቢያንስ አራት የአውታረ መረብ እኩዮችን ይጠቀሙ። እያንዳንዱ የአውታረ መረብ አቻ የራሱ የግል ቁልፍ ሊኖረው ይገባል፣ ነገር ግን እያንዳንዱ የአውታረ መረብ አቻ ውቅር ተመሳሳይ የታመነ የአውታረ መረብ አቻ ስብስብ ያስፈልገዋል።
+
+## የደንበኛ መለያዎች {#client-accounts}
+
+በ `client.toml` ውስጥ ያለው የደንበኛ መለያ አስቀድሞ በሰንሰለት ላይ መኖር አለበት። በብሎክቼይን ጀነሲስ ቴክኒካል ማኒፌስት ወይም በኋላ ግብይት ሊመዘገብ ይችላል። የብሎክቼይን ጀነሲስ ፊርማ ማንነትን እንደ ረጅም ጊዜ የመተግበሪያ መለያ ከመጠቀም ይቆጠቡ; የብሎክቼይን ጀነሲስ ልዩ መብቶች የሚተገበሩት በብሎክቼይን ጀነሲስ ዙር ብቻ ነው፣ እና የምርት ደንበኞች የራሳቸውን መለያዎች እና ሚናዎች መጠቀም አለባቸው።

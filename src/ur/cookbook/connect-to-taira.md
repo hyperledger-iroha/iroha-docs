@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /cookbook/connect-to-taira.md
-translation_source_hash: a7347a7e8ea055fd5bab9a34b6124ea19ef6f355f9beef9e9488794d9c6e3202
+translation_source_hash: e14be7d9314f26f40f6aa30678fddcfcfea39eda9b98016f1b2f84838203c548
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 ## نتیجہ {#outcome}
 
-اس بات کی تصدیق کریں کہ Taira قابل رسائی ہے، مقامی کلائنٹ ترتیب سے کینیکل I105 اکاؤنٹ ID حاصل کریں، ٹیسٹ نیٹ XOR کے ساتھ دستخط کنندہ کو فنڈ دیں، اور ایک فیس کوٹیڈ کینری ٹرانزیکشن پیش کریں۔ یہ نسخہ کبھی بھی Minamoto پر لکھنا نہیں بھیجتا ہے۔
+تصدیق کریں کہ Taira قابل رسائی ہے، مقامی client configuration سے canonical I105 account ID اخذ کریں، signer کو testnet XOR سے فنڈ کریں، اور fee-quoted canary transaction جمع کریں۔ یہ recipe کبھی Minamoto پر write نہیں بھیجتی۔
 
 ## لازمی شرائط {#prerequisites}
 
@@ -69,7 +69,7 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID"
 
 ### موجودہ Taira فیس اثاثہ کا دعویٰ کرنا۔ {#_4-claim-the-current-taira-fee-asset}
 
-نل کا جواب فیس اثاثہ کی تعریف کے لئے سچائی کا ذریعہ ہے۔ کسی دوسرے نیٹ ورک یا پرانے رن سے ID کو کاپی کرنے کے بجائے واپس آنے والے بیس 58 ID کو رکھیں.
+فوسیٹ کا جواب فیس اثاثہ کی تعریف کے لئے سچائی کا ذریعہ ہے۔ کسی دوسرے نیٹ ورک یا پرانے رن سے ID کو کاپی کرنے کے بجائے واپس آنے والے بیس 58 ID کو رکھیں.
 
 ```bash
 python3 ./taira_faucet_claim.py "$TAIRA_ACCOUNT_ID" \
@@ -80,7 +80,7 @@ jq -n --arg gas_asset_id "$TAIRA_FEE_ASSET" \
   '{gas_asset_id: $gas_asset_id}' > taira.tx-metadata.json
 ```
 
-زیادہ سے زیادہ ایک منٹ کے لئے بیلنس کا سروے کریں۔ فنڈنگ ٹرانزیکشن دیکھنے میں آنے سے پہلے نل `202 Accepted` واپس کر سکتا ہے۔
+زیادہ سے زیادہ ایک منٹ کے لئے بیلنس کا سروے کریں۔ فنڈنگ ٹرانزیکشن دیکھنے میں آنے سے پہلے فوسیٹ `202 Accepted` واپس کر سکتا ہے۔
 
 ```bash
 funded=false
@@ -127,15 +127,15 @@ iroha --config ./taira.client.toml \
 
 - `/livez` واپس کرتا ہے `406` جب پوچھا جاتا ہے کہ JSON کیونکہ یہ اختتامی نقطہ `text/plain` ہے۔ اوپر دکھایا گیا ہے کے طور پر `Accept: text/plain` بھیجیں.
 - `/health` یا `/readyz` `503` کو مشین پڑھنے کے قابل بلاکر کے ساتھ واپس کر سکتے ہیں یہاں تک کہ جب `/livez` اور `/status` کام کرتے ہیں۔ اس بلاکر کی مرمت کریں یا انتظار کریں۔ بازیافت کرنے والی چابیاں نوڈ کی تیاری کو تبدیل نہیں کریں گی۔
-- ایک نل `502`، ٹائم آؤٹ، یا پرانی کام کا ثبوت لنگر عوامی خدمت کی ناکامی ہے. ایک نیا پہیلی لانا اور بعد میں دوبارہ کوشش کریں.
+- ایک فوسیٹ `502`، ٹائم آؤٹ، یا پرانی کام کا ثبوت لنگر عوامی خدمت کی ناکامی ہے. ایک نیا پہیلی لانا اور بعد میں دوبارہ کوشش کریں.
 - I105 پریفیکس کی خرابی کا مطلب ہے کہ عوامی کلید کو غلط پروفائل کے ساتھ کوڈ کیا گیا تھا۔ دوبارہ چلائیں `iroha tools address convert --profile taira`۔
 - فیس کی کوٹ کو مسترد کرنے کا مطلب عام طور پر یہ ہوتا ہے کہ اتھارٹی کو فنڈ نہیں دیا گیا تھا، فیس اثاثے کے میٹا ڈیٹا متروک ہیں، یا کوئی واضح فیس ادا کرنے والا منتخب نہیں کیا گیا تھا.
 - اس کینری کے کامیاب ہونے کے بعد بھی رجسٹریشن ، مائننگ ، یا ناموں کی جگہ کا انتظام مسترد کیا جاسکتا ہے۔ ان کارروائیوں کو الگ سے رن ٹائم اجازتیں درکار ہوتی ہیں۔ جب Taira تک رسائی نہیں دی گئی ہے تو پیدا کردہ مقامی نیٹ ورک پر ان کا تجربہ کریں۔
 
 ## ماخذ اور متعلقہ دستاویزات {#source-and-related-docs}
 
-- [Taira CLI تشخیص اور پنڈ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/taira.rs) پر کینری ذریعہ۔
-- [واضح طور پر فیس کا انتخاب اور مقررہ کمیٹ ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/main_shared.rs) میں جمع کرانے کا ذریعہ CLI
-- [Taira اکاؤنٹ اور نل گائیڈ](/ur/get-started/sora-nexus-dataspaces.md)
+- [Taira CLI تشخیص اور پنڈ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/taira.rs) پر کینری ذریعہ۔
+- [واضح طور پر فیس کا انتخاب اور مقررہ کمیٹ ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs) میں جمع کرانے کا ذریعہ CLI
+- [Taira اکاؤنٹ اور فوسیٹ گائیڈ](/ur/get-started/sora-nexus-dataspaces.md)
 - [کلائنٹ کی ترتیب](/ur/guide/configure/client-configuration.md)
 - [لین دین](/ur/blockchain/transactions.md)

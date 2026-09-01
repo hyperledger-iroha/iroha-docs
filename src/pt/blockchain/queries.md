@@ -3,28 +3,28 @@ translation_locale: pt
 translation_source: /blockchain/queries.md
 translation_source_hash: 234c831c97bb93996e6cf51505921ff509e233408cf2faf6a9b23641e5642040
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 <script setup>
 import WarningFatQuery from './WarningFatQuery.vue'
 </script>
 
-# Questões {#queries}
+# Consultas {#queries}
 
-Os assinantes de eventos e os filtros podem acompanhar as mudanças no estado da blockchain. Use uma consulta quando precisar de uma visão direta do estado atual.
+Assinantes de eventos e filtros podem acompanhar mudanças no estado da blockchain. Use uma consulta quando precisar de uma visão direta do estado atual.
 
-As consultas são pequenos objetos semelhantes a instruções. Envie um para um Iroha colega para receber detalhes da sua visão atual do estado do mundo.
+Consultas são pequenos objetos semelhantes a instruções. Envie uma a um par da rede Iroha para receber detalhes de sua visão atual do estado do mundo.
 
-Uma rede pode expor outras informações. Informações queráveis sobre estados mundiais são o único tipo garantido de estar disponível em todas as redes Iroha.
+Uma rede pode expor outras informações. Informações do estado mundial consultáveis são o único tipo garantido de estar disponível em toda rede Iroha.
 
-Para cada implantação de Iroha, podem existir outras informações disponíveis, por exemplo, a disponibilidade dos dados telemétricos depende dos administradores da rede. É inteiramente a decisão deles se querem ou não alocar poder de processamento para rastrear o trabalho em vez de usá-lo para fazer o trabalho real.
+Para cada implantação de Iroha, pode haver outras informações disponíveis. Por exemplo, a disponibilidade de dados de telemetria depende dos administradores da rede. É inteiramente decisão deles se querem ou não alocar poder de processamento para acompanhar o trabalho em vez de usá-lo para realizar o trabalho real. Em contraste, algumas funções são sempre necessárias, por exemplo, ter acesso ao saldo da sua conta.
 
-Os resultados das consultas podem ser classificados [](#sorting), [paginated](#pagination) e [filtered](#filters) peer-side ao mesmo tempo. A filtragem pode ser feita com base em uma variedade de princípios, desde domínios específicos (máscaras individuais de filtro de endereço IP até métodos de substring como `begins_with` combinados usando operações lógicas.
+Os resultados das consultas podem ser [ordenado](#sorting), [paginado](#pagination) e [filtrado](#filters) do lado do par, tudo de uma vez. A ordenação é feita lexicograficamente nas chaves de metadados. A filtragem pode ser feita com base em uma variedade de princípios, desde específicos do domínio (máscaras de filtro de endereço individual IP) até métodos de subcadeia como `begins_with` combinados usando operações lógicas.
 
-## Tente em Taira {#try-it-on-taira}
+## Experimente em Taira {#try-it-on-taira}
 
-Taira expõe os auxiliares de consulta somente leitura sobre JSON para recursos comuns. Utilize-os para praticar a paginação e o tratamento das respostas antes de ligar um SDK:
+Taira expõe auxiliares de consulta somente leitura sobre JSON para recursos comuns. Use-os para praticar paginação e manipulação de respostas antes de conectar um SDK:
 
 ```bash
 TAIRA_ROOT=https://taira.sora.org
@@ -39,17 +39,17 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=3" \
   | jq '{total, assets: [.items[] | {id, name, total_quantity}]}'
 ```
 
-Para o diagnóstico de aplicativos, mantenha esses controles de fumaça separados dos testes de transação assinados. Uma falha da consulta apenas para leitura geralmente aponta para a disponibilidade do endpoint, acessibilidade à rede ou compatibilidade de rota antes de apontar para a configuração do signatário.
+Para diagnósticos de aplicativos, mantenha essas verificações básicas separadas dos testes de transações assinadas. Uma falha em uma consulta somente leitura geralmente indica disponibilidade do endpoint API, alcance da rede ou compatibilidade de rota antes de indicar configuração do signatário criptográfico.
 
 ## Criar uma consulta {#create-a-query}
 
-Usar construtores de consultas digitadas a partir do SDK ou CLI. Por exemplo, o modelo de dados atual expõe `FindAccounts` para contas listadas:
+Use construtores de consultas tipadas de SDK ou CLI. Por exemplo, o modelo de dados atual expõe `FindAccounts` para listar contas:
 
 ```rust
 let query = FindAccounts;
 ```
 
-Aqui está um exemplo de uma consulta que encontra os bens de Alice:
+Aqui está um exemplo de uma consulta que encontra os ativos de Alice:
 
 ```rust
 let alice_id = load_canonical_account_id_from_client_config()?;
@@ -58,11 +58,11 @@ let query = FindAssetsByAccountId::new(alice_id);
 
 ## Paginação {#pagination}
 
-Para consultas singulares e pequenas consultas iteráveis, você pode usar `client.request` para enviar uma consulta e obter o resultado em um só momento.
+Para consultas singulares e consultas iteráveis pequenas, você pode usar `client.request` para enviar uma consulta e obter o resultado de uma vez.
 
-No entanto, consultas iteráveis amplas como `FindAccounts`, `FindAssets` ou `FindBlocks` podem retornar grandes conjuntos de resultados. Use pagination para reduzir a carga no peer e cliente.
+No entanto, consultas iteráveis amplas, como `FindAccounts`, `FindAssets` ou `FindBlocks`, podem retornar conjuntos de resultados grandes. Use paginação para reduzir a carga no par de rede e no cliente.
 
-Para construir um `Pagination`, é necessário ligar para `client.request_with_pagination(query, pagination)`, onde o `pagination` é construído do seguinte modo:
+Para construir um `Pagination`, você precisa chamar `client.request_with_pagination(query, pagination)`, onde o `pagination` é construído da seguinte forma:
 
 ```rust
 let starting_result: u32 = _;
@@ -72,18 +72,18 @@ let pagination = Pagination::new(Some(starting_result), Some(limit));
 
 ## Filtros {#filters}
 
-Ao criar uma consulta, você pode usar um filtro para retornar apenas os resultados que correspondem ao filtro especificado.
+Quando você cria uma consulta, pode usar um filtro para retornar apenas os resultados que correspondem ao filtro especificado.
 
-Os filtros são específicos da consulta. Por exemplo, as consultas de contas podem ser reduzidas por identidade de conta ou metadados, enquanto que as consultas dos ativos podem ser reduzidos por ativo definição, conta do titular ou projeção de domínio. Use os construtores de consultas digitais do SDK quando possível para que o tipo de filtro coincida com o tipo de saída da consulta.
+Os filtros são específicos para cada consulta. Por exemplo, consultas de conta podem ser restritas por identidade da conta ou metadados, enquanto consultas de ativos podem ser restritas por ativo definição, conta do titular ou projeção de domínio. Use os construtores de consulta tipados do SDK sempre que possível para que o tipo de filtro corresponda ao tipo de saída da consulta.
 
 ## Classificação {#sorting}
 
-Iroha pode classificar os itens com [Metadados](/pt/blockchain/metadata.md) Lexicográficamente, se fornecer uma chave para classificar durante a construção da consulta. Um caso típico de utilização é que as contas tenham um `registered-on` Entrada de metadados, que, quando ordenada, permite ver o histórico de registro da conta.
+Iroha pode classificar itens com [metadados](/pt/blockchain/metadata.md) lexicograficamente se você fornecer uma chave para classificar durante a construção da consulta. Um caso de uso típico é que contas tenham uma entrada de metadados `registered-on`, que, quando classificada, permite visualizar o histórico de registro da conta.
 
-A classificação só se aplica a entidades que possuem metadados [](/pt/blockchain/metadata.md), já que a chave de metadados é utilizada para classificar os resultados da consulta.
+A ordenação se aplica apenas às entidades que têm [metadados](/pt/blockchain/metadata.md), já que a chave de metadados é usada para ordenar os resultados da consulta.
 
-Você pode combinar classificação com paginação e filtros. Observe que a classificação é uma característica opcional, a maioria das consultas com pagination não precisará dele.
+Você pode combinar ordenação com paginação e filtros. Note que a ordenação é um recurso opcional, a maioria das consultas com paginação não irá precisar dela.
 
 ## Referência {#reference}
 
-Verifique a lista de consultas existentes [ ](/pt/reference/queries.md) para obter informações detalhadas sobre elas.
+Verifique o [lista de consultas existentes](/pt/reference/queries.md) para obter informações detalhadas sobre eles.

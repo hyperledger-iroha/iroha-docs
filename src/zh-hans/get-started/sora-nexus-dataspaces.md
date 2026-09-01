@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
+translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,10 +15,10 @@ SORA 3是基于 Iroha 3 和 SORA Nexus 构建的应用面向公众部署轨道. 
 - Taira 测试网在 `https://taira.sora.org`
 - Minamoto 主网在 `https://minamoto.sora.org`
 
-使用 Taira 用于集成测试,用水龙头资助的写作运行器和部署练习.只使用 Minamoto 用于生产准备的主网活动.两个网络都在 XOR 收取费用:
+使用 Taira 进行集成测试、由水龙头资助的写入 canary 测试和部署演练.只使用 Minamoto 用于生产准备的主网活动.两个网络都在 XOR 收取费用:
 
 - Taira 使用公共水龙头的测试网 XOR.
-- Minamoto 使用真实的 XOR.没有 Minamoto 龙头.
+- Minamoto 使用真实的 XOR.没有 Minamoto 水龙头.
 
 ## 建设者之路 {#builder-path}
 
@@ -26,39 +26,39 @@ SORA 3是基于 Iroha 3 和 SORA Nexus 构建的应用面向公众部署轨道. 
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
 |开始阅读网络状态|查询 `/status` 没有钥匙|查询 `/status` 没有钥匙|
 |选择一个数据空间|使用公开 `universal` 除非您的应用程序需要一个受监管的路径|仅在主网批准后使用相同的数据空间|
-|获得费用资产.|使用公众的 Taira 龙头|从资助的 Minamoto 账户或经批准的财政流通中获得 XOR|
-|测试写道|使用水龙头资助的测试 XOR |不要使用测试工具; 写实用费 XOR |
+|获得费用资产.|使用公众的 Taira 水龙头|从资助的 Minamoto 账户或经批准的财政流通中获得 XOR|
+|测试写入|使用水龙头资助的测试 XOR |不要使用测试工具; 写入会消耗真实 XOR |
 |促进|继续尝试逻辑,监测和签名处理|使用单独的钥匙,资金和释放控制|
 
 实际流程是:
 
 1. 建立客户端与 Taira 相反,并使用公开的 `universal`数据空间.
-2. 添加一个签字者,并用 Taira 龙头资助它.
+2. 添加一个签字者,并用 Taira 水龙头资助它.
 3. 运行应用程序的逻辑与 Taira 相比,直到故障无聊和可观察.
-4. 创建一个单独的 Minamoto 签字器,用真实 XOR 资助它,并将相同的经过验证的运算转移到主网.
+4. 创建一个单独的 Minamoto 签名者，用真实 XOR 为其提供资金，并且只将同样经过验证的操作迁移到主网。
 
-## 继续使用食谱 {#continue-with-the-cookbook}
+## 继续使用操作指南 {#continue-with-the-cookbook}
 
-使用此指南来选择网络,配置签名器和资金费用.然后继续使用与您想要构建的应用程序行为相匹配的食谱:
+使用此指南来选择网络,配置签名器和资金费用.然后继续使用与您想要构建的应用程序行为相匹配的操作指南:
 
-|目标|配方|
+|目标|操作指南|
 | --- | --- |
 |检查 Taira 和配置一个客户端 | [连接到 Taira](/zh-hans/cookbook/connect-to-taira.md)|
 |发送一个第一次写下来,验证结果| [提交和验证交易](/zh-hans/cookbook/submit-and-verify-transactions.md) |
-|登记,硬币和移动值| [性资产](/zh-hans/cookbook/fungible-assets.md) |
+|注册、铸造和转移价值| [性资产](/zh-hans/cookbook/fungible-assets.md) |
 |阅读过的申请状态| [查询账本状态](/zh-hans/cookbook/query-ledger-state.md) |
-|应对承诺的变化反应| [流动事件](/zh-hans/cookbook/stream-events.md) |
+|应对提交的变化反应| [流动事件](/zh-hans/cookbook/stream-events.md) |
 
 书籍将每个工作流程集中,并在需要 Taira 资金或 SORA Nexus 网络环境时链接到此处.
 
 ## 1. 了解你设定的目标 {#_1-understand-what-you-are-setting-up}
 
-在 SORA Nexus 中,一个数据空间是网络轨道和路由目录的一部分.客户端不仅仅通过更改`client.toml`来创建新的公共数据空间. 客户端设置可以做两件事:
+在 SORA Nexus 中,一个数据空间是网络通道和路由目录的一部分.客户端不仅仅通过更改`client.toml`来创建新的公共数据空间. 客户端设置可以做两件事:
 
 1. 向客户指向右端点 Torii
-2. 选择域名和数据空间路由文本为其常规帐户
+2. 选择域名和数据空间路由文本为其规范帐户
 
-`AccountId`始终是正规的,无域名. `client.toml`中的`[account].domain`值提供了路由和称语境;它不会成为帐户身份的一部分.对于大多数应用程序来说,从公开的 `universal`数据空间开始.域名文本使用`domain.dataspace`形式,例如:
+`AccountId`始终是规范的,无域名. `client.toml`中的`[account].domain`值提供了路由和称语境;它不会成为帐户身份的一部分.对于大多数应用程序来说,从公开的 `universal`数据空间开始.域名文本使用`domain.dataspace`形式,例如:
 
 ```text
 wonderland.universal
@@ -66,7 +66,7 @@ wonderland.universal
 
 如果您需要一个新的组织数据空间,请编制一份目录和路由建议,而不是试图从普通客户端帐户注册. 查看下面[提供新数据空间](#_8-provision-a-new-dataspace).
 
-## 2. 检查公众 Torii 终点 {#_2-check-the-public-torii-endpoint}
+## 2. 检查公众 Torii 端点 {#_2-check-the-public-torii-endpoint}
 
 在配置签名器之前,请检查目标终端直播.
 
@@ -98,14 +98,14 @@ curl -fsS https://taira.sora.org/status \
 
 ## Taira MCP 用于代理人 {#taira-mcp-for-agents}
 
-Taira 也揭示了一个 Torii-本地模型文本议定书 (MCP 当一个代理需要现场测试网时使用它,编写的诊断,或严格审查的写作练习, Torii 首先是客户.
+Taira 还为代理运行时公开了一个 Torii 原生的模型上下文协议（MCP）桥。当代理需要实时 testnet 读取、脚本化诊断或经过严格审查的写入演练，而又不想先构建自定义 Torii 客户端时，请使用它。
 
 |设置|价值|
 | --- | --- |
-|MCP 终点 |`https://taira.sora.org/v1/mcp`|
+|MCP 端点 |`https://taira.sora.org/v1/mcp`|
 |网络根|`https://taira.sora.org`|
-|预期使用|Taira 测试网阅读和水龙头资助的写作练习.|
-|产量等价| 不要将此条目指向 Minamoto 除了主网外 MCP 终端点和释放控制明确批准 |
+|预期使用|Taira 测试网读取和水龙头资助的写入演练.|
+|产量等价| 不要将此条目指向 Minamoto 除了主网外 MCP 端点和释放控制明确批准 |
 
 在添加签字材料之前,检查桥梁的元数据:
 
@@ -115,14 +115,14 @@ curl -fsS https://taira.sora.org/v1/mcp \
   | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
 ```
 
-设置 URL 作为一个用户本地 MCP 服务器在代理运行时间. MCP 配置, API 代币,转发的作者标题, `authority`, 或 `private_key` 在此文档 repo 或应用程序 repo 中的值.
+在代理运行时中，将该 URL 配置为用户本地 MCP 服务器。不要把代理 MCP 配置、API 令牌、转发的身份验证标头、`authority` 或 `private_key` 值提交到此文档仓库或应用仓库。
 
 代理提示规则与 Taira 工作良好:
 
-- 在打电话之前,从 MCP 服务器中发现工具;如果服务器报告 `listChanged`,重新发现.
-- 宁愿选用 `iroha.`工具,而不是原始的 `torii.`.
+- 在调用之前,从 MCP 服务器中发现工具;如果服务器报告 `listChanged`,重新发现.
+- 宁愿选用 `iroha.*`工具,而不是原始的 `torii.*`.
 - 开始仅阅读:在提出笔记之前检查状态,账户,资产,号,区块,治理状态和交易状态.
-- 在实时测试网络突变之前,需要明确的人类指示.对于预先签署的交易包裹,请使用 `iroha.transactions.submit_and_wait`,以便代理只等待结果而不是仅提交.
+- 在实时测试网络突变之前,需要明确的人类指示.对于预先签署的交易封装,请使用 `iroha.transactions.submit_and_wait`,以便代理只等待结果而不是仅提交.
 - 在代理响应中总结交易哈希,最终状态和服务器验证错误.
 
 ### 开发工作流程与代理人 {#development-workflow-with-agents}
@@ -132,11 +132,11 @@ curl -fsS https://taira.sora.org/v1/mcp \
 实际的工作流程是:
 
 1. 在编写代码之前,请代理检查相关的文件, SDK 代码, CLI 命令或 MCP 工具计划.
-2. 让代理先写出最小的客户端路径:状态检查,账户搜索,号分辨率或平衡搜索.
+2. 让代理先写出最小的客户端路径:状态检查,账户搜索,号分辨率或余额搜索.
 3. 只有在仅阅读通话对 Taira 工作后,只添加交易构建代码.
 4. 保持现实网络测试的选择,例如在 `TAIRA_LIVE=1` 后面,以便正常的单元测试运行从来不花费测试网资金或取决于网络可用性.
-5. 要求经纪人在提交任何交易之前报告网络根,链,权威账户,说明总结,费用资产和预期状态变化.
-6. 在将其推广到 CI 或主网络工作流程之前,检查生成的秘密处理,重新尝试行为,无权和拒绝处理代码.
+5. 要求经纪人在提交任何交易之前报告网络根,链,授权主体账户,说明总结,费用资产和预期状态变化.
+6. 在将生成的代码推广到 CI 或主网工作流之前，请审查其秘密处理、重试行为、幂等性和拒绝处理。
 
 只有阅读的有用 MCP 开发工具包括账户资产查找,别名解析,区块查询,交易查找,交易列表,在提交任何签署的有效载荷之前,使用这些来建立信心.
 
@@ -149,21 +149,21 @@ say "submit this transaction".
 
 ### 经过代理人的交易工作流程 {#transaction-workflow-through-agents}
 
-MCP 桥梁可以提交签署的 Iroha 交易,但它不删除正常的交易要求. 交易仍然需要正确的权威,许可证,费用资金,链 ID,元数据和签名.
+MCP 桥梁可以提交签署的 Iroha 交易,但它不删除正常的交易要求. 交易仍然需要正确的授权主体,许可证,费用资金,链 ID,元数据和签名.
 
-对于原始 Iroha 交易,先用 SDK 或 CLI 编写和签署交易包裹,然后只向代理提供正规的文件.签署的交易字节编码为 `body_base64`.代理人可以用 `iroha.transactions.submit_and_wait`提交封面,或用 `iroha.transactions.submit`提交调查和 `iroha.transactions.wait`提交调查.
+对于原始 Iroha 交易,先用 SDK 或 CLI 编写和签署交易封装,然后只向代理提供规范的文件.签署的交易字节编码为 `body_base64`.代理人可以用 `iroha.transactions.submit_and_wait`提交封装,或用 `iroha.transactions.submit`提交轮询和 `iroha.transactions.wait`提交轮询.
 
-不要将私钥粘贴到代理提示中. 如果一个代理需要构建交易,请把它指向加载用户运行时间的秘密的地方代码.经纪人永远不应该将关键材料写入Markdown,Fixtures,Logs或 commit.
+不要将私钥粘贴到代理提示中. 如果一个代理需要构建交易,请把它指向加载用户运行时的秘密的地方代码.经纪人永远不应该将密钥材料写入Markdown、测试数据、日志或 commit.
 
 在提交交易之前,请让代理人编写一个简短的交易计划:
 
 - `network`:Taira 测试网根和链 ID
 - `authority`:签署和支付费用的账户
-- `instructions`:注册,货币交易,燃烧,转移,元数据,许可或合同调用总结
+- `instructions`：注册、铸造、销毁、转移,元数据,许可或合同调用总结
 - `fee asset`:将对 Taira 征收资产
 - `preflight reads`:已进行的账户,资产余额,许可证,代名或区块检查
 - `expected result`:确认后应该可见的状态
-- `idempotency`:如果重新审核同样的请求,会发生什么?
+- `idempotency`：重试相同请求时会发生什么？
 
 提交后,让代理等待终端状态,然后通过读取查询验证状态变化.有用的完成报告包括:
 
@@ -183,7 +183,7 @@ expected post-state. Wait for my explicit "submit" message before calling
 iroha.transactions.submit_and_wait.
 ```
 
-当已准备签署的包裹时:
+当已准备签署的封装时:
 
 ```text
 Submit this pre-signed Taira transaction envelope with
@@ -193,7 +193,7 @@ state with read-only iroha.* tools and report the hash, status, and
 verification result.
 ```
 
-处理 Taira MCP 作为公共测试网控制表面. Taira 键,测试网 XOR,水龙头账户和印仪是可一次性使用的,必须与 Minamoto 钥匙和生产释放工作流程保持分离.
+处理 Taira MCP 作为公共测试网控制表面. Taira 键,测试网 XOR,水龙头账户和 canary 签名者是可一次性使用的,必须与 Minamoto 钥匙和生产释放工作流程保持分离.
 
 ## 你现在可以试玩具的例子 {#toy-examples-you-can-try-now}
 
@@ -256,14 +256,14 @@ for (const [name, root] of Object.entries(roots)) {
 EOF
 ```
 
-首个写边玩具应该是 Taira 龙头索赔.它使用测试网 XOR,并且永远不应指向 Minamoto.
+首个写入侧练习应该是 Taira 水龙头索赔.它使用测试网 XOR,并且永远不应指向 Minamoto.
 
 ## 3. 创建一个 Taira 客户端配置. {#_3-create-a-taira-client-config}
 
 如果您还没有一个键组,生成键组:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 ```
 
 创建 `taira.client.toml`:
@@ -292,15 +292,15 @@ nonce = false
 iroha --config ./taira.client.toml --output-format text ops sumeragi status
 ```
 
-在写作测试之前,执行公开的 Taira 诊断:
+在写入测试之前,执行公开的 Taira 诊断:
 
 ```bash
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-在运行费用笔记之前,通过龙头来资助 Taira 账户.直接的龙头流程是在 [Get Testnet XOR 上 Taira](#_4-get-testnet-xor-on-taira).
+在运行费用笔记之前,通过水龙头来资助 Taira 账户.直接的水龙头流程是在 [Get Testnet XOR 上 Taira](#_4-get-testnet-xor-on-taira).
 
-在接收水龙头索赔和资助账户之后, Taira 鱼是可选的写烟测试:
+在接收水龙头索赔和资助账户之后, Taira canary 测试是可选的冒烟测试:
 
 ```bash
 iroha --config ./taira.client.toml taira write-canary \
@@ -309,9 +309,9 @@ iroha --config ./taira.client.toml taira write-canary \
   --json
 ```
 
-鱼提交了一个签名的 ping,等待确认, `--write-config` 提供. Taira 即使水龙头本身工作时,也可能会导致签署的ping失败. `taira doctor` 报告过度排列或鱼回报 `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`, 等待再尝试,然后把它视为客户端配置错误.
+金丝雀测试会提交已签名的 ping、等待确认，并在提供 `--write-config` 时写入运行时签名者配置。Taira 是公共测试网，因此即使水龙头本身正常，队列饱和也可能导致已签名的 ping 失败。如果 `taira doctor` 报告队列饱和，或金丝雀测试返回 `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`，请先等待并重试，再将其视为客户端配置错误。
 
-对于无监督烟雾测试,将鱼包裹在一个有限的重复测试循环中:
+对于无监督冒烟测试,将 canary 放入有界重试循环中:
 
 ```bash
 ok=false
@@ -331,12 +331,12 @@ test "$ok" = true
 
 ## 创建一个 SORA Nexus 帐户 ID {#generate-a-sora-nexus-account-id}
 
-SORA Nexus 账户 ID 是一个源于帐户公钥和目标网络前的常规 I105 地址,而不是客户端 TOML 中的`[account].domain`值.同样的公共密钥在 Taira 和 Minamoto 上对不同的 IDs 进行编码,生产用户应该为 Minamoto 生成单独的密钥组.
+SORA Nexus 账户 ID 是一个源于帐户公钥和目标网络前的规范 I105 地址,而不是客户端 TOML 中的`[account].domain`值.同样的公共密钥在 Taira 和 Minamoto 上对不同的 IDs 进行编码,生产用户应该为 Minamoto 生成单独的密钥组.
 
 创建或加载将控制帐户的Ed25519键组:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./nexus-account-key
 ```
 
 转换公钥为 Taira 账户 ID:
@@ -351,9 +351,9 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-在 Nexus API 或 CLI 命令要求一个法典帐户 ID 的情况下,使用结果的账号 ID 例如 Taira 龙头 `account_id`,在您的客户端配置中保存匹配的私钥,并选择相同的公共网络以 `[account].profile = "taira"`或 `[account].profile = "minamoto"`.
+在 Nexus API 或 CLI 命令要求一个规范帐户 ID 的情况下,使用结果的账号 ID 例如 Taira 水龙头 `account_id`,在您的客户端配置中保存匹配的私钥,并选择相同的公共网络以 `[account].profile = "taira"`或 `[account].profile = "minamoto"`.
 
-生成 ID 本身并不能创建一个资助的连锁账户.在 Taira 上,龙头可以创建和资助测试网写帐户.在 Minamoto 上,使用已批准的主网安装或财政流程.
+生成 ID 本身并不能创建一个资助的连锁账户.在 Taira 上,水龙头可以创建和资助测试网写帐户.在 Minamoto 上,使用已批准的主网安装或财政流程.
 
 ### 关键存储和备份 {#key-storage-and-backup}
 
@@ -363,7 +363,7 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 
 - 存储私钥在加密密码管理器,硬件支持的关键存储器或专用签字服务中.不要将密钥交给源控制,也不要把生产密钥留在 Shell 历史记录,日志,聊天,门票或未加密备份中.
 - 使用每个保险柜或生产签名器的独特高密码. 存储密码在密码管理器或分类保管过程中,而不是与加密私钥相同的文件或备份捆绑中.
-- 保持 Taira 和 Minamoto 的密钥分开,把 Taira 的密钥作为一次性测试网材料和 Minamoto 的密钥当作生产资金权威.
+- 保持 Taira 和 Minamoto 的密钥分开,把 Taira 的密钥作为一次性测试网材料和 Minamoto 的密钥当作生产资金授权主体.
 - 备份私钥,公钥,帐户 ID,账户配置文件以及任何需要恢复签署者的帐户恢复或存储记录.在恢复过程中很容易滥用没有网络文本的私钥.
 - 保持至少一个加密的离线备份和一个地理位置分开的加密备份,用于生产签名器.在依赖备份之前测试恢复,只需进行小型读取操作.
 - 如果私钥,密码短语,备份媒体或签名主机可能被曝光,请旋转或更换签名器.
@@ -374,13 +374,13 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 
 直接使用公共水龙头,流量是:
 
-1. 创建或加载签字符,并计算其常规账户 Taira ID.
+1. 创建或加载签字符,并计算其规范账户 Taira ID.
 2. 带来当前的水龙头拼图.
 3. 如果 `difficulty_bits` 超过 `0` 则解决题.
 4. 提交水龙头申请.
-5. 在发送付费信之前,等到账户或资产余额显现.
+5. 在发送付费写入操作之前,等到账户或资产余额显现.
 
-将公钥转换到 Taira I105 账户 ID 中,该龙头预期:
+将公钥转换到 Taira I105 账户 ID 中,该水龙头预期:
 
 ```bash
 iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
@@ -394,7 +394,7 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
   | jq .
 ```
 
-如果拼图或索赔终点返回 `502`,截止时间,或者其他网关级别错误,请等待再尝试,然后更改键或客户端配置.
+水龙头是公共测试网服务。如果谜题或领取端点返回 `502`、超时或其他网关级错误，请先等待并重试，再更改密钥或客户端配置。
 
 答案是这样的:
 
@@ -446,15 +446,15 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
    - `anchor_height`作为一个大子 `u64`
    - `anchor_block_hash_hex`被解码为字节
    - `challenge_salt_hex`在存在时被解码为字节
-2. 试用 `u64` 非符号编码为大数值8字节.
+2. 试用 `u64` nonce编码为大数值8字节.
 3. 对于每一个nonce,运行脚本:
-   - 密码:是8字节的
+   - 密码：8 字节 nonce
    - 盐:32字节的挑战
    - `N = 2^scrypt_log_n`
    - `r = scrypt_r`
    - `p = scrypt_p`
    - 输出长度: 32 字节
-4. 获胜的无数是第一个以至少 `difficulty_bits`为首的零位的消化.
+4. 获胜的 nonce是第一个以至少 `difficulty_bits`为首的零位的摘要.
 
 管道响应包括资产资金和排列交易哈希:
 
@@ -483,7 +483,7 @@ iroha --config ./taira.client.toml ledger asset get \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
-如果头索赔被接受,但账户或资产尚未可见,交易仍在公共测试网队列处理后. 在发送写信之前等待再尝试阅读.
+如果头索赔被接受,但账户或资产尚未可见,交易仍在公共测试网队列处理后. 在发送写入操作之前等待再尝试阅读.
 
 对于准备运行的直接检查 API,将此存储为 `taira_faucet_claim.py`并通过 Taira I105 帐户 ID:
 
@@ -551,7 +551,7 @@ with urllib.request.urlopen(request) as res:
     print(json.dumps(json.load(res), indent=2))
 ```
 
-龙头仅适用于 Taira 测试网资金.在 Minamoto 流动中,不要使用测试网 XOR,龙头账户或 Taira 加拿大签名器.
+水龙头仅适用于 Taira 测试网资金.在 Minamoto 流动中,不要使用测试网 XOR,水龙头账户或 Taira canary 签名者.
 
 ## 5. 创建一个 Minamoto 客户端配置. {#_5-create-a-minamoto-client-config}
 
@@ -575,9 +575,9 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-顶级层次 `chain` 是电流 Nexus 主网链 ID. `[account].profile = "minamoto"` 选择了 Minamoto I105 链区分器;终端点主机名称和链 ID 不要隐含地选择它.
+顶级层次 `chain` 是电流 Nexus 主网链 ID. `[account].profile = "minamoto"` 选择了 Minamoto I105 链区分器;端点主机名称和链 ID 不要隐含地选择它.
 
-将 Minamoto 公共密钥转换为其常规的 I105 账户 ID,并附上主网前:
+将 Minamoto 公共密钥转换为其规范的 I105 账户 ID,并附上主网前:
 
 ```bash
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
@@ -589,13 +589,13 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
 ```
 
-不要将 Taira 龙头或写法辅助器与 Minamoto 打开.
+切勿针对 Minamoto 运行 Taira 水龙头或 write-canary 辅助工具.
 
 ## 6. 在 XOR 中资助 Minamoto 账户. {#_6-fund-a-minamoto-account-with-xor}
 
 Minamoto 费用由生产 XOR 支付,而 Minamoto 没有公共水龙头.通过批准的主网登录或财政转账来资助配置的帐户,或者从现有资助的 Minamoto 账户中获得 XOR.
 
-在提交笔记之前,请检查常规账户 ID 和资金使用仅阅读检查. 作为生产资金,将 Minamoto XOR 视为生产资金:先在 Taira 上练习同样的操作,保留单独的生产密钥,不要假设可以重置主网交易.
+在提交笔记之前,请检查规范账户 ID 和资金使用仅阅读检查. 作为生产资金,将 Minamoto XOR 视为生产资金:先在 Taira 上练习同样的操作,保留单独的生产密钥,不要假设可以重置主网交易.
 
 Taira XOR 不能支付 Minamoto 费用.测试网余额和水龙头索赔不会转移到 Minamoto.
 
@@ -620,7 +620,7 @@ iroha --config ./taira.client.toml \
   app alias setup apply --plan-file ./taira-apps-domain.plan.json
 ```
 
-对于 Minamoto,生成并批准单独的主网意图和计划.计划与其链,权威,现实状态和截止日期有关,因此不能推广或重播 Taira 计划:
+对于 Minamoto,生成并批准单独的主网意图和计划.计划与其链,授权主体,现实状态和截止日期有关,因此不能推广或重播 Taira 计划:
 
 ```bash
 iroha --config ./minamoto.client.toml \
@@ -639,11 +639,11 @@ alice@apps.universal
 alice@universal
 ```
 
-严格账户字段仍然使用常规 I105 帐户 IDs.将姓氏视为可以读取的人类的绑定,并解决常规账户 IDs.
+严格账户字段仍然使用规范 I105 帐户 IDs.将别名视为可以读取的人类的绑定,并解决规范账户 IDs.
 
 ## 8. 提供新的数据空间 {#_8-provision-a-new-dataspace}
 
-一个新的数据区是一个运营商和治理变化.公众 Torii 终端点可以将流量导向配置的数据区,但它会拒绝未知的数据区别姓氏.
+一个新的数据区是一个运营商和治理变化.公众 Torii 端点可以将流量导向配置的数据区,但它会拒绝未知的数据区别别名.
 
 在准备更改之前,捕捉当前的现场目录:
 
@@ -653,18 +653,18 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-对于运营商账户,请检查车道表姿势:
+对于运营商账户,请检查通道表姿势:
 
 ```bash
 iroha --config ./operator.client.toml app nexus lane-report --summary
 ```
 
-除非行径 ID,数据空间 ID,验证器设置,故障耐受性,表格,路由规则和运营所有者一起经过审查,否则不得推广新的号.一个正常的用户帐户,具有所需权限,可以通过代号规划器在现有数据空间内获得域名和其 SNS 租;它不能安全地添加新的公共数据空间.
+除非通道 ID,数据空间 ID,验证器设置,故障耐受性,清单,路由规则和运营所有者一起经过审查,否则不得推广新的号.一个正常的用户帐户,具有所需权限,可以通过代号规划器在现有数据空间内获得域名和其 SNS 租;它不能安全地添加新的公共数据空间.
 
 对于私人或组织数据空间,编制一项目录变更,包括:
 
 - 唯一的数据空间别名和数字 `id`
-- 一个相匹配的车道入口或现有车道分配
+- 一个相匹配的通道入口或现有通道分配
 - 数据空间 `fault_tolerance`
 - 路由指令或帐户范围的规则,应在此登陆
 - 空间目录表或相等的部署证据,当数据区暴露 UAID 功能时
@@ -697,11 +697,11 @@ description = "Route payments domains to the payments dataspace"
 
 运营商的接受应包括以下门户:
 
-- `irohad --sora --config <config.toml> --trace-config` 传输已解决的节点配置
-- 生成或检查的表格是用哈希和签名存档的
-- 在任何 Minamoto 促销之前,烟雾测试通过 Taira
-- 变更后的目录 `/status` 表示预期的车道和数据空间
-- `iroha app nexus lane-report --summary` 没有报告缺失所需的表格
+- `iroha3d --sora --config <config.toml> --trace-config` 传输已解决的节点配置
+- 生成或检查的清单是用哈希和签名存档的
+- 在任何 Minamoto 促销之前,冒烟测试通过 Taira
+- 变更后的目录 `/status` 表示预期的通道和数据空间
+- `iroha app nexus lane-report --summary` 没有报告缺失所需的清单
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -709,12 +709,12 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 
-只有在 Taira 部署,烟雾测试,监控和治理证据完成后才能将相同的数据空间推广到 Minamoto.
+只有在 Taira 部署,冒烟测试,监控和治理证据完成后才能将相同的数据空间推广到 Minamoto.
 
 ## 相关页面 {#related-pages}
 
 - [安装 Iroha 3](/zh-hans/get-started/install-iroha.md)
 - [通过 CLI](/zh-hans/get-started/operate-iroha-via-cli.md)运行 Iroha 3
 - [对私人数据空间的赞助费用](/zh-hans/get-started/private-dataspace-fee-sponsor.md)
-- [Torii 终端点](/zh-hans/reference/torii-endpoints.md)
+- [Torii 端点](/zh-hans/reference/torii-endpoints.md)
 - [创世记引用](/zh-hans/reference/genesis.md)

@@ -3,50 +3,50 @@ translation_locale: fr
 translation_source: /guide/best-practices/release-readiness.md
 translation_source_hash: 984957526424a4e0ec9f29a6da1bb64699245bb135e8157bbe684bc3d87de4cc
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: bing-translator-llm
 ---
 
-# La libération est prête {#release-readiness}
+# Préparation à la mise en production {#release-readiness}
 
-Avant de promouvoir une application Iroha ou un changement de réseau, prouver le comportement dans le plus petit environnement susceptible d'exposer le risque pertinent, puis passer délibérément par les réseaux de test et les portes de production partagés.
+Avant de promouvoir une application ou un changement de réseau Iroha, prouvez le comportement dans l'environnement le plus petit pouvant exposer le risque pertinent, puis passez délibérément par les étapes du testnet partagé et de la production.
 
-## Porte de réseau local {#localnet-gate}
+## Passerelle Localnet {#localnet-gate}
 
-- Lancer un réseau local jetable avec la même piste Iroha et le nombre de validateurs pratiques le plus proche.
-- Exécutez des tests d'unité pour les constructeurs de transactions, l'analyse des requêtes, la gestion du rejet et le chargement de configuration.
+- Lancer un réseau local jetable avec la même piste Iroha et le nombre de validateurs praticable le plus proche.
+- Exécutez des tests unitaires pour les constructeurs de transactions, l'analyse des requêtes, la gestion des rejets et le chargement de la configuration.
 - Exercez les plus petits chemins de lecture et d'écriture réussis à travers la même forme SDK ou CLI que l'application utilisera plus tard.
-- Capture des hashes de transaction attendus, des statuts, des événements et des lectures d'état dans les objets de test.
+- Capturer les hachages cryptographiques des transactions attendues, les statuts, les événements et les lectures d'état dans les artefacts de test.
 
-Voir [Le lancement de Iroha 3](/fr/get-started/launch-iroha.md) et [SDK Les tutoriels ](/fr/guide/tutorials/).
+Voir [Lancer Iroha 3](/fr/get-started/launch-iroha.md) et [SDK Tutoriels](/fr/guide/tutorials/).
 
-## Porte de réseau partagé {#shared-testnet-gate}
+## Passerelle Testnet Partagée {#shared-testnet-gate}
 
-- Utilisez Taira ou un autre réseau de test partagé pour le comportement, les frais, le financement du compte, la latence et les répétitions opérationnelles des terminaux.
-- Keep live testnet écrit opt-in de sorte que les essais ordinaires ne dépendent pas de la disponibilité du réseau ou dépensent des fonds testnet.
-- Vérifiez le financement du signataire, les métadonnées des actifs des frais, les autorisations de l'autorité et l'état attendu avant de soumettre chaque transaction d'essai en direct.
-- Attendez un état terminal, puis vérifiez l'état résultant avec une requête en lecture seulement.
+- Utilisez Taira ou un autre testnet partagé pour le comportement du point de terminaison API, les frais, le financement des comptes, la latence et les répétitions opérationnelles.
+- Gardez les écritures sur le testnet en direct optionnelles afin que les tests ordinaires ne dépendent pas de la disponibilité du réseau ou ne dépensent des fonds du testnet.
+- Vérifiez le financement du signataire cryptographique, les métadonnées de l'actif de frais, les autorisations du principal d'autorisation et l'état attendu avant de soumettre chaque transaction de test en direct.
+- Attendez un état terminal, puis vérifiez l'état résultant avec une requête en lecture seule.
 
-Voir [Construire sur SORA 3: Taira et Minamoto ](/fr/get-started/sora-nexus-dataspaces.md).
+Voir [Construire sur SORA 3 : Taira et Minamoto](/fr/get-started/sora-nexus-dataspaces.md).
 
-## Réseau principal ou porte de production {#mainnet-or-production-gate}
+## Réseau principal ou passerelle de production {#mainnet-or-production-gate}
 
-- Utilisez des signataires, des financements, des domaines et des chemins de configuration distincts pour la production. N'utilisez pas en production les clés du réseau de test ni les hypothèses liées au faucet.
-- Confirmer les scénarios croisés requis SDK avec la matrice de compatibilité [](/fr/reference/compatibility-matrix.md). Pin séparément et tester l'exact CLI, le binaire par pair, la configuration et la libération du réseau utilisés par le déploiement.
-- Autorisations d'examen, parrainage des frais, limites de tarifs, surveillance, statut de sauvegarde et critères de retour avant la fenêtre de sortie.
-- Exiger une transaction écrite ou un plan de migration pour les états à fort impact.
+- Séparez en production les signataires, fonds, domaines et chemins de configuration. Ne réutilisez ni les clés de test ni les hypothèses relatives au distributeur.
+- Confirmez les scénarios inter-SDK requis avec le [Matrice de compatibilité](/fr/reference/compatibility-matrix.md). Épinglez séparément et testez le CLI exact, le binaire du pair réseau, la configuration et la version réseau utilisés par le déploiement.
+- Vérifiez les autorisations, le parrainage des frais, les limites de débit, la surveillance, l'état des sauvegardes et les critères de rétablissement avant la fenêtre de publication.
+- Exiger un plan écrit de transaction ou de migration pour les écritures à fort impact.
 
-## Retour en arrière et récupération {#rollback-and-recovery}
+## Restauration et récupération {#rollback-and-recovery}
 
-- Définir les changements qui peuvent être inversés par déploiement de code, qui nécessitent une transaction en chaîne et qui ne peuvent pas être annulés directement.
-- Pour les modifications apportées aux données en chaîne, préparer des scripts de compensation ou de migration avant la première rédaction de la production.
-- Pour les changements de réseau, gardez le fichier binaire précédent, le paquet de configuration, la génèse signée et le répertoire opérationnel disponibles pendant la sortie.
-- Définir un point de décision pour annuler le déploiement sur la base de signaux objectifs tels que le taux de rejet, la croissance des files d'attente, la latence ou la santé des pairs.
+- Définissez quels changements peuvent être annulés par le déploiement de code, lesquels nécessitent une transaction en chaîne, et lesquels ne peuvent pas être annulés directement.
+- Pour les modifications de données sur la chaîne, préparez des transactions compensatoires ou des scripts de migration avant la première écriture en production.
+- Pour les changements de réseau, gardez l'ancien binaire, le bundle de configuration, le bloc genesis de la blockchain signé et le manuel opérationnel disponibles pendant la mise en production.
+- Définissez un point de décision pour interrompre le déploiement en fonction de signaux objectifs tels que le taux de rejet, la croissance de la file d'attente, la latence ou l'état de santé des pairs réseau.
 
 ## Liste de contrôle finale {#final-checklist}
 
-- La configuration est spécifique à l'environnement et ne contient pas de secrets destinés aux tests uniquement.
-- Le comportement de réessayer une transaction est idempotent ou explicitement limité.
-- L'application peut faire la distinction entre le rejet, l'expiration, les délais et les défaillances de disponibilité des terminaux.
-- La surveillance couvre le débit, la latence, la profondeur des files d'attente, les rejetes, les changements de vue et les événements commerciaux pertinents.
-- Les opérateurs disposent de livres d'exécution pour les modes d'échec attendus.
-- L'examen de la sécurité a porté sur le contrôle des clés, les autorisations, l'exposition au réseau et l'autorité d'automatisation.
+- La configuration est spécifique à l'environnement et ne contient pas de secrets réservés aux tests.
+- Le comportement de réessai des transactions est idempotent ou explicitement limité.
+- L'application peut distinguer le rejet, l'expiration, le délai d'attente et les échecs de disponibilité du point de terminaison API.
+- La surveillance couvre le débit, la latence, la profondeur de la file d'attente, les rejets, les changements de vue et les événements commerciaux pertinents.
+- Les opérateurs ont des guides d'exploitation pour les modes de défaillance prévus.
+- La revue de sécurité a couvert la garde des clés, les permissions, l'exposition du réseau et le principe d'autorisation de l'automatisation.

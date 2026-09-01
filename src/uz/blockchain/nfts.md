@@ -8,63 +8,63 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 
 # NFTs {#nfts}
 
-Iroha NFT - bu bitta egasiga ega bo'lgan noyob kitob ob'ekti. NFTs dan foydalansangiz, ro'yxatga o'z shaxsiyati, metadatalar, hayot davri voqealari va mulkchilikni o'tkazish semantikasi kerak bo'lsa, lekin raqamli muvozanatga muhtoj emassiz.
+Iroha NFT si — bitta egaga ega noyob reyestr obyekti. Yozuvga o‘z identifikatori, metama’lumoti, hayot davri hodisalari va egalikni o‘tkazish semantikasi kerak bo‘lib, sonli qoldiq talab qilinmasa, NFTs dan foydalaning.
 
-Raqamga oʻxshamaydi . [aktiv](/uz/blockchain/assets.md), bir NFT to'g'rilik, mintaqaviylik yoki hisob-kitob miqdori yo'q. NFT bitta ro'yxatdan o'tgan obyekt sifatida mavjud bo'lib, mulkdorlik to'g'ridan-to'g'ri ushbu obyektda kuzatilmoqda.
+Sonli [aktivdan](/uz/blockchain/assets.md) farqli ravishda NFT da aniqlik, zarb qilish imkoniyati yoki har hisob bo‘yicha miqdor yo‘q. NFT bitta ro‘yxatdan o‘tgan obyekt sifatida mavjud va egalik bevosita shu obyektda kuzatiladi.
 
-## Tashkilot {#structure}
+## Tuzilishi {#structure}
 
-Ro'yxatga olingan `Nft` tarkibida quyidagilar mavjud:
+Ro‘yxatdan o‘tgan `Nft` quyidagilarni o‘z ichiga oladi:
 
-- `id`: bir `NftId`
-- `content`: NFT faylini tavsiflovchi metadatalar
-- `owned_by`: NFT hisobvarag'iga ega bo'lgan hisobvaraq
+- `id`: `NftId`;
+- `content`: NFT ni tavsiflovchi metama’lumot;
+- `owned_by`: NFT ga egalik qiladigan hisob.
 
-`content` maydoni `Metadata` xaritasi hisoblanadi. Uni kompak saqlang: deskriptiv maydonlarni, barqaror ma'lumotlarni, hashlarni, URIs yoki SoraFS yo'llarini saqlash. Yirik hujjatlarni, ommaviy axborot vositalarini yoki yuqori churnli ilovalar holatini zanjirdan tashlab qo'ying va faqat tekshirish mumkin bo'lgan ma'lumotni NFT da saqlang.
+`content` maydoni `Metadata` xaritasidir. Uni ixcham saqlang: tavsifiy maydonlar, barqaror havolalar, xeshlar, URIs yoki SoraFS yo‘llarini shu yerga yozing. Katta hujjatlar, media yoki tez-tez o‘zgaradigan ilova holatini zanjirdan tashqarida saqlab, NFT da faqat tekshiriladigan havolani qoldiring.
 
-## Taira bilan sinab ko'ring. {#try-it-on-taira}
+## Taira da sinab ko‘rish {#try-it-on-taira}
 
-Umumiy Taira testnetda hozirda NFT yozuvlari mavjudmi yoki yo'qmi tekshiring:
+Ochiq Taira sinov tarmog‘ida hozir NFT yozuvlari bor-yo‘qligini tekshiring:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/nfts?limit=5' \
   | jq '{total, nft_ids: [.items[].id]}'
 ```
 
-NFT nod tomonidan aniqlangan yo'nalishlar uchun jonli OpenAPI hujjatini tekshirish:
+Tugun taqdim etadigan NFT yo‘nalishlari uchun jonli OpenAPI hujjatini tekshiring:
 
 ```bash
 curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/nfts") or startswith("/v1/explorer/nfts"))'
 ```
 
-Bo'sh `items` massivi ommaviy testnet uchun haqiqiy javobdir. Bu joriy sahifada NFTs yo'qligini anglatadi, NFT ko'rsatmalari mavjud emasligini emas.
+Bo‘sh `items` massivi ochiq sinov tarmog‘ida yaroqli javobdir. Bu joriy sahifada NFTs yo‘qligini anglatadi, NFT ko‘rsatmalari mavjud emasligini emas.
 
-## NFT IDs {#nft-ids}
+## NFT identifikatorlari {#nft-ids}
 
-`NftId` ushbu matn shaklini qo'lladi:
+`NftId` quyidagi matn ko‘rinishidan foydalanadi:
 
 ```text
 name$domain
 name$domain.dataspace
 ```
 
-Masalan, `badge$docs.universal` ta'riflaydi `badge` NFT bilan `docs.universal` Agar ma'lumotlar maydonasi chiqarib tashlangan bo'lsa, joriy tahlilchi ushbu `universal` ma'lumotlar maydoni, shuning uchun `badge$docs` qaror qiladi: `badge$docs.universal`.
+Masalan, `badge$docs.universal` qiymati `docs.universal` domenidagi `badge` NFT sini bildiradi. Ma’lumotlar makoni ko‘rsatilmasa, joriy tahlilchi `universal` makonidan foydalanadi; shu sababli `badge$docs` qiymati `badge$docs.universal` ga yechiladi.
 
-NFT IDs uchun barqaror nomlardan foydalaning. ID - bu ko'rsatmalar, so'rovlar, ruxsatnomalar, hodisa filtrlari va dastur ma'lumotlari tomonidan ishlatiladigan ob'ekt identifikatsiyasi.
+NFT identifikatorlari uchun barqaror nomlardan foydalaning. Identifikator — ko‘rsatmalar, so‘rovlar, ruxsatlar, hodisa filtrlari va ilova havolalari ishlatadigan obyekt identifikatsiyasidir.
 
 ## Hayot davri {#lifecycle}
 
-NFT hayot davri operatsiyalari foydalanish Iroha Maxsus ko'rsatmalar:
+NFT hayot davri amallari Iroha maxsus ko‘rsatmalaridan foydalanadi:
 
-- [`Register`](/uz/blockchain/instructions.md#un-register) boshlang'ich `content` bilan NFT ni yaratadi.
-- [`Unregister`](/uz/blockchain/instructions.md#un-register) NFT belgisini olib tashlaydi.
-- [`Transfer`](/uz/blockchain/instructions.md#transfer) o'zgarishlar `owned_by`.
-- [`SetKeyValue` va `RemoveKeyValue`](/uz/blockchain/instructions.md#setkeyvalue-removekeyvalue) NFT metadatalarini yangilash.
+- [`Register`](/uz/blockchain/instructions.md#un-register) NFT ni dastlabki `content` bilan yaratadi.
+- [`Unregister`](/uz/blockchain/instructions.md#un-register) NFT ni olib tashlaydi.
+- [`Transfer`](/uz/blockchain/instructions.md#transfer) `owned_by` ni o‘zgartiradi.
+- [`SetKeyValue` va `RemoveKeyValue`](/uz/blockchain/instructions.md#setkeyvalue-removekeyvalue) NFT metama’lumotini yangilaydi.
 
-## Mahalliy hududda sinab koʻring {#try-it-locally}
+## Mahalliy sinab ko‘rish {#try-it-locally}
 
-Ushbu misollarga ko'ra, siz mahalliy tarmoqni ishga tushirdingiz va [CLI qo'llanma](/uz/get-started/operate-iroha-via-cli.md)dan klient konfiguratsiyasi hosil bo'lgan:
+Bu misollarda mahalliy tarmoq ishga tushirilgan va [CLI qo‘llanmasi](/uz/get-started/operate-iroha-via-cli.md) orqali mijoz sozlamasi hosil qilingan deb olinadi:
 
 ```bash
 export IROHA_CONFIG=./localnet/client.toml
@@ -72,9 +72,9 @@ export NFT_DOMAIN=wonderland.universal
 export NFT_ID='badge_intro$wonderland.universal'
 ```
 
-Yaratilgan lokalnet allaqachon `wonderland.universal` va uning SNS ijara shartnomasini o'rnatadi. Boshqa domendan foydalanish uchun uni birinchi navbatda `app alias setup plan` va `app alias setup apply` ish oqimi bilan yaratish [Domains](/uz/blockchain/domains.md#registration).
+Hosil qilingan mahalliy tarmoq `wonderland.universal` va uning SNS ijarasini allaqachon sozlaydi. Boshqa domendan foydalanish uchun avval uni [Domenlar](/uz/blockchain/domains.md#registration) bo‘limidagi deklarativ `app alias setup plan` va `app alias setup apply` jarayoni bilan yarating.
 
-NFT raqami ro'yxatdan o'tkazilsin. Ro'yxatga olish dastlabki tarkibni JSON standart kirishdan o'qiydi:
+NFT ni ro‘yxatdan o‘tkazing. Ro‘yxatga olish dastlabki kontent JSON ini standart kirishdan o‘qiydi:
 
 ```bash
 printf '{"kind":"badge","level":"intro","issuer":"docs"}\n' |
@@ -82,7 +82,7 @@ printf '{"kind":"badge","level":"intro","issuer":"docs"}\n' |
   ledger nft register --id "$NFT_ID"
 ```
 
-NFT to'g'ridan-to'g'ri tekshirib ko'ring, so'ngra barcha NFTs to'liq yozuvlar bilan ro'yxatdan o'qing:
+NFT ni bevosita tekshiring, so‘ng barcha NFTs ni to‘liq yozuvlari bilan sanang:
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -92,7 +92,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft list all --verbose
 ```
 
-Metadata kalitini qo'shing va NFT ni yana o'qing:
+Metama’lumot kalitini qo‘shing va NFT-ni yana o‘qing:
 
 ```bash
 printf '{"color":"blue","rarity":"tutorial"}\n' |
@@ -103,14 +103,14 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft get --id "$NFT_ID"
 ```
 
-Metadata kalitini olib tashlash:
+Metama’lumot kalitini olib tashlang:
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
-NFT ni ko'chirish uchun `ledger nft get` dan foydalanib, hozirgi egasini `owned_by`dan o'qish va `ledger account list all` dan foydalanib maqsadli hisob qaydnomani ID topish.
+Ixtiyoriy ravishda NFT ni o‘tkazing. Joriy egani `owned_by` dan o‘qish uchun `ledger nft get`, maqsad hisob identifikatorini topish uchun `ledger account list all` dan foydalaning.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -123,44 +123,44 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
-NFT namunasini o'chirishdan keyin olib tashlang. Agar siz uni o'tkazgan bo'lsangiz, uni qaytarib yuboring yoki hozirgi egasining hisob raqami konfiguratsiyasi bilan ro'yxatdan chiqarmaslik buyruqini taqdim eting.
+Ko‘rsatmalarni bajargach namunaviy NFT ni olib tashlang. Uni o‘tkazgan bo‘lsangiz, avval qaytaring yoki joriy eganing hisob sozlamasi bilan ro‘yxatdan chiqarish buyrug‘ini yuboring.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft unregister --id "$NFT_ID"
 ```
 
-## Savollar va voqealar {#queries-and-events}
+## So‘rovlar va hodisalar {#queries-and-events}
 
-[`FindNfts`](/uz/reference/queries.md#assets-nfts-and-rwas) dan foydalanib, hisob qaydnomasiga ega bo'lgan NFTs va [`FindNftsByAccountId`](/uz/reference/queries.md#assets-nfts-and-rwas)dan foydalanib, NFTs ni ro'yxatga oling.
+NFTs ni sanash uchun [`FindNfts`](/uz/reference/queries.md#assets-nfts-and-rwas), muayyan hisobga tegishli NFTs ni sanash uchun [`FindNftsByAccountId`](/uz/reference/queries.md#assets-nfts-and-rwas) dan foydalaning.
 
-NFT ro'yxatdan o'tish, olib tashlash, uzatish va metadata yangilanishlari NFT ma'lumotlar hodisalarini chiqaradi. `Nft` ma'lumotlar hodisasi filtridan foydalanib, katta kitobga o'zgarishlar kiritishda yoki NFT hayotiy davrida sodir bo'ladigan voqealarga munosabatda bo'lgan triggerlarni qurishda foydalaning.
+NFT-ni ro‘yxatdan o‘tkazish, o‘chirish, o‘tkazish va metama’lumotini yangilash NFT ma’lumotlari hodisalarini chiqaradi. Reyestr o‘zgarishlariga obuna bo‘lishda yoki NFT hayot sikli hodisalariga javob beradigan qo‘zg‘atuvchilarni yaratishda `Nft` ma’lumotlar hodisasi filtridan foydalaning.
 
 ## Ruxsatlar {#permissions}
 
-Bo'yicha ruxsat berish yuzi NFT uchun maxsus tokenlarni o'z ichiga oladi:
+Standart ruxsatlar interfeysi NFT ga xos tokenlarni o‘z ichiga oladi:
 
 - `CanRegisterNft`
 - `CanUnregisterNft`
 - `CanTransferNft`
 - `CanModifyNftMetadata`
 
-Ruxsatlarni tekshirish faol ishga tushirish vaqtini tasdiqlovchi tomonidan amalga oshiriladi, shuning uchun tarmoq ijrochisini yangilab ruxsatnomalarni moslash mumkin. [Ruxsat belgisi](/uz/reference/permissions.md) joriy andoza tokenlar ro'yxati uchun.
+Ruxsat tekshiruvlarini faol bajarish muhiti tekshiruvchisi majburiy qo‘llaydi, shu sabab tarmoq ijrochini yangilab vakolat siyosatini moslashtirishi mumkin. Joriy standart tokenlar ro‘yxati uchun [Ruxsat tokenlari](/uz/reference/permissions.md) bo‘limiga qarang.
 
-## NFTs tanlang {#choosing-nfts}
+## NFTs ni qachon tanlash kerak {#choosing-nfts}
 
-Maxsuslik va egalik ahamiyati bo'lgan yozuvlar uchun NFT dan foydalaning:
+Noyoblik va egalik muhim bo‘lgan yozuvlar uchun NFT dan foydalaning:
 
 - sertifikatlar, belgilar, litsenziyalar va guvohnomalar
-- a'zolik yoki kirish yozuvlari
-- Kimlik bilan bog'liq yoki hisob-kitobga tegishli arizalar ro'yxati
-- zaryaddan tashqaridagi ommaviy axborot vositalariga, hujjatlar yoki manifestlarga murojaat qilish;
+- a’zolik yoki kirish yozuvlari;
+- identifikatsiyaga bog‘langan yoki hisobga tegishli ilova yozuvlari;
+- zanjirdan tashqari media, hujjat yoki manifestlarga havolalar.
 
-Fungible saldolar uchun raqamli aktivdan foydalaning va ma'lumotlar mavjud katta qog'oz obyektining faqat kompakt atributi bo'lganda oddiy [ metadatalardan](/uz/blockchain/metadata.md) foydalaning.
+O‘zaro almashinadigan qoldiqlar uchun sonli aktivdan foydalaning; ma’lumot mavjud reyestr obyektining faqat ixcham atributi bo‘lsa, oddiy [metama’lumotlardan](/uz/blockchain/metadata.md) foydalaning.
 
 Shuningdek qarang:
 
 - [Aktivlar](/uz/blockchain/assets.md)
-- [Metadatalar](/uz/blockchain/metadata.md)
+- [Metama’lumotlar](/uz/blockchain/metadata.md)
 - [Ko'rsatmalar](/uz/blockchain/instructions.md)
 - [So'rovlar](/uz/blockchain/queries.md)

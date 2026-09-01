@@ -319,7 +319,7 @@ XOR and should never be pointed at Minamoto.
 Generate a keypair if you do not already have one:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 ```
 
 Create `taira.client.toml`:
@@ -408,7 +408,7 @@ separate keypair for Minamoto.
 Generate or load the Ed25519 keypair that will control the account:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./nexus-account-key
 ```
 
 Convert the public key into a Taira account ID:
@@ -829,7 +829,7 @@ description = "Route payments domains to the payments dataspace"
 
 Operator acceptance should include these gates:
 
-- `irohad --sora --config <config.toml> --trace-config` passes on the
+- `iroha3d --sora --config <config.toml> --trace-config` passes on the
   resolved node configuration
 - the generated or reviewed manifest is archived with hashes and signatures
 - smoke tests pass on Taira before any Minamoto promotion

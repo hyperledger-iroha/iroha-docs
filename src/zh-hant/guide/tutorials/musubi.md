@@ -1,171 +1,211 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 6b33c687fd1d81d931b932d38908d9a87e9c619e5aca5714d09d892160a6b704
+translation_source_hash: 621d1795fd1c3cc62462a9a91af68fe684c0ff5293f5e77801420dc8318bac38
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Musubi Kotodama 包裝 {#musubi-kotodama-packages}
 
-Musubi 是 Kotodama 源包的包管理器. 它爲開發人員提供了類似 Cargo 的工作流程,可以共享可組合的 Kotodama 函數,同時將包裹身份與 SORA 和 Iroha 名字空間聯繫在一起,而不是全球首次出現的名字表.
+Musubi 是 Kotodama 源包的首次釋出包管理器.它解決了一個精確的鏈上依賴圖表,驗證 SoraFS 來源檔案,編譯和測試選定的工作空間,構建規範的 CAR 檔案,並透過 Iroha 釋出不可變的版本.
 
 使用 Musubi 當需要:
 
-- 出版可重複使用的源庫 Kotodama
-- 在 `Musubi.lock` 中確定確切的過渡源依賴性
-- 從驗證的 SoraFS 檔案承諾中重新構建依賴來源
-- 將包名空間連接到同一名區中的dapp合同別名
-- 通過連鎖註冊表檢查,發佈,抽取或名包
+- 釋出可重複使用的 Kotodama 函式庫
+- 在 `Musubi.lock` 中刻出一個準確的過渡圖
+- 從最終完成的 SoraFS 檔案承諾中重建依賴來源
+- 構建和測試一個包裝或多包裝工作空間
+- 透過連鎖登錄檔檢查,釋出,抽取,維護或名包
 
 ## 包裝名稱 {#package-names}
 
-可尼克式包裝識別器使用:
+標準的包裝選擇器使用:
 
 ```text
 namespace/package
 ```
 
-準確釋放引用使用:
+準確釋出識別符號新增一個版本:
 
 ```text
 namespace/package@version
 ```
 
-名稱空間前沒有首頁 `@`. `@`分區爲版本後尾保留.
+沒有領導者 `@` 名稱空間是資料空間根,例如 `universal` 或一個域名合格的資料空間,如 `dex.universal`. 總賬將結構名稱空間繫結到一個穩定的家庭資料空間,然後才能索賠包.
 
-名稱空間段與 Kotodama dapp合同別名所使用的後相匹配:
+## 清單和鎖檔案 {#manifest-and-lockfile}
 
-|包裝標識|相關合同別名形狀|
-| ------------------------- | ---------------------------- |
-|`universal/math`|`router::universal`|
-|`dex.universal/swap-core`|`router::dex.universal`|
-
-名稱空間要麼具有 `<dataspace>`或`<domain>.<dataspace>`的形式.當一個包裝有dapp鏈接時, Musubi 檢查每個鏈接的合同別名都使用與包裝相同的命名空間後音.
-
-## 顯現 {#manifest}
-
-一個包裝以 `Musubi.toml`開始:
+一個包裝使用封閉的第一版本 `Musubi.toml`方案.清單必須宣告`manifest-version = 1`, Kotodama 版 `"1"`和 IVM ABI 版本 `1`;沒有替代清單或 ABI 模式.
 
 ```toml
+manifest-version = 1
+
 [package]
 namespace = "dex.universal"
 name = "swap-core"
 version = "0.1.0"
+edition = "1"
+abi-version = 1
+
+[lib]
+source-dir = "src"
+exports = ["quote"]
 
 [dependencies.math]
 package = "std.universal/math"
 version = "^1.0.0"
-
-[exports]
-functions = ["quote"]
-
-[dapp]
-namespace = "dex.universal"
-contracts = ["router::dex.universal"]
 ```
 
-依賴性可以使用精確版本,護理要求,點要求,像 `1.*`這樣的野生卡或比較列表,如 `>=1.0.0,<2.0.0`.
+依賴性可以使用精確版本,關心或傾斜要求,像 `1.*`這樣的野生卡和逗號分離比較組,如 `>=1.0.0,<2.0.0`.依賴度表鍵是母本地進口別名;`package`始終是規範登錄檔選擇器.
 
-`Musubi.lock`將從鏈上登記中記錄選定的過渡圖.每個鎖定節點都存儲了其常規包,所選的要求,SoraFS 表格消化,源檔案哈希,字節計數,文件計數,出口函數,確定性源檔案計劃和依賴姓氏.在進入鎖文件之前解決短名字.
+`Musubi.lock`將圖表繫結到精確的創世來源 `NetworkId` 和一個最終的註冊錄影.它記錄了選定的工作空間根和不可變的釋放節點,包括髮布,原始碼,介面,檔案, ABI 以及精確的依賴邊緣承諾.當解決圖所要求時,允許並行版本.
+
+## 配置 Taira SoraFS 取 {#configure-taira-sorafs-fetching}
+
+Taira 是此工作流的公開測試網路.從一個 Taira 客戶端配置開始,包含已註冊連結和當前固定的創世來源網路身份,然後在下面新增供應商特定的認證搜尋鍵.一個 Taira 重置可以改變`NetworkId`;從簽署的部署配置檔案中更新它,而不是從穩定的鏈中推斷它 UUID.帳戶簽名材料和供應商操作員金鑰必須保留在僅所有者執行階段檔案中.
+
+```toml
+torii_url = "https://taira.sora.org/"
+chain = "fc56984b-2be7-431d-840e-21514d1883f0"
+network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+
+[musubi.fetch]
+network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+client_id = "musubi-taira"
+request_timeout_ms = 30000
+
+[[musubi.fetch.provider_gateways]]
+provider_id = "REPLACE_WITH_ADMITTED_PROVIDER_ID_HEX"
+url = "REPLACE_WITH_ADVERTISED_PROVIDER_HTTPS_ORIGIN"
+operator_public_key = "REPLACE_WITH_PROVIDER_AUTHORIZED_OPERATOR_PUBLIC_KEY"
+operator_private_key_file = "./secrets/taira-sorafs-provider.key"
+```
+
+在公共測試網根中發現 Taira 的受理供應商:
+
+```bash
+export TAIRA_ROOT=https://taira.sora.org
+curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
+```
+
+提供商目錄提供提供商身份和廣告端點.從選擇的提供商獲得匹配操作員授權.執行階段使用該鍵請求有限流令牌;令牌既不是 CLI 引數也不是鎖檔案內容.
+
+請勿將 Taira 驗證器的 pin URL 用作 `url`。簽入的驗證器已停用內嵌 SoraFS 儲存。其 `https://taira-validator-{1,2,3,4}.sora.org` 端點接受 pin 註冊，而 archive 讀取則使用所選且已獲準 provider 的 HTTPS origin。
 
 ## 地方工作流程 {#local-workflow}
 
-從上游 Iroha 工作空間根,運行 Musubi 通過 Cargo:
+從上游 Iroha 工作空間根,建立或輸入包目錄並透過Cargo執行 Musubi:
 
 ```bash
-cargo run -p musubi -- init --namespace dex.universal --name swap-core --dapp
-cargo run -p musubi -- add std.universal/math --version '^1.0.0' --alias math
-cargo run -p musubi -- install --config client.toml
-cargo run -p musubi -- build src/lib.ko --manifest-out target/lib.contract.json
-cargo run -p musubi -- pack \
-  --car-out source.car \
-  --sorafs-manifest-out manifest.norito \
-  --source-plan-out source-plan.norito
+mkdir -p examples/swap-core
+cd examples/swap-core
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  init . --namespace dex.universal --name swap-core --export quote
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  add std.universal/math --version '^1.0.0' --rename math
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- fetch --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- check --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- build --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- test --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- package --config client.toml
 ```
 
-使用 `install --offline` 來寫一個未解決的鎖文件,不需要查詢節點.在 CI 中使用 `install --locked` 拒絕過時的鎖文件.
+`fetch`解決了最終的登錄檔圖,允許時更新`Musubi.lock`,並從認證的 SoraFS 地點填寫不可變的本地快取. `check`, `build`, `test`和 `package`在自己的工作之前執行相同的圖形和快取檢查.
 
-`build`通過重寫`math::add()`等調用到確定性內部 Kotodama 函數名稱來將緩存的依賴源鏈接.它拒絕對該依賴未出口的函數的調用.Musubi v1圖書館僅具有功能:包含狀態聲明,觸發器, kotoba 區塊,常量或其他非功能合同項的依賴來源被拒絕.
+使用 `--locked` 拒絕任何鎖檔案更改.只使用`--offline` 當登錄檔索引和所有需要的檔案都已經快取時. `--frozen` 結合了這兩個限制.離線快取失敗; Musubi 永遠不會寫一個未解決的鎖檔案.
 
-## 獲取來源檔案 {#fetching-source-archives}
+依賴源透過重寫符合條件的呼叫,如 `math::add()`與確定性內部 Kotodama 名稱進行連線.對未出口函式的依賴呼叫被拒絕.進口庫暴露了函式;本地 `[[contract]]`和 `[[test]]`目標仍然是明確的包目標.
 
-Musubi 可以通過緩存子命令在解決或稍後搜索缺失的依賴源:
+## 快取驗證和修復 {#cache-verification-and-repair}
+
+公共快取命令執行在不可變的登錄檔提交檔案:
 
 ```bash
-cargo run -p musubi -- install --config client.toml --fetch \
-  --provider-payload math.payload
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache verify --all --config client.toml
 
-cargo run -p musubi -- cache import math --source-root ../math
-cargo run -p musubi -- cache fetch math --provider-payload math.payload
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache repair --config client.toml
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  cache prune --dry-run --config client.toml
 ```
 
-現場網關採集使用一個或多個 SoraFS 網關供應商規格:
+`cache repair` 會隔離已損壞的受信任後代，並在最終確定的供應商證據允許時重新擷取完全相同的封存。對即時且非空的變更，修剪會刻意採用失敗關閉策略；請使用 `--dry-run` 檢查已分類的候選項。
+
+## 包裝和出版 {#packaging-and-publishing}
+
+在編寫檔案之前檢查清潔的正檔案集,然後構建規範包:
 
 ```bash
-cargo run -p musubi -- install --config client.toml --fetch \
-  --gateway-provider 'name=hot-a,provider-id=1111111111111111111111111111111111111111111111111111111111111111,base-url=https://gw.example,stream-token=BASE64,package=math'
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  package --list --locked --config client.toml
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  package --locked --config client.toml
 ```
 
-提供商的有效載荷文件和網關供應商對一個接收操作相互排斥.如果缺少多個鎖定包,請用 `package=<dependency-alias>`,`package=<namespace/package@version>`, `package=<namespace/package>`或 `manifest=<64-hex SoraFS manifest digest>`來查詢每個網關供應商.
+`package` 會寫入 `target/package/<namespace>-<name>-<version>.car`。CAR 會繫結規範套件資訊清單、語意化發行資訊清單、精確的驗證鎖、原始碼樹、介面摘要及 SoraFS 封存承諾。首個版本的 CLI 中沒有獨立的 `pack`、`--car-out`、`--sorafs-manifest-out` 或 `--source-plan-out` 命令。
 
-門口 `base-url` 和 `privacy-url` 值必須使用 `https://` 默認情況下,本地測試網關可以使用 `http://localhost`, `http://127.0.0.1`, 或 `http://[::1]` 只有 `--gateway-allow-insecure-localhost`. 流通令牌是運行時間憑證,並非寫入 `Musubi.lock`.
-
-## 出版物 {#publishing}
-
-`pack`計算了確定性的 BLAKE3-256 源檔案哈希加上源字節和文件計數.當 `--car-out`, `--sorafs-manifest-out`或 `--source-plan-out`是在提供時,它還從同一源文件集中構建了確定性的 SoraFS CAR 實用載荷, SoraFS 表格和 Musubi 源檔案計劃.
-
-在發佈之前使用乾燥運行:
+釋出是一個已簽署且可恢復的網路工作流程。所選的 `client.toml` 必須包含所需的 `[musubi.publication]` 繫結，以及帳戶和 Taira 網路組態。僅封裝一個 workspace member：
 
 ```bash
-cargo run -p musubi -- publish --config client.toml --dry-run
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  publish -p dex.universal/swap-core --locked --config client.toml
 ```
 
-沒有 `--dry-run`, `publish` 將默認的文物寫在 `.musubi/dist/<namespace>/<name>/<version>/`, 選擇性上傳表格和有效載荷 Torii 沒有什麼. SoraFS 存儲終端點 `--upload`, 記錄生成的數據 SoraFS 子,並提交 `PublishMusubiRelease` 通過配置的 Iroha 客戶.
+操作日誌與種子輸入邊界持久化後，使用 `--detach` 返回。使用 `publish --resume <operation-id> --config client.toml` 繼續持久化的操作。範圍較窄的 `--recover <operation-id>` 路徑只會為未受更動的輸入前日誌重建遺失且不可變的 sidecar。發布沒有 `--dry-run` 或通用公開上傳後備路徑；請執行 `package --list` 與 `package` 進行本機預檢。
 
-發佈的公告必須包括:
+## 登記查詢和生命週期 {#registry-queries-and-lifecycle}
 
-- 一個不空的法典源檔案
-- 一個確定性源檔案計劃
-- 至少一個出口的 Kotodama 函數
-- 沒有選擇被拖放的依賴性記錄
-- 如果存在,其合同別名與包裝名稱空間相匹配的dapp鏈接
-
-## 登記問題和生命週期 {#registry-queries-and-lifecycle}
-
-搜索和檢查註冊表,使用:
+搜尋和檢查使用相同的 Taira 客戶端配置的最終登錄檔:
 
 ```bash
-cargo run -p musubi -- search swap --config client.toml
-cargo run -p musubi -- versions dex.universal/swap-core --config client.toml
-cargo run -p musubi -- alias resolve swap --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  search swap --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  info dex.universal/swap-core --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  versions dex.universal/swap-core --config client.toml
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  alias resolve swap --config client.toml
 ```
 
-揚金隱藏了新的分辨率的釋放,但保持現有鎖文件可複製:
+揚金排除了從新解析度中不可改變的釋放,而現有的精確鎖仍然可複製.先閱讀當前的揚金修改,然後提交比較和設定突變:
 
 ```bash
-cargo run -p musubi -- yank dex.universal/swap-core@0.1.0 \
-  --reason "bad archive" \
-  --config client.toml \
-  --dry-run
+: "${EXPECTED_YANK_REVISION:?set the current non-zero yank revision}"
+
+cargo run --manifest-path ../../Cargo.toml -p musubi -- \
+  yank dex.universal/swap-core 0.1.0 \
+  --expected-revision="$EXPECTED_YANK_REVISION" \
+  --reason="bad archive" \
+  --config client.toml
 ```
 
-Musubi 通過將 `namespace/package` 作爲規範包名來避免全球名稱縮.在一個命名空間中發佈必須由相同的所有權或授權許可模型授權使用該 Kotodama dapp名稱空間.`SetMusubiShortAlias`需要`CanSetMusubiShortAlias`的許可,目標包必須已經有至少一個活躍的發行.
+使用 `unyank` 與相同的包裝,版本和新閱讀修訂來逆轉該狀態. 包裝所有權和維護角色控制釋出,,後設資料,和檔案位置許可權. 全球別名有自己的價格註冊,重定位歷史,和比較和設定修訂;它們不是包裝所有權的快捷方式.
 
 ## Iroha 表面 {#iroha-surfaces}
 
-Musubi 使用第一類 Iroha 說明和查詢:
+Musubi 使用了首次釋出的 V1 說明和查詢:
 
-|表面|目的|
-| ---------------------------- | -------------------------------------------------- |
-|`PublishMusubiRelease`|發佈一個不可變的包裝版本.|
-|`YankMusubiRelease`|標記現有釋放爲被拉走的.|
-|`SetMusubiShortAlias`|綁定一個全球簡短代號到一個包郵身份證.|
-|`AssertMusubiReleaseExists`|需要一個具體的包裝版本才能存在.|
-|`FindMusubiReleaseByRef`|根據具體的包裝引用,請收取一個釋放.|
-|`FindMusubiPackageVersions`|列出包 ID 的版本. |
-|`FindMusubiPackageReleases`|列出一個包郵身份的發佈總結. |
-|`SearchMusubiPackages`|按名字空間和文字搜索包總結. |
-|`FindMusubiShortAliasByName`|解決一個簡短的姓氏.|
+|表面| 用途                                                        |
+| ---------------------------------------------------- | -------------------------------------------------------------- |
+|`RegisterMusubiNamespaceBindingV1`|繫結一個名字空間與其穩定的家庭資料空間.|
+|`RegisterMusubiArchiveV1`|註冊不可變的身份認證源檔案承諾. |
+|`AddMusubiArchiveLocationV1`|新增或更新已證明的 SoraFS 檔案位置. |
+|`PublishMusubiReleaseV1`|要求或更新一個包,併釋出一個不可變的版本. |
+|`SetMusubiReleaseYankV1`|進行比較並設定精確釋放的拉動狀態.|
+|`InviteMusubiPackageMaintainerV1`|啟動明確的包裝角色邀請流. |
+|`RegisterMusubiAliasV1` / `RetargetMusubiAliasV1` |登記或重定位一個全球化名. |
+|`AssertMusubiReleaseDigestV1`|確立一個不變的釋放摘要.|
+|`FindMusubiExactPackageV1`|閱讀一個精確的包裝及其修訂.|
+|`FindMusubiExactReleaseV1`|閱讀一個準確的釋放快照.|
+|`FindMusubiResolverIndexV1` / `FindMusubiVersionsV1` |解決或列出已完成的釋放候選人.|
+|`FindMusubiArchiveLocationsV1`|閱讀提供商支援的最終檔案位置. |
+|`FindMusubiAliasV1` / `FindMusubiAliasHistoryV1` |閱讀當前的名目標或其不可變的歷史.|
 
-Torii 揭示了 Musubi HTTP 下面的路線家族 `/v1/musubi/`. 面向代理人 MCP 工具被曝光爲 `iroha.musubi.` 其他名字. [Torii 終點](/zh-hant/reference/torii-endpoints.md) 和 [查詢參考](/zh-hant/reference/queries.md) 爲更廣泛的 API 在地圖上.
+Torii 顯示下面的應用程式路線家族 `/v1/musubi/*`. MCP 工具使用電流 `iroha.musubi.queries.*` 和 `iroha.musubi.instructions.*` 他們的名字. [Torii 端點](/zh-hant/reference/torii-endpoints.md) 和 [查詢參考](/zh-hant/reference/queries.md) 為更廣泛的 API 在地圖上.

@@ -11,16 +11,16 @@ pageClass: torii-api-console-page
 
 # Torii API 控制台 {#torii-api-console}
 
-使用从运行 Torii 终端点的直播 OpenAPI 文档来检查路线,发送测试请求,复制 curl 指令并生成客户端代码.
+使用从运行 Torii 端点的直播 OpenAPI 文档来检查路线,发送测试请求,复制 curl 指令并生成客户端代码.
 
 <ToriiApiConsole />
 
 ## 要求 {#requirements}
 
-- Torii 终端点必须暴露`/openapi.json`.
+- Torii 端点必须暴露`/openapi.json`.
 - 浏览器测试需要 CORS 才能允许此文档的来源.
-- 浏览器必须能够直接到达终点.
-- 代码生成需要 Node.js, pnpm,以及 OpenAPI 发电机的Java运行时间.
+- 浏览器必须能够直接到达端点.
+- 代码生成需要 Node.js, pnpm,以及 OpenAPI 发电机的Java运行时.
 
 默认的控制台为 `https://taira.sora.org`. 地方发展通常与 `http://127.0.0.1:8080` 当你跑步时 Torii 在你的机器上.
 

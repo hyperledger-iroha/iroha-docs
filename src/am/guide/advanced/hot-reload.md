@@ -1,45 +1,45 @@
 ---
 translation_locale: am
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 2c71e6c135d862d626d3b184eef3cbed350f1353d7dee78cc129092e7b857924
+translation_source_hash: 96505bdba910beb902c399004f5cd24f5e5b0773f01df9cdcfdb49d019830d03
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# ትኩስ ዳግም መጫን Iroha በ Docker ኮንቴይነር {#hot-reload-iroha-in-a-docker-container}
+# ትኩስ ዳግም ጫን Iroha በ Docker መያዣ ውስጥ {#hot-reload-iroha-in-a-docker-container}
 
-ለአካባቢያዊ debugging ብቻ ሙቅ ዳግም መጫን ይጠቀሙ. ለተለመደው አካባቢያዊ ልማት ምስሉን እንደገና መገንባት ወይም የተፈጠረውን Docker Compose ክምችት ከአዲስ Kagami ጥቅል ዳግም ማስጀመር ይመርጣሉ።
+ለአካባቢያዊ ማረም ብቻ ትኩስ ዳግም መጫን ይጠቀሙ። ለመደበኛ የአካባቢ ልማት ምስሉን እንደገና መገንባት ወይም የተፈጠረውን Docker Compose ቁልል ከአዲስ Kagami ጥቅል እንደገና ማስጀመርን ይመርጣሉ።
 
-## የባልደረባ ባነሪን ይተካሉ {#replace-the-peer-binary}
+## የአውታረ መረብ አቻውን ይተኩ ሁለትዮሽ {#replace-the-peer-binary}
 
-ከሊኑክስ ጋር ተኳሃኝ የሆነ ዳይሞን ባናሪ ከስራ ቦታው ይገንቡ:
+ከላይኛው የስራ ቦታ ከሊኑክስ ጋር ተኳሃኝ የሆነ ዴሞን ሁለትዮሽ ይገንቡ -
 
 ```bash
-cargo build --release -p irohad --target x86_64-unknown-linux-musl
+cargo build --release -p irohad --bin iroha3d --target x86_64-unknown-linux-musl
 ```
 
-በሂደት ላይ ባለው የእኩዮች ኮንቴይነር ውስጥ ቅጂ ያድርጉት, ከዚያም ያንን ኮንቴነር እንደገና ይጀምሩ:
+ወደ ሩጫ የአውታረ መረብ አቻ ኮንቴይነር ይቅዱት እና ከዚያ ያንን መያዣ እንደገና ያስጀምሩት -
 
 ```bash
-docker cp target/x86_64-unknown-linux-musl/release/irohad <container>:/usr/local/bin/irohad
+docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/local/bin/iroha3d
 docker restart <container>
 ```
 
-የመያዣውን ስም ለማረጋገጥ `docker ps` ይጠቀሙ። በተፈጠረው ክምችት ውስጥ የእኩዮቹ መያዣዎች በ `./localnet/docker-compose.yml` ተለይተዋል ።
+የመያዣውን ስም ለማረጋገጥ `docker ps` ይጠቀሙ። በተፈጠረው ቁልል ውስጥ የአውታረ መረብ አቻ ኮንቴይነሮች በ `./docker-compose.yml` ይገለፃሉ።
 
-## የዘፍጥረት ዘገባን በአንድ ጊዜ ሊጣሉ በሚችሉ አውታረመረቦች ውስጥ እንደገና ያስገቡ {#recommit-genesis-in-a-disposable-network}
+## ሊጣል በሚችል አውታረ መረብ ውስጥ የብሎክቼይን ጀነሲስን እንደገና ይፈጽሙ {#recommit-genesis-in-a-disposable-network}
 
-አንድ እኩያ ማከማቻው ባዶ በሚሆንበት ጊዜ ብቻ ጀኔሲስን ይፈጽማል ። ለአንድ ጊዜ የሚጣፍጥ Docker አውታረመረብ ፣ ክምችቱን ያቁሙ ፣ የተፈጠረውን ሁኔታ ያስወግዱ ፣ የተፈረመውን የጀኔሲስ ጥቅል መልሰዋል ወይም ይተካሉ ፣ እና እንደገና ይጀምሩ:
+የአውታረ መረብ አቻ የብሎክቼይን ጀነሲስን የሚያጠናቅቀው ማከማቻው ባዶ ሲሆን ብቻ ነው። ሊጣል ለሚችል Docker አውታረ መረብ፣ ቁልሉን ያቁሙ፣ የተፈጠረውን ሁኔታ ያስወግዱ፣ የተፈረመውን የብሎክቼይን ጀነሲስ ቅርቅብ እንደገና ያድሱ ወይም ይተኩ እና እንደገና ይጀምሩ -
 
 ```bash
-docker compose -f ./localnet/docker-compose.yml down
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+docker compose -f ./docker-compose.yml down
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
-ሁኔታውን መጠበቅ ያለበት አውታረመረብ ላይ መፈጠራትን አይተካው ።
+ግዛቱ ተጠብቆ መቆየት ያለበት አውታረ መረብ ላይ የብሎክቼይን ጀነሲስን አይተኩ።
 
-## ብጁ አወቃቀር ይጠቀሙ {#use-custom-configuration}
+## ብጁ ውቅረትን ተጠቀም {#use-custom-configuration}
 
-የአሁኑ የእኩዮች ውቅር TOML ነው ። የተፈጠሩትን `config.toml` ፣ `genesis.signed.nrt` እና ተዛማጅ ቁልፍ ፋይሎችን ወደ ምስሉ የሚጠበቁ የኮንቴይነር ዱካዎች ያያይዙ ወይም ቅጂ ያድርጉ ፣ ከዚያ እኩያውን እንደገና ይጀምሩ። የተፈጠሩትን ፋይሎች አንድ ላይ ያቆዩ; ከተለያዩ Kagami ሩጫዎች የሚመጡ ፋይሎችን ማደባለቅ የዴሴሪያላይዜሽን ወይም የስምምነት ውድቀቶችን ሊያመጣ ይችላል ።
+የአሁኑ የአውታረ መረብ አቻ ውቅር TOML ነው። የመነጨውን `config.toml`፣ `genesis.signed.nrt` እና ተዛማጅ ቁልፍ ፋይሎችን በ በሚጠበቀው የእቃ መያዣ ዱካዎች ውስጥ ይጫኑ ወይም ይቅዱ ምስል፣ ከዚያ የአውታረ መረብ አቻውን እንደገና ያስጀምሩ። የተፈጠሩትን ፋይሎች አንድ ላይ ያስቀምጡ; ከተለያዩ Kagami ሩጫዎች ፋይሎችን መቀላቀል ተከታታይ ወይም የጋራ መግባባት ውድቀቶችን ሊያስከትል ይችላል።

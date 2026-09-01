@@ -3,66 +3,66 @@ translation_locale: pt
 translation_source: /blockchain/assets.md
 translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Ativos {#assets}
 
-Um ativo Iroha é um saldo numérico detido por uma conta. Cada saldo concreto aponta para um `AssetDefinition`, e a definição descreve como esse ativo pode ser nomeado, cunhado, exibido e dividido.
+Um ativo Iroha é um saldo numérico mantido por uma conta. Cada saldo concreto aponta para um `AssetDefinition`, e a definição descreve como esse ativo pode ser nomeado, emitido, exibido e particionado.
 
-## Definição de ativos {#asset-definition}
+## Definição de Ativo {#asset-definition}
 
 Um `AssetDefinition` contém:
 
-- `id`: endereço de definição do ativo canônico
-- `name`: um nome de exibição legível ao ser humano
-- `description`: descrição facultativa legível ao ser humano.
-- `alias`: alias opcionais no formulário `<name>#<domain>.<dataspace>` ou `<name>#<dataspace>`
-- `spec`: precisão numérica e restrições para os saldos
-- `mintable`: a política de mintabilidade
+- `id`: o endereço de definição de ativo canônico
+- `name`: um nome de exibição legível para humanos
+- `description`: descrição opcional legível por humanos
+- `alias`: alias opcional na forma `<name>#<domain>.<dataspace>` ou `<name>#<dataspace>`
+- `spec`: precisão numérica e restrições para saldos
+- `mintable`: a política de emissão de ativos
 - `logo`: opcional `SoraFS` URI
-- `metadata`: metadados arbitrários de valor-chave
-- `balance_scope_policy`: se os saldos são globais ou limitados ao espaço de dados;
-- `owned_by`: conta que registrou ou detém a definição
+- `metadata`: metadados de chave-valor arbitrários
+- `balance_scope_policy`: se os saldos são globais ou restritos ao espaço de dados
+- `owned_by`: a conta que registrou ou possui a definição
 - `total_quantity`: quantidade total emitida
-- `confidential_policy`: Política de operações em activos protegidos
+- `confidential_policy`: política para operações com ativos protegidos
 
-Definição de ativos IDs são endereços opacos canônicos. Quando uma definição é construída a partir de um domínio e um nome, Iroha pode manter essa projeção de domínio / nome para UX e consultas, mas o formulário de texto canônico é o endereço gerado.
+IDs de definição de ativos são endereços opacos canônicos. Quando uma definição é construída a partir de um domínio e um nome, Iroha pode manter essa projeção domínio/nome para UX e consultas, mas a forma textual canônica é o endereço gerado.
 
-## Equilíbrio de activos {#asset-balance}
+## Saldo do Ativo {#asset-balance}
 
 Um `Asset` contém:
 
-- `id`: um `AssetId`, que combina a definição de ativo, a conta do detentor e o escopo de saldo opcional
-- `value`: um saldo de `Numeric`
+- `id`: um `AssetId`, que combina a definição do ativo, a conta do titular e o escopo opcional do saldo do ativo
+- `value`: um saldo `Numeric`
 
-A conta do titular é canônica e sem domínio. A definição de ativo pode ser projetada sob um domínio qualificado para o espaço de dados, por exemplo `payments.universal`.
+A conta do titular é canônica e sem domínio. A definição do ativo pode ser projetada sob um domínio qualificado por espaço de dados, por exemplo `payments.universal`.
 
-## Capacidade de conservação {#mintability}
+## Política de emissão de ativos {#mintability}
 
-As definições de ativos suportam estes modos de mintabilidade:
+As definições de ativos suportam estes modos de política de emissão de ativos:
 
-|Modo .|Que significa ?|
+|Modo         |Significado|
 | ------------ | ----------------------------------------------------------------- |
-|`Infinitely` |O activo pode ser montado e queimado repetidamente. |
-|`Once` |Um símbolo de oferta fixa, pode ser cunhado uma vez e depois queimado.|
-|`Not` |Token de fornecimento fixo que pode ser queimado mas não coitado novamente. |
-|`Limited(n)` |A política permite a emissão de novas unidades de activos num número limitado de operações adicionais. |
+| `Infinitely` |Oferta elástica. O ativo pode ser emitido e queimado repetidamente.|
+| `Once`       |Token de suprimento fixo. Pode ser emitido uma vez e depois queimado.|
+| `Not`        |Token de oferta fixa que pode ser queimado, mas não pode ser emitido novamente.|
+| `Limited(n)` |A política permite que novas unidades de ativos sejam emitidas em um número limitado de operações adicionais.|
 
-Utilize `Infinitely` para ativos elásticos normais e `Once` ou `Limited(n)` para activos de oferta fixa ou limitada. Não utilize `Not` como política inicial, a menos que o fornecimento de activos já seja estabelecido.
+Use `Infinitely` para ativos elásticos normais e `Once` ou `Limited(n)` para ativos de oferta fixa ou limitada. Não use `Not` como política inicial, a menos que a oferta do ativo já esteja estabelecida.
 
-## O escopo do balanço {#balance-scope}
+## Escopo do saldo de ativos {#balance-scope}
 
-O `balance_scope_policy` controla a forma como os saldos são colocados em cubos:
+O `balance_scope_policy` controla como os saldos são repartidos:
 
-- `Global`: um balde de saldo por conta e definição do ativo
-- `DataspaceRestricted`: Os saldos são divididos por contexto do espaço de dados
+- `Global`: uma partição de saldo por conta e definição de ativo
+- `DataspaceRestricted`: os saldos são particionados por contexto de espaço de dados
 
-Os saldos restritos ao espaço de dados são úteis quando a mesma definição de ativo é utilizada em múltiplos bancos de dados Nexus, mas os saldos devem permanecer isolados.
+Saldos restritos por dataspace são úteis quando a mesma definição de ativo é usada em vários dataspaces Nexus, mas os saldos devem permanecer isolados.
 
-## Tente em Taira {#try-it-on-taira}
+## Experimente em Taira {#try-it-on-taira}
 
-Estas chamadas de somente leitura mostram definições reais de ativos na rede de teste pública Taira:
+Essas chamadas somente leitura mostram definições de ativos reais na testnet pública Taira:
 
 ```bash
 TAIRA_ROOT=https://taira.sora.org
@@ -71,7 +71,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=10" \
   | jq -r '.items[] | [.id, .name, .mintable, .total_quantity] | @tsv'
 ```
 
-Encontrar a definição atual do ativo de taxa Taira XOR:
+Encontre a definição atual do ativo de taxa Taira XOR:
 
 ```bash
 curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
@@ -89,9 +89,9 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-Todos os três exemplos são leituras. Para coletar, queimar ou transferir ativos em Taira, use uma conta financiada por torneiras e o fluxo guardado em [Conectar-se aos bancos de dados SORA Nexus ](/pt/get-started/sora-nexus-dataspaces.md).
+Todos os três exemplos são leituras. Para emitir, queimar ou transferir ativos em Taira, use uma conta financiada na testnet e o fluxo protegido em [Conectar-se aos Dataspaces SORA Nexus](/pt/get-started/sora-nexus-dataspaces.md).
 
-Para um exemplo de ativo Taira pago por taxa, salve o auxiliar da torneira a partir de [Obter Testnet XOR em Taira](/pt/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) como `taira_faucet_claim.py`, em seguida, reivindique primeiro o ativo da torneira e use-o como ativo do gás de transação:
+Para ver um ativo da Taira usado no pagamento de taxas, salve o auxiliar de [Obter XOR de teste na Taira](/pt/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) como `taira_faucet_claim.py`, solicite primeiro fundos ao dispensador e use o ativo recebido para pagar o gas da transação:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -101,11 +101,11 @@ python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
 printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
 ```
 
-Em seguida, inclua `--metadata ./taira.tx-metadata.json` nos comandos `ledger asset mint`, `ledger asset burn` e `ledger asset transfer`.
+Então inclua `--metadata ./taira.tx-metadata.json` nos comandos `ledger asset mint`, `ledger asset burn` e `ledger asset transfer`.
 
 ## Instruções {#instructions}
 
-Os ativos podem ser registados, montados, queimados e transferidos com Iroha Instruções especiais:
+Os ativos podem ser registrados, emitidos, queimados e transferidos com as operações de instrução Iroha:
 
 - [`Register` e `Unregister`](/pt/blockchain/instructions.md#un-register)
 - [`Mint` e `Burn`](/pt/blockchain/instructions.md#mint-burn)
@@ -114,9 +114,9 @@ Os ativos podem ser registados, montados, queimados e transferidos com Iroha Ins
 
 Veja também:
 
-- [Guia CLI](/pt/get-started/operate-iroha-via-cli.md)
-- [Rust tutorial](/pt/guide/tutorials/rust.md)
-- [Python tutorial](/pt/guide/tutorials/python.md)
-- [JavaScript/TypeScript tutorial ](/pt/guide/tutorials/javascript.md)
+- [CLI guia](/pt/get-started/operate-iroha-via-cli.md)
+- [Tutorial de Rust](/pt/guide/tutorials/rust.md)
+- [tutorial de Python](/pt/guide/tutorials/python.md)
+- [Tutorial de JavaScript/TypeScript](/pt/guide/tutorials/javascript.md)
 - [Modelo de dados](/pt/blockchain/data-model.md)
 - [NFTs](/pt/blockchain/nfts.md)

@@ -56,8 +56,8 @@ See [Torii Endpoints](/reference/torii-endpoints.md) and
   grows during steady load means the network is overloaded.
 - Record effective Sumeragi parameters, telemetry profile, validator count,
   network RTT, workload shape, and hardware details for each benchmark.
-- Increase collector fanout only after comparing latency, traffic, and
-  backpressure signals.
+- Change one bounded queue or payload-recovery limit at a time, and retain the
+  before-and-after latency, traffic, memory, and backpressure evidence.
 
 See [Performance and Metrics](/guide/advanced/metrics.md).
 

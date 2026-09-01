@@ -1,38 +1,39 @@
 ---
 translation_locale: ru
 translation_source: /reference/instructions.md
-translation_source_hash: e300187da832a8f82258a36b7c4aaebf505adc09c771de5b0c7ab8fb0052d3db
+translation_source_hash: 9999816502505026fb35d2ddaf4033f54768be697ca5b03550e1cf5949ada36c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Iroha Специальные инструкции {#iroha-special-instructions}
+# Iroha Инструкционные операции {#iroha-special-instructions}
 
-Нынешняя модель данных раскрывает эти встроенные семейства инструкций:
+Текущая модель данных предоставляет эти встроенные семейства инструкций:
 
-|Инструкция |Варианты |
+|Инструкция|Варианты|
 | --- | --- |
-| [`RegisterBox`](/ru/blockchain/instructions.md#un-register) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Role`, `Trigger`, `RegisterPeerWithPop` |
+| [`RegisterBox`](/ru/blockchain/instructions.md#un-register) |`Domain`, `Account`, `AssetDefinition`, `Nft`, `Role`, `Trigger`, `RegisterPeerWithPop`|
 | [`UnregisterBox`](/ru/blockchain/instructions.md#un-register) | `Peer`, `Domain`, `Account`, `AssetDefinition`, `Nft`, `Role`, `Trigger` |
-| [`MintBox`](/ru/blockchain/instructions.md#mint-burn) |цифровая `Asset`, запускает повторения |
-| [`BurnBox`](/ru/blockchain/instructions.md#mint-burn) |цифровая `Asset`, запускает повторения |
-| [`TransferBox`](/ru/blockchain/instructions.md#transfer) |`Domain`, `AssetDefinition`, цифры `Asset`, `Nft` |
+| [`MintBox`](/ru/blockchain/instructions.md#mint-burn) |числовой `Asset`, повторение триггеров|
+| [`BurnBox`](/ru/blockchain/instructions.md#mint-burn) |числовой `Asset`, повторения триггера|
+| [`TransferBox`](/ru/blockchain/instructions.md#transfer) | `Domain`, `AssetDefinition`, числовой `Asset`, `Nft` |
 | [`SetKeyValueBox`](/ru/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` метаданные |
 | [`RemoveKeyValueBox`](/ru/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` метаданные |
-| [`GrantBox`](/ru/blockchain/instructions.md#grant-revoke) |`Permission` (`Grant<Permission, Account>`), `Role` (`Grant<RoleId, Account>`), `RolePermission` (`Grant<Permission, Role>`) |
-| [`RevokeBox`](/ru/blockchain/instructions.md#grant-revoke) |`Permission` (`Revoke<Permission, Account>`), `Role` (`Revoke<RoleId, Account>`), `RolePermission` (`Revoke<Permission, Role>`) |
-| [`SetParameter`](/ru/blockchain/instructions.md#setparameter) |обновление параметров цепочки |
-| [`ExecuteTrigger`](/ru/blockchain/instructions.md#executetrigger) |запустить исполнение |
-| [`Upgrade`](/ru/blockchain/instructions.md#other-instructions) |обновление исполнителя |
-| [`Log`](/ru/blockchain/instructions.md#other-instructions) |запись в журнале исполнителя |
-| [`CustomInstruction`](/ru/blockchain/instructions.md#other-instructions) |Исполнитель-специфическая полезная нагрузка JSON |
-| [Конфиденциальность активов ](/ru/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
-| [Общие блоки активов](/ru/blockchain/escrow.md#generic-asset-locks) |`OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
-| [Anonymous asset escrow](/ru/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
+| [`GrantBox`](/ru/blockchain/instructions.md#grant-revoke) | `Permission` (`Grant<Permission, Account>`), `Role` (`Grant<RoleId, Account>`), `RolePermission` (`Grant<Permission, Role>`) |
+| [`RevokeBox`](/ru/blockchain/instructions.md#grant-revoke) | `Permission` (`Revoke<Permission, Account>`), `Role` (`Revoke<RoleId, Account>`), `RolePermission` (`Revoke<Permission, Role>`) |
+| [`SetParameter`](/ru/blockchain/instructions.md#setparameter) |обновление параметра цепочки|
+| [`ExecuteTrigger`](/ru/blockchain/instructions.md#executetrigger) |вызвать выполнение|
+| [`Upgrade`](/ru/blockchain/instructions.md#other-instructions) |обновление исполнителя|
+| [`Log`](/ru/blockchain/instructions.md#other-instructions) |запись журнала исполнителя|
+| [`CustomInstruction`](/ru/blockchain/instructions.md#other-instructions) |исполнитель-специфическая JSON полезная нагрузка|
+| [Эскроу нативного актива](/ru/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
+| [Общие блокировки активов](/ru/blockchain/escrow.md#generic-asset-locks) | `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
+| [Анонимный эскроу для активов](/ru/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
+| [Атомарное частное финансовое урегулирование транзакций](/ru/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
-Дополнительные модули Iroha 3 могут регистрировать типы инструкций для конкретного домена через реестр инструкций. Для списка уровня схемы, созданного из текущего источника дерева, см. [Схема модели данных](./data-model-schema.md).
+Дополнительные модули Iroha 3 могут регистрировать типы инструкций, специфичные для домена, через реестр инструкций. Для схемы с авторитетным узлом и команды, которая ее захватывает, смотрите [Схема модели данных](./data-model-schema.md).
 
-::: details Диаграмма: Основные семейные инструкции
+::: details Диаграмма: Основные семейства команд
 
 ```mermaid
 classDiagram

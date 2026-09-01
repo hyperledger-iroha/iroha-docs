@@ -3,103 +3,103 @@ translation_locale: az
 translation_source: /guide/security/fraud-monitoring.md
 translation_source_hash: 4739a0bfe80f14545a51c804abbe6a2dfa5497d546192f76096f938a0af70184
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Xəyanətlərin nəzarəti {#fraud-monitoring}
+# Fırıldaqçılığın Monitorinqi {#fraud-monitoring}
 
-Iroha tətbiqi üçün dolandırıcılıq nəzarəti kitabda baş verən hadisələr, suallar, icazələr və tətbiq kontekstinin ətrafında qurulmuş əməliyyat nəzarətidir. Iroha təqdim olunanları, qəbul edilənləri, rədd edilənləri və etdiyimizləri qeyd edir. Müşahidə sisteminiz hansı üsulların iş prosesi üçün şübhəli olduğuna qərar verir və bu halları nəzərdən keçirənlərə və ya avtomatik cavab nəzarətlərinə yönəltir.
+Bir Iroha yerləşdirilməsi üçün saxtakarlığın monitorinqi blokçeyn qeyd dəftəri hadisələri, sorğular, icazələr və tətbiq konteksti ətrafında qurulmuş əməliyyat nəzarətidir. Iroha nə təqdim edildiyini, qəbul edildiyini, rədd edildiyini və tamamlandığını qeyd edir. Sizin izləmə sisteminiz biznes prosesiniz üçün hansı nümunələrin şübhəli olduğunu müəyyən edir və həmin halları nəzərdən keçirənlərə və ya avtomatlaşdırılmış cavab nəzarətlərinə yönləndirir.
 
-Xəyanətlərin monitorinqinə bir validatorda yerləşdirilmiş məntiqdən daha çox ayrı bir xidmət kimi yanaşın. Xidmətin kitabxana fəaliyyətinə abunə olması, zəncirdən kənar risk kontekstini zənginləşdirməsi, sübutların davam etdirilməsi və cavab əməliyyatlarını yalnız açıq icazələrə malik hesablar vasitəsilə təqdim etməsi lazımdır.
+Fırıldaqçılığın izlənməsini valyuta yoxlayıcısına daxil edilmiş məntiqdən üstün tutulan ayrıca xidmət kimi qəbul edin. Xidmət blokçeyn dəftəri fəaliyyətinə abunə olmalı, onu zəncirxaric risk konteksti ilə zənginləşdirməli, sübutları saxlamalı və cavab əməliyyatlarını yalnız açıq icazəsi olan hesablar vasitəsilə təqdim etməlidir.
 
 ## Monitorinq modeli {#monitoring-model}
 
-Fəaliyyətli monitorinq boru kəmərinin dörd mərhələsi var:
+Faydalı bir izləmə proqram təminatı işləmə prosesi dörd mərhələdən ibarətdir:
 
-1. Torii hadisə axınlarından, sorğulardan və ölçülərdən kitabxana və operator siqnallarını toplayın.
-2. Tədbirləri müştərinin statusu, əks tərəflərin siyahıları, tətbiqetmə seansı identifikatorları, gözlənilən həddlər və vəziyyət IDs kimi zəncirdən kənar kontekstlə zənginləşdirmək.
-3. Determinizm qaydaları, tənqidçi sıraları və ya risk hesablamaları ilə şübhəli davranışı aşkar edin.
-4. Operatorları xəbərdar etmək, tətbiq tərəfi iş axınlarını dayandırmaq, lazımsız icazələri ləğv etmək və ya idarəetmə prosesiniz buna imkan verdiyi zaman kompensasiya əməliyyatlarını təqdim etməklə cavab verin.
+1. Torii hadisə axınlarından, sorğulardan və metriklərdən blokçeyn dəftəri və operator siqnallarını toplayın.
+2. Hadisələri müştəri vəziyyəti, qarşı tərəf siyahıları, tətbiq sessiyası identifikatorları, gözlənilən limitlər və iş nömrələri kimi zəncirdən kənar kontekstlə zənginləşdirin.
+3. Şübhəli davranışı deterministik qaydalar, nəzərdən keçirici növbələri və ya risk qiymətləndirməsi vasitəsilə aşkarlayın.
+4. Əgər idarəetmə prosesiniz bunu mümkün edirsə, operatorları xəbərdar etməklə, tətbiq tərəfi iş axınlarını dayandırmaqla, lazımsız icazələri ləğv etməklə və ya kompensasiyaedici əməliyyatlar təqdim etməklə cavab verin.
 
-Siyasət qərarlarını konsensusdan kənarda saxlayın, əgər hər təsdiqləyici eyni qərarı təkrarlamalı deyilsə. Runtime təsdiqləməsinə icazələr və əməliyyatların etibarlılığı tətbiq edilməlidir.
+Siyasət qərarlarını konsensus xaricində saxlayın, hər bir doğrulayıcının eyni qərarı təkrar etməsi tələb olunmadıqca. Proqram icra mühiti doğrulaması icazələri və əməliyyat etibarlılığını tətbiq etməlidir. Fırıldaqçılığın izlənməsi riskləri izah etməli, sübutları qorumaq və operatorlara sürətli hərəkət etməyə kömək etməlidir.
 
-## Toplamaq üçün siqnallar {#signals-to-collect}
+## Toplanacaq siqnallar {#signals-to-collect}
 
-Sığ abunələrlə başlayın və yalnız araşdırma üçün daha geniş axınları əlavə edin:
+Araşdırma üçün yalnız dar abunəliklərlə başlayın və daha geniş axınları əlavə edin:
 
-|Sinyal |Mənbə |istifadə |
+|Siqnal|Mənbə|İstifadə et|
 | --- | --- | --- |
-|Transaksiyanın vəziyyəti |Pipeline hadisələri |Təkrarlanan rəddlər, uğursuz icazə cəhdləri və qeyri-adi təqdimat nümunələrini aşkar etmək |
-|Hesabın həyat dövrü və metadataları |Məlumat hadisələri və hesab sorğuları |Yeni hesablar, alias dəyişiklikləri, şəxsiyyət yeniləmələri və gözlənilməz metadata düzəlişlərini aşkar edin |
-|Aktivlərin balansları və köçürmələri |Aktiv məlumatları hadisələri və aktiv sorğuları |Yüksək dəyərli hərəkətləri, sürətli ventilyatorları, balans axınlarını və qeyri-adi əks tərəfləri aşkar etmək |
-|Rolu və icazələri |Rol və icazə sorğuları, rol məlumatları hadisələri |Müvəffəqiyyətlərin artması, təcili yardımlar və yüksək riskli girişlərin aşkar edilməsi |
-|Trigger və müqavilə dəyişiklikləri |Trigger, contract və executor hadisələri |Yeni avtomatlaşdırma, dəyişən icra yolları və şübhəli yeniləmə fəaliyyətini aşkar etmək |
-|Konfiqurasiya və həmyaşıd dəyişiklikləri |Konfiqurasiya və həmyaşıd hadisələri |Validasiyaya, şəbəkəyə və ya operatorun görünürlüyünə təsir edən idarəetmə dəyişikliklərini aşkar etmək |
-|Operatorun sağlamlığı |`/metrics` və Sumeragi status marşrutları |Şübhəli istifadəçi davranışını node həddindən artıq yükləməsindən, növbə təzyiqindən və ya şəbəkə səhvlərindən ayırın |
+|Əməliyyatın vəziyyəti|proqram təminatı işləmə iş axını hadisələri|Təkrar rədd etmələri, uğursuz təsdiqləmə cəhdlərini və qeyri-adi təqdimat nümunələrini aşkar edin|
+|Hesabın həyat dövrü və metadatalar|Məlumat hadisələri və hesab sorğuları|Yeni hesabları, təxəllüs dəyişikliklərini, şəxsiyyət yeniləmələrini və gözlənilməz metadata redaktələrini aşkar edin|
+|Aktiv balansları və köçürmələr|Aktiv məlumat hadisələri və aktiv sorğuları|Yüksək dəyərli hərəkəti, sürətli yayılmanı, balans xərclərini və qeyri-adi tərəfdaşları aşkar edin|
+|Rollar və icazələr|Rol və icazə sorğuları, rol məlumatı hadisələri|Üstünlük artırılmasını, fövqəladə imtiyazları və köhnəlmiş yüksək riskli girişləri aşkarlayın|
+|Tətik və müqavilə dəyişiklikləri|Tetikleyici, müqavilə və icraçı hadisələri|Yeni avtomatlaşdırmanı, dəyişdirilmiş icra yollarını və şübhəli yeniləmə fəaliyyətini aşkar edin|
+|Konfiqurasiya və şəbəkə həmkarı dəyişiklikləri|Konfiqurasiya və şəbəkə həmkar hadisələri|Təsdiq, şəbəkələşmə və ya operator görünürlüğünə təsir edən idarəetmə dəyişikliklərini aşkarlayın|
+|Operator sağlamlığı| `/metrics` və Sumeragi status marşrutları |Şübhəli istifadəçi davranışını node yüklənməsindən, növbə təzyiqindən və ya şəbəkə nasazlıqlarından ayırın|
 
-İstifadə [Hadisə filtrləri](/az/blockchain/filters.md) bir qayda yalnız hesablara, aktivlərə, rollara və ya konfigurasiya dəyişikliklərinə ehtiyac duyulduğu zaman bütün hadisə axını işlənmədən qaçınmaq üçün. Periodik uyğunlaşdırma üçün axını səhifəli ilə birləşdirin. [suallar](/az/blockchain/queries.md) Beləliklə, monitor istismara məruz qalandan sonra bərpa oluna bilər.
+Bir qayda yalnız hesablar, aktivlər, rollar və ya konfiqurasiya dəyişikliklərini tələb edirsə, bütün hadisə axını işləməmək üçün [hadisə filtrləri](/az/blockchain/filters.md)-dən istifadə edin. Dövri uzlaşma üçün, monitorun işləməməkdən sonra bərpa oluna bilməsi üçün axını səhifələnmiş [sorğular](/az/blockchain/queries.md) ilə birləşdirin.
 
-## İstifadə qaydaları {#detection-rules}
+## Aşkar etmə Qaydaları {#detection-rules}
 
-Ümumi qayda ailələrinə aşağıdakılar daxildir:
+Ümumi qayda ailələrinə daxildir:
 
-|Hökumət ailəsi |Misal şərti |Tipik reaksiya |
+|Qayda ailəsi|Nümunə vəziyyət|Tipik reaksiya|
 | --- | --- | --- |
-|Sürət |Hesabı qısa bir müddət ərzində gözlənilən məbləğdən və ya hesabdan daha çox pul köçürür |Bu hesab üçün xəbərdarlıqları nəzərdən keçirənlər və müraciət tərəfində pul çəkmələri dayandırır |
-|Çıxış.|Fondlar bir hesabdan çox sayda yeni müşahidə olunan hesablara köçürülür .|Əlavə köçürmələrə icazə verilmədən əvvəl əl ilə təsdiqlənməsini tələb edin |
-|Tərəflərin balansı sıxılır.|Hesab balansının böyük bir hissəsi açar, alias və ya metadata dəyişikliyindən qısa müddət sonra buraxılır |Mümkün qədər hesabın alınmasını artırmaq |
-|Xeyriyyələrin artması |Yüksək riskli bir icazə və ya rol dəyişiklik pəncərəsi xaricində verilir |Təşkilatlara xəbərdarlıq etmək və yardım əməliyyatını nəzərdən keçirmək |
-|Rədd edilmə |Bir imzaçı və ya müştəri dəfələrlə rədd edilmiş əməliyyatlar həyata keçirir |İdarəetmə səlahiyyətlərindən sui-istifadə, inteqrasiya səhvləri və ya araşdırma üçün yoxlayın. |
-|Avtomatlaşdırma dəyişikliyi |Trigger, müqavilə və ya icraçı ilə əlaqəli obyekt gözlənilməz şəkildə dəyişir |Dəyişiklik nəzərdən keçirilənə qədər asılı iş axınlarını dayandırmaq |
-|Hökumət üçün həssas dəyişikliklər |Tərəfdaşlar, konfigurasiya və ya iş vaxtı vəziyyətində dəyişikliklər təsdiqlənmiş bir bilet olmadan baş verir |İdarəetmə rekordunu və hadisə prosesini müqayisə edin |
+|Sürət|Hesab qısa müddət ərzində gözləniləndən daha çox məbləğ və ya sayda köçürmə edir|Hesab üçün nəzərdən keçirənləri xəbərdar edin və tətbiq tərəfdən çıxarışları dayandırın|
+|Çıxış sayı|Vəsaitlər bir hesabdan bir çox yeni görünən hesablara keçir|Əlavə köçürmələrə icazə verməzdən əvvəl əl ilə təsdiq tələb edin|
+|Balansın azalması|Hesab balansının böyük bir hissəsi əsas, ləqəb və ya metada dəyişiklikdən qısa müddət sonra çıxır|Hesab ələ keçirilməsi mümkünsə yüksəldin|
+|Üstünlük artırılması|Yüksək riskli icazə və ya rol dəyişiklik pəncərəsinin xaricində verilir|Operatorlara xəbərdarlıq edin və qrant əməliyyatını yoxlayın|
+|Təkrarlanan rədd edilmələrin artımı|Bir kriptoqrafik imzalayan və ya müştəri təkrar-təkrar rədd edilən əməliyyatlar yaradır|Giriş məlumatlarının sui-istifadəsini, inteqrasiya xətalarını və ya yoxlamaları yoxlayın|
+|Avtomatlaşdırma dəyişikliyi|Tetikləyici, müqavilə və ya icraçı ilə əlaqəli obyekt gözlənilmədən dəyişir|Dəyişiklik nəzərdən keçirənə qədər asılı iş axınlarını dayandırın|
+|İdarəetməyə həssas dəyişiklik|şəbəkə eyni səviyyəli, konfiqurasiya və ya proqram təminatı icra mühiti vəziyyətində təsdiqlənmiş bilet olmadan dəyişikliklər baş verir|İdarəetmə qeydləri və insident prosesi ilə müqayisə edin|
 
-Qaydalar tələb olunan sübutlar, qiymətləndirdikləri vaxt və tədbirlər haqqında açıq olmalıdır və davası bağlaya biləcək şəxs və ya sistem. Müştəri riskindən, aktiv növündən və ya yurisdiksiyadan asılı olan həcmlər ad hoc skriptlərdə deyil, monitorinq xidmətinə aiddir.
+Qaydalar tələb etdikləri sübutlar, qiymətləndirdikləri zaman pəncərəsi, gördükləri tədbir və onu bağlaya biləcək şəxs və ya sistem haqqında açıq olmalıdır iş halı. Müştəri riski, aktiv növü və ya yurisdiksiya kimi meyarlardan asılı olan həddlər sizin monitorinq xidməti konfiqurasiyanızda olmalıdır, ixtiyari skriptlərdə deyil.
 
-## Cavab nəzarətləri {#response-controls}
+## Cavab Nəzarətləri {#response-controls}
 
-Xəbərdarlıqların təmin edilməsindən əvvəl reaksiya tədbirlərini nəzərdə tutun. Yüksək cəhətdən saxtakarlıq hadisəsi aşkarlanmasından məhdudlaşdırılmasına qədər sənədləşdirilmiş bir yol olmalıdır:
+Bildirişləri aktiv etməzdən əvvəl cavab tədbirlərini planlaşdırın. Yüksək ciddiyyətli fırıldaqçılıq halının aşkarlanmasından məhdudlaşdırılmasına qədər sənədləşdirilmiş bir yolu olmalıdır:
 
-- təsirlənmiş domen və ya aktiv təyinatı üçün məsuliyyət daşıyan təhlükəsizlik, əməliyyat və sahibkarları məlumatlandırır.
-- hadisə kursorunu, blok hashini, əməliyyat hashini, səlahiyyəti, payload və axtarış sürətini saxlayın aşkarlama qaydasında istifadə olunur
-- başlıqdan kənarda olan tətbiq tərəfi hərəkətlərini pozun, məsələn, sifariş, çıxarış, imzalanma, köprü və ya hesablaşma iş axınları.
-- hadisələrə cavab planında artıq əsaslanmayan rol və ya icazələrin ləğv edilməsi
-- aktiv idarəetmə siyasəti və icazə modelinin imkan verdiyi təqdirdə yalnız sonrakı kitab əməliyyatlarını təqdim etmək;
-- sübutlar imzalananın razılaşmasını göstərdiyi zaman açarları fırlatmaq
+- Təsirə məruz qalmış domen və ya aktiv tərifinə cavabdeh olan təhlükəsizlik, əməliyyatlar və biznes sahiblərini məlumatlandırın
+- Aşkarlama qaydası tərəfindən istifadə olunan hadisə kursorunu, kriptoqrafik xəşi, əməliyyat kriptoqrafik xəşi, səlahiyyət prinsipi, yük və vaxt nöqtəsi üzrə verilənlər baxışını qoruyun
+- checkout, pul çıxarma, imzalama, körpü və ya maliyyə əməliyyatlarının tənzimlənməsi iş prosesləri kimi blokçeyn lövhəsinin xaricində olan tətbiq tərəfi fəaliyyətlərini dayandırmaq
+- insidentə cavab planı tərəfindən artıq əsaslandırılmayan rolları və ya icazələri ləğv edin
+- aktiv idarəetmə siyasəti və icazə modeli buna imkan verdikdə yalnız ardıcıl blokçeyn dəftər əməliyyatlarını təqdim edin
+- əlavələrin kriptoqrafik imzalayıcının pozulmasını göstərdiyi zaman açarları dəyişdirin
 
-Müşahidə xidmətinə geniş yazma girişindən çəkinin və cavab tədbirləri üçün lazım olan ən kiçik icazə dəstinə malik xüsusi bir texniki hesabdan istifadə edin. İnsan təsdiqləri aktivlərin köçürülməsinə, icazələrin dəyişdirilməsinə və ya təsdiqləyiciyə yönəlmiş konfigüratsiyanı dəyişdirə biləcək hər hansı bir iş axınının bir hissəsi olaraq qalmalıdır.
+İzləmə xidmətinə geniş yazma icazəsi verməkdən çəkinin. Cavab tədbirləri üçün tələb olunan ən az icazələr dəsti ilə xüsusi texniki hesabdan istifadə edin. yerinə yetirməyə icazə verilir. İnsan təsdiqi, aktivləri köçürə bilən, icazələri dəyişdirə bilən və ya yoxlayıcılara yönəlmiş konfiqurasiyanı dəyişdirə bilən hər hansı bir iş prosesinin bir hissəsi olaraq qalmalıdır.
 
-## Əldə edilmiş sübutlar və saxlama {#evidence-and-retention}
+## Sübut və Saxlama {#evidence-and-retention}
 
-Monitorinq sübutlarını təsdiqləyici məlumatları dizaynından ayrı bir əlavə sistemi ilə saxlamaq.
+Təsdiqləyici məlumat qovluğundan ayrı olan yalnız əlavə olunan sistemdə monitorinq sübutlarını saxlayın. Hər bir xəbərdarlıq aşağıdakıları əhatə etməlidir:
 
-- hadisələr axınının adı və kursor
-- blok hündürlüyü və ya mövcud olduqda blok hash
-- Transaction hash və səlahiyyət
-- təsirlənən hesab, domen, aktiv, rol, tetikləyici və ya konfiqurasiya ID
-- xam hadisə paylı yükü və ya onun kanonik bir hissəsi
-- xəbərdarlığı zənginləşdirmək üçün istifadə olunan sorğu sürətli görüntüləri
-- Qayda adı, versiyası, həddi, nəticə və rəyçi qərarı
+- tədbir axını adı və kursor
+- mövcud olduqda blok hündürlüyü və ya blok kriptoqrafik hash
+- əməliyyat kriptoqrafik xəş və səlahiyyət prinsipi
+- təsirlənmiş hesab, domain, aktiv, rol, tetikleyici və ya konfiqurasiya ID-si
+- xam hadisə məlumat yükü və ya onun tək bir protokol-standart kriptoqrafik qarışııq dəyəri
+- xəbərdarlığı zənginləşdirmək üçün istifadə olunan nöqtə-vaxt məlumat baxışlarını sorğulayın
+- qayda adı, versiya, hədd, qiymət, və nəzərdən keçiricinin qərarı
 
-Şəbəkənin məlumat idarəçiliyi siyasəti açıq şəkildə göstərilmədikcə həssas araşdırma qeydlərini ictimai kitabın metadataları kimi saxlama. icazə verir. Əgər zəncirdən kənarda olan bir işi zəncirlə bağlı vəziyyətlə əlaqələndirmək istəyirsinizsə, zəncirdə olan vəziyyəti müəyyənləşdirməyə üstünlük verin, imzalanmış təsdiq, və ya şəxsi məlumatları aşkar etməyən hash öhdəliyi.
+Şəbəkənin məlumat idarəetmə siyasəti açıqca icazə vermədikcə, həssas istintaq qeydlərini ictimai blokçeyn dəftər metadata kimi saxlamayın. Əgər bağlantı yaratmağa ehtiyacınız varsa off-chain vəziyyətini on-chain vəziyyətinə keçirmək üçün, şəxsi məlumatları aşkar etməyən bir iş şəxsiyyəti, imzalanmış təsdiq sənədi və ya kriptoqrafik hash kriptoqrafik öhdəlik dəyərini üstün tutun.
 
-## Tədbirlərin həyata keçirilməsi siyahısı {#implementation-checklist}
+## Tətbiq yoxlama siyahısı {#implementation-checklist}
 
-- `/metrics` və operatorların marşrutları üçün lazım olan telemetri profilini aktivləşdirin.
-- Nəzarət etdiyiniz obyektlər üçün dar filtrlərlə Torii hadisələr axınına abunə olun.
-- Monitor boşluqlar olmadan bərpa edilməsi üçün hadisə kursorlarını davam etdirin.
-- Səhifəli suallarla axınları müntəzəm bir cədvəldə uyğunlaşdırın.
-- Risk həddlərini qoruyun və versiya nəzarəti ilə konfiqurasiya edilmiş siyahılara icazə verin.
-- Avtomatlaşdırılmış hərəkətlərin təmin edilməsindən əvvəl tarixi bloklara qarşı yoxlama xəbərdarlıq qaydaları.
-- Reaksiya tədbirləri üçün xüsusi texniki hesablardan istifadə edin.
-- Təkrarlanan cədvəl üzrə nəzərdən keçirilən rol və icazə verilmələri.
-- Hadisələrin qarşısının alınması prosesinə saxtakarlıq nəzarəti ilə bağlı xəbərdarlıqları daxil etmək.
+- `/metrics` və operator marşrutları üçün tələb olunan telemetriya profilini aktivləşdirin.
+- İzlədiyiniz obyektlər üçün dar filtrlərlə Torii hadisə axınlarına abunə olun.
+- Hadisə kursorlarını davam etdirin ki, monitor boşluqsuz davam edə bilsin.
+- Axınları müntəzəm cədvəl üzrə səhifələnmiş sorğularla uzlaşdırın.
+- Risk həddlərini və icazə siyahılarını versiya ilə idarə olunan konfiqurasiyada saxlayın.
+- Avtomatlaşdırılmış əməliyyatları aktivləşdirməzdən əvvəl xəbərdarlıq qaydalarını tarixi bloklar üzərində sınayın.
+- Cavab tədbirləri üçün xüsusi texniki hesablar istifadə edin.
+- Təkrar olunan cədvəl üzrə rol və icazə verilməsini nəzərdən keçirin.
+- Hücum cavab prosesinə fırıldaqçılıq-izləmə xəbərdarlıqlarını daxil edin.
 
-## Əlaqəli səhifələr {#related-pages}
+## Əlaqəli Səhifələr {#related-pages}
 
-- [Hadisələr](/az/blockchain/events.md)
+- [Tədbirlər](/az/blockchain/events.md)
 - [Filtrlər](/az/blockchain/filters.md)
-- [Suallar](/az/blockchain/queries.md)
-- [icazələr](/az/blockchain/permissions.md)
-- [Performance and Metrics](/az/guide/advanced/metrics.md)
-- [Torii bitki nöqtələri](/az/reference/torii-endpoints.md)
-- [Əməliyyat təhlükəsizliyi](/az/guide/security/operational-security.md)
+- [Sorğular](/az/blockchain/queries.md)
+- [İcazələr](/az/blockchain/permissions.md)
+- [Performans və Ölçülər](/az/guide/advanced/metrics.md)
+- [Torii API son nöqtələr](/az/reference/torii-endpoints.md)
+- [Əməliyyat Təhlükəsizliyi](/az/guide/security/operational-security.md)

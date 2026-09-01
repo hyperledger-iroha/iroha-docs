@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /blockchain/rwas.md
-translation_source_hash: cbdc6d766fb90bea7e68dc67f2c705bb1638340feeb2fca9f2dd43a727ac03e7
+translation_source_hash: 8d64a9a17c93f60306c279e8656e6edde8ce5dd024e742218bfb9572b7438bb0
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # נכסים בעולם האמיתי {#real-world-assets}
 
 נכסים בעולם האמיתי (RWAs) מודל של נכסים מחוץ למשרשרת אשר בעלות או שליטה נעקשת על שרשרת. ב Iroha, RWA הוא רכיב ספרים רשום עם מזהה שנוצר, חשבון הבעלים, כמות, מטא נתונים עסקיים, מקור, ובקרה אופציונלית של מחזור החיים .
@@ -16,7 +15,7 @@ RWAs הם שונים משארית נכסים מספרית:
 - NFT הוא רשום ייחודי על שרשרת עם בעל אחד
 - RWA הוא הרבה שיכול להכיל מטא נתונים עסקיים, כמות, מחזיקה, קפואות, מצב פיצוי, מקור, ומדיניות המפקד
 
-השתמש RWAs כאשר הספר הגדול צריך לייצג הרבה ספציפי מחוץ לרשת במקום רק איזון פוגבילי.
+השתמש RWAs כאשר הספר הגדול צריך לייצג הרבה ספציפי מחוץ לרשת במקום רק יתרה פוגבילי.
 
 ## RWA הרבה {#rwa-lot}
 
@@ -33,7 +32,7 @@ RWAs הם שונים משארית נכסים מספרית:
 - `controls`: חשבונות המפקדים, תפקידי המפקדים ופעולות המאפשרות למפקדים.
 - `is_frozen` ו `held_quantity`: מצב מחזור החיים המופעל על ידי זמן הפעלה.
 
-שמור את המטען הפועל על שרשרת קומפקטי. שמור מסמכים משפטיים גדולים, דו"חות ביקורת וקבוצות בדיקה מחוץ ל- WSV, ולאחר מכן שים דיגסט, דרך URI, SoraFS, או תיקון מפורסם ב- RWA מטא נתונים.
+שמור את מטען הנתונים על שרשרת קומפקטי. שמור מסמכים משפטיים גדולים, דו"חות ביקורת וקבוצות בדיקה מחוץ ל- WSV, ולאחר מכן שים דיגסט, דרך URI, SoraFS, או תיקון מפורסם ב- RWA מטא נתונים.
 
 ## זיהוי {#identifiers}
 
@@ -51,7 +50,7 @@ RWAs הם שונים משארית נכסים מספרית:
 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef$commodities.universal
 ```
 
-בקשות צריכות לאחסן את תעודת זהות העסק שלהם ב `primary_reference` או `metadata`, ולאחר מכן לגלות את `RwaId` שנוצרו מ `RwaEvent::Created`, `FindRwas`, `/v1/rwas`, או את מסלול המוקדש הנקבע לאחר ההתחייבויות של העסקה .
+יישומים צריכים לשמור את המזהה העסקי שלהם ב-`primary_reference` או ב-`metadata`, ולאחר מכן לאתר את ה-`RwaId` שנוצר דרך `RwaEvent::Created`, ‏`FindRwas`, ‏`/v1/rwas` או נתיבי הסייר לאחר שהעסקה עוברת commit.
 
 ## מחזור החיים {#lifecycle}
 
@@ -61,7 +60,7 @@ RWAs הם שונים משארית נכסים מספרית:
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
 |`RegisterRwa` |ליצור הרבה של ID שנוצר בדומיין; סמכות העסקה הופכת ל- `owned_by`. |
 |`TransferRwa` |להעביר כמות לחשבון אחר. העברה מלאה יכולה לשנות `owned_by`. העברת חלקית יוצרת חטיבת ילדים נפרדת עם ID שנוצר. |
-|`HoldRwa` |כמות אחסון: דורש שליטה מוגדרת ו `hold_enabled`. |
+|`HoldRwa` |שמירת כמות בצד. נדרשים controller מוגדר ו-`hold_enabled`. |
 |`ReleaseRwa` |להסיר כמות מוחזקת. דורש שליטה מוגדרת ו `hold_enabled`. |
 |`FreezeRwa` |לחסום פעולות הבעלים הרגילים. דורש שליטה מותאמת ו `freeze_enabled`. |
 |`UnfreezeRwa` |להפעיל מחדש את פעולות הבעלים הרגילות. דורש שליטה מוגדרת ו `freeze_enabled`. |
@@ -73,7 +72,7 @@ RWAs הם שונים משארית נכסים מספרית:
 
 אין הוראה `UnregisterRwa` בקוד הנוכחי. להוציא את המגרש מחוץ למשרשרת עם `RedeemRwa` כאשר הכמות המוצגת נשלחה, נוצרה, נקבלה או מוציא אחרת מהזרקה.
 
-## נתונים מטאטא ופיקוחים {#metadata-and-controls}
+## מטא-נתונים ופיקוחים {#metadata-and-controls}
 
 השתמשו בנתונים מטא עבור עובדות קומפקטיות שיעזרו לתרשומים לזהות ולמתקן את הקבוצה:
 
@@ -98,11 +97,11 @@ RWAs הם שונים משארית נכסים מספרית:
 
 חשבונות ומפקידים של שליטנים יכולים לבצע רק את המבצעים המאפשרים על ידי הדגלים הבולניים המתאימים. עומס הפיקוח הנוכחי מכיל זהויות של השליטה ודגלי מבצע. רשימות הזכות להעברה ומשפט `transfers` מונחים מחוץ לטובת זו.
 
-## שאלות, אירועים ו- APIs {#queries-events-and-apis}
+## שאילתות, אירועים ו- APIs {#queries-events-and-apis}
 
-שימוש [`FindRwas`](/he/reference/queries.md#assets-nfts-and-rwas) לרשימה רשומה RWA הרבה. יישומים שצריכים עדכונים חי יכולים להצטרף [`Rwa` אירועי נתונים](/he/blockchain/filters.md#data-event-filters) עבור יצירת, שינוי הבעלים, פיצוץ, מיזוג, חידוש, קפוא, לא קפוא; אירועים שנערכו, שוחררו, הועברו בכוח, השתנו בקרונות ונתונים מטאטא.
+שימוש [`FindRwas`](/he/reference/queries.md#assets-nfts-and-rwas) לרשימה רשומה RWA הרבה. יישומים שצריכים עדכונים חי יכולים להצטרף [`Rwa` אירועי נתונים](/he/blockchain/filters.md#data-event-filters) עבור יצירת, שינוי הבעלים, פיצוץ, מיזוג, חידוש, קפוא, לא קפוא; אירועים שנערכו, שוחררו, הועברו בכוח, השתנו בקרונות ומטא-נתונים.
 
-Torii חושף דרכים של מצב שרשרת כגון `/v1/rwas` ו `/v1/rwas/query`, בנוסף לדרכים של חוקרים כמו `/v1/explorer/rwas` ו `/v1/explorer/rwas/{rwa_id}` כאשר משפחת המסלול הזו מופעלת. לקוחות שנוצרים צריכים להעדיף את המסמך חי [ `/openapi` ](/he/reference/torii-endpoints.md#common-endpoints) עבור הצורה המדויקת של התגובה המחשבת על ידי קשר.
+Torii חושף מסלולים של מצב שרשרת כגון `/v1/rwas` ו `/v1/rwas/query`, בנוסף למסלולים של חוקרים כמו `/v1/explorer/rwas` ו `/v1/explorer/rwas/{rwa_id}` כאשר משפחת המסלול הזו מופעלת. לקוחות שנוצרים צריכים להעדיף את המסמך חי [ `/openapi.json` ](/he/reference/torii-endpoints.md#common-endpoints) עבור צורת התגובה המדויקת המחשבת על ידי קשר.
 
 ### נסה את זה על Taira {#try-it-on-taira}
 
@@ -124,7 +123,7 @@ curl -fsS https://taira.sora.org/openapi.json \
 
 ## תנסו. {#try-it}
 
-הדוגמאות הבאות משתמשות בשטח Python SDK מ- [Shared Setup](/he/guide/tutorials/python.md#shared-setup). להחליף את החשבון IDs, המפתחות הפרטיות ואת הרכיב שנוצר IDs עם ערכים מהרשת שלך לפני שישלוח עסקאות. .
+הדוגמאות הבאות משתמשות בשטח Python SDK מ- [התקנה משותפת](/he/guide/tutorials/python.md#shared-setup). להחליף את החשבון IDs, המפתחות הפרטיות ואת הרכיב שנוצר IDs עם ערכים מהרשת שלך לפני שישלוח עסקאות. .
 
 ### גלה RWA API דרכים {#discover-rwa-api-routes}
 
@@ -134,7 +133,7 @@ curl -fsS https://taira.sora.org/openapi.json \
 from iroha_python import create_torii_client
 
 client = create_torii_client("https://taira.sora.org")
-openapi = client.request_json("GET", "/openapi", expected_status=(200,))
+openapi = client.request_json("GET", "/openapi.json", expected_status=(200,))
 
 rwa_paths = sorted(
     path for path in openapi.get("paths", {}) if path.startswith("/v1/rwas")
@@ -144,7 +143,7 @@ for path in rwa_paths:
     print(path)
 ```
 
-אם הרשימה היא ריקה, הערך עשוי עדיין לתמוך בהוראות RWA ושאלות דרך Torii APIs אחרים, אך הוא לא חושף את משפחת הנתיב הבלתי אפשרית JSON.
+אם הרשימה היא ריקה, הערך עשוי עדיין לתמוך בהוראות RWA ושאילתות דרך Torii APIs אחרים, אך הוא לא חושף את משפחת הנתיב הבלתי אפשרית JSON.
 
 ### רשום קבלה במחסן {#register-a-warehouse-receipt}
 
@@ -189,7 +188,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-לאחר ההתחייבויות של העסקה, רשימה נוצרת RWA IDs. נתיבי מצב שרשרת חושפים את הקנוניקלי IDs; השתמשו באירועים או במסלולים מדויקים של חוקרים כאשר אתה צריך להתאים ID בחזרה ל `primary_reference` או נתונים מטאטא:
+לאחר commit של העסקה, רשימה נוצרת RWA IDs. נתיבי מצב שרשרת חושפים את הקנוניקלי IDs; השתמשו באירועים או במסלולים מדויקים של חוקרים כאשר אתה צריך להתאים ID בחזרה ל `primary_reference` או מטא-נתונים:
 
 ```python
 page = client.list_rwas_typed(limit=20, offset=0)
@@ -240,7 +239,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### הוספת נתונים מטאטא של פיקוח ואודט {#add-controls-and-audit-metadata}
+### הוספת מטא-נתונים של פיקוח ואודט {#add-controls-and-audit-metadata}
 
 פיקוחים ומטא נתונים הם נפרדים. השתמשו בפיקוחים למדיניות המובטלים, ובמטא נתון לעובדות שיישומים או אודיטורים צריכים להציג:
 
@@ -271,9 +270,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### כמות הגאולה או הפנסיה {#redeem-or-retire-quantity}
+### כמות הפדיון או ההוצאה מהמחזור {#redeem-or-retire-quantity}
 
-הגשת `RedeemRwa` לאחר שהאוצר המייצג מחוץ למשרשרת נשלח, נצרך, נסוג או מוציא ממסלול אחר. זה מוריד באופן קבוע את הכמות הנשלחת מהגרף. הגרף חייב להיות `redeem_enabled`.
+יש לשלוח `RedeemRwa` לאחר שהנכס המיוצג מחוץ לשרשרת נמסר, נצרך, הוצא משימוש או הוסר בדרך אחרת מן המחזור. פעולה זו מפחיתה לצמיתות מן האצווה את הכמות שנשלחה. באצווה חייב להיות `redeem_enabled`. החותם חייב להיות הבעלים או אחד הבקרים.
 
 ```python
 draft = TransactionDraft(
@@ -327,7 +326,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### פיקוח החשבון {#invoice-receivable}
 
-להציג פיקוח כצורה RWA על ידי שמירת מספר הפיקוח ב- `primary_reference` ונתונים מטאטא. לאחר הרישום, השתמשו ב- ID שנוצר עבור העברה והחיסכון.
+להציג פיקוח כצורה RWA על ידי שמירת מספר הפיקוח ב- `primary_reference` ומטא-נתונים. לאחר הרישום, השתמשו ב- ID שנוצר עבור העברה והחיסכון.
 
 ```python
 draft = TransactionDraft(
@@ -455,7 +454,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 ## מסמכים קשורים {#related-docs}
 
 - [נכסים](/he/blockchain/assets.md)
-- [נתונים מטאטא](/he/blockchain/metadata.md)
+- [מטא-נתונים](/he/blockchain/metadata.md)
 - [Iroha הוראות מיוחדות](/he/blockchain/instructions.md)
-- [שאלות](/he/reference/queries.md#assets-nfts-and-rwas)
+- [שאילתות](/he/reference/queries.md#assets-nfts-and-rwas)
 - [נקודות קצה Torii ](/he/reference/torii-endpoints.md#app-and-sora-route-families)

@@ -1,86 +1,73 @@
 ---
 translation_locale: uz
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: ccbb076ef3e2ba45d074ad3394ac354d0c2233cdd4286c5fa7a77f0d1c413988
+translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: bing-translator-llm
 ---
 
-# Kriptografik kalitlarni yaratish {#generating-cryptographic-keys}
+# Kriptografik Kalitlarni Yaratish {#generating-cryptographic-keys}
 
-Iroha 3 uchun mijoz, peer va validator kalit materiallarini yaratishda `kagami keys` dan foydalaning.
+Iroha 3 uchun mijoz, tugun va tasdiqlovchi kalit materialini yaratishda `kagami keys` dan foydalaning.
 
-## Asosiy foydalanish {#basic-usage}
+## Asosiy ishlatish {#basic-usage}
 
-Iroha manba kodining checkout katalogidan:
-
-```bash
-cargo run --bin kagami -- keys --algorithm ed25519
-```
-
-JSON chiqarishni TOML yoki avtomatlashtirishga ko'pincha ko'paytirish eng oson bo'ladi:
-
-```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --json
-```
-
-Buyruq ochiq kalit va oshkor ko'rinishdagi xususiy kalitni chiqaradi. Xususiy kalitni maxfiy material deb hisoblang; yaratilgan ishlab chiqarish kalitlarini repozitoriyga commit qilmang.
-
-Qo'llab-quvvatlanadigan Unix platformasida xavfsiz mahalliy eksport yoki saqlovchiga topshirish uchun xususiy kalitni chiqarish o'rniga yangi kalit juftini faqat egasi kira oladigan bo'sh katalogga yozing:
+Iroha manba-kodi ishlaydigan nusxasidan:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-Ota katalog oldindan mavjud bo'lishi kerak. Nishon katalog yangi yoki joriy foydalanuvchiga tegishli, `0700` rejimli, ramziy havolalarsiz va bo'sh bo'lishi kerak. `kagami` `public.key` va `private.key` fayllarini `0600` rejimida yozadi va xususiy kalitni chiqarmaydi. `--pop` bilan u `pop.hex` faylini ham yozadi.
+Ota katalogi allaqachon mavjud bo‘lishi kerak. Maqsad yangi bo‘lishi yoki joriy foydalanuvchi tomonidan allaqachon egalik qilinishi, rejim `0700`ga ega bo‘lishi, simbollik bog‘lanmalardan xoli bo‘lishi va bo‘sh bo‘lishi kerak. `kagami` `public.key` va `private.key` ni rejim `0600` bilan yozadi va kalit materialini chop etmaydi. `--pop` bilan u shuningdek `pop.hex` ni ham yozadi.
 
-Kagami faqat egaga tegishli fayl tizimi qoidalarini ta'minlay olmaydigan platformalarda `--out-dir` xavfsiz tarzda xato bilan yakunlanadi. Xususiy kalit fayli shifrlanmagan eksport bo'lib, apparat yoki eksport qilinmaydigan ishlab chiqarish imzochisi emas. Uni tasdiqlangan saqlash chegarasiga import qiling va eksport faylini joylashtirish tartibiga muvofiq olib tashlang.
+`--out-dir` egalar uchun mo‘ljallangan fayl tizimi qoidalarini Kagami amalga oshira olmagan platformalarda yopiq holatda ishlaydi. Maxfiy kalit fayli shifrlanmagan eksport faylidir, emas apparatli yoki eksport qilinmaydigan ishlab chiqarish kriptografik imzolagichi. Uni tasdiqlangan saqlash chegarasiga import qiling va tarqatish protsedurasiga muvofiq eksportni o‘chiring.
 
 ## Algoritmlar {#algorithms}
 
-Oddiy algoritmlar quyidagilardan iborat:
+Eng keng tarqalgan algoritmlar:
 
-- `ed25519` mijozlar hisobvaraqlari va streaming identifikatsiyalari uchun.
-- `secp256k1` agar mijoz hisob raqami uchun secp256k1 identifikatsiyasi kerak bo'lsa.
-- build BLS qo'llab-quvvatlashini yoqsa, har bir node yoki peer konsensus identifikatori uchun `bls_normal`.
+- `ed25519` mijoz hisoblari va oqim identifikatorlari uchun.
+- `secp256k1` mijoz hisob qaydnomasi secp256k1 identifikatorini talab qilganda.
+- `bls_normal` har bir tugun yoki tarmoq hamkori konsensus identifikatori uchun.
 
-Qurilishingiz tomonidan qo'llab-quvvatlanadigan aniq algoritmlarni quyidagi yordam bilan tekshiring:
+Sizning qurilmangiz tomonidan qo‘llab-quvvatlanadigan aniq algoritmlarni quyidagida tekshiring:
 
 ```bash
 cargo run --bin kagami -- keys --help
 ```
 
-## Deterministik rivojlanish kalitlari {#deterministic-development-keys}
+## Deterministik Rivojlanish Kalitlari {#deterministic-development-keys}
 
-Takrorlanadigan fixture-lar uchun 64 ta o'n oltilik belgi ko'rinishida kodlangan 32 baytli seed bering. Ixtiyoriy `0x` prefiksi qabul qilinadi:
+Takrorlanadigan test artefaktlari uchun 64 o'n oltilik belgilar sifatida kodlangan 32-baytli urug'ni kiriting. Ixtiyoriy `0x` prefiksi qabul qilinadi:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 \
   --seed-hex 1111111111111111111111111111111111111111111111111111111111111111 \
-  --json
+  --out-dir ./fixture-client-key
 ```
 
-Seed xususiy kalit materialidir. Deterministik seed-lardan faqat mahalliy ishlab chiqish va sinovlarda foydalaning. Operatsion tizim tasodifiyligidan ishlab chiqarish kalitini yaratish uchun `--seed-hex` ni ko'rsatmang.
+Uchqun shaxsiy kalit materialidir. Faqat mahalliy rivojlantirish va testlar uchun deterministik uchqunlardan foydalaning. Ishlash tizimi tasodifiyligidan ishlab chiqarish kalitini yaratish uchun `--seed-hex` ni tashlab yuboring.
 
-## BLS Konsensus kalitlari va mulkdorlik hujjati {#bls-consensus-keys-and-proofs-of-possession}
+## BLS Konsensus Kalitlari va Egalik-Dalillari {#bls-consensus-keys-and-proofs-of-possession}
 
-Iroha 3 nodlar va tengdoshlarning kelishuvli identifikatsiyalari BLS-normal kalitlaridan foydalanadi. BLS-normal kalit va egalik to'g'risidagi dalil (PoP) ni yaratish:
+Iroha 3 tugun va tarmoq tengdoshining konsensus identifikatorlari BLS-normal kalitlardan foydalanadi. BLS-normal kalit va egalik isboti (PoP) yaratish:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./validator-key
 ```
 
-`--pop` faqat `bls_normal` bilan yaroqli. JSON chiqishi `pop_hex` ni o'z ichiga oladi. Imzolangan genesis har bir ovoz beruvchi validator uchun mos PoP talab qiladi. Peer konfiguratsiyasida bo'sh bo'lmagan `trusted_peers_pop` xaritasi validatorlar quyi to'plamini tanlaydi; shu bo'sh bo'lmagan xaritada ko'rsatilmagan ishonchli peer-lar kuzatuvchi bo'ladi. Xarita bo'sh bo'lsa, barcha BLS-normal ishonchli peer-lar bootstrap nomzodlari to'plamiga kiradi, ovoz beruvchilarning PoPs-i esa baribir imzolangan genesis orqali beriladi.
+`--pop` faqat `bls_normal` bilan amal qiladi; u saqlov katalogiga `pop.hex` ni qo‘shadi. Imzolangan boshlang‘ich holat har bir ovoz beruvchi tasdiqlovchi uchun mos PoP talab qiladi. Tugun konfiguratsiyasida bo‘sh bo‘lmagan `trusted_peers_pop` xaritasi tasdiqlovchilar to‘plamini tanlaydi; undan chiqarib tashlangan ishonchli tugunlar kuzatuvchidir. Xarita bo‘sh bo‘lsa, barcha BLS-normal ishonchli tugunlar dastlabki nomzodlar to‘plamiga kiradi, ammo ovoz beruvchilarning PoPs qiymatlarini baribir imzolangan boshlang‘ich holat belgilaydi.
 
-## Ishlab chiqarish formatlari {#output-formats}
+## Hibs chiqarish {#custody-output}
 
-Terminal tekshiruvi uchun andoza chiqish, avtomatlashtirish uchun `--json` va boshqa skriptda oddiy chiziqlarga yo'naltirilgan qiymatlar kerak bo'lganda `--compact` dan foydalaning:
+`kagami keys` `--out-dir` ga muhtoj va hech qachon maxfiy kalit materialini standart chiqishga yozmaydi. `public.key`, `private.key` va ixtiyoriy `pop.hex` ni o'qing yaratilgan katalog. Har bir fayl bitta protokol-standart qiymatini o‘z ichiga oladi va undan keyin yangi qator keladi, bu esa faylga asoslangan avtomatlashtirishni oddiy qiladi:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --compact
+PUBLIC_KEY=$(tr -d '\n' < ./client-key/public.key)
 ```
 
-To'liq hosil bo'lgan Kagami yordam uchun:
+To‘liq yaratilgan Kagami yordam uchun:
 
 ```bash
 cargo run -p iroha_kagami -- advanced markdown-help > crates/iroha_kagami/CommandLineHelp.md

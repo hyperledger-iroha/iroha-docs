@@ -14,7 +14,7 @@ translation_engine: nllb-200-ct2
 
 ایک رجسٹرڈ `Trigger` میں شامل ہیں:
 
-- `id`: ایک `TriggerId` لفافہ ایک `Name`
+- `id`: ایک `TriggerId` جو `Name` کو اپنے اندر سمیٹتا ہے
 - `action`: قابل عمل، اختیار، فلٹر، تکرار پالیسی، دوبارہ کوشش کی پالیسی، اور میٹا ڈیٹا
 
 اس کارروائی میں شامل ہیں:
@@ -65,9 +65,9 @@ translation_engine: nllb-200-ct2
 
 جب دوبارہ کوشش کرنے کا بجٹ ختم ہو جاتا ہے، تو ٹرگر رجسٹرڈ نہیں ہوتا ہے۔
 
-## سوالات {#queries}
+## استفسارات {#queries}
 
-ٹرگر کی حالت چیک کرنے کے لئے موجودہ ٹرگر سوالات کا استعمال کریں:
+ٹرگر کی حالت چیک کرنے کے لئے موجودہ ٹرگر استفسارات کا استعمال کریں:
 
 - [`FindTriggers`](/ur/reference/queries.md#triggers-contracts-transactions-and-blocks)
 - [`FindActiveTriggerIds`](/ur/reference/queries.md#triggers-contracts-transactions-and-blocks)

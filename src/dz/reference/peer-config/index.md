@@ -1,20 +1,19 @@
 ---
 translation_locale: dz
 translation_source: /reference/peer-config/index.md
-translation_source_hash: 5cc6ddf62a45f655d61a0ff3ebc7e20b939fe78c9d542087b717c2e17e19250d
+translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f29469aaf4
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: human-reviewed
 ---
-
 # གཞི་སྒྲིག་འབད་ Iroha {#configuring-iroha}
 
-ས་གནས་ཀྱི་ མཉམ་འབྲེལ་བཟོ་རྣམ་འདི་ TOML ཡིག་སྣོད་ཚུ་ནང་ གཞི་སྒྲིག་འབདཝ་ཨིན། འདི་ [`SetParameter`](/dz/blockchain/instructions.md#setparameter) གི་བཀོད་རྒྱ་བརྒྱུད་དེ་ བསྒྱུར་བཅོས་འབད་མི་ On-chain སྒྲིག་གཞི་ལས་ཁྱད་པར་ཅན་ཨིན། བཟོ་སྐྲུན་འབད་ནིའི་ བྱ་སྤྱོད་འདི་ སྒྲིག་གཞི་བཟོ་ཐངས་ཡིག་སྣོད་ ཡང་ན་ On-chain ཁྱད་ཚད་ནང་ལུ་ངོ་སྤྲོད་འབད་དགོཔ་ཨིན། གནས་སྟངས་འགྱུར་ལྡེ་མིག་ཚུ་ features gatesམེན།
+ཉེ་གནས་ཡོངས་འབྲེལ་མཉམ་རོགས་རིམ་སྒྲིག་འདི་ TOML ཡིག་སྣོད་ཚུ་ནང་གཞི་སྒྲིག་འབད་ཡོདཔ་ཨིན། འདི་ [`SetParameter`](/dz/blockchain/instructions.md#setparameter) བཀོད་རྒྱ་བརྒྱུད་དེ་བསྒྱུར་བཅོས་འབད་ཡོད་པའི་ རིམ་སྒྲིག་རིམ་སྒྲིག་ལས་སོ་སོ་ཨིན། ཐོན་སྐྱེད་སྤྱོད་ལམ་འདི་རིམ་སྒྲིག་ཡིག་སྣོད་ཡང་ན་ཨོན་-ཆིན་ཚད་བཟུང་ནང་ལུ་ངོས་འཛིན་འབད་དགོཔ་ཨིན། མཐའ་འཁོར་འགྱུར་ཅན་ཚུ་ཁྱད་རྣམ་སྒོ་སྒྲིག་མེན།
 
-གཞི་སྒྲིག་ཡིག་སྣོད་ལུ་ལམ་སྟོན་འབད་ནིའི་དོན་ལུ་ [`--config`](../irohad-cli#arg-config)CLI གྲོས་བསྡུར་ལག་ལེན་འཐབ་ཨིན།
+གཞི་སྒྲིག་ཡིག་སྣོད་ལུ་ལམ་སྟོན་འབད་ནིའི་དོན་ལུ་ [`--config`](../iroha3d-cli#arg-config)CLI གྲོས་བསྡུར་ལག་ལེན་འཐབ་ཨིན།
 
 ## དཔྱད་ཡིག་འདི་ {#template}
 
-ཁྱད་ཚད་རེ་རེ་གྱི་གསལ་བཤད་ཚུ་གི་དོན་ལུ་ [Parameters](./params.md) འབྲི་ཤོག་ལུ་བལྟ་དགོ།
+རིམ་སྒྲིག་ཚད་བཟུང་རེ་རེ་གི་གོ་དོན་དང་ལག་ལེན་ཐབས་ཀྱི་འགྲེལ་བཤད་ཁ་གསལ་གྱི་དོན་ལུ་ [ཚད་བཟུང་ཚུ་](./params.md) གི་ཟུར་བརྟེན་ལུ་བལྟ།
 
 ::: details `peer.template.toml`
 
@@ -61,8 +60,8 @@ max_content_len = 2048
 
 :::
 
-གཞི་སྒྲིག་འདི་ `a.toml` ལས་ `chain` དང་ `max_content_len` ལས་ `b.toml` དེ་ལས་ `torii.address` ལས་ `config.toml` (overwrites `b.toml`) འབད་ནི་ཨིན་པས།
+གྲུབ་འབྲས་རིམ་སྒྲིག་འདི་ `chain` ལས་ `a.toml` དང་ `max_content_len` ལས་ `b.toml` དེ་ལས་ `torii.address` ལས་ `config.toml` འོང་ (`b.toml` བསྐྱར་འབྲིཝ་ཨིན།)།
 
 ## དཀའ་ངལ་སེལ་ཐབས། {#troubleshooting}
 
-སྒྲིག་གཞི་འདི་ག་དེ་སྦེ་བཀླག་ནི་དང་ བརྟག་ཞིབ་འབད་ཡི་ག་གི་ཤུལ་རྟགས་བལྟ་ནིའི་དོན་ལུ་ [`--trace-config`](../irohad-cli#arg-trace-config) CLI ཌིང་སྒྲི་བབ་གཏང་དགོ།
+སྒྲིག་གཞི་འདི་ག་དེ་སྦེ་བཀླག་ནི་དང་ བརྟག་ཞིབ་འབད་ཡི་ག་གི་ཤུལ་རྟགས་བལྟ་ནིའི་དོན་ལུ་ [`--trace-config`](../iroha3d-cli#arg-trace-config) CLI ཌིང་སྒྲི་བབ་གཏང་དགོ།

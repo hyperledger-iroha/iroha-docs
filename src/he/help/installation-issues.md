@@ -73,7 +73,7 @@ $ rustup which rustc
 $ rustup which cargo
 ```
 
-ההתקנות של המשתמש של שרשראות הכלים בדרך כלל ב `~/.rustup/toolchains/stable-*/bin/`.
+התקנות משתמש של ערכות הכלים נמצאות _בדרך כלל_ ב-`~/.rustup/toolchains/stable-*/bin/`. אם כך, אמורה להיות אפשרות להריץ
 
 ```bash
 $ rustup toolchain update stable
@@ -93,7 +93,7 @@ $ rustup default stable
 
 ### בדוק אם יש גרסאות אחרות Rust {#check-if-there-are-other-rust-versions}
 
-אם נמשיך לפתור בעיות בבור הארנב, נוכל להשתמש בשמות כדורים:
+אם ממשיכים לעומק פתרון הבעיה, ייתכן שהוגדרו כינויים (aliases) במעטפת:
 
 ```bash
 $ type rustc
@@ -129,7 +129,7 @@ $ rustup remove <toolchain>
 $ cargo --help
 ```
 
-שגיאה זו מאשרת שאין שרשרת כלים פעילה Rust נותרה מותקנת.
+שגיאה זו מאשרת שלא נותרה מותקנת שרשרת כלים פעילה של Rust. לאחר מכן הריצו:
 
 ```bash
 $ rustup toolchain install stable
@@ -137,7 +137,7 @@ $ rustup toolchain install stable
 
 ## פתרון בעיות Python שרשרת כלים {#troubleshooting-python-toolchain}
 
-כאשר אתה מקין את Python חבילת גלגלים באמצעות צינור במהלך [Python הגדרת הלקוח](/he/guide/tutorials/python.md), אתה עלול לעמוד בטעות כמו: "אירוזה_פיטון...*.whl הוא לא גלגל תומך על פלטפורמה זו".
+בעת התקנת חבילת wheel של Python באמצעות `pip` במהלך [הגדרת לקוח Python](/he/guide/tutorials/python.md), ייתכן שתיתקלו בשגיאה כגון: "הקובץ iroha_python-*.whl אינו חבילת wheel נתמכת בפלטפורמה זו".
 
 שגיאה זו פירושה כי pip ישן, אז אתה צריך לעדכן אותו. ראשית כל, מומלץ לבדוק את OS שלך על עדכונים ולעשות שיפור מערכת.
 

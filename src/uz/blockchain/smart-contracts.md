@@ -1,64 +1,81 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
+translation_source_hash: 4281cb307762443c85b67659310da69f1f1ea5b99926bad43b90abe36e87075e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2
 ---
 
 # Aqlli shartnomalar {#smart-contracts}
 
-Iroha tranzaksiyalari `Executable` foydali yuklarni amalga oshiradi. Hozirgi ma'lumot modeli quyidagilarni qo'llab-quvvatlaydi:
 
-- `Executable::Instructions`: Iroha maxsus yo'l-yo'riqlarining tartiblangan to'plami.
-- `Executable::ContractCall`: ishga tushirilgan shartnoma instansiyasiga qo'shimcha ma'lumotnoma chaqirichi
-- `Executable::Ivm`: Iroha VM bytekod
-- `Executable::IvmProved`: Iroha VM bayt kodi oldindan hisoblangan ko'rsatma qoplamasi va isbot majburiyatlari bilan
+Iroha tranzaksiyalari `Executable` foydali yuklarini bajaradi. Joriy ma’lumotlar modeli quyidagilarni qo‘llab-quvvatlaydi:
 
-Kotodama — Iroha'ning yuqori darajali aqlli shartnomalar tili. `.ko` manba fayli deterministik IVM bayt-kodiga kompilyatsiya qilinadi va joylashtirish uchun odatda `.to` artefakti sifatida saqlanadi. Kotodama faqat IVM-ni nishonga oladi. U RISC-V yoki WebAssembly-ni nishonga olmaydi.
+- `Executable::Instructions`: Iroha maxsus ko‘rsatmalaridan iborat tartibli majmua;
+- `Executable::ContractCall`: joylashtirilgan shartnoma nusxasini havola orqali chaqirish;
+- `Executable::Ivm`: Iroha VM baytkodi;
+- `Executable::IvmProved`: oldindan hisoblangan ko‘rsatmalar qoplami va isbot majburiyatlariga ega Iroha VM baytkodi.
 
-Birinchi reliz faqat ABI 1-versiyasini qo‘llab-quvvatlaydi. syscall va pointer-ABI siyosati shartnomani qabul qilish va bajarish vaqtida hech qanday shartsiz qo‘llanadi; ish vaqti mosligi tugmasi mavjud emas.
+Kotodama — Iroha yuqori darajadagi aqlli shartnoma tili. `.ko` manba fayli deterministik IVM baytkodiga kompilyatsiya qilinadi va joylashtirish uchun odatda `.to` artefakti sifatida saqlanadi. Kotodama faqat IVM ni nishonlaydi; RISC-V yoki WebAssembly ni emas.
+
+Birinchi reliz faqat ABI ning 1-versiyasini qo‘llab-quvvatlaydi. Tizim chaqiruvlari va ko‘rsatkich-ABI siyosati qabul qilish hamda bajarishda majburiy qo‘llanadigan yagona shartsiz V1 shartnomasidir; muqobil bajarish muhiti rejimi yo‘q.
 
 ## Aqlli shartnomalardan qachon foydalanish kerak {#when-to-use-smart-contracts}
 
-Transaksiyani to'g'ridan-to'g'ri ifodalash mumkin bo'lganda odatdagi ko'rsatmalardan foydalaning:
+Tranzaksiyani bevosita ifodalash mumkin bo‘lsa, odatiy ko‘rsatmalardan foydalaning:
 
-- ro'yxatdan o'tkazish yoki uni bekor qilish ob'ektlari
-- Minta, yonish yoki o'tkazish aktivlari
-- Metadatalarni yangilash
-- ruxsatnomalarni berish yoki bekor qilish
-- qo'zg ' otish
-- zanjirda o'rnatilgan parametrlar
+- obyektlarni ro‘yxatdan o‘tkazish yoki chiqarish;
+- aktivlarni zarb qilish, yoqish yoki o‘tkazish;
+- metama’lumotni yangilash;
+- ruxsatlarni berish yoki bekor qilish;
+- triggerni bajarish;
+- zanjirdagi parametrlarni o‘rnatish.
 
-Transaksiya uchun o'rnatilgan logika kerak bo'lganda, uni statik yo'l-yo'riqlar ketma-ketligi sifatida ifodalash qiyin bo'lganida yoki ishga tushirilgan kontrakt instansiyasini ma'lumotnoma orqali chaqirish kerak bo'lsa aqlli shartnoma ishlatish.
+Tranzaksiyaga statik ko‘rsatmalar ketma-ketligi bilan ifodalash noqulay bo‘lgan paketlangan mantiq kerak bo‘lsa yoki joylashtirilgan shartnoma nusxasini havola orqali chaqirish lozim bo‘lsa, aqlli shartnomadan foydalaning.
 
-## IVM Amalga oshiriladigan qismlar {#ivm-executables}
+## IVM bajariladigan foydali yuklari {#ivm-executables}
 
-`Executable::Ivm` xom IVM baytkodini o'z ichiga oladi. Nukllar bu baytkodni zanjir uchun moslashtirilgan ishga tushirish vaqti cheklovlari ichida bajaradi. Baytkodni kichik va deterministik saqlang; shartnomalar bitimlarni amalga oshirishning bir qismi bo'lib, shuning uchun konsensusga ta'sir qiladi.
+`Executable::Ivm` xom IVM baytkodini olib yuradi. Tugunlar uni zanjir uchun sozlangan bajarish muhiti chegaralarida bajaradi. Baytkodni kichik va deterministik saqlang; shartnomalar tranzaksiya bajarilishining bir qismi bo‘lgani uchun konsensusga ta’sir qiladi.
 
-`Executable::IvmProved` issiqlik o'tkazgichlari uchun mo'ljallangan.
+`Executable::IvmProved` isbot olib yuradigan jarayonlar uchun mo‘ljallangan. U quyidagilarni o‘z ichiga oladi:
 
-- IVM byte kodi
-- deterministik yo'l-yo'riqlarni qoplash
-- bajarishga doir tadbirlar majburiyati
-- gaz siyosati majburiyati
+- IVM baytkodi;
+- deterministik ko‘rsatmalar qoplami;
+- bajarish hodisalari majburiyati;
+- gaz siyosati majburiyati.
 
-Dasturi o'rnatilgan bytekod bilan qoplamani bog'laydi. Pipeline siyosatiga qarab, validatorlar dalilni tasdiqlashlari va uni qo'shimcha xavfsizlik tekshiruvi sifatida takrorlashlari mumkin.
+Isbot qoplamni bajarilgan baytkodga bog‘laydi. Konveyer siyosatiga qarab, tasdiqlovchilar isbotni tekshirishi va qo‘shimcha xavfsizlik tekshiruvi sifatida bajarishni takrorlashi mumkin.
 
-## Ishlab chiqarilgan shartnoma qo'ng'iroqlari {#deployed-contract-calls}
+## Joylashtirilgan shartnoma chaqiruvlari {#deployed-contract-calls}
 
-`Executable::ContractCall` jo'natilgan kontrakt ko'rinishini manzil orqali chaqiradi. Agar shartnoma kodi alohida ro'yxatdan o'tkazilgan bo'lsa va bitimlar bayt kodini har safar olib yurishning o'rniga, uni ma'lumotnoma asosida chaqirishlari kerak bo'lsa, buni ishlating.
+`Executable::ContractCall` joylashtirilgan shartnoma nusxasini manzil orqali chaqiradi. Shartnoma kodi alohida ro‘yxatdan o‘tgan va tranzaksiyalar baytkodni har safar olib yurish o‘rniga uni havola orqali chaqirishi kerak bo‘lsa, undan foydalaning.
 
-## Operativ yo'l-yo'riq {#operational-guidance}
+## Shartnoma hayot davri va egalik {#contract-lifecycle-and-ownership}
 
-- Shartnomalarni deterministik saqlang. Shartnoma xatti-harakati mahalliy devor soat vaqti, uy egasi fayl tizimining holati, tarmoq qo'ng'iroqlari yoki boshqa tengdosh lokal ma'lumotlarga bog'liq bo'lishi kerak emas.
-- Yordamchi yuklarni kompak saqlang. Katta byte kodlar tranzaksiya hajmini va blok tarqatish xarajatlarini oshiradi.
-- Oddiy daftar oʻzgarishlari uchun yozib qoʻyilgan koʻrsatmalarni afzal koʻrish. Ularni audit qilish osonroq va amalga oshirish arzonroq.
-- Shartnomalarni yangilash va ro'yxatga olish huquqlarini yuqori xavfli operatsion nazoratlar sifatida ko'rib chiqish.
+Har bir joylashtirilgan manzil shartnoma faol bo‘lmaganida ham `ContractLifecycleControlV1` yozuvini saqlaydi. Yozuvda birinchi joylashtirishning o‘zgarmas kelib chiqishi, joriy va kutilayotgan ega, bekor qilinadigan Parlament vakolati, faol kod xeshi, noldan farqli solishtirish-va-almashtirish tahriri hamda saqlanayotgan favqulodda cheklov bo‘ladi. Bevosita joylashtirish joylashtiruvchi hisobni qayd etadi. Parlament joylashtirishi esa taklifchi, taklif kontenti identifikatori va muvaffaqiyatli boshqaruv urinish identifikatorini qayd etadi.
+
+Hayot davri egasi bitta hisob yoki Parlament bo‘ladi. Hisob egaligini o‘zgartirish alohida taklif va qabul qilishdan iborat; taklif qabul qilinsa, Parlamentga berilgan har qanday vakolat bekor qilinadi. Hisob egasi Parlamentga shartnomani faollashtirish yoki faolsizlantirish huquqini berib, keyin bu vakolatni bekor qilishi mumkin, ammo vakolat Parlamentga egalikni o‘tkazishga hech qachon ruxsat bermaydi. Parlamentga tegishli o‘zgarishlar va Parlamentning qabul qilishi sertifikatlangan boshqaruv ta’sirlari orqali amalga oshiriladi.
+
+Xom `ActivateContractInstance` va `DeactivateContractInstance` ko‘rsatmalari faqat joriy hisob egasiga ochiq. Ular yozuvning aniq `expected_revision` qiymatini olib yurishi shart; eskirgan yoki nol tahrir xavfsiz tarzda rad etiladi. Xom faollashtirish hayot davri yozuvini yarata olmaydi va `active_code_hash` ni o‘zgartirishdan avval ro‘yxatdan o‘tgan artefakt, manifest va ABI ni tekshiradi. Faolsizlantirish faol kod xeshini tozalaydi, ammo egalik va kelib chiqishni saqlaydi. Har bir muvaffaqiyatli hayot davri o‘tishi tahrirni oshiradi va amaldan keyingi butun holatni chiqaradi.
+
+Faollashtirish manifest e’lon qilgan bitta hayot davri ilgagini ham tayyorlashi mumkin. Manifestida `EntryPointKind::Hajimari` kirish nuqtasi (`hajimari`/`始まり`) bo‘lgan dastlabki faollashtirish `Hajimari` ni tayyorlaydi. Faol manzilni manifestida `EntryPointKind::Kaizen` kirish nuqtasi (`kaizen`/`改善`) bo‘lgan kodga qayta bog‘lash `Kaizen` ni tayyorlaydi. Bog‘lanish darhol o‘zgaradi, ammo shartnoma hali tayyor emas: aynan tayyorlangan ilgak muvaffaqiyatli tugamaguncha har bir `Kotoage` va `View` chaqiruvi rad etiladi. Ilgak kutilayotganida boshqa faollashtirish ham rad etiladi.
+
+Tayyorlangan ilgakni ayni shartnoma manzili va yangi kod xeshida `Executable::ContractCall` bilan, manifest e’lon qilgan aniq `hajimari` yoki `kaizen` kirish nuqtasi va argumentlardan foydalanib chaqiring. Bajarish muhiti manzil va selektor doirasidagi `CanInvokeContractEntrypoint` ruxsatini o‘zi beradi; chaqiruvchilar bu ruxsatni yaratmasligi yoki bermasligi kerak. Kutilayotgan belgi bajarish muhiti hosil qilgan deterministik `transition_id` va yangi `code_hash` ni, `Kaizen` belgisi esa `previous_code_hash` ni ham o‘z ichiga oladi. Mijozlar `transition_id` ni hisoblamaydi ham, yubormaydi ham. Muvaffaqiyatli ilgak belgini atomik sarflaydi, muvaffaqiyatsiz ilgak esa keyinroq qayta urinish uchun uni kutilayotgan holatda qoldiradi.
+
+Parlamentning favqulodda darajadagi taklifi joriy tahrir, kod xeshi va nol bo‘lmagan hodisa dayjestini bog‘lasa, ko‘pi bilan 3 600 blokka cheklov joriy qilishi mumkin. Chaqiruvlar cheklov joriy qilingan balandlikdan uning amal qilish muddati tugaydigan balandlikkacha, oxirgi balandlikni kiritmagan holda, bloklanadi. Muddat tugashi bajarilishni tiklaydi, ammo cheklov yozuvini o‘chirmaydi. Yozuvni tozalashdan oldin sertifikatlangan `CompleteEmergencyHoldRetrospective` amali aynan shu cheklov identifikatorlari va dayjestini hamda nol bo‘lmagan xulosa ildizini bog‘lashi shart; retrospektiva yakunlanmaguncha boshqa cheklov joriy qilib bo‘lmaydi.
+
+Ilova API si yoqilganda saqlanayotgan holatni `GET /v1/gov/contracts/{contract_address}` bilan o‘qing. Uning `found` maydoni hayot davri yozuvi mavjudligini bildiradi, manzilda hozir faol kod borligini emas.
+
+## Ishlatishga oid tavsiyalar {#operational-guidance}
+
+- Shartnomalarni deterministik saqlang. Shartnoma xatti-harakati mahalliy tizim soati, mezbon fayl tizimi holati, tarmoq chaqiruvlari yoki tugunga xos boshqa kirishlarga bog‘liq bo‘lmasligi kerak.
+- Foydali yuklarni ixcham saqlang. Katta baytkod tranzaksiya hajmi va blok tarqatish xarajatini oshiradi.
+- Reyestrdagi sodda o‘zgarishlar uchun tiplashtirilgan ko‘rsatmalarni tanlang. Ularni tekshirish osonroq va bajarish arzonroq.
+- Shartnomani yangilash va ro‘yxatdan o‘tkazish ruxsatlarini yuqori xavfli operatsion boshqaruv deb hisoblang.
 
 Shuningdek qarang:
 
 - [Ko'rsatmalar](/uz/blockchain/instructions.md)
-- [Ishtirokchilar](/uz/blockchain/triggers.md)
+- [Triggerlar](/uz/blockchain/triggers.md)
 - [Ruxsatnomalar](/uz/blockchain/permissions.md)
 - [Ma'lumotlar modeli sxemasi](/uz/reference/data-model-schema.md)

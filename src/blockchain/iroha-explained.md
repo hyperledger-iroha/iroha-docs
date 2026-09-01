@@ -6,7 +6,7 @@ spaces and multi-lane routing.
 
 ## Core Building Blocks
 
-- **`irohad`** runs peers
+- **`iroha3d`** runs peers
 - **Torii** is the client and operator gateway
 - **Sumeragi** handles consensus
 - **Norito** is the [canonical binary format](/reference/norito.md)

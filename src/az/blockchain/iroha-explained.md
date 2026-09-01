@@ -1,77 +1,77 @@
 ---
 translation_locale: az
 translation_source: /blockchain/iroha-explained.md
-translation_source_hash: 3fdd22338e826b1ce335ebf5e4e850cf3deb9415c36a0c8d21ad63c397cec8c0
+translation_source_hash: ba591b2c1aa819837177625b1ae457b5fa492197576dc690b19ca2897562a436
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Iroha Açıqlanıb {#iroha-explained}
+# Iroha İzah olundu {#iroha-explained}
 
-Iroha 3 ilk buraxılışda olan Hyperledger Iroha platformasıdır. Eyni mərkəz özünü hosted şəbəkələri və məlumat məkanları üçün SORA Nexus icra modelini dəstəkləyir və çox zolaqlı yönləndirmə.
+Iroha 3 ilk buraxılış Hyperledger Iroha platformasıdır. Eyni əsas öz-özünə yerləşdirilən şəbəkələri və məlumat məkanları və çoxzolaqlı yönləndirmə üçün SORA Nexus icra modelini dəstəkləyir.
 
-## Əsas inşaat blokları {#core-building-blocks}
+## Əsas Tikinti Blokları {#core-building-blocks}
 
-- `irohad` həmyaşıdları idarə edir
-- Torii müştərinin və operatorun girişidir
-- Sumeragi konsensus ilə məşğul olur
-- Norito [kanoniki ikili formatdır ](/az/reference/norito.md)
-- IVM portativ ağıllı müqavilələr və bayt kodunu icra edir.
-- Kotodama yüksək səviyyəli `.ko` müqavilələri IVM `.to` byte koduna tərtib edir.
-- Kagami açarları, mənşəyi, profilləri və lokal şəbəkələri hazırlayır
-- SORA Nexus xidmət təyyarələri tətbiq hosting, məxfilik nəqliyyatı, saxlama və adlandırma üçün Soracloud, Inrou, SoraNet, SoraFS və SoraDNS əlavə edir
+- `iroha3d` şəbəkə həmkarlarını işlədir
+- Torii müştəri və operator qovşağıdır
+- Sumeragi konsensusu idarə edir
+- Norito [tək protokol-standart ikilik format](/az/reference/norito.md)-dir
+- IVM daşına bilən ağıllı müqavilələri və baytkodu işlədir
+- Kotodama yüksək səviyyəli `.ko` müqavilələri IVM `.to` baytkoduna yığır
+- Kagami açarları, blokçeyn başlanğıcını, profilləri və lokal şəbəkələri hazırlayır
+- SORA Nexus xidmət təyyarələri tətbiq hostinqi, məxfilik nəqliyyatı, saxlanma və adlandırma üçün Soracloud, Inrou, SoraNet, SoraFS və SoraDNS əlavə edir
 
-## İşə salınma modeli {#execution-model}
+## İcra modeli {#execution-model}
 
-Hər bir dünya vəziyyətinin dəyişməsi hələ də əməliyyatlarla baş verir. IVM byte kodu və Torii Müştərilərin onları təqdim etməsi və ya təsirlərini müşahidə etməsinin əsas yolu budur.
+Dünyanın vəziyyətinə edilən hər dəyişiklik hələ də əməliyyatlar vasitəsilə baş verir. Əməliyyatlar təlimatları və ya IVM baytkodunu daşıyır və Torii müştərilərin onları təqdim etməsinin və ya təsirini müşahidə etməsinin əsas yoludur.
 
-- Nexus -dən xəbərdar konfiqurasiyalar bir neçə zolağı müəyyənləşdirə bilər
-- məlumat məkanları eyni kitabın modelinin bir hissəsi olaraq qalarkən iş yüklərini təcrid edir.
-- istiqamət siyasəti hansı iş sinfi ilə məşğul olduğunu müəyyənləşdirir.
+- Nexus-məlumatlı konfiqurasiyalar bir neçə icra yolunu təyin edə bilər
+- məlumat sahələri iş yüklərini təcrid edir və eyni blockchain dəftər modeli hissəsi olaraq qalır
+- Routing siyasəti iş sinfini hansı icra zolağı və məlumat sahəsinin idarə edəcəyinə qərar verir
 
-## Bir çox məlumat məkanı memarlığı {#multi-dataspace-architecture}
+## Çox-Məlumat Məkanlı Memarlıq {#multi-dataspace-architecture}
 
-Bir məlumat məkanı ayrı bir blok zinciri deyil, bir marşrut və ad məkanı sərhədidir. İdarə vaxtı hələ də bir `World`, bir əməliyyat modeli və bir konsensus boru xəttinə malikdir. Nexus qovşağa bu zolaqlar arasındakı bölmə işinin necə ediləcəyini və həmin zolaqların xidmət etdiyi məlumat məkanlarının necə adlandırılacağını izah edən kataloqlar əlavə edir.
+Məlumat məkanı yönləndirmə və ad sahəsi həddi olub, ayrı bir blokçeyn deyil. Proqramın icra mühiti hələ də bir `World`, bir əməliyyat modeli malikdir, və bir konsensus proqram təminatı emal iş axını. Nexus icra zolaqları boyunca işi necə bölüşdürmək və həmin icra zolaqlarının xidmət etdiyi verilənlər məkanlarını necə adlandırmaq barədə node-a məlumat verən kataloqlar əlavə edir.
 
-İndirmə vaxtında bir məlumat boşluğu rəqəmsal `DataSpaceId` və kataloq metadata ilə təmsil olunur. `DataSpaceId::UNIVERSAL` `0` kimi qorunur; varsayılan kataloq `universal` məlumat boşluğunu ehtiva edir. Hər qurulmuş məlumat boşluğunun:
+Proqram icra mühitində verilənlər sahəsi ədədi `DataSpaceId` və kataloq metadatası ilə göstərilir. `DataSpaceId::UNIVERSAL` `0` kimi ayrılmışdır; standart kataloq `universal` verilənlər sahəsini ehtiva edir. Hər bir konfiqurasiya edilmiş verilənlər sahəsi malikdir:
 
-- unikal rəqəmi ID
-- `universal`, `governance` və ya `zk` kimi unikal bir alias.
-- operator səthləri üçün fakultativ bir təsvir
-- Relay komitələrinin ölçülməsi üçün istifadə olunan sıfırdan kənar `fault_tolerance` qiyməti
+- unikal ədədi identifikator
+- məsələn, `universal`, `governance` və ya `zk` kimi unikal ləqəb
+- operator səthləri üçün isteğe bağlı təsvir
+- rilay komitələrinin ölçüsünü təyin etmək üçün istifadə olunan sıfır olmayan `fault_tolerance` dəyər
 
-Lənələr həmin məlumat sahələri ilə əlaqəli icra və saxlama yollarıdır.Lənə girişində `LaneId`, xidmət etdiyi `DataSpaceId`, bir əlifba, görünürlük (`public` və ya `restricted`), saxlama profili (`full_replica`, `commitment_only` və ya `split_replica`), sübut sxemi və seçməli idarəetmə, hesablaşma, İndirmə vaxtı Kura segment adları və deterministik açar prefiksləri daxil olmaqla, bu kataloqdan bir yol üçün saxlama geometriyasını çıxarır.
+icra zolaqları həmin məlumat məkanlarına bağlı icra və saxlama yollarıdır. Bir icra zolağı girişi `LaneId`-ı, xidmət etdiyi `DataSpaceId`-i, ləqəbi, görünürlüyü (`public` və ya `restricted`), saxlama profili (`full_replica`, `commitment_only` və ya `split_replica`), sübut sxemi və istəyə bağlı idarəçiliyi daşıyır, maliyyə əməliyyatının həlli və planlayıcı metaverisi. Proqram icra mühiti bu kataloqdan hər-zolaqlı saxlama geometriyasını çıxardır, o cümlədən Kura seqment adları və deterministik açar prefikslərini.
 
-Yol yolu:
+Marşrutlaşdırma yolu belədir:
 
-1. Konfiqurasiya təsdiqlənmiş `DataSpaceCatalog`, `LaneCatalog` və `LaneRoutingPolicy` sistemlərini quraşdırır. Bir çox zolaq, bir neçə məlumat sahəsi və ya əvvəlcədən təyin edilməyən marşrutlaşdırma `nexus.enabled = true` tələb olunur.
-2. Transaksiya növbəsində aktiv zolaq yönləndiricisindən `RoutingDecision` bir zolağı ID və məlumat sahəsi ID ehtiva edən bir [PH000000) axtarır.
-3. Xüsusi yönümləmə qaydaları səlahiyyət / hesab və ya təlimat etiketləri ilə uyğunlaşa bilər. uyğunlaşdırma qaidəsi olmadan router məlumat sahəsini domen IDs, aktivlərin tərif proqnozlarından, məlumat sahəsinə aid icazələrdən, ödəniş ayaqlarından və ya səlahiyyətli hesabın bağlanmış məkanından əldə edə bilər.
-4. Çözülmüş marşrut hər iki kataloqla müqayisədə yoxlanılır.Məlum yollar, bilinməyən məlumat sahələri və yol / məlumat sahəsi uyğunsuzluqları deterministik marşrut səhvləridir. Əgər bir əməliyyat iki fərqli məlumat məkanı hədəflərinə yazılırsa, bu münaqişəli bir marşrut kimi rədd edilir; veri məkanı DVP/PVP arasında ödəniş universal koordinator zolağı ilə yönəldirilir.
-5. Sumeragi və telemetriya tapşırıqı yol və məlumat məkanının fəaliyyəti, geri yükləmələr və öhdəlik sürətləri kimi görünür saxlayır.
+1. Konfiqurasiya təsdiqlənmiş `DataSpaceCatalog`, `LaneCatalog` və `LaneRoutingPolicy` qurur. Çoxlu icra zolaqları, çoxlu məlumat sahələri və ya standart olmayan marşrutlaşdırma `nexus.enabled = true` tələb edir.
+2. Əməliyyat növbəsi aktiv icra zolağı yönləndiricisindən icra zolağı ID-si və məlumat sahəsi ID-si olan `RoutingDecision` tələb edir.
+3. Aydın marşrutlaşdırma qaydaları səlahiyyət/hesab və ya təlimat etiketi ilə uyğun gələ bilər. Uyğun qayda olmadıqda, marşrutlaşdırıcı məlumat sahəsini domen ID-lərindən, aktiv-təyinat proyeksiyalarından, məlumat sahəsinə aid icazələrdən, maliyyə köçürmə hissələrindən və ya səlahiyyət verənin bağlı hesab sahəsindən çıxara bilər.
+4. Həll olunmuş marşrut hər iki kataloqla yoxlanılır. Naməlum icra zolaqları, naməlum məlumat sahələri və zolaq/məlumat sahəsi uyğunsuzluqları determinist marşrutlama səhvləridir. Əgər bir əməliyyat iki fərqli məlumat sahəsi hədəfinə yazırsa, o, ziddiyyətli marşrut kimi rədd edilir; məlumat sahələri arasındakı DVP/PVP maliyyə əməliyyatının həlli universal koordinator icra yolu vasitəsilə yönləndirilir.
+5. Sumeragi və telemetriya, tapşırığı icra zolağı və məlumat sahəsi fəaliyyəti, artım siyahısı və kriptoqrafik öhdəlik dəyəri şəkilləri kimi görünən saxlayır.
 
-Bu səbəbdən obyekt identifikatorları vacibdir. Domenlər ID -də məlumat sahəsi aliasını ehtiva edir, məsələn `payments.universal`, belə ki, domen ölçülü yazılar yönləndirilə bilər. Hesablar kanonik və domensiz qalır, buna görə eyni hesabı özünün `AccountId` dəyişmədən fərqli tətbiqi sahələrinə bağlaya bilərsiniz. Mülkiyyət tərifləri bir domen / məlumat sahəsi proyeksiyasını daşıya bilər ki, bu da aktiv əməliyyatlarına düzgün məlumat sahəsi marşrutunu miras almağa imkan verir.
+Buna görə obyekt identifikatorları əhəmiyyətlidir. Domenlər ID-lərində verilənlər məkanı ləqəbini ehtiva edir, məsələn `payments.universal`, beləliklə domen çatışlı yazılar yönləndirilə bilər. Hesablar isə tək protokol-standart və domensiz qalır, Beləliklə, eyni hesab fərqli tətbiq sahələrinə onun `AccountId`-ni dəyişdirmədən bağlana bilər. Aktiv tərifləri domen/dataspace proyeksiyasını daşıya bilər, bu da aktiv əməliyyatlarının düzgün dataspace marşrutunu miras almasına imkan verir.
 
-Heç bir Nexus nodu tək bir zolaqdan istifadə edir və `universal` Məlumat sahəsi. SORA Profil onu üç yollu bir kataloqla əvəz edir: `core` universal ictimai zolaq üçün, `governance` idarəetmə əməliyyatı üçün və `zk` sıfır bilik bağlanması və müqavilə tətbiqi üçün trafik.
+Nexus üstünlükləri olmadan, düyün tək bir icra yolundan və `universal` məlumat məkanından istifadə edir. Quraşdırılmış SORA profili bunu üç yollu kataloqu əvəz edir: `core` universal ictimai icra zolağı üçün, `governance` idarəetmə trafiki üçün və `zk` sıfır-bilik əlavə və müqavilə yerləşdirmə trafiki üçün.
 
-Bu üç standart iş yükü sinifləri üçün mövcuddur:
+Bu üç standart iş yükü siniflərini ayırmaq üçün mövcuddur:
 
-|Məlumat sahəsi |Lane |Nə üçün mövcuddur?|
+|Məlumat məkanı|icra zolağı|Niyə mövcuddur|
 | ------------ | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-|`universal` |`core` |Normal ictimai kitabxana trafik və geri dönüş yönümləri üçün nəzərdə tutulmuş standart məlumat sahəsi (`DataSpaceId::UNIVERSAL == 0`) |
-|`governance` |`governance` |İdarəetmə və parlament nəqliyyatı üçün məhdud yol, belə ki, nəzarət təyyarəsi fəaliyyəti ümumi tətbiqi yazılar ilə qarışdırılmır. |
-|`zk` |`zk` |Sıfır bilik sübutları, əlavələr və müqavilə tətbiqi yönümləri üçün məhdudiyyətli zolaq, sübut ağır iş axınlarını normal yazılardan ayırır. |
+| `universal` | `core`       |Sadə ictimai blokçeyn qeydiyyat trafiki və ehtiyat marşrutlaşdırma üçün ayrılmış standart verilənlər məkanı (`DataSpaceId::UNIVERSAL == 0`).|
+| `governance` | `governance` |Hökumət və parlament trafiki üçün məhdudlaşdırılmış icra zolağı, beləliklə idarəetmə təbəqəsinin fəaliyyəti ümumi tətbiq yazıları ilə qarışmır.|
+| `zk`         | `zk`         |Sıfır-bilik sübutları, əlavələr və müqavilə yerləşdirmə istiqamətləndirməsi üçün məhdud icra zolağı, sübuta əsaslanan iş axınlarını normal yazılardan ayrı saxlayır.|
 
-Yalnız `universal` ayrılmış əsas xəttdir. `governance` və `zk` birləşmiş kataloq və marşrutlaşdırma siyasətində kodlanmış SORA profil seçimləridir; operatorlar fərqli məlumat məkanının sərhədlərinə ehtiyac duyduqları zaman fərqli bir kataloq müəyyən edə bilərlər.
+Yalnız `universal` rezerv edilmiş əsas xəttdir. `governance` və `zk` paketlənmiş kataloqda və marşrut siyasətində kodlaşdırılmış SORA profil seçimləridir; operatorlar fərqli məlumat sahəsi sərhədlərinə ehtiyac olduqda fərqli kataloq təyin edə bilərlər.
 
-Sumeragi hər zaman məlumatların mövcudluğunu və etibarlı yayımı istifadə edir. Bu yollar Iroha 3 konsensus protokolunun bir hissəsidir və yerləşdirmə profili tərəfindən söndürülə bilməz.
+Sumeragi həmişə məlumat əlçatanlığından və etibarlı yayımdan istifadə edir. Bu yollar Iroha 3 konsensus protokolunun bir hissəsidir və yerləşdirmə profili tərəfindən deaktiv edilə bilməz.
 
-İdarəetmə vaxtı davranışı konfigurasiya fayllarından və zəncirdəki parametrlərdən alınır. Ətraf mühit dəyişiklikləri istehsal xüsusiyyət qapıları deyil.
+Proqram təminatının icra mühiti davranışı konfiqurasiya fayllarından və zəncir üzərindəki parametrlərdən əldə olunur. Ətraf mühit dəyişənləri istehsal xüsusiyyət qapıları deyildir.
 
-## Sonrakı oxu {#read-next}
+## Növbəti oxu {#read-next}
 
 - [SORA Nexus xidmətləri](/az/blockchain/sora-nexus-services.md)
-- [İndirmə Iroha 3](/az/get-started/launch-iroha.md)
-- [Dünya, WSV, və Kura saxlama](/az/blockchain/world.md)
-- [Genesis istinadı](/az/reference/genesis.md)
-- [Torii son nöqtələri](/az/reference/torii-endpoints.md)
+- [Iroha 3-ı işə sal](/az/get-started/launch-iroha.md)
+- [Dünya, WSV və Kura saxlama](/az/blockchain/world.md)
+- [blokçeyn başlanğıc istinadı](/az/reference/genesis.md)
+- [Torii API son nöqtələr](/az/reference/torii-endpoints.md)

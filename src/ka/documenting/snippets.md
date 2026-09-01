@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /documenting/snippets.md
-translation_source_hash: e188082e05db85d5e514b782f93648fb402a09740840c9201e47db353f2192f5
+translation_source_hash: 48d6670f100c7c6368fa03f163c9ff9e0322d36e51c22f89562b23b0e2ee2a2f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -18,11 +18,11 @@ Iroha-დან გამომდინარე ნაწყვეტები
 pnpm refresh:iroha --source /path/to/iroha
 ```
 
-შემოწმებული [`etc/refresh-iroha.ts`](https://github.com/hyperledger-iroha/iroha-docs/blob/main/etc/refresh-iroha.ts) სამუშაო ნაკადი ადასტურებს სუფთა წყაროდან გადახდის შეფასებას `provenance/iroha.json`-თან, რეგენერირებს `/src/snippets` და Torii OpenAPI სურათს. და განახლებები SHA-256 ჰეშები. შეამოწმეთ შინაარსი და წარმოშობის ცვლილებები ერთად. ჩვეულებრივი დამოკიდებულების ინსტალაცია და VitePress ბილდები მოიხმარენ შემოწმებულ ფაილებს გარდამტეხი ფილიალის მოპოვების გარეშე.
+შემოწმებული `etc/refresh-iroha.ts` სამუშაო ნაკადი ადასტურებს სუფთა წყაროდან გადახდის შეფასებას `provenance/iroha.json`-თან, რეგენერირებს`/src/snippets` და Torii OpenAPI წერტილის დროის მონაცემების ხედვას. და განახლებები SHA-256 კრიპტოგრაფიული ჰეშები. შეხედეთ შინაარსს და წარმოშობის ცვლილებებს ერთად. ჩვეულებრივი დამოკიდებულების ინსტალაცია და VitePress შენობა-ნაგებობები მოიხმარენ შემოწმებულ ფაილებს, გარდამტეხი დარგის მოპოვების გარეშე .
 
 ## ჩათვლით სნაპეტები {#including-snippets}
 
-გამოიყენეთ [VitePress კოდის ნაწილის სინტაქსი ](https://vitepress.dev/guide/markdown#import-code-snippets) გენერირებული ან ადგილობრივი წყაროების შესატანად:
+გამოიყენეთ [VitePress კოდის ნაწილის სინტაქსი](https://vitepress.dev/guide/markdown#import-code-snippets) გენერირებული ან ადგილობრივი წყაროების შესასვლელად:
 
 ```md
 <<< @/snippets/client.template.toml

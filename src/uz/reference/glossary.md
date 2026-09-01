@@ -1,163 +1,163 @@
 ---
 translation_locale: uz
 translation_source: /reference/glossary.md
-translation_source_hash: fe3bc2d62ca81b5e6e30023407f3c900eb4026b6668f0d422728a8eedd436148
+translation_source_hash: ab484310e7e0b0662c1d4bb133e7ae337c71b09b5fdc8e678581234d74ee9b29
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Glosar <!-- omit in toc --> {#glossary}
+# Atamalar lug‘ati <!-- omit in toc --> {#glossary}
 
-Bu yerda Iroha bilan bog'liq bo'lgan barcha entitetlarning ta'riflarini topishingiz mumkin.
+Bu yerda Iroha bilan bog‘liq tushuncha va obyektlarning ta’riflari berilgan.
 
-- [O'rtog'i](#peer)
-- [Moddiyyat](#asset)
-- [Bizansning xato tolerantligi (BFT) ](#byzantine-fault-tolerance-bft)
-- [Iroha tarkibiy qismlar](#iroha-components)
-  - [Sumeragi (Imperador)](#sumeragi-emperor)
-  - [Torii (Gate) ](#torii-gate)
-  - [Kura (Oxiraxona) ](#kura-warehouse)
-  - [Kagami(O'qituvchi va namunachi va/yoki ko'zguvch) ](#kagami-teacher-and-exemplar-and-or-looking-glass)
-  - [Merkle daraxti (hash daraxti) ](#merkle-tree-hash-tree)
+- [Tugun](#peer)
+- [Aktiv](#asset)
+- [Vizantiya xatolariga chidamlilik (BFT)](#byzantine-fault-tolerance-bft)
+- [Iroha komponentlari](#iroha-components)
+  - [Sumeragi (Imperator)](#sumeragi-emperor)
+  - [Torii (darvoza)](#torii-gate)
+  - [Kura (Ombor)](#kura-warehouse)
+  - [Kagami (Ustoz, namuna yoki ko‘zgu)](#kagami-teacher-and-exemplar-and-or-looking-glass)
+  - [Merkle daraxti (xesh daraxti)](#merkle-tree-hash-tree)
   - [Aqlli shartnomalar](#smart-contracts)
-  - [Ishtirokchilar](#triggers)
-  - [](#versioning) versiyasi
-  - [Hijiri (qarshilarning obro'si tizimi) ](#hijiri-peer-reputation-system)
-- [Iroha Modullar](#iroha-modules)
-- [Iroha Maxsus ko'rsatmalar (ISI)](#iroha-special-instructions-isi)
-  - [Foydalanuvchi Iroha Maxsus ko'rsatmalar](#utility-iroha-special-instructions)
-  - [Asosiy Iroha Maxsus yo'l-yo'riqlar](#core-iroha-special-instructions)
-  - [Domenga oid Iroha Maxsus ko'rsatmalar](#domain-specific-iroha-special-instructions)
-  - [Bo'yicha Iroha Maxsus ko'rsatma](#custom-iroha-special-instruction)
-- [Iroha So'rovnoma](#iroha-query)
-- [Ko'rinish o'zgarishi](#view-change)
-- [Jahon holati ko'rinishi (WSV) ](#world-state-view-wsv)
-- [Lider](#leader)
+  - [Qo‘zg‘atuvchilar](#triggers)
+  - [Versiyalash](#versioning)
+  - [Hijiri (tugunlar obro‘si tizimi)](#hijiri-peer-reputation-system)
+- [Iroha modullari](#iroha-modules)
+- [Iroha maxsus ko‘rsatmalari (ISI)](#iroha-special-instructions-isi)
+  - [Yordamchi Iroha maxsus ko‘rsatmalari](#utility-iroha-special-instructions)
+  - [Asosiy Iroha maxsus ko‘rsatmalari](#core-iroha-special-instructions)
+  - [Muayyan sohaga xos Iroha maxsus ko‘rsatmalari](#domain-specific-iroha-special-instructions)
+  - [Maxsus Iroha ko‘rsatmasi](#custom-iroha-special-instruction)
+- [Iroha so‘rovi](#iroha-query)
+- [Ko‘rinishni almashtirish](#view-change)
+- [Global holat ko‘rinishi (WSV)](#world-state-view-wsv)
+- [Yetakchi](#leader)
 
-## Blockchain daftarlari {#blockchain-ledgers}
+## Blokcheyn reyestrlari {#blockchain-ledgers}
 
-Blockchain daftarlari - moliyaviy yozuvlarni saqlash uchun blokchayn texnologiyasidan foydalangan raqamli yozuvlarni yuritish tizimidir. Bular narxlar, yangiliklar va tranzaksiya ma'lumotlari kabi moliyaviy yozuvlar uchun ishlatilgan qadimgi kitoblardan nomlanadi.
+Blokcheyn reyestrlari — moliyaviy yozuvlarni saqlash uchun blokcheyn texnologiyasidan foydalanadigan raqamli hisob tizimlari. Ularning nomi narx, axborot va tranzaksiya ma’lumoti kabi moliyaviy qaydlar yuritilgan an’anaviy hisob daftarlaridan kelib chiqqan.
 
-O'rta asrlar davrida katta kitoblar ommaviy ko'rish va aniqlikni tekshirish uchun ochiq edi. Bu fikr blockchainga asoslangan tizimlarda aks ettirilgan bo'lib, ular saqlangan ma'lumotlarning haqiqiyligini tekshiradi.
+O‘rta asrlarda hisob daftarlari jamoatchilik ko‘rishi va yozuvlar to‘g‘riligini tekshirishi uchun ochiq bo‘lgan. Saqlangan ma’lumotning yaroqliligini tekshirish imkonini beradigan blokcheyn tizimlari shu g‘oyani davom ettiradi.
 
-## Tengdoshlar {#peer}
+## Tugun {#peer}
 
-Bir tengdosh Iroha nazarda tutadi Iroha boshqa protsessual instansiyaga Iroha jarayonlar va mijoz dasturlari bir-biri bilan bog'lanishi mumkin. Iroha tengdoshlar o'z resurslari va qobiliyatlari bo'yicha tengdir, muhim istisno bilan: tengdoshlaridan faqat biri genesis blokni ishga tushirish bosqichida boshqaradi Iroha tarmoq.
+Iroha-da tugun — boshqa Iroha jarayonlari va mijoz ilovalari ulana oladigan Iroha jarayonining nusxasi. Bitta kompyuter bir nechta Iroha tuguniga mezbonlik qilishi mumkin. Tugunlar resurslari va imkoniyatlari jihatidan teng. Muhim istisno shuki, Iroha tarmog‘ini dastlab ishga tushirish bosqichida genezis blokini faqat bitta tugun bajaradi.
 
-Boshqa blokchainlar nod yoki validator bilan bir xil kontseptsiyaga ishora qilishi mumkin.
+Boshqa blokcheynlarda ayni tushuncha tugun yoki tasdiqlovchi deb atalishi mumkin.
 
-Bir tengdosh o'z uy tizimida jarayon bo'lishi mumkin. U Docker konteyner va Kubernetes podda ham mavjud bo'ladi.
+Tugun mezbon tizimdagi jarayon bo‘lishi, Docker konteynerida yoki Kubernetes podida ishlashi mumkin.
 
-## Assetlar {#asset}
+## Aktiv {#asset}
 
-Blockchains kontekstida aktiv - bu blokchaindagi qimmatli ob'ektning tasviri.
+Blokcheyn kontekstida aktiv — qimmatli obyektning blokcheyndagi ifodasidir.
 
-Aktivlar to'g'risidagi qo'shimcha ma'lumot [da ](/uz/blockchain/assets.md) mavjud.
+Aktivlar haqida batafsil ma’lumot [Aktivlar](/uz/blockchain/assets.md) bo‘limida berilgan.
 
-### O'zgaruvchan aktivlar {#fungible-assets}
+### O‘zaro almashtiriladigan aktivlar {#fungible-assets}
 
-Bunday aktivlar bir xil turdagi boshqa aktivlarga osonlikcha almashtiriladi, chunki ular o'zaro almashtirilishi mumkin.
+Bunday aktivlarning birliklari bir-biriga teng bo‘lgani uchun ularni ayni turdagi boshqa birliklarga erkin almashtirish mumkin.
 
-Misol uchun, bir xil valyutaning barcha birliklari qiymati teng bo'lib, tovarlarni sotib olish uchun ishlatilishi mumkin. Odatda, fungible aktivlar banknota va tangalarning eskirishidan tashqari ko'rinishda bir xil.
+Masalan, bir valyutaning barcha birliklari teng qiymatga ega va tovar xaridida ishlatilishi mumkin. Banknota yoki tanganing eskirishini hisobga olmaganda, o‘zaro almashtiriladigan aktivlar odatda bir xil ko‘rinadi.
 
-### O'zgaruvchan bo'lmagan aktivlar {#non-fungible-assets}
+### O‘zaro almashtirilmaydigan aktivlar {#non-fungible-assets}
 
-O'zgaruvchan bo'lmagan aktivlar o'z xususiyatlari va kamchiliklari sababli noyob va qimmatli; ularning qiymati boshqa aktivlar bilan taqqoslanmaydi.
+O‘zaro almashtirilmaydigan aktivlar o‘ziga xos xususiyatlari va noyobligi sababli qimmatli; ularning qiymatini boshqa aktivniki bilan bevosita tenglashtirib bo‘lmaydi.
 
-- Ressamning qiymati rassom, uning bo'yilgan davri va jamoatchilikning bunga qiziqishiga qarab farq qilishi mumkin.
-- Bir ko'chada joylashgan ikkita uyda har xil ta'mirlash darajasi bo'lishi mumkin.
-- Zargarlik ishlab chiqaruvchilari odatda turli xil dizaynlarni taklif qilishadi.
+- Rasmning qiymati rassom, yaratilgan davr va jamoatchilik qiziqishiga qarab farq qilishi mumkin.
+- Bir ko‘chadagi ikki uyning ta’mir holati turlicha bo‘lishi mumkin.
+- Zargarlik buyumlari ishlab chiqaruvchilari odatda turli dizaynlarni taklif qiladi.
 
-### Xizmatga olinishi mumkin bo'lgan aktivlar {#mintable-assets}
+### Qo‘shimcha chiqariladigan aktivlar {#mintable-assets}
 
-Agar bir xil turdagi ko'proq aktsiyalar chiqarilishi mumkin bo'lsa, aktiv ishlab chiqariladi.
+Bir xil turdagi qo‘shimcha birliklarni chiqarish mumkin bo‘lsa, aktiv qo‘shimcha chiqariladigan hisoblanadi.
 
-### Ishlab chiqarilmaydigan aktivlar {#non-mintable-assets}
+### Qo‘shimcha chiqarilmaydigan aktivlar {#non-mintable-assets}
 
-Agar aktivning boshlang'ich miqdori bir marta aniqlansa va o'zgarmasa, u iste'mol qilinmaydigan deb hisoblanadi.
+Aktivning boshlang‘ich miqdori bir marta belgilanib, keyin o‘zgarmasa, u qo‘shimcha chiqarilmaydigan hisoblanadi.
 
-[Genesis blokida ](/uz/guide/configure/genesis.md) ushbu ma'lumotlarni Iroha konfiguratsiyasi uchun belgilaydi.
+[Genezis bloki](/uz/guide/configure/genesis.md) bu ma’lumotni Iroha sozlamasida belgilaydi.
 
 ## Bizansdagi xatolarga chidamlilik (BFT) {#byzantine-fault-tolerance-bft}
 
-Ma'lum bir foiz zararli aktyorlarni o'z ichiga olgan tarmoq bilan to'g'ri ishlashi mumkin bo'lgan xususiyat Iroha o'zining tengdosh-tashkilot tarmog'ida 33% gacha zararli aktyorlar bilan ishlashga qodir.
+Tarmoq ishtirokchilarining muayyan qismi zararli bo‘lsa ham tizimning to‘g‘ri ishlay olish xususiyati. Iroha tugunlararo tarmog‘ida zararli tugunlar ulushi 33% gacha bo‘lganda ishlay oladi.
 
-## Iroha Komponentlar {#iroha-components}
+## Iroha komponentlari {#iroha-components}
 
-Rust funktsiyasini o'z ichiga olgan Iroha modullari.
+Iroha funksiyalarini o‘z ichiga olgan Rust modullari.
 
 ### Sumeragi (Imperator) {#sumeragi-emperor}
 
-Iroha modul konsensus uchun javobgardir.
+Konsensus uchun javob beradigan Iroha moduli.
 
-### Torii (Ochiq) {#torii-gate}
+### Torii (Darvoza) {#torii-gate}
 
-[ peer](#peer) uchun kelib tushgan so'rovlarni boshqarish mantiqasini o'z ichiga olgan modul. U kelib tushadigan yo'l-yo'riqlarni qabul qilish, qabul qilish va yo'naltirish uchun ishlatiladi, shuningdek HTTP so'rovlari, shuningdek, ishga tushirish vaqti konfiguratsiya yangilanishlari.
+[Tugun](#peer) uchun kiruvchi so‘rovlarni boshqarish mantiqini o‘z ichiga olgan modul. U kiruvchi ko‘rsatmalar va HTTP so‘rovlarini qabul qiladi hamda yo‘naltiradi, shuningdek bajarish muhiti sozlamalarining yangilanishlarini boshqaradi.
 
-### Kura (Oxiraxona) {#kura-warehouse}
+### Kura (Ombor) {#kura-warehouse}
 
-Kura diskdagi imzolangan bloklarni, blok hashlarini, balandlik indekslarini, tiklash bo'laklari va commit-roster metadatalarini saqlaydi. [World State View](#world-state-view-wsv) davlat fotosuratlari mavjud bo'lmaganida yoki mahalliy bloklar do'konining orqasida bo'lganda Kura bloklardan qayta quriladi. Ko'rish [Kura saqlash ](/uz/blockchain/world.md#kura-storage).
+Kura diskda imzolangan bloklar, blok xeshlari, balandlik indekslari, tiklash bo‘laklari va yakunlash tarkibi metama’lumotlarini saqlaydi. Holatning oniy tasviri bo‘lmasa yoki mahalliy bloklar omboridan ortda qolsa, [Global holat ko‘rinishi](#world-state-view-wsv) Kura bloklaridan qayta quriladi. [Kura saqlovi](/uz/blockchain/world.md#kura-storage) bo‘limiga qarang.
 
-### Kagami(O'qituvchi va namunachi va/yoki ko'z o'rinchasi) {#kagami-teacher-and-exemplar-and-or-looking-glass}
+### Kagami (Ustoz, namuna yoki ko‘zgu) {#kagami-teacher-and-exemplar-and-or-looking-glass}
 
-Odatda ishlatiladigan ma'lumotlar uchun generator. U kriptografik kalit juftliklarini, genesis bloklarini, hujjatlarni va boshqalar ishlab chiqarishi mumkin.
+Ko‘p ishlatiladigan ma’lumotlar generatori. U kriptografik kalit juftliklari, genezis bloklari, hujjatlar va boshqa artefaktlarni yaratishi mumkin.
 
-### Merkle daraxti (hash daraxi) {#merkle-tree-hash-tree}
+### Merkle daraxti (xesh daraxti) {#merkle-tree-hash-tree}
 
-Har bir blok balandligida holatni tasdiqlash va tekshirish uchun ishlatiladigan ma'lumotlar tuzilmasi. Iroha ning hozirgi amalga oshirilishi ikkilamchi daraxtdir. Ko'proq batafsillik uchun [Wikipedia](https://en.wikipedia.org/wiki/Merkle_tree)-ga qarang.
+Har bir blok balandligidagi holatni tasdiqlash va tekshirish uchun ishlatiladigan ma’lumotlar tuzilmasi. Iroha-ning joriy amalga oshirilishi ikkilik daraxtdan foydalanadi. Batafsil ma’lumot uchun [Wikipedia](https://en.wikipedia.org/wiki/Merkle_tree)-ga qarang.
 
 ### Aqlli shartnomalar {#smart-contracts}
 
-Aqlli shartnomalar - bu blokchainga asoslangan dasturlar bo'lib, muayyan shart-sharoitlarga javob berganda ishlatiladi. Iroha da aqlli kontraktlar [core Iroha maxsus ko'rsatma](#core-iroha-special-instructions) yordamida amalga oshiriladi.
+Aqlli shartnomalar — muayyan shartlar bajarilganda ishga tushadigan blokcheyn dasturlari. Iroha-da aqlli shartnomalar [asosiy Iroha maxsus ko‘rsatmalari](#core-iroha-special-instructions) yordamida amalga oshiriladi.
 
-### Ishtirokchilar {#triggers}
+### Qo‘zg‘atuvchilar {#triggers}
 
-Iroha maxsus yo'l-yo'riqlarini muayyan blok qo'yishi, vaqt (ba'zi ehtiyotkorliklar bilan) va boshqalar bo'yicha chaqirish imkonini beradigan hodisa turi. Ishtirokchilar haqida ko'proq ma'lumot [da](/uz/blockchain/triggers.md).
+Muayyan blok yakunlanganda, belgilangan vaqtda (ayrim cheklovlar bilan) yoki boshqa hodisada Iroha maxsus ko‘rsatmasini chaqirish imkonini beradigan mexanizm. Qo‘zg‘atuvchilar haqida [batafsil ma’lumot](/uz/blockchain/triggers.md).
 
-### Tarjima qilish {#versioning}
+### Versiyalash {#versioning}
 
-Har bir so'rov u tegishli bo'lgan API versiyasi bilan belgilab qo'yilgan. Bu Iroha mijoz / tengdosh dasturiy ta'minotining turli xil ikkilamchi versiyalarining kombinatsiyasini o'zaro ishlashga imkon beradi, bu esa Iroha tarmog'ida dasturni yangilashlarga imkon beradi.
+Har bir so‘rov tegishli API versiyasi bilan belgilanadi. Shu tufayli Iroha mijoz va tugun dasturlarining turli bajariluvchi versiyalari o‘zaro ishlay oladi hamda Iroha tarmog‘idagi dasturiy ta’minotni bosqichma-bosqich yangilash mumkin bo‘ladi.
 
-### Hijiri (o'rtog'lar orasida obro'ni saqlaydigan tizim) {#hijiri-peer-reputation-system}
+### Hijiri (tugunlar obro‘si tizimi) {#hijiri-peer-reputation-system}
 
-Iroha Bu aloqalarni ustuvorlashtirish imkonini beradi . [tengdoshlar](#peer) yaxshi yo'l-yo'riqlarga ega bo'lgan va zararli ta'sirlarni kamaytiruvchi [tengdoshlar](#peer).
+Iroha obro‘ tizimi yaxshi tarixga ega [tugunlar](#peer) bilan aloqani ustuvorlashtirish va zararli [tugunlar](#peer) yetkazishi mumkin bo‘lgan ziyonni kamaytirish imkonini beradi.
 
-## Iroha Modullar {#iroha-modules}
+## Iroha modullari {#iroha-modules}
 
-Iroha uchun o'zlashtirilgan funktsiyalarni taqdim etuvchi uchinchi tomonlar kengaytmalari.
+Iroha-ga maxsus funksiyalar qo‘shadigan uchinchi tomon kengaytmalari.
 
-## Iroha Maxsus ko'rsatmalar (ISI) {#iroha-special-instructions-isi}
+## Iroha maxsus ko‘rsatmalari (ISI) {#iroha-special-instructions-isi}
 
-Ma'lum kontraktlar kutubxonasi Iroha. Bularni ham savdo-sotiq orqali, ham ro'yxatdan o'tgan tadbir tinglovchilari orqali murojaat qilish mumkin. ISI [bu yerda](/uz/blockchain/instructions.md).
+Iroha bilan birga taqdim etiladigan aqlli shartnomalar kutubxonasi. Ularni tranzaksiyalar yoki ro‘yxatdan o‘tgan hodisa tinglovchilari orqali chaqirish mumkin. ISI haqida [batafsil ma’lumot](/uz/blockchain/instructions.md).
 
-#### Foydalanuvchi Iroha Maxsus ko'rsatmalar {#utility-iroha-special-instructions}
+#### Yordamchi Iroha maxsus ko‘rsatmalari {#utility-iroha-special-instructions}
 
-Ushbu [isi](#iroha-special-instructions-isi) setida `If` kabi mantiqiy ko'rsatmalar, `Notify` kabi tegishli I/O va `Sequence` kabi kompozitsiyalar mavjud. Ular asosan [ning maxsus ko'rsatmalari sifatida ishlatiladi ](#custom-iroha-special-instruction).
+Bu [ISI](#iroha-special-instructions-isi) to‘plamiga `If` kabi mantiqiy ko‘rsatmalar, `Notify` kabi kiritish-chiqarish amallari va `Sequence` kabi kompozitsiyalar kiradi. Ular asosan [maxsus ko‘rsatmalarni](#custom-iroha-special-instruction) tuzishda ishlatiladi.
 
-### Asosiy Iroha Maxsus ko'rsatmalar {#core-iroha-special-instructions}
+### Asosiy Iroha maxsus ko‘rsatmalari {#core-iroha-special-instructions}
 
-[Maxsus ko'rsatmalar](#iroha-special-instructions-isi) bilan ta'minlangan Iroha qo'llab-quvvatlash; shu jumladan, ayrim [domen bo'yicha](#domain-specific-iroha-special-instructions) va [foydalanish ko'rsatmalari](#utility-iroha-special-instructions).
+Har bir Iroha joylashtirishi bilan birga beriladigan [maxsus ko‘rsatmalar](#iroha-special-instructions-isi). Ularga ayrim [muayyan sohaga xos](#domain-specific-iroha-special-instructions) va [yordamchi ko‘rsatmalar](#utility-iroha-special-instructions) kiradi.
 
-### Viloyatga oid Iroha maxsus ko'rsatmalar {#domain-specific-iroha-special-instructions}
+### Muayyan sohaga xos Iroha maxsus ko‘rsatmalari {#domain-specific-iroha-special-instructions}
 
-Hududga doir faoliyat bilan bog'liq ko'rsatmalar: aktivlar, hisobotlar, domenlar, tengdoshlarni boshqarish). Bular [ Jahon holati ko'rinishini ](#world-state-view-wsv) xavfsiz va xavfsiz tarzda o'zgartirish uchun zarur vositalarni ta'minlaydi.
+Muayyan obyekt sohasidagi amallarga — aktivlar, hisoblar, domenlar va tugunlarni boshqarishga — oid ko‘rsatmalar. Ular [global holat ko‘rinishini](#world-state-view-wsv) xavfsiz o‘zgartirish uchun zarur vositalarni taqdim etadi.
 
-### Oddiy Iroha Maxsus ko'rsatma {#custom-iroha-special-instruction}
+### Maxsus Iroha ko‘rsatmasi {#custom-iroha-special-instruction}
 
-O ' zbekiston Respublikasining [Iroha Modullar](#iroha-modules), mijozlar yoki uchinchi tomonlar tomonidan qurilishi mumkin. [Asosiy ko'rsatmalar](#core-iroha-special-instructions). Forking va o'zgartirish Iroha manba kodi tavsiya etilmaydi, chunki maxsus ko'rsatmalar bilan kelishilmagan [tengdoshlar](#peer) bo ' yicha Iroha ishga tushirish xatolar sifatida ko'rib chiqiladi, shuning uchun: [tengdoshlar](#peer) o'zgartirilgan instansiyani ishga tushirish ularning kirish huquqi bekor qilinadi.
+[Iroha modullari](#iroha-modules), mijozlar yoki uchinchi tomonlar taqdim etadigan ko‘rsatmalar faqat [asosiy ko‘rsatmalar](#core-iroha-special-instructions) yordamida tuzilishi mumkin. Iroha manba kodini tarmoqlantirib o‘zgartirish tavsiya etilmaydi: Iroha joylashtirishidagi [tugunlar](#peer) kelishmagan maxsus ko‘rsatmalar xato deb baholanadi va o‘zgartirilgan nusxani ishlatayotgan [tugunlar](#peer) tarmoqdan chiqariladi.
 
-## Iroha So'rov {#iroha-query}
+## Iroha so‘rovi {#iroha-query}
 
-Jahon holati ko'rinishini o'qish uchun iltimos ushbu ko'rinishni o'zgartirmasdan. [ so'rovlar haqida ko'proq ma'lumot olish uchun bu yerda ](/uz/blockchain/queries.md).
+Global holat ko‘rinishini o‘zgartirmasdan undan ma’lumot o‘qish so‘rovi. So‘rovlar haqida [batafsil ma’lumot](/uz/blockchain/queries.md).
 
-## Oʻzgarish koʻrinishi {#view-change}
+## Ko‘rinishni almashtirish {#view-change}
 
-Konsensusga erishishga urinish muvaffaqiyatsiz bo'lgan taqdirda o'tkaziladigan jarayon. Odatda bu yangi [Lider](#leader) tanlovi bilan bog'liq.
+Konsensusga erishish urinishi muvaffaqiyatsiz bo‘lganda bajariladigan jarayon. Odatda u yangi [yetakchini](#leader) tanlashni o‘z ichiga oladi.
 
-## Jahon holati ko'rinishi (WSV) {#world-state-view-wsv}
+## Global holat ko‘rinishi (WSV) {#world-state-view-wsv}
 
-Hozirgi blokcheyn holatini xotira ichida ifodalash. WSV tarkibida `World`, qo'shilgan blok hashlari, tranzaksiya indekslari, konsensus topologiyasi va so'rovlarda ishlatiladigan ma'lumotlar indekslari. Bu faqat belgilangan bloklar orqali yangilanadi va qayta tiklanishi mumkin [Kura](#kura-warehouse). Koʻring [Dunyoga qarash](/uz/blockchain/world.md#world-state-view-wsv).
+Joriy blokcheyn holatining xotiradagi ifodasi. WSV tarkibiga `World`, yakunlangan blok xeshlari, tranzaksiya indekslari, konsensus topologiyasi va so‘rovlar ishlatadigan hosila indekslar kiradi. U faqat yakunlangan bloklar orqali yangilanadi va [Kura](#kura-warehouse) dan qayta tiklanishi mumkin. [Global holat ko‘rinishi](/uz/blockchain/world.md#world-state-view-wsv) bo‘limiga qarang.
 
-## Lider {#leader}
+## Yetakchi {#leader}
 
-Bir iroha tarmog'ida tengdoshi tasodifiy tanlanadi va keyingi blokni shakllantirishning maxsus imtiyozi beriladi. Bu imtiyoz [ Byzant fayl-torelance ](#byzantine-fault-tolerance-bft) ga ega bo'lgan tarmoqlarda [ ko'rinish o'zgaruvchisi](#view-change) orqali bekor qilinishi mumkin.
+Iroha tarmog‘ida bitta tugun tasodifiy tanlanib, unga keyingi blokni tuzish vakolati beriladi. [Vizantiya xatolariga chidamlilikni](#byzantine-fault-tolerance-bft) ta’minlaydigan tarmoqlarda bu vakolat [ko‘rinishni almashtirish](#view-change) orqali bekor qilinishi mumkin.

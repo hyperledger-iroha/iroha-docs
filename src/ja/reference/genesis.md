@@ -1,29 +1,29 @@
 ---
 translation_locale: ja
 translation_source: /reference/genesis.md
-translation_source_hash: 6710e76508e6a38a6b68d274247cc1383de2472e74f10be85000b30f74cb04a6
+translation_source_hash: ac6bad693ed382dede0818132b8649fe14726283508da897a32eea417e5bbb28
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# 創世記 の 参照 {#genesis-reference}
+# ブロックチェーン ジェネシス リファレンス {#genesis-reference}
 
-現在の Iroha 3 ワークフローでは, `genesis.json` マネスティックはネットワークが起動するときに適用される最初のトランザクションとパラメータを記述します.
+現在の Iroha 3 ワークフローでは、`genesis.json`技術マニフェストが、ネットワーク開始時に適用される最初のトランザクションとパラメータを記述します。
 
-同級者に配布された署名したアーテファクトは, Norito コード化された `.nrt`ファイルで, `kagami genesis sign` によって作成されています.
+ネットワークのピアに配布される署名付きアーティファクトは、`kagami genesis sign`によって生成された`.nrt`ファイルで、Norito でエンコードされています。
 
-## 主要分野 {#main-fields}
+## 主な分野 {#main-fields}
 
-ジェネス・マニフェストは以下を定義できます
+ブロックチェーンのジェネシス技術マニフェストは以下を定義することができる：
 
-- `chain` チェーン識別子
-- `executor` 任意の実行者アップグレードバイトコードパス
-- `ivm_dir`は,トリガーおよびアップグレードで使用される IVM ライブラリ
-- `consensus_mode` マニセットで広告された最初のモード
-- `transactions` 順番のパラメータ更新,指示,トリガー,トポロジー
-- `crypto` 初期暗号スナップショット
+- チェーン識別子のための`chain`
+- `executor` オプションの実行者アップグレードバイトコードパス用
+- IVM のトリガーおよびアップグレードで使用される `ivm_dir` ライブラリ
+- `consensus_mode` 技術マニフェストで宣伝されている初期モード用
+- `transactions` は、順序付けられたパラメータ更新、指示、トリガー、およびトポロジー用です
+- `crypto` 初期の暗号データスナップショット用
 
-`transactions`内のトポロジーエントリは,ペアIDと PoPs を組み合わせる:
+`transactions` 内で、トポロジーエントリはネットワークピアIDと PoPs をペアにします:
 
 ```json
 {
@@ -32,9 +32,9 @@ translation_engine: nllb-200-ct2
 }
 ```
 
-## 宣言 を 生み出す {#generate-a-manifest}
+## 技術的なマニフェストを生成する {#generate-a-manifest}
 
-Kagami を使ってテンプレートを作成する
+Kagami を使用してテンプレートを生成する：
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
@@ -43,23 +43,23 @@ cargo run -p iroha_kagami -- genesis generate \
   --genesis-public-key <PUBLIC_KEY> > genesis.json
 ```
 
-公衆のために SORA Nexus データの空間 `npos` 期待されるコンセンサスモードである. Iroha 3 配備は目標プロフィールに応じて,許可されたまたはNPoSを使用することができる.
+公共の SORA Nexus データスペースでは、`npos` が期待されるコンセンサスモードです。他の Iroha 3 の展開では、対象プロファイルに応じてパーミッション型または NPoS を使用する場合があります。
 
-## 宣言に署名する {#sign-the-manifest}
+## 技術的マニフェストに署名する {#sign-the-manifest}
 
-JSON を編集して検証した後,展開可能な `.nrt` ブロックに署名する:
+編集して検証した後 JSON, それをデプロイ可能なものに署名する `.nrt` ブロック：
 
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
-  --private-key <PRIVATE_KEY> \
+  --private-key-file <MODE_0600_PRIVATE_KEY_FILE> \
   --out-file genesis.signed.nrt
 ```
 
-`kagami genesis sign` はマニフェストからゲネス公钥を読み,提供されたプライベートキー,シード,アルゴリズムを使用してデプロイできる署名ブロックを作成します. 結果は,同類が設定から参照すべきファイルです.
+`kagami genesis sign`は、技術マニフェストからブロックチェーンのジェネシス公開鍵を読み取り、所有者が保持する単一リンクの通常ファイルからプライベート鍵を使用して、デプロイ可能な署名付きブロックを生成します。ファイルには、1つの正規のプライベートキー多重ハッシュが1行で含まれている必要があります。Kagami はシンボリックリンクおよび`0600`以外のモードを拒否します。コマンドラインで生のプライベートキーは受け付けられません。結果として得られるのは、ネットワークピアが自分の設定から参照すべきファイルです。
 
-## 設定 `irohad` {#configure-irohad}
+## `iroha3d` を設定する {#configure-iroha3d}
 
-署名されたジェネシスブロックに デイモンを指す
+デーモンを署名済みブロックチェーンのジェネシスブロックに向ける:
 
 ```toml
 [genesis]
@@ -75,4 +75,4 @@ public_key = "<PUBLIC_KEY>"
 - `kagami localnet`
 - `cargo xtask kagami-profiles`
 
-発電機の実装とコマンドの詳細については, [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_kagami/README.md)を参照してください.
+ジェネレーターの実装およびコマンドの詳細については、[Kagami README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md)を参照してください。

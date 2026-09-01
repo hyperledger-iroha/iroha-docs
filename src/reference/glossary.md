@@ -214,8 +214,8 @@ blocks and can be reconstructed from [Kura](#kura-warehouse). See
 
 ## Leader
 
-In an iroha network, a peer is selected randomly and granted the special
+In an Iroha network, a peer is selected randomly and granted the special
 privilege of forming the next block. This privilege can be revoked in
 networks that achieve
-[Byzantine fault-torelance](#byzantine-fault-tolerance-bft) via
+[Byzantine fault tolerance](#byzantine-fault-tolerance-bft) via
 [view change](#view-change).

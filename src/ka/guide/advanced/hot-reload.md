@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 2c71e6c135d862d626d3b184eef3cbed350f1353d7dee78cc129092e7b857924
+translation_source_hash: 96505bdba910beb902c399004f5cd24f5e5b0773f01df9cdcfdb49d019830d03
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,36 +10,36 @@ translation_engine: nllb-200-ct2
 
 გამოიყენეთ ცხელი გადატვირთვა მხოლოდ ადგილობრივი დებუგინგისთვის. ნორმალური ადგილობრივი განვითარებისათვის, უმჯობესია აღადგინოთ სურათი ან განახორციელოთ წარმოქმნილი Docker Compose სტაკი ახალი Kagami ბუნდიდან.
 
-## შეცვალეთ თანატოლების ორმაგი {#replace-the-peer-binary}
+## შეცვალეთ ქსელის კვანძი ორობითი ფაილი {#replace-the-peer-binary}
 
-შექმენით Linux- ით თავსებადი daemon binary upstream სამუშაო სივრცედან:
+შექმენით Linux- ით თავსებადი daemon ორობითი ფაილი ძირითადი სამუშაო სივრცედან:
 
 ```bash
-cargo build --release -p irohad --target x86_64-unknown-linux-musl
+cargo build --release -p irohad --bin iroha3d --target x86_64-unknown-linux-musl
 ```
 
-გადაწერეთ იგი მიმდინარე თანატოლების კონტეინერში, შემდეგ განახორციელეთ კონტეინერი:
+გადაწერეთ იგი მიმდინარე ქსელის თანაბარი კონტეინერში, შემდეგ განახორციელეთ კონტეინერი:
 
 ```bash
-docker cp target/x86_64-unknown-linux-musl/release/irohad <container>:/usr/local/bin/irohad
+docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/local/bin/iroha3d
 docker restart <container>
 ```
 
-გამოიყენეთ `docker ps` კონტეინერის სახელწოდების დასამტკიცებლად. წარმოქმნილ სტაკში პარტნიორული კონტეინერები განისაზღვრება `./localnet/docker-compose.yml`.
+გამოიყენეთ `docker ps` კონტეინერის სახელის დასამტკიცებლად. გენერირებულ სტაკში ქსელის თანასწორ კონტეინერებს განსაზღვრავს `./docker-compose.yml`.
 
-## გენეზიის განახლება ერთჯერადი ქსელში {#recommit-genesis-in-a-disposable-network}
+## რეკომენდირებული ბლოკჩეინის გენეზისი ერთჯერადი ქსელში {#recommit-genesis-in-a-disposable-network}
 
-პარტნიორი იწყებს გენეზიას მხოლოდ მაშინ, როდესაც მისი შენახვა ცარიელია. ერთჯერადი Docker ქსელისთვის, შეაჩერეთ მასალა, ამოიღეთ გამომუშავებული მდგომარეობა, რეგენერაცია ან შეცვალეთ ხელმოწერილი გენეზის ბუნდი და დაიწყეთ ისევ:
+ქსელის კვანძები ახდენენ ბლოკჩეინის გენეზის დასრულებას მხოლოდ მაშინ, როდესაც მისი შენახვა ცარიელია. ერთჯერადი Docker ქსელისთვის, შეაჩერეთ სტაკი, ამოიღეთ გამომუშავებული მდგომარეობა, რეგენერირეთ ან შეცვალეთ ხელმოწერილი ბლოკჩეინ გენეზისის ნაკრები და დაიწყეთ ისევ:
 
 ```bash
-docker compose -f ./localnet/docker-compose.yml down
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+docker compose -f ./docker-compose.yml down
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
-არ შეცვალოთ გენეზი ქსელზე, რომლის მდგომარეობა უნდა იყოს შენარჩუნებული.
+არ შეცვალოთ ბლოკჩეინის გენეზისი ქსელზე, რომლის მდგომარეობა უნდა იყოს შენარჩუნებული.
 
 ## გამოიყენეთ პერსონალური კონფიგურაცია {#use-custom-configuration}
 
-ამჟამინდელი პარტნიორის კონფიგურაცია არის TOML. შეაერთეთ ან აკოპირეთ გენერირებული `config.toml`, `genesis.signed.nrt` და შესაბამისი საკვანძო ფაილები კონტეინერის გზებში   image, შემდეგ restart peer. შეინარჩუნეთ გენერირებული ფაილები ერთად; სხვადასხვა Kagami run- დან ფაილების შერევა შეიძლება გამოიწვიოს deserialization ან კონსენსუსის ჩავარდნა.
+ქსელის კვანძის მიმდინარე კონფიგურაცია TOML ფორმატშია. გენერირებული `config.toml`, `genesis.signed.nrt` და შესაბამისი გასაღების ფაილები მიბმით დაამონტაჟეთ ან დააკოპირეთ გამოსახულების მიერ მოსალოდნელ კონტეინერის ბილიკებში, შემდეგ კი კვანძი ხელახლა გაუშვით. გენერირებული ფაილები ერთად შეინახეთ; Kagami-ს სხვადასხვა გაშვებებიდან ფაილების შერევამ შეიძლება დესერიალიზაციის ან კონსენსუსის შეცდომები გამოიწვიოს.

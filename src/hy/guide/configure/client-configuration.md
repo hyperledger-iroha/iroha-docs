@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /guide/configure/client-configuration.md
-translation_source_hash: 0d897a79e6118de2e7e88a45f1daf1444b515fd35e7b2562f7c1cc18ed0a83b4
+translation_source_hash: 6da8a0abddc9723b16477a935a3953ebd497300f02eadd635e4e38027a11d095
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -31,7 +31,7 @@ private_key = "802620..."
 ```
 
 - `chain` ընտրում է այն շղթան, որին պատկանում են ներկայացված գործարքները:
-- `torii_url` կետերը զուգընկեր Torii HTTP API:
+- `torii_url` կետերը հանգույց Torii HTTP API:
 - `[account].domain`-ը օգտագործվում է CLI շտապուղներով եւ հասցեների ընտրողի կոդավորմամբ, իսկ քանոնիկ `AccountId`-ը ինքնուրույն դոմեյնային չէ:
 - `[account].public_key` եւ `[account].private_key` ստորագրման գործարքներ:
 
@@ -45,7 +45,7 @@ Iroha անունները կանոնական զննարկումից հետո զգ
 
 ## Հիմնական վավերացում {#basic-authentication}
 
-Ընտրական `[basic_auth]` բաժինը հաճախորդի խնդրանքներին ավելացնում է HTTP `Authorization` գլուխը: Iroha զուգընկերները ուղղակիորեն չեն մեկնաբանում այս հավատարմագրերը. օգտագործեք դրանք, երբ Torii-ը գտնվում է Nginx- ի նման հակառակ պրոկսի հետեւում:
+Ընտրական `[basic_auth]` բաժինը հաճախորդի խնդրանքներին ավելացնում է HTTP `Authorization` գլուխը: Iroha հանգույցները ուղղակիորեն չեն մեկնաբանում այս հավատարմագրերը. օգտագործեք դրանք, երբ Torii-ը գտնվում է Nginx- ի նման հակառակ պրոկսի հետեւում:
 
 ```toml
 [basic_auth]
@@ -84,7 +84,7 @@ queue_root = "./queue"
 Տեղական ցանցերի համար նախընտրեք Kagami, քանի որ այն գրում է համընկնում Iroha 3 կոնֆիգներ, գենեզիս, սքրիպտներ եւ README:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 Օգտագործեք արտադրված `./localnet/client.toml` ՝ CLI հետ:

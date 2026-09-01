@@ -1,32 +1,32 @@
 ---
 translation_locale: fr
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 0185b6a341ee90ed6cd52fb9f510549b20592468abe6627d3efa639c3b67d1fd
+translation_source_hash: 576e03924f19b63681cdfafa641b996672e35a992478fc9eaf5b83f0e7baa6da
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Réservation des actifs natifs {#native-asset-escrow}
+# Compte séquestre d'actif natif {#native-asset-escrow}
 
-## Le résultat {#outcome}
+## Résultat {#outcome}
 
-Choisissez entre une garantie de marché et un verrouillage d'actif lié à la destination, exécutez le cycle de vie typé en cours avec Rust ou Python, attachez chaque tentative de verrouillaage au montant restant que vous avez réellement observé et compilez la surface de garantie native Kotodama à partir de JavaScript.
+Choisissez entre un séquestre de marché et un verrouillage d'actif destiné, exécutez le cycle de vie actuel typé avec Rust ou Python, liez chaque tentative de verrouillage au montant restant que vous avez réellement observé, et compilez la surface de séquestre native Kotodama à partir de JavaScript.
 
-## Conditions préalables {#prerequisites}
+## Prérequis {#prerequisites}
 
-- Une définition numérique d'actif et un ouvreur/vendeur qui possède une quantité suffisante.
-- Clients à clé unique I105 financés pour chaque partie qui soumet une étape. Utilisez une intention `fee_payment` payée par l'autorité en direct dont l'actif de redevance correspond à la réponse du robinet Taira actuel; n'incorporez pas un actif ID dans la documentation.
-- Le courant Rust ou Python SDK à partir Iroha commettre `bc7114ed1c7f265a156d2100ff09e851cc95702c`.
-- Pour le JavaScript l'exemple du compilateur, Node.js 24 plus une maison construite localement `@iroha/iroha-js` l'emballage et son origine `iroha_js_host`; suivre le [JavaScript SDK configuration de la construction source](/fr/guide/tutorials/javascript.md#build-from-source). Les constructions de navigateur doivent fournir `compilerUrl` au lieu de charger l'hôte.
-- Taira doit admettre les instructions de transfert d'actifs et d'escroquerie. Les propriétaires d'actif peuvent utiliser le cycle de vie ordinaire lorsque leur politique en matière d'actions le permet; la résolution d'un différend nécessite l'autorisation globale `CanResolveEscrowDispute`. Utilisez un réseau local généré lorsque l'autorité publique nécessaire est absente.
+- Une définition d'actif numérique et un ouvreur/vendeur qui possède une quantité suffisante.
+- Clients financés, à clé unique I105 pour chaque partie qui soumet une étape. Utilisez une intention `fee_payment` payée par une autorité en direct dont l'actif de frais correspond à la réponse actuelle du service de financement du testnet Taira ; n'intégrez pas d'ID d'actif provenant de la documentation.
+- Le Rust ou Python actuel SDK du commit `0010c5a70039eac101a4846499ba9ceaf43eb65c` de Iroha.
+- Pour l'exemple de compilateur JavaScript, Node.js 24 plus un paquet `@iroha/iroha-js` construit localement et son `iroha_js_host` natif ; suivez le [JavaScript SDK configuration de source-build](/fr/guide/tutorials/javascript.md#build-from-source). Les constructions pour navigateur doivent fournir `compilerUrl` au lieu de charger l'hôte natif.
+- Taira doit admettre le transfert d'actifs et les instructions de séquestre. Les propriétaires d'actifs peuvent utiliser le cycle de vie ordinaire lorsque leur politique d'actifs le permet ; résoudre un litige nécessite l'autorisation globale `CanResolveEscrowDispute`. Utilisez un réseau local généré lorsque le principal d'autorisation du réseau public nécessaire est absent.
 
-Les modèles de marché sont le vendeur, l'acheteur, les paiements hors chaîne et la libération. Les serrures génériques désignent une destination et optionnellement une libération distincte autorité; ils soutiennent le retrait partiel, l'annulation et l'expiration.
+Les modèles d'entiercement du marché concernent le vendeur, l'acheteur, le paiement hors chaîne et la libération. Les verrous génériques désignent une destination et, éventuellement, un ordre d'autorisation de libération distinct ; ils prennent en charge le tirage partiel, l'annulation et l'expiration.
 
-## Les étapes {#steps}
+## Étapes {#steps}
 
-### 1. Remplissez une caution sur le marché avec Rust {#_1-complete-a-marketplace-escrow-with-rust}
+### 1. Complétez un dépôt fiduciaire sur le marché avec Rust {#_1-complete-a-marketplace-escrow-with-rust}
 
-Cette fonction reçoit réellement typé IDs et clients. Il ouvre 40 unités, permet à l'acheteur d'accepter et de marquer le paiement hors chaîne, puis permet au vendeur de libérer la garde. Chaque soumission nomme le payeur des frais d'autorité par `FeePaymentIntent`.
+Cette fonction reçoit des identifiants et des clients de type réel. Elle ouvre 40 unités, permet à l'acheteur d'accepter et de marquer le paiement hors chaîne, puis permet au vendeur de libérer la garde. Chaque soumission nomme le payeur des frais principaux d'autorisation via `FeePaymentIntent`.
 
 ```rust
 use eyre::{Result, ensure};
@@ -70,11 +70,11 @@ fn complete_marketplace_escrow(
 }
 ```
 
-Le compte de détention est géré par un grand livre.L'octroi d'un jeton normal de transfert d'actifs ne rend pas la détention active exploitable en dehors du cycle de vie des garanties.
+Le compte de garde est géré par grand livre. L'octroi d'un jeton de transfert d'actif normal ne rend pas la garde active susceptible d'être vidée en dehors du cycle de vie de l'entiercement.
 
-### 2. ouvrir et dessiner partiellement une serrure générique avec Python {#_2-open-and-partially-draw-a-generic-lock-with-python}
+### 2. Ouvrir et dessiner partiellement une serrure générique avec Python {#_2-open-and-partially-draw-a-generic-lock-with-python}
 
-L'autorité de délivrance interroge le dossier natif signé avant de le retirer. Le passage exact `remaining_amount` fournit une synchronisation optimiste: une demande parallèle périmée est rejetée au lieu d'acquérir la garde deux fois.
+Le principal d'autorisation de libération interroge l'enregistrement natif signé avant de procéder au prélèvement. La transmission de ce `remaining_amount` exact offre une concurrence optimiste : une demande parallèle obsolète est rejetée au lieu de débiter la garde deux fois.
 
 ```python
 import secrets
@@ -145,9 +145,9 @@ def open_and_draw_lock(
     return escrow_id, after
 ```
 
-Le Python SDK peut effectuer une requête automatique lorsque le `expected_remaining_amount` est omis, mais en passant la valeur observée, la condition économique signée devient visible dans le code d'application.
+Le Python SDK peut interroger automatiquement lorsque `expected_remaining_amount` est omis, mais transmettre la valeur observée rend la précondition économique signée visible dans le code de l'application.
 
-Pour les flux de verrouillage Rust, les constructeurs de courant exigent également la quantité observée:
+Pour les flux de verrouillage Rust, les constructeurs actuels nécessitent également la quantité observée :
 
 ```rust
 let before = opener.query_single(FindAssetEscrowById::new(lock_id))?;
@@ -167,13 +167,13 @@ opener.submit_blocking(
 )?;
 ```
 
-`DrawdownAssetLock::new` prend trois valeurs; `CancelAssetLock::new` prend deux. L'exclusion du montant restant attendu décrit une forme d'appel plus ancienne et dangereuse.
+`DrawdownAssetLock::new` prend trois valeurs ; `CancelAssetLock::new` en prend deux. Omettre le montant restant attendu décrit une forme d'appel plus ancienne et non sécurisée.
 
-### 3. Compiler la surface de dépôt Kotodama à partir de JavaScript {#_3-compile-the-kotodama-escrow-surface-from-javascript}
+### 3. Compiler la surface séquestre Kotodama à partir de JavaScript {#_3-compile-the-kotodama-escrow-surface-from-javascript}
 
-JavaScript n'a pas besoin d'inventer des instructions natives non typiées. Le compilateur actuel expose le cahier des charges intégré au Kotodama; déploiement et appels suivent ensuite [Construire et déployer un contrat intelligent](./smart-contracts.md).
+JavaScript n'a pas besoin d'inventer des instructions natives non typées. Le compilateur actuel expose les fonctions intégrées de séquestre du registre de la blockchain à Kotodama ; le déploiement et les appels suivent ensuite [Créer et déployer un contrat intelligent](./smart-contracts.md).
 
-Enregistrez ceci sous la forme `native_escrow.ko`:
+Enregistrez ceci sous `native_escrow.ko` :
 
 ```kotodama
 seiyaku NativeEscrowAitai {
@@ -196,7 +196,7 @@ seiyaku NativeEscrowAitai {
 }
 ```
 
-Conserver le texte suivant sous `compile-native-escrow.mjs` et l'utiliser pour compiler cette source exacte à partir de Node.js:
+Enregistrez ce qui suit sous `compile-native-escrow.mjs` et utilisez-le pour compiler exactement cette source à partir de Node.js :
 
 ```js
 import { readFile } from 'node:fs/promises'
@@ -216,15 +216,15 @@ console.log({
 })
 ```
 
-L'exécuter à partir de l'environnement d'emballage basé sur la source décrit dans les conditions préalables:
+Exécutez-le depuis l'environnement de paquet construit à partir des sources décrit dans les prérequis :
 
 ```bash
 node ./compile-native-escrow.mjs
 ```
 
-## Vérifiez {#verify}
+## Vérifier {#verify}
 
-Pour l'escrow sur le marché, la requête `FindAssetEscrowById` et les détentions d'actifs des deux parties après libération. L'enregistrement doit être `Released`, nommer l'acheteur acceptant et ne pas montrer de garde restante. Pour la serrure Python ci-dessus, conservez le retourné ID et répétez la requête signée:
+Pour le séquestre du marché, interrogez `FindAssetEscrowById` et les avoirs des deux parties après la libération. L'enregistrement doit être `Released`, nommer l'acheteur acceptant, et ne montrer aucune garde restante. Pour le verrou Python ci-dessus, conservez l'ID retourné et répétez la requête signée :
 
 ```python
 record = client.get_asset_escrow(
@@ -236,23 +236,23 @@ assert escrow_status(record) == "Locked"
 assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 ```
 
-Demandez également la détention d'actifs de la destination et confirmez qu'elle a augmenté de quatre unités. Un reçu de transaction sans enregistrement d'escrow et post-état de destination est une vérification incomplète.
+Interrogez également la détention d'actifs de la destination et confirmez qu'elle a augmenté de quatre unités. Un enregistrement de résultats du protocole de transaction sans l'enregistrement de séquestre et l'état postérieur de la destination constitue une vérification incomplète.
 
-## Résolution des problèmes {#troubleshooting}
+## Dépannage {#troubleshooting}
 
-- `Not permitted` l'ouverture signifie habituellement que l'autorité ne peut pas transférer l'actif sélectionné en détention. La résolution des litiges a un système mondial distinct `CanResolveEscrowDispute` La porte.
-- Le refus `expected remaining amount` est un conflit optimiste-concurrence. Requérir le dossier, décider si l'autre retrait/annulation était prévu et signer une nouvelle instruction seulement si la nouvelle condition est acceptable.
-- Seule l'autorité de libération configurée peut dessiner un verrou de confiance. Le destinataire ne peut pas le relâcher simplement parce qu'il recevra les fonds.
-- La libération sur le marché n'est valable qu'après l'acceptation et l'envoi du paiement; l'annulation est limitée aux premiers états de cycle de vie.
-- L'expiration utilise un temps de registre autorisé. Ne traitez pas d'un délai local à l'horloge murale comme une preuve que `ExpireAssetLock` passera.
-- Un défaut de redevance appartient à la partie qui soumet cette étape du cycle de vie: acheteur, vendeur/ouvreur de fonds et autorisation de libération indépendamment sur Taira.
+- `Not permitted` lors de l'ouverture signifie généralement que le principal d'autorisation ne peut pas transférer l'actif sélectionné en garde. La résolution des litiges dispose d'un portail global distinct `CanResolveEscrowDispute`.
+- `expected remaining amount` le rejet est un conflit de concurrence optimiste. Interrogez à nouveau l'enregistrement, décidez si l'autre retrait/annulation était intentionnel, et signez une nouvelle instruction uniquement si le nouvel état est acceptable.
+- Seul le principal d'autorisation de libération configuré peut lever un verrou de confiance. La destination ne peut pas le libérer simplement parce qu'elle recevra les fonds.
+- La publication sur la place de marché n'est valide qu'après l'acceptation et l'état de paiement envoyé ; l'annulation est limitée aux états précédents du cycle de vie.
+- L'expiration utilise le temps du registre blockchain autoritaire. Ne considérez pas un délai du réveil local comme une preuve que `ExpireAssetLock` passera.
+- Un échec de paiement appartient à la partie soumettant cette étape du cycle de vie. Acheteur de fonds, vendeur/initié et principal d'autorisation de libération indépendamment sur Taira.
 
-## Sources et documents connexes {#source-and-related-docs}
+## Source et documents connexes {#source-and-related-docs}
 
-- [Modèle d'instruction en escrow native à l'obligation fixée](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/isi/escrow.rs)
-- [Tests d'intégration en escrow native à l'engagement fixé](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/native_escrow.rs)
-- [Python méthodes de fidélisation du client à l'obligation fixée](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama échantillon d'escrow natif à l'impôt fixé](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/native_escrow.ko)
-- [Réserve des actifs natifs ](/fr/blockchain/escrow.md)
-- [Les actifs fonciers](./fungible-assets.md)
-- [Autorisations et rôles ](./permissions-and-roles.md)
+- [Modèle d'instruction de séquestre natif à l'engagement épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
+- [Tests d'intégration de séquestre natif au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
+- [Python méthodes client d'entiercement au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama exemple d'entiercement natif au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [Séquestre d'actifs natifs](/fr/blockchain/escrow.md)
+- [Actifs fongibles](./fungible-assets.md)
+- [Autorisations et rôles](./permissions-and-roles.md)

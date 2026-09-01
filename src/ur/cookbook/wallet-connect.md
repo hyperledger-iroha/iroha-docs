@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /cookbook/wallet-connect.md
-translation_source_hash: ab5b6c560ed8b0a208666e5854306ba6adce7af1210fc3c94b9c560d8e6eb686
+translation_source_hash: 81b370bdc73a40ff2dbb8df0f91547ab4c279ed94600bdd6df367f29a949ec71
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -17,7 +17,7 @@ translation_engine: nllb-200-ct2
 - ایک براؤزر ایپلی کیشن جو `@iroha/iroha-js` اور HTTPS کا استعمال کرتی ہے۔
 - ایک بٹوے جو Iroha کنیکٹ v1 کو نافذ کرتا ہے اور ایک واحد کلید Ed25519 I105 اکاؤنٹ کو کنٹرول کرتا ہے۔
 - موجودہ Taira چین ID اور سلسلہ امتیاز، بٹوے کے رجسٹرڈ چھوٹے حرف Ed25519 عوامی کلید hex، ایک ملکیت قابل منتقلی اثاثہ، اور کینیکل I105 منزل.
-- فیس اثاثہ ID موجودہ Taira نل کے جواب کی طرف سے واپس کیا گیا ہے۔ مثال اس ID کے مقابلے میں براہ راست فیس کوٹیشن کی تصدیق کرتی ہے؛ یہ کبھی بھی ایک کاپی شدہ اثاثہ شناخت نہیں کرتا ہے.
+- فیس اثاثہ ID موجودہ Taira فوسیٹ کے جواب کی طرف سے واپس کیا گیا ہے۔ مثال اس ID کے مقابلے میں براہ راست فیس کوٹیشن کی تصدیق کرتی ہے؛ یہ کبھی بھی ایک کاپی شدہ اثاثہ شناخت نہیں کرتا ہے.
 - کنکشن کو منتخب کردہ Torii پر فعال کیا جانا چاہئے۔ ایک QR یا گہری لنک دکھانے سے پہلے چیک کریں:
 
 ```bash
@@ -251,7 +251,7 @@ fn seal_wallet_signature(
 }
 ```
 
-مخزن کی `connect_app` اور `connect_wallet` کی مثالیں پروٹوکول فکسچر ہیں: وہ تعیناتی ٹرانسپورٹ چابیاں استعمال کرتے ہیں ، آؤٹ پٹ میں ٹوکن کو بے نقاب کرتے ہیں ، اور پرس فکسچر ایک ڈمی دستخط واپس کرتا ہے۔ ان کا استعمال صرف فریموں کا مطالعہ کرنے کے لئے کریں ، کبھی بھی بطور Taira پرس لاگو نہیں ہوتا۔
+مخزن کی `connect_app` اور `connect_wallet` کی مثالیں پروٹوکول کے آزمائشی وسائل ہیں: وہ تعیناتی ٹرانسپورٹ چابیاں استعمال کرتے ہیں ، آؤٹ پٹ میں ٹوکن کو بے نقاب کرتے ہیں ، اور پرس کا آزمائشی وسیلہ ایک ڈمی دستخط واپس کرتا ہے۔ ان کا استعمال صرف فریموں کا مطالعہ کرنے کے لئے کریں ، کبھی بھی بطور Taira پرس لاگو نہیں ہوتا۔
 
 ## تصدیق کریں {#verify}
 
@@ -266,7 +266,7 @@ curl -fsS -G \
   jq .
 ```
 
-توثیق صرف اس صورت میں کامیاب ہوتی ہے جب JavaScript ویٹر `Applied` کو پیش کردہ ٹرانزیکشن ہیش کے لئے دیکھتا ہے اور منزل کی ہولڈنگ منتقلی کی عکاسی کرتی ہے۔ HTTP قبولیت یا پرس کی منظوری اکیلے ہی لیجر فائنلٹی نہیں ہے۔
+توثیق صرف اس صورت میں کامیاب ہوتی ہے جب JavaScript ویٹ ہیلپر `Applied` کو پیش کردہ ٹرانزیکشن ہیش کے لئے دیکھتا ہے اور منزل کی ہولڈنگ منتقلی کی عکاسی کرتی ہے۔ HTTP قبولیت یا پرس کی منظوری اکیلے ہی لیجر فائنلٹی نہیں ہے۔
 
 ## خرابی کا سراغ لگانا {#troubleshooting}
 
@@ -275,15 +275,15 @@ curl -fsS -G \
 - منظوری کے اکاؤنٹ سے عدم مطابقت یا غلط منظوری کی دستخط سیشن کو بند کرنا چاہئے۔ شناخت پابند کرنے میں ناکامی کے بعد کبھی بھی پرس سے دستخط کرنے کا مطالبہ نہ کریں۔
 - `public_key_hex does not control authority` رجسٹریشن کے اعداد و شمار اور منظور شدہ I105 شناختی اختلافات سے مراد ہے۔ اس فیلڈ میں فوری پرس ٹرانسپورٹ کلید کا استعمال نہیں کیا جا سکتا۔
 - دستخط یا سکفولڈ رد عام طور پر ایک درخواست فیلڈ یا براہ راست فیس کی قیمت کو تیار کرنے اور جمع کرانے کے درمیان تبدیل کرتا ہے. نئی درخواست بنائیں؛ کبھی بھی پرانا دستخط منتقل نہ کریں.
-- پہلے سے ہی قبول شدہ دستخط شدہ درخواست کی ایک عین مطابق نقل ناممکن ہے۔ ٹائم آؤٹ کو دوبارہ شروع کرنے کی وجہ کے طور پر علاج کرنے سے پہلے اس کی واپسی کی ٹرانزیکشن ہیش کو استفسار کریں۔
+- پہلے سے قبول شدہ signed request کا عین replay idempotent ہے۔ ٹائم آؤٹ کو دوبارہ شروع کرنے کی وجہ کے طور پر علاج کرنے سے پہلے اس کی واپسی کی ٹرانزیکشن ہیش کو استفسار کریں۔
 
 ## ماخذ اور متعلقہ دستاویزات {#source-and-related-docs}
 
-- [پنڈ commit پر براؤزر کنیکٹ لاگو کرنا](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/src/connect.browser.js)
-- [براؤزر کنیکٹ ٹیسٹ پنڈ commit پر](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/test/connect.browser.test.js)
-- [Rust ایپ فریم کی مثال پر پنڈ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_app.rs)
-- [Rust pined commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_wallet.rs) پر پرس فریم کی مثال۔
-- [پنڈ Torii OpenAPI اسکیم](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/artifacts/openapi/torii.json)
+- [پنڈ commit پر براؤزر کنیکٹ لاگو کرنا](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/src/connect.browser.js)
+- [براؤزر کنیکٹ ٹیسٹ پنڈ commit پر](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/test/connect.browser.test.js)
+- [Rust ایپ فریم کی مثال پر پنڈ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_app.rs)
+- [Rust pined commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_wallet.rs) پر پرس فریم کی مثال۔
+- [پنڈ Torii OpenAPI اسکیم](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/artifacts/openapi/torii.json)
 - [SORA Nexus خدمات](/ur/blockchain/sora-nexus-services.md)
 - [فنگبل اثاثے](./fungible-assets.md)
 - [ٹرانزیکشنز جمع کروانا اور ان کی تصدیق کرنا ](./submit-and-verify-transactions.md)

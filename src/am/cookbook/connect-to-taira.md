@@ -1,28 +1,28 @@
 ---
 translation_locale: am
 translation_source: /cookbook/connect-to-taira.md
-translation_source_hash: a7347a7e8ea055fd5bab9a34b6124ea19ef6f355f9beef9e9488794d9c6e3202
+translation_source_hash: e14be7d9314f26f40f6aa30678fddcfcfea39eda9b98016f1b2f84838203c548
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# ወደ Taira ይገናኙ። {#connect-to-taira}
+# ከ Taira ጋር ይገናኙ {#connect-to-taira}
 
-## ውጤቱ {#outcome}
+## ውጤት {#outcome}
 
-Taira ተደራሽ መሆኑን ያረጋግጡ ፣ ካኖኒካዊውን I105 መለያ ID ከአከባቢው የደንበኛ ውቅር ይምረጡ ፣ ፊርማውን በቴስትኔት XOR ያግኙ እና አንድ ክፍያ የተጠየቀ የካናሪ ግብይት ያቅርቡ ። ይህ የምግብ አሰራር በጭራሽ ወደ Minamoto መጻፍ አይልክም።
+Taira ሊደረስበት የሚችል መሆኑን ያረጋግጡ፣ ነጠላ ፕሮቶኮል-ስታንዳርድ I105 መለያ መታወቂያ ከአካባቢያዊ ደንበኛ ውቅር ያውጡ፣ ምስጠራ ፈራሚውን በቴስትኔት XOR የገንዘብ ድጋፍ ያድርጉ እና አንድ በክፍያ የተጠቀሰ የካናሪ ግብይት ያስገቡ። ይህ የተግባር መመሪያ ወደ Minamoto የመጻፍ ክዋኔ በጭራሽ አይልክም።
 
 ## ቅድመ ሁኔታዎች {#prerequisites}
 
-- `curl`, `jq`, Python 11 ወይም ከዚያ በኋላ, እና የአሁኑ `iroha` እና `kagami` የሁለትዮሽ.
-- በ Taira ሰንሰለት ፣ መጨረሻ ነጥብ ፣ የመለያ መገለጫ እና የተወሰነ የሙከራ ኔትወርክ ቁልፍ የተፈጠረ `taira.client.toml`። የ [ን ይከተሉ። የ Taira ደንበኛ ቅንብር](/am/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config) ይፍጠሩ እና ፋይሉን ከምንጭ ቁጥጥር ውጭ ያድርጉ ።
-- ለመሮጥ ዝግጁ የሆነው `taira_faucet_claim.py` ከ [Testnet ን ያግኙ XOR ላይ Taira](/am/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira), ከደንበኛው ኮንፊግሬሽን አጠገብ የተቀመጠ።
+- `curl`፣ `jq`፣ Python ስሪት 3.11 ወይም ከዚያ በኋላ፣ እና የአሁኑ `iroha` እና `kagami` ሁለትዮሽ።
+- በ Taira ሰንሰለት፣ API የመጨረሻ ነጥብ፣ የመለያ መገለጫ እና የተወሰነ የቴስትኔት ቁልፍ የተፈጠረ `taira.client.toml`። [የ Taira የደንበኛ ውቅር ይፍጠሩ](/am/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config)ን ይከተሉ እና ፋይሉን ከምንጭ ቁጥጥር ውጭ ያድርጉት።
+- ለመሮጥ ዝግጁ `taira_faucet_claim.py` ከ [Testnet ያግኙ XOR በርቷል Taira](/am/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira), ከደንበኛው ውቅር አጠገብ ተቀምጧል።
 
 ## እርምጃዎች {#steps}
 
-### 1. ከዝግጅት የመነሳት ችሎታ {#_1-separate-liveness-from-readiness}
+### 1. ሕያውነትን ከዝግጁነት ይለዩ {#_1-separate-liveness-from-readiness}
 
-`/livez` ቀላል-ጽሑፍ ሂደት-የህይወት ፍተሻ ነው. `/status`, `/health`, እና `/readyz` መመለስ JSON. አንድ የሂደት ኖት የሚፈለገው ንዑስ ስርዓት ሲታገድ ከዝግጅት ምርመራዎች ህጋዊ በሆነ መንገድ `503` መመለስ ይችላል.
+`/livez` ግልጽ የሆነ የጽሑፍ ሂደት-ሕያው ምርመራ ነው።. `/status`፣ `/health` እና `/readyz` ይመለሳሉ JSON። የሚፈለገው ንዑስ ስርዓት ሲታገድ የሚሮጥ ኖድ `503` ከዝግጁነት መመርመሪያዎች በህጋዊ መንገድ መመለስ ይችላል።
 
 ```bash
 curl -fsS -H 'Accept: text/plain' https://taira.sora.org/livez
@@ -34,21 +34,21 @@ curl -sS -H 'Accept: application/json' \
   -w '\nHTTP %{http_code}\n' https://taira.sora.org/readyz
 ```
 
-`/livez` ን በመጠቀም ብቻ ሂደቱ ምላሽ የሚሰጥ መሆኑን ለመወሰን ይጠቀሙ. `/readyz` ን ለትራፊክ ማስገቢያ ይጠቀሙ እና JSON መቆለፊያ ዝርዝሮችን ከመቆጣጠርዎ በፊት `503` ን እንደ ማቋረጥ ይቆጥቡ ።
+ሂደቱ ምላሽ መስጠቱን ለማወቅ `/livez`ን ብቻ ይጠቀሙ። ትራፊክን ለመቀበል `/readyz`ን ይጠቀሙ፤ `503`ን እንደ መቋረጥ ከመቁጠርዎ በፊት የ JSON የእንቅፋት ዝርዝሮቹን ይመርምሩ።
 
-### 2. የሕዝብ ምርመራዎችን ማካሄድ {#_2-run-the-public-diagnostics}
+### 2. የህዝብ ምርመራዎችን ያሂዱ {#_2-run-the-public-diagnostics}
 
-ይህ ቼክ የሚነበበው ብቻ ነው እና ፊርማ ሰሪውን አያጫንም:
+ይህ ቼክ ተነባቢ-ብቻ ነው እና ምስጠራ ፈራሚ ውቅረትን አይጭንም -
 
 ```bash
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-ሐኪሙ ከባድ DNS ፣ TLS ፣ ሰንሰለት ወይም መጨረሻ ነጥብ አለመሳካቱን ሲገልጽ መጻፍዎን አይቀጥሉ። የተሟላ የህዝብ ረድፍ ጊዜያዊ ነው; ይጠብቁ እና በተወሰነ ፖሊሲ እንደገና ይሞክሩ ።
+ዶክተሩ ከባድ DNS፣ TLS፣ ሰንሰለት ወይም API የመጨረሻ ነጥብ ውድቀትን ሲዘግብ መጻፍዎን አይቀጥሉ። የተሞላ የህዝብ ወረፋ ጊዜያዊ ነው; ይጠብቁ እና በተገደበ ፖሊሲ እንደገና ይሞክሩ።
 
-### የ Taira መለያ ID ሚስጥር ሳይታተም ይዞት {#_3-derive-the-taira-account-id-without-printing-a-secret}
+### 3. ሚስጥር ሳያትሙ የ Taira መለያ መታወቂያውን ያግኙ {#_3-derive-the-taira-account-id-without-printing-a-secret}
 
-የሕዝብ ቁልፍን ብቻ ያንብቡ, ከዚያም በ ኮድ Taira I105 መገለጫ. `[account].domain` የዋጋ አቅርቦቶች የመመሪያ አውድ; ይህ የሂሳብ አካል አይደለም ID.
+የህዝብ ቁልፉን ከማዋቀሩ ብቻ ያንብቡ እና ከዚያ በ Taira I105 መገለጫ ኮድ ያድርጉት። የ `[account].domain` እሴት የማስተላለፊያ አውድ ያቀርባል; የመለያ መታወቂያው አካል አይደለም።
 
 ```bash
 TAIRA_PUBLIC_KEY="$(python3 - <<'PY'
@@ -65,11 +65,11 @@ export TAIRA_ACCOUNT_ID="$(
 printf '%s\n' "$TAIRA_ACCOUNT_ID"
 ```
 
-የውጤቱ ጎራ የሌለው ቀኖናዊ I105 አድራሻ ነው ። እንደ `wallet@payments.universal` ያሉ ስሞች ቅጽል ስሞች ናቸው እናም በጥብቅ የሂሳብ መስኮች ውስጥ ከመጠቀምዎ በፊት መፍትሄ ማግኘት አለባቸው።
+ውጤቱ ጎራ የሌለው ነጠላ ፕሮቶኮል-መደበኛ I105 አድራሻ ነው። እንደ `wallet@payments.universal` ያሉ ስሞች ተለዋጭ ስሞች ናቸው እና በጥብቅ የመለያ መስኮች ውስጥ ጥቅም ላይ ከመዋላቸው በፊት መፈታት አለባቸው።
 
-### የአሁኑን Taira የክፍያ ንብረትን ለመጠየቅ። {#_4-claim-the-current-taira-fee-asset}
+### 4. የአሁኑን Taira ክፍያ ንብረት ይጠይቁ {#_4-claim-the-current-taira-fee-asset}
 
-የውሃ ቧንቧ ምላሽ የክፍያ ንብረቶች ትርጉም እውነት ምንጭ ነው. ከሌላ አውታረመረብ ወይም ከአሮጌው ሩጫ ID ቅጂ ከመቅዳት ይልቅ የተመለሰውን Base58 ID ይያዙ.
+የቴስትኔት የገንዘብ ድጋፍ አገልግሎት ምላሽ ለክፍያ ንብረት ፍቺ የእውነት ምንጭ ነው። መታወቂያውን ከሌላ አውታረ መረብ ወይም ከአሮጌ ሩጫ ከመቅዳት ይልቅ የተመለሰውን Base58 መታወቂያ ያስቀምጡ።
 
 ```bash
 python3 ./taira_faucet_claim.py "$TAIRA_ACCOUNT_ID" \
@@ -80,7 +80,7 @@ jq -n --arg gas_asset_id "$TAIRA_FEE_ASSET" \
   '{gas_asset_id: $gas_asset_id}' > taira.tx-metadata.json
 ```
 
-ሚዛኑን እስከ አንድ ደቂቃ ድረስ ይከታተሉ. የገንዘብ ድጋፍ ግብይቱ ከመታየቱ በፊት የቧንቧው `202 Accepted` መመለስ ይችላል ።
+ቀሪ ሒሳቡን ቢበዛ ለአንድ ደቂቃ ይመርጡ። የገንዘብ ድጋፍ ግብይቱ ከመታየቱ በፊት የቴስትኔት የገንዘብ ድጋፍ አገልግሎት `202 Accepted` ሊመለስ ይችላል።
 
 ```bash
 funded=false
@@ -96,11 +96,11 @@ done
 test "$funded" = true
 ```
 
-`gas_asset_id` የግብይት ሜታዳታ ነው። ግልፅ የሆነው `--fee-payer authority` ምርጫ በፊርማ የተገደበ ነው ፣ እና CLI ከመፈረምዎ በፊት ትክክለኛውን ክፍያ ዋጋ ያገኛል።
+`gas_asset_id` የግብይት ሜታዳታ ነው። ግልጽ የሆነው `--fee-payer authority` ምርጫው ከፊርማው ጋር የተሳሰረ ነው፣ እና CLI ከመፈረሙ በፊት ትክክለኛ የክፍያ ዋጋ ግምት ያገኛል።.
 
-## ያረጋግጡ {#verify}
+## አረጋግጥ {#verify}
 
-መዝገብ መመሪያ ማስገባት, የ JSON ደረሰኝ መጠበቅ, እና ተግባራዊ ፍጻሜ ድረስ ይጠብቁ. `--no-wait` ማስወገድ ደግሞ የመጀመሪያ ማቅረቢያ ማረጋገጫ የሚጠብቅ ያደርገዋል; ግልፅ ሁኔታ ንባብ የመጨረሻ ቱቦ መስመር ሁኔታ የሚያረጋግጥ.
+የምዝግብ ማስታወሻ መመሪያ ያስገቡ፣ የ JSON ደረሰኝ ያስቀምጡ እና የተተገበረውን የመጨረሻነት ይጠብቁ። `--no-wait`ን መተው የመጀመሪያውን ግቤት ማረጋገጫ እንዲጠብቅ ያደርገዋል። ግልጽ የሆነው ሁኔታ ንባብ የመጨረሻውን የሶፍትዌር ማቀነባበሪያ የስራ ፍሰት ሁኔታን ያረጋግጣል።
 
 ```bash
 iroha --config ./taira.client.toml \
@@ -121,21 +121,21 @@ iroha --config ./taira.client.toml \
   --timeout-ms 60000
 ```
 
-የመጨረሻው ትዕዛዝ የተሳካ የሚሆነው ግብይቱ ነባሪውን `Applied` ተርሚናል ሁኔታ ከደረሰ በኋላ ብቻ ነው። ሃሽ በሙከራ ማስረጃ ውስጥ ይጠብቁ; የግል ቁልፉን ወይም ሙሉ የደንበኞችን ውቅር ከእሱ ጋር በጭራሽ አያከማቹ ።
+የመጨረሻው ትዕዛዝ የሚሳካው ግብይቱ ነባሪው `Applied` ተርሚናል ሁኔታ ላይ ከደረሰ በኋላ ብቻ ነው። ምስጠራውን ሃሽ በሙከራ ማስረጃ ውስጥ ያስቀምጡ; የግል ቁልፉን ወይም ሙሉውን የደንበኛ ውቅር በጭራሽ አያከማቹ።
 
-## ችግሮችን መፍታት {#troubleshooting}
+## መላ ፍለጋ {#troubleshooting}
 
-- `/livez` ተመላሾች `406` ሲጠየቁ JSON ምክንያቱም ይህ መጨረሻ ነጥብ `text/plain`. ላክ `Accept: text/plain` ከላይ እንደታየው።
-- `/health` ወይም `/readyz` የ `503` ማሽን ሊነበብ በሚችል አግዳሚ አማካኝነት `/livez` እና `/status` በሚሰሩበት ጊዜም እንኳ መልሰው ሊሰጡ ይችላሉ ። ያንን አግዳሚ ያዘጋጁ ወይም ይጠብቁ; የመልሶ ማቋቋም ቁልፎች የአገናኝን ዝግጁነት አይቀይሩም።
-- `502` ቧንቧ፣ የጊዜ ገደብ ወይም የቆየ የስራ ማስረጃ አናከር የህዝብ አገልግሎት ውድቀት ነው። አዲስ እንቆቅልሽ አምጣ በኋላ ላይ እንደገና ሞክር።
-- የ I105 ቅድመ ቅደም ተከተል ስህተት ማለት የህዝብ ቁልፍ በተሳሳተ መገለጫ ተመዝግቧል ማለት ነው. እንደገና ይሂዱ `iroha tools address convert --profile taira`.
-- የክፍያ መጠየቂያ ውድቅ ማድረግ አብዛኛውን ጊዜ ባለሥልጣኑ አልተደገፈም ማለት ነው ፣ የክፍያው አክሲዮን ሜታዳታ የዘመነ ነው ፣ ወይም ምንም ግልፅ ክፍያ ሰጪ አልመረጠም።
-- ይህ ካናሪ ስኬታማ ከሆነ በኋላ ምዝገባ ፣ ማጣሪያ ወይም የስም ቦታ አስተዳደር አሁንም ውድቅ ሊደረግ ይችላል ። እነዚህ ሥራዎች የተለየ የአሂድ ጊዜ ፍቃዶችን ይጠይቃሉ; Taira መዳረሻ ያልተሰጠበት ጊዜ በተፈጠረው አካባቢያዊ አውታረ መረብ ላይ ይለማመዱ ።
+- `/livez` JSON ሲጠየቅ `406` ይመልሳል ምክንያቱም ያ API የመጨረሻ ነጥብ `text/plain` ነው። ከላይ እንደሚታየው `Accept: text/plain` ይላኩ።
+- `/health` ወይም `/readyz` `/livez` እና `/status` በሚሰሩበት ጊዜም ቢሆን `503` በማሽን ሊነበብ በሚችል እንቅፋት ሊመለሱ ይችላሉ። ያንን እንቅፋት ያስተካክሉ ወይም ይጠብቁ; ቁልፎችን እንደገና ማደስ የኖድ ዝግጁነትን አይለውጥም።
+- የቴስትኔት የገንዘብ ድጋፍ አገልግሎት `502`፣ የጊዜ ማብቂያ ወይም የቆየ የስራ ማረጋገጫ መልህቅ የህዝብ አገልግሎት ውድቀት ነው። አዲስ እንቆቅልሽ አምጡ እና በኋላ እንደገና ይሞክሩ።
+- የ I105 ቅድመ ቅጥያ ስህተት ማለት ይፋዊ ቁልፉ በተሳሳተ መገለጫ ተመዝግቧል ማለት ነው። እንደገና ያሂዱ `iroha tools address convert --profile taira`።
+- የክፍያ ዋጋ አለመቀበል ብዙውን ጊዜ የፈቃድ ርዕሰ መምህሩ የገንዘብ ድጋፍ አልተደረገለም፣ የክፍያ ንብረት ሜታዳታ ጊዜው ያለፈበት ወይም ምንም ግልጽ ክፍያ ከፋይ አልተመረጠም ማለት ነው።
+- ይህ ካናሪ ከተሳካ በኋላ ምዝገባ፣ መስጠት ወይም የስም ቦታ አስተዳደር አሁንም ውድቅ ሊደረግ ይችላል። እነዚያ ክዋኔዎች የተለየ የሶፍትዌር ማስፈጸሚያ አካባቢ ፈቃዶችን ይፈልጋሉ; Taira መዳረሻ ካልተሰጠ በተፈጠረው የአካባቢ አውታረመረብ ላይ ይለማመዱዋቸው።
 
 ## ምንጭ እና ተዛማጅ ሰነዶች {#source-and-related-docs}
 
-- [Taira CLI የዲጂኖስቲክስ እና የካናሪ ምንጭ በፒን የተቀመጠ ኮሚት](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/taira.rs)
-- [በግልጽ የሚከፈልበትን ክፍያ መምረጥ እና CLI ማቅረቢያ ምንጭ በተያዘለት ተልእኮ ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/main_shared.rs) ላይ።
-- [Taira ሂሳብ እና የቧንቧ መመሪያ](/am/get-started/sora-nexus-dataspaces.md)
-- [የደንበኛው ውቅር](/am/guide/configure/client-configuration.md)
+- [Taira CLI ምርመራ እና የካናሪ ምንጭ በተሰካው የምንጭ-ኮድ ክለሳ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/taira.rs)
+- [ግልጽ የሆነ የክፍያ ምርጫ እና CLI የማስረከቢያ ምንጭ በተሰካው የምንጭ-ኮድ ክለሳ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
+- [Taira የመለያ እና የቴስትኔት የገንዘብ ድጋፍ አገልግሎት መመሪያ](/am/get-started/sora-nexus-dataspaces.md)
+- [የደንበኛ ውቅር](/am/guide/configure/client-configuration.md)
 - [ግብይቶች](/am/blockchain/transactions.md)

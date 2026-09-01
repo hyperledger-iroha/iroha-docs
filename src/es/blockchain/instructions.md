@@ -1,73 +1,75 @@
 ---
 translation_locale: es
 translation_source: /blockchain/instructions.md
-translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
+translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Iroha Instrucciones especiales {#iroha-special-instructions}
+# Iroha Operaciones de instrucción {#iroha-special-instructions}
 
-Cuando hablamos de [¿Cómo Iroha que opera](/es/blockchain/iroha-explained), Nosotros lo decimos. Iroha Las instrucciones especiales son la única manera de modificar el estado mundial. ¿Qué tipo de instrucciones especiales tenemos? Si han leído las guías específicas del idioma en este tutorial, Usted ya ha visto un par de instrucciones: `Register<Account>` y `Mint<Numeric>`.
+Cuando hablamos sobre [cómo funciona Iroha](/es/blockchain/iroha-explained), dijimos que las operaciones de instrucción Iroha son la única manera de modificar el estado del mundo. Entonces, ¿qué tipo de instrucción ¿Qué operaciones tenemos? Si has leído las guías específicas del lenguaje en este tutorial, ya has visto un par de instrucciones: `Register<Account>` y `Mint<Numeric>`.
 
-La siguiente es la lista completa de las instrucciones especiales Iroha:
+Aquí está la lista completa de operaciones de instrucción Iroha:
 
-|Instrucciones |Descripciones |
+|Instrucción|Descripciones|
 | --------------------------------------------------------- | ------------------------------------------------ |
-| [Registro/desregistro ](#un-register) |Dar un ID a una nueva entidad en la cadena de bloques. |
-| [Mint/Burn](#mint-burn) |Activos numéricos de moneda/combustión o repeticiones desencadenantes. |
-| [SetKeyValue/RemoveKeyValue ](#setkeyvalue-removekeyvalue) |Actualizar los metadatos de objetos blockchain. |
-| [SetParameter](#setparameter) |Establezca un parámetro de toda la cadena.|
-| [Subvención/Revocación](#grant-revoke) |Dar o eliminar permisos y roles. |
-| [Transferencia ](#transfer) |Transferencia de propiedad o valor del activo. |
-| [Escrow y bloqueo de activos nativos ](#native-escrow-and-asset-locks) |Bloquea los activos numéricos en custodia de protocolo. |
-| [ExecuteTrigger](#executetrigger) |Ejecutar los gatillo. |
-| [Log/Custom/Upgrade ](#other-instructions) |Registre, extienda o actualice el comportamiento del tiempo de ejecución. |
+| [Registrar/Deseleccionar](#un-register)                       |Asigna un ID a una nueva entidad en la blockchain.|
+| [Mint/Burn](#mint-burn)                                   |Emitir/quema de activos numéricos o activar repeticiones.|
+| [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) |Actualizar metadatos del objeto de blockchain.|
+| [SetParameter](#setparameter)                             |Establecer un parámetro a nivel de cadena.|
+| [Grant/Revoke](#grant-revoke)                             |Dar o quitar permisos y roles.|
+| [Transferir](#transfer)                                     |Transferir la propiedad o el valor del activo.|
+| [Depósito en garantía nativo y bloqueos de activos](#native-escrow-and-asset-locks) |Bloquear activos numéricos en la custodia del protocolo.|
+| [Acuerdo privado atómico](#atomic-private-settlement)   |Gobernar grupos confidenciales y paquetes atómicos.|
+| [ExecuteTrigger](#executetrigger)                         |Ejecutar desencadenadores.|
+| [Log/Custom/Upgrade](#other-instructions)                 |Registrar, ampliar o actualizar el comportamiento del entorno de ejecución.|
 
-Comencemos con un resumen de Iroha Instrucciones especiales; qué objetos cada instrucción puede ser llamada para y qué instrucciones están disponibles para cada objeto.
+Comencemos con un resumen de las operaciones de instrucción Iroha; qué objetos puede solicitar cada instrucción y qué instrucciones están disponibles para cada objeto.
 
 ## Resumen {#summary}
 
-Para cada instrucción, hay una lista de objetos en los que se puede ejecutar esta instrucción. Por ejemplo, las variantes de transferencia cubren objetos del libro mayor y activos numéricos, mientras que la acuñación cubre activos numéticos y desencadena repeticiones.
+Para cada instrucción, hay una lista de objetos sobre los que se puede ejecutar esta instrucción. Por ejemplo, la transferencia de variantes abarca objetos de libro mayor blockchain propiedad de alguien y activos numéricos, mientras que la emisión abarca activos numéricos y repeticiones de disparadores.
 
-Algunas instrucciones requieren que se especifique un destino. Por ejemplo, si usted transfiere activos, siempre debe especificar a qué cuenta se están transferindo. Por otro lado, cuando estás registrando algo, lo único que necesitas es el objeto que quieres registrar.
+Algunas instrucciones requieren que se especifique un destino. Por ejemplo, si transfieres activos, siempre necesitas especificar a qué cuenta los estás transfiriendo. Por otro lado, cuando estás registrando algo, todo lo que necesitas es el objeto que quieres registrar.
 
-|Instrucciones |Objetos |El destino |
+|Instrucción|Objetos|Destino|
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- |
-| [EnsureAlias](#ensurealias) |dominio ordinario, alias de espacio de datos y alias de cuentas |                      |
-| [Registro/desregistro ](#un-register) |Cuentas, definiciones de activos, NFTs, roles, factores desencadenantes, pares; eliminación del dominio |                      |
-| [Mint/Burn](#mint-burn) |activos numéricos, repeticiones desencadenantes |cuentas o factores desencadenantes |
-| [SetKeyValue/RemoveKeyValue ](#setkeyvalue-removekeyvalue) |Objetos que tienen [metadatos](./metadata.md): dominios, cuentas, definiciones de activos, NFTs, RWAs, desencadenantes |                      |
-| [SetParameter](#setparameter) |Parámetros de la cadena |                      |
-| [Subvención/Revocación](#grant-revoke) | [funciones, tokens de permiso ](/es/blockchain/permissions.md) |cuentas o funciones |
-| [Transferencia ](#transfer) |dominios, definiciones de activos, activos numéricos, NFTs |cuentas |
-| [Escrow y bloqueo de activos nativos ](#native-escrow-and-asset-locks) |garantías numéricas de activos, bloqueos de activos, compromisos anónimos en garantía |los compradores, los destinos o las divisiones de la disputa |
-| [ExecuteTrigger](#executetrigger) |desencadenantes .|                      |
-| [Log/Custom/Upgrade ](#other-instructions) |registros, cargas útiles específicas de los ejecutores, actualizaciones del ejecutor |                      |
+| [EnsureAlias](#ensurealias)                               |configuración de dominio ordinario, alias de espacio de datos y alias de cuenta|                      |
+| [Registrar/Deseleccionar](#un-register)                       |cuentas, definiciones de activos, NFTs, roles, activadores, pares de red; eliminación de dominio|                      |
+| [Mint/Burn](#mint-burn)                                   |activos numéricos, desencadenar repeticiones|cuentas o desencadenantes|
+| [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) |objetos que tienen [metadatos](./metadata.md): dominios, cuentas, definiciones de activos, NFTs, RWAs, desencadenadores|                      |
+| [SetParameter](#setparameter)                             |parámetros de la cadena|                      |
+| [Grant/Revoke](#grant-revoke)                             | [roles, tokens de permiso](/es/blockchain/permissions.md)                                                  |cuentas o roles|
+| [Transferir](#transfer)                                     |dominios, definiciones de activos, activos numéricos, NFTs|cuentas|
+| [Depósitos en garantía nativos y bloqueos de activos](#native-escrow-and-asset-locks) |depósitos de garantía de activos numéricos, bloqueos de activos, compromisos de depósito de garantía anónimos|compradores, destinos o divisiones de disputas|
+| [Acuerdo privado atómico](#atomic-private-settlement)   |conjuntos confidenciales limitados a la ruta, rotaciones de políticas, paquetes finalizados y marcadores de aborto|                      |
+| [ExecuteTrigger](#executetrigger)                         |desencadena|                      |
+| [Log/Custom/Upgrade](#other-instructions)                 |registros, cargas específicas del ejecutor, actualizaciones del ejecutor|                      |
 
-También hay otra manera de ver ISI, en términos del objeto del libro mayor que tocan:
+También hay otra forma de ver ISI, en términos del objeto del libro mayor de la blockchain con el que interactúan:
 
-|Objetivo .|Instrucciones |
+|Objetivo|Instrucciones|
 | ---------------- | ------------------------------------------------------------------------------------------------------------ |
-|Cuenta |Registro de cuentas/desregistro, activos recibidos, metadatos actualizados de cuentas, permisos y funciones de concesión/revocación |
-|Dominio |garantizar la configuración del dominio, no registrar dominios, transferir la propiedad del dominio, actualizar los metadatos del dominio |
-|Definición de activos |las definiciones de registro/no registro, transferencia de propiedad, actualización de metadatos |
-|Activos |cantidad numérica de menta/combustión, transferencia de cantidad numérica |
-|Escrow |abrir, aceptar, marcar el pago enviado, liberar, cancelar, disputar, resolver, retirar o caducar los registros de custodia nativos.|
-|NFT |Registro/desregistro NFTs, transferencia de propiedad, actualización de metadatos |
-|RWA |registro de lotes, cantidad transferida, retención/liberación, congelación/descongelación, canje, fusión, actualización de metadatos y controles |
-|Trigger .|registrar/desinscrir, repeticiones del gatillo de la moneda/quema, ejecutar el gatillo, actualizar los metadatos del gatillo |
-|El mundo |registrar/desregistrar pares y roles, establecer parámetros, actualizar el ejecutor |
+|Cuenta|registrar/dar de baja cuentas, recibir activos, actualizar metadatos de cuentas, otorgar/revocar permisos y roles|
+|Dominio|asegurar la configuración del dominio, cancelar el registro de dominios, transferir la propiedad del dominio, actualizar los metadatos del dominio|
+|Definición de activo|registrar/desregistrar definiciones, transferir propiedad, actualizar metadatos|
+|Activo|acuñar/quema cantidad numérica, transferir cantidad numérica|
+|Depósito en garantía|abrir, aceptar, marcar el pago como enviado, liberar, cancelar, disputar, resolver, retirar o expirar registros de custodia nativos|
+| NFT              |registrar/darse de baja NFTs, transferir propiedad, actualizar metadatos|
+| RWA              |registrar lotes, transferir cantidad, retener/liberar, congelar/descongelar, canjear, fusionar, actualizar metadatos y controles|
+|Disparador|registrar/dar de baja, acuñar/quemar repeticiones de disparadores, ejecutar disparador, actualizar metadatos del disparador|
+|Mundo|registrar/desregistrar pares y roles de red, configurar parámetros, actualizar el ejecutor|
 
 ## CLI Ejemplos {#cli-examples}
 
-Los ejemplos de esta página suponen que está ejecutando comandos desde el espacio de trabajo upstream Iroha contra la configuración local predeterminada del cliente:
+Los ejemplos en esta página asumen que estás ejecutando comandos desde el espacio de trabajo ascendente Iroha contra la configuración de cliente local predeterminada:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml <command>
 ```
 
-Si instaló el binario `iroha`, utilice `iroha --config ./defaults/client.toml` en su lugar. Reemplazar los titulares de lugar a continuación con valores de su red:
+Si instalaste el binario `iroha`, usa `iroha --config ./defaults/client.toml` en su lugar. Sustituye los marcadores de posición a continuación con valores de tu red:
 
 ```bash
 export ALICE="<ALICE_ACCOUNT_I105>"
@@ -77,7 +79,7 @@ export PEER_KEY="<BLS_PUBLIC_KEY_MULTIHASH>"
 export PEER_POP="<PROOF_OF_POSSESSION_HEX>"
 ```
 
-Cuando se dirige al público Taira la red de prueba, utilizar un Taira Configuración del cliente. Antes de ejecutar ejemplos de pago, guarde el ayudante del grifo de [Obtenga el Testnet XOR en el Taira](/es/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) como `taira_faucet_claim.py`, luego reclamar la red de prueba XOR del grifo:
+Al apuntar a la testnet pública Taira, use una configuración de cliente Taira. Antes de ejecutar ejemplos que requieren pago de tarifas, guarde el asistente de servicio de financiamiento de testnet de [Obtener Testnet XOR en Taira](/es/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) como `taira_faucet_claim.py`, luego reclame XOR de testnet del servicio de financiamiento de testnet:
 
 ```bash
 export TAIRA_ACCOUNT_ID="<TAIRA_I105_ACCOUNT_ID>"
@@ -91,7 +93,7 @@ iroha --config ./taira.client.toml ledger asset get \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-Después de que el activo financiado por el grifo sea visible, adjunta los metadatos requeridos sobre los activos de gas para escribir las transacciones:
+Cuando aparezca el activo financiado por el dispensador, añada a las transacciones de escritura los metadatos exigidos del activo de gas:
 
 ```bash
 printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
@@ -104,7 +106,7 @@ cargo run --bin iroha -- \
 
 ## EnsureAlias {#ensurealias}
 
-`EnsureAlias` es el camino ordinario para la creación de dominios y sus contratos de arrendamiento SNS. Se obliga declarativamente el espacio de datos exacto, propietario, término del arrendamiento y guardia de cotizaciones, Luego crea o repara todo el estado requerido de forma atómica. Utilizar la autenticación `POST /v1/aliases/setup/plan` punto final o la coincidencia CLI flujo de trabajo:
+`EnsureAlias` es la ruta ordinaria de primera publicación para crear dominios y sus SNS arrendamientos. Vincula de manera declarativa el espacio de datos exacto, el propietario, el plazo del arrendamiento, y la protección de cotización, luego crea o repara todo el estado requerido de manera atómica. Use el endpoint autenticado `POST /v1/aliases/setup/plan` API o el flujo de trabajo correspondiente CLI:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -116,46 +118,46 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   app alias setup apply --plan-file ./domain.plan.json
 ```
 
-La intención y el plan son libres de secretos, pero se aplican señales de paso y se presenta una transacción ordinaria con la cuenta configurada. Un plan está ligado a su cadena, autoridad, anclaje de estado en vivo y fecha límite; nunca vuelva a utilizar uno en otra red.
+La intención y el plan son libres de secretos, pero el paso de aplicar firma y envía una transacción ordinaria con la cuenta configurada. Un plan está vinculado a su cadena, al principal de autorización, al ancla de estado en vivo y al plazo; nunca reutilices uno en otra red.
 
-## (Un) Registro {#un-register}
+## (Des)Registrar {#un-register}
 
-El registro y el no registro son las instrucciones utilizadas para otorgar una ID a una nueva entidad en la cadena de bloques.
+Registrar y cancelar el registro son las instrucciones utilizadas para asignar un ID a una nueva entidad en la cadena de bloques.
 
-Todo lo que se puede registrar es tanto `Registrable` como `Identifiable`, pero no todo lo que es `Identifiable` es`Registrable`. La mayoría de las cosas se registran directamente, pero en algunos casos la representación en el blockchain tiene considerablemente más datos. Por razones de seguridad y rendimiento, utilizamos constructores para dichas estructuras de datos (por ejemplo `NewAccount`), y el registro entre pares tiene una instrucción dedicada de prueba de posesión.
+Todo lo que puede ser registrado es tanto `Registrable` como `Identifiable`, pero no todo lo que es `Identifiable` es `Registrable`. La mayoría de las cosas se registran directamente, pero en algunos casos la representación en la blockchain tiene considerablemente más datos. Por razones de seguridad y rendimiento, usamos generadores para tales estructuras de datos (por ejemplo, `NewAccount`), y el registro de pares en la red tiene una instrucción dedicada de prueba de posesión. Como regla, todo lo que puede ser registrado también puede ser dado de baja, pero eso no es una regla absoluta.
 
-Usted puede registrar cuentas, definiciones de activos, NFTs, los pares, roles y desencadenantes. `EnsureAlias`; el crudo `Register::Domain` la carga útil está reservada para genesis/bootstrap. `RegisterPeerWithPop`, que lleva una prueba de posesión para la llave de pares. [nombramiento de convenciones](/es/reference/naming.md) para conocer las restricciones impuestas a los nombres de entidades.
+Puede registrar cuentas, definiciones de activos, NFTs, pares de red, roles y desencadenadores. La configuración del dominio utiliza `EnsureAlias`; la carga útil sin procesar `Register::Domain` está reservada para genesis/bootstrap. El registro de pares de la red utiliza `RegisterPeerWithPop`, que contiene una prueba de posesión de la clave del par de la red. Consulta nuestro [convenciones de nomenclatura](/es/reference/naming.md) para aprender sobre las restricciones impuestas a los nombres de entidades.
 
-Los lotes RWA se crean a través de la instrucción `RegisterRwa` dedicada. El código actual no expone una instrucción `UnregisterRwa`; utilice `RedeemRwa` para retirar la cantidad representada.
+RWA los lotes se crean mediante la instrucción dedicada `RegisterRwa`. El código actual no expone una instrucción `UnregisterRwa`; use `RedeemRwa` para dar de baja la cantidad representada.
 
 ::: info
 
-Tenga en cuenta que dependiendo de cómo decida configurar su bloque genético [](/es/guide/configure/genesis.md) en `genesis.json` (específicamente, si incluye o no el registro de tokens de permiso), el proceso para registrar una cuenta puede ser muy diferente.
+Tenga en cuenta que, dependiendo de cómo decida configurar su [bloque génesis de blockchain](/es/guide/configure/genesis.md) en `genesis.json` (específicamente, si incluye o no el registro de tokens de permiso), el proceso para registrar una cuenta puede ser muy diferente. En general, podemos resumirlo así:
 
-- En una cadena de bloques pública, cualquier persona debería poder registrar una cuenta.
-- En una cadena de bloques privada, puede haber un proceso único para registrar cuentas. En una blockchain privada típica, es decir, una cadena debloques sin procesos únicos para el registro de cuentas, necesita una cuenta para registrar otra cuenta.
+- En una blockchain pública, cualquiera debería poder registrar una cuenta.
+- En una blockchain privada, puede haber un proceso único para registrar cuentas. En una blockchain privada típica, es decir, una blockchain sin ningún proceso único para registrar cuentas, necesitas una cuenta para registrar otra cuenta.
 
-En este sentido, la Comisión ha adoptado una propuesta de directiva relativa a los [comparación entre cadenas de bloques privadas y públicas](/es/guide/configure/modes.md).
+Discutimos estas diferencias en gran detalle cuando nosotros [comparar blockchain privadas y públicas](/es/guide/configure/modes.md).
 
 :::
 
 ::: info
 
-El registro de un igual es actualmente la única manera de agregar pares que no formaban parte del primer grupo de confianza establecido en la red.
+Registrar un par de red es actualmente la única manera de agregar pares de red que no formaban parte del conjunto original de pares de red confiables a la red.
 
 :::
 
-Utilice una guía específica del idioma para registrar objetos blockchain:
+Utilice una guía específica del idioma para registrar objetos de blockchain:
 
-|El lenguaje |Guía |
+|Idioma|Guía|
 | --------------------- | ------------------------------------------------------------------------------------------------------- |
-|CLI |Utilice el [Iroha CLI](/es/get-started/operate-iroha-via-cli.md) para configurar dominios y registrar cuentas y activos. |
-|Rust |Usar el tutorial [Rust ](/es/guide/tutorials/rust.md). |
-|Kotlin/Java |Utilice el tutorial [Kotlin/Java ](/es/guide/tutorials/kotlin-java.md). |
-|Python |Usar el tutorial [Python ](/es/guide/tutorials/python.md). |
-|JavaScript/TypeScript |Use el tutorial [JavaScript/TypeScript ](/es/guide/tutorials/javascript.md). |
+| CLI                   |Utilice el [Iroha CLI](/es/get-started/operate-iroha-via-cli.md) para configurar dominios y registrar cuentas y activos.|
+| Rust                  |Usa el [tutorial de Rust](/es/guide/tutorials/rust.md).|
+| Kotlin/Java           |Usa el [Kotlin/Java](/es/guide/tutorials/kotlin-java.md).|
+| Python                |Usa el [tutorial de Python](/es/guide/tutorials/python.md).|
+| JavaScript/TypeScript |Usa el [JavaScript/TypeScript](/es/guide/tutorials/javascript.md).|
 
-Planifique y aplique la configuración de dominio ordinario, luego deje de registrar el dominio cuando ya no sea necesario:
+Planifique y aplique la configuración de dominio ordinaria, luego desregistre el dominio cuando ya no sea necesario:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -170,7 +172,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger domain unregister --id docs.universal
 ```
 
-Cuentas registradas y no registradas:
+Registrar y cancelar el registro de cuentas:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -180,7 +182,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger account unregister --id "$BOB"
 ```
 
-Las definiciones de activos registradas y no registradas:
+Registrar y anular el registro de definiciones de activos:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -194,7 +196,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger asset definition unregister --id "$ASSET_DEF"
 ```
 
-Registro y no registro NFTs. El registro NFT lee su contenido JSON a partir de la entrada estándar:
+Registrar y anular el registro de NFTs. La registración de NFT lee su contenido JSON desde la entrada estándar:
 
 ```bash
 printf '{"kind":"badge","level":"intro"}\n' |
@@ -205,7 +207,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger nft unregister --id 'badge$docs.universal'
 ```
 
-Funciones de registro y no registro:
+Registrar y anular el registro de roles:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -215,7 +217,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger role unregister --id operators
 ```
 
-Registro y desregistro de los disparadores. El registro del desencadenante necesita un código IVM compilado o una lista de instrucciones serializada. Este ejemplo construye una instrucción `Log` con el CLI y la envía al registrador del activador:
+Registrar y anular el registro de disparadores. El registro de disparadores necesita ya sea bytecode compilado IVM o una lista de instrucciones serializada. Este ejemplo construye una instrucción `Log` con el CLI y la envía al registro del disparador:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml -o \
@@ -231,10 +233,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger trigger unregister --id hourly_cleanup
 ```
 
-Registro y desregistro de pares. Generar la clave BLS y PoP con `kagami` si ya no las tiene:
+Registre y elimine el registro de pares de red. Genere la clave BLS y PoP con `kagami` si aún no las tiene:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./peer-key
+PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
+PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
@@ -243,26 +248,26 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer unregister --key "$PEER_KEY"
 ```
 
-## La menta y el bronceado {#mint-burn}
+## Crear/Quemar {#mint-burn}
 
-La acuñación y la quema pueden referirse a activos numéricos y desencadenan con un número limitado de repeticiones. Algunos activos pueden ser declarados como no acuñables, lo que significa que sólo se pueden acuñar una vez después del registro.
+La emisión y quema pueden referirse a activos numéricos y disparadores con un número limitado de repeticiones. Algunos activos pueden declararse como no acuñables, lo que significa que solo se pueden emitir una vez después del registro.
 
-Los activos se acuñan en una cuenta específica, generalmente la que registró el activo en primer lugar. Las cantidades de activos no son negativas, por lo que nunca puede tener `$-1.0` de un activo o quemar una cantidad negativa y obtener una moneda.
+Los activos se emiten a una cuenta específica, generalmente la que registró el activo en primer lugar. Las cantidades de activos no son negativas, por lo que nunca puedes tener `$-1.0` de un activo o quemar una cantidad negativa y obtener una emisión.
 
-Utilizar una guía específica del idioma para acuñar activos de blockchain:
+Utilice una guía específica del idioma para emitir activos de blockchain:
 
 - [CLI](/es/get-started/operate-iroha-via-cli.md)
 - [Rust](/es/guide/tutorials/rust.md)
 - [Kotlin/Java](/es/guide/tutorials/kotlin-java.md)
 - [Python](/es/guide/tutorials/python.md)
-- [JavaScript/TypeScript ](/es/guide/tutorials/javascript.md)
+- [JavaScript/TypeScript](/es/guide/tutorials/javascript.md)
 
-He aquí algunos ejemplos de activos en llamas:
+Aquí hay ejemplos de activos quemados:
 
 - [CLI](/es/get-started/operate-iroha-via-cli.md)
 - [Rust](/es/guide/tutorials/rust.md)
 
-Activos numéricos de hortalizas y quemadores:
+emitir y quemar activos numéricos:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -278,7 +283,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --quantity 10
 ```
 
-Repeticiones de la menta y el gatillo:
+emitir y quemar repeticiones de disparo:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -288,13 +293,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger trigger burn --id hourly_cleanup --repetitions 1
 ```
 
-## Transferencia {#transfer}
+## Transferir {#transfer}
 
-Las transferencias mueven la propiedad o el valor entre cuentas. Las variantes genéricas de transferencia cubren dominios, definiciones de activos, activos numéricos y NFTs. El movimiento de cantidades RWA utiliza las instrucciones dedicadas `TransferRwa` y `ForceTransferRwa` descritas en [Real-World Assets ](/es/blockchain/rwas.md).
+Las transferencias mueven la propiedad o el valor entre cuentas. Las variantes genéricas de transferencia cubren dominios, definiciones de activos, activos numéricos y NFTs. El movimiento de cantidad de RWA utiliza las instrucciones dedicadas `TransferRwa` y `ForceTransferRwa` descritas en [Activos del mundo real](/es/blockchain/rwas.md).
 
-Para ello, se debe conceder una cuenta a los [Permiso para transferir activos](/es/reference/permissions.md). Se refiere a un ejemplo de cómo transferir activos con [CLI](/es/get-started/operate-iroha-via-cli.md) o [Rust](/es/guide/tutorials/rust.md).
+Para hacer esto, una cuenta debe recibir el [permiso para transferir activos](/es/reference/permissions.md). Consulte un ejemplo sobre cómo transferir activos con [CLI](/es/get-started/operate-iroha-via-cli.md) o [Rust](/es/guide/tutorials/rust.md).
 
-Transferencia de activos numéricos:
+Transferir activos numéricos:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -305,7 +310,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --quantity 25
 ```
 
-El dominio de transferencia, la definición del activo y la propiedad NFT:
+Transferir la propiedad del dominio, la definición del activo y NFT:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -318,21 +323,29 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger nft transfer --id 'badge$docs.universal' --from "$ALICE" --to "$BOB"
 ```
 
-## Los escudos y los activos nativos {#native-escrow-and-asset-locks}
+## Depósitos en garantía nativos y bloqueos de activos {#native-escrow-and-asset-locks}
 
-Las instrucciones de custodia nativa bloquean los activos numéricos en la custodia del protocolo administrado por un libro mayor. Se utilizan para el liquidación al estilo de mercado, bloqueos genéricos de activos y flujos anónimos de custodia protegidos.
+Las instrucciones de fideicomiso nativas bloquean activos numéricos bajo la custodia del protocolo gestionado por el libro mayor. Se utilizan para la liquidación al estilo de mercado, bloqueos de activos genéricos y flujos de fideicomiso anónimos protegidos.
 
-Utilizaciones de la fianza en el mercado `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, y `ResolveEscrowDispute`. Uso de bloqueos genéricos de activos `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, y `ExpireAssetLock`. El escrow anónimo refleja el ciclo de vida del mercado con `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, y `ResolveAnonymousEscrowDispute`.
+El depósito en garantía del mercado utiliza `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute` y `ResolveEscrowDispute`. Los bloqueos de activos genéricos utilizan `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock` y `ExpireAssetLock`. La custodia anónima refleja el ciclo de vida del mercado con `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute` y `ResolveAnonymousEscrowDispute`.
 
-Estos ISIs no tienen actualmente los comandos de primera clase CLI. Utilice constructores de tipo SDK o cargas útiles de instrucciones serializadas, y vea [Native Asset Escrow](/es/blockchain/escrow.md) para obtener detalles del ciclo de vida, permisos, consultas, eventos y ejemplos de Rust.
+Estos ISIs actualmente no tienen comandos CLI de primera clase. Utilice constructores SDK tipados o cargas de instrucciones serializadas, y consulte [Custodia de Activos Nativos](/es/blockchain/escrow.md) para detalles del ciclo de vida, permisos, consultas, eventos y ejemplos de Rust.
 
-## Grants/Revocaciones {#grant-revoke}
+## Acuerdo Privado Atómico {#atomic-private-settlement}
 
-Las instrucciones de concesión y revocación se utilizan para los permisos y funciones de cuenta [ ](permissions.md).
+La familia de instrucciones de liquidación privada atómica gobernada está separada de Native transparente AMX. `ActivatePrivateSettlementPoolV1` establece un conjunto confidencial de alcance de ruta a partir de una proyección de gobernanza redactada y compromisos de origen canónico. `FinalizeAtomicPrivateSettlementV1` aplica un paquete certificado por el comité de manera atómica, mientras que `AbortAtomicPrivateSettlementV1` publica solo el marcador terminal público autorizado por el patrocinador.
 
-`Grant` Se utiliza para otorgar permanentemente a un usuario un solo permiso o un grupo de permisos (un "rollo"). Las funciones y permisos otorgados sólo pueden ser eliminados a través de la `Revoke` Como tal, estas instrucciones deben ser utilizadas con cuidado.
+`RotatePrivateSettlementPoolPolicyV1` está restringido a la gobernanza de privacidad. Requiere el valor exacto del digest criptográfico de gobernanza actual, conserva la ruta, el grupo, el compromiso de vinculación de activos, la frontera del estado, los conjuntos de repetición y los registros de resultados del protocolo finalizados, y avanza la revisión pública en uno, y utiliza una nueva época de clave de auditor. La rotación se activa en su altura de inclusión y no puede compartir esa altura con un registro de resultado del protocolo para la misma ruta/pool. La línea de revisión pública mantiene los registros de resultados del protocolo finalizados antes del reinicio de la rotación: válidos y reproducibles de manera idempotente; los paquetes de políticas antiguas en curso fallan cerrados. Los operadores deben conservar las claves de descifrado antiguas para las cápsulas almacenadas o gobernar y probar el reempaquetado de cápsulas antes de destruirlas.
 
-Conceder y revocar un papel en una cuenta:
+La ruta permanece desactivada por defecto y no está calificada para producción. Consulte [Ejecutar Liquidación Atómica Privada entre Espacios de Datos](/es/get-started/atomic-private-settlement) para los requisitos de configuración, principal de autorización, auditoría, recuperación y liberación.
+
+## Conceder/Revocar {#grant-revoke}
+
+Las instrucciones de concesión y revocación se utilizan para la cuenta [permisos y roles](permissions.md).
+
+`Grant` se utiliza para otorgar permanentemente a un usuario ya sea un único permiso o un grupo de permisos (un "rol"). Los roles y permisos otorgados solo pueden eliminarse mediante la instrucción `Revoke`. Por lo tanto, estas instrucciones deben usarse con cuidado.
+
+Conceder y revocar un rol en una cuenta:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -342,7 +355,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger account role revoke --id "$BOB" --role operators
 ```
 
-Conceder y revocar tokens de permisos. Los comandos de permisos leen un objeto de permiso desde la entrada estándar:
+Conceder y revocar tokens de permiso. Los comandos de permiso leen un objeto de permiso desde la entrada estándar:
 
 ```bash
 printf '{"name":"CanSetParameters","payload":null}\n' |
@@ -354,7 +367,7 @@ printf '{"name":"CanSetParameters","payload":null}\n' |
   ledger account permission revoke --id "$BOB"
 ```
 
-Conceder y revocar los permisos de un papel:
+Conceder y revocar permisos en un rol:
 
 ```bash
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
@@ -368,9 +381,9 @@ printf '{"name":"CanRegisterDomain","payload":null}\n' |
 
 ## `SetKeyValue`/`RemoveKeyValue` {#setkeyvalue-removekeyvalue}
 
-Estas instrucciones actualizan el objeto [metadatos](/es/blockchain/metadata.md). Utilice `SetKeyValue` para insertar o reemplazar una entrada de metadatos y `RemoveKeyValue` para eliminarla.
+Estas instrucciones actualizan el objeto [metadatos](/es/blockchain/metadata.md). Use `SetKeyValue` para insertar o reemplazar una entrada de metadatos y `RemoveKeyValue` para eliminar una.
 
-Los comandos de metadatos `set` leen el valor de JSON desde la entrada estándar:
+Metadatos `set` comandos leen el valor JSON de la entrada estándar:
 
 ```bash
 printf '"production"\n' |
@@ -381,7 +394,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger domain meta remove --id docs.universal --key environment
 ```
 
-El mismo patrón está disponible para las cuentas, las definiciones de activos NFTs, RWAs y los desencadenantes:
+El mismo patrón está disponible para cuentas, definiciones de activos, NFTs, RWAs y disparadores:
 
 ```bash
 printf '{"display_name":"Alice"}\n' |
@@ -403,9 +416,9 @@ printf '{"owner":"ops"}\n' |
 
 ## `SetParameter` {#setparameter}
 
-`SetParameter` cambia los parámetros de toda la cadena expuestos por el modelo de datos activo y el ejecutor.
+`SetParameter` cambia los parámetros a nivel de cadena expuestos por el modelo de datos activo y el ejecutor.
 
-Establezca un parámetro mediante el paso de un único parámetro JSON en la entrada estándar:
+Establezca un parámetro pasando un objeto de parámetro único JSON en la entrada estándar:
 
 ```bash
 printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
@@ -415,9 +428,9 @@ printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
 
 ## `ExecuteTrigger` {#executetrigger}
 
-Esta instrucción se utiliza para ejecutar los desencadenantes [ ](./triggers.md).
+Esta instrucción se utiliza para ejecutar [desencadenantes](./triggers.md).
 
-El CLI puede registrar los desencadenantes y suscribirse directamente a los eventos de ejecución del desencadenante. No proporciona un comando `execute trigger`, por lo que debe enviar una instrucción manual `ExecuteTrigger`, generar una serie `InstructionBox` con una herramienta SDK o ejecutor y pasar la matriz JSON resultante a través de `ledger transaction stdin`:
+El CLI puede registrar disparadores y suscribirse a eventos de ejecución de disparadores directamente. No proporciona un comando `execute trigger` tipado, por lo que para enviar un manual `ExecuteTrigger` instrucción, genere un `InstructionBox` serializado con una herramienta SDK o ejecutor y pase la matriz resultante JSON a través de `ledger transaction stdin`:
 
 ```bash
 printf '["<BASE64_EXECUTE_TRIGGER_INSTRUCTION_BOX>"]\n' |
@@ -430,20 +443,20 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ## Otras instrucciones {#other-instructions}
 
-Iroha expone también las instrucciones de nivel inferior para la integración del tiempo de ejecución y el ejecutor:
+Iroha también expone instrucciones de nivel inferior para la integración del tiempo de ejecución de software y del ejecutor:
 
-- `Log`: emitir una entrada en el registro durante la ejecución
-- `CustomInstruction`: llevar cargas útiles específicas del ejecutor JSON
-- `Upgrade`: activar la actualización del ejecutor
+- `Log`: emitir una entrada de registro durante la ejecución
+- `CustomInstruction`: transportar cargas útiles JSON específicas del ejecutor
+- `Upgrade`: activar una mejora de ejecutor
 
-Presentar una instrucción `Log` con el asistente de ping:
+Envía una instrucción `Log` con el asistente de ping:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger transaction ping --log-level INFO --msg "hello from docs"
 ```
 
-Envía una instrucción de ejecutor personalizada como una serie `InstructionBox`. La forma de la carga útil es específica para el ejecutor, así que genera la instrucción con la combinación SDK o herramienta del ejecutor:
+Envíe una instrucción de ejecutor personalizada como un `InstructionBox` serializado. La forma de la carga útil es específica del ejecutor, por lo que genere la instrucción con el SDK correspondiente o las herramientas del ejecutor:
 
 ```bash
 printf '["<BASE64_CUSTOM_INSTRUCTION_BOX>"]\n' |
@@ -451,7 +464,7 @@ printf '["<BASE64_CUSTOM_INSTRUCTION_BOX>"]\n' |
   ledger transaction stdin
 ```
 
-Actualizar el ejecutor a partir de un archivo compilado IVM de código byte:
+Actualiza el ejecutor desde un archivo de bytecode compilado IVM:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \

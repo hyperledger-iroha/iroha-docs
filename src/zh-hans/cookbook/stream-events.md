@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /cookbook/stream-events.md
-translation_source_hash: 1267a7e22bb6601674557f349e4fc5c6b883ce83b7dc62115ea2b8c3a0c39261
+translation_source_hash: 96f0a26000530fee15d121f815f9f5717a535dc3836cff9a2a447b1e5b70c41c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,13 +10,13 @@ translation_engine: nllb-200-ct2
 
 ## 结果 {#outcome}
 
-通过服务器发送的事件 (SSE) 来消耗现场 Taira 管道事件,并在替换流开放后重新连接到限定的备份状态.由于终点没有重播缓冲器,所以将事件视为通知而不是完整的历史记录.
+通过服务器发送的事件 (SSE) 来消耗现场 Taira 管道事件,并在替换流开放后重新连接到限定的备份状态.由于端点没有重播缓冲器,所以将事件视为通知而不是完整的历史记录.
 
 ## 预先条件 {#prerequisites}
 
-- `curl`用于公共烟雾测试.
+- `curl`用于公共冒烟测试.
 - Node.js 24 对 JavaScript 消费者.
-- 没有需要签名. `https://taira.sora.org/v1/events/sse`是公开的,只能阅读的流程;这个配方不执行任何 Minamoto 或 Taira 写字.
+- 没有需要签名. `https://taira.sora.org/v1/events/sse`是公开的,只能阅读的流程;这个操作指南不执行任何 Minamoto 或 Taira 写入.
 
 ## 步骤 {#steps}
 
@@ -30,7 +30,7 @@ curl -sS -N --max-time 15 \
   https://taira.sora.org/v1/events/sse
 ```
 
-不要发送 `Last-Event-ID`. Torii 现在, SSE 终点是一个直播风扇流,而不是重播日志,并且拒绝重播请求.
+不要发送 `Last-Event-ID`. Torii 现在, SSE 端点是一个直播风扇流,而不是重播日志,并且拒绝重播请求.
 
 ### 添加过的 JavaScript 消费者 {#_2-add-a-filtered-javascript-consumer}
 
@@ -164,7 +164,7 @@ SSE 心跳评论保持惰的连接活跃,但不会建立账本排序.当订单�
 
 最新25名探险家的请求只是一个公开诊断.生产消费者必须用其耐用的应用资源和足够大的检查点回收要求来取代或延长 `reconcile()`.仅限快照不能证明没有错过事件.
 
-在固定提交时, `ToriiClient.streamEvents()`只发送`Accept: text/event-stream`;直播 Taira 拒绝使用 `406` 缩小标题. 使用上面的原始Fetch表格,直到 SDK 和公共终端点谈判相同的媒体类型.
+在固定提交时, `ToriiClient.streamEvents()`只发送`Accept: text/event-stream`;直播 Taira 拒绝使用 `406` 缩小标题. 使用上面的原始 Fetch 形式,直到 SDK 和公共端点谈判相同的媒体类型.
 
 ## 验证 {#verify}
 
@@ -185,14 +185,14 @@ curl -fsS \
 - `406 Not Acceptable`在直播上 Taira 通常只表示广告的请求`text/event-stream`. 发送 `text/event-stream, application/json` 正如上面所示.
 - `stream_error`事件表明服务器检测到滞后或其他终端流状况. Torii 发送该事件一次并关闭流;在重新连接之前调整.
 - 代理可以缓冲 SSE 即使 Torii 没有. 在代理中禁用响应缓冲和压缩,并在诊断中保持`curl -N`.
-- 永远不要通过假设下一个事件跟上前一个事件来填补连接缺口.终点没有重播缓冲器;反而查询当前账本状态.
+- 永远不要通过假设下一个事件跟上前一个事件来填补连接缺口.端点没有重播缓冲器;反而查询当前账本状态.
 
 ## 来源及相关文件 {#source-and-related-docs}
 
-- [JavaScript 在固定提交](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/recipes/streaming.mjs)的流媒体配方
-- [SSE 集成测试在固定的承诺](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/events/sse_smoke.rs)
-- [Torii FilterExpr 解析器在固定的提交上](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/src/filter.rs)
-- [Torii 事件路由在固定的提交](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/src/routing.rs)
+- [JavaScript 在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs)的流媒体操作指南
+- [SSE 集成测试在固定的提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs)
+- [Torii FilterExpr 解析器在固定的提交上](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs)
+- [Torii 事件路由在固定的提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
 - [事件](/zh-hans/blockchain/events.md)
-- [Torii 终端点](/zh-hans/reference/torii-endpoints.md)
+- [Torii 端点](/zh-hans/reference/torii-endpoints.md)
 - [查询大本状态](./query-ledger-state.md)

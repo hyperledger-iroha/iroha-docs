@@ -1,9 +1,16 @@
 # Data Model Schema
 
-This page is generated with `kagami advanced schema` from the pinned
-[`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha)
-revision recorded by the documentation refresh workflow. The rendered snapshot
-is checked into this repository so normal documentation builds do not require
-an Iroha source checkout.
+Query the schema from the exact node your integration targets. Torii serves the
+active data-model schema at `GET /v1/schema` when that surface is enabled:
 
-<DataModelSchema />
+```bash
+export TORII_URL=http://127.0.0.1:8180
+
+curl -fsS -H 'Accept: application/json' "$TORII_URL/v1/schema" \
+  > iroha-data-model-schema.json
+```
+
+Do not generate bindings from the checked-in documentation snippet while its
+provenance status is pending. The live node response is authoritative for that
+node's compiled data model; keep it pinned alongside the node build used by
+your integration.

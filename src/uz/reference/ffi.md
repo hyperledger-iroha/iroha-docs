@@ -3,30 +3,30 @@ translation_locale: uz
 translation_source: /reference/ffi.md
 translation_source_hash: 2df23722cea2f918874f0109b31b24bb3d8dbd7f95c00d1d6d1568c5f81f68bc
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Xorijiy funksiya interfeyslari (FFI) {#foreign-function-interfaces-ffi}
+# Chet funktsiya interfeyslari (FFI) {#foreign-function-interfaces-ffi}
 
-O ' zbekiston Respublikasining `iroha_ffi` C ishlab chiqarish uchun makro va xususiyatlarni taqdim etadi. ABI bilan bog'liq Rust APIs. U yerda ishlatiladi Iroha turlari o'tish kerak FFI chegara, masalan, SDK bog'lanishlar yoki uy egasi integratsiyalari.
+`iroha_ffi` dasturiy ta'minot paketi Rust APIs dan C ABI bog‘lamalarini yaratish uchun makrolar va xususiyatlarni taqdim etadi. U Iroha turlari FFI chegarasidan o‘tishi kerak bo‘lgan joylarda ishlatiladi, masalan, SDK bog‘lamalari yoki mezbon integratsiyalari orqali.
 
 ## Nima uchun FFI {#why-ffi}
 
-Funksiya juda abstrakt entitetdir va aksariyat tillar funksiyaning nima qilishi kerakligi to'g'risida kelishib olganda, funksiyalarning ifodalash usuli juda farq qiladi. Bundan tashqari, Rust kabi ba'zi tillarda funktsiyaga chaqirishning oqibatlari va unga ruxsat berilgan narsalar ham farq qiladi. Rust APIs boshqa tildan yoki boshqa uy muhitidan chaqirilishi kerak bo'lganda, Iroha o'yin sharoitini tenglashtirish uchun chet funksiya interfeysidan (FFI) foydalanadi.
+Funksiya biroz mavhum mavjudotdir, va ko‘pgina tillar funksiya nima qilishi kerakligiga rozi bo‘lsa-da, funksiyalar qanday ifodalanishi juda farq qiladi. Bundan tashqari, ba'zi tillarda, masalan Rust, funksiyani chaqirishning oqibatlari va uning qilishga ruxsat berilgan narsalari ham boshqacha. Rust qachon APIs boshqa til yoki boshqa xost muhiti tomonidan chaqirilishi kerak, Iroha teng sharoit yaratish uchun chet funksiyalar interfeysidan (FFI) foydalanadi.
 
-Bugungi kunda ishlatiladigan asosiy standart C dasturlari ikkilamchi interfeysidir. Bu sodda, keng tarqalgan va barqaror. Aslida siz hamma narsani qo'lda bajarishingiz mumkin, ammo Iroha mavjud bo'lgan Rust API dan FFI-ga mos funksiyalarni hosil qilish uchun `iroha_ffi` qutisini taqdim etadi .
+Bugungi kunda ishlatiladigan asosiy standart C ilova binar interfeysidir. U sodda, keng tarqalgan va barqarordir. Aslida, siz hamma narsani qo'lda qilishingiz mumkin, lekin Iroha mavjud Rust API dan FFI-ga mos keladigan funksiyalarni yaratish uchun `iroha_ffi` dasturiy paketini taqdim etadi.
 
-Albatta, siz buni o'zingizning yo'lingiz bilan qila olasiz. `iroha_ffi` qutisi faqatgina siz yaratishingiz kerak bo'lgan kodni ishlab chiqaradi. Kerakli boilerplate yozish juda ko'p g'ayrat va intizom talab qiladi. FFI chegara bo'ylab har bir funktsiya qo'ng'iroqlari `unsafe` bo'lib, aniqlanmagan xatti-harakatlarga olib kelishi mumkin. Biz uni hal qilishga muvaffaq bo'lgan usul kuchli `repr(C)` turlarini ishlatish bilan aylanadi.
+Albatta, siz buni o'zingizcha qilishingiz mumkin. `iroha_ffi` dasturiy ta'minot paketi faqat sizga har qanday holatda kerak bo'ladigan kodni yaratadi. Zarur bo'lgan takroriy shablon kodini yozish sezilarli darajada mehnat va intizom talab qiladi. Har bir funksiya texnik chaqiruv FFI chegara orqali amalga oshirilganda, `unsafe` bilan bog‘liq bo‘lib, noaniq xatti-harakatni keltirib chiqarishi mumkin. Biz uni hal qilishga muvaffaq bo‘lgan usulimiz mustahkam `repr(C)` turlaridan foydalanishga asoslangan.
 
 ::: info
 
-Faqatgina istisnolar ko'rsatkichlardir. Null tekshiruvi va haqiqiyligi global miqyosda qo'llanilmaydi, shuning uchun xom ko'rsatkichi (har doimgidek) faqat istisno hollarda ishlatiladi. Iroha ma'lumotlar modelidagi ob'ektning deyarli har bir holatini o'rab olgan holda, siz hech qachon xom ko'rsatkichlardan foydalanishingiz shart emas.
+Yagona istisno ko‘rsatkichlardir. Bo‘sh tekshiruv va amal qilinishini global tarzda majburlash mumkin emas, shuning uchun xom ko‘rsatkichlar (doimiy qilganimizdek) faqat istisno hollarda ishlatiladi. Agar biz Iroha ma'lumotlar modeli ichidagi deyarli har bir obyektning atrofida dasturiy adapterlar taqdim qilsak, sizga hech qachon xom ko'rsatkichlardan foydalanishga to'g'ri kelmasligi kerak.
 
 :::
 
 ## Misol {#example}
 
-Bu erda bog'lanish hosil qilishning bir namunasi:
+Mana bir bog'lanishni yaratish misoli:
 
 ```rust
 #[derive(FfiType)]
@@ -40,7 +40,7 @@ impl DaysSinceEquinox {
 }
 ```
 
-Yuqoridagi misol `DaysSinceEquinox` bilan quyidagi bog'lanishni hosil qiladi, u shaffof ko'rsatkich sifatida tasvirlanadi:
+Yuqoridagi misol quyidagi bog‘lanishni yaratadi, bunda `DaysSinceEquinox` shaffof bo‘lmagan ko‘rsatgich sifatida ifodalanadi:
 
 ```rust
 pub extern fn DaysSinceEquinox__update_value(handle: *mut DaysSinceEquinox, a: *const u8) -> FfiReturn {
@@ -48,39 +48,39 @@ pub extern fn DaysSinceEquinox__update_value(handle: *mut DaysSinceEquinox, a: *
 }
 ```
 
-## FFI Bog'lovchi avlod {#ffi-binding-generation}
+## FFI Bog'lashni yaratish {#ffi-binding-generation}
 
-`iroha_ffi` qutisi FFI orqali chaqirish mumkin bo'lgan funksiyalarni yaratish uchun ishlatiladi. `Rust` tuzilmalari va usullarini hisobga olgan holda, ular bog'lanish chegarasini kesish uchun kerak bo'ladigan `unsafe` kodini ishlab chiqaradi.
+`iroha_ffi` dasturiy ta'minot paketi FFI orqali chaqiriladigan funksiyalarni yaratish uchun ishlatiladi. `Rust` strukturalar va metodlar berilgan holda, ular sizga bog‘lanish chegarasini kesib o‘tish uchun kerak bo‘lgan `unsafe` kodini yaratadi.
 
-A Rust turi mustahkamga aylantiriladi `repr(C)` o'tish mumkin bo'lgan turi FFI bilan chegarasi `FfiType::into_ffi`. Bu esa oʻzgacha yoʻldan boradi: FFI `ReprC` turi o'zgartirilgan `Rust` yo'nalishi `FfiType::try_from_ffi`.
+Rust turidagi narsa mustahkam `repr(C)` turiga aylantiriladi, u `FfiType::into_ffi` bilan FFI chegarasini kesib o'tishi mumkin. Bu aksincha ham shunday: FFI `ReprC` turi `FfiType::try_from_ffi` orqali `Rust` turiga aylantiriladi.
 
 ::: warning
 
-Shuni yodda tutingki, aksincha o'zgarish noto'g'ri va aniqlanmagan xatti-harakatlarga sabab bo'lishi mumkin. Biz eng ko'p xatolarni oldini olish uchun qo'limizdan kelganini qilishimiz mumkin bo'lsa-da, siz dasturning to'g'ridan-to'g'risida ishonch hosil qilishingiz kerak.
+Shuni yodda tutingki, qarama-qarshi aylantirish xatoga moyil bo‘lib, noma'lum xatti-harakatga olib kelishi mumkin. Eng aniq xatolardan qochish uchun qo‘limizdan kelganini qilishimiz mumkin bo‘lsa-da, dastur to‘g‘riligini o‘z tomoningizdan ta'minlashingiz zarur.
 
 :::
 
-Bog'lovchi ishlab chiqarishni imkon beradigan asosiy xususiyatlar `ReprC`, `FfiType` va `FfiConvert`.
+Bog'lash generatsiyasini ta'minlaydigan asosiy xususiyatlar `ReprC`, `FfiType` va `FfiConvert` dir.
 
-|Xususiyat |Tafsiri |
+|Xususiyat|Tavsif|
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|`ReprC` |Ushbu xususiyat C ABI ga mos keladigan mustahkam turni ifodalaydi. Bu tur FFI chegaralarida xavfsiz taqsimlanishi mumkin. |
-|`FfiType` |Ushbu xususiyat ma'lum bir `Rust` turi uchun tegishli `ReprC` tipini belgilaydi. hosil bo'lgan FFI funksiyasining API funksiyasida `Rust` tipining o'rniga belgilangan `ReprC` turi ishlatiladi. |
-|`FfiConvert` |Ushbu xususiyat `into_ffi` va `try_from_ffi` turini `Rust` turiga yoki undan `ReprC` turiga aylantirish uchun ishlatiladigan ikkita usulni belgilaydi. |
+| `ReprC`      |Ushbu xususiyat C ABI ga mos keladigan mustahkam turini ifodalaydi. Ushbu tur FFI chegaralari bo‘ylab xavfsiz ulashilishi mumkin.|
+| `FfiType`    |Ushbu xususiyat berilgan `Rust` turi uchun mos keluvchi `ReprC` turini belgilaydi. Belgilangan `ReprC` turi yaratilgan FFI funksiyaning API da `Rust` turining o‘rnida ishlatiladi.|
+| `FfiConvert` |Bu xususiyat `Rust` turini `ReprC` turiga yoki aksincha konvertatsiya qilish uchun ishlatiladigan `into_ffi` va `try_from_ffi` metodlarini belgilaydi.|
 
-FFI bo'yicha egalik o'tkazilishi yo'qligiga e'tibor bering, faqat shaffof ko'rsatkich turlari mavjud. `Vec<T>` kabi egalikni olib boradigan barcha boshqa turlar klonlanadi.
+Qayd eting, faqat shaffof bo‘lmagan ko‘rsatkich tiplari bundan mustasno, FFI ustidan egalik o‘tkazilmaydi. Egalikni o‘z ichiga olgan boshqa barcha turlar, masalan `Vec<T>`, nusxalanadi.
 
-### Ism Mangling {#name-mangling}
+### Ismni o'zgartirish {#name-mangling}
 
-FFI ob'ektlarining ishlab chiqilgan nomlarida ikki marta ko'rsatkichlar qo'llanilishiga e'tibor bering:
+Yaratilgan FFI obyektlarining nomlarida ikki pastki chiziqdan foydalanishga e'tibor bering:
 
-- `StructName` tuzilmasida belgilangan `inherent_fn` usuli uchun FFI nomi `StructName__inherent_fn` bo'ladi.
-- `StructName` tarkibidagi `TraitName` xususiyatidan `MethodName` usuli uchun FFI nomi `StructNameTraitNameMethodName` bo'ladi.
-- `StructName` strukturasida `field_name` maydonini o'rnatish uchun FFI funksiya nomi `StructName__set_field_name` bo'ladi.
-- `StructName` tuzilmasidagi `field_name` maydonini olish uchun FFI funksiya nomi `StructName__field_name` bo'ladi.
-- `StructName` tarkibida o'zgaruvchan `field_name` maydonini olish uchun FFI funksiya nomi `StrucuName__field_name_mut` bo'ladi.
-- O'zboshida turgan `module_name::fn_name` uchun FFI nomi `module_name::__fn_name` bo'ladi.
-- Umumiy bo'lmagan xususiyatlar uchun va ularni amalga oshirishni FFI (qarang) `Clone` quyida keltirilgan), FFI nom boʻladi `module_name::__clone`.
+- `StructName` strukturasida belgilangan `inherent_fn` usul uchun, FFI nomi `StructName__inherent_fn` bo‘ladi.
+- `StructName` strukturasidagi `TraitName` traitidagi `MethodName` usuli uchun, FFI nomi `StructName__TraitName__MethodName` bo'ladi.
+- `StructName` strukturadagi `field_name` maydonni o'rnatish uchun, FFI funksiyaning nomi `StructName__set_field_name` bo'ladi.
+- `StructName` strukturadagi `field_name` maydonni olish uchun, FFI funksiyaning nomi `StructName__field_name` bo'ladi.
+- `StructName` strukturasidagi o'zgartiriladigan `field_name` maydonini olish uchun, FFI funktsiya nomi `StrucuName__field_name_mut` bo'ladi.
+- Mustaqil `module_name::fn_name` uchun, FFI nomi `module_name::__fn_name` bo'ladi.
+- Umumiy bo‘lmagan va ularning amalga oshirilishini FFI da bo‘lishishga imkon beradigan xususiyatlar uchun (quyida `Clone` ga qarang), FFI nomi `module_name::__clone` bo‘ladi.
 
   ```rust
   impl Clone for Type1 {

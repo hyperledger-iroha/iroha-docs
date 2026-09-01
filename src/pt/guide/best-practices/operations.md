@@ -3,49 +3,49 @@ translation_locale: pt
 translation_source: /guide/best-practices/operations.md
 translation_source_hash: de9e8129467b1111a58cee07acf43382d6cf3c352211a1511659ced422b46778
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Operações {#operations}
 
-A prontidão operacional significa que a rede pode ser observada, alterada, feita backup e recuperada sem contar com o acesso improvisado aos hospedeiros de validadores.
+Prontidão operacional significa que a rede pode ser observada, alterada, copiada e recuperada sem depender de acesso improvisado aos hosts validadores.
 
 ## Observabilidade {#observability}
 
-- Capacitar intencionalmente os perfis de telemetria. Utilize `extended` quando for necessário `/metrics` e `full` durante as corridas de ensaio que necessitem de rotas detalhadas do operador Sumeragi.
-- O painel aceitou o rendimento, rejeitou o rendimentos, comprometeu a latência, profundidade da fila, saturação da fila, visualiza mudanças, deixou cair as mensagens de consenso e pressão de armazenamento.
-- Mantenha snapshots de status, raspagens de métricas, registros e configuração de implantação no mesmo conjunto de incidentes ou artefatos de referência.
-- Alerta sobre crescimento sustentado da fila, picos inesperados de rejeição, altura parada do bloco, mudança de visão e mudanças na saúde dos colegas.
+- Ative perfis de telemetria intencionalmente. Use `extended` quando `/metrics` for necessário e `full` durante execuções de teste que precisam de rotas operacionais detalhadas Sumeragi.
+- Painel de controle aceitou taxa de transferência, taxa de transferência rejeitada, latência de commit, profundidade da fila, saturação da fila, alterações de visualização, mensagens de consenso descartadas e pressão de armazenamento.
+- Mantenha visualizações de dados de ponto no tempo de status, coleta de métricas, logs e configuração de implantação no mesmo conjunto de artefatos de incidente ou benchmark.
+- Alerta sobre crescimento contínuo da fila, picos inesperados de rejeição, altura de bloco parada, mudança de visualização frequente e alterações na saúde dos pares da rede.
 
-Veja [Performance and Metrics ](/pt/guide/advanced/metrics.md).
+Veja [Desempenho e Métricas](/pt/guide/advanced/metrics.md).
 
-## Livros de execução {#runbooks}
+## Guia de execução {#runbooks}
 
-- Escreva runbooks para reinicialização por pares, degradação Torii, compromisso de chaves, erros de permissão, esgotamento do patrocinador de taxas, filas bloqueadas e sintomas de partição da rede.
-- Incluir verificações exatas de somente leitura antes das operações de escrita, especialmente para registro entre pares, concessão de permissões e mudanças de parâmetros.
-- Mantenha os contactos de emergência e as regras de escalada fora do repo dos documentos, se incluirem dados operacionais privados.
-- Revisão de runbooks após cada incidente, ensaio ou grande atualização.
+- Escreva procedimentos operacionais para reiniciar pares de rede e tratar degradação da Torii, comprometimento de chaves, erros de permissão, esgotamento do patrocinador de taxas, filas travadas e sintomas de partição da rede.
+- Inclua verificações exatas de somente leitura antes das operações de escrita, especialmente para registro de pares de rede, concessão de permissões e alterações de parâmetros.
+- Mantenha os contatos de emergência e as regras de escalonamento fora do repositório de documentos se incluírem dados operacionais privados.
+- Revise os runbooks após cada incidente, ensaio ou grande atualização.
 
-Veja [Segurança operacional ](/pt/guide/security/operational-security.md).
+Veja [Segurança Operacional](/pt/guide/security/operational-security.md).
 
-## Backup e recuperação {#backups-and-recovery}
+## Backups e Recuperação {#backups-and-recovery}
 
-- Faça backup do armazenamento peer de acordo com o ponto de recuperação exigido pela implantação.
-- Mantenha a gênese assinada, liberte metadados, configuração de pares e registos de custódia de chaves recuperáveis mesmo que um host validador não esteja disponível.
-- Documentar se um procedimento de recuperação reconstrui a partir da gênese, restaura a partir de uma instantânea ou substitui um colega fracassado por uma nova identidade.
-- Nunca teste os procedimentos de restauração pela primeira vez durante um incidente de produção.
+- Faça backup do armazenamento de pares da rede de acordo com o ponto de recuperação exigido pela implantação. Valide as restaurações em hosts não produtivos.
+- Mantenha recuperáveis a gênese assinada, os metadados da versão, a configuração dos pares e os registros de custódia de chaves, mesmo que um host validador fique indisponível.
+- Documente se o procedimento de recuperação reconstrói o estado desde a gênese, restaura um instantâneo ou substitui um par com falha por uma nova identidade.
+- Nunca teste procedimentos de restauração pela primeira vez durante um incidente de produção.
 
-## Gerenciamento das mudanças {#change-management}
+## Gestão de Mudanças {#change-management}
 
-- Trate as alterações de configuração na cadeia como transações que exigem revisão, leituras pré-voio, autorização e verificação pós-mudança.
-- Implementar atualizações binárias entre pares com um plano de compatibilidade e um ponto de decisão para o retrocesso.
-- Evite alterar a topologia de pares, o calendário de consenso e a carga de trabalho das aplicações na mesma janela de manutenção, a menos que o plano de migração exija isso.
-- Registrar os hashes de transacção e as alturas dos blocos para alterações operacionais.
+- Trate as alterações de configuração on-chain como transações que exigem revisão, leituras preliminares, autorização e verificação após a alteração.
+- Implante atualizações binárias de pares de rede com um plano de compatibilidade e um ponto de decisão de reversão.
+- Evite alterar a topologia dos pares de rede, o tempo de consenso e a carga de trabalho do aplicativo na mesma janela de manutenção, a menos que o plano de migração exija.
+- Registre os hashes criptográficos da transação e as alturas dos blocos para mudanças operacionais.
 
-Veja [Recarga de calor ](/pt/guide/advanced/hot-reload.md) e [ Matriz de compatibilidade ](/pt/reference/compatibility-matrix.md).
+Veja [Recarga Rápida](/pt/guide/advanced/hot-reload.md) e [Matriz de Compatibilidade](/pt/reference/compatibility-matrix.md).
 
 ## Revisões de Capacidade {#capacity-reviews}
 
-- Re-exercer verificações de carga quando a contagem do validador, o hardware, a colocação da rede, a mistura de carga de trabalho ou os parâmetros de consenso mudam.
-- Medir o aquecimento, o estado estável e a carga máxima esperada em vez de confiar numa amostra curta de potência do melhor caso.
-- Comparar a capacidade de transferência aceita com a capacidade de transmissão comprometida e a profundidade da fila. Se o TPS enviado exceder o TPS comprometido e as filas crescerem, a rede ultrapassará o seu alcance sustentável.
+- Execute novamente as verificações de carga quando a contagem de validadores, hardware, posicionamento na rede, mix de carga de trabalho ou parâmetros de consenso mudarem.
+- Meça o aquecimento, o estado estacionário e a carga máxima esperada em vez de confiar em uma amostra curta de melhor desempenho.
+- Compare a taxa de transferência aceita com a taxa de transferência comprometida e a profundidade da fila. Se o valor enviado TPS exceder o comprometido TPS e as filas crescerem, a rede ultrapassou seu limite operacional sustentável.

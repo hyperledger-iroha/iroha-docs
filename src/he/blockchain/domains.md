@@ -25,11 +25,11 @@ domain.dataspace
 - `metadata`: מטא נתונים של ערך מפתח שרירותי.
 - `owned_by`: חשבון הבעלים של הדומיין, בדרך כלל החשבון שהרשם אותו
 
-המטען הפועל של התחזית המשמש כדי לייצר דומיין הוא `NewDomain`. הוא נושא את `id`, אופציונלי `logo`, ומקורתי `metadata`. זמן ההפעלה ממלאים `owned_by` מהשלטון. לקוחות רגילים לא מספקים מטען זה ישירות.
+מטען הנתונים של התחזית המשמש כדי לייצר דומיין הוא `NewDomain`. הוא נושא את `id`, אופציונלי `logo`, ומקורתי `metadata`. זמן ההפעלה ממלאים `owned_by` מהשלטון. לקוחות רגילים לא מספקים מטען זה ישירות.
 
 ## רישום {#registration}
 
-יצירת תחום רגיל משתמשת בזרם ההתקנה של דקלרטיביות. SNS השכרה, יכולות הבעלים, אבטחת ציטוט, ושורה של תחום באטום אחד `EnsureAlias` עסקה. `Register::Domain` היא נשארת שטח גנז / קישור, ואת `ledger domain` פקודה לא `register` תת-הפיקוד.
+יצירת תחום רגיל משתמשת בזרם ההתקנה של דקלרטיביות. SNS השכרה, יכולות הבעלים, אבטחת תמחור, ושורה של תחום באטום אחד `EnsureAlias` עסקה. `Register::Domain` היא נשארת שטח גנז / קישור, ואת `ledger domain` פקודה לא `register` תת-הפיקוד.
 
 ליצור כוונה `AliasSetupPlanRequestV1` ללא סוד עם שירות SDK או חיבור, ואז לגרום ל- CLI לתכנן את זה נגד מצב חיה ולגיש את התוכנית המדויקת:
 
@@ -45,7 +45,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-התכוון מזהה `payments.universal`, את חלל הנתונים המספרי שלו, הבעלים הקנוני של I105, תקופת רכישת השכרה, ואת המשמרת המדיניות/שלם הנוכחית. נקודת הסיום של מתכנן היא `POST /v1/aliases/setup/plan`; התוכנית המובילה שלה קשורה לשרשרת, סמכות, מדינה ותקופה. הסרת הדומיין עדיין משתמשת [`Unregister` ](/he/blockchain/instructions.md#un-register).
+ה־intent מזהה את `payments.universal`, את מרחב הנתונים המספרי שלו, את הבעלים הקנוני לפי I105, את תקופת רכישת החכירה ואת כוונת המדיניות/התשלום הנוכחית. נקודת הקצה של המתכנן היא `POST /v1/aliases/setup/plan`; התוכנית המתקבלת קשורה לשרשרת, לסמכות, למצב ול־epoch. הסרת domain עדיין משתמשת ב־[`Unregister`](/he/blockchain/instructions.md#un-register).
 
 יצירת או הסרת תחום דורשת רשות ניהול תחום מתאימה תחת מעודד זמן ההפעלה הפעיל. מטא נתוני תחום ניתן לעדכן עם [`SetKeyValue` ו `RemoveKeyValue`](/he/blockchain/instructions.md#setkeyvalue-removekeyvalue) כאשר לרשות יש רשות לשנות את התחום הזה.
 
@@ -69,7 +69,7 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
 
 השתמש בפקודה הראשונה כאשר אפליקציה צריכה לבדוק אם תחום קיים. השתמש בקאטלוג המסלול כאשר אתה צריך לאשר אם חלל נתונים הוא ציבורי, מוגבל או מאחור במסלול המרכזי.
 
-הגדרת דומיין היא כתיבה בתשלום. לפני שניסיים את זה על Taira, שמור את עוזר המזרקה מ- [Get Testnet XOR on Taira](/he/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) as `taira_faucet_claim.py`, תממן את החותם דרך המזרקה הציבורית, ותקליף נתונים מטאטאלוגיות:
+הגדרת דומיין היא כתיבה בתשלום. לפני שניסיים את זה על Taira, שמור את עוזר faucet מ- [קבלת XOR של רשת הבדיקה ב-Taira](/he/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) as `taira_faucet_claim.py`, תממן את החותם דרך faucet הציבורית, ותקליף מטא-נתוניםלוגיות:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -88,15 +88,15 @@ iroha --config ./taira.client.toml \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 
-לבנות את כוונה עבור שם דומיין ייחודי על פעולות רשתת מבחן חוזרות ונשנות, ושימו את המדיניות הנוכחית של Taira ומבטחת הציטוט של נכס תשלום. אל תחזרו להשתמש בתוכנית שנוצרה עבור localnet או Minamoto.
+בנו את הכוונה עם שם דומיין ייחודי בכל הרצה חוזרת ברשת הבדיקה, והשתמשו במדיניות העדכנית של Taira ובמנגנון ההגנה על הצעת המחיר של נכס העמלה. אל תשתמשו מחדש בתוכנית שנוצרה עבור localnet או Minamoto.
 
 ## היחסים עם יחידות אחרות {#relationship-to-other-entities}
 
-ארגונים קבוצת ספריה אובייקטים ומספקים חלל שמות עבור נתונים שנקבעו על ידי דומיין. הגדרות נכסים משתמשות במזהרים מוסמכים על ידי הדומיין, ושאלות יכולות לרשום דומנים או למצוא חישובים עצמם אינם בעלי תחום במודל הנתונים הנוכחי, אך חשבונות יכולים להיות בעלים של תחומים ולחזיק נכסים שההגדרות שלהם חיים תחת תחומי נתונים.
+Domains מקבצים אובייקטים של ספר החשבונות ומספקים namespace לנתונים בהיקף domain. הגדרות נכס משתמשות במזהים שמוסמכים ב־domain, ושאילתות יכולות לרשום domains או למצוא אובייקטים בהיקף domain. לחשבונות עצמם אין domain במודל הנתונים הנוכחי, אך הם יכולים להיות בעלי domains ולהחזיק נכסים שהגדרותיהם נמצאות תחת domains של dataspace.
 
 ראו גם:
 
 - [העולם](/he/blockchain/world.md)
 - [נכסים](/he/blockchain/assets.md)
-- [נתונים מטאטא](/he/blockchain/metadata.md)
+- [מטא-נתונים](/he/blockchain/metadata.md)
 - [חוקי הכינוי](/he/reference/naming.md)

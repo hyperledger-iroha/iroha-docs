@@ -1,16 +1,16 @@
 ---
 translation_locale: he
 translation_source: /cookbook/triggers.md
-translation_source_hash: 93080591f5171c7ce25173eb1ef826d6f5ca661a17797be53e90aedab33ed0c3
+translation_source_hash: 5267fb9bb232d52d9df4bedee414d745ccc30dd52cbc30993df3c5b975a0bc38
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# תפעילים {#triggers}
+# טריגרים {#triggers}
 
 ## התוצאה {#outcome}
 
-רשום תפעול שיחה קצרה על Taira, פעל אותו פעם אחת, חכה לסיום יישום, ותוכיח את השלמתו בהצלחה מתוך היסטוריה של בלוק מחויבים.
+רשום תפעול קריאה קצרה על Taira, פעל אותו פעם אחת, חכה לסיום יישום, ותוכיח את השלמתו בהצלחה מתוך היסטוריה של בלוק commit.
 
 ## תנאים מוקדמים {#prerequisites}
 
@@ -29,7 +29,7 @@ test -n "$TAIRA_ACCOUNT_ID"
 
 ### 1. רשום תפעיל עם הוראות {#_1-register-an-instruction-backed-trigger}
 
-`--instructions-stdin` מקבל מערך של הוראות JSON. ההוראה `Log` שומרת את הדוגמה הזאת ממוקדת על אישור ההפעלה ולא על הרשויות של אובייקט ספריה שנייה.
+`--instructions-stdin` מקבל מערך JSON של instructions. ההוראה `Log` משאירה את הדוגמה ממוקדת בהרשאת trigger במקום בהרשאות של אובייקט שני בספר החשבונות.
 
 ```bash
 printf '%s\n' \
@@ -93,7 +93,7 @@ client.submit_blocking(ExecuteTrigger::new(trigger_id), fee)?;
 
 ## לאמת {#verify}
 
-סורק את ההיסטוריה של בלוקים מחויבים כדי להשלים ולבדוק את מספר ההפגנות המופחת:
+סורק את ההיסטוריה של בלוקים commit כדי להשלים ולבדוק את מספר ההפגנות המופחת:
 
 ```bash
 iroha --config "$CONFIG" ledger trigger completed list \
@@ -116,9 +116,9 @@ iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 
 ## מקור ומסמכים קשורים {#source-and-related-docs}
 
-- [בדיקות אינטגרציה של תפעול ידי-קריאה בקביעת קישור ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/triggers/by_call_trigger.rs)
-- [בדיקות אינטגרציה של אירועים וניצולים ב- commit ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/events_and_triggers.rs)
-- [ביצוע ההוראות של התניע ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
-- [תפעילים](/he/blockchain/triggers.md)
+- [בדיקות אינטגרציה של תפעול ידי-קריאה בקביעת קישור ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/triggers/by_call_trigger.rs)
+- [בדיקות אינטגרציה של אירועים וניצולים ב- commit ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events_and_triggers.rs)
+- [ביצוע ההוראות של התניע ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
+- [טריגרים](/he/blockchain/triggers.md)
 - [דוגמאות להפעיל ](/he/blockchain/trigger-examples.md)
 - [אירועים](./stream-events.md)

@@ -8,27 +8,27 @@ translation_engine: nllb-200-ct2
 
 # ဖြစ်ရပ်များ {#events}
 
-events တွေကို blockchain အတွင်းမှာ ဖြစ်ပျက်တဲ့အခါ ထုတ်လွှင့်ပါတယ်။ ဥပမာ အကောင့်သစ်တစ်ခု ဖန်တီးတာ (သို့) ဘလော့က committed လုပ်တာမျိုးပါ။
+Typed event notification တွေကို blockchain အတွင်းမှာ တစ်ခုခုဖြစ်တဲ့အခါ ထုတ်ပေးပါတယ်။ ဥပမာ အကောင့်သစ်တစ်ခု ဖန်တီးတာ (သို့) ဘလော့က နောက်ဆုံးသတ်မှတ်ထားတာပါ။
 
-- ပိုက်လိုင်း ဖြစ်ရပ်များ
+- ဆော့ဖ်ဝဲ စီမံခန့်ခွဲမှု အလုပ်ဖြစ်စဉ်များ
 - ဒေတာဖြစ်ရပ်များ
-- အချိန်ဖြစ်ရပ်များ
+- အချိန်ကို အခြေခံတဲ့ အဖြစ်အပျက် အကြောင်းကြားချက်များ
 - trigger execution ဖြစ်ရပ်များ
 
-## ပိုက်လိုင်း ဖြစ်ရပ်များ {#pipeline-events}
+## ဆော့ဖ်ဝဲ စီမံခန့်ခွဲမှု လုပ်ငန်းခွင်များ ဖြစ်ရပ်များ {#pipeline-events}
 
-pipeline events ကို transaction သို့မဟုတ် block တစ်ခုကို တင်သွင်း၊ အကောင်အထည်ဖော် (သို့မဟုတ်) commit လုပ်တဲ့အခါ ထုတ်လွှင့်ပါတယ်။ pipeline event မှာ အောက်ပါ အချက်အလက်တွေပါဝင်ပါတယ်- ဖြစ်စဉ်တစ်ခုဖြစ်ပေါ်စေတဲ့ entity အမျိုးအစား (transaction or block), ၎င်းရဲ့ hash နှင့်အခြေအနေ။ ဒီအခြေအနေက `Validating` (လက်ရှိတည်ငြိမ်မှု) ၊ `Rejected` သို့မဟုတ် `Committed` ဖြစ်နိုင်ပါတယ်။ Entity တစ်ခုကို ပယ်ချခဲ့ရင် ပယ်ချခြင်း အကြောင်းရင်းကို ဖော်ပြပါတယ်။
+Software Processing Workflow ဖြစ်ရပ်များသည် ငွေပေးချေမှုများကို ဘလော့ (ခ်) တွင်တင်သွင်းခြင်း၊ အကောင်အထည်ဖော်ခြင်း သို့မဟုတ် အဆုံးသတ်ခြင်းဖြင့် ထုတ်လွှင့်ခြင်းဖြစ်သည်။ Software Processing workflow ဖြစ်စဉ်တွင် အောက်ပါအချက်အလက်များပါဝင်သည်-ဖြစ်ရပ်ကိုဖြစ်စေသော entity အမျိုးအစား (transaction or block), ၎င်း၏ cryptographic hash နှင့်အခြေအနေ။ ဒီအခြေအနေက `Validating` (လက်ရှိတည်ငြိမ်မှု) ၊ `Rejected` သို့မဟုတ် `Committed` ဖြစ်နိုင်ပါတယ်။ Entity တစ်ခုကို ပယ်ချခဲ့ရင် ပယ်ချခြင်း အကြောင်းရင်းကို ဖော်ပြပါတယ်။
 
-### Taira မှာ စမ်းကြည့်ပါ။ {#try-it-on-taira}
+### Taira တွင် ဤအလုပ်ခွင်ကို run လုပ်ပါ။ {#try-it-on-taira}
 
-အများသုံး pipeline event stream ကို တပ်ဆင်ထားတာကို စစ်ဆေးပါ။
+အများသုံး ဆော့ဖ်ဝဲ စီမံခန့်ခွဲမှု အလုပ်ခွင်ဖြစ်စဉ်စီးကြောင်းကို တပ်ဆင်ထားတာကို စစ်ဆေးပါ။
 
 ```bash
 curl -fsSI https://taira.sora.org/v1/events/sse \
   | sed -n '1,12p'
 ```
 
-ရေစီးကြောင်းကို ဖွင့်မထားဘဲ စစ်ဆေးနိုင်တဲ့ အရှိန်အဟုန်ပြချက်အတွက် မကြာသေးခင်က Explorer Transactions ကို ဖတ်ရှုပါ။
+Stream ကို ဖွင့်မထားဘဲ စစ်ဆေးနိုင်မယ့် point-in-time data view တစ်ခုအတွက် မကြာသေးခင်က explorer transaction တွေကို ဖတ်ရှုပါ။
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
@@ -45,12 +45,12 @@ curl -fsS -N https://taira.sora.org/v1/events/sse
 
 ## ဒေတာဖြစ်ရပ်များ {#data-events}
 
-ဒေတာဖြစ်ရပ်များကို စာရင်းအင်းဒေတာများနှင့်စပ်လျဉ်း၍ အပြောင်းအလဲရှိသည့်အခါ ထုတ်လွှင့်ခြင်းဖြစ်သည်။ ဥပမာ တူညီသူများ၊ နယ်ပယ်များ၊ အကောင့်များ၊ အရင်းအမြစ်များ၊ ပိုင်ဆိုင်မှု အဓိပ္ပါယ်ဖွင့်ဆိုချက်များ၊ NFTs၊ trigger များ၊ အခန်းကဏ္ဍများ၊ ကွင်းဆက်ပေါ်က ဖွဲ့စည်းပုံ၊ အကောင်အထည်ဖော်သူအခြေအနေ၊ အထောက်အထားများ၊ လျှို့ဝှက်အရင်းအမြစ်၊ တံတားများ သို့မဟုတ် SORA/Nexus- သီးခြားအရာရာများ။ [data event filters ](./filters.md#data-event-filters) မှာ ဒီအဖြစ်အပျက်အမျိုးအစားတွေကို သုံးပါတယ်။
+ဒေတာဖြစ်ရပ်များကို blockchain ledger အချက်အလက်များနှင့် ပတ်သက်၍ network peers, domains, accounts, assets, asset definitions, NFTs, trigger များကဲ့သို့သောပြောင်းလဲမှုရှိသောအခါ ထုတ်လွှင့်သည်။ Roles, on-chain configuration, executor state, proofs, confidential assets, bridges, or SORA/Nexus-specific objects. ဒီဖြစ်ရပ်အမျိုးအစားတွေကို [ဒေတာဖြစ်ရပ် စစ်ဆေးချက်များ](./filters.md#data-event-filters) မှာ အသုံးပြုပါတယ်။
 
-## အချိန်ကာလ ဖြစ်ရပ်များ {#time-events}
+## အချိန်ကို အခြေခံတဲ့ အဖြစ်အပျက် အကြောင်းကြားချက်များ {#time-events}
 
-အချိန်ဖြစ်ရပ်တွေကို ကမ္ဘာ့နိုင်ငံရေးအမြင်က ကိုင်တွယ်ဖို့ အသင့်ရှိတဲ့အခါ ထုတ်လွှတ်တယ်။ [အချိန် trigger များ](./triggers.md#time-triggers).
+ကမ္ဘာ့အခြေအနေအမြင်ကို ကိုင်တွယ်ဖို့ အဆင်သင့်ဖြစ်တဲ့အခါ အချိန်အခြေခံ အဖြစ်အပျက် အကြောင်းကြားချက်တွေကို ထုတ်လွှင့်ပါတယ်။ [အချိန်ကို စေ့ဆော်ပေးသူ](./triggers.md#time-triggers).
 
 ## trigger execution ဖြစ်ရပ်များ {#trigger-execution-events}
 
-Trigger execution events များကို [`ExecuteTrigger`](./instructions.md#executetrigger) ညွှန်ကြားချက်အား အကောင်အထည်ဖော်သည့်အခါ ထုတ်လွှတ်ပေးသည်။ trigger completion events များသည် trigger လုပ်ဆောင်မှုတစ်ခု ပြီးဆုံးပြီးနောက်မှထုတ်လွှတ်ပေးသည်။
+trigger execution events တွေကို emit လုပ်တဲ့အခါမှာ [`ExecuteTrigger`](./instructions.md#executetrigger) ညွှန်ကြားချက်ကို အကောင်အထည်ဖော်ပြီးနောက် trigger completion events တွေကို emit လုပ်ပေးပါတယ်။

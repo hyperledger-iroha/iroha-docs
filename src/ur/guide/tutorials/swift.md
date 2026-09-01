@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Swift اور iOS {#swift-and-ios}
 
-انگریزی میں Swift SDK اوپر بہاؤ کام کی جگہ کی طرف سے بھیجا جاتا ہے `IrohaSwift` Swift پیکج کے تحت `IrohaSwift/`. اس کے پیکج مینوفیس میں تین لائبریری مصنوعات کی وضاحت کی گئی ہے`IrohaSwift`, `IrohaSwiftMobileTransports`, اور `IrohaSwiftTransferUI`اور iOS 15+ اور macOS 12+ کو نشانہ بناتا ہے Swift اوزار 5.9۔
+اپ اسٹریم workspace کی Swift SDK، ‏`IrohaSwift/` کے تحت `IrohaSwift` Swift package ہے۔ اس کا package مینی فیسٹ تین library products—`IrohaSwift`، ‏`IrohaSwiftMobileTransports` اور `IrohaSwiftTransferUI`—متعین کرتا ہے، اور Swift tools 5.9 کے ساتھ iOS 15+ اور macOS 12+ کو ہدف بناتا ہے۔
 
 پیکیج مقامی `NoritoBridge` بائنری ہدف پر منحصر ہے۔ پیکیج ریزولوشن تعمیر سے پہلے `../dist/NoritoBridge.xcframework` کی توثیق کرتا ہے ، اور جب مقامی علامتیں لوڈ نہیں ہوتی ہیں تو ٹرانزیکشن یا کنیکٹ کرپٹو راستے پل دستیاب غلطیوں کو پھینک دیتے ہیں۔
 
@@ -85,7 +85,7 @@ if #available(iOS 15.0, macOS 12.0, *) {
 
 ایک ہی استعمال کریں `URLSession` چیک کریں `https://taira.sora.org/v1/assets/definitions?limit=5` جب تم تعمیر کر رہے ہو UI اور دوبارہ رویے کی کوشش کریں. `IrohaSDK` ایپ کو محفوظ اسٹوریج سے دستخط کرنے والے مواد کو لوڈ کرنے کے بعد ہی مددگار بھیجیں اور اکاؤنٹ پر فنڈنگ کی جاتی ہے Taira.
 
-ٹرانزیکشن بنانے اور جمع کرانے کے لئے، `IrohaSDK` مددگاروں کا استعمال کریں. یہ مقامی پل کی حمایت شدہ ٹرانزیکtion کوڈر کہتے ہیں:
+ٹرانزیکشن بنانے اور جمع کرانے کے لئے، `IrohaSDK` مددگاروں کا استعمال کریں. یہ مقامی پل کی حمایت شدہ ٹرانزیکشن کوڈر کہتے ہیں:
 
 ```swift
 let transfer = TransferRequest(
@@ -109,9 +109,9 @@ if #available(iOS 15.0, macOS 12.0, *) {
 
 `TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest`, اور `UnshieldRequest` کینونیکل اکاؤنٹ کی توثیق IDs اور کینونیکل غیر مقررہ Base58 اثاثے کی تعریف IDs دستخط کرنے سے پہلے.
 
-## مقامی ایسکرو {#native-escrow}
+## مقامی ایایسکرو {#native-escrow}
 
-Swift مارکیٹ پلیس اور گمنام ایسکرو ہدایات کی تعمیر کرتا ہے جو Norito JSON کے ذریعہ `NativeEscrowInstructionBuilders` یا مساوی `IrohaSDK.build*Escrow*` معاونین کے ذریعہ مفید بوجھ ہیں۔ مثالوں ، گمنام ثبوت فیلڈز اور تنازعہ حل کرنے والے اجازت ٹوکن کے لئے [ نیشنل اثاثہ ایسکرو](/ur/blockchain/escrow.md#swift-and-ios) دیکھیں۔
+Swift، `NativeEscrowInstructionBuilders` یا مساوی `IrohaSDK.build*Escrow*` معاون کے ذریعے مارکیٹ پلیس اور گمنام ایایسکرو ہدایات بناتا ہے، جو پے لوڈ کو Norito JSON میں انکوڈ کرتے ہیں۔ مثالوں، گمنام ثبوت فیلڈز اور تنازعہ حل کرنے والے permission tokens کے لیے [مقامی اثاثہ ایایسکرو](/ur/blockchain/escrow.md#swift-and-ios) دیکھیں۔
 
 ## دستخط {#signing}
 
@@ -148,7 +148,7 @@ let session = ConnectSession(sessionID: sessionID, client: client)
 let keyPair = try ConnectCrypto.generateKeyPair()
 ```
 
-`ConnectSession` کھولنے اور بند کرنے کے کنٹرولز، خفیہ لفافے پڑھتا ہے، سمت کی چابیاں، بہاؤ کنٹرول، واقعہ بہاؤ، توازن بہاؤ، اور تشخیصی جرنل ہینڈل.
+`ConnectSession` کھولنے اور بند کرنے کے کنٹرولز، خفیہ لفافے پڑھتا ہے، سمت کی چابیاں، بہاؤ کنٹرول، واقعہ بہاؤ، بیلنس بہاؤ، اور تشخیصی جرنل ہینڈل.
 
 ## موجودہ کوریج {#current-coverage}
 
@@ -159,9 +159,9 @@ Swift ذریعہ میں فی الحال شامل ہیں:
 - `PendingTransactionQueue` اور `FilePendingTransactionQueue` کے ذریعے ٹرانزیکشن کی قطار میں معاونت کا انتظار کرنا
 - `AccountAddress` اور `AccountId` کے ذریعے اکاؤنٹ ایڈریس اور I105 معاونین
 - Ed25519، secp256k1، ML-DSA، BLS، GOST، اور SM2 پر دستخط کرنے والی سطحیں، جہاں ضروری ہو مقامی پل کی حمایت کے ساتھ
-- مارکیٹ پلیس اور گمنام اسرو کے لئے مقامی سپلائی ہدایات کی مفید بوجھ بنانے والے
+- مارکیٹ پلیس اور گمنام ایسکرو کے لئے مقامی سپلائی ہدایات کی پے لوڈ بنانے والے
 - WebSocket ، فریم، کرپٹو، سیشن، قطار، دوبارہ چلائیں، اور تشخیص کے مددگاروں کو مربوط کریں
-- Kagemusha کی تیاری، ٹائپ کردہ بھرنے اور واپسی، آپریشن کی حیثیت، نوٹ، ہم مرتبہ بنڈل، رسید، اور QR سٹریم ماڈلز
+- Kagemusha کی تیاری، ٹائپ کردہ بھرنے اور واپسی، آپریشن کی حیثیت، نوٹ، نیٹ ورک نوڈ بنڈل، رسید، اور QR سٹریم ماڈلز
 - SoraFS ، اعداد و شمار کی دستیابی اور ثبوت منسلک کرنے میں مدد
 
 ## API مثالیں {#api-examples}

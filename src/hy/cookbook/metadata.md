@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /cookbook/metadata.md
-translation_source_hash: 07b065b28eca44939a92b40a81a47b57178de4539abb0daf51913969e34eced7
+translation_source_hash: bb486994faabb29fb48609a886862e44e565148be4800ec1244218ef37e2e54b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 - `curl`, `jq`, Python 3.11 կամ ավելի ուշ եւ հոսքը `iroha` CLI:
 - Ֆինանսավորված `taira.client.toml` եւ `taira.tx-metadata.json` գումարը [ Կապակցեք Taira ](./connect-to-taira.md):
-- Կառավարություն նպատակային հաշիվի մետադատաների նկատմամբ: Օրինակն ուղղված է ինքնուրույն կազմավորված իշխանությանը. մեկ այլ հաշիվ պահանջում է հստակ թույլտվություն:
+- Թիրախային հաշվի մետադատաների նկատմամբ լիազորություն: Օրինակն ուղղված է կազմաձևված լիազոր հաշվին. մեկ այլ հաշիվ պահանջում է հստակ թույլտվություն:
 
 ## Քայլեր {#steps}
 
@@ -75,13 +75,13 @@ CLI- ը նշում է վճարը, ստորագրում է, ներկայացնո�
 
 ::: warning Թույլատրելիության սահման
 
-Ակտիվ հավաստիացնողը որոշում է, թե ով կարող է փոխել յուրաքանչյուր օբյեկտ: Մեկ այլ հաշիվ թարմացնելը սովորաբար պահանջում է `CanModifyAccountMetadata`; դոմեյնները, ակտիվների սահմանումները, NFTs, եւ գործարկիչները ունեն իրենց սեփական նպատակային հատուկ մետադատա թույլտվությունները: Եթե Taira-ը չի տրամադրել պահանջվող իշխանությունը, գործարկեք նույն հաշիվի հրամանները `./localnet/client.toml`-ով, փոխարինեք առաջադրված տեղական ցանցի իշխանության կանոնիկ I105-ը ID, եւ բաց թողնեք վճարային մետադատա ֆայլը Taira: Պահպանեք պարզ տեղական վճարատու ընտրությունը։
+Ակտիվ հավաստիացնողը որոշում է, թե ով կարող է փոխել յուրաքանչյուր օբյեկտ: Մեկ այլ հաշիվ թարմացնելը սովորաբար պահանջում է `CanModifyAccountMetadata`; դոմեյնները, ակտիվների սահմանումները, NFTs, եւ գործարկիչները ունեն իրենց սեփական նպատակային հատուկ մետադատա թույլտվությունները: Եթե Taira-ը չի տրամադրել պահանջվող լիազոր հաշիվը, գործարկեք նույն հաշիվի հրամանները `./localnet/client.toml`-ով, փոխարինեք առաջադրված տեղական ցանցի լիազոր հաշվի կանոնիկ I105-ը ID, եւ բաց թողնեք վճարային մետադատա ֆայլը Taira: Պահպանեք պարզ տեղական վճարատու ընտրությունը։
 
 :::
 
 ### 4. Հեռացրեք բանալին {#_4-remove-the-key}
 
-Նախ կարդացեք պարտավորված արժեքը, ապա ներկայացրեք առանձին հեռացման գործարք:
+Նախ կարդացեք հաստատված արժեքը, ապա ներկայացրեք առանձին հեռացման գործարք:
 
 ```bash
 iroha --config ./taira.client.toml --machine ledger account meta get \
@@ -133,8 +133,8 @@ fi
 
 ## Աղբյուրը եւ դրա հետ կապված փաստաթղթերը {#source-and-related-docs}
 
-- [Մետադատա հարցումների ինտեգրման փորձարկումներ փինացված հանձնաժողովում](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/queries/metadata.rs)
-- [Python SDK գործարքի կառուցողները փակված պարտավորության վրա](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/README.md)
+- [Մետադատա հարցումների ինտեգրման փորձարկումներ փինացված commit-ում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/queries/metadata.rs)
+- [Python SDK գործարքի կառուցողները փակված commit վրա](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/README.md)
 - [Մետադատա](/hy/blockchain/metadata.md)
 - [Մետադատա եւ գլխավոր գրքի պահեստավորման տարբերակներ](/hy/guide/configure/metadata-and-store-assets.md)
 - [Ուղարկման հղում](/hy/reference/instructions.md)

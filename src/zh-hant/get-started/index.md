@@ -8,26 +8,26 @@ translation_engine: nllb-200-ct2
 
 # Iroha 3 {#iroha-3}
 
-Iroha 3 是首次發佈的 Hyperledger Iroha 支持自主託管的網絡和多數據空間 SORA Nexus 基於一個確定性代碼基礎的部署模型.
+Iroha 3 是首次釋出的 Hyperledger Iroha 支援自主託管的網路和多資料空間 SORA Nexus 基於一個確定性程式碼基礎的部署模型.
 
 在高水平上, Iroha 3 結合:
 
-- 確定性執行和存儲
-- Iroha 移動智能合同虛擬機 (IVM)
-- Norito 作爲法典電線格式
-- Torii 用於客戶端,運營商和應用程序面向 APIs
-- Sumeragi 與強制性的數據可用性和可靠的廣播達成一致
-- 沒有域名的可信賬戶,具有單獨綁定的人類可讀的號
+- 確定性執行和儲存
+- Iroha 移動智慧合同虛擬機器 (IVM)
+- Norito 作為規範序列化格式
+- Torii 用於客戶端,運營商和應用程式面向 APIs
+- Sumeragi 與強制性的資料可用性和可靠的廣播達成一致
+- 沒有域名的可信帳戶,具有單獨繫結的人類可讀的號
 
 ## 快速開始 {#quickstart}
 
 如果您從零開始,請按順序關注以下頁面:
 
 1. [安裝 Iroha 3](/zh-hant/get-started/install-iroha.md)
-2. [發射 Iroha 3](/zh-hant/get-started/launch-iroha.md)
-3. [通過 CLI](/zh-hant/get-started/operate-iroha-via-cli.md)運行 Iroha 3
-4. [連接到 SORA Nexus 數據庫](/zh-hant/get-started/sora-nexus-dataspaces.md)
-5. [贊助商私人數據空間費用](/zh-hant/get-started/private-dataspace-fee-sponsor.md)
+2. [啟動 Iroha 3](/zh-hant/get-started/launch-iroha.md)
+3. [透過 CLI](/zh-hant/get-started/operate-iroha-via-cli.md)執行 Iroha 3
+4. [連線到 SORA Nexus 資料空間](/zh-hant/get-started/sora-nexus-dataspaces.md)
+5. [贊助商私人資料空間費用](/zh-hant/get-started/private-dataspace-fee-sponsor.md)
 
 ## SDKs {#sdks}
 
@@ -41,16 +41,16 @@ Iroha 3 是首次發佈的 Hyperledger Iroha 支持自主託管的網絡和多�
 
 ## 運營商參考 {#operator-references}
 
-在運行網絡時,您最經常使用的頁面是:
+在執行網路時,您最經常使用的頁面是:
 
-- [與 Iroha 二進制](/zh-hant/reference/binaries.md) 合作
+- [與 Iroha 二進位制](/zh-hant/reference/binaries.md) 合作
 - [創世記引用](/zh-hant/reference/genesis.md)
-- [Torii 終端點](/zh-hant/reference/torii-endpoints.md)
-- [連接到 SORA Nexus 數據庫](/zh-hant/get-started/sora-nexus-dataspaces.md)
-- [贊助商私人數據空間費用](/zh-hant/get-started/private-dataspace-fee-sponsor.md)
-- [兼容性矩陣](/zh-hant/reference/compatibility-matrix.md)
+- [Torii 端點](/zh-hant/reference/torii-endpoints.md)
+- [連線到 SORA Nexus 資料空間](/zh-hant/get-started/sora-nexus-dataspaces.md)
+- [贊助商私人資料空間費用](/zh-hant/get-started/private-dataspace-fee-sponsor.md)
+- [相容性矩陣](/zh-hant/reference/compatibility-matrix.md)
 
 ## 瞭解更多 {#learn-more}
 
-- [Iroha 源存儲庫](https://github.com/hyperledger-iroha/iroha)
-- [文件來源存儲庫](https://github.com/hyperledger-iroha/iroha-docs)
+- [Iroha 源儲存庫](https://github.com/hyperledger-iroha/iroha)
+- [檔案來源儲存庫](https://github.com/hyperledger-iroha/iroha-docs)

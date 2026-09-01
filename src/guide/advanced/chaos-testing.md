@@ -8,7 +8,7 @@ network keeps making progress under controlled failure.
 Use Izanami for pre-production resilience checks, regression reproduction,
 and consensus tuning. Do not point it at a production network: the tool is
 designed to own the peers it starts, including peer restarts, storage
-wipes, artificial packet loss, and local CPU or disk pressure.
+wipes, temporary trusted-peer partitions, and local CPU or disk pressure.
 
 ## Prerequisites
 
@@ -36,8 +36,10 @@ For an interactive run configuration:
 cargo run -p izanami -- --tui --allow-net
 ```
 
-Izanami persists TUI and CLI settings under the user config directory, so
-review the displayed settings before reusing a previous profile.
+Izanami persists TUI and CLI settings under the user config directory. The
+first-release file has one explicit V1 layout byte; pre-release or otherwise
+unversioned settings are rejected and should be recreated rather than migrated.
+Review the displayed settings before reusing a current profile.
 
 ## Baseline Run
 
@@ -114,32 +116,29 @@ disabled with `=false`.
 | Invalid transaction spam | `--fault-enable-spam-invalid-transactions` | Admission and rejection paths              |
 | Network latency          | `--fault-enable-network-latency`           | Slow gossip and delayed consensus messages |
 | Network partition        | `--fault-enable-network-partition`         | Temporary trusted-peer isolation           |
-| P2P packet loss          | `--fault-enable-network-packet-loss`       | Dropped application-frame traffic          |
 | CPU stress               | `--fault-enable-cpu-stress`                | Local validation and scheduling pressure   |
 | Disk saturation          | `--fault-enable-disk-saturation`           | Local storage pressure                     |
 
-For a packet-loss-only run:
+For a network-partition-only run:
 
 ```bash
 cargo run -p izanami -- \
   --allow-net \
-  --peers 20 \
-  --faulty 5 \
-  --duration 800s \
-  --fault-window-start 133s \
-  --fault-window-end 266s \
-  --tps 200 \
-  --submitters 20 \
-  --max-inflight 512 \
+  --peers 4 \
+  --faulty 1 \
+  --duration 5m \
+  --fault-window-start 60s \
+  --fault-window-end 180s \
+  --tps 15 \
+  --submitters 1 \
+  --max-inflight 32 \
   --fault-enable-crash-restart=false \
   --fault-enable-wipe-storage=false \
   --fault-enable-spam-invalid-transactions=false \
   --fault-enable-network-latency=false \
-  --fault-enable-network-partition=false \
-  --fault-enable-network-packet-loss=true \
+  --fault-enable-network-partition=true \
   --fault-enable-cpu-stress=false \
   --fault-enable-disk-saturation=false \
-  --fault-network-packet-loss-percent 75 \
   --seed 42
 ```
 
@@ -156,9 +155,8 @@ shapes to CLI profiles. You can model them with the same flags:
 | --------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | Targeted load         | `--faulty 0`, high `--tps`, one submitter, high `--max-inflight`                                                         |
 | Transient failure     | Enable crash/restart only inside a bounded fault window                                                                  |
-| Packet loss           | Enable packet loss only, usually with the default 75% loss rate                                                          |
 | Stopping and recovery | Use a large faulty-peer population with crash/restart                                                                    |
-| Leader isolation      | Use exactly one faulty peer with only network-partition or packet-loss faults; Izanami follows Sumeragi leader telemetry |
+| Leader isolation      | Use exactly one faulty peer with only the network-partition fault; Izanami follows Sumeragi leader telemetry             |
 
 Keep one variable fixed at a time. If you change peer count, workload
 profile, fault window, and TPS in the same run, the result is difficult to
@@ -173,7 +171,8 @@ During the run, watch the same signals used for performance validation:
 - queue depth, queue saturation, and endpoint backpressure
 - view changes, recovery paths, missing blocks, and missing quorum
   certificates
-- RBC backlog, pending sessions, and dropped or delayed consensus traffic
+- signed RS16 availability backlog, pending sessions, and delayed consensus
+  traffic
 - CPU, memory, disk, and network saturation on the host running the peers
 
 For validation-latency analysis, enable main-loop debug logs:
@@ -202,8 +201,7 @@ Treat a run as a failure when:
 - queues grow for the rest of the run after a fault window closes
 - rejected or timed-out transactions are not explained by the selected
   workload
-- peer restart, storage wipe, or packet-loss recovery requires manual
-  cleanup
+- peer restart, storage wipe, or partition recovery requires manual cleanup
 
 After a failure, rerun with the same seed and one fewer fault type. This
 keeps the workload and timing reproducible while narrowing the failure

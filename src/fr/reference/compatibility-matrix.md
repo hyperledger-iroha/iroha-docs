@@ -3,23 +3,23 @@ translation_locale: fr
 translation_source: /reference/compatibility-matrix.md
 translation_source_hash: 5928eaf7e65023ad1867ca8d125efa61da6d8fe505b91e71b2c2121b183ce06e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Matrice de compatibilité {#compatibility-matrix}
 
-La matrice de compatibilité affiche la couverture des scénarios transversaux SDK pour l'ensemble actuel de documents Iroha 3. Par défaut, la page charge le snapshot regroupé généré à partir de la révision [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) coincée.
+La matrice de compatibilité montre la croisée SDK couverture des scénarios pour le courant Iroha 3 docs configurés. Par défaut, la page charge la vue de données ponctuelle groupée générée à partir des éléments épinglés [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) révision.
 
-La matrice est composée de:
+La matrice se compose de :
 
-- Les histoires de la première colonne
-- SDKs dans les colonnes restantes
-- Symboles d'état pour les données couvertes, manquantes ou non
+- Histoires dans la première colonne
+- SDKs à travers les colonnes restantes
+- Symboles de statut pour les données couvertes, échouées et manquantes
 
-Seuls les résultats vérifiés par le flux de travail de mise à jour sont signalés comme couverts ou échoués. Les scénarios sans preuve de la révision fixée sont affichés comme des données manquantes plutôt que d'hériter des résultats d'une autre révision source.
+Seuls les résultats vérifiés par le flux de travail de rafraîchissement sont signalés comme couverts ou échoués. Les scénarios sans preuve pour la révision épinglée sont affichés comme données manquantes plutôt que d'hériter des résultats d'une autre révision source.
 
 <CompatibilityMatrixTable />
 
 ::: info
-Définir `VITE_COMPAT_MATRIX_URL` uniquement pour remplacer l'instantané bundled avec un backend en direct compatible. Sans cette variable, la page se charge `src/public/compat-matrix.json`.
+Définissez `VITE_COMPAT_MATRIX_URL` uniquement pour remplacer la vue de données ponctuelles incluse par un backend en direct compatible. Sans cette variable, la page charge `src/public/compat-matrix.json`.
 :::

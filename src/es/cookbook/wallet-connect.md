@@ -1,24 +1,24 @@
 ---
 translation_locale: es
 translation_source: /cookbook/wallet-connect.md
-translation_source_hash: ab5b6c560ed8b0a208666e5854306ba6adce7af1210fc3c94b9c560d8e6eb686
+translation_source_hash: 81b370bdc73a40ff2dbb8df0f91547ab4c279ed94600bdd6df367f29a949ec71
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Wallet Connect: apruebe la transferencia de activos {#wallet-connect-approve-an-asset-transfer}
+# Wallet Connect: Aprobar una transferencia de activos {#wallet-connect-approve-an-asset-transfer}
 
-## El resultado {#outcome}
+## Resultado {#outcome}
 
-Crear una sesión de conexión Iroha en un navegador, obtener la aprobación criptográfica para una identidad de billetera I105, pedir a esa billetera que firme el andamio exacto de transferencia de activos de Torii, enviar la firma separada y esperar a la finalidad aplicada.
+Crea una sesión de Iroha Connect en un navegador, obtén la aprobación criptográfica para una identidad de billetera I105, solicita que esa billetera firme la estructura inicial generada de transferencia de activos exacta de Torii, envía la firma separada y espera la finalización aplicada.
 
-## Los requisitos previos {#prerequisites}
+## Requisitos previos {#prerequisites}
 
-- Una aplicación de navegador que utilice `@iroha/iroha-js` y HTTPS.
-- Una billetera que implementa Iroha Connect v1 y controla una cuenta de llave única Ed25519 I105.
-- La cadena Taira actual ID y el discriminante de la cadena, la letra pequeña registrada en la cartera Ed25519 hex de llave pública, un activo transferible de propiedad y un destino canónico I105.
-- El activo de cuota ID devuelto por la respuesta actual del grifo Taira. El ejemplo verifica la cotización de cuota en vivo con respecto a esa ID; nunca incorpora un identificador de activo copiado.
-- Se debe habilitar la conexión en el Torii seleccionado. Verifique antes de mostrar un QR o enlace profundo:
+- Una aplicación de navegador que usa `@iroha/iroha-js` y HTTPS.
+- Una cartera que implementa Iroha Connect v1 y controla una cuenta I105 Ed25519 de clave única.
+- El ID de cadena Taira actual y el discriminante de la cadena, la clave pública Ed25519 en minúsculas inscrita de la billetera en hexadecimal, un activo transferible propiedad y un destino canónico I105.
+- El ID de activo de tarifa devuelto por la respuesta del servicio de financiación de testnet actual Taira. El ejemplo verifica la estimación del precio de la tarifa en vivo contra ese ID; nunca incrusta un identificador de activo copiado.
+- Connect debe estar habilitado en el Torii seleccionado. Verifique antes de mostrar un QR o enlace profundo:
 
 ```bash
 curl -fsS \
@@ -27,23 +27,23 @@ curl -fsS \
   jq -e '{enabled, sessions_active} | select(.enabled == true)'
 ```
 
-Si Taira informa que Connect ha sido desactivado o devuelve `404`/`503`, utilice una red local generada con Connect habilitada. Una transferencia ordinaria de activos también requiere que la billetera posea suficiente cantidad transferible y saldo de tarifas.
+Si Taira informa que Connect está desactivado o devuelve `404`/`503`, use una red local generada con Connect habilitado. Una transferencia de activos ordinaria también requiere que la billetera tenga suficiente cantidad transferible y saldo para tarifas.
 
-## Los pasos {#steps}
+## Pasos {#steps}
 
 ### 1. Proporcionar un control de lanzamiento de billetera {#_1-provide-one-wallet-launch-control}
 
-El JavaScript siguiente espera que este elemento aparezca en la página de solicitud:
+El JavaScript a continuación espera este elemento en la página de la aplicación:
 
 ```html
 <a id="wallet-connect" hidden>Open this request in my Iroha wallet</a>
 ```
 
-Entregue el mismo URI que un código QR para una billetera en otro dispositivo. El URI contiene el token de relevo escaneado por la billetera, así que no lo ponga en análisis, registros, referentes o informes de choque.
+Genera el mismo URI como un código QR para una billetera en otro dispositivo. El URI contiene el token de retransmisión con alcance de billetera, por lo que no lo pongas en análisis, registros, referidos o informes de fallos.
 
-### 2. Creación, aprobación, firma y presentación {#_2-create-approve-sign-and-submit}
+### 2. Crear, aprobar, firmar y enviar {#_2-create-approve-sign-and-submit}
 
-Este módulo del navegador acepta valores concretos de su estado de aplicación. El primero `POST /v1/assets/transfer` omite los campos de firma y devuelve un andamio de transacción citado, versionado. El segundo solo agrega la clave pública de la billetera y la firma independiente a la misma solicitud de transferencia.
+Este módulo del navegador acepta valores concretos de su estado de aplicación. El primero `POST /v1/assets/transfer` omite los campos de firma y devuelve una estructura inicial de transacción generada entre comillas y con versión. El segundo solo añade la clave pública de la cartera y la firma separada a la misma solicitud de transferencia.
 
 ```js
 import { AccountAddress } from '@iroha/iroha-js/address'
@@ -219,11 +219,11 @@ export async function transferWithWallet({
 }
 ```
 
-Mantenga `token_app`, `token_management`, y `token_relay` Sólo el lanzamiento de la billetera URI La aprobación Connect está firmada por la identidad de la cuenta; el X25519 `walletPublicKey` En la aprobación hay una llave de transporte efímera, no la llave de firma Ed25519 de la cuenta.
+Mantenga `token_app`, `token_management` y `token_relay` en la memoria de la aplicación. Solo el lanzamiento de la billetera URI/token se transfiere a la billetera. La aprobación de Connect es firmada por la identidad de la cuenta; la X25519 `walletPublicKey` en la aprobación es una clave de transporte efímera, no la clave de firma Ed25519 de la cuenta.
 
-### 3. Utilice los tipos de marco Rust en una implementación de billetera. {#_3-use-the-rust-frame-types-in-a-wallet-implementation}
+### 3. Use los tipos de marco Rust en una implementación de cartera {#_3-use-the-rust-frame-types-in-a-wallet-implementation}
 
-La superficie del protocolo Rust sólo puede sellar una firma después de que la billetera haya descifrado la transacción solicitada, mostrado su intención exacta, aplicada política y firmado con la clave de cuenta aprobada.
+La superficie del protocolo Rust puede sellar una firma solo después de que la billetera haya decodificado la transacción solicitada, mostrado su intención exacta, aplicado la política y firmado con la clave de cuenta aprobada. Este asistente acepta esa firma validada; no fabrica una:
 
 ```rust
 use iroha_crypto::{Algorithm, Signature};
@@ -251,11 +251,11 @@ fn seal_wallet_signature(
 }
 ```
 
-El repositorio es `connect_app` y `connect_wallet` ejemplos son las fichas de protocolo: utilizan claves de transporte deterministas, exponen tokens en la salida, y el accesorio de la billetera devuelve una firma manifiesta. Taira implementación de la billetera.
+Los ejemplos `connect_app` y `connect_wallet` del repositorio son artefactos de prueba del protocolo: utilizan claves de transporte deterministas, muestran tokens en la salida, y el artefacto de prueba de la billetera devuelve una firma ficticia. Úselos solo para estudiar marcos, nunca como una implementación de billetera Taira.
 
 ## Verificar {#verify}
 
-Mantenga el hash devuelto y confirme el estado posterior del destino a través del punto final de los titulares públicos:
+Mantenga el hash criptográfico devuelto y confirme el estado posterior del destino a través del endpoint de titulares públicos API:
 
 ```bash
 curl -fsS -G \
@@ -266,24 +266,24 @@ curl -fsS -G \
   jq .
 ```
 
-La verificación sólo tiene éxito cuando el JavaScript el camarero observa `Applied` para el hash de la transacción presentada, y la explotación de destino refleja la transferencia. HTTP La aceptación o aprobación de la billetera por sí sola no constituyen finalidad del libro mayor.
+La verificación tiene éxito solo cuando el camarero JavaScript observa `Applied` para el hash criptográfico de la transacción enviada y el destino refleja la transferencia. La aceptación de HTTP o la aprobación de la billetera por sí sola no constituye la finalización del libro mayor de la blockchain.
 
 ## Solución de problemas {#troubleshooting}
 
-- `404`, `503`, o `enabled: false` desde el estado de conexión significa que no se puede crear ninguna sesión de relaje en ese nodo. Cambiar a una red local activada; no vuelva a transportar aplicaciones o tokens de gestión usted mismo.
-- `USER_DENIED` es una decisión de la billetera. Conservarlo como resultado del usuario terminal en lugar de abrir repetidas instrucciones de aprobación.
-- Una falta de coincidencia entre la cuenta de aprobación o una firma de aprobación inválida deben cerrar la sesión. Nunca pida a la billetera que firme después de que el vínculo de identidad falla.
-- `public_key_hex does not control authority` significa los datos de inscripción y el desacuerdo de identidad aprobado I105. La clave efímera de transporte de la billetera no se puede utilizar en este campo.
-- Un rechazo de la firma o el andamio suele significar un campo de solicitud o una cotización en vivo cambiada entre preparar y enviar. Construye una nueva solicitud; nunca trasplante la firma antigua.
-- Una reproducción exacta de una solicitud ya aceptada y firmada es impotente. Pregunte su hash de transacción devuelta antes de tratar un tiempo muerto como una razón para empezar de nuevo.
+- `404`, `503` o `enabled: false` desde el estado Conectado significa que no se puede crear una sesión de retransmisión en ese nodo. Cambie a una red local habilitada; no intente transportar tokens de aplicación o de gestión por su cuenta.
+- `USER_DENIED` es una decisión de cartera. Consérvala como un resultado del usuario terminal en lugar de abrir repetidamente solicitudes de aprobación.
+- Un desajuste entre la cuenta de aprobación o una firma de aprobación no válida debe cerrar la sesión. Nunca pidas a la billetera que firme después de que falle la vinculación de identidad.
+- `public_key_hex does not control authority` significa que los datos de inscripción y la identidad aprobada I105 no coinciden. La clave de transporte de la billetera efímera no se puede usar en este campo.
+- Un rechazo de firma o de estructura inicial generada generalmente significa que un campo de solicitud o la estimación de tarifa en vivo cambiaron entre la preparación y el envío. Construya una nueva solicitud; nunca trasplante la firma antigua.
+- Una repetición exacta de una solicitud firmada ya aceptada es idempotente. Consulte su hash criptográfico de transacción devuelto antes de considerar un tiempo de espera como motivo para empezar de nuevo.
 
 ## Fuente y documentos relacionados {#source-and-related-docs}
 
-- [Implementación de la conexión del navegador en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/src/connect.browser.js)
-- [Pruebas de conexión del navegador en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/test/connect.browser.test.js)
-- [Rust Ejemplo de marco de aplicación en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_app.rs)
-- [Rust ejemplo de marco de billetera en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii_shared/examples/connect_wallet.rs)
-- [Pinned Torii OpenAPI schema](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/artifacts/openapi/torii.json)
-- [Servicios SORA Nexus](/es/blockchain/sora-nexus-services.md)
-- [Activos funcionales ](./fungible-assets.md)
-- [Enviar y verificar las transacciones ](./submit-and-verify-transactions.md)
+- [Implementación de Browser Connect en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/src/connect.browser.js)
+- [Pruebas de Browser Connect en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/test/connect.browser.test.js)
+- [Rust ejemplo de marco de aplicación en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_app.rs)
+- [Rust ejemplo de marco de billetera en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_wallet.rs)
+- [Esquema fijado Torii OpenAPI](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/artifacts/openapi/torii.json)
+- [SORA Nexus servicios](/es/blockchain/sora-nexus-services.md)
+- [Activos fungibles](./fungible-assets.md)
+- [Enviar y verificar transacciones](./submit-and-verify-transactions.md)

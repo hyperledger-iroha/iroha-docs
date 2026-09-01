@@ -1,32 +1,32 @@
 ---
 translation_locale: am
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 0185b6a341ee90ed6cd52fb9f510549b20592468abe6627d3efa639c3b67d1fd
+translation_source_hash: 576e03924f19b63681cdfafa641b996672e35a992478fc9eaf5b83f0e7baa6da
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# የአገር ውስጥ ንብረት ማስከበሪያ {#native-asset-escrow}
+# ቤተኛ ንብረት Escrow {#native-asset-escrow}
 
-## ውጤቱ {#outcome}
+## ውጤት {#outcome}
 
-ከገበያ ቦታ ኤስሮው እና ወደ መድረሻ የተገደበ የንብረት መቆለፊያ መካከል ይምረጡ ፣ የአሁኑን የታየውን የሕይወት ዑደት በ Rust ወይም Python ያካሂዱ ፣ እያንዳንዱን የመቆለፊያ ሙከራ በእውነቱ ከተመለከቱት ቀሪ መጠን ጋር ያያይዙ እና የተፈጥሮውን Kotodama ኤስሮ ገጽ ከ JavaScript ያጠናቅቁ ።
+በገበያ ቦታ ማስያዣ እና ከመድረሻ ጋር በተያያዘ የንብረት መቆለፊያ መካከል ይምረጡ፣ የአሁኑን የተተየበውን የህይወት ኡደት በ Rust ወይም Python ያስፈጽሙ፣ እያንዳንዱን የመቆለፊያ ድጋሚ ሙከራ በትክክል ከተመለከቱት ቀሪ መጠን ጋር ያያይዙ እና ቤተኛ Kotodama የማስያዣ ወለልን ከ JavaScript ያጠናቅሩ።
 
 ## ቅድመ ሁኔታዎች {#prerequisites}
 
-- የቁጥር ሀብት ትርጉም እና በቂ መጠን ያለው የመክፈቻ / ሻጭ።
-- አንድ እርምጃ ለሚያቀርብ ለእያንዳንዱ ወገን የገንዘብ ድጋፍ የተደረገበት, ነጠላ ቁልፍ I105 ደንበኞች። የክፍያ ንብረቱ ከወቅታዊው Taira faucet ምላሽ ጋር የሚስማማ በቀጥታ ባለስልጣን የተከፈለ `fee_payment` ዓላማ ይጠቀሙ; ከዝግጅት ውስጥ የንብረትን ID አያካትቱ.
-- የአሁኑ Rust ወይም Python SDK ከ Iroha ተሳትፎ ማድረግ `bc7114ed1c7f265a156d2100ff09e851cc95702c`.
-- ለ JavaScript የኮምፒተር ምሳሌ፣ Node.js 24 እና በአካባቢው የተገነባ `@iroha/iroha-js` ማሸጊያ እና ተወላጅ `iroha_js_host`; ይከተሉ [JavaScript SDK ምንጭ-ግንባታ ማዋቀር](/am/guide/tutorials/javascript.md#build-from-source). የአሳሽ ገንቢዎች ማቅረብ አለባቸው `compilerUrl` የአካባቢውን አስተናጋጅ ከመጫን ይልቅ።
-- Taira የንብረት ማስተላለፍ እና የመጠባበቂያ መመሪያዎችን መቀበል አለበት ። የንብረት ባለቤቶች የተለመደውን የሕይወት ዑደት መጠቀም ይችላሉ የእነሱ የንብረት ፖሊሲ ሲፈቅድለት; አለመግባባት ለመፍታት ዓለም አቀፍ `CanResolveEscrowDispute` ፈቃድ ይጠይቃል. አስፈላጊው የህዝብ አውታረ መረብ ባለስልጣን በሌለበት ጊዜ የተፈጠረ አካባቢያዊ አውታረመረብ ይጠቀሙ።
+- የቁጥር ንብረት ፍቺ እና በቂ መጠን ያለው መክፈቻ/ሻጭ።
+- አንድ እርምጃ ለሚያቀርብ እያንዳንዱ አካል በገንዘብ የተደገፈ፣ ነጠላ-ቁልፍ I105 ደንበኞች። የክፍያ ንብረቱ ከአሁኑ Taira የቴስትኔት የገንዘብ ድጋፍ አገልግሎት ምላሽ ጋር የሚዛመድ በግብይት ፊርማ መለያ `fee_payment` ዓላማ የሚከፈል ቀጥታ ስርጭት ይጠቀሙ። የንብረት መታወቂያ ከሰነድ ውስጥ አያስገቡ።
+- የአሁኑ Rust ወይም Python SDK ከ Iroha ፕሮቶኮል ማጠናቀቂያ `0010c5a70039eac101a4846499ba9ceaf43eb65c`።
+- ለ JavaScript አቀናባሪ ምሳሌ፣ Node.js 24 እና አብሮ የተሰራ ጥቅል በአካባቢው ልማት አካባቢ `@iroha/iroha-js` እና ቤተኛ `iroha_js_host`; [JavaScript SDK ምንጭ-ግንባታ ማዋቀር](/am/guide/tutorials/javascript.md#build-from-source) የሚለውን ይከተሉ። የአሳሽ ግንባታዎች ቤተኛ አስተናጋጁን ከመጫን ይልቅ `compilerUrl` ማቅረብ አለባቸው።
+- Taira የንብረት ዝውውሩን እና የማስያዣ መመሪያዎችን ማጽደቅ አለበት። የንብረት ባለቤቶች የንብረት ፖሊሲያቸው በሚፈቅድበት ጊዜ መደበኛውን የሕይወት ዑደት መከተል ይችላሉ; . መፍታት ሀ ክርክር ዓለም አቀፋዊ `CanResolveEscrowDispute` ፈቃድ ያስፈልገዋል። አስፈላጊው የህዝብ blockchain አውታረ መረብ ፈቃድ ባለቤት በማይኖርበት ጊዜ የመነጨ የአካባቢ አውታረ መረብ ይጠቀሙ።
 
-የገበያ ቦታ ኤስሮው ሞዴሎች ሻጭ ፣ ገዢ ፣ ከሰንሰለት ውጭ ክፍያ እና ልቀት። አጠቃላይ መቆለፊያዎች መድረሻን እና አማራጭ የተለየ የመልቀቅ ባለሥልጣን ስም ይሰጣሉ ፤ እነሱ በከፊል ማውጣት ፣ መሰረዝ እና ጊዜ ማብቂያ ይደግፋሉ ።
+የገበያ ቦታ ማስያዣ ሞዴሎች ሻጩን፣ ገዢውን፣ ከሰንሰለት ውጪ ክፍያን እና መለቀቅን ያካትታሉ። አጠቃላይ መቆለፊያዎች መድረሻን እና እንደ አማራጭ የተለየ የመልቀቂያ የፈቃድ ባለቤትን ይገልጻሉ። ከፊል መውደቅን፣ መሰረዝን እና ጊዜን ማለፍ ይፈቅዳሉ።
 
 ## እርምጃዎች {#steps}
 
-### በ Rust አማካኝነት የገበያ ማስከበሪያ ማሟላት። {#_1-complete-a-marketplace-escrow-with-rust}
+### 1. የገበያ ቦታን በ Rust ያጠናቅቁ {#_1-complete-a-marketplace-escrow-with-rust}
 
-ይህ ተግባር እውነተኛ የተጻፈ IDs እና ደንበኞችን ይቀበላል ። 40 አሃዶችን ይከፍታል ፣ ገዢው ከሰንሰለት ውጭ ክፍያውን እንዲቀበል እና ምልክት እንዲያደርግ ያስችለዋል ፣ ከዚያ ሻጩ ጥበቃውን እንዲለቀቅ ያስችለዋል። እያንዳንዱ ማቅረቢያ ባለሥልጣን ክፍያ የሚከፈልበትን ስም በ `FeePaymentIntent` በኩል ይጠራል።
+ይህ ተግባር እውነተኛ የተተየቡ መታወቂያዎችን እና ደንበኞችን ይቀበላል። 40 ክፍሎችን ይከፍታል፣ ገዢው ከሰንሰለት ውጪ ክፍያን እንዲቀበል እና ምልክት እንዲያደርግ ያስችለዋል፣ ከዚያም ሻጩ የጥበቃ መብትን እንዲለቅ ያስችለዋል። እያንዳንዱ ግቤት የፈቃድ ዋና ክፍያ ከፋይን በ`FeePaymentIntent` በኩል ይሰይማል።
 
 ```rust
 use eyre::{Result, ensure};
@@ -70,11 +70,11 @@ fn complete_marketplace_escrow(
 }
 ```
 
-የመጠባበቂያ ሂሳቡ በሪጀር የሚተዳደር ነው። የተለመደ የንብረት ማስተላለፊያ ቶከን መስጠት ከኤስሮው የሕይወት ዑደት ውጭ ንቁ መጠባበቂያ እንዲፈጠር አያደርግም.
+የጥበቃ መለያው የሚተዳደረው በብሎክቼይን መዝገብ ነው። መደበኛ የንብረት ማስተላለፍ ቶከን መስጠት ንቁ ጥበቃን ከ escrow የሕይወት ዑደት ውጭ እንዲፈስ አያደርገውም።
 
-### 2. በ Python አማካኝነት አጠቃላይ መቆለፊያውን ይክፈቱ እና በከፊል ይስቡ። {#_2-open-and-partially-draw-a-generic-lock-with-python}
+### 2. ከ Python ጋር አጠቃላይ መቆለፊያን ይክፈቱ እና በከፊል ይሳሉ {#_2-open-and-partially-draw-a-generic-lock-with-python}
 
-የመልቀቂያ ባለሥልጣኑ ከመውሰዱ በፊት የተፈረመውን ተወላጅ መዝገብ ይጠይቃል። ትክክለኛውን `remaining_amount` ማለፍ አዎንታዊ ተመሳሳይነት ያስገኛል-የተረከበ ተጓዳኝ ጥያቄ ሁለት ጊዜ ጥበቃን ከማስከፈል ይልቅ ውድቅ ተደርጓል ።
+የመልቀቂያ የፈቃድ ባለቤት ከመውረድ በፊት የተፈረመውን ቤተኛ መዝገብ ይፈትሻል። ያንን ትክክለኛ `remaining_amount` ማቅረብ ብሩህ ተስፋ ያለው ተመሳሳይነት ያስችላል የቆየ ትይዩ ጥያቄ ሁለት ጊዜ ከመክፈል ይልቅ ውድቅ ይደረጋል።
 
 ```python
 import secrets
@@ -145,9 +145,9 @@ def open_and_draw_lock(
     return escrow_id, after
 ```
 
-Python SDK `expected_remaining_amount` ሲለቀቅ በራስ-ሰር መጠየቅ ይችላል ፣ ነገር ግን የተመለከተውን እሴት በማለፍ የተፈረመውን ኢኮኖሚያዊ ቅድመ ሁኔታ በመተግበሪያ ኮድ ውስጥ እንዲታይ ያደርጋል።
+Python SDK `expected_remaining_amount` ሲቀር በራስ-ሰር መጠየቅ ይችላል፣ ነገር ግን የታየውን እሴት ማለፍ የተፈረመውን ኢኮኖሚያዊ ቅድመ ሁኔታ በመተግበሪያ ኮድ ውስጥ እንዲታይ ያደርገዋል።
 
-ለ Rust መቆለፊያ ፍሰቶች የአሁኑ ገንቢዎች ደግሞ የተመለከተውን መጠን ይጠይቃሉ-
+ለ Rust የመቆለፊያ ፍሰቶች፣ የአሁኑ ገንቢዎች እንዲሁ የሚታየውን መጠን ይፈልጋሉ -
 
 ```rust
 let before = opener.query_single(FindAssetEscrowById::new(lock_id))?;
@@ -167,13 +167,13 @@ opener.submit_blocking(
 )?;
 ```
 
-`DrawdownAssetLock::new` ሦስት እሴቶች ይወስዳል; `CancelAssetLock::new` ሁለት ይወስዳል. የሚጠበቀው ቀሪ መጠን ማስወገድ አንድ ጥንታዊ, ደህንነቱ ያልተጠበቀ ጥሪ ቅርጸት ይገልጻል.
+`DrawdownAssetLock::new` ሶስት እሴቶችን ይወስዳል; `CancelAssetLock::new` ሁለት ይወስዳል። የሚጠበቀውን የቀረውን መጠን መተው የቆየ፣ ደህንነቱ ያልተጠበቀ የቴክኒክ ጥሪ ቅርፅን ይገልጻል።
 
-### የ Kotodama ኤስሮው ወለልን ከ JavaScript ያጠናቅቁ። {#_3-compile-the-kotodama-escrow-surface-from-javascript}
+### 3. የ Kotodama የ escrow ወለልን ከ JavaScript ያጠናቅቁ {#_3-compile-the-kotodama-escrow-surface-from-javascript}
 
-JavaScript ያልተጻፈ ተወላጅ መመሪያዎችን ማመንጨት አያስፈልገውም. የአሁኑ አዘጋጅ የ መለያ ማስከበሪያ የተገነባውን ወደ Kotodama ያጋልጣል; ልውውጥ እና ጥሪዎች ከዚያ በኋላ ይከተላሉ [ስማርት ኮንትራት መገንባት እና ማሰማራት](./smart-contracts.md)።
+JavaScript ያልተተየቡ ቤተኛ መመሪያዎችን መፈልሰፍ አያስፈልገውም።. የአሁኑ አቀናባሪ አብሮገነብ የብሎክቼይን መዝገብ escrow አብሮገነብ ለ Kotodama ያጋልጣል። ማሰማራት እና ቴክኒካል ጥሪዎች ከዚያ [ብልጥ ውል ይገንቡ እና ያሰማሩ](./smart-contracts.md) ይከተሉ።
 
-ይህንን `native_escrow.ko` ብለው ያስቀምጡ:
+ይህንን እንደ `native_escrow.ko` ያስቀምጡ
 
 ```kotodama
 seiyaku NativeEscrowAitai {
@@ -196,7 +196,7 @@ seiyaku NativeEscrowAitai {
 }
 ```
 
-የሚከተለውን `compile-native-escrow.mjs` አድርገው ያስቀምጡ እና ያንን ትክክለኛ ምንጭ ከ Node.js ለማጠናቀር ይጠቀሙበት:
+የሚከተለውን እንደ `compile-native-escrow.mjs` ያስቀምጡ እና ያንን ትክክለኛ ምንጭ ከ Node.js ለማጠናቀር ይጠቀሙበት።
 
 ```js
 import { readFile } from 'node:fs/promises'
@@ -216,15 +216,15 @@ console.log({
 })
 ```
 
-በቅድመ ቅድመ ሁኔታዎች ውስጥ ከተገለጸው ምንጭ የተገነባው የፓኬጅ አካባቢ ይሂዱ:
+በቅድመ ሁኔታዎች ውስጥ ከተገለጸው ምንጭ ከተሰራው የጥቅል አካባቢ ያሂዱት -
 
 ```bash
 node ./compile-native-escrow.mjs
 ```
 
-## ያረጋግጡ {#verify}
+## አረጋግጥ {#verify}
 
-ለገበያ ቦታ ማስከበሪያ ጥያቄ `FindAssetEscrowById` እና የሁለቱም ወገኖች ንብረቶች ከተለቀቁ በኋላ መያዝ አለባቸው። መዝገቡ `Released` መሆን አለበት ፣ ተቀባይነት ያለው ገዢ ስም ያቅርቡ ፣ እና ቀሪውን ጥበቃ አያሳዩም ። ከላይ ላለው Python መቆለፊያ ፣ የተመለሰውን ID ይያዙ እና የተፈረመውን መጠይቅ መድገም:
+ለገበያ ቦታ ማስያዣ፣ ጥያቄ `FindAssetEscrowById` እና ከተለቀቀ በኋላ የሁለቱም ወገኖች የንብረት ይዞታዎች። መዝገቡ `Released` መሆን አለበት፣ ተቀባዩን ገዢ ይሰይሙ እና ምንም ቀሪ ጥበቃ አያሳይም። ከላይ ላለው Python መቆለፊያ፣ የተመለሰውን መታወቂያ ይያዙ እና የተፈረመውን ጥያቄ ይድገሙት -
 
 ```python
 record = client.get_asset_escrow(
@@ -236,23 +236,23 @@ assert escrow_status(record) == "Locked"
 assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 ```
 
-እንዲሁም የመድረሻውን የንብረት አክሲዮን መጠየቅ እና በአራት ዩኒቶች መጨመሩን ያረጋግጡ ። ያለ ኤስሮው መዝገብ እና የመድረሻ ፖስት-ስታት ያለ የግብይት ደረሰኝ ያልተሟላ ማረጋገጫ ነው ።
+እንዲሁም የመድረሻውን ንብረት ይዞታ ይጠይቁ እና በአራት ክፍሎች መጨመሩን ያረጋግጡ። የግብይት ደረሰኝ ያለ escrow መዝገብ እና መድረሻ ድህረ-ሁኔታ ያልተሟላ ማረጋገጫ ነው።
 
-## ችግሮችን መፍታት {#troubleshooting}
+## መላ ፍለጋ {#troubleshooting}
 
-- `Not permitted` በመክፈት ጊዜ ባለሥልጣኑ የተመረጠውን ንብረት ወደ ክምችት ማስተላለፍ አይችልም ማለት ነው. አለመግባባቶችን መፍታት የተለያዩ ዓለም አቀፍ `CanResolveEscrowDispute` በር.
-- `expected remaining amount` ውድቅ በአዎንታዊነት-የተመጣጣኝነት ግጭት ነው ። መዝገቡን እንደገና ይጠይቁ ፣ ሌላውን ማውጣት / መሰረዝ የታሰበ መሆኑን ይወስኑ እና አዲሱን መመሪያ የሚፈርሙት አዲሱ ሁኔታ ተቀባይነት ካለው ብቻ ነው።
-- የተዋቀረው የመልቀቅ ባለሥልጣን ብቻ አስተማማኝ መቆለፊያ ማውጣት ይችላል። መድረሻው ገንዘብ ስለሚቀበል ብቻ ሊለቀው አይችልም።
-- የገበያ ቦታ መለቀቅ የሚሰራው ተቀባይነት ካገኘና ክፍያ ከተላከ በኋላ ብቻ ነው፤ መሰረዙ ቀደም ባሉት የሕይወት ዑደት ሁኔታዎች ላይ ብቻ የተወሰነ ነው።
-- ጊዜ ማብቂያ የተረጋገጠ መለያ ጊዜን ይጠቀማል። የአካባቢው የግድግዳ ሰዓት የጊዜ ገደብ `ExpireAssetLock` እንደሚያልፍ የሚያረጋግጥ ማስረጃ አድርገው አያዩት ።
-- የክፍያ ውድቀት ያንን የሕይወት ዑደት እርምጃ የሚያቀርብ ወገን ነው። የገንዘብ ግዢ ፣ ሻጭ / መክፈቻ እና የመልቀቂያ ባለስልጣን በ Taira ላይ ገለልተኛ በሆነ መንገድ።
+- `Not permitted` ሲከፈት ብዙውን ጊዜ የፈቃድ ርዕሰ መምህሩ የተመረጠውን ንብረት ወደ እስር ቤት ማስተላለፍ አይችልም ማለት ነው።. የክርክር አፈታት የተለየ ዓለም አቀፍ `CanResolveEscrowDispute` በር አለው።.
+- `expected remaining amount` አለመቀበል ብሩህ ተስፋ ያለው የጋራ ግጭት ነው።. መዝገቡን እንደገና ይጠይቁ፣ ሌላኛው መውረድ/መሰረዝ የታሰበ መሆኑን ይወስኑ እና አዲስ መመሪያ ይፈርሙ አዲሱ ሁኔታ ተቀባይነት ካለው ብቻ ነው።.
+- የታመነ መቆለፊያ መሳል የሚችለው የተዋቀረው የመልቀቂያ ፈቃድ ባለቤት ብቻ ነው። መድረሻው ገንዘቡን ስለሚቀበል ብቻ ሊለቀቀው አይችልም።
+- የገበያ ቦታ መለቀቅ የሚሰራው ከተቀበለ እና ክፍያ ከተላከ በኋላ ብቻ ነው። መሰረዙ በቀደሙት የህይወት ኡደት ግዛቶች ብቻ የተገደበ ነው።
+- ጊዜው የሚያበቃው ስልጣን ያለው የብሎክቼይን መዝገብ ጊዜን ይጠቀማል። የአካባቢ ስርዓት ሰዓት ማብቂያውን `ExpireAssetLock` እንደሚያልፍ እንደ ማረጋገጫ አድርገው አይቁጠሩት።
+- የክፍያ አለመሳካት ያንን የህይወት ኡደት ደረጃ የሚያቀርበው አካል ነው። ገዢን፣ ሻጭን/መክፈቻን ፈንድ ያድርጉ እና የፈቃድ ባለቤትን በተናጥል በ Taira ላይ ይልቀቁ።
 
 ## ምንጭ እና ተዛማጅ ሰነዶች {#source-and-related-docs}
 
-- [የተጣራ ግዴታ ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/isi/escrow.rs) ላይ የአገር ውስጥ የኤስኮር መመሪያ ሞዴል
-- [የተጣራ ግዴታ ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/native_escrow.rs) ላይ የአገር ውስጥ የኤስሮ ውህደት ሙከራዎች
-- [Python የተጣራ ግዴታ ላይ የዋስትና ደንበኛ ዘዴዎች](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama የተጣራ ግዴታ ላይ ተወላጅ ኤስኮር ናሙና](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/native_escrow.ko)
-- [የአገሬው ተወላጅ ንብረት የዋስትና ማስከበሪያ ](/am/blockchain/escrow.md)
-- [ተንቀሳቃሽ ሀብቶች](./fungible-assets.md)
-- [ፍቃዶች እና ሚናዎች](./permissions-and-roles.md)
+- [ቤተኛ escrow መመሪያ ሞዴል በተሰካው የምንጭ-ኮድ ክለሳ ላይ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
+- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ ቤተኛ escrow ውህደት ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
+- [Python በተሰካው የምንጭ-ኮድ ክለሳ ላይ የማስያዣ ደንበኛ ዘዴዎች](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama ቤተኛ escrow ናሙና በተሰካው የምንጭ-ኮድ ክለሳ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [ቤተኛ የንብረት escrow](/am/blockchain/escrow.md)
+- [ፈንገስ ሊሆኑ የሚችሉ ንብረቶች](./fungible-assets.md)
+- [ፈቃዶች እና ሚናዎች](./permissions-and-roles.md)

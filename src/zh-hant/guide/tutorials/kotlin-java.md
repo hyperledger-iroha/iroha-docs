@@ -1,31 +1,31 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 91dfd38597028531ec579eeb97dcd5acbfcdf6d27ba51991ca96a2d40077aaef
+translation_source_hash: f2411fec1cc35b1bf7795a7ab5a0eb7a8eb6b60b4799ebf3db47208b902f87e6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Kotlin,Android 和Java {#kotlin-android-and-java}
 
-Kotlin SDK 是 JVM 和 Android 應用程序的默認客戶端堆.它在 Iroha 存儲庫中存在於 `kotlin/` 下,並按平臺分開,因此便攜代碼不會獲得 Android 依賴性.
+Kotlin SDK 是 JVM 和 Android 應用程式的預設客戶端堆.它在 Iroha 儲存庫中存在於 `kotlin/` 下,並按平臺分開,因此便攜程式碼不會獲得 Android 依賴性.
 
-## 模塊 {#modules}
+## 模組 {#modules}
 
-|藝術品|類型|使用|
+|藝術品|型別|使用|
 | --- | --- | --- |
-|`org.hyperledger.iroha.sdk:core-jvm`|JAR|純 Kotlin/JVM Norito,數據模型,加密貨幣,交易, Torii 和協議代碼 |
-|`org.hyperledger.iroha.sdk:client-android`|AAR|Android 關鍵存儲,設備遠程測量和 JNI 支持的客戶端集成|
-|`org.hyperledger.iroha.sdk:offline-wallet-android`|AAR|Android 基於`client-android`的離線錢包運輸和集成|
+|`org.hyperledger.iroha.sdk:core-jvm`|JAR|純 Kotlin/JVM Norito,資料模型,加密貨幣,交易, Torii 和協議程式碼 |
+|`org.hyperledger.iroha.sdk:client-android`|AAR|Android 關鍵儲存,裝置遠端測量和 JNI 支援的客戶端整合|
+|`org.hyperledger.iroha.sdk:offline-wallet-android`|AAR|Android 基於`client-android`的離線錢包運輸和整合|
 
-這些文物還沒有在Maven Central上發佈. 從注入的 Iroha 來源修改中構建並本地發佈:
+這些構件還沒有在Maven Central上釋出. 從注入的 Iroha 來源修改中構建並本地釋出:
 
 ```bash
 cd kotlin
 ./gradlew publishToMavenLocal
 ```
 
-然後選擇您的應用程序需要的文物:
+然後只選擇應用程式所需的成品：
 
 ```kotlin
 repositories {
@@ -41,24 +41,24 @@ dependencies {
 }
 ```
 
-`core-jvm`不包含 Android 的依賴性.在 `client-android`中保存 Android 客戶端和密鑰存儲代碼,並且僅使用`offline-wallet-android`用於 Android 的離線錢包和 JNI 流.
+`core-jvm`不包含 Android 的依賴性.在 `client-android`中儲存 Android 客戶端和金鑰儲存程式碼,並且僅使用`offline-wallet-android`用於 Android 的離線錢包和 JNI 流.
 
-## Kotlin 和Java兼容性 {#kotlin-and-java-compatibility}
+## Kotlin 和Java相容性 {#kotlin-and-java-compatibility}
 
-公共 API 是 Kotlin 的首個,在 JVM 調用者需要時提供Java間接.相等變化反映在相應的 `java/`實現中.新的 Android 集成應該從上述 Kotlin 文物開始.
+公共 API 是 Kotlin 的首個,在 JVM 呼叫者需要時提供Java間接.相等變化反映在相應的 `java/`實現中.新的 Android 整合應該從上述 Kotlin 構件開始.
 
-所有的 Kotlin 模塊執行 JDK 8 API 編譯時與 `-Xjdk-release=8`, 儘管構建工具鏈本身使用 JDK 21. 不要使用 JDK 9+ APIs 在 SDK 這個代碼.
+所有的 Kotlin 模組執行 JDK 8 API 編譯時與 `-Xjdk-release=8`, 儘管構建工具鏈本身使用 JDK 21. 不要使用 JDK 9+ APIs 在 SDK 這個程式碼.
 
 ## 建立和測試 {#build-and-test}
 
-運行便攜式 JVM 測試:
+執行行動式 JVM 測試:
 
 ```bash
 cd kotlin
 ./gradlew :core-jvm:test --console=plain
 ```
 
-建造 Android 的文物:
+建造 Android 的構件:
 
 ```bash
 ./gradlew :client-android:assembleRelease \
@@ -70,11 +70,11 @@ cd kotlin
 在 Kotlin SDK 中包括:
 
 - Norito 編碼和解碼
-- 規範賬戶和資產地址處理
-- 交易構建,簽署和離線包裹
+- 規範帳戶和資產地址處理
+- 交易構建,簽署和離線封裝
 - Torii HTTP,WebSocket 和 SSE 的客戶
-- 多簽名,訂閱, SoraFS, Nexus 和連接型號
-- Android 鍵存儲和設備遠程測量集成
+- 多簽名,訂閱, SoraFS, Nexus 和連線型號
+- Android 鍵儲存和裝置遠端測量整合
 - Android 離線運輸 QR,附近運輸和 NFC
 
-查看[Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/main/kotlin/README.md)對模塊特定的 APIs 和精確的構建命令.
+檢視[Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md)對模組特定的 APIs 和精確的構建命令.

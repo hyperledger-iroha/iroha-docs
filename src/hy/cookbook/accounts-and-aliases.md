@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 23b3ddbdadb0d177b2b12de60e0947a94ecdb20fa6ee1b3a2c6b83e5c91ba2f3
+translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -20,7 +20,7 @@ translation_engine: nllb-200-ct2
 
 ## Քայլեր {#steps}
 
-### 1. Վերլուծել Taira-ի օրինական հաշվետվությունները: {#_1-inspect-canonical-accounts-on-taira}
+### 1. Ստուգեք Taira-ի կանոնական հաշիվները {#_1-inspect-canonical-accounts-on-taira}
 
 Հանրային հաշիվների ցուցակում միշտ վերադարձվում է քանոնիկ I105 IDs: Գլխավոր անանունը ընտրանքային է եւ հաշվետուվում է առանձին:
 
@@ -57,7 +57,7 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID" \
 
 ### 3. Կարդացեք հաշիվը եւ դրա ակտիվները {#_3-read-the-account-and-its-assets}
 
-Հաշիվը տրամադրելուց հետո անմիջապես հարցրեք այն եւ ցուցադրեք սահմանված ակտիվի էջ: URL - կոդավորել I105 արժեքը, նախքան այն օգտագործելը ուղու մեջ:
+Հաշիվը տրամադրելուց հետո անմիջապես կատարեք հարցում այն եւ ցուցադրեք սահմանված ակտիվի էջ: URL - կոդավորել I105 արժեքը, նախքան այն օգտագործելը ուղու մեջ:
 
 ```bash
 iroha --config ./taira.client.toml ledger account get \
@@ -150,7 +150,7 @@ fi
 ## Խնդիրների լուծում {#troubleshooting}
 
 - Փորձարկման կամ նախադրյալի սխալը սովորաբար նշանակում է, որ հասցեն կոդավորվել է տարբեր ցանցային պրոֆիլի համար: Սովորեցրեք `--profile taira` եւ մերժեք անհամապատասխանությունները:
-- `404` հաշիվը `202` ջրհեղեղից հետո կարող է լինել տարածման հետաձգում: Գնահատեք հաշիվը կամ ֆինանսավորված ակտիվը, նախքան գրառումը ուղարկելը:
+- `404` հաշիվը `202` faucet հետո կարող է լինել տարածման հետաձգում: Գնահատեք հաշիվը կամ ֆինանսավորված ակտիվը, նախքան գրառումը ուղարկելը:
 - `total: 0` վերադարձ լուծիչից նշանակում է, որ ոչ մի տեսանելի անանուն չի կապված: Դա հաշիվի որոնման ձախողում չէ:
 - `401` կամ `403` alias երթուղից ցույց է տալիս սահմանափակ տվյալների տարածք կամ բավարար ճշգրիտ լուծման թույլտվություն: Չօգտագործեք լայն նախապայման որոնումը որպես հետընթաց:
 - Ընթերցելի `name@domain.dataspace` արժեքը չի ընդունվում ամենուր, որտեղ պահանջվում է քանոնիկ I105 ID: Նախ լուծեք այն.
@@ -158,8 +158,8 @@ fi
 
 ## Աղբյուրը եւ դրա հետ կապված փաստաթղթերը {#source-and-related-docs}
 
-- [Կոնոնիկական հաշիվի հասցեների իրականացումը փակված հանձնաժողովում ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/account/address.rs):
-- [Հաշվեի եւ alias Torii փորձարկումները փակված հանձնաժողովում](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/tests/accounts_endpoints.rs):
+- [Կոնոնիկական հաշիվի հասցեների իրականացումը փակված commit-ում ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs):
+- [Հաշվեի եւ alias Torii փորձարկումները փակված commit-ում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs):
 - [Հաշվարկներ](/hy/blockchain/accounts.md)
 - [Տվյալների մոդելային կեղծանուններ](/hy/blockchain/data-model.md#aliases)
 - [Անվանման կոնվենցիաներ](/hy/reference/naming.md)

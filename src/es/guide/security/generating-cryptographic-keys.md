@@ -1,40 +1,26 @@
 ---
 translation_locale: es
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: ccbb076ef3e2ba45d074ad3394ac354d0c2233cdd4286c5fa7a77f0d1c413988
+translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: bing-translator-llm
 ---
 
-# La generación de claves criptográficas {#generating-cryptographic-keys}
+# Generando Claves Criptográficas {#generating-cryptographic-keys}
 
-Utilice `kagami keys` para generar el material de claves de clientes, pares y validadores de Iroha 3.
+Utilice `kagami keys` para generar material clave de cliente, par de red y validador para Iroha 3.
 
 ## Uso básico {#basic-usage}
 
-Desde una copia del código fuente de Iroha:
-
-```bash
-cargo run --bin kagami -- keys --algorithm ed25519
-```
-
-Por lo general, la salida JSON es más fácil de copiar en TOML o automatizar:
-
-```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --json
-```
-
-El comando imprime una clave pública y una clave privada expuesta. Trate la clave privada como material secreto; no incorpore al repositorio las claves de producción generadas.
-
-Para una exportación local segura o una transferencia a custodia en una plataforma Unix compatible, escriba un nuevo par de claves en un directorio vacío accesible únicamente por el propietario, en lugar de imprimir la clave privada:
+Desde la copia de trabajo del código fuente Iroha:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-El directorio padre debe existir. El directorio de destino debe ser nuevo o pertenecer ya al usuario actual, tener el modo `0700`, no contener enlaces simbólicos y estar vacío. `kagami` escribe `public.key` y `private.key` con el modo `0600` y no imprime la clave privada. Con `--pop`, también escribe `pop.hex`.
+El directorio principal ya debe existir. El destino debe ser nuevo o ya pertenecer al usuario actual, con modo `0700`, libre de enlaces simbólicos y vacío. `kagami` escribe `public.key` y `private.key` con modo `0600` y no imprime material clave. Con `--pop`, también escribe `pop.hex`.
 
-`--out-dir` falla de forma segura en las plataformas donde Kagami no puede aplicar estas reglas del sistema de archivos que limitan el acceso al propietario. El archivo de clave privada es una exportación sin cifrar, no un firmante de producción respaldado por hardware o no exportable. Impórtelo en el entorno de custodia aprobado y elimine la exportación conforme al procedimiento de despliegue.
+`--out-dir` falla al cerrarse en plataformas donde Kagami no puede hacer cumplir estas reglas del sistema de archivos solo para el propietario. El archivo de clave privada es una exportación sin cifrar, no un firmware o firmante criptográfico de producción no exportable. Imprórtelo al límite de custodia aprobado y elimine la exportación de acuerdo con el procedimiento de implementación.
 
 ## Algoritmos {#algorithms}
 
@@ -42,45 +28,46 @@ Los algoritmos comunes son:
 
 - `ed25519` para cuentas de clientes e identidades de transmisión.
 - `secp256k1` cuando una cuenta de cliente requiere una identidad secp256k1.
-- `bls_normal` para la identidad de consenso de cada nodo o par cuando la compilación incluya compatibilidad con BLS.
+- `bls_normal` para cada nodo o identidad de consenso de par en la red.
 
-Compruebe los algoritmos exactos que admite su compilación con:
+Comprueba los algoritmos exactos compatibles con tu compilación con:
 
 ```bash
 cargo run --bin kagami -- keys --help
 ```
 
-## Claves de desarrollo deterministas {#deterministic-development-keys}
+## Claves de Desarrollo Determinísticas {#deterministic-development-keys}
 
-Para fixtures reproducibles, proporcione una semilla de 32 bytes codificada como 64 caracteres hexadecimales. Se acepta un prefijo `0x` opcional:
+Para artefactos de prueba reproducibles, pase una semilla de 32 bytes codificada como 64 caracteres hexadecimales. Se acepta un prefijo opcional `0x`:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm ed25519 \
   --seed-hex 1111111111111111111111111111111111111111111111111111111111111111 \
-  --json
+  --out-dir ./fixture-client-key
 ```
 
-La semilla es material de clave privada. Utilice semillas deterministas únicamente para el desarrollo local y las pruebas. Omita `--seed-hex` para generar una clave de producción con la aleatoriedad del sistema operativo.
+La semilla es material de clave privada. Use semillas deterministas únicamente para desarrollo local y pruebas. Omita `--seed-hex` para generar una clave de producción a partir de la aleatoriedad del sistema operativo.
 
-## Claves de consenso BLS y pruebas de posesión {#bls-consensus-keys-and-proofs-of-possession}
+## BLS Claves de Consenso y Pruebas de Posesión {#bls-consensus-keys-and-proofs-of-possession}
 
-Las identidades de consenso de los nodos y pares de Iroha 3 usan claves BLS normales. Genere una clave BLS normal y una prueba de posesión (PoP) con:
+Iroha 3 las identidades de consenso de nodos y pares de red usan claves normales BLS. Genere una clave normal BLS y una prueba de posesión (PoP) con:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./validator-key
 ```
 
-`--pop` solo es válido con `bls_normal`. La salida JSON incluye `pop_hex`. El bloque génesis firmado requiere una PoP coincidente para cada validador con derecho a voto. En la configuración de pares, un mapa `trusted_peers_pop` no vacío selecciona el subconjunto de validadores; los pares de confianza omitidos de ese mapa no vacío son observadores. Si el mapa está vacío, todos los pares de confianza con claves BLS normales entran en el conjunto de candidatos inicial, y las PoPs de los validadores con voto siguen procediendo del bloque génesis firmado.
+`--pop` es válido únicamente con `bls_normal`; añade `pop.hex` al directorio de custodia. La génesis de blockchain firmada requiere un PoP coincidente para cada validador votante. En la configuración de pares de red, un mapa `trusted_peers_pop` no vacío selecciona el subconjunto de validadores; los pares de red de confianza omitidos de ese mapa no vacío son observadores. Si el mapa está vacío, todos los pares de red confiables BLS-normales entran en el conjunto de candidatos a bootstrap, con el votante PoPs aún suministrado por el génesis de blockchain firmado.
 
-## Formatos de salida {#output-formats}
+## Salida de custodia {#custody-output}
 
-Utilice la salida predeterminada para la inspección de terminales, `--json` para automatización y `--compact` cuando otro script necesite valores orientados a líneas simples:
+`kagami keys` requiere `--out-dir` y nunca escribe material de clave privada en la salida estándar. Lea `public.key`, `private.key` y opcionalmente `pop.hex` desde el directorio generado. Cada archivo contiene un valor canónico seguido de un salto de línea, lo que facilita la automatización basada en archivos de manera explícita:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm ed25519 --compact
+PUBLIC_KEY=$(tr -d '\n' < ./client-key/public.key)
 ```
 
-Para la ayuda Kagami de generación completa:
+Para obtener ayuda completa de Kagami:
 
 ```bash
 cargo run -p iroha_kagami -- advanced markdown-help > crates/iroha_kagami/CommandLineHelp.md

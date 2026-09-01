@@ -1,16 +1,16 @@
 ---
 translation_locale: hy
 translation_source: /reference/peer-config/index.md
-translation_source_hash: 5cc6ddf62a45f655d61a0ff3ebc7e20b939fe78c9d542087b717c2e17e19250d
+translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f29469aaf4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Iroha կազմավորումը {#configuring-iroha}
 
-Տեղական զուգընկերային կոֆիգուրացիան սահմանվում է TOML ֆայլերում: Սա տարբերվում է շղթայի վրա փոփոխված կոնֆիգորացիայից, որը փոխվում է [`SetParameter`](/hy/blockchain/instructions.md#setparameter) հրահանգների միջոցով: Արտադրման վարքագիծը պետք է ներկայացվի կազմավորման ֆայլում կամ շղթայի մեջ պարամետրով. Շրջակա միջավայրի փոփոխվողները չեն առանձնահատկությունների դարպասներ.
+Տեղական հանգույցային կոֆիգուրացիան սահմանվում է TOML ֆայլերում: Սա տարբերվում է շղթայի վրա փոփոխված կոնֆիգորացիայից, որը փոխվում է [`SetParameter`](/hy/blockchain/instructions.md#setparameter) հրահանգների միջոցով: Արտադրման վարքագիծը պետք է ներկայացվի կազմավորման ֆայլում կամ շղթայի մեջ պարամետրով. Շրջակա միջավայրի փոփոխվողները չեն առանձնահատկությունների դարպասներ.
 
-Օգտագործեք [`--config`](../irohad-cli#arg-config) CLI փաստարկը ՝ կոնֆիգուրացիոն ֆայլի ուղին նշելու համար:
+Օգտագործեք [`--config`](../iroha3d-cli#arg-config) CLI փաստարկը ՝ կոնֆիգուրացիոն ֆայլի ուղին նշելու համար:
 
 ## Թեմա {#template}
 
@@ -65,4 +65,4 @@ max_content_len = 2048
 
 ## Խնդիրների լուծում {#troubleshooting}
 
-Անցնել [`--trace-config`](../irohad-cli#arg-trace-config)CLI դրոշը ՝ տեսնելու համար, թե ինչպես է ընթերցվում եւ վերլուծվում կոնֆիգուրացիան:
+Անցնել [`--trace-config`](../iroha3d-cli#arg-trace-config)CLI դրոշը ՝ տեսնելու համար, թե ինչպես է ընթերցվում եւ վերլուծվում կոնֆիգուրացիան:

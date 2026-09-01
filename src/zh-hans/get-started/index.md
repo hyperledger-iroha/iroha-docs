@@ -14,7 +14,7 @@ Iroha 3 是首次发布的 Hyperledger Iroha 支持自主托管的网络和多�
 
 - 确定性执行和存储
 - Iroha 移动智能合同虚拟机 (IVM)
-- Norito 作为法典电线格式
+- Norito 作为规范序列化格式
 - Torii 用于客户端,运营商和应用程序面向 APIs
 - Sumeragi 与强制性的数据可用性和可靠的广播达成一致
 - 没有域名的可信账户,具有单独绑定的人类可读的号
@@ -24,9 +24,9 @@ Iroha 3 是首次发布的 Hyperledger Iroha 支持自主托管的网络和多�
 如果您从零开始,请按顺序关注以下页面:
 
 1. [安装 Iroha 3](/zh-hans/get-started/install-iroha.md)
-2. [发射 Iroha 3](/zh-hans/get-started/launch-iroha.md)
+2. [启动 Iroha 3](/zh-hans/get-started/launch-iroha.md)
 3. [通过 CLI](/zh-hans/get-started/operate-iroha-via-cli.md)运行 Iroha 3
-4. [连接到 SORA Nexus 数据库](/zh-hans/get-started/sora-nexus-dataspaces.md)
+4. [连接到 SORA Nexus 数据空间](/zh-hans/get-started/sora-nexus-dataspaces.md)
 5. [赞助商私人数据空间费用](/zh-hans/get-started/private-dataspace-fee-sponsor.md)
 
 ## SDKs {#sdks}
@@ -45,8 +45,8 @@ Iroha 3 是首次发布的 Hyperledger Iroha 支持自主托管的网络和多�
 
 - [与 Iroha 二进制](/zh-hans/reference/binaries.md) 合作
 - [创世记引用](/zh-hans/reference/genesis.md)
-- [Torii 终端点](/zh-hans/reference/torii-endpoints.md)
-- [连接到 SORA Nexus 数据库](/zh-hans/get-started/sora-nexus-dataspaces.md)
+- [Torii 端点](/zh-hans/reference/torii-endpoints.md)
+- [连接到 SORA Nexus 数据空间](/zh-hans/get-started/sora-nexus-dataspaces.md)
 - [赞助商私人数据空间费用](/zh-hans/get-started/private-dataspace-fee-sponsor.md)
 - [兼容性矩阵](/zh-hans/reference/compatibility-matrix.md)
 

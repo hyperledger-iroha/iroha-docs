@@ -1,12 +1,12 @@
 ---
 translation_locale: hy
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Հարցեր {#queries}
+# Հարցումներ {#queries}
 
 Iroha հարցումները կարդում են գլխավոր գրքի վիճակը ՝ առանց դրա մուտացիայի: Ներկայիս տվյալների մոդելը բացահայտում է երկու լայն հարցման ձեւեր.
 
@@ -17,7 +17,7 @@ Iroha հարցումները կարդում են գլխավոր գրքի վիճ�
 
 ## Գործընթացային ժամկետը եւ կարգավորումը {#runtime-and-configuration}
 
-|Հարց |Նպատակ |
+|Հարցում |Նպատակ |
 | --- | --- |
 |`FindAbiVersion` |Վերադարձնել կատարող ABI տարբերակը: |
 |`FindExecutorDataModel` |Վերադարձ կատարողի տվյալների մոդելի նկարագրությունը: |
@@ -25,7 +25,7 @@ Iroha հարցումները կարդում են գլխավոր գրքի վիճ�
 
 ## հաշիվներ եւ թույլտվություններ {#accounts-and-permissions}
 
-|Հարց |Նպատակ |
+|Հարցում |Նպատակ |
 | --- | --- |
 |`FindAccountById` |Գտեք մեկ հաշիվ քանոնիկ հաշիվով ID. |
 |`FindAccountByAlias` |Բացահայտեք հաշիվ, որը կոչվում է հաշիվ:|
@@ -40,9 +40,9 @@ Iroha հարցումները կարդում են գլխավոր գրքի վիճ�
 |`FindRolesByAccountId` |Հաշվի համար տրված դերակատարությունների ցուցակը: |
 |`FindPermissionsByAccountId` |Հաշիվի համար տրված թույլտվությունների ցանկը: |
 
-## Դոմեյններ եւ զուգընկերներ {#domains-and-peers}
+## Դոմեյններ եւ հանգույցներ {#domains-and-peers}
 
-|Հարց |Նպատակ |
+|Հարցում |Նպատակ |
 | --- | --- |
 |`FindDomainById` |Գտեք մեկ տիրույթ `DomainId`. |
 |`FindDomains` |Ցուցադրել գրանցված տիրույթները: |
@@ -50,16 +50,16 @@ Iroha հարցումները կարդում են գլխավոր գրքի վիճ�
 |`FindDomainEndorsements` |Դոմեյնների հավատարմագրերի ցանկը: |
 |`FindDomainEndorsementPolicy` |Վերադարձ տիրույթի հաստատման քաղաքականությունը: |
 |`FindDomainCommittee` |Վերադարձ տիրույթի հանձնաժողովը: |
-|`FindPeers` |Հաշվապահական գրքում հայտնի վստահելի զուգընկերների ցանկ։ |
+|`FindPeers` |Հաշվապահական գրքում հայտնի վստահելի հանգույցների ցանկ։ |
 
 ## Գործիքներ, NFTs եւ RWAs {#assets-nfts-and-rwas}
 
-|Հարց |Նպատակ |
+|Հարցում |Նպատակ |
 | --- | --- |
 |`FindAssets` |Նշեք ակտիվների հաշվեկշիռները: |
 |`FindAssetsDefinitions` |Նշեք ակտիվների սահմանումները: |
 |`FindAssetsByAccountId` |Հաշվեի կողմից պահվող ակտիվների ցուցակում: |
-|`FindAssetById` |Գտեք մեկ ակտիվի հավասարակշռությունը `AssetId`: |
+|`FindAssetById` |Գտեք մեկ ակտիվի մնացորդը `AssetId`: |
 |`FindAssetDefinitionById` |Գտեք ID կողմից ակտիվի մեկ սահմանումը: |
 |`FindNfts` |Ցուցակ NFTs. |
 |`FindNftsByAccountId` |NFTs ցուցակ, որը պատկանում է հաշվին: |
@@ -69,7 +69,7 @@ Iroha հարցումները կարդում են գլխավոր գրքի վիճ�
 
 Պահպանման հարցումները ստուգում են [նացիոն ակտիվների պահպանման ISIs](/hy/blockchain/escrow.md) կողմից ստեղծված արձանագրությունները, ներառյալ շուկայական պահպանումները, ընդհանուր ակտիվների փակիչները եւ անանուն պահպանակային արձանագրություններն։
 
-|Հարց |Նպատակ |
+|Հարցում |Նպատակ |
 | --- | --- |
 |`FindAssetEscrows` |Գրանցեք ակտիվների գրառումները: |
 |`FindAssetEscrowById` |Գտեք ID մինչեւ մեկ ակտիվի պահապան: |
@@ -88,7 +88,7 @@ Iroha հարցումները կարդում են գլխավոր գրքի վիճ�
 
 ## Nexus, Տվյալների մատչելիությունը եւ փաթեթները {#nexus-data-availability-and-packages}
 
-|Հարց |Նպատակ |
+|Հարցում |Նպատակ |
 | --- | --- |
 |`FindRepoAgreements` |Ցուցահանդես պահեստային պայմանագրեր, որոնք պահպանվում են շղթայով: |
 |`FindTwitterBindingByHash` |Հաշշի միջոցով լուծեք Twitter- ի կապը: |
@@ -99,20 +99,27 @@ Iroha հարցումները կարդում են գլխավոր գրքի վիճ�
 |`FindLaneRelayEnvelopeByRef` |Գտեք վավերացված երթուղային ռելե փաթեթ: |
 |`FindSorafsProviderOwner` |Բացահայտել SoraFS մատակարարի սեփականատիրոջը: |
 |`FindDataspaceNameOwnerById` |Բացահայտեք տվյալների տարածքի անվանումի սեփականատերը: |
-|`FindMusubiReleaseByRef` |Գտեք Musubi արձակուրդը հղումով: |
-|`FindMusubiPackageVersions` |Musubi փաթեթի վարկածների ցանկը: |
-|`FindMusubiPackageReleases` |Musubi փաթեթի ցուցակի հրապարակումները: |
-|`FindMusubiShortAliasByName` |լուծել Musubi կարճ alias. |
+|`FindMusubiExactPackageV1` |Կարդացեք մեկ ճշգրիտ փաթեթային արձանագրությունը եւ դրա ներկայիս վերանայմանները: |
+|`FindMusubiExactReleaseV1` |Կարդացեք մեկ ճշգրիտ արձանագրություն: |
+|`FindMusubiProviderBundleAttestationV1` |Կարդացեք մեկ մատակարարի արխիվային փաթեթավորման վկայականը: |
+|`FindMusubiResolverIndexV1` |Հրապարակեք վերջնական լուծման ինդեքսը: |
+|`FindMusubiVersionsV1` |էջը վերջնականացված տարբերակներ մեկ փաթեթ. |
+|`FindMusubiMaintainersV1` |Էջը ընդունել է պահապանների եւ սպասարկվող հրավիրումների: |
+|`FindMusubiArchiveLocationsV1` |Էջը վերջնականացրել է SoraFS վայրերը մեկ արխիվի համար: |
+|`FindMusubiArchiveRetentionV1` |Կայքի արխիվային պահեստավորման փաստաթղթերը: |
+|`FindMusubiAliasV1` |Կարդացեք գլոբալ alias- ի ներկայիս թիրախը եւ վերանայման մասին: |
+|`FindMusubiAliasHistoryV1` |Գլոբալ alias- ի անփոխարինելի վերանայման պատմությունը: |
+|`FindMusubiOrderedPrefixV1` |Էջի փաթեթները մեկ կարգավորված կառուցվածքային նախադրյալի ներքո: |
 
-## Գործարկիչներ, պայմանագրեր, գործարքներ եւ արգելափակումներ {#triggers-contracts-transactions-and-blocks}
+## Գործարկիչներ, պայմանագրեր, գործարքներ եւ բլոկներ {#triggers-contracts-transactions-and-blocks}
 
-|Հարց |Նպատակ |
+|Հարցում |Նպատակ |
 | --- | --- |
 |`FindActiveTriggerIds` |Բացրեք ակտիվ գործարկիչը IDs. |
 |`FindTriggers` |Թողարկիչները. |
 |`FindTriggerById` |Գտեք մեկ գործարկիչ մինչեւ ID. |
 |`FindContractManifestByCodeHash` |Գտեք խելացի պայմանագրերի մանիֆեսը կոդով: |
-|`FindTransactions` |Հանձնառու գործարքների ցուցակը: |
+|`FindTransactions` |Վավերացված գործարքների ցուցակը: |
 |`FindBlocks` |Ցուցակի բլոկներ: |
 |`FindBlockHeaders` |Ցուցադրեք բլոկի գլխավորությունները: |
 

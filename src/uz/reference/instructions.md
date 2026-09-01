@@ -1,38 +1,39 @@
 ---
 translation_locale: uz
 translation_source: /reference/instructions.md
-translation_source_hash: e300187da832a8f82258a36b7c4aaebf505adc09c771de5b0c7ab8fb0052d3db
+translation_source_hash: 9999816502505026fb35d2ddaf4033f54768be697ca5b03550e1cf5949ada36c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Iroha Maxsus ko'rsatmalar {#iroha-special-instructions}
+# Iroha Ko‘rsatma operatsiyalari {#iroha-special-instructions}
 
-Joriy ma'lumotlar modeli ushbu o'rnatilgan ta'lim oilalarini aniqlaydi:
+Joriy ma'lumotlar modeli ushbu ichki ko'rsatma oilalarini ochib beradi:
 
-|Koʻrsatmalar |Variantlar |
+|Ko'rsatma|Variantlar|
 | --- | --- |
 | [`RegisterBox`](/uz/blockchain/instructions.md#un-register) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Role`, `Trigger`, `RegisterPeerWithPop` |
 | [`UnregisterBox`](/uz/blockchain/instructions.md#un-register) | `Peer`, `Domain`, `Account`, `AssetDefinition`, `Nft`, `Role`, `Trigger` |
-| [`MintBox`](/uz/blockchain/instructions.md#mint-burn) |raqamli `Asset`, takrorlashlarni qo'zg'atish |
-| [`BurnBox`](/uz/blockchain/instructions.md#mint-burn) |raqamli `Asset`, takrorlashlarni qo'zg'atish |
-| [`TransferBox`](/uz/blockchain/instructions.md#transfer) |`Domain`, `AssetDefinition`, raqamli `Asset`, `Nft` |
-| [`SetKeyValueBox`](/uz/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` Metadatalar |
-| [`RemoveKeyValueBox`](/uz/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` Metadatalar |
-| [`GrantBox`](/uz/blockchain/instructions.md#grant-revoke) |`Permission` (`Grant<Permission, Account>`), `Role` (`Grant<RoleId, Account>`), `RolePermission` (`Grant<Permission, Role>`) |
-| [`RevokeBox`](/uz/blockchain/instructions.md#grant-revoke) |`Permission` (`Revoke<Permission, Account>`), `Role` (`Revoke<RoleId, Account>`), `RolePermission` (`Revoke<Permission, Role>`) |
-| [`SetParameter`](/uz/blockchain/instructions.md#setparameter) |zanjir parametrlarini yangilash |
-| [`ExecuteTrigger`](/uz/blockchain/instructions.md#executetrigger) |qoʻzgʻatish bajarilishi |
-| [`Upgrade`](/uz/blockchain/instructions.md#other-instructions) |ijrochi yangilanishi |
-| [`Log`](/uz/blockchain/instructions.md#other-instructions) |ijrochi roʻyxatga olish |
-| [`CustomInstruction`](/uz/blockchain/instructions.md#other-instructions) |Ijrochiga xos JSON foydali yuk |
-| [Asosiy aktivlar garovi](/uz/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
-| [Umumiy aktivlar qulflari](/uz/blockchain/escrow.md#generic-asset-locks) |`OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
-| [Anonim aktivlar garovi](/uz/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
+| [`MintBox`](/uz/blockchain/instructions.md#mint-burn) |raqamli `Asset`, takrorlashlarni ishga tushirish|
+| [`BurnBox`](/uz/blockchain/instructions.md#mint-burn) |raqamli `Asset`, takrorlashlarni ishga tushirish|
+| [`TransferBox`](/uz/blockchain/instructions.md#transfer) | `Domain`, `AssetDefinition`, sonli `Asset`, `Nft` |
+| [`SetKeyValueBox`](/uz/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` meta ma'lumot|
+| [`RemoveKeyValueBox`](/uz/blockchain/instructions.md#setkeyvalue-removekeyvalue) | `Domain`, `Account`, `AssetDefinition`, `Nft`, `Trigger` meta ma'lumot|
+| [`GrantBox`](/uz/blockchain/instructions.md#grant-revoke) | `Permission` (`Grant<Permission, Account>`), `Role` (`Grant<RoleId, Account>`), `RolePermission` (`Grant<Permission, Role>`) |
+| [`RevokeBox`](/uz/blockchain/instructions.md#grant-revoke) | `Permission` (`Revoke<Permission, Account>`), `Role` (`Revoke<RoleId, Account>`), `RolePermission` (`Revoke<Permission, Role>`) |
+| [`SetParameter`](/uz/blockchain/instructions.md#setparameter) |zanjir parametrini yangilash|
+| [`ExecuteTrigger`](/uz/blockchain/instructions.md#executetrigger) |ishga tushirishni amalga oshirish|
+| [`Upgrade`](/uz/blockchain/instructions.md#other-instructions) |ijrochi yangilanishi|
+| [`Log`](/uz/blockchain/instructions.md#other-instructions) |ijrochi jurnal yozuvi|
+| [`CustomInstruction`](/uz/blockchain/instructions.md#other-instructions) |ijrochi-ga xos JSON yuk|
+| [Mahalliy aktiv depoziti](/uz/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
+| [Umumiy aktiv qulflari](/uz/blockchain/escrow.md#generic-asset-locks) | `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
+| [Anonim aktiv depoziti](/uz/blockchain/escrow.md#anonymous-escrow) |`OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute`|
+| [Atomik shaxsiy moliyaviy tranzaksiya hisob-kitobi](/uz/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
-Qo'shimcha Iroha 3 modullari ko'rsatmalar reyestri orqali domenga mos ko'rsatma turlarini ro'yxatdan o'tkazishi mumkin. Joriy manba daraxtidan hosil qilingan sxema-darajali ro'yxat uchun [Ma'lumotlar modeli sxemasi](./data-model-schema.md) ni ko'ring.
+Qo'shimcha Iroha 3 modullar domenga xos ko'rsatma turlarini ko'rsatmalar reestri orqali ro'yxatdan o'tkazishi mumkin. Tugun-avtorizatsiya qiluvchi sxema va uni ushlaydigan buyruq uchun [Ma'lumotlar modeli sxemasi](./data-model-schema.md) ga qarang.
 
-::: details Diagramma: Oilalarning asosiy ta'limotlari
+::: details Diagramma: Asosiy Buyruq Oilalari
 
 ```mermaid
 classDiagram

@@ -1,28 +1,28 @@
 ---
 translation_locale: am
 translation_source: /cookbook/stream-events.md
-translation_source_hash: 1267a7e22bb6601674557f349e4fc5c6b883ce83b7dc62115ea2b8c3a0c39261
+translation_source_hash: 96f0a26000530fee15d121f815f9f5717a535dc3836cff9a2a447b1e5b70c41c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# ክስተቶች ዥረት {#stream-events}
+# ክስተቶችን በዥረት ይልቁ {#stream-events}
 
-## ውጤቱ {#outcome}
+## ውጤት {#outcome}
 
-በአገልጋይ የተላኩ ክስተቶች (SSE) ላይ የቀጥታ Taira ቧንቧ ክስተቶችን ይጠቀሙ ፣ በተገደበ ምትኬ ጋር እንደገና ያገናኙ እና የመተኪያ ዥረት ከተከፈተ በኋላ ዘላቂ ሁኔታውን ያድሱ ። የመጨረሻው ነጥብ ዳግም ማጫወቻ ካርሰር ስለሌለው ፣ ክስተቶችን እንደ ሙሉ ታሪክ ሳይሆን ማሳወቂያዎች አድርገው ይመለከቱ ።
+በአገልጋይ በተላኩ ክስተቶች (SSE) ላይ የቀጥታ Taira ሶፍትዌር የስራ ሂደት ክስተቶችን ይጠቀሙ፣ ከታሰረ ጀርባ ጋር እንደገና ይገናኙ እና ዘላቂ ሁኔታን ያድሱ ተተኪው ዥረት ከተከፈተ በኋላ. የ API የመጨረሻ ነጥብ ምንም የመልሶ ማጫወት ጠቋሚ ስለሌለው ክስተቶችን ከሙሉ ታሪክ ይልቅ እንደ ማሳወቂያ ይያዙት።
 
 ## ቅድመ ሁኔታዎች {#prerequisites}
 
-- `curl` ለሕዝብ ጭስ ሙከራ.
+- `curl` ለህዝብ የመጀመሪያ የስራ ሙከራ።
 - Node.js 24 ለ JavaScript ሸማች።
-- ምንም ፊርማ አያስፈልግም. `https://taira.sora.org/v1/events/sse` የህዝብ, ለማንበብ ብቻ ዥረት ነው; ይህ የምግብ አዘገጃጀት ምንም አያደርግም Minamoto ወይም Taira ይጽፋል.
+- ምንም ምስጠራ ፈራሚ አያስፈልግም። `https://taira.sora.org/v1/events/sse` ይፋዊ፣ ተነባቢ-ብቻ ዥረት ነው; ይህ የተግባር መመሪያ ምንም Minamoto ወይም Taira አይጽፍም.
 
 ## እርምጃዎች {#steps}
 
-### የ SSE ምላሽ አረጋግጥ {#_1-confirm-the-sse-response}
+### 1. የ SSE ምላሽን ያረጋግጡ {#_1-confirm-the-sse-response}
 
-Taira በአሁኑ ጊዜ ይህንን መንገድ የሚደራደርው የ `Accept` ራስጌ የተመረጠውን ክስተት ዥረት እና የ JSON ውድቀትን በሚያካትት ጊዜ ብቻ ነው ። curl ቡፈርን ያሰናክል። ትዕዛዙ ከ 15 ሰከንዶች በኋላ ይጠናቀቃል; በዝምታ ወቅት የልብ ምት አስተያየቶችን ብቻ መቀበል ዋጋ አለው.
+Taira በአሁኑ ጊዜ በዚህ መንገድ የሚደራደረው የ`Accept` ራስጌ ሁለቱንም ተመራጭ የክስተት ዥረት እና JSON ተተኪ አማራጩን ሲያካትት ብቻ ነው። curl ቋት አጠቃቀምን አሰናክል። ትዕዛዙ ከ 15 ሰከንድ በኋላ ያበቃል; በጸጥታ ጊዜ የልብ ምት አስተያየቶችን ብቻ መቀበል ልክ ነው።
 
 ```bash
 curl -sS -N --max-time 15 \
@@ -30,11 +30,11 @@ curl -sS -N --max-time 15 \
   https://taira.sora.org/v1/events/sse
 ```
 
-አትላክ `Last-Event-ID`. Torii እሱ ነው SSE Endpoint የቀጥታ አድናቂ ውጪ ዥረት እንጂ የመልሶ ማጫዎቻ መዝገብ አይደለም፣ እና የመልሶ የማጫዎቻ ጥያቄዎችን ውድቅ ያደርጋል።
+`Last-Event-ID` አይላኩ። Torii SSE API የመጨረሻ ነጥብ የቀጥታ ደጋፊ ዥረት እንጂ የድጋሚ አጫውት ምዝግብ ማስታወሻ አይደለም፣ እና የድጋሚ አጫውት ጥያቄዎችን ውድቅ ያደርጋል።
 
-### 2. የተጣራ JavaScript ሸማች አክል። {#_2-add-a-filtered-javascript-consumer}
+### 2. የተጣራ JavaScript ሸማች ያክሉ {#_2-add-a-filtered-javascript-consumer}
 
-የሚከተሉትን እንደ `stream-taira.mjs`. ጥያቄው መላክ እንዲችል በቀጥታ Fetch ይጠቀማል Taira የተደባለቀ መሆን አለበት `Accept` ራስጌ. የአሁኑ `FilterExpr` ተቀባይነት ያላቸውን የግብይት ክስተቶች ይመርጣል ፣ እና አጣራው የሚጠቀምበት SSE ያለ ዳግም ማጫወቻ ካርሰር ያሉ ክፈፎች።
+የሚከተለውን እንደ `stream-taira.mjs` ያስቀምጡ። ጥያቄው የ Taira የሚፈለገውን ድብልቅ `Accept` ራስጌ መላክ እንዲችል በቀጥታ አምጣን ይጠቀማል። የአሁኑ `FilterExpr` የጸደቁ የግብይት ክስተቶችን ይመርጣል፣ እና ተንታኙ ያለ ድጋሚ አጫውት ጠቋሚ SSE ፍሬሞችን ይጠቀማል።
 
 ```js
 const baseUrl = 'https://taira.sora.org'
@@ -154,21 +154,21 @@ async function follow() {
 await follow()
 ```
 
-በ Taira ላይ ቢያንስ አንድ ግብይት `Approved` እስኪደርስ ድረስ ይሮጥ:
+በ Taira ላይ ቢያንስ አንድ ግብይት `Approved` እስኪደርስ ድረስ ያሂዱት።
 
 ```bash
 node ./stream-taira.mjs
 ```
 
-SSE የልብ ምት አስተያየቶች አሰልቺ ግንኙነቶችን በሕይወት ይይዛሉ ነገር ግን መቁጠሪያ ትዕዛዝ አያቋቁሙም ። ትዕዛዝ ወይም የተሟላነት አስፈላጊ በሚሆንበት ጊዜ የብሎክ ቁመት ፣ የትራንስክሽን ሃሽስ እና የመቁጠሪያ ጥያቄዎችን ይጠቀሙ ።
+SSE የልብ ምት አስተያየቶች ስራ ፈት ግንኙነቶችን በህይወት ያቆዩታል ነገር ግን የብሎክቼይን መዝገብ ማዘዣን አያቋቁሙም። ትዕዛዝ ወይም ሙሉነት አስፈላጊ በሚሆንበት ጊዜ የብሎክ ቁመቶችን፣ የግብይት ምስጠራ ሃሽዎችን እና የብሎክቼይን መዝገብ መጠይቆችን ይጠቀሙ።
 
-የቅርብ ጊዜው 25 አሰሳ ፈላጊ ጥያቄ የህዝብ ምርመራ ብቻ ነው ። አንድ የምርት ሸማች `reconcile()` ን ለዘላቂነት ያለው የመተግበሪያ ሀብቱ መጠይቆች እና ለመቆጣጠሪያ ቦታው በቂ የሆነ የማገገም ገደብ ጋር መተካት ወይም ማራዘም አለበት ። የተወሰነ ቅጽበታዊ ገጽ እይታ ብቻ ምንም ክስተቶች እንዳልተመለሱ ሊያረጋግጥ አይችልም ።
+የቅርብ ጊዜው-25 አሳሽ ጥያቄ የህዝብ ምርመራ ብቻ ነው። የምርት ሸማች `reconcile()`ን ለረጅም ጊዜ የሚቆይ የመተግበሪያ ሀብቶቹ እና ለፍተሻ ኬላው በቂ የሆነ የመልሶ ማግኛ መጠይቆችን መተካት ወይም ማራዘም አለበት። የታሰረው የጊዜ ነጥብ የውሂብ እይታ ብቻውን ምንም አይነት ክስተት እንዳላመለጠ ማረጋገጥ አይችልም።
 
-በተጣራው ኮሚቴ ላይ `ToriiClient.streamEvents()` ብቻ `Accept: text/event-stream` ይልካል; በቀጥታ Taira ያንን ጠባብ ራስጌ በ `406` ይጥላል። የ SDK እና የህዝብ መጨረሻ ነጥብ ተመሳሳይ የመገናኛ ዓይነቶችን እስኪደራደሩ ድረስ ከላይ ያለውን ጥሬ የ Fetch ቅጽ ይጠቀሙ.
+በተሰካው የምንጭ-ኮድ ክለሳ፣ `ToriiClient.streamEvents()` የሚልከው `Accept: text/event-stream` ብቻ ነው። ቀጥታ ስርጭት Taira ያንን ጠባብ ራስጌ በ`406` ውድቅ ያደርጋል። የ SDK እና ይፋዊ API የመጨረሻ ነጥብ ተመሳሳይ የሚዲያ አይነቶችን እስኪደራደሩ ድረስ ከላይ ያለውን ጥሬ አምጣ ቅጽ ይጠቀሙ።
 
-## ያረጋግጡ {#verify}
+## አረጋግጥ {#verify}
 
-በአንድ ተርሚናል ላይ JavaScript ሸማች ይሂዱ. በሌላ ውስጥ የህዝብ ግብይት ቅጽበታዊ ገጽ እይታን ያንብቡ:
+በአንድ ተርሚናል ውስጥ JavaScript ሸማቾችን ያሂዱ። በሌላ ውስጥ፣ የህዝብ ግብይት ነጥብ-በ-ጊዜ ውሂብ እይታን ያንብቡ -
 
 ```bash
 curl -fsS \
@@ -177,22 +177,22 @@ curl -fsS \
   jq .
 ```
 
-ለእያንዳንዱ የግብይት ክስተት እርስዎ ያስባሉ, ቅጽበታዊ ገጽ እይታ ውስጥ ያለውን ሃሽ ያግኙ ወይም በቀጥታ መጠየቅ. እና ተጠቃሚውን ዳግም ማስጀመር: አንድ ክስተት ID ሳያቀርብ እንደገና መገናኘት አለበት እንዲሁም የመተኪያ ዥረት ከተከፈተ በኋላ አዲስ የምርመራ ጽሑፍ ማተም አለበት.
+ለሚያስቡት ለእያንዳንዱ የግብይት ክስተት፣ ምስጠራ ሃሽ በጊዜ ውሂብ እይታ ውስጥ ያግኙት ወይም በቀጥታ ይጠይቁት። የታሰረው ገጽ የቆዩ ግብይቶችን መተው ይችላል። ከዚያ ያቁሙ እና ሸማቹን እንደገና ያስጀምሩት የክስተት መታወቂያ ሳያቀርቡ እንደገና መገናኘት አለበት እና ተተኪው ዥረት ከተከፈተ በኋላ አዲስ ምርመራ ማተም አለበት።
 
-## ችግሮችን መፍታት {#troubleshooting}
+## መላ ፍለጋ {#troubleshooting}
 
-- የልብ ምት አስተያየቶች ጋር ግንኙነት ግን ምንም ውሂብ ክስተቶች ጤናማ ነው; የተመረጠው ቧንቧ ሁኔታ በቀላሉ ዝም ሊሆን ይችላል.
-- `406 Not Acceptable` በቀጥታ Taira አብዛኛውን ጊዜ የሚያመለክተው ማስታወቂያ የተሰጠው ጥያቄ ብቻ ነው `text/event-stream`. ላክ `text/event-stream, application/json` ከላይ እንደሚታየው በትክክል።
-- አንድ `stream_error` ክስተት አገልጋዩ መዘግየትን ወይም ሌላ ተርሚናል ዥረት ሁኔታ እንዳስተዋለ ይጠቁማል. Torii ያንን ክስተት አንድ ጊዜ ይልካል እና ዥረቱን ያዘጋል; ከመገናኘቱ በፊት ማስታረቅ.
-- አንድ ወኪል SSE አይደለም እንኳ ጊዜ buffer ይችላሉ Torii. ምላሽ buffering እና በወኪሉ ውስጥ መጭመቂያ ማሰናከል, እና የምርመራ ውስጥ `curl -N` ጠብቁ.
-- ቀጣዩ ክስተት የቀደመውን ይከተላል ብሎ በማሰብ በፍፁም የማያገናኝ ክፍተት መሙላት የለበትም ። የመጨረሻው ነጥብ የመልሶ ማጫወት መርማሪ የለውም ፣ በምትኩ የአሁኑን መቁጠሪያ ሁኔታ መጠየቅ።
+- ከልብ ምት አስተያየቶች ጋር ግንኙነት ግን ምንም የውሂብ ክስተቶች ጤናማ አይደሉም; የተመረጠው የሶፍትዌር ማቀነባበሪያ የስራ ፍሰት ሁኔታ በቀላሉ ጸጥ ያለ ሊሆን ይችላል።
+- `406 Not Acceptable` በቀጥታ ስርጭት Taira ብዙውን ጊዜ የሚታወጀው ጥያቄ `text/event-stream` ብቻ ማለት ነው። ከላይ እንደሚታየው `text/event-stream, application/json` በትክክል ይላኩ።
+- የ`stream_error` ክስተት አገልጋዩ መዘግየት ወይም ሌላ የተርሚናል ዥረት ሁኔታን ማግኘቱን ያሳያል። Torii ያንን ክስተት አንድ ጊዜ ይልካል እና ዥረቱን ይዘጋዋል; እንደገና ከመገናኘትዎ በፊት ማስታረቅ.
+- Torii ባያደርግም ፕሮክሲ SSE ን ማቋረጥ ይችላል። በተኪው ውስጥ የምላሽ ማቋት እና መጭመቅን ያሰናክሉ እና `curl -N` በምርመራ ውስጥ ያስቀምጡ።
+- የሚቀጥለው ክስተት የቀደመውን ይከተላል ብለው በማሰብ የግንኙነት ማቋረጥ ክፍተትን በጭራሽ አይሙሉ። የ API የመጨረሻ ነጥብ ምንም መልሶ ማጫወት ጠቋሚ የለውም; በምትኩ የአሁኑን የብሎክቼይን መዝገብ ሁኔታ ይጠይቁ።
 
 ## ምንጭ እና ተዛማጅ ሰነዶች {#source-and-related-docs}
 
-- [JavaScript የዥረት የምግብ አዘገጃጀት መመሪያ በፒን የተቀመጠ ኮሚቴ ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/javascript/iroha_js/recipes/streaming.mjs)
-- [SSE ተጣብቆ በተቀመጠበት ኮምፕርት ላይ የተዋሃዱ ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/events/sse_smoke.rs)
-- [Torii FilterExpr በፒን የተሰቀለ ኮሚቴ ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/src/filter.rs) ላይ ፓነር።
-- [Torii የዝግጅት አቅጣጫ በፒን commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/src/routing.rs) ላይ።
+- [JavaScript በተሰካው የምንጭ-ኮድ ክለሳ ላይ የዥረት አሰራር](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs)
+- [SSE በተሰካው የምንጭ-ኮድ ክለሳ ላይ የውህደት ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs)
+- [Torii FilterExpr ተንታኝ በተሰካው የምንጭ-ኮድ ክለሳ ላይ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs)
+- [Torii በተሰካው የምንጭ-ኮድ ክለሳ ላይ የክስተት ማዘዋወር](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
 - [ክስተቶች](/am/blockchain/events.md)
-- [Torii መጨረሻ ነጥቦች](/am/reference/torii-endpoints.md)
-- [የጥያቄ መለያ ሁኔታ ](./query-ledger-state.md)
+- [Torii API የመጨረሻ ነጥቦች](/am/reference/torii-endpoints.md)
+- [መጠይቅ blockchain መዝገብ ሁኔታ](./query-ledger-state.md)

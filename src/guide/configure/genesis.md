@@ -16,7 +16,7 @@ Kagami-generated networks write their own manifest and signed transaction into
 the output directory:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 The generated `README.md` in that directory records the exact files and launch
@@ -43,10 +43,14 @@ If you edit a manifest manually, validate and sign it before starting peers:
 ```bash
 cargo run --bin kagami -- genesis validate ./genesis.json
 cargo run --bin kagami -- genesis sign ./genesis.json \
-  --private-key "$GENESIS_PRIVATE_KEY_HEX" \
-  --algorithm ed25519 \
+  --private-key-file "$GENESIS_PRIVATE_KEY_FILE" \
   --out-file ./genesis.signed.nrt
 ```
+
+`GENESIS_PRIVATE_KEY_FILE` must be an owner-held mode-`0600`, single-link
+regular file containing one canonical private-key multihash and a final
+newline. Kagami rejects symbolic links and never accepts a raw genesis private
+key on the command line.
 
 For NPoS or Nexus profiles, include the topology and BLS Proofs-of-Possession
 required by the generated profile. Kagami `localnet`, `wizard`, and profile

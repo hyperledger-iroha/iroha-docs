@@ -1,89 +1,89 @@
 ---
 translation_locale: am
 translation_source: /blockchain/rwas.md
-translation_source_hash: cbdc6d766fb90bea7e68dc67f2c705bb1638340feeb2fca9f2dd43a727ac03e7
+translation_source_hash: 8d64a9a17c93f60306c279e8656e6edde8ce5dd024e742218bfb9572b7438bb0
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# በእውነተኛ ዓለም ውስጥ ያሉ ሀብቶች {#real-world-assets}
+# የገሃዱ ዓለም ንብረቶች {#real-world-assets}
 
-በእውነተኛ ዓለም ሀብቶች (RWAs) ባለቤትነት ወይም ቁጥጥር በሰንሰለት ላይ የሚከታተሉ ከሰንሰለት ውጭ ያሉ ንብረቶች ሞዴል ። በ Iroha ውስጥ ፣ RWA የተፈጠረ መታወቂያ ፣ የባለቤት መለያ ፣ ብዛት ፣ የንግድ ሜታዳታ ፣ መነሻ እና አማራጭ የሕይወት ዑደት ቁጥሮች ያሉት የተመዘገበ የመቁጠሪያ ክፍል ነው ።
+የገሃዱ ዓለም ንብረቶች (RWAs) ባለቤትነታቸው ወይም ቁጥጥራቸው በሰንሰለት ላይ ክትትል የሚደረግባቸው ከሰንሰለት ውጪ ያሉ ንብረቶችን ሞዴል። በ Iroha፣ RWA የተፈጠረ መለያ፣ የባለቤት መለያ፣ ብዛት፣ የንግድ ሜታዳታ፣ አመጣጥ እና አማራጭ የህይወት ዑደት መቆጣጠሪያዎች ያለው የተመዘገበ የብሎክቼይን መዝገብ ዕጣ ነው።
 
-RWAs ከቁጥር ንብረቶች ቀሪዎች ይለያያሉ:
+RWAs ከቁጥር የንብረት ቀሪ ሒሳቦች የተለዩ ናቸው -
 
-- የቁጥር ሀብት በሂሳብ የተያዘ ተለዋዋጭ ሚዛን ነው
-- አንድ NFT ከአንድ ባለቤት ጋር በአንድ ሰንሰለት ላይ ልዩ መዝገብ ነው
-- አንድ RWA የንግድ ሜታዳታ, ብዛት, ይዞታዎች, ማቀዝቀዣዎች, የክፍያ ሁኔታ, መነሻ, እና ተቆጣጣሪ ፖሊሲ ሊይዙ የሚችሉ እቃዎች ናቸው.
+- የቁጥር ንብረት በሂሳብ የተያዘ የፈንገስ ቀሪ ሂሳብ ነው
+- NFT አንድ ባለቤት ያለው ልዩ በሰንሰለት ላይ ያለ መዝገብ ነው
+- አንድ RWA የንግድ ሜታዳታ፣ ብዛት፣ መያዣ፣ በረዶ፣ የመቤዠት ሁኔታ፣ አመጣጥ እና የመቆጣጠሪያ ፖሊሲን ሊሸከም የሚችል ብዙ ነው።
 
-RWAs ን መጠቀም መቁጠሪያው ከሰንሰለት ውጭ የሆነ የተወሰነ ጭማሪን ብቻ ሳይሆን የሚቀላቀል ሚዛንን ለመወከል ሲያስፈልግ።
+የብሎክቼይን መዝገብ ከፈንገስ ቀሪ ሒሳብ ብቻ ይልቅ የተወሰነ ከሰንሰለት ውጪ ያለውን ዕጣ መወከል ሲፈልግ RWAs ይጠቀሙ።
 
-## RWA ጭነት {#rwa-lot}
+## RWA ሎጥ {#rwa-lot}
 
-አንድ RWA ጭነት የሚከተሉትን ያካትታል:
+አንድ RWA ዕጣ የሚከተሉትን ያጠቃልላል
 
-- `id`: የተፈጠረው የካኖኒክ RWA መታወቂያ፣ `<hash>$<domain>` ተብሎ ይታያል።
-- `owned_by`: በወቅቱ የፓርቲው ባለቤት የሆነው ሂሳብ
-- `quantity`: በፓርቲው የተወከለው ያልተቋረጠ ብዛት
-- `spec`: የቁጥር ዝርዝር መግለጫ፣ ለምሳሌ አሥርኛ ደረጃ
-- `primary_reference`: ከሰንሰለት ውጭ ዋነኛው ደረሰኝ፣ የምስክር ወረቀት፣ የክፍያ ማስረጃ ወይም የመመዝገቢያ ማጣቀሻ
-- `status`: አማራጭ የንግድ ሁኔታ ጽሑፍ
-- `metadata`: ለንግድ አውድ እና መረጃ ጠቋሚነት ጥቅም ላይ የዋሉ ትናንሽ JSON መስኮች
-- `parents`: ይህንን ቡድን ለማምረት ጥቅም ላይ የዋሉ የመነሻ ጭነቶች
-- `controls`: ተቆጣጣሪ ሂሳቦች፣ የተቆጣጣሪ ሚናዎች እና የተፈቀዱ የቁጥጥር ሥራዎች
-- `is_frozen` እና `held_quantity`: የህይወት ዑደት ሁኔታ በሂደቱ ጊዜ ተፈጻሚነት ያለው
+- `id` የመነጨው ነጠላ ፕሮቶኮል-መደበኛ RWA መለያ፣ እንደ `<hash>$<domain>` ይታያል።
+- `owned_by` በአሁኑ ጊዜ የዕጣው ባለቤት የሆነው መለያ
+- `quantity` በዕጣ የተወከለው እጅግ በጣም ጥሩ መጠን
+- `spec` እንደ አስርዮሽ መለኪያ ያሉ የብዛታ ዝርዝር
+- `primary_reference` ዋናው ከሰንሰለት ውጪ ፕሮቶኮል የውጤት መዝገብ፣ የምስክር ወረቀት፣ ደረሰኝ ወይም የመመዝገቢያ ማጣቀሻ
+- `status` አማራጭ የንግድ ሁኔታ ጽሑፍ
+- `metadata` የታመቀ JSON ሜዳዎች ለንግድ አውድ እና መረጃ ጠቋሚ ጥቅም ላይ ይውላሉ
+- `parents` ይህንን ዕጣ ለማግኘት ጥቅም ላይ የዋሉ ምንጭ ዕጣዎች
+- `controls` የመቆጣጠሪያ መለያዎች፣ የመቆጣጠሪያ ሚናዎች እና የነቁ የመቆጣጠሪያ ስራዎች
+- `is_frozen` እና `held_quantity` በሶፍትዌር ማስፈጸሚያ አካባቢ የሚተገበር የህይወት ዑደት ሁኔታ
 
-በሰንሰለት ላይ ያለውን ጠቃሚ ጭነት ውስብስብ ያድርጉ። ትላልቅ የሕግ ሰነዶችን ፣ የምርመራ ሪፖርቶችን እና የኦዲት ጥቅሎችን ከ WSV ውጭ ያስቀምጡ ፣ ከዚያ ዲጀስት ፣ URI ፣ SoraFS ዱካ ወይም ግልፅ ማጣቀሻን ወደ RWA ሜታዳታ ውስጥ ያስገቡ ።
+በሰንሰለት ላይ ያለውን ጭነት የታመቀ ያድርጉት። ትላልቅ ህጋዊ ሰነዶችን፣ የፍተሻ ሪፖርቶችን እና የኦዲት ቅርቅቦችን ከ WSV ውጭ ያከማቹ፣ ከዚያ የምስጠራ ዳይጀስት እሴት፣ URI፣ SoraFS መንገድ ወይም ቴክኒካል አንጸባራቂ ማጣቀሻ በ RWA ሜታዳታ ውስጥ ያስቀምጡ።
 
-## መታወቂያዎች {#identifiers}
+## መለያዎች {#identifiers}
 
-`RegisterRwa` ለተጠቃሚው የተመረጠውን `id` አይቀበልም ፣ እና የ `owner` መስክ አይቀበልም። የግብይት ባለሥልጣን የመጀመሪያውን `owned_by` ሂሳብ ይሆናል ፣ እናም የአሂደቱ ጊዜ በዒላማው ጎራ ውስጥ `RwaId` ያመነጫል።
+`RegisterRwa` በደንበኛ የተመረጠውን `id` አይቀበልም እና `owner` መስክን አይቀበልም።. የግብይት ፈቃድ ርእሰ መምህሩ የመጀመሪያ `owned_by` መለያ ይሆናል፣ እና የሶፍትዌር ማስፈጸሚያ አካባቢ በዒላማው ጎራ ውስጥ `RwaId` ያመነጫል።.
 
-የ RWA ID ጽሑፍ ቅርጽ የሚከተለው ነው-
+የ RWA መታወቂያ ጽሑፋዊ ቅጽ -
 
 ```text
 <generated-hash>$<domain>
 ```
 
-ለምሳሌ፡-
+ለምሳሌ:
 
 ```text
 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef$commodities.universal
 ```
 
-ማመልከቻዎች የንግድ መታወቂያዎቻቸውን በ `primary_reference` ወይም `metadata`, ከዚያም የተፈጠሩትን ያግኙ `RwaId` ከ `RwaEvent::Created`, `FindRwas`, `/v1/rwas`, ወይም የግብይት ግዴታዎች ከተፈጸሙ በኋላ የተቀመጠው የአሰሳ መንገድ።
+አፕሊኬሽኖች የንግድ መለያቸውን በ`primary_reference` ወይም `metadata` ውስጥ ማከማቸት አለባቸው፣ ከዚያም የተፈጠረውን `RwaId` ከ`RwaEvent::Created`፣ `FindRwas`፣ `/v1/rwas` ወይም ግብይቱ ከተጠናቀቀ በኋላ የተቀመጠውን የአሳሽ መንገድ ያግኙ።
 
 ## የሕይወት ዑደት {#lifecycle}
 
-የተለመዱ RWA የስራ ፍሰቶች የሚከተሉትን ያካትታሉ:
+የተለመዱ RWA የስራ ፍሰቶች የሚከተሉትን ያካትታሉ
 
-|እንቅስቃሴ |የተተገበረ ባህሪ |
+|ቀዶ ጥገና|የተተገበረ ባህሪ|
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
-|`RegisterRwa` |በአንድ ጎራ ውስጥ የተፈጠረ- ID ጭነት ይፍጠሩ; የግብይት ባለሥልጣን `owned_by` ይሆናል.|
-|`TransferRwa` | መጠን ወደ ሌላ መለያ ይዛወሩ. ሙሉ ዝውውር ሊለወጥ ይችላል `owned_by`. በከፊል ዝውውር የተፈጠረ የተለየ የልጆች ጭነት ይፈጥራል ID. |
-|`HoldRwa` |የመጠባበቂያ መጠን: የተዋቀረ መቆጣጠሪያ እና `hold_enabled` ያስፈልጋል.|
-|`ReleaseRwa` |የተያዘውን መጠን ማስወገድ። የተዋቀረ መቆጣጠሪያ እና `hold_enabled` ይጠይቃል። |
-|`FreezeRwa` |መደበኛ ባለቤት ስራዎችን ያግድ. የተዋቀረ መቆጣጠሪያ እና `freeze_enabled` ይጠይቃል. |
-|`UnfreezeRwa` |መደበኛ ባለቤት ተግባራትን እንደገና ማግበር። የተዋቀረ መቆጣጠሪያ እና `freeze_enabled` ይጠይቃል ። |
-|`RedeemRwa` |በቋሚነት መጠኑን ከሽያጭ ማስወገድ። ባለቤቱ ወይም አስተዳዳሪው `redeem_enabled` እውነት ከሆነ ማቅረብ ይችላል ። |
-|`MergeRwas` |ተመሳሳይ ጎራ ያላቸው የወላጅ እቃዎች እና ስፔክቶችን በአንድ የተፈጠረ የልጆች እቃ ውስጥ ያዋህዱ ።|
-|`ForceTransferRwa` |መጠን በመቆጣጠሪያ ፍሰት በኩል ይንቀሳቀሱ. የተዋቀረ መቆጣጠሪያ እና `force_transfer_enabled` ይጠይቃል. |
-|`SetRwaControls` |የፓርት ቁጥጥር ፖሊሲውን ይተካል። ባለቤት ወይም ተቆጣጣሪን ይጠይቃል ።|
-|`SetKeyValue<Rwa>` / `RemoveKeyValue<Rwa>` |የፓርት ሜታዳታ ማዘመን። ባለቤት ወይም ተቆጣጣሪ ይጠይቃል፤ የተጋለጡ ፓርኮች ተቆጣጣሪ ያስፈልጋቸዋል። |
+|`RegisterRwa`|በጎራ ውስጥ የመነጨ መታወቂያ ዕጣ ይፍጠሩ; የግብይት ፈቃድ ርእሰ መምህሩ `owned_by` ይሆናል።|
+|`TransferRwa`|ብዛቱን ወደ ሌላ መለያ ያንቀሳቅሱት። ሙሉ ዝውውር ሊለወጥ ይችላል `owned_by`። ከፊል ዝውውር የተፈጠረ መታወቂያ ያለው የተለየ የልጅ ዕጣ ይፈጥራል።|
+|`HoldRwa`|የመጠባበቂያ ብዛት። የተዋቀረ መቆጣጠሪያ እና `hold_enabled` ያስፈልገዋል።|
+|`ReleaseRwa`|የተያዘውን መጠን ያስወግዱ። የተዋቀረ መቆጣጠሪያ ያስፈልገዋል እና `hold_enabled`።|
+|`FreezeRwa`|ተራ የባለቤት ስራዎችን አግድ። የተዋቀረ መቆጣጠሪያ እና `freeze_enabled` ያስፈልገዋል።|
+|`UnfreezeRwa`|ተራ የባለቤት ስራዎችን እንደገና አንቃ። የተዋቀረ መቆጣጠሪያ እና `freeze_enabled` ያስፈልገዋል።|
+|`RedeemRwa`|መጠኑን ከስርጭት በቋሚነት ይቀንሱ። `redeem_enabled` እውነት በሚሆንበት ጊዜ ባለቤቱ ወይም ተቆጣጣሪው ሊያቀርቡት ይችላሉ።|
+|`MergeRwas`|ከወላጅ ዕጣዎች የሚመጡ መጠኖችን ከተመሳሳይ ጎራ እና ዝርዝር መግለጫ ጋር ወደ የመነጨ የልጅ ዕጣ ያዋህዱ።|
+|`ForceTransferRwa`|በመቆጣጠሪያ ፍሰት ውስጥ መጠኑን ያንቀሳቅሱ። የተዋቀረ መቆጣጠሪያ ያስፈልገዋል እና `force_transfer_enabled`።|
+|`SetRwaControls`|የሎጥ መቆጣጠሪያ ፖሊሲን ይተኩ። ባለቤቱን ወይም ተቆጣጣሪውን ይጠይቃል።|
+|`SetKeyValue<Rwa>` / `RemoveKeyValue<Rwa>`|የሎጥ ሜታዳታን ያዘምኑ። ባለቤቱን ወይም ተቆጣጣሪውን ይፈልጋል; የቀዘቀዙ ዕጣዎች መቆጣጠሪያ ያስፈልጋቸዋል።|
 
-አሁን ባለው ኮድ ውስጥ `UnregisterRwa` መመሪያ የለም ። የተገለጸው ብዛት ሲሰጥ ፣ ሲበላው ፣ ሲያስተካክል ወይም በሌላ መንገድ ከሽያጭ ሲወገድ ከሰንሰለት ውጭ ያለውን ጭነት በ `RedeemRwa` ያስወግዱ ።
+በአሁኑ ኮድ ውስጥ የ `UnregisterRwa` መመሪያ የለም። የተወከለው መጠን ሲደርስ፣ ጥቅም ላይ ሲውል፣ ሲጠናቀቅ ወይም በሌላ መንገድ ከዝውውር ሲወጣ፣ ከሰንሰለት ውጭ ያለውን ሎት በ `RedeemRwa` ከዝውውር ያስወግዱ።
 
-## ሜታዳታ እና ቁጥጥር {#metadata-and-controls}
+## ሜታዳታ እና መቆጣጠሪያዎች {#metadata-and-controls}
 
-አፕሊኬሽኖችን ለመለየት እና ምርመራ ለማድረግ የሚረዱ ትናንሽ እውነታዎችን ለማግኘት ሜታዳታ ይጠቀሙ:
+መተግበሪያዎች ዕጣውን ለይተው እንዲያውቁ ለሚረዱ የታመቀ እውነታዎች ሜታዳታ ይጠቀሙ -
 
-- የአክሲዮን መደብ፣ ኤሚቲዩት፣ የዋስትና ባለቤት ወይም የምዝገባ ማጣቀሻ
-- መጋዘን ፣ ዋልድ ፣ ISIN ፣ የክፍያ ወይም የምስክር ወረቀት መታወቂያዎች
-- የይገባኛል ጥያቄዎችና የሕግ ሰነዶች ይዘት ሃሽ
-- SoraFS ትላልቅ የምስክር ወረቀቶች መንገድ ወይም ግልፅ ማጣቀሻዎች
-- ከሰንሰለት ውጭ ባሉ አገልግሎቶች ጥቅም ላይ የሚውሉት የእድሜ ገደብ፣ የሕግ ባለሥልጣን ወይም የመጣጣም መለያዎች
+- የንብረት ክፍል፣ ሰጪ፣ ጠባቂ ወይም የመመዝገቢያ ማጣቀሻ
+- መጋዘን፣ ቮልት፣ ISIN፣ ደረሰኝ ወይም የምስክር ወረቀት መለያዎች
+- የምስክር ወረቀት እና ህጋዊ ሰነዶች የይዘት ምስጠራ ሃሽ
+- SoraFS ለትላልቅ ማስረጃ ጥቅሎች ዱካዎች ወይም ቴክኒካዊ አንጸባራቂ ማጣቀሻዎች
+- ከሰንሰለት ውጪ አገልግሎቶች ጥቅም ላይ የሚውሉ ብስለት፣ ስልጣን ወይም ተገዢነት መለያዎች
 
-የተተገበረው `RwaControlPolicy` የሚከተሉትን መስኮች ይ containsል-
+የተተገበረው `RwaControlPolicy` እነዚህ መስኮች አሉት -
 
 ```json
 {
@@ -96,45 +96,45 @@ RWAs ን መጠቀም መቁጠሪያው ከሰንሰለት ውጭ የሆነ የ
 }
 ```
 
-የተቆጣጣሪ መለያዎች እና ሚናዎች የሚመለከታቸው የቦሊያን ባንዲራዎች በሚያስችሏቸው ተግባራት ብቻ ሊፈጽሙ ይችላሉ ። የአሁኑ የቁጥጥር ጭነት የተቆጣጣሪ ማንነቶችን እና የአሠራር ባንዲራዎችን ይ containsል ። የማስተላለፍ ፍቃድ ዝርዝሮች እና የተሰቀሉ `transfers` ደንቦች ከዚህ ጥቅማጥቅሞች ውጭ ናቸው።
+የመቆጣጠሪያ መለያዎች እና ሚናዎች በተዛማጅ የቡሊያን ባንዲራዎች የነቁትን ስራዎች ብቻ ማከናወን ይችላሉ። የአሁኑ የቁጥጥር ጭነት የመቆጣጠሪያ ማንነቶችን እና የአሠራር ባንዲራዎችን ይዟል። የተፈቀዱ ዝርዝሮችን እና የጎጆ `transfers` ህጎችን ያስተላልፉ ከዚህ ጭነት ውጭ ናቸው።
 
-## ጥያቄዎች, ክስተቶች እና APIs {#queries-events-and-apis}
+## መጠይቆች፣ ክስተቶች፣ እና APIs {#queries-events-and-apis}
 
-አጠቃቀም [`FindRwas`](/am/reference/queries.md#assets-nfts-and-rwas) ተመዝግቧል RWA የቀጥታ ዝማኔዎች የሚያስፈልጋቸው መተግበሪያዎች [`Rwa` የመረጃ ክስተቶች](/am/blockchain/filters.md#data-event-filters) የተፈጠሩ፣ ባለቤትነት የተለወጡ፣ የተከፋፈሉ፣ የተዋሃዱ፣ የተመለሱ፣ የቀዘቀዙ፣ ያልተቀዘቁ፣ የተካሄደው፣ የተለቀቀው፣ የኃይል ማስተላለፍ፣ የመቆጣጠሪያ ለውጥ እና ሜታዳታ ክስተቶች።
+ጥቅም [`FindRwas`](/am/reference/queries.md#assets-nfts-and-rwas) የተመዘገበውን ለመዘርዘር RWA ብዙ። የቀጥታ ዝመናዎችን የሚያስፈልጋቸው መተግበሪያዎች መመዝገብ ይችላሉ [`Rwa` የውሂብ ክስተቶች](/am/blockchain/filters.md#data-event-filters) ለተፈጠረ ፣ ለተለወጠ ፣ ለተከፋፈለ ፣ ለተዋሃደ ፣ ለተዋጀ ፣ የቀዘቀዘ ፣ ያልቀዘቀዘ ፣ ተይዟል፣ ተለቀቀ፣ በግዳጅ የተላለፈ፣ ቁጥጥሮች-ተለውጠዋል እና ሜታዳታ ክስተቶች።
 
-Torii እንደ `/v1/rwas` እና `/v1/rwas/query` ያሉ ሰንሰለት-የመንግስት መንገዶችን እንዲሁም እንደ `/v1/explorer/rwas` እና `/v1/explorer/rwas/{rwa_id}` ያሉ የአሰሳ መንገዶችን ያጋልጣል ፣ ይህ የመንገድ ቤተሰብ ሲፈታ ። የተፈጠሩ ደንበኞች በአንድ ኖድ ከተጋለጠው ትክክለኛ የምላሽ ቅርፅ ይልቅ የቀጥታውን [`/openapi`](/am/reference/torii-endpoints.md#common-endpoints) ሰነድ ይመርጣሉ።
+Torii እንደ ሰንሰለት-ሁኔታ መንገዶችን ያጋልጣል `/v1/rwas` እና `/v1/rwas/query`, በተጨማሪም እንደ አሳሽ መንገዶች `/v1/explorer/rwas` እና `/v1/explorer/rwas/{rwa_id}` ያ መንገድ ቤተሰብ ሲነቃ። የመነጩ ደንበኞች ቀጥታ ስርጭትን መምረጥ አለባቸው [`/openapi.json`](/am/reference/torii-endpoints.md#common-endpoints) በ Node የተገለጠውን ትክክለኛ ምላሽ ለመስጠት ሰነድ.
 
-### Taira ላይ ይሞክሩት {#try-it-on-taira}
+### ይህንን የስራ ፍሰት በ Taira ላይ ያሂዱ {#try-it-on-taira}
 
-የህዝብ Taira በአሁኑ ጊዜ RWA ዕቃዎችን መመዝገብ አለመሆኑን ያረጋግጡ:
+ይፋዊ Taira በአሁኑ ጊዜ RWA ዕጣዎችን መመዝገቡን ያረጋግጡ -
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/rwas?limit=5' \
   | jq '{total, rwa_ids: [.items[].id]}'
 ```
 
-በቀጥታ Taira OpenAPI ሰነድ የተጋለጡትን የ RWA መስመሮች ይዘርዝሩ:
+በቀጥታ Taira OpenAPI ሰነድ የተጋለጡትን RWA መንገዶች ይዘርዝሩ -
 
 ```bash
 curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/rwas") or startswith("/v1/explorer/rwas"))'
 ```
 
-ክፍት `items` ውፅዓት የሚጠበቀው ገና ምንም የህዝብ ዕቃዎች ካልተመዘገቡ ነው ። ምዝገባ ፣ ዝውውር ፣ ማቆየት ፣ ማቀዝቀዣ እና መመለስ የተፈረሙ ግብይቶች ናቸው።
+እስካሁን ምንም የህዝብ ዕጣዎች ካልተመዘገቡ ባዶ `items` ውፅዓት ይጠበቃል። ምዝገባ፣ ማስተላለፍ፣ መያዝ፣ ማቆዝ እና መቤዠት የተፈረሙ ግብይቶች ናቸው።
 
-## ሞክር {#try-it}
+## ይሞክሩት {#try-it}
 
-ከዚህ በታች የቀረቡት ምሳሌዎች ከ Python SDK ገጽታዎች ይጠቀማሉ [የተጋራ ማዋቀር](/am/guide/tutorials/python.md#shared-setup). ሂሳቡን IDs ፣ የግል ቁልፎችን እና የተፈጠረውን ጭነት IDs ግብይት ከማቅረብዎ በፊት ከእራስዎ አውታረመረብ ጋር በመተካት።
+ከታች ያሉት ምሳሌዎች ከ[የተጋራ ማዋቀር](/am/guide/tutorials/python.md#shared-setup) የ Python SDK ንጣፎችን ይጠቀማሉ። ግብይት ከማስገባትዎ በፊት የመለያ መታወቂያዎችን፣ የግል ቁልፎችን እና የተፈጠሩ የሎጥ መታወቂያዎችን ከራስዎ አውታረ መረብ እሴቶች ጋር ይተኩ።
 
 ### RWA API መንገዶችን ያግኙ {#discover-rwa-api-routes}
 
-ይህ የንባብ-ብቻ ምሳሌ የሚሰራውን Torii አንቀሳቃሽ ይጠይቃል የትኞቹ መተግበሪያ-ተኮር RWA መስመሮች እንደተፈቀደላቸው:
+ይህ ተነባቢ-ብቻ ምሳሌ የትኞቹን መተግበሪያ የሚመለከቱ RWA መንገዶች እንደነቁ የሚሮጥ Torii ኖድ ይጠይቃል -
 
 ```python
 from iroha_python import create_torii_client
 
 client = create_torii_client("https://taira.sora.org")
-openapi = client.request_json("GET", "/openapi", expected_status=(200,))
+openapi = client.request_json("GET", "/openapi.json", expected_status=(200,))
 
 rwa_paths = sorted(
     path for path in openapi.get("paths", {}) if path.startswith("/v1/rwas")
@@ -144,11 +144,11 @@ for path in rwa_paths:
     print(path)
 ```
 
-ዝርዝሩ ባዶ ከሆነ ኖዱ አሁንም በሌሎች Torii APIs በኩል የ RWA መመሪያዎችን እና መጠይቆችን ሊደግፍ ይችላል ፣ ግን አማራጭ የሆነውን JSON የመንገድ ቤተሰብ አያጋልጥም።
+ዝርዝሩ ባዶ ከሆነ፣ ኖድ አሁንም RWA መመሪያዎችን እና ጥያቄዎችን በሌሎች Torii APIs ሊደግፍ ይችላል፣ ነገር ግን የአማራጭ JSON መንገድ ቤተሰብን እያጋለጠ አይደለም።
 
-### የመጋዘን ደረሰኝ መመዝገብ {#register-a-warehouse-receipt}
+### የመጋዘን ደረሰኝ ይመዝገቡ {#register-a-warehouse-receipt}
 
-አንድ የንግድ ድርጊት አንድ የተፈረመ ግብይት መሆን አለበት ጊዜ ረቂቅ ይጠቀሙ. የንግድ ደረሰኝ ቁጥር ውስጥ ይሄዳል `primary_reference`; መለያ ID ግብይቱ ተሳትፎ በኋላ ይፈጠራል.
+አንድ የንግድ እርምጃ አንድ የተፈረመ ግብይት መሆን ሲገባው ረቂቅ ይጠቀሙ። የቢዝነስ ደረሰኝ ቁጥር ወደ ውስጥ ይገባል `primary_reference`; የብሎክቼይን መዝገብ መታወቂያ የሚመነጨው ግብይቱ ከተጠናቀቀ በኋላ ነው።
 
 ```python
 from iroha_python import TransactionConfig, TransactionDraft
@@ -189,7 +189,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-ግብይቱ ከተቀበለ በኋላ ዝርዝር ይፈጠራል RWA IDs ሰንሰለት-የግዛት መስመሮች ቀኖናዊውን IDs ያጋልጣሉ; አንድን ID ወደ `primary_reference` ወይም ሜታዳታ መልሰው ማዛመድ በሚፈልጉበት ጊዜ ክስተቶችን ወይም አሰሳ ዝርዝሮችን ይጠቀሙ:
+ግብይቱ ከተጠናቀቀ በኋላ የመነጩ RWA መታወቂያዎችን ይዘርዝሩ። የሰንሰለት-ሁኔታ መስመሮች ነጠላ ፕሮቶኮል-መደበኛ መታወቂያዎችን ያጋልጣሉ; መታወቂያውን ከ`primary_reference` ወይም ሜታዳታ ጋር ማዛመድ ሲፈልጉ ክስተቶችን ወይም አሳሽ ዝርዝር መንገዶችን ይጠቀሙ -
 
 ```python
 page = client.list_rwas_typed(limit=20, offset=0)
@@ -198,7 +198,7 @@ for lot in page.items:
     print(lot.id)
 ```
 
-የአስፕሎረር-የተፈቀደላቸው አንጓዎች የበለጠ ሀብታም ትንበያዎችን ሊመልሱ ይችላሉ:
+በአሳሽ የነቁ አንጓዎች የበለጸጉ ትንበያዎችን ሊመልሱ ይችላሉ -
 
 ```python
 page = client.list_explorer_rwas_typed(domain="commodities.universal")
@@ -207,9 +207,9 @@ for lot in page.items:
     print(lot.id, lot.primary_reference, lot.owned_by, lot.quantity)
 ```
 
-### ጊዜያዊ አቋራጭነት {#transfer-with-a-temporary-hold}
+### በጊዜያዊ መያዣ ያስተላልፉ {#transfer-with-a-temporary-hold}
 
-የተፈጠረውን ይጠቀሙ RWA ID ይህ ምሳሌ `alice` ባለቤት ነው እንዲሁም እንደ ተቆጣጣሪ ሆኖ የተዋቀረ ነው `hold_enabled`.
+በሰንሰለቱ የተመለሰውን የመነጨውን RWA መታወቂያ ይጠቀሙ። ይህ የቀደመው ምሳሌ `alice` ባለቤቱ እንደሆነ ይገምታል እና እንዲሁም በ`hold_enabled` እንደ ተቆጣጣሪ ተዋቅሯል።
 
 ```python
 warehouse_lot_id = (
@@ -228,7 +228,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-ከሰንሰለት ውጭ ያለው ሂደት ከተሳካ በኋላ `ReleaseRwa` ያቅርቡ:
+ከሰንሰለት ውጪ ያለው ሂደት ከተሳካ በኋላ `ReleaseRwa` ያስገቡ -
 
 ```python
 draft = TransactionDraft(
@@ -240,9 +240,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### የቁጥጥር እና የኦዲት ሜታዳታ ይጨምሩ {#add-controls-and-audit-metadata}
+### መቆጣጠሪያዎችን እና ኦዲት ሜታዳታን ያክሉ {#add-controls-and-audit-metadata}
 
-መቆጣጠሪያዎች እና ሜታዳታ የተለዩ ናቸው. ለተቆጣጣሪ ፖሊሲዎች መቆጣጠሪያዎችን ይጠቀሙ, እና አፕሊኬሽኖች ወይም ኦዲተሮች ለማሳየት የሚያስፈልጋቸውን እውነታዎች ለሜታዳታ:
+መቆጣጠሪያዎች እና ሜታዳታ የተለዩ ናቸው። ለተቆጣጣሪ ፖሊሲ መቆጣጠሪያዎችን እና መተግበሪያዎች ወይም ኦዲተሮች ማሳየት ለሚያስፈልጋቸው እውነታዎች ሜታዳታ ይጠቀሙ -
 
 ```python
 draft = TransactionDraft(
@@ -271,9 +271,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### የክፍያ ወይም የጡረታ መጠን {#redeem-or-retire-quantity}
+### ብዛት ማስመለስ ወይም ማቋረጥ {#redeem-or-retire-quantity}
 
-`RedeemRwa` የተወከለው ከሰንሰለት ውጭ ንብረት ከተሰጠ ፣ ከተበላሸ ፣ ወደ ጡረታ ከተወሰደ ወይም በሌላ መንገድ ከሽያጭ ከተወገደ በኋላ ያቅርቡ። ይህ የቀረበውን ብዛት በቋሚነት ከመደርደሪያው ይቀነሳል ። መደርደሩ `redeem_enabled` ሊኖረው ይገባል ፊርማው ባለቤት ወይም ተቆጣጣሪ መሆን አለበት ።
+የተወከለው ከሰንሰለት ውጪ ያለው ንብረት ከደረሰ፣ ከተበላ፣ ከተቋረጠ ወይም በሌላ መንገድ ከስርጭት ከተወገደ በኋላ `RedeemRwa` ያስገቡ። ይህ የቀረበውን መጠን ከዕጣው በቋሚነት ይቀንሳል። ዕጣው `redeem_enabled` ሊኖረው ይገባል። ምስጠራ ፈራሚው ባለቤት ወይም ተቆጣጣሪ መሆን አለበት።
 
 ```python
 draft = TransactionDraft(
@@ -285,9 +285,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### ማክበር በሚያረጋግጥበት ጊዜ መቋረጥ {#freeze-during-compliance-review}
+### ተገዢነት ግምገማ ወቅት ያቀዘቅዙ {#freeze-during-compliance-review}
 
-`FreezeRwa` ከሰንሰለት ውጭ የሚደረግ ግምገማ መደበኛ ባለቤት ሥራዎችን ማገድ ሲያስፈልገው ማስገባት አለበት። ፊርማው ተቆጣጣሪ መሆን አለበት ። የጅምላው `freeze_enabled` ሊኖረው ይገባል.
+ከሰንሰለት ውጪ የሆነ ግምገማ ተራ የባለቤት ስራዎችን ማገድ ሲኖርበት `FreezeRwa` ያስገቡ። ምስጠራ ፈራሚው ተቆጣጣሪ መሆን አለበት። ዕጣው `freeze_enabled` ሊኖረው ይገባል።
 
 ```python
 draft = TransactionDraft(
@@ -308,7 +308,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-ግምገማው ካለቀ በኋላ `UnfreezeRwa` ያቅርቡ:
+ግምገማው ካለፈ በኋላ `UnfreezeRwa` ያስገቡ -
 
 ```python
 draft = TransactionDraft(
@@ -327,7 +327,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### ደረሰኝ ደረሰኝ {#invoice-receivable}
 
-የክፍያውን ቁጥር በ `primary_reference` እና ሜታዳታ በማከማቸት አንድን ደረሰኝ እንደ RWA ጭነት ይወክሉ። ከተመዘገቡ በኋላ ለማስተላለፍና ለመመለስ የተፈጠረውን ID ይጠቀሙ።
+የክፍያ መጠየቂያ ቁጥሩን በ`primary_reference` እና ሜታዳታ ውስጥ በማከማቸት ደረሰኝ እንደ RWA ዕጣ ይወክሉ። ከተመዘገቡ በኋላ ለማስተላለፍ እና ለመቤዠት የመነጨውን መታወቂያ ይጠቀሙ።
 
 ```python
 draft = TransactionDraft(
@@ -363,7 +363,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-ተቀባይነት ያለው ገንዘብ ሲከፈል ወይም ሲከፈል የተፈጠረውን የክፍያ ክፍል ID ይጠቀሙ:
+ደረሰኙ ሲደገፍ ወይም ሲከፈል፣ የመነጨውን የክፍያ መጠየቂያ ዕጣ መታወቂያ ይጠቀሙ -
 
 ```python
 invoice_lot_id = (
@@ -380,7 +380,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-ከሰንሰለት ውጭ ክፍያ በኋላ የተገለጸውን መጠን ማስመለስ:
+ከሰንሰለት ውጪ የፋይናንሺያል ግብይት እልባት በኋላ የተወከለውን መጠን ይውሰዱ -
 
 ```python
 draft = TransactionDraft(
@@ -392,9 +392,9 @@ envelope = draft.sign_with_keypair(bob_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### የካርቦን ብድር ጡረታ {#carbon-credit-retirement}
+### የካርቦን ክሬዲት ከጥቅም ማስወጣት {#carbon-credit-retirement}
 
-የሚጠየቁትን የካርቦን ክሬዲት ከሽያጭ ለማስወገድ `RedeemRwa` ያቅርቡ። ከሰንሰለት ውጭ ያለውን የምስክር ወረቀት ወይም የምዝገባ ማስረጃ በሜታዳታ ውስጥ ያስቀምጡ:
+የይገባኛል ጥያቄዎችን ከስርጭት ለማስወገድ `RedeemRwa` ያስገቡ። ከሰንሰለት ውጪ ያለውን የምስክር ወረቀት ወይም የመመዝገቢያ ማረጋገጫ በሜታዳታ ውስጥ ያከማቹ -
 
 ```python
 carbon_lot_id = (
@@ -416,9 +416,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### ሁለት እቃዎች ይዋሃዱ {#merge-two-lots}
+### ሁለት ዕጣዎችን አዋህድ {#merge-two-lots}
 
-ሁለት ከሰንሰለት ውጭ ያሉ አከባቢዎች ሲቀላቀሉ ሎቶች ይቀላቀሉ። ወላጆች በተመሳሳይ ጎራ ውስጥ መሆን አለባቸው እና ተመሳሳይ መጠን መጠንን ይጠቀማሉ ። የሩጫ ጊዜ የልጅ ሎቱን ID ያመነጫል ።
+ሁለት ከሰንሰለት ውጪ ያሉ ቦታዎች ሲዋሃዱ ዕጣዎችን ያዋህዱ። ወላጆች በአንድ ጎራ ውስጥ መሆን አለባቸው እና ተመሳሳይ መጠን ያለው መግለጫ መጠቀም አለባቸው. የሶፍትዌር ማስፈጸሚያ አካባቢ የልጁን ዕጣ መታወቂያ ያመነጫል።
 
 ```python
 warehouse_lot_id_2 = (
@@ -450,12 +450,12 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-የ Python ግብይት ሙሉ ምሳሌ ለማግኘት [Real-World Assets](/am/guide/tutorials/python.md#real-world-assets) የሚለውን ተመልከት።
+ለሙሉ Python ግብይት ምሳሌ፣ [የገሃዱ ዓለም ንብረቶች](/am/guide/tutorials/python.md#real-world-assets) ይመልከቱ።
 
 ## ተዛማጅ ሰነዶች {#related-docs}
 
 - [ንብረቶች](/am/blockchain/assets.md)
-- [ሜታ መረጃዎች](/am/blockchain/metadata.md)
-- [Iroha ልዩ መመሪያዎች](/am/blockchain/instructions.md)
-- [ጥያቄዎች](/am/reference/queries.md#assets-nfts-and-rwas)
-- [Torii መጨረሻ ነጥቦች](/am/reference/torii-endpoints.md#app-and-sora-route-families)
+- [ሜዳዳታ](/am/blockchain/metadata.md)
+- [Iroha የማስተማሪያ ስራዎች](/am/blockchain/instructions.md)
+- [መጠይቆች](/am/reference/queries.md#assets-nfts-and-rwas)
+- [Torii API የመጨረሻ ነጥቦች](/am/reference/torii-endpoints.md#app-and-sora-route-families)

@@ -2,7 +2,7 @@
   "schema_version": 1,
   "source": {
     "repository": "https://github.com/hyperledger-iroha/iroha.git",
-    "commit": "bc7114ed1c7f265a156d2100ff09e851cc95702c",
+    "commit": "0010c5a70039eac101a4846499ba9ceaf43eb65c",
     "refresh_state": "awaiting-signed-source-commit"
   },
   "artifacts": [
@@ -11,36 +11,36 @@
       "kind": "copy",
       "status": "pending-signed-source-commit",
       "source": "defaults/client.toml",
-      "source_sha256": "504e32542706c1cc72eef7c2cc422f301dd6e895d96424545f1bcbdd3aa50f28",
+      "source_sha256": "5609a7618d34e698cfa4145bff3c147419fb2298420a452784bafc66aa22f591",
       "target": "src/snippets/client.template.toml",
-      "sha256": "504e32542706c1cc72eef7c2cc422f301dd6e895d96424545f1bcbdd3aa50f28"
+      "sha256": "5609a7618d34e698cfa4145bff3c147419fb2298420a452784bafc66aa22f591"
     },
     {
       "id": "peer-config",
       "kind": "copy",
       "status": "pending-signed-source-commit",
       "source": "specs/references/peer.template.toml",
-      "source_sha256": "2191f806faf0d6d3e3c6cbf52ce91891ddf424ae491383b661d3c248b643f451",
+      "source_sha256": "26d7d4a4e4e7a8ce14492c83194be22bfa95cfef337367d6f43851709c786bf0",
       "target": "src/snippets/peer.template.toml",
-      "sha256": "2191f806faf0d6d3e3c6cbf52ce91891ddf424ae491383b661d3c248b643f451"
+      "sha256": "26d7d4a4e4e7a8ce14492c83194be22bfa95cfef337367d6f43851709c786bf0"
     },
     {
       "id": "genesis",
       "kind": "copy",
       "status": "pending-signed-source-commit",
       "source": "defaults/genesis.json",
-      "source_sha256": "c44e3c55deb7bb5f4e92233e0b9dea7450873849e20bca9533bd1f034180835a",
+      "source_sha256": "a07c53d2696eed16b2232c7feb08a1a0cf11dc4d4e00d67c828a02aff935c306",
       "target": "src/snippets/genesis.json",
-      "sha256": "c44e3c55deb7bb5f4e92233e0b9dea7450873849e20bca9533bd1f034180835a"
+      "sha256": "a07c53d2696eed16b2232c7feb08a1a0cf11dc4d4e00d67c828a02aff935c306"
     },
     {
       "id": "torii-openapi",
       "kind": "copy",
       "status": "pending-signed-source-commit",
       "source": "artifacts/openapi/torii.json",
-      "source_sha256": "508eff700c800619d48ea0a372937b82bf4a1f488c0deff5f6339ec78e3c97ad",
+      "source_sha256": "021018192ca60645af50ba7b4a54a7b2e67e65ff8d1c80b63b26866e3a4ecb4a",
       "target": "src/public/openapi/torii.json",
-      "sha256": "508eff700c800619d48ea0a372937b82bf4a1f488c0deff5f6339ec78e3c97ad"
+      "sha256": "021018192ca60645af50ba7b4a54a7b2e67e65ff8d1c80b63b26866e3a4ecb4a"
     },
     {
       "id": "data-model-schema",
@@ -59,9 +59,13 @@
         "advanced",
         "schema"
       ],
-      "inputs": ["crates/iroha_data_model", "crates/iroha_kagami", "crates/norito"],
+      "inputs": [
+        "crates/iroha_data_model",
+        "crates/iroha_kagami",
+        "crates/norito"
+      ],
       "target": "src/snippets/data-model-schema.md",
-      "sha256": "a152dab457853c3964a5b50a49818123820e9acb297a21b770353be0621ee97c"
+      "sha256": "80128e0519fd3dfe1ba03982613062a21f123b778a2db21b17bdd4fdf68a39fe"
     },
     {
       "id": "iroha-cli",
@@ -80,12 +84,23 @@
         "tools",
         "markdown-help"
       ],
-      "inputs": ["crates/iroha_cli"],
+      "inputs": [
+        "crates/iroha_cli"
+      ],
       "target": "src/snippets/iroha-cli.md",
-      "sha256": "8ca6de3d5eca8e53bcc90a9e15f552e3b34744d7a02589e970b4a3057fe3b473"
+      "sha256": "85d5e1281b8b582154d0a98aafcf973af07fed5399e696c5b276352f900cec6a"
     },
     {
       "id": "kagami-cli",
+      "kind": "copy",
+      "status": "pending-signed-source-commit",
+      "source": "crates/iroha_kagami/CommandLineHelp.md",
+      "source_sha256": "1096eee43c5bde03a7ba059532c3078f4076a6685476fb4bb0f9dbefcebdef74",
+      "target": "src/snippets/kagami-cli.md",
+      "sha256": "1096eee43c5bde03a7ba059532c3078f4076a6685476fb4bb0f9dbefcebdef74"
+    },
+    {
+      "id": "iroha3d-help",
       "kind": "command",
       "status": "pending-signed-source-commit",
       "command": [
@@ -94,25 +109,17 @@
         "--locked",
         "--quiet",
         "-p",
-        "iroha_kagami",
+        "irohad",
         "--bin",
-        "kagami",
+        "iroha3d",
         "--",
-        "advanced",
-        "markdown-help"
+        "--help"
       ],
-      "inputs": ["crates/iroha_kagami"],
-      "target": "src/snippets/kagami-cli.md",
-      "sha256": "2a7bcafba6483aa94d54f471e6170f3f9498122ec09b3c378ca8238f40ad4070"
-    },
-    {
-      "id": "irohad-help",
-      "kind": "command",
-      "status": "pending-signed-source-commit",
-      "command": ["cargo", "run", "--locked", "--quiet", "-p", "irohad", "--bin", "irohad", "--", "--help"],
-      "inputs": ["crates/irohad"],
-      "target": "src/snippets/irohad-help.md",
-      "sha256": "10e49e697a7abeebeb919bb9455512191815c57db94bf035ab2a245f73df4f64"
+      "inputs": [
+        "crates/irohad"
+      ],
+      "target": "src/snippets/iroha3d-help.md",
+      "sha256": "a23ace55275e181368911bab6260074df30932ed408fb413b0db35f8c36ee16e"
     }
   ]
 }

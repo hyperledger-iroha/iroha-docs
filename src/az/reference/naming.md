@@ -3,27 +3,27 @@ translation_locale: az
 translation_source: /reference/naming.md
 translation_source_hash: d757024fca471ec55f1fe4857e88e01a9a0a18e0d79e8cb4fdb3da0cb250f4be
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Konqreslərin adları {#naming-conventions}
+# Adlandırma Qaydaları {#naming-conventions}
 
-Hesabların, domenlərin və ya aktivlərin adlandırılması zamanı Iroha -də istifadə olunan aşağıdakı konvensiyaları nəzərə almaq lazımdır:
+Hesabları, domenləri və ya aktivləri adlandırarkən, Iroha -də istifadə olunan aşağıdakı qaydaları nəzərə almalısınız:
 
-1. Müəyyən konstruksiya növləri üçün istifadə olunan bir sıra ayrılan ayırıcılar mövcuddur:
+1. Xüsusi növ konstruksiyalar üçün istifadə olunan bir sıra ayrıcılar mövcuddur:
 
-   - `@` Hesab adı və həcmli hesab / ictimai açar formları üçün nəzərdə tutulmuşdur.
-   - `#` aktivlərin müəyyənləşdirilməsi əlifbaları və aktiv balansı əlifbası üçün nəzərdə tutulub
-   - `::` müqavilə aliasları üçün nəzərdə tutulub.
-   - `.` domen və məlumat məkanı ixtisası üçün nəzərdə tutulmuşdur.
-   - `$` Təkərlənmiş mətn formaları üçün nəzərdə tutulmuşdur
-   - `%` təsdiqləyici ölçülü mətn formaları üçün nəzərdə tutulub.
+   - `@` hesab ləqəbləri və məhdudlaşdırılmış hesab/ictimai açar formaları üçün ayrılıb
+   - `#` aktiv təyini ləqəbləri və aktiv balansı literaları üçün ayrılıb
+   - `::` müqavilə ləqəbləri üçün ayrılıb
+   - `.` domen və məlumat sahəsi təsdiqi üçün ayrılmışdır
+   - `$` tetik-şöbəli mətn formalari üçün ayrılmışdır
+   - `%` təsdiqçi-əsaslı mətn formaları üçün ayrılmışdır
 
-2. Bir adın ola biləcəyi maksimum hərflərin sayı (o cümlədən UTF-8 hərfləri) iki amil ilə məhdudlaşdırılır: `[0, u32::MAX]` və hazırda təyin olunan yığın yerləri.
+2. Bir adın ala biləcəyi maksimum simvol sayı (UTF-8 simvollar daxil olmaqla) iki amil ilə məhdudlaşdırılır: `[0, u32::MAX]` və hazırda ayrılmış stack sahəsi.
 
-## Taira üzərində sınayın. {#try-it-on-taira}
+## Bu iş axınını Taira üzərində işə sal {#try-it-on-taira}
 
-Bir ictimai aktivin aliasını onun kanonik aktiv tərifinə ID daxil etmək:
+İctimai aktiv təxəllüsünü onun tək protokol-standart aktiv tərif ID-sinə çevirin:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/assets/aliases/resolve \
@@ -32,11 +32,11 @@ curl -fsS https://taira.sora.org/v1/assets/aliases/resolve \
   | jq '{alias, asset_definition_id, asset_name, status: .alias_binding.status}'
 ```
 
-Bunu aktivlərin təyinat siyahısı ilə müqayisə edin:
+Bunu aktivlərin tərif siyahısı ilə müqayisə edin:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=20' \
   | jq -r '.items[] | select(.alias != null) | [.alias, .id, .name] | @tsv'
 ```
 
-`#` xarakteri bir aktiv aliasını domen kontekstindən ayırır. Əsas adlardan kənarda saxlayın, əgər siz məqsədyönlü olaraq bir aktiv əlifbasını yazmırsınızsa və ya maliyyə balansı əsl.
+`#` simvolu aktiv ləqəbini domen kontekstindən ayırır. Onu sadə adlarda istifadə etməyin, əgər qəsdən aktiv ləqəbini və ya aktiv balansını yazmırsınızsa.

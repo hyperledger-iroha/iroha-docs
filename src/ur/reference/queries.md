@@ -1,31 +1,31 @@
 ---
 translation_locale: ur
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# سوالات {#queries}
+# استفسارات {#queries}
 
-Iroha سوالات لیجر کی حالت کو تبدیل کیے بغیر پڑھتے ہیں۔ موجودہ ڈیٹا ماڈل دو وسیع استفسار شکلوں کا پتہ چلتا ہے:
+Iroha استفسارات لیجر کی حالت کو تبدیل کیے بغیر پڑھتے ہیں۔ موجودہ ڈیٹا ماڈل دو وسیع استفسار شکلوں کا پتہ چلتا ہے:
 
 - singular queries، جو ایک اعتراض یا ایک قدر واپس کرتے ہیں
-- iterable queries، جو ایک سٹریم یا مجموعہ واپس کرتے ہیں اور فلٹرنگ، ترتیب، پروجیکشن، اور صفحہ بندی کے ساتھ مل کر کیا جا سکتا ہے جہاں استفسار کی قسم اس کی حمایت کرتا
+- iterable queries، جو ایک سٹریم یا مجموعہ واپس کرتے ہیں اور فلٹرنگ، ترتیب، پروجیکشن، اور صفحہ بstream کے ساتھ مل کر کیا جا سکتا ہے جہاں استفسار کی قسم اس کی حمایت کرتا
 
 دستی طور پر استفسار لفافے بنانے کے بجائے SDK ٹائپڈ بلڈرز یا CLI استعمال کریں۔ ذیل میں دیئے گئے نام `iroha_data_model::query` کی طرف سے سامنے آنے والے موجودہ استفسار کی اقسام ہیں۔
 
 ## چلانے کا وقت اور ترتیب {#runtime-and-configuration}
 
-|سوال |مقصد |
+|استفسار |مقصد |
 | --- | --- |
-|`FindAbiVersion` |پھانسی ABI ورژن واپس کریں. |
+|`FindAbiVersion` |عمل درآمد کا ABI ورژن واپس کریں۔ |
 |`FindExecutorDataModel` |عملدرآمد کرنے والے ڈیٹا ماڈل کی تفصیل واپس کریں۔ |
 |`FindParameters` |چین پر عملدرآمد کنفیگریشن پیرامیٹرز واپس کریں. |
 
 ## اکاؤنٹس اور اجازت نامے {#accounts-and-permissions}
 
-|سوال |مقصد |
+|استفسار |مقصد |
 | --- | --- |
 |`FindAccountById` |ID کے مطابق ایک اکاؤنٹ تلاش کریں۔ |
 |`FindAccountByAlias` |ایک اکاؤنٹ کے نام سے ایک اکاؤنٹ کو حل کریں۔ |
@@ -40,9 +40,9 @@ Iroha سوالات لیجر کی حالت کو تبدیل کیے بغیر پڑھ
 |`FindRolesByAccountId` |ایک اکاؤنٹ کو دیئے گئے کردار کی فہرست دیں۔ |
 |`FindPermissionsByAccountId` |کسی اکاؤنٹ کو دی جانے والی اجازتوں کی فہرست بنائیں۔ |
 
-## ڈومینز اور ہم مرتبہ {#domains-and-peers}
+## ڈومینز اور نیٹ ورک نوڈ {#domains-and-peers}
 
-|سوال |مقصد |
+|استفسار |مقصد |
 | --- | --- |
 |`FindDomainById` |`DomainId` سے ایک ڈومین تلاش کریں. |
 |`FindDomains` |رجسٹرڈ ڈومینز کی فہرست بنائیں۔ |
@@ -50,11 +50,11 @@ Iroha سوالات لیجر کی حالت کو تبدیل کیے بغیر پڑھ
 |`FindDomainEndorsements` |ڈومین کی منظوری کے ریکارڈ درج کریں۔ |
 |`FindDomainEndorsementPolicy` |ڈومین کی منظوری کی پالیسی واپس کریں۔ |
 |`FindDomainCommittee` |ڈومین کمیٹی واپس. |
-|`FindPeers` |قابلِ اعتماد ہم عمر افراد کی فہرست درج کریں جو کتاب میں مشہور ہیں۔ |
+|`FindPeers` |ان قابلِ اعتماد peers کی فہرست دیں جو رجسٹر کو معلوم ہیں۔ |
 
 ## اثاثہ جات، NFTs، اور RWAs {#assets-nfts-and-rwas}
 
-|سوال |مقصد |
+|استفسار |مقصد |
 | --- | --- |
 |`FindAssets` |اثاثوں کے بیلنس درج کریں۔ |
 |`FindAssetsDefinitions` |اثاثہ جات کی تعریفیں درج کریں۔ |
@@ -65,11 +65,11 @@ Iroha سوالات لیجر کی حالت کو تبدیل کیے بغیر پڑھ
 |`FindNftsByAccountId` |ایک اکاؤنٹ کے مالک کی فہرست NFTs۔ |
 |`FindRwas` |رجسٹرڈ حقیقی دنیا کے اثاثوں کی فہرست. |
 
-## ایسکرو اور ثبوت ریکارڈ {#escrow-and-proof-records}
+## ایایسکرو اور ثبوت ریکارڈ {#escrow-and-proof-records}
 
-ایسکرو سوالات [نیٹیو اثاثہ ایسکرو ISIs](/ur/blockchain/escrow.md) کے ذریعہ بنائے گئے ریکارڈوں کا معائنہ کرتے ہیں ، بشمول مارکیٹ پلیس ایسکرو ، عام اثاثہ تالے ، اور گمنام ایسکرو ریکارڈز۔
+ایایسکرو استفسارات [نیٹیو اثاثہ ایایسکرو ISIs](/ur/blockchain/escrow.md) کے ذریعہ بنائے گئے ریکارڈوں کا معائنہ کرتے ہیں ، بشمول مارکیٹ پلیس ایایسکرو ، عام اثاثہ تالے ، اور گمنام ایایسکرو ریکارڈز۔
 
-|سوال |مقصد |
+|استفسار |مقصد |
 | --- | --- |
 |`FindAssetEscrows` |اثاثہ جات کے کریڈٹ ریکارڈز درج کریں۔ |
 |`FindAssetEscrowById` |ID کے ذریعہ ایک اثاثہ محفوظ کریں. |
@@ -77,10 +77,10 @@ Iroha سوالات لیجر کی حالت کو تبدیل کیے بغیر پڑھ
 |`FindAssetEscrowsByBuyer` |خریدار کے ذریعہ اثاثوں کی فہرست بنائیں۔ |
 |`FindAssetEscrowsByStatus` |اسٹیٹس کے لحاظ سے اثاثہ جات کی فہرست بنائیں۔ |
 |`FindAnonymousAssetEscrows` |گمنام اثاثوں کے کریڈٹ ریکارڈز درج کریں۔ |
-|`FindAnonymousAssetEscrowById` |ID تک ایک گمنام اثاثہ اسکرور تلاش کریں. |
+|`FindAnonymousAssetEscrowById` |ID تک ایک گمنام اثاثہ ایسکرو تلاش کریں. |
 |`FindAnonymousAssetEscrowsBySeller` |بیچنے والے کے مطابق گمنام گروہوں کی فہرست بنائیں۔ |
 |`FindAnonymousAssetEscrowsByBuyer` |خریدار کی طرف سے گمنام کریڈٹ درج کریں۔ |
-|`FindAnonymousAssetEscrowsByStatus` |گمنام اسکرورز کو حیثیت کے مطابق درج کریں۔ |
+|`FindAnonymousAssetEscrowsByStatus` |anonymous escrows کو status کے مطابق درج کریں۔ |
 |`FindProofRecordById` |ID سے ایک ثبوت ریکارڈ تلاش کریں. |
 |`FindProofRecords` |ثبوت ریکارڈ درج کریں. |
 |`FindProofRecordsByBackend` |ایک ثبوت بیک اینڈ کے لئے ثبوت ریکارڈز درج کریں. |
@@ -88,7 +88,7 @@ Iroha سوالات لیجر کی حالت کو تبدیل کیے بغیر پڑھ
 
 ## Nexus، ڈیٹا کی دستیابی اور پیکیج {#nexus-data-availability-and-packages}
 
-|سوال |مقصد |
+|استفسار |مقصد |
 | --- | --- |
 |`FindRepoAgreements` |آن لائن ذخیرہ شدہ مخزن معاہدوں کی فہرست بنائیں۔ |
 |`FindTwitterBindingByHash` |ہیش کے ذریعہ ٹویٹر بائنڈنگ کو حل کریں۔ |
@@ -99,14 +99,21 @@ Iroha سوالات لیجر کی حالت کو تبدیل کیے بغیر پڑھ
 |`FindLaneRelayEnvelopeByRef` |ایک تصدیق شدہ لین ریلے لفافہ تلاش کریں. |
 |`FindSorafsProviderOwner` |SoraFS فراہم کنندہ کے مالک کو حل کریں. |
 |`FindDataspaceNameOwnerById` |ایک ڈیٹا اسپیس نام مالک کو حل کریں. |
-|`FindMusubiReleaseByRef` |Musubi ریفرنس کے ذریعہ ایک رہائی تلاش کریں. |
-|`FindMusubiPackageVersions` |Musubi پیکج کے لیے ورژن درج کریں۔ |
-|`FindMusubiPackageReleases` |Musubi پیکج کے لیے فہرست جاری کرنا۔ |
-|`FindMusubiShortAliasByName` |Musubi مختصر عرفی نام کو حل کریں۔ |
+|`FindMusubiExactPackageV1` |ایک عین مطابق پیکج ریکارڈ اور اس کے موجودہ نظر ثانیوں کو پڑھیں. |
+|`FindMusubiExactReleaseV1` |ایک عین مطابق ریلیز اسنیپ شاٹ پڑھیں۔ |
+|`FindMusubiProviderBundleAttestationV1` |ایک فراہم کنندہ کے آرکائیو کٹ کی تصدیق پڑھیں۔ |
+|`FindMusubiResolverIndexV1` |حتمی حل کرنے والے انڈیکس کا صفحہ. |
+|`FindMusubiVersionsV1` |صفحہ ایک پیکج کے لئے حتمی ورژن. |
+|`FindMusubiMaintainersV1` |صفحہ نے منتظمین کو قبول کیا اور زیر التواء دعوت نامے. |
+|`FindMusubiArchiveLocationsV1` |صفحہ ایک آرکائیو کے لئے SoraFS مقامات کو حتمی. |
+|`FindMusubiArchiveRetentionV1` |صفحہ محفوظ شدہ دستاویزات کے ریکارڈ. |
+|`FindMusubiAliasV1` |ایک عالمی عرف کا موجودہ ہدف اور نظر ثانی پڑھیں۔ |
+|`FindMusubiAliasHistoryV1` |ایک عالمی عرف کی ناقابل تبدیل ری ٹارگٹ تاریخ کا صفحہ. |
+|`FindMusubiOrderedPrefixV1` |صفحے کے پیکجوں کو ایک ترتیب شدہ ڈھانچے کی پیش گوئی کے تحت ترتیب دیا گیا ہے۔ |
 
 ## ٹرگرز، معاہدوں، لین دین اور بلاک {#triggers-contracts-transactions-and-blocks}
 
-|سوال |مقصد |
+|استفسار |مقصد |
 | --- | --- |
 |`FindActiveTriggerIds` |فعال ٹرگر درج کریں IDs. |
 |`FindTriggers` |فہرست ٹرگرز. |

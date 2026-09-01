@@ -3,31 +3,31 @@ translation_locale: az
 translation_source: /blockchain/metadata.md
 translation_source_hash: 20e78492bf757147f2c9afed2d3b51639bc79913d3d8e4351193b6011f5469c2
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Metadatalar {#metadata}
+# Metaməlumat {#metadata}
 
-Metadata - kitabın obyektlərinə qoşulmuş yoxlanılmış açar-qiymət xəritəsidir. Anahtarlar `Name` dəyərlər və qiymətlər JSON (`Json`) payloadlardır.
+Metaməlumat, blok zənciri dəftər obyektlərinə əlavə edilmiş yoxlanılmış açar-dəyər xəritəsidir. Açarlar `Name` dəyərlər və dəyərlər JSON (`Json`) yük məlumatlarıdır.
 
-Aşağıdakı obyektlər metadata daşıya bilər:
+Aşağıdakı obyektlər metadatanı daşıya bilər:
 
 - domenlər
-- Hesablar
+- hesablar
 - aktivlər
 - aktivlərin tərifləri
 - NFTs
 - RWAs
-- başlatıcılar
+- tetikləyicilər
 - əməliyyatlar
 
-Başlıq vəziyyətinə aid olan kiçik təsviri və ya indeksləmə sahələri üçün metadatalardan istifadə edin. Böyük paylı yüklər WSV-nin xaricində saxlanılmalı və URI və ya SoraFS yolları ilə istinad edilməlidir.
+Zəncir blok dəftəri vəziyyətinə aid olan kiçik təsviri və ya indeksləmə sahələri üçün metadata-dan istifadə edin. Böyük yük məlumatları WSV xaricində saxlanmalı və kriptoqrafik xülasə dəyəri, URI və ya SoraFS yolu ilə istinad edilməlidir.
 
-Metadata, aktivlərə NFTs, RWAs və ya zəncirdən kənar saxlama seçimi ilə bağlı tövsiyələr üçün [Metadata və Ledger Storage Choices](/az/guide/configure/metadata-and-store-assets.md)-ə baxın.
+Metadataların, aktivlərin, NFTs, RWAs və ya off-chain yaddaşın seçilməsi ilə bağlı təlimat üçün [Meta məlumatlar və blokçeyn dəftərxanası Saxlama Seçimləri](/az/guide/configure/metadata-and-store-assets.md)-a baxın.
 
-## Taira üzərində sınayın. {#try-it-on-taira}
+## Bu iş axınını Taira üzərində işə sal {#try-it-on-taira}
 
-Metadata normal resurs oxumaları vasitəsilə görünə bilər. Bu əmr hazırda metadata malik olan Taira aktiv təriflərini siyahıya alır:
+Metaməlumat normal resurs oxumaları vasitəsilə görünür. Bu əmrlə hazırda metaməlumatı olan Taira aktiv təyinatları siyahıya alınır:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
@@ -36,7 +36,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
     | {id, name, metadata}'
 ```
 
-Domenlər və hesablar üçün eyni modeldən istifadə edin:
+Domenlər və hesablar üçün eyni nümunədən istifadə edin:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
@@ -46,20 +46,20 @@ curl -fsS 'https://taira.sora.org/v1/accounts?limit=20' \
   | jq '.items[] | select((.metadata // {} | length) > 0)'
 ```
 
-Boş çıxışı etibarlı bir nəticə kimi qəbul edin. Bu, Taira obyektlərinin cari səhifəsində metadata malik olmadığını və son nöqtənin uğursuz olduğu anlamına gəlmir.
+Boş çıxışı etibarlı nəticə kimi qəbul edin. Bu, mövcud Taira obyekt səhifəsinin metadatalara malik olmamasını nəzərdə tutur, API son nöqtəsinin uğursuz olduğunu yox.
 
-## Metadataları yeniləmək {#updating-metadata}
+## Metadatanı Yeniləmək {#updating-metadata}
 
-Metadata Iroha xüsusi təlimatları ilə dəyişdirilir:
+Metaməlumat Iroha Təlimat əməliyyatları ilə dəyişdirilir:
 
-- [`SetKeyValue`](/az/blockchain/instructions.md#setkeyvalue-removekeyvalue) bir açarı əlavə edir və ya əvəz edir
-- [`RemoveKeyValue`](/az/blockchain/instructions.md#setkeyvalue-removekeyvalue) bir açar çıxarır
+- [`SetKeyValue`](/az/blockchain/instructions.md#setkeyvalue-removekeyvalue) açarı əlavə edir və ya əvəz edir
+- [`RemoveKeyValue`](/az/blockchain/instructions.md#setkeyvalue-removekeyvalue) açarı çıxarır
 
-Əməliyyatı təqdim edən orqan aktiv icra vaxtının təsdiqçisi tərəfindən tələb olunan icazəyə malik olmalıdır. Varsayılan icazə səthinə görə [Izin Tokens](/az/reference/permissions.md) baxın.
+Əməliyyatı təqdim edən səlahiyyət prinsipi aktiv proqram icra mühitinin yoxlayıcısı tərəfindən tələb olunan icazəyə malik olmalıdır. Defolt icazə səthinə baxmaq üçün [İcazə Jetonları](/az/reference/permissions.md) səhifəsinə baxın.
 
-## Hadisələr {#events}
+## Tədbirlər {#events}
 
-Məlumat hadisələri metadata dəyişikliklər zamanı yayılır. Ümumi hadisə pay yükü `MetadataChanged<Id>`:
+Məlumat hadisələri metadata dəyişdikdə yayılır. Ümumi hadisə yükü `MetadataChanged<Id>` şəklindədir:
 
 ```mermaid
 classDiagram
@@ -81,10 +81,10 @@ MetadataChanged --> AssetDefinitionMetadataChanged
 MetadataChanged --> DomainMetadataChanged
 ```
 
-Bir inteqrasiya üçün əhəmiyyətli olan subyekt tipli və ya obyekti ID üçün yalnız metadata hadisələrindən abunə olmaq üçün [ məlumat hadisələri filtrlərindən ](/az/blockchain/filters.md#data-event-filters) istifadə edin.
+Yalnız bir inteqrasiya üçün vacib olan obyekt növü və ya obyekt ID-si üçün metadatanın hadisələrinə abunə olmaq üçün [məlumat hadisəsi filtrləri](/az/blockchain/filters.md#data-event-filters)-dən istifadə edin.
 
-## Suallar {#queries}
+## Sorğular {#queries}
 
-Metadata sorğu edilən obyektin bir hissəsi olaraq qaytarılır. Məsələn, [`FindAccountById`](/az/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/az/reference/queries.md#domains-and-peers) və ya [`FindAssetDefinitionById` ](/az/reference/queries.md#assets-nfts-and-rwas) istifadə edin. [`FindNfts`](/az/reference/queries.md#assets-nfts-and-rwas) və ya [`FindNftsByAccountId`](/az/reference/queries.md#assets-nfts-and-rwas) NFTs üçün və [`FindRwas`](/az/reference/queries.md#assets-nfts-and-rwas) RWA lotları üçün istifadə edin. Sonra obyektin metadata sahəsini oxuyun. NFT sorğunun cavabları NFT `content` xəritəsini qeyd metadata kimi açıqlayır .
+Metadatan sorğulanan obyektin bir hissəsi olaraq qaytarılır. Məsələn, istifadə edin [`FindAccountById`](/az/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/az/reference/queries.md#domains-and-peers), və ya [`FindAssetDefinitionById`](/az/reference/queries.md#assets-nfts-and-rwas). İstifadə et [`FindNfts`](/az/reference/queries.md#assets-nfts-and-rwas) və ya [`FindNftsByAccountId`](/az/reference/queries.md#assets-nfts-and-rwas) üçün NFTs, və [`FindRwas`](/az/reference/queries.md#assets-nfts-and-rwas) üçün RWA çox. Sonra obyektin metadatası sahəsini oxuyun. NFT sorgu cavabları ortaya çıxarır NFT `content` xəritəni qeydin metadata kimi.
 
-Metadata açarları nəşriyyatın vəziyyətinin bir hissəsidir, buna görə onları sabit saxlayın və JSON dəyəri həmin versiyanı açıq şəkildə daşıya bildiyi zaman tətbiqə aid versiyaların kodlaşdırılmasını qaçırın.
+Metaməlumat açarları blokçeyn dəftərxana vəziyyətinin bir hissəsidir, buna görə də onları stabilliyini qoruyun və tətbiqə xas versiya dəyişikliklərini açar adına kodlaşdırmaqdan çəkinin, JSON dəyəri bu versiyanı açıq şəkildə daşıya bildiyi zaman.

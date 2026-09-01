@@ -3,25 +3,25 @@ translation_locale: es
 translation_source: /blockchain/trigger-examples.md
 translation_source_hash: d40a0298466fdcbd30a9fdff979887b033e069646fcf3e437527d4d4ec2d0684
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Ejemplo de desencadenante del evento {#event-trigger-example}
+# Ejemplo de activador de evento {#event-trigger-example}
 
-En este ejemplo se utilizan cuentas canónicas sin dominios IDs y definiciones de activos proyectadas en el modelo de datos Iroha 3.
+Este ejemplo utiliza identificadores de cuenta canónicos sin dominio y definiciones de activos proyectadas en el modelo de datos Iroha 3.
 
 Supongamos que una red tiene:
 
-- Una cuenta canónica controlada por la llave de Alice.
-- Una cuenta canónica controlada por la llave del Sombrero Loco.
-- Una definición de activo proyectada como `tea` bajo `wonderland.universal`
-- un saldo de ese activo en cada cuenta
+- un registro canónico controlado por la clave de Alice
+- una cuenta canónica controlada por la clave de Mad Hatter
+- una definición de activo proyectada como `tea` bajo `wonderland.universal`
+- un saldo de ese activo mantenido por cada cuenta
 
-El objetivo es registrar un gatillo que observe el saldo de té de Alice y envíe una transferencia desde la cuenta Mad Hatter cuando se emita el evento de datos correspondientes.
+El objetivo es registrar un disparador que observe el saldo de té de Alice y envíe una transferencia desde la cuenta Mad Hatter cuando se emita el evento de datos correspondiente.
 
 ## 1. Preparar cuentas y activos {#_1-prepare-accounts-and-assets}
 
-Registrar primero las cuentas participantes y la definición de activos. En el Iroha actual, la cuenta IDs proviene de los controladores de cuentas, mientras que los dominios proyectados utilizan el formulario `domain.dataspace`:
+Registre primero las cuentas participantes y la definición del activo. En el actual Iroha, los IDs de cuenta provienen de los controladores de cuenta, mientras que los dominios proyectados usan el formulario `domain.dataspace`:
 
 ```text
 domain: wonderland.universal
@@ -29,17 +29,17 @@ asset definition projection: tea in wonderland.universal
 holder accounts: AccountId(controller=alice_key), AccountId(controller=mad_hatter_key)
 ```
 
-La definición de activo todavía tiene una dirección opaca canónica. Almacenar o consultar esa dirección después del registro y usarla en la acción de activación.
+La definición del activo todavía tiene una dirección opaca canónica. Almacene o consulte esa dirección después del registro y úsela en la acción del disparador.
 
-## 2. Elegir la autoridad de activación {#_2-choose-the-trigger-authority}
+## 2. Elija el principal de autorización del desencadenador {#_2-choose-the-trigger-authority}
 
-Configurar la cuenta técnica del gatillo a una cuenta dedicada cuando sea posible. Una cuenta dedicada deja claro qué permisos se requieren para la ejecución del gatillo y evita acoplar el gatillo a la clave de firma personal de un operador.
+Configure la cuenta técnica del desencadenador en una cuenta dedicada cuando sea posible. Una cuenta dedicada deja claro qué permisos se requieren para la ejecución del desencadenador y evita acoplar el desencadenador a la clave de firma personal de un operador.
 
-La cuenta técnica debe ya existir y tener permiso para presentar las instrucciones en el ejecutable del activador.
+La cuenta técnica ya debe existir y debe tener permiso para enviar las instrucciones en el ejecutable del disparador.
 
-## 3. Definir el ejecutable {#_3-define-the-executable}
+## 3. Define el ejecutable {#_3-define-the-executable}
 
-El ejecutable es la secuencia de instrucciones que el gatillo envía cuando el filtro de eventos coincide. Para este ejemplo, contiene una transferencia:
+El ejecutable es la secuencia de instrucciones que el activador envía cuando el filtro de eventos coincide. Para este ejemplo, contiene una transferencia:
 
 ```text
 Transfer(
@@ -49,11 +49,11 @@ Transfer(
 )
 ```
 
-Utilice los constructores de tipografía actual del SDK para la carga útil final de la transacción. Evite codificar en formato duro el viejo texto IDs en código desencadenante; analizar o consultar canónico IDs antes de construir el ejecutable.
+Utilice los constructores tipados actuales de SDK para la carga útil final de la transacción. Evite codificar manualmente IDs textuales antiguos en el código del disparador; analice o consulte los IDs canónicos antes de construir el ejecutable.
 
 ## 4. Definir el filtro de eventos {#_4-define-the-event-filter}
 
-Utilice un filtro de eventos de datos que restringe los eventos al objeto que le importa:
+Utiliza un filtro de data-event que limite los eventos al objeto que te interesa:
 
 ```text
 EventFilterBox::Data(
@@ -62,11 +62,11 @@ EventFilterBox::Data(
 )
 ```
 
-Mantenga los filtros tan específicos como prácticos. Un filtro `AcceptAll` es útil para la depuración, pero hace que cada evento de coincidencia pague el costo de la evaluación del desencadenante.
+Mantenga los filtros tan específicos como sea práctico. Un filtro `AcceptAll` es útil para depuración, pero hace que cada evento que coincida pague el costo de la evaluación del disparador.
 
-## 5. Registrar el gatillo {#_5-register-the-trigger}
+## 5. Registrar el disparador {#_5-register-the-trigger}
 
-Registre el gatillo con:
+Registre el disparador con:
 
 - un establo `TriggerId`
 - la secuencia de instrucciones ejecutables
@@ -75,15 +75,15 @@ Registre el gatillo con:
 - el filtro de eventos
 - metadatos opcionales
 
-El registro del activador en sí es una transacción normal, por lo que la cuenta de registro necesita permiso para registrar los activadores. La cuenta técnica necesita los permisos requeridos por la ejecutable del gatillo.
+El registro de disparadores en sí es una transacción normal, por lo que la cuenta que registra necesita permiso para registrar disparadores. La cuenta técnica necesita los permisos requeridos por el ejecutable del disparador.
 
 ## Orden de ejecución {#execution-order}
 
-Cuando se ejecuta un bloque:
+Cuando un bloque se ejecuta:
 
-1. Las instrucciones normales de la transacción se ejecutan primero.
-2. Se recopilan los datos de eventos producidos por dichas instrucciones.
-3. Los desencadenantes cuyos filtros coinciden con esos eventos están programados.
-4. Los efectos producidos por el gatillo se manejan en la tubería de ejecución del bloque sin permitir una ejecución sin límites del gatillo recursivo.
+1. Las instrucciones de transacción normales se ejecutan primero.
+2. Los eventos de datos producidos por esas instrucciones son recopilados.
+3. Se programan los desencadenadores cuyos filtros coinciden con esos eventos.
+4. Los efectos producidos por triggers se manejan en la canalización de procesamiento de ejecución de bloques sin permitir una ejecución recursiva ilimitada de triggers.
 
-Si un gatillo utiliza `Repeats::Exactly(n)`, registre un nuevo gatillo cuando el recuento esté agotado y se requiere el mismo comportamiento.
+Si un disparador usa `Repeats::Exactly(n)`, registre un nuevo disparador cuando se agote el conteo y se necesite el mismo comportamiento nuevamente.

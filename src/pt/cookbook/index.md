@@ -1,78 +1,78 @@
 ---
 translation_locale: pt
 translation_source: /cookbook/index.md
-translation_source_hash: cdcfb3549506a65a7dbd1c37672893956a0252153a4075c82333804674aa07b6
+translation_source_hash: 58f5247ece30d3755c38d4d24ae4553a35e0d0437476092d568a1be5c8a2ed28
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Iroha 3 Manual de aplicação {#iroha-3-application-cookbook}
+# Iroha 3 Manual de Aplicação {#iroha-3-application-cookbook}
 
-Construir contra Iroha 3 com receitas pequenas e verificáveis, que começam no Taira testnet e manter Minamoto Cada receita indica se é uma leitura pública. uma escrita normal de conta financiada, ou uma operação com limite de permissão. I105 Conta IDs, seleção explícita de taxas, e o comportamento verificado no Iroha Compromissar [`bc7114ed1c7f265a156d2100ff09e851cc95702c`](https://github.com/hyperledger-iroha/iroha/tree/bc7114ed1c7f265a156d2100ff09e851cc95702c).
+Construir contra Iroha 3 com receitas pequenas e verificáveis que começam no Taira testnet e manter Minamoto mainnet somente leitura. Cada receita indica se é uma leitura pública, uma escrita de conta financiada normal, ou uma operação com permissão restrita. Os comandos usam o atual I105 IDs de conta, seleção explícita de taxa e o comportamento verificado em Iroha comprometer [`0010c5a70039eac101a4846499ba9ceaf43eb65c`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c).
 
-Comece com [Conecte-se a Taira](./connect-to-taira.md). Ele cria a configuração do cliente e os metadados de taxas reutilizados pelas receitas da linha de comando. Nunca copie um ativo de taxa ID desta documentação: derive-o da resposta atual do torneio Taira.
+Comece com [Conectar-se a Taira](./connect-to-taira.md). Ele cria a configuração do cliente e os metadados de taxa reutilizados pelas instruções da linha de comando. Nunca copie um ID de ativo de taxa desta documentação: derive-o a partir da resposta atual do serviço de financiamento do testnet Taira.
 
 ## Níveis de acesso {#access-levels}
 
-- Público  Não é necessária autorização de assinatura ou de rede.
-- Preparação para escrever  utilizar uma conta de ensaio Taira financiada, um pagador explícito de taxas e o ativo da taxa corrente devolvido pela torneira.
-- Permissão necessária  Taira deve conceder a licença de execução nomeada ou espaço de nomes governado. Use uma rede local gerada quando essa concessão não estiver disponível; o sucesso local não confere autoridade à Taira.
+- Público — não é necessário nenhum signatário criptográfico ou permissão de rede.
+- Pronto para escrever — use uma conta de teste financiada na Taira, um pagador de taxa explícito e o ativo de taxa atual devolvido pelo dispensador.
+- Permissão necessária — Taira deve conceder permissão ao tempo de execução do software nomeado ou ao namespace governado. Use uma rede local gerada quando essa concessão não estiver disponível; o sucesso local não confere ao principal de autorização Taira.
 
-Nenhuma receita do livro de cozinha envia um texto para Minamoto.
+Nenhuma receita de livro de receitas envia uma escrita para Minamoto.
 
-## Começar e submeter {#start-and-submit}
+## Iniciar e enviar {#start-and-submit}
 
-|Receita .|Acesso Taira |O que acabas com ?|
+|Receita| Taira acesso |Com o que você termina|
 | --------------------------------------------------------------------- | ------------ | -------------------------------------------------------------------- |
-| [Conectar a Taira](./connect-to-taira.md) |Pronto para escrever|Uma assinante I105 financiada, um ativo de taxa real e uma transacção canária aplicada |
-| [Presentação e verificação de transações ](./submit-and-verify-transactions.md)|Pronto para escrever|Uma transacção cotada, resultado do pipeline terminal e recibo armazenado |
+| [Conectar-se a Taira](./connect-to-taira.md)                             |Pronto para escrever|Um signatário I105 financiado, um ativo de taxa vigente e uma transação canário aplicada|
+| [Enviar e verificar transações](./submit-and-verify-transactions.md) |Pronto para escrever|Uma transação com cotação, o resultado terminal do pipeline e um recibo armazenado|
 
-## Estado do Ledger {#ledger-state}
+## estado do livro razão da blockchain {#ledger-state}
 
-|Receita .|Acesso Taira |O que acabas com ?|
+|Receita| Taira acesso|Com o que você termina|
 | ------------------------------------------------- | ------------------------------------------------------------ | -------------------------------------------------------------- |
-| [Contas e pseudónimos](./accounts-and-aliases.md) |Permissão exigida |Uma conta I105 mais um alias resolvivel para leitura humana |
-| [Ativos funcionais ](./fungible-assets.md) |Permissão exigida |Definição registada, saldo bancário e transferência verificada |
-| [NFTs](./nfts.md)|Permissão exigida |Um NFT registado, a propriedade transferida e uma consulta pós-estado |
-| [Metadados](./metadata.md) |Pronto para escrita para objetos de propriedade; autorização exigida em caso contrário |Um metadados escrever seguido por uma leitura exata |
-| [Estado do livro-razão de consulta](./query-ledger-state.md) |Público para Estado público |Resultados em páginas e filtros sem inscrição |
+| [Contas e apelidos](./accounts-and-aliases.md) |Permissão necessária|Uma conta I105 mais um alias legível por humanos que pode ser resolvido|
+| [Ativos fungíveis](./fungible-assets.md)           |Permissão necessária|Uma definição registrada, saldo emitido e transferência verificada|
+| [NFTs](./nfts.md)                                 |Permissão necessária|Um NFT registrado, transferiu a propriedade e consulta pós-estado|
+| [Metadados](./metadata.md)                         |Pronto para escrita em objetos próprios; permissão necessária caso contrário|Uma gravação de metadados seguida por uma leitura exata|
+| [Consultar o estado do livro-razão da blockchain](./query-ledger-state.md)     |Público para estado público|Resultados paginados e filtrados sem uma escrita|
 
 ## Acesso e automação {#access-and-automation}
 
-|Receita .|Acesso Taira |O que acabas com ?|
+|Receita| Taira acesso        |Com o que você termina|
 | --------------------------------------------------- | ------------------- | -------------------------------------------------------------- |
-| [Permissões e funções ](./permissions-and-roles.md) |Permissão exigida |Uma autorização com escopo recolhida em um papel reutilizável |
-| [Eventos de transmissão](./stream-events.md) |Público |Um consumidor reconnectante SSE que se reconcilia depois de uma desconexão |
-| [Trigers](./triggers.md) |Permissão exigida |Um gatilho de chamada, recibo de execução e evento de conclusão |
-| [Multisig](./multisig.md) |Pronto para escrever|Uma conta ponderada multisig e uma proposta aprovada por quórum |
+| [Permissões e funções](./permissions-and-roles.md) |Permissão necessária|Uma permissão com escopo coletada em um papel reutilizável|
+| [Transmitir eventos](./stream-events.md)                 |Público|Um consumidor SSE que se reconecta após uma desconexão|
+| [Gatilhos](./triggers.md)                           |Permissão necessária|Um gatilho por chamada, registro de resultado do protocolo de execução e evento de conclusão|
+| [Multisig](./multisig.md)                           |Pronto para escrever|Uma conta multissig ponderada e proposta aprovada por quórum|
 
 ## Padrões de aplicação {#application-patterns}
 
-|Receita .|Acesso Taira |O que acabas com ?|
+|Receita| Taira acesso|Com o que você termina|
 | --------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| [Contratos inteligentes](./smart-contracts.md) |Permissão exigida |Verificado Kotodama código de byte, artefatos de implantação e um contrato de chamada |
-| [Wallet Connect](./wallet-connect.md) |Pronto para escrever quando o Connect estiver habilitado |Transferência de ativos aprovada por carteira e hash de transacção reconciliado |
-| [Reservatório nacional ](./native-escrow.md) |Preparada para a escrita dos proprietários de activos; resolução de litígios requer permissão |Uma fechadura nativa ou garantia de mercado com o estado final solicitado |
+| [Contratos inteligentes](./smart-contracts.md) |Permissão necessária|Verificado Kotodama bytecode, artefatos de implantação e uma chamada de contrato|
+| [Wallet Connect](./wallet-connect.md)   |Pronto para escrita quando o Connect estiver habilitado|Uma transferência aprovada pela carteira e um hash reconciliado da transação|
+| [Depósito em garantia nativo](./native-escrow.md)     |Pronto para escrita para proprietários de ativos; resolução de disputas requer permissão|Um bloqueio nativo ou escrow de mercado com estado final consultado|
 
-## Superfícies de exemplo verificadas {#verified-example-surfaces}
+## Exemplos verificados de superfícies {#verified-example-surfaces}
 
-As marcas abaixo descrevem exemplos executáveis em cada receita, e não todos os SDK que podem acessar o recurso.
+As marcas abaixo descrevem exemplos executáveis em cada receita, não todos os SDK que podem acessar o recurso.
 
-|Receita .|HTTP / curl |CLI |Rust |JavaScript |Python |Kotodama |
+|Receita| HTTP / curl | CLI | Rust | JavaScript | Python | Kotodama |
 | --------------------- | :---------: | :-: | :--: | :--------: | :----: | :------: |
-|Ligação a Taira |      ✓      |  ✓  |  —   |     —      |   —    |    —     |
-|Submeter e verificar |      ✓      |  ✓  |  —   |     —      |   —    |    —     |
-|Contas e pseudónimos |      ✓      |  ✓  |  —   |     —      |   —    |    —     |
-|Ativos funcionais |      ✓      |  ✓  |  —   |     ✓      |   —    |    —     |
-|NFTs |      ✓      |  ✓  |  —   |     —      |   —    |    ✓     |
-|Metadados |      ✓      |  ✓  |  —   |     —      |   —    |    —     |
-|Estado do livro-razão de consulta |      ✓      |  ✓  |  ✓   |     ✓      |   —    |    —     |
-|Permissões e funções |      —      |  ✓  |  ✓   |     —      |   —    |    —     |
-|Eventos de transmissão |      ✓      |  —  |  —   |     ✓      |   —    |    —     |
-|Os gatilhos .|      —      |  ✓  |  ✓   |     —      |   —    |    —     |
-|Multisig |      —      |  ✓  |  ✓   |     —      |   —    |    —     |
-|Contratos inteligentes |      —      |  ✓  |  —   |     —      |   —    |    ✓     |
-|Portfólio Conectar |      ✓      |  —  |  ✓   |     ✓      |   —    |    —     |
-|Native escrow |      —      |  —  |  ✓   |     ✓      |   ✓    |    ✓     |
+|Conectar-se ao Taira|      ✓      |  ✓  |  —   |     —      |   —    |    —     |
+|Enviar e verificar|      ✓      |  ✓  |  —   |     —      |   —    |    —     |
+|Contas e apelidos|      ✓      |  ✓  |  —   |     —      |   —    |    —     |
+|Ativos fungíveis|      ✓      |  ✓  |  —   |     ✓      |   —    |    —     |
+| NFTs                  |      ✓      |  ✓  |  —   |     —      |   —    |    ✓     |
+|Metadados|      ✓      |  ✓  |  —   |     —      |   —    |    —     |
+|Consultar o estado do livro razão da blockchain|      ✓      |  ✓  |  ✓   |     ✓      |   —    |    —     |
+|Permissões e funções|      —      |  ✓  |  ✓   |     —      |   —    |    —     |
+|Eventos de transmissão|      ✓      |  —  |  —   |     ✓      |   —    |    —     |
+|Gatilhos|      —      |  ✓  |  ✓   |     —      |   —    |    —     |
+|Multisig|      —      |  ✓  |  ✓   |     —      |   —    |    —     |
+|Contratos inteligentes|      —      |  ✓  |  —   |     —      |   —    |    ✓     |
+|Conectar Carteira|      ✓      |  —  |  ✓   |     ✓      |   —    |    —     |
+|Depósito em garantia nativo|      —      |  —  |  ✓   |     ✓      |   ✓    |    ✓     |
 
-Cada receita liga-se à arquitetura de produção, às operações, às orientações SDK e API. A própria receita mostra um caminho de sucesso. Inclui também os controlos necessários para provar o resultado.
+Cada receita está vinculada à arquitetura de produção, operações, SDK e API de orientação. A própria receita mostra um caminho bem-sucedido. Ela também inclui as verificações necessárias para comprovar o resultado.

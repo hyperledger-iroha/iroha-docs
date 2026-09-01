@@ -1,32 +1,32 @@
 ---
 translation_locale: es
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 0185b6a341ee90ed6cd52fb9f510549b20592468abe6627d3efa639c3b67d1fd
+translation_source_hash: 576e03924f19b63681cdfafa641b996672e35a992478fc9eaf5b83f0e7baa6da
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Aseguración de activos nativos {#native-asset-escrow}
+# Custodia de Activos Nativos {#native-asset-escrow}
 
-## El resultado {#outcome}
+## Resultado {#outcome}
 
-Elegir entre un escrow de mercado y un bloqueo de activos vinculado a destino, ejecutar el ciclo de vida tipado actual con Rust o Python, vincular cada intento de bloqueo al monto restante que realmente haya observado, y compilar la superficie de escrow nativa Kotodama desde JavaScript.
+Elija entre un depósito en garantía del mercado y un bloqueo de activos destinado a un destino, ejecute el ciclo de vida tipado actual con Rust o Python, vincule cada reintento de bloqueo al monto restante que realmente observó, y compile la superficie de depósito en garantía nativa Kotodama desde JavaScript.
 
-## Los requisitos previos {#prerequisites}
+## Prerrequisitos {#prerequisites}
 
-- Una definición numérica del activo y un operador/vendedor que posea una cantidad suficiente.
-- Clientes de llave única I105 financiados para cada parte que presente un paso. Utilice una intención `fee_payment` pagada por la autoridad en vivo cuyo activo de honorario coincida con la respuesta actual del grifo Taira; no incorpore un activo ID de la documentación.
-- La corriente Rust o Python SDK de Iroha Compromiso `bc7114ed1c7f265a156d2100ff09e851cc95702c`.
-- Para el JavaScript ejemplo de compilador, Node.js 24 más una construida localmente `@iroha/iroha-js` envasado y su origen `iroha_js_host`; seguir el [JavaScript SDK configuración de la construcción fuente](/es/guide/tutorials/javascript.md#build-from-source). Las construcciones del navegador deben proporcionar `compilerUrl` En vez de cargar al anfitrión nativo.
-- Taira debe admitir las instrucciones de transferencia y custodia de activos. Los propietarios de activos pueden utilizar el ciclo normal de vida cuando su política de activos lo permita; la resolución de una disputa requiere el permiso global `CanResolveEscrowDispute`.
+- Una definición de activo numérico y un aperturista/vendedor que posee suficiente cantidad.
+- Clientes financiados de llave única I105 para cada parte que envíe un paso. Utilice una intención `fee_payment` pagada por la autoridad en vivo cuyo activo de tarifa coincida con la respuesta del servicio de financiación de testnet Taira actual; no inserte un ID de activo de la documentación.
+- El Rust o Python SDK actual de Iroha compromete `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
+- Para el ejemplo del compilador JavaScript, Node.js 24 más un paquete `@iroha/iroha-js` construido localmente y su `iroha_js_host` nativo; siga el [JavaScript SDK configuración de source-build](/es/guide/tutorials/javascript.md#build-from-source). Las compilaciones para navegador deben proporcionar `compilerUrl` en lugar de cargar el host nativo.
+- Taira debe admitir la transferencia de activos y las instrucciones de custodia. Los propietarios de activos pueden usar el ciclo de vida ordinario cuando su política de activos lo permite; resolver una disputa requiere el permiso global `CanResolveEscrowDispute`. Utilice una red local generada cuando el principal de autorización de red pública necesario esté ausente.
 
-Modelos de custodia del mercado vendedor, comprador, pago fuera de la cadena y liberación. Los bloqueos genéricos nombran un destino y opcionalmente una liberación distinta Autoridad; apoyan la retirada parcial, la cancelación y la caducidad.
+Los modelos de depósito en garantía del mercado incluyen vendedor, comprador, pago fuera de cadena y liberación. Los bloqueos genéricos nombran un destino y opcionalmente un principal de autorización de liberación distinto; admiten retiros parciales, cancelación y vencimiento.
 
-## Los pasos {#steps}
+## Pasos {#steps}
 
-### 1. Completa una fianza en el mercado con Rust {#_1-complete-a-marketplace-escrow-with-rust}
+### 1. Complete un depósito en garantía del mercado con Rust {#_1-complete-a-marketplace-escrow-with-rust}
 
-Esta función recibe real typed IDs y clientes. Abre 40 unidades, permite al comprador aceptar y marcar el pago fuera de la cadena, luego permite que el vendedor libere la custodia. Cada presentación nombra al pagador de las tarifas de autoridad a través de `FeePaymentIntent`.
+Esta función recibe identificaciones reales tipadas y clientes. Abre 40 unidades, permite al comprador aceptar y marcar el pago fuera de cadena, luego permite al vendedor liberar la custodia. Cada envío nombra al pagador principal de la autorización a través de `FeePaymentIntent`.
 
 ```rust
 use eyre::{Result, ensure};
@@ -70,11 +70,11 @@ fn complete_marketplace_escrow(
 }
 ```
 
-La cuenta de custodia se gestiona en un libro mayor. La concesión de un token normal de transferencia de activos no hace que la custodia activa sea drenable fuera del ciclo de vida de la fianza.
+La cuenta de custodia se gestiona mediante libro mayor. Otorgar un token de transferencia de activos normal no hace que la custodia activa sea drenable fuera del ciclo de vida del depósito en garantía.
 
-### 2. Abrir y dibujar parcialmente un bloqueo genérico con Python {#_2-open-and-partially-draw-a-generic-lock-with-python}
+### 2. Abrir y dibujar parcialmente un candado genérico con Python {#_2-open-and-partially-draw-a-generic-lock-with-python}
 
-La autoridad de liberación consulta el registro nativo firmado antes de retirarlo. Pasar ese `remaining_amount` exacto proporciona una concurrencia optimista: se rechaza una solicitud paralela obsoleta en lugar de cobrar la custodia dos veces.
+El principal de autorización de liberación consulta el registro nativo firmado antes de retirar fondos. Pasar ese `remaining_amount` exacto proporciona concurrencia optimista: se rechaza una solicitud paralela obsoleta en lugar de debitar la custodia dos veces.
 
 ```python
 import secrets
@@ -145,9 +145,9 @@ def open_and_draw_lock(
     return escrow_id, after
 ```
 
-El Python SDK puede hacer consultas automáticamente cuando se omite `expected_remaining_amount`, pero pasar el valor observado hace que la condición económica firmada sea visible en el código de aplicación.
+El Python SDK puede consultar automáticamente cuando se omite `expected_remaining_amount`, pero pasar el valor observado hace que la precondición económica firmada sea visible en el código de la aplicación.
 
-Para los flujos de bloqueo Rust, los constructores de corriente también requieren la cantidad observada:
+Para los flujos de bloqueo Rust, los constructores actuales también requieren la cantidad observada:
 
 ```rust
 let before = opener.query_single(FindAssetEscrowById::new(lock_id))?;
@@ -169,11 +169,11 @@ opener.submit_blocking(
 
 `DrawdownAssetLock::new` toma tres valores; `CancelAssetLock::new` toma dos. Omitir la cantidad restante esperada describe una forma de llamada más antigua e insegura.
 
-### 3. Compila la superficie de garantía Kotodama a partir de JavaScript {#_3-compile-the-kotodama-escrow-surface-from-javascript}
+### 3. Compile la superficie de depósito en garantía Kotodama de JavaScript {#_3-compile-the-kotodama-escrow-surface-from-javascript}
 
-JavaScript no necesita inventar instrucciones nativas destipulizadas. El compilador actual expone el registro de garantía integrado a Kotodama; implementación y llamadas luego siguen [Construir e implementar un contrato inteligente](./smart-contracts.md).
+JavaScript no necesita inventar instrucciones nativas no tipadas. El compilador actual expone las funciones incorporadas de custodia del libro mayor de la blockchain a Kotodama; el despliegue y las llamadas luego siguen a [Construir y desplegar un contrato inteligente](./smart-contracts.md).
 
-Salvar esto como `native_escrow.ko`:
+Guarda esto como `native_escrow.ko`:
 
 ```kotodama
 seiyaku NativeEscrowAitai {
@@ -196,7 +196,7 @@ seiyaku NativeEscrowAitai {
 }
 ```
 
-Guarde lo siguiente como `compile-native-escrow.mjs` y use para compilar esa fuente exacta a partir de Node.js:
+Guarde lo siguiente como `compile-native-escrow.mjs` y úselo para compilar ese mismo código fuente de Node.js:
 
 ```js
 import { readFile } from 'node:fs/promises'
@@ -216,7 +216,7 @@ console.log({
 })
 ```
 
-Se ejecuta desde el entorno de paquete basado en la fuente descrito en los requisitos previos:
+Ejecutarlo desde el entorno de paquete construido desde la fuente descrito en los prerrequisitos:
 
 ```bash
 node ./compile-native-escrow.mjs
@@ -224,7 +224,7 @@ node ./compile-native-escrow.mjs
 
 ## Verificar {#verify}
 
-Para el escrow de mercado, consulta `FindAssetEscrowById` y las tenencias de activos de ambas partes después de la liberación. El registro debe ser `Released`, nombrar al comprador que acepta, y no mostrar ninguna custodia restante. Para la cerradura Python anterior, retenga el devolvido ID y repita la consulta firmada:
+Para la custodia del mercado, consulte `FindAssetEscrowById` y las tenencias de activos de ambas partes después de la liberación. El registro debe ser `Released`, nombrar al comprador que acepta y no mostrar custodia restante. Para el bloqueo Python anterior, retenga el ID devuelto y repita la consulta firmada:
 
 ```python
 record = client.get_asset_escrow(
@@ -236,23 +236,23 @@ assert escrow_status(record) == "Locked"
 assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 ```
 
-También consulte la tenencia de activos del destino y confirme que aumentó en cuatro unidades. Un recibo de transacción sin el registro de garantía y el estado postal del destino es una verificación incompleta.
+También consulta la tenencia de activos del destino y confirma que aumentó en cuatro unidades. Un registro de resultado del protocolo de transacción sin el registro de depósito en custodia y el estado posterior del destino es una verificación incompleta.
 
 ## Solución de problemas {#troubleshooting}
 
-- `Not permitted` al abrir, por lo general significa que la autoridad no puede transferir el activo seleccionado en custodia. La resolución de disputas tiene el sistema global `CanResolveEscrowDispute` Por la puerta.
-- El rechazo de `expected remaining amount` es un conflicto entre el optimismo y la competencia. Reanudar el registro, decidir si se pretendía la otra retirada / cancelación, y firmar una nueva instrucción sólo si el nuevo estado es aceptable.
-- Sólo la autoridad de liberación configurada puede dibujar un bloqueo confiable. El destino no puede liberarlo simplemente porque recibirá los fondos.
-- La liberación en el mercado es válida sólo después de la aceptación y el estado de envío del pago; la cancelación se limita a los estados anteriores del ciclo de vida.
-- Expiry utiliza el tiempo de registro autorizado. No trate un tiempo local del reloj de la pared como prueba de que `ExpireAssetLock` pasará.
-- El incumplimiento de las tarifas pertenece a la parte que presenta el paso del ciclo de vida. El comprador, el vendedor/abrior de fondos y la autoridad para liberar los fondos independientemente Taira.
+- `Not permitted` al abrir generalmente significa que el principal de autorización no puede transferir el activo seleccionado a la custodia. La resolución de disputas tiene la puerta global separada `CanResolveEscrowDispute`.
+- `expected remaining amount` el rechazo es un conflicto de concurrencia optimista. Vuelva a consultar el registro, decida si la otra retirada/cancelación fue intencionada, y firme una nueva instrucción únicamente si el nuevo estado es aceptable.
+- Solo el principal de autorización de liberación configurado puede ejecutar un bloqueo confiable. El destino no puede liberarlo simplemente porque recibirá los fondos.
+- La publicación en el mercado es válida solo después de la aceptación y del estado de pago enviado; la cancelación está limitada a los estados anteriores del ciclo de vida.
+- La expiración utiliza el tiempo del libro mayor autoritario de la blockchain. No considere un tiempo de espera del reloj local como prueba de que `ExpireAssetLock` pasará.
+- Un incumplimiento de tarifa pertenece a la parte que envía ese paso del ciclo de vida. Comprador de fondos, vendedor/abridor y principal de autorización de liberación de forma independiente en Taira.
 
 ## Fuente y documentos relacionados {#source-and-related-docs}
 
-- [Modelo nativo de instrucciones de escrow en el commit fijado ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/isi/escrow.rs)
-- [Pruebas de integración nativa en la fijación del compromiso](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/native_escrow.rs)
-- [Python Métodos de custodia del cliente en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama muestra de garantía nativa en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/kotodama_lang/src/samples/native_escrow.ko)
-- [Escrow de activos nativos ](/es/blockchain/escrow.md)
-- [Activos funcionales ](./fungible-assets.md)
-- [Permisos y funciones ](./permissions-and-roles.md)
+- [Modelo de instrucción de fideicomiso nativo en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
+- [Pruebas de integración de custodia nativa en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
+- [Python métodos del cliente de depósito en garantía en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama ejemplo de custodia nativa en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [Fideicomiso de activos nativos](/es/blockchain/escrow.md)
+- [Activos fungibles](./fungible-assets.md)
+- [Permisos y roles](./permissions-and-roles.md)

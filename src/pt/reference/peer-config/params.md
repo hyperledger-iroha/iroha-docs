@@ -1,28 +1,28 @@
 ---
 translation_locale: pt
 translation_source: /reference/peer-config/params.md
-translation_source_hash: d9fa3775e65b26b4eda726b27e54d167097b8bbd5bb766c27d7eeefdbc7ef10b
+translation_source_hash: 027486a17e7624cc301f939429baf9ea9ed1259564c3b99b8dc63cce17a7b26e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 
-outline: [ 2, 3 ]
+outline: [2, 3]
 ---
 
 <script setup>
 import ParamTable from './ParamTable.vue';
 </script>
 
-# Parâmetros de configuração {#configuration-parameters}
+# Parâmetros de Configuração {#configuration-parameters}
 
-[toc]
+[[toc]]
 
-## Nível de raiz {#root}
+## Nível Raiz {#root}
 
 ### `chain` <Badge text="required" /> {#param-chain-id}
 
-Cadeia ID que deve ser incluída em cada transação.
+ID da cadeia que deve ser incluído em cada transação. Usado para prevenir ataques de repetição.
 
-Um ataque de repetição é uma tentativa de submeter uma transação válida a uma rede diferente da que foi destinada. Como o `chain` faz parte da carga útil das transações assinadas, uma transação assinada para uma cadeia é rejeitada por pares que usam outra cadeia ID.
+Um ataque de repetição é uma tentativa de enviar uma transação válida para uma rede diferente daquela para a qual foi destinada. Como o `chain` faz parte da carga útil da transação assinada, uma transação assinada para uma cadeia é rejeitada pelos pares da rede que utilizam outro ID de cadeia.
 
 <param-table type=string env=CHAIN />
 
@@ -40,7 +40,7 @@ CHAIN="00000000-0000-0000-0000-000000000000"
 
 ### `public_key` <Badge text="required" /> {#param-public-key}
 
-Chave pública do peer. Os pares de validadores de consenso devem usar chaves BLS-Normal.
+Chave pública do par de rede. Os pares de rede do validador de consenso devem usar chaves BLS-Normal.
 
 <param-table type="public-key" env="PUBLIC_KEY" />
 
@@ -58,7 +58,7 @@ PUBLIC_KEY="ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7
 
 ### `private_key` <Badge text="required" /> {#param-private-key}
 
-Chave privada do peer. Deve corresponder a `public_key`; os pares validadores de consenso devem usar chaves normais BLS-
+Chave privada do par de rede. Ela deve corresponder a `public_key`; os pares validadores de consenso devem usar chaves BLS-Normais.
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
@@ -76,14 +76,14 @@ PRIVATE_KEY="8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E9029
 
 ### `trusted_peers` {#param-trusted-peers}
 
-Lista de colegas de confiança pré-definidos.
+Lista de pares de rede confiáveis predefinidos.
 
-Os validadores de consenso devem usar BLS-Chaves peer normais. Para cada validador, também forneça uma entrada correspondente [`trusted_peers_pop`](#param-trusted-peers-pop).
+Os validadores de consenso devem usar BLS-Chaves de pares de rede normais. Para cada validador, forneça também uma correspondente [`trusted_peers_pop`](#param-trusted-peers-pop) entrada.
 
 <param-table env="TRUSTED_PEERS">
 <template #type>
 
-Array of peer strings. Use `PUBLIC_KEY@ADDRESS` quando o endereço P2P é conhecido; também é aceito `PUBLIC_KEY` nu e permite que o endereçamento de pares seja descoberto a partir do fofoco.
+Matriz de strings de pares de rede. Use `PUBLIC_KEY@ADDRESS` quando o endereço P2P for conhecido; `PUBLIC_KEY` isolado também é aceito e permite descobrir o endereço do par por gossip.
 
 </template>
 </param-table>
@@ -109,12 +109,12 @@ TRUSTED_PEERS='[
 
 ### `trusted_peers_pop` {#param-trusted-peers-pop}
 
-BLS entradas de prova de posse para os pares confiáveis do validador.
+BLS entradas de prova de posse para pares confiáveis da rede do validador.
 
 <param-table env="TRUSTED_PEERS_POP">
 <template #type>
 
-Array de objetos com campos `public_key` e `pop_hex`
+Array de objetos com os campos `public_key` e `pop_hex`
 
 </template>
 </param-table>
@@ -138,11 +138,11 @@ TRUSTED_PEERS_POP='[
 
 :::
 
-## Gênesis {#genesis}
+## gênese da blockchain {#genesis}
 
 ### `genesis.file` {#param-genesis-file}
 
-Caminho de arquivo para a carga útil do bloco genesis assinado gerada por `kagami genesis sign`. Os perfis gerados normalmente escrevem isso como um arquivo Norito `.nrt`.
+Caminho do arquivo para o payload do bloco gênese da blockchain assinado gerado por `kagami genesis sign`. Perfis gerados comumente escrevem isso como um arquivo Norito `.nrt`.
 
 <param-table type="file-path" env="GENESIS" />
 
@@ -161,7 +161,7 @@ GENESIS="./genesis.signed.nrt"
 
 ### `genesis.public_key` <Badge text="required" /> {#param-genesis-public-key}
 
-A chave pública do par de chaves da Gênesis.
+Chave pública do par de chaves gênese da blockchain.
 
 <param-table type="public-key" env="GENESIS_PUBLIC_KEY" />
 
@@ -182,7 +182,7 @@ GENESIS_PUBLIC_KEY="ed01208BA62848CF767D72E7F7F4B9D2D7BA07FEE33760F79ABE5597A515
 
 ### `network.address` <Badge text="required" /> {#param-network-address}
 
-Endereço para comunicação p2p para efeitos de consenso (sumeragi) e sincronização de blocos (bloco_sync).
+Endereço para comunicação p2p para fins de consenso (sumeragi) e sincronização de blocos (block_sync).
 
 <param-table type="socket-addr" env="P2P_ADDRESS" />
 
@@ -201,9 +201,9 @@ P2P_ADDRESS=0.0.0.0:1337
 
 ### `network.public_address` <Badge text="required" /> {#param-network-public-address}
 
-Endereço peer-to-peer (externo, como visto por outros pares).
+Endereço ponto a ponto (externo, como visto por outros pares da rede).
 
-Serão fofocas para colegas ligados para que eles possam fofocar isso para outros colegas.
+Será repassado por gossip aos pares conectados da rede para que eles possam repassá-lo a outros pares da rede.
 
 <param-table type="socket-addr" env="P2P_PUBLIC_ADDRESS" />
 
@@ -222,7 +222,7 @@ P2P_PUBLIC_ADDRESS=0.0.0.0:5000
 
 ### `network.block_gossip_size` {#param-network-block-gossip-size}
 
-A quantidade de blocos que podem ser enviados em uma única mensagem de sincronização.
+A quantidade de blocos que pode ser enviada em uma única mensagem de sincronização.
 
 <param-table type=number default-value=4 />
 
@@ -237,9 +237,9 @@ block_gossip_size = 256
 
 ### `network.block_gossip_period_ms` {#param-network-block-gossip-period-ms}
 
-O intervalo de tempo entre os pedidos aos pares para o bloco mais recente.
+O intervalo de tempo entre solicitações aos pares da rede pelo bloco mais recente.
 
-Os fofocas mais frequentes reduzem o tempo de sincronização, mas podem sobrecarregar a rede.
+Fofocas mais frequentes encurtam o tempo para sincronizar, mas podem sobrecarregar a rede.
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
@@ -254,9 +254,9 @@ block_gossip_period_ms = 1_000
 
 ### `network.transaction_gossip_size` {#param-network-transaction-gossip-size}
 
-Número máximo de transações em uma mensagem de boatos.
+Número máximo de transações em uma mensagem de lote de fofoca.
 
-Um tamanho menor leva a um tempo de sincronização mais longo, mas útil se tiver uma alta perda de pacotes.
+Tamanho menor leva a um tempo maior para sincronizar, mas é útil se você tiver alta perda de pacotes.
 
 <param-table type=number default-value=500 />
 
@@ -271,9 +271,9 @@ transaction_gossip_size = 256
 
 ### `network.transaction_gossip_period_ms` {#param-network-transaction-gossip-period-ms}
 
-Período de fofocas pendentes a transacção entre pares.
+Período de fofoca sobre transação pendente entre pares da rede.
 
-Os fofocas mais frequentes reduzem o tempo de sincronização, mas podem sobrecarregar a rede.
+Fofocas mais frequentes encurtam o tempo para sincronização, mas podem sobrecarregar a rede.
 
 <param-table type=millis default-value=1_000 default-note="1 second" />
 
@@ -288,7 +288,7 @@ transaction_gossip_period_ms = 5_000
 
 ### `network.idle_timeout_ms` {#param-network-idle-timeout-ms}
 
-Duração do tempo após o qual a conexão com os pares é interrompida se os pares estiverem inactivos.
+Duração de tempo após a qual a conexão com o par de rede é encerrada se o par de rede estiver inativo.
 
 <param-table type=millis default-value=300_000 default-note="5 minutes" />
 
@@ -305,7 +305,7 @@ idle_timeout_ms = 300_000
 
 ### `torii.address` <Badge text="required" /> {#param-torii-address}
 
-Endereço ao qual o servidor Torii deve prestar ouvidos e ao qual os clientes (((s) fazem as suas solicitações.
+Endereço ao qual o servidor Torii deve escutar e ao qual os clientes fazem suas requisições.
 
 <param-table type=socket-addr env=API_ADDRESS />
 
@@ -324,9 +324,9 @@ API_ADDRESS=0.0.0.0:8080
 
 ### `torii.max_content_len` {#param-torii-max-content-len}
 
-O número máximo de bytes em um corpo de solicitação bruto aceito pelos pontos finais [Torii ](/pt/reference/torii-endpoints.md).
+O número máximo de bytes em um corpo de requisição bruto aceito pelo [Torii API pontos de extremidade](/pt/reference/torii-endpoints.md).
 
-Este limite é utilizado para prevenir os ataques DOS.
+Este limite é usado para prevenir ataques DOS.
 
 <param-table>
 <template #type>
@@ -352,7 +352,7 @@ max_content_len = 64_000_000
 
 ### `torii.query_idle_time_ms` {#param-torii-query-idle-time-ms}
 
-O tempo em que uma consulta pode permanecer na loja se não tiver acesso.
+O tempo que uma consulta pode permanecer no armazenamento se não for acessada.
 
 <param-table type=millis default-value=10_000 default-note="10 seconds" />
 
@@ -367,7 +367,7 @@ query_idle_time_ms = 10_000
 
 ### `torii.query_store_capacity` {#param-torii-query-store-capacity}
 
-O limite superior do número de consultas ao vivo.
+O limite máximo do número de consultas ativas.
 
 <param-table type=number default-value=128 />
 
@@ -382,7 +382,7 @@ query_store_capacity = 128
 
 ### `torii.query_store_capacity_per_user` {#param-torii-query-store-capacity-per-user}
 
-O limite máximo do número de consultas ao vivo para um único utilizador.
+O limite máximo do número de consultas ativas para um único usuário.
 
 <param-table type=number default-value=128 />
 
@@ -395,24 +395,24 @@ query_store_capacity_per_user = 128
 
 :::
 
-## Loja de madeira {#logger}
+## Lenhador {#logger}
 
 ### `logger.level` {#param-logger-level}
 
-Verbosidade geral de registro (ver [ `logger.filter`](#param-logger-filter) para a configuração refinada).
+Verbosidade geral de registro (veja [`logger.filter`](#param-logger-filter) para configuração refinada).
 
 <param-table default-value=INFO env=LOG_LEVEL>
 <template #type>
 
 String, valores possíveis:
 
-- `TRACE`: Todos os eventos, incluindo as operações de baixo nível.
-- `DEBUG`: Mensagens de nível de depuração, úteis para diagnóstico.
-- `INFO`: Mensagens de informação gerais.
+- `TRACE`: Todos os eventos, incluindo operações de baixo nível.
+- `DEBUG`: Mensagens em nível de depuração, úteis para diagnósticos.
+- `INFO`: Mensagens informativas gerais.
 - `WARN`: Avisos que indicam problemas potenciais.
-- `ERROR`: Erros que perturbam a função normal, mas permitem uma continuação da operação.
+- `ERROR`: Erros que interrompem a função normal, mas permitem a operação contínua.
 
-Escolha o nível que mais se adapte ao seu caso de uso. Consulte [Stack Overflow](https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels) para obter detalhes adicionais sobre como usar diferentes níveis de registro.
+Escolha o nível que melhor se adequa ao seu caso de uso. Consulte [Stack Overflow](https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels) para obter detalhes adicionais sobre como usar diferentes níveis de log.
 
 </template>
 </param-table>
@@ -430,28 +430,28 @@ LOG_LEVEL=INFO
 
 :::
 
-::: tip Atualização do tempo de execução
+::: tip atualização do tempo de execução do software
 
-Este parâmetro está sujeito a uma atualização da configuração de tempo de execução através dos pontos finais do operador Torii.
+Este parâmetro está sujeito à atualização de configuração em tempo de execução do software através dos endpoints do operador API Torii.
 
 :::
 
 ### `logger.filter` {#param-logger-filter}
 
-Filtros de registro refinados além do [`logger.level`](#param-logger-level). Permite personalizar a verbosidade de registro por alvo.
+Filtros de log refinados além de [`logger.level`](#param-logger-level). Permite personalizar a verbosidade de registro por alvo.
 
 <param-table type=string env=LOG_FILTER>
 <template #type>
 
-Cada directiva pode ter um nível máximo de verbosidade correspondente que permita (por exemplo, selecionar) intervalos e eventos correspondentes. O Iroha considera que os níveis menos exclusivos (como `trace` ou `info`) são mais verbosos do que os mais exclusivos (tais como `error` ou `warn`).
+String, consiste em uma ou mais diretivas separadas por vírgulas. Cada diretiva pode ter um nível máximo de verbosidade correspondente que habilita (por exemplo, seleciona) spans e eventos que correspondem. Iroha considera que níveis menos exclusivos (como `trace` ou `info`) são mais verbosos do que níveis mais exclusivos (como `error` ou `warn`).
 
-A nível elevado, a sintaxe das directivas consiste em várias partes:
+Em um nível alto, a sintaxe para diretivas consiste em várias partes:
 
 ```
 target[span{field=value}]=level
 ```
 
-Para mais informações, veja a documentação [`tracing-subscriber` ](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html).
+Para mais detalhes, veja [`tracing-subscriber` documentação](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/filter/struct.EnvFilter.html).
 
 </template>
 
@@ -470,35 +470,35 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 
 :::
 
-::: info Compatibilidade com [`logger.level`](#param-logger-level)
+::: info Composição com [`logger.level`](#param-logger-level)
 
-`logger.filter` trabalha em conjunto com [`logger.level` ](#param-logger-level) e nenhum dos dois superscreve o outro.
+`logger.filter` trabalha junto com [`logger.level`](#param-logger-level) e nenhum deles substitui o outro.
 
-Por exemplo, se o `logger.level` for definido em `INFO` e o `logger.filter` é definido em`iroha_core=debug`, o conjunto de filtros resultante será `info,iroha_core=debug` (ou seja, `info` para todos os módulos, `debug` para `iroha_core`.
+Por exemplo, se `logger.level` for definido como `INFO` e `logger.filter` for definido como `iroha_core=debug`, o conjunto de filtros resultante será `info,iroha_core=debug` (ou seja, `info` para todos os módulos, `debug` para `iroha_core`).
 
 :::
 
-::: tip Atualização do tempo de execução
+::: tip atualização do tempo de execução do software
 
-Este parâmetro está sujeito a uma atualização da configuração de tempo de execução através dos pontos finais do operador Torii.
+Este parâmetro está sujeito à atualização de configuração em tempo de execução do software através dos endpoints do operador API Torii.
 
 :::
 
 ### `logger.format` {#param-logger-format}
 
-Formatos de registos.
+Formato de logs.
 
 <param-table default-value=full env=LOG_FORMAT>
 <template #type>
 
 String, valores possíveis:
 
-- `full`: O formatador padrão. Este emite registros de linha única e legíveis por pessoa para cada evento que ocorre, com o contexto do espaço atual exibido antes da representação formateada do evento.
-- `compact`: Uma variante do formatador padrão, otimizada para comprimentos de linhas curtas. Os campos do contexto de span atual são anexados aos campos do evento formatizado e os nomes de span não são mostrados; o nível de verbosidade é abreviado para um único caracteres.
-- `pretty`: Emite registros muito bonitos, de várias linhas, otimizados para leitura humana. Este é principalmente destinado a ser usado em desenvolvimento local e depuração, ou para aplicações de linha de comando, Quando a análise automática e o armazenamento compacto dos registos sejam menos prioritários do que a legibilidade e a atração visual.
-- `json`: Saídas de registros JSON com linha nova e limitada. Isto é destinado à utilização em produção em sistemas onde registros estruturados são consumidos como JSON por ferramentas de análise e visualização. A saída JSON não é otimizada para a legibilidade humana.
+- `full`: O formatador padrão. Ele emite logs de uma única linha, legíveis por humanos, para cada evento que ocorre, com o contexto do span atual exibido antes da representação formatada do evento.
+- `compact`: Uma variante do formatador padrão, otimizada para comprimentos curtos de linha. Campos do contexto de span atual são adicionados aos campos do evento formatado, e os nomes de span não são exibidos; o nível de verbosidade é abreviado para um único caractere.
+- `pretty`: Emite logs excessivamente bonitos e multilinha, otimizados para legibilidade humana. Isso é destinado principalmente para ser usado no desenvolvimento local e depuração, ou para aplicações de linha de comando, onde a análise automatizada e o armazenamento compacto de logs têm menos prioridade do que a legibilidade e o apelo visual.
+- `json`: Gera logs JSON separados por quebras de linha. Isso é destinado para uso em produção com sistemas onde logs estruturados são consumidos como JSON por ferramentas de análise e visualização. A saída JSON não é otimizada para legibilidade humana.
 
-Para obter mais detalhes e resultados da amostra, ver a documentação [`tracing-subscriber` ](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/index.html).
+Para mais detalhes e exemplos de resultados, veja [`tracing-subscriber` documentação](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/format/index.html).
 
 </template>
 </param-table>
@@ -518,13 +518,13 @@ LOG_FORMAT=json
 
 ## Kura {#kura}
 
-O Kura é o motor de armazenamento persistente do Iroha (japonês para armazém).
+Kura é o mecanismo de armazenamento persistente de Iroha (japonês para armazém).
 
 ### `kura.blocks_in_memory` {#param-kura-blocks-in-memory}
 
-No máximo, N últimos blocos serão armazenados na memória.
+No máximo N últimos blocos serão armazenados na memória.
 
-Os blocos mais antigos serão retirados da memória e carregados do disco se forem necessários.
+Blocos mais antigos serão descartados da memória e carregados do disco se forem necessários.
 
 <param-table type=number default-value=1024 env=KURA_BLOCKS_IN_MEMORY />
 
@@ -543,15 +543,21 @@ KURA_BLOCKS_IN_MEMORY=1024
 
 ### `kura.init_mode` {#param-kura-init-mode}
 
-Modo de inicialização Kura
+Kura modo de inicialização. `strict` é o modo normal e padrão: ele valida o histórico canônico, artefatos de recuperação, índices auxiliares e contabilidade de armazenamento antes que o nó se torne ativo.
 
-<param-table  default-value=strict env=KURA_INIT_MODE>
+`fast` é um modo de serviço degradado de emergência para restaurar a visibilidade operacional quando uma auditoria completa de inicialização apresentaria risco de interrupção. Ele requer armazenamento previamente inicializado por `strict` e uma geração de visualização de dados em ponto no tempo atual contendo exatamente cinco artefatos: `snapshot.data`, `snapshot.sha256`, `snapshot.sig`, `snapshot.fast.norito` e `snapshot.merkle.json`. Uma assinatura de operador separada por domínio vincula o valor do resumo criptográfico da carga útil anunciada e o manifesto técnico limitado; o manifesto técnico vincula comprimento da carga útil, identidade da cadeia/rede, altura/hash do terminal, hash criptográfico da política SCCP e presença da linhagem de inicialização. O Fast rejeita a linhagem bootstrap e requer o mesmo marcador/contagem/limite de ponta exato do durável Kura. Os nós da primeira versão aceitam exatamente esses cinco artefatos e rejeitam qualquer outro conjunto de contagem ou nome de arquivo de artefatos.
+
+O Fast inventaria esses cinco nomes e vincula os metadados ao payload e aos arquivos Merkle, mas não lê, faz hash criptográfico, analisa ou decodifica seus conteúdos. Ele constrói um World/Nexus mínimo a partir do manifesto técnico assinado, mapeia o prefixo de hash criptográfico exato Kura como somente leitura e deixa a visualização de dados em ponto no tempo World, o array de hash de blocos, o histórico de transações, os índices derivados e os diários de recuperação duráveis não abertos. Merkle, auditorias de visualização de dados pontuais canônicos e semânticos, reconciliação histórica de blocos/finalidade/SCCP, recuperação de altura ativa Sumeragi, fusão e consultas de diários, manifesto/lotes de execução de fontes de conformidade, arquivos SoraFS respaldados por Kura, contabilidade de armazenamento recursiva, e os conciliadores de serviço opcionais permanecem adiados. A admissão de transações locais, propostas, votação, gravações canônicas e produtores auxiliares permanecem desativados. Kura rejeita por si só a inicialização do gravador e mutações duráveis; o pipeline de processamento e as filas de persistência FASTPQ rejeitam o trabalho imediatamente em vez de retê-lo ou codificá-lo. Kura leia APIs também desativa o comportamento de reparo e sincronização de durabilidade: registros auxiliares temporários não são promovidos, artefatos de lane de execução ausentes não são publicados, e barreiras de progresso não são fsyncadas. Sumeragi e gossip de transação não são iniciados. Torii expõe apenas operações de saúde, vigência, prontidão, pares de rede e configuração; API-versão, status, métricas e todas as rotas de estado/histórico comuns permanecem indisponíveis. A prontidão permanece indisponível até a reinicialização Strict.
+
+Use `fast` apenas para um incidente. Uma vez que o serviço esteja estável, pare o nó, restaure `strict` e reinicie para que todas as verificações adiadas e a reconstrução de índices sejam executadas antes que a produção seja retomada. O modo rápido não requer o log de mesclagem diferida e não cria, repara, trunca ou importa o armazenamento canônico; sufixos não publicados e estágios de recuperação auxiliar pendentes são ignorados sem serem lidos ou modificados, e então deixados para a recuperação Estrita. A linhagem de visualização de dados pontual apenas com hash importada permanece indisponível. Uma visualização de dados pontual atual ausente ou inválida falha imediatamente; o Fast nunca recorre a uma reconstrução de replay histórico ou mundo vazio.
+
+<param-table default-value=strict>
 <template #type>
 
 String, valores possíveis:
 
-- `strict`: validação rigorosa de todos os blocos
-- `fast`: Inicialização rápida, com apenas controlos básicos
+- `strict`: validação completa e produção normal
+- `fast`: inicialização de emergência limitada com produção quarentenada até uma reinicialização rigorosa
 
 </template>
 </param-table>
@@ -563,15 +569,11 @@ String, valores possíveis:
 init_mode = "fast"
 ```
 
-```shell [Environment]
-KURA_INIT_MODE=fast
-```
-
 :::
 
 ### `kura.store_dir` {#param-kura-store-dir}
 
-Especifica o diretório [^paths] onde os blocos são armazenados.
+Especifica o diretório[^paths] onde os blocos são armazenados.
 
 Veja também: [`snapshot.store_dir`](#param-snapshot-store-dir).
 
@@ -592,7 +594,7 @@ KURA_STORE_DIR=/path/to/storage
 
 ### `kura.debug.output_new_blocks` <Badge type="warning" text="debug" /> {#param-kura-debug-output-new-blocks}
 
-Bandeira para permitir a impressão de novos blocos no console.
+Flag para habilitar a impressão de novos blocos no console.
 
 <param-table env=KURA_DEBUG_OUTPUT_NEW_BLOCKS type=bool default-value=false />
 
@@ -609,11 +611,11 @@ KURA_DEBUG_OUTPUT_NEW_BLOCKS=true
 
 :::
 
-## Cotação {#queue}
+## Fila {#queue}
 
 ### `queue.capacity` {#param-queue-capacity}
 
-O limite superior do número de transações à espera na fila.
+O limite máximo do número de transações aguardando na fila.
 
 <param-table type=number default-value=65_536 />
 
@@ -628,9 +630,9 @@ capacity = 1_048_576
 
 ### `queue.capacity_per_user` {#param-queue-capacity-per-user}
 
-O limite superior do número de transacções à espera na fila para um único utilizador.
+O limite máximo do número de transações esperando na fila para um único usuário.
 
-Utilize esta opção para aplicar o estrogamento.
+Use esta opção para aplicar limitação.
 
 <param-table type=number default-value=65_536 />
 
@@ -645,7 +647,7 @@ capacity_per_user = 1_048_576
 
 ### `queue.transaction_time_to_live_ms` {#param-queue-transaction-time-to-live-ms}
 
-A transacção será cancelada após este período, se ainda estiver na fila.
+A transação será descartada após esse tempo se ainda estiver na fila.
 
 <param-table type=millis default-value=86_400_000 default-note="24 hours" />
 
@@ -662,7 +664,7 @@ transaction_time_to_live_ms = 43_200_000
 
 ### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
 
-O interruptor de depuração apenas para o exercício dos caminhos de manuseio de garfo macio Sumeragi. Deixe isso desativado fora de testes controlados; mudando-o em uma rede de produção em execução pode fazer com que os colegas discordem sobre o comportamento de consenso.
+Interruptor apenas para depuração para exercitar os caminhos de manuseio de soft-fork Sumeragi. Deixe isso desativado fora de testes controlados; alterá-lo em uma rede de produção em execução pode fazer com que os pares da rede discordem sobre o comportamento de consenso.
 
 <param-table type=bool default-value=false />
 
@@ -675,30 +677,40 @@ force_soft_fork = true
 
 :::
 
-## Imagem instantânea {#snapshot}
+## Nexus Liquidação Privada Atômica {#nexus-atomic-private-settlement}
 
-Este módulo é responsável pela leitura e escrita de instantâneos do [World State View](/pt/blockchain/world#world-state-view-wsv).
+`[nexus.atomic_private_settlement]` governa o caminho separado `AtomicPrivateSettlementV1`. Ele está desativado por padrão. Configurar `enabled = true` também requer um `activation_height`; a admissão ainda falha fechada, a menos que a capacidade na cadeia, o período de notificação, o perfil de prova fixo e a governança do pool/auditoria estejam ativos.
 
-Snapshots armazenam um ponto de verificação serializado do World State View para que um peer possa reiniciar sem repetição de cada bloco a partir de Kura. Kura permanece o histórico duradouro de blocos e a fonte de verdade para repetição; snapshots são um caminho de aceleração. Na inicialização, Iroha verifica os metadados de snapshot contra a cadeia configurada e os blocos armazenados antes de decidir se deve carregar um snapshot ou voltar à reprodução.
+Os limites principais são `max_participants`, `max_expiry_blocks`, `audit_timeout_blocks`, `prepare_timeout_blocks`, `commit_timeout_blocks`, `max_proof_bytes`, `max_capsule_bytes`, `max_carrier_bytes`, `sidecar_retention_blocks`, `sidecar_max_records` e `sidecar_max_total_bytes`. `capsule_padding_classes_bytes` deve ser um subconjunto estritamente crescente das classes de preenchimento V1. `permitted_policy_versions` aceita apenas V1.
 
-::: tip Esfolar imagens instantâneas
+`max_capsule_bytes` mede os Norito bytes canônicos do `PrivateSettlementAuditCapsuleV1` completo, incluindo AAD, valor de nonce criptográfico, cifra, enquadramento de vetor e cada linha DEK envolta por auditor; não é um limite apenas para cifra. Cada classe de espaçamento ativada deve se ajustar ao contêiner de dados de cápsula inteira conservador para pelo menos `default_min_auditor_approvals` auditores. Essa configuração de aprovação também é um limite regulamentado: Torii rejeita uma política recém-admitida com um valor `min_approvals` inferior e rejeita qualquer cápsula real acima do limite canônico de bytes.
 
-Caso algo esteja errado com o sistema de instantâneos, e você queira começar a partir de uma página em branco (em termos de instantâneas), você pode remover o diretório especificado por [`snapshot.store_dir`](#param-snapshot-store-dir).
+Essas configurações não têm bypass de ativação de variável de ambiente em produção. Veja [Executar Liquidação Atômica Privada entre Espaços de Dados](/pt/get-started/atomic-private-settlement) para o exemplo completo de configuração e requisitos operacionais. O caminho não é qualificado para produção até que os portões de liberação externa documentados sejam aprovados.
+
+## visualização de dados em um ponto no tempo {#snapshot}
+
+Este módulo é responsável por ler e escrever visualizações de dados pontuais do [Visão do Estado Mundial](/pt/blockchain/world#world-state-view-wsv).
+
+Os instantâneos armazenam um ponto de verificação serializado da Visão do Estado Mundial, permitindo que um par reinicie sem reproduzir todos os blocos de Kura. Kura continua sendo o histórico durável de blocos e a fonte de verdade para reprodução; os instantâneos apenas aceleram a recuperação. Na inicialização, a Iroha compara os metadados do instantâneo com a cadeia configurada e os blocos armazenados antes de decidir entre carregar o instantâneo e reproduzir o histórico.
+
+::: tip Limpar visualizações de dados em ponto no tempo
+
+Caso haja algum problema com o sistema de visualização de dados em ponto no tempo, e você quer começar a partir de uma página em branco (em termos de visualizações de dados pontuais), você poderia remover o diretório especificado por [`snapshot.store_dir`](#param-snapshot-store-dir).
 
 :::
 
 ### `snapshot.mode` {#param-snapshot-mode}
 
-O modo em que o sistema Snapshot funciona.
+O modo em que o sistema de visualização de dados em um ponto no tempo funciona.
 
 <param-table default-value=read_write env=SNAPSHOT_MODE>
 <template #type>
 
 String, valores possíveis:
 
-- `read_write`: Iroha cria instantâneos com um período especificado por [`snapshot.create_every_ms`](#param-snapshot-create-every-ms). Ao iniciar, Iroha lê uma instantânea existente (se houver) e verifica que está atualizada com o armazenamento de blocos.
-- `readonly`: Semelhante a `read_write` mas Iroha não cria nenhuma instantânea.
-- `disabled`: Iroha não cria novos instantâneos nem lê um existente no início.
+- `read_write`: o Iroha cria instantâneos no intervalo definido por [`snapshot.create_every_ms`](#param-snapshot-create-every-ms). Na inicialização, o Iroha lê o instantâneo existente, se houver, e verifica se ele está atualizado em relação ao armazenamento de blocos.
+- `readonly`: semelhante a `read_write`, mas o Iroha não cria nenhum instantâneo.
+- `disabled`: o Iroha não cria instantâneos nem lê um instantâneo existente na inicialização.
 
 </template>
 </param-table>
@@ -718,7 +730,7 @@ SNAPSHOT_MODE=readonly
 
 ### `snapshot.create_every_ms` {#param-snapshot-create-every-ms}
 
-Frequência de instantâneos.
+Frequência de snapshots.
 
 <param-table type=millis default-value=600_000 default-note="10 minutes" />
 
@@ -733,9 +745,9 @@ create_every_ms = 60_000
 
 ### `snapshot.store_dir` {#param-snapshot-store-dir}
 
-Directório onde armazenar instantâneos.
+Diretório onde armazenar snapshots.
 
-Ver também: [`kura.store_dir`](#param-kura-store-dir)
+Veja também: [`kura.store_dir`](#param-kura-store-dir)
 
 <param-table type=file-path default-value=./storage/snapshot env=SNAPSHOT_STORE_DIR />
 
@@ -754,15 +766,15 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 ## Telemetria {#telemetry}
 
-A telemetria exporta o diagnóstico de pares para um coletor externo de telemetria. Configure tanto `telemetry.name` como `telemetry.url` quando um peer deve relatar a um coleccionador; omita a seção quando a telemetria não é usada.
+A telemetria exporta diagnósticos de pares de rede para um coletor de telemetria externo. Configure tanto `telemetry.name` quanto `telemetry.url` quando um par de rede deve relatar a um coletor; omita a seção quando a telemetria não for usada.
 
-O `name` e o `url` devem ser emparelhados.
+`name` e `url` devem ser emparelhados.
 
-Todas as secções `telemetry` são opcionais.
+Toda a seção `telemetry` é opcional.
 
 ### `telemetry.name` {#param-telemetry-name}
 
-O nome do nó deve ser exibido na telemetria.
+O nome do nó a ser exibido na telemetria.
 
 <param-table type=string />
 
@@ -792,7 +804,7 @@ url = "ws://telemetry.example.com/submit"
 
 ### `telemetry.min_retry_period_ms` {#param-telemetry-min-retry-period-ms}
 
-O período mínimo de espera antes da reconexão.
+O período mínimo de tempo para esperar antes de reconectar.
 
 <param-table type=millis default-value=1_000  default-note="1 second" />
 
@@ -807,7 +819,7 @@ min_retry_period_ms = 5_000
 
 ### `telemetry.max_retry_delay_exponent` {#param-telemetry-max-retry-delay-exponent}
 
-O exponente máximo de 2 utilizado para aumentar o atraso entre as reconexões.
+O expoente máximo de 2 que é usado para aumentar o intervalo entre reconexões.
 
 <param-table type=number default-value=4 />
 
@@ -822,7 +834,7 @@ max_retry_delay_exponent = 4
 
 ### `dev_telemetry.out_file` {#param-dev-telemetry-out-file}
 
-O caminho de arquivo para escrever dev-telemetria para
+O caminho do arquivo para escrever dev-telemetry
 
 <param-table type=file-path />
 

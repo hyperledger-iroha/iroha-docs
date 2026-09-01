@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 9341b2404624dec2230bc294c3d60dc124ac9574a0a5803b9bba744f4c5e7f50
+translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,15 +12,15 @@ translation_engine: nllb-200-ct2
 
 ## 1. შექმნას ადგილობრივი მრავალმხრივი ქსელი {#_1-generate-a-local-multi-peer-network}
 
-გენერირება ოთხი peer localnet მოქმედი Kagami კოდიდან:
+მიმდინარე Kagami კოდიდან შექმენით ოთხკვანძიანი ლოკალური ქსელი:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-გამოშვების დირექტორი შეიცავს შესაბამის პარტნიორთა კონფიგურაციებს, `genesis.json`, `genesis.signed.nrt`, `client.toml` და დამხმარე სკრიპტები.
+გამომავალი დირექტორი შეიცავს შედარებულ ქსელის კვანძთა კონფიგურაციებს, `genesis.json`, `genesis.signed.nrt`, `client.toml` და დამხმარე სcripts.
 
-ადგილობრივი სიგარეტის ტესტისთვის, დაუწყეთ წარმოქმნილი თანატოლების პირდაპირი:
+ადგილობრივი სიგარეტის ტესტისთვის, დაიწყეთ წარმოქმნილი ქსელის კვანძები პირდაპირ:
 
 ```bash
 ./localnet/start.sh
@@ -33,21 +33,21 @@ cargo run --bin kagami -- docker \
   --peers 4 \
   --config-dir ./localnet \
   --image hyperledger/iroha:dev \
-  --out-file ./localnet/docker-compose.yml \
+  --out-file ./docker-compose.yml \
   --force
 
-docker compose -f ./localnet/docker-compose.yml up
+docker compose -f ./docker-compose.yml up
 ```
 
 გათვალისწინებით გენერირებული სტეიკი აჩვენებს:
 
-- პარტნიორი P2P პორტები `1337` - `1340`
+- კვანძების P2P პორტები `1337`-დან `1340`-მდე
 - Torii HTTP პორტები `8080` - `8083`
 - მზა კლიენტის კონფიგურაცია `./localnet/client.toml`
 
 ## 2. შეამოწმეთ, არის თუ არა ქსელი მოქმედი {#_2-verify-that-the-network-is-up}
 
-შეამოწმეთ სტატუსის საბოლოო წერტილი პირველ პარტნიორზე:
+შეამოწმეთ სტატუსის API საბოლოო წერტილი პირველი ქსელის თანასწორზე:
 
 ```bash
 curl http://127.0.0.1:8080/status
@@ -69,10 +69,10 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 
 რეპოზიტორი ასევე გზავნის SORA Nexus ორიენტირებულ კონფიგურაციის პროფილი `defaults/nexus/` ქვეშ.
 
-Nexus პროფილის მქონე მშობლიური პარტნიორის ჩასატარებლად:
+Nexus პროფილის მქონე მშობლიური ქსელის პერის ჩასატარებლად:
 
 ```bash
-./target/release/irohad --sora --config ./defaults/nexus/config.toml
+./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
 ```
 
 გამოიყენეთ `defaults/nexus/client.toml` ამ პროფილისთვის CLI წვდომისათვის.
@@ -88,7 +88,7 @@ Nexus პროფილის მქონე მშობლიური პ�
 წარმოქმნილი კომპოსის სტაკისთვის:
 
 ```bash
-docker compose -f ./localnet/docker-compose.yml down
+docker compose -f ./docker-compose.yml down
 ```
 
-შემდეგ, რაც ქსელი მუშაობს, განაგრძეთ [Operate Iroha 3 მეშვეობით CLI](/ka/get-started/operate-iroha-via-cli.md).
+შემდეგ, რაც ქსელი ამოქმედდება, განაგრძეთ [ოპერირება Iroha 3 მეშვეობით CLI](/ka/get-started/operate-iroha-via-cli.md).

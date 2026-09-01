@@ -8,9 +8,9 @@ translation_engine: nllb-200-ct2
 
 # Swift 和iOS {#swift-and-ios}
 
-其他 Swift SDK 由上游工作空間發送的是 `IrohaSwift` Swift 下面的包裝 `IrohaSwift/`. 它的包郵說明書定義了三個圖書館產品`IrohaSwift`, `IrohaSwiftMobileTransports`, 和 `IrohaSwiftTransferUI`並且針對iOS 15+和macOS 12+ Swift 工具 5.9.
+上游工作空間提供的 Swift SDK 是 `IrohaSwift/` 下的 `IrohaSwift` Swift 套件。其套件 manifest 定義三個函式庫產品：`IrohaSwift`、`IrohaSwiftMobileTransports` 和 `IrohaSwiftTransferUI`，並以 Swift 5.9 工具支援 iOS 15+ 與 macOS 12+。
 
-包 depends on the native `NoritoBridge` binary target. 包分辨率在構建之前驗證`../dist/NoritoBridge.xcframework`,當本地符號不加載時,交易或連接加密路徑會拋出橋式不可用的錯誤.
+此套件依賴原生的 `NoritoBridge` 二進位目標.套件解析在構建之前驗證`../dist/NoritoBridge.xcframework`,當本地符號不載入時,交易或連線加密路徑會丟擲橋式不可用的錯誤.
 
 ## Swift 包裝經理 {#swift-package-manager}
 
@@ -30,7 +30,7 @@ targets: [
 ]
 ```
 
-調整應用程序的路徑.不要複製當前的 `examples/ios/ConnectMinimalApp`路徑,該表格將 `../../IrohaSwift` 分解爲 `examples/IrohaSwift`.
+調整應用程式的路徑.不要複製當前的 `examples/ios/ConnectMinimalApp`路徑,該形式將 `../../IrohaSwift` 分解為 `examples/IrohaSwift`.
 
 在解決包之前,請確保橋樑存在於工作空間根點:
 
@@ -39,11 +39,11 @@ cd /path/to/iroha
 make bridge-xcframework
 ```
 
-這產生`dist/NoritoBridge.xcframework`; `IrohaSwift/Package.swift`將其稱爲`../dist/NoritoBridge.xcframework`.
+這產生`dist/NoritoBridge.xcframework`; `IrohaSwift/Package.swift`將其稱為`../dist/NoritoBridge.xcframework`.
 
 ## CocoaPods {#cocoapods}
 
-該代碼庫還包含 `IrohaSwift/IrohaSwift.podspec`. 聲明: `IrohaSwift` 子, Swift 5,9和iOS 15. Swift 來自主存儲庫中的來源;原始橋樑仍然必須存在並用於交易編碼,非Ed25519簽名和Connect加密.
+該程式碼庫還包含 `IrohaSwift/IrohaSwift.podspec`. 宣告: `IrohaSwift` 子, Swift 5,9和iOS 15. Swift 來自主儲存庫中的來源;原始橋樑仍然必須存在並用於交易編碼,非Ed25519簽名和Connect加密.
 
 ## 快速開始 {#quickstart}
 
@@ -65,7 +65,7 @@ if #available(iOS 15.0, macOS 12.0, *) {
 
 ## 試看 Taira 只閱讀 {#try-taira-read-only}
 
-開始一個簡單的 HTTP 探測器,以確認設備或模擬器可以達到公衆的 Taira 終點:
+開始一個簡單的 HTTP 探測器,以確認裝置或模擬器可以達到公眾的 Taira 端點:
 
 ```swift
 import Foundation
@@ -83,9 +83,9 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-在構建 UI 時,使用相同的 `URLSession` 檢查對 `https://taira.sora.org/v1/assets/definitions?limit=5` 和重新嘗試行爲. 切換到 `IrohaSDK` 僅在應用程序從安全存儲中加載簽名材料後提交輔助員,並且賬戶在 Taira 上獲得資金.
+在構建 UI 時,使用相同的 `URLSession` 檢查對 `https://taira.sora.org/v1/assets/definitions?limit=5` 和重新嘗試行為. 切換到 `IrohaSDK` 僅在應用程式從安全儲存中載入簽名材料後提交輔助員,並且帳戶在 Taira 上獲得資金.
 
-爲了構建和提交交易,使用 `IrohaSDK`輔助員. 這些稱爲本地橋接支持的交易編碼器:
+為了構建和提交交易,使用 `IrohaSDK`輔助員. 這些稱為本地橋接支援的交易編碼器:
 
 ```swift
 let transfer = TransferRequest(
@@ -107,15 +107,15 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-`TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest`, 和 `UnshieldRequest` 驗證法典賬戶 IDs 基本資產的定義 IDs 在簽署之前.
+`TransferRequest`、`MintRequest`、`BurnRequest`、`ShieldRequest` 和 `UnshieldRequest` 會在簽署前驗證規範帳戶 IDs 和規範且無前置詞的 Base58 資產定義 IDs。
 
 ## 產業保險 {#native-escrow}
 
-Swift 通過 `NativeEscrowInstructionBuilders`或同等 `IrohaSDK.build*Escrow*`助手構建市場和匿名保證指令,作爲 Norito JSON 的有效載荷.參見 [本土資產保證](/zh-hant/blockchain/escrow.md#swift-and-ios)爲示例,匿名證明字段和爭端解決權限代幣.
+Swift 透過 `NativeEscrowInstructionBuilders` 或等效的 `IrohaSDK.build*Escrow*` 輔助程式，將市場和匿名託管指令建置為 Norito JSON 負載。有關範例、匿名證明欄位和爭議解決者許可權權杖，請參閱[原生資產託管](/zh-hant/blockchain/escrow.md#swift-and-ios)。
 
 ## 簽字 {#signing}
 
-`Keypair`是Ed25519方便性 API.對於其他算法來說,用 `defaultSigningAlgorithm`構建一個 `IrohaSDK`,並使用 `generateSigningKey()`或 `signingKey(fromSeed:)`:
+`Keypair`是Ed25519方便性 API.對於其他演算法來說,用 `defaultSigningAlgorithm`構建一個 `IrohaSDK`,並使用 `generateSigningKey()`或 `signingKey(fromSeed:)`:
 
 ```swift
 let pqSdk = IrohaSDK(
@@ -125,11 +125,11 @@ let pqSdk = IrohaSDK(
 let signingKey = try pqSdk.generateSigningKey()
 ```
 
-目前`SigningAlgorithm` enum包括Ed25519, secp256k1, BLS 正常和小型變體, ML-DSA, GOST R 34.10-2012參數組,以及 SM2.在Ed25519便利路徑之外,需要原生橋樑支持.
+目前`SigningAlgorithm` enum包括Ed25519, secp256k1, BLS 正常和小型變體, ML-DSA, GOST R 34.10-2012引數組,以及 SM2.在Ed25519便利路徑之外,需要原生橋樑支援.
 
-## 連接 {#connect}
+## 連線 {#connect}
 
-連接客戶端在 Swift 源中實現,加密和框架代碼由 `NoritoBridge`支持:
+連線客戶端在 Swift 源中實現,加密和框架程式碼由 `NoritoBridge`支援:
 
 ```swift
 let sessionID = Data(repeating: 0, count: 32) // replace with the session bytes
@@ -148,21 +148,21 @@ let session = ConnectSession(sessionID: sessionID, client: client)
 let keyPair = try ConnectCrypto.generateKeyPair()
 ```
 
-`ConnectSession`處理打開和關閉控制,加密封筒閱讀,方向鍵,流量控制,事件流,平衡流和診斷日誌.
+`ConnectSession`處理開啟和關閉控制,加密封裝閱讀,方向鍵,流量控制,事件流,餘額流和診斷日誌.
 
 ## 目前覆蓋範圍 {#current-coverage}
 
 目前 Swift 來源包括:
 
-- `ToriiClient` HTTP 對賬戶,資產,姓氏,探索者頁面, RWA,合同,多簽證,管理,訂閱,數據可用性,機密資產,節點/運行時間狀態,健康,指標和 SSE 流的輔助員
-- `IrohaSDK`交易構建者和提交/投票助手轉移,硬幣,燒傷,盾牌,無盾牌,ZK 轉移, ZK 資產登記,元數據,識別索賠,多簽名登記以及管理說明
-- 通過 `PendingTransactionQueue`和 `FilePendingTransactionQueue`等待的交易隊列支持
-- 通過 `AccountAddress`和 `AccountId`的賬戶地址和 I105 助手.
+- `ToriiClient` HTTP 對帳戶,資產,別名,探索者頁面, RWA,合同,多簽證,管理,訂閱,資料可用性,機密資產,節點/執行階段狀態,健康,指標和 SSE 流的輔助員
+- `IrohaSDK`交易構建者和提交/投票助手轉移、鑄造、銷毀,盾牌,無盾牌,ZK 轉移, ZK 資產登記,後設資料,識別索賠,多簽名登記以及管理說明
+- 透過 `PendingTransactionQueue`和 `FilePendingTransactionQueue`等待的交易佇列支援
+- 透過 `AccountAddress`和 `AccountId`的帳戶地址和 I105 助手.
 - Ed25519, secp256k1, ML-DSA, BLS,GOST 和 SM2 的簽字表面,在需要時具有原生橋樑支
-- 產地保證指令用貨物構建商和匿名保證
-- 連接 WebSocket,框架,加密,會議,排隊,重播和診斷輔助器
-- 卡蓋穆沙準備,打字補充和贖回,運營狀態,筆記,同行捆綁,收據和 QR 流模型
-- SoraFS,數據可用性和驗證附件輔助器
+- 用於市場型和匿名託管的原生託管指令承載資料建構器
+- 連線 WebSocket,框架,加密,會議,排隊,重播和診斷輔助器
+- 卡蓋穆沙準備,打字補充和贖回,運營狀態,筆記,對等節點捆綁,收據和 QR 流模型
+- SoraFS,資料可用性和驗證附件輔助器
 
 ## API 舉例 {#api-examples}
 

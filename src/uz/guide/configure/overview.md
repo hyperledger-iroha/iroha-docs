@@ -3,24 +3,24 @@ translation_locale: uz
 translation_source: /guide/configure/overview.md
 translation_source_hash: 24eae3295459781d774369521241f1c2da5b24fe51eb8a2b086911b923395846
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Konfiguratsiya va boshqaruv {#configuration-and-management}
+# Sozlash va Boshqarish {#configuration-and-management}
 
-Iroha konfiguratsiyasi ikkita ishonchli qatlamga ega:
+Iroha konfiguratsiyasida ikki vakolatli qatlam mavjud:
 
-- TOML fayllarida saqlangan va jarayonni ishga tushirish paytida o'qiladigan mahalliy tengdoshlar va mijoz konfiguratsiyasi
-- [`SetParameter`](/uz/blockchain/instructions.md#setparameter) orqali amalga oshirilgan operatsiyalar bilan o'zgartirilgan zanjirdagi konfiguratsiya.
+- mahalliy tarmoq hamkori va mijoz konfiguratsiyasi, TOML fayllarda saqlanadi va jarayon boshlanishida o‘qiladi
+- zanjir ustidagi sozlamalar, tranzaksiyalar orqali o'zgartiriladi [`SetParameter`](/uz/blockchain/instructions.md#setparameter)
 
-Nukl identifikatsiyasi, manzillar, yozuv, saqlash va mijoz imzolash kalitlari uchun mahalliy konfiguratsiyadan foydalaning. Tarmoq tomonidan kelishilgan va deterministik tarzda qayta o'ynash kerak bo'lgan qiymatlar uchun zanjirda konfiguratsiyadan foydalanish.
+Node identifikatori, manzillar, loglash, saqlash va mijoz imzolash kalitlari uchun mahalliy konfiguratsiyadan foydalaning. Tarmoq tomonidan kelishilgan bo‘lishi va deterministik tarzda qayta ishlatilishi kerak bo‘lgan qiymatlar uchun zanjir usti konfiguratsiyasidan foydalaning.
 
-Ishlab chiqarish xatti-harakati ushbu konfiguratsiya qatlamlaridan kelib chiqishi kerak. Mahalliy asboblarga sinov ma'lumotlarini yetkazib berish uchun muhit o'zgaruvchilari qulay bo'lishi mumkin, ammo ular ishlab chiqarish xususiyatlari darvozalari emas va belgilangan konfiguratsiyani almashtirmaydilar.
+Ishlab chiqarish xatti-harakatlari ushbu konfiguratsiya qatlamlaridan kelib chiqishi kerak. Muhit o‘zgaruvchilari mahalliy vositalarga test kirishlarini taqdim etishda qulay bo‘lishi mumkin, lekin ular ishlab chiqarish xususiyatlari uchun darvoza emas va yakuniy konfiguratsiyani almashtirmaydi.
 
-Asosiy konfiguratsiya kirish punktlari quyidagilardir:
+Asosiy konfiguratsiya kirish nuqtalari quyidagilardir:
 
-- [Ibtido](/uz/guide/configure/genesis.md)
-- [Mijozning konfiguratsiyasi](/uz/guide/configure/client-configuration.md)
-- [Tarmoqni ishga tushirish uchun kalitlar ](/uz/guide/configure/keys-for-network-deployment.md)
-- [Yolg'iz metalda ishlaydi](/uz/guide/advanced/running-iroha-on-bare-metal.md)
-- [Tengdoshlar konfiguratsiyasi ma'lumotnomasi](/uz/reference/peer-config/index.md)
+- [blokcheyn genesis](/uz/guide/configure/genesis.md)
+- [Mijoz konfiguratsiyasi](/uz/guide/configure/client-configuration.md)
+- [Tarmoqni joylashtirish uchun kalitlar](/uz/guide/configure/keys-for-network-deployment.md)
+- [Yaltiroq temirda ishlash](/uz/guide/advanced/running-iroha-on-bare-metal.md)
+- [tarmoq sherik konfiguratsiyasi havolasi](/uz/reference/peer-config/index.md)

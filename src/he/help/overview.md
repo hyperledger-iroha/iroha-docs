@@ -21,6 +21,6 @@ translation_engine: nllb-200-ct2
 
 רוב הבעיות מתעוררות כתוצאה מפתחות שאינן מקבילות. לכן אנו ממליצים לעקוב אחר הכלל הזה: אם משהו משתבש, בדוק קודם את המפתחות.
 
-הנה הסבר מהיר: אי אפשר להבחין בין הודעות הטעות שנגרמות כאשר מפתחות של עמיתים לא מתאימים עם המפתחות ברשימת עמיתים אמינים כי זה יחשוף את המפתח הציבורי של העמיתים. כתוצאה מכך, אם יש לך תארים של הלם או פיתוחי קברנטיס עם מפתחות מוגדרות באמצעות משתנים סביבתיים, השווא את הערכים המוגדרים [`public_key`](/he/reference/peer-config/params.md#param-public-key), [`private_key`](/he/reference/peer-config/params.md#param-private-key), ו [`trusted_peers`](/he/reference/peer-config/params.md#param-trusted-peers) לפני שתחקור כישלונות ברמה גבוהה יותר. .
+הסבר קצר: אי אפשר להבדיל בין הודעות השגיאה שנוצרות כאשר מפתחות הצמתים אינם תואמים למפתחות במערך הצמתים המהימנים, משום שהבדלה כזאת הייתה חושפת את המפתח הציבורי של הצומת. לכן, אם יש לכם תרשימי Helm או פריסות Kubernetes שבהם המפתחות מוגדרים באמצעות משתני סביבה, השוו את הערכים המוגדרים של [`public_key`](/he/reference/peer-config/params.md#param-public-key), ‏[`private_key`](/he/reference/peer-config/params.md#param-private-key) ו־[`trusted_peers`](/he/reference/peer-config/params.md#param-trusted-peers) לפני שתבדקו כשלים ברמה גבוהה יותר.
 
 אם אין ספק, [ יצר זוג מפתחות חדש ](/he/guide/security/generating-cryptographic-keys.md).

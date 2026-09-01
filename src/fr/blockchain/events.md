@@ -3,54 +3,54 @@ translation_locale: fr
 translation_source: /blockchain/events.md
 translation_source_hash: 16b8cacc9bdf156d4b1e1a93b720085adcabb0002a34b9dc564a9926f573de63
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Les événements {#events}
+# Événements {#events}
 
-Les événements sont émis lorsque certaines choses se produisent au sein de la blockchain, par exemple lorsqu'un nouveau compte est créé ou qu'un bloc est engagé.
+Des événements sont émis lorsque certaines actions se produisent au sein de la blockchain, par exemple la création d'un nouveau compte ou la validation d'un bloc. Il existe différents types d'événements :
 
-- événements du pipeline
+- traitement des événements du pipeline
 - événements de données
-- événements dans le temps
-- déclenche des événements d'exécution
+- événements temporels
+- déclencher des événements d'exécution
 
-## Les événements sur le pipeline {#pipeline-events}
+## Événements du pipeline de traitement {#pipeline-events}
 
-Les événements de pipeline sont émis lorsque des transactions sont soumises, exécutées ou engagées sur un bloc. Un événement de pipeline contient les informations suivantes: le type d'entité qui a causé un événement (transaction ou bloc), son hash et son statut. Le statut peut être `Validating` (validation en cours), `Rejected` ou `Committed`. Si une entité a été rejetée, la raison du refus est indiquée.
+Les événements du pipeline de traitement sont émis lorsque des transactions sont soumises, exécutées ou validées dans un bloc. Un événement du pipeline de traitement contient les informations suivantes : le type d'entité qui a causé un événement (transaction ou bloc), son empreinte cryptographique et son statut. Le statut peut être soit `Validating` (validation en cours), `Rejected`, ou `Committed`. Si une entité a été rejetée, la raison du rejet est fournie.
 
-### Essayez le sur Taira {#try-it-on-taira}
+### Essayez-le sur Taira {#try-it-on-taira}
 
-Vérifiez que le flux d'événements du pipeline public est monté:
+Vérifiez que le flux d'événements du pipeline de traitement public est monté :
 
 ```bash
 curl -fsSI https://taira.sora.org/v1/events/sse \
   | sed -n '1,12p'
 ```
 
-Pour une capture d'écran que vous pouvez inspecter sans garder un flux ouvert, lisez les transactions récentes de l'explorateur:
+Pour une vue des données à un moment donné que vous pouvez consulter sans garder un flux ouvert, lisez les transactions récentes de l'explorateur :
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
   | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
-Ouvrir la route SSE dans un terminal lorsque vous avez besoin d'événements en direct:
+Ouvrez le chemin SSE dans un terminal lorsque vous avez besoin d'événements en direct :
 
 ```bash
 curl -fsS -N https://taira.sora.org/v1/events/sse
 ```
 
-Si aucune transaction n'est déposée pendant que le flux est ouvert, la commande peut rester silencieuse même si la route est saine.
+Si aucune transaction n'est soumise pendant que le flux est ouvert, la commande peut rester silencieuse même si le chemin est sain.
 
 ## Événements de données {#data-events}
 
-Les événements de données sont émis lorsqu'il y a une modification liée aux données du registre telles que les pairs, les domaines, les comptes, les actifs, les définitions d'actifs, NFTs, les déclencheurs, les rôles, la configuration sur la chaîne, l'état de l'exécuteur, les preuves, les biens confidentiels, les ponts ou les objets spécifiques à SORA/Nexus. Ces types d'événements sont utilisés dans les filtres [ pour les événements de données ](./filters.md#data-event-filters).
+Les événements de données sont émis lorsqu'il y a un changement lié aux données du grand livre blockchain telles que les pairs du réseau, les domaines, les comptes, les actifs, les définitions d'actifs, NFTs, les déclencheurs, rôles, configuration on-chain, état de l'exécuteur, preuves, actifs confidentiels, ponts, ou objets spécifiques à SORA/Nexus. Ces types d'événements sont utilisés dans [filtres d'événements de données](./filters.md#data-event-filters).
 
-## Les événements du temps {#time-events}
+## Événements temporels {#time-events}
 
-Les événements temporels sont émis lorsque la vue de l'état mondial est prête à gérer les déclencheurs du temps [ ](./triggers.md#time-triggers).
+Les événements temporels sont émis lorsque la vue de l'état du monde est prête à gérer [déclencheurs de temps](./triggers.md#time-triggers).
 
-## Événements d'exécution déclencheurs {#trigger-execution-events}
+## Déclencher des événements d'exécution {#trigger-execution-events}
 
-Les événements d'exécution du déclencheur sont émis lorsque l'instruction [ `ExecuteTrigger`](./instructions.md#executetrigger) est exécutée. Les événements de termination du déclencheur sont émis après la fin d'une action de déclenchement.
+Des événements d'exécution de déclencheur sont émis lorsque le [`ExecuteTrigger`](./instructions.md#executetrigger) L'instruction est exécutée. Les événements de complétion de déclenchement sont émis après qu'une action de déclenchement est terminée.

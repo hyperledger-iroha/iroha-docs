@@ -151,28 +151,43 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 
 ## 5. Operator Commands
 
-Consensus status:
+Consensus operator commands require an allow-listed runtime key. Keep it out
+of `client.toml` and pass the owner-only file explicitly:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi status
+: "${OPERATOR_KEY_FILE:=./secrets/operator.key}"
+
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi status
 ```
 
-Per-phase latency snapshot:
+Non-authoritative queue, pipeline, election, and lane diagnostics:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi phases
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi diagnostics
 ```
 
-Availability, collector, RBC backlog, and VRF snapshot:
+Highest and locked quorum certificates:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi telemetry
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi qc
 ```
 
 On-chain consensus parameters:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ops sumeragi params
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi params
 ```
 
 ## 6. Where to Go Next
@@ -180,7 +195,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml ops sumeragi params
 - [SDK tutorials](/guide/tutorials/)
 - [Torii endpoints](/reference/torii-endpoints.md)
 - [Working with Iroha binaries](/reference/binaries.md)
-- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_cli/README.md)
+- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/README.md)
 
 To regenerate a full Markdown help snapshot from the source checkout, run:
 

@@ -1,20 +1,20 @@
 ---
 translation_locale: mn
 translation_source: /reference/peer-config/index.md
-translation_source_hash: 5cc6ddf62a45f655d61a0ff3ebc7e20b939fe78c9d542087b717c2e17e19250d
+translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f29469aaf4
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Iroha-ийн тохируулалт {#configuring-iroha}
+# Iroha тохируулах {#configuring-iroha}
 
-TOML файлуудад орон нутгийн ижил төстэй конфигурацийг байгуулж байна. Энэ нь [`SetParameter`](/mn/blockchain/instructions.md#setparameter) заавар дамжуулан өөрчлөгдсөн зангилааны конфигурацыас ялгаатай. Үйлдвэрлэлийн зангилаа конфигурацийн файл эсвэл зангилаа дахь параметрээр илэрхийлэх ёстой; байгаль орчны хувьчлал нь онцлог дархан биш юм.
+Орон нутгийн сүлжээний хамтрагчийн тохиргоо нь энд тохируулагдана TOML файлууд. Энэ нь гинж дээрх тохиргоо өөрчлөгдсөнөөс ялгаатай юм [`SetParameter`](/mn/blockchain/instructions.md#setparameter) заавар. Үйлдвэрлэлийн үйлдлийг тохиргоонд илэрхийлэх ёстой файл эсвэл сүлжээнд байгаа параметр; орчны хувьсагчууд нь онцлогийн хаалт биш юм.
 
-Байгалийн файлын замыг тодорхойлхын тулд [`--config`](../irohad-cli#arg-config) CLI аргументийг ашиглах.
+Хэрэглэх [`--config`](../iroha3d-cli#arg-config) CLI төлөвлөлтийн файлын замыг заах аргумент.
 
-## Нүүр хуудас {#template}
+## Хавтлага {#template}
 
-Арьсны параметрын дэлгэрэнгүй тодорхойлолт авахын тулд [Parameters](./params.md) нэвтрүүлэгт харна уу.
+Тус бүр параметрийн дэлгэрэнгүй тайлбарын хувьд, [Параметрүүд](./params.md) лавлах материалд хандахыг хүснэ үү.
 
 ::: details `peer.template.toml`
 
@@ -22,9 +22,9 @@ TOML файлуудад орон нутгийн ижил төстэй конфи
 
 :::
 
-## Конфигурацийн файлуудыг бүрдүүлэх {#composing-configuration-files}
+## Тохиргооны файлуудыг зохиох {#composing-configuration-files}
 
-TOML конфигурацийн файлууд нь бусад TOML файлуудад чиглэсэн нэмэлт `extends` талбайтай. Энэ бол нэг зам эсвэл олон зам байж болно:
+TOML тохиргооны файлууд нь нэмэлт `extends` талбартай бөгөөд энэ нь бусад TOML файлууд руу зааж өгдөг. Энэ нь нэг зам эсвэл хэд хэдэн зам байж болно:
 
 ::: code-group
 
@@ -38,7 +38,7 @@ extends = ["file1.toml", "file2.toml"]
 
 :::
 
-Iroha нь `extends` -д заасан бүх файлуудыг эргэлтээр уншиж, тэдгээрийг давхаргаар хувааж, сүүлийнх нь параметр түвшинд өмнөх файлуудыг давхар бичнэ. Жишээлбэл, `config.toml`-ийг уншдаг бол:
+Iroha нь `extends`-д заасан бүх файлыг дахин давтан уншиж, давхаргад нэгтгэх бөгөөд сүүлд нь уншигдсан файлууд өмнөх файлуудын параметрүүдийг давхарлах болно. Жишээлбэл, хэрэв `config.toml`-ийг уншиж байвал:
 
 ::: code-group
 
@@ -61,8 +61,8 @@ max_content_len = 2048
 
 :::
 
-Үүнд хүрэх конфигурац нь: `chain` цаашид `a.toml`, `max_content_len` цаашид `b.toml`, болон `torii.address` цаашид `config.toml` (сэтгэгдэл) `b.toml`).
+Үр дүнд гарах тохиргоо нь `a.toml`-аас `chain`, `b.toml`-аас `max_content_len`, мөн `config.toml`-аас `torii.address` ( `b.toml`-г түр давтана) байх болно.
 
-## Ашигтвортой байдлын асуудал {#troubleshooting}
+## Алдааг олох болон засах {#troubleshooting}
 
-[`--trace-config`](../irohad-cli#arg-trace-config)CLI зургийг дамжуулан конфигурацыг хэрхэн уншиж, шинжилгээ хийх талаар үзнэ үү.
+Амжилттай [`--trace-config`](../iroha3d-cli#arg-trace-config) CLI Тохиргоог хэрхэн уншиж, задлан шинжлээд байгааг харах туг.

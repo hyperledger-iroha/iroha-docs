@@ -1,12 +1,12 @@
 ---
 translation_locale: my
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: a81f6cc04befb0b92a0a01c2cb3c1ecbbc631ce1f2a923cb046241c295db7806
+translation_source_hash: 68ef931f3d37b9bd40fcf61c9a77313539ca0bd648405834d161a018debb491a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Query Ledger ပြည်နယ် {#query-ledger-state}
+# မေးမြန်းချက် blockchain ledger ပြည်နယ် {#query-ledger-state}
 
 ## ရလဒ် {#outcome}
 
@@ -73,7 +73,7 @@ for (let offset = 0; ; offset += limit) {
 
 ### (၂) CLI စာမေးပွဲကို စစ်ဆေးပြီး အစုလိုက်ဖြည့်ပါ။ {#_2-filter-and-batch-a-typed-cli-query}
 
-CLI သည် ရိုက်နှိပ်နိုင်သော iterable query ကို serialize လုပ်ပြီး server ဆက်တိုက် cursors များကို အတွင်းပိုင်းတွင်လိုက်နာသည်။ ဤနေရာတွင် ယုတ္တိတန်သောရလဒ်သည်တစ်တန်းတည်းဖြင့်သာ ကန့်သတ်ထားပြီး `--fetch-size 1` သည်ပြန်လည်ခရီးစဉ်တစ်ခုလျှင်ရရှိသည့် အများဆုံး batch ကိုထိန်းချုပ်သည်။
+CLI သည် ရိုက်နှိပ်နိုင်သော iterable query ကို serialize လုပ်ပြီး server ဆက်တိုက် cursors များကို အတွင်းပိုင်းတွင်လိုက်နာသည်။ ဤနေရာတွင် ယုတ္တိတန်သောရလဒ်သည်တစ်တန်းတည်းဖြင့်သာ ကန့်သတ်ထားပြီး `--fetch-size 1` သည်ပြန်လည်ခရီးစဉ်တစ်ခုလျှင်ရရှိသည့် အမြင့်ဆုံး batch ကိုထိန်းချုပ်သည်။
 
 ```bash
 DOMAIN_PREDICATE='{"equals":[{"field":"id","value":"wonderland.universal"}]}'
@@ -85,11 +85,11 @@ iroha --config ./localnet/client.toml \
   --fetch-size 1
 ```
 
-စာမျက်နှာရှာဖွေခြင်းမတိုင်မီ Filtering ဖြစ်ပေါ်သည်။ query-specific typeed predicate များကိုအသုံးပြုပါ။ အကောင့်တစ်ခု သို့မဟုတ် အရင်းအမြစ်အတွက် predicate ကို domain တစ်ခုအတွက် ဘေးကင်းစွာ ပြန်လည်သုံးလို့မရပါ။
+စာမျက်နှာရှာဖွေခြင်းမတိုင်မီ Filtering ဖြစ်ပေါ်သည်။ query-specific typeed predicate များကိုအသုံးပြုပါ။ အကောင့်တစ်ခု သို့မဟုတ် အရင်းအမြစ်အတွက် predicate ကို domain တစ်ခုအတွက် ဘေးကင်းစွာ ပြန်လည်သုံးလို့ မရပါ။
 
 ### (၃) တည်ငြိမ်တဲ့ metadata key နဲ့ sort လုပ်ပါ။ {#_3-sort-by-a-stable-metadata-key}
 
-Typed query sorting သည် metadata key တစ်ခုပေါ် lexicographic ဖြစ်ပါသည်။ ထို key မရှိသော items များသည် runtime ၏သတ်မှတ်ထားသောအစီအစဉ်ကိုလိုက်နာကြသည်၊ ထို့ကြောင့် စုစည်းမှုတစ်ခုလုံးတွင်ဆက်မပြတ်ပြည့်စုံသော key ကိုအသုံးပြုပါ။
+Typed query sorting သည် metadata key တစ်ခုပေါ်တွင် lexicographic ဖြစ်ပါသည်။ ထို key မရှိသော items များသည် software စီမံခန့်ခွဲမှု ပတ်ဝန်းကျင်၏သတ်မှတ်ထားသောအစီအစဉ်ကိုလိုက်နာကြသည်၊ ထို့ကြောင့် စုစည်းမှုတစ်ခုလုံးတွင် အစဉ်အတိုင်း ပြည့်နှက်နေသည့် key ကိုအသုံးပြုပါ။
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -104,7 +104,7 @@ iroha --config ./localnet/client.toml \
   | jq '[.[] | {id, metadata}]'
 ```
 
-မှတ်ပုံတင်ခံရသူ CLI ပဲခူး `--select` JSON Selector tuple ကို forward လုပ်ပေးတယ် ဒါပေမဲ့ လက်ရှိ lightweight query ကတော့ DSL server က selector ကို evaluate မလုပ်ဘူး။ projection contract ကို build မလုပ်ပါနဲ့။ SDK ပရိုဂျက်ကို ရည်မှန်းချက် runtime ကိုထောက်ပံ့ပြီးနောက်မှသာ project သို့မဟုတ် validated ရလဒ် client-side နှင့် project `jq` ဒါမှမဟုတ် JavaScript အထက်ပါအတိုင်းပါ။
+မှတ်ပုံတင်ခံရသူ CLI ပဲခူး `--select` JSON Selector tuple ကို forward လုပ်ပေးတယ် ဒါပေမဲ့ လက်ရှိ lightweight query ကတော့ DSL server က selector ကို evaluate မလုပ်ဘူး။ projection contract ကို build မလုပ်ပါနဲ့။ SDK ပရိုဂျက်ကို ရည်ရွယ်တဲ့ ဆော့ဝဲ အကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင်က ထောက်ပံ့ပြီးနောက်မှသာ ထုတ်လွှင့်ခြင်း (သို့မဟုတ်) validated result client-side project ကို `jq` ဒါမှမဟုတ် JavaScript အထက်ပါအတိုင်းပါ။
 
 ### (၄) Rust iterator ကို opaque cursors တွေကို လိုက်ပါအောင်လုပ်ပါ။ {#_4-let-the-rust-iterator-follow-opaque-cursors}
 
@@ -132,7 +132,7 @@ for definition in definitions {
 }
 ```
 
-`ForwardCursor` သည်အာဏာပိုင်သတ်မှတ်ထားသော, လုပ်ငန်းစဉ်-ဒေသခံ, နှင့် ရှေ့သို့သာဖြစ်သည်. ၎င်းကို ဘယ်တော့မှစစ်ဆေးခြင်း၊ ပေါင်းစပ်ခြင်း၊ အာဏာပိုင်များအကြားမျှဝေခြင်း၊ သို့မဟုတ် Torii နမူနာများအတွင်းတွင် portable resume token အဖြစ်ဆက်ရှိနေခြင်းမရှိပါ။ သက်တမ်းကုန်ပါက မူလမေးခွန်းကိုရည်ရွယ်ချက်ရှိ application အဆင့် စစ်ဆေးရေးဂိတ်တစ်ခုဖြင့် restart လုပ်ပါ။
+`ForwardCursor` သည် ခွင့်ပြုချက် ချည်နှောင်ထားသည်၊ လုပ်ငန်းစဉ်-ဒေသတွင်းဖြစ်ပြီး ရှေ့သို့သာဖြစ်ပါသည်။ ၎င်းကို ဘယ်တော့မှ မစစ်ဆေးခြင်း၊ ပေါင်းစပ်ခြင်း၊ ခွင့်ပြုမှု မူဝါဒများအကြား မျှဝေခြင်း သို့မဟုတ် Torii ဖြစ်ရပ်များတွင် သယ်ဆောင်နိုင်သော resume token အဖြစ် ဆက်လက်တည်ရှိစေခြင်း။ ကုန်ဆုံးပါကမူ မူလမေးခွန်းကို ရည်ရွယ်ပြီး application အဆင့် စစ်ဆေးရေးမှတ်တိုင်တစ်ခုဖြင့် ပြန်လည်စတင်ပါ။
 
 ## စစ်ဆေးပါ {#verify}
 
@@ -146,23 +146,23 @@ iroha --config ./localnet/client.toml \
   | jq -e 'length == 1 and .[0] == "wonderland.universal"'
 ```
 
-Pageed application query တွေအတွက် IDs ကို စာမျက်နှာတွေကြားမှာ ထပ်မလုပ်၊ တောင်းဆိုထားတဲ့ ယုတ္တိတန်တဲ့ အကန့်အသတ်ကို ဘယ်တော့မှ မကျော်နိုင်အောင် စစ်ဆေးပြီး သက်တမ်းကုန်သွားတဲ့ နှောင့်ယှက်ကိရိယာက မှတ်တမ်းတင်ထားတဲ့ စစ်ဆေးရေးဂိတ်တစ်ခုကနေ ပြန်လည်စတင်ဖို့လည်း စမ်းသပ်ပါ။
+Pageed application query တွေအတွက် ID တွေဟာ စာမျက်နှာတွေကြားမှာ ထပ်မဖြစ်အောင် စစ်ဆေးပါ၊ တောင်းဆိုထားတဲ့ ယုတ္တိတန်တဲ့ အကန့်အသတ်ကို ဘယ်တော့မှ မကျော်နိုင်ဘူး၊ သက်တမ်းကုန်သွားပြီးနောက် ကောက်ဆာက မှတ်တမ်းတင်ထားတဲ့ စစ်ဆေးရေးမှတ်တိုင်ကနေ ပြန်လည်စလုပ်ပါ။
 
 ## ပြဿနာဖြေရှင်းခြင်း {#troubleshooting}
 
 - singular query သည် iterable filter, sorting, pagination သို့မဟုတ် fetch parameters ကိုလက်မခံပါ။ ထိုထိန်းချုပ်ချက်များလိုအပ်ပါက သက်ဆိုင်ရာစာရင်းမေးမြန်းမှုကိုအသုံးပြုပါ။
-- `fetch_size` သည် သုညမဟုတ်သော batch အညွှန်းတစ်ခုဖြစ်ပြီး စုစုပေါင်းရလဒ်ကန့်သတ်ချက်မဟုတ်ပါ။ လက်ရှိအဓိပ္ပာယ်ဖွင့်ဆိုချက်သည် `100` ဖြစ်ပြီး runtime က ၎င်း၏ အမြင့်ဆုံးထက်တန်ဖိုးများကို ပစ်ချသည်။
+- `fetch_size` သည် သုညမဟုတ်သော batch အညွှန်းကိန်းဖြစ်ပြီး စုစုပေါင်းရလဒ်ကန့်သတ်ချက်မဟုတ်ပါ။ လက်ရှိအဓိပ္ပာယ်ဖွင့်ဆိုချက်သည် `100` ဖြစ်ပြီး ဆော့ဝဲလုပ်ဆောင်မှု ပတ်ဝန်းကျင်က ၎င်း၏ အများဆုံးထက်တန်ဖိုးများကို ပစ်ပယ်သည်။
 - အမည်မသိ၊ သက်တမ်းကုန်ဆုံးပြီးသား (သို့) နိုင်ငံခြားကော်ဆာကို ရည်ရွယ်ချက်အရ ပြန်လည်သုံးလို့မရပါ။ မေးမြန်းမှုကို ပြန်စတင်ပါ၊ ပွင့်လင်းမြင်သာမှုမရှိတဲ့ တန်ဖိုးကို ပြင်ဆင်ဖို့ မကြိုးစားပါ။
 - metadata sorting က general field sorting မဟုတ်ပါ။ item တစ်ခုချင်းစီမှာ ရွေးချယ်ထားတဲ့ key မပါရင် missing-key order ကို မှတ်တမ်းတင်လိုက်ပါ။ (သို့) အခြားနည်းဗျူဟာတစ်ခုကို ရွေးပါ။
-- CLI က `--select` ကို ခြေရာခံပြီး ရှေ့ဆက်ပေးပေမဲ့ လက်ရှိ ဆာဗာက လွယ်ကူတဲ့ ရွေးချယ်သူ tuple ကို အကဲဖြတ်ခြင်းမရှိပါ။ ဖြန့်ချိထားသော runtime အတွက် server-side selector support ကို စစ်ဆေးမထားရင် client-side projection ကိုအသုံးပြုပါ။
-- ကျယ်ပြန့်တဲ့ အကန့်အသတ်မဲ့ မေးမြန်းမှုတွေက အဖော်အလုပ်၊ ဖောက်သည် မှတ်ဉာဏ်နဲ့ ညွှန်ပြသူ သက်တမ်းအန္တရာယ်ကို မြှင့်တင်ပေးတယ်။ သုံးစွဲသူအတွက် သင့်လျော်တဲ့ ယုတ္တိတန်တဲ့ ကန့်သတ်ချက်တစ်ခုနဲ့ ရယူမှု အရွယ်အစားတစ်ခုကို သတ်မှတ်ပါ။
-- အများပြည်သူ JSON အရင်းအမြစ်ပမာဏများနှင့် လက်မှတ်ရေးထိုးထားသော typeed query parameters တို့သည် ဆက်စပ်သော်လည်း လဲလှယ်နိုင်သည့် wire formats များမဟုတ်ပါ။ typeed query envelopes အတွက် SDK သို့မဟုတ် CLI ကိုသာ ကြိုက်သည်။
+- CLI က `--select` ကို ခြေရာခံပြီး ရှေ့ဆက်ပေးပေမဲ့ လက်ရှိ ဆာဗာက လွယ်ကူတဲ့ ရွေးချယ်သူ tuple ကို အကဲဖြတ်မထားပါ။ ဖြန့်ဖြူးထားတဲ့ ဆော့ဖ်ဝဲလ် လုပ်ဆောင်မှု ပတ်ဝန်းကျင်အတွက် ဆာဗားဘက်ရွေးချယ်သူ ထောက်ပံ့မှုကို စစ်ဆေးခြင်းမရှိရင် ဖောက်သည်ဘက် ပရိုဂျက်ကို အသုံးချပါ။
+- ကျယ်ပြန့်တဲ့ အကန့်အသတ်မဲ့ မေးမြန်းချက်တွေဟာ ကွန်ရက်မှာ လုပ်ဖော်ကိုင်ဖက်အလုပ်၊ ဖောက်သည် မှတ်ဉာဏ်နဲ့ ညွှန်ပြသူသက်တမ်း အန္တရာယ်ကို မြှင့်တင်ပေးပါတယ်။ သုံးစွဲသူအတွက် သင့်လျော်တဲ့ ယုတ္တိတန်တဲ့ ကန့်သတ်ချက်တစ်ခုနဲ့ ရယူမှုအရွယ်အစားတစ်ခုကို သတ်မှတ်ပါ။
+- အများပြည်သူ JSON အရင်းအမြစ်ပမာဏများနှင့် လက်မှတ်ရေးထိုးထားသော typeed query parameters တို့သည် ဆက်စပ်သော်လည်း လဲလှယ်နိုင်သည့် serialization formats များမဟုတ်ပါ။ Typeed query data container များအတွက် SDK သို့မဟုတ် CLI ကိုသာ ကြိုက်သည်။
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [Cursor-backed pagination integration tests at the pinned commit ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/pagination.rs)
-- [Query Builder နှင့် Selector အပြုအမူကို pinned commit တွင်](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/builder/mod.rs)
-- [Query parameters and cursor model at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/parameters.rs)
-- [မေးမြန်းချက်များ ](/my/blockchain/queries.md)
-- [မေးမြန်းချက် မှတ်တမ်း ](/my/reference/queries.md)
+- [Cursor-backed pagination integration tests at the pinned source code revision များတွင် စာမျက်နှာပေါင်းစပ်မှု စမ်းသပ်မှုများ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs)
+- [Query Builder နှင့် Selector အပြုအမူများကို pinned source-code ပြင်ဆင်မှု](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs)
+- [Query Parameters and Cursor Model at the pinned source-code revision (ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှု)](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs)
+- [မေးခွန်းများ](/my/blockchain/queries.md)
+- [မေးမြန်းချက် အကိုးအကား](/my/reference/queries.md)
 - [JavaScript နှင့် TypeScript](/my/guide/tutorials/javascript.md)

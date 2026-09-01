@@ -1,40 +1,50 @@
 ---
 translation_locale: az
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: 5772bf7175b693fbbed54b59304859a33c2e19fef0c402141b6f4ad4cfd6714f
+translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Performans və Metriklər {#performance-and-metrics}
+# Performans və Ölçülər {#performance-and-metrics}
 
-Iroha performans iş yükündən, validator topologiyasından, şəbəkə şərtlərindən və konsensus parametrlərindən asılıdır. TPS Bu səbəbdən, sayı yalnız sabit konfigüratsiyaya malik olan bir istinad göstəricisi ilə bağlı olduqda faydalı olur.
+Iroha performans iş yükündən, təsdiqləyici topologiyasından, şəbəkə şərtlərindən və konsensus parametrlərindən asılıdır. Buna görə də, tək bir TPS nömrəsi yalnız sabit konfiqurasiyaya malik benchmark icrası ilə əlaqələndirildiyi zaman faydalıdır.
 
-Mümkünlüklərin planlaşdırılması üçün səmərəli fəaliyyətə əməliyyat bağlamı kimi baxın:
+Tutum planlaması üçün performansı əməliyyat məlumatı konteyneri kimi qəbul edin:
 
-- şəbəkə tələb olunan əməliyyat dərəcəsini qəbul edir.
-- hədəf büdcəsi daxilində gecikmə müddətini təyin etmək
-- Transaksiya sıraları məhdud qalır.
-- konsensus təkrarlanan görünüş dəyişikliklərinə və ya bərpa yollarına asılı deyil
+- şəbəkə tələb olunan əməliyyat sürətini qəbul edir
+- protokolun yekunlaşdırılması gecikməsi hədəf büdcə daxilində qalır
+- əməliyyat növbələri məhdud qalır
+- konsensus təkrarlanan baxış dəyişikliklərinə və ya bərpa yollarına əsaslanmır
 
-Bu səhifədən istifadə edərək bir tətbiqin verilən qovşaq sayı, şəbəkə gecikmə həddi və hədəf TPS üçün yüksək, orta və ya aşağı performans vəziyyətində olub olmadığını qiymətləndirmək üçün istifadə edin.
+Bu səhifədən istifadə edərək müəyyən bir düyün sayı, şəbəkə gecikmə həddi və hədəf TPS üçün yerləşdirmənin yüksək, orta və ya aşağı performans vəziyyətində olub-olmadığını təxmin edə bilərsiniz.
 
-## Nələri ölçmək lazımdır {#what-to-measure}
+## Nəyi Ölçmək {#what-to-measure}
 
-Torii ilə məruz qalan operator səthləri ilə başlayın:
+İctimai node vaxt nöqtəsi məlumat baxışı və Prometheus yığımı ilə başlayın, sonra operator tərəfindən təsdiqlənmiş konsensus vəziyyəti üçün CLI istifadə edin. Operator açarı hədəf node tərəfindən icazə verilməli və yalnız proqram icra mühitində yüklənir:
 
 ```bash
 export TORII=http://127.0.0.1:8180
+export OPERATOR_KEY_FILE=./secrets/operator.key
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
-curl -s -H 'Accept: application/json' "$TORII/v1/sumeragi/status" | jq .
-curl -s "$TORII/v1/sumeragi/phases" | jq .
-curl -s "$TORII/v1/sumeragi/rbc" | jq .
-curl -s "$TORII/v1/sumeragi/params" | jq .
 curl -s "$TORII/metrics" > metrics.prom
+
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi status
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi diagnostics
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi qc
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi params
 ```
 
-İctimaiyyətə Taira qarşı eyni yalnız oxunma nümunəsini cəhd edə bilərsiniz:
+İctimai Taira anonim düyün anlarının şəklini öyrənmək üçün faydalıdır. Onun operator diaqnostikaları Taira operator açarı olmadan qəsdən mövcud deyil:
 
 ```bash
 TAIRA=https://taira.sora.org
@@ -42,214 +52,215 @@ TAIRA=https://taira.sora.org
 curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
-curl -fsS "$TAIRA/v1/time/status" \
-  | jq '{healthy: .health.healthy, peers, samples_used, rtt_count: .rtt.count}'
-
-curl -fsS "$TAIRA/metrics" \
-  | grep -E '^(block_height|queue_size|sumeragi_tx_queue_depth|txs|view_changes)' \
-  | head -n 20
+curl -fsS "$TAIRA/v1/time/now" \
+  | jq '{now_ms, offset_ms}'
 ```
 
-Ictimai Taira ölçüləri siqnal adlarını öyrənmək üçün faydalıdır. Onları öz tətbiqiniz üçün istehsal qabiliyyətinin sayı kimi istifadə etməyin.
+Öz yerləşdirməniz üçün istehsal tutumu rəqəmləri kimi ictimai testnet müşahidələrindən istifadə etməyin.
 
-CLI vasitəsilə eyni konsensus görüntüləri mövcuddur:
-
-```bash
-iroha --config ./localnet/client.toml --output-format text ops sumeragi status
-iroha --config ./localnet/client.toml --output-format text ops sumeragi phases
-iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
-iroha --config ./localnet/client.toml ops sumeragi params
-```
-
-Telemetri görünüşü konfigürə olunmuş profildən asılıdır. `/metrics` lazım olduqda `extended` istifadə edin və detallı Sumeragi operator yollarına ehtiyac duyduğunuz zaman sınaq dövründə `full` istifadə edin.
+Telemetriya görünürlüğü konfiqurasiya edilmiş profilə bağlıdır. `operator` status və diaqnostika anlıqlarını aktiv edir. `extended` `/metrics` və bahalı zamanlamaları əlavə edir, Əvvəllər `developer` lider, QC, parametrlər və sübut kimi inkişafçı zaman nöqtəsi məlumat baxışlarını əlavə edir, lakin `/metrics`-ü aktiv etmir. Bir işləmə həm dəstələrə ehtiyac duyursa, `full`-dən istifadə edin. `telemetry_profile` tək ilk buraxılış telemetriya açarıdır.
 
 ```toml
-telemetry_enabled = true
 telemetry_profile = "full"
 ```
 
-## Performance Bands {#performance-bands}
+## Performans Səviyyələri {#performance-bands}
 
-Bu bantları hədəf keçid `Y` TPS və gecikmə büdcəsi `L` millisecondlarda müşahidə olunmuş bir iş üçün istifadə edin. İş yükünü istilik, sabit vəziyyət və ən azı gözlənilən zirvə yükünün bir dövrü əhatə etmək üçün kifayət qədər uzun sürün.
+Müşahidə olunan hədəf keçid sürəti üçün bu zolaqlardan istifadə edin `Y` TPS və gecikmə büdcəsi `L` millisekund. İş yükünü kifayət qədər uzun müddət işlədin ki, istismar, sabit vəziyyət və ən azı bir gözlənilən yüksək yüklər dövrünü əhatə etsin.
 
-|Band |Şərtlər |Məna|
+|Qrup|Şərtlər|Mənası|
 | --- | --- | --- |
-|Yüksək .|Qəbul olunan keçid səviyyəsi `Y` və ya ondan yuxarıdır, p95 cəlbedici gecikmə müddəti `0.8 * L` -dən aşağıdır, növbələr potensialın 10% -dən aşağı qalır və görünüş dəyişikliyi / bərpa hesablamaları düzdür |Göndərmədə tələb olunan iş yükü üçün yer var |
-|Orta |Qəbul olunan keçid gücü `Y` yaxınlaşır, p95 cəlbedici gecikmə müddəti `L` -dən aşağıdır, növbələr 50% -dən aşağı sabitdir və görünüş dəyişiklikləri nadir hallarda olur.|İstifadə işləyir, lakin məhdud partlayış tolerantlığı var |
-|Aşağı |Qəbul olunan keçid səviyyəsi `Y` -dən aşağıdır, p95 cəlbedici gecikmə müddəti `L` -dən çoxdur, səyahət zamanı növbələr artır və ya görünüş dəyişikliyi / geri təzyiq hesablayıcıları davamlı olaraq artır. |Tələb olunan iş yükü ən azı bir şüşə boğazından çoxdur |
+|Yüksək|Qəbul edilmiş ötürmə `Y` səviyyəsində və ya üstündədir, p95 protokol yekunlaşdırma gecikməsi `0.8 * L`-dən aşağıdır, növbələr tutumun 10%-dən aşağı qalır və görünüş-dəyişmə/bərpa sayğacları düz qalır|Yerinə yetirmə tələb olunan iş yükü üçün boşluğa sahibdir|
+|Orta|Qəbul olunan vasitəçilik `Y`-a yaxındır, p95 protokol tamamlanma gecikməsi `L`-in altında, növbələr tutumun 50%-dən aşağı səviyyədə stabildir və görünüş dəyişiklikləri nadirdir|Yerləşdirmə işləyir, lakin məhdud ani yüklənmə dözümlülüyü var|
+|Aşağı|Qəbul edilmiş ötürmə `Y`-dan aşağıdır, p95 protokolun yekunlaşdırma gecikməsi `L`-i aşır, iş zamanı növbələr artır və ya görünüş dəyişikliyi/backpressure sayğacları davamlı olaraq yüksəlir|Tələb olunan iş yükü ən azı bir dar nöqtəni aşır|
 
-Əsas qayda növbənin istiqamətidir. Əgər təqdim edilən TPS öhdəlikdən böyükdürsə TPS və növbənin artması davam etsə, qısa nümunələr sağlam görünsə də, yerləşdirilmə həddindən artıq yüklənir.
+Əsas qayda növbənin istiqamətidir. Əgər təqdim olunan TPS sonlaşdırılmış TPS-dən böyükdürsə və növbə böyüməyə davam edirsə, quraşdırma hətta kiçik nümunələr sağlam görünsə də yüklənir.
 
-## Qeydiyyatın sayı və quorum {#node-count-and-quorum}
+## Node sayı və kvorum {#node-count-and-quorum}
 
-Daha çox validatorlar səhv tolerantlığını yaxşılaşdırır, lakin koordinasiya, imzalanma və şəbəkə üçün xərcləri artırır. Sumeragi icrası:
+Daha çox doğrulayıcı səhv tolere etməni artırır, lakin əlaqələndirmə, imza və şəbəkə yayılma xərclərini artırır. İlk buraxılış Sumeragi protokolu bunu tələb edir:
 
-- təsdiqləyici sayı `n` səhv büdcəsini `f = floor((n - 1) / 3)` çıxarır.
-- `n >= 4` üçün komitə quorum `2f + 1`dir.
-- `n <= 3` üçün bütün təsdiqçilər öhdəlik almaq üçün tələb olunur.
-- müşahidəçi həmyaşıdları sinxron bloklar, lakin səs vermək, təklif etmək və ya toplamaq deyil
+- dəqiq `n = 3f + 1` səsvermə komitəsi
+- `4 <= n <= 31`, yəni etibarlı ölçülər 4, 7, 10 və sairədir
+- konsensusun yekunlaşması üçün `2f + 1` iştirakçı sayı
+- müşahidəçi şəbəkə yoldaşları blokları sinxronizasiya edir, amma səs vermir, təklif etmir və ya toplaşdıra bilmirlər
 
-|Validatorlar |Xəta büdcəsi |Quorum qəbul edin.|Mükəmməllik notası |
+|Təsdiqləyicilər|Xəta büdcəsi|konsensusun yekunlaşdırılması üçün kvorum|Tutum qeydi|
 | --- | --- | --- | --- |
-|1-dən 3-dək|0 praktiki offline slack |bütün təsdiqçilər |İnkişaf və kiçik sınaqlar üçün faydalıdır; hər hansı bir yoxlayıcı öhdəlikləri dayandıra bilər. |
-| 4 | 1 | 3 |Bir səhv tolerantlığı üçün ümumi minimum |
-| 7 | 2 | 5 |Daha davamlı, daha çox səsvermə və təbliğat nəqliyyatı ilə |
-| 10 | 3 | 7 |Daha yüksək koordinasiya xərcləri; şəbəkə və kollektor tənzimlənməsi daha vacibdir |
+| 4 | 1 | 3 |Bir səhv tolerantlığı üçün ümumi minimum|
+| 7 | 2 | 5 |Daha davamlı, daha çox səs və yayım trafiki ilə|
+| 10 | 3 | 7 |Daha yüksək əlaqələndirmə xərci; şəbəkə və giriş tənzimlənməsi daha çox əhəmiyyət daşıyır|
+| 31 | 10 | 21 |Maksimum ilk buraxılış komitəsi; müqayisə koordinasiyası və imza xərclərini diqqətlə|
 
-"X qovşaqlarını" qiymətləndirərkən səsvermə təsdiqləyicilərini müşahidəçilərdən ayırın. Müşahidəçilərin əlavə edilməsi ümumiyyətlə təsdiqləyicilərin əlavə edilməsindən daha ucuz başa gəlir, lakin müşahidəçılar hələ də blok dedikodunu, blok sinxronlaşmasını, disk və şəbəkə bant genişliyini istehlak edirlər.
+blokçeyn mənşə nəsli və başlanğıc təsdiqi uyğun gəlməyən komitə ölçülərini rədd edir; buraxılışın qəbul edə bilməyəcəyi bir topologiyanı benchmark etməyin.
 
-## Fəaliyyətlərə təsir edən amillər {#factors-that-influence-performance}
+“X düyünləri”ni qiymətləndirərkən, səsvermə təsdiqləyiciləri ilə müşahidəçiləri ayırın. Müşahidəçilərin əlavə edilməsi adətən təsdiqləyiciləri əlavə etməkdən daha ucuz başa gəlir, amma müşahidəçilər hələ də blok yayımı, blok sinxronizasiyası, disk və şəbəkə bant genişliyindən istifadə edirlər.
 
-### İş yükünün forması {#workload-shape}
+## Performansa Təsir Edən Faktorlar {#factors-that-influence-performance}
 
-Eyni TPS hər bir əməliyyatın nə ilə bağlı olaraq ucuz və ya bahalı ola bilər.
+### İş Yükü Forması {#workload-shape}
 
-- Hər əməliyyat üçün təlimatların sayı
-- İmzaların sayılması və imzalanma alqoritmləri
-- Transaction byte ölçüsü və dekompressed payload ölçüsü
-- oxuma və yazma nisbəti
-- Metadalanın ölçüsü və aktiv əməliyyatları
-- Smart contract, trigger və IVM icra xərcləri
-- eyni həmyaşıdlara qarşı hərəkət edən sorğu yükü
+Eyni TPS hər əməliyyatın nə etdiyindən asılı olaraq ucuz və ya bahalı ola bilər. Qeyd:
 
-Kiçik köçürmə əməliyyatları müqavilə ağır və ya metadata ağır iş yükləri üçün bir təyinat deyil.
+- əməliyyat başına təlimatların sayı
+- imza sayı və imzalama alqoritmləri
+- əməliyyat bayt ölçüsü və dekompressiya olunmuş yükgöndərmə ölçüsü
+- oxuma/yazma nisbəti
+- metaməlumat ölçüsü və aktiv əməliyyatları
+- ağıllı müqavilə, tetikleyici və IVM icra xərci
+- sorğu yüklənməsi eyni şəbəkə yoldaşlarına qarşı işləyir
 
-### Razılaşma vaxtı {#consensus-timing}
+Kiçik köçürmə əməliyyatları müqavilə-yüklü və ya metadata-yüklü iş yüklərinin vasitəsi deyil.
 
-Sumeragi vaxtlandırılması effektiv Sumeragi parametrləri ilə tənzimlənir:
+### Razılaşma Tempi {#consensus-cadence}
 
-- `block_time_ms`
-- `commit_time_ms`
-- `min_finality_ms`
-- `pacing_factor_bps`
-- NPoS rejiminin aktivləşdirildiyi zaman NPoS mərhələ vaxtları.
+Effektiv Sumeragi parametr zaman nöqtəsi məlumat görüntüsü imzalanmış dəyişməz blok kadençası və saat sürüşməsi sərhədini ehtiva edir:
 
-Onları yoxlayın:
+- `block_cadence_ms`
+- `max_clock_drift_ms`
 
-```bash
-iroha --config ./localnet/client.toml ops sumeragi params
-curl -s "$TORII/v1/sumeragi/params" | jq .
-```
-
-Aşağı vaxtlandırma hədəfləri yalnız şəbəkə, saxlama və icra təbəqələrinin davam edə biləcəyi müddətdə gecikmə sürətini yaxşılaşdıra bilər. Dəyişikliklər görüldükdən sonra, itkin payload alınması və ya geri təzyiq meydana çıxdıqdan sonra zamanlayıcıların azaldılması ümumiyyətlə performansını pisləşdirir.
-
-### Kollektor Fanout {#collector-fanout}
-
-Kollektor parametrləri komitə səslərinin nə qədər sürətli birləşməsinə təsir edir:
-
-- `sumeragi.collectors.k` hündürlüyünə görə nə qədər toplayıcı səs topladığını idarə edir
-- `sumeragi.collectors.redundant_send_r` yerli müddətdən sonra əlavə səsverməni idarə edir.
-- `sumeragi.collectors.parallel_topology_fanout` topologiyayı kollektorlarla birlikdə əlavə edir.
-
-Daha böyük və ya daha az etibarlı şəbəkələrdə bayraq gecikməsini azalda bilər, lakin həmçinin trafik artırır. Bu dəyərləri dəyişdirməkdən əvvəl ümumi mövcudluğu və kollektor telemetriyasını gecikmə və geri basınç ölçülərinə müqayisə edin:
+Onları ilə yoxlayın:
 
 ```bash
-iroha --config ./localnet/client.toml --output-format text ops sumeragi telemetry
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi params
 ```
 
-### Şəbəkənin şərtləri {#network-conditions}
+`block_cadence_ms` imzalanmış blokçeyn başlanğıcı ilə təyin olunur və başlanğıcda dondurulur; bu, canlı tənzimləmə düyməsi deyil. Yalnız fərqli imzalanmış blokçeyn başlanğıcı girişlərinə malik şəbəkələri ayrı benchmark ssenariləri kimi müqayisə edin. Baxış dəyişiklikləri, çatışmayan yük götürmələri və ya tərs təzyiq meydana gəldikdə, daha qısa dövr adətən davamlı ötürülən məlumatın artmasındansa, yüklənməni daha görünən edir.
 
-Konsensus nəticələri aşağıdakılara görə həssasdır:
+### Namizəd və Daxilolma Hüdudları {#candidate-and-ingress-bounds}
+
+Qovşaq-yerli Sumeragi sərhədlər, bir təsdiqləyicinin nə qədər namizəd və bərpa işi saxlaya biləcəyini müəyyən edir:
+
+- `sumeragi.block.max_transactions`
+- `sumeragi.block.max_payload_bytes`
+- `sumeragi.block.proposal_queue_scan_multiplier`
+- `sumeragi.queues.commands`
+- `sumeragi.queues.bodies` və `sumeragi.queues.body_bytes`
+- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks` və `sumeragi.queues.ready_bodies`
+
+Çox kiçik sərhədlər növbə və ya yük bərpası təzyiqi yaradır; həddindən böyük sərhədlər isə saxlanılan yaddaşı və sui-istifadə edən şəbəkəyə mövcud iş miqdarını artırır Həmyaşıdı. Hər dəfə bir sərhədi dəyişdirməzdən əvvəl diaqnostikaların müəyyən zaman nöqtəsinə aid verilənlər görüntüsünü proses yaddaşı, mesaj işlənməsi və bədən çatışmazlığı göstəriciləri ilə müqayisə edin:
+
+```bash
+iroha --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format json ops sumeragi diagnostics
+```
+
+### Şəbəkə Şəraitləri {#network-conditions}
+
+Konsensus performansı aşağıdakılara həssasdır:
 
 - RTT təsdiqləyicilər arasında
-- həyəcan və paket itkisi
-- blok payliq yükləri və RBC parçalar üçün bant genişliyi
-- regionlar arasındakı asimetrik əlaqə
-- NAT, həmyaşıd bağlantısını gecikdirən yanğın divarı və ya relay davranışları
+- titrəmə və paket itkisi
+- blok yükləri və imzalanmış RS16 parçalar üçün genişlik
+- regionlar arasında qeyri-bərabər əlaqələr
+- NAT, firewall və ya şəbəkə digər düyünlərə qoşulmanı gecikdirən ötürücü davranış
 
-Planlaşdırma qaidəsi olaraq, bir neçə təsdiqçi dönüş səyahətini və icra və disk təzyiqi vaxtını əhatə etmək üçün gecikmə büdcəsini kifayət qədər yüksəkləşdirin. p95 şəbəkəsi RTT artıq istədiyiniz p95 təzyiq gecikməsinə yaxındırsa, hədəf realist deyil.
+Planlaşdırma qaydası olaraq, gecikmə büdcəsini bir neçə doğrulayıcı tura, həmçinin icra və diskdə yadda saxlama vaxtını əhatə edəcək qədər yüksək qoyun. Əgər p95 şəbəkə RTT artıq istənilən p95 protokol yekunlaşma gecikməsinə yaxınsa, hədəf realist deyil.
 
-### Səfərlər və giriş məhdudiyyəti {#queues-and-admission-limits}
+### Növbələr və Qəbul Məhdudiyyətləri {#queues-and-admission-limits}
 
-Giriş və sıra parametrləri bir həmyaşıdın nə qədər partlayış təzyiqi əhatə edə biləcəyini müəyyənləşdirir:
+Qəbul və növbə parametrləri şəbəkə dostunun nə qədər ani təzyiqi qəbul edə biləcəyini müəyyən edir:
 
 - `queue.capacity`
 - `queue.capacity_per_user`
+- `queue.max_retained_bytes`
 - `queue.transaction_time_to_live_ms`
-- max imzaları, təlimatları, bayt və dekompressiya edilmiş bayt kimi genesis əməliyyat məhdudiyyətləri
-- p2p növbənin həddləri və konsensus daxil olmaq məhdudiyyətləri
+- blok zənciri başlanğıc əməliyyatı limitləri, məsələn, maksimum imzalar, təlimatlar, baytlar və dekompressiya olunmuş baytlar
+- p2p növbə hədləri və konsensus giriş limitləri
 
-Yüksək növbə qabiliyyəti bir müddət həddindən artıq yükü gizlədə bilər, lakin bu da davamlı keçid artımını artırmır.
+Yüksək növbə tutumu bir müddət üçün yüklənməni gizlədə bilər, amma davamlı işləmə sürətini artırmır. Sabit növbə sağlamdır; artan növbə isə gecikmədir.
 
-### Hardver və saxlama {#hardware-and-storage}
+### Avadanlıq və Saxlama {#hardware-and-storage}
 
-Yalnız lider deyil, hər təsdiqçiyi ölçün:
+Hər bir təsdiqləyicini ölçün, yalnız lideri deyil:
 
-- CPU təsdiqləmə, imzalanma yoxlaması və icra zamanı doymuşluğu
-- Sifarişlər, sürətli görüntülər və aktiv RBC seanslardan olan yaddaş təzyiqi
-- blok saxlama və sürətli şəkillər üçün disk yazma gecikməsi
-- şəbəkənin ötürülməsi/alması sıxlığı
-- İş yükü tərəfindən istifadə olunduğu zaman texniki sürətlənmə parametrləri
+- CPU doğrulama, imza yoxlaması və icra zamanı doyma
+- növbələrdən yaddaş təzyiqi, vaxt nöqtəsi məlumat baxışları və yük bərpa tamponları
+- blok saxlama və zaman nöqtəsi üzrə məlumat görüntüləri üçün disk yazma gecikməsi
+- şəbəkə göndərmə/qəbul doyması
+- iş yükü tərəfindən istifadə edildikdə ixtiyari aparat sürətləndirmə parametrləri
 
-Ən yavaş səsvermə təsdiqçisi şəbəkənin quyruq gecikməsini müəyyən edə bilər.
+Ən yavaş səs verən yoxlayıcı şəbəkənin son gecikməsini müəyyən edə bilər.
 
-## Prometheus siqnalları {#prometheus-signals}
+## Prometey Siqnalları {#prometheus-signals}
 
-Metrik adları profil və xüsusiyyətlər dəstindən asılı olaraq dəyişə bilər. Əvvəlcə nodunuzda `/metrics` yoxlayın, sonra mövcud seriya ətrafında taxtalar qurun.
+Metrlərin adları yoxlanılmış telemetriya kataloqundan gəlir. Seriyaların mövcudluğu və nümunə götürülməsi hələ də quruluş xüsusiyyətlərindən və `telemetry_profile`-dən asılıdır, buna görə bir dashbord yaratmadan əvvəl hədəf nodda `/metrics`-i yoxlayın.
 
-Ümumi siqnallar aşağıdakılardır:
+Ümumi siqnallar bunlardır:
 
-|Sinyal |Prometheus nümunələri |Nəyə baxmaq lazımdır?|
+|Siqnal|Prometey nümunələri|Nəyə baxmalı|
 | --- | --- | --- |
-|Qəbul olunan keçid |`sum(rate(txs{type="accepted"}[5m]))` |Hələlik sabit vəziyyətdə hədəf TPS -i yerinə yetirməlidir və ya aşmalıdır. |
-|Təkliflər |`sum(rate(txs{type="rejected"}[5m]))` |Test planı ilə izah edilməlidir.|
-|Gecikmə vaxtını təyin edin.|`histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |Qeydiyyat büdcəsi ilə p95/p99-u müqayisə edin |
-|Səyahət dərinliyi |`queue_size`, `sumeragi_tx_queue_depth` |Çıxışın zirvəsi zamanı məhdudlaşdırılmalıdır.|
-|Səyahət doymuşluğu |`sumeragi_tx_queue_saturated` |Dayanmış sıfır olmayan dəyərlər həddindən artıq yükləndirilmə deməkdir |
-|Dəyişiklikləri baxın |`view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |Artan qiymətlər zamanlama, topologiya, pay yükü və ya şəbəkə problemini göstərir |
-|İndirildiyi mesajlar |`dropped_messages`, `sumeragi_consensus_message_handling_total` |Yükləmə zamanı azalma ümumiyyətlə gecikmə zirvələrini izah edir .|
-|RBC basıncı |`sumeragi_rbc_store_pressure`, `sumeragi_rbc_backpressure_deferrals_total` |Faydalı yüklərin bərpası və ya saxlanılması üçün sıfır olmayan təzyiq nöqtələri |
-|Quorum qəbul edin.|`sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |Sayılan imzalar tezliklə tələb olunan quorumuna çatmalıdır.|
+|Qəbul edilmiş ötürmə sürəti| `sum(rate(txs{type="accepted"}[5m]))` |Sabit vəziyyətdə hədəf TPS-ə çatmalı və ya onu aşmalıdır|
+|Rədd etmələr| `sum(rate(txs{type="rejected"}[5m]))` |Test planı ilə izah edilə bilməlidir|
+|protokolun yekunlaşdırılma gecikməsi| `histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |p95/p99-i gecikmə büdcəsi ilə müqayisə edin|
+|Növbə dərinliyi| `queue_size`, `sumeragi_tx_queue_depth` |Yüksək yüklənmə zamanı məhdud qalmalıdır|
+|Növbənin doyması| `sumeragi_tx_queue_saturated` |Davamlı sıfırdan fərqli dəyərlər həddindən artıq yüklənmə deməkdir|
+|Dəyişiklikləri göstər| `view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |Yüksələn dəyərlər zamanlama, topologiya, yükləmə və ya şəbəkə problemi göstərir|
+|Atılmış mesajlar| `dropped_messages`, `sumeragi_consensus_message_handling_total` |Yük zamanı düşmələr adətən gecikmə artımlarını izah edir|
+|Yük və DA bərpası| `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` |Davamlı sorğular, artan yaş və ya təkrarlanan DA qapılar bədən və ya parça əldə etmə çətinliyini göstərir|
+|konsensusun yekunlaşdırılması üçün kvorum| `sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |Sayılan imzalar tələb olunan səs çoxluğuna tez çatmalıdır|
 
-Bir metrik yalnız `/v1/sumeragi/status`də mövcud olduqda, Prometheus sürüşməsi ilə eyni dövrdəki əşyalarda JSON sürüşməsini tutun.
+Bir metrik yalnız `/v1/sumeragi/status` mövcud olduqda, JSON nöqtəsində vaxt məlumatlarının görünüşünü Prometheus skreypi ilə eyni işləmə artefaktlarında tutun.
 
-## Qiymətləndirmə iş axını {#estimation-workflow}
+## Təxmin İş Axını {#estimation-workflow}
 
-1. Ssenariyi təyin edin:
-   - təsdiqləyici və müşahidəçi sayı
+1. Ssenarini müəyyən edin:
+   - təsdiqləyici sayı və müşahidəçi sayı
    - konsensus rejimi
-   - hədəf TPS
-   - p95 və p99 büdcələri ilə bağlı
+   - target TPS
+   - p95 və p99 protokolunun yekunlaşdırılması-latentlik büdcələri
    - əməliyyat qarışığı
-   - gözlənilir şəbəkə RTT, jitter və bant genişliyi
-2. Fəaliyyətli quruluşu qeyd edin:
+   - gözlənilən şəbəkə RTT, sıçrayış və bant genişliyi
+2. Effektiv konfiqurasiyanı qeyd edin:
 
    ```bash
-   iroha --config ./localnet/client.toml --output-format json ops sumeragi params \
+   iroha --config ./localnet/client.toml \
+     --operator-private-key-file "$OPERATOR_KEY_FILE" \
+     --output-format json ops sumeragi params \
      > artifacts/sumeragi-params.json
-   curl -s "$TORII/v1/sumeragi/collectors" \
-     > artifacts/sumeragi-collectors.json
+   iroha --config ./localnet/client.toml \
+     --operator-private-key-file "$OPERATOR_KEY_FILE" \
+     --output-format json ops sumeragi status \
+     > artifacts/sumeragi-status.json
+   iroha --config ./localnet/client.toml \
+     --operator-private-key-file "$OPERATOR_KEY_FILE" \
+     --output-format json ops sumeragi diagnostics \
+     > artifacts/sumeragi-diagnostics.json
    ```
 
-3. İş yükünü hədəflə TPS yerinə yetirin.
-4. Yarışın başlanğıcında, ortasında və sonunda status və ölçüləri tutun.
-5. Döyüşü performans bandı cədvəli ilə təsnif edin.
-6. Əgər bant orta və ya aşağıdırsa, bir-birində bir faktor dəyişdirin və təkrarlayın.
+3. İş yükünü hədəf TPS üzərində işlədin.
+4. Qaçışın əvvəlində, ortasında və sonunda vəziyyət və göstəriciləri qeyd edin.
+5. İşi performans-zolaq cədvəli ilə təsnif edin.
+6. Əgər zolaq Orta və ya Aşağıdırsa, bir faktoru bir vaxtda dəyişdirin və təkrarlayın.
 
-## Benchmark Report Şablonu {#benchmark-report-template}
+## Benchmark Hesabat Şablonu {#benchmark-report-template}
 
-Xidmət göstəricilərini yalnız onları təkrarlamaq üçün kifayət qədər kontekstlə nəşr edin:
+Performans göstəricilərini yalnız onları təkrarlamaq üçün kifayət qədər kontekst ilə birlikdə dərc edin:
 
-- Iroha təyinat, buraxılış və xüsusiyyət bayraqları
-- Validator və müşahidəçi sayları
-- konsensus rejimi və Sumeragi parametrləri
-- kollektor `k`, redundant göndərmək `r` və topoloji fanout
-- Telemetrik profil
-- Hardver, saxlama və OS detalları
-- şəbəkə RTT, jitter, itki və bant genişliyi fərziyyələri
-- əməliyyat qarışığı və paylı yük ölçüləri
-- təklif edilən TPS və icra müddəti
-- Qəbul edilmiş və rədd edilmiş TPS
-- p50/p95/p99 commit latency
-- növbənin dərinliyi və doymuşluğu
-- görünüş dəyişiklikləri, buraxılmış mesajlar, RBC təzyiqi və itkin payload hesablamaları
-- CPU, hər bir validator üçün yaddaş, disk və şəbəkə istifadəsi
+- Iroha protokolun yekunlaşdırılması, buraxılışı və xüsusiyyət bayraqları
+- təsdiqləyici və müşahidəçi sayı
+- konsensus rejimi, imzalı blok kadençası və DA tərtibatı
+- dəqiq `3f + 1` komitə, kvorum və müşahidəçi siyahısı
+- `sumeragi.block`, `sumeragi.queues`, `sumeragi.limits`, şəbəkə-giriş və əməliyyat-növbəsi sərhədləri
+- telemetriya profili
+- avadanlıq, saxlama və OS detallar
+- şəbəkə RTT, tərpənmə, itkilər və genişlik fərziyyələri
+- əməliyyat qarışığı və yük ölçüləri
+- təklif olunan TPS və işləmə müddəti
+- qəbul edildi/rədd edildi TPS
+- p50/p95/p99 protokolunun yekunlaşma gecikməsi
+- növbə dərinliyi və doyma
+- dəyişikləri baxın, batmış mesajlar, blok alınmalarının itməsi və DA-qapı sayğacları
+- CPU, hər bir təsdiqləyici üzrə yaddaş, disk və şəbəkə istifadəsi
 
-Bu məlumatlar olmadan TPS nömrəsi anekdot kimi qəbul edilməlidir.
+Bu detallarsız, TPS nömrəsi hekayəvi kimi qəbul edilməlidir.
 
-## Əlaqəli səhifələr {#related-pages}
+## Əlaqəli Səhifələr {#related-pages}
 
-- [Izanami ilə Kaos Testləri](./chaos-testing.md)
-- [Torii bitki nöqtələri](../../reference/torii-endpoints.md)
-- [Iroha 3 vasitəsilə CLI](../../get-started/operate-iroha-via-cli.md) istifadə etmək
-- [Peer konfigurasiyası istinadı](../../reference/peer-config/params.md)
+- [Izanami ilə Xaos Testi](./chaos-testing.md)
+- [Torii API son nöqtələr](../../reference/torii-endpoints.md)
+- [Iroha 3-i CLI vasitəsilə işlədin](../../get-started/operate-iroha-via-cli.md)
+- [şəbəkə həmkarı konfiqurasiya istinadı](../../reference/peer-config/params.md)

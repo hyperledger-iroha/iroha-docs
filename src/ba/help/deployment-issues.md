@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /help/deployment-issues.md
-translation_source_hash: 6f35ac59053e312f56a716810c8f0b625752500d1fc64b27d93cbd8317b6cc19
+translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Деployment проблемаларын хәл итеү {#troubleshooting-deployment-issues}
 
 Был бүлектә Iroha 3 урынлаштырыуҙар өсөн проблемаларҙы хәл итеү буйынса кәңәштәр бирелә. Әгәр һеҙ кисергән мәсьәлә бында һүрәтләнмәгән икән, беҙгә [Telegram](https://t.me/hyperledgeriroha) аша мөрәжәғәт итегеҙ.
@@ -15,26 +14,26 @@ translation_engine: nllb-200-ct2
 Урындағы һәм һынау эштәрен башҡарыу өсөн Kagami тарафынан сығарылған артефакттарҙы ҡулдан яҙылған файлдар урынына өҫтөнлөк бирегеҙ:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-Булдырылған каталогта тиңдәш конфигурациялары, генез материалы, старт скрипттары һәм README өсөн Iroha 3 төҙөлөш һыҙығы бар.
+Булдырылған каталогта пир конфигурациялары, генез материалы, старт скрипттары һәм README өсөн Iroha 3 төҙөлөш һыҙығы бар.
 
-## Тиҫтерҙәр башланмай {#peer-does-not-start}
+## Пирҙар башланмай {#peer-does-not-start}
 
 Тәүҙә был әйберҙәрҙе тикшерегеҙ:
 
-- `irohad --config <path>` пункттары үҙ файлында TOML.
-- `public_key` һәм `private_key` тиңдәш конфигурацияһында бер үк асҡыс парына ҡарай.
+- `iroha3d --config <path>` пункттары үҙ файлында TOML.
+- `public_key` һәм `private_key` пир конфигурацияһында бер үк асҡыс парына ҡарай.
 - `genesis.public_key` генез операцияһына ҡул ҡуйыу өсөн ҡулланылған асҡыс менән тап килә.
-- validator peer identities use BLS-Normal keys, and `trusted_peers_pop` contains proof of ownership entries for the local key and trusted peers.
+- validator һәм peer идентификаторҙары BLS-Normal асҡыстарын ҡуллана, ә `trusted_peers_pop` урындағы асҡыс һәм ышаныслы peers өсөн хужа булыуҙы иҫбатлау яҙмаларын үҙ эсенә ала.
 - Torii һәм P2P порттары башҡа процесс менән бәйле түгел.
 - Kura магазиндар каталогы бер үк сылбырға ҡарай һәм башҡа селтәр профиленән күсерелмәгән.
 
 TOML ҡатламынан күберәк уҡығанда конфигурация эҙләүҙе ҡулланыу:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --trace-config
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 ```
 
 ## Docker һәм Композиция {#docker-and-compose}
@@ -42,15 +41,15 @@ cargo run --bin irohad -- --config ./config.toml --trace-config
 Генерациялау Хәҙерге Kagami локаль селтәр сығымынан яҙыу, шуға күрә команда һыҙығы аргументтары һәм конфигурация файлдар иҫкәртелгән кодҡа тап килә:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
 Әгәр комплектты урынлаштырыу башлана һәм һуңынан туҡтап ҡалһа, демондар журналдарын тикшереп ҡарағыҙ:
 
 - `chain`
-- башҡа генез транзакцияһы йәки манифест ҡулланған бер тиңдәше
+- башҡа генез транзакцияһы йәки манифест ҡулланған бер пире
 - P2P адрестары рекламалана, улар контейнерҙар селтәрендә генә эшләй
 - урындағы күләмде регенерацияланған генездан һуң ҡабаттан ҡулланыу
 
@@ -58,10 +57,10 @@ docker compose -f ./localnet/docker-compose.yml up
 
 ## Кубернеттар {#kubernetes}
 
-Kubernetes өсөн, һәр validator дәүләт инфраструктураһы тип ҡарау:
+Kubernetes өсөн һәр validator-ҙы торош һаҡлаусы инфраструктура тип ҡарағыҙ:
 
 - һәр бер яҡташтарына тотороҡло идентификация асҡысы һәм тотороҡһоҙ даими күләме биреү
-- P2P адрестарын асыҡларға, уларҙы башҡа хеҙмәттәштәре кластер эсендә хәл итә ала.
+- P2P адрестарын асыҡларға, уларҙы башҡа пирҙары кластер эсендә хәл итә ала.
 - монтаж конфигурация һәм генез файлдар булараҡ үҙгәрешһеҙ конфигурацияһы өсөн развертывание
 - Бөтә генез йәки топология үҙгәрештәрен автоматлаштырылған конфигурация картаһын яңыртыу рәүешендә түгел, ә аңлы рәүештә файҙаланырға
 
@@ -69,10 +68,20 @@ Kubernetes өсөн, һәр validator дәүләт инфраструктура�
 
 ## Сора профиле {#sora-profile}
 
-Iroha 3, Nexus, SoraFS йәки күп юллы ағымдарҙы ҡулланған урынлаштырыуҙарҙа "Сора" профиле менән демоны ҡуҙғатырға кәрәк.
+Шәхси йәки урындағы Iroha 3 урынлаштырыуҙар, уларҙа Nexus, SoraFS йәки күп юллы ағымдар ҡулланыла, стандарт демоны Sora профиле менән эшләй башлай:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --sora
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora
 ```
 
 Бер үк селтәрҙәге валидаторҙар араһында бер үк профилде ҡулланыу.
+
+Йәмәғәт Taira раҫлаусылары махсус стартер ҡуллана, ул Taira-ның теүәл сылбырын, реестрын, һүндерелгән индекцияланған-SoraFS һаҡлауын һәм йүгереү ваҡытын билдәләүсе профилде талап итә. Уны башлар алдынан күрһәтелгән Taira конфигурацияһын раҫлағыҙ:
+
+```bash
+iroha3d_taira --sora \
+  --config /etc/iroha/taira/config.toml \
+  --check-config
+```
+
+Дөйөм `iroha3d` менән асыҡ Taira валидаторын эшләтеп ебәрмәгеҙ; мәжбүри профилде [`iroha3d` CLI белешмәһендә](/ba/reference/iroha3d-cli.md) ҡарағыҙ.

@@ -1,23 +1,23 @@
 ---
 translation_locale: ar
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: af3e0b8698f877c035ccd3bb71926cea14d1029fc2eb73e23756d57357935f0e
+translation_source_hash: 4979ab2c52eba4040d7f003f3da73dbc333fa7e047b0259816d0d34f97377749
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# العينات والوصفات {#samples-and-recipes}
+# عينات ووصفات {#samples-and-recipes}
 
-يحتوي مخزن المصدر Iroha على وصفات SDK ومجموعات اختبارية تتبع نفس مراجعة العقد.
+يحتوي مستودع المصدر Iroha على SDK وصفات ومجموعات اختبار تتبع نفس الإصدار مثل العقدة.
 
 ## JavaScript وصفات {#javascript-recipes}
 
-[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/main/javascript/iroha_js/recipes) يحتوي على أمثلة مستهدفة لمجموعة المعاملات المحددة. Nexus تحويلات التطبيقات NFT وتكرار الحسابات ISO تدفقات الجسر، و Torii كل وصفة توثيق ما إذا كان يعمل خارج الاتصال أو يحتاج إلى حياة Torii نقطة النهاية
+[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes) يحتوي على أمثلة مركزة لتجميع المعاملات الحتمية، Nexus تحويلات التطبيق, NFT وتكرار الحساب، ISO تدفقات الجسر، و Torii البث المباشر. كل وصفة توثق ما إذا كانت تعمل بدون اتصال أو تحتاج إلى بث مباشر Torii API نقطة النهاية.
 
-## Swift و iOS {#swift-and-ios}
+## Swift ونظام iOS {#swift-and-ios}
 
-استخدم `IrohaSwift/Tests/IrohaSwiftTests` في الأمثلة التي تم التحقق منها مقابل Swift SDK. انظر [ Swift و ](/ar/guide/tutorials/swift.md) لإعداد الحزمة والجسور.
+استخدم `IrohaSwift/Tests/IrohaSwiftTests` للأمثلة التي تم التحقق منها مقابل Swift SDK الحالية. انظر [Swift ونظام iOS](/ar/guide/tutorials/swift.md) لإعداد الحزمة والجسر.
 
 ## Android {#android}
 
-للجدد Android العمل، استخدام Kotlin- أولاً `core-jvm`, `client-android`, و `offline-wallet-android` الوحدات الموصوفة في [Kotlin, Android, والجافا](/ar/guide/tutorials/kotlin-java.md). (الـ) Kotlin SDK هو نقطة البداية الكانونية ل Android المستهلكين.
+بالنسبة للعمل الجديد Android، استخدم الوحدات Kotlin-الأولى `core-jvm`، `client-android`، و`offline-wallet-android` الموضحة في [Kotlin، Android، وجافا](/ar/guide/tutorials/kotlin-java.md). يعد Kotlin SDK نقطة البداية الأساسية لمستهلكي Android.

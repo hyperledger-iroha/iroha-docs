@@ -20,12 +20,12 @@ event streams တွေကို ကျဉ်းမြောင်းစေပ�
 
 ## ဒေတာဖြစ်ရပ် စစ်ဆေးခြင်း {#data-event-filters}
 
-`DataEventFilter` သည် စာရင်းအင်း ဒေတာဖြစ်စဉ်များနှင့် ကိုက်ညီသည်။ ၎င်း၏ လက်ရှိကွဲပြားမှုများသည်:
+`DataEventFilter` သည် blockchain ledger ဒေတာဖြစ်စဉ်များနှင့် ကိုက်ညီသည်။ ၎င်း၏လက်ရှိဗားရှင်းများမှာ:
 
 |အပြောင်းအလဲ|အဖြစ်အပျက် မိသားစု|
 | --- | --- |
 |`Any` |ဘယ်ဒေတာဖြစ်ရပ်မဆို |
-|`Peer` |အတန်းတူ ဘဝပတ်ဝန်းကျင် ဖြစ်ရပ်များ |
+|`Peer` |Network peer lifecycle events များ |
 |`Domain` |Domain lifecycle နှင့် metadata ဖြစ်ရပ်များ |
 |`Account` |အကောင့်သက်တမ်း စက်ဝန်း၊ မက်တာဒေတာများ၊ အမည်မဖော်လိုသူများနှင့် လက္ခဏာဖြစ်ရပ်များ |
 |`Asset` |အရင်းအမြစ် balance နှင့် metadata ဖြစ်ရပ်များ |
@@ -35,26 +35,26 @@ event streams တွေကို ကျဉ်းမြောင်းစေပ�
 |`Trigger` |trigger lifecycle နှင့် metadata ဖြစ်စဉ်များ |
 |`Role` |Role lifecycle ဖြစ်ရပ်များ |
 |`Configuration` |ကွင်းဆက်ပေါ်က ဖွဲ့စည်းမှုဖြစ်ရပ်များ |
-|`Executor` |Runtime အကောင်အထည်ဖော်မှု ဖြစ်ရပ်များ |
+|`Executor` |ဆော့ဖ်ဝဲ အကောင်အထည်ဖော်ရေး ပတ်ဝန်းကျင် အကောင်အ ထည်ဖော်မှု ဖြစ်ရပ်များ |
 |`Proof` |အထောက်အထား စစ်ဆေးမှု သက်တမ်းပတ်ဝန်းကျင် ဖြစ်ရပ်များ |
 |`Confidential` |လျှို့ဝှက်သော အရင်းအမြစ်ဖြစ်စဉ်များ |
 |`VerifyingKey` |Verifying-key မှတ်ပုံတင်ဖြစ်ရပ်များ |
-|`RuntimeUpgrade` |Runtime upgrade ဖြစ်ရပ်များ |
+|`RuntimeUpgrade` |ဆော့ဖ်ဝဲ အကောင်အထည်ဖော်ရေး ပတ်ဝန်းကျင် အဆင့်မြှင့်တင်မှု ဖြစ်ရပ်များ |
 |`Soradns` |Directory governance events ကို ဖြေရှင်းပေးပါ |
 |`Sorafs` |SoraFS gateway လိုက်နာမှုဖြစ်ရပ်များ |
-|`SpaceDirectory` |Space Directory က Lifecycle အဖြစ်အပျက်တွေကို ပြသနေပါတယ်|
+|`SpaceDirectory` |Space Directory နည်းပညာ manifest သက်တမ်းပတ်ဝန်းကျင်ဖြစ်ရပ်များ |
 |`Escrow` |ပွင့်လင်းမြင်သာသော Native Assets Escrow Lifecycle ဖြစ်ရပ်များ |
-|`Offline` |Offline settlement events များ|
+|`Offline` |Offline ဘဏ္ဍာရေး ငွေကြေးငွေချေမှုပွဲများ |
 |`Oracle` |Oracle feed ဖြစ်ရပ်များ |
 |`Social` |ဗိုင်းရပ်စ် လှုံ့ဆော်မှု ဖြစ်စဉ်များ |
 |`Bridge` |တံတားပွဲများ |
-|`Governance` |အုပ်ချုပ်ရေး feature ကို ဖွင့်ထားပါက Governance event များ |
+|`Governance` |အုပ်ချုပ်ရေး feature ကို ဖွင့်ထားပါက Governance events |
 
-ကွန်ကရစ်စစ် filter အများစုမှာ optional ID matcher နဲ့ event-set mask ကိုလည်းခွင့်ပြုပါတယ်။ ဥပမာ၊ asset filter တစ်ခုဟာ asset တစ်ခု (သို့) asset events အမျိုးအစားတစ်ခုနဲ့ကိုက်ညီနိုင်ပြီး trigger filter တစ်ခုကတော့ trigger ID နှင့် trigger event set ကိုက်ညီနိုင်ပါတယ်။
+ကွန်ကရစ်စစ်ဆေးမှု အများစုသည် ရွေးချယ်စရာ ID ကိုက်ညီခြင်းနှင့် ဖြစ်ရပ်အစီအစဉ် နှာခေါင်းစည်းကိုလည်းခွင့်ပြုသည်။ ဥပမာ၊ အရင်းအမြစ်စစ်ဆေးမှုတစ်ခုသည်အရင်းအမြစ်တစ်ခုသို့မဟုတ်အရင်းအမြတ်ဖြစ်ရပ်တန်းတစ်ခုနှင့် ကိုက်ညီနိုင်ပြီး trigger filter သည် trigger ID နှင့် trigger event set တို့ကို ကိုက်ညီစေသည်။
 
-## ဘိုက်လိုင်း စစ်ဆေးရေး {#pipeline-filters}
+## ဆော့ဖ်ဝဲ စီမံခန့်ခွဲမှု လုပ်ငန်းခွင် Filters {#pipeline-filters}
 
-Pipeline Filters သည် block, transaction, merge နှင့် witness events ကဲ့သို့သော စီမံခန့်ခွဲမှုဖြစ်ရပ်များနှင့် ကိုက်ညီသည်။ ၎င်းတို့ကို လုပ်ဆောင်ရေး subscriptions များ၊ block-processing dashboards များနှင့် ledger data objects များအစား pipeline state သို့ တုံ့ပြန်သည့် trigger များအတွက် အသုံးပြုပါ။
+Software Processing Workflow Filters များသည် Block, Transaction, merge နှင့် witness events ကဲ့သို့သော Processing ဖြစ်ရပ်များနှင့် ကိုက်ညီသည်။ ၎င်းတို့အား Operational Subscriptions များ၊ Block-processing Dashboards များနှင့် blockchain ledger ဒေတာအရာဝတ္ထုများထက် software processing workflow အခြေအနေကို တုံ့ပြန်သည့် trigger များအတွက် အသုံးပြုပါ။
 
 ## Trigger Filters များ {#trigger-filters}
 
@@ -62,20 +62,20 @@ trigger တွေက သူတို့အခြေအနေကို `EventFilt
 
 - အပြီးသတ်လို့ရတဲ့
 - ထပ်ကျော့ခြင်း မူဝါဒ
-- အာဏာပိုင်စာရင်း
+- ခွင့်ပြုချက် အရင်းအမြစ်စာရင်း
 - ရွေးချယ်စရာ Time-Trigger ပြန်လည်စမ်းသပ်မှု မူဝါဒ
 - metadata များ
 
-အစပျိုးသူအာဏာပိုင်က အကောင်အထည်ဖော်လို့ရတဲ့အတွက် လိုအပ်တဲ့ ခွင့်ပြုချက်တွေ ရှိဖို့လိုပါတယ်။ ရေရှည် သက်တမ်းရှိတဲ့ အစပျိုးသူတွေ အတွက် ရည်စူးထားတဲ့ နည်းပညာစာရင်းတွေကို ကြိုက်တယ်။
+trigger authorization principal မှာ executable ကလိုအပ်တဲ့ ခွင့်ပြုချက်တွေရှိဖို့လိုပါတယ်။ သက်တမ်းရှည်ရှိတဲ့ trigger တွေအတွက် ရည်စူးထားတဲ့ နည်းပညာ အကောင့်တွေကို ဦးစားပေးပါ။
 
 ## မေးမြန်းမှု စစ်ဆေးခြင်း {#query-filters}
 
 Query Filters သည် Event Filter များနှင့် သီးခြားဖြစ်သည်။ Iterable queries များသည် predicate နှင့် selector support ကို ဖော်ပြနိုင်သည်။ query-specific typeed filter များကို SDK မှအသုံးပြု၍ filter input သည် query output အမျိုးအစားနှင့် ကိုက်ညီစေရန်။
 
-အောက်ပါအတိုင်းလည်း ကြည့်ပါ။
+နောက်တစ်ချက်ကြည့်ပါ-
 
 - [ဖြစ်ရပ်များ](/my/blockchain/events.md)
-- [Native Asset Escrow ](/my/blockchain/escrow.md#queries-and-events)
-- [အစပျိုးစက်များ ](/my/blockchain/triggers.md)
-- [မေးမြန်းချက်များ ](/my/blockchain/queries.md)
-- [မေးမြန်းချက် မှတ်တမ်း ](/my/reference/queries.md)
+- [Native Asset Escrow](/my/blockchain/escrow.md#queries-and-events)
+- [နှိုးစက်များ](/my/blockchain/triggers.md)
+- [မေးခွန်းများ](/my/blockchain/queries.md)
+- [မေးမြန်းချက် အကိုးအကား](/my/reference/queries.md)

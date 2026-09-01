@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /guide/configure/client-configuration.md
-translation_source_hash: 0d897a79e6118de2e7e88a45f1daf1444b515fd35e7b2562f7c1cc18ed0a83b4
+translation_source_hash: 6da8a0abddc9723b16477a935a3953ebd497300f02eadd635e4e38027a11d095
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -45,7 +45,7 @@ Iroha nomlari kanonik tahlildan so'ng holatga mos keladi. Misol uchun, `wonderla
 
 ## Asosiy autentifikatsiya {#basic-authentication}
 
-Opsional `[basic_auth]` bo'limi mijoz so'rovlariga HTTP `Authorization` boshliqini qo'shadi. Iroha tengdoshlar ushbu ma'lumotnomalarni to'g'ridan-to'g'ri talqin qilmaydilar; ularni Torii Nginx kabi terma proksi ortida bo'lganda ishlating .
+Opsional `[basic_auth]` bo'limi mijoz so'rovlariga HTTP `Authorization` boshliqini qo'shadi. Iroha tugunlar ushbu ma'lumotnomalarni to'g'ridan-to'g'ri talqin qilmaydilar; ularni Torii Nginx kabi terma proksi ortida bo'lganda ishlating .
 
 ```toml
 [basic_auth]
@@ -66,7 +66,7 @@ nonce = false
 
 - `time_to_live_ms` - milisekundlarda operatsiya muddati.
 - `status_timeout_ms` mijoz tranzaksiya holatini qancha vaqt kutishini nazorat qiladi.
-- `nonce = true` mijozdan takrorlanayotgan operatsiyalar turli xil hashlarni keltirib chiqarishi uchun bitta notni kiritishni so'raydi.
+- `nonce = true` mijozdan takrorlanayotgan operatsiyalar turli xil hashlarni keltirib chiqarishi uchun nonce qiymatini kiritishni so'raydi.
 
 ## Chegara moslamalarini ulash {#connect-queue-settings}
 
@@ -84,7 +84,7 @@ Ish oqimi uchun uzoq muddatli mijoz tomoni navbatda saqlash kerak bo'lganda buni
 Bir martalik mahalliy tarmoqlar uchun Kagami ni afzal ko'rish kerak, chunki u Iroha 3 konfiguratsiyalari, genesis, skriptlar va README ga mos keladi:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 hosil bo'lgan `./localnet/client.toml` dan CLI bilan foydalanish:

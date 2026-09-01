@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hant
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2
 ---
 
 # 查詢 {#queries}
@@ -21,9 +21,9 @@ Iroha 查詢可讀取分類帳狀態而不加以變更。目前的資料模型�
 | --- | --- |
 | `FindAbiVersion` | 傳回執行器 ABI 版本。 |
 | `FindExecutorDataModel` | 傳回執行器的資料模型描述。 |
-| `FindParameters` | 傳回鏈上執行器組態參數。 |
+| `FindParameters` | 傳回鏈上執行器組態引數。 |
 
-## 帳戶與權限 {#accounts-and-permissions}
+## 帳戶與許可權 {#accounts-and-permissions}
 
 | 查詢 | 用途 |
 | --- | --- |
@@ -32,13 +32,13 @@ Iroha 查詢可讀取分類帳狀態而不加以變更。目前的資料模型�
 | `FindAccounts` | 列出已註冊帳戶。 |
 | `FindAccountIds` | 列出已註冊帳戶 IDs。 |
 | `FindAccountsWithAsset` | 列出持有指定資產定義之資產的帳戶。 |
-| `FindAliasesByAccountId` | 列出綁定至帳戶的別名。 |
+| `FindAliasesByAccountId` | 列出繫結至帳戶的別名。 |
 | `FindAccountRecoveryPolicyByAlias` | 尋找某別名的復原政策。 |
 | `FindAccountRecoveryRequestByAlias` | 尋找某別名的復原請求。 |
 | `FindRoles` | 列出角色。 |
 | `FindRoleIds` | 列出角色 IDs。 |
 | `FindRolesByAccountId` | 列出授予某帳戶的角色。 |
-| `FindPermissionsByAccountId` | 列出授予某帳戶的權限。 |
+| `FindPermissionsByAccountId` | 列出授予某帳戶的許可權。 |
 
 ## 網域與對等節點 {#domains-and-peers}
 
@@ -91,7 +91,7 @@ Iroha 查詢可讀取分類帳狀態而不加以變更。目前的資料模型�
 | 查詢 | 用途 |
 | --- | --- |
 | `FindRepoAgreements` | 列出儲存在鏈上的儲存庫協議。 |
-| `FindTwitterBindingByHash` | 依雜湊解析 Twitter 綁定。 |
+| `FindTwitterBindingByHash` | 依雜湊解析 Twitter 繫結。 |
 | `FindDaPinIntentByTicket` | 依票證尋找資料可用性釘選意圖。 |
 | `FindDaPinIntentByManifest` | 依資訊清單參照尋找釘選意圖。 |
 | `FindDaPinIntentByAlias` | 依別名尋找釘選意圖。 |
@@ -99,10 +99,17 @@ Iroha 查詢可讀取分類帳狀態而不加以變更。目前的資料模型�
 | `FindLaneRelayEnvelopeByRef` | 尋找已驗證的通道轉送封套。 |
 | `FindSorafsProviderOwner` | 解析 SoraFS 提供者的擁有者。 |
 | `FindDataspaceNameOwnerById` | 解析資料空間名稱的擁有者。 |
-| `FindMusubiReleaseByRef` | 依參照尋找 Musubi 發行版本。 |
-| `FindMusubiPackageVersions` | 列出 Musubi 套件的版本。 |
-| `FindMusubiPackageReleases` | 列出 Musubi 套件的發行版本。 |
-| `FindMusubiShortAliasByName` | 解析 Musubi 短別名。 |
+|`FindMusubiExactPackageV1`|閱讀一個精確的包裝記錄及其當前修訂.|
+|`FindMusubiExactReleaseV1`|閱讀一個準確的釋放快照.|
+|`FindMusubiProviderBundleAttestationV1`|閱讀一個供應商的檔案包證書.|
+|`FindMusubiResolverIndexV1`|頁面已完成的解決器索引.|
+|`FindMusubiVersionsV1`|頁面為一個包完成版本. |
+|`FindMusubiMaintainersV1`|頁面接受了維護人員和等待的邀請.|
+|`FindMusubiArchiveLocationsV1`|頁面最終確定了一個檔案的 SoraFS 位置.|
+|`FindMusubiArchiveRetentionV1`|頁面檔案儲存記錄.|
+|`FindMusubiAliasV1`|閱讀當前目標和全球名的修改.|
+|`FindMusubiAliasHistoryV1`|頁面是全球名的不可改變的重定目標歷史.|
+|`FindMusubiOrderedPrefixV1`|在一個順序結構前下列頁面包. |
 
 ## 觸發器、合約、交易與區塊 {#triggers-contracts-transactions-and-blocks}
 
@@ -118,4 +125,4 @@ Iroha 查詢可讀取分類帳狀態而不加以變更。目前的資料模型�
 
 ## 篩選與分頁 {#filtering-and-pagination}
 
-可迭代查詢可提供述詞與選取器支援。請使用 SDK 中各查詢專用的強型別篩選器，確保篩選輸入符合查詢輸出型別。結果集很大時，請使用游標與上限等查詢參數，不要一次擷取所有資料列。
+可迭代查詢可提供述詞與選取器支援。請使用 SDK 中各查詢專用的強型別篩選器，確保篩選輸入符合查詢輸出型別。結果集很大時，請使用遊標與上限等查詢引數，不要一次擷取所有資料列。

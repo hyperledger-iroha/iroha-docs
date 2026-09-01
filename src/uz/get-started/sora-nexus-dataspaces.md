@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
+translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 SORA 3 - Iroha 3 va SORA Nexus ustida qurilgan dasturga qaraydigan ommaviy ishga tushirish yo'li. Avvalo Taira ustida quring va mashq qiling, so'ngra o'sha xil mijoz shaklini faqat alohida asosiy tarmoq kalitlaringiz bo'lganda, to'lovlar uchun haqiqiy XOR va ishlab chiqarish ruxsatnomasi bo'lganida Minamoto ustiga ko'chiring:
 
-Ushbu qo'llanma Iroha mijozini jamoatchi SORA tarmoqlari uchun qanday konfiguratsiya qilishni ko'rsatadi:
+Ushbu qo‘llanma Iroha mijozini ommaviy SORA 3 tarmoqlari uchun qanday sozlashni ko‘rsatadi:
 
 - Taira sinov tarmog'i `https://taira.sora.org`
 - Minamoto asosiy tarmoq `https://minamoto.sora.org`
@@ -25,16 +25,16 @@ Taira ni integratsiya sinovlari, kran mablag'i bilan ta'minlangan yozish kanarla
 |qadam |Taira Testnet |Minamoto Asosiy |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
 |Tarmoqning holatini oʻqishni boshlash |`/status` kalitsiz so'rovlar |`/status` kalitsiz so'rovlar |
-|Maʼlumotlar maydonini tanlang |Ochiq `universal` dan foydalaning , agar sizning dasturingizga boshqariladigan yo'nalish kerak bo'lmasa |Xuddi shu maʼlumotlar maydonidan faqat asosiy tarmoqning tasdiqlanganidan soʻng foydalanish |
+| Ma’lumotlar makonini tanlash | Ilovangiz boshqariladigan yo‘lakka muhtoj bo‘lmasa, ochiq `universal` makonidan foydalaning | Shu ma’lumotlar makonidan faqat asosiy tarmoq tasdiqlaganidan keyin foydalaning |
 |Toʻlov aktivini oling .|Ommaviy Taira krandan foydalanish |XOR mablag ' bilan ta ' minlangan Minamoto hisobidan yoki tasdiqlangan xazina oqimidan oling |
-|Test yozadi |Foydalanuvchi tomonidan moliyalashtirilgan sinovdan foydalanish XOR |Sinov vositalaridan foydalanmang; real XOR xarajatlarini yozadi |
+| Sinov yozuvlari | Sinov uchun ajratilgan XOR mablag‘idan foydalaning | Sinov vositalarini ishlatmang; yozuvlar haqiqiy XOR sarflaydi |
 |Taʼlim berish |Logika, monitoring va imzolashni qayta sinab ko'ring |alohida kalitlar, moliyalashtirish va ozod qilish nazoratlaridan foydalanish |
 
 Amaliy oqim quyidagicha:
 
-1. Mijozni Taira ga qarshi yaratish va ommaviy `universal` ma'lumotlar maydonidan foydalanish.
+1. Mijozni Taira ga qarshi yaratish va ommaviy `universal` ma’lumotlar makonidan foydalanish.
 2. Imzolovchi qo'shing va Taira kran bilan moliyalashtiring.
-3. Taira ga qarshi o'zingizning dasturingiz mantiqasini muvaffaqiyatsizliklar zerikarli va kuzatilishi mumkin bo'lgunga qadar mashq qiling.
+3. Nosozliklar odatiy va kuzatiladigan holga kelguncha ilova mantiqingizni Taira da sinab ko‘ring.
 4. O'ziga xos Minamoto imzochini yaratish, uni haqiqiy XOR bilan moliyalashtirish va faqat o'sha tasdiqlangan operatsiyalarni mainnetga ko'chirish.
 
 ## Mulohazalar kitobi bilan davom eting {#continue-with-the-cookbook}
@@ -46,8 +46,8 @@ Ushbu qo'llanma yordamida tarmoqni tanlash, imzolashni sozlash va to'lovlarni mo
 |Taira ni tekshiring va mijozni sozlang | [Taira](/uz/cookbook/connect-to-taira.md) raqamiga ulanish|
 |Birinchi yozishni yuboring va natijani tasdiqlang .| [Transaksiyalarni taqdim etish va tekshirish ](/uz/cookbook/submit-and-verify-transactions.md) |
 |Ro'yxatdan o'tish va ko'chirish qiymati | [O'zgaruvchan aktivlar](/uz/cookbook/fungible-assets.md) |
-|Filtrlangan ilova holatini oʻqing | [Query Ledger State](/uz/cookbook/query-ledger-state.md) |
-|Amalga oshirilgan oʻzgarishlarga munosabatda boʻlish | [Stream voqealari](/uz/cookbook/stream-events.md) |
+|Filtrlangan ilova holatini oʻqing | [Reyestr holatini so‘rash](/uz/cookbook/query-ledger-state.md) |
+|Tasdiqlangan oʻzgarishlarga munosabatda boʻlish | [Stream voqealari](/uz/cookbook/stream-events.md) |
 
 Oziq-ovqat kitobi har bir ish oqimiga e'tibor qaratadi va Taira mablag' yoki SORA Nexus tarmoq kontekstiga muhtoj bo'lganda uni bu yerga bog'laydi.
 
@@ -58,7 +58,7 @@ SORA Nexus da ma'lumotlar maydonlari tarmoq yo'nalishi va yo'naltirish katalogi 
 1. mijozni o'ng Torii oxirgi nuqtaga ko'rsatadi
 2. oʻz kanonik hisoboti uchun domen va maʼlumotlar maydonining yoʻnaltirish kontekstini tanlaydi .
 
-`AccountId` har doim kanonik va domensiz. `[account].domain` qiymati `client.toml` yo'nalish va alias kontekstini taqdim etadi; u hisob kimligining bir qismiga aylanmaydi. Aksariyat ilovalar uchun ommaviy `universal` ma'lumotlar maydonidan boshlang. Domen kontekstida `domain.dataspace` shakli ishlatiladi, masalan:
+`AccountId` har doim kanonik va domensiz. `[account].domain` qiymati `client.toml` yo'nalish va alias kontekstini taqdim etadi; u hisob kimligining bir qismiga aylanmaydi. Aksariyat ilovalar uchun ommaviy `universal` ma’lumotlar makonidan boshlang. Domen kontekstida `domain.dataspace` shakli ishlatiladi, masalan:
 
 ```text
 wonderland.universal
@@ -115,12 +115,12 @@ curl -fsS https://taira.sora.org/v1/mcp \
   | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
 ```
 
-URL serverini agent ishga tushirish paytida foydalanuvchiga o'xshagan MCP server sifatida konfiguratsiya qiling. Agentning MCP konfiguratsiyasi, API tokenlari, yuborilgan muallif sarlavhalari, `authority` yoki `private_key` qiymatlarini ushbu hujjat repo yoki dastur repo-ga qo'shmang.
+URL serverini agent ishga tushirish paytida foydalanuvchiga o'xshagan MCP server sifatida konfiguratsiya qiling. Agentning MCP konfiguratsiyasi, API tokenlari, yuborilgan autentifikatsiya sarlavhalari, `authority` yoki `private_key` qiymatlarini ushbu hujjat repo yoki dastur repo-ga qo'shmang.
 
 Taira bilan yaxshi ishlaydigan vositachi tezkor qoidalari:
 
 - MCP serveridan vositalarni qo'ng'iroq qilishdan oldin kashf eting; agar server `listChanged` haqida xabar bersa, ularni qayta kashf qiling.
-- `iroha.` qurilmalarini xom `torii.` qurilmalariga qaraganda ko'proq yoqadi.
+- `iroha.*` qurilmalarini xom `torii.*` qurilmalariga qaraganda ko'proq yoqadi.
 - Faqat o'qishni boshlash: yozishlarni taklif qilishdan oldin holatini, hisob-kitoblarni, aktivlarni, aliaslarni, bloklarni, boshqaruv holati va tranzaksiya holatini tekshirish.
 - jonli testnet mutatsiyalaridan oldin aniq inson yo'l-yo'riqini talab qiling. Oldindan imzolangan tranzaksiya zarflari uchun `iroha.transactions.submit_and_wait` dan foydalaning, shunda agent faqat taqdim etishning o'rniga natijani kutadi.
 - Agent javobida tranzaksiya hashlari, yakuniy holat va serverni tasdiqlash xatolarini qisqacha ko'rsatish.
@@ -135,10 +135,10 @@ Amaldagi ish oqimi quyidagilardan iborat:
 2. Agent birinchi navbatda eng kichik mijoz yo'lini yozsin: holatni tekshirish, hisobni qidirish, alias rezolyutsiyasini yoki balansni qidirish.
 3. Transaction-building kodini faqat o'qish uchun qo'ng'iroqlar Taira bilan ishlayotganidan keyin qo'shing.
 4. To'g'ridan-to'g'ri jonli tarmoq sinovlarini, masalan `TAIRA_LIVE=1` orqasida o'tkazing, shuning uchun normal birlik sinovlari testnet mablag'larini hech qachon sarflamaydi yoki tarmoq mavjudligiga bog'liq.
-5. Agent har qanday tranzaksiyani taqdim etishdan oldin tarmoq ildiz, zanjir, hokimiyat hisobvarag'i, ko'rsatmalarning qisqartmasi, to'lov aktivlari va kutilayotgan holat o'zgarishi haqida xabar berishlarini talab qiling.
+5. Agent har qanday tranzaksiyani taqdim etishdan oldin tarmoq ildiz, zanjir, vakolat hisobvarag'i, ko'rsatmalarning qisqartmasi, to'lov aktivlari va kutilayotgan holat o'zgarishi haqida xabar berishlarini talab qiling.
 6. CI yoki asosiy tarmoq ish oqimlariga ko'tarilishdan oldin sirli ishlash, qayta urinish xatti-harakatlari, idempotency va rad etish xati uchun ishlab chiqarilgan kodni tekshiring.
 
-Ishlab chiqish uchun foydali faqat o'qiladigan MCP vositalar hisobvaraq aktivlarini qidirish, alias rezolyutsiyasi, bloklarni qidirish, tranzaksiyalarni izlash, tranzaksiyalar ro'yxatlari va quvurlarning holatini tekshirishni anglatadi.
+Ishlab chiqish uchun foydali faqat o'qiladigan MCP vositalar hisobvaraq aktivlarini qidirish, alias rezolyutsiyasi, bloklarni qidirish, tranzaksiyalarni izlash, tranzaksiyalar ro'yxatlari va konveyerlarning holatini tekshirishni anglatadi.
 
 ```text
 Use Taira MCP as a read-only inspector while developing this Iroha feature.
@@ -149,11 +149,11 @@ say "submit this transaction".
 
 ### Agentlar orqali operatsiya ish oqimi {#transaction-workflow-through-agents}
 
-O ' zbekiston Respublikasining MCP koʻprik imzolangan hujjatni taqdim etishi mumkin Iroha amal qiladi, ammo bu odatiy bitim talablarini bekor qilmaydi. Transaksiyaga hali ham to'g'ri vakolat, ruxsatnomalar, to'lov mablag'lari, zanjir kerak. ID, Metadatalar va imzo.
+MCP ko'prigi imzolangan Iroha yo'riqnomasini yuborishi mumkin, ammo bu odatiy tranzaksiya talablarini chetlab o'tmaydi. Tranzaksiyaga baribir to'g'ri vakolat, ruxsatlar, to'lov mablag'lari, `chain` ID, metadata va imzo kerak.
 
 Xom Iroha tranzaksiyalari uchun avval tranzaksiya zarfini SDK yoki CLI bilan tuzish va imzolash, so'ngra agentga faqat kanonik imzolangan tranzaksiya bytlari `body_base64` sifatida kodlangan. Agent xotiraga `iroha.transactions.submit_and_wait` yoki `iroha.transactions.submit` va so'rovnoma bilan `iroha.transactions.wait` murojaat qilishi mumkin.
 
-Xususiy kalitlarni agent so'rovnomasiga qo'ymang. Agar agent tranzaksiya tuzish kerak bo'lsa, uni foydalanuvchining ish vaqti sirlarini yuklaydigan mahalliy kodga yozing Agent hech qachon kalit materialni Markdown, fixtures, loglar yoki commitsga yozmasligi kerak.
+Xususiy kalitlarni agent so‘roviga qo‘ymang. Agar agent tranzaksiya tuzishi kerak bo‘lsa, uni foydalanuvchining ish muhiti, keychain, apparat imzolagichi yoki e’tibordan chiqarilgan testnet konfiguratsiya faylidan sirlarni yuklaydigan mahalliy kodga yo‘naltiring. Agent kalit materialini hech qachon Markdown, sinov ma’lumotlari-lar, loglar yoki commit-larga yozmasligi kerak.
 
 Transaksiyani taqdim etishdan oldin agentni qisqa tranzaksiya rejasi tuzishga majbur qiling:
 
@@ -211,7 +211,7 @@ for network in taira minamoto; do
 done
 ```
 
-Taira tomonidan aniqlangan ommaviy ma'lumotlar maydoni yo'nalishlarining ro'yxatini ko'rsatish:
+Taira tomonidan aniqlangan ommaviy ma’lumotlar makoni yo'nalishlarining ro'yxatini ko'rsatish:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -263,7 +263,7 @@ Birinchi yozish tomoni o'yinchoq Taira faucet da'vosi bo'lishi kerak. U testnetd
 Agar sizda allaqachon yoʻq boʻlsa , kalit juftligini yaratish:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 ```
 
 `taira.client.toml` ni yaratish:
@@ -284,7 +284,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-Eng yuqori darajadagi `chain` to'g'ri Taira operatsiyalar zanjiri ID. O ' zbekiston Respublikasining `[account].profile = "taira"` moslama mustaqil ravishda tanlaydi Taira I105 zanjir tanqid qiluvchi. ID hisobning profilini tanlamaydi.
+Yuqori darajadagi `chain` — Taira tranzaksiyalari uchun to'g'ri zanjir ID-si. `[account].profile = "taira"` sozlamasi Taira I105 zanjir diskriminatorini mustaqil tanlaydi; zanjir ID-si hisob profilini tanlamaydi.
 
 Faqat oʻqish uchun tekshiruvni bajaring:
 
@@ -336,7 +336,7 @@ A SORA Nexus hisob ID kanonik hisoblanadi I105 hisobning ommaviy kalitidan va ma
 Hisobotni boshqaradigan Ed25519 tugmalarini yaratish yoki yuklash:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./nexus-account-key
 ```
 
 Ochiq kalitni Taira hisob raqamiga ID o'zgartirish:
@@ -368,9 +368,9 @@ SORA Nexus hisob raqamlari uchun ushbu amaliyotlardan foydalaning:
 - Ishlab chiqarish imzochilari uchun kamida bitta shifrlangan offline ehtiyot qismini va bitta geografik jihatdan alohida shifrlangan ehtiyot qismni saqlang. Tekshiruvdan oldin faqat o'qishga mo'ljallangan kichik operatsiya bilan tiklanish sinovini amalga oshirish.
 - Agar xususiy kalit, maxfiy so'z, ehtiyot vositasi yoki imzolash host ko'rsatilgan bo'lsa, imzolani aylantiring yoki almashtiring.
 
-Ko'proq batafsil ma'lumot olish uchun [Storing Cryptographic Keys](/uz/guide/security/storing-cryptographic-keys.md) va [Password Security](/uz/guide/security/password-security.md) ko'ring.
+Ko'proq batafsil ma'lumot olish uchun [Kriptografik kalitlarni saqlash](/uz/guide/security/storing-cryptographic-keys.md) va [Maxfiy soʻzlar xavfsizligi](/uz/guide/security/password-security.md) ko'ring.
 
-## 4. Testnet-ni XOR -ga Taira orqali olib boring. {#_4-get-testnet-xor-on-taira}
+## 4. Taira-da test XOR oling {#_4-get-testnet-xor-on-taira}
 
 To'g'ridan-to'g'ri ommaviy krandan foydalaning.
 
@@ -599,9 +599,9 @@ Yozib olishni taqdim etishdan oldin ID kanonik hisobini va moliyalashtirishni fa
 
 Taira XOR Minamoto to'lovlarini to'lay olmaydi. Testnet saldi va kran talablari Minamoto ga o'tkazilamaydi.
 
-## 7. Mavjud ma'lumotlar maydonida ishlash {#_7-work-inside-an-existing-dataspace}
+## 7. Mavjud ma’lumotlar makonida ishlash {#_7-work-inside-an-existing-dataspace}
 
-Ma'lumotlar maydonida yashovchi katta daftar ob'ektlari uchun to'liq malakali domen nomlaridan foydalaning. Masalan, ommaviy ma'lumotlar maydonidagi loyiha domenidan foydalanish kerak:
+Ma’lumotlar makonida yashovchi katta daftar ob'ektlari uchun to'liq malakali domen nomlaridan foydalaning. Masalan, ommaviy ma’lumotlar makonidagi loyiha domenidan foydalanish kerak:
 
 ```text
 apps.universal
@@ -620,7 +620,7 @@ iroha --config ./taira.client.toml \
   app alias setup apply --plan-file ./taira-apps-domain.plan.json
 ```
 
-Minamoto uchun alohida asosiy tarmoq niyati va rejasi ishlab chiqiladi va tasdiqlanadi. Rejalar o'zlarining zanjirlari, vakolatlari, jonli davlat anchorligi va muddatlariga bog'liq, shuning uchun Taira rejasini targ'ib qilish yoki takrorlash mumkin emas:
+Minamoto uchun alohida asosiy tarmoq niyati va rejasi ishlab chiqiladi va tasdiqlanadi. Rejalar o'zlarining zanjirlari, vakolatlari, jonli holat anchorligi va muddatlariga bog'liq, shuning uchun Taira rejasini targ'ib qilish yoki takrorlash mumkin emas:
 
 ```bash
 iroha --config ./minamoto.client.toml \
@@ -632,7 +632,7 @@ iroha --config ./minamoto.client.toml \
   app alias setup apply --plan-file ./minamoto-apps-domain.plan.json
 ```
 
-Hisobvaraq aliaslari bir xil ma'lumotlar maydonining suffixidan foydalanadi:
+Hisobvaraq aliaslari bir xil ma’lumotlar makonining suffixidan foydalanadi:
 
 ```text
 alice@apps.universal
@@ -641,9 +641,9 @@ alice@universal
 
 Katta hisob maydonlari hali ham kanonikdan foydalanadi I105 hisob IDs. Aliaslarni inson o'qishi mumkin bo'lgan bog'liqliklar sifatida qabul qiling, ular kanonik hisobda hal qilinadi IDs.
 
-## 8. Yangi ma'lumotlar maydonini yaratish {#_8-provision-a-new-dataspace}
+## 8. Yangi ma’lumotlar makonini yaratish {#_8-provision-a-new-dataspace}
 
-Yangi ma'lumotlar maydoni operator va boshqaruv o'zgarishidir. Umumiy Torii oxirgi nuqtasi trafikni konfiguratsiyalangan ma'lumot maydonlariga yo'naltirish mumkin, ammo u noma'lum ma'lumot maydonlari aliaslarini rad etadi.
+Yangi ma’lumotlar makoni operator va boshqaruv o'zgarishidir. Umumiy Torii oxirgi nuqtasi trafikni konfiguratsiyalangan ma'lumot maydonlariga yo'naltirish mumkin, ammo u noma'lum ma'lumot maydonlari aliaslarini rad etadi.
 
 O'zgarishlarni tayyorlashdan oldin, amaldagi jonli katalogni o'qing:
 
@@ -659,16 +659,16 @@ Operator hisobini ko'rsatish uchun yo'l manifesti holatini ham tekshiring:
 iroha --config ./operator.client.toml app nexus lane-report --summary
 ```
 
-Yo'nalish ID, ma'lumotlar maydoni ID, tasdiqlovchi moslama, xato tolerantligi, manifest, yo'naltirish qoidalari va operatsion egasi birgalikda ko'rib chiqilmagan bo'lsa, yangi aliasni targ'ib qilmang. Kerakli ruxsatnomalarga ega bo'lgan odatiy foydalanuvchi hisobi mavjud ma'lumotlar maydonida domen sotib olish va SNS ijaraga olish mumkin; u yangi ommaviy ma'lumotni xavfsiz qo'sholmaydi.
+Yo'nalish ID, ma’lumotlar makoni ID, tasdiqlovchi moslama, xato tolerantligi, manifest, yo'naltirish qoidalari va operatsion egasi birgalikda ko'rib chiqilmagan bo'lsa, yangi aliasni targ'ib qilmang. Kerakli ruxsatnomalarga ega bo'lgan odatiy foydalanuvchi hisobi mavjud ma’lumotlar makonida domen sotib olish va SNS ijaraga olish mumkin; u yangi ommaviy ma'lumotni xavfsiz qo'sholmaydi.
 
 Xususiy yoki tashkiliy ma'lumotlar maydonchasi uchun katalog o'zgartirishni quyidagilar bilan tayyorlang:
 
-- yagona ma'lumotlar maydonining aliasi va raqamli `id`
+- yagona ma’lumotlar makonining aliasi va raqamli `id`
 - to'g'ri yo'nalishdagi kirish yoki mavjud yo'nalishda berilgan vazifa
-- ma'lumotlar maydoni `fault_tolerance`
+- ma’lumotlar makoni `fault_tolerance`
 - yo'naltirish qoidalari u yerga tushishi kerak bo'lgan ko'rsatmalar yoki hisob maydonlari uchun
-- ma'lumotlar maydoni UAID qobiliyatlarini ochib berganda Space Directory manifest yoki tenglashtirilgan ishga tushirish dalillari;
-- Validator, muvofiqlik, hisob-kitob qilish va monitoring siyosati uchun boshqaruv ma'qullanishi
+- ma’lumotlar makoni UAID imkoniyatlarini taqdim etsa, Makon katalogi manifesti yoki ishga tushirilganini tasdiqlovchi teng kuchli dalil
+- validatorlar, muvofiqlik, hisob-kitob va kuzatuv siyosati uchun boshqaruv tasdig‘i
 
 Tekshirilishi mumkin boʻlgan konfig fragment quyidagicha koʻrinadi:
 
@@ -697,10 +697,10 @@ description = "Route payments domains to the payments dataspace"
 
 Operatorning qabul qilishida quyidagi darvozalar bo'lishi kerak:
 
-- `irohad --sora --config <config.toml> --trace-config` hal qilingan nod konfiguratsiyasini o'tkazadi
+- `iroha3d --sora --config <config.toml> --trace-config` hal qilingan nod konfiguratsiyasini o'tkazadi
 - hosil qilingan yoki ko'rib chiqilgan manifest hash va imzolar bilan arxivlanadi.
 - tutun sinovlari oʻtadi Taira har qanday Minamoto rag'batlantirish
-- o'zgarishdan keyingi `/status` katalogida belgilangan yo'nalish va ma'lumotlar maydoni ko'rsatilgan;
+- o'zgarishdan keyingi `/status` katalogida belgilangan yo'nalish va ma’lumotlar makoni ko'rsatilgan;
 - `iroha app nexus lane-report --summary` talab qilingan manifestlar yo'qolganligini bildirmaydi
 
 ```bash
@@ -709,12 +709,12 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 
-Xuddi shu ma'lumotlar maydonini Minamoto ga faqat Taira ishga tushirilishi, tutun sinovlari, monitoring va boshqaruv dalillari to'liq bo'lganidan so'ng targ'ib qilish.
+Xuddi shu ma’lumotlar makonini Minamoto ga faqat Taira ishga tushirilishi, tutun sinovlari, monitoring va boshqaruv dalillari to'liq bo'lganidan so'ng targ'ib qilish.
 
 ## Bogʻliq sahifalar {#related-pages}
 
 - [Iroha 3](/uz/get-started/install-iroha.md) o'rnatish
 - [Iroha 3 orqali CLI](/uz/get-started/operate-iroha-via-cli.md) orqali harakatlaning
-- [Xususiy ma'lumotlar maydoni uchun sponsorlik to'lovlari](/uz/get-started/private-dataspace-fee-sponsor.md)
+- [Xususiy ma’lumotlar makoni uchun sponsorlik to'lovlari](/uz/get-started/private-dataspace-fee-sponsor.md)
 - [Torii oxirgi nuqtalari](/uz/reference/torii-endpoints.md)
 - [Ibtido ko'rsatkichi](/uz/reference/genesis.md)

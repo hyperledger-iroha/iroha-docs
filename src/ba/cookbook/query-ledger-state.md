@@ -1,12 +1,12 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: a81f6cc04befb0b92a0a01c2cb3c1ecbbc631ce1f2a923cb046241c295db7806
+translation_source_hash: 68ef931f3d37b9bd40fcf61c9a77313539ca0bd648405834d161a018debb491a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Һорау Леджер дәүләте {#query-ledger-state}
+# Һорау Леджер торошо {#query-ledger-state}
 
 ## Һөҙөмтә {#outcome}
 
@@ -85,7 +85,7 @@ iroha --config ./localnet/client.toml \
   --fetch-size 1
 ```
 
-Һорауға ярашлы типланған предикаттар ҡулланыу; иҫәп-хисап йәки актив өсөн предикат домен өсөн хәүефһеҙ рәүештә ҡабаттан ҡулланылмай.
+Filtering pagination-дан алда башҡарыла. Query-ға махсус typed predicates ҡулланығыҙ; account йәки asset өсөн predicate-ты domain өсөн хәүефһеҙ рәүештә ҡабат ҡулланып булмай.
 
 ### 3. Тотороҡло метамәғлүмәттәр асҡысы буйынса тәртипкә килтереү. {#_3-sort-by-a-stable-metadata-key}
 
@@ -132,7 +132,7 @@ for definition in definitions {
 }
 ```
 
-`ForwardCursor` - власть менән бәйләнгән, процестарҙа урындағы һәм бары тик алдау өсөн генә. Уны бер ҡасан да анализламағыҙ, синтезлағыҙ, властар араһында бүлегеҙ йәки уны Torii осраҡтарында портатив резюме токены булараҡ һаҡлағыҙ. Әгәр ул тамамланһа, төп һорауҙы маҡсатлы ҡулланыу кимәлендәге контроль пункты менән ҡайтанан башларға кәрәк.
+`ForwardCursor` - вәкәләтле иҫәп менән бәйләнгән, процестарҙа урындағы һәм бары тик алдау өсөн генә. Уны бер ҡасан да анализламағыҙ, синтезлағыҙ, вәкәләтле иҫәптәр араһында бүлегеҙ йәки уны Torii осраҡтарында портатив резюме токены булараҡ һаҡлағыҙ. Әгәр ул тамамланһа, төп һорауҙы маҡсатлы ҡулланыу кимәлендәге контроль пункты менән ҡайтанан башларға кәрәк.
 
 ## Тикшереү {#verify}
 
@@ -155,14 +155,14 @@ iroha --config ./localnet/client.toml \
 - Билдәһеҙ, иҫкергән йәки сит ил курсоры үҙ белдеге менән ҡабаттан ҡулланылмай. Һорауҙы яңынан башларға; үтә күренмәле баһаны ремонтларға тырышмағыҙ.
 - Метамәғлүмәттәрҙе сортлау дөйөм майҙансыҡтарҙы сортлау түгел. Әгәр һәр пунктта һайланған асҡыс булмаһа, юғалған асҡыс тәртибен документлаштырығыҙ йәки икенсе стратегияны һайлағыҙ.
 - CLI `--select` анализлай һәм күсерә, әммә ағымдағы сервер еңел һайлаусы туплын баһаламай. Сервер яғы селектор ярҙамы ҡулланылған эшләү ваҡыты өсөн раҫланмаһа, клиент яғында проекция ҡулланырға.
-- Киң сикһеҙ һорауҙар хеҙмәттәштәре эше, клиент хәтерен һәм курсор ғүмере хәүефен арттыра. Кулланыусыға яраҡлы логик сикләү һәм сумма күләме билдәләгеҙ.
-- Йәмәғәтселек JSON ресурс параметрҙары һәм ҡул ҡуйылған типографик һорауҙар параметрҙары бәйле, әммә алмаштырыла торған сым форматтары түгел. SDK йәки CLI типтағы һорау конверттары өсөн.
+- Киң сикһеҙ һорауҙар пирҙары эше, клиент хәтерен һәм курсор ғүмере хәүефен арттыра. Кулланыусыға яраҡлы логик сикләү һәм сумма күләме билдәләгеҙ.
+- Йәмәғәт JSON ресурс параметрҙары һәм ҡул ҡуйылған типланған һорау параметрҙары бәйле, әммә бер-береһен алмаштыра алған сериализация форматтары түгел. Типланған һорау конверттары өсөн SDK йәки CLI ҡулланығыҙ.
 
 ## Сығанаҡ һәм уның менән бәйле документтар {#source-and-related-docs}
 
-- [Кассир ярҙамында ҡағыҙлаштырылған commit-та pagination интеграция һынауҙары](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/pagination.rs)
-- [Һорау төҙөүсе һәм һайлап алыусының ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/builder/mod.rs) тәртибе
-- [Һорауҙар параметрҙары һәм курсор моделе ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/query/parameters.rs).
+- [Ҡуйылған commit-та курсорға нигеҙләнгән pagination интеграция һынауҙары](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs)
+- [Һорау төҙөүсе һәм һайлап алыусының ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs) тәртибе
+- [Һорауҙар параметрҙары һәм курсор моделе ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs).
 - [Һорауҙар](/ba/blockchain/queries.md)
 - [Һорау буйынса һылтанма](/ba/reference/queries.md)
 - [JavaScript һәм TypeScript](/ba/guide/tutorials/javascript.md)

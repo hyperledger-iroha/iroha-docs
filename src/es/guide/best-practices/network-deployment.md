@@ -1,55 +1,55 @@
 ---
 translation_locale: es
 translation_source: /guide/best-practices/network-deployment.md
-translation_source_hash: 312f9cb3c6fd937b3e7c30ea27d1876ea7901cfa79eced352611db99bbca4a70
+translation_source_hash: 7839268b8c1f6700b0c26652e3308fa4e8acef4717d8527c609b6f30fb8c84ab
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Despliegue de la red {#network-deployment}
+# Despliegue de red {#network-deployment}
 
-Tratar una red Iroha como un sistema coordinado. Los validadores deben acordar sobre la génesis, topología, pares de confianza y configuración relevante para el consenso antes de que la red pueda comenzar y seguir completando los bloques.
+Trate una red Iroha como un sistema coordinado. Los validadores deben ponerse de acuerdo sobre el génesis de la blockchain, la topología, los nodos confiables de la red y la configuración relevante para el consenso antes de que la red pueda iniciar y continuar finalizando bloques.
 
-## Separación del medio ambiente {#environment-separation}
+## Separación del entorno {#environment-separation}
 
-- Mantener paquetes de configuración separados para el desarrollo local, la red de pruebas compartida, la puesta en escena y la producción.
-- Generar llaves nuevas para todos los entornos no desechables. No reutilice el localnet o el material clave Taira en la producción.
-- Mantenga la configuración de pares, la configuración del cliente, la genesis firmada, los scripts y las notas de implementación juntos como un artefacto de liberación versionado.
-- Almacenar las claves privadas fuera de los repositorios y plantillas de implementación.
+- Mantenga paquetes de configuración separados para desarrollo local, testnet compartido, staging y producción.
+- Genere claves nuevas para cada entorno no desechable. No reutilice material de clave localnet o Taira en producción.
+- Mantenga la configuración del par de red, la configuración del cliente, el génesis de blockchain firmado, los scripts y las notas de implementación juntos como un artefacto de versión liberada.
+- Almacene las claves privadas fuera de los repositorios y plantillas de implementación.
 
-Véase [Las claves para el despliegue de la red ](/es/guide/configure/keys-for-network-deployment.md).
+Ver [Claves para el Despliegue de la Red](/es/guide/configure/keys-for-network-deployment.md).
 
-## Génesis y topología {#genesis-and-topology}
+## génesis y topología de blockchain {#genesis-and-topology}
 
-- Haga que cada validador utilice la misma transacción de génesis firmada, conjunto de pares confiables, topología y validador Pruebas de posesión cuando el perfil las requiera.
-- Utilizar al menos cuatro validadores para un despliegue mínimo de tolerancia a fallos bizantinos.
-- Los validadores separados de los observadores en la planificación de las capacidades. Los observadores no votan, proponen o recogen, pero todavía consumen almacenamiento, sincronización de bloqueo y ancho de banda de la red.
-- Tratar los cambios de génesis, ejecutor y topología como migraciones coordinadas en lugar de ediciones individuales.
+- Haga que cada validador use la misma transacción génesis de blockchain firmada, el conjunto de pares de red confiables, la topología y las Pruebas de Posesión del validador cuando el perfil lo requiera.
+- Use al menos cuatro validadores para un despliegue mínimamente tolerante a fallos bizantinos.
+- Separe los validadores de los observadores en la planificación de capacidad. Los observadores no votan, no proponen ni recopilan, pero aún así consumen almacenamiento, sincronización de bloques y ancho de banda de red.
+- Trata los cambios de génesis, ejecutor y topología de la blockchain como migraciones coordinadas en lugar de ediciones de un solo nodo.
 
-Ver [Génesis](/es/reference/genesis.md), [Gestión entre pares](/es/guide/configure/peer-management.md) y [Performance and Metrics ](/es/guide/advanced/metrics.md#node-count-and-quorum).
+Vea [génesis de la blockchain](/es/reference/genesis.md), [Gestión de pares de red](/es/guide/configure/peer-management.md) y [Rendimiento y Métricas](/es/guide/advanced/metrics.md#node-count-and-quorum).
 
-## Torii y el acceso a la red {#torii-and-network-access}
+## Torii y Acceso a la Red {#torii-and-network-access}
 
-- Coloque Torii detrás de un proxy o firewall inverso cuando esté expuesto fuera de la red host o privada.
-- Terminar TLS y aplicar controles básicos de autenticación, limitación de tasa y tamaño de solicitud en el borde cuando la implementación los requiera.
-- Publicar sólo los puntos finales necesarios para el medio ambiente. Las rutas del operador y de la telemetría deben ser más restringidas que las rutas públicas de lectura única.
-- Enlace las direcciones del oyente a interfaces locales del host cuando los compañeros no deben aceptar el tráfico remoto directamente.
+- Coloque Torii detrás de un proxy inverso o un cortafuegos cuando esté expuesto fuera del host o de la red privada.
+- Termina TLS y aplica autenticación básica, limitación de velocidad y controles de tamaño de solicitud en el borde cuando el despliegue los requiera.
+- Publique solo los endpoints API necesarios para el entorno. Las rutas de operador y telemetría deben ser más restringidas que las rutas públicas de solo lectura.
+- Vincule las direcciones del oyente a interfaces locales del host cuando los pares de la red no deban aceptar tráfico remoto directamente.
 
-Véase [Torii Puntos finales](/es/reference/torii-endpoints.md) y [Redes privadas virtuales ](/es/guide/security/vpn.md).
+Vea [Torii API puntos finales](/es/reference/torii-endpoints.md) y [Redes Privadas Virtuales](/es/guide/security/vpn.md).
 
-## El consenso y la capacidad {#consensus-and-capacity}
+## Consenso y Capacidad {#consensus-and-capacity}
 
-- Mide la implementación antes de ajustar los tiempos de consenso. Los tiempos más bajos pueden reducir la latencia solo mientras las capas de red, almacenamiento y ejecución se mantienen al día.
-- Observe la dirección de las colas, no sólo muestras cortas de rendimiento. Una cola que crece durante una carga constante significa que la red está sobrecargada.
-- Registrar los parámetros efectivos Sumeragi, el perfil de telemetría, el número de validadores, la red RTT, la forma de la carga de trabajo y los detalles del hardware para cada referencia.
-- Aumentar la fanout del colector solo después de comparar las señales de latencia, tráfico y contrapresión.
+- Mida el despliegue antes de ajustar los temporizadores de consenso. Los tiempos de espera más bajos pueden reducir la latencia solo mientras las capas de red, almacenamiento y ejecución se mantengan al día.
+- Observe la dirección de la cola, no solo muestras cortas del rendimiento. Una cola que crece durante una carga constante significa que la red está sobrecargada.
+- Registre los parámetros efectivos Sumeragi, el perfil de telemetría, el recuento de validadores, la red RTT, la forma de la carga de trabajo y los detalles del hardware para cada referencia.
+- Cambie un límite de cola limitada o de recuperación de carga útil a la vez, y conserve la evidencia de latencia, tráfico, memoria y contrapresión antes y después.
 
-Véase [Performance and Metrics](/es/guide/advanced/metrics.md).
+Ver [Rendimiento y Métricas](/es/guide/advanced/metrics.md).
 
-## Gestión de metales y procesos desnudos {#bare-metal-and-process-management}
+## Gestión de hardware sin sistema operativo y de procesos {#bare-metal-and-process-management}
 
-- Mantenga separados los `config.toml`, la clave privada, el directorio de almacenamiento y los puertos de cada pares.
-- Utilizar administradores de procesos como systemd con políticas explícitas de reinicio, registro y recursos.
-- Conservar los comandos generados README y iniciar desde los paquetes de localnet Kagami cuando se traduce una topología de prueba a hosts administrados.
+- Mantenga separados el `config.toml`, la clave privada, el directorio de almacenamiento y los puertos de cada par de la red.
+- Use administradores de procesos como systemd con reinicio explícito, registro y políticas de recursos.
+- Conserve los comandos generados README y de inicio de los paquetes localnet Kagami al traducir una topología de prueba a hosts gestionados.
 
-Véase [Running Iroha en Metales desnudos ](/es/guide/advanced/running-iroha-on-bare-metal.md).
+Ver [Ejecutando Iroha en hardware físico](/es/guide/advanced/running-iroha-on-bare-metal.md).

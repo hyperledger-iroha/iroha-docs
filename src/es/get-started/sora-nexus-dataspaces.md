@@ -1,74 +1,74 @@
 ---
 translation_locale: es
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 8cc510f79468efa58732b806c254155d4d7225c0876272bd8126ea07e8607888
+translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Construir en SORA 3: Taira y Minamoto {#build-on-sora-3-taira-and-minamoto}
+# Construir sobre SORA 3: Taira y Minamoto {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 es la pista de despliegue pública orientada a la aplicación construida en Iroha 3 y SORA Nexus. Construir y ensayar primero en Taira, luego mover la misma forma del cliente a Minamoto solo cuando tenga llaves mainnet separadas, reales XOR por tarifas y aprobación de producción.
+SORA 3 es la pista de despliegue público orientada a la aplicación construida sobre Iroha 3 y SORA Nexus. Construye y ensaya primero en Taira, luego mueve la misma configuración de cliente a Minamoto solo cuando tengas claves principales separadas, XOR reales para tarifas y aprobación de producción.
 
-Esta guía muestra cómo configurar un cliente Iroha para las redes públicas SORA 3:
+Este tutorial muestra cómo configurar un cliente Iroha para las redes públicas SORA 3:
 
-- Red de ensayo Taira en `https://taira.sora.org`
+- Taira red de prueba en `https://taira.sora.org`
 - Minamoto red principal en `https://minamoto.sora.org`
 
-Utilización Taira para las pruebas de integración, los canales de escritura financiados por grifos y los ensayos de despliegue. Minamoto En el caso de las redes de transporte, los servicios de transporte y de telecomunicaciones se aplican únicamente a las actividades de la red principal preparadas para su producción. XOR:
+Use Taira para pruebas de integración, canarios de escritura financiados por testnet y ensayos de despliegue. Use Minamoto solo para actividad lista para producción en mainnet. Ambas redes cobran tarifas en XOR:
 
-- El Taira utiliza la red de prueba XOR del grifo público.
-- Minamoto utiliza real XOR. No hay grifo Minamoto.
+- Taira utiliza la testnet XOR del servicio público de financiación de testnet.
+- Minamoto utiliza XOR real. No existe un servicio de financiación de testnet Minamoto.
 
-## Camino de los constructores {#builder-path}
+## Ruta del Constructor {#builder-path}
 
-|Paso a paso .|Taira Red de pruebas |Minamoto Mainnet |
+|Paso| Taira Red de prueba                                                | Minamoto Red principal |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|Comienza a leer el estado de la red |Encuesta `/status` sin llaves |Encuesta `/status` sin llaves |
-|Elige un espacio de datos .|Utilice público `universal` a menos que su aplicación necesite un carril regulado |Usar el mismo espacio de datos sólo después de la aprobación de la red principal |
-|Obtenga el activo de los honorarios .|Utilice el grifo público Taira |Recibir XOR de una cuenta financiada Minamoto o un flujo del Tesoro aprobado |
-|Test escribe |Utilizar el ensayo financiado con grifo XOR |No use herramientas de prueba; escribe gastar real XOR |
-|Promover |Mantenga la lógica, el monitoreo y el manejo de los firmas.|Utilice llaves separadas, fondos y controles de liberación |
+|Comenzar a leer el estado de la red|Consulta `/status` sin claves|Consulta `/status` sin claves|
+|Elige un espacio de datos|Use público `universal` a menos que su aplicación necesite una vía de ejecución gobernada|Usa el mismo espacio de datos solo después de la aprobación de la mainnet|
+|Obtener activo de tarifa|Utilice el servicio público de financiamiento de testnet Taira|Recibir XOR de una cuenta Minamoto financiada o un flujo de tesorería aprobado|
+|Prueba escribe|Usa la prueba financiada por la testnet XOR|No utilice herramientas de prueba; escribe gastos reales XOR|
+|Promocionar|Mantener la lógica de reintento, la monitorización y la gestión del firmante criptográfico|Usa claves, financiamiento y controles de liberación separados|
 
 El flujo práctico es:
 
-1. Construir el cliente contra Taira y utilizar el espacio de datos público `universal`.
-2. Añadir un firmante y financiarlo con el grifo Taira.
-3. Exercita la lógica de tu aplicación contra Taira hasta que los fallos sean aburridos y observables.
-4. Crear un firmante separado Minamoto, financiar con real XOR, y mover sólo las mismas operaciones probadas a la red principal.
+1. Compila el cliente contra Taira y utiliza el espacio de datos público `universal`.
+2. Agrega un firmante criptográfico y fíndalo con el servicio de financiamiento de testnet Taira.
+3. Ejercita la lógica de tu aplicación contra Taira hasta que los fallos sean aburridos y observables.
+4. Crea un firmante criptográfico separado Minamoto, súmele fondos con XOR reales y mueve solo las mismas operaciones comprobadas a la red principal.
 
-## Sigue con el libro de cocina {#continue-with-the-cookbook}
+## Continuar con el libro de cocina {#continue-with-the-cookbook}
 
-Utilice esta guía para elegir una red, configurar un signatario y pagar las tarifas. Luego continúe con la receta que coincida con el comportamiento de la aplicación que desea construir:
+Utilice esta guía para elegir una red, configurar un firmante criptográfico y financiar las tarifas. Luego continúe con la receta que coincida con el comportamiento de la aplicación que desea construir:
 
-|Objetivo .|La receta |
+|Meta|Receta|
 | --- | --- |
-|Verificar Taira y configurar un cliente | [Conectarse a Taira](/es/cookbook/connect-to-taira.md) |
-|Envía una primera escritura y verifique su resultado | [Enviar y verificar las transacciones ](/es/cookbook/submit-and-verify-transactions.md) |
-|Registro, moneda y movimiento de valor | [Activos Fungibles ](/es/cookbook/fungible-assets.md) |
-|Lea el estado de la aplicación filtrada | [Query Ledger Estado ](/es/cookbook/query-ledger-state.md) |
-|Reaccionar a los cambios comprometidos | [Eventos de flujo](/es/cookbook/stream-events.md) |
+|Revisar Taira y configurar un cliente| [Conectar a Taira](/es/cookbook/connect-to-taira.md) |
+|Envía una primera escritura y verifica su resultado| [Enviar y Verificar Transacciones](/es/cookbook/submit-and-verify-transactions.md) |
+|Registrar, emitir y mover valor| [Activos fungibles](/es/cookbook/fungible-assets.md) |
+|Leer estado de la aplicación filtrado| [Consultar el estado del libro mayor de blockchain](/es/cookbook/query-ledger-state.md) |
+|Reaccionar a los cambios confirmados| [Eventos de transmisión](/es/cookbook/stream-events.md) |
 
-El libro de cocina mantiene cada flujo de trabajo centrado y se enlaza aquí cuando necesita financiación Taira o contexto de red SORA Nexus.
+El libro de cocina mantiene cada flujo de trabajo enfocado y vuelve aquí cuando necesita financiamiento Taira o contexto de red SORA Nexus.
 
-## 1. Comprende lo que estás preparando {#_1-understand-what-you-are-setting-up}
+## 1. Comprende lo que estás configurando {#_1-understand-what-you-are-setting-up}
 
-En SORA Nexus, un espacio de datos es parte del catálogo de vía de red y enrutamiento. Un cliente no crea un nuevo espacio de datos público simplemente cambiando `client.toml`. La configuración del cliente hace dos cosas:
+En SORA Nexus, un espacio de datos es parte del carril de ejecución de la red y del catálogo de enrutamiento. Un cliente no crea un nuevo espacio de datos público simplemente cambiando `client.toml`. La configuración del cliente hace dos cosas:
 
-1. señalar al cliente en el punto final derecho Torii
-2. selecciona el contexto de enrutamiento del dominio y espacio de datos para su cuenta canónica
+1. apunta al cliente al endpoint correcto Torii API
+2. selecciona el dominio y el contexto de enrutamiento de espacio de datos para su cuenta canónica
 
-`AccountId` Es siempre canónico y sin dominios. `[account].domain` el valor en `client.toml` proporciona un contexto de enrutamiento y alias; no se convierte en parte de la identidad de la cuenta. Para la mayoría de las aplicaciones, comience con el público `universal` espacio de datos. Uso del contexto del dominio `domain.dataspace` forma, por ejemplo:
+`AccountId` siempre es canónico y sin dominio. El valor `[account].domain` en `client.toml` proporciona contexto de enrutamiento y alias; no se convierte en parte de la identidad de la cuenta. Para la mayoría de las aplicaciones, comience con el espacio de datos público `universal`. El contexto de dominio utiliza la forma `domain.dataspace`, por ejemplo:
 
 ```text
 wonderland.universal
 ```
 
-Si necesita un nuevo espacio de datos organizacional, prepare un catálogo y una propuesta de enrutamiento en lugar de intentar registrarlo desde una cuenta de cliente ordinaria. Ver [Provision a New Dataspace](#_8-provision-a-new-dataspace) abajo.
+Si necesita un nuevo espacio de datos organizacional, prepare un catálogo y una propuesta de enrutamiento en lugar de intentar registrarlo desde una cuenta de cliente ordinaria. Vea [Proveer un nuevo espacio de datos](#_8-provision-a-new-dataspace) a continuación.
 
-## 2. Compruebe el punto final público Torii {#_2-check-the-public-torii-endpoint}
+## 2. Verifique el endpoint público Torii API {#_2-check-the-public-torii-endpoint}
 
-Compruebe que el punto final objetivo está en vivo antes de configurar un firmador.
+Verifique que el punto final de destino API esté activo antes de configurar un firmante criptográfico.
 
 Para Taira:
 
@@ -86,7 +86,7 @@ curl -fsS https://minamoto.sora.org/status \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
-Inspeccionar el espacio de datos y la vista del carril expuestos por el nodo:
+Inspeccione el espacio de datos y la vista del carril de ejecución expuestos por el nodo:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -94,20 +94,20 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-Utilice el mismo comando con `https://minamoto.sora.org/status` para la red principal.
+Usa el mismo comando con `https://minamoto.sora.org/status` para la red principal.
 
-## Taira MCP para los agentes {#taira-mcp-for-agents}
+## Taira MCP para Agentes {#taira-mcp-for-agents}
 
-Taira También expone una Torii- Protocolo de contexto modelo nativo (MCP Usalo cuando un agente necesita testnet en vivo. el diagnóstico scripted, o los ensayos de escritura estrictamente revisados sin construir una costumbre Torii El cliente primero.
+Taira también expone un puente de Protocolo de Contexto de Modelo (MCP) nativo de Torii para entornos de ejecución de software de agentes. Úselo cuando un agente necesite lecturas en la testnet en vivo, diagnósticos scriptados o ensayos de escritura revisados minuciosamente sin construir primero un cliente Torii personalizado.
 
-|Configuración .|El valor |
+|Configuración|Valor|
 | --- | --- |
-|MCP punto final |`https://taira.sora.org/v1/mcp` |
-|Raíz de red |`https://taira.sora.org` |
-|Uso previsto |Taira testnet lecturas y ensayos de escritura financiados por el grifo |
-|Producción equivalente |No señale esta entrada en Minamoto a menos que se apruebe explícitamente un punto final de la red principal MCP y los controles de liberación |
+| MCP API punto final | `https://taira.sora.org/v1/mcp` |
+|Raíz de red| `https://taira.sora.org` |
+|Uso previsto|Taira lecturas en testnet y ensayos de escritura financiados por testnet|
+|Equivalente de producción|No dirija esta entrada a Minamoto a menos que un endpoint y controles de lanzamiento de mainnet MCP API estén explícitamente aprobados|
 
-Verifique los metadatos del puente antes de agregar el material de firma:
+Verifique los metadatos del puente antes de agregar material de firma:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
@@ -115,30 +115,30 @@ curl -fsS https://taira.sora.org/v1/mcp \
   | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
 ```
 
-Configurar el URL como un usuario local MCP servidor en el tiempo de ejecución del agente. No comprometa al agente MCP config, API fichas, encabezados de autores enviados, `authority`, o `private_key` los valores en este repo de documentos o en un repo de aplicaciones.
+Configure la URL como un servidor MCP local del usuario en el entorno de ejecución del agente. No incluya en commits de este repositorio de documentación ni de un repositorio de aplicaciones la configuración MCP del agente, tokens de API, encabezados de autenticación reenviados ni valores de `authority` o `private_key`.
 
-Reglas urgentes para agentes que funcionan bien con Taira:
+Reglas de indicaciones para agentes que funcionan bien con Taira:
 
-- Descubra las herramientas del servidor MCP antes de llamarlas; vuelva a descubrir si el servidor informa `listChanged`.
-- Las herramientas `iroha.` seleccionadas son preferibles a las herramientas en bruto `torii.`.
-- Comienza con sólo lectura: inspeccione el estado, cuentas, activos, alias, bloques, estado de gobierno y estado de transacción antes de proponer escritos.
-- Requerir una instrucción humana explícita antes de las mutaciones en vivo de la red de prueba. Para los sobres de transacciones prefirmados, utilice `iroha.transactions.submit_and_wait` para que el agente espere al resultado en lugar de sólo enviarlo.
-- Resume los hashes de transacción, el estado final y los errores de validación del servidor en la respuesta del agente.
+- Descubra herramientas del servidor MCP antes de llamarlas; redescúbralas si el servidor informa `listChanged`.
+- Prefiere las herramientas `iroha.*` seleccionadas sobre las herramientas `torii.*` en bruto.
+- Comenzar en solo lectura: inspeccionar el estado, las cuentas, los activos, los alias, los bloques, el estado de gobernanza y el estado de las transacciones antes de proponer escrituras.
+- Requiere una instrucción humana explícita antes de las mutaciones en el testnet en vivo. Para contenedores de datos de transacciones pre-firmadas, usa `iroha.transactions.submit_and_wait` para que el agente espere el resultado en lugar de solo enviar.
+- Resuma los hashes criptográficos de la transacción, el estado final y los errores de validación del servidor en la respuesta del agente.
 
 ### Flujo de trabajo de desarrollo con agentes {#development-workflow-with-agents}
 
-Usar agentes como ayudantes de desarrollo para clientes Iroha, constructores de transacciones, scripts de diagnóstico y libretas de pruebas. Mantenga la autoridad del agente limitada: Puede inspeccionar el código, leer el estado Taira, proponer cambios y ejecutar pruebas locales, pero no debe mutar una red en vivo hasta que un humano apruebe la operación exacta.
+Utilice agentes como ayudantes de desarrollo para clientes Iroha, constructores de transacciones, scripts de diagnóstico y manuales de ejecución en testnet. Mantenga el principio de autorización del agente limitado: puede inspeccionar el código, leer el estado de Taira, proponer cambios y ejecutar pruebas locales, pero no debe modificar una red en vivo hasta que un humano apruebe la operación exacta.
 
 Un flujo de trabajo práctico es:
 
-1. Pídale al agente que inspeccione los documentos pertinentes, el código SDK, el comando CLI o el esquema de herramientas MCP antes de escribir el código.
-2. Que el agente escriba primero la ruta más pequeña del cliente: verificación de estado, búsqueda de cuenta, resolución alias o búsqueda del balance.
-3. Añadir el código de construcción de transacciones sólo después de que las llamadas solo para lectura funcionen contra Taira.
-4. Mantenga opt-in a los ensayos de red en vivo, por ejemplo detrás de `TAIRA_LIVE=1`, para que una prueba de unidad normal nunca gasta fondos de la red de pruebas o dependa de la disponibilidad de la red.
-5. Requerir al agente que informe la raíz de red, cadena, cuenta de autoridad, resumen de instrucciones, activo de tarifas y cambio esperado en el estado antes de presentar cualquier transacción.
-6. Revise el código generado para la manipulación secreta, el comportamiento de retentaje, la idempotencia y el manejo del rechazo antes de promocionarlo a CI o flujos de trabajo de la red.
+1. Pide al agente que inspeccione los documentos relevantes, el código SDK, el comando CLI o el esquema de la herramienta MCP antes de que escriba código.
+2. Haga que el agente escriba primero la ruta de cliente más pequeña: verificación de estado, búsqueda de cuenta, resolución de alias o consulta de saldo.
+3. Agrega el código de construcción de transacciones solo después de que las llamadas de solo lectura funcionen contra Taira.
+4. Mantenga las pruebas en red en vivo como opcionales, por ejemplo detrás de `TAIRA_LIVE=1`, para que una ejecución normal de pruebas unitarias nunca gaste fondos de la red de prueba ni dependa de la disponibilidad de la red.
+5. Requiere que el agente informe la raíz de la red, la cadena, la cuenta principal de autorización, el resumen de instrucciones, el activo de tarifa y el cambio de estado esperado antes de enviar cualquier transacción.
+6. Revise el código generado para el manejo de secretos, el comportamiento de reintento, la idempotencia y el manejo de rechazos antes de promoverlo a CI o a los flujos de trabajo de mainnet.
 
-Las herramientas útiles MCP para el desarrollo incluyen búsquedas de activos de cuentas, resolución de alias, búsqueda de bloqueo, búsquedo de transacciones, listas de transacciones y verificaciones del estado de la tubería. Utilice estas para construir confianza antes de enviar cualquier carga útil firmada.
+Las herramientas útiles de solo lectura MCP para el desarrollo incluyen búsquedas de activos de cuenta, resolución de alias, búsqueda de bloques, búsqueda de transacciones, listas de transacciones y comprobaciones del estado del proceso de la canalización. Úselas para generar confianza antes de enviar cualquier carga útil firmada.
 
 ```text
 Use Taira MCP as a read-only inspector while developing this Iroha feature.
@@ -147,33 +147,33 @@ then update the client code. Do not submit transactions unless I explicitly
 say "submit this transaction".
 ```
 
-### Flujo de trabajo de las transacciones a través de agentes {#transaction-workflow-through-agents}
+### Flujo de transacciones a través de agentes {#transaction-workflow-through-agents}
 
-El Consejo MCP puente puede presentar una firma Iroha la transacción, pero no elimina los requisitos normales de la transacción. Una transacción todavía necesita una autoridad correcta, permisos, financiación de tarifas, cadena ID, Metadatos, y firma.
+El puente MCP puede enviar una transacción Iroha firmada, pero no elimina los requisitos normales de la transacción. Una transacción aún necesita un principal de autorización correcto, permisos, financiamiento de tarifas, ID de cadena, metadatos y firma.
 
-Para productos crudos Iroha las transacciones, elaborar y firmar el envase de la transacción con una SDK o CLI Primero, luego dar al agente sólo los bytes de transacción canónica firmada codificada como `body_base64`. El agente puede presentar el sobre con `iroha.transactions.submit_and_wait`, o presentar con `iroha.transactions.submit` y la encuesta con `iroha.transactions.wait`.
+Para las transacciones Iroha sin procesar, construya y firme primero el sobre de la transacción con un SDK o la CLI. Entregue al agente únicamente los bytes canónicos de la transacción firmada, codificados como `body_base64`. El agente puede enviar el sobre con `iroha.transactions.submit_and_wait` o usar `iroha.transactions.submit` y consultar el estado con `iroha.transactions.wait`.
 
-No pongan las claves privadas en una solicitud de agente. Si un agente necesita construir una transacción, apunta a un código local que cargue secretos de el entorno de ejecución del usuario, la cadena de llaves, el firmador de hardware o el archivo de configuración de testnet ignorado El agente nunca debe escribir el material clave en Markdown, fichas, registros, o compromisos.
+No pegue claves privadas en la petición de un agente. Si el agente necesita construir una transacción, indíquele código local que cargue los secretos desde el entorno de ejecución del usuario, el llavero, un firmante de hardware o un archivo ignorado de configuración de la red de pruebas. El agente nunca debe escribir las claves en Markdown, artefactos de prueba, registros ni commits.
 
-Antes de presentar una transacción, haga que el agente elabore un breve plan de transacción:
+Antes de enviar una transacción, haga que el agente produzca un breve plan de transacción:
 
-- `network`: Taira raíz y cadena de la red de ensayo ID
-- `authority`: cuenta que firma y paga tarifas
-- `instructions`: registro, acuña, quemadura, transferencia, metadatos, permiso o resumen de la convocatoria del contrato
-- `fee asset`: activo que se cobrará en Taira
-- `preflight reads`: cuentas, saldo de activos, permisos, alias o controles de bloques ya realizados
-- `expected result`: el estado que debe ser visible después de la confirmación
-- `idempotency`: qué ocurre si se retoma la misma solicitud
+- `network`: raíz de la red de pruebas Taira e ID de cadena
+- `authority`: cuenta que firma y paga las tarifas
+- `instructions`: registrar, emitir, quemar, transferir, metadatos, permiso o resumen de llamada de contrato
+- `fee asset`: activo que se cargará en Taira
+- `preflight reads`: cuenta, saldo de activos, permisos, alias o verificaciones de bloqueo ya realizadas
+- `expected result`: el estado que debería ser visible después de la confirmación
+- `idempotency`: ¿qué sucede si se vuelve a intentar la misma solicitud?
 
-Después de la presentación, haga que el agente espere un estado terminal y luego verifique el cambio de estado con una consulta de lectura.
+Después de la presentación, haga que el agente espere un estado terminal, luego verifique el cambio de estado con una consulta de lectura. Un informe de finalización útil incluye:
 
-- hash de las transacciones
-- el estado de terminal como `Committed`, `Applied`, `Rejected` o `Expired`;
-- detalle del bloque o explorador, cuando esté disponible
-- resultados de las lecturas de verificación
-- mensaje de rechazo y si el fallo se parece a permisos, tarifas, validación, estado obsoleto o disponibilidad del punto final.
+- hash criptográfico de transacción
+- estado del terminal como `Committed`, `Applied`, `Rejected` o `Expired`
+- detalle del bloque o del explorador cuando esté disponible
+- verificación de resultados de lectura
+- mensaje de rechazo y si el fallo parece ser por permisos, tarifas, validación, estado obsoleto o disponibilidad del endpoint API
 
-Ejemplo de guardia rápida:
+Ejemplo de instrucción protegida:
 
 ```text
 Prepare a Taira transaction plan, but do not submit yet. Use MCP reads to
@@ -183,7 +183,7 @@ expected post-state. Wait for my explicit "submit" message before calling
 iroha.transactions.submit_and_wait.
 ```
 
-Cuando el sobre firmado ya esté preparado:
+Cuando el contenedor de datos firmado ya está preparado:
 
 ```text
 Submit this pre-signed Taira transaction envelope with
@@ -193,13 +193,13 @@ state with read-only iroha.* tools and report the hash, status, and
 verification result.
 ```
 
-Tratar Taira MCP como una superficie de control pública de la red de ensayo. Las teclas Taira, las redes de ensayo XOR, las cuentas del grifo y los marcadores canarios son desechables y deben mantenerse separadas de las teclas Minamoto y de los flujos de trabajo de liberación de producción.
+Trata Taira MCP como una superficie de control de testnet pública. Las claves Taira, XOR de testnet, las cuentas de servicio de financiamiento de testnet y los firmantes criptográficos canarios son desechables y deben mantenerse separados de las claves Minamoto y de los flujos de trabajo de lanzamiento en producción.
 
 ## Ejemplos de juguetes que puedes probar ahora {#toy-examples-you-can-try-now}
 
-Estos ejemplos son sólo para lectura, a menos que se indique. Funcionan antes de generar claves y son seguros para correr contra ambas redes públicas.
+Estos ejemplos son de solo lectura a menos que se indique lo contrario. Funcionan antes de que generes claves y son seguros para ejecutar en redes públicas.
 
-Comparar la salud de la red de ensayo Taira con la de la red principal Minamoto:
+Comparar la salud de la testnet Taira y la mainnet Minamoto:
 
 ```bash
 for network in taira minamoto; do
@@ -211,7 +211,7 @@ for network in taira minamoto; do
 done
 ```
 
-Lista de las vías del espacio público de datos expuestas por Taira:
+Enumere los carriles de ejecución del espacio de datos público expuestos por Taira:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -221,7 +221,7 @@ curl -fsS https://taira.sora.org/status \
     | @tsv'
 ```
 
-Ejecutar el mismo comando contra Minamoto cuando se necesita la vista de red:
+Ejecute el mismo comando contra Minamoto cuando necesite la vista de la mainnet:
 
 ```bash
 curl -fsS https://minamoto.sora.org/status \
@@ -231,7 +231,7 @@ curl -fsS https://minamoto.sora.org/status \
     | @tsv'
 ```
 
-Construir una pequeña sonda de estado Node.js para un panel de control, bot o verificación de implementación:
+Construye una pequeña sonda de estado Node.js para un panel, bot o verificación de despliegue:
 
 ```bash
 node --input-type=module <<'EOF'
@@ -256,17 +256,17 @@ for (const [name, root] of Object.entries(roots)) {
 EOF
 ```
 
-El primer juguete de escritura debe ser una reclamación del grifo Taira. Utiliza la red de prueba XOR y nunca debe apuntar a Minamoto.
+El primer juguete del lado de escritura debería ser un reclamo de servicio de financiamiento en testnet Taira. Utiliza XOR de testnet y nunca debería apuntar a Minamoto.
 
-## 3. Crear una configuración de cliente Taira {#_3-create-a-taira-client-config}
+## 3. Crear una Configuración de Cliente Taira {#_3-create-a-taira-client-config}
 
-Generar un par de teclas si aún no tienes uno:
+Genera un par de claves si aún no tienes uno:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 ```
 
-Creación de `taira.client.toml`:
+Crear `taira.client.toml`:
 
 ```toml
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
@@ -284,23 +284,23 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-El nivel más alto `chain` es el exacto Taira cadena de transacciones ID. El Consejo `[account].profile = "taira"` el ajuste selecciona de forma independiente la Taira I105 Discriminante de la cadena. ID no selecciona el perfil de la cuenta.
+El `chain` de nivel superior es el ID de cadena de transacción exacto Taira. La configuración `[account].profile = "taira"` selecciona de manera independiente el discriminante de cadena Taira I105. El ID de la cadena no selecciona el perfil de la cuenta.
 
-Ejecutar un cheque de sólo lectura:
+Ejecute una verificación de solo lectura:
 
 ```bash
 iroha --config ./taira.client.toml --output-format text ops sumeragi status
 ```
 
-Ejecutar el diagnóstico público Taira antes de escribir pruebas:
+Ejecute los diagnósticos públicos Taira antes de las pruebas de escritura:
 
 ```bash
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-Financia la cuenta Taira a través del grifo antes de ejecutar los escritos de pago. El flujo directo del grifo se encuentra en [Obtener Testnet XOR en Taira](#_4-get-testnet-xor-on-taira).
+Financie la cuenta de Taira mediante el dispensador antes de realizar escrituras con tarifa. El flujo directo se explica en [Obtener XOR de prueba en Taira](#_4-get-testnet-xor-on-taira).
 
-Después de que se acepte la solicitud del grifo y la cuenta sea financiada, el canario Taira es una prueba opcional de humo de escritura:
+Después de que se acepte la solicitud del servicio de financiación de la red de prueba y la cuenta sea financiada, el canario Taira es una prueba opcional de escritura:
 
 ```bash
 iroha --config ./taira.client.toml taira write-canary \
@@ -309,9 +309,9 @@ iroha --config ./taira.client.toml taira write-canary \
   --json
 ```
 
-El canario envía un ping firmado, espera la confirmación, y escribe la configuración de firma del tiempo de ejecución cuando `--write-config` se proporcionará. Taira es una red de prueba pública, por lo que la saturación de la cola puede hacer que el ping firmado falle incluso cuando el propio grifo funciona. `taira doctor` se informa de una cola saturada o los resultados del canario `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`, Esperar y volver a intentar antes de tratarlo como un error de configuración del cliente.
+El canario envía un ping firmado, espera la confirmación y escribe la configuración del firmador criptográfico del tiempo de ejecución del software cuando se proporciona `--write-config`. Taira es una testnet pública, así que la saturación de la cola puede hacer que el ping firmado falle incluso cuando el propio servicio de financiación de la testnet funciona. Si `taira doctor` informa de una cola saturada o el canario devuelve `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`, espere e intente de nuevo antes de considerarlo un error de configuración del cliente.
 
-Para los ensayos de humo sin supervisión, envuelva el canario en un bucle de ensayo restringido:
+Para las pruebas de humo desatendidas, envuelva el canario en un bucle de reintento limitado:
 
 ```bash
 ok=false
@@ -327,60 +327,60 @@ done
 test "$ok" = true
 ```
 
-Dejar de volver a probar si `iroha taira doctor` muestra fallas severas. La saturación en la cola y el rechazo de la admisión de tarifas son condiciones transitorias de la red pública de pruebas; los diagnósticos DNS, TLS o `status = "fail"` no lo son.
+Deja de reintentar si `iroha taira doctor` muestra fallos graves. La saturación de la cola y los rechazos por admisión de tarifas son condiciones transitorias de la red de prueba pública; los diagnósticos DNS, TLS o `status = "fail"` no lo son.
 
-## Generar una cuenta SORA Nexus ID {#generate-a-sora-nexus-account-id}
+## Generar un ID de cuenta SORA Nexus {#generate-a-sora-nexus-account-id}
 
-Una cuenta SORA Nexus ID es una dirección canónica I105 derivada de la clave pública de la cuenta y del prefijo de red objetivo. No es el valor `[account].domain` en cliente TOML. La misma clave pública codifica a diferentes IDs en Taira y Minamoto, y los usuarios de producción deben generar un par de teclas separado para Minamoto.
+Un ID de cuenta SORA Nexus es una dirección canónica I105 derivada de la clave pública de la cuenta y del prefijo de red objetivo. No es el valor `[account].domain` en cliente TOML. La misma clave pública se codifica en diferentes ID en Taira y Minamoto, y los usuarios de producción deben generar un par de claves separado para Minamoto.
 
-Generar o cargar el par de teclas Ed25519 que controlará la cuenta:
+Genera o carga el par de claves Ed25519 que controlará la cuenta:
 
 ```bash
-kagami keys --algorithm ed25519 --json
+kagami keys --algorithm ed25519 --out-dir ./nexus-account-key
 ```
 
-Convertir la clave pública en una cuenta Taira ID:
+Convierte la clave pública en un ID de cuenta Taira:
 
 ```bash
 iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Convertir una clave pública Minamoto con el prefijo de la red principal:
+Convierte una clave pública Minamoto con el prefijo de la red principal:
 
 ```bash
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Utilice la cuenta resultante ID donde un Nexus API o CLI El comando pide un relato canónico. ID, Por ejemplo, el Taira el grifo `account_id`, Las consultas de balance, los campos estrictos de cuentas o las obligaciones de alias. clave privada en su configuración de cliente, y seleccione la misma red pública con `[account].profile = "taira"` o `[account].profile = "minamoto"`.
+Use el ID de cuenta resultante dondequiera que un comando Nexus API o CLI solicite un ID de cuenta canónico, por ejemplo, el servicio de financiamiento de testnet Taira `account_id`, consultas de saldo, campos estrictos de cuenta o vinculaciones de alias. Mantenga la clave privada correspondiente en la configuración de su cliente y seleccione la misma red pública con `[account].profile = "taira"` o `[account].profile = "minamoto"`.
 
-La generación del ID no crea por sí mismo una cuenta en cadena financiada. Taira, el grifo puede crear y financiar la cuenta de testnet escribe. Minamoto, utilizar una conexión a la red principal o un flujo de tesorería aprobada.
+Generar el ID no crea por sí mismo una cuenta financiada en la cadena. En Taira, el servicio de financiamiento de la testnet puede crear y financiar la cuenta para escrituras en la testnet. En Minamoto, use un flujo aprobado de incorporación o tesorería en la mainnet.
 
-### Almacenamiento de llaves y respaldo {#key-storage-and-backup}
+### Almacenamiento y Copia de Seguridad de Claves {#key-storage-and-backup}
 
-La cuenta ID y la clave pública pueden ser compartidas. La clave privada correspondiente, la frase de acceso, la semilla y el material de recuperación deben ser tratados como secreto.
+El ID de la cuenta y la clave pública pueden compartirse. La clave privada correspondiente, la frase de contraseña, la semilla y el material de recuperación deben tratarse como secretos.
 
 Utilice estas prácticas para las cuentas SORA Nexus:
 
-- Guarde las claves privadas en un administrador de contraseñas cifrado, keystore respaldado por hardware o servicio dedicado de firma. No comprometa las claves al control de origen ni deje las llaves de producción en el historial del shell, registros, chat, boletos o copias de seguridad no cifradas.
-- Usar una contraseña única de alta entropía para cada bóveda o firma de producción. Almacenar las contraseñas en un administrador de contraseñas o proceso de custodia dividido, no en el mismo archivo o paquete de copia de seguridad que la clave privada cifrada.
-- Mantenga Taira y Minamoto Las llaves separadas. Taira llaves como material desechable de la red de ensayo y Minamoto las claves como autoridad de fondos de producción.
-- Copia de seguridad de la clave privada, llave pública, cuenta ID, perfil de cuenta y cualquier recuperación de cuenta o notas de custodia necesarias para restaurar el firmante. Una clave privada sin contexto de red es fácil de usar mal durante la recuperación.
-- Mantenga al menos una copia de seguridad encriptada fuera de línea y una copia de copia de seguridad cifrada geográficamente separada para firmas de producción. Prueba de recuperación con una pequeña operación de sólo lectura antes de depender de la copia de seguridad.
-- Rotar o reemplazar un firmador si la clave privada, frase de contraseña, soporte de copia de seguridad o el host de firma pueden haber sido expuestos.
+- Almacene las claves privadas en un gestor de contraseñas encriptado, un almacén de claves respaldado por hardware o un servicio de firma dedicado. No cometa las claves en el control de versiones ni deje claves de producción en el historial de la terminal, registros, chat, tickets o copias de seguridad sin encriptar.
+- Utilice una frase de paso única de alta entropía para cada bóveda o firmante criptográfico de producción. Almacene las frases de paso en un gestor de contraseñas o en un proceso de custodia dividida, no en el mismo archivo o paquete de respaldo que la clave privada encriptada.
+- Mantenga las claves Taira y Minamoto separadas. Trate las claves Taira como material desechable de testnet y las claves Minamoto como principal de autorización de fondos de producción.
+- Respaldar la clave privada, la clave pública, el ID de la cuenta, el perfil de la cuenta y cualquier nota de recuperación o custodia de la cuenta necesaria para restaurar el firmante criptográfico. Una clave privada sin el contexto de la red es fácil de usar incorrectamente durante la recuperación.
+- Mantenga al menos una copia de seguridad cifrada fuera de línea y una copia de seguridad cifrada geográficamente separada para los firmantes criptográficos de producción. Pruebe la recuperación con una operación pequeña de solo lectura antes de depender de la copia de seguridad.
+- Rote o reemplace un firmante criptográfico si la clave privada, la frase de contraseña, el medio de respaldo o el host de firma pueden haber sido expuestos.
 
-Para más detalles, véase [El almacenamiento de las claves criptográficas](/es/guide/security/storing-cryptographic-keys.md) y [Seguridad de contraseñas](/es/guide/security/password-security.md).
+Para más detalles, consulte [Almacenamiento de Claves Criptográficas](/es/guide/security/storing-cryptographic-keys.md) y [Seguridad de la contraseña](/es/guide/security/password-security.md).
 
-## Envía Testnet a XOR en Taira {#_4-get-testnet-xor-on-taira}
+## 4. Obtén Testnet XOR en Taira {#_4-get-testnet-xor-on-taira}
 
-Utilice directamente el grifo público.
+Utilice directamente el servicio público de financiamiento de testnet. El flujo es:
 
-1. Generar o cargar una firma y calcular su cuenta canónica Taira ID.
-2. Traiga el rompecabezas del grifo actual.
-3. Resolver el rompecabezas si el `difficulty_bits` es mayor que el `0`.
-4. Presenta la solicitud del grifo.
-5. Esperar a que el saldo de la cuenta o los activos se vuelvan visibles antes de enviar escritos de pago.
+1. Generar o cargar un firmante criptográfico y calcular su ID de cuenta canónica Taira.
+2. Obtén el rompecabezas del servicio de financiamiento de testnet actual.
+3. Resuelve el rompecabezas si `difficulty_bits` es mayor que `0`.
+4. Envíe la solicitud de servicio de financiamiento de testnet.
+5. Espere a que el saldo de la cuenta o del activo sea visible antes de enviar escrituras que requieran pago de tarifas.
 
-Convertir una llave pública en la cuenta Taira I105 ID que espera el grifo:
+Convierte una clave pública en el ID de cuenta Taira I105 que espera el servicio de financiamiento de la red de prueba:
 
 ```bash
 iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
@@ -394,9 +394,9 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
   | jq .
 ```
 
-El grifo es un servicio de testnet público. Si el rompecabezas o el punto final de la reclamación devuelve `502`, un tiempo de espera u otro error a nivel de pasarela, espere y vuelva a intentar antes de cambiar sus claves o configuración del cliente.
+El servicio de financiamiento de testnet es un servicio público de testnet. Si el endpoint del rompecabezas o reclamación API devuelve `502`, un tiempo de espera, u otro error a nivel de puerta de enlace, espere e intente de nuevo antes de cambiar sus claves o la configuración del cliente.
 
-La respuesta tiene la siguiente forma:
+La respuesta tiene esta forma:
 
 ```json
 {
@@ -412,7 +412,7 @@ La respuesta tiene la siguiente forma:
 }
 ```
 
-Cuando `difficulty_bits` sea `0`, presente únicamente la cuenta ID:
+Cuando `difficulty_bits` esté `0`, envíe solo el ID de la cuenta:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
@@ -423,7 +423,7 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
   | jq .
 ```
 
-Cuando `difficulty_bits` sea mayor que `0`, resuelva el rompecabezas e incluya la altura del anclaje más la noción:
+Cuando `difficulty_bits` sea mayor que `0`, resuelve el rompecabezas e incluye la altura del ancla más el valor del nonce criptográfico:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/accounts/faucet \
@@ -440,23 +440,23 @@ curl -fsS https://taira.sora.org/v1/accounts/faucet \
 
 El algoritmo del rompecabezas es:
 
-1. Construir el desafío como SHA-256 sobre:
+1. Construye el desafío como SHA-256 sobre:
    - los bytes de `iroha:accounts:faucet:pow:v2`
-   - la cuenta UTF-8 ID
-   - `anchor_height` como el gran indio `u64`
-   - `anchor_block_hash_hex` decodificado en bytes
-   - `challenge_salt_hex` descifrado en bytes, cuando esté presente
-2. Pruebe `u64` noces codificados como valores de 8 bytes big-endian.
-3. Para cada nonce, ejecuta scrypt con:
-   - contraseña: el nonce de 8 bits
-   - Sal: el desafío de 32 bits
+   - el ID de cuenta UTF-8
+   - `anchor_height` en orden de bytes big-endian `u64`
+   - `anchor_block_hash_hex` decodificado como bytes
+   - `challenge_salt_hex` decodificado como bytes, cuando está presente
+2. Pruebe valores de nonce criptográficos `u64` codificados como valores de 8 bytes en big-endian.
+3. Para cada valor de nonce criptográfico, ejecuta scrypt con:
+   - contraseña: el valor nonce criptográfico de 8 bytes
+   - sal: el desafío de 32 bytes
    - `N = 2^scrypt_log_n`
    - `r = scrypt_r`
    - `p = scrypt_p`
    - longitud de salida: 32 bytes
-4. El nonce ganador es el primer digesto con al menos `difficulty_bits` que conduce a cero bits.
+4. El valor de nonce criptográfico ganador es el primer valor de resumen criptográfico con al menos `difficulty_bits` bits cero iniciales.
 
-La respuesta del grifo incluye el activo financiado y el hash de la transacción en cola:
+La respuesta del dispensador incluye el activo financiado y el hash de la transacción en cola:
 
 ```json
 {
@@ -469,9 +469,9 @@ La respuesta del grifo incluye el activo financiado y el hash de la transacción
 }
 ```
 
-La respuesta se devuelve actualmente con HTTP `202 Accepted`. Su `asset_definition_id` es el activo de cuota actual Taira financiado por el grifo público; derivarlo de la respuesta en lugar de copiar un ejemplo ID. El grifo ha aceptado la solicitud cuando devuelve `tx_hash_hex` y `status: "QUEUED"`.
+La respuesta se devuelve actualmente con HTTP `202 Accepted`. Su `asset_definition_id` es el actual activo de tarifas Taira financiado por el servicio público de financiamiento de testnet; derívate de la respuesta en lugar de copiar un ID de ejemplo. El servicio de financiación de la testnet ha aceptado la solicitud cuando devuelve `tx_hash_hex` y `status: "QUEUED"`.
 
-Luego, sondee el activo financiado antes de presentar sus propias transacciones de pago de cuotas:
+Luego consulta el activo financiado antes de enviar tus propias transacciones pagando tarifas:
 
 ```bash
 TAIRA_FEE_ASSET_DEFINITION=$(
@@ -483,9 +483,9 @@ iroha --config ./taira.client.toml ledger asset get \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
-Si la reclamación del grifo fue aceptada, pero la cuenta o el activo aún no es visible, la transacción todavía está detrás del procesamiento público de la cola en testnet.
+Si se aceptó la solicitud del servicio de financiación de testnet pero la cuenta o el activo aún no es visible, la transacción todavía está retrasada en el procesamiento de la cola pública de testnet. Espere y vuelva a intentar la lectura antes de enviar escrituras.
 
-Para un cheque directo API listo para su ejecución, guarde esto como `taira_faucet_claim.py` y envíe la cuenta Taira I105 ID:
+Para una verificación directa API lista para usar, guarde esto como `taira_faucet_claim.py` y pase el ID de cuenta Taira I105:
 
 ```python
 #!/usr/bin/env python3
@@ -551,11 +551,11 @@ with urllib.request.urlopen(request) as res:
     print(json.dumps(json.load(res), indent=2))
 ```
 
-El grifo es solo para los fondos de la red de prueba Taira. No utilice la red de pruebas XOR, las cuentas del grifo o los indicadores canarios Taira en los flujos Minamoto.
+El dispensador solo proporciona fondos para la red de pruebas Taira. No use XOR de prueba, cuentas del dispensador ni firmantes canarios de Taira en flujos de Minamoto.
 
-## 5. Cree una configuración de cliente Minamoto {#_5-create-a-minamoto-client-config}
+## 5. Crear una Configuración de Cliente Minamoto {#_5-create-a-minamoto-client-config}
 
-Utilice un par de teclas separado para Minamoto. No vuelva a utilizar las teclas Taira para la red principal.
+Usa un par de claves separado para Minamoto. No reutilices las claves de Taira para la red principal.
 
 Crear `minamoto.client.toml`:
 
@@ -575,39 +575,39 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-El nivel más alto `chain` es la corriente Nexus cadena de red principal ID. `[account].profile = "minamoto"` selecciona el Minamoto I105 Discriminante de cadena; el nombre de anfitrión del punto final y la cadena ID no lo seleccionen implícitamente.
+El nivel superior `chain` es el ID de cadena mainnet actual de Nexus. `[account].profile = "minamoto"` selecciona el discriminante de cadena Minamoto I105; el nombre de host del endpoint API y el ID de cadena no lo seleccionan implícitamente.
 
-Convertir una llave pública Minamoto en su cuenta canónica I105 ID con el prefijo de la red principal:
+Convierte una clave pública Minamoto en su ID de cuenta canónica I105 con el prefijo de mainnet:
 
 ```bash
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Ejecutar solo controles de lado leído hasta que la cuenta sea provista y financiada a través del flujo de incorporación o gobernanza de la red principal:
+Ejecute solo verificaciones del lado de lectura hasta que la cuenta esté aprovisionada y financiada a través del flujo de incorporación a la mainnet o de gobernanza:
 
 ```bash
 iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
 ```
 
-No utilice el grifo Taira o el auxiliar de escritura canario contra el Minamoto.
+No ejecute el servicio de financiación de la testnet Taira ni el asistente write-canary contra Minamoto.
 
 ## 6. Financiar una cuenta Minamoto con XOR {#_6-fund-a-minamoto-account-with-xor}
 
-Las tasas Minamoto se pagan con la producción XOR, y Minamoto no tiene grifo público. Financia la cuenta configurada mediante una incorporación a la red principal aprobada o transferencia de tesorería, o recibe XOR desde una cuenta Minamoto existente financiada.
+Las tarifas Minamoto se pagan con la producción XOR, y Minamoto no tiene servicio público de financiamiento de testnet. Financia la cuenta configurada a través de una incorporación aprobada en la mainnet o una transferencia del tesoro, o recibe XOR de una cuenta Minamoto existente ya financiada.
 
-Verifique la cuenta canónica ID y el financiamiento con cheques de sólo lectura antes de presentar una escritura. Trate a Minamoto XOR como fondos de producción: enséña primero la misma operación en Taira, mantenga las llaves de producción separadas y no asuma que se puede restablecer una transacción de la red principal.
+Verifique la identificación de la cuenta canónica y la financiación con verificaciones de solo lectura antes de enviar una escritura. Trate Minamoto XOR como fondos de producción: ensaye la misma operación primero en Taira, mantenga claves de producción separadas y no asuma que una transacción en mainnet se puede restablecer.
 
-Taira XOR no puede pagar las tarifas de Minamoto. Los saldos de la red de pruebas y los créditos del grifo no se transfieren a Minamoto.
+El XOR de Taira no puede pagar las tarifas de Minamoto. Los saldos y las solicitudes de fondos de la red de pruebas no se transfieren a Minamoto.
 
 ## 7. Trabajar dentro de un espacio de datos existente {#_7-work-inside-an-existing-dataspace}
 
-Utilizar nombres de dominio completamente calificados para objetos del libro mayor que viven dentro de un espacio de datos. Por ejemplo, un dominio de proyecto en el espacio de datos público debe utilizar:
+Utilice nombres de dominio completamente calificados para los objetos del libro mayor de blockchain que se encuentran dentro de un espacio de datos. Por ejemplo, un dominio de proyecto en el espacio de datos público debería usar:
 
 ```text
 apps.universal
 ```
 
-Una vez que su cuenta tenga los permisos requeridos, cree una intención libre de secretos `AliasSetupPlanRequestV1` para el dominio y use el planificador declarativo:
+Después de que tu cuenta tenga los permisos requeridos, crea una intención `AliasSetupPlanRequestV1` sin secretos para el dominio y utiliza el planificador declarativo:
 
 ```bash
 iroha --config ./taira.client.toml \
@@ -620,7 +620,7 @@ iroha --config ./taira.client.toml \
   app alias setup apply --plan-file ./taira-apps-domain.plan.json
 ```
 
-Para Minamoto, generar y aprobar una intención y un plan de la red principal separados. Los planes están vinculados a su cadena, autoridad, anclaje del estado en vivo y fecha límite, por lo que no se puede promover o reproducir un plan Taira:
+Para Minamoto, genere y apruebe una intención y plan de mainnet separados. Los planes están vinculados a su cadena, principal de autorización, ancla de estado en vivo y fecha límite, por lo que un plan Taira no puede ser promovido ni reproducido:
 
 ```bash
 iroha --config ./minamoto.client.toml \
@@ -632,20 +632,20 @@ iroha --config ./minamoto.client.toml \
   app alias setup apply --plan-file ./minamoto-apps-domain.plan.json
 ```
 
-Los alias de cuentas utilizan el mismo sufijo del espacio de datos:
+Los alias de cuenta usan el mismo sufijo de espacio de datos:
 
 ```text
 alice@apps.universal
 alice@universal
 ```
 
-Los campos de cuentas estrictas todavía utilizan la cuenta canónica I105 IDs. Trate a los alias como vínculos legibles para el ser humano que se resuelven a la cuenta canónica IDs.
+Los campos de cuenta estrictos todavía utilizan IDs de cuenta canónicas I105. Trate los alias como vinculaciones legibles por humanos que se resuelven en IDs de cuenta canónicas.
 
-## 8. Proporcionar un nuevo espacio de datos {#_8-provision-a-new-dataspace}
+## 8. Provisionar un nuevo espacio de datos {#_8-provision-a-new-dataspace}
 
-Un nuevo espacio de datos es un operador y cambio en la gobernanza. El punto final público Torii puede dirigir el tráfico a los espacios de datos configurados, pero rechazará alias desconocidos del espacio de datos.
+Un nuevo espacio de datos es un cambio de operador y gobernanza. El endpoint público Torii API puede enrutar el tráfico a espacios de datos configurados, pero rechazará alias de espacios de datos desconocidos.
 
-Antes de preparar un cambio, captura el catálogo en vivo actual:
+Antes de preparar un cambio, captura el catálogo activo actual:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -653,24 +653,24 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-Para una cuenta de operador, compruebe también la postura del manifiesto de carril:
+Para una cuenta de operador, también verifique la postura técnica del manifiesto del carril de ejecución:
 
 ```bash
 iroha --config ./operator.client.toml app nexus lane-report --summary
 ```
 
-No promocione un nuevo alias a menos que se hayan revisado conjuntamente el carril ID, el espacio de datos ID, el conjunto de validadores, la tolerancia a fallas, el manifiesto, las reglas de enrutamiento y el propietario operativo. Una cuenta de usuario normal con los permisos requeridos puede adquirir un dominio y su arrendamiento SNS dentro de un espacio de datos existente a través del planificador alias; no puede agregar de forma segura un nuevo espacio de datos público.
+No promuevas un nuevo alias a menos que se hayan revisado juntos la ID de la vía de ejecución, la ID del espacio de datos, el conjunto de validadores, la tolerancia a fallos, el manifiesto técnico, las reglas de enrutamiento y el propietario operativo. Una cuenta de usuario normal con los permisos requeridos puede adquirir un dominio y su SNS arrendamiento dentro de un espacio de datos existente a través del planificador de alias; no puede agregar de manera segura un nuevo espacio de datos público.
 
-Para un espacio de datos privado o organizacional, prepare un cambio de catálogo con:
+Para un espacio de datos privado u organizacional, prepare un cambio de catálogo con:
 
 - un alias de espacio de datos único y numérico `id`
-- una entrada de carril correspondiente o una asignación de carril existente
+- una entrada de carril de ejecución coincidente o una asignación de carril de ejecución existente
 - el espacio de datos `fault_tolerance`
-- Reglas de enrutamiento para las instrucciones o los ámbitos de cuenta que deben aterrizar allí
-- un manifiesto del Directorio Espacial o evidencia de implementación equivalente, cuando el espacio de datos exponga las capacidades UAID
-- aprobación de gobernanza para la política de validador, cumplimiento, liquidación y seguimiento.
+- reglas de enrutamiento para las instrucciones o ámbitos de cuenta que deberían llegar allí
+- un manifiesto técnico de Directorio Espacial o evidencia de implementación equivalente, cuando el espacio de datos expone capacidades UAID
+- aprobación de la gobernanza para la política de validadores, cumplimiento, liquidación y monitoreo
 
-Un fragmento de configuración revisable se parece a esto:
+Un fragmento de configuración que se puede revisar se ve así:
 
 ```toml
 [[nexus.lane_catalog]]
@@ -695,13 +695,13 @@ account_prefix = "payments."
 description = "Route payments domains to the payments dataspace"
 ```
 
-La aceptación del operador debe incluir las siguientes puertas:
+La aceptación por parte del operador debería incluir estas etapas:
 
-- `irohad --sora --config <config.toml> --trace-config` pasa a la configuración del nodo resuelto
-- El manifiesto generado o revisado se archivará con hashes y firmas
-- Los ensayos de humo pasan en Taira antes de cualquier promoción Minamoto
-- el catálogo `/status` posterior al cambio muestra el carril previsto y el espacio de datos
-- `iroha app nexus lane-report --summary` no informa de que faltan los manifestos requeridos
+- `iroha3d --sora --config <config.toml> --trace-config` transmite la configuración del nodo resuelta
+- El manifiesto técnico generado o revisado se archiva con hashes y firmas criptográficas
+- las pruebas de humo pasan en Taira antes de cualquier promoción Minamoto
+- El catálogo `/status` posterior al cambio muestra la vía de ejecución y el espacio de datos previstos
+- `iroha app nexus lane-report --summary` no informa la falta de manifiestos técnicos requeridos
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -709,12 +709,12 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 
-Promover el mismo espacio de datos a Minamoto sólo después de que se complete la implementación, las pruebas de humo, el monitoreo y la evidencia de gobernanza de Taira.
+Promocione el mismo espacio de datos a Minamoto únicamente después de que se completen el despliegue de Taira, las pruebas de humo, la monitorización y las evidencias de gobernanza.
 
 ## Páginas relacionadas {#related-pages}
 
 - [Instalar Iroha 3](/es/get-started/install-iroha.md)
-- [Operar en Iroha 3 a través de CLI ](/es/get-started/operate-iroha-via-cli.md)
-- [Tarifas de patrocinio para un espacio privado de datos](/es/get-started/private-dataspace-fee-sponsor.md)
-- [Puntos finales Torii](/es/reference/torii-endpoints.md)
-- [Referencia de Génesis](/es/reference/genesis.md)
+- [Operar Iroha 3 a través de CLI](/es/get-started/operate-iroha-via-cli.md)
+- [Tarifas de patrocinador para un espacio de datos privado](/es/get-started/private-dataspace-fee-sponsor.md)
+- [Torii API puntos finales](/es/reference/torii-endpoints.md)
+- [referencia de génesis de blockchain](/es/reference/genesis.md)

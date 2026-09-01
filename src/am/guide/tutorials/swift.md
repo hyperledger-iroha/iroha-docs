@@ -3,18 +3,18 @@ translation_locale: am
 translation_source: /guide/tutorials/swift.md
 translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Swift እና iOS {#swift-and-ios}
 
-የ Swift SDK በቅድመ-መንገድ የሥራ ቦታ የተላከው `IrohaSwift` Swift ፓኬጅ በ `IrohaSwift/` ስር ነው ። የእሱ ፓኬጅ ማኒፌስት ሶስት የቤተ-መጽሐፍት ምርቶችን ይገልጻል `IrohaSwift` ፣ `IrohaSwiftMobileTransports` እና `IrohaSwiftTransferUI`እና iOS 15+ እና macOS 12+ ን በ Swift መሳሪያዎች 5.
+በላይኛው የስራ ቦታ የተላከው Swift SDK በ`IrohaSwift/` ስር ያለው `IrohaSwift` Swift ጥቅል ነው። የእሱ ጥቅል ቴክኒካል ማኒፌስት ሶስት የቤተ-መጽሐፍት ምርቶችን ይገልፃል - `IrohaSwift`፣ `IrohaSwiftMobileTransports` እና `IrohaSwiftTransferUI` - እና iOS 15+ እና macOS 12+ በ Swift መሳሪያዎች 5.9 ያነጣጠረ ነው።
 
-ፓኬጁ በአገሬው `NoritoBridge` በሁለትዮሽ ዒላማ ላይ የተመሠረተ ነው። የፓኬጅ ጥራት ከመገንባቱ በፊት `../dist/NoritoBridge.xcframework` ያረጋግጣል ፣ እና የአገሬው ምልክቶች ባልጫኑበት ጊዜ የግብይት ወይም የግንኙነት ምስጠራ መንገዶች ድልድይ የማይገኙ ስህተቶችን ይጥላሉ ።
+ጥቅሉ በቤተኛ `NoritoBridge` ሁለትዮሽ ዒላማ ላይ የተመሰረተ ነው. የጥቅል ጥራት ከመገንባቱ በፊት `../dist/NoritoBridge.xcframework` ያረጋግጣል፣ እና ግብይት ወይም የ crypto ዱካዎችን ያገናኙ ቤተኛ ምልክቶች በማይጫኑበት ጊዜ ድልድይ-የማይገኙ ስህተቶችን ይጥላሉ።
 
-## Swift የፓኬጅ አስተዳዳሪ {#swift-package-manager}
+## Swift የጥቅል አስተዳዳሪ {#swift-package-manager}
 
-ከተሰረዘ የስራ ቦታ ጋር ሲነፃፀር በአካባቢው `IrohaSwift/` ጥቅል ማውጫ ውስጥ SwiftPM ን ያመልክቱ። በ `Package.swift` የተጠቀመው የጥቅሉ መታወቂያ `IrohaSwift` ነው-
+ከተወረደ የሥራ ቦታ ቅጂ ጋር ሲያበለጽጉ፣ SwiftPMን ወደ አካባቢያዊው `IrohaSwift/` የጥቅል ማውጫ ይጠቁሙ። `Package.swift` የሚጠቀመው የጥቅል መለያ `IrohaSwift` ነው፦
 
 ```swift
 dependencies: [
@@ -30,20 +30,20 @@ targets: [
 ]
 ```
 
-የመተግበሪያዎን መንገድ ያስተካክሉ የአሁኑን `examples/ios/ConnectMinimalApp` መንገድ እንደነበረው አይኮፒ ያድርጉ፤ ይህ ማኒፌስት `../../IrohaSwift` ወደ `examples/IrohaSwift` ይለወጣል።
+ለመተግበሪያዎ መንገዱን ያስተካክሉ። የአሁኑን `examples/ios/ConnectMinimalApp` መንገድ እንዳለ አይገለብጡ; ያ ቴክኒካዊ አንጸባራቂ `../../IrohaSwift` ወደ `examples/IrohaSwift` ይፈታል።
 
-ጥቅሉን ከመፍታትዎ በፊት ድልድዩ በስራ ቦታ ሥር ላይ እንዳለ ያረጋግጡ:
+ጥቅሉን ከመፍታትዎ በፊት ድልድዩ በስራ ቦታ ሥር ላይ መኖሩን ያረጋግጡ -
 
 ```bash
 cd /path/to/iroha
 make bridge-xcframework
 ```
 
-ይህ `dist/NoritoBridge.xcframework` ያስገኛል፤ `IrohaSwift/Package.swift` `../dist/NoritoBridge.xcframework` በማለት ይጠቅሳል።
+ይህ `dist/NoritoBridge.xcframework` ያመነጫል; `IrohaSwift/Package.swift` እንደ `../dist/NoritoBridge.xcframework` ይጠቅሳል።
 
 ## CocoaPods {#cocoapods}
 
-የኮድ መሰረት ደግሞ ይዟል `IrohaSwift/IrohaSwift.podspec`. ይህ ይገልጻል `IrohaSwift` ካፕል፣ Swift 9 እና iOS 15. የ podspec ይጎትታል Swift ከዋናው ማከማቻው ምንጮች; የአገር ውስጥ ድልድይ አሁንም መኖር አለበት እና ለግብይት ኮዲንግ, ኤድ 25519 ያልሆነ ፊርማ, እና Connect crypto የተገናኙ ናቸው.
+የኮድ ቤዝ `IrohaSwift/IrohaSwift.podspec` ይዟል። `IrohaSwift` ፖድ፣ Swift 5.9 እና iOS 15 ያውጃል። ፖድስፔክ Swift ምንጮችን ከዋናው ማከማቻ ይጎትታል; ቤተኛ ድልድይ አሁንም ለግብይት ኢንኮዲንግ፣ Ed25519 ላልሆነ ፊርማ እና ክሪፕቶፕን ለማገናኘት መገኘት እና መገናኘት አለበት።
 
 ## ፈጣን ጅምር {#quickstart}
 
@@ -63,9 +63,9 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-## Taira ንባብ ብቻ ይሞክሩ {#try-taira-read-only}
+## ይሞክሩ Taira ተነባቢ-ብቻ {#try-taira-read-only}
 
-መሣሪያው ወይም ሲምዩተሩ ወደ Taira የህዝብ መጨረሻ ነጥብ መድረሱን ለማረጋገጥ ቀላል የሆነ HTTP ምርመራ ይጀምሩ:
+መሳሪያው ወይም አስመሳዩ ለህዝብ Taira API የመጨረሻ ነጥብ መድረስ መቻሉን ለማረጋገጥ በግልጽ HTTP ምርመራ ይጀምሩ -
 
 ```swift
 import Foundation
@@ -83,9 +83,9 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-ተመሳሳይ ይጠቀሙ `URLSession` ፍተሻ `https://taira.sora.org/v1/assets/definitions?limit=5` እናንተ ግንባታ እያደረጋችሁ UI እና እንደገና ባህሪ ይሞክሩ. `IrohaSDK` አፕሊኬሽኑ ፊርማውን ከደህንነት ማከማቻ ከተጫነ በኋላ ብቻ ረዳቶችን ያቅርቡ እና ሂሳቡ በ Taira.
+UI በሚገነቡበት ጊዜ ተመሳሳይ `URLSession` ለ`https://taira.sora.org/v1/assets/definitions?limit=5` ያረጋግጡ እና ባህሪን እንደገና ይሞክሩ። ወደ `IrohaSDK` ረዳቶች ያስገቡ መተግበሪያው ምስጠራ ፈራሚ ቁሳቁሶችን ደህንነቱ የተጠበቀ ማከማቻ ከጫነ እና መለያው በ Taira ላይ የገንዘብ ድጋፍ ከተደረገ በኋላ ብቻ ነው።
 
-አንድ ግብይት ለመገንባት እና ለማቅረብ, `IrohaSDK` ረዳቶችን ይጠቀሙ. እነዚህ የአገር ውስጥ ድልድይ የተደገፈ የግብይት ኢንኮደር ይጠሩታል:
+ግብይትን ለመገንባት እና ለማስገባት `IrohaSDK` ረዳቶችን ይጠቀሙ። እነዚህ ቤተኛ ድልድይ የተደገፈ የግብይት ኢንኮደርን ይጠይቃሉ -
 
 ```swift
 let transfer = TransferRequest(
@@ -107,15 +107,15 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-`TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest`, እና `UnshieldRequest` የካኖኒክ ሂሳብ ማረጋገጫ IDs እና ካኖኒካዊ ያልተስተካከለ Base58 ንብረቶች ትርጉም IDs ከመፈረምዎ በፊት።
+`TransferRequest`፣ `MintRequest`፣ `BurnRequest`፣ `ShieldRequest` እና `UnshieldRequest` ከመፈረም በፊት ካኖኒካል የመለያ IDs እና ቅድመ-ቅጥያ የሌላቸው ካኖኒካል Base58 የንብረት-ፍቺ IDs ያረጋግጣሉ።
 
-## የአገር ውስጥ ኤስኮር {#native-escrow}
+## ቤተኛ Escrow {#native-escrow}
 
-Swift የገበያ ቦታ እና የማይታወቁ ኤስኮር መመሪያዎችን እንደ Norito JSON በጠቅላላ ጭነት `NativeEscrowInstructionBuilders` ወይም ተመጣጣኝ `IrohaSDK.build*Escrow*` ረዳቶች። [የአገር ውስጥ ንብረት ማስከበሪያ](/am/blockchain/escrow.md#swift-and-ios) ለምሳሌ፣ የማይታወቁ ማስረጃ መስኮች፣ እና የክርክር መፍቻ ፈቃድ ምልክት።
+Swift የገበያ ቦታ እና ስም-አልባ የዋስትና መመሪያዎችን እንደ Norito JSON ጭነቶች `NativeEscrowInstructionBuilders` ወይም ተመጣጣኝ `IrohaSDK.build*Escrow*` ረዳቶችን በመጠቀም ይገነባል። ለምሳሌዎች፣ ማንነታቸው ያልታወቁ የማረጋገጫ መስኮች እና የክርክር ፈቺ ፍቃድ ቶከን [ቤተኛ ንብረት Escrow](/am/blockchain/escrow.md#swift-and-ios)ን ይመልከቱ።
 
-## ፊርማ ማድረግ {#signing}
+## መፈረም {#signing}
 
-`Keypair` Ed25519 ምቾት ነው API. ለሌሎች ስልተ ቀመሮች `IrohaSDK` ን በ `defaultSigningAlgorithm` ይገንቡ እና `generateSigningKey()` ወይም `signingKey(fromSeed:)` ይጠቀሙ:
+`Keypair` የ Ed25519 ምቾት API ነው። ለሌሎች ስልተ ቀመሮች፣ `IrohaSDK`ን በ`defaultSigningAlgorithm` ይገንቡ እና `generateSigningKey()` ወይም `signingKey(fromSeed:)` ይጠቀሙ -
 
 ```swift
 let pqSdk = IrohaSDK(
@@ -125,11 +125,11 @@ let pqSdk = IrohaSDK(
 let signingKey = try pqSdk.generateSigningKey()
 ```
 
-የ `SigningAlgorithm` enum በአሁኑ ጊዜ Ed25519 ፣ secp256k1 ን ያካትታል ፣ BLS መደበኛ እና አነስተኛ ልዩነቶች፣ ML-DSA, GOST R 34.10-2012 የፓራሜትር ስብስቦች, እና SM2. ከኤድ 25519 ምቾት መንገድ ውጭ የአገር ውስጥ ድልድይ ድጋፍ ያስፈልጋል ።
+የ`SigningAlgorithm` enum በአሁኑ ጊዜ Ed25519፣ secp256k1፣ BLS መደበኛ እና ትናንሽ ልዩነቶችን፣ ML-DSA፣ GOST R 34.10-2012 መለኪያ ስብስቦችን እና SM2 ያካትታል። ቤተኛ ድልድይ ድጋፍ ከEd25519 ምቹ መንገድ ውጭ ያስፈልጋል።
 
-## አገናኝ {#connect}
+## ይገናኙ {#connect}
 
-የ ‹Connect› ደንበኛ በ Swift ምንጭ ውስጥ ተተግብሯል ፣ በ `NoritoBridge` የተደገፉ crypto እና ክፈፍ ኮዴኮች:
+የግንኙነት ደንበኛው በ Swift ምንጭ ውስጥ ይተገበራል፣ በ `NoritoBridge` የተደገፉ crypto እና ፍሬም ኮዴኮች -
 
 ```swift
 let sessionID = Data(repeating: 0, count: 32) // replace with the session bytes
@@ -148,27 +148,27 @@ let session = ConnectSession(sessionID: sessionID, client: client)
 let keyPair = try ConnectCrypto.generateKeyPair()
 ```
 
-`ConnectSession` ክፍት እና ዝግ መቆጣጠሪያዎች, የተመሰጠረ ፖስታ ንባቦች, አቅጣጫ ቁልፎች, ፍሰት ቁጥጥር, ክስተቶች ዥረቶች, ሚዛን ዥረቶችን, እና የምርመራ መጽሔቶች ያከናውናል.
+`ConnectSession` ክፍት እና መዝጊያ መቆጣጠሪያዎችን፣ የተመሰጠሩ የውሂብ መያዣ ንባቦችን፣ የአቅጣጫ ቁልፎችን፣ የፍሰት መቆጣጠሪያን፣ የክስተት ዥረቶችን፣ የቀሪ ሒሳብ ዥረቶችን እና የምርመራ መጽሔቶችን ያስተናግዳል።
 
-## ወቅታዊ ሽፋን {#current-coverage}
+## የአሁኑ ሽፋን {#current-coverage}
 
-Swift ምንጭ በአሁኑ ጊዜ የሚከተሉትን ያካትታል:
+የ Swift ምንጭ በአሁኑ ጊዜ የሚከተሉትን ያጠቃልላል -
 
-- `ToriiClient` HTTP ለሂሳቦች ፣ ንብረቶች ፣ ቅጽል ስሞች ፣ የአሰሳ ገጾች ፣ RWA ፣ ውል ፣ ባለብዙ ስም ፣ አስተዳደር ፣ ምዝገባዎች ፣ የመረጃ ተደራሽነት ፣ ሚስጥራዊ ሀብቶች ፣ ኖድ / የስራ ሰዓት ሁኔታ ፣ ጤና ፣ መለኪያዎች እና SSE ዥረቶች
-- `IrohaSDK` የግብይት ገንቢዎች እና ለዝውውር ፣ ለወፍጮ ፣ ለማቃጠል ፣ ለመከላከያ ፣ ለመከላከል የማይችል ፣ ለዝውዋር ፣ ለ ZK ዝውውር ፣ ZK ንብረቶች ምዝገባ ፣ ሜታዳታ ፣ የመለየት ጥያቄዎችን ፣ ባለብዙ ምልክቶች ምዝገባ እና የአስተዳደር መመሪያዎችን የሚያቀርቡ/የሚዘረዙ ረዳቶች
-- በ `PendingTransactionQueue` እና `FilePendingTransactionQueue` በኩል የሚደረገውን የግብይት ረድፍ ድጋፍ
-- የሂሳብ አድራሻ እና I105 ረዳቶች በ `AccountAddress` እና `AccountId` በኩል
-- Ed25519, secp256k1, ML-DSA, BLS, GOST, እና SM2 ፊርማ ወለሎች, አስፈላጊ ከሆነ የአገር ውስጥ ድልድይ ድጋፍ ጋር.
-- የገበያ ቦታ እና የማይታወቁ የኤስኮር መመሪያ ተጠቃሚ ጭነት ገንቢዎች
-- አገናኝ WebSocket, ክፈፍ, crypto, ክፍለ ጊዜ, ረድፍ, መልሶ ማጫወት, እና የምርመራ ረዳቶች
-- የ Kagemusha ዝግጁነት, የተጻፈ ማሟያ እና ማስመለስ, የአሠራር ሁኔታ, ማስታወሻ, የእኩዮች ጥቅል, ደረሰኝ, እና QR ዥረት ሞዴሎች
-- SoraFS ፣ የመረጃ ተደራሽነት እና የማረጋገጫ ማያያዝ ረዳቶች
+- `ToriiClient` HTTP ለመለያዎች፣ ንብረቶች፣ ተለዋጭ ስሞች፣ አሳሽ ገጾች፣ RWA፣ ኮንትራቶች፣ መልቲሲግ፣ አስተዳደር፣ የደንበኝነት ምዝገባዎች፣ የውሂብ ተገኝነት ረዳቶች፣ ሚስጥራዊ ንብረቶች፣ የኖድ/የአሂድ ጊዜ ሁኔታ፣ ጤና፣ መለኪያዎች እና SSE ዥረቶች
+- `IrohaSDK` የግብይት ገንቢዎች እና ለማስተላለፍ፣ ለማውጣት፣ ለማጥፋት፣ ለጋሻ፣ ለጋሻ ለማራገፍ፣ ZK ማስተላለፍ፣ ZK የንብረት ምዝገባ፣ ሜታዳታ፣ መለያ የይገባኛል ጥያቄዎች፣ ባለብዙ ሲጂ ምዝገባ እና የአስተዳደር መመሪያዎች
+- በ`PendingTransactionQueue` እና `FilePendingTransactionQueue` በኩል በመጠባበቅ ላይ ያለ የግብይት ወረፋ ድጋፍ
+- የመለያ-አድራሻ እና I105 ረዳቶች በ `AccountAddress` እና `AccountId` በኩል
+- Ed25519፣ secp256k1፣ ML-DSA፣ BLS፣ GOST እና SM2 ፊርማ ቦታዎች፣ አስፈላጊ ሆኖ ሲገኝ ቤተኛ ድልድይ ድጋፍ
+- ቤተኛ escrow መመሪያ ጭነት ግንበኞች ለገበያ ቦታ እና ስም-አልባ escrow
+- WebSocket፣ ፍሬም፣ ክሪፕቶ፣ ክፍለ ጊዜ፣ ወረፋ፣ ድጋሚ ማጫወት እና የምርመራ አጋዥዎችን ያገናኙ
+- የካጌሙሻ ዝግጁነት፣ የተተየበ መሙላት እና መቤዠት፣ የክወና ሁኔታ፣ ማስታወሻ፣ የአውታረ መረብ አቻ ጥቅል፣ የደረሰኝ እና QR የዥረት ሞዴሎች
+- SoraFS፣ የውሂብ ተገኝነት እና ማረጋገጫ-አባሪ ረዳቶች
 
 ## API ምሳሌዎች {#api-examples}
 
-ለህዝብ ትግበራ `IrohaSwift/Sources/IrohaSwift` እና በተመሳሳይ ምንጭ ማሻሻያ የተደረጉ የሙከራ አጠቃቀም ምሳሌዎች `IrohaSwift/Tests/IrohaSwiftTests` ይጠቀሙ።
+ለህዝብ ትግበራ `IrohaSwift/Sources/IrohaSwift` እና `IrohaSwift/Tests/IrohaSwiftTests` ለተሞከረ የአጠቃቀም ምሳሌዎች ከተመሳሳይ ምንጭ ክለሳ ይጠቀሙ።
 
-## የመረጃ ምንጮች {#source-references}
+## የምንጭ ማጣቀሻዎች {#source-references}
 
 - `IrohaSwift/Package.swift`
 - `IrohaSwift/IrohaSwift.podspec`

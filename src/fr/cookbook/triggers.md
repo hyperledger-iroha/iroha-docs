@@ -1,22 +1,22 @@
 ---
 translation_locale: fr
 translation_source: /cookbook/triggers.md
-translation_source_hash: 93080591f5171c7ce25173eb1ef826d6f5ca661a17797be53e90aedab33ed0c3
+translation_source_hash: 5267fb9bb232d52d9df4bedee414d745ccc30dd52cbc30993df3c5b975a0bc38
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Les déclencheurs {#triggers}
+# Déclencheurs {#triggers}
 
-## Le résultat {#outcome}
+## Résultat {#outcome}
 
-Enregistrez un déclencheur d'appel par voie indirecte finie sur Taira, exécutez-le une fois, attendez la finalité appliquée et confirmez sa réussite à partir de l'historique des blocs engagés.
+Enregistrez un déclencheur à appel fini sur Taira, exécutez-le une fois, attendez la finalité appliquée, et confirmez son achèvement réussi à partir de l'historique des blocs validés.
 
-## Conditions préalables {#prerequisites}
+## Prérequis {#prerequisites}
 
-- Un signataire financé, `taira.client.toml`, `taira.tx-metadata.json` et `TAIRA_ACCOUNT_ID` de [Connectez-vous à Taira](./connect-to-taira.md).
-- Taira autorisation d'enregistrer un déclencheur pour `TAIRA_ACCOUNT_ID` et d'exécuter le déclenchement résultant. Les jetons pertinents sont `CanRegisterTrigger` avec la portée de `authority` et `CanExecuteTrigger` avec la porté de `trigger`.
-- Si ces subventions ne sont pas disponibles, utilisez un réseau local généré et son client administrateur. L'autorité déclenchante a également besoin de toutes les autorisations requises par les instructions que le déclencheur exécutera.
+- Un signataire cryptographique financé, `taira.client.toml`, `taira.tx-metadata.json` et `TAIRA_ACCOUNT_ID` de [Connectez-vous à Taira](./connect-to-taira.md).
+- Taira autorisation d'enregistrer un déclencheur pour `TAIRA_ACCOUNT_ID` et d'exécuter le déclencheur résultant. Les jetons pertinents sont `CanRegisterTrigger` soumis à `authority` et `CanExecuteTrigger` soumis à `trigger`.
+- Si ces subventions ne sont pas disponibles, utilisez un réseau local généré et son client administrateur. Le principal d'autorisation du déclencheur a également besoin de toutes les autorisations requises par les instructions que le déclencheur exécutera.
 
 ```bash
 CONFIG=./taira.client.toml
@@ -25,11 +25,11 @@ TRIGGER_ID=cookbook_by_call_log
 test -n "$TAIRA_ACCOUNT_ID"
 ```
 
-## Les étapes {#steps}
+## Étapes {#steps}
 
-### 1. Enregistrer un déclencheur supporté par une instruction {#_1-register-an-instruction-backed-trigger}
+### 1. Enregistrer un déclencheur basé sur une instruction {#_1-register-an-instruction-backed-trigger}
 
-`--instructions-stdin` accepte un ensemble d'instructions JSON. Une instruction `Log` garde cet exemple axé sur l'autorisation de déclenchement plutôt que les autorisations d'un deuxième objet de registre.
+`--instructions-stdin` accepte un tableau JSON d'instructions. Une instruction `Log` maintient cet exemple centré sur l'autorisation de déclenchement plutôt que sur les permissions d'un deuxième objet de registre blockchain.
 
 ```bash
 printf '%s\n' \
@@ -45,7 +45,7 @@ printf '%s\n' \
     --filter execute
 ```
 
-Le déclencheur peut s'exécuter trois fois au maximum. Son autorité déclarée, et non l'appelant qui se trouve à l'exécution, autorise les instructions à l'intérieur de l'action.
+Le déclencheur peut s'exécuter au maximum trois fois. Son principal d'autorisation déclaré, et non l'appelant qui se trouve à l'exécuter, autorise les instructions à l'intérieur de l'action.
 
 ### 2. Inspecter la déclaration avant l'exécution {#_2-inspect-the-declaration-before-execution}
 
@@ -54,11 +54,11 @@ iroha --config "$CONFIG" ledger trigger get --id "$TRIGGER_ID"
 iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 ```
 
-Confirmez l'autorité I105, le filtre d'exécution, les répétitions restantes et l'instruction unique `Log` avant de dépenser une autre redevance.
+Confirmez le principal d'autorisation I105, le filtre d'exécution, les répétitions restantes et l'instruction unique `Log` avant de dépenser un autre frais.
 
-### 3. Exécuter et attendre les deux couches. {#_3-execute-and-wait-for-both-layers}
+### 3. Exécutez et attendez que les deux couches soient terminées {#_3-execute-and-wait-for-both-layers}
 
-La transaction d'exécution et l'action déclenchante présentent des preuves distinctes. `--wait` attend la finalisation de la transaction appliquée; `--trace` rapporte également les diagnostics d'achèvement du temps d'expérience.
+La transaction d'exécution et l'action de déclenchement ont des preuves distinctes. `--wait` attend la finalité de la transaction appliquée ; `--trace` rapporte également les diagnostics de fin d'exécution du logiciel.
 
 ```bash
 iroha --config "$CONFIG" \
@@ -71,7 +71,7 @@ iroha --config "$CONFIG" \
   "$TRIGGER_ID"
 ```
 
-Les clients Rust construisent les mêmes deux instructions typées. Ici, `authority` est un signe `AccountId` et `client` comme ce compte:
+Rust les clients construisent les mêmes deux instructions typées. Ici `authority` est un `AccountId` et `client` signe en tant que ce compte :
 
 ```rust
 use iroha::data_model::{prelude::*, transaction::FeePaymentIntent};
@@ -91,9 +91,9 @@ client.submit_blocking(Register::trigger(Trigger::new(trigger_id.clone(), action
 client.submit_blocking(ExecuteTrigger::new(trigger_id), fee)?;
 ```
 
-## Vérifiez {#verify}
+## Vérifier {#verify}
 
-Scanner l'historique des blocs engagés pour la réalisation et inspecter le nombre de répétitions décrementées:
+Analysez l'historique des blocs validés pour l'achèvement et examinez le nombre de répétitions décrémenté :
 
 ```bash
 iroha --config "$CONFIG" ledger trigger completed list \
@@ -104,21 +104,21 @@ iroha --config "$CONFIG" ledger trigger completed list \
 iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 ```
 
-Le déclencheur doit rester actif avec deux exécutions restantes. Une soumission réussie sans une réalisation réussie du déclenchement n'est pas une vérification suffisante.
+Au moins une réalisation doit signaler le succès. Le déclencheur doit rester actif avec deux exécutions restantes. Une soumission réussie sans une réalisation réussie du déclencheur ne constitue pas une vérification suffisante.
 
-## Résolution des problèmes {#troubleshooting}
+## Dépannage {#troubleshooting}
 
-- L'enregistrement refusé comme non autorisé signifie que le signataire n'a pas `CanRegisterTrigger` pour l'autorité déclarée. L'exécution exige que les `CanExecuteTrigger` - Je ne sais pas.
-- Une transaction peut atteindre Applied pendant que l'action déclenchante rapporte une défaillance. Lisez le résultat de la réalisation et l'erreur; vérifiez ensuite les autorisations de l'autorité de déclenchement pour chaque instruction intégrée.
-- `trigger not found` peut signifier que l'opération d'enregistrement a été rejetée ou qu'une configuration différente de la chaîne Torii a été utilisée pour l'exécution.
-- Lorsque les répétitions atteignent le zéro, l'écriture est un autre privilège. Ne changez pas silencieusement cette recette en déclencheur indéfini.
-- Pour le nettoyage, `ledger trigger unregister --id "$TRIGGER_ID"` exige `CanUnregisterTrigger` pour ce déclencheur plus une sélection explicite de frais.
+- Inscription rejetée car non autorisée signifie que le signataire cryptographique ne dispose pas de `CanRegisterTrigger` pour le principal d'autorisation déclaré. L'exécution nécessite le jeton `CanExecuteTrigger` à portée séparée.
+- Une transaction peut atteindre Appliqué tandis que l'action du déclencheur signale un échec. Lisez le résultat de l'exécution et l'erreur ; puis vérifiez les autorisations du principal de l'autorisation du déclencheur pour chaque instruction intégrée.
+- `trigger not found` peut signifier que la transaction d'enregistrement a été rejetée ou qu'une configuration différente Torii/chaîne a été utilisée pour l'exécution.
+- Lorsque les répétitions atteignent zéro, émettre plus de répétitions constitue une autre écriture privilégiée. Ne changez pas silencieusement cette recette en un déclencheur indéfini.
+- Pour le nettoyage, `ledger trigger unregister --id "$TRIGGER_ID"` nécessite `CanUnregisterTrigger` pour ce déclencheur ainsi qu'une sélection explicite des frais.
 
-## Sources et documents connexes {#source-and-related-docs}
+## Source et documents connexes {#source-and-related-docs}
 
-- [Tests d'intégration du déclencheur de l'appel par défaut sur le commit fixé](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/triggers/by_call_trigger.rs)
-- [Tests d'intégration de l'événement et du déclencheur dans le commit fixé](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/events_and_triggers.rs)
-- [Exécution de l'instruction de déclenchement à la commande coincée](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
-- [Les déclencheurs ](/fr/blockchain/triggers.md)
+- [Tests d'intégration de déclenchement à la demande sur le commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/triggers/by_call_trigger.rs)
+- [Tests d'intégration des événements et des déclencheurs au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events_and_triggers.rs)
+- [Déclencher l'exécution de l'instruction au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
+- [Déclencheurs](/fr/blockchain/triggers.md)
 - [Exemples de déclencheurs](/fr/blockchain/trigger-examples.md)
-- [Les événements](./stream-events.md)
+- [Événements](./stream-events.md)

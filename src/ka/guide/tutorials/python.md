@@ -1,29 +1,30 @@
 ---
 translation_locale: ka
 translation_source: /guide/tutorials/python.md
-translation_source_hash: a87e8db2b77fa4952689276ae538e65b3b51070749dd0938a9e18d3a6a3dc5e4
+translation_source_hash: d0ecbade221ceba455730e80c6e12db930c65a4cbcf9e643c1c2d4cba47b0940
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Python {#python}
 
-აღმავალი სამუშაო სივრცეში Python SDK არის `iroha-python`. პირველი Iroha 3 გამოშვება მიზნად ისახავს მიმდინარე Torii და Norito ზედაპირებს. დააჭირეთ პაკეტის ვერსია ან წყარო რევიზიონი, რომელიც გამოიყენება თქვენი ინტეგრაციის მიერ, რათა SDK და კვანძი დარჩნენ იმავე საფაილო ფორმატის რევიზიონზე.
+აღმავალი სამუშაო სივრცეში Python SDK არის `iroha-python`. პირველი Iroha 3 გამოშვება მიზნად ისახავს მიმდინარე Torii და Norito ზედაპირებს. დააჭირეთ პაკეტის ვერსია ან წყარო რევიზიონი, რომელიც გამოიყენება თქვენი ინტეგრაციის მიერ, რათა SDK და კვანძი დარჩნენ იმავე სერიალიზაციის ფორმატის რევიზიონზე .
 
-ქვემოთ მოცემული მხოლოდ წაკითხვის ნიმუშები შეამოწმეს საჯარო Taira-თან `https://taira.sora.org`. მუტაციური ნიმუშებია ტრანზაქციის შაბლონები: ისინი საჭიროებენ რეალურ Taira ავტორიტეტს, კერძო გასაღებას, გაზის მეტა მონაცემებს და ნებისმიერი ოპერატორის ტოკენებს, რომლებიც მიზნობრივი მარშრუტის მიერ მოთხოვნილია, სანამ ისინი წარმოდგენილი იქნება.
+ანონიმური წაკითხვის მაგალითები ქვემოთ მიზნობრივი საჯარო Taira მისამართზე `https://taira.sora.org`. მარშრუტი შეიძლება იყოს მხოლოდ წაკითხვა და მაინც მოითხოვს კანონიკური ანგარიშის ხელმოწერა ან ზუსტი ქსელის ოპერატორის ხელმოწერა; ეს მაგალითები ცალკე აღნიშნულია. მუტაციური მაგალითებია ტრანზაქციის შაბლონები და საჭიროა რეალური Taira ავტორიზაციის პრინციპი, კერძო გასაღები, გადასახადის გადახდის განზრახვა, საკმარისი ტესტნეტი XOR და მიზნობრივი მარშრუტის მიერ მოთხოვნილი აuthentication სანამ ისინი შეიძლება წარდგენილი იყოს.
 
 გამოიყენეთ მაგალითები ამ რიგში:
 
-|ეტაპი | დაპირისპირება საზოგადოებასთან Taira? |რა გჭირთ?|
-| --- | --- | --- |
-|მხოლოდ წაკითხული კლიენტების ზარები |დიახ.|Python პაკეტი და ქსელის წვდომა |
-|ადგილობრივი ხელმოწერისა და ინსტრუქციის მშენებლები |არანაირი ქსელური ზარი, სანამ `submit()` |ნეიტური გაფართოება და თქვენი მთავარი მასალა |
-|მუტაციის ოპერაციები და მომსახურების ზარები |მხოლოდ თქვენი საკუთარი დაფინანსებული ანგარიშით.|ორგანოს ანგარიში, კერძო გასაღები, ჯაჭვი ID, საფასურის მეტადატატი, საფასურის აქტივების ბალანსი და მარშრუტის ტოკენები |
-|გაერთიანეთ ჩარჩო კოდექები, კრიპტო და GPU დამხმარეები |მხოლოდ ადგილობრივი |მშობლიური გაფართოება; GPU დამხმარეებს ასევე სჭირდებათ CUDA-სუნებლიანი backend |
+|ეტაპი | დაპირისპირება საზოგადოებასთან Taira?            |რა გჭირთ?|
+| --------------------------------------------- | ------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+|ანონიმური კითხვის ზარები.|დიახ.|Python პაკეტი და ქსელის წვდომა |
+|ანგარიშის ან ოპერატორის მიერ დამოწმებული წაკითხვა |მხოლოდ თქვენი საკუთარი აღიარებული იდენტობის შემთხვევაში.|ზუსტი Taira `NetworkId` და შესაბამისი ანგარიშის ან ოპერატორის გასაღები |
+|ადგილობრივი ხელმოწერისა და ინსტრუქციის მშენებლები |არანაირი ქსელური ზარი სანამ `submit()` |ნეიტური გაგრძელება და თქვენი მთავარი მასალა |
+|მუტაციის ოპერაციები და მომსახურების ზარები |მხოლოდ თქვენს მიერ დაფინანსებულ ანგარიშზე.|ავტორიზაციის ძირითადი ანგარიში, კერძო გასაღები, ზუსტი Taira `NetworkId`, ტიპირებული საფასურის განზრახვა, საფასური აქტივების ბალანსი და მარშრუტის ტოკენები |
+|გაერთიანეთ ჩარჩო კოდექები, კრიპტო და GPU დამხმარეები |მხოლოდ ადგილობრივი |მშობლიური გაფართოება; GPU დამხმარეებს ასევე სჭირდებათ CUDA-სუნებლიანი ბეკენდი |
 
 ## დამონტაჟება {#install}
 
-პაკეტის მეტა მონაცემების სახელწოდება არის `iroha-python`. არ ჩათვალოთ, რომ არაფუნქციონირებული PyPI ინსტალაცია შეესაბამება ცოცხალ Taira ქსელს. დააყენეთ ბორბალი ან წყარო გადარიცხვა, რომელიც აშენდა იმავე წინსასვლელი რევიზიიდან თქვენი ინტეგრაციის მიზნები:
+პაკეტის მეტამონაცემების სახელწოდება არის `iroha-python`. არ ჩათვალოთ, რომ არაფუნქციონირებული PyPI ინსტალაცია შეესაბამება ცოცხალ Taira ქსელს. დააყენეთ ბორბლის ან წყარო კოდის სამუშაო ასლი, რომელიც აშენდა იმავე ზემოაღნიშნული რევიზიისგან თქვენი ინტეგრაციის მიზნები:
 
 ```bash
 python -m pip install /path/to/iroha_python-*.whl
@@ -45,7 +46,7 @@ PY
 
 ## სწრაფი დასაწყისი {#quickstart}
 
-დაიწყეთ საჯარო, მხოლოდ წაკითხვისათვის საჭირო Taira საბოლოო წერტილებით:
+დაიწყეთ საჯარო, მხოლოდ წაკითხვისთვის საჭირო Taira API საბოლოო წერტილებთან:
 
 ```python
 from iroha_python import (
@@ -65,21 +66,29 @@ for account in accounts.items:
 
 ## საერთო განლაგება {#shared-setup}
 
-გამოიყენეთ ეს პარამეტრი მუტაციური შაბლონებისთვის. შეცვალეთ თითოეული ადგილის მფლობელი თქვენი განთავსების Taira ავტორიტეტით, კერძო გასაღებით, ტოკენით და აქტივმა / ანგარიშით IDs წარსადგენამდე.
+გამოიყენეთ ეს პარამეტრი მუტირებადი შაბლონებისთვის. შეცვალეთ თითოეული ადგილმდებარეობა Taira ავტორიზაციის პრინციპით, კერძო გასაღებით, ჯეკონით და აქტივის / ანგარიშის ID-ებით თქვენი განთავსების წინ.
 
-`authority` არის ანგარიში, რომელიც ხელს აწერს ტრანზაქციას. `private_key` უნდა შეესაბამებოდეს ამ ანგარიშს, `CHAIN_ID` უნდა ემთხვეოდეს მიზნობრივ ქსელს და `TX_METADATA` უნდა შეიცავდეს ქსელის მიერ მოსალოდნელი საფასურის ველები. ქვემოთ მოცემული ადგილების მფლობელები განზრახ არასწორნი არიან, ამიტომ ისინი შემთხვევით არ წარმოდგენილია.
+`authority` არის ანგარიში, რომელიც ხელს აწერს ტრანზაქციას და `private_key` უნდა შეესაბამებოდეს მას. ტრანზაკციები უკავშირდება Taira-ის ზუსტ გენეზისიდან გამომდინარე `NetworkId`; ჯაჭვი UUID არის განთავსების ეტიკეტი, არა ტრანზუქციის იდენტობა . საფასურები იყენებს ტიპირებულ გადახდის განზრახვას და ზუსტ საფასურის შეფასებას, დამოუკიდებლად განაცხადის მეტამონაცემებისა. ქვემოთ მოცემული ანგარიში და საკვანძო ადგილის მფლობელები მიზანმიმართულად არასწორია, ამიტომ ისინი შემთხვევით არ წარმოდგენილია.
+
+ქვემოთ მოცემული ლექსიკონი არის მიმდინარე ჩაკეტილი Taira ბლოკჩეინის გენეზის იდენტობა. ტესტნეტის განახლება შეიძლება შეცვალოს იგი, ასე რომ განაახლეთ ის ხელმოწერილი განთავსების პროფილისგან და არასოდეს გამოიყოს მას ჯაჭვიდან UUID.
 
 ```python
 from iroha_python import (
     Ed25519KeyPair,
     Instruction,
+    LocalSigningContext,
+    NetworkId,
+    ToriiClient,
+    ToriiCanonicalRequestAuth,
     TransactionConfig,
     TransactionDraft,
-    create_torii_client,
+    authority_fee_payment,
 )
 
 TORII_URL = "https://taira.sora.org"
-CHAIN_ID = "fc56984b-2be7-431d-840e-21514d1883f0"
+TAIRA_NETWORK_ID = NetworkId.parse(
+    "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+)
 AUTH_TOKEN = None
 
 # Replace these placeholders with the real signing keys for your accounts.
@@ -90,68 +99,83 @@ bob_pair = Ed25519KeyPair.from_private_key(bytes.fromhex("<bob-private-key-hex>"
 alice = "<alice-account-id>"
 bob = "<bob-account-id>"
 
+canonical_auth = ToriiCanonicalRequestAuth(
+    network_id=TAIRA_NETWORK_ID.literal,
+    account_id=alice,
+    signer=alice_pair.sign,
+)
+
 ROSE_DEFINITION = "rose#wonderland"
 ROSE_ASSET = "<rose-asset-id>"
 BADGE_NFT = "badge$wonderland"
 
-TX_METADATA = {
-    # Public Taira fee asset. Use the configured XOR asset on your network.
-    "gas_asset_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
-}
+APP_METADATA = {"source": "python-docs"}
+# Torii replaces the empty maxima with an exact, validated live fee quote before
+# anything is signed. The payer remains the transaction authority.
+BASE_FEE_PAYMENT = authority_fee_payment(charge_limits=[])
 
-client = create_torii_client(TORII_URL, auth_token=AUTH_TOKEN)
+client = ToriiClient(
+    TORII_URL,
+    local_signing_context=LocalSigningContext(TAIRA_NETWORK_ID),
+    canonical_request_auth=canonical_auth,
+    auth_token=AUTH_TOKEN,
+)
 
 
 def submit(*instructions):
-    # This is the network boundary: build, sign, submit, and wait for status.
-    return client.build_and_submit_transaction(
-        chain_id=CHAIN_ID,
-        authority=alice,
-        private_key=alice_pair.private_key,
-        instructions=list(instructions),
-        metadata=TX_METADATA,
-        wait=True,
+    draft = TransactionDraft(
+        TransactionConfig(
+            network_id=TAIRA_NETWORK_ID,
+            authority=alice,
+            fee_payment=BASE_FEE_PAYMENT,
+            metadata=APP_METADATA,
+        )
     )
+    draft.extend_instructions(instructions)
+
+    # Freeze one payload, obtain its exact fee limits, and sign that same payload.
+    envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
+    status = client.submit_transaction_envelope_and_wait(envelope)
+    return envelope, fee_quote, status
 ```
 
-`Instruction.*` მხოლოდ კონსტრუქციის ინსტრუქციების სასარგებლო ტვირთებს უწოდებს. `submit()` არის ის მომენტი, როდესაც SDK ხელს აწერს გარიგებას, გამოგზავნის მას Torii და ელოდება სტატუსს.
+`Instruction.*` მხოლოდ კონსტრუქციის ინსტრუქციების დატვირთვებს უწოდებს. `submit()` არის ის მომენტი, როდესაც SDK იღებს ცოცხალი საფასურის ფასის შეფასებას, ხელს აწერს ზუსტად მითითებულ სასარგებლო დატვირთვას, გამოგზავნის მას Torii და ელოდება სტატუსს.
 
-## გადასახადები და გაზი {#fees-and-gas}
+## საფასურები და ტრანზაქციის განხორციელების ღირებულება {#fees-and-gas}
 
-Taira-ზე, საფასურის აქტივი ფინანსდება საჯარო ნაგავში და ტრანზაქციის მეტა მონაცემები უნდა შეიცავდეს `gas_asset_id`. Minamoto-ზე, გადასახადები იხდის რეალური XOR და აქტივი ID მოდის ამ ქსელის კონფიგურაციისგან.
+წერილობითი ტრანზაქციები საჭიროებენ `FeePaymentIntent` დაფინანსებული საფასურის აქტივების ბალანსს. Taira-ზე, საჯარო ტესტნეტის ფინანსირების მომსახურების ფონდები სატესტო ქსელი XOR. Python SDK გამოგზავნის ფიქსირებულ ხელმოწერილი სასარგებლო დატვირთვა Torii საფასურის ზუსტი ფასის შეფასებისთვის, ადასტურებს, რომ შეთავაზება გადამხდელს ან დატვირთვას არ შეცვლია და ხელს უწერს მითითებულ განზრახვას. საფასურის შერჩევა ტრანზაქციის მეტატალებში არ ჩასვათ.
 
-საფასურის მეტა მონაცემები შედის ტრანზაქციაზე და არა ინდივიდუალურ ინსტრუქციებზე. ზემოაღნიშნული `submit()` დამხმარე აერთიანებს `TX_METADATA` თითოეულ ტრანზაკციას, რომელსაც ის ქმნის:
+ზემოაღნიშნული `submit()` დამხმარე იწყება ტრანზაქციის ხელმოწერის მიზნით გადახდილი ანგარიშით, რომლის საფასურის ლიმიტებიც განზრახ ცარიელია. `quote_and_sign()` ასრულებს მათ პირდაპირი ციტირებისგან ხელმოწერამდე:
 
 ```python
-TX_METADATA = {
-    # Taira expects the fee asset definition in transaction metadata.
-    "gas_asset_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
-}
-
-envelope, status = client.build_and_submit_transaction(
-    chain_id=CHAIN_ID,
-    authority=alice,
-    private_key=alice_pair.private_key,
-    # Fee metadata is attached to the transaction, not the instruction.
-    instructions=[
-        Instruction.set_account_key_value(
-            alice,
-            "python_fee_example",
-            "ready",
-        )
-    ],
-    metadata=TX_METADATA,
-    wait=True,
+draft = TransactionDraft(
+    TransactionConfig(
+        network_id=TAIRA_NETWORK_ID,
+        authority=alice,
+        fee_payment=authority_fee_payment(charge_limits=[]),
+        metadata={"source": "python-fee-example"},
+    )
 )
+draft.add_instruction(
+    Instruction.set_account_key_value(
+        alice,
+        "python_fee_example",
+        "ready",
+    )
+)
+envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
+status = client.submit_transaction_envelope_and_wait(envelope)
+
+for limit in fee_quote["intent"]["value"]["charge_limits"]:
+    print(limit["asset_definition_id"], limit["max_amount"])
 ```
 
-სანამ გაგზავნით წერილებს, დარწმუნდით, რომ ავტორიტეტის ანგარიშს აქვს საკმარისი საფასურის აქტივი. ზუსტი ნაქავი და აქტივი ID არის ქსელის სპეციფიკური; ეს არის Taira ფორმა:
+სანამ გაგზავნით წერილებს, დარწმუნდით, რომ ავტორიზაციის ძირითადი ანგარიში ფლობს საკმარის რაოდენობით საფასურის აქტივს. ზუსტი ტესტური მონეტების გამცემი და აქტივების ID არის ქსელის სპეციფიკური; ეს არის Taira ფორმა:
 
 ```python
 FEE_ASSET_DEFINITION = "6TEAJqbb8oEPmLncoNiMRbLEK6tw"
 # The faucet returns the concrete account asset ID to check here.
 FEE_ASSET_ID = "<fee-asset-id-from-faucet-response>"
-TX_METADATA = {"gas_asset_id": FEE_ASSET_DEFINITION}
 
 # Fail before submitting if the signer cannot pay gas.
 fee_assets = client.list_account_assets_typed(
@@ -163,29 +187,28 @@ if not fee_assets.items:
     raise RuntimeError("fund the authority account with the Taira fee asset first")
 ```
 
-საფანქარი ბრუნავს ბეტონის `asset_id`, რომელიც გამოიყენება ბალანსის შემოწმებისათვის. `gas_asset_id` მეტა მონაცემთა ველში გამოყენებულია გადასახადის აქტივის განსაზღვრა ID.
+ტესტური მონეტების გამცემი ბრუნავს ბეტონის `asset_id`, რომელიც გამოიყენება ბალანსის შემოწმებისთვის. შეამოწმეთ, რომ ცოცხალი კოტირება მოითხოვს `FEE_ASSET_DEFINITION`; ტრანზაქცია ამ აქტივს მეტამონაცემებით არ ასახელებს.
 
-შეინახეთ აპლიკაციის მეტა მონაცემები ცალკე საფასურის მეტა მონაცემებისაგან გაერთიანების გზით, როდესაც თქვენ შექმნით ტრანზაქციას:
+აპლიკაციის მეტამონაცემები ვარიანტია და არ აქვს საფასური სემანტიკის:
 
 ```python
 APP_METADATA = {"source": "python-docs"}
-# Merge app metadata with required fee metadata before building the draft.
-metadata = {**TX_METADATA, **APP_METADATA}
 
 draft = TransactionDraft(
     TransactionConfig(
-        chain_id=CHAIN_ID,
+        network_id=TAIRA_NETWORK_ID,
         authority=alice,
-        metadata=metadata,
+        fee_payment=BASE_FEE_PAYMENT,
+        metadata=APP_METADATA,
     )
 )
 ```
 
-თუ გადახდის მეტა მონაცემებს გამოტოვებთ, არასწორად იყენებთ საფასურის აქტივს ან ხელმოწერით არაფინანსურ ანგარიშზე, რეალურმა ქსელმა უნდა უარყოთ ტრანზაქცია მაშინაც კი, თუ ინსტრუქციის სასარგებლო დატვირთვა სხვაგვარად ძალაშია.
+თუ გადახდის განზრახვას არ შეასრულებთ, მოულოდნელი აქტივის კოტირებას მიიღებთ, კოტირების შემდეგ დატვირთვის შეცვლას აპირებთ ან ფინანსური უზრუნველყოფის გარეშე ანგარიშზე გაფორმდებით, ტრანზაქცია არ უნდა წარედგინოთ.
 
-## Taira - შემოწმებული მხოლოდ წაკითხვის ზარები {#taira-checked-read-only-calls}
+## ანონიმური Taira კითხულობს {#anonymous-taira-reads}
 
-აღნიშნული მოწოდებები წარმატებით დაუბრუნდათ საზოგადოებას Taira:
+ამ ზარებში გამოიყენება Taira მარშრუტები, რომელთა კატალოგის საზღვარი იძლევა ანონიმურ წაკითხვას:
 
 ```python
 client = create_torii_client("https://taira.sora.org")
@@ -197,22 +220,18 @@ parameters = client.request_json("GET", "/v1/parameters", expected_status=(200,)
 # Typed helpers parse pagination and records into dataclasses.
 accounts = client.list_accounts_typed(limit=1)
 domains = client.list_domains_typed(limit=1)
-definitions = client.query_asset_definitions_typed(limit=1)
+definitions = client.list_asset_definitions_typed(limit=1)
 
 # These calls inspect live node subsystems without mutating state.
-time_now = client.get_time_now_typed()
-time_status = client.get_time_status_typed()
-sumeragi = client.get_sumeragi_status_typed()
-connect = client.get_connect_status_typed()
+time_now = client.get_time_now()
 
 print(status["build"]["version"])
-print(parameters["sumeragi"]["block_time_ms"])
+print(parameters["sumeragi"]["block_cadence_ms"])
 print(accounts.total, domains.total, definitions.total)
-print(time_now.now_ms, len(time_status.samples), sumeragi.leader_index)
-print(connect.enabled, connect.sessions_active)
+print(time_now.now_ms)
 ```
 
-ისეთი მარშრუტები, როგორიცაა `/v1/status`, საჯარო თანატოლთა ინვენტარი, Sumeragi RBC ნიმუშების აღება, კვანძის ადმინისტრატორული გადაღებები და Connect აპლიკაციის რეგისტრაციის ადმინისტრაცია არ იყო საჯაროდ ხელმისაწვდომი Taira-ზე შემოწმების დროს. გამოიყენეთ `request_json("GET", "/status")` საჯარო კვანძი სტატუსის სასარგებლო ტვირთისთვის Taira.
+`/v1/time/status` და ყველა `/v1/sumeragi/*` ოპერატორის წერტილის დროში მონაცემების ნახვა საჭიროებს ზუსტ ქსელის ოპერატორის ხელმოწერას, მიუხედავად იმისა, რომ ისინი არ მუტაციის მდგომარეობა. გამოიყენეთ `request_json("GET", "/status")` ანონიმური კვანძისთვის სტატუსი სასარგებლო დატვირთვა და ოპერატორის პარამეტრი ქვემოთ კონსენსუსის ან ნოდ-ლოკალური საათის დიაგნოსტიკისთვის. Connect სესიის სტატუსი არის ცალკე პროტოკოლის მარშრუტი და საჭიროებს იმ სესიის მართვის ტოქენი.
 
 ## ინსტრუქციის მშენებლები {#instruction-builders}
 
@@ -221,25 +240,25 @@ SDK გამოხატავს ტიპირებულ მშენე�
 სასურველია ჩაწერილი დამხმარეები, როდესაც ისინი არსებობენ: ისინი ნორმალიზებენ Python მნიშვნელობებს და არასწორ ფორმებზე ადრეულ პერიოდში ჩავარდებიან. გამოიყენეთ `Instruction.from_json` მხოლოდ მაშინ, როდესაც საჭიროა ინსტრუქციის ვარიანტი, რომელსაც ჯერ არ აქვს Python დამხმარე.
 
 |ინსტრუქციის ოჯახი |Python ზედაპირი |
-| --- | --- |
-|რეგისტრაცია | `register_account`, `register_asset_definition_numeric`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` განკუთვნილია genesis/bootstrap ინსტრუმენტებისთვის. |
+| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|რეგისტრაცია | `register_account`, `register_asset_definition_numeric`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` განკუთვნილია გენეზისი/საწყისი გამართვა ინსტრუმენტებისთვის. |
 |დარეგისტრირება |`unregister_trigger`; გამოყენება `Instruction.from_json` სხვა ვარიანტებისთვის |
 |Mint/Burn |`mint_asset_numeric`, `burn_asset_numeric`, `mint_trigger_repetitions`, `burn_trigger_repetitions` |
-|გადაცემა | `transfer_asset_numeric`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa` |
-|მეტა მონაცემები და კონტროლი | `set_account_key_value`, `remove_account_key_value`, `set_rwa_controls`, `set_rwa_key_value`, `remove_rwa_key_value` |
-|RWA სიცოცხლის ციკლი | `merge_rwas`, `redeem_rwa`, `freeze_rwa`, `unfreeze_rwa`, `hold_rwa`, `release_rwa` |
+|გადაცემა | `transfer_asset_numeric`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa`                                                              |
+|მეტამონაცემები და კონტროლი | `set_account_key_value`, `remove_account_key_value`, `set_rwa_controls`, `set_rwa_key_value`, `remove_rwa_key_value`                                                                        |
+|RWA სიცოცხლის ციკლი | `merge_rwas`, `redeem_rwa`, `freeze_rwa`, `unfreeze_rwa`, `hold_rwa`, `release_rwa`                                                                                                         |
 |ExecuteTrigger |`execute_trigger` |
-|რეპორტის/დასახლების გაფართოება | `repo_initiate`, `repo_unwind`, `repo_margin_call`, `settlement_dvp`, `settlement_pvp` |
+| რეპოს/ანგარიშსწორების გაფართოებები | `repo_initiate`, `repo_unwind`, `repo_margin_call`, `settlement_dvp`, `settlement_pvp` |
 |ადგილობრივი აქტივების ჩაკეტვა |`open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, `expire_asset_lock` და დამხმარე კლიენტები `*_and_wait` |
-|გრანტი/რეგისტრაციის გაუქმება, SetParameter, რეგისტრაცია, საბაჟო გადახდა, განახლება და ნაკლებად გავრცელებული რეგისტრაციისა და არარეგისტრირების ვარიანტები |`Instruction.from_json` ან `TransactionBuilder.add_instruction_json` კანონიკური `InstructionBox` JSON |
+|მინიჭება/გაუქმება, SetParameter, ჟურნალი, მორგებული, განახლება და რეგისტრაციისა თუ რეგისტრაციის გაუქმების ნაკლებად გავრცელებული ვარიანტები |`Instruction.from_json` ან `TransactionBuilder.add_instruction_json` კანონიკური `InstructionBox` JSON-ით |
 
-საფარდობო სტილის პირობითი გადახდების შესახებ იხილეთ [Native Asset Escrow](/ka/blockchain/escrow.md#python-asset-locks). Python ამჟამად გამოყოფს პირველ კლასის დამხმარეებს გენერული აქტივების ჩაკეტვისთვის; ბაზრის და ანონიმური საფარის დამხმარეები ჯერჯერობით არ არიან პირველი კლასის მეთოდები Python.
+საფინანსო სტილის პირობითი გადახდებისათვის იხილეთ [ნაციონალური აქტივების დაფარვა](/ka/blockchain/escrow.md#python-asset-locks). Python ამჟამად გამოავლინებს პირველხარისხის დამხმარე პირებს გენერული აქტივების ჩაკეტვისთვის; ბაზარზე და ანონიმურ საფინანსო დახმარებებზე არ არის პირველი ხარისხის. Python მეთოდები ჯერ არ არის.
 
 ### შეიქმნას დომენები, შემდეგ რეგისტრაცია ანგარიშები და აქტივები {#set-up-domains-then-register-accounts-and-assets}
 
-ჩვეულებრივი დომენის შექმნა ხდება დეკლარაციური ალექსანდრის დაგეგმვის მეშვეობით, ასე რომ SNS იჯარის ხელშეკრულება, მფლობელის შესაძლებლობები, ციტატის დაცვა და დომენის მდგომარეობა ერთად შემოწმდება. შეიქმნას საიდუმლო-უფასო `AliasSetupPlanRequestV1` განზრახვა თქვენი SDK ან onboarding სერვისი, შემდეგ გამოიყენოთ `iroha app alias setup plan` და `iroha app alias setup apply`. არ წარადგინოს `Instruction.register_domain` განაცხადის ტრანზაქციადან; რომ მშენებელი რჩება genesis / bootstrap ინსტრუმენტების.
+ჩვეულებრივი დომენის შექმნა გადის დეკლარაციური ალიასების დაგეგმვის მეშვეობით, ასე რომ SNS იჯარის ხელშეკრულება, მფლობელის შესაძლებლობები, საფასურის ფასის დამადასტურებელი დაცვა და დომენის მდგომარეობა ერთად შემოწმებულია. შეიქმნას ალიასი-უფასო `AliasSetupPlanRequestV1` განზრახვა თქვენი SDK ან ჩართვა სერვისი, შემდეგ გამოიყენოთ `iroha app alias setup plan` და `iroha app alias setup apply`. არ წარადგინოს `Instruction.register_domain` განაცხადის ტრანზაქციადან; რომ მშენებელი რჩება გენეზისი / საწყისი გამართვა ინსტრუმენტების.
 
-დომენის დაყენების გეგმის შესრულების შემდეგ, რეგისტრირეთ დომენის საკუთრებაში არსებული ობიექტები. საერთო ქსელში, როგორიცაა Taira, გამოიყენეთ თქვენთვის მინიჭებული დომენი და ანგარიშის სახელების სივრცე.
+დომენის დაყენების გეგმის დასრულების შემდეგ, რეგისტრირეთ დომენის საკუთრებაში არსებული ობიექტები. საერთო ქსელში, როგორიცაა Taira, გამოიყენეთ თქვენთვის მინიჭებული დომენი და ანგარიშის სახელების სივრცე.
 
 ```python
 # The domain and its SNS lease already exist before this transaction.
@@ -259,9 +278,9 @@ submit(
 
 `mintable` მიიღებს `Infinitely`, `Once`, `Not`, ან `Limited(n)` მონაცემთა მოდელის მიერ მიღებული მნიშვნელობები. გამორიცხეთ `scale` შეუზღუდავი ციფრული აქტივისთვის.
 
-### მინა, დამწვარი და გადარიცხული ქონებები {#mint-burn-and-transfer-assets}
+### გაცემა, განადგურება და აქტივების გადაცემა {#mint-burn-and-transfer-assets}
 
-ამ მოწოდებებში გამოიყენება არსებული აქტივი ID. ჯერ დაარეგისტრირეთ აქტივის განსაზღვრა, შემდეგ კი შექმენით კონკრეტული აქტივი ID იმ ანგარიშისთვის, რომელიც ფლობს აქტივს.
+ეს ზარები იყენებს არსებულ აქტივის ID- ს. პირველ რიგში დაარეგისტრირეთ აქტივის განსაზღვრა, შემდეგ კი შეიქმნას კონკრეტული აქტივის ID ანგარიშისთვის, რომელიც ფლობს აქტივს.
 
 ```python
 # Increase the account's asset balance.
@@ -276,7 +295,7 @@ submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
 
 ### გადაცემის მფლობელობა {#transfer-ownership}
 
-მფლობელობის ტრანსფერები ცვლილება ვინ აკონტროლებს დომენს, აქტივების განსაზღვრა ან NFT. გამოიყენეთ მიმდინარე მფლობელი როგორც ოპერაციის ორგანო.
+მფლობელობის გადაცემა ცვლილება ვინ აკონტროლებს დომენს, აქტივების განსაზღვრა ან NFT. გამოიყენეთ მიმდინარე მფლობელი როგორც ტრანზაქციის ავტორიზაციის პრინციპული.
 
 ```python
 # The first argument is the current owner; the last is the new owner.
@@ -285,9 +304,9 @@ submit(Instruction.transfer_asset_definition(alice, ROSE_DEFINITION, bob))
 submit(Instruction.transfer_nft(alice, BADGE_NFT, bob))
 ```
 
-### მოწყობა და ამოღება მეტა მონაცემები {#set-and-remove-metadata}
+### მოწყობა და ამოღება მეტამონაცემები {#set-and-remove-metadata}
 
-Metadata ღირებულებები უნდა იყოს JSON-სერიალიზირებადი. როდესაც თქვენ იყენებთ `TransactionDraft`, ავტორიტეტი `TransactionConfig` ხდება გათვალისწინებული მიზნობრივი ანგარიში.
+მეტამონაცემები ღირებულებები უნდა იყოს JSON-სერიალიზებადი. როდესაც თქვენ გამოიყენოთ `TransactionDraft`, ავტორიზაციის პრინციპული `TransactionConfig` ხდება გათვალისწინებული სამიზნე ანგარიში.
 
 ```python
 # Values are encoded as JSON metadata under the target account.
@@ -303,11 +322,16 @@ submit(
 submit(Instruction.remove_account_key_value(alice, "profile"))
 ```
 
-უმაღლესი დონის შემწეობის პროექტის მიზანი ტრანზაქციული ორგანოა ჩვეულებრივად:
+მაღალი დონის პროექტის დამხმარე მიმართავს ტრანზაქციის ავტორიზაციის პრინციპს ჩვეულებრივ:
 
 ```python
 draft = TransactionDraft(
-    TransactionConfig(chain_id=CHAIN_ID, authority=alice, metadata=TX_METADATA)
+    TransactionConfig(
+        network_id=TAIRA_NETWORK_ID,
+        authority=alice,
+        fee_payment=BASE_FEE_PAYMENT,
+        metadata=APP_METADATA,
+    )
 )
 # With a draft, account metadata methods default to the draft authority.
 draft.set_account_key_value("nickname", "Queen Alice")
@@ -316,11 +340,16 @@ draft.remove_account_key_value("nickname")
 
 ### რეალური აქტივები {#real-world-assets}
 
-RWA დამხმარეები აქტივების სპეციფიკური მეტა მონაცემების, წარმომავლობისა და კონტროლერის პოლიტიკისათვის იყენებენ JSON-ს სერიალიზებადი სასარგებლო ტვირთებს. `register_rwa` არ იღებს`id` ან `owner`: გამშვები დრო წარმოქმნის `RwaId` და ოპერაციის ორგანო ხდება საწყისი მფლობელი.
+RWA დამხმარეები იყენებენ JSON-სერიალიზებადი დატვირთვებს აქტივების სპეციფიკური მეტამონაცემების, წარმომავლობის და კონტროლერის პოლიტიკისათვის. `register_rwa` არ იღებს `id` ან `owner`: შესრულების გარემოში წარმოიქმნება `RwaId`, ხოლო ტრანზაქციის ავტორიზაციის პრინციპი ხდება პირველადი მფლობელი.
 
 ```python
 draft = TransactionDraft(
-    TransactionConfig(chain_id=CHAIN_ID, authority=alice, metadata=TX_METADATA)
+    TransactionConfig(
+        network_id=TAIRA_NETWORK_ID,
+        authority=alice,
+        fee_payment=BASE_FEE_PAYMENT,
+        metadata=APP_METADATA,
+    )
 )
 
 # Register the lot in a domain. Store business identifiers in primary_reference
@@ -349,7 +378,7 @@ draft.register_rwa(
 )
 ```
 
-რეგისტრაციის ტრანზაქციის ჩატარების შემდეგ გამოიყენეთ `FindRwas`, `/v1/rwas`, RWA მოვლენა ან გამომძიებლის მარშრუტი, რომელიც განისაზღვრება წარმოქმნილი ID აღმოჩენისთვის:
+რეგისტრაციის ტრანზაქციის დასრულების შემდეგ, გამოიყენეთ `FindRwas`, `/v1/rwas`, RWA მოვლენა ან გამომძიებლის მარშრუტი, რომელიც განსაზღვრულია გენერირებული ID-ის აღმოჩენის მიზნით:
 
 ```python
 page = client.list_rwas_typed(limit=20, offset=0)
@@ -358,7 +387,7 @@ for lot in page.items:
     print(lot.id)
 ```
 
-მომდევნო ოპერაციებში გამოიყენება გამომუშავებული `hash$domain` ID:
+მომდევნო ოპერაციებში გამოიყენება წარმოქმნილი `hash$domain` ID:
 
 ```python
 registered_rwa_id = (
@@ -367,7 +396,12 @@ registered_rwa_id = (
 )
 
 draft = TransactionDraft(
-    TransactionConfig(chain_id=CHAIN_ID, authority=alice, metadata=TX_METADATA)
+    TransactionConfig(
+        network_id=TAIRA_NETWORK_ID,
+        authority=alice,
+        fee_payment=BASE_FEE_PAYMENT,
+        metadata=APP_METADATA,
+    )
 )
 
 # Transfer, hold, release, freeze, and redeem model the lot lifecycle.
@@ -423,11 +457,11 @@ draft.force_transfer_rwa(
 )
 ```
 
-სრული გადარიცხვები შეიძლება შეიცვალოს `owned_by` არსებულ პარტიაში. ნაწილობრივი გადარიცხვა და გაერთიანება ქმნის წარმოქმნილ შვილთა პარტებს.
+სრული გადარიცხვები შეიძლება შეიცვალოს `owned_by` არსებულ პარტიაში. ნაწილობრივი გადარიცხვა და გაერთიანება ქმნის წარმოქმნილ შვილობილ პარტებს.
 
 ### მატარებლები {#triggers}
 
-გამოიყენეთ trigger რეგისტრაციის დამხმარეები, როდესაც შესრულებადი არის სხვა ინსტრუქციის თანმიმდევრობა:
+გამოიყენეთ ტრიგერი რეგისტრაციის დამხმარეები, როდესაც შესრულებადი არის სხვა ინსტრუქციის რიგითი:
 
 ```python
 # The trigger executable is just another instruction payload.
@@ -475,9 +509,9 @@ details = client.get_trigger_typed("precommit_reward")
 
 ტრიგერის ინვენტარის ზარები მხოლოდ კითხულობს ან ამოწმებს ტრიგერების ჩანაწერებს. რეგისტრაცია, შესრულება, განმეორებითი ცვლილებები და არარეგისტრირება მუტაციური ოპერაციებია.
 
-### რეპორტისა და ანგარიშსწორების ინსტრუქციები {#repo-and-settlement-instructions}
+### ანგარიშსწორების ინსტრუქციები {#repo-and-settlement-instructions}
 
-რეპოს და ორმხრივი დასახლების დამხმარეები დომენის სპეციფიკური ინსტრუქციის ვარიანტებს ხელნაკეთი დამუშავების გარეშე Norito სასარგებლო ტვირთების დამატებას:
+რეპოსა და ორმხრივი ანგარიშსწორების დამხმარეები დომენისთვის სპეციფიკურ ინსტრუქციის ვარიანტებს Norito-ს სასარგებლო დატვირთვების ხელით აგების გარეშე ამატებენ:
 
 ```python
 from iroha_python import (
@@ -491,11 +525,12 @@ from iroha_python import (
 )
 
 config = TransactionConfig(
-    chain_id=CHAIN_ID,
+    network_id=TAIRA_NETWORK_ID,
     authority=alice,
+    fee_payment=BASE_FEE_PAYMENT,
     # Keep repo and settlement examples bounded by a short TTL.
     ttl_ms=120_000,
-    metadata=TX_METADATA,
+    metadata=APP_METADATA,
 )
 draft = TransactionDraft(config)
 
@@ -520,14 +555,8 @@ draft.repo_initiate(
     governance=governance,
 )
 draft.repo_margin_call("daily_repo")
-draft.repo_unwind(
-    agreement_id="daily_repo",
-    initiator=alice,
-    counterparty=bob,
-    cash_leg=cash,
-    collateral_leg=collateral,
-    settlement_timestamp_ms=1_704_086_400_000,
-)
+# Unwind uses the immutable counterparties, legs, and maturity stored on-chain.
+draft.repo_unwind("daily_repo")
 
 # DVP/PVP settlement plans encode ordering and atomicity for both legs.
 delivery = SettlementLeg(
@@ -561,16 +590,16 @@ draft.settlement_pvp(
     counter_leg=delivery,
 )
 
-envelope = draft.sign_with_keypair(alice_pair)
+envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### JSON Escape Hatch {#json-escape-hatch}
+### JSON-ის სარეზერვო გზა {#json-escape-hatch}
 
-როდესაც ა Python დამხმარე ჯერ არ არის ხელმისაწვდომი, მიწოდება კანონიკური მონაცემების მოდელი `InstructionBox` JSON შემოტანილი `Instruction.from_json` ან პირდაპირ `TransactionBuilder.add_instruction_json`. ეს არის რეკომენდებული გზა `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, პარტნიორი/ როლი/NFT რეგისტრაცია, და არა-trigger არარეგისტრირება ვარიანტები, სანამ ეს დამხმარეები არიან typed.
+როდესაც Python-ის დამხმარე ფუნქცია ხელმისაწვდომი არ არის, კანონიკური მონაცემთა მოდელის `InstructionBox` JSON გადასცით `Instruction.from_json`-ს. სანამ შესაბამისი დამხმარეები ტიპიზებული გახდება, ეს რეკომენდებული გზაა `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, კვანძის, როლისა და NFT-ის რეგისტრაციისთვის და რეგისტრაციის გაუქმების არატრიგერული ვარიანტებისთვის.
 
 ```python
-from iroha_python import Instruction, TransactionBuilder
+from iroha_python import Instruction
 
 # Copy this payload from Rust/CLI tooling or from a pinned data-model schema.
 instruction_box_json = """
@@ -583,16 +612,11 @@ instruction_box_json = """
 
 instruction = Instruction.from_json(instruction_box_json)
 submit(instruction)
-
-# Use TransactionBuilder when you need lower-level control than TransactionDraft.
-builder = TransactionBuilder(CHAIN_ID, alice)
-builder.set_metadata(TX_METADATA)
-builder.add_instruction_json(instruction_box_json)
-envelope = builder.sign(alice_pair.private_key)
-client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-გენერირებული ან გაუმჭვირვალე ინსტრუქციებისათვის, მოწყობილობების შენახვის წინ JSON-ში გადაადგილება და დაბრუნება:
+შეინახეთ ტიპირებული პროექტის გზა გარიგების საზღვარზე: იგი ინარჩუნებს ზუსტ `NetworkId`, გადასახადის გადახდის განზრახვას და საფასურის შეფასების გაფორმებამდე ინვარიანტს. პირდაპირი `TransactionBuilder` გამოყენება მოითხოვს იმავე ღირებულებებს, პლუს პირდაპირი საფასურის შეფასების მკაფიო დამტკიცებას, ასე რომ ეს არ არის შესავალი განაცხადის კოდისთვის.
+
+წარმოქმნილი ან გაუმჭვირვალე ინსტრუქციებისათვის, ტესტის არტეფაქტების შენახვის წინ JSON-ში გადაადგილება და დაბრუნება:
 
 ```python
 # Round trips are useful for validating fixtures generated by another tool.
@@ -607,35 +631,38 @@ print(same_instruction.as_dict())
 
 ```python
 config = TransactionConfig(
-    chain_id=CHAIN_ID,
+    network_id=TAIRA_NETWORK_ID,
     authority=alice,
+    fee_payment=BASE_FEE_PAYMENT,
     # TTL and nonce are transaction-level properties shared by all instructions.
     ttl_ms=120_000,
     nonce=1,
-    metadata={**TX_METADATA, "source": "python-docs"},
+    metadata=APP_METADATA,
 )
 
 draft = TransactionDraft(config)
 # Draft methods append instructions but do not submit anything yet. Domain
 # setup is a separate alias-planner flow and has already committed here.
 draft.register_account(bob, metadata={"role": "user"})
-draft.register_asset_definition_numeric(
+draft.register_asset_definition(
     ROSE_DEFINITION,
-    owner=alice,
+    owning_domain=None,
+    balance_scope_policy="Global",
+    name="Rose",
     scale=2,
     mintable="Infinitely",
 )
-draft.mint_asset_numeric(ROSE_ASSET, "100")
-draft.transfer_asset_numeric(ROSE_ASSET, "25", destination=bob)
+draft.mint_asset_quantity(ROSE_ASSET, "100")
+draft.transfer_asset_quantity(ROSE_ASSET, "25", bob)
 
-# Signing freezes the draft into an envelope ready for Torii.
-envelope = draft.sign_with_keypair(alice_pair)
+# Quoting freezes the draft, validates exact fee limits, and signs that payload.
+envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 receipt = client.submit_transaction_envelope(envelope)
 status = client.wait_for_transaction_status(envelope.hash_hex(), timeout=30)
 print(receipt, status)
 ```
 
-ექსპორტი დეტერმინისტური მანიფესტის განხილვის, აუდიტის ან საფულეების გადაცემისათვის:
+ექსპორტი დეტერმინისტური ტექნიკური მანიფესტის განხილვის, აუდიტის ან საფულეების გადაცემისათვის:
 
 ```python
 import json
@@ -651,7 +678,7 @@ Path("transaction_manifest.json").write_text(
 )
 ```
 
-გაფორმებამდე დაურთეთ ბილიკის კონფიდენციალურობის მტკიცებულება, როდესაც მიზნობრივი ბილიკი ამას მოითხოვს:
+თუ სამიზნე ზოლი კონფიდენციალურობის მტკიცებულებას მოითხოვს, ის ხელმოწერამდე დაურთეთ:
 
 ```python
 # Attach the proof before signing so it is covered by the transaction hash.
@@ -659,17 +686,17 @@ draft.add_lane_privacy_merkle_proof(
     commitment_id=7,
     leaf=bytes.fromhex("aa" * 32),
     leaf_index=3,
-    audit_path=[bytes.fromhex("bb" * 32), None, bytes.fromhex("cc" * 32)],
+    audit_path=[bytes.fromhex("bb" * 32), bytes.fromhex("cc" * 32)],
     proof_backend="halo2/ipa",
     proof_bytes=b"...proof bytes...",
-    verifying_key_bytes=b"...verifying key bytes...",
+    verifying_key_name="lane_privacy_vk",
 )
-envelope = draft.sign_with_keypair(alice_pair)
+envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 ```
 
 ## კითხვები {#queries}
 
-ტიპირებული გამოკითხვის დამხმარეები ბრუნდებიან მონაცემთა კლასებს ნედლი JSON ლექსიკონების მაგივრად. ისინი ყველაზე მარტივი გზაა დასაწყებად, რადგან SDK პარსირებს გვერდოვნება და საერთო ჩანაწერის ველები თქვენთვის:
+ტიპირებული მოთხოვნის დამხმარეები ბრუნდებიან მონაცემთა კლასებს ნედლი JSON ლექსიკონების მაგივრად. ისინი ყველაზე მარტივი გზაა დასაწყებად, რადგან SDK პარსირებს გვერდოვნება და საერთო ჩანაწერის ველები თქვენთვის:
 
 ```python
 # Typed pages expose `.items` plus pagination metadata such as `.total`.
@@ -678,19 +705,26 @@ for account in accounts.items:
     print(account.id, account.metadata)
 
 domains = client.list_domains_typed(limit=10)
-definitions = client.query_asset_definitions_typed(limit=10)
+definitions = client.list_asset_definitions_typed(limit=10)
 print(domains.total, definitions.total)
 ```
 
-გამოიყენეთ გენერული მოთხოვნის დამხმარეები, როდესაც Torii საბოლოო წერტილში ჯერ არ არის ტიპირებული ჩარგული:
+გამოიყენეთ ზოგადი მოთხოვნის დამხმარეები, როდესაც Torii API საბოლოო წერტილში ჯერ არ არის დატაიპებული პროგრამული უზრუნველყოფის ადაპტერი:
 
 ```python
+from urllib.request import Request, urlopen
+
 # Drop to raw JSON when you need an endpoint before a typed helper exists.
 payload = client.request_json("GET", "/v1/parameters", expected_status=(200,))
-metrics = client.get_metrics(as_text=True)
+
+# Prometheus exposition is served at `/metrics` when telemetry is `extended`
+# or `full`; it is text, not a `/v1` JSON resource.
+request = Request(f"{TORII_URL}/metrics", headers={"Accept": "text/plain"})
+with urlopen(request, timeout=5) as response:
+    metrics = response.read().decode("utf-8")
 ```
 
-ანგარიშის ინვენტარის დამხმარე პირებს სჭირდებათ ანგარიშის იდენტიფიკატორი, რომელიც აღიარებულია SDK ნორმალიზატორია. გამოიყენეთ კანონიკური I105 ანგარიში IDs ან ჯაჭვზე არსებული ალტერნატივები; თუ ბლოკის ექსპლუატორი ან ნედლეული საბოლოო წერტილი ბრუნდება ID რომ SDK უარყოფს, გადაწყვიტოს იგი კანონიკური ანგარიში ID სანამ ამ დამხმარეებს დაუძახებდით:
+ანგარიშის ინვენტარის დამხმარე პირებს სჭირდებათ SDK ნორმალიზატორის მიერ მიღებული ანგარიშის იდენტიფიკატორი. გამოიყენეთ კანონიკური I105 ანგარიშის ID-ები ან ჯაჭვზე არსებული ალიასები; თუ ბლოკის ექსპლუატორი ან ნედლი API-ის საბოლოო წერტილი იბრუნებს ID- ს, რომელიც SDK უარყოფს, გადაწყვიტეთ იგი კანონიკური ანგარიშის ID- ში, სანამ ამ დამხმარეებს დაურეკავთ:
 
 ```python
 # These helpers expect a canonical account ID or an alias the SDK can normalize.
@@ -703,10 +737,10 @@ print(len(assets.items), len(transactions.items), len(permissions.items))
 
 ## მოვლენები {#events}
 
-სტრიმინგის დამხმარეები დეკოდირებენ JSON სასარგებლო ტვირთებს დეფოლუტურად. გადადით `with_metadata=True` როდესაც გჭირდებათ SSE მოვლენის სახელი, იდენტიფიკაცია, განმეორებითი მცდელობა და ნედლეული სასარგებლო დატვირთვა. წყვილური ნაკადები `EventCursor` შეინარჩუნოს ბოლო მოვლენის ID. ეს მაგალითები ელოდებიან ცოცხალ მოვლენებს, ასე რომ გაუშვით ისინი კვანძზე, სადაც შესაბამისი მოვლენების ნაკადი ჩართულია და აქტიურია.
+სტრიმინგის დამხმარეები დეკოდირებენ JSON დატვირთვებს დეფოლუტურად. გადადით `with_metadata=True` როდესაც გჭირდებათ SSE მოვლენის სახელი, იდენტიფიკაცია, განმეორებითი მცდელობა და ნედლი სასარგებლო დატვირთვა. კანონიკური `/v1/events/sse` შეღავათი არის მხოლოდ პირდაპირი: იგი არ გამოდის რეპლეი ID და არ ინახავს რეპლეის ლოგს, ასე რომ ეს დამხმარეები არ გამოყოფენ კურსერს ან განაგრძობენ არგუმენტებს. ხელმეორედ დაკავშირება იწყებს ახალ აბონენტს და შეიძლება ჰქონდეს სივრცე; გამოიყენეთ `/v1/blocks/stream` ცნობილი სიმაღლიდან, როდესაც საჭიროა სრული ბლოკჩეინის რეესტრის ისტორია. ეს მაგალითები ელოდებიან ცოცხალ მოვლენებს, ასე რომ გაუშვით ისინი კვანძზე, სადაც ნაკადი არის ჩართული და აქტიური.
 
 ```python
-from iroha_python import DataEventFilter, EventCursor
+from iroha_python import DataEventFilter, SseStreamError
 
 # Narrow the stream to proof events with the expected backend and proof hash.
 proof_filter = DataEventFilter.proof(
@@ -714,18 +748,14 @@ proof_filter = DataEventFilter.proof(
     proof_hash_hex="deadbeef" * 8,
 )
 
-# Persist the latest SSE id so a reconnect can resume from the same point.
-cursor = EventCursor()
-for event in client.stream_events(
-    filter=proof_filter,
-    cursor=cursor,
-    resume=True,
-    with_metadata=True,
-):
-    print(event.id, event.event, event.data)
-    break
+try:
+    for event in client.stream_events(filter=proof_filter, with_metadata=True):
+        print(event.id, event.event, event.data)
+        break
+except SseStreamError as error:
+    print(error.code, error.dropped_messages, error.replay_available)
 
-for event in client.stream_trigger_events(trigger_id="hourly_reward", resume=True):
+for event in client.stream_trigger_events(trigger_id="hourly_reward"):
     print(event)
     break
 
@@ -736,7 +766,7 @@ for tx_event in client.stream_pipeline_transactions(status="Queued"):
 
 ## გასაღები და მისამართები {#keys-and-addresses}
 
-SDK გამოყოფს ადგილობრივ ხელმოწერის დამხმარეებს თითოეული ხელმოწერების ალგორითმისათვის, რომელიც შედგენილია მშობლიურ გაფართოებაში. ეს დამხმარეები არ ურეკებიან Taira, მაგრამ მათ საჭიროებენ მშობლიურ გავრცელებას:
+SDK გამოყოფს ადგილობრივ ხელმოწერის დამხმარეებს თითოეული ხელმოწერების ალგორითმისთვის, რომელიც შედგენილია მშობლიურ გაფართოებაში. ეს დამხმარეები არ ურეკებიან Taira, მაგრამ მათ საჭიროებენ მშობლიურ გავრცელებას:
 
 ```python
 from iroha_python import (
@@ -766,7 +796,7 @@ print(confidential.as_hex())
 print(hash_blake2b_32(b"payload").hex())
 ```
 
-გამოიყენეთ `supported_crypto_algorithms()` იმისათვის, რომ ნახოთ, თუ რა უჭერს თქვენს ბორბალს მხარს. ზოგადი დამხმარეები იყენებენ კანონიკური ალგორითმების ეტიკეტებს და მუშაობენ Ed25519, secp256k1, ML-DSA, GOST, BLS და SM2, როდესაც ეს ალგორიტმები შედგენილია:
+გამოიყენეთ `supported_crypto_algorithms()` იმისათვის, რომ ნახოთ, თუ რა უჭერს თქვენს ბორბალს მხარს. ზოგადი დამხმარეები იყენებენ კანონიკური ალგორითმის ეტიკეტებს და მუშაობენ Ed25519, secp256k1, ML-DSA, GOST, BLS და SM2, როდესაც ეს ალგორიტმები შედგენილია:
 
 ```python
 from iroha_python import (
@@ -824,7 +854,7 @@ for algorithm in supported_crypto_algorithms():
 
 ### ჩინური SM კრიპტოგრაფია {#chinese-sm-cryptography}
 
-Python SDK გამოყოფს როგორც ზოგად SM2 დამხმარე, ასევე SM2-ის სპეციფიკური კომფორტის დამხმარე. გამოიყენეთ კვანძის შესაძლებლობების რეკლამა, რათა აირჩიოთ SM2 განასხვავებელი იდენტიფიკატორი, რომელსაც ელოდება სამიზნე ქსელი:
+Python SDK გამოყოფს როგორც ზოგად SM2 დამხმარე, ასევე SM2-ის სპეციფიკური კომფორტის დამხმარე. გამოიყენეთ კვანძის შესაძლებლობების რეკლამა, რომ შეარჩიოთ SM2 განასხვავებელი იდენტიფიკატორი, რომელიც ელოდება სამიზნე ქსელს:
 
 ```python
 from iroha_python import (
@@ -838,7 +868,7 @@ from iroha_python import (
     verify_sm2,
 )
 
-capabilities = client.get_node_capabilities_typed()
+capabilities = client.get_node_capabilities_typed(canonical_auth=canonical_auth)
 sm = capabilities.crypto.sm if capabilities.crypto else None
 # Use the node's default SM2 distinguishing ID when the node advertises one.
 distid = sm.sm2_distid_default if sm else SM2_DEFAULT_DISTINGUISHED_ID
@@ -861,10 +891,10 @@ print(pair.public_key_sec1_hex)
 print(pair.public_key_multihash)
 ```
 
-`crypto.sm.enabled` გეტყვით, იღებს თუ არა კვანძი SM- ოჯახური ალგორითმები მისი მიმდინარე პოლიტიკაში. იგივე რეკლამა მოიცავს SM ჰაშის პოლიტიკა და აჩქარების სტატუსი, რომელიც სასარგებლოა გადაწყვეტილების მიღებისას თუ არა ჩართვა SM2- კონკრეტული ნაკადები:
+`crypto.sm.enabled` გეტყვით, იღებს თუ არა კვანძი SM- ოჯახური ალგორითმები ამჟამინდელი პოლიტიკაში. იგივე რეკლამა მოიცავს SM კრიპტოგრაფიული ჰეშის პოლიტიკა და აჩქარების სტატუსი, რომელიც სასარგებლოა გადაწყვეტილების მიღებისას თუ არა ჩართვა SM2- კონკრეტული ნაკადები:
 
 ```python
-capabilities = client.get_node_capabilities_typed()
+capabilities = client.get_node_capabilities_typed(canonical_auth=canonical_auth)
 
 # `enabled` is the submit-time policy flag, not just local SDK support.
 if capabilities.crypto and capabilities.crypto.sm.enabled:
@@ -876,7 +906,7 @@ else:
     print("SM crypto is not enabled by this node")
 ```
 
-საჯარო Taira გამოავლინა SM შესაძლებლობების რეკლამა შემოწმების დროს, მაგრამ იქ SM ხელმოწერა იყო გამორთული. მისი რეკლამირებული ხელმოწერის ალგორითმები იყო `ed25519`, `secp256k1` და `bls_normal`, შესაბამისად, არ წარუდგინოთ SM2-ზე ხელმოწერილი ტრანზაქციები ამ განთავსებისათვის, თუ შესაძლებლობების სასარგებლო ტვირთის ცვლილება არ მოხდება.
+მოახდინეთ დამადასტურებული შესაძლებლობების დატვირთვის განთავსება როგორც ავტორიტეტული განთავსებული კვანძისთვის. არ წარადგინოთ SM2-ზე ხელმოწერილი ტრანზაქცია, თუ `crypto.sm.enabled` არ არის ჭეშმარიტი და რეკლამირებული ხელმოწერის პოლიტიკა ამას აღიარებს
 
 ### GOST და პოსტკვანტური გასაღები {#gost-and-post-quantum-keys}
 
@@ -944,18 +974,15 @@ print(post_quantum_address.to_i105(CHAIN_DISCRIMINANT))
 print(mldsa_keypair.prefixed_public_key_multihash)
 ```
 
-კარიბჭე GOST და პოსტ-კვანტური ნაკადები ბმულის რეკლამირებული ხელმოწერის ალგორითმებზე. გამოიყენეთ ნედლეული შესაძლებლობების სასარგებლო ტვირთი წინასწარი თავსებადობის ალგორიტმების სახელებისთვის:
+კარიბჭე GOST და პოსტ-კვანტური ნაკადები ბმულის ავთენტირებული, ტიპირებული შესაძლებლობების რეკლამაზე:
 
 ```python
-capabilities = client.request_json(
-    "GET",
-    "/v1/node/capabilities",
-    expected_status=(200,),
+capabilities = client.get_node_capabilities_typed(
+    canonical_auth=canonical_auth,
 )
-crypto = capabilities.get("crypto", {})
-sm = crypto.get("sm", {})
+sm = capabilities.crypto.sm if capabilities.crypto else None
 # Nodes advertise the signing algorithms they will accept for transactions.
-allowed = set(sm.get("allowed_signing", []))
+allowed = set(sm.allowed_signing if sm else ())
 
 GOST_ALGORITHMS = {
     "gost3410-2012-256-paramset-a",
@@ -968,12 +995,12 @@ GOST_ALGORITHMS = {
 # Local support is not enough; submit only when the node advertises support.
 supports_gost = bool(allowed & GOST_ALGORITHMS)
 supports_post_quantum = "ml-dsa" in allowed
-supports_sm2 = "sm2" in allowed and bool(sm.get("enabled", False))
+supports_sm2 = "sm2" in allowed and bool(sm and sm.enabled)
 
 print(supports_gost, supports_post_quantum, supports_sm2)
 ```
 
-თუ კვანძი არ რეკლამირებს საჭირო ალგორითმს, გამოიყენეთ გასაღები მხოლოდ ადგილობრივი ან ოფლაინ სამუშაო პროცესებისთვის. ამ ალგორიტმით ხელმოწერილი ტრანზაქციების წარდგენა ამ კვანძში არ მოხდეს. საჯარო Taira შემოწმების დროს, GOST და ML-DSA ხელმისაწვდომი იყო როგორც SDK კრიპტოვალუტის დამხმარეები წინსვლის ბიბლიოთეკაში Python, მაგრამ ბმული არ აცხადებდა მათ ტრანზაქციის ხელმოწერის მიზნით.
+თუ კვანძი არ რეკლამირებს საჭირო ალგორითმს, გამოიყენეთ გასაღები მხოლოდ ადგილობრივი ან ოფლაინ სამუშაო პროცესებისთვის. ამ ალგორიტმით ხელმოწერილი ტრანზაქციების წარდგენა ამ კვანძში არ მოხდეს. საჯარო Taira შემოწმების დროს, GOST და ML-DSA ხელმისაწვდომი იყო როგორც SDK კრიპტოგრაფიული დამხმარეები წინსვლის ბიბლიოთეკაში Python, მაგრამ ბმული არ აცხადებდა მათ ტრანზაქციის ხელმოწერის მიზნით.
 
 ## კონფიგურაციული მომხმარებლის შექმნა {#config-aware-client-creation}
 
@@ -1017,11 +1044,11 @@ print(readiness["ready"])
 print(readiness["blockers"])
 ```
 
-Python არ გამოხატავს ტიპირებული Kagemusha დამატების ან გადახდის არქივის მშენებლებს. გამოიყენეთ Swift ან JVM საფულე, რათა შეიქმნას კანონიკური V4 არქივები, შემდეგ კი წარადგინეთ და გამოკითხეთ ისინი მხარდაჭერილი Kagemusha Torii კლიენტის მეშვეობით.
+Python არ გამოავლინებს ტიპირებული Kagemusha დამატების ან გადახდის არქივის შემქმნელებს. გამოიყენეთ Swift ან JVM საფულე, რათა შექმნათ კანონიკური V4 არქივი, შემდეგ წარადგინეთ და გამოკითხეთ ისინი მხარდაჭერილი Kagemusha Torii კლიენტის საშუალებით.
 
 ## აბონენტები {#subscriptions}
 
-აბონენტების დამხმარეები მუტაციური სერვისის ზარებია, რომლებიც მიემკვიდრეა Torii კლიენტიდან, რომელსაც იყენებს `iroha_python.ToriiClient`. გამოიყენეთ IDs და აქტივები, რომლებიც არსებობს თქვენს მიზნობრივ ქსელში.
+`iroha_python.ToriiClient` მიერ გამოყენებული საერთო Torii კლიენტისგან მიიღება აბონენტთა წაკითხვა და პროექტების მშენებლობა. თითოეული მუტაცია მიღებულია სხეულის კანონიკური ანგარიშის ხელმოწერა და უხელმოწერილი ტრანზაქციის პროექტის დაბრუნება. Torii არასდროს იღებს კერძო გასაღების და არ წარადგენს პროექტს თქვენთვის.
 
 ```python
 # The plan defines billing cadence, retry policy, and usage pricing.
@@ -1047,61 +1074,69 @@ usage_plan = {
     },
 }
 
-# The provider signs plan creation.
-client.create_subscription_plan(
+# The provider authorizes preparation of a plan-registration draft.
+plan_draft = client.create_subscription_plan(
     authority=alice,
-    private_key=alice_pair.private_key_hex,
     plan_id="compute#wonderland",
     plan=usage_plan,
+    canonical_auth=canonical_auth,
 )
 
-# The subscriber signs subscription creation.
-client.create_subscription(
+bob_canonical_auth = ToriiCanonicalRequestAuth(
+    network_id=TAIRA_NETWORK_ID.literal,
+    account_id=bob,
+    signer=bob_pair.sign,
+)
+
+# The subscriber authorizes preparation of a subscription-creation draft.
+subscription_draft = client.create_subscription(
     authority=bob,
-    private_key=bob_pair.private_key_hex,
     subscription_id="sub-001",
     plan_id="compute#wonderland",
+    canonical_auth=bob_canonical_auth,
 )
 
-# Usage is recorded by the provider and then charged on demand.
-client.record_subscription_usage(
+# Usage and charge-now operations also return unsigned transaction drafts.
+usage_draft = client.record_subscription_usage(
     "sub-001",
     authority=alice,
-    private_key=alice_pair.private_key_hex,
     unit_key="compute_ms",
     delta="3600000",
+    canonical_auth=canonical_auth,
 )
-client.charge_subscription_now(
+charge_draft = client.charge_subscription_now(
     "sub-001",
     authority=alice,
-    private_key=alice_pair.private_key_hex,
+    canonical_auth=canonical_auth,
 )
+
+for draft in (plan_draft, subscription_draft, usage_draft, charge_draft):
+    assert draft.submitted is False
+    print(draft.transaction_payload_b64, draft.signing_message_b64)
 ```
+
+მიეცით თითოეული ზუსტი დატვირთვისა და ხელმოწერის შეტყობინება შესაბამის ანგარიშის ადგილობრივ საფულეზე, შემოწმეთ იქ მოთხოვნილი ოპერაცია, შეადგინეთ ხელმოწერილი ტრანზაქცია და წარუდგინეთ იგი ჩვეულებრივი ტრანზაკციის დამუშავების კონვეიერის საშუალებით. Python SDK ადასტურებს, რომ ხელმოწერის შეტყობინება არის დაბრუნებული დატვირთვის კანონიკური კრიპტოგრაფიული ჰეში, მაგრამ საფულე კვლავ პასუხისმგებელია ტრანზაქციის დეკოდირებისა და ხელმოწერამდე დამტკიცებისათვის.
 
 ## გაერთიანება {#connect}
 
-შექმენით და შეისწავლეთ Connect URIs და წაიკითხეთ Taira -ის მიერ გამოქვეყნებული Public Connect სტატუსი:
+შექმენით და შეისწავლეთ Connect URIs ადგილობრივად. Connect- ის იდენტობა აკავშირებს SID ზუსტად `NetworkId`, აპლიკაციის საჯარო გასაღები და კრიპტოგრაფიული ნონსი მნიშვნელობას:
 
 ```python
-from iroha_python.connect import ConnectUri, build_connect_uri, parse_connect_uri
+from iroha_python.connect import create_connect_session_preview, parse_connect_uri
 
-# Connect URIs are what an app hands to a wallet to start a session.
-uri = build_connect_uri(
-    ConnectUri(
-        sid="base64url-session-id",
-        chain_id=CHAIN_ID,
-        node="taira.sora.org",
-    )
+# Generate consistent SID, key, nonce, and URI values as one bundle.
+preview = create_connect_session_preview(
+    network_id=TAIRA_NETWORK_ID,
+    node="taira.sora.org",
 )
-parsed = parse_connect_uri(uri)
-# Status tells you whether the node currently exposes Connect.
-status = client.get_connect_status_typed()
+parsed = parse_connect_uri(preview.wallet_uri)
 
-assert parsed.chain_id == CHAIN_ID
-print(status.enabled, status.sessions_active)
+assert parsed.sid == preview.sid_base64url
+assert parsed.network_id.literal == TAIRA_NETWORK_ID.literal
+assert parsed.app_public_key == preview.app_key_pair.public_key
 ```
 
-ჩარჩო კოდეკები, სესიის საკვანძო დერეფცია და სესიის შექმნა საჭიროებს მშობლიურ გაფართოებასა და Connect სესიის მარშრუტს:
+რეგისტრირება ზუსტი წინასწარი ნახვა მხოლოდ მაშინ, როდესაც სამიზნე კვანძი გამოყოფს Connect. სესიის შექმნა უბრუნებს ოთხი როლი-სპეციფიკური მატარებელი ტოქენები. ყოველ სესიის სტატუსის მარშრუტი მოითხოვს მართვის ტოქენი; შეკრებილი სტატუსი არის ოპერატორის მარშრუტი.
 
 ```python
 from iroha_python import (
@@ -1110,37 +1145,53 @@ from iroha_python import (
     ConnectDirection,
     ConnectFrame,
     ConnectPermissions,
+    bootstrap_connect_preview_session,
     decode_connect_frame,
     encode_connect_frame,
-    generate_connect_keypair,
 )
 
-# The app keypair is separate from the account key used for transactions.
-connect_pair = generate_connect_keypair()
-info = client.create_connect_session_info(
-    {"role": "app", "sid": connect_pair.public_key.hex()}
+bootstrap = bootstrap_connect_preview_session(
+    client,
+    network_id=TAIRA_NETWORK_ID,
+    node="taira.sora.org",
 )
-print(info.app_uri, info.wallet_token, info.expires_at)
+info = bootstrap.session
+tokens = bootstrap.tokens
+assert info is not None and tokens is not None
+
+session_status = client.request_json(
+    "GET",
+    "/v1/connect/status",
+    params={"sid": info.sid},
+    headers={"Authorization": f"Bearer {tokens.management}"},
+    expected_status=(200,),
+)
+print(info.app_uri, session_status)
 
 # Control frames negotiate permissions before encrypted messages are sent.
 frame = ConnectFrame(
-    sid=bytes.fromhex("01" * 32),
+    sid=bootstrap.preview.sid_bytes,
     direction=ConnectDirection.APP_TO_WALLET,
     sequence=1,
     control=ConnectControlOpen(
-        app_public_key=connect_pair.public_key,
-        chain_id=CHAIN_ID,
+        app_public_key=bootstrap.preview.app_key_pair.public_key,
+        network_id=TAIRA_NETWORK_ID,
         permissions=ConnectPermissions(methods=["SIGN_REQUEST_TX"], events=[]),
     ),
 )
 payload = encode_connect_frame(frame)
 assert decode_connect_frame(payload) == frame
 
-# Closing the control channel is explicit and carries a reason code.
-client.send_connect_control_frame(
-    "base64url-session-id",
-    ConnectControlClose(role="App", code=4100, reason="finished", retryable=False),
+# Closing the control channel is explicit and also travels as a frame.
+close_frame = ConnectFrame(
+    sid=bootstrap.preview.sid_bytes,
+    direction=ConnectDirection.APP_TO_WALLET,
+    sequence=2,
+    control=ConnectControlClose(
+        role="App", code=4100, reason="finished", retryable=False
+    ),
 )
+close_payload = encode_connect_frame(close_frame)
 ```
 
 დაშიფრეთ შეტყობინებები დამტკიცების შემდეგ სტატისტირებული სესიით:
@@ -1171,61 +1222,56 @@ state = session.snapshot_state().to_dict()
 print(encrypted.sequence, state)
 ```
 
-## მმართველობა, გამართვის დრო და ადმინის ზედაპირები {#governance-runtime-and-admin-surfaces}
+## მმართველობა, შესრულების გარემო და ადმინის ზედაპირები {#governance-runtime-and-admin-surfaces}
 
-ეს მხოლოდ წაკითხული ზარები წარმატებით დაუბრუნდათ საზოგადოებას Taira:
+მმართველობის წაკითხვა არის ანგარიშის ავთენტიფიცირება. [საერთო განლაგება](#shared-setup)-დან ავტორიზაციის ძირითადი და საკვანძო წყვილი გამოყენებით, თითოეული დამხმარე ზარი დაუკავშირდით Taira-ს ზუსტ გენეზისგან გამომდინარე `NetworkId`:
 
 ```python
-client = create_torii_client("https://taira.sora.org")
-
 # Governance reads return either current settings or typed not-found wrappers.
-protected = client.get_protected_namespaces()
-referendum = client.get_governance_referendum_typed("ref-1")
-tally = client.get_governance_tally_typed("ref-1")
-locks = client.get_governance_locks_typed("ref-1")
-unlock_stats = client.get_governance_unlock_stats_typed()
+protected = client.get_protected_namespaces(canonical_auth=canonical_auth)
+referendum = client.get_governance_referendum_typed(
+    "ref-1", canonical_auth=canonical_auth
+)
+tally = client.get_governance_tally_typed("ref-1", canonical_auth=canonical_auth)
+locks = client.get_governance_locks_typed("ref-1", canonical_auth=canonical_auth)
+unlock_stats = client.get_governance_unlock_stats_typed(
+    canonical_auth=canonical_auth
+)
 
 print(protected, referendum.found)
 print(tally.approve, list(locks.locks), unlock_stats.expired_locks_now)
 
-# Runtime reads expose the active ABI and any pending upgrade records.
-abi = client.get_runtime_abi_active_typed()
+# Account-authenticated runtime reads use the same canonical request proof.
+abi = client.get_runtime_abi_active_typed(canonical_auth=canonical_auth)
+# The ABI hash itself is a public read.
 abi_hash = client.get_runtime_abi_hash_typed()
-runtime_metrics = client.get_runtime_metrics_typed()
-upgrades = client.list_runtime_upgrades_typed()
-capabilities = client.get_node_capabilities_typed()
+runtime_metrics = client.get_runtime_metrics_typed(canonical_auth=canonical_auth)
+capabilities = client.get_node_capabilities_typed(canonical_auth=canonical_auth)
 
 print(abi, abi_hash, runtime_metrics)
-print(upgrades.total, capabilities.abi_version)
+print(capabilities.abi_version)
 ```
 
-Runtime განახლება დამხმარეები იღებენ manifest ფორმა გამოყენებული runtime განახლების API. ისინი ოპერატორის ქმედებები, ასე რომ გამოიყენოთ მათ მხოლოდ წინააღმდეგ კვანძის სადაც თქვენი ანგარიში და ტოქნი არის ავტორიზებული:
+შეიქმნას ცალკე კლიენტი ოპერატორის წაკითხვისთვის. დატვირთეთ ნებადართული ჩამოთვლილი ოპერატორების გასაღები შესრულების გარემოში და დაუკავშირდით მას Taira ზუსტად `NetworkId`; მფლობელის ნიშნები და `x-api-token` არ შეცვლის ამ ხელმოწერას:
 
 ```python
-admin = create_torii_client(
+import os
+
+from iroha_python import Ed25519KeyPair, NetworkId, OperatorSigningContext
+
+operator_pair = Ed25519KeyPair.from_private_key(
+    bytes.fromhex(os.environ["IROHA_OPERATOR_PRIVATE_KEY_HEX"])
+)
+operator_client = create_torii_client(
     TORII_URL,
-    auth_token="admin-token",
-api_token="torii-token",
+    operator_signing_context=OperatorSigningContext(
+        TAIRA_NETWORK_ID,
+        operator_pair,
+    ),
 )
-
-# Propose creates the upgrade instructions; activation/cancel are operator actions.
-upgrade = admin.propose_runtime_upgrade(
-    {
-        "name": "Refresh runtime provenance",
-        "description": "Schedules a no-ABI-change runtime rollout.",
-        "abi_version": 1,
-        "abi_hash": "00" * 32,
-        "added_syscalls": [],
-        "added_pointer_types": [],
-        "start_height": 1_500_000,
-        "end_height": 1_500_256,
-    }
-)
-print(upgrade["tx_instructions"])
-
-admin.activate_runtime_upgrade("deadbeef" * 4)
-admin.cancel_runtime_upgrade("feedface" * 4)
 ```
+
+განახლების მარშრუტები ოპერატორის მიერ ავტორიზებული ინსტრუქციების შემქმნელია. წარმატებული წინადადება, გააქტიურება ან გაუქმება პასუხის დაბრუნება `tx_instructions`; ეს არ ახორციელებს განახლებას. წარუდგინეთ ეს ბუნდელი ჩვეულებრივი ხელმოწერილი ტრანზაქციის და მმართველობის გზაზე. ამჟამად ჩასმული Python მეთოდები `propose_runtime_upgrade`, `activate_runtime_upgrade` და `cancel_runtime_upgrade` კლიენტის `OperatorSigningContext` გამოყენების ნაცვლად უბრალო მოთხოვნებს აძლევენ. ამიტომ ეს სახელმძღვანელო მათ სამუშაო ოპერატორის ნაკადად არ წარმოადგენს.
 
 ## სტატუსი, კონსენსუსი და ქსელის ტელემეტრია {#status-consensus-and-network-telemetry}
 
@@ -1234,20 +1280,27 @@ admin.cancel_runtime_upgrade("feedface" * 4)
 status = client.request_json("GET", "/status", expected_status=(200,))
 print(status["blocks"], status["txs_approved"])
 
-# Sumeragi and time endpoints expose consensus and clock diagnostics.
-sumeragi = client.get_sumeragi_status_typed()
-print(sumeragi.highest_qc.height, sumeragi.tx_queue.saturated)
+# Sumeragi and time-status endpoints use the operator client configured above.
+sumeragi = operator_client.get_sumeragi_status_typed()
+diagnostics = operator_client.get_sumeragi_diagnostics_typed()
+print(sumeragi.last_committed_height, diagnostics.tx_queue_saturated)
 
-time_now = client.get_time_now_typed()
-time_status = client.get_time_status_typed()
+time_now = client.get_time_now()
+time_status = operator_client.get_time_status()
 for sample in time_status.samples:
     print(sample.peer, sample.last_offset_ms, sample.last_rtt_ms)
 print(time_now.now_ms)
+
+# Connect aggregate status is operator-authenticated. Individual sessions use
+# `/v1/connect/status?sid=...` with their management bearer token instead.
+connect_status = operator_client.get_connect_status_typed()
+if connect_status is not None:
+    print(connect_status.enabled, connect_status.sessions_active)
 ```
 
 ## SoraFS, UAID და Kaigi დამხმარეები {#sorafs-uaid-and-kaigi-helpers}
 
-ეს დამხმარეები ხელმისაწვდომია მაშინ, როდესაც სამიზნე კვანძში გამოჩნდება შესაბამისი Nexus/SORA საბოლოო წერტილები. ცარიელი სიები განიხილეთ როგორც ვალიდური პასუხი: საჯარო Taira-ს შეიძლება ჰქონდეს მარშრუტი ჩართული ნიმუშის მანიფესტის ან UAID მონაცემების გარეშე.
+ეს დამხმარეები ხელმისაწვდომია მაშინ, როდესაც სამიზნე კვანძში გამოჩნდება შესაბამისი Nexus/SORA API საბოლოო წერტილები. ცარიელი სიები განიხილეთ როგორც ვალიდური პასუხი: საჯარო Taira-ს შეიძლება ჰქონდეს მარშრუტი ჩართული ნიმუშის ტექნიკური მანიფესტის ან UAID მონაცემების გარეშე.
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
@@ -1264,25 +1317,28 @@ manifests = client.list_space_directory_manifests_typed(
 )
 print(len(bindings.dataspaces), len(manifests.manifests))
 
-# Kaigi health summarizes relay availability when the route is enabled.
-health = client.get_kaigi_relays_health_typed()
+# Kaigi relay health is an operator snapshot, even though it is read-only.
+health = operator_client.get_kaigi_relays_health_typed()
 print(health.healthy_total, health.failovers_total)
 ```
 
 ## Norito RPC და GPU დამხმარეები {#norito-rpc-and-gpu-helpers}
 
-გამოიყენეთ `NoritoRpcClient` მაშინ, როდესაც თქვენ უკვე გაქვთ Norito ბაიტები და უნდა გამოიძახოთ ორმაგი Torii საბოლოო წერტილი. მაგალითისთვის საჭიროა ხელმოწერილი კონვერტი წინა ტრანზაქციის შაბლონიდან:
+გამოიყენეთ `NoritoRpcClient` მაშინ, როდესაც თქვენ უკვე გაქვთ Norito ბაიტები და უნდა გამოიძახოთ ბინარული Torii API საბოლოო წერტილი. მაგალითისთვის საჭიროა წინა ტრანზაქციის შაბლონიდან ხელმოწერილი მონაცემთა კონტეინერი:
 
 ```python
 from iroha_python import NoritoRpcClient, NoritoRpcConfig
 
 # Use the binary RPC client for endpoints that expect Norito bytes.
 with NoritoRpcClient(NoritoRpcConfig(TORII_URL, timeout=5.0)) as rpc:
-    response_bytes = rpc.call("/v1/transaction", envelope.signed_transaction_versioned)
+    response_bytes = rpc.call(
+        "/v1/pipeline/transactions",
+        envelope.signed_transaction_versioned,
+    )
     print(len(response_bytes))
 ```
 
-CUDA დამხმარეები დაბრუნებენ `None`, როდესაც backend არ არის ხელმისაწვდომი, ასე რომ აპლიკაციები შეიძლება დაბრუნდეს სკალარული დანერგვის:
+CUDA დამხმარეები დაბრუნებენ `None`, როდესაც ბეკენდი არ არის ხელმისაწვდომი, ასე რომ აპლიკაციები შეიძლება დაბრუნდეს სკალარული დანერგვის:
 
 ```python
 from iroha_python import bn254_add_cuda, cuda_available, poseidon2_cuda
@@ -1297,14 +1353,14 @@ if cuda_available():
 
 Python SDK უკვე შეიცავს დამხმარე პირებს:
 
-- Torii წარდგენა, სტატუსი, გამოკითხვა და ადმინისტრირების ნაკადები
+- Torii წარდგენა, სტატუსი, მოთხოვნა და ადმინისტრირების ნაკადები
 - საერთო ISI და დომენის სპეციფიკური გაფართოებების ტიპირებული ინსტრუქციის შემქმნელები
-- გარიგების პროექტები, მანიფესტები, ხელმოწერა და ხელმოწერილი გარიგებების კონვერტის სამუშაო პროცესები
-- გადაადგილების მოვლენები, ფილტრები და განახლებადი კურსორები
+- გარიგების პროექტები, ტექნიკური მანიფესტები, ხელმოწერა და ხელმოწერილი გარიგებების მონაცემების კონტეინერის სამუშაო პროცესები
+- ცოცხალი მოვლენების ნაკადები და ტიპირებული ფილტრები; საბოლოო ბლოკის ნაკადები უზრუნველყოფენ სრულ ისტორიას
 - გენერული Kagemusha მზადყოფნის წვდომა და Torii აბონენტების დამხმარეები; ტაიპირებული დამატება და გამოსასყიდი მშენებლები არ არიან გამოცხადებულნი
 - ანგარიშის მისამართი, ყველა ალგორითმის ხელმოწერის დამხმარეები, მრავალფუნქციური ბრუნვა-ბრუნვა, SM2, GOST, ML-DSA და BLS და კონფიდენციალური გასაღების მართვა
 - გაერთიანება URIs, სესიები, ჩარჩოები, დაშიფვრის დამხმარეები და რეესტრი ადმინისტრატორი.
-- მმართველობა, გაშვების დროის განახლება, Sumeragi, node-admin, SoraFS, UAID და Kaigi საბოლოო წერტილების ჩანართები, სადაც კვანძი ამ მახასიათებლებს ასახავს.
+- მმართველობა, შესრულების გარემოს განახლება, Sumeragi, კვანძი-admin, SoraFS, UAID და Kaigi API საბოლოო წერტილების პროგრამული ადაპტერები, სადაც კვანძი ამ მახასიათებლებს ასახავს.
 
 ## წინსავალი რეფერენციები {#upstream-references}
 
@@ -1312,4 +1368,4 @@ Python SDK უკვე შეიცავს დამხმარე პირ
 - `python/iroha_python/DESIGN.md`
 - `python/iroha_python/src/iroha_python`
 
-ეს ფაილები არის სიმართლის წყარო Python ზედაპირში pinned სამუშაო სივრცე რევიზიის.
+ეს ფაილები არის სიმართლის წყარო Python ზედაპირში დამაგრებული სამუშაო სივრცე რევიზიის.

@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /cookbook/permissions-and-roles.md
-translation_source_hash: 734437b8530ad0efb9ddd83b24cb90c30dc29843a03753babd8dca5e86a3f91d
+translation_source_hash: 8d6fd7101094ba21cfc2c5fb9a89d2acd7e67f13ff47b9f8c8e01bbbd7bf2836
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 - Taira ֆինանսավորվող հաճախորդի եւ վճարային մետադատա [ Կապակցեք Taira](./connect-to-taira.md):
 - `TARGET_ACCOUNT` եւ `DELEGATE_ACCOUNT` սահմանված են քանոնիկ I105 հաշվին IDs:
-- ստորագրող հաշիվը պետք է թույլատրվի կառավարել նպատակային թույլտվությունները եւ դերերը: Taira-ում դա թույլտվությունների սահմանված վարչական գործողություն է. ստանալ `CanManageRoles` եւ անհրաժեշտ իշխանությունը, որպեսզի տրամադրի շրջանակային թույլտվի կամ գործարկել բաղադրատոմսը ստեղծված տեղական ցանցում:
+- ստորագրող հաշիվը պետք է թույլատրվի կառավարել նպատակային թույլտվությունները եւ դերերը: Taira-ում դա թույլտվությունների սահմանված վարչական գործողություն է. ստանալ `CanManageRoles` եւ անհրաժեշտ լիազոր հաշիվը, որպեսզի տրամադրի շրջանակային թույլտվի կամ գործարկել բաղադրատոմսը ստեղծված տեղական ցանցում:
 
 ```bash
 CONFIG=./taira.client.toml
@@ -36,7 +36,7 @@ DELEGATE_CONFIG=./taira.delegate.toml
 
 ### 1. Գրանցեք դատարկ դեր: {#_1-register-an-empty-role}
 
-Յուրաքանչյուր CLI հրաման, որը փոխում է պետությունը, բացարձակապես անվանում է վճարման վճարողին: Մետադատա ֆայլը պարունակում է ներկա Taira վճարային ակտիվը, որը բխում է ջրհեղեղի արձագանքից:
+Վիճակ փոխող յուրաքանչյուր CLI հրաման բացահայտ նշում է fee payer-ին։ Metadata ֆայլը պարունակում է faucet-ի պատասխանից ստացված ընթացիկ Taira fee asset-ը։
 
 ```bash
 iroha --config "$CONFIG" \
@@ -69,11 +69,11 @@ iroha --config "$CONFIG" \
   --role "$ROLE_ID"
 ```
 
-Գործառույթներն ու նրանց դրամաշնորհները չեն ավարտվում: Հատկանշական կերպով վերացրեք դրանք, երբ մուտքը այլեւս անհրաժեշտ չէ:
+Դերերը և դրանց նշանակումները ժամկետ չունեն։ Հստակորեն հետ կանչեք դրանք, երբ մուտքն այլևս անհրաժեշտ չէ։
 
 ### 4. Օգտագործիր պատվիրված թույլտվությունը {#_4-exercise-the-delegated-permission}
 
-Գրելու համար օգտագործեք պատվիրակվածի ստորագրողը եւ վճարային հավասարակշռությունը: JSON արժեքները ընթերցվում են ստանդարտ մուտք գործելուց:
+Գրելու համար օգտագործեք պատվիրակվածի ստորագրողը եւ վճարային մնացորդը: JSON արժեքները ընթերցվում են ստանդարտ մուտք գործելուց:
 
 ```bash
 printf '"delegated"\n' |
@@ -132,9 +132,9 @@ iroha --config "$CONFIG" ledger account meta get \
 
 ## Աղբյուրը եւ դրա հետ կապված փաստաթղթերը {#source-and-related-docs}
 
-- [Դասերի ինտեգրման փորձարկումներ փակված հանձնաժողովում ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/roles.rs)
-- [Թույլտվությունների ինտեգրման փորձարկումները փակված պարտավորության վրա ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/permissions.rs)
-- [Մուտքագրված թույլտվությունների տվյալների մոդելը փաթեթավորված կոմիտեում](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_executor_data_model/src/permission.rs)
+- [Դասերի ինտեգրման փորձարկումներ փակված commit-ում ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/roles.rs)
+- [Թույլտվությունների ինտեգրման փորձարկումները փակված commit վրա ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/permissions.rs)
+- [Մուտքագրված թույլտվությունների տվյալների մոդելը փաթեթավորված կոմիտեում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/permission.rs)
 - [թույլտվություններ եւ դերակատարություններ](/hy/blockchain/permissions.md)
 - [թույլտվության նշանների հղում](/hy/reference/permissions.md)
 - [Մետադատա](./metadata.md)

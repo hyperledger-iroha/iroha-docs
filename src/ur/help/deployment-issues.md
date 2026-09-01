@@ -1,40 +1,39 @@
 ---
 translation_locale: ur
 translation_source: /help/deployment-issues.md
-translation_source_hash: 6f35ac59053e312f56a716810c8f0b625752500d1fc64b27d93cbd8317b6cc19
+translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # تعیناتی کے مسائل کا حل {#troubleshooting-deployment-issues}
 
 اس سیکشن میں Iroha 3 تعیناتی کے لئے خرابیوں کا سراغ لگانے کے نکات پیش کیے گئے ہیں۔ اگر آپ کو جو مسئلہ درپیش ہے وہ یہاں بیان نہیں کیا گیا ہے تو ، ہم سے رابطہ کریں [ٹیلیگرام](https://t.me/hyperledgeriroha).
 
-## تخلیق شدہ آثار قدیمہ کے ساتھ شروع کریں {#start-with-generated-artifacts}
+## تخلیق شدہ آرٹی فیکٹس کے ساتھ شروع کریں {#start-with-generated-artifacts}
 
-مقامی اور ٹیسٹ کی تعیناتی کے لئے، ہاتھ سے تحریری ہم مرتبہ فائلوں کے بجائے Kagami کی طرف سے پیدا کردہ آثار کو ترجیح دیں:
+مقامی اور ٹیسٹ کی تعیناتی کے لئے، ہاتھ سے تحریری نیٹ ورک نوڈ فائلوں کے بجائے Kagami کی طرف سے پیدا کردہ آثار کو ترجیح دیں:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-جنریٹڈ ڈائرکٹری میں ہم مرتبہ تشکیلات، ابتداء مواد، شروع اسکرپٹس، اور README کی تعمیر لائن کے لئے ایک Iroha 3 شامل ہے.
+جنریٹڈ ڈائرکٹری میں نیٹ ورک نوڈ تشکیلات، ابتداء مواد، شروع اسکرپٹس، اور README کی تعمیر لائن کے لئے ایک Iroha 3 شامل ہے.
 
-## ہم مرتبہ شروع نہیں ہوتا {#peer-does-not-start}
+## نیٹ ورک نوڈ شروع نہیں ہوتا {#peer-does-not-start}
 
 سب سے پہلے ان اشیاء کو چیک کریں:
 
-- `irohad --config <path>` پیئر کی اپنی فائل میں پوائنٹس TOML.
+- `iroha3d --config <path>` پیئر کی اپنی فائل میں پوائنٹس TOML.
 - پیئر ترتیب میں `public_key` اور `private_key` ایک ہی کلید کے جوڑے سے تعلق رکھتے ہیں۔
 - `genesis.public_key` جینیس ٹرانزیکشن پر دستخط کرنے کے لئے استعمال کی گئی کلید سے ملتا ہے.
-- توثیق کنندہ ہم مرتبہ کی شناختیں BLS-معمولی چابیاں استعمال کرتی ہیں، اور `trusted_peers_pop` میں مقامی چابی اور قابل اعتماد ہم مرتبہ کے لئے ثبوت کے اندراجات شامل ہیں۔
+- توثیق کنندہ نیٹ ورک نوڈ کی شناختیں BLS-معمولی چابیاں استعمال کرتی ہیں، اور `trusted_peers_pop` میں مقامی چابی اور قابل اعتماد نیٹ ورک نوڈ کے لئے ثبوت کے اندراجات شامل ہیں۔
 - Torii اور P2P کے لیے بندرگاہیں پہلے سے ہی کسی دوسرے عمل کی پابند نہیں ہیں۔
 - Kura اسٹور کی ڈائرکٹری ایک ہی سلسلہ سے تعلق رکھتی ہے اور اسے کسی مختلف نیٹ ورک پروفائل سے نقل نہیں کیا گیا ہے۔
 
 جب ڈییمون ایک سے زیادہ TOML پرت کو پڑھتا ہے تو ترتیب کی نشاندہی کا استعمال کریں:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --trace-config
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 ```
 
 ## Docker اور کمپوز {#docker-and-compose}
@@ -42,15 +41,15 @@ cargo run --bin irohad -- --config ./config.toml --trace-config
 تخلیق کریں موجودہ Kagami لوکل نیٹ آؤٹ پٹ سے تحریر کریں تاکہ کمانڈ لائن کی دلیلیں اور ترتیب فائلیں چیک آؤٹ کوڈ سے ملیں:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
 ```
 
 اگر کمپوز کی تعیناتی شروع ہوتی ہے اور پھر اسٹال ہوجاتی ہے تو ، ڈیمون لاگس کو چیک کریں تاکہ:
 
 - غیر متفقہ `chain`
-- ایک جینیس ٹرانزیکشن یا مانیفیس کا استعمال کرتے ہوئے ایک ہم مرتبہ
+- ایک جینیس ٹرانزیکشن یا مانیفیس کا استعمال کرتے ہوئے ایک نیٹ ورک نوڈ
 - P2P ایڈریسز جو صرف کنٹینر نیٹ ورک کے اندر کام کرتی ہیں۔
 - regenerating genesis کے بعد مقامی حجم کا دوبارہ استعمال
 
@@ -58,10 +57,10 @@ docker compose -f ./localnet/docker-compose.yml up
 
 ## کوبرنیٹس {#kubernetes}
 
-Kubernetes کے لئے، ہر تصدیق کنندہ کو ریاستی انفراسٹرکچر کے طور پر علاج کریں:
+Kubernetes کے لیے، ہر توثیق کنندہ کو حالت برقرار رکھنے والے انفراسٹرکچر کے طور پر سمجھیں:
 
-- ہر ہم مرتبہ کو ایک مستحکم شناخت کلید اور مستحکم مستقل حجم دیں۔
-- P2P پتوں کو اجاگر کریں جو دوسرے ہم مرتبہ گروپ کے اندر سے حل کرسکتے ہیں۔
+- ہر نیٹ ورک نوڈ کو ایک مستحکم شناخت کلید اور مستحکم مستقل حجم دیں۔
+- P2P پتوں کو اجاگر کریں جو دوسرے نیٹ ورک نوڈ گروپ کے اندر سے حل کرسکتے ہیں۔
 - ایک رول آؤٹ کے لئے ناقابل تبدیل کنفیگریشن کے طور پر ترتیب اور جینیس فائلوں کو نصب کریں
 - تمام جینیس یا ٹاپولوجی تبدیلیوں کو جان بوجھ کر لاگو کریں، نہ کہ خود کار طریقے سے ترتیب کے نقشے کی تازہ کاری کے طور پر
 
@@ -69,10 +68,20 @@ Kubernetes کے لئے، ہر تصدیق کنندہ کو ریاستی انفرا
 
 ## سورہ پروفائل {#sora-profile}
 
-Iroha 3 تنصیبات جو Nexus، SoraFS، یا کثیر لین کے بہاؤ کا استعمال کرتے ہیں اس ڈییمون کو سورا پروفائل چالو کرنے کے ساتھ شروع کرنا چاہئے:
+نجی یا مقامی Iroha 3 تعیناتی جو Nexus، SoraFS، یا کثیر لین کے بہاؤ کا استعمال کرتے ہیں، کو سورا پروفائل فعال ہونے کے ساتھ معیاری ڈییمون شروع کرنا چاہئے:
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --sora
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora
 ```
 
 ایک ہی نیٹ ورک میں تصدیق کاروں کے درمیان مسلسل ایک ہی پروفائل کا استعمال کریں۔
+
+عوامی Taira تصدیق کنندہ وقف لانچر کا استعمال کرتے ہیں ، جو Taira کی عین مطابق سلسلہ ، لسٹری ، غیر فعال ایمبیڈڈ-SoraFS اسٹوریج ، اور رن ٹائم دستخط کرنے والے پروفائل کو نافذ کرتا ہے۔ اسے شروع کرنے سے پہلے پیش کردہ Taira ترتیب کی توثیق کریں:
+
+```bash
+iroha3d_taira --sora \
+  --config /etc/iroha/taira/config.toml \
+  --check-config
+```
+
+عوامی Taira تصدیق کنندہ کو عام `iroha3d` کے ساتھ شروع نہ کریں؛ نافذ کردہ پروفائل کے لئے [`iroha3d` CLI ریفرنس ](/ur/reference/iroha3d-cli.md) دیکھیں.

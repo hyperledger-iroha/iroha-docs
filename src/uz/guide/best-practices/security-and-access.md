@@ -3,51 +3,51 @@ translation_locale: uz
 translation_source: /guide/best-practices/security-and-access.md
 translation_source_hash: f0163734d618d91337b437da703743014d01c57c4cb603fbc2e66316f3654779
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Xavfsizlik va kirish {#security-and-access}
 
-Iroha dagi xavfsizlik amaliyotlari cheklangan vakolatga, nazorat qilinadigan kalitlar saqlanishiga, ochiq tarmoqlarga taalluqli bo'lishiga va audit qilinishi mumkin bo'lgan o'zgarishlarga asoslanishi kerak.
+Iroha dagi xavfsizlik amaliyoti tor vakolat prinsipi, nazorat qilinadigan kalit saqlash, ochiq tarmoq taʼsirini va audit qilinadigan o‘zgarishlarga asoslangan bo‘lishi kerak.
 
-## Muvaffaqiyatli nazorat {#key-custody}
+## Kalitni saqlash {#key-custody}
 
-- Ishlab chiqarish darajasidagi entropiyaga ega bo'lgan ishlab chiqarish kalitlarini hosil qilish va shaxsiy kalitlarni omborlar tashqarisida saqlash, izlovchi, iltimosnomalar, suhbat loglari va CI mahsulotlarini chiqarish.
-- Mijozlar, tengdoshlar, genesis imzolash, tasdiqlovchilar, to'lov sponsorlari va texnik hisobotlar uchun alohida kalit materiallardan foydalaning.
-- Tugmalarni yozma jarayonga ko'ra aylantiring va jonli hodisalardan oldin tiklanish mashg'ulotlarini o'tkazing.
-- Agar ishga tushirish xavfi asoslangan bo'lsa, yuqori qiymatli imzolash kalitlari uchun asbob-uskunalar bilan ta'minlangan yoki operatsion tizim tomonidan ta'minlanadigan saqlashdan foydalaning.
+- Ishlab chiqarish kalitlarini ishlab chiqarish darajasidagi entropiya bilan yarating va shaxsiy kalitlarni repozitoriyalar, muammo kuzatuvchi tizimlar, so'rovlar, chat yozuvlari va CI chiqishidan tashqarida saqlang.
+- Mijozlar, tarmoq tengdoshlar, blokcheyn asosiy imzo, validatorlar, to‘lov homiylari va texnik hisoblar uchun alohida kalit materialidan foydalaning.
+- Kalitlarni yozma jarayon bo‘yicha aylantiring va jonli hodisadan oldin tiklashni mashq qiling.
+- Joylashtirish xavfi buni talab qilganda, yuqori qiymatga ega imzolash kalitlari uchun apparat yoki operatsion tizim tomonidan qo‘llab-quvvatlanadigan saqlashdan foydalaning.
 
-[Generating Cryptographic Keys](/uz/guide/security/generating-cryptographic-keys.md) va [Storing Cryptographic keys](/uz/guide/security/storing-cryptographic-keys.md)-ni ko'ring.
+[Kriptografik kalitlarni yaratish](/uz/guide/security/generating-cryptographic-keys.md) va [Kriptografik kalitlarni saqlash](/uz/guide/security/storing-cryptographic-keys.md) bo‘limlariga qarang.
 
 ## Ruxsatlar {#permissions}
 
-- Ish oqimini qo'llab-quvvatlaydigan eng kichik ruxsat belgisini yoki rolni bering.
-- Xizmatlar, triggerlar, agentlar va avtomatlashtirish uchun maxsus texnik hisoblarni afzal ko'rish. Shaxsiy operator hisobidan uzoq muddatli avtomatlashtirishdan qoching.
-- Ishlab chiqarish ishga tushirilishidan oldin tengdoshlarni boshqarish, metadata mutatsiyasi, qalinlashtirish, yoqish, qo'zg'atuvchi ro'yxatdan o'tkazish, ijrochi o'zgarishlari va SORA/Nexus boshqaruv uchun ruxsatnomalarni ko'rib chiqish.
-- Ta'mirlash oynasidan keyin yoki ularni talab qilgan ko'chirishdan so'ng vaqtincha ruxsatlarni bekor qiling.
+- Ish oqimini qo‘llab-quvvatlaydigan eng kichik ruxsat tokeni yoki rolni bering.
+- Xizmatlar, triggerlar, agentlar va avtomatlashtirish uchun bag‘ishlangan texnik hisoblarni afzal ko‘ring. Shaxsiy operator hisobingiz orqali uzoq muddat ishlaydigan avtomatlashtirishni bajarishdan saqlaning.
+- Ishlab chiqarishga ishga tushirishdan oldin tarmoq tengdoshini boshqarish, metama'lumotlarni o'zgartirish, chiqarish, yo'q qilish, trigger ro'yxatdan o'tkazish, bajaruvchi o'zgarishlari va SORA/Nexus boshqaruv huquqlarini ko'rib chiqing.
+- Ularni talab qilgan texnik xizmat oynasi yoki ko‘chirishdan so‘ng vaqtinchalik ruxsatlarni bekor qiling.
 
-Qarang [Izohlar](/uz/blockchain/permissions.md) va [Izoh tokenlari](/uz/reference/permissions.md).
+Buni [Ruxsatlar](/uz/blockchain/permissions.md) va [Ruxsat tokenlari](/uz/reference/permissions.md) ko‘ring.
 
-## Tarmoqdagi ta'sir {#network-exposure}
+## Tarmoqni namoyon qilish {#network-exposure}
 
-- Torii, telemetriya va operator yo'nalishlarini atrof-muhitga qarab cheklash. Umumiy o'qishga kirish umuman yozish yoki operatorga kirishni anglatmaydi.
-- VPNs, yong'in devorlari, qaytarib yuboriladigan vositalar, TLS to'xtatish va joylashtirish uchun zarur bo'lganda stavka cheklovlaridan foydalanish.
-- Asosiy mualliflik ma'lumotlarini, proxy tokenlari va etkazib berilgan sarlavhalarni o'rnatilmagan konfiguratsiyalardan saqlash.
-- Ruxsatsiz mijozlar cheklangan yo'nalishlarga yetib borolmasligini tekshirish.
+- Atrof-muhitga muvofiq peer-to-peer, Torii, telemetriya va operator yo‘llarini cheklang. Jamoat o‘qish huquqi jamoat yozish yoki operator huquqini anglatmaydi.
+- VPNs, firewall-lar, teskari proksi-lar, TLS yakunlanishi va tezlik cheklovlarini joylashtirish uchun mos bo'lgan joylarda ishlating.
+- Oddiy autentifikatsiya ma’lumotlari, proksi tokenlari va uzatilgan sarlavhalarni repozitoriydagi konfiguratsiyaga kiritmang.
+- Ruxsatsiz mijozlar cheklangan yo'nalishlarga kira olmasligini sinash.
 
-Qarang [Virtual xususiy tarmoqlar](/uz/guide/security/vpn.md) va [ Torii Oxirgi nuqtalari ](/uz/reference/torii-endpoints.md).
+Buni [Virtual Shaxsiy Tarmoqlar](/uz/guide/security/vpn.md) va [Torii API oxir nuqtalar](/uz/reference/torii-endpoints.md) ko‘ring.
 
-## Kamchiliklar va suiiste'mollarni nazorat qilish {#fraud-and-abuse-monitoring}
+## Firibgarlik va suiiste’molni nazorat qilish {#fraud-and-abuse-monitoring}
 
-- O'ylanmagan aktivlar harakatlanishi, ruxsat berish, o'zgarishlarni qo'zg'atish, tengdoshlarning o'zgarishi va takror-takror rad etilgan operatsiyalarni kuzatish uchun katta kitob hodisalari va operatsion signallarni kuzatib boring.
-- Transaksiya hashlari, blok balandliklari, hodisalar yozuvi, log va holat fotosuratlari bilan dalillarni saqlash.
-- Ta'sirlangan aktivlar yoki ish oqimlari uchun javobgar bo'lgan xavfsizlik, operatsiya va biznes egalariga yo'nalishdagi ogohlantirishlar.
+- Kutilmagan aktiv harakatlari, ruxsat berishlar, trigger o'zgarishlari, tarmoq hamkorlari o'zgarishlari va takroriy rad etilgan tranzaksiyalar uchun blockchain jurnal hodisalarini va operatsion signallarni kuzatib boring.
+- Dalillarni tranzaksiya kriptografik xeshlarida, blok balandliklarida, voqea yozuvlarida, jurnallarda va holat snapshotslarida saqlang.
+- Yo'nalish ogohlantirishlarini ta'sirlangan aktivlar yoki ish jarayonlari uchun javobgar bo'lgan xavfsizlik, operatsiyalar va biznes egalarga yuboradi.
 
-[Xaroba monitoringini ](/uz/guide/security/fraud-monitoring.md) ko'rish.
+Buni [Firibgarlikni kuzatish](/uz/guide/security/fraud-monitoring.md) ko‘ring.
 
-## Agent va avtomatlashtirish qo'riqchi rails {#agent-and-automation-guardrails}
+## Agent va Avtomatlashtirish Qo'llanmalari {#agent-and-automation-guardrails}
 
-- Faqat o'qish uchun ruxsatnomalar bilan avtomatlashtirishni boshlash va faqat ish oqimini ko'rib chiqilgandan so'ng yozish huquqini qo'shing.
-- To'g'ridan-to'g'ri tarmoq mutatsiyalari uchun aniq insonning roziligini talab qilish, agar avtomatlashtirish niyat bilan ishga tushirilgan ishlab chiqarish xizmati bo'lmasa.
-- Xususiy kalitlarni agent iltimoslariga oshkor qilmang. Mahalliy koddan foydalanib, atrof muhit o'zgaruvchilari, kalitlar zanjirlari, uskuna imzolari yoki e'tiborsiz qoldirilgan konfiguratsiya fayllaridan sirlarni yuklab oling.
-- Yozuvlarni avtomatlashtirish qarorlari sirli materialni chiqarib tashlamasdan auditlarni qo'llab-quvvatlaydigan tarzda.
+- Avtomatlashtirishni faqat o‘qish huquqi bilan boshlang va yozish ruxsati prinsipi faqat ish jarayoni ko‘rib chiqilgandan keyin qo‘shilsin.
+- Jonli tarmoq o'zgarishlari uchun aniq inson tasdig'ini talab qiling, agar avtomatlashtirish mo'ljallangan ishlab chiqarish xizmati sifatida joylashtirilmagan bo'lsa.
+- Shaxsiy kalitlarni agent soʻrovlariga oshkor qilmang. Sirlarni muhit oʻzgaruvchilaridan, kalit jadvallari, apparat kriptografik imzo qurilmalari yoki e'tiborsiz konfiguratsiya fayllaridan yuklaydigan lokal koddan foydalaning.
+- Maxfiy materialni oshkor qilmasdan auditlarni qo‘llab-quvvatlaydigan tarzda avtomatlashtirilgan qarorlarni qayd eting.

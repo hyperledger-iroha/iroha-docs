@@ -17,6 +17,7 @@ Here is the full list of Iroha Special Instructions:
 | [Grant/Revoke](#grant-revoke)                             | Give or remove permissions and roles.            |
 | [Transfer](#transfer)                                     | Transfer ownership or asset value.               |
 | [Native escrow and asset locks](#native-escrow-and-asset-locks) | Lock numeric assets in protocol custody.     |
+| [Atomic private settlement](#atomic-private-settlement)   | Govern confidential pools and atomic bundles.    |
 | [ExecuteTrigger](#executetrigger)                         | Execute triggers.                                |
 | [Log/Custom/Upgrade](#other-instructions)                 | Log, extend, or upgrade runtime behavior.        |
 
@@ -46,6 +47,7 @@ all you need is the object that you want to register.
 | [Grant/Revoke](#grant-revoke)                             | [roles, permission tokens](/blockchain/permissions.md)                                                  | accounts or roles    |
 | [Transfer](#transfer)                                     | domains, asset definitions, numeric assets, NFTs                                                        | accounts             |
 | [Native escrow and asset locks](#native-escrow-and-asset-locks) | numeric asset escrows, asset locks, anonymous escrow commitments                                    | buyers, destinations, or dispute splits |
+| [Atomic private settlement](#atomic-private-settlement)   | route-scoped confidential pools, policy rotations, finalized bundles, and abort markers                 |                      |
 | [ExecuteTrigger](#executetrigger)                         | triggers                                                                                                |                      |
 | [Log/Custom/Upgrade](#other-instructions)                 | logs, executor-specific payloads, executor upgrades                                                     |                      |
 
@@ -282,7 +284,10 @@ Register and unregister peers. Generate the BLS key and PoP with `kagami`
 if you do not already have them:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./peer-key
+PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
+PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
@@ -397,6 +402,30 @@ These ISIs do not currently have first-class CLI commands. Use typed SDK
 builders or serialized instruction payloads, and see
 [Native Asset Escrow](/blockchain/escrow.md) for lifecycle details,
 permissions, queries, events, and Rust examples.
+
+## Atomic Private Settlement
+
+The governed atomic-private-settlement instruction family is separate from
+transparent Native AMX. `ActivatePrivateSettlementPoolV1` establishes one
+route-scoped confidential pool from a redacted governance projection and
+canonical origin commitments. `FinalizeAtomicPrivateSettlementV1` applies one
+complete committee-certified bundle atomically, while
+`AbortAtomicPrivateSettlementV1` publishes only the sponsor-authorized public
+terminal marker.
+
+`RotatePrivateSettlementPoolPolicyV1` is restricted to privacy governance. It
+requires the exact current governance digest, preserves the route, pool,
+asset-binding commitment, state frontier, replay sets, and finalized receipts,
+advances the public revision by one, and uses a newer auditor key epoch. The
+rotation activates at its inclusion height and cannot share that height with a
+receipt for the same route/pool. Public revision lineage keeps receipts
+finalized before rotation restart-valid and exact-replay idempotent; in-flight
+old-policy bundles fail closed. Operators must retain old decryption keys for
+stored capsules or govern and test capsule rewrapping before destroying them.
+
+The path remains disabled by default and is not production-qualified. See
+[Run Atomic Private Cross-Dataspace Settlement](/get-started/atomic-private-settlement)
+for configuration, authority, audit, recovery, and release requirements.
 
 ## Grant/Revoke
 

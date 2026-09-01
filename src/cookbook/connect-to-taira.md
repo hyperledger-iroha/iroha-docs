@@ -163,8 +163,8 @@ private key or the complete client config with it.
 
 ## Source and related docs
 
-- [Taira CLI diagnostics and canary source at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/taira.rs)
-- [Explicit fee selection and CLI submission source at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_cli/src/main_shared.rs)
+- [Taira CLI diagnostics and canary source at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/taira.rs)
+- [Explicit fee selection and CLI submission source at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
 - [Taira account and faucet guide](/get-started/sora-nexus-dataspaces.md)
 - [Client configuration](/guide/configure/client-configuration.md)
 - [Transactions](/blockchain/transactions.md)

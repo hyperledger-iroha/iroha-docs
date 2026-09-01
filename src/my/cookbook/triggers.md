@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /cookbook/triggers.md
-translation_source_hash: 93080591f5171c7ce25173eb1ef826d6f5ca661a17797be53e90aedab33ed0c3
+translation_source_hash: 5267fb9bb232d52d9df4bedee414d745ccc30dd52cbc30993df3c5b975a0bc38
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,13 +10,13 @@ translation_engine: nllb-200-ct2
 
 ## ရလဒ် {#outcome}
 
-Finite by-call trigger ကို Taira မှာ မှတ်ပုံတင်ပြီး ဒါကို တစ်ကြိမ်လုပ်ဆောင်ပြီး Applied finality ကိုစောင့်ပြီး commited block history ကနေ အောင်မြင်စွာ ပြီးစီးတာကို အတည်ပြုပါ။
+Finite by-technical invocation trigger ကို Taira မှာ မှတ်ပုံတင်ပြီး ဒါကို တစ်ကြိမ်လုပ်ဆောင်ပြီး Applied finality ကိုစောင့်ပြီး နောက်ဆုံးသတ်မှတ်ထားတဲ့ block history ကနေ အောင်မြင်စွာ ပြီးစီးတာကို အတည်ပြုပါ။
 
 ## လိုအပ်ချက်များ {#prerequisites}
 
-- ငွေကြေးထောက်ပံ့တဲ့ လက်မှတ်ထိုးသူ၊ `taira.client.toml`, `taira.tx-metadata.json`, နှင့် `TAIRA_ACCOUNT_ID` မှ [ချိတ်ဆက် Taira](./connect-to-taira.md).
+- `taira.client.toml`, `taira.tx-metadata.json` နှင့် `TAIRA_ACCOUNT_ID` မှ ရင်းနှီးမြှုပ်နှံထားသော cryptographic signer များ၊ [Taira သို့ ချိတ်ဆက်ပါ။](./connect-to-taira.md)
 - Taira trigger ကို မှတ်ပုံတင်ဖို့ ခွင့်ပြုချက် `TAIRA_ACCOUNT_ID` ရလာတဲ ့ trigger ကို execute လုပ္ပါ။ `CanRegisterTrigger` ကန့်သတ်ချက် `authority` နှင့် `CanExecuteTrigger` ကန့်သတ်ချက် `trigger`.
-- ဒီထောက်ပံ့မှုတွေဟာ မရနိုင်ဘူးဆိုရင် ဖန်တီးထားတဲ့ ဒေသတွင်းကွန်ရက်နဲ့ ၎င်းရဲ့ အုပ်ချုပ်ရေးမှူး ဝယ်သူကို အသုံးပြုပါ။ trigger အာဏာပိုင်ဟာ trigger က လုပ်ဆောင်မယ့် ညွှန်ကြားချက်တွေက လိုအပ်တဲ့ ခွင့်ပြုချက်အားလုံးကိုလည်း လိုအပ်ပါတယ်။
+- ဒီထောက်ပံ့မှုတွေဟာ မရနိုင်ဘူးဆိုရင် ဖန်တီးထားတဲ့ ဒေသတွင်းကွန်ရက်နဲ့ ၎င်းရဲ့ အုပ်ချုပ်ရေးမှူး ဝယ်သူကို သုံးပါ။ trigger ခွင့်ပြုချက် မူဝါဒကလည်း trigger ကလုပ်ဆောင်မယ့် ညွှန်ကြားချက်တွေက တောင်းဆိုတဲ့ ခွင့်ပြုချက်တွေအားလုံးကို လိုအပ်ပါတယ်။
 
 ```bash
 CONFIG=./taira.client.toml
@@ -29,7 +29,7 @@ test -n "$TAIRA_ACCOUNT_ID"
 
 ### (၁) ညွှန်ကြားချက်ထောက်ပံ့တဲ့ trigger ကို မှတ်ပုံတင်ပါ။ {#_1-register-an-instruction-backed-trigger}
 
-`--instructions-stdin` သည် JSON ညွှန်ကြားချက်အတန်းကိုလက်ခံသည်။ `Log` ညွှန်ပြချက်သည်ဤဥပမာကို ဒုတိယ ledger အရာဝတ္ထု၏ခွင့်ပြုချက်များအစား trigger ခွင့်ပြုချက်အပေါ်အာရုံစိုက်စေသည်။
+`--instructions-stdin` သည် JSON ညွှန်ကြားချက်အတန်းကိုလက်ခံသည်။ `Log` ညွှန်ပြချက်သည်ဤဥပမာကို ဒုတိယ blockchain ledger အရာဝတ္ထု၏ခွင့်ပြုချက်များအစား trigger ခွင့်ပြုချက်အပေါ်အာရုံစိုက်စေသည်။
 
 ```bash
 printf '%s\n' \
@@ -45,7 +45,7 @@ printf '%s\n' \
     --filter execute
 ```
 
-trigger က အမြင့်ဆုံး ၃ ကြိမ် ပြေးနိုင်ပြီး ၎င်းရဲ့ ထုတ်ပြန်ထားတဲ့ အာဏာက လုပ်ဆောင်မှုအတွင်းမှာရှိတဲ့ ညွှန်ကြားချက်တွေကို အမိန့်ပေးတယ်၊ ဒါကို အကောင်အထည်ဖော်တဲ့ ဖုန်းခေါ်သူမဟုတ်ဘူး။
+trigger ကို အမြင့်ဆုံး သုံးကြိမ်လောက် run လုပ်လို့ရပါတယ်။ ၎င်းရဲ့ ကြေညာထားတဲ့ authorization principal က လုပ်ဆောင်ချက်အတွင်းက ညွှန်ကြားချက်တွေကို အတည်ပြုတယ်၊ ဒါကိုလုပ်ဆောင်တဲ့ requesting client မဟုတ်ဘူး။
 
 ### (၂) အမိန့်မချမှတ်မီ ကြေညာချက်ကို စစ်ဆေးပါ။ {#_2-inspect-the-declaration-before-execution}
 
@@ -54,11 +54,11 @@ iroha --config "$CONFIG" ledger trigger get --id "$TRIGGER_ID"
 iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 ```
 
-I105 ခွင့်ပြုချက်၊ အကောင်အထည်ဖော်မှု စစ်ဆေးရေးကိရိယာ၊ ကျန်တဲ့ ထပ်ကျော့ခြင်းများနှင့် တစ်ကြိမ်တည်း `Log` ညွှန်ကြားချက်များကို အခြားခမပေးမီ အတည်ပြုပါ။
+I105 ခွင့်ပြုချက် အရင်းအမြစ်၊ အကောင်အထည်ဖော်မှု စစ်ဆေးရေးကိရိယာ၊ ကျန်တဲ့ ထပ်ကျော့ခြင်းများနှင့် တစ်ကြိမ်တည်းသော `Log` ညွှန်ကြားချက်ကို အခြားစရိတ်မပေးခင်မှာ အတည်ပြုပါ။
 
 ### (၃) အလွှာနှစ်ခုစလုံးကို လုပ်ပြီး စောင့်ပါ။ {#_3-execute-and-wait-for-both-layers}
 
-`--wait` သည် Applied transaction finality ကို စောင့်ဆိုင်းနေသည်၊ `--trace` သည် runtime completion diagnostics များကိုလည်း ဖော်ပြသည်။
+`--wait` သည် Applied transaction finality ကို စောင့်ဆိုင်းနေသည်; `--trace` သည် software execution environment ၏ ပြီးစီးမှု ရောဂါစစ်ဆေးမှုကိုလည်း ဖော်ပြသည်။
 
 ```bash
 iroha --config "$CONFIG" \
@@ -93,7 +93,7 @@ client.submit_blocking(ExecuteTrigger::new(trigger_id), fee)?;
 
 ## စစ်ဆေးပါ {#verify}
 
-ပြီးဆုံးဖို့ committed block history ကို scan လုပ်ပြီး decremented repetition count ကို စစ်ဆေးပါ။
+ပြီးစီးမှုအတွက် နောက်ဆုံးသတ်မှတ်ထားတဲ့ ဘလော့ဂ်သမိုင်းကို စကင်လုပ်ပြီး လျှော့ချထားတဲ့ အထပ်ထပ်တွက်ချက်မှုကို စစ်ဆေးပါ။
 
 ```bash
 iroha --config "$CONFIG" ledger trigger completed list \
@@ -108,17 +108,17 @@ iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 
 ## ပြဿနာဖြေရှင်းခြင်း {#troubleshooting}
 
-- မှတ်ပုံတင်ခွင့်မရှိလို့ ပယ်ချခြင်းဆိုသည်မှာ လက်မှတ်ရေးထိုးသူအတွက် `CanRegisterTrigger` ကင်းမဲ့ခြင်းဖြစ်သည်။ အကောင်အထည်ဖော်ရန်အတွက် သီးခြားကန့်သတ်ချက်ရှိ `CanExecuteTrigger` token ကိုလိုအပ်သည်။
-- ငွေပေးချေမှုတစ်ခုသည် Applied သို့ရောက်ရှိနိုင်ပြီး trigger လုပ်ဆောင်ချက်သည် ကျရှုံးမှု အစီရင်ခံစာများကို ဖတ်ရှုပါ။ ပြီးစီးခြင်းရလဒ်နှင့်အမှားကိုဖတ်ပါ၊ ထို့နောက်ထည့်သွင်းထားသော ညွှန်ကြားချက်တိုင်းအတွက် trigger အာဏာပိုင်၏ ခွင့်ပြုချက်များကိုစစ်ဆေးပါ.
+- မှတ်ပုံတင်ခြင်းသည် ခွင့်ပြုချက်မရှိသည့်အတွက် ပယ်ချခံရခြင်းဆိုသည်မှာ စာဝှက်လက်မှတ်ရေးထိုးသူတွင် ကြေညာထားသော ခွင့်ပြုမှု မူလစာရင်းအတွက် `CanRegisterTrigger` မရှိခြင်းဖြစ်သည်။ အကောင်အထည်ဖော်ရန်အတွက် သီးခြား scoped `CanExecuteTrigger` token ကိုလိုအပ်သည်။
+- ငွေပေးချေမှုတစ်ခုသည် Applied ကိုရောက်ရှိနိုင်ပြီး trigger လုပ်ဆောင်ချက် ပျက်ကွက်မှု အစီရင်ခံစာများကို ဖတ်ရှုပါ။ ပြီးစီးခြင်းရလဒ်နှင့်အမှားကိုဖတ်ပါ၊ ထို့နောက်ထည့်သွင်းထားသော ညွှန်ကြားချက်တိုင်းအတွက် trigger ခွင့်ပြုချက် မူဝါဒ၏ခွင့်ပြုချက်များကိုစစ်ဆေးပါ။
 - `trigger not found` ဆိုသည်မှာ မှတ်ပုံတင် ငွေပေးချေမှုကို ပယ်ချခဲ့ခြင်း သို့မဟုတ် အခြား Torii/chain configuration ကို အကောင်အထည်ဖော်ရန် အသုံးပြုခဲ့ခြင်း ဖြစ်ပါသည်။
-- ထပ်ကျော့မှု သုညကို ရောက်တဲ့အခါ ထပ်ကျော့မှုတွေ ပိုလုပ်ခြင်းဟာ နောက်ထပ် အခွင့်ထူးခံ စာသားတစ်ပုဒ်ပါ။ ဒီအချက်ပြနည်းကို မရေမတွက်နိုင်တဲ့ trigger အဖြစ် တိတ်ဆိတ်စွာ မပြောင်းပါနဲ့။
+- ထပ်ကျော့မှု သုညကို ရောက်တဲ့အခါ ထပ်ကျော့မှုတွေ ပိုထုတ်ပေးခြင်းဟာ နောက်ထပ် အခွင့်ထူးခံ စာတစ်စောင်ပါ။ ဒီအချက်ပြနည်းကို မရေရာတဲ့ trigger အဖြစ် တိတ်ဆိတ်စွာမပြောင်းပါနဲ့။
 - သန့်ရှင်းရေးအတွက် `ledger trigger unregister --id "$TRIGGER_ID"` က ဒီ trigger နဲ့ explicit fee ရွေးချယ်မှု အတွက် `CanUnregisterTrigger` ကို တောင်းဆိုပါတယ်။
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [ချိတ်ဆက်ထားသော commit ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/triggers/by_call_trigger.rs) တွင် By-call trigger ပေါင်းစပ်မှု စမ်းသပ်မှုများ
-- [ပိတ်ထားသော commit တွင်ဖြစ်စဉ်နှင့် trigger ပေါင်းစပ်မှု စမ်းသပ်ချက်များ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/events_and_triggers.rs)
-- [Trigger instruction execution at the pinned commit ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
-- [အစပျိုးစက်များ ](/my/blockchain/triggers.md)
-- [အစပျိုးစက် နမူနာများ](/my/blockchain/trigger-examples.md)
+- [Pinned source-code revision တွင် By-technical invocation trigger integration စမ်းသပ်မှုများ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/triggers/by_call_trigger.rs)
+- [Pinned source-code revision တွင် ဖြစ်ရပ်နှင့် trigger ပေါင်းစပ်မှု စမ်းသပ်ချက်များ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events_and_triggers.rs)
+- [Trigger ညွှန်ကြားချက်များကို ပိတ်ထားသော source-code revision တွင်လုပ်ဆောင်ခြင်း](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
+- [နှိုးစက်များ](/my/blockchain/triggers.md)
+- [trigger နမူနာများ](/my/blockchain/trigger-examples.md)
 - [ဖြစ်ရပ်များ](./stream-events.md)

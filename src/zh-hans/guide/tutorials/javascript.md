@@ -22,7 +22,7 @@ npm run build:native
 npm run build:dist
 ```
 
-本土构建包裹`cargo build -p iroha_js_host`并记录在 SDK 启动中使用的平台特定检查数量.源构建地址验证了主机在 `native/`.设置 `IROHA_JS_NATIVE_DIR`只有当故意供应单独构建的,检查数量验证的主机时.包装仅是 ESM;从 CommonJS,使用动态 `import()`.
+原生构建封装 `cargo build -p iroha_js_host`，并记录 SDK 启动时使用的特定平台校验和。源码构建会将经过验证的宿主放入 `native/`。仅在有意提供单独构建且已验证校验和的宿主时设置 `IROHA_JS_NATIVE_DIR`。该包仅支持 ESM；从 CommonJS 使用时请调用动态 `import()`。
 
 ## 快速开始 {#quickstart}
 
@@ -73,7 +73,7 @@ for (const asset of assets.items) {
 node taira-readonly.mjs
 ```
 
-仅在这些只阅读检查工作后才能移动到签署的 SDK 电话.公众 Taira 可以暂时返回和排队或网关错误,因此保持现场网络测试选择进入 CI.
+仅在这些只阅读检查工作后才能移动到签署的 SDK 调用.公众 Taira 可以暂时返回和排队或网关错误,因此保持现场网络测试选择进入 CI.
 
 有效的子路进口:
 
@@ -87,7 +87,7 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 ## 产业保险 {#native-escrow}
 
-JavaScript 和 TypeScript 应用程序可以通过本地托管使用 Kotodama 合同. 编译托管主机电话与 `@iroha/iroha-js/kotodama-compiler`; 目前,本地保证金交易构建者未被 JavaScript SDK. 查看 [产业资产保证](/zh-hans/blockchain/escrow.md#javascript-and-typescript-kotodama) 对于托管主机电话的例子.
+JavaScript 和 TypeScript 应用程序可以通过本地托管使用 Kotodama 合同. 编译托管主机调用与 `@iroha/iroha-js/kotodama-compiler`; 目前,本地托管交易构建者未被 JavaScript SDK. 查看 [产业资产保证](/zh-hans/blockchain/escrow.md#javascript-and-typescript-kotodama) 对于托管主机调用的例子.
 
 ## 目前覆盖范围 {#current-coverage}
 

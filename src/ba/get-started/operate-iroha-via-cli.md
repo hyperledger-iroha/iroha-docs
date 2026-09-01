@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: ab8f3bf6d2259dc1ea649273e695429a992108b936475b263fe9d1fae59e8766
+translation_source_hash: c070c86b715b36079a7b6a47de2e31144187d7ebc6309f294a346be61a372660
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Iroha 3 аша хәрәкәт итеү CLI {#operate-iroha-3-via-cli}
 
 `iroha` бинар - Iroha 3 өсөн команда һыҙығы клиенты. Уны иҫәп-хисап ҡаҙнаһының торошон һорарға, транзакциялар тапшырырға һәм операторҙың һуңғы нөктәләрен тикшереүгә ҡулланығыҙ.
@@ -16,7 +15,7 @@ translation_engine: nllb-200-ct2
 
 - [Пуск Iroha 3](./launch-iroha.md)
 
-[Launch Iroha 3](./launch-iroha.md) локаль селтәрҙән барлыҡҡа килгән клиент конфигурацияһын түбәндәге миҫалдар ҡабул итә:
+[Iroha 3-те эшләтеп ебәреү](./launch-iroha.md) локаль селтәрҙән барлыҡҡа килгән клиент конфигурацияһын түбәндәге миҫалдар ҡабул итә:
 
 ```bash
 ./localnet/client.toml
@@ -47,7 +46,7 @@ CLI түбәндәге юғары кимәлдәге команда төркөм
 
 ## 3. асыҡтан-асыҡ Taira тест селтәрен һынағыҙ {#_3-try-the-public-taira-testnet}
 
-Һеҙ уҡырға ғына тырыша ала Taira локаль тиҫтерҙе эшләткәнгә йәки ҡултамға яһағанға тиклем тикшерә. Был командалар асыҡ ҡулланыла Torii JSON маршруттар һәм ҡулланыу testnet түгел XOR.
+Һеҙ уҡырға ғына тырыша ала Taira локаль пирҙы эшләткәнгә йәки ҡултамға яһағанға тиклем тикшерә. Был командалар асыҡ ҡулланыла Torii JSON маршруттар һәм ҡулланыу testnet түгел XOR.
 
 Taira статусын тикшерегеҙ:
 
@@ -76,9 +75,9 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=10' \
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-Төҙөү `taira.client.toml` тик ҡул ҡуйылған бойороҡтарҙы һынарға әҙер булғанда ғына. [Ҡатнашыу SORA Nexus Мәғлүмәт базалары](/ba/get-started/sora-nexus-dataspaces.md) конфигурация, кран һәм канарий ағымы өсөн. Taira Аҡсаны банкоматҡа түләү иҫәбенә түләгәнгә тиклем.
+`taira.client.toml`-ды signed commands һынарға әҙер булғанда ғына булдырығыҙ. Config, faucet һәм canary flow өсөн [SORA Nexus Dataspaces-ҡа тоташыу](/ba/get-started/sora-nexus-dataspaces.md) бүлеген ҡарағыҙ. Account faucet fee asset менән fund ителмәйенсә Taira-ға write commands ебәрмәгеҙ.
 
-Һәр түләүле Taira CLI миҫал өсөн, кран ярҙамсыһын һаҡлағыҙ [Testnet XOR алыу Taira](/ba/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) буйынса `taira_faucet_claim.py`, һуңынан тәүҙә testnet XOR талап итегеҙ:
+Һәр түләүле Taira CLI миҫал өсөн, faucet ярҙамсыһын һаҡлағыҙ [Testnet XOR алыу Taira](/ba/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) буйынса `taira_faucet_claim.py`, һуңынан тәүҙә testnet XOR талап итегеҙ:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
@@ -92,7 +91,7 @@ iroha --config ./taira.client.toml ledger asset get \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-Әгәр кран табышы йәки талап маршруты `502` кире ҡайтарһа, көт һәм тағы ла тырышығыҙ. Был асыҡ тест селтәрҙәре менән тәьмин итеү мәсьәләһе, иҫәбенә асҡыстарҙы тергеҙеү өсөн сигнал түгел.
+Әгәр faucet табышы йәки талап маршруты `502` кире ҡайтарһа, көт һәм тағы ла тырышығыҙ. Был асыҡ тест селтәрҙәре менән тәьмин итеү мәсьәләһе, иҫәбенә асҡыстарҙы тергеҙеү өсөн сигнал түгел.
 
 Баланс күренеп бөткәндән һуң, түләү активтары метамәғлүмәтенә ҡушымта яҙыу:
 
@@ -124,7 +123,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml \
   app alias setup apply --plan-file ./docs-domain.plan.json
 ```
 
-Маҡсат пинг мәғлүмәт киңлеге ID, каноник хужаһы иҫәбенә, ҡуртым срогы һәм ағымдағы цитата һаҡлау. планер тере торошон раҫлай һәм тапшырыу өсөн теүәл атом `EnsureAlias` планын ҡайтара. башҡа селтәрҙән һаҡланыу ҡиммәттәрен ҡулдан күсермәгеҙ.
+Маҡсат пинг мәғлүмәт киңлеге ID, каноник хужаһы иҫәбенә, ҡуртым срогы һәм ағымдағы комиссия иҫәбе һаҡлау. планер тере торошон раҫлай һәм тапшырыу өсөн теүәл атом `EnsureAlias` планын ҡайтара. башҡа селтәрҙән һаҡланыу ҡиммәттәрен ҡулдан күсермәгеҙ.
 
 Ябай Пинг транзакцияһын ебәр:
 
@@ -141,28 +140,42 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 
 ## 5. Операторҙар командаһы {#_5-operator-commands}
 
-Консенсус торошо:
+Консенсус операторы бойороҡтары рөхсәт ителгән ваҡытта эшләү асҡысын талап итә. уны `client.toml` араһынан һаҡлап ҡалығыҙ һәм хужаға ғына бирелгән файлды асыҡтан-асыҡ тапшырығыҙ:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi status
+: "${OPERATOR_KEY_FILE:=./secrets/operator.key}"
+
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi status
 ```
 
-Ваҡыт-ваҡыт задержкаһы:
+Авторитетлы булмаған сират, үткәргес линияһы, һайлауҙар һәм юл диагностикаһы:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi phases
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi diagnostics
 ```
 
-Ҡулланыу мөмкинлеге, коллектор, RBC запас һәм VRF миҫалдары:
+Иң юғары һәм бикле кворум сертификаттары:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ops sumeragi telemetry
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi qc
 ```
 
 Сылбырҙағы консенсус параметрҙары:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ops sumeragi params
+cargo run --bin iroha -- \
+  --config ./localnet/client.toml \
+  --operator-private-key-file "$OPERATOR_KEY_FILE" \
+  --output-format text ops sumeragi params
 ```
 
 ## 6. Артабан ҡайҙа барырға? {#_6-where-to-go-next}
@@ -170,9 +183,9 @@ cargo run --bin iroha -- --config ./localnet/client.toml ops sumeragi params
 - [SDK дәреслектәр](/ba/guide/tutorials/)
 - [Torii сикләү пункттары](/ba/reference/torii-endpoints.md)
 - [Iroha бинарҙар](/ba/reference/binaries.md) менән эшләү
-- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/main/crates/iroha_cli/README.md)
+- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/README.md)
 
-Барлыҡ Markeddown ярҙам фотоһүрәттәрен ҡайтарыу өсөн сығанаҡ иҫәбенә инеү, эшләй:
+Барлыҡ Markeddown ярҙам снапшоттарын ҡайтарыу өсөн сығанаҡ иҫәбенә инеү, эшләй:
 
 ```bash
 cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md

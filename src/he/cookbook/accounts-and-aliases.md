@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 23b3ddbdadb0d177b2b12de60e0947a94ecdb20fa6ee1b3a2c6b83e5c91ba2f3
+translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -57,7 +57,7 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID" \
 
 ### 3. קרא את החשבון ואת נכסיו. {#_3-read-the-account-and-its-assets}
 
-לאחר שהחשבון נעבור, תשאלו אותו ישירות ותרשום דף נכס מוגבל. URL - קוד את הערך I105 לפני השימוש בו בנתיב.
+לאחר הקצאת החשבון, בצעו עליו שאילתה ישירה והציגו דף נכסים מוגבל. קודדו את ערך I105 ל-URL לפני השימוש בו בנתיב.
 
 ```bash
 iroha --config ./taira.client.toml ledger account get \
@@ -111,7 +111,7 @@ fi
 
 ::: warning גבולת היתר
 
-הטמבל Taira יכול לספק את חשבון הבקשה שלו, אבל זה לא נותן סמכות רישום חשבונות כללית או סמכות ניהול פרופיל. הרישום של חשבון אחר דורש `CanRegisterAccount` תחת האישור הפעיל. כינויים של חשבונות דורשים בדרך כלל גם חוזה שכירות פעיל SNS ורישיונות כינוי מתאימים. השתמש ב-onboarding/alias planner הנמלט, או תרגלי רישום נגד הרשת המקומית שנוצרה.
+ה-faucet של Taira יכול לספק את חשבון הבקשה שלו, אבל זה לא נותן סמכות רישום חשבונות כללית או סמכות ניהול פרופיל. הרישום של חשבון אחר דורש `CanRegisterAccount` תחת האישור הפעיל. כינויים של חשבונות דורשים בדרך כלל גם חוזה שכירות פעיל SNS ורישיונות כינוי מתאימים. השתמש ב-onboarding/alias planner הנמלט, או תרגלי רישום נגד הרשת המקומית שנוצרה.
 
 :::
 
@@ -145,21 +145,21 @@ if test "${ALIAS_WAS_RESOLVED:-false}" = true; then
 fi
 ```
 
-חישוב קאנוני IDs. השתמשו בקנוניקה IDs עבור חתימות, רשיונות, הוראות עסקאות. שם זיהוי בגבול היישום. לשמור את החשבון הקנוני ID השתמשו בניתוח.
+שמרו IDs קנוניים. השתמשו ב־IDs קנוניים לחתימות, להרשאות ולהוראות עסקה; השתמשו בכינויים רק בגבול היישום. שמרו את ה־ID הקנוני של החשבון לצד הכינוי.
 
 ## פתרון בעיות {#troubleshooting}
 
 - שגיאה בניתוח או תצוגה בדרך כלל פירושה כי כתובת הועברה לפרופיל רשת אחר. `--profile taira` ומכחישים את ההפרעות.
-- חשבון `404` לאחר קנק `202` יכול להיות עיכוב התפשטות. סקר את החשבון או הנכס המיועד לפני שישלוח כתב.
+- תגובת חשבון `404` לאחר קבלת `202` עשויה להעיד על עיכוב בהפצה. בצעו polling על החשבון או על נכס היעד לפני שליחת פעולת כתיבה תלויה.
 - `total: 0` מהמשתגר ההפוך אומר שאין שם זיהוי מחובר; זה לא כישלון בחיפוש החשבון.
 - `401` או `403` ממסלול שמהותי מצביעים על חלל נתונים מוגבל או לא מספיק רשות פתרון מדויק. אל תשתמשו בחיפוש מקדמות רחבה כמחזור.
-- ערך קריא `name@domain.dataspace` אינו מקובל בכל מקום בו נדרש קאנוניקה I105 ID.
+- ערך קריא `name@domain.dataspace` אינו מתקבל בכל מקום שבו נדרש מזהה I105 קנוני (ID). יש לפתור אותו תחילה.
 - אם רישום חשבון מקומי מצליח אבל Taira דוחה אותו, ההבדל הוא אישור. לקבל `CanRegisterAccount`; לא לשנות את החשבון ID כדי לעקוף אישור.
 
 ## מקור ומסמכים קשורים {#source-and-related-docs}
 
-- [יישום כתובת חשבון קאנוניקה בביצוע הקליטה ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/account/address.rs)
-- [בדיקות חשבון ושמה Torii בביצוע ה-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/tests/accounts_endpoints.rs)
+- [יישום כתובת חשבון קאנוניקה בביצוע הקליטה ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
+- [בדיקות חשבון ושמה Torii בביצוע ה-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
 - [חשבונות](/he/blockchain/accounts.md)
 - [שמה של דגם נתונים ](/he/blockchain/data-model.md#aliases)
 - [קונבנוציות שמות](/he/reference/naming.md)

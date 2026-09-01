@@ -1,28 +1,28 @@
 ---
 translation_locale: am
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 6b50c995afaf9f46df6fdaab31add40b106cfa12fdaa31dabbb74448486f87f9
+translation_source_hash: 29f2bdb390fc93b97f8ed9108634f70e21ba747c8606fb84093d37e9586516c1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# ተለዋዋጭ ሀብቶች {#fungible-assets}
+# ፈንገስ ንብረቶች {#fungible-assets}
 
-## ውጤቱ {#outcome}
+## ውጤት {#outcome}
 
-በቀጥታ Taira የንብረት ትርጓሜዎችን ይፈትሹ እና በተፈጠረው አካባቢያዊ አውታረመረብ ላይ መዝገብ, ሙጫ, ዝውውር, መቃጠል እና ሚዛን ማረጋገጫ ፍሰት ያጠናቅቁ. የምግብ አዘገጃጀት መመሪያው የካኖኒክ ያልተስተካከለ Base58 የንብረት ትርጉም IDs ፣ የጎራ ብቃት ያላቸው ቅጽል ስሞች ፣ ጎራ የሌለው I105 ሂሳብ IDs እና ግልፅ ክፍያ ይጠቀማል ።
+የቀጥታ Taira የንብረት ፍቺዎችን ይፈትሹ እና በተፈጠረ የአካባቢ አውታረመረብ ላይ የመመዝገብ፣ የማስተላለፍ፣ የማስተላለፍ፣ የማጥፋት እና የቀሪ ሒሳብ ማረጋገጫ ፍሰትን ያጠናቅቁ። የተግባር መመሪያው ነጠላ ፕሮቶኮል-ስታንዳርድ ቅድመ-ቅጥያ የሌላቸው Base58 የንብረት-ፍቺ መታወቂያዎችን፣ ጎራ ብቁ የሆኑ ተለዋጭ ስሞችን፣ ጎራ አልባ I105 መለያ መታወቂያዎችን እና ግልጽ የክፍያ ክፍያን ይጠቀማል።
 
 ## ቅድመ ሁኔታዎች {#prerequisites}
 
-- `curl`, `jq`, Python 3.11 ወይም ከዚያ በኋላ, Node.js 24, እና የአሁኑ `iroha` CLI.
-- Taira የንባብ-ብቻ መዳረሻ።
-- ለመጻፍ የዝግጅት አቀራረብ ከ [የተፈጠረ አካባቢያዊ አውታረመረብ ይጀምሩ Iroha](/am/get-started/launch-iroha.md)፣ በ `./localnet/client.toml` እና Torii ላይ በ `http://127.0.0.1:8080`።
+- `curl`፣ `jq`፣ Python 3.11 ወይም ከዚያ በኋላ፣ Node.js 24፣ እና የአሁኑ `iroha` CLI።
+- ተነባቢ ብቻ Taira መዳረሻ።
+- ለመጻፍ የእግር ጉዞ፣ ከ[አስጀምር Iroha](/am/get-started/launch-iroha.md)፣ `./localnet/client.toml` እና Torii በ`http://127.0.0.1:8080` ላይ የመነጨ የአካባቢ አውታረ መረብ።
 
 ## እርምጃዎች {#steps}
 
-### Taira ትርጓሜዎችን ያለ ፊርማ መመርመር። {#_1-inspect-taira-definitions-without-a-signer}
+### 1. ያለ ምስጠራ ፈራሚ Taira ፍቺዎችን ይፈትሹ {#_1-inspect-taira-definitions-without-a-signer}
 
-የንብረት ትርጓሜዎች ግልጽ ያልሆነ Base58 ID, የማሳያ ስም አላቸው, የማጣቀሻ ፖሊሲ, የቁጥር ስኬል, አማራጭ ቅጽል ስም, ባለቤት እና አጠቃላይ ብዛት. ተጨባጭ ሚዛኑ ደግሞ ባለቤቱ መለያ እና አማራጭ የውሂብ ቦታን ያካትታል.
+የንብረት ፍቺዎች ግልጽ ያልሆነ Base58 መታወቂያ፣ የማሳያ ስም፣ የንብረት አሰጣጥ ፖሊሲ፣ የቁጥር ልኬት፣ አማራጭ ተለዋጭ ስም፣ ባለቤት እና አጠቃላይ ብዛት ይይዛሉ። የኮንክሪት ቀሪ ሒሳቡ የያዢውን መለያ እና አማራጭ የውሂብ ቦታ ወሰን ያካትታል።
 
 ::: code-group
 
@@ -54,11 +54,11 @@ for (const definition of items) {
 
 :::
 
-JavaScript ቅጹን በ `node taira-assets.mjs` ይጠቀሙ። የህዝብ ንብረት IDs ባዶ Base58 እሴቶች ናቸው; እንደ `cookbook_credit#wonderland.universal` ያሉ ሊነበቡ የሚችሉ እሴቶች ከእነዚህ ውስጥ ወደ አንዱ የሚፈታ ስያሜ ነው IDs.
+የ JavaScript ቅጹን በ`node taira-assets.mjs` ያሂዱ። የህዝብ ንብረት መታወቂያዎች ባዶ Base58 እሴቶች ናቸው; እንደ `cookbook_credit#wonderland.universal` ያለ ሊነበብ የሚችል እሴት ከእነዚያ መታወቂያዎች ውስጥ በአንዱ ላይ የሚፈታ ተለዋጭ ስም ነው።
 
-### 2. የአካባቢውን ባለስልጣንና መድረሻ ማዘጋጀት። {#_2-prepare-the-local-authority-and-destination}
+### 2. አካባቢውን ያዘጋጁ ፍቃድ ዋና እና መድረሻ {#_2-prepare-the-local-authority-and-destination}
 
-ከተፈጠረው ውቅር ውስጥ ካለው የህዝብ ቁልፍ የአከባቢውን ባለስልጣን ይምረጡ እና እንደ ተቀባዩ ሌላ የተመዘገበ መለያ ይምረጡ ። የግል ቁልፍ አይታተምም።
+በመነጨው ውቅር ውስጥ ካለው የህዝብ ቁልፍ የአካባቢ የፈቃድ ባለቤትን ያውጡ እና ሌላ የተመዘገበ መለያ እንደ ተቀባዩ ይምረጡ። ምንም የግል ቁልፍ አልታተመም።
 
 ```bash
 LOCAL_ROOT='http://127.0.0.1:8080'
@@ -82,9 +82,9 @@ DESTINATION_ACCOUNT="$(
 )"
 ```
 
-### 3. የቁጥር ትርጉም መመዝገብ። {#_3-register-a-numeric-definition}
+### 3. የቁጥር ፍቺ ይመዝገቡ {#_3-register-a-numeric-definition}
 
-ይህ አካባቢያዊ-ብቻ ID ትክክለኛ ያልተስተካከለ Base58 ሀብት መግለጫ አድራሻ ነው ። ስሙ በሰዎች ሊነበብ የሚችል `domain.dataspace` ትንበያ ያቀርባል ። ልኬት `2` ሁለት ጥፍሮች ይፈቅዳል ፣ `--mint-once` ን ማስወገድ ነባሪውን `Infinitely` ፖሊሲ ይጠብቃል ።
+ይህ የአካባቢ-ብቻ መታወቂያ የሚሰራ ቅድመ-ቅጥያ የሌለው Base58 የንብረት ፍቺ አድራሻ ነው። ተለዋጭ ስሙ በሰው ሊነበብ የሚችል `domain.dataspace` ትንበያ ያቀርባል። ልኬት `2` ሁለት ክፍልፋይ አሃዞችን ይፈቅዳል; `--mint-once`ን መተው ነባሪውን `Infinitely` ፖሊሲ ይይዛል።
 
 ```bash
 ASSET_DEFINITION_ID='66owaQmAQMuHxPzxUN3bqZ6FJfDa'
@@ -101,11 +101,11 @@ iroha --config "$LOCAL_CONFIG" \
   --scale 2
 ```
 
-ID ን በ Taira ላይ እንደገና አይጠቀሙ። የህዝብ አውታረመረብ ምዝገባ አዲስ ቀኖናዊ ID ፣ ለጥያቄዎ የተመደበ ጎራ / ቅጽል ስም ፣ የክፍያ የገንዘብ ድጋፍ እና የአሂድ ጊዜ ንብረት ምዝገባ ፈቃድ ይጠይቃል።
+ያንን መታወቂያ በ Taira ላይ እንደገና አይጠቀሙ። ይፋዊ የብሎክቼይን ኔትወርክ ምዝገባ አዲስ ነጠላ ፕሮቶኮል-መደበኛ መታወቂያ፣ ለመተግበሪያዎ የተመደበ ጎራ/ተለዋጭ ስም፣ የክፍያ የገንዘብ ድጋፍ እና የሶፍትዌር ማስፈጸሚያ አካባቢ የንብረት ምዝገባ ፍቃድ ያስፈልገዋል።
 
-### 4. ሙጫ፣ ማስተላለፍና ማቃጠል {#_4-mint-transfer-and-burn}
+### 4. ማውጣት, ማስተላለፍ እና ማጥፋት {#_4-mint-transfer-and-burn}
 
-ሁሉም የጻፍ ትዕዛዞች ባለሥልጣኑን እንደ ክፍያ ሰጪ በግልጽ ይመርጣሉ። CLI ከመፈረምዎ በፊት ትክክለኛውን ግብይት ይጠቅሳል እና በነባሪነት ይጠብቃል ።
+ሁሉም ትዕዛዞችን ይፃፉ የፍቃድ ርዕሰ መምህሩን እንደ ክፍያ ከፋይ በግልፅ ይመርጣሉ። CLI ከመፈረሙ በፊት ትክክለኛውን ግብይት ይጠቅሳል እና በነባሪነት ይጠብቃል።
 
 ```bash
 iroha --config "$LOCAL_CONFIG" \
@@ -131,17 +131,17 @@ iroha --config "$LOCAL_CONFIG" \
   --quantity 10.00
 ```
 
-ከተቃጠለ በኋላ ምንጩን ሚዛናዊ ማድረግ `64.50`, የመድረሻ ሚዛን `25.50`, እና አጠቃላይ ብዛት `90.00`.
+ከጥፋቱ በኋላ፣ የምንጭ ቀሪ ሒሳብ `64.50`፣ የመድረሻ ቀሪ ሒሳብ `25.50` እና አጠቃላይ ብዛት `90.00` ይጠብቁ።
 
-::: warning የተፈቀደለት ገደብ
+::: warning የፍቃድ ወሰን
 
-በ Taira ላይ ከፋይሌት የተገኘውን `taira.tx-metadata.json` ያያይዙ እና ለእያንዳንዱ ጽሑፍ `--fee-payer authority` ይጠቀሙ። ምዝገባ እና ቅርጽ ማውጣት የንቃት ማረጋገጫ ሰጪው ፍቃዶችን ይጠይቃሉ; ማስተላለፍ እና መቃጠል የመነሻ ሚዛኑን በተመለከተ ሥልጣን ይጠይቃሉ። በፋይሌት የገንዘብ ድጋፍ የሚደረግ አካውንት በራስ-ሰር ባለቤት አይደለም ።
+በ Taira ላይ ከቴስትኔት ገንዘብ ድጋፍ አገልግሎቱ የተገኘውን `taira.tx-metadata.json` ያያይዙ እና ለእያንዳንዱ የመጻፍ ክዋኔ `--fee-payer authority` ይጠቀሙ። ምዝገባ እና መስጠት የነቃውን አረጋጋጭ ፈቃዶች ይፈልጋሉ; ማስተላለፍ እና ማጥፋት በምንጩ ቀሪ ሂሳብ ላይ የፍቃድ ዋና ያስፈልገዋል። በቴስትኔት የተደገፈ መለያ በራስ-ሰር ሰጪ አይደለም።
 
 :::
 
-## ያረጋግጡ {#verify}
+## አረጋግጥ {#verify}
 
-ሁለቱንም ተጨባጭ ቅናሾች እና ከዚያ ፍቺን ያንብቡ ። እነዚህ ከመንግስት በኋላ ጥያቄዎች የስኬት መስፈርት ናቸው ፣ የቀረበው ደረሰኝ በራሱ አይደለም ።
+ሁለቱንም ተጨባጭ ቀሪ ሒሳቦች እና ከዚያ ፍቺውን ያንብቡ። እነዚህ የድህረ-ሁኔታ መጠይቆች የስኬት መስፈርት ናቸው; የማስረከቢያ ደረሰኝ በራሱ አይደለም.
 
 ```bash
 iroha --config "$LOCAL_CONFIG" ledger asset get \
@@ -156,22 +156,22 @@ iroha --config "$LOCAL_CONFIG" ledger asset definition get \
   --id "$ASSET_DEFINITION_ID"
 ```
 
-የአተገባበር ማረጋገጫዎች የቁጥር እሴቶችን እንደ ቋሚ ነጥብ አሥረኛዎች እንጂ በሁለትዮሽ ተንሳፋፊ ነጥብ እሴቶች ሊወዳደሩ እና ID ትርጉምን እንዲሁም ሂሳብን ሊያረጋግጡ ይገባል ።
+የመተግበሪያ ማረጋገጫዎች የቁጥር እሴቶችን እንደ ቋሚ ነጥብ አስርዮሽ ማወዳደር አለባቸው እንጂ ሁለትዮሽ ተንሳፋፊ ነጥብ እሴቶችን ሳይሆን የፍቺ መታወቂያውን እና መለያውን ማረጋገጥ አለባቸው።
 
-## ችግሮችን መፍታት {#troubleshooting}
+## መላ ፍለጋ {#troubleshooting}
 
-- ID የያዘው `#` ቅጽል ስያሜ ወይም የኮንክሪት ሚዛን ቃል በቃል ነው ፣ የካኖኒክ የአክሲዮን ትርጉም አይደለም ID. ባዶውን Base58 እሴት ከ `--definition` ጋር ይጠቀሙ ፣ ወይም የተገደበ ቅጽል ስም ከ `--definition-alias` ጋር ያስገቡ።
-- `Scale` ስህተቶች ማለት አንድ ብዛት ትርጉም ከሚፈቅደው በላይ ብዙ ቁጥሮችን ያካተተ ነው።
-- `Mintability` ውድቅ ማለት የ `Once` ፣ `Not` ወይም `Limited(n)` ፖሊሲ ማጭድ ተጠናቋል ወይም አልተፈቀደለትም ማለት ነው ። ታሪክን እንደገና አይፃፉ; በገለጸው ጥያቄ የተመለሰውን ፖሊሲ ይጠቀሙ።
-- ደረጃ 2 ሆን ተብሎ የተመዘገበ መድረሻ መለያ ይመርጣል. `ExplicitOnly`, የመዳረሻ ሚዛኑን ከማስተላለፍ በፊት በተፈቀደ ፍሰት በኩል ማቅረብ። CLI ጠባቂው ሂሳብ ወይም ሚዛን አይመዘገብም; ሌላ መመሪያ ከመጨመር ይልቅ ይወርዳል.
-- የክፍያ ውድቀት የተለመደው መመሪያ ስኬታማ ከመሆኑ በፊት ይከሰታል. ክፍያ ሰጪውን ይምረጡ, የአውታረ መረቡ የክፍያው ሀብት ሜታዳታ ይጠቀሙ እና ቀሪውን ያረጋግጡ.
-- ቋሚው አካባቢያዊ ትርጓሜ ቀደም ባለው ሩጫ ውስጥ ቀድሞውኑ የሚገኝ ከሆነ አዲስ የተፈጠረውን አካባቢያዊ አውታረ መረብ ይጀምሩ ወይም ነባር ሁኔታውን ይቀጥሉ ። የተበላሸ የዘፈቀደ ሰንጠረዥን ለ Base58 ID በጭራሽ አይተኩ ።
+- `#` የያዘ መታወቂያ ተለዋጭ ስም ወይም ተጨባጭ ቀሪ ሒሳብ ቃል በቃል እንጂ አንድ ፕሮቶኮል-መደበኛ የንብረት-ፍቺ መታወቂያ አይደለም። ባዶውን Base58 እሴትን በ`--definition` ይጠቀሙ ወይም የታሰረ ተለዋጭ ስም በ`--definition-alias` ያስተላልፉ።
+- `Scale` ስህተቶች ማለት አንድ መጠን ትርጉሙ ከሚፈቅደው በላይ ክፍልፋይ አሃዞች አሉት ማለት ነው።.
+- `Mintability` አለመቀበል ማለት የ`Once`፣ `Not` ወይም `Limited(n)` ፖሊሲ መስጠትን አሟጥሟል ወይም አልፈቀደም። ታሪክን እንደገና አይፃፉ; በፍቺው መጠይቅ የተመለሰውን ፖሊሲ ይጠቀሙ።
+- ደረጃ 2 ሆን ብሎ የተመዘገበ የመድረሻ መለያ ይመርጣል። የንብረት መግቢያ `ExplicitOnly` ከሆነ፣ የመድረሻ ቀሪ ሂሳቡን በተፈቀደለት በኩል ያቅርቡ ከማስተላለፉ በፊት ፍሰት. ተመሳሳይ ስም ያለው CLI ጠባቂ መለያ ወይም ቀሪ ሂሳብ አይመዘግብም; ሌላ መመሪያ ከመጨመር ይልቅ ያቋርጣል.
+- የተለመደው መመሪያ ከመሳካቱ በፊት ክፍያ አለመቀበል ይከሰታል። ከፋዩን ይምረጡ፣ የአውታረ መረቡን የክፍያ ንብረት ሜታዳታ ይጠቀሙ እና ቀሪ ሂሳቡን ያረጋግጡ።
+- ቋሚው የአካባቢ ፍቺ አስቀድሞ ከቀደመው ሩጫ ካለ፣ አዲስ የመነጨ localnet ያስጀምሩ ወይም አሁን ባለው ሁኔታ ይቀጥሉ። የተበላሸ የዘፈቀደ ሕብረቁምፊን በBase58 መታወቂያ በጭራሽ አይተኩ።
 
 ## ምንጭ እና ተዛማጅ ሰነዶች {#source-and-related-docs}
 
-- [የተጣራ ግዴታ ላይ የሃብት የሕይወት ዑደት ውህደት ሙከራዎች ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/asset.rs)
-- [Rust የተጣራ ግዴታ ላይ ያሉ የንብረት ግንባታዎች ምሳሌዎች](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha/examples/tutorial.rs)
+- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የንብረት የሕይወት ዑደት ውህደት ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/asset.rs)
+- [Rust የንብረት ግንባታ ምሳሌዎች በተሰካው የምንጭ-ኮድ ክለሳ ላይ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/examples/tutorial.rs)
 - [ንብረቶች](/am/blockchain/assets.md)
 - [መመሪያዎች](/am/blockchain/instructions.md)
-- [የፈቃድ ማስያዣዎች](/am/reference/permissions.md)
-- [JavaScript እና TypeScript ](/am/guide/tutorials/javascript.md)
+- [የፍቃድ ምልክቶች](/am/reference/permissions.md)
+- [JavaScript እና TypeScript](/am/guide/tutorials/javascript.md)

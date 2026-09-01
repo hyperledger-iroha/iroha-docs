@@ -1,94 +1,94 @@
 ---
 translation_locale: pt
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 9341b2404624dec2230bc294c3d60dc124ac9574a0a5803b9bba744f4c5e7f50
+translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Lançamento Iroha 3 {#launch-iroha-3}
+# Iniciar Iroha 3 {#launch-iroha-3}
 
-Esta página percorre o fluxo de rede local atual para Iroha 3 usando os ativos padrão do espaço de trabalho do repositório upstream.
+Esta página explica o fluxo atual da rede local para Iroha 3 usando os recursos padrão do espaço de trabalho do repositório upstream.
 
-## 1. Gerar uma rede local multi-peer {#_1-generate-a-local-multi-peer-network}
+## 1. Gerar uma rede local com vários pares {#_1-generate-a-local-multi-peer-network}
 
-Gerar uma rede local de quatro pares a partir do código Kagami atual:
+Gere uma rede local de quatro pares a partir do código atual Kagami:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-O diretório de saída contém configurações de pares correspondentes, `genesis.json`, `genesis.signed.nrt`, `client.toml` e scripts auxiliares.
+O diretório de saída contém configurações de pares de rede correspondentes, `genesis.json`, `genesis.signed.nrt`, `client.toml`, e scripts auxiliares.
 
-Para um teste de fumo local nativo, iniciar diretamente os pares gerados:
+Para um teste rápido nativo local, inicie diretamente os pares de rede gerados:
 
 ```bash
 ./localnet/start.sh
 ```
 
-Para uma execução contêinerizada, gerar Compose a partir do mesmo diretório localnet:
+Para uma execução em contêiner, gere o Compose a partir do mesmo diretório localnet:
 
 ```bash
 cargo run --bin kagami -- docker \
   --peers 4 \
   --config-dir ./localnet \
   --image hyperledger/iroha:dev \
-  --out-file ./localnet/docker-compose.yml \
+  --out-file ./docker-compose.yml \
   --force
 
-docker compose -f ./localnet/docker-compose.yml up
+docker compose -f ./docker-compose.yml up
 ```
 
 A pilha gerada por padrão expõe:
 
-- Os portos P2P a `1337` para `1340`
-- Os portos Torii HTTP `8080` a `8083`
-- Uma configuração de cliente pronta em `./localnet/client.toml`
+- par de rede P2P portas `1337` para `1340`
+- Torii HTTP portas `8080` para `8083`
+- uma configuração de cliente pronta em `./localnet/client.toml`
 
-## 2. Verifique se a rede está ativada {#_2-verify-that-the-network-is-up}
+## 2. Verifique se a rede está ativa {#_2-verify-that-the-network-is-up}
 
-Verifique o ponto final do status no primeiro peer:
+Verifique o endpoint de status no primeiro par da rede:
 
 ```bash
 curl http://127.0.0.1:8080/status
 ```
 
-Os controlos de saúde padrão também utilizam:
+As verificações de saúde padrão também usam:
 
 ```bash
 curl http://127.0.0.1:8080/status/blocks
 ```
 
-Você pode apontar imediatamente o CLI para a configuração do cliente em conjunto:
+Você pode apontar imediatamente o CLI para a configuração do cliente incluída:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
 ```
 
-## 3. Profisso Nexus {#_3-nexus-profile}
+## 3. Nexus Perfil {#_3-nexus-profile}
 
-O repositório também envia um perfil de configuração orientado para SORA Nexus em `defaults/nexus/`.
+O repositório também fornece um perfil de configuração orientado para SORA Nexus sob `defaults/nexus/`.
 
-Para executar um peer native com o perfil Nexus:
+Para executar um par de rede nativo com o perfil Nexus:
 
 ```bash
-./target/release/irohad --sora --config ./defaults/nexus/config.toml
+./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
 ```
 
-Utilize `defaults/nexus/client.toml` para o acesso a esse perfil CLI.
+Use `defaults/nexus/client.toml` para acessar esse perfil pela CLI.
 
-## 4. Parar a rede local {#_4-stop-the-local-network}
+## 4. Pare a Rede Local {#_4-stop-the-local-network}
 
-Para uma rede local nativa gerada:
+Para uma localnet gerada nativamente:
 
 ```bash
 ./localnet/stop.sh
 ```
 
-Para a pilha de Compose gerada:
+Para a pilha Compose gerada:
 
 ```bash
-docker compose -f ./localnet/docker-compose.yml down
+docker compose -f ./docker-compose.yml down
 ```
 
-Após a operação da rede, continue com [Operar Iroha 3 através de CLI](/pt/get-started/operate-iroha-via-cli.md).
+Depois que a rede estiver funcionando, continue com [Operar Iroha 3 via CLI](/pt/get-started/operate-iroha-via-cli.md).

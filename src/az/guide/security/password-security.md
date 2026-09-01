@@ -3,43 +3,43 @@ translation_locale: az
 translation_source: /guide/security/password-security.md
 translation_source_hash: 093be5b91700b9a6f85b45dc873c8c29d90397d5c9e3c842a77bfb03e97b37da
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: bing-translator-llm
 ---
 
-# Şifrə təhlükəsizliyi {#password-security}
+# Şifrə Təhlükəsizliyi {#password-security}
 
-Şifrələr operator konsollarını, gizli mağazaları, yedekləmələri və yerli açar fayllarını qoruyub saxlaya bilər. Şifrə yalnız bir idarəetmədir. Mövcud olduğu təqdirdə təhlükəsiz açar saxlama, giriş nəzarəti və çox amilli təsdiqləmə ilə birlikdə istifadə edin.
+Şifrələr operator konsollarını, gizli anbarları, ehtiyat nüsxələri və yerli açar fayllarını qoruya bilər. Şifrə yalnız bir nəzarət vasitəsidir. Mövcud olduqda təhlükəsiz açar saxlanması, giriş nəzarətləri və çoxfaktorlu identifikasiyadan birlikdə istifadə edin.
 
-## Uğurlu və unikal şifrələrdən istifadə edin {#use-unique-generated-passwords}
+## Yalnız Unikal, Yaradılmış Şifrələrdən İstifadə Edin {#use-unique-generated-passwords}
 
-- Hər hesab və mühit üçün fərqli şifrə istehsal edin.
-- Uzun təsadüfi şifrələr yaratmaq və saxlamaq üçün bir şifrə menecerindən istifadə edin.
-- Bir çox sözlü şifrə yalnız kifayət qədər böyük bir siyahıdan onun sözləri təsadüfi olaraq seçildiyi zaman istifadə olunur.
-- Adları, tarixlərini, ünvanlarını, sitatları, klaviatur modellərini və yenidən istifadə olunan parçaları şifrələrdən saxlayın.
-- Xidmətin bu üsulunu dəstəklədiyi zaman insan daxil etdiyi şifrə əvəzinə xidmət tərəfindən yaradılmış bir token və ya kriptografik açar istifadə edin.
+- Hər hesab və mühit üçün fərqli parol yaradın.
+- Uzun təsadüfi parollar yaratmaq və saxlamaq üçün parol menecerindən istifadə edin.
+- Çoxsözlü parol ifadəsini yalnız sözləri kifayət qədər böyük siyahıdan təsadüfi seçildikdə istifadə edin.
+- Şifrlərdə adları, tarixləri, ünvanları, sitatları, klaviatura nümunələrini və təkrar istifadə olunan parçaları daxil etməyin.
+- Xidmət bu üsulu dəstəklədikdə, insan tərəfindən daxil edilmiş parol əvəzinə xidmət tərəfindən yaradılmış token və ya kriptoqrafik açardan istifadə edin.
 
-Uzunluq və gözlənilməzlik dekorativ əvəzlərdən daha vacibdir. Bir simvolun təxmin edilə bilən bir sözə əlavə edilməsi nəticəni təhlükəsiz etmir.
+Uzunluq və proqnozlaşdırılmazlıq bəzək əvəzetmələrindən daha önəmlidir. Proqnozlaşdırıla bilən sözə bir simvol əlavə etmək nəticəni təhlükəsiz etmir.
 
-## Password əsaslı hesabları qoruyun {#protect-password-based-accounts}
+## Şifrə Əsaslı Hesabları Qoruyun {#protect-password-based-accounts}
 
-- Mövcud olduğu təqdirdə phishing əleyhinə çox amilli təsdiqlənməni təmin etmək.
-- Dəfələrlə təsdiqlənmə çatışmazlığı üçün dərəcə məhdudiyyətləri, bağlama siyasəti və xəbərdarlıqlar tətbiq edin.
-- Yalnız etibarlı, şifrələnmiş kanallar vasitəsilə şifrələr göndərin.
-- Şifrələri və bərpa kodlarını qeydlərdən, əmr xəttlərindən, mənbə qoruyucularından, konfigüratsiya fayllarından, biletlərdən və söhbətlərdən uzaq tutun.
-- Server tərəfindəki şifrə təsdiqləyicilərin duzlu, yaddaş sərt şifrə hashinq funksiyası və tətbiq üçün uyğun parametrləri ilə saxlanılması.
+- Mövcud olduqda fişinqə davamlı çoxfaktorlu autentifikasiyanı aktiv edin.
+- Təkrar olunan autentifikasiya uğursuzluqlarına tətbiq sürət məhdudiyyətləri, kilidləmə siyasəti və xəbərdarlıqlar tətbiq edin.
+- Şifrləri yalnız təsdiqlənmiş, şifrələnmiş kanallar vasitəsilə göndərin.
+- Şifrələri və bərpa kodlarını qeydlərdən, əmr sətrlərindən, mənbə anbarlarından, konfiqurasiya fayllarından, biletlərdən və söhbətlərdən kənarda saxlayın.
+- Server tərəfi parol yoxlayıcılarını duzlu, yaddaş tələb edən parol həşləmə funksiyası və yerləşdirməyə uyğun parametrlərlə saxlayın.
 
-## Yükləmə, bərpa və əvəz {#storage-recovery-and-replacement}
+## Yaddaş, Bərpa və Əvəzləmə {#storage-recovery-and-replacement}
 
-- Şifreli, sınaqdan keçirilmiş yedekləmələri olan yoxlanan şifrə idarəçisindən istifadə edin.
-- Bərpa kodlarını bərpa etdikləri cihazdan ayrı saxlayın. Qorunan oflayn kağız nüsxə bərpa materialı üçün uyğun ola bilər.
-- Şifrə menecerinin ixracına və ehtiyat medialarına girişini məhdudlaşdırın.
-- Şübhəli ifşadan, icazəsiz təkrar istifadədən və ya dəyişdirmə tələb edən siyasət hadisəsindən sonra şifrəni dəyişdirin.
-- İstehsalatın başlanğıcından əvvəl hesabın bərpası prosedurlarını yoxlayın.
+- Şifrələnmiş, sınaqdan keçirilmiş ehtiyat nüsxələri olan auditdən keçirilmiş şifrə menecerindən istifadə edin.
+- Bərpa kodlarını onları bərpa edən cihazdan ayrı saxlayın. Qorunan, oflayn kağız nüsxəsi bərpa materialı üçün uyğun ola bilər.
+- Şifrə menecerinin ixracatlarına və ehtiyat nüsxə daşıyıcılarına girişə məhdudiyyət qoyun.
+- Şübhəli ifşa, icazəsiz təkrar istifadə və ya əvəzləmə tələb edən bir siyasət hadisəsindən sonra şifrəni dəyişdirin.
+- İstehsal işə salmadan əvvəl hesabın bərpa prosedurlarını sınaqdan keçirin.
 
 ::: warning
 
-Xüsusi açarı açan şifrə həmin açarın ifşa olunmuş nüsxəsini təhlükəsiz edə bilməz. Xüsusi açarın ifşasından şübhələnirsinizsə, yerləşdirmənin açarı dəyişdirmə və ya ləğv etmə proseduruna əməl edin.
+Şəxsi açarı açan parol, həmin açarın aşkar edilmiş nüsxəsini təhlükəsiz edə bilməz. Əgər şəxsi açarın aşkar edilməsi şübhə altındadırsa, yerləşdirmənin açar əvəzləmə və ya ləğv prosedurunu izləyin.
 
 :::
 
-Bax [Əməliyyat təhlükəsizliyi](./operational-security.md) və [Storing Cryptographic Keys](./storing-cryptographic-keys.md).
+Baxın [Əməliyyat Təhlükəsizliyi](./operational-security.md) və [Kriptoqrafik Açarların Saxlanması](./storing-cryptographic-keys.md).

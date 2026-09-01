@@ -10,6 +10,6 @@ translation_engine: nllb-200-ct2
 
 کبھی کبھار، آپ کے پاس Iroha کے بارے میں سوالات ہوسکتے ہیں جن پر آپ دوسروں کے ساتھ تفصیل سے تبادلہ خیال کرنا چاہتے ہیں۔ ہماری کمیونٹی سے فوری طور پر رابطہ کرنے کے تین طریقے ہیں: ٹیلیگرام، ڈسکارڈ اور GitHub.
 
-کمیونٹی مواصلات کے لئے [ٹیلیگرام](https://t.me/hyperledgeriroha) اور [ LF Decentralized Trust ڈسکارڈ](https://discord.gg/hyperledger) کا استعمال کرتی ہے۔ منصوبے کے سوالات کے ل the `iroha` چینل کا استعمال کریں.
+کمیونٹی رابطے کے لیے [Telegram](https://t.me/hyperledgeriroha) اور [LF Decentralized Trust Discord](https://discord.gg/hyperledger) استعمال کرتی ہے۔ project سے متعلق سوالات کے لیے `iroha` channel استعمال کریں۔
 
 آخر میں، آپ [ایک GitHub مسئلہ](https://github.com/hyperledger-iroha/iroha/issues/new/choose) تشکیل دے سکتے ہیں، چاہے یہ دستاویزات کو اپ ڈیٹ کرنے کی درخواست ہو، بنیادی ٹیم کے لئے ایک تجویز ہو، یا کوئی بگ جو آپ نے پایا ہو۔

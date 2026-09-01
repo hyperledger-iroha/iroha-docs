@@ -14,7 +14,7 @@ translation_engine: nllb-200-ct2
 
 - [I105 հաշիվի հասցեային ձեւաչափը](/hy/reference/i105.md)
 - [Աշխատել Iroha բինարների հետ](/hy/reference/binaries.md)
-- [Ծննդոցային հղում](/hy/reference/genesis.md)
+- [Գենեզիսի հղում](/hy/reference/genesis.md)
 - [Torii վերջնական կետեր](/hy/reference/torii-endpoints.md)
 - [Torii API կոնսոլը ](/hy/reference/torii-api-console.md)
 - [Norito](/hy/reference/norito.md)

@@ -1,78 +1,88 @@
 ---
 translation_locale: am
 translation_source: /help/deployment-issues.md
-translation_source_hash: 6f35ac59053e312f56a716810c8f0b625752500d1fc64b27d93cbd8317b6cc19
+translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# የመተግበሪያ ችግሮች {#troubleshooting-deployment-issues}
+# የማሰማራት ችግሮችን መላ መፈለግ {#troubleshooting-deployment-issues}
 
-ይህ ክፍል ለ Iroha 3 ማሰማሪያዎች የችግር መፍታት ጠቃሚ ምክሮችን ይሰጣል ። እርስዎ የሚያጋጥሟቸው ችግሮች እዚህ ካልተገለጹ በቴሌግራም [ ቴሌግራም](https://t.me/hyperledgeriroha) በኩል እኛን ያነጋግሩን ።
+ይህ ክፍል ለ Iroha 3 ማሰማራት የመላ መፈለጊያ ምክሮችን ይሰጣል። እያጋጠመዎት ያለው ችግር እዚህ ካልተገለጸ፣ በ[ቴሌግራም](https://t.me/hyperledgeriroha) በኩል ያግኙን።
 
-## ከተፈጠሩ ዕቃዎች ጋር ይጀምሩ። {#start-with-generated-artifacts}
+## በተፈጠሩ አርቲፋክቶች ይጀምሩ {#start-with-generated-artifacts}
 
-ለአካባቢያዊ እና ለሙከራ ትግበራዎች በእጅ ከተጻፉ የእኩዮች ፋይሎች ይልቅ በ Kagami የተፈጠሩ ንጥረ ነገሮችን ይመርጣሉ-
-
-```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-```
-
-የተፈጠረው ማውጫ የእኩዮች ውቅር ፣ የመነሻ ቁሳቁስ ፣ የጅምር ስክሪፕቶች እና ለ Iroha 3 ግንባታ መስመር README ይ containsል።
-
-## ፒር አይጀምርም {#peer-does-not-start}
-
-በመጀመሪያ እነዚህን ዕቃዎች ይመልከቱ:
-
-- `irohad --config <path>` በባልደረባው TOML ፋይል ላይ ያሉ ነጥቦች።
-- `public_key` እና `private_key` በባልደረባዎች ውቅር ውስጥ ተመሳሳይ ቁልፍ ጥንድ ናቸው.
-- `genesis.public_key` የመነሻ ግብይቱን ለመፈረም ጥቅም ላይ የዋለው ቁልፍ ጋር ይዛመዳል.
-- የማረጋገጫ የእኩዮች ማንነት BLS-የተለመዱ ቁልፎችን ይጠቀማል ፣ እና `trusted_peers_pop` ለአካባቢያዊ ቁልፍ እና የታመኑ እኩዮችን የመያዝ ማስረጃ ግቤቶችን ይ containsል።
-- የ Torii እና P2P ወደቦች ቀድሞውኑ በሌላ ሂደት አልተገደዱም ።
-- የ Kura ማከማቻ ማውጫ ወደ ተመሳሳይ ሰንሰለት የሚመዘገብ ሲሆን ከተለየ የአውታረ መረብ መገለጫ አልተገለጸም ።
-
-ዳይሞን ከአንድ በላይ TOML ንብርብሮች ሲያነብ የኮንፊግሪንግ መከታተልን ይጠቀሙ
+ለአካባቢያዊ እና ለሙከራ ማሰማራት፣ በእጅ ከተጻፉ የአውታረ መረብ አቻ ፋይሎች ይልቅ በ Kagami የተፈጠሩ አርቲፋክቶችን ይምረጡ -
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --trace-config
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-## Docker እና ማቀናበር {#docker-and-compose}
+የተፈጠረው ማውጫ የአውታረ መረብ አቻ ውቅሮችን፣ የብሎክቼይን ጀነሲስ ቁሳቁሶችን፣ የመነሻ ስክሪፕቶችን እና README ለ Iroha 3 የግንባታ መስመር ይዟል።
 
-Generate ከወቅቱ Kagami localnet ውፅዓት ይፃፉ ስለዚህ የኮማንድ-መስመር ክርክር እና የማዋቀር ፋይሎች ከተረጋገጠው ኮድ ጋር ይጣጣማሉ:
+## የአውታረ መረብ አቻ አይጀምርም {#peer-does-not-start}
+
+መጀመሪያ እነዚህን እቃዎች ያረጋግጡ -
+
+- `iroha3d --config <path>` የአውታረ መረቡን አቻ የራሱን TOML ፋይል ይጠቁማል።
+- `public_key` እና `private_key` በኔትወርክ አቻ ውቅር ውስጥ የአንድ ቁልፍ ጥንድ ናቸው።
+- `genesis.public_key` የብሎክቼይን ጀነሲስ ግብይትን ለመፈረም ጥቅም ላይ ከሚውለው ቁልፍ ጋር ይዛመዳል።
+- አረጋጋጭ አውታረ መረብ የአቻ ማንነቶች BLS-መደበኛ ቁልፎችን ይጠቀማሉ፣ እና `trusted_peers_pop` ለአካባቢያዊ ቁልፍ እና ለታመኑ የአውታረ መረብ እኩዮች የይዞታ ማረጋገጫ ግቤቶችን ይዟል።
+- ለ Torii እና P2P ወደቦች ቀድሞውኑ በሌላ ሂደት የታሰሩ አይደሉም።
+- የ Kura የመደብር ማውጫ የተመሳሳይ ሰንሰለት ነው እና ከተለየ የአውታረ መረብ መገለጫ አልተገለበጠም።
+
+ዴሞን ከአንድ በላይ TOML ንብርብር ሲያነብ የማዋቀሪያ ፍለጋን ይጠቀሙ -
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./localnet/docker-compose.yml --force
-docker compose -f ./localnet/docker-compose.yml up
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 ```
 
-የኮምፖዝ ማሰማራት ከተጀመረ እና ከዚያ ከተቆረጠ በኋላ, ለ:
+## Docker እና ያፃፉ {#docker-and-compose}
 
-- የተሳሳተ `chain`
-- አንድ ባልደረባ የተለየ የጄኔሲስ ግብይት ወይም ማኒፌስት በመጠቀም
-- በኮንቴይነር አውታረመረብ ውስጥ ብቻ የሚሰሩ ማስታወቂያ የተሰጡ P2P አድራሻዎች
-- ከተወለደ በኋላ አካባቢያዊ መጠን እንደገና ጥቅም ላይ መዋል
+የትእዛዝ መስመር ክርክሮች እና አዋቅር ፋይሎች ከተፈተሸው ኮድ ጋር እንዲዛመዱ ከአሁኑ Kagami localnet ውፅዓት ያቅርቡ
 
-አዲስ ጀኔሲስ በሚፈተንበት ጊዜ አሮጌውን Kura ጥራዞችን ከመጀመሩ በፊት ያስወግዱ. አሮጌውን ብሎክ ከአዲስ ጀኔዝ ጋር ማከማቸት መልሶ መጫወት እንዳይሳካ ያደርጋል.
+```bash
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
+docker compose -f ./docker-compose.yml up
+```
+
+የቅንብር ማሰማራት ከጀመረ እና ከቆመ፣ የዴሞን ምዝግብ ማስታወሻዎችን ለሚከተሉት ይፈትሹ -
+
+- ያልተዛመደ `chain`
+- የተለየ የብሎክቼይን ጀነሲስ ግብይት ወይም ቴክኒካል ማኒፌስት በመጠቀም አንድ የአውታረ መረብ አቻ
+- በኮንቴይነር አውታረመረብ ውስጥ ብቻ የሚሰሩ የማስታወቂያ P2P አድራሻዎች
+- የብሎክቼይን ጀነሲስን እንደገና ካዳበረ በኋላ የአካባቢ መጠን እንደገና ጥቅም ላይ ይውላል
+
+አዲስ የብሎክቼይን ጀነሲስ ሲሞክሩ ቁልሉን እንደገና ከመጀመርዎ በፊት የድሮውን Kura ጥራዞች ያስወግዱ። የድሮውን የብሎክ ማከማቻ በአዲስ blockchain ጀነሲስ ማቆየት እንደገና ማጫወት እንዲሳካ ያደርገዋል።
 
 ## ኩበርኔትስ {#kubernetes}
 
-ለ Kubernetes, እያንዳንዱን ማረጋገጫ እንደ ሁኔታ የተሞላ መሠረተ ልማት አድርገው ይመለከቱት
+ለ Kubernetes፣ እያንዳንዱን አረጋጋጭ እንደ ሁኔታ መሠረተ ልማት ይያዙት -
 
-- ለእያንዳንዱ እኩዮች የተረጋጋ የማንነት ቁልፍ እና የተረጋጋ ቀጣይነት ያለው መጠን ይስጡ
-- ሌሎች እኩዮች ከቡድኑ ውስጡ ሊፈቱ የሚችሉትን P2P አድራሻዎች ያጋለጥሉ
-- የማውጫ ውቅር እና የመነሻ ፋይሎችን ለስርጭት የማይለወጥ ውቅር አድርገው ይጠቀማሉ
-- ሁሉም የጄኔሲስ ወይም የቶፖሎጂ ለውጦች ሆን ተብሎ ይተገበራሉ ፣ እንደ አውቶማቲክ የማዋቀር ካርታ ማዘመን አይደለም
+- ለእያንዳንዱ የአውታረ መረብ አቻ የተረጋጋ የመታወቂያ ቁልፍ እና የተረጋጋ የማያቋርጥ መጠን ይስጡ
+- ሌሎች የአውታረ መረብ እኩዮች ከክላስተር ውስጥ ሆነው ሊፈቷቸው የሚችሏቸውን P2P አድራሻዎችን ያጋልጡ
+- ውቅር እና blockchain Genesis ፋይሎችን ለልቀት የማይለወጥ ውቅር አድርጎ ተራራ
+- ሁሉንም የብሎክቼይን ጀነሲስ ወይም ቶፖሎጂ ለውጦችን ሆን ብለው ያውጡ እንጂ እንደ አውቶማቲክ የማዋቀር-ካርታ እድሳት አይደለም
 
-አንድ ፖድ በተደጋጋሚ እንደገና ከተጀመረ በፖድ ውስጥ የተሰየመውን ውቅር ከሚጠበቀው [`peer.template.toml`](/am/reference/peer-config/index.md#template) ጋር ያነፃፅሩ እና የባልደረባው አሮጌ Kura መረጃዎችን እየተጫወተ መሆኑን ይፈትሹ.
+አንድ ፖድ በተደጋጋሚ እንደገና ከጀመረ፣ በፖድ ውስጥ የተሰራውን ውቅር ከተጠበቀው ጋር ያወዳድሩ [`peer.template.toml`](/am/reference/peer-config/index.md#template) እና የአውታረ መረብ አቻው ያረጀውን እየተጫወተ መሆኑን ያረጋግጡ Kura ውሂብ.
 
 ## የሶራ መገለጫ {#sora-profile}
 
-Iroha 3 Nexus ፣ SoraFS ወይም ባለብዙ መስመሮች ፍሰቶችን የሚጠቀሙ ልውውጦች የሶራ መገለጫ በተቻለ ሁኔታ ዳይሞንን ማስጀመር አለባቸው:
+Nexus፣ SoraFS ወይም ባለብዙ መስመር ፍሰቶችን የሚጠቀሙ የግል ወይም የአካባቢ Iroha 3 ማሰማራቶች መደበኛውን ዴሞን በሶራ መገለጫ መጀመር አለባቸው -
 
 ```bash
-cargo run --bin irohad -- --config ./config.toml --sora
+cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora
 ```
 
-በተመሳሳይ አውታረመረብ ውስጥ ባሉ ማረጋገጫ ሰጪዎች ላይ ተመሳሳይ መገለጫን በተከታታይ ይጠቀሙ።
+በተመሳሳይ አውታረ መረብ ውስጥ ባሉ አረጋጋጮች ላይ ተመሳሳዩን መገለጫ በቋሚነት ይጠቀሙ።
+
+ይፋዊ Taira አረጋጋጮች የ Taira ትክክለኛ ሰንሰለት፣ ዝርዝር፣ የተሰናከለ የተከተተ-SoraFS ማከማቻ እና የአሂድ ጊዜ ፈራሚ መገለጫን የሚያስፈጽም የተወሰነውን አስጀማሪ ይጠቀማሉ። ከመጀመርዎ በፊት የተሰራውን Taira ውቅር ያረጋግጡ -
+
+```bash
+iroha3d_taira --sora \
+  --config /etc/iroha/taira/config.toml \
+  --check-config
+```
+
+ይፋዊ አይጀምሩ Taira አረጋጋጭ ከአጠቃላይ ጋር `iroha3d`; ተመልከት [`iroha3d` CLI ማጣቀሻ](/am/reference/iroha3d-cli.md) ለተፈፀመው መገለጫ.

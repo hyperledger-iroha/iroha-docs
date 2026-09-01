@@ -1,67 +1,67 @@
 ---
 translation_locale: az
 translation_source: /help/configuration-issues.md
-translation_source_hash: b62b106e985933d90dab1258d3b991674dd75d14322f2326148164b0fbee0f20
+translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Konfigurasiya problemlərinin həlli {#troubleshooting-configuration-issues}
+# Konfiqurasiya Problemlərinin Həlli {#troubleshooting-configuration-issues}
 
-Bu bölmə Iroha 3 konfigurasiyası üçün problemlərin aradan qaldırılması məsləhətlərini təqdim edir. Əvvəlcə [ düymələrini ](./overview.md#check-the-keys) yoxladığınızdan əmin olun, çünki bu ən çox rast gəlinən problem mənbəyidir Iroha.
+Bu bölmə Iroha 3 konfiqurasiyası üçün problemlərin həlli tövsiyələrini təqdim edir. Əvvəlcə [açarları yoxladı](./overview.md#check-the-keys) olduğunuzdan əmin olun, çünki bu, Iroha dakı problemlərin ən yayılmış mənbəyidir.
 
-Əgər yaşadığınız problem burada təsvir olunmursa, [Teleqram ](https://t.me/hyperledgeriroha) vasitəsilə bizimlə əlaqə saxlayın.
+Əgər qarşılaşdığınız problem burada təsvir edilməyibsə, bizimlə [Telegram](https://t.me/hyperledgeriroha) vasitəsilə əlaqə saxlayın.
 
-## Docker Compose quruluşunda köhnə genesis {#outdated-genesis-on-a-docker-compose-setup}
+## Köhnəlmiş blockchain genesis Docker Compose qurğusunda {#outdated-genesis-on-a-docker-compose-setup}
 
-İstifadə edərkən Docker Compose versiyası Iroha, bir qabın problemi ilə rast gəlinə bilər `Failed to deserialize raw genesis block` Bu adətən o deməkdir ki, həmyaşıdlar, imzalanmış genesis əməliyyatı və istehsal olunmuş konfiqurasiya müxtəlif Iroha Dəyişikliklər və ya profillər.
+Iroha proqramının Docker Compose versiyasından istifadə edərkən, şəbəkə həmkarı konteynerlərindən birinin `Failed to deserialize raw genesis block` xətası ilə uğursuz olma problemi ilə qarşılaşa bilərsiniz. Bu adətən şəbəkə tərəfdaşı, imzalanmış blokçeyn başlanğıc əməliyyatı və yaradılmış konfiqurasiyanın fərqli Iroha versiyaları və ya profilləri tərəfindən istehsal edildiyi deməkdir.
 
-Bu addımlarla uğursuzluğu yoxlayın:
+Uğursuzluğu bu addımlarla yoxlayın:
 
-1. Hazırda olan konteynerləri yoxlamaq üçün `docker ps` istifadə edin. Yaradılan profildən asılı olaraq, ümumiyyətlə `hyperledger/iroha:dev` konteynerlərini görəcəksiniz. Standart Docker Compose profili dörd həmyaşıd konteynerini ehtiva edir, baxmayaraq ki, yaradılmış `docker-compose.yml` fərqli ola bilər.
+1. `docker ps` istifadə edərək mövcud konteynerləri yoxlayın. Yaradılmış profilə görə adətən `hyperledger/iroha:dev` konteynerləri görəcəksiniz. Standart Docker Compose profili dörd şəbəkə həmkarı konteynerini ehtiva edir, baxmayaraq ki, sizin yaradılmış `docker-compose.yml` fərqli ola bilər.
 
-2. Logları yoxlayın və `Failed to deserialize raw genesis block` səhvini axtarın. Iroha daemon rejimində `docker compose up -d` ilə başladığınızda, `docker compose logs` əmri istifadə edin.
+2. Jurnalları yoxlayın və `Failed to deserialize raw genesis block` xətasını axtarın. Əgər `docker compose up -d` ilə Iroha-inizi daemon rejimində başladırsınızsa, `docker compose logs` əmrdən istifadə edin.
 
-Belə bir problemin həllinin yolu Iroha istifadəsinə bağlıdır. Bu əsas demo olsa və həmyaşıd məlumatlarını qorumağa ehtiyacınız yoxdursa, uyğun localnet və ya Docker Compose paketini Kagami ilə bərpa edin:
+Belə bir problemi aradan qaldırmağın yolu Iroha istifadəsindən asılıdır. Əgər bu sadə bir demo-dursa və şəbəkə həmkarı məlumatlarını saxlamağa ehtiyacınız yoxdursa, uyğun bir localnet və ya Docker Compose paketini Kagami ilə yenidən yaradın:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
 ```
 
-Sonra köhnə konteyner vəziyyətini çıxarın və bərpa olunan `genesis.signed.nrt`, peer `config.toml` və `client.toml` fayllarından yenidən başlayın.
+Sonra köhnə konteyner vəziyyətini silin və yenidən yaradılmış `genesis.signed.nrt`, şəbəkə həmkarı `config.toml` faylları və `client.toml`-dən yenidən başlayın.
 
-Iroha instansiyası məlumatlarını bərpa etmək lazımdırsa, aşağıdakıları edin:
+Əgər sizə Iroha nümunə məlumatlarını bərpa etmək lazım olsa, aşağıdakıları edin:
 
-1. İkinci Iroha rəqəmini bağlayın ki, bu da ilk (fallast) rəqəmdən məlumatları kopyalayacaqdır.
-2. Yeni rəqibin məlumatları ilk rəqiblə sinxronizasiya etməsini gözləyin.
-3. Yeni qohumunu aktiv buraxın.
-4. Yalnız koordinasiyalı miqrasiyanın bir hissəsi olaraq ilk həmyaşıdın mənşəyi və konfigurasiya fayllarını yeniləyin.
+1. Birinci (işləməyən) şəbəkə həmkarından məlumatı kopyalayacaq ikinci Iroha şəbəkə həmkarını qoşun.
+2. Yeni şəbəkə iştirakçısının məlumatları ilk şəbəkə iştirakçısı ilə sinxronlaşdırmasını gözləyin.
+3. Yeni şəbəkə həmkarını aktiv saxlayın.
+4. Koordinasiyalı miqrasiya çərçivəsində yalnız birinci şəbəkə həmkarının blokçeyn başlanğıc və konfiqurasiya fayllarını yeniləyin.
 
 ::: info
 
-Canlı şəbəkədə genesi əvəz etmək üçün ümumi avtomatik yenidən yazma yolu yoxdur. Bunu koordinasiya edilmiş bir köçürmə kimi qəbul edin: köhnə vəziyyəti qoruyun, uyğun həmyaşıdları gətirin və təsdiqləyiciləri yalnız operatorlar köçürmə planı barədə razılığa gəldikdən sonra yeni konfigurasiyaya keçirin.
+Canlı şəbəkədə blokçeyn genesis-ini əvəz etmək üçün ümumi avtomatik yenidən yazma yolu yoxdur. Bunu koordinasiyalı bir miqrasiya kimi qəbul edin: köhnə vəziyyəti qoruyun, uyğun şəbəkə iştirakçılarını işə salın və yalnız operatorlar miqrasiya planı ilə razılaşdıqdan sonra doğrulayıcıları yeni konfiqurasiyaya köçürün.
 
 :::
 
-## Xüsusi və ictimai açarların çoxlu-hash formatı {#multihash-format-of-private-and-public-keys}
+## Şəxsi və İctimai Açarların Multihash Formatı {#multihash-format-of-private-and-public-keys}
 
-Əgər baxsanız, [müştərinin konfigurasiyası](/az/guide/configure/client-configuration.md), baxırsınız ki, orada açarlar verilmişdir [Multi-hash formatı](https://github.com/multiformats/multihash).
+Əgər siz [müştəri konfiqurasiyası](/az/guide/configure/client-configuration.md)-a baxsanız, oradakı düymələrin [çoxlu-həş formatı](https://github.com/multiformats/multihash) şəklində verildiyini görəcəksiniz.
 
-Əvvəllər multi-hash ilə işləməmisinizsə, sağ tərəfdəki açar baytlarının (bayt başına iki simvol) hexadecimal təmsil edilməsi deyil, daha çox ASCII (və ya UTF-8) kimi kodlanmış baytlar olduğunu qəbul etmək normaldır; Və `public_key` və `private_key` nümunələrində hər iki silsilə əslində `from_hex` çağırın.
+Əgər əvvəllər çoxlu hash ilə işləməyibsinizsə, sağ tərəfin açar baytlarının onaltılıq təmsili olmadığı qənaətinə gəlmək təbii olar (hər biri iki simvol) bayt), lakin ASCII (və ya UTF-8) kimi kodlanmış baytlardır və həm `public_key`, həm də `private_key` instansiyalaşdırmasında string literal üzərində `from_hex`-ı çağırın.
 
-Bu da təbiidir ki, `PrivateKey::try_from_str` ilə zəng etmək yalnız düzgün açarı verəcəkdir. Beləliklə, açardakı bitlərin sayını səhv etsəniz, məsələn, 32 bayt vs 64, bu bir səhv mesajı yaradacaq.
+Eyni zamanda, sətir ədədində `PrivateKey::try_from_str` çağırmağın yalnız düzgün açarı verəcəyini fərz etmək təbii olar. Beləliklə, əgər açarın bit sayını yanlış təyin etsəniz, məsələn, 32 bayt əvəzinə 64, bu, səhv mesajı verər.
 
-Təəssüflər olsun ki, səhv mesajları bu cür uğursuzluqların aradan qaldırılmasına kömək etmir.
+Hər iki bu fərziyyə yanlışdır. Təəssüf ki, səhv mesajları bu xüsusi növ uğursuzluğu düzəltməkdə kömək etmir.
 
-Bunu necə düzəltmək olar: `hex_literal` istifadə edin. Bu da çirkin bir simvol silsiləni açıq-aşkar hexadecimal saylardan ibarət gözəl kiçik bir cədvələ çevirəcəkdir.
+Düzəltmək üçün: `hex_literal` istifadə edin. Bu həm də çirkin simvollar ardıcıllığını aydın şəkildə onaltılıq rəqəmlərdən ibarət kiçik bir cədvələ çevirəcək.
 
 ::: warning
 
-Hətta `try_from_str` tətbiqi verilən bir silsiləyin etibarlı `PrivateKey` olub olmadığını yoxlaya bilməz və əgər yoxdursa sizi xəbərdar edə bilməz.
+Hətta `try_from_str` tətbiqi də verilmiş stringin etibarlı `PrivateKey` olub olmadığını yoxlaya bilməz və əgər yoxdursa, sizi xəbərdar edə bilməz.
 
-Bu, bəzi açıq səhvləri ələ keçirəcəkdir, məsələn, əgər silsilədə etibarsız bir simvol varsa. Bununla birlikdə, bir çox açar formatını dəstəkləməyi hədəf qoyduğumuz üçün başqa heç bir şey edə bilməz.
+O, bəzi açıq səhvləri aşkar edəcək, məsələn, əgər sətir etibarsız simvol ehtiva edirsə. Lakin, çoxlu açar formatlarını dəstəkləməyi nəzərdə tutduğumuz üçün, o, başqa çox bir şey edə bilmir. O, həmçinin açarın verilmiş hesab üçün düzgün şəxsi açar olub-olmadığını deyə bilməz, əgər siz göstəriş göndərməsəniz.
 
 :::
 
-Bu cür incə səhvlərin qarşısını almaq olar, məsələn, birbaşa string literallarından deseriallaşdırmaqla və ya mənalı olduğu yerlərdə yeni bir açar cütü yaratmaqla.
+Belə incə səhvlər, məsələn, birbaşa sətir literallarından deserializasiya etməklə və ya məntiqli olduğu yerlərdə yeni açar cütü yaratmaqla qarşısı alına bilər.

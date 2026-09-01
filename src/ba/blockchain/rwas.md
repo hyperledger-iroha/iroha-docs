@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /blockchain/rwas.md
-translation_source_hash: cbdc6d766fb90bea7e68dc67f2c705bb1638340feeb2fca9f2dd43a727ac03e7
+translation_source_hash: 8d64a9a17c93f60306c279e8656e6edde8ce5dd024e742218bfb9572b7438bb0
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Реаль донъя активтары {#real-world-assets}
 
 Реаль донъя активтары (RWAs) - селтәрҙән тыш активтар моделе, уларҙың хужалығы йәки контроле сылбырҙа күҙәтелә. Iroha - RWA - теркәлгән бухгалтер партияһы, генерированный идентификаторы, хужа иҫәбенә, күләм, бизнес метаданмалар, килеп сығышы һәм факультатив йәшәү циклы контролдәре менән.
@@ -51,7 +50,7 @@ RWA ID текстовый формаһында:
 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef$commodities.universal
 ```
 
-Ҡулланыусылар үҙҙәренең бизнес идентификаторҙарын `primary_reference` йәки `metadata` исемдәрендә һаҡларға тейеш, һуңынан `RwaEvent::Created`, `FindRwas`, `/v1/rwas`, йәки транзакция йөкләмәләрен үтәгәндән һуң билдәләнгән эҙләүсе маршрутынан барлыҡҡа килгән `RwaId` табырға кәрәк.
+Ҡушымталар бизнес идентификаторын `primary_reference` йәки `metadata` эсендә һаҡларға, шунан `RwaEvent::Created`, `FindRwas`, `/v1/rwas` йәки транзакция commit булғандан һуң explorer маршруттары аша барлыҡҡа килгән `RwaId`-ны табырға тейеш.
 
 ## Ғүмер циклы {#lifecycle}
 
@@ -102,7 +101,7 @@ RWA дөйөм эш ағымдары:
 
 Ҡулланыу [`FindRwas`](/ba/reference/queries.md#assets-nfts-and-rwas) теркәлгән исемлеккә RWA бик күп. туранан-тура яңыртыуҙарға мохтаж булған ҡушымталар [`Rwa` мәғлүмәт ваҡиғалары](/ba/blockchain/filters.md#data-event-filters) барлыҡҡа килтерелгән, хужаһы үҙгәртелгән, бүленгән, берләштерелгән, һатып алынған, туңдырылған, туңмаған, Һаҡланған, сығарылған, көс менән күсерелгән, контролдәрҙе үҙгәрткән һәм метамәғлүмәт ваҡиғалары.
 
-Torii Сылбырлы дәүләт маршруттарын асыҡлай: `/v1/rwas` һәм `/v1/rwas/query`, шулай уҡ экспедиторҙар маршруттары, мәҫәлән: `/v1/explorer/rwas` һәм `/v1/explorer/rwas/{rwa_id}` генерацияланған клиенттар өҫтөнлөк бирергә тейеш тере [`/openapi`](/ba/reference/torii-endpoints.md#common-endpoints) Көйөргәҙе тарафынан асыҡланған яуап формаһы өсөн документ.
+Torii Сылбырлы дәүләт маршруттарын асыҡлай: `/v1/rwas` һәм `/v1/rwas/query`, шулай уҡ экспедиторҙар маршруттары, мәҫәлән: `/v1/explorer/rwas` һәм `/v1/explorer/rwas/{rwa_id}` генерацияланған клиенттар өҫтөнлөк бирергә тейеш тере [`/openapi.json`](/ba/reference/torii-endpoints.md#common-endpoints) Көйөргәҙе тарафынан асыҡланған яуап формаһы өсөн документ.
 
 ### Taira менән һынап ҡарағыҙ. {#try-it-on-taira}
 
@@ -134,7 +133,7 @@ curl -fsS https://taira.sora.org/openapi.json \
 from iroha_python import create_torii_client
 
 client = create_torii_client("https://taira.sora.org")
-openapi = client.request_json("GET", "/openapi", expected_status=(200,))
+openapi = client.request_json("GET", "/openapi.json", expected_status=(200,))
 
 rwa_paths = sorted(
     path for path in openapi.get("paths", {}) if path.startswith("/v1/rwas")
@@ -148,7 +147,7 @@ for path in rwa_paths:
 
 ### Һаҡлыҡхананан квитанция яҙығыҙ {#register-a-warehouse-receipt}
 
-Бер эште бер ҡул ҡуйылған транзакцияға әйләндерергә тейеш саҡта проект ҡулланыу. `primary_reference`; ҙур китап ID операциянан һуң барлыҡҡа килә.
+Business action бер signed transaction булырға тейеш булғанда draft pattern ҡулланығыҙ. Trade invoice номеры `primary_reference`-кә инә; реестр ID-һы transaction commit булғандан һуң булдырыла.
 
 ```python
 from iroha_python import TransactionConfig, TransactionDraft
@@ -189,7 +188,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-Транзакция йөкләмәләрен үтәгәндән һуң, исемлек барлыҡҡа килә RWA IDs. Сылбыр-хәллә маршруттары каноник IDs асыла; ваҡиғалар йәки Explorer деталдәр маршруттарын ҡулланығыҙ, әгәр һеҙгә кәрәк булһа, ID кире `primary_reference` йәки метамәғлүмәттәр менән тап килеү:
+Транзакция commit үтәгәндән һуң, исемлек барлыҡҡа килә RWA IDs. Сылбыр-хәллә маршруттары каноник IDs асыла; ваҡиғалар йәки Explorer деталдәр маршруттарын ҡулланығыҙ, әгәр һеҙгә кәрәк булһа, ID кире `primary_reference` йәки метамәғлүмәттәр менән тап килеү:
 
 ```python
 page = client.list_rwas_typed(limit=20, offset=0)
@@ -271,9 +270,9 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### Аҡсаны түләп алыу йәки пенсияға сығарыу {#redeem-or-retire-quantity}
+### Ҡайтарып алыу йәки әйләнештән сығарыу күләме {#redeem-or-retire-quantity}
 
-Ҡабул итеү `RedeemRwa` күрһәтелгән сылбырҙан тыш актив тапшырылғандан һуң, ҡулланылғандан һуң, пенсияға сығарылғандан һуң йәки әйләнештән башҡа юл менән алынғандан һуң. Был даими рәүештә тапшырылған күләмде партиянан айыра. `redeem_enabled`. Ҡул ҡуйыусы хужа йәки контроллер булырға тейеш.
+Ҡабул итеү `RedeemRwa` күрһәтелгән сылбырҙан тыш актив тапшырылғандан һуң, ҡулланылғандан һуң, әйләнештән сығарылғандан һуң йәки башҡа юл менән әйләнештән алынғандан һуң. Был даими рәүештә тапшырылған күләмде партиянан айыра. `redeem_enabled`. Ҡул ҡуйыусы хужа йәки контроллер булырға тейеш.
 
 ```python
 draft = TransactionDraft(
@@ -392,7 +391,7 @@ envelope = draft.sign_with_keypair(bob_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-### Углерод кредиты пенсияһы {#carbon-credit-retirement}
+### Углерод кредитын ғәмәлдән сығарыу {#carbon-credit-retirement}
 
 `RedeemRwa` тапшырыу өсөн, әйләнешкә индерелгән углерод кредиттарын алып ташларға. Сираттан тыш сертификатты йәки реестр иҫбатлауҙы метамәғлүмәттә һаҡларға:
 

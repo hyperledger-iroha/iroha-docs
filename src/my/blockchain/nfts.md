@@ -8,9 +8,9 @@ translation_engine: nllb-200-ct2
 
 # NFTs {#nfts}
 
-Iroha NFT သည် ပိုင်ရှင်တစ်ဦးတည်းရှိသော ထူးခြားသောအမှတ်တံဆိပ်အရာဖြစ်သည်။ မှတ်တမ်းတစ်ခုသည် ၎င်း၏ ကိုယ်ပိုင်လက္ခဏာ၊ မီတာဒေတာ၊ ဘဝပတ်ဝန်းကျင်ဖြစ်ရပ်များနှင့် ပိုင်ဆိုင်မှုလွှဲပြောင်းမှု အဓိပ္ပာယ်ကောက်ယူမှုလိုအပ်သော်လည်း ကိန်းဂဏန်းညီမျှခြင်းမရှိသည့်အခါ NFTs ကိုအသုံးပြုပါ။
+Iroha NFT သည် ပိုင်ရှင်တစ်ဦးတည်းရှိသော ထူးခြားသော blockchain ledger ပစ္စည်းဖြစ်သည်။ မှတ်တမ်းတစ်ခုသည် ၎င်း၏ ကိုယ်ပိုင်လက္ခဏာ၊ မီတာဒေတာ၊ ဘဝပတ်ဝန်းကျင်ဖြစ်ရပ်များနှင့် ပိုင်ဆိုင်မှုလွှဲပြောင်းမှု အဓိပ္ပာယ်ကောက်ယူမှုလိုအပ်သော်လည်း ကိန်းဂဏန်းညီမျှမှုမရှိတဲ့အခါ NFTs ကိုအသုံးပြုပါ။
 
-ကိန်းဂဏန်းနဲ့မတူဘဲ [အရင်းအမြစ်](/my/blockchain/assets.md), တစ် NFT တိကျမှုမရှိ၊ ထုတ်ယူနိုင်စွမ်းမရှိ၊ စာရင်းတစ်စောင်အတွက် အရေအတွက် မရှိပါ။ NFT မှတ်ပုံတင်ထားတဲ့ အရာတစ်ခုအဖြစ် တည်ရှိပြီး ပိုင်ဆိုင်မှုကို အဲဒီအရာကို တိုက်ရိုက် ခြေရာခံထားရတယ်။
+NFT သည် ကိန်းဂဏန်း [အရင်းအမြစ်](/my/blockchain/assets.md) နှင့်မတူဘဲ တိကျမှု၊ အရင်းအမြစ်ထုတ်လွှင့်ရေးမူဝါဒ (သို့) အကောင့်တစ်စောင်အရေအတွက်မရှိပါ။ NFT သည် မှတ်ပုံတင်ပစ္စည်းတစ်ခုအဖြစ်တည်ရှိပြီး ပိုင်ဆိုင်မှုကို တိုက်ရိုက်မှတ်တမ်းတင်ထားသည်။
 
 ## ဖွဲ့စည်းပုံ {#structure}
 
@@ -18,11 +18,11 @@ Iroha NFT သည် ပိုင်ရှင်တစ်ဦးတည်းရှ
 
 - `id`: a `NftId`
 - `content`: NFT ကို ဖော်ပြတဲ့ metadata များ
-- `owned_by`: NFT ကို ပိုင်ဆိုင်ထားသော အကောင့်
+- `owned_by`: NFT ကို ပိုင်ဆိုင်ထားသော စာရင်း
 
-`content` ကွင်းသည် `Metadata` မြေပုံတစ်ခုဖြစ်သည်။ အသေးစိတ်ထားပါ- သရုပ်ဖော်ရေးကွင်းများ၊ တည်ငြိမ်သော ရည်ညွှန်းချက်များ၊ ဟက်ရှ်များ၊ URIs သို့မဟုတ် SoraFS လမ်းကြောင်းများကို သိုလှောင်ပါ။ ကြီးမားသောစာရွက်စာတမ်းများ၊ မီဒီယာများ၊ (သို့) မြင့်မားသော churn application status များကို ချိတ်ဆက်ထားပြီး စစ်ဆေးနိုင်သည့် ရည်ညွှန်းချက်ကိုသာ NFT တွင် သိမ်းဆည်းပါ။
+`content` ကွင်းသည် `Metadata` မြေပုံတစ်ခုဖြစ်သည်။ အသေးစိတ်ထားပါ: သရုပ်ဖော်ရေးကွင်းများ၊ တည်ငြိမ်သော ရည်ညွှန်းချက်များ၊ cryptographic hashes များ၊ URIs သို့မဟုတ် SoraFS လမ်းကြောင်းများကို သိုလှောင်ပါ။ ကြီးမားသောစာရွက်စာတမ်းများ၊ မီဒီယာများ၊ သို့မဟုတ် high-churn application state off-chain ကို သိမ်းဆည်းပြီး စစ်ဆေးနိုင်သည့် ရည်ညွှန်းချက်ကိုသာ NFT တွင် သိမ်းဆည်းပါ။
 
-## Taira မှာ စမ်းကြည့်ပါ။ {#try-it-on-taira}
+## Taira တွင် ဤအလုပ်ခွင်ကို run လုပ်ပါ။ {#try-it-on-taira}
 
 အများပြည်သူ Taira testnet မှာ လက်ရှိမှာ NFT မှတ်တမ်းတွေ ရှိမရှိကို စစ်ဆေးပါ။
 
@@ -40,7 +40,7 @@ curl -fsS https://taira.sora.org/openapi.json \
 
 အလွတ် `items` array သည် အများသုံး testnet တွင် သက်ဝင်သော တုံ့ပြန်မှုတစ်ခုဖြစ်သည်။ ဆိုလိုသည်မှာ လက်ရှိစာမျက်နှာတွင် NFTs မရှိခြင်းမဟုတ်ဘဲ NFT ညွှန်ကြားချက်များ မရရှိခြင်းပါ။
 
-## NFT IDs {#nft-ids}
+## NFT အထောက်အထားများ {#nft-ids}
 
 `NftId` သည် ဤစာသားပုံစံကို အသုံးပြုသည်-
 
@@ -51,20 +51,20 @@ name$domain.dataspace
 
 ဥပမာ၊ `badge$docs.universal` သည် `badge` NFT ကို `docs.universal` ဒိုမင်ထဲတွင် ဖော်ထုတ်သည်။ အချက်အလက်နေရာကို ချန်ထားပါက လက်ရှိစစ်ဆေးသူသည် `universal` အချက်အလက်နေရာအား အသုံးပြု၍ `badge$docs` ကို `badge$docs.universal` သို့ ဖြေရှင်းပေးပါသည်။
 
-NFT IDs အတွက် တည်ငြိမ်သောနာမည်များကို အသုံးပြုပါ။ ID သည် ညွှန်ကြားချက်များ၊ မေးမြန်းမှုများ၊ ခွင့်ပြုချက်များ၊ ဖြစ်ရပ်စစ်ဆေးသူများနှင့် အသုံးချမှု ရည်ညွှန်းချက်များတွင်အသုံးပြုသည့် အရာဝတ္ထုသမိုင်းဖြစ်ပါသည်။
+NFT ID များအတွက် တည်ငြိမ်သောနာမည်များကို အသုံးပြုပါ။ ID သည် ညွှန်ကြားချက်များ၊ မေးမြန်းမှုများ၊ ခွင့်ပြုချက်များ၊ ဖြစ်ရပ်စစ် filter များနှင့် application references များတွင်အသုံးပြုသည့် အရာဝတ္ထုသမိုင်းဖြစ်သည်။
 
 ## သက်တမ်း စက်ဝန်း {#lifecycle}
 
-NFT သက်တမ်း စက်ဝန်း လုပ်ငန်းများ အသုံးပြုခြင်း Iroha အထူးညွှန်ကြားချက်များ:
+NFT သက်တမ်း စက်ဝန်း လုပ်ငန်းများ အသုံးပြုခြင်း Iroha သင်ကြားမှုလုပ်ငန်းများ:
 
-- [`Register`](/my/blockchain/instructions.md#un-register) က NFT ကို အစောပိုင်း `content` ဖြင့် ဖန်တီးသည်။
-- [`Unregister`](/my/blockchain/instructions.md#un-register) က NFT ကို ဖယ်ရှားတယ်။
-- [`Transfer`](/my/blockchain/instructions.md#transfer) ပြောင်းလဲချက်များ `owned_by`.
-- [`SetKeyValue` နှင့် `RemoveKeyValue`](/my/blockchain/instructions.md#setkeyvalue-removekeyvalue) update NFT metadata များ။
+- [`Register`](/my/blockchain/instructions.md#un-register) ဖန်တီးပေးတယ် NFT အစောပိုင်း `content`.
+- [`Unregister`](/my/blockchain/instructions.md#un-register) ဖယ်ရှားပေးသည် NFT.
+- [`Transfer`](/my/blockchain/instructions.md#transfer) ပြောင်းလဲမှု `owned_by`.
+- [`SetKeyValue` နှင့် `RemoveKeyValue`](/my/blockchain/instructions.md#setkeyvalue-removekeyvalue) update ကို NFT မီတာဒေတာ။
 
 ## ဒေသတွင်းမှာ စမ်းကြည့်ပါ။ {#try-it-locally}
 
-[CLI လမ်းညွှန်ချက် ](/my/get-started/operate-iroha-via-cli.md) မှ client ဖွဲ့စည်းမှုကို ဖန်တီးပြီး ဒေသတွင်းကွန်ရက်ကို စတင်ခဲ့ပြီလို့ ယူဆပါ
+[CLI လမ်းညွှန်](/my/get-started/operate-iroha-via-cli.md) ကနေ client ဖွဲ့စည်းမှုကို ဖန်တီးထားပြီး ဒေသတွင်းကွန်ရက်ကို စတင်ခဲ့တယ်လို့ ဒီဥပမာတွေက ယူဆတယ်။
 
 ```bash
 export IROHA_CONFIG=./localnet/client.toml
@@ -72,7 +72,7 @@ export NFT_DOMAIN=wonderland.universal
 export NFT_ID='badge_intro$wonderland.universal'
 ```
 
-ထုတ်လုပ်သော localnet သည် `wonderland.universal` နှင့် ၎င်း၏ SNS ငှားရန်စာချုပ်ကိုအတည်ပြုပြီးသားဖြစ်သည်။ မတူညီသောဒိုမင်တစ်ခုအသုံးပြုရန်၊ `app alias setup plan` နှင့် `app alias setup apply` လုပ်ငန်းခွင်များတွင်ဖော်ပြထားသည့် ကြေညာချက်များနှင့် [Domains](/my/blockchain/domains.md#registration) တွင်ဖန်တီးပါ။
+Generated localnet ကို Setup လုပ်ပြီးသားပါ။ `wonderland.universal` ၎င်း၏ SNS ခြားနားတဲ့ ဒိုမင်တစ်ခု သုံးချင်ရင် ပထမဦးဆုံးအနေနဲ့ ကြေညာချက်နဲ့ ဖန်တီးပါ။ `app alias setup plan` နှင့် `app alias setup apply` Workflow ကို [ဒိုမင်များ](/my/blockchain/domains.md#registration).
 
 NFT ကို မှတ်ပုံတင်ပါ။ မှတ်ပုံတင်သည် စံဝင်မှတ်သွင်းချက်မှ အစောပိုင်းစာရင်း JSON ကိုဖတ်သည်။
 
@@ -110,7 +110,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
-ရွေးချယ်မှုအရ transfer ကို NFT. အသုံးပြုခြင်း `ledger nft get` လက်ရှိပိုင်ရှင်ကို ဖတ်ဖို့ `owned_by`, အသုံးပြုခြင်း `ledger account list all` ရည်မှန်းချက်စာရင်းရှာဖို့ ID.
+NFT ကို ရွေးချယ်ပြီး လွှဲပြောင်းပါ။ လက်ရှိပိုင်ရှင်ကို `owned_by` မှဖတ်ဖို့ `ledger nft get` ကိုသုံးပြီး ရည်ရွယ်ချက် အကောင့် ID ကိုရှာဖို့ `ledger account list all` ကိုသုံးပါ။
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -132,9 +132,9 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 
 ## မေးခွန်းများနှင့် ဖြစ်ရပ်များ {#queries-and-events}
 
-[`FindNfts`](/my/reference/queries.md#assets-nfts-and-rwas) ကိုသုံးပြီး NFTs နှင့် [`FindNftsByAccountId` ](/my/reference/queries.md#assets-nfts-and-rwas) ကိုသုံးပြီး အကောင့်ပိုင်ရှင်များအတွက် NFTs ကိုသုံးပါ။
+အသုံးပြုခြင်း [`FindNfts`](/my/reference/queries.md#assets-nfts-and-rwas) စာရင်းသွင်းရန် NFTs နှင့် [`FindNftsByAccountId`](/my/reference/queries.md#assets-nfts-and-rwas) စာရင်းသွင်းရန် NFTs အကောင့်တစ်ခုရဲ့ ပိုင်ရှင်ပါ။
 
-NFT မှတ်ပုံတင်၊ ဖျက်သိမ်းခြင်း၊ လွှဲပြောင်းခြင်းနှင့် metadata update များသည် NFT ဒေတာဖြစ်ရပ်များကို ထုတ်လွှင့်သည်။ `Nft` ဒေတာဖြစ်စဉ် စစ်ဆေးမှုကို အသုံးပြု၍ စာရင်းအင်းပြောင်းလဲမှုများသို့မဟုတ် NFT ဘဝပတ်ဝန်းကျင်ဖြစ်ရပ်များအား တုံ့ပြန်သော အဆောက်အအုံ trigger များကို ၀ င်ရောက်ရှိပါ။
+NFT မှတ်ပုံတင်ခြင်း၊ ဖျက်သိမ်းခြင်း၊ လွှဲပြောင်းခြင်းနှင့် metadata update များ ထုတ်လွှင့်ခြင်း NFT ဒေတာဖြစ်ရပ်များ။ `Nft` ဒေတာဖြစ်ရပ် filter ကို blockchain ledger ပြောင်းလဲခြင်းများအတွက် subscribe လုပ်နေစဉ် သို့မဟုတ် build trigger များကို တုံ့ပြန်မှု NFT ဘဝ စက်ဝန်း ဖြစ်ရပ်များ။
 
 ## ခွင့်ပြုချက်များ {#permissions}
 
@@ -145,7 +145,7 @@ Default permission surface မှာ NFT သီးသန့် tokens တွေ 
 - `CanTransferNft`
 - `CanModifyNftMetadata`
 
-ခွင့်ပြုချက် စစ်ဆေးမှုများကို Active Runtime Validator က အကောင်အထည်ဖော်ပေးပြီး ကွန်ရက်တစ်ခုသည် အတည်ပြုသူကို အဆင့်မြှင့်တင်ခြင်းဖြင့် ခွင့်ပြုချက်ကို ပြုပြင်နိုင်သည်။ လက်ရှိ default token စာရင်းအတွက် [ Permission Tokens ](/my/reference/permissions.md) ကိုကြည့်ပါ။
+ခွင့်ပြုချက် စစ်ဆေးမှုများကို တက်ကြွသော ဆော့ဝဲ အကောင်အထည်ဖော်ရေး ပတ်ဝန်းကျင် အတည်ပြုသူက အကောင်အ ထမ်းဆောင်ပေးသည်၊ ထို့ကြောင့် ကွန်ရက်တစ်ခုသည် အကောင်အက်ရှင်ကို အဆင့်မြှင့်တင်ခြင်းဖြင့် ခွင့်ပြုချက်ကို ပြုပြင်နိုင်သည်။ လက်ရှိ အလိုလျောက် token စာရင်းအတွက် [ခွင့်ပြုချက် လက်မှတ်များ](/my/reference/permissions.md) ကို ကြည့်ပါ။
 
 ## NFTs ကို ရွေးချယ်ခြင်း {#choosing-nfts}
 
@@ -154,13 +154,13 @@ Default permission surface မှာ NFT သီးသန့် tokens တွေ 
 - အထောက်အထားများ၊ အမှတ်တံဆိပ်များ၊ လိုင်စင်များနှင့် အတည်ပြုချက်များ
 - ကိုယ်စားလှယ်လောင်း သို့မဟုတ် ဝင်ရောက်ခွင့် မှတ်တမ်းများ
 - ကိုယ်ပိုင်လက္ခဏာနဲ့ ချည်နှောင်ထားတဲ့ (သို့) အကောင့်ပိုင် လျှောက်ထားချက် မှတ်တမ်းများ
-- ချိတ်ဆက်မှုအပြင် မီဒီယာများ၊ စာရွက်စာတမ်းများ သို့မဟုတ် ထုတ်ပြန်ချက်များကို ရည်ညွှန်းခြင်း
+- ချိတ်ဆက်မှုအပြင် မီဒီယာများ၊ စာရွက်စာတမ်းများ သို့မဟုတ် နည်းပညာထုတ်ပြန်ချက်များကို ရည်ညွှန်းခြင်း
 
-fungible balance များအတွက် numeric asset ကိုသုံးပြီး data တွေဟာ ရှိနေတဲ့ ledger object တစ်ခုရဲ့ compact attribute တစ်ခုသာဖြစ်တဲ့အခါ plain [ metadata ](/my/blockchain/metadata.md) ကို သုံးပါ။
+fungible balance များအတွက် numeric asset ကိုသုံးပြီး data တွေဟာ ရှိနေတဲ့ blockchain ledger object တစ်ခုရဲ့ compact attribute တစ်ခုသာဖြစ်တဲ့အခါ plain [metadata များ](/my/blockchain/metadata.md) ကို အသုံးပြုပါ။
 
 နောက်တစ်ချက်ကြည့်ပါ-
 
-- [အရင်းအမြစ်များ](/my/blockchain/assets.md)
-- [metadata](/my/blockchain/metadata.md)
-- [ညွှန်ကြားချက်များ ](/my/blockchain/instructions.md)
-- [မေးမြန်းချက်များ ](/my/blockchain/queries.md)
+- [ပိုက်ဆံများ](/my/blockchain/assets.md)
+- [မီတာဒေတာ](/my/blockchain/metadata.md)
+- [ညွှန်ကြားချက်](/my/blockchain/instructions.md)
+- [မေးခွန်းများ](/my/blockchain/queries.md)

@@ -98,10 +98,17 @@ escrows, generic asset locks, and anonymous escrow records.
 | `FindLaneRelayEnvelopeByRef` | Find a verified lane-relay envelope. |
 | `FindSorafsProviderOwner` | Resolve the owner of a SoraFS provider. |
 | `FindDataspaceNameOwnerById` | Resolve a dataspace-name owner. |
-| `FindMusubiReleaseByRef` | Find a Musubi release by reference. |
-| `FindMusubiPackageVersions` | List versions for a Musubi package. |
-| `FindMusubiPackageReleases` | List releases for a Musubi package. |
-| `FindMusubiShortAliasByName` | Resolve a Musubi short alias. |
+| `FindMusubiExactPackageV1` | Read one exact package record and its current revisions. |
+| `FindMusubiExactReleaseV1` | Read one exact release snapshot. |
+| `FindMusubiProviderBundleAttestationV1` | Read one provider's archive-bundle attestation. |
+| `FindMusubiResolverIndexV1` | Page the finalized resolver index. |
+| `FindMusubiVersionsV1` | Page finalized versions for one package. |
+| `FindMusubiMaintainersV1` | Page accepted maintainers and pending invitations. |
+| `FindMusubiArchiveLocationsV1` | Page finalized SoraFS locations for one archive. |
+| `FindMusubiArchiveRetentionV1` | Page archive-retention records. |
+| `FindMusubiAliasV1` | Read the current target and revision of a global alias. |
+| `FindMusubiAliasHistoryV1` | Page the immutable retarget history of a global alias. |
+| `FindMusubiOrderedPrefixV1` | Page packages under one ordered structural prefix. |
 
 ## Triggers, Contracts, Transactions, and Blocks
 

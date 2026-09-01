@@ -1,37 +1,37 @@
 ---
 translation_locale: az
 translation_source: /guide/security/vpn.md
-translation_source_hash: 4161cec5d601ad3a57decc19402738358a03648adad8502b5282e8e9bacc3fa8
+translation_source_hash: 020591f0d7c5560dfb2e9f3f4537f429cbeba864c3eb022856d42addcf32e225
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Virtual özəl şəbəkələr {#virtual-private-networks}
+# Virtual Özəl Şəbəkələr {#virtual-private-networks}
 
-<abbr title="Virtual Private Network">VPN</abbr> - Iroha xidmətlərinə kim daxil ola biləcəyini məhdudlaşdıran bir şəbəkə nəzarətidir. Validatorların, tətbiq arxa planlarının və operatorların açıq internet marşrutu əvəzinə özəl ünvanlar vasitəsilə ünsiyyət qurduğu xüsusi və konsorsium tətbiqetmələri üçün ən faydalıdır.
+Bir <abbr title="Virtual Private Network">VPN</abbr> şəbəkə nəzarətidir ki, kimlərin Iroha xidmətlərinə çata biləcəyini məhdudlaşdırır. Bu, əsasən özəl və konsorsium yerləşdirmələrində faydalıdır, burada doğrulayıcılar, tətbiq arxa planları və operatorlar açıq internet marşrutları əvəzinə özəl ünvanlar üzərindən əlaqə qurmalıdırlar.
 
-VPN Iroha həmyaşıd açarlarını, hesab açarlarını, icazələri, yanğın divarı qaydalarını, monitorinq və ya təhlükəsiz açar saxlamalarını əvəz etmir. VPN şəbəkənin əldə edilmə qabiliyyətini daraldır, Iroha konfiqurasiyası və idarəetməsi isə hansı rəqiblərə və hesablara güvəniləcəyini müəyyən edir.
+A VPN Iroha şəbəkə bərabər açarlarını, hesab açarlarını, icazələri, firewall qaydalarını, monitorinqi və ya təhlükəsiz açar saxlamağı əvəz etmir. Bunu bir qat kimi qiymətləndirin idaəetmə sərhədi: VPN şəbəkə mövcudluğunu daraldır, Iroha konfiqurasiyası və idarəçiliyi isə hansı şəbəkə tərəfdaşlarının və hesabların etibarlı olduğunu müəyyən edir.
 
-## VPN -dən nə vaxt istifadə etmək lazımdır? {#when-to-use-a-vpn}
+## VPN-dən Nə Zaman İstifadə Etməli {#when-to-use-a-vpn}
 
-VPN istifadə edin:
+İstifadə edin VPN aşağıdakı hallarda:
 
-- Validatorlar müxtəlif təşkilatlar tərəfindən və ya fərqli hosting mühitlərində idarə olunur.
-- Torii yalnız tətbiq arxa tərəfləri, operatorlar və ya etibarlı müştərilər tərəfindən əldə edilə bilər
-- Metriklər, loglar, SSH və ya digər idarəetmə son nöqtələri özəl operator şəbəkəsində qalmalıdır.
-- Test və ya mərhələlənmə şəbəkəsi ictimai son nöqtələri açıqlamadan istehsal giriş nəzarətlərinə bənzəməlidir.
+- təsdiqləyicilər müxtəlif təşkilatlar tərəfindən və ya müxtəlif hosting mühitlərində işlədilir
+- Torii yalnız tətbiq arxa ucları, operatorlar və ya etibarlı müştərilər vasitəsilə əlçatan olmalıdır
+- metriklər, qeydiyyatlar, SSH və ya digər idarəetmə API son nöqtələri özəl operator şəbəkəsində qalmalıdır
+- sınaq və ya hazırlıq şəbəkəsi istehsal giriş nəzarətlərinə bənzəməlidir, lakin ictimai API son nöqtələrini açmamalıdır
 
-Hər bir tətbiq üçün VPN tələb olunmur. İctimai şəbəkələr ictimai bir qapı, yük balanseri və ya geri proxy vasitəsilə Torii niyyətli şəkildə ifşa edə bilərlər. O halda belə olsa da, mümkün olduqda təsdiqçi peer-to-peer trafikini və idarəetmə son nöqtələrini məhdud şəbəkədə saxlayın.
+Hər yerləşdirmə üçün VPN tələb olunmur. İctimai şəbəkələr Torii-ni ictimai şlüz, yük balanslaşdırıcısı və ya tərs proksi vasitəsilə qəsdən açıq edə bilər. Hətta bu halda da təsdiqləyicilərarası trafiki və idarəetmə API son nöqtələrini mümkün olduqda məhdud şəbəkədə saxlayın.
 
 ::: tip
 
-Bir brauzer VPN yalnız bu brauzerdən trafik qoruyur. Bu proseslər eyni özəl şəbəkə vasitəsilə yönləndirilmədiyi təqdirdə, `irohad`, CLI, SDK, SSH, ölçülər və ya ehtiyat trafikinin qorunmamasıdır.
+Bir brauzer VPN yalnız həmin brauzerdən gələn trafiki qoruyur. O, `iroha3d`, CLI, SDK, SSH, metrikləri və ya ehtiyat nüsxə trafiki qorumur, əgər həmin proseslər eyni xüsusi şəbəkədən yönləndirilməyibsə.
 
 :::
 
-## İstifadə nümunəsi {#deployment-pattern}
+## Yerləşdirmə Naxışı {#deployment-pattern}
 
-Xüsusi təsdiqçi şəbəkəsi üçün hər bir təsdiqçiyə sabit VPN ünvanı və ya xüsusi DNS adını verin. Tərəfdaşları reklamlaşdırılan peer-to-peer ünvanlarına digər təsdiqçilərdən bu şəbəkə vasitəsilə daxil olmaq üçün qurun:
+Şəxsi valyidator şəbəkəsi üçün hər bir valyidatora sabit VPN ünvanı və ya şəxsi DNS adı verin. Şəbəkə tərəfdaşlarını elə qurun ki, onların reklam olunan bərabərhüquqlu şəbəkə ünvanları həmin şəbəkədən digər valyidatorlar tərəfindən əldə edilə bilsin:
 
 ```toml
 trusted_peers = [
@@ -49,46 +49,46 @@ public_address = "10.20.0.11:1337"
 address = "10.20.0.11:8080"
 ```
 
-`network.address` və `network.public_address` səhifələrindəki mövcud həmyaşıdlara təyin edilmiş ünvanı istifadə edin. Hər bir həmyaşıda eyni etibarlı həmyaşıdı kimlikləri qeyd etmək lazımdır, lakin özünün VPN marşrut cədvəlindən əldə edilə bilən ünvanlar ilə.
+Hazırkı şəbəkə dostuna `network.address` və `network.public_address` daxil edilmiş ünvanı istifadə edin. Hər bir şəbəkə dostu eyni etibarlı şəbəkə dostu şəxsiyyətlərini siyahıda göstərməlidir, lakin ünvanlar öz VPN marşrut cədvəlindən çatılabilir olmalıdır.
 
-Müştəri və CLI konfiqurasiyaları Torii son nöqtəsinə, VPN vasitəsilə və ya idarə olunan daxili qapı vasitəsilə əldə edilə bilən bir [PH000000) endpoint-a yönəlməlidir:
+Müştəri və CLI konfiqurasiyaları VPN vasitəsilə və ya nəzarətli daxili şlüz vasitəsilə əldə edilə bilən Torii API son nöqtəsinə işarə etməlidir:
 
 ```toml
 torii_url = "http://10.20.0.11:8080"
 ```
 
-Əgər Torii VPN-nin xaricində mövcud olmalıdırsa, onu TLS təmin edən əks proxy və ya yük balansçusu arxasında qoyun; təsdiqləmə, dərəcə məhdudiyyəti və qeydə alınma. Xüsusi peer-to-peer portlarını və ya idarəetmə son nöqtələrini birbaşa ictimai internetə çıxarmaqdan çəkinin.
+Əgər Torii VPN-in xaricində mövcud olmalıdırsa, onu TLS, autentifikasiya, limit tətbiqi və qeydiyyat təmin edən bir tərs proxy və ya yük balanslayıcı arxasında yerləşdirin. Xam bərabərhüquqlu şəbəkə portlarını və ya inzibati API uç nöqtələrini birbaşa ictimai İnternetə açmaqdan çəkinin.
 
 ## Firewall Qaydaları {#firewall-rules}
 
-VPN mövcud olsa da, host və bulud yanğın duvarı qaydalarından istifadə edin:
+Bir VPN mövcud olduqda belə host və bulud firewall qaydalarından istifadə edin:
 
-|Xidmət |Tələb olunan giriş |
+|Xidmət|Tövsiyə olunan giriş|
 | --- | --- |
-|Peer-to-peer port |Yalnız digər təsdiqçi VPN ünvanları |
-|Torii |Tətbiq arxa planları, operatorlar və ya etibarlı müştərilər VPN aralığı |
-|Metriklər və sağlamlıq yoxlamaları |Operator şəbəkəsindəki monitorinq sistemləri |
-|SSH və idarəetmə |Bastion host, imtiyazlı operator VPN məsafəsi və ya şüşə qırma prosesi |
-|Yedekləmə və saxlama replikasiyası |Özəl şəbəkədə yedek sistemləri |
+|Şəbəkə üzvləri arasında port|Digər doğrulayıcı VPN yalnız ünvanlar|
+| Torii |Tətbiq arxa hissələri, operatorlar və ya etibarlı müştəri VPN diapazonları|
+|Metriklər və sağlamlıq yoxlamaları|Operator şəbəkəsində monitorinq sistemləri|
+|SSH və inzibati işlər|Bastion host, imtiyazlı operator VPN diapazonu və ya təcili giriş prosesi|
+|Ehtiyat nüsxələr və saxlama təkrarlanması|Şəxsi şəbəkədə ehtiyat nüsxə sistemləri|
 
-Standart imtina qaydaları geniş icazə qaydalarından daha asan nəzarət edilir. Yeni bir həmyaşıd şəbəkəyə qoşulduqda, VPN üzvlüyünü yeniləyin, yanğın divarı icazə siyahısı və Iroha etibarlı həmyaşıda konfigurasiyası koordinasiya edilmiş bir dəyişiklik kimi.
+Default-deny qaydaları geniş allow qaydalarından daha asan yoxlanılır. Yeni bir şəbəkə tərəfdaşı şəbəkəyə qoşulduqda, VPN üzvlük, firewall icazə siyahısı və Iroha etibarlı şəbəkə tərəfdaşı konfiqurasiyasını birgə koordinasiya olunmuş dəyişiklik olaraq yeniləyin.
 
-## Əməliyyat yoxlama siyahısı {#operational-checklist}
+## Əməliyyat Yoxlama Siyahısı {#operational-checklist}
 
-- VPN tətbiqini seçin, məsələn WireGuard, IPsec və ya təşkilat tərəfindən təsdiqlənmiş idarə olunan özəl şəbəkə.
-- Unikal istifadə edin VPN Hər bir aparıcı və operator üçün etibarnamələr. Paylaşmayın VPN Validatorlar arasındakı açarlar.
-- VPN etibarnamələrini Iroha şəxsi açarlarından və genesis imzalanması materialından ayırın.
-- VPN gecikmə, paket itkisi, yenidən əlaqə və marşrut dəyişikliklərini izləyin. Konsensus davamlı şəbəkə qeyri-sabitliyinə həssasdır.
-- Güclü MTU testi. Paket parçalanması intermitent peer və ya Torii çatışmazlıqlara bənzəyə bilər.
-- VPN aralıqlarının peer-to-peer, Torii, metriklər, SSH və yedek son nöqtələrə çatmasına icazə verilən sənəd.
-- Ev sahibi, operator hesabı və ya təşkilat şəbəkəni tərk edərkən VPN etibarnamələrini fırlatın.
-- Validyatorlar arasındakı yeganə marşrut olaraq tək bir VPN qapıdan çəkinin. İstehsalat şəbəkələri üçün redundant qapılar və ya saytdan sayta marşrutları planlaşdırın.
-- Hadisə cavabı təlimlərində VPN çatışmazlıqları daxil edin ki, operatorlar şəbəkə partisiyasını Iroha prosesi çatışmazlığından nə vaxt ayırmalı olduğunu bilsinlər.
+- Auditorlardan keçmiş və aktiv şəkildə saxlanılan VPN implementasiyasını seçin, məsələn, WireGuard, IPsec və ya təşkilat tərəfindən təsdiqlənmiş idarə olunan özəl şəbəkə.
+- Hər bir host və operator üçün unikal VPN giriş məlumatlarından istifadə edin. Təsdiqləyicilər arasında VPN açarlarını paylaşmayın.
+- VPN etimadnamələrini Iroha şəxsi açarları və blokçeyn yaradılma imzalama materialından ayrı saxlayın.
+- Latensiyanı, paket itkisini, yenidən qoşulmaları və marşrut dəyişikliklərini izləyin VPN. Konsensus davamlı şəbəkə qeyri-sabitliyinə həssasdır.
+- Effektiv MTU-i sınaqdan keçirin. Paket parçalanması ara-sıra şəbəkə həmkarı və ya Torii çatışmazlıqları kimi görünə bilər.
+- Sənəd hansı VPN diapazonlarının bərabərhüquqlu şəbəkə, Torii, metriklər, SSH və ehtiyat nüsxə API son nöqtələrinə çatmasına icazə verildiyini göstərir.
+- Bir host, operator hesabı və ya təşkilat şəbəkədən çıxdıqda VPN şəhadətnamələrini dəyişdirin.
+- Tək VPN qapısını doğrulayıcılar arasında yeganə yol kimi istifadə etməkdən çəkinin. İstehsal şəbəkələri üçün ehtiyatlı qapılar və ya saytlararası yollar planlaşdırın.
+- Operatorların bir şəbəkə bölünməsini Iroha prosesin uğursuzluğundan ayırd etməyi bilməsi üçün insident cavab məşqlərinə VPN uğursuzluqları daxil edin.
 
-## Əlaqəli səhifələr {#related-pages}
+## Əlaqəli Səhifələr {#related-pages}
 
-- [Təhlükəsizlik prinsipləri](/az/guide/security/security-principles.md)
-- [Əməliyyat təhlükəsizliyi](/az/guide/security/operational-security.md)
-- [Şəbəkənin tətbiqi üçün açarlar ](/az/guide/configure/keys-for-network-deployment.md)
-- [Peer Management](/az/guide/configure/peer-management.md)
-- [Peer Configuration Reference ](/az/reference/peer-config/index.md)
+- [Təhlükəsizlik Prinsipləri](/az/guide/security/security-principles.md)
+- [Əməliyyat Təhlükəsizliyi](/az/guide/security/operational-security.md)
+- [Şəbəkə Yerləşdirilməsi üçün Açarlar](/az/guide/configure/keys-for-network-deployment.md)
+- [şəbəkə tərəfdaşının idarə edilməsi](/az/guide/configure/peer-management.md)
+- [şəbəkə həmkarı Konfiqurasiya Referansı](/az/reference/peer-config/index.md)

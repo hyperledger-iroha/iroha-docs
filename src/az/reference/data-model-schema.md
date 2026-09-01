@@ -1,13 +1,20 @@
 ---
 translation_locale: az
 translation_source: /reference/data-model-schema.md
-translation_source_hash: 30235305046e4d9e7fd76b7dcf8859f9de0fe2182c61e1e96f455f6c5c4dbda6
+translation_source_hash: cf27b1f313a695b648ae450564a51120af0e3e39641ed140a187d128b930da97
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Məlumat modelləri sxemi {#data-model-schema}
+# Məlumat Modeli SXeması {#data-model-schema}
 
-Bu səhifə sənəd yeniləmə iş axını tərəfindən qeyd olunan [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) tənzimləmədən `kagami advanced schema` ilə yaradılmışdır. Rendered sürətli görüntüləri bu anbarda yoxlanılır, buna görə normal sənədləşmə binaları Iroha mənbə yoxlamasına ehtiyac yoxdur.
+İnteqrasiyanızın hədəf aldığı dəqiq noddan sxemi sorğulayın. Torii səthi aktiv olduqda `GET /v1/schema` ünvanında aktiv məlumat modeli sxemini təqdim edir:
 
-<DataModelSchema />
+```bash
+export TORII_URL=http://127.0.0.1:8180
+
+curl -fsS -H 'Accept: application/json' "$TORII_URL/v1/schema" \
+  > iroha-data-model-schema.json
+```
+
+Təsdiq edilmiş sənədləşdirmə parçacığından bağımlılıqlar yaratmayın, əgər onun mənşə statusu gözləmədədirsə. Canlı nodun cavabı həmin nodun tərtib edilmiş məlumat modeli üçün səlahiyyətlidir; onu inteqrasiyanızda istifadə olunan node quruluşu ilə yanaşı sabitləyin.

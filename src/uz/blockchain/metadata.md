@@ -6,28 +6,28 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Metadatalar {#metadata}
+# Metama’lumotlar {#metadata}
 
-Metadatalar - bu kitob ob'ektlariga ilova qilingan aniqlangan kalit qiymat xaritasi. `Name` qiymatlar va qiymatlar JSON (`Json`) yordamchi yuklar.
+Metama’lumot — reyestr obyektiga biriktiriladigan tekshirilgan kalit-qiymat xaritasi. Kalitlar `Name` qiymatlari, qiymatlar esa JSON (`Json`) foydali yuklaridir.
 
-Quyidagi ob'ektlar metadatalarga ega bo'lishi mumkin:
+Quyidagi obyektlar metama’lumot olib yurishi mumkin:
 
 - domenlar
-- hisob raqamlari
+- hisoblar
 - aktivlar
-- aktivlarning ta'riflari
+- aktiv ta’riflari
 - NFTs
 - RWAs
-- qo'zg'atuvchilar
-- operatsiyalar
+- triggerlar
+- tranzaksiyalar
 
-Katta hisobda bo'lgan kichik tavsif yoki indekslash maydonlari uchun metadatalardan foydalaning. Katta foydali yuklar WSV tashqarisida saqlanishi va URI yoki SoraFS yo'nalishi bilan ko'rsatilishi kerak.
+Reyestr holatida saqlanishi lozim bo‘lgan kichik tavsifiy yoki indekslash maydonlari uchun metama’lumotdan foydalaning. Katta foydali yuklarni WSV tashqarisida saqlang va ularga dayjest, URI yoki SoraFS yo‘li orqali murojaat qiling.
 
-Metadotlar, aktivlar NFTs, RWAs yoki zanjirdan tashqari saqlashni tanlash bo'yicha yo'l-yo'riq olish uchun [Metadotlar va Ledger Storage Options](/uz/guide/configure/metadata-and-store-assets.md) ni ko'ring.
+Metama’lumotlar, aktivlar, NFTs, RWAs yoki zanjirdan tashqari saqlash usulini tanlash bo‘yicha [Metama’lumotlar va reyestrda saqlash variantlari](/uz/guide/configure/metadata-and-store-assets.md) bo‘limiga qarang.
 
-## Taira bilan sinab ko'ring. {#try-it-on-taira}
+## Taira da sinab ko‘rish {#try-it-on-taira}
 
-Metadatalar oddiy resurs o'qish orqali ko'rinadi. Ushbu buyruq Taira aktivlarning hozirda metadatalarga ega bo'lgan ta'riflarini ro'yxatga oladi:
+Metama’lumotlar odatiy resurs o‘qishlarida ko‘rinadi. Bu buyruq hozir metama’lumotga ega Taira aktiv ta’riflarini sanaydi:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
@@ -36,7 +36,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=100' \
     | {id, name, metadata}'
 ```
 
-Domenlar va hisob-kitoblar uchun bir xil modeldan foydalaning:
+Domenlar va hisoblar uchun ayni usuldan foydalaning:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
@@ -46,20 +46,20 @@ curl -fsS 'https://taira.sora.org/v1/accounts?limit=20' \
   | jq '.items[] | select((.metadata // {} | length) > 0)'
 ```
 
-Bo'sh chiqarishni haqiqiy natija deb hisoblang. Bu Taira ob'ektlarining joriy sahifasida metadotlar yo'qligini anglatadi, bu esa oxirgi nuqta muvaffaqiyatsiz tugadi emas.
+Bo‘sh natijani yaroqli deb hisoblang. Bu Taira obyektlarining joriy sahifasida metama’lumot yo‘qligini bildiradi, so‘nggi nuqta ishlamaganini emas.
 
-## Metadatalarni yangilash {#updating-metadata}
+## Metama’lumotlarni yangilash {#updating-metadata}
 
-Metadotlar Iroha maxsus yo'l-yo'riqlari bilan o'zgartirilgan:
+Metama’lumotlar Iroha maxsus ko‘rsatmalari bilan o‘zgartiriladi:
 
-- [`SetKeyValue`](/uz/blockchain/instructions.md#setkeyvalue-removekeyvalue) kalitni qo'shadi yoki o'rniga qo'yadi
+- [`SetKeyValue`](/uz/blockchain/instructions.md#setkeyvalue-removekeyvalue) kalitni kiritadi yoki almashtiradi
 - [`RemoveKeyValue`](/uz/blockchain/instructions.md#setkeyvalue-removekeyvalue) kalitni olib tashlaydi
 
-Transaksiyani taqdim etayotgan organ faol ish vaqti tasdiqlovchi tomonidan talab qilingan ruxsatga ega bo'lishi kerak. Andoza ruxsatlar yuzi uchun koʻring [Ruxsat belgisi](/uz/reference/permissions.md).
+Tranzaksiyani yuborayotgan vakolat faol bajarish muhiti tekshiruvchisi talab qiladigan ruxsatga ega bo‘lishi shart. Standart ruxsatlar interfeysi uchun [Ruxsat tokenlari](/uz/reference/permissions.md) bo‘limiga qarang.
 
-## O'zgarishlar {#events}
+## Hodisalar {#events}
 
-Ma'lumotlar hodisalari metama'lumotlar o'zgarganda chiqariladi. Umumiy hodisa payload `MetadataChanged<Id>`:
+Metama’lumot o‘zgarganda ma’lumotlar hodisasi chiqariladi. Umumiy hodisa foydali yuki — `MetadataChanged<Id>`:
 
 ```mermaid
 classDiagram
@@ -81,10 +81,10 @@ MetadataChanged --> AssetDefinitionMetadataChanged
 MetadataChanged --> DomainMetadataChanged
 ```
 
-[ma'lumotlar hodisalari filtrlaridan ](/uz/blockchain/filters.md#data-event-filters) foydalanib, integratsiya uchun muhim bo'lgan entitet turi yoki obyekti ID uchun faqat metadata hodisalariga obuna bo'ling.
+Integratsiya uchun muhim obyekt turi yoki identifikatoriga oid metama’lumot hodisalarigagina obuna bo‘lish uchun [ma’lumotlar hodisasi filtrlaridan](/uz/blockchain/filters.md#data-event-filters) foydalaning.
 
-## Savollar {#queries}
+## So'rovlar {#queries}
 
-Metama'lumotlar so'ragan ob'ektning bir qismi sifatida qaytariladi. Masalan, [`FindAccountById`](/uz/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/uz/reference/queries.md#domains-and-peers) yoki [`FindAssetDefinitionById`](/uz/reference/queries.md#assets-nfts-and-rwas)dan foydalaning. [`FindNfts`](/uz/reference/queries.md#assets-nfts-and-rwas) yoki [`FindNftsByAccountId`](/uz/reference/queries.md#assets-nfts-and-rwas) NFTs va [`FindRwas` ](/uz/reference/queries.md#assets-nfts-and-rwas) RWA lotlar uchun foydalaning. Keyin ob'ektning metadata maydonini o'qing. NFT so'rov javoblari NFT `content` xaritasini yozuvchi metadata sifatida ko'rsatadi.
+Metama’lumotlar so‘ralgan obyektning bir qismi sifatida qaytariladi. Masalan, [`FindAccountById`](/uz/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/uz/reference/queries.md#domains-and-peers) yoki [`FindAssetDefinitionById`](/uz/reference/queries.md#assets-nfts-and-rwas) dan foydalaning. NFTs uchun [`FindNfts`](/uz/reference/queries.md#assets-nfts-and-rwas) yoki [`FindNftsByAccountId`](/uz/reference/queries.md#assets-nfts-and-rwas), RWA partiyalari uchun esa [`FindRwas`](/uz/reference/queries.md#assets-nfts-and-rwas) dan foydalaning. Keyin obyektning metama’lumot maydonini o‘qing. NFT so‘rovi javoblari NFT `content` xaritasini yozuv metama’lumoti sifatida ko‘rsatadi.
 
-Metadata kalitlari katta ma'lumotlar ro'yxatining bir qismi hisoblanadi, shuning uchun ularni barqaror saqlang va JSON qiymati o'sha versiyani aniq olib borishi mumkin bo'lganda dasturga mos versiyalarni kodlashdan qoching.
+Metama’lumot kalitlari reyestr holatining bir qismidir. Ularni barqaror saqlang; versiyani JSON qiymatining o‘zida aniq ko‘rsatish mumkin bo‘lsa, ilovaga xos versiya almashishini kalit nomiga kodlamang.

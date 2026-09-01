@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /cookbook/metadata.md
-translation_source_hash: 07b065b28eca44939a92b40a81a47b57178de4539abb0daf51913969e34eced7
+translation_source_hash: bb486994faabb29fb48609a886862e44e565148be4800ec1244218ef37e2e54b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 ## نتیجہ {#outcome}
 
-Taira پر میٹا ڈیٹا پڑھیں، ایک اکاؤنٹ کے میٹا ڈیٹا کی قیمت کو واضح طور پر فیس ادا کرنے والی ٹرانزیکشن کے ساتھ ترتیب دیں اور اس کی تصدیق کریں، پھر دوبارہ قدر کو ہٹائیں۔ آپ لیجر آبجیکٹ میٹا ڈیٹا کو ٹرانزیکtion فیس میٹا ڈیٹا سے الگ رکھیں گے۔
+Taira پر میٹا ڈیٹا پڑھیں، ایک اکاؤنٹ کے میٹا ڈیٹا کی قیمت کو واضح طور پر فیس ادا کرنے والی ٹرانزیکشن کے ساتھ ترتیب دیں اور اس کی تصدیق کریں، پھر دوبارہ قدر کو ہٹائیں۔ آپ لیجر آبجیکٹ میٹا ڈیٹا کو ٹرانزیکشن فیس میٹا ڈیٹا سے الگ رکھیں گے۔
 
 ## لازمی شرائط {#prerequisites}
 
@@ -36,7 +36,7 @@ curl -fsS -H 'Accept: application/json' \
   | jq '.items[] | select((.metadata // {} | length) > 0)'
 ```
 
-چھوٹے وضاحتی یا انڈیکسنگ فیلڈز کے لئے میٹا ڈیٹا کا استعمال کریں۔ بڑے مفید بوجھ کو لیجر سے باہر رکھیں اور اس کی بجائے ایک ڈائجسٹ ، URI ، یا SoraFS حوالہ محفوظ کریں۔
+چھوٹے وضاحتی یا انڈیکسنگ فیلڈز کے لئے میٹا ڈیٹا کا استعمال کریں۔ بڑے پے لوڈ کو لیجر سے باہر رکھیں اور اس کی بجائے ایک ڈائجسٹ ، URI ، یا SoraFS حوالہ محفوظ کریں۔
 
 ### 2۔ ہدف کے حساب سے اخذ کریں {#_2-derive-the-target-account}
 
@@ -133,8 +133,8 @@ fi
 
 ## ماخذ اور متعلقہ دستاویزات {#source-and-related-docs}
 
-- [پنڈ commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/integration_tests/tests/queries/metadata.rs) پر میٹا ڈیٹا query انٹیگریشن ٹیسٹ۔
-- [Python SDK ٹرانزیکشن بلڈرز پر مقررہ کمیٹ](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/python/iroha_python/README.md)۔
+- [پنڈ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/queries/metadata.rs) پر میٹا ڈیٹا query انٹیگریشن ٹیسٹ۔
+- [Python SDK ٹرانزیکشن بلڈرز پر مقررہ کمیٹ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/README.md)۔
 - [میٹا ڈیٹا](/ur/blockchain/metadata.md)
 - [میٹا ڈیٹا اور لیجر اسٹوریج کے اختیارات ](/ur/guide/configure/metadata-and-store-assets.md)
 - [ہدایات کا حوالہ](/ur/reference/instructions.md)

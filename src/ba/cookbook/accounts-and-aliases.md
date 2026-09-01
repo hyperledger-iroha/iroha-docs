@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 23b3ddbdadb0d177b2b12de60e0947a94ecdb20fa6ee1b3a2c6b83e5c91ba2f3
+translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 - `curl`, `jq`, Python 3.11 йәки унан һуңғы, һәм ток `iroha` CLI.
 - [тан `taira.client.toml` үҙ иҫәбенә инспектирование ваҡытында Taira](./connect-to-taira.md) менән бәйләнеше.
-- Taira кран аша йәки селтәрҙең идара ителгән инеү юлы аша иҫәп яҙмаһын тәьмин итеү алдан иҫәп-хисапҡа ярашлы уҡыу уңышлы булыр тип көтөлә.
+- Taira faucet аша йәки селтәрҙең идара ителгән инеү юлы аша иҫәп яҙмаһын тәьмин итеү алдан иҫәп-хисапҡа ярашлы уҡыу уңышлы булыр тип көтөлә.
 
 ## Аҙымдар {#steps}
 
@@ -111,7 +111,7 @@ fi
 
 ::: warning Рөхсәт сиктәре
 
-Ҡоролтай Taira faucet үҙенең дәғүәсе иҫәбенә тәьмин итә ала, әммә был дөйөм иҫәбенә теркәлеү йәки исем-шәриф менән идара итеү органы. `CanRegisterAccount` Актив раҫлаусы аҫтында. иҫәп-хисап исемдәре ғәҙәттә шулай уҡ кәрәк актив SNS лизинг һәм тейешле ҡушамат таныҡлыҡтары. көйләнгән инеү / ҡушамат планер ҡулланыу, йәки генерируемая локаль селтәр менән теркәүҙе һынап ҡарарға.
+Taira faucet дәғүәсе аккаунтын булдыра ала, әммә был дөйөм account-registration йәки alias-management хоҡуғы бирмәй. Икенсе аккаунтты теркәү active validator шарттарында `CanRegisterAccount` талап итә. Account aliases өсөн ғәҙәттә шулай уҡ active SNS lease һәм тейешле alias permissions кәрәк. Governed onboarding/alias planner ҡулланығыҙ йәки теркәүҙе generated local network-та һынап ҡарағыҙ.
 
 :::
 
@@ -150,7 +150,7 @@ fi
 ## Проблемаларҙы хәл итеү {#troubleshooting}
 
 - Анализлау йәки префикс хатаһы, ғәҙәттә, адрес башҡа селтәр профиле өсөн кодланған тигәнде аңлата. `--profile taira` менән нормализациялау һәм тап килмәгән осраҡтарҙы кире ҡағыу.
-- `202` краннан һуң `404` иҫәбенә таралыу ваҡыты кисектерелергә мөмкин. Яҙыу ебәрер алдынан иҫәбенә йәки финансланған активҡа тикшереү үткәрегеҙ.
+- `202` faucetнан һуң `404` иҫәбенә таралыу ваҡыты кисектерелергә мөмкин. Яҙыу ебәрер алдынан иҫәбенә йәки финансланған активҡа тикшереү үткәрегеҙ.
 - `total: 0` реверс-резолюторҙан күренеп торған ҡушамат бәйләнмәгән тигәнде аңлата; ул иҫәб буйынса эҙләүҙә уңышһыҙлыҡ булмаясаҡ.
 - `401` йәки `403` ҡушамат маршруты сикләнгән мәғлүмәт киңлеге йәки дөрөҫ хәл итеү рөхсәте етерлек булмаған күрһәткән. Яуызлыҡ өсөн киң префикс эҙләмәгеҙ.
 - Уҡырға яраҡлы `name@domain.dataspace` ҡиммәттәре һәр ерҙә ҡабул ителмәй каноник I105 ID Тәүҙә уны хәл итергә кәрәк.
@@ -158,8 +158,8 @@ fi
 
 ## Сығанаҡ һәм уның менән бәйле документтар {#source-and-related-docs}
 
-- [Ҡатнашылған commit](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/account/address.rs)-ла Canonical account адресын тормошҡа ашырыу
-- [Хисап һәм псевдонимы һынауҙары Torii ҡуйылған commit-та](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/tests/accounts_endpoints.rs)
+- [Ҡатнашылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)-ла Canonical account адресын тормошҡа ашырыу
+- [Хисап һәм псевдонимы һынауҙары Torii ҡуйылған commit-та](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
 - [Иҫәпкә алыуҙар](/ba/blockchain/accounts.md)
 - [Мәғлүмәт моделе исемдәре](/ba/blockchain/data-model.md#aliases)
 - [Исемдәр биреү конвенциялары](/ba/reference/naming.md)

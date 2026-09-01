@@ -1,28 +1,28 @@
 ---
 translation_locale: ja
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 23b3ddbdadb0d177b2b12de60e0947a94ecdb20fa6ee1b3a2c6b83e5c91ba2f3
+translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# 口座と名前の表記 {#accounts-and-aliases}
+# アカウントとエイリアス {#accounts-and-aliases}
 
-## 成果 {#outcome}
+## 結果 {#outcome}
 
-ドメインレス・カノニカルで安全に作業する I105 口座 IDs 人に読めるような別々に結合された仮名 `treasury@payments.universal`. 検査する Taira 経歴は,あなたの独自の法典的な ID, ルーティングコンテキストとアイデンティティを混同することなく アニックネームを解く.
+ドメインのないカノニカルな I105 アカウントID と、`treasury@payments.universal` のような個別に紐付けられた人間が読みやすいエイリアスを安全に使用してください。Taira アカウントを確認し、独自のカノニカルID を導き出し、ルーティングコンテキストとID を混同せずにエイリアスを解決します。
 
-## 必須条件 {#prerequisites}
+## 前提条件 {#prerequisites}
 
-- `curl`,`jq`, Python 3.11またはそれ以降,および電流 `iroha` CLI.
-- [からの `taira.client.toml` 自分の口座を検査するときに, Taira](./connect-to-taira.md) に連絡してください.
-- Taira faucetまたはネットワークの管理されたオンボードパスを経由して,アカウント特別の読み取りが成功することを期待する前に提供される口座.
+- `curl`、`jq`、Python 3.11以降、および現在の `iroha` CLI。
+- 自分のアカウントを確認するときに、[Taira に接続する](./connect-to-taira.md)からの`taira.client.toml`。
+- アカウント固有の読み取りが成功することを期待する前に、Taira テストネット資金提供サービスまたはネットワークの管理されたオンボーディング経路を通じてアカウントがプロビジョニングされます。
 
 ## ステップ {#steps}
 
-### 1. Taira の法典的な会計を検査する {#_1-inspect-canonical-accounts-on-taira}
+### 1. Taira の公式アカウントを確認する {#_1-inspect-canonical-accounts-on-taira}
 
-公開口座のリストでは常に正規 I105 IDs を返します. 主要な別名はオプションで,個別に報告されます.
+公開アカウントリストは常に正規の I105 ID を返します。主要なエイリアスは任意であり、別途報告されます。
 
 ```bash
 curl -fsS -H 'Accept: application/json' \
@@ -30,11 +30,11 @@ curl -fsS -H 'Accept: application/json' \
   | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
 ```
 
-ID からの `.id` は,厳格なアカウントフィールドで有効である.ドメインを追加しないでください. `.primary_alias` の偽名はユーザー向け検索キーであり,他の定例的なアイデンティティではありません.
+`.id` の ID は厳格なアカウントフィールドに対して有効です。ドメインを付加しないでください。`.primary_alias` のエイリアスはユーザー向けの検索キーであり、別の正規の識別子ではありません。
 
-### 2. 導出し,正常化する Taira I105 ID {#_2-derive-and-normalize-your-taira-i105-id}
+### 2. あなたの Taira I105 ID を導出して正規化してください {#_2-derive-and-normalize-your-taira-i105-id}
 
-ローカル設定から公開鍵だけ読みます.同じ公開鍵は,異なる公共ネットワークプロフィールで異なった暗号化されますので,`taira` を明示的に選択してください.
+ローカル構成から公開鍵のみを読み取ります。同じ公開鍵でも異なるパブリックブロックチェーンネットワークプロファイルでは異なる方法でエンコードされるため、`taira` を明示的に選択してください。
 
 ```bash
 TAIRA_PUBLIC_KEY="$(python3 - <<'PY'
@@ -53,11 +53,11 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID" \
   | iroha tools address normalize --profile taira
 ```
 
-標準化された値は `TAIRA_ACCOUNT_ID` と同じである. TOML ファイル内の `[account].domain`設定は `wonderland.universal` であるが,その値はルーティングと別名文脈にのみ影響する.
+正規化された値は `TAIRA_ACCOUNT_ID` と同一である必要があります。TOML ファイルの `[account].domain` 設定は `wonderland.universal` にすることができますが、その値はルーティングとエイリアスコンテキストにのみ影響します。
 
-### 3. 会計とその資産を読む {#_3-read-the-account-and-its-assets}
+### 3. 口座とその資産を確認する {#_3-read-the-account-and-its-assets}
 
-アカウントがプロビジョニングされた後,直接查询し,制限された資産ページをリストする. URL - 経路で使用する前に I105 値を暗号化します.
+アカウントがプロビジョニングされた後、直接クエリを実行し、制限された資産ページを一覧表示します。パスで使用する前に、I105 の値を URL でエンコードしてください。
 
 ```bash
 iroha --config ./taira.client.toml ledger account get \
@@ -73,9 +73,9 @@ curl -fsS -H 'Accept: application/json' \
   | jq '{total, items}'
 ```
 
-### 4. 口座に結びついている偽名を探す {#_4-look-up-aliases-bound-to-the-account}
+### 4. アカウントに紐づけられた別名を確認する {#_4-look-up-aliases-bound-to-the-account}
 
-リバースリズラーは,正確な1つのカノニカルアカウント ID を受け入れます.公開データスペスの行は,要求署名ヘッダなしで読み取れます.制限されたデータスペスは承認された署名された要請が必要です.
+リバースリゾルバーは、1つの正確な正規アカウントIDを受け入れます。パブリックデータスペースの行はリクエスト署名ヘッダーなしで読み取ることができます。制限付きデータスペースは、認証された署名付きリクエストが必要です。
 
 ```bash
 jq -nc --arg account_id "$TAIRA_ACCOUNT_ID" \
@@ -89,7 +89,7 @@ curl -fsS -H 'Accept: application/json' \
   | jq '{account_id, total, items}'
 ```
 
-`total: 0` は有効である:アカウントに偽名は必要ない.拘束力がある場合,その正確な完全に資格のある偽名を解除し,返済された口座 ID を比較してください.
+`total: 0` は有効です: アカウントにはエイリアスを設定する必要はありません。バインディングが存在する場合、その正確な完全修飾エイリアスを解決し、返されたアカウントIDと比較してください:
 
 ```bash
 ALIAS_WAS_RESOLVED=false
@@ -109,13 +109,13 @@ else
 fi
 ```
 
-::: warning 許可制限
+::: warning 許可境界
 
-Taira faucetは,請求者のアカウントを提供することができるが,それは一般口座登録または別名管理権限を与えていない.別の口座の登録には,アクティブ検証器の下での `CanRegisterAccount` が必要である.アカウント・アライアスは通常,アクティブ SNS リース契約と適切なアライアスの許可を必要とします.管理されたオンボード/アライアスプランナーを使用するか,生成されたローカルネットワークに対して登録を練習します.
+Taira テストネット資金提供サービスは請求者アカウントを用意することができますが、それは一般的なアカウント登録やエイリアス管理の認可プリンシパルを付与するものではありません。別のアカウントを登録するには、アクティブなバリデータの下で `CanRegisterAccount` が必要です。アカウントの別名には通常、アクティブな SNS リースと適切な別名権限も必要です。管理されたオンボーディング/別名プランナーを使用するか、生成されたローカルネットワークに対して登録をリハーサルしてください。
 
 :::
 
-ローカルネットワークでは,安全な署名提供ステップが新しいカノニカル `NEW_ACCOUNT_ID` を輸出した後に,登録表面は:
+ローカルネットワークでは、セキュアな暗号署名キーのプロビジョニング手順が新しい標準的な `NEW_ACCOUNT_ID` をエクスポートした後、登録サーフェスは次の通りです:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -127,11 +127,11 @@ iroha --config ./localnet/client.toml ledger account get \
   --id "$NEW_ACCOUNT_ID"
 ```
 
-対応するプライベートキーをドキュメントまたはアプリケーションリポジトリの外で生成および保存します. コントローラーキーが捨てられた ID を登録すると,使用できないアカウントを作成します.
+一致する秘密鍵をドキュメントやアプリケーションのリポジトリの外で生成して保存してください。コントローラキーを破棄したIDを登録すると、使用できないアカウントが作成されます。
 
 ## 確認する {#verify}
 
-公開鍵の設定を証明する I105 暗号化,およびすべての結合をアライアス1のカノニカルアカウントに収束する ID:
+構成公開鍵、I105 エンコーディング、およびエイリアスのバインディングがすべて1つの標準的なアカウントIDに収束することを証明してください。
 
 ```bash
 NORMALIZED_ACCOUNT_ID="$(
@@ -145,22 +145,22 @@ if test "${ALIAS_WAS_RESOLVED:-false}" = true; then
 fi
 ```
 
-IDs を保存する.署名,許可およびトランザクション指示のために IDs を使用する.アプリケーションの境界で偽名を解決する.操作に使用された ID の正規アカウントを保持する.
+標準アカウントIDを保存します。署名、権限、およびトランザクション指示には標準IDを使用します。アプリケーションの境界でエイリアスを解決します。操作に使用された標準アカウントIDを保持します。
 
-## 問題を解く {#troubleshooting}
+## トラブルシューティング {#troubleshooting}
 
-- 解析またはプレフィックスエラーは通常,別のネットワークプロファイルにアドレスが暗号化されたことを意味します. `--profile taira`で正常化し,不一致を拒絶します.
-- `202` ポンプの後,アカウント `404` はプロパガンダ遅延である可能性があります.書き込みを送信する前に口座または資金調達資産を調査します.
-- `total: 0` は逆解析器から,可視な偽名が結合されていないことを意味します. これはアカウント検索失敗ではありません.
-- `401`または `403`という名前のルートから,データスペースが制限されているか,正確な解析許可が不足していることを示します.
-- 読み取れる値 `name@domain.dataspace` は,常識的な I105 ID が要求されるすべての場所では受け入れられない.まずそれを解決する.
-- ローカルアカウント登録が成功するが Taira がそれを拒否した場合,違いは承認である. `CanRegisterAccount` を取得する;認証を回避するために ID の口座を変更しないでください.
+- パースエラーやプレフィックスエラーは通常、アドレスが異なるネットワークプロファイル用にエンコードされていることを意味します。`--profile taira`で正規化し、不一致は拒否してください。
+- テストネット資金提供サービス `202` の後のアカウント `404` は伝播遅延が発生する可能性があります。書き込みを送信する前に、アカウントまたは資金提供された資産を確認してください。
+- リバースリゾルバからの`total: 0`は、表示されるエイリアスがバインドされていないことを意味します。これはアカウントの検索失敗ではありません。
+- `401` または `403` がエイリアス経路から返される場合、それは制限されたデータスペースまたは十分な正確な解決権限がないことを示します。フォールバックとして広範なプレフィックス検索を使用しないでください。
+- 読み取り可能な`name@domain.dataspace`値は、標準的な I105 IDが必要なすべての場所で受け入れられるわけではありません。まずそれを解決してください。
+- ローカルアカウントの登録が成功しても、Taira がそれを拒否する場合、その違いは認証です。`CanRegisterAccount` を取得してください。検証を回避するためにアカウントIDを変更しないでください。
 
 ## ソースおよび関連文書 {#source-and-related-docs}
 
-- [固定されたコミット](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_data_model/src/account/address.rs)でカノニカルアカウントアドレスの実装
-- [固定されたコミット](https://github.com/hyperledger-iroha/iroha/blob/bc7114ed1c7f265a156d2100ff09e851cc95702c/crates/iroha_torii/tests/accounts_endpoints.rs)でのアカウントと別名テスト Torii
-- [口座](/ja/blockchain/accounts.md)
-- [データのモデル・アライス](/ja/blockchain/data-model.md#aliases)
-- [名称に関する条約](/ja/reference/naming.md)
+- [固定されたソースコードのリビジョンでの正規アカウントアドレスの実装](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
+- [ピン留めされたソースコードのリビジョンでのアカウントとエイリアス Torii のテスト](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
+- [アカウント](/ja/blockchain/accounts.md)
+- [データモデルの別名](/ja/blockchain/data-model.md#aliases)
+- [命名規則](/ja/reference/naming.md)
 - [許可トークン](/ja/reference/permissions.md)

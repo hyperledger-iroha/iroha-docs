@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /reference/queries.md
-translation_source_hash: 22e8a75acd72d066e3516ba46a0afe075d2d02790154458aec00a5d8bb861838
+translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -40,7 +40,7 @@ Iroha һорауҙар иҫәп-хисап хәлен уҡый, уны үҙгә�
 |`FindRolesByAccountId` |Хисапҡа бирелгән ролдәрҙе исемлеккә килтерегеҙ. |
 |`FindPermissionsByAccountId` |Хисапҡа бирелгән рөхсәттәре исемлеген яҙығыҙ. |
 
-## Домендар һәм тиҫтерҙәр {#domains-and-peers}
+## Домендар һәм пирҙар {#domains-and-peers}
 
 |Һорау |Маҡсат |
 | --- | --- |
@@ -50,7 +50,7 @@ Iroha һорауҙар иҫәп-хисап хәлен уҡый, уны үҙгә�
 |`FindDomainEndorsements` |Домендар менән танышыу документтарын яҙығыҙ. |
 |`FindDomainEndorsementPolicy` |Доменды раҫлау сәйәсәтен кире ҡайтарығыҙ. |
 |`FindDomainCommittee` |Домен комитетын кире ҡайтарығыҙ. |
-|`FindPeers` |Китапта танылған ышаныслы хеҙмәттәштәрегеҙҙе яҙығыҙ. |
+|`FindPeers` |Реестрға билдәле trusted peer-ҙарҙы исемлеккә сығарығыҙ. |
 
 ## NFTs һәм RWAs активтары {#assets-nfts-and-rwas}
 
@@ -99,10 +99,17 @@ Iroha һорауҙар иҫәп-хисап хәлен уҡый, уны үҙгә�
 |`FindLaneRelayEnvelopeByRef` |Тикшеренгән юл эстафетаһы табығыҙ. |
 |`FindSorafsProviderOwner` |SoraFS менән тәьмин итеүсе хужаһын хәл итергә. |
 |`FindDataspaceNameOwnerById` |Мәғлүмәт киңлеге исеме хужаһын хәл итеү. |
-|`FindMusubiReleaseByRef` |Һылтанма буйынса Musubi исемлеген табығыҙ. |
-|`FindMusubiPackageVersions` |Musubi пакетына версиялар исемлеге. |
-|`FindMusubiPackageReleases` |Musubi пакет өсөн исемлек сығарыу. |
-|`FindMusubiShortAliasByName` |Musubi ҡыҫҡа исемде хәл итегеҙ. |
+|`FindMusubiExactPackageV1` |Бер төп нөсхә һәм уның хәҙерге үҙгәрештәрен уҡығыҙ.|
+|`FindMusubiExactReleaseV1` |Дөрөҫөн генә әйткәндә, бер фотоны уҡығыҙ. |
+|`FindMusubiProviderBundleAttestationV1` |Бер провайдерҙың архив-банкет аттестацияһын уҡығыҙ. |
+|`FindMusubiResolverIndexV1` |Оҙаҡлатылған хәл итеүсе индексын битегеҙ. |
+|`FindMusubiVersionsV1` |Бер пакет өсөн биттәр тамамланған версиялар. |
+|`FindMusubiMaintainersV1` |Сайт ҡараусыларҙы һәм саҡырыуҙарҙы ҡабул итә. |
+|`FindMusubiArchiveLocationsV1` |Бер архив өсөн SoraFS урындарын тамамлаған биттәр. |
+|`FindMusubiArchiveRetentionV1` |Файл архив-һаҡлау яҙмалары. |
+|`FindMusubiAliasV1` |Хәҙерге маҡсатты һәм глобаль алфавитты уҡығыҙ. |
+|`FindMusubiAliasHistoryV1` |Глобаль алфавиттың үҙгәрешһеҙ ретаргеты тарихын биттәренә яҙығыҙ. |
+|`FindMusubiOrderedPrefixV1` |Бер тәртиптәге структура префиксы аҫтында биттәр пакеттары. |
 
 ## Трекерҙар, килешеүҙәр, транзакциялар һәм блоктар {#triggers-contracts-transactions-and-blocks}
 

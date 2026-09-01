@@ -1,73 +1,75 @@
 ---
 translation_locale: az
 translation_source: /blockchain/instructions.md
-translation_source_hash: adc3eff9758dd73e9114e78eaa18ddf6271db3bc4042611e1ed6ed1aac226246
+translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# Iroha Xüsusi təlimatlar {#iroha-special-instructions}
+# Iroha Təlimat əməliyyatları {#iroha-special-instructions}
 
-Biz haqqında danışarkən [necə Iroha fəaliyyət göstərir](/az/blockchain/iroha-explained), Biz demişdik ki, Iroha Xüsusi təlimatlar dünya dövlətinin dəyişdirilməsinin yeganə yoludır. Bu dərslikdəki dil təlimatlarını oxuduğunuzda, Artıq bir neçə təlimat gördünüz: `Register<Account>` və `Mint<Numeric>`.
+Biz [Iroha necə işləyir](/az/blockchain/iroha-explained) haqqında danışanda, Iroha Təlimat əməliyyatlarının dünya vəziyyətini dəyişdirməyin yeganə yolu olduğunu dedik. Beləliklə, hansı növ təlimat Bizdə hansı əməliyyatlar var? Əgər siz bu dərslikdə dilə xas bələdçiləri oxumusunuzsa, artıq bir neçə təlimatı görmüsünüz: `Register<Account>` və `Mint<Numeric>`.
 
-Iroha Xüsusi təlimatların tam siyahısı:
+Budur Iroha Təlim əməliyyatlarının tam siyahısı:
 
-|Təlimat |Təsvirlər |
+|Təlimat|Təsvirlər|
 | --------------------------------------------------------- | ------------------------------------------------ |
-| [Qeydiyyatdan çıxarmaq/Qeyri-qeydiyyatlaşdırmaq](#un-register) |Bir ID verilsin yeni bir qurum blockchain. |
-| [Mint/Burn](#mint-burn) |"Mint/burn" saylı aktivlər və ya təkrarlamaları başlatmaq. |
-| [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) |Blockchain obyektlərinin metadatalarını yeniləyin. |
-| [SetParameter](#setparameter) |Zəncir genişliyi parametrini təyin edin. |
-| [Grant/Revoke](#grant-revoke) |icazələr və rollar verin və ya çıxarın. |
-| [Transfer](#transfer) |Mülkiyyət və ya aktiv dəyərinin köçürülməsi. |
-| [Yerli depozit və aktivlər ](#native-escrow-and-asset-locks) |Saylı aktivləri protokol saxlamaqda kilidləyin. |
-| [ExecuteTrigger](#executetrigger) |Başlatıcıları icra edin. |
-| [Log/Custom/Upgrade](#other-instructions) |Sürüş vaxtı davranışını qeyd edin, uzatın və ya təkmilləşdirin. |
+| [Qeydiyyatdan keç/Qeydiyyatdan çıx](#un-register)                       |Blokçeyn üzərində yeni bir varlığa ID verin.|
+| [Mint/Burn](#mint-burn) |Rəqəmsal aktivləri çap et/yan və ya təkrarlanmanı işə sal.|
+| [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) |Blokçeyn obyektinin metadatasını yeniləyin.|
+| [SetParameter](#setparameter)                             |Zəncir üzrə ümumi parametr təyin edin.|
+| [Grant/Revoke](#grant-revoke)                             |İcazələri və rolları verin və ya silin.|
+| [Köçürmə](#transfer)                                     |Mülkiyyətin və ya aktivin dəyərinin köçürülməsi.|
+| [Yerli etibar və aktiv kilidləri](#native-escrow-and-asset-locks) |Rəqəmsal aktivləri protokol mühafizəsində kilidləyin.|
+| [Atomik şəxsi maliyyə əməliyyatının həlli](#atomic-private-settlement)   |Gizli protokol məlumat qruplarını və atom paketlərini idarə edin.|
+| [ExecuteTrigger](#executetrigger)                         |Tətikləyiciləri işə sal.|
+| [Log/Custom/Upgrade](#other-instructions)                 |Proqramın icra mühitinin davranışını qeydə alın, genişləndirin və ya təkmilləşdirin.|
 
-Iroha Xüsusi Təlimatların ümumiləşdirilməsi ilə başlayaq; hər təlimat üçün hansı obyektlər çağırıla bilər və hər bir obyekt üçün hansı təlimatlar mövcuddur.
+Gəlin Iroha Təlimat əməliyyatlarının xülasəsi ilə başlayaq; hər bir təlimatın hansı obyektlər üçün çağırıla biləcəyini və hər bir obyekt üçün hansı təlimatların mövcud olduğunu.
 
-## Qeydiyyat {#summary}
+## Xülasə {#summary}
 
-Hər bir təlimat üçün bu təlimatın icra edilə biləcəyi obyektlərin siyahısı var. Məsələn, köçürmə variantları mülkiyyətli nəşriyyat obyektlərini və rəqəmli aktivləri əhatə edir, mining isə rəqəmsal aktivləri ələ keçirir və təkrarlamaları başlatır.
+Hər təlimat üçün bu təlimatın tətbiq oluna biləcəyi obyektlərin siyahısı var. Məsələn, köçürmə variantları mülkiyyətli blokçeyn dəftər obyektlərini və rəqəmsal aktivləri əhatə edir, çıxarma isə rəqəmsal aktivləri və təkrarlanan tetiklemeleri əhatə edir.
 
-Bəzi təlimatlarda məqsədin müəyyən edilməsi tələb olunur. Məsələn, aktivləri köçürsəniz, onları hansı hesabda köçürəcəyinizi həmişə göstərməlisiniz. Digər tərəfdən, bir şeyi qeydiyyatdan keçirərkən yalnız qeydiyyatda saxlamaq istədiyiniz obyektə ehtiyacınız olur.
+Bəzi təlimatlar bir təyinatın göstərilməsini tələb edir. Məsələn, əgər aktivləri transfer edirsinizsə, onları hansı hesaba köçürdüyünüzü həmişə göstərməlisiniz. Digər tərəfdən, bir şeyi qeydiyyata alanda, sadəcə qeydiyyatdan keçirmək istədiyiniz obyekt kifayətdir.
 
-|Təlimat |Əşyalar |Məqsəd |
+|Təlimat|Obyektlər|Təyinat|
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- |
-| [EnsureAlias](#ensurealias) |Adətənki domen, məlumat məkanı və hesab adı qurma |                      |
-| [Qeydiyyatdan çıxarmaq/Qeyri-qeydiyyatlaşdırmaq](#un-register) |Hesabatlar, aktivlərin tərifləri, NFTs, rollar, tetiklər, həmyaşıdlar; domen çıxarılması |                      |
-| [Mint/Burn](#mint-burn) |rəqəmsal aktivlər, təkrarlamaları başlatmaq |hesablar və ya tetiklər |
-| [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) |[metadata](./metadata.md) malik olan obyektlər: domenlər, hesablar, aktiv tərifləri, NFTs, RWAs, tetikləyici |                      |
-| [SetParameter](#setparameter) |zəncir parametrləri |                      |
-| [Grant/Revoke](#grant-revoke) | [rolu, icazə nömrələri](/az/blockchain/permissions.md) |Hesablar və ya rollar |
-| [Transfer](#transfer) |domenlər, aktiv tərifləri, rəqəmsal aktivlər, NFTs |Hesabatlar |
-| [Yerli depozit və aktivlər ](#native-escrow-and-asset-locks) |rəqəmsal vəsait əmanətləri, aktivlər bağlamaları, anonim vəsait əmanı öhdəlikləri |Alıcılar, istiqamətlər və ya mübahisə bölünmələri |
-| [ExecuteTrigger](#executetrigger) |başlatıcılar|                      |
-| [Log/Custom/Upgrade](#other-instructions) |loglar, icraçı xüsusi paylı yüklər, icraçının yüksəldilməsi |                      |
+| [EnsureAlias](#ensurealias)                               |adi domen, məlumatlar məkanı-təxəllüs və hesab-təxəllüs qurulması|                      |
+| [Qeydiyyatdan keç/Qeydiyyatı ləğv et](#un-register)                       |hesablar, aktiv təsvirləri, NFTs, rollar, tetikleyicilər, şəbəkə həmkarları; domenin silinməsi|                      |
+| [Mint/Burn](#mint-burn) |rəqəmsal aktivlər, təkrarları tetiklə|hesablar və ya tetikleyicilər|
+| [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) |obyektlər ki, [metaməlumat](./metadata.md): domenlər, hesablar, aktiv tərifləri, NFTs, RWAs, tetikleyiciləri var|                      |
+| [SetParameter](#setparameter)                             |zəncir parametrləri|                      |
+| [Grant/Revoke](#grant-revoke)                             | [rollar, icazə tokenləri](/az/blockchain/permissions.md)                                                  |hesablar və ya rollar|
+| [Köçürmə](#transfer)                                     |domenlər, aktiv tərifləri, rəqəmsal aktivlər, NFTs|hesablar|
+| [Yerli etibar və aktiv kilidləri](#native-escrow-and-asset-locks) |rəqəmsal aktiv depozitləri, aktiv kilidləri, anonim depozit kriptoqrafik öhdəlik dəyərləri|alıcılar, təyinatlar və ya mübahisə bölgüləri|
+| [Atomik şəxsi maliyyə əməliyyatının həlli](#atomic-private-settlement)   |marşrut üzrə məhdudlaşdırılmış gizli protokol məlumat qrupları, siyasət rotasiyaları, yekunlaşdırılmış paketlər və ləğv işarələri|                      |
+| [ExecuteTrigger](#executetrigger)                         |tetikləyir|                      |
+| [Log/Custom/Upgrade](#other-instructions)                 |jurnallar, icraçıya xüsusi fayllar, icraçı yeniləmələri|                      |
 
-ISI -in toxunduğu nəşr obyekti baxımından başqa bir baxış yolu da var:
+ISI-a baxmağın başqa bir yolu da var, onlarla əlaqəli blokçeyn qeyd dəftəri obyekti baxımından:
 
-|Hədəf |Təlimatlar |
+|Hədəf|Təlimatlar|
 | ---------------- | ------------------------------------------------------------------------------------------------------------ |
-|Hesab |Hesabların qeydiyyatdan çıxarılması və qeydiyyata alınması, aktivlərin qəbul edilməsi, hesabın metadatalarının yenilənməsi, icazələrin verilməsi və ləğv edilməsi və rolları |
-|Domain |domenlərin qurulmasını təmin etmək, domenləri qeydiyyatdan çıxarmaq, domen mülkiyyətini köçürmək, domen metadatalarını yeniləmək |
-|Mülkiyyətin təyinatı|qeydiyyatdan çıxarma tərifləri, mülkiyyətin ötürülməsi, metadata yeniləmə |
-|Mülkiyyət|Ədəd miqdarı, köçürülmə miqdarı |
-|Əmanət götürülməsi|göndərilən ödənişi açmaq, qəbul etmək, qeyd etmək, buraxmaq, ləğv etmək, mübahisə aparmaq, həll etmək, çıxarmaq və ya yerli saxlama sənədlərini bitirmək.|
-|NFT |qeydiyyatdan çıxarma NFTs, mülkiyyətin ötürülməsi, meta məlumatların yenilənməsi |
-|RWA |partiyaların qeydiyyatına alınması, miqdarın köçürülməsi, saxlanılması/azad edilməsi, dondurulması/dondurulmaması, əvəz olunması, birləşdirilməsi, metadata və nəzarətlərin yenilənməsi |
-|Trigger |qeydiyyatdan çıxarmaq/qeydiyyatdan çıxartmaq, mint/burning trigger təkrarlamaları, execut trigger, update trigger metadataları |
-|Dünya |qeydiyyatdan çıxarmaq / qeydiyyata alınmayan həmyaşıdlar və rollar, parametrləri təyin etmək, icraçını yüksəltmək |
+|Hesab|hesabları qeydiyyatdan keçirmək/ləğv etmək, aktivləri qəbul etmək, hesab metadata-sını yeniləmək, icazə və rolları vermək/ləğv etmək|
+|Domen|domen qurulmasını təmin edin, domenləri qeydiyyatdan çıxarın, domen sahibliyini köçürün, domen metadatasını yeniləyin|
+|Əmlakın tərifi|tərifləri qeydiyyatdan keçirmək/ləğv etmək, mülkiyyəti ötürmək, metadatanı yeniləmək|
+|Aktiv|rəqəmsal miqdarı çıxarmaq/yandırmaq, rəqəmsal miqdarı köçürmək|
+|Əmanət|açmaq, qəbul etmək, ödəmə göndərildiyini işarələmək, buraxmaq, ləğv etmək, mübahisə etmək, həll etmək, çəkmək və ya yerli saxlama qeydlərinin müddətini başa vurmaq|
+| NFT              | qeydiyyatdan keçirmək/qeydiyyatdan silmək NFTs, mülkiyyəti köçürmək, metadatanı yeniləmək|
+| RWA              |çoxluqları qeydiyyatdan keçirmək, miqdarı köçürmək, saxlamaq/buraxmaq, dondurmaq/dondurmanı açmaq, geri ödəmək, birləşdirmək, metadatanı və nəzarətləri yeniləmək|
+|Tətik| qeydiyyatdan keçmək/qatılmamaq, pul vurmaq/yandırmaq tetik təkrarları, tetiki icra etmək, tetik metadatasını yeniləmək|
+|Dünya|şəbəkə iştirakçılarını və rollarını qeydiyyatdan keçirmək/ləğv etmək, parametrləri təyin etmək, icraçını yeniləmək|
 
-## CLI nümunələr {#cli-examples}
+## CLI Nümunələr {#cli-examples}
 
-Bu səhifədəki nümunələr, əvvəlcədən yerli müştəri konfigurasiyasına qarşı yuxarı axını Iroha iş məkanından əmrləri icra etdiyinizi güman edir:
+Bu səhifədəki nümunələr, upstream Iroha iş sahəsindən komandaları defolt yerli müştəri konfiqurasiyasına qarşı işlətdiyinizi nəzərdə tutur:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml <command>
 ```
 
-`iroha` ikili quraşdırdığınız təqdirdə, bunun əvəzinə `iroha --config ./defaults/client.toml` istifadə edin. Aşağıda yer tutanları şəbəkənizdən olan dəyərlərlə əvəz edin:
+Əgər siz `iroha` ikili faylını quraşdırmısınızsa, onun əvəzinə `iroha --config ./defaults/client.toml`-dən istifadə edin. Aşağıdakı yer tutucuları şəbəkənizdən olan dəyərlərlə əvəz edin:
 
 ```bash
 export ALICE="<ALICE_ACCOUNT_I105>"
@@ -77,7 +79,7 @@ export PEER_KEY="<BLS_PUBLIC_KEY_MULTIHASH>"
 export PEER_POP="<PROOF_OF_POSSESSION_HEX>"
 ```
 
-İctimaiyyətə hədəfləndikdə Taira testnet, istifadə a Taira Müştəri konfigurasiyası. ödənişli nümunələri çalışdırmadan əvvəl, faucet köməkçisini [Testnet əldə edin XOR ilə Taira](/az/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) kimi `taira_faucet_claim.py`, sonra da iddia testnet XOR qabdan:
+İctimai Taira testnet-i hədəfləyərkən, Taira müştəri konfiqurasiyasından istifadə edin. Ödəniş tələb edən nümunələri işlətmədən əvvəl, testnet maliyyələşdirmə xidməti köməkçisini [Taira üzərində Testnet XOR əldə edin](/az/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)-dən `taira_faucet_claim.py` olaraq yadda saxlayın, sonra testnet maliyyələşdirmə xidmətindən testnet XOR-ü tələb edin:
 
 ```bash
 export TAIRA_ACCOUNT_ID="<TAIRA_I105_ACCOUNT_ID>"
@@ -91,7 +93,7 @@ iroha --config ./taira.client.toml ledger asset get \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-Qanaqdan maliyyələşdirilən aktiv görünmədikdən sonra əməliyyatları yazmaq üçün tələb olunan qaz aktivinin metadatalarını əlavə edin:
+Testnet tərəfindən maliyyələşdirilən aktiv göründükdən sonra, yazı əməliyyatlarına lazım olan əməliyyat icra xərci aktiv metadatasını əlavə edin:
 
 ```bash
 printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
@@ -104,7 +106,7 @@ cargo run --bin iroha -- \
 
 ## EnsureAlias {#ensurealias}
 
-`EnsureAlias` domenlərin və onların SNS icarə dairələrinin yaradılması üçün adi ilk buraxılış yoludur. Bu, dəqiq məlumat məkanını, sahibini, icarə müddəti və qiymət mühafizəsini bəyanatlı olaraq bağlayır, sonra bütün tələb olunan vəziyyəti atomik şəkildə yaratır və ya təmir edir. Məlum olan `POST /v1/aliases/setup/plan` son nöqtəsini və ya uyğunlaşan CLI iş axını istifadə edin:
+`EnsureAlias` domenlər yaratmaq və onların SNS icarələrini təyin etmək üçün adi ilk-çıxış yoludur. Bu, dəqiq məlumat sahəsini, sahibi, icarə müddətini deklarativ şəkildə bağlayır, və ödəniş-qiymət yoxlama qoruyucusu, sonra bütün tələb olunan vəziyyəti atomik şəkildə yaradır və ya təmir edir. Doğrulanmış `POST /v1/aliases/setup/plan` API son nöqtəsindən və ya uyğun CLI iş axınından istifadə edin:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -116,46 +118,46 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   app alias setup apply --plan-file ./domain.plan.json
 ```
 
-Məqsəd və plan sirrsizdir, lakin addım əlamətləri tətbiq edir və qurulmuş hesabla adi bir əməliyyat təqdim edir. Bir plan onun zəncirinə, səlahiyyətinə, canlı dövlət ancoruna və müddətə bağlıdır; heç vaxt başqa şəbəkədə yenidən istifadə etməyin.
+Niyyət və plan gizli-sizdir, lakin tətbiq addımı tənzimlənmiş hesabla adi əməliyyatı imzalayır və təqdim edir. Plan öz zənciri, icazə prinsipi, canlı vəziyyət lövhəsi və son tarixlə bağlıdır; heç vaxt birini başqa şəbəkədə təkrar istifadə etməyin.
 
-## (Un) qeydiyyat {#un-register}
+## (Qeydiyyatdan keçmək/Qeydiyyatdan çıxmaq) {#un-register}
 
-Qeydiyyat və qeydiyyatdan kənarlaşdırma ID verilməsi üçün istifadə olunan təlimatlardır.
+Qeydiyyatdan keçmək və qeydiyyatı silmək blokçeyndə yeni varlığa ID vermək üçün istifadə olunan təlimatlardır.
 
-Qeydiyyatdan keçirilə bilən hər şey həm `Registrable` və `Identifiable`dir, amma `Identifiable` olan hər şey `Registrable` deyil. Əksər şeylər birbaşa qeydiyyatdan keçirilir, lakin bəzi hallarda blok zincirindəki təmsilçiliyin daha çox məlumatı var. Təhlükəsizlik və performans səbəbləri üçün bu cür məlumat strukturları üçün quruculardan istifadə edirik (məsələn `NewAccount`), həmyaşıd qeydiyyatı xüsusi bir mülkiyyət sübutu təlimatına malikdir. Bir qayda olaraq, qeyd edilə bilən hər şey də qeydiyyatsız ola bilər, amma bu sərt və sürətli bir qayda deyil.
+Qeydiyyatdan keçirilə bilən hər şey həm `Registrable`, həm də `Identifiable`dir, amma hər şey `Identifiable` olan `Registrable` olmur. Əksər şeylər birbaşa qeydiyyata alınır, lakin bəzi hallarda blokçeyndəki nümayəndəlik xeyli daha çox məlumat ehtiva edir. Təhlükəsizlik və performans səbəblərinə görə, biz belə məlumat strukturları üçün quruculardan istifadə edirik (məsələn, `NewAccount`), və şəbəkə həmkarı qeydiyyatı üçün xüsusi bir sahiblik sübutu təlimatı mövcuddur. Qayda olaraq, qeydiyyatdan keçə bilən hər şey həm də qeydə alınmadan çıxarıla bilər, amma bu sərt və qəti bir qayda deyil.
 
-Hesablar, aktiv tərifləri, NFTs, həmyaşıllılar, rollar və tetiklər qeydiyyatdan keçirə bilərsiniz. Domen quruluşu `EnsureAlias` istifadə edir; xam `Register::Domain` pay yükü genesis / bootstrap üçün ayrılır. Tərəfdaş qeydiyyatı `RegisterPeerWithPop` istifadə edir ki, həmyaşılı açarın sahiblik sübutunu daşıyır. Birlik adlarına qoyulan məhdudiyyətlər haqqında öyrənmək üçün [ adlandırma konvensiyalarımızı](/az/reference/naming.md) yoxlayın.
+Siz hesabları, aktivlərin təyinatlarını, NFTs, şəbəkə iştirakçılarını, rolları və tetikleyiciləri qeydiyyatdan keçirə bilərsiniz. Domen qurulumu `EnsureAlias` istifadə edir; xam `Register::Domain` yükləməsi üçün ayrılmışdır genesis/bootstrap. şəbəkə həmkarı qeydiyyatı üçün `RegisterPeerWithPop` istifadə olunur, bu isə şəbəkə həmkarı açarı üçün mülkiyyət sübutunu daşıyır. Subyekt adlarına qoyulan məhdudiyyətləri öyrənmək üçün bizim [adlandırma qaydaları](/az/reference/naming.md)-ə baxın.
 
-RWA partiyaları xüsusi `RegisterRwa` təlimatı vasitəsilə yaradılır. mövcud kod `UnregisterRwa` təlimatını açıqlamır; təsvir olunan miqdarı geri çəkmək üçün `RedeemRwa` istifadə edin.
+RWA lotlar xüsusi `RegisterRwa` təlimatı vasitəsilə yaradılır. Mövcud kod `UnregisterRwa` təlimatını açıq göstərmir; göstərilən miqdarı ləğv etmək üçün `RedeemRwa`-dən istifadə edin.
 
 ::: info
 
-Qeyd edək ki, [genesis blokunuzu](/az/guide/configure/genesis.md) `genesis.json`da necə qurmağı qərar verdiyindən asılı olaraq (müəyyən olaraq icazə simvollarının qeydiyyatı daxil olub-olmamasından asılı olaraq), hesabın qeydiyyata alınması prosesi çox fərqli ola bilər. Ümumiyyətlə, onu belə bir şəkildə qısaca izah edə bilərik:
+Qeyd edin ki, `genesis.json`-da [blokçeyn başlanğıc bloku](/az/guide/configure/genesis.md)-inizi necə qurmağa qərar verdiyinizdən asılı olaraq (xüsusən də icazə tokenlərinin qeydiyyatını daxil edib-etməməyinizdən), hesabın qeydiyyatı prosesi çox fərqli ola bilər. Ümumiyyətlə, bunu belə ümumiləşdirə bilərik:
 
-- İctimai blok kateqoriyada hər kəs hesabı qeyd edə bilər.
-- Şəxsi blok kateqoriyada hesabların qeydiyyatı üçün unikal bir proses ola bilər. Tipik xüsusi blok kateqoriyada, yəni hesabların qeydiyyata alınması üçün heç bir unikal proses olmayan blok kateqoriyalarında başqa bir hesabı qeyd etmək üçün bir hesab lazımdır.
+- İctimai blokçeyndə hər kəs hesab qeydiyyatdan keçirə bilməlidir.
+- Şəxsi blokçeyndə hesabların qeydiyyatı üçün unikal bir proses ola bilər. Tipik şəxsi blokçeyndə, yəni hesabların qeydiyyatı üçün heç bir unikal prosesi olmayan bir blokçeyndə, başqa bir hesabı qeydiyyatdan keçirmək üçün hesab lazımdır.
 
-Biz [ özəl və ictimai blok zincirləri ](/az/guide/configure/modes.md) müqayisə edərkən bu fərqlər haqqında ətraflı danışırıq.
+Biz bu fərqləri böyük təfərrüatla müzakirə edirik, biz [şəxsi və ictimai blokçeynleri müqayisə edin](/az/guide/configure/modes.md) zaman.
 
 :::
 
 ::: info
 
-Bir həmyaşıdın qeydiyyatı, hazırda şəbəkəyə orijinal etibarlı həmyaşıddan olmayan həmyaşıdı əlavə etmək üçün yeganə yoldur.
+Şəbəkə yoldaşını qeydiyyatdan keçirmək, hazırda orijinal etibarlı şəbəkə yoldaşları dəstinin bir hissəsi olmayan şəbəkə yoldaşlarını şəbəkəyə əlavə etməyin yeganə yoludur.
 
 :::
 
-Blockchain obyektlərini qeyd etmək üçün dilə aid bir təlimatdan istifadə edin:
+Blockchain obyektlərini qeydiyyatdan keçirmək üçün dilə xas təlimatdan istifadə edin:
 
-|Dil |Təlimat |
+|Dil|Bələdçi|
 | --------------------- | ------------------------------------------------------------------------------------------------------- |
-|CLI |Domenləri qurmaq və hesabları və aktivləri qeyd etmək üçün [Iroha CLI](/az/get-started/operate-iroha-via-cli.md) istifadə edin. |
-|Rust |[Rust təlimatını istifadə edin ](/az/guide/tutorials/rust.md). |
-|Kotlin/Java |[Kotlin/Java təlimatından istifadə edin ](/az/guide/tutorials/kotlin-java.md). |
-|Python |[Python təlimatını istifadə edin ](/az/guide/tutorials/python.md). |
-|JavaScript/TypeScript |[JavaScript/TypeScript təlimatını istifadə edin ](/az/guide/tutorials/javascript.md).|
+| CLI                   |Domainləri qurmaq və hesablar və aktivləri qeydiyyatdan keçirmək üçün [Iroha CLI](/az/get-started/operate-iroha-via-cli.md)-dən istifadə edin.|
+| Rust                  | [Rust dərsliyi](/az/guide/tutorials/rust.md)-dən istifadə edin.|
+| Kotlin/Java           | [Kotlin/Java](/az/guide/tutorials/kotlin-java.md)-dən istifadə edin.|
+| Python                | [Python dərsliyi](/az/guide/tutorials/python.md)-dən istifadə edin.|
+| JavaScript/TypeScript | [JavaScript/TypeScript](/az/guide/tutorials/javascript.md)-dən istifadə edin.|
 
-Adətənki domen quruluşunu planlaşdırın və tətbiq edin, sonra artıq lazım olmadıqda domeni qeydiyyatdan çıxarın:
+Adi domen quruluşunu planlaşdırın və tətbiq edin, sonra domen artıq lazım olmadıqda qeydiyyatdan çıxarın:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -170,7 +172,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger domain unregister --id docs.universal
 ```
 
-Qeydiyyat və qeydiyyata alınmayan hesablar:
+Hesabları qeydiyyatdan keçirin və qeydiyyatdan çıxarın:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -180,7 +182,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger account unregister --id "$BOB"
 ```
 
-Qeydiyyat və qeydiyyata alınmayan aktivlərin tərifləri:
+Aktiv təyinatlarını qeydiyyatdan keçirin və qeydiyyatdan silin:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -194,7 +196,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger asset definition unregister --id "$ASSET_DEF"
 ```
 
-Qeydiyyatdan və qeydiyyata alınmadan NFTs. NFT qeydiyyat onun məzmununu oxuyur JSON Standart girişdən:
+NFTs-i qeydiyyatdan keçirin və qeydiyyatdan silin. NFT qeydiyyatı onun məzmununu JSON standart girişdən oxuyur:
 
 ```bash
 printf '{"kind":"badge","level":"intro"}\n' |
@@ -205,7 +207,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger nft unregister --id 'badge$docs.universal'
 ```
 
-Qeydiyyat və qeydiyyata alınmayan vəzifələr:
+Rolları qeydiyyatdan keçirin və qeydiyyatını ləğv edin:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -215,7 +217,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger role unregister --id operators
 ```
 
-Trigger qeydiyyatı tələbləri ya tərtib edilmişdir IVM Bytecode və ya seriallaşdırılmış təlimat siyahısı. `Log` təlimatları ilə CLI və onu tetikləyici qeydiyyatına gətirir:
+Tətikçiləri qeydiyyatdan keçirmək və qeydiyyatdan çıxarmaq. Tətikçi qeydiyyatı ya tərcümə olunmuş IVM bayt koduna, ya da seriyalaşdırılmış təlimatlar siyahısına ehtiyac duyur. Bu nümunə CLI ilə bir `Log` təlimatı yaradır və onu tətikçi qeydiyyatına yönləndirir:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml -o \
@@ -231,10 +233,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger trigger unregister --id hourly_cleanup
 ```
 
-BLS açarını və PoP açarını `kagami` ilə istehsal edin, əgər sizdə hələ yoxdursa:
+Şəbəkə iştirakçılarını qeydiyyatdan keçirin və qeydiyyatını ləğv edin. Əgər artıq onlara malik deyilsinizsə, BLS açarını və PoP-i `kagami` ilə yaradın:
 
 ```bash
-cargo run --bin kagami -- keys --algorithm bls_normal --pop --json
+cargo run --bin kagami -- keys --algorithm bls_normal --pop \
+  --out-dir ./peer-key
+PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
+PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
@@ -243,13 +248,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer unregister --key "$PEER_KEY"
 ```
 
-## Mint/Burn {#mint-burn}
+## Yaratmaq/Yandırmaq {#mint-burn}
 
-Çıxma və yandırma saylı aktivlərə aid ola bilər və təkrarların məhdud sayı ilə tetiklənir. Bəzi aktivlər çırpılmaz olaraq bəyan edilə bilər, yəni qeydiyyatdan sonra yalnız bir dəfə çırpıla bilər.
+verilməsi və məhv edilməsi məhdud sayda təkrarlarla rəqəmsal aktivlərə və tetikleyicilərə aid ola bilər. Bəzi aktivlər qeydə alındıqdan sonra yalnız bir dəfə verilməsi mümkün olan qeyri-mintable kimi elan edilə bilər.
 
-Əmlaklar müəyyən bir hesabda, adətən ilk növbədə aktivin qeydiyyata alınması üçün qeydə alınıb. Mülkiyyət miqdarları mənfi deyil, buna görə heç vaxt `$-1.0` bir aktivə sahib ola bilməzsən və ya mənfi məbləği yandırıb mint ala bilməzsən.
+Aktivlər müəyyən bir hesaba verilir, adətən aktivin ilk dəfə qeydiyyata alındığı hesaba. Aktivlərin miqdarı mənfi deyil, buna görə də bir aktivdən `$-1.0` ola bilməz və ya mənfi miqdarı məhv edib bir veriliş əldə edə bilməzsiniz.
 
-Mint blockchain aktivləri üçün dilə aid bir təlimatdan istifadə edin:
+Blockchain aktivlərini çıxarmaq üçün dilə spesifik təlimatdan istifadə edin:
 
 - [CLI](/az/get-started/operate-iroha-via-cli.md)
 - [Rust](/az/guide/tutorials/rust.md)
@@ -257,12 +262,12 @@ Mint blockchain aktivləri üçün dilə aid bir təlimatdan istifadə edin:
 - [Python](/az/guide/tutorials/python.md)
 - [JavaScript/TypeScript](/az/guide/tutorials/javascript.md)
 
-Burda yanmış aktivlərin nümunələri var:
+Əmlakları məhv etməyin nümunələri:
 
 - [CLI](/az/get-started/operate-iroha-via-cli.md)
 - [Rust](/az/guide/tutorials/rust.md)
 
-"Mint" və "burn" sayı aktivləri:
+rəqəmsal aktivləri buraxmaq və məhv etmək:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -278,7 +283,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --quantity 10
 ```
 
-Mint və yanma tetikləyici təkrarlamaları:
+təhvil verin və təkrarları məhv edin:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -288,13 +293,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger trigger burn --id hourly_cleanup --repetitions 1
 ```
 
-## Transfer {#transfer}
+## Köçürmə {#transfer}
 
-Transferlər hesablar arasında mülkiyyət və ya dəyər köçürülür. və NFTs. RWA miqdarı hərəkət xüsusi istifadə edir `TransferRwa` və `ForceTransferRwa` Məlumatda təsvir edilən təlimatlar [Əsl dünya aktivləri](/az/blockchain/rwas.md).
+Transferlər mülkiyyətin və ya dəyərin hesablar arasında hərəkətini təmin edir. Ümumi transfer variantları domenləri, aktiv təriflərini, ədədi aktivləri və NFTs-ü əhatə edir. RWA miqdarın hərəkəti, [Həqiqi Dünyada Aktivlər](/az/blockchain/rwas.md)-də təsvir olunan xüsusi `TransferRwa` və `ForceTransferRwa` təlimatlarından istifadə edir.
 
-Bunun üçün hesab verilməlidir. [aktivlərin köçürülməsinə icazə](/az/reference/permissions.md). Əməliyyat vasitələri ilə aktivlərin köçürülməsi barədə bir nümunəyə baxın. [CLI](/az/get-started/operate-iroha-via-cli.md) və ya [Rust](/az/guide/tutorials/rust.md).
+Bunu etmək üçün bir hesaba [aktivlərin köçürülməsi icazəsi](/az/reference/permissions.md) verilməlidir. Aktivləri [CLI](/az/get-started/operate-iroha-via-cli.md) və ya [Rust](/az/guide/tutorials/rust.md) ilə necə köçürmək nümunəsinə baxın.
 
-Saylı aktivlərin köçürülməsi:
+Rəqəmsal aktivləri köçürmək:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -305,7 +310,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --quantity 25
 ```
 
-Transfer domeni, aktiv tərifi və NFT mülkiyyət:
+Domeni, aktiv-tərifini və NFT mülkiyyətini köçürmək:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -318,21 +323,29 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger nft transfer --id 'badge$docs.universal' --from "$ALICE" --to "$BOB"
 ```
 
-## Məlum vəsaitlərin qapanması {#native-escrow-and-asset-locks}
+## Yerli Depozit və Aktiv Bloklamaları {#native-escrow-and-asset-locks}
 
-Native escrow instructions lock numeric assets in ledger-managed protocol custody. Onlar bazar üslubunda hesablaşma, ümumi aktivlər kilidləri və anonim qorunmuş escrow axınları üçün istifadə olunur.
+Yerleşik etibarnamə təlimatları rəqəmsal aktivləri blokçeyn dəftər protokolu tərəfindən idarə olunan mühafizədə kilidləyir. Onlar bazar tərzi maliyyə əməliyyatlarının həlli, ümumi aktiv kilidləri və anonim qorunan etibarnamə axınları üçün istifadə olunur.
 
-Marketplace escrow istifadəsi `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, və `ResolveEscrowDispute`. Ümumi aktivlər qapaqlarının istifadəsi `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, və `ExpireAssetLock`. Anonymous escrow bazarın həyat dövrünü əks etdirir `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, və `ResolveAnonymousEscrowDispute`.
+Marketplace depoziti `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute` və `ResolveEscrowDispute`-dən istifadə edir. Ümumi aktiv kilidləri `OpenAssetLock`, `DrawdownAssetLock`-dən istifadə edir, `CancelAssetLock` və `ExpireAssetLock`. Anonim depozit `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute` və `ResolveAnonymousEscrowDispute` ilə bazar dövrünü əks etdirir.
 
-Bu ISIs hazırda birinci dərəcəli CLI əmrlərinə malik deyil. Tiplənmiş SDK qurucularından və ya seriyalı təlimat yüklərindən istifadə edin və həyat dövrü detalları, icazələr, sorğular, hadisələr və Rust nümunələri üçün [Native Asset Escrow](/az/blockchain/escrow.md) baxın.
+Bu ISIs hazırda birinci dərəcəli CLI əmrlərə malik deyil. Tipli SDK quruculardan və ya sıralanmış təlimat paketlərindən istifadə edin və həyat dövrü detalları, icazələr, sorğular, hadisələr və Rust nümunələri üçün [Yerli Aktiv Əmanət](/az/blockchain/escrow.md)-a baxın.
 
-## Grant/Revoque {#grant-revoke}
+## Atomik Şəxsi maliyyə əməliyyatı hesablaşması {#atomic-private-settlement}
 
-Müdafiə və ləğv təlimatları [ icazələr və rollar üçün istifadə olunur ](permissions.md).
+Tənzimlənən atom-xüsusi-hesablama təlimatı ailəsi şəffaf Yerli AMX-dən ayrıdir. `ActivatePrivateSettlementPoolV1` qırmızı gözdən keçirilmiş idarəetmə proyeksiyasından və tək protokol-standart mənşəli kriptoqrafik öhdəlik dəyərlərindən bir marşrut-dəməli məxfi protokol məlumat qrupu müəyyən edir. `FinalizeAtomicPrivateSettlementV1` tam komitə tərəfindən təsdiqlənmiş paketi atomik şəkildə tətbiq edir, `AbortAtomicPrivateSettlementV1` isə yalnız sponsor tərəfindən təsdiqlənmiş ictimai terminal markerini yayımlayır.
 
-`Grant` istifadəçiyə tək icazə və ya bir qrup icazə vermək üçün davamlı olaraq istifadə olunur ("roll"). Verilən rollar və icazələr yalnız `Revoke` təlimatı ilə aradan qaldırıla bilər. Beləliklə, bu təlimatları diqqətlə istifadə etmək lazımdır.
+`RotatePrivateSettlementPoolPolicyV1` məxfilik idarəçiliyi ilə məhdudlaşdırılıb. Bu, dəqiq cari idarəetmə kriptoqrafik xülasə dəyərini tələb edir, marşrutu, protokol məlumat qrupunu, aktiv-bağlama kriptoqrafik öhdəlik dəyərini, vəziyyət sərhədini, təkrar dəstlərini və yekunlaşdırılmış protokol nəticə qeydlərini qoruyur, ictimai təftişi bir addım irəlilədərək, daha yeni auditçi açarı epoxundan istifadə edir. Dövriyyə daxilolma hündürlüyündə aktivləşir və eyni marşrut/baxa üçün protokol nəticəsi qeydi ilə həmin hündürlüyü paylaşa bilməz. İctimai baxış soyadı protokol nəticəsi qeydlərini dövriyyə yenidən başlatmadan əvvəl sonlandırılmış, doğru və dəqiq təkrar icra olunabilən saxlayır; hərəkətdə olan köhnə siyasət paketləri bağlı şəkildə uğursuz olur. Operatorlar saxlanılmış kapsullar üçün köhnə deşifrə açarlarını qorumalı və ya onları məhv etməzdən əvvəl kapsulu yenidən bükməyi idarə etməli və yoxlamalıdırlar.
 
-Hesabda rol vermək və ləğv etmək:
+Yol varsayılan olaraq deaktivdir və istehsal üçün uyğun deyil. Konfiqurasiya, səlahiyyət prinsipi, audit, bərpa və buraxılış tələbləri üçün [Atomik Şəxsi Çarpaz Məlumatlar Məkanında maliyyə əməliyyatı hesablaşmasını icra et](/az/get-started/atomic-private-settlement)-a baxın.
+
+## Təyin et/Ləğv et {#grant-revoke}
+
+Hesab [icazələr və rollar](permissions.md) üçün icazə vermək və ləğv etmək göstərişləri istifadə olunur.
+
+`Grant` istifadəçiyə ya tək bir icazə, ya da bir icazələr qrupunu ("rol") daimi olaraq vermək üçün istifadə olunur. Verilən rollar və icazələr yalnız `Revoke` təlimatı vasitəsilə silinə bilər. Beləliklə, bu təlimatlar diqqətlə istifadə edilməlidir.
+
+Hesabda rolu vermək və ya ləğv etmək:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -342,7 +355,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger account role revoke --id "$BOB" --role operators
 ```
 
-İzin verilməsi və ləğv edilməsi üçün icazə simvolları. İzin əmrləri standart girişdən bir icazə obyekti oxuyur:
+İcazə tokenlərini vermək və geri almaq. İcazə əmrləri icazə obyektini standart girişdən oxuyur:
 
 ```bash
 printf '{"name":"CanSetParameters","payload":null}\n' |
@@ -354,7 +367,7 @@ printf '{"name":"CanSetParameters","payload":null}\n' |
   ledger account permission revoke --id "$BOB"
 ```
 
-Bir rol üçün icazə ver və ləğv et:
+Bir rolda icazələri verin və ləğv edin:
 
 ```bash
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
@@ -368,9 +381,9 @@ printf '{"name":"CanRegisterDomain","payload":null}\n' |
 
 ## `SetKeyValue`/`RemoveKeyValue` {#setkeyvalue-removekeyvalue}
 
-Bu təlimatlar obyekti [metadata](/az/blockchain/metadata.md) yeniləyir. Metadata girişini daxil etmək və ya əvəz etmək üçün `SetKeyValue` istifadə edin və birini silmək üçün `RemoveKeyValue` istifadə edin.
+Bu təlimatlar [metaməlumat](/az/blockchain/metadata.md) obyektini yeniləyir. Metaməlumat girişini əlavə etmək və ya əvəz etmək üçün `SetKeyValue`-dən və birini silmək üçün `RemoveKeyValue`-dən istifadə edin.
 
-Metadata `set` əmrləri standart girişdən JSON dəyərini oxumuşdur:
+Metadata `set` əmrləri standart girişdən JSON dəyərini oxuyur:
 
 ```bash
 printf '"production"\n' |
@@ -381,7 +394,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger domain meta remove --id docs.universal --key environment
 ```
 
-Hesablar, aktivlər tərifləri, NFTs, RWAs üçün eyni nümunə mövcuddur və tetikləyici:
+Eyni nümunə hesablar, aktiv tərifləri, NFTs, RWAs və tetikleyicilər üçün də mövcuddur:
 
 ```bash
 printf '{"display_name":"Alice"}\n' |
@@ -403,9 +416,9 @@ printf '{"owner":"ops"}\n' |
 
 ## `SetParameter` {#setparameter}
 
-`SetParameter` aktiv məlumat modeli və icraçısı tərəfindən aşkar edilmiş şəbəkə boyu parametrləri dəyişir.
+`SetParameter` aktiv məlumat modeli və icraçı tərəfindən göstərilən zəncir üzrə parametrləri dəyişdirir.
 
-Standart girişdə yalnız bir parametr JSON obyektini keçərək bir parametr təyin edin:
+Standart girişdə tək parametr JSON obyekti ötürərək parametri təyin edin:
 
 ```bash
 printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
@@ -415,9 +428,9 @@ printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
 
 ## `ExecuteTrigger` {#executetrigger}
 
-Bu təlimat [ triggerləri ](./triggers.md) icra etmək üçün istifadə olunur.
+Bu təlimat [tetikleyicilər](./triggers.md)-i icra etmək üçün istifadə olunur.
 
-İndiki CLI başlatıcıları qeyd edə və başlatıcı icra hadisələrini birbaşa abunə ola bilər. `execute trigger` əmr, beləliklə bir təlimat təqdim etmək üçün `ExecuteTrigger` təlimat, seriallaşdırılmış bir istehsal `InstructionBox` bir SDK və ya icra vasitəsi və nəticəsində keçmək JSON arşivi keçmək `ledger transaction stdin`:
+CLI tetikleyiciləri qeydiyyatdan keçirə və tetikleyici icra hadisələrinə birbaşa abunə ola bilər. O, tiplənmiş `execute trigger` əmri təmin etmir, buna görə təqdim etmək üçün əl kitabçası `ExecuteTrigger` təlimat, sıra şəklində `InstructionBox` yaradın SDK və ya icraçı alət ilə və yaranan JSON massivini `ledger transaction stdin` vasitəsilə keçirin:
 
 ```bash
 printf '["<BASE64_EXECUTE_TRIGGER_INSTRUCTION_BOX>"]\n' |
@@ -430,20 +443,20 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ## Digər təlimatlar {#other-instructions}
 
-Iroha həmçinin iş vaxtı və icraçı inteqrasiyası üçün aşağı səviyyəli təlimatları açıqlayır:
+Iroha həmçinin proqram icra mühiti və icraçı inteqrasiyası üçün aşağı səviyyəli təlimatları da aşkar edir:
 
-- `Log`: icra olunarkən qeydə alınmış bir giriş buraxın
-- `CustomInstruction`: icraçıya aid olan JSON pay yükləri daşın
-- `Upgrade`: icraçı təkmilləşdirməni aktivləşdirin
+- `Log`: icra zamanı bir qeyd qeydi göndərin
+- `CustomInstruction`: icraçıya xas JSON yükləri daşımaq
+- `Upgrade`: icraçı təkmilləşdirməsini aktivləşdir
 
-`Log` təlimatını ping köməkçisi ilə təqdim edin:
+Ping yardımçısı ilə `Log` təlimatını təqdim edin:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger transaction ping --log-level INFO --msg "hello from docs"
 ```
 
-Seriallaşdırılmış `InstructionBox` olaraq xüsusi icraçı təlimatını təqdim edin. Faydalı yük şəklini icraçı xüsusi edir, buna görə də təlimatı uyğunlaşdıran SDK və ya icraçı alətləri ilə istehsal edin:
+Xüsusi icraçı təlimatını serializə edilmiş `InstructionBox` kimi təqdim edin. Yükləmə forması icraçıya xasdır, buna görə təlimatı uyğun SDK və ya icraçı alətləri ilə yaradın:
 
 ```bash
 printf '["<BASE64_CUSTOM_INSTRUCTION_BOX>"]\n' |
@@ -451,7 +464,7 @@ printf '["<BASE64_CUSTOM_INSTRUCTION_BOX>"]\n' |
   ledger transaction stdin
 ```
 
-Yükləyici IVM bytecode faylından yüksəltmək:
+İcraçını tərtib edilmiş IVM baytkod faylından yeniləyin:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \

@@ -14,8 +14,8 @@ trigger တွေက event filter ကို executable action နဲ့ ချ�
 
 မှတ်ပုံတင်ထားသော `Trigger` တွင်:
 
-- `id`: a `TriggerId` ကိုဖုံးအုပ်ခြင်း `Name`
-- `action`: အကောင်အထည်ဖော်နိုင်သူ၊ အာဏာပိုင်၊ စစ်ဆေးရေး၊ ထပ်ကျော့ခြင်း မူဝါဒ၊ ပြန်လည်စမ်းသပ်မှု မူဝါဒနှင့် မီတာဒေတာများ
+- `id`: a `TriggerId` ကို ဖုံးအုပ်ထားသော `Name`
+- `action`: အကောင်အထည်ဖော်နိုင်မှု, ခွင့်ပြုချက် မူလအချက်အလက်များ, စစ်ဆေးခြင်း, ထပ်ကျော့ခြင်းမူဝါဒများ, ပြန်လည်စမ်းသပ်မှုမူဝါဒနှင့် metadata များ
 
 လုပ်ဆောင်ချက်မှာ အောက်ပါအချက်တွေ ပါဝင်ပါတယ်။
 
@@ -30,19 +30,19 @@ trigger တွေက event filter ကို executable action နဲ့ ချ�
 
 Trigger Conditions က Subscriptions တွေနဲ့ တူတဲ့ Event Filter ပုံစံကို သုံးပါတယ်။ အထက်တန်းအဆင့် Event filter ကတော့
 
-- ပိုက်လိုင်း ဖြစ်ရပ်များ
+- ဆော့ဖ်ဝဲ စီမံခန့်ခွဲမှု အလုပ်ဖြစ်စဉ်များ
 - ဒေတာဖြစ်ရပ်များ
-- အချိန်ဖြစ်ရပ်များ
+- အချိန်ကို အခြေခံတဲ့ အဖြစ်အပျက် အကြောင်းကြားချက်များ
 - trigger execution ဖြစ်ရပ်များ
 - အစပျိုးပြီးစီးမှုဖြစ်ရပ်များ
 
 Workflow ကိုက်ညီတဲ့ သေးငယ်ဆုံး filter ကို ကြိုက်တယ်။ Broad filters တွေဟာ ရောဂါရှာဖွေရေးအတွက် အသုံးဝင်ပေမဲ့ block execution အတွင်းမှာ အလုပ်ကို တိုးမြှင့်ပါတယ်။
 
-[ Filters](/my/blockchain/filters.md) ကို လက်ရှိ filter အမျိုးအစားများအတွက် ကြည့်ပါ။
+[Filters များ](/my/blockchain/filters.md) ကို ကြည့်ပါ။ လက်ရှိ filter မိသားစုတွေ အတွက်။
 
 ## အချိန်ကို နှိုးဆွပေးခြင်း {#time-triggers}
 
-Time trigger တွေက time event filter ကိုသုံးပါတယ်။ world state view က match time condition ကိုရောက်တဲ့အခါ Iroha က trigger လုပ်ရပ်ကို trigger authority အောက်မှာ အကောင်အထည်ဖော်ပါတယ်။ Time trigger ဟာ အောက်ဖော်ပြထားတဲ့ retry policy ကို အသုံးပြုနိုင်တဲ့ trigger အမျိုးအစားပါ။
+Time trigger တွေက time event filter ကို သုံးပါတယ်။ world state view က match time condition ကို ရောက်တဲ့အခါ Iroha ဟာ trigger authorization principle အောက်မှာ trigger လုပ်တာကို လုပ်ဆောင်တယ်။ Time trigger များဟာ အောက်ဖော်ပြထားတဲ့ retry policy ကို အသုံးပြုနိုင်တဲ့ trigger အမျိုးအစားပါ။
 
 ## ထပ်ကျော့ခြင်း {#repetition}
 
@@ -50,11 +50,11 @@ Time trigger တွေက time event filter ကိုသုံးပါတယ်
 
 `Repeats::Exactly(n)` က trigger ကို fixed number of times fire လုပ်ခွင့်ပေးတယ်။ count ပြီးသွားတဲ့အခါ အလားတူအပြုအမူကို ထပ်မံလိုအပ်ရင် trigger အသစ်တစ်ခုကို မှတ်ပုံတင်ပါ။
 
-## အာဏာနှင့် ခွင့်ပြုချက်များ {#authority-and-permissions}
+## ခွင့်ပြုချက် အရင်းအမြစ်နှင့် ခွင့်ပြုချက်တွေ {#authority-and-permissions}
 
-trigger authority ဆိုသည်မှာ executable ကိုခေါ်ယူရန်အသုံးပြုသောစာရင်းဖြစ်သည်။ သက်တမ်းရှည် trigger များအတွက် သီးသန့်နည်းပညာစာရင်းကို အသုံးပြုပါကလိုအပ်သည့်ခွင့်ပြုချက်များကို operator ၏ကိုယ်ပိုင်စာရင်းမှ ရှင်းလင်းစွာခွဲခြားထားသည်။
+trigger authorization principal က executable ကို invocate လုပ်ဖို့ အသုံးပြုတဲ့ account ပါ။ ရေရှည် သက်တမ်းရှိတဲ့ trigger တွေအတွက် ရည်စူးထားတဲ့ technical account တစ်ခုကို သုံးပြီး လိုအပ်တဲ့ ခွင့်ပြုချက်တွေဟာ operator ရဲ့ ကိုယ်ရေးကိုယ်တာအကောင့်ကနေ ရှင်းလင်းပြီး သီးသန့်ဖြစ်စေပါတယ်။
 
-အာဏာပိုင်သည် စီမံခန့်ခွဲနိုင်သော ညွှန်ကြားချက်များ သို့မဟုတ် စာချုပ်ခေါ်ဆိုမှုတွင်လိုအပ်သည့် ခွင့်ပြုချက်များကို လိုအပ်သည်။ trigger ကိုမှတ်ပုံတင်သည့်အကောင့်သည် activated runtime validator တွင် trigger များကို မှတ်ပုံတင်ရန် ခွင့်ပြုချက်ကိုလည်းလိုအပ်သည်။
+Authorisation Principal က executable instruction တွေ (သို့) contract technical invocation တွေမှာ လိုအပ်တဲ့ ခွင့်ပြုချက်တွေကို လိုအပ်ပါတယ်။ trigger ကို မှတ်ပုံတင်တဲ့ account ဟာ active software execution environment validator အောက်မှာ trigger တွေကို မှတ်ပုံတင်ဖို့ ခွင့်ပြုချက်ကိုလည်း လိုအပ်တယ်။
 
 ## ပြန်လည်စမ်းသပ်မှု မူဝါဒ {#retry-policy}
 
@@ -75,7 +75,7 @@ trigger status ကို စစ်ဆေးဖို့ လက်ရှိ trigg
 
 နောက်တစ်ချက်ကြည့်ပါ-
 
-- [အဖြစ်အပျက် trigger ဥပမာ ](/my/blockchain/trigger-examples.md)
+- [Event trigger နမူနာ](/my/blockchain/trigger-examples.md)
 - [ဖြစ်ရပ်များ](/my/blockchain/events.md)
-- [ညွှန်ကြားချက်များ ](/my/blockchain/instructions.md)
-- [ခွင့်ပြုချက်များ ](/my/blockchain/permissions.md)
+- [ညွှန်ကြားချက်](/my/blockchain/instructions.md)
+- [ခွင့်ပြုချက်များ](/my/blockchain/permissions.md)

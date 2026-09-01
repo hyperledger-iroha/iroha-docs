@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /guide/configure/client-configuration.md
-translation_source_hash: 0d897a79e6118de2e7e88a45f1daf1444b515fd35e7b2562f7c1cc18ed0a83b4
+translation_source_hash: 6da8a0abddc9723b16477a935a3953ebd497300f02eadd635e4e38027a11d095
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -35,7 +35,7 @@ private_key = "802620..."
 - `[account].domain` משמשת על ידי קיצוצים CLI וקידוד בוחר כתובת; הקאנוניקלי `AccountId` עצמו הוא ללא תחום .
 - `[account].public_key` ו `[account].private_key` חותמים על עסקאות.
 
-החשבון חייב כבר להתקיים על שרשרת. עבור הרשת המקומית המקובלת זה מנוהל על ידי מוניסט הגנזיס הקבוצת.
+החשבון חייב כבר להתקיים בשרשרת. ברשת המקומית המוגדרת כברירת מחדל, מניפסט ה־genesis המצורף מטפל בכך.
 
 ::: info רגישות המקרה
 
@@ -45,7 +45,7 @@ private_key = "802620..."
 
 ## אימות בסיסי {#basic-authentication}
 
-החלק בחופשי `[basic_auth]` מוסיף כותרת HTTP `Authorization` לבקשות הלקוח. עמיתים Iroha אינם מתרגמים את האישורים האלה ישירות; השתמש בהם כאשר Torii עומד מאחורי פרוקסי ההפוך כגון Nginx.
+הסעיף האופציונלי `[basic_auth]` מוסיף כותרת HTTP מסוג `Authorization` לבקשות הלקוח. צומתי Iroha אינם מפרשים את פרטי ההזדהות האלה ישירות; השתמשו בהם כאשר Torii נמצא מאחורי proxy הפוך כגון Nginx.
 
 ```toml
 [basic_auth]
@@ -84,7 +84,7 @@ queue_root = "./queue"
 עבור רשתות מקומיות חד פעמיות, מעדיפים Kagami כי הוא כותב קונפיג'ים מתאימים Iroha 3, גנזה, תסריטים, ו README:
 
 ```bash
-cargo run --bin kagami -- localnet --build-line iroha3 --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
 השתמשו ב- `./localnet/client.toml` עם CLI:

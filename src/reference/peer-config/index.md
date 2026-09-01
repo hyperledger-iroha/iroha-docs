@@ -5,7 +5,7 @@ configuration changed through [`SetParameter`](/blockchain/instructions.md#setpa
 instructions. Production behavior must be represented in a configuration file
 or an on-chain parameter; environment variables are not feature gates.
 
-Use [`--config`](../irohad-cli#arg-config) CLI argument to specify the path to the configuration file.
+Use [`--config`](../iroha3d-cli#arg-config) CLI argument to specify the path to the configuration file.
 
 ## Template
 
@@ -63,4 +63,4 @@ The resulting configuration will be `chain` from `a.toml`, `max_content_len` fro
 
 ## Troubleshooting
 
-Pass [`--trace-config`](../irohad-cli#arg-trace-config) CLI flag to see a trace of how configuration is read and parsed.
+Pass [`--trace-config`](../iroha3d-cli#arg-trace-config) CLI flag to see a trace of how configuration is read and parsed.

@@ -3,49 +3,49 @@ translation_locale: az
 translation_source: /guide/best-practices/operations.md
 translation_source_hash: de9e8129467b1111a58cee07acf43382d6cf3c352211a1511659ced422b46778
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # Əməliyyatlar {#operations}
 
-İşə hazırlıq, şəbəkənin təsdiqləyici hostlara təkmilləşdirilmiş girişdən asılı olmayaraq müşahidə edilməsini, dəyişdirilməsini, yedeklənməsini və bərpasını nəzərdə tutur.
+Əməliyyat hazırlığı o deməkdir ki, şəbəkə müşahidə edilə, dəyişdirilə, ehtiyat nüsxəsi yaradıla və bərpa oluna bilər, təsdiqləyici hostlara müvəqqəti girişə güvənmədən.
 
-## Müşahidə qabiliyyəti {#observability}
+## Müşahidə edilə bilənlik {#observability}
 
-- Telemetriya profillərini məqsədyönlü olaraq aktivləşdirin. `/metrics` lazım olduqda `extended` və Sumeragi operatorlarının ətraflı marşrutlarına ehtiyacı olan sınaqlar zamanı `full` istifadə edin.
-- Dashboard qəbul edilmiş keçid, rədd edilən keçid, təzyiq sürəti, sıra dərinliyi, sıra doymuşluğu, görünüş dəyişiklikləri, buraxılmış konsensus mesajları və saxlama təzyiqi.
-- Vəziyyət görüntülərini, metrik skrapları, qeydləri və tətbiq konfigüratsiyasını eyni hadisə və ya istinad sənəd dəstində saxlayın.
-- Səyahətlərin davamlı böyüməsi, gözlənilməz rədd edilmə spikləri, blok hündürlüyü durduqları, görünüş dəyişikliyi və həmyaşıdların sağlamlıqda dəyişiklikləri barədə xəbərdarlıqlar.
+- Telemetriya profillərini qəsdən aktivləşdirin. `/metrics` lazım olduqda `extended`-dan istifadə edin və ətraflı Sumeragi operator marşrutları tələb edən test işləri zamanı `full`-dən istifadə edin.
+- Tablo qəbul olunan ötürmə sürətini, rədd edilmiş ötürmə sürətini, protokolun yekunlaşma gecikməsini, növbə dərinliyini, növbənin doyma səviyyəsini, görünüş dəyişikliklərini, itirilmiş konsensus mesajlarını və yaddaş təzyiqini göstərir.
+- Status nöqtə-vaxt məlumat baxışlarını, metrikaların əldə olunmasını, qeydləri və yerləşdirmə konfiqurasiyasını eyni hadisə və ya benchmark sənəd dəstində saxlayın.
+- Davamlı növbə artımı, gözlənilməz rədd edilmə sıçrayışları, dayanmış blok hündürlüyü, görünüş dəyişikliyi dəyişiklikləri və şəbəkə həmkarı sağlamlığı dəyişiklikləri barədə xəbərdarlıq.
 
-Bax [Fəaliyyət və Metriklər ](/az/guide/advanced/metrics.md).
+Baxın [Performans və Ölçülər](/az/guide/advanced/metrics.md).
 
-## Dərs kitabları {#runbooks}
+## İş dəftərləri {#runbooks}
 
-- Peer restart, Torii degradasiyası, açar kompromisi, icazə səhvləri, ödəniş sponsorunun tükənməsi, sıxışmış növbələr və şəbəkə bölünməsinin simptomları üçün idarəetmə kitabları yazın.
-- Yazı əməliyyatlarından əvvəl yalnız oxumaq üçün dəqiq yoxlamalar daxil edin, xüsusilə həmkarların qeydiyyatı, icazə verilməsi və parametr dəyişiklikləri üçün.
-- Xüsusi əməliyyat məlumatları daxil olsa, təcili əlaqələrin və aşkarlanma qaydalarının repo sənədlərindən kənarda saxlanılması.
-- Hər bir hadisədən, təcrübədən və ya əsas yeniləmədən sonra kitablara baxın.
+- Şəbəkə həmkarının yenidən başlaması, Torii azalması, açar pozulması, icazə səhvləri, ödəniş sponsorunun tükənməsi, ilişmiş növbələr və şəbəkə parçalanması simptomları üçün runbuklar yazın.
+- Yazma əməliyyatlarından əvvəl dəqiq oxumaq üçün yoxlamaları daxil edin, xüsusən şəbəkə həmkarlarının qeydiyyatı, icazələrin verilməsi və parametr dəyişiklikləri üçün.
+- Təcili əlaqə məlumatlarını və eskalasiya qaydalarını sənədlər deposunun xaricində saxlayın, əgər onlar şəxsi əməliyyat məlumatlarını ehtiva edirsə.
+- Hər bir hadisə, təlim və ya böyük yeniləmədən sonra əməliyyat təlimatlarını nəzərdən keçirin.
 
-Bax [Əməliyyat təhlükəsizliyi ](/az/guide/security/operational-security.md).
+Bax [Əməliyyat Təhlükəsizliyi](/az/guide/security/operational-security.md).
 
-## Backup və bərpa {#backups-and-recovery}
+## Ehtiyat nüsxələr və Bərpa {#backups-and-recovery}
 
-- Təkmilləşdirmə üçün tələb olunan bərpa nöqtəsinə uyğun olaraq həmyaşıd saxlama ehtiyatı. İstehsal olmayan hostlarda bərpaları təsdiqləyin.
-- İmzalanmış mənşəyi saxlayın, metadatalar buraxın, həmyaşıd konfiqurasiyası və bir təsdiqləyici ev sahibi mövcud olmasa da açar saxlama qeydləri bərpa oluna bilər.
-- Bir bərpa prosedurunun təməldən yenidən qurulduğunu, sürətli görüntülərdən bərpa edildiyini və ya uğursuz bir həmyaşıdın yerini yeni bir şəxsiyyətlə əvəz etdiyini sənədləşdirin.
-- İstehsal hadisəsi zamanı heç vaxt ilk dəfə bərpa prosedurlarını sınaqdan keçirməyin.
+- Təqdimat tərəfindən tələb olunan bərpa nöqtəsinə uyğun olaraq şəbəkə həmkarı yaddaşını ehtiyat nüsxəsini çıxarın. Qeyri-istehsal hostlarında bərpaları yoxlayın.
+- İmzalanmış blockchain genesis, buraxılış metadata, şəbəkə həmkarı konfiqurasiyası və açar saxlanması qeydlərinin, hətta bir təsdiqləyici hostu mövcud olmasa belə bərpa edilə bilinməsini təmin edin.
+- Qurtarma prosedurunun blokzincir başlanğıcından yenidən qurulub-qurulmadığını, müəyyən vaxt nöqtəsindəki məlumat görüntüsündən bərpa edilib-edilmədiyini və ya uğursuz şəbəkə iştirakçısının yeni identitetlə əvəz olunub-olunmadığını sənədləşdirin.
+- Heç vaxt bərpa prosedurlarını istehsal hadisəsi zamanı ilk dəfə sınaqdan keçirməyin.
 
-## Dəyişikliklərin idarə edilməsi {#change-management}
+## Dəyişiklik İdarəetməsi {#change-management}
 
-- Zincirdəki konfigüratsiya dəyişikliklərini yoxlama, uçuşdan əvvəl oxunma, icazə və dəyişiklikdən sonrakı təsdiqlənmə tələb edən əməliyyatlar kimi qəbul edin.
-- Bir uyğunluq planı və geri dönmə qərar nöqtəsi ilə həmyaşıd ikili yeniləmələri tətbiq edin.
-- Eyni saxlama pəncərəsində həmyaşıd topologiyasını, razılaşma vaxtını və tətbiq iş yükünü dəyişdirməyin, əgər köç planı bunu tələb etməsə.
-- Operativ dəyişikliklər üçün əməliyyat hashləri və blok hündürlüklərini qeyd edin.
+- Zəncirüstü konfiqurasiya dəyişikliklərini nəzərdən keçirilməyi, əvvəlcədən oxunmağı, icazəni və dəyişiklik sonrası yoxlamanı tələb edən əməliyyatlar kimi qəbul edin.
+- Şəbəkə həmkarı ikili yeniləmələrini uyğunluq planı və geri qaytarma qərar nöqtəsi ilə həyata keçirin.
+- Əgər miqrasiya planı tələb etmirsə, eyni texniki qulluq pəncərəsində şəbəkə həmkarlarının topologiyasını, konsensus vaxtlamasını və tətbiq iş yükünü dəyişməkdən çəkinin.
+- Əməliyyat dəyişiklikləri üçün əməliyyat kriptoqrafik xəşləri və blok hündürlüklərini qeyd edin.
 
-[Hot Reload](/az/guide/advanced/hot-reload.md) və [Compatibility Matrix](/az/reference/compatibility-matrix.md) bax.
+Baxın [İstidən Yenidən Yükləmə](/az/guide/advanced/hot-reload.md) və [Uyğunluq Matrisi](/az/reference/compatibility-matrix.md).
 
-## İstehsalat baxımları {#capacity-reviews}
+## Tutum Baxışları {#capacity-reviews}
 
-- Validator sayının, aparatın, şəbəkənin yerləşdirilməsinin, iş yük mixinin və ya konsensus parametrlərinin dəyişdiyi zaman yenidən yük yoxlamaları aparılır.
-- Qısa bir ən yaxşı hal nümunəsinə etibar etmək əvəzinə istilik, sabit vəziyyət və gözlənilən zirvə yükünü ölçün.
-- Qəbul olunan keçid gücünü öhdəlik alınan keçid və növbənin dərinliyi ilə müqayisə edin. Əgər təqdim edilən TPS öhdəliyi aşırsa TPS və növbələr artırsa, şəbəkə öz davamlı qovluğundan kənarda qalır.
+- Doğrulayıcı sayı, avadanlıq, şəbəkə yerləşməsi, iş yükü qarışığı və ya konsensus parametrləri dəyişdikdə yükləmə yoxlamalarını yenidən işə salın.
+- Qısa, ən yaxşı hal göstəricisinə əsaslanmaq əvəzinə, qızma mərhələsini, sabit vəziyyəti və gözlənilən maksimum yükü ölçün.
+- Qəbul edilmiş ötürmə sürətini yekunlaşdırılmış ötürmə sürəti və növbə dərinliyi ilə müqayisə edin. Əgər təqdim edilmiş TPS yekunlaşdırılmış TPS-i aşır və növbələr böyüyürsə, şəbəkə davamlı işləmə həddini keçmişdir.

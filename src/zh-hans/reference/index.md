@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2
 - [I105 账户地址格式](/zh-hans/reference/i105.md)
 - [与 Iroha 二进制](/zh-hans/reference/binaries.md) 合作
 - [创世记引用](/zh-hans/reference/genesis.md)
-- [Torii 终端点](/zh-hans/reference/torii-endpoints.md)
+- [Torii 端点](/zh-hans/reference/torii-endpoints.md)
 - [Torii API 控制台](/zh-hans/reference/torii-api-console.md)
 - [Norito](/zh-hans/reference/norito.md)
 - [兼容性矩阵](/zh-hans/reference/compatibility-matrix.md)
