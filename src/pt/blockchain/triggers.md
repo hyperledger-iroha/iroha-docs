@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/triggers.md
-translation_source_hash: 9443b139623544fd3c54b324e54b7e06f57820c70ffd0856f05aacac9f7591a3
+translation_source_hash: 726e2998ec1439138ef94d3a702049731ce2432f5c52a723ed0c92593de41c1e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -55,6 +55,16 @@ Os gatilhos de tempo usam um filtro de evento de tempo. Quando a visão do estad
 A autoridade do gatilho é a conta usada para invocar o executável. Use uma conta técnica dedicada para gatilhos de longa duração para que as permissões exigidas sejam explícitas e isoladas da conta pessoal de um operador.
 
 A autoridade precisa das permissões exigidas pelas instruções executáveis ou pela chamada de contrato. A conta que regista o gatilho também precisa de permissão para registrar os gatilhos sob o validador ativo do tempo de execução.
+
+### Ámbito de aplicação e capacidade dos gatilhos de dados {#data-trigger-scope-and-capacity}
+
+Um gatilho de dados ordinário deve ligar o seu filtro a um sujeito exato pertencente à sua autoridade de gatilho. Os filtros de contas devem indicar a conta exata. NFT, RWA, e os filtros de desencadeamento devem igualmente indicar a entidade exata da autoridade. `Any`, uma correspondência não vinculada, um sujeito estrangeiro e famílias de eventos de sistema ou governança não são desencadeadores comuns calculados.
+
+Só o Parlamento pode conceder `CanRegisterGlobalDataTrigger`.A subvenção é armazenada diretamente numa conta exata, com os mesmos nomes da mesma autoridade de desencadeamento exata, e pode ser revogada através o mesmo ciclo de vida do Parlamento. Não é herdado através de uma função e não renuncia a `CanRegisterTrigger` quando uma conta registra um desencadeamento para outra autoridade.
+
+O consenso admite no máximo 64 gatilhos de dados para uma autoridade e 4.096 gatilhos globais. Uma transação originária pode causar no máximo 256 disparos de gatilhos de dados, incluindo cascas. Cada verificação de filtros indexada, disparo, instrução nativa e instrução VM consome o mesmo orçamento de gás do bloco.
+
+A execução do gatilho é atômica com a transação que emitiu o evento de correspondência. Se um gatilho autorizado falhar, exceder seu limite de disparar ou profundidade de execução, ou esgotar gás, Iroha retorna os efeitos do gatilha e a transação originária.
 
 ## Política de Reprovação {#retry-policy}
 

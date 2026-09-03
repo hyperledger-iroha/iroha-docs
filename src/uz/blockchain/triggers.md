@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/triggers.md
-translation_source_hash: 9443b139623544fd3c54b324e54b7e06f57820c70ffd0856f05aacac9f7591a3
+translation_source_hash: 726e2998ec1439138ef94d3a702049731ce2432f5c52a723ed0c92593de41c1e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -55,6 +55,16 @@ Vaqt qo'zg'atuvchilari vaqt hodisalari filtridan foydalanadi. Dunyo holati ko'ri
 O'chirib qo'yish huquqi ijro etilishini chaqirish uchun ishlatiladigan hisob hisoblanadi. Uzoq muddatli tetiklar uchun maxsus texnik hisobdan foydalaning, shunda kerakli ruxsatnomalar aniq va operatorning shaxsiy hisobidan ajratilgan bo'ladi.
 
 Ma'muriyatga ijro etilishi mumkin bo'lgan ko'rsatmalar yoki shartnoma qo'ng'iroqlari uchun talab qilingan ruxsatlar kerak. Ishtirokchini ro'yxatdan o'tkazadigan hisobvaraqning faol ishga tushirish vaqtini tasdiqlash vositasi ostida ishtirokilarni ro'yxatga olish uchun ruxsatnoma ham kerak.
+
+### Ma'lumotlarni qo'zg'atishning doirasi va quvvati {#data-trigger-scope-and-capacity}
+
+Oddiy ma'lumotlarni qo'zg'atuvchi o'z filtrini uning qo'zgʻatuvchi hokimiyatiga tegishli aniq mavzuga bog'lashi kerak. Hisobot filtrlari ushbu aniq hisobni nomlashlari kerak. Asset, aktivning ta'rifi, domen, NFT, RWA, `Any`, bog'lanmagan moslash, chet el subyekti va tizim yoki boshqaruv hodisalari oilalari oddiy hisob-kitob qilingan triggerlar emas.
+
+Faqatgina Parlament `CanRegisterGlobalDataTrigger` ni berishi mumkin. Yordam to'g'ridan-to'g'ri bitta hisob raqamida saqlanadi, u xuddi shu aniq trigger hokimiyati bilan nomlanadi va uni Parlamentning bir xil hayot davri. Bu vazifa orqali meros qilib olinmaydi va `CanRegisterTrigger` hisobidan boshqa organ uchun qo'zg'atuvchi ro'yxatdan o'tganda voz kechadi.
+
+Konsensus bir hokimiyat uchun eng ko'p 64 ta ma'lumotlar triggerini va butun dunyo bo'ylab 4,096 ta ma'lumot triggerlarini qabul qiladi. Bir tug'ilgan operatsiya, kaskadlarni o'z ichiga olgan, eng ko'p 256 ta ma'lumotlar qo'zg'atuvchisiga sabab bo'lishi mumkin. Har bir indekslangan filtr tekshiruvi, ishga tushirish, mahalliy ko'rsatma va VM ko'rsatmasi xuddi shu blok gaz budjeti bilan iste'mol qiladi.
+
+Trigger o'tkazilishi moslashtirilgan hodisani chiqargan tranzaksiya bilan atom bo'ladi. Agar ruxsat etilgan trigger muvaffaqiyatsizlikka uchsa, uning ishga tushirish yoki ijro chuqurligi chegarasidan oshsa yoki gazni chiqarib tashlasa, Iroha trigger effektlarini ham, kelib chiqqan tranzaksiyani ham qaytaradi.
 
 ## Qayta sinab koʻrish siyosati {#retry-policy}
 

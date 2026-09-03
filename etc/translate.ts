@@ -2522,6 +2522,8 @@ export function isCompleteCompactCjkSentence(source: string, translated: string,
   const translatedWithoutMarkers = withoutMarkers(translated)
   const sourceLetters = translationLetterCount(sourceWithoutMarkers)
   const translatedLetters = translationLetterCount(translatedWithoutMarkers)
+  const hasOneCompleteSentence =
+    sentenceCount(sourceWithoutMarkers, 'en') === 1 && sentenceCount(translatedWithoutMarkers, locale.lang) === 1
   const hasCompactCoordinatedPair =
     sourceLetters <= 40 &&
     translatedLetters >= 7 &&
@@ -2532,11 +2534,13 @@ export function isCompleteCompactCjkSentence(source: string, translated: string,
     (sourceLetters > 40 && sourceLetters <= 50 && translatedLetters >= Math.max(10, Math.ceil(sourceLetters * 0.22))) ||
     (sourceLetters > 50 && sourceLetters <= 60 && translatedLetters >= 12) ||
     (sourceLetters > 60 && sourceLetters <= 90 && translatedLetters >= Math.max(15, Math.ceil(sourceLetters * 0.22))) ||
+    (sourceLetters > 90 && sourceLetters <= 120 && translatedLetters >= Math.max(20, Math.ceil(sourceLetters * 0.2))) ||
     hasCompactCoordinatedPair
   return (
     sourceLetters >= 20 &&
-    sourceLetters <= 90 &&
+    sourceLetters <= 120 &&
     hasEnoughTargetLetters &&
+    hasOneCompleteSentence &&
     /[.!?](?:["')\]}]*)\s*$/u.test(sourceWithoutMarkers) &&
     /[.!?。！？](?:["')\]}»”]*)\s*$/u.test(translatedWithoutMarkers) &&
     hasExactTechnicalIdentifierSet(sourceWithoutMarkers, translatedWithoutMarkers)

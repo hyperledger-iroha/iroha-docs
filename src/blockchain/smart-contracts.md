@@ -64,16 +64,28 @@ Every deployed address retains a `ContractLifecycleControlV1` record, including
 while the contract is inactive. The record contains immutable first-deployment
 provenance, the current and pending owner, any revocable Parliament delegation,
 the active code hash, a non-zero compare-and-swap revision, and any retained
-emergency hold. A direct deployment records the deploying account. A Parliament
-deployment records its proposer, proposal-content ID, and successful governance
-attempt ID.
+emergency hold. A direct deployment assigns the submitting account as owner and
+records it as the deployment origin. A Parliament deployment assigns Parliament
+as owner and records its proposer, proposal-content ID, and successful governance
+attempt ID only as provenance.
+
+Configured protected namespaces are reserved for Parliament deployment. Holding
+`CanRegisterSmartContractCode` permits artifact registration but does not
+authorize direct deployment or raw activation into a protected namespace; the
+initial lifecycle record there must be created by the certified Parliament
+deployment path.
 
 The lifecycle owner is either one account or Parliament. Account ownership
-changes use a separate offer and acceptance; accepting an offer clears any
-Parliament delegation. An account owner can allow Parliament to activate or
-deactivate the contract, then revoke that delegation, but delegation never
-allows Parliament to transfer ownership. Parliament-owned changes and
-Parliament acceptance are enacted through certified governance effects.
+changes use `OfferContractOwnership` followed by the pending owner's
+`AcceptContractOwnership`; the current owner can withdraw an unaccepted offer
+with `CancelContractOwnershipOffer`. Acceptance clears any Parliament
+delegation. Account removal is rejected while the account owns a contract or is
+the pending owner in an outstanding offer.
+
+An account owner can allow Parliament to upgrade, activate, or deactivate the
+contract, then revoke that delegation. Delegation never allows Parliament to
+transfer ownership or change the delegation itself. Parliament-owned changes
+and Parliament acceptance are enacted through certified governance effects.
 
 Raw `ActivateContractInstance` and `DeactivateContractInstance` instructions
 are available only to the current account owner. They must carry the record's
@@ -83,13 +95,17 @@ manifest, and ABI before changing `active_code_hash`. Deactivation clears the
 active code hash but retains ownership and provenance. Every successful
 lifecycle transition advances the revision and emits the complete post-state.
 
-An Emergency-tier Parliament proposal can impose a hold for at most 3,600
-blocks when it binds the current revision, code hash, and a non-zero incident
-digest. Calls are blocked from the imposition height up to, but not including,
-the expiry height. Expiry restores execution but does not erase the hold. A
-certified `CompleteEmergencyHoldRetrospective` action must later bind the exact
-hold IDs and digest plus a non-zero finding root before the record is cleared;
-another hold cannot be imposed while that retrospective remains outstanding.
+An Emergency-tier Parliament proposal can impose a hold only through the full
+Parliament pipeline and with Aye votes from at least two-thirds of the original
+Policy Jury seats. The hold binds the current revision, code hash, and a
+non-zero incident digest, and lasts for at most 3,600 blocks. It can only
+suspend calls and trigger execution: it cannot be extended or change code,
+ownership, or delegation. Calls and matching trigger executions are blocked
+from the imposition height up to, but not including, the expiry height. Expiry
+automatically restores execution but does not erase the hold. A certified
+`CompleteEmergencyHoldRetrospective` action must later bind the exact hold IDs
+and digest plus a non-zero finding root before the record is cleared; another
+hold cannot be imposed until that retrospective is complete.
 
 When the app API is enabled, read the retained state with
 `GET /v1/gov/contracts/{contract_address}`. Its `found` field means that a

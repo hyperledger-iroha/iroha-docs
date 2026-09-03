@@ -1,9 +1,9 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
+translation_source_hash: c69237ded68aee4d663b00f1aa13d400c4763682af9bd5b5a49ca0edb5905dd2
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2
 ---
 
 # Les contrats intelligents {#smart-contracts}
@@ -48,6 +48,22 @@ La preuve lie la superposition au code octal exécuté. Selon la politique du pi
 ## Les appels contractuels déployés {#deployed-contract-calls}
 
 `Executable::ContractCall` invoque une instance de contrat déployée par adresse.Utilisez-la lorsque le code du contrat est enregistré séparément et que les transactions doivent l'appeler par référence au lieu de porter chaque fois le bytecode.
+
+## Cycle de vie et propriété des contrats {#contract-lifecycle-and-ownership}
+
+Chaque adresse déployée conserve un enregistrement `ContractLifecycleControlV1`, y compris pendant que le contrat est inactif. Le registre contient l'origine immuable du premier déploiement, le propriétaire actuel et en attente, toute délégation parlementaire révocable, le code hash actif, une révision non zéro comparer-et-swap, Un déploiement direct attribue le compte soumis en tant que propriétaire et l'enregistre comme étant l'origine du déploiements. Un dépôt parlementaire attribue au Parlement en tant que titulaire et enregistre son proposant, contenu-proposition ID; et une tentative de gouvernance réussie ID uniquement comme provenance.
+
+Les espaces de noms protégés configurés sont réservés au déploiement par le Parlement. `CanRegisterSmartContractCode` autorise l'enregistrement d'un artefact, mais n'autorise pas le déploiement direct ou l'activation brute dans un espace de noms protégé; l'enregistrement initial du cycle de vie doit être créé par la voie de déploiement certifiée par le Parlement.
+
+Le propriétaire du cycle de vie est soit un compte, soit le Parlement. `OfferContractOwnership` suivie de celle du propriétaire en attente `AcceptContractOwnership`; le propriétaire actuel peut retirer une offre non acceptée avec: `CancelContractOwnershipOffer`. L'acceptation accorde l'autorisation à toute délégation du Parlement européen. le compte est titulaire d'un contrat ou est le propriétaire en attente dans une offre en cours.
+
+Un titulaire de compte peut permettre au Parlement d'améliorer, d'activer ou de désactiver le contrat, puis révoquer cette délégation. Les modifications détenues par le Parlement et l'acceptation par le Parlement sont promulguées à travers des effets de gouvernance certifiés.
+
+Les instructions crues `ActivateContractInstance` et `DeactivateContractInstance` ne sont disponibles que pour le titulaire du compte courant. Elles doivent contenir l'exactitude exacte de l'enregistrement `expected_revision`; les modifications obsolètes ou zéro ne peuvent pas être fermées. L'activation brute ne peut pas créer un enregistrement du cycle de vie, et elle valide l'artefact enregistré, le manifeste et ABI avant de modifier `active_code_hash`. Désactivation chaque transition réussie du cycle de vie fait avancer la révision et émet l'état post-complete.
+
+Une proposition parlementaire de niveau d'urgence ne peut imposer un arrêt qu'à travers l'ensemble du pipeline parlementaire et avec les votes Oui à partir d'au moins deux tiers des sièges du jury politique original. Il ne peut que suspendre les appels et déclencher l'exécution: il ne peut pas être étendu ou modifier le code, la propriété ou la délégation. Les appels et les exécutions de déclencheurs correspondants sont bloqués depuis la hauteur d'imposition jusqu'à, mais sans inclure, la hauteur de validité. L'expiration rétablit automatiquement l'exécution mais n'efface pas la retenue. Une action certifiée `CompleteEmergencyHoldRetrospective` doit ensuite lier la retenue exacte IDs et digérer plus une racine de recherche non zéro avant que le dossier ne soit effacé; une autre retenue ne peut pas être imposée jusqu'à ce que cette rétrospective soit complète.
+
+Lorsque l'application API est activée, lisez l'état conservé avec `GET /v1/gov/contracts/{contract_address}`. Son champ `found` signifie qu'un enregistrement du cycle de vie existe, et non que l'adresse a actuellement un code actif.
 
 ## Conseils opérationnels {#operational-guidance}
 

@@ -1,9 +1,16 @@
 import { createHash } from 'node:crypto'
 import { readFile, rename, writeFile } from 'node:fs/promises'
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 import { TRANSLATED_LOCALES, type DocsLocale } from './locales'
-import { NllbTranslationProvider, translateDocument } from './translate'
+import { NllbTranslationProvider, translateDocument, type TranslationProvider } from './translate'
+
+export const SECURITY_REMEDIATION_ROUTES = {
+  smartContracts: 'blockchain/smart-contracts.md',
+  triggers: 'blockchain/triggers.md',
+  soraNexusServices: 'blockchain/sora-nexus-services.md',
+  toriiEndpoints: 'reference/torii-endpoints.md',
+} as const
 
 interface PageUpdate {
   readonly route: string
@@ -86,16 +93,27 @@ async function localizeSnippet(
   source: string,
   route: string,
   locale: DocsLocale,
-  provider: NllbTranslationProvider,
+  provider: TranslationProvider,
 ): Promise<string> {
   return translatedBody(await translateDocument(`${source.trim()}\n`, route, locale, provider))
 }
 
-async function updateLocale(sourceRoot: string, locale: DocsLocale, provider: NllbTranslationProvider): Promise<void> {
-  const smartRoute = 'blockchain/smart-contracts.md'
-  const toriiRoute = 'reference/torii-endpoints.md'
-  const soraRoute = 'blockchain/sora-nexus-services.md'
+export async function updateSecurityRemediationLocale(
+  sourceRoot: string,
+  locale: DocsLocale,
+  provider: TranslationProvider,
+): Promise<void> {
+  if (provider.engine !== 'nllb-200-ct2') {
+    throw new Error('Security remediation translation requires the deterministic nllb-200-ct2 provider')
+  }
+  const {
+    smartContracts: smartRoute,
+    triggers: triggerRoute,
+    soraNexusServices: soraRoute,
+    toriiEndpoints: toriiRoute,
+  } = SECURITY_REMEDIATION_ROUTES
   const smartEnglish = await readFile(path.join(sourceRoot, smartRoute), 'utf8')
+  const triggerEnglish = await readFile(path.join(sourceRoot, triggerRoute), 'utf8')
   const toriiEnglish = await readFile(path.join(sourceRoot, toriiRoute), 'utf8')
   const soraEnglish = await readFile(path.join(sourceRoot, soraRoute), 'utf8')
 
@@ -105,9 +123,21 @@ async function updateLocale(sourceRoot: string, locale: DocsLocale, provider: Nl
     locale,
     provider,
   )
+  const triggerScope = await localizeSnippet(
+    extract(triggerEnglish, '### Data-trigger scope and capacity', '## Retry Policy'),
+    triggerRoute,
+    locale,
+    provider,
+  )
   const accountVisibility = await localizeSnippet(
     extract(toriiEnglish, '## Account Authentication, Visibility, and Explorer Cursors', '## ISO 20022 Bridge'),
     toriiRoute,
+    locale,
+    provider,
+  )
+  const moderationChallenges = await localizeSnippet(
+    extract(soraEnglish, '### Moderation challenges', '### Pack, Manifest, Sign, and Submit'),
+    soraRoute,
     locale,
     provider,
   )
@@ -128,7 +158,7 @@ async function updateLocale(sourceRoot: string, locale: DocsLocale, provider: Nl
     provider,
   )
   const publicGateways = await localizeSnippet(
-    extract(soraEnglish, '### Public Local CID and Site Gateways', '### Pack, Manifest, Sign, and Submit'),
+    extract(soraEnglish, '### Public Local CID and Site Gateways', '### Moderation challenges'),
     soraRoute,
     locale,
     provider,
@@ -153,6 +183,10 @@ async function updateLocale(sourceRoot: string, locale: DocsLocale, provider: Nl
   smartLocalized = upsertSection(smartLocalized, contract, 'contract-lifecycle-and-ownership', 'operational-guidance')
   smartLocalized = refreshFrontmatter(smartLocalized, smartEnglish)
 
+  let triggerLocalized = await readFile(path.join(sourceRoot, locale.path, triggerRoute), 'utf8')
+  triggerLocalized = upsertSection(triggerLocalized, triggerScope, 'data-trigger-scope-and-capacity', 'retry-policy')
+  triggerLocalized = refreshFrontmatter(triggerLocalized, triggerEnglish)
+
   let toriiLocalized = await readFile(path.join(sourceRoot, locale.path, toriiRoute), 'utf8')
   toriiLocalized = replaceEndpointRows(toriiLocalized, isoRows, endpoints)
   toriiLocalized = upsertSection(
@@ -173,17 +207,35 @@ async function updateLocale(sourceRoot: string, locale: DocsLocale, provider: Nl
   soraLocalized = upsertSection(soraLocalized, relayRoster, 'relay-incentive-verifier-roster', 'data-availability-da')
   soraLocalized = upsertSection(
     soraLocalized,
+    moderationChallenges,
+    'moderation-challenges',
+    'pack-manifest-sign-and-submit',
+  )
+  soraLocalized = upsertSection(
+    soraLocalized,
     publicGateways,
     'public-local-cid-and-site-gateways',
-    'pack-manifest-sign-and-submit',
+    'moderation-challenges',
   )
   soraLocalized = refreshFrontmatter(soraLocalized, soraEnglish)
 
   const updates: readonly PageUpdate[] = [
     { route: smartRoute, localized: smartLocalized },
+    { route: triggerRoute, localized: triggerLocalized },
     { route: toriiRoute, localized: toriiLocalized },
     { route: soraRoute, localized: soraLocalized },
   ]
+  const englishPreimages = new Map([
+    [smartRoute, smartEnglish],
+    [triggerRoute, triggerEnglish],
+    [toriiRoute, toriiEnglish],
+    [soraRoute, soraEnglish],
+  ])
+  for (const [route, preimage] of englishPreimages) {
+    if ((await readFile(path.join(sourceRoot, route), 'utf8')) !== preimage) {
+      throw new Error(`${route} changed during security remediation translation; restart without writing locale pages`)
+    }
+  }
   const temporary: string[] = []
   for (const update of updates) {
     if (!update.localized.endsWith('\n')) throw new Error(`${locale.key}/${update.route} lost its final newline`)
@@ -195,7 +247,7 @@ async function updateLocale(sourceRoot: string, locale: DocsLocale, provider: Nl
   for (let index = 0; index < updates.length; index += 1) {
     await rename(temporary[index], path.join(sourceRoot, locale.path, updates[index].route))
   }
-  console.log(`[${locale.key}] updated 3 focused pages`)
+  console.log(`[${locale.key}] updated ${updates.length} focused pages`)
 }
 
 async function main(): Promise<void> {
@@ -215,13 +267,15 @@ async function main(): Promise<void> {
     python: pythonArgument?.slice('--python='.length),
   })
   try {
-    for (const locale of locales) await updateLocale(sourceRoot, locale, provider)
+    for (const locale of locales) await updateSecurityRemediationLocale(sourceRoot, locale, provider)
   } finally {
     await provider.close()
   }
 }
 
-main().catch((error: unknown) => {
-  console.error(error)
-  process.exitCode = 1
-})
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  void main().catch((error: unknown) => {
+    console.error(error)
+    process.exitCode = 1
+  })
+}

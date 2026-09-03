@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/triggers.md
-translation_source_hash: 9443b139623544fd3c54b324e54b7e06f57820c70ffd0856f05aacac9f7591a3
+translation_source_hash: 726e2998ec1439138ef94d3a702049731ce2432f5c52a723ed0c92593de41c1e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -55,6 +55,16 @@ translation_engine: nllb-200-ct2
 引發權力是用來調用可執行的帳戶.用專用的技術帳戶來實現長壽命的觸發器,許可證是明確的,並從運營商個人帳戶中隔離.
 
 當局需要執行指令或合同調用所要求的權限. 註冊觸發器的帳戶還需要在活躍運行時間驗證器下注冊觸發符的許可.
+
+### 數據觸發器的範圍和容量 {#data-trigger-scope-and-capacity}
+
+一個普通的數據觸發器必須將其過器綁定到其觸發權所有的一個確切主體. 賬戶過器必須命名該確切帳戶.資產,資產定義,域名, NFT, RWA,並且觸發過器也必須指定該機構擁有的確切實體. `Any`,一個無關匹配者,外國主體以及系統或治理事件家族不是普通的賬戶掃描觸發器.
+
+只有議會才能授予 `CanRegisterGlobalDataTrigger`.該補貼直接存儲在一個準確的賬戶上,名稱與同樣的準確的觸發權限,並且可以通過同樣的議會生命週期.它不會通過角色繼承,並且不放棄 `CanRegisterTrigger` 當一個賬戶註冊另一個機構的觸發器時.
+
+共識允許一個機構最多有64個數據觸發器和全球4,096個數據觸動器.精確的主題和事件家庭索引以正宗標識器順序選擇候選人.一個產生的交易可能會導致最多256次數據觸發器發射,包括.每個索引過器檢查,發射,本土指令和 VM 指令都消耗相同的塊氣體預算.
+
+觸發器執行與發射相匹配事件的交易是原子性的.如果已授權的觸發器故障,超過其射擊或執行深度限制,或者排氣,Iroha 將觸發效應和原始交易都推翻.
 
 ## 複試政策 {#retry-policy}
 

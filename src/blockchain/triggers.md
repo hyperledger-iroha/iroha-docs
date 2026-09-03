@@ -62,6 +62,31 @@ The authority needs the permissions required by the executable instructions or
 contract call. The account registering the trigger also needs permission to
 register triggers under the active runtime validator.
 
+### Data-trigger scope and capacity
+
+An ordinary data trigger must bind its filter to one exact subject owned by its
+trigger authority. Account filters must name that exact account. Asset, asset
+definition, domain, NFT, RWA, and trigger filters must likewise name an exact
+entity owned by the authority. `Any`, an unbound matcher, a foreign subject, and
+system or governance event families are not ordinary account-scoped triggers.
+
+Only Parliament can grant `CanRegisterGlobalDataTrigger`. The grant is stored
+directly on one exact account, names that same exact trigger authority, and can
+be revoked through the same Parliament lifecycle. It is not inherited through
+a role and does not waive `CanRegisterTrigger` when one account registers a
+trigger for another authority.
+
+Consensus admits at most 64 data triggers for one authority and 4,096 data
+triggers globally. Exact subject and event-family indexes select candidates in
+canonical identifier order. One originating transaction can cause at most 256
+data-trigger firings, including cascades. Every indexed filter check, firing,
+native instruction, and VM instruction consumes the same block gas budget.
+
+Trigger execution is atomic with the transaction that emitted the matching
+event. If an authorized trigger fails, exceeds its firing or execution-depth
+bound, or exhausts gas, Iroha rolls back both the trigger effects and the
+originating transaction.
+
 ## Retry Policy
 
 Time triggers can opt into a retry policy. A retry policy sets:

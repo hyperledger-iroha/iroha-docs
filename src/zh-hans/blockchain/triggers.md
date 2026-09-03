@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/triggers.md
-translation_source_hash: 9443b139623544fd3c54b324e54b7e06f57820c70ffd0856f05aacac9f7591a3
+translation_source_hash: 726e2998ec1439138ef94d3a702049731ce2432f5c52a723ed0c92593de41c1e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -55,6 +55,16 @@ translation_engine: nllb-200-ct2
 引发权力是用来调用可执行的帐户.用专用的技术帐户来实现长寿命的触发器,许可证是明确的,并从运营商个人帐户中隔离.
 
 当局需要执行指令或合同调用所要求的权限. 注册触发器的帐户还需要在活跃运行时间验证器下注册触发符的许可.
+
+### 数据触发器的范围和容量 {#data-trigger-scope-and-capacity}
+
+一个普通的数据触发器必须将其过器绑定到其触发权所有的一个确切主体. 账户过器必须命名该确切帐户.资产,资产定义,域名, NFT, RWA,并且触发过器也必须指定该机构拥有的确切实体. `Any`,一个无关匹配者,外国主体以及系统或治理事件家族不是普通的账户扫描触发器.
+
+只有议会才能授予 `CanRegisterGlobalDataTrigger`.该补贴直接存储在一个准确的账户上,名称与同样的准确的触发权限,并且可以通过同样的议会生命周期.它不会通过角色继承,并且不放弃 `CanRegisterTrigger` 当一个账户注册另一个机构的触发器时.
+
+共识允许一个机构最多有64个数据触发器和全球4,096个数据触动器.精确的主题和事件家庭索引以正宗标识器顺序选择候选人.一个产生的交易可能会导致最多256次数据触发器发射,包括.每个索引过器检查,发射,本土指令和 VM 指令都消耗相同的块气体预算.
+
+触发器执行与发射相匹配事件的交易是原子性的.如果已授权的触发器故障,超过其射击或执行深度限制,或者排气,Iroha 将触发效应和原始交易都推翻.
 
 ## 复试政策 {#retry-policy}
 

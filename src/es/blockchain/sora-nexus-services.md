@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: 667f691b84fab27114ffab4bb78e3df6356aaf25b1cba6aea14a193e33471f52
+translation_source_hash: 94f978f16ea7e43a8bc269b88bbfe58b6c9f9f5e0d829d40fefa523bb37d115a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -493,20 +493,34 @@ Los usos típicos de SoraFS incluyen activos estáticos de aplicaciones, edifica
 
 ### Puertas de acceso locales y locales CID {#public-local-cid-and-site-gateways}
 
-Todos los nodos Torii habilitados para SoraFS montan estas rutas públicas anónimas incluso cuando la aplicación opcional API no está creada:
+Cada nodo Torii habilitado para SoraFS instala estas rutas públicas anónimas incluso cuando la aplicación opcional API no está construida:
 
-|Método y punto final |Propósito .|
+|Método y punto final |El propósito .|
 | --- | --- |
-|`GET /.well-known/sorafs/manifest` |Regresar el manifiesto seleccionado por el anfitrión de la solicitud canónica |
+|`GET /.well-known/sorafs/manifest` |Regresa el manifiesto seleccionado por el anfitrión de la solicitud canónica |
 |`GET /v1/sorafs/cid/{cid}` |Regresar los metadatos del manifiesto local y las entradas de archivo con límites para uno CID |
 |`GET /sorafs/cid/{cid}` |Servir el documento raíz para un sitio local con contenido dirigido |
 |`GET /sorafs/cid/{cid}/{*path}` |Servir una trayectoria normalizada, o un rango de byte limitado, debajo de ese CID |
 
 Estas rutas nunca aceptan `x-sorafs-stream-token` o `x-sorafs-token-id`. Presencia de cualquiera de los encabezados es una mala solicitud. capacidad de lectura pública; una falta de caché no autoriza la hidratación del proveedor remoto. el proveedor protegido CAR y las rutas fragmentadas siguen siendo superficies de protocolo autenticadas separadas.
 
-Antes de leer los bytes, Torii valida la codificación canónica del manifiesto local, las restricciones semánticas, el digesto y la raíz CID. Luego requiere la identidad del proveedor local autorizado, la admisión de gobernanza y el cumplimiento regulado para el manifiesto, CID y el proveedor. La política de tarifa / prohibición de la puerta de entrada utiliza la dirección del cliente efectiva, respetando las direcciones reenviadas solo a través de proxies confiables configurados.
+Antes de leer bytes, Torii valida la codificación canónica del manifiesto local, las restricciones semánticas, el digesto y la raíz CID. Luego requiere la identidad del proveedor local autorizado, la admisión de gobernanza y los controles de cumplimiento y eliminación regulados para el manifiesto, CID, y proveedor. La política de tarifa / prohibición del gateway utiliza la dirección efectiva del cliente, respetando las direcciones reenviadas solo a través de proxies confiables configurados. La política faltante, cumplimiento, eliminación, identidad o estado de admisión no se cierran.
 
 Una solicitud tiene un permiso de entrada pública de extremo a extremo; el límite para todo el proceso es de 64 lecturas simultáneas, con solicitudes excedentes que devuelven `503 Service Unavailable` y `Retry-After: 1`. Las respuestas manifiestas se limitan a 16 MiB, las listas de archivos por defecto a 50 entradas y aceptan al máximo 500, y un archivo completo o un rango de byte único se limita a 8 MiB. CIDs, consultas, hosts, caminos y encabezados de rango deben usar sus formas canónicas de valor único. El contenido activo HTML, script, SVG, XML, PDF o Wasm solo se sirve a partir de un origen aislado derivado (o redirigido) de CID configurado, lo que impide que un origen gateway compartido ejecute el contenido no fiable.
+
+### Los retos de la moderación {#moderation-challenges}
+
+SoraFS la economía del desafío de moderación es el estado de consenso. La política activa nombra el activo de gobierno votante y las cuentas de gobierno utilizadas para custodia y recorte. Cada desafío requiere exactamente 150 unidades de ese activo; elevarlo automáticamente mueve el bono en custodia. Un caso rechaza un identificador de desafío duplicado, un segundo desafío por la misma cuenta o una digestión de evidencia reutilizada sin cambiar los saldos ni los contadores de desafíos.
+
+El plazo de presentación de desafíos y el plazo de resolución de los mismos son distintos. El gobierno recibe exactamente 24 horas después de las presentaciones cercanas a aceptar o rechazar un reto pendiente. Los desafíos pendientes del bloqueo de votación revelarán sólo a través de ese plazo de resolución:
+
+- un desafío aceptado detendrá el caso y reembolsará la fianza completa;
+- una impugnación rechazada permite que el caso continúe, envía un 25% del bono al receptor de la reducción (redondeado a raíz de la precisión del activo con derecho a voto) y devuelve el resto; y
+- un desafío sin resolver expira después de la ventana de gracia, no se abre y reembolsa el bono completo.
+
+`ExpireSorafsModerationChallenge` no tiene permiso y es impotente para un desafío que ya ha expirado. La finalización del caso lleva a cabo la misma liquidación de vencimiento como un respaldo, Así que un administrador ausente no puede dejar los fondos bloqueados o mantener las revelaciones bloqueadas. Cada liquidación es atómica: si alguna devolución o recorte falla, la liquidación completa se vuelve atrás.
+
+La política de moderación y los registros de casos utilizan directamente el esquema de primera liberación. Los nodos rechazan los diseños pre-cortados persistentes durante la inicialización genésica / estado o restauración instantánea; regenerar esos accesorios en lugar de inferir el activo con derecho a voto, cuentas de custodia, plazos o economía del estado heredado.
 
 ### Empachar, manifestar, firmar y presentar {#pack-manifest-sign-and-submit}
 

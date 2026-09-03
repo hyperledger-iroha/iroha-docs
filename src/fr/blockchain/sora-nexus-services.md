@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: de50aa8206a5b82d4340f68173e9d89bb8eabab83369c363eb05c9d6632eed28
+translation_source_hash: 94f978f16ea7e43a8bc269b88bbfe58b6c9f9f5e0d829d40fefa523bb37d115a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -377,6 +377,12 @@ sorafs_cli fetch \
 
 Les rapports du fournisseur d'enregistrements sommaires, les reçus partiels, les métadonnées proxy locales et les paramètres de route utilisés pour la récupération.
 
+### Liste des vérificateurs d'incitations au relais {#relay-incentive-verifier-roster}
+
+L'ingestion d'incitations de relais est fermée en défaillance. `incentives.enable` C'est vrai. `incentives.trusted_verifier_ids` doit contenir au moins un compte canonique et un maximum de 64 IDs. Le runtime stocke la liste comme un ensemble d'ordre déterministe, et la géométrie de liste invalide est rejetée pendant le démarrage du relais.
+
+Chaque `RelayBandwidthProof` est décodé selon un cadre fixe/budget d'allocation et doit consommer le cadre complet. Le compte de vérificateur de la preuve doit être présent dans la liste configurée, et `RelayBandwidthProof::verify_signature()` doit réussir: avant que le relais ne bloque ou ne modifie son accumulateur de performances. Un signataire non fiable ou une preuve de signature invalide/tamperée ne contribuent donc à aucune mesure et ne peuvent pas produire un instantané d'incitation.
+
 ## Disponibilité des données (DA) {#data-availability-da}
 
 DA est la couche de preuve de disponibilité pour les charges utiles qui sont trop grandes, trop sensibles à la vie privée ou trop spécifiques au service pour être placées directement dans l'état du monde. Il enregistre les engagements déterministes et les obligations de récupération afin que les validateurs, les passerelles et les clients puissent se mettre d'accord sur les octets qui ont été promis, quelle politique s'applique et quelles preuves ont été observées.
@@ -484,6 +490,37 @@ Utilisez le [référence de requête](/fr/reference/queries.md#nexus-data-availa
 SoraFS est le tissu de stockage décentralisé adressé au contenu. Il regroupe des octets en morceaux déterministes, archives CAR et manifestes Norito qui lient les racines du contenu, Les fournisseurs de stockage annoncent la capacité et la disponibilité du contenu, tandis que les passerelles vérifient les manifestes et les engagements des pièces détachées avant de diffuser le contenu.
 
 Typique SoraFS Les utilisations comprennent les actifs d'application statique, les constructions de documentation, la zone L'objectif de l'étude est d'élaborer des modèles, des références à des modèles ou à des artefacts, ainsi que des éléments de preuve de gouvernance. Iroha les expositions du modèle de données SoraFS événements de la porte d'entrée et un [`FindSorafsProviderOwner`](/fr/reference/queries.md#nexus-data-availability-and-packages) demande de résolution de la propriété du fournisseur.
+
+### Portes d'accès au site public CID {#public-local-cid-and-site-gateways}
+
+Chaque nœud Torii activé par SoraFS installe ces routes publiques anonymes même lorsque l'application optionnelle API n'est pas construite:
+
+|Méthode et point final |Objectif |
+| --- | --- |
+|`GET /.well-known/sorafs/manifest` |Retourner le manifeste sélectionné par l' hôte de la demande canonique |
+|`GET /v1/sorafs/cid/{cid}` |Retourner les métadonnées du manifeste local limité et les entrées de fichier pour un CID |
+|`GET /sorafs/cid/{cid}` |Servir le document racine pour un site à contenu local . |
+|`GET /sorafs/cid/{cid}/{*path}` |Servir un chemin normalisé ou une plage limitée en octets, sous ce CID |
+
+Ces routes n'acceptent jamais `x-sorafs-stream-token` ou `x-sorafs-token-id`. La présence de l'une ou l'autre en-tête est une mauvaise demande. la capacité de lecture publique; une erreur de cache n'autorise pas l'hydratation du fournisseur distant. le fournisseur protégé CAR et les routes en pièces restent des surfaces de protocole authentifiées distinctes.
+
+Avant de lire des octets, Torii valide le codage canonique du manifeste local, les contraintes sémantiques, la digestion et la racine CID. Il exige ensuite l'identité du fournisseur local autorisé, l'admission de gouvernance et les vérifications réglementées de conformité et de suppression du manifeste, CID; et fournisseur. La politique de tarification/interdiction du gateway utilise l'adresse client effective, en honorant les adresses renvoyées uniquement par le biais de proxies fiables configurées.
+
+Une demande détient un permis d'entrée publique de bout en bout; la limite à l'échelle du processus est de 64 lectures concomitantes, avec des demandes excessives de retour `503 Service Unavailable` et `Retry-After: 1`. Les réponses manifestes sont limitées à 16 MiB, Listes de fichiers par défaut à 50 entrées et accepter au maximum 500, et un fichier complet ou une plage d'octets unique est limité à 8 MiB. CIDs, les requêtes, hôtes, chemins et en-têtes de portée doivent utiliser leurs formes canoniques à valeur unique. HTML, le scénario, SVG, XML, PDF, ou le contenu de Wasm est fourni uniquement à partir d'une configuration CID- d'origine isolée dérivée (ou redirigée vers elle), empêchant une source partagée de générer des contenus non fiables.
+
+### Les défis liés à la modération {#moderation-challenges}
+
+SoraFS l'économie des défis de modération est un état de consensus. la politique active nomme l'actif de gouvernance votant et les comptes de gouverrance utilisés pour les escrois et les coupes. chaque défi nécessite exactement 150 unités de cet actif; en le faisant, l'obligation passe automatiquement en escrow. Un cas rejette un identifiant de défi dupliqué, un deuxième défi par le même compte ou une analyse des preuves réutilisées sans modifier les équilibres ni les compteurs de défi.
+
+Les délais de soumission et de résolution des défis sont différents. La gouvernance reçoit exactement 24 heures après les soumissions proches de l'acceptation ou du rejet d'un défi en instance. Les défis en attente ne sont révélés que dans ce délai de résolution par le bloc de vote:
+
+- un recours accepté met fin à l'affaire et rembourse la caution intégrale;
+- une contestation rejetée permet la poursuite de l'affaire, envoie 25% de l'obligation au bénéficiaire d'une réduction (arrondie à la fin en fonction de la précision de l'actif de vote) et rembourse le reste;
+- une contestation non résolue expire après la fenêtre de grâce, ne s'ouvre pas et rembourse la caution complète.
+
+`ExpireSorafsModerationChallenge` n'a pas d'autorisation et n'a aucun pouvoir sur un défi qui a déjà expiré. La finalisation de l'affaire effectue le même règlement d'expiration que le backstop, Ainsi, un détenteur absent ne peut pas laisser les fonds verrouillés ou garder les révélations bloquées. Chaque règlement est atomique: si un remboursement ou une coupe de pied échouent, le règlement complet est révoqué.
+
+La politique de modération et les dossiers de cas utilisent directement le schéma de première sortie. Les nœuds rejettent les mises en page persistantes prédéfinies pendant l'initialisation génèse/état ou la restauration instantanée; régénérer ces appareils au lieu d'en déduire l'actif de vote, les comptes de conservation, les délais ou l'économie à partir de l'état hérité.
 
 ### Emballez, manifestez- le, signez et soumettez {#pack-manifest-sign-and-submit}
 

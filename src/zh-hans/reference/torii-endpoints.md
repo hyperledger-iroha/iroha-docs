@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: c23170b2949bae9c9483ecbee6f0c09fea503904ae93934aef56537ddd13c42d
+translation_source_hash: 29cb291e63f427a4e71296e4244eaf71dc4651d486e3d15fb3d1045230f6023e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -145,6 +145,22 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
 |`/v1/offline/`, `/v1/repo/`,`/v1/space-directory/`, `/v1/ram-lfe/` |在线准备,存储协议,数据空间表格和[RAM-LFE 助手](/zh-hans/blockchain/ram-lfe.md#torii-routes) |
 |`/v1/kaigi/`, `/v1/webhooks/`,`/v1/notify/`, `/v1/telemetry/` |合作,网络连接,推送通知和直播远程测量集成|
 
+## 账户身份验证,可见性和探险器的客 {#account-authentication-visibility-and-explorer-cursors}
+
+应用程序面向账本阅读使用一个可选的常规帐户签名界限.未签署的请求只收到活跃的公共数据库.有效的签署的要求添加了与调用者的当前 UAID 绑定的数据库和该帐户的 `CanReadRestrictedDataspace`权限命名的确切数据库路线.`CanReadAllLedgerData`在每个数据空间中提供可见性.只提供`X-Iroha-Account`,或者任何不完整或错误的签名标题集,返回`401 Unauthorized`;它不会回到匿名可见性的状态.
+
+同样的可见性对象过帐户,域名,资产定义,资产, NFT, RWA,持有者和探险器.一个缺失的对象和一个在调用者的可见路线之外的对象是故意无法区分的.只有当交易所记录的每条路线脚图可见时,就会显示承诺的交易和指令历史.因此,当连一个参与者腿都不在调用者的范围之外时,隐藏; 缺失,过时或错误的路由文本仅可见于全球读者.
+
+Torii 在使用者过器,页面化,计数或对 SSE,WebSocket,合同事件和重播路径的投影之前应用这一范围.长期流程重新评估相同的授权随着账本权限的变化,并在访问后终止与通用授权失败.已撤销.
+
+全球支持的六个Explorer集合使用不透明的正规base64url键盘设置缓冲器.默认页面限制为 25,最大是100,一个页面检查最多512个候选键.每个缓解器都与其集合,过器,法定最后键和调用者的可见路线设置消化联系在一起,因此不能在另一个查询或调用者可视性发生变化后重播.
+
+区块,交易,最新事务,指令和最新指令历史线索 additionally pin the committed snapshot height and block hash.响应显示`pagination.limit`, `pagination.snapshot_height`, `pagination.snapshot_hash`, `pagination.next_cursor`,和 `pagination.has_more`.另一个路线或过器设置的导向器,改变的可见性消化,或者节点不再可以验证的快照被关闭.在阻塞工作者运行时,历史扫描仍然存在于 Torii 的查询录取许可中.
+
+随着账本权限的变化, Explorer WebSocket 流发出过总结和重新计算可见性.本地 `GET /v1/blocks/stream` 路线不同:它发射完整在手握时需要 `CanReadAllLedgerData`,并在后面撤销该许可的情况下关闭.
+
+现场 `GET /v1/sumeragi/status/sse`共识诊断流也不是一个匿名的数据空间输送.它需要在每个连接尝试中完成操作员签名头条四旋翼.客户为精确流 URI 生成一个新签名,并不会通过自动重新尝试运输来遵循转向或重播已签署的尝试.
+
 ## ISO 20022 桥 {#iso-20022-bridge}
 
 Torii 将 ISO 20022桥暴露在 `/v1/iso20022/*`下,当应用程序面向 API 和桥运行时间启用时.桥是故意设定的:它不是一个一般用途的 ISO 20022清算网关,而是用于将选定的支付消息转换为签署的 Iroha 转账和跟踪其账本状态的支持子集.
@@ -155,12 +171,12 @@ Torii 将 ISO 20022桥暴露在 `/v1/iso20022/*`下,当应用程序面向 API �
 | --- | --- |
 |`POST /v1/iso20022/pacs008`|提交 FI 到 FI 客户信贷转账,并构建匹配的 Iroha 资产转账|
 |`POST /v1/iso20022/pacs009`|提交用于 PvP 或与证券相关的现金资助的 FI 到 FI 信用转账|
-|`POST /v1/iso20022/pacs002`|提交支付状况报告|
-|`POST /v1/iso20022/pacs004`|提交支付申报表|
-|`POST /v1/iso20022/camt056`|提交取消支付的请求|
+|`POST /v1/iso20022/pacs002`|提交对方所拥有的支付状况报告;结算需要承诺的交易证据|
+|`POST /v1/iso20022/pacs004`|提交对方所拥有的付款申报表|
+|`POST /v1/iso20022/camt056`|提交原始人的取消支付请求|
 |`POST /v1/iso20022/sese023`|提交证券结算说明|
-|`POST /v1/iso20022/sese024`|提交证券结算状况信息|
-|`POST /v1/iso20022/sese025`|提交证券结算确认|
+|`POST /v1/iso20022/sese024`|提交对方所有的证券结算状态信息 |
+|`POST /v1/iso20022/sese025`|提交对方持有的证券结算确认|
 |`POST /v1/iso20022/colr012`|提交一个抵押替换信息|
 |`GET /v1/iso20022/messages/{msg_id}`|阅读一条经典的桥梁记录.|
 |`GET /v1/iso20022/audit/messages`|阅读"改"的信息审计表.|
@@ -175,6 +191,39 @@ Torii 将 ISO 20022桥暴露在 `/v1/iso20022/*`下,当应用程序面向 API �
 `pacs.009`提交的信息必须包含业务消息 ID,信息定义 ID,创建时间,银行间结算额,货币,结算日期,指示和指令代理人 BICs,债务人和信贷者 IBANs.如果信息包含`Purp`,桥梁目前只接受用于证券的资金: `Purp=SECU`.
 
 其他 `pacs.008` 和 `pacs.009` 提交终点接受 XML ISO 在桥梁测试中使用的封筒或平面场格式.可选 `SplmtryData` 字段可以定目标 Iroha 总账户,来源和目标帐户 IDs 或地址,以及资产定义 ID. 答案是 `202 Accepted` 与 `message_id`, `transaction_hash`, `status`, `pacs002_code`, 解决账本/帐户/资产背景.
+
+### 参与者授权和生命周期所有权 {#participant-authorization-and-lifecycle-ownership}
+
+每个启用桥都有参与者目录.每个参与者入口都有一个独特的参与者 ID,一个或多个运营商公钥,一个或更多的财务标识符,允许的个人资料集和`originator`, `counterparty`,或者两个角色.运营商密钥和财务识别符不能属于多个参与者.单独配置 `audit_admin_keys`;一个审计管理员密钥也不能是参与者的突变密钥.
+
+所有的 ISO 路线需要新的运营商签名. `pacs.008`, `pacs.009`, `sese.023`, 或 `colr.012` 提交,验证的运营商必须属于申请标题所识别的参与者 `From` 金融身份. `To` 身份必须指定另一个配置参与者,并且对双方都允许选择的个人资料.持久的录取记录原始人,对方,承认参与者和运营商密钥,以及原始配置文件和嵌入式签名政策.
+
+生命周期授权来源于该不可改变的记录,而不是来自调用者选择的值:
+
+|生命周期信息|要求参与者|
+| --- | --- |
+|`pacs.002`, `pacs.004`,`sese.024`, `sese.025` |具有 `counterparty`角色的原始对方 |
+|`camt.056`|具有 `originator`角色的原始创始人|
+
+原始的个人资料和签名政策将保留在整个文件中调用者不能选择一个较弱的配置文件来更新. `pacs.002` 代表结算的代码 (`ACSC`, `ACCP`, `SETT`, 或 `SETTLED`) 只有当原始记录被调整为结算 Torii 已提交交易证据.
+
+任何原始方都可以阅读其消息记录和生成的输出箱文件. 审计终点只返回验证参与者是发起者或对方的记录. 单独配置的审计管理员收到全局仅可阅读的审计视图,不能提交或更改消息. 不知名参与者和无关的消息标识符不披露.
+
+### 持久重播身份和签署的输出箱文件 {#durable-replay-identity-and-signed-outbox-documents}
+
+ISO 记录存储只接受图案 V3 记录和重播墓碑. Torii 如果保留的数据不符合该方案,则出现明显的兼容性错误.每个富有的记录都保留着.一个独立的持久墓碑保留了信息. ID, 使用负载哈希,业务信息 ID, 和 UETR 对于完整的减倍 TTL 即使有丰富的记录细节被剪切.
+
+Torii 在签署或处理生命周期消息之前仍然存在重播录取.它永远不会驱逐未到期的重播身份.如果配置记录容量仅包含 TTL 受保护的输入,则提交文件会得到可转换的 `503 Service Unavailable` 没有改变生命周期或会计状态.
+
+每个生成的 `pacs.002`, `pacs.004`, `camt.029`, `sese.024`或 `sese.025` 文件都以`application/xml` 返回这些响应标题:
+
+|标题| 含义 |
+| --- | --- |
+|`X-Iroha-Iso-Signature-Domain`|总是 `iroha.iso20022.outbound.v2`|
+|`X-Iroha-Iso-Signer`|配置桥签名器的可нони公钥 |
+|`X-Iroha-Iso-Signature`|在域分隔的 XML 字节上使用Base64签名|
+
+验证 UTF-8 字节序列 `iroha.iso20022.outbound.v2`,一个零字节,以及精确的响应体上的签名. 在验证之前不要重新格式化或正常化 XML
 
 ### 额外的解析和绘图支持 {#additional-parser-and-mapping-support}
 

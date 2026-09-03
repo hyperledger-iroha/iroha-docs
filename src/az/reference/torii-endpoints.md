@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: c23170b2949bae9c9483ecbee6f0c09fea503904ae93934aef56537ddd13c42d
+translation_source_hash: 29cb291e63f427a4e71296e4244eaf71dc4651d486e3d15fb3d1045230f6023e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -145,6 +145,22 @@ Torii tətbiqetmə ilə üzləşən xüsusiyyətlər toplusu ilə qurulduqda, k�
 |`/v1/offline/`, `/v1/repo/`, `/v1/space-directory/`, `/v1/ram-lfe/` |Offline hazırlıq, saxlama müqavilələri, məlumat sahəsi manifestləri və [RAM-LFE köməkçiləri ](/az/blockchain/ram-lfe.md#torii-routes) |
 |`/v1/kaigi/`, `/v1/webhooks/`, `/v1/notify/`, `/v1/telemetry/` |Əməkdaşlıq, webhook, push bildirişləri və canlı telemetri inteqrasiyaları |
 
+## Hesabların təsdiqlənməsi, görünmə və Explorer cursorları {#account-authentication-visibility-and-explorer-cursors}
+
+Tətbiq üzündə başlıq oxumaq bir seçməli kanonik hesab imza sərhədindən istifadə edir. İmzalanmamış müraciət yalnız aktiv ictimai məlumat sahələri alır. Müvafiq imzalanmış müraciət zəng edənin cari UAID ilə bağlı məlumat sahələrini və həmin hesabın `CanReadRestrictedDataspace` icazələri ilə adlandırılan dəqiq məlumat sahəsi yollarını əlavə edir. `CanReadAllLedgerData` hər bir məlumat boşluğunda görünürlük təmin edir. Yalnız `X-Iroha-Account` və ya hər hansı tam olmayan və ya səhv formalaşmış imza başlıqları dəstini təqdim edərək, `401 Unauthorized` qaytarır; anonim görünüşə geri dönmür.
+
+Eyni görünmə obyektləri hesabı, domen, aktiv tərifini, aktiv, NFT, RWA, sahibini və Explorer-i oxuyur. Əməliyyat və təlimat tarixçəsi yalnız əməliyyat üçün qeyd olunan hər bir marşrut ayağı görünəndə göstərilir. Qarışıq məlumat məkanı əməliyyatı bu səbəbdən hətta bir iştirakçı ayağı zəng edənin əhatə dairəsindən kənarda olanda gizlənir; yoxa çıxmış, köhnəlmiş və ya yanlış formalaşmış marşrut kontekstinin görünməsi yalnız qlobal oxucu üçün mümkündür.
+
+Torii istifadəçi filtrləri, səhifələrin sayılması, hesablamaları və ya proqnozlaşdırmalarından əvvəl bu sahəni tətbiq edir SSE, WebSocket, müqavilə hadisəsi və yenidən oynatma yolları. Uzun ömürlü axınlar başlıq icazələri dəyişdikdə eyni icazəni yenidən qiymətləndirir və girişdən sonra ümumi bir icazə pozuntu ilə bitirir. ləğv edilmişdir.
+
+Altı dünya tərəfindən dəstəklənmiş Explorer kolleksiyaları qeyri-şəffaf kanonik base64url açar dəst kursorlarından istifadə edir. Standart səhifə məhdudluğu 25, maksimum 100 və bir səhifə ən çox 512 namizəd açarlarını yoxlayır. Hər bir kursor onun toplanmasına, filtrlərinə, kanonik son açarına və zəngçinin görünən marşrut-set digestinə bağlıdır, buna görə başqa bir sorğuda və ya zəngçinin görünürlüyünün dəyişdikdən sonra yenidən oynatıla bilməz.
+
+Block, əməliyyat, son əməliyyat, təlimat və ən son təlimat tarixçəsi Cursorlar əlavə olaraq hədəfləndirilmiş sürət hündürlüyünü təyin edir və hashini bloklayır. `pagination.limit`, `pagination.snapshot_height`, `pagination.snapshot_hash`, `pagination.next_cursor`, və `pagination.has_more`. Başqa bir marşrut və ya filtr dəstinin kursoru, dəyişdirilmiş görünürlük həzmləri, və ya bir sürətli görüntüləri ki, düyün artıq təsdiqləmək mümkün deyil qapatılır. Tarix tarama daxildir Torii İşçi qaçarkən sorğu-müqavilə icazəsi.
+
+Eksplorer WebSocket axınları süzülmüş ümumiləşdirmələr buraxır və kitabxana icazələri dəyişdikcə görünüşü yenidən hesablayır. `GET /v1/blocks/stream` yol fərqlidir: tamamilə imzalanmış blokları yayır, tələb edir `CanReadAllLedgerData` Əllərini sıxarkən və sonra icazəsi ləğv edilərsə bağlanır. Vətəndaş axını məlumat məkanı üzrə tədqiqatçı üçün istifadə etməyin.
+
+Canlı `GET /v1/sumeragi/status/sse` konsensus-diagnostik axını da anonim bir məlumat məkanı feed deyil. Hər əlaqə cəhdində operator imzası başlıq quartetunu tələb edir. Müştərilər dəqiq axın URI üçün yeni bir imza yaradırlar və avtomatik nəqliyyat yenidən sınağı vasitəsilə yönləndirmələri izləmirlər və ya imzalanmış cəhdini yenidən oynatmazlar.
+
 ## ISO 20022 Köprü {#iso-20022-bridge}
 
 Torii tətbiqə baxan API və körpünün işləmə vaxtı aktivləşdirildiyi zaman ISO 20022 köprüsünü `/v1/iso20022/*` altında aşkar edir. Köprü məqsədəuyğun olaraq məhdudlaşdırılmışdır: Bu, ümumi məqsədli ISO 20022 clearing gateway deyil, seçilmiş ödəniş mesajlarının imzalanmış Iroha ötürülmələrinə çevrilməsi və kitabın statusunu izləmək üçün dəstəklənən bir alt dəstdir.
@@ -155,12 +171,12 @@ Torii tətbiqə baxan API və körpünün işləmə vaxtı aktivləşdirildiyi z
 | --- | --- |
 |`POST /v1/iso20022/pacs008` |FI-dən FI müştəri kreditinin ötürülməsini təqdim etmək və uyğunlaşdırılmış Iroha aktivin ötürülməsi qurmaq |
 |`POST /v1/iso20022/pacs009` | Bir təqdim edin FI-Yaxşı.FI kredit köçürülməsi üçün istifadə olunur PvP və ya qiymətli kağızlarla əlaqəli nakit maliyyələşdirmə |
-|`POST /v1/iso20022/pacs002` |Ödəniş vəziyyətinin hesabatını təqdim edin |
-|`POST /v1/iso20022/pacs004` |Ödəniş ödənilməsi haqqında məlumat təqdim edin|
-|`POST /v1/iso20022/camt056` |Ödənişlərin ləğv edilməsi üçün müraciət etmək |
+|`POST /v1/iso20022/pacs002` |Müqaviləçi tərəfindən verilən ödəniş vəziyyəti hesabatını təqdim etmək; hesablama tələbləri öhdəlik götürülmüş əməliyyat sübutları |
+|`POST /v1/iso20022/pacs004` |Müqaviləçi tərəfindən verilən ödəniş bildirimini təqdim edin |
+|`POST /v1/iso20022/camt056` |Ödənişlərin ləğv edilməsi üçün originator tərəfindən verilən müraciət təqdim edin |
 |`POST /v1/iso20022/sese023` |Qiymətli kağızların hesablanması üçün göstərici təqdim edin |
-|`POST /v1/iso20022/sese024` |Qiymətli kağızlar üzrə hesablama vəziyyətini bildirin |
-|`POST /v1/iso20022/sese025` |Qiymətli kağızların hesablanması təsdiqini təqdim edin |
+|`POST /v1/iso20022/sese024` |Müxalifənin mülkiyyətində olan qiymətli kağızların həlli vəziyyətini bildirmək |
+|`POST /v1/iso20022/sese025` |Müxalifənin mülkiyyətində olan qiymətli kağızların həlli təsdiqini təqdim edin |
 |`POST /v1/iso20022/colr012` |Əmanətlərin əvəz edilməsi ilə bağlı məlumat göndərin |
 |`GET /v1/iso20022/messages/{msg_id}` |Bir mesaj üçün kanonik körpü qeydini oxuyun.|
 |`GET /v1/iso20022/audit/messages` |Düzü-düzgün mesajlar yoxlama manifestini oxuyun.|
@@ -175,6 +191,39 @@ Torii tətbiqə baxan API və körpünün işləmə vaxtı aktivləşdirildiyi z
 `pacs.009` təqdimatlarında biznes mesajı ID, mesajın tərifi ID, yaradılış vaxtı, banklararası hesablama məbləği, valyuta, hesablama tarixi göstərilməlidir. təlimat verən və təlimat alan agent BICs, borclu şəxs və kreditor IBANs. Əgər mesajda `Purp` yer alırsa, körpü hazırda yalnız qiymətli kağızlar üçün maliyyələşdirilməni qəbul edir: `Purp=SECU`.
 
 İndiki `pacs.008` və `pacs.009` təqdimat son nöqtələri qəbul edilir XML ISO qovşaqlar və ya körpü sınaqlarında istifadə olunan düz sahə formatı. `SplmtryData` sahələr hədəf saxlaya bilər Iroha başlıq, mənbə və hədəf hesabı IDs və ya ünvanlar və aktivlərin müəyyənləşdirilməsi ID. Cavab: `202 Accepted` ilə `message_id`, `transaction_hash`, `status`, `pacs002_code`, və həll edilmiş başlıq / hesab / aktiv kontekstində.
+
+### İştirakçıların icazəsi və həyat dövründəki mülkiyyət {#participant-authorization-and-lifecycle-ownership}
+
+Hər aktivləşdirilmiş körpünün iştirakçı kataloqu var. Hər bir iştirakçı girişinin unikal bir iştirakçısı ID, bir və ya daha çox operatorun ictimai açarı, bir və daha çox maliyyə identifikatoru, icazə verilən profil dəstləri və `originator`, `counterparty` və ya hər iki rolu vardır. Operator açarları və maliyyə identifikatorları birdən çox iştirakçıya aid ola bilməzlər. `audit_admin_keys`-ni ayrı-ayrı qurun; audit-admin açarı da iştirakçı mutasiyası açarı ola bilməz.
+
+Bütün ISO marşrutları üçün yeni operator imzasını tələb edir. İlk `pacs.008`, `pacs.009`, `sese.023` və ya `colr.012` təqdimat üçün təsdiqlənmiş operator müraciət başlığı `From` ilə müəyyən edilmiş iştirakçıya aid olmalıdır. `To` kimliyi digər qurulmuş iştirakçının adını çəkməlidir və seçilmiş profil hər iki tərəf üçün icazə verilməlidir. Dayanıqlı qəbul müəllifi, əks tərəf, qəbul edən iştirakçı və operator açarı və orijinal profil və yerləşdirilmiş imzalanma siyasəti qeyd edir.
+
+Həyat dövrü icazəsi zəng edən tərəfindən seçilmiş dəyərlərdən deyil, bu dəyişməz qeyddən əldə edilir:
+
+|Həyat dövrü mesajı |Tələb olunan iştirakçı |
+| --- | --- |
+|`pacs.002`, `pacs.004`, `sese.024`, `sese.025` |`counterparty` rolu olan orijinal tərəfdaş |
+|`camt.056` |`originator` rolu ilə orijinal müəllif |
+
+Əvvəlki profil və imzalanma siyasəti bütövlükdə saxlanılır həyat dövrü, buna görə də zəng edən bir yeniləmə üçün zəif profil seçə bilməz. `pacs.002` məbləği təmsil edən kod (`ACSC`, `ACCP`, `SETT`, və ya `SETTLED`) ilkin hesabı yalnız o zaman məzənnəyə dəyişir Torii əməliyyat sübutlarını öhdəsinə götürmüşdür.
+
+Hər iki orijinal tərəf öz mesaj qeydini və istehsal edilmiş outbox sənədlərini oxuya bilər. Audit son nöqtəsi yalnız təsdiqlənmiş iştirakçının originator və ya əks tərəfin olduğu qeydləri qaytarır. Ayrı-ayrı qurulmuş bir audit idarəçisi qlobal yalnız oxunacaq audit görünüşünü alır və mesajları göndərə və ya dəyişə bilməz. Tanınmayan iştirakçılar və əlaqəsi olmayan mesaj identifikatorları açıqlanmır.
+
+### Dayanıqlı Yeniləmə Kimliyi və İmzalanmış Çəkiliş Qutu Sənədləri {#durable-replay-identity-and-signed-outbox-documents}
+
+ISO qeydlər mağazası yalnız sxem qəbul edir V3 qeydlər və məzar daşları oynatmaq. Torii saxlanılan məlumatlar həmin sxemə uyğun olmadıqda açıq bir qeyri-müvafiqlik səhvi ilə başlanğıcdan imtina edir; Beləliklə, ilk buraxılış mağazası və cihazları bərpa edilməlidir. Müqayisə iştirakçılarının mənşəyi dəyişməzdir. ID, payload hash, iş mesajı ID, və UETR tam deduplyasiya üçün TTL Hətta zəngin qeydlərin detalları kəsildikdən sonra da.
+
+Torii bir həyat dövrü mesajı imzalamazdan və ya işlənmədən əvvəl yenidən oynama girişini davam etdirir. Heç vaxt bitməmiş bir yenidən oynama kimliyini çıxarmır. Konfiqurasiya edilmiş qeyd qabiliyyəti yalnız TTL ilə qorunan girişləri ehtiva edərsə, təqdimatlar mutasiyalı həyat dövrü və ya mühasibat vəziyyət olmadan geri qaytarıla bilən `503 Service Unavailable` alır.
+
+Bütün `pacs.002`, `pacs.004`, `camt.029`, `sese.024` və ya `sese.025` sənədləri aşağıdakı cavab başlıqları ilə `application/xml` kimi qaytarılır:
+
+|Başlıq |Məna|
+| --- | --- |
+|`X-Iroha-Iso-Signature-Domain` |Həmişə `iroha.iso20022.outbound.v2` |
+|`X-Iroha-Iso-Signer` |Konfiqurasiya edilmiş körpü imzalanıcısı üçün Canonic ictimai açar |
+|`X-Iroha-Iso-Signature` |Domain-separated XML bytes üzərində Base64 imzası |
+
+İmzanı yoxlayın UTF-8 bayt ardıcıllığı `iroha.iso20022.outbound.v2`, Bir sıfır bayt, və dəqiq cavab bədən. XML yoxlanmadan əvvəl.
 
 ### Əlavə Parser və xəritələşmə dəstəyi {#additional-parser-and-mapping-support}
 

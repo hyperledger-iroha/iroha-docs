@@ -5,6 +5,7 @@ import path from 'node:path'
 import { globby } from 'globby'
 import { describe, expect, test } from 'vitest'
 import { TRANSLATED_LOCALES } from './locales'
+import { SECURITY_REMEDIATION_ROUTES, updateSecurityRemediationLocale } from './translate_security_remediation'
 import {
   GoogleTranslationProvider,
   NLLB_LANGUAGE_CODES,
@@ -1393,6 +1394,18 @@ describe('Markdown translation protection', () => {
     expect(isCompleteCompactCjkSentence(source, '除非明确授予相关许可.', simplifiedChinese)).toBe(false)
   })
 
+  test('accepts one complete 91-120-letter CJK sentence without accepting truncation', () => {
+    const source =
+      'The audit endpoint returns only records in which the authenticated participant is the originator or counterparty.'
+    const translated = '稽核端點僅傳回經驗證參與者為發起人或對手方的記錄。'
+
+    expect(isCompleteCompactCjkSentence(source, translated, traditionalChinese)).toBe(true)
+    expect(isCompleteCompactCjkSentence(source, '僅傳回記錄。', traditionalChinese)).toBe(false)
+    expect(
+      isCompleteCompactCjkSentence(`${source} Unknown participants are not disclosed.`, translated, traditionalChinese),
+    ).toBe(false)
+  })
+
   test('accepts a complete ideographically compressed sentence without accepting a dropped sentence', () => {
     const source = 'Length and unpredictability matter more than decorative substitutions.'
     const translated = '长度和不可预测性比装饰品更重要.'
@@ -1946,6 +1959,253 @@ echo "$HOME"
     expect(addStableHeadingAnchors(source)).toContain('## 1. Prepare {#_1-prepare}')
     expect(addStableHeadingAnchors(source)).toContain('## Pinned {#custom-anchor}')
     expect(addStableHeadingAnchors(source)).toContain('# Not a heading\n```')
+  })
+})
+
+describe('security remediation translation routing', () => {
+  test('refreshes every remediation section while preserving unrelated localized prose', async () => {
+    expect(Object.values(SECURITY_REMEDIATION_ROUTES)).toEqual([
+      'blockchain/smart-contracts.md',
+      'blockchain/triggers.md',
+      'blockchain/sora-nexus-services.md',
+      'reference/torii-endpoints.md',
+    ])
+
+    const temporaryRoot = await mkdtemp(path.join(tmpdir(), 'iroha-docs-security-remediation-'))
+    const localizedFrontmatter = (route: string) => `---
+translation_locale: fr
+translation_source: /${route}
+translation_source_hash: stale
+translation_status: machine-validated
+translation_engine: nllb-200-ct2
+---
+`
+    const english = new Map<string, string>([
+      [
+        SECURITY_REMEDIATION_ROUTES.smartContracts,
+        `# Smart Contracts
+
+## Contract Lifecycle and Ownership
+
+NEW_CONTRACT_LIFECYCLE.
+
+## Operational Guidance
+
+KEEP_SMART.
+`,
+      ],
+      [
+        SECURITY_REMEDIATION_ROUTES.triggers,
+        `# Triggers
+
+### Data-trigger scope and capacity
+
+NEW_TRIGGER_SCOPE.
+
+## Retry Policy
+
+KEEP_TRIGGER.
+`,
+      ],
+      [
+        SECURITY_REMEDIATION_ROUTES.soraNexusServices,
+        `# Sora Nexus Services
+
+### Relay Incentive Verifier Roster
+
+NEW_RELAY_ROSTER.
+
+## Data Availability (DA)
+
+KEEP_DA.
+
+### Public Local CID and Site Gateways
+
+NEW_PUBLIC_GATEWAY.
+
+### Moderation challenges
+
+NEW_MODERATION_CHALLENGE.
+
+### Pack, Manifest, Sign, and Submit
+
+KEEP_SORA.
+`,
+      ],
+      [
+        SECURITY_REMEDIATION_ROUTES.toriiEndpoints,
+        `# Torii Endpoints
+
+## Account Authentication, Visibility, and Explorer Cursors
+
+NEW_ACCOUNT_VISIBILITY.
+
+## ISO 20022 Bridge
+
+| Method and endpoint | Purpose |
+| --- | --- |
+| \`POST /v1/iso20022/pacs002\` | NEW_PACS002. |
+| \`POST /v1/iso20022/pacs004\` | NEW_PACS004. |
+| \`POST /v1/iso20022/camt056\` | NEW_CAMT056. |
+| \`POST /v1/iso20022/sese024\` | NEW_SESE024. |
+| \`POST /v1/iso20022/sese025\` | NEW_SESE025. |
+
+### Participant Authorization and Lifecycle Ownership
+
+NEW_ISO_LIFECYCLE.
+
+### Durable Replay Identity and Signed Outbox Documents
+
+NEW_ISO_REPLAY.
+
+### Additional Parser and Mapping Support
+
+KEEP_TORII.
+`,
+      ],
+    ])
+    const localized = new Map<string, string>([
+      [
+        SECURITY_REMEDIATION_ROUTES.smartContracts,
+        `${localizedFrontmatter(SECURITY_REMEDIATION_ROUTES.smartContracts)}# Contrats {#smart-contracts}
+
+## Ancien cycle {#contract-lifecycle-and-ownership}
+
+OLD_CONTRACT_LIFECYCLE.
+
+## Conseils {#operational-guidance}
+
+KEEP_SMART.
+`,
+      ],
+      [
+        SECURITY_REMEDIATION_ROUTES.triggers,
+        `${localizedFrontmatter(SECURITY_REMEDIATION_ROUTES.triggers)}# Déclencheurs {#triggers}
+
+### Ancienne portée {#data-trigger-scope-and-capacity}
+
+OLD_TRIGGER_SCOPE.
+
+## Nouvelle tentative {#retry-policy}
+
+KEEP_TRIGGER.
+`,
+      ],
+      [
+        SECURITY_REMEDIATION_ROUTES.soraNexusServices,
+        `${localizedFrontmatter(SECURITY_REMEDIATION_ROUTES.soraNexusServices)}# Services {#sora-nexus-services}
+
+### Ancienne liste {#relay-incentive-verifier-roster}
+
+OLD_RELAY_ROSTER.
+
+## Disponibilité {#data-availability-da}
+
+KEEP_DA.
+
+### Ancienne passerelle {#public-local-cid-and-site-gateways}
+
+OLD_PUBLIC_GATEWAY.
+
+### Ancienne modération {#moderation-challenges}
+
+OLD_MODERATION_CHALLENGE.
+
+### Paquet {#pack-manifest-sign-and-submit}
+
+KEEP_SORA.
+`,
+      ],
+      [
+        SECURITY_REMEDIATION_ROUTES.toriiEndpoints,
+        `${localizedFrontmatter(SECURITY_REMEDIATION_ROUTES.toriiEndpoints)}# Torii {#torii-endpoints}
+
+## Ancienne visibilité {#account-authentication-visibility-and-explorer-cursors}
+
+OLD_ACCOUNT_VISIBILITY.
+
+## ISO {#iso-20022-bridge}
+
+| Method and endpoint | Purpose |
+| --- | --- |
+| \`POST /v1/iso20022/pacs002\` | OLD_PACS002. |
+| \`POST /v1/iso20022/pacs004\` | OLD_PACS004. |
+| \`POST /v1/iso20022/camt056\` | OLD_CAMT056. |
+| \`POST /v1/iso20022/sese024\` | OLD_SESE024. |
+| \`POST /v1/iso20022/sese025\` | OLD_SESE025. |
+
+### Ancien cycle ISO {#participant-authorization-and-lifecycle-ownership}
+
+OLD_ISO_LIFECYCLE.
+
+### Analyse {#additional-parser-and-mapping-support}
+
+KEEP_TORII.
+`,
+      ],
+    ])
+    const provider: TranslationProvider = {
+      engine: 'nllb-200-ct2',
+      translate: async (text) => text.replace(/<span\b[^>]*>(\d+)<\/span>/gu, '$1'),
+    }
+
+    try {
+      for (const [route, content] of english) {
+        const target = path.join(temporaryRoot, route)
+        await mkdir(path.dirname(target), { recursive: true })
+        await writeFile(target, content)
+      }
+      for (const [route, content] of localized) {
+        const target = path.join(temporaryRoot, french.path, route)
+        await mkdir(path.dirname(target), { recursive: true })
+        await writeFile(target, content)
+      }
+
+      await updateSecurityRemediationLocale(temporaryRoot, french, provider)
+
+      for (const [route, source] of english) {
+        const result = await readFile(path.join(temporaryRoot, french.path, route), 'utf8')
+        const digest = createHash('sha256').update(source).digest('hex')
+        expect(result).toContain(`translation_source_hash: ${digest}`)
+      }
+      const smart = await readFile(
+        path.join(temporaryRoot, french.path, SECURITY_REMEDIATION_ROUTES.smartContracts),
+        'utf8',
+      )
+      const triggers = await readFile(
+        path.join(temporaryRoot, french.path, SECURITY_REMEDIATION_ROUTES.triggers),
+        'utf8',
+      )
+      const sora = await readFile(
+        path.join(temporaryRoot, french.path, SECURITY_REMEDIATION_ROUTES.soraNexusServices),
+        'utf8',
+      )
+      const torii = await readFile(
+        path.join(temporaryRoot, french.path, SECURITY_REMEDIATION_ROUTES.toriiEndpoints),
+        'utf8',
+      )
+      expect(smart).toContain('NEW_CONTRACT_LIFECYCLE.')
+      expect(smart).toContain('KEEP_SMART.')
+      expect(smart).not.toContain('OLD_CONTRACT_LIFECYCLE.')
+      expect(triggers).toContain('NEW_TRIGGER_SCOPE.')
+      expect(triggers).toContain('KEEP_TRIGGER.')
+      expect(triggers).not.toContain('OLD_TRIGGER_SCOPE.')
+      expect(sora).toContain('NEW_RELAY_ROSTER.')
+      expect(sora).toContain('NEW_PUBLIC_GATEWAY.')
+      expect(sora).toContain('NEW_MODERATION_CHALLENGE.')
+      expect(sora).toContain('KEEP_DA.')
+      expect(sora).toContain('KEEP_SORA.')
+      expect(sora).not.toContain('OLD_MODERATION_CHALLENGE.')
+      expect(torii).toContain('NEW_ACCOUNT_VISIBILITY.')
+      expect(torii).toContain('NEW_ISO_LIFECYCLE.')
+      expect(torii).toContain('NEW_ISO_REPLAY.')
+      expect(torii).toContain('NEW_PACS002.')
+      expect(torii).toContain('KEEP_TORII.')
+      expect(torii).not.toContain('OLD_ACCOUNT_VISIBILITY.')
+      expect(torii).not.toContain('OLD_PACS002.')
+    } finally {
+      await rm(temporaryRoot, { recursive: true, force: true })
+    }
   })
 })
 

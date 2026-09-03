@@ -158,11 +158,13 @@ families are not all enabled on every network profile.
 ## Account Authentication, Visibility, and Explorer Cursors
 
 App-facing ledger reads use one optional canonical account-signature boundary.
-An unsigned request receives only routes configured as public. A valid signed
-request adds the dataspaces bound to the caller's current UAID and any exact
-read permissions held by that account. Supplying only `X-Iroha-Account`, or any
-incomplete or malformed signature header set, returns `401 Unauthorized`; it
-does not fall back to anonymous visibility.
+An unsigned request receives only active public dataspaces. A valid signed
+request adds the dataspaces bound to the caller's current UAID and the exact
+dataspace routes named by that account's `CanReadRestrictedDataspace`
+permissions. `CanReadAllLedgerData` grants visibility across every dataspace.
+Supplying only `X-Iroha-Account`, or any incomplete or malformed signature
+header set, returns `401 Unauthorized`; it does not fall back to anonymous
+visibility.
 
 The same visibility object filters account, domain, asset-definition, asset,
 NFT, RWA, holder, and Explorer reads. An absent object and an object that is
@@ -172,6 +174,11 @@ leg recorded for the transaction is visible. A mixed-dataspace transaction is
 therefore hidden when even one participant leg is outside the caller's scope;
 missing, stale, or malformed routing context is visible only to a global
 reader.
+
+Torii applies this scope before user filters, pagination, counts, or projections
+on SSE, WebSocket, contract-event, and replay paths. Long-lived streams
+re-evaluate the same authorization as ledger permissions change and terminate
+with a generic authorization failure after access is revoked.
 
 The six world-backed Explorer collections use opaque canonical base64url
 keyset cursors. The default page limit is 25, the maximum is 100, and one page
@@ -193,6 +200,12 @@ ledger permissions change. The native `GET /v1/blocks/stream` route is
 different: it emits complete signed blocks, requires
 `CanReadAllLedgerData` during the handshake, and closes if that permission is
 later revoked. Do not use the native stream for a dataspace-scoped explorer.
+
+The live `GET /v1/sumeragi/status/sse` consensus-diagnostic stream is also not
+an anonymous dataspace feed. It requires the complete operator-signature header
+quartet on every connection attempt. Clients generate a fresh signature for
+the exact stream URI and do not follow redirects or replay a signed attempt
+through an automatic transport retry.
 
 ## ISO 20022 Bridge
 
@@ -282,7 +295,7 @@ not disclosed.
 
 ### Durable Replay Identity and Signed Outbox Documents
 
-ISO record stores accept only schema V2 records and replay tombstones. Torii
+ISO record stores accept only schema V3 records and replay tombstones. Torii
 fails startup with a clear incompatibility error when persisted data does not
 match that schema, so first-release stores and fixtures must be regenerated.
 Each rich record keeps immutable participant provenance. A separate durable

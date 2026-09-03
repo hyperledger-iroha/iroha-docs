@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: c23170b2949bae9c9483ecbee6f0c09fea503904ae93934aef56537ddd13c42d
+translation_source_hash: 29cb291e63f427a4e71296e4244eaf71dc4651d486e3d15fb3d1045230f6023e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -145,6 +145,22 @@ Lorsque Torii est construit avec le jeu de fonctionnalités face à l'applicatio
 |`/v1/offline/`, `/v1/repo/`, `/v1/space-directory/`, `/v1/ram-lfe/` |Préparation en ligne, accords de référentiel, manifestes d'espace de données et aides [RAM-LFE ](/fr/blockchain/ram-lfe.md#torii-routes)  |
 |`/v1/kaigi/`, `/v1/webhooks/`, `/v1/notify/`, `/v1/telemetry/` |Collaboration, connexion web, notifications push et intégration en direct de télémétrie |
 
+## L'authentification des comptes, la visibilité et les cursors de l'explorateur {#account-authentication-visibility-and-explorer-cursors}
+
+Une demande non signée ne reçoit que des bases de données publiques actives. Une demande signée valide ajoute les bases de données liées au courant UAID de l'appelant et les itinéraires exacts de la base de données nommés par les autorisations `CanReadRestrictedDataspace` de ce compte. `CanReadAllLedgerData` donne une visibilité dans tous les espaces de données. En fournissant seulement `X-Iroha-Account`, ou tout ensemble d'en-têtes de signature incomplet ou malformé, il renvoie `401 Unauthorized`; il ne revient pas à la visibilité anonyme.
+
+Le même objet de visibilité filtre le compte, domaine, définition d'actif, actif, NFT, RWA, détenteur et Explorer. Un objet absent et un objet qui est en dehors des routes visibles de l'appelant sont intentionnellement indiscernables. L'historique des transactions engagées et des instructions est affiché uniquement lorsque chaque étape de route enregistrée pour la transaction est visible. par conséquent caché lorsqu'une seule jambe du participant est hors de la portée de l'appelant; le contexte de routage manquant, obsolète ou malformé n'est visible qu'à un lecteur mondial.
+
+Torii applique cette portée avant que les filtres d'utilisateur, la pagination, le comptage ou les projections sur SSE, WebSocket, l'événement-contrat et les voies de répétition. Il est révoqué.
+
+Les six collections Explorer prises en charge dans le monde entier utilisent des curseurs de base64url non transparents. La limite par défaut de la page est 25, le maximum est 100, et une page inspecte au plus 512 touches candidates. Chaque curseur est lié à sa collection, aux filtres, à la dernière clé canonique et au digeste de route visible de l'appelant, de sorte qu'il ne peut pas être reproduit sur une autre requête ou après que la visibilité de l'auteur a changé.
+
+Bloc, transaction, dernière transaction, instruction et historique de la dernière instruction les curseurs fixent également la hauteur de l'instantané engagée et bloquent le hash. Les réponses exposent `pagination.limit`, `pagination.snapshot_height`, `pagination.snapshot_hash`, `pagination.next_cursor`, et `pagination.has_more`. Un curseur pour une autre voie ou un ensemble de filtres, un digeste de visibilité modifié, ou une prise de vue instantanée que le nœud ne peut plus valider échoue à fermer. Torii Le permis d'admission de la requête pendant que le travailleur bloquant s'enfuit.
+
+L'explorateur WebSocket les flux émettent des résumés filtrés et recommencent à calculer la visibilité lorsque les autorisations du registre changent. `GET /v1/blocks/stream` L'itinéraire est différent: il émet des blocs entièrement signés, `CanReadAllLedgerData` pendant la poignée de main, et ferme si cette autorisation est révoquée plus tard. N'utilisez pas le flux natif pour un explorateur de l'espace de données.
+
+Le flux de diagnostic de consensus en direct `GET /v1/sumeragi/status/sse` n'est pas non plus un flux d'espace de données anonyme. Il nécessite le quatuor complet d'en-tête de signature de l'opérateur pour chaque tentative de connexion. Les clients génèrent une nouvelle signature pour le flux exact URI et ne suivent pas les redirections ou ne reproduisent pas une tentative signée par une reprise de transport automatique.
+
 ## ISO pont 20022 {#iso-20022-bridge}
 
 Torii dévoile les ISO 20022 pont sous `/v1/iso20022/*` lorsque l'application est tournée vers API Le pont est délibérément ciblé: il ne s'agit pas d'un objet général. ISO 20022 passerelle de compensation, mais un sous-ensemble pris en charge pour transformer des messages de paiement sélectionnés en signatures Iroha les transferts et pour le suivi de leur statut dans le registre.
@@ -155,12 +171,12 @@ Torii dévoile les ISO 20022 pont sous `/v1/iso20022/*` lorsque l'application es
 | --- | --- |
 |`POST /v1/iso20022/pacs008` |soumettre un transfert de crédit client FI à FI et effectuer le transfert d'actifs correspondant Iroha |
 |`POST /v1/iso20022/pacs009` |Soumettre un transfert de crédit FI vers FI utilisé pour PvP ou des fonds en espèces liés à des valeurs mobilières |
-|`POST /v1/iso20022/pacs002` |Soumettre un rapport sur l' état des paiements |
-|`POST /v1/iso20022/pacs004` |Soumettre une déclaration de paiement |
-|`POST /v1/iso20022/camt056` |Soumettre une demande d' annulation de paiement |
+|`POST /v1/iso20022/pacs002` |Soumettre un rapport d' état de paiement appartenant à la contrepartie; les besoins de règlement comprennent des éléments de preuve de transaction engagée |
+|`POST /v1/iso20022/pacs004` |Soumettre une déclaration de paiement détenue par la contrepartie |
+|`POST /v1/iso20022/camt056` |Soumettre une demande d' annulation de paiement déposée par l' initiateur |
 |`POST /v1/iso20022/sese023` |Soumettre une instruction de règlement des titres |
-|`POST /v1/iso20022/sese024` |Soumettre un message sur l' état du règlement des titres |
-|`POST /v1/iso20022/sese025` |Présentation d' une confirmation de règlement des titres |
+|`POST /v1/iso20022/sese024` |Soumettre un message d' état de règlement des titres détenus par la contrepartie |
+|`POST /v1/iso20022/sese025` |Soumettre une confirmation de règlement des titres détenus par la contrepartie |
 |`POST /v1/iso20022/colr012` |Envoyer un message de remplacement des garanties |
 |`GET /v1/iso20022/messages/{msg_id}` |Lisez le record du pont canonique pour un message |
 |`GET /v1/iso20022/audit/messages` |Lisez le manifeste de vérification des messages falsifiés .|
@@ -175,6 +191,39 @@ Les déclarations `pacs.008` doivent contenir le message ID, le montant du règl
 Les déclarations `pacs.009` doivent contenir le message d'affaires ID, la définition du message ID, l'heure de création, le montant du règlement interbancaire, la devise, la date du règlement; l'agent chargé BICs, le débiteur et le créancier IBANs. Si le message comprend `Purp`, le pont n'accepte actuellement que des fonds destinés aux valeurs mobilières: `Purp=SECU`.
 
 Les points finaux de soumission `pacs.008` et `pacs.009` acceptent les enveloppes XML ISO ou le format de champ plat utilisé dans les essais de pont. Les champs optionnels `SplmtryData` peuvent saisir le registre cible Iroha compte source et cible IDs ou adresses, ainsi que la définition d'actif ID. La réponse est `202 Accepted` avec `message_id`, `transaction_hash`, `status`, `pacs002_code` et le contexte de registre/compte/actif résolu.
+
+### Autorisation et propriété du cycle de vie des participants {#participant-authorization-and-lifecycle-ownership}
+
+Chaque entrée de participant possède un participant unique ID, une ou plusieurs clés publiques de l'opérateur, un ou plusieurs identifiants financiers, un ensemble de profils autorisés et le `originator`, `counterparty` ou les deux rôles. Les clés de l'opérateur et les identifiants financiers ne peuvent appartenir à plus d'un participant. Configurer séparément `audit_admin_keys`; une clé d'administration d'audit ne peut pas non plus être une clé de mutation des participants.
+
+Tout le monde ISO Les routes nécessitent une nouvelle signature de l'opérateur. `pacs.008`, `pacs.009`, `sese.023`, ou `colr.012` la soumission, l'opérateur authentifié doit appartenir au participant identifié par le titre de la demande `From` l'identité financière. `To` l'identité doit nommer un autre participant configuré, et le profil sélectionné doit être autorisé pour les deux parties. Enregistrements d'admission durables de l'auteur, de la contrepartie et de l'admission la clé participant et l'opérateur, ainsi que le profil d'origine et la politique de signature intégrée.
+
+L'autorisation du cycle de vie est dérivée de cet enregistrement immuable plutôt que des valeurs sélectionnées par l'appelant:
+
+|Le message du cycle de vie |Participant requis |
+| --- | --- |
+|`pacs.002`, `pacs.004`, `sese.024`, `sese.025` |contrepartie originale avec le rôle de `counterparty` |
+|`camt.056` |L'auteur original avec le rôle `originator` |
+
+Le profil et la politique de signature originaux restent fichés pour l'ensemble le cycle de vie, donc un appelant ne peut pas sélectionner un profil plus faible pour une mise à jour. `pacs.002` code qui représente le règlement (`ACSC`, `ACCP`, `SETT`, ou `SETTLED`) modifie le registre d'origine à réglé uniquement lorsque Torii a engagé une preuve de transaction.
+
+L'un ou l'autre des parties originales peut lire son enregistrement de message et les documents générés dans la boîte de réception. Le point final d'audit ne renvoie que les enregistrements dans lesquels le participant authentifié est l'auteur ou la contrepartie. Un administrateur de vérification configuré séparément reçoit une vue globale d'audit en lecture seule et ne peut pas soumettre ou modifier des messages. Les participants inconnus et les identifiants de messages non liés ne sont pas communiqués.
+
+### Identification de lecture durable et documents de boîte de réception signés {#durable-replay-identity-and-signed-outbox-documents}
+
+Les magasins d'enregistrement ISO acceptent uniquement les enregistrements du schéma V3 et la reproduction des pierres tombales. Torii échoue à démarrer avec une erreur d'incompatibilité claire lorsque les données persistantes ne correspondent pas à ce schéma, il faut donc régénérer les magasins de première sortie et les fixations. Chaque enregistrement riche conserve l'immutable provenance du participant. Une pierre tombale durable distincte garde le message ID, le hash de charge utile, le message d'affaires ID et UETR pour la déduplication complète TTL même après que les détails des enregistrements riches ont été tranchés.
+
+Torii persiste l'admission de répétition avant de signer ou de traiter un message de cycle de vie. Il n'expulse jamais une identité de reproduction non expirée. Si la capacité d'enregistrement configurée ne contient que des entrées protégées par TTL, les soumissions reçoivent `503 Service Unavailable` rétractable sans mutation du cycle de vie ou de l'état de comptabilité.
+
+Chaque document généré `pacs.002`, `pacs.004`, `camt.029`, `sese.024` ou `sese.025` est retourné sous la forme de `application/xml` avec les en-têtes de réponse suivants:
+
+|En-tête|Le sens .|
+| --- | --- |
+|`X-Iroha-Iso-Signature-Domain` |Toujours `iroha.iso20022.outbound.v2` |
+|`X-Iroha-Iso-Signer` |La clé publique canonique pour le signataire de pont configuré |
+|`X-Iroha-Iso-Signature` |La signature de base 64 sur les octets XML séparés par domaine |
+
+Vérifiez la signature sur la séquence UTF-8 en octets `iroha.iso20022.outbound.v2`, un octet zéro et le corps de réponse exact. Ne reformattez pas ou ne normalisez pas le XML avant vérification.
 
 ### Appui supplémentaire aux analyses et cartographies {#additional-parser-and-mapping-support}
 

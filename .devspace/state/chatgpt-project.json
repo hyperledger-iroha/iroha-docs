@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "projectId": "cgpt_d7215030-ec78-4403-8cb8-c3069644a90f",
+  "identitySource": "git_config:chatgpt-pro.projectId",
+  "repoRoot": "/Users/takemiyamakoto/dev/iroha-docs",
+  "gitTopLevel": "/Users/takemiyamakoto/dev/iroha-docs",
+  "gitCommonDir": "/Users/takemiyamakoto/dev/iroha-docs/.git",
+  "displayName": "iroha-docs",
+  "gitRemoteOrigin": "git@github.com:hyperledger-iroha/iroha-docs.git",
+  "gitRemoteCanonical": "github.com/hyperledger-iroha/iroha-docs",
+  "canonicalProjectStateDir": "/Users/takemiyamakoto/.chatgpt-pro-codex/projects/cgpt_d7215030-ec78-4403-8cb8-c3069644a90f",
+  "canonicalSessionRegistryPath": "/Users/takemiyamakoto/.chatgpt-pro-codex/projects/cgpt_d7215030-ec78-4403-8cb8-c3069644a90f/chatgpt-sessions.json",
+  "createdAt": "2026-08-30T06:11:08.454Z",
+  "updatedAt": "2026-08-30T06:36:13.869Z"
+}

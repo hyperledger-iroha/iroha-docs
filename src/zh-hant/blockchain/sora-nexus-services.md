@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: de50aa8206a5b82d4340f68173e9d89bb8eabab83369c363eb05c9d6632eed28
+translation_source_hash: 94f978f16ea7e43a8bc269b88bbfe58b6c9f9f5e0d829d40fefa523bb37d115a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -377,6 +377,12 @@ sorafs_cli fetch \
 
 總結記錄提供商報告,零件收據,本地代理元數據以及用於採集的有效路線設置.
 
+### 繼電激勵驗證器清單 {#relay-incentive-verifier-roster}
+
+如果`incentives.enable`是真實的, `incentives.trusted_verifier_ids`必須包含至少一個和最多64個常規帳戶 IDs.運行時間將列表存儲爲確定性有序的集合,在連接啓動時被拒絕了無效列表幾何.
+
+每個 `RelayBandwidthProof`都根據固定框架/分配預算進行解碼,必須使用完整的框架.證明驗證賬戶必須在配置名單中存在,並且`RelayBandwidthProof::verify_signature()`必須成功,在繼電器鎖定或更改其性能蓄積器之前.一個不值得信賴的簽署者或簽名無效/被改的證明因此沒有貢獻測量,無法產生激勵快照.
+
 ## 數據可用性 (DA) {#data-availability-da}
 
 DA 是太大,太敏感於隱私或太特定於服務的有效載荷的可用性證據層,無法直接放置在世界狀態.它記錄了確定性承諾和檢索義務,以便驗證者,網關和客戶可以同意哪些字節被承諾,哪些政策適用,以及哪些證據已經觀察到.
@@ -484,6 +490,37 @@ curl -fsS "$TORII_URL/openapi.json" \
 SoraFS 是分散的內容地址存儲布料. 它將字節包裝成決定性塊, CAR 檔案,和 Norito 表達了綁定內容根,分類配置文件,針政策和治理證書. 存儲服務提供商廣告容量和內容可用性,而在提供內容之前,門戶驗證表格和部分承諾.
 
 典型的 SoraFS 用途包括靜態應用資產,文檔構建,區域捆綁,模型或文物引用和治理證據捆綁. Iroha 數據模型暴露了 SoraFS 門戶事件和供應商所有權解決方案的[`FindSorafsProviderOwner`](/zh-hant/reference/queries.md#nexus-data-availability-and-packages)查詢.
+
+### 公共局域 CID 和站點門口 {#public-local-cid-and-site-gateways}
+
+每一個 SoraFS- 啓用了 Torii 節點安裝這些匿名的公共路線,即使是可選應用程序 API 沒有建造:
+
+|方法和終點| 用途 |
+| --- | --- |
+|`GET /.well-known/sorafs/manifest`|返回由常規請求主機選擇的表格.|
+|`GET /v1/sorafs/cid/{cid}`|返回一個 CID 的局部公佈元數據和文件輸入|
+|`GET /sorafs/cid/{cid}`|服務一個本地內容地址的網站的根文件|
+|`GET /sorafs/cid/{cid}/{*path}`|在 CID 底下提供一個正常化路徑,或一個有限的字節範圍.|
+
+這些路線從來沒有接受 `x-sorafs-stream-token`或 `x-sorafs-token-id`.任何一個標題的存在是一個糟糕的請求. 已經在節點的權威本地存儲中存在的正規宣言是 公開閱讀能力;緩存錯誤不允許遠程提供商化. 保護的提供商 CAR 和零件路線仍然是單獨的認證協議表面.
+
+在閱讀字節之前, Torii 驗證本地公佈的法規編碼,語義限制,消化和根 CID.然後需要授權本地供應商身份,管理認可以及對公佈進行合規性和刪除檢查,CID 網關稅率/禁令政策使用有效客戶端地址,僅通過配置的可信任代理來授權轉發的地址.缺失政策,合規性,取消,身份或錄取狀態未能關閉.
+
+一項請求持有端到端公開門戶許可證;整個過程的限制爲64次同時閱讀,超過要求返回`503 Service Unavailable`和 `Retry-After: 1`.顯而易見的響應限制在16 MiB,文件列表默認爲50個輸入並接受最多500個,並且一個完整的文件或單字節範圍被限制在8 MiB. CIDs,查詢,主機,路徑和範圍標題必須使用其正規單值形式.活躍的 HTML,腳本,SVG, XML, PDF,或Wassm內容僅從配置的 CID 衍生的孤立來源 (或轉向到那裏),防止共享路徑門源執行不可信賴的內容.
+
+### 適度化挑戰 {#moderation-challenges}
+
+SoraFS 適度挑戰經濟是共識狀態.積極的政策命名管理投票資產和用於保證和削減的治理賬戶.每個挑戰都需要正確的150個單位的資產;提升它,將債券自動轉移到保證.一個案例拒絕複製挑戰標識符,同一賬戶的第二次挑戰或沒有改變平衡或挑戰計數的重複使用證據消化.
+
+提出挑戰的截止日期和解決挑戰的截取日期是不同的.治理收到在接納或拒絕懸而未決的挑戰後24小時的提交後,只有通過該決議期限才能顯示:
+
+- 接受的挑戰終止了案件,並退還了全部債券;
+- 被拒絕的挑戰讓案件繼續,將25%的債券發送給減息收件人 (按投票資產的精度進行下),並退還剩餘部分;
+- 一個未解決的挑戰在寬恕窗口結束後過期,未能打開,並退還全部債券.
+
+`ExpireSorafsModerationChallenge`對已經過期的訴訟沒有許可和無權. 案例最終結算與後備程序相同,每個結算都是原子的:如果任何退款或削減腿都失敗,完整的結算將被推翻.
+
+調節政策和案例記錄直接使用首次發佈方案.在創始/狀態初始化期間,節點拒絕預剪的持續佈局.或快照恢復;再生這些裝置,而不是從遺產狀態推斷投票資產,保管賬戶,截止日期或經濟學.
 
 ### 包裝,表達,簽署和提交 {#pack-manifest-sign-and-submit}
 

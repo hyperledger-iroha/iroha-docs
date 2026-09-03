@@ -1,0 +1,14 @@
+{
+  "runId": "2026-08-30T06-11-35-775Z-chatgpt-call",
+  "target": "https://chatgpt.com/",
+  "profileDir": ".devspace/chrome-profiles/chatgpt-pro",
+  "posture": "headed",
+  "cdpUrls": [
+    "http://127.0.0.1:9222"
+  ],
+  "phase": "failed",
+  "startedAt": "2026-08-30T06:11:35.776Z",
+  "updatedAt": "2026-08-30T06:11:35.791Z",
+  "ok": false,
+  "error": "fetch failed"
+}

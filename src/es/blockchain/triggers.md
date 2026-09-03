@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /blockchain/triggers.md
-translation_source_hash: 9443b139623544fd3c54b324e54b7e06f57820c70ffd0856f05aacac9f7591a3
+translation_source_hash: 726e2998ec1439138ef94d3a702049731ce2432f5c52a723ed0c92593de41c1e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -55,6 +55,16 @@ Los desencadenantes de tiempo utilizan un filtro de eventos de tiempo. Cuando la
 La autoridad de activación es la cuenta utilizada para invocar el ejecutable. Utilice una cuenta técnica dedicada para los activadores de larga duración para que los permisos requeridos sean explícitos y aislados de la cuenta personal de un operador.
 
 La autoridad necesita los permisos requeridos por las instrucciones ejecutables o la llamada de contrato.La cuenta que registra el gatillo también necesita permiso para registrar gatillos bajo el validador activo del tiempo de ejecución.
+
+### El alcance y la capacidad de los disparadores de datos {#data-trigger-scope-and-capacity}
+
+Un desencadenante de datos ordinario debe vincular su filtro a un objeto exacto propiedad de su autoridad de desencadenamiento. Los filtros de cuentas deben nombrar esa cuenta exacta: activo, definición de activo, dominio, NFT, RWA, y los filtros de desencadenamiento deberán nombrar igualmente una entidad exacta propiedad de la autoridad. `Any`, una pareja no vinculada, un sujeto extranjero y las familias de eventos de sistema o gobernanza no son desencadenantes ordinarios calculados.
+
+Sólo el Parlamento puede conceder `CanRegisterGlobalDataTrigger`.La subvención se almacena directamente en una cuenta exacta, con los mismos nombres de la misma autoridad de activación exacta, y puede ser revocada a través de el mismo ciclo de vida del Parlamento. No se hereda a través de una función y no renuncia a `CanRegisterTrigger` cuando una cuenta registra un desencadenante para otra autoridad.
+
+El consenso admite, como máximo, 64 factores desencadenantes de datos para una autoridad y 4.096 factores en todo el mundo. Los índices exactos de sujetos y familias de eventos seleccionan a los candidatos en orden de identificadores canónicos. Una transacción originaria puede causar un máximo de 256 disparos en el gatillo de datos, Cada filtro indexado comprueba, disparo, instrucción nativa, y VM La instrucción consume el mismo presupuesto de gas del bloque.
+
+La ejecución del gatillo es atómica con la transacción que emitió el evento de coincidencia. Si un gatillo autorizado falla, excede su límite de disparar o profundidad de ejecución, o agota gas, Iroha retrocede tanto los efectos del gatillo como la transacción originaria.
 
 ## Política de retraso {#retry-policy}
 

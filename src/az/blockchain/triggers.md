@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /blockchain/triggers.md
-translation_source_hash: 9443b139623544fd3c54b324e54b7e06f57820c70ffd0856f05aacac9f7591a3
+translation_source_hash: 726e2998ec1439138ef94d3a702049731ce2432f5c52a723ed0c92593de41c1e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -55,6 +55,16 @@ Zaman tetikleyiciləri zaman hadisəsi filtrindən istifadə edirlər. Dünya v�
 Trigger səlahiyyəti, icra edilə bilənləri çağırmaq üçün istifadə edilmiş hesabdır. Uzun ömürlü tetikləmələr üçün xüsusi texniki hesabdan istifadə edin ki , tələb olunan icazələr açıq şəkildə və bir operatorun şəxsi hesabı.
 
 Orqanın icra edilə bilən təlimat və ya müqavilə çağırışı üçün tələb olunan icazələrə ehtiyacı var. Trigger-i qeydiyyatdan keçirən hesabın aktiv icra vaxtının təsdiqçisi altında triggerləri qeydiyyata alması üçün icazəsi də lazımdır.
+
+### Məlumat tetikleyicilərinin həcmi və gücü {#data-trigger-scope-and-capacity}
+
+Adətənki məlumat tetikçisi öz filtrini onun tetikçi orqanına məxsus dəqiq bir subyektə bağlamalıdır. Hesab filtrləri bu dəqiq hesabın adını verməlidir. Əməliyyat, aktiv tərifi, domen, NFT, RWA, və tetikçi filtrləri eyni zamanda orqanın mülkiyyətində olan dəqiq bir qurumun adını göstərməlidir. `Any`, bağlanmamış uyğunlaşma, xarici subyekt və sistem və ya idarəetmə hadisələrinin ailələri adi hesab ölçülü tetikçilər deyil.
+
+Təkcə Parlament `CanRegisterGlobalDataTrigger` verə bilər. Tələb birbaşa bir hesabda saxlanılır, eyni dəqiq tetikləyici səlahiyyətə malikdir və Eyni Parlamentin həyat dövrü. Bu, bir rol vasitəsilə irs edilmir və bir hesab başqa bir orqan üçün tetikçi qeyd edərkən `CanRegisterTrigger`dan imtina etmir.
+
+Konsensus bir səlahiyyət üçün ən çox 64 məlumat tetikleyicisini və qlobal miqyasda 4,096 məlumat tetikləyicini qəbul edir. Bir başlanğıc əməliyyatı, kaskadlar da daxil olmaqla ən çox 256 məlumat tetikləyici atışına səbəb ola bilər. Hər indeksləşdirilmiş filtr yoxlaması, atış, yerli təlimat və VM təlimat eyni blok qaz büdcəsi istehlak edir.
+
+Trigger icrası uyğunlaşma hadisəsini yaydığı əməliyyatla atomdur. Əgər icazə verilən bir tetikləyici uğursuz olursa, atəş və ya icra dərinliyi məhdudunu aşırsa və ya qaz tükənirsə, Iroha həm tetikləyici təsirləri, həm də başlanğıc əməliyyatını geri qaytarır.
 
 ## Yenidən sınaq siyasəti {#retry-policy}
 

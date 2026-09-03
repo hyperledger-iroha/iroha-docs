@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: 7d6f8e1a0316b312b43c278b377e08382dbb2bff538a7bca4c43b585d12567ca
+translation_source_hash: c69237ded68aee4d663b00f1aa13d400c4763682af9bd5b5a49ca0edb5905dd2
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -51,13 +51,17 @@ La prueba une la superposición al bytecode ejecutado. Dependiendo de la políti
 
 ## Ciclo de vida y propiedad del contrato {#contract-lifecycle-and-ownership}
 
-Cada dirección desplegada conserva un registro `ContractLifecycleControlV1`, incluso mientras el contrato esté inactivo. El registro contiene la procedencia inmutable del primer despliegue, el propietario actual y pendiente, cualquier delegación del Parlamento que pueda ser revocada, el código hash activo, una revisión de comparación y cambio no cero, Un despliegue directo registra la cuenta de implementación. Un despliego del Parlamento registra su proponente, contenido de propuesta ID y intento exitoso de gobernanza ID.
+Cada dirección desplegada retiene una `ContractLifecycleControlV1` El registro contiene la procedencia inmutable del primer despliegue. el propietario actual y pendiente, cualquier delegación del Parlamento que pueda ser revocada, el código hash activo, una revisión de comparación y intercambio sin cero; Un despliegue directo asigna a la cuenta de envío como propietario y lo registra como el despacho. Un despliegue del Parlamento asigna al Parlamento como propietario y registra su proponente, contenido de la propuesta. ID, y un intento exitoso de gobernanza ID sólo como procedencia.
 
-El titular del ciclo de vida es una cuenta o el Parlamento.Los cambios en la propiedad de la cuenta utilizan una oferta y aceptación separadas; la aceptación de una oferta libera a cualquier delegación parlamentaria. Un propietario de cuenta puede permitir al Parlamento activar o desactivar el contrato, y luego revocar esa delegación, pero la delegación nunca permite al Parlamento transferir la propiedad.
+Los espacios de nombres protegidos configurados están reservados para el despliegue del Parlamento. `CanRegisterSmartContractCode` Permite el registro de artefactos, pero no autoriza el despliegue directo ni la activación en bruto en un espacio de nombres protegido; El registro inicial del ciclo de vida debe ser creado por el camino de despliegue certificado por el Parlamento.
+
+El propietario del ciclo de vida es una cuenta o el Parlamento. Los cambios en la propiedad de la cuenta utilizarán `OfferContractOwnership` seguidos por el `AcceptContractOwnership` del propietario pendiente. El propietario actual puede retirar una oferta no aceptada con `CancelContractOwnershipOffer`. La aceptación autoriza cualquier delegación del Parlamento. La eliminación de la cuenta se rechaza mientras la cuenta posea un contrato o es el titular pendiente en una oferta pendiente.
+
+El titular de una cuenta puede permitir al Parlamento actualizar, activar o desactivar el contrato y luego revocar esa delegación. En el caso de los Estados miembros, las modificaciones y la aceptación por parte del Parlamento se efectúan a través de efectos de gobernanza certificados.
 
 Las instrucciones en bruto `ActivateContractInstance` y `DeactivateContractInstance` solo están disponibles para el titular de la cuenta corriente. Deben tener el registro exacto `expected_revision`; las revisiones obsoletas o cero no se cierran. La activación en bruto no puede crear un registro del ciclo de vida, y valida el artefacto registrado, el manifiesto y ABI antes de cambiar `active_code_hash`. Desactivación Cada transición exitosa del ciclo de vida avanza en la revisión y emite el estado post completo.
 
-Una propuesta del Parlamento de nivel de emergencia puede imponer una retención para un máximo de 3.600 bloques cuando se une a la revisión actual, el hash de código y un índice de incidentes no cero. Una acción certificada `CompleteEmergencyHoldRetrospective` debe vincular posteriormente la retención exacta IDs y digerir más una raíz de hallazgo no cero antes de que se elimine el registro; no puede imponerse otra retención mientras ese retrospectivo permanezca pendiente.
+Una propuesta del Parlamento de nivel de emergencia puede imponer una retención sólo a través de la línea parlamentaria completa y con los votos "Aye" de al menos dos tercios de los asientos originales del jurado de políticas. Sólo puede suspender llamadas y desencadenar la ejecución: no se puede extender o cambiar el código, propiedad o delegación. Las llamadas y las ejecuciones de disparos correspondientes están bloqueadas desde la altura de imposición hasta, pero sin incluir, la altura de vencimiento. Expiry restaura automáticamente la ejecución pero no borra la retención. Una acción certificada `CompleteEmergencyHoldRetrospective` debe vincular posteriormente la retención exacta IDs y digerir más una raíz de hallazgo sin cero antes de que se elimine el registro; no puede imponerse otra retención hasta que esa retrospectiva esté completa.
 
 Cuando la aplicación API esté habilitada, lea el estado retenido con `GET /v1/gov/contracts/{contract_address}`. Su campo `found` significa que existe un registro del ciclo de vida, no que la dirección tenga actualmente código activo.
 

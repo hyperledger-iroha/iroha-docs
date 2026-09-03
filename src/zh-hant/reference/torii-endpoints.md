@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: c23170b2949bae9c9483ecbee6f0c09fea503904ae93934aef56537ddd13c42d
+translation_source_hash: 29cb291e63f427a4e71296e4244eaf71dc4651d486e3d15fb3d1045230f6023e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -145,6 +145,22 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
 |`/v1/offline/`, `/v1/repo/`,`/v1/space-directory/`, `/v1/ram-lfe/` |在線準備,存儲協議,數據空間表格和[RAM-LFE 助手](/zh-hant/blockchain/ram-lfe.md#torii-routes) |
 |`/v1/kaigi/`, `/v1/webhooks/`,`/v1/notify/`, `/v1/telemetry/` |合作,網絡連接,推送通知和直播遠程測量集成|
 
+## 賬戶身份驗證,可見性和探險器的客 {#account-authentication-visibility-and-explorer-cursors}
+
+應用程序面向賬本閱讀使用一個可選的常規帳戶簽名界限.未簽署的請求只收到活躍的公共數據庫.有效的簽署的要求添加了與調用者的當前 UAID 綁定的數據庫和該帳戶的 `CanReadRestrictedDataspace`權限命名的確切數據庫路線.`CanReadAllLedgerData`在每個數據空間中提供可見性.只提供`X-Iroha-Account`,或者任何不完整或錯誤的簽名標題集,返回`401 Unauthorized`;它不會回到匿名可見性的狀態.
+
+同樣的可見性對象過帳戶,域名,資產定義,資產, NFT, RWA,持有者和探險器.一個缺失的對象和一個在調用者的可見路線之外的對象是故意無法區分的.只有當交易所記錄的每條路線腳圖可見時,就會顯示承諾的交易和指令歷史.因此,當連一個參與者腿都不在調用者的範圍之外時,隱藏; 缺失,過時或錯誤的路由文本僅可見於全球讀者.
+
+Torii 在使用者過器,頁面化,計數或對 SSE,WebSocket,合同事件和重播路徑的投影之前應用這一範圍.長期流程重新評估相同的授權隨着賬本權限的變化,並在訪問後終止與通用授權失敗.已撤銷.
+
+全球支持的六個Explorer集合使用不透明的正規base64url鍵盤設置緩衝器.默認頁面限制爲 25,最大是100,一個頁面檢查最多512個候選鍵.每個緩解器都與其集合,過器,法定最後鍵和調用者的可見路線設置消化聯繫在一起,因此不能在另一個查詢或調用者可視性發生變化後重播.
+
+區塊,交易,最新事務,指令和最新指令歷史線索 additionally pin the committed snapshot height and block hash.響應顯示`pagination.limit`, `pagination.snapshot_height`, `pagination.snapshot_hash`, `pagination.next_cursor`,和 `pagination.has_more`.另一個路線或過器設置的導向器,改變的可見性消化,或者節點不再可以驗證的快照被關閉.在阻塞工作者運行時,歷史掃描仍然存在於 Torii 的查詢錄取許可中.
+
+隨着賬本權限的變化, Explorer WebSocket 流發出過總結和重新計算可見性.本地 `GET /v1/blocks/stream` 路線不同:它發射完整在手握時需要 `CanReadAllLedgerData`,並在後面撤銷該許可的情況下關閉.
+
+現場 `GET /v1/sumeragi/status/sse`共識診斷流也不是一個匿名的數據空間輸送.它需要在每個連接嘗試中完成操作員簽名頭條四旋翼.客戶爲精確流 URI 生成一個新簽名,並不會通過自動重新嘗試運輸來遵循轉向或重播已簽署的嘗試.
+
 ## ISO 20022 橋 {#iso-20022-bridge}
 
 Torii 將 ISO 20022橋暴露在 `/v1/iso20022/*`下,當應用程序面向 API 和橋運行時間啓用時.橋是故意設定的:它不是一個一般用途的 ISO 20022清算網關,而是用於將選定的支付消息轉換爲簽署的 Iroha 轉賬和跟蹤其賬本狀態的支持子集.
@@ -155,12 +171,12 @@ Torii 將 ISO 20022橋暴露在 `/v1/iso20022/*`下,當應用程序面向 API �
 | --- | --- |
 |`POST /v1/iso20022/pacs008`|提交 FI 到 FI 客戶信貸轉賬,並構建匹配的 Iroha 資產轉賬|
 |`POST /v1/iso20022/pacs009`|提交用於 PvP 或與證券相關的現金資助的 FI 到 FI 信用轉賬|
-|`POST /v1/iso20022/pacs002`|提交支付狀況報告|
-|`POST /v1/iso20022/pacs004`|提交支付申報表|
-|`POST /v1/iso20022/camt056`|提交取消支付的請求|
+|`POST /v1/iso20022/pacs002`|提交對方所擁有的支付狀況報告;結算需要承諾的交易證據|
+|`POST /v1/iso20022/pacs004`|提交對方所擁有的付款申報表|
+|`POST /v1/iso20022/camt056`|提交原始人的取消支付請求|
 |`POST /v1/iso20022/sese023`|提交證券結算說明|
-|`POST /v1/iso20022/sese024`|提交證券結算狀況信息|
-|`POST /v1/iso20022/sese025`|提交證券結算確認|
+|`POST /v1/iso20022/sese024`|提交對方所有的證券結算狀態信息 |
+|`POST /v1/iso20022/sese025`|提交對方持有的證券結算確認|
 |`POST /v1/iso20022/colr012`|提交一個抵押替換信息|
 |`GET /v1/iso20022/messages/{msg_id}`|閱讀一條經典的橋樑記錄.|
 |`GET /v1/iso20022/audit/messages`|閱讀"改"的信息審計表.|
@@ -175,6 +191,39 @@ Torii 將 ISO 20022橋暴露在 `/v1/iso20022/*`下,當應用程序面向 API �
 `pacs.009`提交的信息必須包含業務消息 ID,信息定義 ID,創建時間,銀行間結算額,貨幣,結算日期,指示和指令代理人 BICs,債務人和信貸者 IBANs.如果信息包含`Purp`,橋樑目前只接受用於證券的資金: `Purp=SECU`.
 
 其他 `pacs.008` 和 `pacs.009` 提交終點接受 XML ISO 在橋樑測試中使用的封筒或平面場格式.可選 `SplmtryData` 字段可以定目標 Iroha 總賬戶,來源和目標帳戶 IDs 或地址,以及資產定義 ID. 答案是 `202 Accepted` 與 `message_id`, `transaction_hash`, `status`, `pacs002_code`, 解決賬本/帳戶/資產背景.
+
+### 參與者授權和生命週期所有權 {#participant-authorization-and-lifecycle-ownership}
+
+每個啓用橋都有參與者目錄.每個參與者入口都有一個獨特的參與者 ID,一個或多個運營商公鑰,一個或更多的財務標識符,允許的個人資料集和`originator`, `counterparty`,或者兩個角色.運營商密鑰和財務識別符不能屬於多個參與者.單獨配置 `audit_admin_keys`;一個審計管理員密鑰也不能是參與者的突變密鑰.
+
+所有的 ISO 路線需要新的運營商簽名. `pacs.008`, `pacs.009`, `sese.023`, 或 `colr.012` 提交,驗證的運營商必須屬於申請標題所識別的參與者 `From` 金融身份. `To` 身份必須指定另一個配置參與者,並且對雙方都允許選擇的個人資料.持久的錄取記錄原始人,對方,承認參與者和運營商密鑰,以及原始配置文件和嵌入式簽名政策.
+
+生命週期授權來源於該不可改變的記錄,而不是來自調用者選擇的值:
+
+|生命週期信息|要求參與者|
+| --- | --- |
+|`pacs.002`, `pacs.004`,`sese.024`, `sese.025` |具有 `counterparty`角色的原始對方 |
+|`camt.056`|具有 `originator`角色的原始創始人|
+
+原始的個人資料和簽名政策將保留在整個文件中調用者不能選擇一個較弱的配置文件來更新. `pacs.002` 代表結算的代碼 (`ACSC`, `ACCP`, `SETT`, 或 `SETTLED`) 只有當原始記錄被調整爲結算 Torii 已提交交易證據.
+
+任何原始方都可以閱讀其消息記錄和生成的輸出箱文件. 審計終點只返回驗證參與者是發起者或對方的記錄. 單獨配置的審計管理員收到全局僅可閱讀的審計視圖,不能提交或更改消息. 不知名參與者和無關的消息標識符不披露.
+
+### 持久重播身份和簽署的輸出箱文件 {#durable-replay-identity-and-signed-outbox-documents}
+
+ISO 記錄存儲只接受圖案 V3 記錄和重播墓碑. Torii 如果保留的數據不符合該方案,則出現明顯的兼容性錯誤.每個富有的記錄都保留着.一個獨立的持久墓碑保留了信息. ID, 使用負載哈希,業務信息 ID, 和 UETR 對於完整的減倍 TTL 即使有豐富的記錄細節被剪切.
+
+Torii 在簽署或處理生命週期消息之前仍然存在重播錄取.它永遠不會驅逐未到期的重播身份.如果配置記錄容量僅包含 TTL 受保護的輸入,則提交文件會得到可轉換的 `503 Service Unavailable` 沒有改變生命週期或會計狀態.
+
+每個生成的 `pacs.002`, `pacs.004`, `camt.029`, `sese.024`或 `sese.025` 文件都以`application/xml` 返回這些響應標題:
+
+|標題| 含義 |
+| --- | --- |
+|`X-Iroha-Iso-Signature-Domain`|總是 `iroha.iso20022.outbound.v2`|
+|`X-Iroha-Iso-Signer`|配置橋簽名器的可нони公鑰 |
+|`X-Iroha-Iso-Signature`|在域分隔的 XML 字節上使用Base64簽名|
+
+驗證 UTF-8 字節序列 `iroha.iso20022.outbound.v2`,一個零字節,以及精確的響應體上的簽名. 在驗證之前不要重新格式化或正常化 XML
 
 ### 額外的解析和繪圖支持 {#additional-parser-and-mapping-support}
 

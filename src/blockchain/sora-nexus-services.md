@@ -673,10 +673,11 @@ protocol surfaces.
 
 Before reading bytes, Torii validates the local manifest's canonical encoding,
 semantic constraints, digest, and root CID. It then requires the authoritative
-local provider identity, governance admission, and governed compliance for the
-manifest, CID, and provider. Gateway rate/ban policy uses the effective client
-address, honoring forwarded addresses only through configured trusted proxies.
-Missing policy, compliance, identity, or admission state fails closed.
+local provider identity, governance admission, and governed compliance and
+takedown checks for the manifest, CID, and provider. Gateway rate/ban policy
+uses the effective client address, honoring forwarded addresses only through
+configured trusted proxies. Missing policy, compliance, takedown, identity, or
+admission state fails closed.
 
 One request holds an end-to-end public-gateway permit; the process-wide limit
 is 64 concurrent reads, with excess requests returning `503 Service
@@ -687,6 +688,49 @@ headers must use their canonical single-valued forms. Active HTML, script,
 SVG, XML, PDF, or Wasm content is served only from a configured CID-derived
 isolated origin (or redirected there), preventing a shared path-gateway origin
 from executing untrusted content.
+
+### Moderation challenges
+
+SoraFS moderation challenge economics are consensus state. The active policy
+names the governance voting asset and the governance accounts used for escrow
+and slashing. Every challenge requires exactly 150 units of that
+asset; raising it atomically moves the bond into escrow. A case rejects a
+duplicate challenge identifier, a second challenge by the same account, or a
+reused evidence digest without changing balances or challenge counters.
+Once a case opens, its complete policy snapshot is authoritative for funding
+and settlement. A later governance-configuration or active-policy revision
+cannot change that case's asset, custody accounts, bond, slash, or grace window.
+
+The challenge-submission deadline and challenge-resolution deadline are
+distinct. Governance receives exactly 24 hours after submissions close to
+accept or reject a pending challenge. Pending challenges block ballot reveals
+only through that resolution deadline:
+
+- an accepted challenge stops the case and refunds the complete bond;
+- a rejected challenge lets the case continue, sends 25% of the bond to the
+  slash receiver (rounded down at the voting asset's precision), and refunds
+  the remainder; and
+- an unresolved challenge expires after the grace window, fails open, and
+  refunds the complete bond.
+
+`ExpireSorafsModerationChallenge` is permissionless and idempotent for a
+challenge that has already expired. Case finalization performs the same expiry
+settlement as a backstop, so an absent keeper cannot leave funds locked or keep
+reveals blocked. Each settlement is atomic: if any refund or slash leg fails,
+the complete settlement rolls back.
+
+Every pending challenge contributes to the aggregate liability of its exact
+asset-and-escrow balance. Ordinary transfers, burns, batched movements, and
+other protocol custody releases—including an overlapping SCCP route—must leave
+that combined reserve fully backed. Only the challenge's typed refund and slash
+settlement can consume its principal. Accounts and asset definitions remain
+retained while current or historical moderation state still needs them to
+validate or settle custody, even after active-policy rotation.
+
+The moderation policy and case records use the first-release schema directly.
+Nodes reject pre-cut persisted layouts during genesis/state initialization or
+snapshot restoration; regenerate those fixtures instead of inferring the
+voting asset, custody accounts, deadlines, or economics from legacy state.
 
 ### Pack, Manifest, Sign, and Submit
 

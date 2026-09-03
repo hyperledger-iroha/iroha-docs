@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
+translation_source_hash: c69237ded68aee4d663b00f1aa13d400c4763682af9bd5b5a49ca0edb5905dd2
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2
 ---
 
 # 智能合约 {#smart-contracts}
@@ -48,6 +48,22 @@ Kotodama 是 Iroha 的高级智能合约语言。`.ko` 源文件会编译为确�
 ## 已部署合约调用 {#deployed-contract-calls}
 
 `Executable::ContractCall` 按地址调用已部署的合约实例。当合约代码已单独注册，且交易应按引用调用它而不是每次都携带字节码时，请使用此载荷。
+
+## 合同使用周期和所有权 {#contract-lifecycle-and-ownership}
+
+每个部署的地址都保留`ContractLifecycleControlV1`记录,包括合同不活跃期间.该记录包含不可变的首次部署来源,当前和即将到期的所有者,可撤销的议会代表团,活跃代码哈希,非零比较和交换修订;一个直接部署将提交账户分配为所有者,并记录它作为部署的来源. 一个议会部署将议会分配为所有人,并记录其提出者,提案内容 ID,和成功的治理尝试 ID 仅作为来源.
+
+设置的保护名字空间为议会部署保留. `CanRegisterSmartContractCode` 允许对文物进行注册,但不允许直接部署或原始激活到受保护的名称空间中;首先必须通过欧洲议会认证的部署路径创建生命周期记录.
+
+账户所有权变更使用 `OfferContractOwnership` 随后是悬而未决的所有者的 `AcceptContractOwnership`;现有所有者可以撤销一个 在 `CancelContractOwnershipOffer`中未接受的报价. 通过该报价,可批准议会任何代表团.在账户持有合同或正在悬而未决的报价时,将拒绝取消帐户.
+
+账户所有者可以允许议会升级,激活或禁用合同,然后撤销该授权. 代表团永远不会允许议会转让所有权或更改代表团本身.通过经过认证的治理效应,由议会实施的变化和议会接受.
+
+`ActivateContractInstance`和`DeactivateContractInstance`原始指令仅可供经常账户所有者使用.它们必须包含记录的确切 `expected_revision`;过时或零修订无法关闭.原始激活不能创建生命周期记录,它在改变 `active_code_hash`之前验证已注册的文物,表格和 ABI.每次成功的生命周期过渡都会推进修改,并发出完整的后状态.
+
+紧急级别议会提案只能通过整个议会管道,至少有三分之二的政策陪审团席位获得"对"对"的选票".该选项绑定了当前的修订,代码哈希和非零事件消化,并持续最多3600块.它只能暂停调用和触发执行:它不能延长或更改代码,所有权或委托. 调用和匹配的触发执行被阻止从施加高度到,但不包括,过期高度.过期自动恢复执行,但不会删除保留.一个认证的 `CompleteEmergencyHoldRetrospective` 行动必须在记录清除之前绑定确切保留 IDs 和消化加上非零的发现根;直到追溯完成之前,不能强加另一次保留.
+
+当应用程序 API 启动时,请用 `GET /v1/gov/contracts/{contract_address}`读取保留状态.其 `found` 字段意味着存在生命周期记录,而不是地址目前具有活跃代码.
 
 ## 运营指导 {#operational-guidance}
 

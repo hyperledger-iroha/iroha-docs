@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: de50aa8206a5b82d4340f68173e9d89bb8eabab83369c363eb05c9d6632eed28
+translation_source_hash: 94f978f16ea7e43a8bc269b88bbfe58b6c9f9f5e0d829d40fefa523bb37d115a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -377,6 +377,12 @@ sorafs_cli fetch \
 
 Qisqa ma'lumotlar provayderining hisobotlari, qisqacha rasmga olishlar, mahalliy proxy metadatalari va to'lov uchun ishlatiladigan samarali yo'nalish moslamalari.
 
+### Relay ragʻbatlantiruvchi tekshiruvchining roʻyxati {#relay-incentive-verifier-roster}
+
+Relay rag'batlantirishni iste'mol qilish muvaffaqiyatsizlik bilan yopiladi. `incentives.enable` bu haqiqatdir, `incentives.trusted_verifier_ids` kamida bitta va eng ko'pida 64 ta kanonik hisobotni o'z ichiga olishi kerak IDs. Ish vaqti ro'yxatni deterministik tartibga solinadigan set sifatida saqlaydi va relayni ishga tushirish paytida haqiqiy bo'lmagan ro'yxat geometriyasi rad etiladi.
+
+Har bir `RelayBandwidthProof` o'rnatilgan ramka / taqsimlash byudjeti bo'yicha dekodlanadi va butun ramkani iste'mol qilishi kerak. Isbotning tasdiqlovchi hisobi konfiguratsiya qilingan ro'yxatda mavjud bo'lishi kerak va `RelayBandwidthProof::verify_signature()` muvaffaqiyatli bo'lishi lozim, relay o'rnatilmaguncha, uning ishlash akkumulyatorini blokirovka qiladi yoki o'zgartiradi. Ishonchsiz imzochi yoki imzo haqiqiy emasligi / o'zgartirilmagan dalolatnoma shuning uchun hech qanday o'lchamga hissa qo'shmaydi va rag'batlantiruvchi fotosuratni yaratolmaydi.
+
 ## Ma'lumotlarning mavjudligi (DA) {#data-availability-da}
 
 DA to'g'ridan-to'g'ri dunyo holatiga joylashtirish uchun juda katta, juda maxfiylikni sezadigan yoki xizmatga mos bo'lgan foydali yuklar uchun mavjudlik guvohnomasi qatlami hisoblanadi. U deterministik majburiyatlar va olish majburiyatlarini qayd etadi, shunda tasdiqlovchilar, darvozalar va mijozlar qaysi baytlar va'da qilinganligi, qaysi siyosat qo'llanilayotganligi va qanday dalillar kuzatilganligi haqida kelishib olishi mumkin.
@@ -484,6 +490,37 @@ Foydalanish [soʻrov maʼlumotlari](/uz/reference/queries.md#nexus-data-availabi
 SoraFS - bu markazlashtirilmagan tarkibga yo'naltirilgan saqlash matoidir. Bu baytlarni deterministik qismlarga, CAR arxivlariga va Norito tarkib ildizlarini bog'laydigan manifestlarga to'ldiradi; profillar, pin siyosatlari va boshqaruv attestatsiyalari. saqlash provayderlari tarkibni taqdim etishdan oldin quvvat va mavjudlikni e'lon qilishadi, darvozalar esa tarkibni xizmat ko'rsatishdan oldin manifestlar va qatlam majburiyatlarni tekshirishadi.
 
 SoraFS odatiy qo'llanmalar statik dastur aktivlari, hujjat qurilmalari, zonalar to'plamlari, model yoki artefakt ma'lumotlari va boshqaruv dalillari to'plamalarini o'z ichiga oladi. Iroha ma'lumotlar modeli SoraFS darvoza hodisalarini va provayder mulkchilikni hal qilish uchun [`FindSorafsProviderOwner`](/uz/reference/queries.md#nexus-data-availability-and-packages) so'rovini ochadi.
+
+### Jamoat mahalliy CID va joylar darvozalari {#public-local-cid-and-site-gateways}
+
+SoraFS qo'llab-quvvatlangan har bir Torii nod ushbu anonim ommaviy yo'nalishlarni o'rnatadi, hatto tanlovli dastur API yaratilmagan taqdirda ham:
+
+|usuli va oxirgi nuqtasi | Maqsad |
+| --- | --- |
+|`GET /.well-known/sorafs/manifest` |Kanonik soʻrovni qabul qiluvchi tomonidan tanlangan manifestni qaytarish |
+|`GET /v1/sorafs/cid/{cid}` |CID uchun cheklangan mahalliy manifest metadatalarini va fayl yozuvlarini qaytaring |
+|`GET /sorafs/cid/{cid}` |Mahalliy tarkibga ega boʻlgan sayt uchun ilova hujjatini koʻrsatish |
+|`GET /sorafs/cid/{cid}/{*path}` |CID ostida bitta normallashtirilgan yo'l yoki bir chegaralangan byt doirasiga xizmat qilish. |
+
+Ushbu yo'nalishlar `x-sorafs-stream-token` yoki `x-sorafs-token-id` ni hech qachon qabul qilmaydi. Har bir boshliqning mavjudligi yomon talabdir. ommaviy o'qish qobiliyati; kecha xatoligi masofadagi provayderni hidratatsiya qilishga ruxsat bermaydi. himoyalangan provayder CAR va chunk yo'nalishlari alohida tasdiqlangan protokol yuzalari bo'lib qolmoqda.
+
+Baytlarni o'qishdan oldin Torii mahalliy manifestning kanonik kodlashini, semantik cheklovlarini, dijesini va ildizini CID tasdiqlaydi. Keyinchalik bu uchun vakolatli mahalliy provayder kimligini, boshqaruv qabul qilishini hamda manifestning CID muvofiqligi va olib tashlanishini tekshirishni talab qiladi. va provayder. Gateway stavkalari / taqiqlash siyosati haqiqiy mijoz manzilidan foydalanadi, faqat konfiguratsiya qilingan ishonchli vakillar orqali yuborilgan manzillarni hurmat qiladi. Yo'qolgan siyosat, rioya qilish, olib tashlash, identifikatsiya yoki qabul holatini yopishmaydi.
+
+Bir so'rovda oxirdan oxirigacha ommaviy darvoza ruxsatnomasi mavjud; jarayon bo'ylab cheklov 64 bir vaqtning o'zida o'qiladi, ortiqcha so'rovlar `503 Service Unavailable` va `Retry-After: 1` qaytarilishi bilan. Manifest javoblar 16 MiB ga cheklanadi, fayl ro'yxatlari andoza ravishda 50 ta kirish va maksimal 500 ta qabul qilinadi va to'liq fayl yoki bitta byt doirasi 8 MiB ga cheklanadi. CIDs so'rovlar, uy egalari, yo'nalishlar va doiras sarlavhalari o'zlarining kanonik bir qiymatli shakllaridan foydalanishlari kerak. Aktiv HTML, skript, SVG, XML, PDF yoki Wasm tarkibi faqat konfiguratsiya qilingan CID-dan kelib chiqadigan izolyatsiyalashgan manzildan (yoki u yerga qayta yo'naltirilgan) xizmat ko'rsatadi va bu umumiy yo'nalish orqali kirish darvozalari natijasining ishonchli bo'lmagan tarkibni ijro etishiga yo'l qo'ymaydi.
+
+### Moderatsiya bilan bog'liq muammolar {#moderation-challenges}
+
+SoraFS moderatsiya muammosi iqtisodiyoti konsensus holatidir. faol siyosat boshqaruv ovoz berish aktivini va depozit va qisqartirish uchun ishlatiladigan boshqaruv hisoblarini nomlaydi. Har bir musobaqa aynan 150 birlik ushbu aktivni talab qiladi; uni ko'tarish obligatsiyani atomik ravishda depozitga o'tkazadi. Kassa ikki marta ko'rsatilgan tanqid identifikatorini, bir xil hisobda ikkinchi tanqidni yoki balanslarni o'zgartirmasdan qayta ishlatiladigan dalillarni rad etadi.
+
+Muammolarni taqdim etish muddatlari va muammoni hal qilish muddati farq qiladi. Boshqaruv qarorini qabul qilishga yoki rad etishga yaqin bo'lgan takliflardan keyin to'g'ri 24 soat o'tadi. Muhokama qilinadigan musobaqalar blok ovoz berish faqat ushbu muhlatda:
+
+- qabul qilingan da'vo ishini to'xtatadi va to'liq obligatsiya qaytariladi;
+- rad etilgan da'vo ishini davom ettiradi, obligatsiyalarning 25%-ni slash oluvchiga yuboradi (soz beruvchi aktivning aniqligiga ko'ra quyib tashlanadi) va qolgan qismini qaytaradi; va
+- hal etilmagan nizo grace oynasidan keyin tugadi, ochilmaydi va to'liq obligatsiyani qaytarib beradi.
+
+`ExpireSorafsModerationChallenge` allaqachon tugagan da'vo uchun ruxsatsiz va imkonsiz bo'ladi. Shunday qilib, bo'lmagan saqlovchi mablag'larni qulflab qo'yishi yoki oshkor qilishni to'xtatishi mumkin emas. Har bir kelishuv atomik: agar biron-bir qaytarish yoki qisqartma noto'g'ri bo'lsa, to'liq kelishuv bekor qilinadi.
+
+Moderatsiya siyosati va holatlar yozuvlari birinchi chiqarilish sxemasidan to'g'ridan-to'g'ri foydalanadi. nodlar genesis / davlatni boshlash paytida oldindan kesilgan saqlanib qolgan layoutlarni rad etadi yoki tezkor fotosuratlarni tiklash; ovoz berish aktivini, saqlash hisob-kitoblarini, muddatlarni yoki iqtisodiyotni meros holatidan chiqarishning o'rniga, ushbu qurilmalarni qayta tiklash.
 
 ### To'plash, ko'rsatish, imzolash va taqdim etish {#pack-manifest-sign-and-submit}
 

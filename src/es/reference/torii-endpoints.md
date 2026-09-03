@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: 396a6e3879ca6d802a66fcc0190a7bc8f9578b7f66aaf70bd840a96dfa54857f
+translation_source_hash: 29cb291e63f427a4e71296e4244eaf71dc4651d486e3d15fb3d1045230f6023e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -147,15 +147,19 @@ Si una ruta de testnet pública devuelve `502`, tiempo fuera, o informa una cola
 
 ## Autenticación de cuentas, visibilidad y cursores del explorador {#account-authentication-visibility-and-explorer-cursors}
 
-Una solicitud no firmada recibe sólo rutas configuradas como públicas. Una solicitud firmada válida agrega los espacios de datos vinculados a la llamada del usuario corriente UAID y cualquier permiso de lectura exacta que tenga dicha cuenta. suministrando sólo `X-Iroha-Account`, o cualquier conjunto incompleto o malformado de encabezados de firma, devuelve `401 Unauthorized`; no se vuelve a la visibilidad anónima.
+Una solicitud no firmada recibe sólo los espacios de datos públicos activos. Una solicitud firmada válida agrega los espacios ligados a la corriente UAID del solicitante y las rutas exactas del espacio de datos nombradas por los permisos `CanReadRestrictedDataspace` de esa cuenta. `CanReadAllLedgerData` otorga visibilidad en todos los espacios de datos. suministrando sólo `X-Iroha-Account`, o cualquier conjunto incompleto o malformado de encabezados de firmas, devuelve `401 Unauthorized`; no vuelve a la visibilidad anónima.
 
 El mismo objeto de visibilidad filtra la cuenta, dominio, definición de activo, activo, NFT, RWA, titular y explorador. Un objeto ausente y un objeto que está fuera de las rutas visibles del solicitante son intencionalmente indistinguibles. El historial de transacciones y instrucciones comprometidas solo se muestra cuando cada etapa de ruta registrada para la transacción es visible. por lo tanto, oculta cuando incluso una pierna del participante está fuera del alcance de la persona que llama; el contexto de enrutamiento faltante, obsoleto o malformado es visible solo para un lector global.
 
-Las seis colecciones de Explorer respaldadas por el mundo utilizan cursores opacos del conjunto de teclas base64url canónicos. El límite predeterminado de página es 25, el máximo es 100, y una página inspecciona un máximo de 512 claves candidatas. Cada cursor está ligado a su colección, filtros, última tecla canónica y la digesta de ruta visible del llamador, por lo que no se puede reproducir en otra consulta o después de que cambie la visibilidad del llamador.
+Torii aplica este alcance antes de que los filtros del usuario, la pagination, recuentos o proyecciones en SSE, WebSocket, contrato-evento y vías de reproducción. Se revocó.
+
+Las seis colecciones de Explorer respaldadas por el mundo utilizan cursores opacos del conjunto de teclas base64url canónicos. El límite predeterminado de página es 25, el máximo es 100, y una página inspecciona un máximo de 512 claves candidatas. Cada cursor está ligado a su colección, filtros, última tecla canónica y la digesta de ruta visible del llamado, por lo que no se puede reproducir en otra consulta o después de que cambie la visibilidad del llamador.
 
 Bloqueo, transacción, última operación, instrucciones y historial de las últimas instrucciones los cursores también pin la altura de instantánea comprometida y bloquear hash. Respuestas exponen `pagination.limit`, `pagination.snapshot_height`, `pagination.snapshot_hash`, `pagination.next_cursor`, y `pagination.has_more`. Un cursor para otra ruta o un conjunto de filtros, una digestión cambiada de visibilidad, O una instantánea que el nodo ya no puede validar falla cerrado. Torii El permiso de admisión de la consulta mientras el trabajador bloquea corre.
 
-Los flujos Explorer WebSocket emiten resúmenes filtrados y recomputan la visibilidad a medida que cambian los permisos del libro mayor. La ruta nativa `GET /v1/blocks/stream` es diferente: emite completa bloques firmados, requiere `CanReadAllLedgerData` durante el apretón de manos, y cierra si ese permiso se revoca posteriormente. No utilice la corriente nativa para un explorador escaneado por espacio de datos.
+Los flujos Explorer WebSocket emiten resúmenes filtrados y recomputan la visibilidad a medida que cambian los permisos del libro mayor. La ruta nativa `GET /v1/blocks/stream` es diferente: emite completa bloques firmados, requiere `CanReadAllLedgerData` durante el apretón de manos, y cierra si ese permiso se revoca más tarde. No utilice la corriente nativa para un explorador escaneado por espacio de datos.
+
+El flujo de diagnóstico de consenso en vivo `GET /v1/sumeragi/status/sse` tampoco es un feed anónimo del espacio de datos. Requiere el cuarteto completo de encabezado de la firma del operador en cada intento de conexión. Los clientes generan una firma nueva para el flujo exacto URI y no siguen las redirecciones ni reproducen un intento firmado a través de un nuevo intento automático de transporte.
 
 ## ISO Puente 20022 {#iso-20022-bridge}
 
@@ -196,7 +200,7 @@ Todas las rutas ISO requieren una nueva firma del operador. Para una primera `pa
 
 La autorización del ciclo de vida se deriva de ese registro inmutable y no de los valores seleccionados por el solicitante:
 
-|Mensaje del ciclo de vida |Participante requerido |
+|Mensaje del ciclo de vida|Participante requerido |
 | --- | --- |
 |`pacs.002`, `pacs.004`, `sese.024`, `sese.025` |Contralor original con el papel de `counterparty` |
 |`camt.056` |Originario con el papel de `originator` |
@@ -207,13 +211,13 @@ Cualquiera de las partes originales puede leer sus registros de mensajes y los d
 
 ### Identidad de reproducción duradera y documentos de caja de salida firmados {#durable-replay-identity-and-signed-outbox-documents}
 
-Las tiendas de registros ISO aceptan sólo los registros del esquema V2 y las lápidas de reproducción. Torii falla en la inicialización con un claro error de incompatibilidad cuando los datos persistentes no coinciden con ese esquema, por lo que se deben regenerar las tiendas y los accesorios de primera edición. Cada registro rico mantiene la procedencia de los participantes inmutable. Una lápida duradera separada guarda el mensaje ID, hash de carga útil, mensaje de negocio ID y UETR para la deduplicación completa TTL incluso después de que se podan los detalles del registro rico.
+Las tiendas de registros ISO aceptan sólo los registros del esquema V3 y las lápidas de reproducción. Torii falla en la inicialización con un claro error de incompatibilidad cuando los datos persistentes no coinciden con ese esquema, por lo que se deben regenerar las tiendas y los accesorios de primera edición. Cada registro rico mantiene la procedencia de los participantes inmutable. Una lápida duradera separada guarda el mensaje ID, hash de carga útil, mensaje de negocio ID y UETR para la deduplicación completa TTL incluso después de que se podan los detalles del registro rico.
 
 Torii persiste en la admisión de reproducción antes de firmar o procesar un mensaje del ciclo de vida. Nunca despeja una identidad de reproducción no vencida. Si la capacidad de registro configurada contiene solo entradas protegidas por TTL, las presentaciones reciben `503 Service Unavailable` retrievable sin mutar el ciclo de vida o estado contable.
 
 Cada documento generado `pacs.002`, `pacs.004`, `camt.029`, `sese.024` o `sese.025` se devuelve como `application/xml` con los siguientes encabezados de respuesta:
 
-|Cabezas |El significado .|
+|Cabezas .|El significado .|
 | --- | --- |
 |`X-Iroha-Iso-Signature-Domain` |Siempre `iroha.iso20022.outbound.v2` |
 |`X-Iroha-Iso-Signer` |Clave pública canónica para la firma de puente configurada |

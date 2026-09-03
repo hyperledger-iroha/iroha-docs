@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: 396a6e3879ca6d802a66fcc0190a7bc8f9578b7f66aaf70bd840a96dfa54857f
+translation_source_hash: 29cb291e63f427a4e71296e4244eaf71dc4651d486e3d15fb3d1045230f6023e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -147,15 +147,19 @@ Quando Torii é construído com o conjunto de recursos voltados para aplicativos
 
 ## Cursores de autenticação de contas, visibilidade e explorador {#account-authentication-visibility-and-explorer-cursors}
 
-As leituras do livro-razão voltadas para aplicativos usam um limite de assinatura da conta canônica opcional. Uma solicitação não assinada recebe apenas rotas configuradas como públicas. Um pedido assinado válido adiciona os espaços de dados ligados à chamada do chamador atual UAID e quaisquer permissões de leitura exatas detidas por essa conta. fornecendo apenas `X-Iroha-Account`, ou qualquer conjunto incompleto ou mal formado de cabeçalhos de assinatura, devolve `401 Unauthorized`; não retorna à visibilidade anónima.
+As leituras do livro-razão voltadas para aplicativos usam um limite de assinatura da conta canônica opcional. Uma solicitação não assinada recebe apenas bancos de dados públicos ativos. Um pedido assinado válido adiciona os bancos de dados ligados à corrente UAID do chamador e as rotas exatas do banco de dados nomeadas pelas permissões `CanReadRestrictedDataspace` dessa conta. `CanReadAllLedgerData` dá visibilidade em todos os espaços de dados. fornecendo apenas `X-Iroha-Account`, ou qualquer conjunto incompleto ou mal formado de cabeçalhos de assinatura, retorna `401 Unauthorized`; não se resume à visibilidade anônima.
 
 O mesmo objeto de visibilidade filtra conta, domínio, definição de ativo, ativo, NFT, RWA, detentor e Explorer. Um objeto ausente e um objeto que está fora das rotas visíveis do chamador são intencionalmente indistinguíveis. O histórico de transações e instruções comprometidas só é mostrado quando cada etapa da rota registrada para a transação for visível. Portanto, oculta quando até mesmo uma perna do participante está fora do escopo da chamada; o contexto de roteamento faltante, obsoleto ou mal formado é visível apenas para um leitor global.
+
+Torii aplica este escopo antes de filtros de usuário, pagination, contagens ou projeções em SSE, WebSocket, contrato-evento e caminhos de repetição. fluxos de longa duração re-avalia a mesma autorização quando as permissões do livro maior mudarem e terminam com uma falha genérica de autorização após o acesso é . revogado.
 
 As seis coleções do Explorer com suporte mundial usam cursores de conjunto de teclas base64url canônicos opacos. O limite padrão da página é 25, o máximo é 100, e uma página inspeciona no máximo 512 chaves candidatas. Cada cursor está ligado à sua coleção, filtros, última chave canônica e digest de rota-set visível do chamador, por isso não pode ser reproduzido em outra consulta ou depois que a visibilidade do chamador muda.
 
 Bloco, transacção, última transacção, instrução e histórico de última instrução os cursores também apontam a altura do snapshot comprometido e bloqueiam o hash. `pagination.limit`, `pagination.snapshot_height`, `pagination.snapshot_hash`, `pagination.next_cursor`, e `pagination.has_more`. Um cursor para outra rota ou conjunto de filtros, um digesto de visibilidade alterado, ou um snapshot que o nó não pode validar mais falha fechado. Torii Permissão de admissão de consulta enquanto o trabalhador bloquear corre.
 
 Os fluxos de explorador WebSocket emitem resumos filtrados e recomputam a visibilidade à medida que as permissões do livro-razão mudam. A rota nativa `GET /v1/blocks/stream` é diferente: emite completa blocos assinados, requer `CanReadAllLedgerData` durante o aperto de mão, e fecha se essa permissão for revogada mais tarde. Não use o fluxo nativo para um explorador com espaço de dados.
+
+O fluxo de diagnóstico de consenso ao vivo `GET /v1/sumeragi/status/sse` também não é um feed anônimo do espaço de dados. Requer o quarteto completo de cabeçalhos de assinatura do operador em cada tentativa de conexão. Os clientes geram uma assinatura nova para o fluxo exato URI e não seguem redirecionamentos nem reproduzem uma tentativa assinada através de uma nova tentativa automática de transporte.
 
 ## Ponte ISO 20022 {#iso-20022-bridge}
 
@@ -207,7 +211,7 @@ Qualquer parte original pode ler o seu registo de mensagens e os documentos gera
 
 ### Identidade de reprodução duradoura e documentos de caixa externa assinados {#durable-replay-identity-and-signed-outbox-documents}
 
-As lojas de registros ISO aceitam apenas os registros do esquema V2 e as lápides de repetição. Torii falha na inicialização com um claro erro de incompatibilidade quando os dados persistentes não correspondem a esse esquema, por isso as lojas e aparelhos da primeira versão devem ser regenerados. Cada registro rico mantém a proveniência imutável dos participantes. Uma lápide durável separada mantém a mensagem ID, hash de carga útil, mensagem de negócios ID e UETR para a deduplicação completa TTL mesmo após os detalhes do registro rico serem podados.
+As lojas de registros ISO aceitam apenas os registros do esquema V3 e as lápides de repetição. Torii falha na inicialização com um claro erro de incompatibilidade quando os dados persistentes não correspondem a esse esquema, por isso as lojas e aparelhos da primeira versão devem ser regenerados. Cada registro rico mantém a proveniência imutável dos participantes. Uma lápide durável separada mantém a mensagem ID, hash de carga útil, mensagem de negócios ID e UETR para a deduplicação completa TTL mesmo após os detalhes do registro rico serem podados.
 
 Torii persiste na admissão de reprodução antes de assinar ou processar uma mensagem do ciclo de vida. Nunca despeja uma identidade de reprodução não expirada. Se a capacidade de registro configurada contém apenas entradas protegidas por TTL, as apresentações recebem `503 Service Unavailable` retryable sem mutação no ciclo de vida ou estado contabilístico.
 

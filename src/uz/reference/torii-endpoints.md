@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: c23170b2949bae9c9483ecbee6f0c09fea503904ae93934aef56537ddd13c42d
+translation_source_hash: 29cb291e63f427a4e71296e4244eaf71dc4651d486e3d15fb3d1045230f6023e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -145,6 +145,22 @@ Torii dasturga mos xususiyatlar to'plami bilan qurilganda, u qidiruvchilar uchun
 |`/v1/offline/`, `/v1/repo/`, `/v1/space-directory/`, `/v1/ram-lfe/` |Offline tayyorlik, ombor shartnomalari, ma'lumotlar maydonining manifestlari va [RAM-LFE yordamchilar ](/uz/blockchain/ram-lfe.md#torii-routes)  |
 |`/v1/kaigi/`, `/v1/webhooks/`, `/v1/notify/`, `/v1/telemetry/` |Hamkorlik, veb-qo'shish, push xabardorlik va jonli telemetri integratsiyalari |
 
+## Hisobvaraqlarni tasdiqlash, ko'rinish va Explorer cursorlari {#account-authentication-visibility-and-explorer-cursors}
+
+Foydalanuvchi tomonidan ko'rsatiladigan katta kitob o'qishlaridan bir xil tanlovli kanonik hisob imzosi chegarasidan foydalanadi. Imzolanmagan so'rov faqat faol ommaviy ma'lumotlar maydonlarini oladi. Amaldagi imzolangan so'rov qo'shilgan ma'lumot maydonlarini chaqiruvchining joriy UAID bilan bog'liq qiladi va ushbu hisobning `CanReadRestrictedDataspace` ruxsatnomalari bilan nomlangan aniq ma'lumot maydonlari yo'nalishlariga qo'shiladi. `CanReadAllLedgerData` har bir ma'lumotlar maydonida ko'rinishni beradi. Faqatgina `X-Iroha-Account` yoki biron-bir to'liq bo'lmagan yoki noto'g'ri shakllangan imzo boshliqlari setini taqdim etgan holda, `401 Unauthorized` qaytaradi; u anonim ko'rinishga qaytmaydi.
+
+Bir xil ko'rinish obʼektlari hisob, domen, aktiv-maʼrifi, aktiv, NFT, RWA, egasi va Explorerni oʻqiydi. Yoʻqolgan obyekt va chaqiruvchining ko'rinadigan yo'llaridan tashqarida bo'lgan object niyat bilan ajratib bo'lmaydi. Amalga oshirilgan tranzaksiya va ko'rsatmalar tarixi faqat tranzaksiya uchun qayd etilgan har bir yo'nalish bosqichini ko'rishganda ko'rsatiladi . shu sababli, hatto bitta ishtirokchi oyoq qo'ng'iroq qiluvchining qamrovidan tashqarida bo'lganda yashirilgan; yo'qolgan, eskirgan yoki noto'g'ri ko'rsatilgan yo'naltirish konteksti faqat global o'quvchi uchun ko'rinadi.
+
+Torii foydalanuvchi filtrlari, sahifalashtirish, hisoblar yoki SSE, WebSocket, shartnoma-havolani va takrorlash yo'nalishlari bo'yicha proyektsiyalardan oldin ushbu ko'lamni qo'llaydi. Uzoq muddatli oqimlar katta kitob ruxsatnomalari o'zgarganda bir xil ruxsatnomalarni qayta baholaydi va kirishdan keyin umumiy ruxsat etish muvaffaqiyatsiz tugadi . bekor qilindi.
+
+Olti butun dunyo tomonidan qo'llab-quvvatlanadigan Explorer kolleksiyalarida shaffof bo'lmagan kanonik base64url tugmachalar kursorlari ishlatiladi. Standart sahifa chegarasi 25, maksimal 100 va bitta sahifa eng ko'pida 512 nomzod tugmachasini tekshiradi. Har bir kursor o'zining to'plami, filtrlari, kanonik oxirgi kalit va chaqiruvchining ko'rinadigan yo'l-qoidalari bilan bog'liq, shuning uchun uni boshqa so'rovda yoki chaqiruvchining ko'rinishi o'zgarganidan keyin takrorlash mumkin emas.
+
+Blok, operatsiya, so'nggi tranzaksiya, ko'rsatma va so'ngki ko'rsatmalar tarixi cursorlari qo'shimcha ravishda o'rnatilgan fotosuratning balandligi va blok hashini belgilaydi. Javoblar `pagination.limit`, `pagination.snapshot_height`, `pagination.snapshot_hash`, `pagination.next_cursor` va `pagination.has_more`. Boshqa yo'nalish yoki filtrlar to'plami uchun kursor, o'zgartirilgan ko'rinish aniqlanishi yoki nod endi tasdiqlay olmaydigan darhol surat yopiladi. Torii blokiruvchi ishchi ishlayotganda tarixni skanerlash so'rovlarni qabul qilish ruxsatnomasida qoladi.
+
+Eksplorator WebSocket oqimlar filtrlangan qisqartmalarni chiqaradi va ko'rinishni qayta hisoblashda katta ma'lumotlar huquqlarini o'zgartirish. `GET /v1/blocks/stream` yo'nalish boshqacha: u to'liq imzolangan bloklarni chiqaradi, talab qiladi `CanReadAllLedgerData` qo'l urish paytida, agar ruxsatnoma keyinchalik bekor qilinsa, yopiladi. Ma'lumotlar maydonini ko'rib chiqayotgan kashfiyotchi uchun mahalliy oqishni ishlatmang.
+
+jonli `GET /v1/sumeragi/status/sse` konsensus-diagnostik oqim ham anonim ma'lumotlar maydonini to'ldirish emas. U har bir aloqa urinishida operator imzosi sarlavhasi quartetining to'liq talab qiladi. Mijozlar aniq oqim URI uchun yangi imzo hosil qiladilar va avtomatik transportni qayta sinab ko'rish orqali yo'naltirishlarga amal qilmaydilar yoki imzolangan urinishni takror ko'rsatmaydilar.
+
 ## ISO 20022 ko'prik {#iso-20022-bridge}
 
 Torii ISO 20022 ko'prini `/v1/iso20022/*` ostida qo'llaydi, agar dasturga qaraydigan API va ko'prikni ishga tushirish vaqti yoqilgan bo'lsa. Ko'prik niyat bilan: bu umumiy maqsadga mo'ljallangan ISO 20022 clearing gateway emas, balki tanlangan to'lov xabarlarini Iroha imzolangan o'tkazmalarga aylantirish va ularning katta qog'ozdagi holatini kuzatish uchun qo'llab-quvvatlanadigan kichik guruhdir.
@@ -155,12 +171,12 @@ Torii ISO 20022 ko'prini `/v1/iso20022/*` ostida qo'llaydi, agar dasturga qarayd
 | --- | --- |
 |`POST /v1/iso20022/pacs008` |FI-to-FI mijoz kreditini o'tkazish va moslashtirilgan Iroha aktivni o'tkazish |
 |`POST /v1/iso20022/pacs009` |FI dan FI ga PvP yoki qimmatli qog'ozlar bilan bog ' liq naqd pul mablag ' lari uchun ishlatilgan kredit o ' tkazmasini taqdim etish |
-|`POST /v1/iso20022/pacs002` |Toʻlov holati toʻgʻrisidagi hisobotni taqdim etish |
-|`POST /v1/iso20022/pacs004` |Toʻlov deklaratsiyasini taqdim etish |
-|`POST /v1/iso20022/camt056` |Toʻlovni bekor qilish toʻgʻrisida ariza berish |
+|`POST /v1/iso20022/pacs002` |Qarzdorga tegishli toʻlov holatini koʻrsatishni taqdim etish; hisob-kitob qilish uchun majburiyatli tranzaksiya maʼlumotlari kerak |
+|`POST /v1/iso20022/pacs004` |Qarzdorga tegishli to ' lov deklaratsiyasini taqdim etish |
+|`POST /v1/iso20022/camt056` |To ' lovni bekor qilish uchun tashabbuskorga tegishli talabnoma taqdim etish |
 |`POST /v1/iso20022/sese023` |Qimmatli qogʻozlar bilan hisob-kitob qilish boʻyicha koʻrsatma taqdim etish |
-|`POST /v1/iso20022/sese024` |Qimmatli qogʻozlar boʻyicha hisob-kitobning holati xabarini taqdim etish |
-|`POST /v1/iso20022/sese025` |Qimmatli qog ' ozlar bo ' yicha hisob-kitobni tasdiqlashni taqdim etish |
+|`POST /v1/iso20022/sese024` |Qarzdorning egalikidagi qimmatli qog ' ozlar bo ' yicha hisob-kitob holati xabarini taqdim etish |
+|`POST /v1/iso20022/sese025` |Qarzdorning egalikidagi qimmatli qog ' ozlar bo ' yicha hisob-kitobining tasdiqlanishini taqdim etish |
 |`POST /v1/iso20022/colr012` |O ' rnini bosish xabarini yuboring |
 |`GET /v1/iso20022/messages/{msg_id}` |Bir xabar uchun kanonik koʻprik yozuvini oʻqing |
 |`GET /v1/iso20022/audit/messages` |O ' rnatilgan xabarlarni o ' rganing .|
@@ -175,6 +191,39 @@ Torii ISO 20022 ko'prini `/v1/iso20022/*` ostida qo'llaydi, agar dasturga qarayd
 `pacs.009` taqdimotlarida biznes xabarini ID, xabarning ta'rifini ID, yaratilish vaqti, banklararo hisob-kitob miqdori, valyuta, hisob-kitob sanasi ko'rsatilishi kerak. topshiriq beruvchi va topshiriq beruvchi vakil BICs, qarzdor va kreditor IBANs. Agar xabarda `Purp` mavjud bo'lsa, ko'prik hozirda faqat qimmatli qog'ozlar uchun moliyalashtirishni qabul qiladi: `Purp=SECU`.
 
 O ' zbekiston Respublikasining `pacs.008` va `pacs.009` ko'rsatkichlar qabul qilinadi XML ISO ko'prik sinovlarida qo'llaniladigan konvertlar yoki tekis maydon shakli. `SplmtryData` maydonlar maqsadni belgilashlari mumkin Iroha katta hisob raqami, manba va maqsadli hisob raqamlari IDs yoki manzillar va aktivlarni aniqlash ID. Javob: `202 Accepted` bilan `message_id`, `transaction_hash`, `status`, `pacs002_code`, va hal qilingan katta ma'lumotlar/hisob-kitob/mashnat kontekstini ko'rsatish.
+
+### Ishtirokchilarning ruxsatnomasi va hayot davri egaligi {#participant-authorization-and-lifecycle-ownership}
+
+Har bir qo'llab-quvvatlangan ko'prik ishtirokchi katalogini o'z ichiga oladi. Har bir ishtirokchi kirishida noyob ishtirokchi ID, bitta yoki bir nechta operatorning ommaviy kalitlari, bir yoki bir nechta moliyaviy identifikatorlar, ruxsat etilgan profil to'plami va `originator`, `counterparty` yoki ikkala roli mavjud. Operator kalitlari va moliyaviy identifikatorlar birdan ko'proq ishtirokchiga tegishli bo'lishi mumkin emas. `audit_admin_keys`-ni alohida konfiguratsiya qiling; auditorlik boshqaruvchisi kalitini ham ishtirokchi mutatsiya kaliti bo'lishi shart emas.
+
+Hammasi ISO yo'nalishlarda operatorning yangi imzosi talab etiladi. `pacs.008`, `pacs.009`, `sese.023`, yoki `colr.012` taqdim etish, tasdiqlangan operator talabnoma boshliqida belgilangan ishtirokchiga tegishli bo'lishi kerak `From` moliyaviy identifikatsiya. `To` identifikatsiya boshqa konfiguratsiyalangan ishtirokchining nomini bildirishi kerak va tanlangan profil har ikki tomon uchun ham ruxsat etilishi kerak. Uzoq qabul ro'yxati muallif, qarzdor tomonidan qabul qilinadi ishtirokchi va operator kalitlari hamda asl profil va o'rnatilgan imzo siyosati.
+
+Hayot davri to'g'risidagi ruxsatnoma chaqiruvchi tomonidan tanlangan qiymatlardan ko'ra ushbu o'zgaruvchan rekorddan kelib chiqadi:
+
+|Hayot davri xabarlari |Kerakli ishtirokchi |
+| --- | --- |
+|`pacs.002`, `pacs.004`, `sese.024`, `sese.025` |`counterparty` rolini o'z ichiga olgan asl nusxasi |
+|`camt.056` |`originator` vazifasini egallagan asl nusxasi |
+
+Asl profil va imzo siyosati butun davrda saqlanib qoladi hayot davri, shuning uchun qo'ng'iroq qiluvchi yangilanish uchun zaifroq profilni tanlash mumkin emas. A `pacs.002` hisob-kitobni ifodalaydigan kod (`ACSC`, `ACCP`, `SETT`, yoki `SETTLED`) asl yozuvni faqatgina Torii to'lovni tasdiqlagan.
+
+Asosiy tomonlarning har biri o'z xabar yozuvini va yaratilgan outbox hujjatlarini o'qishi mumkin. Audit oxirgi nuqtasi faqat tasdiqlangan ishtirokchi muallif yoki qarzdor bo'lgan hujjatlarni qaytarib beradi. Ayrim ravishda konfiguratsiya qilingan auditorlik boshqaruvchisi global faqat o'qiladigan audit ko'rinishini oladi va xabarlarni yuborish yoki o'zgartirish mumkin emas.
+
+### Qayta oʻynashning mustahkamligi va imzolangan chipta hujjatlari {#durable-replay-identity-and-signed-outbox-documents}
+
+ISO yozuv do'konlari faqat sxema V3 yozuvlarini qabul qiladi va qabr toshlarini takrorlaydi. Torii saqlanib qolgan ma'lumotlar ushbu sxemaga mos kelmasa, aniq muvofiqlik xatosi bilan ishga tushirishda muvaffaqiyatsizlikka uchraydi, shuning uchun birinchi chiqarilgan do'konlar va qurilmalar qayta tiklanishi kerak. Har bir boy yozuv ishtirokchi kelib chiqishini o'zgartirmaydi. Oʻziga xos chidamli qabriston xabarni ID, foydali yuk hashini, biznes xabarini ID va UETR toʻliq deduplikatsiya qilish uchun saqlaydi TTL hatto boy yozuv tafsilotlari kesib tashlangandan keyin ham.
+
+Torii hayot davri xabarini imzolashdan yoki qayta ishlashdan oldin takroriy kirish davom etadi. U hech qachon o'tmagan takroriy shaxsni chiqarib tashlamaydi. Agar konfiguratsiya qilingan yozuv quvvatida faqat TTL himoyalangan kirish joylari mavjud bo'lsa, taqdimnomalar hayot davri yoki buxgalteriya holati o'zgartirmasdan tiklanadigan `503 Service Unavailable` ni oladilar.
+
+Har bir hosil boʻlgan `pacs.002`, `pacs.004`, `camt.029`, `sese.024`, yoki `sese.025` hujjatni quyidagicha qaytarish `application/xml` javoblarning quyidagi boshliqlari bilan:
+
+|Sarlavha |Maʼnosi |
+| --- | --- |
+|`X-Iroha-Iso-Signature-Domain` |Doimo `iroha.iso20022.outbound.v2` |
+|`X-Iroha-Iso-Signer` |Konfiguratsiya qilingan koʻprik imzochisi uchun kanonik ommaviy kalit |
+|`X-Iroha-Iso-Signature` |Domen bo ' yicha ajratilgan XML bytlar ustida Base64 imzosi |
+
+imzolarni tekshirish UTF-8 Bayt sekvensiyasi `iroha.iso20022.outbound.v2`, bir nol byte, va aniq javob tanasi. XML tekshiruvdan oldin.
 
 ### Qo'shimcha Parser va xaritalash qo'llab-quvvatlash {#additional-parser-and-mapping-support}
 

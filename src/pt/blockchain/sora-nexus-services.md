@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: 667f691b84fab27114ffab4bb78e3df6356aaf25b1cba6aea14a193e33471f52
+translation_source_hash: 94f978f16ea7e43a8bc269b88bbfe58b6c9f9f5e0d829d40fefa523bb37d115a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -504,9 +504,23 @@ Todos os nós Torii habilitados para SoraFS montam estas rotas públicas anônim
 
 Estas rotas nunca aceitam `x-sorafs-stream-token` ou `x-sorafs-token-id`. A presença de qualquer cabeçalho é um pedido ruim. Um manifesto canônico já presente na loja local autorizada do nó é o capacidade de leitura pública; uma falta de cache não autoriza a hidratação do provedor remoto. CAR E as rotas fragmentadas continuam a ser superfícies de protocolo autenticadas separadas.
 
-Antes de ler bytes, Torii valida a codificação canônica do manifesto local, restrições semânticas, digest e raiz CID. Em seguida, requer a identidade do fornecedor local autorizado, admissão de governança e conformidade regida para o manifesto, CID, e provedor. A política de taxa/ban do gateway usa o endereço efetivo do cliente, honrando os endereços encaminhados apenas através de proxies confiáveis configurados. A política faltante, conformidade, identidade ou estado de admissão não são fechadas.
+Antes de ler bytes, Torii valida a codificação canônica do manifesto local, restrições semânticas, digest e raiz CID. Em seguida, requer a identidade autorizada do fornecedor local, admissão de governança e verificações reguladas de conformidade e eliminação para o manifesto, CID; A política de taxa / proibição do gateway usa o endereço efetivo do cliente, honrando os endereços encaminhados apenas através de representantes confiáveis configurados. A política faltante, conformidade, remoção, identidade ou estado de admissão não é fechada.
 
 Uma solicitação detém uma licença de entrada pública de ponta a ponta; o limite para todo o processo é de 64 leituras simultâneas, com pedidos excessivos devolvidos `503 Service Unavailable` e `Retry-After: 1`. As respostas manifestas são limitadas a 16 MiB, as listas de arquivos são definidas por padrão para 50 entradas e aceitam no máximo 500, e um arquivo completo ou intervalo de byte único é limitado a 8 MiB. CIDs, consultas, hospedeiros, caminhos e cabeçalhos de intervalo devem usar seus formulários canônicos de valor único. O conteúdo ativo HTML, script, SVG, XML, PDF ou Wasm é servido apenas a partir de uma origem isolada (ou redirecionada) derivada de CID configurada, impedindo que uma origem gateway partilhada execute conteúdo sem confiança.
+
+### Desafios da moderação {#moderation-challenges}
+
+SoraFS A economia do desafio da moderação é um estado de consenso. A política ativa designa o activo de voto de governança e as contas de governança utilizadas para custódia e redução. Cada desafio requer exatamente 150 unidades desse ativo; aumentá-lo move automaticamente o título em garantia. Um caso rejeita um duplo identificador de desafio, um segundo desafio pela mesma conta, ou uma digestão de evidências reutilizada sem alterar balanças ou contadores de desafios.
+
+O prazo para a apresentação de desafios e o prazo para a resolução dos desafios são distintos. A Governance recebe exatamente 24 horas após as apresentações próximas a aceitar ou rejeitar um desafio pendente. Os desafios pendentes do bloco de votação revelam apenas através desse prazo de resolução:
+
+- Uma contestação aceita encerra o processo e reembolsa a obrigação completa;
+- Uma contestação rejeitada permite que o caso continue, envia 25% da obrigação ao destinatário do corte (redondada com a precisão do ativo de voto) e reembolsa o restante; e
+- um desafio não resolvido expira após a janela de graça, falha na abertura e reembolsa a obrigação completa.
+
+`ExpireSorafsModerationChallenge` não tem permissão e é impotente para uma contestação que já expirou. Assim, um detentor ausente não pode deixar fundos fechados ou manter revelações bloqueadas. Cada liquidação é atômica: se qualquer reembolso ou corte de perna falhar, a liquidação completa retorna.
+
+A política de moderação e os registros de casos usam diretamente o esquema da primeira versão. Os nós rejeitam layouts persistentes pré-cortados durante a inicialização genésica / estado ou restauração instantânea; regenerar esses dispositivos em vez de inferir o ativo com voto, contas de custódia, prazos ou economia do estado legado.
 
 ### Paque, manifeste, assine e apresente {#pack-manifest-sign-and-submit}
 

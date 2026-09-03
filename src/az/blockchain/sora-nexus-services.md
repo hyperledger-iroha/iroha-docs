@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: de50aa8206a5b82d4340f68173e9d89bb8eabab83369c363eb05c9d6632eed28
+translation_source_hash: 94f978f16ea7e43a8bc269b88bbfe58b6c9f9f5e0d829d40fefa523bb37d115a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -377,6 +377,12 @@ sorafs_cli fetch \
 
 Ümumi qeydlər təminatçısının hesabatları, hissə qəbulu, yerli proxy metadataları və çatdırılma üçün istifadə olunan effektiv marşrut parametrləri.
 
+### Relay Incentive Verifier Roster {#relay-incentive-verifier-roster}
+
+Relay stimullarının qəbul edilməsi uğursuzluqla bağlanır. Nə vaxt? `incentives.enable` həqiqətdir. `incentives.trusted_verifier_ids` Ən azı bir və ən çox 64 kanonik hesabın olması lazımdır. IDs. Runtime siyahını müəyyənləşdirilmiş bir sıra olaraq saxlayır və etibarsız siyahı geometriyası relye başlanğıcı zamanı rədd edilir.
+
+Hər `RelayBandwidthProof` sabit bir çərçivə / təyinat büdcəsi ilə dekodlaşdırılır və bütün çərçiliyi istehlak etməlidir. Sığortalanmış siyahıda sübutun təsdiqləyici hesabı olmalıdır və `RelayBandwidthProof::verify_signature()` uğurlu olmalı, Bu səbəbdən etibarsız bir imzaçı və ya imzalanma qeyri-mümkündür / əxlaqsızlaşdırılmış sübut heç bir ölçməyə kömək etmir və təşviq sürətli görüntüsünü istehsal edə bilmir.
+
 ## Məlumatların mövcudluğu (DA) {#data-availability-da}
 
 DA dünya vəziyyətində birbaşa yerləşdirilməsi üçün çox böyük, məxfiliyə həssas və ya xidmətə xüsusi olan paylı yüklər üçün mövcudluğun sübut qatıdır. Deterministik öhdəlikləri və geri alınma öhdəliyi qeyd olunur ki, təsdiqləyicilər, qapı vasitələri və müştərilər hansı baytların vəd olunması, hansı siyasət tətbiq edilməsi və hansı sübutların müşahidə edildiyi barədə razılaşa bilərlər.
@@ -484,6 +490,37 @@ istifadə edin. [sorğu istinadı](/az/reference/queries.md#nexus-data-availabil
 SoraFS mərkəzləşdirilmiş məzmunu ünvanlanan saxlama materialıdır. O, baytları müəyyənləşdirici parçalara, CAR arxivlərə və Norito məzmunu kökləri bağlayan manifestlərə qovurulur. Qazanma təminatçıları məzmunu təqdim etməzdən əvvəl manifestləri və hissə öhdəliklərini təsdiqləyirlər.
 
 Tipik SoraFS İstifadələr arasında statik tətbiq aktivləri, sənədləşdirmə binaları, zona daxildir İdarəetmə və idarəetmə sübutları qrupları. Iroha Məlumat modellərinin məruz qalması SoraFS giriş tədbirləri və [`FindSorafsProviderOwner`](/az/reference/queries.md#nexus-data-availability-and-packages) Təchizatçının mülkiyyətini həll etmək üçün müraciət.
+
+### İctimai Yerli CID və Site Gateways {#public-local-cid-and-site-gateways}
+
+SoraFS imkanlı olan hər bir Torii düyün, seçmə tətbiqi API qurulmadıqda belə bu anonim ictimai yolları quraşdırır:
+
+|Metod və son nöqtə |Məqsəd|
+| --- | --- |
+|`GET /.well-known/sorafs/manifest` |Kanonik istək ev sahibi tərəfindən seçilmiş manifesti qaytarın |
+|`GET /v1/sorafs/cid/{cid}` |CID üçün məhdudlaşdırılmış yerli manifest metadataları və fayl girişlərini qaytarın. |
+|`GET /sorafs/cid/{cid}` |Yerli məzmunla ünvanlanan bir sayt üçün kök sənədinə xidmət edin |
+|`GET /sorafs/cid/{cid}/{*path}` |Bu CID altında bir normallaşdırılmış yol və ya bir sərhədli bayt aralığında xidmət edin. |
+
+Bu yollar heç vaxt `x-sorafs-stream-token` və ya `x-sorafs-token-id` qəbul etmirlər. Hər iki başlıqların mövcudluğu pis bir tələbdir. İctimai oxuma qabiliyyəti; bir saxlama çatışmazlığı uzaqdan provayder hidratasiyasına icazə vermir. Mühafizə olunmuş provayder CAR və parçalı yollar ayrı təsdiq edilmiş protokol səthləri olaraq qalır.
+
+Torii baytları oxumazdan əvvəl yerli manifestin kanonik kodlaşmasını, semantik məhdudiyyətlərini, həzmini və kökünü CID təsdiqləyir. Daha sonra etibarlı yerli provayder kimliyini, idarəetmənin qəbulunu və manifestin uyğunluğu və çıxarılması yoxlamalarını tələb edir, CID, Gateway nisbət / qadağa siyasəti təsirli müştəri ünvanını istifadə edir, yalnız konfiqurasiyalı etibarlı proxylər vasitəsilə ötürülən ünvanlara hörmət göstərir.
+
+Bir müraciətdə sondan sonuna qədər ictimai qapı icazəsi var; proses üzrə məhdudiyyət 64 eyni vaxtda oxunmasıdır, həddindən artıq müraciətlər `503 Service Unavailable` və `Retry-After: 1` qaytarılır. Manifest cavablar 16 MiB ilə məhdudlaşdırılır, fayl siyahıları standart olaraq 50 girişə və ən çox 500 qəbul edilir və tam bir fayl və ya tək bayt aralığı 8 MiB ilə məhdullaşdırılır. CIDs, sorğular, aparıcılar, yollar və aralıq başlıqları kanonik vahid dəyərli formalarını istifadə etməlidirlər. Aktiv HTML, skript, SVG, XML, PDF və ya Wasm məzmunları yalnız konfigüralaşdırılmış CID-dən əldə edilmiş təcrid edilmiş mənşəddən (və ya oraya yönəldilir), bu da bir paylaşılan yol qapısı mənşədin etibarsız məzmunu icra etməsinin qarşısını alır.
+
+### Moderasiya ilə bağlı çətinliklər {#moderation-challenges}
+
+SoraFS moderasiya çətinlik iqtisadiyyatı konsensus dövlətidir. Aktiv siyasət idarəetmə səsverməsi aktivləri və escrow və slashing üçün istifadə edilən idarəetmə hesabları adlanır. Hər bir çətinlik tam olaraq bu aktivin 150 vahidini tələb edir; onu artırmaq atomatik olaraq istiqrazın escrow-a köçürülür. Məlumatda ikiqat çağırış identifikatorunu, eyni hesabın ikinci çağırışını və ya balansları dəyişdirmədən yenidən istifadə olunan sübutların istehsal edilməsini rədd edilir.
+
+Mübahisələrin təqdim edilməsi və mübahisələrin həlli ilə bağlı məhdudiyyətlər fərqlidir. Hökumət qüvvədə olan bir mübahisəni qəbul etmək və ya rədd etmək üçün təqdimatlardan sonra tam 24 saat vaxt alacaq.
+
+- Qəbul edilmiş bir təhdid işi dayandırır və bütün borc geri qaytarılır;
+- rədd edilən çağırış davasının davam etdirilməsinə imkan verir, istiqrazın 25%-ni slash alıcıya göndərir (səhsiyyətə malik aktivin dəqiqliyindən sonra yuvarlanır) və qalanını qaytarır; və
+- həll edilməmiş bir mübahisə zəiflik müddətindən sonra sona çatır, açılmır və bütün borc geri qaytarılır.
+
+`ExpireSorafsModerationChallenge` artıq başa çatmış iddia üçün icazəsi yoxdur və idempotentdir. Beləliklə, yox olan bir saxlayıcı pulları kilidli buraxmayacaq və ya açıqlamaları bloklaya bilməz. Hər ödəniş atomdur: hər hansı bir qaytarma və ya kəsmə ayaq uğursuz olduqda, tam hesablaşma geri çəkiləcəkdir.
+
+Moderasiya siyasəti və hal qeydləri ilk buraxılış sxemini birbaşa istifadə edir. nodlar başlanğıc / vəziyyət başlanğıcı zamanı əvvəlcədən kəsilmiş davamlı düzənlikləri rədd edirlər . və ya sürətli görüntülərin bərpası; səsvermə aktivini, saxlama hesablarını, müddətləri və ya iqtisadiyyatını miras vəziyyətindən çıxarmaq əvəzinə həmin qurğuları yeniləyin.
 
 ### Yükləyin, bildirin, imzalayın və təqdim edin {#pack-manifest-sign-and-submit}
 

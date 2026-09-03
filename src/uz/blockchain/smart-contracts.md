@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: 7c35c609442df65328fa619b6673be76f801cfc2abc28afd853d7fe61e439e9c
+translation_source_hash: c69237ded68aee4d663b00f1aa13d400c4763682af9bd5b5a49ca0edb5905dd2
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2
 ---
 
 # Aqlli shartnomalar {#smart-contracts}
@@ -48,6 +48,22 @@ Dasturi o'rnatilgan bytekod bilan qoplamani bog'laydi. Pipeline siyosatiga qarab
 ## Ishlab chiqarilgan shartnoma qo'ng'iroqlari {#deployed-contract-calls}
 
 `Executable::ContractCall` jo'natilgan kontrakt ko'rinishini manzil orqali chaqiradi. Agar shartnoma kodi alohida ro'yxatdan o'tkazilgan bo'lsa va bitimlar bayt kodini har safar olib yurishning o'rniga, uni ma'lumotnoma asosida chaqirishlari kerak bo'lsa, buni ishlating.
+
+## Shartnoma Hayot davri va mulkdorlik {#contract-lifecycle-and-ownership}
+
+Har bir jo'natilgan manzil `ContractLifecycleControlV1` yozuvini saqlaydi, shu jumladan shartnoma faoliyatsiz bo'lsa ham. Yozuvda birinchi jo'natishning o'zgarmas kelib chiqishi, joriy va davom etayotgan egasi, bekor qilinishi mumkin bo'lgan Parlament delegatsiyasi, faol kod hash, nol bo'lmagan solishtirish-va almashtirish tekshiruvi mavjud; va har qanday saqlab qolgan favqulodda holatlarni saqlash. To'g'ridan-to'g'ri ishga tushirish taqdim etuvchi hisobvaraqni egasi sifatida tayinlaydi va uni joylashtirishning kelib chiqishi sifatida qayd etadi. Parlament ishga tushirishida parlamentga egalik qiladi va uning taklif qiluvchi, taklif tarkibini ID qayd etadi; va muvaffaqiyatli boshqaruv urinishi ID faqat kelib chiqish sifatida.
+
+Konfiguratsiya qilingan himoyalangan nom maydonlari Parlament tomonidan ishga tushirilishi uchun ajratilgan. `CanRegisterSmartContractCode` artefaktni ro'yxatdan o'tkazishga ruxsat beradi, lekin himoyalangan nomlar maydonida to'g'ridan-to'g'ri ishga tushirilishiga yoki xom faollashtirilishiga ruxsat bermaydi; u erda dastlabki hayot davri to'plami Parlament tomonidan tasdiqlangan ishga tushirish yo'li bilan yaratilishi kerak.
+
+Hayot davri egasi yoki bitta hisob raqamidir yoki Parlament. Hisobvaraq egaligi o'zgarishlaridan `OfferContractOwnership` foydalaning, so'ngra bo'sh turgan egasining `AcceptContractOwnership`; joriy egasi `CancelContractOwnershipOffer` bilan qabul qilinmagan taklif. Qabul qilish har qanday Parlament delegatsiyasini tasdiqlaydi. Hisobni olib tashlash hisobvaraqning shartnomasiga ega bo'lganida yoki to'xtamayotgan taklifda ishtirok etayotgan mulkdor bo'lsa rad etiladi.
+
+Hisobvaraq egasi Parlamentga kontraktni yangilash, faollashtirish yoki o'chirib tashlashga ruxsat berishi mumkin va keyinchalik ushbu vakolatni bekor qilishi mumkin. Parlamentga tegishli o'zgarishlar va parlamentning qabul qilishi tasdiqlangan boshqaruvni amalga oshirish orqali amalga oshiriladi.
+
+Raw `ActivateContractInstance` va `DeactivateContractInstance` yo'l-yo'riqlari faqat joriy hisob raqami egasi uchun mavjud. Ular rekordning to'g'ri `expected_revision` bo'lishi kerak; eskirgan yoki nol ko'riklar yopilmaydi. Xom faollashtirish hayoti davrining rekordini yaratolmaydi va u `active_code_hash` o'zgartirishdan oldin ro'yxatdan o'tgan artefakt, manifest va ABI ni tasdiqlaydi. faol kod hashini tozalaydi, ammo mulkdorlik va kelib chiqishini saqlab qoladi. Har bir muvaffaqiyatli hayot davridagi o'tish qayta ko'rib chiqishni ilgari suradi va to'liq post-davlatni chiqaradi.
+
+Parlamentning favqulodda darajadagi taklifiga faqat to'liq parlament quvurlari orqali va Asosiy hujjaning dastlabki o'rinlarining kamida uchdan ikki qismidan "Aye" ovozlari bilan cheklov qo'llash mumkin. U faqat qo'ng'iroqlarni to'xtatish va ijro etishni boshlash mumkin: u uzaytirilishi yoki kod, mulkdorlik yoki delegatsiyani o'zgartirishi mumkin emas. Qo'ng'ichishlar va moslashtiriladigan ishga tushirishlarni qo'llash balandligidan boshlab muddati tugagangacha blokirovka qilish mumkin, ammo muddatlari o'tadi. Expiry avtomatik ravishda ijroni tiklaydi, ammo to'xtatishni o'chirmaydi. Sertifikatlangan `CompleteEmergencyHoldRetrospective` harakat keyinchalik aniq to'xtatni IDs bog'lashi va ro'yxatdan o'tishdan oldin nol bo'lmagan qidiruv ildizini o'zlashtirishi kerak; ushbu retrospektivani tugatmaguncha boshqa to'xtatib turish qo'llanilishi mumkin emas.
+
+API dasturi yoqilg'i bo'lganda, saqlangan holatni `GET /v1/gov/contracts/{contract_address}` bilan o'qing. Uning `found` maydoni hayot davri ro'yxati mavjudligini anglatadi va manzil hozirda faol kodga ega emasligini anglatadi.
 
 ## Operativ yo'l-yo'riq {#operational-guidance}
 
