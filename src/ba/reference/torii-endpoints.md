@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: f04e5e78329996d70926c4fd5dc034d41605d0a82fffd6460f67b252269480d9
+translation_source_hash: 631ec91b5ea398ae17253f0fd6307d76bc3820e2a2b6c8c9f79b30e0188ec170
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -379,7 +379,7 @@ Relays viewer tickets-һыҙ күрһәтә алған rooms өсөн `--room-po
 
 ### JavaScript Интеграция {#javascript-integration}
 
-Ағымдағы [Iroha JavaScript демоһы](https://github.com/soramitsu/iroha-demo-javascript) асыҡ, authentication үткән бер-бер осрашыу профилен тормошҡа ашыра. Ул протоколдың `zk-roster-v1` proof flow-ын асмай. Renderer WebRTC offer һәм answer-ҙарын булдыра, ә privileged bridge урындағы [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) checkout-ын ҡулланып Kaigi транзакцияларына quote ала, ҡул ҡуя, ебәрә һәм финализацияны көтә.
+Ағымдағы [Iroha JavaScript демоһы](https://github.com/soramitsu/iroha-demo-javascript) асыҡ, authentication үткән бер-бер осрашыу профилен тормошҡа ашыра. Ул протоколдың `zk-roster-v1` proof flow-ын асмай. Renderer WebRTC offer һәм answer-ҙарын булдыра, ә privileged bridge урындағы [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js) checkout-ын ҡулланып Kaigi транзакцияларына quote ала, ҡул ҡуя, ебәрә һәм финализацияны көтә.
 
 Теүәл маршрут аутентификацияһы, саҡырыу форматы, күпер сиге һәм ағымдағы демо һынау командалары өсөн [Kaigi-ны JavaScript ҡушымтаһына урынлаштырыу](/ba/guide/tutorials/kaigi.md) бүлеген ҡарағыҙ.
 
@@ -438,6 +438,6 @@ iroha --config ./localnet/client.toml --operator-private-key-file "$IROHA_OPERAT
 
 ## Үрге йүнәлештәге белешмәләр {#upstream-references}
 
-- [README API һәм күҙәтеү мөмкинлеген күҙәтеү](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/README.md)
-- [ISO 20022 күперҙе тормошҡа ашырыу](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/iso20022_bridge.rs)
+- [README API һәм күҙәтеү мөмкинлеген күҙәтеү](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/README.md)
+- [ISO 20022 күперҙе тормошҡа ашырыу](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/iso20022_bridge.rs)
 - [Эшмәкәрлек һәм күрһәткестәр](/ba/guide/advanced/metrics.md)

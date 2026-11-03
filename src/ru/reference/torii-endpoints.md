@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: f04e5e78329996d70926c4fd5dc034d41605d0a82fffd6460f67b252269480d9
+translation_source_hash: 631ec91b5ea398ae17253f0fd6307d76bc3820e2a2b6c8c9f79b30e0188ec170
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -380,7 +380,7 @@ iroha app kaigi end --domain kaigi.universal --call-name daily
 
 ### JavaScript Интеграция {#javascript-integration}
 
-Текущий [Iroha JavaScript демо](https://github.com/soramitsu/iroha-demo-javascript) реализует прозрачный, аутентифицированный профиль встречи один на один. Он не раскрывает протокол `zk-roster-v1` поток доказательства. Его рендерер создает WebRTC предложения и ответы, в то время как привилегированный мост использует локальный [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) оформите заказ для получения предложения, подписи, отправки и ожидания окончательного варианта Kaigi транзакции.
+Текущий [Iroha JavaScript демо](https://github.com/soramitsu/iroha-demo-javascript) реализует прозрачный, аутентифицированный профиль встречи один на один. Он не раскрывает протокол `zk-roster-v1` поток доказательства. Его рендерер создает WebRTC предложения и ответы, в то время как привилегированный мост использует локальный [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js) оформите заказ для получения предложения, подписи, отправки и ожидания окончательного варианта Kaigi транзакции.
 
 Смотрите [Встроить Kaigi в приложение JavaScript](/ru/guide/tutorials/kaigi.md) для точной аутентификации маршрута, формата приглашения, границ моста и текущих команд тестового демо.
 
@@ -439,6 +439,6 @@ iroha --config ./localnet/client.toml --operator-private-key-file "$IROHA_OPERAT
 
 ## Исходные ссылки {#upstream-references}
 
-- [README API и обзор наблюдаемости](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/README.md)
-- [ISO реализация моста 20022](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/iso20022_bridge.rs)
+- [README API и обзор наблюдаемости](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/README.md)
+- [ISO реализация моста 20022](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/iso20022_bridge.rs)
 - [Производительность и метрики](/ru/guide/advanced/metrics.md)

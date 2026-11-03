@@ -1,9 +1,9 @@
 ---
 translation_locale: my
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
+translation_source_hash: c1aee0c29332bd7c883500e72a1ec7812aebfca13b673e6681788cf4bc5ecbf1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # အကောင့်များနှင့် အမည်မဖော်လိုသူများ {#accounts-and-aliases}
@@ -22,15 +22,19 @@ Domainless Single Protocol-Standard I105 အကောင့် ID များ�
 
 ### (၁) Taira တွင် Single Protocol Standard Account များကို စစ်ဆေးပါ။ {#_1-inspect-canonical-accounts-on-taira}
 
-အများသုံးအကောင့်စာရင်းမှာ အမြဲတမ်း Single Protocol-Standard I105 ID တွေကို ပြန်ပို့တယ်။ အဓိက အမည်မဖော်လိုဘဲ သီးခြားပြန်ကြားပေးပါတယ်။
+အများသုံး အကောင့်စာရင်းသည် canonical I105 ID များကို အမြဲ ပြန်ပေးသည်။ primary alias သည် ရွေးချယ်နိုင်သော အရာဖြစ်သည်။ ၎င်းကို ကြည့်ရန် `aliases` field ကို တောင်းဆိုပါ။
 
 ```bash
-curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+curl -fsS -H 'Accept: application/json' --get \
+  https://taira.sora.org/v1/accounts \
+  --data-urlencode 'limit=5' \
+  --data-urlencode 'select=id,aliases' \
+  | jq -r '.items[]
+    | [.id, (first(.aliases[]? | select(.is_primary) | .alias) // "-")]
+    | @tsv'
 ```
 
-`.id` မှ ID သည်ကြမ်းတမ်းသောစာရင်းကွင်းများအတွက်အတည်ပြုသည်။ domain ကိုမထည့်ပါနဲ့။ `.primary_alias` မှ alias သည်အသုံးပြုသူမျက်နှာစာရှာဖွေရေး key ဖြစ်သည်၊ အခြား single protocol-standard identity တစ်ခုမဟုတ်ပါ။
+`.id` မှ ID သည်ကြမ်းတမ်းသောစာရင်းကွင်းများအတွက်အတည်ပြုသည်။ domain ကိုမထည့်ပါနဲ့။ `.aliases[].alias` မှ alias သည်အသုံးပြုသူမျက်နှာစာရှာဖွေရေး key ဖြစ်သည်၊ အခြား single protocol-standard identity တစ်ခုမဟုတ်ပါ။
 
 ### (၂) သင့်ရဲ့ Taira I105 ID ကို ရယူပြီး ပုံမှန်ပြုပြင်ပါ။ {#_2-derive-and-normalize-your-taira-i105-id}
 
@@ -53,14 +57,14 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID" \
   | iroha tools address normalize --profile taira
 ```
 
-ပုံမှန်တန်ဖိုးသည် `TAIRA_ACCOUNT_ID` နှင့်တူသင့်သည်။ TOML ဖိုင်တွင်ရှိသော `[account].domain` သတ်မှတ်ချက်သည် `wonderland.universal` ဖြစ်နိုင်သော်လည်း ထိုတန်ဖိုးသည် လမ်းညွှန်ခြင်းနှင့် alias အခြေအနေကိုသာ သက်ရောက်သည်။
+normalize လုပ်ထားသော တန်ဖိုးသည် `TAIRA_ACCOUNT_ID` နှင့် တူညီသင့်သည်။ `[account].profile` သတ်မှတ်ချက်သည် I105 network prefix ကိုသာ ရွေးချယ်သည်။ ဒိုမင်များသည် alias များနှင့်သာ သက်ဆိုင်ပြီး အကောင့် ID နှင့် ဘယ်သောအခါမျှ မသက်ဆိုင်ပါ။
 
 ### (၃) ငွေစာရင်းနှင့် ငွေကြေးကို ဖတ်ရှုပါ။ {#_3-read-the-account-and-its-assets}
 
 Account ကို provision လုပ်ပြီးနောက် တိုက်ရိုက် query လုပ်ပြီး bounded asset page တစ်ခုကို list လုပ်ပါ။ URL - path တစ်ခုမှာ အသုံးပြုမည့် I105 တန်ဖိုးကို encode လုပ်ပါ။
 
 ```bash
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 ENCODED_ACCOUNT_ID="$(
@@ -69,7 +73,7 @@ ENCODED_ACCOUNT_ID="$(
 )"
 
 curl -fsS -H 'Accept: application/json' \
-  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10" \
+  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10&include_total=true" \
   | jq '{total, items}'
 ```
 
@@ -111,7 +115,7 @@ fi
 
 ::: warning ခွင့်ပြုချက် ကန့်သတ်ချက်
 
-Taira testnet ငွေကြေးထောက်ပံ့မှု ဝန်ဆောင်မှုသည် လျှောက်ထားသူ၏ အကောင့်ကို ထောက်ပံ့နိုင်သော်လည်း ယင်းက ယေဘုယျ အကောင့်မှတ်ပုံတင်ခြင်း သို့မဟုတ် အမည်မဖော်လိုသော စီမံခန့်ခွဲမှု ခွင့်ပြုချက် မူလစာရင်းကို မပေးပါ။ အခြား အကောင့်တစ်ခုကို မှတ်ပုံတင်ရန်အတွက် တက်ကြွသည့် validator တွင် `CanRegisterAccount` ကိုလိုအပ်သည်။ Account aliases များအတွက်လည်း active SNS lease နှင့် သင့်လျော်သော alias ခွင့်ပြုချက်များလိုအပ်သည်။ စည်းကမ်းထားသည့် onboarding/alias planner ကိုအသုံးပြုပါ (သို့မဟုတ်) ဖန်တီးထားတဲ့ ဒေသတွင်းကွန်ရက်ကိုစစ်ဆေးရင်း မှတ်ပုံတင်ပါ။
+Taira faucet သည် ၎င်း၏ တောင်းဆိုသူအကောင့်ကို ပြင်ဆင်ပေးနိုင်သော်လည်း ၎င်းသည် ယေဘုယျ အကောင့်မှတ်ပုံတင်ခြင်း သို့မဟုတ် alias စီမံခန့်ခွဲမှုဆိုင်ရာ authority ကို ခွင့်ပြုချက်ပေးအပ်ခြင်း မဟုတ်ပါ။ အခြားအကောင့်တစ်ခုကို မှတ်ပုံတင်ရန် အသက်ဝင်နေသော executor အောက်တွင် `CanRegisterAccount` လိုအပ်သည်။ အကောင့် alias များအတွက် ပုံမှန်အားဖြင့် အသက်ဝင်နေသော SNS lease နှင့် သင့်လျော်သော alias ခွင့်ပြုချက်များလည်း လိုအပ်သည်။ governance ဖြင့် ထိန်းချုပ်ထားသော onboarding/alias planner ကို အသုံးပြုပါ၊ သို့မဟုတ် ဖန်တီးထားသော ဒေသတွင်းကွန်ရက်ပေါ်တွင် မှတ်ပုံတင်ခြင်းကို အစမ်းလေ့ကျင့်ပါ။
 
 :::
 
@@ -121,9 +125,9 @@ Taira testnet ငွေကြေးထောက်ပံ့မှု ဝန်�
 iroha --config ./localnet/client.toml \
   --machine \
   --fee-payer authority \
-  ledger account register --id "$NEW_ACCOUNT_ID"
+  account register --id "$NEW_ACCOUNT_ID"
 
-iroha --config ./localnet/client.toml ledger account get \
+iroha --config ./localnet/client.toml account get \
   --id "$NEW_ACCOUNT_ID"
 ```
 
@@ -158,8 +162,8 @@ Single protocol-standard account ID များကို သိမ်းဆည�
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [ချိတ်ဆက်ထားသော source code revision တွင် single protocol standard account address အကောင်အထည်ဖော်ခြင်း](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
-- [ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှုမှာ Account နဲ့ alias Torii စမ်းသပ်မှုတွေ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
+- [ချိတ်ဆက်ထားသော source code revision တွင် single protocol standard account address အကောင်အထည်ဖော်ခြင်း](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/account/address.rs)
+- ပုံသေသတ်မှတ်ထားသော commit ရှိ [အကောင့် endpoint Torii smoke စမ်းသပ်မှုများ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/tests/accounts_endpoints.rs) နှင့် [alias route စမ်းသပ်မှုများ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/tests/lib_tests/part_2.rs)
 - [အကောင့်များ](/my/blockchain/accounts.md)
 - [ဒေတာမော်ဒယ်အမည်များ](/my/blockchain/data-model.md#aliases)
 - [နာမည်ပေးသော ညီလာခံများ](/my/reference/naming.md)

@@ -1,41 +1,28 @@
 ---
 translation_locale: fr
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: f1ea542f7a710830cd32465d141db8452e6418d426500995b9df7c9c4e1fd597
+translation_source_hash: ca6fd12e33df43b73a72dd6327133115aa44256cf579387c11bf0693797bf96e
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Créer et déployer un contrat intelligent {#build-and-deploy-a-smart-contract}
 
 ## Résultat {#outcome}
 
-Vérifiez et compilez un contrat Kotodama V1, exécutez son point d'entrée public localement, déployez l'artéfact IVM vérifié, simulez le point d'entrée déployé, et soumettez-le avec des frais payés par l'autorité explicitement cités.
+Vérifiez et compilez un contrat Kotodama V1, exécutez localement sa vue publique, déployez l'artéfact IVM vérifié avec des frais payés par l'autorité et sélectionnés explicitement, puis lisez la vue déployée via Torii.
 
 ## Prérequis {#prerequisites}
 
-- Une copie opérationnelle du code source Iroha au commit `0010c5a70039eac101a4846499ba9ceaf43eb65c`, Rust, et Cargo.
-- Le `iroha` CLI actuel plus un client Taira financé de [Connectez-vous à Taira](./connect-to-taira.md).
-- Chemins absolus dans `IROHA_CONFIG` et `IROHA_PRIVATE_KEY_FILE`. Le fichier clé doit être un fichier régulier à lien unique détenu par le propriétaire avec le mode `0600` ; l'assistant de déploiement n'a intentionnellement aucun argument de clé privée en ligne.
-- Taira approbation de l'opérateur. L'enregistrement du code de contrat nécessite `CanRegisterSmartContractCode`, et les déploiements protégés peuvent nécessiter une attribution et une mise en œuvre de la gouvernance. Si Taira n'a pas accordé cet accès, effectuer le déploiement sur un réseau local généré dont le génesis de la blockchain accorde la permission.
+- Une copie opérationnelle du code source Iroha au commit `c8c872461e92f04325c350cdd952f4276e96f9dc`, Rust, et Cargo.
+- Le `iroha` CLI actuel et `musubi` (exécuté avec `cargo run -p musubi --` dans la copie de travail) plus un client Taira financé de [Connectez-vous à Taira](./connect-to-taira.md).
+- Un chemin absolu dans `IROHA_CONFIG`. La liaison réseau de Musubi stocke une référence à ce fichier client et signe le déploiement avec sa clé de compte.
+- Autorité sur l'alias. L'exécuteur exige `CanManageAccountAlias` pour l'alias exact du contrat ou pour sa portée parente : le domaine propriétaire pour `name::domain.dataspace`, ou l'espace de données pour `name::dataspace`. Les comptes enregistrés n'ont besoin d'aucune autorisation distincte d'enregistrement de code, et les espaces de noms protégés exigent aussi le processus de gouvernance du réseau. Les exemples utilisent `cookbook_tuple::universal` ; sur Taira, remplacez-le par un alias dans un domaine que vous possédez, ou déployez sur un réseau local généré dont la genèse accorde la portée de l'alias.
 
 ```bash
-TORII_URL=https://taira.sora.org
 IROHA_SOURCE=/absolute/path/to/iroha
 IROHA_CONFIG=/absolute/path/to/taira.client.toml
-IROHA_PRIVATE_KEY_FILE=/absolute/path/to/taira-private-key.txt
-test -n "$TAIRA_ACCOUNT_ID"
-test -f "$IROHA_PRIVATE_KEY_FILE"
-
-CHAIN_ID="$({
-  python3 - "$IROHA_CONFIG" <<'PY'
-import sys
-import tomllib
-
-with open(sys.argv[1], "rb") as config_file:
-    print(tomllib.load(config_file)["chain"])
-PY
-})"
+test -f "$IROHA_CONFIG"
 ```
 
 ## Étapes {#steps}
@@ -46,12 +33,12 @@ Travaillez à l'intérieur du Iroha checkout épinglé et copiez l'exemple de re
 
 ```bash
 cd "$IROHA_SOURCE"
-mkdir -p ./contracts ./build/deployment
+mkdir -p ./contracts ./build
 cp ./crates/kotodama_lang/src/samples/tuple_return_demo.ko \
   ./contracts/tuple_return_demo.ko
 ```
 
-Le code source complet est petit et utilise la syntaxe actuelle `seiyaku`/`kotoage` :
+Le code source complet est petit : une fonction d'assistance privée `fn` et une `view fn` publique en lecture seule qui autorise explicitement tout appelant :
 
 ```kotodama
 seiyaku TupleReturnDemo {
@@ -60,7 +47,7 @@ seiyaku TupleReturnDemo {
         return t;
     }
 
-    kotoage fn compute() -> (int, int) authorize("Entry") {
+    view fn compute() authorize(anyone) -> (int, int) {
         let p = pair(a: 3, b: 5);
         return (p.0, p.1);
     }
@@ -72,16 +59,16 @@ Kotodama cible la Machine Virtuelle Iroha et son ABI actuel. Ce n'est pas un lan
 ### 2. Vérifier, construire et valider l'artéfact {#_2-check-build-and-verify-the-artifact}
 
 ```bash
-cargo run -p ivm --bin koto -- \
+cargo run -p kotodama_toolchain --bin koto -- \
   check ./contracts/tuple_return_demo.ko
 
-cargo run -p ivm --bin koto -- \
+cargo run -p kotodama_toolchain --bin koto -- \
   build \
   --out ./build/tuple_return_demo.to \
   --manifest-out ./build/tuple_return_demo.manifest.json \
   ./contracts/tuple_return_demo.ko
 
-cargo run -p ivm --bin koto -- \
+cargo run -p kotodama_toolchain --bin koto -- \
   build \
   --out ./build/tuple_return_demo.to \
   --manifest-out ./build/tuple_return_demo.manifest.json \
@@ -93,82 +80,90 @@ La première compilation publie l'artifact et les sidecars authentifiés. La deu
 
 ### 3. Exécutez le bytecode localement {#_3-run-the-bytecode-locally}
 
-`compute` est un point d'entrée public `kotoage`. Exécutez-le avec `debug-call`, qui s'exécute contre des artefacts de test locaux sans soumettre ni payer pour une transaction.
+`compute` est une `view fn` publique en lecture seule. Exécutez-la avec `debug-view`, qui exécute localement le bytecode compilé sur des données de test facultatives sans soumettre ni payer de transaction.
 
 ```bash
-iroha --config "$IROHA_CONFIG" --machine contract debug-call \
+iroha --config "$IROHA_CONFIG" --machine contract debug-view \
   --code-file ./build/tuple_return_demo.to \
   --entrypoint compute \
-  > ./build/local-call.json
+  > ./build/local-view.json
 
 jq -e '.ok == true and .result == ["3", "5"]' \
-  ./build/local-call.json
+  ./build/local-view.json
 ```
 
 Kotodama les entiers sont rendus comme des chaînes JSON, donc le tuple décodé est `["3", "5"]`.
 
-### 4. Déployer via l'assistant natif {#_4-deploy-through-the-native-helper}
+### 4. Déployer l'artéfact vérifié avec Musubi {#_4-deploy-the-verified-artifact-with-musubi}
 
-L'assistant télécharge des morceaux de bytecode, enregistre le manifeste technique signé et soumet une opération `CommitContractDeployment`. Il propose un tarif pour chaque transaction et refuse un devis qui modifie le payeur sélectionné ou la limite de coût d'exécution de la transaction.
+`iroha contract` inspecte les contrats, exécute leurs vues et les débogue, mais ne les déploie pas ; les déploiements sur Taira passent donc par Musubi. Son service de déploiement téléverse les fragments de bytecode, enregistre le manifeste technique vérifié et soumet une opération `CommitContractDeployment`. Il obtient un devis pour chaque transaction, refuse un devis qui modifie le payeur sélectionné, la révision du sponsor ou la limite de gas, et ne déploie l'artéfact précompilé qu'après que la compilation du paquet aux dépendances verrouillées a reproduit ses hachages de code et d'ABI. Sur un réseau local géré par Kagami, `kagami contract deploy` déploie à la place `./build/tuple_return_demo.to` avec `--alias cookbook_tuple::universal --json` ; son reçu se trouve sous `.receipt`, et `kagami context show` affiche la configuration client à utiliser comme `IROHA_CONFIG`.
 
 ```bash
-printf '%s\n' \
-  '{"payer":"authority","value":{"charge_limits":[],"gas_limit":1500000}}' \
-  > ./build/fee-payment.json
+cat > ./contracts/Musubi.toml <<'TOML'
+manifest-version = 1
 
-cargo run -p iroha_cli --bin ivm_contract_deploy -- \
-  --torii-url "$TORII_URL" \
-  --chain-id "$CHAIN_ID" \
-  --authority "$TAIRA_ACCOUNT_ID" \
-  --private-key-file "$IROHA_PRIVATE_KEY_FILE" \
-  --code-file ./build/tuple_return_demo.to \
-  --contract-alias cookbook_tuple::universal \
-  --fee-payment-json ./build/fee-payment.json \
-  --out-dir ./build/deployment \
+[package]
+namespace = "local"
+name = "cookbook-tuple"
+version = "0.1.0"
+edition = "1"
+abi-version = 1
+
+[[contract]]
+name = "tuple_return_demo"
+path = "tuple_return_demo.ko"
+TOML
+
+cargo run -p musubi -- --manifest-path ./contracts/Musubi.toml check
+
+cargo run -p musubi -- --manifest-path ./contracts/Musubi.toml \
+  network configure taira \
+  --config "$IROHA_CONFIG" \
+  --fee-payer authority \
+  --contract tuple_return_demo \
+  --alias cookbook_tuple::universal
+
+cargo run -p musubi -- --manifest-path ./contracts/Musubi.toml --format json \
+  deploy --network taira \
+  --contract tuple_return_demo \
+  --artifact ./build/tuple_return_demo.to \
+  --artifact-manifest ./build/tuple_return_demo.manifest.json \
   > ./build/deployment.json
 
-jq '{contract_address, code_hash_hex, final, fee_quotes}' \
+jq '.data.receipt | {contract_address, code_hash, stored_artifact_matches}' \
   ./build/deployment.json
 ```
 
-La demande dont `charge_limits` est vide ne contient pas d’identifiant d’actif copié : l’outil accepte le devis actif exact avant de signer. Comparez l’actif facturé renvoyé avec la réponse actuelle du distributeur. Les appels de contrat n’acceptent la sélection des frais qu’au moyen du devis actif typé ; les métadonnées de transaction `gas_asset_id` ne font pas partie du contrat de première version.
+La liaison utilise `--fee-payer authority` ; Musubi établit le devis exact des frais, dans l'actif de frais de Taira, avant de signer. Comparez l’actif facturé renvoyé avec celui que publie la politique actuelle du distributeur. Les appels de contrat n’acceptent la sélection des frais qu’au moyen du devis actif typé ; les métadonnées de transaction `gas_asset_id` ne font pas partie du contrat de première version.
 
-### 5. Simuler et appeler le point d'entrée déployé {#_5-simulate-and-call-the-deployed-entrypoint}
+### 5. Lire la vue déployée {#_5-read-the-deployed-view}
 
-La simulation exécute le point d’entrée public sur Torii sans le soumettre. L’appel suivant est une transaction et sélectionne donc explicitement l’autorité comme payeur des frais. Les deux commandes fixent la limite de gas à 1 500 000.
+`contract view` exécute le point d'entrée en lecture seule sur Torii sans transaction ni frais. Une vue n'a pas de forme transactionnelle : Torii rejette un sélecteur de vue sur ses routes d'appel.
 
 ```bash
-iroha --config "$IROHA_CONFIG" --machine contract call \
-  --simulate \
+iroha --config "$IROHA_CONFIG" --machine contract view \
   --contract-alias cookbook_tuple::universal \
   --entrypoint compute \
   --gas-limit 1500000 \
-  > ./build/deployed-simulation.json
+  > ./build/deployed-view.json
 
 jq -e '.ok == true and .result == ["3", "5"]' \
-  ./build/deployed-simulation.json
-
-iroha --config "$IROHA_CONFIG" \
-  --machine \
-  --fee-payer authority \
-  contract call \
-  --contract-alias cookbook_tuple::universal \
-  --entrypoint compute \
-  --gas-limit 1500000 \
-  --wait \
-  --timeout-ms 60000 \
-  > ./build/deployed-call.json
-
-jq -e '.terminal_kind == "Applied"' ./build/deployed-call.json
+  ./build/deployed-view.json
 ```
 
 ## Vérifier {#verify}
 
-Résolvez l'alias, récupérez le manifeste technique sur la chaîne via le hachage cryptographique du code retourné, et simulez la même entrée publique par adresse canonique :
+Résolvez l'alias, récupérez le manifeste technique sur la chaîne via le hachage cryptographique du code que Torii indique pour la vue déployée, et exécutez la même vue par adresse canonique :
 
 ```bash
-CODE_HASH="$({ jq -er '.code_hash_hex' ./build/deployment.json; })"
-CONTRACT_ADDRESS="$({ jq -er '.contract_address' ./build/deployment.json; })"
+CONTRACT_ADDRESS="$({
+  jq -er '.data.receipt.contract_address' ./build/deployment.json
+})"
+CODE_HASH="$({ jq -er '.code_hash_hex' ./build/local-view.json; })"
+DEPLOYED_CODE_HASH="$({
+  jq -er '.code_hash_hex' ./build/deployed-view.json
+})"
+test "$DEPLOYED_CODE_HASH" = "$CODE_HASH"
 
 RESOLVED_ADDRESS="$({
   iroha --config "$IROHA_CONFIG" --machine \
@@ -178,36 +173,36 @@ RESOLVED_ADDRESS="$({
 test "$RESOLVED_ADDRESS" = "$CONTRACT_ADDRESS"
 
 iroha --config "$IROHA_CONFIG" contract manifest get \
+  --dataspace-id 0 \
   --code-hash "$CODE_HASH" \
   --out ./build/on-chain-manifest.json
 
-iroha --config "$IROHA_CONFIG" --machine contract call \
-  --simulate \
+iroha --config "$IROHA_CONFIG" --machine contract view \
   --contract-address "$CONTRACT_ADDRESS" \
   --entrypoint compute \
-  > ./build/address-simulation.json
+  > ./build/address-view.json
 
 jq -e '.ok == true and .result == ["3", "5"]' \
-  ./build/address-simulation.json
+  ./build/address-view.json
 ```
 
-Le déploiement est terminé uniquement lorsque l'alias se résout à l'adresse renvoyée, que le manifeste technique est lisible sous le même hachage cryptographique du code, que les simulations locales et Torii renvoient `["3", "5"]`, et que l'appel soumis atteint `Applied`.
+Le déploiement n'est terminé que lorsque le reçu de déploiement indique que l'artéfact stocké est vérifié, que l'alias se résout à l'adresse renvoyée, que le manifeste technique est lisible sous le même hachage cryptographique du code, et que les vues locale et Torii renvoient `["3", "5"]`.
 
 ## Dépannage {#troubleshooting}
 
-- `CanRegisterSmartContractCode` les échecs nécessitent une autorisation d'opérateur Taira ou un changement de genèse/bootstrap sur le réseau local. Un compte normal ne peut pas s'accorder cette permission après coup.
-- Le rejet dû à la gouvernance ou à la voie protégée signifie que le déploiement nécessite l'attribution exacte de l'approbateur requise par ce réseau. Coordonnez la liste des approbateurs ; n'inventez pas d'identifiants de compte.
-- Une incompatibilité du manifeste ou de l’ABI signifie que le bytecode, le manifeste et l’environnement d’exécution du nœud ne décrivent pas le même artefact. Reconstruisez au commit épinglé avec `--verify`.
+- `deployment authority lacks CanManageAccountAlias`, ou le message de l'exécuteur `authority is not permitted to manage contract alias`, signifie que le compte ne peut pas lier cet alias. Utilisez un alias dans un domaine que vous possédez, ou obtenez du propriétaire de cette portée l'octroi exact de l'alias ou celui de son domaine ou espace de données ; sur un réseau local, accordez-le dans la genèse.
+- Un rejet lié à un espace de noms protégé signifie que l'espace de noms de l'alias est soumis à la gouvernance. Lister des identifiants de comptes approbateurs ne constitue pas une preuve d'approbation ; utilisez le processus de gouvernance du réseau (`iroha app gov deploy propose`) pour cet espace de noms, ou choisissez un alias en dehors de celui-ci.
+- Une incompatibilité du manifeste ou de l’ABI signifie que le bytecode, le manifeste et l’environnement d’exécution du nœud ne décrivent pas le même artefact. Reconstruisez au commit épinglé, puis relancez la compilation avec `--verify`.
 - `fee quote changed ... gas bound` signifie que l'intention tapée demandée et le devis en direct ne sont pas d'accord. Re-vérifiez plutôt que de modifier une transaction signée.
-- L'assistant de déploiement rejette les clés en ligne, les modes de fichier clé permissifs, les liens symboliques et les fichiers à liens multiples avant la soumission sur le réseau.
-- Une erreur de point d'entrée en lecture seule signifie que `compute` a été acheminé via la mauvaise famille de commandes. Cet exemple déclare `kotoage`, donc utilisez la simulation d'appel ou la soumission.
+- Un déploiement interrompu conserve son plan signé dans un journal. Reprenez-le avec `musubi deploy --resume <JOURNAL>` au lieu de signer un nouveau plan.
+- `is read-only and cannot be invoked as a transaction` ou `is not a kotoage or lifecycle entrypoint` signifie que `compute` a été envoyé à une commande d'appel. Cet exemple déclare `view fn` ; utilisez donc `debug-view` localement et `view` sur Torii.
 - Les appels de contrat exigent une limite de gas typée et positive. Le contrat d’appel de la première version rejette le gas de niveau supérieur et les métadonnées de l’actif de frais.
 
 ## Source et documents connexes {#source-and-related-docs}
 
-- [Kotodama V1 implémentation de la commande au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
-- [Exemple de source retournant un tuple au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
-- [Assistant de déploiement natif au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [Tests d'intégration de contrat au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
+- [Implémentation de la commande Kotodama V1 au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_toolchain/src/bin/koto.rs)
+- [Exemple de source retournant un tuple au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
+- [Commande de déploiement Musubi](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/musubi/src/command_deploy.rs) et le [service natif de déploiement de contrats](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_contract_deploy/src/lib.rs) au commit épinglé
+- [Tests d'intégration de contrat au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/contracts.rs)
 - [Contrats intelligents](/fr/blockchain/smart-contracts.md)
 - [CLI référence](/fr/get-started/operate-iroha-via-cli.md)

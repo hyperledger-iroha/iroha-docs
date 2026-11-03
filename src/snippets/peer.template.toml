@@ -12,7 +12,7 @@
 # chain =
 # public_key =
 # private_key =
-# soranet_transport_public_key = "ed0120..." # required dedicated Ed25519 SoraNet transport identity
+# soranet_transport_public_key = "ed0120..." # dedicated Ed25519 SoraNet transport identity; derived from the private key when omitted
 # soranet_transport_private_key = "802620..." # required matching transport private key; keep distinct from node and streaming identities
 # chain_discriminant = 0x02F1              # I105 prefix / chain discriminant; override for dev/test networks.
 
@@ -84,7 +84,7 @@ expected_hash_file = "genesis.expected_hash"
 # consensus_ingress_burst = 300
 # consensus_ingress_bytes_per_sec = 67_108_864
 # consensus_ingress_bytes_burst = 134_217_728
-# Revision-4 Proposal/Vote/QC/timeout, PayloadManifest/PayloadChunk,
+# Revision-4 Proposal (including its manifest), Vote/QC/timeout, PayloadChunk,
 # body/certificate recovery, and global threshold-beacon partial signatures use the critical policy;
 # CertifiedBodyResponse and BlockSync traffic use the bulk policy. These local
 # resource caps do not alter the signed full-committee quorum or mandatory RS16 layout.
@@ -101,38 +101,48 @@ expected_hash_file = "genesis.expected_hash"
 # disconnect_on_post_overflow = true
 
 ## Consensus settings (Sumeragi)
-## Participation role and finite node-local bounds for revision-4 consensus.
+## Participation role and node-local settings of the Sumeragi consensus.
 ## Consensus mode, cadence, committee/leader selection, quorum, and the mandatory
 ## Reed-Solomon-16 DA layout come from signed genesis/current-height context. They
 ## have no mutable local switches.
 [sumeragi]
 # role = "validator"
 # role = "observer" # sync-only; omit to use the validator default
+## Credential-free global beacon share signer binding.
+# global_beacon_partial_signer_provider_handle = "signer://..."
+# global_beacon_partial_signer_provider_revision = 1
+# global_beacon_partial_signer_provider_policy_digest_hex = "..."
+## Sumeragi core local-parameter overrides (`specs/sumeragi.md` §12.4). Each key is
+## optional: an unset value takes the §9.3 default for the committee size (the second
+## value applies from 10 members on). The node validates the complete set at startup (§9.4).
+# view_timeout_base_ms = 2000      # 3000
+# view_timeout_max_ms = 30000
+# start_level_cap = 4
+# start_level_decay_after = 8
+# rebroadcast_interval_ms = 500    # 1000
+# status_keepalive_ms = 5000
+# build_timeout_ms = 200
+# fetch_retry_ms = 250             # 500
+# sync_batch = 64
+# sync_retry_ms = 1000
+## At least the committed max_block_bytes + FRAME_OVERHEAD (264224), and with FRAME_OVERHEAD
+## added at most the chain frame limit: both are 17041440 at the 16 MiB payload default.
+# sync_max_bytes = 17041440
+# max_observers = 64
+## Safety records and key installation log (§7.4). Records must stay outside
+## `kura.store_dir` and out of backups; the log must be outside `records_dir`.
+## Defaults are siblings of the Kura store directory.
+# records_dir = "./storage-sumeragi-records"
+# installation_log = "./storage-sumeragi-installation.log"
+## Consensus keys retired by a rotation (§10.3); list them for good.
+# retired_keys = []
 
-[sumeragi.block]
-# max_transactions = 512
-# max_payload_bytes = 16777216
-# proposal_queue_scan_multiplier = 4
-
-[sumeragi.queues]
-# commands = 1024
-# authenticated_non_validator_sources = 2
-# bodies = 161
-# body_bytes = 242221056
-# body_source_bytes = 34603008
-# chunks = 2048
-# ready_bodies = 128
-
-## `[sumeragi.limits]` exposes finite lane, merge, recovery, and Native AMX
-## service bounds. Defaults are suitable for the reference profile; consult
-## `specs/references/configuration.md` before overriding one.
+## Block size and transaction limits are chain parameters from genesis, not node settings.
 [sumeragi.keys]
 # activation_lead_blocks = 1
 # overlap_grace_blocks = 8
 # expiry_grace_blocks = 0
-# require_hsm = false
 # allowed_algorithms = ["bls_normal"]
-# allowed_hsm_providers = ["pkcs11", "softkey", "yubihsm"]
 
 [torii]
 # address =
@@ -154,9 +164,11 @@ expected_hash_file = "genesis.expected_hash"
 [torii.operator_auth]
 # enabled = false
 # require_mtls = false
-# tokens = [] # Dedicated x-iroha-operator-token values accepted only before the first credential.
+# tokens = [] # Unique 32..=256-byte visible-ASCII x-iroha-operator-token values; required until the first credential exists.
 # rate_per_minute = 30
 # burst = 10
+# ephemeral_state_capacity = 4096 # Each of challenges, sessions, and lockout identities; maximum 65536.
+# credential_capacity = 64 # Maximum persisted WebAuthn credentials; maximum 1024.
 # lockout_failures = 5
 # lockout_window_secs = 300
 # lockout_duration_secs = 900
@@ -195,11 +207,6 @@ expected_hash_file = "genesis.expected_hash"
 # init_mode = "strict"               # "fast" trusts a signed current snapshot plus marker/count/tip, skips deep audits, and quarantines production until a Strict restart
 # store_dir = "./storage"
 # blocks_in_memory = 1024
-# lane_history_retention = 512        # Lane, autonomous-lifecycle, and Native-AMX history retained before GC
-# eviction_required_replicas = 3      # Minimum selected CommitQC keepers required for body eviction
-# replica_advert_evictable_window = 4096  # Historical evictable heights retained beyond the protected tail
-# replica_advert_ttl_ms = 3_600_000       # Authenticated observation lifetime (2 ms through one hour)
-# replica_advert_refresh_interval_ms = 900_000  # At least 1 ms and at most half the configured TTL
 
 [logger]
 # level = "INFO"
@@ -217,29 +224,20 @@ expected_hash_file = "genesis.expected_hash"
 # capacity_per_user = 16384
 # transaction_time_to_live_ms = 86_400_000 # 1 day
 
-[zk.halo2]
-# enabled = false
-# max_k = 16
-# verifier_budget_ms = 20
-# verifier_max_batch = 16
-# verifier_worker_threads = 0        # 0 = auto by available parallelism
-# verifier_queue_cap = 0             # 0 = auto-derived from worker count
-# verifier_enqueue_wait_ms = 25      # bounded enqueue wait before timeout under saturation
-# verifier_retry_ring_cap = 2048     # in-memory retry ring capacity for important tasks
-# verifier_retry_max_attempts = 3    # retry rounds before final drop
-# verifier_retry_tick_ms = 5         # retry scheduler tick interval
+# Local diagnostic resources only. Native proof limits are chain policy
+# (the committed `zk_validity_policy_v1` parameter).
+[zk.trace]
+# enabled = true
+# worker_threads = 0
+# queue_cap = 0
+# enqueue_wait_ms = 25
+# retry_ring_cap = 2048
+# retry_max_attempts = 3
+# retry_tick_ms = 5
 
 [governance]
 # Allowed JDG attestation signature schemes.
 # jdg_signature_schemes = ["simple_threshold"] # or "bls_normal_aggregate"
-
-# Runtime upgrade provenance policy.
-# [governance.runtime_upgrade_provenance]
-# mode = "optional" # or "required"
-# require_sbom = false
-# require_slsa = false
-# signature_threshold = 0
-# trusted_signers = ["ed0120..."]
 
 [snapshot]
 # mode = "read_write"
@@ -272,15 +270,14 @@ expected_hash_file = "genesis.expected_hash"
 # feature_bits = 0b11
 
 [crypto]
-# Toggle Chinese SM2/SM3/SM4 support (verification only unless admission is configured for SM signatures).
-# Default hash algorithm fall-back when callers omit one (switch to `sm3-256` alongside SM rollouts).
+# Local generation defaults and implementation choices; no admission authority.
 # default_hash = "blake2b-256"
-# Signing algorithms permitted during transaction admission (must include `ed25519`; append `sm2` once enabled).
-# allowed_signing = ["ed25519"]
-# Default SM2 distinguishing identifier when clients omit `distid`. The node seeds
-# `Sm2PublicKey::default_distid()` with this value during startup, so adjustments take
-# effect before any transactions execute; update it to match your PKI profile.
 # sm2_distid_default = "1234567812345678"
+# The IVM omitted SM2 DistID operand uses the fixed protocol constant.
+# sm_intrinsics = "auto"
+# enable_sm_openssl_preview = false
+# Signed genesis must author exactly one explicit crypto_admission_policy_v1.
+# That committed algorithm set governs every ordinary signature/controller family.
 
 ## Hardware acceleration (optional; defaults enable all available backends)
 ## These settings do not change outputs; they only affect performance by allowing
@@ -289,9 +286,20 @@ expected_hash_file = "genesis.expected_hash"
 # enable_simd = true   # Allow SIMD/NEON/AVX; set false to force scalar execution for deterministic parity runs
 # enable_cuda = true   # Use CUDA backend when compiled and available
 # enable_metal = true  # Use Metal backend on macOS when available
-# max_gpus = 0         # Maximum GPUs to initialize (0 = auto/no cap)
+# max_gpus = 2         # Optional IVM selection cap; omit for available devices, 0 opts out
 # merkle_min_leaves_gpu = 8192  # Minimum leaves to offload Merkle leaf hashing to GPU
-# merkle_min_leaves_metal = 0    # Backend-specific override for Metal (0 = inherit GPU default)
-# merkle_min_leaves_cuda = 0     # Backend-specific override for CUDA (0 = inherit GPU default)
-# prefer_cpu_sha2_max_leaves_aarch64 = 0  # Prefer CPU SHA2 for trees up to this many leaves on AArch64 (0 = default)
-# prefer_cpu_sha2_max_leaves_x86 = 0      # Prefer CPU SHA2 for trees up to this many leaves on x86/x86_64 (0 = default)
+# merkle_min_leaves_metal = 8192 # Optional Metal threshold; omission inherits, zero is literal
+# merkle_min_leaves_cuda = 8192  # Optional CUDA threshold; omission inherits, zero is literal
+# prefer_cpu_sha2_max_leaves_aarch64 = 32768 # Omission inherits; zero is literal
+# prefer_cpu_sha2_max_leaves_x86 = 32768 # Omission inherits; zero is literal
+# [accel.resource_limits]
+# host_bytes = 268435456
+# pinned_bytes = 268435456
+# device_bytes = 1073741824
+# in_flight = 16
+# metadata_bytes = 16777216
+# observed_devices = 16
+# discovery_ordinals = 64
+# modules = 304
+# streams = 16
+# artifact_bytes = 16777216

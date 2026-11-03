@@ -1,33 +1,33 @@
 ---
 translation_locale: zh-hans
 translation_source: /cookbook/wallet-connect.md
-translation_source_hash: 81b370bdc73a40ff2dbb8df0f91547ab4c279ed94600bdd6df367f29a949ec71
+translation_source_hash: 6bcb87693d4a4cdf45662029dd455c15d3a7a1d4a1e1586e92317ca91b587390
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # 钱包连接:批准资产转移 {#wallet-connect-approve-an-asset-transfer}
 
 ## 结果 {#outcome}
 
-在浏览器中创建 Iroha 连接会话,获取一个 I105 钱包身份的加密批准,要求该钱包签署 Torii 的准确资产转让架,提交单独的签名,然后等待应用最终.
+在浏览器中创建 Iroha Connect 会话，获取一个 I105 钱包身份的密码学批准，请该钱包签名 Torii 提供的确切未签名资产转移有效载荷，提交分离式签名，然后等待 Applied 最终性。
 
 ## 预先条件 {#prerequisites}
 
 - 使用 `@iroha/iroha-js`和 HTTPS 的浏览器应用程序.
-- 一个实现 Iroha 连接v1的钱包,并控制一个单键Ed25519 I105 帐户.
-- 目前的 Taira 链 ID 和链分辨器,钱包注册的小字母Ed25519公钥六字符号,拥有可转移资产,以及规范的 I105 目的地
-- 费用资产 ID 由当前的 Taira faucet响应返回.该例子验证了现场费用报价与 ID;它从来没有嵌入复制的资产标识符.
-- 在选择的 Torii 上必须启用连接. 在显示一个 QR 或深度链接之前,请检查:
+- 一个实现 Iroha Connect v1、控制单密钥 Ed25519 I105 账户，并授予 `sign_transaction` 和 `sign_raw` 方法的钱包。
+- 当前的 Taira 网络 ID、钱包已登记的小写 Ed25519 公钥十六进制值、一项自有的可转移资产，以及规范的 I105 目的地。
+- 当前 Taira 水龙头政策公布的费用资产 ID。示例会依据该 ID 验证实时费用报价；它从不嵌入复制来的资产标识符。
+- 所选的 Torii 必须启用 Connect。在显示 QR 码或深度链接之前，请从公开的账户能力信息中读取网络 ID：
 
 ```bash
 curl -fsS \
   -H 'Accept: application/json' \
-  https://taira.sora.org/v1/connect/status |
-  jq -e '{enabled, sessions_active} | select(.enabled == true)'
+  https://taira.sora.org/v1/accounts/capabilities |
+  jq -er '.network_id'
 ```
 
-如果 Taira 报告连接被禁用或返回`404`/`503`,则使用已启动连接的生成本地网络.普通资产转移还需要钱包拥有足够的可转移量和费用余额.
+Torii 不公开匿名的 Connect 状态：`GET /v1/connect/status` 只会向持有某个会话管理令牌的一方报告该会话，而汇总状态需要运营者签名。当节点禁用 Connect 时，`registerConnectSession` 会以 HTTP `503` 和代码 `connect_disabled` 失败（若构建版本未包含 Connect 则为 `404`），示例也不会显示 QR 码或深度链接；请使用已启用 Connect 的生成式本地网络。普通的资产转移还需要钱包拥有足够的可转移数量和费用余额。
 
 ## 步骤 {#steps}
 
@@ -43,16 +43,20 @@ curl -fsS \
 
 ### 2. 创建,批准,签署和提交 {#_2-create-approve-sign-and-submit}
 
-这个浏览器模块从您的应用程序状态中接受具体值.第一个 `POST /v1/assets/transfer` 省略了签字字段,返回了一个报价,版本的交易结构.第二个只添加钱包的公钥和单独的签名到相同的转移请求.
+这个浏览器模块从您的应用程序状态中接受具体值。第一个 `POST /v1/assets/transfer` 省略签名字段，并返回已报价的费用意图和未签名的交易有效载荷。第二个只在相同的转移请求中加入钱包的公钥和分离式签名。Torii 要求两个请求都带有规范的账户签名，因此该模块会让钱包通过 `createConnectCanonicalRequestAuth` 签名它们。
 
 ```js
-import { AccountAddress } from '@iroha/iroha-js/address'
+import { buildCanonicalJsonRequest } from '@iroha/iroha-js/canonical-request'
 import {
+  NetworkId,
   createConnectAppSession,
+  createConnectCanonicalRequestAuth,
   createConnectSessionPreview,
   deleteConnectSession,
   registerConnectSession,
+  toHex,
 } from '@iroha/iroha-js/connect-browser'
+import { ToriiBrowserClient } from '@iroha/iroha-js/torii-browser'
 
 const baseUrl = 'https://taira.sora.org'
 const wait = (milliseconds) =>
@@ -63,14 +67,21 @@ const decodeBase64 = (value) =>
 const encodeBase64 = (bytes) =>
   btoa(Array.from(bytes, (byte) => String.fromCharCode(byte)).join(''))
 
-async function postJson(path, body) {
-  const response = await fetch(`${baseUrl}${path}`, {
+async function postSignedJson(path, body, auth, networkId) {
+  const request = await buildCanonicalJsonRequest({
+    nativeIdentity: auth.nativeIdentity,
+    accountId: auth.authAccountId,
+    networkId,
     method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
+    path,
+    baseUrl,
+    body,
+    sign: auth.sign,
+  })
+  const response = await fetch(`${baseUrl}${path}`, {
+    method: request.method,
+    headers: request.headers,
+    body: request.body,
   })
   if (!response.ok) {
     throw new Error(
@@ -87,6 +98,10 @@ async function waitForApplied(transactionHash) {
     const response = await fetch(url, {
       headers: { Accept: 'application/json' },
     })
+    if (response.status === 404) {
+      await wait(1_000)
+      continue
+    }
     if (!response.ok) {
       throw new Error(`pipeline status: HTTP ${response.status}`)
     }
@@ -102,8 +117,7 @@ async function waitForApplied(transactionHash) {
 }
 
 export async function transferWithWallet({
-  chainId,
-  chainDiscriminant,
+  networkIdLiteral,
   authority,
   publicKeyHex,
   assetDefinitionId,
@@ -114,21 +128,16 @@ export async function transferWithWallet({
   if (!/^[0-9a-f]{64}$/.test(publicKeyHex)) {
     throw new Error('publicKeyHex must be 32-byte lower-case Ed25519 hex')
   }
-  const derivedAuthority = AccountAddress.fromAccount({
-    publicKey: publicKeyHex,
-    algorithm: 'ed25519',
-  }).toI105(chainDiscriminant)
-  if (derivedAuthority !== authority) {
-    throw new Error('enrolled public key does not control authority')
-  }
+  const networkId = NetworkId.parse(networkIdLiteral)
+  const torii = new ToriiBrowserClient(baseUrl, { networkId })
 
   const preview = createConnectSessionPreview({
-    chainId,
+    networkId,
     node: baseUrl,
   })
   const relay = await registerConnectSession(
     baseUrl,
-    preview.sidBase64Url,
+    preview,
     {
       node: baseUrl,
     },
@@ -140,8 +149,10 @@ export async function transferWithWallet({
       baseUrl,
       preview,
       session: relay,
+      inspectAccountIdentity: (accountId, options) =>
+        torii.inspectAccountIdentity(accountId, options),
       permissions: {
-        methods: ['sign_transaction'],
+        methods: ['sign_transaction', 'sign_raw'],
         resources: [assetDefinitionId],
       },
       appMeta: { name: 'Iroha cookbook transfer' },
@@ -158,6 +169,10 @@ export async function transferWithWallet({
     if (approval.accountId !== authority) {
       throw new Error('wallet approved a different I105 account')
     }
+    if (toHex(approval.signingPublicKey) !== publicKeyHex) {
+      throw new Error('enrolled public key does not control authority')
+    }
+    const auth = await createConnectCanonicalRequestAuth(connect)
 
     const transfer = {
       authority,
@@ -167,16 +182,21 @@ export async function transferWithWallet({
       destination,
       fee_payment: {
         payer: 'authority',
-        value: { charge_limits: [] },
+        value: { charge_limits: [], gas_limit: null },
       },
       creation_time_ms: Date.now(),
       transaction_ttl_ms: 120_000,
       memo: 'iroha-cookbook-wallet-connect',
     }
 
-    const prepared = await postJson('/v1/assets/transfer', transfer)
+    const prepared = await postSignedJson(
+      '/v1/assets/transfer',
+      transfer,
+      auth,
+      networkId,
+    )
     if (!prepared.ok || prepared.submitted) {
-      throw new Error('Torii did not return a pending-signature scaffold')
+      throw new Error('Torii did not return an unsigned transaction payload')
     }
     const limits = prepared.intent.fee_payment.value.charge_limits
     if (
@@ -186,22 +206,27 @@ export async function transferWithWallet({
       )
     ) {
       throw new Error(
-        'live fee quote uses an asset other than the faucet response',
+        'live fee quote uses an asset other than the faucet policy asset',
       )
     }
 
     const signature = await connect.signTransaction(
-      decodeBase64(prepared.transaction_scaffold_base64),
+      decodeBase64(prepared.transaction_payload_b64),
     )
     if (signature.length !== 64) {
       throw new Error('wallet returned a non-Ed25519 signature length')
     }
 
-    const submitted = await postJson('/v1/assets/transfer', {
-      ...transfer,
-      public_key_hex: publicKeyHex,
-      signature_base64: encodeBase64(signature),
-    })
+    const submitted = await postSignedJson(
+      '/v1/assets/transfer',
+      {
+        ...transfer,
+        public_key_hex: publicKeyHex,
+        signature_base64: encodeBase64(signature),
+      },
+      auth,
+      networkId,
+    )
     if (!submitted.ok || !submitted.submitted) {
       throw new Error('signed transfer was not accepted')
     }
@@ -251,18 +276,18 @@ fn seal_wallet_signature(
 }
 ```
 
-存储库的 `connect_app` 和 `connect_wallet`示例是协议测试资源:它们使用确定性运输密钥,在输出中暴露代币,而钱包测试资源返回了一个假签名.仅用于研究框架,永远不会作为 Taira 钱包实现.
+存储库中的 `connect_app` 和 `connect_wallet` 示例是协议演示：应用程序会将包含令牌的钱包 URI 打印到标准输出，而钱包则以命令行参数接收其令牌，并在不解码也不显示的情况下签名所请求的字节。仅将它们用于研究帧，切勿作为 Taira 钱包实现。
 
 ## 验证 {#verify}
 
 保存返回的哈希,通过公共持有端点确认目的地的后状态:
 
 ```bash
+HOLDER_FILTER="account_id = \"$DESTINATION_ACCOUNT\" and scope = \"global\""
 curl -fsS -G \
   -H 'Accept: application/json' \
   "https://taira.sora.org/v1/assets/$ASSET_DEFINITION_ID/holders" \
-  --data-urlencode "account_id=$DESTINATION_ACCOUNT" \
-  --data-urlencode 'scope=global' |
+  --data-urlencode "filter=$HOLDER_FILTER" |
   jq .
 ```
 
@@ -270,20 +295,20 @@ curl -fsS -G \
 
 ## 解决问题 {#troubleshooting}
 
-- `404`, `503`,或`enabled: false`从连接状态意味着在该节点上不能创建中继会话. 切换到启用的本地网络;不要自行运输应用程序或管理代币.
+- `registerConnectSession` 返回带有代码 `connect_disabled` 的 `503` 或 `404`，表示无法在该节点上创建中继会话。请切换到已启用的本地网络；不要退而自行传输应用程序令牌或管理令牌。
 - `USER_DENIED`是一个钱包的决定. 保存它作为终端用户结果,而不是打开反复批准提示.
 - 批准账户不一致或无效的批准签名必须结束会议. 在身份绑定失败后,永远不要要求钱包签名.
 - `public_key_hex does not control authority`指注册数据和批准的 I105 身份异议.在此领域不能使用短暂的钱包运输密钥.
-- 一个签名或结构拒绝通常意味着在准备和提交之间改变的请求字段或现场费用报价. 构建一个新的请求;永远不要移植旧的签名.
+- 分离式签名被拒绝，通常表示请求字段或实时费用报价在准备与提交之间发生了变化。请创建新的请求；切勿移植旧的签名。
 - 对已接受签名请求的精确重放具有幂等性。在把超时当作重新开始的理由之前，请查询其返回的交易哈希。
 
 ## 来源及相关文件 {#source-and-related-docs}
 
-- [浏览器连接的实现在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/src/connect.browser.js)
-- [浏览器连接测试在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/test/connect.browser.test.js)
-- [Rust 应用程序框架的示例在固定提交上](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_app.rs)
-- [Rust 钱包框架的示例在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_wallet.rs)
-- [固定 Torii OpenAPI 方案](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/artifacts/openapi/torii.json)
+- [浏览器连接的实现在固定提交](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/src/connect.browser.js)
+- [浏览器连接测试在固定提交](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/test/connect.browser.test.js)
+- [Rust 应用程序框架的示例在固定提交上](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/examples/connect_app.rs)
+- [Rust 钱包框架的示例在固定提交](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/examples/connect_wallet.rs)
+- [固定 Torii OpenAPI 方案](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/artifacts/openapi/torii.json)
 - [SORA Nexus 服务](/zh-hans/blockchain/sora-nexus-services.md)
 - [性资产](./fungible-assets.md)
 - [提交和核实交易](./submit-and-verify-transactions.md)

@@ -1,9 +1,9 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: 4281cb307762443c85b67659310da69f1f1ea5b99926bad43b90abe36e87075e
+translation_source_hash: 0c6392deb9ddca84e262c699c777276b3a6ca731154b66e7a8418f38dca52021
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Contrats intelligents {#smart-contracts}
@@ -16,6 +16,8 @@ Iroha les transactions exécutent `Executable` des charges utiles. Le modèle de
 - `Executable::IvmProved` : Iroha VM bytecode avec une superposition d'instructions précalculée et des engagements de preuve
 
 Kotodama est le langage de contrat intelligent de haut niveau de Iroha. Un fichier source `.ko` se compile en bytecode IVM déterministe, stocké conventionnellement comme un artefact `.to` pour le déploiement. Kotodama cible uniquement IVM. Il ne cible pas RISC-V ni WebAssembly.
+
+Chaque diagnostic du compilateur possède un code stable, expliqué dans la référence des [diagnostics Kotodama](/fr/reference/kotodama-diagnostics.md).
 
 La première version ne prend en charge que la version 1 de ABI. La politique syscall et pointeur-ABI est un contrat V1 inconditionnel appliqué lors de l'admission et de l'exécution ; il n'existe aucun mode d'exécution logicielle alternatif.
 
@@ -44,6 +46,18 @@ Utilisez un contrat intelligent lorsque la transaction nécessite une logique in
 - un engagement en matière de politique gazière
 
 La preuve lie la superposition au bytecode exécuté. Selon la politique de la chaîne de traitement, les validateurs peuvent vérifier la preuve et rejouer l'exécution comme contrôle de sécurité supplémentaire.
+
+## Appels système IVM {#ivm-syscalls}
+
+Le bytecode IVM invoque l'hôte au moyen d'appels système numérotés. Les appels système de la version 1 de l'ABI ci-dessous sont générés à partir du code source épinglé d'Iroha.
+
+::: details Appels système de la version 1 de l'ABI
+
+```generated-reference
+ivm-syscalls
+```
+
+:::
 
 ## Appels de contrat déployé {#deployed-contract-calls}
 

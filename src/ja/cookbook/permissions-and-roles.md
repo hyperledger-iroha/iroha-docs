@@ -1,9 +1,9 @@
 ---
 translation_locale: ja
 translation_source: /cookbook/permissions-and-roles.md
-translation_source_hash: 8d6fd7101094ba21cfc2c5fb9a89d2acd7e67f13ff47b9f8c8e01bbbd7bf2836
+translation_source_hash: 40fe8b19344d8eff66b178dc8576e2e049fef50bd3212fbddc5c0d5f7f37fa03
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # 権限と役割 {#permissions-and-roles}
@@ -14,13 +14,12 @@ translation_engine: bing-translator-llm
 
 ## 前提条件 {#prerequisites}
 
-- 資金提供された Taira クライアントと[Taira に接続する](./connect-to-taira.md)からの手数料メタデータ。
+- [Taira に接続する](./connect-to-taira.md) で用意した、資金提供済みの Taira クライアント。
 - `TARGET_ACCOUNT` と `DELEGATE_ACCOUNT` が正規の I105 アカウントID に設定されました。
-- 署名アカウントは、対象の権限およびロールを管理できるようにする必要があります。Taira では、これは権限が制限された管理操作です。スコープ付き権限を付与するために必要な `CanManageRoles` および認可プリンシパルを取得するか、生成されたローカルネットワーク上でレシピを実行してください。
+- 署名アカウントは `CanManageRoles` を保持し、かつスコープ付き権限を委任できる必要があります。つまり、`TARGET_ACCOUNT` 自身であるか、そのアカウントに対する `CanModifyAccountMetadata` をすでに保持している必要があります。Taira では、これは権限が制限された管理操作です。生成されたローカルネットのクライアントは `CanManageRoles` を保持していないため、このレシピにはジェネシスでそれを付与するネットワークが必要です。
 
 ```bash
 CONFIG=./taira.client.toml
-FEE_METADATA=./taira.tx-metadata.json
 ROLE_ID=cookbook_metadata_editors
 test -n "$TARGET_ACCOUNT"
 test -n "$DELEGATE_ACCOUNT"
@@ -36,12 +35,11 @@ DELEGATE_CONFIG=./taira.delegate.toml
 
 ### 1. 空の役割を登録する {#_1-register-an-empty-role}
 
-すべての状態を変更する CLI コマンドは、手数料の支払者を明示的に指定します。メタデータファイルには、テストネットの資金提供サービスの応答から派生した現在の Taira 手数料資産が含まれています。
+すべての状態を変更する CLI コマンドは、手数料の支払者を明示的に指定します。CLI は署名前に、Taira の手数料資産で表した正確な手数料の見積もりを提示します。
 
 ```bash
 iroha --config "$CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
   ledger role register --id "$ROLE_ID"
 ```
 
@@ -54,7 +52,6 @@ jq -cn --arg account "$TARGET_ACCOUNT" \
   '{name:"CanModifyAccountMetadata",payload:{account:$account}}' |
   iroha --config "$CONFIG" \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
     ledger role permission grant --id "$ROLE_ID"
 ```
 
@@ -63,8 +60,7 @@ jq -cn --arg account "$TARGET_ACCOUNT" \
 ```bash
 iroha --config "$CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
-  ledger account role grant \
+  account role grant \
   --id "$DELEGATE_ACCOUNT" \
   --role "$ROLE_ID"
 ```
@@ -79,13 +75,12 @@ iroha --config "$CONFIG" \
 printf '"delegated"\n' |
   iroha --config "$DELEGATE_CONFIG" \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
-    ledger account meta set \
+    account meta set \
     --id "$TARGET_ACCOUNT" \
     --key cookbook_access
 ```
 
-同じモデルは Rust のクライアントにも利用可能です。ここで`client`が`registrar_account`として署名し、CLI のフローと同様に、そのロールの初期所有者となります。3つのアカウント変数はすでに`AccountId`の値として解析されています：
+同じモデルは Rust のクライアントにも利用可能です。ここで `client` は `registrar_account` として署名する `iroha::blocking::Client` です。CLI のフローと同様に、このアカウントがロールの初期所有者となります。3つのアカウント変数はすでに`AccountId`の値として解析されています：
 
 ```rust
 use iroha::data_model::{prelude::*, transaction::FeePaymentIntent};
@@ -98,7 +93,7 @@ let role = Role::new(role_id.clone(), registrar_account).add_permission(
     },
 );
 
-client.submit_all_blocking::<InstructionBox>(
+client.submit_all::<InstructionBox>(
     [
         Register::role(role).into(),
         Grant::account_role(role_id, delegate_account).into(),
@@ -109,32 +104,35 @@ client.submit_all_blocking::<InstructionBox>(
 
 ## 確認する {#verify}
 
-課題の両面をリストアップし、次に代表者が書いた正確な値を読みなさい：
+ロールによる付与を含む代理人の実効権限を読み取り、次に代理人が書いた正確な値を読み取ってください：
 
 ```bash
-iroha --config "$CONFIG" ledger role permission list --id "$ROLE_ID"
-iroha --config "$CONFIG" ledger account role list --id "$DELEGATE_ACCOUNT"
+iroha --config "$CONFIG" --machine account permission list \
+  --id "$DELEGATE_ACCOUNT" --all \
+  | jq -e --arg account "$TARGET_ACCOUNT" \
+    '.items | any(.name == "CanModifyAccountMetadata"
+      and .payload.account == $account)'
 
-iroha --config "$CONFIG" ledger account meta get \
+iroha --config "$CONFIG" account meta get \
   --id "$TARGET_ACCOUNT" \
   --key cookbook_access
 ```
 
-許可リストには `CanModifyAccountMetadata` が `TARGET_ACCOUNT` にスコープされて含まれている必要があり、代理人の役割リストには `ROLE_ID` が含まれている必要があり、メタデータの読み取りは `"delegated"` を返す必要があります。
+代理人の実効権限には `TARGET_ACCOUNT` にスコープされた `CanModifyAccountMetadata` が含まれている必要があり、メタデータの読み取りは `"delegated"` を返す必要があります。Torii は署名付きクエリによるロール一覧の取得を拒否するため、実効権限の一覧が割り当ての確認になります。
 
 ## トラブルシューティング {#troubleshooting}
 
-- `Not permitted` を登録、編集、または役割を割り当てる際には、暗号署名者が必要な Taira 認可プリンシパルを持っていないことを意味します。スコープ付きトークンをグローバルなものに置き換えないでください。正確な権限を要求するか、localnet を使用してください。
+- ロールの登録、編集、または割り当て時の `Not permitted` は、暗号署名者が必要な Taira 認可プリンシパルを持っていないことを意味します。スコープ付きトークンをグローバルなものに置き換えないでください。正確な権限の付与を要求してください。
 - ペイロード解析エラーは通常、`account` が `payload` の横に置かれた、エイリアスが I105 ID の代わりに供給された、または JSON の値が二重に引用符で囲まれたことを意味します。
-- 料金の拒否は、そのステップを提出する暗号署名者に属します。マネージャーに資金を提供し、独立して委任し、フォーセットから得られた料金資産のメタデータを保持してください。
+- 手数料の拒否は、そのステップを提出する暗号署名者に属します。マネージャーと代理人には、それぞれの手数料見積もりで示された手数料資産で、個別に資金を提供してください。
 - 成功したロールの付与は、そのトークンにエンコードされたスコープを上書きすることはありません。このロールは、権限ペイロードに名前が記載されたアカウントのみを変更できます。
-- クリーンアップするには、まず `ledger account role revoke` を実行し、次に `ledger role permission revoke` を実行し、最後に `ledger role unregister` を実行してください。各操作は別々の書き込みで、`--fee-payer authority` と手数料のメタデータを含める必要があります。
+- クリーンアップするには、まず `account role revoke` を実行し、次に `ledger role permission revoke` を実行し、最後に `ledger role unregister` を実行してください。各操作は別々の書き込みで、`--fee-payer authority` を含める必要があります。
 
 ## ソースおよび関連文書 {#source-and-related-docs}
 
-- [固定されたソースコードのリビジョンでの役割統合テスト](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/roles.rs)
-- [固定されたソースコードのリビジョンでの権限統合テスト](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/permissions.rs)
-- [ピン留めされたソースコードのリビジョンにおける組み込みの権限データモデル](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/permission.rs)
+- [固定されたソースコードのリビジョンでの役割統合テスト](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/roles.rs)
+- [固定されたソースコードのリビジョンでの権限統合テスト](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/permissions.rs)
+- [ピン留めされたソースコードのリビジョンにおける組み込みの権限データモデル](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_executor_data_model/src/permission.rs)
 - [権限と役割](/ja/blockchain/permissions.md)
 - [許可トークンの参照](/ja/reference/permissions.md)
 - [メタデータ](./metadata.md)

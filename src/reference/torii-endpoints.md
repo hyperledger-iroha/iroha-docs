@@ -574,7 +574,7 @@ The current
 implements a transparent, authenticated one-to-one meeting profile. It does
 not expose the protocol's `zk-roster-v1` proof flow. Its renderer creates
 WebRTC offers and answers, while a privileged bridge uses the local
-[`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js)
+[`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js)
 checkout to quote, sign, submit, and wait for finalized Kaigi transactions.
 
 See [Embed Kaigi in a JavaScript App](/guide/tutorials/kaigi.md) for the
@@ -644,6 +644,6 @@ iroha --config ./localnet/client.toml --operator-private-key-file "$IROHA_OPERAT
 
 ## Upstream References
 
-- [README API and observability overview](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/README.md)
-- [ISO 20022 bridge implementation](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/iso20022_bridge.rs)
+- [README API and observability overview](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/README.md)
+- [ISO 20022 bridge implementation](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/iso20022_bridge.rs)
 - [Performance and metrics](/guide/advanced/metrics.md)

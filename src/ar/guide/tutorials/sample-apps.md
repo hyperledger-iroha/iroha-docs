@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 4979ab2c52eba4040d7f003f3da73dbc333fa7e047b0259816d0d34f97377749
+translation_source_hash: c1432d8d2483f67b6ab81680f6c5457cab470db7944512626242a1446a7d501f
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -12,7 +12,7 @@ translation_engine: bing-translator-llm
 
 ## JavaScript وصفات {#javascript-recipes}
 
-[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes) يحتوي على أمثلة مركزة لتجميع المعاملات الحتمية، Nexus تحويلات التطبيق, NFT وتكرار الحساب، ISO تدفقات الجسر، و Torii البث المباشر. كل وصفة توثق ما إذا كانت تعمل بدون اتصال أو تحتاج إلى بث مباشر Torii API نقطة النهاية.
+[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes) يحتوي على أمثلة مركزة لتجميع المعاملات الحتمية، Nexus تحويلات التطبيق, NFT وتكرار الحساب، ISO تدفقات الجسر، و Torii البث المباشر. كل وصفة توثق ما إذا كانت تعمل بدون اتصال أو تحتاج إلى بث مباشر Torii API نقطة النهاية.
 
 ## Swift ونظام iOS {#swift-and-ios}
 

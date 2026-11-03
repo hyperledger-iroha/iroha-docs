@@ -1,41 +1,28 @@
 ---
 translation_locale: zh-hant
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: f1ea542f7a710830cd32465d141db8452e6418d426500995b9df7c9c4e1fd597
+translation_source_hash: ca6fd12e33df43b73a72dd6327133115aa44256cf579387c11bf0693797bf96e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # 建立和部署智慧合同 {#build-and-deploy-a-smart-contract}
 
 ## 結果 {#outcome}
 
-檢查和編譯 Kotodama V1 合同,本地執行其公開入口點,部署驗證的 IVM 構件,模擬部署的入口點並以明確報價的機構支付費用提交.
+檢查並編譯 Kotodama V1 合約，在本機執行其公開的檢視函式，使用明確選擇、由授權主體支付的費用部署已驗證的 IVM 構件，並透過 Torii 讀取已部署的檢視函式。
 
 ## 預先條件 {#prerequisites}
 
-- 簽出到提交 `0010c5a70039eac101a4846499ba9ceaf43eb65c` 的 Iroha 原始碼、Rust 和 Cargo。
-- 目前的 `iroha` CLI，以及透過[連線到 Taira](./connect-to-taira.md)取得的已注資 Taira 使用者端。
-- `IROHA_CONFIG` 和 `IROHA_PRIVATE_KEY_FILE` 中必須使用絕對路徑。金鑰檔案必須由擁有者保管，是硬連結數為 1、許可權模式為 `0600` 的一般檔案；部署輔助程式刻意不提供內嵌私鑰引數。
-- Taira 營運商批准。註冊合約程式碼需要 `CanRegisterSmartContractCode`，受保護的部署還可能需要治理歸屬和頒布。如果 Taira 尚未授予此存取權，請在創世設定已授予該許可權的產生式本地網路上執行部署。
+- 簽出到提交 `c8c872461e92f04325c350cdd952f4276e96f9dc` 的 Iroha 原始碼、Rust 和 Cargo。
+- 目前的 `iroha` CLI 和 `musubi`（在原始碼工作副本中以 `cargo run -p musubi --` 執行），以及透過[連線到 Taira](./connect-to-taira.md)取得的已注資 Taira 使用者端。
+- `IROHA_CONFIG` 中必須使用絕對路徑。Musubi 的網路繫結會儲存對此使用者端檔案的參照，並以該檔案中的帳戶金鑰簽署部署。
+- 別名權限。執行器要求針對確切的合約別名或其上層範圍持有 `CanManageAccountAlias`：對於 `name::domain.dataspace` 是所屬域名，對於 `name::dataspace` 則是資料空間。已註冊帳戶不需要另外的程式碼註冊許可權，而受保護的命名空間還需要經過網路的治理流程。範例使用 `cookbook_tuple::universal`；在 Taira 上，請將其替換為您擁有的域名中的別名，或在創世設定已授予該別名範圍的產生式本地網路上部署。
 
 ```bash
-TORII_URL=https://taira.sora.org
 IROHA_SOURCE=/absolute/path/to/iroha
 IROHA_CONFIG=/absolute/path/to/taira.client.toml
-IROHA_PRIVATE_KEY_FILE=/absolute/path/to/taira-private-key.txt
-test -n "$TAIRA_ACCOUNT_ID"
-test -f "$IROHA_PRIVATE_KEY_FILE"
-
-CHAIN_ID="$({
-  python3 - "$IROHA_CONFIG" <<'PY'
-import sys
-import tomllib
-
-with open(sys.argv[1], "rb") as config_file:
-    print(tomllib.load(config_file)["chain"])
-PY
-})"
+test -f "$IROHA_CONFIG"
 ```
 
 ## 步驟 {#steps}
@@ -46,12 +33,12 @@ PY
 
 ```bash
 cd "$IROHA_SOURCE"
-mkdir -p ./contracts ./build/deployment
+mkdir -p ./contracts ./build
 cp ./crates/kotodama_lang/src/samples/tuple_return_demo.ko \
   ./contracts/tuple_return_demo.ko
 ```
 
-完整的來源小,使用當前的 `seiyaku`/`kotoage`語法:
+完整的原始碼很短：一個私有輔助 `fn`，以及一個明確允許所有呼叫者的公開唯讀 `view fn`：
 
 ```kotodama
 seiyaku TupleReturnDemo {
@@ -60,7 +47,7 @@ seiyaku TupleReturnDemo {
         return t;
     }
 
-    kotoage fn compute() -> (int, int) authorize("Entry") {
+    view fn compute() authorize(anyone) -> (int, int) {
         let p = pair(a: 3, b: 5);
         return (p.0, p.1);
     }
@@ -72,16 +59,16 @@ Kotodama 針對 Iroha 虛擬機器及其當前的 ABI.它不是一個 WASM 或 E
 ### 2. 檢查,建造和驗證構件 {#_2-check-build-and-verify-the-artifact}
 
 ```bash
-cargo run -p ivm --bin koto -- \
+cargo run -p kotodama_toolchain --bin koto -- \
   check ./contracts/tuple_return_demo.ko
 
-cargo run -p ivm --bin koto -- \
+cargo run -p kotodama_toolchain --bin koto -- \
   build \
   --out ./build/tuple_return_demo.to \
   --manifest-out ./build/tuple_return_demo.manifest.json \
   ./contracts/tuple_return_demo.ko
 
-cargo run -p ivm --bin koto -- \
+cargo run -p kotodama_toolchain --bin koto -- \
   build \
   --out ./build/tuple_return_demo.to \
   --manifest-out ./build/tuple_return_demo.manifest.json \
@@ -93,82 +80,90 @@ cargo run -p ivm --bin koto -- \
 
 ### 3. 在本地執行位元組碼 {#_3-run-the-bytecode-locally}
 
-`compute`是一個公開的 `kotoage`入口點.使用`debug-call`執行,該系統在沒有提交或支付交易的情況下執行與本機測試資料相對.
+`compute` 是一個公開的唯讀 `view fn`。使用 `debug-view` 執行它；它會在本機針對可選的測試資料執行已編譯的位元組碼，而不提交交易或支付交易費用。
 
 ```bash
-iroha --config "$IROHA_CONFIG" --machine contract debug-call \
+iroha --config "$IROHA_CONFIG" --machine contract debug-view \
   --code-file ./build/tuple_return_demo.to \
   --entrypoint compute \
-  > ./build/local-call.json
+  > ./build/local-view.json
 
 jq -e '.ok == true and .result == ["3", "5"]' \
-  ./build/local-call.json
+  ./build/local-view.json
 ```
 
 Kotodama 整數被呈現為 JSON 字串,因此解碼的tuple是 `["3", "5"]`.
 
-### 4. 透過本地助手部署 {#_4-deploy-through-the-native-helper}
+### 4. 使用 Musubi 部署已驗證的構件 {#_4-deploy-the-verified-artifact-with-musubi}
 
-助手上傳位元組程式碼塊,註冊簽署的清單,並提交一個 `CommitContractDeployment`操作.它收費報價每筆交易,拒絕改變選擇付款人或加油繫結的報價.
+`iroha contract` 可以檢查、檢視和除錯合約，但不會部署合約，因此 Taira 上的部署要透過 Musubi 進行。其部署服務會上傳位元組碼區塊、註冊已驗證的清單，並提交一個 `CommitContractDeployment` 操作。它會為每筆交易取得報價，拒絕任何會改變所選付款人、贊助方修訂版本或 gas 上限的報價，並且只有在鎖定的套件建置重現其程式碼雜湊與 ABI 雜湊之後，才會部署預先建置的構件。在由 Kagami 管理的本地網路上，則改用 `kagami contract deploy` 以 `--alias cookbook_tuple::universal --json` 部署 `./build/tuple_return_demo.to`；其收據位於 `.receipt` 下，而 `kagami context show` 會列印要作為 `IROHA_CONFIG` 使用的使用者端設定。
 
 ```bash
-printf '%s\n' \
-  '{"payer":"authority","value":{"charge_limits":[],"gas_limit":1500000}}' \
-  > ./build/fee-payment.json
+cat > ./contracts/Musubi.toml <<'TOML'
+manifest-version = 1
 
-cargo run -p iroha_cli --bin ivm_contract_deploy -- \
-  --torii-url "$TORII_URL" \
-  --chain-id "$CHAIN_ID" \
-  --authority "$TAIRA_ACCOUNT_ID" \
-  --private-key-file "$IROHA_PRIVATE_KEY_FILE" \
-  --code-file ./build/tuple_return_demo.to \
-  --contract-alias cookbook_tuple::universal \
-  --fee-payment-json ./build/fee-payment.json \
-  --out-dir ./build/deployment \
+[package]
+namespace = "local"
+name = "cookbook-tuple"
+version = "0.1.0"
+edition = "1"
+abi-version = 1
+
+[[contract]]
+name = "tuple_return_demo"
+path = "tuple_return_demo.ko"
+TOML
+
+cargo run -p musubi -- --manifest-path ./contracts/Musubi.toml check
+
+cargo run -p musubi -- --manifest-path ./contracts/Musubi.toml \
+  network configure taira \
+  --config "$IROHA_CONFIG" \
+  --fee-payer authority \
+  --contract tuple_return_demo \
+  --alias cookbook_tuple::universal
+
+cargo run -p musubi -- --manifest-path ./contracts/Musubi.toml --format json \
+  deploy --network taira \
+  --contract tuple_return_demo \
+  --artifact ./build/tuple_return_demo.to \
+  --artifact-manifest ./build/tuple_return_demo.manifest.json \
   > ./build/deployment.json
 
-jq '{contract_address, code_hash_hex, final, fee_quotes}' \
+jq '.data.receipt | {contract_address, code_hash, stored_artifact_matches}' \
   ./build/deployment.json
 ```
 
-空的 `charge_limits` 請求不是複製來的資產識別碼：輔助程式會在簽署前接受精確的即時報價。請將傳回的收費資產與目前的 faucet 回應比較。合約呼叫只透過具型別的即時報價接受費用選擇；`gas_asset_id` 交易 metadata 並非首個版本合約的一部分。
+此繫結使用 `--fee-payer authority`；Musubi 會在簽署前給出以 Taira 費用資產計價的確切費用報價。請將傳回的收費資產與目前水龍頭政策公布的資產比較。合約呼叫只透過具型別的即時報價接受費用選擇；`gas_asset_id` 交易 metadata 並非首個版本合約的一部分。
 
-### 5. 模擬並呼叫部署的入口點 {#_5-simulate-and-call-the-deployed-entrypoint}
+### 5. 讀取已部署的檢視函式 {#_5-read-the-deployed-view}
 
-模擬在 Torii 上執行公共入口點,沒有提交.下面的呼叫是交易,因此明確選擇授權主體費付款人.這兩項命令都繫結了1500000個gas限制.
+`contract view` 會在 Torii 上執行唯讀入口點，不需要交易或費用。檢視函式沒有交易形式：Torii 會在其呼叫路由上拒絕檢視選擇器。
 
 ```bash
-iroha --config "$IROHA_CONFIG" --machine contract call \
-  --simulate \
+iroha --config "$IROHA_CONFIG" --machine contract view \
   --contract-alias cookbook_tuple::universal \
   --entrypoint compute \
   --gas-limit 1500000 \
-  > ./build/deployed-simulation.json
+  > ./build/deployed-view.json
 
 jq -e '.ok == true and .result == ["3", "5"]' \
-  ./build/deployed-simulation.json
-
-iroha --config "$IROHA_CONFIG" \
-  --machine \
-  --fee-payer authority \
-  contract call \
-  --contract-alias cookbook_tuple::universal \
-  --entrypoint compute \
-  --gas-limit 1500000 \
-  --wait \
-  --timeout-ms 60000 \
-  > ./build/deployed-call.json
-
-jq -e '.terminal_kind == "Applied"' ./build/deployed-call.json
+  ./build/deployed-view.json
 ```
 
 ## 驗證 {#verify}
 
-透過返回的程式碼雜湊來搜尋鏈上的清單,並透過規範地址模擬相同的公開入口點:
+解析別名，依 Torii 為已部署檢視函式回報的程式碼雜湊取得鏈上清單，並透過規範地址執行相同的檢視函式：
 
 ```bash
-CODE_HASH="$({ jq -er '.code_hash_hex' ./build/deployment.json; })"
-CONTRACT_ADDRESS="$({ jq -er '.contract_address' ./build/deployment.json; })"
+CONTRACT_ADDRESS="$({
+  jq -er '.data.receipt.contract_address' ./build/deployment.json
+})"
+CODE_HASH="$({ jq -er '.code_hash_hex' ./build/local-view.json; })"
+DEPLOYED_CODE_HASH="$({
+  jq -er '.code_hash_hex' ./build/deployed-view.json
+})"
+test "$DEPLOYED_CODE_HASH" = "$CODE_HASH"
 
 RESOLVED_ADDRESS="$({
   iroha --config "$IROHA_CONFIG" --machine \
@@ -178,36 +173,36 @@ RESOLVED_ADDRESS="$({
 test "$RESOLVED_ADDRESS" = "$CONTRACT_ADDRESS"
 
 iroha --config "$IROHA_CONFIG" contract manifest get \
+  --dataspace-id 0 \
   --code-hash "$CODE_HASH" \
   --out ./build/on-chain-manifest.json
 
-iroha --config "$IROHA_CONFIG" --machine contract call \
-  --simulate \
+iroha --config "$IROHA_CONFIG" --machine contract view \
   --contract-address "$CONTRACT_ADDRESS" \
   --entrypoint compute \
-  > ./build/address-simulation.json
+  > ./build/address-view.json
 
 jq -e '.ok == true and .result == ["3", "5"]' \
-  ./build/address-simulation.json
+  ./build/address-view.json
 ```
 
-部署只有當別名解決返回地址時才完成,清單可在相同的程式碼雜湊下讀取,本地和 Torii 模擬返回 `["3", "5"]`,提交的呼叫達到 `Applied`.
+只有當部署收據回報已儲存的構件為已驗證、別名解析為傳回的地址、清單可在相同的程式碼雜湊下讀取，且本機與 Torii 的檢視結果都返回 `["3", "5"]` 時，部署才算完成。
 
 ## 解決問題 {#troubleshooting}
 
-- `CanRegisterSmartContractCode`失敗需要一個 Taira 運營商授權或在 localnet上發生/啟動鏈變化.正常帳戶不能自行授予此許可事實後.
-- 管理或受保護通道拒絕意味著部署需要該網路所要求的準確批准屬性.協調批准者列表;不要創作帳戶 IDs.
-- 一個明示或 ABI 不匹配意味著位元組碼,明示和節點執行階段沒有描述相同的構件.重建與 `--verify` 固定的提交.
+- `deployment authority lacks CanManageAccountAlias` 或執行器的 `authority is not permitted to manage contract alias` 表示該帳戶不得繫結該別名。請使用您擁有的域名中的別名，或從該範圍的所有者取得確切的別名授權或其域名或資料空間授權；在本地網路上，則在創世中授予。
+- 受保護命名空間的拒絕表示該別名命名空間受治理約束。列出批准者帳戶 ID 並不能作為批准證據；請針對該命名空間使用網路的治理流程（`iroha app gov deploy propose`），或選擇該命名空間以外的別名。
+- 清單或 ABI 不相符表示位元組碼、清單和節點執行環境描述的不是同一個構件。請在固定的提交上重新建置，然後使用 `--verify` 再次執行建置。
 - `fee quote changed ... gas bound` 表示所要求的輸入意圖和現場報價不同意見.重新預期,而不是修改簽署交易.
-- 部署輔助器在網路提交之前拒絕內線鍵,允許鍵檔案模式,符號連結和複製連結的檔案.
-- 只有檢視輸入點的錯誤意味著 `compute` 透過錯誤的命令家族進行了路由. 這個樣本宣告`kotoage`,所以使用呼叫模擬或提交.
+- 中斷的部署會將其已簽署的計畫保存在日誌中。請使用 `musubi deploy --resume <JOURNAL>` 復原，而不是簽署新的計畫。
+- `is read-only and cannot be invoked as a transaction` 或 `is not a kotoage or lifecycle entrypoint` 表示 `compute` 被送到了呼叫命令。此範例宣告的是 `view fn`，因此請在本機使用 `debug-view`，在 Torii 上使用 `view`。
 - 合同呼叫需要正型gas限制.第一次釋出的呼叫合約拒絕最高階別的gas或費用資產後設資料.
 
 ## 來源及相關檔案 {#source-and-related-docs}
 
-- [Kotodama V1 命令的執行在固定提交上](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
-- [在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)的雙重返回源樣本
-- [在固定提交中本地部署輔助員](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [合同整合測試在固定提交上](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
+- [固定提交中的 Kotodama V1 命令實作](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_toolchain/src/bin/koto.rs)
+- [在固定提交](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/tuple_return_demo.ko)的雙重返回源樣本
+- 固定提交中的 [Musubi 部署命令](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/musubi/src/command_deploy.rs) 與[原生合約部署服務](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_contract_deploy/src/lib.rs)
+- [合同整合測試在固定提交上](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/contracts.rs)
 - [智慧合同](/zh-hant/blockchain/smart-contracts.md)
 - [CLI 引用](/zh-hant/get-started/operate-iroha-via-cli.md)

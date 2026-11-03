@@ -1,9 +1,9 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/multisig.md
-translation_source_hash: e1b57e1c4310dd0db8be8d9f5a15e1d4f693abb90b634772857eb4b1e86e4baf
+translation_source_hash: 7fca7feca0c27d41a14d1c38497c23aa9f1afe37c5ac19cd8e79c487dc35cc5e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Ваҡланған мультисиг {#weighted-multisig}
@@ -16,14 +16,13 @@ Taira иҫәбендә өс кешенән торған күп һанлы иҫә
 
 - Өс каноник I105 ҡултамғалаусы IDs үҙ эсенә `SIGNER_A`, `SIGNER_B`, һәм `SIGNER_C`.
 - A һәм C ҡултамғасылары өсөн финансланған Taira конфигурациялар. Тәҡдим итеүсе һәм һәр раҫлаусы үҙ транзакцияһы өсөн түләй.
-- `taira.tx-metadata.json` хәҙерге faucet яуаптан яһалған, бер ҡасан да күсергән түләү активтан ID.
-- А Rust клиент проекты шул уҡ Iroha сығанаҡ ревизияһы Taira һуңғараҡ тәҡдим һәм раҫлау этаптарында ҡулланыу CLI.
+- CLI аша яҙыуҙар `--fee-payer authority` ҡуллана; CLI ҡул ҡуйыр алдынан теүәл комиссияны Taira-ның түләү активында иҫәпләп күрһәтә.
+- Теркәү аҙымы өсөн `iroha` һәм `iroha_model_base` пакеттарына бәйле, Taira менән бер үк Iroha сығанаҡ ревизияһына беркетелгән Rust клиент проекты. Һуңғыраҡ тәҡдим һәм раҫлау аҙымдары CLI ҡуллана.
 - Хәҙерге башҡарыусының күп миҡдарлы функцияһы булдырылған. Регистрация ябай иҫәптәр өсөн алдан билдәләнгән ваҡытта Iroha 3 эшләй, әммә Taira сәйәсәте һәм түләү ҡабул итеүе һаман да ғәмәлдә; әгәр йәмәғәт ҡулланыу уны инҡар итһә, localnet ҡулланығыҙ.
 
 ```bash
 SIGNER_A_CONFIG=./taira.signer-a.toml
 SIGNER_C_CONFIG=./taira.signer-c.toml
-FEE_METADATA=./taira.tx-metadata.json
 test -n "$SIGNER_A"
 test -n "$SIGNER_B"
 test -n "$SIGNER_C"
@@ -33,7 +32,7 @@ test -n "$SIGNER_C"
 
 ### 1. Күләмле сәйәсәт яҙыу {#_1-register-a-weighted-policy}
 
-C-ның ауырлығы 2; A һәм B-ҙың һәр береһенең ауырлығы 1. Шуға күрә 3-тән торған кворум өсөн C плюс A йәки B талап ителә. Теркәлгәнгә тиклем шул уҡ сәйәсәттән каноник иҫәпте сығарығыҙ, һуңынан шул уҡ баһаны `MultisigRegister::with_account`ҡа күсерегеҙ:
+C ҡул ҡуйыусыһының ауырлығы 2; A һәм B-ның һәр береһенең ауырлығы 1. Шуға күрә 3 кворумы өсөн C һәм A йәки B кәрәк. Бында `registrar` — `iroha::blocking::Client`, уның `submit` методы Applied һуңғы торошона етеүен көтә. Теркәүгә тиклем каноник иҫәпте нәҡ шул сәйәсәттән сығарып алығыҙ, һуңынан шул уҡ ҡиммәтте `MultisigRegister::with_account`-ҡа бирегеҙ:
 
 ```rust
 use std::{collections::BTreeMap, num::{NonZeroU16, NonZeroU64}};
@@ -44,9 +43,11 @@ use iroha::{
         transaction::FeePaymentIntent,
     },
     executor_data_model::isi::multisig::{
-        MultisigApprove, MultisigPropose, MultisigRegister, MultisigSpec,
+        MultisigApprove, MultisigProposalId, MultisigProposalNonce,
+        MultisigPropose, MultisigRegister, MultisigSpec,
     },
 };
+use iroha_model_base::domain::DomainId;
 
 let spec = MultisigSpec::new(
     BTreeMap::from([
@@ -77,7 +78,7 @@ let register = MultisigRegister::with_account(
     spec,
 );
 
-registrar.submit_blocking::<InstructionBox>(
+registrar.submit::<InstructionBox>(
     register.into(),
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
@@ -91,16 +92,16 @@ MULTISIG_ACCOUNT='<POLICY_DERIVED_I105_ACCOUNT_ID>'
 test -n "$MULTISIG_ACCOUNT"
 ```
 
-CLI теркәлеү командаһы, ҡағыҙланған commit-та, уның ваҡытлыса орлоғон яҙҙыра. был орлоҡто контроллер сифатында ҡабаттан файҙаланмағыҙ. контроллерҙың шәхси асҡысы юҡ: multisig власы тик раҫланған тәҡдимдәрҙән килә.
+Ҡуйылған commit-та CLI теркәү командаһы ваҡытлыса орлоғон башҡарыу мөхите асҡысты яңыһына алыштырғансы баҫтырып сығара. Был орлоҡто контроллер итеп ҡабат ҡулланмағыҙ. Контроллерҙың шәхси асҡысы юҡ: multisig вәкәләте тик раҫланған тәҡдимдәрҙән генә килә. Уның урынына CLI аша теркәү өсөн сәйәсәттән сығарылған ҡиммәтте `ledger multisig register --account`-ҡа бирегеҙ.
 
 ### 2. Берәр күрһәтмәне тапшырмайынса төҙөгөҙ. {#_2-build-one-instruction-without-submitting-it}
 
-Глобаль `-o` коммутатор инструкциялар массивын стандарт сығарылышҡа сериаллаштыра. Ул бер транзакцияны ла индермәй һәм шуның өсөн түләү түләмәй.
+Глобаль `--emit-instructions` флагы инструкциялар массивын тапшырыу урынына стандарт сығарылышҡа баҫтыра, шуға күрә ул комиссия түләмәй.
 
 ```bash
 printf '"approved"\n' |
-  iroha --config "$SIGNER_A_CONFIG" -o \
-    ledger account meta set \
+  iroha --config "$SIGNER_A_CONFIG" --emit-instructions \
+    account meta set \
     --id "$MULTISIG_ACCOUNT" \
     --key cookbook_quorum \
   > multisig-instructions.json
@@ -110,25 +111,32 @@ jq . multisig-instructions.json
 
 ### 3. "А" тип тәҡдим итегеҙ. {#_3-propose-as-signer-a}
 
-Тәҡдим итеүсе үҙенән-үҙе үҙенең ауырлығын индерә. CLI тарафынан баҫтырылған теүәл инструкция хешын ҡуллана; хуплауҙар шул хешҡа бәйләнә.
+Тәҡдим итеүсе үҙ ауырлығын автоматик рәүештә индерә. Тәҡдим өсөн яңы бер тапҡырлыҡ һан (nonce) булдырығыҙ һәм уны теләһә ниндәй ҡабатлау өсөн һаҡлағыҙ. CLI баҫтырған тәҡдим ID-һын һәм инструкция хешын яҙып алығыҙ; раҫлауҙар уларҙың икеһенә лә бәйләнә.
 
 ```bash
+PROPOSAL_NONCE="$(openssl rand -hex 32)"
 PROPOSE_OUTPUT="$({
   iroha --config "$SIGNER_A_CONFIG" \
     --output-format text \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
     ledger multisig propose \
+    --proposal-nonce "$PROPOSAL_NONCE" \
     --account "$MULTISIG_ACCOUNT" \
     < multisig-instructions.json
 })"
 printf '%s\n' "$PROPOSE_OUTPUT"
 
+PROPOSAL_ID="$({
+  printf '%s\n' "$PROPOSE_OUTPUT" |
+    sed -n 's/^proposal_id: //p' |
+    head -n 1
+})"
 INSTRUCTIONS_HASH="$({
   printf '%s\n' "$PROPOSE_OUTPUT" |
     sed -n 's/^instructions_hash: //p' |
     head -n 1
 })"
+test -n "$PROPOSAL_ID"
 test -n "$INSTRUCTIONS_HASH"
 ```
 
@@ -146,13 +154,13 @@ A-ның 1 ауырлығы менән C-ның 2 ауырлығы quorum 3-кә
 ```bash
 iroha --config "$SIGNER_C_CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
   ledger multisig approve \
   --account "$MULTISIG_ACCOUNT" \
+  --proposal-id "$PROPOSAL_ID" \
   --instructions-hash "$INSTRUCTIONS_HASH"
 ```
 
-Rust клиенты шул уҡ сәйәсәт иҫәбенә һәм юғарыла ҡулланылған ике йәшәү циклы күрһәтмәләре менән дауам итә ала:
+Rust клиенты сәйәсәттән сығарылған шул уҡ иҫәп һәм юғарыла ҡулланылған ике тормош циклы инструкцияһы менән дауам итә ала. Һәр ҡул ҡуйыусы клиент — `iroha::blocking::Client`; тәҡдим ID-һы клиенттың селтәренән, multisig иҫәбенән һәм яңы бер тапҡырлыҡ һандан (nonce) сығарыла:
 
 ```rust
 let instructions = vec![SetKeyValue::account(
@@ -161,12 +169,26 @@ let instructions = vec![SetKeyValue::account(
     Json::from("approved"),
 ).into()];
 let instructions_hash = HashOf::new(&instructions);
-signer_a_client.submit_blocking::<InstructionBox>(
-    MultisigPropose::new(multisig_account.clone(), instructions, None).into(),
+// A fresh nonzero nonce, for example from `openssl rand -hex 32`.
+let proposal_nonce: MultisigProposalNonce = "<FRESH_64_HEX_NONCE>".parse()?;
+let proposal_id = MultisigProposalId::derive(
+    signer_a_client.client().network_id(),
+    &multisig_account,
+    &proposal_nonce,
+);
+signer_a_client.submit::<InstructionBox>(
+    MultisigPropose::new(
+        multisig_account.clone(),
+        proposal_nonce,
+        instructions,
+        None,
+    )
+    .into(),
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
-signer_c_client.submit_blocking::<InstructionBox>(
-    MultisigApprove::new(multisig_account, instructions_hash).into(),
+signer_c_client.submit::<InstructionBox>(
+    MultisigApprove::new(multisig_account, proposal_id, instructions_hash)
+        .into(),
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 ```
@@ -176,7 +198,7 @@ signer_c_client.submit_blocking::<InstructionBox>(
 Артабанғы мәғлүмәтте уҡығыҙ һәм тәҡдимдең башҡаса тикшерелмәгәнен раҫлағыҙ:
 
 ```bash
-iroha --config "$SIGNER_A_CONFIG" ledger account meta get \
+iroha --config "$SIGNER_A_CONFIG" account meta get \
   --id "$MULTISIG_ACCOUNT" \
   --key cookbook_quorum
 
@@ -189,21 +211,21 @@ iroha --config "$SIGNER_A_CONFIG" ledger multisig inspect \
   jq .
 ```
 
-Метамәғлүмәттәрҙең ҡиммәте `"approved"` булырға тейеш, ҡулланған инструкция хэшиғы башҡаса күреүсән булып күренергә тейеш түгел һәм тикшерелгән контроллер ауырлыҡтарҙы `1, 1, 2` кворум менән күрһәтергә тейеш `3`.
+Метамәғлүмәт ҡиммәте `"approved"` булырға тейеш, яҙып алынған тәҡдим ID-һы һәм инструкция хешы көтөүҙәге тәҡдимдәр араһында башҡа күренмәҫкә тейеш, ә тикшерелгән контроллер `threshold` `3`, `total_weight` `4` һәм ағзаларҙың 1, 1 һәм 2 ауырлыҡтарын күрһәтергә тейеш; ағзалар асыҡ асҡыстар тәртибендә һанала.
 
 ## Проблемаларҙы хәл итеү {#troubleshooting}
 
-- `signatory is not part of multisig` - тәҡдим итеүсе йәки раҫлаусы клиент полиста теркәлгән I105 IDs клиенттарының береһенә тап килмәй.
+- `not qualified to propose multisig` йәки `not qualified to approve multisig` хатаһы тәҡдим итеүсе йәки раҫлаусы клиенттың сәйәсәттә теркәлгән I105 ID-ларының береһенә лә тап килмәүен аңлата.
 - Күп миҡдарлы иҫәпкә тәҡдим ителгән күрһәтмәләрҙе башҡарыу өсөн рөхсәт булмағанда, һуңғы раҫлау кире ҡағыла ала. Күп ҡултамғалы иҫәпкә генә түгел, ә ҡалған ҡултамғалаусыларға рөхсәт итегеҙ.
-- Ҡатнашыла торған тәҡдим булмаһа, кворумға өлгәшелгән булыуы ихтимал. TTL тамамланды, йәки яңылыш инструкция хэш / иҫәп һайлаусыһы ҡулланылды. Тағы бер тапҡыр тәҡдим итер алдынан, дәүләт имтиханын һорағыҙ.
+- Көтөүҙәге тәҡдимдең булмауы кворумға инде өлгәшелгәнен, TTL ваҡыты үткәнен йәки дөрөҫ булмаған тәҡдим ID-һы, инструкция хешы йәки иҫәп һайлағысы ҡулланылғанын аңлатырға мөмкин. Яңы бер тапҡырлыҡ һан (nonce) менән ҡабат тәҡдим итер алдынан һуңғы торошто һорап алығыҙ.
 - Икеләтә раҫлауҙар ауырлыҡ өҫтәмәй. Һәр теркәлгән ҡул ҡуйған кеше үҙенең конфигурацияланған ауырлығын бер тапҡыр ғына индерә.
 - Тура транзакцияға ҡул ҡуйыу контролер булараҡ тыйыла. Һәр ваҡыт `MultisigPropose` һәм `MultisigApprove` ҡулланығыҙ.
 - Әгәр һуңғараҡ командалар CLI теркәү ваҡытында баҫылған иҫәпте таба алмаһа, һеҙ ваҡытлыса орлоҡто алғанһығыҙ. Каноник иҫәбен ҡушҡан сәйәсәттән сығарығыҙ һәм юғарыла күрһәтелгәнсә шул ҡиммәт менән теркәлегеҙ.
 
 ## Сығанаҡ һәм уның менән бәйле документтар {#source-and-related-docs}
 
-- [Пинк commit-та Multisig интеграция һынауҙары](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/multisig.rs)
-- [Пинк commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/isi.rs) буйынса Multisig мәғлүмәт моделе
-- [CLI ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs) буйынса multisig тормошҡа ашырыу
+- [Пинк commit-та Multisig интеграция һынауҙары](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/multisig.rs)
+- [Пинк commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_executor_data_model/src/isi.rs) буйынса Multisig мәғлүмәт моделе
+- [CLI ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs) буйынса multisig тормошҡа ашырыу
 - [Транзакциялар](/ba/blockchain/transactions.md)
 - [Рөхсәт һәм ролдәр](./permissions-and-roles.md)

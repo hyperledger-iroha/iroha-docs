@@ -3,6 +3,8 @@ name: Pull Request CI
 on:
   pull_request:
     branches: [main]
+  # The scheduled Iroha reference refresh dispatches these checks on its pull request branch.
+  workflow_dispatch:
 
 permissions:
   contents: read

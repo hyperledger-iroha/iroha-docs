@@ -1,9 +1,9 @@
 ---
 translation_locale: az
 translation_source: /cookbook/connect-to-taira.md
-translation_source_hash: e14be7d9314f26f40f6aa30678fddcfcfea39eda9b98016f1b2f84838203c548
+translation_source_hash: 31555f0c56bddb8892d09af250cef732a2dfdd39564c83de8b344200157751b9
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Taira-ə qoşul {#connect-to-taira}
@@ -15,14 +15,14 @@ Taira-ın əlçatan olduğunu təsdiqləyin, yerli müştəri konfiqurasiyasınd
 ## Tələb olunan əvvəlcədən biliklər {#prerequisites}
 
 - `curl`, `jq`, Python 3.11 və sonrakı versiyalar, həmçinin cari `iroha` və `kagami` ikili fayllar.
-- Bir `taira.client.toml` Taira zənciri, API son nöqtəsi, hesab profili və xüsusi testnet açarı ilə yaradılıb. [Taira Müştəri Konfiqurasiyası Yarat](/az/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config)-i izləyin və faylı mənbə nəzarətindən kənarda saxlayın.
-- İcra etməyə hazır `taira_faucet_claim.py` [Taira üzərində Testnet XOR əldə edin](/az/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)-dən, müştəri konfiqurasiyasının yanında qeyd olundu.
+- Taira zənciri, dəqiq `network_id`, son nöqtə, hesab profili və ayrıca testnet açarı ilə yaradılmış `taira.client.toml`. [Taira müştəri konfiqurasiyasını yaradın](/az/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config) bölməsinə əməl edin və faylı versiya nəzarəti sistemindən kənarda saxlayın.
+- Testnet maliyyələşdirmə xidməti jurnalı üçün yazıla bilən iş qovluğu: `iroha taira account faucet prepare` `./taira-faucet` qovluğunu yalnız sahibinin əlçatanlığı ilə yaradır və mövcud qovluğu əvəz etməkdən imtina edir.
 
 ## Addımlar {#steps}
 
 ### 1. Hazır olma vəziyyətindən canlılığı ayırın {#_1-separate-liveness-from-readiness}
 
-`/livez` sadə mətnli proses-canlılıq probe-dir. `/status`, `/health` və `/readyz` JSON-i qaytarır. İşləyən bir node, tələb olunan bir alt sistemi bloklandıqda hazır olmaq probe-larından qanuni olaraq `503`-ü qaytara bilər.
+`/livez`, `/health` və `/readyz` sadə mətn yoxlamalarıdır; `/status` JSON qaytarır. İşləyən qovşaq konsensusa qəbul və ya başqa vacib alt sistem əlçatan olmadıqda `/readyz` üzərindən tamamilə normal olaraq `503` qaytara bilər.
 
 ```bash
 curl -fsS -H 'Accept: text/plain' https://taira.sora.org/livez
@@ -30,11 +30,11 @@ curl -fsS -H 'Accept: text/plain' https://taira.sora.org/livez
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
-curl -sS -H 'Accept: application/json' \
+curl -sS -H 'Accept: text/plain, application/json' \
   -w '\nHTTP %{http_code}\n' https://taira.sora.org/readyz
 ```
 
-`/livez` yalnız prosesin cavab verib-vermədiyini müəyyən etmək üçün istifadə edin. `/readyz` trafikin qəbul edilməsi üçün istifadə edin və `503`-ni çatışmazlıq kimi qiymətləndirməzdən əvvəl onun JSON bloklayıcı detalları yoxlayın.
+`/livez`-dən yalnız prosesin cavab verib-vermədiyini müəyyən etmək üçün istifadə edin. Trafikin qəbulu üçün `/readyz`-dən istifadə edin. Onun `503` cavabı bloklayıcı təfərrüatları olmayan `service_unavailable` xəta zərfidir, buna görə onu nasazlıq hesab etməzdən əvvəl aşağıdakı diaqnostikanı işə salın.
 
 ### 2. İctimai diaqnostikanı işə salın {#_2-run-the-public-diagnostics}
 
@@ -48,7 +48,7 @@ Həkim möhkəm DNS, TLS, zəncir və ya API son nöqtə uğursuzluğu barədə 
 
 ### 3. Gizli məlumatı çap etmədən Taira hesab ID-sini çıxarın {#_3-derive-the-taira-account-id-without-printing-a-secret}
 
-Konfiqurasiyadan yalnız açıq açarı oxuyun, sonra onu Taira I105 profili ilə kodlayın. `[account].domain` dəyəri yönləndirmə kontekstini təmin edir; bu, hesab ID-nin bir hissəsi deyil.
+Konfiqurasiyadan yalnız ictimai açarı oxuyun, sonra onu Taira I105 profili ilə kodlaşdırın. Hesab ID-si domen daşımır; `[account].profile` yalnız onun şəbəkə prefiksini seçir.
 
 ```bash
 TAIRA_PUBLIC_KEY="$(python3 - <<'PY'
@@ -69,18 +69,29 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID"
 
 ### 4. Mövcud Taira ödəniş aktivini tələb edin {#_4-claim-the-current-taira-fee-asset}
 
-Testnet maliyyələşdirmə xidməti cavabı ödəniş aktivinin tərifi üçün doğru mənbədir. Başqa şəbəkədən və ya köhnə icradan bir ID kopyalamaq əvəzinə, qaytarılan Base58 ID-ni saxlayın.
+Testnet maliyyələşdirmə xidmətinin siyasəti cari ödəniş aktivi tərifini göstərir. Başqa şəbəkədən və ya köhnə icradan ID kopyalamaq əvəzinə onun Base58 ID-sini saxlayın. Siyasət imzasız aşkarlama məlumatıdır, buna görə avtomatlaşdırma hər cavaba etibar etmək əvəzinə gözlədiyi emitenti, aktiv tərifini və məbləği sabitləməlidir.
 
 ```bash
-python3 ./taira_faucet_claim.py "$TAIRA_ACCOUNT_ID" \
-  | tee taira-faucet.json
+curl -fsS -H 'Accept: application/json' \
+  https://taira.sora.org/v1/accounts/faucet/policy \
+  | tee taira-faucet-policy.json
 
-export TAIRA_FEE_ASSET="$(jq -er '.asset_definition_id' taira-faucet.json)"
-jq -n --arg gas_asset_id "$TAIRA_FEE_ASSET" \
-  '{gas_asset_id: $gas_asset_id}' > taira.tx-metadata.json
+export TAIRA_FEE_ASSET="$(
+  jq -er '.asset_definition_id' taira-faucet-policy.json
+)"
+
+iroha --config ./taira.client.toml --fee-payer authority \
+  taira account faucet prepare \
+  --journal ./taira-faucet \
+  --issuer "$(jq -er '.authority' taira-faucet-policy.json)" \
+  --asset-definition "$TAIRA_FEE_ASSET" \
+  --amount "$(jq -er '.amount' taira-faucet-policy.json)"
+
+iroha --config ./taira.client.toml \
+  taira account faucet submit --journal ./taira-faucet
 ```
 
-Balansı ən çox bir dəqiqə ərzində yoxlayın. Testnet maliyyələşdirmə xidməti maliyyələşdirmə əməliyyatı görünməzdən əvvəl `202 Accepted` qaytara bilər.
+`prepare` iş sübutu tapşırığını həll edir və dəqiq imzalanmış əməliyyatı saxlayır; `submit` onu bir dəfə göndərir və əməliyyat tətbiq olunduqdan sonra qayıdır. `submit` `Pending` bildirirsə və ya vaxtı bitirsə, yeni iddia hazırlamaq əvəzinə eyni konfiqurasiya və jurnal ilə `taira account faucet resume` işə salın. Sonra balansı ən çoxu bir dəqiqə ərzində dövri olaraq yoxlayın.
 
 ```bash
 funded=false
@@ -96,7 +107,7 @@ done
 test "$funded" = true
 ```
 
-`gas_asset_id` əməliyyat metadatasıdır. Açıq `--fee-payer authority` seçimi imza ilə bağlıdır və CLI imzalamadan əvvəl dəqiq ödəniş qiymətini təxmin edir.
+Hər Taira yazması üçün `--fee-payer authority` istifadə edin. Seçim imzaya bağlıdır və CLI imzalamadan əvvəl dəqiq haqqı Taira-nın ödəniş aktivində hesablayıb göstərir.
 
 ## Yoxla {#verify}
 
@@ -106,8 +117,7 @@ Bir gündəm təlimatı təqdim edin, JSON protokol nəticəsi qeydini saxlayın
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg 'cookbook-connect' \
+  tx ping --msg 'cookbook-connect' \
   > taira-connect-submission.json
 
 jq '{hash, fee_quote}' taira-connect-submission.json
@@ -115,27 +125,27 @@ TAIRA_TX_HASH="$(jq -er '.hash' taira-connect-submission.json)"
 
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction status \
+  tx status \
   --hash "$TAIRA_TX_HASH" \
   --wait \
   --timeout-ms 60000
 ```
 
-Son əməliyyat yalnız tranzaksiya standart `Applied` son vəziyyətinə çatdıqdan sonra müvəffəq olur. Kriptoqrafik xəşi sınaq sübutunda saxlayın; şəxsi açarı və ya tam müştəri konfiqurasiyasını heç vaxt onunla birlikdə saxlamayın.
+Son əmr yalnız dəqiq qlobal status vəziyyətlə təsdiqlənmiş `Applied` yekunluğunu bildirdikdən sonra uğurla başa çatır. Heşi test sübutlarında saxlayın; onunla birlikdə heç vaxt şəxsi açarı və ya tam müştəri konfiqurasiyasını saxlamayın.
 
 ## Problemlərin aradan qaldırılması {#troubleshooting}
 
-- `/livez` JSON soruşulduqda `406` qaytarır, çünki həmin API son nöqtəsi `text/plain`. Yuxarıda göstərildiyi kimi `Accept: text/plain` göndərin.
-- `/health` və ya `/readyz` `/livez` və `/status` işləyərkən belə maşın tərəfindən oxunan bloklayıcı ilə `503` qaytara bilər. Onu düzəldin və ya həmin bloklayıcının qarşısını gözləyin; açarları yenidən yaratmaq nodun hazır olmasını dəyişdirməyəcək.
-- Testnet maliyyələşdirmə xidməti `502`, vaxtın bitməsi və ya köhnəlmiş iş-nəzəriyyəsi ankeri ictimai xidmətin uğursuzluğudur. Yeni bir tapmaca götürün və sonra yenidən cəhd edin.
+- `/livez`, `/health` və `/readyz` yalnız JSON istənildikdə `406` qaytarır, çünki onlar `text/plain` ilə cavab verir. Yuxarıda göstərilən `Accept` başlıqlarını göndərin.
+- `/livez` və `/status` işləyərkən belə `/readyz` `service_unavailable` xəta zərfi ilə `503` qaytara bilər. Hazırlığı gözləyin və ya `iroha taira doctor` işə salın; açarların yenidən yaradılması qovşağın hazırlığını dəyişməyəcək.
+- `submit` zamanı testnet maliyyələşdirmə xidmətinin `502` cavabı və ya vaxtın bitməsi iddianın nəticəsini naməlum qoyur: yeni iddia hazırlamaq əvəzinə eyni konfiqurasiya və jurnal ilə `taira account faucet resume` işə salın. Köhnəlmiş iş sübutu ankeri `prepare` mərhələsini uğursuz edir; yeni jurnal qovluğunda yenidən hazırlayın.
 - I105 prefiks xətası, açıq açarın səhv profil ilə kodlandığını göstərir. `iroha tools address convert --profile taira` əməliyyatını yenidən həyata keçirin.
-- Rüsum təklifi rədd ediləsi adətən o deməkdir ki, icazə prinsipi maliyyələşdirilməyib, rüsum aktivinin metadatası köhnəlib, ya da açıq rüsum ödəyicisi seçilməyib.
+- Ödəniş qiyməti təxmininin rəddi adətən səlahiyyətli hesabın maliyyələşdirilmədiyini və ya konfiqurasiyadakı `network_id` dəyərinin Taira-ya aid olmadığını bildirir. Çatışmayan `--fee-payer` və ya `--metadata` içində `gas_asset_id` kimi ödəniş açarı təxmindən əvvəl lokal xəta verir.
 - Qeydiyyat, buraxılış və ya ad sahəsi idarəçiliyi bu kanari uğur qazandıqdan sonra da rədd edilə bilər. Bu əməliyyatlar ayrı proqram təminatı icra mühiti icazələri tələb edir; bunları Taira girişi verilmədikdə yaradılmış lokal şəbəkədə məşq edin.
 
 ## Mənbə və əlaqəli sənədlər {#source-and-related-docs}
 
-- [Taira CLI diaqnostika və canary mənbə kodu təyin olunmuş mənbə kodu reviziyasında](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/taira.rs)
-- [Aydın ödəniş seçimi və CLI təqdimetmə mənbəyi bərkidilmiş mənbə kodu reviziyasında](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
+- Sabitlənmiş reviziyada [Taira CLI diaqnostikası və canary mənbə kodu](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/taira.rs) və [maliyyələşdirmə xidməti əmrləri](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/taira_onboarding.rs)
+- [Aydın ödəniş seçimi və CLI təqdimetmə mənbəyi bərkidilmiş mənbə kodu reviziyasında](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs)
 - [Taira hesab və testnet maliyyələşdirmə xidməti bələdçisi](/az/get-started/sora-nexus-dataspaces.md)
 - [Müştəri konfiqurasiyası](/az/guide/configure/client-configuration.md)
 - [Əməliyyatlar](/az/blockchain/transactions.md)

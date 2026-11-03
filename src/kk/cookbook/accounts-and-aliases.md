@@ -1,9 +1,9 @@
 ---
 translation_locale: kk
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
+translation_source_hash: c1aee0c29332bd7c883500e72a1ec7812aebfca13b673e6681788cf4bc5ecbf1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Шоттар және Болжамдар {#accounts-and-aliases}
@@ -22,15 +22,19 @@ translation_engine: bing-translator-llm
 
 ### 1. Taira жүйесінде бір протокол-стандарт есепшоттарын тексеру {#_1-inspect-canonical-accounts-on-taira}
 
-Қоғамдық есептік жазба тізімі әрқашан бір протокол-стандартты I105 идентификаторларын қайтарады. Негізгі алиас таңдамалы болып табылады және жеке есеп беріледі.
+Жалпыға ашық есептік жазбалар тізімі әрқашан канондық I105 ID-лерін қайтарады. Негізгі алиас міндетті емес; оны көру үшін `aliases` өрісін сұраңыз.
 
 ```bash
-curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+curl -fsS -H 'Accept: application/json' --get \
+  https://taira.sora.org/v1/accounts \
+  --data-urlencode 'limit=5' \
+  --data-urlencode 'select=id,aliases' \
+  | jq -r '.items[]
+    | [.id, (first(.aliases[]? | select(.is_primary) | .alias) // "-")]
+    | @tsv'
 ```
 
-`.id`-ден алынған ID қатаң есептік жазба өрістері үшін жарамды. Оған домен қоспаңыз. `.primary_alias`-ден алынғанл есімшеше пайдаланушыға көрінетін іздеу кілті болып табылады, басқа бір протокол-стандартталған идентификатор емес.
+`.id`-ден алынған ID қатаң есептік жазба өрістері үшін жарамды. Оған домен қоспаңыз. `.aliases[].alias`-ден алынғанл есімшеше пайдаланушыға көрінетін іздеу кілті болып табылады, басқа бір протокол-стандартталған идентификатор емес.
 
 ### 2. Сіздің Taira I105 ID-ні шығарыңыз және қалыпқа келтіріңіз {#_2-derive-and-normalize-your-taira-i105-id}
 
@@ -53,14 +57,14 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID" \
   | iroha tools address normalize --profile taira
 ```
 
-Қалыпты мән `TAIRA_ACCOUNT_ID` мәніне бірдей болу керек. TOML файлындағы `[account].domain` баптауы `wonderland.universal` болуы мүмкін, бірақ бұл мән тек маршрутизация мен алиас контекстіне әсер етеді.
+Қалыпқа келтірілген мән `TAIRA_ACCOUNT_ID` мәнімен бірдей болуы керек. `[account].profile` параметрі тек I105 желі префиксін таңдайды; домендер есептік жазба ID-іне емес, әрқашан алиастарға тиесілі.
 
 ### 3. Есепшотты және оның активтерін оқыңыз {#_3-read-the-account-and-its-assets}
 
 Есептік жазба дайын болғаннан кейін, оны тікелей сұраңыз және шектелген активтер бетін тізімдеңіз. URL-мәнін жолда қолданбас бұрын I105 мәнін кодтаңыз.
 
 ```bash
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 ENCODED_ACCOUNT_ID="$(
@@ -69,7 +73,7 @@ ENCODED_ACCOUNT_ID="$(
 )"
 
 curl -fsS -H 'Accept: application/json' \
-  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10" \
+  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10&include_total=true" \
   | jq '{total, items}'
 ```
 
@@ -111,7 +115,7 @@ fi
 
 ::: warning Рұқсат шегі
 
-Taira тест желісін қаржыландыру қызметі өзінің талапкер шотын қамтамасыз ете алады, бірақ бұл жалпы шот тіркеу немесе лақап атты басқару уәкілетті субъектіні бермейді. Басқа шотты тіркеу үшін белсенді валидатордың астында `CanRegisterAccount` қажет. Есептік жазба лақап аттары әдетте белсенді SNS жалға алу мен тиісті лақап ат құқықтарын талап етеді. Басқарылатын тіркеу/лақап ат жоспарлаушысын пайдаланыңыз немесе жасалған жергілікті желінің тіркелуін жаттығыңыз.
+Taira faucet қызметі өзінің талапкер есептік жазбасын дайындай алады, бірақ бұл есептік жазбаларды тіркеуге немесе алиастарды басқаруға жалпы өкілеттік бермейді. Басқа есептік жазбаны тіркеу үшін белсенді орындаушы бойынша `CanRegisterAccount` қажет. Есептік жазба алиастары әдетте белсенді SNS жалдауын және тиісті алиас рұқсаттарын да талап етеді. Басқарылатын қосылу/алиас жоспарлағышын пайдаланыңыз немесе тіркеуді жасалған жергілікті желіде алдын ала сынап көріңіз.
 
 :::
 
@@ -121,9 +125,9 @@ Taira тест желісін қаржыландыру қызметі өзіні
 iroha --config ./localnet/client.toml \
   --machine \
   --fee-payer authority \
-  ledger account register --id "$NEW_ACCOUNT_ID"
+  account register --id "$NEW_ACCOUNT_ID"
 
-iroha --config ./localnet/client.toml ledger account get \
+iroha --config ./localnet/client.toml account get \
   --id "$NEW_ACCOUNT_ID"
 ```
 
@@ -158,8 +162,8 @@ fi
 
 ## Дереккөз және қатысты құжаттар {#source-and-related-docs}
 
-- [бекітілген көз-код нұсқасындағы бір протокол-стандарт аккаунт мекенжайын іске асыру](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
-- [Есептік жазба және лақап атау Torii бекітілген бастапқы кодтың нұсқасында тестілеу](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
+- [бекітілген көз-код нұсқасындағы бір протокол-стандарт аккаунт мекенжайын іске асыру](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/account/address.rs)
+- Бекітілген нұсқадағы [Torii есептік жазба нүктесінің жылдам тесттері](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/tests/accounts_endpoints.rs) және [алиас маршрут тесттері](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/tests/lib_tests/part_2.rs)
 - [Шоттар](/kk/blockchain/accounts.md)
 - [Деректер үлгісінің ауыстырымдары](/kk/blockchain/data-model.md#aliases)
 - [Атаулау дәстүрлері](/kk/reference/naming.md)

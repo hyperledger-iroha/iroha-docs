@@ -1,9 +1,9 @@
 ---
 translation_locale: ru
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 576e03924f19b63681cdfafa641b996672e35a992478fc9eaf5b83f0e7baa6da
+translation_source_hash: d399284a2baec507e4c979c762d6e216d8c3fbc5b4b4fe221b6bbb0049ee9fd9
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Эскроу для родных активов {#native-asset-escrow}
@@ -15,8 +15,8 @@ translation_engine: bing-translator-llm
 ## Предварительные требования {#prerequisites}
 
 - Определение числового актива и инициатор/продавец, который владеет достаточным количеством.
-- Финансируемые клиенты с одним ключом I105 для каждой стороны, которая отправляет шаг. Используйте живой аккаунт, оплачиваемый за подписание транзакций `fee_payment`, намерение, чей актив для комиссии соответствует текущему ответу службы финансирования тестнета Taira; не вставляйте идентификатор актива из документации.
-- Текущая Rust или Python SDK от Iroha завершения протокола `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
+- Профинансированные клиенты I105 с одним ключом для каждой стороны, которая отправляет шаг. Используйте актуальное намерение `fee_payment` с оплатой полномочным субъектом, актив комиссии которого совпадает с активом, публикуемым текущей политикой службы финансирования тестовой сети Taira; не встраивайте идентификатор актива из документации.
+- Текущая Rust или Python SDK от Iroha завершения протокола `c8c872461e92f04325c350cdd952f4276e96f9dc`.
 - Для примера компилятора JavaScript, Node.js 24 плюс встроенный в локальную среду разработки пакет `@iroha/iroha-js` и его родной `iroha_js_host`; следуйте [JavaScript SDK настройка source-build](/ru/guide/tutorials/javascript.md#build-from-source). Сборки для браузера должны предоставлять `compilerUrl` вместо загрузки родного хоста.
 - Taira должен подтвердить передачу активов и инструкции по эскроу. Владельцы активов могут использовать обычный жизненный цикл, когда их политика активов это позволяет; решение Спор требует глобального разрешения `CanResolveEscrowDispute`. Используйте сгенерированную локальную сеть, когда отсутствует необходимый субъект авторизации публичной блокчейн-сети.
 
@@ -31,7 +31,7 @@ translation_engine: bing-translator-llm
 ```rust
 use eyre::{Result, ensure};
 use iroha::{
-    client::Client,
+    blocking::Client,
     data_model::{
         isi::escrow::{
             AcceptAssetEscrow, MarkEscrowPaymentSent, OpenAssetEscrow,
@@ -51,7 +51,7 @@ fn complete_marketplace_escrow(
 ) -> Result<AssetEscrowRecord> {
     let fee = FeePaymentIntent::authority(Vec::new(), None);
 
-    seller.submit_blocking(
+    seller.submit(
         OpenAssetEscrow::with_evidence_hashes(
             escrow_id,
             asset_definition,
@@ -60,11 +60,13 @@ fn complete_marketplace_escrow(
         ),
         fee.clone(),
     )?;
-    buyer.submit_blocking(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
-    buyer.submit_blocking(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
-    seller.submit_blocking(ReleaseAssetEscrow::new(escrow_id), fee)?;
+    buyer.submit(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
+    buyer.submit(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
+    seller.submit(ReleaseAssetEscrow::new(escrow_id), fee)?;
 
-    let record = seller.query_single(FindAssetEscrowById::new(escrow_id))?;
+    let record = seller
+        .client()
+        .query_single(FindAssetEscrowById::new(escrow_id))?;
     ensure!(record.status == AssetEscrowStatus::Released);
     Ok(record)
 }
@@ -74,7 +76,7 @@ fn complete_marketplace_escrow(
 
 ### 2. Откройте и частично нарисуйте общий замок с Python {#_2-open-and-partially-draw-a-generic-lock-with-python}
 
-Главный управляющий разрешением на выпуск запрашивает подписанную исходную запись перед снятием средств. Передача именно этого `remaining_amount` обеспечивает оптимистичную конкуренцию: устаревший параллельный запрос отклоняется вместо того, чтобы дважды списывать средства из опеки.
+Лицо, уполномоченное на выпуск, запрашивает подписанную нативную запись перед снятием средств. Передача именно этого `remaining_amount` обеспечивает оптимистичное управление параллелизмом: устаревший параллельный запрос отклоняется вместо того, чтобы дважды списывать средства с хранения. `client` — это `ToriiClient`, созданный с `local_signing_context=LocalSigningContext(network_id)` и `chain_discriminant` сети; вспомогательные функции транзакций берут идентификатор сети из этого контекста, а подписанные запросы получают его как `network_id`.
 
 ```python
 import secrets
@@ -92,7 +94,6 @@ def escrow_status(record):
 def open_and_draw_lock(
     *,
     client,
-    chain_id,
     opener,
     opener_private_key,
     release_authority,
@@ -102,9 +103,9 @@ def open_and_draw_lock(
     fee_payment,
 ):
     escrow_id = f"cookbook_lock_{secrets.token_hex(12)}"
+    network_id = client.local_signing_context.network_id
 
     client.open_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=opener,
         private_key=opener_private_key,
         fee_payment=fee_payment,
@@ -120,10 +121,10 @@ def open_and_draw_lock(
     before = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
     client.drawdown_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=release_authority,
         private_key=release_private_key,
         fee_payment=fee_payment,
@@ -135,6 +136,7 @@ def open_and_draw_lock(
     after = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
 
@@ -150,8 +152,10 @@ Python SDK может выполнять автоматический запро
 Для потоков блокировки Rust текущие конструкторы также требуют наблюдаемое количество:
 
 ```rust
-let before = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-release_authority.submit_blocking(
+let before = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+release_authority.submit(
     DrawdownAssetLock::new(
         lock_id,
         Quantity::from(4_u64),
@@ -160,23 +164,26 @@ release_authority.submit_blocking(
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 
-let current = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-opener.submit_blocking(
+let current = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+opener.submit(
     CancelAssetLock::new(lock_id, current.remaining_amount),
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 ```
 
-`DrawdownAssetLock::new` принимает три значения; `CancelAssetLock::new` принимает два. Пропуск ожидаемой оставшейся суммы описывает старую, небезопасную форму технического вызова.
+`DrawdownAssetLock::new` принимает блокировку, сумму и наблюдаемую оставшуюся сумму; `CancelAssetLock::new` принимает блокировку и наблюдаемую оставшуюся сумму. Реестр отклоняет любую из этих инструкций, если оставшаяся сумма успела измениться.
 
 ### 3. Скомпилируйте эскроу-поверхность Kotodama из JavaScript {#_3-compile-the-kotodama-escrow-surface-from-javascript}
 
-JavaScript не нужно изобретать немаркированные нативные инструкции. Текущий компилятор предоставляет Kotodama встроенные функции распределенного реестра блокчейн-эскроу; развертывание и технические вызовы затем следуют за [Создать и развернуть смарт-контракт](./smart-contracts.md).
+JavaScript не нужно изобретать нетипизированные нативные инструкции. Текущий компилятор предоставляет Kotodama встроенные функции эскроу распределённого реестра; затем развертывание выполняется по руководству [Создать и развернуть смарт-контракт](./smart-contracts.md). Точка входа `open_offer` объявлена как `authorize(Admin)`, поэтому исполнитель требует, чтобы вызывающая сторона имела `CanUseContractPermission` для развернутого адреса и `permission: "Admin"`.
 
 Сохраните это как `native_escrow.ko`:
 
 ```kotodama
 seiyaku NativeEscrowAitai {
+    permission Admin;
     error enum EscrowError {
         NonPositiveAmount = 1,
     }
@@ -185,7 +192,7 @@ seiyaku NativeEscrowAitai {
         Name offer,
         AssetDefinitionId asset_definition,
         quantity amount
-    ) authorize("Admin") {
+    ) authorize(Admin) {
         require(amount > 0, EscrowError::NonPositiveAmount);
         ledger::escrow::open_offer(
             offer: offer,
@@ -230,6 +237,7 @@ node ./compile-native-escrow.mjs
 record = client.get_asset_escrow(
     escrow_id=escrow_id,
     authority=release_authority,
+    network_id=client.local_signing_context.network_id,
     private_key=release_private_key,
 )
 assert escrow_status(record) == "Locked"
@@ -241,7 +249,7 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 ## Устранение неполадок {#troubleshooting}
 
 - `Not permitted` при открытии обычно означает, что полномочный представитель не может передать выбранный актив на хранение. Разрешение споров имеет отдельный глобальный `CanResolveEscrowDispute` шлюз.
-- `expected remaining amount` отклонение является конфликтом оптимистической конкуренции. Повторно запросите запись, определите, было ли другое списание/отменение намеренным, и подпишите новую инструкцию только в том случае, если новое состояние приемлемо.
+- `asset lock remaining amount changed since the drawdown was prepared` (или `...since the cancellation was prepared`) — это конфликт оптимистичного управления параллелизмом. Повторно запросите запись, определите, было ли другое списание/отмена намеренным действием, и подпишите новую инструкцию только в том случае, если новое состояние приемлемо.
 - Только настроенный основной субъект авторизации выпуска может снять доверенный замок. Пункт назначения не может его освободить только потому, что он получит средства.
 - Выпуск на маркетплейсе действителен только после состояния «принято и оплата отправлена»; отмена ограничена более ранними стадиями жизненного цикла.
 - Истечение срока использует авторитетное распределенное регистровое время блокчейна. Не рассматривайте истечение времени локальных системных часов как доказательство того, что `ExpireAssetLock` пройдет.
@@ -249,10 +257,10 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## Исходные и связанные документы {#source-and-related-docs}
 
-- [Модель инструкции условного депонирования на закреплённой версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
-- [Интеграционные тесты нативного эскроу на закрепленной ревизии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
-- [Python методы клиента эскроу на закрепленной версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama образец нативного эскроу на закрепленной версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [Модель инструкции условного депонирования на закреплённой версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/isi/escrow.rs)
+- [Интеграционные тесты нативного эскроу на закрепленной ревизии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/native_escrow.rs)
+- [Python методы клиента эскроу на закрепленной версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama образец нативного эскроу на закрепленной версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [Эскроу нативного актива](/ru/blockchain/escrow.md)
 - [Взаимозаменяемые активы](./fungible-assets.md)
 - [Разрешения и роли](./permissions-and-roles.md)

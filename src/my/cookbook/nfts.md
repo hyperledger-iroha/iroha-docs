@@ -1,9 +1,9 @@
 ---
 translation_locale: my
 translation_source: /cookbook/nfts.md
-translation_source_hash: db99dab483d4e2fb3fd84be84f6e4ef9f8373f0c16eb2f34952f1232c4587561
+translation_source_hash: b60c542052eac6a916350c4aaa779c9f46d248be64ecea9c9bda679a4d56dff3
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # NFTs {#nfts}
@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 - `curl`, `jq`, Python 3.11 သို့မဟုတ်နောက်ဆုံး၊ current `iroha` CLI။
 - ဖတ်လို့သာရတဲ့ Taira ဝင်ခွင့်။
-- [လွှတ်တင်ခြင်း Iroha](/my/get-started/launch-iroha.md) မှ `./localnet/client.toml` နှင့် Torii တို့ဖြင့် ဖန်တီးထားသော ဒေသတွင်းကွန်ရက်များအတွက် `http://127.0.0.1:8080` တွင် စာရေးသားခြင်း။
+- ရေးသွင်းမှုများအတွက် [လွှတ်တင်ခြင်း Iroha](/my/get-started/launch-iroha.md) တွင်ကဲ့သို့ `kagami localnet generate --peers 4 --out-dir ./localnet` ဖြင့် ဖန်တီးထားပြီး `./localnet/client.toml` နှင့် `http://127.0.0.1:8080` ပေါ်ရှိ Torii ပါဝင်သော ဒေသတွင်းကွန်ရက်တစ်ခုနှင့် ၎င်း၏ လက်မှတ်ထိုးသူ ပိုင်ဆိုင်သော NFT ဒိုမင်တစ်ခု (အဆင့် ၂ ကို ကြည့်ပါ)။
 
 ## ခြေလှမ်း {#steps}
 
@@ -26,20 +26,21 @@ translation_engine: nllb-200-ct2
 
 ```bash
 curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/nfts?limit=5' \
-  | jq '{total, nfts: [.items[] | {id, owned_by, content}]}'
+  'https://taira.sora.org/v1/nfts?limit=5&include_total=true' \
+  | jq '{total, nfts: [.items[] | {id, owned_by, metadata}]}'
 ```
 
-NFTs ဟာ ကိန်းဂဏန်းစာရင်းတွေ မဟုတ်ဘဲ ထူးခြားတဲ့ မှတ်တမ်းတွေပါ။ ၎င်းတို့မှာ ID တစ်ခု၊ ပိုင်ရှင်တစ်ဦးနဲ့ အသေးစား `content` metadata မြေပုံရှိတယ်။
+NFTs သည် ကိန်းဂဏန်းလက်ကျန်များ မဟုတ်ဘဲ ထူးခြားသော မှတ်တမ်းများ ဖြစ်သည်။ ၎င်းတို့တွင် ID တစ်ခု၊ ပိုင်ရှင်တစ်ဦးနှင့် ကျစ်လစ်သော content map တစ်ခု ရှိပြီး Torii collection row များက ၎င်းကို `metadata` အဖြစ် ပြန်ပေးကာ `ledger nft get` က `content` အဖြစ် ပြန်ပေးသည်။
 
 ### (၂) ဒေသခံပိုင်ရှင်များ၏ မှတ်ပုံတင်မှတ်တမ်းများကို ပြင်ဆင်ပါ။ {#_2-prepare-local-owner-ids}
 
-`wonderland.universal` နယ်ပယ်ကို အသုံးပြုပြီး စာရေးခြင်းဥပမာတွင် ရေးသားထားပါသည်။ ၎င်း၏ ပုဂ္ဂလိက သော့ချက်များကို မဖော်ထုတ်ဘဲ ဖွဲ့စည်းထားသော ခွင့်ပြုချက် အရင်းအမြစ်ကို ထုတ်ယူ၍ လွှဲပြောင်းရန် ရည်ရွယ်ချက်အဖြစ် အခြားမှတ်ပုံတင်စာရင်းတစ်ခုကို ရွေးချယ်ပါ။
+ရေးသွင်းမှုဥပမာအတွက် လက်မှတ်ထိုးသည့်အကောင့်က ပိုင်ဆိုင်သော ဒိုမင်တစ်ခု သို့မဟုတ် ထိုဒိုမင်အတွက် `CanRegisterNft` ခွင့်ပြုချက်ပေးအပ်ထားမှု လိုအပ်သည်။ ဖန်တီးထားသော localnet သည် ၎င်း၏ client အတွက် application ဒိုမင်ကို မှတ်ပုံတင်မပေးဘဲ raw ဒိုမင်မှတ်ပုံတင်ခြင်းကို genesis အတွက်သာ သီးသန့်ထားသောကြောင့် `NFT_DOMAIN` ကို သင့်လက်မှတ်ထိုးသူ ထိန်းချုပ်သော `name.dataspace` ဒိုမင်တစ်ခုအဖြစ် သတ်မှတ်ပါ။ ပြင်ဆင်သတ်မှတ်ထားသော authority ကို ၎င်း၏ ပုဂ္ဂလိကသော့ကို မဖော်ပြဘဲ ထုတ်ယူပြီးနောက် လွှဲပြောင်းမှု၏ ဦးတည်ရာအဖြစ် အခြားမှတ်ပုံတင်ထားသော အကောင့်တစ်ခုကို ရွေးချယ်ပါ။
 
 ```bash
 LOCAL_ROOT='http://127.0.0.1:8080'
 LOCAL_CONFIG='./localnet/client.toml'
-NFT_ID='cookbook_badge$wonderland.universal'
+test -n "$NFT_DOMAIN"
+NFT_ID="cookbook_badge\$$NFT_DOMAIN"
 
 LOCAL_PUBLIC_KEY="$(python3 - <<'PY'
 import tomllib
@@ -59,7 +60,7 @@ NEW_OWNER="$(
 )"
 ```
 
-`$` ကွာခြားချက်သည် NFT စာသားပုံစံတွင် ပါဝင်သည်။ ပြည့်စုံသော `wonderland.universal` နယ်ပယ်နှင့် ဒေတာနေရာနောက်ဆက်တွဲကို ထိန်းသိမ်းပါ။
+`$` ခွဲခြားသင်္ကေတသည် NFT စာသားပုံစံ၏ အစိတ်အပိုင်း ဖြစ်သည်။ ID ထဲတွင် ပြည့်စုံသော `name.dataspace` ဒိုမင်ကို ထိန်းသိမ်းထားပါ။
 
 ### (၃) NFT ကို အစောပိုင်းပါဝင်မှုနှင့်အတူ မှတ်ပုံတင်ပါ။ {#_3-register-the-nft-with-initial-content}
 
@@ -102,34 +103,28 @@ iroha --config "$LOCAL_CONFIG" \
 
 ::: warning ခွင့်ပြုချက် ကန့်သတ်ချက်
 
-အပေါ် Taira, စာရေးသူတိုင်းလည်း လိုအပ်ပါတယ်။ `--metadata ./taira.tx-metadata.json` မှတ်ပုံတင်ခြင်း၊ လွှဲပြောင်းခြင်း၊ ဖယ်ရှားခြင်းနှင့် metadata update များကို တက်ကြွသော software အကောင်အထည်ဖော်မှုဖြင့် စစ်ဆေးသည်။ ပတ်ဝန်းကျင် (`CanRegisterNft`, `CanTransferNft`, `CanUnregisterNft`, နှင့် `CanModifyNftMetadata` သင့်အက်ပလီကေးရှင်းကို သတ်မှတ်ထားတဲ့ ဒိုမင်တစ်ခုသုံးပါ (သို့) localnet မှာ ဒီလမ်းကြောင်းဖြတ်သန်းမှုကို ထိန်းပါ။
+Taira တွင် ရေးသွင်းမှုတိုင်းသည် `--fee-payer authority` ကို အသုံးပြုပြီး CLI သည် လက်မှတ်မထိုးမီ Taira ၏ အခွန်အရင်းအမြစ်ဖြင့် တိကျသော အခွန်ကို ခန့်မှန်းတွက်ချက်ပြသသည်။ မှတ်ပုံတင်ခြင်း၊ လွှဲပြောင်းခြင်း၊ ဖယ်ရှားခြင်းနှင့် metadata ပြင်ဆင်မှုများကို အသက်ဝင်နေသော runtime က စစ်ဆေးသည် (မူလ ခွင့်ပြုချက်မျက်နှာပြင်ရှိ `CanRegisterNft`၊ `CanTransferNft`၊ `CanUnregisterNft` နှင့် `CanModifyNftMetadata`)။ သင့်အကောင့်က ပိုင်ဆိုင်သော ဒိုမင် သို့မဟုတ် ဤခွင့်ပြုချက်များကို ကိုင်ဆောင်ထားသော ဒိုမင်တစ်ခုကို အသုံးပြုပါ။
 
 :::
 
 စာချုပ်ပိုင် အလုပ်ဖြစ်စဉ်များအတွက် Kotodama သည် NFT ကိုရိုက်ကူးထားသော host function invocations များကို ဖော်ပြသည်။ အောက်ပါအချက်များသည် ပိတ်ထားတဲ့ IVM မှတ်တမ်းတင်မှု စမ်းသပ်ချက်ဖြင့် စုစည်းပြီး အကောင်အထည်ဖော်ထားသည့် တိကျတဲ့ ဘဝပတ်ဝန်းကျင်စမ်းသပ်မှုလက်ရာဖြစ်သည်။
 
 ```kotodama
+// Mint an NFT, transfer it, update metadata, and burn it using typed IDs.
 seiyaku NftFlow {
-    kotoage fn nft_issue_and_transfer() authorize("NftAuthority") {
-        let owner = AccountId::parse(
-            "sorauﾛ1PﾉｳﾇmEｴWｵebHﾑ6ﾔﾙｲヰiwuCWErJ7uｽoPGｱﾔnjﾑKﾋTCW2PV",
-        );
+    permission NftAuthority;
+    kotoage fn nft_issue_and_transfer() authorize(NftAuthority) {
+        let owner = AccountId::parse("sorauﾛ1PﾉｳﾇmEｴWｵebHﾑ6ﾔﾙｲヰiwuCWErJ7uｽoPGｱﾔnjﾑKﾋTCW2PV");
         let nft = NftId::parse("n0$wonderland.universal");
-        ledger::nft::mint(nft, owner);
-        let to = AccountId::parse(
-            "sorauﾛ1NfｷgﾉﾓﾉBｦKﾌﾘﾒoﾇﾂﾛrG81ﾋjWﾎﾕVncwﾌSｱ3pﾘﾋﾉhUS9Q76",
-        );
-        ledger::nft::transfer(
-            source: owner,
-            nft: nft,
-            destination: to,
-        );
+        ledger::nft::mint(nft: nft, owner: owner);
+        let to = AccountId::parse("sorauﾛ1NfｷgﾉﾓﾉBｦKﾌﾘﾒoﾇﾂﾛrG81ﾋjWﾎﾕVncwﾌSｱ3pﾘﾋﾉhUS9Q76");
+        ledger::nft::transfer(source: owner, nft: nft, destination: to);
         ledger::nft::set_metadata(
             nft: nft,
             key: Name::parse("issued"),
             value: Json::parse("{\"issued\":\"demo\"}"),
         );
-        ledger::nft::burn(nft);
+        ledger::nft::burn(nft: nft);
     }
 }
 ```
@@ -149,22 +144,23 @@ jq -e --arg owner "$NEW_OWNER" \
   cookbook-nft.json
 ```
 
-(သို့) CLI output data container ထဲက record ကို wrapped လုပ်ပြီး JSON တစ်ကြိမ်ပြီး အဆိုပြုချက်ကို ပါဝင်တဲ့ NFT အရာဝတ္ထု။ ခိုင်မာတဲ့ invariants တွေက `id`, `owned_by`, နှင့် `content`.
+CLI သည် NFT မှတ်တမ်းကိုယ်တိုင်ကို ထုတ်ပြသည်။ အခိုင်အမာ စစ်ဆေးရမည့် invariant များမှာ `id`၊ `owned_by` နှင့် `content` ဖြစ်သည်။
 
 ## ပြဿနာဖြေရှင်းခြင်း {#troubleshooting}
 
 - `name$domain` သည် တစ်ချို့ parsers များတွင် အထွေထွေဒေတာနေရာသို့ အလိုအလျောက်အသုံးပြုနိုင်သော်လည်း Cookbook နှင့် Application ID များမှာ ရှင်းလင်းသော `name$domain.dataspace` ပုံစံကို အသုံးပြုသင့်သည်။
 - NFT ID တစ်ခုတည်းကို ထပ်ခါထပ်ခါ မှတ်ပုံတင်ခြင်းသည် ငြင်းပယ်ခံရသည်။ သီးခြားမှတ်တမ်းတစ်ခုအတွက် အသစ်အဆန်း localnet ကိုအသုံးပြုပါ (သို့) တည်ငြိမ်သော ID အသစ်တစ်ခုကိုရွေးချယ်ပါ။
 - metadata input ကို Standard input မှာ valid JSON ဖြစ်ရပါမယ်။ JSON ကို quote မလုပ်တဲ့ shell string ဟာ metadata value မဟုတ်ဘူး။
-- လက်ရှိပိုင်ရှင်မဟုတ်တဲ့ အကောင့်တစ်ခုက လက်မှတ်ထိုးထားတဲ့ ငွေလွှဲပြောင်းမှုအတွက် တိကျတဲ့ ခွင့်ပြုချက်လိုအပ်ပြီး `--from` ကိုပြောင်းလဲခြင်းသည် cryptographic signer ကိုမပြောင်းလဲပါ။
-- ငွေလွှဲပြောင်းပြီးနောက် မူလဖောက်သည် NFT ကိုပြောင်းလဲခြင်း (သို့) မှတ်ပုံတင်မဖျက်သိမ်းနိုင်တော့ပါ။ ပိုင်ရှင်သစ်၏ cryptographic signer သို့မဟုတ် ခွင့်ပြုထားတဲ့ controller ကို အသုံးပြုပါ။
+- လက်ရှိပိုင်ရှင်မဟုတ်သော အကောင့်တစ်ခုက လက်မှတ်ထိုးထားသော လွှဲပြောင်းမှုအတွက် NFT ၏ ဒိုမင်ကို ပိုင်ဆိုင်ခြင်း သို့မဟုတ် တိကျသော `CanTransferNft` ခွင့်ပြုချက်ပေးအပ်ထားမှု လိုအပ်သည်။ `--from` ကို ပြောင်းလဲခြင်းသည် လက်မှတ်ထိုးသူကို မပြောင်းလဲပါ။
+- လွှဲပြောင်းခြင်းသည် `owned_by` ကိုသာ ပြောင်းလဲသည်။ metadata ပြင်ဆင်မှုများနှင့် မှတ်ပုံတင်မှုဖျက်သိမ်းခြင်းသည် ဒိုမင်ပိုင်ရှင် သို့မဟုတ် ထို NFT အတွက် `CanModifyNftMetadata` သို့မဟုတ် `CanUnregisterNft` ကို ကိုင်ဆောင်ထားသော အကောင့်ထံတွင်သာ ရှိနေသည်။ ပိုင်ရှင်အသစ်သည် ၎င်းကို ဆက်လက်လွှဲပြောင်းနိုင်သည်။
 - Taira အလွတ်ကို ပြန်ပေးလို့ရတယ် NFT ကောက်ယူမှု မပြုလုပ်ပါနဲ့ `items: []` အထောက်အထားအဖြစ် NFT ညွှန်ကြားချက်တွေ မရဘူး။
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [NFT ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှုတွင် ပေါင်းစပ်မှု စမ်းသပ်မှုများ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/nft.rs)
-- [Kotodama NFT host-technical invocation tests at the pinned source code revision](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
-- [တိကျသော Kotodama NFT သက်တမ်းပတ်ဝန်းကျင် စမ်းသပ်မှု လက်ရာများ ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်ချက်တွင်](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko)
+- [NFT ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှုတွင် ပေါင်းစပ်မှု စမ်းသပ်မှုများ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/nft.rs)
+- [Kotodama NFT host-technical invocation tests at the pinned source code revision](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
+- [တိကျသော Kotodama NFT သက်တမ်းပတ်ဝန်းကျင် စမ်းသပ်မှု လက်ရာများ ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်ချက်တွင်](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/ivm/docs/examples/12_nft_flow.ko)
+- [ပုံသေသတ်မှတ်ထားသော commit ရှိ Kotodama documentation ဥပမာ စမ်းသပ်မှုများ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/ivm/tests/kotodama_documentation_examples.rs)
 - [NFTs](/my/blockchain/nfts.md)
 - [မီတာဒေတာ](/my/blockchain/metadata.md)
 - [ညွှန်ကြားချက်](/my/blockchain/instructions.md)

@@ -10,9 +10,11 @@ qualified `name$domain.dataspace` NFT ID and canonical I105 owner IDs.
 
 - `curl`, `jq`, Python 3.11 or later, and the current `iroha` CLI.
 - Read-only Taira access.
-- For writes, a generated local network from
+- For writes, a local network from
+  `kagami localnet generate --peers 4 --out-dir ./localnet` as in
   [Launch Iroha](/get-started/launch-iroha.md), with
-  `./localnet/client.toml` and Torii on `http://127.0.0.1:8080`.
+  `./localnet/client.toml` and Torii on `http://127.0.0.1:8080`, plus an
+  NFT domain that its signer owns (see step 2).
 
 ## Steps
 
@@ -23,23 +25,28 @@ requested page.
 
 ```bash
 curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/nfts?limit=5' \
-  | jq '{total, nfts: [.items[] | {id, owned_by, content}]}'
+  'https://taira.sora.org/v1/nfts?limit=5&include_total=true' \
+  | jq '{total, nfts: [.items[] | {id, owned_by, metadata}]}'
 ```
 
 NFTs are unique records, not numeric balances. They have an ID, one owner,
-and a compact `content` metadata map.
+and a compact content map, which Torii collection rows return as
+`metadata` and `ledger nft get` returns as `content`.
 
 ### 2. Prepare local owner IDs
 
-The write example uses the checked-in `wonderland.universal` domain. Derive
-the configured authority without exposing its private key, then choose
-another registered account as the transfer destination.
+The write example needs a domain that the signing account owns, or a
+`CanRegisterNft` grant for it. A generated localnet registers no
+application domain for its client, and raw domain registration is reserved
+for genesis, so set `NFT_DOMAIN` to a `name.dataspace` domain your signer
+controls. Derive the configured authority without exposing its private
+key, then choose another registered account as the transfer destination.
 
 ```bash
 LOCAL_ROOT='http://127.0.0.1:8080'
 LOCAL_CONFIG='./localnet/client.toml'
-NFT_ID='cookbook_badge$wonderland.universal'
+test -n "$NFT_DOMAIN"
+NFT_ID="cookbook_badge\$$NFT_DOMAIN"
 
 LOCAL_PUBLIC_KEY="$(python3 - <<'PY'
 import tomllib
@@ -60,7 +67,7 @@ NEW_OWNER="$(
 ```
 
 The `$` separator belongs to the NFT text form. Keep the complete
-`wonderland.universal` domain and dataspace suffix.
+`name.dataspace` domain in the ID.
 
 ### 3. Register the NFT with initial content
 
@@ -106,12 +113,12 @@ iroha --config "$LOCAL_CONFIG" \
 
 ::: warning Permission boundary
 
-On Taira, every write also needs `--metadata ./taira.tx-metadata.json` and
-an explicit fee payer. Registration, transfer, removal, and metadata
-updates are checked by the active runtime (`CanRegisterNft`,
-`CanTransferNft`, `CanUnregisterNft`, and `CanModifyNftMetadata` in the
-default permission surface). Use a domain assigned to your application or
-keep this walkthrough on localnet.
+On Taira, every write uses `--fee-payer authority`; the CLI quotes the
+exact fee, in Taira's fee asset, before signing. Registration, transfer,
+removal, and metadata updates are checked by the active runtime
+(`CanRegisterNft`, `CanTransferNft`, `CanUnregisterNft`, and
+`CanModifyNftMetadata` in the default permission surface). Use a domain
+your account owns, or one for which it holds these grants.
 
 :::
 
@@ -120,27 +127,21 @@ following is the exact lifecycle fixture compiled and executed by the
 pinned IVM documentation test:
 
 ```kotodama
+// Mint an NFT, transfer it, update metadata, and burn it using typed IDs.
 seiyaku NftFlow {
-    kotoage fn nft_issue_and_transfer() authorize("NftAuthority") {
-        let owner = AccountId::parse(
-            "sorauﾛ1PﾉｳﾇmEｴWｵebHﾑ6ﾔﾙｲヰiwuCWErJ7uｽoPGｱﾔnjﾑKﾋTCW2PV",
-        );
+    permission NftAuthority;
+    kotoage fn nft_issue_and_transfer() authorize(NftAuthority) {
+        let owner = AccountId::parse("sorauﾛ1PﾉｳﾇmEｴWｵebHﾑ6ﾔﾙｲヰiwuCWErJ7uｽoPGｱﾔnjﾑKﾋTCW2PV");
         let nft = NftId::parse("n0$wonderland.universal");
-        ledger::nft::mint(nft, owner);
-        let to = AccountId::parse(
-            "sorauﾛ1NfｷgﾉﾓﾉBｦKﾌﾘﾒoﾇﾂﾛrG81ﾋjWﾎﾕVncwﾌSｱ3pﾘﾋﾉhUS9Q76",
-        );
-        ledger::nft::transfer(
-            source: owner,
-            nft: nft,
-            destination: to,
-        );
+        ledger::nft::mint(nft: nft, owner: owner);
+        let to = AccountId::parse("sorauﾛ1NfｷgﾉﾓﾉBｦKﾌﾘﾒoﾇﾂﾛrG81ﾋjWﾎﾕVncwﾌSｱ3pﾘﾋﾉhUS9Q76");
+        ledger::nft::transfer(source: owner, nft: nft, destination: to);
         ledger::nft::set_metadata(
             nft: nft,
             key: Name::parse("issued"),
             value: Json::parse("{\"issued\":\"demo\"}"),
         );
-        ledger::nft::burn(nft);
+        ledger::nft::burn(nft: nft);
     }
 }
 ```
@@ -167,9 +168,8 @@ jq -e --arg owner "$NEW_OWNER" \
   cookbook-nft.json
 ```
 
-If the CLI wraps the record in an output envelope, inspect the JSON once
-and apply the assertion to the contained NFT object. The authoritative
-invariants are `id`, `owned_by`, and `content`.
+The CLI prints the NFT record itself. The authoritative invariants are
+`id`, `owned_by`, and `content`.
 
 ## Troubleshooting
 
@@ -180,19 +180,21 @@ invariants are `id`, `owned_by`, and `content`.
   localnet or choose a stable new ID for a distinct record.
 - Metadata input must be valid JSON on standard input. A shell string
   without JSON quoting is not a metadata value.
-- A transfer signed by an account other than the current owner needs an
-  exact permission; changing `--from` does not change the signer.
-- After transfer, the original client may no longer be allowed to mutate or
-  unregister the NFT. Use the new owner's signer or an authorized
-  controller.
+- A transfer signed by an account other than the current owner needs
+  ownership of the NFT's domain or an exact `CanTransferNft` grant;
+  changing `--from` does not change the signer.
+- Transfer changes only `owned_by`. Metadata updates and unregistration
+  stay with the domain owner or an account holding `CanModifyNftMetadata`
+  or `CanUnregisterNft` for that NFT; the new owner can transfer it onward.
 - Taira can return an empty NFT collection. Do not treat `items: []` as
   proof that NFT instructions are unavailable.
 
 ## Source and related docs
 
-- [NFT integration tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/nft.rs)
-- [Kotodama NFT host-call tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
-- [Exact Kotodama NFT lifecycle fixture at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko)
+- [NFT integration tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/nft.rs)
+- [Kotodama NFT host-call tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
+- [Exact Kotodama NFT lifecycle fixture at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/ivm/docs/examples/12_nft_flow.ko)
+- [Kotodama documentation example tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/ivm/tests/kotodama_documentation_examples.rs)
 - [NFTs](/blockchain/nfts.md)
 - [Metadata](/blockchain/metadata.md)
 - [Instructions](/blockchain/instructions.md)

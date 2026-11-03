@@ -14,6 +14,8 @@
     "lint": "eslint --ext .js,.ts,.mts,.vue . .vitepress",
     "typecheck": "tsc --noEmit",
     "refresh:iroha": "tsx etc/refresh-iroha.ts",
+    "select:iroha": "tsx etc/select-iroha.ts",
+    "move:iroha-citations": "tsx etc/move-iroha-citations.ts",
     "translate": "tsx etc/translate.ts",
     "validate:content": "tsx etc/validate-content-policy.ts",
     "validate:cookbook": "tsx etc/validate-cookbook.ts",

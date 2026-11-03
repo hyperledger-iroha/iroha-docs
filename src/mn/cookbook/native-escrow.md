@@ -1,9 +1,9 @@
 ---
 translation_locale: mn
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 576e03924f19b63681cdfafa641b996672e35a992478fc9eaf5b83f0e7baa6da
+translation_source_hash: d399284a2baec507e4c979c762d6e216d8c3fbc5b4b4fe221b6bbb0049ee9fd9
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Уугуул хөрөнгийн хадгаламж {#native-asset-escrow}
@@ -15,8 +15,8 @@ translation_engine: bing-translator-llm
 ## Өмнөх шаардлага {#prerequisites}
 
 - Тооцооны хөрөнгийн тодорхойлолт болон хангалттай тоотой эзэмшигч нээлт/борлуулагч.
-- Санхүүжүүлсэн, ганц түлхүүртэй I105 үйлчлүүлэгчид алхам илгээсэн бүх намын хувьд. Гүйлгээг гарын үсэг зурсан данс `fee_payment`-аар төлсөн амьд зорилгыг ашигла; түүний төлбөрийн хөрөнгө нь одоогийн Taira тестнет санхүүжүүлэх үйлчилгээний хариутай тохирч байвал сайн; баримт бичгээс хөрөнгийн ID оруулахгүй.
-- Одоогийн Rust эсвэл Python SDK нь Iroha протоколын эцсийн хэлэлцээрээс `0010c5a70039eac101a4846499ba9ceaf43eb65c` юм.
+- Алхам илгээдэг тал бүрт зориулсан, санхүүжүүлсэн, ганц түлхүүртэй I105 клиентүүд. Төлбөрийн хөрөнгө нь Taira-ийн faucet-ийн одоогийн бодлогын нийтэлсэн хөрөнгөтэй таарах, эрх бүхий данс төлдөг бодит цагийн `fee_payment` зорилгыг ашигла; баримт бичгээс хөрөнгийн ID бүү шигтгэ.
+- Одоогийн Rust эсвэл Python SDK нь Iroha протоколын эцсийн хэлэлцээрээс `c8c872461e92f04325c350cdd952f4276e96f9dc` юм.
 - JavaScript компиляторын жишээний хувьд, Node.js 24 ба орон нутгийн хөгжүүлэлтийн орчинд `@iroha/iroha-js` багцыг бүтээж, түүний анхны `iroha_js_host`-ийг ашиглана; [JavaScript SDK эх үүсвэр бүтээх тохиргоо](/mn/guide/tutorials/javascript.md#build-from-source)-ийг дагана уу. Вэб хөтчийн бүтээлүүд нь анхны хостыг ачааллахын оронд `compilerUrl`-ийг өгөх ёстой.
 - Taira нь хөрөнгийн шилжүүлэг болон хадгалалтын зааврыг хүлээн зөвшөөрөх ёстой. Хөрөнгийн эзэмшигчид хөрөнгийн бодлогын зөвшөөрөлтэй бол энгийн амьдралын мөчлөгийг ашиглаж болно; шийдвэрлэх маргаан нь дэлхийн `CanResolveEscrowDispute` зөвшөөрлийг шаарддаг. Хэрэв шаардлагатай олон нийтийн блокчэйн сүлжээний эрх олголтын гол нь байхгүй бол үүсгэсэн локал сүлжээг ашиглана уу.
 
@@ -31,7 +31,7 @@ translation_engine: bing-translator-llm
 ```rust
 use eyre::{Result, ensure};
 use iroha::{
-    client::Client,
+    blocking::Client,
     data_model::{
         isi::escrow::{
             AcceptAssetEscrow, MarkEscrowPaymentSent, OpenAssetEscrow,
@@ -51,7 +51,7 @@ fn complete_marketplace_escrow(
 ) -> Result<AssetEscrowRecord> {
     let fee = FeePaymentIntent::authority(Vec::new(), None);
 
-    seller.submit_blocking(
+    seller.submit(
         OpenAssetEscrow::with_evidence_hashes(
             escrow_id,
             asset_definition,
@@ -60,11 +60,13 @@ fn complete_marketplace_escrow(
         ),
         fee.clone(),
     )?;
-    buyer.submit_blocking(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
-    buyer.submit_blocking(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
-    seller.submit_blocking(ReleaseAssetEscrow::new(escrow_id), fee)?;
+    buyer.submit(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
+    buyer.submit(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
+    seller.submit(ReleaseAssetEscrow::new(escrow_id), fee)?;
 
-    let record = seller.query_single(FindAssetEscrowById::new(escrow_id))?;
+    let record = seller
+        .client()
+        .query_single(FindAssetEscrowById::new(escrow_id))?;
     ensure!(record.status == AssetEscrowStatus::Released);
     Ok(record)
 }
@@ -74,7 +76,7 @@ fn complete_marketplace_escrow(
 
 ### 2. Python-аар ерөнхий түгжээг нээж, хэсэгчлэн зурна уу {#_2-open-and-partially-draw-a-generic-lock-with-python}
 
-Гаргалтын зөвшөөрлийн үндсэн хэрэглэгч татахын өмнө гарын үсэг зурсны төрөлхийн бичлэгийг шалгадаг. Тэр яг `remaining_amount`-г дамжуулснаар итгэл найдвар бүхий зэрэгцээ ажиллагааг хангана: хуучирсан зэрэгцээ хүсэлтийг хоёр удаа хадгаламжнаас хасахын оронд татгалздаг.
+Чөлөөлөх эрх бүхий данс татан авахаасаа өмнө гарын үсэгтэй уугуул бичлэгийг асуулгаар авдаг. Яг тэр `remaining_amount`-ийг дамжуулснаар оптимист зэрэгцээ хяналт хангагдана: хуучирсан зэрэгцээ хүсэлт хадгаламжаас хоёр удаа хасахын оронд татгалзагдана. `client` нь `local_signing_context=LocalSigningContext(network_id)` болон сүлжээний `chain_discriminant`-аар үүсгэсэн `ToriiClient` юм; гүйлгээний туслах функцууд сүлжээний таних мэдээллийг тэр контекстээс авдаг бол гарын үсэгтэй асуулгууд үүнийг `network_id` хэлбэрээр авдаг.
 
 ```python
 import secrets
@@ -92,7 +94,6 @@ def escrow_status(record):
 def open_and_draw_lock(
     *,
     client,
-    chain_id,
     opener,
     opener_private_key,
     release_authority,
@@ -102,9 +103,9 @@ def open_and_draw_lock(
     fee_payment,
 ):
     escrow_id = f"cookbook_lock_{secrets.token_hex(12)}"
+    network_id = client.local_signing_context.network_id
 
     client.open_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=opener,
         private_key=opener_private_key,
         fee_payment=fee_payment,
@@ -120,10 +121,10 @@ def open_and_draw_lock(
     before = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
     client.drawdown_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=release_authority,
         private_key=release_private_key,
         fee_payment=fee_payment,
@@ -135,6 +136,7 @@ def open_and_draw_lock(
     after = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
 
@@ -150,8 +152,10 @@ Python SDK нь `expected_remaining_amount`-ыг орхих үед автома�
 Rust түгжих урсгад зориулсан одоогийн бүтээгчид бас ажиглагдсан хэмжээг шаардана:
 
 ```rust
-let before = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-release_authority.submit_blocking(
+let before = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+release_authority.submit(
     DrawdownAssetLock::new(
         lock_id,
         Quantity::from(4_u64),
@@ -160,23 +164,26 @@ release_authority.submit_blocking(
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 
-let current = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-opener.submit_blocking(
+let current = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+opener.submit(
     CancelAssetLock::new(lock_id, current.remaining_amount),
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 ```
 
-`DrawdownAssetLock::new` нь гурван утгыг авна; `CancelAssetLock::new` нь хоёр утгыг авна. Хүлээгдэж буй үлдсэн хэмжээг орхих нь хуучин, аюулгүй бус техникийн дуудах хэлбэрийг илэрхийлдэг.
+`DrawdownAssetLock::new` нь түгжээ, дүн болон ажигласан үлдсэн дүнг авдаг; `CancelAssetLock::new` нь түгжээ болон ажигласан үлдсэн дүнг авдаг. Үлдсэн дүн түрүүлж өөрчлөгдсөн бол блокчэйн дэвтэр аль ч зааврыг татгалздаг.
 
 ### 3. JavaScript -оос Kotodama арилжааны хөрсийг бүрдүүлэх {#_3-compile-the-kotodama-escrow-surface-from-javascript}
 
-JavaScript нь төрөлгүй дотоод заавруудыг зохион бүтээх шаардлагагүй. Одоогийн компилятор блокчейн бүртгэлийн эскроу-д орох үндсэн функцуудыг Kotodama-д нэвтрүүлдэг; байрлуулалт ба техникийн дуудлагууд дараа нь [Ухаалаг гэрээг бүтээж, хэрэгжүүл](./smart-contracts.md)-ыг дагана.
+JavaScript-д төрөлгүй уугуул заавар зохиох шаардлагагүй. Одоогийн компилятор блокчэйн дэвтрийн эскроугийн суурилагдсан функцуудыг Kotodama-д нээж өгдөг; дараа нь байрлуулалт [Ухаалаг гэрээг бүтээж, байрлуулах](./smart-contracts.md) зааврыг дагана. `open_offer` орох цэг нь `authorize(Admin)` тул гүйцэтгэгч түүний дуудагчаас байрлуулсан хаяг болон `permission: "Admin"`-д зориулсан `CanUseContractPermission`-ийг эзэмшсэн байхыг шаарддаг.
 
 Үүнийг `native_escrow.ko` гэж хадгална уу:
 
 ```kotodama
 seiyaku NativeEscrowAitai {
+    permission Admin;
     error enum EscrowError {
         NonPositiveAmount = 1,
     }
@@ -185,7 +192,7 @@ seiyaku NativeEscrowAitai {
         Name offer,
         AssetDefinitionId asset_definition,
         quantity amount
-    ) authorize("Admin") {
+    ) authorize(Admin) {
         require(amount > 0, EscrowError::NonPositiveAmount);
         ledger::escrow::open_offer(
             offer: offer,
@@ -230,6 +237,7 @@ node ./compile-native-escrow.mjs
 record = client.get_asset_escrow(
     escrow_id=escrow_id,
     authority=release_authority,
+    network_id=client.local_signing_context.network_id,
     private_key=release_private_key,
 )
 assert escrow_status(record) == "Locked"
@@ -241,7 +249,7 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 ## Алдааг олох болон засах {#troubleshooting}
 
 - `Not permitted` нээхэд ихэвчлэн эрх олгогч гол субъект сонгосон хөрөнгийг хадгалалтанд шилжүүлж чадахгүй гэсэн үг юм. Маргааныг шийдвэрлэхэд тусдаа дэлхийн `CanResolveEscrowDispute` хаалга байдаг.
-- `expected remaining amount` татгалзалт бол оптимист өнөө-усан зэрэгцээ мөргөлдөөн юм. Бичлэгийг дахин асууж, нөгөө татан авалт/цахилгаан цуцлах нь зориуд байсан эсэхийг тодорхойлж, шинэ нөхцөл байдал зөв бол шинэ заавар бичиж гарын үсэг зурна уу.
+- `asset lock remaining amount changed since the drawdown was prepared` (эсвэл `...since the cancellation was prepared`) нь оптимист зэрэгцээ хяналтын зөрчил юм. Бичлэгийг дахин асууж, нөгөө татан авалт/цуцлалт санаатай байсан эсэхийг шийдээд, шинэ төлөв хүлээн зөвшөөрөгдөхүйц бол л шинэ зааварт гарын үсэг зур.
 - Зөвхөн тохируулагдсан гаргах эрх бүхий үндсэн субъект итгэмжлэгдсэн түгжээг тайлж болно. Хүлээн авагч санхүүгийн хөрөнгийг авах гэж байгаа учраас үүнийг гаргаж чадахгүй.
 - Маркетплейсийн гаргалт зөвхөн хүлээн зөвшөөрөгдсөн ба төлбөр илгээгдсэн төлөвт байхад хүчинтэй; цуцлалт нь өмнөх амьдралын мөчлөгийн төлөвүүдтэй хязгаарлагдана.
 - Дуусах хугацаа нь эрх бүхий блокчэйн бүртгэлийн цагийг ашигладаг. Орон нутгийн системийн цагийн хугацаа дууссан болохыг `ExpireAssetLock` дамжих баталгаа гэж бүү үз.
@@ -249,10 +257,10 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## Эх сурвалж ба холбогдох баримт бичгүүд {#source-and-related-docs}
 
-- [Төлөвлөсөн эх кодын өөрчлөлтөд үндэсний баталгаат зааврын модель](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
-- [Эх үүсвэрийн кодын тогтоосон хувилбарт нутгийн эскроу интеграцийн туршилтууд](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
-- [Python эскроу клиент аргачлалуудыг тогтсон эх кодын хувилбараас](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama бэхлэгдсэн эх кодын хувилбарт эх нутгийн итгэмжлэгдсэн дээж](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [Төлөвлөсөн эх кодын өөрчлөлтөд үндэсний баталгаат зааврын модель](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/isi/escrow.rs)
+- [Эх үүсвэрийн кодын тогтоосон хувилбарт нутгийн эскроу интеграцийн туршилтууд](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/native_escrow.rs)
+- [Python эскроу клиент аргачлалуудыг тогтсон эх кодын хувилбараас](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama бэхлэгдсэн эх кодын хувилбарт эх нутгийн итгэмжлэгдсэн дээж](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [Уугуул хөрөнгийн итгэмжлэл](/mn/blockchain/escrow.md)
 - [Ширээний хөрөнгө](./fungible-assets.md)
 - [Зөвшөөрөл болон үүрэг](./permissions-and-roles.md)

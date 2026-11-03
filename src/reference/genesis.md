@@ -77,4 +77,4 @@ public_key = "<PUBLIC_KEY>"
 - `cargo xtask kagami-profiles`
 
 For the generator implementation and command details, see the
-[Kagami README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md).
+[Kagami README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami/README.md).

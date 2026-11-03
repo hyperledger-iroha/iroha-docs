@@ -1,9 +1,9 @@
 ---
 translation_locale: hy
 translation_source: /cookbook/submit-and-verify-transactions.md
-translation_source_hash: 98e5c7e9db1ba8468cfd5409409b0e8d02251311dc85492f7b71675e983dc4fd
+translation_source_hash: de608ef52ad3a999c0e253e6683e454f8f66f399a690dce4c2185c79d02334cd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Գործարքների ներկայացում եւ ստուգում {#submit-and-verify-transactions}
@@ -14,7 +14,7 @@ translation_engine: nllb-200-ct2
 
 ## Նախադրյալներ {#prerequisites}
 
-- Ֆինանսավորված `taira.client.toml`, `taira.tx-metadata.json` եւ `TAIRA_ACCOUNT_ID` ապրանքներ, որոնք արտադրվել են [: Կապվեք Taira](./connect-to-taira.md):
+- [Միացում Taira-ին](./connect-to-taira.md) էջի արդյունքում ստեղծված ֆինանսավորված `taira.client.toml`, `taira-faucet-policy.json` և `TAIRA_ACCOUNT_ID`։ Գրառումներն օգտագործում են `--fee-payer authority`; CLI-ն ստորագրելուց առաջ ստանում է ճշգրիտ վճարային առաջարկ Taira-ի վճարային ակտիվով։
 - Հոսքը `iroha` CLI եւ `jq`
 - Մեկ անգամ օգտագործվող Taira ստորագրող: Մի օգտագործեք նրա բանալին կամ գրեք այս հրամանները Minamoto հասցեին:
 
@@ -22,15 +22,15 @@ translation_engine: nllb-200-ct2
 
 ### 1. Նախագահել վերջնական կետը, լիազորությունը եւ վճարների մնացորդը {#_1-preflight-the-endpoint-authority-and-fee-balance}
 
-Սկզբում կարդացեք հերթի նկարը, ապա ապացուցեք, որ լիազոր հաշվի վճարային մնացորդը տեսանելի է: Կարդացեք Base58 ակտիվի սահմանումը ID կապի բաղադրատոմսով ստեղծված մետադատայից:
+Նախ կարդացեք հերթի վիճակապատկերը, ապա ապացուցեք, որ լիազոր հաշվի վճարային մնացորդը տեսանելի է։ Base58 ակտիվի սահմանման ID-ն կարդացեք faucet-ի քաղաքականությունից, որը պահպանել է միացման բաղադրատոմսը։
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, queue_size, txs_approved, txs_rejected}'
 
-TAIRA_FEE_ASSET="$(jq -er '.gas_asset_id' taira.tx-metadata.json)"
+TAIRA_FEE_ASSET="$(jq -er '.asset_definition_id' taira-faucet-policy.json)"
 
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 iroha --config ./taira.client.toml ledger asset get \
@@ -48,8 +48,7 @@ CLI նետում է հստակ ոչ ստորագրված օգտակար բեռը
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg 'cookbook-submit-verify' \
+  tx ping --msg 'cookbook-submit-verify' \
   > taira-submission.json
 
 jq '{hash, fee_quote}' taira-submission.json
@@ -60,12 +59,12 @@ TAIRA_TX_HASH="$(jq -er '.hash' taira-submission.json)"
 
 ### 3. Սպասեք վերջնական մշակման շղթայի վիճակը: {#_3-wait-for-terminal-pipeline-state}
 
-Օգտագործեք մուտքագրված կարգավիճակի օգնականը, այլ ոչ թե հաջողության եզրակացությունը HTTP ընդունումից կամ հերթի ընդունումից: With `--wait`, անվտանգ երթեւեկման շրջանակը ավտոմատ կերպով ընտրվում է, եւ նախանշյալ նպատակն է կիրառվում վերջնականություն.
+HTTP ընդունումից կամ հերթում ընդունվելուց հաջողություն եզրակացնելու փոխարեն օգտագործեք տիպավորված կարգավիճակի օգնականը։ `--wait`-ով CLI-ն պարբերաբար հարցում է անում ճշգրիտ գլոբալ կարգավիճակը և հաջողությամբ ավարտվում է միայն վիճակով հաստատված `Applied` վերջնականության դեպքում։
 
 ```bash
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction status \
+  tx status \
   --hash "$TAIRA_TX_HASH" \
   --wait \
   --timeout-ms 60000 \
@@ -83,7 +82,7 @@ Pipeline- ի վիճակը պատասխանում է, թե արդյոք մշակ�
 ```bash
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction get --hash "$TAIRA_TX_HASH" \
+  tx get --hash "$TAIRA_TX_HASH" \
   > taira-transaction.json
 
 jq . taira-transaction.json
@@ -101,15 +100,17 @@ curl -fsS -H 'Accept: application/json' \
 
 ## Փորձարկել {#verify}
 
-Ստուգեք, որ բոլոր երեք արձանագրությունները համաձայն են նույն շաշի վրա եւ որ Explorer- ը այլեւս չի հայտնում սպասվող վիճակի մասին.
+Ստուգեք, որ երեք գրառումներն էլ համընկնում են նույն հեշի վրա, և որ բլոկների դիտարկիչը հաղորդում է `Committed`, այլ ոչ թե `Rejected`:
 
 ```bash
-test "$(jq -r '.hash' taira-submission.json)" = "$TAIRA_TX_HASH"
+jq -e --arg hash "$TAIRA_TX_HASH" \
+  '.hash == $hash and .terminal_kind == "Applied"' taira-final-status.json
 
 curl -fsS -H 'Accept: application/json' \
   "https://taira.sora.org/v1/explorer/transactions/$TAIRA_TX_HASH" \
   | jq -e --arg hash "$TAIRA_TX_HASH" \
-    '.hash == $hash and .status == "Committed"'
+    '(.hash | ascii_downcase | ltrimstr("hash:") | split("#")[0]) == $hash
+      and .status == "Committed"'
 ```
 
 Պահպանեք ներկայացված փաստաթուղթը եւ վերջնական կարգավիճակը որպես փորձարկման ապացույց: Նրանք պարունակում են հանրային գործարքի նյութ, այլ ոչ թե ստորագրության բանալին:
@@ -118,15 +119,15 @@ curl -fsS -H 'Accept: application/json' \
 
 - HTTP `202` կամ հերթի կարգավիճակը միայն ընդունելություն է ապացուցում: Շարունակեք քվեարկությունը տիպված կարգավիճակի համար մինչեւ կիրառված, մերժված, ժամկետը լրացած կամ սահմանված ժամանակահատվածը:
 - Եթե ուղարկման ժամանակահատվածը ավարտվում է hash- ը վերադարձնելուց հետո, կատարեք հարցում այն hash- ը նախքան մեկ այլ գործարք կառուցելը: Կույր վերակառուցումը ստեղծում է նոր վճարի գնառաջարկ եւ ստորագրված օգտակար բեռ:
-- Հաշվարկի առաջարկը կարող է մերժվել ստորագրելուց առաջ: Ստուգեք `--fee-payer authority`, `gas_asset_id`, մարմնի մնացորդը եւ ցանցային շղթան ID.
+- Վճարային առաջարկը կարող է մերժվել մինչև ստորագրումը։ Ստուգեք `--fee-payer authority`-ն, լիազոր հաշվի մնացորդը, կազմաձևված `chain`-ը և `network_id`-ն, ինչպես նաև այն, որ `--metadata`-ն չի պարունակում վճարի բանալի, օրինակ՝ `gas_asset_id`։
 - `Rejected` սովորաբար նշում է հանձնարարականի վավերացումը, թույլտվությունները, վճարները կամ հնացած վիճակը: Այն հաստատված ապացույց է ձախողված կատարման եւ չպետք է վերակարգավորվի որպես փոխադրման կրկին փորձ:
 - Explorer `404` Applied- ի անմիջապես հետո կարող է ինդեքսել ձգձգումը: Կրկին փորձեք ընթերցել; գործարքը կրկին չներկայացրեք:
 - Եթե արտոնյալ հրահանգը աշխատում է ստեղծված տեղական ցանցում, բայց Taira մերժում է այն, ստացեք ճշգրիտ Taira թույլտվությունը կամ կառավարվող անվան տարածքի նշանակումը: Տեղական արդյունքը չի տալիս հանրային ցանցի լիազոր հաշիվ:
 
 ## Աղբյուրը եւ դրա հետ կապված փաստաթղթերը {#source-and-related-docs}
 
-- [Գործարքի ներկայացումը եւ վճարային կոտորայի իրականացումը հաստատված commit դեպքում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
-- [Գործարքի հաստատման փորձարկումները փակված commit վրա](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/src/client.rs)
+- [Գործարքի ներկայացումը եւ վճարային կոտորայի իրականացումը հաստատված commit դեպքում](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs)
+- [Գործարքի հաստատման փորձարկումները փակված commit վրա](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/src/client.rs)
 - [Գործարքներ](/hy/blockchain/transactions.md)
 - [CLI ուղեցույց](/hy/get-started/operate-iroha-via-cli.md)
 - [Torii վերջնական կետեր](/hy/reference/torii-endpoints.md)

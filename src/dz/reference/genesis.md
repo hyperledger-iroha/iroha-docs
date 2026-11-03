@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /reference/genesis.md
-translation_source_hash: ac6bad693ed382dede0818132b8649fe14726283508da897a32eea417e5bbb28
+translation_source_hash: 8215489720e1bc2fc3b7c22c4cb2f8f7b1f0f15d1df4a4f596ee3caa2c6b7829
 translation_status: machine-validated
 translation_engine: human-reviewed
 ---
@@ -74,4 +74,4 @@ public_key = "<PUBLIC_KEY>"
 - `kagami localnet`
 - `cargo xtask kagami-profiles`
 
-བཟོ་བསྐྲུན་པ་ལག་ལེན་འཐབ་ནི་དང་བརྡ་བཀོད་ཁ་གསལ་གྱི་དོན་ལུ་ བལྟ། [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md).
+བཟོ་བསྐྲུན་པ་ལག་ལེན་འཐབ་ནི་དང་བརྡ་བཀོད་ཁ་གསལ་གྱི་དོན་ལུ་ བལྟ། [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami/README.md).

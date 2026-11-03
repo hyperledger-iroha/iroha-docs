@@ -1,33 +1,42 @@
 name: Refresh pinned Iroha references
 
+# Follows `source.track` in provenance/iroha.json. Each run pins the newest Iroha commit on the
+# tracked branch whose signature GitHub verifies, or a newer verified release tag, regenerates every
+# reference from that exact commit, and opens or updates one pull request. Runs that find nothing
+# newer than the current pin stop after the selection job.
 on:
+  schedule:
+    - cron: '17 3 * * *'
   workflow_dispatch:
+    inputs:
+      ref:
+        description: Tracked Iroha branch or release tag to pin; leave empty to follow provenance/iroha.json
+        required: false
+        default: ''
+  # Lets an Iroha release workflow request a refresh with client_payload.ref once a sender is set up.
+  repository_dispatch:
+    types: [iroha-release]
 
 permissions:
   contents: read
 
+concurrency:
+  group: refresh-iroha
+  cancel-in-progress: false
+
 jobs:
-  refresh:
+  select:
+    name: Select a verified Iroha commit
     runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.select.outputs.changed }}
+      commit: ${{ steps.select.outputs.commit }}
+      ref: ${{ steps.select.outputs.ref }}
+      previous: ${{ steps.select.outputs.previous }}
+      committed_at: ${{ steps.select.outputs.committed_at }}
+      reason: ${{ steps.select.outputs.reason }}
     steps:
-      - name: Check out documentation
-        uses: actions/checkout@v4
-
-      - name: Read pinned Iroha commit
-        id: source
-        run: |
-          node -e "const manifest = require('./provenance/iroha.json'); process.stdout.write('commit=' + manifest.source.commit + '\n')" >> "$GITHUB_OUTPUT"
-
-      - name: Require a publicly fetchable source commit
-        run: |
-          node -e "const manifest = require('./provenance/iroha.json'); if (manifest.source.refresh_state) { console.error('Iroha provenance is incomplete: ' + manifest.source.refresh_state); process.exit(1) }"
-
-      - name: Check out pinned Iroha source
-        uses: actions/checkout@v4
-        with:
-          repository: hyperledger-iroha/iroha
-          ref: ${{ steps.source.outputs.commit }}
-          path: .upstream/iroha
+      - uses: actions/checkout@v4
 
       - uses: pnpm/action-setup@v4
         with:
@@ -42,11 +51,174 @@ jobs:
       - name: Install packages
         run: pnpm install --frozen-lockfile
 
-      - name: Refresh checked-in references
-        run: pnpm refresh:iroha --source .upstream/iroha
+      - name: Select the next pin
+        id: select
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          REQUESTED_REF: ${{ inputs.ref || github.event.client_payload.ref }}
+        run: |
+          args=(--github-output "$GITHUB_OUTPUT")
+          if [[ -n "$REQUESTED_REF" ]]; then args+=(--ref "$REQUESTED_REF"); fi
+          pnpm --silent select:iroha "${args[@]}"
 
-      - name: Validate provenance
-        run: pnpm validate:provenance
+  guard:
+    name: Keep a refresh that reviewers have changed
+    needs: select
+    if: needs.select.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    outputs:
+      replace: ${{ steps.guard.outputs.replace }}
+      lease: ${{ steps.guard.outputs.lease }}
+    env:
+      REFRESH_BRANCH: automation/refresh-iroha
+      COMMIT: ${{ needs.select.outputs.commit }}
+      REASON: ${{ needs.select.outputs.reason }}
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      BOT_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+    steps:
+      - name: Check the open refresh pull request
+        id: guard
+        run: |
+          # The refresh replaces its branch only while every commit on the open pull request is its own.
+          lease="$(gh api "repos/${GH_REPO}/git/matching-refs/heads/${REFRESH_BRANCH}" \
+            --jq ".[] | select(.ref == \"refs/heads/${REFRESH_BRANCH}\") | .object.sha")"
+          echo "lease=${lease}" >> "$GITHUB_OUTPUT"
+          number="$(gh pr list --head "$REFRESH_BRANCH" --base main --state open --json number --jq '.[0].number // empty')"
+          reviewed=0
+          if [[ -n "$number" ]]; then
+            reviewed="$(gh pr view "$number" --json commits \
+              --jq "[.commits[].authors[].email | select(. != \"${BOT_EMAIL}\")] | length")"
+          fi
+          if [[ "$reviewed" == 0 ]]; then
+            echo "replace=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "replace=false" >> "$GITHUB_OUTPUT"
+          echo "::notice::Pull request #${number} has reviewer commits, so this refresh leaves it in place."
+          if ! gh pr view "$number" --json comments --jq '.comments[].body' | grep -qF "$COMMIT"; then
+            gh pr comment "$number" --body "A newer verified Iroha commit is available: [\`${COMMIT:0:10}\`](https://github.com/hyperledger-iroha/iroha/commit/${COMMIT}), the ${REASON}. This pull request has reviewer commits, so scheduled refreshes leave it in place. Merge or close it to let the next refresh replace it."
+          fi
 
-      - name: Require a clean generated snapshot
-        run: git diff --exit-code
+  refresh:
+    name: Refresh references and open a pull request
+    needs: [select, guard]
+    if: needs.guard.outputs.replace == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    env:
+      REFRESH_BRANCH: automation/refresh-iroha
+      # The branch head the guard saw; the push fails if a reviewer pushed while the refresh ran.
+      LEASE: ${{ needs.guard.outputs.lease }}
+      COMMIT: ${{ needs.select.outputs.commit }}
+      REF: ${{ needs.select.outputs.ref }}
+      PREVIOUS: ${{ needs.select.outputs.previous }}
+      COMMITTED_AT: ${{ needs.select.outputs.committed_at }}
+      REASON: ${{ needs.select.outputs.reason }}
+      CARGO_INCREMENTAL: '0'
+      CARGO_TERM_COLOR: never
+    steps:
+      - name: Check out documentation
+        uses: actions/checkout@v4
+        with:
+          path: docs
+
+      - name: Check out the selected Iroha commit
+        uses: actions/checkout@v4
+        with:
+          repository: hyperledger-iroha/iroha
+          ref: ${{ needs.select.outputs.commit }}
+          path: iroha
+          persist-credentials: false
+
+      - name: Free disk space for the generator build
+        run: sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc /opt/hostedtoolcache/CodeQL
+
+      - name: Install the pinned Rust toolchain
+        working-directory: iroha
+        run: |
+          rustup toolchain install
+          rustup show active-toolchain
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.1
+          run_install: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: docs/pnpm-lock.yaml
+
+      - name: Install packages
+        working-directory: docs
+        run: pnpm install --frozen-lockfile
+
+      - name: Refresh references from the selected commit
+        working-directory: docs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: pnpm refresh:iroha --source ../iroha --pin "$COMMIT" --ref "$REF"
+
+      - name: Validate the refreshed references
+        working-directory: docs
+        run: |
+          pnpm validate:provenance
+          pnpm exec prettier --check provenance/iroha.json
+
+      - name: Open or update the refresh pull request
+        working-directory: docs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          short="${COMMIT:0:10}"
+          title="Refresh Iroha references to ${short}"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch --create "$REFRESH_BRANCH"
+          jq -r '.artifacts[].target' provenance/iroha.json |
+            xargs git add -- provenance/iroha.json src/public/compat-matrix.json
+          git commit --signoff --message "$title" \
+            --message "Pinned from ${REF} (${REASON}). GitHub verifies the commit signature."
+          git push --force-with-lease="refs/heads/${REFRESH_BRANCH}:${LEASE}" origin "$REFRESH_BRANCH"
+
+          body="$RUNNER_TEMP/refresh-pr.md"
+          {
+            echo "Regenerates the Iroha references from [\`${short}\`](https://github.com/hyperledger-iroha/iroha/commit/${COMMIT}), the ${REASON} (committed ${COMMITTED_AT})."
+            echo
+            echo "- GitHub verifies the commit signature, and the commit is reachable from \`${REF}\`."
+            echo "- Source changes since the previous pin: https://github.com/hyperledger-iroha/iroha/compare/${PREVIOUS}...${COMMIT}"
+            echo "- Opened by [${GITHUB_WORKFLOW}](${RUN_URL})."
+            echo
+            echo '```text'
+            git diff --stat HEAD~1 HEAD
+            echo '```'
+            echo
+            echo 'Before merging:'
+            echo
+            echo '1. Review the regenerated references like source changes.'
+            echo '2. Check the cookbook recipes and every other page that cites Iroha source against this commit, and correct contradicted prose in English and in every translation.'
+            echo "3. Run \`pnpm move:iroha-citations --source <Iroha checkout>\` to move the pages' source citations to this commit, and commit the result. \`validate:cookbook\` fails until the recipes cite this commit."
+            echo
+            echo 'Commits pushed to this branch keep it in place: later refreshes comment here instead of replacing it.'
+          } > "$body"
+
+          number="$(gh pr list --head "$REFRESH_BRANCH" --base main --state open --json number --jq '.[0].number // empty')"
+          if [[ -n "$number" ]]; then
+            gh pr edit "$number" --title "$title" --body-file "$body"
+          else
+            gh pr create --base main --head "$REFRESH_BRANCH" --title "$title" --body-file "$body"
+          fi
+
+          # Pull requests opened with GITHUB_TOKEN do not trigger pull_request workflows, so run the
+          # pull request checks on the refresh branch explicitly.
+          gh workflow run pull-request-ci.yaml --ref "$REFRESH_BRANCH"

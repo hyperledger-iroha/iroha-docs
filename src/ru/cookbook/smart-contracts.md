@@ -1,41 +1,28 @@
 ---
 translation_locale: ru
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: f1ea542f7a710830cd32465d141db8452e6418d426500995b9df7c9c4e1fd597
+translation_source_hash: ca6fd12e33df43b73a72dd6327133115aa44256cf579387c11bf0693797bf96e
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Создать и развернуть смарт-контракт {#build-and-deploy-a-smart-contract}
 
 ## Результат {#outcome}
 
-Проверьте и скомпилируйте контракт Kotodama V1, выполните его публичную точку входа локально, разверните проверенный артефакт IVM, смоделируйте развернутую точку входа и отправьте его с явной оценкой стоимости комиссии, оплачиваемой аккаунтом, подписывающим транзакцию.
+Проверьте и скомпилируйте контракт Kotodama V1, выполните локально его публичную view-функцию, разверните проверенный артефакт IVM с явно выбранной оплатой комиссий полномочным субъектом и прочитайте развернутую view-функцию через Torii.
 
 ## Предварительные требования {#prerequisites}
 
-- Рабочая копия исходного кода Iroha при завершении протокола `0010c5a70039eac101a4846499ba9ceaf43eb65c`, Rust и Cargo.
-- Текущий `iroha` CLI плюс финансируемый Taira клиент из [Подключиться к Taira](./connect-to-taira.md).
-- Абсолютные пути в `IROHA_CONFIG` и `IROHA_PRIVATE_KEY_FILE`. Ключевой файл должен быть обычным файлом с одной ссылкой, находящимся во владении владельца, с режимом `0600`; помощник развертывания специально не имеет аргумента встроенного приватного ключа.
-- Taira одобрение оператора. Регистрация кода контракта требует `CanRegisterSmartContractCode`, а защищённые развертывания могут требовать атрибуции управления и реализации. Если Taira не предоставил этот доступ, выполните развертывание в сгенерированной локальной сети, чей генезис блокчейна предоставляет это разрешение.
+- Рабочая копия исходного кода Iroha при завершении протокола `c8c872461e92f04325c350cdd952f4276e96f9dc`, Rust и Cargo.
+- Текущий `iroha` CLI и `musubi` (запускается как `cargo run -p musubi --` в рабочей копии) плюс финансируемый клиент Taira из [Подключиться к Taira](./connect-to-taira.md).
+- Абсолютный путь в `IROHA_CONFIG`. Сетевая привязка Musubi хранит ссылку на этот файл клиента и подписывает развертывание ключом его аккаунта.
+- Полномочия на псевдоним. Исполнитель требует `CanManageAccountAlias` для точного псевдонима контракта или его родительской области: домена-владельца для `name::domain.dataspace` или пространства данных для `name::dataspace`. Зарегистрированным аккаунтам не нужно отдельное разрешение на регистрацию кода, а защищённые пространства имён также требуют процесса управления сети. В примерах используется `cookbook_tuple::universal`; на Taira замените его псевдонимом в принадлежащем вам домене или выполните развертывание в сгенерированной локальной сети, генезис которой предоставляет область псевдонима.
 
 ```bash
-TORII_URL=https://taira.sora.org
 IROHA_SOURCE=/absolute/path/to/iroha
 IROHA_CONFIG=/absolute/path/to/taira.client.toml
-IROHA_PRIVATE_KEY_FILE=/absolute/path/to/taira-private-key.txt
-test -n "$TAIRA_ACCOUNT_ID"
-test -f "$IROHA_PRIVATE_KEY_FILE"
-
-CHAIN_ID="$({
-  python3 - "$IROHA_CONFIG" <<'PY'
-import sys
-import tomllib
-
-with open(sys.argv[1], "rb") as config_file:
-    print(tomllib.load(config_file)["chain"])
-PY
-})"
+test -f "$IROHA_CONFIG"
 ```
 
 ## Шаги {#steps}
@@ -46,12 +33,12 @@ PY
 
 ```bash
 cd "$IROHA_SOURCE"
-mkdir -p ./contracts ./build/deployment
+mkdir -p ./contracts ./build
 cp ./crates/kotodama_lang/src/samples/tuple_return_demo.ko \
   ./contracts/tuple_return_demo.ko
 ```
 
-Полный исходный код небольшой и использует текущий синтаксис `seiyaku`/`kotoage`:
+Полный исходный код небольшой: приватная вспомогательная функция `fn` и одна публичная `view fn` только для чтения, которая явно допускает любого вызывающего:
 
 ```kotodama
 seiyaku TupleReturnDemo {
@@ -60,7 +47,7 @@ seiyaku TupleReturnDemo {
         return t;
     }
 
-    kotoage fn compute() -> (int, int) authorize("Entry") {
+    view fn compute() authorize(anyone) -> (int, int) {
         let p = pair(a: 3, b: 5);
         return (p.0, p.1);
     }
@@ -72,16 +59,16 @@ Kotodama нацеливается на виртуальную машину Iroha
 ### 2. Проверить, собрать и проверить артефакт {#_2-check-build-and-verify-the-artifact}
 
 ```bash
-cargo run -p ivm --bin koto -- \
+cargo run -p kotodama_toolchain --bin koto -- \
   check ./contracts/tuple_return_demo.ko
 
-cargo run -p ivm --bin koto -- \
+cargo run -p kotodama_toolchain --bin koto -- \
   build \
   --out ./build/tuple_return_demo.to \
   --manifest-out ./build/tuple_return_demo.manifest.json \
   ./contracts/tuple_return_demo.ko
 
-cargo run -p ivm --bin koto -- \
+cargo run -p kotodama_toolchain --bin koto -- \
   build \
   --out ./build/tuple_return_demo.to \
   --manifest-out ./build/tuple_return_demo.manifest.json \
@@ -93,82 +80,90 @@ cargo run -p ivm --bin koto -- \
 
 ### 3. Запустите байткод локально {#_3-run-the-bytecode-locally}
 
-`compute` является публичной точкой входа `kotoage`. Запускайте её с помощью `debug-call`, которая выполняется с локальными тестовыми артефактами без отправки или оплаты транзакции.
+`compute` — это публичная `view fn` только для чтения. Запускайте её с помощью `debug-view`, которая локально выполняет скомпилированный байткод с необязательными тестовыми данными без отправки или оплаты транзакции.
 
 ```bash
-iroha --config "$IROHA_CONFIG" --machine contract debug-call \
+iroha --config "$IROHA_CONFIG" --machine contract debug-view \
   --code-file ./build/tuple_return_demo.to \
   --entrypoint compute \
-  > ./build/local-call.json
+  > ./build/local-view.json
 
 jq -e '.ok == true and .result == ["3", "5"]' \
-  ./build/local-call.json
+  ./build/local-view.json
 ```
 
 Kotodama целые числа отображаются как JSON строки, поэтому декодированный кортеж выглядит как `["3", "5"]`.
 
-### 4. Развернуть с помощью встроенного помощника {#_4-deploy-through-the-native-helper}
+### 4. Разверните проверенный артефакт с помощью Musubi {#_4-deploy-the-verified-artifact-with-musubi}
 
-Помощник загружает фрагменты байткода, регистрирует подписанный технический манифест и отправляет одну операцию `CommitContractDeployment`. Он оценивает комиссию для каждой транзакции и отказывает в оценке, если меняется выбранный плательщик или предел стоимости выполнения транзакции.
+`iroha contract` проверяет контракты, вызывает их view-функции и отлаживает их, но не развертывает, поэтому развертывания в Taira выполняются через Musubi. Его служба развертывания загружает фрагменты байткода, регистрирует проверенный технический манифест и отправляет одну операцию `CommitContractDeployment`. Она получает котировку для каждой транзакции, отклоняет котировку, если меняются выбранный плательщик, ревизия спонсора или предел газа, и развертывает заранее собранный артефакт только после того, как сборка пакета с зафиксированными зависимостями воспроизведёт его хэши кода и ABI. В локальной сети под управлением Kagami вместо этого `kagami contract deploy` развертывает `./build/tuple_return_demo.to` с `--alias cookbook_tuple::universal --json`; его квитанция находится в `.receipt`, а `kagami context show` выводит конфигурацию клиента, которую следует использовать как `IROHA_CONFIG`.
 
 ```bash
-printf '%s\n' \
-  '{"payer":"authority","value":{"charge_limits":[],"gas_limit":1500000}}' \
-  > ./build/fee-payment.json
+cat > ./contracts/Musubi.toml <<'TOML'
+manifest-version = 1
 
-cargo run -p iroha_cli --bin ivm_contract_deploy -- \
-  --torii-url "$TORII_URL" \
-  --chain-id "$CHAIN_ID" \
-  --authority "$TAIRA_ACCOUNT_ID" \
-  --private-key-file "$IROHA_PRIVATE_KEY_FILE" \
-  --code-file ./build/tuple_return_demo.to \
-  --contract-alias cookbook_tuple::universal \
-  --fee-payment-json ./build/fee-payment.json \
-  --out-dir ./build/deployment \
+[package]
+namespace = "local"
+name = "cookbook-tuple"
+version = "0.1.0"
+edition = "1"
+abi-version = 1
+
+[[contract]]
+name = "tuple_return_demo"
+path = "tuple_return_demo.ko"
+TOML
+
+cargo run -p musubi -- --manifest-path ./contracts/Musubi.toml check
+
+cargo run -p musubi -- --manifest-path ./contracts/Musubi.toml \
+  network configure taira \
+  --config "$IROHA_CONFIG" \
+  --fee-payer authority \
+  --contract tuple_return_demo \
+  --alias cookbook_tuple::universal
+
+cargo run -p musubi -- --manifest-path ./contracts/Musubi.toml --format json \
+  deploy --network taira \
+  --contract tuple_return_demo \
+  --artifact ./build/tuple_return_demo.to \
+  --artifact-manifest ./build/tuple_return_demo.manifest.json \
   > ./build/deployment.json
 
-jq '{contract_address, code_hash_hex, final, fee_quotes}' \
+jq '.data.receipt | {contract_address, code_hash, stored_artifact_matches}' \
   ./build/deployment.json
 ```
 
-Пустой запрос `charge_limits` не является идентификатором скопированного актива: помощник принимает точную текущую котировку перед подписанием. Сравните возвращаемый актив оплаты с текущим ответом службы финансирования тестовой сети. Вызовы контрактов принимают выбор комиссии только через типизированное живое предложение; `gas_asset_id` метаданные транзакции не являются частью контракта первой версии.
+Привязка использует `--fee-payer authority`; Musubi получает точную котировку комиссии в активе комиссии Taira до подписания. Сравните возвращаемый актив оплаты с активом, который публикует текущая политика службы финансирования тестовой сети. Вызовы контрактов принимают выбор комиссии только через типизированную текущую котировку; метаданные транзакции `gas_asset_id` не являются частью контракта первой версии.
 
-### 5. Смоделируйте и вызовите развернутую точку входа {#_5-simulate-and-call-the-deployed-entrypoint}
+### 5. Прочитайте развернутую view-функцию {#_5-read-the-deployed-view}
 
-Симуляция запускает общедоступную точку входа на Torii без отправки. Следующий технический вызов является транзакцией и поэтому явно выбирает плательщика комиссии основного принципала авторизации. Обе команды устанавливают лимит стоимости выполнения транзакции в 1 500 000.
+`contract view` выполняет точку входа только для чтения на Torii без транзакции и комиссии. У view-функции нет транзакционной формы: Torii отклоняет селектор view-функции на своих маршрутах вызова.
 
 ```bash
-iroha --config "$IROHA_CONFIG" --machine contract call \
-  --simulate \
+iroha --config "$IROHA_CONFIG" --machine contract view \
   --contract-alias cookbook_tuple::universal \
   --entrypoint compute \
   --gas-limit 1500000 \
-  > ./build/deployed-simulation.json
+  > ./build/deployed-view.json
 
 jq -e '.ok == true and .result == ["3", "5"]' \
-  ./build/deployed-simulation.json
-
-iroha --config "$IROHA_CONFIG" \
-  --machine \
-  --fee-payer authority \
-  contract call \
-  --contract-alias cookbook_tuple::universal \
-  --entrypoint compute \
-  --gas-limit 1500000 \
-  --wait \
-  --timeout-ms 60000 \
-  > ./build/deployed-call.json
-
-jq -e '.terminal_kind == "Applied"' ./build/deployed-call.json
+  ./build/deployed-view.json
 ```
 
 ## Проверить {#verify}
 
-Разрешите псевдоним, получите технический манифест в блокчейне по возвращённому криптографическому хэшу кода и смоделируйте ту же публичную точку входа по каноническому адресу:
+Разрешите псевдоним, получите технический манифест в блокчейне по криптографическому хэшу кода, который Torii сообщает для развернутой view-функции, и выполните ту же view-функцию по каноническому адресу:
 
 ```bash
-CODE_HASH="$({ jq -er '.code_hash_hex' ./build/deployment.json; })"
-CONTRACT_ADDRESS="$({ jq -er '.contract_address' ./build/deployment.json; })"
+CONTRACT_ADDRESS="$({
+  jq -er '.data.receipt.contract_address' ./build/deployment.json
+})"
+CODE_HASH="$({ jq -er '.code_hash_hex' ./build/local-view.json; })"
+DEPLOYED_CODE_HASH="$({
+  jq -er '.code_hash_hex' ./build/deployed-view.json
+})"
+test "$DEPLOYED_CODE_HASH" = "$CODE_HASH"
 
 RESOLVED_ADDRESS="$({
   iroha --config "$IROHA_CONFIG" --machine \
@@ -178,36 +173,36 @@ RESOLVED_ADDRESS="$({
 test "$RESOLVED_ADDRESS" = "$CONTRACT_ADDRESS"
 
 iroha --config "$IROHA_CONFIG" contract manifest get \
+  --dataspace-id 0 \
   --code-hash "$CODE_HASH" \
   --out ./build/on-chain-manifest.json
 
-iroha --config "$IROHA_CONFIG" --machine contract call \
-  --simulate \
+iroha --config "$IROHA_CONFIG" --machine contract view \
   --contract-address "$CONTRACT_ADDRESS" \
   --entrypoint compute \
-  > ./build/address-simulation.json
+  > ./build/address-view.json
 
 jq -e '.ok == true and .result == ["3", "5"]' \
-  ./build/address-simulation.json
+  ./build/address-view.json
 ```
 
-Развертывание считается завершённым только тогда, когда псевдоним разрешается в возвращённый адрес, технический манифест читаем при том же криптографическом хэше кода, локальные и Torii симуляции возвращают `["3", "5"]`, и переданный технический вызов достигает `Applied`.
+Развертывание считается завершённым только тогда, когда квитанция развертывания сообщает, что сохранённый артефакт проверен, псевдоним разрешается в возвращённый адрес, технический манифест читается при том же криптографическом хэше кода, а локальная view-функция и view-функция Torii возвращают `["3", "5"]`.
 
 ## Устранение неполадок {#troubleshooting}
 
-- `CanRegisterSmartContractCode` ошибки требуют предоставления прав оператором Taira или изменения генезиса/загрузки на localnet. Обычный аккаунт не может самостоятельно предоставить себе это разрешение после факта.
-- Отказ из-за управления или защищённой полосы означает, что для развертывания требуется точное указание утверждающего, необходимое для этой сети. Координируйте список утверждающих; не придумывайте идентификаторы аккаунтов.
-- Технический манифест или несоответствие ABI означает, что байткод, технический манифест и среда выполнения узла не описывают один и тот же артефакт. Пересоберите на закреплённой ревизии исходного кода с `--verify`.
+- `deployment authority lacks CanManageAccountAlias` или сообщение исполнителя `authority is not permitted to manage contract alias` означает, что аккаунт не может привязать этот псевдоним. Используйте псевдоним в принадлежащем вам домене или получите у владельца этой области точное разрешение на псевдоним либо разрешение на его домен или пространство данных; в локальной сети предоставьте его в генезисе.
+- Отказ из-за защищённого пространства имён означает, что пространство имён псевдонима подчиняется управлению. Перечисление идентификаторов утверждающих аккаунтов не является доказательством утверждения; используйте процесс управления сети (`iroha app gov deploy propose`) для этого пространства имён или выберите псевдоним вне его.
+- Несоответствие технического манифеста или ABI означает, что байткод, технический манифест и среда выполнения узла не описывают один и тот же артефакт. Пересоберите на закреплённой ревизии исходного кода, затем повторно запустите сборку с `--verify`.
 - `fee quote changed ... gas bound` означает, что запрашиваемое типизированное намерение и текущая котировка не совпадают. Выполните повторную проверку, а не изменяйте подписанную транзакцию.
-- Помощник развертывания отвергает встроенные ключи, разрешающие режимы файлов ключей, символьные ссылки и файлы с множественными ссылками перед отправкой по сети.
-- Ошибка точки входа только для просмотра означает, что `compute` был направлен через неправильное семейство команд. В этом примере объявляется `kotoage`, поэтому используйте техническую симуляцию вызова или отправку.
+- Прерванное развертывание сохраняет свой подписанный план в журнале. Восстановите его с помощью `musubi deploy --resume <JOURNAL>` вместо того, чтобы подписывать новый план.
+- `is read-only and cannot be invoked as a transaction` или `is not a kotoage or lifecycle entrypoint` означает, что `compute` был отправлен команде вызова. В этом примере объявлена `view fn`, поэтому используйте `debug-view` локально и `view` на Torii.
 - Вызовы контрактов требуют положительного предела стоимости выполнения транзакции с указанным типом. Контракт технического вызова первой версии отклоняет метаданные стоимости выполнения транзакции верхнего уровня или активов оплаты.
 
 ## Исходные и сопутствующие документы {#source-and-related-docs}
 
-- [Kotodama V1 реализация команды на закрепленной версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
-- [Пример исходного кода с возвратом кортежа на закрепленной версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
-- [Встроенный помощник развертывания на закреплённой версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [Интеграционные тесты контрактов на закреплённой версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
+- [Реализация команды Kotodama V1 на закрепленной версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_toolchain/src/bin/koto.rs)
+- [Пример исходного кода с возвратом кортежа на закрепленной версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
+- [Команда развертывания Musubi](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/musubi/src/command_deploy.rs) и [нативная служба развертывания контрактов](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_contract_deploy/src/lib.rs) на закрепленной версии исходного кода
+- [Интеграционные тесты контрактов на закреплённой версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/contracts.rs)
 - [Умные контракты](/ru/blockchain/smart-contracts.md)
 - [CLI справка](/ru/get-started/operate-iroha-via-cli.md)

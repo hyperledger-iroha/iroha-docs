@@ -1,21 +1,21 @@
 ---
 translation_locale: ka
 translation_source: /cookbook/metadata.md
-translation_source_hash: bb486994faabb29fb48609a886862e44e565148be4800ec1244218ef37e2e54b
+translation_source_hash: 88298912f083d79a9fdfe5e8d0a89d49acb97d814d3871db0c874cb40db5342b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # მეტამონაცემები {#metadata}
 
 ## შედეგები {#outcome}
 
-წაიკითხეთ მეტამონაცემები Taira, დააყენეთ და შეამოწმეთ ერთი ანგარიშის მეტამონაცემების ღირებულება საფასურის გადახდის ტრანზაქციით და კვლავ ამოიღეთ ღირებულება. თქვენ შენარჩუნებთ ბლოკჩეინის რეესტრის ობიექტების მეტამონაცემებს განცალკევებულად ტრანზუქციის საფასურის მეტამონაცემებიდან.
+წაიკითხეთ მეტამონაცემები Taira-ზე, დააყენეთ და შეამოწმეთ ანგარიშის მეტამონაცემების ერთი მნიშვნელობა ტრანზაქციით, რომელიც საფასურს ცხადად იხდის, შემდეგ კი ეს მნიშვნელობა ისევ წაშალეთ. თქვენ რეესტრის ობიექტების მეტამონაცემებს ტრანზაქციის მეტამონაცემებისგან განცალკევებით შეინახავთ.
 
 ## წინაპირობები {#prerequisites}
 
 - `curl`, `jq`, Python 3.11 ან უფრო გვიან და მიმდინარე `iroha` CLI.
-- დაფინანსებული `taira.client.toml` და `taira.tx-metadata.json` საფასური [გაერთიანება Taira](./connect-to-taira.md).
+- დაფინანსებული `taira.client.toml` გვერდიდან [Taira-სთან დაკავშირება](./connect-to-taira.md).
 - ავტორიზაციის პრინციპი სამიზნე ანგარიშის მეტამონაცემებზე. მაგალითი მიზნად ისახავს თვითონ კონფიგურირებულ ავტორიზაციულ პრინციპს; სხვა ანგარიში საჭიროებს ზუსტ ნებართვას.
 
 ## ნაბიჯები {#steps}
@@ -27,8 +27,8 @@ translation_engine: nllb-200-ct2
 ```bash
 curl -fsS -H 'Accept: application/json' \
   'https://taira.sora.org/v1/assets/definitions?limit=100' \
-  | jq '.items[] \
-    | select((.metadata // {} | length) > 0) \
+  | jq '.items[]
+    | select((.metadata // {} | length) > 0)
     | {id, name, metadata}'
 
 curl -fsS -H 'Accept: application/json' \
@@ -57,7 +57,7 @@ export TAIRA_ACCOUNT_ID="$(
 
 ### 3. დააყენეთ ერთი JSON ღირებულება {#_3-set-one-json-value}
 
-JSON სტანდარტული შეყვანიდან ამოღებული ხდება ანგარიშის `cookbook_profile` ღირებულება. ამის საპირისპიროდ, `--metadata ./taira.tx-metadata.json` აერთიანებს საფასურის ველებს გარიგების მონაცემთა კონტეინერში. ორ რუკაზე განსხვავებული მიზნები და მიზნები აქვთ.
+სტანდარტული შეყვანიდან წაკითხული JSON ხდება ანგარიშის `cookbook_profile` მნიშვნელობა. ტრანზაქციის მეტამონაცემები, რომლებიც `--metadata <file>`-ით ერთვის, ტრანზაქციის კონვერტზე ცალკე გასაღები-მნიშვნელობის რუკაა და საფასურს არასოდეს ირჩევს: ამას აკეთებენ `--fee-payer` და CLI-ის ზუსტი საფასურის შეფასება, ხოლო კლიენტი უარყოფს ტრანზაქციის მეტამონაცემებს, რომლებიც შეიცავს `gas_asset_id`, `gas_limit` ან `fee_sponsor` გასაღებებს.
 
 ```bash
 printf '%s\n' \
@@ -65,17 +65,16 @@ printf '%s\n' \
   | iroha --config ./taira.client.toml \
       --machine \
       --fee-payer authority \
-      --metadata ./taira.tx-metadata.json \
-      ledger account meta set \
+      account meta set \
       --id "$TAIRA_ACCOUNT_ID" \
       --key cookbook_profile
 ```
 
-CLI საფასურის შეფასებებს საფასურს, ხელმოწერს, წარადგენს და ელოდება დეფოლუტურად. არ დაამატოთ `--no-wait`, როდესაც შემდეგი ოპერაცია დამოკიდებულია ამ ღირებულებაზე.
+CLI ხელმოწერამდე იღებს ზუსტი საფასურის შეფასებას Taira-ს საფასურის აქტივში, შემდეგ აგზავნის ტრანზაქციას და მუშაობის დასრულებამდე ელოდება Applied საბოლოობას.
 
 ::: warning ნებართვის საზღვარი
 
-აქტიური ვალიდატორი გადაწყვეტს, ვინ შეიძლება მოიტანოს თითოეული ობიექტი. სხვა ანგარიშის განახლება ჩვეულებრივ საჭიროებს `CanModifyAccountMetadata`; დომენები, აქტივების დეფინიციები, NFTs და ტრიგერებს აქვთ საკუთარი სამიზნე-სპეციფიკური მეტატალების ნებართვები. თუ Taira არ აძლევს საჭირო ავტორიზაციის პრინციპს, განახორციელეთ იგივე ანგარიშის ბრძანებები `./localnet/client.toml`-ით, შეცვალეთ გენერირებული ლოკალურ ქსელზე ავტორიზების პრინციპის კანონიკური ID I105 და გამოტოვეთ საფასური მეტამონაცემები ფაილი Taira. შეინახეთ მკაფიო ადგილობრივი მოსაკრებლის შერჩევა.
+აქტიური აღმასრულებელი წყვეტს, ვის შეუძლია თითოეული ობიექტის შეცვლა. სხვა ანგარიშის განახლებას ჩვეულებრივ სჭირდება `CanModifyAccountMetadata`; დომენებს, აქტივების განსაზღვრებებს, NFTs და ტრიგერებს საკუთარი, სამიზნისთვის სპეციფიკური მეტამონაცემების ნებართვები აქვთ. თუ Taira-ს საჭირო უფლებამოსილება არ მოუნიჭებია, იგივე ანგარიშის ბრძანებები გაუშვით `./localnet/client.toml`-ით და ჩასვით გენერირებული ლოკალური ქსელის უფლებამოსილი ანგარიშის კანონიკური I105 ID. შეინარჩუნეთ საფასურის გადამხდელის ცხადი ლოკალური არჩევანი.
 
 :::
 
@@ -84,7 +83,7 @@ CLI საფასურის შეფასებებს საფას�
 ჯერ წაიკითხეთ დასრულებული ღირებულება, შემდეგ წარადგინეთ ცალკე გადატანა ოპერაცია.
 
 ```bash
-iroha --config ./taira.client.toml --machine ledger account meta get \
+iroha --config ./taira.client.toml --machine account meta get \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile \
   | tee cookbook-profile.json
@@ -94,8 +93,7 @@ jq -e '.version == 1' cookbook-profile.json
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger account meta remove \
+  account meta remove \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile
 ```
@@ -107,10 +105,10 @@ Python აპლიკაციებისათვის შესაბამ
 განსაზღვრული ოპერაციის შემდეგ `meta get` უნდა დაუბრუნოს ობიექტი `version: 1`. ამოღების შემდეგ, პირდაპირი ძებნა აღარ უნდა დაუბრუნდეს ღირებულებას:
 
 ```bash
-iroha --config ./taira.client.toml --machine ledger account get \
+iroha --config ./taira.client.toml --machine account get \
   --id "$TAIRA_ACCOUNT_ID" > /dev/null
 
-if iroha --config ./taira.client.toml --machine ledger account meta get \
+if iroha --config ./taira.client.toml --machine account meta get \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile; then
   printf '%s\n' 'metadata key still exists' >&2
@@ -133,8 +131,8 @@ fi
 
 ## წყარო და შესაბამისი დოკუმენტები {#source-and-related-docs}
 
-- [მეტამონაცემები შეკითხვის ინტეგრაციის ტესტები დამაგრებული წყარო კოდის რევიზიით](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/queries/metadata.rs)
-- [Python SDK ტრანზაქციის შემქმნელები ჩაკეტილი წყარო კოდის რევიზიისას](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/README.md)
+- [მეტამონაცემები შეკითხვის ინტეგრაციის ტესტები დამაგრებული წყარო კოდის რევიზიით](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/queries/metadata.rs)
+- [Python SDK ტრანზაქციის შემქმნელები ჩაკეტილი წყარო კოდის რევიზიისას](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/README.md)
 - [მეტამონაცემები](/ka/blockchain/metadata.md)
 - [მეტამონაცემებისა და ბლოკჩეინის რეესტრის შენახვის არჩევანი.](/ka/guide/configure/metadata-and-store-assets.md)
 - [ინსტრუქციის მითითება](/ka/reference/instructions.md)

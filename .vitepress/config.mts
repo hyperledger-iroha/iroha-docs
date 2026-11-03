@@ -1,13 +1,16 @@
 /// <reference types="vite/client" />
 
-import { DefaultTheme, defineConfig, type HeadConfig } from 'vitepress'
+import { DefaultTheme, defineConfig, type HeadConfig, type MarkdownOptions } from 'vitepress'
 import footnote from 'markdown-it-footnote'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'path'
 import ViteSvgLoader from 'vite-svg-loader'
 import ViteUnoCSS from 'unocss/vite'
 import { mermaid } from './md-mermaid'
+import { generatedReferences } from './md-generated-references'
 import { katex } from '@mdit/plugin-katex'
+import kotodamaGrammar from '../src/snippets/kotodama.tmLanguage.json'
+import { readEmbeddedReference } from '../etc/generated-references'
 import {
   documentHead,
   prefixRoute,
@@ -21,6 +24,16 @@ import {
 } from '../etc/locales'
 import { localizeShellA11yHtml } from '../etc/localize-shell'
 import { renderSearchHeadings, splitSearchHeadings } from '../etc/search-index'
+
+const REPOSITORY_ROOT = resolve(__dirname, '..')
+
+// Kotodama's TextMate grammar is a pinned generated reference (provenance id `kotodama-grammar`).
+const KOTODAMA_LANGUAGE = {
+  ...kotodamaGrammar,
+  name: 'kotodama',
+  displayName: 'Kotodama',
+  aliases: ['ko', 'koto'],
+} as unknown as NonNullable<MarkdownOptions['languages']>[number]
 
 function nav(
   labels: NavigationLabels = ROOT_LOCALE.navigation,
@@ -529,12 +542,20 @@ function sidebarReference(): DefaultTheme.SidebarItem[] {
           link: '/reference/norito.md',
         },
         {
+          text: 'Kotodama Diagnostics',
+          link: '/reference/kotodama-diagnostics.md',
+        },
+        {
           text: 'Compatibility Matrix',
           link: '/reference/compatibility-matrix.md',
         },
         {
           text: 'Genesis',
           link: '/reference/genesis.md',
+        },
+        {
+          text: 'Genesis Types',
+          link: '/reference/genesis-types.md',
         },
       ],
     },
@@ -754,9 +775,11 @@ export default defineConfig({
   ],
 
   markdown: {
+    languages: [KOTODAMA_LANGUAGE],
     async config(md) {
       md.use(footnote)
         .use(mermaid)
+        .use(generatedReferences, REPOSITORY_ROOT)
         // Note: Since vitepress@1.0.0-rc.14, it supports MathJax natively with `markdown.math = true`:
         //   https://github.com/vuejs/vitepress/pull/2977
         // Although KaTeX is more efficient, we might consider removing it in the future.
@@ -829,7 +852,8 @@ export default defineConfig({
           },
           _splitIntoSections: splitSearchHeadings,
         },
-        _render: renderSearchHeadings,
+        _render: (source, environment, markdown) =>
+          renderSearchHeadings(source, environment, markdown, (name) => readEmbeddedReference(REPOSITORY_ROOT, name)),
       },
     },
   },

@@ -1,9 +1,9 @@
 ---
 translation_locale: am
 translation_source: /cookbook/stream-events.md
-translation_source_hash: 96f0a26000530fee15d121f815f9f5717a535dc3836cff9a2a447b1e5b70c41c
+translation_source_hash: d6202b208288688cdfd927491d6670f094f631ccaecd7ff62858a94267c5306a
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # ክስተቶችን በዥረት ይልቁ {#stream-events}
@@ -22,10 +22,10 @@ translation_engine: bing-translator-llm
 
 ### 1. የ SSE ምላሽን ያረጋግጡ {#_1-confirm-the-sse-response}
 
-Taira በአሁኑ ጊዜ በዚህ መንገድ የሚደራደረው የ`Accept` ራስጌ ሁለቱንም ተመራጭ የክስተት ዥረት እና JSON ተተኪ አማራጩን ሲያካትት ብቻ ነው። curl ቋት አጠቃቀምን አሰናክል። ትዕዛዙ ከ 15 ሰከንድ በኋላ ያበቃል; በጸጥታ ጊዜ የልብ ምት አስተያየቶችን ብቻ መቀበል ልክ ነው።
+የክስተት ዥረቱን ከ JSON ተተኪ አማራጭ ጋር ይጠይቁ፦ Torii `text/event-stream`ን በዥረት ያስተላልፋል፣ እና ውድቅ የተደረገ ጥያቄን፣ ለምሳሌ ልክ ያልሆነ ማጣሪያን፣ እንደ JSON ስህተት ሪፖርት ያደርጋል። curl ቋት አጠቃቀምን አሰናክል። ትዕዛዙ ከ20 ሰከንድ በኋላ ያበቃል። Torii ከ15 የስራ-ፈት ሰከንዶች በኋላ የልብ ምት አስተያየት ይልካል፣ ስለዚህ በጸጥታ ጊዜ የልብ ምት አስተያየቶችን ብቻ መቀበል ልክ ነው።
 
 ```bash
-curl -sS -N --max-time 15 \
+curl -sS -N --max-time 20 \
   -H 'Accept: text/event-stream, application/json' \
   https://taira.sora.org/v1/events/sse
 ```
@@ -34,15 +34,12 @@ curl -sS -N --max-time 15 \
 
 ### 2. የተጣራ JavaScript ሸማች ያክሉ {#_2-add-a-filtered-javascript-consumer}
 
-የሚከተለውን እንደ `stream-taira.mjs` ያስቀምጡ። ጥያቄው የ Taira የሚፈለገውን ድብልቅ `Accept` ራስጌ መላክ እንዲችል በቀጥታ አምጣን ይጠቀማል። የአሁኑ `FilterExpr` የጸደቁ የግብይት ክስተቶችን ይመርጣል፣ እና ተንታኙ ያለ ድጋሚ አጫውት ጠቋሚ SSE ፍሬሞችን ይጠቀማል።
+የሚከተለውን እንደ `stream-taira.mjs` ያስቀምጡ። በአውታረ መረብ ላይ የሚተላለፈውን የመልዕክት ቅርጸት ለማሳየት Fetch APIን በቀጥታ ይጠቀማል። የ`filter` መጠይቅ መለኪያ የጸደቁ የግብይት ክስተቶችን ለመምረጥ የ Torii የጽሑፍ ማጣሪያ ሰዋሰውን ይጠቀማል፣ እና ተንታኙ ያለ ድጋሚ አጫውት ጠቋሚ SSE ፍሬሞችን ይጠቀማል።
 
 ```js
 const baseUrl = 'https://taira.sora.org'
 const shutdown = new AbortController()
-const filter = {
-  op: 'eq',
-  args: ['tx_status', 'Approved'],
-}
+const filter = 'tx_status = "Approved"'
 
 process.once('SIGINT', () => shutdown.abort())
 process.once('SIGTERM', () => shutdown.abort())
@@ -52,7 +49,7 @@ const delay = (milliseconds) =>
 
 async function reconcile() {
   const response = await fetch(
-    `${baseUrl}/v1/explorer/transactions?page=1&per_page=25`,
+    `${baseUrl}/v1/explorer/transactions?limit=25`,
     { headers: { Accept: 'application/json' } },
   )
   if (!response.ok) {
@@ -63,7 +60,7 @@ async function reconcile() {
 
 async function* streamOnce() {
   const url = new URL('/v1/events/sse', baseUrl)
-  url.searchParams.set('filter', JSON.stringify(filter))
+  url.searchParams.set('filter', filter)
   const response = await fetch(url, {
     headers: { Accept: 'text/event-stream, application/json' },
     signal: shutdown.signal,
@@ -164,7 +161,7 @@ SSE የልብ ምት አስተያየቶች ስራ ፈት ግንኙነቶችን �
 
 የቅርብ ጊዜው-25 አሳሽ ጥያቄ የህዝብ ምርመራ ብቻ ነው። የምርት ሸማች `reconcile()`ን ለረጅም ጊዜ የሚቆይ የመተግበሪያ ሀብቶቹ እና ለፍተሻ ኬላው በቂ የሆነ የመልሶ ማግኛ መጠይቆችን መተካት ወይም ማራዘም አለበት። የታሰረው የጊዜ ነጥብ የውሂብ እይታ ብቻውን ምንም አይነት ክስተት እንዳላመለጠ ማረጋገጥ አይችልም።
 
-በተሰካው የምንጭ-ኮድ ክለሳ፣ `ToriiClient.streamEvents()` የሚልከው `Accept: text/event-stream` ብቻ ነው። ቀጥታ ስርጭት Taira ያንን ጠባብ ራስጌ በ`406` ውድቅ ያደርጋል። የ SDK እና ይፋዊ API የመጨረሻ ነጥብ ተመሳሳይ የሚዲያ አይነቶችን እስኪደራደሩ ድረስ ከላይ ያለውን ጥሬ አምጣ ቅጽ ይጠቀሙ።
+ከ`@iroha/iroha-js` የሚገኘው `ToriiClient.streamEvents({ filter })` ተመሳሳዩን ዥረት ያነባል፦ `field('tx_status').eq('Approved')`ን ወይም ከላይ ያለውን የጽሑፍ ማጣሪያ ያስተላልፉ። ዥረቱ ከማብቃቱ በፊት የመጨረሻውን `stream_error` ፍሬም ያቀርባል፣ ስለዚህ ከላይ ያሉት የዳግም ግንኙነት እና የማስታረቅ ደንቦች አሁንም ተፈጻሚ ናቸው።
 
 ## አረጋግጥ {#verify}
 
@@ -173,7 +170,7 @@ SSE የልብ ምት አስተያየቶች ስራ ፈት ግንኙነቶችን �
 ```bash
 curl -fsS \
   -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=25' |
+  'https://taira.sora.org/v1/explorer/transactions?limit=25' |
   jq .
 ```
 
@@ -182,17 +179,17 @@ curl -fsS \
 ## መላ ፍለጋ {#troubleshooting}
 
 - ከልብ ምት አስተያየቶች ጋር ግንኙነት ግን ምንም የውሂብ ክስተቶች ጤናማ አይደሉም; የተመረጠው የሶፍትዌር ማቀነባበሪያ የስራ ፍሰት ሁኔታ በቀላሉ ጸጥ ያለ ሊሆን ይችላል።
-- `406 Not Acceptable` በቀጥታ ስርጭት Taira ብዙውን ጊዜ የሚታወጀው ጥያቄ `text/event-stream` ብቻ ማለት ነው። ከላይ እንደሚታየው `text/event-stream, application/json` በትክክል ይላኩ።
-- የ`stream_error` ክስተት አገልጋዩ መዘግየት ወይም ሌላ የተርሚናል ዥረት ሁኔታን ማግኘቱን ያሳያል። Torii ያንን ክስተት አንድ ጊዜ ይልካል እና ዥረቱን ይዘጋዋል; እንደገና ከመገናኘትዎ በፊት ማስታረቅ.
+- `400` ከኮድ `invalid_filter` ጋር ማለት `filter` የ Torii የጽሑፍ ሰዋሰውን አይከተልም ወይም የክስተት ዥረቶች የማይደግፉትን መስክ ይሰይማል ማለት ነው። የክስተት ዥረቶች በ`tx_status`፣ `tx_hash`፣ `tx_block_height`፣ `tx_lane_id`፣ `tx_dataspace_id`፣ `block_status`፣ `block_height`፣ `proof_backend`፣ `proof_call_hash` እና `proof_envelope_hash` ላይ ያጣራሉ።
+- የ`stream_error` ክስተት አገልጋዩ መዘግየት ወይም ዥረቱን የሚያበቃ ሌላ ሁኔታ ማግኘቱን ያሳያል። Torii ያንን ክስተት አንድ ጊዜ ይልካል እና ዥረቱን ይዘጋዋል፤ ተተኪ ዥረት ይክፈቱ፣ ከዚያም ያስታርቁ።
 - Torii ባያደርግም ፕሮክሲ SSE ን ማቋረጥ ይችላል። በተኪው ውስጥ የምላሽ ማቋት እና መጭመቅን ያሰናክሉ እና `curl -N` በምርመራ ውስጥ ያስቀምጡ።
 - የሚቀጥለው ክስተት የቀደመውን ይከተላል ብለው በማሰብ የግንኙነት ማቋረጥ ክፍተትን በጭራሽ አይሙሉ። የ API የመጨረሻ ነጥብ ምንም መልሶ ማጫወት ጠቋሚ የለውም; በምትኩ የአሁኑን የብሎክቼይን መዝገብ ሁኔታ ይጠይቁ።
 
 ## ምንጭ እና ተዛማጅ ሰነዶች {#source-and-related-docs}
 
-- [JavaScript በተሰካው የምንጭ-ኮድ ክለሳ ላይ የዥረት አሰራር](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs)
-- [SSE በተሰካው የምንጭ-ኮድ ክለሳ ላይ የውህደት ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs)
-- [Torii FilterExpr ተንታኝ በተሰካው የምንጭ-ኮድ ክለሳ ላይ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs)
-- [Torii በተሰካው የምንጭ-ኮድ ክለሳ ላይ የክስተት ማዘዋወር](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
+- [JavaScript በተሰካው የምንጭ-ኮድ ክለሳ ላይ የዥረት አሰራር](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes/streaming.mjs)
+- [SSE በተሰካው የምንጭ-ኮድ ክለሳ ላይ የውህደት ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/events/sse_smoke.rs)
+- [Torii የማጣሪያ ጽሑፍ ሰዋሰው በተሰካው የምንጭ-ኮድ ክለሳ ላይ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/src/list_query/text.rs)
+- [Torii በተሰካው የምንጭ-ኮድ ክለሳ ላይ የክስተት ማዘዋወር](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/routing.rs)
 - [ክስተቶች](/am/blockchain/events.md)
 - [Torii API የመጨረሻ ነጥቦች](/am/reference/torii-endpoints.md)
 - [መጠይቅ blockchain መዝገብ ሁኔታ](./query-ledger-state.md)

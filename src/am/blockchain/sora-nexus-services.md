@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: 9fa38abe42ede1b40d92b79dfc7fb6fe8eae7375275a7a3e2bf22e05713026c7
+translation_source_hash: c42f039ab38de29d8182d4232e130a327b8b3cf9224c0a66e25deea979591580
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -814,4 +814,4 @@ UAID ምስጢራዊ ጽሑፍ አይደለም እና የ FHE ፖሊሲ ራሱ �
 - [Torii API የመጨረሻ ነጥቦች](/am/reference/torii-endpoints.md)
 - [የውሂብ ክስተት ማጣሪያዎች](/am/blockchain/filters.md#data-event-filters)
 - [የመጠይቅ ማጣቀሻ](/am/reference/queries.md#nexus-data-availability-and-packages)
-- [ነጠላ ፕሮቶኮል-መደበኛ Taira አረጋጋጭ ውቅር በተሰካው የምንጭ-ኮድ ክለሳ ላይ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/configs/soranexus/taira/config.toml)
+- [ነጠላ ፕሮቶኮል-መደበኛ Taira አረጋጋጭ ውቅር በተሰካው የምንጭ-ኮድ ክለሳ ላይ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/configs/soranexus/taira/config.toml)

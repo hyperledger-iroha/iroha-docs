@@ -1,9 +1,9 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/connect-to-taira.md
-translation_source_hash: e14be7d9314f26f40f6aa30678fddcfcfea39eda9b98016f1b2f84838203c548
+translation_source_hash: 31555f0c56bddb8892d09af250cef732a2dfdd39564c83de8b344200157751b9
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Taira-ға тоташыу {#connect-to-taira}
@@ -15,14 +15,14 @@ Taira-ның асыҡ булыуын раҫлағыҙ, урындағы client c
 ## Шарттар {#prerequisites}
 
 - `curl`, `jq`, Python 3.11 йәки унан һуңғы, һәм хәҙерге `iroha` һәм `kagami` бинарҙар.
-- А `taira.client.toml` барлыҡҡа килтерелгән Taira сылбыр, һуңғы нөктә, иҫәб профиле һәм махсус тест селтәре асҡысы. [Төҙөү Taira Клиент конфигурацияһы](/ba/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config) һәм файлды сығанаҡ контроленән ситтә ҡалдырығыҙ.
-- [Get Testnet XOR на Taira](/ba/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira), клиент конфигурацияһы эргәһендә һаҡланған эшләй торған `taira_faucet_claim.py`
+- Taira сылбыры, теүәл `network_id`, тоташыу нөктәһе, иҫәп профиле һәм махсус һынау селтәре асҡысы менән булдырылған `taira.client.toml`. [Taira клиент конфигурацияһын булдырыу](/ba/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config) күрһәтмәһенә эйәрегеҙ һәм файлды сығанаҡ код контроленән ситтә тотоғоҙ.
+- Faucet журналы өсөн яҙыу мөмкин булған эш каталогы: `iroha taira account faucet prepare` `./taira-faucet` каталогын шәхси инеү хоҡуҡтары менән булдыра һәм булған каталогты алмаштырыуҙан баш тарта.
 
 ## Аҙымдар {#steps}
 
 ### 1. Яҡшылыҡ менән әҙерлек араһындағы айырма {#_1-separate-liveness-from-readiness}
 
-`/livez` - ябай текстлы процесс йәшәүсәнлеге сондаһы. `/status`, `/health` һәм `/readyz` кире ҡайтарыу JSON. Эшләүсе узел кәрәкле подсистема блокировкаланған ваҡытта әҙерлек сондаларынан законлы рәүештә `503` кире ҡайтара ала.
+`/livez`, `/health` һәм `/readyz` — ябай текст ҡайтарған тикшереү нөктәләре; `/status` JSON ҡайтара. Консенсусҡа ҡабул итеү йәки башҡа кәрәкле подсистема мөмкин булмағанда, эшләп торған узелдың `/readyz`-тан `503` ҡайтарыуы тулыһынса дөрөҫ.
 
 ```bash
 curl -fsS -H 'Accept: text/plain' https://taira.sora.org/livez
@@ -30,11 +30,11 @@ curl -fsS -H 'Accept: text/plain' https://taira.sora.org/livez
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
-curl -sS -H 'Accept: application/json' \
+curl -sS -H 'Accept: text/plain, application/json' \
   -w '\nHTTP %{http_code}\n' https://taira.sora.org/readyz
 ```
 
-`/livez` процестың яуап бирәме-юҡмы икәнен хәл итеү өсөн генә ҡулланығыҙ. `/readyz`-ны трафикҡа инеү өсөн файҙаланығыҙ һәм JSON блокаторының деталдәрен тикшерегеҙ, ә `503`-ны өҙөклөктө тип иҫәпләмәйенсә.
+`/livez`-ты процесс яуап бирәме-юҡмы икәнен хәл итеү өсөн генә ҡулланығыҙ. `/readyz`-ты трафикты ҡабул итеү өсөн ҡулланығыҙ. Уның `503` яуабы — блоклау сәбәбе күрһәтелмәгән `service_unavailable` хата конверты, шуға күрә уны хеҙмәт өҙөклөгө тип һанағансы түбәндәге диагностиканы үткәрегеҙ.
 
 ### 2. Халыҡ-ара диагностикаларҙы үткәреү {#_2-run-the-public-diagnostics}
 
@@ -48,7 +48,7 @@ iroha taira doctor --public-root https://taira.sora.org --json
 
 ### 3. сығарыу Taira иҫәбенә ID йәшерен нәмәне баҫмайынса {#_3-derive-the-taira-account-id-without-printing-a-secret}
 
-Конфигурациянан асыҡ асҡысты ғына уҡығыҙ, һуңынан уны Taira I105 профиле менән кодлағыҙ. `[account].domain` ҡиммәте маршрутлау контексын бирә; ул ID иҫәбенең бер өлөшө түгел.
+Конфигурациянан асыҡ асҡысты ғына уҡығыҙ, һуңынан уны Taira I105 профиле менән кодлағыҙ. Иҫәп ID-һында домен юҡ; `[account].profile` уның селтәр префиксын ғына һайлай.
 
 ```bash
 TAIRA_PUBLIC_KEY="$(python3 - <<'PY'
@@ -69,18 +69,29 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID"
 
 ### 4. ғәмәлдәге Taira түләү активын талап итеү {#_4-claim-the-current-taira-fee-asset}
 
-faucet яуабы — fee asset билдәләмәһе өсөн дөрөҫлөктөң сығанағы. Башҡа селтәрҙән йәки иҫке эшләтеп ебәреүҙән ID күсермәгеҙ; яуапта ҡайтарылған Base58 ID-ны һаҡлағыҙ.
+Faucet сәйәсәте ағымдағы түләү активы билдәләмәһен атай. Башҡа селтәрҙән йәки иҫке эшләтеүҙән ID күсереү урынына уның Base58 ID-һын һаҡлағыҙ. Сәйәсәт — ҡул ҡуйылмаған асыҡлау мәғлүмәттәре, шуға күрә автоматлаштырыу һәр яуапҡа ышаныу урынына үҙе көткән эмитентты, актив билдәләмәһен һәм сумманы беркетергә тейеш.
 
 ```bash
-python3 ./taira_faucet_claim.py "$TAIRA_ACCOUNT_ID" \
-  | tee taira-faucet.json
+curl -fsS -H 'Accept: application/json' \
+  https://taira.sora.org/v1/accounts/faucet/policy \
+  | tee taira-faucet-policy.json
 
-export TAIRA_FEE_ASSET="$(jq -er '.asset_definition_id' taira-faucet.json)"
-jq -n --arg gas_asset_id "$TAIRA_FEE_ASSET" \
-  '{gas_asset_id: $gas_asset_id}' > taira.tx-metadata.json
+export TAIRA_FEE_ASSET="$(
+  jq -er '.asset_definition_id' taira-faucet-policy.json
+)"
+
+iroha --config ./taira.client.toml --fee-payer authority \
+  taira account faucet prepare \
+  --journal ./taira-faucet \
+  --issuer "$(jq -er '.authority' taira-faucet-policy.json)" \
+  --asset-definition "$TAIRA_FEE_ASSET" \
+  --amount "$(jq -er '.amount' taira-faucet-policy.json)"
+
+iroha --config ./taira.client.toml \
+  taira account faucet submit --journal ./taira-faucet
 ```
 
-Балансты иң күбе бер минут дауамында тикшерегеҙ. Faucet финанслау транзакцияһы күренгәнсе үк `202 Accepted` ҡайтара ала.
+`prepare` proof-of-work мәсьәләһен сисә һәм ҡул ҡуйылған теүәл транзакцияны һаҡлай; `submit` уны бер тапҡыр ебәрә һәм транзакция ҡулланылғандан һуң ғына эшен тамамлай. Әгәр `submit` `Pending` хәбәр итһә йәки уның ваҡыты сыҡһа, тағы бер һорау әҙерләү урынына шул уҡ конфигурация һәм журнал менән `taira account faucet resume` эшләтегеҙ. Һуңынан балансты иң күбе бер минут дауамында тикшереп тороғоҙ.
 
 ```bash
 funded=false
@@ -96,7 +107,7 @@ done
 test "$funded" = true
 ```
 
-`gas_asset_id` - транзакция метамәғлүмәттәре. асыҡтан-асыҡ `--fee-payer authority` һайлап алыу ҡултамға менән бәйләнгән, һәм CLI ҡултамғаһын яҙғансы туранан-тура түләү комиссия иҫәбе ала.
+Taira-ға һәр яҙыу өсөн `--fee-payer authority` ҡулланығыҙ. Был һайлау ҡултамғаға бәйләнгән, һәм CLI ҡул ҡуйыр алдынан теүәл комиссияны Taira-ның түләү активында иҫәпләп күрһәтә.
 
 ## Тикшереү {#verify}
 
@@ -106,8 +117,7 @@ JSON квитанцияһын һаҡлап ҡалыу һәм ҡулланылғ�
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg 'cookbook-connect' \
+  tx ping --msg 'cookbook-connect' \
   > taira-connect-submission.json
 
 jq '{hash, fee_quote}' taira-connect-submission.json
@@ -115,27 +125,27 @@ TAIRA_TX_HASH="$(jq -er '.hash' taira-connect-submission.json)"
 
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction status \
+  tx status \
   --hash "$TAIRA_TX_HASH" \
   --wait \
   --timeout-ms 60000
 ```
 
-Һуңғы бойороҡ транзакция default `Applied` терминал дәүләткә еткәндән һуң ғына уңышлы була. Һынау иҫбатлауҙа хешты һаҡлағыҙ; бер ҡасан да шәхси асҡысты йәки уның менән тулы клиент конфигурацияһын һаҡлау.
+Һуңғы команда теүәл глобаль статус реестр торошо буйынса раҫланған `Applied` һуңғы торошон хәбәр иткәндән һуң ғына уңышлы тамамлана. Хешты һынау дәлилдәрендә һаҡлағыҙ; уның менән бергә шәхси асҡысты йәки тулы клиент конфигурацияһын бер ҡасан да һаҡламағыҙ.
 
 ## Проблемаларҙы хәл итеү {#troubleshooting}
 
-- `/livez` кире ҡайтарыу `406` һорағанда JSON сөнки был ахыр сиктә `text/plain`. Ебәрегеҙ `Accept: text/plain` юғарыла күрһәтелгәнсә.
-- `/health` йәки `/readyz` `503` машина уҡый торған блокер менән кире ҡайтарырға мөмкин, хатта `/livez` һәм `/status` эшләгәндә лә. Был блокерҙы төҙөп ҡуйығыҙ йәки көтөгөҙ; регенерациялау клавишалары узел әҙерлеген үҙгәртмәйәсәк.
-- faucet-тан килгән `502`, көтөү ваҡыты үтеүе йәки иҫкергән proof-of-work якоры — асыҡ хеҙмәттең ваҡытлыса өҙөклөгө. Яңы мәсьәлә алығыҙ һәм бер аҙҙан ҡабатлап ҡарағыҙ.
+- `/livez`, `/health` һәм `/readyz` тик JSON һоралғанда `406` ҡайтара, сөнки улар `text/plain` форматында яуап бирә. Өҫтә күрһәтелгән `Accept` башлыҡтарын ебәрегеҙ.
+- `/livez` һәм `/status` эшләгәндә лә `/readyz` `service_unavailable` хата конверты менән `503` ҡайтарырға мөмкин. Әҙерлекте көтөгөҙ йәки `iroha taira doctor` эшләтегеҙ; асҡыстарҙы яңынан булдырыу узелдың әҙерлеген үҙгәртмәй.
+- `submit` ваҡытында faucet-тан килгән `502` йәки ваҡыт сығыуы һорауҙың һөҙөмтәһен билдәһеҙ ҡалдыра: тағы бер һорау әҙерләү урынына шул уҡ конфигурация һәм журнал менән `taira account faucet resume` эшләтегеҙ. Иҫкергән proof-of-work якоры `prepare`-ҙы уңышһыҙлыҡҡа килтерә; яңы журнал каталогында ҡабат әҙерләгеҙ.
 - I105 префиксы хатаһы асыҡ асҡыс дөрөҫ булмаған профил менән кодланған тигәнде аңлата. `iroha tools address convert --profile taira` ҡабаттан эшләгеҙ.
-- Түләү квотаһын кире ҡағыу, ғәҙәттә, вәкәләтле иҫәптең финансланмауын, түләү активтарының метамәғлүмәттәре иҫкергән булыуын йәки асыҡтан-асыҡ түләүсе һайланмағанын аңлата.
+- Комиссия иҫәбенең кире ҡағылыуы, ғәҙәттә, вәкәләтле иҫәптең финансланмағанын йәки көйләнгән `network_id` Taira-ныҡы түгеллеген аңлата. `--fee-payer` булмаһа йәки `--metadata` эсендә `gas_asset_id` кеүек комиссия асҡысы булһа, команда комиссия иҫәбенә тиклем үк локаль уңышһыҙлыҡҡа осрай.
 - Был canary уңышҡа өлгәшкәндән һуң теркәлеү, минтлау йәки исемдәр арауығын идара итеү кире ҡағылырға мөмкин. Был операциялар өсөн айырым осош ваҡыты рөхсәттәре кәрәк . Уларҙы Taira инеү мөмкинлеге бирелмәгән осраҡта барлыҡҡа килгән локаль селтәр.
 
 ## Сығанаҡ һәм уның менән бәйле документтар {#source-and-related-docs}
 
-- [Taira CLI диагностика һәм ҡанатлы сығанаҡ ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/taira.rs)
-- [Билдәле commit буйынса асыҡтан-асыҡ түләү һайлап алыу һәм тапшырыу сығанағы CLI](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
+- Ҡуйылған commit-тағы [Taira CLI диагностикаһы һәм контроль транзакция сығанаҡ коды](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/taira.rs) һәм [faucet командалары](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/taira_onboarding.rs)
+- [Билдәле commit буйынса асыҡтан-асыҡ түләү һайлап алыу һәм тапшырыу сығанағы CLI](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs)
 - [Taira иҫәбенә һәм faucet күрһәтмәһе](/ba/get-started/sora-nexus-dataspaces.md)
 - [Клиент конфигурацияһы](/ba/guide/configure/client-configuration.md)
 - [Транзакциялар](/ba/blockchain/transactions.md)

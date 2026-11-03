@@ -1,36 +1,36 @@
 ---
 translation_locale: he
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 29f2bdb390fc93b97f8ed9108634f70e21ba747c8606fb84093d37e9586516c1
+translation_source_hash: 3287a6bbaf06ec92ebbe9ac33a8294d4e1d232bc01fd6a5da13ddd166c620965
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # נכסים פונגביים {#fungible-assets}
 
 ## התוצאה {#outcome}
 
-לבחון חי Taira הגדרות נכסים ולשלם רישום, הנפקה, העברה, שריפה, ותנועה של אימות השוויון ברשת מקומית שנוצרת. המתכון משתמש בהגדרת נכס Base58 לא מקובלת קנוניקה IDs, שם כינוי מוסמך לתחום, חשבון ללא דומיין I105 IDs ושכר תשלום מפורסם.
+בחנו הגדרות נכסים חיות ב־Taira, ולאחר מכן השלימו תהליך של הנפקה, העברה, שריפה ואימות יתרות ברשת מקומית שנוצרה. המתכון משתמש במזהי הגדרות נכסים קנוניים בפורמט Base58 ללא קידומת, במזהי חשבון I105 ללא דומיין ובתשלום עמלה מפורש.
 
 ## תנאים מוקדמים {#prerequisites}
 
-- `curl`, `jq`, Python 3.11 או מאוחר יותר, Node.js 24, והזרם `iroha` CLI.
+- `curl`, `jq`, Python 3.11 או מאוחר יותר, Node.js 24, וה־CLIs הנוכחיים `iroha` ו־`kagami`.
 - גישה בקריאה בלבד Taira.
-- עבור הליכה של כתיבה, רשת מקומית נוצרה מ [שיגור Iroha](/he/get-started/launch-iroha.md), עם `./localnet/client.toml` ו Torii על `http://127.0.0.1:8080`.
+- עבור המדריך של פעולות הכתיבה: רשת מקומית שנוצרה באמצעות `kagami localnet generate --peers 4 --out-dir ./localnet` כמו ב־[שיגור Iroha](/he/get-started/launch-iroha.md), בתוספת `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa`. היא מספקת את `./localnet/client.toml` ואת Torii בכתובת `http://127.0.0.1:8080`.
 
 ## צעדים {#steps}
 
 ### 1. לבדוק את ההגדרות של Taira ללא חותם {#_1-inspect-taira-definitions-without-a-signer}
 
-הגדרות נכסים נושאות Base58 ID, שם תצוגה לא ברור, מדיניות קביעות, סולם מספרי, פרופיל אופציונלי, בעל, וכמות הכוללת. המשקל הקונקרטי כולל גם את חשבון הבעלים שלו ואת תחום הנתונים בחופשי.
+הגדרות נכסים נושאות מזהה Base58 אטום, שם תצוגה, מדיניות הנפקה, סולם מספרי, כינוי אופציונלי, בעלים, דומיין או מרחב נתונים בעלים אופציונלי, מדיניות יתרה וכמות כוללת. היתרה הממשית כוללת גם את חשבון המחזיק בה ואת היקף מרחב הנתונים האופציונלי.
 
 ::: code-group
 
 ```bash [curl]
 curl -fsS -H 'Accept: application/json' \
   'https://taira.sora.org/v1/assets/definitions?limit=10' \
-  | jq -r '.items[] \
-    | [.id, .name, .mintable, (.spec.scale // "unconstrained"), .total_quantity] \
+  | jq -r '.items[]
+    | [.id, .name, .mintable, (.spec.scale // "unconstrained"), .total_quantity]
     | @tsv'
 ```
 
@@ -58,10 +58,9 @@ for (const definition of items) {
 
 ### 2. להכין את הרשות המקומית ואת היעד {#_2-prepare-the-local-authority-and-destination}
 
-להוציא את הרשות המקומית מהמפתח הציבורי בהשוואה המיוצרת ולבחר חשבון רשמי אחר כמתקבל. שום מפתח פרטי לא מודפס.
+גזרו את הסמכות המקומית מהמפתח הציבורי שבתצורה שנוצרה, ולאחר מכן צרו זוג מפתחות עבור חשבון נמען חדש ורשמו אותו. שום מפתח פרטי אינו מודפס.
 
 ```bash
-LOCAL_ROOT='http://127.0.0.1:8080'
 LOCAL_CONFIG='./localnet/client.toml'
 
 LOCAL_PUBLIC_KEY="$(python3 - <<'PY'
@@ -75,33 +74,28 @@ SOURCE_ACCOUNT="$(
   iroha --config "$LOCAL_CONFIG" tools address convert "$LOCAL_PUBLIC_KEY"
 )"
 
+kagami keys --out-dir ./cookbook-recipient
 DESTINATION_ACCOUNT="$(
-  curl -fsS -H 'Accept: application/json' "$LOCAL_ROOT/v1/accounts?limit=20" \
-    | jq -er --arg source "$SOURCE_ACCOUNT" \
-      '[.items[].id | select(. != $source)][0]'
+  iroha --config "$LOCAL_CONFIG" tools address convert \
+    "$(cat ./cookbook-recipient/public.key)"
 )"
+iroha --config "$LOCAL_CONFIG" \
+  --machine --fee-payer authority \
+  account register --id "$DESTINATION_ACCOUNT"
 ```
 
-### 3. רשום הגדרה מספרית {#_3-register-a-numeric-definition}
+### 3. השתמשו בהגדרה מספרית שבבעלות הלקוח {#_3-use-a-client-owned-numeric-definition}
 
-זה מקומי בלבד ID הוא כתובת נכס-הגדרת Base58 ללא קובץ תקנה. האליס מספק את ההערכה של `domain.dataspace` שניתן לקרוא בבני אדם. סולם `2` מאפשר שני ספרות חתיכות; השאירה של `--mint-once` שומר על מדיניות המוגנת `Infinitely`.
+מחוץ ל־genesis, הגדרה נרשמת תחת `--domain` בעלים שבבעלות החותם, ולקוח של localnet שנוצר אינו הבעלים של אף דומיין. ה־localnet שנוצר עם `--asset-definition-id` כבר מכיל את ההגדרה הזאת: ה־genesis רשם אותה עם סולם בלתי מוגבל, הפך את הלקוח לבעליה והנפיק ללקוח 1,000,000,000 יחידות.
 
 ```bash
 ASSET_DEFINITION_ID='66owaQmAQMuHxPzxUN3bqZ6FJfDa'
-ASSET_ALIAS='cookbook_credit#wonderland.universal'
 
-iroha --config "$LOCAL_CONFIG" \
-  --machine \
-  --fee-payer authority \
-  ledger asset definition register \
-  --id "$ASSET_DEFINITION_ID" \
-  --name cookbook_credit \
-  --description 'Local cookbook credit' \
-  --alias "$ASSET_ALIAS" \
-  --scale 2
+iroha --config "$LOCAL_CONFIG" ledger asset definition get \
+  --id "$ASSET_DEFINITION_ID"
 ```
 
-אל תשתמשו מחדש ב־ID זה ב־Taira. רישום ברשת ציבורית דורש ID קנוני חדש, דומיין/כינוי שהוקצה ליישום שלכם, מימון לעמלה והרשאת רישום הנכסים של סביבת הריצה.
+אל תשתמשו מחדש ב־ID זה ב־Taira. רישום ברשת ציבורית דורש ID קנוני חדש, דומיין בעלים שבבעלות החשבון שלכם (מועבר אל `ledger asset definition register` כ־`--domain`), הענקת `CanManageAssetDefinitionAlias` עבור כל כינוי, ומימון לעמלה.
 
 ### 4. הנפקה, העברה ושרוף {#_4-mint-transfer-and-burn}
 
@@ -131,11 +125,11 @@ iroha --config "$LOCAL_CONFIG" \
   --quantity 10.00
 ```
 
-לאחר השריפה, תצפו במשקל המקור `64.50`, משקל היעד `25.50`, וכמות הכוללת `90.00`.
+לאחר השריפה, תצפו במשקל המקור `1000000064.50`, משקל היעד `25.50`, וכמות הכוללת `1000000090.00`.
 
 ::: warning גבולת היתר
 
-ב- Taira, תלוף את `taira.tx-metadata.json` המוצא מהנעל ותשתמש ב- `--fee-payer authority` עבור כל כתיבה. הרישום והציתוי דורשים רשיונות של המאשר הפעיל; העברה וחיסול דורשים סמכות על סלון המקור. חשבון מיועד למנעל אינו יוצר באופן אוטומטי.
+ב־Taira, השתמשו ב־`--fee-payer authority` בכל פעולת כתיבה; ה־CLI מקבל הצעת עמלה מדויקת, בנכס העמלה של Taira, לפני החתימה. רישום דורש בעלות על ה־`--domain` של ההגדרה, וכינוי דורש גם את `CanManageAssetDefinitionAlias`. הנפקה דורשת בעלות על ההגדרה או החזקה ב־`CanMintAssetWithDefinition` או ב־`CanMintAssetToAccount`; העברה ושריפה דורשות סמכות על יתרת המקור. חשבון שמומן דרך ה־faucet אינו הופך אוטומטית למנפיק.
 
 :::
 
@@ -163,14 +157,14 @@ iroha --config "$LOCAL_CONFIG" ledger asset definition get \
 - ID המכיל `#` הוא שם כינוי או סכום מסלול קונקרטי פשוטו כמשמעו, ולא תיאור נכס קנוני ID. השתמש בשווי Base58 ריק עם `--definition`, או העביר שם כינוי מחובר עם `--definition-alias`.
 - שגיאות `Scale` פירושו כי כמויות יש יותר מספרים חלקי מאשר ההגדרה מאפשרת.
 - דחיית `Mintability` פירושה שמדיניות `Once`, ‏`Not` או `Limited(n)` מיצתה את ההטבעה או אסרה אותה. אל תשכתבו את ההיסטוריה; השתמשו במדיניות שהוחזרה בשאילתת ההגדרה.
-- שלב 2 בוחר במכוון חשבון יעד רשום. אם הכניסה לאוצר היא `ExplicitOnly`, אספקת היתר יעד באמצעות מסמך מורשה זרימה לפני העברה. השומר שנקרא באופן דומה CLI לא רשום חשבון או מצואה; הוא מבטל במקום להוסיף הוראה אחרת.
-- דחייה בתשלום מתרחשת לפני הצלחת ההוראות הרגילה. בחר את המשלם, השתמש בנתונים של נכסי התשלום של הרשת ותבדוק את היתר שלה.
-- אם ההגדרה המקומית הקבועה כבר קיימת מהרצה קודמת, הפעילו localnet חדש שנוצר מחדש או המשיכו עם המצב הקיים שלה. לעולם אל תחליפו את ה־Base58 ID במחרוזת אקראית פגומה.
+- שלב 2 רושם את חשבון היעד במפורש, כך שההעברה פועלת גם כאשר מדיניות קבלת החשבונות היא `ExplicitOnly`. מנגנון ההגנה של ה־CLI בעל השם הדומה אינו רושם חשבון או יתרה; הוא מבטל את הפעולה במקום להוסיף הוראה נוספת.
+- דחיית עמלה מתרחשת לפני הצלחה רגילה של ההוראות. בחרו את המשלם, בדקו את נכס העמלה ואת הסכום המרבי בהצעת העמלה של ה־CLI, ואמתו את היתרה הזאת.
+- הרצה חוזרת על אותו localnet מתחילה מהיתרות הקודמות, ו־`kagami keys` מסרב להשתמש בתיקייה `./cookbook-recipient` שכבר קיימת. הפעילו localnet חדש שנוצר מחדש והסירו את התיקייה הזאת, או השוו שינויים ביתרות במקום ערכים מוחלטים. לעולם אל תחליפו את ה־Base58 ID במחרוזת אקראית פגומה.
 
 ## מקור ומסמכים קשורים {#source-and-related-docs}
 
-- [בדיקות אינטגרציה של מחזור החיים של נכסים במתחם קשור ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/asset.rs)
-- [Rust דוגמאות לבניית נכסים בביצוע commit הקשורות ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/examples/tutorial.rs)
+- [בדיקות אינטגרציה של מחזור החיים של נכסים במתחם קשור ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/asset.rs)
+- [Rust דוגמאות לבניית נכסים בביצוע commit הקשורות ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/examples/tutorial.rs)
 - [נכסים](/he/blockchain/assets.md)
 - [הוראות](/he/blockchain/instructions.md)
 - [סימני רשיון ](/he/reference/permissions.md)

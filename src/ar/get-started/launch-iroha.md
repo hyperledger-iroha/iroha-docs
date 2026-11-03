@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
+translation_source_hash: 35a4caba21bf1e34cc015f79fa82bfe143b37603eddb5f1eb72513ad83a20f61
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -15,7 +15,7 @@ translation_engine: bing-translator-llm
 إنشاء شبكة محلية من أربعة أقران من الشيفرة الحالية Kagami:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 يحتوي دليل الإخراج على تكوينات أقران الشبكة المطابقة، `genesis.json`، `genesis.signed.nrt`، `client.toml`، وسيناريوهات مساعدة.
@@ -62,7 +62,7 @@ curl http://127.0.0.1:8080/status/blocks
 يمكنك توجيه CLI فورًا نحو تكوين العميل المرفق:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list
 ```
 
 ## 3. Nexus الملف الشخصي {#_3-nexus-profile}

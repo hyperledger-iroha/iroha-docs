@@ -1,21 +1,21 @@
 ---
 translation_locale: zh-hans
 translation_source: /cookbook/metadata.md
-translation_source_hash: bb486994faabb29fb48609a886862e44e565148be4800ec1244218ef37e2e54b
+translation_source_hash: 88298912f083d79a9fdfe5e8d0a89d49acb97d814d3871db0c874cb40db5342b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # 超级数据 {#metadata}
 
 ## 结果 {#outcome}
 
-阅读 Taira 上的元数据,设置和验证一个帐户元数据值,使用明确支付费用的交易,然后再次删除该价值.您将将账本对象元数据与交易费用元数据分开.
+读取 Taira 上的元数据，使用明确支付费用的交易设置并验证一个账户元数据值，然后再次移除该值。您将把账本对象元数据与交易元数据分开。
 
 ## 预先条件 {#prerequisites}
 
 - `curl`,`jq`, Python 3.11或以后的电流,以及 `iroha` CLI.
-- 资助的 `taira.client.toml`和`taira.tx-metadata.json`从 [连接到 Taira](./connect-to-taira.md).
+- 来自 [连接到 Taira](./connect-to-taira.md) 且已注资的 `taira.client.toml`。
 - 对目标帐户的元数据进行授权主体.该示例针对配置授权主体本身;另一个帐户需要准确的许可.
 
 ## 步骤 {#steps}
@@ -27,8 +27,8 @@ translation_engine: nllb-200-ct2
 ```bash
 curl -fsS -H 'Accept: application/json' \
   'https://taira.sora.org/v1/assets/definitions?limit=100' \
-  | jq '.items[] \
-    | select((.metadata // {} | length) > 0) \
+  | jq '.items[]
+    | select((.metadata // {} | length) > 0)
     | {id, name, metadata}'
 
 curl -fsS -H 'Accept: application/json' \
@@ -57,7 +57,7 @@ export TAIRA_ACCOUNT_ID="$(
 
 ### 3. 设置一个值 JSON {#_3-set-one-json-value}
 
-从标准输入读取的 JSON 会成为账户的 `cookbook_profile` 值。相比之下，`--metadata ./taira.tx-metadata.json` 会把费用字段附加到交易封装。两者是目标和用途不同的映射。
+从标准输入读取的 JSON 会成为账户的 `cookbook_profile` 值。交易元数据通过 `--metadata <file>` 附加，是交易封装上另一个独立的映射，并且从不选择费用：选择费用的是 `--fee-payer` 和 CLI 的确切费用报价；此外，客户端会拒绝包含 `gas_asset_id`、`gas_limit` 或 `fee_sponsor` 键的交易元数据。
 
 ```bash
 printf '%s\n' \
@@ -65,17 +65,16 @@ printf '%s\n' \
   | iroha --config ./taira.client.toml \
       --machine \
       --fee-payer authority \
-      --metadata ./taira.tx-metadata.json \
-      ledger account meta set \
+      account meta set \
       --id "$TAIRA_ACCOUNT_ID" \
       --key cookbook_profile
 ```
 
-CLI 默认报价费用,签字,提交和等待. 当下一次操作取决于此值时,不要添加 `--no-wait`.
+CLI 会在签名前给出以 Taira 费用资产计价的确切费用报价，然后提交，并在返回前等待 Applied 最终性。
 
 ::: warning 许可范围
 
-活跃验证器决定谁可以突变每个对象.更新另一个帐户通常需要 `CanModifyAccountMetadata`;域名,资产定义, NFTs,并触发器有自己的目标特定的元数据权限.如果 Taira 没有授予所需权限,运行相同的帐户命令与 `./localnet/client.toml`,替代生成的本地网络授权主体机构的规范 I105 ID,并省略 Taira 费用元数据文件. 保持明确的本地支付费者选择.
+当前生效的执行器决定谁可以变更每个对象。更新另一个账户通常需要 `CanModifyAccountMetadata`；域名、资产定义、NFTs 和触发器各自有针对目标的元数据权限。如果 Taira 尚未授予所需的权限，请使用 `./localnet/client.toml` 运行相同的账户命令，并换成所生成本地网络授权主体的规范 I105 ID。保留明确的本地费用付款人选择。
 
 :::
 
@@ -84,7 +83,7 @@ CLI 默认报价费用,签字,提交和等待. 当下一次操作取决于此值
 首先读取提交值,然后提交单独的移动交易.
 
 ```bash
-iroha --config ./taira.client.toml --machine ledger account meta get \
+iroha --config ./taira.client.toml --machine account meta get \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile \
   | tee cookbook-profile.json
@@ -94,8 +93,7 @@ jq -e '.version == 1' cookbook-profile.json
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger account meta remove \
+  account meta remove \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile
 ```
@@ -107,10 +105,10 @@ iroha --config ./taira.client.toml \
 在设置交易后, `meta get`必须将对象返回以 `version: 1`.在删除之后,直接搜索不再可以返回一个值:
 
 ```bash
-iroha --config ./taira.client.toml --machine ledger account get \
+iroha --config ./taira.client.toml --machine account get \
   --id "$TAIRA_ACCOUNT_ID" > /dev/null
 
-if iroha --config ./taira.client.toml --machine ledger account meta get \
+if iroha --config ./taira.client.toml --machine account meta get \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile; then
   printf '%s\n' 'metadata key still exists' >&2
@@ -133,8 +131,8 @@ fi
 
 ## 来源及相关文件 {#source-and-related-docs}
 
-- [在固定的提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/queries/metadata.rs)中测试对元数据查询集成
-- [Python SDK 交易构建者在固定的提交上](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/README.md)
+- [在固定的提交](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/queries/metadata.rs)中测试对元数据查询集成
+- [Python SDK 交易构建者在固定的提交上](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/README.md)
 - [超值数据](/zh-hans/blockchain/metadata.md)
 - [大数据和账本存储的选择](/zh-hans/guide/configure/metadata-and-store-assets.md)
 - [指示参考](/zh-hans/reference/instructions.md)

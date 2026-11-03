@@ -98,27 +98,36 @@ their model cards and license before downloading or using them.
 
 ## Refresh Generated Iroha References
 
-Refreshing references is an explicit maintainer operation:
+[`provenance/iroha.json`](provenance/iroha.json) pins the exact Iroha commit
+that every generated reference comes from. GitHub must verify the commit's
+signature, and the commit must be reachable from the tracked branch or a
+tracked release tag recorded under `source.track`.
+
+The [refresh workflow](.github/workflows/refresh-iroha.yaml) runs daily and on
+demand. It selects the newest verified commit on the tracked branch, or a newer
+verified release tag, regenerates every reference from that exact commit, and
+opens or updates a pull request from `automation/refresh-iroha`. Once reviewers
+push commits to it, later runs leave it in place and comment instead. The
+repository setting **Allow GitHub Actions to create and approve pull requests**
+must be enabled for the workflow to open that pull request.
+
+To refresh locally, select the pin, check it out in a clean Iroha checkout, and
+regenerate:
 
 ```bash
-pnpm refresh:iroha --source /path/to/iroha
+pnpm select:iroha
+pnpm refresh:iroha --source /path/to/iroha --pin <commit> --ref <ref>
 pnpm validate:provenance
 ```
 
-The source checkout must contain the commit pinned in
-`provenance/iroha.json`. Generated schema and CLI references require that exact
-commit in a clean checkout. Copy-only artifacts are read from the pinned Git
-tree. The refresh updates checked-in artifacts and their SHA-256 values; review
-all resulting diffs.
+Without `--pin` and `--ref`, `pnpm refresh:iroha --source /path/to/iroha`
+regenerates the references at the current pin. Both commands check signatures
+and reachability through the GitHub API; set `GITHUB_TOKEN` to raise its rate
+limit. Review the regenerated diffs like source changes.
 
-The pinned candidate commit is publicly fetchable, and its copy-artifact paths
-and hashes match the public Git tree. The candidate is unsigned, however, and a
-compliant signed public source commit for the final documentation relocation
-and current implementation truth is still required. Until that commit is
-available and the references are refreshed from it, every artifact remains
-`pending-signed-source-commit` and the manifest records
-`awaiting-signed-source-commit`. This is an explicit incomplete state; public
-reachability and matching copy hashes do not make the artifacts `current`.
+Source citations in the pages move separately, once the cookbook and the other
+citing pages have been checked against the new pin:
+`pnpm move:iroha-citations --source /path/to/iroha`.
 
 ## Optional Site Configuration
 

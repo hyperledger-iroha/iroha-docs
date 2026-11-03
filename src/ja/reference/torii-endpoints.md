@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: f04e5e78329996d70926c4fd5dc034d41605d0a82fffd6460f67b252269480d9
+translation_source_hash: 631ec91b5ea398ae17253f0fd6307d76bc3820e2a2b6c8c9f79b30e0188ec170
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -380,7 +380,7 @@ iroha app kaigi end --domain kaigi.universal --call-name daily
 
 ### JavaScript 統合 {#javascript-integration}
 
-現在の [Iroha JavaScript デモ](https://github.com/soramitsu/iroha-demo-javascript) 透明で認証された1対1のミーティングプロファイルを実装します。プロトコルの内容を公開しません `zk-roster-v1` プルーフフロー。そのレンダラーは作成します WebRTC 提供と応答、一方で特権付きブリッジはローカルを使用する [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) 見積もりにチェックアウトし、署名して、提出し、最終結果を待つ Kaigi 取引。
+現在の [Iroha JavaScript デモ](https://github.com/soramitsu/iroha-demo-javascript) 透明で認証された1対1のミーティングプロファイルを実装します。プロトコルの内容を公開しません `zk-roster-v1` プルーフフロー。そのレンダラーは作成します WebRTC 提供と応答、一方で特権付きブリッジはローカルを使用する [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js) 見積もりにチェックアウトし、署名して、提出し、最終結果を待つ Kaigi 取引。
 
 正確なルート認証、招待フォーマット、ブリッジ境界、現在のデモテストコマンドについては、[JavaScript アプリに Kaigi を埋め込む](/ja/guide/tutorials/kaigi.md) を参照してください。
 
@@ -439,6 +439,6 @@ iroha --config ./localnet/client.toml --operator-private-key-file "$IROHA_OPERAT
 
 ## 上流参照 {#upstream-references}
 
-- [README API とオブザーバビリティの概要](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/README.md)
-- [ISO 20022ブリッジ実装](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/iso20022_bridge.rs)
+- [README API とオブザーバビリティの概要](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/README.md)
+- [ISO 20022ブリッジ実装](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/iso20022_bridge.rs)
 - [パフォーマンスと指標](/ja/guide/advanced/metrics.md)

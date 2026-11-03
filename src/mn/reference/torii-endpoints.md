@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: f04e5e78329996d70926c4fd5dc034d41605d0a82fffd6460f67b252269480d9
+translation_source_hash: 631ec91b5ea398ae17253f0fd6307d76bc3820e2a2b6c8c9f79b30e0188ec170
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -380,7 +380,7 @@ iroha app kaigi end --domain kaigi.universal --call-name daily
 
 ### JavaScript интеграц {#javascript-integration}
 
-Өнөөгийн [Iroha JavaScript демо](https://github.com/soramitsu/iroha-demo-javascript) ил тод, баталгаажсан нэгээс-нэг уулзалтын профайлыг хэрэгжүүлдэг. Энэ нь протоколыг ил болгодоггүй `zk-roster-v1` баримт үзүүлэх урсгал. Үүний рендерер үүсгэдэг WebRTC санал болон хариулт, харин давуу эрхтэй гүүр нь орон нутгийн ашигладаг [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) санал авах, гарын үсэг зурах, илгээх, ба эцсийн байдлыг хүлээх Kaigi үйлдвэрлэлүүд.
+Өнөөгийн [Iroha JavaScript демо](https://github.com/soramitsu/iroha-demo-javascript) ил тод, баталгаажсан нэгээс-нэг уулзалтын профайлыг хэрэгжүүлдэг. Энэ нь протоколыг ил болгодоггүй `zk-roster-v1` баримт үзүүлэх урсгал. Үүний рендерер үүсгэдэг WebRTC санал болон хариулт, харин давуу эрхтэй гүүр нь орон нутгийн ашигладаг [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js) санал авах, гарын үсэг зурах, илгээх, ба эцсийн байдлыг хүлээх Kaigi үйлдвэрлэлүүд.
 
 Яг замын баталгаажуулалт, урилга оруулах хэлбэр, гүүрний хил болон одоогийн туршилтын командыг харахын тулд [Эмбед Kaigi-ийг JavaScript апп-д оруулах](/mn/guide/tutorials/kaigi.md)-ийг үзнэ үү.
 
@@ -439,6 +439,6 @@ iroha --config ./localnet/client.toml --operator-private-key-file "$IROHA_OPERAT
 
 ## Upstream лавлагаа {#upstream-references}
 
-- [README API ба ажиглах чадварын тойм](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/README.md)
-- [ISO 20022 гүүрний хэрэгжилт](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/iso20022_bridge.rs)
+- [README API ба ажиглах чадварын тойм](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/README.md)
+- [ISO 20022 гүүрний хэрэгжилт](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/iso20022_bridge.rs)
 - [Гүйцэтгэл болон үзүүлэлтүүд](/mn/guide/advanced/metrics.md)

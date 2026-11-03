@@ -13,10 +13,10 @@ Kotodama escrow surface from JavaScript.
   quantity.
 - Funded, single-key I105 clients for every party that submits a step. Use
   a live authority-paid `fee_payment` intent whose fee asset matches the
-  current Taira faucet response; do not embed an asset ID from
-  documentation.
+  one the current Taira faucet policy publishes; do not embed an asset ID
+  from documentation.
 - The current Rust or Python SDK from Iroha commit
-  `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
+  `c8c872461e92f04325c350cdd952f4276e96f9dc`.
 - For the JavaScript compiler example, Node.js 24 plus a locally built
   `@iroha/iroha-js` package and its native `iroha_js_host`; follow the
   [JavaScript SDK source-build setup](/guide/tutorials/javascript.md#build-from-source).
@@ -43,7 +43,7 @@ custody. Each submission names the authority fee payer through
 ```rust
 use eyre::{Result, ensure};
 use iroha::{
-    client::Client,
+    blocking::Client,
     data_model::{
         isi::escrow::{
             AcceptAssetEscrow, MarkEscrowPaymentSent, OpenAssetEscrow,
@@ -63,7 +63,7 @@ fn complete_marketplace_escrow(
 ) -> Result<AssetEscrowRecord> {
     let fee = FeePaymentIntent::authority(Vec::new(), None);
 
-    seller.submit_blocking(
+    seller.submit(
         OpenAssetEscrow::with_evidence_hashes(
             escrow_id,
             asset_definition,
@@ -72,11 +72,13 @@ fn complete_marketplace_escrow(
         ),
         fee.clone(),
     )?;
-    buyer.submit_blocking(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
-    buyer.submit_blocking(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
-    seller.submit_blocking(ReleaseAssetEscrow::new(escrow_id), fee)?;
+    buyer.submit(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
+    buyer.submit(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
+    seller.submit(ReleaseAssetEscrow::new(escrow_id), fee)?;
 
-    let record = seller.query_single(FindAssetEscrowById::new(escrow_id))?;
+    let record = seller
+        .client()
+        .query_single(FindAssetEscrowById::new(escrow_id))?;
     ensure!(record.status == AssetEscrowStatus::Released);
     Ok(record)
 }
@@ -90,6 +92,10 @@ token does not make active custody drainable outside the escrow lifecycle.
 The release authority queries the signed native record before drawing down.
 Passing that exact `remaining_amount` provides optimistic concurrency: a
 stale parallel request is rejected instead of debiting custody twice.
+`client` is a `ToriiClient` created with
+`local_signing_context=LocalSigningContext(network_id)` and the network's
+`chain_discriminant`; transaction helpers take the network identity from
+that context, and signed queries take it as `network_id`.
 
 ```python
 import secrets
@@ -107,7 +113,6 @@ def escrow_status(record):
 def open_and_draw_lock(
     *,
     client,
-    chain_id,
     opener,
     opener_private_key,
     release_authority,
@@ -117,9 +122,9 @@ def open_and_draw_lock(
     fee_payment,
 ):
     escrow_id = f"cookbook_lock_{secrets.token_hex(12)}"
+    network_id = client.local_signing_context.network_id
 
     client.open_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=opener,
         private_key=opener_private_key,
         fee_payment=fee_payment,
@@ -135,10 +140,10 @@ def open_and_draw_lock(
     before = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
     client.drawdown_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=release_authority,
         private_key=release_private_key,
         fee_payment=fee_payment,
@@ -150,6 +155,7 @@ def open_and_draw_lock(
     after = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
 
@@ -168,8 +174,10 @@ For Rust lock flows, the current constructors also require the observed
 amount:
 
 ```rust
-let before = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-release_authority.submit_blocking(
+let before = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+release_authority.submit(
     DrawdownAssetLock::new(
         lock_id,
         Quantity::from(4_u64),
@@ -178,28 +186,34 @@ release_authority.submit_blocking(
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 
-let current = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-opener.submit_blocking(
+let current = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+opener.submit(
     CancelAssetLock::new(lock_id, current.remaining_amount),
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 ```
 
-`DrawdownAssetLock::new` takes three values; `CancelAssetLock::new` takes
-two. Omitting the expected remaining amount describes an older, unsafe call
-shape.
+`DrawdownAssetLock::new` takes the lock, the amount, and the observed
+remaining amount; `CancelAssetLock::new` takes the lock and the observed
+remaining amount. The ledger rejects either instruction if the remaining
+amount changed first.
 
 ### 3. Compile the Kotodama escrow surface from JavaScript
 
 JavaScript does not need to invent untyped native instructions. The current
-compiler exposes the ledger escrow built-ins to Kotodama; deployment and
-calls then follow
-[Build and deploy a smart contract](./smart-contracts.md).
+compiler exposes the ledger escrow built-ins to Kotodama; deployment then
+follows [Build and deploy a smart contract](./smart-contracts.md). The
+`open_offer` entrypoint is `authorize(Admin)`, so the executor requires its
+caller to hold `CanUseContractPermission` for the deployed address and
+`permission: "Admin"`.
 
 Save this as `native_escrow.ko`:
 
 ```kotodama
 seiyaku NativeEscrowAitai {
+    permission Admin;
     error enum EscrowError {
         NonPositiveAmount = 1,
     }
@@ -208,7 +222,7 @@ seiyaku NativeEscrowAitai {
         Name offer,
         AssetDefinitionId asset_definition,
         quantity amount
-    ) authorize("Admin") {
+    ) authorize(Admin) {
         require(amount > 0, EscrowError::NonPositiveAmount);
         ledger::escrow::open_offer(
             offer: offer,
@@ -258,6 +272,7 @@ returned ID and repeat the signed query:
 record = client.get_asset_escrow(
     escrow_id=escrow_id,
     authority=release_authority,
+    network_id=client.local_signing_context.network_id,
     private_key=release_private_key,
 )
 assert escrow_status(record) == "Locked"
@@ -273,7 +288,8 @@ post-state is incomplete verification.
 - `Not permitted` while opening usually means the authority cannot transfer
   the selected asset into custody. Dispute resolution has the separate
   global `CanResolveEscrowDispute` gate.
-- `expected remaining amount` rejection is an optimistic-concurrency
+- `asset lock remaining amount changed since the drawdown was prepared` (or
+  `...since the cancellation was prepared`) is an optimistic-concurrency
   conflict. Re-query the record, decide whether the other drawdown/cancel
   was intended, and sign a new instruction only if the new state is
   acceptable.
@@ -288,10 +304,10 @@ post-state is incomplete verification.
 
 ## Source and related docs
 
-- [Native escrow instruction model at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
-- [Native escrow integration tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
-- [Python escrow client methods at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama native escrow sample at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [Native escrow instruction model at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/isi/escrow.rs)
+- [Native escrow integration tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/native_escrow.rs)
+- [Python escrow client methods at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama native escrow sample at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [Native asset escrow](/blockchain/escrow.md)
 - [Fungible assets](./fungible-assets.md)
 - [Permissions and roles](./permissions-and-roles.md)

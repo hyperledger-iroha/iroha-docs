@@ -1,9 +1,9 @@
 ---
 translation_locale: hy
 translation_source: /cookbook/stream-events.md
-translation_source_hash: 96f0a26000530fee15d121f815f9f5717a535dc3836cff9a2a447b1e5b70c41c
+translation_source_hash: d6202b208288688cdfd927491d6670f094f631ccaecd7ff62858a94267c5306a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Ծրագրային իրադարձություններ {#stream-events}
@@ -22,10 +22,10 @@ translation_engine: nllb-200-ct2
 
 ### 1. Հաստատեք SSE արձագանքը {#_1-confirm-the-sse-response}
 
-Taira-ը ներկայումս բանակցում է այս երթուղին միայն այն ժամանակ, երբ `Accept` գլխավորությունը ներառում է ինչպես նախընտրված իրադարձությունների հոսքը, այնպես էլ JSON հետընթացը: Անջատեք curl բուֆերումը: Կառավարությունը ավարտվում է 15 վայրկյանից հետո. Հաստատվում է միայն սրտի կոտրման մեկնաբանություններ ստանալը լռության ընթացքում:
+Պահանջեք իրադարձությունների հոսքը JSON պահուստային տարբերակով: Torii-ն հոսքը փոխանցում է `text/event-stream` ձևաչափով, իսկ մերժված հարցումը, օրինակ՝ անվավեր ֆիլտրը, հայտնում է որպես JSON սխալ։ Անջատեք curl-ի բուֆերացումը։ Հրամանն ավարտվում է 20 վայրկյանից հետո։ Torii-ն 15 վայրկյան անգործությունից հետո ուղարկում է heartbeat մեկնաբանություն, ուստի հանգիստ ժամանակահատվածում միայն heartbeat մեկնաբանություններ ստանալը նորմալ է։
 
 ```bash
-curl -sS -N --max-time 15 \
+curl -sS -N --max-time 20 \
   -H 'Accept: text/event-stream, application/json' \
   https://taira.sora.org/v1/events/sse
 ```
@@ -34,15 +34,12 @@ curl -sS -N --max-time 15 \
 
 ### 2. Ավելացրեք ֆիլտրված JavaScript սպառող {#_2-add-a-filtered-javascript-consumer}
 
-Պահպանեք հետեւյալը ՝ որպես `stream-taira.mjs`: Այն օգտագործում է Fetch- ը ուղղակիորեն, որպեսզի խնդրանքն կարողանա ուղարկել Taira -ի պահանջվող խառնված `Accept` գլուխը: Գործող `FilterExpr` -ը ընտրում է հաստատված գործարքների իրադարձությունները, եւ զննարկիչը սպառում է SSE շրջանակները առանց կրկնօրինակման կուրսորի:
+Պահպանեք հետևյալը որպես `stream-taira.mjs`։ Այն ուղղակիորեն օգտագործում է Fetch՝ փոխանցման ձևաչափը ցույց տալու համար։ `filter` հարցման պարամետրն օգտագործում է Torii-ի տեքստային ֆիլտրի քերականությունը՝ հաստատված գործարքների իրադարձություններն ընտրելու համար, իսկ վերլուծիչը մշակում է SSE կադրերը՝ առանց վերարտադրման կուրսորի։
 
 ```js
 const baseUrl = 'https://taira.sora.org'
 const shutdown = new AbortController()
-const filter = {
-  op: 'eq',
-  args: ['tx_status', 'Approved'],
-}
+const filter = 'tx_status = "Approved"'
 
 process.once('SIGINT', () => shutdown.abort())
 process.once('SIGTERM', () => shutdown.abort())
@@ -52,7 +49,7 @@ const delay = (milliseconds) =>
 
 async function reconcile() {
   const response = await fetch(
-    `${baseUrl}/v1/explorer/transactions?page=1&per_page=25`,
+    `${baseUrl}/v1/explorer/transactions?limit=25`,
     { headers: { Accept: 'application/json' } },
   )
   if (!response.ok) {
@@ -63,7 +60,7 @@ async function reconcile() {
 
 async function* streamOnce() {
   const url = new URL('/v1/events/sse', baseUrl)
-  url.searchParams.set('filter', JSON.stringify(filter))
+  url.searchParams.set('filter', filter)
   const response = await fetch(url, {
     headers: { Accept: 'text/event-stream, application/json' },
     signal: shutdown.signal,
@@ -164,7 +161,7 @@ SSE սրտի կոտրված մեկնաբանությունները պահում 
 
 Վերջին 25 հետազոտողի խնդրանքն ընդամենը հանրային ախտորոշում է: Արտադրման սպառողը պետք է փոխարինի կամ ընդլայնի `reconcile()` իր կայուն կիրառման ռեսուրսների հարցումներով եւ բավականաչափ մեծ վերականգնման սահմանով, որը բավարար է իր ստուգման կետի համար: Միայն սահմանափակ արձանագրությունը չի կարող ապացուցել, որ որեւէ իրադարձություն չի բաց թողնվել։
 
-Պինդված commit-ում, `ToriiClient.streamEvents()` ուղարկում է միայն `Accept: text/event-stream`; կենդանի Taira մերժում է ավելի նեղ գլխավորությունը `406`: Օգտագործեք վերեւում գտնվող "raw Fetch" ձեւը, մինչեւ որ SDK եւ հանրային վերջնական կետերը բանակցեն նույն մեդիա տեսակները:
+`@iroha/iroha-js`-ի `ToriiClient.streamEvents({ filter })`-ը կարդում է նույն հոսքը: փոխանցեք `field('tx_status').eq('Approved')` կամ վերևի տեքստային ֆիլտրը։ Հոսքի ավարտից առաջ այն տրամադրում է վերջնական `stream_error` կադրը, ուստի վերևում նկարագրված վերամիացման և համաձայնեցման կանոնները շարունակում են գործել։
 
 ## Փորձարկել {#verify}
 
@@ -173,7 +170,7 @@ SSE սրտի կոտրված մեկնաբանությունները պահում 
 ```bash
 curl -fsS \
   -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=25' |
+  'https://taira.sora.org/v1/explorer/transactions?limit=25' |
   jq .
 ```
 
@@ -182,17 +179,17 @@ curl -fsS \
 ## Խնդիրների լուծում {#troubleshooting}
 
 - Կապը սրտի կոտրման մեկնաբանությունների հետ, բայց ոչ մի տվյալների իրադարձություն առողջ է: Ընտրված մշակման շղթայի կարգավիճակը կարող է պարզապես լռել:
-- `406 Not Acceptable` ուղիղ եթերում Taira սովորաբար նշանակում է միայն `text/event-stream` գովազդված խնդրանք: ուղարկեք `text/event-stream, application/json` ճիշտ այնպես, ինչպես ցույց է տրվում վերեւում:
-- `stream_error` իրադարձությունը ցույց է տալիս, որ սերվերը հայտնաբերել է ուշացում կամ այլ վերջնական հոսքի վիճակ: Torii մի անգամ ուղարկում է այդ իրադարձությունը եւ փակում է հոսքը. reconcile նախքան վերապահովելը:
+- `invalid_filter` կոդով `400`-ը նշանակում է, որ `filter`-ը չի համապատասխանում Torii-ի տեքստային քերականությանը կամ նշում է դաշտ, որը իրադարձությունների հոսքերը չեն աջակցում։ Իրադարձությունների հոսքերը ֆիլտրում են ըստ `tx_status`, `tx_hash`, `tx_block_height`, `tx_lane_id`, `tx_dataspace_id`, `block_status`, `block_height`, `proof_backend`, `proof_call_hash` և `proof_envelope_hash` դաշտերի։
+- `stream_error` իրադարձությունը ցույց է տալիս, որ սերվերը հայտնաբերել է ուշացում կամ հոսքի այլ վերջնական վիճակ։ Torii-ն այդ իրադարձությունն ուղարկում է մեկ անգամ և փակում հոսքը; բացեք փոխարինող հոսք, ապա կատարեք համաձայնեցում։
 - Պրոքսի կարող է բուֆեր SSE նույնիսկ, երբ Torii չի անում: Անջատեք արձագանքային բուֆերը եւ սեղմումը պրոկսիում, եւ պահեք `curl -N` ախտորոշման մեջ:
 - Երբեք մի լրացրեք անջատման բացակայություն ՝ ենթադրելով, որ հաջորդ իրադարձությունը հետեւում է նախորդին: Վերջնական կետը չունի կրկնօրինակման կուրսոր. Փոխարենը կատարեք հարցում ընթացիկ գլխավոր գրքի վիճակը:
 
 ## Աղբյուրը եւ դրա հետ կապված փաստաթղթերը {#source-and-related-docs}
 
-- [JavaScript հոսքային բաղադրատոմս փակված commit- ում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs):
-- [SSE ինտեգրման փորձարկումները փակված commit-ի վրա](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs)
-- [Torii FilterExpr զննարկիչը փաթեթավորված commit-ում ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs):
-- [Torii իրադարձության երթեւեկությունը փակված commit-ում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
+- [JavaScript հոսքային բաղադրատոմս փակված commit- ում](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes/streaming.mjs):
+- [SSE ինտեգրման փորձարկումները փակված commit-ի վրա](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/events/sse_smoke.rs)
+- [Torii-ի ֆիլտրի տեքստային քերականությունը ամրագրված commit-ում](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/src/list_query/text.rs)
+- [Torii իրադարձության երթեւեկությունը փակված commit-ում](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/routing.rs)
 - [Տեղեկատվություն](/hy/blockchain/events.md)
 - [Torii վերջնական կետեր](/hy/reference/torii-endpoints.md)
 - [Հարցման գլխավոր գրքի վիճակը](./query-ledger-state.md)

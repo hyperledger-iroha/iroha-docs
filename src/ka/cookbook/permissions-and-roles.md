@@ -1,9 +1,9 @@
 ---
 translation_locale: ka
 translation_source: /cookbook/permissions-and-roles.md
-translation_source_hash: 8d6fd7101094ba21cfc2c5fb9a89d2acd7e67f13ff47b9f8c8e01bbbd7bf2836
+translation_source_hash: 40fe8b19344d8eff66b178dc8576e2e049fef50bd3212fbddc5c0d5f7f37fa03
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # ნებართვები და როლები {#permissions-and-roles}
@@ -14,13 +14,12 @@ translation_engine: nllb-200-ct2
 
 ## წინაპირობები {#prerequisites}
 
-- Taira დაფინანსებული კლიენტი და საფასურის მეტამონაცემები [გაერთიანება Taira](./connect-to-taira.md).
+- დაფინანსებული Taira კლიენტი გვერდიდან [Taira-სთან დაკავშირება](./connect-to-taira.md).
 - `TARGET_ACCOUNT` და `DELEGATE_ACCOUNT` განისაზღვრება ერთპიროვნული პროტოკოლური სტანდარტის I105 ანგარიშის ID-ებად.
-- ხელმოწერის ანგარიშს უნდა ეძლევათ უფლება მართოს მიზნობრივი ნებართვა და როლები. Taira-ზე ეს არის ნებართვის გათვალისწინებული ადმინისტრაციული ოპერაცია; მიიღეთ `CanManageRoles` და ავტორიზაციის პრინციპალი, რომელიც საჭიროა განსაზღვრული ნებართვების გასაცემად ან აწარმოეთ რეცეპტი გენერირებულ ლოკალურ ქსელში.
+- ხელმომწერ ანგარიშს უნდა ჰქონდეს `CanManageRoles` და უნდა შეეძლოს არეალით შეზღუდული ნებართვის დელეგირება: ის თავად არის `TARGET_ACCOUNT` ან ამ ანგარიშისთვის უკვე აქვს `CanModifyAccountMetadata`. Taira-ზე ეს ნებართვით დაცული ადმინისტრაციული ოპერაციაა. გენერირებული ლოკალური ქსელის კლიენტს `CanManageRoles` არ აქვს, ამიტომ რეცეპტს სჭირდება ქსელი, რომლის გენეზისიც ამ ნებართვას ანიჭებს.
 
 ```bash
 CONFIG=./taira.client.toml
-FEE_METADATA=./taira.tx-metadata.json
 ROLE_ID=cookbook_metadata_editors
 test -n "$TARGET_ACCOUNT"
 test -n "$DELEGATE_ACCOUNT"
@@ -36,12 +35,11 @@ DELEGATE_CONFIG=./taira.delegate.toml
 
 ### 1. დაარეგისტრირეთ ცარიელი როლი {#_1-register-an-empty-role}
 
-ყველა სახელმწიფოს შეცვლის CLI ბრძანება ცალსახად ასახელებს გადასახადის გადამხდელს. მეტამონაცემების ფაილი შეიცავს მიმდინარე Taira გადასახადის აქტივს, რომელიც გამომდინარეობს ტესტური მონეტების გამცემის პასუხიდან.
+მდგომარეობის შემცვლელი ყოველი CLI ბრძანება საფასურის გადამხდელს ცხადად ასახელებს. CLI ხელმოწერამდე იღებს ზუსტი საფასურის შეფასებას Taira-ს საფასურის აქტივში.
 
 ```bash
 iroha --config "$CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
   ledger role register --id "$ROLE_ID"
 ```
 
@@ -54,7 +52,6 @@ jq -cn --arg account "$TARGET_ACCOUNT" \
   '{name:"CanModifyAccountMetadata",payload:{account:$account}}' |
   iroha --config "$CONFIG" \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
     ledger role permission grant --id "$ROLE_ID"
 ```
 
@@ -63,8 +60,7 @@ jq -cn --arg account "$TARGET_ACCOUNT" \
 ```bash
 iroha --config "$CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
-  ledger account role grant \
+  account role grant \
   --id "$DELEGATE_ACCOUNT" \
   --role "$ROLE_ID"
 ```
@@ -79,13 +75,12 @@ iroha --config "$CONFIG" \
 printf '"delegated"\n' |
   iroha --config "$DELEGATE_CONFIG" \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
-    ledger account meta set \
+    account meta set \
     --id "$TARGET_ACCOUNT" \
     --key cookbook_access
 ```
 
-იგივე მოდელი ხელმისაწვდომია Rust კლიენტებისთვის. აქ `client` ინიშნება როგორც `registrar_account`, რომელიც ხდება როლის თავდაპირველი მფლობელი ისევე, როგორც ეს ხდება CLI ნაკადში. სამივე ანგარიშის ცვლადი უკვე არის გაანალიზებული `AccountId` ღირებულებები:
+იგივე მოდელი ხელმისაწვდომია Rust კლიენტებისთვის. აქ `client` არის `iroha::blocking::Client`, რომელიც ხელს აწერს როგორც `registrar_account`; ეს ანგარიში, ისევე როგორც CLI-ის ნაკადში, როლის საწყისი მფლობელი ხდება. სამივე ანგარიშის ცვლადი უკვე გარჩეული `AccountId` მნიშვნელობებია:
 
 ```rust
 use iroha::data_model::{prelude::*, transaction::FeePaymentIntent};
@@ -98,7 +93,7 @@ let role = Role::new(role_id.clone(), registrar_account).add_permission(
     },
 );
 
-client.submit_all_blocking::<InstructionBox>(
+client.submit_all::<InstructionBox>(
     [
         Register::role(role).into(),
         Grant::account_role(role_id, delegate_account).into(),
@@ -109,32 +104,35 @@ client.submit_all_blocking::<InstructionBox>(
 
 ## შემოწმება {#verify}
 
-დავალების ორივე მხარის ჩამონათვალი, შემდეგ წაიკითხეთ ზუსტი ღირებულება, რომელიც დელეგატმა დაწერა:
+წაიკითხეთ დელეგატის მოქმედი ნებართვები, რომლებიც როლებით მინიჭებულ ნებართვებსაც მოიცავს, შემდეგ კი წაიკითხეთ დელეგატის მიერ ჩაწერილი ზუსტი მნიშვნელობა:
 
 ```bash
-iroha --config "$CONFIG" ledger role permission list --id "$ROLE_ID"
-iroha --config "$CONFIG" ledger account role list --id "$DELEGATE_ACCOUNT"
+iroha --config "$CONFIG" --machine account permission list \
+  --id "$DELEGATE_ACCOUNT" --all \
+  | jq -e --arg account "$TARGET_ACCOUNT" \
+    '.items | any(.name == "CanModifyAccountMetadata"
+      and .payload.account == $account)'
 
-iroha --config "$CONFIG" ledger account meta get \
+iroha --config "$CONFIG" account meta get \
   --id "$TARGET_ACCOUNT" \
   --key cookbook_access
 ```
 
-ნებართვის ჩამონათვალში უნდა იყოს `CanModifyAccountMetadata` დასახელებული `TARGET_ACCOUNT`-ზე, დელეგატის როლების ჩამონათვალი უნდა შეიცავდეს `ROLE_ID` და გათვლილი მეტამონაცემები უნდა დაუბრუნდეს `"delegated"`.
+დელეგატის მოქმედი ნებართვები უნდა შეიცავდეს `TARGET_ACCOUNT`-ით შეზღუდულ `CanModifyAccountMetadata`-ს, ხოლო მეტამონაცემების წაკითხვამ უნდა დააბრუნოს `"delegated"`. Torii ხელმოწერილი მოთხოვნებით როლების ჩამონათვალს არ გასცემს, ამიტომ როლის მინიჭების შემოწმებად მოქმედი ნებართვების ჩამონათვალი გამოიყენება.
 
 ## პრობლემების აღმოფხვრა {#troubleshooting}
 
-- `Not permitted` რეგისტრაციის, რედაქტირების ან როლის დანიშვნისას ნიშნავს, რომ კრიპტოგრაფიულ ხელმომწერს არ გააჩნია საჭირო Taira ავტორიზაციის პრინციპი. არ შეცვალოთ განსაზღვრული ტოკენი გლობალური; ითხოვეთ ზუსტი გრანტი ან გამოიყენეთ localnet.
+- `Not permitted` როლის რეგისტრაციის, რედაქტირების ან მინიჭებისას ნიშნავს, რომ ხელმომწერს Taira-ზე საჭირო უფლებამოსილება არ აქვს. შეზღუდული ტოკენი გლობალურით არ შეცვალოთ; მოითხოვეთ ზუსტი ნებართვის მინიჭება.
 - დატვირთვის ალიასების შეცდომა, როგორც წესი, ნიშნავს, რომ `account` განთავსდა `payload`-ს გვერდით, I105 ID-ის ნაცვლად წარედგინა ალიასი სახელი ან JSON ღირებულება ორჯერ მითითებული იყო.
-- საფასურის უარყოფა ეკუთვნის კრიპტოგრაფიული ხელმომწერს, რომელმაც ეს ნაბიჯი წარადგინა. ფინანსდება მენეჯერი და დამოუკიდებლად დელეგირებს და ინახავს საბანქოზე მოყვანილი საფასურის აქტივების მეტადატასები.
+- საფასურის უარყოფა იმ ხელმომწერს ეკუთვნის, რომელიც ამ ნაბიჯს აგზავნის. მენეჯერი და დელეგატი დამოუკიდებლად დააფინანსეთ იმ საფასურის აქტივში, რომელსაც თითოეული საფასურის შეფასება ასახელებს.
 - წარმატებული როლების მინიჭება არ აძლიერებს მის ტოკენებში კოდირებულ მოცულობას. ამ როლს შეუძლია შეცვალოს მხოლოდ ნებართვის დატვირთვაში მითითებული ანგარიში.
-- დასუფთავებისათვის, განახორციელეთ `ledger account role revoke`, შემდეგ `ledger role permission revoke` და ბოლოს `ledger role unregister`; თითოეული ცალკე წერია და უნდა შეიცავდეს `--fee-payer authority` და საფასურის მეტადატასებს.
+- გასასუფთავებლად გაუშვით `account role revoke`, შემდეგ `ledger role permission revoke` და ბოლოს `ledger role unregister`; თითოეული ცალკე ჩაწერაა და უნდა შეიცავდეს `--fee-payer authority`-ს.
 
 ## წყარო და შესაბამისი დოკუმენტები {#source-and-related-docs}
 
-- [როლების ინტეგრაციის ტესტები დამაგრებული წყარო კოდის რევიზიის](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/roles.rs)
-- [ნებართვის ინტეგრაციის ტესტები ჩაკეტილი წყარო კოდის რევიზიისას](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/permissions.rs)
-- [შეყვანილი ნებართვის მონაცემთა მოდელი დამაგრებული წყარო კოდის გადახედვაზე](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/permission.rs)
+- [როლების ინტეგრაციის ტესტები დამაგრებული წყარო კოდის რევიზიის](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/roles.rs)
+- [ნებართვის ინტეგრაციის ტესტები ჩაკეტილი წყარო კოდის რევიზიისას](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/permissions.rs)
+- [შეყვანილი ნებართვის მონაცემთა მოდელი დამაგრებული წყარო კოდის გადახედვაზე](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_executor_data_model/src/permission.rs)
 - [ნებართვები და როლები](/ka/blockchain/permissions.md)
 - [ნებართვის ნიშნების მითითება](/ka/reference/permissions.md)
 - [მეტამონაცემები](./metadata.md)

@@ -1,9 +1,9 @@
 ---
 translation_locale: es
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 576e03924f19b63681cdfafa641b996672e35a992478fc9eaf5b83f0e7baa6da
+translation_source_hash: d399284a2baec507e4c979c762d6e216d8c3fbc5b4b4fe221b6bbb0049ee9fd9
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Custodia de Activos Nativos {#native-asset-escrow}
@@ -15,8 +15,8 @@ Elija entre un depósito en garantía del mercado y un bloqueo de activos destin
 ## Prerrequisitos {#prerequisites}
 
 - Una definición de activo numérico y un aperturista/vendedor que posee suficiente cantidad.
-- Clientes financiados de llave única I105 para cada parte que envíe un paso. Utilice una intención `fee_payment` pagada por la autoridad en vivo cuyo activo de tarifa coincida con la respuesta del servicio de financiación de testnet Taira actual; no inserte un ID de activo de la documentación.
-- El Rust o Python SDK actual de Iroha compromete `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
+- Clientes financiados de llave única I105 para cada parte que envíe un paso. Utilice una intención `fee_payment` en vivo pagada por la autoridad cuyo activo de tarifa coincida con el que publica la política actual del servicio de financiación de testnet Taira; no inserte un ID de activo de la documentación.
+- El Rust o Python SDK actual de Iroha compromete `c8c872461e92f04325c350cdd952f4276e96f9dc`.
 - Para el ejemplo del compilador JavaScript, Node.js 24 más un paquete `@iroha/iroha-js` construido localmente y su `iroha_js_host` nativo; siga el [JavaScript SDK configuración de source-build](/es/guide/tutorials/javascript.md#build-from-source). Las compilaciones para navegador deben proporcionar `compilerUrl` en lugar de cargar el host nativo.
 - Taira debe admitir la transferencia de activos y las instrucciones de custodia. Los propietarios de activos pueden usar el ciclo de vida ordinario cuando su política de activos lo permite; resolver una disputa requiere el permiso global `CanResolveEscrowDispute`. Utilice una red local generada cuando el principal de autorización de red pública necesario esté ausente.
 
@@ -31,7 +31,7 @@ Esta función recibe identificaciones reales tipadas y clientes. Abre 40 unidade
 ```rust
 use eyre::{Result, ensure};
 use iroha::{
-    client::Client,
+    blocking::Client,
     data_model::{
         isi::escrow::{
             AcceptAssetEscrow, MarkEscrowPaymentSent, OpenAssetEscrow,
@@ -51,7 +51,7 @@ fn complete_marketplace_escrow(
 ) -> Result<AssetEscrowRecord> {
     let fee = FeePaymentIntent::authority(Vec::new(), None);
 
-    seller.submit_blocking(
+    seller.submit(
         OpenAssetEscrow::with_evidence_hashes(
             escrow_id,
             asset_definition,
@@ -60,11 +60,13 @@ fn complete_marketplace_escrow(
         ),
         fee.clone(),
     )?;
-    buyer.submit_blocking(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
-    buyer.submit_blocking(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
-    seller.submit_blocking(ReleaseAssetEscrow::new(escrow_id), fee)?;
+    buyer.submit(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
+    buyer.submit(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
+    seller.submit(ReleaseAssetEscrow::new(escrow_id), fee)?;
 
-    let record = seller.query_single(FindAssetEscrowById::new(escrow_id))?;
+    let record = seller
+        .client()
+        .query_single(FindAssetEscrowById::new(escrow_id))?;
     ensure!(record.status == AssetEscrowStatus::Released);
     Ok(record)
 }
@@ -74,7 +76,7 @@ La cuenta de custodia se gestiona mediante libro mayor. Otorgar un token de tran
 
 ### 2. Abrir y dibujar parcialmente un candado genérico con Python {#_2-open-and-partially-draw-a-generic-lock-with-python}
 
-El principal de autorización de liberación consulta el registro nativo firmado antes de retirar fondos. Pasar ese `remaining_amount` exacto proporciona concurrencia optimista: se rechaza una solicitud paralela obsoleta en lugar de debitar la custodia dos veces.
+El principal de autorización de liberación consulta el registro nativo firmado antes de retirar fondos. Pasar ese `remaining_amount` exacto proporciona concurrencia optimista: se rechaza una solicitud paralela obsoleta en lugar de debitar la custodia dos veces. `client` es un `ToriiClient` creado con `local_signing_context=LocalSigningContext(network_id)` y el `chain_discriminant` de la red; los asistentes de transacción toman la identidad de red de ese contexto, y las consultas firmadas la reciben como `network_id`.
 
 ```python
 import secrets
@@ -92,7 +94,6 @@ def escrow_status(record):
 def open_and_draw_lock(
     *,
     client,
-    chain_id,
     opener,
     opener_private_key,
     release_authority,
@@ -102,9 +103,9 @@ def open_and_draw_lock(
     fee_payment,
 ):
     escrow_id = f"cookbook_lock_{secrets.token_hex(12)}"
+    network_id = client.local_signing_context.network_id
 
     client.open_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=opener,
         private_key=opener_private_key,
         fee_payment=fee_payment,
@@ -120,10 +121,10 @@ def open_and_draw_lock(
     before = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
     client.drawdown_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=release_authority,
         private_key=release_private_key,
         fee_payment=fee_payment,
@@ -135,6 +136,7 @@ def open_and_draw_lock(
     after = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
 
@@ -150,8 +152,10 @@ El Python SDK puede consultar automáticamente cuando se omite `expected_remaini
 Para los flujos de bloqueo Rust, los constructores actuales también requieren la cantidad observada:
 
 ```rust
-let before = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-release_authority.submit_blocking(
+let before = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+release_authority.submit(
     DrawdownAssetLock::new(
         lock_id,
         Quantity::from(4_u64),
@@ -160,23 +164,26 @@ release_authority.submit_blocking(
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 
-let current = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-opener.submit_blocking(
+let current = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+opener.submit(
     CancelAssetLock::new(lock_id, current.remaining_amount),
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 ```
 
-`DrawdownAssetLock::new` toma tres valores; `CancelAssetLock::new` toma dos. Omitir la cantidad restante esperada describe una forma de llamada más antigua e insegura.
+`DrawdownAssetLock::new` toma el bloqueo, la cantidad y la cantidad restante observada; `CancelAssetLock::new` toma el bloqueo y la cantidad restante observada. El libro mayor rechaza cualquiera de las dos instrucciones si la cantidad restante cambió antes.
 
 ### 3. Compile la superficie de depósito en garantía Kotodama de JavaScript {#_3-compile-the-kotodama-escrow-surface-from-javascript}
 
-JavaScript no necesita inventar instrucciones nativas no tipadas. El compilador actual expone las funciones incorporadas de custodia del libro mayor de la blockchain a Kotodama; el despliegue y las llamadas luego siguen a [Construir y desplegar un contrato inteligente](./smart-contracts.md).
+JavaScript no necesita inventar instrucciones nativas no tipadas. El compilador actual expone las funciones incorporadas de custodia del libro mayor de la blockchain a Kotodama; el despliegue sigue luego [Construir y desplegar un contrato inteligente](./smart-contracts.md). El punto de entrada `open_offer` es `authorize(Admin)`, por lo que el ejecutor exige que quien lo invoque tenga `CanUseContractPermission` para la dirección desplegada y `permission: "Admin"`.
 
 Guarda esto como `native_escrow.ko`:
 
 ```kotodama
 seiyaku NativeEscrowAitai {
+    permission Admin;
     error enum EscrowError {
         NonPositiveAmount = 1,
     }
@@ -185,7 +192,7 @@ seiyaku NativeEscrowAitai {
         Name offer,
         AssetDefinitionId asset_definition,
         quantity amount
-    ) authorize("Admin") {
+    ) authorize(Admin) {
         require(amount > 0, EscrowError::NonPositiveAmount);
         ledger::escrow::open_offer(
             offer: offer,
@@ -230,6 +237,7 @@ Para la custodia del mercado, consulte `FindAssetEscrowById` y las tenencias de 
 record = client.get_asset_escrow(
     escrow_id=escrow_id,
     authority=release_authority,
+    network_id=client.local_signing_context.network_id,
     private_key=release_private_key,
 )
 assert escrow_status(record) == "Locked"
@@ -241,7 +249,7 @@ También consulta la tenencia de activos del destino y confirma que aumentó en 
 ## Solución de problemas {#troubleshooting}
 
 - `Not permitted` al abrir generalmente significa que el principal de autorización no puede transferir el activo seleccionado a la custodia. La resolución de disputas tiene la puerta global separada `CanResolveEscrowDispute`.
-- `expected remaining amount` el rechazo es un conflicto de concurrencia optimista. Vuelva a consultar el registro, decida si la otra retirada/cancelación fue intencionada, y firme una nueva instrucción únicamente si el nuevo estado es aceptable.
+- `asset lock remaining amount changed since the drawdown was prepared` (o `...since the cancellation was prepared`) es un conflicto de concurrencia optimista. Vuelva a consultar el registro, decida si la otra retirada/cancelación fue intencionada, y firme una nueva instrucción únicamente si el nuevo estado es aceptable.
 - Solo el principal de autorización de liberación configurado puede ejecutar un bloqueo confiable. El destino no puede liberarlo simplemente porque recibirá los fondos.
 - La publicación en el mercado es válida solo después de la aceptación y del estado de pago enviado; la cancelación está limitada a los estados anteriores del ciclo de vida.
 - La expiración utiliza el tiempo del libro mayor autoritario de la blockchain. No considere un tiempo de espera del reloj local como prueba de que `ExpireAssetLock` pasará.
@@ -249,10 +257,10 @@ También consulta la tenencia de activos del destino y confirma que aumentó en 
 
 ## Fuente y documentos relacionados {#source-and-related-docs}
 
-- [Modelo de instrucción de fideicomiso nativo en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
-- [Pruebas de integración de custodia nativa en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
-- [Python métodos del cliente de depósito en garantía en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama ejemplo de custodia nativa en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [Modelo de instrucción de fideicomiso nativo en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/isi/escrow.rs)
+- [Pruebas de integración de custodia nativa en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/native_escrow.rs)
+- [Python métodos del cliente de depósito en garantía en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama ejemplo de custodia nativa en el commit fijado](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [Fideicomiso de activos nativos](/es/blockchain/escrow.md)
 - [Activos fungibles](./fungible-assets.md)
 - [Permisos y roles](./permissions-and-roles.md)

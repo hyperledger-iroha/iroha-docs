@@ -1,21 +1,21 @@
 ---
 translation_locale: hy
 translation_source: /cookbook/metadata.md
-translation_source_hash: bb486994faabb29fb48609a886862e44e565148be4800ec1244218ef37e2e54b
+translation_source_hash: 88298912f083d79a9fdfe5e8d0a89d49acb97d814d3871db0c874cb40db5342b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Մետադատա {#metadata}
 
 ## Արդյունքը {#outcome}
 
-Կարդացեք Taira մետադատները, սահմանեք եւ ստուգեք մեկ հաշիվի մետադատների արժեքը' բացարձակ վճարովի գործարքի միջոցով, եւ կրկին հեռացրեք արժեքը: Դուք պահելու եք գրասենյակի օբյեկտի մեթադատները առանձին գործարքի վճարային մետադատարից:
+Կարդացեք մետատվյալները Taira-ում, վճարը բացահայտորեն վճարող գործարքով սահմանեք և ստուգեք հաշվի մետատվյալների մեկ արժեք, ապա նորից հեռացրեք այդ արժեքը։ Դուք ռեեստրի օբյեկտների մետատվյալները կպահեք գործարքի մետատվյալներից առանձին։
 
 ## Նախադրյալներ {#prerequisites}
 
 - `curl`, `jq`, Python 3.11 կամ ավելի ուշ եւ հոսքը `iroha` CLI:
-- Ֆինանսավորված `taira.client.toml` եւ `taira.tx-metadata.json` գումարը [ Կապակցեք Taira ](./connect-to-taira.md):
+- Ֆինանսավորված `taira.client.toml`՝ [Միացում Taira-ին](./connect-to-taira.md) էջից։
 - Թիրախային հաշվի մետադատաների նկատմամբ լիազորություն: Օրինակն ուղղված է կազմաձևված լիազոր հաշվին. մեկ այլ հաշիվ պահանջում է հստակ թույլտվություն:
 
 ## Քայլեր {#steps}
@@ -27,8 +27,8 @@ translation_engine: nllb-200-ct2
 ```bash
 curl -fsS -H 'Accept: application/json' \
   'https://taira.sora.org/v1/assets/definitions?limit=100' \
-  | jq '.items[] \
-    | select((.metadata // {} | length) > 0) \
+  | jq '.items[]
+    | select((.metadata // {} | length) > 0)
     | {id, name, metadata}'
 
 curl -fsS -H 'Accept: application/json' \
@@ -57,7 +57,7 @@ export TAIRA_ACCOUNT_ID="$(
 
 ### 3. Սահմանեք մեկ JSON արժեք: {#_3-set-one-json-value}
 
-JSON ստանդարտ մուտքից ընթերցվածը դառնում է հաշիվի `cookbook_profile` արժեքը: Ընդհակառակը, `--metadata ./taira.tx-metadata.json`-ը վճարային դաշտեր է միացնում գործարքի փաթեթին: Երկու քարտեզները ունեն տարբեր նպատակներ եւ նպատակներ.
+Ստանդարտ մուտքից կարդացված JSON-ը դառնում է հաշվի `cookbook_profile` արժեքը։ Գործարքի մետատվյալները, որոնք կցվում են `--metadata <file>`-ով, գործարքի ծրարի վրա առանձին քարտեզ են և երբեք վճար չեն ընտրում: դա անում են `--fee-payer`-ը և CLI-ի ճշգրիտ վճարային առաջարկը, իսկ հաճախորդը մերժում է `gas_asset_id`, `gas_limit` կամ `fee_sponsor` բանալիներ պարունակող գործարքի մետատվյալները։
 
 ```bash
 printf '%s\n' \
@@ -65,17 +65,16 @@ printf '%s\n' \
   | iroha --config ./taira.client.toml \
       --machine \
       --fee-payer authority \
-      --metadata ./taira.tx-metadata.json \
-      ledger account meta set \
+      account meta set \
       --id "$TAIRA_ACCOUNT_ID" \
       --key cookbook_profile
 ```
 
-CLI- ը նշում է վճարը, ստորագրում է, ներկայացնում է եւ սպասում է անշարժ կարգով: Մի ավելացրեք `--no-wait`, երբ հաջորդ գործողությունը կախված է այս արժեքից:
+CLI-ն ստորագրելուց առաջ ստանում է ճշգրիտ վճարային առաջարկ Taira-ի վճարային ակտիվով, ապա ներկայացնում է գործարքը և մինչև աշխատանքն ավարտելը սպասում է Applied վերջնականությանը։
 
 ::: warning Թույլատրելիության սահման
 
-Ակտիվ հավաստիացնողը որոշում է, թե ով կարող է փոխել յուրաքանչյուր օբյեկտ: Մեկ այլ հաշիվ թարմացնելը սովորաբար պահանջում է `CanModifyAccountMetadata`; դոմեյնները, ակտիվների սահմանումները, NFTs, եւ գործարկիչները ունեն իրենց սեփական նպատակային հատուկ մետադատա թույլտվությունները: Եթե Taira-ը չի տրամադրել պահանջվող լիազոր հաշիվը, գործարկեք նույն հաշիվի հրամանները `./localnet/client.toml`-ով, փոխարինեք առաջադրված տեղական ցանցի լիազոր հաշվի կանոնիկ I105-ը ID, եւ բաց թողնեք վճարային մետադատա ֆայլը Taira: Պահպանեք պարզ տեղական վճարատու ընտրությունը։
+Ակտիվ կատարողը որոշում է, թե ով կարող է փոփոխել յուրաքանչյուր օբյեկտ։ Այլ հաշիվ թարմացնելու համար սովորաբար անհրաժեշտ է `CanModifyAccountMetadata`; դոմենները, ակտիվների սահմանումները, NFTs և գործարկիչներն ունեն իրենց սեփական, թիրախին հատուկ մետատվյալների թույլտվությունները։ Եթե Taira-ն չի տրամադրել անհրաժեշտ լիազորությունը, նույն հաշվի հրամանները գործարկեք `./localnet/client.toml`-ով և տեղադրեք ստեղծված տեղական ցանցի լիազոր հաշվի կանոնիկ I105 ID-ն։ Պահպանեք վճարողի բացահայտ տեղական ընտրությունը։
 
 :::
 
@@ -84,7 +83,7 @@ CLI- ը նշում է վճարը, ստորագրում է, ներկայացնո�
 Նախ կարդացեք հաստատված արժեքը, ապա ներկայացրեք առանձին հեռացման գործարք:
 
 ```bash
-iroha --config ./taira.client.toml --machine ledger account meta get \
+iroha --config ./taira.client.toml --machine account meta get \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile \
   | tee cookbook-profile.json
@@ -94,8 +93,7 @@ jq -e '.version == 1' cookbook-profile.json
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger account meta remove \
+  account meta remove \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile
 ```
@@ -107,10 +105,10 @@ Python հավելվածների համար համապատասխան տիպավո
 Սահմանված գործարքի ավարտից հետո `meta get`-ը պետք է վերադարձնի օբյեկտը `version: 1`-ով: Հեռացնելուց հետո ուղղակի որոնումը չպետք է վերադարձնի արժեք.
 
 ```bash
-iroha --config ./taira.client.toml --machine ledger account get \
+iroha --config ./taira.client.toml --machine account get \
   --id "$TAIRA_ACCOUNT_ID" > /dev/null
 
-if iroha --config ./taira.client.toml --machine ledger account meta get \
+if iroha --config ./taira.client.toml --machine account meta get \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile; then
   printf '%s\n' 'metadata key still exists' >&2
@@ -133,8 +131,8 @@ fi
 
 ## Աղբյուրը եւ դրա հետ կապված փաստաթղթերը {#source-and-related-docs}
 
-- [Մետադատա հարցումների ինտեգրման փորձարկումներ փինացված commit-ում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/queries/metadata.rs)
-- [Python SDK գործարքի կառուցողները փակված commit վրա](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/README.md)
+- [Մետադատա հարցումների ինտեգրման փորձարկումներ փինացված commit-ում](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/queries/metadata.rs)
+- [Python SDK գործարքի կառուցողները փակված commit վրա](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/README.md)
 - [Մետադատա](/hy/blockchain/metadata.md)
 - [Մետադատա եւ գլխավոր գրքի պահեստավորման տարբերակներ](/hy/guide/configure/metadata-and-store-assets.md)
 - [Ուղարկման հղում](/hy/reference/instructions.md)

@@ -1,9 +1,9 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: 4281cb307762443c85b67659310da69f1f1ea5b99926bad43b90abe36e87075e
+translation_source_hash: 0c6392deb9ddca84e262c699c777276b3a6ca731154b66e7a8418f38dca52021
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Contratos Inteligentes {#smart-contracts}
@@ -16,6 +16,8 @@ Iroha transações executam `Executable` cargas úteis. O modelo de dados atual 
 - `Executable::IvmProved`: Iroha VM bytecode com uma sobreposição de instrução pré-computada e compromissos de prova
 
 Kotodama é a linguagem de contrato inteligente de alto nível de Iroha. Um arquivo fonte `.ko` é compilado em bytecode determinístico IVM, normalmente armazenado como um artefato `.to` para implantação. Kotodama visa apenas IVM. Não visa RISC-V nem WebAssembly.
+
+Cada diagnóstico do compilador tem um código estável, explicado na referência de [diagnósticos do Kotodama](/pt/reference/kotodama-diagnostics.md).
 
 O primeiro lançamento suporta apenas a versão 1 do ABI. A política de syscall e ponteiro-ABI é um único contrato incondicional V1 aplicado pela admissão e execução; não há modo alternativo de tempo de execução de software.
 
@@ -44,6 +46,18 @@ Use um contrato inteligente quando a transação precisar de lógica empacotada 
 - um compromisso com a política de gás
 
 A prova vincula a sobreposição ao bytecode executado. Dependendo da política do pipeline de processamento, os validadores podem verificar a prova e reproduzir a execução como uma verificação de segurança adicional.
+
+## Chamadas de sistema da IVM {#ivm-syscalls}
+
+O bytecode da IVM invoca o hospedeiro por meio de chamadas de sistema numeradas. As chamadas de sistema da versão 1 da ABI abaixo são geradas a partir do código-fonte fixado do Iroha.
+
+::: details Chamadas de sistema da versão 1 da ABI
+
+```generated-reference
+ivm-syscalls
+```
+
+:::
 
 ## Chamadas de Contrato Implantado {#deployed-contract-calls}
 

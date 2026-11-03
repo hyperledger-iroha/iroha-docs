@@ -1,9 +1,9 @@
 ---
 translation_locale: az
 translation_source: /cookbook/nfts.md
-translation_source_hash: db99dab483d4e2fb3fd84be84f6e4ef9f8373f0c16eb2f34952f1232c4587561
+translation_source_hash: b60c542052eac6a916350c4aaa779c9f46d248be64ecea9c9bda679a4d56dff3
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # NFTs {#nfts}
@@ -16,7 +16,7 @@ Taira NFT vəziyyətini yoxlayın, sonra bir unikal NFT i yaradılmış lokal ş
 
 - `curl`, `jq`, Python 3.11 və daha sonrakı versiyaları, həmçinin cari `iroha` CLI.
 - Yalnız oxumaq üçün Taira girişi.
-- Yazmaq üçün, [Iroha-ı işə sal](/az/get-started/launch-iroha.md)-dən yaradılmış yerli şəbəkə, `http://127.0.0.1:8080`-də `./localnet/client.toml` və Torii ilə.
+- Yazmalar üçün: [Iroha-nı işə salın](/az/get-started/launch-iroha.md) səhifəsindəki kimi `kagami localnet generate --peers 4 --out-dir ./localnet` ilə yaradılmış, `./localnet/client.toml` və `http://127.0.0.1:8080` ünvanında Torii olan lokal şəbəkə, üstəlik imzalayanına məxsus NFT domeni (2-ci addıma baxın).
 
 ## Addımlar {#steps}
 
@@ -26,20 +26,21 @@ Boş bir səhifə uğurlu oxunuşdur: bu, istənilən səhifədə görünən he�
 
 ```bash
 curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/nfts?limit=5' \
-  | jq '{total, nfts: [.items[] | {id, owned_by, content}]}'
+  'https://taira.sora.org/v1/nfts?limit=5&include_total=true' \
+  | jq '{total, nfts: [.items[] | {id, owned_by, metadata}]}'
 ```
 
-NFTs unikal qeydlərdir, rəqəmli balanslar deyil. Onların bir ID-si, bir sahibi və kompakt `content` metadata xəritəsi var.
+NFTs ədədi balanslar deyil, unikal qeydlərdir. Onların bir ID-si, bir sahibi və yığcam məzmun xəritəsi var; Torii kolleksiya sətirləri onu `metadata`, `ledger nft get` isə `content` kimi qaytarır.
 
 ### 2. Yerli sahibin şəxsiyyət vəsiqələrini hazırlayın {#_2-prepare-local-owner-ids}
 
-Yazı nümunəsi yoxlanılmış `wonderland.universal` domenindən istifadə edir. Konfiqurasiya olunmuş avtorizasiya əsasını özəl açarını ifşa etmədən çıxarın, sonra digər bir qeydiyyatdan keçmiş hesabı köçürmə məkanı kimi seçin.
+Yazma nümunəsinə imzalayan hesabın sahib olduğu domen və ya onun üçün `CanRegisterNft` icazəsinin verilməsi lazımdır. Yaradılmış lokal şəbəkə öz müştərisi üçün heç bir tətbiq domeni qeydiyyatdan keçirmir, birbaşa domen qeydiyyatı isə genezis üçün ayrılıb, buna görə `NFT_DOMAIN` dəyişənini imzalayanınızın idarə etdiyi `name.dataspace` domeninə təyin edin. Konfiqurasiya olunmuş səlahiyyətli hesabı şəxsi açarını açıqlamadan çıxarın, sonra köçürmənin təyinatı kimi başqa qeydiyyatdan keçmiş hesabı seçin.
 
 ```bash
 LOCAL_ROOT='http://127.0.0.1:8080'
 LOCAL_CONFIG='./localnet/client.toml'
-NFT_ID='cookbook_badge$wonderland.universal'
+test -n "$NFT_DOMAIN"
+NFT_ID="cookbook_badge\$$NFT_DOMAIN"
 
 LOCAL_PUBLIC_KEY="$(python3 - <<'PY'
 import tomllib
@@ -59,7 +60,7 @@ NEW_OWNER="$(
 )"
 ```
 
-`$` ayırıcı NFT mətn formasına aiddir. Tam `wonderland.universal` domen və məlumat sahəsi sonluğunu qoruyun.
+`$` ayırıcısı NFT-nin mətn formasına aiddir. ID-də tam `name.dataspace` domenini saxlayın.
 
 ### 3. NFT-i ilkin məzmunla qeydiyyatdan keçirin {#_3-register-the-nft-with-initial-content}
 
@@ -102,34 +103,28 @@ iroha --config "$LOCAL_CONFIG" \
 
 ::: warning İcazə sərhədi
 
-Hər Taira üçün hər yazı həmçinin `--metadata ./taira.tx-metadata.json` və açıq-aşkar ödəniş edən tələb edir. Qeydiyyat, köçürmə, silmə və metadata yeniləmələri aktiv proqram təminatı icrası tərəfindən yoxlanılır mühit (`CanRegisterNft`, `CanTransferNft`, `CanUnregisterNft` və `CanModifyNftMetadata` standart icazə səthində). Tətbiqinizə təyin edilmiş domeni istifadə edin və ya bu walkthrough-u localnet-də saxlayın.
+Taira-da hər yazma əməliyyatı `--fee-payer authority` istifadə edir; CLI imzalamadan əvvəl dəqiq haqqı Taira-nın ödəniş aktivində hesablayıb göstərir. Qeydiyyat, köçürmə, silmə və metadata yeniləmələri aktiv proqram icra mühiti tərəfindən yoxlanılır (standart icazə səthində `CanRegisterNft`, `CanTransferNft`, `CanUnregisterNft` və `CanModifyNftMetadata`). Hesabınızın sahib olduğu domendən və ya hesabınıza bu icazələrin verildiyi domendən istifadə edin.
 
 :::
 
 Müqavilə-əlaqəli iş axınları üçün, Kotodama tipləndirilmiş NFT host-funksiyası çağırışlarını göstərir. Aşağıda, pinlənmiş IVM sənədləşdirmə testi tərəfindən tərtib edilmiş və icra edilmiş dəqiq həyat dövrü test artefaktı verilmişdir:
 
 ```kotodama
+// Mint an NFT, transfer it, update metadata, and burn it using typed IDs.
 seiyaku NftFlow {
-    kotoage fn nft_issue_and_transfer() authorize("NftAuthority") {
-        let owner = AccountId::parse(
-            "sorauﾛ1PﾉｳﾇmEｴWｵebHﾑ6ﾔﾙｲヰiwuCWErJ7uｽoPGｱﾔnjﾑKﾋTCW2PV",
-        );
+    permission NftAuthority;
+    kotoage fn nft_issue_and_transfer() authorize(NftAuthority) {
+        let owner = AccountId::parse("sorauﾛ1PﾉｳﾇmEｴWｵebHﾑ6ﾔﾙｲヰiwuCWErJ7uｽoPGｱﾔnjﾑKﾋTCW2PV");
         let nft = NftId::parse("n0$wonderland.universal");
-        ledger::nft::mint(nft, owner);
-        let to = AccountId::parse(
-            "sorauﾛ1NfｷgﾉﾓﾉBｦKﾌﾘﾒoﾇﾂﾛrG81ﾋjWﾎﾕVncwﾌSｱ3pﾘﾋﾉhUS9Q76",
-        );
-        ledger::nft::transfer(
-            source: owner,
-            nft: nft,
-            destination: to,
-        );
+        ledger::nft::mint(nft: nft, owner: owner);
+        let to = AccountId::parse("sorauﾛ1NfｷgﾉﾓﾉBｦKﾌﾘﾒoﾇﾂﾛrG81ﾋjWﾎﾕVncwﾌSｱ3pﾘﾋﾉhUS9Q76");
+        ledger::nft::transfer(source: owner, nft: nft, destination: to);
         ledger::nft::set_metadata(
             nft: nft,
             key: Name::parse("issued"),
             value: Json::parse("{\"issued\":\"demo\"}"),
         );
-        ledger::nft::burn(nft);
+        ledger::nft::burn(nft: nft);
     }
 }
 ```
@@ -149,22 +144,23 @@ jq -e --arg owner "$NEW_OWNER" \
   cookbook-nft.json
 ```
 
-Əgər CLI qeydi çıxış məlumat konteynerində sarğılayırsa, JSON-i bir dəfə yoxlayın və iddianı daxil edilmiş NFT obyektinə tətbiq edin. Səlahiyyətli invariantslar `id`, `owned_by` və `content`-dir.
+CLI NFT qeydinin özünü çap edir. Həlledici invariantlar `id`, `owned_by` və `content` sahələridir.
 
 ## Problemlərin aradan qaldırılması {#troubleshooting}
 
 - `name$domain` bəzi analizlərdə universal verilənlər məkanına defolt olaraq gedə bilər, lakin kitabça və tətbiq ID-ləri açıq `name$domain.dataspace` formasından istifadə etməlidir.
 - Eyni NFT ID-nin təkrarlanan qeydiyyatı rədd edilir. Fərqli bir qeyd üçün yeni bir localnet istifadə edin və ya stabilliyini qoruyan yeni bir ID seçin.
 - Metaməlumat girişi standart girişdə etibarlı olmalıdır JSON. JSON sitatlaşdırılmamış bir səth sətir metaməlumat dəyəri deyil.
-- Cari sahib olmayan bir hesab tərəfindən imzalanmış köçürmə üçün dəqiq icazə lazımdır; `--from` dəyişmək kriptoqrafik imzalayanı dəyişmir.
-- Köçürmədən sonra, ilkin müştərinin NFT-i dəyişdirməsinə və ya qeydiyyatdan çıxarmasına icazə verilməyə bilər. Yeni sahibin kriptoqrafik imzalayıcısından və ya səlahiyyətli nəzarətçidən istifadə edin.
+- Cari sahibdən fərqli hesabın imzaladığı köçürmə üçün NFT domeninə sahiblik və ya dəqiq `CanTransferNft` icazəsinin verilməsi lazımdır; `--from` dəyərini dəyişmək imzalayanı dəyişmir.
+- Köçürmə yalnız `owned_by` sahəsini dəyişir. Metadata yeniləmələri və qeydiyyatdan çıxarma domen sahibində və ya həmin NFT üçün `CanModifyNftMetadata` ya da `CanUnregisterNft` icazəsinə malik hesabda qalır; yeni sahib onu növbəti hesaba köçürə bilər.
 - Taira boş NFT kolleksiyasını qaytara bilər. `items: []`-ı NFT təlimatlarının mövcud olmadığının sübutu kimi qəbul etməyin.
 
 ## Mənbə və əlaqəli sənədlər {#source-and-related-docs}
 
-- [NFT pin edilmiş mənbə kodu reviziyasında inteqrasiya testləri](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/nft.rs)
-- [Kotodama NFT bərkidilmiş mənbə kodu versiyasında host-texniki çağırış sınaqları](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
-- [Qeyd olunmuş mənbə kodu reviziyasında dəqiq Kotodama NFT həyat dövrü test artefaktı](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko)
+- [NFT pin edilmiş mənbə kodu reviziyasında inteqrasiya testləri](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/nft.rs)
+- [Kotodama NFT bərkidilmiş mənbə kodu versiyasında host-texniki çağırış sınaqları](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
+- [Qeyd olunmuş mənbə kodu reviziyasında dəqiq Kotodama NFT həyat dövrü test artefaktı](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/ivm/docs/examples/12_nft_flow.ko)
+- [Sabitlənmiş mənbə kodu reviziyasında Kotodama sənədləşmə nümunələrinin testləri](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/ivm/tests/kotodama_documentation_examples.rs)
 - [NFTs](/az/blockchain/nfts.md)
 - [Metaməlumat](/az/blockchain/metadata.md)
 - [Təlimatlar](/az/blockchain/instructions.md)

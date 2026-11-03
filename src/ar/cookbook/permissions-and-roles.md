@@ -1,9 +1,9 @@
 ---
 translation_locale: ar
 translation_source: /cookbook/permissions-and-roles.md
-translation_source_hash: 8d6fd7101094ba21cfc2c5fb9a89d2acd7e67f13ff47b9f8c8e01bbbd7bf2836
+translation_source_hash: 40fe8b19344d8eff66b178dc8576e2e049fef50bd3212fbddc5c0d5f7f37fa03
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # الأذونات والأدوار {#permissions-and-roles}
@@ -14,13 +14,12 @@ translation_engine: bing-translator-llm
 
 ## المتطلبات الأساسية {#prerequisites}
 
-- عميل مموّل Taira وبيانات الرسوم من [الاتصال بـ Taira](./connect-to-taira.md).
+- عميل Taira مموّل من [الاتصال بـ Taira](./connect-to-taira.md).
 - `TARGET_ACCOUNT` و `DELEGATE_ACCOUNT` تم تعيينهما إلى معرفات حساب I105 وفقًا لبروتوكول واحد.
-- يجب أن يُسمح للحساب الموقع بإدارة الإذن والأدوار المستهدفة. على Taira هذه عملية إدارية محمية بالإذن؛ احصل على `CanManageRoles` وأساس التفويض اللازم لمنح الإذن المحدد، أو نفذ الوصفة على شبكة محلية مولدة.
+- يجب أن يحمل الحساب الموقِّع `CanManageRoles` وأن يكون قادرًا على تفويض الإذن المحدد النطاق: أي أن يكون هو `TARGET_ACCOUNT` نفسه أو يحمل مسبقًا `CanModifyAccountMetadata` لذلك الحساب. على Taira هذه عملية إدارية محمية بالإذن. لا يحمل عميل الشبكة المحلية المُولَّدة `CanManageRoles`، لذا تحتاج الوصفة إلى شبكة تمنحه إياه كتلة التكوين الخاصة بها.
 
 ```bash
 CONFIG=./taira.client.toml
-FEE_METADATA=./taira.tx-metadata.json
 ROLE_ID=cookbook_metadata_editors
 test -n "$TARGET_ACCOUNT"
 test -n "$DELEGATE_ACCOUNT"
@@ -36,12 +35,11 @@ DELEGATE_CONFIG=./taira.delegate.toml
 
 ### 1. تسجيل دور فارغ {#_1-register-an-empty-role}
 
-كل أمر يغير الحالة CLI يذكر دافع الرسوم صراحة. يحتوي ملف البيانات الوصفية على أصل الرسوم الحالي Taira المستمد من استجابة خدمة التمويل لشبكة الاختبار.
+كل أمر CLI يغيّر الحالة يذكر دافع الرسوم صراحة. يعرض CLI تقدير سعر الرسوم الدقيق بأصل رسوم Taira قبل التوقيع.
 
 ```bash
 iroha --config "$CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
   ledger role register --id "$ROLE_ID"
 ```
 
@@ -54,7 +52,6 @@ jq -cn --arg account "$TARGET_ACCOUNT" \
   '{name:"CanModifyAccountMetadata",payload:{account:$account}}' |
   iroha --config "$CONFIG" \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
     ledger role permission grant --id "$ROLE_ID"
 ```
 
@@ -63,8 +60,7 @@ jq -cn --arg account "$TARGET_ACCOUNT" \
 ```bash
 iroha --config "$CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
-  ledger account role grant \
+  account role grant \
   --id "$DELEGATE_ACCOUNT" \
   --role "$ROLE_ID"
 ```
@@ -79,13 +75,12 @@ iroha --config "$CONFIG" \
 printf '"delegated"\n' |
   iroha --config "$DELEGATE_CONFIG" \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
-    ledger account meta set \
+    account meta set \
     --id "$TARGET_ACCOUNT" \
     --key cookbook_access
 ```
 
-يتوفر نفس النموذج لعملاء Rust. هنا يقوم `client` بالتوقيع بصفتها `registrar_account`، والتي تصبح المالك الأول للدور تمامًا كما هو الحال في تدفق CLI. جميع متغيرات الحساب الثلاثة قد تم تحليل قيم `AccountId` بالفعل:
+يتوفر نفس النموذج لعملاء Rust. هنا `client` هو `iroha::blocking::Client` يوقّع بصفة `registrar_account`، الذي يصبح المالك الأول للدور تمامًا كما هو الحال في تدفق CLI. جميع متغيرات الحساب الثلاثة هي قيم `AccountId` تم تحليلها بالفعل:
 
 ```rust
 use iroha::data_model::{prelude::*, transaction::FeePaymentIntent};
@@ -98,7 +93,7 @@ let role = Role::new(role_id.clone(), registrar_account).add_permission(
     },
 );
 
-client.submit_all_blocking::<InstructionBox>(
+client.submit_all::<InstructionBox>(
     [
         Register::role(role).into(),
         Grant::account_role(role_id, delegate_account).into(),
@@ -109,32 +104,35 @@ client.submit_all_blocking::<InstructionBox>(
 
 ## تحقق {#verify}
 
-اكتب جانبي الواجب، ثم اقرأ القيمة الدقيقة المكتوبة بواسطة المندوب:
+اقرأ الأذونات الفعلية للمندوب، والتي تشمل منح الأدوار، ثم اقرأ القيمة الدقيقة المكتوبة بواسطة المندوب:
 
 ```bash
-iroha --config "$CONFIG" ledger role permission list --id "$ROLE_ID"
-iroha --config "$CONFIG" ledger account role list --id "$DELEGATE_ACCOUNT"
+iroha --config "$CONFIG" --machine account permission list \
+  --id "$DELEGATE_ACCOUNT" --all \
+  | jq -e --arg account "$TARGET_ACCOUNT" \
+    '.items | any(.name == "CanModifyAccountMetadata"
+      and .payload.account == $account)'
 
-iroha --config "$CONFIG" ledger account meta get \
+iroha --config "$CONFIG" account meta get \
   --id "$TARGET_ACCOUNT" \
   --key cookbook_access
 ```
 
-يجب أن تحتوي قائمة الأذونات على `CanModifyAccountMetadata` المقيّد بـ `TARGET_ACCOUNT`، ويجب أن تحتوي قائمة أدوار المندوب على `ROLE_ID`، ويجب أن تُرجع قراءة البيانات الوصفية `"delegated"`.
+يجب أن تحتوي الأذونات الفعلية للمندوب على `CanModifyAccountMetadata` المقيّد بـ `TARGET_ACCOUNT`، ويجب أن تُرجع قراءة البيانات الوصفية `"delegated"`. يرفض Torii عرض قوائم الأدوار عبر الاستعلامات الموقعة، لذا فإن قائمة الأذونات الفعلية هي وسيلة التحقق من التعيين.
 
 ## استكشاف الأخطاء وإصلاحها {#troubleshooting}
 
-- `Not permitted` أثناء التسجيل أو التعديل أو تعيين الدور يعني أن الموقع التوقيعي التشفيري يفتقر إلى المسؤولية التفويضية المطلوبة Taira. لا تقم باستبدال الرمز المميز ذي النطاق برمز عام؛ اطلب التفويض الدقيق أو استخدم الشبكة المحلية.
+- `Not permitted` أثناء التسجيل أو التعديل أو تعيين الدور يعني أن الموقّع يفتقر إلى الصلاحية المطلوبة على Taira. لا تقم باستبدال الرمز المميز ذي النطاق برمز عام؛ اطلب المنح الدقيق.
 - عادةً ما يعني خطأ تحليل الحمولة أن `account` وُضع بجانب `payload`، أو تم تزويد اسم مستعار بدلًا من معرف I105، أو تم اقتباس قيمة JSON مرتين.
-- رفض الرسوم ينتمي إلى الموقع التشفيري الذي يقدم تلك الخطوة. قم بتمويل المدير وتفويضه بشكل مستقل واحتفظ ببيانات أصول الرسوم المستمدة من الصنبور.
+- رفض الرسوم يخص الموقّع الذي يقدم تلك الخطوة. موّل المدير والمندوب كلًّا على حدة بأصل الرسوم المذكور في كل تقدير لسعر الرسوم.
 - منحة الدور الناجحة لا تتجاوز النطاق المضمن في رموزها. يمكن لهذا الدور تعديل الحساب المسمى في حمولة الإذن فقط.
-- للتنظيف، قم بتشغيل `ledger account role revoke`، ثم `ledger role permission revoke`، وأخيرًا `ledger role unregister`؛ كل منها عملية كتابة منفصلة ويجب أن تتضمن `--fee-payer authority` وبيانات الرسوم.
+- للتنظيف، قم بتشغيل `account role revoke`، ثم `ledger role permission revoke`، وأخيرًا `ledger role unregister`؛ كل منها عملية كتابة منفصلة ويجب أن تتضمن `--fee-payer authority`.
 
 ## المصدر والمستندات ذات الصلة {#source-and-related-docs}
 
-- [اختبارات تكامل الأدوار عند مراجعة كود المصدر المثبتة](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/roles.rs)
-- [اختبارات تكامل الأذونات عند مراجعة كود المصدر المثبتة](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/permissions.rs)
-- [نموذج بيانات الأذونات المدمج في مراجعة الشيفرة المصدرية المثبتة](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/permission.rs)
+- [اختبارات تكامل الأدوار عند مراجعة كود المصدر المثبتة](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/roles.rs)
+- [اختبارات تكامل الأذونات عند مراجعة كود المصدر المثبتة](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/permissions.rs)
+- [نموذج بيانات الأذونات المدمج في مراجعة الشيفرة المصدرية المثبتة](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_executor_data_model/src/permission.rs)
 - [الأذونات والأدوار](/ar/blockchain/permissions.md)
 - [مرجع رمز الإذن](/ar/reference/permissions.md)
 - [البيانات الوصفية](./metadata.md)

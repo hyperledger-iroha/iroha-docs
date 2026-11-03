@@ -1,9 +1,9 @@
 ---
 translation_locale: hy
 translation_source: /cookbook/connect-to-taira.md
-translation_source_hash: e14be7d9314f26f40f6aa30678fddcfcfea39eda9b98016f1b2f84838203c548
+translation_source_hash: 31555f0c56bddb8892d09af250cef732a2dfdd39564c83de8b344200157751b9
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Կապակցեք Taira {#connect-to-taira}
@@ -15,14 +15,14 @@ translation_engine: nllb-200-ct2
 ## Նախադրյալներ {#prerequisites}
 
 - `curl`, `jq`, Python 3.11 կամ ավելի ուշ, եւ ընթացիկ `iroha` եւ `kagami` բինարներ:
-- A `taira.client.toml` ստեղծվել է Taira շղթայով, վերջային կետով, հաշիվի պրոֆիլով եւ հատուկ թեստնետի բանալիրով: Հետեւեք [ Ստեղծեք Taira Client Config](/hy/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config) եւ պահեք ֆայլը աղբյուրի վերահսկողությունից դուրս:
-- Պատրաստ գործելու համար `taira_faucet_claim.py` _ ից [Ստացեք Testnet- ը XOR բ) Taira](/hy/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira), պահված է հաճախորդի գաղտնիքի կողքին:
+- `taira.client.toml`, որը ստեղծված է Taira-ի շղթայով, ճշգրիտ `network_id`-ով, վերջնակետով, հաշվի պրոֆիլով և առանձին թեստային ցանցի բանալիով։ Հետևեք [Taira հաճախորդի կազմաձևման ստեղծում](/hy/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config) բաժնին և ֆայլը պահեք տարբերակների կառավարման համակարգից դուրս։
+- Գրելու հնարավորությամբ աշխատանքային գրացուցակ faucet-ի մատյանի համար: `iroha taira account faucet prepare`-ը ստեղծում է `./taira-faucet`-ը միայն սեփականատիրոջը հասանելի իրավունքներով և հրաժարվում է փոխարինել գոյություն ունեցող գրացուցակը։
 
 ## Քայլեր {#steps}
 
 ### 1. Կենդանիության եւ պատրաստվածության տարբերություն {#_1-separate-liveness-from-readiness}
 
-`/livez` պարզ տեքստային գործընթացների տեւողության հետաքննություն է: `/status`, `/health` եւ `/readyz` վերադարձ JSON. Գործող հանգույցը կարող է օրինական կերպով վերադարձնել `503` պատրաստության հետաքինություններից, երբ անհրաժեշտ ենթակառուցվածքը արգելափակվում է.
+`/livez`-ը, `/health`-ը և `/readyz`-ը պարզ տեքստային ստուգումներ են; `/status`-ը վերադարձնում է JSON։ Աշխատող հանգույցը կարող է օրինաչափորեն վերադարձնել `503` `/readyz`-ից, երբ կոնսենսուսի ընդունումը կամ մեկ այլ պարտադիր ենթահամակարգ անհասանելի է։
 
 ```bash
 curl -fsS -H 'Accept: text/plain' https://taira.sora.org/livez
@@ -30,11 +30,11 @@ curl -fsS -H 'Accept: text/plain' https://taira.sora.org/livez
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
-curl -sS -H 'Accept: application/json' \
+curl -sS -H 'Accept: text/plain, application/json' \
   -w '\nHTTP %{http_code}\n' https://taira.sora.org/readyz
 ```
 
-Օգտագործեք `/livez` միայն որոշելու համար, թե արդյոք գործընթացը արձագանքում է: Օգտագործել `/readyz` երթեւեկության մուտքի համար եւ ստուգել նրա JSON արգելափակիչի մանրամասները, նախքան `503`- ը դիտարկելը որպես անջատում.
+`/livez`-ն օգտագործեք միայն պարզելու համար, թե արդյոք գործընթացը պատասխանում է։ Երթևեկի ընդունման համար օգտագործեք `/readyz`-ը։ Դրա `503`-ը `service_unavailable` սխալի ծրար է՝ առանց արգելափակման մանրամասների, ուստի նախքան այն որպես խափանում դիտարկելը գործարկեք ստորև նկարագրված ախտորոշումը։
 
 ### 2. Հանրային ախտորոշման աշխատանքներ իրականացնել {#_2-run-the-public-diagnostics}
 
@@ -48,7 +48,7 @@ iroha taira doctor --public-root https://taira.sora.org --json
 
 ### 3. Հեռացնել Taira հաշիվը ID առանց գաղտնիք տպելու: {#_3-derive-the-taira-account-id-without-printing-a-secret}
 
-Կարդացեք միայն հանրային բանալին կոնֆիգից, ապա կոդավորեք այն Taira I105 պրոֆիլով: `[account].domain` արժեքը մատակարարում է երթեւեկման համատեքստը, այն չի կազմում հաշիվը ID:
+Կազմաձևումից կարդացեք միայն հանրային բանալին, ապա կոդավորեք այն Taira-ի I105 պրոֆիլով։ Հաշվի ID-ն դոմեն չի պարունակում; `[account].profile`-ն ընտրում է միայն դրա ցանցի նախածանցը։
 
 ```bash
 TAIRA_PUBLIC_KEY="$(python3 - <<'PY'
@@ -69,18 +69,29 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID"
 
 ### 4. Պահանջել ընթացիկ Taira վճարային ակտիվը: {#_4-claim-the-current-taira-fee-asset}
 
-Գաղափարների պատասխանը փաստի աղբյուրն է վճարային ակտիվների սահմանման համար: Պահպանեք վերադարձված Base58 ID ՝ այլ ցանցից կամ հին երթեւեկությունից ստացված ID պատճենի փոխարեն:
+Faucet-ի քաղաքականությունը նշում է վճարային ակտիվի ընթացիկ սահմանումը։ Պահպանեք դրա Base58 ID-ն՝ այլ ցանցից կամ հին գործարկումից ID պատճենելու փոխարեն։ Քաղաքականությունը չստորագրված հայտնաբերման տվյալներ է, ուստի ավտոմատացումը յուրաքանչյուր պատասխանին վստահելու փոխարեն պետք է ամրագրի իր ակնկալած թողարկողը, ակտիվի սահմանումը և գումարը։
 
 ```bash
-python3 ./taira_faucet_claim.py "$TAIRA_ACCOUNT_ID" \
-  | tee taira-faucet.json
+curl -fsS -H 'Accept: application/json' \
+  https://taira.sora.org/v1/accounts/faucet/policy \
+  | tee taira-faucet-policy.json
 
-export TAIRA_FEE_ASSET="$(jq -er '.asset_definition_id' taira-faucet.json)"
-jq -n --arg gas_asset_id "$TAIRA_FEE_ASSET" \
-  '{gas_asset_id: $gas_asset_id}' > taira.tx-metadata.json
+export TAIRA_FEE_ASSET="$(
+  jq -er '.asset_definition_id' taira-faucet-policy.json
+)"
+
+iroha --config ./taira.client.toml --fee-payer authority \
+  taira account faucet prepare \
+  --journal ./taira-faucet \
+  --issuer "$(jq -er '.authority' taira-faucet-policy.json)" \
+  --asset-definition "$TAIRA_FEE_ASSET" \
+  --amount "$(jq -er '.amount' taira-faucet-policy.json)"
+
+iroha --config ./taira.client.toml \
+  taira account faucet submit --journal ./taira-faucet
 ```
 
-Պարզեք մնացորդը առավելագույնս մեկ րոպեի ընթացքում: Փողովակը կարող է վերադարձնել `202 Accepted` մինչեւ ֆինանսավորման գործարքը տեսանելի լինի:
+`prepare`-ը լուծում է աշխատանքի ապացույցը և պահպանում ճշգրիտ ստորագրված գործարքը; `submit`-ը այն ուղարկում է մեկ անգամ և վերադառնում է գործարքի կիրառվելուց հետո։ Եթե `submit`-ը հաղորդում է `Pending` կամ ժամանակը սպառվում է, մեկ այլ հայտ պատրաստելու փոխարեն գործարկեք `taira account faucet resume` նույն կազմաձևմամբ և մատյանով։ Ապա առավելագույնը մեկ րոպե պարբերաբար ստուգեք մնացորդը։
 
 ```bash
 funded=false
@@ -96,7 +107,7 @@ done
 test "$funded" = true
 ```
 
-`gas_asset_id` գործարքի մետադատա: Հստակ `--fee-payer authority` ընտրությունը պարտադիր է ստորագրության վրա, եւ CLI-ը ձեռք է բերում ճշգրիտ վճարային առաջարկ ՝ նախքան այն ստորագրվում է:
+Taira-ում յուրաքանչյուր գրառման համար օգտագործեք `--fee-payer authority`։ Ընտրությունը կապված է ստորագրությանը, և CLI-ն ստորագրելուց առաջ ստանում է ճշգրիտ վճարային առաջարկ Taira-ի վճարային ակտիվով։
 
 ## Փորձարկել {#verify}
 
@@ -106,8 +117,7 @@ test "$funded" = true
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg 'cookbook-connect' \
+  tx ping --msg 'cookbook-connect' \
   > taira-connect-submission.json
 
 jq '{hash, fee_quote}' taira-connect-submission.json
@@ -115,27 +125,27 @@ TAIRA_TX_HASH="$(jq -er '.hash' taira-connect-submission.json)"
 
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction status \
+  tx status \
   --hash "$TAIRA_TX_HASH" \
   --wait \
   --timeout-ms 60000
 ```
 
-Վերջնական հրամանը հաջողվում է միայն այն բանից հետո, երբ գործարքը հասնում է նախանշված `Applied` տերմինալային վիճակի: Պահպանեք շիշը փորձարկման ապացույցներում. Երբեք պահեք մասնավոր բանալին կամ ամբողջական հաճախորդի կոնֆիգերը դրա հետ.
+Վերջին հրամանը հաջողվում է միայն այն բանից հետո, երբ ճշգրիտ գլոբալ կարգավիճակը հաղորդում է վիճակով հաստատված `Applied` վերջնականություն։ Հեշը պահեք թեստային ապացույցներում; երբեք դրա հետ մի՛ պահեք մասնավոր բանալին կամ հաճախորդի ամբողջական կազմաձևումը։
 
 ## Խնդիրների լուծում {#troubleshooting}
 
-- `/livez` վերադարձ `406` երբ պահանջվում է JSON քանի որ այդ վերջակետն է `text/plain`. ուղարկել `Accept: text/plain` ինչպես ցույց է տրված վերեւում:
-- `/health` կամ `/readyz` կարող են վերադարձնել `503` մեքենայով ընթերցելի արգելափակիչի միջոցով նույնիսկ այն ժամանակ, երբ `/livez` եւ `/status` աշխատում են: Փոփոխեք կամ սպասեք այդ արգելափակչի համար. Վերականգնման կոճակները չեն փոխի հանգույցների պատրաստությունը:
-- Հասարակական ծառայության խախտում է `502`, ժամկետային դադար, կամ հնացած աշխատանքային ապացույցի ամփոփիչը: Գտիր նոր հանելուկ եւ փորձիր նորից ավելի ուշ:
+- `/livez`-ը, `/health`-ը և `/readyz`-ը վերադարձնում են `406`, երբ պահանջվում է միայն JSON, քանի որ նրանք պատասխանում են `text/plain`-ով։ Ուղարկեք վերևում ցուցադրված `Accept` վերնագրերը։
+- `/readyz`-ը կարող է վերադարձնել `503` `service_unavailable` սխալի ծրարով, նույնիսկ երբ `/livez`-ը և `/status`-ը աշխատում են։ Սպասեք պատրաստականությանը կամ գործարկեք `iroha taira doctor`; բանալիների վերագեներացումը չի փոխի հանգույցի պատրաստականությունը։
+- Faucet-ի `502`-ը կամ ժամանակի սպառումը `submit`-ի ընթացքում հայտի արդյունքն անհայտ է թողնում: մեկ այլ հայտ պատրաստելու փոխարեն գործարկեք `taira account faucet resume` նույն կազմաձևմամբ և մատյանով։ Աշխատանքի ապացույցի հնացած խարիսխը ձախողում է `prepare`-ը; կրկին պատրաստեք մատյանի նոր գրացուցակում։
 - I105 նախադրյալի սխալը նշանակում է, որ հանրային բանալին կոդավորված էր սխալ պրոֆիլով: Վերագործարկել `iroha tools address convert --profile taira`
-- Հարկային կոտայի մերժումը սովորաբար նշանակում է, որ լիազոր հաշիվը չի ֆինանսավորվել, վճարային ակտիվի մետադատները հնացած են կամ բացարձակ վճարովի վճարող չի ընտրվել:
+- Վճարային առաջարկի մերժումը սովորաբար նշանակում է, որ լիազոր հաշիվը ֆինանսավորված չէ կամ կազմաձևված `network_id`-ը Taira-ինը չէ։ Բացակայող `--fee-payer`-ը կամ `--metadata`-ում վճարի բանալին, օրինակ՝ `gas_asset_id`-ը, ձախողվում է տեղականորեն՝ մինչև առաջարկը։
 - Գրանցումը, մինինգը կամ անվանումների տարածքի կառավարումը դեռ կարող են մերժվել այն բանից հետո, երբ այս կանարին հաջողության է հասել: Այդ գործողությունները պահանջում են առանձին վազման թույլտվություններ: Դասընթացներ ստեղծված տեղական ցանցը, եթե Taira մուտք չի տրվել:
 
 ## Աղբյուրը եւ դրա հետ կապված փաստաթղթերը {#source-and-related-docs}
 
-- [Taira CLI ախտորոշում եւ կանարային աղբյուր փակված commit-ում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/taira.rs)
-- [Բացարձակ վճարային ընտրություն եւ CLI ներկայացման աղբյուր փաթեթավորված commit վրա](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs):
+- [Taira CLI-ի ախտորոշման և canary ստուգումների աղբյուրը](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/taira.rs) և [faucet-ի հրամանները](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/taira_onboarding.rs) ամրագրված commit-ում
+- [Բացարձակ վճարային ընտրություն եւ CLI ներկայացման աղբյուր փաթեթավորված commit վրա](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs):
 - [Taira հաշվառման եւ գազի ուղեցույց](/hy/get-started/sora-nexus-dataspaces.md)
 - [Հաճախորդի կարգավորումը](/hy/guide/configure/client-configuration.md)
 - [Գործարքներ](/hy/blockchain/transactions.md)

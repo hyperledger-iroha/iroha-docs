@@ -1,9 +1,9 @@
 ---
 translation_locale: am
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: 4281cb307762443c85b67659310da69f1f1ea5b99926bad43b90abe36e87075e
+translation_source_hash: 0c6392deb9ddca84e262c699c777276b3a6ca731154b66e7a8418f38dca52021
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # ስማርት ኮንትራቶች {#smart-contracts}
@@ -16,6 +16,8 @@ Iroha ግብይቶች `Executable` ጭነቶችን ያስፈጽማሉ። የአ�
 - `Executable::IvmProved` Iroha VM ባይት ኮድ አስቀድሞ ከተሰላ መመሪያ ተደራቢ እና የክሪፕቶግራፊያዊ ኮሚትመንቶች ጋር
 
 Kotodama የ Iroha ከፍተኛ ደረጃ ስማርት-ኮንትራት ቋንቋ ነው። የ`.ko` ምንጭ ፋይል ወደ ዲተርሚኒስቲክ IVM ባይት ኮድ ያጠናቅራል፣ በተለምዶ እንደ `.to` አርቲፋክት ለማሰማራት ይከማቻል። Kotodama ኢላማ IVM ብቻ ነው። RISC-V ወይም WebAssembly ላይ ያነጣጠረ አይደለም።
+
+እያንዳንዱ የአቀናባሪ ምርመራ ቋሚ ኮድ አለው፤ ኮዶቹ በ[Kotodama ምርመራዎች](/am/reference/kotodama-diagnostics.md) ማጣቀሻ ውስጥ ተብራርተዋል።
 
 የመጀመሪያው ልቀት የሚደግፈው ABI ስሪት 1 ብቻ ነው። የስርዓት እና ጠቋሚ-ABI ፖሊሲ በመግቢያ እና በአፈፃፀም የሚተገበር አንድ ቅድመ ሁኔታ የሌለው V1 ውል ነው። ምንም አማራጭ የሶፍትዌር ማስፈጸሚያ አካባቢ ሁነታ የለም።
 
@@ -44,6 +46,18 @@ Kotodama የ Iroha ከፍተኛ ደረጃ ስማርት-ኮንትራት ቋንቋ
 - የጋዝ-ፖሊሲ ክሪፕቶግራፊያዊ ኮሚትመንት
 
 ማረጋገጫው ተደራቢውን ከተተገበረው ባይት ኮድ ጋር ያገናኛል። በሶፍትዌር ማቀነባበሪያ የስራ ሂደት ፖሊሲ ላይ በመመስረት፣ አረጋጋጮች ማረጋገጫውን ማረጋገጥ እና አፈፃፀሙን እንደ ተጨማሪ የደህንነት ፍተሻ እንደገና ማጫወት ይችላሉ።
+
+## የIVM የስርዓት ጥሪዎች {#ivm-syscalls}
+
+የIVM ባይት ኮድ በቁጥር በተሰጡ የስርዓት ጥሪዎች አማካኝነት አስተናጋጁን ይጠራል። ከዚህ በታች ያሉት የABI ስሪት 1 የስርዓት ጥሪዎች ከተሰካው የIroha ምንጭ ኮድ የተፈጠሩ ናቸው።
+
+::: details የABI ስሪት 1 የስርዓት ጥሪዎች
+
+```generated-reference
+ivm-syscalls
+```
+
+:::
 
 ## የተሰማሩ የኮንትራት ጥሪዎች {#deployed-contract-calls}
 

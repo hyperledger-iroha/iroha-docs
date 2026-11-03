@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: f04e5e78329996d70926c4fd5dc034d41605d0a82fffd6460f67b252269480d9
+translation_source_hash: 631ec91b5ea398ae17253f0fd6307d76bc3820e2a2b6c8c9f79b30e0188ec170
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -380,7 +380,7 @@ iroha app kaigi end --domain kaigi.universal --call-name daily
 
 ### JavaScript İnteqrasiya {#javascript-integration}
 
-Hazırkı [Iroha JavaScript demosu](https://github.com/soramitsu/iroha-demo-javascript) şəffaf, autentifikasiya olunan təkbətək görüş profilini həyata keçirir. O, protokolun `zk-roster-v1` sübut axınını təqdim etmir. Renderer WebRTC təklif və cavablarını yaradır; imtiyazlı körpü isə Kaigi əməliyyatlarının ödənişini hesablamaq, onları imzalamaq, təqdim etmək və yekunlaşmasını gözləmək üçün yerli [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) mənbə kodu iş nüsxəsindən istifadə edir.
+Hazırkı [Iroha JavaScript demosu](https://github.com/soramitsu/iroha-demo-javascript) şəffaf, autentifikasiya olunan təkbətək görüş profilini həyata keçirir. O, protokolun `zk-roster-v1` sübut axınını təqdim etmir. Renderer WebRTC təklif və cavablarını yaradır; imtiyazlı körpü isə Kaigi əməliyyatlarının ödənişini hesablamaq, onları imzalamaq, təqdim etmək və yekunlaşmasını gözləmək üçün yerli [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js) mənbə kodu iş nüsxəsindən istifadə edir.
 
 Dəqiq marşrut təsdiqi, dəvət formatı, körpü sərhədi və cari demo test əmrləri üçün [Kaigi ilə JavaScript Tətbiqinə yerləşdirin](/az/guide/tutorials/kaigi.md)-a baxın.
 
@@ -439,6 +439,6 @@ iroha --config ./localnet/client.toml --operator-private-key-file "$IROHA_OPERAT
 
 ## Yuxarı Axın İstinadları {#upstream-references}
 
-- [README API və müşahidəlik icmalı](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/README.md)
-- [ISO 20022 körpü tətbiqi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/iso20022_bridge.rs)
+- [README API və müşahidəlik icmalı](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/README.md)
+- [ISO 20022 körpü tətbiqi](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/iso20022_bridge.rs)
 - [Performans və göstəricilər](/az/guide/advanced/metrics.md)

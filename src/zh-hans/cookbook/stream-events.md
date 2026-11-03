@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hans
 translation_source: /cookbook/stream-events.md
-translation_source_hash: 96f0a26000530fee15d121f815f9f5717a535dc3836cff9a2a447b1e5b70c41c
+translation_source_hash: d6202b208288688cdfd927491d6670f094f631ccaecd7ff62858a94267c5306a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # 流动事件 {#stream-events}
@@ -22,10 +22,10 @@ translation_engine: nllb-200-ct2
 
 ### 1. 确认 SSE 的反应 {#_1-confirm-the-sse-response}
 
-Taira 目前只有当`Accept`标题包含既首选事件流,也包括 JSON 倒退时才会谈判这个路线.禁用 curl 缓冲.命令在15秒后结束;只能在静止期间收到心跳评论是有效的.
+请求事件流时附带 JSON 回退：Torii 会以 `text/event-stream` 流式传输，并将被拒绝的请求（例如无效的过滤器）以 JSON 错误报告。禁用 curl 缓冲。命令会在 20 秒后结束。Torii 在空闲 15 秒后会发送心跳注释，因此在安静期间只收到心跳注释也是有效的。
 
 ```bash
-curl -sS -N --max-time 15 \
+curl -sS -N --max-time 20 \
   -H 'Accept: text/event-stream, application/json' \
   https://taira.sora.org/v1/events/sse
 ```
@@ -34,15 +34,12 @@ curl -sS -N --max-time 15 \
 
 ### 添加过的 JavaScript 消费者 {#_2-add-a-filtered-javascript-consumer}
 
-保存下列内容为 `stream-taira.mjs`.它直接使用Fetch,以便请求可以发送 Taira 所需的混合 `Accept`标题.当前 `FilterExpr`选择已批准的交易事件,解析器则在没有重播缓冲器的情况下消耗 SSE 框架.
+将以下内容保存为 `stream-taira.mjs`。它直接使用 Fetch，以展示传输格式。`filter` 查询参数使用 Torii 的文本过滤语法来选择已批准的交易事件，而解析器会在没有重放游标的情况下读取 SSE 帧。
 
 ```js
 const baseUrl = 'https://taira.sora.org'
 const shutdown = new AbortController()
-const filter = {
-  op: 'eq',
-  args: ['tx_status', 'Approved'],
-}
+const filter = 'tx_status = "Approved"'
 
 process.once('SIGINT', () => shutdown.abort())
 process.once('SIGTERM', () => shutdown.abort())
@@ -52,7 +49,7 @@ const delay = (milliseconds) =>
 
 async function reconcile() {
   const response = await fetch(
-    `${baseUrl}/v1/explorer/transactions?page=1&per_page=25`,
+    `${baseUrl}/v1/explorer/transactions?limit=25`,
     { headers: { Accept: 'application/json' } },
   )
   if (!response.ok) {
@@ -63,7 +60,7 @@ async function reconcile() {
 
 async function* streamOnce() {
   const url = new URL('/v1/events/sse', baseUrl)
-  url.searchParams.set('filter', JSON.stringify(filter))
+  url.searchParams.set('filter', filter)
   const response = await fetch(url, {
     headers: { Accept: 'text/event-stream, application/json' },
     signal: shutdown.signal,
@@ -164,7 +161,7 @@ SSE 心跳评论保持惰的连接活跃,但不会建立账本排序.当订单�
 
 最新25名探险家的请求只是一个公开诊断.生产消费者必须用其耐用的应用资源和足够大的检查点回收要求来取代或延长 `reconcile()`.仅限快照不能证明没有错过事件.
 
-在固定提交时, `ToriiClient.streamEvents()`只发送`Accept: text/event-stream`;直播 Taira 拒绝使用 `406` 缩小标题. 使用上面的原始 Fetch 形式,直到 SDK 和公共端点谈判相同的媒体类型.
+`@iroha/iroha-js` 中的 `ToriiClient.streamEvents({ filter })` 读取相同的流：传入 `field('tx_status').eq('Approved')` 或上面的文本过滤器。它会在流结束前产出终止的 `stream_error` 帧，因此上述的重新连接与核对规则仍然适用。
 
 ## 验证 {#verify}
 
@@ -173,7 +170,7 @@ SSE 心跳评论保持惰的连接活跃,但不会建立账本排序.当订单�
 ```bash
 curl -fsS \
   -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=25' |
+  'https://taira.sora.org/v1/explorer/transactions?limit=25' |
   jq .
 ```
 
@@ -182,17 +179,17 @@ curl -fsS \
 ## 解决问题 {#troubleshooting}
 
 - 连接与心跳评论,但没有数据事件是健康的;所选管道状态可能只是安静.
-- `406 Not Acceptable`在直播上 Taira 通常只表示广告的请求`text/event-stream`. 发送 `text/event-stream, application/json` 正如上面所示.
-- `stream_error`事件表明服务器检测到滞后或其他终端流状况. Torii 发送该事件一次并关闭流;在重新连接之前调整.
+- 带有代码 `invalid_filter` 的 `400` 表示 `filter` 不符合 Torii 的文本语法，或指定了事件流不支持的字段。事件流可按 `tx_status`、`tx_hash`、`tx_block_height`、`tx_lane_id`、`tx_dataspace_id`、`block_status`、`block_height`、`proof_backend`、`proof_call_hash` 和 `proof_envelope_hash` 过滤。
+- `stream_error` 事件表示服务器检测到延迟或其他终止流的状况。Torii 只会发送该事件一次并关闭流；请打开替代流，然后再进行核对。
 - 代理可以缓冲 SSE 即使 Torii 没有. 在代理中禁用响应缓冲和压缩,并在诊断中保持`curl -N`.
 - 永远不要通过假设下一个事件跟上前一个事件来填补连接缺口.端点没有重播缓冲器;反而查询当前账本状态.
 
 ## 来源及相关文件 {#source-and-related-docs}
 
-- [JavaScript 在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs)的流媒体操作指南
-- [SSE 集成测试在固定的提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs)
-- [Torii FilterExpr 解析器在固定的提交上](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs)
-- [Torii 事件路由在固定的提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
+- [JavaScript 在固定提交](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes/streaming.mjs)的流媒体操作指南
+- [SSE 集成测试在固定的提交](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/events/sse_smoke.rs)
+- [固定提交中的 Torii 过滤文本语法](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/src/list_query/text.rs)
+- [Torii 事件路由在固定的提交](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/routing.rs)
 - [事件](/zh-hans/blockchain/events.md)
 - [Torii 端点](/zh-hans/reference/torii-endpoints.md)
 - [查询大本状态](./query-ledger-state.md)

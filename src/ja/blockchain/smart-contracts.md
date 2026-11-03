@@ -1,9 +1,9 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: 4281cb307762443c85b67659310da69f1f1ea5b99926bad43b90abe36e87075e
+translation_source_hash: 0c6392deb9ddca84e262c699c777276b3a6ca731154b66e7a8418f38dca52021
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # スマートコントラクト {#smart-contracts}
@@ -16,6 +16,8 @@ Iroha トランザクションは`Executable`ペイロードを実行します�
 - `Executable::IvmProved`: Iroha VM 事前計算された命令オーバーレイと暗号学的コミットメント値を持つバイトコード
 
 Kotodama は Iroha の高レベルスマートコントラクト言語です。`.ko`ソースファイルは決定論的な IVM バイトコードにコンパイルされ、通常はデプロイのために`.to`アーティファクトとして保存されます。Kotodama は IVM のみを対象としています。RISC-V や WebAssembly は対象としていません。
+
+コンパイラの各診断には安定したコードがあり、[Kotodama 診断](/ja/reference/kotodama-diagnostics.md)リファレンスで説明しています。
 
 最初のリリースは ABI バージョン1 のみをサポートします。システムコールおよびポインタ-ABI ポリシーは、アドミッションと実行によって強制される1つの無条件の V1 契約であり、代替のソフトウェア実行モードはありません。
 
@@ -44,6 +46,18 @@ Kotodama は Iroha の高レベルスマートコントラクト言語です。`
 - ガスポリシー暗号化コミットメント値
 
 その証明は、オーバーレイを実行されたバイトコードに結び付けます。ソフトウェア処理のワークフローポリシーに応じて、検証者は証明を検証し、追加の安全確認として実行を再現することができます。
+
+## IVM システムコール {#ivm-syscalls}
+
+IVM バイトコードは、番号付きのシステムコールを通じてホストを呼び出します。以下の ABI バージョン1 のシステムコールは、固定された Iroha ソースから生成されています。
+
+::: details ABI バージョン1 のシステムコール
+
+```generated-reference
+ivm-syscalls
+```
+
+:::
 
 ## 展開されたコントラクトの呼び出し {#deployed-contract-calls}
 

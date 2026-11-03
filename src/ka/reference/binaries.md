@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /reference/binaries.md
-translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
+translation_source_hash: c617a21d50b28495c261d05d672e0b7803c282d53da577391dbebbc7f120d045
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,10 +10,10 @@ translation_engine: nllb-200-ct2
 
 Iroha 3 ოპერატორის სამუშაო მიმდინარეობა ოთხი ძირითადი ბინარის ირგვლივ ბრუნავს:
 
-- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) ქსელის კვანძის დემონის გასაშვებად
+- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/irohad) ქსელის კვანძის დემონის გასაშვებად
 - `iroha3d_taira` ერთპიროვნული პროტოკოლური სტანდარტის Taira ვალიდატორის გამშვებ აპარატისთვის
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli) სამედიცინო CLI და ოპერატორის ბრძანებები
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) საკვანძოების, ბლოკჩეინის წარმოქმნის, ლოკალურ ქსელებისა და პროფილებისთვის
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli) სამედიცინო CLI და ოპერატორის ბრძანებები
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami) საკვანძოების, ბლოკჩეინის წარმოქმნის, ლოკალურ ქსელებისა და პროფილებისთვის
 
 ## შენება წყაროდან {#build-from-source}
 

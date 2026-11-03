@@ -1,41 +1,28 @@
 ---
 translation_locale: ar
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: f1ea542f7a710830cd32465d141db8452e6418d426500995b9df7c9c4e1fd597
+translation_source_hash: ca6fd12e33df43b73a72dd6327133115aa44256cf579387c11bf0693797bf96e
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # بناء ونشر عقد ذكي {#build-and-deploy-a-smart-contract}
 
 ## نتيجة {#outcome}
 
-تحقق وقم بتجميع عقد Kotodama V1، وقم بتنفيذ نقطة الدخول العامة محليًا، وانشر القطعة الفنية IVM التي تم التحقق منها، وحاكي نقطة الدخول المنشورة، وقدمها مع تقدير صريح لسعر الرسوم التي يدفعها حساب توقيع المعاملة.
+تحقق وقم بتجميع عقد Kotodama V1، وشغّل دالة العرض العامة الخاصة به محليًا، وانشر مُخرَج IVM الذي تم التحقق منه مع رسوم يدفعها حساب توقيع المعاملة ومختارة صراحةً، واقرأ دالة العرض المنشورة عبر Torii.
 
 ## المتطلبات الأساسية {#prerequisites}
 
-- نسخة عاملة من شفرة المصدر Iroha عند إنهاء البروتوكول `0010c5a70039eac101a4846499ba9ceaf43eb65c`، Rust، وCargo.
-- العميل الحالي `iroha` CLI بالإضافة إلى عميل ممول Taira من [الاتصال بـ Taira](./connect-to-taira.md).
-- المسارات المطلقة في `IROHA_CONFIG` و `IROHA_PRIVATE_KEY_FILE`. يجب أن يكون ملف المفتاح ملفًا عاديًا برابط واحد ومملوكًا من قبل المالك مع الوضع `0600`؛ مساعد النشر لا يحتوي عمدًا على وسيطة مفتاح خاص مضمنة.
-- Taira موافقة المشغل. تسجيل رمز العقد يتطلب `CanRegisterSmartContractCode`، ويمكن أن تتطلب النشرات المحمية نسب الحوكمة وتنفيذها. إذا لم يمنح Taira ذلك الوصول، فقم بتنفيذ النشر على شبكة محلية تم إنشاؤها والتي تمنح أصل سلسلة الكتل الخاص بها الإذن.
+- نسخة عاملة من شفرة المصدر Iroha عند إنهاء البروتوكول `c8c872461e92f04325c350cdd952f4276e96f9dc`، Rust، وCargo.
+- أداة CLI الحالية `iroha` و`musubi` (تُشغَّل بالأمر `cargo run -p musubi --` داخل النسخة العاملة من المصدر) بالإضافة إلى عميل Taira ممول من [الاتصال بـ Taira](./connect-to-taira.md).
+- مسار مطلق في `IROHA_CONFIG`. يخزّن ربط الشبكة في Musubi مرجعًا إلى ملف العميل هذا ويوقّع النشر بمفتاح الحساب الخاص به.
+- صلاحية الاسم المستعار. يشترط المُنفِّذ وجود `CanManageAccountAlias` للاسم المستعار الدقيق للعقد أو للنطاق الأعلى الذي يحتويه: النطاق المالك لـ `name::domain.dataspace`، أو مساحة البيانات لـ `name::dataspace`. لا تحتاج الحسابات المسجلة إلى إذن منفصل لتسجيل الشيفرة، وتتطلب مساحات الأسماء المحمية أيضًا سير عمل الحوكمة الخاص بالشبكة. تستخدم الأمثلة `cookbook_tuple::universal`؛ على Taira، استبدله باسم مستعار في نطاق تملكه، أو انشر على شبكة محلية مُولَّدة تمنح كتلة التكوين الخاصة بها نطاق الاسم المستعار.
 
 ```bash
-TORII_URL=https://taira.sora.org
 IROHA_SOURCE=/absolute/path/to/iroha
 IROHA_CONFIG=/absolute/path/to/taira.client.toml
-IROHA_PRIVATE_KEY_FILE=/absolute/path/to/taira-private-key.txt
-test -n "$TAIRA_ACCOUNT_ID"
-test -f "$IROHA_PRIVATE_KEY_FILE"
-
-CHAIN_ID="$({
-  python3 - "$IROHA_CONFIG" <<'PY'
-import sys
-import tomllib
-
-with open(sys.argv[1], "rb") as config_file:
-    print(tomllib.load(config_file)["chain"])
-PY
-})"
+test -f "$IROHA_CONFIG"
 ```
 
 ## خطوات {#steps}
@@ -46,12 +33,12 @@ PY
 
 ```bash
 cd "$IROHA_SOURCE"
-mkdir -p ./contracts ./build/deployment
+mkdir -p ./contracts ./build
 cp ./crates/kotodama_lang/src/samples/tuple_return_demo.ko \
   ./contracts/tuple_return_demo.ko
 ```
 
-المصدر الكامل صغير ويستخدم الصياغة الحالية `seiyaku`/`kotoage`:
+المصدر الكامل صغير: دالة مساعدة خاصة `fn` ودالة `view fn` عامة واحدة للقراءة فقط تسمح صراحةً لكل مستدعٍ:
 
 ```kotodama
 seiyaku TupleReturnDemo {
@@ -60,7 +47,7 @@ seiyaku TupleReturnDemo {
         return t;
     }
 
-    kotoage fn compute() -> (int, int) authorize("Entry") {
+    view fn compute() authorize(anyone) -> (int, int) {
         let p = pair(a: 3, b: 5);
         return (p.0, p.1);
     }
@@ -72,16 +59,16 @@ Kotodama يستهدف آلة Iroha الافتراضية و ABI الحالية ا
 ### ٢. تحقق من الأداة، ابنها، وتأكد من صحتها {#_2-check-build-and-verify-the-artifact}
 
 ```bash
-cargo run -p ivm --bin koto -- \
+cargo run -p kotodama_toolchain --bin koto -- \
   check ./contracts/tuple_return_demo.ko
 
-cargo run -p ivm --bin koto -- \
+cargo run -p kotodama_toolchain --bin koto -- \
   build \
   --out ./build/tuple_return_demo.to \
   --manifest-out ./build/tuple_return_demo.manifest.json \
   ./contracts/tuple_return_demo.ko
 
-cargo run -p ivm --bin koto -- \
+cargo run -p kotodama_toolchain --bin koto -- \
   build \
   --out ./build/tuple_return_demo.to \
   --manifest-out ./build/tuple_return_demo.manifest.json \
@@ -93,82 +80,90 @@ cargo run -p ivm --bin koto -- \
 
 ### 3. تشغيل الشيفرة الثنائية محليًا {#_3-run-the-bytecode-locally}
 
-`compute` نقطة دخول عامة في `kotoage`. شغّله باستخدام `debug-call`، الذي ينفّذ على بيانات اختبار محلية من دون إرسال معاملة أو دفع رسومها.
+`compute` هي دالة `view fn` عامة للقراءة فقط. شغّلها باستخدام `debug-view`، الذي ينفّذ الشيفرة الثنائية المُجمَّعة محليًا على بيانات الاختبار الاختيارية من دون إرسال معاملة أو دفع رسومها.
 
 ```bash
-iroha --config "$IROHA_CONFIG" --machine contract debug-call \
+iroha --config "$IROHA_CONFIG" --machine contract debug-view \
   --code-file ./build/tuple_return_demo.to \
   --entrypoint compute \
-  > ./build/local-call.json
+  > ./build/local-view.json
 
 jq -e '.ok == true and .result == ["3", "5"]' \
-  ./build/local-call.json
+  ./build/local-view.json
 ```
 
 Kotodama تُحوَّل الأعداد الصحيحة إلى JSON سلاسل نصية، لذلك تكون المجموعة المفكّكة `["3", "5"]`.
 
-### ٤. النشر من خلال المساعد الأصلي {#_4-deploy-through-the-native-helper}
+### ٤. نشر المُخرَج المُتحقَّق منه باستخدام Musubi {#_4-deploy-the-verified-artifact-with-musubi}
 
-يقوم المساعد بتحميل مقاطع الكود الثنائي، وتسجيل السجل الفني الموقع، وتقديم عملية واحدة `CommitContractDeployment`. كما يقوم بتحديد رسوم لكل معاملة ويرفض أي عرض يغير الدافع المحدد أو حد تكلفة تنفيذ المعاملة.
+يفحص `iroha contract` العقود ويستدعي دوال العرض فيها ويصحّح أخطاءها لكنه لا ينشرها، لذا تتم عمليات النشر على Taira عبر Musubi. تقوم خدمة النشر الخاصة به بتحميل مقاطع الشيفرة الثنائية، وتسجيل البيان المُتحقَّق منه، وتقديم عملية واحدة `CommitContractDeployment`. وهي تحصل على تقدير لسعر الرسوم لكل معاملة، وترفض أي تقدير يغيّر الدافع المحدد أو مراجعة الراعي أو حد gas، ولا تنشر المُخرَج المبني مسبقًا إلا بعد أن يعيد بناء الحزمة المقفل إنتاج تجزئات الشيفرة وABI الخاصة به. على شبكة محلية تديرها Kagami، يقوم `kagami contract deploy` بدلًا من ذلك بنشر `./build/tuple_return_demo.to` مع `--alias cookbook_tuple::universal --json`؛ ويكون إيصاله تحت `.receipt`، ويطبع `kagami context show` إعدادات العميل التي تُستخدم بصفتها `IROHA_CONFIG`.
 
 ```bash
-printf '%s\n' \
-  '{"payer":"authority","value":{"charge_limits":[],"gas_limit":1500000}}' \
-  > ./build/fee-payment.json
+cat > ./contracts/Musubi.toml <<'TOML'
+manifest-version = 1
 
-cargo run -p iroha_cli --bin ivm_contract_deploy -- \
-  --torii-url "$TORII_URL" \
-  --chain-id "$CHAIN_ID" \
-  --authority "$TAIRA_ACCOUNT_ID" \
-  --private-key-file "$IROHA_PRIVATE_KEY_FILE" \
-  --code-file ./build/tuple_return_demo.to \
-  --contract-alias cookbook_tuple::universal \
-  --fee-payment-json ./build/fee-payment.json \
-  --out-dir ./build/deployment \
+[package]
+namespace = "local"
+name = "cookbook-tuple"
+version = "0.1.0"
+edition = "1"
+abi-version = 1
+
+[[contract]]
+name = "tuple_return_demo"
+path = "tuple_return_demo.ko"
+TOML
+
+cargo run -p musubi -- --manifest-path ./contracts/Musubi.toml check
+
+cargo run -p musubi -- --manifest-path ./contracts/Musubi.toml \
+  network configure taira \
+  --config "$IROHA_CONFIG" \
+  --fee-payer authority \
+  --contract tuple_return_demo \
+  --alias cookbook_tuple::universal
+
+cargo run -p musubi -- --manifest-path ./contracts/Musubi.toml --format json \
+  deploy --network taira \
+  --contract tuple_return_demo \
+  --artifact ./build/tuple_return_demo.to \
+  --artifact-manifest ./build/tuple_return_demo.manifest.json \
   > ./build/deployment.json
 
-jq '{contract_address, code_hash_hex, final, fee_quotes}' \
+jq '.data.receipt | {contract_address, code_hash, stored_artifact_matches}' \
   ./build/deployment.json
 ```
 
-طلب `charge_limits` الفارغ ليس معرف أصل منسوخ: يساعد المساعد في قبول العرض الحي الدقيق قبل التوقيع. قارن الأصل المحمل بالرسوم مع استجابة خدمة تمويل الشبكة التجريبية الحالية. تقبل استدعاءات العقد اختيار الرسوم فقط من خلال العرض المباشر المطبوع؛ `gas_asset_id` بيانات تعريف المعاملة ليست جزءًا من العقد بالإصدار الأول.
+يستخدم الربط `--fee-payer authority`؛ ويعرض Musubi تقدير سعر الرسوم الدقيق بأصل رسوم Taira قبل التوقيع. قارن أصل الرسوم المُعاد مع الأصل الذي تنشره سياسة خدمة تمويل الشبكة التجريبية الحالية. تقبل استدعاءات العقد اختيار الرسوم فقط من خلال تقدير سعر الرسوم المباشر محدد النوع؛ بيانات تعريف المعاملة `gas_asset_id` ليست جزءًا من عقد الإصدار الأول.
 
-### 5. محاكاة واستدعاء نقطة الدخول المنتشرة {#_5-simulate-and-call-the-deployed-entrypoint}
+### 5. قراءة دالة العرض المنشورة {#_5-read-the-deployed-view}
 
-تشغيل المحاكاة لنقطة الدخول العامة على Torii بدون تقديم. يُعد الاستدعاء الفني التالي معاملة وبالتالي يحدد صريحًا دافع رسوم السلطة المصرح لها. كلا الأمرين يربطان حد تكلفة تنفيذ المعاملة البالغ 1,500,000.
+ينفّذ `contract view` نقطة الدخول المخصصة للقراءة فقط على Torii من دون معاملة أو رسوم. ليس لدالة العرض صيغة معاملة: يرفض Torii محدِّد دالة العرض على مسارات الاستدعاء الخاصة به.
 
 ```bash
-iroha --config "$IROHA_CONFIG" --machine contract call \
-  --simulate \
+iroha --config "$IROHA_CONFIG" --machine contract view \
   --contract-alias cookbook_tuple::universal \
   --entrypoint compute \
   --gas-limit 1500000 \
-  > ./build/deployed-simulation.json
+  > ./build/deployed-view.json
 
 jq -e '.ok == true and .result == ["3", "5"]' \
-  ./build/deployed-simulation.json
-
-iroha --config "$IROHA_CONFIG" \
-  --machine \
-  --fee-payer authority \
-  contract call \
-  --contract-alias cookbook_tuple::universal \
-  --entrypoint compute \
-  --gas-limit 1500000 \
-  --wait \
-  --timeout-ms 60000 \
-  > ./build/deployed-call.json
-
-jq -e '.terminal_kind == "Applied"' ./build/deployed-call.json
+  ./build/deployed-view.json
 ```
 
 ## تحقق {#verify}
 
-حلّ الاسم المستعار، واجلب البيان الموجود على السلسلة باستخدام هاش الشيفرة المُعاد، ثم حاكِ نقطة الدخول العامة نفسها باستخدام العنوان المعياري:
+حلّ الاسم المستعار، واجلب البيان الموجود على السلسلة باستخدام هاش الشيفرة الذي يبلغ عنه Torii لدالة العرض المنشورة، ثم شغّل دالة العرض نفسها باستخدام العنوان المعياري:
 
 ```bash
-CODE_HASH="$({ jq -er '.code_hash_hex' ./build/deployment.json; })"
-CONTRACT_ADDRESS="$({ jq -er '.contract_address' ./build/deployment.json; })"
+CONTRACT_ADDRESS="$({
+  jq -er '.data.receipt.contract_address' ./build/deployment.json
+})"
+CODE_HASH="$({ jq -er '.code_hash_hex' ./build/local-view.json; })"
+DEPLOYED_CODE_HASH="$({
+  jq -er '.code_hash_hex' ./build/deployed-view.json
+})"
+test "$DEPLOYED_CODE_HASH" = "$CODE_HASH"
 
 RESOLVED_ADDRESS="$({
   iroha --config "$IROHA_CONFIG" --machine \
@@ -178,36 +173,36 @@ RESOLVED_ADDRESS="$({
 test "$RESOLVED_ADDRESS" = "$CONTRACT_ADDRESS"
 
 iroha --config "$IROHA_CONFIG" contract manifest get \
+  --dataspace-id 0 \
   --code-hash "$CODE_HASH" \
   --out ./build/on-chain-manifest.json
 
-iroha --config "$IROHA_CONFIG" --machine contract call \
-  --simulate \
+iroha --config "$IROHA_CONFIG" --machine contract view \
   --contract-address "$CONTRACT_ADDRESS" \
   --entrypoint compute \
-  > ./build/address-simulation.json
+  > ./build/address-view.json
 
 jq -e '.ok == true and .result == ["3", "5"]' \
-  ./build/address-simulation.json
+  ./build/address-view.json
 ```
 
-يكتمل النشر فقط عندما يحل الاسم المستعار إلى العنوان المعاد، ويكون البيان الفني قابلاً للقراءة تحت نفس تجزئة الشيفرة التشفيرية، وتُرجع المحاكاة المحلية و Torii قيمة `["3", "5"]`، وتصل الدعوة الفنية المقدمة إلى `Applied`.
+يكتمل النشر فقط عندما يُبلغ إيصال النشر بأن المُخرَج المخزَّن تم التحقق منه، ويحل الاسم المستعار إلى العنوان المعاد، ويكون البيان قابلاً للقراءة تحت نفس تجزئة الشيفرة، وتُرجع دالة العرض محليًا وعبر Torii القيمة `["3", "5"]`.
 
 ## استكشاف الأخطاء وإصلاحها {#troubleshooting}
 
-- `CanRegisterSmartContractCode` الفشل يتطلب منح مشغل Taira أو تغيير التكوين الأولي/التمهيدي على الشبكة المحلية. لا يمكن لحساب عادي منح هذا الإذن لنفسه بعد ذلك.
-- رفض الحوكمة أو الممر المحمي يعني أن النشر يحتاج إلى تحديد الموافق الدقيق المطلوب من قبل تلك الشبكة. قم بتنسيق قائمة الموافقين؛ لا تخترع معرفات الحسابات.
-- المخطط الفني أو عدم التطابق ABI يعني أن الشيفرة الثنائية، والمخطط الفني، وبيئة تنفيذ برنامج العقدة لا تصف نفس القطعة. أعد البناء عند نسخة الشيفرة المصدرية المثبتة باستخدام `--verify`.
+- الخطأ `deployment authority lacks CanManageAccountAlias`، أو خطأ المُنفِّذ `authority is not permitted to manage contract alias`، يعني أن الحساب لا يجوز له ربط ذلك الاسم المستعار. استخدم اسمًا مستعارًا في نطاق تملكه، أو احصل من مالك ذلك النطاق على منح الاسم المستعار الدقيق أو منح النطاق أو مساحة البيانات الخاصة به؛ وعلى الشبكة المحلية، امنحه في كتلة التكوين.
+- يعني رفض مساحة الأسماء المحمية أن مساحة أسماء الاسم المستعار خاضعة للحوكمة. إدراج معرفات حسابات الموافقين ليس دليلًا على الموافقة؛ استخدم سير عمل الحوكمة الخاص بالشبكة (`iroha app gov deploy propose`) لمساحة الأسماء تلك، أو اختر اسمًا مستعارًا خارجها.
+- عدم تطابق البيان أو ABI يعني أن الشيفرة الثنائية والبيان وبيئة تنفيذ برنامج العقدة لا تصف المُخرَج نفسه. أعد البناء عند نسخة الشيفرة المصدرية المثبتة، ثم أعد تشغيل البناء باستخدام `--verify`.
 - `fee quote changed ... gas bound` يعني أن النية المطلوبة المكتوبة والسعر المباشر غير متوافقين. قم بإعادة الفحص بدلاً من تعديل معاملة موقعة.
-- يرفض مساعد النشر المفاتيح المضمنة، وأوضاع ملفات المفتاح المتساهلة، والروابط الرمزية، والملفات المرتبطة بشكل متعدد قبل الإرسال عبر الشبكة.
-- خطأ نقطة الدخول للعرض فقط يعني أن `compute` تم توجيهه عبر عائلة الأوامر الخاطئة. هذا المثال يعلن عن `kotoage`، لذا استخدم محاكاة الاستدعاء الفني أو الإرسال.
+- يحتفظ النشر المتقطع بخطته الموقعة في سجل يومي. استعده باستخدام `musubi deploy --resume <JOURNAL>` بدلًا من توقيع خطة جديدة.
+- الخطأ `is read-only and cannot be invoked as a transaction` أو `is not a kotoage or lifecycle entrypoint` يعني أن `compute` أُرسلت إلى أمر استدعاء. يعلن هذا المثال عن `view fn`، لذا استخدم `debug-view` محليًا و`view` على Torii.
 - تتطلب استدعاءات العقود حد gas موجبًا ومحدد النوع. يرفض عقد الاستدعاء في الإصدار الأول بيانات gas أو أصل الرسوم الوصفية على المستوى الأعلى.
 
 ## المصدر والمستندات ذات الصلة {#source-and-related-docs}
 
-- [Kotodama V1 تنفيذ الأمر في النسخة المثبتة من رمز المصدر](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
-- [عينة مصدر تُرجع Tuple عند نسخة الكود المصدر المثبتة](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
-- [مساعد النشر المحلي عند إصدار الشيفرة المصدرية المثبت](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [اختبارات تكامل العقد عند إصدار الشيفرة المصدرية المثبت](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
+- [تنفيذ أمر Kotodama V1 في النسخة المثبتة من رمز المصدر](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_toolchain/src/bin/koto.rs)
+- [عينة مصدر تُرجع Tuple عند نسخة الكود المصدر المثبتة](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
+- [أمر النشر في Musubi](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/musubi/src/command_deploy.rs) و[خدمة نشر العقود الأصلية](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_contract_deploy/src/lib.rs) عند إصدار الشيفرة المصدرية المثبت
+- [اختبارات تكامل العقد عند إصدار الشيفرة المصدرية المثبت](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/contracts.rs)
 - [العقود الذكية](/ar/blockchain/smart-contracts.md)
 - [CLI مرجع](/ar/get-started/operate-iroha-via-cli.md)

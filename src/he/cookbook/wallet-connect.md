@@ -1,33 +1,33 @@
 ---
 translation_locale: he
 translation_source: /cookbook/wallet-connect.md
-translation_source_hash: 81b370bdc73a40ff2dbb8df0f91547ab4c279ed94600bdd6df367f29a949ec71
+translation_source_hash: 6bcb87693d4a4cdf45662029dd455c15d3a7a1d4a1e1586e92317ca91b587390
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Wallet Connect: אישור העברה של נכסים {#wallet-connect-approve-an-asset-transfer}
 
 ## התוצאה {#outcome}
 
-ליצור פגישה Iroha Connect בדפדפן, לקבל אישור קריפטוגרפי עבור זהות ארנק אחת I105, לבקש מהארנק הזה לחתום על הסדרון המדויק של העברה של נכסים Torii, להגיש את החתימה המפרדת ולחכות לסיום יישום.
+צרו סשן של Iroha Connect בדפדפן, קבלו אישור קריפטוגרפי עבור זהות ארנק I105 אחת, בקשו מהארנק הזה לחתום על מטען העברת הנכס הלא חתום המדויק של Torii, הגישו את החתימה המנותקת והמתינו לסופיות Applied.
 
 ## תנאים מוקדמים {#prerequisites}
 
 - יישום דפדפן באמצעות `@iroha/iroha-js` ו- HTTPS.
-- ארנק שמפעיל Iroha Connect v1 ופיקוח על חשבון Ed25519 I105 בעל מפתח אחד.
-- שרשרת Taira הנוכחית ID ומבחן שרשרת, ארנק הארנק רשום בתווים קטנים Ed25519 שמן מפתח ציבורי, נכס מוחלף בבעלותו, וביעד קנוני I105.
-- נכס העלות ID הוחזר על ידי תגובת המברר הנוכחית Taira. הדוגמה מאשרת את תמחור העלות חי נגד זה ID; הוא אף פעם לא מכיל מזהד נכס נכתב.
-- קישור חייב להיות פעיל על Torii הנבחר. בדוק לפני הצגת קישור QR או קישור עמוק:
+- ארנק שמממש את Iroha Connect v1, שולט בחשבון I105 מסוג Ed25519 בעל מפתח יחיד, ומעניק את המתודות `sign_transaction` ו־`sign_raw`.
+- מזהה הרשת הנוכחי של Taira, ייצוג ה־hex באותיות קטנות של המפתח הציבורי מסוג Ed25519 שהארנק רשם, נכס בבעלותו שניתן להעברה, ויעד I105 קנוני.
+- ה־ID של נכס העמלה שמדיניות ה־faucet הנוכחית של Taira מפרסמת. הדוגמה מאמתת את הצעת העמלה החיה מול ה־ID הזה; היא לעולם אינה מטמיעה מזהה נכס שהועתק.
+- יש להפעיל את Connect ב־Torii שנבחר. קראו את מזהה הרשת מיכולות החשבון הציבוריות לפני הצגת QR או קישור עמוק:
 
 ```bash
 curl -fsS \
   -H 'Accept: application/json' \
-  https://taira.sora.org/v1/connect/status |
-  jq -e '{enabled, sessions_active} | select(.enabled == true)'
+  https://taira.sora.org/v1/accounts/capabilities |
+  jq -er '.network_id'
 ```
 
-אם Taira מדווחת שהחיבור מושבת או מחזירה `404`/`503`, השתמשו ברשת מקומית שנוצרה עם Connect מופעל. העברת נכס רגילה דורשת גם שבארנק תהיה כמות מספקת הניתנת להעברה ויתרת עמלה מספקת.
+Torii אינו מפרסם סטטוס Connect אנונימי: `GET /v1/connect/status` מדווח על סשן אחד לאסימון הניהול שלו, והסטטוס המצרפי דורש חתימת מפעיל. כאשר צומת משבית את Connect, `registerConnectSession` נכשל עם HTTP `503` והקוד `connect_disabled` (`404` כאשר הבנייה אינה כוללת את Connect), והדוגמה אינה מציגה קוד QR או קישור עמוק; השתמשו ברשת מקומית שנוצרה עם Connect מופעל. העברת נכס רגילה דורשת גם שבארנק תהיה כמות מספקת הניתנת להעברה ויתרת עמלה מספקת.
 
 ## צעדים {#steps}
 
@@ -43,16 +43,20 @@ JavaScript בהמשך מצפה לרכיב הזה בדף הבקשה:
 
 ### 2. ליצור, לאשר, לחתום ולהגיש {#_2-create-approve-sign-and-submit}
 
-מודול דפדפן זה מקבל ערכים ממשיים ממצב היישום שלכם. הקריאה הראשונה אל `POST /v1/assets/transfer` משמיטה את שדות החתימה ומחזירה תבנית עסקה מצוטטת ובעלת גרסה. הקריאה השנייה מוסיפה לאותה בקשת העברה רק את המפתח הציבורי של הארנק ואת חתימת ה־detached שלו.
+מודול דפדפן זה מקבל ערכים ממשיים ממצב היישום שלכם. הקריאה הראשונה אל `POST /v1/assets/transfer` משמיטה את שדות החתימה ומחזירה את כוונת העמלה המתומחרת ואת מטען העסקה הלא חתום. הקריאה השנייה מוסיפה לאותה בקשת העברה רק את המפתח הציבורי של הארנק ואת החתימה המנותקת. Torii דורש חתימת חשבון קנונית על שתי הבקשות, ולכן המודול מבקש מהארנק לחתום עליהן באמצעות `createConnectCanonicalRequestAuth`.
 
 ```js
-import { AccountAddress } from '@iroha/iroha-js/address'
+import { buildCanonicalJsonRequest } from '@iroha/iroha-js/canonical-request'
 import {
+  NetworkId,
   createConnectAppSession,
+  createConnectCanonicalRequestAuth,
   createConnectSessionPreview,
   deleteConnectSession,
   registerConnectSession,
+  toHex,
 } from '@iroha/iroha-js/connect-browser'
+import { ToriiBrowserClient } from '@iroha/iroha-js/torii-browser'
 
 const baseUrl = 'https://taira.sora.org'
 const wait = (milliseconds) =>
@@ -63,14 +67,21 @@ const decodeBase64 = (value) =>
 const encodeBase64 = (bytes) =>
   btoa(Array.from(bytes, (byte) => String.fromCharCode(byte)).join(''))
 
-async function postJson(path, body) {
-  const response = await fetch(`${baseUrl}${path}`, {
+async function postSignedJson(path, body, auth, networkId) {
+  const request = await buildCanonicalJsonRequest({
+    nativeIdentity: auth.nativeIdentity,
+    accountId: auth.authAccountId,
+    networkId,
     method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
+    path,
+    baseUrl,
+    body,
+    sign: auth.sign,
+  })
+  const response = await fetch(`${baseUrl}${path}`, {
+    method: request.method,
+    headers: request.headers,
+    body: request.body,
   })
   if (!response.ok) {
     throw new Error(
@@ -87,6 +98,10 @@ async function waitForApplied(transactionHash) {
     const response = await fetch(url, {
       headers: { Accept: 'application/json' },
     })
+    if (response.status === 404) {
+      await wait(1_000)
+      continue
+    }
     if (!response.ok) {
       throw new Error(`pipeline status: HTTP ${response.status}`)
     }
@@ -102,8 +117,7 @@ async function waitForApplied(transactionHash) {
 }
 
 export async function transferWithWallet({
-  chainId,
-  chainDiscriminant,
+  networkIdLiteral,
   authority,
   publicKeyHex,
   assetDefinitionId,
@@ -114,21 +128,16 @@ export async function transferWithWallet({
   if (!/^[0-9a-f]{64}$/.test(publicKeyHex)) {
     throw new Error('publicKeyHex must be 32-byte lower-case Ed25519 hex')
   }
-  const derivedAuthority = AccountAddress.fromAccount({
-    publicKey: publicKeyHex,
-    algorithm: 'ed25519',
-  }).toI105(chainDiscriminant)
-  if (derivedAuthority !== authority) {
-    throw new Error('enrolled public key does not control authority')
-  }
+  const networkId = NetworkId.parse(networkIdLiteral)
+  const torii = new ToriiBrowserClient(baseUrl, { networkId })
 
   const preview = createConnectSessionPreview({
-    chainId,
+    networkId,
     node: baseUrl,
   })
   const relay = await registerConnectSession(
     baseUrl,
-    preview.sidBase64Url,
+    preview,
     {
       node: baseUrl,
     },
@@ -140,8 +149,10 @@ export async function transferWithWallet({
       baseUrl,
       preview,
       session: relay,
+      inspectAccountIdentity: (accountId, options) =>
+        torii.inspectAccountIdentity(accountId, options),
       permissions: {
-        methods: ['sign_transaction'],
+        methods: ['sign_transaction', 'sign_raw'],
         resources: [assetDefinitionId],
       },
       appMeta: { name: 'Iroha cookbook transfer' },
@@ -158,6 +169,10 @@ export async function transferWithWallet({
     if (approval.accountId !== authority) {
       throw new Error('wallet approved a different I105 account')
     }
+    if (toHex(approval.signingPublicKey) !== publicKeyHex) {
+      throw new Error('enrolled public key does not control authority')
+    }
+    const auth = await createConnectCanonicalRequestAuth(connect)
 
     const transfer = {
       authority,
@@ -167,16 +182,21 @@ export async function transferWithWallet({
       destination,
       fee_payment: {
         payer: 'authority',
-        value: { charge_limits: [] },
+        value: { charge_limits: [], gas_limit: null },
       },
       creation_time_ms: Date.now(),
       transaction_ttl_ms: 120_000,
       memo: 'iroha-cookbook-wallet-connect',
     }
 
-    const prepared = await postJson('/v1/assets/transfer', transfer)
+    const prepared = await postSignedJson(
+      '/v1/assets/transfer',
+      transfer,
+      auth,
+      networkId,
+    )
     if (!prepared.ok || prepared.submitted) {
-      throw new Error('Torii did not return a pending-signature scaffold')
+      throw new Error('Torii did not return an unsigned transaction payload')
     }
     const limits = prepared.intent.fee_payment.value.charge_limits
     if (
@@ -186,22 +206,27 @@ export async function transferWithWallet({
       )
     ) {
       throw new Error(
-        'live fee quote uses an asset other than the faucet response',
+        'live fee quote uses an asset other than the faucet policy asset',
       )
     }
 
     const signature = await connect.signTransaction(
-      decodeBase64(prepared.transaction_scaffold_base64),
+      decodeBase64(prepared.transaction_payload_b64),
     )
     if (signature.length !== 64) {
       throw new Error('wallet returned a non-Ed25519 signature length')
     }
 
-    const submitted = await postJson('/v1/assets/transfer', {
-      ...transfer,
-      public_key_hex: publicKeyHex,
-      signature_base64: encodeBase64(signature),
-    })
+    const submitted = await postSignedJson(
+      '/v1/assets/transfer',
+      {
+        ...transfer,
+        public_key_hex: publicKeyHex,
+        signature_base64: encodeBase64(signature),
+      },
+      auth,
+      networkId,
+    )
     if (!submitted.ok || !submitted.submitted) {
       throw new Error('signed transfer was not accepted')
     }
@@ -251,18 +276,18 @@ fn seal_wallet_signature(
 }
 ```
 
-הדוגמאות `connect_app` ו־`connect_wallet` שבמאגר הן משאבי בדיקה של הפרוטוקול: הן משתמשות במפתחות תעבורה דטרמיניסטיים, חושפות אסימונים בפלט, ומשאב הבדיקה של הארנק מחזיר חתימת דמה. השתמשו בהן רק ללימוד מסגרות, ולעולם לא כמימוש של ארנק Taira.
+הדוגמאות `connect_app` ו־`connect_wallet` שבמאגר הן הדגמות של הפרוטוקול: האפליקציה מדפיסה לפלט הסטנדרטי את ה־URI של הארנק, כולל האסימון שלו, והארנק מקבל את האסימונים שלו כארגומנטים בשורת הפקודה וחותם על הבתים המבוקשים בלי לפענח או להציג אותם. השתמשו בהן רק ללימוד מסגרות, ולעולם לא כמימוש של ארנק Taira.
 
 ## לאמת {#verify}
 
 שמרו על ה-hash שהחזרו ותוכיחו את מצב המוקדמת של היעד באמצעות נקודת הסיום של בעלי הציבור:
 
 ```bash
+HOLDER_FILTER="account_id = \"$DESTINATION_ACCOUNT\" and scope = \"global\""
 curl -fsS -G \
   -H 'Accept: application/json' \
   "https://taira.sora.org/v1/assets/$ASSET_DEFINITION_ID/holders" \
-  --data-urlencode "account_id=$DESTINATION_ACCOUNT" \
-  --data-urlencode 'scope=global' |
+  --data-urlencode "filter=$HOLDER_FILTER" |
   jq .
 ```
 
@@ -270,20 +295,20 @@ curl -fsS -G \
 
 ## פתרון בעיות {#troubleshooting}
 
-- `404`, `503`, או `enabled: false` ממצב Connect אומר כי לא ניתן ליצור פגישה רלוונטית על הערך הזה. לעבור לרשת מקומית פעילה; אל תחזרו לתחבורה של אפליקציות או סימני ניהול בעצמכם.
+- `503` עם הקוד `connect_disabled`, או `404`, מ־`registerConnectSession` פירושו שלא ניתן ליצור סשן ממסר בצומת הזה. עברו ל־localnet שבו Connect מופעל; אל תפנו כחלופה להעברה עצמית של אסימוני האפליקציה או הניהול.
 - `USER_DENIED` הוא החלטה של הארנק. שמרו אותו כתוצאה של משתמש סגור במקום לפתוח בקשות אישור חוזרות ונשנות.
 - אי התאמה בין חשבון ההסכמה או חתימת אישור לא חוקית חייבת לסגור את הפגישה. לעולם אל תבקשו מהמטבע לחתום לאחר שחיבור זהות נכשל.
 - `public_key_hex does not control authority` פירושו נתוני ההרשמה והסכמה בין זהות I105 המאושרת. המפתח לזמן קצר לתחבורה של הארנק לא ניתן להשתמש בשדה זה.
-- סירוב חתימה או מסדרון פירושו בדרך כלל שדה בקשה או תמחור תשלום חי שנשנה בין הכנת ושלוח. תבנה בקשה חדשה; לעולם אל תשליחי את החתימה הישנה.
+- חתימה מנותקת שנדחתה פירושה בדרך כלל ששדה בבקשה או הצעת העמלה החיה השתנו בין ההכנה להגשה. בנו בקשה חדשה; לעולם אל תשתילו את החתימה הישנה.
 - replay מדויק של בקשה חתומה שכבר התקבלה הוא idempotent. בצעו שאילתה על hash העסקה שהוחזר לפני שתתייחסו לפסק זמן כסיבה להתחיל מחדש.
 
 ## מקור ומסמכים קשורים {#source-and-related-docs}
 
-- [יישום Browser Connect ב-pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/src/connect.browser.js)
-- [בדיקות מחברת הדפדפן בקביט ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/test/connect.browser.test.js)
-- [Rust דוגמא של מסגרת אפליקציה ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_app.rs)
-- [Rust דוגמה של מסגרת הארנק ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_wallet.rs)
-- [תבנית Torii OpenAPI](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/artifacts/openapi/torii.json)
+- [יישום Browser Connect ב-pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/src/connect.browser.js)
+- [בדיקות מחברת הדפדפן בקביט ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/test/connect.browser.test.js)
+- [Rust דוגמא של מסגרת אפליקציה ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/examples/connect_app.rs)
+- [Rust דוגמה של מסגרת הארנק ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/examples/connect_wallet.rs)
+- [תבנית Torii OpenAPI](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/artifacts/openapi/torii.json)
 - [SORA Nexus שירותים](/he/blockchain/sora-nexus-services.md)
 - [נכסים פונגביים](./fungible-assets.md)
 - [הגשת והבחינה של עסקאות ](./submit-and-verify-transactions.md)

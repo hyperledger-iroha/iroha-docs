@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
+translation_source_hash: c1aee0c29332bd7c883500e72a1ec7812aebfca13b673e6681788cf4bc5ecbf1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Hisoblar va taxalluslar {#accounts-and-aliases}
@@ -22,15 +22,19 @@ Domensiz kanonik I105 hisob IDs va `treasury@payments.universal` kabi alohida bo
 
 ### 1. Taira-dagi kanonik hisoblarni tekshirish {#_1-inspect-canonical-accounts-on-taira}
 
-Ochiq hisoblar ro‘yxati doim kanonik I105 IDs ni qaytaradi. Asosiy taxallus ixtiyoriy bo‘lib, alohida ko‘rsatiladi.
+Ochiq hisoblar ro‘yxati doim kanonik I105 IDs ni qaytaradi. Asosiy taxallus ixtiyoriy; uni ko‘rish uchun `aliases` maydonini so‘rang.
 
 ```bash
-curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+curl -fsS -H 'Accept: application/json' --get \
+  https://taira.sora.org/v1/accounts \
+  --data-urlencode 'limit=5' \
+  --data-urlencode 'select=id,aliases' \
+  | jq -r '.items[]
+    | [.id, (first(.aliases[]? | select(.is_primary) | .alias) // "-")]
+    | @tsv'
 ```
 
-`.id` maydonidagi ID qat’iy hisob maydonlari uchun yaroqli. Unga domen qo‘shmang. `.primary_alias` maydonidagi taxallus foydalanuvchi uchun qidiruv kalitidir, boshqa kanonik shaxsiyat emas.
+`.id` maydonidagi ID qat’iy hisob maydonlari uchun yaroqli. Unga domen qo‘shmang. `.aliases[].alias` maydonidagi taxallus foydalanuvchi uchun qidiruv kalitidir, boshqa kanonik shaxsiyat emas.
 
 ### 2. Taira I105 ID-ingizni hosil qilish va me’yorlashtirish {#_2-derive-and-normalize-your-taira-i105-id}
 
@@ -53,14 +57,14 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID" \
   | iroha tools address normalize --profile taira
 ```
 
-Me’yorlashtirilgan qiymat `TAIRA_ACCOUNT_ID` bilan aynan bir xil bo‘lishi kerak. TOML faylidagi `[account].domain` sozlamasi `wonderland.universal` bo‘lishi mumkin, ammo bu qiymat faqat yo‘naltirish va taxallus kontekstiga ta’sir qiladi.
+Me’yorlashtirilgan qiymat `TAIRA_ACCOUNT_ID` bilan aynan bir xil bo‘lishi kerak. `[account].profile` sozlamasi faqat I105 tarmoq prefiksini tanlaydi; domenlar hisob ID-siga emas, faqat taxalluslarga tegishli.
 
 ### 3. Hisob va uning aktivlarini o‘qish {#_3-read-the-account-and-its-assets}
 
 Hisob yaratilgach, uni bevosita so‘rang va aktivlarning chegaralangan sahifasini oling. I105 qiymatini yo‘lda ishlatishdan oldin URL-kodlang.
 
 ```bash
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 ENCODED_ACCOUNT_ID="$(
@@ -69,7 +73,7 @@ ENCODED_ACCOUNT_ID="$(
 )"
 
 curl -fsS -H 'Accept: application/json' \
-  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10" \
+  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10&include_total=true" \
   | jq '{total, items}'
 ```
 
@@ -111,7 +115,7 @@ fi
 
 ::: warning Ruxsat chegarasi
 
-Taira krani da’vogarning hisobini yaratishi mumkin, ammo bu umumiy hisoblarni ro‘yxatdan o‘tkazish yoki taxalluslarni boshqarish vakolatini bermaydi. Boshqa hisobni ro‘yxatdan o‘tkazish uchun faol tekshiruvchi ostida `CanRegisterAccount` talab qilinadi. Hisob taxalluslari odatda faol SNS ijarasi va tegishli taxallus ruxsatlarini ham talab qiladi. Boshqariladigan qabul/taxallus rejalashtiruvchisidan foydalaning yoki ro‘yxatdan o‘tkazishni yaratilgan mahalliy tarmoqda mashq qiling.
+Taira krani da’vogarning hisobini yaratishi mumkin, ammo bu umumiy hisoblarni ro‘yxatdan o‘tkazish yoki taxalluslarni boshqarish vakolatini bermaydi. Boshqa hisobni ro‘yxatdan o‘tkazish uchun faol ijrochi ostida `CanRegisterAccount` talab qilinadi. Hisob taxalluslari odatda faol SNS ijarasi va tegishli taxallus ruxsatlarini ham talab qiladi. Boshqariladigan qabul/taxallus rejalashtiruvchisidan foydalaning yoki ro‘yxatdan o‘tkazishni yaratilgan mahalliy tarmoqda mashq qiling.
 
 :::
 
@@ -121,9 +125,9 @@ Mahalliy tarmoqda xavfsiz imzolovchini tayyorlash bosqichi yangi kanonik `NEW_AC
 iroha --config ./localnet/client.toml \
   --machine \
   --fee-payer authority \
-  ledger account register --id "$NEW_ACCOUNT_ID"
+  account register --id "$NEW_ACCOUNT_ID"
 
-iroha --config ./localnet/client.toml ledger account get \
+iroha --config ./localnet/client.toml account get \
   --id "$NEW_ACCOUNT_ID"
 ```
 
@@ -158,8 +162,8 @@ Kanonik hisob IDs ni saqlang. Imzolar, ruxsatlar va tranzaksiya ko‘rsatmalarid
 
 ## Manba va u bilan bog'liq hujjatlar {#source-and-related-docs}
 
-- [Mahkamlangan commitdagi kanonik hisob manzili amalga oshirishi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
-- [Mahkamlangan commitdagi Torii hisob va taxallus sinovlari](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
+- [Mahkamlangan commitdagi kanonik hisob manzili amalga oshirishi](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/account/address.rs)
+- Mahkamlangan commitdagi [Torii hisob so‘nggi nuqtalarining tezkor sinovlari](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/tests/accounts_endpoints.rs) va [taxallus marshruti sinovlari](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/tests/lib_tests/part_2.rs)
 - [Hisoblar](/uz/blockchain/accounts.md)
 - [Ma’lumotlar modeli taxalluslari](/uz/blockchain/data-model.md#aliases)
 - [Nomlash qoidalari](/uz/reference/naming.md)

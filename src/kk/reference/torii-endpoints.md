@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: f04e5e78329996d70926c4fd5dc034d41605d0a82fffd6460f67b252269480d9
+translation_source_hash: 631ec91b5ea398ae17253f0fd6307d76bc3820e2a2b6c8c9f79b30e0188ec170
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -380,7 +380,7 @@ iroha app kaigi end --domain kaigi.universal --call-name daily
 
 ### JavaScript Интеграция {#javascript-integration}
 
-Ағымдағы [Iroha JavaScript демо](https://github.com/soramitsu/iroha-demo-javascript) транспарентті, аутентификацияланған бір-бірімен кездесетін профильді іске асырады. Ол протоколдың ашылуына жол бермейді `zk-roster-v1` дәлел ағыны. Оның рендерері жасайды WebRTC ұсыныстар мен жауаптар, ал артықшылықты көпір жергілікті қолданады [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) дәйексөз алу, қол қою, жіберу және соңғы нұсқасын күту үшін тексеру Kaigi транзакциялар.
+Ағымдағы [Iroha JavaScript демо](https://github.com/soramitsu/iroha-demo-javascript) транспарентті, аутентификацияланған бір-бірімен кездесетін профильді іске асырады. Ол протоколдың ашылуына жол бермейді `zk-roster-v1` дәлел ағыны. Оның рендерері жасайды WebRTC ұсыныстар мен жауаптар, ал артықшылықты көпір жергілікті қолданады [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js) дәйексөз алу, қол қою, жіберу және соңғы нұсқасын күту үшін тексеру Kaigi транзакциялар.
 
 Дәл маршрут аутентификациясы, шақыру форматы, көпір шекарасы және ағымдағы демонстрациялық тест командалары үшін [JavaScript қосымшасында Kaigi кірістіру](/kk/guide/tutorials/kaigi.md) қараңыз.
 
@@ -439,6 +439,6 @@ iroha --config ./localnet/client.toml --operator-private-key-file "$IROHA_OPERAT
 
 ## Ағыспен жоғары сілтемелер {#upstream-references}
 
-- [README API және бақылау шолу](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/README.md)
-- [ISO 20022 көпірін іске асыру](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/iso20022_bridge.rs)
+- [README API және бақылау шолу](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/README.md)
+- [ISO 20022 көпірін іске асыру](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/iso20022_bridge.rs)
 - [Өнімділік және көрсеткіштер](/kk/guide/advanced/metrics.md)

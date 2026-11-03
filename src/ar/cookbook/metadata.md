@@ -1,21 +1,21 @@
 ---
 translation_locale: ar
 translation_source: /cookbook/metadata.md
-translation_source_hash: bb486994faabb29fb48609a886862e44e565148be4800ec1244218ef37e2e54b
+translation_source_hash: 88298912f083d79a9fdfe5e8d0a89d49acb97d814d3871db0c874cb40db5342b
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # البيانات الوصفية {#metadata}
 
 ## نتيجة {#outcome}
 
-اقرأ البيانات الوصفية على Taira، واضبط وتحقق من قيمة بيانات وصفية لحساب واحد من خلال معاملة تدفع الرسوم صراحة، وأزل القيمة مرة أخرى. ستبقي بيانات الكائن على دفتر الأستاذ الخاص بالبلوكشين منفصلة عن بيانات رسوم المعاملات.
+اقرأ البيانات الوصفية على Taira، واضبط وتحقق من قيمة بيانات وصفية لحساب واحد من خلال معاملة تدفع الرسوم صراحة، وأزل القيمة مرة أخرى. ستبقي البيانات الوصفية لكائن دفتر الأستاذ منفصلة عن البيانات الوصفية للمعاملة.
 
 ## المتطلبات الأساسية {#prerequisites}
 
 - `curl`، `jq`، Python 3.11 أو أحدث، و`iroha` الحالي CLI.
-- تمويل `taira.client.toml` و `taira.tx-metadata.json` من [الاتصال بـ Taira](./connect-to-taira.md).
+- ملف `taira.client.toml` مموَّل من [الاتصال بـ Taira](./connect-to-taira.md).
 - الجهة المخوّلة على بيانات الحساب الهدف. المثال يستهدف الجهة المخوّلة المهيأة نفسها؛ حساب آخر يتطلب إذنًا محددًا بالضبط.
 
 ## خطوات {#steps}
@@ -27,8 +27,8 @@ translation_engine: bing-translator-llm
 ```bash
 curl -fsS -H 'Accept: application/json' \
   'https://taira.sora.org/v1/assets/definitions?limit=100' \
-  | jq '.items[] \
-    | select((.metadata // {} | length) > 0) \
+  | jq '.items[]
+    | select((.metadata // {} | length) > 0)
     | {id, name, metadata}'
 
 curl -fsS -H 'Accept: application/json' \
@@ -57,7 +57,7 @@ export TAIRA_ACCOUNT_ID="$(
 
 ### 3. قم بتعيين قيمة واحدة JSON {#_3-set-one-json-value}
 
-يصبح JSON المقروء من الإدخال القياسي هو قيمة `cookbook_profile` للحساب. بالمقابل، يرفق `--metadata ./taira.tx-metadata.json` حقول الرسوم بحاوية بيانات المعاملة. الخريطتان لهما أهداف وأغراض مختلفة.
+يصبح JSON المقروء من الإدخال القياسي هو قيمة `cookbook_profile` للحساب. أما البيانات الوصفية للمعاملة، التي تُرفق باستخدام `--metadata <file>`، فهي خريطة منفصلة في حاوية بيانات المعاملة ولا تختار الرسوم أبدًا: فاختيارها يتم عبر `--fee-payer` وتقدير سعر الرسوم الدقيق الذي يعرضه CLI، ويرفض العميل البيانات الوصفية للمعاملة التي تحتوي على المفاتيح `gas_asset_id` أو `gas_limit` أو `fee_sponsor`.
 
 ```bash
 printf '%s\n' \
@@ -65,17 +65,16 @@ printf '%s\n' \
   | iroha --config ./taira.client.toml \
       --machine \
       --fee-payer authority \
-      --metadata ./taira.tx-metadata.json \
-      ledger account meta set \
+      account meta set \
       --id "$TAIRA_ACCOUNT_ID" \
       --key cookbook_profile
 ```
 
-يعرض CLI الرسوم، يوقع، يقدّم، وينتظر بشكل افتراضي. لا تضف `--no-wait` عندما تعتمد العملية التالية على هذه القيمة.
+يعرض CLI تقدير سعر الرسوم الدقيق بأصل رسوم Taira قبل التوقيع، ثم يقدّم المعاملة وينتظر الوصول إلى نهائية Applied قبل أن يعود.
 
 ::: warning حدود الإذن
 
-المُتحقق النشط يقرر من يمكنه تعديل كل كائن. تحديث حساب آخر عادةً يتطلب `CanModifyAccountMetadata`؛ المجالات، تعريفات الأصول، NFTs، والمحركات لديها أذونات بيانات وصفية محددة للأهداف الخاصة بها. إذا لم يقم Taira بمنح الصلاحية المطلوبة للمخول الرئيسي، قم بتشغيل أوامر الحساب نفسها باستخدام `./localnet/client.toml`، واستبدل معرف I105 الوحيد للبروتوكول القياسي للمخول المحلي المُنشأ، وتجاوز ملف بيانات الرسوم Taira. احتفظ بالاختيار الصريح للمدفوعات المحلية.
+المُنفِّذ النشط يقرر من يمكنه تعديل كل كائن. تحديث حساب آخر عادةً يتطلب `CanModifyAccountMetadata`؛ المجالات، تعريفات الأصول، NFTs، والمحفزات لديها أذونات بيانات وصفية محددة للأهداف الخاصة بها. إذا لم يمنح Taira الصلاحية المطلوبة، فشغّل أوامر الحساب نفسها باستخدام `./localnet/client.toml` واستبدل معرف I105 القياسي للبروتوكول الخاص بالجهة المخوّلة في الشبكة المحلية المُولَّدة. احتفظ بالاختيار الصريح لدافع الرسوم المحلي.
 
 :::
 
@@ -84,7 +83,7 @@ printf '%s\n' \
 اقرأ أولاً القيمة النهائية، ثم قدم معاملة إزالة منفصلة.
 
 ```bash
-iroha --config ./taira.client.toml --machine ledger account meta get \
+iroha --config ./taira.client.toml --machine account meta get \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile \
   | tee cookbook-profile.json
@@ -94,8 +93,7 @@ jq -e '.version == 1' cookbook-profile.json
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger account meta remove \
+  account meta remove \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile
 ```
@@ -107,10 +105,10 @@ iroha --config ./taira.client.toml \
 بعد إجراء المعاملة المحددة، يجب على `meta get` إرجاع الكائن مع `version: 1`. بعد الإزالة، يجب ألا يُرجع البحث المباشر أي قيمة:
 
 ```bash
-iroha --config ./taira.client.toml --machine ledger account get \
+iroha --config ./taira.client.toml --machine account get \
   --id "$TAIRA_ACCOUNT_ID" > /dev/null
 
-if iroha --config ./taira.client.toml --machine ledger account meta get \
+if iroha --config ./taira.client.toml --machine account meta get \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile; then
   printf '%s\n' 'metadata key still exists' >&2
@@ -133,8 +131,8 @@ fi
 
 ## المصدر والمستندات ذات الصلة {#source-and-related-docs}
 
-- [اختبارات تكامل استعلام البيانات الوصفية عند نسخة التعليمات البرمجية المثبتة](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/queries/metadata.rs)
-- [Python SDK منشئو المعاملات في إصدار الشيفرة المصدرية المثبت](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/README.md)
+- [اختبارات تكامل استعلام البيانات الوصفية عند نسخة التعليمات البرمجية المثبتة](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/queries/metadata.rs)
+- [Python SDK منشئو المعاملات في إصدار الشيفرة المصدرية المثبت](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/README.md)
 - [البيانات الوصفية](/ar/blockchain/metadata.md)
 - [البيانات الوصفية وخيارات تخزين سجل البلوكشين](/ar/guide/configure/metadata-and-store-assets.md)
 - [مرجع التعليمات](/ar/reference/instructions.md)

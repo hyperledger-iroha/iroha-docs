@@ -1,41 +1,28 @@
 ---
 translation_locale: am
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: f1ea542f7a710830cd32465d141db8452e6418d426500995b9df7c9c4e1fd597
+translation_source_hash: ca6fd12e33df43b73a72dd6327133115aa44256cf579387c11bf0693797bf96e
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # ስማርት ውል ይገንቡ እና ያሰማሩ {#build-and-deploy-a-smart-contract}
 
 ## ውጤት {#outcome}
 
-የ Kotodama V1 ውል ይፈትሹ እና ያጠናቅሩ፣ ይፋዊ የመግቢያ ነጥቡን በአገር ውስጥ ያስፈጽሙ፣ የተረጋገጠውን IVM አርቲፋክት ያሰማሩ፣ የተዘረጋውን የመግቢያ ነጥብ አስመስለው እና በግብይቱ ፊርማ መለያ የተከፈለውን ግልጽ የክፍያ ዋጋ ግምት ያስገቡ።
+የ Kotodama V1 ውል ይፈትሹ እና ያጠናቅሩ፣ ይፋዊ የእይታ ተግባሩን በአገር ውስጥ ያሂዱ፣ የተረጋገጠውን IVM አርቲፋክት በግልጽ በተመረጡና በፈቃድ ባለቤቱ በሚከፈሉ ክፍያዎች ያሰማሩ፣ እና የተሰማራውን የእይታ ተግባር በ Torii በኩል ያንብቡ።
 
 ## ቅድመ ሁኔታዎች {#prerequisites}
 
-- በፕሮቶኮል ማጠናቀቂያ `0010c5a70039eac101a4846499ba9ceaf43eb65c`፣ Rust እና ጭነት ላይ የ Iroha ምንጭ-ኮድ የሚሰራ ቅጂ።
-- የአሁኑ `iroha` CLI እና በገንዘብ የተደገፈ Taira ደንበኛ ከ[ከ Taira ጋር ይገናኙ](./connect-to-taira.md)።
-- በ `IROHA_CONFIG` እና `IROHA_PRIVATE_KEY_FILE` ውስጥ ያሉ ፍፁም መንገዶች። የቁልፍ ፋይሉ በባለቤትነት የተያዘ፣ ነጠላ-አገናኝ መደበኛ ፋይል ከሞድ `0600` ጋር መሆን አለበት። የማሰማራት አጋዥው ሆን ብሎ ምንም የመስመር ውስጥ የግል-ቁልፍ ክርክር የለውም።
-- Taira የኦፕሬተር ማጽደቅ. የኮንትራት ኮድ ምዝገባ `CanRegisterSmartContractCode` ያስፈልገዋል፣ እና የተጠበቁ ማሰማራቶች የአስተዳደር ባለቤትነት እና ድንጋጌን ሊጠይቁ ይችላሉ። Taira ያንን መዳረሻ ካልሰጠ፣ የብሎክቼይን ጀነሲስ ፈቃዱን በሚሰጥ በተፈጠረ የአካባቢ አውታረ መረብ ላይ ማሰማራቱን ያከናውኑ።
+- በፕሮቶኮል ማጠናቀቂያ `c8c872461e92f04325c350cdd952f4276e96f9dc`፣ Rust እና ጭነት ላይ የ Iroha ምንጭ-ኮድ የሚሰራ ቅጂ።
+- የአሁኑ `iroha` CLI እና `musubi` (በሚሰራው የምንጭ-ኮድ ቅጂ ውስጥ እንደ `cargo run -p musubi --` የሚሄድ)፣ እንዲሁም በገንዘብ የተደገፈ Taira ደንበኛ ከ[ከ Taira ጋር ይገናኙ](./connect-to-taira.md)።
+- በ`IROHA_CONFIG` ውስጥ ፍፁም መንገድ። የ Musubi የአውታረ መረብ ትስስር የዚህን የደንበኛ ፋይል ማጣቀሻ ያከማቻል እና ማሰማራቱን በዚያ ፋይል የመለያ ቁልፍ ይፈርማል።
+- የተለዋጭ ስም ስልጣን። አስፈፃሚው ለትክክለኛው የውል ተለዋጭ ስም ወይም ለወላጅ ወሰኑ `CanManageAccountAlias` ይፈልጋል፦ ለ`name::domain.dataspace` ባለቤት የሆነው ጎራ፣ ወይም ለ`name::dataspace` የውሂብ ቦታው። የተመዘገቡ መለያዎች የተለየ የኮድ ምዝገባ ፈቃድ አያስፈልጋቸውም፣ እና የተጠበቁ የስም ቦታዎች የአውታረ መረቡን የአስተዳደር የስራ ሂደትም ይጠይቃሉ። ምሳሌዎቹ `cookbook_tuple::universal` ይጠቀማሉ፤ በ Taira ላይ በባለቤትነት በያዙት ጎራ ውስጥ ባለ ተለዋጭ ስም ይተኩት፣ ወይም ጀነሲሱ የተለዋጭ ስም ወሰኑን በሚሰጥ የመነጨ የአካባቢ አውታረ መረብ ላይ ያሰማሩ።
 
 ```bash
-TORII_URL=https://taira.sora.org
 IROHA_SOURCE=/absolute/path/to/iroha
 IROHA_CONFIG=/absolute/path/to/taira.client.toml
-IROHA_PRIVATE_KEY_FILE=/absolute/path/to/taira-private-key.txt
-test -n "$TAIRA_ACCOUNT_ID"
-test -f "$IROHA_PRIVATE_KEY_FILE"
-
-CHAIN_ID="$({
-  python3 - "$IROHA_CONFIG" <<'PY'
-import sys
-import tomllib
-
-with open(sys.argv[1], "rb") as config_file:
-    print(tomllib.load(config_file)["chain"])
-PY
-})"
+test -f "$IROHA_CONFIG"
 ```
 
 ## እርምጃዎች {#steps}
@@ -46,12 +33,12 @@ PY
 
 ```bash
 cd "$IROHA_SOURCE"
-mkdir -p ./contracts ./build/deployment
+mkdir -p ./contracts ./build
 cp ./crates/kotodama_lang/src/samples/tuple_return_demo.ko \
   ./contracts/tuple_return_demo.ko
 ```
 
-ሙሉው ምንጭ ትንሽ ነው እና የአሁኑን `seiyaku`/`kotoage` አገባብ ይጠቀማል -
+ሙሉው ምንጭ ትንሽ ነው፤ አንድ የግል ረዳት `fn` እና ማንኛውንም ጠሪ በግልጽ የሚፈቅድ አንድ ይፋዊ ተነባቢ-ብቻ `view fn` ይዟል፦
 
 ```kotodama
 seiyaku TupleReturnDemo {
@@ -60,7 +47,7 @@ seiyaku TupleReturnDemo {
         return t;
     }
 
-    kotoage fn compute() -> (int, int) authorize("Entry") {
+    view fn compute() authorize(anyone) -> (int, int) {
         let p = pair(a: 3, b: 5);
         return (p.0, p.1);
     }
@@ -72,16 +59,16 @@ Kotodama Iroha ቨርቹዋል ማሽን እና የአሁኑን ABI ያነጣጠ
 ### 2. አርቲፋክቱን ይፈትሹ፣ ይገንቡ እና ያረጋግጡ {#_2-check-build-and-verify-the-artifact}
 
 ```bash
-cargo run -p ivm --bin koto -- \
+cargo run -p kotodama_toolchain --bin koto -- \
   check ./contracts/tuple_return_demo.ko
 
-cargo run -p ivm --bin koto -- \
+cargo run -p kotodama_toolchain --bin koto -- \
   build \
   --out ./build/tuple_return_demo.to \
   --manifest-out ./build/tuple_return_demo.manifest.json \
   ./contracts/tuple_return_demo.ko
 
-cargo run -p ivm --bin koto -- \
+cargo run -p kotodama_toolchain --bin koto -- \
   build \
   --out ./build/tuple_return_demo.to \
   --manifest-out ./build/tuple_return_demo.manifest.json \
@@ -93,82 +80,90 @@ cargo run -p ivm --bin koto -- \
 
 ### 3. ባይት ኮዱን በአገር ውስጥ ያሂዱ {#_3-run-the-bytecode-locally}
 
-`compute` ይፋዊ `kotoage` የመግቢያ ነጥብ ነው።. ለግብይት ሳያስገቡ ወይም ሳይከፍሉ በአካባቢያዊ የሙከራ አብነቶች ላይ በሚፈጽመው በ`debug-call` ያሂዱት።
+`compute` ይፋዊ ተነባቢ-ብቻ `view fn` ነው። ግብይት ሳያስገቡ ወይም ለግብይት ሳይከፍሉ የተጠናቀረውን ባይት ኮድ በአማራጭ የሙከራ አብነቶች ላይ በአገር ውስጥ በሚያስፈጽመው በ`debug-view` ያሂዱት።
 
 ```bash
-iroha --config "$IROHA_CONFIG" --machine contract debug-call \
+iroha --config "$IROHA_CONFIG" --machine contract debug-view \
   --code-file ./build/tuple_return_demo.to \
   --entrypoint compute \
-  > ./build/local-call.json
+  > ./build/local-view.json
 
 jq -e '.ok == true and .result == ["3", "5"]' \
-  ./build/local-call.json
+  ./build/local-view.json
 ```
 
 Kotodama ኢንቲጀሮች እንደ JSON ሕብረቁምፊዎች ይተረጎማሉ፣ ስለዚህ የተገለፀው ቱፕል `["3", "5"]` ነው።
 
-### 4. በአገሬው ተወላጅ ረዳት በኩል ያሰማሩ {#_4-deploy-through-the-native-helper}
+### 4. የተረጋገጠውን አርቲፋክት በ Musubi ያሰማሩ {#_4-deploy-the-verified-artifact-with-musubi}
 
-ረዳቱ የባይት ኮድ ቁርጥራጮችን ይሰቅላል፣ የተፈረመውን ቴክኒካል ማኒፌስት ይመዘግባል እና አንድ `CommitContractDeployment` ክዋኔ ያቀርባል። እያንዳንዱን ግብይት ክፍያ ይጠቅሳል እና የተመረጠውን ከፋይ ወይም የግብይት ማስፈጸሚያ ወጪ ገደብ የሚቀይር የክፍያ ዋጋ ግምት ውድቅ ያደርጋል።
+`iroha contract` ውሎችን ይፈትሻል፣ የእይታ ተግባሮቻቸውን ያሂዳል እና ስህተቶቻቸውን ያርማል፣ ነገር ግን አያሰማራቸውም፤ ስለዚህ የ Taira ማሰማራቶች በ Musubi በኩል ይከናወናሉ። የማሰማራት አገልግሎቱ የባይት ኮድ ቁርጥራጮቹን ይሰቅላል፣ የተረጋገጠውን ቴክኒካል ማኒፌስት ይመዘግባል እና አንድ `CommitContractDeployment` ክዋኔ ያቀርባል። ለእያንዳንዱ ግብይት የክፍያ ዋጋ ግምት ያወጣል፣ የተመረጠውን ከፋይ፣ የስፖንሰር ክለሳ ወይም የግብይት ማስፈጸሚያ ወጪ ገደብ የሚቀይር የክፍያ ዋጋ ግምት ውድቅ ያደርጋል፣ እና የተቆለፈው የጥቅል ግንባታ የአርቲፋክቱን የኮድ እና የ ABI ሃሾች እንደገና ካስገኘ በኋላ ብቻ አስቀድሞ የተገነባውን አርቲፋክት ያሰማራል። በ Kagami በሚተዳደር የአካባቢ አውታረ መረብ ላይ በምትኩ `kagami contract deploy` `./build/tuple_return_demo.to`ን በ`--alias cookbook_tuple::universal --json` ያሰማራል፤ ደረሰኙ በ`.receipt` ስር ይገኛል፣ እና `kagami context show` እንደ `IROHA_CONFIG` የሚያገለግለውን የደንበኛ ውቅር ያትማል።
 
 ```bash
-printf '%s\n' \
-  '{"payer":"authority","value":{"charge_limits":[],"gas_limit":1500000}}' \
-  > ./build/fee-payment.json
+cat > ./contracts/Musubi.toml <<'TOML'
+manifest-version = 1
 
-cargo run -p iroha_cli --bin ivm_contract_deploy -- \
-  --torii-url "$TORII_URL" \
-  --chain-id "$CHAIN_ID" \
-  --authority "$TAIRA_ACCOUNT_ID" \
-  --private-key-file "$IROHA_PRIVATE_KEY_FILE" \
-  --code-file ./build/tuple_return_demo.to \
-  --contract-alias cookbook_tuple::universal \
-  --fee-payment-json ./build/fee-payment.json \
-  --out-dir ./build/deployment \
+[package]
+namespace = "local"
+name = "cookbook-tuple"
+version = "0.1.0"
+edition = "1"
+abi-version = 1
+
+[[contract]]
+name = "tuple_return_demo"
+path = "tuple_return_demo.ko"
+TOML
+
+cargo run -p musubi -- --manifest-path ./contracts/Musubi.toml check
+
+cargo run -p musubi -- --manifest-path ./contracts/Musubi.toml \
+  network configure taira \
+  --config "$IROHA_CONFIG" \
+  --fee-payer authority \
+  --contract tuple_return_demo \
+  --alias cookbook_tuple::universal
+
+cargo run -p musubi -- --manifest-path ./contracts/Musubi.toml --format json \
+  deploy --network taira \
+  --contract tuple_return_demo \
+  --artifact ./build/tuple_return_demo.to \
+  --artifact-manifest ./build/tuple_return_demo.manifest.json \
   > ./build/deployment.json
 
-jq '{contract_address, code_hash_hex, final, fee_quotes}' \
+jq '.data.receipt | {contract_address, code_hash, stored_artifact_matches}' \
   ./build/deployment.json
 ```
 
-ባዶው `charge_limits` ጥያቄ የተቀዳ የንብረት መለያ አይደለም ረዳቱ ከመፈረሙ በፊት ትክክለኛውን የቀጥታ የክፍያ ዋጋ ግምት ይቀበላል። የተመለሰውን የክፍያ ንብረት አሁን ካለው የቴስትኔት የገንዘብ ድጋፍ አገልግሎት ምላሽ ጋር ያወዳድሩ። የኮንትራት ጥሪዎች የክፍያ ምርጫን የሚቀበሉት በተተየበው የቀጥታ የክፍያ ዋጋ ግምት ብቻ ነው። `gas_asset_id` የግብይት ሜታዳታ የመጀመሪያ ልቀት ውል አካል አይደለም።.
+ትስስሩ `--fee-payer authority` ይጠቀማል፤ Musubi ከመፈረሙ በፊት ትክክለኛውን ክፍያ በ Taira የክፍያ ንብረት የሚገልጽ የክፍያ ዋጋ ግምት ያቀርባል። የተመለሰውን የክፍያ ንብረት የአሁኑ የቴስትኔት የገንዘብ ድጋፍ አገልግሎት ፖሊሲ ከሚያትመው ጋር ያወዳድሩ። የኮንትራት ጥሪዎች የክፍያ ምርጫን የሚቀበሉት ዓይነቱ በተገለጸው የቀጥታ የክፍያ ዋጋ ግምት በኩል ብቻ ነው፤ `gas_asset_id` የግብይት ሜታዳታ የመጀመሪያ ልቀት ውል አካል አይደለም።
 
-### 5. የተሰማራውን የመግቢያ ነጥብ ማስመሰል እና ጥሪ {#_5-simulate-and-call-the-deployed-entrypoint}
+### 5. የተሰማራውን የእይታ ተግባር ያንብቡ {#_5-read-the-deployed-view}
 
-ማስመሰል ይፋዊ የመግቢያ ነጥቡን በ Torii ላይ ያለ ማስገባት ያካሂዳል። የሚከተለው ቴክኒካል ጥሪ ግብይት ነው እና ስለዚህ የፍቃድ ዋና ክፍያ ከፋይን በግልፅ ይመርጣል። ሁለቱም ትዕዛዞች የ1,500,000 የግብይት ማስፈጸሚያ ወጪ ገደብን ያስራሉ።
+`contract view` ተነባቢ-ብቻ የሆነውን የመግቢያ ነጥብ ያለ ግብይት ወይም ክፍያ በ Torii ላይ ያስፈጽማል። የእይታ ተግባር የግብይት ቅጽ የለውም፦ Torii በቴክኒካል ጥሪ መንገዶቹ ላይ የሚቀርብን የእይታ ተግባር መራጭ ውድቅ ያደርጋል።
 
 ```bash
-iroha --config "$IROHA_CONFIG" --machine contract call \
-  --simulate \
+iroha --config "$IROHA_CONFIG" --machine contract view \
   --contract-alias cookbook_tuple::universal \
   --entrypoint compute \
   --gas-limit 1500000 \
-  > ./build/deployed-simulation.json
+  > ./build/deployed-view.json
 
 jq -e '.ok == true and .result == ["3", "5"]' \
-  ./build/deployed-simulation.json
-
-iroha --config "$IROHA_CONFIG" \
-  --machine \
-  --fee-payer authority \
-  contract call \
-  --contract-alias cookbook_tuple::universal \
-  --entrypoint compute \
-  --gas-limit 1500000 \
-  --wait \
-  --timeout-ms 60000 \
-  > ./build/deployed-call.json
-
-jq -e '.terminal_kind == "Applied"' ./build/deployed-call.json
+  ./build/deployed-view.json
 ```
 
 ## አረጋግጥ {#verify}
 
-ተለዋጭ ስሙን ይፍቱ፣ የተመለሰውን ኮድ ምስጠራ ሃሽ በመጠቀም በሰንሰለት ላይ ያለውን ቴክኒካል ማኒፌስት ያምጡ እና ተመሳሳዩን የህዝብ መግቢያ ነጥብ በአንድ ፕሮቶኮል-መደበኛ አድራሻ አስመስለው -
+ተለዋጭ ስሙን ይፍቱ፣ Torii ለተሰማራው የእይታ ተግባር በሚያሳውቀው የኮድ ምስጠራ ሃሽ በሰንሰለት ላይ ያለውን ቴክኒካል ማኒፌስት ያምጡ፣ እና ተመሳሳዩን የእይታ ተግባር በአንድ ፕሮቶኮል-መደበኛ አድራሻ ያሂዱ፦
 
 ```bash
-CODE_HASH="$({ jq -er '.code_hash_hex' ./build/deployment.json; })"
-CONTRACT_ADDRESS="$({ jq -er '.contract_address' ./build/deployment.json; })"
+CONTRACT_ADDRESS="$({
+  jq -er '.data.receipt.contract_address' ./build/deployment.json
+})"
+CODE_HASH="$({ jq -er '.code_hash_hex' ./build/local-view.json; })"
+DEPLOYED_CODE_HASH="$({
+  jq -er '.code_hash_hex' ./build/deployed-view.json
+})"
+test "$DEPLOYED_CODE_HASH" = "$CODE_HASH"
 
 RESOLVED_ADDRESS="$({
   iroha --config "$IROHA_CONFIG" --machine \
@@ -178,36 +173,36 @@ RESOLVED_ADDRESS="$({
 test "$RESOLVED_ADDRESS" = "$CONTRACT_ADDRESS"
 
 iroha --config "$IROHA_CONFIG" contract manifest get \
+  --dataspace-id 0 \
   --code-hash "$CODE_HASH" \
   --out ./build/on-chain-manifest.json
 
-iroha --config "$IROHA_CONFIG" --machine contract call \
-  --simulate \
+iroha --config "$IROHA_CONFIG" --machine contract view \
   --contract-address "$CONTRACT_ADDRESS" \
   --entrypoint compute \
-  > ./build/address-simulation.json
+  > ./build/address-view.json
 
 jq -e '.ok == true and .result == ["3", "5"]' \
-  ./build/address-simulation.json
+  ./build/address-view.json
 ```
 
-ማሰማራት የሚጠናቀቀው ተለዋጭ ስሙ ወደ ተመለሰው አድራሻ ሲፈታ ብቻ ነው፣ ቴክኒካል ማኒፌስት በተመሳሳይ ኮድ ምስጠራ ሃሽ፣ አካባቢያዊ እና Torii ማስመሰያዎች ይመለሳሉ `["3", "5"]`፣ እና የቀረበው ቴክኒካል ጥሪ `Applied` ሲደርስ ብቻ ነው።
+ማሰማራት የሚጠናቀቀው የማሰማራት ደረሰኙ የተከማቸውን አርቲፋክት እንደተረጋገጠ ሲያሳውቅ፣ ተለዋጭ ስሙ ወደ ተመለሰው አድራሻ ሲፈታ፣ ቴክኒካል ማኒፌስቱ በተመሳሳይ የኮድ ምስጠራ ሃሽ ስር ሊነበብ ሲችል፣ እና የአካባቢው እና የ Torii የእይታ ተግባራት `["3", "5"]` ሲመልሱ ብቻ ነው።
 
 ## መላ ፍለጋ {#troubleshooting}
 
-- `CanRegisterSmartContractCode` ውድቀቶች የ Taira ኦፕሬተር ስጦታ ወይም በlocalnet ላይ የጀነሲስ/ቡት ማሰሪያ ለውጥ ያስፈልጋቸዋል።. መደበኛ መለያ ይህን ፍቃድ ለራሱ ሊሰጥ አይችልም።
-- አስተዳደር ወይም የተጠበቀ-ሌይን አለመቀበል ማለት ማሰማራቱ በዚያ አውታረ መረብ የሚፈለገውን ትክክለኛ የማጽደቅ ባህሪ ያስፈልገዋል ማለት ነው። የማጽደቅ ዝርዝሩን ማስተባበር; የመለያ መታወቂያዎችን አይፈጠሩ።
-- ቴክኒካል ማኒፌስት ወይም ABI አለመመጣጠን ማለት የባይት ኮድ፣ ቴክኒካል ማኒፌስት እና የኖድ ሶፍትዌር ማስፈጸሚያ አካባቢ አንድ አይነት አርቲፋክት አይገልጹም ማለት ነው። በተሰካው የምንጭ-ኮድ ክለሳ በ`--verify` እንደገና ይገንቡ።
+- `deployment authority lacks CanManageAccountAlias`፣ ወይም የአስፈፃሚው `authority is not permitted to manage contract alias`፣ ማለት መለያው ያንን ተለዋጭ ስም ማሰር አይችልም ማለት ነው። በባለቤትነት በያዙት ጎራ ውስጥ ያለ ተለዋጭ ስም ይጠቀሙ፣ ወይም ትክክለኛውን የተለዋጭ ስም የፈቃድ ስጦታ ወይም የጎራውን ወይም የውሂብ ቦታውን የፈቃድ ስጦታ ከዚያ ወሰን ባለቤት ያግኙ፤ በlocalnet ላይ በጀነሲስ ውስጥ ይስጡት።
+- የተጠበቀ የስም ቦታ አለመቀበል ማለት የተለዋጭ ስሙ የስም ቦታ በአስተዳደር ቁጥጥር ስር ነው ማለት ነው። የአጽዳቂ መለያ መታወቂያዎችን መዘርዘር የማጽደቅ ማስረጃ አይደለም፤ ለዚያ የስም ቦታ የአውታረ መረቡን የአስተዳደር የስራ ሂደት (`iroha app gov deploy propose`) ይጠቀሙ፣ ወይም ከዚያ የስም ቦታ ውጭ ያለ ተለዋጭ ስም ይምረጡ።
+- ቴክኒካል ማኒፌስት ወይም ABI አለመመጣጠን ማለት የባይት ኮድ፣ ቴክኒካል ማኒፌስት እና የኖድ ሶፍትዌር ማስፈጸሚያ አካባቢ አንድ አይነት አርቲፋክት አይገልጹም ማለት ነው። በተሰካው የምንጭ-ኮድ ክለሳ እንደገና ይገንቡ፣ ከዚያም ግንባታውን በ`--verify` እንደገና ያሂዱ።
 - `fee quote changed ... gas bound` ማለት የተጠየቀው የተተየበ ዓላማ እና የቀጥታ የክፍያ ዋጋ ግምት አይስማሙም ማለት ነው።. የተፈረመ ግብይት ከመቀየር ይልቅ እንደገና ቅድመ-በረራ.
-- የማሰማራት አጋዥው አውታረ መረብ ከማስገባቱ በፊት የመስመር ውስጥ ቁልፎችን፣ የሚፈቀዱ የቁልፍ-ፋይል ሁነታዎችን፣ ሲምሊንኮችን እና የተገናኙ ፋይሎችን ማባዛት ውድቅ ያደርጋል።
-- የእይታ ብቻ የመግቢያ ነጥብ ስህተት ማለት `compute` በተሳሳተ የትዕዛዝ ቤተሰብ በኩል ተላልፏል። ይህ ናሙና `kotoage` ያውጃል፣ ስለዚህ የቴክኒክ ጥሪ ማስመሰልን ወይም ማስረከብን ይጠቀሙ።
+- የተቋረጠ ማሰማራት የተፈረመውን እቅዱን በሂደት መዝገብ (journal) ውስጥ ያስቀምጣል። አዲስ እቅድ ከመፈረም ይልቅ በ`musubi deploy --resume <JOURNAL>` መልሰው ያስቀጥሉት።
+- `is read-only and cannot be invoked as a transaction` ወይም `is not a kotoage or lifecycle entrypoint` ማለት `compute` ወደ ቴክኒካል ጥሪ ትዕዛዝ ተልኳል ማለት ነው። ይህ ናሙና `view fn` ያውጃል፣ ስለዚህ በአገር ውስጥ `debug-view` እና በ Torii ላይ `view` ይጠቀሙ።
 - የኮንትራት ጥሪዎች አዎንታዊና ዓይነቱ የተገለጸ የ gas ገደብ ይፈልጋሉ። የመጀመሪያ ልቀት ጥሪ ኮንትራት ከፍተኛ-ደረጃ gas ወይም የክፍያ-ንብረት ሜታዳታን ይከለክላል።
 
 ## ምንጭ እና ተዛማጅ ሰነዶች {#source-and-related-docs}
 
-- [Kotodama V1 በተሰካው የምንጭ-ኮድ ክለሳ ላይ የትእዛዝ ትግበራ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
-- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የቱፕል-መመለሻ ምንጭ ናሙና](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
-- [ቤተኛ ማሰማራት ረዳት በተሰካው የምንጭ-ኮድ ክለሳ ላይ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የኮንትራት ውህደት ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
+- [Kotodama V1 በተሰካው የምንጭ-ኮድ ክለሳ ላይ የትእዛዝ ትግበራ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_toolchain/src/bin/koto.rs)
+- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የቱፕል-መመለሻ ምንጭ ናሙና](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
+- በተሰካው የምንጭ-ኮድ ክለሳ ላይ ያሉት [የ Musubi የማሰማራት ትዕዛዝ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/musubi/src/command_deploy.rs) እና [ቤተኛ የውል ማሰማራት አገልግሎት](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_contract_deploy/src/lib.rs)
+- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የኮንትራት ውህደት ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/contracts.rs)
 - [ብልጥ ኮንትራቶች](/am/blockchain/smart-contracts.md)
 - [CLI ማጣቀሻ](/am/get-started/operate-iroha-via-cli.md)

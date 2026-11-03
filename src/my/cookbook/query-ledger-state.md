@@ -1,22 +1,22 @@
 ---
 translation_locale: my
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: 68ef931f3d37b9bd40fcf61c9a77313539ca0bd648405834d161a018debb491a
+translation_source_hash: 866b7d3ca37be67878f6f319ce0b0e27eac52c581decad1f46096ef75ad1b10f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # မေးမြန်းချက် blockchain ledger ပြည်နယ် {#query-ledger-state}
 
 ## ရလဒ် {#outcome}
 
-Taira JSON အရင်းအမြစ်များကိုဖတ်ပြီး ပရိုဂျက်ပါ၊ ထို့နောက် filter များ၊ ယုတ္တိတန်သော pagination, sorting, fetch အရွယ်အစားများနှင့် forward-only cursor ဆက်လက်မှုရှိသည့် Iroha typeed queries ကိုအသုံးပြုပါ။ သင်သည် server သည် forwarded `--select` tuple ကို အကဲဖြတ်မပေးမီက selector projection ကို အားကိုးခြင်းမှလည်း ရှောင်ရှားနိုင်ပါသည်။
+Taira JSON အရင်းအမြစ်များကို ဖတ်ပြီး project လုပ်ပါ၊ ထို့နောက် CLI နှင့် Rust SDK မှ Torii collection query များကို filter များ၊ sorting၊ server ဘက်ခြမ်း projection၊ စာမျက်နှာ ကန့်သတ်ချက်များနှင့် opaque `next_cursor` ဆက်လက်ဖတ်ရှုမှုတို့ဖြင့် အသုံးပြုပါ။ သင်သည် စာရင်းပြုစုခြင်းကို လက်မှတ်ထိုးထားသော typed query များဖြင့် မပြုလုပ်ဘဲ ထားရှိမည်ဖြစ်ပြီး အကြောင်းမှာ ယင်း query များသည် စာရင်းများကို filter၊ sort သို့မဟုတ် project မလုပ်သောကြောင့် ဖြစ်သည်။
 
 ## လိုအပ်ချက်များ {#prerequisites}
 
 - `curl`, `jq`, Node.js 24 နှင့် လျှပ်စစ် current `iroha` CLI တို့ကို တင်ပြထားသည်။
 - ဖတ်လို့သာရတဲ့ Taira ဝင်ခွင့်။
-- လက်မှတ်ရေးထိုးထားသော typeed query နမူနာများအတွက် Taira အတွက် client config သို့မဟုတ် generated local network ကို အသုံးပြုပါ။
+- CLI ဥပမာများအတွက် Taira သို့မဟုတ် ဖန်တီးထားသော ဒေသတွင်းကွန်ရက်တစ်ခုအတွက် client ၏ config တစ်ခု။
 - Rust နမူနာမှာ ပရိုဂျက်တစ်ခုဟာ ရည်မှန်းချက်ကွန်ရက်နဲ့အတူတူ Iroha အရင်းအမြစ် ပြင်ဆင်မှုကို ချိတ်ဆက်ထားတာပါ။
 
 ## ခြေလှမ်း {#steps}
@@ -30,25 +30,23 @@ Resource routes တွေဟာ dashboard နဲ့ smoke checks အတွက်
 ```bash [curl]
 curl -fsS -H 'Accept: application/json' --get \
   https://taira.sora.org/v1/domains \
-  --data-urlencode 'sort=id:asc' \
+  --data-urlencode 'sort=id' \
   --data-urlencode 'limit=5' \
-  --data-urlencode 'offset=0' \
-  --data-urlencode 'count_mode=exact' \
-  | jq '{total, ids: [.items[].id]}'
+  --data-urlencode 'include_total=true' \
+  | jq '{total, next_cursor, ids: [.items[].id]}'
 ```
 
 ```js [Node.js]
 const root = 'https://taira.sora.org'
-const limit = 5
 const seen = new Set()
+let cursor = null
 
-for (let offset = 0; ; offset += limit) {
+do {
   const url = new URL('/v1/domains', root)
   url.search = new URLSearchParams({
-    sort: 'id:asc',
-    limit: String(limit),
-    offset: String(offset),
-    count_mode: 'exact',
+    sort: 'id',
+    limit: '5',
+    ...(cursor ? { cursor } : {}),
   })
 
   const response = await fetch(url, {
@@ -63,106 +61,90 @@ for (let offset = 0; ; offset += limit) {
     seen.add(domain.id)
     console.log(domain.id)
   }
-  if (page.items.length < limit || seen.size >= page.total) break
-}
+  cursor = page.next_cursor
+} while (cursor)
 ```
 
 :::
 
-ဒီ HTTP မျက်နှာပြင်မှာ `limit` နဲ့ `offset` တို့ကို သုံးပါတယ်။ လမ်းကြောင်းက စျေးသက်သာတဲ့ ရေတွက်မှု mode ကိုသုံးတဲ့အခါ လွဲချော်ထားတဲ့ (သို့) နယ်နိမိတ်သတ်မှတ်ထားတဲ့ `total` ကို ပုံမှန်အတိုင်း ပြုလုပ်ပါ။
+ဤ HTTP မျက်နှာပြင်သည် `limit` နှင့် opaque `next_cursor` ဖြင့် စာမျက်နှာခွဲသည်။ ၎င်းကို `null` ဖြစ်သည်အထိ မပြောင်းလဲဘဲ `cursor` အဖြစ် ပြန်ပို့ပါ။ `total` သည် သင် `include_total=true` ကို တောင်းဆိုမှသာ ပေါ်လာပြီး ၎င်းအတွက် full scan တစ်ခု ကုန်ကျသည်။
 
-### (၂) CLI စာမေးပွဲကို စစ်ဆေးပြီး အစုလိုက်ဖြည့်ပါ။ {#_2-filter-and-batch-a-typed-cli-query}
+### (၂) CLI ဖြင့် collection တစ်ခုကို filter လုပ်ပါ {#_2-filter-a-collection-with-the-cli}
 
-CLI သည် ရိုက်နှိပ်နိုင်သော iterable query ကို serialize လုပ်ပြီး server ဆက်တိုက် cursors များကို အတွင်းပိုင်းတွင်လိုက်နာသည်။ ဤနေရာတွင် ယုတ္တိတန်သောရလဒ်သည်တစ်တန်းတည်းဖြင့်သာ ကန့်သတ်ထားပြီး `--fetch-size 1` သည်ပြန်လည်ခရီးစဉ်တစ်ခုလျှင်ရရှိသည့် အမြင့်ဆုံး batch ကိုထိန်းချုပ်သည်။
+CLI သည် filter၊ projection နှင့် စာမျက်နှာအရွယ်အစားကို collection endpoint သို့ ပေးပို့ပြီး စာမျက်နှာတစ်ခု `{items, next_cursor}` ကို ထုတ်ပြသည်။ `next_cursor` ကို `null` ဖြစ်သည်အထိ ဆက်လိုက်ရန် `--all` ကို ထည့်ပါ။
 
 ```bash
-DOMAIN_PREDICATE='{"equals":[{"field":"id","value":"wonderland.universal"}]}'
+DOMAIN_FILTER='id = "universal.universal"'
 
 iroha --config ./localnet/client.toml \
-  ledger domain list filter "$DOMAIN_PREDICATE" \
-  --limit 1 \
-  --offset 0 \
-  --fetch-size 1
+  ledger domain list \
+  --filter "$DOMAIN_FILTER" \
+  --select id \
+  --limit 1
 ```
 
-စာမျက်နှာရှာဖွေခြင်းမတိုင်မီ Filtering ဖြစ်ပေါ်သည်။ query-specific typeed predicate များကိုအသုံးပြုပါ။ အကောင့်တစ်ခု သို့မဟုတ် အရင်းအမြစ်အတွက် predicate ကို domain တစ်ခုအတွက် ဘေးကင်းစွာ ပြန်လည်သုံးလို့ မရပါ။
+Filtering သည် စာမျက်နှာခွဲခြင်းမတိုင်မီ ဖြစ်ပေါ်သည်။ collection တစ်ခုစီသည် ၎င်း၏ ကိုယ်ပိုင် field များကိုသာ လက်ခံသည်။ မသိသော field တစ်ခုသည် ဘာနှင့်မျှ မကိုက်ညီခြင်းအစား `invalid_filter` ကို ပြန်ပေးသည်။
 
 ### (၃) တည်ငြိမ်တဲ့ metadata key နဲ့ sort လုပ်ပါ။ {#_3-sort-by-a-stable-metadata-key}
 
-Typed query sorting သည် metadata key တစ်ခုပေါ်တွင် lexicographic ဖြစ်ပါသည်။ ထို key မရှိသော items များသည် software စီမံခန့်ခွဲမှု ပတ်ဝန်းကျင်၏သတ်မှတ်ထားသောအစီအစဉ်ကိုလိုက်နာကြသည်၊ ထို့ကြောင့် စုစည်းမှုတစ်ခုလုံးတွင် အစဉ်အတိုင်း ပြည့်နှက်နေသည့် key ကိုအသုံးပြုပါ။
+collection ၏ စီရန် key များသည် ကြေညာထားသော field များနှင့် `metadata.<key>` ကို လက်ခံသည်။ ကြီးစဉ်ငယ်လိုက်စီရန် key ၏ ရှေ့တွင် `-` ကို ထည့်ပါ။ key မပါသော row များသည် ငယ်စဉ်ကြီးလိုက် အစီအစဉ်တွင် အရင်ဆုံးနေရာယူပြီး တူညီနေသည့် row များသည် row ၏ အထောက်အထားအတိုင်း စီသောကြောင့် collection တစ်ခုလုံးတွင် တသမတ်တည်း ဖြည့်သွင်းထားသော key ကို အသုံးပြုပါ။
 
 ```bash
 iroha --config ./localnet/client.toml \
   --machine \
-  ledger account list all \
-  --verbose \
-  --sort-by-metadata-key key \
-  --order asc \
+  account list \
+  --sort metadata.key \
   --limit 10 \
-  --offset 0 \
-  --fetch-size 2 \
-  | jq '[.[] | {id, metadata}]'
+  | jq '[.items[] | {id, metadata}]'
 ```
 
-မှတ်ပုံတင်ခံရသူ CLI ပဲခူး `--select` JSON Selector tuple ကို forward လုပ်ပေးတယ် ဒါပေမဲ့ လက်ရှိ lightweight query ကတော့ DSL server က selector ကို evaluate မလုပ်ဘူး။ projection contract ကို build မလုပ်ပါနဲ့။ SDK ပရိုဂျက်ကို ရည်ရွယ်တဲ့ ဆော့ဝဲ အကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင်က ထောက်ပံ့ပြီးနောက်မှသာ ထုတ်လွှင့်ခြင်း (သို့မဟုတ်) validated result client-side project ကို `jq` ဒါမှမဟုတ် JavaScript အထက်ပါအတိုင်းပါ။
+`--select` သည် server ဘက်ခြမ်း projection ဖြစ်သည်- `--select id,metadata` သည် ထို field များကိုသာ ပြန်ပေးပြီး မသိသော field တစ်ခုသည် `invalid_select` ကို ပြန်ပေးသည်။ လက်မှတ်ထိုးထားသော typed query များသည် item အပြည့်အစုံကို အမြဲ ပြန်ပေးသောကြောင့် ၎င်းတို့၏ ရလဒ်များကို အထက်ပါအတိုင်း `jq` သို့မဟုတ် JavaScript ဖြင့် client ဘက်ခြမ်းတွင် project လုပ်ပါ။
 
 ### (၄) Rust iterator ကို opaque cursors တွေကို လိုက်ပါအောင်လုပ်ပါ။ {#_4-let-the-rust-iterator-follow-opaque-cursors}
 
-`Pagination` သည် logical result set ကိုသတ်မှတ်သည်။ `FetchSize` သည် server batch တစ်ခုစီကိုထိန်းချုပ်သည်။ ပြန်လာသော iterator က server-generated cursor ကိုအသုံးပြုပြီး ဆက်လက်တောင်းဆိုချက်များကို ပွင့်လင်းမြင်သာစွာပို့ပေးသည်။
+`limit` သည် စာမျက်နှာအရွယ်အစားကို သတ်မှတ်သည်။ `list` က ပြန်ပေးသော iterator သည် လက်ရှိစာမျက်နှာကို အသုံးပြုပြီးမှသာ server ၏ `next_cursor` ဖြင့် နောက်စာမျက်နှာကို တောင်းဆိုပြီး `take` သည် logical ရလဒ်ကို ကန့်သတ်သည်။ ဤနေရာတွင် `client` သည် `iroha::blocking::Client` ဖြစ်သည်။
 
 ```rust
-use std::num::NonZeroU64;
+use iroha::collections::{Collection, ListQuery, SortKey};
 
-use iroha::data_model::{
-    prelude::FindAssetsDefinitions,
-    query::{
-        builder::QueryBuilderExt as _,
-        parameters::{FetchSize, Pagination},
-    },
-};
+let query = ListQuery::new().sort_by(SortKey::asc("id")).limit(5);
 
-let definitions = client
-    .query(FindAssetsDefinitions::new())
-    .with_pagination(Pagination::new(NonZeroU64::new(25), 0))
-    .with_fetch_size(FetchSize::new(NonZeroU64::new(5)))
-    .execute_all()?;
-
-for definition in definitions {
-    println!("{} {}", definition.id(), definition.name());
+for definition in client.list(Collection::AssetDefinitions, query).take(25) {
+    let definition = definition?;
+    println!("{:?} {:?}", definition.get("id"), definition.get("name"));
 }
 ```
 
-`ForwardCursor` သည် ခွင့်ပြုချက် ချည်နှောင်ထားသည်၊ လုပ်ငန်းစဉ်-ဒေသတွင်းဖြစ်ပြီး ရှေ့သို့သာဖြစ်ပါသည်။ ၎င်းကို ဘယ်တော့မှ မစစ်ဆေးခြင်း၊ ပေါင်းစပ်ခြင်း၊ ခွင့်ပြုမှု မူဝါဒများအကြား မျှဝေခြင်း သို့မဟုတ် Torii ဖြစ်ရပ်များတွင် သယ်ဆောင်နိုင်သော resume token အဖြစ် ဆက်လက်တည်ရှိစေခြင်း။ ကုန်ဆုံးပါကမူ မူလမေးခွန်းကို ရည်ရွယ်ပြီး application အဆင့် စစ်ဆေးရေးမှတ်တိုင်တစ်ခုဖြင့် ပြန်လည်စတင်ပါ။
+`next_cursor` သည် ၎င်း၏ collection၊ path၊ filter နှင့် sort တို့နှင့် ချိတ်ဆက်ထားသော opaque keyset နေရာတစ်ခု ဖြစ်သည်။ ၎င်းကို ဘယ်သောအခါမျှ parse မလုပ်ပါနှင့်၊ ကိုယ်တိုင် မဖန်တီးပါနှင့်၊ မတူညီသော filter သို့မဟုတ် sort ဖြင့်လည်း ပြန်မသုံးပါနှင့်- Torii သည် ၎င်းကို `invalid_cursor` ဖြင့် ငြင်းပယ်သည်။ စာမျက်နှာများကြားတွင် ထည့်သွင်းခြင်း သို့မဟုတ် ဖယ်ရှားခြင်းခံရသော row များကြောင့် နောက်စာမျက်နှာတွင် မသက်ဆိုင်သော row များကို ထပ်မံပြသခြင်း သို့မဟုတ် ကျော်သွားခြင်း ဘယ်သောအခါမျှ မဖြစ်ပါ။
 
 ## စစ်ဆေးပါ {#verify}
 
-အတိအကျ domain filter က `wonderland.universal` ကိုသာ ပြန်ပို့သင့်ပါတယ်။ အောင်မြင်တဲ့ CLI ထွက်ပေါက်ကိုပဲ ရေတွက်တာထက် ရလဒ်ကို စစ်ဆေးပါ။
+အတိအကျ domain filter က `universal.universal` ကိုသာ ပြန်ပို့သင့်ပါတယ်။ အောင်မြင်တဲ့ CLI ထွက်ပေါက်ကိုပဲ ရေတွက်တာထက် ရလဒ်ကို စစ်ဆေးပါ။
 
 ```bash
 iroha --config ./localnet/client.toml \
   --machine \
-  ledger domain list filter "$DOMAIN_PREDICATE" \
-  --limit 1 --offset 0 --fetch-size 1 \
-  | jq -e 'length == 1 and .[0] == "wonderland.universal"'
+  ledger domain list --filter "$DOMAIN_FILTER" --select id --limit 1 \
+  | jq -e '[.items[].id] == ["universal.universal"]'
 ```
 
-Pageed application query တွေအတွက် ID တွေဟာ စာမျက်နှာတွေကြားမှာ ထပ်မဖြစ်အောင် စစ်ဆေးပါ၊ တောင်းဆိုထားတဲ့ ယုတ္တိတန်တဲ့ အကန့်အသတ်ကို ဘယ်တော့မှ မကျော်နိုင်ဘူး၊ သက်တမ်းကုန်သွားပြီးနောက် ကောက်ဆာက မှတ်တမ်းတင်ထားတဲ့ စစ်ဆေးရေးမှတ်တိုင်ကနေ ပြန်လည်စလုပ်ပါ။
+စာမျက်နှာခွဲထားသော application query များအတွက် ID များသည် စာမျက်နှာများအကြား ထပ်မနေကြောင်း၊ တောင်းဆိုထားသော logical ကန့်သတ်ချက်ကို ဘယ်သောအခါမျှ မကျော်လွန်ကြောင်းနှင့် ငြင်းပယ်ခံရသော cursor သည် မှတ်တမ်းတင်ထားသော checkpoint မှ ပြန်လည်စတင်ကြောင်းကိုလည်း စမ်းသပ်ပါ။
 
 ## ပြဿနာဖြေရှင်းခြင်း {#troubleshooting}
 
 - singular query သည် iterable filter, sorting, pagination သို့မဟုတ် fetch parameters ကိုလက်မခံပါ။ ထိုထိန်းချုပ်ချက်များလိုအပ်ပါက သက်ဆိုင်ရာစာရင်းမေးမြန်းမှုကိုအသုံးပြုပါ။
-- `fetch_size` သည် သုညမဟုတ်သော batch အညွှန်းကိန်းဖြစ်ပြီး စုစုပေါင်းရလဒ်ကန့်သတ်ချက်မဟုတ်ပါ။ လက်ရှိအဓိပ္ပာယ်ဖွင့်ဆိုချက်သည် `100` ဖြစ်ပြီး ဆော့ဝဲလုပ်ဆောင်မှု ပတ်ဝန်းကျင်က ၎င်း၏ အများဆုံးထက်တန်ဖိုးများကို ပစ်ပယ်သည်။
-- အမည်မသိ၊ သက်တမ်းကုန်ဆုံးပြီးသား (သို့) နိုင်ငံခြားကော်ဆာကို ရည်ရွယ်ချက်အရ ပြန်လည်သုံးလို့မရပါ။ မေးမြန်းမှုကို ပြန်စတင်ပါ၊ ပွင့်လင်းမြင်သာမှုမရှိတဲ့ တန်ဖိုးကို ပြင်ဆင်ဖို့ မကြိုးစားပါ။
-- metadata sorting က general field sorting မဟုတ်ပါ။ item တစ်ခုချင်းစီမှာ ရွေးချယ်ထားတဲ့ key မပါရင် missing-key order ကို မှတ်တမ်းတင်လိုက်ပါ။ (သို့) အခြားနည်းဗျူဟာတစ်ခုကို ရွေးပါ။
-- CLI က `--select` ကို ခြေရာခံပြီး ရှေ့ဆက်ပေးပေမဲ့ လက်ရှိ ဆာဗာက လွယ်ကူတဲ့ ရွေးချယ်သူ tuple ကို အကဲဖြတ်မထားပါ။ ဖြန့်ဖြူးထားတဲ့ ဆော့ဖ်ဝဲလ် လုပ်ဆောင်မှု ပတ်ဝန်းကျင်အတွက် ဆာဗားဘက်ရွေးချယ်သူ ထောက်ပံ့မှုကို စစ်ဆေးခြင်းမရှိရင် ဖောက်သည်ဘက် ပရိုဂျက်ကို အသုံးချပါ။
-- ကျယ်ပြန့်တဲ့ အကန့်အသတ်မဲ့ မေးမြန်းချက်တွေဟာ ကွန်ရက်မှာ လုပ်ဖော်ကိုင်ဖက်အလုပ်၊ ဖောက်သည် မှတ်ဉာဏ်နဲ့ ညွှန်ပြသူသက်တမ်း အန္တရာယ်ကို မြှင့်တင်ပေးပါတယ်။ သုံးစွဲသူအတွက် သင့်လျော်တဲ့ ယုတ္တိတန်တဲ့ ကန့်သတ်ချက်တစ်ခုနဲ့ ရယူမှုအရွယ်အစားတစ်ခုကို သတ်မှတ်ပါ။
-- အများပြည်သူ JSON အရင်းအမြစ်ပမာဏများနှင့် လက်မှတ်ရေးထိုးထားသော typeed query parameters တို့သည် ဆက်စပ်သော်လည်း လဲလှယ်နိုင်သည့် serialization formats များမဟုတ်ပါ။ Typeed query data container များအတွက် SDK သို့မဟုတ် CLI ကိုသာ ကြိုက်သည်။
+- `limit` သည် စုစုပေါင်းရလဒ် မဟုတ်ဘဲ စာမျက်နှာအရွယ်အစား ဖြစ်သည်- အနည်းဆုံး 1 နှင့် အများဆုံး node ၏ `torii.app_api_max_list_limit` (မူလတန်ဖိုး 500) အထိ ဖြစ်သည်။ Torii ၏ မူလတန်ဖိုးမှာ 100 ဖြစ်သည်။ ထပ်မံဖတ်ရှုရန် `next_cursor`၊ `--all` သို့မဟုတ် SDK iterator ကို လိုက်ပါ။
+- `invalid_cursor` ဆိုသည်မှာ cursor ပုံစံမမှန်ခြင်း သို့မဟုတ် အခြား collection၊ path၊ filter သို့မဟုတ် sort နှင့် သက်ဆိုင်ခြင်းကို ဆိုလိုသည်။ query ကို ပြန်စတင်ပါ။ opaque တန်ဖိုးကို ပြင်ဆင်ရန် မကြိုးစားပါနှင့်။
+- ရွေးချယ်မှုတင်းကျပ်သော filter တစ်ခုသည် null မဟုတ်သော `next_cursor` ပါရှိသည့် တိုတောင်းသော သို့မဟုတ် ဗလာစာမျက်နှာကို ပြန်ပေးနိုင်သည်။ ၎င်းသည် `null` ဖြစ်သည်အထိ ဆက်လိုက်ပါ။
+- `--filter` နှင့် HTTP `filter` parameter တို့သည် `id = "universal.universal"` သို့မဟုတ် `exists(metadata.tier)` ကဲ့သို့ Torii ၏ စာသားသဒ္ဒါကို လက်ခံသည်။ JSON predicate object သည် filter စာသား မဟုတ်သောကြောင့် မမှန်ကန်သော `filter` အဖြစ် မအောင်မြင်ပါ။
+- ကျယ်ပြန့်ပြီး အကန့်အသတ်မဲ့သော query များသည် peer ၏ အလုပ်နှင့် client ၏ memory ကို တိုးစေသည်။ အသုံးပြုသူနှင့် သင့်လျော်သော logical ကန့်သတ်ချက်နှင့် စာမျက်နှာအရွယ်အစားကို သတ်မှတ်ပါ။
+- လက်မှတ်ထိုးထားသော `/v1/query` သည် စာရင်းပြုစုရေး API မဟုတ်ပါ။ ၎င်းသည် singular query များနှင့် filter မပါသော iterable စတင်မှုအနည်းငယ်ကို လက်ခံပြီး `FindDomains` သို့မဟုတ် `FindAssetDefinitions` ကဲ့သို့သော အခြား query များကို `signed_query_shape_not_admitted` ဖြင့် ငြင်းပယ်သည်။ collection endpoint များ၊ CLI `list` command များနှင့် SDK collection reader များသည် filter၊ sort နှင့် cursor သဒ္ဒါ တစ်ခုတည်းကို မျှဝေအသုံးပြုသည်။
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [Cursor-backed pagination integration tests at the pinned source code revision များတွင် စာမျက်နှာပေါင်းစပ်မှု စမ်းသပ်မှုများ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs)
-- [Query Builder နှင့် Selector အပြုအမူများကို pinned source-code ပြင်ဆင်မှု](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs)
-- [Query Parameters and Cursor Model at the pinned source-code revision (ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှု)](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs)
+- [ပုံသေသတ်မှတ်ထားသော commit ရှိ Torii collection query သတ်မှတ်ချက်](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/torii/collection_queries.md)
+- [ပုံသေသတ်မှတ်ထားသော commit ရှိ Rust collection ဖတ်ရှုမှုများနှင့် cursor iterator](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/src/collections.rs)
+- [ပုံသေသတ်မှတ်ထားသော commit ရှိ လက်မှတ်ထိုးထားသော query ဝင်ခွင့်](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/query_json.md)
 - [မေးခွန်းများ](/my/blockchain/queries.md)
 - [မေးမြန်းချက် အကိုးအကား](/my/reference/queries.md)
 - [JavaScript နှင့် TypeScript](/my/guide/tutorials/javascript.md)

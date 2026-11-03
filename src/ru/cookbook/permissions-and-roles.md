@@ -1,9 +1,9 @@
 ---
 translation_locale: ru
 translation_source: /cookbook/permissions-and-roles.md
-translation_source_hash: 8d6fd7101094ba21cfc2c5fb9a89d2acd7e67f13ff47b9f8c8e01bbbd7bf2836
+translation_source_hash: 40fe8b19344d8eff66b178dc8576e2e049fef50bd3212fbddc5c0d5f7f37fa03
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Разрешения и роли {#permissions-and-roles}
@@ -14,13 +14,12 @@ translation_engine: bing-translator-llm
 
 ## Предварительные требования {#prerequisites}
 
-- Финансируемый клиент Taira и метаданные по сбору с [Подключиться к Taira](./connect-to-taira.md).
+- Финансируемый клиент Taira из [Подключиться к Taira](./connect-to-taira.md).
 - `TARGET_ACCOUNT` и `DELEGATE_ACCOUNT` установлены на канонические идентификаторы учетной записи I105.
-- Аккаунт, выполняющий подпись, должен иметь разрешение на управление целевыми правами и ролями. На Taira это административная операция с ограничением по разрешениям; получите `CanManageRoles` и главный элемент авторизации, необходимый для предоставления разрешения в пределах области действия, или выполните рецепт в созданной локальной сети.
+- Подписывающий аккаунт должен иметь `CanManageRoles` и должен иметь возможность делегировать ограниченное разрешение: это сам `TARGET_ACCOUNT` или аккаунт, уже имеющий `CanModifyAccountMetadata` для этого аккаунта. На Taira это административная операция с ограничением по разрешениям. Клиент сгенерированной локальной сети не имеет `CanManageRoles`, поэтому для рецепта нужна сеть, генезис которой предоставляет это разрешение.
 
 ```bash
 CONFIG=./taira.client.toml
-FEE_METADATA=./taira.tx-metadata.json
 ROLE_ID=cookbook_metadata_editors
 test -n "$TARGET_ACCOUNT"
 test -n "$DELEGATE_ACCOUNT"
@@ -36,12 +35,11 @@ DELEGATE_CONFIG=./taira.delegate.toml
 
 ### 1. Зарегистрировать пустую роль {#_1-register-an-empty-role}
 
-Каждая команда, изменяющая состояние CLI, явно указывает плательщика комиссии. Файл метаданных содержит текущий Taira комиссионный актив, полученный из ответа сервиса финансирования тестовой сети.
+Каждая команда CLI, изменяющая состояние, явно указывает плательщика комиссии. CLI получает точную котировку комиссии в активе комиссии Taira до подписания.
 
 ```bash
 iroha --config "$CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
   ledger role register --id "$ROLE_ID"
 ```
 
@@ -54,7 +52,6 @@ jq -cn --arg account "$TARGET_ACCOUNT" \
   '{name:"CanModifyAccountMetadata",payload:{account:$account}}' |
   iroha --config "$CONFIG" \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
     ledger role permission grant --id "$ROLE_ID"
 ```
 
@@ -63,8 +60,7 @@ jq -cn --arg account "$TARGET_ACCOUNT" \
 ```bash
 iroha --config "$CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
-  ledger account role grant \
+  account role grant \
   --id "$DELEGATE_ACCOUNT" \
   --role "$ROLE_ID"
 ```
@@ -79,13 +75,12 @@ iroha --config "$CONFIG" \
 printf '"delegated"\n' |
   iroha --config "$DELEGATE_CONFIG" \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
-    ledger account meta set \
+    account meta set \
     --id "$TARGET_ACCOUNT" \
     --key cookbook_access
 ```
 
-Та же модель доступна клиентам Rust. Здесь `client` подписывает как `registrar_account`, который становится первоначальным владельцем роли так же, как и в процессе CLI. Все три переменные учетной записи уже разобраны как значения `AccountId`:
+Та же модель доступна клиентам Rust. Здесь `client` — это `iroha::blocking::Client`, который подписывает как `registrar_account`, становящийся первоначальным владельцем роли так же, как и в процессе CLI. Все три переменные учетной записи уже разобраны как значения `AccountId`:
 
 ```rust
 use iroha::data_model::{prelude::*, transaction::FeePaymentIntent};
@@ -98,7 +93,7 @@ let role = Role::new(role_id.clone(), registrar_account).add_permission(
     },
 );
 
-client.submit_all_blocking::<InstructionBox>(
+client.submit_all::<InstructionBox>(
     [
         Register::role(role).into(),
         Grant::account_role(role_id, delegate_account).into(),
@@ -109,32 +104,35 @@ client.submit_all_blocking::<InstructionBox>(
 
 ## Проверить {#verify}
 
-Перечислите обе стороны задания, а затем прочитайте точное значение, указанное делегатом:
+Прочитайте действующие разрешения делегата, включающие разрешения, полученные через роли, а затем прочитайте точное значение, записанное делегатом:
 
 ```bash
-iroha --config "$CONFIG" ledger role permission list --id "$ROLE_ID"
-iroha --config "$CONFIG" ledger account role list --id "$DELEGATE_ACCOUNT"
+iroha --config "$CONFIG" --machine account permission list \
+  --id "$DELEGATE_ACCOUNT" --all \
+  | jq -e --arg account "$TARGET_ACCOUNT" \
+    '.items | any(.name == "CanModifyAccountMetadata"
+      and .payload.account == $account)'
 
-iroha --config "$CONFIG" ledger account meta get \
+iroha --config "$CONFIG" account meta get \
   --id "$TARGET_ACCOUNT" \
   --key cookbook_access
 ```
 
-Список разрешений должен содержать `CanModifyAccountMetadata` с областью `TARGET_ACCOUNT`, список ролей делегата должен содержать `ROLE_ID`, а чтение метаданных должно возвращать `"delegated"`.
+Действующие разрешения делегата должны содержать `CanModifyAccountMetadata` с областью `TARGET_ACCOUNT`, а чтение метаданных должно возвращать `"delegated"`. Torii отклоняет получение списков ролей через подписанные запросы, поэтому проверкой назначения служит список действующих разрешений.
 
 ## Устранение неполадок {#troubleshooting}
 
-- `Not permitted` при регистрации, редактировании или назначении роли означает, что криптографический подписант не имеет необходимого Taira полномочного лица. Не заменяйте ограниченный токен на глобальный; запросите точное разрешение или используйте localnet.
+- `Not permitted` при регистрации, редактировании или назначении роли означает, что у криптографического подписанта нет необходимых полномочий Taira. Не заменяйте ограниченный токен на глобальный; запросите точное разрешение.
 - Ошибка разбора полезной нагрузки обычно означает, что `account` был помещён рядом с `payload`, был предоставлен псевдоним вместо идентификатора I105, или значение JSON было заключено в кавычки дважды.
-- Отклонение комиссии принадлежит криптографическому подписанту, подавшему этот шаг. Финансируйте менеджера и делегируйте независимо и сохраняйте метаданные активов комиссии, полученной из крана.
+- Отклонение комиссии относится к криптографическому подписанту, подавшему этот шаг. Пополните баланс менеджера и делегата независимо друг от друга в активе комиссии, указанном в каждой котировке комиссии.
 - Успешное предоставление роли не отменяет область, закодированную в его токенах. Эта роль может изменять только учетную запись, указанную в полезной нагрузке разрешений.
-- Чтобы очистить, выполните `ledger account role revoke`, затем `ledger role permission revoke`, и наконец `ledger role unregister`; каждая выполняется отдельно и должна включать `--fee-payer authority` и метаданные комиссии.
+- Для очистки выполните `account role revoke`, затем `ledger role permission revoke` и наконец `ledger role unregister`; каждая команда — отдельная запись и должна включать `--fee-payer authority`.
 
 ## Исходные и связанные документы {#source-and-related-docs}
 
-- [Интеграционные тесты роли на зафиксированной версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/roles.rs)
-- [Тесты интеграции разрешений на закрепленной ревизии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/permissions.rs)
-- [Встроенная модель данных разрешений на закреплённой версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/permission.rs)
+- [Интеграционные тесты роли на зафиксированной версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/roles.rs)
+- [Тесты интеграции разрешений на закрепленной ревизии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/permissions.rs)
+- [Встроенная модель данных разрешений на закреплённой версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_executor_data_model/src/permission.rs)
 - [Разрешения и роли](/ru/blockchain/permissions.md)
 - [Ссылка на токен разрешения](/ru/reference/permissions.md)
 - [Метаданные](./metadata.md)

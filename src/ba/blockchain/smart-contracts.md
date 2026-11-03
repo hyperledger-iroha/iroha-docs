@@ -1,9 +1,9 @@
 ---
 translation_locale: ba
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: 4281cb307762443c85b67659310da69f1f1ea5b99926bad43b90abe36e87075e
+translation_source_hash: 0c6392deb9ddca84e262c699c777276b3a6ca731154b66e7a8418f38dca52021
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Аҡыллы килешеүҙәр {#smart-contracts}
@@ -17,6 +17,8 @@ Iroha операциялар үтәү `Executable` файҙалы йөкләмә
 - `Executable::IvmProved`: Iroha VM байт коды, алдан иҫәпләнгән инструкция менән ҡаплау һәм иҫбатлау йөкләмәләре
 
 Kotodama булып тора Iroha юғары кимәлдәге аҡыллы килешеү теле. `.ko` сығанаҡ файл туплай өсөн детерминистик IVM байткод, конвенциональ рәүештә һаҡлана `.to` ҡулланыу өсөн артефакт. Kotodama маҡсаттар IVM тик. ул маҡсатлы түгел RISC-V йәки WebAssembly.
+
+Компиляторҙың һәр диагностикаһының даими коды бар, улар [Kotodama диагностикаһы](/ba/reference/kotodama-diagnostics.md) белешмәһендә аңлатылған.
 
 Беренсе релиз тик ABI version 1-ҙе хуплай. Syscall һәм pointer-ABI сәйәсәте — admission һәм execution мотлаҡ үтәгән бер шартһыҙ V1 contract; альтернатив runtime mode юҡ.
 
@@ -45,6 +47,18 @@ Kotodama булып тора Iroha юғары кимәлдәге аҡыллы к
 - газ сәйәсәте буйынса йөкләмә
 
 Документ үтәлгән байт-кодҡа бәйләй. үткәргес ҡағиҙәләренә ҡарап, валидаторҙар иҫбатлауҙы раҫлай һәм өҫтәмә хәүефһеҙлек контроле сифатында башҡарыуҙы ҡабатлай.
+
+## IVM системалы саҡырыуҙары {#ivm-syscalls}
+
+IVM байткоды номерланған системалы саҡырыуҙар аша хост мөхиткә мөрәжәғәт итә. Түбәндәге ABI 1-се версияһының системалы саҡырыуҙары Iroha-ның беркетелгән сығанаҡ кодынан булдырылған.
+
+::: details ABI 1-се версияһының системалы саҡырыуҙары
+
+```generated-reference
+ivm-syscalls
+```
+
+:::
 
 ## Контрактлы саҡырыуҙар {#deployed-contract-calls}
 

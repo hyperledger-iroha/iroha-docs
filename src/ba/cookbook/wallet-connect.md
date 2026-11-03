@@ -1,33 +1,33 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/wallet-connect.md
-translation_source_hash: 81b370bdc73a40ff2dbb8df0f91547ab4c279ed94600bdd6df367f29a949ec71
+translation_source_hash: 6bcb87693d4a4cdf45662029dd455c15d3a7a1d4a1e1586e92317ca91b587390
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Wallet Connect: активтарҙы күсереүгә рөхсәт бирегеҙ {#wallet-connect-approve-an-asset-transfer}
 
 ## Һөҙөмтә {#outcome}
 
-Браузерҙа Iroha Connect сеансын булдырыу, бер I105 аҡса янсығы идентификацияһы өсөн криптографик раҫлау алыу, был аҡса янсығына Torii мөлкәт күсереүенең теүәл асфальтҡа ҡул ҡуйыуын һорау, айырым имза тапшырыу һәм ҡулланылған тамамланыуға тиклем көтөр.
+Браузерҙа Iroha Connect сеансын булдырығыҙ, бер I105 аҡса янсығы идентификацияһы өсөн криптографик раҫлау алығыҙ, был аҡса янсығынан Torii-ҙың теүәл, ҡул ҡуйылмаған актив күсереү файҙалы йөгөнә ҡул ҡуйыуын һорағыҙ, айырым ҡултамғаны тапшырығыҙ һәм Applied һуңғы торошон көтөгөҙ.
 
 ## Шарттар {#prerequisites}
 
 - `@iroha/iroha-js` һәм HTTPS менән браузер ҡушымтаһы.
-- Iroha Connect v1 программаһын тормошҡа ашырған һәм Ed25519 I105 аккаунтын яңғыҙ асҡыс менән контролдә тота торған аҡса янсығы.
-- Хәҙерге Taira сылбыр ID һәм сылбыр айырмасыһы, букмекерҙың теркәлгән бәләкәй хәрефле Ed25519 асыҡ асҡыслы алты йөҙө, үҙ милкендәге күсергә мөмкин булған актив һәм каноник I105 тәғәйенләнеше.
-- Һалым активы ID хәҙерге Taira faucet яуап менән кире ҡайтарыла. Миҫал туранан-тура түләү комиссия иҫәбе раҫлай шул ID; ул бер ҡасан да күсергән актив идентификаторы индереп булмай.
-- Һайланған Torii менән бәйләнеш булдырылырға тейеш. QR йәки тәрән һылтанма күрһәткәнсе тикшерегеҙ:
+- Iroha Connect v1-ҙы тормошҡа ашырған, бер асҡыслы Ed25519 I105 иҫәбен идара иткән һәм `sign_transaction` менән `sign_raw` методтарын рөхсәт иткән аҡса янсығы.
+- Taira-ның хәҙерге селтәр ID-һы, аҡса янсығының теркәлгән, бәләкәй хәрефле уналтылыҡ рәүештәге Ed25519 асыҡ асҡысы, үҙегеҙгә ҡараған күсерелә торған актив һәм каноник I105 тәғәйенләнеш.
+- Хәҙерге Taira faucet сәйәсәте баҫтырған түләү активы ID-һы. Миҫал ағымдағы комиссия иҫәбен шул ID менән тикшерә; ул бер ҡасан да күсерелгән актив идентификаторын индермәй.
+- Һайланған Torii-ҙа Connect ҡабыҙылған булырға тейеш. QR йәки тәрән һылтанма күрһәткәнсе селтәр ID-һын асыҡ иҫәп мөмкинлектәренән уҡығыҙ:
 
 ```bash
 curl -fsS \
   -H 'Accept: application/json' \
-  https://taira.sora.org/v1/connect/status |
-  jq -e '{enabled, sessions_active} | select(.enabled == true)'
+  https://taira.sora.org/v1/accounts/capabilities |
+  jq -er '.network_id'
 ```
 
-Әгәр Taira хәбәр итһә Connect һүндерелгән йәки кире ҡайтарһа `404`/`503`, Connect ҡеүәтләнгән булдырылған локаль селтәрҙән файҙаланығыҙ. Ғәҙәти активтарҙы күсереү өсөн аҡса янсығының күсергә мөмкин булған күләме һәм түләүҙәр балансы етерлек булырға тейеш.
+Torii Connect статусын аноним рәүештә баҫтырмай: `GET /v1/connect/status` бер сеанс тураһында уның идара итеү токенына ғына хәбәр итә, ә дөйөм статус өсөн оператор ҡултамғаһы кәрәк. Узел Connect-ты һүндергәндә `registerConnectSession` HTTP `503` һәм `connect_disabled` коды менән уңышһыҙлыҡҡа осрай (йыйылышта Connect булмаһа — `404`), һәм миҫал QR код та, тәрән һылтанма ла күрһәтмәй; Connect ҡабыҙылған генерацияланған локаль селтәрҙе ҡулланығыҙ. Ғәҙәти актив күсереү өсөн шулай уҡ аҡса янсығында етерлек күсерелә торған күләм һәм комиссия өсөн баланс булырға тейеш.
 
 ## Аҙымдар {#steps}
 
@@ -43,16 +43,20 @@ QR кодын икенсе ҡоролмала булған аҡса янсығы
 
 ### 2. төҙөү, раҫлау, ҡул ҡуйыу һәм тапшырыу {#_2-create-approve-sign-and-submit}
 
-Был браузер модуле ҡушымта торошонан конкрет ҡиммәттәрҙе ҡабул итә. беренсе `POST /v1/assets/transfer` ҡултамға баҫыуҙарын ситләтә һәм комиссия иҫәбе, версиялы транзакция баҫҡысын кире ҡайтара. Икенсеһе шул уҡ күсереү һорауына аҡса янсығының асыҡ асҡысын һәм айырым ҡултамғаһын ғына өҫтәй.
+Был браузер модуле ҡушымтағыҙ торошонан конкрет ҡиммәттәрҙе ҡабул итә. Беренсе `POST /v1/assets/transfer` ҡул ҡуйыу яландарын төшөрөп ҡалдыра һәм иҫәпләнгән комиссия ниәтен һәм ҡул ҡуйылмаған транзакция файҙалы йөгөн ҡайтара. Икенсеһе шул уҡ күсереү һорауына аҡса янсығының асыҡ асҡысын һәм айырым ҡултамғаһын ғына өҫтәй. Torii ике һорауҙа ла каноник иҫәп ҡултамғаһын талап итә, шуға күрә модуль аҡса янсығына уларға `createConnectCanonicalRequestAuth` аша ҡул ҡуйҙыра.
 
 ```js
-import { AccountAddress } from '@iroha/iroha-js/address'
+import { buildCanonicalJsonRequest } from '@iroha/iroha-js/canonical-request'
 import {
+  NetworkId,
   createConnectAppSession,
+  createConnectCanonicalRequestAuth,
   createConnectSessionPreview,
   deleteConnectSession,
   registerConnectSession,
+  toHex,
 } from '@iroha/iroha-js/connect-browser'
+import { ToriiBrowserClient } from '@iroha/iroha-js/torii-browser'
 
 const baseUrl = 'https://taira.sora.org'
 const wait = (milliseconds) =>
@@ -63,14 +67,21 @@ const decodeBase64 = (value) =>
 const encodeBase64 = (bytes) =>
   btoa(Array.from(bytes, (byte) => String.fromCharCode(byte)).join(''))
 
-async function postJson(path, body) {
-  const response = await fetch(`${baseUrl}${path}`, {
+async function postSignedJson(path, body, auth, networkId) {
+  const request = await buildCanonicalJsonRequest({
+    nativeIdentity: auth.nativeIdentity,
+    accountId: auth.authAccountId,
+    networkId,
     method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
+    path,
+    baseUrl,
+    body,
+    sign: auth.sign,
+  })
+  const response = await fetch(`${baseUrl}${path}`, {
+    method: request.method,
+    headers: request.headers,
+    body: request.body,
   })
   if (!response.ok) {
     throw new Error(
@@ -87,6 +98,10 @@ async function waitForApplied(transactionHash) {
     const response = await fetch(url, {
       headers: { Accept: 'application/json' },
     })
+    if (response.status === 404) {
+      await wait(1_000)
+      continue
+    }
     if (!response.ok) {
       throw new Error(`pipeline status: HTTP ${response.status}`)
     }
@@ -102,8 +117,7 @@ async function waitForApplied(transactionHash) {
 }
 
 export async function transferWithWallet({
-  chainId,
-  chainDiscriminant,
+  networkIdLiteral,
   authority,
   publicKeyHex,
   assetDefinitionId,
@@ -114,21 +128,16 @@ export async function transferWithWallet({
   if (!/^[0-9a-f]{64}$/.test(publicKeyHex)) {
     throw new Error('publicKeyHex must be 32-byte lower-case Ed25519 hex')
   }
-  const derivedAuthority = AccountAddress.fromAccount({
-    publicKey: publicKeyHex,
-    algorithm: 'ed25519',
-  }).toI105(chainDiscriminant)
-  if (derivedAuthority !== authority) {
-    throw new Error('enrolled public key does not control authority')
-  }
+  const networkId = NetworkId.parse(networkIdLiteral)
+  const torii = new ToriiBrowserClient(baseUrl, { networkId })
 
   const preview = createConnectSessionPreview({
-    chainId,
+    networkId,
     node: baseUrl,
   })
   const relay = await registerConnectSession(
     baseUrl,
-    preview.sidBase64Url,
+    preview,
     {
       node: baseUrl,
     },
@@ -140,8 +149,10 @@ export async function transferWithWallet({
       baseUrl,
       preview,
       session: relay,
+      inspectAccountIdentity: (accountId, options) =>
+        torii.inspectAccountIdentity(accountId, options),
       permissions: {
-        methods: ['sign_transaction'],
+        methods: ['sign_transaction', 'sign_raw'],
         resources: [assetDefinitionId],
       },
       appMeta: { name: 'Iroha cookbook transfer' },
@@ -158,6 +169,10 @@ export async function transferWithWallet({
     if (approval.accountId !== authority) {
       throw new Error('wallet approved a different I105 account')
     }
+    if (toHex(approval.signingPublicKey) !== publicKeyHex) {
+      throw new Error('enrolled public key does not control authority')
+    }
+    const auth = await createConnectCanonicalRequestAuth(connect)
 
     const transfer = {
       authority,
@@ -167,16 +182,21 @@ export async function transferWithWallet({
       destination,
       fee_payment: {
         payer: 'authority',
-        value: { charge_limits: [] },
+        value: { charge_limits: [], gas_limit: null },
       },
       creation_time_ms: Date.now(),
       transaction_ttl_ms: 120_000,
       memo: 'iroha-cookbook-wallet-connect',
     }
 
-    const prepared = await postJson('/v1/assets/transfer', transfer)
+    const prepared = await postSignedJson(
+      '/v1/assets/transfer',
+      transfer,
+      auth,
+      networkId,
+    )
     if (!prepared.ok || prepared.submitted) {
-      throw new Error('Torii did not return a pending-signature scaffold')
+      throw new Error('Torii did not return an unsigned transaction payload')
     }
     const limits = prepared.intent.fee_payment.value.charge_limits
     if (
@@ -186,22 +206,27 @@ export async function transferWithWallet({
       )
     ) {
       throw new Error(
-        'live fee quote uses an asset other than the faucet response',
+        'live fee quote uses an asset other than the faucet policy asset',
       )
     }
 
     const signature = await connect.signTransaction(
-      decodeBase64(prepared.transaction_scaffold_base64),
+      decodeBase64(prepared.transaction_payload_b64),
     )
     if (signature.length !== 64) {
       throw new Error('wallet returned a non-Ed25519 signature length')
     }
 
-    const submitted = await postJson('/v1/assets/transfer', {
-      ...transfer,
-      public_key_hex: publicKeyHex,
-      signature_base64: encodeBase64(signature),
-    })
+    const submitted = await postSignedJson(
+      '/v1/assets/transfer',
+      {
+        ...transfer,
+        public_key_hex: publicKeyHex,
+        signature_base64: encodeBase64(signature),
+      },
+      auth,
+      networkId,
+    )
     if (!submitted.ok || !submitted.submitted) {
       throw new Error('signed transfer was not accepted')
     }
@@ -251,18 +276,18 @@ fn seal_wallet_signature(
 }
 ```
 
-Репозиториеның `connect_app` һәм `connect_wallet` миҫалдары - протоколдың һынау ресурстары: улар детерминистик транспорт асҡыстарын ҡуллана, сығанаҡта токендарҙы аса, ә аҡса янсығының һынау ресурсы ялған имзаны кире ҡайтара. Уларҙы фәҡәт кадрҙарҙы өйрәнеү өсөн генә ҡулланығыҙ, бер ҡасан да Taira аҡса янсығын тормошҡа ашырыу сифатында ҡулланырға ярамай.
+Репозиторийҙағы `connect_app` һәм `connect_wallet` миҫалдары — протокол демонстрациялары: ҡушымта аҡса янсығының URI-ын, токенын да ҡушып, стандарт сығарылышҡа баҫтыра, ә аҡса янсығы токендарын командалар юлы аргументтары итеп ала һәм һоралған байттарҙы декодламайынса һәм күрһәтмәйенсә уларға ҡул ҡуя. Уларҙы тик кадрҙарҙы өйрәнеү өсөн генә ҡулланығыҙ, бер ҡасан да Taira аҡса янсығын тормошҡа ашырыу итеп ҡулланмағыҙ.
 
 ## Тикшереү {#verify}
 
 кире ҡайтарылған хэш һаҡлағыҙ һәм киләсәктең һуңғы торошон асыҡ хужалар йомғаҡлау пункты аша раҫлағыҙ:
 
 ```bash
+HOLDER_FILTER="account_id = \"$DESTINATION_ACCOUNT\" and scope = \"global\""
 curl -fsS -G \
   -H 'Accept: application/json' \
   "https://taira.sora.org/v1/assets/$ASSET_DEFINITION_ID/holders" \
-  --data-urlencode "account_id=$DESTINATION_ACCOUNT" \
-  --data-urlencode 'scope=global' |
+  --data-urlencode "filter=$HOLDER_FILTER" |
   jq .
 ```
 
@@ -270,20 +295,20 @@ curl -fsS -G \
 
 ## Проблемаларҙы хәл итеү {#troubleshooting}
 
-- `404`, `503` йәки `enabled: false` Connect статусынан был узелда эстафета сессияһы булдырылмай тигәнде аңлата. localnet-ҡа күсерегеҙ; ҡушымталарҙы йәки менеджмент токендарын үҙегеҙҙе күсереп йөрөтмәгеҙ.
+- `registerConnectSession`-дан `connect_disabled` коды менән `503` йәки `404` яуабы был узелда ретранслятор сеансын булдырып булмауын аңлата. Connect ҡабыҙылған локаль селтәргә күсегеҙ; запас юл итеп ҡушымта йәки идара итеү токендарын үҙегеҙ ташымағыҙ.
 - `USER_DENIED` - букмекер ҡарар. уны терминал файҙаланыусыһы һөҙөмтәһе булараҡ һаҡлап ҡалыу урынына ҡабатланма раҫлау саҡырыуҙарын асыу.
 - Белешмә менән иҫәптең тап килмәүе йәки раҫлауҙың ғәмәлһеҙ ҡултамғаһы сессияны тамамларға тейеш. Идентификация бәйләнештәре боҙолғандан һуң, аҡса янсығына ҡул ҡуйыуын бер ҡасан да һорамағыҙ.
 - `public_key_hex does not control authority` - теркәлеү мәғлүмәттәре һәм раҫланған I105 таныҡлыҡ килешмәүе. был өлкәлә эфемер портфель транспорт асҡысын ҡуллана алмай.
-- Ҡул ҡуйыу йәки баҫҡыс кире ҡағыу, ғәҙәттә, әҙерләү һәм тапшырыу араһында үҙгәртелгән заявка яланы йәки туранан-тура түләү ставкаһын аңлата. Яңы заявка төҙөй; иҫке ҡултамғаны бер ҡасан да күсереп ҡуйма.
+- Кире ҡағылған айырым ҡултамға, ғәҙәттә, әҙерләү менән тапшырыу араһында һорау яланы йәки ағымдағы комиссия иҫәбе үҙгәргәнен аңлата. Яңы һорау төҙөгөҙ; иҫке ҡултамғаны бер ҡасан да күсереп ҡуймағыҙ.
 - Алдан ҡабул ителгән signed request-тың теүәл replay-ы idempotent була. Яңынан башлау өсөн ваҡыт үтеүҙе сәбәп итеп ҡабул итер алдынан кире ҡайтарылған транзакцияның хэшенә һорау бирергә кәрәк.
 
 ## Сығанаҡ һәм уның менән бәйле документтар {#source-and-related-docs}
 
-- [Браузеры тоташтырыуҙы ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/src/connect.browser.js) буйынса тормошҡа ашырыу
-- [Браузеры тоташтырыу һынауҙары ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/test/connect.browser.test.js)
-- [Rust ҡушымта рамкаһы өлгөһө ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_app.rs)
-- [Rust портфель рамкаһы миҫалы ҡуйылған commit-та](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_wallet.rs)
-- [Torii OpenAPI схемаһы](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/artifacts/openapi/torii.json)
+- [Браузеры тоташтырыуҙы ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/src/connect.browser.js) буйынса тормошҡа ашырыу
+- [Браузеры тоташтырыу һынауҙары ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/test/connect.browser.test.js)
+- [Rust ҡушымта рамкаһы өлгөһө ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/examples/connect_app.rs)
+- [Rust портфель рамкаһы миҫалы ҡуйылған commit-та](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/examples/connect_wallet.rs)
+- [Torii OpenAPI схемаһы](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/artifacts/openapi/torii.json)
 - [SORA Nexus хеҙмәттәр](/ba/blockchain/sora-nexus-services.md)
 - [Функциональ активтар](./fungible-assets.md)
 - [Транзакцияларҙы тапшырыу һәм тикшереү](./submit-and-verify-transactions.md)

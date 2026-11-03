@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: 4281cb307762443c85b67659310da69f1f1ea5b99926bad43b90abe36e87075e
+translation_source_hash: 0c6392deb9ddca84e262c699c777276b3a6ca731154b66e7a8418f38dca52021
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Aqlli shartnomalar {#smart-contracts}
@@ -17,6 +17,8 @@ Iroha tranzaksiyalari `Executable` foydali yuklarini bajaradi. Joriy ma’lumotl
 - `Executable::IvmProved`: oldindan hisoblangan ko‘rsatmalar qoplami va isbot majburiyatlariga ega Iroha VM baytkodi.
 
 Kotodama — Iroha yuqori darajadagi aqlli shartnoma tili. `.ko` manba fayli deterministik IVM baytkodiga kompilyatsiya qilinadi va joylashtirish uchun odatda `.to` artefakti sifatida saqlanadi. Kotodama faqat IVM ni nishonlaydi; RISC-V yoki WebAssembly ni emas.
+
+Har bir kompilyator diagnostikasining barqaror kodi bor; kodlar [Kotodama diagnostikasi](/uz/reference/kotodama-diagnostics.md) ma’lumotnomasida tushuntirilgan.
 
 Birinchi reliz faqat ABI ning 1-versiyasini qo‘llab-quvvatlaydi. Tizim chaqiruvlari va ko‘rsatkich-ABI siyosati qabul qilish hamda bajarishda majburiy qo‘llanadigan yagona shartsiz V1 shartnomasidir; muqobil bajarish muhiti rejimi yo‘q.
 
@@ -45,6 +47,18 @@ Tranzaksiyaga statik ko‘rsatmalar ketma-ketligi bilan ifodalash noqulay bo‘l
 - gaz siyosati majburiyati.
 
 Isbot qoplamni bajarilgan baytkodga bog‘laydi. Konveyer siyosatiga qarab, tasdiqlovchilar isbotni tekshirishi va qo‘shimcha xavfsizlik tekshiruvi sifatida bajarishni takrorlashi mumkin.
+
+## IVM tizim chaqiruvlari {#ivm-syscalls}
+
+IVM baytkodi raqamlangan tizim chaqiruvlari orqali xost muhitiga murojaat qiladi. Quyidagi ABI 1-versiyasining tizim chaqiruvlari qat’iy belgilangan Iroha manba kodidan yaratilgan.
+
+::: details ABI 1-versiyasining tizim chaqiruvlari
+
+```generated-reference
+ivm-syscalls
+```
+
+:::
 
 ## Joylashtirilgan shartnoma chaqiruvlari {#deployed-contract-calls}
 

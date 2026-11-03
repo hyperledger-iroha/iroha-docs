@@ -1,9 +1,9 @@
 ---
 translation_locale: ar
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 576e03924f19b63681cdfafa641b996672e35a992478fc9eaf5b83f0e7baa6da
+translation_source_hash: d399284a2baec507e4c979c762d6e216d8c3fbc5b4b4fe221b6bbb0049ee9fd9
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # ضمان الأصل الأصلي {#native-asset-escrow}
@@ -15,8 +15,8 @@ translation_engine: bing-translator-llm
 ## المتطلبات الأساسية {#prerequisites}
 
 - تعريف أصل رقمي ومفتاح/بائع يمتلك كمية كافية.
-- تمويل العملاء ذوي المفتاح الواحد I105 لكل طرف يقدم خطوة. استخدم نية مباشرة مدفوعة بواسطة حساب توقيع المعاملة `fee_payment` الذي تتطابق فيه عملة الرسوم مع استجابة خدمة تمويل شبكة الاختبار الحالية Taira؛ لا تقم بتضمين معرف أصل من الوثائق.
-- الـ Rust أو Python الحالي SDK من Iroha بروتوكول الانتهاء `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
+- عملاء I105 ممولون وذوو مفتاح واحد لكل طرف يقدم خطوة. استخدم نية `fee_payment` مباشرة مدفوعة بواسطة حساب توقيع المعاملة، يتطابق أصل الرسوم فيها مع الأصل الذي تنشره سياسة خدمة تمويل الشبكة التجريبية الحالية في Taira؛ لا تقم بتضمين معرف أصل من الوثائق.
+- الـ Rust أو Python الحالي SDK من Iroha بروتوكول الانتهاء `c8c872461e92f04325c350cdd952f4276e96f9dc`.
 - بالنسبة لمثال المترجم JavaScript، Node.js 24 بالإضافة إلى حزمة `@iroha/iroha-js` المدمجة في بيئة التطوير المحلية و `iroha_js_host` الأصلية الخاصة بها؛ اتبع [JavaScript SDK إعداد بناء المصدر](/ar/guide/tutorials/javascript.md#build-from-source). يجب أن توفر بناءات المتصفح `compilerUrl` بدلاً من تحميل المضيف الأصلي.
 - Taira يجب قبول تعليمات نقل الأصول والحساب الضمان. يمكن لمالكي الأصول استخدام دورة الحياة العادية عندما تسمح سياسة الأصول الخاصة بهم بذلك؛ حل يتطلب النزاع إذن `CanResolveEscrowDispute` العالمي. استخدم شبكة محلية مُولَّدة عندما يكون المبدأ المصرح به لشبكة البلوك تشين العامة المطلوبة غائبًا.
 
@@ -31,7 +31,7 @@ translation_engine: bing-translator-llm
 ```rust
 use eyre::{Result, ensure};
 use iroha::{
-    client::Client,
+    blocking::Client,
     data_model::{
         isi::escrow::{
             AcceptAssetEscrow, MarkEscrowPaymentSent, OpenAssetEscrow,
@@ -51,7 +51,7 @@ fn complete_marketplace_escrow(
 ) -> Result<AssetEscrowRecord> {
     let fee = FeePaymentIntent::authority(Vec::new(), None);
 
-    seller.submit_blocking(
+    seller.submit(
         OpenAssetEscrow::with_evidence_hashes(
             escrow_id,
             asset_definition,
@@ -60,11 +60,13 @@ fn complete_marketplace_escrow(
         ),
         fee.clone(),
     )?;
-    buyer.submit_blocking(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
-    buyer.submit_blocking(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
-    seller.submit_blocking(ReleaseAssetEscrow::new(escrow_id), fee)?;
+    buyer.submit(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
+    buyer.submit(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
+    seller.submit(ReleaseAssetEscrow::new(escrow_id), fee)?;
 
-    let record = seller.query_single(FindAssetEscrowById::new(escrow_id))?;
+    let record = seller
+        .client()
+        .query_single(FindAssetEscrowById::new(escrow_id))?;
     ensure!(record.status == AssetEscrowStatus::Released);
     Ok(record)
 }
@@ -74,7 +76,7 @@ fn complete_marketplace_escrow(
 
 ### 2. افتح وارسم جزئياً قفلًا عامًا باستخدام Python {#_2-open-and-partially-draw-a-generic-lock-with-python}
 
-يستعلم مسؤول تفويض الإصدار عن السجل الأصلي الموقع قبل السحب. إن تمرير ذلك `remaining_amount` بالضبط يوفر تنافسية تفاؤلية: يتم رفض الطلب المتزامن القديم بدلاً من خصم الحضانة مرتين.
+يستعلم مسؤول تفويض الإصدار عن السجل الأصلي الموقع قبل السحب. إن تمرير ذلك `remaining_amount` بالضبط يوفر تحكمًا تفاؤليًا في التزامن: يتم رفض الطلب المتوازي القديم بدلاً من خصم الحضانة مرتين. `client` هو `ToriiClient` مُنشأ باستخدام `local_signing_context=LocalSigningContext(network_id)` و`chain_discriminant` الخاص بالشبكة؛ تأخذ أدوات المعاملات المساعدة هوية الشبكة من ذلك السياق، وتأخذها الاستعلامات الموقعة بصفتها `network_id`.
 
 ```python
 import secrets
@@ -92,7 +94,6 @@ def escrow_status(record):
 def open_and_draw_lock(
     *,
     client,
-    chain_id,
     opener,
     opener_private_key,
     release_authority,
@@ -102,9 +103,9 @@ def open_and_draw_lock(
     fee_payment,
 ):
     escrow_id = f"cookbook_lock_{secrets.token_hex(12)}"
+    network_id = client.local_signing_context.network_id
 
     client.open_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=opener,
         private_key=opener_private_key,
         fee_payment=fee_payment,
@@ -120,10 +121,10 @@ def open_and_draw_lock(
     before = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
     client.drawdown_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=release_authority,
         private_key=release_private_key,
         fee_payment=fee_payment,
@@ -135,6 +136,7 @@ def open_and_draw_lock(
     after = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
 
@@ -150,8 +152,10 @@ def open_and_draw_lock(
 بالنسبة لتدفقات القفل Rust، تتطلب البنيات الحالية أيضًا المبلغ الملاحظ:
 
 ```rust
-let before = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-release_authority.submit_blocking(
+let before = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+release_authority.submit(
     DrawdownAssetLock::new(
         lock_id,
         Quantity::from(4_u64),
@@ -160,23 +164,26 @@ release_authority.submit_blocking(
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 
-let current = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-opener.submit_blocking(
+let current = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+opener.submit(
     CancelAssetLock::new(lock_id, current.remaining_amount),
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 ```
 
-`DrawdownAssetLock::new` يأخذ ثلاث قيم؛ `CancelAssetLock::new` يأخذ قيمتين. حذف المبلغ المتبقي المتوقع يصف شكل استدعاء تقني قديم وغير آمن.
+`DrawdownAssetLock::new` يأخذ القفل والمبلغ والمبلغ المتبقي المرصود؛ `CancelAssetLock::new` يأخذ القفل والمبلغ المتبقي المرصود. يرفض دفتر الأستاذ أيًّا من التعليمتين إذا تغيّر المبلغ المتبقي أولًا.
 
 ### 3. تجميع سطح الضمان Kotodama من JavaScript {#_3-compile-the-kotodama-escrow-surface-from-javascript}
 
-JavaScript لا يحتاج إلى اختراع تعليمات أصلية غير نوعية. المجمع الحالي يتيح الوصول إلى البنية التحتية لسجل سلسلة الكتل الموثوقة لـ Kotodama؛ ثم تتبع عمليات النشر والاستدعاءات التقنية [بناء ونشر عقد ذكي](./smart-contracts.md).
+JavaScript لا يحتاج إلى اختراع تعليمات أصلية غير محددة النوع. يتيح المترجم الحالي لـ Kotodama الدوال المدمجة لضمان دفتر الأستاذ؛ ثم يتبع النشر [بناء ونشر عقد ذكي](./smart-contracts.md). نقطة الدخول `open_offer` هي `authorize(Admin)`، لذا يشترط المُنفِّذ أن يحمل مستدعيها الإذن `CanUseContractPermission` للعنوان المنشور و`permission: "Admin"`.
 
 احفظ هذا باسم `native_escrow.ko`:
 
 ```kotodama
 seiyaku NativeEscrowAitai {
+    permission Admin;
     error enum EscrowError {
         NonPositiveAmount = 1,
     }
@@ -185,7 +192,7 @@ seiyaku NativeEscrowAitai {
         Name offer,
         AssetDefinitionId asset_definition,
         quantity amount
-    ) authorize("Admin") {
+    ) authorize(Admin) {
         require(amount > 0, EscrowError::NonPositiveAmount);
         ledger::escrow::open_offer(
             offer: offer,
@@ -230,6 +237,7 @@ node ./compile-native-escrow.mjs
 record = client.get_asset_escrow(
     escrow_id=escrow_id,
     authority=release_authority,
+    network_id=client.local_signing_context.network_id,
     private_key=release_private_key,
 )
 assert escrow_status(record) == "Locked"
@@ -241,7 +249,7 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 ## استكشاف الأخطاء وإصلاحها {#troubleshooting}
 
 - `Not permitted` عند الفتح عادة ما يعني أن المفوض لا يستطيع نقل الأصل المحدد إلى الحفظة. تسوية النزاعات لها بوابة `CanResolveEscrowDispute` عالمية منفصلة.
-- `expected remaining amount` الرفض هو صراع تفاؤلي-التزامن. أعد استعلام السجل، وقرّر ما إذا كانت عملية السحب/الإلغاء الأخرى مقصودة، ووقّع تعليمات جديدة فقط إذا كانت الحالة الجديدة مقبولة.
+- الخطأ `asset lock remaining amount changed since the drawdown was prepared` (أو `...since the cancellation was prepared`) هو تعارض في التزامن التفاؤلي. أعد استعلام السجل، وقرّر ما إذا كانت عملية السحب/الإلغاء الأخرى مقصودة، ووقّع تعليمات جديدة فقط إذا كانت الحالة الجديدة مقبولة.
 - فقط المبدأ المخول بإصدار التفويض يمكنه سحب القفل الموثوق. لا يمكن للوجهة تحريره لمجرد أنها ستستلم الأموال.
 - إصدار السوق صالح فقط بعد حالة القبول وإرسال الدفع؛ الإلغاء يقتصر على حالات دورة الحياة السابقة.
 - تنتهي الصلاحية باستخدام وقت دفتر الأستاذ البلوكشين الموثوق. لا تعتَبِر انتهاء مهلة ساعة النظام المحلية دليلًا على أن `ExpireAssetLock` سوف يمر.
@@ -249,10 +257,10 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## المصدر والمستندات ذات الصلة {#source-and-related-docs}
 
-- [نموذج تعليمات الضمان الأصلي في نسخة الشيفرة المصدرية المثبتة](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
-- [اختبارات تكامل الضمان الأصلية عند مراجعة الشيفرة المصدرية المثبتة](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
-- [Python طرق عميل الضمان عند نسخة الكود المصدر المثبتة](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama نموذج الضمان الأصلي عند نسخة الكود المصدر المثبتة](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [نموذج تعليمات الضمان الأصلي في نسخة الشيفرة المصدرية المثبتة](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/isi/escrow.rs)
+- [اختبارات تكامل الضمان الأصلية عند مراجعة الشيفرة المصدرية المثبتة](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/native_escrow.rs)
+- [Python طرق عميل الضمان عند نسخة الكود المصدر المثبتة](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama نموذج الضمان الأصلي عند نسخة الكود المصدر المثبتة](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [حساب ضمان للأصل الأصلي](/ar/blockchain/escrow.md)
 - [الأصول القابلة للاستبدال](./fungible-assets.md)
 - [الأذونات والأدوار](./permissions-and-roles.md)

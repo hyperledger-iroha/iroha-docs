@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: f04e5e78329996d70926c4fd5dc034d41605d0a82fffd6460f67b252269480d9
+translation_source_hash: 631ec91b5ea398ae17253f0fd6307d76bc3820e2a2b6c8c9f79b30e0188ec170
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -379,7 +379,7 @@ iroha app kaigi end --domain kaigi.universal --call-name daily
 
 ### JavaScript انضمام {#javascript-integration}
 
-موجودہ [Iroha JavaScript ڈیمو ](https://github.com/soramitsu/iroha-demo-javascript) ایک شفاف ، تصدیق شدہ ایک سے ایک میٹنگ پروفائل کو نافذ کرتا ہے۔ یہ پروٹوکول کی `zk-roster-v1` ثبوت بہاؤ کو ظاہر نہیں کرتا ہے۔ اس کا رینڈر WebRTC پیش کشیں اور جوابات تیار کرتا ہے ، جبکہ ایک امتياز یافتہ پل مقامی [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) چیک آؤٹ کو قیمت درج کرنے ، دستخط کرنے ، جمع کرانے اور حتمی Kaigi لین دین کا انتظار کرنے کے لئے استعمال کرتی ہے۔
+موجودہ [Iroha JavaScript ڈیمو ](https://github.com/soramitsu/iroha-demo-javascript) ایک شفاف ، تصدیق شدہ ایک سے ایک میٹنگ پروفائل کو نافذ کرتا ہے۔ یہ پروٹوکول کی `zk-roster-v1` ثبوت بہاؤ کو ظاہر نہیں کرتا ہے۔ اس کا رینڈر WebRTC پیش کشیں اور جوابات تیار کرتا ہے ، جبکہ ایک امتياز یافتہ پل مقامی [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js) چیک آؤٹ کو قیمت درج کرنے ، دستخط کرنے ، جمع کرانے اور حتمی Kaigi لین دین کا انتظار کرنے کے لئے استعمال کرتی ہے۔
 
 درست روٹ کی توثیق، دعوت نامے کے فارمیٹ، پل کی حد، اور موجودہ ڈیمو ٹیسٹ کمانڈز کے لیے [Kaigi کو JavaScript ایپ میں شامل کریں](/ur/guide/tutorials/kaigi.md) ملاحظہ کریں۔
 
@@ -438,6 +438,6 @@ iroha --config ./localnet/client.toml --operator-private-key-file "$IROHA_OPERAT
 
 ## اپ اسٹریم ریفرنسز {#upstream-references}
 
-- [README API اور مشاہدہ کرنے کی صلاحیت کا جائزہ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/README.md)
-- [ISO 20022 پل کی تنصیب](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/iso20022_bridge.rs)
+- [README API اور مشاہدہ کرنے کی صلاحیت کا جائزہ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/README.md)
+- [ISO 20022 پل کی تنصیب](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/iso20022_bridge.rs)
 - [کارکردگی اور میٹرکس](/ur/guide/advanced/metrics.md)

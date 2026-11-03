@@ -5,18 +5,18 @@ Taira testnet and keep Minamoto mainnet read-only. Each recipe states
 whether it is a public read, a normal funded-account write, or a
 permission-gated operation. Commands use current I105 account IDs, explicit
 fee selection, and the behavior checked in at Iroha commit
-[`0010c5a70039eac101a4846499ba9ceaf43eb65c`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c).
+[`c8c872461e92f04325c350cdd952f4276e96f9dc`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc).
 
-Start with [Connect to Taira](./connect-to-taira.md). It creates the client
-configuration and fee metadata reused by the command-line recipes. Never
-copy a fee asset ID from this documentation: derive it from the current
-Taira faucet response.
+Start with [Connect to Taira](./connect-to-taira.md). It funds the signer
+and records the fee asset reused by the command-line recipes. Never copy a
+fee asset ID from this documentation: read it from the current Taira faucet
+policy.
 
 ## Access levels
 
 - **Public** — no signer or network permission is required.
 - **Write-ready** — use a funded Taira test account, an explicit fee payer,
-  and the current fee asset returned by the faucet.
+  and the current fee asset published by the faucet policy.
 - **Permission required** — Taira must grant the named runtime permission
   or governed namespace. Use a generated local network when that grant is
   not available; local success does not confer Taira authority.

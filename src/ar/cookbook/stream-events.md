@@ -1,9 +1,9 @@
 ---
 translation_locale: ar
 translation_source: /cookbook/stream-events.md
-translation_source_hash: 96f0a26000530fee15d121f815f9f5717a535dc3836cff9a2a447b1e5b70c41c
+translation_source_hash: d6202b208288688cdfd927491d6670f094f631ccaecd7ff62858a94267c5306a
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # أحداث البث {#stream-events}
@@ -22,10 +22,10 @@ translation_engine: bing-translator-llm
 
 ### 1. تأكيد الاستجابة SSE {#_1-confirm-the-sse-response}
 
-Taira يتفاوض حاليًا على هذا المسار فقط عندما يتضمن رأس `Accept` كل من تدفق الحدث المفضل وبديل JSON. قم بإلغاء تخزين curl. ينتهي الأمر بعد 15 ثانية؛ استقبال تعليقات القلب النابض فقط خلال فترة هادئة يعتبر صحيحًا.
+اطلب تدفق الأحداث مع بديل JSON: يبث Torii بصيغة `text/event-stream` ويُبلغ عن الطلب المرفوض، مثل مرشح غير صالح، كخطأ JSON. عطّل التخزين المؤقت في curl. ينتهي الأمر بعد 20 ثانية. يرسل Torii تعليق نبض القلب بعد 15 ثانية من الخمول، لذا فإن استقبال تعليقات نبض القلب فقط خلال فترة هادئة يعتبر صحيحًا.
 
 ```bash
-curl -sS -N --max-time 15 \
+curl -sS -N --max-time 20 \
   -H 'Accept: text/event-stream, application/json' \
   https://taira.sora.org/v1/events/sse
 ```
@@ -34,15 +34,12 @@ curl -sS -N --max-time 15 \
 
 ### 2. أضف مستهلك JavaScript مُصفّى {#_2-add-a-filtered-javascript-consumer}
 
-احفظ ما يلي باسم `stream-taira.mjs`. إنه يستخدم Fetch مباشرة بحيث يمكن للطلب إرسال رأس `Accept` المختلط المطلوب من Taira. يختار `FilterExpr` الحالي أحداث المعاملات المعتمدة، ويستهلك المحلل إطارات SSE بدون مؤشر إعادة التشغيل.
+احفظ ما يلي باسم `stream-taira.mjs`. إنه يستخدم Fetch مباشرة لإظهار صيغة النقل على الشبكة. تستخدم معلمة الاستعلام `filter` قواعد صياغة المرشحات النصية في Torii لاختيار أحداث المعاملات المعتمدة، ويستهلك المحلل إطارات SSE بدون مؤشر إعادة التشغيل.
 
 ```js
 const baseUrl = 'https://taira.sora.org'
 const shutdown = new AbortController()
-const filter = {
-  op: 'eq',
-  args: ['tx_status', 'Approved'],
-}
+const filter = 'tx_status = "Approved"'
 
 process.once('SIGINT', () => shutdown.abort())
 process.once('SIGTERM', () => shutdown.abort())
@@ -52,7 +49,7 @@ const delay = (milliseconds) =>
 
 async function reconcile() {
   const response = await fetch(
-    `${baseUrl}/v1/explorer/transactions?page=1&per_page=25`,
+    `${baseUrl}/v1/explorer/transactions?limit=25`,
     { headers: { Accept: 'application/json' } },
   )
   if (!response.ok) {
@@ -63,7 +60,7 @@ async function reconcile() {
 
 async function* streamOnce() {
   const url = new URL('/v1/events/sse', baseUrl)
-  url.searchParams.set('filter', JSON.stringify(filter))
+  url.searchParams.set('filter', filter)
   const response = await fetch(url, {
     headers: { Accept: 'text/event-stream, application/json' },
     signal: shutdown.signal,
@@ -164,7 +161,7 @@ SSE تعليقات نبضات القلب تبقي الاتصالات الخام�
 
 طلب المستكشف الأحدث-25 هو مجرد تشخيص عام. يجب على المستهلك الإنتاجي استبدال أو توسيع `reconcile()` باستعلامات لموارده التطبيقية الدائمة وحدود الاسترداد الكافية لنقطة التحقق الخاصة به. عرض البيانات المحدد لنقطة زمنية معينة بمفرده لا يمكن أن يثبت أنه لم يتم تفويت أي أحداث.
 
-في نسخة الشيفرة المصدرية المثبتة، يرسل `ToriiClient.streamEvents()` فقط `Accept: text/event-stream`؛ يرفض Taira المباشر ذلك العنوان الفرعي الأضيق باستخدام `406`. استخدم نموذج Fetch الخام أعلاه حتى تتفاوض SDK و API العامة على نفس أنواع الوسائط.
+يقرأ `ToriiClient.streamEvents({ filter })` من `@iroha/iroha-js` التدفق نفسه: مرّر `field('tx_status').eq('Approved')` أو المرشح النصي أعلاه. وهو يُخرج الإطار النهائي `stream_error` قبل انتهاء التدفق، لذا تظل قواعد إعادة الاتصال والتسوية المذكورة أعلاه سارية.
 
 ## تحقق {#verify}
 
@@ -173,7 +170,7 @@ SSE تعليقات نبضات القلب تبقي الاتصالات الخام�
 ```bash
 curl -fsS \
   -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=25' |
+  'https://taira.sora.org/v1/explorer/transactions?limit=25' |
   jq .
 ```
 
@@ -182,17 +179,17 @@ curl -fsS \
 ## استكشاف الأخطاء وإصلاحها {#troubleshooting}
 
 - الاتصال مع تعليقات نبض القلب ولكن بدون أحداث بيانات صحي؛ قد يكون وضع سير عمل معالجة البرنامج المحدد هادئًا ببساطة.
-- `406 Not Acceptable` على الهواء Taira عادةً يعني أن الطلب المعلن كان فقط `text/event-stream`. أرسل `text/event-stream, application/json` بالضبط كما هو موضح أعلاه.
-- يشير حدث `stream_error` إلى أن الخادم اكتشف تأخراً أو حالة أخرى في تدفق الطرف. يقوم Torii بإرسال هذا الحدث مرة واحدة ويغلق التدفق؛ يجب التسوية قبل إعادة الاتصال.
+- `400` مع الرمز `invalid_filter` يعني أن `filter` لا يتوافق مع قواعد الصياغة النصية في Torii أو يسمّي حقلًا لا تدعمه تدفقات الأحداث. تُرشِّح تدفقات الأحداث حسب الحقول `tx_status`، `tx_hash`، `tx_block_height`، `tx_lane_id`، `tx_dataspace_id`، `block_status`، `block_height`، `proof_backend`، `proof_call_hash`، و`proof_envelope_hash`.
+- يشير حدث `stream_error` إلى أن الخادم اكتشف تأخراً أو حالة أخرى تُنهي التدفق. يقوم Torii بإرسال هذا الحدث مرة واحدة ويغلق التدفق؛ افتح تدفقًا بديلًا، ثم قم بالتسوية.
 - يمكن للوكيل تخزين مؤقت لـ SSE حتى عندما لا يقوم Torii بذلك. قم بإيقاف تخزين الاستجابة المؤقت وضغطها في الوكيل، وحافظ على `curl -N` في التشخيصات.
 - لا تملأ فجوة الانفصال أبداً بافتراض أن الحدث التالي يتبع الحدث السابق. لا يمتلك الطرف النهائي API مؤشر إعادة التشغيل؛ بدلاً من ذلك، استعلم عن حالة دفتر الحسابات الحالي في البلوكشين.
 
 ## المصدر والمستندات ذات الصلة {#source-and-related-docs}
 
-- [JavaScript بث الوصفة في نسخة الشيفرة المصدرية المثبتة](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs)
-- [SSE اختبارات التكامل عند نسخة التعليمات البرمجية المثبتة](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs)
-- [Torii FilterExpr محلّل الأكواد في نسخة رمز المصدر المثبتة](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs)
-- [Torii توجيه الحدث عند مراجعة كود المصدر المثبتة](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
+- [JavaScript بث الوصفة في نسخة الشيفرة المصدرية المثبتة](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes/streaming.mjs)
+- [SSE اختبارات التكامل عند نسخة التعليمات البرمجية المثبتة](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/events/sse_smoke.rs)
+- [قواعد الصياغة النصية لمرشحات Torii في نسخة رمز المصدر المثبتة](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/src/list_query/text.rs)
+- [Torii توجيه الحدث عند مراجعة كود المصدر المثبتة](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/routing.rs)
 - [الأحداث](/ar/blockchain/events.md)
 - [Torii API نقاط النهاية](/ar/reference/torii-endpoints.md)
 - [استعلام حالة دفتر الحسابات في البلوكشين](./query-ledger-state.md)

@@ -1,9 +1,9 @@
 ---
 translation_locale: es
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: 4281cb307762443c85b67659310da69f1f1ea5b99926bad43b90abe36e87075e
+translation_source_hash: 0c6392deb9ddca84e262c699c777276b3a6ca731154b66e7a8418f38dca52021
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Contratos Inteligentes {#smart-contracts}
@@ -16,6 +16,8 @@ Iroha las transacciones ejecutan `Executable` cargas útiles. El modelo de datos
 - `Executable::IvmProved`: Iroha VM código byte con una superposición de instrucciones precomputada y compromisos de prueba
 
 Kotodama es el lenguaje de contratos inteligentes de alto nivel de Iroha. Un archivo fuente `.ko` se compila en bytecode IVM determinista, almacenado convencionalmente como un artefacto `.to` para su implementación. Kotodama tiene como objetivo únicamente IVM. No tiene como objetivo RISC-V ni WebAssembly.
+
+Cada diagnóstico del compilador tiene un código estable, que se explica en la referencia de [diagnósticos de Kotodama](/es/reference/kotodama-diagnostics.md).
 
 La primera versión solo admite la versión 1 de ABI. La política de syscall y puntero-ABI es un contrato V1 incondicional aplicado por admisión y ejecución; no existe un modo alternativo de ejecución de software.
 
@@ -44,6 +46,18 @@ Usa un contrato inteligente cuando la transacción necesite lógica empaquetada 
 - un compromiso de política de gas
 
 La prueba vincula la superposición con el bytecode ejecutado. Dependiendo de la política de la cadena de procesamiento, los validadores pueden verificar la prueba y reproducir la ejecución como una verificación de seguridad adicional.
+
+## Llamadas al sistema de IVM {#ivm-syscalls}
+
+El bytecode de IVM invoca al anfitrión mediante llamadas al sistema numeradas. Las llamadas al sistema de la versión 1 de la ABI que aparecen a continuación se generan a partir del código fuente fijado de Iroha.
+
+::: details Llamadas al sistema de la versión 1 de la ABI
+
+```generated-reference
+ivm-syscalls
+```
+
+:::
 
 ## Llamadas a Contratos Desplegados {#deployed-contract-calls}
 

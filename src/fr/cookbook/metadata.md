@@ -1,21 +1,21 @@
 ---
 translation_locale: fr
 translation_source: /cookbook/metadata.md
-translation_source_hash: bb486994faabb29fb48609a886862e44e565148be4800ec1244218ef37e2e54b
+translation_source_hash: 88298912f083d79a9fdfe5e8d0a89d49acb97d814d3871db0c874cb40db5342b
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Métadonnées {#metadata}
 
 ## Résultat {#outcome}
 
-Lisez les métadonnées sur Taira, définissez et vérifiez une valeur de métadonnée de compte avec une transaction payant explicitement des frais, puis supprimez à nouveau la valeur. Vous devez garder les métadonnées des objets du grand livre séparées des métadonnées des frais de transaction.
+Lisez les métadonnées sur Taira, définissez et vérifiez une valeur de métadonnée de compte avec une transaction payant explicitement des frais, puis supprimez à nouveau la valeur. Vous devez garder les métadonnées des objets du grand livre séparées des métadonnées de transaction.
 
 ## Prérequis {#prerequisites}
 
 - `curl`, `jq`, Python 3.11 ou ultérieur, et le `iroha` CLI actuel.
-- Un financé `taira.client.toml` et `taira.tx-metadata.json` de [Connectez-vous à Taira](./connect-to-taira.md).
+- Un `taira.client.toml` financé issu de [Connectez-vous à Taira](./connect-to-taira.md).
 - principal d'autorisation sur les métadonnées du compte cible. L'exemple cible le principal d'autorisation configuré lui-même ; un autre compte nécessite une autorisation précise.
 
 ## Étapes {#steps}
@@ -27,8 +27,8 @@ Les métadonnées sont une carte vérifiée de `Name` à JSON. Les cartes vides 
 ```bash
 curl -fsS -H 'Accept: application/json' \
   'https://taira.sora.org/v1/assets/definitions?limit=100' \
-  | jq '.items[] \
-    | select((.metadata // {} | length) > 0) \
+  | jq '.items[]
+    | select((.metadata // {} | length) > 0)
     | {id, name, metadata}'
 
 curl -fsS -H 'Accept: application/json' \
@@ -57,7 +57,7 @@ export TAIRA_ACCOUNT_ID="$(
 
 ### 3. Définir une valeur JSON {#_3-set-one-json-value}
 
-Le JSON lu depuis l'entrée standard devient la valeur `cookbook_profile` du compte. En revanche, `--metadata ./taira.tx-metadata.json` ajoute des champs de frais au conteneur de données de la transaction. Les deux cartes ont des objectifs et des finalités différents.
+Le JSON lu depuis l'entrée standard devient la valeur `cookbook_profile` du compte. Les métadonnées de transaction, jointes avec `--metadata <file>`, forment une carte distincte dans le conteneur de données de la transaction et ne sélectionnent jamais les frais : ce sont `--fee-payer` et le devis exact des frais du CLI qui le font, et le client refuse les métadonnées de transaction contenant les clés `gas_asset_id`, `gas_limit` ou `fee_sponsor`.
 
 ```bash
 printf '%s\n' \
@@ -65,17 +65,16 @@ printf '%s\n' \
   | iroha --config ./taira.client.toml \
       --machine \
       --fee-payer authority \
-      --metadata ./taira.tx-metadata.json \
-      ledger account meta set \
+      account meta set \
       --id "$TAIRA_ACCOUNT_ID" \
       --key cookbook_profile
 ```
 
-Le CLI cite les frais, signe, soumet et attend par défaut. N'ajoutez pas `--no-wait` lorsque l'opération suivante dépend de cette valeur.
+Le CLI établit le devis exact des frais, dans l'actif de frais de Taira, avant de signer, puis soumet la transaction et attend la finalité appliquée avant de rendre la main.
 
 ::: warning Limite d'autorisation
 
-Le validateur actif décide qui peut modifier chaque objet. La mise à jour d'un autre compte nécessite normalement `CanModifyAccountMetadata` ; les domaines, les définitions d'actifs, NFTs et les déclencheurs ont leurs propres autorisations de métadonnées spécifiques à la cible. Si Taira n'a pas accordé le principal d'autorisation requis, exécutez les mêmes commandes de compte avec `./localnet/client.toml`, substituez l'ID canonique I105 du principal d'autorisation local généré, et omettez le fichier de métadonnées des frais Taira. Conservez la sélection explicite du payeur de frais local.
+L'exécuteur actif décide qui peut modifier chaque objet. La mise à jour d'un autre compte nécessite normalement `CanModifyAccountMetadata` ; les domaines, les définitions d'actifs, les NFTs et les déclencheurs ont leurs propres autorisations de métadonnées spécifiques à la cible. Si Taira n'a pas accordé l'autorité requise, exécutez les mêmes commandes de compte avec `./localnet/client.toml` et substituez l'ID canonique I105 du principal d'autorisation du réseau local généré. Conservez la sélection explicite du payeur de frais local.
 
 :::
 
@@ -84,7 +83,7 @@ Le validateur actif décide qui peut modifier chaque objet. La mise à jour d'un
 Lisez d'abord la valeur engagée, puis soumettez une transaction de suppression distincte.
 
 ```bash
-iroha --config ./taira.client.toml --machine ledger account meta get \
+iroha --config ./taira.client.toml --machine account meta get \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile \
   | tee cookbook-profile.json
@@ -94,8 +93,7 @@ jq -e '.version == 1' cookbook-profile.json
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger account meta remove \
+  account meta remove \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile
 ```
@@ -107,10 +105,10 @@ Pour les applications Python, les constructeurs tapés correspondants sont `Inst
 Après la transaction définie, `meta get` doit retourner l'objet avec `version: 1`. Après suppression, une recherche directe ne doit plus renvoyer de valeur :
 
 ```bash
-iroha --config ./taira.client.toml --machine ledger account get \
+iroha --config ./taira.client.toml --machine account get \
   --id "$TAIRA_ACCOUNT_ID" > /dev/null
 
-if iroha --config ./taira.client.toml --machine ledger account meta get \
+if iroha --config ./taira.client.toml --machine account meta get \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile; then
   printf '%s\n' 'metadata key still exists' >&2
@@ -133,8 +131,8 @@ Le compte séparé lu distingue une clé de métadonnées manquante d’une déf
 
 ## Source et documents connexes {#source-and-related-docs}
 
-- [Tests d'intégration de requêtes de métadonnées sur le commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/queries/metadata.rs)
-- [Python SDK constructeurs de transactions au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/README.md)
+- [Tests d'intégration de requêtes de métadonnées sur le commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/queries/metadata.rs)
+- [Python SDK constructeurs de transactions au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/README.md)
 - [Métadonnées](/fr/blockchain/metadata.md)
 - [Choix de stockage des métadonnées et du registre blockchain](/fr/guide/configure/metadata-and-store-assets.md)
 - [Référence d'instruction](/fr/reference/instructions.md)

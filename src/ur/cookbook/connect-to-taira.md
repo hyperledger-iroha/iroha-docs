@@ -1,9 +1,9 @@
 ---
 translation_locale: ur
 translation_source: /cookbook/connect-to-taira.md
-translation_source_hash: e14be7d9314f26f40f6aa30678fddcfcfea39eda9b98016f1b2f84838203c548
+translation_source_hash: 31555f0c56bddb8892d09af250cef732a2dfdd39564c83de8b344200157751b9
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Taira سے رابطہ کریں {#connect-to-taira}
@@ -15,14 +15,14 @@ translation_engine: nllb-200-ct2
 ## لازمی شرائط {#prerequisites}
 
 - `curl` ، `jq`، Python 3.11 یا بعد میں، اور موجودہ `iroha` اور `kagami` بائنری.
-- Taira سلسلہ، اختتامی نقطہ، اکاؤنٹ پروفائل اور ایک مخصوص ٹیسٹ نیٹ کلید کے ساتھ تخلیق کردہ `taira.client.toml`۔ [ کی پیروی کریں۔ Taira کلائنٹ ترتیب](/ur/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config) بنائیں اور فائل کو ماخذ کنٹرول سے باہر رکھیں.
-- [Get Testnet XOR سے Taira](/ur/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) پر چلانے کے لئے تیار `taira_faucet_claim.py` ، کلائنٹ ترتیب کے ساتھ محفوظ کیا گیا ہے۔
+- Taira سلسلہ، عین `network_id`، اختتامی نقطہ، اکاؤنٹ پروفائل اور ایک مخصوص ٹیسٹ نیٹ کلید کے ساتھ تخلیق کردہ `taira.client.toml`۔ [ایک Taira کلائنٹ ترتیب بنائیں](/ur/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config) پر عمل کریں اور فائل کو ماخذ کنٹرول سے باہر رکھیں۔
+- فوسیٹ جرنل کے لیے ایک قابل تحریر ورکنگ ڈائریکٹری: `iroha taira account faucet prepare` نجی طور پر `./taira-faucet` بناتا ہے اور کسی موجودہ ڈائریکٹری کو تبدیل کرنے سے انکار کرتا ہے۔
 
 ## قدم {#steps}
 
 ### 1۔ تیاری سے زندگی کو الگ کرنا {#_1-separate-liveness-from-readiness}
 
-`/livez` ایک سادہ متن کے عمل کی زندگی استحکام زونڈ ہے۔ `/status`، `/health`، اور `/readyz` واپسی JSON. ایک چلنے والے نوڈ قانونی طور پر تیاری زونڈز سے `503` واپس کر سکتا ہے جب مطلوبہ ذیلی نظام کو مسدود کیا جاتا ہے۔
+`/livez`، `/health` اور `/readyz` سادہ متن والے پروب ہیں؛ `/status` JSON واپس کرتا ہے۔ ایک چلتا ہوا نوڈ جائز طور پر `/readyz` سے `503` واپس کر سکتا ہے جب اتفاق رائے میں داخلہ یا کوئی اور مطلوبہ ذیلی نظام دستیاب نہ ہو۔
 
 ```bash
 curl -fsS -H 'Accept: text/plain' https://taira.sora.org/livez
@@ -30,11 +30,11 @@ curl -fsS -H 'Accept: text/plain' https://taira.sora.org/livez
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
-curl -sS -H 'Accept: application/json' \
+curl -sS -H 'Accept: text/plain, application/json' \
   -w '\nHTTP %{http_code}\n' https://taira.sora.org/readyz
 ```
 
-صرف اس بات کا فیصلہ کرنے کے لئے `/livez` استعمال کریں کہ آیا عمل جواب دیتا ہے۔ ٹریفک میں داخل ہونے کے لیے `/readyz` کا استعمال کریں اور `503` کو معاوضہ قرار دینے سے پہلے اس کے JSON بلاکٹر کی تفصیلات چیک کریں۔
+صرف اس بات کا فیصلہ کرنے کے لئے `/livez` استعمال کریں کہ آیا عمل جواب دیتا ہے۔ ٹریفک کے داخلے کے لیے `/readyz` کا استعمال کریں۔ اس کا `503` ایک `service_unavailable` خرابی لفافہ ہے جس میں رکاوٹ کی کوئی تفصیلات نہیں ہوتیں، اس لیے اسے بندش سمجھنے سے پہلے نیچے دی گئی تشخیص چلائیں۔
 
 ### 2۔ عوامی تشخیص کی کارروائی {#_2-run-the-public-diagnostics}
 
@@ -48,7 +48,7 @@ iroha taira doctor --public-root https://taira.sora.org --json
 
 ### 3۔ Taira اکاؤنٹ ID بغیر کسی راز کی چھپی ہوئی {#_3-derive-the-taira-account-id-without-printing-a-secret}
 
-صرف ترتیب سے عوامی کلید کو پڑھیں ، پھر اسے Taira I105 پروفائل کے ساتھ انکوڈ کریں۔ `[account].domain` قدر روٹنگ کا تناظر فراہم کرتی ہے۔ یہ اکاؤنٹ ID کا حصہ نہیں ہے.
+صرف ترتیب سے عوامی کلید کو پڑھیں، پھر اسے Taira I105 پروفائل کے ساتھ انکوڈ کریں۔ اکاؤنٹ ID میں کوئی ڈومین نہیں ہوتا؛ `[account].profile` صرف اس کا نیٹ ورک سابقہ منتخب کرتا ہے۔
 
 ```bash
 TAIRA_PUBLIC_KEY="$(python3 - <<'PY'
@@ -69,18 +69,29 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID"
 
 ### موجودہ Taira فیس اثاثہ کا دعویٰ کرنا۔ {#_4-claim-the-current-taira-fee-asset}
 
-فوسیٹ کا جواب فیس اثاثہ کی تعریف کے لئے سچائی کا ذریعہ ہے۔ کسی دوسرے نیٹ ورک یا پرانے رن سے ID کو کاپی کرنے کے بجائے واپس آنے والے بیس 58 ID کو رکھیں.
+فوسیٹ پالیسی موجودہ فیس اثاثہ تعریف کا نام بتاتی ہے۔ کسی دوسرے نیٹ ورک یا پرانے رن سے ID کاپی کرنے کے بجائے اس کا Base58 ID رکھیں۔ پالیسی غیر دستخط شدہ دریافتی ڈیٹا ہے، اس لیے آٹومیشن کو ہر جواب پر بھروسہ کرنے کے بجائے متوقع جاری کنندہ، اثاثہ تعریف اور مقدار کو مقرر کرنا چاہیے۔
 
 ```bash
-python3 ./taira_faucet_claim.py "$TAIRA_ACCOUNT_ID" \
-  | tee taira-faucet.json
+curl -fsS -H 'Accept: application/json' \
+  https://taira.sora.org/v1/accounts/faucet/policy \
+  | tee taira-faucet-policy.json
 
-export TAIRA_FEE_ASSET="$(jq -er '.asset_definition_id' taira-faucet.json)"
-jq -n --arg gas_asset_id "$TAIRA_FEE_ASSET" \
-  '{gas_asset_id: $gas_asset_id}' > taira.tx-metadata.json
+export TAIRA_FEE_ASSET="$(
+  jq -er '.asset_definition_id' taira-faucet-policy.json
+)"
+
+iroha --config ./taira.client.toml --fee-payer authority \
+  taira account faucet prepare \
+  --journal ./taira-faucet \
+  --issuer "$(jq -er '.authority' taira-faucet-policy.json)" \
+  --asset-definition "$TAIRA_FEE_ASSET" \
+  --amount "$(jq -er '.amount' taira-faucet-policy.json)"
+
+iroha --config ./taira.client.toml \
+  taira account faucet submit --journal ./taira-faucet
 ```
 
-زیادہ سے زیادہ ایک منٹ کے لئے بیلنس کا سروے کریں۔ فنڈنگ ٹرانزیکشن دیکھنے میں آنے سے پہلے فوسیٹ `202 Accepted` واپس کر سکتا ہے۔
+`prepare` کام کا ثبوت حل کرتا ہے اور عین دستخط شدہ ٹرانزیکشن محفوظ کرتا ہے؛ `submit` اسے ایک بار بھیجتا ہے اور اس کے لاگو ہونے کے بعد واپس آتا ہے۔ اگر `submit` `Pending` رپورٹ کرے یا اس کا وقت ختم ہو جائے تو ایک اور دعویٰ تیار کرنے کے بجائے اسی ترتیب اور جرنل کے ساتھ `taira account faucet resume` چلائیں۔ پھر زیادہ سے زیادہ ایک منٹ کے لئے بیلنس کا سروے کریں۔
 
 ```bash
 funded=false
@@ -96,7 +107,7 @@ done
 test "$funded" = true
 ```
 
-`gas_asset_id` ٹرانزیکشن میٹا ڈیٹا ہے۔ صریح `--fee-payer authority` انتخاب دستخط پر پابند ہے ، اور CLI اس کی دستخط کرنے سے پہلے ایک عین مطابق فیس کا حوالہ حاصل کرتا ہے۔
+ہر Taira تحریر کے لیے `--fee-payer authority` استعمال کریں۔ یہ انتخاب دستخط سے بندھا ہوا ہے، اور CLI دستخط سے پہلے Taira کے فیس اثاثے میں عین فیس کی کوٹیشن دیتا ہے۔
 
 ## تصدیق کریں {#verify}
 
@@ -106,8 +117,7 @@ test "$funded" = true
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg 'cookbook-connect' \
+  tx ping --msg 'cookbook-connect' \
   > taira-connect-submission.json
 
 jq '{hash, fee_quote}' taira-connect-submission.json
@@ -115,27 +125,27 @@ TAIRA_TX_HASH="$(jq -er '.hash' taira-connect-submission.json)"
 
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction status \
+  tx status \
   --hash "$TAIRA_TX_HASH" \
   --wait \
   --timeout-ms 60000
 ```
 
-آخری کمانڈ صرف اس وقت کامیاب ہوتی ہے جب ٹرانزیکشن ڈیفالٹ `Applied` ٹرمینل ریاست تک پہنچ جاتا ہے۔ ٹیسٹ کے ثبوت میں ہیش رکھیں؛ کبھی بھی نجی کلید یا کلائنٹ کی مکمل ترتیب کو اس کے ساتھ ذخیرہ نہ کریں۔
+آخری کمانڈ صرف اس وقت کامیاب ہوتی ہے جب عین عالمی حیثیت حالت سے طے شدہ `Applied` حتمیت رپورٹ کرے۔ ٹیسٹ کے ثبوت میں ہیش رکھیں؛ کبھی بھی نجی کلید یا کلائنٹ کی مکمل ترتیب کو اس کے ساتھ ذخیرہ نہ کریں۔
 
 ## خرابی کا سراغ لگانا {#troubleshooting}
 
-- `/livez` واپس کرتا ہے `406` جب پوچھا جاتا ہے کہ JSON کیونکہ یہ اختتامی نقطہ `text/plain` ہے۔ اوپر دکھایا گیا ہے کے طور پر `Accept: text/plain` بھیجیں.
-- `/health` یا `/readyz` `503` کو مشین پڑھنے کے قابل بلاکر کے ساتھ واپس کر سکتے ہیں یہاں تک کہ جب `/livez` اور `/status` کام کرتے ہیں۔ اس بلاکر کی مرمت کریں یا انتظار کریں۔ بازیافت کرنے والی چابیاں نوڈ کی تیاری کو تبدیل نہیں کریں گی۔
-- ایک فوسیٹ `502`، ٹائم آؤٹ، یا پرانی کام کا ثبوت لنگر عوامی خدمت کی ناکامی ہے. ایک نیا پہیلی لانا اور بعد میں دوبارہ کوشش کریں.
+- `/livez`، `/health` اور `/readyz` صرف JSON مانگنے پر `406` واپس کرتے ہیں کیونکہ وہ `text/plain` میں جواب دیتے ہیں۔ اوپر دکھائے گئے `Accept` ہیڈرز بھیجیں۔
+- `/readyz` `service_unavailable` خرابی لفافے کے ساتھ `503` واپس کر سکتا ہے، یہاں تک کہ جب `/livez` اور `/status` کام کر رہے ہوں۔ تیاری کا انتظار کریں یا `iroha taira doctor` چلائیں؛ چابیاں دوبارہ بنانے سے نوڈ کی تیاری تبدیل نہیں ہوگی۔
+- `submit` کے دوران فوسیٹ کا `502` یا ٹائم آؤٹ دعوے کا نتیجہ نامعلوم چھوڑ دیتا ہے: ایک اور دعویٰ تیار کرنے کے بجائے اسی ترتیب اور جرنل کے ساتھ `taira account faucet resume` چلائیں۔ کام کے ثبوت کا پرانا اینکر `prepare` کو ناکام کر دیتا ہے؛ نئی جرنل ڈائریکٹری میں دوبارہ تیار کریں۔
 - I105 پریفیکس کی خرابی کا مطلب ہے کہ عوامی کلید کو غلط پروفائل کے ساتھ کوڈ کیا گیا تھا۔ دوبارہ چلائیں `iroha tools address convert --profile taira`۔
-- فیس کی کوٹ کو مسترد کرنے کا مطلب عام طور پر یہ ہوتا ہے کہ اتھارٹی کو فنڈ نہیں دیا گیا تھا، فیس اثاثے کے میٹا ڈیٹا متروک ہیں، یا کوئی واضح فیس ادا کرنے والا منتخب نہیں کیا گیا تھا.
+- فیس کوٹیشن کے مسترد ہونے کا مطلب عام طور پر یہ ہوتا ہے کہ اتھارٹی کو فنڈ نہیں دیا گیا یا ترتیب شدہ `network_id` Taira کا نہیں ہے۔ غائب `--fee-payer`، یا `--metadata` میں `gas_asset_id` جیسی فیس کلید، کوٹیشن سے پہلے ہی مقامی طور پر ناکام ہو جاتی ہے۔
 - اس کینری کے کامیاب ہونے کے بعد بھی رجسٹریشن ، مائننگ ، یا ناموں کی جگہ کا انتظام مسترد کیا جاسکتا ہے۔ ان کارروائیوں کو الگ سے رن ٹائم اجازتیں درکار ہوتی ہیں۔ جب Taira تک رسائی نہیں دی گئی ہے تو پیدا کردہ مقامی نیٹ ورک پر ان کا تجربہ کریں۔
 
 ## ماخذ اور متعلقہ دستاویزات {#source-and-related-docs}
 
-- [Taira CLI تشخیص اور پنڈ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/taira.rs) پر کینری ذریعہ۔
-- [واضح طور پر فیس کا انتخاب اور مقررہ کمیٹ ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs) میں جمع کرانے کا ذریعہ CLI
+- مقررہ commit پر [Taira CLI تشخیص اور کینری ماخذ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/taira.rs) اور [فوسیٹ کمانڈز](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/taira_onboarding.rs)
+- [واضح طور پر فیس کا انتخاب اور مقررہ کمیٹ ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs) میں جمع کرانے کا ذریعہ CLI
 - [Taira اکاؤنٹ اور فوسیٹ گائیڈ](/ur/get-started/sora-nexus-dataspaces.md)
 - [کلائنٹ کی ترتیب](/ur/guide/configure/client-configuration.md)
 - [لین دین](/ur/blockchain/transactions.md)

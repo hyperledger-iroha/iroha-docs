@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: 4281cb307762443c85b67659310da69f1f1ea5b99926bad43b90abe36e87075e
+translation_source_hash: 0c6392deb9ddca84e262c699c777276b3a6ca731154b66e7a8418f38dca52021
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # 智慧合同 {#smart-contracts}
@@ -17,6 +17,8 @@ Iroha 交易執行`Executable`的有效載荷.目前的資料模型支援:
 - `Executable::IvmProved`:Iroha VM 位元組碼,具有預先計算的指令覆蓋和證明承諾.
 
 Kotodama 是 Iroha 一個高層級的智慧合同語言 `.ko` 原始檔編譯到確定性 IVM 通常儲存的位元組碼 `.to` 用於部署的構件. Kotodama 目標 IVM 沒有針對性 RISC-V 或 WebAssembly.
+
+每則編譯器診斷都有一個穩定的代碼，詳見 [Kotodama 診斷](/zh-hant/reference/kotodama-diagnostics.md)參考。
 
 第一個版本僅支援 ABI 版本 1. 系統呼叫和指標-ABI 政策是透過錄取和執行執行的無條件 V1 合同;沒有替代執行模式.
 
@@ -45,6 +47,18 @@ Kotodama 是 Iroha 一個高層級的智慧合同語言 `.ko` 原始檔編譯到
 - gas政策承諾
 
 證明將重疊連結到執行的位元組碼. 根據管道政策,驗證人員可以作為額外的安全檢查來驗證證明和重播執行.
+
+## IVM 系統呼叫 {#ivm-syscalls}
+
+IVM 位元組碼透過編號的系統呼叫來呼叫主機環境。以下 ABI 版本 1 的系統呼叫由固定版本的 Iroha 原始碼產生。
+
+::: details ABI 版本 1 的系統呼叫
+
+```generated-reference
+ivm-syscalls
+```
+
+:::
 
 ## 部署的合同呼叫 {#deployed-contract-calls}
 

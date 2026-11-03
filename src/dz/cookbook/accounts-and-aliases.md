@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
+translation_source_hash: c1aee0c29332bd7c883500e72a1ec7812aebfca13b673e6681788cf4bc5ecbf1
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+claude-opus-5-5
 ---
 # རྩིས་ཐོ་དང་ མིང་རྟགས་ཚུ་ {#accounts-and-aliases}
 
@@ -21,15 +21,19 @@ translation_engine: human-reviewed
 
 ### Taira གི་རྩིས་ཐོ་ཚུ་ བརྟག་ཞིབ་འབདཝ་ཨིན། {#_1-inspect-canonical-accounts-on-taira}
 
-མི་མང་རྩིས་ཐོའི་ཐོ་ཡིག་འདི་གིས་ ཨ་རྟག་རང་ ཚད་ལྡན་ I105 ཨའི་ཌི་ཚུ་སླར་ལོག་འབདཝ་ཨིན། གཞི་རིམ་མིང་གཞན་འདི་གདམ་ཁ་ཅན་ཨིནམ་དང་ སོ་སོ་སྦེ་སྙན་ཞུ་འབདཝ་ཨིན།
+མི་མང་རྩིས་ཐོའི་ཐོ་ཡིག་འདི་གིས་ ཨ་རྟག་རང་ ཚད་ལྡན་ I105 ID ཚུ་ ལོག་བྱིནམ་ཨིན། གཙོ་བོའི་མིང་གཞན་འདི་ གདམ་ཁ་ཅན་ཨིན། དེ་བལྟ་ནི་ལུ་ `aliases` ས་སྒོ་ ཞུ།
 
 ```bash
-curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+curl -fsS -H 'Accept: application/json' --get \
+  https://taira.sora.org/v1/accounts \
+  --data-urlencode 'limit=5' \
+  --data-urlencode 'select=id,aliases' \
+  | jq -r '.items[]
+    | [.id, (first(.aliases[]? | select(.is_primary) | .alias) // "-")]
+    | @tsv'
 ```
 
-`.id` ལས་ ID འདི་ རྩིས་ཐོ་ས་སྒོ་དམ་དམ་ཚུ་གི་དོན་ལུ་ ནུས་ཅན་ཨིན། དེ་ལུ་མངའ་ཁོངས་ཅིག་མཉམ་སྦྲགས་མ་འབད། `.primary_alias` ལས་ མིང་གཞན་འདི་ ལག་ལེན་པ་ལུ་གདོང་ལན་འབད་མི་ འཚོལ་ཞིབ་ལྡེ་མིག་ཨིན་ གཞན་མི་ ཚད་ལྡན་ངོ་རྟགས་མེན།
+`.id` ལས་ ID འདི་ རྩིས་ཐོ་ས་སྒོ་དམ་དམ་ཚུ་གི་དོན་ལུ་ ནུས་ཅན་ཨིན། དེ་ལུ་མངའ་ཁོངས་ཅིག་མཉམ་སྦྲགས་མ་འབད། `.aliases[].alias` ལས་ མིང་གཞན་འདི་ ལག་ལེན་པ་ལུ་གདོང་ལན་འབད་མི་ འཚོལ་ཞིབ་ལྡེ་མིག་ཨིན་ གཞན་མི་ ཚད་ལྡན་ངོ་རྟགས་མེན།
 
 ### 2. ཁྱོད་ཀྱི་ Taira I105 ID ལས་འབྱུང་ཞིནམ་ལས་ རང་བཞིན་གནས་གོང་བཟོ་དགོ། {#_2-derive-and-normalize-your-taira-i105-id}
 
@@ -52,14 +56,14 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID" \
   | iroha tools address normalize --profile taira
 ```
 
-སྤྱིར་བཏང་བཟོ་ཡོད་པའི་གནས་གོང་འདི་ `TAIRA_ACCOUNT_ID` དང་འདྲ་མཚུངས་འོང་དགོ། TOML ཡིག་སྣོད་ནང་ལུ་ `[account].domain` གཞི་སྒྲིག་འདི་ `wonderland.universal` འོང་ནི་ཨིན་རུང་ གནས་གོང་དེ་གིས་ འགྲུལ་ལམ་དང་ མིང་གཞན་སྐབས་དོན་ལུ་རྐྱངམ་ཅིག་ གནོད་པ་བརྐྱབ་ཨིན།
+སྤྱིར་བཏང་བཟོ་ཡོད་པའི་ གནས་གོང་འདི་ `TAIRA_ACCOUNT_ID` དང་ འདྲ་མཚུངས་འོང་དགོ། `[account].profile` གཞི་སྒྲིག་འདི་གིས་ I105 དྲ་རྒྱའི་སྔོན་སྦྱོར་རྐྱངམ་ཅིག་ གདམ་ཁ་རྐྱབཔ་ཨིན། མངའ་ཁོངས་ཚུ་ མིང་གཞན་ཚུ་ལུ་ གཏོགསཔ་ཨིན། རྩིས་ཐོ་ ID ལུ་ ནམ་ཡང་ མི་གཏོགས།
 
 ### ༣.རྩིས་ཐོ་དང་ ཅ་དངོས་ཚུ་ ཀློག་ཐེངས། {#_3-read-the-account-and-its-assets}
 
 རྩིས་ཐོ་འདི་ གཞི་བཙུགས་ཚར་བའི་ཤུལ་ལས་ ཐད་ཀར་དུ་དྲིས་ཞིནམ་ལས་ ཚད་འཛིན་ཅན་གྱི་ རྒྱུ་དངོས་གི་ཤོག་ལེབ་ཅིག་བཀོད་དགོ། URL-ལམ་སྟོན་ནང་ལུ་ ལག་ལེན་འཐབ་པའི་ཧེ་མར་ I105 གནས་གོང་ལུ་ ཨེབ་གཏང་འབད་.
 
 ```bash
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 ENCODED_ACCOUNT_ID="$(
@@ -68,7 +72,7 @@ ENCODED_ACCOUNT_ID="$(
 )"
 
 curl -fsS -H 'Accept: application/json' \
-  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10" \
+  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10&include_total=true" \
   | jq '{total, items}'
 ```
 
@@ -110,7 +114,7 @@ fi
 
 ::: warning ངོས་ལེན་གྱི་ཚད་ཐིག་
 
-Taira བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག གིས་ རང་སོའི་རྩིས་ཐོ་ལེན་མི་ལུ་བྱིན་རུང་ འདི་གིས་ སྤྱིར་བཏང་རྩིས་ཐོ་གི་ཐོ་ཡིག་དང་ ཡང་ན་ མིང་རྟགས་འཛིན་སྐྱོང་དབང་འཛིན་མ་བྱིན་པས། གཞན་གྱི་རྩིས་ཐོ་ཅིག་གུ་ ཐོ་བཀོད་འབད་དགོ་པ་ཅིན་ `CanRegisterAccount` འདི་ལག་རྩལ་ཅན་གྱི་ཨེབ་རྟ་ནང་བཙུགས་དགོཔ་ཨིན། རྩིས་ཐོ་གི་མིང་རྟགས་འདི་ཡང་ སྤྱིར་བཏང་ལུ་ SNS གྱི་ལག་ལེན་དང་ འོས་འབབ་ཅན་གྱི་མིང་རྟགས་ཀྱི་ཆོག་ཐམ་ཚུ་ དགོཔ་ཨིན། སྒྲིག་གཞི་བཟོ་ཡོད་པའི་ ནང་ཐོ་བཀོད་/མིང་རྟགས་འཆར་གཞིའི་ལག་ལེན་འཐབ་ ཡང་ན་ ཐོན་སྐྱེད་འབད་མི་ ས་གནས་ཁ་ཐུག་ལས་ ཐོ་བཀོད་ཉམས་མྱོང་འབད་ཚུགས།
+Taira བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག་གིས་ དེ་ལུ་ཞུ་མི་གི་རྩིས་ཐོ་ གྲ་སྒྲིག་འབད་ཚུགས་རུང་ དེ་གིས་ སྤྱིར་བཏང་གི་ རྩིས་ཐོ་ཐོ་བཀོད་ ཡང་ན་ མིང་གཞན་འཛིན་སྐྱོང་གི་ དབང་ཚད་ མི་སྤྲོད། རྩིས་ཐོ་གཞན་ཅིག་ ཐོ་བཀོད་འབད་ནི་ལུ་ ད་ལྟོ་ལག་ལེན་འཐབ་དོ་ཡོད་པའི་ ལག་བསྟར་པ་ (executor) གི་འོག་ལུ་ `CanRegisterAccount` དགོཔ་ཨིན། རྩིས་ཐོའི་མིང་གཞན་ཚུ་ལུ་ སྤྱིར་བཏང་ ནུས་ཅན་གྱི་ SNS གླ་རིན་གན་རྒྱ་ (lease) ཅིག་དང་ འོས་འབབ་ཅན་གྱི་ མིང་གཞན་ཆོག་ཐམ་ཚུ་ཡང་ དགོཔ་ཨིན། གཞུང་སྐྱོང་འོག་གི་ ནང་འཛུལ་/མིང་གཞན་འཆར་གཞི་བཟོ་མི་ ལག་ལེན་འཐབ། ཡང་ན་ བཟོ་བཏོན་འབད་ཡོད་པའི་ ས་གནས་དྲ་རྒྱ་གུ་ ཐོ་བཀོད་ སྔོན་སྦྱོང་འབད།
 
 :::
 
@@ -120,9 +124,9 @@ Taira བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག �
 iroha --config ./localnet/client.toml \
   --machine \
   --fee-payer authority \
-  ledger account register --id "$NEW_ACCOUNT_ID"
+  account register --id "$NEW_ACCOUNT_ID"
 
-iroha --config ./localnet/client.toml ledger account get \
+iroha --config ./localnet/client.toml account get \
   --id "$NEW_ACCOUNT_ID"
 ```
 
@@ -157,8 +161,8 @@ fi
 
 ## གཞི་རྟེན་དང་འབྲེལ་བའི་ཡིག་ཆ་ཚུ་ {#source-and-related-docs}
 
-- [ཚད་ལྡན་གྱི་རྩིས་ཐོའི་ཁ་བྱང་ཚུ་ གཏན་སྦྱར་ཡོད་པའི་གི་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs) ལུ་ལག་ལེན་འཐབ་ནི།
-- [རྩིས་ཐོ་དང་ མིང་རྟགས་ Torii བརྟག་དཔྱད་ཚུ་ ཕིན་ཌ་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs) ལུ་འབདཝ་ཨིན།
+- [ཚད་ལྡན་གྱི་རྩིས་ཐོའི་ཁ་བྱང་ཚུ་ གཏན་སྦྱར་ཡོད་པའི་གི་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/account/address.rs) ལུ་ལག་ལེན་འཐབ་ནི།
+- གཏན་སྦྱར་ཡོད་པའི་ Git commit ནང་གི་ [རྩིས་ཐོའི་མཐའ་མཇུག་ས་ཚིགས་ཀྱི་ Torii མགྱོགས་དཔྱད་ཚུ་](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/tests/accounts_endpoints.rs) དང་ [མིང་གཞན་ལམ་གྱི་ བརྟག་དཔྱད་ཚུ་](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/tests/lib_tests/part_2.rs)
 - [རྩིས་ཐོ་ཚུ་](/dz/blockchain/accounts.md)
 - [ཌའི་ཊ་གི་དཔེ་ཆ་གྱི་མིང་རྟགས་](/dz/blockchain/data-model.md#aliases)
 - [མིང་བཏགས་པའི་ཞལ་འཆེས་](/dz/reference/naming.md)

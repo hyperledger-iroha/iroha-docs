@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: f04e5e78329996d70926c4fd5dc034d41605d0a82fffd6460f67b252269480d9
+translation_source_hash: 631ec91b5ea398ae17253f0fd6307d76bc3820e2a2b6c8c9f79b30e0188ec170
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -379,7 +379,7 @@ iroha app kaigi end --domain kaigi.universal --call-name daily
 
 ### JavaScript ինտեգրումը {#javascript-integration}
 
-Ներկայիս [Iroha-ի JavaScript ցուցադրություն](https://github.com/soramitsu/iroha-demo-javascript) իրականացնում է թափանցիկ, հավաստագրված մեկ-մեկ հանդիպման պրոֆիլ: Այն չի բացահայտում պրոտոկոլի `zk-roster-v1` ապացույցային հոսքը: Դրա ռենդերերը ստեղծում է WebRTC առաջարկներ եւ պատասխաններ, մինչդեռ արտոնյալ կամուրջը օգտագործում է տեղական [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) ստուգումը ՝ վճարի գնառաջարկ, ստորագրելու, ներկայացնելու եւ սպասելու ավարտված Kaigi գործարքների համար:
+Ներկայիս [Iroha-ի JavaScript ցուցադրություն](https://github.com/soramitsu/iroha-demo-javascript) իրականացնում է թափանցիկ, հավաստագրված մեկ-մեկ հանդիպման պրոֆիլ: Այն չի բացահայտում պրոտոկոլի `zk-roster-v1` ապացույցային հոսքը: Դրա ռենդերերը ստեղծում է WebRTC առաջարկներ եւ պատասխաններ, մինչդեռ արտոնյալ կամուրջը օգտագործում է տեղական [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js) ստուգումը ՝ վճարի գնառաջարկ, ստորագրելու, ներկայացնելու եւ սպասելու ավարտված Kaigi գործարքների համար:
 
 Դիտեք [Embed Kaigi-ը JavaScript App-ում](/hy/guide/tutorials/kaigi.md) ճշգրիտ երթեւեկության հավաստագրման, հրավիրման ձեւաչափի, կամուրջի սահմանների եւ ընթացիկ ապացուցման փորձարկման հրամանների համար:
 
@@ -438,6 +438,6 @@ iroha --config ./localnet/client.toml --operator-private-key-file "$IROHA_OPERAT
 
 ## Վերածննդային հղումներ {#upstream-references}
 
-- [README API եւ դիտարկելիության համատեքստը ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/README.md)
-- [ISO 20022 կամուրջի իրականացում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/iso20022_bridge.rs)
+- [README API եւ դիտարկելիության համատեքստը ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/README.md)
+- [ISO 20022 կամուրջի իրականացում](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/iso20022_bridge.rs)
 - [Արդյունավետություն եւ չափանիշներ](/hy/guide/advanced/metrics.md)

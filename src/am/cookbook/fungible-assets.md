@@ -1,36 +1,36 @@
 ---
 translation_locale: am
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 29f2bdb390fc93b97f8ed9108634f70e21ba747c8606fb84093d37e9586516c1
+translation_source_hash: 3287a6bbaf06ec92ebbe9ac33a8294d4e1d232bc01fd6a5da13ddd166c620965
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # ፈንገስ ንብረቶች {#fungible-assets}
 
 ## ውጤት {#outcome}
 
-የቀጥታ Taira የንብረት ፍቺዎችን ይፈትሹ እና በተፈጠረ የአካባቢ አውታረመረብ ላይ የመመዝገብ፣ የማስተላለፍ፣ የማስተላለፍ፣ የማጥፋት እና የቀሪ ሒሳብ ማረጋገጫ ፍሰትን ያጠናቅቁ። የተግባር መመሪያው ነጠላ ፕሮቶኮል-ስታንዳርድ ቅድመ-ቅጥያ የሌላቸው Base58 የንብረት-ፍቺ መታወቂያዎችን፣ ጎራ ብቁ የሆኑ ተለዋጭ ስሞችን፣ ጎራ አልባ I105 መለያ መታወቂያዎችን እና ግልጽ የክፍያ ክፍያን ይጠቀማል።
+የቀጥታ Taira የንብረት ፍቺዎችን ይፈትሹ እና በተፈጠረ የአካባቢ አውታረመረብ ላይ የማውጣት፣ የማስተላለፍ፣ የማጥፋት እና የቀሪ ሒሳብ ማረጋገጫ ፍሰትን ያጠናቅቁ። የተግባር መመሪያው ነጠላ ፕሮቶኮል-ስታንዳርድ ቅድመ-ቅጥያ የሌላቸው Base58 የንብረት-ፍቺ መታወቂያዎችን፣ ጎራ አልባ I105 መለያ መታወቂያዎችን እና ግልጽ የክፍያ ክፍያን ይጠቀማል።
 
 ## ቅድመ ሁኔታዎች {#prerequisites}
 
-- `curl`፣ `jq`፣ Python 3.11 ወይም ከዚያ በኋላ፣ Node.js 24፣ እና የአሁኑ `iroha` CLI።
+- `curl`፣ `jq`፣ Python 3.11 ወይም ከዚያ በኋላ፣ Node.js 24፣ እና የአሁኑ `iroha` እና `kagami` CLIs።
 - ተነባቢ ብቻ Taira መዳረሻ።
-- ለመጻፍ የእግር ጉዞ፣ ከ[አስጀምር Iroha](/am/get-started/launch-iroha.md)፣ `./localnet/client.toml` እና Torii በ`http://127.0.0.1:8080` ላይ የመነጨ የአካባቢ አውታረ መረብ።
+- ለደረጃ በደረጃ የመጻፍ ክዋኔዎቹ፣ በ[አስጀምር Iroha](/am/get-started/launch-iroha.md) ላይ እንደተገለጸው በ`kagami localnet generate --peers 4 --out-dir ./localnet` የተፈጠረ የአካባቢ አውታረ መረብ፣ `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa` ተጨምሮበት። ይህ አውታረ መረብ `./localnet/client.toml`ን እና በ`http://127.0.0.1:8080` ላይ የሚሰራ Torii ያቀርባል።
 
 ## እርምጃዎች {#steps}
 
 ### 1. ያለ ምስጠራ ፈራሚ Taira ፍቺዎችን ይፈትሹ {#_1-inspect-taira-definitions-without-a-signer}
 
-የንብረት ፍቺዎች ግልጽ ያልሆነ Base58 መታወቂያ፣ የማሳያ ስም፣ የንብረት አሰጣጥ ፖሊሲ፣ የቁጥር ልኬት፣ አማራጭ ተለዋጭ ስም፣ ባለቤት እና አጠቃላይ ብዛት ይይዛሉ። የኮንክሪት ቀሪ ሒሳቡ የያዢውን መለያ እና አማራጭ የውሂብ ቦታ ወሰን ያካትታል።
+የንብረት ፍቺዎች ግልጽ ያልሆነ Base58 መታወቂያ፣ የማሳያ ስም፣ የንብረት አሰጣጥ ፖሊሲ፣ የቁጥር ልኬት፣ አማራጭ ተለዋጭ ስም፣ ባለቤት፣ አማራጭ ባለቤት ጎራ ወይም የውሂብ ቦታ፣ የቀሪ ሒሳብ ፖሊሲ እና አጠቃላይ ብዛት ይይዛሉ። ተጨባጩ ቀሪ ሒሳብ እንዲሁም የያዢውን መለያ እና አማራጭ የውሂብ ቦታ ወሰን ያካትታል።
 
 ::: code-group
 
 ```bash [curl]
 curl -fsS -H 'Accept: application/json' \
   'https://taira.sora.org/v1/assets/definitions?limit=10' \
-  | jq -r '.items[] \
-    | [.id, .name, .mintable, (.spec.scale // "unconstrained"), .total_quantity] \
+  | jq -r '.items[]
+    | [.id, .name, .mintable, (.spec.scale // "unconstrained"), .total_quantity]
     | @tsv'
 ```
 
@@ -58,10 +58,9 @@ for (const definition of items) {
 
 ### 2. አካባቢውን ያዘጋጁ ፍቃድ ዋና እና መድረሻ {#_2-prepare-the-local-authority-and-destination}
 
-በመነጨው ውቅር ውስጥ ካለው የህዝብ ቁልፍ የአካባቢ የፈቃድ ባለቤትን ያውጡ እና ሌላ የተመዘገበ መለያ እንደ ተቀባዩ ይምረጡ። ምንም የግል ቁልፍ አልታተመም።
+በመነጨው ውቅር ውስጥ ካለው የህዝብ ቁልፍ የአካባቢ የፈቃድ ባለቤትን ያውጡ፣ ከዚያም ለአዲስ ተቀባይ መለያ የቁልፍ ጥንድ ይፍጠሩ እና መለያውን ያስመዝግቡ። ምንም የግል ቁልፍ አልታተመም።
 
 ```bash
-LOCAL_ROOT='http://127.0.0.1:8080'
 LOCAL_CONFIG='./localnet/client.toml'
 
 LOCAL_PUBLIC_KEY="$(python3 - <<'PY'
@@ -75,33 +74,28 @@ SOURCE_ACCOUNT="$(
   iroha --config "$LOCAL_CONFIG" tools address convert "$LOCAL_PUBLIC_KEY"
 )"
 
+kagami keys --out-dir ./cookbook-recipient
 DESTINATION_ACCOUNT="$(
-  curl -fsS -H 'Accept: application/json' "$LOCAL_ROOT/v1/accounts?limit=20" \
-    | jq -er --arg source "$SOURCE_ACCOUNT" \
-      '[.items[].id | select(. != $source)][0]'
+  iroha --config "$LOCAL_CONFIG" tools address convert \
+    "$(cat ./cookbook-recipient/public.key)"
 )"
+iroha --config "$LOCAL_CONFIG" \
+  --machine --fee-payer authority \
+  account register --id "$DESTINATION_ACCOUNT"
 ```
 
-### 3. የቁጥር ፍቺ ይመዝገቡ {#_3-register-a-numeric-definition}
+### 3. በደንበኛው ባለቤትነት የተያዘ የቁጥር ፍቺ ይጠቀሙ {#_3-use-a-client-owned-numeric-definition}
 
-ይህ የአካባቢ-ብቻ መታወቂያ የሚሰራ ቅድመ-ቅጥያ የሌለው Base58 የንብረት ፍቺ አድራሻ ነው። ተለዋጭ ስሙ በሰው ሊነበብ የሚችል `domain.dataspace` ትንበያ ያቀርባል። ልኬት `2` ሁለት ክፍልፋይ አሃዞችን ይፈቅዳል; `--mint-once`ን መተው ነባሪውን `Infinitely` ፖሊሲ ይይዛል።
+ከጀነሲስ ውጭ፣ ፍቺ የሚመዘገበው ምስጠራ ፈራሚው በባለቤትነት በሚይዘው ባለቤት `--domain` ስር ነው፣ እና የመነጨ localnet ደንበኛ በባለቤትነት የያዘው ምንም ጎራ የለውም። በ`--asset-definition-id` የመነጨው localnet ይህን ፍቺ አስቀድሞ ይዟል፦ ጀነሲስ ፍቺውን ባልተገደበ ልኬት መዝግቧል፣ ደንበኛውን ባለቤቱ አድርጓል እና 1,000,000,000 አሃዶችን ለደንበኛው አውጥቷል።
 
 ```bash
 ASSET_DEFINITION_ID='66owaQmAQMuHxPzxUN3bqZ6FJfDa'
-ASSET_ALIAS='cookbook_credit#wonderland.universal'
 
-iroha --config "$LOCAL_CONFIG" \
-  --machine \
-  --fee-payer authority \
-  ledger asset definition register \
-  --id "$ASSET_DEFINITION_ID" \
-  --name cookbook_credit \
-  --description 'Local cookbook credit' \
-  --alias "$ASSET_ALIAS" \
-  --scale 2
+iroha --config "$LOCAL_CONFIG" ledger asset definition get \
+  --id "$ASSET_DEFINITION_ID"
 ```
 
-ያንን መታወቂያ በ Taira ላይ እንደገና አይጠቀሙ። ይፋዊ የብሎክቼይን ኔትወርክ ምዝገባ አዲስ ነጠላ ፕሮቶኮል-መደበኛ መታወቂያ፣ ለመተግበሪያዎ የተመደበ ጎራ/ተለዋጭ ስም፣ የክፍያ የገንዘብ ድጋፍ እና የሶፍትዌር ማስፈጸሚያ አካባቢ የንብረት ምዝገባ ፍቃድ ያስፈልገዋል።
+ያንን መታወቂያ በ Taira ላይ እንደገና አይጠቀሙ። ይፋዊ የብሎክቼይን ኔትወርክ ምዝገባ አዲስ ነጠላ ፕሮቶኮል-መደበኛ መታወቂያ፣ መለያዎ በባለቤትነት የሚይዘው ባለቤት ጎራ (ለ`ledger asset definition register` እንደ `--domain` የሚተላለፍ)፣ ለማንኛውም ተለዋጭ ስም የ`CanManageAssetDefinitionAlias` የፈቃድ ስጦታ እና የክፍያ የገንዘብ ድጋፍ ያስፈልገዋል።
 
 ### 4. ማውጣት, ማስተላለፍ እና ማጥፋት {#_4-mint-transfer-and-burn}
 
@@ -131,11 +125,11 @@ iroha --config "$LOCAL_CONFIG" \
   --quantity 10.00
 ```
 
-ከጥፋቱ በኋላ፣ የምንጭ ቀሪ ሒሳብ `64.50`፣ የመድረሻ ቀሪ ሒሳብ `25.50` እና አጠቃላይ ብዛት `90.00` ይጠብቁ።
+ከጥፋቱ በኋላ፣ የምንጭ ቀሪ ሒሳብ `1000000064.50`፣ የመድረሻ ቀሪ ሒሳብ `25.50` እና አጠቃላይ ብዛት `1000000090.00` ይጠብቁ።
 
 ::: warning የፍቃድ ወሰን
 
-በ Taira ላይ ከቴስትኔት ገንዘብ ድጋፍ አገልግሎቱ የተገኘውን `taira.tx-metadata.json` ያያይዙ እና ለእያንዳንዱ የመጻፍ ክዋኔ `--fee-payer authority` ይጠቀሙ። ምዝገባ እና መስጠት የነቃውን አረጋጋጭ ፈቃዶች ይፈልጋሉ; ማስተላለፍ እና ማጥፋት በምንጩ ቀሪ ሂሳብ ላይ የፍቃድ ዋና ያስፈልገዋል። በቴስትኔት የተደገፈ መለያ በራስ-ሰር ሰጪ አይደለም።
+በ Taira ላይ ለእያንዳንዱ የመጻፍ ክዋኔ `--fee-payer authority` ይጠቀሙ፤ CLI ከመፈረሙ በፊት ትክክለኛውን ክፍያ በ Taira የክፍያ ንብረት የሚገልጽ የክፍያ ዋጋ ግምት ያቀርባል። ምዝገባ የፍቺውን `--domain` በባለቤትነት መያዝን ይጠይቃል፣ ተለዋጭ ስም ደግሞ `CanManageAssetDefinitionAlias` ያስፈልገዋል። ማውጣት ፍቺውን በባለቤትነት መያዝን ወይም `CanMintAssetWithDefinition` ወይም `CanMintAssetToAccount` መያዝን ይጠይቃል፤ ማስተላለፍ እና ማጥፋት በምንጩ ቀሪ ሂሳብ ላይ የፍቃድ ዋና ያስፈልጋቸዋል። በቴስትኔት የተደገፈ መለያ በራስ-ሰር ሰጪ አይደለም።
 
 :::
 
@@ -163,14 +157,14 @@ iroha --config "$LOCAL_CONFIG" ledger asset definition get \
 - `#` የያዘ መታወቂያ ተለዋጭ ስም ወይም ተጨባጭ ቀሪ ሒሳብ ቃል በቃል እንጂ አንድ ፕሮቶኮል-መደበኛ የንብረት-ፍቺ መታወቂያ አይደለም። ባዶውን Base58 እሴትን በ`--definition` ይጠቀሙ ወይም የታሰረ ተለዋጭ ስም በ`--definition-alias` ያስተላልፉ።
 - `Scale` ስህተቶች ማለት አንድ መጠን ትርጉሙ ከሚፈቅደው በላይ ክፍልፋይ አሃዞች አሉት ማለት ነው።.
 - `Mintability` አለመቀበል ማለት የ`Once`፣ `Not` ወይም `Limited(n)` ፖሊሲ መስጠትን አሟጥሟል ወይም አልፈቀደም። ታሪክን እንደገና አይፃፉ; በፍቺው መጠይቅ የተመለሰውን ፖሊሲ ይጠቀሙ።
-- ደረጃ 2 ሆን ብሎ የተመዘገበ የመድረሻ መለያ ይመርጣል። የንብረት መግቢያ `ExplicitOnly` ከሆነ፣ የመድረሻ ቀሪ ሂሳቡን በተፈቀደለት በኩል ያቅርቡ ከማስተላለፉ በፊት ፍሰት. ተመሳሳይ ስም ያለው CLI ጠባቂ መለያ ወይም ቀሪ ሂሳብ አይመዘግብም; ሌላ መመሪያ ከመጨመር ይልቅ ያቋርጣል.
-- የተለመደው መመሪያ ከመሳካቱ በፊት ክፍያ አለመቀበል ይከሰታል። ከፋዩን ይምረጡ፣ የአውታረ መረቡን የክፍያ ንብረት ሜታዳታ ይጠቀሙ እና ቀሪ ሂሳቡን ያረጋግጡ።
-- ቋሚው የአካባቢ ፍቺ አስቀድሞ ከቀደመው ሩጫ ካለ፣ አዲስ የመነጨ localnet ያስጀምሩ ወይም አሁን ባለው ሁኔታ ይቀጥሉ። የተበላሸ የዘፈቀደ ሕብረቁምፊን በBase58 መታወቂያ በጭራሽ አይተኩ።
+- ደረጃ 2 የመድረሻ መለያውን በግልጽ ያስመዘግባል፣ ስለዚህ የመለያ መግቢያ `ExplicitOnly` በሚሆንበት ጊዜም ዝውውሩ ይሰራል። ተመሳሳይ ስም ያለው CLI ጠባቂ መለያ ወይም ቀሪ ሂሳብ አይመዘግብም፤ ሌላ መመሪያ ከመጨመር ይልቅ ያቋርጣል።
+- የተለመደው መመሪያ ከመሳካቱ በፊት ክፍያ አለመቀበል ይከሰታል። ከፋዩን ይምረጡ፣ በ CLI የክፍያ ዋጋ ግምት ውስጥ ያለውን የክፍያ ንብረት እና ከፍተኛ መጠን ይፈትሹ፣ እና ያንን ቀሪ ሂሳብ ያረጋግጡ።
+- በተመሳሳይ localnet ላይ የሚደረግ ድጋሚ ሩጫ ከቀደሙት ቀሪ ሂሳቦች ይጀምራል፣ እና `kagami keys` አስቀድሞ ያለውን `./cookbook-recipient` አይቀበልም። አዲስ የመነጨ localnet ያስጀምሩ እና ያንን ማውጫ ያስወግዱ፣ ወይም ከፍፁም እሴቶች ይልቅ የቀሪ ሂሳብ ለውጦችን ያወዳድሩ። የBase58 መታወቂያውን በተበላሸ የዘፈቀደ ሕብረቁምፊ በጭራሽ አይተኩ።
 
 ## ምንጭ እና ተዛማጅ ሰነዶች {#source-and-related-docs}
 
-- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የንብረት የሕይወት ዑደት ውህደት ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/asset.rs)
-- [Rust የንብረት ግንባታ ምሳሌዎች በተሰካው የምንጭ-ኮድ ክለሳ ላይ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/examples/tutorial.rs)
+- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የንብረት የሕይወት ዑደት ውህደት ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/asset.rs)
+- [Rust የንብረት ግንባታ ምሳሌዎች በተሰካው የምንጭ-ኮድ ክለሳ ላይ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/examples/tutorial.rs)
 - [ንብረቶች](/am/blockchain/assets.md)
 - [መመሪያዎች](/am/blockchain/instructions.md)
 - [የፍቃድ ምልክቶች](/am/reference/permissions.md)

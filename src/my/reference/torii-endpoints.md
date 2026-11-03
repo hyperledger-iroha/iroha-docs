@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: f04e5e78329996d70926c4fd5dc034d41605d0a82fffd6460f67b252269480d9
+translation_source_hash: 631ec91b5ea398ae17253f0fd6307d76bc3820e2a2b6c8c9f79b30e0188ec170
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -380,7 +380,7 @@ iroha app kaigi end --domain kaigi.universal --call-name daily
 
 ### JavaScript ပေါင်းစပ်ခြင်း {#javascript-integration}
 
-လက်ရှိ [Iroha JavaScript demo ကို](https://github.com/soramitsu/iroha-demo-javascript) ပရိုတိုကောရဲ့ အချက်အလက်တွေကို မဖေါ်ပြဘဲ၊ `zk-roster-v1` proof flow. ၎င်းရဲ့ renderer က ဖန်တီးပေးတယ်။ WebRTC ကမ်းလှမ်းချက်တွေနဲ့ ဖြေဆိုချက်တွေ၊ အခွင့်ထူးခံ တံတားတစ်ခုက ဒေသတွင်းသုံးတဲ့ [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) စာရင်းပေးသွင်းရန်၊ လက်မှတ်ရေးထိုးရန်၊ တင်ပြရန်နှင့် အဆုံးသတ်ရန်စောင့်ဆိုင်းရန် checkout Kaigi ငွေပေးချေမှု။
+လက်ရှိ [Iroha JavaScript demo ကို](https://github.com/soramitsu/iroha-demo-javascript) ပရိုတိုကောရဲ့ အချက်အလက်တွေကို မဖေါ်ပြဘဲ၊ `zk-roster-v1` proof flow. ၎င်းရဲ့ renderer က ဖန်တီးပေးတယ်။ WebRTC ကမ်းလှမ်းချက်တွေနဲ့ ဖြေဆိုချက်တွေ၊ အခွင့်ထူးခံ တံတားတစ်ခုက ဒေသတွင်းသုံးတဲ့ [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js) စာရင်းပေးသွင်းရန်၊ လက်မှတ်ရေးထိုးရန်၊ တင်ပြရန်နှင့် အဆုံးသတ်ရန်စောင့်ဆိုင်းရန် checkout Kaigi ငွေပေးချေမှု။
 
 [Kaigi ကို JavaScript App တွင်ထည့်သွင်းထားသည်](/my/guide/tutorials/kaigi.md) ကိုကြည့်ပါ လမ်းကြောင်းအစစ်အမှန်၊ ဖိတ်ကြားမှုပုံစံ၊ တံတားနယ်နိမိတ်နဲ့ လက်ရှိ demo စမ်းသပ်မှု အမိန့်များ။
 
@@ -439,6 +439,6 @@ iroha --config ./localnet/client.toml --operator-private-key-file "$IROHA_OPERAT
 
 ## အထက်ပိုင်းဆိုင်ရာ ရည်ညွှန်းချက်များ {#upstream-references}
 
-- [README API နှင့် လေ့လာနိုင်မှု အနှစ်ချုပ်](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/README.md)
-- [ISO 20022 တံတား အကောင်အထည်ဖော်ခြင်း](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/iso20022_bridge.rs)
+- [README API နှင့် လေ့လာနိုင်မှု အနှစ်ချုပ်](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/README.md)
+- [ISO 20022 တံတား အကောင်အထည်ဖော်ခြင်း](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/iso20022_bridge.rs)
 - [စွမ်းဆောင်ရည်နှင့် မက်ထရစ်များ](/my/guide/advanced/metrics.md)

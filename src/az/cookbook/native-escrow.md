@@ -1,9 +1,9 @@
 ---
 translation_locale: az
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 576e03924f19b63681cdfafa641b996672e35a992478fc9eaf5b83f0e7baa6da
+translation_source_hash: d399284a2baec507e4c979c762d6e216d8c3fbc5b4b4fe221b6bbb0049ee9fd9
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Yerli Aktiv Əmanət {#native-asset-escrow}
@@ -15,8 +15,8 @@ Bazar yarmarkası mühafizəsi ilə təyinat yönümlü aktiv kilidi arasında s
 ## Tələb olunan əvvəlcədən biliklər {#prerequisites}
 
 - Rəqəmsal aktivin tərifi və kifayət qədər miqdara sahib olan açan/satan.
-- Hər bir addım təqdim edən tərəf üçün maliyyələşdirilmiş, tək açarlı I105 müştərilər. Cari Taira testnet maliyyələşdirmə xidməti cavabına uyğun ödəniş aktivinə malik əməliyyat imzalama hesabı `fee_payment` niyyəti ilə canlı istifadə edin; sənədləşmədən aktiv ID daxil etməyin.
-- Hazırkı Rust və ya Python SDK Iroha protokolunun yekunlaşdırılmasından `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
+- Addım təqdim edən hər tərəf üçün maliyyələşdirilmiş, tək açarlı I105 müştəriləri. Ödəniş aktivi cari Taira testnet maliyyələşdirmə xidməti siyasətinin dərc etdiyi aktivlə üst-üstə düşən, səlahiyyətli hesabın ödədiyi canlı `fee_payment` niyyətindən istifadə edin; sənədlərdən aktiv ID-si daxil etməyin.
+- Hazırkı Rust və ya Python SDK Iroha protokolunun yekunlaşdırılmasından `c8c872461e92f04325c350cdd952f4276e96f9dc`.
 - JavaScript kompilyator nümunəsi üçün, Node.js 24 və yerli inkişaf mühitində qurulmuş `@iroha/iroha-js` paketi və onun yerli `iroha_js_host`; [JavaScript SDK mənbə-yaradılışı quraşdırması](/az/guide/tutorials/javascript.md#build-from-source) izləyin. Brauzer quruluşları yerli hostu yükləmək əvəzinə `compilerUrl` təqdim etməlidir.
 - Taira aktivin köçürülməsini və vasitəçilik təlimatlarını təsdiqləməlidir. Aktiv sahibləri aktiv siyasətləri icazə verdikdə adi həyat dövründən istifadə edə bilərlər; bir mübahisə qlobal `CanResolveEscrowDispute` icazəsini tələb edir. Lazımi ictimai blokçeyn şəbəkəsi icazəsi əsas prinsipi olmadıqda yaradılmış yerli şəbəkədən istifadə edin.
 
@@ -31,7 +31,7 @@ Bu funksiya real tipli ID-ləri və müştəriləri qəbul edir. 40 vahid açır
 ```rust
 use eyre::{Result, ensure};
 use iroha::{
-    client::Client,
+    blocking::Client,
     data_model::{
         isi::escrow::{
             AcceptAssetEscrow, MarkEscrowPaymentSent, OpenAssetEscrow,
@@ -51,7 +51,7 @@ fn complete_marketplace_escrow(
 ) -> Result<AssetEscrowRecord> {
     let fee = FeePaymentIntent::authority(Vec::new(), None);
 
-    seller.submit_blocking(
+    seller.submit(
         OpenAssetEscrow::with_evidence_hashes(
             escrow_id,
             asset_definition,
@@ -60,11 +60,13 @@ fn complete_marketplace_escrow(
         ),
         fee.clone(),
     )?;
-    buyer.submit_blocking(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
-    buyer.submit_blocking(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
-    seller.submit_blocking(ReleaseAssetEscrow::new(escrow_id), fee)?;
+    buyer.submit(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
+    buyer.submit(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
+    seller.submit(ReleaseAssetEscrow::new(escrow_id), fee)?;
 
-    let record = seller.query_single(FindAssetEscrowById::new(escrow_id))?;
+    let record = seller
+        .client()
+        .query_single(FindAssetEscrowById::new(escrow_id))?;
     ensure!(record.status == AssetEscrowStatus::Released);
     Ok(record)
 }
@@ -74,7 +76,7 @@ fn complete_marketplace_escrow(
 
 ### 2. Ümumi bir kilidi Python ilə açın və qismən çəkin {#_2-open-and-partially-draw-a-generic-lock-with-python}
 
-Buraxılış icazəsi prinsipi çəkilməzdən əvvəl imzalanmış yerli qeydi sorğulayır. Dəqiq `remaining_amount`-in göndərilməsi nikbin qarşılıqlı fəaliyyət təmin edir: köhnəlmiş paralel sorğu mühafizəni iki dəfə çıxmaq əvəzinə rədd edilir.
+Azad etmə səlahiyyətinə malik hesab vəsaiti çıxarmazdan əvvəl imzalanmış daxili qeydi sorğulayır. Məhz həmin `remaining_amount` dəyərinin ötürülməsi optimist paralellik təmin edir: köhnəlmiş paralel sorğu saxlamadakı vəsaitin iki dəfə silinməsi əvəzinə rədd edilir. `client` `local_signing_context=LocalSigningContext(network_id)` və şəbəkənin `chain_discriminant` dəyəri ilə yaradılmış `ToriiClient` obyektidir; əməliyyat köməkçiləri şəbəkə identikliyini həmin kontekstdən götürür, imzalı sorğular isə onu `network_id` kimi qəbul edir.
 
 ```python
 import secrets
@@ -92,7 +94,6 @@ def escrow_status(record):
 def open_and_draw_lock(
     *,
     client,
-    chain_id,
     opener,
     opener_private_key,
     release_authority,
@@ -102,9 +103,9 @@ def open_and_draw_lock(
     fee_payment,
 ):
     escrow_id = f"cookbook_lock_{secrets.token_hex(12)}"
+    network_id = client.local_signing_context.network_id
 
     client.open_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=opener,
         private_key=opener_private_key,
         fee_payment=fee_payment,
@@ -120,10 +121,10 @@ def open_and_draw_lock(
     before = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
     client.drawdown_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=release_authority,
         private_key=release_private_key,
         fee_payment=fee_payment,
@@ -135,6 +136,7 @@ def open_and_draw_lock(
     after = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
 
@@ -150,8 +152,10 @@ Python SDK `expected_remaining_amount` atlandıqda avtomatik olaraq sorğu verə
 Rust kilid axınları üçün, mövcud konstrukturlar da müşahidə olunan miqdarı tələb edir:
 
 ```rust
-let before = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-release_authority.submit_blocking(
+let before = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+release_authority.submit(
     DrawdownAssetLock::new(
         lock_id,
         Quantity::from(4_u64),
@@ -160,23 +164,26 @@ release_authority.submit_blocking(
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 
-let current = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-opener.submit_blocking(
+let current = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+opener.submit(
     CancelAssetLock::new(lock_id, current.remaining_amount),
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 ```
 
-`DrawdownAssetLock::new` üç dəyər qəbul edir; `CancelAssetLock::new` iki dəyər qəbul edir. Gözlənilən qalan miqdarı buraxmaq köhnə, təhlükəsiz olmayan texniki çağırış formasını təsvir edir.
+`DrawdownAssetLock::new` kilidi, məbləği və müşahidə olunan qalıq məbləği qəbul edir; `CancelAssetLock::new` kilidi və müşahidə olunan qalıq məbləği qəbul edir. Qalıq məbləğ əvvəlcə dəyişibsə, reyestr hər iki təlimatı rədd edir.
 
 ### 3. JavaScript üzərindən Kotodama əmanət səthini tərtib edin {#_3-compile-the-kotodama-escrow-surface-from-javascript}
 
-JavaScript tipi olmayan yerli təlimatlar ixtira etməyə ehtiyac yoxdur. Mövcud kompayler Kotodama-ə blokçeyn dəftər çölündəki escrow daxili funksiyalarını açır; yerləşdirmə və texniki çağırışlar sonra [Ağıllı müqavilə yaradın və yerləşdirin](./smart-contracts.md)-ə uyğun həyata keçirilir.
+JavaScript-in tipsiz daxili təlimatlar uydurmasına ehtiyac yoxdur. Cari kompilyator reyestrin escrow daxili funksiyalarını Kotodama-ya təqdim edir; yerləşdirmə daha sonra [Ağıllı müqavilə yaradın və yerləşdirin](./smart-contracts.md) bələdçisinə uyğun aparılır. `open_offer` giriş nöqtəsi `authorize(Admin)` kimi elan olunub, buna görə icraçı onu çağıranın yerləşdirilmiş ünvan və `permission: "Admin"` üçün `CanUseContractPermission` icazəsinə malik olmasını tələb edir.
 
 Bunu `native_escrow.ko` kimi yadda saxlayın:
 
 ```kotodama
 seiyaku NativeEscrowAitai {
+    permission Admin;
     error enum EscrowError {
         NonPositiveAmount = 1,
     }
@@ -185,7 +192,7 @@ seiyaku NativeEscrowAitai {
         Name offer,
         AssetDefinitionId asset_definition,
         quantity amount
-    ) authorize("Admin") {
+    ) authorize(Admin) {
         require(amount > 0, EscrowError::NonPositiveAmount);
         ledger::escrow::open_offer(
             offer: offer,
@@ -230,6 +237,7 @@ Bazar yerdə mübadilə üçün, `FindAssetEscrowById` sorğusunu və buraxıld�
 record = client.get_asset_escrow(
     escrow_id=escrow_id,
     authority=release_authority,
+    network_id=client.local_signing_context.network_id,
     private_key=release_private_key,
 )
 assert escrow_status(record) == "Locked"
@@ -241,7 +249,7 @@ Həmçinin, təyinat yerinin aktiv saxlamasını sorğulayın və dörd vahid ar
 ## Problemlərin aradan qaldırılması {#troubleshooting}
 
 - `Not permitted` açıq olarkən adətən o deməkdir ki, səlahiyyət sahibinin seçilmiş aktivləri saxlanmağa köçürə bilməməsidir. Mübahisələrin həlli üçün ayrıca qlobal `CanResolveEscrowDispute` qapısı mövcuddur.
-- `expected remaining amount` rədd etmə optimist-sinxronizasiya qarşıdurmasıdır. Yazını yenidən sorğulayın, digər çıxarma/ləğvin nəzərdə tutulub-tutulmadığını müəyyən edin və yalnız yeni vəziyyət qəbulediləndirsə yeni təlimatı imzalayın.
+- `asset lock remaining amount changed since the drawdown was prepared` (və ya `...since the cancellation was prepared`) optimist paralellik münaqişəsidir. Qeydi yenidən sorğulayın, digər çıxarmanın/ləğvin nəzərdə tutulub-tutulmadığına qərar verin və yalnız yeni vəziyyət məqbuldursa, yeni təlimatı imzalayın.
 - Yalnız konfiqurasiya olunmuş buraxılış icazəsi prinsipi etibarlı kilidi aça bilər. Məqsəd onun pul alacağına görə onu buraxa bilməz.
 - Marketplace buraxılışı yalnız qəbul və ödəmə-göndərilmiş vəziyyətdən sonra etibarlıdır; ləğv əvvəlki həyat dövrü vəziyyətləri ilə məhdudlaşdırılır.
 - Bitmə səlahiyyətli blokçeyn jurnal vaxtından istifadə edir. Yerli sistem saatının vaxt aşımını `ExpireAssetLock`-ın keçəcəyinə dair dəlil kimi qəbul etməyin.
@@ -249,10 +257,10 @@ Həmçinin, təyinat yerinin aktiv saxlamasını sorğulayın və dörd vahid ar
 
 ## Mənbə və əlaqəli sənədlər {#source-and-related-docs}
 
-- [Sabitlənmiş mənbə kodu versiyasında yerli eskro təlimat modeli](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
-- [Sabitlənmiş mənbə kodu versiyasında yerli eskro inteqrasiya testləri](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
-- [Python pinlənmiş mənbə kodu reviziyasında escrow müştəri metodları](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama pinlənmiş mənbə kodu reviziyasında yerli əmanət nümunəsi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [Sabitlənmiş mənbə kodu versiyasında yerli eskro təlimat modeli](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/isi/escrow.rs)
+- [Sabitlənmiş mənbə kodu versiyasında yerli eskro inteqrasiya testləri](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/native_escrow.rs)
+- [Python pinlənmiş mənbə kodu reviziyasında escrow müştəri metodları](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama pinlənmiş mənbə kodu reviziyasında yerli əmanət nümunəsi](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [Yerli aktiv depoziti](/az/blockchain/escrow.md)
 - [Mübadilə edilə bilən aktivlər](./fungible-assets.md)
 - [İcazələr və rollar](./permissions-and-roles.md)

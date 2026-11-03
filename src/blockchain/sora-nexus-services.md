@@ -1130,4 +1130,4 @@ See also:
 - [Torii endpoints](/reference/torii-endpoints.md)
 - [Data event filters](/blockchain/filters.md#data-event-filters)
 - [Query reference](/reference/queries.md#nexus-data-availability-and-packages)
-- [Canonical Taira validator configuration at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/configs/soranexus/taira/config.toml)
+- [Canonical Taira validator configuration at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/configs/soranexus/taira/config.toml)

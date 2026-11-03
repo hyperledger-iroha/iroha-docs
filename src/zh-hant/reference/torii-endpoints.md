@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: f04e5e78329996d70926c4fd5dc034d41605d0a82fffd6460f67b252269480d9
+translation_source_hash: 631ec91b5ea398ae17253f0fd6307d76bc3820e2a2b6c8c9f79b30e0188ec170
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -379,7 +379,7 @@ iroha app kaigi end --domain kaigi.universal --call-name daily
 
 ### JavaScript 整合 {#javascript-integration}
 
-目前的 [Iroha JavaScript 演示](https://github.com/soramitsu/iroha-demo-javascript)實現了透明,認證的一對一會議配置檔案.它不暴露協議的`zk-roster-v1`證明流程.它的渲染器建立 WebRTC 的提議和應答,而特權橋樑使用本地 [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js)工作副本來報價,簽署,提交併等待完成的 Kaigi 交易.
+目前的 [Iroha JavaScript 演示](https://github.com/soramitsu/iroha-demo-javascript)實現了透明,認證的一對一會議配置檔案.它不暴露協議的`zk-roster-v1`證明流程.它的渲染器建立 WebRTC 的提議和應答,而特權橋樑使用本地 [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js)工作副本來報價,簽署,提交併等待完成的 Kaigi 交易.
 
 檢視 [在 JavaScript App](/zh-hant/guide/tutorials/kaigi.md)中嵌入 Kaigi,準確的路線身份驗證,邀請格式,橋邊界和當前的演示測試指令.
 
@@ -438,6 +438,6 @@ iroha --config ./localnet/client.toml --operator-private-key-file "$IROHA_OPERAT
 
 ## 上游引用 {#upstream-references}
 
-- [README API 和可觀測性概述](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/README.md)
-- [ISO 20022 橋接實作](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/iso20022_bridge.rs)
+- [README API 和可觀測性概述](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/README.md)
+- [ISO 20022 橋接實作](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/iso20022_bridge.rs)
 - [效能和指標](/zh-hant/guide/advanced/metrics.md)

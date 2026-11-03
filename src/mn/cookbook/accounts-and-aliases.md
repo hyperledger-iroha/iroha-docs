@@ -1,9 +1,9 @@
 ---
 translation_locale: mn
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
+translation_source_hash: c1aee0c29332bd7c883500e72a1ec7812aebfca13b673e6681788cf4bc5ecbf1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Данс болон Нэрүүд {#accounts-and-aliases}
@@ -22,15 +22,19 @@ translation_engine: bing-translator-llm
 
 ### 1. Taira дээр нэг протокол-стандарт дансуудыг шалгах {#_1-inspect-canonical-accounts-on-taira}
 
-Нийтийн дансны жагсаалт үргэлж нэг протоколын стандарт I105 ID-г буцаадаг. Гол овогтой нэр нь сонголттой бөгөөд тусад нь тайлагнадаг.
+Нийтийн дансны жагсаалт үргэлж каноник I105 ID-г буцаадаг. Үндсэн alias нь сонголттой; үүнийг харахын тулд `aliases` талбарыг хүсэлтэд заа.
 
 ```bash
-curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+curl -fsS -H 'Accept: application/json' --get \
+  https://taira.sora.org/v1/accounts \
+  --data-urlencode 'limit=5' \
+  --data-urlencode 'select=id,aliases' \
+  | jq -r '.items[]
+    | [.id, (first(.aliases[]? | select(.is_primary) | .alias) // "-")]
+    | @tsv'
 ```
 
-`.id`-аас авсан ID нь хатуу дансны талбарт хүчинтэй. Үүнд домайн нэмбэж болохгүй. `.primary_alias`-аас авсан нэр буюу alias нь хэрэглэгчдэд зориулсан хайлтын түлхүүр бөгөөд өөр нэг протокол стандартын танигч биш.
+`.id`-аас авсан ID нь хатуу дансны талбарт хүчинтэй. Үүнд домайн нэмбэж болохгүй. `.aliases[].alias`-аас авсан нэр буюу alias нь хэрэглэгчдэд зориулсан хайлтын түлхүүр бөгөөд өөр нэг протокол стандартын танигч биш.
 
 ### 2. Таны Taira I105 ID-г гаргаж, хэвийн хэмжээнд оруулна уу {#_2-derive-and-normalize-your-taira-i105-id}
 
@@ -53,14 +57,14 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID" \
   | iroha tools address normalize --profile taira
 ```
 
-Энэ хэвийн утга нь `TAIRA_ACCOUNT_ID` -той ижил байх ёстой. TOML файлын `[account].domain` тохиргоо нь `wonderland.universal` байж болно, гэхдээ энэ утга нь зөвхөн чиглүүлэлт болон давхар нэрийн контекстэд нөлөөлдөг.
+Хэвийн болгосон утга нь `TAIRA_ACCOUNT_ID`-тэй яг ижил байх ёстой. `[account].profile` тохиргоо нь зөвхөн I105 сүлжээний угтварыг сонгодог; домэйнууд alias-д хамаардаг бөгөөд дансны ID-д хэзээ ч хамаарахгүй.
 
 ### 3. Данс болон түүний хөрөнгийг унш {#_3-read-the-account-and-its-assets}
 
 Данс бүртгэгдсэний дараа түүнийг шууд асууж, хязгаарлагдмал хөрөнгийн хуудсыг жагсаана уу. URL-г I105 утгыг замд ашиглахын өмнө кодлоорой.
 
 ```bash
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 ENCODED_ACCOUNT_ID="$(
@@ -69,7 +73,7 @@ ENCODED_ACCOUNT_ID="$(
 )"
 
 curl -fsS -H 'Accept: application/json' \
-  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10" \
+  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10&include_total=true" \
   | jq '{total, items}'
 ```
 
@@ -111,7 +115,7 @@ fi
 
 ::: warning Өөрт олгосон зөвшөөрлийн хязгаар
 
-Taira тестнетийн санхүүжилтийн үйлчилгээ нь өөрийн нэхэмжлэгч дансыг хангаж болно, гэхдээ энэ нь ерөнхий данс бүртгэл хийх буюу нэрийн удирдлагын эрх олгохгүй. Өөр данс бүртгэхэд идэвхтэй баталгаажуулагчийн дор `CanRegisterAccount` шаардлагатай. Дансны хаягууд ерөнхийдөө идэвхтэй SNS түрээс ба тохирох хаягийн зөвшөөрлийг шаарддаг. Засаглалттай нэвтрүүлэх/хаяг төлөвлөгчийг ашиглах эсвэл үүсгэсэн локал сүлжээнд бүртгэлийг давтаж хийх.
+Taira-ийн faucet нь нэхэмжлэл гаргасан дансаа бэлтгэн хангаж чадах боловч энэ нь данс бүртгэх эсвэл alias удирдах ерөнхий эрх мэдлийг олгодоггүй. Өөр данс бүртгэхэд идэвхтэй гүйцэтгэгчийн дор `CanRegisterAccount` шаардлагатай. Дансны alias-д ихэвчлэн мөн идэвхтэй SNS түрээс болон зохих alias-ийн зөвшөөрлүүд шаардлагатай. Засаглалын хяналттай бүртгэлжүүлэлт/alias төлөвлөгчийг ашигла, эсвэл бүртгэлийг үүсгэсэн локал сүлжээнд туршиж үз.
 
 :::
 
@@ -121,9 +125,9 @@ Taira тестнетийн санхүүжилтийн үйлчилгээ нь ө
 iroha --config ./localnet/client.toml \
   --machine \
   --fee-payer authority \
-  ledger account register --id "$NEW_ACCOUNT_ID"
+  account register --id "$NEW_ACCOUNT_ID"
 
-iroha --config ./localnet/client.toml ledger account get \
+iroha --config ./localnet/client.toml account get \
   --id "$NEW_ACCOUNT_ID"
 ```
 
@@ -158,8 +162,8 @@ fi
 
 ## Эх сурвалж ба холбогдох баримт бичгүүд {#source-and-related-docs}
 
-- [хавсаргасан эх кодын шинэчлэлт дээрх ганц протокол-стандарт дансны хаягийн хэрэгжилт](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
-- [Данс болон овог Torii нь бэхэлсэн эх кодны хувилбарт туршигдсан](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
+- [хавсаргасан эх кодын шинэчлэлт дээрх ганц протокол-стандарт дансны хаягийн хэрэгжилт](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/account/address.rs)
+- Тогтоосон commit дахь [дансны төгсгөл цэгийн Torii-ийн хурдан шалгах тестүүд](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/tests/accounts_endpoints.rs) болон [alias-ийн маршрутын тестүүд](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/tests/lib_tests/part_2.rs)
 - [Данс](/mn/blockchain/accounts.md)
 - [Өгөгдлийн загварын хос нэрс](/mn/blockchain/data-model.md#aliases)
 - [Нэрлэх заншил](/mn/reference/naming.md)

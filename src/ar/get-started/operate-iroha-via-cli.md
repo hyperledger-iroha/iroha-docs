@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: c070c86b715b36079a7b6a47de2e31144187d7ebc6309f294a346be61a372660
+translation_source_hash: d7edc74d06a9481123156520d7774e26d1790fee657607031d180aea172d9a98
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -184,7 +184,7 @@ cargo run --bin iroha -- \
 - [SDK دروس](/ar/guide/tutorials/)
 - [Torii API نقاط النهاية](/ar/reference/torii-endpoints.md)
 - [العمل مع ثنائيات Iroha](/ar/reference/binaries.md)
-- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/README.md)
+- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/README.md)
 
 لإعادة إنشاء لقطة كاملة لمساعدة Markdown من نسخة المصدر، نفّذ:
 

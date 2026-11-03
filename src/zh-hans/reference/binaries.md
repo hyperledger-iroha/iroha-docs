@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /reference/binaries.md
-translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
+translation_source_hash: c617a21d50b28495c261d05d672e0b7803c282d53da577391dbebbc7f120d045
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,10 +10,10 @@ translation_engine: nllb-200-ct2
 
 Iroha 3 操作员的工作流程围绕四个主要二进制:
 
-- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad)用于运行一个对等节点守护进程
+- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/irohad)用于运行一个对等节点守护进程
 - `iroha3d_taira` 对于规范 Taira 验证器启动器
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli)用于 CLI 和操作员指令
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami)用于密钥,创世,局域网和个人资料
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli)用于 CLI 和操作员指令
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami)用于密钥,创世,局域网和个人资料
 
 ## 建立从源头 {#build-from-source}
 

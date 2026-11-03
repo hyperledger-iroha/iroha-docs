@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
+translation_source_hash: 35a4caba21bf1e34cc015f79fa82bfe143b37603eddb5f1eb72513ad83a20f61
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2
 從當前的 Kagami 程式碼生成一個四對子本地網路:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 輸出目錄包含相匹配的對等節點配置, `genesis.json`, `genesis.signed.nrt`, `client.toml`和輔助指令碼.
@@ -62,7 +62,7 @@ curl http://127.0.0.1:8080/status/blocks
 您可以立即將 CLI 指向捆綁的客戶端配置:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list
 ```
 
 ## 3. Nexus 個人資料 {#_3-nexus-profile}

@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 4979ab2c52eba4040d7f003f3da73dbc333fa7e047b0259816d0d34f97377749
+translation_source_hash: c1432d8d2483f67b6ab81680f6c5457cab470db7944512626242a1446a7d501f
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -12,7 +12,7 @@ Iroha дерекқорында түйінмен бірдей нұсқаны ба
 
 ## JavaScript Рецептер {#javascript-recipes}
 
-[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes) анық транзакциялық топтастыру үшін бағытталған мысалдарды қамтиды, Nexus қосымша аударымдары, NFT және есептік қайталау, ISO көпір ағады, және Torii ағынды тарату. Әрбір рецепт оның офлайн жұмыс істейтінін немесе тікелей қажет екенін көрсетеді Torii API соңғы нүкте.
+[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes) анық транзакциялық топтастыру үшін бағытталған мысалдарды қамтиды, Nexus қосымша аударымдары, NFT және есептік қайталау, ISO көпір ағады, және Torii ағынды тарату. Әрбір рецепт оның офлайн жұмыс істейтінін немесе тікелей қажет екенін көрсетеді Torii API соңғы нүкте.
 
 ## Swift және iOS {#swift-and-ios}
 

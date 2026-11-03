@@ -1,21 +1,21 @@
 ---
 translation_locale: ja
 translation_source: /cookbook/index.md
-translation_source_hash: 58f5247ece30d3755c38d4d24ae4553a35e0d0437476092d568a1be5c8a2ed28
+translation_source_hash: 9e13bcd28ad8ae356314041828f73af0ed25636af82ff4ea2948268b47dd73e6
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Iroha 3 アプリケーションクックブック {#iroha-3-application-cookbook}
 
-対して構築する Iroha 3 小さく、検証可能なレシピで始まる Taira テストネットと保持 Minamoto メインネットの読み取り専用。各レシピには、それが公開読み取りかどうかが記載されています。 通常の資金提供されたアカウントの書き込み、または許可で制御された操作。コマンドは現在のものを使用します I105 アカウントID、明示的な料金選択、およびチェックイン時に確認された動作 Iroha プロトコルの最終化 [`0010c5a70039eac101a4846499ba9ceaf43eb65c`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c).
+対して構築する Iroha 3 小さく、検証可能なレシピで始まる Taira テストネットと保持 Minamoto メインネットの読み取り専用。各レシピには、それが公開読み取りかどうかが記載されています。 通常の資金提供されたアカウントの書き込み、または許可で制御された操作。コマンドは現在のものを使用します I105 アカウントID、明示的な料金選択、およびチェックイン時に確認された動作 Iroha プロトコルの最終化 [`c8c872461e92f04325c350cdd952f4276e96f9dc`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc).
 
-まず[Taira に接続する](./connect-to-taira.md)から始めます。これは、コマンドラインレシピで再利用されるクライアント設定と料金メタデータを作成します。このドキュメントから料金資産IDをコピーしないでください：現在の Taira テストネット資金提供サービスの応答から派生させてください。
+まず[Taira に接続する](./connect-to-taira.md)から始めます。これは署名者に資金を提供し、コマンドラインレシピで再利用される手数料資産を記録します。このドキュメントから手数料資産IDをコピーしないでください：現在の Taira フォーセットポリシーから読み取ってください。
 
 ## アクセスレベル {#access-levels}
 
 - パブリック — 暗号署名者やネットワークの許可は不要です。
-- 書き込み準備完了 — 資金提供された Taira テストアカウント、明示的な手数料支払者、およびテストネット資金提供サービスから返される現在の手数料資産を使用してください。
+- 書き込み準備完了 — 資金提供された Taira テストアカウント、明示的な手数料支払者、およびフォーセットポリシーで公開されている現在の手数料資産を使用してください。
 - 許可が必要 — Taira は指定されたソフトウェア実行時の権限または管理対象の名前空間を付与する必要があります。その付与が利用できない場合は、生成されたローカルネットワークを使用してください。ローカルでの成功は Taira の認可主体を付与するものではありません。
 
 どの料理本のレシピも Minamoto に書き込みを送信しません。

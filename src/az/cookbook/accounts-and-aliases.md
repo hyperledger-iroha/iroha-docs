@@ -1,9 +1,9 @@
 ---
 translation_locale: az
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
+translation_source_hash: c1aee0c29332bd7c883500e72a1ec7812aebfca13b673e6681788cf4bc5ecbf1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Hesablar və Ləqəblər {#accounts-and-aliases}
@@ -22,15 +22,19 @@ Domeni olmayan tək protokol-standart I105 hesab identifikatorları və `treasur
 
 ### 1. Taira-də tək protokol-standart hesabları yoxlayın {#_1-inspect-canonical-accounts-on-taira}
 
-İctimai hesab siyahısı həmişə tək protokol-standart I105 ID-lərini qaytarır. Əsas ləqəb seçimi ixtiyari olub ayrıca bildirilir.
+İctimai hesab siyahısı həmişə kanonik I105 ID-lərini qaytarır. Əsas alias istəyə bağlıdır; onu görmək üçün `aliases` sahəsini sorğulayın.
 
 ```bash
-curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+curl -fsS -H 'Accept: application/json' --get \
+  https://taira.sora.org/v1/accounts \
+  --data-urlencode 'limit=5' \
+  --data-urlencode 'select=id,aliases' \
+  | jq -r '.items[]
+    | [.id, (first(.aliases[]? | select(.is_primary) | .alias) // "-")]
+    | @tsv'
 ```
 
-`.id` -dan olan bir şəxsiyyət vəsiqəsi ciddi hesab sahələri üçün etibarlıdır. Ona bir domen əlavə etməyin. `.primary_alias` -dən olan bir təxəllüs istifadəçi qarşısında axtarış açarıdır, başqa bir protokol-standart şəxsiyyət deyil.
+`.id` -dan olan bir şəxsiyyət vəsiqəsi ciddi hesab sahələri üçün etibarlıdır. Ona bir domen əlavə etməyin. `.aliases[].alias` -dən olan bir təxəllüs istifadəçi qarşısında axtarış açarıdır, başqa bir protokol-standart şəxsiyyət deyil.
 
 ### 2. Taira I105 İD-nizi çıxarın və normallaşdırın {#_2-derive-and-normalize-your-taira-i105-id}
 
@@ -53,14 +57,14 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID" \
   | iroha tools address normalize --profile taira
 ```
 
-Normallaşdırılmış dəyər `TAIRA_ACCOUNT_ID` ilə eyni olmalıdır. TOML faylındakı `[account].domain` parametri `wonderland.universal` ola bilər, lakin bu dəyər yalnız yönləndirmə və ləqəb kontekstinə təsir göstərir.
+Normallaşdırılmış dəyər `TAIRA_ACCOUNT_ID` ilə eyni olmalıdır. `[account].profile` parametri yalnız I105 şəbəkə prefiksini seçir; domenlər hesab ID-sinə deyil, həmişə aliaslara aiddir.
 
 ### 3. Hesabı və onun aktivlərini oxuyun {#_3-read-the-account-and-its-assets}
 
 Hesab təmin edildikdən sonra birbaşa onu sorğu edin və məhdudlaşdırılmış aktiv səhifəsini siyahıya alın. URL-dakı I105 dəyərini bir yolda istifadə etməzdən əvvəl kodlayın.
 
 ```bash
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 ENCODED_ACCOUNT_ID="$(
@@ -69,7 +73,7 @@ ENCODED_ACCOUNT_ID="$(
 )"
 
 curl -fsS -H 'Accept: application/json' \
-  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10" \
+  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10&include_total=true" \
   | jq '{total, items}'
 ```
 
@@ -111,7 +115,7 @@ fi
 
 ::: warning İcazə sərhədi
 
-Taira testnet maliyyələşdirmə xidməti öz iddiaçı hesabını təmin edə bilər, lakin bu, ümumi hesab qeydiyyatı və ya aliase idarəetmə səlahiyyətini vermir. Başqa bir hesabın qeydiyyatı aktiv təsdiqləyici altında `CanRegisterAccount` tələb edir. Hesab təxəllüsləri adətən həmçinin aktiv SNS icarə və müvafiq təxəllüs icazələri tələb edir. İdarə olunan qeydiyyat/təxəllüs planlayıcısından istifadə edin və ya yaradılmış yerli şəbəkəyə qarşı qeydiyyatı məşq edin.
+Taira testnet maliyyələşdirmə xidməti iddiaçı hesabını hazırlaya bilər, lakin bu, ümumi hesab qeydiyyatı və ya alias idarəetməsi səlahiyyəti vermir. Başqa hesabın qeydiyyatı aktiv icraçı altında `CanRegisterAccount` tələb edir. Hesab aliasları adətən həmçinin aktiv SNS icarəsi və müvafiq alias icazələri tələb edir. İdarə olunan qoşulma/alias planlayıcısından istifadə edin və ya qeydiyyatı yaradılmış lokal şəbəkədə əvvəlcədən sınaqdan keçirin.
 
 :::
 
@@ -121,9 +125,9 @@ Yerel şəbəkədə, bir təhlükəsiz kriptoqrafik imza-açar təchizatı addı
 iroha --config ./localnet/client.toml \
   --machine \
   --fee-payer authority \
-  ledger account register --id "$NEW_ACCOUNT_ID"
+  account register --id "$NEW_ACCOUNT_ID"
 
-iroha --config ./localnet/client.toml ledger account get \
+iroha --config ./localnet/client.toml account get \
   --id "$NEW_ACCOUNT_ID"
 ```
 
@@ -158,8 +162,8 @@ Tək protokol-standart hesab ID-lərini saxlayın. İmzalar, icazələr və əm�
 
 ## Mənbə və əlaqəli sənədlər {#source-and-related-docs}
 
-- [sabitləşdirilmiş mənbə kodu reviziyasında tək protokol-standart hesab ünvanının tətbiqi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
-- [Hesab və təxəllüs Torii bərkidilmiş mənbə kodu versiyasında testlər](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
+- [sabitləşdirilmiş mənbə kodu reviziyasında tək protokol-standart hesab ünvanının tətbiqi](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/account/address.rs)
+- Sabitlənmiş mənbə kodu reviziyasında [Torii hesab son nöqtəsinin ilkin yoxlama testləri](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/tests/accounts_endpoints.rs) və [alias marşrutu testləri](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/tests/lib_tests/part_2.rs)
 - [Hesablar](/az/blockchain/accounts.md)
 - [Məlumat-modeli təxəllüsləri](/az/blockchain/data-model.md#aliases)
 - [Adlandırma qaydaları](/az/reference/naming.md)

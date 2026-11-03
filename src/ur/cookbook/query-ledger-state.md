@@ -1,22 +1,22 @@
 ---
 translation_locale: ur
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: 68ef931f3d37b9bd40fcf61c9a77313539ca0bd648405834d161a018debb491a
+translation_source_hash: 866b7d3ca37be67878f6f319ce0b0e27eac52c581decad1f46096ef75ad1b10f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # استفسار شدہ لیجر حالت {#query-ledger-state}
 
 ## نتیجہ {#outcome}
 
-Taira کے JSON وسائل پڑھیں اور مطلوبہ فیلڈز منتخب کریں، پھر filters، منطقی pagination، sorting، fetch sizes اور صرف آگے بڑھنے والے cursor continuation کے ساتھ typed Iroha استفسارات استعمال کریں۔ server کے بھیجے گئے `--select` tuple کو جانچنے سے پہلے selector projection پر انحصار نہ کریں۔
+Taira کے JSON وسائل پڑھیں اور ان کے مطلوبہ فیلڈز منتخب کریں، پھر CLI اور Rust SDK سے Torii مجموعہ استفسارات کو فلٹرز، ترتیب، سرور سائیڈ پروجیکشن، صفحے کی حدود اور غیر شفاف `next_cursor` تسلسل کے ساتھ استعمال کریں۔ آپ فہرستوں کو دستخط شدہ مخصوص قسم والے استفسارات سے بھی دور رکھیں گے، جو انہیں نہ فلٹر کرتے ہیں، نہ ترتیب دیتے ہیں اور نہ پروجیکٹ کرتے ہیں۔
 
 ## لازمی شرائط {#prerequisites}
 
 - `curl` ، `jq`، Node.js 24، اور موجودہ `iroha` CLI.
 - Taira تک رسائی صرف پڑھنے کے لئے۔
-- دستخط شدہ ٹائپڈ استفسارات کی مثالوں کے لئے، Taira کے لئے کلائنٹ ترتیب یا ایک مقامی نیٹ ورک پیدا کیا.
+- CLI مثالوں کے لئے، Taira یا کسی پیدا کردہ مقامی نیٹ ورک کے لئے کلائنٹ ترتیب۔
 - Rust مثال کے لئے، ہدف نیٹ ورک کے طور پر ایک ہی Iroha ماخذ کی نظر ثانی پر منسلک ایک منصوبہ.
 
 ## قدم {#steps}
@@ -30,25 +30,23 @@ Taira کے JSON وسائل پڑھیں اور مطلوبہ فیلڈز منتخب 
 ```bash [curl]
 curl -fsS -H 'Accept: application/json' --get \
   https://taira.sora.org/v1/domains \
-  --data-urlencode 'sort=id:asc' \
+  --data-urlencode 'sort=id' \
   --data-urlencode 'limit=5' \
-  --data-urlencode 'offset=0' \
-  --data-urlencode 'count_mode=exact' \
-  | jq '{total, ids: [.items[].id]}'
+  --data-urlencode 'include_total=true' \
+  | jq '{total, next_cursor, ids: [.items[].id]}'
 ```
 
 ```js [Node.js]
 const root = 'https://taira.sora.org'
-const limit = 5
 const seen = new Set()
+let cursor = null
 
-for (let offset = 0; ; offset += limit) {
+do {
   const url = new URL('/v1/domains', root)
   url.search = new URLSearchParams({
-    sort: 'id:asc',
-    limit: String(limit),
-    offset: String(offset),
-    count_mode: 'exact',
+    sort: 'id',
+    limit: '5',
+    ...(cursor ? { cursor } : {}),
   })
 
   const response = await fetch(url, {
@@ -63,106 +61,90 @@ for (let offset = 0; ; offset += limit) {
     seen.add(domain.id)
     console.log(domain.id)
   }
-  if (page.items.length < limit || seen.size >= page.total) break
-}
+  cursor = page.next_cursor
+} while (cursor)
 ```
 
 :::
 
-یہ HTTP سطح `limit` اور `offset` کا استعمال کرتی ہے۔ جب راستہ سستا گنتی موڈ کا استعمال کرتا ہے تو ایک متروک یا حد بندی شدہ `total` کو معمول کے مطابق علاج کریں۔
+یہ HTTP سطح `limit` اور ایک غیر شفاف `next_cursor` کے ذریعے صفحہ بندی کرتی ہے؛ اسے بغیر تبدیلی کے `cursor` کے طور پر واپس بھیجیں جب تک کہ یہ `null` نہ ہو جائے۔ `total` صرف اس وقت ظاہر ہوتا ہے جب آپ `include_total=true` کی درخواست کریں، جس کے لیے پورا اسکین کرنا پڑتا ہے۔
 
-### ایک ٹائپڈ CLI استفسار کو فلٹر کریں اور بیچ کریں۔ {#_2-filter-and-batch-a-typed-cli-query}
+### CLI کے ساتھ ایک مجموعہ فلٹر کریں {#_2-filter-a-collection-with-the-cli}
 
-CLI ایک ٹائپ شدہ تکرار پذیر استفسار کو سیریل بناتا ہے اور سرور کے تسلسل کرسرز کو اندرونی طور پر پیروی کرتا ہے۔ یہاں منطقی نتیجہ ایک سطر تک محدود ہوتا ہے ، جبکہ `--fetch-size 1` ہر دورہ واپسی میں حاصل کردہ زیادہ سے زیادہ بیچ کو کنٹرول کرتا ہے۔
+CLI فلٹر، پروجیکشن اور صفحے کا سائز مجموعہ کے اینڈ پوائنٹ کو بھیجتا ہے اور ایک صفحہ، `{items, next_cursor}`، پرنٹ کرتا ہے۔ `next_cursor` کے `null` ہونے تک اس کی پیروی کرنے کے لیے `--all` شامل کریں۔
 
 ```bash
-DOMAIN_PREDICATE='{"equals":[{"field":"id","value":"wonderland.universal"}]}'
+DOMAIN_FILTER='id = "universal.universal"'
 
 iroha --config ./localnet/client.toml \
-  ledger domain list filter "$DOMAIN_PREDICATE" \
-  --limit 1 \
-  --offset 0 \
-  --fetch-size 1
+  ledger domain list \
+  --filter "$DOMAIN_FILTER" \
+  --select id \
+  --limit 1
 ```
 
-صفحہ بندی سے پہلے فلٹرنگ ہوتی ہے۔ استفسار کے مخصوص ٹائپ کردہ پیشگوئیاں استعمال کریں۔ کسی اکاؤنٹ یا اثاثے کے لئے پیشگوئی کو محفوظ طریقے سے ڈومین کے لئے دوبارہ استعمال نہیں کیا جاسکتا ہے۔
+صفحہ بندی سے پہلے فلٹرنگ ہوتی ہے۔ ہر مجموعہ صرف اپنے فیلڈز قبول کرتا ہے؛ نامعلوم فیلڈ کچھ بھی میچ نہ کرنے کے بجائے `invalid_filter` واپس کرتا ہے۔
 
 ### ایک مستحکم میٹا ڈیٹا کلید کے مطابق ترتیب دیں۔ {#_3-sort-by-a-stable-metadata-key}
 
-ٹائپڈ استفسار کی ترتیب ایک میٹا ڈیٹا کلید پر لسانیاتی ہے۔ اس کلید کے بغیر آئٹمز رن ٹائم کی وضاحت شدہ ترتیب پر عمل کرتے ہیں ، لہذا مجموعہ میں مستقل طور پر آباد کردہ کلید کا استعمال کریں۔
+مجموعہ کی ترتیب کی کلیدیں اعلان شدہ فیلڈز اور `metadata.<key>` قبول کرتی ہیں؛ نزولی ترتیب کے لیے کلید سے پہلے `-` لگائیں۔ صعودی ترتیب میں کلید کے بغیر قطاریں پہلے آتی ہیں اور برابری کی صورت میں قطار کی شناخت کے مطابق ترتیب ہوتی ہے، لہذا مجموعہ میں مستقل طور پر آباد کردہ کلید کا استعمال کریں۔
 
 ```bash
 iroha --config ./localnet/client.toml \
   --machine \
-  ledger account list all \
-  --verbose \
-  --sort-by-metadata-key key \
-  --order asc \
+  account list \
+  --sort metadata.key \
   --limit 10 \
-  --offset 0 \
-  --fetch-size 2 \
-  | jq '[.[] | {id, metadata}]'
+  | jq '[.items[] | {id, metadata}]'
 ```
 
-داخل ہونے والے CLI پارس `--select` JSON اور منتخب کرنے والے tuple آگے بڑھاتا ہے، لیکن موجودہ ہلکے وزن کے استفسار DSL سرور پر اس سلیکٹر کا جائزہ نہیں لیتا ہے. ابھی تک اس کے ارد گرد پروجیکشن معاہدہ کی تعمیر نہیں کرتے ہیں. ایک ٹائپڈ SDK پروجیکشن صرف اس کے بعد ہدف رن ٹائم اس کی حمایت کرتا ہے، یا تصدیق شدہ نتیجہ کلائنٹ کی طرف سے `jq` یا JavaScript جیسا کہ اوپر بیان کیا گیا ہے۔
+`--select` ایک سرور سائیڈ پروجیکشن ہے: `--select id,metadata` صرف وہی فیلڈز واپس کرتا ہے، اور نامعلوم فیلڈ `invalid_select` واپس کرتا ہے۔ دستخط شدہ مخصوص قسم والے استفسارات ہمیشہ مکمل آئٹمز واپس کرتے ہیں، اس لیے ان کے نتائج کو اوپر کی طرح `jq` یا JavaScript کے ذریعے کلائنٹ سائیڈ پر پروجیکٹ کریں۔
 
 ### Rust تکرار کرنے والے کو غیر شفاف کرسرز پر عمل کرنے دیں۔ {#_4-let-the-rust-iterator-follow-opaque-cursors}
 
-`Pagination` منطقی نتیجہ سیٹ کو محدود کرتا ہے۔ `FetchSize` ہر سرور بیچ کو کنٹرول کرتا ہے۔ واپس آنے والا تکرار کنندہ شفاف طور پر سرور کے ذریعہ تیار کردہ کرسر کا استعمال کرتے ہوئے تسلسل کی درخواستیں بھیجتا ہے۔
+`limit` صفحے کا سائز مقرر کرتا ہے۔ `list` سے واپس آنے والا تکرار کنندہ موجودہ صفحہ استعمال ہو جانے کے بعد ہی سرور کے `next_cursor` کے ساتھ اگلے صفحے کی درخواست کرتا ہے، اور `take` منطقی نتیجے کو محدود کرتا ہے۔ یہاں `client` ایک `iroha::blocking::Client` ہے۔
 
 ```rust
-use std::num::NonZeroU64;
+use iroha::collections::{Collection, ListQuery, SortKey};
 
-use iroha::data_model::{
-    prelude::FindAssetsDefinitions,
-    query::{
-        builder::QueryBuilderExt as _,
-        parameters::{FetchSize, Pagination},
-    },
-};
+let query = ListQuery::new().sort_by(SortKey::asc("id")).limit(5);
 
-let definitions = client
-    .query(FindAssetsDefinitions::new())
-    .with_pagination(Pagination::new(NonZeroU64::new(25), 0))
-    .with_fetch_size(FetchSize::new(NonZeroU64::new(5)))
-    .execute_all()?;
-
-for definition in definitions {
-    println!("{} {}", definition.id(), definition.name());
+for definition in client.list(Collection::AssetDefinitions, query).take(25) {
+    let definition = definition?;
+    println!("{:?} {:?}", definition.get("id"), definition.get("name"));
 }
 ```
 
-`ForwardCursor` اختیار سے منسلک ، عمل کے مقامی اور صرف فارورڈ ہے۔ اسے کبھی بھی تجزیہ نہ کریں ، اس کا ترکیب نہ کریں ، اسے مجاز اکاؤنٹس کے مابین بانٹیں ، یا اسے Torii کی مثالوں میں پورٹیبل ریزیومے ٹوکن کے طور پر برقرار رکھیں۔ اگر اس کی میعاد ختم ہوجاتی ہے تو ، ایپلیکیشن لیول چیک پوائنٹ کے ساتھ اصل استفسار کو دوبارہ شروع کریں۔
+`next_cursor` ایک غیر شفاف کی سیٹ پوزیشن ہے جو اپنے مجموعہ، راستے، فلٹر اور ترتیب سے بندھی ہوتی ہے۔ اسے کبھی پارس یا خود تیار نہ کریں، اور اسے مختلف فلٹر یا ترتیب کے ساتھ دوبارہ استعمال نہ کریں؛ Torii اسے `invalid_cursor` کے ساتھ مسترد کرتا ہے۔ صفحات کے درمیان داخل یا ہٹائی گئی قطاریں کبھی کسی بعد کے صفحے کو غیر متعلقہ قطاریں دہرانے یا چھوڑنے پر مجبور نہیں کرتیں۔
 
 ## تصدیق کریں {#verify}
 
-عین مطابق ڈومین فلٹر کو صرف `wonderland.universal` واپس کرنا چاہئے۔ نتیجہ کی تصدیق کریں اس کے بجائے صرف کامیاب CLI آؤٹ پٹ گننے کے بجائے:
+عین مطابق ڈومین فلٹر کو صرف `universal.universal` واپس کرنا چاہئے۔ نتیجہ کی تصدیق کریں اس کے بجائے صرف کامیاب CLI آؤٹ پٹ گننے کے بجائے:
 
 ```bash
 iroha --config ./localnet/client.toml \
   --machine \
-  ledger domain list filter "$DOMAIN_PREDICATE" \
-  --limit 1 --offset 0 --fetch-size 1 \
-  | jq -e 'length == 1 and .[0] == "wonderland.universal"'
+  ledger domain list --filter "$DOMAIN_FILTER" --select id --limit 1 \
+  | jq -e '[.items[].id] == ["universal.universal"]'
 ```
 
-پیجائزڈ ایپلی کیشن استفسارات کے لئے، یہ بھی ٹیسٹ کریں کہ IDs صفحات پر بار بار نہیں ہوتا ہے، مطلوبہ منطقی حد کبھی بھی تجاوز نہیں کی جاتی ہے، اور ختم ہونے والے کرسر کے بعد دوبارہ کوشش کرنا ایک دستاویزی چیک پوائنٹ سے دوبارہ شروع ہوتا ہے.
+صفحہ بند ایپلی کیشن استفسارات کے لئے یہ بھی ٹیسٹ کریں کہ IDs صفحات میں دہرائے نہیں جاتے، مطلوبہ منطقی حد کبھی تجاوز نہیں کی جاتی، اور مسترد شدہ کرسر ایک دستاویزی چیک پوائنٹ سے دوبارہ شروع ہوتا ہے۔
 
 ## خرابی کا سراغ لگانا {#troubleshooting}
 
 - ایک واحد استفسار متكرر فلٹر ، ترتیب ، صفحہ بندی ، یا حصول پیرامیٹرز کو قبول نہیں کرتا ہے۔ جب ان کنٹرولز کی ضرورت ہو تو اس سے متعلق فہرست استفسار کا استعمال کریں۔
-- `fetch_size` ایک غیر صفر بیچ اشارہ ہے، مجموعی نتائج کی حد نہیں. موجودہ ڈیفالٹ `100` ہے، اور رن ٹائم اس کی زیادہ سے زیادہ اقدار کو مسترد کرتا ہے.
-- نامعلوم، ختم ہونے والا یا غیر ملکی کرسر جان بوجھ کر دوبارہ استعمال نہیں کیا جاسکتا ہے۔ استفسار کو دوبارہ شروع کریں؛ opaque قدر کی مرمت کرنے کی کوشش نہ کریں۔
-- میٹا ڈیٹا ترتیب عام فیلڈ ترتیب نہیں ہے۔ اگر ہر شے میں منتخب کردہ کلید شامل نہیں ہے تو ، لاپتہ کلیدی آرڈر کی دستاویز کریں یا ایک اور حکمت عملی منتخب کریں۔
-- CLI تجزیہ کرتا ہے اور آگے بڑھاتا ہے `--select` ، لیکن موجودہ سرور ہلکے وزن والے سلیکٹر ٹپل کا جائزہ نہیں لیتا ہے۔ کلائنٹ سائڈ پروجیکشن لاگو کریں جب تک کہ سرور سائڈ سلیکٹر سپورٹ کی تعیناتی شدہ رن ٹائم کے لئے تصدیق نہ کی جائے۔
-- وسیع لامحدود استفسارات نیٹ ورک نوڈ کے کام، کلائنٹ میموری اور کرسر کی زندگی کا خطرہ بڑھاتے ہیں۔ ایک منطقی حد مقرر کریں اور صارف کے لئے مناسب سائز حاصل کریں۔
-- عوامی JSON وسائل کے پیرامیٹرز اور دستخط شدہ typed query parameters باہم متعلق ہیں، لیکن یہ ایک دوسرے کے بدلے استعمال ہونے والے serialization formats نہیں ہیں۔ typed query envelopes کے لیے SDK یا CLI کو ترجیح دیں۔
+- `limit` صفحے کا سائز ہے، کل نتیجہ نہیں: کم از کم 1 اور زیادہ سے زیادہ نوڈ کا `torii.app_api_max_list_limit` (ڈیفالٹ 500)؛ Torii کا ڈیفالٹ 100 ہے۔ مزید پڑھنے کے لیے `next_cursor`، `--all` یا SDK تکرار کنندہ کی پیروی کریں۔
+- `invalid_cursor` کا مطلب ہے کہ کرسر غلط شکل کا ہے یا کسی مختلف مجموعہ، راستے، فلٹر یا ترتیب سے تعلق رکھتا ہے۔ استفسار کو دوبارہ شروع کریں؛ غیر شفاف قدر کی مرمت کرنے کی کوشش نہ کریں۔
+- ایک انتخابی فلٹر ایسا مختصر یا خالی صفحہ واپس کر سکتا ہے جس کا `next_cursor` `null` نہ ہو۔ جب تک یہ `null` نہ ہو جائے، اس کی پیروی جاری رکھیں۔
+- `--filter` اور HTTP `filter` پیرامیٹر Torii کی متنی گرامر لیتے ہیں، جیسے `id = "universal.universal"` یا `exists(metadata.tier)`۔ JSON پریڈیکیٹ آبجیکٹ فلٹر متن نہیں ہے اور غلط `filter` کے طور پر ناکام ہو جاتا ہے۔
+- وسیع لامحدود استفسارات نیٹ ورک نوڈ کے کام اور کلائنٹ میموری کو بڑھاتے ہیں۔ صارف کے لئے مناسب منطقی حد اور صفحے کا سائز مقرر کریں۔
+- دستخط شدہ `/v1/query` فہرست سازی کا API نہیں ہے۔ یہ واحد استفسارات اور چند غیر فلٹر شدہ تکرار پذیر آغاز قبول کرتا ہے، اور دوسروں، جیسے `FindDomains` یا `FindAssetDefinitions`، کو `signed_query_shape_not_admitted` کے ساتھ مسترد کرتا ہے۔ مجموعہ اینڈ پوائنٹس، CLI `list` کمانڈز اور SDK مجموعہ ریڈرز ایک ہی فلٹر، ترتیب اور کرسر گرامر استعمال کرتے ہیں۔
 
 ## ماخذ اور متعلقہ دستاویزات {#source-and-related-docs}
 
-- [pinned commit پر cursor-backed pagination انضمام ٹیسٹ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs)
-- [پنڈ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs) پر query builder اور selector کا رویہ۔
-- [پنڈ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs) میں استفسار پیرامیٹرز اور کرسر ماڈل۔
+- [مقررہ commit پر Torii مجموعہ استفسار معاہدہ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/torii/collection_queries.md)
+- [مقررہ commit پر Rust مجموعہ پڑھائی اور کرسر تکرار کنندہ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/src/collections.rs)
+- [مقررہ commit پر دستخط شدہ استفسار کا داخلہ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/query_json.md)
 - [استفسارات](/ur/blockchain/queries.md)
 - [استفسار کا حوالہ](/ur/reference/queries.md)
 - [JavaScript اور TypeScript](/ur/guide/tutorials/javascript.md)

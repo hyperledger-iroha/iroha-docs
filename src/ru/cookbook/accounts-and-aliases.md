@@ -1,9 +1,9 @@
 ---
 translation_locale: ru
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
+translation_source_hash: c1aee0c29332bd7c883500e72a1ec7812aebfca13b673e6681788cf4bc5ecbf1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Аккаунты и псевдонимы {#accounts-and-aliases}
@@ -22,15 +22,19 @@ translation_engine: bing-translator-llm
 
 ### 1. Проверьте канонические учетные записи на Taira {#_1-inspect-canonical-accounts-on-taira}
 
-Список публичных аккаунтов всегда возвращает канонические идентификаторы I105. Основной псевдоним является необязательным и указывается отдельно.
+Список публичных аккаунтов всегда возвращает канонические идентификаторы I105. Основной псевдоним необязателен; чтобы увидеть его, запросите поле `aliases`.
 
 ```bash
-curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+curl -fsS -H 'Accept: application/json' --get \
+  https://taira.sora.org/v1/accounts \
+  --data-urlencode 'limit=5' \
+  --data-urlencode 'select=id,aliases' \
+  | jq -r '.items[]
+    | [.id, (first(.aliases[]? | select(.is_primary) | .alias) // "-")]
+    | @tsv'
 ```
 
-Идентификатор из `.id` действителен для строгих полей аккаунта. Не добавляйте к нему домен. Псевдоним из `.primary_alias` является ключом для поиска пользователем, а не другой канонической идентичностью.
+Идентификатор из `.id` действителен для строгих полей аккаунта. Не добавляйте к нему домен. Псевдоним из `.aliases[].alias` является ключом для поиска пользователем, а не другой канонической идентичностью.
 
 ### 2. Выведите и нормализуйте свой Taira I105 идентификатор {#_2-derive-and-normalize-your-taira-i105-id}
 
@@ -53,14 +57,14 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID" \
   | iroha tools address normalize --profile taira
 ```
 
-Нормализованное значение должно быть идентично `TAIRA_ACCOUNT_ID`. Параметр `[account].domain` в файле TOML может быть `wonderland.universal`, но это значение влияет только на маршрутизацию и контекст псевдонима.
+Нормализованное значение должно быть идентично `TAIRA_ACCOUNT_ID`. Параметр `[account].profile` выбирает только сетевой префикс I105; домены принадлежат псевдонимам и никогда — идентификатору аккаунта.
 
 ### 3. Прочитайте счет и его активы {#_3-read-the-account-and-its-assets}
 
 После того как учетная запись будет создана, запросите ее напрямую и выведите страницу с ограниченным активом. URL-кодируйте значение I105 перед использованием его в пути.
 
 ```bash
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 ENCODED_ACCOUNT_ID="$(
@@ -69,7 +73,7 @@ ENCODED_ACCOUNT_ID="$(
 )"
 
 curl -fsS -H 'Accept: application/json' \
-  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10" \
+  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10&include_total=true" \
   | jq '{total, items}'
 ```
 
@@ -111,7 +115,7 @@ fi
 
 ::: warning Граница разрешений
 
-Сервис финансирования тестовой сети Taira может пополнять свой аккаунт заявителя, но это не предоставляет общего права на регистрацию аккаунтов или управления псевдонимами. Регистрация другого аккаунта требует `CanRegisterAccount` под активным валидатором. Псевдонимы учетной записи обычно также требуют активной аренды SNS и соответствующих разрешений для псевдонима. Используйте регулируемый планировщик подключения/псевдонимов или репетируйте регистрацию через созданную локальную сеть.
+Сервис финансирования тестовой сети Taira может пополнять свой аккаунт заявителя, но это не предоставляет общего права на регистрацию аккаунтов или управления псевдонимами. Регистрация другого аккаунта требует `CanRegisterAccount` под активным исполнителем. Псевдонимы учетной записи обычно также требуют активной аренды SNS и соответствующих разрешений для псевдонима. Используйте регулируемый планировщик подключения/псевдонимов или репетируйте регистрацию через созданную локальную сеть.
 
 :::
 
@@ -121,9 +125,9 @@ fi
 iroha --config ./localnet/client.toml \
   --machine \
   --fee-payer authority \
-  ledger account register --id "$NEW_ACCOUNT_ID"
+  account register --id "$NEW_ACCOUNT_ID"
 
-iroha --config ./localnet/client.toml ledger account get \
+iroha --config ./localnet/client.toml account get \
   --id "$NEW_ACCOUNT_ID"
 ```
 
@@ -158,8 +162,8 @@ fi
 
 ## Исходные и связанные документы {#source-and-related-docs}
 
-- [реализация канонического адреса аккаунта на закрепленной версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
-- [Тесты аккаунта и псевдонима Torii на закреплённой версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
+- [реализация канонического адреса аккаунта на закрепленной версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/account/address.rs)
+- [Дымовые тесты конечных точек аккаунтов Torii](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/tests/accounts_endpoints.rs) и [тесты маршрутов псевдонимов](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/tests/lib_tests/part_2.rs) на закрепленной версии исходного кода
 - [Счета](/ru/blockchain/accounts.md)
 - [Псевдонимы модели данных](/ru/blockchain/data-model.md#aliases)
 - [Конвенции именования](/ru/reference/naming.md)

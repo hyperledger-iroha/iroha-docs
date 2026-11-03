@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: f04e5e78329996d70926c4fd5dc034d41605d0a82fffd6460f67b252269480d9
+translation_source_hash: 631ec91b5ea398ae17253f0fd6307d76bc3820e2a2b6c8c9f79b30e0188ec170
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -379,7 +379,7 @@ Foydalanish `--room-policy public` relaylar tomoshabinlar uchun chiptalarsiz ko'
 
 ### JavaScript Integratsiya {#javascript-integration}
 
-Joriy [Iroha JavaScript namoyishi](https://github.com/soramitsu/iroha-demo-javascript) shaffof, tasdiqlangan bir-bir uchrashuv profilini amalga oshiradi. Bu protokolning `zk-roster-v1` dalil oqimini oshkor qilmaydi. Uning rendereri WebRTC takliflari va javoblarini yaratadi, imtiyozli ko'prik esa mahalliy [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) checkoutdan foydalanib, sozlash, imzolash, taqdim etish va yakunlangan Kaigi bitimlarni kutish uchun foydalanadi. .
+Joriy [Iroha JavaScript namoyishi](https://github.com/soramitsu/iroha-demo-javascript) shaffof, tasdiqlangan bir-bir uchrashuv profilini amalga oshiradi. Bu protokolning `zk-roster-v1` dalil oqimini oshkor qilmaydi. Uning rendereri WebRTC takliflari va javoblarini yaratadi, imtiyozli ko'prik esa mahalliy [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js) checkoutdan foydalanib, sozlash, imzolash, taqdim etish va yakunlangan Kaigi bitimlarni kutish uchun foydalanadi. .
 
 Koʻring [Oʻrnatilgan Kaigi a JavaScript Ilova](/uz/guide/tutorials/kaigi.md) to'g'ri yo'nalish tasdiqlanishi, taklif shakli, ko'prik chegaralari va joriy demo sinov buyruqlari uchun.
 
@@ -438,6 +438,6 @@ iroha --config ./localnet/client.toml --operator-private-key-file "$IROHA_OPERAT
 
 ## Yuqori yo'nalishdagi referentlar {#upstream-references}
 
-- [README API va kuzatuvchanlik ko'rib chiqishi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/README.md)
-- [ISO 20022 ko'priklarni amalga oshirish](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/iso20022_bridge.rs)
+- [README API va kuzatuvchanlik ko'rib chiqishi](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/README.md)
+- [ISO 20022 ko'priklarni amalga oshirish](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/iso20022_bridge.rs)
 - [Ishlab chiqarish va o'lchovlar](/uz/guide/advanced/metrics.md)

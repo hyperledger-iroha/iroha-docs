@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 4979ab2c52eba4040d7f003f3da73dbc333fa7e047b0259816d0d34f97377749
+translation_source_hash: c1432d8d2483f67b6ab81680f6c5457cab470db7944512626242a1446a7d501f
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -12,7 +12,7 @@ Iroha ソースリポジトリには、ノードと同じリビジョンを追�
 
 ## JavaScript レシピ {#javascript-recipes}
 
-[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes) 決定論的なトランザクションバッチ処理のための具体的な例を含んでいます、 Nexus アプリの転送 NFT およびアカウントの反復、 ISO 橋が流れ、そして Torii ストリーミング。各レシピは、オフラインで実行できるか、ライブが必要かを記録します Torii API エンドポイント。
+[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes) 決定論的なトランザクションバッチ処理のための具体的な例を含んでいます、 Nexus アプリの転送 NFT およびアカウントの反復、 ISO 橋が流れ、そして Torii ストリーミング。各レシピは、オフラインで実行できるか、ライブが必要かを記録します Torii API エンドポイント。
 
 ## Swift と iOS {#swift-and-ios}
 

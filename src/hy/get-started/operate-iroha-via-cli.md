@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: c070c86b715b36079a7b6a47de2e31144187d7ebc6309f294a346be61a372660
+translation_source_hash: d7edc74d06a9481123156520d7774e26d1790fee657607031d180aea172d9a98
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -183,7 +183,7 @@ cargo run --bin iroha -- \
 - [SDK դասընթացներ](/hy/guide/tutorials/)
 - [Torii վերջնական կետեր](/hy/reference/torii-endpoints.md)
 - [Աշխատել Iroha բինարների հետ](/hy/reference/binaries.md)
-- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/README.md)
+- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/README.md)
 
 Որպեսզի վերականգնել ամբողջ Markdown օգնության snapshot աղբյուրի ստուգման, գործարկել:
 

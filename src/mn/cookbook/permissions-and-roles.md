@@ -1,9 +1,9 @@
 ---
 translation_locale: mn
 translation_source: /cookbook/permissions-and-roles.md
-translation_source_hash: 8d6fd7101094ba21cfc2c5fb9a89d2acd7e67f13ff47b9f8c8e01bbbd7bf2836
+translation_source_hash: 40fe8b19344d8eff66b178dc8576e2e049fef50bd3212fbddc5c0d5f7f37fa03
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Зөвшөөрөл болон үүрэг {#permissions-and-roles}
@@ -14,13 +14,12 @@ translation_engine: bing-translator-llm
 
 ## Өмнөх шаардлагууд {#prerequisites}
 
-- Санхүүжилт авсан Taira клиент ба [Taira-д холбогдох](./connect-to-taira.md) -аас хураамжийн мета мэдээлэл.
+- [Taira-д холбогдох](./connect-to-taira.md) хэсгээс авсан, санхүүжүүлсэн Taira клиент.
 - `TARGET_ACCOUNT` ба `DELEGATE_ACCOUNT` нь ганц протоколын стандарт I105 дансны ID-д тохируулагдсан.
-- Баталгаажуулах акаунт нь зорилтот зөвшөөрөл болон үүргүүдийг удирдах эрхтэй байх ёстой. Taira-д энэ нь зөвшөөрлөөр хязгаарлагдсан удирдлагын үйлдэл юм; `CanManageRoles` болон хүрээтэй зөвшөөрлийг олгоход шаардлагатай эрхийг олж ав, эсвэл үүсгэгдсэн локал сүлжээнд жорыг ажиллуул.
+- Гарын үсэг зурж буй данс `CanManageRoles`-ийг эзэмшсэн байх ёстой бөгөөд хүрээтэй зөвшөөрлийг шилжүүлэн олгох чадвартай байх ёстой: тэр нь `TARGET_ACCOUNT` өөрөө, эсвэл тухайн дансны хувьд `CanModifyAccountMetadata`-г аль хэдийн эзэмшдэг. Taira дээр энэ нь зөвшөөрлөөр хязгаарлагдсан удирдлагын үйлдэл юм. Үүсгэсэн localnet-ийн клиент `CanManageRoles`-гүй тул жорд genesis нь үүнийг олгодог сүлжээ хэрэгтэй.
 
 ```bash
 CONFIG=./taira.client.toml
-FEE_METADATA=./taira.tx-metadata.json
 ROLE_ID=cookbook_metadata_editors
 test -n "$TARGET_ACCOUNT"
 test -n "$DELEGATE_ACCOUNT"
@@ -36,12 +35,11 @@ DELEGATE_CONFIG=./taira.delegate.toml
 
 ### 1. Хоосон үүрэг бүртгэх {#_1-register-an-empty-role}
 
-Төрлийн өөрчлөлт хийх бүр CLI командыг төлбөр төлөгчийг тодорхой заадаг. Метадат файлууд нь туршилтын сүлжээний санхүүжилтийн үйлчилгээний хариултаас гарч ирсэн одоогийн Taira төлбөрийн хөрөнгийг агуулдаг.
+Төлөв өөрчилдөг CLI команд бүр төлбөр төлөгчийг тодорхой заадаг. CLI нь гарын үсэг зурахаас өмнө яг төлбөрийг Taira-ийн төлбөрийн хөрөнгөөр тооцоолж, үнийн санал гаргадаг.
 
 ```bash
 iroha --config "$CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
   ledger role register --id "$ROLE_ID"
 ```
 
@@ -54,7 +52,6 @@ jq -cn --arg account "$TARGET_ACCOUNT" \
   '{name:"CanModifyAccountMetadata",payload:{account:$account}}' |
   iroha --config "$CONFIG" \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
     ledger role permission grant --id "$ROLE_ID"
 ```
 
@@ -63,8 +60,7 @@ jq -cn --arg account "$TARGET_ACCOUNT" \
 ```bash
 iroha --config "$CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
-  ledger account role grant \
+  account role grant \
   --id "$DELEGATE_ACCOUNT" \
   --role "$ROLE_ID"
 ```
@@ -79,13 +75,12 @@ iroha --config "$CONFIG" \
 printf '"delegated"\n' |
   iroha --config "$DELEGATE_CONFIG" \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
-    ledger account meta set \
+    account meta set \
     --id "$TARGET_ACCOUNT" \
     --key cookbook_access
 ```
 
-Ижил загвар Rust үйлчлүүлэгчдэд хэрэглэх боломжтой. Энд `client` нь `registrar_account` болж гарын үсэг зурна, энэ нь CLI урсгалд байдаг шиг үүргийн анхны эзэмшигч болно. Бүх гурван дансны хувьсагчууд аль хэдийн `AccountId` утгыг задлан шинжилсэн байна:
+Ижил загварыг Rust клиентүүд ашиглах боломжтой. Энд `client` нь `registrar_account`-ийн нэрээр гарын үсэг зурдаг `iroha::blocking::Client` бөгөөд CLI урсгалд байдаг шиг тэр данс үүргийн анхны эзэмшигч болно. Дансны гурван хувьсагч бүгд аль хэдийн задлан шинжилсэн `AccountId` утгууд юм:
 
 ```rust
 use iroha::data_model::{prelude::*, transaction::FeePaymentIntent};
@@ -98,7 +93,7 @@ let role = Role::new(role_id.clone(), registrar_account).add_permission(
     },
 );
 
-client.submit_all_blocking::<InstructionBox>(
+client.submit_all::<InstructionBox>(
     [
         Register::role(role).into(),
         Grant::account_role(role_id, delegate_account).into(),
@@ -109,32 +104,35 @@ client.submit_all_blocking::<InstructionBox>(
 
 ## Баталгаажуулах {#verify}
 
-Даалгаврын аль алиныг нь жагсаагаад, дараа нь төлөөлөгчийн бичсэн яг утгыг уншина уу:
+Үүргээр олгосон эрхүүдийг багтаасан, төлөөлөгчийн үйлчилж буй зөвшөөрлүүдийг уншаад, дараа нь төлөөлөгчийн бичсэн яг утгыг унш:
 
 ```bash
-iroha --config "$CONFIG" ledger role permission list --id "$ROLE_ID"
-iroha --config "$CONFIG" ledger account role list --id "$DELEGATE_ACCOUNT"
+iroha --config "$CONFIG" --machine account permission list \
+  --id "$DELEGATE_ACCOUNT" --all \
+  | jq -e --arg account "$TARGET_ACCOUNT" \
+    '.items | any(.name == "CanModifyAccountMetadata"
+      and .payload.account == $account)'
 
-iroha --config "$CONFIG" ledger account meta get \
+iroha --config "$CONFIG" account meta get \
   --id "$TARGET_ACCOUNT" \
   --key cookbook_access
 ```
 
-Зөвшөөрлийн жагсаалт нь `CanModifyAccountMetadata`-г `TARGET_ACCOUNT` хүрээнд агуулсан байх ёстой, төлөөлөгчийн үүргийн жагсаалт нь `ROLE_ID`-г агуулсан байх ёстой, мөн метадатаг уншихад `"delegated"` буцах ёстой.
+Төлөөлөгчийн үйлчилж буй зөвшөөрлүүд `TARGET_ACCOUNT` хүрээтэй `CanModifyAccountMetadata`-г агуулсан байх ёстой бөгөөд метадатын уншилт `"delegated"`-г буцаах ёстой. Torii гарын үсэгтэй асуулгаар үүргийн жагсаалт гаргахаас татгалздаг тул үйлчилж буй зөвшөөрлийн жагсаалт нь оноолтын шалгалт болно.
 
 ## Алдааг олох болон засах {#troubleshooting}
 
-- `Not permitted` бүртгүүлэх, засах эсвэл үүрэг олгох үед криптографийн гарын үсэг зурж буй этгээд нь шаардлагатай Taira эрх бүхий эрх мэдлийн үндэслэлгүй байна гэсэн үг. Хязгаарлагдмал токеныг глобал токеноор сольж болохгүй; зөвшөөрөгдсөн зөвшөөрлийг хүсэх эсвэл localnet-г ашигла.
+- Үүргийг бүртгэх, засах эсвэл оноох үед гарсан `Not permitted` нь гарын үсэг зурагчид шаардлагатай Taira эрх мэдэл байхгүй гэсэн үг. Хүрээтэй токеныг глобал токеноор бүү соль; яг тухайн эрхийн олголтыг хүс.
 - Пэйлоуд задлах алдаа нь ихэвчлэн `account` нь `payload`-ийн хажууд байрласан, I105 ID-ийн оронд нэгэн нэршил өгөгдсөн, эсвэл JSON утга хоёр удаа ишлэлд авсан гэсэн үг юм.
-- Төлбөр татгалзах нь тухайн алхмыг илгээж буй криптографи гарын үүсгэгчид хамаарна. Менежерийг бие даан санхүүжүүлж, төлөөлөгчийг томилж, усны хангамжаас гаралтай төлбөрийн хөрөнгийн метадатыг хадгал.
+- Төлбөрийн татгалзал нь тухайн алхмыг илгээж буй гарын үсэг зурагчид хамаарна. Менежер болон төлөөлөгчийг төлбөрийн үнийн санал бүрт нэрлэгдсэн төлбөрийн хөрөнгөөр тус тусад нь санхүүжүүл.
 - Амжилттай үүрэг олголт нь түүний токенууд дээр кодлогдсон хүрээг давж гарахгүй. Энэхүү үүрэг зөвхөн зөвшөөрлийн хэвлэсэн өглөмжид нэрлэгдсэн дансыг л өөрчлөх боломжтой.
-- Цэвэрлэхдээ эхлээд `ledger account role revoke`, дараа нь `ledger role permission revoke`, эцэст нь `ledger role unregister`-г ажиллуулна; тус бүр нь тусдаа бичих үйлдэл бөгөөд `--fee-payer authority` болон төлбөрийн мета өгөгдөл агуулсан байх ёстой.
+- Цэвэрлэхийн тулд эхлээд `account role revoke`, дараа нь `ledger role permission revoke`, эцэст нь `ledger role unregister`-г ажиллуул; тус бүр нь тусдаа бичих үйлдэл бөгөөд `--fee-payer authority`-г агуулсан байх ёстой.
 
 ## Эх сурвалж ба холбогдох баримт бичгүүд {#source-and-related-docs}
 
-- [Тогтоосон эх кодын хувилбар дээр үүрэг нэгтгэх туршилтууд](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/roles.rs)
-- [Зөвшөөрлийн интеграцын сорилуудыг түгжигдсэн эх кодуудын хувилбар дээр](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/permissions.rs)
-- [Бүртгэлтэй эх кодын тогтсон хувилбарт суулгасан зөвшөөрлийн өгөгдлийн загвар](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/permission.rs)
+- [Тогтоосон эх кодын хувилбар дээр үүрэг нэгтгэх туршилтууд](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/roles.rs)
+- [Зөвшөөрлийн интеграцын сорилуудыг түгжигдсэн эх кодуудын хувилбар дээр](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/permissions.rs)
+- [Бүртгэлтэй эх кодын тогтсон хувилбарт суулгасан зөвшөөрлийн өгөгдлийн загвар](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_executor_data_model/src/permission.rs)
 - [Зөвшөөрөл болон үүрэг](/mn/blockchain/permissions.md)
 - [Зөвшөөрлийн токены лавлах](/mn/reference/permissions.md)
 - [Метадата](./metadata.md)

@@ -326,10 +326,11 @@ Create `taira.client.toml`:
 
 ```toml
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
+# The exact `network_id` from https://taira.sora.org/v1/accounts/capabilities
+network_id = "<TAIRA_NETWORK_ID>"
 torii_url = "https://taira.sora.org/"
 
 [account]
-domain = "wonderland.universal"
 profile = "taira"
 public_key = "<ED25519_PUBLIC_KEY_HEX>"
 private_key = "<ED25519_PRIVATE_KEY_HEX>"

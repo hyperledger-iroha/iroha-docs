@@ -1,9 +1,9 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/stream-events.md
-translation_source_hash: 96f0a26000530fee15d121f815f9f5717a535dc3836cff9a2a447b1e5b70c41c
+translation_source_hash: d6202b208288688cdfd927491d6670f094f631ccaecd7ff62858a94267c5306a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Тамашалар {#stream-events}
@@ -22,10 +22,10 @@ translation_engine: nllb-200-ct2
 
 ### 1. SSE реакцияһын раҫлау {#_1-confirm-the-sse-response}
 
-Taira әлеге ваҡытта был маршрут тураһында һөйләшеүҙәр бары тик `Accept` башлыҡ өҫтөнлөклө ваҡиғалар ағымы һәм JSON fallback үҙ эсенә ала. curl буферын һүндерергә. 15 секундтан һуң бойороҡ тамамлана; тыныс ваҡытта йөрәк тибештәре менән генә һөйләшеүҙәр ҡабул ителә.
+Ваҡиғалар ағымын JSON запас варианты менән һорағыҙ: Torii `text/event-stream` ағымын ебәрә, ә кире ҡағылған һорауҙы, мәҫәлән, дөрөҫ булмаған фильтрҙы, JSON хатаһы итеп хәбәр итә. curl буферлауын һүндерегеҙ. Команда 20 секундтан һуң тамамлана. Torii 15 секунд эшһеҙ торғандан һуң йөрәк тибеше комментарийын ебәрә, шуға күрә тын осорҙа тик йөрәк тибеше комментарийҙарын ғына алыу — дөрөҫ һөҙөмтә.
 
 ```bash
-curl -sS -N --max-time 15 \
+curl -sS -N --max-time 20 \
   -H 'Accept: text/event-stream, application/json' \
   https://taira.sora.org/v1/events/sse
 ```
@@ -34,15 +34,12 @@ curl -sS -N --max-time 15 \
 
 ### 2. фильтрланған JavaScript ҡулланыусыны өҫтәгеҙ. {#_2-add-a-filtered-javascript-consumer}
 
-Түбәндәгеләрҙе һаҡлағыҙ `stream-taira.mjs`. Ул туранан-тура Fetch ҡуллана, шуға күрә үтенесе ебәрергә мөмкин Taira аралаштырыу талап ителә `Accept` баштан. ағым `FilterExpr` раҫланған транзакция ваҡиғаларын һайлай, һәм анализлаусы ҡулланыу SSE Ҡабатлау курсоры булмаған кадрҙар.
+Түбәндәгене `stream-taira.mjs` итеп һаҡлағыҙ. Ул селтәр аша тапшырыу форматын күрһәтер өсөн Fetch-ты туранан-тура ҡуллана. `filter` һорау параметры раҫланған транзакция ваҡиғаларын һайлау өсөн Torii-ҙың текст фильтр грамматикаһын ҡуллана, ә анализатор SSE кадрҙарын ҡабатлау курсорһыҙ эшкәртә.
 
 ```js
 const baseUrl = 'https://taira.sora.org'
 const shutdown = new AbortController()
-const filter = {
-  op: 'eq',
-  args: ['tx_status', 'Approved'],
-}
+const filter = 'tx_status = "Approved"'
 
 process.once('SIGINT', () => shutdown.abort())
 process.once('SIGTERM', () => shutdown.abort())
@@ -52,7 +49,7 @@ const delay = (milliseconds) =>
 
 async function reconcile() {
   const response = await fetch(
-    `${baseUrl}/v1/explorer/transactions?page=1&per_page=25`,
+    `${baseUrl}/v1/explorer/transactions?limit=25`,
     { headers: { Accept: 'application/json' } },
   )
   if (!response.ok) {
@@ -63,7 +60,7 @@ async function reconcile() {
 
 async function* streamOnce() {
   const url = new URL('/v1/events/sse', baseUrl)
-  url.searchParams.set('filter', JSON.stringify(filter))
+  url.searchParams.set('filter', filter)
   const response = await fetch(url, {
     headers: { Accept: 'text/event-stream, application/json' },
     signal: shutdown.signal,
@@ -164,7 +161,7 @@ SSE Йөрәк тибеш комментарийҙары буш бәйләнеш
 
 Һуңғы 25 Explorer һорауы тик асыҡ диагностика. етештереү ҡулланыусыһы алмаштырырға йәки киңәйтергә тейеш `reconcile()` уның оҙайлы ҡушымта ресурстары өсөн һорауҙар һәм бойомға ашырыу сикләнгән үҙ контроль пункты өсөн етерлек ҙур. сикләнгән мгновеньшот ғына иҫбат итә алмай, бер ниндәй ҙә ваҡиғалар юғалтылған.
 
-pinned commit-та `ToriiClient.streamEvents()` тик `Accept: text/event-stream` ебәрә; live Taira был тарыраҡ header-ҙы `406` менән кире ҡаға. SDK һәм public endpoint бер үк media type-тар тураһында килешкәнсе өҫтәге raw Fetch формаһын ҡулланығыҙ.
+`@iroha/iroha-js` пакетындағы `ToriiClient.streamEvents({ filter })` шул уҡ ағымды уҡый: уға `field('tx_status').eq('Approved')` йәки өҫтәге текст фильтрын бирегеҙ. Ул ағым тамамланғансы аҙаҡҡы `stream_error` кадрын бирә, шуға күрә өҫтәге ҡабат тоташыу һәм тикшереп килештереү ҡағиҙәләре һаман да ғәмәлдә.
 
 ## Тикшереү {#verify}
 
@@ -173,7 +170,7 @@ pinned commit-та `ToriiClient.streamEvents()` тик `Accept: text/event-strea
 ```bash
 curl -fsS \
   -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=25' |
+  'https://taira.sora.org/v1/explorer/transactions?limit=25' |
   jq .
 ```
 
@@ -182,17 +179,17 @@ curl -fsS \
 ## Проблемаларҙы хәл итеү {#troubleshooting}
 
 - Йөрәк тибеш комментарийҙары менән бәйләнеш, әммә бер ниндәй ҙә мәғлүмәт ваҡиғалары сәләмәт; һайлап алынған үткәргес ҡаҙанышы ябай ғына тын булыуы мөмкин.
-- `406 Not Acceptable` тура эфирҙа Taira ғәҙәттә тик иғлан ителгән заявканы аңлата `text/event-stream`. Ебәрегеҙ `text/event-stream, application/json` юғарыла күрһәтелгән кеүек үк.
-- `stream_error` ваҡиғаһы серверҙың артта ҡалыуын йәки башҡа терминал ағым торошон асыҡлауын күрһәтә. Torii был ваҡиғаны бер тапҡыр ебәрә һәм ағымды яба; ҡабаттан тоташтырыу алдынан көйләгеҙ.
+- `invalid_filter` коды менән `400` яуабы `filter` Torii-ҙың текст грамматикаһына тап килмәүен йәки ваҡиғалар ағымдары танымаған яланды атауын аңлата. Ваҡиғалар ағымдары `tx_status`, `tx_hash`, `tx_block_height`, `tx_lane_id`, `tx_dataspace_id`, `block_status`, `block_height`, `proof_backend`, `proof_call_hash` һәм `proof_envelope_hash` буйынса фильтрлай.
+- `stream_error` ваҡиғаһы серверҙың артта ҡалыуҙы йәки ағымдың башҡа аҙаҡҡы торошон асыҡлағанын күрһәтә. Torii был ваҡиғаны бер тапҡыр ебәрә һәм ағымды яба; алмашҡа яңы ағым асығыҙ, һуңынан тикшереп килештерегеҙ.
 - Прокси буферлы банка SSE хатта Torii юҡ. Проксиҙа яуапты буферлауҙы һәм ҡыҫырыҡлауҙы һүндерегеҙ һәм `curl -N` диагностикала.
 - Бер ҡасан да бәйләнеште өҙөү бушлығын тултырырға тейеш түгел, тип фаразлап, киләһе ваҡиға үткәндән һуң килә. һуңғы нөктәлә ҡабатлау курсоры юҡ; уның урынына ағымдағы иҫәп яҙмаһын һорағыҙ.
 
 ## Сығанаҡ һәм уның менән бәйле документтар {#source-and-related-docs}
 
-- [JavaScript ҡағыҙланған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs) буйынса трансляция рецепты
-- [SSE интеграция һынауҙары ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs)
-- [Torii FilterExpr финированный commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs) буйынса аналитик
-- [Torii ваҡиғалар маршруты ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
+- [JavaScript ҡағыҙланған commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes/streaming.mjs) буйынса трансляция рецепты
+- [SSE интеграция һынауҙары ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/events/sse_smoke.rs)
+- [Ҡуйылған commit-тағы Torii фильтрының текст грамматикаһы](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/src/list_query/text.rs)
+- [Torii ваҡиғалар маршруты ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/routing.rs)
 - [ваҡиғалар](/ba/blockchain/events.md)
 - [Torii сикләү пункттары](/ba/reference/torii-endpoints.md)
 - [Һорауҙар яҙмаһының торошо](./query-ledger-state.md)

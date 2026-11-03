@@ -1,9 +1,9 @@
 ---
 translation_locale: ka
 translation_source: /cookbook/nfts.md
-translation_source_hash: db99dab483d4e2fb3fd84be84f6e4ef9f8373f0c16eb2f34952f1232c4587561
+translation_source_hash: b60c542052eac6a916350c4aaa779c9f46d248be64ecea9c9bda679a4d56dff3
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # NFTs {#nfts}
@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 - `curl`, `jq`, Python 3.11 ან უფრო გვიან და მიმდინარე `iroha` CLI.
 - მხოლოდ წაკითხვის საშუალებით Taira.
-- ლოკალური ქსელი, რომელიც შექმნილია [გაშვება Iroha](/ka/get-started/launch-iroha.md), მქონე `./localnet/client.toml` და Torii დაწყება `http://127.0.0.1:8080`.
+- ჩაწერისთვის: ლოკალური ქსელი ბრძანებით `kagami localnet generate --peers 4 --out-dir ./localnet`, როგორც გვერდზე [Iroha-ს გაშვება](/ka/get-started/launch-iroha.md), `./localnet/client.toml`-ითა და Torii-ით მისამართზე `http://127.0.0.1:8080`, ასევე NFT დომენი, რომელსაც მისი ხელმომწერი ფლობს (იხილეთ მე-2 ნაბიჯი).
 
 ## ნაბიჯები {#steps}
 
@@ -26,20 +26,21 @@ translation_engine: nllb-200-ct2
 
 ```bash
 curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/nfts?limit=5' \
-  | jq '{total, nfts: [.items[] | {id, owned_by, content}]}'
+  'https://taira.sora.org/v1/nfts?limit=5&include_total=true' \
+  | jq '{total, nfts: [.items[] | {id, owned_by, metadata}]}'
 ```
 
-NFTs არის უნიკალური ჩანაწერები, არა ციფრული ბალანსი. მათ აქვთ ID, ერთი მფლობელი და კომპაქტური `content` მეტამონაცემები რუკა.
+NFTs უნიკალური ჩანაწერებია და არა რიცხვითი ბალანსები. მათ აქვთ ID, ერთი მფლობელი და კომპაქტური შიგთავსის რუკა, რომელსაც Torii-ის კოლექციის მწკრივები აბრუნებს როგორც `metadata`, ხოლო `ledger nft get` — როგორც `content`.
 
 ### 2. მომზადეთ ადგილობრივი მფლობელის პირადობის მოწმობა {#_2-prepare-local-owner-ids}
 
-დაწერის მაგალითში გამოიყენება ჩანახული `wonderland.universal` დომენი. გამოიყვანეთ კონფიგურირებული ავტორიზაციის პრინციპალი, მისი პირადი გასაღების გაშუქების გარეშე, შემდეგ აირჩიეთ სხვა რეგისტრირებული ანგარიში გადაცემის მიმართულებად.
+ჩაწერის მაგალითს სჭირდება დომენი, რომელსაც ხელმომწერი ანგარიში ფლობს, ან მასზე `CanRegisterNft` ნებართვის მინიჭება. გენერირებული ლოკალური ქსელი თავისი კლიენტისთვის აპლიკაციის დომენს არ არეგისტრირებს, ხოლო დომენის პირდაპირი რეგისტრაცია გენეზისისთვისაა დაცული, ამიტომ `NFT_DOMAIN`-ს მიანიჭეთ `name.dataspace` დომენი, რომელსაც თქვენი ხელმომწერი მართავს. გამოიყვანეთ კონფიგურირებული უფლებამოსილი ანგარიში მისი პირადი გასაღების გამჟღავნების გარეშე, შემდეგ კი გადაცემის დანიშნულებად აირჩიეთ სხვა რეგისტრირებული ანგარიში.
 
 ```bash
 LOCAL_ROOT='http://127.0.0.1:8080'
 LOCAL_CONFIG='./localnet/client.toml'
-NFT_ID='cookbook_badge$wonderland.universal'
+test -n "$NFT_DOMAIN"
+NFT_ID="cookbook_badge\$$NFT_DOMAIN"
 
 LOCAL_PUBLIC_KEY="$(python3 - <<'PY'
 import tomllib
@@ -59,7 +60,7 @@ NEW_OWNER="$(
 )"
 ```
 
-`$` სეპარატორი ეკუთვნის NFT ტექსტის ფორმას. შეინარჩუნეთ სრულად `wonderland.universal` დომენი და მონაცემთა სივრცე.
+`$` გამყოფი NFT-ის ტექსტური ფორმის ნაწილია. ID-ში შეინარჩუნეთ სრული `name.dataspace` დომენი.
 
 ### 3. რეგისტრაცია NFT საწყისი შინაარსის {#_3-register-the-nft-with-initial-content}
 
@@ -102,34 +103,28 @@ iroha --config "$LOCAL_CONFIG" \
 
 ::: warning ნებართვის საზღვარი
 
-Taira-ზე, თითოეულ წერას ასევე სჭირდება `--metadata ./taira.tx-metadata.json` და მკაფიო გადასახადის გადამხდელი. რეგისტრაცია, გადაცემა, ამოღება და მეტამონაცემების განახლება შემოწმდება პროგრამული უზრუნველყოფის აქტიური შესრულებით გარემო (`CanRegisterNft`, `CanTransferNft`, `CanUnregisterNft` და `CanModifyNftMetadata` გათვალისწინებული ნებართვის ზედაპირში). გამოიყენეთ თქვენი აპლიკაციისათვის მინიჭებული დომენი ან შეინახეთ ეს სიარული localnet- ზე.
+Taira-ზე ყოველი ჩაწერა იყენებს `--fee-payer authority`-ს; CLI ხელმოწერამდე იღებს ზუსტი საფასურის შეფასებას Taira-ს საფასურის აქტივში. რეგისტრაციას, გადაცემას, წაშლასა და მეტამონაცემების განახლებას ამოწმებს აქტიური შესრულების გარემო (`CanRegisterNft`, `CanTransferNft`, `CanUnregisterNft` და `CanModifyNftMetadata` ნაგულისხმევი ნებართვების ზედაპირში). გამოიყენეთ დომენი, რომელსაც თქვენი ანგარიში ფლობს, ან დომენი, რომლისთვისაც მას ეს ნებართვები აქვს მინიჭებული.
 
 :::
 
 ხელშეკრულების საკუთრებაში არსებული სამუშაო პროცესებისთვის, Kotodama გამოხატავს NFT ტიპირებულ ჰოსტი ფუნქციის მოწოდებებს. შემდეგი არის ზუსტი სიცოცხლის ციკლის ტესტის არტეფაქტი, რომელიც შედგენილია და შესრულებულია ჩაკეტილი IVM დოკუმენტაციის ტესტით:
 
 ```kotodama
+// Mint an NFT, transfer it, update metadata, and burn it using typed IDs.
 seiyaku NftFlow {
-    kotoage fn nft_issue_and_transfer() authorize("NftAuthority") {
-        let owner = AccountId::parse(
-            "sorauﾛ1PﾉｳﾇmEｴWｵebHﾑ6ﾔﾙｲヰiwuCWErJ7uｽoPGｱﾔnjﾑKﾋTCW2PV",
-        );
+    permission NftAuthority;
+    kotoage fn nft_issue_and_transfer() authorize(NftAuthority) {
+        let owner = AccountId::parse("sorauﾛ1PﾉｳﾇmEｴWｵebHﾑ6ﾔﾙｲヰiwuCWErJ7uｽoPGｱﾔnjﾑKﾋTCW2PV");
         let nft = NftId::parse("n0$wonderland.universal");
-        ledger::nft::mint(nft, owner);
-        let to = AccountId::parse(
-            "sorauﾛ1NfｷgﾉﾓﾉBｦKﾌﾘﾒoﾇﾂﾛrG81ﾋjWﾎﾕVncwﾌSｱ3pﾘﾋﾉhUS9Q76",
-        );
-        ledger::nft::transfer(
-            source: owner,
-            nft: nft,
-            destination: to,
-        );
+        ledger::nft::mint(nft: nft, owner: owner);
+        let to = AccountId::parse("sorauﾛ1NfｷgﾉﾓﾉBｦKﾌﾘﾒoﾇﾂﾛrG81ﾋjWﾎﾕVncwﾌSｱ3pﾘﾋﾉhUS9Q76");
+        ledger::nft::transfer(source: owner, nft: nft, destination: to);
         ledger::nft::set_metadata(
             nft: nft,
             key: Name::parse("issued"),
             value: Json::parse("{\"issued\":\"demo\"}"),
         );
-        ledger::nft::burn(nft);
+        ledger::nft::burn(nft: nft);
     }
 }
 ```
@@ -149,22 +144,23 @@ jq -e --arg owner "$NEW_OWNER" \
   cookbook-nft.json
 ```
 
-თუ CLI ჩანაწერს გამოსასვლელი მონაცემების კონტეინერში ამოტვირთავს, ერთხელ შეამოწმეთ JSON და მოიცადეთ განცხადება NFT ობიექტზე. ავტორიტეტული ინვარაციები არის `id`, `owned_by` და `content`.
+CLI თავად NFT-ის ჩანაწერს ბეჭდავს. გადამწყვეტი ინვარიანტებია `id`, `owned_by` და `content`.
 
 ## პრობლემების აღმოფხვრა {#troubleshooting}
 
 - `name$domain` ზოგიერთ პარსერში შეიძლება გათვალისწინებული იყოს საყოველთაო მონაცემთა სივრცეში, მაგრამ სამზარეულოს წიგნებისა და აპლიკაციების ID-ებს უნდა გამოიყენონ ნიშანი `name$domain.dataspace`.
 - იგივე NFT ID-ის განმეორებითი რეგისტრაცია უარყოფითია. გამოიყენეთ ახალი ლოკალური ქსელი ან აირჩიეთ სტაბილური ახალი ID განსხვავებული ჩანაწერისთვის.
 - მეტამონაცემები შეღება უნდა იყოს მოქმედი JSON სტანდარტული შეღება. გარსი სტრიქონი გარეშე JSON ციტირება არ არის მეტამონაცემები მნიშვნელობა.
-- გადარიცხვა, რომელსაც ხელი მოაწერა მიმდინარე მფლობელისგან განსხვავებულმა ანგარიშმა, საჭიროებს ზუსტ ნებართვას; `--from` შეცვლა არ შეიცავს კრიპტოგრაფიული ხელმომწერს.
-- გადაცემის შემდეგ, თავდაპირველ კლიენტს NFT ვეღარ შეეძლება მოუტაცია ან რეგისტრაციის გაუქმება. გამოიყენეთ ახალი მფლობელის კრიპტოგრაფიული ხელმოწერა ან ავტორიზებული კონტროლერი.
+- გადაცემას, რომელსაც ხელს აწერს მიმდინარე მფლობელისგან განსხვავებული ანგარიში, სჭირდება NFT-ის დომენის ფლობა ან ზუსტი `CanTransferNft` ნებართვის მინიჭება; `--from`-ის შეცვლა ხელმომწერს არ ცვლის.
+- გადაცემა მხოლოდ `owned_by`-ს ცვლის. მეტამონაცემების განახლება და რეგისტრაციის გაუქმება რჩება დომენის მფლობელთან ან ანგარიშთან, რომელსაც ამ NFT-ისთვის აქვს `CanModifyNftMetadata` ან `CanUnregisterNft`; ახალ მფლობელს შეუძლია მისი შემდგომი გადაცემა.
 - Taira შეიძლება დაბრუნდეს ცარიელი NFT კოლექცია. არ განიხილოს `items: []` როგორც მტკიცებულება, რომ NFT ინსტრუქციები არ არის ხელმისაწვდომი.
 
 ## წყარო და შესაბამისი დოკუმენტები {#source-and-related-docs}
 
-- [NFT ინტეგრაციის ტესტები ჩაკეტილი წყარო კოდის რევიზიისას](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/nft.rs)
-- [Kotodama NFT მასპინძლის ტექნიკური მოწოდების ტესტები ჩაკეტილი წყარო კოდის რევიზიის დროს](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
-- [ზუსტი Kotodama NFT სიცოცხლის ციკლის გამოცდის არტეფაქტი ჩაკეტილი წყარო კოდის რევიზიის დროს](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko)
+- [NFT ინტეგრაციის ტესტები ჩაკეტილი წყარო კოდის რევიზიისას](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/nft.rs)
+- [Kotodama NFT მასპინძლის ტექნიკური მოწოდების ტესტები ჩაკეტილი წყარო კოდის რევიზიის დროს](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
+- [ზუსტი Kotodama NFT სიცოცხლის ციკლის გამოცდის არტეფაქტი ჩაკეტილი წყარო კოდის რევიზიის დროს](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/ivm/docs/examples/12_nft_flow.ko)
+- [Kotodama-ს დოკუმენტაციის მაგალითების ტესტები დამაგრებული წყარო კოდის რევიზიისას](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/ivm/tests/kotodama_documentation_examples.rs)
 - [NFTs](/ka/blockchain/nfts.md)
 - [მეტამონაცემები](/ka/blockchain/metadata.md)
 - [ინსტრუქციები](/ka/blockchain/instructions.md)

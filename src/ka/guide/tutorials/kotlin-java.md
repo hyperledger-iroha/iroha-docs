@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: f2411fec1cc35b1bf7795a7ab5a0eb7a8eb6b60b4799ebf3db47208b902f87e6
+translation_source_hash: 9388823f782eef86aedbaf141bd251dae39837957aefd224ed0cc97ba11ad97d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -77,4 +77,4 @@ Kotlin SDK მოიცავს:
 - Android საკვანძო შენახვისა და მოწყობილობის ტელემეტრიის ინტეგრაციები
 - Android ოფლაინ QR, ახლომდებარე და NFC ტრანსპორტები
 
-იხილეთ [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md) მოდულის სპეციფიკური APIs და ზუსტი მშენებლობის ბრძანებებისათვის.
+იხილეთ [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/kotlin/README.md) მოდულის სპეციფიკური APIs და ზუსტი მშენებლობის ბრძანებებისათვის.

@@ -1,9 +1,9 @@
 ---
 translation_locale: ur
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
+translation_source_hash: c1aee0c29332bd7c883500e72a1ec7812aebfca13b673e6681788cf4bc5ecbf1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # اکاؤنٹس اور عرفی نام {#accounts-and-aliases}
@@ -22,15 +22,19 @@ translation_engine: nllb-200-ct2
 
 ### Taira پر کینونیکل اکاؤنٹس کا معائنہ کریں {#_1-inspect-canonical-accounts-on-taira}
 
-پبلک اکاؤنٹس کی فہرست میں ہمیشہ کینونیکل I105 IDs لوٹایا جاتا ہے۔ ایک بنیادی عرف اختیاری ہے اور علیحدہ علیحدہ اطلاع دی جاتی ہے۔
+پبلک اکاؤنٹس کی فہرست میں ہمیشہ کینونیکل I105 IDs لوٹائے جاتے ہیں۔ ایک بنیادی عرف اختیاری ہے؛ اسے دیکھنے کے لیے `aliases` فیلڈ کی درخواست کریں۔
 
 ```bash
-curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+curl -fsS -H 'Accept: application/json' --get \
+  https://taira.sora.org/v1/accounts \
+  --data-urlencode 'limit=5' \
+  --data-urlencode 'select=id,aliases' \
+  | jq -r '.items[]
+    | [.id, (first(.aliases[]? | select(.is_primary) | .alias) // "-")]
+    | @tsv'
 ```
 
-`.id` سے حاصل ہونے والا ID سخت اکاؤنٹ فیلڈز کے لیے درست ہے۔ اس کے ساتھ ڈومین منسلک نہ کریں۔ `.primary_alias` سے حاصل ہونے والا alias صارف کے لیے lookup key ہے، کوئی دوسری کینونیکل شناخت نہیں۔
+`.id` سے حاصل ہونے والا ID سخت اکاؤنٹ فیلڈز کے لیے درست ہے۔ اس کے ساتھ ڈومین منسلک نہ کریں۔ `.aliases[].alias` سے حاصل ہونے والا alias صارف کے لیے lookup key ہے، کوئی دوسری کینونیکل شناخت نہیں۔
 
 ### اپنے Taira I105 ID کو حاصل کریں اور اسے معمول پر لائیں۔ {#_2-derive-and-normalize-your-taira-i105-id}
 
@@ -53,14 +57,14 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID" \
   | iroha tools address normalize --profile taira
 ```
 
-معیاری قدر `TAIRA_ACCOUNT_ID` کے ساتھ یکساں ہونی چاہئے۔ TOML فائل میں `[account].domain` کی ترتیب `wonderland.universal` ہوسکتی ہے ، لیکن یہ قیمت صرف روٹنگ اور عرفی سیاق و سباق پر اثر انداز ہوتی ہے۔
+معیاری قدر `TAIRA_ACCOUNT_ID` کے ساتھ یکساں ہونی چاہئے۔ `[account].profile` ترتیب صرف I105 نیٹ ورک سابقہ منتخب کرتی ہے؛ ڈومینز عرفی ناموں سے تعلق رکھتے ہیں، اکاؤنٹ ID سے کبھی نہیں۔
 
 ### 3۔ اکاؤنٹ اور اس کے اثاثوں کو پڑھیں۔ {#_3-read-the-account-and-its-assets}
 
 اکاؤنٹ کو ذخیرہ کرنے کے بعد ، براہ راست اس سے استفسار کریں اور حد بندی شدہ اثاثہ صفحے کی فہرست دیں۔ URL - اسے راستے میں استعمال کرنے سے پہلے I105 قدر کو کوڈ کریں۔
 
 ```bash
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 ENCODED_ACCOUNT_ID="$(
@@ -69,7 +73,7 @@ ENCODED_ACCOUNT_ID="$(
 )"
 
 curl -fsS -H 'Accept: application/json' \
-  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10" \
+  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10&include_total=true" \
   | jq '{total, items}'
 ```
 
@@ -111,7 +115,7 @@ fi
 
 ::: warning اجازت کی حد
 
-Taira فوسیٹ اپنے درخواست دہندگان کے اکاؤنٹ کو فراہم کرسکتا ہے، لیکن یہ عام اکاؤنٹ رجسٹریشن یا عرفی انتظام کی اجازت نہیں دیتا۔ کسی دوسرے اکاؤنٹ کو رجسٹر کرنے کے لئے فعال تصدیق کنندہ کے تحت `CanRegisterAccount` کی ضرورت ہوتی ہے۔ اکاؤنٹ کے عرفی ناموں میں عام طور پر ایک فعال SNS لیزنگ معاہدہ اور مناسب عرفی اجازت کی بھی ضرورت ہوتی ہے۔ کنٹرول شدہ آن بورڈنگ / عرفی منصوبہ ساز کا استعمال کریں ، یا تیار کردہ مقامی نیٹ ورک کے ساتھ رجسٹریشن کا تجربہ کریں۔
+Taira فوسیٹ اپنے درخواست دہندگان کے اکاؤنٹ کو فراہم کرسکتا ہے، لیکن یہ عام اکاؤنٹ رجسٹریشن یا عرفی انتظام کی اجازت نہیں دیتا۔ کسی دوسرے اکاؤنٹ کو رجسٹر کرنے کے لئے فعال عملدرآمد کنندہ کے تحت `CanRegisterAccount` کی ضرورت ہوتی ہے۔ اکاؤنٹ کے عرفی ناموں میں عام طور پر ایک فعال SNS لیزنگ معاہدہ اور مناسب عرفی اجازت کی بھی ضرورت ہوتی ہے۔ کنٹرول شدہ آن بورڈنگ / عرفی منصوبہ ساز کا استعمال کریں، یا تیار کردہ مقامی نیٹ ورک کے ساتھ رجسٹریشن کا تجربہ کریں۔
 
 :::
 
@@ -121,9 +125,9 @@ Taira فوسیٹ اپنے درخواست دہندگان کے اکاؤنٹ کو �
 iroha --config ./localnet/client.toml \
   --machine \
   --fee-payer authority \
-  ledger account register --id "$NEW_ACCOUNT_ID"
+  account register --id "$NEW_ACCOUNT_ID"
 
-iroha --config ./localnet/client.toml ledger account get \
+iroha --config ./localnet/client.toml account get \
   --id "$NEW_ACCOUNT_ID"
 ```
 
@@ -158,8 +162,8 @@ fi
 
 ## ماخذ اور متعلقہ دستاویزات {#source-and-related-docs}
 
-- [پنڈل کمیٹ پر کینونیکل اکاؤنٹ ایڈریس لاگو کرنا ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
-- [پِنڈ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs) میں اکاؤنٹ اور عرفی Torii ٹیسٹ
+- [پنڈل کمیٹ پر کینونیکل اکاؤنٹ ایڈریس لاگو کرنا ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/account/address.rs)
+- مقررہ commit پر [اکاؤنٹ اینڈ پوائنٹ کے Torii اسموک ٹیسٹ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/tests/accounts_endpoints.rs) اور [عرفی نام کے روٹ ٹیسٹ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/tests/lib_tests/part_2.rs)
 - [اکاؤنٹس](/ur/blockchain/accounts.md)
 - [ڈیٹا ماڈل عرفی نام ](/ur/blockchain/data-model.md#aliases)
 - [ناموں کے کنونشنز](/ur/reference/naming.md)

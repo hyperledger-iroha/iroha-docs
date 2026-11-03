@@ -1,9 +1,9 @@
 ---
 translation_locale: am
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 576e03924f19b63681cdfafa641b996672e35a992478fc9eaf5b83f0e7baa6da
+translation_source_hash: d399284a2baec507e4c979c762d6e216d8c3fbc5b4b4fe221b6bbb0049ee9fd9
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # ቤተኛ ንብረት Escrow {#native-asset-escrow}
@@ -15,8 +15,8 @@ translation_engine: bing-translator-llm
 ## ቅድመ ሁኔታዎች {#prerequisites}
 
 - የቁጥር ንብረት ፍቺ እና በቂ መጠን ያለው መክፈቻ/ሻጭ።
-- አንድ እርምጃ ለሚያቀርብ እያንዳንዱ አካል በገንዘብ የተደገፈ፣ ነጠላ-ቁልፍ I105 ደንበኞች። የክፍያ ንብረቱ ከአሁኑ Taira የቴስትኔት የገንዘብ ድጋፍ አገልግሎት ምላሽ ጋር የሚዛመድ በግብይት ፊርማ መለያ `fee_payment` ዓላማ የሚከፈል ቀጥታ ስርጭት ይጠቀሙ። የንብረት መታወቂያ ከሰነድ ውስጥ አያስገቡ።
-- የአሁኑ Rust ወይም Python SDK ከ Iroha ፕሮቶኮል ማጠናቀቂያ `0010c5a70039eac101a4846499ba9ceaf43eb65c`።
+- አንድ እርምጃ ለሚያቀርብ እያንዳንዱ አካል በገንዘብ የተደገፈ፣ ነጠላ-ቁልፍ I105 ደንበኞች። የክፍያ ንብረቱ የአሁኑ የ Taira የቴስትኔት የገንዘብ ድጋፍ አገልግሎት ፖሊሲ ከሚያትመው ጋር የሚዛመድ፣ በፈቃድ ባለቤቱ የሚከፈል የቀጥታ `fee_payment` ዓላማ ይጠቀሙ፤ የንብረት መታወቂያ ከሰነድ ውስጥ አያስገቡ።
+- የአሁኑ Rust ወይም Python SDK ከ Iroha ፕሮቶኮል ማጠናቀቂያ `c8c872461e92f04325c350cdd952f4276e96f9dc`።
 - ለ JavaScript አቀናባሪ ምሳሌ፣ Node.js 24 እና አብሮ የተሰራ ጥቅል በአካባቢው ልማት አካባቢ `@iroha/iroha-js` እና ቤተኛ `iroha_js_host`; [JavaScript SDK ምንጭ-ግንባታ ማዋቀር](/am/guide/tutorials/javascript.md#build-from-source) የሚለውን ይከተሉ። የአሳሽ ግንባታዎች ቤተኛ አስተናጋጁን ከመጫን ይልቅ `compilerUrl` ማቅረብ አለባቸው።
 - Taira የንብረት ዝውውሩን እና የማስያዣ መመሪያዎችን ማጽደቅ አለበት። የንብረት ባለቤቶች የንብረት ፖሊሲያቸው በሚፈቅድበት ጊዜ መደበኛውን የሕይወት ዑደት መከተል ይችላሉ; . መፍታት ሀ ክርክር ዓለም አቀፋዊ `CanResolveEscrowDispute` ፈቃድ ያስፈልገዋል። አስፈላጊው የህዝብ blockchain አውታረ መረብ ፈቃድ ባለቤት በማይኖርበት ጊዜ የመነጨ የአካባቢ አውታረ መረብ ይጠቀሙ።
 
@@ -31,7 +31,7 @@ translation_engine: bing-translator-llm
 ```rust
 use eyre::{Result, ensure};
 use iroha::{
-    client::Client,
+    blocking::Client,
     data_model::{
         isi::escrow::{
             AcceptAssetEscrow, MarkEscrowPaymentSent, OpenAssetEscrow,
@@ -51,7 +51,7 @@ fn complete_marketplace_escrow(
 ) -> Result<AssetEscrowRecord> {
     let fee = FeePaymentIntent::authority(Vec::new(), None);
 
-    seller.submit_blocking(
+    seller.submit(
         OpenAssetEscrow::with_evidence_hashes(
             escrow_id,
             asset_definition,
@@ -60,11 +60,13 @@ fn complete_marketplace_escrow(
         ),
         fee.clone(),
     )?;
-    buyer.submit_blocking(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
-    buyer.submit_blocking(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
-    seller.submit_blocking(ReleaseAssetEscrow::new(escrow_id), fee)?;
+    buyer.submit(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
+    buyer.submit(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
+    seller.submit(ReleaseAssetEscrow::new(escrow_id), fee)?;
 
-    let record = seller.query_single(FindAssetEscrowById::new(escrow_id))?;
+    let record = seller
+        .client()
+        .query_single(FindAssetEscrowById::new(escrow_id))?;
     ensure!(record.status == AssetEscrowStatus::Released);
     Ok(record)
 }
@@ -74,7 +76,7 @@ fn complete_marketplace_escrow(
 
 ### 2. ከ Python ጋር አጠቃላይ መቆለፊያን ይክፈቱ እና በከፊል ይሳሉ {#_2-open-and-partially-draw-a-generic-lock-with-python}
 
-የመልቀቂያ የፈቃድ ባለቤት ከመውረድ በፊት የተፈረመውን ቤተኛ መዝገብ ይፈትሻል። ያንን ትክክለኛ `remaining_amount` ማቅረብ ብሩህ ተስፋ ያለው ተመሳሳይነት ያስችላል የቆየ ትይዩ ጥያቄ ሁለት ጊዜ ከመክፈል ይልቅ ውድቅ ይደረጋል።
+የመልቀቂያ የፈቃድ ባለቤት ገንዘብ ከመሳቡ በፊት የተፈረመውን ቤተኛ መዝገብ ይፈትሻል። ያንን ትክክለኛ `remaining_amount` ማቅረብ ብሩህ ተስፋ ያለው የተመሳሳይ ጊዜ ቁጥጥር (optimistic concurrency) ያስችላል፦ የቆየ ትይዩ ጥያቄ ጥበቃውን ሁለት ጊዜ ከመቀነስ ይልቅ ውድቅ ይደረጋል። `client` በ`local_signing_context=LocalSigningContext(network_id)` እና በአውታረ መረቡ `chain_discriminant` የተፈጠረ `ToriiClient` ነው፤ የግብይት ረዳቶች የአውታረ መረቡን ማንነት ከዚያ አውድ ይወስዳሉ፣ የተፈረሙ መጠይቆች ደግሞ እንደ `network_id` ይወስዱታል።
 
 ```python
 import secrets
@@ -92,7 +94,6 @@ def escrow_status(record):
 def open_and_draw_lock(
     *,
     client,
-    chain_id,
     opener,
     opener_private_key,
     release_authority,
@@ -102,9 +103,9 @@ def open_and_draw_lock(
     fee_payment,
 ):
     escrow_id = f"cookbook_lock_{secrets.token_hex(12)}"
+    network_id = client.local_signing_context.network_id
 
     client.open_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=opener,
         private_key=opener_private_key,
         fee_payment=fee_payment,
@@ -120,10 +121,10 @@ def open_and_draw_lock(
     before = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
     client.drawdown_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=release_authority,
         private_key=release_private_key,
         fee_payment=fee_payment,
@@ -135,6 +136,7 @@ def open_and_draw_lock(
     after = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
 
@@ -150,8 +152,10 @@ Python SDK `expected_remaining_amount` ሲቀር በራስ-ሰር መጠየቅ �
 ለ Rust የመቆለፊያ ፍሰቶች፣ የአሁኑ ገንቢዎች እንዲሁ የሚታየውን መጠን ይፈልጋሉ -
 
 ```rust
-let before = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-release_authority.submit_blocking(
+let before = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+release_authority.submit(
     DrawdownAssetLock::new(
         lock_id,
         Quantity::from(4_u64),
@@ -160,23 +164,26 @@ release_authority.submit_blocking(
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 
-let current = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-opener.submit_blocking(
+let current = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+opener.submit(
     CancelAssetLock::new(lock_id, current.remaining_amount),
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 ```
 
-`DrawdownAssetLock::new` ሶስት እሴቶችን ይወስዳል; `CancelAssetLock::new` ሁለት ይወስዳል። የሚጠበቀውን የቀረውን መጠን መተው የቆየ፣ ደህንነቱ ያልተጠበቀ የቴክኒክ ጥሪ ቅርፅን ይገልጻል።
+`DrawdownAssetLock::new` መቆለፊያውን፣ መጠኑን እና የታየውን ቀሪ መጠን ይወስዳል፤ `CancelAssetLock::new` መቆለፊያውን እና የታየውን ቀሪ መጠን ይወስዳል። ቀሪው መጠን አስቀድሞ ከተለወጠ የብሎክቼይን መዝገቡ ከሁለቱ መመሪያዎች ማንኛውንም ውድቅ ያደርጋል።
 
 ### 3. የ Kotodama የ escrow ወለልን ከ JavaScript ያጠናቅቁ {#_3-compile-the-kotodama-escrow-surface-from-javascript}
 
-JavaScript ያልተተየቡ ቤተኛ መመሪያዎችን መፈልሰፍ አያስፈልገውም።. የአሁኑ አቀናባሪ አብሮገነብ የብሎክቼይን መዝገብ escrow አብሮገነብ ለ Kotodama ያጋልጣል። ማሰማራት እና ቴክኒካል ጥሪዎች ከዚያ [ብልጥ ውል ይገንቡ እና ያሰማሩ](./smart-contracts.md) ይከተሉ።
+JavaScript ዓይነታቸው ያልተገለጸ ቤተኛ መመሪያዎችን መፈልሰፍ አያስፈልገውም። የአሁኑ አቀናባሪ የብሎክቼይን መዝገብ escrow አብሮገነብ ተግባራትን ለ Kotodama ያጋልጣል፤ ማሰማራት ከዚያ [ብልጥ ውል ይገንቡ እና ያሰማሩ](./smart-contracts.md) የሚለውን ይከተላል። የ`open_offer` የመግቢያ ነጥብ `authorize(Admin)` ነው፣ ስለዚህ አስፈፃሚው ጠሪው ለተሰማራው አድራሻ እና ለ`permission: "Admin"` `CanUseContractPermission` እንዲይዝ ይፈልጋል።
 
 ይህንን እንደ `native_escrow.ko` ያስቀምጡ
 
 ```kotodama
 seiyaku NativeEscrowAitai {
+    permission Admin;
     error enum EscrowError {
         NonPositiveAmount = 1,
     }
@@ -185,7 +192,7 @@ seiyaku NativeEscrowAitai {
         Name offer,
         AssetDefinitionId asset_definition,
         quantity amount
-    ) authorize("Admin") {
+    ) authorize(Admin) {
         require(amount > 0, EscrowError::NonPositiveAmount);
         ledger::escrow::open_offer(
             offer: offer,
@@ -230,6 +237,7 @@ node ./compile-native-escrow.mjs
 record = client.get_asset_escrow(
     escrow_id=escrow_id,
     authority=release_authority,
+    network_id=client.local_signing_context.network_id,
     private_key=release_private_key,
 )
 assert escrow_status(record) == "Locked"
@@ -241,7 +249,7 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 ## መላ ፍለጋ {#troubleshooting}
 
 - `Not permitted` ሲከፈት ብዙውን ጊዜ የፈቃድ ርዕሰ መምህሩ የተመረጠውን ንብረት ወደ እስር ቤት ማስተላለፍ አይችልም ማለት ነው።. የክርክር አፈታት የተለየ ዓለም አቀፍ `CanResolveEscrowDispute` በር አለው።.
-- `expected remaining amount` አለመቀበል ብሩህ ተስፋ ያለው የጋራ ግጭት ነው።. መዝገቡን እንደገና ይጠይቁ፣ ሌላኛው መውረድ/መሰረዝ የታሰበ መሆኑን ይወስኑ እና አዲስ መመሪያ ይፈርሙ አዲሱ ሁኔታ ተቀባይነት ካለው ብቻ ነው።.
+- `asset lock remaining amount changed since the drawdown was prepared` (ወይም `...since the cancellation was prepared`) የብሩህ ተስፋ የተመሳሳይ ጊዜ ቁጥጥር (optimistic concurrency) ግጭት ነው። መዝገቡን እንደገና ይጠይቁ፣ ሌላኛው የመሳብ/የመሰረዝ ክዋኔ የታሰበ መሆኑን ይወስኑ፣ እና አዲሱ ሁኔታ ተቀባይነት ያለው ከሆነ ብቻ አዲስ መመሪያ ይፈርሙ።
 - የታመነ መቆለፊያ መሳል የሚችለው የተዋቀረው የመልቀቂያ ፈቃድ ባለቤት ብቻ ነው። መድረሻው ገንዘቡን ስለሚቀበል ብቻ ሊለቀቀው አይችልም።
 - የገበያ ቦታ መለቀቅ የሚሰራው ከተቀበለ እና ክፍያ ከተላከ በኋላ ብቻ ነው። መሰረዙ በቀደሙት የህይወት ኡደት ግዛቶች ብቻ የተገደበ ነው።
 - ጊዜው የሚያበቃው ስልጣን ያለው የብሎክቼይን መዝገብ ጊዜን ይጠቀማል። የአካባቢ ስርዓት ሰዓት ማብቂያውን `ExpireAssetLock` እንደሚያልፍ እንደ ማረጋገጫ አድርገው አይቁጠሩት።
@@ -249,10 +257,10 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## ምንጭ እና ተዛማጅ ሰነዶች {#source-and-related-docs}
 
-- [ቤተኛ escrow መመሪያ ሞዴል በተሰካው የምንጭ-ኮድ ክለሳ ላይ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
-- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ ቤተኛ escrow ውህደት ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
-- [Python በተሰካው የምንጭ-ኮድ ክለሳ ላይ የማስያዣ ደንበኛ ዘዴዎች](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama ቤተኛ escrow ናሙና በተሰካው የምንጭ-ኮድ ክለሳ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [ቤተኛ escrow መመሪያ ሞዴል በተሰካው የምንጭ-ኮድ ክለሳ ላይ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/isi/escrow.rs)
+- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ ቤተኛ escrow ውህደት ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/native_escrow.rs)
+- [Python በተሰካው የምንጭ-ኮድ ክለሳ ላይ የማስያዣ ደንበኛ ዘዴዎች](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama ቤተኛ escrow ናሙና በተሰካው የምንጭ-ኮድ ክለሳ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [ቤተኛ የንብረት escrow](/am/blockchain/escrow.md)
 - [ፈንገስ ሊሆኑ የሚችሉ ንብረቶች](./fungible-assets.md)
 - [ፈቃዶች እና ሚናዎች](./permissions-and-roles.md)

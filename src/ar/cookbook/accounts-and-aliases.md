@@ -1,9 +1,9 @@
 ---
 translation_locale: ar
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
+translation_source_hash: c1aee0c29332bd7c883500e72a1ec7812aebfca13b673e6681788cf4bc5ecbf1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # الحسابات والاسميات المستعارة {#accounts-and-aliases}
@@ -22,15 +22,19 @@ translation_engine: bing-translator-llm
 
 ### 1. فحص حسابات البروتوكول الموحدة على Taira {#_1-inspect-canonical-accounts-on-taira}
 
-قائمة الحسابات العامة تعيد دائمًا معرفات I105 وفقًا للمعيار البروتوكولي الفردي. الاسم المستعار الأساسي اختياري ويتم الإبلاغ عنه بشكل منفصل.
+قائمة الحسابات العامة تعيد دائمًا معرفات I105 وفقًا للمعيار البروتوكولي الفردي. الاسم المستعار الأساسي اختياري؛ اطلب الحقل `aliases` لرؤيته.
 
 ```bash
-curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+curl -fsS -H 'Accept: application/json' --get \
+  https://taira.sora.org/v1/accounts \
+  --data-urlencode 'limit=5' \
+  --data-urlencode 'select=id,aliases' \
+  | jq -r '.items[]
+    | [.id, (first(.aliases[]? | select(.is_primary) | .alias) // "-")]
+    | @tsv'
 ```
 
-معرّف من `.id` صالح لحقول الحساب الصارمة. لا تقم بإضافة نطاق إليه. الاسم المستعار من `.primary_alias` هو مفتاح بحث موجه للمستخدم، وليس هوية أخرى موحدة وفق المعيار البروتوكولي.
+معرّف من `.id` صالح لحقول الحساب الصارمة. لا تقم بإضافة نطاق إليه. الاسم المستعار من `.aliases[].alias` هو مفتاح بحث موجه للمستخدم، وليس هوية أخرى موحدة وفق المعيار البروتوكولي.
 
 ### 2. استخرج وقم بتطبيع معرف Taira I105 الخاص بك {#_2-derive-and-normalize-your-taira-i105-id}
 
@@ -53,14 +57,14 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID" \
   | iroha tools address normalize --profile taira
 ```
 
-يجب أن تكون القيمة الموحدة مطابقة لـ `TAIRA_ACCOUNT_ID`. يمكن أن يكون إعداد `[account].domain` في ملف TOML `wonderland.universal`، لكن تلك القيمة تؤثر فقط على التوجيه وسياق الاسم المستعار.
+يجب أن تكون القيمة الموحدة مطابقة لـ `TAIRA_ACCOUNT_ID`. يختار الإعداد `[account].profile` بادئة شبكة I105 فقط؛ فالنطاقات تخص الأسماء المستعارة، ولا تخص معرف الحساب أبدًا.
 
 ### 3. اقرأ الحساب وأصوله {#_3-read-the-account-and-its-assets}
 
 بعد تجهيز الحساب، استعلم عنه مباشرة وقم بعرض صفحة الأصول المحدودة. URL-ترميز I105 القيمة قبل استخدامها في مسار.
 
 ```bash
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 ENCODED_ACCOUNT_ID="$(
@@ -69,7 +73,7 @@ ENCODED_ACCOUNT_ID="$(
 )"
 
 curl -fsS -H 'Accept: application/json' \
-  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10" \
+  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10&include_total=true" \
   | jq '{total, items}'
 ```
 
@@ -111,7 +115,7 @@ fi
 
 ::: warning حدود الإذن
 
-يمكن لخدمة تمويل شبكة الاختبار Taira تجهيز حساب المطالب الخاص بها، لكن ذلك لا يمنح صلاحية عامة لتسجيل الحساب أو إدارة الألقاب. يتطلب تسجيل حساب آخر `CanRegisterAccount` تحت المدقق النشط. عادةً ما تتطلب الأسماء المستعارة للحساب أيضًا عقد إيجار SNS نشط والأذونات المناسبة للاسم المستعار. استخدم مخطط الإعداد/الأسماء المستعارة المحكوم، أو تدرب على التسجيل مقابل الشبكة المحلية المولدة.
+يمكن لخدمة تمويل شبكة الاختبار Taira تجهيز حساب المطالب الخاص بها، لكن ذلك لا يمنح صلاحية عامة لتسجيل الحساب أو إدارة الألقاب. يتطلب تسجيل حساب آخر `CanRegisterAccount` تحت المُنفِّذ النشط. عادةً ما تتطلب الأسماء المستعارة للحساب أيضًا عقد إيجار SNS نشط والأذونات المناسبة للاسم المستعار. استخدم مخطط الإعداد/الأسماء المستعارة المحكوم، أو تدرب على التسجيل مقابل الشبكة المحلية المولدة.
 
 :::
 
@@ -121,9 +125,9 @@ fi
 iroha --config ./localnet/client.toml \
   --machine \
   --fee-payer authority \
-  ledger account register --id "$NEW_ACCOUNT_ID"
+  account register --id "$NEW_ACCOUNT_ID"
 
-iroha --config ./localnet/client.toml ledger account get \
+iroha --config ./localnet/client.toml account get \
   --id "$NEW_ACCOUNT_ID"
 ```
 
@@ -158,8 +162,8 @@ fi
 
 ## المصدر والمستندات ذات الصلة {#source-and-related-docs}
 
-- [تنفيذ عنوان حساب قياسي لبروتوكول واحد عند مراجعة الشيفرة المصدرية المثبتة](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
-- [اختبارات الحساب والاسم المستعار Torii عند نسخة الشيفرة المصدرية المثبتة](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
+- [تنفيذ عنوان حساب قياسي لبروتوكول واحد عند مراجعة الشيفرة المصدرية المثبتة](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/account/address.rs)
+- [اختبارات الدخان لنقاط نهاية الحسابات في Torii](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/tests/accounts_endpoints.rs) و[اختبارات مسارات الأسماء المستعارة](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/tests/lib_tests/part_2.rs) عند نسخة الشيفرة المصدرية المثبتة
 - [الحسابات](/ar/blockchain/accounts.md)
 - [أسماء مستعارة لنموذج البيانات](/ar/blockchain/data-model.md#aliases)
 - [قواعد التسمية](/ar/reference/naming.md)

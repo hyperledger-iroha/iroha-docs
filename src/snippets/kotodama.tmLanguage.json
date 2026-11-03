@@ -1,0 +1,569 @@
+{
+  "name": "Kotodama",
+  "scopeName": "source.kotodama",
+  "fileTypes": [
+    "ko"
+  ],
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#attributes"
+    },
+    {
+      "include": "#triggers"
+    },
+    {
+      "include": "#definitions"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#retiredNumericSuffixes"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#sumVariants"
+    },
+    {
+      "include": "#roundingVariants"
+    },
+    {
+      "include": "#namedFields"
+    },
+    {
+      "include": "#jsonConstruction"
+    },
+    {
+      "include": "#memberCalls"
+    },
+    {
+      "include": "#types"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#builtins"
+    },
+    {
+      "include": "#operators"
+    }
+  ],
+  "repository": {
+    "namedFields": {
+      "patterns": [
+        {
+          "match": "(?<![\\p{L}\\p{N}_])(?<!\\?)(?<!\\?\\s)[\\p{L}_][\\p{L}\\p{N}_]*(?=\\s*:(?!:))",
+          "name": "variable.parameter.named.kotodama"
+        }
+      ]
+    },
+    "__BEGIN_GENERATED_KOTODAMA_V1_SUMVARIANTS__": {},
+    "sumVariants": {
+      "patterns": [
+        {
+          "match": "\\b(?:Option::some|Option::none|Result::ok|Result::err)\\b",
+          "name": "support.constant.variant.kotodama"
+        }
+      ]
+    },
+    "__END_GENERATED_KOTODAMA_V1_SUMVARIANTS__": {},
+    "__BEGIN_GENERATED_KOTODAMA_V1_ROUNDINGVARIANTS__": {},
+    "roundingVariants": {
+      "patterns": [
+        {
+          "match": "\\b(?:Rounding::toward_zero|Rounding::away_from_zero|Rounding::floor|Rounding::ceil|Rounding::nearest_even|Rounding::nearest_away|Rounding::nearest_toward_zero)\\b",
+          "name": "support.constant.variant.rounding.kotodama"
+        }
+      ]
+    },
+    "__END_GENERATED_KOTODAMA_V1_ROUNDINGVARIANTS__": {},
+    "jsonConstruction": {
+      "patterns": [
+        {
+          "match": "\\bjson\\b(?=\\s*[\\{\\[])",
+          "name": "keyword.operator.expression.json.kotodama"
+        }
+      ]
+    },
+    "__BEGIN_GENERATED_KOTODAMA_V1_MEMBERCALLS__": {},
+    "memberCalls": {
+      "patterns": [
+        {
+          "match": "(?<=\\.)(?:is_some|is_none|is_ok|is_err|unwrap_or|unwrap_err_or|expect|ok_or|or_err|page|len|get|set|push|try_set|try_push|pop|contains|take|enumerate|div_round|mul_div_round|ratio_round|get_or_insert|remove|path|get_int|get_decimal|get_quantity|get_json|get_name|get_account_id|get_asset_definition_id|get_nft_id|get_bytes_hex|get_string|get_bool)(?=\\s*\\()",
+          "name": "support.function.method.kotodama"
+        }
+      ]
+    },
+    "__END_GENERATED_KOTODAMA_V1_MEMBERCALLS__": {},
+    "__BEGIN_GENERATED_KOTODAMA_V1_RETIREDNUMERICSUFFIXES__": {},
+    "retiredNumericSuffixes": {
+      "patterns": [
+        {
+          "match": "(?<![A-Za-z0-9_])(?:0[xX][0-9A-Fa-f_]+|0[bB][01_]+|\\d(?:[\\d_]*\\d)?(?:\\.\\d(?:[\\d_]*\\d)?)?(?:[eE][+-]?\\d(?:[\\d_]*\\d)?)?)(?:amt|qty)\\b",
+          "name": "invalid.deprecated.numeric.suffix.kotodama"
+        }
+      ]
+    },
+    "__END_GENERATED_KOTODAMA_V1_RETIREDNUMERICSUFFIXES__": {},
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.kotodama",
+          "begin": "//",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.kotodama"
+            }
+          },
+          "end": "$"
+        },
+        {
+          "name": "comment.block.kotodama",
+          "begin": "/\\*",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.begin.kotodama"
+            }
+          },
+          "end": "\\*/",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.end.kotodama"
+            }
+          }
+        }
+      ]
+    },
+    "attributes": {
+      "patterns": [
+        {
+          "name": "meta.annotation.kotodama",
+          "begin": "#\\[",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.annotation.begin.kotodama"
+            }
+          },
+          "end": "\\]",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.annotation.end.kotodama"
+            }
+          },
+          "patterns": [
+            {
+              "match": "\\b(?:fixture|message|test)\\b",
+              "name": "keyword.annotation.kotodama"
+            },
+            {
+              "include": "#strings"
+            },
+            {
+              "include": "#operators"
+            }
+          ]
+        }
+      ]
+    },
+    "triggers": {
+      "patterns": [
+        {
+          "name": "meta.trigger.kotodama",
+          "begin": "\\b(trigger)\\s+([A-Za-z_][A-Za-z0-9_]*)\\s*(->)\\s*((?:[A-Za-z_][A-Za-z0-9_]*::)?[A-Za-z_][A-Za-z0-9_]*)\\s*(\\{)",
+          "beginCaptures": {
+            "1": {
+              "name": "keyword.declaration.trigger.kotodama"
+            },
+            "2": {
+              "name": "entity.name.function.trigger.kotodama"
+            },
+            "3": {
+              "name": "keyword.operator.kotodama"
+            },
+            "4": {
+              "name": "variable.function.callback.kotodama"
+            },
+            "5": {
+              "name": "punctuation.section.braces.kotodama"
+            }
+          },
+          "end": "\\}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.braces.kotodama"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#triggerBody"
+            }
+          ]
+        }
+      ]
+    },
+    "triggerBody": {
+      "patterns": [
+        {
+          "include": "#comments"
+        },
+        {
+          "include": "#strings"
+        },
+        {
+          "match": "(?<![\\p{L}\\p{N}_])(?:on|time|pre_commit|schedule|start_ms|period_ms|execute|trigger|data|any|pipeline|transaction|block|approved|repeats|indefinitely|authority|metadata)(?![\\p{L}\\p{N}_])",
+          "name": "keyword.other.trigger.kotodama"
+        },
+        {
+          "begin": "\\{",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.braces.kotodama"
+            }
+          },
+          "end": "\\}",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.braces.kotodama"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#triggerBody"
+            }
+          ]
+        },
+        {
+          "include": "$self"
+        }
+      ]
+    },
+    "definitions": {
+      "patterns": [
+        {
+          "match": "((?<![\\p{L}\\p{N}_])(?:seiyaku|誓約)(?![\\p{L}\\p{N}_]))\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": {
+              "name": "keyword.declaration.contract.kotodama"
+            },
+            "2": {
+              "name": "entity.name.type.contract.kotodama"
+            }
+          }
+        },
+        {
+          "match": "\\b(module)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": {
+              "name": "keyword.declaration.module.kotodama"
+            },
+            "2": {
+              "name": "entity.name.type.module.kotodama"
+            }
+          }
+        },
+        {
+          "match": "\\b(enum)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": { "name": "keyword.declaration.enum.kotodama" },
+            "2": { "name": "entity.name.type.enum.kotodama" }
+          }
+        },
+        {
+          "match": "\\b(error)\\s+(enum)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": {
+              "name": "keyword.declaration.error.kotodama"
+            },
+            "2": {
+              "name": "keyword.declaration.error.kotodama"
+            },
+            "3": {
+              "name": "entity.name.type.enum.kotodama"
+            }
+          }
+        },
+        {
+          "match": "\\b(struct)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": {
+              "name": "keyword.declaration.struct.kotodama"
+            },
+            "2": {
+              "name": "entity.name.type.struct.kotodama"
+            }
+          }
+        },
+        {
+          "match": "(?:((?<![\\p{L}\\p{N}_])(?:kotoage|言挙げ|view)(?![\\p{L}\\p{N}_]))\\s+)?(fn)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": {
+              "name": "storage.modifier.kotodama"
+            },
+            "2": {
+              "name": "keyword.declaration.function.kotodama"
+            },
+            "3": {
+              "name": "entity.name.function.kotodama"
+            }
+          }
+        },
+        {
+          "match": "\\b(trigger)\\s+([A-Za-z_][A-Za-z0-9_]*)",
+          "captures": {
+            "1": {
+              "name": "keyword.declaration.trigger.kotodama"
+            },
+            "2": {
+              "name": "entity.name.function.trigger.kotodama"
+            }
+          }
+        },
+        {
+          "match": "(?<![\\p{L}\\p{N}_])(?:hajimari|始まり|kaizen|改善)(?![\\p{L}\\p{N}_])",
+          "name": "keyword.declaration.lifecycle.kotodama"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.raw.bytes.kotodama",
+          "begin": "\\b(?:rb|br)(#{0,16})\"",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.kotodama"
+            }
+          },
+          "end": "\"\\1",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.kotodama"
+            }
+          }
+        },
+        {
+          "name": "string.quoted.double.raw.kotodama",
+          "begin": "\\br(#{0,16})\"",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.kotodama"
+            }
+          },
+          "end": "\"\\1",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.kotodama"
+            }
+          }
+        },
+        {
+          "name": "string.quoted.double.bytes.kotodama",
+          "begin": "\\bb\"",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.kotodama"
+            }
+          },
+          "end": "\"",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.kotodama"
+            }
+          },
+          "patterns": [
+            {
+              "match": "\\\\(?:[nrt0\"\\\\]|x[0-9A-Fa-f]{2}|u\\{[0-9A-Fa-f_]+\\})",
+              "name": "constant.character.escape.kotodama"
+            }
+          ]
+        },
+        {
+          "name": "string.quoted.double.kotodama",
+          "begin": "\"",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.begin.kotodama"
+            }
+          },
+          "end": "\"",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.string.end.kotodama"
+            }
+          },
+          "patterns": [
+            {
+              "match": "\\\\(?:[nrt0\"\\\\]|x[0-9A-Fa-f]{2}|u\\{[0-9A-Fa-f_]+\\})",
+              "name": "constant.character.escape.kotodama"
+            }
+          ]
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "match": "\\b0[xX][0-9A-Fa-f_]+\\b",
+          "name": "constant.numeric.integer.hexadecimal.kotodama"
+        },
+        {
+          "match": "\\b0[bB][01_]+\\b",
+          "name": "constant.numeric.integer.binary.kotodama"
+        },
+        {
+          "match": "\\b(?:\\d(?:[\\d_]*\\d)?\\.\\d(?:[\\d_]*\\d)?(?:[eE][+-]?\\d(?:[\\d_]*\\d)?)?|\\d(?:[\\d_]*\\d)?[eE][+-]?\\d(?:[\\d_]*\\d)?)\\b",
+          "name": "constant.numeric.decimal.kotodama"
+        },
+        {
+          "match": "\\b\\d(?:[\\d_]*\\d)?\\b",
+          "name": "constant.numeric.integer.decimal.kotodama"
+        }
+      ]
+    },
+    "__BEGIN_GENERATED_KOTODAMA_V1_TYPES__": {},
+    "types": {
+      "patterns": [
+        {
+          "match": "\\b(?:int|decimal|quantity|bool|string|bytes|Json|AccountId|AssetDefinitionId|AssetId|DomainId|Name|NftId|DataSpaceId|Option|Result|List|ListError|NumericError|StateMap|StateCursor|StatePage|Secret|AccountView|AssetView|AssetDefinitionView|DomainView|NftView|QueryPage|AssetUidHoldingQuote|PendingAction|Rounding)\\b",
+          "name": "support.type.kotodama"
+        }
+      ]
+    },
+    "__END_GENERATED_KOTODAMA_V1_TYPES__": {},
+    "__BEGIN_GENERATED_KOTODAMA_V1_KEYWORDS__": {},
+    "keywords": {
+      "patterns": [
+        {
+          "match": "(?<![\\p{L}\\p{N}_])(?:as|import|include)(?![\\p{L}\\p{N}_])",
+          "name": "keyword.control.import.kotodama"
+        },
+        {
+          "match": "(?<![\\p{L}\\p{N}_])(?:permission)(?![\\p{L}\\p{N}_])",
+          "name": "storage.type.permission.kotodama"
+        },
+        {
+          "match": "(?<![\\p{L}\\p{N}_])(?:authorize)(?![\\p{L}\\p{N}_])",
+          "name": "storage.modifier.authorization.kotodama"
+        },
+        {
+          "match": "(?<![\\p{L}\\p{N}_])(?:break|continue|else|for|if|in|match|return)(?![\\p{L}\\p{N}_])",
+          "name": "keyword.control.kotodama"
+        },
+        {
+          "match": "(?<![\\p{L}\\p{N}_])(?:const|let|state|var)(?![\\p{L}\\p{N}_])",
+          "name": "storage.type.kotodama"
+        },
+        {
+          "match": "(?<![\\p{L}\\p{N}_])(?:enum)(?![\\p{L}\\p{N}_])",
+          "name": "keyword.declaration.enum.kotodama"
+        },
+        {
+          "match": "(?<![\\p{L}\\p{N}_])(?:error)(?![\\p{L}\\p{N}_])",
+          "name": "keyword.declaration.error.kotodama"
+        },
+        {
+          "match": "(?<![\\p{L}\\p{N}_])(?:export|kotoage|言挙げ|view)(?![\\p{L}\\p{N}_])",
+          "name": "storage.modifier.kotodama"
+        },
+        {
+          "match": "(?<![\\p{L}\\p{N}_])(?:false|true)(?![\\p{L}\\p{N}_])",
+          "name": "constant.language.boolean.kotodama"
+        },
+        {
+          "match": "(?<![\\p{L}\\p{N}_])(?:fn)(?![\\p{L}\\p{N}_])",
+          "name": "keyword.declaration.function.kotodama"
+        },
+        {
+          "match": "(?<![\\p{L}\\p{N}_])(?:hajimari|始まり|kaizen|改善)(?![\\p{L}\\p{N}_])",
+          "name": "keyword.declaration.lifecycle.kotodama"
+        },
+        {
+          "match": "(?<![\\p{L}\\p{N}_])(?:module)(?![\\p{L}\\p{N}_])",
+          "name": "keyword.declaration.module.kotodama"
+        },
+        {
+          "match": "(?<![\\p{L}\\p{N}_])(?:seiyaku|誓約)(?![\\p{L}\\p{N}_])",
+          "name": "keyword.declaration.contract.kotodama"
+        },
+        {
+          "match": "(?<![\\p{L}\\p{N}_])(?:struct)(?![\\p{L}\\p{N}_])",
+          "name": "keyword.declaration.struct.kotodama"
+        },
+        {
+          "match": "(?<![\\p{L}\\p{N}_])(?:event)(?![\\p{L}\\p{N}_])",
+          "name": "keyword.declaration.event.kotodama"
+        },
+        {
+          "match": "(?<![\\p{L}\\p{N}_])(?:emit)(?![\\p{L}\\p{N}_])",
+          "name": "keyword.control.emit.kotodama"
+        },
+        {
+          "match": "(?<![\\p{L}\\p{N}_])(?:trigger)(?![\\p{L}\\p{N}_])",
+          "name": "keyword.declaration.trigger.kotodama"
+        }
+      ]
+    },
+    "__END_GENERATED_KOTODAMA_V1_KEYWORDS__": {},
+    "builtins": {
+      "patterns": [
+        {
+          "match": "(?:\\brequire\\b|(?<=::)[A-Za-z_][A-Za-z0-9_]*)(?=\\s*\\()",
+          "name": "support.function.kotodama"
+        }
+      ]
+    },
+    "__BEGIN_GENERATED_KOTODAMA_V1_OPERATORS__": {},
+    "operators": {
+      "patterns": [
+        {
+          "match": "(?:!=|%=|&&|\\*=|\\+=|-=|->|\\.\\.|/=|<=|==|=>|>=|\\|\\||!|%|\\*|\\+|-|/|<|=|>|\\?)",
+          "name": "keyword.operator.kotodama"
+        },
+        {
+          "match": "(?:::)",
+          "name": "punctuation.separator.namespace.kotodama"
+        },
+        {
+          "match": "(?:\\.)",
+          "name": "punctuation.accessor.kotodama"
+        },
+        {
+          "match": "(?:#)",
+          "name": "punctuation.definition.annotation.kotodama"
+        },
+        {
+          "match": "(?:\\{|\\})",
+          "name": "punctuation.section.braces.kotodama"
+        },
+        {
+          "match": "(?:\\[|\\])",
+          "name": "punctuation.section.brackets.kotodama"
+        },
+        {
+          "match": "(?:\\(|\\))",
+          "name": "punctuation.section.parens.kotodama"
+        },
+        {
+          "match": "(?::)",
+          "name": "punctuation.separator.colon.kotodama"
+        },
+        {
+          "match": "(?:,)",
+          "name": "punctuation.separator.comma.kotodama"
+        },
+        {
+          "match": "(?:;)",
+          "name": "punctuation.terminator.statement.kotodama"
+        }
+      ]
+    },
+    "__END_GENERATED_KOTODAMA_V1_OPERATORS__": {}
+  },
+  "uuid": "5d167a6a-57c4-468a-9b82-564f4aacb42b"
+}

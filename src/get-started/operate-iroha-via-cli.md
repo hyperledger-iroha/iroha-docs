@@ -195,7 +195,7 @@ cargo run --bin iroha -- \
 - [SDK tutorials](/guide/tutorials/)
 - [Torii endpoints](/reference/torii-endpoints.md)
 - [Working with Iroha binaries](/reference/binaries.md)
-- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/README.md)
+- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/README.md)
 
 To regenerate a full Markdown help snapshot from the source checkout, run:
 

@@ -52,7 +52,7 @@ npm run dev
 The clean SDK package does not contain the Cargo workspace required by
 `npm run build:native`, so rebuild it in the Iroha source checkout after
 SDK changes. The documented SDK source is pinned at
-[`javascript/iroha_js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js).
+[`javascript/iroha_js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js).
 
 ## Check the Endpoint
 

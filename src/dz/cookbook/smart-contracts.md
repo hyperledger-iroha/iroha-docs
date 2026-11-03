@@ -1,40 +1,27 @@
 ---
 translation_locale: dz
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: f1ea542f7a710830cd32465d141db8452e6418d426500995b9df7c9c4e1fd597
+translation_source_hash: ca6fd12e33df43b73a72dd6327133115aa44256cf579387c11bf0693797bf96e
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+claude-opus-5-5
 ---
 # རིག་རྩལ་ཅན་གྱི་ཆིངས་ཡིག་བཟོ་ནི་དང་ ལག་ལེན་འཐབ་ནི་ {#build-and-deploy-a-smart-contract}
 
 ## གྲུབ་འབྲས་ {#outcome}
 
-Kotodama V1 ལས་འཆམ་དེ་ བརྟག་ཞིབ་འབད་ཞིནམ་ལས་ བསྡུ་སྒྲིག་འབད་ཞིནམ་ལས་ ས་གནས་ཀྱི་ནང་འཁོད་ལུ་ མི་མང་གི་འཛུལ་སྒོ་འདི་ལག་ལེན་བསྟར་སྤྱོད་འབད་ཞིནམ་ལས་ དབྱེ་དཔྱད་ཅན་གྱི་ IVM ཅ་ཆས་ཚུ་ སྤོ་བཤུད་འབད་ཞིནམ་ལས་ སྤོ་བཤུབས་འབད་ཡོད་པའི་འཛུལ་སྒོ་དེ་ སིམ་ལེཊི་འབད་ཞིནམ་ལས་ གཞུང་གིས་གསལ་ཏོག་ཏོ་སྦེ་ སྙན་ཞུ་འབད་ཐོག་ལས་ སྤྲོད་པའི་འཐུས་དང་གཅིག་ཁར་ ཕུལ་དགོ།
+Kotodama V1 ཆིངས་ཡིག་ཅིག་ ཞིབ་དཔྱད་དང་ བསྡུ་སྒྲིག་འབད་ཞིནམ་ལས་ དེ་གི་ མི་མང་མཐོང་སྣང་འདི་ ས་གནས་ནང་ གཡོག་བཀོལ། བདེན་དཔྱད་འབད་ཡོད་པའི་ IVM བཟོ་བསྐྲུན་ཐོན་དངོས་འདི་ གསལ་ཏོག་ཏོ་སྦེ་ གདམ་ཁ་རྐྱབ་ཡོད་པའི་ དབང་འཛིན་གྱིས་སྤྲོད་མི་ འཐུས་ཚུ་དང་གཅིག་ཁར་ བཀྲམ་སྤེལ་འབད་ཞིནམ་ལས་ བཀྲམ་སྤེལ་འབད་ཡོད་པའི་ མཐོང་སྣང་འདི་ Torii བརྒྱུད་དེ་ ལྷག།
 
 ## དགོས་མཁོ་ཚུ་ {#prerequisites}
 
-- Iroha ལས་ཁུངས་ནང་ལས་ བཏང་མི་ཡིག་ཚང་ `0010c5a70039eac101a4846499ba9ceaf43eb65c`, Rust དང་ ཅ་ཅོ་གཟེར་ཁ་ཐོ་བཀོད་འབད་ཡོདཔ་ཨིན།
-- ད་ལྟོའི་ `iroha` CLI མཉམ་འབྲེལ་འབད་ཡོད་པའི་ དངུལ་ཕོགས་སྤྲོད་མི་ Taira ཚོང་མགྲོན་པ་ཅིག་ལས་ [ འབྲེལ་བ་འཐབ་ནི་ Taira](./connect-to-taira.md).
-- `IROHA_CONFIG` དང་ `IROHA_PRIVATE_KEY_FILE` ནང་ལུ་ ཆ་ཚང་འགྲུལ་ལམ། ལྡེ་མིག་ཡིག་སྣོད་འདི་ ཐབས་ལམ་`0600` དང་ཅིག་ཁར་ ཇོ་བདག་གིས་འཛིན་མི་ འབྲེལ་ལམ་རྐྱང་པའི་དུས་རྒྱུན་ཡིག་སྣོད་ཅིག་འོང་དགོ། བཀྲམ་སྤེལ་གྲོགས་རམ་པ་ལུ་ བསམ་བཞིན་དུ་ ནང་ཐིག་སྒེར་གྱི་ལྡེ་མིག་སྒྲུབ་བྱེད་མེདཔ་ཨིན།
-- Taira ལས་འཛིན་གྱི་ ངོས་ལེན་འབད་ཐབས། གྲོས་ཆོད་ཀྱི་ལས་རིམ་ཨང་རྟགས་གུ་ ཐོ་བཀོད་འབད་དགོ་པ་ཅིན་ `CanRegisterSmartContractCode` དེ་ལས་ ཉེན་སྲུང་ཅན་གྱི་ལག་ལེན་འཐབ་ཐངས་ཚུ་གིས་ གཞུང་སྐྱོང་གི་འགན་ཁུར་དང་ ལག་ལེན་འཐབ་ཐངས་ཚུ་ དགོཔ་ཨིན། གལ་སྲིད་ Taira གིས་ ཐོབ་ཐངས་དེ་མ་བྱིན་པ་ཅིན་ ཐོན་སྐྱེད་འབད་མི་ ས་གནས་ཁ་ཐུག་ལས་ འབྲེལ་བ་འཐབ་ཐངས་ནང་ལུ་ ལག་ལེན་འཐབ་ཐབས།
+- Iroha ལས་ཁུངས་ནང་ལས་ བཏང་མི་ཡིག་ཚང་ `c8c872461e92f04325c350cdd952f4276e96f9dc`, Rust དང་ ཅ་ཅོ་གཟེར་ཁ་ཐོ་བཀོད་འབད་ཡོདཔ་ཨིན།
+- ད་ལྟོའི་ `iroha` CLI དང་ `musubi` (འབྱུང་ཁུངས་ཀྱི་འདྲ་བཤུས་ནང་ `cargo run -p musubi --` སྦེ་ གཡོག་བཀོལ་མི་) དེ་ལས་ [Taira ལུ་མཐུད་སྦྲེལ་འབད་](./connect-to-taira.md) ལས་ མ་དངུལ་བཙུགས་ཡོད་པའི་ Taira ཞབས་ཏོག་ལེན་མི་ཅིག།
+- `IROHA_CONFIG` ནང་ ཆ་ཚང་གི་འགྲུལ་ལམ་ཅིག། Musubi གི་ དྲ་རྒྱ་མཐུད་སྦྲེལ་གྱིས་ ཞབས་ཏོག་ལེན་མིའི་ཡིག་སྣོད་འདི་ལུ་ གཞི་བསྟུན་ཅིག་ གསོག་འཇོག་འབད་ཞིནམ་ལས་ དེ་གི་རྩིས་ཐོ་ལྡེ་མིག་གིས་ བཀྲམ་སྤེལ་ལུ་ མིང་རྟགས་བཀོདཔ་ཨིན།
+- མིང་གཞན་གྱི་དབང་ཚད། ལག་བསྟར་པ་ (executor) གིས་ ཆིངས་ཡིག་གི་མིང་གཞན་ངེས་བདེན་ ཡང་ན་ དེ་གི་ གོང་རིམ་ཁྱབ་ཚད་ཀྱི་དོན་ལུ་ `CanManageAccountAlias` དགོཔ་ཨིན། གོང་རིམ་ཁྱབ་ཚད་འདི་ `name::domain.dataspace` གི་དོན་ལུ་ བདག་དབང་མངའ་ཁོངས་ ཡང་ན་ `name::dataspace` གི་དོན་ལུ་ གནད་སྡུད་ས་སྟོང་ཨིན། ཐོ་བཀོད་འབད་ཡོད་པའི་ རྩིས་ཐོ་ཚུ་ལུ་ ཀོཌ་ཐོ་བཀོད་ཀྱི་ ཆོག་ཐམ་སོ་སོ་ མི་དགོ། ཉེན་སྲུང་ཅན་གྱི་ མིང་གི་ས་ཁོངས་ཚུ་ལུ་ དྲ་རྒྱའི་ གཞུང་སྐྱོང་བྱ་རིམ་ཡང་ དགོཔ་ཨིན། དཔེ་ཚུ་གིས་ `cookbook_tuple::universal` ལག་ལེན་འཐབ་ཨིན། Taira གུ་ དེ་ ཁྱོད་ཀྱིས་ བདག་དབང་འཛིན་མི་ མངའ་ཁོངས་ཅིག་ནང་གི་ མིང་གཞན་ཅིག་གིས་ ཚབ་བཙུགས། ཡང་ན་ འགོ་ཐོག་སྡེབ་ཚན་གྱིས་ མིང་གཞན་གྱི་ཁྱབ་ཚད་ གནང་མི་ བཟོ་བཏོན་འབད་ཡོད་པའི་ ས་གནས་དྲ་རྒྱ་ཅིག་གུ་ བཀྲམ་སྤེལ་འབད།
 
 ```bash
-TORII_URL=https://taira.sora.org
 IROHA_SOURCE=/absolute/path/to/iroha
 IROHA_CONFIG=/absolute/path/to/taira.client.toml
-IROHA_PRIVATE_KEY_FILE=/absolute/path/to/taira-private-key.txt
-test -n "$TAIRA_ACCOUNT_ID"
-test -f "$IROHA_PRIVATE_KEY_FILE"
-
-CHAIN_ID="$({
-  python3 - "$IROHA_CONFIG" <<'PY'
-import sys
-import tomllib
-
-with open(sys.argv[1], "rb") as config_file:
-    print(tomllib.load(config_file)["chain"])
-PY
-})"
+test -f "$IROHA_CONFIG"
 ```
 
 ## རིམ་པ་ཚུ་ {#steps}
@@ -45,12 +32,12 @@ PY
 
 ```bash
 cd "$IROHA_SOURCE"
-mkdir -p ./contracts ./build/deployment
+mkdir -p ./contracts ./build
 cp ./crates/kotodama_lang/src/samples/tuple_return_demo.ko \
   ./contracts/tuple_return_demo.ko
 ```
 
-འབྱུང་ཁུངས་ཆ་ཚང་འདི་ཆུང་ཀུ་ཨིནམ་དང་ ད་ལྟོའི་`seiyaku`/`kotoage` ཚིག་སྦྱོར་འདི་ལག་ལེན་འཐབ་ཨིན།
+འབྱུང་ཁུངས་ཆ་ཚང་འདི་ ཆུང་ཀུ་ཨིན། དེ་ནང་ སྒེར་གྱི་ རོགས་རམ་ `fn` གཅིག་དང་ འབོད་མི་ག་ར་ལུ་ གསལ་ཏོག་ཏོ་སྦེ་ ཆོག་ཐམ་བྱིན་མི་ མི་མང་གི་ ལྷག་ནི་རྐྱངམ་ཅིག་གི་ `view fn` གཅིག་ ཡོདཔ་ཨིན་:
 
 ```kotodama
 seiyaku TupleReturnDemo {
@@ -59,7 +46,7 @@ seiyaku TupleReturnDemo {
         return t;
     }
 
-    kotoage fn compute() -> (int, int) authorize("Entry") {
+    view fn compute() authorize(anyone) -> (int, int) {
         let p = pair(a: 3, b: 5);
         return (p.0, p.1);
     }
@@ -71,16 +58,16 @@ Kotodama གིས་ Iroha བརྡ་དོན་འཕྲུལ་ཆས་�
 ### 2. བཟོ་སྐྲུན་དང་བརྟག་དཔྱད་འབད་ {#_2-check-build-and-verify-the-artifact}
 
 ```bash
-cargo run -p ivm --bin koto -- \
+cargo run -p kotodama_toolchain --bin koto -- \
   check ./contracts/tuple_return_demo.ko
 
-cargo run -p ivm --bin koto -- \
+cargo run -p kotodama_toolchain --bin koto -- \
   build \
   --out ./build/tuple_return_demo.to \
   --manifest-out ./build/tuple_return_demo.manifest.json \
   ./contracts/tuple_return_demo.ko
 
-cargo run -p ivm --bin koto -- \
+cargo run -p kotodama_toolchain --bin koto -- \
   build \
   --out ./build/tuple_return_demo.to \
   --manifest-out ./build/tuple_return_demo.manifest.json \
@@ -92,82 +79,90 @@ cargo run -p ivm --bin koto -- \
 
 ### 3. བའི་ཊི་ཀོཌ་འདི་ ས་གནས་ནང་ལུ་ལག་ལེན་འཐབ་དགོ། {#_3-run-the-bytecode-locally}
 
-`compute`འདི་ མི་མང་གི་འཛུལ་སྒོ་ `kotoage`ཨིན། ཁྱོད་ཀྱིས་དེ་ `debug-call` ལག་ལེན་འཐབ་སྟེ་ལག་ལེན་འབད་དོ་ཡོདཔ་ད་ འདི་གིས་ ས་གནས་ཀྱི་བརྟག་དཔྱད་གནས་སྡུད་གྱི་ཐད་ཁར་ བཏང་མ་དགོ་པར་ ཡང་ན་ དངུལ་སྤྲོད་མ་དགོ་པར་ ལག་ལེན་འབདཝ་ཨིན།
+`compute` འདི་ མི་མང་གི་ ལྷག་ནི་རྐྱངམ་ཅིག་གི་ `view fn` ཅིག་ཨིན། དེ་ `debug-view` གིས་ གཡོག་བཀོལ། `debug-view` གིས་ བསྡུ་སྒྲིག་འབད་ཡོད་པའི་ བཱའིཊི་ཀོཌ་འདི་ ས་གནས་ནང་ གདམ་ཁ་ཅན་གྱི་ བརྟག་དཔྱད་གནས་སྡུད་ཚུ་གུ་ ཚོང་འབྲེལ་ཕུལ་ནི་ ཡང་ན་ དེ་གི་དོན་ལུ་ འཐུས་སྤྲོད་ནི་ མེད་པར་ ལག་བསྟར་འབདཝ་ཨིན།
 
 ```bash
-iroha --config "$IROHA_CONFIG" --machine contract debug-call \
+iroha --config "$IROHA_CONFIG" --machine contract debug-view \
   --code-file ./build/tuple_return_demo.to \
   --entrypoint compute \
-  > ./build/local-call.json
+  > ./build/local-view.json
 
 jq -e '.ok == true and .result == ["3", "5"]' \
-  ./build/local-call.json
+  ./build/local-view.json
 ```
 
 Kotodama ཧྲིལ་གྲངས་ཚུ་ JSON ཡིག་རྒྱུན་སྦེ་བཏོན་ཡོདཔ་ལས་ ཌི་ཀོཌི་འབད་ཡོད་པའི་ཊུཔལ་འདི་ `["3", "5"]` ཨིན།
 
-### 4. རང་ལུགས་ཀྱི་རོགས་པ་བརྒྱུད་དེ་ བགོ་བཀྲམ་འབད་ {#_4-deploy-through-the-native-helper}
+### 4. བདེན་དཔྱད་འབད་ཡོད་པའི་ བཟོ་བསྐྲུན་ཐོན་དངོས་འདི་ Musubi གིས་ བཀྲམ་སྤེལ་འབད {#_4-deploy-the-verified-artifact-with-musubi}
 
-གྲོགས་རམ་པ་གིས་ བཱའིཊི་ཀོཌི་ཆ་ཤས་ཚུ་སྐྱེལ་བཙུགས་འབདཝ་ཨིན་ མིང་རྟགས་བཀོད་ཡོད་པའི་གསལ་བསྒྲགས་འདི་ཐོ་བཀོད་འབདཝ་ཨིན་ དེ་ལས་ `CommitContractDeployment` བཀོལ་སྤྱོད་གཅིག་བཙུགསཔ་ཨིན། འདི་གིས་ ཚོང་འབྲེལ་ག་ར་ལུ་ འཐུས་-ཚིག་བརྗོད་བཀལཝ་ཨིནམ་དང་ སེལ་འཐུ་འབད་ཡོད་པའི་ དངུལ་སྤྲོད་མི་ཡང་ན་ རླངས་རླུང་བཀག་ཆ་བསྒྱུར་བཅོས་འབད་མི་ ཚིག་བརྗོད་ཅིག་ ངོས་ལེན་མི་འབད།
+`iroha contract` གིས་ ཆིངས་ཡིག་ཚུ་ བརྟག་ཞིབ་དང་ མཐོང་སྣང་ དེ་ལས་ འཛོལ་བ་སེལ་ནི་ཚུ་ འབདཝ་ཨིན་རུང་ དེ་ཚུ་ བཀྲམ་སྤེལ་མི་འབདཝ་ལས་ Taira གི་བཀྲམ་སྤེལ་ཚུ་ Musubi བརྒྱུད་དེ་ གཡོག་བཀོལཝ་ཨིན། དེ་གི་ བཀྲམ་སྤེལ་ཞབས་ཏོག་གིས་ བཱའིཊི་ཀོཌ་གི་ ཆ་ཤས་ཚུ་ སྐྱེལ་བཙུགས་འབད་ཞིནམ་ལས་ བདེན་དཔྱད་འབད་ཡོད་པའི་ གསལ་བཀོད་ཡིག་ཆ་འདི་ ཐོ་བཀོད་འབད་དེ་ `CommitContractDeployment` བཀོལ་སྤྱོད་གཅིག་ ཕུལཝ་ཨིན། དེ་གིས་ ཚོང་འབྲེལ་རེ་རེ་གི་ གོང་ཚད་བཀོདཔ་ཨིན། གདམ་ཁ་རྐྱབ་ཡོད་པའི་ འཐུས་སྤྲོད་མི་ རྒྱབ་སྐྱོར་པའི་ བསྐྱར་བཅོས་ཐོན་རིམ་ ཡང་ན་ gas ཚད་མཐའ་ བསྒྱུར་མི་ གོང་ཚད་བཀོད་པ་ཅིག་ ངོས་ལེན་མི་འབད། གཏན་བཟུང་ (locked) འབད་ཡོད་པའི་ ཐུམ་སྒྲིལ་བཟོ་བསྐྲུན་གྱིས་ དེ་གི་ ཀོཌ་དང་ ABI ཧེཤ་ཚུ་ ལོག་བཟོ་ཞིནམ་ལས་རྐྱངམ་ཅིག་ ཧེ་མ་ལས་བཟོ་ཡོད་པའི་ བཟོ་བསྐྲུན་ཐོན་དངོས་འདི་ བཀྲམ་སྤེལ་འབདཝ་ཨིན། Kagami གིས་ འཛིན་སྐྱོང་འཐབ་མི་ ས་གནས་དྲ་རྒྱ་གུ་ དེའི་ཚབ་ལུ་ `kagami contract deploy` གིས་ `./build/tuple_return_demo.to` འདི་ `--alias cookbook_tuple::universal --json` དང་གཅིག་ཁར་ བཀྲམ་སྤེལ་འབདཝ་ཨིན། དེ་གི་འབྱོར་རྟགས་འདི་ `.receipt` གི་འོག་ལུ་ ཡོདཔ་དང་ `kagami context show` གིས་ `IROHA_CONFIG` སྦེ་ ལག་ལེན་འཐབ་ནིའི་ ཞབས་ཏོག་ལེན་མིའི་རིམ་སྒྲིག་འདི་ གསལ་སྟོནམ་ཨིན།
 
 ```bash
-printf '%s\n' \
-  '{"payer":"authority","value":{"charge_limits":[],"gas_limit":1500000}}' \
-  > ./build/fee-payment.json
+cat > ./contracts/Musubi.toml <<'TOML'
+manifest-version = 1
 
-cargo run -p iroha_cli --bin ivm_contract_deploy -- \
-  --torii-url "$TORII_URL" \
-  --chain-id "$CHAIN_ID" \
-  --authority "$TAIRA_ACCOUNT_ID" \
-  --private-key-file "$IROHA_PRIVATE_KEY_FILE" \
-  --code-file ./build/tuple_return_demo.to \
-  --contract-alias cookbook_tuple::universal \
-  --fee-payment-json ./build/fee-payment.json \
-  --out-dir ./build/deployment \
+[package]
+namespace = "local"
+name = "cookbook-tuple"
+version = "0.1.0"
+edition = "1"
+abi-version = 1
+
+[[contract]]
+name = "tuple_return_demo"
+path = "tuple_return_demo.ko"
+TOML
+
+cargo run -p musubi -- --manifest-path ./contracts/Musubi.toml check
+
+cargo run -p musubi -- --manifest-path ./contracts/Musubi.toml \
+  network configure taira \
+  --config "$IROHA_CONFIG" \
+  --fee-payer authority \
+  --contract tuple_return_demo \
+  --alias cookbook_tuple::universal
+
+cargo run -p musubi -- --manifest-path ./contracts/Musubi.toml --format json \
+  deploy --network taira \
+  --contract tuple_return_demo \
+  --artifact ./build/tuple_return_demo.to \
+  --artifact-manifest ./build/tuple_return_demo.manifest.json \
   > ./build/deployment.json
 
-jq '{contract_address, code_hash_hex, final, fee_quotes}' \
+jq '.data.receipt | {contract_address, code_hash, stored_artifact_matches}' \
   ./build/deployment.json
 ```
 
-`charge_limits` སྟོངམ་གྱི་ཞུ་བ་འདི་འདྲ་བཤུས་རྐྱབ་ཡོད་པའི་རྒྱུ་དངོས་ངོས་འཛིན་འབད་མི་ཅིག་མེན་: གྲོགས་རམ་པ་གིས་ མིང་རྟགས་མ་བཀོད་པའི་ཧེ་མ་ ཐད་རི་བ་རི་ དངོས་ཡོད་ཚིག་བརྗོད་འདི་ངོས་ལེན་འབདཝ་ཨིན། ད་ལྟོའི་བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག་ལན་དང་གཅིག་ཁར་ ལོག་སྤྲོད་ཡོད་པའི་ གླ་ཆ་རྒྱུ་དངོས་འདི་ ག་བསྡུར་འབད། གན་རྒྱ་འབོད་བརྡ་ཚུ་གིས་ ཡིག་དཔར་རྐྱབས་ཡོད་པའི་ཐད་རི་བ་རི་ཚིག་བརྗོད་བརྒྱུད་དེ་རྐྱངམ་ཅིག་ འཐུས་སེལ་འཐུ་འདི་ངོས་ལེན་འབདཝ་ཨིན། `gas_asset_id` བརྗེ་སོར་མེ་ཊ་ཌེ་ཊ་འདི་ འགོ་དང་པ་བཏོན་པའི་གན་རྒྱ་གི་ཆ་ཤས་མེན།
+མཐུད་སྦྲེལ་འདི་གིས་ `--fee-payer authority` ལག་ལེན་འཐབ་ཨིན། Musubi གིས་ མིང་རྟགས་མ་བཀོད་པའི་ཧེ་མ་ Taira གི་འཐུས་རྒྱུ་དངོས་ནང་ འཐུས་ངེས་བདེན་གྱི་ གོང་ཚད་བཀོདཔ་ཨིན། ལོག་བྱིན་མི་ འཐུས་བསྡུ་རྒྱུ་དངོས་འདི་ ད་ལྟོའི་ བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག་གི་སྲིད་བྱུས་ཀྱིས་ བཀྲམ་སྤེལ་འབད་མི་ རྒྱུ་དངོས་དང་ ག་བསྡུར་འབད། ཆིངས་ཡིག་ལུ་ འབོད་བརྡ་ཚུ་གིས་ འཐུས་ཀྱི་གདམ་ཁ་འདི་ དབྱེ་བ་བཀོད་ཡོད་པའི་ ད་ལྟོའི་གོང་ཚད་བཀོད་པ་ བརྒྱུད་དེ་རྐྱངམ་ཅིག་ ངོས་ལེན་འབདཝ་ཨིན། `gas_asset_id` ཚོང་འབྲེལ་ཟུར་གནས་གནད་སྡུད་འདི་ འགོ་ཐོག་ཐོན་རིམ་གྱི་ འབོད་བརྡའི་གན་རྒྱ་གི་ ཆ་ཤས་ མེན།
 
-### 5. བཏང་ཡོད་པའི་འཛུལ་སྒོ་འདི་ སི་མུལ་དང་འབོ་འབད། {#_5-simulate-and-call-the-deployed-entrypoint}
+### 5. བཀྲམ་སྤེལ་འབད་ཡོད་པའི་ མཐོང་སྣང་འདི་ ལྷག {#_5-read-the-deployed-view}
 
-བརྟག་དཔྱད་འདི་གིས་ Torii གུ་མི་མང་འཛུལ་སྒོ་འདི་ བཙུགས་མ་དགོ་པར་ གཡོག་བཀོལཝ་ཨིན། འོག་གི་འབོད་བརྡ་འདི་ ཚོང་འབྲེལ་ཅིག་ཨིནམ་ལས་ གནང་བ་གཙོ་བོ་འཐུས་སྤྲོད་མི་འདི་ གསལ་ཏོག་ཏོ་སྦེ་སེལ་འཐུ་འབདཝ་ཨིན། བརྡ་བཀོད་གཉིས་ཆ་ར་གིས་ བརྗེ་སོར་ལག་ལེན་འཐབ་ནིའི་འགྲོ་སོང་ཚད་གཞི་ ༡,༥༠༠,༠༠༠ བསྡམ་བཞགཔ་ཨིན།
+`contract view` གིས་ ལྷག་ནི་རྐྱངམ་ཅིག་གི་ འཛུལ་སྒོ་འདི་ ཚོང་འབྲེལ་ ཡང་ན་ འཐུས་ མེད་པར་ Torii གུ་ ལག་བསྟར་འབདཝ་ཨིན། མཐོང་སྣང་ལུ་ ཚོང་འབྲེལ་གྱི་ རྣམ་པ་ མེད། Torii གིས་ དེ་གི་ འབོད་བརྡའི་ལམ་ཚུ་གུ་ མཐོང་སྣང་སེལ་འཐུ་འབད་མི་ཅིག་ ངོས་ལེན་མི་འབད།
 
 ```bash
-iroha --config "$IROHA_CONFIG" --machine contract call \
-  --simulate \
+iroha --config "$IROHA_CONFIG" --machine contract view \
   --contract-alias cookbook_tuple::universal \
   --entrypoint compute \
   --gas-limit 1500000 \
-  > ./build/deployed-simulation.json
+  > ./build/deployed-view.json
 
 jq -e '.ok == true and .result == ["3", "5"]' \
-  ./build/deployed-simulation.json
-
-iroha --config "$IROHA_CONFIG" \
-  --machine \
-  --fee-payer authority \
-  contract call \
-  --contract-alias cookbook_tuple::universal \
-  --entrypoint compute \
-  --gas-limit 1500000 \
-  --wait \
-  --timeout-ms 60000 \
-  > ./build/deployed-call.json
-
-jq -e '.terminal_kind == "Applied"' ./build/deployed-call.json
+  ./build/deployed-view.json
 ```
 
 ## བརྟག་དཔྱད་འབད་ {#verify}
 
-མིང་གཞན་འདི་སེལ་འཐུ་འབད་ཞིནམ་ལས་ ལོག་སྤྲོད་ཡོད་པའི་ཨང་རྟགས་ཧ་ཤི་གིས་ ཨོན་-ཅེན་མེ་ནིཕཊ་འདི་འབག་འོང་ དེ་ལས་ ཚད་ལྡན་ཁ་བྱང་གིས་ མི་མང་འཛུལ་སྒོ་གཅིགཔོ་འདི་ དཔེ་སྟོན་འབད།
+མིང་གཞན་འདི་ ཁ་གསལ་བཟོ་ཞིནམ་ལས་ བཀྲམ་སྤེལ་འབད་ཡོད་པའི་ མཐོང་སྣང་གི་དོན་ལུ་ Torii གིས་ སྙན་ཞུ་འབད་མི་ ཀོཌ་ཧེཤ་གིས་ རྩིས་དེབ་གུ་ཡོད་པའི་ གསལ་བཀོད་ཡིག་ཆ་འདི་ ལེན། དེ་ལས་ ཚད་ལྡན་ཁ་བྱང་གིས་ མཐོང་སྣང་གཅིག་པ་དེ་ གཡོག་བཀོལ་:
 
 ```bash
-CODE_HASH="$({ jq -er '.code_hash_hex' ./build/deployment.json; })"
-CONTRACT_ADDRESS="$({ jq -er '.contract_address' ./build/deployment.json; })"
+CONTRACT_ADDRESS="$({
+  jq -er '.data.receipt.contract_address' ./build/deployment.json
+})"
+CODE_HASH="$({ jq -er '.code_hash_hex' ./build/local-view.json; })"
+DEPLOYED_CODE_HASH="$({
+  jq -er '.code_hash_hex' ./build/deployed-view.json
+})"
+test "$DEPLOYED_CODE_HASH" = "$CODE_HASH"
 
 RESOLVED_ADDRESS="$({
   iroha --config "$IROHA_CONFIG" --machine \
@@ -177,36 +172,36 @@ RESOLVED_ADDRESS="$({
 test "$RESOLVED_ADDRESS" = "$CONTRACT_ADDRESS"
 
 iroha --config "$IROHA_CONFIG" contract manifest get \
+  --dataspace-id 0 \
   --code-hash "$CODE_HASH" \
   --out ./build/on-chain-manifest.json
 
-iroha --config "$IROHA_CONFIG" --machine contract call \
-  --simulate \
+iroha --config "$IROHA_CONFIG" --machine contract view \
   --contract-address "$CONTRACT_ADDRESS" \
   --entrypoint compute \
-  > ./build/address-simulation.json
+  > ./build/address-view.json
 
 jq -e '.ok == true and .result == ["3", "5"]' \
-  ./build/address-simulation.json
+  ./build/address-view.json
 ```
 
-མིང་གཞན འདི་ལོག་ཐོབ་པའི་ཁ་བྱང་ལུ་ སེལ འབད་ནི་ གསལ་སྟོན་ཡིག་ཆ འདི་ ལས་རིམ་ཨང་རྟགས བསྡུས་རྟགས གཅིག་པའི་འོག་ལུ་ལྷག་ཚུགས་ནི་ ས་གནས དང་ Torii ལད་ཟློས གཉིས་ཆ་ར་གིས་ `["3", "5"]` ལོག་བྱིན་ནི་དང་ ཕུལ འབད་མི་ ལས་རིམ་འབོད འདི་ `Applied` ལུ་ལྷོད་པའི་སྐབས་རྐྱངམ་ཅིག་ བཀྲམ་སྤེལ ཆ་ཚང་ཨིན།
+བཀྲམ་སྤེལ་གྱི་འབྱོར་རྟགས་ཀྱིས་ གསོག་འཇོག་འབད་ཡོད་པའི་ བཟོ་བསྐྲུན་ཐོན་དངོས་འདི་ བདེན་དཔྱད་འབད་ཚར་ཡོདཔ་སྦེ་ སྙན་ཞུ་འབད་དེ་ མིང་གཞན་འདི་ ལོག་བྱིན་མི་ཁ་བྱང་ལུ་ ཁ་གསལ་འགྱོཝ་དང་ གསལ་བཀོད་ཡིག་ཆ་འདི་ ཀོཌ་ཧེཤ་གཅིག་པའི་འོག་ལུ་ ལྷག་ཚུགསཔ་ དེ་ལས་ ས་གནས་དང་ Torii གི་ མཐོང་སྣང་ཚུ་གིས་ `["3", "5"]` ལོག་བྱིན་པའི་སྐབས་རྐྱངམ་ཅིག་ བཀྲམ་སྤེལ་འདི་ ཆ་ཚང་ཨིན།
 
 ## དཀའ་ངལ་སེལ་ཐབས། {#troubleshooting}
 
-- `CanRegisterSmartContractCode` གྱི་འཛོལ་བ་ཚུ་གིས་ Taira ལས་འཛིན་གྱི་གྲོགས་རམ་ ཡང་ན་ ས་གནས་བརྟག་དཔྱད་དྲ་རྒྱ ལུ་ འགོ་ཐོག/འགོ་སྒྲིག བསྒྱུར་བཅོས་འབད་དགོཔ་ཨིན། སྤྱིར་བཏང་རྩིས་ཐོ་འདི་གིས་ རང་གིས་རང་ལུ་ཆོག་ཐམ་འདི་བྱིན་མ་ཚུགསཔ་ཨིན།
-- སྲིད་སྐྱོང་འབད་ནི་དང་ ཡང་ན་ ཉེན་སྲུང་ཅན་གྱི་ལམ་ལུགས་ལུ་ རྒྱབ་སྐྱོར་འབད་མ་དགོ་པའི་དོན་ལས་ ལག་ལེན་འཐབ་ནིའི་དོན་ལས་ འབྲེལ་མཐུད་དེ་ཅིག་གིས་ དགོས་མཁོ་ཡོད་མི་ ངོས་ལེན་ཡིག་ཆ་ཚུ་ ངེས་བདེན་སྦེ་ བཏང་དགོཔ་ཨིན། ངོས་ལེན་གྱི་ཐོ་ཡིག་འདི་ མཉམ་སྒྲིག་འབད། རྩིས་རྩིས་ IDs བཟོ་མི་དགོ།
-- གསལ་སྟོན་ཡིག་ཆ ཡང་ན་ ABI མ་མཐུན་པའི་དོན་དག་དེ་ བཱའིཊི་ཨང་རྟགས, གསལ་སྟོན་ཡིག་ཆ དང་ མཐུད་མཚམས ལག་བསྟར་མཉེན་ཆས འདི་ གཅིག་མཚུངས བཟོས་དངོས གསལ་བཀོད་མི་འབདཝ་ཨིན་མས། `--verify` ལུ་ གཏན་སྦྱར་ཡོད་པའི Git commit ལུ་སླར་གསོ་འབདཝ་ཨིན།
+- `deployment authority lacks CanManageAccountAlias` ཡང་ན་ ལག་བསྟར་པ་ (executor) གི་ `authority is not permitted to manage contract alias` ཟེར་མི་འདི་གིས་ རྩིས་ཐོ་དེ་གིས་ མིང་གཞན་དེ་ མཐུད་མི་ཆོག་ཟེར་ སྟོནམ་ཨིན། ཁྱོད་ཀྱིས་ བདག་དབང་འཛིན་མི་ མངའ་ཁོངས་ཅིག་ནང་གི་ མིང་གཞན་ཅིག་ ལག་ལེན་འཐབ། ཡང་ན་ མིང་གཞན་གྱི་ ཆོག་ཐམ་གནང་བ་ངེས་བདེན་ ཡང་ན་ དེ་གི་མངའ་ཁོངས་ ཡང་ན་ གནད་སྡུད་ས་སྟོང་གི་ ཆོག་ཐམ་གནང་བ་འདི་ ཁྱབ་ཚད་དེ་གི་ཇོ་བདག་ལས་ ལེན། ས་གནས་དྲ་རྒྱ་གུ་ དེ་ འགོ་ཐོག་སྡེབ་ཚན་ནང་ གནང་།
+- ཉེན་སྲུང་ཅན་གྱི་ མིང་གི་ས་ཁོངས་ཀྱི་ བཀག་ཆ་ཅིག་གིས་ མིང་གཞན་གྱི་ མིང་གི་ས་ཁོངས་འདི་ གཞུང་སྐྱོང་གི་འོག་ལུ་ ཡོདཔ་སྦེ་ སྟོནམ་ཨིན། ཆ་འཇོག་འབད་མི་ཚུ་གི་ རྩིས་ཐོ་ ID ཚུ་ ཐོ་བཀོད་འབད་མི་འདི་ ཆ་འཇོག་གི་ སྒྲུབ་བྱེད་ མེན། མིང་གི་ས་ཁོངས་དེ་གི་དོན་ལུ་ དྲ་རྒྱའི་ གཞུང་སྐྱོང་བྱ་རིམ་ (`iroha app gov deploy propose`) ལག་ལེན་འཐབ། ཡང་ན་ དེ་གི་ཕྱི་ཁར་ཡོད་པའི་ མིང་གཞན་ཅིག་ གདམ་ཁ་རྐྱབ།
+- གསལ་བཀོད་ཡིག་ཆ་ ཡང་ན་ ABI མ་མཐུན་པ་ཅིག་གིས་ བཱའིཊི་ཀོཌ་དང་ གསལ་བཀོད་ཡིག་ཆ་ དེ་ལས་ མཐུད་མཚམས་ཀྱི་ ལག་བསྟར་མཉེན་ཆས་ཚུ་གིས་ བཟོ་བསྐྲུན་ཐོན་དངོས་ གཅིག་པ་ འགྲེལ་བཤད་མི་འབདཝ་སྦེ་ སྟོནམ་ཨིན། གཏན་སྦྱར་ཡོད་པའི་ Git commit ནང་ ལོག་བཟོ་བསྐྲུན་འབད་ཞིནམ་ལས་ `--verify` དང་གཅིག་ཁར་ བཟོ་བསྐྲུན་འདི་ ལོག་གཡོག་བཀོལ།
 - `fee quote changed ... gas bound` ཟེར་མི་འདི་ ཞུ་བ་འབད་ཡོད་པའི་ཡིག་དཔར་རྐྱབ་ཡོད་པའི་དམིགས་ཡུལ་དང་ འཚོ་བའི་ཚིག་བརྗོད་འདི་ མོས་མཐུན་མེདཔ་ཨིན། མིང་རྟགས་བཀོད་ཡོད་པའི་ཚོང་འབྲེལ་ཅིག་ལེགས་བཅོས་འབད་ནི་ལས་ ལོག་སྟེ་སྔོན་སྒྲིག་འབད།
-- བཀྲམ་སྤེལ་གྲོགས་རམ་པ་གིས་ ཡོངས་འབྲེལ་མ་ཕུལ་བའི་ཧེ་མ་ གྲལ་ཐིག་ནང་ལྡེ་མིག་ཚུ་ གནང་བ་ཡོད་པའི་ལྡེ་མིག་-ཡིག་སྣོད་ཐབས་ལམ་ བརྡ་མཚོན་འབྲེལ་ལམ་ཚུ་ དེ་ལས་ འབྲེལ་མཐུད་འབད་ཡོད་པའི་ཡིག་སྣོད་ཚུ་ བསྒྱུར་བཅོས་འབདཝ་ཨིན།
-- མཐོང་སྣང་རྐྱངམ་ཅིག་གི་འཛུལ་སྒོའི་འཛོལ་བ་འདི་གིས་ `compute` འདི་ བརྡ་བཀོད་བཟའ་ཚང་འཛོལ་བ་བརྒྱུད་དེ་ འགྲུལ་ལམ་བཏང་ཡོདཔ་སྦེ་ཨིན། དཔེ་ཚད་འདི་གིས་ `kotoage` གསལ་བསྒྲགས་འབདཝ་ལས་ འབོད་བརྡ་བརྟག་དཔྱད་ཡང་ན་ ཕུལ་ནི་ལག་ལེན་འཐབ།
+- བར་ཆད་བྱུང་ཡོད་པའི་ བཀྲམ་སྤེལ་ཅིག་གིས་ དེ་གི་ མིང་རྟགས་བཀོད་ཡོད་པའི་ འཆར་གཞི་འདི་ ཉིན་ཐོ་ནང་ བཞགཔ་ཨིན། འཆར་གཞི་གསརཔ་ཅིག་ལུ་ མིང་རྟགས་བཀོད་ནིའི་ཚབ་ལུ་ `musubi deploy --resume <JOURNAL>` གིས་ དེ་ སླར་གསོ་འབད།
+- `is read-only and cannot be invoked as a transaction` ཡང་ན་ `is not a kotoage or lifecycle entrypoint` ཟེར་མི་འདི་གིས་ `compute` འདི་ འབོད་བརྡའི་བཀའ་རྒྱ་ཅིག་ལུ་ བཏང་ཡོདཔ་སྦེ་ སྟོནམ་ཨིན། དཔེ་འདི་གིས་ `view fn` གསལ་བསྒྲགས་འབདཝ་ལས་ ས་གནས་ནང་ `debug-view` དང་ Torii གུ་ `view` ལག་ལེན་འཐབ།
 - གན་རྒྱ་ཁ་པར་ཚུ་ལུ་ རླངས་རྫས་ཚད་གཞི་ངེས་གཏན་དགོཔ་ཨིན། འགོ་ཐོག་བཏོན་པའི་འབོད་བརྡའི་གན་རྒྱ་འདི་གིས་ མཐོ་རིམ་རླངས་རྫས་ཡང་ན་ འཐུས་རྒྱུ་དངོས་མེ་ཊ་ཌེ་ཊ་འདི་ ངོས་ལེན་མི་འབད།
 
 ## གཞི་རྟེན་དང་འབྲེལ་བའི་ཡིག་ཆ་ཚུ་ {#source-and-related-docs}
 
-- [Kotodama V1 བཀའ་རྒྱ་ལག་ལེན་འབད་ཐབས། པིན་ཌི་གི་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
-- [པིན་འབད་ཡོད་པའི་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko) ལུ་ ཊུ་པལ་-ལོག་འབྱུང་ཁུངས་དཔེ་ཚད།
-- [རང་བཞིན་གནས་སྟངས་ནང་ལུ་ གྲོགས་རམ་འབད་མི་ ཕབ་ལེན་འབད་ཡོད་པའི་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [ཟད་འགྲོ་བཏང་བཞག་མི་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs) ལུ་ སྦྲེལ་མཐུད་འབད་ནིའི་དོན་ལས་ བརྟག་དཔྱད་འབདཝ་ཨིན།
+- [གཏན་སྦྱར་ཡོད་པའི་ Git commit ནང་གི་ Kotodama V1 བཀའ་རྒྱའི་ ལག་བསྟར་](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_toolchain/src/bin/koto.rs)
+- [པིན་འབད་ཡོད་པའི་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/tuple_return_demo.ko) ལུ་ ཊུ་པལ་-ལོག་འབྱུང་ཁུངས་དཔེ་ཚད།
+- གཏན་སྦྱར་ཡོད་པའི་ Git commit ནང་གི་ [Musubi བཀྲམ་སྤེལ་བཀའ་རྒྱ་](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/musubi/src/command_deploy.rs) དང་ [རང་སོའི་ཆིངས་ཡིག་ བཀྲམ་སྤེལ་ཞབས་ཏོག་](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_contract_deploy/src/lib.rs)
+- [ཟད་འགྲོ་བཏང་བཞག་མི་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/contracts.rs) ལུ་ སྦྲེལ་མཐུད་འབད་ནིའི་དོན་ལས་ བརྟག་དཔྱད་འབདཝ་ཨིན།
 - [མཁས་མཆོག་གི་འཆམ་ཁ་](/dz/blockchain/smart-contracts.md)
 - [CLI གི་ཁ་བྱང་](/dz/get-started/operate-iroha-via-cli.md)

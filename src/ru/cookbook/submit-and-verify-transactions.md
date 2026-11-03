@@ -1,9 +1,9 @@
 ---
 translation_locale: ru
 translation_source: /cookbook/submit-and-verify-transactions.md
-translation_source_hash: 98e5c7e9db1ba8468cfd5409409b0e8d02251311dc85492f7b71675e983dc4fd
+translation_source_hash: de608ef52ad3a999c0e253e6683e454f8f66f399a690dce4c2185c79d02334cd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Отправить и Проверить Транзакции {#submit-and-verify-transactions}
@@ -14,7 +14,7 @@ translation_engine: bing-translator-llm
 
 ## Предварительные требования {#prerequisites}
 
-- Финансируемый `taira.client.toml`, `taira.tx-metadata.json` и `TAIRA_ACCOUNT_ID`, произведённый [Подключиться к Taira](./connect-to-taira.md).
+- Профинансированный `taira.client.toml`, `taira-faucet-policy.json` и `TAIRA_ACCOUNT_ID`, созданные рецептом [Подключиться к Taira](./connect-to-taira.md). Записи используют `--fee-payer authority`; CLI получает точную котировку комиссии в активе комиссии Taira до подписания.
 - Текущий `iroha` CLI и `jq`.
 - Одноразовый Taira криптографический подписант. Не используйте повторно его ключ или эти команды записи на Minamoto.
 
@@ -22,15 +22,15 @@ translation_engine: bing-translator-llm
 
 ### 1. Выполните предварительную проверку конечной точки API, основного пользователя авторизации и баланса комиссии {#_1-preflight-the-endpoint-authority-and-fee-balance}
 
-Сначала прочитайте снимок данных очереди, затем докажите, что баланс комиссии субъекта авторизации виден. Прочитайте Base58 ID определения актива из метаданных, созданных рецептом подключения.
+Сначала прочитайте снимок данных очереди, затем докажите, что баланс комиссии субъекта авторизации виден. Прочитайте Base58 ID определения актива из политики службы финансирования тестовой сети, сохранённой рецептом подключения.
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, queue_size, txs_approved, txs_rejected}'
 
-TAIRA_FEE_ASSET="$(jq -er '.gas_asset_id' taira.tx-metadata.json)"
+TAIRA_FEE_ASSET="$(jq -er '.asset_definition_id' taira-faucet-policy.json)"
 
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 iroha --config ./taira.client.toml ledger asset get \
@@ -48,8 +48,7 @@ CLI отправляет точную неподписанную полезну�
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg 'cookbook-submit-verify' \
+  tx ping --msg 'cookbook-submit-verify' \
   > taira-submission.json
 
 jq '{hash, fee_quote}' taira-submission.json
@@ -60,12 +59,12 @@ TAIRA_TX_HASH="$(jq -er '.hash' taira-submission.json)"
 
 ### 3. Подождите, пока программное обеспечение терминала обработает состояние рабочего процесса {#_3-wait-for-terminal-pipeline-state}
 
-Используйте помощник по статусу с набором текста вместо того, чтобы делать вывод о успехе на основе принятия HTTP или допуска в очередь. С `--wait` область безопасной маршрутизации выбирается автоматически, а целевой параметр по умолчанию — Применённая окончательность.
+Используйте типизированный помощник статуса вместо того, чтобы делать вывод об успехе на основе принятия HTTP или допуска в очередь. С `--wait` CLI опрашивает точный глобальный статус и завершается успешно только при финальности `Applied`, подтверждённой состоянием.
 
 ```bash
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction status \
+  tx status \
   --hash "$TAIRA_TX_HASH" \
   --wait \
   --timeout-ms 60000 \
@@ -83,7 +82,7 @@ jq . taira-final-status.json
 ```bash
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction get --hash "$TAIRA_TX_HASH" \
+  tx get --hash "$TAIRA_TX_HASH" \
   > taira-transaction.json
 
 jq . taira-transaction.json
@@ -101,15 +100,17 @@ curl -fsS -H 'Accept: application/json' \
 
 ## Проверить {#verify}
 
-Проверьте, что все три записи совпадают по одному и тому же криптографическому хэшу и что обозреватель больше не сообщает о состоянии ожидания:
+Проверьте, что все три записи совпадают по одному и тому же криптографическому хэшу и что обозреватель сообщает `Committed`, а не `Rejected`:
 
 ```bash
-test "$(jq -r '.hash' taira-submission.json)" = "$TAIRA_TX_HASH"
+jq -e --arg hash "$TAIRA_TX_HASH" \
+  '.hash == $hash and .terminal_kind == "Applied"' taira-final-status.json
 
 curl -fsS -H 'Accept: application/json' \
   "https://taira.sora.org/v1/explorer/transactions/$TAIRA_TX_HASH" \
   | jq -e --arg hash "$TAIRA_TX_HASH" \
-    '.hash == $hash and .status == "Committed"'
+    '(.hash | ascii_downcase | ltrimstr("hash:") | split("#")[0]) == $hash
+      and .status == "Committed"'
 ```
 
 Сохраняйте запись результата протокола подачи и окончательный статус в качестве доказательства тестирования. Они содержат материалы о публичных транзакциях, а не ключ подписи.
@@ -118,15 +119,15 @@ curl -fsS -H 'Accept: application/json' \
 
 - HTTP `202` или состояние в очереди доказывает только прием. Продолжайте опрашивать указанный статус до получения Applied, Rejected, Expired или до истечения ограниченного времени ожидания.
 - Если время подачи истекает после возврата криптографического хэша, запросите этот криптографический хэш перед созданием другой транзакции. Слепая повторная подача создает новый цитируемый и подписанный полезный нагрузочный пакет.
-- Оценка цены комиссии может быть отклонена до подписания. Проверьте `--fee-payer authority`, `gas_asset_id`, баланс полномочного представителя и идентификатор цепочки сети.
+- Оценка цены комиссии может быть отклонена до подписания. Проверьте `--fee-payer authority`, баланс полномочного представителя, настроенные `chain` и `network_id`, а также то, что `--metadata` не содержит ключей комиссии, таких как `gas_asset_id`.
 - `Rejected` обычно указывает на проверку инструкции, разрешения, сборы или устаревшее состояние. Это окончательное подтверждение неудавшегося выполнения и не должно переклассифицироваться как повторная попытка передачи.
 - Если сразу после состояния Applied обозреватель возвращает `404`, причиной может быть задержка индексации. Повторите чтение; не отправляйте транзакцию заново.
 - Если привилегированная инструкция работает на сгенерированной локальной сети, но Taira её отклоняет, получите точное разрешение Taira или назначение управляемого пространства имён. Локальный результат не предоставляет полномочий субъекта авторизации публичной сети блокчейн.
 
 ## Исходные и связанные документы {#source-and-related-docs}
 
-- [Отправка транзакции и реализация запроса комиссии на закрепленной версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
-- [Реализация подтверждения транзакции и тесты на закрепленной версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/src/client.rs)
+- [Отправка транзакции и реализация запроса комиссии на закрепленной версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs)
+- [Реализация подтверждения транзакции и тесты на закрепленной версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/src/client.rs)
 - [Транзакции](/ru/blockchain/transactions.md)
 - [CLI руководство](/ru/get-started/operate-iroha-via-cli.md)
 - [Torii API конечные точки](/ru/reference/torii-endpoints.md)

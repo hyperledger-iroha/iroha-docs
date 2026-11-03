@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /cookbook/submit-and-verify-transactions.md
-translation_source_hash: 98e5c7e9db1ba8468cfd5409409b0e8d02251311dc85492f7b71675e983dc4fd
+translation_source_hash: de608ef52ad3a999c0e253e6683e454f8f66f399a690dce4c2185c79d02334cd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Tranzaksiyalarni yuborish va tasdiqlash {#submit-and-verify-transactions}
@@ -14,7 +14,7 @@ Taira tranzaksiyasini oldindan tekshiring, aniq to‘lov narxi taxminini qabul q
 
 ## Oldingi talablar {#prerequisites}
 
-- [Taira ga ulaning](./connect-to-taira.md) tomonidan ishlab chiqarilgan moliyalashtirilgan `taira.client.toml`, `taira.tx-metadata.json` va `TAIRA_ACCOUNT_ID`.
+- [Taira-ga ulanish](./connect-to-taira.md) retsepti yaratgan moliyalashtirilgan `taira.client.toml`, `taira-faucet-policy.json` va `TAIRA_ACCOUNT_ID`. Yozish amallari `--fee-payer authority` dan foydalanadi; CLI imzolashdan oldin Taira to‘lov aktividagi aniq to‘lov narxini oladi.
 - Joriy `iroha` CLI va `jq`.
 - Bir martalik Taira imzolovchi. Uning kalitini yoki bu yozuv buyruqlarini Minamoto da qayta ishlatmang.
 
@@ -22,15 +22,15 @@ Taira tranzaksiyasini oldindan tekshiring, aniq to‘lov narxi taxminini qabul q
 
 ### 1. API tugun nuqtasini, vakolat hisobini va to‘lov balansini oldindan tekshiring {#_1-preflight-the-endpoint-authority-and-fee-balance}
 
-Avval navbatdagi nuqtai nazardagi ma'lumotlar ko‘rinishini o‘qing, keyin avtorizatsiya qiluvchi shaxsning to‘lov balansini ko‘rish mumkinligini isbotlang. Ulash retseptlari tomonidan yaratilgan metadata'dan Base58 aktiv-ta’rif ID'sini o‘qing.
+Avval navbatning oniy nusxasini o‘qing, so‘ng vakolat hisobining to‘lov balansi ko‘rinishini isbotlang. Base58 aktiv ta’rifi ID-sini ulanish retsepti saqlagan kran siyosatidan o‘qing.
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, queue_size, txs_approved, txs_rejected}'
 
-TAIRA_FEE_ASSET="$(jq -er '.gas_asset_id' taira.tx-metadata.json)"
+TAIRA_FEE_ASSET="$(jq -er '.asset_definition_id' taira-faucet-policy.json)"
 
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 iroha --config ./taira.client.toml ledger asset get \
@@ -48,8 +48,7 @@ CLI aniq imzosiz yukni to‘lov narxi taxmini uchun yuboradi, qabul qilingan to�
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg 'cookbook-submit-verify' \
+  tx ping --msg 'cookbook-submit-verify' \
   > taira-submission.json
 
 jq '{hash, fee_quote}' taira-submission.json
@@ -60,12 +59,12 @@ Ushbu retseptda `--no-wait` dan foydalanmang. Buyruq muvaffaqiyatli protokol nat
 
 ### 3. Terminal dasturiy ta'minot ish jarayoni holatini kuting {#_3-wait-for-terminal-pipeline-state}
 
-Muvaffaqiyatni HTTP qabul qilinishidan yoki navbatga kiritilishidan taxmin qilish o‘rniga yozilgan holat yordamchisidan foydalaning. `--wait` bilan xavfsiz yo‘naltirish doirasi avtomatik ravishda tanlanadi va standart maqsad Tatbiq etilgan yakuniylik hisoblanadi.
+Muvaffaqiyatni HTTP qabul qilinishidan yoki navbatga kiritilishidan taxmin qilish o‘rniga turlangan holat yordamchisidan foydalaning. `--wait` bilan CLI aniq global holatni takroran so‘raydi va faqat reyestr holati bo‘yicha aniqlangan `Applied` yakuniy holatida muvaffaqiyatli tugaydi.
 
 ```bash
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction status \
+  tx status \
   --hash "$TAIRA_TX_HASH" \
   --wait \
   --timeout-ms 60000 \
@@ -83,7 +82,7 @@ Dasturiy ta'minot ishlov berish ish oqimi holati, ishlov berish tugaganligini ja
 ```bash
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction get --hash "$TAIRA_TX_HASH" \
+  tx get --hash "$TAIRA_TX_HASH" \
   > taira-transaction.json
 
 jq . taira-transaction.json
@@ -101,15 +100,17 @@ Davlatni o‘zgartiruvchi ko‘rsatma uchun, o‘zgartirilgan obyektni so‘rov 
 
 ## Tekshirish {#verify}
 
-Uchala yozuvning ham bir xil kriptografik xeshga ega ekanligini va explorer endi kutish holatini bildirayotganini tekshiring:
+Uchala yozuvning ham bir xil kriptografik xeshga mos kelishini va explorer `Rejected` emas, `Committed` holatini ko‘rsatishini tekshiring:
 
 ```bash
-test "$(jq -r '.hash' taira-submission.json)" = "$TAIRA_TX_HASH"
+jq -e --arg hash "$TAIRA_TX_HASH" \
+  '.hash == $hash and .terminal_kind == "Applied"' taira-final-status.json
 
 curl -fsS -H 'Accept: application/json' \
   "https://taira.sora.org/v1/explorer/transactions/$TAIRA_TX_HASH" \
   | jq -e --arg hash "$TAIRA_TX_HASH" \
-    '.hash == $hash and .status == "Committed"'
+    '(.hash | ascii_downcase | ltrimstr("hash:") | split("#")[0]) == $hash
+      and .status == "Committed"'
 ```
 
 Yuborish protokoli natijalari yozuvini va yakuniy holatni test dalili sifatida saqlang. Ularda imzo kaliti emas, balki jamoat tranzaksiyasi materiallari mavjud.
@@ -118,15 +119,15 @@ Yuborish protokoli natijalari yozuvini va yakuniy holatni test dalili sifatida s
 
 - HTTP `202` yoki navbatdagi holat faqat qabul qilinganini tasdiqlaydi. Typed holatini Applied, Rejected, Expired yoki belgilangan vaqt tugaguncha so‘rov qilib turishni davom ettiring.
 - Agar topshirish kriptografik xeshni qaytargandan keyin vaqti tugasa, boshqa tranzaksiya tuzishdan oldin o‘sha kriptografik xeshni so‘rang. Ko‘z yummoq tarzidagi qayta topshirish yangi iqtiboslangan va imzolangan yukni yaratadi.
-- To'lov narxi taxmini imzolanmasdan rad etilishi mumkin. `--fee-payer authority`, `gas_asset_id`, vakolatli shaxsning qoldig'ini va tarmoq zanjiri ID sini tekshiring.
+- To‘lov narxi imzolashdan oldin rad etilishi mumkin. `--fee-payer authority` ni, vakolat hisobining qoldig‘ini, sozlangan `chain` va `network_id` ni hamda `--metadata` da `gas_asset_id` kabi to‘lov kaliti yo‘qligini tekshiring.
 - `Rejected` odatda ko‘rsatma tasdiqlash, ruxsatnomalar, to‘lovlar yoki eskirgan holatni bildiradi. Bu bajarilmagan amalga oshirishning yakuniy dalilidir va transportni qayta urinish sifatida qayta tasniflanmasligi kerak.
 - Bir tadqiqotchi `404` Qo‘llanganidan so‘ng darhol indekslash kechikishi bo‘lishi mumkin. O‘qishni qayta urinib ko‘ring; tranzaksiyani qayta yubormang.
 - Agar imtiyozli ko‘rsatma yaratilgan localnetda ishlasa, lekin Taira uni rad etsa, aniq Taira ruxsatini yoki boshqariladigan namespace tayinlovini oling. Lokal natija jamoat blokcheyn tarmog‘i vakolatini bermaydi.
 
 ## Manba va tegishli hujjatlar {#source-and-related-docs}
 
-- [Bitim yuborilishi va to'lov narxini ko'rsatish pinlangan manba-kod reviziyasida amalga oshiriladi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
-- [Bitimni tasdiqlashni amalga oshirish va sinovlarni pinlangan manba-kod reviziyasida o'tkazish](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/src/client.rs)
+- [Bitim yuborilishi va to'lov narxini ko'rsatish pinlangan manba-kod reviziyasida amalga oshiriladi](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs)
+- [Bitimni tasdiqlashni amalga oshirish va sinovlarni pinlangan manba-kod reviziyasida o'tkazish](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/src/client.rs)
 - [Tranzaksiyalar](/uz/blockchain/transactions.md)
 - [CLI qo'llanma](/uz/get-started/operate-iroha-via-cli.md)
 - [Torii API oxir nuqtalar](/uz/reference/torii-endpoints.md)
