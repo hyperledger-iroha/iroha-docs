@@ -71,21 +71,35 @@ before use.
 
 ## Generated References
 
-Only maintainers should refresh generated material. Use a clean Iroha checkout
-at the exact commit recorded in `provenance/iroha.json`:
+A scheduled workflow opens a pull request whenever a newer verified Iroha
+commit is available. Review those pull requests like source changes and update
+any prose that the regenerated references contradict. Commits you push to that
+pull request keep it in place; later refreshes comment instead of replacing it.
+
+Pages also cite Iroha source at the pinned commit, and every cookbook recipe
+must cite it. Once the cookbook and the other citing pages are correct at the
+new pin, in English and every translation, move their citations:
 
 ```bash
-pnpm refresh:iroha --source /path/to/iroha
+pnpm move:iroha-citations --source /path/to/iroha
+```
+
+It refuses while any cited path is missing at the pin. A translation's source
+hash follows its English page only if the translation was current before.
+
+Maintainers can also refresh locally from a clean Iroha checkout of the
+selected commit:
+
+```bash
+pnpm select:iroha
+pnpm refresh:iroha --source /path/to/iroha --pin <commit> --ref <ref>
 pnpm validate:provenance
 ```
 
-The command writes checked-in snippets and public OpenAPI data, then updates
-their SHA-256 provenance. It never selects or fetches a branch. Do not mark
-artifacts current until a compliant signed commit representing the final source
-truth is publicly available and the references have been refreshed from it.
-The currently pinned candidate is public and its copy-artifact hashes match,
-but it is unsigned, so the manifest uses the explicit
-`awaiting-signed-source-commit` state.
+The refresh writes checked-in snippets and public OpenAPI data, updates their
+SHA-256 provenance, and records the pin. It refuses a commit whose signature
+GitHub does not verify, or one that is not reachable from the tracked branch or
+a tracked release tag. See [`provenance/README.md`](provenance/README.md).
 
 ## Quality Checks
 

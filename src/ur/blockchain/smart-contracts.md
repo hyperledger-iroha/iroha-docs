@@ -1,9 +1,9 @@
 ---
 translation_locale: ur
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: 4281cb307762443c85b67659310da69f1f1ea5b99926bad43b90abe36e87075e
+translation_source_hash: 0c6392deb9ddca84e262c699c777276b3a6ca731154b66e7a8418f38dca52021
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # ہوشیار معاہدے {#smart-contracts}
@@ -17,6 +17,8 @@ Iroha ٹرانزیکشنز `Executable` پے لوڈ انجام دیتے ہیں۔
 - `Executable::IvmProved`: Iroha VM بائٹ کوڈ جس میں پہلے سے کمپیوٹرائزڈ ہدایات کی اوورلیپ اور ثبوت کے وعدے ہیں۔
 
 Kotodama ہے Iroha اعلی سطح کے ذہین معاہدے کی زبان ہے. `.ko` ماخذ فائل deterministic کو مرتب کرتا ہے IVM بائٹکوڈ، روایتی طور پر ایک کے طور پر ذخیرہ `.to` تعیناتی کے لئے آرٹیفیکٹ۔ Kotodama اہداف IVM صرف. یہ ہدف نہیں ہے RISC-V یا WebAssembly.
+
+کمپائلر کی ہر تشخیص کا ایک مستقل کوڈ ہے، جس کی وضاحت [Kotodama تشخیصات](/ur/reference/kotodama-diagnostics.md) کے حوالے میں کی گئی ہے۔
 
 پہلی ریلیز صرف ABI ورژن 1 کی حمایت کرتی ہے۔ سسٹم کال اور پوائنٹر-ABI پالیسی ایک غیر مشروط V1 معاہدہ ہے جو قبولیت اور عمل درآمد کے ذریعہ نافذ کیا جاتا ہے۔ کوئی متبادل رن ٹائم موڈ نہیں ہے۔
 
@@ -45,6 +47,18 @@ Kotodama ہے Iroha اعلی سطح کے ذہین معاہدے کی زبان ہ�
 - گیس پالیسی کا عزم
 
 ثبوت انجام دیئے گئے بائٹ کوڈ سے اوورلے کو منسلک کرتا ہے۔ پائپ لائن پالیسی کے مطابق ، تصدیق کنندہ ثبوت کی توثیق کرسکتے ہیں اور حفاظت کی اضافی جانچ کے طور پر دوبارہ پلے عملدرآمد کریں۔
+
+## IVM سسٹم کالز {#ivm-syscalls}
+
+IVM بائٹ کوڈ نمبر شدہ سسٹم کالز کے ذریعے میزبان کو کال کرتا ہے۔ نیچے دی گئی ABI ورژن 1 کی سسٹم کالز Iroha کے مقررہ سورس کوڈ سے تیار کی گئی ہیں۔
+
+::: details ABI ورژن 1 کی سسٹم کالز
+
+```generated-reference
+ivm-syscalls
+```
+
+:::
 
 ## تعینات کردہ معاہدے کی کالز {#deployed-contract-calls}
 

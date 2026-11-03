@@ -298,6 +298,19 @@
   | `approver` | [`AccountId`](#accountid) |
   | `request` | [`AccountRecoveryRequest`](#accountrecoveryrequest) |
 
+## `AccountRecoveryCancellationApproved` {#accountrecoverycancellationapproved}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `account` | [`AccountId`](#accountid) |
+  | `alias` | [`AccountAlias`](#accountalias) |
+  | `approver` | [`AccountId`](#accountid) |
+  | `request` | [`AccountRecoveryRequest`](#accountrecoveryrequest) |
+
 ## `AccountRecoveryCancelled` {#accountrecoverycancelled}
 
 **Type:** Struct
@@ -323,8 +336,9 @@
   | `PolicyCleared` | [`AccountRecoveryPolicyCleared`](#accountrecoverypolicycleared) | 1 |
   | `Proposed` | [`AccountRecoveryProposed`](#accountrecoveryproposed) | 2 |
   | `Approved` | [`AccountRecoveryApproved`](#accountrecoveryapproved) | 3 |
-  | `Cancelled` | [`AccountRecoveryCancelled`](#accountrecoverycancelled) | 4 |
-  | `Finalized` | [`AccountRecoveryFinalized`](#accountrecoveryfinalized) | 5 |
+  | `CancellationApproved` | [`AccountRecoveryCancellationApproved`](#accountrecoverycancellationapproved) | 4 |
+  | `Cancelled` | [`AccountRecoveryCancelled`](#accountrecoverycancelled) | 5 |
+  | `Finalized` | [`AccountRecoveryFinalized`](#accountrecoveryfinalized) | 6 |
 
 ## `AccountRecoveryFinalized` {#accountrecoveryfinalized}
 
@@ -395,10 +409,12 @@
   | Field name | Field value |
   | --: | :-- |
   | `alias` | [`AccountAlias`](#accountalias) |
+  | `request_generation` | [`NonZero<u64>`](#nonzero-u64) |
   | `active_account_id_at_proposal` | [`AccountId`](#accountid) |
   | `proposed_controller` | [`AccountController`](#accountcontroller) |
   | `approvals` | [`SortedVec<AccountId>`](#sortedvec-accountid) |
-  | `invalidated_multisig_proposal_hashes` | [`Vec<HashOf<Vec<InstructionBox>>>`](#vec-hashof-vec-instructionbox) |
+  | `cancellation_approvals` | [`SortedVec<AccountId>`](#sortedvec-accountid) |
+  | `invalidated_multisig_proposal_ids` | [`Vec<Array<u8, 32>>`](#vec-array-u8-32) |
   | `proposed_by` | [`AccountId`](#accountid) |
   | `execute_after_ms` | `u64` |
   | `status` | [`AccountRecoveryStatus`](#accountrecoverystatus) |
@@ -441,6 +457,148 @@
   | `retry_policy` | [`Option<TimeTriggerRetryPolicy>`](#option-timetriggerretrypolicy) |
   | `metadata` | [`Metadata`](#metadata) |
 
+## `ActionAuthorityBindingV1` {#actionauthoritybindingv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `TransactionAuthority` | &mdash; | 0 |
+  | `ContractSubject` | [`AccountId`](#accountid) | 1 |
+  | `Account` | [`AccountId`](#accountid) | 2 |
+
+## `ActionIntentV1` {#actionintentv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `action_index` | `u32` |
+  | `operation` | [`ActionOperationV1`](#actionoperationv1) |
+  | `role` | [`ActionRoleV1`](#actionrolev1) |
+  | `authority` | [`ActionAuthorityBindingV1`](#actionauthoritybindingv1) |
+  | `invocation` | [`ActionInvocationBindingV1`](#actioninvocationbindingv1) |
+  | `public_inputs_digest` | [`ActionPublicInputsDigestV1`](#actionpublicinputsdigestv1) |
+  | `statement_digest` | [`ActionStatementDigestV1`](#actionstatementdigestv1) |
+  | `attachments` | [`Vec<AttachmentReferenceV1>`](#vec-attachmentreferencev1) |
+
+## `ActionInvocationBindingV1` {#actioninvocationbindingv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Transaction` | &mdash; | 0 |
+  | `Direct` | [`ActionInvocationBindingV1::Direct`](#actioninvocationbindingv1-direct) | 1 |
+  | `Contract` | [`ActionInvocationBindingV1::Contract`](#actioninvocationbindingv1-contract) | 2 |
+
+## `ActionInvocationBindingV1::Contract` {#actioninvocationbindingv1-contract}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `root_index` | `u32` |
+  | `call_path` | [`Vec<u32>`](#vec-u32) |
+
+## `ActionInvocationBindingV1::Direct` {#actioninvocationbindingv1-direct}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `instruction_index` | `u32` |
+
+## `ActionOperationV1` {#actionoperationv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `NativeInstruction` | `String` | 0 |
+  | `TransactionProof` | &mdash; | 1 |
+  | `IvmProvedExecution` | &mdash; | 2 |
+
+## `ActionPublicInputsDigestV1` {#actionpublicinputsdigestv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `ActionRoleV1` {#actionrolev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `ProofEffect` | &mdash; | 0 |
+  | `ProofVerification` | &mdash; | 1 |
+  | `Administrative` | &mdash; | 2 |
+  | `Effect` | &mdash; | 3 |
+
+## `ActionStatementDigestV1` {#actionstatementdigestv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `ActivateAssetUidEnrollmentV1` {#activateassetuidenrollmentv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+
+## `AdmissionHistoryRecordV1` {#admissionhistoryrecordv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `genesis_origin` | [`Option<GenesisAdmissionOriginV1>`](#option-genesisadmissionoriginv1) |
+  | `revision` | `u64` |
+  | `predecessor` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
+  | `height` | `u64` |
+  | `recorded_at_unix_ms` | `u64` |
+  | `owner` | [`Option<AccountId>`](#option-accountid) |
+  | `revoked` | `bool` |
+  | `material` | [`Vec<u8>`](#vec-u8) |
+
+## `AdvanceMusubiPinOutboxV1` {#advancemusubipinoutboxv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `pin_authority` | [`AccountId`](#accountid) |
+  | `session_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `expected_revision` | `u64` |
+  | `expected_inventory_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `inventory_digest` | [`Array<u8, 32>`](#array-u8-32) |
+
 ## `AggregationRule` {#aggregationrule}
 
 **Type:** Enum
@@ -472,11 +630,148 @@
   | `Gost3410_2012_512ParamSetB` | &mdash; | 9 |
   | `Sm2` | &mdash; | 10 |
 
+## `AmxApprovalReadFailureV1` {#amxapprovalreadfailurev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `approval_hash` | [`Hash`](#hash) |
+  | `relay_header_hash` | [`Hash`](#hash) |
+  | `requested_height` | `u64` |
+  | `reason` | [`AmxApprovalReadReasonV1`](#amxapprovalreadreasonv1) |
+  | `observed_height` | [`Option<u64>`](#option-u64) |
+  | `retry_after_ms` | [`Option<u64>`](#option-u64) |
+
+## `AmxApprovalReadReasonV1` {#amxapprovalreadreasonv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `CutChanged` | &mdash; | 0 |
+  | `Capacity` | &mdash; | 1 |
+
+## `AmxCertifiedBlockV1` {#amxcertifiedblockv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `consensus_header` | [`Vec<u8>`](#vec-u8) |
+  | `commit_qc` | [`Vec<u8>`](#vec-u8) |
+  | `result_preimage` | [`Vec<u8>`](#vec-u8) |
+
+## `AmxDebitApprovalProofV1` {#amxdebitapprovalproofv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `world` | [`WorldStateSnapshotV1`](#worldstatesnapshotv1) |
+  | `relay_permissions` | [`SortedVec<Permission>`](#sortedvec-permission) |
+
+## `AmxDebitApprovalV1` {#amxdebitapprovalv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `global_network` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `participant_network` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `participant_instance` | [`Array<u8, 32>`](#array-u8-32) |
+  | `dataspace` | [`DataSpaceId`](#dataspaceid) |
+  | `transaction_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `debited_asset` | [`AssetId`](#assetid) |
+
+## `AmxForeignInstanceV1` {#amxforeigninstancev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `instance` | [`Array<u8, 32>`](#array-u8-32) |
+  | `result_scope` | [`CertifiedResultScope`](#certifiedresultscope) |
+  | `current` | [`ValidatorEpochContextV1`](#validatorepochcontextv1) |
+  | `previous` | [`Option<ValidatorEpochContextV1>`](#option-validatorepochcontextv1) |
+
+## `AmxWriteProofV1` {#amxwriteproofv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `present` | [`Array<u8, 32>`](#array-u8-32) |
+  | `siblings` | [`Vec<Array<u8, 32>>`](#vec-array-u8-32) |
+
+## `AnchorPrivateDataspace` {#anchorprivatedataspace}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
+  | `anchor` | [`Vec<u8>`](#vec-u8) |
+
+## `AnonymousBallotRejectionV1` {#anonymousballotrejectionv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `outside_casting_window` | &mdash; | 0 |
+  | `duplicate_nullifier` | &mdash; | 1 |
+
+## `AnonymousPgcLimitsV1` {#anonymouspgclimitsv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `max_anonymity_set_size` | `u32` |
+  | `max_recipient_count` | `u32` |
+
 ## `ArchiveId` {#archiveid}
 
 **Type:** Alias
 
 **To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `Array<Hash, 256>` {#array-hash-256}
+
+**Type:** Array
+
+**Length:** 256
+
+**Value:** [`Hash`](#hash)
+
+## `Array<PrivateSettlementCommitteeKeyProofV1, 4>` {#array-privatesettlementcommitteekeyproofv1-4}
+
+**Type:** Array
+
+**Length:** 4
+
+**Value:** [`PrivateSettlementCommitteeKeyProofV1`](#privatesettlementcommitteekeyproofv1)
 
 ## `Array<u16, 8>` {#array-u16-8}
 
@@ -507,6 +802,14 @@
 **Type:** Array
 
 **Length:** 32
+
+**Value:** `u8`
+
+## `Array<u8, 33>` {#array-u8-33}
+
+**Type:** Array
+
+**Length:** 33
 
 **Value:** `u8`
 
@@ -542,6 +845,22 @@
 
 **Value:** `u8`
 
+## `Array<u8, 8>` {#array-u8-8}
+
+**Type:** Array
+
+**Length:** 8
+
+**Value:** `u8`
+
+## `Array<u8, 97>` {#array-u8-97}
+
+**Type:** Array
+
+**Length:** 97
+
+**Value:** `u8`
+
 ## `ArtifactAbiHashMismatchInfo` {#artifactabihashmismatchinfo}
 
 **Type:** Struct
@@ -552,6 +871,59 @@
   | --: | :-- |
   | `expected` | [`Hash`](#hash) |
   | `actual` | [`Hash`](#hash) |
+
+## `AssertAssetFiContextV1` {#assertassetficontextv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `target` | [`AssetFiContextTargetV1`](#assetficontexttargetv1) |
+  | `expected_incarnation` | [`Hash`](#hash) |
+  | `expected_uid` | [`Array<u8, 32>`](#array-u8-32) |
+  | `expected_context_hash` | [`Hash`](#hash) |
+  | `request_sha256` | [`Array<u8, 32>`](#array-u8-32) |
+  | `challenge` | [`Array<u8, 32>`](#array-u8-32) |
+  | `minimum_height` | `u64` |
+  | `minimum_block_hash` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `AssertAssetFiTransferReceiptV1` {#assertassetfitransferreceiptv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `expected_incarnation` | [`Hash`](#hash) |
+  | `account_id` | [`AccountId`](#accountid) |
+  | `execution_call_hash` | [`Hash`](#hash) |
+  | `transcript_index` | `u64` |
+  | `expected_receipt_hash` | [`Hash`](#hash) |
+  | `request_sha256` | [`Array<u8, 32>`](#array-u8-32) |
+  | `challenge` | [`Array<u8, 32>`](#array-u8-32) |
+  | `minimum_height` | `u64` |
+  | `minimum_block_hash` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `AssertSorafsPublicationV1` {#assertsorafspublicationv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `manifest_digest` | [`ManifestDigest`](#manifestdigest) |
+  | `order_id` | [`ReplicationOrderId`](#replicationorderid) |
+  | `assignment_revision` | `u64` |
+  | `canonical_order_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `require_complete` | `bool` |
+  | `challenge` | [`Array<u8, 32>`](#array-u8-32) |
+  | `minimum_height` | `u64` |
+  | `minimum_block_hash` | [`Array<u8, 32>`](#array-u8-32) |
 
 ## `Asset` {#asset}
 
@@ -702,6 +1074,17 @@
   | `domain` | [`DomainId`](#domainid) | 0 |
   | `dataspace` | [`DataSpaceId`](#dataspaceid) | 1 |
   | `alias` | [`ResolvedAssetDefinitionAliasV1`](#resolvedassetdefinitionaliasv1) | 2 |
+
+## `AssetDefinitionDirectHomeV1` {#assetdefinitiondirecthomev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `incarnation` | [`Hash`](#hash) |
+  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
 
 ## `AssetDefinitionEvent` {#assetdefinitionevent}
 
@@ -873,6 +1256,30 @@
   | `buyer_amount` | [`Quantity`](#quantity) |
   | `seller_amount` | [`Quantity`](#quantity) |
 
+## `AssetEscrowScopeOriginalV1` {#assetescrowscopeoriginalv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `scope_original` | [`Vec<u8>`](#vec-u8) |
+  | `records` | [`Vec<AssetEscrowRecord>`](#vec-assetescrowrecord) |
+
+## `AssetEscrowScopeV1` {#assetescrowscopev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `asset_incarnation` | [`Hash`](#hash) |
+  | `revision` | `u64` |
+  | `record_count` | `u64` |
+
 ## `AssetEscrowStatus` {#assetescrowstatus}
 
 **Type:** Enum
@@ -942,6 +1349,162 @@
   | `MetadataRemoved` | `0x40` |
   | `BatchTransferOutcome` | `0x80` |
 
+## `AssetFiContextSnapshotV1` {#assetficontextsnapshotv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `asset_incarnation` | [`Hash`](#hash) |
+  | `account_id` | [`AccountId`](#accountid) |
+  | `uid` | [`Array<u8, 32>`](#array-u8-32) |
+  | `fi_account_id` | [`AccountId`](#accountid) |
+  | `reference_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `binding` | [`Option<AssetUidBindingV1>`](#option-assetuidbindingv1) |
+  | `policy` | [`Option<AssetUidPolicyV1>`](#option-assetuidpolicyv1) |
+  | `fi` | [`Option<AssetFiV1>`](#option-assetfiv1) |
+  | `attestation` | [`Option<AssetFiLinkAttestationV1>`](#option-assetfilinkattestationv1) |
+  | `link` | [`Option<AssetFiLinkV1>`](#option-assetfilinkv1) |
+  | `controller` | [`Option<AssetFiControllerBindingV1>`](#option-assetficontrollerbindingv1) |
+
+## `AssetFiContextTargetV1` {#assetficontexttargetv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `LinkApproval` | [`SetAssetFiLinkV1`](#setassetfilinkv1) | 0 |
+  | `Transfer` | [`AssetFiContextTargetV1::Transfer`](#assetficontexttargetv1-transfer) | 1 |
+
+## `AssetFiContextTargetV1::Transfer` {#assetficontexttargetv1-transfer}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `instruction` | [`TransferToLinkedFiV1`](#transfertolinkedfiv1) |
+  | `fi_account_id` | [`AccountId`](#accountid) |
+  | `reference_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `expected_fi_revision` | `u64` |
+  | `expected_attestation_revision` | `u64` |
+
+## `AssetFiControllerBindingV1` {#assetficontrollerbindingv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `address` | [`ContractAddress`](#contractaddress) |
+  | `subject` | [`AccountId`](#accountid) |
+
+## `AssetFiLinkAttestationV1` {#assetfilinkattestationv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `account_id` | [`AccountId`](#accountid) |
+  | `fi_account_id` | [`AccountId`](#accountid) |
+  | `reference_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `revision` | `u64` |
+  | `enabled` | `bool` |
+
+## `AssetFiLinkV1` {#assetfilinkv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `account_id` | [`AccountId`](#accountid) |
+  | `fi_account_id` | [`AccountId`](#accountid) |
+  | `reference_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `fi_revision` | `u64` |
+  | `attestation_revision` | `u64` |
+  | `revision` | `u64` |
+  | `enabled` | `bool` |
+  | `controller` | [`Option<ContractAddress>`](#option-contractaddress) |
+  | `waterfall` | `bool` |
+  | `reverse_waterfall` | `bool` |
+
+## `AssetFiRelationshipViewV1` {#assetfirelationshipviewv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `fi` | [`Option<AssetFiV1>`](#option-assetfiv1) |
+  | `attestation` | [`Option<AssetFiLinkAttestationV1>`](#option-assetfilinkattestationv1) |
+  | `link` | [`Option<AssetFiLinkV1>`](#option-assetfilinkv1) |
+  | `ledger_time_ms` | `u64` |
+  | `as_of_height` | `u64` |
+
+## `AssetFiTransferControllerV1` {#assetfitransfercontrollerv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `address` | [`ContractAddress`](#contractaddress) |
+  | `subject` | [`AccountId`](#accountid) |
+  | `entrypoint` | `String` |
+
+## `AssetFiTransferReceiptV1` {#assetfitransferreceiptv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_incarnation` | [`Hash`](#hash) |
+  | `network` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `execution_call_hash` | [`Hash`](#hash) |
+  | `instruction_hash` | [`Hash`](#hash) |
+  | `instruction` | [`TransferToLinkedFiV1`](#transfertolinkedfiv1) |
+  | `authority` | [`AccountId`](#accountid) |
+  | `controller` | [`Option<AssetFiTransferControllerV1>`](#option-assetfitransfercontrollerv1) |
+  | `fi` | [`AssetFiV1`](#assetfiv1) |
+  | `attestation` | [`AssetFiLinkAttestationV1`](#assetfilinkattestationv1) |
+  | `link` | [`AssetFiLinkV1`](#assetfilinkv1) |
+  | `uid` | [`Array<u8, 32>`](#array-u8-32) |
+  | `uid_policy_revision` | `u64` |
+  | `uid_policy_hash` | [`Hash`](#hash) |
+  | `execution_height` | `u64` |
+  | `execution_time_ms` | `u64` |
+  | `transcript_index` | `u64` |
+
+## `AssetFiV1` {#assetfiv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `fi_account_id` | [`AccountId`](#accountid) |
+  | `revision` | `u64` |
+  | `enabled` | `bool` |
+
 ## `AssetHandle` {#assethandle}
 
 **Type:** Struct
@@ -977,6 +1540,29 @@
   | `definition` | [`AssetDefinitionId`](#assetdefinitionid) |
   | `scope` | [`AssetBalanceScope`](#assetbalancescope) |
 
+## `AssetLockControlV1` {#assetlockcontrolv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `controller` | [`ContractAddress`](#contractaddress) |
+  | `release_until_ms` | [`Option<NonZero<u64>>`](#option-nonzero-u64) |
+  | `cancel_not_before_ms` | [`Option<NonZero<u64>>`](#option-nonzero-u64) |
+
+## `AssetLockWaterfallSettlementV1` {#assetlockwaterfallsettlementv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `expected_policy_revision` | `u64` |
+  | `expected_link_revision` | `u64` |
+
 ## `AssetTransferAdmissionError` {#assettransferadmissionerror}
 
 **Type:** Enum
@@ -1004,6 +1590,186 @@
   | `destination` | [`AssetId`](#assetid) |
   | `amount` | [`Quantity`](#quantity) |
 
+## `AssetUidBindingV1` {#assetuidbindingv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `account_id` | [`AccountId`](#accountid) |
+  | `uid` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `AssetUidDailyWindowV1` {#assetuiddailywindowv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `UtcDay` | &mdash; | 0 |
+  | `JerusalemDay` | &mdash; | 1 |
+
+## `AssetUidEnrollmentV1` {#assetuidenrollmentv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `activated_at_height` | `u64` |
+
+## `AssetUidEnrollmentViewV1` {#assetuidenrollmentviewv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `enrollment` | [`Option<AssetUidEnrollmentV1>`](#option-assetuidenrollmentv1) |
+  | `ledger_time_ms` | `u64` |
+  | `as_of_height` | `u64` |
+
+## `AssetUidPolicyV1` {#assetuidpolicyv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `uid` | [`Array<u8, 32>`](#array-u8-32) |
+  | `revision` | `u64` |
+  | `accounts` | [`SortedVec<AccountId>`](#sortedvec-accountid) |
+  | `holding_limit` | [`Option<Quantity>`](#option-quantity) |
+  | `daily_window` | [`AssetUidDailyWindowV1`](#assetuiddailywindowv1) |
+  | `daily_spend_limit` | [`Option<Quantity>`](#option-quantity) |
+  | `daily_outgoing_limit` | [`Option<Quantity>`](#option-quantity) |
+
+## `AssetUidPolicyViewV1` {#assetuidpolicyviewv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `policy` | [`AssetUidPolicyV1`](#assetuidpolicyv1) |
+  | `beneficial_holdings` | [`Quantity`](#quantity) |
+  | `wallet_holdings` | [`Option<AssetUidWalletHoldingsV1>`](#option-assetuidwalletholdingsv1) |
+  | `day_start_ms` | `u64` |
+  | `daily_spend_usage` | [`Quantity`](#quantity) |
+  | `daily_outgoing_usage` | [`Quantity`](#quantity) |
+  | `ledger_time_ms` | `u64` |
+  | `as_of_height` | `u64` |
+
+## `AssetUidSystemAccountV1` {#assetuidsystemaccountv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `account_id` | [`AccountId`](#accountid) |
+  | `revision` | `u64` |
+  | `enabled` | `bool` |
+
+## `AssetUidUsageV1` {#assetuidusagev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `uid` | [`Array<u8, 32>`](#array-u8-32) |
+  | `daily_window` | [`AssetUidDailyWindowV1`](#assetuiddailywindowv1) |
+  | `day_start_ms` | `u64` |
+  | `spend_amount` | [`Quantity`](#quantity) |
+  | `outgoing_amount` | [`Quantity`](#quantity) |
+
+## `AssetUidWalletHoldingsV1` {#assetuidwalletholdingsv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `account_id` | [`AccountId`](#accountid) |
+  | `asset_id` | [`AssetId`](#assetid) |
+  | `spendable` | [`Quantity`](#quantity) |
+  | `locked` | [`Quantity`](#quantity) |
+  | `total` | [`Quantity`](#quantity) |
+  | `pending_incoming` | [`Quantity`](#quantity) |
+
+## `AtomicSettlementDetails` {#atomicsettlementdetails}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `movements` | [`ResolvedSettlementMovements`](#resolvedsettlementmovements) |
+  | `intent_hash` | [`Hash`](#hash) |
+  | `escrow_ids` | [`Vec<EscrowId>`](#vec-escrowid) |
+
+## `AttachmentContentHashV1` {#attachmentcontenthashv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `AttachmentKindV1` {#attachmentkindv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Proof` | &mdash; | 0 |
+  | `KeyMaterial` | &mdash; | 1 |
+
+## `AttachmentReferenceV1` {#attachmentreferencev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `index` | `u32` |
+  | `kind` | [`AttachmentKindV1`](#attachmentkindv1) |
+  | `role` | [`AttachmentRoleV1`](#attachmentrolev1) |
+  | `length` | `u64` |
+  | `content_hash` | [`AttachmentContentHashV1`](#attachmentcontenthashv1) |
+
+## `AttachmentRoleV1` {#attachmentrolev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `ActionProof` | &mdash; | 0 |
+  | `VerifyingKey` | &mdash; | 1 |
+  | `LanePrivacyProof` | &mdash; | 2 |
+  | `ExecutionProof` | &mdash; | 3 |
+
 ## `AuthorityFeePayment` {#authorityfeepayment}
 
 **Type:** Struct
@@ -1015,7 +1781,7 @@
   | `charge_limits` | [`Vec<FeeChargeLimit>`](#vec-feechargelimit) |
   | `gas_limit` | [`Option<NonZero<u64>>`](#option-nonzero-u64) |
 
-## `AutonomousLanePayloadEnvelopeV1` {#autonomouslanepayloadenvelopev1}
+## `AxtAnchoredSpendDraftV1` {#axtanchoredspenddraftv1}
 
 **Type:** Struct
 
@@ -1023,20 +1789,37 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `version` | `u8` |
-  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
-  | `epoch` | `u64` |
-  | `lane_id` | [`LaneId`](#laneid) |
-  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
-  | `lane_incarnation` | [`Hash`](#hash) |
-  | `proposal_height` | `u64` |
-  | `lane_block_height` | `u64` |
-  | `lane_block_view` | `u64` |
-  | `proposal_hash` | [`Hash`](#hash) |
-  | `descriptor_hash` | [`Hash`](#hash) |
-  | `payload_hash` | [`Hash`](#hash) |
-  | `producer` | [`PeerId`](#peerid) |
-  | `canonical_payload` | [`Vec<u8>`](#vec-u8) |
+  | `handle` | [`AssetHandle`](#assethandle) |
+  | `intent` | [`RemoteSpendIntent`](#remotespendintent) |
+  | `proof` | [`Option<ProofBlob>`](#option-proofblob) |
+  | `amount` | [`Option<Quantity>`](#option-quantity) |
+  | `amount_commitment` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
+  | `source_receipt` | [`AxtSourceSuccessReceiptV1`](#axtsourcesuccessreceiptv1) |
+  | `source_occurrence` | [`AxtSourceTransferOccurrenceV1`](#axtsourcetransferoccurrencev1) |
+
+## `AxtAnchoredSpendIssuerAuthorizationV1` {#axtanchoredspendissuerauthorizationv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `anchor` | [`AxtFinalizedSpendAnchorV1`](#axtfinalizedspendanchorv1) |
+  | `expiry_slot` | `u64` |
+  | `nonce` | [`AxtSpendNonceV1`](#axtspendnoncev1) |
+  | `issuer_signature` | [`Signature`](#signature) |
+
+## `AxtAnchoredSpendV1` {#axtanchoredspendv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `draft` | [`AxtAnchoredSpendDraftV1`](#axtanchoredspenddraftv1) |
+  | `authorization` | [`AxtAnchoredSpendIssuerAuthorizationV1`](#axtanchoredspendissuerauthorizationv1) |
 
 ## `AxtBinding` {#axtbinding}
 
@@ -1085,7 +1868,7 @@
   | `descriptor` | [`AxtDescriptor`](#axtdescriptor) |
   | `touches` | [`Vec<AxtTouchFragment>`](#vec-axttouchfragment) |
   | `proofs` | [`Vec<AxtProofFragment>`](#vec-axtprooffragment) |
-  | `handles` | [`Vec<AxtHandleFragment>`](#vec-axthandlefragment) |
+  | `spends` | [`Vec<AxtAnchoredSpendV1>`](#vec-axtanchoredspendv1) |
   | `commit_height` | `u64` |
 
 ## `AxtFastpqBinding` {#axtfastpqbinding}
@@ -1113,7 +1896,7 @@
   | `effect_binding` | [`Option<AxtEffectBinding>`](#option-axteffectbinding) |
   | `remote_spend_intent_commitments` | [`Vec<Array<u8, 32>>`](#vec-array-u8-32) |
 
-## `AxtHandleFragment` {#axthandlefragment}
+## `AxtFinalizedSpendAnchorV1` {#axtfinalizedspendanchorv1}
 
 **Type:** Struct
 
@@ -1121,11 +1904,19 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `handle` | [`AssetHandle`](#assethandle) |
-  | `intent` | [`RemoteSpendIntent`](#remotespendintent) |
-  | `proof` | [`Option<ProofBlob>`](#option-proofblob) |
-  | `amount` | [`Option<Quantity>`](#option-quantity) |
-  | `amount_commitment` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `genesis_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
+  | `lane_id` | [`LaneId`](#laneid) |
+  | `lane_incarnation` | [`Hash`](#hash) |
+  | `finalized_height` | `u64` |
+  | `block_header_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `quorum_certificate_digest` | [`Hash`](#hash) |
+  | `committee_digest` | [`Hash`](#hash) |
+  | `pre_state_root` | [`Hash`](#hash) |
+  | `post_state_root` | [`Hash`](#hash) |
+  | `transaction_set_digest` | [`Hash`](#hash) |
+  | `da_manifest_digest` | [`Hash`](#hash) |
 
 ## `AxtHandleIssuerContextV1` {#axthandleissuercontextv1}
 
@@ -1143,6 +1934,21 @@
   | `code_root` | [`Array<u8, 32>`](#array-u8-32) |
   | `abi_version` | `u16` |
   | `abi_hash` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `AxtHandleReplayKey` {#axthandlereplaykey}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_dsid` | [`DataSpaceId`](#dataspaceid) |
+  | `asset_definition_incarnation` | [`Hash`](#hash) |
+  | `binding` | [`AxtBinding`](#axtbinding) |
+  | `handle_era` | `u64` |
+  | `sub_nonce` | `u64` |
+  | `target_lane` | [`LaneId`](#laneid) |
 
 ## `AxtPolicyBinding` {#axtpolicybinding}
 
@@ -1228,6 +2034,58 @@
   | `ReplayCache` | &mdash; | 10 |
   | `Duplicate` | &mdash; | 11 |
 
+## `AxtRemoteSpendClaimV1` {#axtremotespendclaimv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `handle_replay_key` | [`AxtHandleReplayKey`](#axthandlereplaykey) |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `kind` | `String` |
+  | `from` | `String` |
+  | `to` | `String` |
+  | `effective_amount` | [`Quantity`](#quantity) |
+
+## `AxtSourceSuccessReceiptV1` {#axtsourcesuccessreceiptv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `finalized_anchor_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `source_tx_commitment` | [`Array<u8, 32>`](#array-u8-32) |
+  | `source_tx_index` | `u32` |
+  | `post_transaction_state_root` | [`Array<u8, 32>`](#array-u8-32) |
+  | `effect_set_digest` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `AxtSourceTransferOccurrenceV1` {#axtsourcetransferoccurrencev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `source_tx_commitment` | [`Array<u8, 32>`](#array-u8-32) |
+  | `source_success_receipt_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `source_tx_index` | `u32` |
+  | `transcript_index` | `u32` |
+  | `delta_index` | `u32` |
+  | `pair_ordinal` | `u32` |
+  | `transfer_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `remote_spend_claim_commitment` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `AxtSpendNonceV1` {#axtspendnoncev1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
 ## `AxtTouchFragment` {#axttouchfragment}
 
 **Type:** Struct
@@ -1259,16 +2117,10 @@
 
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
-  | `Halo2IpaPasta` | &mdash; | 0 |
+  | `NativePipaRPasta` | &mdash; | 0 |
   | `Stark` | &mdash; | 1 |
 
-## `BallotAttemptId` {#ballotattemptid}
-
-**Type:** Alias
-
-**To:** [`Array<u8, 32>`](#array-u8-32)
-
-## `BallotAttemptStatusV1` {#ballotattemptstatusv1}
+## `BeaconEpochBindingV1` {#beaconepochbindingv1}
 
 **Type:** Enum
 
@@ -1276,14 +2128,22 @@
 
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
-  | `Registration` | &mdash; | 0 |
-  | `SurvivorFreeze` | &mdash; | 1 |
-  | `TimedCommitment` | &mdash; | 2 |
-  | `AwaitingRelease` | &mdash; | 3 |
-  | `Opening` | &mdash; | 4 |
-  | `Finalized` | &mdash; | 5 |
-  | `NoResult` | &mdash; | 6 |
-  | `Superseded` | &mdash; | 7 |
+  | `bootstrap` | &mdash; | 0 |
+  | `installed` | [`InstalledBeaconEpochBindingV1`](#installedbeaconepochbindingv1) | 1 |
+
+## `BeaconHorizonStatusV1` {#beaconhorizonstatusv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `epoch_length_blocks` | `u64` |
+  | `next_required_pulse_height` | [`Option<u64>`](#option-u64) |
+  | `active_session_id` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
+  | `session_covers_next_pulse` | `bool` |
+  | `local_provider_ready` | `bool` |
 
 ## `BigInt` {#bigint}
 
@@ -1332,10 +2192,7 @@
   | --: | :-- |
   | `version` | `u8` |
   | `external` | [`Vec<ExternalExecutionContext>`](#vec-externalexecutioncontext) |
-  | `autonomous_lane_payloads` | [`Vec<AutonomousLanePayloadEnvelopeV1>`](#vec-autonomouslanepayloadenvelopev1) |
-  | `lane_payload_ownerships` | [`Vec<SumeragiLanePayloadOwnership>`](#vec-sumeragilanepayloadownership) |
-  | `queue_plan_admissions` | [`Vec<Vec<u8>>`](#vec-vec-u8) |
-  | `merge_entry` | [`Option<CertifiedMergeLedgerReference>`](#option-certifiedmergeledgerreference) |
+  | `lane_merge` | [`Option<SumeragiLaneMergeSection>`](#option-sumeragilanemergesection) |
 
 ## `BlockHeader` {#blockheader}
 
@@ -1348,16 +2205,15 @@
   | `height` | [`NonZero<u64>`](#nonzero-u64) |
   | `prev_block_hash` | [`Option<HashOf<BlockHeader>>`](#option-hashof-blockheader) |
   | `merkle_root` | [`Option<HashOf<MerkleTree<TransactionEntrypoint>>>`](#option-hashof-merkletree-transactionentrypoint) |
-  | `result_merkle_root` | [`Option<HashOf<MerkleTree<TransactionResult>>>`](#option-hashof-merkletree-transactionresult) |
   | `da_proof_policies_hash` | [`Option<HashOf<DaProofPolicyBundle>>`](#option-hashof-daproofpolicybundle) |
   | `da_commitments_hash` | [`Option<HashOf<DaCommitmentBundle>>`](#option-hashof-dacommitmentbundle) |
   | `da_pin_intents_hash` | [`Option<HashOf<DaPinIntentBundle>>`](#option-hashof-dapinintentbundle) |
   | `npos_effects_hash` | [`Option<HashOf<NposConsensusEffects>>`](#option-hashof-nposconsensuseffects) |
-  | `sccp_commitment_root` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
   | `creation_time_ms` | `u64` |
   | `view_change_index` | `u64` |
   | `confidential_features` | [`Option<ConfidentialFeatureDigest>`](#option-confidentialfeaturedigest) |
   | `execution_context_hash` | [`Option<HashOf<BlockExecutionContextBundle>>`](#option-hashof-blockexecutioncontextbundle) |
+  | `global_beacon_pulse_hash` | [`Option<HashOf<FinalizedGlobalThresholdBeaconPulseV1>>`](#option-hashof-finalizedglobalthresholdbeaconpulsev1) |
 
 ## `BlockMessage` {#blockmessage}
 
@@ -1374,6 +2230,9 @@
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
   | `MaxTransactions` | [`NonZero<u64>`](#nonzero-u64) | 0 |
+  | `MaxTimeTriggerInvocations` | [`NonZero<u32>`](#nonzero-u32) | 1 |
+  | `ExecutionOutput` | [`ExecutionOutputPolicyV1`](#executionoutputpolicyv1) | 2 |
+  | `FastpqSource` | [`FastpqSourcePolicyV1`](#fastpqsourcepolicyv1) | 3 |
 
 ## `BlockParameters` {#blockparameters}
 
@@ -1384,6 +2243,9 @@
   | Field name | Field value |
   | --: | :-- |
   | `max_transactions` | [`NonZero<u64>`](#nonzero-u64) |
+  | `max_time_trigger_invocations` | [`NonZero<u32>`](#nonzero-u32) |
+  | `execution_output` | [`ExecutionOutputPolicyV1`](#executionoutputpolicyv1) |
+  | `fastpq_source` | [`FastpqSourcePolicyV1`](#fastpqsourcepolicyv1) |
 
 ## `BlockPayload` {#blockpayload}
 
@@ -1399,6 +2261,7 @@
   | `da_proof_policies` | [`Option<DaProofPolicyBundle>`](#option-daproofpolicybundle) |
   | `da_pin_intents` | [`Option<DaPinIntentBundle>`](#option-dapinintentbundle) |
   | `npos_consensus_effects` | [`Option<NposConsensusEffects>`](#option-nposconsensuseffects) |
+  | `global_beacon_pulse` | [`Option<FinalizedGlobalThresholdBeaconPulseV1>`](#option-finalizedglobalthresholdbeaconpulsev1) |
   | `execution_context` | [`Option<BlockExecutionContextBundle>`](#option-blockexecutioncontextbundle) |
 
 ## `BlockRejectionReason` {#blockrejectionreason}
@@ -1432,7 +2295,6 @@
   | `DaProofPolicyMismatch` | &mdash; | 20 |
   | `DaShardCursorViolation` | &mdash; | 21 |
   | `NposEffectsMismatch` | &mdash; | 22 |
-  | `SccpCommitmentRootMismatch` | &mdash; | 23 |
 
 ## `BlockResult` {#blockresult}
 
@@ -1442,17 +2304,13 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `time_triggers` | [`Vec<TimeTriggerEntrypoint>`](#vec-timetriggerentrypoint) |
-  | `merkle` | [`MerkleTree<TransactionEntrypoint>`](#merkletree-transactionentrypoint) |
-  | `result_merkle` | [`MerkleTree<TransactionResult>`](#merkletree-transactionresult) |
-  | `transaction_results` | [`Vec<TransactionResult>`](#vec-transactionresult) |
+  | `outputs` | [`Vec<ExecutionOutputV1>`](#vec-executionoutputv1) |
+  | `output_merkle` | [`MerkleTree<ExecutionOutputV1>`](#merkletree-executionoutputv1) |
   | `committed_fragment_count` | `u64` |
   | `fastpq_transcripts` | [`SortedMap<Hash, Vec<TransferTranscript>>`](#sortedmap-hash-vec-transfertranscript) |
   | `axt_envelopes` | [`Vec<AxtEnvelopeRecord>`](#vec-axtenveloperecord) |
-  | `trigger_completions` | [`Vec<TriggerCompletedEvent>`](#vec-triggercompletedevent) |
   | `axt_policy_snapshot` | [`AxtPolicySnapshot`](#axtpolicysnapshot) |
   | `axt_transitioned_dataspaces` | [`SortedVec<DataSpaceId>`](#sortedvec-dataspaceid) |
-  | `lane_finality_statements` | [`Vec<LaneFinalityStatement>`](#vec-lanefinalitystatement) |
 
 ## `BlockSignature` {#blocksignature}
 
@@ -1464,6 +2322,12 @@
   | --: | :-- |
   | `index` | `u64` |
   | `signature` | [`SignatureOf<BlockHeader>`](#signatureof-blockheader) |
+
+## `BlockSignatures` {#blocksignatures}
+
+**Type:** Vec
+
+**Value:** [`BlockSignature`](#blocksignature)
 
 ## `BlockStatus` {#blockstatus}
 
@@ -1479,7 +2343,13 @@
   | `Committed` | &mdash; | 3 |
   | `Applied` | &mdash; | 4 |
 
-## `BlockSubject` {#blocksubject}
+## `BlockSubscriptionRequest` {#blocksubscriptionrequest}
+
+**Type:** Alias
+
+**To:** [`NonZero<u64>`](#nonzero-u64)
+
+## `BondCallTerms` {#bondcallterms}
 
 **Type:** Struct
 
@@ -1487,23 +2357,62 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `parent_block_hash` | [`Option<HashOf<BlockHeader>>`](#option-hashof-blockheader) |
-  | `block_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
-  | `payload_hash` | [`Hash`](#hash) |
+  | `first_call_date_ms` | `u64` |
+  | `price_bps` | `u32` |
+  | `notice_ms` | `u64` |
 
-## `BlockSubscriptionRequest` {#blocksubscriptionrequest}
+## `BondCalled` {#bondcalled}
 
-**Type:** Alias
+**Type:** Struct
 
-**To:** [`NonZero<u64>`](#nonzero-u64)
+**Declarations:**
 
-## `BodyInstanceId` {#bodyinstanceid}
+  | Field name | Field value |
+  | --: | :-- |
+  | `bond` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `call_date_ms` | `u64` |
+  | `redemption_index` | `u16` |
 
-**Type:** Alias
+## `BondCashflowClaimed` {#bondcashflowclaimed}
 
-**To:** [`Array<u8, 32>`](#array-u8-32)
+**Type:** Struct
 
-## `BodyInstanceStatusV1` {#bodyinstancestatusv1}
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `bond` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `index` | `u16` |
+  | `holder` | [`AccountId`](#accountid) |
+  | `units` | [`Quantity`](#quantity) |
+  | `amount` | [`Quantity`](#quantity) |
+
+## `BondCashflowClosed` {#bondcashflowclosed}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `bond` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `index` | `u16` |
+  | `unclaimed_holders` | `u32` |
+  | `unclaimed_amount` | [`Quantity`](#quantity) |
+
+## `BondCashflowFunded` {#bondcashflowfunded}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `bond` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `index` | `u16` |
+  | `amount` | [`Quantity`](#quantity) |
+
+## `BondCashflowKind` {#bondcashflowkind}
 
 **Type:** Enum
 
@@ -1511,16 +2420,279 @@
 
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
-  | `AwaitingSortition` | &mdash; | 0 |
-  | `AcceptingInvitations` | &mdash; | 1 |
-  | `RosterSealed` | &mdash; | 2 |
-  | `Deliberating` | [`DeliberationPhaseV1`](#deliberationphasev1) | 3 |
-  | `Balloting` | &mdash; | 4 |
-  | `Approved` | &mdash; | 5 |
-  | `Rejected` | &mdash; | 6 |
-  | `NoQuorum` | &mdash; | 7 |
-  | `NoResult` | &mdash; | 8 |
-  | `Superseded` | &mdash; | 9 |
+  | `Coupon` | &mdash; | 0 |
+  | `Redemption` | &mdash; | 1 |
+
+## `BondCashflowRecorded` {#bondcashflowrecorded}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `bond` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `index` | `u16` |
+  | `kind` | [`BondCashflowKind`](#bondcashflowkind) |
+  | `holders` | `u32` |
+  | `entitled_units` | [`Quantity`](#quantity) |
+  | `amount_due` | [`Quantity`](#quantity) |
+
+## `BondCashflowState` {#bondcashflowstate}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `terms` | [`BondCashflowTerms`](#bondcashflowterms) |
+  | `status` | [`BondCashflowStatus`](#bondcashflowstatus) |
+  | `recording` | [`Option<BondRecordingCursor>`](#option-bondrecordingcursor) |
+  | `holders` | `u32` |
+  | `claimed_holders` | `u32` |
+  | `entitled_units` | [`Quantity`](#quantity) |
+  | `amount_due` | [`Quantity`](#quantity) |
+  | `funded` | [`Quantity`](#quantity) |
+  | `paid` | [`Quantity`](#quantity) |
+  | `recorded_at_ms` | [`Option<u64>`](#option-u64) |
+  | `funded_at_ms` | [`Option<u64>`](#option-u64) |
+  | `closed_at_ms` | [`Option<u64>`](#option-u64) |
+  | `evidence_sha256` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
+
+## `BondCashflowStatus` {#bondcashflowstatus}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Scheduled` | &mdash; | 0 |
+  | `Recording` | &mdash; | 1 |
+  | `Recorded` | &mdash; | 2 |
+  | `Funded` | &mdash; | 3 |
+  | `Closed` | &mdash; | 4 |
+  | `Defaulted` | &mdash; | 5 |
+  | `Cancelled` | &mdash; | 6 |
+
+## `BondCashflowTerms` {#bondcashflowterms}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `index` | `u16` |
+  | `kind` | [`BondCashflowKind`](#bondcashflowkind) |
+  | `record_date_ms` | `u64` |
+  | `payment_date_ms` | `u64` |
+  | `amount_per_unit` | [`Quantity`](#quantity) |
+
+## `BondDayCount` {#bonddaycount}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `ActActIcma` | &mdash; | 0 |
+  | `Thirty360` | &mdash; | 1 |
+  | `Act360` | &mdash; | 2 |
+  | `Act365Fixed` | &mdash; | 3 |
+
+## `BondDefaulted` {#bonddefaulted}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `bond` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `index` | `u16` |
+  | `evidence_sha256` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `BondEvent` {#bondevent}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Registered` | [`BondRegistered`](#bondregistered) | 0 |
+  | `CashflowRecorded` | [`BondCashflowRecorded`](#bondcashflowrecorded) | 1 |
+  | `CashflowFunded` | [`BondCashflowFunded`](#bondcashflowfunded) | 2 |
+  | `CashflowClaimed` | [`BondCashflowClaimed`](#bondcashflowclaimed) | 3 |
+  | `CashflowClosed` | [`BondCashflowClosed`](#bondcashflowclosed) | 4 |
+  | `Called` | [`BondCalled`](#bondcalled) | 5 |
+  | `Defaulted` | [`BondDefaulted`](#bonddefaulted) | 6 |
+  | `PayingAgentReplaced` | [`BondPayingAgentReplaced`](#bondpayingagentreplaced) | 7 |
+  | `TreasuryUnitsRetired` | [`BondTreasuryUnitsRetired`](#bondtreasuryunitsretired) | 8 |
+
+## `BondIdentifiers` {#bondidentifiers}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `isin` | [`Option<String>`](#option-string) |
+  | `cfi` | [`Option<String>`](#option-string) |
+  | `issuer_lei` | [`Option<String>`](#option-string) |
+  | `bdt_version` | `String` |
+  | `bdt_document_sha256` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
+
+## `BondInstructionBox` {#bondinstructionbox}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Register` | [`RegisterBond`](#registerbond) | 0 |
+  | `RecordCashflow` | [`RecordBondCashflow`](#recordbondcashflow) | 1 |
+  | `FundCashflow` | [`FundBondCashflow`](#fundbondcashflow) | 2 |
+  | `ClaimCashflow` | [`ClaimBondCashflow`](#claimbondcashflow) | 3 |
+  | `CloseCashflow` | [`CloseBondCashflow`](#closebondcashflow) | 4 |
+  | `Call` | [`CallBond`](#callbond) | 5 |
+  | `DeclareDefault` | [`DeclareBondDefault`](#declarebonddefault) | 6 |
+  | `ReplacePayingAgent` | [`ReplaceBondPayingAgent`](#replacebondpayingagent) | 7 |
+  | `RetireTreasuryUnits` | [`RetireBondTreasuryUnits`](#retirebondtreasuryunits) | 8 |
+
+## `BondLifecycle` {#bondlifecycle}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Active` | &mdash; | 0 |
+  | `Called` | &mdash; | 1 |
+  | `Matured` | &mdash; | 2 |
+  | `Defaulted` | &mdash; | 3 |
+
+## `BondPayingAgentReplaced` {#bondpayingagentreplaced}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `bond` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `previous` | [`AccountId`](#accountid) |
+  | `paying_agent` | [`AccountId`](#accountid) |
+
+## `BondRecord` {#bondrecord}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `vault` | [`AccountId`](#accountid) |
+  | `terms` | [`BondTerms`](#bondterms) |
+  | `state` | [`BondState`](#bondstate) |
+
+## `BondRecordingCursor` {#bondrecordingcursor}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `phase` | [`BondRecordingPhase`](#bondrecordingphase) |
+  | `after_asset` | [`Option<AssetId>`](#option-assetid) |
+  | `after_escrow` | [`Option<EscrowId>`](#option-escrowid) |
+
+## `BondRecordingPhase` {#bondrecordingphase}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Holders` | &mdash; | 0 |
+  | `Escrows` | &mdash; | 1 |
+
+## `BondRegistered` {#bondregistered}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `bond` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `issuer` | [`AccountId`](#accountid) |
+  | `paying_agent` | [`AccountId`](#accountid) |
+  | `outstanding_units` | [`Quantity`](#quantity) |
+  | `cashflows` | `u16` |
+
+## `BondState` {#bondstate}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `lifecycle` | [`BondLifecycle`](#bondlifecycle) |
+  | `outstanding_units` | [`Quantity`](#quantity) |
+  | `redeemed_units` | [`Quantity`](#quantity) |
+  | `retired_units` | [`Quantity`](#quantity) |
+  | `transfers_frozen` | `bool` |
+  | `cashflows` | [`Vec<BondCashflowState>`](#vec-bondcashflowstate) |
+
+## `BondTerms` {#bondterms}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `issuer` | [`AccountId`](#accountid) |
+  | `paying_agent` | [`AccountId`](#accountid) |
+  | `payment_asset` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `denomination` | [`Quantity`](#quantity) |
+  | `coupon_rate_bps` | `u32` |
+  | `coupon_frequency` | `u8` |
+  | `day_count` | [`BondDayCount`](#bonddaycount) |
+  | `issue_date_ms` | `u64` |
+  | `maturity_date_ms` | `u64` |
+  | `redemption_price_bps` | `u32` |
+  | `payment_grace_ms` | `u64` |
+  | `call` | [`Option<BondCallTerms>`](#option-bondcallterms) |
+  | `cashflows` | [`Vec<BondCashflowTerms>`](#vec-bondcashflowterms) |
+  | `identifiers` | [`BondIdentifiers`](#bondidentifiers) |
+  | `terms_sha256` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `BondTreasuryUnitsRetired` {#bondtreasuryunitsretired}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `bond` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `issuer` | [`AccountId`](#accountid) |
+  | `quantity` | [`Quantity`](#quantity) |
+  | `outstanding_units` | [`Quantity`](#quantity) |
+  | `retired_units` | [`Quantity`](#quantity) |
+  | `cancelled_cashflows` | `u16` |
 
 ## `BridgeEvent` {#bridgeevent}
 
@@ -1531,7 +2703,6 @@
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
   | `Emitted` | [`BridgeReceipt`](#bridgereceipt) | 0 |
-  | `ReplayDelta` | [`SccpReplayDeltaEventV1`](#sccpreplaydeltaeventv1) | 1 |
 
 ## `BridgeEventFilter` {#bridgeeventfilter}
 
@@ -1555,7 +2726,6 @@
   | Field name | Field value |
   | --: | :-- |
   | `Emitted` | `0x1` |
-  | `ReplayDelta` | `0x2` |
 
 ## `BridgeHashFunction` {#bridgehashfunction}
 
@@ -1582,31 +2752,6 @@
   | `proof` | [`MerkleProof<Array<u8, 32>>`](#merkleproof-array-u8-32) |
   | `hash_function` | [`BridgeHashFunction`](#bridgehashfunction) |
 
-## `BridgeNativeProofBackendV1` {#bridgenativeproofbackendv1}
-
-**Type:** Enum
-
-**Variants:**
-
-  | Variant name | Variant value | Discriminant |
-  | --: | :-- | --- |
-  | `ethereum_beacon_v1` | &mdash; | 0 |
-  | `bsc_parlia_v1` | &mdash; | 1 |
-  | `tron_dpos_v1` | &mdash; | 2 |
-  | `ton_masterchain_v1` | &mdash; | 3 |
-
-## `BridgeNativeProtocolProofV1` {#bridgenativeprotocolproofv1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `backend` | [`BridgeNativeProofBackendV1`](#bridgenativeproofbackendv1) |
-  | `route_configuration_hash` | [`Array<u8, 32>`](#array-u8-32) |
-  | `encoded_envelope` | [`Vec<u8>`](#vec-u8) |
-
 ## `BridgeProof` {#bridgeproof}
 
 **Type:** Struct
@@ -1628,8 +2773,6 @@
   | --: | :-- | --- |
   | `Ics` | [`BridgeIcsProof`](#bridgeicsproof) | 0 |
   | `TransparentZk` | [`BridgeTransparentProof`](#bridgetransparentproof) | 1 |
-  | `NativeProtocol` | [`BridgeNativeProtocolProofV1`](#bridgenativeprotocolproofv1) | 2 |
-  | `SccpDestination` | [`BridgeSccpDestinationProofV1`](#bridgesccpdestinationproofv1) | 3 |
 
 ## `BridgeProofRange` {#bridgeproofrange}
 
@@ -1671,30 +2814,6 @@
   | `asset_id` | [`Vec<u8>`](#vec-u8) |
   | `recipient` | [`Vec<u8>`](#vec-u8) |
 
-## `BridgeSccpDestinationProofBackendV1` {#bridgesccpdestinationproofbackendv1}
-
-**Type:** Enum
-
-**Variants:**
-
-  | Variant name | Variant value | Discriminant |
-  | --: | :-- | --- |
-  | `evm_groth16_bn254_v1` | &mdash; | 0 |
-  | `tron_groth16_bn254_v1` | &mdash; | 1 |
-  | `ton_groth16_bls12381_v1` | &mdash; | 2 |
-
-## `BridgeSccpDestinationProofV1` {#bridgesccpdestinationproofv1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `backend` | [`BridgeSccpDestinationProofBackendV1`](#bridgesccpdestinationproofbackendv1) |
-  | `route_configuration_hash` | [`Array<u8, 32>`](#array-u8-32) |
-  | `encoded_artifact` | [`Vec<u8>`](#vec-u8) |
-
 ## `BridgeTransparentProof` {#bridgetransparentproof}
 
 **Type:** Struct
@@ -1720,6 +2839,18 @@
   | `dpn_validator_release_commit` | `String` |
   | `cargo_features` | `String` |
   | `target_triple` | `String` |
+  | `wire_schema_hash` | `String` |
+
+## `CallBond` {#callbond}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `bond` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `call_date_ms` | `u64` |
 
 ## `CanBurnAsset` {#canburnasset}
 
@@ -1741,6 +2872,56 @@
   | --: | :-- |
   | `asset_definition` | [`AssetDefinitionId`](#assetdefinitionid) |
 
+## `CanCheckSorafsFinalPromotion` {#canchecksorafsfinalpromotion}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `deployment_id` | `String` |
+
+## `CanCheckSorafsFinalPromotionAccountCustody` {#canchecksorafsfinalpromotionaccountcustody}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `deployment_id` | `String` |
+
+## `CanCheckSorafsStreamToken` {#canchecksorafsstreamtoken}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `provider_id` | [`ProviderId`](#providerid) |
+
+## `CanCheckSorafsStreamTokenGateway` {#canchecksorafsstreamtokengateway}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `gateway_id` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `CanCheckSorafsTopologyApproval` {#canchecksorafstopologyapproval}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `deployment_id` | `String` |
+
 ## `CanExecuteTrigger` {#canexecutetrigger}
 
 **Type:** Struct
@@ -1750,6 +2931,10 @@
   | Field name | Field value |
   | --: | :-- |
   | `trigger` | [`TriggerId`](#triggerid) |
+
+## `CanGrantSmartContractCodeManagement` {#cangrantsmartcontractcodemanagement}
+
+**Type:** Zero-Size Type (unit type, null type)
 
 ## `CanManageAssetDefinitionAlias` {#canmanageassetdefinitionalias}
 
@@ -1771,9 +2956,15 @@
   | --: | :-- |
   | `asset_definition` | [`AssetDefinitionId`](#assetdefinitionid) |
 
-## `CanManageLaneRelayEmergency` {#canmanagelanerelayemergency}
+## `CanManageKagemushaWallet` {#canmanagekagemushawallet}
 
-**Type:** Zero-Size Type (unit type, null type)
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_definition` | [`AssetDefinitionId`](#assetdefinitionid) |
 
 ## `CanManagePeers` {#canmanagepeers}
 
@@ -1782,6 +2973,54 @@
 ## `CanManageRoles` {#canmanageroles}
 
 **Type:** Zero-Size Type (unit type, null type)
+
+## `CanManageSmartContractCode` {#canmanagesmartcontractcode}
+
+**Type:** Zero-Size Type (unit type, null type)
+
+## `CanManageSorafsFinalPromotionAccountCustody` {#canmanagesorafsfinalpromotionaccountcustody}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `deployment_id` | `String` |
+
+## `CanManageSorafsFinalPromotionCustody` {#canmanagesorafsfinalpromotioncustody}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `deployment_id` | `String` |
+
+## `CanManageSorafsStreamTokenCustody` {#canmanagesorafsstreamtokencustody}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `provider_id` | [`ProviderId`](#providerid) |
+
+## `CanManageSorafsStreamTokenGateway` {#canmanagesorafsstreamtokengateway}
+
+**Type:** Zero-Size Type (unit type, null type)
+
+## `CanManageSorafsTopologyCustody` {#canmanagesorafstopologycustody}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `deployment_id` | `String` |
 
 ## `CanMintAssetToAccount` {#canmintassettoaccount}
 
@@ -1864,6 +3103,46 @@
   | --: | :-- |
   | `trigger` | [`TriggerId`](#triggerid) |
 
+## `CanOperateSorafsFinalPromotion` {#canoperatesorafsfinalpromotion}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `deployment_id` | `String` |
+
+## `CanOperateSorafsStreamToken` {#canoperatesorafsstreamtoken}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `provider_id` | [`ProviderId`](#providerid) |
+
+## `CanOperateSorafsStreamTokenGateway` {#canoperatesorafsstreamtokengateway}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `gateway_id` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `CanOperateSorafsTopologyApproval` {#canoperatesorafstopologyapproval}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `deployment_id` | `String` |
+
 ## `CanRegisterAccount` {#canregisteraccount}
 
 **Type:** Struct
@@ -1887,10 +3166,6 @@
   | Field name | Field value |
   | --: | :-- |
   | `domain` | [`DomainId`](#domainid) |
-
-## `CanRegisterSmartContractCode` {#canregistersmartcontractcode}
-
-**Type:** Zero-Size Type (unit type, null type)
 
 ## `CanRegisterTrigger` {#canregistertrigger}
 
@@ -1994,6 +3269,28 @@
 
 **Type:** Zero-Size Type (unit type, null type)
 
+## `CancelAssetLock` {#cancelassetlock}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `escrow_id` | [`EscrowId`](#escrowid) |
+  | `expected_remaining_amount` | [`Quantity`](#quantity) |
+
+## `CancelControlledAssetLockV1` {#cancelcontrolledassetlockv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `cancel` | [`CancelAssetLock`](#cancelassetlock) |
+  | `waterfall` | [`Option<AssetLockWaterfallSettlementV1>`](#option-assetlockwaterfallsettlementv1) |
+
 ## `CancelSmartContractCodeUpload` {#cancelsmartcontractcodeupload}
 
 **Type:** Struct
@@ -2002,7 +3299,17 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `code_hash` | [`Hash`](#hash) |
+  | `artifact_id` | [`ContractArtifactId`](#contractartifactid) |
+
+## `CanonicalAnonymousBallotEnvelopeV1` {#canonicalanonymousballotenvelopev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `bytes` | [`Vec<u8>`](#vec-u8) |
 
 ## `CanonicalHistoryError` {#canonicalhistoryerror}
 
@@ -2013,10 +3320,9 @@
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
   | `HeightOutsideSnapshot` | [`CanonicalHistorySnapshotHeightSchema`](#canonicalhistorysnapshotheightschema) | 0 |
-  | `HashOnlyBodyUnavailable` | [`CanonicalHistoryHeightHashSchema`](#canonicalhistoryheighthashschema) | 1 |
-  | `BodyUnavailable` | [`CanonicalHistoryHeightHashSchema`](#canonicalhistoryheighthashschema) | 2 |
-  | `BlockHashMismatch` | [`CanonicalHistoryHashMismatchSchema`](#canonicalhistoryhashmismatchschema) | 3 |
-  | `BlockHeightMismatch` | [`CanonicalHistoryHeightMismatchSchema`](#canonicalhistoryheightmismatchschema) | 4 |
+  | `BodyUnavailable` | [`CanonicalHistoryHeightHashSchema`](#canonicalhistoryheighthashschema) | 1 |
+  | `BlockHashMismatch` | [`CanonicalHistoryHashMismatchSchema`](#canonicalhistoryhashmismatchschema) | 2 |
+  | `BlockHeightMismatch` | [`CanonicalHistoryHeightMismatchSchema`](#canonicalhistoryheightmismatchschema) | 3 |
 
 ## `CanonicalHistoryHashMismatchSchema` {#canonicalhistoryhashmismatchschema}
 
@@ -2063,6 +3369,22 @@
   | `height` | `u64` |
   | `committed_height` | `u64` |
 
+## `CapacityDeclarationRecord` {#capacitydeclarationrecord}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `provider_id` | [`ProviderId`](#providerid) |
+  | `declaration` | [`Vec<u8>`](#vec-u8) |
+  | `committed_capacity_gib` | `u64` |
+  | `registered_epoch` | `u64` |
+  | `valid_from_epoch` | `u64` |
+  | `valid_until_epoch` | `u64` |
+  | `metadata` | [`Metadata`](#metadata) |
+
 ## `CapacityDisputeId` {#capacitydisputeid}
 
 **Type:** Alias
@@ -2081,7 +3403,7 @@
   | `Dismissed` | &mdash; | 1 |
   | `Withdrawn` | &mdash; | 2 |
 
-## `CertPhase` {#certphase}
+## `CertifiedResultScope` {#certifiedresultscope}
 
 **Type:** Enum
 
@@ -2089,31 +3411,10 @@
 
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
-  | `Prepare` | &mdash; | 1 |
-  | `Commit` | &mdash; | 2 |
-  | `NewView` | &mdash; | 3 |
+  | `TairaGlobal` | &mdash; | 0 |
+  | `NonGlobal` | &mdash; | 1 |
 
-## `CertifiedMergeLedgerReference` {#certifiedmergeledgerreference}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `version` | `u8` |
-  | `entry_hash` | [`HashOf<MergeLedgerEntry>`](#hashof-mergeledgerentry) |
-  | `encoded_len` | `u64` |
-  | `epoch_id` | `u64` |
-  | `execution_batch_hash` | [`Option<Hash>`](#option-hash) |
-  | `entrypoint_count` | [`Option<u64>`](#option-u64) |
-  | `entrypoint_merkle_root` | [`Option<HashOf<MerkleTree<TransactionEntrypoint>>>`](#option-hashof-merkletree-transactionentrypoint) |
-  | `result_merkle_root` | [`Option<HashOf<MerkleTree<TransactionResult>>>`](#option-hashof-merkletree-transactionresult) |
-  | `base_state_height` | [`Option<u64>`](#option-u64) |
-  | `base_state_hash` | [`Option<HashOf<BlockHeader>>`](#option-hashof-blockheader) |
-  | `merge_qc` | [`MergeQuorumCertificate`](#mergequorumcertificate) |
-
-## `CertifiedMergeTransactionInclusion` {#certifiedmergetransactioninclusion}
+## `CertifiedTransactionInclusionV1` {#certifiedtransactioninclusionv1}
 
 **Type:** Struct
 
@@ -2121,13 +3422,70 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `version` | `u8` |
-  | `merge_entry_hash` | [`HashOf<MergeLedgerEntry>`](#hashof-mergeledgerentry) |
-  | `merge_epoch_id` | `u64` |
-  | `execution_batch_hash` | [`Hash`](#hash) |
-  | `entrypoint_count` | `u64` |
-  | `entrypoint_merkle_root` | [`HashOf<MerkleTree<TransactionEntrypoint>>`](#hashof-merkletree-transactionentrypoint) |
-  | `result_merkle_root` | [`HashOf<MerkleTree<TransactionResult>>`](#hashof-merkletree-transactionresult) |
+  | `entry_proof` | [`MerkleProof<TransactionEntrypoint>`](#merkleproof-transactionentrypoint) |
+  | `output` | [`ExecutionOutputV1`](#executionoutputv1) |
+  | `output_proof` | [`MerkleProof<ExecutionOutputV1>`](#merkleproof-executionoutputv1) |
+
+## `ChainId` {#chainid}
+
+**Type:** Alias
+
+**To:** `String`
+
+## `ChainParamsRecord` {#chainparamsrecord}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `block_time_ms` | `u64` |
+  | `payload_retry_interval_ms` | `u64` |
+  | `exec_budget_ms` | `u64` |
+  | `apply_budget_ms` | `u64` |
+  | `max_block_bytes` | `u32` |
+  | `epoch_length_blocks` | `u64` |
+
+## `ChangeSetId` {#changesetid}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `CheckMusubiPinOutboxV1` {#checkmusubipinoutboxv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `pin_authority` | [`AccountId`](#accountid) |
+  | `session_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `inventory_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `challenge` | [`Array<u8, 32>`](#array-u8-32) |
+  | `floor` | [`MusubiPinOutboxCheckFloorV1`](#musubipinoutboxcheckfloorv1) |
+  | `expected` | [`MusubiPinOutboxCheckExpectationV1`](#musubipinoutboxcheckexpectationv1) |
+
+## `CheckpointDecision` {#checkpointdecision}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `height` | `u64` |
+  | `block_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `core_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `result` | [`Array<u8, 32>`](#array-u8-32) |
+  | `committee_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `schedule` | [`ScheduleOutcome`](#scheduleoutcome) |
+  | `beacon` | [`Option<FinalizedGlobalThresholdBeaconPulseV1>`](#option-finalizedglobalthresholdbeaconpulsev1) |
+  | `executed_hash` | [`Hash`](#hash) |
+  | `executed_len` | `u64` |
 
 ## `ChunkerProfileHandle` {#chunkerprofilehandle}
 
@@ -2143,17 +3501,17 @@
   | `semver` | `String` |
   | `multihash_code` | `u64` |
 
-## `CitizenServiceEvent` {#citizenserviceevent}
+## `ClaimBondCashflow` {#claimbondcashflow}
 
-**Type:** Enum
+**Type:** Struct
 
-**Variants:**
+**Declarations:**
 
-  | Variant name | Variant value | Discriminant |
-  | --: | :-- | --- |
-  | `decline` | &mdash; | 0 |
-  | `no-show` | &mdash; | 1 |
-  | `misconduct` | &mdash; | 2 |
+  | Field name | Field value |
+  | --: | :-- |
+  | `bond` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `index` | `u16` |
+  | `holder` | [`AccountId`](#accountid) |
 
 ## `ClassRentRate` {#classrentrate}
 
@@ -2165,6 +3523,53 @@
   | --: | :-- |
   | `storage_class` | [`StorageClass`](#storageclass) |
   | `rent_per_gib_month` | [`XorQuantity`](#xorquantity) |
+
+## `CloseBondCashflow` {#closebondcashflow}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `bond` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `index` | `u16` |
+
+## `CollateralPolicy` {#collateralpolicy}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `multiplier_bps` | `u32` |
+  | `onboarding_discount_bps` | `u32` |
+  | `onboarding_period_secs` | `u64` |
+
+## `CommitCertificate` {#commitcertificate}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `consensus_header` | [`Vec<u8>`](#vec-u8) |
+  | `commit_qc` | [`Vec<u8>`](#vec-u8) |
+  | `result_preimage` | [`Vec<u8>`](#vec-u8) |
+  | `availability` | [`Vec<u8>`](#vec-u8) |
+
+## `CommitmentDiscountTier` {#commitmentdiscounttier}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `minimum_commitment_gib_month` | `u64` |
+  | `discount_bps` | `u16` |
 
 ## `CommittedTransaction` {#committedtransaction}
 
@@ -2178,10 +3583,9 @@
   | `entrypoint_hash` | [`HashOf<TransactionEntrypoint>`](#hashof-transactionentrypoint) |
   | `entrypoint_proof` | [`MerkleProof<TransactionEntrypoint>`](#merkleproof-transactionentrypoint) |
   | `entrypoint` | [`TransactionEntrypoint`](#transactionentrypoint) |
-  | `result_hash` | [`HashOf<TransactionResult>`](#hashof-transactionresult) |
-  | `result_proof` | [`MerkleProof<TransactionResult>`](#merkleproof-transactionresult) |
-  | `result` | [`TransactionResult`](#transactionresult) |
-  | `merge_inclusion` | [`Option<CertifiedMergeTransactionInclusion>`](#option-certifiedmergetransactioninclusion) |
+  | `output_hash` | [`HashOf<ExecutionOutputV1>`](#hashof-executionoutputv1) |
+  | `output_proof` | [`MerkleProof<ExecutionOutputV1>`](#merkleproof-executionoutputv1) |
+  | `output` | [`ExecutionOutputV1`](#executionoutputv1) |
 
 ## `CommittedTxPredicate` {#committedtxpredicate}
 
@@ -2350,7 +3754,6 @@
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
   | `Changed` | [`ParameterChanged`](#parameterchanged) | 0 |
-  | `SccpRegistryChanged` | [`SccpRegistryChanged`](#sccpregistrychanged) | 1 |
 
 ## `ConfigurationEventFilter` {#configurationeventfilter}
 
@@ -2373,7 +3776,58 @@
   | Field name | Field value |
   | --: | :-- |
   | `Changed` | `0x1` |
-  | `SccpRegistryChanged` | `0x2` |
+
+## `ConsensusKeyId` {#consensuskeyid}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `role` | [`ConsensusKeyRole`](#consensuskeyrole) |
+  | `name` | `String` |
+
+## `ConsensusKeyRecord` {#consensuskeyrecord}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `id` | [`ConsensusKeyId`](#consensuskeyid) |
+  | `public_key` | [`PublicKey`](#publickey) |
+  | `pop` | [`Option<Vec<u8>>`](#option-vec-u8) |
+  | `activation_height` | `u64` |
+  | `expiry_height` | [`Option<u64>`](#option-u64) |
+  | `replaces` | [`Option<ConsensusKeyId>`](#option-consensuskeyid) |
+  | `status` | [`ConsensusKeyStatus`](#consensuskeystatus) |
+
+## `ConsensusKeyRole` {#consensuskeyrole}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Validator` | &mdash; | 0 |
+  | `Committee` | &mdash; | 1 |
+  | `Endorsement` | &mdash; | 2 |
+
+## `ConsensusKeyStatus` {#consensuskeystatus}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Pending` | &mdash; | 0 |
+  | `Active` | &mdash; | 1 |
+  | `Retiring` | &mdash; | 2 |
+  | `Disabled` | &mdash; | 3 |
 
 ## `ConsensusMode` {#consensusmode}
 
@@ -2385,18 +3839,6 @@
   | --: | :-- | --- |
   | `permissioned` | &mdash; | 0 |
   | `npos` | &mdash; | 1 |
-
-## `ConsensusRound` {#consensusround}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `context_id` | [`HeightContextId`](#heightcontextid) |
-  | `height` | `u64` |
-  | `view` | `u64` |
 
 ## `ContractAddress` {#contractaddress}
 
@@ -2410,6 +3852,17 @@
 
 **To:** [`Vec<u8>`](#vec-u8)
 
+## `ContractArtifactId` {#contractartifactid}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
+  | `code_hash` | [`Hash`](#hash) |
+
 ## `ContractCodeRegistered` {#contractcoderegistered}
 
 **Type:** Struct
@@ -2418,7 +3871,7 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `code_hash` | [`Hash`](#hash) |
+  | `artifact_id` | [`ContractArtifactId`](#contractartifactid) |
   | `registrar` | [`AccountId`](#accountid) |
 
 ## `ContractCodeRemoved` {#contractcoderemoved}
@@ -2429,7 +3882,7 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `code_hash` | [`Hash`](#hash) |
+  | `artifact_id` | [`ContractArtifactId`](#contractartifactid) |
   | `removed_by` | [`AccountId`](#accountid) |
   | `reason` | [`Option<String>`](#option-string) |
 
@@ -2486,7 +3939,7 @@
   | `imposed_at_height` | `u64` |
   | `expires_at_height` | `u64` |
 
-## `ContractErrorCodeDescriptor` {#contracterrorcodedescriptor}
+## `ContractEmissionV1` {#contractemissionv1}
 
 **Type:** Struct
 
@@ -2494,9 +3947,86 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `namespace` | `String` |
+  | `contract` | [`ContractAddress`](#contractaddress) |
+  | `code_hash` | [`Hash`](#hash) |
+  | `entrypoint` | `u32` |
+  | `event` | `u32` |
+  | `caller` | [`AccountId`](#accountid) |
+  | `definition` | [`ContractEventDescriptorV1`](#contracteventdescriptorv1) |
+  | `payload` | [`EntrypointReturnRecordV1`](#entrypointreturnrecordv1) |
+
+## `ContractEmissionsV1` {#contractemissionsv1}
+
+**Type:** Vec
+
+**Value:** [`ContractEmissionV1`](#contractemissionv1)
+
+## `ContractEnumTypeDescriptorV1` {#contractenumtypedescriptorv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `identity` | `String` |
+  | `variants` | [`Vec<ContractEnumVariantDescriptorV1>`](#vec-contractenumvariantdescriptorv1) |
+
+## `ContractEnumVariantDescriptorV1` {#contractenumvariantdescriptorv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
   | `name` | `String` |
   | `code` | `u32` |
+
+## `ContractErrorMessage` {#contracterrormessage}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `error_type` | `String` |
+  | `code` | `u32` |
+  | `message` | `String` |
+
+## `ContractErrorTypeDescriptor` {#contracterrortypedescriptor}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `identity` | `String` |
+  | `variants` | [`Vec<ContractErrorVariantDescriptor>`](#vec-contracterrorvariantdescriptor) |
+
+## `ContractErrorVariantDescriptor` {#contracterrorvariantdescriptor}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `name` | `String` |
+  | `code` | `u32` |
+
+## `ContractEventDescriptorV1` {#contracteventdescriptorv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `name` | [`Name`](#name) |
+  | `payload_type` | [`EntrypointValueTypeV1`](#entrypointvaluetypev1) |
 
 ## `ContractInstanceActivated` {#contractinstanceactivated}
 
@@ -2552,6 +4082,7 @@
   | `pending_owner` | [`Option<ContractLifecycleOwnerV1>`](#option-contractlifecycleownerv1) |
   | `parliament_delegation` | [`ContractParliamentDelegationV1`](#contractparliamentdelegationv1) |
   | `active_code_hash` | [`Option<Hash>`](#option-hash) |
+  | `retained_code_hash` | [`Option<Hash>`](#option-hash) |
   | `revision` | `u64` |
   | `emergency_hold` | [`Option<ContractEmergencyHoldV1>`](#option-contractemergencyholdv1) |
 
@@ -2580,9 +4111,13 @@
   | `compiler_fingerprint` | [`Option<String>`](#option-string) |
   | `features_bitmap` | [`Option<u64>`](#option-u64) |
   | `access_set_hints` | [`Option<AccessSetHints>`](#option-accesssethints) |
+  | `permissions` | [`Vec<ContractPermissionDescriptorV1>`](#vec-contractpermissiondescriptorv1) |
+  | `events` | [`Vec<ContractEventDescriptorV1>`](#vec-contracteventdescriptorv1) |
   | `entrypoints` | [`Option<Vec<EntrypointDescriptor>>`](#option-vec-entrypointdescriptor) |
   | `states` | [`Option<Vec<StateDescriptor>>`](#option-vec-statedescriptor) |
-  | `error_codes` | [`Option<Vec<ContractErrorCodeDescriptor>>`](#option-vec-contracterrorcodedescriptor) |
+  | `error_types` | [`Option<Vec<ContractErrorTypeDescriptor>>`](#option-vec-contracterrortypedescriptor) |
+  | `enum_types` | [`Vec<ContractEnumTypeDescriptorV1>`](#vec-contractenumtypedescriptorv1) |
+  | `error_messages` | [`Option<Vec<ContractErrorMessage>>`](#option-vec-contracterrormessage) |
   | `kotoba` | [`Option<Vec<KotobaTranslationEntry>>`](#option-vec-kotobatranslationentry) |
   | `provenance` | [`Option<ManifestProvenance>`](#option-manifestprovenance) |
 
@@ -2652,6 +4187,38 @@
   | `None` | &mdash; | 0 |
   | `Lifecycle` | &mdash; | 1 |
 
+## `ContractPermissionDescriptorV1` {#contractpermissiondescriptorv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `name` | [`Name`](#name) |
+  | `scope` | [`ContractPermissionScopeV1`](#contractpermissionscopev1) |
+
+## `ContractPermissionScopeV1` {#contractpermissionscopev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Instance` | &mdash; | 0 |
+  | `Chain` | [`ContractPermissionScopeV1::Chain`](#contractpermissionscopev1-chain) | 1 |
+
+## `ContractPermissionScopeV1::Chain` {#contractpermissionscopev1-chain}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `permission_name` | [`Name`](#name) |
+
 ## `ContractRejection` {#contractrejection}
 
 **Type:** Struct
@@ -2661,20 +4228,33 @@
   | Field name | Field value |
   | --: | :-- |
   | `contract` | `String` |
-  | `namespace` | `String` |
+  | `error_type` | `String` |
+  | `schema_hash` | [`Array<u8, 32>`](#array-u8-32) |
   | `name` | `String` |
   | `code` | `u32` |
+  | `message` | [`Option<String>`](#option-string) |
 
-## `CouncilDerivationKind` {#councilderivationkind}
+## `CreditPolicy` {#creditpolicy}
 
-**Type:** Enum
+**Type:** Struct
 
-**Variants:**
+**Declarations:**
 
-  | Variant name | Variant value | Discriminant |
-  | --: | :-- | --- |
-  | `Sortition` | &mdash; | 0 |
-  | `Manual` | &mdash; | 1 |
+  | Field name | Field value |
+  | --: | :-- |
+  | `settlement_window_secs` | `u64` |
+  | `settlement_grace_secs` | `u64` |
+  | `low_balance_alert_bps` | `u16` |
+
+## `CryptoAdmissionPolicyV1` {#cryptoadmissionpolicyv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `allowed_algorithms` | [`Vec<Algorithm>`](#vec-algorithm) |
 
 ## `CryptoStatus` {#cryptostatus}
 
@@ -2686,7 +4266,7 @@
   | --: | :-- |
   | `sm_helpers_available` | `bool` |
   | `sm_openssl_preview_enabled` | `bool` |
-  | `halo2` | [`Halo2Status`](#halo2status) |
+  | `trace` | [`DiagnosticTraceStatus`](#diagnostictracestatus) |
 
 ## `CustomParameter` {#customparameter}
 
@@ -2704,6 +4284,14 @@
 **Type:** Alias
 
 **To:** [`Name`](#name)
+
+## `CustomParameters` {#customparameters}
+
+**Type:** Map
+
+**Key:** [`CustomParameterId`](#customparameterid)
+
+**Value:** [`CustomParameter`](#customparameter)
 
 ## `DaCommitmentBundle` {#dacommitmentbundle}
 
@@ -2764,6 +4352,27 @@
   | `payload_bytes` | `u64` |
   | `request_content_hash` | [`Hash`](#hash) |
   | `signatures` | [`Vec<DaIngestSignatureV1>`](#vec-daingestsignaturev1) |
+
+## `DaIngestReceipt` {#daingestreceipt}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `client_blob_id` | [`BlobDigest`](#blobdigest) |
+  | `lane_id` | [`LaneId`](#laneid) |
+  | `epoch` | `u64` |
+  | `blob_hash` | [`BlobDigest`](#blobdigest) |
+  | `chunk_root` | [`BlobDigest`](#blobdigest) |
+  | `manifest_hash` | [`BlobDigest`](#blobdigest) |
+  | `storage_ticket` | [`StorageTicketId`](#storageticketid) |
+  | `pdp_commitment` | [`Option<Vec<u8>>`](#option-vec-u8) |
+  | `stripe_layout` | [`DaStripeLayout`](#dastripelayout) |
+  | `queued_at_unix` | `u64` |
+  | `rent_quote` | [`DaRentQuote`](#darentquote) |
+  | `operator_signature` | [`Signature`](#signature) |
 
 ## `DaIngestSignatureV1` {#daingestsignaturev1}
 
@@ -2847,7 +4456,7 @@
   | --: | :-- |
   | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
   | `owner` | [`AccountId`](#accountid) |
-  | `request_authorization_digest` | [`Hash`](#hash) |
+  | `request_authorization_digest` | [`BlobDigest`](#blobdigest) |
   | `lane_id` | [`LaneId`](#laneid) |
   | `epoch` | `u64` |
   | `sequence` | `u64` |
@@ -2902,6 +4511,33 @@
   | `epoch` | `u64` |
   | `highest_sequence` | `u64` |
 
+## `DaRentQuote` {#darentquote}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `base_rent` | [`XorQuantity`](#xorquantity) |
+  | `protocol_reserve` | [`XorQuantity`](#xorquantity) |
+  | `provider_reward` | [`XorQuantity`](#xorquantity) |
+  | `pdp_bonus` | [`XorQuantity`](#xorquantity) |
+  | `potr_bonus` | [`XorQuantity`](#xorquantity) |
+  | `egress_credit_per_gib` | [`XorQuantity`](#xorquantity) |
+
+## `DaStripeLayout` {#dastripelayout}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `total_stripes` | `u32` |
+  | `shards_per_stripe` | `u32` |
+  | `row_parity_stripes` | `u16` |
+
 ## `DataAvailabilityLayout` {#dataavailabilitylayout}
 
 **Type:** Struct
@@ -2947,6 +4583,10 @@
   | `Governance` | [`GovernanceEvent`](#governanceevent) | 19 |
   | `Social` | [`SocialEvent`](#socialevent) | 20 |
   | `Bridge` | [`BridgeEvent`](#bridgeevent) | 21 |
+  | `GameSession` | [`GameSessionEventV1`](#gamesessioneventv1) | 22 |
+  | `Sccp` | [`SccpEvent`](#sccpevent) | 23 |
+  | `KagemushaLoadCommitted` | [`KagemushaLoadCommittedV1`](#kagemushaloadcommittedv1) | 24 |
+  | `Bond` | [`BondEvent`](#bondevent) | 25 |
 
 ## `DataEventFilter` {#dataeventfilter}
 
@@ -2980,6 +4620,10 @@
   | `Social` | [`SocialEventFilter`](#socialeventfilter) | 21 |
   | `Bridge` | [`BridgeEventFilter`](#bridgeeventfilter) | 22 |
   | `Governance` | [`GovernanceEventFilter`](#governanceeventfilter) | 23 |
+  | `GameSession` | [`Option<Hash>`](#option-hash) | 24 |
+  | `Sccp` | [`SccpEventFilter`](#sccpeventfilter) | 25 |
+  | `KagemushaLoadCommitted` | [`Option<Array<u8, 32>>`](#option-array-u8-32) | 26 |
+  | `Bond` | [`Option<AssetDefinitionId>`](#option-assetdefinitionid) | 27 |
 
 ## `DataSpaceId` {#dataspaceid}
 
@@ -2997,6 +4641,18 @@
   | --: | :-- |
   | `id` | [`TriggerId`](#triggerid) |
   | `instructions` | [`ExecutionStep`](#executionstep) |
+
+## `DeclareBondDefault` {#declarebonddefault}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `bond` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `index` | `u16` |
+  | `evidence_sha256` | [`Array<u8, 32>`](#array-u8-32) |
 
 ## `DecodedCodeSizeLimitInfo` {#decodedcodesizelimitinfo}
 
@@ -3073,21 +4729,24 @@
   | `request_hash` | [`Hash`](#hash) |
   | `field` | `String` |
 
-## `DeliberationPhaseV1` {#deliberationphasev1}
+## `DefinitionId` {#definitionid}
 
-**Type:** Enum
+**Type:** Alias
 
-**Variants:**
+**To:** [`Array<u8, 32>`](#array-u8-32)
 
-  | Variant name | Variant value | Discriminant |
-  | --: | :-- | --- |
-  | `Orientation` | &mdash; | 0 |
-  | `Evidence` | &mdash; | 1 |
-  | `Questions` | &mdash; | 2 |
-  | `Responses` | &mdash; | 3 |
-  | `Deliberation` | &mdash; | 4 |
-  | `Reflection` | &mdash; | 5 |
-  | `Vote` | &mdash; | 6 |
+## `DiagnosticTraceStatus` {#diagnostictracestatus}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `enabled` | `bool` |
+  | `max_batch` | `u32` |
+  | `worker_threads` | `u64` |
+  | `queue_cap` | `u64` |
 
 ## `DirectContractDeploymentOriginV1` {#directcontractdeploymentoriginv1}
 
@@ -3180,6 +4839,18 @@
   | --: | :-- |
   | `resolver_id` | [`Array<u8, 32>`](#array-u8-32) |
   | `block_height` | `u64` |
+
+## `DiscountSchedule` {#discountschedule}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `loyalty_months_required` | `u16` |
+  | `loyalty_discount_bps` | `u16` |
+  | `commitment_tiers` | [`Vec<CommitmentDiscountTier>`](#vec-commitmentdiscounttier) |
 
 ## `Domain` {#domain}
 
@@ -3366,7 +5037,7 @@
   | `domain` | [`DomainId`](#domainid) |
   | `new_owner` | [`AccountId`](#accountid) |
 
-## `DualQuorum` {#dualquorum}
+## `DrawdownAssetLock` {#drawdownassetlock}
 
 **Type:** Struct
 
@@ -3374,8 +5045,20 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `min_signers` | `u32` |
-  | `total_power` | `u64` |
+  | `escrow_id` | [`EscrowId`](#escrowid) |
+  | `amount` | [`Quantity`](#quantity) |
+  | `expected_remaining_amount` | [`Quantity`](#quantity) |
+
+## `DrawdownControlledAssetLockV1` {#drawdowncontrolledassetlockv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `drawdown` | [`DrawdownAssetLock`](#drawdownassetlock) |
+  | `waterfall` | [`Option<AssetLockWaterfallSettlementV1>`](#option-assetlockwaterfallsettlementv1) |
 
 ## `DurationFactorSet` {#durationfactorset}
 
@@ -3388,6 +5071,18 @@
   | `monthly_bps` | `u16` |
   | `quarterly_bps` | `u16` |
   | `annual_bps` | `u16` |
+
+## `DvpSettlementDetails` {#dvpsettlementdetails}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `delivery` | [`ResolvedSettlementMovement`](#resolvedsettlementmovement) |
+  | `payment` | [`ResolvedSettlementMovement`](#resolvedsettlementmovement) |
+  | `order` | [`SettlementExecutionOrder`](#settlementexecutionorder) |
 
 ## `DynamicAccessHint` {#dynamicaccesshint}
 
@@ -3436,6 +5131,18 @@
   | --: | :-- |
   | `fields` | [`Vec<EntrypointArgumentFieldV1>`](#vec-entrypointargumentfieldv1) |
 
+## `EntrypointAuthorizationV1` {#entrypointauthorizationv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Anyone` | &mdash; | 0 |
+  | `Permission` | [`Name`](#name) | 1 |
+  | `RuntimeLifecycle` | &mdash; | 2 |
+
 ## `EntrypointDescriptor` {#entrypointdescriptor}
 
 **Type:** Struct
@@ -3450,7 +5157,7 @@
   | `argument_schema` | [`Option<EntrypointArgumentSchemaV1>`](#option-entrypointargumentschemav1) |
   | `return_type` | [`Option<String>`](#option-string) |
   | `return_schema` | [`Option<EntrypointValueTypeV1>`](#option-entrypointvaluetypev1) |
-  | `permission` | [`Option<String>`](#option-string) |
+  | `authorization` | [`EntrypointAuthorizationV1`](#entrypointauthorizationv1) |
   | `read_keys` | [`Vec<String>`](#vec-string) |
   | `write_keys` | [`Vec<String>`](#vec-string) |
   | `access_hints_complete` | [`Option<bool>`](#option-bool) |
@@ -3478,6 +5185,17 @@
   | `name` | `String` |
   | `type_name` | `String` |
 
+## `EntrypointReturnRecordV1` {#entrypointreturnrecordv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `schema_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `atoms` | [`Vec<EntrypointValueAtomV1>`](#vec-entrypointvalueatomv1) |
+
 ## `EntrypointStructTypeNodeV1` {#entrypointstructtypenodev1}
 
 **Type:** Struct
@@ -3488,6 +5206,22 @@
   | --: | :-- |
   | `name` | `String` |
   | `fields` | [`Vec<String>`](#vec-string) |
+
+## `EntrypointValueAtomV1` {#entrypointvalueatomv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Tag` | `bool` | 0 |
+  | `Bool` | `bool` | 1 |
+  | `Pointer` | [`Vec<u8>`](#vec-u8) | 2 |
+  | `List` | `u8` | 3 |
+  | `Unit` | &mdash; | 4 |
+  | `ErrorCode` | `u32` | 5 |
+  | `EnumCode` | `u32` | 6 |
 
 ## `EntrypointValueKindV1` {#entrypointvaluekindv1}
 
@@ -3526,6 +5260,10 @@
   | `Result` | &mdash; | 3 |
   | `List` | [`EntrypointListTypeNodeV1`](#entrypointlisttypenodev1) | 4 |
   | `Leaf` | [`EntrypointValueKindV1`](#entrypointvaluekindv1) | 5 |
+  | `Unit` | &mdash; | 6 |
+  | `Error` | [`ContractErrorTypeDescriptor`](#contracterrortypedescriptor) | 7 |
+  | `StateCursor` | [`EntrypointValueTypeV1`](#entrypointvaluetypev1) | 8 |
+  | `Enum` | [`ContractEnumTypeDescriptorV1`](#contractenumtypedescriptorv1) | 9 |
 
 ## `EntrypointValueTypeV1` {#entrypointvaluetypev1}
 
@@ -3643,6 +5381,16 @@
   | `proof_call_hash` | [`Option<Vec<Array<u8, 32>>>`](#option-vec-array-u8-32) |
   | `proof_envelope_hash` | [`Option<Vec<Array<u8, 32>>>`](#option-vec-array-u8-32) |
 
+## `Evidence` {#evidence}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `native` | [`Vec<u8>`](#vec-u8) |
+
 ## `ExecKv` {#execkv}
 
 **Type:** Struct
@@ -3729,7 +5477,7 @@
   | `trigger_id` | [`Option<TriggerId>`](#option-triggerid) |
   | `authority` | [`Option<AccountId>`](#option-accountid) |
 
-## `ExecutionCommitment` {#executioncommitment}
+## `ExecutionOutputPolicyV1` {#executionoutputpolicyv1}
 
 **Type:** Struct
 
@@ -3737,18 +5485,41 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `parent_state_root` | [`Hash`](#hash) |
-  | `post_state_root` | [`Hash`](#hash) |
-  | `ordinary_writes_root` | [`Hash`](#hash) |
-  | `topup_anchor_root` | [`Option<Hash>`](#option-hash) |
-  | `topup_anchor_count` | `u32` |
-  | `native_amx_application_manifest_version` | `u16` |
-  | `native_amx_application_manifest_root` | [`Hash`](#hash) |
-  | `native_amx_application_manifest_count` | `u32` |
-  | `lane_finality_manifest` | [`Option<MerkleTreeCommitment<LaneFinalityStatement>>`](#option-merkletreecommitment-lanefinalitystatement) |
-  | `merge_carrier` | [`Option<MergeCarrierCommitmentV1>`](#option-mergecarriercommitmentv1) |
-  | `executed_block_wire_len` | `u64` |
-  | `executed_block_wire_hash` | [`Hash`](#hash) |
+  | `max_outputs` | `u32` |
+  | `max_output_bytes` | `u64` |
+  | `max_total_output_bytes` | `u64` |
+  | `max_executed_wire_bytes` | `u64` |
+  | `max_pipeline_triggers` | `u32` |
+  | `max_time_triggers` | `u32` |
+  | `max_time_invocations` | `u32` |
+
+## `ExecutionOutputV1` {#executionoutputv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `network` | [`NetworkExecutionOutputV1`](#networkexecutionoutputv1) | 0 |
+  | `pipeline` | [`PipelineExecutionOutputV1`](#pipelineexecutionoutputv1) | 1 |
+  | `time` | [`TimeExecutionOutputV1`](#timeexecutionoutputv1) | 2 |
+  | `network_with_lifecycle` | [`NetworkExecutionOutputV2`](#networkexecutionoutputv2) | 3 |
+  | `pipeline_with_lifecycle` | [`PipelineExecutionOutputV2`](#pipelineexecutionoutputv2) | 4 |
+  | `time_with_lifecycle` | [`TimeExecutionOutputV2`](#timeexecutionoutputv2) | 5 |
+
+## `ExecutionProofVerificationV1` {#executionproofverificationv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `profile_id` | [`Hash`](#hash) |
+  | `statement_hash` | [`Hash`](#hash) |
+  | `proof_hash` | [`Hash`](#hash) |
+  | `verified_at_height` | `u64` |
 
 ## `ExecutionStep` {#executionstep}
 
@@ -3775,7 +5546,7 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `parameters` | [`SortedMap<CustomParameterId, CustomParameter>`](#sortedmap-customparameterid-customparameter) |
+  | `parameters` | [`CustomParameters`](#customparameters) |
   | `instructions` | [`SortedVec<String>`](#sortedvec-string) |
   | `permissions` | [`SortedVec<String>`](#sortedvec-string) |
   | `schema` | [`Json`](#json) |
@@ -3822,6 +5593,27 @@
   | --: | :-- |
   | `new_data_model` | [`ExecutorDataModel`](#executordatamodel) |
 
+## `ExpireAssetLock` {#expireassetlock}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `escrow_id` | [`EscrowId`](#escrowid) |
+
+## `ExpireControlledAssetLockV1` {#expirecontrolledassetlockv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `expiry` | [`ExpireAssetLock`](#expireassetlock) |
+  | `waterfall` | [`Option<AssetLockWaterfallSettlementV1>`](#option-assetlockwaterfallsettlementv1) |
+
 ## `ExternalExecutionContext` {#externalexecutioncontext}
 
 **Type:** Struct
@@ -3835,7 +5627,6 @@
   | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
   | `routing_plan_digest` | [`Hash`](#hash) |
   | `routing_plan_legs` | [`Vec<ExternalExecutionRouteLeg>`](#vec-externalexecutionrouteleg) |
-  | `native_amx_receipt` | [`Option<NativeAmxReceipt>`](#option-nativeamxreceipt) |
 
 ## `ExternalExecutionRouteLeg` {#externalexecutionrouteleg}
 
@@ -3860,6 +5651,240 @@
   | `coordinator` | &mdash; | 0 |
   | `participant` | &mdash; | 1 |
 
+## `FastpqArtifactIdentityDescriptionV1` {#fastpqartifactidentitydescriptionv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `proof_kind` | [`FastpqProofKindV1`](#fastpqproofkindv1) |
+  | `profile_id` | [`FastpqCompactProfileIdV1`](#fastpqcompactprofileidv1) |
+  | `public_statement_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `artifact_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `inner_bundle_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `artifact_bytes` | `u64` |
+  | `commitments` | [`FastpqCommitmentDescriptionV1`](#fastpqcommitmentdescriptionv1) |
+
+## `FastpqAxtCompactArtifactV1` {#fastpqaxtcompactartifactv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `profile_id` | [`FastpqCompactProfileIdV1`](#fastpqcompactprofileidv1) |
+  | `statement` | [`FastpqPublicTransferStatementV1`](#fastpqpublictransferstatementv1) |
+  | `binding` | [`AxtFastpqBinding`](#axtfastpqbinding) |
+  | `metadata` | [`FastpqAxtPublicMetadataV1`](#fastpqaxtpublicmetadatav1) |
+  | `mirrors` | [`FastpqAxtPreProofMirrorsV1`](#fastpqaxtpreproofmirrorsv1) |
+  | `remote_spend_claims` | [`Option<Vec<AxtRemoteSpendClaimV1>>`](#option-vec-axtremotespendclaimv1) |
+  | `bundle_frame` | [`Vec<u8>`](#vec-u8) |
+
+## `FastpqAxtPreProofMirrorsV1` {#fastpqaxtpreproofmirrorsv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `dsid` | [`DataSpaceId`](#dataspaceid) |
+  | `manifest_root` | [`Array<u8, 32>`](#array-u8-32) |
+  | `da_commitment` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
+  | `committed_amount` | [`Option<u128>`](#option-u128) |
+  | `expiry_slot` | [`Option<u64>`](#option-u64) |
+
+## `FastpqAxtPublicMetadataV1` {#fastpqaxtpublicmetadatav1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `parameter` | `String` |
+  | `entry_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `committed_amount` | [`Option<Array<u8, 16>>`](#option-array-u8-16) |
+  | `expiry_slot` | [`Array<u8, 8>`](#array-u8-8) |
+  | `manifest_root` | [`Array<u8, 32>`](#array-u8-32) |
+  | `da_commitment` | [`Array<u8, 33>`](#array-u8-33) |
+  | `source_transfer_occurrences` | [`Vec<AxtSourceTransferOccurrenceV1>`](#vec-axtsourcetransferoccurrencev1) |
+
+## `FastpqBalanceKeyV1` {#fastpqbalancekeyv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_definition` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `account` | [`AccountId`](#accountid) |
+
+## `FastpqCommitmentDescriptionV1` {#fastpqcommitmentdescriptionv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `LegacyPreprocessing` | [`GoldilocksDigest384V1`](#goldilocksdigest384v1) | 0 |
+  | `OrderedCompactAir` | [`FastpqOrderedCompactAirCommitmentsV1`](#fastpqorderedcompactaircommitmentsv1) | 1 |
+
+## `FastpqCommitmentV1` {#fastpqcommitmentv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `FastpqCompactProfileIdV1` {#fastpqcompactprofileidv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `FastpqExecutionAssetV1` {#fastpqexecutionassetv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `definition` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `incarnation` | [`Hash`](#hash) |
+
+## `FastpqExecutionBalanceV1` {#fastpqexecutionbalancev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset` | [`FastpqExecutionAssetV1`](#fastpqexecutionassetv1) |
+  | `account` | [`AccountId`](#accountid) |
+  | `scope` | [`AssetBalanceScope`](#assetbalancescope) |
+
+## `FastpqExecutionEffectContextV1` {#fastpqexecutioneffectcontextv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `source` | [`FastpqSourceStatementContextV1`](#fastpqsourcestatementcontextv1) |
+  | `entry` | [`FastpqSourceExecutionEntryV1`](#fastpqsourceexecutionentryv1) |
+
+## `FastpqExecutionEffectKindV1` {#fastpqexecutioneffectkindv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Transfer` | [`FastpqExecutionTransferV1`](#fastpqexecutiontransferv1) | 0 |
+  | `Mint` | [`FastpqExecutionSupplyChangeV1`](#fastpqexecutionsupplychangev1) | 1 |
+  | `Burn` | [`FastpqExecutionSupplyChangeV1`](#fastpqexecutionsupplychangev1) | 2 |
+  | `Retire` | [`FastpqExecutionAssetV1`](#fastpqexecutionassetv1) | 3 |
+
+## `FastpqExecutionEffectStatementV1` {#fastpqexecutioneffectstatementv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `public_inputs` | [`FastpqPublicInputs`](#fastpqpublicinputs) |
+  | `ordering_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `transitions` | [`Vec<FastpqStateTransition>`](#vec-fastpqstatetransition) |
+  | `effects` | [`FastpqExecutionEffectsV1`](#fastpqexecutioneffectsv1) |
+
+## `FastpqExecutionEffectV1` {#fastpqexecutioneffectv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `ordinal` | `u32` |
+  | `authority_digest` | [`Hash`](#hash) |
+  | `authorization_context` | [`Hash`](#hash) |
+  | `kind` | [`FastpqExecutionEffectKindV1`](#fastpqexecutioneffectkindv1) |
+
+## `FastpqExecutionEffectsV1` {#fastpqexecutioneffectsv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `context` | [`FastpqExecutionEffectContextV1`](#fastpqexecutioneffectcontextv1) |
+  | `effects` | [`Vec<FastpqExecutionEffectV1>`](#vec-fastpqexecutioneffectv1) |
+
+## `FastpqExecutionQuantityKeyV1` {#fastpqexecutionquantitykeyv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Balance` | [`FastpqExecutionBalanceV1`](#fastpqexecutionbalancev1) | 0 |
+  | `Supply` | [`FastpqExecutionAssetV1`](#fastpqexecutionassetv1) | 1 |
+  | `Lifecycle` | [`FastpqExecutionAssetV1`](#fastpqexecutionassetv1) | 2 |
+
+## `FastpqExecutionSupplyChangeV1` {#fastpqexecutionsupplychangev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `balance` | [`FastpqExecutionBalanceV1`](#fastpqexecutionbalancev1) |
+  | `amount` | [`Quantity`](#quantity) |
+  | `balance_before` | [`Quantity`](#quantity) |
+  | `balance_after` | [`Quantity`](#quantity) |
+  | `supply_before` | [`Quantity`](#quantity) |
+  | `supply_after` | [`Quantity`](#quantity) |
+
+## `FastpqExecutionTransferV1` {#fastpqexecutiontransferv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `source` | [`FastpqExecutionBalanceV1`](#fastpqexecutionbalancev1) |
+  | `destination` | [`FastpqExecutionBalanceV1`](#fastpqexecutionbalancev1) |
+  | `amount` | [`Quantity`](#quantity) |
+  | `source_before` | [`Quantity`](#quantity) |
+  | `source_after` | [`Quantity`](#quantity) |
+  | `destination_before` | [`Quantity`](#quantity) |
+  | `destination_after` | [`Quantity`](#quantity) |
+
+## `FastpqMandatorySourcePolicyV1` {#fastpqmandatorysourcepolicyv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `max_retained_obligations` | `u32` |
+  | `per_obligation` | [`FastpqSourceLimitsV1`](#fastpqsourcelimitsv1) |
+
 ## `FastpqOperationKind` {#fastpqoperationkind}
 
 **Type:** Enum
@@ -3868,8 +5893,110 @@
 
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
-  | `Transfer` | &mdash; | 16 |
-  | `MetaSet` | &mdash; | 17 |
+  | `Transfer` | &mdash; | 32 |
+  | `Mint` | &mdash; | 33 |
+  | `Burn` | &mdash; | 34 |
+  | `RoleGrant` | [`FastpqRolePermissionDelta`](#fastpqrolepermissiondelta) | 35 |
+  | `RoleRevoke` | [`FastpqRolePermissionDelta`](#fastpqrolepermissiondelta) | 36 |
+  | `MetaSet` | &mdash; | 37 |
+
+## `FastpqOrderedCompactAirCommitmentsV1` {#fastpqorderedcompactaircommitmentsv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `segment_count` | `u64` |
+  | `segment_air_row_roots` | [`Vec<FastpqCommitmentV1>`](#vec-fastpqcommitmentv1) |
+
+## `FastpqOrdinaryCompactArtifactV1` {#fastpqordinarycompactartifactv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `profile_id` | [`FastpqCompactProfileIdV1`](#fastpqcompactprofileidv1) |
+  | `source` | [`FastpqOrdinarySourceStatementLeafV1`](#fastpqordinarysourcestatementleafv1) |
+  | `statement` | [`FastpqExecutionEffectStatementV1`](#fastpqexecutioneffectstatementv1) |
+  | `bundle_frame` | [`Vec<u8>`](#vec-u8) |
+
+## `FastpqOrdinarySourceStatementArchiveV1` {#fastpqordinarysourcestatementarchivev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u16` |
+  | `manifest` | [`FastpqOrdinarySourceStatementManifestV1`](#fastpqordinarysourcestatementmanifestv1) |
+  | `leaves` | [`Vec<FastpqOrdinarySourceStatementLeafV1>`](#vec-fastpqordinarysourcestatementleafv1) |
+  | `manifest_siblings` | [`Array<Hash, 256>`](#array-hash-256) |
+
+## `FastpqOrdinarySourceStatementLeafV1` {#fastpqordinarysourcestatementleafv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `source` | [`FastpqSourceStatementContextV1`](#fastpqsourcestatementcontextv1) |
+  | `statement_index` | `u32` |
+  | `entry_index` | `u32` |
+  | `effect_count` | `u32` |
+  | `entry_hash` | [`Hash`](#hash) |
+  | `execution_kind` | [`FastpqSourceExecutionKindV1`](#fastpqsourceexecutionkindv1) |
+  | `route` | [`FastpqSourceRouteV1`](#fastpqsourceroutev1) |
+  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
+  | `effects_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `slot` | `u64` |
+  | `perm_root` | [`Array<u8, 32>`](#array-u8-32) |
+  | `tx_set_hash` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `FastpqOrdinarySourceStatementManifestV1` {#fastpqordinarysourcestatementmanifestv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `source` | [`FastpqSourceStatementContextV1`](#fastpqsourcestatementcontextv1) |
+  | `executed_entry_count` | `u32` |
+  | `source_entries_digest` | [`Hash`](#hash) |
+  | `coverage` | [`FastpqSourceEffectCoverageV1`](#fastpqsourceeffectcoveragev1) |
+  | `statement_count` | `u32` |
+  | `statement_root` | [`Hash`](#hash) |
+
+## `FastpqOrdinarySourceStatementOpeningV1` {#fastpqordinarysourcestatementopeningv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `manifest` | [`FastpqOrdinarySourceStatementManifestV1`](#fastpqordinarysourcestatementmanifestv1) |
+  | `leaf` | [`FastpqOrdinarySourceStatementLeafV1`](#fastpqordinarysourcestatementleafv1) |
+  | `membership` | [`MerkleProof<FastpqOrdinarySourceStatementLeafV1>`](#merkleproof-fastpqordinarysourcestatementleafv1) |
+  | `manifest_siblings` | [`Vec<Hash>`](#vec-hash) |
+
+## `FastpqProofKindV1` {#fastpqproofkindv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `LegacyReplay` | &mdash; | 0 |
+  | `OrdinaryCompact` | &mdash; | 1 |
+  | `AxtCompact` | &mdash; | 2 |
 
 ## `FastpqPublicInputs` {#fastpqpublicinputs}
 
@@ -3885,6 +6012,157 @@
   | `new_root` | [`Array<u8, 32>`](#array-u8-32) |
   | `perm_root` | [`Array<u8, 32>`](#array-u8-32) |
   | `tx_set_hash` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `FastpqPublicTransferDeltaV1` {#fastpqpublictransferdeltav1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `from_account` | [`AccountId`](#accountid) |
+  | `to_account` | [`AccountId`](#accountid) |
+  | `asset_definition` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `amount` | [`Quantity`](#quantity) |
+  | `from_balance_before` | [`Quantity`](#quantity) |
+  | `from_balance_after` | [`Quantity`](#quantity) |
+  | `to_balance_before` | [`Quantity`](#quantity) |
+  | `to_balance_after` | [`Quantity`](#quantity) |
+
+## `FastpqPublicTransferStatementV1` {#fastpqpublictransferstatementv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `public_inputs` | [`FastpqPublicInputs`](#fastpqpublicinputs) |
+  | `ordering_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `transitions` | [`Vec<FastpqStateTransition>`](#vec-fastpqstatetransition) |
+  | `transcripts` | [`Vec<FastpqPublicTransferTranscriptV1>`](#vec-fastpqpublictransfertranscriptv1) |
+
+## `FastpqPublicTransferTranscriptV1` {#fastpqpublictransfertranscriptv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `batch_hash` | [`Hash`](#hash) |
+  | `deltas` | [`Vec<FastpqPublicTransferDeltaV1>`](#vec-fastpqpublictransferdeltav1) |
+  | `authority_digest` | [`Hash`](#hash) |
+  | `poseidon_preimage_digest` | [`Option<Hash>`](#option-hash) |
+
+## `FastpqRolePermissionDelta` {#fastpqrolepermissiondelta}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `role_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `permission_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `epoch` | `u64` |
+
+## `FastpqSourceEffectCoverageV1` {#fastpqsourceeffectcoveragev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Complete` | &mdash; | 0 |
+  | `Unsupported` | &mdash; | 1 |
+
+## `FastpqSourceExecutionEntryV1` {#fastpqsourceexecutionentryv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `entry_hash` | [`Hash`](#hash) |
+  | `execution_kind` | [`FastpqSourceExecutionKindV1`](#fastpqsourceexecutionkindv1) |
+  | `route` | [`FastpqSourceRouteV1`](#fastpqsourceroutev1) |
+  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
+
+## `FastpqSourceExecutionKindV1` {#fastpqsourceexecutionkindv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `ExecutionCall` | &mdash; | 0 |
+  | `ProtocolPurpose` | &mdash; | 1 |
+
+## `FastpqSourceLaneV1` {#fastpqsourcelanev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `lane_id` | [`LaneId`](#laneid) |
+  | `lane_incarnation` | [`Hash`](#hash) |
+
+## `FastpqSourceLimitsV1` {#fastpqsourcelimitsv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `max_executed_entries` | `u32` |
+  | `max_transcripts` | `u32` |
+  | `max_deltas` | `u32` |
+  | `max_input_transcript_bytes` | `u64` |
+  | `max_statement_bytes` | `u64` |
+  | `max_total_statement_bytes` | `u64` |
+
+## `FastpqSourcePolicyV1` {#fastpqsourcepolicyv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `intrinsic` | [`FastpqSourceLimitsV1`](#fastpqsourcelimitsv1) |
+  | `block` | [`FastpqSourceLimitsV1`](#fastpqsourcelimitsv1) |
+  | `max_native_maintenance_invocations` | `u32` |
+  | `mandatory` | [`FastpqMandatorySourcePolicyV1`](#fastpqmandatorysourcepolicyv1) |
+
+## `FastpqSourceRouteV1` {#fastpqsourceroutev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Unrouted` | &mdash; | 0 |
+  | `Lane` | [`FastpqSourceLaneV1`](#fastpqsourcelanev1) | 1 |
+
+## `FastpqSourceStatementContextV1` {#fastpqsourcestatementcontextv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `height` | `u64` |
 
 ## `FastpqStateTransition` {#fastpqstatetransition}
 
@@ -3911,6 +6189,17 @@
   | `public_inputs` | [`FastpqPublicInputs`](#fastpqpublicinputs) |
   | `transitions` | [`Vec<FastpqStateTransition>`](#vec-fastpqstatetransition) |
   | `metadata` | [`SortedMap<String, Vec<u8>>`](#sortedmap-string-vec-u8) |
+
+## `FcmpLimitsV1` {#fcmplimitsv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `max_input_count` | `u32` |
+  | `max_output_count` | `u32` |
 
 ## `FeeChargeKind` {#feechargekind}
 
@@ -4114,6 +6403,264 @@
   | --: | :-- |
   | `fetch_size` | [`Option<NonZero<u64>>`](#option-nonzero-u64) |
 
+## `FinalPromotionAccountCustodyActionV1` {#finalpromotionaccountcustodyactionv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `configure` | [`Vec<u8>`](#vec-u8) | 0 |
+  | `enroll` | [`Vec<u8>`](#vec-u8) | 1 |
+  | `revoke` | [`FinalPromotionAccountCustodyRevocationV1`](#finalpromotionaccountcustodyrevocationv1) | 2 |
+  | `check` | [`FinalPromotionAccountCustodyCheckV1`](#finalpromotionaccountcustodycheckv1) | 3 |
+
+## `FinalPromotionAccountCustodyCheckV1` {#finalpromotionaccountcustodycheckv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `challenge` | [`Array<u8, 32>`](#array-u8-32) |
+  | `network_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `minimum_height` | `u64` |
+  | `minimum_block_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `expected_account` | [`AccountId`](#accountid) |
+  | `transaction_payload_digest` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `FinalPromotionAccountCustodyExecutionV1` {#finalpromotionaccountcustodyexecutionv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `height` | `u64` |
+  | `ordinal` | `u32` |
+  | `recorded_at_unix_ms` | `u64` |
+  | `authority` | [`AccountId`](#accountid) |
+
+## `FinalPromotionAccountCustodyRecordV1` {#finalpromotionaccountcustodyrecordv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `deployment_id` | `String` |
+  | `revision` | `u64` |
+  | `predecessor_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `request_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `execution` | [`FinalPromotionAccountCustodyExecutionV1`](#finalpromotionaccountcustodyexecutionv1) |
+  | `control_state` | [`Vec<u8>`](#vec-u8) |
+  | `enrollment` | [`Option<Vec<u8>>`](#option-vec-u8) |
+
+## `FinalPromotionAccountCustodyRevocationV1` {#finalpromotionaccountcustodyrevocationv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `signer` | `bool` |
+  | `attester` | `bool` |
+
+## `FinalPromotionAuthorityActionV1` {#finalpromotionauthorityactionv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `configure` | [`Vec<u8>`](#vec-u8) | 0 |
+  | `enroll` | [`Vec<u8>`](#vec-u8) | 1 |
+  | `revoke` | [`FinalPromotionRevocationV1`](#finalpromotionrevocationv1) | 2 |
+  | `reserve` | [`FinalPromotionReserveV1`](#finalpromotionreservev1) | 3 |
+  | `complete` | [`FinalPromotionCompleteV1`](#finalpromotioncompletev1) | 4 |
+  | `expire` | [`FinalPromotionExpireV1`](#finalpromotionexpirev1) | 5 |
+  | `check` | [`FinalPromotionCheckV1`](#finalpromotioncheckv1) | 6 |
+
+## `FinalPromotionCheckSubjectV1` {#finalpromotionchecksubjectv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `current` | [`SignerOperationAuditHeadV1`](#signeroperationauditheadv1) | 0 |
+  | `before_provider` | [`FinalPromotionOperationRecordV1`](#finalpromotionoperationrecordv1) | 1 |
+  | `after_provider` | [`FinalPromotionOperationRecordV1`](#finalpromotionoperationrecordv1) | 2 |
+  | `before_commit` | [`FinalPromotionOperationRecordV1`](#finalpromotionoperationrecordv1) | 3 |
+  | `after_commit` | [`FinalPromotionOperationRecordV1`](#finalpromotionoperationrecordv1) | 4 |
+  | `before_release` | [`FinalPromotionOperationRecordV1`](#finalpromotionoperationrecordv1) | 5 |
+
+## `FinalPromotionCheckV1` {#finalpromotioncheckv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `challenge` | [`Array<u8, 32>`](#array-u8-32) |
+  | `network_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `expected_operator` | [`AccountId`](#accountid) |
+  | `minimum_height` | `u64` |
+  | `minimum_block_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `request` | [`SignerFinalPromotionRequestV1`](#signerfinalpromotionrequestv1) |
+  | `subject` | [`FinalPromotionCheckSubjectV1`](#finalpromotionchecksubjectv1) |
+
+## `FinalPromotionCompleteV1` {#finalpromotioncompletev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `intent` | [`SignerOperationIntentV1`](#signeroperationintentv1) |
+  | `custody` | [`SignerOperationCustodyV1`](#signeroperationcustodyv1) |
+  | `reservation` | [`SignerOperationReservationV1`](#signeroperationreservationv1) |
+  | `commitment` | [`SignerOperationCommitmentV1`](#signeroperationcommitmentv1) |
+  | `signatures_digest` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `FinalPromotionCompletedV1` {#finalpromotioncompletedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `commitment` | [`SignerOperationCommitmentV1`](#signeroperationcommitmentv1) |
+  | `signatures_digest` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `FinalPromotionCustodyRecordV1` {#finalpromotioncustodyrecordv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `deployment_id` | `String` |
+  | `revision` | `u64` |
+  | `predecessor_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `request_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `execution` | [`FinalPromotionExecutionV1`](#finalpromotionexecutionv1) |
+  | `control_state` | [`Vec<u8>`](#vec-u8) |
+  | `enrollment` | [`Option<Vec<u8>>`](#option-vec-u8) |
+
+## `FinalPromotionExecutionV1` {#finalpromotionexecutionv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `height` | `u64` |
+  | `ordinal` | `u32` |
+  | `recorded_at_unix_ms` | `u64` |
+  | `authority` | [`AccountId`](#accountid) |
+
+## `FinalPromotionExpireV1` {#finalpromotionexpirev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `operation_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `reservation` | [`SignerOperationReservationV1`](#signeroperationreservationv1) |
+
+## `FinalPromotionOperationOriginV1` {#finalpromotionoperationoriginv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `entry_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `entry_index` | `u32` |
+
+## `FinalPromotionOperationOutcomeV1` {#finalpromotionoperationoutcomev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `reserved` | &mdash; | 0 |
+  | `completed` | [`FinalPromotionCompletedV1`](#finalpromotioncompletedv1) | 1 |
+  | `expired` | &mdash; | 2 |
+  | `invalidated` | &mdash; | 3 |
+
+## `FinalPromotionOperationRecordV1` {#finalpromotionoperationrecordv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `deployment_id` | `String` |
+  | `revision` | `u64` |
+  | `predecessor_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `request_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `execution` | [`FinalPromotionExecutionV1`](#finalpromotionexecutionv1) |
+  | `execution_origin` | [`Option<FinalPromotionOperationOriginV1>`](#option-finalpromotionoperationoriginv1) |
+  | `intent` | [`SignerOperationIntentV1`](#signeroperationintentv1) |
+  | `custody` | [`SignerOperationCustodyV1`](#signeroperationcustodyv1) |
+  | `reservation` | [`SignerOperationReservationV1`](#signeroperationreservationv1) |
+  | `reserved` | [`FinalPromotionExecutionV1`](#finalpromotionexecutionv1) |
+  | `reserved_origin` | [`FinalPromotionOperationOriginV1`](#finalpromotionoperationoriginv1) |
+  | `outcome` | [`FinalPromotionOperationOutcomeV1`](#finalpromotionoperationoutcomev1) |
+
+## `FinalPromotionReserveV1` {#finalpromotionreservev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `intent` | [`SignerOperationIntentV1`](#signeroperationintentv1) |
+  | `custody` | [`SignerOperationCustodyV1`](#signeroperationcustodyv1) |
+
+## `FinalPromotionRevocationV1` {#finalpromotionrevocationv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `signer` | `bool` |
+  | `attester` | `bool` |
+
+## `FinalityValidator` {#finalityvalidator}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `public_key` | [`PublicKey`](#publickey) |
+  | `proof_of_possession` | [`Vec<u8>`](#vec-u8) |
+
 ## `FinalizeSmartContractCodeUpload` {#finalizesmartcontractcodeupload}
 
 **Type:** Struct
@@ -4122,7 +6669,7 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `code_hash` | [`Hash`](#hash) |
+  | `artifact_id` | [`ContractArtifactId`](#contractartifactid) |
   | `total_size` | `u64` |
   | `chunk_count` | `u32` |
 
@@ -4139,28 +6686,13 @@
   | `session_id` | [`Array<u8, 32>`](#array-u8-32) |
   | `roster_hash` | [`Array<u8, 32>`](#array-u8-32) |
   | `transcript_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `context` | [`GlobalThresholdBeaconPulseContextV1`](#globalthresholdbeaconpulsecontextv1) |
   | `height` | `u64` |
   | `round` | `u64` |
   | `finalized_chain_anchor` | [`GlobalThresholdBeaconChainAnchorV1`](#globalthresholdbeaconchainanchorv1) |
   | `signature` | [`Array<u8, 48>`](#array-u8-48) |
   | `seed` | [`Array<u8, 32>`](#array-u8-32) |
   | `pulse_id` | [`Array<u8, 32>`](#array-u8-32) |
-
-## `FinalizedNextEpochSnapshot` {#finalizednextepochsnapshot}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `epoch` | `u64` |
-  | `epoch_end_height` | `u64` |
-  | `mode` | [`ConsensusMode`](#consensusmode) |
-  | `roster` | [`Vec<ValidatorPower>`](#vec-validatorpower) |
-  | `validator_set_pops` | [`Vec<Vec<u8>>`](#vec-vec-u8) |
-  | `quorum` | [`DualQuorum`](#dualquorum) |
-  | `leader_seed` | [`Array<u8, 32>`](#array-u8-32) |
 
 ## `FindAbiVersion` {#findabiversion}
 
@@ -4238,6 +6770,16 @@
   | --: | :-- |
   | `id` | [`AssetDefinitionId`](#assetdefinitionid) |
 
+## `FindAssetDefinitionDirectHome` {#findassetdefinitiondirecthome}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `id` | [`AssetDefinitionId`](#assetdefinitionid) |
+
 ## `FindAssetEscrowById` {#findassetescrowbyid}
 
 **Type:** Struct
@@ -4248,7 +6790,7 @@
   | --: | :-- |
   | `escrow_id` | [`EscrowId`](#escrowid) |
 
-## `FindContractManifestByCodeHash` {#findcontractmanifestbycodehash}
+## `FindAssetEscrowsByAssetDefinitionV1` {#findassetescrowsbyassetdefinitionv1}
 
 **Type:** Struct
 
@@ -4256,7 +6798,66 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `code_hash` | [`Hash`](#hash) |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `expected_incarnation` | [`Hash`](#hash) |
+
+## `FindAssetFiContextV1` {#findassetficontextv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `target` | [`AssetFiContextTargetV1`](#assetficontexttargetv1) |
+  | `expected_incarnation` | [`Hash`](#hash) |
+  | `expected_uid` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `FindAssetFiTransferReceiptV1` {#findassetfitransferreceiptv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `expected_incarnation` | [`Hash`](#hash) |
+  | `account_id` | [`AccountId`](#accountid) |
+  | `execution_call_hash` | [`Hash`](#hash) |
+  | `transcript_index` | `u64` |
+
+## `FindAssetUidPoliciesV1` {#findassetuidpoliciesv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `uid` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
+  | `wallet_account_id` | [`Option<AccountId>`](#option-accountid) |
+
+## `FindBondById` {#findbondbyid}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `bond` | [`AssetDefinitionId`](#assetdefinitionid) |
+
+## `FindContractManifestByArtifactId` {#findcontractmanifestbyartifactid}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `artifact_id` | [`ContractArtifactId`](#contractartifactid) |
 
 ## `FindDaPinIntentByAlias` {#finddapinintentbyalias}
 
@@ -4400,23 +7001,35 @@
   | `SorafsPopRegistryStatus` | &mdash; | 39 |
   | `SorafsCitizenBond` | [`Array<u8, 32>`](#array-u8-32) | 40 |
   | `SorafsCitizenBondSnapshot` | &mdash; | 41 |
-  | `SorafsAnonymousServiceEscrow` | [`Array<u8, 32>`](#array-u8-32) | 42 |
-  | `SorafsRepairTask` | `String` | 43 |
-  | `SorafsRepairStatus` | &mdash; | 44 |
-  | `SorafsProofOutcome` | [`SorafsProofOutcomeFindErrorV1`](#sorafsproofoutcomefinderrorv1) | 45 |
-  | `SorafsReputationJournalAuthorityPolicy` | &mdash; | 46 |
-  | `SorafsReputationJournalEvent` | [`ReputationJournalSourceIdV1`](#reputationjournalsourceidv1) | 47 |
-  | `SorafsModerationPolicy` | &mdash; | 48 |
-  | `SorafsModerationAppeal` | `String` | 49 |
-  | `SorafsModerationJurorEligibility` | `String` | 50 |
-  | `SorafsAnonymousJurorCandidacy` | [`Array<u8, 32>`](#array-u8-32) | 51 |
-  | `SorafsModerationCase` | `String` | 52 |
-  | `SorafsModerationCommit` | `String` | 53 |
-  | `SorafsModerationReveal` | `String` | 54 |
-  | `SorafsModerationChallenge` | `String` | 55 |
-  | `SorafsModerationOutcome` | `String` | 56 |
-  | `SorafsModerationNoShow` | `String` | 57 |
-  | `SorafsModerationStatus` | &mdash; | 58 |
+  | `SorafsRepairTask` | `String` | 42 |
+  | `SorafsRepairStatus` | &mdash; | 43 |
+  | `SorafsProofOutcome` | [`SorafsProofOutcomeFindErrorV1`](#sorafsproofoutcomefinderrorv1) | 44 |
+  | `SorafsReputationJournalAuthorityPolicy` | &mdash; | 45 |
+  | `SorafsReputationJournalEvent` | [`ReputationJournalSourceIdV1`](#reputationjournalsourceidv1) | 46 |
+  | `SorafsModerationPolicy` | &mdash; | 47 |
+  | `SorafsModerationAppeal` | `String` | 48 |
+  | `SorafsModerationJurorEligibility` | `String` | 49 |
+  | `SorafsModerationCase` | `String` | 50 |
+  | `SorafsModerationCommit` | `String` | 51 |
+  | `SorafsModerationReveal` | `String` | 52 |
+  | `SorafsModerationChallenge` | `String` | 53 |
+  | `SorafsModerationOutcome` | `String` | 54 |
+  | `SorafsModerationNoShow` | `String` | 55 |
+  | `SorafsModerationStatus` | &mdash; | 56 |
+  | `GameSession` | [`Hash`](#hash) | 57 |
+  | `ExecutionProofVerification` | [`Hash`](#hash) | 58 |
+  | `SettlementReceipt` | [`SettlementId`](#settlementid) | 59 |
+  | `Bond` | [`AssetDefinitionId`](#assetdefinitionid) | 60 |
+
+## `FindExecutionProofVerificationById` {#findexecutionproofverificationbyid}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `verification_id` | [`Hash`](#hash) |
 
 ## `FindExecutorDataModel` {#findexecutordatamodel}
 
@@ -4446,7 +7059,7 @@
 
 **Type:** Zero-Size Type (unit type, null type)
 
-## `FindLaneRelayEnvelopeByRef` {#findlanerelayenvelopebyref}
+## `FindGameSessionById` {#findgamesessionbyid}
 
 **Type:** Struct
 
@@ -4454,7 +7067,7 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `relay_ref` | [`LaneRelayEnvelopeRef`](#lanerelayenveloperef) |
+  | `session_id` | [`Hash`](#hash) |
 
 ## `FindLatestDefiOracleAttestation` {#findlatestdefioracleattestation}
 
@@ -4586,6 +7199,16 @@
   | --: | :-- |
   | `id` | [`NftId`](#nftid) |
 
+## `FindNftSaleOfferById` {#findnftsaleofferbyid}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `offer_id` | [`Hash`](#hash) |
+
 ## `FindOracleChangeById` {#findoraclechangebyid}
 
 **Type:** Struct
@@ -4640,7 +7263,7 @@
   | --: | :-- |
   | `id` | [`ProofId`](#proofid) |
 
-## `FindSorafsAnonymousJurorCandidacy` {#findsorafsanonymousjurorcandidacy}
+## `FindSettlementReceiptById` {#findsettlementreceiptbyid}
 
 **Type:** Struct
 
@@ -4648,17 +7271,7 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `action_digest` | [`Array<u8, 32>`](#array-u8-32) |
-
-## `FindSorafsAnonymousServiceEscrowById` {#findsorafsanonymousserviceescrowbyid}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `escrow_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `id` | [`SettlementId`](#settlementid) |
 
 ## `FindSorafsCitizenBondBySerialCommitment` {#findsorafscitizenbondbyserialcommitment}
 
@@ -5222,6 +7835,70 @@
   | `cursor` | [`NonZero<u64>`](#nonzero-u64) |
   | `gas_budget` | [`Option<u64>`](#option-u64) |
 
+## `FraudAdmissionAttesterV1` {#fraudadmissionattesterv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `engine_id` | `String` |
+  | `public_key` | [`PublicKey`](#publickey) |
+
+## `FraudAdmissionPolicyV1` {#fraudadmissionpolicyv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u8` |
+  | `enabled` | `bool` |
+  | `required_minimum_band` | [`Option<FraudRiskBandV1>`](#option-fraudriskbandv1) |
+  | `missing_assessment_permitted` | `bool` |
+  | `attesters` | [`Vec<FraudAdmissionAttesterV1>`](#vec-fraudadmissionattesterv1) |
+
+## `FraudRiskBandV1` {#fraudriskbandv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `low` | &mdash; | 0 |
+  | `medium` | &mdash; | 1 |
+  | `high` | &mdash; | 2 |
+  | `critical` | &mdash; | 3 |
+
+## `FundBondCashflow` {#fundbondcashflow}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `bond` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `index` | `u16` |
+  | `source` | [`AssetId`](#assetid) |
+
+## `FxCorridorOracleEvidence` {#fxcorridororacleevidence}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `feed_id` | [`FeedId`](#feedid) |
+  | `feed_config_version` | [`FeedConfigVersion`](#feedconfigversion) |
+  | `slot` | `u64` |
+  | `request_hash` | [`Hash`](#hash) |
+  | `event_hash` | [`HashOf<FeedEvent>`](#hashof-feedevent) |
+
 ## `FxCorridorPolicy` {#fxcorridorpolicy}
 
 **Type:** Struct
@@ -5259,6 +7936,32 @@
   | `policies` | [`SortedMap<Name, FxCorridorPolicy>`](#sortedmap-name-fxcorridorpolicy) |
   | `usage` | [`SortedMap<Name, FxCorridorUsage>`](#sortedmap-name-fxcorridorusage) |
 
+## `FxCorridorPricingContext` {#fxcorridorpricingcontext}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `policy_id` | [`Name`](#name) |
+  | `policy_revision` | `u64` |
+  | `oracle_evidence` | [`FxCorridorOracleEvidence`](#fxcorridororacleevidence) |
+  | `oracle_recorded_at_ms` | `u64` |
+  | `oracle_rate` | [`ObservationValue`](#observationvalue) |
+
+## `FxCorridorSettlementDetails` {#fxcorridorsettlementdetails}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `source` | [`ResolvedSettlementMovement`](#resolvedsettlementmovement) |
+  | `destination` | [`ResolvedSettlementMovement`](#resolvedsettlementmovement) |
+  | `context` | [`FxCorridorPricingContext`](#fxcorridorpricingcontext) |
+
 ## `FxCorridorUsage` {#fxcorridorusage}
 
 **Type:** Struct
@@ -5272,6 +7975,279 @@
   | `source_amount` | [`Quantity`](#quantity) |
   | `destination_amount` | [`Quantity`](#quantity) |
 
+## `GameAccessV1` {#gameaccessv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `public` | &mdash; | 0 |
+  | `invite` | [`PublicKey`](#publickey) | 1 |
+
+## `GameCheckpointV1` {#gamecheckpointv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `session_id` | [`Hash`](#hash) |
+  | `epoch` | `u64` |
+  | `tick` | `u32` |
+  | `transcript_root` | [`Hash`](#hash) |
+  | `state_root` | [`Hash`](#hash) |
+  | `terminal` | `bool` |
+
+## `GameCommitmentSetV1` {#gamecommitmentsetv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `session_id` | [`Hash`](#hash) |
+  | `epoch` | `u64` |
+  | `start_tick` | `u32` |
+  | `parent_transcript_root` | [`Hash`](#hash) |
+  | `commitments` | [`Vec<Hash>`](#vec-hash) |
+  | `signatures` | [`Vec<GameSlotSignatureV1>`](#vec-gameslotsignaturev1) |
+
+## `GameForcedBatchV1` {#gameforcedbatchv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `epoch` | `u64` |
+  | `start_tick` | `u32` |
+  | `inputs` | [`Vec<Vec<u8>>`](#vec-vec-u8) |
+  | `dnf_slots` | [`Vec<u8>`](#vec-u8) |
+
+## `GameItemStakeV1` {#gameitemstakev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `slot` | `u8` |
+  | `nft_id` | [`NftId`](#nftid) |
+  | `custody` | [`AccountId`](#accountid) |
+  | `metadata_hash` | [`Hash`](#hash) |
+  | `recipient` | [`Option<AccountId>`](#option-accountid) |
+  | `claimed` | `bool` |
+
+## `GameManifestV1` {#gamemanifestv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u16` |
+  | `application_id` | [`Hash`](#hash) |
+  | `profile_id` | [`Hash`](#hash) |
+  | `application_parameters` | [`Vec<u8>`](#vec-u8) |
+  | `min_participants` | `u8` |
+  | `max_participants` | `u8` |
+  | `batch_ticks` | `u16` |
+  | `max_ticks` | `u32` |
+  | `max_input_bytes` | `u16` |
+  | `max_participant_data_bytes` | `u16` |
+  | `access` | [`GameAccessV1`](#gameaccessv1) |
+  | `payout_policy` | [`GamePayoutPolicyV1`](#gamepayoutpolicyv1) |
+
+## `GameOutcomeV1` {#gameoutcomev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `terminal_tick` | `u32` |
+  | `winner_slots` | [`Vec<u8>`](#vec-u8) |
+  | `result` | [`Vec<u8>`](#vec-u8) |
+
+## `GameParticipantV1` {#gameparticipantv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `account` | [`AccountId`](#accountid) |
+  | `input_key` | [`PublicKey`](#publickey) |
+  | `application_data` | [`Vec<u8>`](#vec-u8) |
+  | `dnf_at_tick` | [`Option<u32>`](#option-u32) |
+
+## `GamePayoutClaimV1` {#gamepayoutclaimv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `slot` | `u8` |
+  | `amount` | [`Quantity`](#quantity) |
+  | `remaining` | [`Quantity`](#quantity) |
+
+## `GamePayoutPolicyV1` {#gamepayoutpolicyv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `no_payout` | &mdash; | 0 |
+  | `equal_winners_or_refund` | &mdash; | 1 |
+
+## `GamePhaseV1` {#gamephasev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `lobby` | &mdash; | 0 |
+  | `playing` | &mdash; | 1 |
+  | `selecting_checkpoint` | &mdash; | 2 |
+  | `forced_commit` | &mdash; | 3 |
+  | `forced_reveal` | &mdash; | 4 |
+  | `awaiting_proof` | &mdash; | 5 |
+  | `settled` | &mdash; | 6 |
+  | `cancelled` | &mdash; | 7 |
+
+## `GameResourceReservationRecordV1` {#gameresourcereservationrecordv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `slot` | `u8` |
+  | `nft_id` | [`NftId`](#nftid) |
+  | `metadata_hash` | [`Hash`](#hash) |
+  | `role_id` | [`Hash`](#hash) |
+  | `policy` | [`GameResourceReturnPolicyV1`](#gameresourcereturnpolicyv1) |
+  | `original_owner` | [`AccountId`](#accountid) |
+  | `custody` | [`AccountId`](#accountid) |
+  | `reserved_at_height` | `u64` |
+  | `released_at_height` | [`Option<u64>`](#option-u64) |
+
+## `GameResourceReturnPolicyV1` {#gameresourcereturnpolicyv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `return_to_original_owner_at_terminal` | &mdash; | 0 |
+
+## `GameSessionEventV1` {#gamesessioneventv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `session_id` | [`Hash`](#hash) |
+  | `revision` | `u64` |
+  | `phase` | `u8` |
+  | `dispute_root` | [`Hash`](#hash) |
+  | `payout_claims` | [`Vec<GamePayoutClaimV1>`](#vec-gamepayoutclaimv1) |
+  | `item_stakes` | [`Vec<GameItemStakeV1>`](#vec-gameitemstakev1) |
+  | `resources` | [`Vec<GameResourceReservationRecordV1>`](#vec-gameresourcereservationrecordv1) |
+  | `terminal_at_height` | [`Option<u64>`](#option-u64) |
+
+## `GameSessionRecordV1` {#gamesessionrecordv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u16` |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `session_id` | [`Hash`](#hash) |
+  | `manifest` | [`GameManifestV1`](#gamemanifestv1) |
+  | `profile_id` | [`Hash`](#hash) |
+  | `manifest_hash` | [`Hash`](#hash) |
+  | `asset_definition` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `stake` | [`Quantity`](#quantity) |
+  | `payout_scale` | `u32` |
+  | `custody` | [`AccountId`](#accountid) |
+  | `liability` | [`Quantity`](#quantity) |
+  | `payout_claims` | [`Vec<GamePayoutClaimV1>`](#vec-gamepayoutclaimv1) |
+  | `item_stakes` | [`Vec<GameItemStakeV1>`](#vec-gameitemstakev1) |
+  | `resources` | [`Vec<GameResourceReservationRecordV1>`](#vec-gameresourcereservationrecordv1) |
+  | `participants` | [`Vec<GameParticipantV1>`](#vec-gameparticipantv1) |
+  | `roster_hash` | [`Hash`](#hash) |
+  | `phase` | [`GamePhaseV1`](#gamephasev1) |
+  | `revision` | `u64` |
+  | `epoch` | `u64` |
+  | `deadline_height` | `u64` |
+  | `checkpoint` | [`Option<SignedGameCheckpointV1>`](#option-signedgamecheckpointv1) |
+  | `pending_certificate` | [`Option<GameCommitmentSetV1>`](#option-gamecommitmentsetv1) |
+  | `next_tick` | `u32` |
+  | `input_commitments` | [`Vec<Option<Hash>>`](#vec-option-hash) |
+  | `input_reveals` | [`Vec<Option<Vec<u8>>>`](#vec-option-vec-u8) |
+  | `transcript_anchors` | [`Vec<GameTranscriptAnchorV1>`](#vec-gametranscriptanchorv1) |
+  | `forced_batches` | [`Vec<GameForcedBatchV1>`](#vec-gameforcedbatchv1) |
+  | `dispute_root` | [`Hash`](#hash) |
+  | `verification_id` | [`Option<Hash>`](#option-hash) |
+  | `terminal_at_height` | [`Option<u64>`](#option-u64) |
+  | `result` | [`Option<GameOutcomeV1>`](#option-gameoutcomev1) |
+
+## `GameSlotSignatureV1` {#gameslotsignaturev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `slot` | `u8` |
+  | `signature` | [`Signature`](#signature) |
+
+## `GameTranscriptAnchorV1` {#gametranscriptanchorv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `tick` | `u32` |
+  | `transcript_root` | [`Hash`](#hash) |
+
+## `GenesisAdmissionOriginV1` {#genesisadmissionoriginv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `entrypoint_index` | `u32` |
+  | `instruction_digest` | [`Array<u8, 32>`](#array-u8-32) |
+
 ## `GlobalThresholdBeaconChainAnchorV1` {#globalthresholdbeaconchainanchorv1}
 
 **Type:** Struct
@@ -5283,26 +8259,31 @@
   | `height` | `u64` |
   | `block_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
 
+## `GlobalThresholdBeaconPulseContextV1` {#globalthresholdbeaconpulsecontextv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `instance` | [`Array<u8, 32>`](#array-u8-32) |
+  | `epoch` | `u64` |
+  | `epoch_context_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `parent_consensus_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `parent_result` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `GoldilocksDigest384V1` {#goldilocksdigest384v1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 48>`](#array-u8-48)
+
 ## `GovernanceAttemptId` {#governanceattemptid}
 
 **Type:** Alias
 
 **To:** [`Array<u8, 32>`](#array-u8-32)
-
-## `GovernanceAttemptStatusV1` {#governanceattemptstatusv1}
-
-**Type:** Enum
-
-**Variants:**
-
-  | Variant name | Variant value | Discriminant |
-  | --: | :-- | --- |
-  | `Active` | &mdash; | 0 |
-  | `Certified` | &mdash; | 1 |
-  | `Rejected` | &mdash; | 2 |
-  | `Enacted` | &mdash; | 3 |
-  | `Superseded` | &mdash; | 4 |
-  | `ExecutionFailed` | &mdash; | 5 |
 
 ## `GovernanceBallotAccepted` {#governanceballotaccepted}
 
@@ -5366,35 +8347,6 @@
   | `owner` | [`AccountId`](#accountid) |
   | `amount` | [`Quantity`](#quantity) |
 
-## `GovernanceCitizenServiceRecorded` {#governancecitizenservicerecorded}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `owner` | [`AccountId`](#accountid) |
-  | `epoch` | `u64` |
-  | `role` | `String` |
-  | `event` | [`CitizenServiceEvent`](#citizenserviceevent) |
-  | `slashed` | [`Quantity`](#quantity) |
-  | `cooldown_until` | `u64` |
-
-## `GovernanceCouncilPersisted` {#governancecouncilpersisted}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `epoch` | `u64` |
-  | `members_count` | `u32` |
-  | `alternates_count` | `u32` |
-  | `candidates_count` | `u32` |
-  | `derived_by` | [`CouncilDerivationKind`](#councilderivationkind) |
-
 ## `GovernanceEvent` {#governanceevent}
 
 **Type:** Enum
@@ -5404,34 +8356,23 @@
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
   | `ProposalSubmitted` | [`GovernanceProposalSubmitted`](#governanceproposalsubmitted) | 0 |
-  | `ProposalApproved` | [`GovernanceProposalApproved`](#governanceproposalapproved) | 1 |
-  | `ProposalRejected` | [`GovernanceProposalRejected`](#governanceproposalrejected) | 2 |
-  | `LockCreated` | [`GovernanceLockCreated`](#governancelockcreated) | 3 |
-  | `LockExtended` | [`GovernanceLockExtended`](#governancelockextended) | 4 |
-  | `ProposalEnacted` | [`GovernanceProposalEnacted`](#governanceproposalenacted) | 5 |
-  | `BallotAccepted` | [`GovernanceBallotAccepted`](#governanceballotaccepted) | 6 |
-  | `BallotRejected` | [`GovernanceBallotRejected`](#governanceballotrejected) | 7 |
-  | `ReferendumOpened` | [`GovernanceReferendumOpened`](#governancereferendumopened) | 8 |
-  | `ReferendumClosed` | [`GovernanceReferendumClosed`](#governancereferendumclosed) | 9 |
-  | `LockUnlocked` | [`GovernanceLockUnlocked`](#governancelockunlocked) | 10 |
-  | `CouncilPersisted` | [`GovernanceCouncilPersisted`](#governancecouncilpersisted) | 11 |
-  | `ParliamentSelected` | [`GovernanceParliamentSelected`](#governanceparliamentselected) | 12 |
-  | `ParliamentAttemptCreated` | [`GovernanceParliamentAttemptCreated`](#governanceparliamentattemptcreated) | 13 |
-  | `ParliamentLifecycleTransitionApplied` | [`GovernanceParliamentLifecycleTransitionApplied`](#governanceparliamentlifecycletransitionapplied) | 14 |
-  | `ParliamentAttemptTransitioned` | [`GovernanceParliamentAttemptTransitioned`](#governanceparliamentattempttransitioned) | 15 |
-  | `ParliamentBodyTransitioned` | [`GovernanceParliamentBodyTransitioned`](#governanceparliamentbodytransitioned) | 16 |
-  | `ParliamentBallotTransitioned` | [`GovernanceParliamentBallotTransitioned`](#governanceparliamentballottransitioned) | 17 |
-  | `ParliamentConcentrationWarning` | [`GovernanceParliamentConcentrationWarning`](#governanceparliamentconcentrationwarning) | 18 |
-  | `ParliamentAggregateFinalized` | [`GovernanceParliamentAggregateFinalized`](#governanceparliamentaggregatefinalized) | 19 |
-  | `ThresholdKeyLifecycleApplied` | [`GovernanceThresholdKeyLifecycleAppliedV1`](#governancethresholdkeylifecycleappliedv1) | 20 |
-  | `ParliamentCertificateIssued` | [`GovernanceParliamentCertificateIssued`](#governanceparliamentcertificateissued) | 21 |
-  | `ParliamentApprovalRecorded` | [`GovernanceParliamentApprovalRecorded`](#governanceparliamentapprovalrecorded) | 22 |
-  | `LockSlashed` | [`GovernanceLockSlashed`](#governancelockslashed) | 23 |
-  | `LockRestituted` | [`GovernanceLockRestituted`](#governancelockrestituted) | 24 |
-  | `CitizenRegistered` | [`GovernanceCitizenRegistered`](#governancecitizenregistered) | 25 |
-  | `CitizenRevoked` | [`GovernanceCitizenRevoked`](#governancecitizenrevoked) | 26 |
-  | `CitizenServiceRecorded` | [`GovernanceCitizenServiceRecorded`](#governancecitizenservicerecorded) | 27 |
-  | `ReferendumDecided` | [`GovernanceReferendumDecided`](#governancereferendumdecided) | 28 |
+  | `ProposalRejected` | [`GovernanceProposalRejected`](#governanceproposalrejected) | 1 |
+  | `LockCreated` | [`GovernanceLockCreated`](#governancelockcreated) | 2 |
+  | `LockExtended` | [`GovernanceLockExtended`](#governancelockextended) | 3 |
+  | `ProposalEnacted` | [`GovernanceProposalEnacted`](#governanceproposalenacted) | 4 |
+  | `BallotAccepted` | [`GovernanceBallotAccepted`](#governanceballotaccepted) | 5 |
+  | `BallotRejected` | [`GovernanceBallotRejected`](#governanceballotrejected) | 6 |
+  | `ReferendumOpened` | [`GovernanceReferendumOpened`](#governancereferendumopened) | 7 |
+  | `ReferendumClosed` | [`GovernanceReferendumClosed`](#governancereferendumclosed) | 8 |
+  | `LockUnlocked` | [`GovernanceLockUnlocked`](#governancelockunlocked) | 9 |
+  | `ParliamentAttemptCreated` | [`GovernanceParliamentAttemptCreated`](#governanceparliamentattemptcreated) | 10 |
+  | `ParliamentLifecycleTransitionApplied` | [`GovernanceParliamentLifecycleTransitionApplied`](#governanceparliamentlifecycletransitionapplied) | 11 |
+  | `ThresholdKeyLifecycleApplied` | [`GovernanceThresholdKeyLifecycleAppliedV1`](#governancethresholdkeylifecycleappliedv1) | 12 |
+  | `LockSlashed` | [`GovernanceLockSlashed`](#governancelockslashed) | 13 |
+  | `LockRestituted` | [`GovernanceLockRestituted`](#governancelockrestituted) | 14 |
+  | `CitizenRegistered` | [`GovernanceCitizenRegistered`](#governancecitizenregistered) | 15 |
+  | `CitizenRevoked` | [`GovernanceCitizenRevoked`](#governancecitizenrevoked) | 16 |
+  | `ReferendumDecided` | [`GovernanceReferendumDecided`](#governancereferendumdecided) | 17 |
 
 ## `GovernanceEventFilter` {#governanceeventfilter}
 
@@ -5456,34 +8397,23 @@
   | Field name | Field value |
   | --: | :-- |
   | `ProposalSubmitted` | `0x1` |
-  | `ProposalApproved` | `0x2` |
-  | `ProposalRejected` | `0x4` |
-  | `LockCreated` | `0x8` |
-  | `LockExtended` | `0x10` |
-  | `ProposalEnacted` | `0x20` |
-  | `BallotAccepted` | `0x40` |
-  | `BallotRejected` | `0x80` |
-  | `ReferendumOpened` | `0x100` |
-  | `ReferendumClosed` | `0x200` |
-  | `LockUnlocked` | `0x400` |
-  | `CouncilPersisted` | `0x800` |
-  | `ParliamentSelected` | `0x1000` |
-  | `ParliamentAttemptCreated` | `0x2000` |
-  | `ParliamentLifecycleTransitionApplied` | `0x4000` |
-  | `ParliamentAttemptTransitioned` | `0x8000` |
-  | `ParliamentBodyTransitioned` | `0x10000` |
-  | `ParliamentBallotTransitioned` | `0x20000` |
-  | `ParliamentConcentrationWarning` | `0x40000` |
-  | `ParliamentAggregateFinalized` | `0x80000` |
-  | `ThresholdKeyLifecycleApplied` | `0x100000` |
-  | `ParliamentCertificateIssued` | `0x200000` |
-  | `ParliamentApprovalRecorded` | `0x400000` |
-  | `LockSlashed` | `0x800000` |
-  | `LockRestituted` | `0x1000000` |
-  | `CitizenRegistered` | `0x2000000` |
-  | `CitizenRevoked` | `0x4000000` |
-  | `CitizenServiceRecorded` | `0x8000000` |
-  | `ReferendumDecided` | `0x10000000` |
+  | `ProposalRejected` | `0x2` |
+  | `LockCreated` | `0x4` |
+  | `LockExtended` | `0x8` |
+  | `ProposalEnacted` | `0x10` |
+  | `BallotAccepted` | `0x20` |
+  | `BallotRejected` | `0x40` |
+  | `ReferendumOpened` | `0x80` |
+  | `ReferendumClosed` | `0x100` |
+  | `LockUnlocked` | `0x200` |
+  | `ParliamentAttemptCreated` | `0x400` |
+  | `ParliamentLifecycleTransitionApplied` | `0x800` |
+  | `ThresholdKeyLifecycleApplied` | `0x1000` |
+  | `LockSlashed` | `0x2000` |
+  | `LockRestituted` | `0x4000` |
+  | `CitizenRegistered` | `0x8000` |
+  | `CitizenRevoked` | `0x10000` |
+  | `ReferendumDecided` | `0x20000` |
 
 ## `GovernanceExpectedHeadAbsentV1` {#governanceexpectedheadabsentv1}
 
@@ -5627,37 +8557,6 @@
   | `satisfied` | `u64` |
   | `rejected` | `u64` |
 
-## `GovernanceParliamentAggregateFinalized` {#governanceparliamentaggregatefinalized}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `proposal_content_id` | [`ProposalContentId`](#proposalcontentid) |
-  | `governance_attempt_id` | [`GovernanceAttemptId`](#governanceattemptid) |
-  | `body_instance_id` | [`BodyInstanceId`](#bodyinstanceid) |
-  | `ballot_attempt_id` | [`BallotAttemptId`](#ballotattemptid) |
-  | `tally` | [`ParliamentAggregateTallyV1`](#parliamentaggregatetallyv1) |
-  | `outcome` | [`ParliamentAggregateOutcomeV1`](#parliamentaggregateoutcomev1) |
-  | `requires_confirmation` | `bool` |
-  | `at_height` | `u64` |
-
-## `GovernanceParliamentApprovalRecorded` {#governanceparliamentapprovalrecorded}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `proposal_id` | [`Array<u8, 32>`](#array-u8-32) |
-  | `epoch` | `u64` |
-  | `body` | [`ParliamentBody`](#parliamentbody) |
-  | `approvals` | `u32` |
-  | `required` | `u32` |
-
 ## `GovernanceParliamentAttemptCreated` {#governanceparliamentattemptcreated}
 
 **Type:** Struct
@@ -5673,72 +8572,6 @@
   | `policy_version` | `u64` |
   | `effect_preimage_hash` | [`Array<u8, 32>`](#array-u8-32) |
   | `expected_head` | [`GovernanceExpectedHeadV1`](#governanceexpectedheadv1) |
-  | `at_height` | `u64` |
-
-## `GovernanceParliamentAttemptTransitioned` {#governanceparliamentattempttransitioned}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `proposal_content_id` | [`ProposalContentId`](#proposalcontentid) |
-  | `governance_attempt_id` | [`GovernanceAttemptId`](#governanceattemptid) |
-  | `stage` | [`GovernanceStageV1`](#governancestagev1) |
-  | `status` | [`GovernanceAttemptStatusV1`](#governanceattemptstatusv1) |
-  | `at_height` | `u64` |
-
-## `GovernanceParliamentBallotTransitioned` {#governanceparliamentballottransitioned}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `body_instance_id` | [`BodyInstanceId`](#bodyinstanceid) |
-  | `ballot_attempt_id` | [`BallotAttemptId`](#ballotattemptid) |
-  | `status` | [`BallotAttemptStatusV1`](#ballotattemptstatusv1) |
-  | `at_height` | `u64` |
-
-## `GovernanceParliamentBodyTransitioned` {#governanceparliamentbodytransitioned}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `governance_attempt_id` | [`GovernanceAttemptId`](#governanceattemptid) |
-  | `body_instance_id` | [`BodyInstanceId`](#bodyinstanceid) |
-  | `body` | [`ParliamentBody`](#parliamentbody) |
-  | `status` | [`BodyInstanceStatusV1`](#bodyinstancestatusv1) |
-  | `at_height` | `u64` |
-
-## `GovernanceParliamentCertificateIssued` {#governanceparliamentcertificateissued}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `certificate_id` | [`GovernanceCertificateId`](#governancecertificateid) |
-  | `proposal_content_id` | [`ProposalContentId`](#proposalcontentid) |
-  | `governance_attempt_id` | [`GovernanceAttemptId`](#governanceattemptid) |
-  | `certified_at_height` | `u64` |
-  | `enact_at_height` | `u64` |
-
-## `GovernanceParliamentConcentrationWarning` {#governanceparliamentconcentrationwarning}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `warning` | [`ParliamentConcentrationWarningV1`](#parliamentconcentrationwarningv1) |
   | `at_height` | `u64` |
 
 ## `GovernanceParliamentLifecycleTransitionApplied` {#governanceparliamentlifecycletransitionapplied}
@@ -5757,27 +8590,6 @@
   | `transition_digest` | [`Array<u8, 32>`](#array-u8-32) |
   | `certificate_id` | [`Option<GovernanceCertificateId>`](#option-governancecertificateid) |
   | `at_height` | `u64` |
-
-## `GovernanceParliamentSelected` {#governanceparliamentselected}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `selection_epoch` | `u64` |
-  | `bodies` | [`ParliamentBodies`](#parliamentbodies) |
-
-## `GovernanceProposalApproved` {#governanceproposalapproved}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `id` | [`Array<u8, 32>`](#array-u8-32) |
 
 ## `GovernanceProposalCounters` {#governanceproposalcounters}
 
@@ -5888,28 +8700,6 @@
   | `Manual` | &mdash; | 3 |
   | `Restitution` | &mdash; | 4 |
 
-## `GovernanceStageV1` {#governancestagev1}
-
-**Type:** Enum
-
-**Variants:**
-
-  | Variant name | Variant value | Discriminant |
-  | --: | :-- | --- |
-  | `Qualification` | &mdash; | 0 |
-  | `Rules` | &mdash; | 1 |
-  | `Agenda` | &mdash; | 2 |
-  | `Interest` | &mdash; | 3 |
-  | `Review` | &mdash; | 4 |
-  | `Coordination` | &mdash; | 5 |
-  | `Mpc` | &mdash; | 6 |
-  | `Fma` | &mdash; | 7 |
-  | `Oversight` | &mdash; | 8 |
-  | `PolicyJury` | &mdash; | 9 |
-  | `ConfirmationJury` | &mdash; | 10 |
-  | `Certification` | &mdash; | 11 |
-  | `Enactment` | &mdash; | 12 |
-
 ## `GovernanceStatus` {#governancestatus}
 
 **Type:** Struct
@@ -5957,21 +8747,6 @@
   | `composability_group_id` | [`Vec<u8>`](#vec-u8) |
   | `epoch_id` | `u64` |
 
-## `Halo2Status` {#halo2status}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `enabled` | `bool` |
-  | `curve` | `String` |
-  | `backend` | `String` |
-  | `max_k` | `u32` |
-  | `verifier_budget_ms` | `u64` |
-  | `verifier_max_batch` | `u32` |
-
 ## `HandleBudget` {#handlebudget}
 
 **Type:** Struct
@@ -6000,6 +8775,12 @@
 
 **To:** [`Array<u8, 32>`](#array-u8-32)
 
+## `Hash32` {#hash32}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
 ## `HashOf<Array<u8, 32>>` {#hashof-array-u8-32}
 
 **Type:** Alias
@@ -6013,6 +8794,12 @@
 **To:** [`Hash`](#hash)
 
 ## `HashOf<BlockHeader>` {#hashof-blockheader}
+
+**Type:** Alias
+
+**To:** [`Hash`](#hash)
+
+## `HashOf<ChainParamsRecord>` {#hashof-chainparamsrecord}
 
 **Type:** Alias
 
@@ -6036,43 +8823,37 @@
 
 **To:** [`Hash`](#hash)
 
-## `HashOf<HeightContext>` {#hashof-heightcontext}
+## `HashOf<EventBox>` {#hashof-eventbox}
 
 **Type:** Alias
 
 **To:** [`Hash`](#hash)
 
-## `HashOf<LaneBlockCommitment>` {#hashof-laneblockcommitment}
+## `HashOf<ExecutionOutputV1>` {#hashof-executionoutputv1}
 
 **Type:** Alias
 
 **To:** [`Hash`](#hash)
 
-## `HashOf<LaneFinalityStatement>` {#hashof-lanefinalitystatement}
+## `HashOf<FastpqOrdinarySourceStatementLeafV1>` {#hashof-fastpqordinarysourcestatementleafv1}
 
 **Type:** Alias
 
 **To:** [`Hash`](#hash)
 
-## `HashOf<MergeLedgerEntry>` {#hashof-mergeledgerentry}
+## `HashOf<FeedEvent>` {#hashof-feedevent}
 
 **Type:** Alias
 
 **To:** [`Hash`](#hash)
 
-## `HashOf<MerkleTree<LaneFinalityStatement>>` {#hashof-merkletree-lanefinalitystatement}
+## `HashOf<FinalizedGlobalThresholdBeaconPulseV1>` {#hashof-finalizedglobalthresholdbeaconpulsev1}
 
 **Type:** Alias
 
 **To:** [`Hash`](#hash)
 
 ## `HashOf<MerkleTree<TransactionEntrypoint>>` {#hashof-merkletree-transactionentrypoint}
-
-**Type:** Alias
-
-**To:** [`Hash`](#hash)
-
-## `HashOf<MerkleTree<TransactionResult>>` {#hashof-merkletree-transactionresult}
 
 **Type:** Alias
 
@@ -6108,53 +8889,17 @@
 
 **To:** [`Hash`](#hash)
 
-## `HashOf<V2FinalityArtifact>` {#hashof-v2finalityartifact}
-
-**Type:** Alias
-
-**To:** [`Hash`](#hash)
-
 ## `HashOf<Vec<InstructionBox>>` {#hashof-vec-instructionbox}
 
 **Type:** Alias
 
 **To:** [`Hash`](#hash)
 
-## `HashOf<Vec<PeerId>>` {#hashof-vec-peerid}
-
-**Type:** Alias
-
-**To:** [`Hash`](#hash)
-
-## `HeightContext` {#heightcontext}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
-  | `protocol_version` | `u16` |
-  | `height` | `u64` |
-  | `epoch` | `u64` |
-  | `epoch_end_height` | `u64` |
-  | `next_epoch_snapshot` | [`Option<FinalizedNextEpochSnapshot>`](#option-finalizednextepochsnapshot) |
-  | `mode` | [`ConsensusMode`](#consensusmode) |
-  | `parent_commit_qc` | [`Option<QuorumCertificate>`](#option-quorumcertificate) |
-  | `snapshot_bootstrap` | [`Option<SnapshotBootstrapAnchor>`](#option-snapshotbootstrapanchor) |
-  | `roster` | [`Vec<ValidatorPower>`](#vec-validatorpower) |
-  | `quorum` | [`DualQuorum`](#dualquorum) |
-  | `nexus_amx_context_hash` | [`Hash`](#hash) |
-  | `execution_policy_hash` | [`Hash`](#hash) |
-  | `da_layout` | [`DataAvailabilityLayout`](#dataavailabilitylayout) |
-  | `leader_seed` | [`Array<u8, 32>`](#array-u8-32) |
-
 ## `HeightContextId` {#heightcontextid}
 
 **Type:** Alias
 
-**To:** [`HashOf<HeightContext>`](#hashof-heightcontext)
+**To:** [`HashOf<ChainParamsRecord>`](#hashof-chainparamsrecord)
 
 ## `IdBox` {#idbox}
 
@@ -6177,6 +8922,63 @@
   | `Permission` | [`Permission`](#permission) | 10 |
   | `CustomParameterId` | [`CustomParameterId`](#customparameterid) | 11 |
   | `RepoAgreementId` | [`RepoAgreementId`](#repoagreementid) | 12 |
+
+## `InitialProviderAdmissionCouncilV1` {#initialprovideradmissioncouncilv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `policy_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `trusted_signers` | [`Vec<Array<u8, 32>>`](#vec-array-u8-32) |
+  | `signature_threshold` | `u8` |
+
+## `InitialProviderAdmissionV1` {#initialprovideradmissionv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `owner` | [`AccountId`](#accountid) |
+  | `material` | [`Vec<u8>`](#vec-u8) |
+
+## `InitializeAssetEscrowReadScopeV1` {#initializeassetescrowreadscopev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `expected_incarnation` | [`Hash`](#hash) |
+  | `expected_revision` | `u64` |
+
+## `InitializeSorafsProviderAdmissionV1` {#initializesorafsprovideradmissionv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `council` | [`InitialProviderAdmissionCouncilV1`](#initialprovideradmissioncouncilv1) |
+  | `providers` | [`Vec<InitialProviderAdmissionV1>`](#vec-initialprovideradmissionv1) |
+
+## `InstalledBeaconEpochBindingV1` {#installedbeaconepochbindingv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `session_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `transcript_hash` | [`Array<u8, 32>`](#array-u8-32) |
 
 ## `InstructionBox` {#instructionbox}
 
@@ -6213,6 +9015,7 @@
   | `AccountAdmission` | [`AccountAdmissionError`](#accountadmissionerror) | 8 |
   | `AssetTransferAdmission` | [`AssetTransferAdmissionError`](#assettransferadmissionerror) | 9 |
   | `InvariantViolation` | `String` | 10 |
+  | `Runtime` | [`RuntimeRejectionV1`](#runtimerejectionv1) | 11 |
 
 ## `InstructionExecutionFail` {#instructionexecutionfail}
 
@@ -6258,6 +9061,18 @@
   | --: | :-- | --- |
   | `SmartContract` | `String` | 0 |
   | `TimeTriggerInThePast` | &mdash; | 1 |
+
+## `InvocationCompletionV1` {#invocationcompletionv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `callback_index` | `u32` |
+  | `trigger_id` | [`TriggerId`](#triggerid) |
+  | `outcome` | [`TriggerCompletedOutcome`](#triggercompletedoutcome) |
 
 ## `IpfsPath` {#ipfspath}
 
@@ -6310,7 +9125,58 @@
 
 **To:** [`Vec<u8>`](#vec-u8)
 
-## `IvmExecutionFail` {#ivmexecutionfail}
+## `IvmFaultKindV1` {#ivmfaultkindv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `OutOfGas` | &mdash; | 0 |
+  | `MemoryLimitExceeded` | &mdash; | 1 |
+  | `MemoryAccessViolation` | &mdash; | 2 |
+  | `MisalignedAccess` | &mdash; | 3 |
+  | `MemoryOutOfBounds` | &mdash; | 4 |
+  | `DecodeError` | &mdash; | 5 |
+  | `InvalidOpcode` | &mdash; | 6 |
+  | `UnknownSyscall` | &mdash; | 7 |
+  | `UnsupportedSyscall` | &mdash; | 8 |
+  | `GasCostOverflow` | &mdash; | 9 |
+  | `Numeric` | [`NumericFaultV1`](#numericfaultv1) | 10 |
+  | `PointerAbi` | [`PointerAbiFaultV1`](#pointerabifaultv1) | 11 |
+  | `AssertionFailed` | &mdash; | 12 |
+  | `ExceededMaxCycles` | &mdash; | 13 |
+  | `InvalidMetadata` | &mdash; | 14 |
+  | `InvalidVectorLength` | &mdash; | 15 |
+  | `MissingHalt` | &mdash; | 16 |
+  | `VectorExtensionDisabled` | &mdash; | 17 |
+  | `ZkExtensionDisabled` | &mdash; | 18 |
+  | `NullifierAlreadyUsed` | &mdash; | 19 |
+  | `PermissionDenied` | &mdash; | 20 |
+  | `PrivacyViolation` | &mdash; | 21 |
+  | `RegisterOutOfBounds` | &mdash; | 22 |
+  | `NoritoInvalid` | &mdash; | 23 |
+  | `AbiTypeNotAllowed` | &mdash; | 24 |
+  | `HostOutputItemsExceeded` | &mdash; | 25 |
+  | `HostOutputBytesExceeded` | &mdash; | 26 |
+  | `AmxBudgetExceeded` | &mdash; | 27 |
+  | `ReentrantCall` | &mdash; | 28 |
+  | `CallDepthExceeded` | &mdash; | 29 |
+
+## `IvmFaultPositionV1` {#ivmfaultpositionv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Initialization` | &mdash; | 0 |
+  | `Execute` | [`IvmFaultPositionV1::Execute`](#ivmfaultpositionv1-execute) | 1 |
+  | `ReturnValidation` | &mdash; | 2 |
+
+## `IvmFaultPositionV1::Execute` {#ivmfaultpositionv1-execute}
 
 **Type:** Struct
 
@@ -6318,7 +9184,52 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `reason` | `String` |
+  | `pc_offset` | `u64` |
+
+## `IvmFaultSiteV1` {#ivmfaultsitev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `code_hash` | [`Hash`](#hash) |
+  | `selector` | [`IvmInvocationSelectorV1`](#ivminvocationselectorv1) |
+  | `position` | [`IvmFaultPositionV1`](#ivmfaultpositionv1) |
+
+## `IvmFaultV1` {#ivmfaultv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `kind` | [`IvmFaultKindV1`](#ivmfaultkindv1) |
+  | `site` | [`IvmFaultSiteV1`](#ivmfaultsitev1) |
+
+## `IvmInvocationSelectorV1` {#ivminvocationselectorv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Generic` | &mdash; | 0 |
+  | `Entrypoint` | `u32` | 1 |
+
+## `IvmPrivateNoteLimitsV1` {#ivmprivatenotelimitsv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `max_input_count` | `u32` |
+  | `max_output_count` | `u32` |
 
 ## `IvmProved` {#ivmproved}
 
@@ -6333,11 +9244,212 @@
   | `events_commitment` | [`Hash`](#hash) |
   | `gas_policy_commitment` | [`Hash`](#hash) |
 
+## `JindoLimitsV1` {#jindolimitsv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `max_polynomial_count` | `u32` |
+
 ## `Json` {#json}
 
 **Type:** Alias
 
 **To:** `String`
+
+## `KagemushaLoadCommittedV1` {#kagemushaloadcommittedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `receipt_digest` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `KagemushaWalletLedgerActionV1` {#kagemushawalletledgeractionv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `register` | [`KagemushaWalletLedgerActionV1::Register`](#kagemushawalletledgeractionv1-register) | 0 |
+  | `install_verifier_pack` | [`KagemushaWalletLedgerActionV1::InstallVerifierPack`](#kagemushawalletledgeractionv1-installverifierpack) | 1 |
+  | `activate` | [`Vec<u8>`](#vec-u8) | 2 |
+  | `abandon` | [`Vec<u8>`](#vec-u8) | 3 |
+  | `close_loads` | [`Vec<u8>`](#vec-u8) | 4 |
+  | `issue_load` | [`KagemushaWalletLedgerActionV1::IssueLoad`](#kagemushawalletledgeractionv1-issueload) | 5 |
+  | `unload` | [`Vec<u8>`](#vec-u8) | 6 |
+  | `claim_fee` | [`Vec<u8>`](#vec-u8) | 7 |
+  | `retain_certificate` | [`KagemushaWalletLedgerActionV1::RetainCertificate`](#kagemushawalletledgeractionv1-retaincertificate) | 8 |
+  | `retain_credential` | [`KagemushaWalletLedgerActionV1::RetainCredential`](#kagemushawalletledgeractionv1-retaincredential) | 9 |
+  | `retain_request` | [`Vec<u8>`](#vec-u8) | 10 |
+
+## `KagemushaWalletLedgerActionV1::InstallVerifierPack` {#kagemushawalletledgeractionv1-installverifierpack}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset` | [`Array<u8, 32>`](#array-u8-32) |
+  | `manifest_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `pack` | [`Vec<u8>`](#vec-u8) |
+
+## `KagemushaWalletLedgerActionV1::IssueLoad` {#kagemushawalletledgeractionv1-issueload}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `wallet` | [`Array<u8, 32>`](#array-u8-32) |
+  | `asset` | [`Array<u8, 32>`](#array-u8-32) |
+  | `ordinal` | `u128` |
+  | `request_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `amount` | `u128` |
+  | `charge` | [`Option<KagemushaWalletLoadChargeV1>`](#option-kagemushawalletloadchargev1) |
+
+## `KagemushaWalletLedgerActionV1::Register` {#kagemushawalletledgeractionv1-register}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `scheme` | [`Vec<u8>`](#vec-u8) |
+  | `asset` | [`Vec<u8>`](#vec-u8) |
+  | `reserve` | [`AccountId`](#accountid) |
+  | `balance_scope` | [`AssetBalanceScope`](#assetbalancescope) |
+
+## `KagemushaWalletLedgerActionV1::RetainCertificate` {#kagemushawalletledgeractionv1-retaincertificate}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset` | [`Array<u8, 32>`](#array-u8-32) |
+  | `certificate` | [`Vec<u8>`](#vec-u8) |
+
+## `KagemushaWalletLedgerActionV1::RetainCredential` {#kagemushawalletledgeractionv1-retaincredential}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `credential` | [`Vec<u8>`](#vec-u8) |
+  | `certificates` | [`Vec<u8>`](#vec-u8) |
+
+## `KagemushaWalletLedgerFinalityV1` {#kagemushawalletledgerfinalityv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u16` |
+  | `entrypoint_hash` | [`HashOf<TransactionEntrypoint>`](#hashof-transactionentrypoint) |
+  | `certificate` | [`SumeragiCommitCertificateV1`](#sumeragicommitcertificatev1) |
+  | `inclusion` | [`CertifiedTransactionInclusionV1`](#certifiedtransactioninclusionv1) |
+
+## `KagemushaWalletLedgerKeyV1` {#kagemushawalletledgerkeyv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 97>`](#array-u8-97)
+
+## `KagemushaWalletLedgerV1` {#kagemushawalletledgerv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `scheme` | [`Array<u8, 32>`](#array-u8-32) |
+  | `action` | [`KagemushaWalletLedgerActionV1`](#kagemushawalletledgeractionv1) |
+
+## `KagemushaWalletLoadChargeV1` {#kagemushawalletloadchargev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `quote` | [`Vec<u8>`](#vec-u8) |
+  | `beneficiary` | [`AccountId`](#accountid) |
+
+## `KagemushaWalletLoadFinalityV1` {#kagemushawalletloadfinalityv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u16` |
+  | `receipt_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `certificate` | [`SumeragiCommitCertificateV1`](#sumeragicommitcertificatev1) |
+  | `event_proof` | [`MerkleProof<EventBox>`](#merkleproof-eventbox) |
+
+## `KagemushaWalletLoadReceiptV1` {#kagemushawalletloadreceiptv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u16` |
+  | `scheme_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `asset_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `wallet_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `request_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `ordinal` | `u128` |
+  | `amount` | `u128` |
+  | `online_charge` | `u128` |
+  | `charge_quote` | [`Array<u8, 32>`](#array-u8-32) |
+  | `transaction_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `block_height` | `u64` |
+  | `payer_account_digest` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `KagemushaWalletPayoutKeyV1` {#kagemushawalletpayoutkeyv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Unload` | [`Array<u8, 32>`](#array-u8-32) | 0 |
+  | `Fee` | [`Array<u8, 32>`](#array-u8-32) | 1 |
+
+## `KagemushaWalletPayoutRecordV1` {#kagemushawalletpayoutrecordv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `key` | [`KagemushaWalletPayoutKeyV1`](#kagemushawalletpayoutkeyv1) |
+  | `source` | [`Array<u8, 32>`](#array-u8-32) |
+  | `amount` | `u128` |
+  | `transaction` | [`Array<u8, 32>`](#array-u8-32) |
 
 ## `KaigiId` {#kaigiid}
 
@@ -6507,439 +9619,11 @@
   | `msg_id` | `String` |
   | `translations` | [`Vec<KotobaTranslation>`](#vec-kotobatranslation) |
 
-## `LaneBlockCommitment` {#laneblockcommitment}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `block_height` | `u64` |
-  | `lane_id` | [`LaneId`](#laneid) |
-  | `lane_incarnation` | [`Hash`](#hash) |
-  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
-  | `tx_count` | `u64` |
-  | `total_local_amount` | [`Quantity`](#quantity) |
-  | `total_xor_due` | [`Quantity`](#quantity) |
-  | `total_xor_after_haircut` | [`Quantity`](#quantity) |
-  | `total_xor_variance` | [`Quantity`](#quantity) |
-  | `swap_metadata` | [`Option<LaneSwapMetadata>`](#option-laneswapmetadata) |
-  | `receipts` | [`Vec<LaneSettlementReceipt>`](#vec-lanesettlementreceipt) |
-  | `nexus_fee_receipts` | [`Vec<NexusFeeReceipt>`](#vec-nexusfeereceipt) |
-  | `native_amx_receipts` | [`Vec<NativeAmxReceipt>`](#vec-nativeamxreceipt) |
-
-## `LaneBlockDescriptorV1` {#laneblockdescriptorv1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `lane_id` | [`LaneId`](#laneid) |
-  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
-  | `lane_incarnation` | [`Hash`](#hash) |
-  | `proposal_height` | `u64` |
-  | `previous_lane_block_height` | `u64` |
-  | `previous_lane_block_descriptor_hash` | [`Option<Hash>`](#option-hash) |
-  | `lane_block_height` | `u64` |
-  | `lane_block_view` | `u64` |
-  | `subject_hash` | [`Hash`](#hash) |
-  | `payload_ownership_hash` | [`Hash`](#hash) |
-  | `rbc_instance_hash` | [`Hash`](#hash) |
-  | `accepted_candidate_indices` | [`Vec<u64>`](#vec-u64) |
-  | `accepted_transaction_hashes` | [`Vec<Hash>`](#vec-hash) |
-  | `validator_set_hash_version` | `u16` |
-  | `validator_set_hash` | [`HashOf<Vec<PeerId>>`](#hashof-vec-peerid) |
-  | `validator_set` | [`Vec<PeerId>`](#vec-peerid) |
-  | `validator_count` | `u32` |
-  | `min_quorum` | `u32` |
-  | `qc_mode_tag` | `String` |
-  | `descriptor_hash` | [`Hash`](#hash) |
-
-## `LaneBlockProposalPayloadHintV1` {#laneblockproposalpayloadhintv1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `proposal_height` | `u64` |
-  | `proposal_view` | `u64` |
-  | `proposal_block_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
-
-## `LaneBlockProposalV1` {#laneblockproposalv1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `descriptor` | [`LaneBlockDescriptorV1`](#laneblockdescriptorv1) |
-  | `proposal_hash` | [`Hash`](#hash) |
-  | `payload_block_hint` | [`Option<LaneBlockProposalPayloadHintV1>`](#option-laneblockproposalpayloadhintv1) |
-
-## `LaneBlockQcV1` {#laneblockqcv1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `body` | [`LaneBlockVoteBodyV1`](#laneblockvotebodyv1) |
-  | `validator_set_hash_version` | `u16` |
-  | `validator_set_hash` | [`HashOf<Vec<PeerId>>`](#hashof-vec-peerid) |
-  | `validator_set` | [`Vec<PeerId>`](#vec-peerid) |
-  | `signers_bitmap` | [`Vec<u8>`](#vec-u8) |
-  | `bls_aggregate_signature` | [`Vec<u8>`](#vec-u8) |
-  | `payload_availability_qc` | [`Option<LanePayloadAvailabilityQcV1>`](#option-lanepayloadavailabilityqcv1) |
-
-## `LaneBlockVoteBodyV1` {#laneblockvotebodyv1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `phase` | [`CertPhase`](#certphase) |
-  | `lane_id` | [`LaneId`](#laneid) |
-  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
-  | `lane_incarnation` | [`Hash`](#hash) |
-  | `proposal_height` | `u64` |
-  | `lane_block_height` | `u64` |
-  | `lane_block_view` | `u64` |
-  | `proposal_hash` | [`Hash`](#hash) |
-  | `descriptor_hash` | [`Hash`](#hash) |
-  | `subject_hash` | [`Hash`](#hash) |
-  | `payload_ownership_hash` | [`Hash`](#hash) |
-  | `rbc_instance_hash` | [`Hash`](#hash) |
-  | `accepted_candidate_indices` | [`Vec<u64>`](#vec-u64) |
-  | `accepted_transaction_hashes` | [`Vec<Hash>`](#vec-hash) |
-  | `validator_set_hash_version` | `u16` |
-  | `validator_set_hash` | [`HashOf<Vec<PeerId>>`](#hashof-vec-peerid) |
-  | `validator_count` | `u32` |
-  | `min_quorum` | `u32` |
-  | `qc_mode_tag` | `String` |
-
-## `LaneCommitmentId` {#lanecommitmentid}
-
-**Type:** Alias
-
-**To:** `u16`
-
-## `LaneDrainCertificateBodyV1` {#lanedraincertificatebodyv1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `version` | `u8` |
-  | `intent` | [`LaneDrainIntentV1`](#lanedrainintentv1) |
-  | `final_frontier` | [`LaneDrainFrontierV1`](#lanedrainfrontierv1) |
-
-## `LaneDrainCertificateV1` {#lanedraincertificatev1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `body` | [`LaneDrainCertificateBodyV1`](#lanedraincertificatebodyv1) |
-  | `validator_set` | [`Vec<PeerId>`](#vec-peerid) |
-  | `signers_bitmap` | [`Vec<u8>`](#vec-u8) |
-  | `signer_proofs` | [`Vec<MergeSignerProof>`](#vec-mergesignerproof) |
-  | `aggregate_signature` | [`Vec<u8>`](#vec-u8) |
-
-## `LaneDrainFrontierV1` {#lanedrainfrontierv1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `version` | `u8` |
-  | `lane_id` | [`LaneId`](#laneid) |
-  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
-  | `lane_incarnation` | [`Hash`](#hash) |
-  | `lane_block_height` | `u64` |
-  | `lane_block_descriptor_hash` | [`Option<Hash>`](#option-hash) |
-  | `native_application` | [`Option<LaneDrainNativeFrontierEvidenceV1>`](#option-lanedrainnativefrontierevidencev1) |
-  | `unresolved_evidence_root` | [`Hash`](#hash) |
-
-## `LaneDrainIntentV1` {#lanedrainintentv1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `version` | `u8` |
-  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
-  | `lane_id` | [`LaneId`](#laneid) |
-  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
-  | `lane_incarnation` | [`Hash`](#hash) |
-  | `close_global_height` | `u64` |
-  | `initial_frontier` | [`LaneDrainFrontierV1`](#lanedrainfrontierv1) |
-  | `validator_set_hash_version` | `u16` |
-  | `validator_set_hash` | [`HashOf<Vec<PeerId>>`](#hashof-vec-peerid) |
-  | `validator_set` | [`Vec<PeerId>`](#vec-peerid) |
-  | `validator_count` | `u32` |
-  | `min_quorum` | `u32` |
-
-## `LaneDrainNativeFrontierEvidenceV1` {#lanedrainnativefrontierevidencev1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `version` | `u16` |
-  | `participant_view` | `u64` |
-  | `predecessor_height` | `u64` |
-  | `predecessor_descriptor_hash` | [`Option<Hash>`](#option-hash) |
-  | `participant_proposal_hash` | [`Hash`](#hash) |
-  | `participant_settlement_hash` | [`HashOf<LaneBlockCommitment>`](#hashof-laneblockcommitment) |
-  | `source_count` | `u32` |
-  | `application_block_height` | `u64` |
-  | `application_block_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
-  | `executed_block_wire_hash` | [`Hash`](#hash) |
-  | `finality_artifact_hash` | [`HashOf<V2FinalityArtifact>`](#hashof-v2finalityartifact) |
-  | `application_manifest_root` | [`Hash`](#hash) |
-  | `application_manifest_leaf_count` | `u32` |
-  | `application_manifest_leaf_index` | `u32` |
-  | `manifest_artifact_hash` | [`Hash`](#hash) |
-  | `receipt_artifact_hash` | [`Hash`](#hash) |
-  | `latest_index_artifact_hash` | [`Hash`](#hash) |
-
-## `LaneFastpqProofMaterial` {#lanefastpqproofmaterial}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `proof_digest` | [`Hash`](#hash) |
-  | `verified_at_height` | `u64` |
-
-## `LaneFinalityAuthorityV1` {#lanefinalityauthorityv1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `version` | `u8` |
-  | `global_block_height` | `u64` |
-  | `finality_artifact_hash` | [`HashOf<V2FinalityArtifact>`](#hashof-v2finalityartifact) |
-  | `statement_proof` | [`MerkleProof<LaneFinalityStatement>`](#merkleproof-lanefinalitystatement) |
-
-## `LaneFinalityStatement` {#lanefinalitystatement}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `version` | `u8` |
-  | `lane_id` | [`LaneId`](#laneid) |
-  | `lane_incarnation` | [`Hash`](#hash) |
-  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
-  | `block_height` | `u64` |
-  | `block_header_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
-  | `da_commitment_hash` | [`Option<HashOf<DaCommitmentBundle>>`](#option-hashof-dacommitmentbundle) |
-  | `lane_block_descriptor_hash` | [`Hash`](#hash) |
-  | `manifest_root` | [`Array<u8, 32>`](#array-u8-32) |
-  | `settlement_commitment` | [`LaneBlockCommitment`](#laneblockcommitment) |
-  | `settlement_hash` | [`HashOf<LaneBlockCommitment>`](#hashof-laneblockcommitment) |
-  | `rbc_bytes_total` | `u64` |
-
 ## `LaneId` {#laneid}
 
 **Type:** Alias
 
 **To:** `u32`
-
-## `LaneLiquidityProfile` {#laneliquidityprofile}
-
-**Type:** Enum
-
-**Variants:**
-
-  | Variant name | Variant value | Discriminant |
-  | --: | :-- | --- |
-  | `Tier1` | &mdash; | 0 |
-  | `Tier2` | &mdash; | 1 |
-  | `Tier3` | &mdash; | 2 |
-
-## `LanePayloadAvailabilityBodyV1` {#lanepayloadavailabilitybodyv1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `version` | `u8` |
-  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
-  | `epoch` | `u64` |
-  | `lane_id` | [`LaneId`](#laneid) |
-  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
-  | `lane_incarnation` | [`Hash`](#hash) |
-  | `proposal_height` | `u64` |
-  | `lane_block_height` | `u64` |
-  | `origin_lane_block_view` | `u64` |
-  | `origin_proposal_hash` | [`Hash`](#hash) |
-  | `origin_descriptor_hash` | [`Hash`](#hash) |
-  | `current_lane_block_view` | `u64` |
-  | `current_proposal_hash` | [`Hash`](#hash) |
-  | `current_descriptor_hash` | [`Hash`](#hash) |
-  | `current_subject_hash` | [`Hash`](#hash) |
-  | `current_payload_ownership_hash` | [`Hash`](#hash) |
-  | `current_rbc_instance_hash` | [`Hash`](#hash) |
-  | `executable_payload_hash` | [`Hash`](#hash) |
-  | `validator_set_hash_version` | `u16` |
-  | `validator_set_hash` | [`HashOf<Vec<PeerId>>`](#hashof-vec-peerid) |
-  | `validator_count` | `u32` |
-  | `min_quorum` | `u32` |
-  | `qc_mode_tag` | `String` |
-
-## `LanePayloadAvailabilityQcV1` {#lanepayloadavailabilityqcv1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `body` | [`LanePayloadAvailabilityBodyV1`](#lanepayloadavailabilitybodyv1) |
-  | `validator_set_hash_version` | `u16` |
-  | `validator_set_hash` | [`HashOf<Vec<PeerId>>`](#hashof-vec-peerid) |
-  | `validator_set` | [`Vec<PeerId>`](#vec-peerid) |
-  | `validator_set_pops` | [`Vec<Vec<u8>>`](#vec-vec-u8) |
-  | `signers_bitmap` | [`Vec<u8>`](#vec-u8) |
-  | `bls_aggregate_signature` | [`Vec<u8>`](#vec-u8) |
-
-## `LanePrivacyMerkleWitness` {#laneprivacymerklewitness}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `leaf` | [`Array<u8, 32>`](#array-u8-32) |
-  | `proof` | [`MerkleProof<Array<u8, 32>>`](#merkleproof-array-u8-32) |
-
-## `LanePrivacyProof` {#laneprivacyproof}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `commitment_id` | [`LaneCommitmentId`](#lanecommitmentid) |
-  | `witness` | [`LanePrivacyWitness`](#laneprivacywitness) |
-
-## `LanePrivacyWitness` {#laneprivacywitness}
-
-**Type:** Enum
-
-**Variants:**
-
-  | Variant name | Variant value | Discriminant |
-  | --: | :-- | --- |
-  | `merkle` | [`LanePrivacyMerkleWitness`](#laneprivacymerklewitness) | 0 |
-
-## `LaneRelayEnvelope` {#lanerelayenvelope}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `lane_id` | [`LaneId`](#laneid) |
-  | `lane_incarnation` | [`Hash`](#hash) |
-  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
-  | `block_height` | `u64` |
-  | `block_header` | [`BlockHeader`](#blockheader) |
-  | `finality_authority` | [`Option<LaneFinalityAuthorityV1>`](#option-lanefinalityauthorityv1) |
-  | `da_commitment_hash` | [`Option<HashOf<DaCommitmentBundle>>`](#option-hashof-dacommitmentbundle) |
-  | `lane_block_descriptor_hash` | [`Option<Hash>`](#option-hash) |
-  | `settlement_commitment` | [`LaneBlockCommitment`](#laneblockcommitment) |
-  | `settlement_hash` | [`HashOf<LaneBlockCommitment>`](#hashof-laneblockcommitment) |
-  | `rbc_bytes_total` | `u64` |
-  | `manifest_root` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
-  | `fastpq_proof` | [`Option<LaneFastpqProofMaterial>`](#option-lanefastpqproofmaterial) |
-
-## `LaneRelayEnvelopeRef` {#lanerelayenveloperef}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
-  | `lane_id` | [`LaneId`](#laneid) |
-  | `lane_incarnation` | [`Hash`](#hash) |
-  | `block_height` | `u64` |
-
-## `LaneSettlementReceipt` {#lanesettlementreceipt}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `source_id` | [`Array<u8, 32>`](#array-u8-32) |
-  | `local_amount` | [`Quantity`](#quantity) |
-  | `xor_due` | [`Quantity`](#quantity) |
-  | `xor_after_haircut` | [`Quantity`](#quantity) |
-  | `xor_variance` | [`Quantity`](#quantity) |
-  | `timestamp_ms` | `u64` |
-
-## `LaneSwapMetadata` {#laneswapmetadata}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `epsilon_bps` | `u16` |
-  | `twap_window_seconds` | `u32` |
-  | `liquidity_profile` | [`LaneLiquidityProfile`](#laneliquidityprofile) |
-  | `twap_local_per_xor` | [`Numeric`](#numeric) |
-  | `volatility_class` | [`LaneVolatilityClass`](#lanevolatilityclass) |
-
-## `LaneVolatilityClass` {#lanevolatilityclass}
-
-**Type:** Enum
-
-**Variants:**
-
-  | Variant name | Variant value | Discriminant |
-  | --: | :-- | --- |
-  | `Stable` | &mdash; | 0 |
-  | `Elevated` | &mdash; | 1 |
-  | `Dislocated` | &mdash; | 2 |
 
 ## `ManifestAbiHashMismatchInfo` {#manifestabihashmismatchinfo}
 
@@ -7036,195 +9720,6 @@
   | `max_cycles` | `u64` |
   | `upper_bound` | `u64` |
 
-## `MergeCarrierCommitmentV1` {#mergecarriercommitmentv1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `version` | `u16` |
-  | `entry_hash` | [`HashOf<MergeLedgerEntry>`](#hashof-mergeledgerentry) |
-
-## `MergeExecutionBatch` {#mergeexecutionbatch}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `version` | `u8` |
-  | `base_state_height` | `u64` |
-  | `base_state_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
-  | `application_block_header` | [`BlockHeader`](#blockheader) |
-  | `lanes` | [`Vec<MergeLaneExecution>`](#vec-mergelaneexecution) |
-  | `entrypoint_count` | `u64` |
-  | `entrypoint_merkle_root` | [`HashOf<MerkleTree<TransactionEntrypoint>>`](#hashof-merkletree-transactionentrypoint) |
-  | `result_merkle_root` | [`HashOf<MerkleTree<TransactionResult>>`](#hashof-merkletree-transactionresult) |
-  | `execution_root` | [`Hash`](#hash) |
-  | `application_write_set_root` | [`Hash`](#hash) |
-  | `write_set_root` | [`Hash`](#hash) |
-  | `expected_post_state_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
-  | `batch_hash` | [`Hash`](#hash) |
-
-## `MergeLaneBinding` {#mergelanebinding}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `lane_id` | [`LaneId`](#laneid) |
-  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
-  | `lane_config_hash` | [`Hash`](#hash) |
-  | `incarnation` | [`Hash`](#hash) |
-  | `activation_height` | `u64` |
-
-## `MergeLaneExecution` {#mergelaneexecution}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `source_bundle` | [`Vec<u8>`](#vec-u8) |
-  | `source_bundle_hash` | [`Hash`](#hash) |
-  | `proposal` | [`LaneBlockProposalV1`](#laneblockproposalv1) |
-  | `origin_proposal` | [`LaneBlockProposalV1`](#laneblockproposalv1) |
-  | `prepare_qc` | [`LaneBlockQcV1`](#laneblockqcv1) |
-  | `commit_qc` | [`LaneBlockQcV1`](#laneblockqcv1) |
-  | `signer_proofs` | [`Vec<MergeLaneSignerProof>`](#vec-mergelanesignerproof) |
-  | `autonomous_network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
-  | `autonomous_epoch` | `u64` |
-  | `autonomous_payload_hash` | [`Hash`](#hash) |
-  | `entrypoint_hashes` | [`Vec<Hash>`](#vec-hash) |
-  | `entrypoints` | [`Vec<TransactionEntrypoint>`](#vec-transactionentrypoint) |
-  | `reservation_keys` | [`Vec<Vec<u8>>`](#vec-vec-u8) |
-  | `routing_plans` | [`Vec<Vec<u8>>`](#vec-vec-u8) |
-  | `native_amx_receipts` | [`Vec<Option<NativeAmxReceipt>>`](#vec-option-nativeamxreceipt) |
-  | `result_hashes` | [`Vec<Hash>`](#vec-hash) |
-  | `results` | [`Vec<TransactionResult>`](#vec-transactionresult) |
-  | `settlement_commitment` | [`LaneBlockCommitment`](#laneblockcommitment) |
-  | `settlement_hash` | [`HashOf<LaneBlockCommitment>`](#hashof-laneblockcommitment) |
-  | `fastpq_transcripts` | [`MergeLaneFastpqTranscripts`](#mergelanefastpqtranscripts) |
-
-## `MergeLaneFastpqTranscripts` {#mergelanefastpqtranscripts}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `fastpq_transcripts` | [`Vec<TransferTranscriptBundle>`](#vec-transfertranscriptbundle) |
-
-## `MergeLaneSignerProof` {#mergelanesignerproof}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `public_key` | [`PublicKey`](#publickey) |
-  | `proof_of_possession` | [`Vec<u8>`](#vec-u8) |
-
-## `MergeLaneSnapshot` {#mergelanesnapshot}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `lane_id` | [`LaneId`](#laneid) |
-  | `lane_incarnation` | [`Hash`](#hash) |
-  | `incarnation_activation_height` | `u64` |
-  | `proposal_height` | `u64` |
-  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
-  | `lane_block_height` | `u64` |
-  | `tip_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
-  | `merge_hint_root` | [`Hash`](#hash) |
-  | `settlement_commitment` | [`LaneBlockCommitment`](#laneblockcommitment) |
-  | `settlement_hash` | [`HashOf<LaneBlockCommitment>`](#hashof-laneblockcommitment) |
-  | `relay_envelope` | [`Option<LaneRelayEnvelope>`](#option-lanerelayenvelope) |
-
-## `MergeLedgerEntry` {#mergeledgerentry}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `version` | `u8` |
-  | `epoch_id` | `u64` |
-  | `lane_catalog_hash` | [`Hash`](#hash) |
-  | `active_lanes` | [`Vec<MergeLaneBinding>`](#vec-mergelanebinding) |
-  | `incarnation_root` | [`Hash`](#hash) |
-  | `activation_root` | [`Hash`](#hash) |
-  | `lane_snapshots` | [`Vec<MergeLaneSnapshot>`](#vec-mergelanesnapshot) |
-  | `global_state_root` | [`Hash`](#hash) |
-  | `merge_qc` | [`MergeQuorumCertificate`](#mergequorumcertificate) |
-  | `execution_batch` | [`Option<MergeExecutionBatch>`](#option-mergeexecutionbatch) |
-  | `lane_drain_certificates` | [`Vec<LaneDrainCertificateV1>`](#vec-lanedraincertificatev1) |
-
-## `MergeLedgerEvent` {#mergeledgerevent}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `entry` | [`MergeLedgerEntry`](#mergeledgerentry) |
-
-## `MergeLedgerEventFilter` {#mergeledgereventfilter}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `epoch_id` | [`Option<u64>`](#option-u64) |
-
-## `MergeQuorumCertificate` {#mergequorumcertificate}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `view` | `u64` |
-  | `epoch_id` | `u64` |
-  | `carrier_height` | `u64` |
-  | `carrier_parent_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
-  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
-  | `validator_set_hash_version` | `u16` |
-  | `validator_set_hash` | [`HashOf<Vec<PeerId>>`](#hashof-vec-peerid) |
-  | `validator_set` | [`Vec<PeerId>`](#vec-peerid) |
-  | `signers_bitmap` | [`Vec<u8>`](#vec-u8) |
-  | `signer_proofs` | [`Vec<MergeSignerProof>`](#vec-mergesignerproof) |
-  | `aggregate_signature` | [`Vec<u8>`](#vec-u8) |
-  | `message_digest` | [`Hash`](#hash) |
-
-## `MergeSignerProof` {#mergesignerproof}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `signer` | `u32` |
-  | `proof_of_possession` | [`Vec<u8>`](#vec-u8) |
-
 ## `MerkleProof<Array<u8, 32>>` {#merkleproof-array-u8-32}
 
 **Type:** Struct
@@ -7236,7 +9731,7 @@
   | `leaf_index` | `u32` |
   | `audit_path` | [`Vec<Option<HashOf<Array<u8, 32>>>>`](#vec-option-hashof-array-u8-32) |
 
-## `MerkleProof<LaneFinalityStatement>` {#merkleproof-lanefinalitystatement}
+## `MerkleProof<EventBox>` {#merkleproof-eventbox}
 
 **Type:** Struct
 
@@ -7245,7 +9740,29 @@
   | Field name | Field value |
   | --: | :-- |
   | `leaf_index` | `u32` |
-  | `audit_path` | [`Vec<Option<HashOf<LaneFinalityStatement>>>`](#vec-option-hashof-lanefinalitystatement) |
+  | `audit_path` | [`Vec<Option<HashOf<EventBox>>>`](#vec-option-hashof-eventbox) |
+
+## `MerkleProof<ExecutionOutputV1>` {#merkleproof-executionoutputv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `leaf_index` | `u32` |
+  | `audit_path` | [`Vec<Option<HashOf<ExecutionOutputV1>>>`](#vec-option-hashof-executionoutputv1) |
+
+## `MerkleProof<FastpqOrdinarySourceStatementLeafV1>` {#merkleproof-fastpqordinarysourcestatementleafv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `leaf_index` | `u32` |
+  | `audit_path` | [`Vec<Option<HashOf<FastpqOrdinarySourceStatementLeafV1>>>`](#vec-option-hashof-fastpqordinarysourcestatementleafv1) |
 
 ## `MerkleProof<TransactionEntrypoint>` {#merkleproof-transactionentrypoint}
 
@@ -7258,45 +9775,17 @@
   | `leaf_index` | `u32` |
   | `audit_path` | [`Vec<Option<HashOf<TransactionEntrypoint>>>`](#vec-option-hashof-transactionentrypoint) |
 
-## `MerkleProof<TransactionResult>` {#merkleproof-transactionresult}
+## `MerkleTree<ExecutionOutputV1>` {#merkletree-executionoutputv1}
 
-**Type:** Struct
+**Type:** Tuple
 
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `leaf_index` | `u32` |
-  | `audit_path` | [`Vec<Option<HashOf<TransactionResult>>>`](#vec-option-hashof-transactionresult) |
+**Values:** (`u8`, [`Vec<HashOf<ExecutionOutputV1>>`](#vec-hashof-executionoutputv1))
 
 ## `MerkleTree<SignedTransaction>` {#merkletree-signedtransaction}
 
 **Type:** Tuple
 
 **Values:** (`u8`, [`Vec<HashOf<SignedTransaction>>`](#vec-hashof-signedtransaction))
-
-## `MerkleTree<TransactionEntrypoint>` {#merkletree-transactionentrypoint}
-
-**Type:** Tuple
-
-**Values:** (`u8`, [`Vec<HashOf<TransactionEntrypoint>>`](#vec-hashof-transactionentrypoint))
-
-## `MerkleTree<TransactionResult>` {#merkletree-transactionresult}
-
-**Type:** Tuple
-
-**Values:** (`u8`, [`Vec<HashOf<TransactionResult>>`](#vec-hashof-transactionresult))
-
-## `MerkleTreeCommitment<LaneFinalityStatement>` {#merkletreecommitment-lanefinalitystatement}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `root` | [`HashOf<MerkleTree<LaneFinalityStatement>>`](#hashof-merkletree-lanefinalitystatement) |
-  | `leaf_count` | [`NonZero<u64>`](#nonzero-u64) |
 
 ## `Metadata` {#metadata}
 
@@ -7482,6 +9971,7 @@
   | `submitted_by` | [`AccountId`](#accountid) |
   | `submitted_at_unix_ms` | `u64` |
   | `eligible_jurors` | [`Vec<AccountId>`](#vec-accountid) |
+  | `sortition_anchor` | [`Option<ModerationSortitionAnchorV1>`](#option-moderationsortitionanchorv1) |
   | `selection` | [`Option<ModerationPanelSelectionV1>`](#option-moderationpanelselectionv1) |
   | `accepted_jurors` | [`Vec<AccountId>`](#vec-accountid) |
   | `replacements` | [`Vec<ModerationJurorReplacementV1>`](#vec-moderationjurorreplacementv1) |
@@ -7939,6 +10429,18 @@
   | `canonical_reveal` | [`Vec<u8>`](#vec-u8) |
   | `accepted_at_unix_ms` | `u64` |
 
+## `ModerationSortitionAnchorV1` {#moderationsortitionanchorv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `block_height` | `u64` |
+  | `block_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `block_timestamp_unix_ms` | `u64` |
+
 ## `ModerationVoteCountsV1` {#moderationvotecountsv1}
 
 **Type:** Struct
@@ -7961,6 +10463,7 @@
   | Field name | Field value |
   | --: | :-- |
   | `account` | [`AccountId`](#accountid) |
+  | `proposal_id` | [`MultisigProposalId`](#multisigproposalid) |
   | `instructions_hash` | [`HashOf<Vec<InstructionBox>>`](#hashof-vec-instructionbox) |
 
 ## `MultisigCancel` {#multisigcancel}
@@ -7972,6 +10475,7 @@
   | Field name | Field value |
   | --: | :-- |
   | `account` | [`AccountId`](#accountid) |
+  | `proposal_id` | [`MultisigProposalId`](#multisigproposalid) |
   | `instructions_hash` | [`HashOf<Vec<InstructionBox>>`](#hashof-vec-instructionbox) |
 
 ## `MultisigInstructionBox` {#multisiginstructionbox}
@@ -8021,6 +10525,18 @@
   | `threshold` | `u16` |
   | `members` | [`Vec<MultisigMember>`](#vec-multisigmember) |
 
+## `MultisigProposalId` {#multisigproposalid}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `MultisigProposalNonce` {#multisigproposalnonce}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
 ## `MultisigProposalValue` {#multisigproposalvalue}
 
 **Type:** Struct
@@ -8029,11 +10545,14 @@
 
   | Field name | Field value |
   | --: | :-- |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `proposal_nonce` | [`MultisigProposalNonce`](#multisigproposalnonce) |
+  | `proposal_id` | [`MultisigProposalId`](#multisigproposalid) |
+  | `transaction_ttl_ms` | [`Option<NonZero<u64>>`](#option-nonzero-u64) |
   | `instructions` | [`Vec<InstructionBox>`](#vec-instructionbox) |
   | `proposed_at_ms` | `u64` |
   | `expires_at_ms` | `u64` |
   | `approvals` | [`SortedVec<AccountId>`](#sortedvec-accountid) |
-  | `is_relayed` | [`Option<bool>`](#option-bool) |
 
 ## `MultisigPropose` {#multisigpropose}
 
@@ -8044,6 +10563,7 @@
   | Field name | Field value |
   | --: | :-- |
   | `account` | [`AccountId`](#accountid) |
+  | `proposal_nonce` | [`MultisigProposalNonce`](#multisigproposalnonce) |
   | `instructions` | [`Vec<InstructionBox>`](#vec-instructionbox) |
   | `transaction_ttl_ms` | [`Option<NonZero<u64>>`](#option-nonzero-u64) |
 
@@ -8058,6 +10578,7 @@
   | `account` | [`AccountId`](#accountid) |
   | `home_domain` | [`Option<DomainId>`](#option-domainid) |
   | `spec` | [`MultisigSpec`](#multisigspec) |
+  | `uaid` | [`Option<UniversalAccountId>`](#option-universalaccountid) |
 
 ## `MultisigSignature` {#multisigsignature}
 
@@ -8962,6 +11483,46 @@
   | `limit` | `u32` |
   | `cursor` | [`Option<MusubiFinalizedCursorV1>`](#option-musubifinalizedcursorv1) |
 
+## `MusubiPinOutboxCheckExpectationV1` {#musubipinoutboxcheckexpectationv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Absent` | &mdash; | 0 |
+  | `Present` | [`MusubiPinOutboxHighWaterV1`](#musubipinoutboxhighwaterv1) | 1 |
+
+## `MusubiPinOutboxCheckFloorV1` {#musubipinoutboxcheckfloorv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `height` | `u64` |
+  | `block_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `context_id` | [`HeightContextId`](#heightcontextid) |
+
+## `MusubiPinOutboxHighWaterV1` {#musubipinoutboxhighwaterv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u8` |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `pin_authority` | [`AccountId`](#accountid) |
+  | `session_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `revision` | `u64` |
+  | `inventory_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `recorded_at_height` | `u64` |
+  | `transaction_hash` | [`Array<u8, 32>`](#array-u8-32) |
+
 ## `MusubiPrereleaseIdentifierV1` {#musubiprereleaseidentifierv1}
 
 **Type:** Enum
@@ -9433,6 +11994,75 @@
   | `patch` | `u64` |
   | `prerelease` | [`Vec<MusubiPrereleaseIdentifierV1>`](#vec-musubiprereleaseidentifierv1) |
 
+## `MutateSorafsFinalPromotionAccountCustody` {#mutatesorafsfinalpromotionaccountcustody}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `deployment_id` | `String` |
+  | `expected_control_revision` | `u64` |
+  | `expected_control_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `action` | [`FinalPromotionAccountCustodyActionV1`](#finalpromotionaccountcustodyactionv1) |
+
+## `MutateSorafsFinalPromotionAuthority` {#mutatesorafsfinalpromotionauthority}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `deployment_id` | `String` |
+  | `expected_control_revision` | `u64` |
+  | `expected_control_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `action` | [`FinalPromotionAuthorityActionV1`](#finalpromotionauthorityactionv1) |
+
+## `MutateSorafsStreamTokenAuthority` {#mutatesorafsstreamtokenauthority}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `request` | [`StreamTokenAuthorityRequestV1`](#streamtokenauthorityrequestv1) |
+
+## `MutateSorafsStreamTokenCustody` {#mutatesorafsstreamtokencustody}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `provider_id` | [`ProviderId`](#providerid) |
+  | `expected_revision` | `u64` |
+  | `expected_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `action` | [`SorafsStreamTokenCustodyActionV1`](#sorafsstreamtokencustodyactionv1) |
+
+## `MutateSorafsStreamTokenGateway` {#mutatesorafsstreamtokengateway}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `request` | [`StreamTokenGatewayRequestV1`](#streamtokengatewayrequestv1) |
+
+## `MutateSorafsTopologyAuthority` {#mutatesorafstopologyauthority}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `transition` | [`TopologyTransitionV1`](#topologytransitionv1) |
+
 ## `Name` {#name}
 
 **Type:** Alias
@@ -9474,7 +12104,7 @@
   | --: | :-- |
   | `reason` | `String` |
 
-## `NativeAmxAttestationBodyV2` {#nativeamxattestationbodyv2}
+## `NativePipaRProofV1` {#nativepiparproofv1}
 
 **Type:** Struct
 
@@ -9482,34 +12112,10 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `round` | [`ConsensusRound`](#consensusround) |
-  | `epoch` | `u64` |
-  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
-  | `source_id` | [`Array<u8, 32>`](#array-u8-32) |
-  | `tx_entrypoint_hash` | [`HashOf<TransactionEntrypoint>`](#hashof-transactionentrypoint) |
-  | `plan_digest` | [`Hash`](#hash) |
-  | `phase` | [`NativeAmxPhase`](#nativeamxphase) |
-  | `coordinator_lane_id` | [`LaneId`](#laneid) |
-  | `coordinator_dataspace_id` | [`DataSpaceId`](#dataspaceid) |
-  | `coordinator_lane_incarnation` | [`Hash`](#hash) |
-  | `participant_lane_id` | [`LaneId`](#laneid) |
-  | `participant_dataspace_id` | [`DataSpaceId`](#dataspaceid) |
-  | `participant_lane_incarnation` | [`Hash`](#hash) |
-  | `participant_previous_block_height` | `u64` |
-  | `participant_previous_block_descriptor_hash` | [`Option<Hash>`](#option-hash) |
-  | `participant_lane_block_height` | `u64` |
-  | `participant_lane_block_view` | `u64` |
-  | `participant_proposal_hash` | [`Hash`](#hash) |
-  | `participant_settlement_commitment` | [`Hash`](#hash) |
-  | `participant_validator_set_hash` | [`HashOf<Vec<PeerId>>`](#hashof-vec-peerid) |
-  | `participant_validator_count` | `u32` |
-  | `participant_min_quorum` | `u32` |
-  | `authority_context_height` | `u64` |
-  | `planned_coordinator_block_height` | `u64` |
-  | `coordinator_lane_block_view` | `u64` |
-  | `coordinator_proposal_hash` | [`Hash`](#hash) |
+  | `public_inputs` | [`Vec<Array<u8, 32>>`](#vec-array-u8-32) |
+  | `proof` | [`Vec<u8>`](#vec-u8) |
 
-## `NativeAmxAttestationQcV2` {#nativeamxattestationqcv2}
+## `NetworkExecutionOutputV1` {#networkexecutionoutputv1}
 
 **Type:** Struct
 
@@ -9517,15 +12123,11 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `body` | [`NativeAmxAttestationBodyV2`](#nativeamxattestationbodyv2) |
-  | `validator_set_hash_version` | `u16` |
-  | `validator_set_hash` | [`HashOf<Vec<PeerId>>`](#hashof-vec-peerid) |
-  | `validator_set` | [`Vec<PeerId>`](#vec-peerid) |
-  | `validator_set_pops` | [`Vec<Vec<u8>>`](#vec-vec-u8) |
-  | `signers_bitmap` | [`Vec<u8>`](#vec-u8) |
-  | `bls_aggregate_signature` | [`Vec<u8>`](#vec-u8) |
+  | `input_index` | `u32` |
+  | `result` | [`TransactionResult`](#transactionresult) |
+  | `completions` | [`Vec<InvocationCompletionV1>`](#vec-invocationcompletionv1) |
 
-## `NativeAmxLegRecordV2` {#nativeamxlegrecordv2}
+## `NetworkExecutionOutputV2` {#networkexecutionoutputv2}
 
 **Type:** Struct
 
@@ -9533,45 +12135,8 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `lane_id` | [`LaneId`](#laneid) |
-  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
-  | `participant_proposal` | [`LaneBlockProposalV1`](#laneblockproposalv1) |
-  | `participant_settlement` | [`LaneBlockCommitment`](#laneblockcommitment) |
-  | `participant_settlement_hash` | [`HashOf<LaneBlockCommitment>`](#hashof-laneblockcommitment) |
-  | `prepare_qc` | [`NativeAmxAttestationQcV2`](#nativeamxattestationqcv2) |
-  | `commit_qc` | [`NativeAmxAttestationQcV2`](#nativeamxattestationqcv2) |
-
-## `NativeAmxPhase` {#nativeamxphase}
-
-**Type:** Enum
-
-**Variants:**
-
-  | Variant name | Variant value | Discriminant |
-  | --: | :-- | --- |
-  | `prepare` | &mdash; | 0 |
-  | `commit` | &mdash; | 1 |
-
-## `NativeAmxReceipt` {#nativeamxreceipt}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `version` | `u16` |
-  | `source_id` | [`Array<u8, 32>`](#array-u8-32) |
-  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
-  | `plan_digest` | [`Hash`](#hash) |
-  | `lane_id` | [`LaneId`](#laneid) |
-  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
-  | `lane_incarnation` | [`Hash`](#hash) |
-  | `authority_context_height` | `u64` |
-  | `lane_block_height` | `u64` |
-  | `lane_block_view` | `u64` |
-  | `coordinator_proposal_hash` | [`Hash`](#hash) |
-  | `legs` | [`Vec<NativeAmxLegRecordV2>`](#vec-nativeamxlegrecordv2) |
+  | `execution` | [`NetworkExecutionOutputV1`](#networkexecutionoutputv1) |
+  | `trigger_lifecycle` | [`TriggerLifecycleEffectsV1`](#triggerlifecycleeffectsv1) |
 
 ## `NexusDataspaceCatalogStatus` {#nexusdataspacecatalogstatus}
 
@@ -9629,6 +12194,7 @@
   | `program_revision` | [`Option<u64>`](#option-u64) |
   | `lease_id` | [`Option<Hash>`](#option-hash) |
   | `fee_amount` | [`Quantity`](#quantity) |
+  | `settlement` | [`NexusFeeSettlementV1`](#nexusfeesettlementv1) |
   | `schedule` | [`NexusFeeScheduleInputs`](#nexusfeescheduleinputs) |
 
 ## `NexusFeeScheduleInputs` {#nexusfeescheduleinputs}
@@ -9646,6 +12212,16 @@
   | `per_byte_fee` | [`Quantity`](#quantity) |
   | `per_instruction_fee` | [`Quantity`](#quantity) |
   | `per_gas_unit_fee` | [`Quantity`](#quantity) |
+
+## `NexusFeeSettlementV1` {#nexusfeesettlementv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `burn` | &mdash; | 0 |
 
 ## `NexusLaneManifestValidatorBindingStatus` {#nexuslanemanifestvalidatorbindingstatus}
 
@@ -9874,6 +12450,52 @@
   | `nft` | [`NftId`](#nftid) |
   | `new_owner` | [`AccountId`](#accountid) |
 
+## `NftSaleOfferV1` {#nftsaleofferv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `offer_id` | [`Hash`](#hash) |
+  | `nft_id` | [`NftId`](#nftid) |
+  | `seller` | [`AccountId`](#accountid) |
+  | `payment_asset` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `price` | [`Quantity`](#quantity) |
+  | `expires_at_height` | `u64` |
+  | `reserved_buyer` | [`Option<AccountId>`](#option-accountid) |
+  | `metadata_hash` | [`Hash`](#hash) |
+
+## `NftSaleRecordV1` {#nftsalerecordv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u16` |
+  | `offer` | [`NftSaleOfferV1`](#nftsaleofferv1) |
+  | `offer_hash` | [`Hash`](#hash) |
+  | `custody` | [`AccountId`](#accountid) |
+  | `status` | [`NftSaleStatusV1`](#nftsalestatusv1) |
+  | `created_at_height` | `u64` |
+  | `closed_at_height` | [`Option<u64>`](#option-u64) |
+
+## `NftSaleStatusV1` {#nftsalestatusv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `open` | &mdash; | 0 |
+  | `purchased` | [`AccountId`](#accountid) | 1 |
+  | `cancelled` | &mdash; | 2 |
+
 ## `NonZero<u16>` {#nonzero-u16}
 
 **Type:** Alias
@@ -9900,8 +12522,8 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `finalized_global_beacon_pulse` | [`Option<FinalizedGlobalThresholdBeaconPulseV1>`](#option-finalizedglobalthresholdbeaconpulsev1) |
-  | `v2_evidence_admissions` | [`Vec<SumeragiV2EquivocationEvidence>`](#vec-sumeragiv2equivocationevidence) |
+  | `parent_service_commit_qc` | [`Option<Vec<u8>>`](#option-vec-u8) |
+  | `evidence_admissions` | [`Vec<Evidence>`](#vec-evidence) |
   | `penalty_actions` | [`Vec<NposPenaltyAction>`](#vec-npospenaltyaction) |
 
 ## `NposConsensusSlashAction` {#nposconsensusslashaction}
@@ -9912,7 +12534,7 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `evidence_key` | [`Vec<u8>`](#vec-u8) |
+  | `evidence_key` | [`Hash`](#hash) |
   | `signer` | `u32` |
   | `peer_id` | [`PeerId`](#peerid) |
   | `lane_id` | [`LaneId`](#laneid) |
@@ -9928,7 +12550,7 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `evidence_key` | [`Vec<u8>`](#vec-u8) |
+  | `evidence_key` | [`Hash`](#hash) |
   | `height` | `u64` |
 
 ## `NposPenaltyAction` {#npospenaltyaction}
@@ -9952,6 +12574,28 @@
   | --: | :-- |
   | `mantissa` | [`BigInt`](#bigint) |
   | `scale` | [`Compact<u32>`](#compact-u32) |
+
+## `NumericFaultV1` {#numericfaultv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `MantissaOverflow` | &mdash; | 1 |
+  | `ScaleOverflow` | &mdash; | 2 |
+  | `DivisionByZero` | &mdash; | 3 |
+  | `RepeatingDecimal` | &mdash; | 4 |
+  | `ExactDivisionScaleOverflow` | &mdash; | 5 |
+  | `InvalidScale` | &mdash; | 6 |
+  | `InexactConversion` | &mdash; | 7 |
+  | `NegativeQuantity` | &mdash; | 8 |
+  | `QuantityUnderflow` | &mdash; | 9 |
+  | `InvalidRoundingMode` | &mdash; | 10 |
+  | `InvalidFailureMode` | &mdash; | 11 |
+  | `ReservedRegisterNonZero` | &mdash; | 12 |
+  | `NegativeSquareRoot` | &mdash; | 13 |
 
 ## `NumericSpec` {#numericspec}
 
@@ -9988,7 +12632,13 @@
   | `mantissa` | [`i128`](#i128) |
   | `scale` | `u32` |
 
-## `OfflineStatus` {#offlinestatus}
+## `OpaqueAccountId` {#opaqueaccountid}
+
+**Type:** Alias
+
+**To:** [`Hash`](#hash)
+
+## `OpenAssetLock` {#openassetlock}
 
 **Type:** Struct
 
@@ -9996,16 +12646,26 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `cash_handoff_capability` | `String` |
-  | `required_bridge_abi_version` | `u32` |
-  | `max_hops` | `u32` |
-  | `ready` | `bool` |
+  | `escrow_id` | [`EscrowId`](#escrowid) |
+  | `asset_definition` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `destination` | [`AccountId`](#accountid) |
+  | `amount` | [`Quantity`](#quantity) |
+  | `release_authority` | [`Option<AccountId>`](#option-accountid) |
+  | `expires_at_ms` | [`Option<u64>`](#option-u64) |
+  | `evidence_hashes` | [`Vec<Hash>`](#vec-hash) |
 
-## `OpaqueAccountId` {#opaqueaccountid}
+## `OpenControlledAssetLockV1` {#opencontrolledassetlockv1}
 
-**Type:** Alias
+**Type:** Struct
 
-**To:** [`Hash`](#hash)
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `source` | [`AccountId`](#accountid) |
+  | `key` | [`Vec<u8>`](#vec-u8) |
+  | `lock` | [`OpenAssetLock`](#openassetlock) |
+  | `control` | [`AssetLockControlV1`](#assetlockcontrolv1) |
 
 ## `Option<AccessSetHints>` {#option-accesssethints}
 
@@ -10037,6 +12697,12 @@
 
 **Some:** [`ArchiveId`](#archiveid)
 
+## `Option<Array<u8, 16>>` {#option-array-u8-16}
+
+**Type:** Option
+
+**Some:** [`Array<u8, 16>`](#array-u8-16)
+
 ## `Option<Array<u8, 32>>` {#option-array-u8-32}
 
 **Type:** Option
@@ -10067,17 +12733,83 @@
 
 **Some:** [`AssetEscrowStatus`](#assetescrowstatus)
 
+## `Option<AssetFiControllerBindingV1>` {#option-assetficontrollerbindingv1}
+
+**Type:** Option
+
+**Some:** [`AssetFiControllerBindingV1`](#assetficontrollerbindingv1)
+
+## `Option<AssetFiLinkAttestationV1>` {#option-assetfilinkattestationv1}
+
+**Type:** Option
+
+**Some:** [`AssetFiLinkAttestationV1`](#assetfilinkattestationv1)
+
+## `Option<AssetFiLinkV1>` {#option-assetfilinkv1}
+
+**Type:** Option
+
+**Some:** [`AssetFiLinkV1`](#assetfilinkv1)
+
+## `Option<AssetFiTransferControllerV1>` {#option-assetfitransfercontrollerv1}
+
+**Type:** Option
+
+**Some:** [`AssetFiTransferControllerV1`](#assetfitransfercontrollerv1)
+
+## `Option<AssetFiV1>` {#option-assetfiv1}
+
+**Type:** Option
+
+**Some:** [`AssetFiV1`](#assetfiv1)
+
 ## `Option<AssetId>` {#option-assetid}
 
 **Type:** Option
 
 **Some:** [`AssetId`](#assetid)
 
+## `Option<AssetLockWaterfallSettlementV1>` {#option-assetlockwaterfallsettlementv1}
+
+**Type:** Option
+
+**Some:** [`AssetLockWaterfallSettlementV1`](#assetlockwaterfallsettlementv1)
+
+## `Option<AssetUidBindingV1>` {#option-assetuidbindingv1}
+
+**Type:** Option
+
+**Some:** [`AssetUidBindingV1`](#assetuidbindingv1)
+
+## `Option<AssetUidEnrollmentV1>` {#option-assetuidenrollmentv1}
+
+**Type:** Option
+
+**Some:** [`AssetUidEnrollmentV1`](#assetuidenrollmentv1)
+
+## `Option<AssetUidPolicyV1>` {#option-assetuidpolicyv1}
+
+**Type:** Option
+
+**Some:** [`AssetUidPolicyV1`](#assetuidpolicyv1)
+
+## `Option<AssetUidWalletHoldingsV1>` {#option-assetuidwalletholdingsv1}
+
+**Type:** Option
+
+**Some:** [`AssetUidWalletHoldingsV1`](#assetuidwalletholdingsv1)
+
 ## `Option<AxtEffectBinding>` {#option-axteffectbinding}
 
 **Type:** Option
 
 **Some:** [`AxtEffectBinding`](#axteffectbinding)
+
+## `Option<BeaconHorizonStatusV1>` {#option-beaconhorizonstatusv1}
+
+**Type:** Option
+
+**Some:** [`BeaconHorizonStatusV1`](#beaconhorizonstatusv1)
 
 ## `Option<BlockExecutionContextBundle>` {#option-blockexecutioncontextbundle}
 
@@ -10097,23 +12829,35 @@
 
 **Some:** [`BlockStatus`](#blockstatus)
 
+## `Option<BondCallTerms>` {#option-bondcallterms}
+
+**Type:** Option
+
+**Some:** [`BondCallTerms`](#bondcallterms)
+
+## `Option<BondRecordingCursor>` {#option-bondrecordingcursor}
+
+**Type:** Option
+
+**Some:** [`BondRecordingCursor`](#bondrecordingcursor)
+
 ## `Option<BridgeProofRecord>` {#option-bridgeproofrecord}
 
 **Type:** Option
 
 **Some:** [`BridgeProofRecord`](#bridgeproofrecord)
 
-## `Option<CertifiedMergeLedgerReference>` {#option-certifiedmergeledgerreference}
+## `Option<ChangeSetId>` {#option-changesetid}
 
 **Type:** Option
 
-**Some:** [`CertifiedMergeLedgerReference`](#certifiedmergeledgerreference)
+**Some:** [`ChangeSetId`](#changesetid)
 
-## `Option<CertifiedMergeTransactionInclusion>` {#option-certifiedmergetransactioninclusion}
+## `Option<CommitCertificate>` {#option-commitcertificate}
 
 **Type:** Option
 
-**Some:** [`CertifiedMergeTransactionInclusion`](#certifiedmergetransactioninclusion)
+**Some:** [`CommitCertificate`](#commitcertificate)
 
 ## `Option<ConditionalEscrowAttestation>` {#option-conditionalescrowattestation}
 
@@ -10132,6 +12876,12 @@
 **Type:** Option
 
 **Some:** [`ConfidentialPolicyTransition`](#confidentialpolicytransition)
+
+## `Option<ConsensusKeyId>` {#option-consensuskeyid}
+
+**Type:** Option
+
+**Some:** [`ConsensusKeyId`](#consensuskeyid)
 
 ## `Option<ContractAddress>` {#option-contractaddress}
 
@@ -10217,23 +12967,47 @@
 
 **Some:** [`FeedId`](#feedid)
 
+## `Option<FinalPromotionOperationOriginV1>` {#option-finalpromotionoperationoriginv1}
+
+**Type:** Option
+
+**Some:** [`FinalPromotionOperationOriginV1`](#finalpromotionoperationoriginv1)
+
 ## `Option<FinalizedGlobalThresholdBeaconPulseV1>` {#option-finalizedglobalthresholdbeaconpulsev1}
 
 **Type:** Option
 
 **Some:** [`FinalizedGlobalThresholdBeaconPulseV1`](#finalizedglobalthresholdbeaconpulsev1)
 
-## `Option<FinalizedNextEpochSnapshot>` {#option-finalizednextepochsnapshot}
-
-**Type:** Option
-
-**Some:** [`FinalizedNextEpochSnapshot`](#finalizednextepochsnapshot)
-
 ## `Option<ForwardCursor>` {#option-forwardcursor}
 
 **Type:** Option
 
 **Some:** [`ForwardCursor`](#forwardcursor)
+
+## `Option<FraudRiskBandV1>` {#option-fraudriskbandv1}
+
+**Type:** Option
+
+**Some:** [`FraudRiskBandV1`](#fraudriskbandv1)
+
+## `Option<GameCommitmentSetV1>` {#option-gamecommitmentsetv1}
+
+**Type:** Option
+
+**Some:** [`GameCommitmentSetV1`](#gamecommitmentsetv1)
+
+## `Option<GameOutcomeV1>` {#option-gameoutcomev1}
+
+**Type:** Option
+
+**Some:** [`GameOutcomeV1`](#gameoutcomev1)
+
+## `Option<GenesisAdmissionOriginV1>` {#option-genesisadmissionoriginv1}
+
+**Type:** Option
+
+**Some:** [`GenesisAdmissionOriginV1`](#genesisadmissionoriginv1)
 
 ## `Option<GovernanceCertificateId>` {#option-governancecertificateid}
 
@@ -10283,23 +13057,35 @@
 
 **Some:** [`HashOf<DaProofPolicyBundle>`](#hashof-daproofpolicybundle)
 
-## `Option<HashOf<LaneFinalityStatement>>` {#option-hashof-lanefinalitystatement}
+## `Option<HashOf<EventBox>>` {#option-hashof-eventbox}
 
 **Type:** Option
 
-**Some:** [`HashOf<LaneFinalityStatement>`](#hashof-lanefinalitystatement)
+**Some:** [`HashOf<EventBox>`](#hashof-eventbox)
+
+## `Option<HashOf<ExecutionOutputV1>>` {#option-hashof-executionoutputv1}
+
+**Type:** Option
+
+**Some:** [`HashOf<ExecutionOutputV1>`](#hashof-executionoutputv1)
+
+## `Option<HashOf<FastpqOrdinarySourceStatementLeafV1>>` {#option-hashof-fastpqordinarysourcestatementleafv1}
+
+**Type:** Option
+
+**Some:** [`HashOf<FastpqOrdinarySourceStatementLeafV1>`](#hashof-fastpqordinarysourcestatementleafv1)
+
+## `Option<HashOf<FinalizedGlobalThresholdBeaconPulseV1>>` {#option-hashof-finalizedglobalthresholdbeaconpulsev1}
+
+**Type:** Option
+
+**Some:** [`HashOf<FinalizedGlobalThresholdBeaconPulseV1>`](#hashof-finalizedglobalthresholdbeaconpulsev1)
 
 ## `Option<HashOf<MerkleTree<TransactionEntrypoint>>>` {#option-hashof-merkletree-transactionentrypoint}
 
 **Type:** Option
 
 **Some:** [`HashOf<MerkleTree<TransactionEntrypoint>>`](#hashof-merkletree-transactionentrypoint)
-
-## `Option<HashOf<MerkleTree<TransactionResult>>>` {#option-hashof-merkletree-transactionresult}
-
-**Type:** Option
-
-**Some:** [`HashOf<MerkleTree<TransactionResult>>`](#hashof-merkletree-transactionresult)
 
 ## `Option<HashOf<NposConsensusEffects>>` {#option-hashof-nposconsensuseffects}
 
@@ -10319,11 +13105,11 @@
 
 **Some:** [`HashOf<TransactionEntrypoint>`](#hashof-transactionentrypoint)
 
-## `Option<HashOf<TransactionResult>>` {#option-hashof-transactionresult}
+## `Option<KagemushaWalletLoadChargeV1>` {#option-kagemushawalletloadchargev1}
 
 **Type:** Option
 
-**Some:** [`HashOf<TransactionResult>`](#hashof-transactionresult)
+**Some:** [`KagemushaWalletLoadChargeV1`](#kagemushawalletloadchargev1)
 
 ## `Option<KeyedHash>` {#option-keyedhash}
 
@@ -10331,59 +13117,11 @@
 
 **Some:** [`KeyedHash`](#keyedhash)
 
-## `Option<LaneBlockProposalPayloadHintV1>` {#option-laneblockproposalpayloadhintv1}
-
-**Type:** Option
-
-**Some:** [`LaneBlockProposalPayloadHintV1`](#laneblockproposalpayloadhintv1)
-
-## `Option<LaneDrainNativeFrontierEvidenceV1>` {#option-lanedrainnativefrontierevidencev1}
-
-**Type:** Option
-
-**Some:** [`LaneDrainNativeFrontierEvidenceV1`](#lanedrainnativefrontierevidencev1)
-
-## `Option<LaneFastpqProofMaterial>` {#option-lanefastpqproofmaterial}
-
-**Type:** Option
-
-**Some:** [`LaneFastpqProofMaterial`](#lanefastpqproofmaterial)
-
-## `Option<LaneFinalityAuthorityV1>` {#option-lanefinalityauthorityv1}
-
-**Type:** Option
-
-**Some:** [`LaneFinalityAuthorityV1`](#lanefinalityauthorityv1)
-
 ## `Option<LaneId>` {#option-laneid}
 
 **Type:** Option
 
 **Some:** [`LaneId`](#laneid)
-
-## `Option<LanePayloadAvailabilityQcV1>` {#option-lanepayloadavailabilityqcv1}
-
-**Type:** Option
-
-**Some:** [`LanePayloadAvailabilityQcV1`](#lanepayloadavailabilityqcv1)
-
-## `Option<LanePrivacyProof>` {#option-laneprivacyproof}
-
-**Type:** Option
-
-**Some:** [`LanePrivacyProof`](#laneprivacyproof)
-
-## `Option<LaneRelayEnvelope>` {#option-lanerelayenvelope}
-
-**Type:** Option
-
-**Some:** [`LaneRelayEnvelope`](#lanerelayenvelope)
-
-## `Option<LaneSwapMetadata>` {#option-laneswapmetadata}
-
-**Type:** Option
-
-**Some:** [`LaneSwapMetadata`](#laneswapmetadata)
 
 ## `Option<ManifestAliasBinding>` {#option-manifestaliasbinding}
 
@@ -10402,24 +13140,6 @@
 **Type:** Option
 
 **Some:** [`ManifestProvenance`](#manifestprovenance)
-
-## `Option<MergeCarrierCommitmentV1>` {#option-mergecarriercommitmentv1}
-
-**Type:** Option
-
-**Some:** [`MergeCarrierCommitmentV1`](#mergecarriercommitmentv1)
-
-## `Option<MergeExecutionBatch>` {#option-mergeexecutionbatch}
-
-**Type:** Option
-
-**Some:** [`MergeExecutionBatch`](#mergeexecutionbatch)
-
-## `Option<MerkleTreeCommitment<LaneFinalityStatement>>` {#option-merkletreecommitment-lanefinalitystatement}
-
-**Type:** Option
-
-**Some:** [`MerkleTreeCommitment<LaneFinalityStatement>`](#merkletreecommitment-lanefinalitystatement)
 
 ## `Option<ModerationChallengeDecisionV1>` {#option-moderationchallengedecisionv1}
 
@@ -10456,6 +13176,12 @@
 **Type:** Option
 
 **Some:** [`ModerationPanelSelectionV1`](#moderationpanelselectionv1)
+
+## `Option<ModerationSortitionAnchorV1>` {#option-moderationsortitionanchorv1}
+
+**Type:** Option
+
+**Some:** [`ModerationSortitionAnchorV1`](#moderationsortitionanchorv1)
 
 ## `Option<MultisigSignatures>` {#option-multisigsignatures}
 
@@ -10529,11 +13255,11 @@
 
 **Some:** [`Name`](#name)
 
-## `Option<NativeAmxReceipt>` {#option-nativeamxreceipt}
+## `Option<NexusFeeReceipt>` {#option-nexusfeereceipt}
 
 **Type:** Option
 
-**Some:** [`NativeAmxReceipt`](#nativeamxreceipt)
+**Some:** [`NexusFeeReceipt`](#nexusfeereceipt)
 
 ## `Option<NexusLaneRuntimeUpgradeHookStatus>` {#option-nexuslaneruntimeupgradehookstatus}
 
@@ -10570,12 +13296,6 @@
 **Type:** Option
 
 **Some:** [`NposConsensusEffects`](#nposconsensuseffects)
-
-## `Option<OfflineStatus>` {#option-offlinestatus}
-
-**Type:** Option
-
-**Some:** [`OfflineStatus`](#offlinestatus)
 
 ## `Option<Option<NonZero<u64>>>` {#option-option-nonzero-u64}
 
@@ -10655,11 +13375,35 @@
 
 **Some:** [`PinStatusKindV1`](#pinstatuskindv1)
 
-## `Option<ProofAttachmentList>` {#option-proofattachmentlist}
+## `Option<PrivacyConsensusPolicyUpdateV1>` {#option-privacyconsensuspolicyupdatev1}
 
 **Type:** Option
 
-**Some:** [`ProofAttachmentList`](#proofattachmentlist)
+**Some:** [`PrivacyConsensusPolicyUpdateV1`](#privacyconsensuspolicyupdatev1)
+
+## `Option<PrivacyProtocolLimitsUpdateV1>` {#option-privacyprotocollimitsupdatev1}
+
+**Type:** Option
+
+**Some:** [`PrivacyProtocolLimitsUpdateV1`](#privacyprotocollimitsupdatev1)
+
+## `Option<PrivacyProtocolPolicyV1>` {#option-privacyprotocolpolicyv1}
+
+**Type:** Option
+
+**Some:** [`PrivacyProtocolPolicyV1`](#privacyprotocolpolicyv1)
+
+## `Option<PrivateSettlementPolicyUpdateV1>` {#option-privatesettlementpolicyupdatev1}
+
+**Type:** Option
+
+**Some:** [`PrivateSettlementPolicyUpdateV1`](#privatesettlementpolicyupdatev1)
+
+## `Option<PrivateSettlementProtocolClosureDrainV1>` {#option-privatesettlementprotocolclosuredrainv1}
+
+**Type:** Option
+
+**Some:** [`PrivateSettlementProtocolClosureDrainV1`](#privatesettlementprotocolclosuredrainv1)
 
 ## `Option<ProofBlob>` {#option-proofblob}
 
@@ -10697,17 +13441,17 @@
 
 **Some:** [`ProviderId`](#providerid)
 
+## `Option<PublicKey>` {#option-publickey}
+
+**Type:** Option
+
+**Some:** [`PublicKey`](#publickey)
+
 ## `Option<Quantity>` {#option-quantity}
 
 **Type:** Option
 
 **Some:** [`Quantity`](#quantity)
-
-## `Option<QuorumCertificate>` {#option-quorumcertificate}
-
-**Type:** Option
-
-**Some:** [`QuorumCertificate`](#quorumcertificate)
 
 ## `Option<RepairFinalizedCursorV1>` {#option-repairfinalizedcursorv1}
 
@@ -10787,29 +13531,35 @@
 
 **Some:** [`RoleId`](#roleid)
 
-## `Option<RuntimeUpgradeId>` {#option-runtimeupgradeid}
-
-**Type:** Option
-
-**Some:** [`RuntimeUpgradeId`](#runtimeupgradeid)
-
 ## `Option<RwaId>` {#option-rwaid}
 
 **Type:** Option
 
 **Some:** [`RwaId`](#rwaid)
 
-## `Option<SccpRouteKeyV1>` {#option-sccproutekeyv1}
+## `Option<SccpNetworkV1>` {#option-sccpnetworkv1}
 
 **Type:** Option
 
-**Some:** [`SccpRouteKeyV1`](#sccproutekeyv1)
+**Some:** [`SccpNetworkV1`](#sccpnetworkv1)
 
-## `Option<SnapshotBootstrapAnchor>` {#option-snapshotbootstrapanchor}
+## `Option<SccpRouteActivationV1>` {#option-sccprouteactivationv1}
 
 **Type:** Option
 
-**Some:** [`SnapshotBootstrapAnchor`](#snapshotbootstrapanchor)
+**Some:** [`SccpRouteActivationV1`](#sccprouteactivationv1)
+
+## `Option<SignedAttachmentsV1>` {#option-signedattachmentsv1}
+
+**Type:** Option
+
+**Some:** [`SignedAttachmentsV1`](#signedattachmentsv1)
+
+## `Option<SignedGameCheckpointV1>` {#option-signedgamecheckpointv1}
+
+**Type:** Option
+
+**Some:** [`SignedGameCheckpointV1`](#signedgamecheckpointv1)
 
 ## `Option<SorafsGarPolicy>` {#option-sorafsgarpolicy}
 
@@ -10835,6 +13585,24 @@
 
 **Some:** [`SortOrder`](#sortorder)
 
+## `Option<StreamTokenCustodyRecordProofV1>` {#option-streamtokencustodyrecordproofv1}
+
+**Type:** Option
+
+**Some:** [`StreamTokenCustodyRecordProofV1`](#streamtokencustodyrecordproofv1)
+
+## `Option<StreamTokenExecutionV1>` {#option-streamtokenexecutionv1}
+
+**Type:** Option
+
+**Some:** [`StreamTokenExecutionV1`](#streamtokenexecutionv1)
+
+## `Option<StreamTokenGatewayQuotaRequestV1>` {#option-streamtokengatewayquotarequestv1}
+
+**Type:** Option
+
+**Some:** [`StreamTokenGatewayQuotaRequestV1`](#streamtokengatewayquotarequestv1)
+
 ## `Option<StreamingSoranetRoute>` {#option-streamingsoranetroute}
 
 **Type:** Option
@@ -10858,6 +13626,18 @@
 **Type:** Option
 
 **Some:** [`SumeragiConsensusStatus`](#sumeragiconsensusstatus)
+
+## `Option<SumeragiHaltReason>` {#option-sumeragihaltreason}
+
+**Type:** Option
+
+**Some:** [`SumeragiHaltReason`](#sumeragihaltreason)
+
+## `Option<SumeragiLaneMergeSection>` {#option-sumeragilanemergesection}
+
+**Type:** Option
+
+**Some:** [`SumeragiLaneMergeSection`](#sumeragilanemergesection)
 
 ## `Option<TicketEnvelopeV1>` {#option-ticketenvelopev1}
 
@@ -10883,11 +13663,23 @@
 
 **Some:** [`TriggerCompletedOutcomeType`](#triggercompletedoutcometype)
 
+## `Option<TriggerFailureRootV1>` {#option-triggerfailurerootv1}
+
+**Type:** Option
+
+**Some:** [`TriggerFailureRootV1`](#triggerfailurerootv1)
+
 ## `Option<TriggerId>` {#option-triggerid}
 
 **Type:** Option
 
 **Some:** [`TriggerId`](#triggerid)
+
+## `Option<TriggerLifecycleRetryStateV1>` {#option-triggerlifecycleretrystatev1}
+
+**Type:** Option
+
+**Some:** [`TriggerLifecycleRetryStateV1`](#triggerlifecycleretrystatev1)
 
 ## `Option<UniversalAccountId>` {#option-universalaccountid}
 
@@ -10895,17 +13687,47 @@
 
 **Some:** [`UniversalAccountId`](#universalaccountid)
 
+## `Option<ValidatorCommitteePreparationV1>` {#option-validatorcommitteepreparationv1}
+
+**Type:** Option
+
+**Some:** [`ValidatorCommitteePreparationV1`](#validatorcommitteepreparationv1)
+
+## `Option<ValidatorEpochBoundaryV1>` {#option-validatorepochboundaryv1}
+
+**Type:** Option
+
+**Some:** [`ValidatorEpochBoundaryV1`](#validatorepochboundaryv1)
+
+## `Option<ValidatorEpochContextV1>` {#option-validatorepochcontextv1}
+
+**Type:** Option
+
+**Some:** [`ValidatorEpochContextV1`](#validatorepochcontextv1)
+
 ## `Option<Vec<Array<u8, 32>>>` {#option-vec-array-u8-32}
 
 **Type:** Option
 
 **Some:** [`Vec<Array<u8, 32>>`](#vec-array-u8-32)
 
-## `Option<Vec<ContractErrorCodeDescriptor>>` {#option-vec-contracterrorcodedescriptor}
+## `Option<Vec<AxtRemoteSpendClaimV1>>` {#option-vec-axtremotespendclaimv1}
 
 **Type:** Option
 
-**Some:** [`Vec<ContractErrorCodeDescriptor>`](#vec-contracterrorcodedescriptor)
+**Some:** [`Vec<AxtRemoteSpendClaimV1>`](#vec-axtremotespendclaimv1)
+
+## `Option<Vec<ContractErrorMessage>>` {#option-vec-contracterrormessage}
+
+**Type:** Option
+
+**Some:** [`Vec<ContractErrorMessage>`](#vec-contracterrormessage)
+
+## `Option<Vec<ContractErrorTypeDescriptor>>` {#option-vec-contracterrortypedescriptor}
+
+**Type:** Option
+
+**Some:** [`Vec<ContractErrorTypeDescriptor>`](#vec-contracterrortypedescriptor)
 
 ## `Option<Vec<EntrypointDescriptor>>` {#option-vec-entrypointdescriptor}
 
@@ -11325,6 +14147,16 @@
   | `oracle_id` | [`AccountId`](#accountid) |
   | `amount` | [`Quantity`](#quantity) |
 
+## `OrchardLimitsV1` {#orchardlimitsv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `max_action_count` | `u32` |
+
 ## `OrderbookAdmissionPolicyRecord` {#orderbookadmissionpolicyrecord}
 
 **Type:** Struct
@@ -11686,44 +14518,7 @@
   | `transaction` | [`TransactionParameters`](#transactionparameters) |
   | `executor` | [`SmartContractParameters`](#smartcontractparameters) |
   | `smart_contract` | [`SmartContractParameters`](#smartcontractparameters) |
-  | `custom` | [`SortedMap<CustomParameterId, CustomParameter>`](#sortedmap-customparameterid-customparameter) |
-
-## `ParentCommitJustification` {#parentcommitjustification}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `certificate` | [`Option<QuorumCertificate>`](#option-quorumcertificate) |
-
-## `ParliamentAggregateOutcomeV1` {#parliamentaggregateoutcomev1}
-
-**Type:** Enum
-
-**Variants:**
-
-  | Variant name | Variant value | Discriminant |
-  | --: | :-- | --- |
-  | `Approved` | &mdash; | 0 |
-  | `Rejected` | &mdash; | 1 |
-  | `NoQuorum` | &mdash; | 2 |
-  | `NoResult` | &mdash; | 3 |
-
-## `ParliamentAggregateTallyV1` {#parliamentaggregatetallyv1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `original_seats` | `u32` |
-  | `accepted_ballots` | `u32` |
-  | `aye` | `u32` |
-  | `nay` | `u32` |
-  | `abstain` | `u32` |
+  | `custom` | [`CustomParameters`](#customparameters) |
 
 ## `ParliamentAutomaticExecutionFailedV1` {#parliamentautomaticexecutionfailedv1}
 
@@ -11758,7 +14553,7 @@
   | --: | :-- |
   | `observed_head` | [`GovernanceExpectedHeadV1`](#governanceexpectedheadv1) |
 
-## `ParliamentBodies` {#parliamentbodies}
+## `ParliamentCandidateTestingPolicyV1` {#parliamentcandidatetestingpolicyv1}
 
 **Type:** Struct
 
@@ -11766,42 +14561,8 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `selection_epoch` | `u64` |
-  | `rosters` | [`SortedMap<ParliamentBody, ParliamentRoster>`](#sortedmap-parliamentbody-parliamentroster) |
-
-## `ParliamentBody` {#parliamentbody}
-
-**Type:** Enum
-
-**Variants:**
-
-  | Variant name | Variant value | Discriminant |
-  | --: | :-- | --- |
-  | `RulesCommittee` | &mdash; | 0 |
-  | `AgendaCouncil` | &mdash; | 1 |
-  | `InterestPanel` | &mdash; | 2 |
-  | `ReviewPanel` | &mdash; | 3 |
-  | `CoordinationCouncil` | &mdash; | 4 |
-  | `MpcCommittee` | &mdash; | 5 |
-  | `FmaCommittee` | &mdash; | 6 |
-  | `OversightCommittee` | &mdash; | 7 |
-  | `PolicyJury` | &mdash; | 8 |
-  | `ConfirmationJury` | &mdash; | 9 |
-
-## `ParliamentConcentrationWarningV1` {#parliamentconcentrationwarningv1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `body_instance_id` | [`BodyInstanceId`](#bodyinstanceid) |
-  | `body` | [`ParliamentBody`](#parliamentbody) |
-  | `target_seats` | `u32` |
-  | `sealed_seats` | `u32` |
-  | `eligible_candidates` | `u32` |
-  | `cross_body_assignment_cap` | `u32` |
+  | `version` | `u16` |
+  | `profile` | [`ProofProfileIdV1`](#proofprofileidv1) |
 
 ## `ParliamentContractDeploymentOriginV1` {#parliamentcontractdeploymentoriginv1}
 
@@ -11847,6 +14608,7 @@
   | `RegisterBallotParticipant` | &mdash; | 21 |
   | `RecordBallotDropout` | &mdash; | 22 |
   | `FailPublicFindingNoResult` | &mdash; | 23 |
+  | `RegisterInitialSortition` | &mdash; | 24 |
 
 ## `ParliamentNoResultKindV1` {#parliamentnoresultkindv1}
 
@@ -11867,21 +14629,6 @@
   | `ConfirmationJuryCapacityUnavailable` | &mdash; | 8 |
   | `RandomnessRedrawBudgetExhausted` | &mdash; | 9 |
 
-## `ParliamentRoster` {#parliamentroster}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `body` | [`ParliamentBody`](#parliamentbody) |
-  | `epoch` | `u64` |
-  | `members` | [`Vec<AccountId>`](#vec-accountid) |
-  | `alternates` | [`Vec<AccountId>`](#vec-accountid) |
-  | `candidate_count` | `u32` |
-  | `derived_by` | [`CouncilDerivationKind`](#councilderivationkind) |
-
 ## `PayloadEncoding` {#payloadencoding}
 
 **Type:** Enum
@@ -11891,21 +14638,6 @@
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
   | `reed_solomon16` | &mdash; | 0 |
-
-## `PayloadManifest` {#payloadmanifest}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `round` | [`ConsensusRound`](#consensusround) |
-  | `subject` | [`BlockSubject`](#blocksubject) |
-  | `payload_size_bytes` | `u64` |
-  | `layout` | [`DataAvailabilityLayout`](#dataavailabilitylayout) |
-  | `chunk_hashes` | [`Vec<Hash>`](#vec-hash) |
-  | `chunk_root` | [`Hash`](#hash) |
 
 ## `PdpOutcomeProjectionV1` {#pdpoutcomeprojectionv1}
 
@@ -12161,8 +14893,7 @@
   | `Transaction` | [`TransactionEvent`](#transactionevent) | 0 |
   | `Block` | [`BlockEvent`](#blockevent) | 1 |
   | `Warning` | [`PipelineWarning`](#pipelinewarning) | 2 |
-  | `Merge` | [`MergeLedgerEvent`](#mergeledgerevent) | 3 |
-  | `Witness` | [`ExecWitnessMsg`](#execwitnessmsg) | 4 |
+  | `Witness` | [`ExecWitnessMsg`](#execwitnessmsg) | 3 |
 
 ## `PipelineEventFilterBox` {#pipelineeventfilterbox}
 
@@ -12174,8 +14905,54 @@
   | --: | :-- | --- |
   | `Transaction` | [`TransactionEventFilter`](#transactioneventfilter) | 0 |
   | `Block` | [`BlockEventFilter`](#blockeventfilter) | 1 |
-  | `Merge` | [`MergeLedgerEventFilter`](#mergeledgereventfilter) | 2 |
-  | `Witness` | [`WitnessEventFilter`](#witnesseventfilter) | 3 |
+  | `Witness` | [`WitnessEventFilter`](#witnesseventfilter) | 2 |
+
+## `PipelineEventPositionV1` {#pipelineeventpositionv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `network` | `u32` | 0 |
+  | `block_approved` | &mdash; | 1 |
+
+## `PipelineExecutionOutputV1` {#pipelineexecutionoutputv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `invocation` | [`PipelineInvocationV1`](#pipelineinvocationv1) |
+  | `result` | [`TransactionResult`](#transactionresult) |
+  | `failure_root` | [`Option<TriggerFailureRootV1>`](#option-triggerfailurerootv1) |
+  | `completions` | [`Vec<InvocationCompletionV1>`](#vec-invocationcompletionv1) |
+
+## `PipelineExecutionOutputV2` {#pipelineexecutionoutputv2}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `execution` | [`PipelineExecutionOutputV1`](#pipelineexecutionoutputv1) |
+  | `trigger_lifecycle` | [`TriggerLifecycleEffectsV1`](#triggerlifecycleeffectsv1) |
+
+## `PipelineInvocationV1` {#pipelineinvocationv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `event` | [`PipelineEventPositionV1`](#pipelineeventpositionv1) |
+  | `candidate_index` | `u32` |
+  | `trigger` | [`TriggerUseV1`](#triggerusev1) |
 
 ## `PipelineWarning` {#pipelinewarning}
 
@@ -12188,6 +14965,81 @@
   | `header` | [`BlockHeader`](#blockheader) |
   | `kind` | `String` |
   | `details` | `String` |
+
+## `PlainConvictionPolicyV1` {#plainconvictionpolicyv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `asset_scale` | `u32` |
+  | `conviction_step_blocks` | `u64` |
+  | `max_conviction` | `u64` |
+  | `approval_threshold_numerator` | `u64` |
+  | `approval_threshold_denominator` | `u64` |
+  | `minimum_turnout` | `u128` |
+  | `minimum_bond` | [`Quantity`](#quantity) |
+  | `bond_escrow_account` | [`AccountId`](#accountid) |
+  | `slash_receiver_account` | [`AccountId`](#accountid) |
+
+## `PlainVotingContextV1` {#plainvotingcontextv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `NotApplicable` | &mdash; | 0 |
+  | `Conviction` | [`PlainConvictionPolicyV1`](#plainconvictionpolicyv1) | 1 |
+
+## `PlainVotingDecisionV1` {#plainvotingdecisionv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `approve` | `u128` |
+  | `reject` | `u128` |
+  | `abstain` | `u128` |
+  | `approved` | `bool` |
+
+## `PlainVotingResultV1` {#plainvotingresultv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `NotApplicable` | &mdash; | 0 |
+  | `Pending` | &mdash; | 1 |
+  | `Decided` | [`PlainVotingDecisionV1`](#plainvotingdecisionv1) | 2 |
+
+## `PointerAbiFaultV1` {#pointerabifaultv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `InvalidAddress` | &mdash; | 1 |
+  | `UnknownType` | &mdash; | 2 |
+  | `TypeNotAllowed` | &mdash; | 3 |
+  | `WrongType` | &mdash; | 4 |
+  | `InvalidEnvelopeVersion` | &mdash; | 5 |
+  | `OversizedLength` | &mdash; | 6 |
+  | `TruncatedEnvelope` | &mdash; | 7 |
+  | `PayloadHashMismatch` | &mdash; | 8 |
+  | `MalformedFrame` | &mdash; | 9 |
+  | `SchemaMismatch` | &mdash; | 10 |
+  | `NonCanonical` | &mdash; | 11 |
 
 ## `PopCommitmentRootRecordV1` {#popcommitmentrootrecordv1}
 
@@ -12467,7 +15319,7 @@
   | `gateway_error` | &mdash; | 3 |
   | `client_cancelled` | &mdash; | 4 |
 
-## `ProofAttachment` {#proofattachment}
+## `PqMaspLimitsV1` {#pqmasplimitsv1}
 
 **Type:** Struct
 
@@ -12475,18 +15327,963 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `backend` | `String` |
-  | `proof` | [`ProofBox`](#proofbox) |
-  | `vk_ref` | [`VerifyingKeyId`](#verifyingkeyid) |
-  | `vk_commitment` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
-  | `envelope_hash` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
-  | `lane_privacy` | [`Option<LanePrivacyProof>`](#option-laneprivacyproof) |
+  | `max_input_count` | `u32` |
+  | `max_output_count` | `u32` |
 
-## `ProofAttachmentList` {#proofattachmentlist}
+## `PricingScheduleRecord` {#pricingschedulerecord}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u16` |
+  | `currency_code` | `String` |
+  | `default_storage_class` | [`StorageClass`](#storageclass) |
+  | `tiers` | [`Vec<TierRate>`](#vec-tierrate) |
+  | `collateral` | [`CollateralPolicy`](#collateralpolicy) |
+  | `credit` | [`CreditPolicy`](#creditpolicy) |
+  | `discounts` | [`DiscountSchedule`](#discountschedule) |
+  | `notes` | [`Option<String>`](#option-string) |
+
+## `PrivacyAcceptedMediumDispositionV1` {#privacyacceptedmediumdispositionv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `finding_digest` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+  | `disposition_digest` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+  | `release_artifact_set_digest` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+  | `signature` | [`Signature`](#signature) |
+
+## `PrivacyAuditBundleDigestV1` {#privacyauditbundledigestv1}
 
 **Type:** Alias
 
-**To:** [`Vec<ProofAttachment>`](#vec-proofattachment)
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `PrivacyConsensusLimitsV1` {#privacyconsensuslimitsv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `max_actions_per_transaction` | `u32` |
+  | `max_actions_per_block` | `u32` |
+  | `max_proof_bytes_per_action` | `u32` |
+  | `max_action_bytes` | `u32` |
+  | `max_privacy_bytes_per_transaction` | `u32` |
+  | `max_privacy_bytes_per_block` | `u32` |
+  | `max_statement_and_encrypted_output_bytes_per_transaction` | `u32` |
+  | `max_nullifiers_per_action` | `u32` |
+  | `max_commitments_per_action` | `u32` |
+  | `retained_root_count` | `u32` |
+
+## `PrivacyConsensusPolicyUpdateV1` {#privacyconsensuspolicyupdatev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `scheduled_at_height` | `u64` |
+  | `effective_at_height` | `u64` |
+  | `next_limits` | [`PrivacyConsensusLimitsV1`](#privacyconsensuslimitsv1) |
+
+## `PrivacyConsensusPolicyV1` {#privacyconsensuspolicyv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `current_limits` | [`PrivacyConsensusLimitsV1`](#privacyconsensuslimitsv1) |
+  | `pending_update` | [`Option<PrivacyConsensusPolicyUpdateV1>`](#option-privacyconsensuspolicyupdatev1) |
+
+## `PrivacyDeploymentValidatorCanaryV1` {#privacydeploymentvalidatorcanaryv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `validator_index` | `u16` |
+  | `validator` | [`PublicKey`](#publickey) |
+  | `rollout_wave` | `u8` |
+  | `restart_count` | `u8` |
+  | `pre_restart_height` | `u64` |
+  | `post_restart_height` | `u64` |
+  | `canary_height` | `u64` |
+  | `canary_digest` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+  | `converged_state_digest` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+  | `endpoint_version` | `String` |
+
+## `PrivacyDeploymentValidatorSignatureV1` {#privacydeploymentvalidatorsignaturev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `validator_index` | `u16` |
+  | `signature` | [`Signature`](#signature) |
+
+## `PrivacyEngineIdV1` {#privacyengineidv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `native-goldilocks-sha3-384-stark-fri-v1` | &mdash; | 0 |
+  | `native-zk-ams-masked-relaxed-spartan-t256-ristretto255` | &mdash; | 1 |
+  | `native-anonymous-pgc-p256` | &mdash; | 2 |
+  | `native-verange-p256` | &mdash; | 3 |
+  | `native-vega` | &mdash; | 4 |
+  | `native-jindo` | &mdash; | 5 |
+  | `native-halo2-orchard` | &mdash; | 6 |
+  | `native-fcmp-plus-plus` | &mdash; | 7 |
+  | `native-lantern-lnp22` | &mdash; | 8 |
+
+## `PrivacyEngineManifestDigestV1` {#privacyenginemanifestdigestv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `PrivacyExact12CatalogCommitmentV1` {#privacyexact12catalogcommitmentv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `PrivacyExact12DeploymentQualificationDigestV1` {#privacyexact12deploymentqualificationdigestv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `PrivacyExact12DeploymentQualificationV1` {#privacyexact12deploymentqualificationv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u16` |
+  | `chain_id` | [`ChainId`](#chainid) |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `genesis_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `release_manifest_digest` | [`PrivacyExact12ReleaseManifestDigestV1`](#privacyexact12releasemanifestdigestv1) |
+  | `validator_roster_digest` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+  | `endpoint_version` | `String` |
+  | `convergence_height` | `u64` |
+  | `converged_state_digest` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+  | `validator_canaries` | [`Vec<PrivacyDeploymentValidatorCanaryV1>`](#vec-privacydeploymentvalidatorcanaryv1) |
+  | `validator_signatures` | [`Vec<PrivacyDeploymentValidatorSignatureV1>`](#vec-privacydeploymentvalidatorsignaturev1) |
+  | `qualification_digest` | [`PrivacyExact12DeploymentQualificationDigestV1`](#privacyexact12deploymentqualificationdigestv1) |
+
+## `PrivacyExact12QualificationRecordV1` {#privacyexact12qualificationrecordv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `release_manifest` | [`PrivacyExact12ReleaseManifestV1`](#privacyexact12releasemanifestv1) |
+  | `deployment_qualification` | [`PrivacyExact12DeploymentQualificationV1`](#privacyexact12deploymentqualificationv1) |
+
+## `PrivacyExact12ReleaseManifestDigestV1` {#privacyexact12releasemanifestdigestv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `PrivacyExact12ReleaseManifestV1` {#privacyexact12releasemanifestv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u16` |
+  | `catalog_id` | `String` |
+  | `catalog_commitment` | [`PrivacyExact12CatalogCommitmentV1`](#privacyexact12catalogcommitmentv1) |
+  | `source` | [`PrivacyReleaseSourceIdentityV1`](#privacyreleasesourceidentityv1) |
+  | `abi_version` | `u16` |
+  | `abi_hash` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+  | `syscall_list_digest` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+  | `executables` | [`Vec<PrivacyReleaseExecutableArtifactV1>`](#vec-privacyreleaseexecutableartifactv1) |
+  | `protocols` | [`Vec<PrivacyReleaseProtocolBindingV1>`](#vec-privacyreleaseprotocolbindingv1) |
+  | `stage_receipts` | [`Vec<PrivacyReleaseStageReceiptV1>`](#vec-privacyreleasestagereceiptv1) |
+  | `proof_artifacts` | [`Vec<PrivacyReleaseProofArtifactV1>`](#vec-privacyreleaseproofartifactv1) |
+  | `sdk_packages` | [`Vec<PrivacyReleaseSdkPackageV1>`](#vec-privacyreleasesdkpackagev1) |
+  | `hardware_results` | [`Vec<PrivacyReleaseHardwareResultV1>`](#vec-privacyreleasehardwareresultv1) |
+  | `release_artifact_set_digest` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+  | `audits` | [`Vec<PrivacyReleaseAuditV1>`](#vec-privacyreleaseauditv1) |
+  | `audit_bundle_digest` | [`PrivacyAuditBundleDigestV1`](#privacyauditbundledigestv1) |
+  | `release_signatures` | [`Vec<PrivacyReleaseSignatureV1>`](#vec-privacyreleasesignaturev1) |
+  | `manifest_digest` | [`PrivacyExact12ReleaseManifestDigestV1`](#privacyexact12releasemanifestdigestv1) |
+
+## `PrivacyParameterDigestV1` {#privacyparameterdigestv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `PrivacyParameterIdV1` {#privacyparameteridv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `PrivacyPoolIdV1` {#privacypoolidv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `PrivacyProofSystemIdV1` {#privacyproofsystemidv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `stark-fri-sha3-384-goldilocks-v1` | &mdash; | 0 |
+  | `zk-ams-masked-relaxed-spartan-t256-ristretto255-sha3-512` | &mdash; | 1 |
+  | `anonymous-pgc-p256` | &mdash; | 2 |
+  | `iroha-verange-p256` | &mdash; | 3 |
+  | `vega-neutron-nova-spartan-hyrax-t256` | &mdash; | 4 |
+  | `jindo-polynomial-commitment` | &mdash; | 5 |
+  | `halo2-ipa-pasta` | &mdash; | 6 |
+  | `fcmp-plus-plus-curve-tree-bulletproofs` | &mdash; | 7 |
+  | `lantern-lnp22-module-linear-norm` | &mdash; | 8 |
+
+## `PrivacyProtocolIdV1` {#privacyprotocolidv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `zk-ace-pq-authorization-v1` | &mdash; | 0 |
+  | `anonymous-pgc-k-out-of-n-v1` | &mdash; | 1 |
+  | `verange-transparent-range-v1` | &mdash; | 2 |
+  | `iroha-zk-ams-v1` | &mdash; | 3 |
+  | `vega-existing-credential-zk-v1` | &mdash; | 4 |
+  | `iroha-zk-x509-stark-p256-v1` | &mdash; | 5 |
+  | `iroha-jindo-polynomial-commitment-v1` | &mdash; | 6 |
+  | `iroha-bootle-lantern-anoncred-v1` | &mdash; | 7 |
+  | `orchard-halo2-actions-v1` | &mdash; | 8 |
+  | `monero-fcmp-plus-plus-v1` | &mdash; | 9 |
+  | `iroha-ivm-private-note-stark-v1` | &mdash; | 10 |
+  | `pq-masp-stark-v1` | &mdash; | 11 |
+
+## `PrivacyProtocolLimitsUpdateV1` {#privacyprotocollimitsupdatev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `scheduled_at_height` | `u64` |
+  | `effective_at_height` | `u64` |
+  | `next_limits` | [`PrivacyProtocolLimitsV1`](#privacyprotocollimitsv1) |
+
+## `PrivacyProtocolLimitsV1` {#privacyprotocollimitsv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `zk-ace-pq-authorization-v1` | &mdash; | 0 |
+  | `anonymous-pgc-k-out-of-n-v1` | [`AnonymousPgcLimitsV1`](#anonymouspgclimitsv1) | 1 |
+  | `verange-transparent-range-v1` | [`VeRangeLimitsV1`](#verangelimitsv1) | 2 |
+  | `iroha-zk-ams-v1` | [`ZkAmsLimitsV1`](#zkamslimitsv1) | 3 |
+  | `vega-existing-credential-zk-v1` | &mdash; | 4 |
+  | `iroha-zk-x509-stark-p256-v1` | &mdash; | 5 |
+  | `iroha-jindo-polynomial-commitment-v1` | [`JindoLimitsV1`](#jindolimitsv1) | 6 |
+  | `iroha-bootle-lantern-anoncred-v1` | &mdash; | 7 |
+  | `orchard-halo2-actions-v1` | [`OrchardLimitsV1`](#orchardlimitsv1) | 8 |
+  | `monero-fcmp-plus-plus-v1` | [`FcmpLimitsV1`](#fcmplimitsv1) | 9 |
+  | `iroha-ivm-private-note-stark-v1` | [`IvmPrivateNoteLimitsV1`](#ivmprivatenotelimitsv1) | 10 |
+  | `pq-masp-stark-v1` | [`PqMaspLimitsV1`](#pqmasplimitsv1) | 11 |
+
+## `PrivacyProtocolPolicyKeyV1` {#privacyprotocolpolicykeyv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `protocol_id` | [`PrivacyProtocolIdV1`](#privacyprotocolidv1) |
+
+## `PrivacyProtocolPolicyV1` {#privacyprotocolpolicyv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `protocol_id` | [`PrivacyProtocolIdV1`](#privacyprotocolidv1) |
+  | `current_limits` | [`PrivacyProtocolLimitsV1`](#privacyprotocollimitsv1) |
+  | `pending_update` | [`Option<PrivacyProtocolLimitsUpdateV1>`](#option-privacyprotocollimitsupdatev1) |
+
+## `PrivacyReleaseArtifactDigestV1` {#privacyreleaseartifactdigestv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `PrivacyReleaseAuditClassV1` {#privacyreleaseauditclassv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `cryptographic` | &mdash; | 0 |
+  | `implementation_parser_side_channel` | &mdash; | 1 |
+  | `build_supply_chain` | &mdash; | 2 |
+  | `deployment_resource` | &mdash; | 3 |
+  | `sdk_boundary` | &mdash; | 4 |
+
+## `PrivacyReleaseAuditV1` {#privacyreleaseauditv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `audit_class` | [`PrivacyReleaseAuditClassV1`](#privacyreleaseauditclassv1) |
+  | `report_digest` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+  | `release_artifact_set_digest` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+  | `open_critical_findings` | `u16` |
+  | `open_high_findings` | `u16` |
+  | `accepted_medium_dispositions` | [`Vec<PrivacyAcceptedMediumDispositionV1>`](#vec-privacyacceptedmediumdispositionv1) |
+  | `auditor` | [`PublicKey`](#publickey) |
+  | `signature` | [`Signature`](#signature) |
+
+## `PrivacyReleaseExecutableArtifactV1` {#privacyreleaseexecutableartifactv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `kind` | [`PrivacyReleaseExecutableKindV1`](#privacyreleaseexecutablekindv1) |
+  | `name` | `String` |
+  | `artifact_digest` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+
+## `PrivacyReleaseExecutableKindV1` {#privacyreleaseexecutablekindv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `binary` | &mdash; | 0 |
+  | `container_image` | &mdash; | 1 |
+
+## `PrivacyReleaseHardwareBackendV1` {#privacyreleasehardwarebackendv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `scalar` | &mdash; | 0 |
+  | `avx2` | &mdash; | 1 |
+  | `avx512` | &mdash; | 2 |
+  | `neon` | &mdash; | 3 |
+  | `metal` | &mdash; | 4 |
+  | `cuda` | &mdash; | 5 |
+
+## `PrivacyReleaseHardwareResultV1` {#privacyreleasehardwareresultv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `backend` | [`PrivacyReleaseHardwareBackendV1`](#privacyreleasehardwarebackendv1) |
+  | `tested_binary_digest` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+  | `deterministic_output_digest` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+  | `scalar_reference_digest` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+  | `result_digest` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+  | `runtime_self_test_passed` | `bool` |
+
+## `PrivacyReleaseProofArtifactV1` {#privacyreleaseproofartifactv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `protocol_id` | [`PrivacyProtocolIdV1`](#privacyprotocolidv1) |
+  | `stage` | [`PrivacyReleaseStageV1`](#privacyreleasestagev1) |
+  | `stage_artifact_ordinal` | `u8` |
+  | `stage_receipt_digest` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+  | `security_claim_digest` | [`PrivacySecurityClaimDigestV1`](#privacysecurityclaimdigestv1) |
+  | `parameter_digest` | [`PrivacyParameterDigestV1`](#privacyparameterdigestv1) |
+  | `verifier_digest` | [`PrivacyVerifierDigestV1`](#privacyverifierdigestv1) |
+  | `engine_manifest_digest` | [`PrivacyEngineManifestDigestV1`](#privacyenginemanifestdigestv1) |
+  | `artifact_digest` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+
+## `PrivacyReleaseProtocolBindingV1` {#privacyreleaseprotocolbindingv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `protocol_id` | [`PrivacyProtocolIdV1`](#privacyprotocolidv1) |
+  | `proof_system_id` | [`PrivacyProofSystemIdV1`](#privacyproofsystemidv1) |
+  | `engine_id` | [`PrivacyEngineIdV1`](#privacyengineidv1) |
+  | `parameter_id` | [`PrivacyParameterIdV1`](#privacyparameteridv1) |
+  | `parameter_digest` | [`PrivacyParameterDigestV1`](#privacyparameterdigestv1) |
+  | `verifier_digest` | [`PrivacyVerifierDigestV1`](#privacyverifierdigestv1) |
+  | `statement_schema_digest` | [`PrivacyStatementSchemaDigestV1`](#privacystatementschemadigestv1) |
+  | `engine_manifest_digest` | [`PrivacyEngineManifestDigestV1`](#privacyenginemanifestdigestv1) |
+  | `security_claim` | [`PrivacySecurityClaimV1`](#privacysecurityclaimv1) |
+  | `security_claim_digest` | [`PrivacySecurityClaimDigestV1`](#privacysecurityclaimdigestv1) |
+
+## `PrivacyReleaseSdkConsumerV1` {#privacyreleasesdkconsumerv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `kotlin_jvm` | &mdash; | 0 |
+  | `kotlin_android` | &mdash; | 1 |
+  | `java_source_kotlin` | &mdash; | 10 |
+  | `swift_c_bridge` | &mdash; | 3 |
+  | `javascript_napi` | &mdash; | 4 |
+  | `python_pyo3` | &mdash; | 5 |
+  | `csharp` | &mdash; | 6 |
+  | `cli` | &mdash; | 7 |
+  | `openapi` | &mdash; | 8 |
+  | `genesis_tooling` | &mdash; | 9 |
+
+## `PrivacyReleaseSdkPackageV1` {#privacyreleasesdkpackagev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `consumer` | [`PrivacyReleaseSdkConsumerV1`](#privacyreleasesdkconsumerv1) |
+  | `package_name` | `String` |
+  | `package_version` | `String` |
+  | `package_digest` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+  | `fixture_corpus_digest` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+
+## `PrivacyReleaseSignatureRoleV1` {#privacyreleasesignaturerolev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `release_engineering` | &mdash; | 0 |
+  | `cryptographic_review` | &mdash; | 1 |
+  | `implementation_security` | &mdash; | 2 |
+  | `build_supply_chain` | &mdash; | 3 |
+  | `deployment_resource` | &mdash; | 4 |
+  | `sdk_boundary` | &mdash; | 5 |
+
+## `PrivacyReleaseSignatureV1` {#privacyreleasesignaturev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `role` | [`PrivacyReleaseSignatureRoleV1`](#privacyreleasesignaturerolev1) |
+  | `signer` | [`PublicKey`](#publickey) |
+  | `signature` | [`Signature`](#signature) |
+
+## `PrivacyReleaseSourceIdentityV1` {#privacyreleasesourceidentityv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `source_tree_digest` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+  | `source_tree_clean` | `bool` |
+  | `toolchain_id` | `String` |
+  | `toolchain_digest` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+  | `cargo_lock_digest` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+
+## `PrivacyReleaseStageReceiptV1` {#privacyreleasestagereceiptv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `stage_ordinal` | `u16` |
+  | `protocol_id` | [`PrivacyProtocolIdV1`](#privacyprotocolidv1) |
+  | `stage` | [`PrivacyReleaseStageV1`](#privacyreleasestagev1) |
+  | `security_claim_digest` | [`PrivacySecurityClaimDigestV1`](#privacysecurityclaimdigestv1) |
+  | `parameter_digest` | [`PrivacyParameterDigestV1`](#privacyparameterdigestv1) |
+  | `verifier_digest` | [`PrivacyVerifierDigestV1`](#privacyverifierdigestv1) |
+  | `engine_manifest_digest` | [`PrivacyEngineManifestDigestV1`](#privacyenginemanifestdigestv1) |
+  | `receipt_digest` | [`PrivacyReleaseArtifactDigestV1`](#privacyreleaseartifactdigestv1) |
+
+## `PrivacyReleaseStageV1` {#privacyreleasestagev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `positive-canonical-end-to-end` | &mdash; | 0 |
+  | `public-statement-binding-mutation` | &mdash; | 1 |
+  | `proof-corruption-and-truncation` | &mdash; | 2 |
+  | `maximum-shape-resource` | &mdash; | 3 |
+
+## `PrivacyRootV1` {#privacyrootv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `PrivacySecurityClaimDigestV1` {#privacysecurityclaimdigestv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `PrivacySecurityClaimV1` {#privacysecurityclaimv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `catalog_commitment` | [`PrivacyExact12CatalogCommitmentV1`](#privacyexact12catalogcommitmentv1) |
+  | `protocol_id` | [`PrivacyProtocolIdV1`](#privacyprotocolidv1) |
+  | `security_model` | [`PrivacySecurityModelV1`](#privacysecuritymodelv1) |
+  | `target_security_bits` | `u16` |
+  | `achieved_security_bits` | `u16` |
+  | `parameter_digest` | [`PrivacyParameterDigestV1`](#privacyparameterdigestv1) |
+  | `verifier_digest` | [`PrivacyVerifierDigestV1`](#privacyverifierdigestv1) |
+  | `reduction_digest` | [`PrivacySecurityReductionDigestV1`](#privacysecurityreductiondigestv1) |
+  | `audit_bundle_digest` | [`PrivacyAuditBundleDigestV1`](#privacyauditbundledigestv1) |
+
+## `PrivacySecurityModelV1` {#privacysecuritymodelv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `pq-qrom` | &mdash; | 0 |
+  | `classical-rom` | &mdash; | 1 |
+
+## `PrivacySecurityReductionDigestV1` {#privacysecurityreductiondigestv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `PrivacyStatementSchemaDigestV1` {#privacystatementschemadigestv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `PrivacyVerifierDigestV1` {#privacyverifierdigestv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `PrivateDataspaceAdmissionPolicy` {#privatedataspaceadmissionpolicy}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `max_registered_roots` | `u32` |
+  | `max_roots_per_owner` | `u32` |
+
+## `PrivateDataspaceAnchor` {#privatedataspaceanchor}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `parent_network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
+  | `child_network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `certificate` | [`AmxCertifiedBlockV1`](#amxcertifiedblockv1) |
+
+## `PrivateDataspaceAnchorState` {#privatedataspaceanchorstate}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `registration` | [`PrivateDataspaceRegistration`](#privatedataspaceregistration) |
+  | `tracker` | [`AmxForeignInstanceV1`](#amxforeigninstancev1) |
+  | `cursor` | [`PrivateDataspaceCursor`](#privatedataspacecursor) |
+
+## `PrivateDataspaceCursor` {#privatedataspacecursor}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `height` | `u64` |
+  | `consensus_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `result` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `PrivateDataspaceRecord` {#privatedataspacerecord}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
+  | `alias` | `String` |
+  | `owner` | [`AccountId`](#accountid) |
+  | `ownership_generation` | `u64` |
+  | `anchor` | [`PrivateDataspaceAnchorState`](#privatedataspaceanchorstate) |
+
+## `PrivateDataspaceRecordProof` {#privatedataspacerecordproof}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `parent_network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `parent_height` | `u64` |
+  | `parent_result` | [`Array<u8, 32>`](#array-u8-32) |
+  | `record` | [`PrivateDataspaceRecord`](#privatedataspacerecord) |
+  | `inclusion` | [`AmxWriteProofV1`](#amxwriteproofv1) |
+
+## `PrivateDataspaceRegistration` {#privatedataspaceregistration}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `scope` | [`SumeragiRootScope`](#sumeragirootscope) |
+  | `child_chain_id` | [`ChainId`](#chainid) |
+  | `child_network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `instance` | [`Array<u8, 32>`](#array-u8-32) |
+  | `genesis_cursor` | [`PrivateDataspaceCursor`](#privatedataspacecursor) |
+  | `initial_epoch` | [`ValidatorEpochContextV1`](#validatorepochcontextv1) |
+
+## `PrivateDataspaceRegistry` {#privatedataspaceregistry}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `records` | [`Vec<PrivateDataspaceRecord>`](#vec-privatedataspacerecord) |
+
+## `PrivateSettlementBundleIdMaterialV1` {#privatesettlementbundleidmaterialv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `authority_context_height` | `u64` |
+  | `expiry_height` | `u64` |
+  | `sponsor` | [`AccountId`](#accountid) |
+  | `fee_intent_digest` | [`Hash`](#hash) |
+  | `reimbursement_terms_commitment` | [`Hash`](#hash) |
+  | `reimbursement_leg_ordinal` | `u8` |
+  | `legs` | [`Vec<PrivateSettlementBundleLegMaterialV1>`](#vec-privatesettlementbundlelegmaterialv1) |
+
+## `PrivateSettlementBundleLegMaterialV1` {#privatesettlementbundlelegmaterialv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `ordinal` | `u8` |
+  | `route` | [`PrivateSettlementRouteV1`](#privatesettlementroutev1) |
+  | `pool_id` | [`PrivacyPoolIdV1`](#privacypoolidv1) |
+  | `asset_binding_commitment` | [`Hash`](#hash) |
+  | `audit_policy_digest` | [`Hash`](#hash) |
+
+## `PrivateSettlementCommitteeKeyProofV1` {#privatesettlementcommitteekeyproofv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `index` | [`Vec<ConsensusKeyId>`](#vec-consensuskeyid) |
+  | `record` | [`ConsensusKeyRecord`](#consensuskeyrecord) |
+
+## `PrivateSettlementContextProofV1` {#privatesettlementcontextproofv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `pool` | [`PrivateSettlementPoolCutProofV1`](#privatesettlementpoolcutproofv1) |
+  | `parameters` | [`Parameters`](#parameters) |
+  | `protocol_policy` | [`Option<PrivacyProtocolPolicyV1>`](#option-privacyprotocolpolicyv1) |
+  | `lanes` | [`SumeragiLaneState`](#sumeragilanestate) |
+  | `committee_keys` | [`Array<PrivateSettlementCommitteeKeyProofV1, 4>`](#array-privatesettlementcommitteekeyproofv1-4) |
+
+## `PrivateSettlementContextRequestV1` {#privatesettlementcontextrequestv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `pools` | [`Vec<PrivateSettlementPoolKeyV1>`](#vec-privatesettlementpoolkeyv1) |
+
+## `PrivateSettlementContextsProofV1` {#privatesettlementcontextsproofv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `contexts` | [`Vec<PrivateSettlementContextProofV1>`](#vec-privatesettlementcontextproofv1) |
+
+## `PrivateSettlementPolicyUpdateV1` {#privatesettlementpolicyupdatev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `scheduled_at_height` | `u64` |
+  | `effective_at_height` | `u64` |
+  | `next_limits` | [`PrivateSettlementValidityLimitsV1`](#privatesettlementvaliditylimitsv1) |
+
+## `PrivateSettlementPolicyV1` {#privatesettlementpolicyv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `current_limits` | [`PrivateSettlementValidityLimitsV1`](#privatesettlementvaliditylimitsv1) |
+  | `pending_update` | [`Option<PrivateSettlementPolicyUpdateV1>`](#option-privatesettlementpolicyupdatev1) |
+  | `protocol_closure_drain` | [`Option<PrivateSettlementProtocolClosureDrainV1>`](#option-privatesettlementprotocolclosuredrainv1) |
+
+## `PrivateSettlementPoolCutProofV1` {#privatesettlementpoolcutproofv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `world` | [`WorldStateSnapshotV1`](#worldstatesnapshotv1) |
+  | `governance` | [`PrivateSettlementPoolGovernanceProjectionV1`](#privatesettlementpoolgovernanceprojectionv1) |
+  | `pool` | [`PrivateSettlementPoolStateV1`](#privatesettlementpoolstatev1) |
+
+## `PrivateSettlementPoolGovernanceLifecycleV1` {#privatesettlementpoolgovernancelifecyclev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `governance_revision` | `u64` |
+  | `activation_height` | `u64` |
+  | `retirement_height` | [`Option<u64>`](#option-u64) |
+
+## `PrivateSettlementPoolGovernanceProjectionV1` {#privatesettlementpoolgovernanceprojectionv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u8` |
+  | `route` | [`PrivateSettlementRouteV1`](#privatesettlementroutev1) |
+  | `pool_id` | [`PrivacyPoolIdV1`](#privacypoolidv1) |
+  | `asset_binding_commitment` | [`Hash`](#hash) |
+  | `audit_policy_digest` | [`Hash`](#hash) |
+  | `audit_key_epoch` | `u64` |
+  | `lifecycle` | [`PrivateSettlementPoolGovernanceLifecycleV1`](#privatesettlementpoolgovernancelifecyclev1) |
+  | `governance_digest` | [`Hash`](#hash) |
+  | `prior_revisions` | [`Vec<PrivateSettlementPoolGovernanceRevisionV1>`](#vec-privatesettlementpoolgovernancerevisionv1) |
+
+## `PrivateSettlementPoolGovernanceRevisionV1` {#privatesettlementpoolgovernancerevisionv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `audit_policy_digest` | [`Hash`](#hash) |
+  | `audit_key_epoch` | `u64` |
+  | `lifecycle` | [`PrivateSettlementPoolGovernanceLifecycleV1`](#privatesettlementpoolgovernancelifecyclev1) |
+  | `governance_digest` | [`Hash`](#hash) |
+
+## `PrivateSettlementPoolKeyV1` {#privatesettlementpoolkeyv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `route` | [`PrivateSettlementRouteV1`](#privatesettlementroutev1) |
+  | `pool_id` | [`PrivacyPoolIdV1`](#privacypoolidv1) |
+
+## `PrivateSettlementPoolStateV1` {#privatesettlementpoolstatev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u8` |
+  | `route` | [`PrivateSettlementRouteV1`](#privatesettlementroutev1) |
+  | `pool_id` | [`PrivacyPoolIdV1`](#privacypoolidv1) |
+  | `restricted_pool_policy_digest` | [`Hash`](#hash) |
+  | `epoch` | `u64` |
+  | `root` | [`PrivacyRootV1`](#privacyrootv1) |
+  | `tree_size` | `u64` |
+  | `leaf` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
+  | `ommers` | [`Vec<Array<u8, 32>>`](#vec-array-u8-32) |
+
+## `PrivateSettlementProofIntentV1` {#privatesettlementproofintentv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u8` |
+  | `bundle_id` | [`Hash`](#hash) |
+  | `public_fee_intent` | [`FeePaymentIntent`](#feepaymentintent) |
+  | `material` | [`PrivateSettlementBundleIdMaterialV1`](#privatesettlementbundleidmaterialv1) |
+
+## `PrivateSettlementProtocolClosureDrainV1` {#privatesettlementprotocolclosuredrainv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `protocol_id` | [`PrivacyProtocolIdV1`](#privacyprotocolidv1) |
+  | `scheduled_at_height` | `u64` |
+  | `effective_at_height` | `u64` |
+  | `next_limits_hash` | [`Hash`](#hash) |
+  | `original_max_expiry_blocks` | `u64` |
+
+## `PrivateSettlementRouteV1` {#privatesettlementroutev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
+  | `lane_id` | [`LaneId`](#laneid) |
+  | `lane_incarnation` | [`Hash`](#hash) |
+
+## `PrivateSettlementValidityLimitsV1` {#privatesettlementvaliditylimitsv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `max_participants` | `u16` |
+  | `max_expiry_blocks` | `u64` |
+  | `audit_timeout_blocks` | `u64` |
+  | `prepare_timeout_blocks` | `u64` |
+  | `commit_timeout_blocks` | `u64` |
+  | `capsule_padding_classes` | `u8` |
+  | `max_proof_bytes` | `u64` |
+  | `max_capsule_bytes` | `u64` |
+  | `max_carrier_bytes` | `u64` |
+  | `sidecar_retention_blocks` | `u64` |
+  | `min_auditor_approvals` | `u16` |
 
 ## `ProofBlob` {#proofblob}
 
@@ -12671,6 +16468,12 @@
   | `committed_at_unix_ms` | `u64` |
   | `projection` | [`ProofOutcomeProjectionV1`](#proofoutcomeprojectionv1) |
 
+## `ProofProfileIdV1` {#proofprofileidv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 64>`](#array-u8-64)
+
 ## `ProofPruneOrigin` {#proofpruneorigin}
 
 **Type:** Enum
@@ -12755,7 +16558,13 @@
   | `call_hash` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
   | `envelope_hash` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
 
-## `Proposal` {#proposal}
+## `ProposalContentId` {#proposalcontentid}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `ProviderAdmissionHeadProofV1` {#provideradmissionheadproofv1}
 
 **Type:** Struct
 
@@ -12763,29 +16572,44 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `round` | [`ConsensusRound`](#consensusround) |
-  | `proposer` | `u32` |
-  | `subject` | [`BlockSubject`](#blocksubject) |
-  | `manifest` | [`PayloadManifest`](#payloadmanifest) |
-  | `justification` | [`ProposalJustification`](#proposaljustification) |
-  | `signature` | [`Vec<u8>`](#vec-u8) |
+  | `head` | [`Vec<u8>`](#vec-u8) |
+  | `predecessor` | [`Option<Vec<u8>>`](#option-vec-u8) |
 
-## `ProposalContentId` {#proposalcontentid}
+## `ProviderCreditRecord` {#providercreditrecord}
 
-**Type:** Alias
+**Type:** Struct
 
-**To:** [`Array<u8, 32>`](#array-u8-32)
+**Declarations:**
 
-## `ProposalJustification` {#proposaljustification}
+  | Field name | Field value |
+  | --: | :-- |
+  | `provider_id` | [`ProviderId`](#providerid) |
+  | `available_credit` | [`Quantity`](#quantity) |
+  | `bonded` | [`Quantity`](#quantity) |
+  | `required_bond` | [`Quantity`](#quantity) |
+  | `expected_settlement` | [`Quantity`](#quantity) |
+  | `onboarding_epoch` | `u64` |
+  | `last_settlement_epoch` | `u64` |
+  | `low_balance_since_epoch` | [`Option<u64>`](#option-u64) |
+  | `slashed` | [`Quantity`](#quantity) |
+  | `under_delivery_strikes` | `u32` |
+  | `last_penalty_epoch` | [`Option<u64>`](#option-u64) |
+  | `metadata` | [`Metadata`](#metadata) |
 
-**Type:** Enum
+## `ProviderDiscoveryProofV1` {#providerdiscoveryproofv1}
 
-**Variants:**
+**Type:** Struct
 
-  | Variant name | Variant value | Discriminant |
-  | --: | :-- | --- |
-  | `parent_commit` | [`ParentCommitJustification`](#parentcommitjustification) | 0 |
-  | `timeout` | [`TimeoutJustification`](#timeoutjustification) | 1 |
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `world` | [`WorldStateSnapshotV1`](#worldstatesnapshotv1) |
+  | `council` | [`ProviderAdmissionHeadProofV1`](#provideradmissionheadproofv1) |
+  | `provider` | [`ProviderAdmissionHeadProofV1`](#provideradmissionheadproofv1) |
+  | `owner` | [`AccountId`](#accountid) |
+  | `advert` | [`Vec<u8>`](#vec-u8) |
+  | `stream_token` | [`Option<StreamTokenCustodyRecordProofV1>`](#option-streamtokencustodyrecordproofv1) |
 
 ## `ProviderDisputeEventV1` {#providerdisputeeventv1}
 
@@ -12854,6 +16678,7 @@
   | Field name | Field value |
   | --: | :-- |
   | `provider_owner` | [`AccountId`](#accountid) |
+  | `completion_signer` | [`AccountId`](#accountid) |
   | `signer_policy` | [`ProviderIngestCompletionSignerPolicyV1`](#provideringestcompletionsignerpolicyv1) |
 
 ## `ProviderIngestCompletionSignerPolicyV1` {#provideringestcompletionsignerpolicyv1}
@@ -12890,6 +16715,18 @@
   | --: | :-- |
   | `algorithm` | [`Algorithm`](#algorithm) |
   | `payload` | [`Vec<u8>`](#vec-u8) |
+
+## `PvpSettlementDetails` {#pvpsettlementdetails}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `primary` | [`ResolvedSettlementMovement`](#resolvedsettlementmovement) |
+  | `counter` | [`ResolvedSettlementMovement`](#resolvedsettlementmovement) |
+  | `order` | [`SettlementExecutionOrder`](#settlementexecutionorder) |
 
 ## `Quantity` {#quantity}
 
@@ -12989,6 +16826,13 @@
   | `AssetEscrowRecord` | [`Vec<AssetEscrowRecord>`](#vec-assetescrowrecord) | 43 |
   | `FeeSponsorProgram` | [`Vec<FeeSponsorProgram>`](#vec-feesponsorprogram) | 44 |
   | `FeeSponsorProgramId` | [`Vec<FeeSponsorProgramId>`](#vec-feesponsorprogramid) | 45 |
+  | `BondRecord` | [`Vec<BondRecord>`](#vec-bondrecord) | 46 |
+  | `AssetUidPolicyViewV1` | [`Vec<AssetUidPolicyViewV1>`](#vec-assetuidpolicyviewv1) | 47 |
+  | `AssetFiRelationshipViewV1` | [`Vec<AssetFiRelationshipViewV1>`](#vec-assetfirelationshipviewv1) | 48 |
+  | `AssetUidEnrollmentViewV1` | [`Vec<AssetUidEnrollmentViewV1>`](#vec-assetuidenrollmentviewv1) | 49 |
+  | `AssetEscrowScopeOriginalV1` | [`Vec<AssetEscrowScopeOriginalV1>`](#vec-assetescrowscopeoriginalv1) | 50 |
+  | `AssetFiTransferReceiptV1` | [`Vec<AssetFiTransferReceiptV1>`](#vec-assetfitransferreceiptv1) | 51 |
+  | `AssetFiContextSnapshotV1` | [`Vec<AssetFiContextSnapshotV1>`](#vec-assetficontextsnapshotv1) | 52 |
 
 ## `QueryOutputBatchBoxTuple` {#queryoutputbatchboxtuple}
 
@@ -13066,22 +16910,6 @@
   | --: | :-- |
   | `params` | [`QueryParams`](#queryparams) |
 
-## `QuorumCertificate` {#quorumcertificate}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `round` | [`ConsensusRound`](#consensusround) |
-  | `proposal_round` | [`ConsensusRound`](#consensusround) |
-  | `phase` | [`SumeragiV2GlobalPhase`](#sumeragiv2globalphase) |
-  | `subject` | [`BlockSubject`](#blocksubject) |
-  | `execution_commitment` | [`ExecutionCommitment`](#executioncommitment) |
-  | `signers` | [`Vec<u32>`](#vec-u32) |
-  | `aggregate_signature` | [`Vec<u8>`](#vec-u8) |
-
 ## `RadRevokeReason` {#radrevokereason}
 
 **Type:** Enum
@@ -13094,6 +16922,17 @@
   | `GovernanceAction` | &mdash; | 1 |
   | `IntegrityViolation` | &mdash; | 2 |
 
+## `RecordBondCashflow` {#recordbondcashflow}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `bond` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `index` | `u16` |
+
 ## `RecoveryGuardian` {#recoveryguardian}
 
 **Type:** Struct
@@ -13104,6 +16943,54 @@
   | --: | :-- |
   | `account` | [`AccountId`](#accountid) |
   | `weight` | `u16` |
+
+## `RegisterBond` {#registerbond}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `bond` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `terms` | [`BondTerms`](#bondterms) |
+
+## `RegisterCapacityDeclaration` {#registercapacitydeclaration}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `declaration` | [`Vec<u8>`](#vec-u8) |
+
+## `RegisterPrivateDataspace` {#registerprivatedataspace}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `alias` | `String` |
+  | `expected_ownership_generation` | `u64` |
+  | `registration` | [`Vec<u8>`](#vec-u8) |
+
+## `RegisteredAccountReadV1` {#registeredaccountreadv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `https_host` | `String` |
+  | `https_port` | `u16` |
+  | `ttl_secs` | `u64` |
+  | `max_streams` | `u16` |
+  | `rate_limit_bytes` | `u64` |
+  | `requests_per_minute` | `u32` |
 
 ## `RemoteSpendIntent` {#remotespendintent}
 
@@ -13376,6 +17263,17 @@
   | `instruction` | [`InstructionType`](#instructiontype) |
   | `id` | [`IdBox`](#idbox) |
 
+## `ReplaceBondPayingAgent` {#replacebondpayingagent}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `bond` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `paying_agent` | [`AccountId`](#accountid) |
+
 ## `ReplicationOrderId` {#replicationorderid}
 
 **Type:** Alias
@@ -13515,6 +17413,7 @@
   | --: | :-- |
   | `haircut_bps` | `u16` |
   | `margin_frequency_secs` | `u64` |
+  | `allow_early_repayment` | `bool` |
 
 ## `ReportEntry` {#reportentry}
 
@@ -13541,6 +17440,7 @@
   | `policy_digest` | [`Array<u8, 32>`](#array-u8-32) |
   | `activated_by` | [`AccountId`](#accountid) |
   | `activated_at_unix_ms` | `u64` |
+  | `origin` | [`ReputationJournalPolicyOriginV1`](#reputationjournalpolicyoriginv1) |
 
 ## `ReputationJournalAuthorityPolicyV1` {#reputationjournalauthoritypolicyv1}
 
@@ -13556,6 +17456,7 @@
   | `por_recorder_authority` | [`AccountId`](#accountid) |
   | `dispute_recorder_authority` | [`AccountId`](#accountid) |
   | `token_recorder_authority` | [`AccountId`](#accountid) |
+  | `stream_token_delivery` | [`StreamTokenReputationDeliveryTemplateV1`](#streamtokenreputationdeliverytemplatev1) |
   | `max_source_age_ms` | `u64` |
 
 ## `ReputationJournalEntryV1` {#reputationjournalentryv1}
@@ -13648,6 +17549,17 @@
   | `provider_dispute` | [`ProviderDisputeEventV1`](#providerdisputeeventv1) | 1 |
   | `stream_token_validation` | [`StreamTokenValidationOutcomeV1`](#streamtokenvalidationoutcomev1) | 2 |
 
+## `ReputationJournalPolicyOriginV1` {#reputationjournalpolicyoriginv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `genesis` | [`StreamTokenGatewayExecutionV1`](#streamtokengatewayexecutionv1) | 0 |
+  | `network` | [`StreamTokenGatewayExecutionV1`](#streamtokengatewayexecutionv1) | 1 |
+
 ## `ReputationJournalSourceIdV1` {#reputationjournalsourceidv1}
 
 **Type:** Alias
@@ -13665,6 +17577,22 @@
   | `por` | &mdash; | 0 |
   | `provider_dispute` | &mdash; | 1 |
   | `stream_token` | &mdash; | 2 |
+
+## `ReserveAccountProofV1` {#reserveaccountproofv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `world` | [`WorldStateSnapshotV1`](#worldstatesnapshotv1) |
+  | `owner` | [`AccountId`](#accountid) |
+  | `policy` | [`Vec<u8>`](#vec-u8) |
+  | `current` | [`Option<Vec<u8>>`](#option-vec-u8) |
+  | `credit` | [`Option<Vec<u8>>`](#option-vec-u8) |
+  | `capacity` | [`Option<Vec<u8>>`](#option-vec-u8) |
+  | `pricing` | [`Vec<u8>`](#vec-u8) |
 
 ## `ReserveAppealPageV1` {#reserveappealpagev1}
 
@@ -13759,6 +17687,18 @@
   | `Monthly` | &mdash; | 0 |
   | `Quarterly` | &mdash; | 1 |
   | `Annual` | &mdash; | 2 |
+
+## `ReserveEventJournalHeadV1` {#reserveeventjournalheadv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `last_sequence` | `u64` |
+  | `last_target_block_height` | `u64` |
+  | `last_event_index` | `u32` |
 
 ## `ReserveFinalizedCursorV1` {#reservefinalizedcursorv1}
 
@@ -13882,6 +17822,18 @@
   | `Approved` | &mdash; | 1 |
   | `Rejected` | &mdash; | 2 |
 
+## `ReservePolicyProofV1` {#reservepolicyproofv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `world` | [`WorldStateSnapshotV1`](#worldstatesnapshotv1) |
+  | `manager_permissions` | [`SortedVec<Permission>`](#sortedvec-permission) |
+  | `current` | [`Option<Vec<u8>>`](#option-vec-u8) |
+
 ## `ReservePolicyV1` {#reservepolicyv1}
 
 **Type:** Struct
@@ -13947,6 +17899,17 @@
   | `duration` | [`ReserveDuration`](#reserveduration) |
   | `capacity_gib` | `u64` |
 
+## `ReserveStateV1` {#reservestatev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `policy` | [`ReserveAuthorityPolicyRecordV1`](#reserveauthoritypolicyrecordv1) |
+  | `journal_head` | [`ReserveEventJournalHeadV1`](#reserveeventjournalheadv1) |
+
 ## `ReserveTier` {#reservetier}
 
 **Type:** Enum
@@ -13984,6 +17947,38 @@
   | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
   | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
 
+## `ResolvedSettlementMovement` {#resolvedsettlementmovement}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `source` | [`AssetId`](#assetid) |
+  | `destination` | [`AssetId`](#assetid) |
+  | `quantity` | [`Quantity`](#quantity) |
+  | `metadata` | [`Metadata`](#metadata) |
+
+## `ResolvedSettlementMovements` {#resolvedsettlementmovements}
+
+**Type:** Alias
+
+**To:** [`Vec<ResolvedSettlementMovement>`](#vec-resolvedsettlementmovement)
+
+## `RestrictionV1` {#restrictionv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Deprecated` | `u64` | 0 |
+  | `AdmissionClosed` | `u64` | 1 |
+  | `CompletionOnly` | `u64` | 2 |
+  | `Disabled` | `u64` | 3 |
+
 ## `Result<Vec<DataTriggerStep>, TransactionRejectionReason>` {#result-vec-datatriggerstep-transactionrejectionreason}
 
 **Type:** Result
@@ -14005,6 +18000,17 @@
   | `required_replicas` | `u16` |
   | `storage_class` | [`StorageClass`](#storageclass) |
   | `governance_tag` | [`GovernanceTag`](#governancetag) |
+
+## `RetireBondTreasuryUnits` {#retirebondtreasuryunits}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `bond` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `quantity` | [`Quantity`](#quantity) |
 
 ## `RiskClass` {#riskclass}
 
@@ -14103,6 +18109,83 @@
   | `role` | [`RoleId`](#roleid) |
   | `permission` | [`Permission`](#permission) |
 
+## `RootFeeExemptions` {#rootfeeexemptions}
+
+**Type:** Alias
+
+**To:** [`Vec<AccountId>`](#vec-accountid)
+
+## `RootFeePolicy` {#rootfeepolicy}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `fee_asset_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `fee_sink_account_id` | [`AccountId`](#accountid) |
+  | `sponsor_vault_custody_account_id` | [`AccountId`](#accountid) |
+  | `successful_claim_fee_exempt_authorities` | [`RootFeeExemptions`](#rootfeeexemptions) |
+  | `base_fee` | [`Quantity`](#quantity) |
+  | `per_byte_fee` | [`Quantity`](#quantity) |
+  | `per_instruction_fee` | [`Quantity`](#quantity) |
+  | `per_gas_unit_fee` | [`Quantity`](#quantity) |
+
+## `RuntimeRejectionV1` {#runtimerejectionv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `DefinitionInactive` | [`RuntimeRejectionV1::DefinitionInactive`](#runtimerejectionv1-definitioninactive) | 0 |
+  | `DefinitionRestricted` | [`RuntimeRejectionV1::DefinitionRestricted`](#runtimerejectionv1-definitionrestricted) | 1 |
+  | `ExpectationMismatch` | [`RuntimeRejectionV1::ExpectationMismatch`](#runtimerejectionv1-expectationmismatch) | 2 |
+  | `MalformedPayload` | [`RuntimeRejectionV1::MalformedPayload`](#runtimerejectionv1-malformedpayload) | 3 |
+
+## `RuntimeRejectionV1::DefinitionInactive` {#runtimerejectionv1-definitioninactive}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `wire_id` | `String` |
+
+## `RuntimeRejectionV1::DefinitionRestricted` {#runtimerejectionv1-definitionrestricted}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `definition` | [`DefinitionId`](#definitionid) |
+  | `restriction` | [`RestrictionV1`](#restrictionv1) |
+
+## `RuntimeRejectionV1::ExpectationMismatch` {#runtimerejectionv1-expectationmismatch}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `wire_id` | [`Option<String>`](#option-string) |
+
+## `RuntimeRejectionV1::MalformedPayload` {#runtimerejectionv1-malformedpayload}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `wire_id` | `String` |
+
 ## `RuntimeUpgradeActivated` {#runtimeupgradeactivated}
 
 **Type:** Struct
@@ -14111,9 +18194,20 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `id` | [`RuntimeUpgradeId`](#runtimeupgradeid) |
-  | `abi_version` | `u16` |
-  | `at_height` | `u64` |
+  | `id` | [`ChangeSetId`](#changesetid) |
+  | `height` | `u64` |
+  | `successor` | [`SelectionId`](#selectionid) |
+
+## `RuntimeUpgradeAttested` {#runtimeupgradeattested}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `id` | [`ChangeSetId`](#changesetid) |
+  | `validator` | [`PublicKey`](#publickey) |
 
 ## `RuntimeUpgradeCanceled` {#runtimeupgradecanceled}
 
@@ -14123,7 +18217,53 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `id` | [`RuntimeUpgradeId`](#runtimeupgradeid) |
+  | `id` | [`ChangeSetId`](#changesetid) |
+  | `height` | `u64` |
+
+## `RuntimeUpgradeContained` {#runtimeupgradecontained}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `containment` | [`Array<u8, 32>`](#array-u8-32) |
+  | `incident` | [`Array<u8, 32>`](#array-u8-32) |
+  | `effective_height` | `u64` |
+
+## `RuntimeUpgradeContainmentExpired` {#runtimeupgradecontainmentexpired}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `containment` | [`Array<u8, 32>`](#array-u8-32) |
+  | `height` | `u64` |
+
+## `RuntimeUpgradeContainmentResolved` {#runtimeupgradecontainmentresolved}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `containment` | [`Array<u8, 32>`](#array-u8-32) |
+  | `height` | `u64` |
+
+## `RuntimeUpgradeContainmentReviewed` {#runtimeupgradecontainmentreviewed}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `containment` | [`Array<u8, 32>`](#array-u8-32) |
+  | `change_set` | [`ChangeSetId`](#changesetid) |
 
 ## `RuntimeUpgradeEvent` {#runtimeupgradeevent}
 
@@ -14133,9 +18273,15 @@
 
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
-  | `Proposed` | [`RuntimeUpgradeProposed`](#runtimeupgradeproposed) | 0 |
-  | `Activated` | [`RuntimeUpgradeActivated`](#runtimeupgradeactivated) | 1 |
-  | `Canceled` | [`RuntimeUpgradeCanceled`](#runtimeupgradecanceled) | 2 |
+  | `Scheduled` | [`RuntimeUpgradeScheduled`](#runtimeupgradescheduled) | 0 |
+  | `Attested` | [`RuntimeUpgradeAttested`](#runtimeupgradeattested) | 1 |
+  | `Activated` | [`RuntimeUpgradeActivated`](#runtimeupgradeactivated) | 2 |
+  | `Lapsed` | [`RuntimeUpgradeLapsed`](#runtimeupgradelapsed) | 3 |
+  | `Canceled` | [`RuntimeUpgradeCanceled`](#runtimeupgradecanceled) | 4 |
+  | `Contained` | [`RuntimeUpgradeContained`](#runtimeupgradecontained) | 5 |
+  | `ContainmentExpired` | [`RuntimeUpgradeContainmentExpired`](#runtimeupgradecontainmentexpired) | 6 |
+  | `ContainmentReviewed` | [`RuntimeUpgradeContainmentReviewed`](#runtimeupgradecontainmentreviewed) | 7 |
+  | `ContainmentResolved` | [`RuntimeUpgradeContainmentResolved`](#runtimeupgradecontainmentresolved) | 8 |
 
 ## `RuntimeUpgradeEventFilter` {#runtimeupgradeeventfilter}
 
@@ -14145,7 +18291,7 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `id_matcher` | [`Option<RuntimeUpgradeId>`](#option-runtimeupgradeid) |
+  | `id_matcher` | [`Option<ChangeSetId>`](#option-changesetid) |
   | `event_set` | [`RuntimeUpgradeEventSet`](#runtimeupgradeeventset) |
 
 ## `RuntimeUpgradeEventSet` {#runtimeupgradeeventset}
@@ -14158,17 +18304,17 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `Proposed` | `0x1` |
-  | `Activated` | `0x2` |
-  | `Canceled` | `0x4` |
+  | `Scheduled` | `0x1` |
+  | `Attested` | `0x2` |
+  | `Activated` | `0x4` |
+  | `Lapsed` | `0x8` |
+  | `Canceled` | `0x10` |
+  | `Contained` | `0x20` |
+  | `ContainmentExpired` | `0x40` |
+  | `ContainmentReviewed` | `0x80` |
+  | `ContainmentResolved` | `0x100` |
 
-## `RuntimeUpgradeId` {#runtimeupgradeid}
-
-**Type:** Alias
-
-**To:** [`Array<u8, 32>`](#array-u8-32)
-
-## `RuntimeUpgradeProposed` {#runtimeupgradeproposed}
+## `RuntimeUpgradeLapsed` {#runtimeupgradelapsed}
 
 **Type:** Struct
 
@@ -14176,10 +18322,19 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `id` | [`RuntimeUpgradeId`](#runtimeupgradeid) |
-  | `abi_version` | `u16` |
-  | `start_height` | `u64` |
-  | `end_height` | `u64` |
+  | `id` | [`ChangeSetId`](#changesetid) |
+  | `height` | `u64` |
+
+## `RuntimeUpgradeScheduled` {#runtimeupgradescheduled}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `id` | [`ChangeSetId`](#changesetid) |
+  | `effective_height` | `u64` |
 
 ## `Rwa` {#rwa}
 
@@ -14363,7 +18518,7 @@
   | `quantity` | [`Quantity`](#quantity) |
   | `new_owner` | [`AccountId`](#accountid) |
 
-## `SccpLaneIdV1` {#sccplaneidv1}
+## `SccpBlockCommittedV1` {#sccpblockcommittedv1}
 
 **Type:** Struct
 
@@ -14371,8 +18526,645 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `source` | [`SccpNetworkV1`](#sccpnetworkv1) |
-  | `target` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `height` | `u64` |
+  | `root` | [`Array<u8, 32>`](#array-u8-32) |
+  | `count` | `u32` |
+  | `history_size` | `u64` |
+
+## `SccpBounceReasonV1` {#sccpbouncereasonv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `undecodable_recipient` | &mdash; | 0 |
+  | `escrow_recipient` | &mdash; | 1 |
+  | `inadmissible_controller` | &mdash; | 2 |
+  | `unregistrable_recipient` | &mdash; | 3 |
+
+## `SccpCommitteeGenerationCreatedV1` {#sccpcommitteegenerationcreatedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `generation` | `u64` |
+  | `cause` | [`SccpGenerationCauseV1`](#sccpgenerationcausev1) |
+  | `committee_root` | [`Array<u8, 32>`](#array-u8-32) |
+  | `start_height` | `u64` |
+  | `deadline_ms` | `u64` |
+
+## `SccpCommitteeResyncV1` {#sccpcommitteeresyncv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `generation` | `u64` |
+  | `committee_root` | [`Array<u8, 32>`](#array-u8-32) |
+  | `start_height` | `u64` |
+
+## `SccpControlRecordedV1` {#sccpcontrolrecordedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `revision` | `u32` |
+  | `control_nonce` | `u64` |
+  | `track` | `u8` |
+  | `parliament_paused` | `bool` |
+  | `fast_pause_until_ms` | `u64` |
+  | `certificate_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `height` | `u64` |
+  | `commitment_index` | `u32` |
+
+## `SccpEvent` {#sccpevent}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `message_recorded` | [`SccpMessageRecordedV1`](#sccpmessagerecordedv1) | 0 |
+  | `block_committed` | [`SccpBlockCommittedV1`](#sccpblockcommittedv1) | 1 |
+  | `inbound_proven` | [`SccpInboundProvenV1`](#sccpinboundprovenv1) | 2 |
+  | `recipient_registered` | [`SccpRecipientRegisteredV1`](#sccprecipientregisteredv1) | 3 |
+  | `inbound_released` | [`SccpInboundReleasedV1`](#sccpinboundreleasedv1) | 4 |
+  | `inbound_bounced` | [`SccpInboundBouncedV1`](#sccpinboundbouncedv1) | 5 |
+  | `inbound_liability_shortfall` | [`SccpInboundLiabilityShortfallV1`](#sccpinboundliabilityshortfallv1) | 6 |
+  | `outbound_voided` | [`SccpOutboundVoidedV1`](#sccpoutboundvoidedv1) | 7 |
+  | `outbound_refunded` | [`SccpOutboundRefundedV1`](#sccpoutboundrefundedv1) | 8 |
+  | `outbound_stranded` | [`SccpOutboundStrandedV1`](#sccpoutboundstrandedv1) | 9 |
+  | `stranded_released` | [`SccpStrandedReleasedV1`](#sccpstrandedreleasedv1) | 10 |
+  | `light_client_advanced` | [`SccpLightClientAdvancedV1`](#sccplightclientadvancedv1) | 11 |
+  | `light_client_frozen` | [`SccpLightClientFrozenV1`](#sccplightclientfrozenv1) | 12 |
+  | `light_client_initialized` | [`SccpLightClientInitializedV1`](#sccplightclientinitializedv1) | 13 |
+  | `trusted_checkpoint_installed` | [`SccpTrustedCheckpointInstalledV1`](#sccptrustedcheckpointinstalledv1) | 14 |
+  | `revision_activation_changed` | [`SccpRevisionActivationChangedV1`](#sccprevisionactivationchangedv1) | 15 |
+  | `control_recorded` | [`SccpControlRecordedV1`](#sccpcontrolrecordedv1) | 16 |
+  | `governance_enacted` | [`SccpGovernanceEnactedV1`](#sccpgovernanceenactedv1) | 17 |
+  | `committee_generation_created` | [`SccpCommitteeGenerationCreatedV1`](#sccpcommitteegenerationcreatedv1) | 18 |
+  | `generation_member_unslashable` | [`SccpGenerationMemberUnslashableV1`](#sccpgenerationmemberunslashablev1) | 19 |
+  | `committee_resync` | [`SccpCommitteeResyncV1`](#sccpcommitteeresyncv1) | 20 |
+  | `generation_destination_cleared` | [`SccpGenerationDestinationClearedV1`](#sccpgenerationdestinationclearedv1) | 21 |
+  | `finality_degraded` | [`SccpFinalityDegradedV1`](#sccpfinalitydegradedv1) | 22 |
+  | `fast_pause_lapsed` | [`SccpFastPauseLapsedV1`](#sccpfastpauselapsedv1) | 23 |
+  | `forgery_evidence_recorded` | [`SccpForgeryEvidenceRecordedV1`](#sccpforgeryevidencerecordedv1) | 24 |
+  | `forgery_offender_unslashable` | [`SccpForgeryOffenderUnslashableV1`](#sccpforgeryoffenderunslashablev1) | 25 |
+  | `revision_forgery_held` | [`SccpRevisionForgeryHeldV1`](#sccprevisionforgeryheldv1) | 26 |
+  | `revision_forgery_released` | [`SccpRevisionForgeryReleasedV1`](#sccprevisionforgeryreleasedv1) | 27 |
+  | `revision_quarantined` | [`SccpRevisionQuarantinedV1`](#sccprevisionquarantinedv1) | 28 |
+  | `reconciliation_opened` | [`SccpReconciliationOpenedV1`](#sccpreconciliationopenedv1) | 29 |
+  | `forged_mint_proven` | [`SccpForgedMintProvenV1`](#sccpforgedmintprovenv1) | 30 |
+  | `reconciliation_settled` | [`SccpReconciliationSettledV1`](#sccpreconciliationsettledv1) | 31 |
+  | `reconciled_claim_settled` | [`SccpReconciledClaimSettledV1`](#sccpreconciledclaimsettledv1) | 32 |
+  | `inbound_stranded` | [`SccpInboundStrandedV1`](#sccpinboundstrandedv1) | 33 |
+  | `pause_panel_seated` | [`SccpPausePanelSeatedV1`](#sccppausepanelseatedv1) | 34 |
+  | `pause_panel_unavailable` | [`SccpPausePanelUnavailableV1`](#sccppausepanelunavailablev1) | 35 |
+  | `pause_panel_seat_accepted` | [`SccpPausePanelSeatAcceptedV1`](#sccppausepanelseatacceptedv1) | 36 |
+  | `fast_pause_endorsed` | [`SccpFastPauseEndorsedV1`](#sccpfastpauseendorsedv1) | 37 |
+  | `fast_pause_no_result` | [`SccpFastPauseNoResultV1`](#sccpfastpausenoresultv1) | 38 |
+  | `fast_pause_enacted` | [`SccpFastPauseEnactedV1`](#sccpfastpauseenactedv1) | 39 |
+  | `fast_pause_retained` | [`SccpFastPauseRetainedV1`](#sccpfastpauseretainedv1) | 40 |
+  | `fast_pause_cleared` | [`SccpFastPauseClearedV1`](#sccpfastpauseclearedv1) | 41 |
+
+## `SccpEventFilter` {#sccpeventfilter}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network_matcher` | [`Option<SccpNetworkV1>`](#option-sccpnetworkv1) |
+  | `event_set` | [`SccpEventSet`](#sccpeventset) |
+
+## `SccpEventSet` {#sccpeventset}
+
+**Type:** Bitmap
+
+**Repr:** u64
+
+**Masks:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `MessageRecorded` | `0x1` |
+  | `BlockCommitted` | `0x2` |
+  | `InboundProven` | `0x4` |
+  | `RecipientRegistered` | `0x8` |
+  | `InboundReleased` | `0x10` |
+  | `InboundBounced` | `0x20` |
+  | `InboundLiabilityShortfall` | `0x40` |
+  | `OutboundVoided` | `0x80` |
+  | `OutboundRefunded` | `0x100` |
+  | `OutboundStranded` | `0x200` |
+  | `StrandedReleased` | `0x400` |
+  | `LightClientAdvanced` | `0x800` |
+  | `LightClientFrozen` | `0x1000` |
+  | `LightClientInitialized` | `0x2000` |
+  | `TrustedCheckpointInstalled` | `0x4000` |
+  | `RevisionActivationChanged` | `0x8000` |
+  | `ControlRecorded` | `0x10000` |
+  | `GovernanceEnacted` | `0x20000` |
+  | `CommitteeGenerationCreated` | `0x40000` |
+  | `GenerationMemberUnslashable` | `0x80000` |
+  | `CommitteeResync` | `0x100000` |
+  | `GenerationDestinationCleared` | `0x200000` |
+  | `FinalityDegraded` | `0x400000` |
+  | `FastPauseLapsed` | `0x800000` |
+  | `ForgeryEvidenceRecorded` | `0x1000000` |
+  | `ForgeryOffenderUnslashable` | `0x2000000` |
+  | `RevisionForgeryHeld` | `0x4000000` |
+  | `RevisionForgeryReleased` | `0x8000000` |
+  | `RevisionQuarantined` | `0x10000000` |
+  | `ReconciliationOpened` | `0x20000000` |
+  | `ForgedMintProven` | `0x40000000` |
+  | `ReconciliationSettled` | `0x80000000` |
+  | `ReconciledClaimSettled` | `0x100000000` |
+  | `InboundStranded` | `0x200000000` |
+  | `PausePanelSeated` | `0x400000000` |
+  | `PausePanelUnavailable` | `0x800000000` |
+  | `PausePanelSeatAccepted` | `0x1000000000` |
+  | `FastPauseEndorsed` | `0x2000000000` |
+  | `FastPauseNoResult` | `0x4000000000` |
+  | `FastPauseEnacted` | `0x8000000000` |
+  | `FastPauseRetained` | `0x10000000000` |
+  | `FastPauseCleared` | `0x20000000000` |
+
+## `SccpFastPauseCertificateId` {#sccpfastpausecertificateid}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `SccpFastPauseClearedReasonV1` {#sccpfastpauseclearedreasonv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `lifted` | &mdash; | 0 |
+
+## `SccpFastPauseClearedV1` {#sccpfastpauseclearedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `part` | [`SccpFastPausePartV1`](#sccpfastpausepartv1) |
+  | `reason` | [`SccpFastPauseClearedReasonV1`](#sccpfastpauseclearedreasonv1) |
+
+## `SccpFastPauseEnactedV1` {#sccpfastpauseenactedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `certificate_id` | [`SccpFastPauseCertificateId`](#sccpfastpausecertificateid) |
+  | `until_ms` | `u64` |
+  | `renewal` | `bool` |
+
+## `SccpFastPauseEndorsedV1` {#sccpfastpauseendorsedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `panel_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `endorser` | [`AccountId`](#accountid) |
+  | `incident_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `count` | `u32` |
+
+## `SccpFastPauseLapsedV1` {#sccpfastpauselapsedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `certificate_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `until_ms` | `u64` |
+
+## `SccpFastPauseNoResultReasonV1` {#sccpfastpausenoresultreasonv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `expired` | &mdash; | 0 |
+  | `panel_changed` | &mdash; | 1 |
+  | `insufficient_eligible_endorsements` | &mdash; | 2 |
+  | `head_changed` | &mdash; | 3 |
+  | `suspended` | &mdash; | 4 |
+  | `renewal_window_closed` | &mdash; | 5 |
+  | `no_live_revision` | &mdash; | 6 |
+  | `control_capacity` | &mdash; | 7 |
+  | `counter_exhausted` | &mdash; | 8 |
+
+## `SccpFastPauseNoResultV1` {#sccpfastpausenoresultv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `panel_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `reason` | [`SccpFastPauseNoResultReasonV1`](#sccpfastpausenoresultreasonv1) |
+
+## `SccpFastPausePartV1` {#sccpfastpausepartv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `taira` | &mdash; | 0 |
+  | `destination` | [`SccpFastPausePartV1::Destination`](#sccpfastpausepartv1-destination) | 1 |
+
+## `SccpFastPausePartV1::Destination` {#sccpfastpausepartv1-destination}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `revision` | `u32` |
+
+## `SccpFastPauseRetainedReasonV1` {#sccpfastpauseretainedreasonv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `ballot_opened_before_or_at_enactment` | &mdash; | 0 |
+
+## `SccpFastPauseRetainedV1` {#sccpfastpauseretainedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `part` | [`SccpFastPausePartV1`](#sccpfastpausepartv1) |
+  | `reason` | [`SccpFastPauseRetainedReasonV1`](#sccpfastpauseretainedreasonv1) |
+
+## `SccpFinalityDegradedReasonV1` {#sccpfinalitydegradedreasonv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `missing_inputs` | &mdash; | 0 |
+  | `invalid_inputs` | &mdash; | 1 |
+  | `missing_generation` | &mdash; | 2 |
+  | `invalid_generation` | &mdash; | 3 |
+  | `missing_parent` | &mdash; | 4 |
+  | `counter_exhausted` | &mdash; | 5 |
+
+## `SccpFinalityDegradedV1` {#sccpfinalitydegradedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `height` | `u64` |
+  | `reason` | [`SccpFinalityDegradedReasonV1`](#sccpfinalitydegradedreasonv1) |
+
+## `SccpForgedMintProvenV1` {#sccpforgedmintprovenv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `revision` | `u32` |
+  | `message_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `amount` | `u128` |
+
+## `SccpForgeryEvidenceRecordedV1` {#sccpforgeryevidencerecordedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `evidence_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `generation` | `u64` |
+  | `height` | `u64` |
+  | `rule` | [`SccpForgeryRuleV1`](#sccpforgeryrulev1) |
+  | `offenders` | [`Vec<SccpForgeryOffenderV1>`](#vec-sccpforgeryoffenderv1) |
+
+## `SccpForgeryOffenderUnslashableV1` {#sccpforgeryoffenderunslashablev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `generation` | `u64` |
+  | `signer` | `u32` |
+
+## `SccpForgeryOffenderV1` {#sccpforgeryoffenderv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `signer` | `u32` |
+  | `lane_id` | [`LaneId`](#laneid) |
+  | `validator` | [`AccountId`](#accountid) |
+  | `activation_height` | `u64` |
+
+## `SccpForgeryRuleV1` {#sccpforgeryrulev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `E1` | &mdash; | 0 |
+  | `E2` | &mdash; | 1 |
+  | `E3` | &mdash; | 2 |
+  | `E4` | &mdash; | 3 |
+
+## `SccpGenerationCauseV1` {#sccpgenerationcausev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `genesis` | &mdash; | 0 |
+  | `key_change` | &mdash; | 1 |
+  | `heartbeat` | &mdash; | 2 |
+  | `resync` | &mdash; | 3 |
+
+## `SccpGenerationDestinationClearedV1` {#sccpgenerationdestinationclearedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `generation` | `u64` |
+  | `lc` | `u64` |
+
+## `SccpGenerationMemberUnslashableV1` {#sccpgenerationmemberunslashablev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `generation` | `u64` |
+  | `index` | `u8` |
+
+## `SccpGovernanceEnactedV1` {#sccpgovernanceenactedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `proposal_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `subjects` | [`Vec<SccpGovernanceSubjectV1>`](#vec-sccpgovernancesubjectv1) |
+
+## `SccpGovernanceSubjectV1` {#sccpgovernancesubjectv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `route` | [`SccpNetworkV1`](#sccpnetworkv1) | 0 |
+  | `route_control` | [`SccpNetworkV1`](#sccpnetworkv1) | 1 |
+  | `light_client` | [`SccpNetworkV1`](#sccpnetworkv1) | 2 |
+  | `parameters` | &mdash; | 3 |
+  | `forgery_hold` | [`SccpNetworkV1`](#sccpnetworkv1) | 5 |
+  | `fast_hold` | [`SccpNetworkV1`](#sccpnetworkv1) | 6 |
+  | `fast_pause_control` | [`SccpNetworkV1`](#sccpnetworkv1) | 7 |
+
+## `SccpInboundBouncedV1` {#sccpinboundbouncedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `message_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `revision` | `u32` |
+  | `bounce_message_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `bounce_revision` | `u32` |
+  | `amount` | `u128` |
+  | `reason` | [`SccpBounceReasonV1`](#sccpbouncereasonv1) |
+
+## `SccpInboundLiabilityShortfallV1` {#sccpinboundliabilityshortfallv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `message_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `revision` | `u32` |
+  | `amount` | `u128` |
+  | `liability` | `u128` |
+
+## `SccpInboundProvenV1` {#sccpinboundprovenv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `message_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `revision` | `u32` |
+  | `amount` | `u128` |
+  | `source_locator` | [`SccpSourceLocatorV1`](#sccpsourcelocatorv1) |
+  | `fee_due` | `u128` |
+
+## `SccpInboundReleasedV1` {#sccpinboundreleasedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `message_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `revision` | `u32` |
+  | `recipient` | [`AccountId`](#accountid) |
+  | `amount` | `u128` |
+  | `fee` | `u128` |
+
+## `SccpInboundStrandedV1` {#sccpinboundstrandedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `message_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `revision` | `u32` |
+  | `amount` | `u128` |
+  | `reason` | [`SccpBounceReasonV1`](#sccpbouncereasonv1) |
+
+## `SccpLcEquivocationFreezeV1` {#sccplcequivocationfreezev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `evidence_hash` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `SccpLcFreezeReasonV1` {#sccplcfreezereasonv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `equivocation` | [`SccpLcEquivocationFreezeV1`](#sccplcequivocationfreezev1) | 0 |
+  | `parliament` | [`SccpLcParliamentFreezeV1`](#sccplcparliamentfreezev1) | 1 |
+
+## `SccpLcParliamentFreezeV1` {#sccplcparliamentfreezev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `proposal_id` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `SccpLcPointV1` {#sccplcpointv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `source_height` | `u64` |
+  | `block_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `source_time_ms` | `u64` |
+
+## `SccpLightClientAdvancedV1` {#sccplightclientadvancedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `latest_set_id` | `u64` |
+  | `latest_finalized` | [`SccpLcPointV1`](#sccplcpointv1) |
+  | `state_hash` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `SccpLightClientFrozenV1` {#sccplightclientfrozenv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `reason` | [`SccpLcFreezeReasonV1`](#sccplcfreezereasonv1) |
+
+## `SccpLightClientInitializedV1` {#sccplightclientinitializedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `latest_set_id` | `u64` |
+  | `latest_finalized` | [`SccpLcPointV1`](#sccplcpointv1) |
+  | `state_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `proposal_id` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `SccpMessageRecordedV1` {#sccpmessagerecordedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `message_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `revision` | `u32` |
+  | `nonce` | `u64` |
+  | `height` | `u64` |
+  | `commitment_index` | `u32` |
+  | `deadline_ms` | `u64` |
 
 ## `SccpNetworkV1` {#sccpnetworkv1}
 
@@ -14385,10 +19177,9 @@
   | `sora_taira` | &mdash; | 64 |
   | `ethereum_mainnet` | &mdash; | 65 |
   | `bsc_mainnet` | &mdash; | 66 |
-  | `tron_mainnet` | &mdash; | 67 |
   | `ton_mainnet` | &mdash; | 68 |
 
-## `SccpRegistryChanged` {#sccpregistrychanged}
+## `SccpOutboundRefundedV1` {#sccpoutboundrefundedv1}
 
 **Type:** Struct
 
@@ -14396,102 +19187,259 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `operation` | [`SccpRegistryOperation`](#sccpregistryoperation) |
-  | `lane_id` | [`SccpLaneIdV1`](#sccplaneidv1) |
-  | `route` | [`Option<SccpRouteKeyV1>`](#option-sccproutekeyv1) |
-  | `old_digest` | [`Array<u8, 32>`](#array-u8-32) |
-  | `new_digest` | [`Array<u8, 32>`](#array-u8-32) |
-
-## `SccpRegistryOperation` {#sccpregistryoperation}
-
-**Type:** Enum
-
-**Variants:**
-
-  | Variant name | Variant value | Discriminant |
-  | --: | :-- | --- |
-  | `RegisterRoute` | &mdash; | 0 |
-  | `SetRouteActivation` | &mdash; | 1 |
-  | `SwitchRouteRevision` | &mdash; | 2 |
-  | `InitializeLaneTrustAnchor` | &mdash; | 3 |
-  | `AdvanceLaneTrustAnchor` | &mdash; | 4 |
-  | `RemoveStagedRoute` | &mdash; | 5 |
-
-## `SccpReplayAccumulatorIdV1` {#sccpreplayaccumulatoridv1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `route_key` | [`SccpRouteKeyV1`](#sccproutekeyv1) |
-  | `boundary` | [`SccpReplayBoundaryV1`](#sccpreplayboundaryv1) |
-
-## `SccpReplayBoundaryV1` {#sccpreplayboundaryv1}
-
-**Type:** Enum
-
-**Variants:**
-
-  | Variant name | Variant value | Discriminant |
-  | --: | :-- | --- |
-  | `SoraOutboundLock` | &mdash; | 1 |
-  | `SoraInboundRelease` | &mdash; | 2 |
-  | `EvmSourceBurn` | &mdash; | 16 |
-  | `EvmDestinationMint` | &mdash; | 17 |
-  | `TronSourceBurn` | &mdash; | 32 |
-  | `TronDestinationMint` | &mdash; | 33 |
-  | `TonBridgeInboundMint` | &mdash; | 48 |
-  | `TonBridgeOutboundBurn` | &mdash; | 49 |
-  | `TonMasterMint` | &mdash; | 50 |
-  | `TonMasterBurn` | &mdash; | 51 |
-  | `TonWalletMintCredit` | &mdash; | 52 |
-  | `TonWalletBurnDebit` | &mdash; | 53 |
-  | `TonWalletRefundDebit` | &mdash; | 54 |
-  | `TonWalletRefundCredit` | &mdash; | 55 |
-
-## `SccpReplayDeltaEventV1` {#sccpreplaydeltaeventv1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `lane` | [`LaneId`](#laneid) |
-  | `accumulator_id` | [`SccpReplayAccumulatorIdV1`](#sccpreplayaccumulatoridv1) |
-  | `delta` | [`SccpReplayDeltaV1`](#sccpreplaydeltav1) |
-
-## `SccpReplayDeltaV1` {#sccpreplaydeltav1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `domain_hash` | [`Array<u8, 32>`](#array-u8-32) |
-  | `shard` | `u8` |
-  | `key` | [`Array<u8, 32>`](#array-u8-32) |
-  | `record_digest` | [`Array<u8, 32>`](#array-u8-32) |
-  | `old_root` | [`Array<u8, 32>`](#array-u8-32) |
-  | `new_root` | [`Array<u8, 32>`](#array-u8-32) |
-  | `leaf_count` | `u64` |
-  | `update_sequence` | `u64` |
-
-## `SccpRouteKeyV1` {#sccproutekeyv1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `lane_id` | [`SccpLaneIdV1`](#sccplaneidv1) |
-  | `route_id` | `String` |
-  | `asset_key` | `String` |
+  | `message_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
   | `revision` | `u32` |
+  | `nonce` | `u64` |
+  | `recipient` | [`AccountId`](#accountid) |
+  | `amount` | `u128` |
+
+## `SccpOutboundStrandedV1` {#sccpoutboundstrandedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `message_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `revision` | `u32` |
+  | `nonce` | `u64` |
+  | `amount` | `u128` |
+
+## `SccpOutboundVoidedV1` {#sccpoutboundvoidedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `message_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `revision` | `u32` |
+  | `nonce` | `u64` |
+  | `kind` | [`SccpVoidKindV1`](#sccpvoidkindv1) |
+  | `refund_pending` | `bool` |
+
+## `SccpPausePanelSeatAcceptedV1` {#sccppausepanelseatacceptedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `panel_seq` | `u64` |
+  | `member` | [`AccountId`](#accountid) |
+
+## `SccpPausePanelSeatedV1` {#sccppausepanelseatedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `panel_seq` | `u64` |
+  | `pulse_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `primary_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `backup_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `seated_height` | `u64` |
+  | `seated_at_ms` | `u64` |
+  | `accept_until_ms` | `u64` |
+  | `term_ends_at_ms` | `u64` |
+  | `drawn_count` | `u32` |
+
+## `SccpPausePanelUnavailableReasonV1` {#sccppausepanelunavailablereasonv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `insufficient_candidates` | &mdash; | 0 |
+  | `snapshot_too_large` | &mdash; | 1 |
+
+## `SccpPausePanelUnavailableV1` {#sccppausepanelunavailablev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `pulse_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `reason` | [`SccpPausePanelUnavailableReasonV1`](#sccppausepanelunavailablereasonv1) |
+
+## `SccpRecipientRegisteredV1` {#sccprecipientregisteredv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `account` | [`AccountId`](#accountid) |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `message_id` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
+
+## `SccpReconciledClaimSettledV1` {#sccpreconciledclaimsettledv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `revision` | `u32` |
+  | `message_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `amount` | `u128` |
+  | `payout` | `u128` |
+
+## `SccpReconciliationOpenedV1` {#sccpreconciliationopenedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `revision` | `u32` |
+  | `opened_at_ms` | `u64` |
+  | `closes_at_ms` | `u64` |
+
+## `SccpReconciliationSettledV1` {#sccpreconciliationsettledv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `revision` | `u32` |
+  | `backing` | `u128` |
+  | `forged_supply` | `u128` |
+
+## `SccpRevisionActivationChangedV1` {#sccprevisionactivationchangedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `revision` | `u32` |
+  | `from` | [`Option<SccpRouteActivationV1>`](#option-sccprouteactivationv1) |
+  | `to` | [`Option<SccpRouteActivationV1>`](#option-sccprouteactivationv1) |
+
+## `SccpRevisionForgeryHeldV1` {#sccprevisionforgeryheldv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `revision` | `u32` |
+  | `forgery_floor` | `u64` |
+  | `generation` | `u64` |
+
+## `SccpRevisionForgeryReleasedV1` {#sccprevisionforgeryreleasedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `revision` | `u32` |
+  | `forgery_floor` | `u64` |
+
+## `SccpRevisionQuarantinedV1` {#sccprevisionquarantinedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `revision` | `u32` |
+  | `certificate_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `since_height` | `u64` |
+
+## `SccpRouteActivationV1` {#sccprouteactivationv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `staged` | &mdash; | 0 |
+  | `bidirectional` | &mdash; | 1 |
+  | `paused` | &mdash; | 2 |
+  | `inbound_only` | &mdash; | 3 |
+  | `retired` | &mdash; | 4 |
+
+## `SccpSourceLocatorV1` {#sccpsourcelocatorv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `source_height` | `u64` |
+  | `block_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `index_in_block` | `u32` |
+
+## `SccpStrandedReleasedV1` {#sccpstrandedreleasedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `recipient` | [`AccountId`](#accountid) |
+  | `amount` | `u128` |
+  | `memo` | `String` |
+  | `proposal_id` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `SccpTrustedCheckpointInstalledV1` {#sccptrustedcheckpointinstalledv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network` | [`SccpNetworkV1`](#sccpnetworkv1) |
+  | `source_height` | `u64` |
+  | `block_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `proposal_id` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `SccpVoidKindV1` {#sccpvoidkindv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `expired` | &mdash; | 0 |
+  | `frozen` | &mdash; | 1 |
 
 ## `Schedule` {#schedule}
 
@@ -14503,6 +19451,43 @@
   | --: | :-- |
   | `start_ms` | `u64` |
   | `period_ms` | [`Option<u64>`](#option-u64) |
+
+## `ScheduleOutcome` {#scheduleoutcome}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `height` | `u64` |
+  | `current` | [`ValidatorEpochContextV1`](#validatorepochcontextv1) |
+  | `boundary` | [`Option<ValidatorEpochBoundaryV1>`](#option-validatorepochboundaryv1) |
+  | `next` | [`ScheduledSlot`](#scheduledslot) |
+  | `after_next` | [`ScheduledSlot`](#scheduledslot) |
+
+## `ScheduledConfig` {#scheduledconfig}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `height` | `u64` |
+  | `epoch` | [`ValidatorEpochContextV1`](#validatorepochcontextv1) |
+  | `params` | [`ChainParamsRecord`](#chainparamsrecord) |
+
+## `ScheduledSlot` {#scheduledslot}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `ready` | [`ScheduledConfig`](#scheduledconfig) | 0 |
+  | `pending_boundary` | [`SumeragiPendingBoundary`](#sumeragipendingboundary) | 1 |
 
 ## `SchedulerLayerWidthBuckets` {#schedulerlayerwidthbuckets}
 
@@ -14574,6 +19559,150 @@
   | `signed_transaction` | [`SignedTransaction`](#signedtransaction) |
   | `salt` | [`Array<u8, 32>`](#array-u8-32) |
 
+## `SelectionId` {#selectionid}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
+## `SetAssetFiLinkAttestationV1` {#setassetfilinkattestationv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `attestation` | [`AssetFiLinkAttestationV1`](#assetfilinkattestationv1) |
+
+## `SetAssetFiLinkV1` {#setassetfilinkv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `link` | [`AssetFiLinkV1`](#assetfilinkv1) |
+  | `expected_policy_revision` | `u64` |
+
+## `SetAssetFiV1` {#setassetfiv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `fi` | [`AssetFiV1`](#assetfiv1) |
+
+## `SetAssetUidPolicyReaderV1` {#setassetuidpolicyreaderv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `controller` | [`ContractAddress`](#contractaddress) |
+  | `revision` | `u64` |
+  | `enabled` | `bool` |
+
+## `SetAssetUidPolicyV1` {#setassetuidpolicyv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `policy` | [`AssetUidPolicyV1`](#assetuidpolicyv1) |
+
+## `SetAssetUidSystemAccountV1` {#setassetuidsystemaccountv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `account` | [`AssetUidSystemAccountV1`](#assetuidsystemaccountv1) |
+
+## `SettlementDetails` {#settlementdetails}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Dvp` | [`DvpSettlementDetails`](#dvpsettlementdetails) | 0 |
+  | `Pvp` | [`PvpSettlementDetails`](#pvpsettlementdetails) | 1 |
+  | `FxCorridor` | [`FxCorridorSettlementDetails`](#fxcorridorsettlementdetails) | 2 |
+  | `Atomic` | [`AtomicSettlementDetails`](#atomicsettlementdetails) | 3 |
+
+## `SettlementExecutionOrder` {#settlementexecutionorder}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `DeliveryThenPayment` | &mdash; | 0 |
+  | `PaymentThenDelivery` | &mdash; | 1 |
+
+## `SettlementId` {#settlementid}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `owner` | [`AccountId`](#accountid) |
+  | `reference` | [`Name`](#name) |
+
+## `SettlementReceipt` {#settlementreceipt}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `authority` | [`AccountId`](#accountid) |
+  | `metadata` | [`Metadata`](#metadata) |
+  | `block_height` | `u64` |
+  | `block_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `executed_at_ms` | `u64` |
+  | `details` | [`SettlementDetails`](#settlementdetails) |
+
+## `SettlementReplayDispositionV1` {#settlementreplaydispositionv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `AlreadySettled` | &mdash; | 0 |
+  | `ConflictingIntent` | &mdash; | 1 |
+
+## `SettlementReplayV1` {#settlementreplayv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `settlement_id` | [`SettlementId`](#settlementid) |
+  | `disposition` | [`SettlementReplayDispositionV1`](#settlementreplaydispositionv1) |
+  | `committed_block_height` | `u64` |
+  | `committed_block_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+
 ## `Signature` {#signature}
 
 **Type:** Struct
@@ -14614,11 +19743,42 @@
 
 **To:** [`Signature`](#signature)
 
+## `SignatureOf<SumeragiFinalityAttestationBody>` {#signatureof-sumeragifinalityattestationbody}
+
+**Type:** Alias
+
+**To:** [`Signature`](#signature)
+
 ## `SignatureOf<TransactionPayload>` {#signatureof-transactionpayload}
 
 **Type:** Alias
 
 **To:** [`Signature`](#signature)
+
+## `SignedAttachmentOccurrenceV1` {#signedattachmentoccurrencev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `index` | `u32` |
+  | `kind` | [`AttachmentKindV1`](#attachmentkindv1) |
+  | `length` | `u64` |
+  | `content_hash` | [`AttachmentContentHashV1`](#attachmentcontenthashv1) |
+  | `bytes` | [`Vec<u8>`](#vec-u8) |
+
+## `SignedAttachmentsV1` {#signedattachmentsv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `actions` | [`Vec<ActionIntentV1>`](#vec-actionintentv1) |
+  | `occurrences` | [`Vec<SignedAttachmentOccurrenceV1>`](#vec-signedattachmentoccurrencev1) |
 
 ## `SignedBlock` {#signedblock}
 
@@ -14628,9 +19788,21 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `signatures` | [`SortedVec<BlockSignature>`](#sortedvec-blocksignature) |
+  | `signatures` | [`BlockSignatures`](#blocksignatures) |
   | `payload` | [`BlockPayload`](#blockpayload) |
   | `result` | [`Option<BlockResult>`](#option-blockresult) |
+  | `commit_certificate` | [`Option<CommitCertificate>`](#option-commitcertificate) |
+
+## `SignedGameCheckpointV1` {#signedgamecheckpointv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `checkpoint` | [`GameCheckpointV1`](#gamecheckpointv1) |
+  | `signatures` | [`Vec<GameSlotSignatureV1>`](#vec-gameslotsignaturev1) |
 
 ## `SignedQuery` {#signedquery}
 
@@ -14666,6 +19838,121 @@
   | `payload` | [`TransactionPayload`](#transactionpayload) |
   | `multisig_signatures` | [`Option<MultisigSignatures>`](#option-multisigsignatures) |
 
+## `SignerFinalPromotionRequestV1` {#signerfinalpromotionrequestv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `operation_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `binding_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `original_custody` | [`SignerOperationCustodyV1`](#signeroperationcustodyv1) |
+  | `statement_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `statement_size` | `u64` |
+
+## `SignerOperationActionV1` {#signeroperationactionv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `sign` | &mdash; | 0 |
+  | `qualify` | &mdash; | 1 |
+  | `status` | &mdash; | 2 |
+  | `activate_custody` | &mdash; | 3 |
+  | `revoke_custody` | &mdash; | 4 |
+
+## `SignerOperationAuditHeadV1` {#signeroperationauditheadv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `sequence` | `u64` |
+  | `digest` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `SignerOperationCommitmentV1` {#signeroperationcommitmentv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `audit` | [`SignerOperationAuditHeadV1`](#signeroperationauditheadv1) |
+  | `response_digest` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `SignerOperationCustodyV1` {#signeroperationcustodyv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `record_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `control_state_digest` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `SignerOperationIntentV1` {#signeroperationintentv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `action` | [`SignerOperationActionV1`](#signeroperationactionv1) |
+  | `operation_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `request_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `previous_audit` | [`SignerOperationAuditHeadV1`](#signeroperationauditheadv1) |
+
+## `SignerOperationReservationV1` {#signeroperationreservationv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `reservation_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `fence` | `u64` |
+  | `expires_at_unix_ms` | `u64` |
+
+## `SignerStreamTokenRequestV1` {#signerstreamtokenrequestv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `operation_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `binding_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `original_custody` | [`SignerOperationCustodyV1`](#signeroperationcustodyv1) |
+  | `signing_payload_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `signing_payload_size` | `u64` |
+  | `issued_at_unix_ms` | `u64` |
+  | `expires_at_unix_ms` | `u64` |
+
+## `SignerTopologyRequestV1` {#signertopologyrequestv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `operation_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `binding_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `original_custody` | [`SignerOperationCustodyV1`](#signeroperationcustodyv1) |
+  | `subject_digest` | [`Array<u8, 32>`](#array-u8-32) |
+
 ## `SingularQueryBox` {#singularquerybox}
 
 **Type:** Enum
@@ -14681,7 +19968,7 @@
   | `FindAccountRecoveryPolicyByAlias` | [`FindAccountRecoveryPolicyByAlias`](#findaccountrecoverypolicybyalias) | 4 |
   | `FindAccountRecoveryRequestByAlias` | [`FindAccountRecoveryRequestByAlias`](#findaccountrecoveryrequestbyalias) | 5 |
   | `FindProofRecordById` | [`FindProofRecordById`](#findproofrecordbyid) | 6 |
-  | `FindContractManifestByCodeHash` | [`FindContractManifestByCodeHash`](#findcontractmanifestbycodehash) | 7 |
+  | `FindContractManifestByArtifactId` | [`FindContractManifestByArtifactId`](#findcontractmanifestbyartifactid) | 7 |
   | `FindAbiVersion` | [`FindAbiVersion`](#findabiversion) | 8 |
   | `FindAssetById` | [`FindAssetById`](#findassetbyid) | 9 |
   | `FindAssetDefinitionById` | [`FindAssetDefinitionById`](#findassetdefinitionbyid) | 10 |
@@ -14700,8 +19987,8 @@
   | `FindDaPinIntentByManifest` | [`FindDaPinIntentByManifest`](#finddapinintentbymanifest) | 23 |
   | `FindDaPinIntentByAlias` | [`FindDaPinIntentByAlias`](#finddapinintentbyalias) | 24 |
   | `FindDaPinIntentByLaneEpochSequence` | [`FindDaPinIntentByLaneEpochSequence`](#finddapinintentbylaneepochsequence) | 25 |
-  | `FindLaneRelayEnvelopeByRef` | [`FindLaneRelayEnvelopeByRef`](#findlanerelayenvelopebyref) | 26 |
-  | `FindFeeSponsorProgramById` | [`FindFeeSponsorProgramById`](#findfeesponsorprogrambyid) | 27 |
+  | `FindFeeSponsorProgramById` | [`FindFeeSponsorProgramById`](#findfeesponsorprogrambyid) | 26 |
+  | `FindSettlementReceiptById` | [`FindSettlementReceiptById`](#findsettlementreceiptbyid) | 27 |
   | `FindFxCorridorPolicyRegistry` | [`FindFxCorridorPolicyRegistry`](#findfxcorridorpolicyregistry) | 28 |
   | `FindFxCorridorPolicyById` | [`FindFxCorridorPolicyById`](#findfxcorridorpolicybyid) | 29 |
   | `FindSorafsProviderOwner` | [`FindSorafsProviderOwner`](#findsorafsproviderowner) | 30 |
@@ -14736,44 +20023,47 @@
   | `FindSorafsPopRegistryStatus` | [`FindSorafsPopRegistryStatus`](#findsorafspopregistrystatus) | 59 |
   | `FindSorafsCitizenBondBySerialCommitment` | [`FindSorafsCitizenBondBySerialCommitment`](#findsorafscitizenbondbyserialcommitment) | 60 |
   | `FindSorafsCitizenBondSnapshot` | [`FindSorafsCitizenBondSnapshot`](#findsorafscitizenbondsnapshot) | 61 |
-  | `FindSorafsAnonymousServiceEscrowById` | [`FindSorafsAnonymousServiceEscrowById`](#findsorafsanonymousserviceescrowbyid) | 62 |
-  | `FindSorafsRepairTask` | [`FindSorafsRepairTask`](#findsorafsrepairtask) | 63 |
-  | `FindSorafsRepairTasks` | [`FindSorafsRepairTasks`](#findsorafsrepairtasks) | 64 |
-  | `FindSorafsRepairStatus` | [`FindSorafsRepairStatus`](#findsorafsrepairstatus) | 65 |
-  | `FindSorafsRepairEvents` | [`FindSorafsRepairEvents`](#findsorafsrepairevents) | 66 |
-  | `FindSorafsProofOutcome` | [`FindSorafsProofOutcome`](#findsorafsproofoutcome) | 67 |
-  | `FindSorafsProofOutcomeEvents` | [`FindSorafsProofOutcomeEvents`](#findsorafsproofoutcomeevents) | 68 |
-  | `FindSorafsReputationJournalAuthorityPolicy` | [`FindSorafsReputationJournalAuthorityPolicy`](#findsorafsreputationjournalauthoritypolicy) | 69 |
-  | `FindSorafsReputationJournalEventBySourceId` | [`FindSorafsReputationJournalEventBySourceId`](#findsorafsreputationjournaleventbysourceid) | 70 |
-  | `FindSorafsReputationJournalEvents` | [`FindSorafsReputationJournalEvents`](#findsorafsreputationjournalevents) | 71 |
-  | `FindSorafsModerationPolicy` | [`FindSorafsModerationPolicy`](#findsorafsmoderationpolicy) | 72 |
-  | `FindSorafsModerationAppeal` | [`FindSorafsModerationAppeal`](#findsorafsmoderationappeal) | 73 |
-  | `FindSorafsModerationJurorEligibility` | [`FindSorafsModerationJurorEligibility`](#findsorafsmoderationjuroreligibility) | 74 |
-  | `FindSorafsAnonymousJurorCandidacy` | [`FindSorafsAnonymousJurorCandidacy`](#findsorafsanonymousjurorcandidacy) | 75 |
-  | `FindSorafsModerationCase` | [`FindSorafsModerationCase`](#findsorafsmoderationcase) | 76 |
-  | `FindSorafsModerationCommit` | [`FindSorafsModerationCommit`](#findsorafsmoderationcommit) | 77 |
-  | `FindSorafsModerationReveal` | [`FindSorafsModerationReveal`](#findsorafsmoderationreveal) | 78 |
-  | `FindSorafsModerationChallenge` | [`FindSorafsModerationChallenge`](#findsorafsmoderationchallenge) | 79 |
-  | `FindSorafsModerationOutcome` | [`FindSorafsModerationOutcome`](#findsorafsmoderationoutcome) | 80 |
-  | `FindSorafsModerationNoShow` | [`FindSorafsModerationNoShow`](#findsorafsmoderationnoshow) | 81 |
-  | `FindSorafsModerationStatus` | [`FindSorafsModerationStatus`](#findsorafsmoderationstatus) | 82 |
-  | `FindSorafsModerationSnapshot` | [`FindSorafsModerationSnapshot`](#findsorafsmoderationsnapshot) | 83 |
-  | `FindSorafsModerationEvents` | [`FindSorafsModerationEvents`](#findsorafsmoderationevents) | 84 |
-  | `FindDataspaceNameOwnerById` | [`FindDataspaceNameOwnerById`](#finddataspacenameownerbyid) | 85 |
-  | `FindMusubiExactPackageV1` | [`FindMusubiExactPackageV1`](#findmusubiexactpackagev1) | 86 |
-  | `FindMusubiExactReleaseV1` | [`FindMusubiExactReleaseV1`](#findmusubiexactreleasev1) | 87 |
-  | `FindMusubiProviderBundleAttestationV1` | [`FindMusubiProviderBundleAttestationV1`](#findmusubiproviderbundleattestationv1) | 88 |
-  | `FindMusubiResolverIndexV1` | [`FindMusubiResolverIndexV1`](#findmusubiresolverindexv1) | 89 |
-  | `FindMusubiVersionsV1` | [`FindMusubiVersionsV1`](#findmusubiversionsv1) | 90 |
-  | `FindMusubiMaintainersV1` | [`FindMusubiMaintainersV1`](#findmusubimaintainersv1) | 91 |
-  | `FindMusubiArchiveLocationsV1` | [`FindMusubiArchiveLocationsV1`](#findmusubiarchivelocationsv1) | 92 |
-  | `FindMusubiArchiveRetentionV1` | [`FindMusubiArchiveRetentionV1`](#findmusubiarchiveretentionv1) | 93 |
-  | `FindMusubiAliasV1` | [`FindMusubiAliasV1`](#findmusubialiasv1) | 94 |
-  | `FindMusubiAliasHistoryV1` | [`FindMusubiAliasHistoryV1`](#findmusubialiashistoryv1) | 95 |
-  | `FindMusubiOrderedPrefixV1` | [`FindMusubiOrderedPrefixV1`](#findmusubiorderedprefixv1) | 96 |
-  | `FindAccountByAlias` | [`FindAccountByAlias`](#findaccountbyalias) | 97 |
-  | `FindDomainById` | [`FindDomainById`](#finddomainbyid) | 98 |
-  | `FindNftById` | [`FindNftById`](#findnftbyid) | 99 |
+  | `FindSorafsRepairTask` | [`FindSorafsRepairTask`](#findsorafsrepairtask) | 62 |
+  | `FindSorafsRepairTasks` | [`FindSorafsRepairTasks`](#findsorafsrepairtasks) | 63 |
+  | `FindSorafsRepairStatus` | [`FindSorafsRepairStatus`](#findsorafsrepairstatus) | 64 |
+  | `FindSorafsRepairEvents` | [`FindSorafsRepairEvents`](#findsorafsrepairevents) | 65 |
+  | `FindSorafsProofOutcome` | [`FindSorafsProofOutcome`](#findsorafsproofoutcome) | 66 |
+  | `FindSorafsProofOutcomeEvents` | [`FindSorafsProofOutcomeEvents`](#findsorafsproofoutcomeevents) | 67 |
+  | `FindSorafsReputationJournalAuthorityPolicy` | [`FindSorafsReputationJournalAuthorityPolicy`](#findsorafsreputationjournalauthoritypolicy) | 68 |
+  | `FindSorafsReputationJournalEventBySourceId` | [`FindSorafsReputationJournalEventBySourceId`](#findsorafsreputationjournaleventbysourceid) | 69 |
+  | `FindSorafsReputationJournalEvents` | [`FindSorafsReputationJournalEvents`](#findsorafsreputationjournalevents) | 70 |
+  | `FindSorafsModerationPolicy` | [`FindSorafsModerationPolicy`](#findsorafsmoderationpolicy) | 71 |
+  | `FindSorafsModerationAppeal` | [`FindSorafsModerationAppeal`](#findsorafsmoderationappeal) | 72 |
+  | `FindSorafsModerationJurorEligibility` | [`FindSorafsModerationJurorEligibility`](#findsorafsmoderationjuroreligibility) | 73 |
+  | `FindSorafsModerationCase` | [`FindSorafsModerationCase`](#findsorafsmoderationcase) | 74 |
+  | `FindSorafsModerationCommit` | [`FindSorafsModerationCommit`](#findsorafsmoderationcommit) | 75 |
+  | `FindSorafsModerationReveal` | [`FindSorafsModerationReveal`](#findsorafsmoderationreveal) | 76 |
+  | `FindSorafsModerationChallenge` | [`FindSorafsModerationChallenge`](#findsorafsmoderationchallenge) | 77 |
+  | `FindSorafsModerationOutcome` | [`FindSorafsModerationOutcome`](#findsorafsmoderationoutcome) | 78 |
+  | `FindSorafsModerationNoShow` | [`FindSorafsModerationNoShow`](#findsorafsmoderationnoshow) | 79 |
+  | `FindSorafsModerationStatus` | [`FindSorafsModerationStatus`](#findsorafsmoderationstatus) | 80 |
+  | `FindSorafsModerationSnapshot` | [`FindSorafsModerationSnapshot`](#findsorafsmoderationsnapshot) | 81 |
+  | `FindSorafsModerationEvents` | [`FindSorafsModerationEvents`](#findsorafsmoderationevents) | 82 |
+  | `FindDataspaceNameOwnerById` | [`FindDataspaceNameOwnerById`](#finddataspacenameownerbyid) | 83 |
+  | `FindMusubiExactPackageV1` | [`FindMusubiExactPackageV1`](#findmusubiexactpackagev1) | 84 |
+  | `FindMusubiExactReleaseV1` | [`FindMusubiExactReleaseV1`](#findmusubiexactreleasev1) | 85 |
+  | `FindMusubiProviderBundleAttestationV1` | [`FindMusubiProviderBundleAttestationV1`](#findmusubiproviderbundleattestationv1) | 86 |
+  | `FindMusubiResolverIndexV1` | [`FindMusubiResolverIndexV1`](#findmusubiresolverindexv1) | 87 |
+  | `FindMusubiVersionsV1` | [`FindMusubiVersionsV1`](#findmusubiversionsv1) | 88 |
+  | `FindMusubiMaintainersV1` | [`FindMusubiMaintainersV1`](#findmusubimaintainersv1) | 89 |
+  | `FindMusubiArchiveLocationsV1` | [`FindMusubiArchiveLocationsV1`](#findmusubiarchivelocationsv1) | 90 |
+  | `FindMusubiArchiveRetentionV1` | [`FindMusubiArchiveRetentionV1`](#findmusubiarchiveretentionv1) | 91 |
+  | `FindMusubiAliasV1` | [`FindMusubiAliasV1`](#findmusubialiasv1) | 92 |
+  | `FindMusubiAliasHistoryV1` | [`FindMusubiAliasHistoryV1`](#findmusubialiashistoryv1) | 93 |
+  | `FindMusubiOrderedPrefixV1` | [`FindMusubiOrderedPrefixV1`](#findmusubiorderedprefixv1) | 94 |
+  | `FindAccountByAlias` | [`FindAccountByAlias`](#findaccountbyalias) | 95 |
+  | `FindDomainById` | [`FindDomainById`](#finddomainbyid) | 96 |
+  | `FindNftById` | [`FindNftById`](#findnftbyid) | 97 |
+  | `FindGameSessionById` | [`FindGameSessionById`](#findgamesessionbyid) | 98 |
+  | `FindExecutionProofVerificationById` | [`FindExecutionProofVerificationById`](#findexecutionproofverificationbyid) | 99 |
+  | `FindNftSaleOfferById` | [`FindNftSaleOfferById`](#findnftsaleofferbyid) | 100 |
+  | `FindAssetDefinitionDirectHome` | [`FindAssetDefinitionDirectHome`](#findassetdefinitiondirecthome) | 101 |
+  | `FindBondById` | [`FindBondById`](#findbondbyid) | 102 |
 
 ## `SingularQueryOutputBox` {#singularqueryoutputbox}
 
@@ -14808,78 +20098,81 @@
   | `DomainEndorsementPolicy` | [`DomainEndorsementPolicy`](#domainendorsementpolicy) | 22 |
   | `DomainCommittee` | [`DomainCommittee`](#domaincommittee) | 23 |
   | `DaPinIntent` | [`DaPinIntentWithLocation`](#dapinintentwithlocation) | 24 |
-  | `VerifiedLaneRelayRecord` | [`VerifiedLaneRelayRecord`](#verifiedlanerelayrecord) | 25 |
-  | `FeeSponsorProgram` | [`FeeSponsorProgram`](#feesponsorprogram) | 26 |
-  | `SorafsPinManifest` | [`PinManifestFinalizedRecordV1`](#pinmanifestfinalizedrecordv1) | 27 |
-  | `SorafsPinManifestPage` | [`PinManifestPageV1`](#pinmanifestpagev1) | 28 |
-  | `SorafsOrderbookPolicy` | [`OrderbookAdmissionPolicyRecord`](#orderbookadmissionpolicyrecord) | 29 |
-  | `SorafsOrderbookOrder` | [`OrderbookOrderRecord`](#orderbookorderrecord) | 30 |
-  | `SorafsOrderbookCancellation` | [`OrderbookCancellationRecord`](#orderbookcancellationrecord) | 31 |
-  | `SorafsOrderbookReceipt` | [`OrderbookSettlementReceiptRecord`](#orderbooksettlementreceiptrecord) | 32 |
-  | `SorafsOrderbookTrade` | [`OrderbookTradeRecord`](#orderbooktraderecord) | 33 |
-  | `SorafsOrderbookChannel` | [`OrderbookSettlementChannelRecord`](#orderbooksettlementchannelrecord) | 34 |
-  | `SorafsOrderbookStatus` | [`OrderbookLedgerStatusV1`](#orderbookledgerstatusv1) | 35 |
-  | `SorafsOrderbookOrderPage` | [`OrderbookOrderPageV1`](#orderbookorderpagev1) | 36 |
-  | `SorafsOrderbookReceiptPage` | [`OrderbookSettlementReceiptPageV1`](#orderbooksettlementreceiptpagev1) | 37 |
-  | `SorafsOrderbookTradePage` | [`OrderbookTradePageV1`](#orderbooktradepagev1) | 38 |
-  | `SorafsOrderbookChannelPage` | [`OrderbookSettlementChannelPageV1`](#orderbooksettlementchannelpagev1) | 39 |
-  | `SorafsOrderbookEventPage` | [`OrderbookFinalizedEventPageV1`](#orderbookfinalizedeventpagev1) | 40 |
-  | `SorafsReservePolicy` | [`ReserveAuthorityPolicyRecordV1`](#reserveauthoritypolicyrecordv1) | 41 |
-  | `SorafsReserveProvider` | [`ReserveProviderAccountV1`](#reserveprovideraccountv1) | 42 |
-  | `SorafsReserveMovement` | [`ReserveMovementRecordV1`](#reservemovementrecordv1) | 43 |
-  | `SorafsReserveAppeal` | [`ReserveAppealRecordV1`](#reserveappealrecordv1) | 44 |
-  | `SorafsReserveProviderPage` | [`ReserveProviderAccountPageV1`](#reserveprovideraccountpagev1) | 45 |
-  | `SorafsReserveMovementPage` | [`ReserveMovementPageV1`](#reservemovementpagev1) | 46 |
-  | `SorafsReserveAppealPage` | [`ReserveAppealPageV1`](#reserveappealpagev1) | 47 |
-  | `SorafsReserveEventPage` | [`ReserveFinalizedEventPageV1`](#reservefinalizedeventpagev1) | 48 |
-  | `SorafsPopIssuerPolicy` | [`PopIssuerPolicyRecordV1`](#popissuerpolicyrecordv1) | 49 |
-  | `SorafsPopCredentialCommitment` | [`PopCredentialCommitmentRecordV1`](#popcredentialcommitmentrecordv1) | 50 |
-  | `SorafsPopCommitmentRoot` | [`PopCommitmentRootRecordV1`](#popcommitmentrootrecordv1) | 51 |
-  | `SorafsPopRevocationPublication` | [`PopRevocationPublicationRecordV1`](#poprevocationpublicationrecordv1) | 52 |
-  | `SorafsPopRevocation` | [`PopRevocationRecordV1`](#poprevocationrecordv1) | 53 |
-  | `SorafsPopAuditDigest` | [`PopRegistryAuditDigestRecordV1`](#popregistryauditdigestrecordv1) | 54 |
-  | `SorafsPopRegistryStatus` | [`PopRegistryStatusV1`](#popregistrystatusv1) | 55 |
-  | `SorafsCitizenBond` | [`SorafsCitizenBondV1`](#sorafscitizenbondv1) | 56 |
-  | `SorafsCitizenBondSnapshot` | [`SorafsCitizenBondSnapshotV1`](#sorafscitizenbondsnapshotv1) | 57 |
-  | `SorafsAnonymousServiceEscrow` | [`SorafsAnonymousServiceEscrowV1`](#sorafsanonymousserviceescrowv1) | 58 |
-  | `SorafsRepairTask` | [`RepairFinalizedTaskV1`](#repairfinalizedtaskv1) | 59 |
-  | `SorafsRepairTaskPage` | [`RepairLedgerTaskPageV1`](#repairledgertaskpagev1) | 60 |
-  | `SorafsRepairStatus` | [`RepairFinalizedStatusV1`](#repairfinalizedstatusv1) | 61 |
-  | `SorafsRepairEventPage` | [`RepairFinalizedEventPageV1`](#repairfinalizedeventpagev1) | 62 |
-  | `SorafsProofOutcome` | [`ProofOutcomeFinalizedRecordV1`](#proofoutcomefinalizedrecordv1) | 63 |
-  | `SorafsProofOutcomeEventPage` | [`ProofOutcomeFinalizedEventPageV1`](#proofoutcomefinalizedeventpagev1) | 64 |
-  | `SorafsReputationJournalAuthorityPolicy` | [`ReputationJournalAuthorityPolicyRecordV1`](#reputationjournalauthoritypolicyrecordv1) | 65 |
-  | `SorafsReputationJournalEvent` | [`ReputationJournalFinalizedEventV1`](#reputationjournalfinalizedeventv1) | 66 |
-  | `SorafsReputationJournalEventPage` | [`ReputationJournalFinalizedEventPageV1`](#reputationjournalfinalizedeventpagev1) | 67 |
-  | `SorafsModerationPolicy` | [`ModerationLedgerPolicyRecord`](#moderationledgerpolicyrecord) | 68 |
-  | `SorafsModerationAppeal` | [`ModerationAppealRecordV1`](#moderationappealrecordv1) | 69 |
-  | `SorafsModerationJurorEligibility` | [`ModerationJurorEligibilityRecordV1`](#moderationjuroreligibilityrecordv1) | 70 |
-  | `SorafsAnonymousJurorCandidacy` | [`SorafsAnonymousJurorCandidacyRecordV1`](#sorafsanonymousjurorcandidacyrecordv1) | 71 |
-  | `SorafsModerationCase` | [`ModerationCaseRecordV1`](#moderationcaserecordv1) | 72 |
-  | `SorafsModerationCommit` | [`ModerationCommitRecordV1`](#moderationcommitrecordv1) | 73 |
-  | `SorafsModerationReveal` | [`ModerationRevealRecordV1`](#moderationrevealrecordv1) | 74 |
-  | `SorafsModerationChallenge` | [`ModerationChallengeRecordV1`](#moderationchallengerecordv1) | 75 |
-  | `SorafsModerationOutcome` | [`ModerationOutcomeRecordV1`](#moderationoutcomerecordv1) | 76 |
-  | `SorafsModerationNoShow` | [`ModerationNoShowRecordV1`](#moderationnoshowrecordv1) | 77 |
-  | `SorafsModerationStatus` | [`ModerationLedgerStatusV1`](#moderationledgerstatusv1) | 78 |
-  | `SorafsModerationSnapshot` | [`ModerationFinalizedLedgerSnapshotV1`](#moderationfinalizedledgersnapshotv1) | 79 |
-  | `SorafsModerationEventPage` | [`ModerationFinalizedEventPageV1`](#moderationfinalizedeventpagev1) | 80 |
-  | `FxCorridorPolicyRegistry` | [`FxCorridorPolicyRegistry`](#fxcorridorpolicyregistry) | 81 |
-  | `FxCorridorPolicy` | [`FxCorridorPolicy`](#fxcorridorpolicy) | 82 |
-  | `MusubiPackage` | [`MusubiPackageRecordV1`](#musubipackagerecordv1) | 83 |
-  | `MusubiRelease` | [`MusubiExactReleaseSnapshotV1`](#musubiexactreleasesnapshotv1) | 84 |
-  | `MusubiProviderBundleAttestation` | [`MusubiProviderBundleAttestationRecordV1`](#musubiproviderbundleattestationrecordv1) | 85 |
-  | `MusubiResolverIndexPage` | [`MusubiResolverIndexPageV1`](#musubiresolverindexpagev1) | 86 |
-  | `MusubiVersionPage` | [`MusubiVersionPageV1`](#musubiversionpagev1) | 87 |
-  | `MusubiMaintainerPage` | [`MusubiMaintainerPageV1`](#musubimaintainerpagev1) | 88 |
-  | `MusubiArchiveLocationPage` | [`MusubiArchiveLocationPageV1`](#musubiarchivelocationpagev1) | 89 |
-  | `MusubiArchiveRetentionPage` | [`MusubiArchiveRetentionPageV1`](#musubiarchiveretentionpagev1) | 90 |
-  | `MusubiAlias` | [`MusubiAliasRecordV1`](#musubialiasrecordv1) | 91 |
-  | `MusubiAliasHistoryPage` | [`MusubiAliasHistoryPageV1`](#musubialiashistorypagev1) | 92 |
-  | `MusubiOrderedPackagePage` | [`MusubiOrderedPackagePageV1`](#musubiorderedpackagepagev1) | 93 |
-  | `AccountId` | [`AccountId`](#accountid) | 94 |
-  | `Domain` | [`Domain`](#domain) | 95 |
-  | `Nft` | [`Nft`](#nft) | 96 |
+  | `FeeSponsorProgram` | [`FeeSponsorProgram`](#feesponsorprogram) | 25 |
+  | `SorafsPinManifest` | [`PinManifestFinalizedRecordV1`](#pinmanifestfinalizedrecordv1) | 26 |
+  | `SorafsPinManifestPage` | [`PinManifestPageV1`](#pinmanifestpagev1) | 27 |
+  | `SorafsOrderbookPolicy` | [`OrderbookAdmissionPolicyRecord`](#orderbookadmissionpolicyrecord) | 28 |
+  | `SorafsOrderbookOrder` | [`OrderbookOrderRecord`](#orderbookorderrecord) | 29 |
+  | `SorafsOrderbookCancellation` | [`OrderbookCancellationRecord`](#orderbookcancellationrecord) | 30 |
+  | `SorafsOrderbookReceipt` | [`OrderbookSettlementReceiptRecord`](#orderbooksettlementreceiptrecord) | 31 |
+  | `SorafsOrderbookTrade` | [`OrderbookTradeRecord`](#orderbooktraderecord) | 32 |
+  | `SorafsOrderbookChannel` | [`OrderbookSettlementChannelRecord`](#orderbooksettlementchannelrecord) | 33 |
+  | `SorafsOrderbookStatus` | [`OrderbookLedgerStatusV1`](#orderbookledgerstatusv1) | 34 |
+  | `SorafsOrderbookOrderPage` | [`OrderbookOrderPageV1`](#orderbookorderpagev1) | 35 |
+  | `SorafsOrderbookReceiptPage` | [`OrderbookSettlementReceiptPageV1`](#orderbooksettlementreceiptpagev1) | 36 |
+  | `SorafsOrderbookTradePage` | [`OrderbookTradePageV1`](#orderbooktradepagev1) | 37 |
+  | `SorafsOrderbookChannelPage` | [`OrderbookSettlementChannelPageV1`](#orderbooksettlementchannelpagev1) | 38 |
+  | `SorafsOrderbookEventPage` | [`OrderbookFinalizedEventPageV1`](#orderbookfinalizedeventpagev1) | 39 |
+  | `SorafsReservePolicy` | [`ReserveAuthorityPolicyRecordV1`](#reserveauthoritypolicyrecordv1) | 40 |
+  | `SorafsReserveProvider` | [`ReserveProviderAccountV1`](#reserveprovideraccountv1) | 41 |
+  | `SorafsReserveMovement` | [`ReserveMovementRecordV1`](#reservemovementrecordv1) | 42 |
+  | `SorafsReserveAppeal` | [`ReserveAppealRecordV1`](#reserveappealrecordv1) | 43 |
+  | `SorafsReserveProviderPage` | [`ReserveProviderAccountPageV1`](#reserveprovideraccountpagev1) | 44 |
+  | `SorafsReserveMovementPage` | [`ReserveMovementPageV1`](#reservemovementpagev1) | 45 |
+  | `SorafsReserveAppealPage` | [`ReserveAppealPageV1`](#reserveappealpagev1) | 46 |
+  | `SorafsReserveEventPage` | [`ReserveFinalizedEventPageV1`](#reservefinalizedeventpagev1) | 47 |
+  | `SorafsPopIssuerPolicy` | [`PopIssuerPolicyRecordV1`](#popissuerpolicyrecordv1) | 48 |
+  | `SorafsPopCredentialCommitment` | [`PopCredentialCommitmentRecordV1`](#popcredentialcommitmentrecordv1) | 49 |
+  | `SorafsPopCommitmentRoot` | [`PopCommitmentRootRecordV1`](#popcommitmentrootrecordv1) | 50 |
+  | `SorafsPopRevocationPublication` | [`PopRevocationPublicationRecordV1`](#poprevocationpublicationrecordv1) | 51 |
+  | `SorafsPopRevocation` | [`PopRevocationRecordV1`](#poprevocationrecordv1) | 52 |
+  | `SorafsPopAuditDigest` | [`PopRegistryAuditDigestRecordV1`](#popregistryauditdigestrecordv1) | 53 |
+  | `SorafsPopRegistryStatus` | [`PopRegistryStatusV1`](#popregistrystatusv1) | 54 |
+  | `SorafsCitizenBond` | [`SorafsCitizenBondV1`](#sorafscitizenbondv1) | 55 |
+  | `SorafsCitizenBondSnapshot` | [`SorafsCitizenBondSnapshotV1`](#sorafscitizenbondsnapshotv1) | 56 |
+  | `SorafsRepairTask` | [`RepairFinalizedTaskV1`](#repairfinalizedtaskv1) | 57 |
+  | `SorafsRepairTaskPage` | [`RepairLedgerTaskPageV1`](#repairledgertaskpagev1) | 58 |
+  | `SorafsRepairStatus` | [`RepairFinalizedStatusV1`](#repairfinalizedstatusv1) | 59 |
+  | `SorafsRepairEventPage` | [`RepairFinalizedEventPageV1`](#repairfinalizedeventpagev1) | 60 |
+  | `SorafsProofOutcome` | [`ProofOutcomeFinalizedRecordV1`](#proofoutcomefinalizedrecordv1) | 61 |
+  | `SorafsProofOutcomeEventPage` | [`ProofOutcomeFinalizedEventPageV1`](#proofoutcomefinalizedeventpagev1) | 62 |
+  | `SorafsReputationJournalAuthorityPolicy` | [`ReputationJournalAuthorityPolicyRecordV1`](#reputationjournalauthoritypolicyrecordv1) | 63 |
+  | `SorafsReputationJournalEvent` | [`ReputationJournalFinalizedEventV1`](#reputationjournalfinalizedeventv1) | 64 |
+  | `SorafsReputationJournalEventPage` | [`ReputationJournalFinalizedEventPageV1`](#reputationjournalfinalizedeventpagev1) | 65 |
+  | `SorafsModerationPolicy` | [`ModerationLedgerPolicyRecord`](#moderationledgerpolicyrecord) | 66 |
+  | `SorafsModerationAppeal` | [`ModerationAppealRecordV1`](#moderationappealrecordv1) | 67 |
+  | `SorafsModerationJurorEligibility` | [`ModerationJurorEligibilityRecordV1`](#moderationjuroreligibilityrecordv1) | 68 |
+  | `SorafsModerationCase` | [`ModerationCaseRecordV1`](#moderationcaserecordv1) | 69 |
+  | `SorafsModerationCommit` | [`ModerationCommitRecordV1`](#moderationcommitrecordv1) | 70 |
+  | `SorafsModerationReveal` | [`ModerationRevealRecordV1`](#moderationrevealrecordv1) | 71 |
+  | `SorafsModerationChallenge` | [`ModerationChallengeRecordV1`](#moderationchallengerecordv1) | 72 |
+  | `SorafsModerationOutcome` | [`ModerationOutcomeRecordV1`](#moderationoutcomerecordv1) | 73 |
+  | `SorafsModerationNoShow` | [`ModerationNoShowRecordV1`](#moderationnoshowrecordv1) | 74 |
+  | `SorafsModerationStatus` | [`ModerationLedgerStatusV1`](#moderationledgerstatusv1) | 75 |
+  | `SorafsModerationSnapshot` | [`ModerationFinalizedLedgerSnapshotV1`](#moderationfinalizedledgersnapshotv1) | 76 |
+  | `SorafsModerationEventPage` | [`ModerationFinalizedEventPageV1`](#moderationfinalizedeventpagev1) | 77 |
+  | `SettlementReceipt` | [`SettlementReceipt`](#settlementreceipt) | 78 |
+  | `FxCorridorPolicyRegistry` | [`FxCorridorPolicyRegistry`](#fxcorridorpolicyregistry) | 79 |
+  | `FxCorridorPolicy` | [`FxCorridorPolicy`](#fxcorridorpolicy) | 80 |
+  | `MusubiPackage` | [`MusubiPackageRecordV1`](#musubipackagerecordv1) | 81 |
+  | `MusubiRelease` | [`MusubiExactReleaseSnapshotV1`](#musubiexactreleasesnapshotv1) | 82 |
+  | `MusubiProviderBundleAttestation` | [`MusubiProviderBundleAttestationRecordV1`](#musubiproviderbundleattestationrecordv1) | 83 |
+  | `MusubiResolverIndexPage` | [`MusubiResolverIndexPageV1`](#musubiresolverindexpagev1) | 84 |
+  | `MusubiVersionPage` | [`MusubiVersionPageV1`](#musubiversionpagev1) | 85 |
+  | `MusubiMaintainerPage` | [`MusubiMaintainerPageV1`](#musubimaintainerpagev1) | 86 |
+  | `MusubiArchiveLocationPage` | [`MusubiArchiveLocationPageV1`](#musubiarchivelocationpagev1) | 87 |
+  | `MusubiArchiveRetentionPage` | [`MusubiArchiveRetentionPageV1`](#musubiarchiveretentionpagev1) | 88 |
+  | `MusubiAlias` | [`MusubiAliasRecordV1`](#musubialiasrecordv1) | 89 |
+  | `MusubiAliasHistoryPage` | [`MusubiAliasHistoryPageV1`](#musubialiashistorypagev1) | 90 |
+  | `MusubiOrderedPackagePage` | [`MusubiOrderedPackagePageV1`](#musubiorderedpackagepagev1) | 91 |
+  | `AccountId` | [`AccountId`](#accountid) | 92 |
+  | `Domain` | [`Domain`](#domain) | 93 |
+  | `Nft` | [`Nft`](#nft) | 94 |
+  | `GameSessionRecord` | [`GameSessionRecordV1`](#gamesessionrecordv1) | 95 |
+  | `ExecutionProofVerification` | [`ExecutionProofVerificationV1`](#executionproofverificationv1) | 96 |
+  | `NftSaleRecord` | [`NftSaleRecordV1`](#nftsalerecordv1) | 97 |
+  | `AssetDefinitionDirectHome` | [`AssetDefinitionDirectHomeV1`](#assetdefinitiondirecthomev1) | 98 |
+  | `BondRecord` | [`BondRecord`](#bondrecord) | 99 |
 
 ## `SmartContractEvent` {#smartcontractevent}
 
@@ -14928,7 +20221,7 @@
   | `max_output_items` | [`NonZero<u64>`](#nonzero-u64) |
   | `max_output_bytes` | [`NonZero<u64>`](#nonzero-u64) |
 
-## `SnapshotBootstrapAnchor` {#snapshotbootstrapanchor}
+## `SnsLeaseProofV1` {#snsleaseproofv1}
 
 **Type:** Struct
 
@@ -14936,10 +20229,8 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `snapshot_height` | `u64` |
-  | `snapshot_block_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
-  | `snapshot_block_creation_time_ms` | `u64` |
-  | `snapshot_state_hash` | [`Hash`](#hash) |
+  | `world` | [`WorldStateSnapshotV1`](#worldstatesnapshotv1) |
+  | `record` | [`Vec<u8>`](#vec-u8) |
 
 ## `SocialEvent` {#socialevent}
 
@@ -15083,81 +20374,6 @@
   | `ReleaseSignerAdded` | `0x10` |
   | `ReleaseSignerRemoved` | `0x20` |
   | `PolicyUpdated` | `0x40` |
-
-## `SorafsAnonymousJurorCandidacyRecordV1` {#sorafsanonymousjurorcandidacyrecordv1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `case_digest` | [`Array<u8, 32>`](#array-u8-32) |
-  | `juror_tag` | [`Array<u8, 32>`](#array-u8-32) |
-  | `session_public_key` | [`Array<u8, 32>`](#array-u8-32) |
-  | `citizen_nullifier` | [`Array<u8, 32>`](#array-u8-32) |
-  | `service_note_commitment` | [`Array<u8, 32>`](#array-u8-32) |
-  | `service_note_nullifier` | [`Array<u8, 32>`](#array-u8-32) |
-  | `fee_tag` | [`Array<u8, 32>`](#array-u8-32) |
-  | `citizen_snapshot_digest` | [`Array<u8, 32>`](#array-u8-32) |
-  | `action_digest` | [`Array<u8, 32>`](#array-u8-32) |
-  | `escrow_id` | [`Array<u8, 32>`](#array-u8-32) |
-  | `registered_at_finalized_height` | `u64` |
-  | `expiry_finalized_height` | `u64` |
-
-## `SorafsAnonymousServiceEscrowStateV1` {#sorafsanonymousserviceescrowstatev1}
-
-**Type:** Enum
-
-**Variants:**
-
-  | Variant name | Variant value | Discriminant |
-  | --: | :-- | --- |
-  | `reserved` | &mdash; | 0 |
-  | `refunded` | [`SorafsAnonymousServiceRefundV1`](#sorafsanonymousservicerefundv1) | 1 |
-  | `slashed` | [`SorafsAnonymousServiceSlashV1`](#sorafsanonymousserviceslashv1) | 2 |
-
-## `SorafsAnonymousServiceEscrowV1` {#sorafsanonymousserviceescrowv1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `escrow_id` | [`Array<u8, 32>`](#array-u8-32) |
-  | `case_digest` | [`Array<u8, 32>`](#array-u8-32) |
-  | `action_digest` | [`Array<u8, 32>`](#array-u8-32) |
-  | `juror_tag` | [`Array<u8, 32>`](#array-u8-32) |
-  | `note_commitment` | [`Array<u8, 32>`](#array-u8-32) |
-  | `note_nullifier` | [`Array<u8, 32>`](#array-u8-32) |
-  | `fee_tag` | [`Array<u8, 32>`](#array-u8-32) |
-  | `penalty_sink` | [`AccountId`](#accountid) |
-  | `reserved_at_height` | `u64` |
-  | `state` | [`SorafsAnonymousServiceEscrowStateV1`](#sorafsanonymousserviceescrowstatev1) |
-
-## `SorafsAnonymousServiceRefundV1` {#sorafsanonymousservicerefundv1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `refund_note_commitment` | [`Array<u8, 32>`](#array-u8-32) |
-  | `finalized_height` | `u64` |
-
-## `SorafsAnonymousServiceSlashV1` {#sorafsanonymousserviceslashv1}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `evidence_digest` | [`Array<u8, 32>`](#array-u8-32) |
-  | `adjudication_digest` | [`Array<u8, 32>`](#array-u8-32) |
-  | `finalized_height` | `u64` |
 
 ## `SorafsCitizenBondExitPendingV1` {#sorafscitizenbondexitpendingv1}
 
@@ -15543,6 +20759,29 @@
   | `appeal_accepted` | &mdash; | 10 |
   | `appeal_rejected` | &mdash; | 11 |
 
+## `SorafsStreamTokenCustodyActionV1` {#sorafsstreamtokencustodyactionv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `configure` | [`Vec<u8>`](#vec-u8) | 0 |
+  | `enroll` | [`Vec<u8>`](#vec-u8) | 1 |
+  | `revoke` | [`SorafsStreamTokenCustodyRevocationV1`](#sorafsstreamtokencustodyrevocationv1) | 2 |
+
+## `SorafsStreamTokenCustodyRevocationV1` {#sorafsstreamtokencustodyrevocationv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `signer` | `bool` |
+  | `attester` | `bool` |
+
 ## `SorafsUri` {#sorafsuri}
 
 **Type:** Alias
@@ -15567,14 +20806,6 @@
 **Key:** [`AccountId`](#accountid)
 
 **Value:** `u8`
-
-## `SortedMap<CustomParameterId, CustomParameter>` {#sortedmap-customparameterid-customparameter}
-
-**Type:** Map
-
-**Key:** [`CustomParameterId`](#customparameterid)
-
-**Value:** [`CustomParameter`](#customparameter)
 
 ## `SortedMap<Hash, Vec<TransferTranscript>>` {#sortedmap-hash-vec-transfertranscript}
 
@@ -15608,14 +20839,6 @@
 
 **Value:** [`Json`](#json)
 
-## `SortedMap<ParliamentBody, ParliamentRoster>` {#sortedmap-parliamentbody-parliamentroster}
-
-**Type:** Map
-
-**Key:** [`ParliamentBody`](#parliamentbody)
-
-**Value:** [`ParliamentRoster`](#parliamentroster)
-
 ## `SortedMap<Permission, u64>` {#sortedmap-permission-u64}
 
 **Type:** Map
@@ -15637,12 +20860,6 @@
 **Type:** Vec
 
 **Value:** [`AccountId`](#accountid)
-
-## `SortedVec<BlockSignature>` {#sortedvec-blocksignature}
-
-**Type:** Vec
-
-**Value:** [`BlockSignature`](#blocksignature)
 
 ## `SortedVec<DataSpaceId>` {#sortedvec-dataspaceid}
 
@@ -15846,7 +21063,6 @@
   | `time_since_last_non_empty_block_ms` | `u64` |
   | `crypto` | [`CryptoStatus`](#cryptostatus) |
   | `stack` | [`StackStatus`](#stackstatus) |
-  | `offline` | [`Option<OfflineStatus>`](#option-offlinestatus) |
   | `sumeragi` | [`Option<SumeragiConsensusStatus>`](#option-sumeragiconsensusstatus) |
   | `governance` | [`GovernanceStatus`](#governancestatus) |
   | `teu_lane_commit` | [`Vec<NexusLaneTeuStatus>`](#vec-nexuslaneteustatus) |
@@ -15876,6 +21092,185 @@
 
 **To:** [`Array<u8, 32>`](#array-u8-32)
 
+## `StoredDaReceipt` {#storeddareceipt}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u16` |
+  | `sequence` | `u64` |
+  | `receipt` | [`DaIngestReceipt`](#daingestreceipt) |
+
+## `StreamTokenAuthorityActionV1` {#streamtokenauthorityactionv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `reserve` | [`StreamTokenReviewedV1`](#streamtokenreviewedv1) | 0 |
+  | `complete` | [`StreamTokenCompleteRequestV1`](#streamtokencompleterequestv1) | 1 |
+  | `expire` | [`StreamTokenExpireV1`](#streamtokenexpirev1) | 2 |
+  | `check` | [`StreamTokenCheckV1`](#streamtokencheckv1) | 3 |
+
+## `StreamTokenAuthorityRequestV1` {#streamtokenauthorityrequestv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `provider_id` | [`ProviderId`](#providerid) |
+  | `expected_control_revision` | `u64` |
+  | `expected_control_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `action` | [`StreamTokenAuthorityActionV1`](#streamtokenauthorityactionv1) |
+
+## `StreamTokenCarRangeV1` {#streamtokencarrangev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `start` | `u64` |
+  | `end_inclusive` | `u64` |
+
+## `StreamTokenCheckPhaseV1` {#streamtokencheckphasev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `current` | [`SignerOperationAuditHeadV1`](#signeroperationauditheadv1) | 0 |
+  | `before_provider` | [`StreamTokenNativeOperationV1`](#streamtokennativeoperationv1) | 1 |
+  | `after_provider` | [`StreamTokenNativeOperationV1`](#streamtokennativeoperationv1) | 2 |
+  | `before_commit` | [`StreamTokenNativeOperationV1`](#streamtokennativeoperationv1) | 3 |
+  | `after_commit` | [`StreamTokenNativeOperationV1`](#streamtokennativeoperationv1) | 4 |
+  | `before_release` | [`StreamTokenNativeOperationV1`](#streamtokennativeoperationv1) | 5 |
+
+## `StreamTokenCheckV1` {#streamtokencheckv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `challenge` | [`Array<u8, 32>`](#array-u8-32) |
+  | `expected_operator` | [`AccountId`](#accountid) |
+  | `expected_observer` | [`AccountId`](#accountid) |
+  | `floor` | [`StreamTokenFinalityFloorV1`](#streamtokenfinalityfloorv1) |
+  | `reviewed` | [`StreamTokenReviewedV1`](#streamtokenreviewedv1) |
+  | `phase` | [`StreamTokenCheckPhaseV1`](#streamtokencheckphasev1) |
+
+## `StreamTokenChunkRequestV1` {#streamtokenchunkrequestv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `chunk_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `stored_length` | `u64` |
+
+## `StreamTokenCompleteRequestV1` {#streamtokencompleterequestv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `reviewed` | [`StreamTokenReviewedV1`](#streamtokenreviewedv1) |
+  | `reservation` | [`SignerOperationReservationV1`](#signeroperationreservationv1) |
+  | `commitment` | [`SignerOperationCommitmentV1`](#signeroperationcommitmentv1) |
+  | `signatures_digest` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `StreamTokenCompleteV1` {#streamtokencompletev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `reviewed` | [`StreamTokenReviewedV1`](#streamtokenreviewedv1) |
+  | `reservation` | [`SignerOperationReservationV1`](#signeroperationreservationv1) |
+  | `commitment` | [`SignerOperationCommitmentV1`](#signeroperationcommitmentv1) |
+  | `signatures_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `completed_at_unix_ms` | `u64` |
+
+## `StreamTokenCustodyControlIndexV1` {#streamtokencustodycontrolindexv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `revision` | `u64` |
+  | `digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `height` | `u64` |
+  | `ordinal` | `u32` |
+
+## `StreamTokenCustodyControlRecordV1` {#streamtokencustodycontrolrecordv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `provider_id` | [`ProviderId`](#providerid) |
+  | `revision` | `u64` |
+  | `predecessor_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `request_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `execution_height` | `u64` |
+  | `ordinal` | `u32` |
+  | `recorded_at_unix_ms` | `u64` |
+  | `authority` | [`AccountId`](#accountid) |
+  | `control_state` | [`Vec<u8>`](#vec-u8) |
+  | `active_enrollment` | [`Option<Vec<u8>>`](#option-vec-u8) |
+
+## `StreamTokenCustodyProofV1` {#streamtokencustodyproofv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `world` | [`WorldStateSnapshotV1`](#worldstatesnapshotv1) |
+  | `owner` | [`AccountId`](#accountid) |
+  | `current` | [`Option<StreamTokenCustodyRecordProofV1>`](#option-streamtokencustodyrecordproofv1) |
+
+## `StreamTokenCustodyRecordProofV1` {#streamtokencustodyrecordproofv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `head` | [`Vec<u8>`](#vec-u8) |
+  | `record` | [`Vec<u8>`](#vec-u8) |
+
+## `StreamTokenExactHeaderDigestV1` {#streamtokenexactheaderdigestv1}
+
+**Type:** Alias
+
+**To:** [`Array<u8, 32>`](#array-u8-32)
+
 ## `StreamTokenExcludedKindV1` {#streamtokenexcludedkindv1}
 
 **Type:** Enum
@@ -15888,6 +21283,503 @@
   | `malformed_encoding` | &mdash; | 1 |
   | `invalid_signature` | &mdash; | 2 |
   | `unsupported_key_version` | &mdash; | 3 |
+  | `signer_authority_unavailable` | &mdash; | 4 |
+
+## `StreamTokenExecutionV1` {#streamtokenexecutionv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `height` | `u64` |
+  | `transaction_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `entry_index` | `u32` |
+  | `instruction_index` | `u32` |
+  | `recorded_at_unix_ms` | `u64` |
+  | `authority` | [`AccountId`](#accountid) |
+
+## `StreamTokenExpireV1` {#streamtokenexpirev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `operation_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `reservation` | [`SignerOperationReservationV1`](#signeroperationreservationv1) |
+
+## `StreamTokenFinalityFloorV1` {#streamtokenfinalityfloorv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `height` | `u64` |
+  | `block_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `context_id` | [`HeightContextId`](#heightcontextid) |
+
+## `StreamTokenGatewayActionV1` {#streamtokengatewayactionv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `configure` | [`StreamTokenGatewayPolicyV1`](#streamtokengatewaypolicyv1) | 0 |
+  | `admit` | [`StreamTokenGatewayAdmissionRequestV1`](#streamtokengatewayadmissionrequestv1) | 1 |
+  | `acknowledge` | [`StreamTokenGatewayAdmissionRecordV1`](#streamtokengatewayadmissionrecordv1) | 2 |
+  | `release_lease` | [`StreamTokenGatewayAdmissionRecordV1`](#streamtokengatewayadmissionrecordv1) | 3 |
+  | `expire` | [`StreamTokenGatewayActionV1::Expire`](#streamtokengatewayactionv1-expire) | 4 |
+  | `check` | [`StreamTokenGatewayCheckV1`](#streamtokengatewaycheckv1) | 5 |
+  | `cancel_reputation_delivery` | [`StreamTokenGatewayActionV1::CancelReputationDelivery`](#streamtokengatewayactionv1-cancelreputationdelivery) | 6 |
+
+## `StreamTokenGatewayActionV1::CancelReputationDelivery` {#streamtokengatewayactionv1-cancelreputationdelivery}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `record` | [`StreamTokenGatewayAdmissionRecordV1`](#streamtokengatewayadmissionrecordv1) |
+  | `expected_recorder_policy_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `reason` | [`StreamTokenReputationCancellationReasonV1`](#streamtokenreputationcancellationreasonv1) |
+
+## `StreamTokenGatewayActionV1::Expire` {#streamtokengatewayactionv1-expire}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `max_items` | `u32` |
+
+## `StreamTokenGatewayAdmissionDeliveryStateV1` {#streamtokengatewayadmissiondeliverystatev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `pending` | [`StreamTokenGatewayAdmissionDeliveryStateV1::Pending`](#streamtokengatewayadmissiondeliverystatev1-pending) | 0 |
+  | `acknowledged_exact_replay` | [`StreamTokenGatewayAdmissionDeliveryStateV1::AcknowledgedExactReplay`](#streamtokengatewayadmissiondeliverystatev1-acknowledgedexactreplay) | 1 |
+
+## `StreamTokenGatewayAdmissionDeliveryStateV1::AcknowledgedExactReplay` {#streamtokengatewayadmissiondeliverystatev1-acknowledgedexactreplay}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `acknowledged_through_sequence` | `u64` |
+
+## `StreamTokenGatewayAdmissionDeliveryStateV1::Pending` {#streamtokengatewayadmissiondeliverystatev1-pending}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `predecessor_sequence` | `u64` |
+
+## `StreamTokenGatewayAdmissionQualificationV1` {#streamtokengatewayadmissionqualificationv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `gateway_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `revision` | `u64` |
+  | `policy_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `max_pending` | `u32` |
+  | `max_tracked_tokens` | `u32` |
+  | `lease_ttl_ms` | `u64` |
+
+## `StreamTokenGatewayAdmissionReadbackV1` {#streamtokengatewayadmissionreadbackv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `acknowledged_through_sequence` | `u64` |
+  | `high_water_sequence` | `u64` |
+  | `records` | [`Vec<StreamTokenGatewayAdmissionRecordV1>`](#vec-streamtokengatewayadmissionrecordv1) |
+
+## `StreamTokenGatewayAdmissionRecordV1` {#streamtokengatewayadmissionrecordv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `serving_attempt_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `admitted_under` | [`StreamTokenGatewayAdmissionQualificationV1`](#streamtokengatewayadmissionqualificationv1) |
+  | `provider_id` | [`ProviderId`](#providerid) |
+  | `outcome` | [`StreamTokenValidationOutcomeV1`](#streamtokenvalidationoutcomev1) |
+  | `retry_after_secs` | [`Option<u32>`](#option-u32) |
+  | `lease_id` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
+  | `lease_expires_at_unix_ms` | [`Option<u64>`](#option-u64) |
+  | `lease_token_expires_at_epoch` | [`Option<u64>`](#option-u64) |
+
+## `StreamTokenGatewayAdmissionRequestV1` {#streamtokengatewayadmissionrequestv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `serving_attempt_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `context` | [`StreamTokenValidationRequestContextV1`](#streamtokenvalidationrequestcontextv1) |
+  | `token_body_digest` | [`Option<Array<u8, 32>>`](#option-array-u8-32) |
+  | `token_key_version` | [`Option<u32>`](#option-u32) |
+  | `validated_at_unix_ms` | `u64` |
+  | `status` | [`StreamTokenValidationStatusV1`](#streamtokenvalidationstatusv1) |
+  | `quota` | [`Option<StreamTokenGatewayQuotaRequestV1>`](#option-streamtokengatewayquotarequestv1) |
+
+## `StreamTokenGatewayAdmissionResultV1` {#streamtokengatewayadmissionresultv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `record` | [`StreamTokenGatewayAdmissionRecordV1`](#streamtokengatewayadmissionrecordv1) |
+  | `delivery_state` | [`StreamTokenGatewayAdmissionDeliveryStateV1`](#streamtokengatewayadmissiondeliverystatev1) |
+
+## `StreamTokenGatewayCheckSubjectV1` {#streamtokengatewaychecksubjectv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `qualification` | &mdash; | 0 |
+  | `admission` | [`StreamTokenGatewayCheckSubjectV1::Admission`](#streamtokengatewaychecksubjectv1-admission) | 1 |
+  | `serving` | [`StreamTokenGatewayCheckSubjectV1::Serving`](#streamtokengatewaychecksubjectv1-serving) | 2 |
+  | `pending` | [`StreamTokenGatewayCheckSubjectV1::Pending`](#streamtokengatewaychecksubjectv1-pending) | 3 |
+  | `acknowledged` | [`StreamTokenGatewayCheckSubjectV1::Acknowledged`](#streamtokengatewaychecksubjectv1-acknowledged) | 4 |
+  | `released` | [`StreamTokenGatewayCheckSubjectV1::Released`](#streamtokengatewaychecksubjectv1-released) | 5 |
+
+## `StreamTokenGatewayCheckSubjectV1::Acknowledged` {#streamtokengatewaychecksubjectv1-acknowledged}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `record` | [`StreamTokenGatewayAdmissionRecordV1`](#streamtokengatewayadmissionrecordv1) |
+
+## `StreamTokenGatewayCheckSubjectV1::Admission` {#streamtokengatewaychecksubjectv1-admission}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `request_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `result` | [`StreamTokenGatewayAdmissionResultV1`](#streamtokengatewayadmissionresultv1) |
+
+## `StreamTokenGatewayCheckSubjectV1::Pending` {#streamtokengatewaychecksubjectv1-pending}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `max_items` | `u32` |
+  | `readback_digest` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `StreamTokenGatewayCheckSubjectV1::Released` {#streamtokengatewaychecksubjectv1-released}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `record` | [`StreamTokenGatewayAdmissionRecordV1`](#streamtokengatewayadmissionrecordv1) |
+
+## `StreamTokenGatewayCheckSubjectV1::Serving` {#streamtokengatewaychecksubjectv1-serving}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `request_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `result` | [`StreamTokenGatewayAdmissionResultV1`](#streamtokengatewayadmissionresultv1) |
+
+## `StreamTokenGatewayCheckV1` {#streamtokengatewaycheckv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `challenge` | [`Array<u8, 32>`](#array-u8-32) |
+  | `expected_operator` | [`AccountId`](#accountid) |
+  | `expected_observer` | [`AccountId`](#accountid) |
+  | `floor` | [`StreamTokenGatewayFinalityFloorV1`](#streamtokengatewayfinalityfloorv1) |
+  | `subject` | [`StreamTokenGatewayCheckSubjectV1`](#streamtokengatewaychecksubjectv1) |
+
+## `StreamTokenGatewayExecutionV1` {#streamtokengatewayexecutionv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `height` | `u64` |
+  | `transaction_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `entry_index` | `u32` |
+  | `instruction_index` | `u32` |
+  | `recorded_at_unix_ms` | `u64` |
+  | `authority` | [`AccountId`](#accountid) |
+
+## `StreamTokenGatewayFinalityFloorV1` {#streamtokengatewayfinalityfloorv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `height` | `u64` |
+  | `block_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `context_id` | [`HeightContextId`](#heightcontextid) |
+
+## `StreamTokenGatewayPolicyV1` {#streamtokengatewaypolicyv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `compliance_gateway_id` | `String` |
+  | `qualification` | [`StreamTokenGatewayAdmissionQualificationV1`](#streamtokengatewayadmissionqualificationv1) |
+  | `operators` | [`SortedVec<AccountId>`](#sortedvec-accountid) |
+  | `observers` | [`SortedVec<AccountId>`](#sortedvec-accountid) |
+  | `valid_from_unix_ms` | `u64` |
+  | `valid_until_unix_ms` | `u64` |
+  | `max_observation_age_ms` | `u64` |
+  | `admission_enabled` | `bool` |
+
+## `StreamTokenGatewayQuotaRequestV1` {#streamtokengatewayquotarequestv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `token_id` | `String` |
+  | `max_streams` | `u16` |
+  | `requests_per_minute` | `u32` |
+  | `rate_limit_bytes` | `u64` |
+  | `requested_bytes` | `u64` |
+  | `expires_at_epoch` | `u64` |
+  | `observed_at_epoch` | `u64` |
+
+## `StreamTokenGatewayRequestV1` {#streamtokengatewayrequestv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `gateway_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `expected_policy_revision` | `u64` |
+  | `expected_policy_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `action` | [`StreamTokenGatewayActionV1`](#streamtokengatewayactionv1) |
+
+## `StreamTokenNativeOperationV1` {#streamtokennativeoperationv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `provider_id` | [`ProviderId`](#providerid) |
+  | `custody_control_revision` | `u64` |
+  | `custody_control_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `operation` | [`StreamTokenOperationV1`](#streamtokenoperationv1) |
+  | `reserved_execution` | [`StreamTokenExecutionV1`](#streamtokenexecutionv1) |
+  | `terminal_execution` | [`Option<StreamTokenExecutionV1>`](#option-streamtokenexecutionv1) |
+
+## `StreamTokenOperationV1` {#streamtokenoperationv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `reviewed` | [`StreamTokenReviewedV1`](#streamtokenreviewedv1) |
+  | `reservation` | [`SignerOperationReservationV1`](#signeroperationreservationv1) |
+  | `outcome` | [`StreamTokenOutcomeV1`](#streamtokenoutcomev1) |
+
+## `StreamTokenOutcomeV1` {#streamtokenoutcomev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `reserved` | &mdash; | 0 |
+  | `completed` | [`StreamTokenCompleteV1`](#streamtokencompletev1) | 1 |
+  | `expired` | &mdash; | 2 |
+
+## `StreamTokenPresentationV1` {#streamtokenpresentationv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `missing` | &mdash; | 0 |
+  | `exact_header` | [`StreamTokenExactHeaderDigestV1`](#streamtokenexactheaderdigestv1) | 1 |
+
+## `StreamTokenReputationCancellationReasonV1` {#streamtokenreputationcancellationreasonv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `credential_unavailable` | &mdash; | 0 |
+  | `authority_withdrawn` | &mdash; | 1 |
+
+## `StreamTokenReputationDeliveryDispositionV1` {#streamtokenreputationdeliverydispositionv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `pending` | &mdash; | 0 |
+  | `delivered` | [`StreamTokenReputationDeliveryDispositionV1::Delivered`](#streamtokenreputationdeliverydispositionv1-delivered) | 1 |
+  | `excluded` | &mdash; | 2 |
+  | `expired` | [`StreamTokenReputationDeliveryDispositionV1::Expired`](#streamtokenreputationdeliverydispositionv1-expired) | 3 |
+  | `governance_cancelled` | [`StreamTokenReputationDeliveryDispositionV1::GovernanceCancelled`](#streamtokenreputationdeliverydispositionv1-governancecancelled) | 4 |
+
+## `StreamTokenReputationDeliveryDispositionV1::Delivered` {#streamtokenreputationdeliverydispositionv1-delivered}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `journal_sequence` | `u64` |
+  | `event_id` | [`ReputationJournalEventIdV1`](#reputationjournaleventidv1) |
+  | `execution` | [`StreamTokenGatewayExecutionV1`](#streamtokengatewayexecutionv1) |
+
+## `StreamTokenReputationDeliveryDispositionV1::Expired` {#streamtokenreputationdeliverydispositionv1-expired}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `execution` | [`StreamTokenGatewayExecutionV1`](#streamtokengatewayexecutionv1) |
+
+## `StreamTokenReputationDeliveryDispositionV1::GovernanceCancelled` {#streamtokenreputationdeliverydispositionv1-governancecancelled}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `recorder_policy_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `gateway_qualification` | [`StreamTokenGatewayAdmissionQualificationV1`](#streamtokengatewayadmissionqualificationv1) |
+  | `reason` | [`StreamTokenReputationCancellationReasonV1`](#streamtokenreputationcancellationreasonv1) |
+  | `execution` | [`StreamTokenGatewayExecutionV1`](#streamtokengatewayexecutionv1) |
+
+## `StreamTokenReputationDeliveryIntentV1` {#streamtokenreputationdeliveryintentv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `record` | [`StreamTokenGatewayAdmissionRecordV1`](#streamtokengatewayadmissionrecordv1) |
+  | `request_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `source_execution` | [`StreamTokenGatewayExecutionV1`](#streamtokengatewayexecutionv1) |
+  | `recorder_policy` | [`ReputationJournalAuthorityPolicyRecordV1`](#reputationjournalauthoritypolicyrecordv1) |
+  | `transaction_ttl_limit_ms` | `u64` |
+  | `payload` | [`TransactionPayload`](#transactionpayload) |
+
+## `StreamTokenReputationDeliveryTemplateV1` {#streamtokenreputationdeliverytemplatev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `allowed_gateways` | [`Vec<Array<u8, 32>>`](#vec-array-u8-32) |
+  | `fee_payment` | [`FeePaymentIntent`](#feepaymentintent) |
+  | `time_to_live_ms` | `u64` |
+  | `height_ttl` | `u64` |
+
+## `StreamTokenRequestRouteV1` {#streamtokenrequestroutev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `car_range` | [`StreamTokenCarRangeV1`](#streamtokencarrangev1) | 0 |
+  | `chunk` | [`StreamTokenChunkRequestV1`](#streamtokenchunkrequestv1) | 1 |
+
+## `StreamTokenReviewedV1` {#streamtokenreviewedv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `request` | [`SignerStreamTokenRequestV1`](#signerstreamtokenrequestv1) |
+  | `intent` | [`SignerOperationIntentV1`](#signeroperationintentv1) |
 
 ## `StreamTokenValidationBindingV1` {#streamtokenvalidationbindingv1}
 
@@ -15914,6 +21806,23 @@
   | `token_key_version` | [`Option<u32>`](#option-u32) |
   | `validated_at_unix_ms` | `u64` |
   | `status` | [`StreamTokenValidationStatusV1`](#streamtokenvalidationstatusv1) |
+
+## `StreamTokenValidationRequestContextV1` {#streamtokenvalidationrequestcontextv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u8` |
+  | `provider_id` | [`ProviderId`](#providerid) |
+  | `manifest_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `manifest_cid` | [`Vec<u8>`](#vec-u8) |
+  | `chunk_profile_handle` | `String` |
+  | `request_nonce_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `token_presentation` | [`StreamTokenPresentationV1`](#streamtokenpresentationv1) |
+  | `route` | [`StreamTokenRequestRouteV1`](#streamtokenrequestroutev1) |
 
 ## `StreamTokenValidationStatusV1` {#streamtokenvalidationstatusv1}
 
@@ -16105,6 +22014,33 @@
 
 **To:** `String`
 
+## `SumeragiCommitCertificateV1` {#sumeragicommitcertificatev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `consensus_header` | [`Vec<u8>`](#vec-u8) |
+  | `commit_qc` | [`Vec<u8>`](#vec-u8) |
+  | `result_preimage` | [`Vec<u8>`](#vec-u8) |
+
+## `SumeragiCommitCheckpointV1` {#sumeragicommitcheckpointv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `genesis_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `network` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `chain` | `String` |
+  | `instance` | [`Hash32`](#hash32) |
+  | `initial` | [`ValidatorEpochContextV1`](#validatorepochcontextv1) |
+  | `selected` | [`ValidatorEpochContextV1`](#validatorepochcontextv1) |
+
 ## `SumeragiConsensusStatus` {#sumeragiconsensusstatus}
 
 **Type:** Struct
@@ -16114,22 +22050,6 @@
   | Field name | Field value |
   | --: | :-- |
   | `mode_tag` | `String` |
-  | `leader_index` | `u64` |
-  | `highest_qc_height` | `u64` |
-  | `locked_qc_height` | `u64` |
-  | `locked_qc_view` | `u64` |
-  | `commit_signatures_present` | `u64` |
-  | `commit_signatures_counted` | `u64` |
-  | `commit_signatures_set_b` | `u64` |
-  | `commit_signatures_required` | `u64` |
-  | `commit_qc_height` | `u64` |
-  | `commit_qc_view` | `u64` |
-  | `commit_qc_epoch` | `u64` |
-  | `commit_qc_signatures_total` | `u64` |
-  | `commit_qc_validator_set_len` | `u64` |
-  | `block_created_dropped_by_lock_total` | `u64` |
-  | `block_created_hint_mismatch_total` | `u64` |
-  | `block_created_proposal_mismatch_total` | `u64` |
   | `tx_queue_depth` | `u64` |
   | `tx_queue_capacity` | `u64` |
   | `tx_queue_retained_bytes` | `u64` |
@@ -16139,21 +22059,10 @@
   | `tx_queue_saturated_by_bytes` | `bool` |
   | `tx_queue_saturated_by_age` | `bool` |
   | `tx_queue_oldest_queued_age_ms` | `u64` |
-  | `epoch_length_blocks` | `u64` |
-  | `epoch_commit_deadline_offset` | `u64` |
-  | `epoch_reveal_deadline_offset` | `u64` |
-  | `prf_epoch_seed` | [`Option<String>`](#option-string) |
-  | `prf_height` | `u64` |
-  | `prf_view` | `u64` |
-  | `view_change_proof_accepted_total` | `u64` |
-  | `view_change_proof_stale_total` | `u64` |
-  | `view_change_proof_rejected_total` | `u64` |
-  | `view_change_suggest_total` | `u64` |
-  | `view_change_install_total` | `u64` |
   | `lane_governance_sealed_total` | `u32` |
   | `lane_governance_sealed_aliases` | [`Vec<String>`](#vec-string) |
 
-## `SumeragiLanePayloadOwnership` {#sumeragilanepayloadownership}
+## `SumeragiFinalityAttestation` {#sumeragifinalityattestation}
 
 **Type:** Struct
 
@@ -16161,25 +22070,252 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `proposal_height` | `u64` |
-  | `proposal_view` | `u64` |
-  | `lane_id` | [`LaneId`](#laneid) |
-  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
-  | `lane_incarnation` | [`Hash`](#hash) |
-  | `lane_block_height` | `u64` |
-  | `lane_block_view` | `u64` |
-  | `subject_hash` | [`Hash`](#hash) |
-  | `qc_mode_tag` | `String` |
-  | `accepted_candidate_indices` | [`Vec<u64>`](#vec-u64) |
-  | `accepted_transaction_hashes` | [`Vec<Hash>`](#vec-hash) |
-  | `previous_lane_block_height` | `u64` |
-  | `previous_lane_block_descriptor_hash` | [`Option<Hash>`](#option-hash) |
-  | `lane_block_descriptor_hash` | [`Option<Hash>`](#option-hash) |
-  | `lane_block_descriptor_validator_set` | [`Vec<PeerId>`](#vec-peerid) |
-  | `lane_block_descriptor_validator_count` | `u32` |
-  | `lane_block_descriptor_min_quorum` | `u32` |
-  | `payload_ownership_hash` | [`Hash`](#hash) |
-  | `rbc_instance_hash` | [`Hash`](#hash) |
+  | `body` | [`SumeragiFinalityAttestationBody`](#sumeragifinalityattestationbody) |
+  | `signature` | [`SignatureOf<SumeragiFinalityAttestationBody>`](#signatureof-sumeragifinalityattestationbody) |
+
+## `SumeragiFinalityAttestationBody` {#sumeragifinalityattestationbody}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `challenge` | [`Array<u8, 32>`](#array-u8-32) |
+  | `observed_at_unix_ms` | `u64` |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `node_id` | [`PeerId`](#peerid) |
+  | `node_fingerprint` | [`Hash`](#hash) |
+  | `build_fingerprint` | [`Hash`](#hash) |
+  | `config_fingerprint` | [`Hash`](#hash) |
+  | `genesis_block_hash` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `genesis_finality_proof` | [`SumeragiFinalityProof`](#sumeragifinalityproof) |
+  | `status` | [`SumeragiStatus`](#sumeragistatus) |
+  | `finality_proof` | [`SumeragiFinalityProof`](#sumeragifinalityproof) |
+
+## `SumeragiFinalityBundle` {#sumeragifinalitybundle}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `finality_proof` | [`SumeragiFinalityProof`](#sumeragifinalityproof) |
+
+## `SumeragiFinalityCheckpoint` {#sumeragifinalitycheckpoint}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `chain_id` | `String` |
+  | `genesis_wire` | [`Vec<u8>`](#vec-u8) |
+  | `genesis_committee` | [`Vec<FinalityValidator>`](#vec-finalityvalidator) |
+  | `decisions` | [`Vec<CheckpointDecision>`](#vec-checkpointdecision) |
+  | `tip` | [`SumeragiFinalityProof`](#sumeragifinalityproof) |
+
+## `SumeragiFinalityProof` {#sumeragifinalityproof}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `block_header` | [`BlockHeader`](#blockheader) |
+  | `block_wire` | [`Vec<u8>`](#vec-u8) |
+  | `committee` | [`Vec<FinalityValidator>`](#vec-finalityvalidator) |
+
+## `SumeragiFootprint` {#sumeragifootprint}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `votes` | `u64` |
+  | `timeouts` | `u64` |
+  | `blocks` | `u64` |
+  | `exec_entries` | `u64` |
+  | `wants` | `u64` |
+  | `pending_apply` | `u64` |
+  | `sync_entries` | `u64` |
+  | `sync_bytes` | `u64` |
+  | `peers` | `u64` |
+  | `recent_headers` | `u64` |
+  | `configs` | `u64` |
+  | `cert_cache` | `u64` |
+  | `evidence_keys` | `u64` |
+  | `probe` | `u64` |
+
+## `SumeragiHaltReason` {#sumeragihaltreason}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `safety_record_corrupt` | &mdash; | 0 |
+  | `safety_record_inconsistent` | &mdash; | 1 |
+  | `safety_violation` | `u64` | 2 |
+  | `apply_diverged` | `u64` | 3 |
+  | `publication_recovery_required` | `u64` | 4 |
+  | `driver_anomaly` | &mdash; | 5 |
+
+## `SumeragiLaneCustody` {#sumeragilanecustody}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `lane` | [`LaneId`](#laneid) |
+  | `incarnation` | [`Array<u8, 32>`](#array-u8-32) |
+  | `instance` | [`Array<u8, 32>`](#array-u8-32) |
+  | `created_at` | `u64` |
+  | `merged` | [`SumeragiLaneFrontier`](#sumeragilanefrontier) |
+  | `signer_count` | `u32` |
+  | `signers` | [`SumeragiLaneCustodySigners`](#sumeragilanecustodysigners) |
+  | `evidence_horizon` | `u64` |
+  | `slashing_delay` | `u64` |
+  | `retired_at` | [`Option<u64>`](#option-u64) |
+
+## `SumeragiLaneCustodySigners` {#sumeragilanecustodysigners}
+
+**Type:** Alias
+
+**To:** [`Vec<SumeragiLaneSignerCustody>`](#vec-sumeragilanesignercustody)
+
+## `SumeragiLaneFrontier` {#sumeragilanefrontier}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `height` | `u64` |
+  | `block_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `result` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `SumeragiLaneMember` {#sumeragilanemember}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `peer` | [`PeerId`](#peerid) |
+  | `pop` | [`Vec<u8>`](#vec-u8) |
+
+## `SumeragiLaneMerge` {#sumeragilanemerge}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `lane` | [`LaneId`](#laneid) |
+  | `incarnation` | [`Array<u8, 32>`](#array-u8-32) |
+  | `from` | `u64` |
+  | `to` | `u64` |
+  | `tip_hash` | [`Array<u8, 32>`](#array-u8-32) |
+  | `tip_result` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `SumeragiLaneMergeSection` {#sumeragilanemergesection}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `merges` | [`Vec<SumeragiLaneMerge>`](#vec-sumeragilanemerge) |
+  | `time_floor_ms` | `u64` |
+  | `merged_count` | `u32` |
+
+## `SumeragiLaneRecord` {#sumeragilanerecord}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `da_layout` | [`DataAvailabilityLayout`](#dataavailabilitylayout) |
+  | `lane` | [`LaneId`](#laneid) |
+  | `dataspace` | [`DataSpaceId`](#dataspaceid) |
+  | `incarnation` | [`Array<u8, 32>`](#array-u8-32) |
+  | `params` | [`SumeragiParameters`](#sumeragiparameters) |
+  | `committee` | [`Vec<SumeragiLaneMember>`](#vec-sumeragilanemember) |
+  | `created_at` | `u64` |
+  | `active_from` | `u64` |
+  | `closing` | [`Option<u64>`](#option-u64) |
+  | `anchor_freshness` | `u64` |
+  | `merged` | [`SumeragiLaneFrontier`](#sumeragilanefrontier) |
+  | `merged_at` | `u64` |
+  | `rescued` | `u64` |
+
+## `SumeragiLaneSample` {#sumeragilanesample}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `height` | `u64` |
+  | `time_ms` | `u64` |
+  | `transactions` | `u64` |
+  | `lanes` | `u32` |
+
+## `SumeragiLaneSignerCustody` {#sumeragilanesignercustody}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `signer` | `u32` |
+  | `binding` | [`SumeragiLaneStakeBinding`](#sumeragilanestakebinding) |
+
+## `SumeragiLaneStakeBinding` {#sumeragilanestakebinding}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `owner_lane` | [`LaneId`](#laneid) |
+  | `validator` | [`Hash`](#hash) |
+  | `activation_height` | `u64` |
+  | `tenure` | [`Hash`](#hash) |
+
+## `SumeragiLaneState` {#sumeragilanestate}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `lanes` | [`Vec<SumeragiLaneRecord>`](#vec-sumeragilanerecord) |
+  | `custody` | [`Vec<SumeragiLaneCustody>`](#vec-sumeragilanecustody) |
+  | `samples` | [`Vec<SumeragiLaneSample>`](#vec-sumeragilanesample) |
+  | `last_transition` | `u64` |
+  | `incarnations` | `u64` |
 
 ## `SumeragiParameter` {#sumeragiparameter}
 
@@ -16190,6 +22326,13 @@
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
   | `MaxClockDriftMs` | `u64` | 0 |
+  | `DueWorkMaxLagMs` | [`NonZero<u64>`](#nonzero-u64) | 1 |
+  | `PayloadRetryIntervalMs` | [`NonZero<u64>`](#nonzero-u64) | 2 |
+  | `ExecBudgetMs` | [`NonZero<u64>`](#nonzero-u64) | 3 |
+  | `ApplyBudgetMs` | [`NonZero<u64>`](#nonzero-u64) | 4 |
+  | `MaxBlockBytes` | [`NonZero<u32>`](#nonzero-u32) | 5 |
+  | `EpochLengthBlocks` | [`NonZero<u64>`](#nonzero-u64) | 6 |
+  | `DemotionWindow` | [`NonZero<u64>`](#nonzero-u64) | 7 |
 
 ## `SumeragiParameters` {#sumeragiparameters}
 
@@ -16201,14 +22344,32 @@
   | --: | :-- |
   | `block_cadence_ms` | [`NonZero<u64>`](#nonzero-u64) |
   | `max_clock_drift_ms` | `u64` |
+  | `due_work_max_lag_ms` | [`NonZero<u64>`](#nonzero-u64) |
   | `key_activation_lead_blocks` | `u64` |
   | `key_overlap_grace_blocks` | `u64` |
   | `key_expiry_grace_blocks` | `u64` |
-  | `key_require_hsm` | `bool` |
   | `key_allowed_algorithms` | [`Vec<Algorithm>`](#vec-algorithm) |
-  | `key_allowed_hsm_providers` | [`Vec<String>`](#vec-string) |
+  | `payload_retry_interval_ms` | [`NonZero<u64>`](#nonzero-u64) |
+  | `exec_budget_ms` | [`NonZero<u64>`](#nonzero-u64) |
+  | `apply_budget_ms` | [`NonZero<u64>`](#nonzero-u64) |
+  | `max_block_bytes` | [`NonZero<u32>`](#nonzero-u32) |
+  | `epoch_length_blocks` | [`NonZero<u64>`](#nonzero-u64) |
+  | `demotion_window` | [`NonZero<u64>`](#nonzero-u64) |
 
-## `SumeragiV2Equivocation` {#sumeragiv2equivocation}
+## `SumeragiPendingBoundary` {#sumeragipendingboundary}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `height` | `u64` |
+  | `boundary_height` | `u64` |
+  | `predecessor_context_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `params` | [`ChainParamsRecord`](#chainparamsrecord) |
+
+## `SumeragiRootScope` {#sumeragirootscope}
 
 **Type:** Enum
 
@@ -16216,34 +22377,10 @@
 
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
-  | `proposal` | [`SumeragiV2ProposalEquivocationSchema`](#sumeragiv2proposalequivocationschema) | 0 |
-  | `phase_vote` | [`SumeragiV2PhaseVoteEquivocationSchema`](#sumeragiv2phasevoteequivocationschema) | 1 |
-  | `timeout_vote` | [`SumeragiV2TimeoutVoteEquivocationSchema`](#sumeragiv2timeoutvoteequivocationschema) | 2 |
+  | `global` | &mdash; | 0 |
+  | `dataspace` | [`SumeragiRootScope::Dataspace`](#sumeragirootscope-dataspace) | 1 |
 
-## `SumeragiV2EquivocationEvidence` {#sumeragiv2equivocationevidence}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `context` | [`HeightContext`](#heightcontext) |
-  | `proofs_of_possession` | [`Vec<Vec<u8>>`](#vec-vec-u8) |
-  | `conflict` | [`SumeragiV2Equivocation`](#sumeragiv2equivocation) |
-
-## `SumeragiV2GlobalPhase` {#sumeragiv2globalphase}
-
-**Type:** Enum
-
-**Variants:**
-
-  | Variant name | Variant value | Discriminant |
-  | --: | :-- | --- |
-  | `Prepare` | &mdash; | 1 |
-  | `Commit` | &mdash; | 2 |
-
-## `SumeragiV2PhaseVoteEquivocationSchema` {#sumeragiv2phasevoteequivocationschema}
+## `SumeragiRootScope::Dataspace` {#sumeragirootscope-dataspace}
 
 **Type:** Struct
 
@@ -16251,21 +22388,10 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `first` | [`Vote`](#vote) |
-  | `second` | [`Vote`](#vote) |
+  | `parent_network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `dataspace_id` | [`DataSpaceId`](#dataspaceid) |
 
-## `SumeragiV2ProposalEquivocationSchema` {#sumeragiv2proposalequivocationschema}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `first` | [`Proposal`](#proposal) |
-  | `second` | [`Proposal`](#proposal) |
-
-## `SumeragiV2TimeoutVoteEquivocationSchema` {#sumeragiv2timeoutvoteequivocationschema}
+## `SumeragiStatus` {#sumeragistatus}
 
 **Type:** Struct
 
@@ -16273,8 +22399,27 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `first` | [`TimeoutVote`](#timeoutvote) |
-  | `second` | [`TimeoutVote`](#timeoutvote) |
+  | `protocol_version` | `u16` |
+  | `config_fingerprint` | [`Hash`](#hash) |
+  | `beacon_horizon` | [`Option<BeaconHorizonStatusV1>`](#option-beaconhorizonstatusv1) |
+  | `instance` | [`Array<u8, 32>`](#array-u8-32) |
+  | `height` | `u64` |
+  | `view` | `u64` |
+  | `stage` | `u8` |
+  | `leader` | [`Option<PublicKey>`](#option-publickey) |
+  | `proxy_tail` | [`Option<PublicKey>`](#option-publickey) |
+  | `high_qc_view` | [`Option<u64>`](#option-u64) |
+  | `level` | `u32` |
+  | `start_level` | `u32` |
+  | `t_retx_ms` | `u64` |
+  | `committed_height` | `u64` |
+  | `applied_height` | `u64` |
+  | `awaiting` | `bool` |
+  | `signer` | [`Option<PublicKey>`](#option-publickey) |
+  | `unanchored` | `bool` |
+  | `abstaining` | `bool` |
+  | `halted` | [`Option<SumeragiHaltReason>`](#option-sumeragihaltreason) |
+  | `footprint` | [`SumeragiFootprint`](#sumeragifootprint) |
 
 ## `TaikaiAliasRotationStatus` {#taikaialiasrotationstatus}
 
@@ -16328,10 +22473,9 @@
 
   | Variant name | Variant value | Discriminant |
   | --: | :-- | --- |
-  | `install_global_beacon_key` | &mdash; | 0 |
-  | `retire_global_beacon_key` | &mdash; | 1 |
-  | `install_parliament_tle_key` | &mdash; | 2 |
-  | `retire_parliament_tle_key` | &mdash; | 3 |
+  | `finalize_global_beacon_key` | &mdash; | 0 |
+  | `install_parliament_tle_key` | &mdash; | 1 |
+  | `retire_parliament_tle_key` | &mdash; | 2 |
 
 ## `TicketBodyV1` {#ticketbodyv1}
 
@@ -16377,6 +22521,18 @@
   | `Write` | &mdash; | 1 |
   | `Admin` | &mdash; | 2 |
 
+## `TierRate` {#tierrate}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `storage_class` | [`StorageClass`](#storageclass) |
+  | `storage_price_per_gib_month` | [`Quantity`](#quantity) |
+  | `egress_price_per_gib` | [`Quantity`](#quantity) |
+
 ## `TimeEvent` {#timeevent}
 
 **Type:** Struct
@@ -16393,6 +22549,30 @@
 
 **To:** [`ExecutionTime`](#executiontime)
 
+## `TimeExecutionOutputV1` {#timeexecutionoutputv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `invocation` | [`TimeInvocationV1`](#timeinvocationv1) |
+  | `result` | [`TransactionResult`](#transactionresult) |
+  | `failure_root` | [`Option<TriggerFailureRootV1>`](#option-triggerfailurerootv1) |
+  | `completions` | [`Vec<InvocationCompletionV1>`](#vec-invocationcompletionv1) |
+
+## `TimeExecutionOutputV2` {#timeexecutionoutputv2}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `execution` | [`TimeExecutionOutputV1`](#timeexecutionoutputv1) |
+  | `trigger_lifecycle` | [`TriggerLifecycleEffectsV1`](#triggerlifecycleeffectsv1) |
+
 ## `TimeInterval` {#timeinterval}
 
 **Type:** Struct
@@ -16404,7 +22584,7 @@
   | `since_ms` | `u64` |
   | `length_ms` | `u64` |
 
-## `TimeTriggerEntrypoint` {#timetriggerentrypoint}
+## `TimeInvocationV1` {#timeinvocationv1}
 
 **Type:** Struct
 
@@ -16412,9 +22592,9 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `id` | [`TriggerId`](#triggerid) |
-  | `instructions` | [`ExecutionStep`](#executionstep) |
-  | `authority` | [`AccountId`](#accountid) |
+  | `schedule_index` | `u32` |
+  | `event` | [`TimeEvent`](#timeevent) |
+  | `trigger` | [`TriggerUseV1`](#triggerusev1) |
 
 ## `TimeTriggerRetryPolicy` {#timetriggerretrypolicy}
 
@@ -16427,7 +22607,23 @@
   | `max_retries` | [`NonZero<u32>`](#nonzero-u32) |
   | `retry_after_ms` | [`NonZero<u64>`](#nonzero-u64) |
 
-## `TimeoutCertificate` {#timeoutcertificate}
+## `TopologyActionV1` {#topologyactionv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Configure` | [`Vec<u8>`](#vec-u8) | 0 |
+  | `Enroll` | [`Vec<u8>`](#vec-u8) | 1 |
+  | `Revoke` | [`TopologyRevocationV1`](#topologyrevocationv1) | 2 |
+  | `Reserve` | [`TopologyReserveV1`](#topologyreservev1) | 3 |
+  | `Complete` | [`TopologyCompleteV1`](#topologycompletev1) | 4 |
+  | `Expire` | [`TopologyExpireV1`](#topologyexpirev1) | 5 |
+  | `Check` | [`TopologyCheckV1`](#topologycheckv1) | 6 |
+
+## `TopologyApprovalSubjectV1` {#topologyapprovalsubjectv1}
 
 **Type:** Struct
 
@@ -16435,10 +22631,34 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `round` | [`ConsensusRound`](#consensusround) |
-  | `groups` | [`Vec<TimeoutVoteGroup>`](#vec-timeoutvotegroup) |
+  | `deployment_id` | `String` |
+  | `network_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `chain_id` | `String` |
+  | `chain_discriminant` | `u16` |
+  | `release_manifest_sha256` | [`Array<u8, 32>`](#array-u8-32) |
+  | `qualification_summary_sha256` | [`Array<u8, 32>`](#array-u8-32) |
+  | `manifest_sha256` | [`Array<u8, 32>`](#array-u8-32) |
+  | `canonical_manifest_sha256` | [`Array<u8, 32>`](#array-u8-32) |
+  | `validator_ids_sha256` | [`Array<u8, 32>`](#array-u8-32) |
+  | `reviewed_at_unix_ms` | `u64` |
+  | `expires_at_unix_ms` | `u64` |
 
-## `TimeoutJustification` {#timeoutjustification}
+## `TopologyCheckPhaseV1` {#topologycheckphasev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Current` | [`SignerOperationAuditHeadV1`](#signeroperationauditheadv1) | 0 |
+  | `BeforeProvider` | [`TopologyOperationRecordV1`](#topologyoperationrecordv1) | 1 |
+  | `AfterProvider` | [`TopologyOperationRecordV1`](#topologyoperationrecordv1) | 2 |
+  | `BeforeCommit` | [`TopologyOperationRecordV1`](#topologyoperationrecordv1) | 3 |
+  | `AfterCommit` | [`TopologyOperationRecordV1`](#topologyoperationrecordv1) | 4 |
+  | `BeforeRelease` | [`TopologyOperationRecordV1`](#topologyoperationrecordv1) | 5 |
+
+## `TopologyCheckV1` {#topologycheckv1}
 
 **Type:** Struct
 
@@ -16446,23 +22666,14 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `timeout_certificate` | [`TimeoutCertificate`](#timeoutcertificate) |
-  | `highest_prepare_qc` | [`Option<QuorumCertificate>`](#option-quorumcertificate) |
+  | `challenge` | [`Array<u8, 32>`](#array-u8-32) |
+  | `network_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `floor` | [`TopologyFloorClaimV1`](#topologyfloorclaimv1) |
+  | `expected_operator` | [`AccountId`](#accountid) |
+  | `reviewed` | [`TopologyReserveV1`](#topologyreservev1) |
+  | `phase` | [`TopologyCheckPhaseV1`](#topologycheckphasev1) |
 
-## `TimeoutVote` {#timeoutvote}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `round` | [`ConsensusRound`](#consensusround) |
-  | `highest_prepare_qc` | [`Option<QuorumCertificate>`](#option-quorumcertificate) |
-  | `signer` | `u32` |
-  | `signature` | [`Vec<u8>`](#vec-u8) |
-
-## `TimeoutVoteGroup` {#timeoutvotegroup}
+## `TopologyCompleteV1` {#topologycompletev1}
 
 **Type:** Struct
 
@@ -16470,9 +22681,135 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `highest_prepare_qc` | [`Option<QuorumCertificate>`](#option-quorumcertificate) |
-  | `signers` | [`Vec<u32>`](#vec-u32) |
-  | `aggregate_signature` | [`Vec<u8>`](#vec-u8) |
+  | `request` | [`SignerTopologyRequestV1`](#signertopologyrequestv1) |
+  | `intent` | [`SignerOperationIntentV1`](#signeroperationintentv1) |
+  | `reservation` | [`SignerOperationReservationV1`](#signeroperationreservationv1) |
+  | `commitment` | [`SignerOperationCommitmentV1`](#signeroperationcommitmentv1) |
+  | `signatures_digest` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `TopologyCompletionV1` {#topologycompletionv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `commitment` | [`SignerOperationCommitmentV1`](#signeroperationcommitmentv1) |
+  | `signatures_digest` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `TopologyExecutionClaimV1` {#topologyexecutionclaimv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `height` | `u64` |
+  | `ordinal` | `u32` |
+  | `recorded_at_unix_ms` | `u64` |
+  | `authority` | [`AccountId`](#accountid) |
+
+## `TopologyExpireV1` {#topologyexpirev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `operation_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `reservation` | [`SignerOperationReservationV1`](#signeroperationreservationv1) |
+
+## `TopologyFloorClaimV1` {#topologyfloorclaimv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `height` | `u64` |
+  | `block_hash` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `TopologyHeadV1` {#topologyheadv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `revision` | `u64` |
+  | `digest` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `TopologyOperationRecordV1` {#topologyoperationrecordv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `deployment_id` | `String` |
+  | `revision` | `u64` |
+  | `predecessor_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `transition_digest` | [`Array<u8, 32>`](#array-u8-32) |
+  | `execution` | [`TopologyExecutionClaimV1`](#topologyexecutionclaimv1) |
+  | `reserved` | [`TopologyExecutionClaimV1`](#topologyexecutionclaimv1) |
+  | `reviewed` | [`TopologyReserveV1`](#topologyreservev1) |
+  | `reservation` | [`SignerOperationReservationV1`](#signeroperationreservationv1) |
+  | `outcome` | [`TopologyOutcomeV1`](#topologyoutcomev1) |
+
+## `TopologyOutcomeV1` {#topologyoutcomev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Reserved` | &mdash; | 0 |
+  | `Completed` | [`TopologyCompletionV1`](#topologycompletionv1) | 1 |
+  | `Expired` | &mdash; | 2 |
+  | `Invalidated` | &mdash; | 3 |
+
+## `TopologyReserveV1` {#topologyreservev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `subject` | [`TopologyApprovalSubjectV1`](#topologyapprovalsubjectv1) |
+  | `request` | [`SignerTopologyRequestV1`](#signertopologyrequestv1) |
+  | `intent` | [`SignerOperationIntentV1`](#signeroperationintentv1) |
+
+## `TopologyRevocationV1` {#topologyrevocationv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `signer` | `bool` |
+  | `attester` | `bool` |
+
+## `TopologyTransitionV1` {#topologytransitionv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `deployment_id` | `String` |
+  | `control` | [`TopologyHeadV1`](#topologyheadv1) |
+  | `operations` | [`TopologyHeadV1`](#topologyheadv1) |
+  | `action` | [`TopologyActionV1`](#topologyactionv1) |
 
 ## `TouchManifest` {#touchmanifest}
 
@@ -16484,17 +22821,6 @@
   | --: | :-- |
   | `read` | [`Vec<String>`](#vec-string) |
   | `write` | [`Vec<String>`](#vec-string) |
-
-## `TransactionAdmissionIntent` {#transactionadmissionintent}
-
-**Type:** Enum
-
-**Variants:**
-
-  | Variant name | Variant value | Discriminant |
-  | --: | :-- | --- |
-  | `ordinary` | &mdash; | 0 |
-  | `queue_plan_synced` | &mdash; | 1 |
 
 ## `TransactionDomain` {#transactiondomain}
 
@@ -16518,7 +22844,7 @@
   | `External` | [`SignedTransaction`](#signedtransaction) | 0 |
   | `SealedCommitment` | [`SignedSealedTransactionCommitment`](#signedsealedtransactioncommitment) | 1 |
   | `SealedReveal` | [`SealedTransactionReveal`](#sealedtransactionreveal) | 2 |
-  | `Time` | [`TimeTriggerEntrypoint`](#timetriggerentrypoint) | 3 |
+  | `AnonymousBallot` | [`CanonicalAnonymousBallotEnvelopeV1`](#canonicalanonymousballotenvelopev1) | 4 |
 
 ## `TransactionEvent` {#transactionevent}
 
@@ -16609,9 +22935,8 @@
   | `time_to_live_ms` | [`Option<NonZero<u64>>`](#option-nonzero-u64) |
   | `nonce` | [`Option<NonZero<u32>>`](#option-nonzero-u32) |
   | `fee_payment` | [`FeePaymentIntent`](#feepaymentintent) |
-  | `admission_intent` | [`TransactionAdmissionIntent`](#transactionadmissionintent) |
   | `metadata` | [`Metadata`](#metadata) |
-  | `attachments` | [`Option<ProofAttachmentList>`](#option-proofattachmentlist) |
+  | `attachments` | [`Option<SignedAttachmentsV1>`](#option-signedattachmentsv1) |
 
 ## `TransactionRejectionReason` {#transactionrejectionreason}
 
@@ -16625,14 +22950,14 @@
   | `LimitCheck` | [`TransactionLimitError`](#transactionlimiterror) | 1 |
   | `Validation` | [`ValidationFail`](#validationfail) | 2 |
   | `InstructionExecution` | [`InstructionExecutionFail`](#instructionexecutionfail) | 3 |
-  | `IvmExecution` | [`IvmExecutionFail`](#ivmexecutionfail) | 4 |
-  | `TriggerExecution` | [`TriggerExecutionFail`](#triggerexecutionfail) | 5 |
+  | `TriggerExecution` | [`TriggerExecutionFail`](#triggerexecutionfail) | 4 |
+  | `AnonymousBallot` | [`AnonymousBallotRejectionV1`](#anonymousballotrejectionv1) | 5 |
 
 ## `TransactionResult` {#transactionresult}
 
 **Type:** Tuple
 
-**Values:** ([`Result<Vec<DataTriggerStep>, TransactionRejectionReason>`](#result-vec-datatriggerstep-transactionrejectionreason), [`Vec<AssetBatchTransferOutcome>`](#vec-assetbatchtransferoutcome))
+**Values:** ([`Result<Vec<DataTriggerStep>, TransactionRejectionReason>`](#result-vec-datatriggerstep-transactionrejectionreason), [`Vec<AssetBatchTransferOutcome>`](#vec-assetbatchtransferoutcome), [`Option<NexusFeeReceipt>`](#option-nexusfeereceipt), [`ContractEmissionsV1`](#contractemissionsv1))
 
 ## `TransactionSignature` {#transactionsignature}
 
@@ -16684,6 +23009,20 @@
   | `root_after` | [`Array<u8, 32>`](#array-u8-32) |
   | `path_bits` | [`Vec<u8>`](#vec-u8) |
   | `siblings` | [`Vec<Array<u8, 32>>`](#vec-array-u8-32) |
+
+## `TransferToLinkedFiV1` {#transfertolinkedfiv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `account_id` | [`AccountId`](#accountid) |
+  | `amount` | [`Quantity`](#quantity) |
+  | `expected_link_revision` | `u64` |
+  | `expected_policy_revision` | `u64` |
 
 ## `TransferTranscript` {#transfertranscript}
 
@@ -16845,6 +23184,19 @@
   | --: | :-- | --- |
   | `MaxDepthExceeded` | &mdash; | 0 |
 
+## `TriggerFailureRootV1` {#triggerfailurerootv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `declared_instruction_projection` | [`ExecutionStep`](#executionstep) | 0 |
+  | `returned_before_rollback` | [`ExecutionStep`](#executionstep) | 1 |
+  | `omitted_by_output_limit` | &mdash; | 2 |
+  | `omitted_after_rejection` | &mdash; | 3 |
+
 ## `TriggerId` {#triggerid}
 
 **Type:** Struct
@@ -16854,6 +23206,211 @@
   | Field name | Field value |
   | --: | :-- |
   | `name` | [`Name`](#name) |
+
+## `TriggerLifecycleActionCodecV1` {#triggerlifecycleactioncodecv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `norito_canonical_v1` | &mdash; | 0 |
+
+## `TriggerLifecycleActionFrameV1` {#triggerlifecycleactionframev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `codec` | [`TriggerLifecycleActionCodecV1`](#triggerlifecycleactioncodecv1) |
+  | `bytes` | [`Vec<u8>`](#vec-u8) |
+
+## `TriggerLifecycleChangeV1` {#triggerlifecyclechangev1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `insert` | [`TriggerLifecycleChangeV1::Insert`](#triggerlifecyclechangev1-insert) | 0 |
+  | `update` | [`TriggerLifecycleChangeV1::Update`](#triggerlifecyclechangev1-update) | 1 |
+  | `remove` | [`TriggerLifecycleChangeV1::Remove`](#triggerlifecyclechangev1-remove) | 2 |
+  | `invoke` | [`TriggerLifecycleChangeV1::Invoke`](#triggerlifecyclechangev1-invoke) | 3 |
+
+## `TriggerLifecycleChangeV1::Insert` {#triggerlifecyclechangev1-insert}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `after` | [`TriggerLifecycleStateV1`](#triggerlifecyclestatev1) |
+
+## `TriggerLifecycleChangeV1::Invoke` {#triggerlifecyclechangev1-invoke}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `state` | [`TriggerLifecycleStateV1`](#triggerlifecyclestatev1) |
+  | `callback_index` | `u32` |
+
+## `TriggerLifecycleChangeV1::Remove` {#triggerlifecyclechangev1-remove}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `before` | [`TriggerLifecycleStateV1`](#triggerlifecyclestatev1) |
+
+## `TriggerLifecycleChangeV1::Update` {#triggerlifecyclechangev1-update}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `before` | [`TriggerLifecycleStateV1`](#triggerlifecyclestatev1) |
+  | `after` | [`TriggerLifecycleStateV1`](#triggerlifecyclestatev1) |
+
+## `TriggerLifecycleEffectV1` {#triggerlifecycleeffectv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `ordinal` | `u32` |
+  | `trigger_id` | [`TriggerId`](#triggerid) |
+  | `origin` | [`TriggerLifecycleOriginV1`](#triggerlifecycleoriginv1) |
+  | `change` | [`TriggerLifecycleChangeV1`](#triggerlifecyclechangev1) |
+
+## `TriggerLifecycleEffectsV1` {#triggerlifecycleeffectsv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `complete` | [`TriggerLifecycleEffectsV1::Complete`](#triggerlifecycleeffectsv1-complete) | 0 |
+
+## `TriggerLifecycleEffectsV1::Complete` {#triggerlifecycleeffectsv1-complete}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `effects` | [`Vec<TriggerLifecycleEffectV1>`](#vec-triggerlifecycleeffectv1) |
+
+## `TriggerLifecycleOriginV1` {#triggerlifecycleoriginv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `direct_network_instruction` | [`TriggerLifecycleOriginV1::DirectNetworkInstruction`](#triggerlifecycleoriginv1-directnetworkinstruction) | 0 |
+  | `derived` | [`TriggerLifecycleOriginV1::Derived`](#triggerlifecycleoriginv1-derived) | 1 |
+  | `invocation_policy` | [`TriggerLifecycleOriginV1::InvocationPolicy`](#triggerlifecycleoriginv1-invocationpolicy) | 2 |
+
+## `TriggerLifecycleOriginV1::Derived` {#triggerlifecycleoriginv1-derived}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `callback_index` | [`Option<u32>`](#option-u32) |
+
+## `TriggerLifecycleOriginV1::DirectNetworkInstruction` {#triggerlifecycleoriginv1-directnetworkinstruction}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `item_index` | `u32` |
+
+## `TriggerLifecycleOriginV1::InvocationPolicy` {#triggerlifecycleoriginv1-invocationpolicy}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `callback_index` | `u32` |
+  | `policy` | [`TriggerLifecyclePolicyV1`](#triggerlifecyclepolicyv1) |
+
+## `TriggerLifecyclePolicyV1` {#triggerlifecyclepolicyv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `consume_repeat` | &mdash; | 0 |
+  | `remove_depleted` | &mdash; | 1 |
+  | `clear_time_retry` | &mdash; | 2 |
+  | `advance_time_retry` | &mdash; | 3 |
+  | `exhaust_time_retry` | &mdash; | 4 |
+  | `quarantine_pipeline` | &mdash; | 5 |
+
+## `TriggerLifecycleRetryStateV1` {#triggerlifecycleretrystatev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `attempt` | `u32` |
+  | `next_time_ms` | `u64` |
+
+## `TriggerLifecycleStateKindV1` {#triggerlifecyclestatekindv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `data` | &mdash; | 0 |
+  | `by_call` | &mdash; | 1 |
+  | `pipeline` | &mdash; | 2 |
+  | `time` | &mdash; | 3 |
+
+## `TriggerLifecycleStateV1` {#triggerlifecyclestatev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `kind` | [`TriggerLifecycleStateKindV1`](#triggerlifecyclestatekindv1) |
+  | `registered_at_height` | [`Option<u64>`](#option-u64) |
+  | `action_hash` | [`Option<Hash>`](#option-hash) |
+  | `action` | [`TriggerLifecycleActionFrameV1`](#triggerlifecycleactionframev1) |
+  | `retry_state` | [`Option<TriggerLifecycleRetryStateV1>`](#option-triggerlifecycleretrystatev1) |
 
 ## `TriggerNumberOfExecutionsChanged` {#triggernumberofexecutionschanged}
 
@@ -16865,6 +23422,18 @@
   | --: | :-- |
   | `trigger` | [`TriggerId`](#triggerid) |
   | `by` | `u32` |
+
+## `TriggerUseV1` {#triggerusev1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `trigger_id` | [`TriggerId`](#triggerid) |
+  | `registered_at_height` | `u64` |
+  | `action_hash` | [`Hash`](#hash) |
 
 ## `TwitterBindingAttestation` {#twitterbindingattestation}
 
@@ -16947,8 +23516,6 @@
   | `public_target_reshuffle_ms` | [`Option<u64>`](#option-u64) |
   | `restricted_target_reshuffle_ms` | [`Option<u64>`](#option-u64) |
   | `drop_unknown_dataspace` | `bool` |
-  | `restricted_fallback` | `String` |
-  | `restricted_public_policy` | `String` |
 
 ## `TxGossipSnapshot` {#txgossipsnapshot}
 
@@ -16976,8 +23543,6 @@
   | `targets` | `u64` |
   | `target_peers` | [`Vec<String>`](#vec-string) |
   | `outcome` | `String` |
-  | `fallback_used` | `bool` |
-  | `fallback_surface` | [`Option<String>`](#option-string) |
   | `reason` | [`Option<String>`](#option-string) |
   | `target_cap` | `u64` |
   | `batch_txs` | `u64` |
@@ -17018,7 +23583,7 @@
 
   | Field name | Field value |
   | --: | :-- |
-  | `code_hash` | [`Hash`](#hash) |
+  | `artifact_id` | [`ContractArtifactId`](#contractartifactid) |
   | `total_size` | `u64` |
   | `chunk_index` | `u32` |
   | `chunk_count` | `u32` |
@@ -17042,12 +23607,14 @@
   | `IvmAdmission` | [`IvmAdmissionError`](#ivmadmissionerror) | 1 |
   | `InstructionFailed` | [`InstructionExecutionError`](#instructionexecutionerror) | 2 |
   | `ContractRejected` | [`ContractRejection`](#contractrejection) | 3 |
-  | `QueryFailed` | [`QueryExecutionFail`](#queryexecutionfail) | 4 |
-  | `AxtReject` | [`AxtRejectContext`](#axtrejectcontext) | 5 |
-  | `TooComplex` | &mdash; | 6 |
-  | `InternalError` | &mdash; | 7 |
+  | `IvmFault` | [`IvmFaultV1`](#ivmfaultv1) | 4 |
+  | `QueryFailed` | [`QueryExecutionFail`](#queryexecutionfail) | 5 |
+  | `AxtReject` | [`AxtRejectContext`](#axtrejectcontext) | 6 |
+  | `SettlementReplay` | [`SettlementReplayV1`](#settlementreplayv1) | 7 |
+  | `TooComplex` | &mdash; | 8 |
+  | `InternalError` | &mdash; | 9 |
 
-## `ValidatorPower` {#validatorpower}
+## `ValidatorCommitteeMemberV1` {#validatorcommitteememberv1}
 
 **Type:** Struct
 
@@ -17056,7 +23623,119 @@
   | Field name | Field value |
   | --: | :-- |
   | `validator` | [`PeerId`](#peerid) |
-  | `power` | `u64` |
+  | `proof_of_possession` | [`Vec<u8>`](#vec-u8) |
+
+## `ValidatorCommitteePreparationV1` {#validatorcommitteepreparationv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u16` |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `selection_epoch` | `u64` |
+  | `selection_height` | `u64` |
+  | `selection_anchor` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `target_epoch` | `u64` |
+  | `first_height` | `u64` |
+  | `last_height` | `u64` |
+  | `authority_generation` | `u64` |
+  | `preparing_authorization_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `election_seed` | [`Array<u8, 32>`](#array-u8-32) |
+  | `eligibility` | [`ValidatorElectionPolicyV1`](#validatorelectionpolicyv1) |
+  | `committee` | [`Vec<ValidatorCommitteeMemberV1>`](#vec-validatorcommitteememberv1) |
+
+## `ValidatorElectionPolicyV1` {#validatorelectionpolicyv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `xor_asset_definition_id` | [`AssetDefinitionId`](#assetdefinitionid) |
+  | `asset_scope` | [`AssetBalanceScope`](#assetbalancescope) |
+  | `asset_scale` | `u32` |
+  | `min_self_bond` | [`Quantity`](#quantity) |
+  | `min_nomination_bond` | [`Quantity`](#quantity) |
+  | `max_validators` | `u32` |
+  | `epoch_length_blocks` | `u64` |
+
+## `ValidatorEpochAuthorizationV1` {#validatorepochauthorizationv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u16` |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `epoch` | `u64` |
+  | `first_height` | `u64` |
+  | `last_height` | `u64` |
+  | `authority_generation` | `u64` |
+  | `authority_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `beacon` | [`BeaconEpochBindingV1`](#beaconepochbindingv1) |
+  | `previous_authorization_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `transition_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `decision` | [`ValidatorEpochDecisionV1`](#validatorepochdecisionv1) |
+
+## `ValidatorEpochBoundaryV1` {#validatorepochboundaryv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `version` | `u16` |
+  | `height` | `u64` |
+  | `predecessor_context_id` | [`Array<u8, 32>`](#array-u8-32) |
+  | `selection_anchor` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `next` | [`ValidatorEpochContextV1`](#validatorepochcontextv1) |
+  | `preparation` | [`Option<ValidatorCommitteePreparationV1>`](#option-validatorcommitteepreparationv1) |
+
+## `ValidatorEpochContextV1` {#validatorepochcontextv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `da_layout` | [`DataAvailabilityLayout`](#dataavailabilitylayout) |
+  | `version` | `u16` |
+  | `network_id` | [`HashOf<BlockHeader>`](#hashof-blockheader) |
+  | `mode` | [`ConsensusMode`](#consensusmode) |
+  | `authorization` | [`ValidatorEpochAuthorizationV1`](#validatorepochauthorizationv1) |
+  | `committee` | [`Vec<ValidatorCommitteeMemberV1>`](#vec-validatorcommitteememberv1) |
+  | `leader_seed` | [`Array<u8, 32>`](#array-u8-32) |
+
+## `ValidatorEpochDecisionV1` {#validatorepochdecisionv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `genesis` | &mdash; | 0 |
+  | `activate` | &mdash; | 1 |
+  | `retain` | &mdash; | 2 |
+  | `retain_and_cancel` | &mdash; | 3 |
+
+## `VeRangeLimitsV1` {#verangelimitsv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `max_aggregation_count` | `u32` |
 
 ## `Vec<Account>` {#vec-account}
 
@@ -17081,6 +23760,12 @@
 **Type:** Vec
 
 **Value:** [`Action`](#action)
+
+## `Vec<ActionIntentV1>` {#vec-actionintentv1}
+
+**Type:** Vec
+
+**Value:** [`ActionIntentV1`](#actionintentv1)
 
 ## `Vec<Algorithm>` {#vec-algorithm}
 
@@ -17130,29 +23815,65 @@
 
 **Value:** [`AssetEscrowRecord`](#assetescrowrecord)
 
+## `Vec<AssetEscrowScopeOriginalV1>` {#vec-assetescrowscopeoriginalv1}
+
+**Type:** Vec
+
+**Value:** [`AssetEscrowScopeOriginalV1`](#assetescrowscopeoriginalv1)
+
+## `Vec<AssetFiContextSnapshotV1>` {#vec-assetficontextsnapshotv1}
+
+**Type:** Vec
+
+**Value:** [`AssetFiContextSnapshotV1`](#assetficontextsnapshotv1)
+
+## `Vec<AssetFiRelationshipViewV1>` {#vec-assetfirelationshipviewv1}
+
+**Type:** Vec
+
+**Value:** [`AssetFiRelationshipViewV1`](#assetfirelationshipviewv1)
+
+## `Vec<AssetFiTransferReceiptV1>` {#vec-assetfitransferreceiptv1}
+
+**Type:** Vec
+
+**Value:** [`AssetFiTransferReceiptV1`](#assetfitransferreceiptv1)
+
 ## `Vec<AssetId>` {#vec-assetid}
 
 **Type:** Vec
 
 **Value:** [`AssetId`](#assetid)
 
-## `Vec<AutonomousLanePayloadEnvelopeV1>` {#vec-autonomouslanepayloadenvelopev1}
+## `Vec<AssetUidEnrollmentViewV1>` {#vec-assetuidenrollmentviewv1}
 
 **Type:** Vec
 
-**Value:** [`AutonomousLanePayloadEnvelopeV1`](#autonomouslanepayloadenvelopev1)
+**Value:** [`AssetUidEnrollmentViewV1`](#assetuidenrollmentviewv1)
+
+## `Vec<AssetUidPolicyViewV1>` {#vec-assetuidpolicyviewv1}
+
+**Type:** Vec
+
+**Value:** [`AssetUidPolicyViewV1`](#assetuidpolicyviewv1)
+
+## `Vec<AttachmentReferenceV1>` {#vec-attachmentreferencev1}
+
+**Type:** Vec
+
+**Value:** [`AttachmentReferenceV1`](#attachmentreferencev1)
+
+## `Vec<AxtAnchoredSpendV1>` {#vec-axtanchoredspendv1}
+
+**Type:** Vec
+
+**Value:** [`AxtAnchoredSpendV1`](#axtanchoredspendv1)
 
 ## `Vec<AxtEnvelopeRecord>` {#vec-axtenveloperecord}
 
 **Type:** Vec
 
 **Value:** [`AxtEnvelopeRecord`](#axtenveloperecord)
-
-## `Vec<AxtHandleFragment>` {#vec-axthandlefragment}
-
-**Type:** Vec
-
-**Value:** [`AxtHandleFragment`](#axthandlefragment)
 
 ## `Vec<AxtPolicyBinding>` {#vec-axtpolicybinding}
 
@@ -17165,6 +23886,18 @@
 **Type:** Vec
 
 **Value:** [`AxtProofFragment`](#axtprooffragment)
+
+## `Vec<AxtRemoteSpendClaimV1>` {#vec-axtremotespendclaimv1}
+
+**Type:** Vec
+
+**Value:** [`AxtRemoteSpendClaimV1`](#axtremotespendclaimv1)
+
+## `Vec<AxtSourceTransferOccurrenceV1>` {#vec-axtsourcetransferoccurrencev1}
+
+**Type:** Vec
+
+**Value:** [`AxtSourceTransferOccurrenceV1`](#axtsourcetransferoccurrencev1)
 
 ## `Vec<AxtTouchFragment>` {#vec-axttouchfragment}
 
@@ -17184,11 +23917,41 @@
 
 **Value:** [`BlockHeader`](#blockheader)
 
+## `Vec<BondCashflowState>` {#vec-bondcashflowstate}
+
+**Type:** Vec
+
+**Value:** [`BondCashflowState`](#bondcashflowstate)
+
+## `Vec<BondCashflowTerms>` {#vec-bondcashflowterms}
+
+**Type:** Vec
+
+**Value:** [`BondCashflowTerms`](#bondcashflowterms)
+
+## `Vec<BondRecord>` {#vec-bondrecord}
+
+**Type:** Vec
+
+**Value:** [`BondRecord`](#bondrecord)
+
+## `Vec<CheckpointDecision>` {#vec-checkpointdecision}
+
+**Type:** Vec
+
+**Value:** [`CheckpointDecision`](#checkpointdecision)
+
 ## `Vec<ClassRentRate>` {#vec-classrentrate}
 
 **Type:** Vec
 
 **Value:** [`ClassRentRate`](#classrentrate)
+
+## `Vec<CommitmentDiscountTier>` {#vec-commitmentdiscounttier}
+
+**Type:** Vec
+
+**Value:** [`CommitmentDiscountTier`](#commitmentdiscounttier)
 
 ## `Vec<CommittedTransaction>` {#vec-committedtransaction}
 
@@ -17202,11 +23965,53 @@
 
 **Value:** [`ConditionalEscrowConditionState`](#conditionalescrowconditionstate)
 
-## `Vec<ContractErrorCodeDescriptor>` {#vec-contracterrorcodedescriptor}
+## `Vec<ConsensusKeyId>` {#vec-consensuskeyid}
 
 **Type:** Vec
 
-**Value:** [`ContractErrorCodeDescriptor`](#contracterrorcodedescriptor)
+**Value:** [`ConsensusKeyId`](#consensuskeyid)
+
+## `Vec<ContractEnumTypeDescriptorV1>` {#vec-contractenumtypedescriptorv1}
+
+**Type:** Vec
+
+**Value:** [`ContractEnumTypeDescriptorV1`](#contractenumtypedescriptorv1)
+
+## `Vec<ContractEnumVariantDescriptorV1>` {#vec-contractenumvariantdescriptorv1}
+
+**Type:** Vec
+
+**Value:** [`ContractEnumVariantDescriptorV1`](#contractenumvariantdescriptorv1)
+
+## `Vec<ContractErrorMessage>` {#vec-contracterrormessage}
+
+**Type:** Vec
+
+**Value:** [`ContractErrorMessage`](#contracterrormessage)
+
+## `Vec<ContractErrorTypeDescriptor>` {#vec-contracterrortypedescriptor}
+
+**Type:** Vec
+
+**Value:** [`ContractErrorTypeDescriptor`](#contracterrortypedescriptor)
+
+## `Vec<ContractErrorVariantDescriptor>` {#vec-contracterrorvariantdescriptor}
+
+**Type:** Vec
+
+**Value:** [`ContractErrorVariantDescriptor`](#contracterrorvariantdescriptor)
+
+## `Vec<ContractEventDescriptorV1>` {#vec-contracteventdescriptorv1}
+
+**Type:** Vec
+
+**Value:** [`ContractEventDescriptorV1`](#contracteventdescriptorv1)
+
+## `Vec<ContractPermissionDescriptorV1>` {#vec-contractpermissiondescriptorv1}
+
+**Type:** Vec
+
+**Value:** [`ContractPermissionDescriptorV1`](#contractpermissiondescriptorv1)
 
 ## `Vec<DaCommitmentRecord>` {#vec-dacommitmentrecord}
 
@@ -17316,17 +24121,35 @@
 
 **Value:** [`EntrypointParamDescriptor`](#entrypointparamdescriptor)
 
+## `Vec<EntrypointValueAtomV1>` {#vec-entrypointvalueatomv1}
+
+**Type:** Vec
+
+**Value:** [`EntrypointValueAtomV1`](#entrypointvalueatomv1)
+
 ## `Vec<EntrypointValueTypeNodeV1>` {#vec-entrypointvaluetypenodev1}
 
 **Type:** Vec
 
 **Value:** [`EntrypointValueTypeNodeV1`](#entrypointvaluetypenodev1)
 
+## `Vec<EscrowId>` {#vec-escrowid}
+
+**Type:** Vec
+
+**Value:** [`EscrowId`](#escrowid)
+
 ## `Vec<EventFilterBox>` {#vec-eventfilterbox}
 
 **Type:** Vec
 
 **Value:** [`EventFilterBox`](#eventfilterbox)
+
+## `Vec<Evidence>` {#vec-evidence}
+
+**Type:** Vec
+
+**Value:** [`Evidence`](#evidence)
 
 ## `Vec<ExecKv>` {#vec-execkv}
 
@@ -17340,6 +24163,12 @@
 
 **Value:** [`ExecutableBatchItem`](#executablebatchitem)
 
+## `Vec<ExecutionOutputV1>` {#vec-executionoutputv1}
+
+**Type:** Vec
+
+**Value:** [`ExecutionOutputV1`](#executionoutputv1)
+
 ## `Vec<ExternalExecutionContext>` {#vec-externalexecutioncontext}
 
 **Type:** Vec
@@ -17351,6 +24180,36 @@
 **Type:** Vec
 
 **Value:** [`ExternalExecutionRouteLeg`](#externalexecutionrouteleg)
+
+## `Vec<FastpqCommitmentV1>` {#vec-fastpqcommitmentv1}
+
+**Type:** Vec
+
+**Value:** [`FastpqCommitmentV1`](#fastpqcommitmentv1)
+
+## `Vec<FastpqExecutionEffectV1>` {#vec-fastpqexecutioneffectv1}
+
+**Type:** Vec
+
+**Value:** [`FastpqExecutionEffectV1`](#fastpqexecutioneffectv1)
+
+## `Vec<FastpqOrdinarySourceStatementLeafV1>` {#vec-fastpqordinarysourcestatementleafv1}
+
+**Type:** Vec
+
+**Value:** [`FastpqOrdinarySourceStatementLeafV1`](#fastpqordinarysourcestatementleafv1)
+
+## `Vec<FastpqPublicTransferDeltaV1>` {#vec-fastpqpublictransferdeltav1}
+
+**Type:** Vec
+
+**Value:** [`FastpqPublicTransferDeltaV1`](#fastpqpublictransferdeltav1)
+
+## `Vec<FastpqPublicTransferTranscriptV1>` {#vec-fastpqpublictransfertranscriptv1}
+
+**Type:** Vec
+
+**Value:** [`FastpqPublicTransferTranscriptV1`](#fastpqpublictransfertranscriptv1)
 
 ## `Vec<FastpqStateTransition>` {#vec-fastpqstatetransition}
 
@@ -17394,6 +24253,60 @@
 
 **Value:** [`FeedEventRecord`](#feedeventrecord)
 
+## `Vec<FinalityValidator>` {#vec-finalityvalidator}
+
+**Type:** Vec
+
+**Value:** [`FinalityValidator`](#finalityvalidator)
+
+## `Vec<FraudAdmissionAttesterV1>` {#vec-fraudadmissionattesterv1}
+
+**Type:** Vec
+
+**Value:** [`FraudAdmissionAttesterV1`](#fraudadmissionattesterv1)
+
+## `Vec<GameForcedBatchV1>` {#vec-gameforcedbatchv1}
+
+**Type:** Vec
+
+**Value:** [`GameForcedBatchV1`](#gameforcedbatchv1)
+
+## `Vec<GameItemStakeV1>` {#vec-gameitemstakev1}
+
+**Type:** Vec
+
+**Value:** [`GameItemStakeV1`](#gameitemstakev1)
+
+## `Vec<GameParticipantV1>` {#vec-gameparticipantv1}
+
+**Type:** Vec
+
+**Value:** [`GameParticipantV1`](#gameparticipantv1)
+
+## `Vec<GamePayoutClaimV1>` {#vec-gamepayoutclaimv1}
+
+**Type:** Vec
+
+**Value:** [`GamePayoutClaimV1`](#gamepayoutclaimv1)
+
+## `Vec<GameResourceReservationRecordV1>` {#vec-gameresourcereservationrecordv1}
+
+**Type:** Vec
+
+**Value:** [`GameResourceReservationRecordV1`](#gameresourcereservationrecordv1)
+
+## `Vec<GameSlotSignatureV1>` {#vec-gameslotsignaturev1}
+
+**Type:** Vec
+
+**Value:** [`GameSlotSignatureV1`](#gameslotsignaturev1)
+
+## `Vec<GameTranscriptAnchorV1>` {#vec-gametranscriptanchorv1}
+
+**Type:** Vec
+
+**Value:** [`GameTranscriptAnchorV1`](#gametranscriptanchorv1)
+
 ## `Vec<GovernanceManifestActivation>` {#vec-governancemanifestactivation}
 
 **Type:** Vec
@@ -17411,6 +24324,12 @@
 **Type:** Vec
 
 **Value:** [`HashOf<BlockHeader>`](#hashof-blockheader)
+
+## `Vec<HashOf<ExecutionOutputV1>>` {#vec-hashof-executionoutputv1}
+
+**Type:** Vec
+
+**Value:** [`HashOf<ExecutionOutputV1>`](#hashof-executionoutputv1)
 
 ## `Vec<HashOf<SignedTransaction>>` {#vec-hashof-signedtransaction}
 
@@ -17430,17 +24349,23 @@
 
 **Value:** [`HashOf<TransactionResult>`](#hashof-transactionresult)
 
-## `Vec<HashOf<Vec<InstructionBox>>>` {#vec-hashof-vec-instructionbox}
+## `Vec<InitialProviderAdmissionV1>` {#vec-initialprovideradmissionv1}
 
 **Type:** Vec
 
-**Value:** [`HashOf<Vec<InstructionBox>>`](#hashof-vec-instructionbox)
+**Value:** [`InitialProviderAdmissionV1`](#initialprovideradmissionv1)
 
 ## `Vec<InstructionBox>` {#vec-instructionbox}
 
 **Type:** Vec
 
 **Value:** [`InstructionBox`](#instructionbox)
+
+## `Vec<InvocationCompletionV1>` {#vec-invocationcompletionv1}
+
+**Type:** Vec
+
+**Value:** [`InvocationCompletionV1`](#invocationcompletionv1)
 
 ## `Vec<Json>` {#vec-json}
 
@@ -17459,54 +24384,6 @@
 **Type:** Vec
 
 **Value:** [`KotobaTranslationEntry`](#kotobatranslationentry)
-
-## `Vec<LaneDrainCertificateV1>` {#vec-lanedraincertificatev1}
-
-**Type:** Vec
-
-**Value:** [`LaneDrainCertificateV1`](#lanedraincertificatev1)
-
-## `Vec<LaneFinalityStatement>` {#vec-lanefinalitystatement}
-
-**Type:** Vec
-
-**Value:** [`LaneFinalityStatement`](#lanefinalitystatement)
-
-## `Vec<LaneSettlementReceipt>` {#vec-lanesettlementreceipt}
-
-**Type:** Vec
-
-**Value:** [`LaneSettlementReceipt`](#lanesettlementreceipt)
-
-## `Vec<MergeLaneBinding>` {#vec-mergelanebinding}
-
-**Type:** Vec
-
-**Value:** [`MergeLaneBinding`](#mergelanebinding)
-
-## `Vec<MergeLaneExecution>` {#vec-mergelaneexecution}
-
-**Type:** Vec
-
-**Value:** [`MergeLaneExecution`](#mergelaneexecution)
-
-## `Vec<MergeLaneSignerProof>` {#vec-mergelanesignerproof}
-
-**Type:** Vec
-
-**Value:** [`MergeLaneSignerProof`](#mergelanesignerproof)
-
-## `Vec<MergeLaneSnapshot>` {#vec-mergelanesnapshot}
-
-**Type:** Vec
-
-**Value:** [`MergeLaneSnapshot`](#mergelanesnapshot)
-
-## `Vec<MergeSignerProof>` {#vec-mergesignerproof}
-
-**Type:** Vec
-
-**Value:** [`MergeSignerProof`](#mergesignerproof)
 
 ## `Vec<Metadata>` {#vec-metadata}
 
@@ -17670,18 +24547,6 @@
 
 **Value:** [`Name`](#name)
 
-## `Vec<NativeAmxLegRecordV2>` {#vec-nativeamxlegrecordv2}
-
-**Type:** Vec
-
-**Value:** [`NativeAmxLegRecordV2`](#nativeamxlegrecordv2)
-
-## `Vec<NativeAmxReceipt>` {#vec-nativeamxreceipt}
-
-**Type:** Vec
-
-**Value:** [`NativeAmxReceipt`](#nativeamxreceipt)
-
 ## `Vec<NexusDataspaceCatalogStatus>` {#vec-nexusdataspacecatalogstatus}
 
 **Type:** Vec
@@ -17693,12 +24558,6 @@
 **Type:** Vec
 
 **Value:** [`NexusDataspaceTeuStatus`](#nexusdataspaceteustatus)
-
-## `Vec<NexusFeeReceipt>` {#vec-nexusfeereceipt}
-
-**Type:** Vec
-
-**Value:** [`NexusFeeReceipt`](#nexusfeereceipt)
 
 ## `Vec<NexusLaneManifestValidatorBindingStatus>` {#vec-nexuslanemanifestvalidatorbindingstatus}
 
@@ -17748,17 +24607,35 @@
 
 **Value:** [`OpaqueAccountId`](#opaqueaccountid)
 
+## `Vec<Option<Hash>>` {#vec-option-hash}
+
+**Type:** Vec
+
+**Value:** [`Option<Hash>`](#option-hash)
+
 ## `Vec<Option<HashOf<Array<u8, 32>>>>` {#vec-option-hashof-array-u8-32}
 
 **Type:** Vec
 
 **Value:** [`Option<HashOf<Array<u8, 32>>>`](#option-hashof-array-u8-32)
 
-## `Vec<Option<HashOf<LaneFinalityStatement>>>` {#vec-option-hashof-lanefinalitystatement}
+## `Vec<Option<HashOf<EventBox>>>` {#vec-option-hashof-eventbox}
 
 **Type:** Vec
 
-**Value:** [`Option<HashOf<LaneFinalityStatement>>`](#option-hashof-lanefinalitystatement)
+**Value:** [`Option<HashOf<EventBox>>`](#option-hashof-eventbox)
+
+## `Vec<Option<HashOf<ExecutionOutputV1>>>` {#vec-option-hashof-executionoutputv1}
+
+**Type:** Vec
+
+**Value:** [`Option<HashOf<ExecutionOutputV1>>`](#option-hashof-executionoutputv1)
+
+## `Vec<Option<HashOf<FastpqOrdinarySourceStatementLeafV1>>>` {#vec-option-hashof-fastpqordinarysourcestatementleafv1}
+
+**Type:** Vec
+
+**Value:** [`Option<HashOf<FastpqOrdinarySourceStatementLeafV1>>`](#option-hashof-fastpqordinarysourcestatementleafv1)
 
 ## `Vec<Option<HashOf<TransactionEntrypoint>>>` {#vec-option-hashof-transactionentrypoint}
 
@@ -17766,17 +24643,11 @@
 
 **Value:** [`Option<HashOf<TransactionEntrypoint>>`](#option-hashof-transactionentrypoint)
 
-## `Vec<Option<HashOf<TransactionResult>>>` {#vec-option-hashof-transactionresult}
+## `Vec<Option<Vec<u8>>>` {#vec-option-vec-u8}
 
 **Type:** Vec
 
-**Value:** [`Option<HashOf<TransactionResult>>`](#option-hashof-transactionresult)
-
-## `Vec<Option<NativeAmxReceipt>>` {#vec-option-nativeamxreceipt}
-
-**Type:** Vec
-
-**Value:** [`Option<NativeAmxReceipt>`](#option-nativeamxreceipt)
+**Value:** [`Option<Vec<u8>>`](#option-vec-u8)
 
 ## `Vec<OracleChangeEvidence>` {#vec-oraclechangeevidence}
 
@@ -17868,11 +24739,101 @@
 
 **Value:** [`PipelineEventBox`](#pipelineeventbox)
 
-## `Vec<ProofAttachment>` {#vec-proofattachment}
+## `Vec<PrivacyAcceptedMediumDispositionV1>` {#vec-privacyacceptedmediumdispositionv1}
 
 **Type:** Vec
 
-**Value:** [`ProofAttachment`](#proofattachment)
+**Value:** [`PrivacyAcceptedMediumDispositionV1`](#privacyacceptedmediumdispositionv1)
+
+## `Vec<PrivacyDeploymentValidatorCanaryV1>` {#vec-privacydeploymentvalidatorcanaryv1}
+
+**Type:** Vec
+
+**Value:** [`PrivacyDeploymentValidatorCanaryV1`](#privacydeploymentvalidatorcanaryv1)
+
+## `Vec<PrivacyDeploymentValidatorSignatureV1>` {#vec-privacydeploymentvalidatorsignaturev1}
+
+**Type:** Vec
+
+**Value:** [`PrivacyDeploymentValidatorSignatureV1`](#privacydeploymentvalidatorsignaturev1)
+
+## `Vec<PrivacyReleaseAuditV1>` {#vec-privacyreleaseauditv1}
+
+**Type:** Vec
+
+**Value:** [`PrivacyReleaseAuditV1`](#privacyreleaseauditv1)
+
+## `Vec<PrivacyReleaseExecutableArtifactV1>` {#vec-privacyreleaseexecutableartifactv1}
+
+**Type:** Vec
+
+**Value:** [`PrivacyReleaseExecutableArtifactV1`](#privacyreleaseexecutableartifactv1)
+
+## `Vec<PrivacyReleaseHardwareResultV1>` {#vec-privacyreleasehardwareresultv1}
+
+**Type:** Vec
+
+**Value:** [`PrivacyReleaseHardwareResultV1`](#privacyreleasehardwareresultv1)
+
+## `Vec<PrivacyReleaseProofArtifactV1>` {#vec-privacyreleaseproofartifactv1}
+
+**Type:** Vec
+
+**Value:** [`PrivacyReleaseProofArtifactV1`](#privacyreleaseproofartifactv1)
+
+## `Vec<PrivacyReleaseProtocolBindingV1>` {#vec-privacyreleaseprotocolbindingv1}
+
+**Type:** Vec
+
+**Value:** [`PrivacyReleaseProtocolBindingV1`](#privacyreleaseprotocolbindingv1)
+
+## `Vec<PrivacyReleaseSdkPackageV1>` {#vec-privacyreleasesdkpackagev1}
+
+**Type:** Vec
+
+**Value:** [`PrivacyReleaseSdkPackageV1`](#privacyreleasesdkpackagev1)
+
+## `Vec<PrivacyReleaseSignatureV1>` {#vec-privacyreleasesignaturev1}
+
+**Type:** Vec
+
+**Value:** [`PrivacyReleaseSignatureV1`](#privacyreleasesignaturev1)
+
+## `Vec<PrivacyReleaseStageReceiptV1>` {#vec-privacyreleasestagereceiptv1}
+
+**Type:** Vec
+
+**Value:** [`PrivacyReleaseStageReceiptV1`](#privacyreleasestagereceiptv1)
+
+## `Vec<PrivateDataspaceRecord>` {#vec-privatedataspacerecord}
+
+**Type:** Vec
+
+**Value:** [`PrivateDataspaceRecord`](#privatedataspacerecord)
+
+## `Vec<PrivateSettlementBundleLegMaterialV1>` {#vec-privatesettlementbundlelegmaterialv1}
+
+**Type:** Vec
+
+**Value:** [`PrivateSettlementBundleLegMaterialV1`](#privatesettlementbundlelegmaterialv1)
+
+## `Vec<PrivateSettlementContextProofV1>` {#vec-privatesettlementcontextproofv1}
+
+**Type:** Vec
+
+**Value:** [`PrivateSettlementContextProofV1`](#privatesettlementcontextproofv1)
+
+## `Vec<PrivateSettlementPoolGovernanceRevisionV1>` {#vec-privatesettlementpoolgovernancerevisionv1}
+
+**Type:** Vec
+
+**Value:** [`PrivateSettlementPoolGovernanceRevisionV1`](#privatesettlementpoolgovernancerevisionv1)
+
+## `Vec<PrivateSettlementPoolKeyV1>` {#vec-privatesettlementpoolkeyv1}
+
+**Type:** Vec
+
+**Value:** [`PrivateSettlementPoolKeyV1`](#privatesettlementpoolkeyv1)
 
 ## `Vec<ProofId>` {#vec-proofid}
 
@@ -17982,6 +24943,12 @@
 
 **Value:** [`ReserveTierConfig`](#reservetierconfig)
 
+## `Vec<ResolvedSettlementMovement>` {#vec-resolvedsettlementmovement}
+
+**Type:** Vec
+
+**Value:** [`ResolvedSettlementMovement`](#resolvedsettlementmovement)
+
 ## `Vec<Role>` {#vec-role}
 
 **Type:** Vec
@@ -18012,6 +24979,24 @@
 
 **Value:** [`RwaParentRef`](#rwaparentref)
 
+## `Vec<SccpForgeryOffenderV1>` {#vec-sccpforgeryoffenderv1}
+
+**Type:** Vec
+
+**Value:** [`SccpForgeryOffenderV1`](#sccpforgeryoffenderv1)
+
+## `Vec<SccpGovernanceSubjectV1>` {#vec-sccpgovernancesubjectv1}
+
+**Type:** Vec
+
+**Value:** [`SccpGovernanceSubjectV1`](#sccpgovernancesubjectv1)
+
+## `Vec<SignedAttachmentOccurrenceV1>` {#vec-signedattachmentoccurrencev1}
+
+**Type:** Vec
+
+**Value:** [`SignedAttachmentOccurrenceV1`](#signedattachmentoccurrencev1)
+
 ## `Vec<SignedBlock>` {#vec-signedblock}
 
 **Type:** Vec
@@ -18023,6 +25008,12 @@
 **Type:** Vec
 
 **Value:** [`StateDescriptor`](#statedescriptor)
+
+## `Vec<StreamTokenGatewayAdmissionRecordV1>` {#vec-streamtokengatewayadmissionrecordv1}
+
+**Type:** Vec
+
+**Value:** [`StreamTokenGatewayAdmissionRecordV1`](#streamtokengatewayadmissionrecordv1)
 
 ## `Vec<StreamingRouteBinding>` {#vec-streamingroutebinding}
 
@@ -18036,17 +25027,41 @@
 
 **Value:** `String`
 
-## `Vec<SumeragiLanePayloadOwnership>` {#vec-sumeragilanepayloadownership}
+## `Vec<SumeragiLaneCustody>` {#vec-sumeragilanecustody}
 
 **Type:** Vec
 
-**Value:** [`SumeragiLanePayloadOwnership`](#sumeragilanepayloadownership)
+**Value:** [`SumeragiLaneCustody`](#sumeragilanecustody)
 
-## `Vec<SumeragiV2EquivocationEvidence>` {#vec-sumeragiv2equivocationevidence}
+## `Vec<SumeragiLaneMember>` {#vec-sumeragilanemember}
 
 **Type:** Vec
 
-**Value:** [`SumeragiV2EquivocationEvidence`](#sumeragiv2equivocationevidence)
+**Value:** [`SumeragiLaneMember`](#sumeragilanemember)
+
+## `Vec<SumeragiLaneMerge>` {#vec-sumeragilanemerge}
+
+**Type:** Vec
+
+**Value:** [`SumeragiLaneMerge`](#sumeragilanemerge)
+
+## `Vec<SumeragiLaneRecord>` {#vec-sumeragilanerecord}
+
+**Type:** Vec
+
+**Value:** [`SumeragiLaneRecord`](#sumeragilanerecord)
+
+## `Vec<SumeragiLaneSample>` {#vec-sumeragilanesample}
+
+**Type:** Vec
+
+**Value:** [`SumeragiLaneSample`](#sumeragilanesample)
+
+## `Vec<SumeragiLaneSignerCustody>` {#vec-sumeragilanesignercustody}
+
+**Type:** Vec
+
+**Value:** [`SumeragiLaneSignerCustody`](#sumeragilanesignercustody)
 
 ## `Vec<TaikaiAliasRotationStatus>` {#vec-taikaialiasrotationstatus}
 
@@ -18066,17 +25081,11 @@
 
 **Value:** [`TaikaiIngestStatus`](#taikaiingeststatus)
 
-## `Vec<TimeTriggerEntrypoint>` {#vec-timetriggerentrypoint}
+## `Vec<TierRate>` {#vec-tierrate}
 
 **Type:** Vec
 
-**Value:** [`TimeTriggerEntrypoint`](#timetriggerentrypoint)
-
-## `Vec<TimeoutVoteGroup>` {#vec-timeoutvotegroup}
-
-**Type:** Vec
-
-**Value:** [`TimeoutVoteGroup`](#timeoutvotegroup)
+**Value:** [`TierRate`](#tierrate)
 
 ## `Vec<TransactionEntrypoint>` {#vec-transactionentrypoint}
 
@@ -18114,12 +25123,6 @@
 
 **Value:** [`Trigger`](#trigger)
 
-## `Vec<TriggerCompletedEvent>` {#vec-triggercompletedevent}
-
-**Type:** Vec
-
-**Value:** [`TriggerCompletedEvent`](#triggercompletedevent)
-
 ## `Vec<TriggerDescriptor>` {#vec-triggerdescriptor}
 
 **Type:** Vec
@@ -18131,6 +25134,12 @@
 **Type:** Vec
 
 **Value:** [`TriggerId`](#triggerid)
+
+## `Vec<TriggerLifecycleEffectV1>` {#vec-triggerlifecycleeffectv1}
+
+**Type:** Vec
+
+**Value:** [`TriggerLifecycleEffectV1`](#triggerlifecycleeffectv1)
 
 ## `Vec<TwitterBindingRecord>` {#vec-twitterbindingrecord}
 
@@ -18144,17 +25153,23 @@
 
 **Value:** [`TxGossipStatus`](#txgossipstatus)
 
-## `Vec<ValidatorPower>` {#vec-validatorpower}
+## `Vec<ValidatorCommitteeMemberV1>` {#vec-validatorcommitteememberv1}
 
 **Type:** Vec
 
-**Value:** [`ValidatorPower`](#validatorpower)
+**Value:** [`ValidatorCommitteeMemberV1`](#validatorcommitteememberv1)
 
 ## `Vec<Vec<u8>>` {#vec-vec-u8}
 
 **Type:** Vec
 
 **Value:** [`Vec<u8>`](#vec-u8)
+
+## `Vec<WorldStateSnapshotEntryV1>` {#vec-worldstatesnapshotentryv1}
+
+**Type:** Vec
+
+**Value:** [`WorldStateSnapshotEntryV1`](#worldstatesnapshotentryv1)
 
 ## `Vec<u32>` {#vec-u32}
 
@@ -18184,27 +25199,6 @@
   | --: | :-- |
   | `vector_length` | `u8` |
   | `max_allowed` | `u8` |
-
-## `VerifiedLaneRelayRecord` {#verifiedlanerelayrecord}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `relay_ref` | [`LaneRelayEnvelopeRef`](#lanerelayenveloperef) |
-  | `relay_envelope` | [`LaneRelayEnvelope`](#lanerelayenvelope) |
-  | `proof_payload_hash` | [`Hash`](#hash) |
-  | `fastpq_statement_digest` | [`Array<u8, 32>`](#array-u8-32) |
-  | `lane_finality_statement_hash` | [`Hash`](#hash) |
-  | `fastpq_old_root` | [`Array<u8, 32>`](#array-u8-32) |
-  | `fastpq_new_root` | [`Array<u8, 32>`](#array-u8-32) |
-  | `fastpq_tx_set_hash` | [`Array<u8, 32>`](#array-u8-32) |
-  | `fastpq_proof_digest` | [`Hash`](#hash) |
-  | `verified_at_height` | `u64` |
-  | `manifest_root` | [`Array<u8, 32>`](#array-u8-32) |
-  | `fastpq_binding` | [`AxtFastpqBinding`](#axtfastpqbinding) |
 
 ## `VerifyingKeyBox` {#verifyingkeybox}
 
@@ -18399,22 +25393,6 @@
   | `day` | `u64` |
   | `spent` | [`Quantity`](#quantity) |
 
-## `Vote` {#vote}
-
-**Type:** Struct
-
-**Declarations:**
-
-  | Field name | Field value |
-  | --: | :-- |
-  | `round` | [`ConsensusRound`](#consensusround) |
-  | `proposal_round` | [`ConsensusRound`](#consensusround) |
-  | `phase` | [`SumeragiV2GlobalPhase`](#sumeragiv2globalphase) |
-  | `subject` | [`BlockSubject`](#blocksubject) |
-  | `execution_commitment` | [`ExecutionCommitment`](#executioncommitment) |
-  | `signer` | `u32` |
-  | `signature` | [`Vec<u8>`](#vec-u8) |
-
 ## `WitnessEventFilter` {#witnesseventfilter}
 
 **Type:** Struct
@@ -18427,6 +25405,41 @@
   | `height` | [`Option<NonZero<u64>>`](#option-nonzero-u64) |
   | `view` | [`Option<u64>`](#option-u64) |
 
+## `WorldStateElementKindV1` {#worldstateelementkindv1}
+
+**Type:** Enum
+
+**Variants:**
+
+  | Variant name | Variant value | Discriminant |
+  | --: | :-- | --- |
+  | `Table` | &mdash; | 0 |
+  | `Cell` | &mdash; | 1 |
+
+## `WorldStateSnapshotEntryV1` {#worldstatesnapshotentryv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `field_id` | `String` |
+  | `kind` | [`WorldStateElementKindV1`](#worldstateelementkindv1) |
+  | `key_hash` | [`Option<Hash>`](#option-hash) |
+  | `value_hash` | [`Hash`](#hash) |
+
+## `WorldStateSnapshotV1` {#worldstatesnapshotv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `schema_hash` | [`Hash`](#hash) |
+  | `entries` | [`Vec<WorldStateSnapshotEntryV1>`](#vec-worldstatesnapshotentryv1) |
+
 ## `XorQuantity` {#xorquantity}
 
 **Type:** Struct
@@ -18436,6 +25449,17 @@
   | Field name | Field value |
   | --: | :-- |
   | `value` | [`Quantity`](#quantity) |
+
+## `ZkAmsLimitsV1` {#zkamslimitsv1}
+
+**Type:** Struct
+
+**Declarations:**
+
+  | Field name | Field value |
+  | --: | :-- |
+  | `max_batch_size` | `u32` |
+  | `max_ring_size` | `u32` |
 
 ## `bool` {#bool}
 

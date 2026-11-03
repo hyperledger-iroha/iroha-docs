@@ -1,9 +1,9 @@
 ---
 translation_locale: ar
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: 4281cb307762443c85b67659310da69f1f1ea5b99926bad43b90abe36e87075e
+translation_source_hash: 0c6392deb9ddca84e262c699c777276b3a6ca731154b66e7a8418f38dca52021
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # العقود الذكية {#smart-contracts}
@@ -16,6 +16,8 @@ Iroha المعاملات تنفذ `Executable` الحمولات. يدعم نمو
 - `Executable::IvmProved`: Iroha VM شيفرة بايت مع تراكب تعليمات محسوبة مسبقًا وقيم التزام تشفيرية للإثبات
 
 Kotodama هي لغة العقود الذكية عالية المستوى لـ Iroha. ملف المصدر `.ko` يُترجم إلى شيفرة بايت IVM حتمية، يتم تخزينها عادةً كأثر `.to` للنشر. Kotodama يستهدف IVM فقط. لا يستهدف RISC-V أو WebAssembly.
+
+لكل تشخيص من تشخيصات المصرّف رمز ثابت، وهو مشروح في مرجع [تشخيصات Kotodama](/ar/reference/kotodama-diagnostics.md).
 
 الإصدار الأول يدعم فقط الإصدار 1 من ABI. سياسة الاستدعاء النظامي والمؤشر-ABI هي عقد V1 غير مشروط يتم تنفيذه من خلال القبول والتنفيذ؛ ولا يوجد وضع بيئة تنفيذ برمجيات بديل.
 
@@ -44,6 +46,18 @@ Kotodama هي لغة العقود الذكية عالية المستوى لـ Ir
 - قيمة التزام تشفيرية لسياسة الغاز
 
 يثبت الإثبات الربط بين الطبقة العليا والشفرة البرمجية التي تم تنفيذها. اعتمادًا على سياسة سير عمل معالجة البرمجيات، يمكن للمحققين التحقق من الإثبات وإعادة تنفيذ التنفيذ كفحص أمان إضافي.
+
+## استدعاءات النظام في IVM {#ivm-syscalls}
+
+تستدعي شيفرة IVM البايتية المضيف عبر استدعاءات نظام مرقّمة. استدعاءات النظام الخاصة بالإصدار 1 من ABI أدناه مولَّدة من شيفرة Iroha المصدرية المثبّتة.
+
+::: details استدعاءات النظام في الإصدار 1 من ABI
+
+```generated-reference
+ivm-syscalls
+```
+
+:::
 
 ## استدعاءات العقد المنشور {#deployed-contract-calls}
 

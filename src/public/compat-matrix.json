@@ -2,30 +2,18 @@
   "source": {
     "repo": "hyperledger-iroha/iroha",
     "repo_url": "https://github.com/hyperledger-iroha/iroha",
-    "revision": "0010c5a70039eac101a4846499ba9ceaf43eb65c",
-    "revision_url": "https://github.com/hyperledger-iroha/iroha/commit/0010c5a70039eac101a4846499ba9ceaf43eb65c",
-    "generated_at": "2026-08-30",
-    "verification": "pending-signed-source-commit"
+    "revision": "c8c872461e92f04325c350cdd952f4276e96f9dc",
+    "revision_url": "https://github.com/hyperledger-iroha/iroha/commit/c8c872461e92f04325c350cdd952f4276e96f9dc",
+    "generated_at": "2026-11-01",
+    "verification": "not-run"
   },
   "included_sdks": [
-    {
-      "name": "Rust"
-    },
-    {
-      "name": "Python"
-    },
-    {
-      "name": "JavaScript / TypeScript"
-    },
-    {
-      "name": "Kotlin / Android"
-    },
-    {
-      "name": "Java / Android"
-    },
-    {
-      "name": "Swift"
-    }
+    { "name": "Rust" },
+    { "name": "Python" },
+    { "name": "JavaScript / TypeScript" },
+    { "name": "Kotlin / Android" },
+    { "name": "Java / Android" },
+    { "name": "Swift" }
   ],
   "stories": [
     {

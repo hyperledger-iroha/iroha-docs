@@ -11,13 +11,25 @@ Options:
           Optional path to genesis manifest JSON for consensus validation
 
       --check-config
-          Validate configuration and available genesis, then exit without binding network sockets
+          Validate configuration and available genesis, then exit without binding network sockets.
 
-      --write-kagemusha-catalog-qualification-seal <PATH>
-          Fully qualify Kagemusha catalog and publish its canonical cold-start seal at this path
+          The runtime-only secrets under `<data_dir>/secrets/` (runtime signer and beacon credential) are never opened; the key files the configuration names are read by the parser after their custody checks. As on a real start, a missing node-local `SoraNet` transport or streaming identity is created first.
 
-      --write-kagemusha-validator-qualification-seal <PATH>
-          Fully qualify this validator against the configured signed promotion reservation and publish its canonical seal at this root-owned path
+      --json
+          With `--check-config`, print this build's and configuration's compatibility values as one Norito JSON object instead of the `Ready`/`Pending` line
+
+      --check-storage
+          Inspect the stopped node's Kura store and newest snapshot read-only with this build's decoders, print the result as one Norito JSON object and exit nonzero on failure.
+
+          Takes the Kura store-root lock, so it refuses a store a running node owns. It never mutates the store and never opens runtime-only secrets (the configuration is parsed as for `--check-config`).
+
+      --check-replay
+          Replay a copy of the stopped node's store with this build, print the result as one Norito JSON object and exit nonzero when a block does not reproduce its certified result or the store lacks a block body the replay needs.
+
+          Opens the store read-only and takes its store-root lock as `--check-storage` does, copies its blocks into a temporary directory, restores the newest snapshot there (or re-executes signed genesis) and re-executes every later block. It never writes the store, the snapshot directory or the tiered-state directory, and never opens runtime-only secrets.
+
+      --require-genesis-inrou-deployment-authority <ACCOUNT_ID>
+          Require this registered account to retain `SoraCloud` deployment authority after executing the exact signed genesis during offline validation
 
       --trace-config
           Enables trace logs of configuration reading & parsing.
@@ -30,6 +42,11 @@ Options:
           Require the configuration file bytes to match this lowercase or uppercase 64-digit BLAKE3 digest.
 
           Integrity-bound files are parsed from the exact bytes that were hashed and must be flattened (the `extends` directive is not accepted).
+
+      --sumeragi-assert-fresh-key
+          Assert, at this boot only, that the node's consensus keys never signed for this chain.
+
+          Sumeragi keeps a safety record per key; without one it signs nothing until it has proof that its record was not lost. Pass this once, at the first boot of a new key, and never after a data loss.
 
       --terminal-colors[=<TERMINAL_COLORS>]
           Whether to enable ANSI-colored output or not
@@ -46,7 +63,7 @@ Options:
           Override system language for messages
 
       --sora
-          Enable Sora Nexus feature profile (`SoraFS`, `SoraNet` handshake, multi-lane consensus)
+          Enable Sora Nexus feature profile (`SoraFS`, `SoraNet` handshake, multi-lane consensus) while preserving explicitly configured Nexus topology, including default-valued catalogs
 
           [env: IROHA_SORA_PROFILE=]
 

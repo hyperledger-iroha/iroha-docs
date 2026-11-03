@@ -1,9 +1,9 @@
 ---
 translation_locale: my
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: 4281cb307762443c85b67659310da69f1f1ea5b99926bad43b90abe36e87075e
+translation_source_hash: 0c6392deb9ddca84e262c699c777276b3a6ca731154b66e7a8418f38dca52021
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # ပညာရှိ စာချုပ်များ {#smart-contracts}
@@ -16,6 +16,8 @@ Iroha ငွေပေးချေမှုတွေမှာ `Executable` အသ
 - `Executable::IvmProved`: ကြိုတင်တွက်ချက်ထားတဲ့ ညွှန်ကြားမှု အပေါ်လွှာထားပြီး သက်သေခံတဲ့ cryptographic commitment တန်ဖိုးများပါတဲ့ Iroha VM byte code
 
 Kotodama ရှိသည် Iroha ဒါက အဆင့်မြင့် စမတ်ကုထုံး ဘာသာစကားပါ။ `.ko` source file ကို deterministic သို့ compiles IVM conventionally stored as a byte code ကို `.to` တပ်ဆင်ဖို့ လက်ရာပစ္စည်းပါ။ Kotodama ရည်မှန်းချက်များ IVM ရည်မှန်းချက်မရှိဘူး။ RISC-V ဒါမှမဟုတ် WebAssembly.
+
+ကွန်ပိုင်လာ စစ်ဆေးတွေ့ရှိချက်တစ်ခုစီတွင် မပြောင်းလဲသော ကုဒ်တစ်ခု ရှိပြီး [Kotodama စစ်ဆေးတွေ့ရှိချက်များ](/my/reference/kotodama-diagnostics.md) ရည်ညွှန်းချက်တွင် ရှင်းပြထားသည်။
 
 ပထမထုတ်ပြန်ချက်သည် ABI ဗားရှင်းကိုသာထောက်ပံ့သည်။ syscall နှင့် pointer-ABI မူဝါဒသည်လက်ခံခြင်းနှင့်လုပ်ဆောင်ခြင်းဖြင့်အကောင်အထည်ဖော်သောစည်းမျဉ်းမဲ့ V1 စာချုပ်တစ်ခုဖြစ်သည်။ အခြားဆော့ဖ်ဝဲ အကောင်အထည် ဖော်မှုပတ်ဝန်းကျင် mode မရှိပါ။
 
@@ -44,6 +46,18 @@ Transaction မှာ packaged logic လိုတဲ့အခါမှာ Smart 
 - ဓာတ်ငွေ့ဆိုင်ရာ မူဝါဒအတွက် cryptographic commitment တန်ဖိုး
 
 Proof က overlay ကို executed bytecode နဲ့ ချိတ်ဆက်ပေးပါတယ်။ software processing workflow policy ကိုအမှီပြုပြီး validator တွေက proof ကို စစ်ဆေးနိုင်ပြီး ထပ်မံ play execution ကို security check တစ်ခုအဖြစ် ထပ်မံလုပ်နိုင်ပါတယ်။
+
+## IVM စနစ်ခေါ်ဆိုမှုများ {#ivm-syscalls}
+
+IVM ဘိုက်ကုဒ်သည် နံပါတ်တပ်ထားသော စနစ်ခေါ်ဆိုမှုများမှတစ်ဆင့် လက်ခံဆောင်ရွက်ပေးသည့်စနစ်ကို ခေါ်ဆိုသည်။ အောက်ပါ ABI ဗားရှင်း 1 စနစ်ခေါ်ဆိုမှုများကို သတ်မှတ်ထားသော Iroha ရင်းမြစ်ကုဒ်မှ ထုတ်လုပ်ထားသည်။
+
+::: details ABI ဗားရှင်း 1 စနစ်ခေါ်ဆိုမှုများ
+
+```generated-reference
+ivm-syscalls
+```
+
+:::
 
 ## စေလွှတ်ထားသော စာချုပ်ခေါ်ဆိုချက်များ {#deployed-contract-calls}
 

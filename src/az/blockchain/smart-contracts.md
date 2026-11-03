@@ -1,9 +1,9 @@
 ---
 translation_locale: az
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: 4281cb307762443c85b67659310da69f1f1ea5b99926bad43b90abe36e87075e
+translation_source_hash: 0c6392deb9ddca84e262c699c777276b3a6ca731154b66e7a8418f38dca52021
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Ağıllı Müqavilələr {#smart-contracts}
@@ -16,6 +16,8 @@ Iroha əməliyyatları `Executable` yükləri icra edir. Mövcud məlumat modeli
 - `Executable::IvmProved`: Iroha VM öncə hesablanmış təlimat örtüyü və sübut kriptoqrafik öhdəlik dəyərləri ilə baytkod
 
 Kotodama Iroha-ün yüksək səviyyəli ağıllı müqavilə dilidir. Bir `.ko` mənbə faylı deterministik IVM baytkoduna tərtib olunur və ənənəvi olaraq yerləşdirmə üçün `.to` artefaktı kimi saxlanılır. Kotodama yalnız IVM-ə yönəlib. O, RISC-V və ya WebAssembly-ə yönəlmir.
+
+Hər kompilyator diaqnostikasının sabit kodu var və bu kodlar [Kotodama diaqnostikası](/az/reference/kotodama-diagnostics.md) arayışında izah olunur.
 
 İlk buraxılış yalnız ABI versiya 1-i dəstəkləyir. Syscall və pointer-ABI siyasəti qəbul və icra tərəfindən tətbiq olunan bir şərtsiz V1 müqaviləsidir; alternativ proqram icra mühiti rejimi yoxdur.
 
@@ -44,6 +46,18 @@ Kotodama Iroha-ün yüksək səviyyəli ağıllı müqavilə dilidir. Bir `.ko` 
 - qaz-siyası kriptoqrafik öhdəlik dəyəri
 
 Sübut örtüyü icra edilmiş baytkodla bağlayır. Proqram təminatı işləmə iş axını siyasətindən asılı olaraq, yoxlayıcılar sübutu təsdiqləyə və əlavə təhlükəsizlik yoxlaması kimi icranı yenidən işlədə bilərlər.
+
+## IVM sistem çağırışları {#ivm-syscalls}
+
+IVM baytkodu nömrələnmiş sistem çağırışları vasitəsilə ev sahibi mühitə müraciət edir. Aşağıdakı ABI 1-ci versiyasının sistem çağırışları Iroha-nın sabitlənmiş mənbə kodundan yaradılıb.
+
+::: details ABI 1-ci versiyasının sistem çağırışları
+
+```generated-reference
+ivm-syscalls
+```
+
+:::
 
 ## Yerinə yetirilmiş müqavilə çağırışları {#deployed-contract-calls}
 

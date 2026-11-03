@@ -17,11 +17,16 @@
 - Use Node.js 24 and pnpm 9. Install with `pnpm install --frozen-lockfile`.
 - Normal install, test, and build commands must not fetch Iroha source or
   require `../iroha`.
-- Never source generated material from a mutable branch. The only supported
-  refresh is `pnpm refresh:iroha --source /path/to/iroha`, using the exact
-  commit in `provenance/iroha.json`.
+- Never source generated material from a mutable branch. Generate references
+  only from the exact commit pinned in `provenance/iroha.json`, which must have
+  a GitHub-verified signature and be reachable from `source.track`. Refresh with
+  the scheduled workflow, or with `pnpm select:iroha` followed by
+  `pnpm refresh:iroha --source /path/to/iroha --pin <commit> --ref <ref>`.
 - Keep generated snippets, OpenAPI, schemas, CLI output, and provenance hashes
   checked in. Review their diffs like source code.
+- Pages cite Iroha source at the pinned commit. After the pin moves, correct the
+  cookbook and the other citing pages against it in English and every
+  translation, then run `pnpm move:iroha-citations --source /path/to/iroha`.
 
 ## Content Policy
 

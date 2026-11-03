@@ -1,9 +1,9 @@
 ---
 translation_locale: he
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: 4281cb307762443c85b67659310da69f1f1ea5b99926bad43b90abe36e87075e
+translation_source_hash: 0c6392deb9ddca84e262c699c777276b3a6ca731154b66e7a8418f38dca52021
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # חוזים חכמים {#smart-contracts}
@@ -16,6 +16,8 @@ translation_engine: nllb-200-ct2
 - `Executable::IvmProved`: קוד־בתים של Iroha VM בצירוף שכבת הוראות שחושבה מראש והתחייבויות הוכחה
 
 Kotodama היא שפת החוזים החכמים העילית של Iroha. קובץ מקור `.ko` עובר הידור לקוד־בתים דטרמיניסטי של IVM, ובדרך כלל נשמר כארטיפקט `.to` לצורך פריסה. Kotodama מיועדת ל־IVM בלבד; היא אינה מיועדת ל־RISC-V או ל־WebAssembly.
+
+לכל אבחון של המהדר יש קוד יציב, המוסבר במסמך העיון [אבחונים של Kotodama](/he/reference/kotodama-diagnostics.md).
 
 הגרסה הראשונה תומכת ב־ABI גרסה 1 בלבד. מדיניות ה־syscall וה־pointer-ABI היא חוזה V1 יחיד ובלתי מותנה, שנאכף בעת הקבלה ובעת הביצוע; אין מצב סביבת ריצה חלופי.
 
@@ -44,6 +46,18 @@ Kotodama היא שפת החוזים החכמים העילית של Iroha. קוב
 - התחייבות למדיניות הגז
 
 ההוכחה קושרת את שכבת ההוראות לקוד־הבתים שבוצע. בהתאם למדיניות שרשרת העיבוד, המאמתים יכולים לאמת את ההוכחה ולהפעיל מחדש את הביצוע כבדיקת בטיחות נוספת.
+
+## קריאות מערכת של IVM {#ivm-syscalls}
+
+קוד־הבתים של IVM קורא למארח באמצעות קריאות מערכת ממוספרות. קריאות המערכת של ABI גרסה 1 שלהלן נוצרות מקוד המקור המוצמד של Iroha.
+
+::: details קריאות המערכת של ABI גרסה 1
+
+```generated-reference
+ivm-syscalls
+```
+
+:::
 
 ## קריאות חוזה משותפות {#deployed-contract-calls}
 

@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/smart-contracts.md
-translation_source_hash: 4281cb307762443c85b67659310da69f1f1ea5b99926bad43b90abe36e87075e
+translation_source_hash: 0c6392deb9ddca84e262c699c777276b3a6ca731154b66e7a8418f38dca52021
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # 智能合同 {#smart-contracts}
@@ -17,6 +17,8 @@ Iroha 交易执行`Executable`的有效载荷.目前的数据模型支持:
 - `Executable::IvmProved`:Iroha VM 字节码,具有预先计算的指令覆盖和证明承诺.
 
 Kotodama 是 Iroha 一个高层级的智能合同语言 `.ko` 源文件编译到确定性 IVM 通常存储的字节码 `.to` 用于部署的构件. Kotodama 目标 IVM 没有针对性 RISC-V 或 WebAssembly.
+
+每条编译器诊断都有一个稳定的代码，详见 [Kotodama 诊断](/zh-hans/reference/kotodama-diagnostics.md)参考。
 
 第一个版本仅支持 ABI 版本 1. 系统调用和指针-ABI 政策是通过录取和执行执行的无条件 V1 合同;没有替代运行模式.
 
@@ -45,6 +47,18 @@ Kotodama 是 Iroha 一个高层级的智能合同语言 `.ko` 源文件编译到
 - gas政策承诺
 
 证明将重叠链接到执行的字节码. 根据管道政策,验证人员可以作为额外的安全检查来验证证明和重播执行.
+
+## IVM 系统调用 {#ivm-syscalls}
+
+IVM 字节码通过编号的系统调用来调用宿主环境。以下 ABI 版本 1 的系统调用由固定版本的 Iroha 源码生成。
+
+::: details ABI 版本 1 的系统调用
+
+```generated-reference
+ivm-syscalls
+```
+
+:::
 
 ## 部署的合同调用 {#deployed-contract-calls}
 
