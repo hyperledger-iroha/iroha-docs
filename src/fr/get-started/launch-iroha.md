@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
+translation_source_hash: 35a4caba21bf1e34cc015f79fa82bfe143b37603eddb5f1eb72513ad83a20f61
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -15,7 +15,7 @@ Cette page explique le flux actuel du réseau local pour Iroha 3 en utilisant le
 Générez un réseau local à quatre pairs à partir du code Kagami actuel :
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Le répertoire de sortie contient les configurations de pairs réseau correspondantes, `genesis.json`, `genesis.signed.nrt`, `client.toml`, et des scripts d'assistance.
@@ -62,7 +62,7 @@ curl http://127.0.0.1:8080/status/blocks
 Vous pouvez immédiatement pointer le CLI vers la configuration client fournie :
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list
 ```
 
 ## 3. Nexus Profil {#_3-nexus-profile}

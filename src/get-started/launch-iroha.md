@@ -8,7 +8,7 @@ default workspace assets from the upstream repository.
 Generate a four-peer localnet from the current Kagami code:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 The output directory contains matching peer configs, `genesis.json`,
@@ -56,7 +56,7 @@ curl http://127.0.0.1:8080/status/blocks
 You can immediately point the CLI at the bundled client config:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list
 ```
 
 ## 3. Nexus Profile

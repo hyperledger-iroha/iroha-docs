@@ -1,21 +1,21 @@
 ---
 translation_locale: zh-hant
 translation_source: /cookbook/index.md
-translation_source_hash: 58f5247ece30d3755c38d4d24ae4553a35e0d0437476092d568a1be5c8a2ed28
+translation_source_hash: 9e13bcd28ad8ae356314041828f73af0ed25636af82ff4ea2948268b47dd73e6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Iroha 3 應用程式操作指南 {#iroha-3-application-cookbook}
 
-使用從 Taira 測試網開始的小型、可驗證操作指南來建構 Iroha 3 應用程式，並保持 Minamoto 主網唯讀。每個操作指南都會註明它屬於公開讀取、一般的已注資帳戶寫入，還是許可權受限操作。命令使用目前 I105 帳戶 IDs、明確的費用選擇，以及 Iroha 提交 [`0010c5a70039eac101a4846499ba9ceaf43eb65c`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c) 中已驗證的行為。
+使用從 Taira 測試網開始的小型、可驗證操作指南來建構 Iroha 3 應用程式，並保持 Minamoto 主網唯讀。每個操作指南都會註明它屬於公開讀取、一般的已注資帳戶寫入，還是許可權受限操作。命令使用目前 I105 帳戶 IDs、明確的費用選擇，以及 Iroha 提交 [`c8c872461e92f04325c350cdd952f4276e96f9dc`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc) 中已驗證的行為。
 
-開始使用 [連線到 Taira](./connect-to-taira.md).它建立了客戶端配置和費用後設資料,由命令列操作指南重複使用.從未複製本文件中的費用資產 ID:從當前的 Taira 水龍頭響應中提取它.
+請從 [連線到 Taira](./connect-to-taira.md) 開始。它會為簽署者注資，並記錄命令列操作指南重複使用的費用資產。切勿從本文件複製費用資產 ID：請從目前的 Taira 水龍頭政策中讀取。
 
 ## 訪問水平 {#access-levels}
 
 - 公眾 不需要簽名或網路許可.
-- **寫入就緒** — 使用已注資的 Taira 測試帳戶、明確的費用支付方，以及 faucet 傳回的目前費用資產。
+- **寫入就緒** — 使用已注資的 Taira 測試帳戶、明確的費用支付方，以及水龍頭政策公布的目前費用資產。
 - **需要許可權** — Taira 必須授予指定的執行階段許可權或受治理的名稱空間。沒有此授權時，請使用產生的本機網路；本機成功並不會賦予 Taira 許可權。
 
 沒有任何 cookbook recipe 會向 Minamoto 傳送寫入操作。

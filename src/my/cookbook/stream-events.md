@@ -1,9 +1,9 @@
 ---
 translation_locale: my
 translation_source: /cookbook/stream-events.md
-translation_source_hash: 96f0a26000530fee15d121f815f9f5717a535dc3836cff9a2a447b1e5b70c41c
+translation_source_hash: d6202b208288688cdfd927491d6670f094f631ccaecd7ff62858a94267c5306a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # အဖြစ်အပျက်များကို Stream {#stream-events}
@@ -22,10 +22,10 @@ translation_engine: nllb-200-ct2
 
 ### 1. SSE တုံ့ပြန်မှုကို အတည်ပြုပါ။ {#_1-confirm-the-sse-response}
 
-Taira သည် `Accept` ခေါင်းစဉ်တွင် အကြိုက်ဆုံးဖြစ်ရပ်စီးကြောင်းနှင့် JSON ကျော့ပြန်မှု နှစ်ခုစလုံးပါဝင်ပါကသာ ယခုလမ်းကြောင်းကို ညှိနှိုင်းသည်။ curl ဘူဖာကိုပိတ်ပါ။ အမိန့်သည် ၁၅ စက္ကန့်အကြာတွင် အဆုံးသတ်သည်; ငြိမ်သက်သောကာလအတွင်း နှလုံးခုန်ချက် မှတ်ချက်များကိုသာ လက်ခံခြင်းသည် သက်ဝင်သည်။
+JSON fallback ပါဝင်သော event stream ကို တောင်းဆိုပါ- Torii သည် `text/event-stream` ကို stream လုပ်ပေးပြီး မမှန်ကန်သော filter ကဲ့သို့ ငြင်းပယ်ခံရသော request ကို JSON error အဖြစ် အစီရင်ခံသည်။ curl buffering ကို ပိတ်ပါ။ command သည် 20 စက္ကန့်အကြာတွင် ပြီးဆုံးသည်။ Torii သည် idle အခြေအနေ 15 စက္ကန့်ကြာပြီးနောက် heartbeat comment တစ်ခု ပေးပို့သောကြောင့် ငြိမ်သက်နေသော ကာလအတွင်း heartbeat comment များကိုသာ လက်ခံရရှိခြင်းသည် မှန်ကန်သည်။
 
 ```bash
-curl -sS -N --max-time 15 \
+curl -sS -N --max-time 20 \
   -H 'Accept: text/event-stream, application/json' \
   https://taira.sora.org/v1/events/sse
 ```
@@ -34,15 +34,12 @@ curl -sS -N --max-time 15 \
 
 ### 2. filtered JavaScript စားသုံးသူကိုထည့်ပါ။ {#_2-add-a-filtered-javascript-consumer}
 
-အောက်ပါအတိုင်း `stream-taira.mjs` အဖြစ် သိမ်းထားပါ။ ၎င်းသည် Fetch ကို တိုက်ရိုက်အသုံးပြု၍ တောင်းဆိုချက်သည် Taira ၏လိုအပ်သော Mixed `Accept` ခေါင်းစဉ်ကိုပို့နိုင်သည်။ လက်ရှိ `FilterExpr` သည်အတည်ပြုသော ငွေလဲလှယ်မှုဖြစ်ရပ်များကိုရွေးချယ်ပြီး ဆန်းစစ်သူသည် ပြန်လည်ဖြည့်စွက်ခြင်းခလုတ်မရှိဘဲ SSE ဘောင်များကိုသုံးစွဲသည်။
+အောက်ပါအတိုင်း `stream-taira.mjs` အဖြစ် သိမ်းထားပါ။ ၎င်းသည် wire format ကို ပြသရန် Fetch ကို တိုက်ရိုက် အသုံးပြုသည်။ `filter` query parameter သည် အတည်ပြုထားသော transaction ဖြစ်ရပ်များကို ရွေးချယ်ရန် Torii ၏ စာသား filter သဒ္ဒါကို အသုံးပြုပြီး parser သည် replay cursor မပါဘဲ SSE frame များကို လုပ်ဆောင်သည်။
 
 ```js
 const baseUrl = 'https://taira.sora.org'
 const shutdown = new AbortController()
-const filter = {
-  op: 'eq',
-  args: ['tx_status', 'Approved'],
-}
+const filter = 'tx_status = "Approved"'
 
 process.once('SIGINT', () => shutdown.abort())
 process.once('SIGTERM', () => shutdown.abort())
@@ -52,7 +49,7 @@ const delay = (milliseconds) =>
 
 async function reconcile() {
   const response = await fetch(
-    `${baseUrl}/v1/explorer/transactions?page=1&per_page=25`,
+    `${baseUrl}/v1/explorer/transactions?limit=25`,
     { headers: { Accept: 'application/json' } },
   )
   if (!response.ok) {
@@ -63,7 +60,7 @@ async function reconcile() {
 
 async function* streamOnce() {
   const url = new URL('/v1/events/sse', baseUrl)
-  url.searchParams.set('filter', JSON.stringify(filter))
+  url.searchParams.set('filter', filter)
   const response = await fetch(url, {
     headers: { Accept: 'text/event-stream, application/json' },
     signal: shutdown.signal,
@@ -164,7 +161,7 @@ SSE နှလုံးခုန်ချက် မှတ်ချက်တွေ
 
 နောက်ဆုံး 25 စူးစမ်းရှာဖွေသူတောင်းဆိုချက်သည် အများပြည်သူရဲ့ ရောဂါစစ်ဆေးမှုတစ်ခုသာဖြစ်သည်။ ထုတ်လုပ်သူသုံးစွဲသူသည် `reconcile()` ကို ၎င်း၏ ရေရှည်တည်တံ့သော အသုံးအဆောင်အရင်းအမြစ်များအတွက် မေးမြန်းမှုများနှင့် စစ်ဆေးရေးဂိတ်အတွက် လုံလောက်စွာကြီးမားသည့် ပြန်လည်ထူထောင်ရေးဘောင်ဖြင့် အစားထိုးရန် (သို့) ဖြန့်ဖြူးရန်လိုအပ်သည်။ ကန့်သတ်ထားတဲ့ point-in-time ဒေတာအမြင်တစ်ခုတည်းက ဘယ်ဖြစ်ရပ်မှ လွတ်သွားတာ သက်သေမပြနိုင်ဘူး။
 
-pinned source-code revision တွင် `ToriiClient.streamEvents()` သည်သာ `Accept: text/event-stream` ကိုပို့ပေးသည်; live Taira သည် `406` နှင့်အတူ ကျဉ်းမြောင်းသော ခေါင်းစဉ်ကို ပယ်ချသည်။ SDK နှင့် အများပြည်သူ API အဆုံးသတ်မှတ်ချက်သည်တူညီသောမီဒီယာအမျိုးအစားများကို ညှိနှိုင်းမချင်းအထက်တွင် raw Fetch ပုံစံကိုအသုံးပြုပါ။
+`@iroha/iroha-js` မှ `ToriiClient.streamEvents({ filter })` သည် တူညီသော stream ကို ဖတ်သည်- `field('tx_status').eq('Approved')` သို့မဟုတ် အထက်ပါ စာသား filter ကို ပေးပါ။ ၎င်းသည် stream မပြီးဆုံးမီ နောက်ဆုံး `stream_error` frame ကို ထုတ်ပေးသောကြောင့် အထက်ပါ ပြန်လည်ချိတ်ဆက်ခြင်းနှင့် ပြန်လည်ညှိနှိုင်းခြင်း စည်းမျဉ်းများ ဆက်လက်သက်ရောက်သည်။
 
 ## စစ်ဆေးပါ {#verify}
 
@@ -173,7 +170,7 @@ terminal တစ်ခုမှာ JavaScript သုံးစွဲသူကိ�
 ```bash
 curl -fsS \
   -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=25' |
+  'https://taira.sora.org/v1/explorer/transactions?limit=25' |
   jq .
 ```
 
@@ -182,17 +179,17 @@ curl -fsS \
 ## ပြဿနာဖြေရှင်းခြင်း {#troubleshooting}
 
 - နှလုံးခုန်တဲ့ မှတ်ချက်တွေနဲ့ ဆက်နွယ်မှုတစ်ခုရှိပေမဲ့ ဒေတာဖြစ်ရပ်မရှိတာ ကျန်းမာတယ်။ ရွေးချယ်ထားတဲ့ ဆော့ဖ်ဝဲ စီမံခန့်ခွဲရေး အလုပ်ခွင်အခြေအနေက တိတ်ဆိတ်လောက်တယ်။
-- `406 Not Acceptable` တိုက်ရိုက် Taira ပုံမှန်ဆိုလိုတာက ကြော်ငြာထားတဲ့ တောင်းဆိုချက်ကိုပဲ ဆိုလိုတာပါ။ `text/event-stream`. ပို့ပေးပါ။ `text/event-stream, application/json` အထက်က ပြထားသလိုပါပဲ။
-- `stream_error` ဖြစ်ရပ်က ဆာဗာက နောက်ဆုတ်မှု (သို့) အခြား terminal stream အခြေအနေတစ်ခုကို ရှာဖွေတွေ့ရှိထားတာကို ညွှန်ပြတယ်။ Torii သည် ဒီအဖြစ်အပျက်ကို တစ်ကြိမ်ပို့ပြီး စီးကြောင်းကိုပိတ်လိုက်တယ်၊ ပြန်လည်ဆက်သွယ်ခြင်းမတိုင်ခင် ငြိမ်းအောင်လုပ်ပါ။
+- ကုဒ် `invalid_filter` ပါသော `400` ဆိုသည်မှာ `filter` သည် Torii ၏ စာသားသဒ္ဒါနှင့် မကိုက်ညီခြင်း သို့မဟုတ် event stream များက မပံ့ပိုးသော field တစ်ခုကို အမည်ဖော်ထားခြင်းကို ဆိုလိုသည်။ event stream များသည် `tx_status`၊ `tx_hash`၊ `tx_block_height`၊ `tx_lane_id`၊ `tx_dataspace_id`၊ `block_status`၊ `block_height`၊ `proof_backend`၊ `proof_call_hash` နှင့် `proof_envelope_hash` တို့ဖြင့် filter လုပ်သည်။
+- `stream_error` ဖြစ်ရပ်သည် server က နောက်ကျမှု (lag) သို့မဟုတ် အခြား terminal stream အခြေအနေတစ်ခုကို တွေ့ရှိကြောင်း ညွှန်ပြသည်။ Torii သည် ထိုဖြစ်ရပ်ကို တစ်ကြိမ် ပေးပို့ပြီး stream ကို ပိတ်သည်။ အစားထိုး stream တစ်ခုကို ဖွင့်ပြီးနောက် ပြန်လည်ညှိနှိုင်းပါ။
 - Torii မလုပ်တဲ့အခါမှာတောင် Proxy က SSE ကို buffer လုပ်နိုင်တယ်။ Proxy ထဲက တုံ့ပြန်မှု buffering နဲ့ compression တွေကို Disable လုပ်ပြီး `curl -N` ကို diagnostics မှာ ထားပါ။
 - API အဆုံးသတ်မှတ်ချက်မှာ ပြန်လည်ပြသမှု ညွှန်ကြားချက်မရှိဘူး၊ ဒီအစား လက်ရှိ blockchain ledger အခြေအနေကို မေးမြန်းပါ။
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [JavaScript ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်ချက်မှာ streaming recipe](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs)
-- [SSE ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှုတွင် ပေါင်းစပ်မှု စမ်းသပ်မှုများ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs)
-- [Torii FilterExpr စာမေးပွဲကို ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှုမှာ စစ်ဆေးတယ်။](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs)
-- [Torii event routing at the pinned source code revision](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
+- [JavaScript ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်ချက်မှာ streaming recipe](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes/streaming.mjs)
+- [SSE ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှုတွင် ပေါင်းစပ်မှု စမ်းသပ်မှုများ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/events/sse_smoke.rs)
+- [ပုံသေသတ်မှတ်ထားသော commit ရှိ Torii filter စာသားသဒ္ဒါ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/src/list_query/text.rs)
+- [Torii event routing at the pinned source code revision](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/routing.rs)
 - [ဖြစ်ရပ်များ](/my/blockchain/events.md)
 - [Torii API အဆုံးသတ်မှတ်ချက်များ](/my/reference/torii-endpoints.md)
 - [မေးမြန်းချက် blockchain ledger အခြေအနေ](./query-ledger-state.md)

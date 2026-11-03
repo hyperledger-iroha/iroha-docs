@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: f04e5e78329996d70926c4fd5dc034d41605d0a82fffd6460f67b252269480d9
+translation_source_hash: 631ec91b5ea398ae17253f0fd6307d76bc3820e2a2b6c8c9f79b30e0188ec170
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -380,7 +380,7 @@ iroha app kaigi end --domain kaigi.universal --call-name daily
 
 ### JavaScript دمج {#javascript-integration}
 
-ينفذ [عرض Iroha التوضيحي بلغة JavaScript](https://github.com/soramitsu/iroha-demo-javascript) الحالي ملف تعريف اجتماع شفافًا وموثّقًا بين طرفين. وهو لا يتيح تدفق إثبات `zk-roster-v1` الخاص بالبروتوكول. ينشئ العارض عروض WebRTC وإجاباتها، بينما يستخدم جسر ذو صلاحيات نسخة العمل المحلية من [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) لتحديد الرسوم والتوقيع والإرسال وانتظار بلوغ معاملات Kaigi حالة النهائية.
+ينفذ [عرض Iroha التوضيحي بلغة JavaScript](https://github.com/soramitsu/iroha-demo-javascript) الحالي ملف تعريف اجتماع شفافًا وموثّقًا بين طرفين. وهو لا يتيح تدفق إثبات `zk-roster-v1` الخاص بالبروتوكول. ينشئ العارض عروض WebRTC وإجاباتها، بينما يستخدم جسر ذو صلاحيات نسخة العمل المحلية من [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js) لتحديد الرسوم والتوقيع والإرسال وانتظار بلوغ معاملات Kaigi حالة النهائية.
 
 انظر [تضمين Kaigi في تطبيق JavaScript](/ar/guide/tutorials/kaigi.md) للمصادقة الدقيقة للمسار، ونمط الدعوة، وحدود الجسر، وأوامر اختبار العرض التوضيحي الحالية.
 
@@ -439,6 +439,6 @@ iroha --config ./localnet/client.toml --operator-private-key-file "$IROHA_OPERAT
 
 ## المراجع العليا {#upstream-references}
 
-- [README API ونظرة عامة على المراقبة والقدرة على الرصد](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/README.md)
-- [ISO تنفيذ جسر 20022](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/iso20022_bridge.rs)
+- [README API ونظرة عامة على المراقبة والقدرة على الرصد](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/README.md)
+- [ISO تنفيذ جسر 20022](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/iso20022_bridge.rs)
 - [الأداء والمؤشرات](/ar/guide/advanced/metrics.md)

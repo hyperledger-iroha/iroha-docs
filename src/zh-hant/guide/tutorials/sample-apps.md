@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 4979ab2c52eba4040d7f003f3da73dbc333fa7e047b0259816d0d34f97377749
+translation_source_hash: c1432d8d2483f67b6ab81680f6c5457cab470db7944512626242a1446a7d501f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,7 +12,7 @@ Iroha 源儲存庫包含 SDK 操作指南和測試套件,跟蹤與節點相同�
 
 ## JavaScript 操作指南 {#javascript-recipes}
 
-[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes) 包含確定性交易批次處理、Nexus 應用程式轉帳、NFT 和帳戶反覆運算、ISO 橋接流程，以及 Torii 串流的針對性範例。每個範例都會說明它是離線執行，還是需要即時 Torii 端點。
+[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes) 包含確定性交易批次處理、Nexus 應用程式轉帳、NFT 和帳戶反覆運算、ISO 橋接流程，以及 Torii 串流的針對性範例。每個範例都會說明它是離線執行，還是需要即時 Torii 端點。
 
 ## Swift 和iOS {#swift-and-ios}
 

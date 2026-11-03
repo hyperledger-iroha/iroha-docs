@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: f04e5e78329996d70926c4fd5dc034d41605d0a82fffd6460f67b252269480d9
+translation_source_hash: 631ec91b5ea398ae17253f0fd6307d76bc3820e2a2b6c8c9f79b30e0188ec170
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -379,7 +379,7 @@ iroha app kaigi end --domain kaigi.universal --call-name daily
 
 ### JavaScript 集成 {#javascript-integration}
 
-目前的 [Iroha JavaScript 演示](https://github.com/soramitsu/iroha-demo-javascript)实现了透明,认证的一对一会议配置文件.它不暴露协议的`zk-roster-v1`证明流程.它的渲染器创建 WebRTC 的提议和应答,而特权桥梁使用本地 [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js)工作副本来报价,签署,提交并等待完成的 Kaigi 交易.
+目前的 [Iroha JavaScript 演示](https://github.com/soramitsu/iroha-demo-javascript)实现了透明,认证的一对一会议配置文件.它不暴露协议的`zk-roster-v1`证明流程.它的渲染器创建 WebRTC 的提议和应答,而特权桥梁使用本地 [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js)工作副本来报价,签署,提交并等待完成的 Kaigi 交易.
 
 查看 [在 JavaScript App](/zh-hans/guide/tutorials/kaigi.md)中嵌入 Kaigi,准确的路线身份验证,邀请格式,桥边界和当前的演示测试指令.
 
@@ -438,6 +438,6 @@ iroha --config ./localnet/client.toml --operator-private-key-file "$IROHA_OPERAT
 
 ## 上游引用 {#upstream-references}
 
-- [README API 和可观测性概述](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/README.md)
-- [ISO 20022 桥接实现](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/iso20022_bridge.rs)
+- [README API 和可观测性概述](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/README.md)
+- [ISO 20022 桥接实现](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/iso20022_bridge.rs)
 - [性能和指标](/zh-hans/guide/advanced/metrics.md)

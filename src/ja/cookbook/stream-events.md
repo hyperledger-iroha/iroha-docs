@@ -1,9 +1,9 @@
 ---
 translation_locale: ja
 translation_source: /cookbook/stream-events.md
-translation_source_hash: 96f0a26000530fee15d121f815f9f5717a535dc3836cff9a2a447b1e5b70c41c
+translation_source_hash: d6202b208288688cdfd927491d6670f094f631ccaecd7ff62858a94267c5306a
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # ストリームイベント {#stream-events}
@@ -22,10 +22,10 @@ translation_engine: bing-translator-llm
 
 ### 1. SSE の応答を確認する {#_1-confirm-the-sse-response}
 
-Taira は現在、`Accept` ヘッダーに優先されるイベントストリームと JSON フォールバックの両方が含まれている場合にのみ、このルートを交渉します。curl のバッファリングを無効にします。コマンドは15秒後に終了します。静かな期間中にハートビートコメントのみを受信することも有効です。
+JSON フォールバック付きでイベントストリームを要求してください。Torii は `text/event-stream` をストリーミングし、無効なフィルターなどの拒否されたリクエストは JSON エラーとして報告します。curl のバッファリングを無効にします。コマンドは20秒後に終了します。Torii はアイドル状態が15秒続くとハートビートコメントを送信するため、静かな期間中にハートビートコメントのみを受信することも有効です。
 
 ```bash
-curl -sS -N --max-time 15 \
+curl -sS -N --max-time 20 \
   -H 'Accept: text/event-stream, application/json' \
   https://taira.sora.org/v1/events/sse
 ```
@@ -34,15 +34,12 @@ curl -sS -N --max-time 15 \
 
 ### 2. フィルタリングされた JavaScript コンシューマーを追加する {#_2-add-a-filtered-javascript-consumer}
 
-以下を `stream-taira.mjs` として保存してください。これは Fetch を直接使用するため、リクエストは Taira の必要な混合 `Accept` ヘッダーを送信できます。現在の `FilterExpr` は承認されたトランザクションイベントを選択し、パーサーはリプレイカーソルなしで SSE フレームを消費します。
+以下を `stream-taira.mjs` として保存してください。これはワイヤー形式を示すために Fetch を直接使用します。`filter` クエリパラメーターは Torii のテキストフィルター文法を使用して承認されたトランザクションイベントを選択し、パーサーはリプレイカーソルなしで SSE フレームを消費します。
 
 ```js
 const baseUrl = 'https://taira.sora.org'
 const shutdown = new AbortController()
-const filter = {
-  op: 'eq',
-  args: ['tx_status', 'Approved'],
-}
+const filter = 'tx_status = "Approved"'
 
 process.once('SIGINT', () => shutdown.abort())
 process.once('SIGTERM', () => shutdown.abort())
@@ -52,7 +49,7 @@ const delay = (milliseconds) =>
 
 async function reconcile() {
   const response = await fetch(
-    `${baseUrl}/v1/explorer/transactions?page=1&per_page=25`,
+    `${baseUrl}/v1/explorer/transactions?limit=25`,
     { headers: { Accept: 'application/json' } },
   )
   if (!response.ok) {
@@ -63,7 +60,7 @@ async function reconcile() {
 
 async function* streamOnce() {
   const url = new URL('/v1/events/sse', baseUrl)
-  url.searchParams.set('filter', JSON.stringify(filter))
+  url.searchParams.set('filter', filter)
   const response = await fetch(url, {
     headers: { Accept: 'text/event-stream, application/json' },
     signal: shutdown.signal,
@@ -164,7 +161,7 @@ SSE ハートビートコメントはアイドル状態の接続を維持しま�
 
 最新の25件のエクスプローラー要求は、あくまで公開された診断にすぎません。実際の運用環境の利用者は、`reconcile()`を耐久性のあるアプリケーションリソース用のクエリに置き換えるか拡張し、チェックポイントに十分な回復境界を設定する必要があります。境界付きデータスナップショットだけでは、イベントが見逃されなかったことを証明することはできません。
 
-固定されたソースコードのリビジョンでは、`ToriiClient.streamEvents()` は `Accept: text/event-stream` のみを送信します；最新の Taira はその狭いヘッダーを `406` で拒否します。上記の生の Fetch 形式を、SDK とパブリック API エンドポイントが同じメディアタイプで交渉するまで使用してください。
+`@iroha/iroha-js` の `ToriiClient.streamEvents({ filter })` は同じストリームを読み取ります。`field('tx_status').eq('Approved')` または上記のテキストフィルターを渡してください。ストリームが終了する前に終端の `stream_error` フレームを渡すため、上記の再接続と調整の規則は引き続き適用されます。
 
 ## 確認する {#verify}
 
@@ -173,7 +170,7 @@ SSE ハートビートコメントはアイドル状態の接続を維持しま�
 ```bash
 curl -fsS \
   -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=25' |
+  'https://taira.sora.org/v1/explorer/transactions?limit=25' |
   jq .
 ```
 
@@ -182,17 +179,17 @@ curl -fsS \
 ## トラブルシューティング {#troubleshooting}
 
 - データイベントはないがハートビートコメントがある接続は正常です。選択されたソフトウェア処理ワークフローのステータスが単に静かなだけかもしれません。
-- `406 Not Acceptable` がライブ Taira 上にある場合、通常はリクエストが `text/event-stream` のみを宣伝していることを意味します。`text/event-stream, application/json` を上記の通り正確に送信してください。
-- A `stream_error` イベントは、サーバーがラグまたは他の端末ストリームの状態を検出したことを示します。Torii はそのイベントを一度送信してストリームを閉じます；再接続する前に調整してください。
+- コード `invalid_filter` を伴う `400` は、`filter` が Torii のテキスト文法に従っていないか、イベントストリームがサポートしないフィールドを指定していることを意味します。イベントストリームは `tx_status`、`tx_hash`、`tx_block_height`、`tx_lane_id`、`tx_dataspace_id`、`block_status`、`block_height`、`proof_backend`、`proof_call_hash`、`proof_envelope_hash` でフィルタリングします。
+- `stream_error` イベントは、サーバーが遅延またはその他の終端的なストリーム状態を検出したことを示します。Torii はそのイベントを一度送信してストリームを閉じます。代替ストリームを開いてから調整してください。
 - プロキシは、Torii がしない場合でも SSE をバッファリングすることがあります。プロキシでのレスポンスのバッファリングと圧縮を無効にし、`curl -N` を診断に保持してください。
 - 次のイベントが前のイベントに続くと仮定して切断ギャップを埋めないでください。API エンドポイントにはリプレイカーソルがありません。代わりに現在のブロックチェーン台帳の状態を照会してください。
 
 ## ソースおよび関連文書 {#source-and-related-docs}
 
-- [JavaScript ピン留めされたソースコードのリビジョンでのストリーミングレシピ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs)
-- [SSE ピン留めされたソースコードのリビジョンでの統合テスト](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs)
-- [Torii FilterExpr ピン留めされたソースコードのリビジョンでのパーサー](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs)
-- [Torii ピン留めされたソースコードのリビジョンでのイベントルーティング](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
+- [JavaScript ピン留めされたソースコードのリビジョンでのストリーミングレシピ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes/streaming.mjs)
+- [SSE ピン留めされたソースコードのリビジョンでの統合テスト](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/events/sse_smoke.rs)
+- [固定されたソースコードのリビジョンでの Torii フィルターテキスト文法](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/src/list_query/text.rs)
+- [Torii ピン留めされたソースコードのリビジョンでのイベントルーティング](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/routing.rs)
 - [イベント](/ja/blockchain/events.md)
 - [Torii API エンドポイント](/ja/reference/torii-endpoints.md)
 - [ブロックチェーン台帳の状態を照会する](./query-ledger-state.md)

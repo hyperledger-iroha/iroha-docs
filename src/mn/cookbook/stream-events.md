@@ -1,9 +1,9 @@
 ---
 translation_locale: mn
 translation_source: /cookbook/stream-events.md
-translation_source_hash: 96f0a26000530fee15d121f815f9f5717a535dc3836cff9a2a447b1e5b70c41c
+translation_source_hash: d6202b208288688cdfd927491d6670f094f631ccaecd7ff62858a94267c5306a
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Өргөдлийн үйл явдлууд {#stream-events}
@@ -22,10 +22,10 @@ translation_engine: bing-translator-llm
 
 ### 1. SSE хариуг баталгаажуулна уу {#_1-confirm-the-sse-response}
 
-Taira одоогоор энэ маршрутын дагуу зөвхөн `Accept` толгой нь илүүд үзсэн арга хэмжээний урсгал болон JSON нөөц боломжийг аль альыг нь агуулж байх үед л тохиролцдог. curl буферлэгчийг идэвхгүй болгоно. Команд 15 секундийн дараа дуусна; нам гүм үед зөвхөн зүрхний цохилтын тайлбарыг хүлээн авах нь хүчинтэй.
+Үйл явдлын урсгалыг JSON нөөц хувилбартайгаар хүс: Torii `text/event-stream`-ээр урсгал дамжуулж, хүчингүй шүүлтүүр зэрэг татгалзсан хүсэлтийг JSON алдаа болгон мэдээлдэг. curl-ийн буфержуулалтыг идэвхгүй болго. Команд 20 секундын дараа дуусна. Torii 15 секунд сул зогссоны дараа heartbeat тайлбар илгээдэг тул нам гүм үед зөвхөн heartbeat тайлбарууд хүлээн авах нь хүчинтэй.
 
 ```bash
-curl -sS -N --max-time 15 \
+curl -sS -N --max-time 20 \
   -H 'Accept: text/event-stream, application/json' \
   https://taira.sora.org/v1/events/sse
 ```
@@ -34,15 +34,12 @@ curl -sS -N --max-time 15 \
 
 ### 2. Шүүлтүүртэй JavaScript хэрэглэгчийг нэмнэ үү {#_2-add-a-filtered-javascript-consumer}
 
-Дараахыг `stream-taira.mjs` болгон хадгална уу. Энэ нь шууд Fetch-г ашигладаг тул хүсэлт Taira-ийн шаардлагатай холимог `Accept` толгойг илгээж чадна. Одоогийн `FilterExpr` зөвшөөрөгдсөн гүйлгээний үйл явдлуудыг сонгож, парсер нь replay курсортойгүй SSE фреймүүдийг боловсруулдаг.
+Дараахыг `stream-taira.mjs` нэрээр хадгал. Энэ нь сүлжээгээр дамжих форматыг харуулахын тулд Fetch-ийг шууд ашигладаг. `filter` асуулгын параметр нь батлагдсан гүйлгээний үйл явдлуудыг сонгохдоо Torii-ийн текст шүүлтүүрийн дүрэм зүйг ашигладаг бөгөөд задлагч нь SSE фреймүүдийг дахин тоглуулах курсоргүйгээр боловсруулдаг.
 
 ```js
 const baseUrl = 'https://taira.sora.org'
 const shutdown = new AbortController()
-const filter = {
-  op: 'eq',
-  args: ['tx_status', 'Approved'],
-}
+const filter = 'tx_status = "Approved"'
 
 process.once('SIGINT', () => shutdown.abort())
 process.once('SIGTERM', () => shutdown.abort())
@@ -52,7 +49,7 @@ const delay = (milliseconds) =>
 
 async function reconcile() {
   const response = await fetch(
-    `${baseUrl}/v1/explorer/transactions?page=1&per_page=25`,
+    `${baseUrl}/v1/explorer/transactions?limit=25`,
     { headers: { Accept: 'application/json' } },
   )
   if (!response.ok) {
@@ -63,7 +60,7 @@ async function reconcile() {
 
 async function* streamOnce() {
   const url = new URL('/v1/events/sse', baseUrl)
-  url.searchParams.set('filter', JSON.stringify(filter))
+  url.searchParams.set('filter', filter)
   const response = await fetch(url, {
     headers: { Accept: 'text/event-stream, application/json' },
     signal: shutdown.signal,
@@ -164,7 +161,7 @@ SSE зүрхний цохилтын тайлбарууд идэвхгүй хол
 
 Хамгийн сүүлийн-25 судлаачийн хүсэлт нь зөвхөн нийтийн оношлогоо юм. Үйлдвэрлэлийн хэрэглэгч нь `reconcile()`-г өөрийн бат бөх програмын нөөцөд зориулсан асуулт эсвэл чекпойнтод хангалттай их хэмжээний сэргээх хязгаар бүхий зүйлээр сольж эсвэл өргөтгөх ёстой. Зөвхөн тодорхой цагийн хязгаарлагдмал өгөгдлийн харагдац нь ямар ч үйл явдлыг алдагдаагүй гэдгийг нотолж чадахгүй.
 
-Наалдсан эх кодын өөрчлөлт дээр, `ToriiClient.streamEvents()` зөвхөн `Accept: text/event-stream` илгээдэг; амьд Taira нь энэ нарийн толгойг `406`-оор татгалздаг. Дээрх түүхий Fetch формыг ашиглан SDK болон олон нийтийн API төгсгөлүүд ижил медиа төрлүүдээр тохиролцсон болтол ашигла.
+`@iroha/iroha-js`-ийн `ToriiClient.streamEvents({ filter })` нь ижил урсгалыг уншдаг: `field('tx_status').eq('Approved')` эсвэл дээрх текст шүүлтүүрийг дамжуул. Урсгал дуусахаас өмнө төгсгөлийн `stream_error` фреймийг гаргадаг тул дээрх дахин холбогдох болон тулгалтын дүрмүүд хүчинтэй хэвээр байна.
 
 ## Баталгаажуулах {#verify}
 
@@ -173,7 +170,7 @@ SSE зүрхний цохилтын тайлбарууд идэвхгүй хол
 ```bash
 curl -fsS \
   -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=25' |
+  'https://taira.sora.org/v1/explorer/transactions?limit=25' |
   jq .
 ```
 
@@ -182,17 +179,17 @@ curl -fsS \
 ## Алдааг олох болон засах {#troubleshooting}
 
 - Heartbeat тайлбар ирж байгаа боловч өгөгдлийн үйл явдалгүй холболт хэвийн; сонгосон боловсруулалтын төлөвт одоогоор үйл явдал байхгүй байж болно.
-- `406 Not Acceptable` дээр шууд Taira нь ихэвчлэн зөвхөн `text/event-stream` зарласан хүсэлтийг илэрхийлдэг. `text/event-stream, application/json`-г дээрээс яг ингэж илгээнэ үү.
-- A `stream_error` событие нь сервер удаашрал эсвэл өөр терминалын урсгалын нөхцөлийг илрүүлсэн гэсэн үг юм. Torii энэ үйл явдлыг нэг удаа илгээдэг бөгөөд урсгалыг хаадаг; дахин холбогдохоос өмнө тохиргоог хийх хэрэгтэй.
+- `invalid_filter` кодтой `400` нь `filter` Torii-ийн текст дүрэм зүйд нийцэхгүй, эсвэл үйл явдлын урсгалын дэмждэггүй талбарыг нэрлэсэн гэсэн үг. Үйл явдлын урсгалууд `tx_status`, `tx_hash`, `tx_block_height`, `tx_lane_id`, `tx_dataspace_id`, `block_status`, `block_height`, `proof_backend`, `proof_call_hash` болон `proof_envelope_hash` талбараар шүүдэг.
+- `stream_error` үйл явдал нь сервер хоцрогдол эсвэл урсгалыг дуусгах өөр нөхцөл илрүүлснийг илтгэнэ. Torii тэр үйл явдлыг нэг удаа илгээгээд урсгалыг хаадаг; орлох шинэ урсгал нээгээд, дараа нь тулгалт хий.
 - Прокси нь Torii хийдэггүй үед ч SSE-г буферлэж болно. Прокси дахь хариу буферлэлт болон шахалтыг идэвхгүй болго, мөн `curl -N`-г оношилгоонд хадгалаарай.
 - Дараагийн үйл явдал өмнөхийг дагаж болно гэж таамаглаж тасралтгүй завсрыг битгий бөглөөрэй. API төгсгөлд дахин тоглуулах заагч байхгүй; оронд нь одоогийн блокчэйн бүртгэлийн төлөвийг асуугаарай.
 
 ## Эх сурвалж ба холбогдох баримт бичгүүд {#source-and-related-docs}
 
-- [JavaScript тогтсон эх кодын шинэчлэл дээр урсгалыг гаргах жор](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs)
-- [SSE тогтсон эх кодын хувилбарт интеграцийн туршилтууд](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs)
-- [Torii FilterExpr холбоослогдсон эх кодны хувилбарт parser](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs)
-- [Torii тогтсон эх кодын шинэчлэл дээр үүссэн үйл явдлын чиглүүлэлт](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
+- [JavaScript тогтсон эх кодын шинэчлэл дээр урсгалыг гаргах жор](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes/streaming.mjs)
+- [SSE тогтсон эх кодын хувилбарт интеграцийн туршилтууд](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/events/sse_smoke.rs)
+- [Тогтоосон commit дахь Torii-ийн шүүлтүүрийн текст дүрэм зүй](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/src/list_query/text.rs)
+- [Torii тогтсон эх кодын шинэчлэл дээр үүссэн үйл явдлын чиглүүлэлт](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/routing.rs)
 - [Арга хэмжээ](/mn/blockchain/events.md)
 - [Torii API төгсгөлүүд](/mn/reference/torii-endpoints.md)
 - [Блокчэйн бүртгэлийн төлөвийг асуух](./query-ledger-state.md)

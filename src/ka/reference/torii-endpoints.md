@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: f04e5e78329996d70926c4fd5dc034d41605d0a82fffd6460f67b252269480d9
+translation_source_hash: 631ec91b5ea398ae17253f0fd6307d76bc3820e2a2b6c8c9f79b30e0188ec170
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -380,7 +380,7 @@ iroha app kaigi end --domain kaigi.universal --call-name daily
 
 ### JavaScript ინტეგრაცია {#javascript-integration}
 
-მიმდინარეობა [Iroha JavaScript დემო](https://github.com/soramitsu/iroha-demo-javascript) ახორციელებს გამჭვირვალე, ავთენტიფიცირებულ ერთ-ერთ შეხვედრის პროფილს. ის არ ასახავს პროტოკოლის `zk-roster-v1` მტკიცებულების ნაკადი. მისი რენდერი ქმნის WebRTC შეთავაზებები და პასუხები, ხოლო პრივილეგირებული ხიდი იყენებს ადგილობრივ [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) გადახდა ციტირება, ხელმოწერა, წარდგენა, და ველოდოთ დასრულებული Kaigi ოპერაციები.
+მიმდინარეობა [Iroha JavaScript დემო](https://github.com/soramitsu/iroha-demo-javascript) ახორციელებს გამჭვირვალე, ავთენტიფიცირებულ ერთ-ერთ შეხვედრის პროფილს. ის არ ასახავს პროტოკოლის `zk-roster-v1` მტკიცებულების ნაკადი. მისი რენდერი ქმნის WebRTC შეთავაზებები და პასუხები, ხოლო პრივილეგირებული ხიდი იყენებს ადგილობრივ [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js) გადახდა ციტირება, ხელმოწერა, წარდგენა, და ველოდოთ დასრულებული Kaigi ოპერაციები.
 
 იხილეთ [შეყვანა Kaigi JavaScript აპლიკაციაში](/ka/guide/tutorials/kaigi.md) ზუსტი მარშრუტის ავთენტიფიკაციის, მოწვევის ფორმატის, ხიდის საზღვრისა და მიმდინარე დემოტესტირების ბრძანებების შესახებ.
 
@@ -439,6 +439,6 @@ iroha --config ./localnet/client.toml --operator-private-key-file "$IROHA_OPERAT
 
 ## წინსავალი რეფერენციები {#upstream-references}
 
-- [README API და სადამკვირვებლო სიახლეები](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/README.md)
-- [ISO 20022 ხიდის განხორციელება](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/iso20022_bridge.rs)
+- [README API და სადამკვირვებლო სიახლეები](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/README.md)
+- [ISO 20022 ხიდის განხორციელება](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/iso20022_bridge.rs)
 - [შესრულება და მაჩვენებლები](/ka/guide/advanced/metrics.md)

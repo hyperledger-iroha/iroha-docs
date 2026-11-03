@@ -1,9 +1,9 @@
 ---
 translation_locale: ka
 translation_source: /cookbook/connect-to-taira.md
-translation_source_hash: e14be7d9314f26f40f6aa30678fddcfcfea39eda9b98016f1b2f84838203c548
+translation_source_hash: 31555f0c56bddb8892d09af250cef732a2dfdd39564c83de8b344200157751b9
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # გაერთიანება Taira {#connect-to-taira}
@@ -15,14 +15,14 @@ translation_engine: nllb-200-ct2
 ## წინაპირობები {#prerequisites}
 
 - `curl`,`jq`, Python 3.11 ან უფრო გვიან და მიმდინარე `iroha` და `kagami` ბინარები.
-- Taira ჯაჭვით, API საბოლოო წერტილით, ანგარიშის პროფილით და სპეციალური ტესტნეტის გასაღებით შექმნილი `taira.client.toml`. მიჰყევით [შექმნას Taira კლიენტის კონფიგურაცია](/ka/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config) და შეინახეთ ფაილი წყაროს კონტროლის გარეშე.
-- ჩართვისთვის მზად `taira_faucet_claim.py` [ტესტნეტს XOR დაუკავშირდით Taira](/ka/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)-დან, დაცულია კლიენტის კონფიგურაციის გვერდით.
+- `taira.client.toml`, რომელიც შექმნილია Taira-ს ჯაჭვით, ზუსტი `network_id`-ით, API-ის საბოლოო წერტილით, ანგარიშის პროფილით და სპეციალური ტესტნეტის გასაღებით. მიჰყევით ინსტრუქციას [Taira კლიენტის კონფიგურაციის შექმნა](/ka/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config) და ფაილი ვერსიების კონტროლის სისტემის გარეთ შეინახეთ.
+- ჩაწერადი სამუშაო დირექტორია გამცემის ჟურნალისთვის: `iroha taira account faucet prepare` ქმნის `./taira-faucet`-ს მხოლოდ მფლობელისთვის ხელმისაწვდომი უფლებებით და უარს ამბობს არსებული დირექტორიის ჩანაცვლებაზე.
 
 ## ნაბიჯები {#steps}
 
 ### 1. ცალკე სიცოცხლისუნარიანობა და მზადყოფნა {#_1-separate-liveness-from-readiness}
 
-`/livez` არის მარტივი ტექსტის პროცესის სიცოცხლისუნარიანობის სონდი. `/status`, `/health` და `/readyz` დაბრუნება JSON. მიმდინარე კვანძს შეუძლია კანონიერად დაბრუნდეს `503` მზადყოფნის სონდებიდან, როდესაც საჭირო ქვესისტემა დაბლოკებულია.
+`/livez`, `/health` და `/readyz` უბრალო ტექსტით მპასუხე შემოწმებებია; `/status` JSON-ს აბრუნებს. მომუშავე კვანძს შეუძლია სრულიად კანონზომიერად დააბრუნოს `503` `/readyz`-დან, როდესაც კონსენსუსში დაშვება ან სხვა აუცილებელი ქვესისტემა მიუწვდომელია.
 
 ```bash
 curl -fsS -H 'Accept: text/plain' https://taira.sora.org/livez
@@ -30,11 +30,11 @@ curl -fsS -H 'Accept: text/plain' https://taira.sora.org/livez
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
-curl -sS -H 'Accept: application/json' \
+curl -sS -H 'Accept: text/plain, application/json' \
   -w '\nHTTP %{http_code}\n' https://taira.sora.org/readyz
 ```
 
-გამოიყენეთ `/livez` მხოლოდ იმისათვის, რომ გადაწყვიტოთ, პასუხობს თუ არა პროცესი. გამოიყენეთ `/readyz` სატრანსპორტო მოძრაობის შესასვლელად და შეამოწმეთ მისი JSON ბლოკერის დეტალები, სანამ `503` გათიშვით განიხილავთ.
+`/livez` გამოიყენეთ მხოლოდ იმის დასადგენად, პასუხობს თუ არა პროცესი. ტრაფიკის დასაშვებად გამოიყენეთ `/readyz`. მისი `503` არის `service_unavailable` შეცდომის კონვერტი ბლოკერის დეტალების გარეშე, ამიტომ, სანამ მას გათიშვად მიიჩნევთ, გაუშვით ქვემოთ მოცემული დიაგნოსტიკა.
 
 ### 2. საზოგადოებრივი დიაგნოსტიკის ჩატარება {#_2-run-the-public-diagnostics}
 
@@ -48,7 +48,7 @@ iroha taira doctor --public-root https://taira.sora.org --json
 
 ### 3. გამოიღეთ Taira ანგარიშის ID საიდუმლოების დაბეჭდვის გარეშე {#_3-derive-the-taira-account-id-without-printing-a-secret}
 
-წაიკითხეთ მხოლოდ საჯარო გასაღები კონფიგურაციიდან, შემდეგ დააკოდირეთ იგი Taira I105 პროფილით. `[account].domain` ღირებულება უზრუნველყოფს მარშრუტის კონტექსტს; ის არ არის ანგარიშის ID- ის ნაწილი.
+კონფიგურაციიდან წაიკითხეთ მხოლოდ საჯარო გასაღები, შემდეგ კი დააკოდირეთ ის Taira-ს I105 პროფილით. ანგარიშის ID დომენს არ შეიცავს; `[account].profile` მხოლოდ მის ქსელის პრეფიქსს ირჩევს.
 
 ```bash
 TAIRA_PUBLIC_KEY="$(python3 - <<'PY'
@@ -69,18 +69,29 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID"
 
 ### 4. მოითხოვეთ მიმდინარე Taira საფასურის აქტივი {#_4-claim-the-current-taira-fee-asset}
 
-ტესტური მონეტების გამცემის პასუხი არის საფასურის აქტივების განსაზღვრის სიმართლის წყარო. შეინარჩუნეთ დაბრუნებული Base58 ID, იმის ნაცვლად, რომ სხვა ქსელიდან ან ძველი რეჟიმის ID- ს ასახავდეთ.
+გამცემის პოლიტიკა ასახელებს საფასურის აქტივის მიმდინარე განსაზღვრებას. შეინარჩუნეთ მისი Base58 ID, ნაცვლად იმისა, რომ ID სხვა ქსელიდან ან ძველი გაშვებიდან დააკოპიროთ. პოლიტიკა ხელმოუწერელი აღმოჩენის მონაცემებია, ამიტომ ავტომატიზაციამ ყოველ პასუხს კი არ უნდა ენდოს, არამედ წინასწარ დააფიქსიროს მოსალოდნელი გამომცემი, აქტივის განსაზღვრება და თანხა.
 
 ```bash
-python3 ./taira_faucet_claim.py "$TAIRA_ACCOUNT_ID" \
-  | tee taira-faucet.json
+curl -fsS -H 'Accept: application/json' \
+  https://taira.sora.org/v1/accounts/faucet/policy \
+  | tee taira-faucet-policy.json
 
-export TAIRA_FEE_ASSET="$(jq -er '.asset_definition_id' taira-faucet.json)"
-jq -n --arg gas_asset_id "$TAIRA_FEE_ASSET" \
-  '{gas_asset_id: $gas_asset_id}' > taira.tx-metadata.json
+export TAIRA_FEE_ASSET="$(
+  jq -er '.asset_definition_id' taira-faucet-policy.json
+)"
+
+iroha --config ./taira.client.toml --fee-payer authority \
+  taira account faucet prepare \
+  --journal ./taira-faucet \
+  --issuer "$(jq -er '.authority' taira-faucet-policy.json)" \
+  --asset-definition "$TAIRA_FEE_ASSET" \
+  --amount "$(jq -er '.amount' taira-faucet-policy.json)"
+
+iroha --config ./taira.client.toml \
+  taira account faucet submit --journal ./taira-faucet
 ```
 
-ტესტური მონეტების გამცემს შეუძლია დაბრუნდეს `202 Accepted` სანამ ფინანსური ოპერაცია ხილული იქნება.
+`prepare` ხსნის სამუშაოს მტკიცებულების ამოცანას და ინახავს ზუსტ ხელმოწერილ ტრანზაქციას; `submit` მას ერთხელ აგზავნის და ბრუნდება მას შემდეგ, რაც ტრანზაქცია გამოიყენება. თუ `submit` აბრუნებს `Pending`-ს ან დრო ამოიწურება, ახალი განაცხადის მომზადების ნაცვლად გაუშვით `taira account faucet resume` იმავე კონფიგურაციითა და ჟურნალით. შემდეგ ბალანსი პერიოდულად შეამოწმეთ არაუმეტეს ერთი წუთის განმავლობაში.
 
 ```bash
 funded=false
@@ -96,7 +107,7 @@ done
 test "$funded" = true
 ```
 
-`gas_asset_id` არის ტრანზაქციის მეტამონაცემები. აშკარა `--fee-payer authority` შერჩევა ხელმოწერითაა დაკავებული, ხოლო CLI მიიღებს ზუსტ საფასურის ფასის შეფასებას მანამ, სანამ ის გაფორმდება.
+Taira-ზე ყოველი ჩაწერისთვის გამოიყენეთ `--fee-payer authority`. არჩევანი ხელმოწერითაა მიბმული, ხოლო CLI ხელმოწერამდე იღებს ზუსტი საფასურის შეფასებას Taira-ს საფასურის აქტივში.
 
 ## შემოწმება {#verify}
 
@@ -106,8 +117,7 @@ test "$funded" = true
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg 'cookbook-connect' \
+  tx ping --msg 'cookbook-connect' \
   > taira-connect-submission.json
 
 jq '{hash, fee_quote}' taira-connect-submission.json
@@ -115,27 +125,27 @@ TAIRA_TX_HASH="$(jq -er '.hash' taira-connect-submission.json)"
 
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction status \
+  tx status \
   --hash "$TAIRA_TX_HASH" \
   --wait \
   --timeout-ms 60000
 ```
 
-საბოლოო ბრძანება წარმატებულია მხოლოდ მას შემდეგ, რაც ტრანზაქცია მიაღწევს გათვალისწინებულ `Applied` ტერმინალის მდგომარეობას. ინახეთ კრიპტოგრაფიული ჰეში სატესტო მტკიცებულებაში; არასოდეს შეინახოთ პირადი გასაღები ან სრული კლიენტის კონფიგურაცია მასთან ერთად.
+საბოლოო ბრძანება წარმატებით სრულდება მხოლოდ მას შემდეგ, რაც ზუსტი გლობალური სტატუსი მდგომარეობით დადასტურებულ `Applied` საბოლოობას აჩვენებს. ჰეში შეინახეთ სატესტო მტკიცებულებებში; მასთან ერთად არასოდეს შეინახოთ პირადი გასაღები ან კლიენტის სრული კონფიგურაცია.
 
 ## პრობლემების აღმოფხვრა {#troubleshooting}
 
-- `/livez` უბრუნებს `406`, როდესაც ითხოვს JSON-ს, რადგან ეს API საბოლოო წერტილი არის `text/plain`. გამოაგზავნეთ `Accept: text/plain`, როგორც ზემოთ მოცემულია.
-- `/health` ან `/readyz` შეიძლება დაუბრუნდეს `503` მანქანით წაკითხული ბლოკერით, მაშინაც კი, როდესაც `/livez` და `/status` მუშაობენ. დააყენეთ ან ელოდოთ ამ ბლოკერს; რეგენერაციის გასაღები არ შეცვლის კვანძის მზადყოფნას.
-- გამცემის `502` პასუხი, დროის ამოწურვა ან სამუშაოს მტკიცებულების მოძველებული საყრდენი საჯარო სერვისის ხარვეზია. მიიღეთ ახალი თავსატეხი და მოგვიანებით კვლავ სცადეთ.
+- `/livez`, `/health` და `/readyz` აბრუნებს `406`-ს, როდესაც მხოლოდ JSON-ს ითხოვთ, რადგან ისინი `text/plain`-ით პასუხობენ. გაგზავნეთ ზემოთ ნაჩვენები `Accept` სათაურები.
+- `/readyz`-მა შეიძლება დააბრუნოს `503` `service_unavailable` შეცდომის კონვერტით მაშინაც კი, როდესაც `/livez` და `/status` მუშაობს. დაელოდეთ მზადყოფნას ან გაუშვით `iroha taira doctor`; გასაღებების ხელახლა გენერირება კვანძის მზადყოფნას არ შეცვლის.
+- გამცემის `502` ან დროის ამოწურვა `submit`-ის დროს განაცხადის შედეგს უცნობს ტოვებს: ახალი განაცხადის მომზადების ნაცვლად გაუშვით `taira account faucet resume` იმავე კონფიგურაციითა და ჟურნალით. სამუშაოს მტკიცებულების მოძველებული საყრდენი `prepare`-ს ჩაშლის; თავიდან მოამზადეთ ახალ ჟურნალის დირექტორიაში.
 - I105 პრეფიქსის შეცდომა ნიშნავს, რომ საჯარო გასაღები არასწორი პროფილით იყო კოდირებული. განახორციელეთ `iroha tools address convert --profile taira`.
-- საფასურის კოტირების უარყოფა ჩვეულებრივ ნიშნავს, რომ ავტორიზაციის პრინციპალი არ იყო დაფინანსებული, საფასური აქტივის მეტადატატი მოძველებულია ან კონკრეტული საფასურის გადამხდელი არ არის შერჩეული.
+- საფასურის შეფასების უარყოფა, როგორც წესი, ნიშნავს, რომ უფლებამოსილი ანგარიში არ არის დაფინანსებული ან კონფიგურირებული `network_id` Taira-ს არ ეკუთვნის. გამოტოვებული `--fee-payer` ან `--metadata`-ში საფასურის გასაღები, მაგალითად `gas_asset_id`, შეფასებამდე ლოკალურად იწვევს შეცდომას.
 - რეგისტრაცია, გაცემა ან სახელების სივრცის მართვა კვლავ შეიძლება უარი თქვას ამ კანარის წარმატების შემდეგ. ეს ოპერაციები მოითხოვს ცალკე შესრულების გარემოს ნებართვებს; შეამოწმეთ ისინი წარმოქმნილ ლოკალურ ქსელში, როდესაც Taira წვდომა არ არის მინიჭებული.
 
 ## წყარო და შესაბამისი დოკუმენტები {#source-and-related-docs}
 
-- [Taira CLI დიაგნოსტიკა და კანარიური წყარო, ჩაკეტილი წყარო კოდის რევიზიით](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/taira.rs)
-- [გამოხატული საფასურის შერჩევა და CLI წარდგენის წყარო, ჩაკეტილი წყარო კოდის რევიზიით](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
+- [Taira CLI-ის დიაგნოსტიკისა და კანარის შემოწმებების წყარო კოდი](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/taira.rs) და [გამცემის ბრძანებები](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/taira_onboarding.rs) დამაგრებული წყარო კოდის რევიზიისას
+- [გამოხატული საფასურის შერჩევა და CLI წარდგენის წყარო, ჩაკეტილი წყარო კოდის რევიზიით](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs)
 - [Taira ანგარიშისა და ტესტური მონეტების გამცემის სახელმძღვანელო](/ka/get-started/sora-nexus-dataspaces.md)
 - [მომხმარებლის კონფიგურაცია](/ka/guide/configure/client-configuration.md)
 - [ოპერაციები](/ka/blockchain/transactions.md)

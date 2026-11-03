@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: f04e5e78329996d70926c4fd5dc034d41605d0a82fffd6460f67b252269480d9
+translation_source_hash: 631ec91b5ea398ae17253f0fd6307d76bc3820e2a2b6c8c9f79b30e0188ec170
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -380,7 +380,7 @@ Use `--room-policy public` para salas que os retransmissores podem expor sem ing
 
 ### JavaScript Integração {#javascript-integration}
 
-O atual [Iroha JavaScript demonstração](https://github.com/soramitsu/iroha-demo-javascript) implementar um perfil de reunião um-a-um transparente e autenticado. Ele não expõe o protocolo `zk-roster-v1` fluxo de prova. Seu renderizador cria WebRTC ofertas e respostas, enquanto uma ponte privilegiada usa a local [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) finalizar para cotar, assinar, enviar e aguardar a finalização Kaigi transações.
+O atual [Iroha JavaScript demonstração](https://github.com/soramitsu/iroha-demo-javascript) implementar um perfil de reunião um-a-um transparente e autenticado. Ele não expõe o protocolo `zk-roster-v1` fluxo de prova. Seu renderizador cria WebRTC ofertas e respostas, enquanto uma ponte privilegiada usa a local [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js) finalizar para cotar, assinar, enviar e aguardar a finalização Kaigi transações.
 
 Consulte [Incorporar Kaigi em um App JavaScript](/pt/guide/tutorials/kaigi.md) para a autenticação exata da rota, formato de convite, limite da ponte e os comandos de teste de demonstração atuais.
 
@@ -439,6 +439,6 @@ iroha --config ./localnet/client.toml --operator-private-key-file "$IROHA_OPERAT
 
 ## Referências a Montante {#upstream-references}
 
-- [README API e visão geral de observabilidade](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/README.md)
-- [ISO implementação da ponte 20022](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/iso20022_bridge.rs)
+- [README API e visão geral de observabilidade](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/README.md)
+- [ISO implementação da ponte 20022](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/iso20022_bridge.rs)
 - [Desempenho e métricas](/pt/guide/advanced/metrics.md)

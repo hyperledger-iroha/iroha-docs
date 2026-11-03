@@ -1,9 +1,9 @@
 ---
 translation_locale: ar
 translation_source: /cookbook/connect-to-taira.md
-translation_source_hash: e14be7d9314f26f40f6aa30678fddcfcfea39eda9b98016f1b2f84838203c548
+translation_source_hash: 31555f0c56bddb8892d09af250cef732a2dfdd39564c83de8b344200157751b9
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # الاتصال بـ Taira {#connect-to-taira}
@@ -15,14 +15,14 @@ translation_engine: bing-translator-llm
 ## المتطلبات الأساسية {#prerequisites}
 
 - `curl`، `jq`، Python إصدار 3.11 أو أحدث، والنسخ الثنائية الحالية لـ `iroha` و`kagami`.
-- تم إنشاء `taira.client.toml` باستخدام سلسلة Taira، ونقطة النهاية API، وملف تعريف الحساب، ومفتاح شبكة اختبار مخصص. اتبع [إنشاء إعدادات عميل Taira](/ar/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config) واحتفظ بالملف خارج نظام التحكم بالمصدر.
-- الـ `taira_faucet_claim.py` الجاهز للتشغيل من [احصل على Testnet XOR على Taira](/ar/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)، محفوظ بجانب إعدادات العميل.
+- ملف `taira.client.toml` تم إنشاؤه باستخدام سلسلة Taira، و`network_id` الدقيق، ونقطة النهاية API، وملف تعريف الحساب، ومفتاح شبكة اختبار مخصص. اتبع [إنشاء إعدادات عميل Taira](/ar/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config) واحتفظ بالملف خارج نظام التحكم بالمصدر.
+- مجلد عمل قابل للكتابة للسجل اليومي لخدمة تمويل الشبكة التجريبية: ينشئ `iroha taira account faucet prepare` المجلد `./taira-faucet` بأذونات خاصة بالمالك ويرفض استبدال مجلد موجود.
 
 ## خطوات {#steps}
 
 ### 1. فصل الجاهزية عن الحياة {#_1-separate-liveness-from-readiness}
 
-`/livez` هو فحص حيّية العملية بنص عادي. `/status`، `/health`، و `/readyz` تُعيد JSON. يمكن لنود تعمل بشكل طبيعي أن تُعيد `503` من فحوصات الجاهزية عندما يكون نظام فرعي مطلوب محجوبًا.
+`/livez` و`/health` و`/readyz` هي فحوصات بنص عادي؛ ويُعيد `/status` بيانات JSON. يمكن لعقدة تعمل بشكل طبيعي أن تُعيد `503` من `/readyz` عندما يكون قبول الإجماع أو نظام فرعي مطلوب آخر غير متاح.
 
 ```bash
 curl -fsS -H 'Accept: text/plain' https://taira.sora.org/livez
@@ -30,11 +30,11 @@ curl -fsS -H 'Accept: text/plain' https://taira.sora.org/livez
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
-curl -sS -H 'Accept: application/json' \
+curl -sS -H 'Accept: text/plain, application/json' \
   -w '\nHTTP %{http_code}\n' https://taira.sora.org/readyz
 ```
 
-استخدم `/livez` فقط لتحديد ما إذا كانت العملية تستجيب. استخدم `/readyz` لقبول المرور وفحص تفاصيل حاجز JSON قبل اعتبار `503` انقطاعًا.
+استخدم `/livez` فقط لتحديد ما إذا كانت العملية تستجيب. استخدم `/readyz` لقبول المرور. الاستجابة `503` منه هي حاوية خطأ `service_unavailable` بدون تفاصيل عن الحاجز، لذا شغّل التشخيصات أدناه قبل اعتبارها انقطاعًا.
 
 ### 2. تشغيل التشخيصات العامة {#_2-run-the-public-diagnostics}
 
@@ -48,7 +48,7 @@ iroha taira doctor --public-root https://taira.sora.org --json
 
 ### 3. استخرج معرف حساب Taira دون طباعة أي سر {#_3-derive-the-taira-account-id-without-printing-a-secret}
 
-اقرأ المفتاح العام فقط من الإعدادات، ثم قم بترميزه باستخدام الملف الشخصي Taira I105. توفر القيمة `[account].domain` سياق التوجيه؛ فهي ليست جزءًا من معرف الحساب.
+اقرأ المفتاح العام فقط من الإعدادات، ثم قم بترميزه باستخدام الملف الشخصي Taira I105. لا يحمل معرف الحساب أي نطاق؛ ويختار `[account].profile` بادئة الشبكة الخاصة به فقط.
 
 ```bash
 TAIRA_PUBLIC_KEY="$(python3 - <<'PY'
@@ -69,18 +69,29 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID"
 
 ### 4. المطالبة بالأصل الرسومي الحالي Taira {#_4-claim-the-current-taira-fee-asset}
 
-استجابة خدمة تمويل شبكة الاختبار هي مصدر الحقيقة لتعريف أصل الرسوم. احتفظ بمعرف Base58 المُعاد بدلاً من نسخ معرف من شبكة أخرى أو تشغيل قديم.
+تحدد سياسة خدمة تمويل الشبكة التجريبية تعريف أصل الرسوم الحالي. احتفظ بمعرف Base58 الخاص به بدلاً من نسخ معرف من شبكة أخرى أو تشغيل قديم. السياسة بيانات اكتشاف غير موقعة، لذا يجب على الأتمتة تثبيت المُصدِر وتعريف الأصل والمبلغ الذي تتوقعه بدلاً من الوثوق بكل استجابة.
 
 ```bash
-python3 ./taira_faucet_claim.py "$TAIRA_ACCOUNT_ID" \
-  | tee taira-faucet.json
+curl -fsS -H 'Accept: application/json' \
+  https://taira.sora.org/v1/accounts/faucet/policy \
+  | tee taira-faucet-policy.json
 
-export TAIRA_FEE_ASSET="$(jq -er '.asset_definition_id' taira-faucet.json)"
-jq -n --arg gas_asset_id "$TAIRA_FEE_ASSET" \
-  '{gas_asset_id: $gas_asset_id}' > taira.tx-metadata.json
+export TAIRA_FEE_ASSET="$(
+  jq -er '.asset_definition_id' taira-faucet-policy.json
+)"
+
+iroha --config ./taira.client.toml --fee-payer authority \
+  taira account faucet prepare \
+  --journal ./taira-faucet \
+  --issuer "$(jq -er '.authority' taira-faucet-policy.json)" \
+  --asset-definition "$TAIRA_FEE_ASSET" \
+  --amount "$(jq -er '.amount' taira-faucet-policy.json)"
+
+iroha --config ./taira.client.toml \
+  taira account faucet submit --journal ./taira-faucet
 ```
 
-تحقق من الرصيد لمدة لا تزيد عن دقيقة واحدة. يمكن لخدمة تمويل الشبكة التجريبية إرجاع `202 Accepted` قبل أن تكون معاملة التمويل مرئية.
+يحل `prepare` مسألة إثبات العمل ويحفظ المعاملة الموقعة الدقيقة؛ ويرسلها `submit` مرة واحدة ويعود بعد تطبيقها. إذا أبلغ `submit` عن `Pending` أو انتهت مهلته، فشغّل `taira account faucet resume` بالإعدادات والسجل اليومي نفسيهما بدلاً من تحضير مطالبة أخرى. ثم تحقق من الرصيد لمدة لا تزيد عن دقيقة واحدة.
 
 ```bash
 funded=false
@@ -96,7 +107,7 @@ done
 test "$funded" = true
 ```
 
-`gas_asset_id` هو بيانات وصفية للمعاملة. الاختيار الصريح لـ `--fee-payer authority` مرتبط بالتوقيع، و CLI يحصل على تقدير دقيق لسعر الرسوم قبل أن يوقع.
+استخدم `--fee-payer authority` لكل عملية كتابة على Taira. هذا الاختيار مرتبط بالتوقيع، ويعرض CLI تقدير سعر الرسوم الدقيق بأصل رسوم Taira قبل التوقيع.
 
 ## تحقق {#verify}
 
@@ -106,8 +117,7 @@ test "$funded" = true
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg 'cookbook-connect' \
+  tx ping --msg 'cookbook-connect' \
   > taira-connect-submission.json
 
 jq '{hash, fee_quote}' taira-connect-submission.json
@@ -115,27 +125,27 @@ TAIRA_TX_HASH="$(jq -er '.hash' taira-connect-submission.json)"
 
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction status \
+  tx status \
   --hash "$TAIRA_TX_HASH" \
   --wait \
   --timeout-ms 60000
 ```
 
-يتم تنفيذ الأمر النهائي بنجاح فقط بعد أن تصل المعاملة إلى حالة الطرفية الافتراضية `Applied`. احتفظ بالهاش التشفيري في دليل الاختبار؛ لا تخزن أبدًا المفتاح الخاص أو تكوين العميل الكامل معه.
+ينجح الأمر النهائي فقط بعد أن تُبلغ الحالة الشاملة الدقيقة عن نهائية `Applied` محسومة على مستوى الحالة. احتفظ بالهاش التشفيري في دليل الاختبار؛ لا تخزن أبدًا المفتاح الخاص أو تكوين العميل الكامل معه.
 
 ## استكشاف الأخطاء وإصلاحها {#troubleshooting}
 
-- `/livez` يُرجع `406` عند الطلب من JSON لأن نقطة النهاية API هي `text/plain`. أرسل `Accept: text/plain` كما هو موضح أعلاه.
-- `/health` أو `/readyz` قد يُرجع `503` مع حاجز قابل للقراءة آليًا حتى بينما يعمل `/livez` و `/status`. أصلح ذلك أو انتظر ذلك الحاجز؛ إعادة توليد المفاتيح لن تغير جاهزية العقدة.
-- خدمة تمويل شبكة الاختبار `502`، انتهاء المهلة، أو مرساة إثبات العمل القديمة هي فشل في الخدمة العامة. احصل على لغز جديد وحاول مرة أخرى لاحقًا.
+- تُرجع `/livez` و`/health` و`/readyz` الرمز `406` عند طلب JSON فقط لأنها تجيب بصيغة `text/plain`. أرسل ترويسات `Accept` الموضحة أعلاه.
+- قد يُرجع `/readyz` الرمز `503` مع حاوية خطأ `service_unavailable` حتى بينما يعمل `/livez` و `/status`. انتظر الجاهزية أو شغّل `iroha taira doctor`؛ إعادة توليد المفاتيح لن تغير جاهزية العقدة.
+- الرمز `502` من خدمة تمويل الشبكة التجريبية أو انتهاء المهلة أثناء `submit` يترك نتيجة المطالبة مجهولة: شغّل `taira account faucet resume` بالإعدادات والسجل اليومي نفسيهما بدلاً من تحضير مطالبة أخرى. تؤدي مرساة إثبات العمل القديمة إلى فشل `prepare`؛ حضّر مجددًا في مجلد سجل يومي جديد.
 - خطأ في البادئة I105 يعني أن المفتاح العام تم ترميزه باستخدام الملف التعريفي الخاطئ. أعد تشغيل `iroha tools address convert --profile taira`.
-- عادةً ما يعني رفض عرض الرسوم أن المبدأ التفويضي لم يُمول، أو أن بيانات وصف أصول الرسوم قديمة، أو أنه لم يتم اختيار دافع رسوم صريح.
+- عادةً ما يعني رفض تقدير سعر الرسوم أن المبدأ التفويضي غير مموّل أو أن `network_id` المُكوَّن ليس الخاص بـ Taira. يفشل غياب `--fee-payer`، أو وجود مفتاح رسوم مثل `gas_asset_id` في `--metadata`، محليًا قبل تقدير السعر.
 - يمكن أن يتم رفض التسجيل أو الإصدار أو إدارة مساحة الاسم حتى بعد نجاح هذا الاختبار التجريبي. تتطلب هذه العمليات أذونات بيئة تشغيل برامج منفصلة؛ قم بتجربتها على الشبكة المحلية المولدة عندما لم يتم منح الوصول لـ Taira.
 
 ## المصدر والمستندات ذات الصلة {#source-and-related-docs}
 
-- [Taira CLI التشخيصات ومصدر الكناري في مراجعة كود المصدر المثبتة](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/taira.rs)
-- [تحديد الرسوم الصريحة و CLI مصدر الإرسال في نسخة الشيفرة المصدرية المثبتة](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
+- [مصدر تشخيصات CLI والكناري في Taira](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/taira.rs) و[أوامر خدمة تمويل الشبكة التجريبية](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/taira_onboarding.rs) عند مراجعة كود المصدر المثبتة
+- [تحديد الرسوم الصريحة و CLI مصدر الإرسال في نسخة الشيفرة المصدرية المثبتة](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs)
 - [دليل خدمة الحساب وتمويل الشبكة التجريبية Taira](/ar/get-started/sora-nexus-dataspaces.md)
 - [تكوين العميل](/ar/guide/configure/client-configuration.md)
 - [المعاملات](/ar/blockchain/transactions.md)

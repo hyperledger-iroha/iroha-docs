@@ -1,9 +1,9 @@
 ---
 translation_locale: kk
 translation_source: /cookbook/stream-events.md
-translation_source_hash: 96f0a26000530fee15d121f815f9f5717a535dc3836cff9a2a447b1e5b70c41c
+translation_source_hash: d6202b208288688cdfd927491d6670f094f631ccaecd7ff62858a94267c5306a
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Оқиғаларды жіберу {#stream-events}
@@ -22,10 +22,10 @@ translation_engine: bing-translator-llm
 
 ### 1. SSE жауабын растаңыз {#_1-confirm-the-sse-response}
 
-Taira қазіргі уақытта осы маршрутты тек `Accept` тақырыбы екеуін де қамтыған кезде — таңдалған оқиға ағыны мен JSON резервтік нұсқасы — келіседі. curl буферлеуді өшіріңіз. Команда 15 секундтан кейін аяқталады; тыныш кезеңде тек жүрек соғу комментарийлерін алу жарамды.
+Оқиғалар ағынын JSON резервтік нұсқасымен сұраңыз: Torii ағынды `text/event-stream` пішімінде жібереді, ал қабылданбаған сұрауды, мысалы, жарамсыз сүзгіні, JSON қатесі ретінде хабарлайды. curl буферлеуін өшіріңіз. Команда 20 секундтан кейін аяқталады. Torii 15 секунд әрекетсіздіктен кейін heartbeat түсініктемесін жібереді, сондықтан тыныш кезеңде тек heartbeat түсініктемелерін алу қалыпты жағдай.
 
 ```bash
-curl -sS -N --max-time 15 \
+curl -sS -N --max-time 20 \
   -H 'Accept: text/event-stream, application/json' \
   https://taira.sora.org/v1/events/sse
 ```
@@ -34,15 +34,12 @@ curl -sS -N --max-time 15 \
 
 ### 2. Сүзгіден өткізілген JavaScript тұтынушыны қосу {#_2-add-a-filtered-javascript-consumer}
 
-Келесіні `stream-taira.mjs` ретінде сақтаңыз. Ол тікелей Fetch қолданады, сондықтан сұрау Taira-тің қажетті аралас `Accept` тақырыбын жібере алады. Ағымдағы `FilterExpr` мақұлданған транзакция оқиғаларын таңдайды, ал парсер SSE кадрларын қайта ойнату курсорысыз тұтынады.
+Келесіні `stream-taira.mjs` ретінде сақтаңыз. Ол тасымалдау пішімін көрсету үшін Fetch-ті тікелей пайдаланады. `filter` сұрау параметрі мақұлданған транзакция оқиғаларын таңдау үшін Torii мәтіндік сүзгі грамматикасын пайдаланады, ал талдағыш SSE кадрларын қайта ойнату курсорынсыз өңдейді.
 
 ```js
 const baseUrl = 'https://taira.sora.org'
 const shutdown = new AbortController()
-const filter = {
-  op: 'eq',
-  args: ['tx_status', 'Approved'],
-}
+const filter = 'tx_status = "Approved"'
 
 process.once('SIGINT', () => shutdown.abort())
 process.once('SIGTERM', () => shutdown.abort())
@@ -52,7 +49,7 @@ const delay = (milliseconds) =>
 
 async function reconcile() {
   const response = await fetch(
-    `${baseUrl}/v1/explorer/transactions?page=1&per_page=25`,
+    `${baseUrl}/v1/explorer/transactions?limit=25`,
     { headers: { Accept: 'application/json' } },
   )
   if (!response.ok) {
@@ -63,7 +60,7 @@ async function reconcile() {
 
 async function* streamOnce() {
   const url = new URL('/v1/events/sse', baseUrl)
-  url.searchParams.set('filter', JSON.stringify(filter))
+  url.searchParams.set('filter', filter)
   const response = await fetch(url, {
     headers: { Accept: 'text/event-stream, application/json' },
     signal: shutdown.signal,
@@ -164,7 +161,7 @@ SSE жүрек қағысы пікірлері бос тұрған қосылы�
 
 Соңғы-25 шолушы сұрауы тек қоғамдық диагностикалық болып табылады. Өндірістік тұтынушы `reconcile()` мәнін оның тұрақты қолданба ресурстарына арналған сұраулармен және оның тексеру нүктесі үшін жеткілікті үлкен қалпына келтіру шегімен алмастыруы немесе кеңейтулері қажет. Шектелген нүкте-мезгіл деректер көрінісі тек оқиғалар жіберілмегенін дәлелдей алмайды.
 
-Бекітілген бастапқы код нұсқасында, `ToriiClient.streamEvents()` тек `Accept: text/event-stream` жібереді; тірі Taira сол тар тақырыпты `406` арқылы қабылдамайды. Жоғарыдағы шикі Fetch формасын SDK және қоғамдық API нүктелер бірдей медиа түрлерін келісіп болғанша пайдаланыңыз.
+`@iroha/iroha-js` пакетіндегі `ToriiClient.streamEvents({ filter })` сол ағынды оқиды: `field('tx_status').eq('Approved')` немесе жоғарыдағы мәтіндік сүзгіні беріңіз. Ағын аяқталмас бұрын ол соңғы `stream_error` кадрын береді, сондықтан жоғарыдағы қайта қосылу және салыстырып тексеру ережелері әлі де қолданылады.
 
 ## Растау {#verify}
 
@@ -173,7 +170,7 @@ SSE жүрек қағысы пікірлері бос тұрған қосылы�
 ```bash
 curl -fsS \
   -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=25' |
+  'https://taira.sora.org/v1/explorer/transactions?limit=25' |
   jq .
 ```
 
@@ -182,17 +179,17 @@ curl -fsS \
 ## Ақауларды жою {#troubleshooting}
 
 - Жүрек соғу тәрізді пікірлермен байланыс бар, бірақ деректер оқиғалары жоқ байланыс сау болып табылады; таңдалған бағдарламалық жасақтама өңдеу жұмыс ағысының күйі жай ғана тыныш болуы мүмкін.
-- `406 Not Acceptable` тікелей эфирде Taira әдетте сұраным тек `text/event-stream` деп жарияланғанын білдіреді. `text/event-stream, application/json` дәл жоғарыда көрсетілгендей жіберіңіз.
-- `stream_error` оқиғасы сервердің кідіріс немесе басқа терминал ағын күйін анықтағанын көрсетеді. Torii бұл оқиғаны бір рет жібереді және ағынды жабады; қайта қосылмас бұрын тізімде сәйкестендіріңіз.
+- `invalid_filter` кодымен келген `400` `filter` Torii мәтіндік грамматикасына сәйкес келмейтінін немесе оқиғалар ағындары қолдамайтын өрісті атайтынын білдіреді. Оқиғалар ағындары `tx_status`, `tx_hash`, `tx_block_height`, `tx_lane_id`, `tx_dataspace_id`, `block_status`, `block_height`, `proof_backend`, `proof_call_hash` және `proof_envelope_hash` өрістері бойынша сүзгіленеді.
+- `stream_error` оқиғасы сервер кешігуді немесе ағынның басқа соңғы күйін анықтағанын көрсетеді. Torii бұл оқиғаны бір рет жіберіп, ағынды жабады; алмастырушы ағынды ашыңыз, содан кейін салыстырып тексеріңіз.
 - Прокси Torii істемегенде де SSE-ті буферлей алады. Проксидегі жауап буферлеу және қысуды өшіріп, диагностикада `curl -N`-ты сақтаңыз.
 - Келесі оқиға алдыңғысынан кейін болады деп ойлап, ажырату саңылауын ешқашан толтырмаңыз. API соңғы нүктеде қайта ойнату курсоры жоқ; оның орнына ағымдағы блокчейн тізілімінің жағдайын сұраңыз.
 
 ## Дереккөз және қатысты құжаттар {#source-and-related-docs}
 
-- [JavaScript бекітілген бастапқы код нұсқасында ағындық рецепт](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs)
-- [SSE интеграциялық тесттер бекітілген код нұсқасында](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs)
-- [Torii FilterExpr процессор бекітілген бастапқы код нұсқасында](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs)
-- [Torii бекітілген бастапқы код нұсқасында оқиға бағыттау](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
+- [JavaScript бекітілген бастапқы код нұсқасында ағындық рецепт](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes/streaming.mjs)
+- [SSE интеграциялық тесттер бекітілген код нұсқасында](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/events/sse_smoke.rs)
+- [Бекітілген бастапқы код нұсқасындағы Torii сүзгісінің мәтіндік грамматикасы](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/src/list_query/text.rs)
+- [Torii бекітілген бастапқы код нұсқасында оқиға бағыттау](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/routing.rs)
 - [Оқиғалар](/kk/blockchain/events.md)
 - [Torii API соңғы нүктелері](/kk/reference/torii-endpoints.md)
 - [Блокчейн регистрінің күйін сұрау](./query-ledger-state.md)

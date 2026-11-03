@@ -1,9 +1,9 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 576e03924f19b63681cdfafa641b996672e35a992478fc9eaf5b83f0e7baa6da
+translation_source_hash: d399284a2baec507e4c979c762d6e216d8c3fbc5b4b4fe221b6bbb0049ee9fd9
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Протоколға индерелгән актив эскроуы {#native-asset-escrow}
@@ -15,8 +15,8 @@ translation_engine: nllb-200-ct2
 ## Шарттар {#prerequisites}
 
 - Санлы активтар билдәләмәһе һәм етерлек күләмдә булған асыусы/сатыусы.
-- Берҙән-бер асҡыс менән финансланған I105 клиенттар өсөн һәр партияһы баҫҡыс тапшыра. ҡулланыу туранан-тура вәкәләтле иҫәп түләүле `fee_payment` маҡсат, уның түләү активы ағымдағы Taira faucet-ҡа яуап биреү; активты ҡуймағыҙ ID документтарҙан.
-- Хәҙерге Rust йәки Python SDK Iroha commit `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
+- Аҙым тапшырған һәр яҡ өсөн финансланған, бер асҡыслы I105 клиенттары. Түләү активы ағымдағы Taira faucet сәйәсәте баҫтырған актив менән тап килгән, вәкәләтле иҫәп түләгән ағымдағы `fee_payment` ниәтен ҡулланығыҙ; документациянан актив ID-һын индермәгеҙ.
+- Хәҙерге Rust йәки Python SDK Iroha commit `c8c872461e92f04325c350cdd952f4276e96f9dc`.
 - өсөн JavaScript компилятор миҫалы, Node.js 24 плюс урындағы төҙөлгән `@iroha/iroha-js` пакеты һәм уның сығышы `iroha_js_host`; күҙәтеү [JavaScript SDK сығанаҡ төҙөлөшөн көйләү](/ba/guide/tutorials/javascript.md#build-from-source). Браузер төҙөү тәьмин ителергә тейеш `compilerUrl` урындағы хужаны йөкләү урынына.
 - Taira активтар күсереү һәм һаҡланыу инструкцияларын ҡабул итергә тейеш. Аҡса хужалары ғәҙәттәгесә йәшәү циклын ҡуллана ала, әгәр уларҙың актив сәйәсәте рөхсәт итһә; бәхәстәрҙе хәл итеү өсөн глобаль `CanResolveEscrowDispute` рөхсәтен талап итә.
 
@@ -31,7 +31,7 @@ translation_engine: nllb-200-ct2
 ```rust
 use eyre::{Result, ensure};
 use iroha::{
-    client::Client,
+    blocking::Client,
     data_model::{
         isi::escrow::{
             AcceptAssetEscrow, MarkEscrowPaymentSent, OpenAssetEscrow,
@@ -51,7 +51,7 @@ fn complete_marketplace_escrow(
 ) -> Result<AssetEscrowRecord> {
     let fee = FeePaymentIntent::authority(Vec::new(), None);
 
-    seller.submit_blocking(
+    seller.submit(
         OpenAssetEscrow::with_evidence_hashes(
             escrow_id,
             asset_definition,
@@ -60,11 +60,13 @@ fn complete_marketplace_escrow(
         ),
         fee.clone(),
     )?;
-    buyer.submit_blocking(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
-    buyer.submit_blocking(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
-    seller.submit_blocking(ReleaseAssetEscrow::new(escrow_id), fee)?;
+    buyer.submit(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
+    buyer.submit(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
+    seller.submit(ReleaseAssetEscrow::new(escrow_id), fee)?;
 
-    let record = seller.query_single(FindAssetEscrowById::new(escrow_id))?;
+    let record = seller
+        .client()
+        .query_single(FindAssetEscrowById::new(escrow_id))?;
     ensure!(record.status == AssetEscrowStatus::Released);
     Ok(record)
 }
@@ -74,7 +76,7 @@ fn complete_marketplace_escrow(
 
 ### 2. Python менән дөйөм бикләүҙе асығыҙ һәм өлөшләтә төшөрөгөҙ. {#_2-open-and-partially-draw-a-generic-lock-with-python}
 
-Азат итеү власы ҡул ҡуйылған туғандаш яҙманан яҙылыу алдынан һорау ала. был теүәл `remaining_amount` тапшырыу оптимистик бер үк ваҡытталыҡ бирә: һаҡлыҡты ике тапҡыр дебютлау урынына, иҫкергән параллель ғариза кире ҡағыла.
+Азат итеү вәкәләте булған иҫәп өлөшләтә төшөрөр алдынан ҡул ҡуйылған протокол яҙмаһын һорап ала. Нәҡ шул `remaining_amount` ҡиммәтен биреү оптимистик конкуренция контролен тәьмин итә: иҫкергән параллель һорау һаҡлауҙағы активтарҙы ике тапҡыр сисеү урынына кире ҡағыла. `client` — `local_signing_context=LocalSigningContext(network_id)` һәм селтәрҙең `chain_discriminant` ҡиммәте менән булдырылған `ToriiClient`; транзакция ярҙамсылары селтәр идентификацияһын шул контексттан ала, ә ҡул ҡуйылған һорауҙар уны `network_id` итеп ала.
 
 ```python
 import secrets
@@ -92,7 +94,6 @@ def escrow_status(record):
 def open_and_draw_lock(
     *,
     client,
-    chain_id,
     opener,
     opener_private_key,
     release_authority,
@@ -102,9 +103,9 @@ def open_and_draw_lock(
     fee_payment,
 ):
     escrow_id = f"cookbook_lock_{secrets.token_hex(12)}"
+    network_id = client.local_signing_context.network_id
 
     client.open_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=opener,
         private_key=opener_private_key,
         fee_payment=fee_payment,
@@ -120,10 +121,10 @@ def open_and_draw_lock(
     before = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
     client.drawdown_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=release_authority,
         private_key=release_private_key,
         fee_payment=fee_payment,
@@ -135,6 +136,7 @@ def open_and_draw_lock(
     after = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
 
@@ -150,8 +152,10 @@ Python SDK автоматик һорау бирә ала, әгәр `expected_rem
 Rust бикләү ағымы өсөн, ағымдағы конструкторҙар шулай уҡ күҙәтелгән күләмде талап итә:
 
 ```rust
-let before = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-release_authority.submit_blocking(
+let before = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+release_authority.submit(
     DrawdownAssetLock::new(
         lock_id,
         Quantity::from(4_u64),
@@ -160,23 +164,26 @@ release_authority.submit_blocking(
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 
-let current = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-opener.submit_blocking(
+let current = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+opener.submit(
     CancelAssetLock::new(lock_id, current.remaining_amount),
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 ```
 
-`DrawdownAssetLock::new` өс баһа ала; `CancelAssetLock::new` ике. көтөлгән ҡалған сумманы ситләтеү иҫке, хәүефһеҙ булмаған саҡырыу формаһын һүрәтләй.
+`DrawdownAssetLock::new` бикләүҙе, сумманы һәм күҙәтелгән ҡалған сумманы ала; `CancelAssetLock::new` бикләүҙе һәм күҙәтелгән ҡалған сумманы ала. Әгәр ҡалған сумма алдан үҙгәргән булһа, реестр был инструкцияларҙың теләһә ҡайһыһын кире ҡаға.
 
 ### 3. Kotodama иҫәбенә JavaScript иҫәбен алыу. {#_3-compile-the-kotodama-escrow-surface-from-javascript}
 
-JavaScript тибы булмаған урындағы күрһәтмәләрҙе уйлап табырға кәрәкмәй. Хәҙерге компилятор иҫәп-хисап ҡаҙнаһы эскровының Kotodama составында төҙөлгәнен аса; урынлаштырыу һәм саҡырыуҙар һуңынан [Аҡыллы килешеү төҙөү һәм урынлаштырыу](./smart-contracts.md).
+JavaScript-ҡа протоколға индерелгән типһыҙ инструкциялар уйлап сығарырға кәрәкмәй. Хәҙерге компилятор реестрҙың эскроу өсөн эсенә ҡоролған функцияларын Kotodama-ға аса; артабан урынлаштырыу [Аҡыллы килешеү төҙөү һәм урынлаштырыу](./smart-contracts.md) битендәгесә бара. `open_offer` инеү нөктәһе `authorize(Admin)` булып тора, шуға күрә башҡарыусы (executor) уны саҡырыусынан урынлаштырылған адрес һәм `permission: "Admin"` өсөн `CanUseContractPermission` рөхсәте булыуын талап итә.
 
 `native_escrow.ko` тип һаҡлағыҙ:
 
 ```kotodama
 seiyaku NativeEscrowAitai {
+    permission Admin;
     error enum EscrowError {
         NonPositiveAmount = 1,
     }
@@ -185,7 +192,7 @@ seiyaku NativeEscrowAitai {
         Name offer,
         AssetDefinitionId asset_definition,
         quantity amount
-    ) authorize("Admin") {
+    ) authorize(Admin) {
         require(amount > 0, EscrowError::NonPositiveAmount);
         ledger::escrow::open_offer(
             offer: offer,
@@ -230,6 +237,7 @@ node ./compile-native-escrow.mjs
 record = client.get_asset_escrow(
     escrow_id=escrow_id,
     authority=release_authority,
+    network_id=client.local_signing_context.network_id,
     private_key=release_private_key,
 )
 assert escrow_status(record) == "Locked"
@@ -241,7 +249,7 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 ## Проблемаларҙы хәл итеү {#troubleshooting}
 
 - `Not permitted` асылған ваҡытта, ғәҙәттә, орган һайланған активты һаҡ аҫтына ала алмай тигәнде аңлата. Яуызлыҡтарҙы хәл итеүгә айырым глобаль `CanResolveEscrowDispute` Ҡапҡа.
-- `expected remaining amount` кире ҡағыу оптимистик-конкуренция конфликты булып тора. рекорды ҡабаттан һорағыҙ, башҡа түләтеү / бөтөрөү ҡаралғанмы икәнен хәл итегеҙ һәм яңы күрһәтмәгә ҡул ҡуйығыҙ, тик әгәр яңы дәүләт ҡабул ителә икән.
+- `asset lock remaining amount changed since the drawdown was prepared` (йәки `...since the cancellation was prepared`) хатаһы — оптимистик конкуренция конфликты. Яҙманы ҡабат һорап алығыҙ, икенсе өлөшләтә төшөрөү/юҡҡа сығарыу ниәтләнгәнме икәнен хәл итегеҙ һәм яңы торош ҡабул ителерлек булғанда ғына яңы инструкцияға ҡул ҡуйығыҙ.
 - Бары тик конфигурацияланған иреккә сығарыу органы ғына ышаныслы бик төшөрә ала. Юлға сығыу урыны аҡсаны аласаҡ өсөн генә уны иреккә сығара алмай.
 - Баҙарҙа сығарыу ҡабул итеү һәм түләү ебәреү дәүләтенән һуң ғына ғәмәлдә була; ғәмәлдән сығарыу тәүге йәшәү циклы дәүләттәренә генә сикләнә.
 - Иҫәпкә алыу ваҡыты иҫәбенә ҡулланыу. `ExpireAssetLock` үтәсәгенә дәлил итеп урындағы система сәғәтеенең ваҡытын ҡарамағыҙ.
@@ -249,10 +257,10 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## Сығанаҡ һәм уның менән бәйле документтар {#source-and-related-docs}
 
-- [Ҡатырылған commit-та протокол эскроуының инструкция моделе](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
-- [Ҡатырылған commit-та протокол эскроуының интеграция һынауҙары](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
-- [Python конфиденциаль клиенттарҙың билдәләнгән commit буйынса алымдары](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama фиктив commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko) буйынса урындағы депозит өлгөһө
+- [Ҡатырылған commit-та протокол эскроуының инструкция моделе](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/isi/escrow.rs)
+- [Ҡатырылған commit-та протокол эскроуының интеграция һынауҙары](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/native_escrow.rs)
+- [Python конфиденциаль клиенттарҙың билдәләнгән commit буйынса алымдары](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama фиктив commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/native_escrow.ko) буйынса урындағы депозит өлгөһө
 - [Протоколға индерелгән актив эскроуы](/ba/blockchain/escrow.md)
 - [Функциональ активтар](./fungible-assets.md)
 - [Рөхсәт һәм ролдәр](./permissions-and-roles.md)

@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /reference/norito.md
-translation_source_hash: b3b7c03bc0df3f7fa3df7e44b0ec8d755d615f9edca66bbcfe5613c33c8afbfe
+translation_source_hash: 810f4378316f4717dee1be4aeffb07e27e81e47735e8031edff775818a48bf48
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -205,5 +205,5 @@ Norito Стриминг шул уҡ детерминистик алымды ме
 
 ## Үрге йүнәлештәге ссылкалар {#upstream-references}
 
-- [Norito форматы буйынса спецификация](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/norito.md)
-- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)
+- [Norito форматы буйынса спецификация](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/norito.md)
+- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/norito/README.md)

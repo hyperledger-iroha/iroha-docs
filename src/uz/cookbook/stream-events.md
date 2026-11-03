@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /cookbook/stream-events.md
-translation_source_hash: 96f0a26000530fee15d121f815f9f5717a535dc3836cff9a2a447b1e5b70c41c
+translation_source_hash: d6202b208288688cdfd927491d6670f094f631ccaecd7ff62858a94267c5306a
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Oqim Tadbirlar {#stream-events}
@@ -22,10 +22,10 @@ Server tomonidan yuborilgan voqealar (SSE) orqali jonli Taira dasturiy ta'minot 
 
 ### 1. SSE javobini tasdiqlang {#_1-confirm-the-sse-response}
 
-Taira hozirgi vaqtda ushbu marshrut bo‘ylab faqat `Accept` sarlavhasi ham afzal ko‘rilgan voqea oqimini, ham JSON zaxira variantini o‘z ichiga olganida muzokaralar qiladi. curl keshini o‘chirib qo‘ying. Buyruq 15 soniyadan so‘ng tugaydi; jim davrda faqat yurak urishi sharhlarini qabul qilish to‘g‘ri hisoblanadi.
+Voqealar oqimini JSON zaxira varianti bilan so‘rang: Torii `text/event-stream` oqimini uzatadi, rad etilgan so‘rovni, masalan, yaroqsiz filtrni esa JSON xatosi sifatida bildiradi. curl buferlashini o‘chirib qo‘ying. Buyruq 20 soniyadan so‘ng tugaydi. Torii 15 soniya faoliyatsizlikdan keyin yurak urishi izohini yuboradi, shuning uchun jim davrda faqat yurak urishi izohlarini qabul qilish to‘g‘ri hisoblanadi.
 
 ```bash
-curl -sS -N --max-time 15 \
+curl -sS -N --max-time 20 \
   -H 'Accept: text/event-stream, application/json' \
   https://taira.sora.org/v1/events/sse
 ```
@@ -34,15 +34,12 @@ curl -sS -N --max-time 15 \
 
 ### 2. Filtrlashgan JavaScript iste'molchisini qo'shish {#_2-add-a-filtered-javascript-consumer}
 
-Quyidagini `stream-taira.mjs` sifatida saqlang. Bu bevosita Fetch-dan foydalanadi, shuning uchun so‘rov Taira talab qilinadigan aralash `Accept` sarlavhasini yuborishi mumkin. Joriy `FilterExpr` tasdiqlangan tranzaksiya voqealarini tanlaydi va parser SSE kadrlarni qayta ijro kursorisiz ishlatadi.
+Quyidagini `stream-taira.mjs` sifatida saqlang. U tarmoqdagi uzatish formatini ko‘rsatish uchun bevosita Fetch-dan foydalanadi. `filter` so‘rov parametri tasdiqlangan tranzaksiya voqealarini tanlash uchun Torii-ning matnli filtr grammatikasidan foydalanadi, tahlilchi esa SSE kadrlarini qayta ijro kursorisiz qayta ishlaydi.
 
 ```js
 const baseUrl = 'https://taira.sora.org'
 const shutdown = new AbortController()
-const filter = {
-  op: 'eq',
-  args: ['tx_status', 'Approved'],
-}
+const filter = 'tx_status = "Approved"'
 
 process.once('SIGINT', () => shutdown.abort())
 process.once('SIGTERM', () => shutdown.abort())
@@ -52,7 +49,7 @@ const delay = (milliseconds) =>
 
 async function reconcile() {
   const response = await fetch(
-    `${baseUrl}/v1/explorer/transactions?page=1&per_page=25`,
+    `${baseUrl}/v1/explorer/transactions?limit=25`,
     { headers: { Accept: 'application/json' } },
   )
   if (!response.ok) {
@@ -63,7 +60,7 @@ async function reconcile() {
 
 async function* streamOnce() {
   const url = new URL('/v1/events/sse', baseUrl)
-  url.searchParams.set('filter', JSON.stringify(filter))
+  url.searchParams.set('filter', filter)
   const response = await fetch(url, {
     headers: { Accept: 'text/event-stream, application/json' },
     signal: shutdown.signal,
@@ -164,7 +161,7 @@ SSE yurak urishi izohlari bo'sh ulanishlarni faol holda saqlaydi, lekin reyestrn
 
 Oxirgi 25 ta yozuvni explorer orqali so‘rash faqat ochiq diagnostikadir. Ishlab chiqarish iste’molchisi `reconcile()` ni o‘zining doimiy ilova resurslariga so‘rovlar bilan almashtirishi yoki kengaytirishi va nazorat nuqtasi uchun yetarli tiklash chegarasini belgilashi kerak. Cheklangan oniy nusxaning o‘zi hech bir hodisa o‘tkazib yuborilmaganini isbotlay olmaydi.
 
-Belgilangan manba-kod reviziyasida, `ToriiClient.streamEvents()` faqat `Accept: text/event-stream` ni yuboradi; jonli Taira bu torroq sarlavhani `406` bilan rad etadi. SDK va jamoat API endpointlari bir xil media turlarini kelishib olishguncha yuqoridagi xom Fetch formasidan foydalaning.
+`@iroha/iroha-js` paketidagi `ToriiClient.streamEvents({ filter })` xuddi shu oqimni o‘qiydi: `field('tx_status').eq('Approved')` ni yoki yuqoridagi matnli filtrni bering. U oqim tugashidan oldin yakunlovchi `stream_error` kadrini qaytaradi, shuning uchun yuqoridagi qayta ulanish va muvofiqlashtirish qoidalari amalda qoladi.
 
 ## Tekshirish {#verify}
 
@@ -173,7 +170,7 @@ Bir terminalda JavaScript iste’molchisini ishga tushiring. Boshqasida ochiq tr
 ```bash
 curl -fsS \
   -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=25' |
+  'https://taira.sora.org/v1/explorer/transactions?limit=25' |
   jq .
 ```
 
@@ -182,17 +179,17 @@ Sizga kerak bo‘lgan har bir tranzaksiya hodisasining xeshini oniy nusxadan top
 ## Muammolarni bartaraf etish {#troubleshooting}
 
 - Ma’lumot hodisalarisiz faqat heartbeat izohlari kelayotgan ulanish ham sog‘lom; tanlangan konveyer holati shunchaki tinch bo‘lishi mumkin.
-- `406 Not Acceptable` jonli Taira da odatda talablari faqat `text/event-stream` e’lon qilinishini anglatadi. `text/event-stream, application/json`ni yuqorida ko‘rsatilganidek aniq yuboring.
-- A `stream_error` voqea server kechikishni yoki boshqa terminal oqim sharoitini aniqlaganini bildiradi. Torii ushbu voqeani bir marta yuboradi va oqimni yopadi; qayta ulanishdan oldin muvofiqlashtiring.
+- `invalid_filter` kodli `400` javobi `filter` Torii-ning matnli grammatikasiga mos emasligini yoki voqealar oqimlari qo‘llab-quvvatlamaydigan maydonni nomlashini anglatadi. Voqealar oqimlari `tx_status`, `tx_hash`, `tx_block_height`, `tx_lane_id`, `tx_dataspace_id`, `block_status`, `block_height`, `proof_backend`, `proof_call_hash` va `proof_envelope_hash` bo‘yicha filtrlaydi.
+- `stream_error` voqeasi server kechikishni yoki oqimni yakunlovchi boshqa holatni aniqlaganini bildiradi. Torii bu voqeani bir marta yuboradi va oqimni yopadi; o‘rniga yangi oqim oching, so‘ng muvofiqlashtiring.
 - Vekil Torii qilmasa ham SSE ni keshga olishi mumkin. Vekilda javobni keshga olish va siqishni o‘chirib qo‘ying, va `curl -N` diagnostikada saqlansin.
 - Aloqani uzilish bo'shligini keyingi hodisa oldingisini kuzatadi deb taxmin qilgan holda to'ldirmang. API endpointda qayta o'ynash kursor yo'q; buning o'rniga joriy blokcheyn ledger holatini so'rang.
 
 ## Manba va tegishli hujjatlar {#source-and-related-docs}
 
-- [JavaScript pinlangan source-code revisiyasi bo‘yicha streaming retsepti](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs)
-- [SSE pinlangan manba-kod versiyasidagi integratsiya testlari](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs)
-- [Torii FilterExpr pinlangan manba-kod reviziyasida parser](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs)
-- [Torii pinlangan manba-kod versiyasida voqeani yo'naltirish](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
+- [JavaScript pinlangan source-code revisiyasi bo‘yicha streaming retsepti](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes/streaming.mjs)
+- [SSE pinlangan manba-kod versiyasidagi integratsiya testlari](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/events/sse_smoke.rs)
+- [Mahkamlangan commitdagi Torii filtr matni grammatikasi](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/src/list_query/text.rs)
+- [Torii pinlangan manba-kod versiyasida voqeani yo'naltirish](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/routing.rs)
 - [Tadbirlar](/uz/blockchain/events.md)
 - [Torii API oxir nuqtalar](/uz/reference/torii-endpoints.md)
 - [Reyestr holatini so‘rash](./query-ledger-state.md)

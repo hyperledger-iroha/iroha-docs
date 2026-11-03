@@ -1,22 +1,22 @@
 ---
 translation_locale: zh-hans
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: 68ef931f3d37b9bd40fcf61c9a77313539ca0bd648405834d161a018debb491a
+translation_source_hash: 866b7d3ca37be67878f6f319ce0b0e27eac52c581decad1f46096ef75ad1b10f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # 查询账本状态 {#query-ledger-state}
 
 ## 结果 {#outcome}
 
-阅读和投影 Taira JSON 资源,然后使用编写的 Iroha 查询以过滤器,逻辑页面化,排序,搜索尺寸和仅向前传导线程延续.您还将避免在服务器评估转发的`--select`tuple之前依靠选择器投影.
+读取并投影 Taira JSON 资源，然后通过 CLI 和 Rust SDK 使用 Torii 集合查询，搭配过滤、排序、服务器端投影、分页上限，以及不透明的 `next_cursor` 续接。您还将避免用已签名的带类型查询来列出数据，因为这类查询不会对列表进行过滤、排序或投影。
 
 ## 预先条件 {#prerequisites}
 
 - `curl`,`jq`, Node.js 24,以及电流 `iroha` CLI.
 - 仅可读的 Taira 访问.
-- 在签署的输入查询示例中,为 Taira 或生成的本地网络设置客户端.
+- 对于 CLI 示例，需要 Taira 或生成的本地网络的客户端配置。
 - 在 Rust 例子中,一个项目与目标网络相同的 Iroha 来源修改.
 
 ## 步骤 {#steps}
@@ -30,25 +30,23 @@ translation_engine: nllb-200-ct2
 ```bash [curl]
 curl -fsS -H 'Accept: application/json' --get \
   https://taira.sora.org/v1/domains \
-  --data-urlencode 'sort=id:asc' \
+  --data-urlencode 'sort=id' \
   --data-urlencode 'limit=5' \
-  --data-urlencode 'offset=0' \
-  --data-urlencode 'count_mode=exact' \
-  | jq '{total, ids: [.items[].id]}'
+  --data-urlencode 'include_total=true' \
+  | jq '{total, next_cursor, ids: [.items[].id]}'
 ```
 
 ```js [Node.js]
 const root = 'https://taira.sora.org'
-const limit = 5
 const seen = new Set()
+let cursor = null
 
-for (let offset = 0; ; offset += limit) {
+do {
   const url = new URL('/v1/domains', root)
   url.search = new URLSearchParams({
-    sort: 'id:asc',
-    limit: String(limit),
-    offset: String(offset),
-    count_mode: 'exact',
+    sort: 'id',
+    limit: '5',
+    ...(cursor ? { cursor } : {}),
   })
 
   const response = await fetch(url, {
@@ -63,106 +61,90 @@ for (let offset = 0; ; offset += limit) {
     seen.add(domain.id)
     console.log(domain.id)
   }
-  if (page.items.length < limit || seen.size >= page.total) break
-}
+  cursor = page.next_cursor
+} while (cursor)
 ```
 
 :::
 
-这一 HTTP 表面使用`limit`和`offset`.当路线采用更便宜的计数模式时,将遗漏或局限的 `total`视为正常的.
+这个 HTTP 接口以 `limit` 和不透明的 `next_cursor` 进行分页；请将其原封不动地作为 `cursor` 传回，直到它为 `null`。只有在您请求 `include_total=true` 时才会出现 `total`，而这需要付出全量扫描的代价。
 
-### 2. 过和批量输入 CLI 查询. {#_2-filter-and-batch-a-typed-cli-query}
+### 2. 使用 CLI 过滤集合 {#_2-filter-a-collection-with-the-cli}
 
-CLI 将输入的可重复查询串行化,并内部跟随服务器延续线索.在这里逻辑结果仅限于一个行,而 `--fetch-size 1`则控制每次回路检索的最大批量.
+CLI 会将过滤条件、投影和分页大小发送到集合端点，并打印一页 `{items, next_cursor}`。加上 `--all` 即可持续跟随 `next_cursor`，直到它为 `null`。
 
 ```bash
-DOMAIN_PREDICATE='{"equals":[{"field":"id","value":"wonderland.universal"}]}'
+DOMAIN_FILTER='id = "universal.universal"'
 
 iroha --config ./localnet/client.toml \
-  ledger domain list filter "$DOMAIN_PREDICATE" \
-  --limit 1 \
-  --offset 0 \
-  --fetch-size 1
+  ledger domain list \
+  --filter "$DOMAIN_FILTER" \
+  --select id \
+  --limit 1
 ```
 
-过发生在页面化之前.使用查询特定类型的预言;一个帐户或资产的预言不能安全地重复用于域名.
+过滤发生在分页之前。每个集合只接受自己的字段；未知的字段会返回 `invalid_filter`，而不是不匹配任何内容。
 
 ### 3. 根据稳定的元数据密钥进行排序 {#_3-sort-by-a-stable-metadata-key}
 
-类型查询排序是对一个元数据密钥进行词汇化.没有该密钥的项目遵循运行时的定义顺序,因此使用在整个集合中一致填充的密钥.
+集合排序键接受已声明的字段和 `metadata.<key>`；在键前加上 `-` 表示降序排序。在升序排序中，没有该键的行会排在最前面，且值相同时按行标识排序，因此请使用在整个集合中一致填充的键。
 
 ```bash
 iroha --config ./localnet/client.toml \
   --machine \
-  ledger account list all \
-  --verbose \
-  --sort-by-metadata-key key \
-  --order asc \
+  account list \
+  --sort metadata.key \
   --limit 10 \
-  --offset 0 \
-  --fetch-size 2 \
-  | jq '[.[] | {id, metadata}]'
+  | jq '[.items[] | {id, metadata}]'
 ```
 
-已注册的 CLI 解析`--select` JSON 并转发选择器tuple,但当前的轻量级查询 DSL 不评估服务器上的选择器.尚未围绕它构建投影合同.仅在目标运行时支持后使用输入的 SDK 投影,或者用上述 `jq`或 JavaScript 来投影验证的结果客户端.
+`--select` 是服务器端投影：`--select id,metadata` 只返回这些字段，而未知的字段会返回 `invalid_select`。已签名的带类型查询总是返回完整的条目，因此请如上所示，以 `jq` 或 JavaScript 在客户端投影其结果。
 
 ### 4. 让 Rust 回复器遵循不透明的线索. {#_4-let-the-rust-iterator-follow-opaque-cursors}
 
-`Pagination`限制了逻辑结果集. `FetchSize`控制每个服务器批量.返回的代器通过服务器生成的线索器透明地发送延续请求.
+`limit` 设置分页大小。`list` 返回的迭代器只会在当前页面被读取完毕后，才使用服务器的 `next_cursor` 请求下一页，而 `take` 会限制逻辑结果的数量。这里的 `client` 是一个 `iroha::blocking::Client`。
 
 ```rust
-use std::num::NonZeroU64;
+use iroha::collections::{Collection, ListQuery, SortKey};
 
-use iroha::data_model::{
-    prelude::FindAssetsDefinitions,
-    query::{
-        builder::QueryBuilderExt as _,
-        parameters::{FetchSize, Pagination},
-    },
-};
+let query = ListQuery::new().sort_by(SortKey::asc("id")).limit(5);
 
-let definitions = client
-    .query(FindAssetsDefinitions::new())
-    .with_pagination(Pagination::new(NonZeroU64::new(25), 0))
-    .with_fetch_size(FetchSize::new(NonZeroU64::new(5)))
-    .execute_all()?;
-
-for definition in definitions {
-    println!("{} {}", definition.id(), definition.name());
+for definition in client.list(Collection::AssetDefinitions, query).take(25) {
+    let definition = definition?;
+    println!("{:?} {:?}", definition.get("id"), definition.get("name"));
 }
 ```
 
-一个 `ForwardCursor` 是受授权主体约束的,过程本地,只能向前进行分析.永远不要解析它,合成它,在权限主体之间分享它,或者在 Torii 实例中保留它作为一个便携式简历代币.如果它过期,请重新启动原始查询,使用了故意的应用级检查点.
+`next_cursor` 是一个不透明的键集位置，与其集合、路径、过滤条件和排序绑定。切勿解析或自行合成它，也不要搭配不同的过滤条件或排序重复使用它；Torii 会以 `invalid_cursor` 拒绝这种情况。在页与页之间插入或移除的行，绝不会让后续页面重复或跳过无关的行。
 
 ## 验证 {#verify}
 
-确切域名过滤器应该只返回 `wonderland.universal`. 验证结果,而不是单独计算成功的 CLI 出口:
+确切域名过滤器应该只返回 `universal.universal`. 验证结果,而不是单独计算成功的 CLI 出口:
 
 ```bash
 iroha --config ./localnet/client.toml \
   --machine \
-  ledger domain list filter "$DOMAIN_PREDICATE" \
-  --limit 1 --offset 0 --fetch-size 1 \
-  | jq -e 'length == 1 and .[0] == "wonderland.universal"'
+  ledger domain list --filter "$DOMAIN_FILTER" --select id --limit 1 \
+  | jq -e '[.items[].id] == ["universal.universal"]'
 ```
 
-对于页面化应用查询,也检验 IDs 不会在不同页面中重复,要求的逻辑限制从来没有超过,并在过期后重新尝试缓冲器从文档化检查点开始.
+对于分页的应用程序查询，还要测试 ID 不会跨页重复、所请求的逻辑上限从未被超过，以及被拒绝的游标会从有记录的检查点重新开始。
 
 ## 解决问题 {#troubleshooting}
 
 - 一个单一查询不接受可重复过滤器,排序,页面化或搜索参数.在需要这些控制时使用相应的列表查询.
-- `fetch_size`是一个非零批量暗示,而不是总结果限制.当前默认是`100`,运行时拒绝超过其最大值的值.
-- 一个未知,过期或外国的缓冲器是故意无法重复使用的.重新启动查询;不要试图修复不透明值.
-- 大数据分类不是一般的场地分类.如果每个项目都没有所选的关键,请记录缺失关键顺序或选择另一个策略.
-- CLI 解析和转发`--select`,但当前的服务器不评估轻量级选择器.除非对部署的运行时进行验证,否则应应用客户端投影.
-- 大范围的无限查询增加了对等节点工作,客户端内存和线索终身风险. 设定一个合乎消费者的逻辑限制和搜索量.
-- 公共 JSON 资源参数与已签名的类型化查询参数彼此相关，但并不是可互换的序列化格式。对于类型化查询封装，请优先使用 SDK 或 CLI。
+- `limit` 是分页大小，而不是结果总数：最小为 1，最大为节点的 `torii.app_api_max_list_limit`（默认 500）；Torii 的默认值是 100。若要读取更多，请跟随 `next_cursor`、使用 `--all` 或 SDK 迭代器。
+- `invalid_cursor` 表示游标格式错误，或属于不同的集合、路径、过滤条件或排序。请重新开始查询；不要尝试修复这个不透明的值。
+- 选择性高的过滤条件可能返回较短或空白的页面，并附带非空的 `next_cursor`。请持续跟随它，直到它为 `null`。
+- `--filter` 和 HTTP `filter` 参数采用 Torii 的文本语法，例如 `id = "universal.universal"` 或 `exists(metadata.tier)`。JSON 谓词对象不是过滤文本，会以无效的 `filter` 失败。
+- 范围广且无上限的查询会增加对等节点的工作量和客户端内存用量。请设置适合使用方的逻辑上限和分页大小。
+- 已签名的 `/v1/query` 不是列表 API。它只接受单一查询和少数不带过滤的可迭代查询起点，并以 `signed_query_shape_not_admitted` 拒绝其他查询，例如 `FindDomains` 或 `FindAssetDefinitions`。集合端点、CLI `list` 命令和 SDK 集合读取器共用同一套过滤、排序和游标语法。
 
 ## 来源及相关文件 {#source-and-related-docs}
 
-- [在固定的 commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs)中支持 cursor 的页面化集成测试
-- [查询构建者和选择者的行为在固定提交中](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs)
-- [在固定 commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs) 中查询参数和线程模型
+- [固定提交中的 Torii 集合查询规范](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/torii/collection_queries.md)
+- [固定提交中的 Rust 集合读取与游标迭代器](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/src/collections.rs)
+- [固定提交中的已签名查询准入规则](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/query_json.md)
 - [查询](/zh-hans/blockchain/queries.md)
 - [查询参考](/zh-hans/reference/queries.md)
 - [JavaScript 和 TypeScript](/zh-hans/guide/tutorials/javascript.md)

@@ -1,22 +1,22 @@
 ---
 translation_locale: he
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: 68ef931f3d37b9bd40fcf61c9a77313539ca0bd648405834d161a018debb491a
+translation_source_hash: 866b7d3ca37be67878f6f319ce0b0e27eac52c581decad1f46096ef75ad1b10f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # רישומים של מצב ספר החשבונות {#query-ledger-state}
 
 ## התוצאה {#outcome}
 
-קראו משאבי JSON של Taira והפיקו מהם את השדות הדרושים, ולאחר מכן השתמשו בשאילתות Iroha בעלות טיפוס עם מסננים, עימוד לוגי, מיון, גדלי אחזור והמשך באמצעות סמן הנע קדימה בלבד. כמו כן, אל תסתמכו על projection של selector לפני שהשרת תומך בהערכת ה־tuple המועבר ב־`--select`.
+קראו משאבי JSON של Taira והפיקו מהם את השדות הדרושים, ולאחר מכן השתמשו בשאילתות אוסף של Torii מתוך ה־CLI ומתוך ה־SDK של Rust, עם מסננים, מיון, הטלת שדות בצד השרת, מגבלות גודל עמוד והמשך באמצעות `next_cursor` אטום. כמו כן, לא תשתמשו בשאילתות חתומות בעלות טיפוס לקבלת רשימות, משום שהן אינן מסננות, ממיינות או מטילות שדות על רשימות.
 
 ## תנאים מוקדמים {#prerequisites}
 
 - `curl`, `jq`, Node.js 24, והזרם `iroha` CLI.
 - גישה בקריאה בלבד Taira.
-- עבור דוגמאות של שאילתת טפסת חתומה, קונפיגציה לקלינט עבור Taira או רשת מקומית שנוצרה.
+- עבור הדוגמאות של ה־CLI: תצורת לקוח עבור Taira או עבור רשת מקומית שנוצרה.
 - לדוגמה Rust, פרויקט מחובר לאותו תיקון מקור Iroha כמו רשת המטרה.
 
 ## צעדים {#steps}
@@ -30,25 +30,23 @@ translation_engine: nllb-200-ct2
 ```bash [curl]
 curl -fsS -H 'Accept: application/json' --get \
   https://taira.sora.org/v1/domains \
-  --data-urlencode 'sort=id:asc' \
+  --data-urlencode 'sort=id' \
   --data-urlencode 'limit=5' \
-  --data-urlencode 'offset=0' \
-  --data-urlencode 'count_mode=exact' \
-  | jq '{total, ids: [.items[].id]}'
+  --data-urlencode 'include_total=true' \
+  | jq '{total, next_cursor, ids: [.items[].id]}'
 ```
 
 ```js [Node.js]
 const root = 'https://taira.sora.org'
-const limit = 5
 const seen = new Set()
+let cursor = null
 
-for (let offset = 0; ; offset += limit) {
+do {
   const url = new URL('/v1/domains', root)
   url.search = new URLSearchParams({
-    sort: 'id:asc',
-    limit: String(limit),
-    offset: String(offset),
-    count_mode: 'exact',
+    sort: 'id',
+    limit: '5',
+    ...(cursor ? { cursor } : {}),
   })
 
   const response = await fetch(url, {
@@ -63,106 +61,90 @@ for (let offset = 0; ; offset += limit) {
     seen.add(domain.id)
     console.log(domain.id)
   }
-  if (page.items.length < limit || seen.size >= page.total) break
-}
+  cursor = page.next_cursor
+} while (cursor)
 ```
 
 :::
 
-זה... HTTP שימוש על פני השטח `limit` ו `offset`. לטיפול בהעלמה או הגבול `total` כרגיל כאשר הנתיב משתמש במצב ספור זול יותר.
+ממשק ה־HTTP הזה מבצע עימוד באמצעות `limit` ו־`next_cursor` אטום; שלחו אותו בחזרה ללא שינוי בתור `cursor` עד שהוא `null`. `total` מופיע רק כאשר מבקשים `include_total=true`, שעלותו סריקה מלאה.
 
-### 2. לנתח ולצבת בקשה מדבקת CLI {#_2-filter-and-batch-a-typed-cli-query}
+### 2. סינון אוסף באמצעות ה־CLI {#_2-filter-a-collection-with-the-cli}
 
-ה CLI מסדרת בקשה חוזרת טפסת ומעקבת לקורסורים של המשך הסרבר פנימית. כאן התוצאה ההגיונית מוגבלת לשורה אחת, בעוד `--fetch-size 1` שולחת את המפלגה המקסימלית שנלקחה בכל נסיעה הלוואה וחזרה.
+ה־CLI שולח את המסנן, את הטלת השדות ואת גודל העמוד אל נקודת הקצה של האוסף ומדפיס עמוד אחד, `{items, next_cursor}`. הוסיפו `--all` כדי לעקוב אחר `next_cursor` עד שהוא `null`.
 
 ```bash
-DOMAIN_PREDICATE='{"equals":[{"field":"id","value":"wonderland.universal"}]}'
+DOMAIN_FILTER='id = "universal.universal"'
 
 iroha --config ./localnet/client.toml \
-  ledger domain list filter "$DOMAIN_PREDICATE" \
-  --limit 1 \
-  --offset 0 \
-  --fetch-size 1
+  ledger domain list \
+  --filter "$DOMAIN_FILTER" \
+  --select id \
+  --limit 1
 ```
 
-הסינון מתבצע לפני העימוד. השתמשו ב-predicates בעלי טיפוסים הייחודיים לשאילתה; לא ניתן להשתמש מחדש בבטחה ב-predicate של חשבון או נכס עבור domain.
+הסינון מתבצע לפני העימוד. כל אוסף מקבל רק את השדות שלו; שדה לא מוכר מחזיר `invalid_filter` במקום להתאים לאפס שורות.
 
 ### 3. לסדר לפי מפתח מטא נתונים יציבים {#_3-sort-by-a-stable-metadata-key}
 
-סורטינג שאילתת טופס הוא לקסיקוגרפי על מפתח מטא נתונים אחד. פריטים ללא המפתח הזה עוקבים אחר הסדר מוגדר של זמן ההפעלה, אז השתמשו במפתח מלא באופן עקבי בכל הקולקציה.
+מפתחות המיון של אוסף מקבלים שדות מוצהרים ו־`metadata.<key>`; הוסיפו `-` לפני מפתח כדי למיין בסדר יורד. שורות ללא המפתח ממוינות ראשונות בסדר עולה, ושוויונות מוכרעים לפי זהות השורה, ולכן השתמשו במפתח שמאוכלס באופן עקבי בכל האוסף.
 
 ```bash
 iroha --config ./localnet/client.toml \
   --machine \
-  ledger account list all \
-  --verbose \
-  --sort-by-metadata-key key \
-  --order asc \
+  account list \
+  --sort metadata.key \
   --limit 10 \
-  --offset 0 \
-  --fetch-size 2 \
-  | jq '[.[] | {id, metadata}]'
+  | jq '[.items[] | {id, metadata}]'
 ```
 
-ה-CLI הכלול במאגר מנתח את ה-JSON של `--select` ומעביר את tuple ה-selector, אך ה-DSL הקל הנוכחי לשאילתות אינו מעריך את ה-selector בשרת. אל תבנו סביבו עדיין חוזה projection. השתמשו ב-projection בעל טיפוסים של SDK רק לאחר שה-runtime היעד תומך בו, או בצעו projection בצד הלקוח על התוצאה המאומתת באמצעות `jq` או JavaScript, כפי שמוצג לעיל.
+`--select` הוא הטלת שדות בצד השרת: `--select id,metadata` מחזיר רק את השדות האלה, ושדה לא מוכר מחזיר `invalid_select`. שאילתות חתומות בעלות טיפוס מחזירות תמיד פריטים שלמים, ולכן הפיקו את השדות הדרושים מהתוצאות שלהן בצד הלקוח באמצעות `jq` או JavaScript, כפי שמוצג לעיל.
 
 ### 4. תנו למשתתף Rust לעקוב אחרי מסמנים לא ברורים {#_4-let-the-rust-iterator-follow-opaque-cursors}
 
-`Pagination` מגביל את קבוצת התוצאות ההגיוניות. `FetchSize` שולח כל חבץ של שרת. המשתקף הובא שולח בקשות המשך בצורה גלויה באמצעות הקורסר שנוצר על ידי השליח.
+`limit` קובע את גודל העמוד. האיטרטור ש־`list` מחזיר מבקש את העמוד הבא עם ה־`next_cursor` של השרת רק לאחר שהעמוד הנוכחי נצרך, ו־`take` מגביל את התוצאה הלוגית. כאן `client` הוא `iroha::blocking::Client`.
 
 ```rust
-use std::num::NonZeroU64;
+use iroha::collections::{Collection, ListQuery, SortKey};
 
-use iroha::data_model::{
-    prelude::FindAssetsDefinitions,
-    query::{
-        builder::QueryBuilderExt as _,
-        parameters::{FetchSize, Pagination},
-    },
-};
+let query = ListQuery::new().sort_by(SortKey::asc("id")).limit(5);
 
-let definitions = client
-    .query(FindAssetsDefinitions::new())
-    .with_pagination(Pagination::new(NonZeroU64::new(25), 0))
-    .with_fetch_size(FetchSize::new(NonZeroU64::new(5)))
-    .execute_all()?;
-
-for definition in definitions {
-    println!("{} {}", definition.id(), definition.name());
+for definition in client.list(Collection::AssetDefinitions, query).take(25) {
+    let definition = definition?;
+    println!("{:?} {:?}", definition.get("id"), definition.get("name"));
 }
 ```
 
-`ForwardCursor` קשור ל-authority, מקומי לתהליך ומתקדם קדימה בלבד. לעולם אל תנתחו אותו, תיצרו אותו באופן מלאכותי, תשתפו אותו בין authorities או תשמרו אותו כ-resume token נייד בין מופעי Torii. אם תוקפו פג, הפעילו מחדש את השאילתה המקורית עם checkpoint מכוון ברמת היישום.
+`next_cursor` הוא מיקום אטום בעימוד מבוסס מפתחות, הקשור לאוסף, לנתיב, למסנן ולמיון שלו. לעולם אל תנתחו אותו או תייצרו אותו באופן מלאכותי, ואל תשתמשו בו שוב עם מסנן או מיון אחרים; Torii דוחה זאת עם `invalid_cursor`. שורות שנוספו או הוסרו בין עמודים לעולם אינן גורמות לעמוד מאוחר יותר לחזור על שורות שאינן קשורות או לדלג עליהן.
 
 ## לאמת {#verify}
 
-הגדרת הדומיין המדויקת צריכה להחזיר רק `wonderland.universal`. בדוק את התוצאה במקום לספור מוצא מצליח CLI לבד:
+הגדרת הדומיין המדויקת צריכה להחזיר רק `universal.universal`. בדוק את התוצאה במקום לספור מוצא מצליח CLI לבד:
 
 ```bash
 iroha --config ./localnet/client.toml \
   --machine \
-  ledger domain list filter "$DOMAIN_PREDICATE" \
-  --limit 1 --offset 0 --fetch-size 1 \
-  | jq -e 'length == 1 and .[0] == "wonderland.universal"'
+  ledger domain list --filter "$DOMAIN_FILTER" --select id --limit 1 \
+  | jq -e '[.items[].id] == ["universal.universal"]'
 ```
 
-עבור שאילתות יישום בעלות עמודים, גם לבדוק כי IDs לא חוזרים על פני עמודים, הגבול הגיוני המבוקש אף פעם אינו מוגבל, והניסיון מחדש לאחר קורסר שעלה תקופה מתחיל מחדש מנקודת בדיקת מסומנת.
+עבור שאילתות יישום עם עימוד, בדקו גם שמזהים אינם חוזרים על פני עמודים, שהמגבלה הלוגית המבוקשת לעולם אינה נחרגת, ושסמן שנדחה מתחיל מחדש מנקודת ביקורת מתועדת.
 
 ## פתרון בעיות {#troubleshooting}
 
 - חיפוש ייחודי לא מקבל מסנן, סורט, פגינציה או קבלת פרמטרים חוזרים. השתמש בקשירת רשימת המתאימה כאשר חוקים אלה נדרשים .
-- `fetch_size` הוא רמז של כיסוי שאינו אפס, לא הגבול הכולל לתוצאה. ההגדרה המקובלת הנוכחית היא `100`, והזמן הפועל מכחיש ערכים מעל מקסימום שלה.
-- cursor לא מוכר, שפג תוקפו או ששייך לגורם אחר אינו ניתן לשימוש חוזר במכוון. הפעילו מחדש את השאילתה; אל תנסו לתקן את הערך האטום.
-- מסדרת מטא-נתונים אינה מסדרת שדה כללית. אם בכל פריט לא יש את המפתח הנבחר, תעדו את סדר המפתח החסר או בחרו אסטרטגיה אחרת.
-- ה- CLI חותך ומעביר `--select`, אך המשרת הנוכחי אינו מעריך את תוספת הסלקטור הקלה. ליישם תחזית בצד הלקוח אלא אם כן תמיכה בסלקטור בצד המשרת היא מאובטחת עבור זמן ההפעלה המוצץ.
-- בקשות רחבות ללא גבולות מגבירות את עבודת הצמתים, זיכרון הלקוח, ואת הסיכון לחיים של הקורסר.
-- הפרמטרים של משאבי JSON הציבוריים והפרמטרים החתומים של שאילתות מטיפוס מוגדר קשורים זה לזה, אך אינם פורמטי סריאליזציה הניתנים להחלפה. העדיפו את SDK או CLI עבור מעטפות של שאילתות מטיפוס מוגדר.
+- `limit` הוא גודל העמוד, לא התוצאה הכוללת: לפחות 1 ולכל היותר `torii.app_api_max_list_limit` של הצומת (ברירת מחדל 500); ברירת המחדל של Torii היא 100. עקבו אחר `next_cursor`, השתמשו ב־`--all` או באיטרטור של ה־SDK כדי לקרוא עוד.
+- `invalid_cursor` פירושו שהסמן פגום או שייך לאוסף, לנתיב, למסנן או למיון אחרים. הפעילו מחדש את השאילתה; אל תנסו לתקן את הערך האטום.
+- מסנן סלקטיבי עשוי להחזיר עמוד קצר או ריק עם `next_cursor` שאינו null. המשיכו לעקוב אחריו עד שהוא `null`.
+- `--filter` ופרמטר ה־HTTP `filter` מקבלים את דקדוק הטקסט של Torii, כגון `id = "universal.universal"` או `exists(metadata.tier)`. אובייקט פרדיקט ב־JSON אינו טקסט מסנן ונכשל כ־`filter` לא תקין.
+- שאילתות רחבות ללא הגבלה מגדילות את עבודת הצמתים ואת צריכת הזיכרון של הלקוח. קבעו מגבלה לוגית וגודל עמוד שמתאימים לצרכן.
+- `/v1/query` החתום אינו ה־API לרשימות. הוא מקבל שאילתות של פריט יחיד ומספר קטן של שאילתות איטרביליות ללא מסנן, ודוחה אחרות, כגון `FindDomains` או `FindAssetDefinitions`, עם `signed_query_shape_not_admitted`. נקודות הקצה של האוספים, פקודות `list` של ה־CLI וקוראי האוספים של ה־SDK חולקים דקדוק אחד למסננים, למיון ולסמנים.
 
 ## מקור ומסמכים קשורים {#source-and-related-docs}
 
-- [בדיקות אינטגרציה של עמודי דף תומכים בקורסר ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs)
-- [ההתנהגות של בונה בקשת ובוחן ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs)
-- [פרמטרים של בקשה ומודל קורסר ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs)
+- [חוזה שאילתות האוספים של Torii ב־commit המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/torii/collection_queries.md)
+- [קריאות אוספים ואיטרטור הסמנים ב־Rust ב־commit המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/src/collections.rs)
+- [קבלת שאילתות חתומות ב־commit המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/query_json.md)
 - [שאילתות](/he/blockchain/queries.md)
 - [רשיון השאילתות](/he/reference/queries.md)
 - [JavaScript ו TypeScript ](/he/guide/tutorials/javascript.md)

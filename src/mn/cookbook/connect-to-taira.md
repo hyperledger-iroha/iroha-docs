@@ -1,9 +1,9 @@
 ---
 translation_locale: mn
 translation_source: /cookbook/connect-to-taira.md
-translation_source_hash: e14be7d9314f26f40f6aa30678fddcfcfea39eda9b98016f1b2f84838203c548
+translation_source_hash: 31555f0c56bddb8892d09af250cef732a2dfdd39564c83de8b344200157751b9
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Taira-т холбогдоно уу {#connect-to-taira}
@@ -15,14 +15,14 @@ Taira-д хандаж болох эсэхийг баталгаажуулж, ло
 ## Өмнөх шаардлага {#prerequisites}
 
 - `curl`, `jq`, Python 3.11 эсвэл шинэчилсэн хувилбар, мөн одоогийн `iroha` ба `kagami` бинар файлууд.
-- A `taira.client.toml` нь Taira гинж, API төгсгөл цэг, дансны профайл, болон зориулалтын тестнет түлхүүртэйгээр бүтээгдсэн. [Taira Клиент тохиргоог үүсгэх](/mn/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config)-ийг дагаж, файлыг эх үүсвэрийн хяналтаас гараас хадгална уу.
-- [Тестнет XOR-ийг Taira-оос авна уу](/mn/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)-аас бэлэн ажиллах `taira_faucet_claim.py`, клиент тохиргооны хажууд хадгалагдсан.
+- Taira гинж, яг `network_id`, API төгсгөл цэг, дансны профайл болон зориулалтын тестнет түлхүүртэйгээр үүсгэсэн `taira.client.toml`. [Taira клиентийн тохиргоо үүсгэх](/mn/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config) зааврыг дагаж, файлыг эх кодын хяналтын системээс гадуур хадгал.
+- Faucet-ийн журналд зориулсан, бичих боломжтой ажлын хавтас: `iroha taira account faucet prepare` нь `./taira-faucet`-ийг хувийн хандалттайгаар үүсгэдэг бөгөөд аль хэдийн байгаа хавтсыг солихоос татгалздаг.
 
 ## Алхамууд {#steps}
 
 ### 1. Амьдралтай байдлыг бэлэн байдлаас салгаж үзэх {#_1-separate-liveness-from-readiness}
 
-`/livez` нь энгийн текст хэлбэрийн процесс амьдралын байдлын шалгагч юм. `/status`, `/health`, ба `/readyz` нь JSON-ыг буцаана. Ажиллаж буй нодууд шаардлагатай дэд систем бөглөрсөн үед readiness шалгагчуудаас `503`-ыг хууль ёсоор буцааж болно.
+`/livez`, `/health` болон `/readyz` нь энгийн текстээр хариулдаг шалгагчид; `/status` нь JSON буцаадаг. Ажиллаж буй зангилаа консенсусын хүлээн авалт эсвэл шаардлагатай өөр дэд систем боломжгүй үед `/readyz`-ээс `503`-ыг зүй ёсоор буцааж болно.
 
 ```bash
 curl -fsS -H 'Accept: text/plain' https://taira.sora.org/livez
@@ -30,11 +30,11 @@ curl -fsS -H 'Accept: text/plain' https://taira.sora.org/livez
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
-curl -sS -H 'Accept: application/json' \
+curl -sS -H 'Accept: text/plain, application/json' \
   -w '\nHTTP %{http_code}\n' https://taira.sora.org/readyz
 ```
 
-Зөвхөн `/livez`-г ашиглан процесс хариу өгч байгаа эсэхийг шийдэж ашигла. `/readyz`-ийг тээврийн нэвтрүүлэгт ашиглаж, `503`-г тасралт гэж үзэхээс өмнө түүний JSON хаагчийн дэлгэрэнгүй мэдээллийг шалга.
+`/livez`-ийг зөвхөн процесс хариу өгч байгаа эсэхийг шийдэхэд ашигла. Траффик хүлээн авах эсэхийг `/readyz`-ээр шийд. Түүний `503` нь саадын дэлгэрэнгүй мэдээлэлгүй `service_unavailable` алдааны хариу бүтэц тул тасалдал гэж үзэхээсээ өмнө доорх оношилгоог ажиллуул.
 
 ### 2. Нийтийн оношилгоог ажиллуулна уу {#_2-run-the-public-diagnostics}
 
@@ -48,7 +48,7 @@ iroha taira doctor --public-root https://taira.sora.org --json
 
 ### 3. Нууцыг хэвлэхгүйгээр Taira дансны ID-г гаргана уу {#_3-derive-the-taira-account-id-without-printing-a-secret}
 
-Зөвхөн тохиргооноос олон нийтийн түлхүүрийг уншиж, дараа нь Taira I105 профайл ашиглан кодлоорой. `[account].domain` утга нь дамжуулалтын контекстыг хангадаг; энэ нь дансны ID-ийн хэсэг биш юм.
+Тохиргооноос зөвхөн нийтийн түлхүүрийг уншаад, дараа нь Taira I105 профайлаар кодчил. Дансны ID домэйн агуулдаггүй; `[account].profile` нь зөвхөн түүний сүлжээний угтварыг сонгодог.
 
 ```bash
 TAIRA_PUBLIC_KEY="$(python3 - <<'PY'
@@ -69,18 +69,29 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID"
 
 ### 4. Одоогийн Taira төлбөрийн хөрөнгийг шаардъя {#_4-claim-the-current-taira-fee-asset}
 
-Тестнетийн санхүүжилтийн үйлчилгээний хариу нь төлбөрийн активын тодорхойлолтын жинхэнэ эх сурвалж юм. Өөр сүлжээнээс эсвэл хуучин гүйцэтгэлээс ID хуулбарлахын оронд буцаагдсан Base58 ID-г хадгал.
+Faucet-ийн бодлого одоогийн төлбөрийн хөрөнгийн тодорхойлолтыг заадаг. Өөр сүлжээ эсвэл хуучин ажиллуулалтаас ID хуулахын оронд түүний Base58 ID-г хадгал. Бодлого нь гарын үсэггүй илрүүлэлтийн өгөгдөл тул автоматжуулалт хариу бүрт итгэхийн оронд хүлээж буй гаргагч, хөрөнгийн тодорхойлолт болон дүнгээ тогтоож бэхлэх ёстой.
 
 ```bash
-python3 ./taira_faucet_claim.py "$TAIRA_ACCOUNT_ID" \
-  | tee taira-faucet.json
+curl -fsS -H 'Accept: application/json' \
+  https://taira.sora.org/v1/accounts/faucet/policy \
+  | tee taira-faucet-policy.json
 
-export TAIRA_FEE_ASSET="$(jq -er '.asset_definition_id' taira-faucet.json)"
-jq -n --arg gas_asset_id "$TAIRA_FEE_ASSET" \
-  '{gas_asset_id: $gas_asset_id}' > taira.tx-metadata.json
+export TAIRA_FEE_ASSET="$(
+  jq -er '.asset_definition_id' taira-faucet-policy.json
+)"
+
+iroha --config ./taira.client.toml --fee-payer authority \
+  taira account faucet prepare \
+  --journal ./taira-faucet \
+  --issuer "$(jq -er '.authority' taira-faucet-policy.json)" \
+  --asset-definition "$TAIRA_FEE_ASSET" \
+  --amount "$(jq -er '.amount' taira-faucet-policy.json)"
+
+iroha --config ./taira.client.toml \
+  taira account faucet submit --journal ./taira-faucet
 ```
 
-Үлдэгдлийг нэг минут хүртэл давтан шалгана. Санхүүжилтийн гүйлгээ харагдахаас өмнө faucet `202 Accepted` буцааж болно.
+`prepare` нь ажлын нотолгооны (proof of work) даалгаврыг шийдэж, гарын үсэг зурсан гүйлгээг яг хэвээр нь хадгалдаг; `submit` нь түүнийг нэг удаа илгээж, хэрэгжсэний дараа буцдаг. Хэрэв `submit` нь `Pending` гэж мэдээлэх эсвэл хугацаа нь хэтэрвэл өөр нэхэмжлэл бэлтгэхийн оронд ижил тохиргоо болон журналаар `taira account faucet resume`-г ажиллуул. Дараа нь үлдэгдлийг хамгийн ихдээ нэг минутын турш давтан шалга.
 
 ```bash
 funded=false
@@ -96,7 +107,7 @@ done
 test "$funded" = true
 ```
 
-`gas_asset_id` нь гүйлгээний мета өгөгдөл юм. Ил тод `--fee-payer authority` сонголт нь гарын үсэгтэй холбогдсон байдаг бөгөөд CLI гарын үсэг зурахаас өмнө нарийн төлбөрийн дүнгийн таамаглал авч чадна.
+Taira-д хийх бичих үйлдэл бүрт `--fee-payer authority`-г ашигла. Энэ сонголт гарын үсэгт холбогддог бөгөөд CLI нь гарын үсэг зурахаас өмнө яг төлбөрийг Taira-ийн төлбөрийн хөрөнгөөр тооцоолж, үнийн санал гаргадаг.
 
 ## Баталгаажуулах {#verify}
 
@@ -106,8 +117,7 @@ test "$funded" = true
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg 'cookbook-connect' \
+  tx ping --msg 'cookbook-connect' \
   > taira-connect-submission.json
 
 jq '{hash, fee_quote}' taira-connect-submission.json
@@ -115,27 +125,27 @@ TAIRA_TX_HASH="$(jq -er '.hash' taira-connect-submission.json)"
 
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction status \
+  tx status \
   --hash "$TAIRA_TX_HASH" \
   --wait \
   --timeout-ms 60000
 ```
 
-Эцсийн команд амжилттай болно зөвхөн гүйлгээ нь анхны `Applied` терминалын төлөвт хүрсний дараа. Туршилтын нотлох баримтанд криптографийн хэшийг хадгал; хувийн түлхүүр эсвэл бүхэл бүтэн клиент тохиргоог үүнтэй хамт хадгалахгүй.
+Сүүлийн команд нь яг глобал статус төлөвөөс тодорхойлогдсон `Applied` эцсийн байдлыг мэдээлсний дараа л амжилттай болно. Хэшийг туршилтын нотолгоонд хадгал; хувийн түлхүүр эсвэл клиентийн бүрэн тохиргоог үүнтэй хамт хэзээ ч бүү хадгал.
 
 ## Алдааг олох болон засах {#troubleshooting}
 
-- `/livez` нь JSON гэж асуусан үед `406`-г буцаадаг, учир нь тэр API төгсгөл нь `text/plain` байдаг. Дээрх шиг `Accept: text/plain`-г илгээнэ үү.
-- `/health` эсвэл `/readyz` нь `/livez` ба `/status` ажиллаж байгаа ч машин уншигдах боломжтой саадаар `503` буцааж магадгүй. Тэр саадыг засах эсвэл хүлээнэ үү; түлхүүрийг дахин үүсгэх нь зангилааны бэлэн байдалд нөлөөлөхгүй.
-- Faucet-ийн `502`, хугацаа хэтрэлт эсвэл хуучирсан proof-of-work тулгуур нь нийтийн үйлчилгээний алдаа юм. Шинэ таавар авч, дараа дахин оролдоно уу.
+- `/livez`, `/health` болон `/readyz` нь зөвхөн JSON хүссэн үед `406` буцаадаг, учир нь тэдгээр `text/plain`-ээр хариулдаг. Дээр үзүүлсэн `Accept` толгойнуудыг илгээ.
+- `/livez` болон `/status` ажиллаж байхад ч `/readyz` нь `service_unavailable` алдааны хариу бүтэцтэй `503` буцааж болно. Бэлэн болохыг хүлээ эсвэл `iroha taira doctor`-ийг ажиллуул; түлхүүрүүдийг дахин үүсгэх нь зангилааны бэлэн байдлыг өөрчлөхгүй.
+- `submit`-ийн үеэр гарсан faucet-ийн `502` эсвэл хугацаа хэтрэлт нь нэхэмжлэлийн үр дүнг тодорхойгүй үлдээдэг: өөр нэхэмжлэл бэлтгэхийн оронд ижил тохиргоо болон журналаар `taira account faucet resume`-г ажиллуул. Хуучирсан ажлын нотолгооны (proof-of-work) зангуу `prepare`-ийг амжилтгүй болгодог; шинэ журналын хавтсанд дахин бэлтгэ.
 - A I105 урд талын алдаа нь олон нийтийн түлхүүрийг буруу профилд кодлосон гэсэн үг юм. `iroha tools address convert --profile taira`-ыг дахин ажиллуулна уу.
-- Төлбөрийн үнийн санал татгалзах нь ихэвчлэн зөвшөөрлийн эрхийг санхүүжүүлээгүй, төлбөрийн хөрөнгийн метадата хуучирсан, эсвэл тодорхой төлбөр төлөгчийг сонгоогүй гэсэн утгатай.
+- Төлбөрийн үнийн саналын татгалзал нь ихэвчлэн эрх бүхий данс санхүүжээгүй, эсвэл тохируулсан `network_id` нь Taira-ийнх биш гэсэн үг. `--fee-payer` дутуу байх, эсвэл `--metadata` дотор `gas_asset_id` зэрэг төлбөрийн түлхүүр байх нь үнийн саналаас өмнө локалаар амжилтгүй болдог.
 - Бүртгэл, гаргалт, эсвэл нэрийн сангийн удирдлагыг энэ канарын амжилттай болсон ч дахин татгалзаж болно. Эдгээр үйлдлүүд нь тусдаа програмын гүйцэтгэх орчны зөвшөөрлийг шаарддаг; Taira эрх олгогдоогүй үед үүсгэсэн дотоод сүлжээг дээр тэдгээрийг дасгал хийж турш.
 
 ## Эх сурвалж ба холбогдох баримт бичгүүд {#source-and-related-docs}
 
-- [Taira CLI оношилгоо ба канар эх сурвалж нь түгжсэн эх кодын шинэчлэлд байна](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/taira.rs)
-- [Тодорхой төлбөрийн сонголт ба CLI илгээх эх сурвалжийг хатгасан эх кодын хувилбараас](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
+- Тогтоосон commit дахь [Taira CLI-ийн оношилгоо болон канарын эх код](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/taira.rs) болон [faucet-ийн командууд](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/taira_onboarding.rs)
+- [Тодорхой төлбөрийн сонголт ба CLI илгээх эх сурвалжийг хатгасан эх кодын хувилбараас](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs)
 - [Taira данс болон туршилтын сүлжээний санхүүжилтийн үйлчилгээний гарын авлага](/mn/get-started/sora-nexus-dataspaces.md)
 - [Клиент тохиргоо](/mn/guide/configure/client-configuration.md)
 - [Гүйлгээ](/mn/blockchain/transactions.md)

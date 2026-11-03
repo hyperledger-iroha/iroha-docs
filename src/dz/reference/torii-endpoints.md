@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: f04e5e78329996d70926c4fd5dc034d41605d0a82fffd6460f67b252269480d9
+translation_source_hash: 631ec91b5ea398ae17253f0fd6307d76bc3820e2a2b6c8c9f79b30e0188ec170
 translation_status: machine-validated
 translation_engine: human-reviewed
 ---
@@ -379,7 +379,7 @@ iroha app kaigi end --domain kaigi.universal --call-name daily
 
 ### JavaScript གཅིག་སྒྲིལ་འབད་ {#javascript-integration}
 
-ད་ལྟོའི་ [Iroha JavaScript ཌེ་མོ་ ](https://github.com/soramitsu/iroha-demo-javascript) གིས་ དྭངས་འཕྲོས་དང་ བདེན་ཁུངས་ཅན་གྱི་ གཅིག་ལས་གཅིག་ལུ་ འཛོམས་འདུ་གི་ཐོ་ཡིག་ཅིག་ལག་ལེན་འཐབ་ཨིན། འདི་གིས་ སྲོལ་སྒྲིག་གི་ `zk-roster-v1` གྲུབ་འབྲས་ཐོན་ཐངས་མ་སྟོན་པར་ཡོདཔ་ཨིན། ཌེན་ཌར་འདི་གིས་ WebRTC གྲོས་འདེབས་དང་ལན་ཚུ་བཟོ་དོ་ཡོདཔ་ད་ ཁྱད་ལྡན་ཟམ་ཅིག་གིས་ ས་གནས་ཀྱི་ [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) འབྱུང་ཁུངས་ཕབ་ལེན འདི་ལག་ལེན་འཐབ་ཐོག་ལས་ གྲོས་འདེབས་བཙུགས་ནི་དང་། ཐོ་བཀོད་འབད་བ། བཏང་ནི་དང་ མཇུག་བསྡུ་ཚུགས་པའི་ Kaigi ཚོང་འབྲེལ་ཚུ་གི་དོན་ལུ་སྒུག་སྟེ་སྡོད་ནུག
+ད་ལྟོའི་ [Iroha JavaScript ཌེ་མོ་ ](https://github.com/soramitsu/iroha-demo-javascript) གིས་ དྭངས་འཕྲོས་དང་ བདེན་ཁུངས་ཅན་གྱི་ གཅིག་ལས་གཅིག་ལུ་ འཛོམས་འདུ་གི་ཐོ་ཡིག་ཅིག་ལག་ལེན་འཐབ་ཨིན། འདི་གིས་ སྲོལ་སྒྲིག་གི་ `zk-roster-v1` གྲུབ་འབྲས་ཐོན་ཐངས་མ་སྟོན་པར་ཡོདཔ་ཨིན། ཌེན་ཌར་འདི་གིས་ WebRTC གྲོས་འདེབས་དང་ལན་ཚུ་བཟོ་དོ་ཡོདཔ་ད་ ཁྱད་ལྡན་ཟམ་ཅིག་གིས་ ས་གནས་ཀྱི་ [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js) འབྱུང་ཁུངས་ཕབ་ལེན འདི་ལག་ལེན་འཐབ་ཐོག་ལས་ གྲོས་འདེབས་བཙུགས་ནི་དང་། ཐོ་བཀོད་འབད་བ། བཏང་ནི་དང་ མཇུག་བསྡུ་ཚུགས་པའི་ Kaigi ཚོང་འབྲེལ་ཚུ་གི་དོན་ལུ་སྒུག་སྟེ་སྡོད་ནུག
 
 ཁྱོད་ཀྱིས་ [ནང་བཙུགས Kaigi ལུ་ JavaScript ལག་ལེན་མཉེན་ཆས](/dz/guide/tutorials/kaigi.md)ནང་ལུ་ ཕྲང་ལམ་བདེན་འཛིན་འབད་ནི་དང་ བསྐུལ་བསྒྲགས་བཟོ་རྣམ་ དེ་ལས་ ཟུར་མཚམས་དང་ ད་ལྟོའི་དཔེ་སྐྲུན་གྱི་དཔྱད་ཡིག་ཚུ་བལྟ་ཚུགས།
 
@@ -438,6 +438,6 @@ iroha --config ./localnet/client.toml --operator-private-key-file "$IROHA_OPERAT
 
 ## གཙོ་རིམ་གོང་མའི་ཁ་བྱང་ཚུ་ {#upstream-references}
 
-- [README API དང་ བརྟག་ཞིབ་འབད་ཚུགས་པའི་ སྤྱིར་བཏང་བལྟ་ཐངས་ ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/README.md)
-- [ISO 20022 ཟམ་ལག་ལེན་འཐབ་ཐབས།](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/iso20022_bridge.rs)
+- [README API དང་ བརྟག་ཞིབ་འབད་ཚུགས་པའི་ སྤྱིར་བཏང་བལྟ་ཐངས་ ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/README.md)
+- [ISO 20022 ཟམ་ལག་ལེན་འཐབ་ཐབས།](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/iso20022_bridge.rs)
 - [གྲུབ་འབྲས་དང་རྩིས་ཐིག་](/dz/guide/advanced/metrics.md)

@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /reference/binaries.md
-translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
+translation_source_hash: c617a21d50b28495c261d05d672e0b7803c282d53da577391dbebbc7f120d045
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -10,10 +10,10 @@ translation_engine: bing-translator-llm
 
 O fluxo de trabalho do operador Iroha 3 gira em torno de quatro binários principais:
 
-- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) para executar um daemon de par de rede
+- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/irohad) para executar um daemon de par de rede
 - `iroha3d_taira` para o inicializador do validador canônico Taira
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli) para CLI e comandos do operador
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) para chaves, gênese de blockchain, redes locais e perfis
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli) para CLI e comandos do operador
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami) para chaves, gênese de blockchain, redes locais e perfis
 
 ## Construir a partir do código-fonte {#build-from-source}
 

@@ -1,36 +1,36 @@
 ---
 translation_locale: my
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 29f2bdb390fc93b97f8ed9108634f70e21ba747c8606fb84093d37e9586516c1
+translation_source_hash: 3287a6bbaf06ec92ebbe9ac33a8294d4e1d232bc01fd6a5da13ddd166c620965
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # ငွေကြေးအထောက်အပံ့များ {#fungible-assets}
 
 ## ရလဒ် {#outcome}
 
-Taira အရင်းအမြစ်အဓိပ္ပါယ်ဖွင့်ဆိုချက်များကို တိုက်ရိုက်စစ်ဆေးပြီး ထုတ်လုပ်သော ဒေသတွင်းကွန်ရက်တစ်ခုတွင် မှတ်ပုံတင်၊ ထုတ်လွှင့်ခြင်း၊ လွှဲပြောင်းခြင်း၊ ဖျက်ဆီးခြင်းနှင့် ငွေကြေးပမာဏ စစ်ဆေးမှု စီးဆင်းမှုကို ပြီးစီးစေရန်။ အဆိုပါချက်ပြနည်းမှာ Single Protocol-Standard unprefixed Base58 Asset Definition IDs များ၊ Domain-qualified aliases များ၊ domainless I105 Account ID များနှင့် explicit fee payment များကို အသုံးပြုသည်။
+လက်ရှိလည်ပတ်နေသော Taira ၏ အရင်းအမြစ်အဓိပ္ပါယ်ဖွင့်ဆိုချက်များကို စစ်ဆေးပြီး ဖန်တီးထားသော ဒေသတွင်းကွန်ရက်တစ်ခုပေါ်တွင် ထုတ်ပေးခြင်း၊ လွှဲပြောင်းခြင်း၊ ဖျက်ဆီးခြင်းနှင့် လက်ကျန်အတည်ပြုခြင်း လုပ်ငန်းစဉ်ကို ပြီးဆုံးအောင် လုပ်ဆောင်ပါ။ ဤလမ်းညွှန်သည် ရှေ့ဆက်မပါသော canonical Base58 အရင်းအမြစ်အဓိပ္ပါယ်ဖွင့်ဆိုချက် ID များ၊ ဒိုမင်မပါသော I105 အကောင့် ID များနှင့် ရှင်းလင်းစွာ သတ်မှတ်ထားသော အခွန်ပေးချေမှုကို အသုံးပြုသည်။
 
 ## လိုအပ်ချက်များ {#prerequisites}
 
-- `curl`, `jq`, Python ၃.၁၁ သို့မဟုတ် နောက်ပိုင်း၊ Node.js (၂၄) ၊ current `iroha` CLI.
+- `curl`၊ `jq`၊ Python 3.11 သို့မဟုတ် နောက်ပိုင်းဗားရှင်း၊ Node.js 24 နှင့် လက်ရှိ `iroha` နှင့် `kagami` CLIs တို့။
 - ဖတ်လို့သာရတဲ့ Taira ဝင်ခွင့်။
-- write walkthrough အတွက် ဒေသတွင်းကွန်ရက်တစ်ခုမှ ဖန်တီးထားသော [လွှတ်တင်ခြင်း Iroha](/my/get-started/launch-iroha.md), နှင့်အတူ `./localnet/client.toml` နှင့် Torii အပေါ် `http://127.0.0.1:8080`.
+- စာရင်းရေးသွင်းခြင်း လမ်းညွှန်အတွက် [လွှတ်တင်ခြင်း Iroha](/my/get-started/launch-iroha.md) တွင်ကဲ့သို့ `kagami localnet generate --peers 4 --out-dir ./localnet` ကို `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa` ထပ်ထည့်၍ ဖန်တီးထားသော ဒေသတွင်းကွန်ရက်တစ်ခု လိုအပ်သည်။ ၎င်းသည် `./localnet/client.toml` နှင့် `http://127.0.0.1:8080` ပေါ်ရှိ Torii ကို ပံ့ပိုးပေးသည်။
 
 ## ခြေလှမ်း {#steps}
 
 ### 1. Taira အဓိပ္ပါယ်ဖွင့်ဆိုချက်များကို cryptographic signer မပါဘဲ စစ်ဆေးပါ။ {#_1-inspect-taira-definitions-without-a-signer}
 
-အရင်းအမြစ်အဓိပ္ပါယ်ဖွင့်ဆိုချက်များတွင် ပွင့်လင်းမြင်သာမှုမရှိသော Base58 ID၊ ပြသနာအမည်၊ အရင်းအမြတ်ထုတ်လွှင့်ခြင်း မူဝါဒမူဝါဒ၊ ကိန်းဂဏန်းကျယ်ပြန့်မှု၊ ရွေးချယ်စရာ alias များ၊ ပိုင်ရှင်များနှင့် စုစုပေါင်းအရေအတွက်တို့ ပါဝင်သည်။ တိကျသည့်စာရင်းတွင် ၎င်း၏ပိုင်ရှင်စာရင်းနှင့် ရွေးချယ်စရာ ဒေတာနေရာကဏ္ဍကဏ္ဍလည်းပါဝင်သည်။
+အရင်းအမြစ်အဓိပ္ပါယ်ဖွင့်ဆိုချက်များတွင် ပွင့်လင်းမြင်သာမှုမရှိသော Base58 ID၊ ပြသမည့်အမည်၊ ထုတ်ပေးနိုင်မှုမူဝါဒ၊ ကိန်းဂဏန်း scale၊ ရွေးချယ်နိုင်သော alias၊ ပိုင်ရှင်၊ ရွေးချယ်နိုင်သော ပိုင်ရှင်ဒိုမင် သို့မဟုတ် ဒေတာနေရာ၊ လက်ကျန်မူဝါဒနှင့် စုစုပေါင်းပမာဏတို့ ပါဝင်သည်။ တိကျသော လက်ကျန်တွင် ၎င်းကို ကိုင်ဆောင်ထားသည့် အကောင့်နှင့် ရွေးချယ်နိုင်သော ဒေတာနေရာ နယ်ပယ်လည်း ပါဝင်သည်။
 
 ::: code-group
 
 ```bash [curl]
 curl -fsS -H 'Accept: application/json' \
   'https://taira.sora.org/v1/assets/definitions?limit=10' \
-  | jq -r '.items[] \
-    | [.id, .name, .mintable, (.spec.scale // "unconstrained"), .total_quantity] \
+  | jq -r '.items[]
+    | [.id, .name, .mintable, (.spec.scale // "unconstrained"), .total_quantity]
     | @tsv'
 ```
 
@@ -58,10 +58,9 @@ JavaScript ပုံစံကို `node taira-assets.mjs` ဖြင့် run 
 
 ### (၂) ဒေသဆိုင်ရာ ခွင့်ပြုချက် အရေအတွက်နှင့် ရည်ရွယ်ချက် ပြင်ဆင်ပါ။ {#_2-prepare-the-local-authority-and-destination}
 
-Generated Config ထဲက Public Key ကနေ Local Authorization Principle ကို ထုတ်ယူပြီး လက်ခံရရှိသူအဖြစ် အခြားမှတ်ပုံတင်ထားတဲ့ အကောင့်တစ်ခုကို ရွေးပါ။ ပုဂ္ဂလိက သော့ကို ပုံနှိပ်ခြင်းမရှိပါ။
+ဖန်တီးထားသော config ထဲရှိ အများသုံးသော့မှ ဒေသတွင်း authority ကို ထုတ်ယူပြီးနောက် လက်ခံသူအကောင့်အသစ်အတွက် သော့တွဲတစ်စုံကို ဖန်တီး၍ ၎င်းအကောင့်ကို မှတ်ပုံတင်ပါ။ ပုဂ္ဂလိကသော့ကို ထုတ်ပြခြင်း မရှိပါ။
 
 ```bash
-LOCAL_ROOT='http://127.0.0.1:8080'
 LOCAL_CONFIG='./localnet/client.toml'
 
 LOCAL_PUBLIC_KEY="$(python3 - <<'PY'
@@ -75,33 +74,28 @@ SOURCE_ACCOUNT="$(
   iroha --config "$LOCAL_CONFIG" tools address convert "$LOCAL_PUBLIC_KEY"
 )"
 
+kagami keys --out-dir ./cookbook-recipient
 DESTINATION_ACCOUNT="$(
-  curl -fsS -H 'Accept: application/json' "$LOCAL_ROOT/v1/accounts?limit=20" \
-    | jq -er --arg source "$SOURCE_ACCOUNT" \
-      '[.items[].id | select(. != $source)][0]'
+  iroha --config "$LOCAL_CONFIG" tools address convert \
+    "$(cat ./cookbook-recipient/public.key)"
 )"
+iroha --config "$LOCAL_CONFIG" \
+  --machine --fee-payer authority \
+  account register --id "$DESTINATION_ACCOUNT"
 ```
 
-### (၃) ကိန်းဂဏန်းဆိုင်ရာ အဓိပ္ပါယ်ဖွင့်ဆိုချက်ကို မှတ်ပုံတင်ပါ။ {#_3-register-a-numeric-definition}
+### (၃) client ပိုင်ဆိုင်သော ကိန်းဂဏန်းဆိုင်ရာ အဓိပ္ပါယ်ဖွင့်ဆိုချက်ကို အသုံးပြုပါ {#_3-use-a-client-owned-numeric-definition}
 
-ဤဒေသတွင်းသာ ID သည်အတည်ပြုသည့် Base58 အရင်းအမြစ်အဓိပ္ပာယ်ဖွင့်ဆိုချက်လိပ်စာတစ်ခုဖြစ်သည်။ အမည်မဖော်လိုသူသည်လူဖတ်နိုင်သော `domain.dataspace` ခန့်မှန်းချက်ကိုပေးသည်။ Scale `2` ကဖွဲကိန်းနှစ်ခုကိုခွင့်ပြုသည်။ `--mint-once` ကိုပယ်ဖျက်ခြင်းအားဖြင့် default `Infinitely` မူဝါဒကိုထိန်းသိမ်းထားပါသည်။
+genesis ပြင်ပတွင် အဓိပ္ပါယ်ဖွင့်ဆိုချက်ကို လက်မှတ်ထိုးသူ ပိုင်ဆိုင်သော ပိုင်ရှင်ဒိုမင် (`--domain`) အောက်တွင် မှတ်ပုံတင်ရပြီး ဖန်တီးထားသော localnet ၏ client သည် မည်သည့်ဒိုမင်ကိုမျှ မပိုင်ဆိုင်ပါ။ `--asset-definition-id` ဖြင့် ဖန်တီးထားသော localnet တွင် ဤအဓိပ္ပါယ်ဖွင့်ဆိုချက် ရှိပြီးသားဖြစ်သည်။ genesis က ၎င်းကို ကန့်သတ်မထားသော scale ဖြင့် မှတ်ပုံတင်ခဲ့ပြီး client ကို ပိုင်ရှင်အဖြစ် သတ်မှတ်ကာ client ထံသို့ ယူနစ် 1,000,000,000 ကို ထုတ်ပေးခဲ့သည်။
 
 ```bash
 ASSET_DEFINITION_ID='66owaQmAQMuHxPzxUN3bqZ6FJfDa'
-ASSET_ALIAS='cookbook_credit#wonderland.universal'
 
-iroha --config "$LOCAL_CONFIG" \
-  --machine \
-  --fee-payer authority \
-  ledger asset definition register \
-  --id "$ASSET_DEFINITION_ID" \
-  --name cookbook_credit \
-  --description 'Local cookbook credit' \
-  --alias "$ASSET_ALIAS" \
-  --scale 2
+iroha --config "$LOCAL_CONFIG" ledger asset definition get \
+  --id "$ASSET_DEFINITION_ID"
 ```
 
-Taira မှာ ဒီ ID ကို ပြန်မသုံးပါနဲ့။ အများပြည်သူ blockchain ကွန်ရက် မှတ်ပုံတင်က ပရိုတိုကော စံတစ်ခုတည်းသော ID အသစ်တစ်ခု၊ သင့်အက်ပလီကေးရှင်းအတွက် သတ်မှတ်ထားတဲ့ Domain / alias တစ်ခု၊ အခွန်ထောက်ပံ့မှု၊ ဆော့ဝဲ အကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင်ရဲ့ အရင်းအမြစ် မှတ်ပုံတင် ခွင့်ပြုချက် လိုအပ်တယ်။
+Taira တွင် ထို ID ကို ပြန်မသုံးပါနှင့်။ အများသုံးကွန်ရက်တွင် မှတ်ပုံတင်ရန် canonical ID အသစ်တစ်ခု၊ သင့်အကောင့်က ပိုင်ဆိုင်သော ပိုင်ရှင်ဒိုမင်တစ်ခု (`ledger asset definition register` သို့ `--domain` အဖြစ် ပေးပို့သည်)၊ မည်သည့် alias အတွက်မဆို `CanManageAssetDefinitionAlias` ခွင့်ပြုချက်ပေးအပ်ထားမှုနှင့် အခွန်အတွက် ငွေကြေးထောက်ပံ့မှု လိုအပ်သည်။
 
 ### (၄) ထုတ်ပေးခြင်း၊ လွှဲပြောင်းခြင်းနှင့် ဖျက်ဆီးခြင်း {#_4-mint-transfer-and-burn}
 
@@ -131,11 +125,11 @@ iroha --config "$LOCAL_CONFIG" \
   --quantity 10.00
 ```
 
-ဖျက်ဆီးပြီးနောက် source balance `64.50` ၊ destination balance `25.50` နဲ့ total quantity `90.00` ကိုမျှော်လင့်ပါ။
+ဖျက်ဆီးပြီးနောက် source balance `1000000064.50` ၊ destination balance `25.50` နဲ့ total quantity `1000000090.00` ကိုမျှော်လင့်ပါ။
 
 ::: warning ခွင့်ပြုချက် ကန့်သတ်ချက်
 
-Taira တွင် faucet-derived `taira.tx-metadata.json` ကိုထည့်ပြီး စာရေးတိုင်းအတွက် `--fee-payer authority` ကိုအသုံးပြုပါ။ မှတ်ပုံတင်ခြင်းနှင့်ထုတ်ပေးခြင်းသည် တက်ကြွသော validator ၏ ခွင့်ပြုချက်များကိုလိုအပ်သည်။ လွှဲပြောင်းခြင်းနှင့်ဖျက်သိမ်းခြင်းသည် အရင်းအမြစ်လက်ကျန်ထက်က ခွင့်ပြုမှုဦးရေကိုလိုအပ်သည်။ testnet မှထောက်ပံ့ထားသောစာရင်းသည် အလိုအလျောက် ထုတ်ပေးသူမဟုတ်ပါ။
+Taira တွင် ရေးသွင်းမှုတိုင်းအတွက် `--fee-payer authority` ကို အသုံးပြုပါ။ CLI သည် လက်မှတ်မထိုးမီ Taira ၏ အခွန်အရင်းအမြစ်ဖြင့် တိကျသော အခွန်ကို ခန့်မှန်းတွက်ချက်ပြသသည်။ မှတ်ပုံတင်ရန် အဓိပ္ပါယ်ဖွင့်ဆိုချက်၏ `--domain` ကို ပိုင်ဆိုင်ရန် လိုအပ်ပြီး alias အတွက် `CanManageAssetDefinitionAlias` လည်း လိုအပ်သည်။ ထုတ်ပေးရန် အဓိပ္ပါယ်ဖွင့်ဆိုချက်ကို ပိုင်ဆိုင်ခြင်း သို့မဟုတ် `CanMintAssetWithDefinition` သို့မဟုတ် `CanMintAssetToAccount` ကို ကိုင်ဆောင်ထားခြင်း လိုအပ်သည်။ လွှဲပြောင်းခြင်းနှင့် ဖျက်ဆီးခြင်းအတွက် ပေးပို့သည့် လက်ကျန်အပေါ် အခွင့်အာဏာ လိုအပ်သည်။ faucet မှ ငွေထည့်ထားသော အကောင့်သည် အလိုအလျောက် ထုတ်ပေးသူ မဖြစ်ပါ။
 
 :::
 
@@ -163,14 +157,14 @@ iroha --config "$LOCAL_CONFIG" ledger asset definition get \
 - `#` ကိုပါဝင်သော ID သည် ပရိုတိုကုတ်စံညွှန်းအရ အရင်းအမြစ်အဓိပ္ပါယ်ဖွင့်ဆိုမှု ID တစ်ခုမဟုတ်ဘဲ အမည်မဖော်လိုသူ (သို့) ဘိလပ်မြေညီမျှခြင်း စာလုံးတစ်လုံးဖြစ်သည်။ Base58 တန်ဖိုးကို `--definition` ဖြင့်သုံးပြီး (သို့) ချိတ်ဆက်ထားသည့် alias ကို `--definition-alias` ဖြင့် ဖြတ်သန်းပါ။
 - `Scale` အမှားတွေက အဓိပ္ပါယ်ဖွင့်ဆိုချက်က ခွင့်ပြုတာထက် အရေအတွက်တစ်ခုမှာ နံပါတ်ပိုင်းအရေအတွက် ပိုများတယ်လို့ ဆိုလိုတာပါ။
 - `Mintability` ပယ်ချခြင်းဆိုသည်မှာ `Once`၊ `Not` သို့မဟုတ် `Limited(n)` မူဝါဒများ ထုတ်လွှင့်မှု ကုန်ဆုံးသွားပြီ (သို့မဟုတ်) ခွင့်ပြုထားခြင်းမရှိပါ။ သမိုင်းကို ပြန်မရေးပါနဲ့။ အဓိပ္ပါယ်သတ်မှတ်ချက် မေးမြန်းချက်ဖြင့်ပြန်ပို့သော မူဝါဒကိုအသုံးပြုပါ။
-- အဆင့် (၂) မှာ မှတ်ပုံတင်မှတ်တိုင်စာရင်းကို ကြံစည်ရွေးချယ်ခြင်း။ အရင်းအမြစ်ဝင်ငွေက `ExplicitOnly` ဆိုပါက၊ ခွင့်ပြုထားသော စာရင်းမှတစ်ဆင့် ရည်မှန်းချက်လက်ကျန်ကို စီမံခန့်ခွဲပါ။ CLI အမည်တူစောင့်သည် အကောင့် သို့မဟုတ် ငွေစာရင်းကို မှတ်ပုံတင်ခြင်းမရှိဘဲ အခြားညွှန်ကြားချက်တစ်ခု ထပ်ဖြည့်ခြင်းအစား abort လုပ်သည်။
-- ပုံမှန် သင်ကြားမှု အောင်မြင်မှု မတိုင်မီမှာ အခွန်ကို ငြင်းပယ်ခံရမှာပါ။ ငွေပေးချေသူကို ရွေးချယ်ပါ၊ ကွန်ရက်ရဲ့ အခွန်အရင်းအမြစ် metadata ကိုသုံးပြီး ၎င်းရဲ့စာရင်းကို စစ်ဆေးပါ။
-- Fixed local definition ကို အရင် run တစ်ခုကတည်းက ရှိပြီးသားဆိုရင်, အသစ်ဖန်တီးထားတဲ့ localnet ကိုစတင်လိုက်ပါ (သို့) တည်ဆဲအခြေအနေကို ဆက်လုပ်ပါ။ Base58 ID အတွက် မှားယွင်းတဲ့ ကျပန်း string ကို ဘယ်တော့မှ အစားထိုးမထားပါနဲ့.
+- အဆင့် (၂) သည် ဦးတည်ရာအကောင့်ကို တိတိကျကျ မှတ်ပုံတင်သောကြောင့် အကောင့်လက်ခံမှုမူဝါဒသည် `ExplicitOnly` ဖြစ်သည့်အခါတွင်လည်း လွှဲပြောင်းမှု အလုပ်လုပ်သည်။ အမည်ဆင်တူသော CLI guard သည် အကောင့် သို့မဟုတ် လက်ကျန်ကို မှတ်ပုံတင်ခြင်းမရှိဘဲ အခြားညွှန်ကြားချက်တစ်ခု ထပ်ဖြည့်ခြင်းအစား abort လုပ်သည်။
+- အခွန်ငြင်းပယ်မှုသည် ပုံမှန်ညွှန်ကြားချက် အောင်မြင်မှုမတိုင်မီ ဖြစ်ပေါ်သည်။ ငွေပေးချေသူကို ရွေးချယ်ပါ၊ CLI ၏ အခွန်စျေးနှုန်းခန့်မှန်းချက်ရှိ အခွန်အရင်းအမြစ်နှင့် အမြင့်ဆုံးပမာဏကို စစ်ဆေးပြီး ထိုလက်ကျန်ကို အတည်ပြုပါ။
+- တူညီသော localnet ပေါ်တွင် ပြန်လည်လုပ်ဆောင်ပါက ယခင်လက်ကျန်များမှ စတင်ပြီး `kagami keys` သည် ရှိပြီးသား `./cookbook-recipient` ကို ငြင်းပယ်သည်။ အသစ်ဖန်တီးထားသော localnet ကို စတင်ပြီး ထိုဖိုင်တွဲကို ဖယ်ရှားပါ၊ သို့မဟုတ် အကြွင်းမဲ့တန်ဖိုးများအစား လက်ကျန်ပြောင်းလဲမှုများကို နှိုင်းယှဉ်ပါ။ Base58 ID အတွက် မှားယွင်းသော ကျပန်း string ကို ဘယ်တော့မှ အစားထိုးမထားပါနှင့်။
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [Asset lifecycle integration tests at the pinned source-code revision (ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှု)](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/asset.rs)
-- [Rust ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ်ကို ပြန်လည်သုံးသပ်မှုမှာ ရင်းနှီးမြှုပ်နှံမှု တည်ဆောက်ပုံဥပမာများ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/examples/tutorial.rs)
+- [Asset lifecycle integration tests at the pinned source-code revision (ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှု)](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/asset.rs)
+- [Rust ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ်ကို ပြန်လည်သုံးသပ်မှုမှာ ရင်းနှီးမြှုပ်နှံမှု တည်ဆောက်ပုံဥပမာများ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/examples/tutorial.rs)
 - [ပိုက်ဆံများ](/my/blockchain/assets.md)
 - [ညွှန်ကြားချက်](/my/blockchain/instructions.md)
 - [ခွင့်ပြုချက် လက်မှတ်များ](/my/reference/permissions.md)

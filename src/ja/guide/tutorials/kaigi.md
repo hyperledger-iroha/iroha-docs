@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /guide/tutorials/kaigi.md
-translation_source_hash: 7a9f03e45a17ecbc4a2d7182d4c9aff88d5f6f0b77e0ecfde86bed56d0ddebba
+translation_source_hash: b42e035ea1056c07dd9c8e2f651e362c7f4b759a345508d2f099ad1507e42e45
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -48,7 +48,7 @@ npm install
 npm run dev
 ```
 
-清潔な SDK パッケージには必要なCargoワークスペースが含まれていません `npm run build:native`, だからそれを再構築する Iroha ソースコード作業コピー後 SDK 変更。文書化された SDK ソースは固定されています [`javascript/iroha_js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js).
+清潔な SDK パッケージには必要なCargoワークスペースが含まれていません `npm run build:native`, だからそれを再構築する Iroha ソースコード作業コピー後 SDK 変更。文書化された SDK ソースは固定されています [`javascript/iroha_js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js).
 
 ## API エンドポイントを確認してください {#check-the-endpoint}
 

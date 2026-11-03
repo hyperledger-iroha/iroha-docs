@@ -1,41 +1,28 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: f1ea542f7a710830cd32465d141db8452e6418d426500995b9df7c9c4e1fd597
+translation_source_hash: ca6fd12e33df43b73a72dd6327133115aa44256cf579387c11bf0693797bf96e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Аҡыллы килешеү төҙөү һәм уны ҡулланыу {#build-and-deploy-a-smart-contract}
 
 ## Һөҙөмтә {#outcome}
 
-Kotodama V1 килешеүен тикшереү һәм төҙөү, уның асыҡ инеү урынын урында үтәү, тикшерелгән IVM артефактын урынлаштырыу, урынлаштырылған инеү урынының симуляцияһын яһау һәм уны вәкәләтле иҫәп тарафынан асыҡтан-асыҡ күрһәтелгән түләү менән тапшырыу.
+Kotodama V1 килешеүен тикшерегеҙ һәм компиляциялағыҙ, уның асыҡ ҡарау функцияһын локаль эшләтегеҙ, тикшерелгән IVM артефактын асыҡтан-асыҡ һайланған, вәкәләтле иҫәп түләгән комиссиялар менән урынлаштырығыҙ һәм урынлаштырылған ҡарау функцияһын Torii аша уҡығыҙ.
 
 ## Шарттар {#prerequisites}
 
-- Iroha сығанағынан `0010c5a70039eac101a4846499ba9ceaf43eb65c`, Rust һәм Cargo адресы буйынса иҫәп-хисап.
-- Хәҙерге `iroha` CLI плюс финансланған Taira клиенты [нан Taira](./connect-to-taira.md) менән бәйләнешкә инә.
-- Абсолют юлдары `IROHA_CONFIG` һәм `IROHA_PRIVATE_KEY_FILE`. Ключлы файл хужаһы ҡарамағында булырға тейеш, бер ссылка менән даими файл режимы менән `0600`; урынлаштырыу ярҙамсыһы аңлы рәүештә шәхси-ключлы аргументҡа эйә түгел.
-- Taira операторҙы раҫлау. Контракт кодын теркәү өсөн `CanRegisterSmartContractCode` кәрәк, һәм һаҡланған урынлаштырыуҙар идара итеүҙе бүлеү һәм ғәмәлгә ашырыу талап итә ала. Әгәр ҙә Taira был хоҡуҡты бирмәгән икән, уны генерияланған локаль селтәрҙә ҡулланыу рөхсәт ителә.
+- Iroha сығанағынан `c8c872461e92f04325c350cdd952f4276e96f9dc`, Rust һәм Cargo адресы буйынса иҫәп-хисап.
+- Хәҙерге `iroha` CLI һәм `musubi` (сығанаҡ код күсермәһендә `cargo run -p musubi --` итеп эшләтелә), шулай уҡ [Taira-ға тоташыу](./connect-to-taira.md) битенән финансланған Taira клиенты.
+- `IROHA_CONFIG`-та абсолют юл. Musubi-ҙың селтәр бәйләүе был клиент файлына һылтанманы һаҡлай һәм урынлаштырыуға шул файлдағы иҫәп асҡысы менән ҡул ҡуя.
+- Ҡушамат вәкәләте. Башҡарыусы (executor) теүәл килешеү ҡушаматы йәки уның өҫтәге даирәһе өсөн `CanManageAccountAlias` талап итә: `name::domain.dataspace` өсөн — хужа домен, `name::dataspace` өсөн — мәғлүмәттәр киңлеге. Теркәлгән иҫәптәргә код теркәү өсөн айырым рөхсәт кәрәкмәй, ә һаҡланған исемдәр арауыҡтары өсөн шулай уҡ селтәрҙең идара итеү процесы кәрәк. Миҫалдар `cookbook_tuple::universal` ҡуллана; Taira-ла уны үҙегеҙгә ҡараған домендағы ҡушамат менән алмаштырығыҙ йәки генезисы ҡушамат даирәһен биргән генерацияланған локаль селтәрҙә урынлаштырығыҙ.
 
 ```bash
-TORII_URL=https://taira.sora.org
 IROHA_SOURCE=/absolute/path/to/iroha
 IROHA_CONFIG=/absolute/path/to/taira.client.toml
-IROHA_PRIVATE_KEY_FILE=/absolute/path/to/taira-private-key.txt
-test -n "$TAIRA_ACCOUNT_ID"
-test -f "$IROHA_PRIVATE_KEY_FILE"
-
-CHAIN_ID="$({
-  python3 - "$IROHA_CONFIG" <<'PY'
-import sys
-import tomllib
-
-with open(sys.argv[1], "rb") as config_file:
-    print(tomllib.load(config_file)["chain"])
-PY
-})"
+test -f "$IROHA_CONFIG"
 ```
 
 ## Аҙымдар {#steps}
@@ -46,12 +33,12 @@ Iroha ҡалыпта эш һәм компиляторҙың тупль кире 
 
 ```bash
 cd "$IROHA_SOURCE"
-mkdir -p ./contracts ./build/deployment
+mkdir -p ./contracts ./build
 cp ./crates/kotodama_lang/src/samples/tuple_return_demo.ko \
   ./contracts/tuple_return_demo.ko
 ```
 
-Тулы сығанаҡ ҙур түгел һәм хәҙерге `seiyaku`/`kotoage` синтаксисын ҡуллана:
+Тулы сығанаҡ код бәләкәй: бер шәхси ярҙамсы `fn` һәм һәр саҡырыусыға асыҡтан-асыҡ рөхсәт иткән бер асыҡ, уҡыу өсөн генә булған `view fn`:
 
 ```kotodama
 seiyaku TupleReturnDemo {
@@ -60,7 +47,7 @@ seiyaku TupleReturnDemo {
         return t;
     }
 
-    kotoage fn compute() -> (int, int) authorize("Entry") {
+    view fn compute() authorize(anyone) -> (int, int) {
         let p = pair(a: 3, b: 5);
         return (p.0, p.1);
     }
@@ -72,16 +59,16 @@ Kotodama маҡсатлы Iroha Виртуаль машина һәм уның х
 ### 2. Артефактты тикшерегеҙ, төҙөгөҙ һәм тикшерегеҙ {#_2-check-build-and-verify-the-artifact}
 
 ```bash
-cargo run -p ivm --bin koto -- \
+cargo run -p kotodama_toolchain --bin koto -- \
   check ./contracts/tuple_return_demo.ko
 
-cargo run -p ivm --bin koto -- \
+cargo run -p kotodama_toolchain --bin koto -- \
   build \
   --out ./build/tuple_return_demo.to \
   --manifest-out ./build/tuple_return_demo.manifest.json \
   ./contracts/tuple_return_demo.ko
 
-cargo run -p ivm --bin koto -- \
+cargo run -p kotodama_toolchain --bin koto -- \
   build \
   --out ./build/tuple_return_demo.to \
   --manifest-out ./build/tuple_return_demo.manifest.json \
@@ -93,82 +80,90 @@ cargo run -p ivm --bin koto -- \
 
 ### 3. Байткодты локаль рәүештә эшләтегеҙ. {#_3-run-the-bytecode-locally}
 
-`compute` - асыҡ `kotoage` инеү пункты. уны ғәмәлгә ашырығыҙ `debug-call`, ул урындағы һынау мәғлүмәттәренә ҡаршы үтә, бер транзакцияны тапшырмайынса йәки түләмәйенсә.
+`compute` — асыҡ, уҡыу өсөн генә булған `view fn`. Уны `debug-view` менән эшләтегеҙ: ул компиляцияланған байт-кодты ирекле һынау мәғлүмәттәре менән локаль башҡара, транзакцияны тапшырмай һәм уның өсөн түләмәй.
 
 ```bash
-iroha --config "$IROHA_CONFIG" --machine contract debug-call \
+iroha --config "$IROHA_CONFIG" --machine contract debug-view \
   --code-file ./build/tuple_return_demo.to \
   --entrypoint compute \
-  > ./build/local-call.json
+  > ./build/local-view.json
 
 jq -e '.ok == true and .result == ["3", "5"]' \
-  ./build/local-call.json
+  ./build/local-view.json
 ```
 
 Kotodama тулы һандар JSON ҡылдары итеп күрһәтелә, шуға күрә декодланған тупл `["3", "5"]` була.
 
-### 4. Native ярҙамсы аша урынлаштырыу {#_4-deploy-through-the-native-helper}
+### 4. Тикшерелгән артефактты Musubi менән урынлаштырығыҙ {#_4-deploy-the-verified-artifact-with-musubi}
 
-Ярҙамсы байт-код өлөштәрен йөкмәтә, ҡул ҡуйылған манифестты теркәй һәм бер `CommitContractDeployment` операцияһын тапшыра. Ул һәр транзакцияны түләү менән билдәләй һәм һайлап алынған түләүсене йәки газ бәйләнешен үҙгәрткән комиссия иҫәбе кире ҡаға.
+`iroha contract` килешеүҙәрҙе тикшерә, уларҙың ҡарау функцияларын эшләтә һәм отладка яһай, ләкин уларҙы урынлаштырмай, шуға күрә Taira-ла урынлаштырыу Musubi аша бара. Уның урынлаштырыу хеҙмәте байт-код өлөштәрен тейәй, тикшерелгән манифестты теркәй һәм бер `CommitContractDeployment` операцияһын тапшыра. Ул һәр транзакция өсөн комиссия иҫәбен ала, һайланған түләүсене, спонсор ревизияһын йәки газ сиген үҙгәрткән комиссия иҫәбен кире ҡаға һәм алдан йыйылған артефактты бикләнгән бәйлелектәр менән пакет йыйылышы уның код һәм ABI хештарын ҡабатлағандан һуң ғына урынлаштыра. Kagami идара иткән локаль селтәрҙә уның урынына `kagami contract deploy` `./build/tuple_return_demo.to`-ны `--alias cookbook_tuple::universal --json` менән урынлаштыра; уның квитанцияһы `.receipt` аҫтында, ә `kagami context show` `IROHA_CONFIG` итеп ҡулланыла торған клиент конфигурацияһын баҫтыра.
 
 ```bash
-printf '%s\n' \
-  '{"payer":"authority","value":{"charge_limits":[],"gas_limit":1500000}}' \
-  > ./build/fee-payment.json
+cat > ./contracts/Musubi.toml <<'TOML'
+manifest-version = 1
 
-cargo run -p iroha_cli --bin ivm_contract_deploy -- \
-  --torii-url "$TORII_URL" \
-  --chain-id "$CHAIN_ID" \
-  --authority "$TAIRA_ACCOUNT_ID" \
-  --private-key-file "$IROHA_PRIVATE_KEY_FILE" \
-  --code-file ./build/tuple_return_demo.to \
-  --contract-alias cookbook_tuple::universal \
-  --fee-payment-json ./build/fee-payment.json \
-  --out-dir ./build/deployment \
+[package]
+namespace = "local"
+name = "cookbook-tuple"
+version = "0.1.0"
+edition = "1"
+abi-version = 1
+
+[[contract]]
+name = "tuple_return_demo"
+path = "tuple_return_demo.ko"
+TOML
+
+cargo run -p musubi -- --manifest-path ./contracts/Musubi.toml check
+
+cargo run -p musubi -- --manifest-path ./contracts/Musubi.toml \
+  network configure taira \
+  --config "$IROHA_CONFIG" \
+  --fee-payer authority \
+  --contract tuple_return_demo \
+  --alias cookbook_tuple::universal
+
+cargo run -p musubi -- --manifest-path ./contracts/Musubi.toml --format json \
+  deploy --network taira \
+  --contract tuple_return_demo \
+  --artifact ./build/tuple_return_demo.to \
+  --artifact-manifest ./build/tuple_return_demo.manifest.json \
   > ./build/deployment.json
 
-jq '{contract_address, code_hash_hex, final, fee_quotes}' \
+jq '.data.receipt | {contract_address, code_hash, stored_artifact_matches}' \
   ./build/deployment.json
 ```
 
-Буш `charge_limits` үтенесе күсереп алынған актив идентификаторы түгел: ярҙамсы ҡул ҡуйыр алдынан теүәл live quote-ты ҡабул итә. Ҡайтарылған charge asset-ты хәҙерге faucet response менән сағыштырығыҙ. Contract call-дар fee selection-ды тик typed live quote аша ҡабул итә; `gas_asset_id` transaction metadata-һы беренсе релиз contract-ының өлөшө түгел.
+Селтәр бәйләүе `--fee-payer authority` ҡуллана; Musubi ҡул ҡуйыр алдынан теүәл комиссияны Taira-ның түләү активында иҫәпләп күрһәтә. Ҡайтарылған комиссия активын хәҙерге faucet сәйәсәте баҫтырған актив менән сағыштырығыҙ. Килешеү саҡырыуҙары комиссияны һайлауҙы тик типлы ағымдағы комиссия иҫәбе аша ҡабул итә; `gas_asset_id` транзакция метамәғлүмәттәре беренсе релиз килешеүенә инмәй.
 
-### 5. Ҡулланылған инеү пунктына саҡырыу һәм симуляциялау {#_5-simulate-and-call-the-deployed-entrypoint}
+### 5. Урынлаштырылған ҡарау функцияһын уҡығыҙ {#_5-read-the-deployed-view}
 
-Симуляция Torii-ҙа асыҡ инеү нөктәһен тапшырмайынса башҡара. Түбәндәге саҡырыу транзакция булып тора, шуға күрә вәкәләтле комиссия түләүсене асыҡтан-асыҡ һайлай. Ике команда ла 1 500 000 газ сикләүен бәйләй.
+`contract view` уҡыу өсөн генә булған инеү нөктәһен Torii-ҙа транзакцияһыҙ һәм комиссияһыҙ башҡара. Ҡарау функцияһының транзакция формаһы юҡ: Torii үҙенең саҡырыу маршруттарында ҡарау селекторын кире ҡаға.
 
 ```bash
-iroha --config "$IROHA_CONFIG" --machine contract call \
-  --simulate \
+iroha --config "$IROHA_CONFIG" --machine contract view \
   --contract-alias cookbook_tuple::universal \
   --entrypoint compute \
   --gas-limit 1500000 \
-  > ./build/deployed-simulation.json
+  > ./build/deployed-view.json
 
 jq -e '.ok == true and .result == ["3", "5"]' \
-  ./build/deployed-simulation.json
-
-iroha --config "$IROHA_CONFIG" \
-  --machine \
-  --fee-payer authority \
-  contract call \
-  --contract-alias cookbook_tuple::universal \
-  --entrypoint compute \
-  --gas-limit 1500000 \
-  --wait \
-  --timeout-ms 60000 \
-  > ./build/deployed-call.json
-
-jq -e '.terminal_kind == "Applied"' ./build/deployed-call.json
+  ./build/deployed-view.json
 ```
 
 ## Тикшереү {#verify}
 
-Алмаш исемдәрҙе хәл итегеҙ, кире ҡайтарылған код хэшигы менән сылбырҙағы манифестты алығыҙ һәм шул уҡ асыҡ инеү нөктәһен каноник адрес буйынса симуляциялау:
+Ҡушаматтың адресын билдәләгеҙ, Torii урынлаштырылған ҡарау функцияһы өсөн хәбәр иткән код хеше буйынса сылбырҙағы манифестты алығыҙ һәм шул уҡ ҡарау функцияһын каноник адрес буйынса эшләтегеҙ:
 
 ```bash
-CODE_HASH="$({ jq -er '.code_hash_hex' ./build/deployment.json; })"
-CONTRACT_ADDRESS="$({ jq -er '.contract_address' ./build/deployment.json; })"
+CONTRACT_ADDRESS="$({
+  jq -er '.data.receipt.contract_address' ./build/deployment.json
+})"
+CODE_HASH="$({ jq -er '.code_hash_hex' ./build/local-view.json; })"
+DEPLOYED_CODE_HASH="$({
+  jq -er '.code_hash_hex' ./build/deployed-view.json
+})"
+test "$DEPLOYED_CODE_HASH" = "$CODE_HASH"
 
 RESOLVED_ADDRESS="$({
   iroha --config "$IROHA_CONFIG" --machine \
@@ -178,36 +173,36 @@ RESOLVED_ADDRESS="$({
 test "$RESOLVED_ADDRESS" = "$CONTRACT_ADDRESS"
 
 iroha --config "$IROHA_CONFIG" contract manifest get \
+  --dataspace-id 0 \
   --code-hash "$CODE_HASH" \
   --out ./build/on-chain-manifest.json
 
-iroha --config "$IROHA_CONFIG" --machine contract call \
-  --simulate \
+iroha --config "$IROHA_CONFIG" --machine contract view \
   --contract-address "$CONTRACT_ADDRESS" \
   --entrypoint compute \
-  > ./build/address-simulation.json
+  > ./build/address-view.json
 
 jq -e '.ok == true and .result == ["3", "5"]' \
-  ./build/address-simulation.json
+  ./build/address-view.json
 ```
 
-Ҡулланыуҙы тик кире ҡайтарылған адресҡа ҡушамат тапҡанда ғына тамамлайҙар, манифест шул уҡ код хэшигы аҫтында уҡыла, локаль һәм Torii симуляциялар кире ҡайта `["3", "5"]`, ә ебәрелгән саҡырыу `Applied` тиклем етә.
+Урынлаштырыу түбәндәге шарттарҙа ғына тамамланған һанала: урынлаштырыу квитанцияһы һаҡланған артефактты тикшерелгән тип күрһәтә, ҡушамат ҡайтарылған адресҡа килтерә, манифест шул уҡ код хеше буйынса уҡыла, ә локаль һәм Torii ҡарау функциялары `["3", "5"]` ҡайтара.
 
 ## Проблемаларҙы хәл итеү {#troubleshooting}
 
-- `CanRegisterSmartContractCode` уңышһыҙлыҡтары өсөн Taira операторы бирелгән рөхсәт йәки localnet-та генез/бутстрап үҙгәреүе кәрәк. Ғәҙәттәгесә, был рөхсәт фактынан һуң үҙ-үҙенә бирелмәй.
-- Идара итеү йәки һаҡланған һуҡмаҡтан баш тартыу , йәғни урынлаштырыу өсөн тейешле раҫлау талап ителә был селтәр талап иткән билдәләү. раҫлаусылар исемлеген координациялау; иҫәп-хисап уйлап сығарыу IDs.
-- Manifest йәки ABI тап килмәһә, bytecode, manifest һәм node runtime бер үк artifact-ты һүрәтләмәй. pinned commit-та `--verify` менән яңынан төҙөгөҙ.
+- `deployment authority lacks CanManageAccountAlias` йәки башҡарыусының `authority is not permitted to manage contract alias` хатаһы иҫәптең был ҡушаматты бәйләй алмауын аңлата. Үҙегеҙгә ҡараған домендағы ҡушаматты ҡулланығыҙ йәки теүәл ҡушамат рөхсәтен, йә уның домены йәки мәғлүмәттәр киңлеге рөхсәтен шул даирәнең хужаһынан алығыҙ; локаль селтәрҙә уны генезиста бирегеҙ.
+- Һаҡланған исемдәр арауығы буйынса кире ҡағыу ҡушаматтың исемдәр арауығы идара итеү аҫтында булыуын аңлата. Раҫлаусы иҫәптәрҙең ID-ларын һанап сығыу раҫлау дәлиле булып тормай; был исемдәр арауығы өсөн селтәрҙең идара итеү процесын (`iroha app gov deploy propose`) ҡулланығыҙ йәки унан ситтәге ҡушаматты һайлағыҙ.
+- Манифест йәки ABI тап килмәүе байт-кодтың, манифесттың һәм узелдың башҡарыу мөхитенең бер үк артефактты һүрәтләмәүен аңлата. Ҡуйылған commit-та ҡабат йыйығыҙ, һуңынан йыйылышты `--verify` менән ҡабат эшләтегеҙ.
 - `fee quote changed ... gas bound` талап ителгән тип яҙған ниәт һәм туранан-тура комиссия иҫәбе килешмәй. Ҡул ҡуйылған транзакцияны үҙгәртмәйенсә, ҡабаттан юлға сығыу.
-- Развертывать ярҙамсыһы кире ҡаға инеү клавишалары, рөхсәт итеүсе клавишалар файл режимы, симссылкалар һәм күп тапҡыр бәйләнгән файлдар селтәр тапшырыу алдынан.
-- Тик ҡарау инеү нөктәһе хатаһы `compute` дөрөҫ булмаған команда ғаиләһе аша йүнәлтелгән тигәнде аңлата. Был өлгө `kotoage` тип белдерә, шуға күрә саҡырыу симуляцияһы йәки тапшырыу ҡулланығыҙ.
+- Өҙөлгән урынлаштырыу үҙенең ҡул ҡуйылған планын журналда һаҡлай. Яңы планға ҡул ҡуйыу урынына уны `musubi deploy --resume <JOURNAL>` менән тергеҙегеҙ.
+- `is read-only and cannot be invoked as a transaction` йәки `is not a kotoage or lifecycle entrypoint` хатаһы `compute` саҡырыу командаһына ебәрелгәнен аңлата. Был миҫал `view fn` иғлан итә, шуға күрә локаль `debug-view`, ә Torii-ҙа `view` ҡулланығыҙ.
 - Контрактҡа саҡырыуҙар ыңғай типланған газ лимитын талап итә. Тәүге сығарылышҡа саҡырыу контракты юғары кимәлдәге газ йәки түләү активтары метамәғлүмәтенә ҡаршы килә.
 
 ## Сығанаҡ һәм уның менән бәйле документтар {#source-and-related-docs}
 
-- [Kotodama V1 командаһы үтәлеше ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
-- [Тупль кире ҡайтарыу сығанағы өлгөһө ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
-- [Ҡатырылған commit-та native урынлаштырыу ярҙамсыһы](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [Контрактлы интеграция һынауҙары ҡуйылған commit буйынса](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
+- [Kotodama V1 командаһының ҡуйылған commit-тағы тормошҡа ашырылышы](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_toolchain/src/bin/koto.rs)
+- [Тупль кире ҡайтарыу сығанағы өлгөһө ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
+- Ҡуйылған commit-тағы [Musubi урынлаштырыу командаһы](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/musubi/src/command_deploy.rs) һәм [Iroha-ның үҙ килешеү урынлаштырыу хеҙмәте](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_contract_deploy/src/lib.rs)
+- [Контрактлы интеграция һынауҙары ҡуйылған commit буйынса](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/contracts.rs)
 - [Аҡыллы килешеүҙәр](/ba/blockchain/smart-contracts.md)
 - [CLI ссылка](/ba/get-started/operate-iroha-via-cli.md)

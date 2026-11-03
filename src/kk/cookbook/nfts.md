@@ -1,9 +1,9 @@
 ---
 translation_locale: kk
 translation_source: /cookbook/nfts.md
-translation_source_hash: db99dab483d4e2fb3fd84be84f6e4ef9f8373f0c16eb2f34952f1232c4587561
+translation_source_hash: b60c542052eac6a916350c4aaa779c9f46d248be64ecea9c9bda679a4d56dff3
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # NFTs {#nfts}
@@ -16,7 +16,7 @@ Taira NFT күйін тексеріп, кейін генерацияланған
 
 - `curl`, `jq`, Python 3.11 немесе одан кейінгі нұсқасы, және қазіргі `iroha` CLI.
 - Тек оқу үшін Taira қолжетімділік.
-- Жазбалар үшін, [Жіберу Iroha](/kk/get-started/launch-iroha.md) арқылы жасалған жергілікті желі, `http://127.0.0.1:8080`-де `./localnet/client.toml` және Torii бірге.
+- Жазу үшін: [Iroha-ны іске қосу](/kk/get-started/launch-iroha.md) бетіндегідей `kagami localnet generate --peers 4 --out-dir ./localnet` арқылы жасалған, `./localnet/client.toml` және `http://127.0.0.1:8080` мекенжайында Torii бар жергілікті желі, сондай-ақ қол қоюшысына тиесілі NFT домені (2-қадамды қараңыз).
 
 ## Қадамдар {#steps}
 
@@ -26,20 +26,21 @@ Taira NFT күйін тексеріп, кейін генерацияланған
 
 ```bash
 curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/nfts?limit=5' \
-  | jq '{total, nfts: [.items[] | {id, owned_by, content}]}'
+  'https://taira.sora.org/v1/nfts?limit=5&include_total=true' \
+  | jq '{total, nfts: [.items[] | {id, owned_by, metadata}]}'
 ```
 
-NFTs ерекше жазбалар болып табылады, сандық баланс емес. Оларда бір ID, бір иесі және ықшам `content` метадеректер картасы бар.
+NFTs — сандық баланстар емес, бірегей жазбалар. Оларда ID, бір иесі және ықшам мазмұн картасы бар; Torii жинақ жолдары оны `metadata` ретінде, ал `ledger nft get` `content` ретінде қайтарады.
 
 ### 2. Жергілікті иелердің жеке куәліктерін дайындаңыз {#_2-prepare-local-owner-ids}
 
-Жазу мысалы тіркелген `wonderland.universal` доменін пайдаланады. Жеке кілтін көрсетпей конфигурацияланған уәкілетті субъектіні шығарыңыз, содан кейін өзгеше тіркелген есепшотты аудару орны ретінде таңдаңыз.
+Жазу мысалына қол қоюшы есептік жазбаға тиесілі домен немесе ол үшін `CanRegisterNft` рұқсатын беру қажет. Жасалған жергілікті желі өз клиенті үшін ешбір қолданба доменін тіркемейді, ал доменді тікелей тіркеу генезиске ғана арналған, сондықтан `NFT_DOMAIN` мәніне қол қоюшыңыз басқаратын `name.dataspace` доменін орнатыңыз. Бапталған уәкілетті субъектіні оның жеке кілтін ашпай анықтаңыз, содан кейін аудару мақсаты ретінде басқа тіркелген есептік жазбаны таңдаңыз.
 
 ```bash
 LOCAL_ROOT='http://127.0.0.1:8080'
 LOCAL_CONFIG='./localnet/client.toml'
-NFT_ID='cookbook_badge$wonderland.universal'
+test -n "$NFT_DOMAIN"
+NFT_ID="cookbook_badge\$$NFT_DOMAIN"
 
 LOCAL_PUBLIC_KEY="$(python3 - <<'PY'
 import tomllib
@@ -59,7 +60,7 @@ NEW_OWNER="$(
 )"
 ```
 
-`$` бөлгіші NFT мәтіндік нысанына жатады. Толық `wonderland.universal` домен мен деректер кеңістігі қосымшасын сақтаңыз.
+`$` бөлгіші NFT мәтіндік пішініне жатады. ID ішінде толық `name.dataspace` доменін сақтаңыз.
 
 ### 3. NFT-ді бастапқы мазмұнымен тіркеу {#_3-register-the-nft-with-initial-content}
 
@@ -102,34 +103,28 @@ iroha --config "$LOCAL_CONFIG" \
 
 ::: warning Рұқсат шегі
 
-Әр жазбада Taira кезінде `--metadata ./taira.tx-metadata.json` және нақты төлем жасайтын қажет. Тіркеу, беру, жою және метадеректерді жаңарту белсенді бағдарламалық қамтамасыз ету арқылы тексеріледі қоршаған орта (`CanRegisterNft`, `CanTransferNft`, `CanUnregisterNft` және `CanModifyNftMetadata` әдепкі рұқсат бетінде). Өтініміңізге тағайындалған доменді пайдаланыңыз немесе осы нұсқаулықты localnet-те сақтаңыз.
+Taira-да әр жазу операциясы `--fee-payer authority` пайдаланады; CLI қол қоюдан бұрын Taira ақы активіндегі нақты ақы бағасын алады. Тіркеуді, аударуды, жоюды және метадеректерді жаңартуды белсенді орындау ортасы тексереді (әдепкі рұқсат бетіндегі `CanRegisterNft`, `CanTransferNft`, `CanUnregisterNft` және `CanModifyNftMetadata`). Есептік жазбаңызға тиесілі доменді немесе есептік жазбаңызда осы рұқсаттар бар доменді пайдаланыңыз.
 
 :::
 
 Шартты меншікке ие жұмыс ағымдары үшін, Kotodama типтелген NFT хост-функция шақыруларын ашады. Төменде бекітілген IVM құжаттама тесті арқылы құрастырылған және орындалған нақты өмірлік цикл тесті артефакт келтірілген:
 
 ```kotodama
+// Mint an NFT, transfer it, update metadata, and burn it using typed IDs.
 seiyaku NftFlow {
-    kotoage fn nft_issue_and_transfer() authorize("NftAuthority") {
-        let owner = AccountId::parse(
-            "sorauﾛ1PﾉｳﾇmEｴWｵebHﾑ6ﾔﾙｲヰiwuCWErJ7uｽoPGｱﾔnjﾑKﾋTCW2PV",
-        );
+    permission NftAuthority;
+    kotoage fn nft_issue_and_transfer() authorize(NftAuthority) {
+        let owner = AccountId::parse("sorauﾛ1PﾉｳﾇmEｴWｵebHﾑ6ﾔﾙｲヰiwuCWErJ7uｽoPGｱﾔnjﾑKﾋTCW2PV");
         let nft = NftId::parse("n0$wonderland.universal");
-        ledger::nft::mint(nft, owner);
-        let to = AccountId::parse(
-            "sorauﾛ1NfｷgﾉﾓﾉBｦKﾌﾘﾒoﾇﾂﾛrG81ﾋjWﾎﾕVncwﾌSｱ3pﾘﾋﾉhUS9Q76",
-        );
-        ledger::nft::transfer(
-            source: owner,
-            nft: nft,
-            destination: to,
-        );
+        ledger::nft::mint(nft: nft, owner: owner);
+        let to = AccountId::parse("sorauﾛ1NfｷgﾉﾓﾉBｦKﾌﾘﾒoﾇﾂﾛrG81ﾋjWﾎﾕVncwﾌSｱ3pﾘﾋﾉhUS9Q76");
+        ledger::nft::transfer(source: owner, nft: nft, destination: to);
         ledger::nft::set_metadata(
             nft: nft,
             key: Name::parse("issued"),
             value: Json::parse("{\"issued\":\"demo\"}"),
         );
-        ledger::nft::burn(nft);
+        ledger::nft::burn(nft: nft);
     }
 }
 ```
@@ -149,22 +144,23 @@ jq -e --arg owner "$NEW_OWNER" \
   cookbook-nft.json
 ```
 
-Егер CLI жазбаны шығыс деректер контейнерінде ораса, JSON-ті бір рет тексеріп, талапты ішіндегі NFT объектісіне қолданыңыз. Билікке ие инварианттар `id`, `owned_by`, және `content`.
+CLI NFT жазбасының өзін басып шығарады. Шешуші инварианттар — `id`, `owned_by` және `content`.
 
 ## Ақауларды жою {#troubleshooting}
 
 - `name$domain` кейбір парсерлерде әмбебап деректер кеңістігіне әдепкі бойынша өтуі мүмкін, бірақ рецепттер мен қосымшалардың идентификаторлары нақты `name$domain.dataspace` формасын қолдануы керек.
 - Дәл сол NFT идентификаторын қайта тіркеуге тыйым салынады. Басқа жазба үшін жаңа localnet пайдаланыңыз немесе тұрақты жаңа идентификатор таңдаңыз.
 - Метадеректерді енгізу стандартты енгізуде жарамды болуы керек JSON. JSON дәйексөзсіз shell жолы метадеректер мәні емес.
-- Ағымдағы иесі емес есепшот арқылы орындалған аударым үшін дәл рұқсат қажет; `--from` өзгерсе де криптографиялық қолтаңба авторы өзгермейді.
-- Ауыстырғаннан кейін, бастапқы клиентке NFT-ны өзгерту немесе тіркеуден шығару рұқсаты берілмеуі мүмкін. Жаңа иесінің криптографиялық қолтаңбасын немесе рұқсат етілген бақылаушыны пайдаланыңыз.
+- Ағымдағы иеден басқа есептік жазба қол қойған аударымға NFT доменіне иелік ету немесе нақты `CanTransferNft` рұқсатын беру қажет; `--from` мәнін өзгерту қол қоюшыны өзгертпейді.
+- Аудару тек `owned_by` өрісін өзгертеді. Метадеректерді жаңарту мен тіркеуден шығару домен иесінде немесе сол NFT үшін `CanModifyNftMetadata` не `CanUnregisterNft` рұқсаты бар есептік жазбада қалады; жаңа ие оны әрі қарай аудара алады.
 - Taira бос NFT жинамасын қайтара алады. `items: []` NFT нұсқаулардың қолжетімсіз екендігінің дәлелі деп санауға болмайды.
 
 ## Дереккөз және қатысты құжаттар {#source-and-related-docs}
 
-- [NFT интеграциялық тесттер бекітілген код нұсқасында](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/nft.rs)
-- [Kotodama NFT иеленуші-техникалық шақыру тесттері бекітілген бастапқы код нұсқасында](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
-- [Белгіленген бастапқы код нұсқасындағы нақты Kotodama NFT өмірлік цикл тесті артефакті](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko)
+- [NFT интеграциялық тесттер бекітілген код нұсқасында](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/nft.rs)
+- [Kotodama NFT иеленуші-техникалық шақыру тесттері бекітілген бастапқы код нұсқасында](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
+- [Белгіленген бастапқы код нұсқасындағы нақты Kotodama NFT өмірлік цикл тесті артефакті](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/ivm/docs/examples/12_nft_flow.ko)
+- [Бекітілген бастапқы код нұсқасындағы Kotodama құжаттама мысалдарының тесттері](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/ivm/tests/kotodama_documentation_examples.rs)
 - [NFTs](/kk/blockchain/nfts.md)
 - [Метадеректер](/kk/blockchain/metadata.md)
 - [Нұсқаулар](/kk/blockchain/instructions.md)

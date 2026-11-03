@@ -1,9 +1,9 @@
 ---
 translation_locale: fr
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
+translation_source_hash: c1aee0c29332bd7c883500e72a1ec7812aebfca13b673e6681788cf4bc5ecbf1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Comptes et alias {#accounts-and-aliases}
@@ -22,15 +22,19 @@ Travaillez en toute sécurité avec des identifiants de compte canoniques sans d
 
 ### 1. Inspecter les comptes canoniques sur Taira {#_1-inspect-canonical-accounts-on-taira}
 
-La liste des comptes publics renvoie toujours des identifiants canoniques I105. Un alias principal est facultatif et est signalé séparément.
+La liste des comptes publics renvoie toujours des identifiants canoniques I105. Un alias principal est facultatif ; demandez le champ `aliases` pour le voir.
 
 ```bash
-curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+curl -fsS -H 'Accept: application/json' --get \
+  https://taira.sora.org/v1/accounts \
+  --data-urlencode 'limit=5' \
+  --data-urlencode 'select=id,aliases' \
+  | jq -r '.items[]
+    | [.id, (first(.aliases[]? | select(.is_primary) | .alias) // "-")]
+    | @tsv'
 ```
 
-Un identifiant de `.id` est valide pour les champs de compte stricts. N'y ajoutez pas de domaine. Un alias de `.primary_alias` est une clé de recherche visible par l'utilisateur, pas une autre identité canonique.
+Un identifiant de `.id` est valide pour les champs de compte stricts. N'y ajoutez pas de domaine. Un alias de `.aliases[].alias` est une clé de recherche visible par l'utilisateur, pas une autre identité canonique.
 
 ### 2. Dérivez et normalisez votre ID Taira I105 {#_2-derive-and-normalize-your-taira-i105-id}
 
@@ -53,14 +57,14 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID" \
   | iroha tools address normalize --profile taira
 ```
 
-La valeur normalisée devrait être identique à `TAIRA_ACCOUNT_ID`. Le paramètre `[account].domain` dans le fichier TOML peut être `wonderland.universal`, mais cette valeur affecte uniquement le routage et le contexte des alias.
+La valeur normalisée devrait être identique à `TAIRA_ACCOUNT_ID`. Le paramètre `[account].profile` ne sélectionne que le préfixe réseau I105 ; les domaines appartiennent aux alias, jamais à l'ID du compte.
 
 ### 3. Lisez le compte et ses actifs {#_3-read-the-account-and-its-assets}
 
 Une fois que le compte est provisionné, interrogez-le directement et listez une page d'actifs bornée. URL-encoder la valeur I105 avant de l'utiliser dans un chemin.
 
 ```bash
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 ENCODED_ACCOUNT_ID="$(
@@ -69,7 +73,7 @@ ENCODED_ACCOUNT_ID="$(
 )"
 
 curl -fsS -H 'Accept: application/json' \
-  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10" \
+  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10&include_total=true" \
   | jq '{total, items}'
 ```
 
@@ -111,7 +115,7 @@ fi
 
 ::: warning Limite d'autorisation
 
-Le service de financement du testnet Taira peut approvisionner son compte de demandeur, mais cela ne confère pas le droit général d’inscription de compte ou de gestion des alias. L’enregistrement d’un autre compte nécessite `CanRegisterAccount` sous le validateur actif. Les alias de compte nécessitent normalement également un bail SNS actif et les autorisations d'alias appropriées. Utilisez le planificateur d'intégration/alias réglementé, ou exercez-vous à l'enregistrement sur le réseau local généré.
+Le service de financement du testnet Taira peut approvisionner son compte de demandeur, mais cela ne confère pas le droit général d’inscription de compte ou de gestion des alias. L’enregistrement d’un autre compte nécessite `CanRegisterAccount` sous l'exécuteur actif. Les alias de compte nécessitent normalement également un bail SNS actif et les autorisations d'alias appropriées. Utilisez le planificateur d'intégration/alias réglementé, ou exercez-vous à l'enregistrement sur le réseau local généré.
 
 :::
 
@@ -121,9 +125,9 @@ Sur un réseau local, une fois qu'une étape de provisionnement de signataire s�
 iroha --config ./localnet/client.toml \
   --machine \
   --fee-payer authority \
-  ledger account register --id "$NEW_ACCOUNT_ID"
+  account register --id "$NEW_ACCOUNT_ID"
 
-iroha --config ./localnet/client.toml ledger account get \
+iroha --config ./localnet/client.toml account get \
   --id "$NEW_ACCOUNT_ID"
 ```
 
@@ -158,8 +162,8 @@ Stockez les identifiants de compte canoniques. Utilisez les identifiants canoniq
 
 ## Source et documents connexes {#source-and-related-docs}
 
-- [Implémentation de l'adresse de compte canonique au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
-- [Tests de compte et d'alias Torii sur le commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
+- [Implémentation de l'adresse de compte canonique au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/account/address.rs)
+- [Tests de fumée des points de terminaison de comptes Torii](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/tests/accounts_endpoints.rs) et [tests des routes d'alias](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/tests/lib_tests/part_2.rs) au commit épinglé
 - [Comptes](/fr/blockchain/accounts.md)
 - [Alias de modèle de données](/fr/blockchain/data-model.md#aliases)
 - [Conventions de nommage](/fr/reference/naming.md)

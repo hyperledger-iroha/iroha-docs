@@ -1,21 +1,21 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/metadata.md
-translation_source_hash: bb486994faabb29fb48609a886862e44e565148be4800ec1244218ef37e2e54b
+translation_source_hash: 88298912f083d79a9fdfe5e8d0a89d49acb97d814d3871db0c874cb40db5342b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Метамәғлүмәттәр {#metadata}
 
 ## Һөҙөмтә {#outcome}
 
-Taira метамәғлүмәттәрен уҡығыҙ, транзакция өсөн түләүле транзакция менән бер иҫәп-хисап метамәғлифтәре ҡиммәтен билдәләгеҙ һәм тикшерегеҙ, ә ҡабаттан баһаны алып ташлағыҙ.
+Taira-лағы метамәғлүмәттәрҙе уҡығыҙ, комиссияһы асыҡтан-асыҡ түләнгән транзакция менән бер иҫәп метамәғлүмәте ҡиммәтен ҡуйығыҙ һәм тикшерегеҙ, һуңынан был ҡиммәтте ҡабат алып ташлағыҙ. Һеҙ реестр объекттарының метамәғлүмәттәрен транзакция метамәғлүмәттәренән айырым тотаһығыҙ.
 
 ## Шарттар {#prerequisites}
 
 - `curl`, `jq`, Python 3.11 йәки унан һуңғы, һәм ток `iroha` CLI.
-- `taira.client.toml` һәм `taira.tx-metadata.json` финансланған [нан Taira](./connect-to-taira.md)ҡа тоташтырыу.
+- [Taira-ға тоташыу](./connect-to-taira.md) битенән финансланған `taira.client.toml`.
 - Маҡсат иҫәбенең метамәғлүмәттәре өҫтөндә вәкәләтле иҫәп. Миҫал көйләнгән вәкәләтле иҫәпте үҙ эсенә ала; икенсе иҫәпкә теүәл рөхсәт талап ителә.
 
 ## Аҙымдар {#steps}
@@ -27,8 +27,8 @@ Taira метамәғлүмәттәрен уҡығыҙ, транзакция өс
 ```bash
 curl -fsS -H 'Accept: application/json' \
   'https://taira.sora.org/v1/assets/definitions?limit=100' \
-  | jq '.items[] \
-    | select((.metadata // {} | length) > 0) \
+  | jq '.items[]
+    | select((.metadata // {} | length) > 0)
     | {id, name, metadata}'
 
 curl -fsS -H 'Accept: application/json' \
@@ -57,7 +57,7 @@ export TAIRA_ACCOUNT_ID="$(
 
 ### 3. Бер JSON ҡиммәтен ҡуйығыҙ {#_3-set-one-json-value}
 
-Стандарт индереүҙән уҡылған JSON иҫәптең `cookbook_profile` ҡиммәтенә әйләнә. Ә `--metadata ./taira.tx-metadata.json`, киреһенсә, транзакция конвертына түләү яландарын ҡуша. Был ике картаның маҡсаты ла, тәғәйенләнгән урыны ла төрлө.
+Стандарт индереүҙән уҡылған JSON иҫәптең `cookbook_profile` ҡиммәтенә әйләнә. `--metadata <file>` менән беркетелгән транзакция метамәғлүмәттәре — транзакция конвертындағы айырым карта, һәм ул бер ҡасан да комиссияны һайламай: быны `--fee-payer` һәм CLI-ның теүәл комиссия иҫәбе башҡара, ә клиент `gas_asset_id`, `gas_limit` йәки `fee_sponsor` асҡыстары булған транзакция метамәғлүмәттәрен кире ҡаға.
 
 ```bash
 printf '%s\n' \
@@ -65,17 +65,16 @@ printf '%s\n' \
   | iroha --config ./taira.client.toml \
       --machine \
       --fee-payer authority \
-      --metadata ./taira.tx-metadata.json \
-      ledger account meta set \
+      account meta set \
       --id "$TAIRA_ACCOUNT_ID" \
       --key cookbook_profile
 ```
 
-CLI default буйынса fee-ны quote итә, transaction-ды sign һәм submit итә, шунан көтә. Киләһе операция ошо ҡиммәткә бәйле булһа, `--no-wait` өҫтәмәгеҙ.
+CLI ҡул ҡуйыр алдынан теүәл комиссияны Taira-ның түләү активында иҫәпләп күрһәтә, һуңынан транзакцияны тапшыра һәм эшен тамамлағансы уның Applied һуңғы торошона етеүен көтә.
 
 ::: warning Рөхсәт сиктәре
 
-Әүҙем validator һәр объектты кем үҙгәртә алыуын хәл итә. Икенсе account-тың metadata-һын яңыртыу өсөн ғәҙәттә `CanModifyAccountMetadata` талап ителә; domain-дар, asset definition-дар, NFTs һәм trigger-ҙар өсөн маҡсатҡа хас metadata рөхсәттәре бар. Taira кәрәкле authority-ҙы бирмәһә, шул уҡ account командаларын `./localnet/client.toml` менән эшләтегеҙ, барлыҡҡа килгән localnet authority-һының canonical I105 ID-һын ҡулланығыҙ һәм Taira fee metadata файлын төшөрөп ҡалдырығыҙ. Local fee payer-ҙы һәр саҡ асыҡтан-асыҡ һайлағыҙ.
+Әүҙем башҡарыусы (executor) һәр объектты кем үҙгәртә алыуын хәл итә. Икенсе иҫәпте яңыртыу өсөн ғәҙәттә `CanModifyAccountMetadata` кәрәк; домендар, актив билдәләмәләре, NFTs һәм ҡуҙғатҡыстар өсөн маҡсатҡа хас айырым метамәғлүмәт рөхсәттәре бар. Әгәр Taira кәрәкле вәкәләтте бирмәгән булһа, шул уҡ иҫәп командаларын `./localnet/client.toml` менән эшләтегеҙ һәм генерацияланған локаль селтәрҙең вәкәләтле иҫәбенең каноник I105 ID-һын ҡуйығыҙ. Локаль комиссия түләүсене асыҡтан-асыҡ һайлауҙы һаҡлағыҙ.
 
 :::
 
@@ -84,7 +83,7 @@ CLI default буйынса fee-ны quote итә, transaction-ды sign һәм s
 Тәүҙә бурысты үтәгән хаҡты уҡығыҙ, һуңынан айырым күсереү транзакцияһын тапшырығыҙ.
 
 ```bash
-iroha --config ./taira.client.toml --machine ledger account meta get \
+iroha --config ./taira.client.toml --machine account meta get \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile \
   | tee cookbook-profile.json
@@ -94,8 +93,7 @@ jq -e '.version == 1' cookbook-profile.json
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger account meta remove \
+  account meta remove \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile
 ```
@@ -107,10 +105,10 @@ Python ҡушымталары өсөн оҡшаш типтағы төҙөүсе�
 билдәләнгән транзакциянан һуң, `meta get` объектты кире ҡайтарырға тейеш `version: 1`. Асылғандан һуң, тура эҙләнеү инде бер ҡиммәтте кире ҡайтармай:
 
 ```bash
-iroha --config ./taira.client.toml --machine ledger account get \
+iroha --config ./taira.client.toml --machine account get \
   --id "$TAIRA_ACCOUNT_ID" > /dev/null
 
-if iroha --config ./taira.client.toml --machine ledger account meta get \
+if iroha --config ./taira.client.toml --machine account meta get \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile; then
   printf '%s\n' 'metadata key still exists' >&2
@@ -133,8 +131,8 @@ fi
 
 ## Сығанаҡ һәм уның менән бәйле документтар {#source-and-related-docs}
 
-- [](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/queries/metadata.rs) ҡуйылған commit-та метафайлдар һорауын интеграциялау һынауҙары.
-- [Python SDK транзакция төҙөүселәре ҡуйылған commit буйынса](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/README.md)
+- [](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/queries/metadata.rs) ҡуйылған commit-та метафайлдар һорауын интеграциялау һынауҙары.
+- [Python SDK транзакция төҙөүселәре ҡуйылған commit буйынса](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/README.md)
 - [Метамәғлүмәттәре](/ba/blockchain/metadata.md)
 - [Метамәғлүмәттәрҙе һәм иҫәп-хисап яҙмаһын һаҡлау варианттары](/ba/guide/configure/metadata-and-store-assets.md)
 - [Инструкцияға һылтанма](/ba/reference/instructions.md)

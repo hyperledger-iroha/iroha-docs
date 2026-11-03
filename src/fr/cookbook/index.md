@@ -1,21 +1,21 @@
 ---
 translation_locale: fr
 translation_source: /cookbook/index.md
-translation_source_hash: 58f5247ece30d3755c38d4d24ae4553a35e0d0437476092d568a1be5c8a2ed28
+translation_source_hash: 9e13bcd28ad8ae356314041828f73af0ed25636af82ff4ea2948268b47dd73e6
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Iroha 3 Livre de recettes de l'application {#iroha-3-application-cookbook}
 
-Construire contre Iroha 3 avec de petites recettes vérifiables qui commencent sur le Taira réseau de test et conserver Minamoto lecture seule du réseau principal. Chaque recette indique si elle est une lecture publique, une écriture de compte financé normale, ou une opération avec autorisation restreinte. Les commandes utilisent le courant I105 identifiants de compte, sélection explicite des frais et le comportement vérifié lors de l'enregistrement Iroha commettre [`0010c5a70039eac101a4846499ba9ceaf43eb65c`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c).
+Construire contre Iroha 3 avec de petites recettes vérifiables qui commencent sur le Taira réseau de test et conserver Minamoto lecture seule du réseau principal. Chaque recette indique si elle est une lecture publique, une écriture de compte financé normale, ou une opération avec autorisation restreinte. Les commandes utilisent le courant I105 identifiants de compte, sélection explicite des frais et le comportement vérifié lors de l'enregistrement Iroha commettre [`c8c872461e92f04325c350cdd952f4276e96f9dc`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc).
 
-Commencez avec [Connectez-vous à Taira](./connect-to-taira.md). Il crée la configuration client et les métadonnées de frais réutilisées par les recettes en ligne de commande. Ne copiez jamais un ID d'actif de frais depuis cette documentation : dérivez-le à partir de la réponse du service de financement du testnet Taira actuel.
+Commencez avec [Connectez-vous à Taira](./connect-to-taira.md). Il finance le signataire cryptographique et enregistre l'actif de frais réutilisé par les recettes en ligne de commande. Ne copiez jamais un ID d'actif de frais depuis cette documentation : lisez-le dans la politique actuelle du service de financement du testnet Taira.
 
 ## Niveaux d'accès {#access-levels}
 
 - Public — aucun signataire cryptographique ni permission réseau n'est requis.
-- Prêt à écrire — utilisez un compte de test financé Taira, un payeur de frais explicite et l’actif de frais actuel retourné par le service de financement du testnet.
+- Prêt à écrire — utilisez un compte de test financé Taira, un payeur de frais explicite et l’actif de frais actuel publié par la politique du service de financement du testnet.
 - Permission requise — Taira doit accorder à l'exécution du logiciel nommé la permission ou l'espace de noms gouverné. Utilisez un réseau local généré lorsque cette autorisation n'est pas disponible ; le succès local ne confère pas le principal d'autorisation Taira.
 
 Aucune recette de livre de cuisine n'envoie d'écriture à Minamoto.

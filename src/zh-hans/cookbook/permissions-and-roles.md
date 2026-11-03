@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hans
 translation_source: /cookbook/permissions-and-roles.md
-translation_source_hash: 8d6fd7101094ba21cfc2c5fb9a89d2acd7e67f13ff47b9f8c8e01bbbd7bf2836
+translation_source_hash: 40fe8b19344d8eff66b178dc8576e2e049fef50bd3212fbddc5c0d5f7f37fa03
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # 许可证和角色 {#permissions-and-roles}
@@ -14,13 +14,12 @@ translation_engine: nllb-200-ct2
 
 ## 预先条件 {#prerequisites}
 
-- 资助的 Taira 客户和费用元数据从 [连接到 Taira](./connect-to-taira.md).
+- 来自 [连接到 Taira](./connect-to-taira.md) 且已注资的 Taira 客户端。
 - `TARGET_ACCOUNT`和 `DELEGATE_ACCOUNT`设置为规范 I105 账户 IDs.
-- 签名账户必须获准管理目标权限和角色。在 Taira 上，这是受权限限制的管理操作；请获取 `CanManageRoles` 以及授予范围权限所需的授权，或在生成的本地网络上运行此操作指南。
+- 签名账户必须持有 `CanManageRoles`，并且必须能够委派该范围权限：它本身就是 `TARGET_ACCOUNT`，或已持有针对该账户的 `CanModifyAccountMetadata`。在 Taira 上，这是受权限限制的管理操作。生成的本地网络的客户端并不持有 `CanManageRoles`，因此此操作指南需要一个由创世授予该权限的网络。
 
 ```bash
 CONFIG=./taira.client.toml
-FEE_METADATA=./taira.tx-metadata.json
 ROLE_ID=cookbook_metadata_editors
 test -n "$TARGET_ACCOUNT"
 test -n "$DELEGATE_ACCOUNT"
@@ -36,12 +35,11 @@ DELEGATE_CONFIG=./taira.delegate.toml
 
 ### 1.注册一个空的角色 {#_1-register-an-empty-role}
 
-每一个变化状态的 CLI 命令明确地命名了费用付款人.元数据文件包含来自水龙头响应的当前 Taira 费用资产.
+每个变更状态的 CLI 命令都会明确指定费用付款人。CLI 会在签名前给出以 Taira 费用资产计价的确切费用报价。
 
 ```bash
 iroha --config "$CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
   ledger role register --id "$ROLE_ID"
 ```
 
@@ -54,7 +52,6 @@ jq -cn --arg account "$TARGET_ACCOUNT" \
   '{name:"CanModifyAccountMetadata",payload:{account:$account}}' |
   iroha --config "$CONFIG" \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
     ledger role permission grant --id "$ROLE_ID"
 ```
 
@@ -63,8 +60,7 @@ jq -cn --arg account "$TARGET_ACCOUNT" \
 ```bash
 iroha --config "$CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
-  ledger account role grant \
+  account role grant \
   --id "$DELEGATE_ACCOUNT" \
   --role "$ROLE_ID"
 ```
@@ -79,13 +75,12 @@ iroha --config "$CONFIG" \
 printf '"delegated"\n' |
   iroha --config "$DELEGATE_CONFIG" \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
-    ledger account meta set \
+    account meta set \
     --id "$TARGET_ACCOUNT" \
     --key cookbook_access
 ```
 
-同样的模型可用于: Rust 客户. `client` 标签: `registrar_account`, 成为角色的初始所有者, CLI 所有三个账户变量都已被分析 `AccountId` 价值:
+Rust 客户端也可以使用相同的模型。这里的 `client` 是一个以 `registrar_account` 身份签名的 `iroha::blocking::Client`，`registrar_account` 会成为角色的初始所有者，与 CLI 流程中相同。三个账户变量都已是解析好的 `AccountId` 值：
 
 ```rust
 use iroha::data_model::{prelude::*, transaction::FeePaymentIntent};
@@ -98,7 +93,7 @@ let role = Role::new(role_id.clone(), registrar_account).add_permission(
     },
 );
 
-client.submit_all_blocking::<InstructionBox>(
+client.submit_all::<InstructionBox>(
     [
         Register::role(role).into(),
         Grant::account_role(role_id, delegate_account).into(),
@@ -109,32 +104,35 @@ client.submit_all_blocking::<InstructionBox>(
 
 ## 验证 {#verify}
 
-列出任务的两侧,然后阅读代表所写的精确值:
+读取被授权者的有效权限（其中包括角色授予的权限），然后读取被授权者写入的确切值：
 
 ```bash
-iroha --config "$CONFIG" ledger role permission list --id "$ROLE_ID"
-iroha --config "$CONFIG" ledger account role list --id "$DELEGATE_ACCOUNT"
+iroha --config "$CONFIG" --machine account permission list \
+  --id "$DELEGATE_ACCOUNT" --all \
+  | jq -e --arg account "$TARGET_ACCOUNT" \
+    '.items | any(.name == "CanModifyAccountMetadata"
+      and .payload.account == $account)'
 
-iroha --config "$CONFIG" ledger account meta get \
+iroha --config "$CONFIG" account meta get \
   --id "$TARGET_ACCOUNT" \
   --key cookbook_access
 ```
 
-授权列表必须包含 `CanModifyAccountMetadata`的范围到 `TARGET_ACCOUNT`,代表角色列表必须包括 `ROLE_ID`,读取的元数据必须返回`"delegated"`.
+被授权者的有效权限必须包含范围限定为 `TARGET_ACCOUNT` 的 `CanModifyAccountMetadata`，且读取的元数据必须返回 `"delegated"`。Torii 会拒绝通过已签名查询列出角色，因此有效权限列表就是分配检查。
 
 ## 解决问题 {#troubleshooting}
 
-- `Not permitted`在注册,编辑或分配角色时意味着签署者缺乏所需的 Taira 授权主体.不要用全球性的代币取代目标代币;要求准确的授予或使用 localnet.
+- 在注册、编辑或分配角色时出现 `Not permitted`，表示签名者缺乏所需的 Taira 权限。不要用全局令牌替换范围限定的令牌；请申请确切的授权。
 - 一个有效载荷解析错误通常意味着 `account` 被放置在 `payload` 旁边,一个别名被提供而不是 I105 ID,或者 JSON 的价值被引用了两次.
-- 收费拒绝属于提交该步骤的签署者. 资助经理,独立委托并保留从水龙头衍生的收费资产元数据.
+- 费用拒绝属于提交该步骤的签名者。请分别以每个费用报价所指定的费用资产为管理者和被授权者注资。
 - 一个成功的角色授予不会超过其代码中编码的范围.这个角色只能修改在许可有效载荷中命名的帐户
-- 为了清理,运行`ledger account role revoke`,然后 `ledger role permission revoke`,最后 `ledger role unregister`;每个是单独的写入,必须包含`--fee-payer authority`和费用元数据.
+- 若要清理，请先运行 `account role revoke`，然后运行 `ledger role permission revoke`，最后运行 `ledger role unregister`；每一个都是单独的写入，且必须包含 `--fee-payer authority`。
 
 ## 来源及相关文件 {#source-and-related-docs}
 
-- [在固定提交时的角色集成测试](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/roles.rs)
-- [在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/permissions.rs)上进行许可集成测试
-- [在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/permission.rs)内置的权限数据模型
+- [在固定提交时的角色集成测试](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/roles.rs)
+- [在固定提交](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/permissions.rs)上进行许可集成测试
+- [在固定提交](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_executor_data_model/src/permission.rs)内置的权限数据模型
 - [许可证和角色](/zh-hans/blockchain/permissions.md)
 - [许可证代币引用](/zh-hans/reference/permissions.md)
 - [超值数据](./metadata.md)

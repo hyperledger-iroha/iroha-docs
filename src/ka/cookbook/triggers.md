@@ -1,9 +1,9 @@
 ---
 translation_locale: ka
 translation_source: /cookbook/triggers.md
-translation_source_hash: 5267fb9bb232d52d9df4bedee414d745ccc30dd52cbc30993df3c5b975a0bc38
+translation_source_hash: 946309958fe4e23a7454206b1eb4557f8e853171ce4e04d5373cb36f46b13970
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # მატარებლები {#triggers}
@@ -14,13 +14,12 @@ translation_engine: nllb-200-ct2
 
 ## წინაპირობები {#prerequisites}
 
-- დაფინანსებული კრიპტოგრაფიული ხელმოწერა, `taira.client.toml`, `taira.tx-metadata.json` და `TAIRA_ACCOUNT_ID` [გაერთიანება Taira](./connect-to-taira.md).
+- დაფინანსებული ხელმომწერი, `taira.client.toml` და `TAIRA_ACCOUNT_ID` გვერდიდან [Taira-სთან დაკავშირება](./connect-to-taira.md). ჩაწერები იყენებს `--fee-payer authority`-ს; CLI ხელმოწერამდე იღებს ზუსტი საფასურის შეფასებას Taira-ს საფასურის აქტივში.
 - Taira ნებართვა, რომ დარეგისტრირდეს გამშვები ღილაკი `TAIRA_ACCOUNT_ID` და განახორციელოს შედეგად მომავალი გამშვები. შესაბამისი ჯოკენები არის `CanRegisterTrigger` გათვალისწინებული `authority` და `CanExecuteTrigger` გათვალისწინებულია `trigger`.
 - თუ ეს თანხები არ არის ხელმისაწვდომი, გამოიყენეთ გენერირებული ადგილობრივი ქსელი და მისი ადმინისტრატორი კლიენტი. ტრიგერის ავტორიზაციის პრინციპს ასევე სჭირდება ყველა ნებართვა, რომელიც საჭიროა ინსტრუქციების შესრულებით ტრიგერი.
 
 ```bash
 CONFIG=./taira.client.toml
-FEE_METADATA=./taira.tx-metadata.json
 TRIGGER_ID=cookbook_by_call_log
 test -n "$TAIRA_ACCOUNT_ID"
 ```
@@ -29,15 +28,14 @@ test -n "$TAIRA_ACCOUNT_ID"
 
 ### 1. დარეგისტრირეთ ინსტრუქციით დამყარებული გამშვები ღილაკი {#_1-register-an-instruction-backed-trigger}
 
-`--instructions-stdin` იღებს JSON ინსტრუქციების მასაჟს. `Log` ინსტრუქცია ამ მაგალითზე ორიენტირებულია ტრიგერის ავტორიზაციაზე და არა მეორე ბლოკჩეინის რეესტრის ობიექტის ნებართვებზე.
+`--instructions-stdin` იღებს JSON ინსტრუქციების მასივს, რომელსაც `--emit-instructions` ბეჭდავს. `tx ping` ქმნის ერთ `Log` ინსტრუქციას, რის გამოც ეს მაგალითი ტრიგერის ავტორიზაციაზეა ორიენტირებული და არა მეორე რეესტრის ობიექტის ნებართვებზე.
 
 ```bash
-printf '%s\n' \
-  '[{"Log":{"level":"INFO","message":"cookbook trigger executed"}}]' |
+iroha --config "$CONFIG" --emit-instructions \
+  tx ping --log-level INFO --msg 'cookbook trigger executed' |
   iroha --config "$CONFIG" \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
-    ledger trigger register \
+    trigger register \
     --id "$TRIGGER_ID" \
     --instructions-stdin \
     --repeats 3 \
@@ -50,11 +48,11 @@ printf '%s\n' \
 ### 2. განცხადების შესრულებამდე შეამოწმეთ {#_2-inspect-the-declaration-before-execution}
 
 ```bash
-iroha --config "$CONFIG" ledger trigger get --id "$TRIGGER_ID"
-iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
+iroha --config "$CONFIG" trigger get --id "$TRIGGER_ID"
+iroha --config "$CONFIG" trigger inspect "$TRIGGER_ID"
 ```
 
-დაადასტურეთ I105 ავტორიზაციის პრინციპი, შესრულების ფილტრი, დარჩენილი გამეორებები და ერთიანი `Log` ინსტრუქცია, სანამ სხვა გადასახადი დაიხარჯავთ.
+კიდევ ერთი საფასურის დახარჯვამდე დაადასტურეთ I105 უფლებამოსილი ანგარიში, შესრულების ფილტრი, დარჩენილი გამეორებები და ერთადერთი დაკოდირებული ინსტრუქცია `executable`-ში.
 
 ### 3. შეასრულეთ და ელოდოთ ორივე ფენაზე {#_3-execute-and-wait-for-both-layers}
 
@@ -63,32 +61,31 @@ iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 ```bash
 iroha --config "$CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
-  ledger trigger execute \
+  trigger execute \
   --wait \
   --trace \
   --timeout-ms 60000 \
   "$TRIGGER_ID"
 ```
 
-Rust კლიენტები ქმნიან იმავე ორ ტიპირებულ ინსტრუქციას. აქ `authority` არის `AccountId` და `client` ნიშნები, როგორც ეს ანგარიში:
+Rust კლიენტები იმავე ორ ტიპიზებულ ინსტრუქციას აგებენ. აქ `authority` არის `AccountId`, ხოლო `client` არის `iroha::blocking::Client`, რომელიც ამ ანგარიშის სახელით აწერს ხელს; `submit` ელოდება Applied საბოლოობას:
 
 ```rust
 use iroha::data_model::{prelude::*, transaction::FeePaymentIntent};
 
 let trigger_id: TriggerId = "cookbook_by_call_log".parse()?;
 let action = Action::new(
-    vec![Log::new(Level::INFO, "cookbook trigger executed".to_owned()).into()],
+    vec![Log::new(Level::INFO, "cookbook trigger executed".to_owned())],
     Repeats::Exactly(3),
     authority.clone(),
     ExecuteTriggerEventFilter::new()
         .for_trigger(trigger_id.clone())
         .under_authority(authority),
-);
+)?;
 let fee = FeePaymentIntent::authority(Vec::new(), None);
 
-client.submit_blocking(Register::trigger(Trigger::new(trigger_id.clone(), action)), fee.clone())?;
-client.submit_blocking(ExecuteTrigger::new(trigger_id), fee)?;
+client.submit(Register::trigger(Trigger::new(trigger_id.clone(), action)), fee.clone())?;
+client.submit(ExecuteTrigger::new(trigger_id), fee)?;
 ```
 
 ## შემოწმება {#verify}
@@ -96,12 +93,12 @@ client.submit_blocking(ExecuteTrigger::new(trigger_id), fee)?;
 დასრულების საპოვნელად საბოლოო ბლოკების ისტორია დაასკანერეთ და განმეორების შემცირებული რაოდენობა შეამოწმეთ:
 
 ```bash
-iroha --config "$CONFIG" ledger trigger completed list \
+iroha --config "$CONFIG" trigger completed list \
   --id "$TRIGGER_ID" \
   --outcome success \
   --limit 5
 
-iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
+iroha --config "$CONFIG" trigger inspect "$TRIGGER_ID"
 ```
 
 მინიმუმ ერთი დასრულება უნდა გამოხატოს წარმატების შესახებ. ტრიგერი უნდა დარჩეს აქტიური ორი შესრულების შემდეგ. წარმატებული წარდგენა წარმატებული ტრიგერის დასრულების გარეშე არ არის საკმარისი შემოწმება.
@@ -110,15 +107,15 @@ iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 
 - რეგისტრაციის უარყოფა არ არის ნებადართული ნიშნავს, რომ კრიპტოგრაფიულ ხელმოწერას არ აქვს `CanRegisterTrigger` დეკლარირებული ავტორიზაციის პრინციპისათვის. შესრულებისთვის საჭიროა ცალკე განსაზღვრული `CanExecuteTrigger` ტოქენი.
 - ტრანზაქცია შეიძლება მიაღწიოს Applied მაშინ, როდესაც ტრიგერი მოქმედება იუწყება წარუმატებლობა. წაიკითხეთ დასრულების შედეგი და შეცდომა; შემდეგ შეამოწმეთ ტრიგერი ავტორიზაციის ხელმძღვანელის ნებართვები თითოეული ჩასმული ინსტრუქციისათვის .
-- `trigger not found` შეიძლება ნიშნავდეს რეგისტრაციის ტრანზაქციის უარყოფას ან განხორციელებისათვის გამოყენებულ იქნა განსხვავებული Torii/ბმულიანი კონფიგურაცია.
+- `Trigger with id … not found` შეიძლება ნიშნავდეს რეგისტრაციის ტრანზაქციის უარყოფას ან განხორციელებისათვის გამოყენებულ იქნა განსხვავებული Torii/ბმულიანი კონფიგურაცია.
 - როდესაც გამეორებების რაოდენობა ნულს მიაღწევს, დამატებითი გამეორებების მინიჭება კიდევ ერთი პრივილეგირებული ჩაწერის ოპერაციაა. ეს რეცეპტი შეუმჩნევლად არ გადააკეთოთ განუსაზღვრელი რაოდენობის გამეორების მქონე ტრიგერად.
-- გაწმენდის მიზნით, `ledger trigger unregister --id "$TRIGGER_ID"` ითხოვს `CanUnregisterTrigger` აღნიშნული მატჩისთვის და კონკრეტული საფასურის შერჩევისთვის.
+- გაწმენდის მიზნით, `trigger unregister --id "$TRIGGER_ID"` ითხოვს `CanUnregisterTrigger` აღნიშნული მატჩისთვის და კონკრეტული საფასურის შერჩევისთვის.
 
 ## წყარო და შესაბამისი დოკუმენტები {#source-and-related-docs}
 
-- [ტექნიკური გამოძახების ტრიგერი ინტეგრაციის ტესტები ჩაკეტილი წყარო კოდის რევიზიისას](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/triggers/by_call_trigger.rs)
-- [ღონისძიების და განძრავების ინტეგრაციის ტესტები ჩაკეტილი წყარო კოდის რევიზიისას](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events_and_triggers.rs)
-- [გამოშვების ინსტრუქციის შესრულება ჩაკეტილი წყარო კოდის რევიზიის დროს](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
+- [ტექნიკური გამოძახების ტრიგერი ინტეგრაციის ტესტები ჩაკეტილი წყარო კოდის რევიზიისას](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/triggers/by_call_trigger.rs)
+- [ღონისძიების და განძრავების ინტეგრაციის ტესტები ჩაკეტილი წყარო კოდის რევიზიისას](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/events_and_triggers.rs)
+- [გამოშვების ინსტრუქციის შესრულება ჩაკეტილი წყარო კოდის რევიზიის დროს](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
 - [გამამოწვევები](/ka/blockchain/triggers.md)
 - [ტრიგერების მაგალითები](/ka/blockchain/trigger-examples.md)
 - [მოვლენები](./stream-events.md)

@@ -1,21 +1,21 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/index.md
-translation_source_hash: 58f5247ece30d3755c38d4d24ae4553a35e0d0437476092d568a1be5c8a2ed28
+translation_source_hash: 9e13bcd28ad8ae356314041828f73af0ed25636af82ff4ea2948268b47dd73e6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Iroha 3 Ҡабул итеү буйынса ҡулланма {#iroha-3-application-cookbook}
 
-Taira testnet-тан башланған бәләкәй, тикшереп була торған recipes менән Iroha 3 өсөн ҡушымталар төҙөгөҙ һәм Minamoto mainnet-ты read-only тотоғоҙ. Һәр recipe уның public read, ғәҙәти funded-account write йәки permission-gated operation булыуын әйтә. Commands ғәмәлдәге I105 account IDs, explicit fee selection һәм Iroha commit [`0010c5a70039eac101a4846499ba9ceaf43eb65c`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c) тәртибен ҡуллана.
+Taira testnet-тан башланған бәләкәй, тикшереп була торған recipes менән Iroha 3 өсөн ҡушымталар төҙөгөҙ һәм Minamoto mainnet-ты read-only тотоғоҙ. Һәр recipe уның public read, ғәҙәти funded-account write йәки permission-gated operation булыуын әйтә. Commands ғәмәлдәге I105 account IDs, explicit fee selection һәм Iroha commit [`c8c872461e92f04325c350cdd952f4276e96f9dc`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc) тәртибен ҡуллана.
 
-Башта [Taira-ға тоташыу](./connect-to-taira.md) бүлегенән башлағыҙ. Ул command-line recipe-тар ҡабат ҡулланған client configuration һәм fee metadata-ны булдыра. Был документациянан fee asset ID-ны бер ҡасан да күсермәгеҙ: уны ағымдағы Taira faucet response-тан сығарығыҙ.
+[Taira-ға тоташыу](./connect-to-taira.md) бүлегенән башлағыҙ. Ул ҡул ҡуйыусыны финанслай һәм командалар юлы рецептары ҡабат ҡулланған түләү активын яҙып ҡуя. Был документациянан түләү активы ID-һын бер ҡасан да күсермәгеҙ: уны ағымдағы Taira faucet сәйәсәтенән уҡығыҙ.
 
 ## Ҡабул итеү кимәле {#access-levels}
 
 - Йәмәғәт  ҡултамғасы йәки селтәр рөхсәте талап ителмәй.
-- Яҙырға әҙер  финансланған Taira һынау иҫәбенә, асыҡтан-асыҡ түләү түләтеүсегә һәм faucet аша кире ҡайтарылған ағымдағы түләү активын ҡулланығыҙ.
+- **Яҙырға әҙер** — финансланған Taira һынау иҫәбен, асыҡтан-асыҡ һайланған комиссия түләүсене һәм faucet сәйәсәтендә баҫтырылған ағымдағы түләү активын ҡулланығыҙ.
 - Рөхсәт кәрәк  Taira исемләнгән йүгереү ваҡыты рөхсәте йәки идара ителгән исемдәр арауығы бирергә тейеш. был рөхсәт биреү булмағанда булдырылған урындағы селтәрҙе ҡулланыу; урындағы уңыш Taira вәкәләтен бирмәй.
 
 Бер cookbook recipe-һы ла Minamoto-ға write ебәрмәй.

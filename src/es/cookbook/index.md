@@ -1,21 +1,21 @@
 ---
 translation_locale: es
 translation_source: /cookbook/index.md
-translation_source_hash: 58f5247ece30d3755c38d4d24ae4553a35e0d0437476092d568a1be5c8a2ed28
+translation_source_hash: 9e13bcd28ad8ae356314041828f73af0ed25636af82ff4ea2948268b47dd73e6
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Iroha 3 Manual de Aplicaciones {#iroha-3-application-cookbook}
 
-Construir contra Iroha 3 con recetas pequeñas y verificables que comienzan en el Taira red de prueba y mantener Minamoto solo lectura en la red principal. Cada receta indica si es una lectura pública, una escritura de cuenta financiada normal, o una operación con acceso restringido por permisos. Los comandos usan el actual I105 IDs de cuenta, selección explícita de tarifas y el comportamiento registrado en Iroha comprometer [`0010c5a70039eac101a4846499ba9ceaf43eb65c`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c).
+Construir contra Iroha 3 con recetas pequeñas y verificables que comienzan en el Taira red de prueba y mantener Minamoto solo lectura en la red principal. Cada receta indica si es una lectura pública, una escritura de cuenta financiada normal, o una operación con acceso restringido por permisos. Los comandos usan el actual I105 IDs de cuenta, selección explícita de tarifas y el comportamiento registrado en Iroha comprometer [`c8c872461e92f04325c350cdd952f4276e96f9dc`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc).
 
-Comienza con [Conectar a Taira](./connect-to-taira.md). Esto crea la configuración del cliente y los metadatos de tarifas que se reutilizan en las recetas de línea de comandos. Nunca copies un ID de activo de tarifa de esta documentación: derivarlo de la respuesta del servicio de financiación de testnet actual Taira.
+Comienza con [Conectar a Taira](./connect-to-taira.md). Esta receta financia al firmante criptográfico y registra el activo de tarifa que reutilizan las recetas de línea de comandos. Nunca copies un ID de activo de tarifa de esta documentación: léelo de la política actual del servicio de financiación de testnet de Taira.
 
 ## Niveles de acceso {#access-levels}
 
 - Público: no se requiere un firmante criptográfico ni permiso de red.
-- Listo para escribir: utiliza una cuenta de prueba financiada Taira, un pagador de tarifas explícito y el activo de tarifas actual devuelto por el servicio de financiamiento de testnet.
+- Listo para escribir: utiliza una cuenta de prueba financiada Taira, un pagador de tarifas explícito y el activo de tarifas actual publicado por la política del servicio de financiamiento de testnet.
 - Se requiere permiso — Taira debe otorgar al software nombrado permiso de ejecución o al espacio de nombres gobernado. Utilice una red local generada cuando ese permiso no esté disponible; el éxito local no confiere el principal de autorización Taira.
 
 Ninguna receta de libro de cocina envía una escritura a Minamoto.

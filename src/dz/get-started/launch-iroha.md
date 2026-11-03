@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
+translation_source_hash: 35a4caba21bf1e34cc015f79fa82bfe143b37603eddb5f1eb72513ad83a20f61
 translation_status: machine-validated
 translation_engine: human-reviewed
 ---
@@ -14,7 +14,7 @@ translation_engine: human-reviewed
 ད་ལྟོའི་ Kagami ཀོ་ཌ་ལས་ མཉམ་རོགས་བཞི་ལྡན་གྱི་ས་གནས་དྲ་རྒྱ་བཟོ།
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 ཐོན་འབྲས་སྣོད་ཐོ་ནང་ མཐུན་སྒྲིག་འབད་མི་ མཉམ་རོགས་རིམ་སྒྲིག་ `genesis.json` `genesis.signed.nrt` `client.toml` དང་ གྲོགས་རམ་ཡིག་ཚུགས་ཚུ་ཡོདཔ་ཨིན།
@@ -61,7 +61,7 @@ curl http://127.0.0.1:8080/status/blocks
 ཁྱོད་ཀྱིས་དེ་འཕྲོ་ལས་ CLI བསྡུ་སྒྲིག་འབད་ཡོད་པའི་ ཞབས་ཏོག་ལེན་མི རིམ་སྒྲིག ལུ་བཏོན་ཚུགས།
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list
 ```
 
 ## 3. Nexus དཔྱད་ཡིག་ {#_3-nexus-profile}

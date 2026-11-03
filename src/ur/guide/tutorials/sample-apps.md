@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 4979ab2c52eba4040d7f003f3da73dbc333fa7e047b0259816d0d34f97377749
+translation_source_hash: c1432d8d2483f67b6ab81680f6c5457cab470db7944512626242a1446a7d501f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -12,7 +12,7 @@ Iroha ماخذ مخزن میں SDK ترکیبیں اور ٹیسٹ سویٹس ش�
 
 ## JavaScript ترکیبیں {#javascript-recipes}
 
-[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes) ڈیٹرمینسٹ ٹرانزیکشن بیچنگ کے لئے مرکوز مثالیں شامل ہیں، Nexus ایپ ٹرانسفر، NFT اور حساب کی تکرار، ISO پل کے بہاؤ، اور Torii سٹریمنگ. ہر نسخہ دستاویزات چاہے یہ آف لائن چلتا ہے یا ایک زندہ کی ضرورت ہے Torii اختتامی نقطہ.
+[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes) ڈیٹرمینسٹ ٹرانزیکشن بیچنگ کے لئے مرکوز مثالیں شامل ہیں، Nexus ایپ ٹرانسفر، NFT اور حساب کی تکرار، ISO پل کے بہاؤ، اور Torii سٹریمنگ. ہر نسخہ دستاویزات چاہے یہ آف لائن چلتا ہے یا ایک زندہ کی ضرورت ہے Torii اختتامی نقطہ.
 
 ## Swift اور iOS {#swift-and-ios}
 

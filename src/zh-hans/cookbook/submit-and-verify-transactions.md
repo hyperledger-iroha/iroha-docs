@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hans
 translation_source: /cookbook/submit-and-verify-transactions.md
-translation_source_hash: 98e5c7e9db1ba8468cfd5409409b0e8d02251311dc85492f7b71675e983dc4fd
+translation_source_hash: de608ef52ad3a999c0e253e6683e454f8f66f399a690dce4c2185c79d02334cd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # 提交和验证交易 {#submit-and-verify-transactions}
@@ -14,7 +14,7 @@ translation_engine: nllb-200-ct2
 
 ## 预先条件 {#prerequisites}
 
-- 由 [生产的资助`taira.client.toml`,`taira.tx-metadata.json`,和`TAIRA_ACCOUNT_ID`连接到 Taira](./connect-to-taira.md).
+- 由 [连接到 Taira](./connect-to-taira.md) 生成的已注资 `taira.client.toml`、`taira-faucet-policy.json` 和 `TAIRA_ACCOUNT_ID`。写入使用 `--fee-payer authority`；CLI 会在签名前给出以 Taira 费用资产计价的确切费用报价。
 - 电流 `iroha` CLI 和`jq`.
 - 一次使用的 Taira 签名器.不要再使用其密钥或在 Minamoto 上写这些命令.
 
@@ -22,15 +22,15 @@ translation_engine: nllb-200-ct2
 
 ### 1. 预先确定端点,权力和费用余额 {#_1-preflight-the-endpoint-authority-and-fee-balance}
 
-首先阅读队列快照,然后证明该机构的费用余额可见. 从连接操作指南生成的元数据中阅读Base58资产定义 ID.
+先读取队列快照，然后证明授权主体的费用余额可见。从连接操作指南所保存的水龙头政策中读取 Base58 资产定义 ID。
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, queue_size, txs_approved, txs_rejected}'
 
-TAIRA_FEE_ASSET="$(jq -er '.gas_asset_id' taira.tx-metadata.json)"
+TAIRA_FEE_ASSET="$(jq -er '.asset_definition_id' taira-faucet-policy.json)"
 
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 iroha --config ./taira.client.toml ledger asset get \
@@ -48,8 +48,7 @@ iroha --config ./taira.client.toml ledger asset get \
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg 'cookbook-submit-verify' \
+  tx ping --msg 'cookbook-submit-verify' \
   > taira-submission.json
 
 jq '{hash, fee_quote}' taira-submission.json
@@ -60,12 +59,12 @@ TAIRA_TX_HASH="$(jq -er '.hash' taira-submission.json)"
 
 ### 3. 等待终端管道状态 {#_3-wait-for-terminal-pipeline-state}
 
-使用输入状态辅助器,而不是从 HTTP 接受或排队录取中推断成功.在 `--wait` 中,安全路由范围自动选择,默认目标是应用最终性
+请使用带类型的状态辅助工具，而不是根据 HTTP 接受或队列准入推断成功。使用 `--wait` 时，CLI 会轮询确切的全局状态，并且只有在达到经状态解析的 `Applied` 最终性时才会成功。
 
 ```bash
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction status \
+  tx status \
   --hash "$TAIRA_TX_HASH" \
   --wait \
   --timeout-ms 60000 \
@@ -83,7 +82,7 @@ jq . taira-final-status.json
 ```bash
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction get --hash "$TAIRA_TX_HASH" \
+  tx get --hash "$TAIRA_TX_HASH" \
   > taira-transaction.json
 
 jq . taira-transaction.json
@@ -101,15 +100,17 @@ curl -fsS -H 'Accept: application/json' \
 
 ## 验证 {#verify}
 
-检查所有三个记录都同意相同的哈希,并且探索者不再报告待定状态:
+检查三条记录是否都对应同一个哈希，以及区块浏览器报告的是 `Committed` 而不是 `Rejected`：
 
 ```bash
-test "$(jq -r '.hash' taira-submission.json)" = "$TAIRA_TX_HASH"
+jq -e --arg hash "$TAIRA_TX_HASH" \
+  '.hash == $hash and .terminal_kind == "Applied"' taira-final-status.json
 
 curl -fsS -H 'Accept: application/json' \
   "https://taira.sora.org/v1/explorer/transactions/$TAIRA_TX_HASH" \
   | jq -e --arg hash "$TAIRA_TX_HASH" \
-    '.hash == $hash and .status == "Committed"'
+    '(.hash | ascii_downcase | ltrimstr("hash:") | split("#")[0]) == $hash
+      and .status == "Committed"'
 ```
 
 保存提交的收据和最终状态作为测试证据.它们包含公开交易材料,而不是签字钥匙.
@@ -118,15 +119,15 @@ curl -fsS -H 'Accept: application/json' \
 
 - HTTP `202`或排队状态只证明录取. 继续对输入状态进行投票,直到应用,拒绝,过期或截止时间.
 - 如果提交时间结束后返回一个哈希,在创建另一个交易之前查询该哈希.盲目重新提交会产生新的报价和签署的有效负载.
-- 在签署之前,可以拒绝收费报价. 检查 `--fee-payer authority`, `gas_asset_id`,机构的余额和网络链 ID.
+- 费用报价可能在签名前被拒绝。请检查 `--fee-payer authority`、授权主体的余额、配置的 `chain` 和 `network_id`，并确认 `--metadata` 未携带 `gas_asset_id` 之类的费用键。
 - `Rejected` 通常表示指令验证、权限、费用或过时状态。它是已提交的失败执行证据，不应重新分类为传输重试。
 - 在应用程序后,一个探测器 `404` 可以将索引滞后. 再次尝试阅读;不要重新提交交易.
 - 如果一个特权命令在生成的本地网络上运行,但 Taira 拒绝它,请获得准确的 Taira 许可或规定的命名空间分配.本地结果不授予公共网络权力.
 
 ## 来源及相关文件 {#source-and-related-docs}
 
-- [在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)中提交交易和执行费率配额
-- [固定 commit 上的交易确认实现与测试](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/src/client.rs)
+- [在固定提交](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs)中提交交易和执行费率配额
+- [固定 commit 上的交易确认实现与测试](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/src/client.rs)
 - [交易](/zh-hans/blockchain/transactions.md)
 - [CLI 指南](/zh-hans/get-started/operate-iroha-via-cli.md)
 - [Torii 端点](/zh-hans/reference/torii-endpoints.md)

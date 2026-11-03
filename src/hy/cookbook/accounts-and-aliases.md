@@ -1,9 +1,9 @@
 ---
 translation_locale: hy
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
+translation_source_hash: c1aee0c29332bd7c883500e72a1ec7812aebfca13b673e6681788cf4bc5ecbf1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Հաշիվներ եւ անանուն անուններ {#accounts-and-aliases}
@@ -22,15 +22,19 @@ translation_engine: nllb-200-ct2
 
 ### 1. Ստուգեք Taira-ի կանոնական հաշիվները {#_1-inspect-canonical-accounts-on-taira}
 
-Հանրային հաշիվների ցուցակում միշտ վերադարձվում է քանոնիկ I105 IDs: Գլխավոր անանունը ընտրանքային է եւ հաշվետուվում է առանձին:
+Հաշիվների հանրային ցուցակը միշտ վերադարձնում է կանոնիկ I105 ID-ներ։ Հիմնական կեղծանունն ընտրովի է; այն տեսնելու համար պահանջեք `aliases` դաշտը։
 
 ```bash
-curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+curl -fsS -H 'Accept: application/json' --get \
+  https://taira.sora.org/v1/accounts \
+  --data-urlencode 'limit=5' \
+  --data-urlencode 'select=id,aliases' \
+  | jq -r '.items[]
+    | [.id, (first(.aliases[]? | select(.is_primary) | .alias) // "-")]
+    | @tsv'
 ```
 
-ID `.id` համարը վավեր է խիստ հաշիվների դաշտերի համար: Մի ավելացրեք մի տիրույթ դրան: `.primary_alias` կեղծանունը օգտագործողի դեմ ուղղված որոնման բանալին է, այլ ոչ թե մեկ այլ կանոնական նույնականություն.
+ID `.id` համարը վավեր է խիստ հաշիվների դաշտերի համար: Մի ավելացրեք մի տիրույթ դրան: `.aliases[].alias` կեղծանունը օգտագործողի դեմ ուղղված որոնման բանալին է, այլ ոչ թե մեկ այլ կանոնական նույնականություն.
 
 ### 2. Պահանջեք եւ կարգավորեք ձեր Taira I105 ID {#_2-derive-and-normalize-your-taira-i105-id}
 
@@ -53,14 +57,14 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID" \
   | iroha tools address normalize --profile taira
 ```
 
-Նորմալացված արժեքը պետք է լինի նույնը, `TAIRA_ACCOUNT_ID`. Գլխավոր էջ `[account].domain` տեղադրվում է TOML ֆայլը կարող է լինել `wonderland.universal`, բայց այդ արժեքը ազդում է միայն երթուղային եւ alias համատեքստի վրա:
+Նորմալացված արժեքը պետք է նույնական լինի `TAIRA_ACCOUNT_ID`-ին։ `[account].profile` կարգավորումն ընտրում է միայն I105 ցանցի նախածանցը; դոմենները պատկանում են կեղծանուններին, երբեք՝ հաշվի ID-ին։
 
 ### 3. Կարդացեք հաշիվը եւ դրա ակտիվները {#_3-read-the-account-and-its-assets}
 
 Հաշիվը տրամադրելուց հետո անմիջապես կատարեք հարցում այն եւ ցուցադրեք սահմանված ակտիվի էջ: URL - կոդավորել I105 արժեքը, նախքան այն օգտագործելը ուղու մեջ:
 
 ```bash
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 ENCODED_ACCOUNT_ID="$(
@@ -69,7 +73,7 @@ ENCODED_ACCOUNT_ID="$(
 )"
 
 curl -fsS -H 'Accept: application/json' \
-  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10" \
+  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10&include_total=true" \
   | jq '{total, items}'
 ```
 
@@ -111,7 +115,7 @@ fi
 
 ::: warning Թույլատրելիության սահման
 
-Taira faucet- ը կարող է ապահովել իր դիմողի հաշիվը, բայց դա չի տրամադրում ընդհանուր հաշվառման գրանցման կամ alias- ի կառավարման լիազորություն: Մեկ այլ հաշվի գրանցումը պահանջում է `CanRegisterAccount` ակտիվ վավերացողի ներքո: Հաշվեի կեղծանունները սովորաբար պահանջում են նաեւ ակտիվ SNS վարձակալության պայմանագիր եւ համապատասխան կեղծանու թույլտվությունները: Օգտագործեք կառավարված ներկառուցման / կեղծանուի պլանավորիչը, կամ փորձեք գրանցումը ստեղծված տեղական ցանցի դեմ:
+Taira-ի faucet-ը կարող է նախապատրաստել իր հայցողի հաշիվը, սակայն դա չի տալիս հաշիվների գրանցման կամ կեղծանունների կառավարման ընդհանուր լիազորություն։ Այլ հաշիվ գրանցելու համար ակտիվ կատարողի ներքո անհրաժեշտ է `CanRegisterAccount`։ Հաշիվների կեղծանունները սովորաբար պահանջում են նաև ակտիվ SNS վարձակալություն և կեղծանունների համապատասխան թույլտվություններ։ Օգտագործեք կառավարվող միացման/կեղծանունների պլանավորիչը կամ գրանցումը նախապես փորձարկեք ստեղծված տեղական ցանցում։
 
 :::
 
@@ -121,9 +125,9 @@ Taira faucet- ը կարող է ապահովել իր դիմողի հաշիվը, 
 iroha --config ./localnet/client.toml \
   --machine \
   --fee-payer authority \
-  ledger account register --id "$NEW_ACCOUNT_ID"
+  account register --id "$NEW_ACCOUNT_ID"
 
-iroha --config ./localnet/client.toml ledger account get \
+iroha --config ./localnet/client.toml account get \
   --id "$NEW_ACCOUNT_ID"
 ```
 
@@ -158,8 +162,8 @@ fi
 
 ## Աղբյուրը եւ դրա հետ կապված փաստաթղթերը {#source-and-related-docs}
 
-- [Կոնոնիկական հաշիվի հասցեների իրականացումը փակված commit-ում ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs):
-- [Հաշվեի եւ alias Torii փորձարկումները փակված commit-ում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs):
+- [Կոնոնիկական հաշիվի հասցեների իրականացումը փակված commit-ում ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/account/address.rs):
+- [Torii-ի հաշիվների վերջնակետի արագ ստուգման թեստերը](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/tests/accounts_endpoints.rs) և [կեղծանունների երթուղիների թեստերը](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/tests/lib_tests/part_2.rs) ամրագրված commit-ում
 - [Հաշվարկներ](/hy/blockchain/accounts.md)
 - [Տվյալների մոդելային կեղծանուններ](/hy/blockchain/data-model.md#aliases)
 - [Անվանման կոնվենցիաներ](/hy/reference/naming.md)

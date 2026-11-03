@@ -1,22 +1,22 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: 68ef931f3d37b9bd40fcf61c9a77313539ca0bd648405834d161a018debb491a
+translation_source_hash: 866b7d3ca37be67878f6f319ce0b0e27eac52c581decad1f46096ef75ad1b10f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Һорау Леджер торошо {#query-ledger-state}
 
 ## Һөҙөмтә {#outcome}
 
-Taira JSON ресурстарын уҡығыҙ һәм проектлағыҙ, һуңынан фильтрҙар, логик биттәрҙе бүлеү, сортировкалау, алып барыу үлсәмдәре һәм алға ғына курсор дауам итеү менән типләнгән Iroha һорауҙарын ҡулланығыҙ. Шулай уҡ сервер ебәрелгән `--select` туплеһын баһалағанға тиклем һайлаусы проекцияһына таянмаҫһығыҙ.
+Taira JSON ресурстарын уҡығыҙ һәм проекциялағыҙ, һуңынан CLI һәм Rust SDK аша фильтрҙар, сортлау, сервер яғындағы проекция, бит сиктәре һәм үтә күренмәҫ `next_cursor` дауамы менән Torii коллекция һорауҙарын ҡулланығыҙ. Шулай уҡ исемлектәрҙе ҡул ҡуйылған типлы һорауҙар аша алмаясаҡһығыҙ, сөнки улар исемлектәрҙе фильтрламай, сортламай һәм проекцияламай.
 
 ## Шарттар {#prerequisites}
 
 - `curl`, `jq`, Node.js 24, һәм хәҙерге `iroha` CLI.
 - Taira уҡырға ғына инеү мөмкинлеге.
-- Ҡул ҡуйылған типланған һорау миҫалдары өсөн Taira йәки локаль селтәр өсөн клиент конфигурацияһы.
+- CLI миҫалдары өсөн Taira йәки генерацияланған локаль селтәр өсөн клиент конфигурацияһы.
 - Rust миҫалында, проект маҡсатлы селтәр менән бер үк Iroha сығанаҡ ревизияһына ҡуйылған.
 
 ## Аҙымдар {#steps}
@@ -30,25 +30,23 @@ Taira JSON ресурстарын уҡығыҙ һәм проектлағыҙ, һ
 ```bash [curl]
 curl -fsS -H 'Accept: application/json' --get \
   https://taira.sora.org/v1/domains \
-  --data-urlencode 'sort=id:asc' \
+  --data-urlencode 'sort=id' \
   --data-urlencode 'limit=5' \
-  --data-urlencode 'offset=0' \
-  --data-urlencode 'count_mode=exact' \
-  | jq '{total, ids: [.items[].id]}'
+  --data-urlencode 'include_total=true' \
+  | jq '{total, next_cursor, ids: [.items[].id]}'
 ```
 
 ```js [Node.js]
 const root = 'https://taira.sora.org'
-const limit = 5
 const seen = new Set()
+let cursor = null
 
-for (let offset = 0; ; offset += limit) {
+do {
   const url = new URL('/v1/domains', root)
   url.search = new URLSearchParams({
-    sort: 'id:asc',
-    limit: String(limit),
-    offset: String(offset),
-    count_mode: 'exact',
+    sort: 'id',
+    limit: '5',
+    ...(cursor ? { cursor } : {}),
   })
 
   const response = await fetch(url, {
@@ -63,106 +61,90 @@ for (let offset = 0; ; offset += limit) {
     seen.add(domain.id)
     console.log(domain.id)
   }
-  if (page.items.length < limit || seen.size >= page.total) break
-}
+  cursor = page.next_cursor
+} while (cursor)
 ```
 
 :::
 
-Был HTTP өҫкө йөҙөндә `limit` һәм `offset` ҡулланыла. Маршрут арзаныраҡ иҫәпләү режимын ҡулланғанда ғәҙәттәгесә ситләштерелгән йәки сикләнгән `total` менән мөғәмәлә итегеҙ.
+Был HTTP интерфейсы `limit` һәм үтә күренмәҫ `next_cursor` менән биттәргә бүлә; уны `null` булғансы үҙгәртмәйенсә `cursor` итеп кире ебәрегеҙ. `total` тик `include_total=true` һораһағыҙ ғына күренә, ә был бөтә яҙмаларҙы тулыһынса ҡарап сығыуҙы талап итә.
 
-### 2. CLI тип яҙылған һорауҙы фильтрлау һәм партиялаштырыу. {#_2-filter-and-batch-a-typed-cli-query}
+### 2. CLI менән коллекцияны фильтрлағыҙ {#_2-filter-a-collection-with-the-cli}
 
-CLI типографик ҡабатлана торған һорауҙы сериаллаштыра һәм сервер дауам итеү курсорҙарын эске яҡтан күҙәтә. Бында логик һөҙөмтә бер рәт менән сикләнә, ә `--fetch-size 1` бер тапҡыр ҡайтыу буйынса алынған максималь партияны контролдә тота.
+CLI фильтрҙы, проекцияны һәм бит үлсәмен коллекцияның API нөктәһенә ебәрә һәм бер битте, `{items, next_cursor}`, баҫтыра. `next_cursor`-ҙы `null` булғансы эҙләп барыу өсөн `--all` өҫтәгеҙ.
 
 ```bash
-DOMAIN_PREDICATE='{"equals":[{"field":"id","value":"wonderland.universal"}]}'
+DOMAIN_FILTER='id = "universal.universal"'
 
 iroha --config ./localnet/client.toml \
-  ledger domain list filter "$DOMAIN_PREDICATE" \
-  --limit 1 \
-  --offset 0 \
-  --fetch-size 1
+  ledger domain list \
+  --filter "$DOMAIN_FILTER" \
+  --select id \
+  --limit 1
 ```
 
-Filtering pagination-дан алда башҡарыла. Query-ға махсус typed predicates ҡулланығыҙ; account йәки asset өсөн predicate-ты domain өсөн хәүефһеҙ рәүештә ҡабат ҡулланып булмай.
+Фильтрлау биттәргә бүлеүгә тиклем башҡарыла. Һәр коллекция үҙ яландарын ғына ҡабул итә; билдәһеҙ ялан бер нәмәгә лә тап килмәү урынына `invalid_filter` ҡайтара.
 
 ### 3. Тотороҡло метамәғлүмәттәр асҡысы буйынса тәртипкә килтереү. {#_3-sort-by-a-stable-metadata-key}
 
-Типланған һорауҙар сортылау бер метамәғлүмәт клавишаһы өҫтөндә лексикографик. Был клавишаһыҙ элементтар үтәү ваҡытының билдәләнгән тәртибен тота, шуға күрә тупланма буйлап эҙмә-эҙлекле тултырылған клавишаны ҡулланығыҙ.
+Коллекцияны сортлау асҡыстары иғлан ителгән яландарҙы һәм `metadata.<key>`-ты ҡабул итә; кәмеү тәртибе өсөн асҡыс алдына `-` ҡуйығыҙ. Был асҡысы булмаған рәттәр үҫеү тәртибендә беренсе килә, ә тигеҙ ҡиммәттәр рәттең идентификаторы буйынса урынлаша, шуға күрә коллекция буйынса эҙмә-эҙлекле тултырылған асҡысты ҡулланығыҙ.
 
 ```bash
 iroha --config ./localnet/client.toml \
   --machine \
-  ledger account list all \
-  --verbose \
-  --sort-by-metadata-key key \
-  --order asc \
+  account list \
+  --sort metadata.key \
   --limit 10 \
-  --offset 0 \
-  --fetch-size 2 \
-  | jq '[.[] | {id, metadata}]'
+  | jq '[.items[] | {id, metadata}]'
 ```
 
-Тикшерелгән CLI `--select` JSON параметрҙы анализлай һәм һайлап алыу туплын кире ебәрә, әммә ағымдағы еңел һорау DSL серверҙа был һайлаусыны баһаламай. Уның тирәләй проекция контракты төҙөмә әле. SDK тип яҙылған проекцияны тик маҡсатлы ваҡыт уны хуплағандан һуң ғына ҡулланығыҙ йәки юғарыла күрһәтелгәнсә, `jq` йәки JavaScript менән раҫланған һөҙөмтә клиенты яғында проекция итегеҙ.
+`--select` — сервер яғындағы проекция: `--select id,metadata` тик шул яландарҙы ҡайтара, ә билдәһеҙ ялан `invalid_select` ҡайтара. Ҡул ҡуйылған типлы һорауҙар һәр саҡ тулы элементтарҙы ҡайтара, шуға күрә уларҙың һөҙөмтәләрен юғарылағы кеүек `jq` йәки JavaScript менән клиент яғында проекциялағыҙ.
 
 ### 4. Rust итераторға үтә күренмәле курсорҙарҙы үтәргә рөхсәт итегеҙ. {#_4-let-the-rust-iterator-follow-opaque-cursors}
 
-`Pagination` логик һөҙөмтәләр йыйылмаһын сикләй. `FetchSize` һәр сервер партияларын контролдә тота. кире ҡайтарылған итератор сервер тыуҙырған курсорҙы ҡулланып үтә күренмәле рәүештә дауам итеү үтенестәрен ебәрә.
+`limit` бит үлсәмен билдәләй. `list` ҡайтарған итератор киләһе битте серверҙың `next_cursor`-ы менән ағымдағы бит тулыһынса уҡылғандан һуң ғына һорай, ә `take` логик һөҙөмтәне сикләй. Бында `client` — `iroha::blocking::Client`.
 
 ```rust
-use std::num::NonZeroU64;
+use iroha::collections::{Collection, ListQuery, SortKey};
 
-use iroha::data_model::{
-    prelude::FindAssetsDefinitions,
-    query::{
-        builder::QueryBuilderExt as _,
-        parameters::{FetchSize, Pagination},
-    },
-};
+let query = ListQuery::new().sort_by(SortKey::asc("id")).limit(5);
 
-let definitions = client
-    .query(FindAssetsDefinitions::new())
-    .with_pagination(Pagination::new(NonZeroU64::new(25), 0))
-    .with_fetch_size(FetchSize::new(NonZeroU64::new(5)))
-    .execute_all()?;
-
-for definition in definitions {
-    println!("{} {}", definition.id(), definition.name());
+for definition in client.list(Collection::AssetDefinitions, query).take(25) {
+    let definition = definition?;
+    println!("{:?} {:?}", definition.get("id"), definition.get("name"));
 }
 ```
 
-`ForwardCursor` - вәкәләтле иҫәп менән бәйләнгән, процестарҙа урындағы һәм бары тик алдау өсөн генә. Уны бер ҡасан да анализламағыҙ, синтезлағыҙ, вәкәләтле иҫәптәр араһында бүлегеҙ йәки уны Torii осраҡтарында портатив резюме токены булараҡ һаҡлағыҙ. Әгәр ул тамамланһа, төп һорауҙы маҡсатлы ҡулланыу кимәлендәге контроль пункты менән ҡайтанан башларға кәрәк.
+`next_cursor` — үҙенең коллекцияһына, маршрутына, фильтрына һәм сортлауына бәйләнгән үтә күренмәҫ асҡыстар йыйылмаһы позицияһы. Уны бер ҡасан да анализламағыҙ һәм яһамағыҙ, башҡа фильтр йәки сортлау менән ҡабат ҡулланмағыҙ; Torii быны `invalid_cursor` менән кире ҡаға. Биттәр араһында өҫтәлгән йәки бөтөрөлгән рәттәр бер ҡасан да һуңғыраҡ биттә бәйләнешһеҙ рәттәрҙең ҡабатланыуына йәки төшөп ҡалыуына килтермәй.
 
 ## Тикшереү {#verify}
 
-Тоғро домен фильтры бары тик `wonderland.universal` кире ҡайтарырға тейеш. Һөҙөмтәне тикшерегеҙ, ә уңышҡа ирешкән CLI сығыуын ғына иҫәпләмәгеҙ:
+Тоғро домен фильтры бары тик `universal.universal` кире ҡайтарырға тейеш. Һөҙөмтәне тикшерегеҙ, ә уңышҡа ирешкән CLI сығыуын ғына иҫәпләмәгеҙ:
 
 ```bash
 iroha --config ./localnet/client.toml \
   --machine \
-  ledger domain list filter "$DOMAIN_PREDICATE" \
-  --limit 1 --offset 0 --fetch-size 1 \
-  | jq -e 'length == 1 and .[0] == "wonderland.universal"'
+  ledger domain list --filter "$DOMAIN_FILTER" --select id --limit 1 \
+  | jq -e '[.items[].id] == ["universal.universal"]'
 ```
 
-Страницалы ҡушымта һорауҙары өсөн, шулай уҡ тикшерегеҙ, IDs биттәре аша ҡабатланмай, һоралған логик сик бер ҡасан да үтәлмәй һәм документлаштырылған контролдә тотоу пунктынан курсорҙың ваҡыты бөткәндән һуң яңынан эшләй башлаясаҡ.
+Биттәргә бүленгән ҡушымта һорауҙары өсөн шулай уҡ ID-ларҙың биттәр араһында ҡабатланмауын, һоралған логик сиктең бер ҡасан да артмауын һәм кире ҡағылған курсорҙан һуң һорау документлаштырылған контроль нөктәһенән яңынан башланыуын тикшерегеҙ.
 
 ## Проблемаларҙы хәл итеү {#troubleshooting}
 
 - Берҙән-бер һорау ҡабатлана торған фильтр, сортлау, биттәрҙе бүлеү йәки алыу параметрҙарын ҡабул итмәй. Был контроллерҙар кәрәк булғанда тейешле исемлек һорауынан файҙаланығыҙ.
-- `fetch_size` - дөйөм һөҙөмтә сиге түгел, ә нуль булмаған партия күрһәткесе. Хәҙерге ҡалыплы билдәһе `100`, һәм йүгереү ваҡыты уның максимумынан юғары булған ҡиммәттәрҙе кире ҡаға.
-- Билдәһеҙ, иҫкергән йәки сит ил курсоры үҙ белдеге менән ҡабаттан ҡулланылмай. Һорауҙы яңынан башларға; үтә күренмәле баһаны ремонтларға тырышмағыҙ.
-- Метамәғлүмәттәрҙе сортлау дөйөм майҙансыҡтарҙы сортлау түгел. Әгәр һәр пунктта һайланған асҡыс булмаһа, юғалған асҡыс тәртибен документлаштырығыҙ йәки икенсе стратегияны һайлағыҙ.
-- CLI `--select` анализлай һәм күсерә, әммә ағымдағы сервер еңел һайлаусы туплын баһаламай. Сервер яғы селектор ярҙамы ҡулланылған эшләү ваҡыты өсөн раҫланмаһа, клиент яғында проекция ҡулланырға.
-- Киң сикһеҙ һорауҙар пирҙары эше, клиент хәтерен һәм курсор ғүмере хәүефен арттыра. Кулланыусыға яраҡлы логик сикләү һәм сумма күләме билдәләгеҙ.
-- Йәмәғәт JSON ресурс параметрҙары һәм ҡул ҡуйылған типланған һорау параметрҙары бәйле, әммә бер-береһен алмаштыра алған сериализация форматтары түгел. Типланған һорау конверттары өсөн SDK йәки CLI ҡулланығыҙ.
+- `limit` — дөйөм һөҙөмтә түгел, ә бит үлсәме: кәмендә 1 һәм иң күбе узелдың `torii.app_api_max_list_limit` ҡиммәте (ғәҙәттә 500); Torii-ҙың ғәҙәттәге ҡиммәте — 100. Күберәк уҡыу өсөн `next_cursor`, `--all` йәки SDK итераторы буйынса барығыҙ.
+- `invalid_cursor` курсорҙың дөрөҫ формалаштырылмағанын йәки башҡа коллекцияға, маршрутҡа, фильтрға йәки сортлауға ҡарағанын аңлата. Һорауҙы яңынан башлағыҙ; үтә күренмәҫ ҡиммәтте төҙәтергә тырышмағыҙ.
+- Һайлаусан фильтр `null` булмаған `next_cursor` менән ҡыҫҡа йәки буш бит ҡайтарырға мөмкин. Ул `null` булғансы уның буйынса барыуҙы дауам итегеҙ.
+- `--filter` һәм HTTP `filter` параметры Torii-ҙың текст грамматикаһын ҡабул итә, мәҫәлән, `id = "universal.universal"` йәки `exists(metadata.tier)`. JSON предикат объекты фильтр тексты түгел һәм дөрөҫ булмаған `filter` булараҡ уңышһыҙлыҡҡа осрай.
+- Киң, сикләнмәгән һорауҙар узелдарҙың эшен һәм клиент хәтерен арттыра. Ҡулланыусыға яраҡлы логик сик һәм бит үлсәмен ҡуйығыҙ.
+- Ҡул ҡуйылған `/v1/query` — исемлектәр API-һы түгел. Ул берлек һорауҙарҙы һәм итерацион һорауҙарҙың фильтрһыҙ бер нисә башланғысын ҡабул итә, ә башҡаларын, мәҫәлән, `FindDomains` йәки `FindAssetDefinitions`-ты, `signed_query_shape_not_admitted` менән кире ҡаға. Коллекция API нөктәләре, CLI `list` командалары һәм SDK коллекция уҡыусылары бер үк фильтр, сортлау һәм курсор грамматикаһын ҡуллана.
 
 ## Сығанаҡ һәм уның менән бәйле документтар {#source-and-related-docs}
 
-- [Ҡуйылған commit-та курсорға нигеҙләнгән pagination интеграция һынауҙары](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs)
-- [Һорау төҙөүсе һәм һайлап алыусының ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs) тәртибе
-- [Һорауҙар параметрҙары һәм курсор моделе ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs).
+- [Ҡуйылған commit-тағы Torii коллекция һорауҙары контракты](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/torii/collection_queries.md)
+- [Ҡуйылған commit-тағы Rust коллекция уҡыуҙары һәм курсор итераторы](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/src/collections.rs)
+- [Ҡуйылған commit-тағы ҡултамғалы һорауҙарҙы ҡабул итеү ҡағиҙәләре](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/query_json.md)
 - [Һорауҙар](/ba/blockchain/queries.md)
 - [Һорау буйынса һылтанма](/ba/reference/queries.md)
 - [JavaScript һәм TypeScript](/ba/guide/tutorials/javascript.md)

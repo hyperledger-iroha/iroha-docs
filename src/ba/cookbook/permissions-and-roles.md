@@ -1,9 +1,9 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/permissions-and-roles.md
-translation_source_hash: 8d6fd7101094ba21cfc2c5fb9a89d2acd7e67f13ff47b9f8c8e01bbbd7bf2836
+translation_source_hash: 40fe8b19344d8eff66b178dc8576e2e049fef50bd3212fbddc5c0d5f7f37fa03
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Иреклелек һәм ролдәр {#permissions-and-roles}
@@ -14,13 +14,12 @@ translation_engine: nllb-200-ct2
 
 ## Шарттар {#prerequisites}
 
-- Taira финансланған клиент һәм түләү метамәғлүмәттәре [нан Taira](./connect-to-taira.md) менән бәйләнешкә инеү.
+- [Taira-ға тоташыу](./connect-to-taira.md) битенән финансланған Taira клиенты.
 - `TARGET_ACCOUNT` һәм `DELEGATE_ACCOUNT` каноникаға ҡуйылған I105 иҫәбенә IDs.
-- Ҡул ҡуйыу иҫәбенә маҡсатлы рөхсәт һәм ролдәр менән идара итеүгә мөмкинлек бирергә кәрәк. Taira буйынса был рөхсәт менән сикләнгән административ операция; `CanManageRoles` һәм тәғәйенләнгән рөхсәт биреү өсөн кәрәкле вәкәләтле иҫәп алыу, йәки рецептты генерацияланған урындағы селтәрҙә файҙаланыу.
+- Ҡул ҡуйыусы иҫәптә `CanManageRoles` булырға тейеш һәм ул даирәһе сикләнгән рөхсәтте тапшыра алырға тейеш: йә ул `TARGET_ACCOUNT`-тың үҙе, йә уның был иҫәп өсөн `CanModifyAccountMetadata` рөхсәте инде бар. Taira-ла был — рөхсәт менән сикләнгән административ операция. Генерацияланған локаль селтәрҙең клиентында `CanManageRoles` юҡ, шуға күрә рецептҡа генезисы был рөхсәтте биргән селтәр кәрәк.
 
 ```bash
 CONFIG=./taira.client.toml
-FEE_METADATA=./taira.tx-metadata.json
 ROLE_ID=cookbook_metadata_editors
 test -n "$TARGET_ACCOUNT"
 test -n "$DELEGATE_ACCOUNT"
@@ -36,12 +35,11 @@ DELEGATE_CONFIG=./taira.delegate.toml
 
 ### 1. Буш роль яҙыу {#_1-register-an-empty-role}
 
-Һәр торошто үҙгәртеүсе CLI командаһы түләүсене асыҡтан-асыҡ атай. Метамәғлүмәттәр файлында faucet яуабынан алынған ағымдағы Taira түләү активы бар.
+Торошто үҙгәрткән һәр CLI командаһы комиссия түләүсене асыҡтан-асыҡ атай. CLI ҡул ҡуйыр алдынан теүәл комиссияны Taira-ның түләү активында иҫәпләп күрһәтә.
 
 ```bash
 iroha --config "$CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
   ledger role register --id "$ROLE_ID"
 ```
 
@@ -54,7 +52,6 @@ jq -cn --arg account "$TARGET_ACCOUNT" \
   '{name:"CanModifyAccountMetadata",payload:{account:$account}}' |
   iroha --config "$CONFIG" \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
     ledger role permission grant --id "$ROLE_ID"
 ```
 
@@ -63,8 +60,7 @@ jq -cn --arg account "$TARGET_ACCOUNT" \
 ```bash
 iroha --config "$CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
-  ledger account role grant \
+  account role grant \
   --id "$DELEGATE_ACCOUNT" \
   --role "$ROLE_ID"
 ```
@@ -79,13 +75,12 @@ iroha --config "$CONFIG" \
 printf '"delegated"\n' |
   iroha --config "$DELEGATE_CONFIG" \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
-    ledger account meta set \
+    account meta set \
     --id "$TARGET_ACCOUNT" \
     --key cookbook_access
 ```
 
-Ошо уҡ модель Rust клиенттары өсөн дә бар. Бында `client` `registrar_account` тип билдәләнә, ул CLI ағымда эшләгән кеүек үк ролдең башланғыс хужаһы булып китә. Өс иҫәп-хисап үҙгәреүсәндәре лә инде `AccountId` ҡиммәттәрен анализлай:
+Ошо уҡ модель Rust клиенттары өсөн дә бар. Бында `client` — `registrar_account` исеменән ҡул ҡуйған `iroha::blocking::Client`; CLI ағымындағы кеүек үк, был иҫәп ролдең башланғыс хужаһы була. Өс иҫәп үҙгәреүсәне лә инде анализланған `AccountId` ҡиммәттәре:
 
 ```rust
 use iroha::data_model::{prelude::*, transaction::FeePaymentIntent};
@@ -98,7 +93,7 @@ let role = Role::new(role_id.clone(), registrar_account).add_permission(
     },
 );
 
-client.submit_all_blocking::<InstructionBox>(
+client.submit_all::<InstructionBox>(
     [
         Register::role(role).into(),
         Grant::account_role(role_id, delegate_account).into(),
@@ -109,32 +104,35 @@ client.submit_all_blocking::<InstructionBox>(
 
 ## Тикшереү {#verify}
 
-Тапшырыуҙың ике яғын да исемлеккә килтерегеҙ, шунан делегаттың яҙған хаҡын уҡығыҙ:
+Делегаттың ғәмәлдәге рөхсәттәрен (ролдәр аша бирелгәндәрен дә) уҡығыҙ, һуңынан делегат яҙған теүәл ҡиммәтте уҡығыҙ:
 
 ```bash
-iroha --config "$CONFIG" ledger role permission list --id "$ROLE_ID"
-iroha --config "$CONFIG" ledger account role list --id "$DELEGATE_ACCOUNT"
+iroha --config "$CONFIG" --machine account permission list \
+  --id "$DELEGATE_ACCOUNT" --all \
+  | jq -e --arg account "$TARGET_ACCOUNT" \
+    '.items | any(.name == "CanModifyAccountMetadata"
+      and .payload.account == $account)'
 
-iroha --config "$CONFIG" ledger account meta get \
+iroha --config "$CONFIG" account meta get \
   --id "$TARGET_ACCOUNT" \
   --key cookbook_access
 ```
 
-Рөхсәт исемлегендә булырға тейеш `CanModifyAccountMetadata` күләмдә `TARGET_ACCOUNT`, Делегаттың роле исемлегендә булырға тейеш `ROLE_ID`, һәм уҡылған метамәғлүмәт кире ҡайтарылырға тейеш `"delegated"`.
+Делегаттың ғәмәлдәге рөхсәттәрендә `TARGET_ACCOUNT` менән сикләнгән `CanModifyAccountMetadata` булырға тейеш, ә метамәғлүмәтте уҡыу `"delegated"` ҡайтарырға тейеш. Torii ҡул ҡуйылған һорауҙар аша ролдәр исемлеген биреүҙән баш тарта, шуға күрә тәғәйенләүҙе ғәмәлдәге рөхсәттәр исемлеге аша тикшерәләр.
 
 ## Проблемаларҙы хәл итеү {#troubleshooting}
 
-- `Not permitted` теркәгәндә, редакциялағанда йәки ролде бүлгәндә ҡул ҡуйған кешегә тейешле Taira вәкәләт етмәй. Объектлы токенды глобаль токен менән алмаштырмағыҙ; аныҡ рөхсәтте һорағыҙ йәки localnet-ты ҡулланығыҙ.
+- Ролде теркәгәндә, мөхәррирләгәндә йәки тәғәйенләгәндә килеп сыҡҡан `Not permitted` хатаһы ҡул ҡуйыусыла кәрәкле Taira вәкәләте булмауын аңлата. Даирәһе сикләнгән токенды глобаль токенға алмаштырмағыҙ; теүәл рөхсәтте һорағыҙ.
 - `payload` янында `account` урынлаштырылған, I105 урынына ID исеме бирелгән, йәки JSON хаҡы ике тапҡыр күрһәтелгән.
-- Бурыстан баш тартыу шул аҙымды тапшырған ҡул ҡуйған кешегә ҡарай. Менеджерҙы финанслау һәм үҙаллы рәүештә йөкмәтеү, шулай уҡ faucetнан алынған түләү активтары метамәғлүмәттәре һаҡлана.
+- Комиссия буйынса кире ҡағыу шул аҙымды тапшырған ҡул ҡуйыусыға ҡарай. Менеджерҙы һәм делегатты һәр комиссия иҫәбендә күрһәтелгән түләү активында айырым-айырым финансланығыҙ.
 - Уңышлы роль биреү уның токендарында кодланған киңлек өҫтөнлөк итмәй. Был роль рөхсәт йөкләмәһендә исемләнгән иҫәпте генә үҙгәртә ала.
-- Таҙартыу өсөн `ledger account role revoke`, һуңынан `ledger role permission revoke` һәм, ниһайәт, `ledger role unregister` эшләй; һәр береһе айырым яҙыу булып тора һәм `--fee-payer authority` һәм түләү метамәғлүмәттәре булырға тейеш.
+- Таҙартыу өсөн `account role revoke`, һуңынан `ledger role permission revoke`, ә аҙаҡтан `ledger role unregister` командаларын эшләтегеҙ; һәр береһе айырым яҙыу булып тора һәм `--fee-payer authority` үҙ эсенә алырға тейеш.
 
 ## Сығанаҡ һәм уның менән бәйле документтар {#source-and-related-docs}
 
-- [Роль интеграцияһына һынауҙар ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/roles.rs)
-- [Ирекле интеграция һынауҙары ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/permissions.rs)
-- [Пинк commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/permission.rs) ҡуйылған рөхсәт мәғлүмәттәр моделендә төҙөлгән
+- [Роль интеграцияһына һынауҙар ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/roles.rs)
+- [Ирекле интеграция һынауҙары ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/permissions.rs)
+- [Пинк commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_executor_data_model/src/permission.rs) ҡуйылған рөхсәт мәғлүмәттәр моделендә төҙөлгән
 - [Рөхсәт һәм ролдәр](/ba/blockchain/permissions.md)
 - [Рөхсәт биреү билдәһе шиғыры](/ba/reference/permissions.md)
 - [Метамәғлүмәттәре](./metadata.md)

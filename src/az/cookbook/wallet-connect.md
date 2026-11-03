@@ -1,33 +1,33 @@
 ---
 translation_locale: az
 translation_source: /cookbook/wallet-connect.md
-translation_source_hash: 81b370bdc73a40ff2dbb8df0f91547ab4c279ed94600bdd6df367f29a949ec71
+translation_source_hash: 6bcb87693d4a4cdf45662029dd455c15d3a7a1d4a1e1586e92317ca91b587390
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Cüzdan Bağlantısı: Aktiv Transferini Təsdiqləyin {#wallet-connect-approve-an-asset-transfer}
 
 ## Nəticə {#outcome}
 
-Brauzerdə Iroha Connect sessiyası yaradın, bir I105 cib pul kisəsi identifikasiyası üçün kriptoqrafik təsdiq əldə edin, həmin cib pul kisəsindən Torii-in dəqiq aktiv-transfer yaradılmış başlanğıc strukturunu imzalamağı xahiş edin, ayrılmış imzanı göndərin və Tətbiq edilmiş sonluğu gözləyin.
+Brauzerdə Iroha Connect sessiyası yaradın, bir I105 cüzdan identikliyi üçün kriptoqrafik təsdiq alın, həmin cüzdandan Torii-nin dəqiq, imzasız aktiv köçürməsi faydalı yükünü imzalamasını xahiş edin, ayrılmış imzanı təqdim edin və Applied yekunluğunu gözləyin.
 
 ## Tələb olunan əvvəlcədən biliklər {#prerequisites}
 
 - Bir veb brauzer tətbiqi `@iroha/iroha-js` və HTTPS istifadə edir.
-- Iroha Connect v1-i tətbiq edən və tək açarlı Ed25519 I105 hesabını idarə edən bir pul kisəsi.
-- Cari Taira zəncir ID və zəncir fərqləndiricisi, cüzdanın qeydiyyatdan keçmiş kiçik hərfli Ed25519 ictimai açar hex-i, sahib olunan ötürülə bilən aktiv və tək bir protokol-standart I105 təyinatı.
-- Cari Taira testnet maliyyələşdirmə xidməti cavabında qaytarılan ödəniş aktivinin ID-si. Nümunə canlı ödəniş qiymət təxminini həmin ID ilə yoxlayır; heç vaxt kopyalanmış aktiv identifikatorunu daxil etmir.
-- Seçilmiş Torii üzərində Qoşulma aktiv olmalıdır. QR və ya dərin əlaqəni göstərmədən əvvəl yoxlayın:
+- Iroha Connect v1-i həyata keçirən, tək açarlı Ed25519 I105 hesabını idarə edən və `sign_transaction` və `sign_raw` metodlarına icazə verən cüzdan.
+- Cari Taira şəbəkə ID-si, cüzdanın qeydiyyatdan keçmiş kiçik hərfli Ed25519 ictimai açar hex dəyəri, sahib olunan köçürülə bilən aktiv və kanonik I105 təyinatı.
+- Cari Taira testnet maliyyələşdirmə xidməti siyasətinin dərc etdiyi ödəniş aktivi ID-si. Nümunə canlı ödəniş qiyməti təxminini həmin ID ilə yoxlayır; o, heç vaxt kopyalanmış aktiv identifikatorunu koda daxil etmir.
+- Seçilmiş Torii-də Connect aktiv olmalıdır. QR və ya dərin keçidi göstərməzdən əvvəl şəbəkə ID-sini ictimai hesab imkanlarından oxuyun:
 
 ```bash
 curl -fsS \
   -H 'Accept: application/json' \
-  https://taira.sora.org/v1/connect/status |
-  jq -e '{enabled, sessions_active} | select(.enabled == true)'
+  https://taira.sora.org/v1/accounts/capabilities |
+  jq -er '.network_id'
 ```
 
-Əgər Taira Connect bağlanmış olduğunu bildirirsə və ya `404`/`503` qaytarırsa, Connect aktivləşdirilmiş yaradılmış yerli şəbəkədən istifadə edin. Adi aktiv köçürməsi üçün də cüzdanın kifayət qədər köçürülə bilən miqdara və ödəniş balansına sahib olması tələb olunur.
+Torii anonim Connect statusu dərc etmir: `GET /v1/connect/status` bir sessiyanın statusunu yalnız onun idarəetmə tokeni ilə bildirir, ümumi status isə operator imzası tələb edir. Qovşaqda Connect söndürüldükdə `registerConnectSession` HTTP `503` və `connect_disabled` kodu ilə uğursuz olur (proqram yığımında Connect olmadıqda `404`), nümunə isə nə QR kod, nə də dərin keçid göstərir; Connect aktiv olan yaradılmış lokal şəbəkədən istifadə edin. Adi aktiv köçürməsi üçün həmçinin cüzdanın kifayət qədər köçürülə bilən miqdara və ödəniş balansına sahib olması tələb olunur.
 
 ## Addımlar {#steps}
 
@@ -43,16 +43,20 @@ Eyni URI-ı başqa bir cihazdakı cüzdan üçün QR kodu kimi təqdim edin. URI
 
 ### 2. Yaratmaq, təsdiqləmək, imzalamaq və təqdim etmək {#_2-create-approve-sign-and-submit}
 
-Bu brauzer modulu tətbiq vəziyyətinizdən konkret dəyərləri qəbul edir. Birinci `POST /v1/assets/transfer` imzalama sahələrini kənarlaşdırır və ödəniş qiymət təxminli versiyalı əməliyyat başlatma strukturunu qaytarır. İkinci isə eyni köçürmə sorğusuna yalnız cüzdanın açıq açarını və ayrılmış imzasını əlavə edir.
+Bu brauzer modulu tətbiqinizin vəziyyətindən konkret dəyərləri qəbul edir. Birinci `POST /v1/assets/transfer` imzalama sahələrini buraxır və təxmin edilmiş ödəniş niyyətini və imzasız əməliyyatın faydalı yükünü qaytarır. İkincisi eyni köçürmə sorğusuna yalnız cüzdanın ictimai açarını və ayrılmış imzanı əlavə edir. Torii hər iki sorğuda kanonik hesab imzası tələb edir, buna görə modul onları cüzdana `createConnectCanonicalRequestAuth` vasitəsilə imzalatdırır.
 
 ```js
-import { AccountAddress } from '@iroha/iroha-js/address'
+import { buildCanonicalJsonRequest } from '@iroha/iroha-js/canonical-request'
 import {
+  NetworkId,
   createConnectAppSession,
+  createConnectCanonicalRequestAuth,
   createConnectSessionPreview,
   deleteConnectSession,
   registerConnectSession,
+  toHex,
 } from '@iroha/iroha-js/connect-browser'
+import { ToriiBrowserClient } from '@iroha/iroha-js/torii-browser'
 
 const baseUrl = 'https://taira.sora.org'
 const wait = (milliseconds) =>
@@ -63,14 +67,21 @@ const decodeBase64 = (value) =>
 const encodeBase64 = (bytes) =>
   btoa(Array.from(bytes, (byte) => String.fromCharCode(byte)).join(''))
 
-async function postJson(path, body) {
-  const response = await fetch(`${baseUrl}${path}`, {
+async function postSignedJson(path, body, auth, networkId) {
+  const request = await buildCanonicalJsonRequest({
+    nativeIdentity: auth.nativeIdentity,
+    accountId: auth.authAccountId,
+    networkId,
     method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
+    path,
+    baseUrl,
+    body,
+    sign: auth.sign,
+  })
+  const response = await fetch(`${baseUrl}${path}`, {
+    method: request.method,
+    headers: request.headers,
+    body: request.body,
   })
   if (!response.ok) {
     throw new Error(
@@ -87,6 +98,10 @@ async function waitForApplied(transactionHash) {
     const response = await fetch(url, {
       headers: { Accept: 'application/json' },
     })
+    if (response.status === 404) {
+      await wait(1_000)
+      continue
+    }
     if (!response.ok) {
       throw new Error(`pipeline status: HTTP ${response.status}`)
     }
@@ -102,8 +117,7 @@ async function waitForApplied(transactionHash) {
 }
 
 export async function transferWithWallet({
-  chainId,
-  chainDiscriminant,
+  networkIdLiteral,
   authority,
   publicKeyHex,
   assetDefinitionId,
@@ -114,21 +128,16 @@ export async function transferWithWallet({
   if (!/^[0-9a-f]{64}$/.test(publicKeyHex)) {
     throw new Error('publicKeyHex must be 32-byte lower-case Ed25519 hex')
   }
-  const derivedAuthority = AccountAddress.fromAccount({
-    publicKey: publicKeyHex,
-    algorithm: 'ed25519',
-  }).toI105(chainDiscriminant)
-  if (derivedAuthority !== authority) {
-    throw new Error('enrolled public key does not control authority')
-  }
+  const networkId = NetworkId.parse(networkIdLiteral)
+  const torii = new ToriiBrowserClient(baseUrl, { networkId })
 
   const preview = createConnectSessionPreview({
-    chainId,
+    networkId,
     node: baseUrl,
   })
   const relay = await registerConnectSession(
     baseUrl,
-    preview.sidBase64Url,
+    preview,
     {
       node: baseUrl,
     },
@@ -140,8 +149,10 @@ export async function transferWithWallet({
       baseUrl,
       preview,
       session: relay,
+      inspectAccountIdentity: (accountId, options) =>
+        torii.inspectAccountIdentity(accountId, options),
       permissions: {
-        methods: ['sign_transaction'],
+        methods: ['sign_transaction', 'sign_raw'],
         resources: [assetDefinitionId],
       },
       appMeta: { name: 'Iroha cookbook transfer' },
@@ -158,6 +169,10 @@ export async function transferWithWallet({
     if (approval.accountId !== authority) {
       throw new Error('wallet approved a different I105 account')
     }
+    if (toHex(approval.signingPublicKey) !== publicKeyHex) {
+      throw new Error('enrolled public key does not control authority')
+    }
+    const auth = await createConnectCanonicalRequestAuth(connect)
 
     const transfer = {
       authority,
@@ -167,16 +182,21 @@ export async function transferWithWallet({
       destination,
       fee_payment: {
         payer: 'authority',
-        value: { charge_limits: [] },
+        value: { charge_limits: [], gas_limit: null },
       },
       creation_time_ms: Date.now(),
       transaction_ttl_ms: 120_000,
       memo: 'iroha-cookbook-wallet-connect',
     }
 
-    const prepared = await postJson('/v1/assets/transfer', transfer)
+    const prepared = await postSignedJson(
+      '/v1/assets/transfer',
+      transfer,
+      auth,
+      networkId,
+    )
     if (!prepared.ok || prepared.submitted) {
-      throw new Error('Torii did not return a pending-signature scaffold')
+      throw new Error('Torii did not return an unsigned transaction payload')
     }
     const limits = prepared.intent.fee_payment.value.charge_limits
     if (
@@ -186,22 +206,27 @@ export async function transferWithWallet({
       )
     ) {
       throw new Error(
-        'live fee quote uses an asset other than the faucet response',
+        'live fee quote uses an asset other than the faucet policy asset',
       )
     }
 
     const signature = await connect.signTransaction(
-      decodeBase64(prepared.transaction_scaffold_base64),
+      decodeBase64(prepared.transaction_payload_b64),
     )
     if (signature.length !== 64) {
       throw new Error('wallet returned a non-Ed25519 signature length')
     }
 
-    const submitted = await postJson('/v1/assets/transfer', {
-      ...transfer,
-      public_key_hex: publicKeyHex,
-      signature_base64: encodeBase64(signature),
-    })
+    const submitted = await postSignedJson(
+      '/v1/assets/transfer',
+      {
+        ...transfer,
+        public_key_hex: publicKeyHex,
+        signature_base64: encodeBase64(signature),
+      },
+      auth,
+      networkId,
+    )
     if (!submitted.ok || !submitted.submitted) {
       throw new Error('signed transfer was not accepted')
     }
@@ -251,18 +276,18 @@ fn seal_wallet_signature(
 }
 ```
 
-Anbarın `connect_app` və `connect_wallet` nümunələri protokol test artefaktlarıdır: onlar deterministik daşınma açarlarından istifadə edir, çıxışda tokenləri göstərir və cüzdan test artefaktı saxta imza qaytarır. Onlardan yalnız çərçivələri öyrənmək üçün istifadə edin, heç vaxt Taira cüzdan implementasiyası kimi istifadə etməyin.
+Repozitoriyadakı `connect_app` və `connect_wallet` nümunələri protokol nümayişləridir: tətbiq cüzdan URI-sini, onun tokeni ilə birlikdə, standart çıxışa çap edir, cüzdan isə tokenlərini əmr sətri arqumentləri kimi qəbul edir və tələb olunan baytları dekodlaşdırmadan və ya göstərmədən imzalayır. Onlardan yalnız çərçivələri öyrənmək üçün istifadə edin, heç vaxt Taira cüzdan implementasiyası kimi yox.
 
 ## Yoxla {#verify}
 
 Qaytarılan kriptoqrafik xəşi saxlayın və təyinatın son vəziyyətini ictimai sahiblər API son nöqtəsi vasitəsilə təsdiqləyin:
 
 ```bash
+HOLDER_FILTER="account_id = \"$DESTINATION_ACCOUNT\" and scope = \"global\""
 curl -fsS -G \
   -H 'Accept: application/json' \
   "https://taira.sora.org/v1/assets/$ASSET_DEFINITION_ID/holders" \
-  --data-urlencode "account_id=$DESTINATION_ACCOUNT" \
-  --data-urlencode 'scope=global' |
+  --data-urlencode "filter=$HOLDER_FILTER" |
   jq .
 ```
 
@@ -270,20 +295,20 @@ Təsdiq yalnız JavaScript ofisiant `Applied`-i təqdim edilmiş əməliyyat kri
 
 ## Problemlərin aradan qaldırılması {#troubleshooting}
 
-- `404`, `503` və ya `enabled: false` Bağlanış statusu bu nodda heç bir relə sessiyasının yaradılmayacağı deməkdir. Aktiv edilmiş bir localnet-ə keçin; tətbiq və ya idarəetmə tokenlərini özünüz daşıma halına düşməyin.
+- `registerConnectSession` cavabında `connect_disabled` kodlu `503` və ya `404` həmin qovşaqda heç bir ötürmə sessiyasının yaradıla bilməyəcəyini bildirir. Connect aktiv olan lokal şəbəkəyə keçin; tətbiq və ya idarəetmə tokenlərini özünüz ötürməyə keçməyin.
 - `USER_DENIED` bir pul kisəsi qərarıdır. Təkrar təsdiq pəncərələrini açmaq əvəzinə bunu terminal istifadəçi nəticəsi kimi qoruyun.
 - Təsdiq və hesab uyğunsuzluğu və ya etibarsız təsdiq imzası sessiyanı bağlamalıdır. Kimliyin bağlanması uğursuz olduqdan sonra heç vaxt cüzdanı imzalamağa çağırmayın.
 - `public_key_hex does not control authority` qeydiyyat məlumatlarını və təsdiqlənmiş I105 şəxsiyyətini uyğunsuz göstərir. Müvəqqəti cüzdan ötürmə açarından bu sahədə istifadə etmək olmaz.
-- İmzalanmış və ya yaradılmış başlanğıc strukturunun rədd edilməsi adətən sorğu sahəsinin və ya canlı ödəniş qiymətinin hazırlanma və göndərilmə mərhələləri arasında dəyişdiyini göstərir. Yeni bir sorğu yaradın; köhnə imzanı heç vaxt köçürməyin.
+- Rədd edilmiş ayrılmış imza adətən hazırlıq və təqdimat arasında sorğu sahəsinin və ya canlı ödəniş qiyməti təxmininin dəyişdiyini bildirir. Yeni sorğu qurun; köhnə imzanı heç vaxt köçürməyin.
 - Artıq qəbul edilmiş imzalı sorğunun dəqiq təkrarı idempotentdir. Yenidən başlama səbəbi kimi vaxt bitməsini qəbul etməzdən əvvəl qaytarılan əməliyyatın kriptoqrafik xəşini sorğu edin.
 
 ## Mənbə və əlaqəli sənədlər {#source-and-related-docs}
 
-- [Sabitlənmiş mənbə kodu revisiyasında Brauzer Bağlantısı tətbiqi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/src/connect.browser.js)
-- [Brauzer Connect pinlənmiş mənbə kodu versiyasında testlər aparır](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/test/connect.browser.test.js)
-- [Rust pinlənmiş mənbə kodu redaksiyasında tətbiq çərçivəsi nümunəsi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_app.rs)
-- [Rust pinlənmiş mənbə kodu redaksiyasında pulqabı çərçivəsi nümunəsi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_wallet.rs)
-- [Sabitləşdirilmiş Torii OpenAPI sxem](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/artifacts/openapi/torii.json)
+- [Sabitlənmiş mənbə kodu revisiyasında Brauzer Bağlantısı tətbiqi](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/src/connect.browser.js)
+- [Brauzer Connect pinlənmiş mənbə kodu versiyasında testlər aparır](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/test/connect.browser.test.js)
+- [Rust pinlənmiş mənbə kodu redaksiyasında tətbiq çərçivəsi nümunəsi](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/examples/connect_app.rs)
+- [Rust pinlənmiş mənbə kodu redaksiyasında pulqabı çərçivəsi nümunəsi](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/examples/connect_wallet.rs)
+- [Sabitləşdirilmiş Torii OpenAPI sxem](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/artifacts/openapi/torii.json)
 - [SORA Nexus xidmətləri](/az/blockchain/sora-nexus-services.md)
 - [Mübadilə edilə bilən aktivlər](./fungible-assets.md)
 - [Əməliyyatları göndərin və təsdiqləyin](./submit-and-verify-transactions.md)

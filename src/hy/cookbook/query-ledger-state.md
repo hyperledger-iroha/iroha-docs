@@ -1,22 +1,22 @@
 ---
 translation_locale: hy
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: 68ef931f3d37b9bd40fcf61c9a77313539ca0bd648405834d161a018debb491a
+translation_source_hash: 866b7d3ca37be67878f6f319ce0b0e27eac52c581decad1f46096ef75ad1b10f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Query անել գրանցամատյանի վիճակը {#query-ledger-state}
 
 ## Արդյունքը {#outcome}
 
-Կարդացեք եւ նախագծեք Taira JSON ռեսուրսները, այնուհետեւ օգտագործեք տիպված Iroha հարցումները ֆիլտրերով, տրամաբանական էջավորմամբ, կարգավորումով, վերցնելու չափերով եւ միայն առաջընթացային կուրսորի շարունակությամբ: Դուք նաեւ խուսափում եք կախված լինելու ընտրողի արտացոլման վրա, նախքան սերվերը գնահատելու է փոխանցված `--select` tuple- ը.
+Կարդացեք և պրոյեկտեք Taira-ի JSON ռեսուրսները, ապա CLI-ից և Rust SDK-ից օգտագործեք Torii-ի հավաքածուների հարցումները՝ ֆիլտրերով, դասավորմամբ, սերվերային պրոյեկցիայով, էջի սահմանաչափերով և անթափանց `next_cursor` շարունակմամբ։ Դուք նաև ցուցակների համար չեք օգտագործի ստորագրված տիպավորված հարցումները, որոնք դրանք չեն ֆիլտրում, չեն դասավորում և չեն պրոյեկտում։
 
 ## Նախադրյալներ {#prerequisites}
 
 - `curl`, `jq`, Node.js 24, եւ ընթացիկ `iroha` CLI.
 - Կարդալ միայն Taira մուտք:
-- ստորագրված տիպավորված հարցումների օրինակների համար Taira կամ ստեղծված տեղական ցանցի հաճախորդի կարգավորումը:
+- CLI-ի օրինակների համար՝ հաճախորդի կազմաձևում Taira-ի կամ ստեղծված տեղական ցանցի համար։
 - Rust օրինակում, նախագիծը կապված է նույն Iroha աղբյուրի վերանայման հետ, ինչ նպատակային ցանցը:
 
 ## Քայլեր {#steps}
@@ -30,25 +30,23 @@ Resource երթուղիները օգտակար են դաշբորդների եւ 
 ```bash [curl]
 curl -fsS -H 'Accept: application/json' --get \
   https://taira.sora.org/v1/domains \
-  --data-urlencode 'sort=id:asc' \
+  --data-urlencode 'sort=id' \
   --data-urlencode 'limit=5' \
-  --data-urlencode 'offset=0' \
-  --data-urlencode 'count_mode=exact' \
-  | jq '{total, ids: [.items[].id]}'
+  --data-urlencode 'include_total=true' \
+  | jq '{total, next_cursor, ids: [.items[].id]}'
 ```
 
 ```js [Node.js]
 const root = 'https://taira.sora.org'
-const limit = 5
 const seen = new Set()
+let cursor = null
 
-for (let offset = 0; ; offset += limit) {
+do {
   const url = new URL('/v1/domains', root)
   url.search = new URLSearchParams({
-    sort: 'id:asc',
-    limit: String(limit),
-    offset: String(offset),
-    count_mode: 'exact',
+    sort: 'id',
+    limit: '5',
+    ...(cursor ? { cursor } : {}),
   })
 
   const response = await fetch(url, {
@@ -63,106 +61,90 @@ for (let offset = 0; ; offset += limit) {
     seen.add(domain.id)
     console.log(domain.id)
   }
-  if (page.items.length < limit || seen.size >= page.total) break
-}
+  cursor = page.next_cursor
+} while (cursor)
 ```
 
 :::
 
-Այս HTTP մակերեւույթը օգտագործում է `limit` եւ `offset`: Հաշվի առնելով, որ երթուղին օգտագործում է ավելի էժան հաշվարկային ռեժիմ, բաց թողնված կամ սահմանված `total` կետը պետք է դիտարկվի որպես սովորական:
+Այս HTTP մակերեսը էջավորում է `limit`-ով և անթափանց `next_cursor`-ով; այն անփոփոխ հետ ուղարկեք որպես `cursor`, մինչև այն դառնա `null`։ `total`-ը հայտնվում է միայն այն դեպքում, երբ պահանջում եք `include_total=true`, ինչը պահանջում է ամբողջական սկանավորում։
 
-### 2. Ֆիլտրեք եւ խմբացրեք CLI տիպված հարցումը {#_2-filter-and-batch-a-typed-cli-query}
+### 2. Ֆիլտրեք հավաքածուն CLI-ով {#_2-filter-a-collection-with-the-cli}
 
-CLI-ը սերիալացնում է տիպված կրկնվող հարցումը եւ հետեւում է սերվերի շարունակականության կուրսորներին ներքին: Այստեղ տրամաբանական արդյունքը սահմանափակվում է մեկ շարքով, մինչդեռ `--fetch-size 1` -ն վերահսկում է ամեն մի երթեւեկության ընթացքում բերված առավելագույն խմբաքանակը:
+CLI-ն ֆիլտրը, պրոյեկցիան և էջի չափն ուղարկում է հավաքածուի վերջնակետին և տպում մեկ էջ՝ `{items, next_cursor}`։ Ավելացրեք `--all`՝ `next_cursor`-ին հետևելու համար, մինչև այն դառնա `null`։
 
 ```bash
-DOMAIN_PREDICATE='{"equals":[{"field":"id","value":"wonderland.universal"}]}'
+DOMAIN_FILTER='id = "universal.universal"'
 
 iroha --config ./localnet/client.toml \
-  ledger domain list filter "$DOMAIN_PREDICATE" \
-  --limit 1 \
-  --offset 0 \
-  --fetch-size 1
+  ledger domain list \
+  --filter "$DOMAIN_FILTER" \
+  --select id \
+  --limit 1
 ```
 
-Ֆիլտրումը տեղի է ունենում էջավորման առաջ: Օգտագործեք հարցման հատուկ տիպված նախադասություններ. հաշիվի կամ ակտիվի նախադասություն չի կարող անվտանգ վերաօգտագործվել դոմենի համար:
+Ֆիլտրումը տեղի է ունենում մինչև էջավորումը։ Յուրաքանչյուր հավաքածու ընդունում է միայն իր սեփական դաշտերը; անհայտ դաշտը ոչնչի հետ չհամընկնելու փոխարեն վերադարձնում է `invalid_filter`։
 
 ### 3. Սորտաժել կայուն մեթադատա բանալինով {#_3-sort-by-a-stable-metadata-key}
 
-Տիպված հարցման կարգավորումը բառապաշարային է մեկ մետադատա բանալի վրա: Առանց այդ բանալին պարունակվող տարրերը հետեւում են վազման ժամանակի սահմանված կարգավորմանը, այնպես որ օգտագործեք մի բանալին, որը համահունչ է հավաքածուի ամբողջությամբ:
+Հավաքածուի դասավորման բանալիներն ընդունում են հայտարարված դաշտերը և `metadata.<key>`; նվազման կարգի համար բանալուց առաջ դրեք `-`։ Բանալի չունեցող տողերն աճման կարգում դասավորվում են առաջինը, իսկ հավասար արժեքների դեպքում կարգը որոշում է տողի ինքնությունը, ուստի օգտագործեք բանալի, որը հետևողականորեն լրացված է ամբողջ հավաքածուում։
 
 ```bash
 iroha --config ./localnet/client.toml \
   --machine \
-  ledger account list all \
-  --verbose \
-  --sort-by-metadata-key key \
-  --order asc \
+  account list \
+  --sort metadata.key \
   --limit 10 \
-  --offset 0 \
-  --fetch-size 2 \
-  | jq '[.[] | {id, metadata}]'
+  | jq '[.items[] | {id, metadata}]'
 ```
 
-Փաստագրված CLI-ը վերլուծում է `--select` JSON եւ փոխանցում է ընտրողի թուպլին, բայց ներկայիս թեթեւ հարցումը DSL չի գնահատում այն ընտրողը սերվերում: Դեռեւս դրա շուրջ մի նախագծման պայմանագիր չեն կառուցում. Օգտագործեք SDK տիպված նախագծումը միայն այն բանից հետո, երբ թիրախային վազման ժամանակը աջակցում է դրան, կամ վավերացված արդյունքի հաճախորդի կողմը ներկայացրեք `jq` կամ JavaScript ՝ ինչպես նշված է վերեւում:
+`--select`-ը սերվերային պրոյեկցիա է: `--select id,metadata`-ն վերադարձնում է միայն այդ դաշտերը, իսկ անհայտ դաշտը վերադարձնում է `invalid_select`։ Ստորագրված տիպավորված հարցումները միշտ վերադարձնում են ամբողջական տարրեր, ուստի դրանց արդյունքները պրոյեկտեք հաճախորդի կողմում `jq`-ով կամ JavaScript-ով, ինչպես վերևում։
 
 ### 4. Թող Rust վերարտադրողը հետեւի անչափանցիկ կուրսորներին: {#_4-let-the-rust-iterator-follow-opaque-cursors}
 
-`Pagination` սահմանափակում է տրամաբանական արդյունքների հավաքածուն: `FetchSize` վերահսկում է յուրաքանչյուր սերվերի խմբաքանակ. վերադարձված վերարտադրողը թափանցիկորեն ուղարկում է շարունակման խնդրանքներ ՝ օգտագործելով սերվերի կողմից ստեղծված դասիչը:
+`limit`-ը սահմանում է էջի չափը։ `list`-ի վերադարձրած իտերատորը հաջորդ էջը սերվերի `next_cursor`-ով պահանջում է միայն ընթացիկ էջն սպառելուց հետո, իսկ `take`-ը սահմանափակում է տրամաբանական արդյունքը։ Այստեղ `client`-ը `iroha::blocking::Client` է։
 
 ```rust
-use std::num::NonZeroU64;
+use iroha::collections::{Collection, ListQuery, SortKey};
 
-use iroha::data_model::{
-    prelude::FindAssetsDefinitions,
-    query::{
-        builder::QueryBuilderExt as _,
-        parameters::{FetchSize, Pagination},
-    },
-};
+let query = ListQuery::new().sort_by(SortKey::asc("id")).limit(5);
 
-let definitions = client
-    .query(FindAssetsDefinitions::new())
-    .with_pagination(Pagination::new(NonZeroU64::new(25), 0))
-    .with_fetch_size(FetchSize::new(NonZeroU64::new(5)))
-    .execute_all()?;
-
-for definition in definitions {
-    println!("{} {}", definition.id(), definition.name());
+for definition in client.list(Collection::AssetDefinitions, query).take(25) {
+    let definition = definition?;
+    println!("{:?} {:?}", definition.get("id"), definition.get("name"));
 }
 ```
 
-`ForwardCursor` -ը լիազորությունների վրա է հիմնված, գործընթացային տեղական եւ միայն հետագա: Երբեք մի վերլուծեք այն, սինթեզիրացրեք այն, կիսեք այն լիազոր հաշիվների միջեւ կամ պահպանեք այն որպես բեռնունակ վերարտադրման տոքեր Torii դեպքերում: Եթե այն ավարտվում է, վերսկսեք սկզբնական հարցումը ծրագրային մակարդակի դիտավորյալ ստուգման կետով:
+`next_cursor`-ը բանալիների հավաքածուի անթափանց դիրք է, որը կապված է իր հավաքածուին, ուղուն, ֆիլտրին և դասավորմանը։ Երբեք մի՛ վերլուծեք կամ մի՛ ստեղծեք այն ձեռքով և մի՛ օգտագործեք այն այլ ֆիլտրով կամ դասավորմամբ; Torii-ն դա մերժում է `invalid_cursor`-ով։ Էջերի միջև ավելացված կամ հեռացված տողերը երբեք չեն ստիպում հաջորդ էջին կրկնել կամ բաց թողնել անկապ տողեր։
 
 ## Փորձարկել {#verify}
 
-Դոմենի ճշգրիտ ֆիլտրը պետք է վերադարձնի միայն `wonderland.universal` ։ Փորձեք ստուգել արդյունքը, այլ ոչ թե հաշվարկել հաջողված CLI ելք միայն.
+Դոմենի ճշգրիտ ֆիլտրը պետք է վերադարձնի միայն `universal.universal` ։ Փորձեք ստուգել արդյունքը, այլ ոչ թե հաշվարկել հաջողված CLI ելք միայն.
 
 ```bash
 iroha --config ./localnet/client.toml \
   --machine \
-  ledger domain list filter "$DOMAIN_PREDICATE" \
-  --limit 1 --offset 0 --fetch-size 1 \
-  | jq -e 'length == 1 and .[0] == "wonderland.universal"'
+  ledger domain list --filter "$DOMAIN_FILTER" --select id --limit 1 \
+  | jq -e '[.items[].id] == ["universal.universal"]'
 ```
 
-Պահանջվող հավելվածների հարցումների համար նաեւ ստուգեք, որ IDs չի կրկնվում տարբեր էջերում, պահանջված տրամաբանական սահմանը երբեք չի գերազանցվում, եւ ժամկետն անցած պրոցեսորից հետո կրկին սկսվում է փաստաթղթավորված վերահսկողության կետից:
+Էջավորված հավելվածային հարցումների համար ստուգեք նաև, որ ID-ները չեն կրկնվում էջերի միջև, պահանջված տրամաբանական սահմանը երբեք չի գերազանցվում, և մերժված կուրսորից հետո հարցումը վերսկսվում է փաստաթղթավորված ստուգման կետից։
 
 ## Խնդիրների լուծում {#troubleshooting}
 
 - Միավոր հարցումը չի ընդունում կրկնվող ֆիլտրի, կարգավորման, էջայնացման կամ վերցնելու պարամետրերը: Օգտագործեք համապատասխան ցուցակի հարցումը, երբ այդ վերահսկողությունները անհրաժեշտ են:
-- `fetch_size` ոչ զրոյական խմբաքանակի հուշում է, այլ ոչ թե ընդհանուր արդյունքի սահմանը: Ներկայիս կանխորոշումը `100` է, եւ վազման ժամանակը մերժում է առավելագույնից բարձր արժեքները:
-- Անհայտ, ժամկետով անցած կամ օտար կուրսորը դիտավորյալ չի կարող կրկնակի օգտագործվել: Վերագործարկեք հարցումը. Մի փորձեք վերականգնել անչափահաս արժեքը:
-- Մետադատայի դասակարգումը ընդհանուր դաշտային դասակարգում չէ: Եթե յուրաքանչյուր կետ չի պարունակում ընտրված բանալին, փաստաթղթագրեք բացակայում է բանալին կարգը կամ ընտրեք այլ ռազմավարություն:
-- CLI-ը վերլուծում եւ փոխանցում է `--select`, բայց ներկայիս սերվերը չի գնահատում թեթեւ ընտրիչի թուպլին: կիրառեք հաճախորդի կողմից նախագծումը, քանի դեռ սերվերի կողմից ընտրողի աջակցությունը հաստատված չէ տեղակայված վազման ժամանակի համար:
-- Տարածաշրջանային անսահմանափակ հարցումները մեծացնում են հանգույցների աշխատանքը, հաճախորդի հիշողությունը եւ կուրսորի կյանքի ռիսկը: Սահմանեք տրամաբանական սահման եւ գնել չափը համապատասխան սպառողի համար.
-- Հանրային JSON ռեսուրսային պարամետրերը եւ ստորագրված տիպավորված հարցման պարամետրները կապված են, բայց չեն փոխանակելի ցանցային ձևաչափեր: Տիպավորված հարցումների փաթեթների համար նախընտրեք SDK կամ CLI:
+- `limit`-ը էջի չափն է, ոչ թե ընդհանուր արդյունքը: առնվազն 1 և առավելագույնը հանգույցի `torii.app_api_max_list_limit` (լռելյայն 500); Torii-ի լռելյայն արժեքը 100 է։ Ավելին կարդալու համար հետևեք `next_cursor`-ին, `--all`-ին կամ SDK-ի իտերատորին։
+- `invalid_cursor`-ը նշանակում է, որ կուրսորը սխալ է ձևավորված կամ պատկանում է այլ հավաքածուի, ուղու, ֆիլտրի կամ դասավորման։ Վերսկսեք հարցումը; մի՛ փորձեք ուղղել անթափանց արժեքը։
+- Ընտրողական ֆիլտրը կարող է վերադարձնել կարճ կամ դատարկ էջ ոչ դատարկ `next_cursor`-ով։ Շարունակեք հետևել դրան, մինչև այն դառնա `null`։
+- `--filter`-ը և HTTP `filter` պարամետրն ընդունում են Torii-ի տեքստային քերականությունը, օրինակ՝ `id = "universal.universal"` կամ `exists(metadata.tier)`։ JSON պրեդիկատի օբյեկտը ֆիլտրի տեքստ չէ և ձախողվում է որպես անվավեր `filter`։
+- Լայն, անսահմանափակ հարցումները մեծացնում են հանգույցների աշխատանքը և հաճախորդի հիշողության օգտագործումը։ Սահմանեք սպառողին համապատասխան տրամաբանական սահման և էջի չափ։
+- Ստորագրված `/v1/query`-ն ցուցակագրման API չէ։ Այն ընդունում է եզակի հարցումներ և առանց ֆիլտրի իտերացվող հարցումների մի քանի մեկնարկ, իսկ մյուսները, օրինակ՝ `FindDomains`-ը կամ `FindAssetDefinitions`-ը, մերժում է `signed_query_shape_not_admitted`-ով։ Հավաքածուների վերջնակետերը, CLI-ի `list` հրամանները և SDK-ի հավաքածուների ընթերցիչները օգտագործում են ֆիլտրի, դասավորման և կուրսորի նույն քերականությունը։
 
 ## Աղբյուրը եւ դրա հետ կապված փաստաթղթերը {#source-and-related-docs}
 
-- [Cursor-backed pagination ինտեգրման փորձարկումները pinned commit- ում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs)
-- [Հարցման ստեղծողի եւ ընտրողի վարքագիծը փակված commit-ում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs)
-- [Հարցման պարամետրերը եւ կուրսորի մոդելը փինված commit- ում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs):
+- [Torii-ի հավաքածուների հարցումների պայմանագիրը ամրագրված commit-ում](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/torii/collection_queries.md)
+- [Rust-ի հավաքածուների ընթերցումները և կուրսորի իտերատորը ամրագրված commit-ում](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/src/collections.rs)
+- [Ստորագրված հարցումների ընդունումը ամրագրված commit-ում](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/query_json.md)
 - [Հարցումներ](/hy/blockchain/queries.md)
 - [Հարցման հղում](/hy/reference/queries.md)
 - [JavaScript եւ TypeScript](/hy/guide/tutorials/javascript.md)

@@ -1,36 +1,36 @@
 ---
 translation_locale: hy
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 29f2bdb390fc93b97f8ed9108634f70e21ba747c8606fb84093d37e9586516c1
+translation_source_hash: 3287a6bbaf06ec92ebbe9ac33a8294d4e1d232bc01fd6a5da13ddd166c620965
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Գործունական ակտիվներ {#fungible-assets}
 
 ## Արդյունքը {#outcome}
 
-Ստուգեք կենդանի Taira ակտիվների սահմանումները եւ լրացրեք գրանցման, դրամապանակի, փոխանցման, այրման եւ մնացորդի ստուգման հոսքը ստեղծված տեղական ցանցում: բաղադրատոմսը օգտագործում է կանոնական չփոխարինված Base58 ակտիվի սահմանումը IDs, տիրույթի համար հավասարեցված կեղծանունները, տիրույթ չունեցող I105 հաշիվը IDs եւ բացարձակ վճարման վճարը։
+Ստուգեք Taira-ի գործող ցանցի ակտիվների սահմանումները և ստեղծված տեղական ցանցում ամբողջությամբ անցեք թողարկման, փոխանցման, այրման և մնացորդի ստուգման հոսքը։ Բաղադրատոմսն օգտագործում է կանոնիկ, առանց նախածանցի Base58 ակտիվի սահմանման ID-ներ, առանց դոմենի I105 հաշվի ID-ներ և վճարի բացահայտ վճարում։
 
 ## Նախադրյալներ {#prerequisites}
 
-- `curl`, `jq`, Python 3.11 կամ ավելի ուշ, Node.js 24, եւ հոսքը `iroha` CLI
+- `curl`, `jq`, Python 3.11 կամ ավելի նոր տարբերակ, Node.js 24 և ընթացիկ CLIs՝ `iroha` և `kagami`։
 - Կարդալ միայն Taira մուտք:
-- Գրելու ընթացքի համար ստեղծված տեղական ցանցը [Առաջարկում Iroha](/hy/get-started/launch-iroha.md), `./localnet/client.toml` եւ Torii հետ `http://127.0.0.1:8080`:
+- Գրառումների համար՝ տեղական ցանց `kagami localnet generate --peers 4 --out-dir ./localnet` հրամանով, ինչպես [Iroha-ի գործարկում](/hy/get-started/launch-iroha.md) էջում, `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa` հավելումով։ Այն տալիս է `./localnet/client.toml`-ը և Torii-ն `http://127.0.0.1:8080` հասցեում։
 
 ## Քայլեր {#steps}
 
 ### 1. Taira սահմանումները ստուգեք առանց ստորագրողի: {#_1-inspect-taira-definitions-without-a-signer}
 
-Աշունների սահմանումները պարունակում են անբացատրելի Base58 ID, ցուցադրման անուն, mintability քաղաքականություն, թվային մասշտաբ, ընտրանքային alias, սեփականատեր եւ ընդհանուր քանակ. կոնկրետ մնացորդը նաեւ ներառում է իր տիրապետող հաշվին եւ ընտրանքական տվյալների տարածքի շրջանակը:
+Ակտիվների սահմանումները պարունակում են անթափանց Base58 ID, ցուցադրվող անուն, թողարկման քաղաքականություն, թվային մասշտաբ, ընտրովի կեղծանուն, սեփականատեր, ընտրովի սեփականատեր դոմեն կամ տվյալների տարածք, մնացորդի քաղաքականություն և ընդհանուր քանակ։ Կոնկրետ մնացորդը ներառում է նաև այն պահող հաշիվը և տվյալների տարածքի ընտրովի շրջանակը։
 
 ::: code-group
 
 ```bash [curl]
 curl -fsS -H 'Accept: application/json' \
   'https://taira.sora.org/v1/assets/definitions?limit=10' \
-  | jq -r '.items[] \
-    | [.id, .name, .mintable, (.spec.scale // "unconstrained"), .total_quantity] \
+  | jq -r '.items[]
+    | [.id, .name, .mintable, (.spec.scale // "unconstrained"), .total_quantity]
     | @tsv'
 ```
 
@@ -58,10 +58,9 @@ for (const definition of items) {
 
 ### 2. Պատրաստեք տեղական լիազոր հաշիվը եւ նպատակակետը {#_2-prepare-the-local-authority-and-destination}
 
-Տեղական լիազոր հաշիվը հանեք ստեղծված կոնֆիգում գտնվող հանրային բանալից եւ ընտրեք այլ գրանցված հաշիվ ՝ որպես ստացողի: Ոչ մի մասնավոր բանալին չի տպագրվում:
+Ստեղծված կազմաձևման հանրային բանալուց ստացեք տեղական լիազոր հաշիվը, ապա ստեղծեք բանալիների զույգ նոր ստացող հաշվի համար և գրանցեք այն։ Ոչ մի մասնավոր բանալի չի տպվում։
 
 ```bash
-LOCAL_ROOT='http://127.0.0.1:8080'
 LOCAL_CONFIG='./localnet/client.toml'
 
 LOCAL_PUBLIC_KEY="$(python3 - <<'PY'
@@ -75,33 +74,28 @@ SOURCE_ACCOUNT="$(
   iroha --config "$LOCAL_CONFIG" tools address convert "$LOCAL_PUBLIC_KEY"
 )"
 
+kagami keys --out-dir ./cookbook-recipient
 DESTINATION_ACCOUNT="$(
-  curl -fsS -H 'Accept: application/json' "$LOCAL_ROOT/v1/accounts?limit=20" \
-    | jq -er --arg source "$SOURCE_ACCOUNT" \
-      '[.items[].id | select(. != $source)][0]'
+  iroha --config "$LOCAL_CONFIG" tools address convert \
+    "$(cat ./cookbook-recipient/public.key)"
 )"
+iroha --config "$LOCAL_CONFIG" \
+  --machine --fee-payer authority \
+  account register --id "$DESTINATION_ACCOUNT"
 ```
 
-### 3. Գրանցեք թվային սահմանումը {#_3-register-a-numeric-definition}
+### 3. Օգտագործեք հաճախորդին պատկանող թվային սահմանում {#_3-use-a-client-owned-numeric-definition}
 
-Այս տեղական-միայն ID հավատարիմ է Base58 ակտիվի սահմանման անվավեր հասցեն: Անանունը մատակարարում է մարդկային ընթերցելի `domain.dataspace` արտացոլումը: Scale `2` թույլ է տալիս երկու մասնավոր թվեր. բաց թողնելով `--mint-once` ՝ պահպանվում է նախնական `Infinitely` քաղաքականությունը:
+Ծագման բլոկից դուրս սահմանումը գրանցվում է սեփականատեր `--domain`-ի ներքո, որը պատկանում է ստորագրողին, իսկ ստեղծված տեղական ցանցի հաճախորդին ոչ մի դոմեն չի պատկանում։ `--asset-definition-id`-ով ստեղծված տեղական ցանցն արդեն պարունակում է այս սահմանումը: ծագման բլոկն այն գրանցել է անսահմանափակ մասշտաբով, հաճախորդին դարձրել է դրա սեփականատերը և հաճախորդի համար թողարկել է 1,000,000,000 միավոր։
 
 ```bash
 ASSET_DEFINITION_ID='66owaQmAQMuHxPzxUN3bqZ6FJfDa'
-ASSET_ALIAS='cookbook_credit#wonderland.universal'
 
-iroha --config "$LOCAL_CONFIG" \
-  --machine \
-  --fee-payer authority \
-  ledger asset definition register \
-  --id "$ASSET_DEFINITION_ID" \
-  --name cookbook_credit \
-  --description 'Local cookbook credit' \
-  --alias "$ASSET_ALIAS" \
-  --scale 2
+iroha --config "$LOCAL_CONFIG" ledger asset definition get \
+  --id "$ASSET_DEFINITION_ID"
 ```
 
-Մի օգտագործեք ID-ը կրկին Taira: Հանրային ցանցում գրանցումը պահանջում է նոր կանոնիկ ID, ձեր դիմման համար հատկացված դոմեյն/անուն անուն, վճարային ֆինանսավորում եւ վազքի ժամանակի ակտիվների գրանցման թույլտվություն.
+Մի՛ օգտագործեք այդ ID-ն կրկին Taira-ում։ Հանրային ցանցում գրանցման համար անհրաժեշտ են նոր կանոնիկ ID, ձեր հաշվին պատկանող սեփականատեր դոմեն (որը `ledger asset definition register`-ին փոխանցվում է որպես `--domain`), ցանկացած կեղծանվան համար `CanManageAssetDefinitionAlias` թույլտվության շնորհում և վճարի ֆինանսավորում։
 
 ### 4. Մինետ, փոխանցում եւ այրումը {#_4-mint-transfer-and-burn}
 
@@ -131,11 +125,11 @@ iroha --config "$LOCAL_CONFIG" \
   --quantity 10.00
 ```
 
-Հրկիզվելուց հետո ակնկալեք աղբյուրի մնացորդը `64.50`, նպատակակետի հավասարումը `25.50` եւ ընդհանուր քանակությունը `90.00`.
+Հրկիզվելուց հետո ակնկալեք աղբյուրի մնացորդը `1000000064.50`, նպատակակետի հավասարումը `25.50` եւ ընդհանուր քանակությունը `1000000090.00`.
 
 ::: warning Թույլատրելիության սահման
 
-Taira-ում միացրեք faucet ստացված `taira.tx-metadata.json` եւ օգտագործեք `--fee-payer authority` յուրաքանչյուր գրման համար: Գրանցումը եւ մետաղադրելը պահանջում են ակտիվ վավերացնողի թույլտվությունները; փոխանցումը եւ այրումը պահանջում են աղբյուրի մնացորդի լիազորություն: Ջրհեղից ֆինանսավորվող հաշիվը ավտոմատ կերպով չի հանդիսանում թողնող.
+Taira-ում յուրաքանչյուր գրառման համար օգտագործեք `--fee-payer authority`; CLI-ն ստորագրելուց առաջ ստանում է ճշգրիտ վճարային առաջարկ Taira-ի վճարային ակտիվով։ Գրանցման համար պետք է լինել սահմանման `--domain`-ի սեփականատերը, իսկ կեղծանվան համար լրացուցիչ անհրաժեշտ է `CanManageAssetDefinitionAlias`։ Թողարկման համար պետք է լինել սահմանման սեփականատերը կամ ունենալ `CanMintAssetWithDefinition` կամ `CanMintAssetToAccount`; փոխանցման և այրման համար անհրաժեշտ է լիազորություն աղբյուրի մնացորդի նկատմամբ։ Faucet-ով ֆինանսավորված հաշիվն ավտոմատ կերպով թողարկող չէ։
 
 :::
 
@@ -163,14 +157,14 @@ iroha --config "$LOCAL_CONFIG" ledger asset definition get \
 - ID պարունակող `#` կեղծանուն է կամ կոնկրետ մնացորդ բառացի, եւ ոչ թե կանոնական ակտիվի սահմանում ID: Օգտագործեք բաց Base58 արժեքը `--definition` կամ անցեք կապված կեղծանվան ՝ `--definition-alias`:
 - `Scale` սխալները նշանակում են, որ մի քանակություն ունի ավելի շատ մասնավոր թվեր, քան սահմանումը թույլ է տալիս:
 - `Mintability` մերժումը նշանակում է, որ `Once`, `Not` կամ `Limited(n)` քաղաքականությունը սպառել է կամ արգելել է մետաղադրույքը: Մի՛ վերանորոգեք պատմությունը: Օգտագործեք սահմանման հարցում վերադարձված քաղաքականությունը:
-- Քայլ 2-ը միտումնավոր ընտրում է գրանցված destination account։ Եթե asset admission-ը `ExplicitOnly` է, փոխանցումից առաջ authorized flow-ով ստեղծեք destination balance-ը։ Նման անունով CLI guard-ը account կամ balance չի գրանցում. այլ instruction ավելացնելու փոխարեն այն ընդհատում է գործողությունը։
-- Հարկի մերժումը տեղի է ունենում նախքան սովորական հրահանգների հաջողությունը: Ընտրեք վճարողը, օգտագործեք ցանցի վճարային ակտիվի մետադատները եւ ստուգեք դրա մնացորդը:
-- Եթե ֆիքսված տեղական սահմանումը արդեն գոյություն ունի ավելի վաղ վազումից, մեկնարկեք նոր ստեղծված տեղական ցանց կամ շարունակեք դրա առկա վիճակը: Երբեք չփոխարինեք Base58 ID սխալ ձեւավորված պատահական շղթան։
+- Քայլ 2-ը բացահայտորեն գրանցում է նպատակային հաշիվը, ուստի փոխանցումն աշխատում է նաև այն դեպքում, երբ հաշիվների ընդունման ռեժիմը `ExplicitOnly` է։ Նման անվամբ CLI պաշտպանիչը ոչ հաշիվ է գրանցում, ոչ էլ մնացորդ; լրացուցիչ հրահանգ ավելացնելու փոխարեն այն ընդհատում է գործողությունը։
+- Վճարի մերժումը տեղի է ունենում մինչև հրահանգի սովորական հաջող կատարումը։ Ընտրեք վճարողին, CLI-ի վճարային առաջարկում ստուգեք վճարային ակտիվը և առավելագույն գումարը, ապա ստուգեք այդ մնացորդը։
+- Նույն տեղական ցանցում կրկնակի գործարկումը սկսվում է նախորդ մնացորդներից, իսկ `kagami keys`-ը մերժում է արդեն գոյություն ունեցող `./cookbook-recipient`-ը։ Գործարկեք նոր ստեղծված տեղական ցանց և հեռացրեք այդ գրացուցակը, կամ բացարձակ արժեքների փոխարեն համեմատեք մնացորդների փոփոխությունները։ Երբեք Base58 ID-ն մի՛ փոխարինեք սխալ ձևավորված պատահական տողով։
 
 ## Աղբյուրը եւ դրա հետ կապված փաստաթղթերը {#source-and-related-docs}
 
-- [Աշունների կյանքի շրջանի ինտեգրման փորձարկումները փակված commit վրա ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/asset.rs):
-- [Rust ակտիվների կառուցման օրինակներ փակված commit դեպքում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/examples/tutorial.rs)
+- [Աշունների կյանքի շրջանի ինտեգրման փորձարկումները փակված commit վրա ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/asset.rs):
+- [Rust ակտիվների կառուցման օրինակներ փակված commit դեպքում](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/examples/tutorial.rs)
 - [Գործիքներ](/hy/blockchain/assets.md)
 - [հրահանգներ](/hy/blockchain/instructions.md)
 - [Թույլտվության տոքեր](/hy/reference/permissions.md)

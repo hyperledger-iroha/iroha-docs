@@ -1,9 +1,9 @@
 ---
 translation_locale: ka
 translation_source: /cookbook/submit-and-verify-transactions.md
-translation_source_hash: 98e5c7e9db1ba8468cfd5409409b0e8d02251311dc85492f7b71675e983dc4fd
+translation_source_hash: de608ef52ad3a999c0e253e6683e454f8f66f399a690dce4c2185c79d02334cd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # ტრანზაქციების წარდგენა და შემოწმება {#submit-and-verify-transactions}
@@ -14,7 +14,7 @@ translation_engine: nllb-200-ct2
 
 ## წინაპირობები {#prerequisites}
 
-- დაფინანსებული `taira.client.toml`, `taira.tx-metadata.json` და `TAIRA_ACCOUNT_ID`, რომლებიც წარმოებულია [გაერთიანება Taira](./connect-to-taira.md)-ით.
+- [Taira-სთან დაკავშირება](./connect-to-taira.md) გვერდის მიერ შექმნილი დაფინანსებული `taira.client.toml`, `taira-faucet-policy.json` და `TAIRA_ACCOUNT_ID`. ჩაწერები იყენებს `--fee-payer authority`-ს; CLI ხელმოწერამდე იღებს ზუსტი საფასურის შეფასებას Taira-ს საფასურის აქტივში.
 - ამჟამინდელი `iroha` CLI და `jq`.
 - ერთჯერადი Taira კრიპტოგრაფიული ხელმოწერა. არ გამოიყენოთ მისი გასაღები ან ამ ბრძანებებს დაწერეთ Minamoto
 
@@ -22,15 +22,15 @@ translation_engine: nllb-200-ct2
 
 ### 1. API საბოლოო წერტილის, ნებართვის საფასურის და საფასურის ბალანსის წინასწარი გათვალისწინება {#_1-preflight-the-endpoint-authority-and-fee-balance}
 
-წაიკითხეთ რიგის წერტილის დროში მონაცემების ნახვა ჯერ, შემდეგ დაამტკიცეთ, რომ ავტორიზაციის ხელმძღვანელის საფასურის ბალანსი ჩანს. წაიკითხეთ Base58 აქტივის განსაზღვრის ID კავშირის რეცეპტის მიერ წარმოქმნილი მეტამონაცემებიდან.
+ჯერ წაიკითხეთ რიგის მდგომარეობის სნეპშოტი, შემდეგ დაადასტურეთ, რომ უფლებამოსილი ანგარიშის საფასურის ბალანსი ხილვადია. Base58 აქტივის განსაზღვრების ID წაიკითხეთ გამცემის პოლიტიკიდან, რომელიც დაკავშირების რეცეპტმა შეინახა.
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, queue_size, txs_approved, txs_rejected}'
 
-TAIRA_FEE_ASSET="$(jq -er '.gas_asset_id' taira.tx-metadata.json)"
+TAIRA_FEE_ASSET="$(jq -er '.asset_definition_id' taira-faucet-policy.json)"
 
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 iroha --config ./taira.client.toml ledger asset get \
@@ -48,8 +48,7 @@ CLI გზავნის ზუსტ ხელმოწერილი და�
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg 'cookbook-submit-verify' \
+  tx ping --msg 'cookbook-submit-verify' \
   > taira-submission.json
 
 jq '{hash, fee_quote}' taira-submission.json
@@ -60,12 +59,12 @@ TAIRA_TX_HASH="$(jq -er '.hash' taira-submission.json)"
 
 ### 3. დაველოდოთ ტერმინალური დამუშავების კონვეიერის მდგომარეობას {#_3-wait-for-terminal-pipeline-state}
 
-გამოიყენეთ ტიპირებული სტატუსის დამხმარე, იმის ნაცვლად რომ წარმატების დასკვნა HTTP მიღება ან რიგში შესვლა. `--wait`, უსაფრთხო მარშრუტის სფერო ავტომატურად არის შერჩეული და დეფოლტური სამიზნე არის გამოყენებული საბოლოო.
+გამოიყენეთ ტიპიზებული სტატუსის დამხმარე, ნაცვლად იმისა, რომ წარმატება HTTP მიღებიდან ან რიგში დაშვებიდან დაასკვნათ. `--wait`-ით CLI ზუსტ გლობალურ სტატუსს პერიოდულად ითხოვს და წარმატებით სრულდება მხოლოდ მდგომარეობით დადასტურებული `Applied` საბოლოობისას.
 
 ```bash
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction status \
+  tx status \
   --hash "$TAIRA_TX_HASH" \
   --wait \
   --timeout-ms 60000 \
@@ -83,7 +82,7 @@ jq . taira-final-status.json
 ```bash
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction get --hash "$TAIRA_TX_HASH" \
+  tx get --hash "$TAIRA_TX_HASH" \
   > taira-transaction.json
 
 jq . taira-transaction.json
@@ -101,15 +100,17 @@ curl -fsS -H 'Accept: application/json' \
 
 ## შემოწმება {#verify}
 
-შეამოწმეთ, რომ სამივე ჩანაწერი თანხმდება იმავე კრიპტოგრაფიულ ჰეშზე და რომ მკვლევარი აღარ აცხადებს გამოწვეული მდგომარეობის:
+შეამოწმეთ, რომ სამივე ჩანაწერი ერთსა და იმავე ჰეშზე თანხმდება და რომ ბლოკების მიმომხილველი აჩვენებს `Committed`-ს და არა `Rejected`-ს:
 
 ```bash
-test "$(jq -r '.hash' taira-submission.json)" = "$TAIRA_TX_HASH"
+jq -e --arg hash "$TAIRA_TX_HASH" \
+  '.hash == $hash and .terminal_kind == "Applied"' taira-final-status.json
 
 curl -fsS -H 'Accept: application/json' \
   "https://taira.sora.org/v1/explorer/transactions/$TAIRA_TX_HASH" \
   | jq -e --arg hash "$TAIRA_TX_HASH" \
-    '.hash == $hash and .status == "Committed"'
+    '(.hash | ascii_downcase | ltrimstr("hash:") | split("#")[0]) == $hash
+      and .status == "Committed"'
 ```
 
 შეინახეთ წარდგენის ქვითრი და საბოლოო სტატუსი, როგორც ტესტის მტკიცებულება. ისინი შეიცავს საჯარო ტრანზაქციის მასალას, არა ხელმოწერის გასაღებს.
@@ -118,15 +119,15 @@ curl -fsS -H 'Accept: application/json' \
 
 - HTTP `202` ან რიგში მყოფი სტატუსი მხოლოდ დაშვების დამტკიცებას ადასტურებს. განაგრძეთ გამოკითხვა ტიპირებული სტატუსის გამოყენებამდე, უარყოფითი, ამოწურული ან შეზღუდული ვადა.
 - თუ ჩაბარების დრო დასრულდა კრიპტოგრაფიული ჰეშის დაბრუნების შემდეგ, შეკითხვა ამ კრიფტოგრაფიულ ჰეშს კიდევ ერთი ტრანზაქციის შექმნამდე. ბრმა განახლება ქმნის ახალ ციტირებულ და ხელმოწერილ დატვირთვას.
-- საფასურის ფასის შეფასება ხელმოწერამდე შეიძლება უარი თქვას. შეამოწმეთ `--fee-payer authority`, `gas_asset_id`, ავტორიზაციის დამფუძნებლის ბალანსი და ქსელის ჯაჭვის ID.
+- საფასურის შეფასება შეიძლება ხელმოწერამდე უარყოფილ იქნას. შეამოწმეთ `--fee-payer authority`, უფლებამოსილი ანგარიშის ბალანსი, კონფიგურირებული `chain` და `network_id` და ის, რომ `--metadata` არ შეიცავს საფასურის გასაღებს, მაგალითად `gas_asset_id`-ს.
 - `Rejected` ჩვეულებრივ მიუთითებს ინსტრუქციის ვალიდაციას, ნებართვებს, საფასურებს ან მოძველებულ მდგომარეობას. ეს არის საბოლოო მტკიცებულება წარუმატებელი შესრულების შესახებ და არ უნდა გადაეწეროს როგორც ტრანსპორტის ხელახალი მცდელობა.
 - მკვლევარი `404` Applied-ის შემდეგ შეიძლება იყოს ინდექსირების დაგვიანება. გაეცადეთ კითხვა; არ გადაიტანოთ ოპერაცია.
 - თუ პრივილეგირებული ინსტრუქცია მუშაობს გენერირებულ ლოკალურ ქსელში, მაგრამ Taira უარყოფს მას, მიიღეთ ზუსტი Taira ნებართვა ან სახელის სივრცის დანიშვნა. ადგილობრივი შედეგი არ იძლევა საჯარო ბლოკჩეინის ქსელის ავტორიზაციის პრინციპს.
 
 ## წყარო და შესაბამისი დოკუმენტები {#source-and-related-docs}
 
-- [ტრანზაქციის წარდგენა და საფასურის კოტირების განხორციელება ჩაკეტილი წყარო კოდის რევიზიისას](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
-- [ტრანზაქციის დადასტურების განხორციელება და ტესტირება ჩაკეტილი წყარო კოდის რევიზიისას](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/src/client.rs)
+- [ტრანზაქციის წარდგენა და საფასურის კოტირების განხორციელება ჩაკეტილი წყარო კოდის რევიზიისას](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs)
+- [ტრანზაქციის დადასტურების განხორციელება და ტესტირება ჩაკეტილი წყარო კოდის რევიზიისას](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/src/client.rs)
 - [ოპერაციები](/ka/blockchain/transactions.md)
 - [CLI სახელმძღვანელო](/ka/get-started/operate-iroha-via-cli.md)
 - [Torii API საბოლოო ნიშნები](/ka/reference/torii-endpoints.md)

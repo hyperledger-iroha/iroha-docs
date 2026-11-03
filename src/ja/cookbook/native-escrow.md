@@ -1,9 +1,9 @@
 ---
 translation_locale: ja
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 576e03924f19b63681cdfafa641b996672e35a992478fc9eaf5b83f0e7baa6da
+translation_source_hash: d399284a2baec507e4c979c762d6e216d8c3fbc5b4b4fe221b6bbb0049ee9fd9
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # ネイティブ資産エスクロー {#native-asset-escrow}
@@ -15,8 +15,8 @@ translation_engine: bing-translator-llm
 ## 前提条件 {#prerequisites}
 
 - 数値資産の定義と、十分な量を所有しているオープナー/セラー。
-- ステップを提出するすべてのパーティのために、資金提供されたシングルキー I105 クライアントを使用してください。現在の Taira テストネット資金提供サービスの応答に一致する手数料資産を持つ、トランザクション署名アカウント`fee_payment`で支払われるライブインテントを使用してください。ドキュメントから資産IDを埋め込まないでください。
-- 現在の Rust または Python SDK は、Iroha プロトコルの最終化`0010c5a70039eac101a4846499ba9ceaf43eb65c`です。
+- ステップを提出するすべてのパーティのために、資金提供されたシングルキー I105 クライアントを使用してください。手数料資産が現在の Taira フォーセットポリシーで公開されているものと一致する、認可主体払いのライブ `fee_payment` インテントを使用してください。ドキュメントから資産IDを埋め込まないでください。
+- 現在の Rust または Python SDK は、Iroha プロトコルの最終化`c8c872461e92f04325c350cdd952f4276e96f9dc`です。
 - のために JavaScript コンパイラの例、 Node.js ローカル開発環境に組み込まれた24プラス `@iroha/iroha-js` パッケージとそのネイティブ `iroha_js_host`; 従う [JavaScript SDK ソースビルドの設定](/ja/guide/tutorials/javascript.md#build-from-source). ブラウザビルドは提供する必要があります `compilerUrl` ネイティブホストを読み込む代わりに。
 - Taira は資産移転およびエスクローの指示を承認しなければなりません。資産所有者は、資産ポリシーが許可する場合、通常のライフサイクルを使用することができます；解決策は紛争にはグローバル`CanResolveEscrowDispute`の権限が必要です。必要なパブリックブロックチェーンネットワークの認可主体がない場合は、生成されたローカルネットワークを使用してください。
 
@@ -31,7 +31,7 @@ translation_engine: bing-translator-llm
 ```rust
 use eyre::{Result, ensure};
 use iroha::{
-    client::Client,
+    blocking::Client,
     data_model::{
         isi::escrow::{
             AcceptAssetEscrow, MarkEscrowPaymentSent, OpenAssetEscrow,
@@ -51,7 +51,7 @@ fn complete_marketplace_escrow(
 ) -> Result<AssetEscrowRecord> {
     let fee = FeePaymentIntent::authority(Vec::new(), None);
 
-    seller.submit_blocking(
+    seller.submit(
         OpenAssetEscrow::with_evidence_hashes(
             escrow_id,
             asset_definition,
@@ -60,11 +60,13 @@ fn complete_marketplace_escrow(
         ),
         fee.clone(),
     )?;
-    buyer.submit_blocking(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
-    buyer.submit_blocking(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
-    seller.submit_blocking(ReleaseAssetEscrow::new(escrow_id), fee)?;
+    buyer.submit(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
+    buyer.submit(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
+    seller.submit(ReleaseAssetEscrow::new(escrow_id), fee)?;
 
-    let record = seller.query_single(FindAssetEscrowById::new(escrow_id))?;
+    let record = seller
+        .client()
+        .query_single(FindAssetEscrowById::new(escrow_id))?;
     ensure!(record.status == AssetEscrowStatus::Released);
     Ok(record)
 }
@@ -74,7 +76,7 @@ fn complete_marketplace_escrow(
 
 ### 2. Python で一般的なロックを開けて部分的に描く {#_2-open-and-partially-draw-a-generic-lock-with-python}
 
-引き出す前に、リリース承認の担当者は署名済みの元の記録を照会します。その正確な`remaining_amount`を渡すことで楽観的同時実行が提供され、古い並列リクエストは却下され、保管を二重に引き落とすことが防止されます。
+引き出す前に、リリース承認の担当者は署名済みのネイティブ記録を照会します。その正確な`remaining_amount`を渡すことで楽観的同時実行が提供され、古い並列リクエストは却下され、保管を二重に引き落とすことが防止されます。`client` は、`local_signing_context=LocalSigningContext(network_id)` とネットワークの `chain_discriminant` を指定して作成した `ToriiClient` です。トランザクションヘルパーはそのコンテキストからネットワーク識別情報を取得し、署名付きクエリはそれを `network_id` として受け取ります。
 
 ```python
 import secrets
@@ -92,7 +94,6 @@ def escrow_status(record):
 def open_and_draw_lock(
     *,
     client,
-    chain_id,
     opener,
     opener_private_key,
     release_authority,
@@ -102,9 +103,9 @@ def open_and_draw_lock(
     fee_payment,
 ):
     escrow_id = f"cookbook_lock_{secrets.token_hex(12)}"
+    network_id = client.local_signing_context.network_id
 
     client.open_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=opener,
         private_key=opener_private_key,
         fee_payment=fee_payment,
@@ -120,10 +121,10 @@ def open_and_draw_lock(
     before = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
     client.drawdown_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=release_authority,
         private_key=release_private_key,
         fee_payment=fee_payment,
@@ -135,6 +136,7 @@ def open_and_draw_lock(
     after = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
 
@@ -150,8 +152,10 @@ Python SDK は `expected_remaining_amount` が省略されたときに自動的�
 〜のために Rust フローをロックすると、現在のコンストラクターでも観測された量が必要です:
 
 ```rust
-let before = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-release_authority.submit_blocking(
+let before = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+release_authority.submit(
     DrawdownAssetLock::new(
         lock_id,
         Quantity::from(4_u64),
@@ -160,23 +164,26 @@ release_authority.submit_blocking(
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 
-let current = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-opener.submit_blocking(
+let current = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+opener.submit(
     CancelAssetLock::new(lock_id, current.remaining_amount),
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 ```
 
-`DrawdownAssetLock::new` は三つの値を取ります。`CancelAssetLock::new` は二つの値を取ります。期待される残りの量を省略することは、古く、安全でない技術的呼び出し形状を示しています。
+`DrawdownAssetLock::new` はロック、金額、および観測された残額を取ります。`CancelAssetLock::new` はロックと観測された残額を取ります。残額が先に変化していた場合、台帳はどちらの命令も拒否します。
 
 ### 3. JavaScript から Kotodama エスクロー表面をコンパイルする {#_3-compile-the-kotodama-escrow-surface-from-javascript}
 
-JavaScript は型のないネイティブ命令を発明する必要はありません。現在のコンパイラはブロックチェーン台帳のエスクロービルトインを Kotodama に公開しており、その後のデプロイメントおよび技術的な呼び出しは [スマートコントラクトを構築してデプロイする](./smart-contracts.md) に従います。
+JavaScript は型のないネイティブ命令を発明する必要はありません。現在のコンパイラはブロックチェーン台帳のエスクロービルトインを Kotodama に公開しており、その後のデプロイメントは [スマートコントラクトを構築してデプロイする](./smart-contracts.md) に従います。`open_offer` エントリポイントは `authorize(Admin)` であるため、実行者は呼び出し元に対し、デプロイされたアドレスと `permission: "Admin"` を対象とする `CanUseContractPermission` を保持していることを要求します。
 
 これを `native_escrow.ko` として保存してください:
 
 ```kotodama
 seiyaku NativeEscrowAitai {
+    permission Admin;
     error enum EscrowError {
         NonPositiveAmount = 1,
     }
@@ -185,7 +192,7 @@ seiyaku NativeEscrowAitai {
         Name offer,
         AssetDefinitionId asset_definition,
         quantity amount
-    ) authorize("Admin") {
+    ) authorize(Admin) {
         require(amount > 0, EscrowError::NonPositiveAmount);
         ledger::escrow::open_offer(
             offer: offer,
@@ -230,6 +237,7 @@ node ./compile-native-escrow.mjs
 record = client.get_asset_escrow(
     escrow_id=escrow_id,
     authority=release_authority,
+    network_id=client.local_signing_context.network_id,
     private_key=release_private_key,
 )
 assert escrow_status(record) == "Locked"
@@ -241,7 +249,7 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 ## トラブルシューティング {#troubleshooting}
 
 - `Not permitted` を開く際は、通常、認可主体が選択した資産をカストディに移管できないことを意味します。紛争解決は、別のグローバルな `CanResolveEscrowDispute` ゲートを持っています。
-- `expected remaining amount` 拒否は楽観的同時実行の競合です。レコードを再クエリし、他の引き出し/キャンセルが意図されたものであるかどうかを判断し、新しい状態が受け入れ可能な場合にのみ新しい指示に署名してください。
+- `asset lock remaining amount changed since the drawdown was prepared`（または `...since the cancellation was prepared`）は楽観的同時実行の競合です。レコードを再クエリし、他の引き出し/キャンセルが意図されたものであるかどうかを判断し、新しい状態が受け入れ可能な場合にのみ新しい指示に署名してください。
 - 設定されたリリース承認主体のみが信頼されたロックを引き出すことができます。宛先は資金を受け取るだけではそれを解放できません。
 - マーケットプレイスでのリリースは、承認および支払い送信状態の後にのみ有効です。キャンセルは、より早いライフサイクルの状態に限定されます。
 - 有効期限は権威あるブロックチェーン台帳の時間を使用します。ローカルシステムの時計のタイムアウトを、`ExpireAssetLock`が通過する証拠として扱わないでください。
@@ -249,10 +257,10 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## ソースおよび関連文書 {#source-and-related-docs}
 
-- [固定されたソースコードリビジョンでのネイティブエスクロー指示モデル](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
-- [固定されたソースコードのリビジョンでのネイティブエスクロー統合テスト](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
-- [Python ピン留めされたソースコードのリビジョンでのエスクロークライアントメソッド](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama ピン留めされたソースコードのリビジョンでのネイティブエスクローサンプル](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [固定されたソースコードリビジョンでのネイティブエスクロー指示モデル](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/isi/escrow.rs)
+- [固定されたソースコードのリビジョンでのネイティブエスクロー統合テスト](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/native_escrow.rs)
+- [Python ピン留めされたソースコードのリビジョンでのエスクロークライアントメソッド](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama ピン留めされたソースコードのリビジョンでのネイティブエスクローサンプル](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [ネイティブ資産エスクロー](/ja/blockchain/escrow.md)
 - [代替可能な資産](./fungible-assets.md)
 - [権限と役割](./permissions-and-roles.md)

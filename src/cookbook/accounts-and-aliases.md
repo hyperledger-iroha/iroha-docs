@@ -20,16 +20,20 @@ without confusing routing context with identity.
 ### 1. Inspect canonical accounts on Taira
 
 The public account list always returns canonical I105 IDs. A primary alias
-is optional and is reported separately.
+is optional; request the `aliases` field to see it.
 
 ```bash
-curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+curl -fsS -H 'Accept: application/json' --get \
+  https://taira.sora.org/v1/accounts \
+  --data-urlencode 'limit=5' \
+  --data-urlencode 'select=id,aliases' \
+  | jq -r '.items[]
+    | [.id, (first(.aliases[]? | select(.is_primary) | .alias) // "-")]
+    | @tsv'
 ```
 
 An ID from `.id` is valid for strict account fields. Do not append a domain
-to it. An alias from `.primary_alias` is a user-facing lookup key, not
+to it. An alias from `.aliases[].alias` is a user-facing lookup key, not
 another canonical identity.
 
 ### 2. Derive and normalize your Taira I105 ID
@@ -56,8 +60,8 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID" \
 ```
 
 The normalized value should be identical to `TAIRA_ACCOUNT_ID`. The
-`[account].domain` setting in the TOML file can be `wonderland.universal`,
-but that value affects routing and alias context only.
+`[account].profile` setting selects only the I105 network prefix; domains
+belong to aliases, never to the account ID.
 
 ### 3. Read the account and its assets
 
@@ -65,7 +69,7 @@ After the account is provisioned, query it directly and list a bounded
 asset page. URL-encode the I105 value before using it in a path.
 
 ```bash
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 ENCODED_ACCOUNT_ID="$(
@@ -74,7 +78,7 @@ ENCODED_ACCOUNT_ID="$(
 )"
 
 curl -fsS -H 'Accept: application/json' \
-  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10" \
+  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10&include_total=true" \
   | jq '{total, items}'
 ```
 
@@ -123,7 +127,7 @@ fi
 The Taira faucet can provision its claimant account, but that does not
 grant general account-registration or alias-management authority.
 Registering another account requires `CanRegisterAccount` under the active
-validator. Account aliases normally also require an active SNS lease and
+executor. Account aliases normally also require an active SNS lease and
 the appropriate alias permissions. Use the governed onboarding/alias
 planner, or rehearse registration against the generated local network.
 
@@ -136,9 +140,9 @@ new canonical `NEW_ACCOUNT_ID`, the registration surface is:
 iroha --config ./localnet/client.toml \
   --machine \
   --fee-payer authority \
-  ledger account register --id "$NEW_ACCOUNT_ID"
+  account register --id "$NEW_ACCOUNT_ID"
 
-iroha --config ./localnet/client.toml ledger account get \
+iroha --config ./localnet/client.toml account get \
   --id "$NEW_ACCOUNT_ID"
 ```
 
@@ -187,8 +191,10 @@ Retain the canonical account ID used for the operation.
 
 ## Source and related docs
 
-- [Canonical account address implementation at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
-- [Account and alias Torii tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
+- [Canonical account address implementation at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/account/address.rs)
+- [Account endpoint Torii smoke tests](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/tests/accounts_endpoints.rs)
+  and [alias route tests](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/tests/lib_tests/part_2.rs)
+  at the pinned commit
 - [Accounts](/blockchain/accounts.md)
 - [Data-model aliases](/blockchain/data-model.md#aliases)
 - [Naming conventions](/reference/naming.md)

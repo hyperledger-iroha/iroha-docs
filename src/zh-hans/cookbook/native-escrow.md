@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hans
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 576e03924f19b63681cdfafa641b996672e35a992478fc9eaf5b83f0e7baa6da
+translation_source_hash: d399284a2baec507e4c979c762d6e216d8c3fbc5b4b4fe221b6bbb0049ee9fd9
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # 产业资产保证 {#native-asset-escrow}
@@ -15,8 +15,8 @@ translation_engine: nllb-200-ct2
 ## 预先条件 {#prerequisites}
 
 - 数字资产定义和拥有足够数量的开放者/卖方.
-- 提供资金,单钥匙 I105 每个提交步骤的客户.使用现场授权付费 `fee_payment` 目的,其费用资产与当前相匹配 Taira 管响应;不嵌入资产 ID 根据文件.
-- Rust 或 Python SDK 的电流从 Iroha 提交 `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
+- 为每个提交步骤的参与方准备已注资的单密钥 I105 客户端。使用实时的、由授权主体付费的 `fee_payment` 意图，其费用资产须与当前 Taira 水龙头政策公布的费用资产相符；不要嵌入文档中的资产 ID。
+- Rust 或 Python SDK 的电流从 Iroha 提交 `c8c872461e92f04325c350cdd952f4276e96f9dc`.
 - 对于 JavaScript 编译器的例子,Node.js 24加上本地构建的 `@iroha/iroha-js`包及其原生 `iroha_js_host`;遵循[JavaScript SDK 源构建设置](/zh-hans/guide/tutorials/javascript.md#build-from-source).浏览器构建必须提供 `compilerUrl`而不是加载原生主机.
 - Taira 必须承认资产转让和保证指令.资产所有者可以使用其资产政策允许的普通生命周期;解决争端需要全球的 `CanResolveEscrowDispute`许可.在缺席必要的公共网络授权主体时,使用生成的本地网络.
 
@@ -31,7 +31,7 @@ translation_engine: nllb-200-ct2
 ```rust
 use eyre::{Result, ensure};
 use iroha::{
-    client::Client,
+    blocking::Client,
     data_model::{
         isi::escrow::{
             AcceptAssetEscrow, MarkEscrowPaymentSent, OpenAssetEscrow,
@@ -51,7 +51,7 @@ fn complete_marketplace_escrow(
 ) -> Result<AssetEscrowRecord> {
     let fee = FeePaymentIntent::authority(Vec::new(), None);
 
-    seller.submit_blocking(
+    seller.submit(
         OpenAssetEscrow::with_evidence_hashes(
             escrow_id,
             asset_definition,
@@ -60,11 +60,13 @@ fn complete_marketplace_escrow(
         ),
         fee.clone(),
     )?;
-    buyer.submit_blocking(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
-    buyer.submit_blocking(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
-    seller.submit_blocking(ReleaseAssetEscrow::new(escrow_id), fee)?;
+    buyer.submit(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
+    buyer.submit(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
+    seller.submit(ReleaseAssetEscrow::new(escrow_id), fee)?;
 
-    let record = seller.query_single(FindAssetEscrowById::new(escrow_id))?;
+    let record = seller
+        .client()
+        .query_single(FindAssetEscrowById::new(escrow_id))?;
     ensure!(record.status == AssetEscrowStatus::Released);
     Ok(record)
 }
@@ -74,7 +76,7 @@ fn complete_marketplace_escrow(
 
 ### 2. 用 Python 打开并部分绘制通用锁. {#_2-open-and-partially-draw-a-generic-lock-with-python}
 
-发放机构在撤销之前查询已签署的原始记录.通过确切的 `remaining_amount`提供了乐观的同步性:一个陈旧的并行请求被拒绝,而不是两次扣除保证权.
+释放授权主体在提取之前会查询已签名的原生记录。传入该确切的 `remaining_amount` 可提供乐观并发控制：过时的并行请求会被拒绝，而不是重复扣减托管资产。`client` 是一个以 `local_signing_context=LocalSigningContext(network_id)` 和该网络的 `chain_discriminant` 创建的 `ToriiClient`；交易辅助函数从该上下文获取网络身份，而已签名的查询则以 `network_id` 参数接收它。
 
 ```python
 import secrets
@@ -92,7 +94,6 @@ def escrow_status(record):
 def open_and_draw_lock(
     *,
     client,
-    chain_id,
     opener,
     opener_private_key,
     release_authority,
@@ -102,9 +103,9 @@ def open_and_draw_lock(
     fee_payment,
 ):
     escrow_id = f"cookbook_lock_{secrets.token_hex(12)}"
+    network_id = client.local_signing_context.network_id
 
     client.open_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=opener,
         private_key=opener_private_key,
         fee_payment=fee_payment,
@@ -120,10 +121,10 @@ def open_and_draw_lock(
     before = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
     client.drawdown_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=release_authority,
         private_key=release_private_key,
         fee_payment=fee_payment,
@@ -135,6 +136,7 @@ def open_and_draw_lock(
     after = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
 
@@ -150,8 +152,10 @@ def open_and_draw_lock(
 对于 Rust 锁流,电流构造器还需要观察到的数量:
 
 ```rust
-let before = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-release_authority.submit_blocking(
+let before = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+release_authority.submit(
     DrawdownAssetLock::new(
         lock_id,
         Quantity::from(4_u64),
@@ -160,23 +164,26 @@ release_authority.submit_blocking(
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 
-let current = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-opener.submit_blocking(
+let current = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+opener.submit(
     CancelAssetLock::new(lock_id, current.remaining_amount),
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 ```
 
-`DrawdownAssetLock::new`取三个值; `CancelAssetLock::new`取两个. 省略预期剩余数量描述了一个较旧的,不安全的呼叫形式.
+`DrawdownAssetLock::new` 接受锁、金额和观察到的剩余金额；`CancelAssetLock::new` 接受锁和观察到的剩余金额。如果剩余金额先行变更，账本会拒绝其中任一指令。
 
 ### 3. 从 JavaScript 编译 Kotodama 托管表面. {#_3-compile-the-kotodama-escrow-surface-from-javascript}
 
-JavaScript 无需自行构造无类型的原生指令。当前编译器向 Kotodama 公开账本托管内置函数；部署和调用随后遵循[构建并部署智能合约](./smart-contracts.md)。
+JavaScript 无需自行构造无类型的原生指令。当前编译器向 Kotodama 公开账本托管内置函数；部署随后遵循[构建并部署智能合约](./smart-contracts.md)。`open_offer` 入口点是 `authorize(Admin)`，因此执行器要求其调用者持有针对已部署地址和 `permission: "Admin"` 的 `CanUseContractPermission`。
 
 保存为 `native_escrow.ko`:
 
 ```kotodama
 seiyaku NativeEscrowAitai {
+    permission Admin;
     error enum EscrowError {
         NonPositiveAmount = 1,
     }
@@ -185,7 +192,7 @@ seiyaku NativeEscrowAitai {
         Name offer,
         AssetDefinitionId asset_definition,
         quantity amount
-    ) authorize("Admin") {
+    ) authorize(Admin) {
         require(amount > 0, EscrowError::NonPositiveAmount);
         ledger::escrow::open_offer(
             offer: offer,
@@ -230,6 +237,7 @@ node ./compile-native-escrow.mjs
 record = client.get_asset_escrow(
     escrow_id=escrow_id,
     authority=release_authority,
+    network_id=client.local_signing_context.network_id,
     private_key=release_private_key,
 )
 assert escrow_status(record) == "Locked"
@@ -241,7 +249,7 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 ## 解决问题 {#troubleshooting}
 
 - `Not permitted`在开放时通常意味着该机构无法将选定的资产转移到保管中.争端解决有单独的全球 `CanResolveEscrowDispute`门口.
-- `expected remaining amount`拒绝是乐观与竞争的冲突.重新查询记录,决定是否打算另一个撤销/取消,并且只签署新指示,如果新的状态是可接受的.
+- `asset lock remaining amount changed since the drawdown was prepared`（或 `...since the cancellation was prepared`）是乐观并发冲突。请重新查询记录，判断另一个提取/取消是否为预期操作，并仅在新状态可接受时签名新指令。
 - 只有配置的释放授权主体才能绘制一个值得信赖的锁.目的地不能仅仅因为它将收到资金而释放.
 - 市场发布仅在接受和支付发送状态后才有效;取消限于更早的生命周期状态.
 - 截止日期使用权威的账本时间. 不要把当地的墙钟截止时间视为证明`ExpireAssetLock`将通过.
@@ -249,10 +257,10 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## 来源及相关文件 {#source-and-related-docs}
 
-- [在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)上,本地保证指令模型
-- [在固定的提交中进行本地保证券整合测试](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
-- [Python 托管客户的方法在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama 本地保证券样本在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [在固定提交](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/isi/escrow.rs)上,本地保证指令模型
+- [在固定的提交中进行本地保证券整合测试](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/native_escrow.rs)
+- [Python 托管客户的方法在固定提交](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama 本地保证券样本在固定提交](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [原生资产托管](/zh-hans/blockchain/escrow.md)
 - [性资产](./fungible-assets.md)
 - [许可证和角色](./permissions-and-roles.md)

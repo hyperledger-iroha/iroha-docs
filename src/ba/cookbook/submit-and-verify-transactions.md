@@ -1,9 +1,9 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/submit-and-verify-transactions.md
-translation_source_hash: 98e5c7e9db1ba8468cfd5409409b0e8d02251311dc85492f7b71675e983dc4fd
+translation_source_hash: de608ef52ad3a999c0e253e6683e454f8f66f399a690dce4c2185c79d02334cd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Транзакцияларҙы тапшырыу һәм тикшереү {#submit-and-verify-transactions}
@@ -14,7 +14,7 @@ Taira транзакцияһын алдан үтәгеҙ, аныҡ түләү к
 
 ## Шарттар {#prerequisites}
 
-- [ тарафынан сығарылған финансланған `taira.client.toml`, `taira.tx-metadata.json` һәм `TAIRA_ACCOUNT_ID` Taira](./connect-to-taira.md) менән бәйләнгән.
+- [Taira-ға тоташыу](./connect-to-taira.md) рецепты булдырған финансланған `taira.client.toml`, `taira-faucet-policy.json` һәм `TAIRA_ACCOUNT_ID`. Яҙыуҙар `--fee-payer authority` ҡуллана; CLI ҡул ҡуйыр алдынан теүәл комиссияны Taira-ның түләү активында иҫәпләп күрһәтә.
 - `iroha` CLI һәм `jq` ток.
 - Taira ҡултамғаһын бер тапҡыр ҡулланыу. уның асҡысын йәки был бойороҡтарҙы Minamoto ҡа яҙырға ярамай.
 
@@ -22,15 +22,15 @@ Taira транзакцияһын алдан үтәгеҙ, аныҡ түләү к
 
 ### 1. Аҡсаны, хоҡуҡты һәм түләүҙәрҙе алдан билдәләгеҙ {#_1-preflight-the-endpoint-authority-and-fee-balance}
 
-Тәүҙә сираттың ағымдағы снимогын уҡығыҙ, шунан вәкәләтле иҫәптең комиссия балансы күренгәнен раҫлағыҙ. Бәйләнеш рецепты булдырған метамәғлүмәттәрҙән Base58 форматындағы актив билдәләмәһе ID-һын уҡығыҙ.
+Тәүҙә сираттың ағымдағы снимогын уҡығыҙ, шунан вәкәләтле иҫәптең комиссия балансы күренгәнен раҫлағыҙ. Base58 форматындағы актив билдәләмәһе ID-һын тоташыу рецепты һаҡлаған faucet сәйәсәтенән уҡығыҙ.
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, queue_size, txs_approved, txs_rejected}'
 
-TAIRA_FEE_ASSET="$(jq -er '.gas_asset_id' taira.tx-metadata.json)"
+TAIRA_FEE_ASSET="$(jq -er '.asset_definition_id' taira-faucet-policy.json)"
 
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 iroha --config ./taira.client.toml ledger asset get \
@@ -48,8 +48,7 @@ CLI түләү ставкаһы өсөн теүәл ҡултамғаланмағ
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg 'cookbook-submit-verify' \
+  tx ping --msg 'cookbook-submit-verify' \
   > taira-submission.json
 
 jq '{hash, fee_quote}' taira-submission.json
@@ -60,12 +59,12 @@ TAIRA_TX_HASH="$(jq -er '.hash' taira-submission.json)"
 
 ### 3. Терминал pipeline торошон көтөп {#_3-wait-for-terminal-pipeline-state}
 
-HTTP ҡабул итеүҙән йәки сиратҡа инеүҙән уңыш алыу урынына типләнгән статус ярҙамсыһын ҡулланығыҙ. `--wait` ярҙамында хәүефһеҙ маршрутлау диапазоны автоматты рәүештә һайлана һәм алдан билдәләнгән маҡсат - Ҡулланылған һуңғыһы.
+Уңышты HTTP ҡабул итеүенән йәки сиратҡа инеүҙән сығарыу урынына типлы статус ярҙамсыһын ҡулланығыҙ. `--wait` менән CLI теүәл глобаль статусты даими һорап тора һәм тик реестр торошо буйынса раҫланған `Applied` һуңғы торошонда ғына уңышлы тамамлана.
 
 ```bash
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction status \
+  tx status \
   --hash "$TAIRA_TX_HASH" \
   --wait \
   --timeout-ms 60000 \
@@ -83,7 +82,7 @@ jq . taira-final-status.json
 ```bash
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction get --hash "$TAIRA_TX_HASH" \
+  tx get --hash "$TAIRA_TX_HASH" \
   > taira-transaction.json
 
 jq . taira-transaction.json
@@ -101,15 +100,17 @@ curl -fsS -H 'Accept: application/json' \
 
 ## Тикшереү {#verify}
 
-Өс record-тың да бер үк hash буйынса килешеүен һәм explorer-ҙың pending state тураһында бүтән хәбәр итмәүен тикшерегеҙ:
+Өс яҙманың да бер үк хеш буйынса тап килеүен һәм тикшереүсенең (explorer) `Rejected` түгел, ә `Committed` хәбәр итеүен тикшерегеҙ:
 
 ```bash
-test "$(jq -r '.hash' taira-submission.json)" = "$TAIRA_TX_HASH"
+jq -e --arg hash "$TAIRA_TX_HASH" \
+  '.hash == $hash and .terminal_kind == "Applied"' taira-final-status.json
 
 curl -fsS -H 'Accept: application/json' \
   "https://taira.sora.org/v1/explorer/transactions/$TAIRA_TX_HASH" \
   | jq -e --arg hash "$TAIRA_TX_HASH" \
-    '.hash == $hash and .status == "Committed"'
+    '(.hash | ascii_downcase | ltrimstr("hash:") | split("#")[0]) == $hash
+      and .status == "Committed"'
 ```
 
 Һынау раҫлау сифатында тапшырыу квитанцияһын һәм һуңғы статусын һаҡлағыҙ. Уларҙа ҡултамғалау асҡысы түгел, ә асыҡ транзакция материалдары бар.
@@ -118,15 +119,15 @@ curl -fsS -H 'Accept: application/json' \
 
 - HTTP `202` йәки сираттағы статус ҡабул итеүҙе генә иҫбатлай. Ҡулланылған, кире ҡағылған, тамамланған йәки сикләнгән ваҡытҡа тиклем тип ҡуйылған статус буйынса һорау алыуҙы дауам итегеҙ.
 - Әгәр тапшырыу ваҡыты бер хэш ҡайтарғандан һуң, был хэште башҡа транзакция төҙөү алдынан һорағыҙ. Һуҡыр ҡабаттан ебәреү яңы комиссия иҫәбе һәм ҡул ҡуйылған файҙалы йөкләмә булдыра.
-- Ҡул ҡуйылғанға тиклем түләүҙе кире ҡағыу мөмкин. `--fee-payer authority`, `gas_asset_id`, вәкәләтле иҫәптең балансы һәм селтәр сылбыры ID тикшерелеү.
+- Комиссия иҫәбе ҡул ҡуйылғанға тиклем үк кире ҡағылырға мөмкин. `--fee-payer authority`, вәкәләтле иҫәптең балансын, көйләнгән `chain` һәм `network_id` ҡиммәттәрен тикшерегеҙ, шулай уҡ `--metadata` эсендә `gas_asset_id` кеүек комиссия асҡысы булмауына инанығыҙ.
 - `Rejected` ғәҙәттә инструкцияларҙы раҫлау, рөхсәттәр, түләүҙәр йәки иҫкергән хәлдә күрһәтелә. Ул уңышһыҙ үтәлеүҙең ышаныслы дәлилдәре булып тора һәм транспортты ҡабаттан һынау тип үҙгәртергә тейеш түгел.
 - Тикшереүсе `404` шунда уҡ ҡулланылғандан һуң индексация лаг. ҡабаттан уҡырға тырышығыҙ; транзакцияны яңынан тапшырмағыҙ.
 - Әгәр privileged instruction generated localnet-та эшләй, әммә Taira уны кире ҡаға икән, тап Taira permission-ын йәки governed namespace assignment-ты алығыҙ. Урындағы һөҙөмтә public-network authority бирмәй.
 
 ## Сығанаҡ һәм уның менән бәйле документтар {#source-and-related-docs}
 
-- [Транзакция тапшырыу һәм түләү квотаһын ғәмәлгә ашырыу билдәләнгән commit буйынса](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
-- [Транзакцияларҙы раҫлау һынауҙары ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/src/client.rs)
+- [Транзакция тапшырыу һәм түләү квотаһын ғәмәлгә ашырыу билдәләнгән commit буйынса](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs)
+- [Транзакцияларҙы раҫлау һынауҙары ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/src/client.rs)
 - [Транзакциялар](/ba/blockchain/transactions.md)
 - [CLI күрһәтмәһе](/ba/get-started/operate-iroha-via-cli.md)
 - [Torii сикләү пункттары](/ba/reference/torii-endpoints.md)

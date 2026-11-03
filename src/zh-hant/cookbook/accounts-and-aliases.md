@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hant
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
+translation_source_hash: c1aee0c29332bd7c883500e72a1ec7812aebfca13b673e6681788cf4bc5ecbf1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # 帳戶和姓名 {#accounts-and-aliases}
@@ -22,15 +22,19 @@ translation_engine: nllb-200-ct2
 
 ### 1. 檢查 Taira 的規範帳戶 {#_1-inspect-canonical-accounts-on-taira}
 
-公開帳戶列表總是返回正文號 I105 IDs.主要別名是可選的,並單獨報告.
+公開帳戶列表總是返回規範的 I105 ID。主要別名是可選的；如需查看，請在請求中包含 `aliases` 欄位。
 
 ```bash
-curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+curl -fsS -H 'Accept: application/json' --get \
+  https://taira.sora.org/v1/accounts \
+  --data-urlencode 'limit=5' \
+  --data-urlencode 'select=id,aliases' \
+  | jq -r '.items[]
+    | [.id, (first(.aliases[]? | select(.is_primary) | .alias) // "-")]
+    | @tsv'
 ```
 
-ID 從 `.id` 適用於嚴格的帳戶欄位.不要新增一個域名. `.primary_alias` 的別名是面向使用者的搜尋金鑰,而不是另一種正義身份.
+ID 從 `.id` 適用於嚴格的帳戶欄位.不要新增一個域名. `.aliases[].alias` 的別名是面向使用者的搜尋金鑰,而不是另一種正義身份.
 
 ### 2. 匯出和正常化您的 Taira I105 ID {#_2-derive-and-normalize-your-taira-i105-id}
 
@@ -53,14 +57,14 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID" \
   | iroha tools address normalize --profile taira
 ```
 
-規範值應與 `TAIRA_ACCOUNT_ID`相同. TOML 檔案中的`[account].domain`設定可以是 `wonderland.universal`,但該值隻影響路由和別名文字.
+正規化後的值應與 `TAIRA_ACCOUNT_ID` 相同。`[account].profile` 設定只選擇 I105 網路前綴；域名屬於別名，絕不屬於帳戶 ID。
 
 ### 3. 閱讀帳戶及其資產 {#_3-read-the-account-and-its-assets}
 
 在帳戶提供後,直接查詢它並列出一個有界限的資產頁面. URL -在使用其在路徑之前加密 I105 值.
 
 ```bash
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 ENCODED_ACCOUNT_ID="$(
@@ -69,7 +73,7 @@ ENCODED_ACCOUNT_ID="$(
 )"
 
 curl -fsS -H 'Accept: application/json' \
-  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10" \
+  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10&include_total=true" \
   | jq '{total, items}'
 ```
 
@@ -111,7 +115,7 @@ fi
 
 ::: warning 許可範圍
 
-Taira 水龍頭可以提供其申請人帳戶,但這不授予一般帳戶註冊或稱管理權. 註冊另一個帳戶需要在活躍的驗證器下進行`CanRegisterAccount`.帳戶密碼通常還需要活躍的 SNS 租合同和適當的密碼許可. 使用管理的登入/密碼規劃器,或對生成的本地網路進行註冊練習.
+Taira 水龍頭可以為其申請者帳戶完成開通，但這並不會授予一般的帳戶註冊或別名管理權限。註冊另一個帳戶需要在目前生效的執行器下持有 `CanRegisterAccount`。帳戶別名通常還需要有效的 SNS 租約和相應的別名許可權。請使用受治理的開戶/別名規劃工具，或在生成的本地網路上演練註冊。
 
 :::
 
@@ -121,9 +125,9 @@ Taira 水龍頭可以提供其申請人帳戶,但這不授予一般帳戶註冊�
 iroha --config ./localnet/client.toml \
   --machine \
   --fee-payer authority \
-  ledger account register --id "$NEW_ACCOUNT_ID"
+  account register --id "$NEW_ACCOUNT_ID"
 
-iroha --config ./localnet/client.toml ledger account get \
+iroha --config ./localnet/client.toml account get \
   --id "$NEW_ACCOUNT_ID"
 ```
 
@@ -158,8 +162,8 @@ fi
 
 ## 來源及相關檔案 {#source-and-related-docs}
 
-- [在固定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)中實現可尼卡帳戶地址
-- [帳戶和別名 Torii 在固定定位的測試](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
+- [在固定提交](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/account/address.rs)中實現可尼卡帳戶地址
+- 固定提交中的[帳戶端點 Torii 冒煙測試](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/tests/accounts_endpoints.rs)與[別名路由測試](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/tests/lib_tests/part_2.rs)
 - [帳戶](/zh-hant/blockchain/accounts.md)
 - [資料模型別名](/zh-hant/blockchain/data-model.md#aliases)
 - [命名公約](/zh-hant/reference/naming.md)

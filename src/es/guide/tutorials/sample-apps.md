@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 4979ab2c52eba4040d7f003f3da73dbc333fa7e047b0259816d0d34f97377749
+translation_source_hash: c1432d8d2483f67b6ab81680f6c5457cab470db7944512626242a1446a7d501f
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -12,7 +12,7 @@ El repositorio de origen Iroha contiene SDK recetas y conjuntos de pruebas que r
 
 ## JavaScript Recetas {#javascript-recipes}
 
-[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes) contiene ejemplos enfocados para la agrupación determinista de transacciones, Nexus transferencias de aplicaciones, NFT y iteración de cuentas, ISO flujos de puente, y Torii transmisión. Cada receta documenta si funciona sin conexión o necesita estar en vivo Torii API punto final.
+[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes) contiene ejemplos enfocados para la agrupación determinista de transacciones, Nexus transferencias de aplicaciones, NFT y iteración de cuentas, ISO flujos de puente, y Torii transmisión. Cada receta documenta si funciona sin conexión o necesita estar en vivo Torii API punto final.
 
 ## Swift y iOS {#swift-and-ios}
 

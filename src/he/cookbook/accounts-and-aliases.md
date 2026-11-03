@@ -1,9 +1,9 @@
 ---
 translation_locale: he
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
+translation_source_hash: c1aee0c29332bd7c883500e72a1ec7812aebfca13b673e6681788cf4bc5ecbf1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # חשבונות ושמות {#accounts-and-aliases}
@@ -22,15 +22,19 @@ translation_engine: nllb-200-ct2
 
 ### 1. לבחון חשבונות קנוניים על Taira {#_1-inspect-canonical-accounts-on-taira}
 
-רשימת החשבונות הציבוריים תמיד מספקת את הקנוניקה I105 IDs. שם זיהוי ראשוני הוא בחופשי ומוצג בנפרד.
+רשימת החשבונות הציבורית מחזירה תמיד מזהי I105 קנוניים. כינוי ראשי הוא אופציונלי; בקשו את השדה `aliases` כדי לראות אותו.
 
 ```bash
-curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+curl -fsS -H 'Accept: application/json' --get \
+  https://taira.sora.org/v1/accounts \
+  --data-urlencode 'limit=5' \
+  --data-urlencode 'select=id,aliases' \
+  | jq -r '.items[]
+    | [.id, (first(.aliases[]? | select(.is_primary) | .alias) // "-")]
+    | @tsv'
 ```
 
-ID מ- `.id` הוא נכון עבור שדות חשבונות קפדניים. אל תוסיף לו דומיין. שם כינוי מ- `.primary_alias` הוא מפתח חיפוש פונה למשתמש, לא זהות קנוניקה אחרת.
+ID מ- `.id` הוא נכון עבור שדות חשבונות קפדניים. אל תוסיף לו דומיין. שם כינוי מ- `.aliases[].alias` הוא מפתח חיפוש פונה למשתמש, לא זהות קנוניקה אחרת.
 
 ### 2. להוציא ולנורמליז את Taira I105 ID שלך {#_2-derive-and-normalize-your-taira-i105-id}
 
@@ -53,14 +57,14 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID" \
   | iroha tools address normalize --profile taira
 ```
 
-הערך הנורמלי צריך להיות זהה ל `TAIRA_ACCOUNT_ID`. הגדרת `[account].domain` בקובץ TOML יכולה להיות `wonderland.universal`, אבל הערך הזה משפיע רק על ההקשר של ההסלול ו- alias.
+הערך המנורמל צריך להיות זהה ל־`TAIRA_ACCOUNT_ID`. ההגדרה `[account].profile` בוחרת רק את קידומת הרשת של I105; דומיינים שייכים לכינויים, ולעולם לא למזהה החשבון.
 
 ### 3. קרא את החשבון ואת נכסיו. {#_3-read-the-account-and-its-assets}
 
 לאחר הקצאת החשבון, בצעו עליו שאילתה ישירה והציגו דף נכסים מוגבל. קודדו את ערך I105 ל-URL לפני השימוש בו בנתיב.
 
 ```bash
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 ENCODED_ACCOUNT_ID="$(
@@ -69,7 +73,7 @@ ENCODED_ACCOUNT_ID="$(
 )"
 
 curl -fsS -H 'Accept: application/json' \
-  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10" \
+  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10&include_total=true" \
   | jq '{total, items}'
 ```
 
@@ -111,7 +115,7 @@ fi
 
 ::: warning גבולת היתר
 
-ה-faucet של Taira יכול לספק את חשבון הבקשה שלו, אבל זה לא נותן סמכות רישום חשבונות כללית או סמכות ניהול פרופיל. הרישום של חשבון אחר דורש `CanRegisterAccount` תחת האישור הפעיל. כינויים של חשבונות דורשים בדרך כלל גם חוזה שכירות פעיל SNS ורישיונות כינוי מתאימים. השתמש ב-onboarding/alias planner הנמלט, או תרגלי רישום נגד הרשת המקומית שנוצרה.
+ה־faucet של Taira יכול להקצות את החשבון שמגיש אליו בקשה, אבל זה אינו מעניק סמכות כללית לרישום חשבונות או לניהול כינויים. רישום של חשבון אחר דורש `CanRegisterAccount` תחת ה־executor הפעיל. כינויים של חשבונות דורשים בדרך כלל גם חוזה שכירות SNS פעיל והרשאות כינוי מתאימות. השתמשו במתכנן ה־onboarding והכינויים שבפיקוח הממשל, או תרגלו את הרישום מול הרשת המקומית שנוצרה.
 
 :::
 
@@ -121,9 +125,9 @@ fi
 iroha --config ./localnet/client.toml \
   --machine \
   --fee-payer authority \
-  ledger account register --id "$NEW_ACCOUNT_ID"
+  account register --id "$NEW_ACCOUNT_ID"
 
-iroha --config ./localnet/client.toml ledger account get \
+iroha --config ./localnet/client.toml account get \
   --id "$NEW_ACCOUNT_ID"
 ```
 
@@ -158,8 +162,8 @@ fi
 
 ## מקור ומסמכים קשורים {#source-and-related-docs}
 
-- [יישום כתובת חשבון קאנוניקה בביצוע הקליטה ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
-- [בדיקות חשבון ושמה Torii בביצוע ה-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
+- [יישום כתובת חשבון קאנוניקה בביצוע הקליטה ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/account/address.rs)
+- [בדיקות smoke של נקודות הקצה של חשבונות ב־Torii](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/tests/accounts_endpoints.rs) ו־[בדיקות נתיבי הכינויים](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/tests/lib_tests/part_2.rs) ב־commit המקובע
 - [חשבונות](/he/blockchain/accounts.md)
 - [שמה של דגם נתונים ](/he/blockchain/data-model.md#aliases)
 - [קונבנוציות שמות](/he/reference/naming.md)

@@ -1,9 +1,9 @@
 ---
 translation_locale: am
 translation_source: /cookbook/submit-and-verify-transactions.md
-translation_source_hash: 98e5c7e9db1ba8468cfd5409409b0e8d02251311dc85492f7b71675e983dc4fd
+translation_source_hash: de608ef52ad3a999c0e253e6683e454f8f66f399a690dce4c2185c79d02334cd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # ግብይቶችን ያስገቡ እና ያረጋግጡ {#submit-and-verify-transactions}
@@ -14,7 +14,7 @@ translation_engine: bing-translator-llm
 
 ## ቅድመ ሁኔታዎች {#prerequisites}
 
-- በገንዘብ የተደገፈ `taira.client.toml`፣ `taira.tx-metadata.json` እና `TAIRA_ACCOUNT_ID` በ[ከ Taira ጋር ይገናኙ](./connect-to-taira.md) የተሰራ።
+- በገንዘብ የተደገፈ `taira.client.toml`፣ `taira-faucet-policy.json` እና `TAIRA_ACCOUNT_ID` በ[ከ Taira ጋር ይገናኙ](./connect-to-taira.md) የተሰራ። የመጻፍ ክዋኔዎች `--fee-payer authority` ይጠቀማሉ፤ CLI ከመፈረሙ በፊት ትክክለኛውን ክፍያ በ Taira የክፍያ ንብረት የሚገልጽ የክፍያ ዋጋ ግምት ያቀርባል።
 - አሁን ያለው `iroha` CLI እና `jq`።
 - ሊጣል የሚችል Taira ምስጠራ ፈራሚ። ቁልፉን እንደገና አይጠቀሙ ወይም እነዚህን በ Minamoto ላይ ትዕዛዞችን ይፃፉ።
 
@@ -22,15 +22,15 @@ translation_engine: bing-translator-llm
 
 ### 1. የ API የመጨረሻ ነጥብ፣ የፍቃድ ዋና እና የክፍያ ቀሪ ሂሳብን አስቀድመው ይተሩ {#_1-preflight-the-endpoint-authority-and-fee-balance}
 
-መጀመሪያ የወረፋውን ነጥብ-በጊዜ ውሂብ ይመልከቱ ያንብቡ፣ ከዚያ የፍቃድ ርእሰ መምህሩ የክፍያ ቀሪ ሂሳብ መታየቱን ያረጋግጡ። በግንኙነት የተግባር መመሪያ ከተፈጠረው ሜታዳታ የBase58 ንብረት-ፍቺ መታወቂያውን ያንብቡ።
+መጀመሪያ የወረፋውን ነጥብ-በጊዜ ውሂብ እይታ ያንብቡ፣ ከዚያ የፈቃድ ባለቤቱ የክፍያ ቀሪ ሂሳብ መታየቱን ያረጋግጡ። በግንኙነት የተግባር መመሪያው ከተቀመጠው የቴስትኔት የገንዘብ ድጋፍ አገልግሎት ፖሊሲ የBase58 ንብረት-ፍቺ መታወቂያውን ያንብቡ።
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, queue_size, txs_approved, txs_rejected}'
 
-TAIRA_FEE_ASSET="$(jq -er '.gas_asset_id' taira.tx-metadata.json)"
+TAIRA_FEE_ASSET="$(jq -er '.asset_definition_id' taira-faucet-policy.json)"
 
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 iroha --config ./taira.client.toml ledger asset get \
@@ -48,8 +48,7 @@ CLI ትክክለኛውን ያልተፈረመ ጭነት ለክፍያ ዋጋ ግ�
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg 'cookbook-submit-verify' \
+  tx ping --msg 'cookbook-submit-verify' \
   > taira-submission.json
 
 jq '{hash, fee_quote}' taira-submission.json
@@ -60,12 +59,12 @@ TAIRA_TX_HASH="$(jq -er '.hash' taira-submission.json)"
 
 ### 3. የተርሚናል ሶፍትዌር ማቀነባበሪያ የስራ ፍሰት ሁኔታን ይጠብቁ {#_3-wait-for-terminal-pipeline-state}
 
-ከ HTTP ተቀባይነት ወይም ወረፋ መግቢያ ስኬትን ከመገመት ይልቅ የተተየበውን ሁኔታ አጋዥ ይጠቀሙ። በ`--wait`፣ ደህንነቱ የተጠበቀ የማስተላለፊያ ወሰን በራስ-ሰር ይመረጣል እና ነባሪው ኢላማው የተተገበረ የመጨረሻነት ነው።
+ከ HTTP ተቀባይነት ወይም ከወረፋ መግቢያ ስኬትን ከመገመት ይልቅ ዓይነቱ የተገለጸውን የሁኔታ አጋዥ ይጠቀሙ። በ`--wait`፣ CLI ትክክለኛውን ዓለም አቀፍ ሁኔታ በየጊዜው ይጠይቃል እና የሚሳካው በብሎክቼይን መዝገብ ሁኔታ የተፈታ (state-resolved) `Applied` የመጨረሻነት ላይ ብቻ ነው።
 
 ```bash
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction status \
+  tx status \
   --hash "$TAIRA_TX_HASH" \
   --wait \
   --timeout-ms 60000 \
@@ -83,7 +82,7 @@ jq . taira-final-status.json
 ```bash
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction get --hash "$TAIRA_TX_HASH" \
+  tx get --hash "$TAIRA_TX_HASH" \
   > taira-transaction.json
 
 jq . taira-transaction.json
@@ -101,15 +100,17 @@ curl -fsS -H 'Accept: application/json' \
 
 ## አረጋግጥ {#verify}
 
-ሦስቱም መዝገቦች በተመሳሳይ ምስጠራ ሃሽ ላይ መስማማታቸውን እና አሳሹ በመጠባበቅ ላይ ያለ ሁኔታን እንደማይዘግብ ያረጋግጡ -
+ሦስቱም መዝገቦች በተመሳሳይ ምስጠራ ሃሽ ላይ መስማማታቸውን እና አሳሹ `Rejected` ሳይሆን `Committed` ሪፖርት ማድረጉን ያረጋግጡ፦
 
 ```bash
-test "$(jq -r '.hash' taira-submission.json)" = "$TAIRA_TX_HASH"
+jq -e --arg hash "$TAIRA_TX_HASH" \
+  '.hash == $hash and .terminal_kind == "Applied"' taira-final-status.json
 
 curl -fsS -H 'Accept: application/json' \
   "https://taira.sora.org/v1/explorer/transactions/$TAIRA_TX_HASH" \
   | jq -e --arg hash "$TAIRA_TX_HASH" \
-    '.hash == $hash and .status == "Committed"'
+    '(.hash | ascii_downcase | ltrimstr("hash:") | split("#")[0]) == $hash
+      and .status == "Committed"'
 ```
 
 የማስረከቢያ ደረሰኝ እና የመጨረሻውን ሁኔታ እንደ የሙከራ ማስረጃ ያቆዩ። የፊርማ ቁልፉን ሳይሆን የህዝብ ግብይት ቁሳቁሶችን ይይዛሉ።
@@ -118,15 +119,15 @@ curl -fsS -H 'Accept: application/json' \
 
 - HTTP `202` ወይም ወረፋ ያለው ሁኔታ መግቢያን ብቻ ያረጋግጣል። የተተየበውን ሁኔታ እስኪተገበረ፣ ውድቅ እስኪደረግ፣ ጊዜው ያለፈበት ወይም የተገደበው የጊዜ ማብቂያ እስኪደርስ ድረስ ድምጽ መስጠቱን ይቀጥሉ።
 - ምስጠራ ሃሽ ከተመለሰ በኋላ የማስረከቢያው ጊዜ ካለፈ፣ ሌላ ግብይት ከመገንባትዎ በፊት ያንን ምስጠራ ሃሽ ይጠይቁ። ዓይነ ስውር እንደገና ማስገባት አዲስ የተጠቀሰ እና የተፈረመ ጭነት ይፈጥራል።
-- ከመፈረምዎ በፊት የክፍያ ዋጋ ግምት ውድቅ ሊደረግ ይችላል። `--fee-payer authority`፣ `gas_asset_id`፣ የፍቃድ ርእሰ መምህሩን ቀሪ ሂሳብ እና የአውታረ መረብ ሰንሰለት መታወቂያን ያረጋግጡ።
+- ከመፈረምዎ በፊት የክፍያ ዋጋ ግምት ውድቅ ሊደረግ ይችላል። `--fee-payer authority`ን፣ የፈቃድ ባለቤቱን ቀሪ ሂሳብ፣ የተዋቀሩትን `chain` እና `network_id`፣ እና `--metadata` እንደ `gas_asset_id` ያለ ምንም የክፍያ ቁልፍ አለመያዙን ያረጋግጡ።
 - `Rejected` ብዙውን ጊዜ የመመሪያ ማረጋገጫን፣ ፈቃዶችን፣ ክፍያዎችን ወይም የቆየ ሁኔታን ያሳያል። ያልተሳካ አፈፃፀም የተጠናቀቀ ማስረጃ ነው እና እንደ የትራንስፖርት ድጋሚ ሙከራ እንደገና መመደብ የለበትም።
 - አሳሽ `404` ከተተገበረ በኋላ ወዲያውኑ የመረጃ ጠቋሚ መዘግየት ሊያጋጥመው ይችላል። ንባቡን እንደገና ይሞክሩ; ግብይቱን እንደገና አያስገቡ።
 - ልዩ መመሪያ በተፈጠረ localnet ላይ የሚሰራ ከሆነ ነገር ግን Taira ውድቅ ካደረገ፣ ትክክለኛውን Taira ፍቃድ ወይም የሚተዳደር የስም ቦታ ምደባ ያግኙ። የአካባቢ ውጤቱ ለህዝብ blockchain አውታረ መረብ ፍቃድ ዋና አይሰጥም።
 
 ## ምንጭ እና ተዛማጅ ሰነዶች {#source-and-related-docs}
 
-- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የግብይት ማቅረቢያ እና የክፍያ ዋጋ ትግበራ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
-- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የግብይት ማረጋገጫ ትግበራ እና ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/src/client.rs)
+- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የግብይት ማቅረቢያ እና የክፍያ ዋጋ ትግበራ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs)
+- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የግብይት ማረጋገጫ ትግበራ እና ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/src/client.rs)
 - [ግብይቶች](/am/blockchain/transactions.md)
 - [CLI መመሪያ](/am/get-started/operate-iroha-via-cli.md)
 - [Torii API የመጨረሻ ነጥቦች](/am/reference/torii-endpoints.md)

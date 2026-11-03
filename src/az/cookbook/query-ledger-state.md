@@ -1,22 +1,22 @@
 ---
 translation_locale: az
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: 68ef931f3d37b9bd40fcf61c9a77313539ca0bd648405834d161a018debb491a
+translation_source_hash: 866b7d3ca37be67878f6f319ce0b0e27eac52c581decad1f46096ef75ad1b10f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Blokçeyn dəftərçəsinin vəziyyətini sorğulamaq {#query-ledger-state}
 
 ## Nəticə {#outcome}
 
-Oxuyun və Taira JSON resurslarını layihələndirin, sonra isə süzgəclər, məntiqi səhifələmə, sıralama, alma ölçüləri və yalnız irəli göstərici kursor davamlılığı ilə yazılmış Iroha sorğularından istifadə edin. Siz həmçinin yönləndirilmiş `--select` tuple server tərəfindən qiymətləndiriləndən əvvəl seçici layihələndirməyə güvənməkdən çəkinəcəksiniz.
+Taira JSON resurslarını oxuyun və proyeksiya edin, sonra CLI və Rust SDK vasitəsilə filtrlər, sıralama, server tərəfli proyeksiya, səhifə limitləri və qeyri-şəffaf `next_cursor` davamı ilə Torii kolleksiya sorğularından istifadə edin. Siz həmçinin siyahılar üçün imzalı tipli sorğulardan istifadə etməyəcəksiniz, çünki onlar siyahıları filtrləmir, sıralamır və proyeksiya etmir.
 
 ## Tələb olunan əvvəlcədən biliklər {#prerequisites}
 
 - `curl`, `jq`, Node.js 24 və indiki `iroha` CLI.
 - Yalnız oxumaq üçün Taira girişi.
-- İmzalı yazılı sorğu nümunələri üçün, Taira və ya yaradılmış lokal şəbəkə üçün bir müştəri konfiqurasiyası.
+- CLI nümunələri üçün Taira və ya yaradılmış lokal şəbəkə üçün müştəri konfiqurasiyası.
 - Rust nümunəsi üçün, hədəf şəbəkə ilə eyni Iroha mənbə reviziyasına bərkidilmiş bir layihə.
 
 ## Addımlar {#steps}
@@ -30,25 +30,23 @@ Resurs yolları dashboardlar və qısa yoxlamalar üçün faydalıdır. JSON ü�
 ```bash [curl]
 curl -fsS -H 'Accept: application/json' --get \
   https://taira.sora.org/v1/domains \
-  --data-urlencode 'sort=id:asc' \
+  --data-urlencode 'sort=id' \
   --data-urlencode 'limit=5' \
-  --data-urlencode 'offset=0' \
-  --data-urlencode 'count_mode=exact' \
-  | jq '{total, ids: [.items[].id]}'
+  --data-urlencode 'include_total=true' \
+  | jq '{total, next_cursor, ids: [.items[].id]}'
 ```
 
 ```js [Node.js]
 const root = 'https://taira.sora.org'
-const limit = 5
 const seen = new Set()
+let cursor = null
 
-for (let offset = 0; ; offset += limit) {
+do {
   const url = new URL('/v1/domains', root)
   url.search = new URLSearchParams({
-    sort: 'id:asc',
-    limit: String(limit),
-    offset: String(offset),
-    count_mode: 'exact',
+    sort: 'id',
+    limit: '5',
+    ...(cursor ? { cursor } : {}),
   })
 
   const response = await fetch(url, {
@@ -63,106 +61,90 @@ for (let offset = 0; ; offset += limit) {
     seen.add(domain.id)
     console.log(domain.id)
   }
-  if (page.items.length < limit || seen.size >= page.total) break
-}
+  cursor = page.next_cursor
+} while (cursor)
 ```
 
 :::
 
-Bu HTTP səth `limit` və `offset` istifadə edir. Əgər marşrut daha ucuz sayma rejimi istifadə edirsə, buraxılmış və ya məhdudlaşdırılmış `total` normal kimi qəbul olunmalıdır.
+Bu HTTP səthi `limit` və qeyri-şəffaf `next_cursor` ilə səhifələnir; o `null` olana qədər onu dəyişmədən `cursor` kimi geri göndərin. `total` yalnız `include_total=true` tələb etdikdə görünür və bu, tam skan tələb edir.
 
-### 2. Yığılmış CLI sorğunu süzün və partiyalara ayırın {#_2-filter-and-batch-a-typed-cli-query}
+### 2. Kolleksiyanı CLI ilə filtrləyin {#_2-filter-a-collection-with-the-cli}
 
-CLI tipli təkrarlana bilən sorğunu ardıcıllıqla saxlayır və daxili olaraq serverin davamlı göstəricilərini izləyir. Burada məntiqi nəticə bir sətr ilə məhdudlaşdırılır, `--fetch-size 1` isə hər gediş-gəlişdə götürülən maksimum partiyanı idarə edir.
+CLI filtri, proyeksiyanı və səhifə ölçüsünü kolleksiya son nöqtəsinə göndərir və bir səhifə, `{items, next_cursor}`, çap edir. `next_cursor` `null` olana qədər onu izləmək üçün `--all` əlavə edin.
 
 ```bash
-DOMAIN_PREDICATE='{"equals":[{"field":"id","value":"wonderland.universal"}]}'
+DOMAIN_FILTER='id = "universal.universal"'
 
 iroha --config ./localnet/client.toml \
-  ledger domain list filter "$DOMAIN_PREDICATE" \
-  --limit 1 \
-  --offset 0 \
-  --fetch-size 1
+  ledger domain list \
+  --filter "$DOMAIN_FILTER" \
+  --select id \
+  --limit 1
 ```
 
-Filtrləmə səhifələnmədən əvvəl baş verir. Sorğuya xas tipli predikatlardan istifadə edin; bir hesab və ya aktiv üçün predikat təhlükəsiz şəkildə bir domen üçün yenidən istifadə oluna bilməz.
+Filtrləmə səhifələmədən əvvəl baş verir. Hər kolleksiya yalnız öz sahələrini qəbul edir; naməlum sahə heç nəyə uyğun gəlməmək əvəzinə `invalid_filter` qaytarır.
 
 ### 3. Sabit metadata açarına görə sıralayın {#_3-sort-by-a-stable-metadata-key}
 
-Daxil edilmiş sorğunun sıralaması bir metadata açarı üzrə leksioqrafikdir. O açara sahib olmayan elementlər proqram təminatı icra mühitinin müəyyən etdiyi qaydada sıralanır, buna görə bütün kolleksiya üzrə eyni şəkildə doldurulmuş açardan istifadə edin.
+Kolleksiya sıralama açarları elan edilmiş sahələri və `metadata.<key>` formasını qəbul edir; azalan sıra üçün açarın əvvəlinə `-` əlavə edin. Açarı olmayan sətirlər artan sırada birinci düzülür, bərabər dəyərlər isə sətir identikliyinə görə sıralanır, buna görə bütün kolleksiyada ardıcıl doldurulmuş açardan istifadə edin.
 
 ```bash
 iroha --config ./localnet/client.toml \
   --machine \
-  ledger account list all \
-  --verbose \
-  --sort-by-metadata-key key \
-  --order asc \
+  account list \
+  --sort metadata.key \
   --limit 10 \
-  --offset 0 \
-  --fetch-size 2 \
-  | jq '[.[] | {id, metadata}]'
+  | jq '[.items[] | {id, metadata}]'
 ```
 
-Qeydiyyatdan keçmiş CLI `--select` JSON analiz edir və seçici tuple-ni yönləndirir, lakin hazırkı yüngül sorğu DSL həmin seçicini serverdə qiymətləndirmir. Hələ bunun ətrafında bir proyeksiya müqaviləsi qurmayın. Yalnız hədəf proqram təminatı icra mühiti bunu dəstəklədikdən sonra yazılı SDK proyeksiyasından istifadə edin, ya da təsdiqlənmiş nəticəni yuxarıdakı kimi `jq` və ya JavaScript ilə müştəri tərəfdə proyeksiya edin.
+`--select` server tərəfli proyeksiyadır: `--select id,metadata` yalnız həmin sahələri qaytarır, naməlum sahə isə `invalid_select` qaytarır. İmzalı tipli sorğular həmişə tam elementləri qaytarır, buna görə onların nəticələrini yuxarıdakı kimi `jq` və ya JavaScript ilə müştəri tərəfində proyeksiya edin.
 
 ### 4. Rust iterator-a qeyri-şəffaf kursorları izləməyə icazə verin {#_4-let-the-rust-iterator-follow-opaque-cursors}
 
-`Pagination` məntiqi nəticə dəstini məhdudlaşdırır. `FetchSize` hər bir server partiyasını idarə edir. Qaytarılan iterator server tərəfindən yaradılan kursoru istifadə edərək davametmə sorğularını şəffaf şəkildə göndərir.
+`limit` səhifə ölçüsünü təyin edir. `list` tərəfindən qaytarılan iterator növbəti səhifəni serverin `next_cursor` dəyəri ilə yalnız cari səhifə tükəndikdən sonra sorğulayır, `take` isə məntiqi nəticəni məhdudlaşdırır. Burada `client` `iroha::blocking::Client` obyektidir.
 
 ```rust
-use std::num::NonZeroU64;
+use iroha::collections::{Collection, ListQuery, SortKey};
 
-use iroha::data_model::{
-    prelude::FindAssetsDefinitions,
-    query::{
-        builder::QueryBuilderExt as _,
-        parameters::{FetchSize, Pagination},
-    },
-};
+let query = ListQuery::new().sort_by(SortKey::asc("id")).limit(5);
 
-let definitions = client
-    .query(FindAssetsDefinitions::new())
-    .with_pagination(Pagination::new(NonZeroU64::new(25), 0))
-    .with_fetch_size(FetchSize::new(NonZeroU64::new(5)))
-    .execute_all()?;
-
-for definition in definitions {
-    println!("{} {}", definition.id(), definition.name());
+for definition in client.list(Collection::AssetDefinitions, query).take(25) {
+    let definition = definition?;
+    println!("{:?} {:?}", definition.get("id"), definition.get("name"));
 }
 ```
 
-Bir `ForwardCursor` səlahiyyətlə bağlıdır, prosesə məxsusdur və yalnız irəli yönlüdür. Onu heç vaxt təhlil etməyin, sintetikləşdirməyin, avtorizasiya əsasları arasında paylaşmayın və ya onu Torii nümunələri arasında daşına bilən CV tokeni kimi saxlamayın. Əgər müddəti bitirsə, ilkin sorğunu qəsdən tətbiq səviyyəsində yoxlama nöqtəsi ilə yenidən başlayın.
+`next_cursor` kolleksiyasına, yoluna, filtrinə və sıralamasına bağlı qeyri-şəffaf açar dəsti mövqeyidir. Onu heç vaxt təhlil etməyin və ya süni yaratmayın, həmçinin onu fərqli filtr və ya sıralama ilə təkrar istifadə etməyin; Torii bunu `invalid_cursor` ilə rədd edir. Səhifələr arasında əlavə edilən və ya silinən sətirlər heç vaxt sonrakı səhifədə əlaqəsiz sətirlərin təkrarlanmasına və ya buraxılmasına səbəb olmur.
 
 ## Yoxla {#verify}
 
-Dəqiq domen filtri yalnız `wonderland.universal`-ı qaytarmalıdır. Yalnız uğurlu CLI çıxışı saymaqla yox, nəticəni yoxlayın:
+Dəqiq domen filtri yalnız `universal.universal`-ı qaytarmalıdır. Yalnız uğurlu CLI çıxışı saymaqla yox, nəticəni yoxlayın:
 
 ```bash
 iroha --config ./localnet/client.toml \
   --machine \
-  ledger domain list filter "$DOMAIN_PREDICATE" \
-  --limit 1 --offset 0 --fetch-size 1 \
-  | jq -e 'length == 1 and .[0] == "wonderland.universal"'
+  ledger domain list --filter "$DOMAIN_FILTER" --select id --limit 1 \
+  | jq -e '[.items[].id] == ["universal.universal"]'
 ```
 
-Səhifələnmiş tətbiq sorğuları üçün, həmçinin test edin ki, ID-lər səhifələrdə təkrarlanmır, tələb olunan məntiqi limit heç vaxt aşılmır və başa çatmış kursorun ardından təkrar cəhd etmə sənədləşdirilmiş yoxlama nöqtəsindən başlayır.
+Səhifələnmiş tətbiq sorğuları üçün həmçinin ID-lərin səhifələr arasında təkrarlanmadığını, tələb olunan məntiqi limitin heç vaxt aşılmadığını və rədd edilmiş kursordan sonra sorğunun sənədləşdirilmiş yoxlama nöqtəsindən yenidən başladığını sınayın.
 
 ## Problemlərin aradan qaldırılması {#troubleshooting}
 
 - Tək sorğu təkrarlana bilən filter, sıralama, səhifələmə və ya əldə etmə parametrlərini qəbul etmir. Bu nəzarətlər lazım olduqda müvafiq siyahı sorğusundan istifadə edin.
-- `fetch_size` sıfır olmayan toplu göstəricidir, total nəticə limiti deyil. Hazırkı standart `100`-dir və proqram təminatı işləmə mühiti maksimum dəyərdən yuxarı olan qiymətləri rədd edir.
-- Naməlum, müddəti bitmiş və ya xarici kursor qəsdən yenidən istifadə edilə bilməz. Sorğunu yenidən başladın; şəffaf olmayan dəyəri təmir etməyə cəhd etməyin.
-- Metadatanın sıralanması ümumi sahə sıralaması deyil. Əgər hər bir element seçilmiş açarı daşımırsa, açarı çatmayanların sırasını sənədləşdirin və ya başqa bir strategiya seçin.
-- CLI `--select` analiz edir və ötürür, lakin mövcud server yüngül çəkili seçici tuplonu qiymətləndirmir. İstifadəçi tərəfi layihəsi tətbiq edin, əgər server tərəfi seçici dəstəyi yerləşdirilmiş proqram icra mühiti üçün təsdiqlənməyibsə.
-- Geniş və məhdudiyyəti olmayan sorğular şəbəkə yoldaşı işini, müştəri yaddaşını və kursorun ömrü riskini artırır. Məntiqi bir limit və istehlakçıya uyğun bir götürmə ölçüsü təyin edin.
-- İctimai JSON resurs parametrləri və imzalanmış tipli sorğu parametrləri əlaqəlidir, lakin əvəz edilə bilən seriyalaşdırma formatları deyildir. Tipli sorğu verilənləri konteynerləri üçün SDK və ya CLI-dən istifadə edin.
+- `limit` ümumi nəticə deyil, səhifə ölçüsüdür: ən azı 1 və ən çoxu qovşağın `torii.app_api_max_list_limit` dəyəri (standart olaraq 500); Torii-nin standart dəyəri 100-dür. Daha çox oxumaq üçün `next_cursor`, `--all` və ya SDK iteratorundan istifadə edin.
+- `invalid_cursor` kursorun səhv formalaşdığını və ya başqa kolleksiyaya, yola, filtrə və ya sıralamaya aid olduğunu bildirir. Sorğunu yenidən başladın; qeyri-şəffaf dəyəri düzəltməyə cəhd etməyin.
+- Seçici filtr boş olmayan `next_cursor` ilə qısa və ya boş səhifə qaytara bilər. O `null` olana qədər onu izləməyə davam edin.
+- `--filter` və HTTP `filter` parametri Torii-nin mətn qrammatikasını qəbul edir, məsələn, `id = "universal.universal"` və ya `exists(metadata.tier)`. JSON predikat obyekti filtr mətni deyil və etibarsız `filter` kimi uğursuz olur.
+- Geniş, məhdudiyyətsiz sorğular şəbəkə həmkarlarının işini və müştərinin yaddaş istifadəsini artırır. İstehlakçıya uyğun məntiqi limit və səhifə ölçüsü təyin edin.
+- İmzalı `/v1/query` siyahı API-si deyil. O, tək nəticəli sorğuları və filtrsiz iterasiya olunan bir neçə sorğu başlanğıcını qəbul edir, digərlərini isə, məsələn, `FindDomains` və ya `FindAssetDefinitions` sorğularını, `signed_query_shape_not_admitted` ilə rədd edir. Kolleksiya son nöqtələri, CLI `list` əmrləri və SDK kolleksiya oxuyucuları vahid filtr, sıralama və kursor qrammatikasından istifadə edir.
 
 ## Mənbə və əlaqəli sənədlər {#source-and-related-docs}
 
-- [Pinned mənbə kodu reviziyasında kursora əsaslanan səhifələmə inteqrasiya testləri](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs)
-- [Möhkəmlənmiş mənbə kodu reviziyasında sorğu qurucusu və seçici davranışı](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs)
-- [Sorğu parametrləri və pinlənmiş mənbə kodu reviziyasında kursor modeli](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs)
+- [Sabitlənmiş mənbə kodu reviziyasında Torii kolleksiya sorğuları müqaviləsi](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/torii/collection_queries.md)
+- [Sabitlənmiş mənbə kodu reviziyasında Rust kolleksiya oxunuşları və kursor iteratoru](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/src/collections.rs)
+- [Sabitlənmiş mənbə kodu reviziyasında imzalı sorğuların qəbulu](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/query_json.md)
 - [Sorğular](/az/blockchain/queries.md)
 - [Sorğu istinadı](/az/reference/queries.md)
 - [JavaScript və TypeScript](/az/guide/tutorials/javascript.md)

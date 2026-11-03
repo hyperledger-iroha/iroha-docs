@@ -1,9 +1,9 @@
 ---
 translation_locale: fr
 translation_source: /cookbook/permissions-and-roles.md
-translation_source_hash: 8d6fd7101094ba21cfc2c5fb9a89d2acd7e67f13ff47b9f8c8e01bbbd7bf2836
+translation_source_hash: 40fe8b19344d8eff66b178dc8576e2e049fef50bd3212fbddc5c0d5f7f37fa03
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Autorisations et rôles {#permissions-and-roles}
@@ -14,13 +14,12 @@ Créez un rôle qui accorde à un compte la permission de mettre à jour les mé
 
 ## Prérequis {#prerequisites}
 
-- Un client financé Taira et des métadonnées de frais provenant de [Connectez-vous à Taira](./connect-to-taira.md).
+- Un client Taira financé provenant de [Connectez-vous à Taira](./connect-to-taira.md).
 - `TARGET_ACCOUNT` et `DELEGATE_ACCOUNT` définis sur les identifiants de compte canoniques I105.
-- Le compte signataire doit être autorisé à gérer la permission et les rôles cibles. Sur Taira, il s'agit d'une opération administrative soumise à autorisation ; obtenez `CanManageRoles` et le principal d'autorisation nécessaire pour accorder la permission limitée, ou exécutez la recette sur un réseau local généré.
+- Le compte signataire doit détenir `CanManageRoles` et doit pouvoir déléguer la permission limitée : il s'agit de `TARGET_ACCOUNT` lui-même, ou il détient déjà `CanModifyAccountMetadata` pour ce compte. Sur Taira, il s'agit d'une opération administrative soumise à autorisation. Le client d'un réseau local généré ne détient pas `CanManageRoles` ; la recette nécessite donc un réseau dont la genèse l'accorde.
 
 ```bash
 CONFIG=./taira.client.toml
-FEE_METADATA=./taira.tx-metadata.json
 ROLE_ID=cookbook_metadata_editors
 test -n "$TARGET_ACCOUNT"
 test -n "$DELEGATE_ACCOUNT"
@@ -36,12 +35,11 @@ DELEGATE_CONFIG=./taira.delegate.toml
 
 ### 1. Enregistrer un rôle vide {#_1-register-an-empty-role}
 
-Chaque commande CLI qui change l'état nomme explicitement le payeur des frais. Le fichier de métadonnées contient l'actif de frais Taira actuel dérivé de la réponse du service de financement du testnet.
+Chaque commande CLI qui change l'état nomme explicitement le payeur des frais. Le CLI établit le devis exact des frais, dans l'actif de frais de Taira, avant de signer.
 
 ```bash
 iroha --config "$CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
   ledger role register --id "$ROLE_ID"
 ```
 
@@ -54,7 +52,6 @@ jq -cn --arg account "$TARGET_ACCOUNT" \
   '{name:"CanModifyAccountMetadata",payload:{account:$account}}' |
   iroha --config "$CONFIG" \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
     ledger role permission grant --id "$ROLE_ID"
 ```
 
@@ -63,8 +60,7 @@ jq -cn --arg account "$TARGET_ACCOUNT" \
 ```bash
 iroha --config "$CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
-  ledger account role grant \
+  account role grant \
   --id "$DELEGATE_ACCOUNT" \
   --role "$ROLE_ID"
 ```
@@ -79,13 +75,12 @@ Utilisez le signataire cryptographique et le solde des frais du délégué pour 
 printf '"delegated"\n' |
   iroha --config "$DELEGATE_CONFIG" \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
-    ledger account meta set \
+    account meta set \
     --id "$TARGET_ACCOUNT" \
     --key cookbook_access
 ```
 
-Le même modèle est disponible pour les clients Rust. Ici, `client` signe en tant que `registrar_account`, ce qui devient le propriétaire initial du rôle tout comme dans le flux CLI. Les trois variables de compte sont déjà analysées en valeurs `AccountId` :
+Le même modèle est disponible pour les clients Rust. Ici, `client` est un `iroha::blocking::Client` qui signe en tant que `registrar_account`, lequel devient le propriétaire initial du rôle, comme dans le flux CLI. Les trois variables de compte sont déjà des valeurs `AccountId` analysées :
 
 ```rust
 use iroha::data_model::{prelude::*, transaction::FeePaymentIntent};
@@ -98,7 +93,7 @@ let role = Role::new(role_id.clone(), registrar_account).add_permission(
     },
 );
 
-client.submit_all_blocking::<InstructionBox>(
+client.submit_all::<InstructionBox>(
     [
         Register::role(role).into(),
         Grant::account_role(role_id, delegate_account).into(),
@@ -109,32 +104,35 @@ client.submit_all_blocking::<InstructionBox>(
 
 ## Vérifier {#verify}
 
-Listez les deux côtés de l'affectation, puis lisez la valeur exacte écrite par le délégué :
+Lisez les autorisations effectives du délégué, qui incluent les octrois de rôles, puis lisez la valeur exacte écrite par le délégué :
 
 ```bash
-iroha --config "$CONFIG" ledger role permission list --id "$ROLE_ID"
-iroha --config "$CONFIG" ledger account role list --id "$DELEGATE_ACCOUNT"
+iroha --config "$CONFIG" --machine account permission list \
+  --id "$DELEGATE_ACCOUNT" --all \
+  | jq -e --arg account "$TARGET_ACCOUNT" \
+    '.items | any(.name == "CanModifyAccountMetadata"
+      and .payload.account == $account)'
 
-iroha --config "$CONFIG" ledger account meta get \
+iroha --config "$CONFIG" account meta get \
   --id "$TARGET_ACCOUNT" \
   --key cookbook_access
 ```
 
-La liste des autorisations doit contenir `CanModifyAccountMetadata` limitée à `TARGET_ACCOUNT`, la liste des rôles du délégué doit contenir `ROLE_ID`, et la lecture des métadonnées doit renvoyer `"delegated"`.
+Les autorisations effectives du délégué doivent contenir `CanModifyAccountMetadata` limitée à `TARGET_ACCOUNT`, et la lecture des métadonnées doit renvoyer `"delegated"`. Torii refuse les listes de rôles via des requêtes signées ; la liste des autorisations effectives sert donc de vérification de l'attribution.
 
 ## Dépannage {#troubleshooting}
 
-- `Not permitted` lors de l’enregistrement, de l’édition ou de l’attribution du rôle, le signataire cryptographique ne possède pas le principe d’autorisation Taira requis. Ne remplacez pas le jeton avec portée par un jeton global ; demandez la concession exacte ou utilisez LocalNet.
+- `Not permitted` lors de l’enregistrement, de l’édition ou de l’attribution du rôle signifie que le signataire cryptographique ne possède pas l’autorité Taira requise. Ne remplacez pas le jeton avec portée par un jeton global ; demandez l’octroi exact.
 - Une erreur d'analyse de charge utile signifie généralement que `account` a été placé à côté de `payload`, qu'un alias a été fourni à la place d'un ID I105, ou que la valeur JSON a été citée deux fois.
-- Un rejet de frais appartient au signataire cryptographique soumettant cette étape. Financez le gestionnaire et déléguez indépendamment et conservez les métadonnées des actifs de frais dérivés du robinet.
+- Un rejet de frais appartient au signataire cryptographique soumettant cette étape. Financez le gestionnaire et le délégué indépendamment dans l'actif de frais indiqué par chaque devis de frais.
 - Un octroi de rôle réussi ne remplace pas la portée codée dans ses jetons. Ce rôle ne peut modifier que le compte nommé dans la charge utile de la permission.
-- Pour nettoyer, exécutez `ledger account role revoke`, puis `ledger role permission revoke`, et enfin `ledger role unregister` ; chacun est une écriture séparée et doit inclure `--fee-payer authority` et les métadonnées de frais.
+- Pour nettoyer, exécutez `account role revoke`, puis `ledger role permission revoke`, et enfin `ledger role unregister` ; chacune est une écriture séparée et doit inclure `--fee-payer authority`.
 
 ## Source et documents connexes {#source-and-related-docs}
 
-- [Tester l'intégration des rôles au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/roles.rs)
-- [Tests d'intégration des permissions au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/permissions.rs)
-- [Modèle de données de permission intégré au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/permission.rs)
+- [Tester l'intégration des rôles au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/roles.rs)
+- [Tests d'intégration des permissions au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/permissions.rs)
+- [Modèle de données de permission intégré au commit épinglé](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_executor_data_model/src/permission.rs)
 - [Autorisations et rôles](/fr/blockchain/permissions.md)
 - [Référence du jeton d'autorisation](/fr/reference/permissions.md)
 - [Métadonnées](./metadata.md)

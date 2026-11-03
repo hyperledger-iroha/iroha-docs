@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
+translation_source_hash: 35a4caba21bf1e34cc015f79fa82bfe143b37603eddb5f1eb72513ad83a20f61
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2
 موجودہ Kagami کوڈ سے چار پیر لوکل نیٹ پیدا کریں:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 آؤٹ پٹ ڈائرکٹری میں مماثل نیٹ ورک نوڈ ترتیب، `genesis.json`، `genesis.signed.nrt`، `client.toml`، اور مددگار اسکرپٹس شامل ہیں.
@@ -62,7 +62,7 @@ curl http://127.0.0.1:8080/status/blocks
 آپ فوری طور پر CLI کی طرف اشارہ کر سکتے ہیں bundled کلائنٹ ترتیب:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list
 ```
 
 ## Nexus پروفائل {#_3-nexus-profile}

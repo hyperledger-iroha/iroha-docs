@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hans
 translation_source: /cookbook/nfts.md
-translation_source_hash: db99dab483d4e2fb3fd84be84f6e4ef9f8373f0c16eb2f34952f1232c4587561
+translation_source_hash: b60c542052eac6a916350c4aaa779c9f46d248be64ecea9c9bda679a4d56dff3
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # NFTs {#nfts}
@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 - `curl`,`jq`, Python 3.11或以后的电流,以及 `iroha` CLI.
 - 仅可读的 Taira 访问.
-- 对于写入操作,一个由 [启动 Iroha](/zh-hans/get-started/launch-iroha.md), 与 `./localnet/client.toml` 和 Torii 在 `http://127.0.0.1:8080`.
+- 对于写入操作，需要一个按照 [启动 Iroha](/zh-hans/get-started/launch-iroha.md) 的做法以 `kagami localnet generate --peers 4 --out-dir ./localnet` 生成的本地网络，其中包含 `./localnet/client.toml` 和位于 `http://127.0.0.1:8080` 的 Torii，另外还需要一个由其签名者拥有的 NFT 域名（见步骤 2）。
 
 ## 步骤 {#steps}
 
@@ -26,20 +26,21 @@ translation_engine: nllb-200-ct2
 
 ```bash
 curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/nfts?limit=5' \
-  | jq '{total, nfts: [.items[] | {id, owned_by, content}]}'
+  'https://taira.sora.org/v1/nfts?limit=5&include_total=true' \
+  | jq '{total, nfts: [.items[] | {id, owned_by, metadata}]}'
 ```
 
-NFTs 是唯一记录，而不是数值余额。它们有一个 ID、一个所有者和一个紧凑的 `content` 元数据映射。
+NFTs 是唯一记录，而不是数值余额。它们有一个 ID、一个所有者和一个紧凑的内容映射；Torii 集合行会将其作为 `metadata` 返回，而 `ledger nft get` 会将其作为 `content` 返回。
 
 ### 2. 准备当地所有者 IDs {#_2-prepare-local-owner-ids}
 
-编写示例使用登录的 `wonderland.universal`域名. 在不暴露其私钥的情况下导出配置授权主体,然后选择另一个注册帐户作为转移目的地.
+写入示例需要一个由签名账户拥有的域名，或针对该域名的 `CanRegisterNft` 授权。生成的本地网络不会为其客户端注册任何应用程序域名，而直接注册域名的操作仅保留给创世，因此请将 `NFT_DOMAIN` 设为您的签名者所控制的 `name.dataspace` 域名。在不暴露私钥的情况下推导出已配置的授权主体，然后选择另一个已注册账户作为转移目的地。
 
 ```bash
 LOCAL_ROOT='http://127.0.0.1:8080'
 LOCAL_CONFIG='./localnet/client.toml'
-NFT_ID='cookbook_badge$wonderland.universal'
+test -n "$NFT_DOMAIN"
+NFT_ID="cookbook_badge\$$NFT_DOMAIN"
 
 LOCAL_PUBLIC_KEY="$(python3 - <<'PY'
 import tomllib
@@ -59,7 +60,7 @@ NEW_OWNER="$(
 )"
 ```
 
-`$`分区器属于 NFT 文本形式. 保持完整的 `wonderland.universal`域和数据空间后.
+`$` 分隔符属于 NFT 的文本形式。在 ID 中保留完整的 `name.dataspace` 域名。
 
 ### 3. 登记 NFT 的初始含量 {#_3-register-the-nft-with-initial-content}
 
@@ -102,34 +103,28 @@ iroha --config "$LOCAL_CONFIG" \
 
 ::: warning 许可范围
 
-在 Taira, 每次写入都需要 `--metadata ./taira.tx-metadata.json` 登记,转移,删除和元数据更新由活跃的运行时检查 (`CanRegisterNft`, `CanTransferNft`, `CanUnregisterNft`, 和 `CanModifyNftMetadata` 在默认权限表面上) 使用为您的应用程序分配的一个域名或在 localnet 上保存这个通行.
+在 Taira 上，每次写入都使用 `--fee-payer authority`；CLI 会在签名前给出以 Taira 费用资产计价的确切费用报价。注册、转移、移除和元数据更新由当前生效的运行时检查（默认权限接口中的 `CanRegisterNft`、`CanTransferNft`、`CanUnregisterNft` 和 `CanModifyNftMetadata`）。请使用您的账户拥有的域名，或您的账户持有这些授权的域名。
 
 :::
 
 在合同所有的工作流程中, Kotodama 显示输入 NFT 主机调用.以下是通过固定 IVM 文档测试编译和执行的精确生命周期测试数据:
 
 ```kotodama
+// Mint an NFT, transfer it, update metadata, and burn it using typed IDs.
 seiyaku NftFlow {
-    kotoage fn nft_issue_and_transfer() authorize("NftAuthority") {
-        let owner = AccountId::parse(
-            "sorauﾛ1PﾉｳﾇmEｴWｵebHﾑ6ﾔﾙｲヰiwuCWErJ7uｽoPGｱﾔnjﾑKﾋTCW2PV",
-        );
+    permission NftAuthority;
+    kotoage fn nft_issue_and_transfer() authorize(NftAuthority) {
+        let owner = AccountId::parse("sorauﾛ1PﾉｳﾇmEｴWｵebHﾑ6ﾔﾙｲヰiwuCWErJ7uｽoPGｱﾔnjﾑKﾋTCW2PV");
         let nft = NftId::parse("n0$wonderland.universal");
-        ledger::nft::mint(nft, owner);
-        let to = AccountId::parse(
-            "sorauﾛ1NfｷgﾉﾓﾉBｦKﾌﾘﾒoﾇﾂﾛrG81ﾋjWﾎﾕVncwﾌSｱ3pﾘﾋﾉhUS9Q76",
-        );
-        ledger::nft::transfer(
-            source: owner,
-            nft: nft,
-            destination: to,
-        );
+        ledger::nft::mint(nft: nft, owner: owner);
+        let to = AccountId::parse("sorauﾛ1NfｷgﾉﾓﾉBｦKﾌﾘﾒoﾇﾂﾛrG81ﾋjWﾎﾕVncwﾌSｱ3pﾘﾋﾉhUS9Q76");
+        ledger::nft::transfer(source: owner, nft: nft, destination: to);
         ledger::nft::set_metadata(
             nft: nft,
             key: Name::parse("issued"),
             value: Json::parse("{\"issued\":\"demo\"}"),
         );
-        ledger::nft::burn(nft);
+        ledger::nft::burn(nft: nft);
     }
 }
 ```
@@ -149,22 +144,23 @@ jq -e --arg owner "$NEW_OWNER" \
   cookbook-nft.json
 ```
 
-如果 CLI 将记录封装在输出包装中,请一次检查 JSON 并将该声明应用于包含的 NFT 对象. 权威变量为 `id`, `owned_by`和 `content`.
+CLI 会直接打印 NFT 记录本身。可作为依据的不变量是 `id`、`owned_by` 和 `content`。
 
 ## 解决问题 {#troubleshooting}
 
 - `name$domain`可以默认地在某些解析器中使用通用数据空间,但书籍和应用程序 IDs 应使用明确的 `name$domain.dataspace`形式.
 - 拒绝重复登记同一个 NFT ID. 使用新 localnet 或选择稳定新的 ID 来进行单独的记录.
 - 在标准输入时,输入元数据必须是有效的 JSON.没有引用 JSON 的链不是元数据值.
-- 一个由现有所有者以外的账户签署的转让需要准确的许可;改变 `--from`不会改变签署者的身份.
-- 转移后,原始客户端可能不再被允许突变或取消 NFT 注册. 使用新所有者的签名器或授权的控制者.
+- 由当前所有者以外的账户签名的转移，需要拥有该 NFT 的域名或具备确切的 `CanTransferNft` 授权；更改 `--from` 不会改变签名者。
+- 转移只会变更 `owned_by`。元数据更新和取消注册仍由域名所有者，或持有该 NFT 的 `CanModifyNftMetadata` 或 `CanUnregisterNft` 的账户负责；新所有者可以再将其转移出去。
 - Taira 可以返回空白的 NFT 收藏.不要将`items: []`作为证明 NFT 指令不可使用的证明
 
 ## 来源及相关文件 {#source-and-related-docs}
 
-- [NFT 集成测试在固定的提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/nft.rs)
-- [Kotodama NFT 在固定提交时进行主机调用测试](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
-- [确切的 Kotodama NFT 生命周期测试数据在定提交](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko)
+- [NFT 集成测试在固定的提交](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/nft.rs)
+- [Kotodama NFT 在固定提交时进行主机调用测试](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
+- [确切的 Kotodama NFT 生命周期测试数据在定提交](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/ivm/docs/examples/12_nft_flow.ko)
+- [固定提交中的 Kotodama 文档示例测试](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/ivm/tests/kotodama_documentation_examples.rs)
 - [NFTs](/zh-hans/blockchain/nfts.md)
 - [超值数据](/zh-hans/blockchain/metadata.md)
 - [指示](/zh-hans/blockchain/instructions.md)

@@ -1,21 +1,21 @@
 ---
 translation_locale: uz
 translation_source: /cookbook/index.md
-translation_source_hash: 58f5247ece30d3755c38d4d24ae4553a35e0d0437476092d568a1be5c8a2ed28
+translation_source_hash: 9e13bcd28ad8ae356314041828f73af0ed25636af82ff4ea2948268b47dd73e6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Iroha 3 ilovalari uchun amaliy qo‘llanma {#iroha-3-application-cookbook}
 
-Iroha 3 bilan ishlashni Taira sinov tarmog‘idan boshlanadigan, tekshirish mumkin bo‘lgan ixcham retseptlar orqali o‘rganing; Minamoto asosiy tarmog‘ida esa faqat o‘qish amallarini bajaring. Har bir retsept amal ochiq o‘qish, moliyalashtirilgan hisobning odatiy yozuvi yoki ruxsat talab qiladigan operatsiya ekanini ko‘rsatadi. Buyruqlar joriy I105 hisob IDs, aniq to‘lov tanlovi va Iroha-ning [`0010c5a70039eac101a4846499ba9ceaf43eb65c`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c) commitida tekshirilgan xatti-harakatdan foydalanadi.
+Iroha 3 bilan ishlashni Taira sinov tarmog‘idan boshlanadigan, tekshirish mumkin bo‘lgan ixcham retseptlar orqali o‘rganing; Minamoto asosiy tarmog‘ida esa faqat o‘qish amallarini bajaring. Har bir retsept amal ochiq o‘qish, moliyalashtirilgan hisobning odatiy yozuvi yoki ruxsat talab qiladigan operatsiya ekanini ko‘rsatadi. Buyruqlar joriy I105 hisob IDs, aniq to‘lov tanlovi va Iroha-ning [`c8c872461e92f04325c350cdd952f4276e96f9dc`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc) commitida tekshirilgan xatti-harakatdan foydalanadi.
 
-Avval [Taira-ga ulanish](./connect-to-taira.md) retseptini bajaring. U buyruq qatori retseptlari qayta ishlatadigan mijoz sozlamasi va to‘lov metama’lumotini yaratadi. To‘lov aktivi ID-sini bu hujjatdan hech qachon ko‘chirmang: uni Taira kranining joriy javobidan oling.
+Avval [Taira-ga ulanish](./connect-to-taira.md) retseptini bajaring. U imzolovchini moliyalashtiradi va buyruq qatori retseptlari qayta ishlatadigan to‘lov aktivini qayd etadi. To‘lov aktivi ID-sini bu hujjatdan hech qachon ko‘chirmang: uni Taira kranining joriy siyosatidan o‘qing.
 
 ## Kirish darajalari {#access-levels}
 
 - **Ochiq** — imzolovchi yoki tarmoq ruxsati talab qilinmaydi.
-- **Yozishga tayyor** — moliyalashtirilgan Taira sinov hisobi, aniq to‘lovchi va kran qaytargan joriy to‘lov aktivini ishlating.
+- **Yozishga tayyor** — moliyalashtirilgan Taira sinov hisobi, aniq to‘lovchi va kran siyosati e’lon qilgan joriy to‘lov aktivini ishlating.
 - **Ruxsat talab qilinadi** — Taira nomlangan bajarish muhiti ruxsatini yoki boshqariladigan nomlar makonini berishi kerak. Bunday ruxsat bo‘lmasa, yaratilgan mahalliy tarmoqdan foydalaning; mahalliy muvaffaqiyat Taira-da vakolat bermaydi.
 
 Amaliy qo‘llanmadagi hech bir retsept Minamoto-ga yozuv yubormaydi.

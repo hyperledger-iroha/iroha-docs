@@ -1,41 +1,28 @@
 ---
 translation_locale: ur
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: f1ea542f7a710830cd32465d141db8452e6418d426500995b9df7c9c4e1fd597
+translation_source_hash: ca6fd12e33df43b73a72dd6327133115aa44256cf579387c11bf0693797bf96e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # ایک ذہین معاہدہ بنائیں اور اس پر عمل درآمد کریں {#build-and-deploy-a-smart-contract}
 
 ## نتیجہ {#outcome}
 
-ایک Kotodama V1 معاہدے کی جانچ پڑتال اور مرتب کریں، مقامی طور پر اس کے عوامی داخلے پوائنٹ کو انجام دیں، تصدیق شدہ IVM آرٹیفیکٹ کو تعینات کریں، تعینات کردہ داخلہ پوائنٹ کی نقالی کریں، اور اسے واضح طور پر فیس کوٹ شدہ مجاز اکاؤنٹس کی طرف سے ادا کردہ فیس کے ساتھ جمع کروائیں.
+ایک Kotodama V1 معاہدے کی جانچ پڑتال اور مرتب کریں، مقامی طور پر اس کا عوامی ویو چلائیں، تصدیق شدہ IVM آرٹیفیکٹ کو صریح طور پر منتخب کردہ اور اتھارٹی کی ادا کردہ فیسوں کے ساتھ تعینات کریں، اور Torii کے ذریعے تعینات شدہ ویو پڑھیں۔
 
 ## لازمی شرائط {#prerequisites}
 
-- Iroha ذریعہ چیک آؤٹ `0010c5a70039eac101a4846499ba9ceaf43eb65c`، Rust، اور کارگو پر کمیٹی.
-- موجودہ `iroha` CLI اور ایک فنڈ Taira کلائنٹ سے [سے رابطہ کریں Taira](./connect-to-taira.md).
-- `IROHA_CONFIG` اور `IROHA_PRIVATE_KEY_FILE` میں مطلق راستے۔ کلیدی فائل کو مالک کے زیر انتظام ، ایک لنک کی باقاعدہ فائل ہونا ضروری ہے جس میں موڈ `0600` ہے۔ تعیناتی مددگار جان بوجھ کر کوئی ان لائن نجی کلید دلیل نہیں رکھتا ہے۔
-- Taira آپریٹر کی منظوری۔ معاہدے کے کوڈ کی رجسٹریشن کے لئے `CanRegisterSmartContractCode` کی ضرورت ہوتی ہے ، اور محفوظ تعیناتی کے لئے گورننس تفویض اور قانون سازی کی ضرورت ہوسکتی ہے۔ اگر Taira نے اس رسائی کی اجازت نہیں دی ہے تو ، ایک تخلیق شدہ مقامی نیٹ ورک پر تعینات کریں جس کی ابتدا اجازت دیتا ہے۔
+- Iroha ذریعہ چیک آؤٹ `c8c872461e92f04325c350cdd952f4276e96f9dc`، Rust، اور کارگو پر کمیٹی.
+- موجودہ `iroha` CLI اور `musubi` (چیک آؤٹ میں `cargo run -p musubi --` کے طور پر چلائیں)، نیز [Taira سے رابطہ کریں](./connect-to-taira.md) سے حاصل کردہ فنڈ شدہ Taira کلائنٹ۔
+- `IROHA_CONFIG` میں ایک مطلق راستہ۔ Musubi کی نیٹ ورک بائنڈنگ اس کلائنٹ فائل کا حوالہ محفوظ کرتی ہے اور اس کی اکاؤنٹ کلید سے تعیناتی پر دستخط کرتی ہے۔
+- عرفی نام کی اتھارٹی۔ عملدرآمد کنندہ معاہدے کے عین عرفی نام یا اس کے بالائی دائرہ کار کے لیے `CanManageAccountAlias` کا تقاضا کرتا ہے: `name::domain.dataspace` کے لیے مالک ڈومین، یا `name::dataspace` کے لیے ڈیٹا اسپیس۔ رجسٹرڈ اکاؤنٹس کو کوڈ رجسٹریشن کی الگ اجازت کی ضرورت نہیں ہوتی، اور محفوظ نیم اسپیسز کے لیے نیٹ ورک کا گورننس ورک فلو بھی درکار ہوتا ہے۔ مثالیں `cookbook_tuple::universal` استعمال کرتی ہیں؛ Taira پر اسے اپنی ملکیت والے ڈومین کے کسی عرفی نام سے بدلیں، یا ایسے پیدا کردہ مقامی نیٹ ورک پر تعینات کریں جس کا جینیسس عرفی نام کا دائرہ کار عطا کرتا ہو۔
 
 ```bash
-TORII_URL=https://taira.sora.org
 IROHA_SOURCE=/absolute/path/to/iroha
 IROHA_CONFIG=/absolute/path/to/taira.client.toml
-IROHA_PRIVATE_KEY_FILE=/absolute/path/to/taira-private-key.txt
-test -n "$TAIRA_ACCOUNT_ID"
-test -f "$IROHA_PRIVATE_KEY_FILE"
-
-CHAIN_ID="$({
-  python3 - "$IROHA_CONFIG" <<'PY'
-import sys
-import tomllib
-
-with open(sys.argv[1], "rb") as config_file:
-    print(tomllib.load(config_file)["chain"])
-PY
-})"
+test -f "$IROHA_CONFIG"
 ```
 
 ## قدم {#steps}
@@ -46,12 +33,12 @@ PY
 
 ```bash
 cd "$IROHA_SOURCE"
-mkdir -p ./contracts ./build/deployment
+mkdir -p ./contracts ./build
 cp ./crates/kotodama_lang/src/samples/tuple_return_demo.ko \
   ./contracts/tuple_return_demo.ko
 ```
 
-مکمل ذریعہ چھوٹا ہے اور موجودہ `seiyaku`/`kotoage` ترکیب کا استعمال کرتا ہے:
+مکمل ذریعہ چھوٹا ہے: ایک نجی مددگار `fn` اور ایک عوامی، صرف پڑھنے والا `view fn` جو صریح طور پر ہر کالر کو اجازت دیتا ہے:
 
 ```kotodama
 seiyaku TupleReturnDemo {
@@ -60,7 +47,7 @@ seiyaku TupleReturnDemo {
         return t;
     }
 
-    kotoage fn compute() -> (int, int) authorize("Entry") {
+    view fn compute() authorize(anyone) -> (int, int) {
         let p = pair(a: 3, b: 5);
         return (p.0, p.1);
     }
@@ -72,16 +59,16 @@ Kotodama Iroha ورچوئل مشین اور اس کے موجودہ ABI کو نش
 ### 2۔ آرٹی فیکٹس کی جانچ پڑتال، تعمیر اور تصدیق {#_2-check-build-and-verify-the-artifact}
 
 ```bash
-cargo run -p ivm --bin koto -- \
+cargo run -p kotodama_toolchain --bin koto -- \
   check ./contracts/tuple_return_demo.ko
 
-cargo run -p ivm --bin koto -- \
+cargo run -p kotodama_toolchain --bin koto -- \
   build \
   --out ./build/tuple_return_demo.to \
   --manifest-out ./build/tuple_return_demo.manifest.json \
   ./contracts/tuple_return_demo.ko
 
-cargo run -p ivm --bin koto -- \
+cargo run -p kotodama_toolchain --bin koto -- \
   build \
   --out ./build/tuple_return_demo.to \
   --manifest-out ./build/tuple_return_demo.manifest.json \
@@ -93,82 +80,90 @@ cargo run -p ivm --bin koto -- \
 
 ### بائٹ کوڈ کو مقامی طور پر چلائیں {#_3-run-the-bytecode-locally}
 
-`compute` ایک عوامی `kotoage` انٹری پوائنٹ ہے۔ اسے `debug-call` کے ساتھ چلائیں ، جو کسی لین دین کی پیش کش یا ادائیگی کیے بغیر مقامی آزمائشی ڈیٹا کے خلاف کام کرتا ہے۔
+`compute` ایک عوامی، صرف پڑھنے والا `view fn` ہے۔ اسے `debug-view` کے ساتھ چلائیں، جو کسی لین دین کو جمع کرائے یا اس کی ادائیگی کیے بغیر مرتب شدہ بائٹ کوڈ کو مقامی طور پر اختیاری آزمائشی ڈیٹا کے خلاف چلاتا ہے۔
 
 ```bash
-iroha --config "$IROHA_CONFIG" --machine contract debug-call \
+iroha --config "$IROHA_CONFIG" --machine contract debug-view \
   --code-file ./build/tuple_return_demo.to \
   --entrypoint compute \
-  > ./build/local-call.json
+  > ./build/local-view.json
 
 jq -e '.ok == true and .result == ["3", "5"]' \
-  ./build/local-call.json
+  ./build/local-view.json
 ```
 
 Kotodama انٹیجرز کو JSON سٹرنگ کے طور پر پیش کیا جاتا ہے، لہذا ڈکوڈ ٹوپل `["3", "5"]` ہے۔
 
-### 4۔ مقامی معاون کے ذریعے تعینات کریں۔ {#_4-deploy-through-the-native-helper}
+### 4۔ تصدیق شدہ آرٹیفیکٹ کو Musubi کے ساتھ تعینات کریں {#_4-deploy-the-verified-artifact-with-musubi}
 
-مددگار بائٹ کوڈ کے ٹکڑے اپ لوڈ کرتا ہے ، دستخط شدہ مینی فیسٹ رجسٹر کرتا ہے ، اور ایک `CommitContractDeployment` آپریشن پیش کرتا ہے۔ یہ ہر ٹرانزیکشن کی فیس کوٹیشن دیتا ہے اور کسی ایسے کوٹیشن سے انکار کرتا ہے جو منتخب کردہ ادائیگی کنندہ یا گیس بانڈ کو تبدیل کرے۔
+`iroha contract` معاہدوں کا معائنہ کرتا ہے، ان کے ویوز چلاتا ہے اور انہیں ڈیبگ کرتا ہے لیکن انہیں تعینات نہیں کرتا، اس لیے Taira پر تعیناتیاں Musubi کے ذریعے چلتی ہیں۔ اس کی تعیناتی سروس بائٹ کوڈ کے ٹکڑے اپ لوڈ کرتی ہے، تصدیق شدہ مینی فیسٹ رجسٹر کرتی ہے، اور ایک `CommitContractDeployment` آپریشن پیش کرتی ہے۔ یہ ہر ٹرانزیکشن کی کوٹیشن لیتی ہے، ایسی کوٹیشن مسترد کرتی ہے جو منتخب کردہ ادائیگی کنندہ، اسپانسر ریویژن یا گیس کی حد کو تبدیل کرے، اور پہلے سے تیار شدہ آرٹیفیکٹ کو صرف اس وقت تعینات کرتی ہے جب لاک شدہ پیکج بلڈ اس کے کوڈ اور ABI ہیشز کو دوبارہ پیدا کر دے۔ Kagami کے زیر انتظام مقامی نیٹ ورک پر اس کے بجائے `kagami contract deploy`، `--alias cookbook_tuple::universal --json` کے ساتھ `./build/tuple_return_demo.to` کو تعینات کرتا ہے؛ اس کی رسید `.receipt` کے تحت ہوتی ہے، اور `kagami context show` وہ کلائنٹ ترتیب پرنٹ کرتا ہے جسے `IROHA_CONFIG` کے طور پر استعمال کرنا ہے۔
 
 ```bash
-printf '%s\n' \
-  '{"payer":"authority","value":{"charge_limits":[],"gas_limit":1500000}}' \
-  > ./build/fee-payment.json
+cat > ./contracts/Musubi.toml <<'TOML'
+manifest-version = 1
 
-cargo run -p iroha_cli --bin ivm_contract_deploy -- \
-  --torii-url "$TORII_URL" \
-  --chain-id "$CHAIN_ID" \
-  --authority "$TAIRA_ACCOUNT_ID" \
-  --private-key-file "$IROHA_PRIVATE_KEY_FILE" \
-  --code-file ./build/tuple_return_demo.to \
-  --contract-alias cookbook_tuple::universal \
-  --fee-payment-json ./build/fee-payment.json \
-  --out-dir ./build/deployment \
+[package]
+namespace = "local"
+name = "cookbook-tuple"
+version = "0.1.0"
+edition = "1"
+abi-version = 1
+
+[[contract]]
+name = "tuple_return_demo"
+path = "tuple_return_demo.ko"
+TOML
+
+cargo run -p musubi -- --manifest-path ./contracts/Musubi.toml check
+
+cargo run -p musubi -- --manifest-path ./contracts/Musubi.toml \
+  network configure taira \
+  --config "$IROHA_CONFIG" \
+  --fee-payer authority \
+  --contract tuple_return_demo \
+  --alias cookbook_tuple::universal
+
+cargo run -p musubi -- --manifest-path ./contracts/Musubi.toml --format json \
+  deploy --network taira \
+  --contract tuple_return_demo \
+  --artifact ./build/tuple_return_demo.to \
+  --artifact-manifest ./build/tuple_return_demo.manifest.json \
   > ./build/deployment.json
 
-jq '{contract_address, code_hash_hex, final, fee_quotes}' \
+jq '.data.receipt | {contract_address, code_hash, stored_artifact_matches}' \
   ./build/deployment.json
 ```
 
-خالی `charge_limits` درخواست ایک کاپی شدہ اثاثہ شناخت نہیں ہے: مددگار دستخط کرنے سے پہلے عین مطابق لائیو کوٹیشن قبول کرتا ہے۔ واپسی چارج اثاثے کے ساتھ موازنہ کریں موجودہ فوسیٹ کا جواب۔ معاہدہ کالز صرف ٹائپ کردہ براہ راست کوٹیشن کے ذریعے فیس انتخاب قبول کرتی ہیں۔ `gas_asset_id` لین دین میٹا ڈیٹا پہلی ریلیز کے معاہدے کا حصہ نہیں ہے.
+بائنڈنگ `--fee-payer authority` استعمال کرتی ہے؛ Musubi دستخط سے پہلے Taira کے فیس اثاثے میں عین فیس کی کوٹیشن دیتا ہے۔ واپس آنے والے چارج اثاثے کا موازنہ اس اثاثے سے کریں جو موجودہ فوسیٹ پالیسی شائع کرتی ہے۔ معاہدہ کالز صرف مخصوص قسم والی براہ راست کوٹیشن کے ذریعے فیس انتخاب قبول کرتی ہیں؛ `gas_asset_id` لین دین میٹا ڈیٹا پہلی ریلیز کے معاہدے کا حصہ نہیں ہے۔
 
-### 5۔ تعینات انٹری پوائنٹ کی نقالی کریں اور کال کریں۔ {#_5-simulate-and-call-the-deployed-entrypoint}
+### 5۔ تعینات شدہ ویو پڑھیں {#_5-read-the-deployed-view}
 
-تخروپن Torii پر عوامی داخلے پوائنٹ کو جمع کرانے کے بغیر چلاتا ہے۔ مندرجہ ذیل کال ایک لین دین ہے اور اس وجہ سے اتھارٹی فیس ادا کرنے والا صریح طور پر منتخب کرتا ہے۔ دونوں امجاز اکاؤنٹسات 1,500,000 گیس کی حد کو پابند کرتے ہیں۔
+`contract view` صرف پڑھنے والے انٹری پوائنٹ کو Torii پر کسی ٹرانزیکشن یا فیس کے بغیر چلاتا ہے۔ ویو کی کوئی ٹرانزیکشن شکل نہیں ہوتی: Torii اپنے کال روٹس پر ویو سلیکٹر کو مسترد کر دیتا ہے۔
 
 ```bash
-iroha --config "$IROHA_CONFIG" --machine contract call \
-  --simulate \
+iroha --config "$IROHA_CONFIG" --machine contract view \
   --contract-alias cookbook_tuple::universal \
   --entrypoint compute \
   --gas-limit 1500000 \
-  > ./build/deployed-simulation.json
+  > ./build/deployed-view.json
 
 jq -e '.ok == true and .result == ["3", "5"]' \
-  ./build/deployed-simulation.json
-
-iroha --config "$IROHA_CONFIG" \
-  --machine \
-  --fee-payer authority \
-  contract call \
-  --contract-alias cookbook_tuple::universal \
-  --entrypoint compute \
-  --gas-limit 1500000 \
-  --wait \
-  --timeout-ms 60000 \
-  > ./build/deployed-call.json
-
-jq -e '.terminal_kind == "Applied"' ./build/deployed-call.json
+  ./build/deployed-view.json
 ```
 
 ## تصدیق کریں {#verify}
 
-عرفی کو حل کریں ، واپس آنے والے کوڈ ہیش کے ذریعہ آن لائن مینی فیسٹ حاصل کریں ، اور ایک ہی عوامی داخلہ پوائنٹ کو کینونیکل ایڈریس کے ذریعہ نقالی بنائیں:
+عرفی کو حل کریں، تعینات شدہ ویو کے لیے Torii کی بتائی گئی کوڈ ہیش کے ذریعے آن چین مینی فیسٹ حاصل کریں، اور وہی ویو کینونیکل ایڈریس کے ذریعے چلائیں:
 
 ```bash
-CODE_HASH="$({ jq -er '.code_hash_hex' ./build/deployment.json; })"
-CONTRACT_ADDRESS="$({ jq -er '.contract_address' ./build/deployment.json; })"
+CONTRACT_ADDRESS="$({
+  jq -er '.data.receipt.contract_address' ./build/deployment.json
+})"
+CODE_HASH="$({ jq -er '.code_hash_hex' ./build/local-view.json; })"
+DEPLOYED_CODE_HASH="$({
+  jq -er '.code_hash_hex' ./build/deployed-view.json
+})"
+test "$DEPLOYED_CODE_HASH" = "$CODE_HASH"
 
 RESOLVED_ADDRESS="$({
   iroha --config "$IROHA_CONFIG" --machine \
@@ -178,36 +173,36 @@ RESOLVED_ADDRESS="$({
 test "$RESOLVED_ADDRESS" = "$CONTRACT_ADDRESS"
 
 iroha --config "$IROHA_CONFIG" contract manifest get \
+  --dataspace-id 0 \
   --code-hash "$CODE_HASH" \
   --out ./build/on-chain-manifest.json
 
-iroha --config "$IROHA_CONFIG" --machine contract call \
-  --simulate \
+iroha --config "$IROHA_CONFIG" --machine contract view \
   --contract-address "$CONTRACT_ADDRESS" \
   --entrypoint compute \
-  > ./build/address-simulation.json
+  > ./build/address-view.json
 
 jq -e '.ok == true and .result == ["3", "5"]' \
-  ./build/address-simulation.json
+  ./build/address-view.json
 ```
 
-تعینات صرف اس وقت مکمل ہوتا ہے جب مستعار واپس آنے والے ایڈریس پر حل ہوجاتا ہے ، منیفیس ایک ہی کوڈ ہیش ، مقامی اور Torii تخروپن کی واپسی `["3", "5"]` کے تحت پڑھنے کے قابل ہو جاتا ہے ، اور جمع کردہ کال `Applied` تک پہنچ جاتی ہے۔
+تعیناتی صرف اس وقت مکمل ہوتی ہے جب تعیناتی کی رسید محفوظ شدہ آرٹیفیکٹ کو تصدیق شدہ بتائے، عرفی نام واپس آنے والے ایڈریس پر حل ہو، مینی فیسٹ اسی کوڈ ہیش کے تحت پڑھنے کے قابل ہو، اور مقامی اور Torii ویوز `["3", "5"]` واپس کریں۔
 
 ## خرابی کا سراغ لگانا {#troubleshooting}
 
-- `CanRegisterSmartContractCode` ناکامیوں کے لئے Taira آپریٹر کی تفویض یا مقامی نیٹ ورک پر جینیس / بوٹسٹریپ تبدیلی کی ضرورت ہوتی ہے۔ ایک عام اکاؤنٹ اس حقیقت کے بعد خود کو یہ اجازت نہیں دے سکتا۔
-- گورننس یا محفوظ لین کی تردید کا مطلب یہ ہے کہ تعیناتی کو اس نیٹ ورک کے ذریعہ مطلوبہ عین مطابق منظوری دینے والے تفویض کی ضرورت ہے۔ منظوری دینے والوں کی فہرست کو مربوط کریں؛ اکاؤنٹ IDs ایجاد نہ کریں۔
-- ایک manifest یا ABI عدم مطابقت کا مطلب ہے کہ بائٹ کوڈ ، manifest اور node runtime ایک ہی artifact کی وضاحت نہیں کرتے ہیں۔ `--verify` کے ساتھ pinned commit پر تعمیر کریں.
+- `deployment authority lacks CanManageAccountAlias`، یا عملدرآمد کنندہ کا `authority is not permitted to manage contract alias`، کا مطلب ہے کہ اکاؤنٹ اس عرفی نام کو منسلک نہیں کر سکتا۔ اپنی ملکیت والے ڈومین کا عرفی نام استعمال کریں، یا اس دائرہ کار کے مالک سے عین عرفی نام کی عطا کردہ اجازت یا اس کے ڈومین یا ڈیٹا اسپیس کی عطا کردہ اجازت حاصل کریں؛ لوکل نیٹ پر اسے جینیسس میں عطا کریں۔
+- محفوظ نیم اسپیس کی بنا پر مسترد ہونے کا مطلب ہے کہ عرفی نام کی نیم اسپیس گورننس کے تحت ہے۔ منظوری دینے والوں کے اکاؤنٹ IDs کی فہرست دینا منظوری کا ثبوت نہیں ہے؛ اس نیم اسپیس کے لیے نیٹ ورک کا گورننس ورک فلو (`iroha app gov deploy propose`) استعمال کریں، یا اس سے باہر کوئی عرفی نام منتخب کریں۔
+- مینی فیسٹ یا ABI کی عدم مطابقت کا مطلب ہے کہ بائٹ کوڈ، مینی فیسٹ اور نوڈ رن ٹائم ایک ہی آرٹیفیکٹ کی وضاحت نہیں کرتے۔ مقررہ commit پر دوبارہ تعمیر کریں، پھر `--verify` کے ساتھ بلڈ دوبارہ چلائیں۔
 - `fee quote changed ... gas bound` کا مطلب ہے کہ مطلوبہ ٹائپ کردہ ارادے اور براہ راست کوٹ متفق نہیں ہیں۔ ایک دستخط شدہ لین دین میں ترمیم کرنے کے بجائے دوبارہ پیش رفت کریں.
-- تعیناتی مددگار ان لائن چابیاں ، اجازت دینے والے کلیدی فائل طریقوں ، symlinks کو مسترد کرتا ہے ، اور نیٹ ورک میں جمع کرنے سے پہلے منسلک فائلوں کو ضرب دیتا ہے۔
-- صرف نقطہ نظر کے اندراج کی غلطی کا مطلب ہے کہ `compute` غلط کمانڈ فیملی سے روٹ کیا گیا تھا۔ یہ نمونہ `kotoage` کا اعلان کرتا ہے۔ لہذا کال سمیلیشن یا جمع کرانے کا استعمال کریں۔
+- منقطع شدہ تعیناتی اپنا دستخط شدہ منصوبہ ایک جرنل میں محفوظ رکھتی ہے۔ نئے منصوبے پر دستخط کرنے کے بجائے اسے `musubi deploy --resume <JOURNAL>` کے ذریعے بحال کریں۔
+- `is read-only and cannot be invoked as a transaction` یا `is not a kotoage or lifecycle entrypoint` کا مطلب ہے کہ `compute` کو کال کمانڈ پر بھیجا گیا تھا۔ یہ نمونہ `view fn` کا اعلان کرتا ہے، اس لیے مقامی طور پر `debug-view` اور Torii پر `view` استعمال کریں۔
 - معاہدے کے کالز کو مثبت ٹائپ شدہ گیس کی حد کی ضرورت ہوتی ہے۔ پہلی ریلیز کال کا معاہدہ اعلی سطح کے گیس یا فیس اثاثہ میٹا ڈیٹا کو مسترد کرتا ہے۔
 
 ## ماخذ اور متعلقہ دستاویزات {#source-and-related-docs}
 
-- [Kotodama V1 کمانڈ پر عملدرآمد پنڈل کمیٹ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
-- [ٹپل ریٹرن ماخذ کا نمونہ پنڈ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko) پر
-- [پنڈل کمیٹ پر مقامی تعیناتی معاون](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
-- [کنٹریکٹ انٹیگریشن ٹیسٹ پر پنڈ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
+- [مقررہ commit پر Kotodama V1 کمانڈ کا نفاذ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_toolchain/src/bin/koto.rs)
+- [ٹپل ریٹرن ماخذ کا نمونہ پنڈ commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/tuple_return_demo.ko) پر
+- مقررہ commit پر [Musubi تعیناتی کمانڈ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/musubi/src/command_deploy.rs) اور [مقامی معاہدہ تعیناتی سروس](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_contract_deploy/src/lib.rs)
+- [کنٹریکٹ انٹیگریشن ٹیسٹ پر پنڈ commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/contracts.rs)
 - [ذہین معاہدے](/ur/blockchain/smart-contracts.md)
 - [CLI حوالہ](/ur/get-started/operate-iroha-via-cli.md)

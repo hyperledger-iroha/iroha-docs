@@ -1,22 +1,22 @@
 ---
 translation_locale: am
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: 68ef931f3d37b9bd40fcf61c9a77313539ca0bd648405834d161a018debb491a
+translation_source_hash: 866b7d3ca37be67878f6f319ce0b0e27eac52c581decad1f46096ef75ad1b10f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # መጠይቅ blockchain መዝገብ ሁኔታ {#query-ledger-state}
 
 ## ውጤት {#outcome}
 
-Taira JSON ግብዓቶችን ያንብቡ እና ያዘጋጁ፣ ከዚያ የተተየቡ Iroha መጠይቆችን በማጣሪያዎች፣ አመክንዮአዊ ገጽ ማድረግ፣ መደርደር፣ መጠኖችን ማምጣት እና ወደፊት-ብቻ ጠቋሚ ቀጣይነት ይጠቀሙ። እንዲሁም አገልጋዩ የተላለፈውን `--select` tuple ከመገምገሙ በፊት በመራጭ ትንበያ ላይ ከመታመን ይቆጠባሉ።
+Taira JSON ግብዓቶችን ያንብቡ እና ያዘጋጁ፣ ከዚያ የ Torii ስብስብ መጠይቆችን ከ CLI እና ከ Rust SDK በማጣሪያዎች፣ በመደርደር፣ በአገልጋይ በኩል በሚደረግ የመስክ ምርጫ (projection)፣ በገጽ ገደቦች እና ግልጽ ባልሆነ የ`next_cursor` ቀጣይነት ይጠቀሙ። እንዲሁም ዝርዝሮችን ለማግኘት ዓይነታቸው የተገለጸ የተፈረሙ መጠይቆችን አይጠቀሙም፤ እነዚያ መጠይቆች ዝርዝሮችን አያጣሩም፣ አይደረድሩም ወይም መስኮቻቸውን አይመርጡም።
 
 ## ቅድመ ሁኔታዎች {#prerequisites}
 
 - `curl`፣ `jq`፣ Node.js 24፣ እና የአሁኑ `iroha` CLI።
 - ተነባቢ ብቻ Taira መዳረሻ።
-- ለተፈረሙ የተተየቡ መጠይቅ ምሳሌዎች፣ የደንበኛ ውቅር ለ Taira ወይም የመነጨ የአካባቢ አውታረ መረብ።
+- ለ CLI ምሳሌዎች፣ የደንበኛ ውቅር ለ Taira ወይም ለመነጨ የአካባቢ አውታረ መረብ።
 - ለ Rust ምሳሌ፣ ከዒላማው አውታረ መረብ ጋር በተመሳሳዩ Iroha ምንጭ ክለሳ ላይ የተሰካ ፕሮጀክት።
 
 ## እርምጃዎች {#steps}
@@ -30,25 +30,23 @@ Taira JSON ግብዓቶችን ያንብቡ እና ያዘጋጁ፣ ከዚያ የ�
 ```bash [curl]
 curl -fsS -H 'Accept: application/json' --get \
   https://taira.sora.org/v1/domains \
-  --data-urlencode 'sort=id:asc' \
+  --data-urlencode 'sort=id' \
   --data-urlencode 'limit=5' \
-  --data-urlencode 'offset=0' \
-  --data-urlencode 'count_mode=exact' \
-  | jq '{total, ids: [.items[].id]}'
+  --data-urlencode 'include_total=true' \
+  | jq '{total, next_cursor, ids: [.items[].id]}'
 ```
 
 ```js [Node.js]
 const root = 'https://taira.sora.org'
-const limit = 5
 const seen = new Set()
+let cursor = null
 
-for (let offset = 0; ; offset += limit) {
+do {
   const url = new URL('/v1/domains', root)
   url.search = new URLSearchParams({
-    sort: 'id:asc',
-    limit: String(limit),
-    offset: String(offset),
-    count_mode: 'exact',
+    sort: 'id',
+    limit: '5',
+    ...(cursor ? { cursor } : {}),
   })
 
   const response = await fetch(url, {
@@ -63,106 +61,90 @@ for (let offset = 0; ; offset += limit) {
     seen.add(domain.id)
     console.log(domain.id)
   }
-  if (page.items.length < limit || seen.size >= page.total) break
-}
+  cursor = page.next_cursor
+} while (cursor)
 ```
 
 :::
 
-ይህ HTTP ወለል `limit` እና `offset` ይጠቀማል። መንገዱ ርካሽ የመቁጠር ሁነታን ሲጠቀም የተተወውን ወይም የታሰረውን `total` እንደተለመደው ይያዙ።
+ይህ HTTP ወለል በ`limit` እና ግልጽ ባልሆነ `next_cursor` ገጽ በገጽ ይመልሳል፤ `null` እስኪሆን ድረስ ሳይቀይሩት እንደ `cursor` መልሰው ይላኩት። `total` የሚታየው `include_total=true` ሲጠይቁ ብቻ ነው፣ ይህም ሙሉ ቅኝት ይጠይቃል።
 
-### 2. የተተየበ CLI መጠይቅን ያጣሩ እና ያጣሩ {#_2-filter-and-batch-a-typed-cli-query}
+### 2. ስብስብን በ CLI ያጣሩ {#_2-filter-a-collection-with-the-cli}
 
-CLI የተተየበ ተደጋጋሚ መጠይቅን ተከታታይ ያደርገዋል እና የአገልጋይ ቀጣይ ጠቋሚዎችን ከውስጥ ይከተላል። እዚህ አመክንዮአዊ ውጤቱ በአንድ ረድፍ ብቻ የተገደበ ሲሆን `--fetch-size 1` በአንድ ዙር ጉዞ የሚመጣውን ከፍተኛውን ባች ይቆጣጠራል።
+CLI ማጣሪያውን፣ የመስክ ምርጫውን (projection) እና የገጽ መጠኑን ወደ ስብስቡ API የመጨረሻ ነጥብ ይልካል እና አንድ ገጽ፣ `{items, next_cursor}`፣ ያትማል። `next_cursor` `null` እስኪሆን ድረስ ለመከተል `--all` ያክሉ።
 
 ```bash
-DOMAIN_PREDICATE='{"equals":[{"field":"id","value":"wonderland.universal"}]}'
+DOMAIN_FILTER='id = "universal.universal"'
 
 iroha --config ./localnet/client.toml \
-  ledger domain list filter "$DOMAIN_PREDICATE" \
-  --limit 1 \
-  --offset 0 \
-  --fetch-size 1
+  ledger domain list \
+  --filter "$DOMAIN_FILTER" \
+  --select id \
+  --limit 1
 ```
 
-ማጣራት የሚከሰተው ከገጽ ከመውጣቱ በፊት ነው። በጥያቄ ላይ የተመሰረቱ የተተየቡ ትንበያዎችን ይጠቀሙ; ለመለያ ወይም ለንብረት ቅድመ ሁኔታ ለጎራ ደህንነቱ በተጠበቀ ሁኔታ እንደገና ጥቅም ላይ ሊውል አይችልም።
+ማጣራት የሚከናወነው ገጽ በገጽ ከመከፋፈሉ በፊት ነው። እያንዳንዱ ስብስብ የራሱን መስኮች ብቻ ይቀበላል፤ ያልታወቀ መስክ ምንም ከማያዛምድ ውጤት ይልቅ `invalid_filter` ይመልሳል።
 
 ### 3. በተረጋጋ ሜታዳታ ቁልፍ ደርድር {#_3-sort-by-a-stable-metadata-key}
 
-የተተየበ የመጠይቅ መደርደር በአንድ ሜታዳታ ቁልፍ ላይ የተመሰረተ መዝገበ ቃላት ነው። ያ ቁልፍ የሌላቸው እቃዎች በሶፍትዌር ማስፈጸሚያ አካባቢ የተገለጸውን ቅደም ተከተል ይከተላሉ፣ ስለዚህ በክምችቱ ውስጥ በቋሚነት የሚሞላ ቁልፍ ይጠቀሙ።
+የስብስብ የመደርደር ቁልፎች የተገለጹ መስኮችን እና `metadata.<key>`ን ይቀበላሉ፤ ለቁልቁል (descending) ቅደም ተከተል ቁልፉን በ`-` ቅድመ ቅጥያ ያድርጉ። ቁልፉ የሌላቸው ረድፎች በሽቅብ (ascending) ቅደም ተከተል መጀመሪያ ይደረደራሉ፣ እኩል የሆኑ ረድፎችም የረድፍ ማንነትን ይከተላሉ፤ ስለዚህ በስብስቡ ውስጥ በቋሚነት የሚሞላ ቁልፍ ይጠቀሙ።
 
 ```bash
 iroha --config ./localnet/client.toml \
   --machine \
-  ledger account list all \
-  --verbose \
-  --sort-by-metadata-key key \
-  --order asc \
+  account list \
+  --sort metadata.key \
   --limit 10 \
-  --offset 0 \
-  --fetch-size 2 \
-  | jq '[.[] | {id, metadata}]'
+  | jq '[.items[] | {id, metadata}]'
 ```
 
-ተመዝግቦ የገባው CLI `--select` JSON ይተነትናል እና የመራጩን ቱፕል ያስተላልፋል፣ ነገር ግን አሁን ያለው ቀላል ክብደት ያለው መጠይቅ DSL ያንን መራጭ በአገልጋዩ ላይ አይገመግምም። በዙሪያው የትንበያ ውል ገና አይገነቡ። የተተየበ SDK ትንበያ ይጠቀሙ የታለመው የሶፍትዌር ማስፈጸሚያ አካባቢ ከሚደግፈው በኋላ ብቻ ወይም የተረጋገጠውን ውጤት ከላይ እንደተገለፀው በ `jq` ወይም JavaScript ያዘጋጁ።
+`--select` በአገልጋይ በኩል የሚደረግ የመስክ ምርጫ (projection) ነው፦ `--select id,metadata` እነዚያን መስኮች ብቻ ይመልሳል፣ ያልታወቀ መስክ ደግሞ `invalid_select` ይመልሳል። ዓይነታቸው የተገለጸ የተፈረሙ መጠይቆች ሁልጊዜ ሙሉ እቃዎችን ይመልሳሉ፣ ስለዚህ ውጤቶቻቸውን ከላይ እንደተገለጸው በ`jq` ወይም JavaScript በደንበኛ በኩል ያዘጋጁ።
 
 ### 4. Rust ተደጋጋሚው ግልጽ ያልሆኑ ጠቋሚዎችን ይከተል {#_4-let-the-rust-iterator-follow-opaque-cursors}
 
-`Pagination` የአመክንዮአዊ ውጤት ስብስብ ገደቦችን ያዘጋጃል።. `FetchSize` እያንዳንዱን የአገልጋይ ስብስብ ያስተዳድራል።. የተመለሰው ተደጋጋሚው በአገልጋይ የመነጨውን ጠቋሚ በመጠቀም ቀጣይ ጥያቄዎችን በግልፅ ይልካል።.
+`limit` የገጽ መጠኑን ያዘጋጃል። በ`list` የሚመለሰው ተደጋጋሚ (iterator) የአሁኑ ገጽ ሙሉ በሙሉ ከተነበበ በኋላ ብቻ የሚቀጥለውን ገጽ በአገልጋዩ `next_cursor` ይጠይቃል፣ `take` ደግሞ አመክንዮአዊ ውጤቱን ይገድባል። እዚህ `client` `iroha::blocking::Client` ነው።
 
 ```rust
-use std::num::NonZeroU64;
+use iroha::collections::{Collection, ListQuery, SortKey};
 
-use iroha::data_model::{
-    prelude::FindAssetsDefinitions,
-    query::{
-        builder::QueryBuilderExt as _,
-        parameters::{FetchSize, Pagination},
-    },
-};
+let query = ListQuery::new().sort_by(SortKey::asc("id")).limit(5);
 
-let definitions = client
-    .query(FindAssetsDefinitions::new())
-    .with_pagination(Pagination::new(NonZeroU64::new(25), 0))
-    .with_fetch_size(FetchSize::new(NonZeroU64::new(5)))
-    .execute_all()?;
-
-for definition in definitions {
-    println!("{} {}", definition.id(), definition.name());
+for definition in client.list(Collection::AssetDefinitions, query).take(25) {
+    let definition = definition?;
+    println!("{:?} {:?}", definition.get("id"), definition.get("name"));
 }
 ```
 
-A `ForwardCursor` በስልጣን የታሰረ፣ ሂደት-አካባቢያዊ እና ወደፊት-ብቻ ነው። በፍፁም አይተነትኑት፣ አያዋህዱት፣ በፍቃድ ርእሰ መምህራን መካከል አያካፍሉት፣ ወይም በ Torii አጋጣሚዎች ላይ እንደ ተንቀሳቃሽ ከቆመበት ቀጥል ቶከን አያቆዩት። ጊዜው ካለፈ፣ ሆን ተብሎ በመተግበሪያ ደረጃ የፍተሻ ነጥብ ዋናውን ጥያቄ እንደገና ያስጀምሩት።
+`next_cursor` ከስብስቡ፣ ከመንገዱ፣ ከማጣሪያው እና ከመደርደሩ ጋር የታሰረ ግልጽ ያልሆነ የቁልፍ ስብስብ (keyset) አቀማመጥ ነው። በጭራሽ አይተንትኑት ወይም በራስዎ አይፍጠሩት፣ እና በተለየ ማጣሪያ ወይም መደርደር እንደገና አይጠቀሙበት፤ Torii ያንን በ`invalid_cursor` ውድቅ ያደርጋል። በገጾች መካከል የገቡ ወይም የተወገዱ ረድፎች በኋላ ያለ ገጽ ተዛማጅ ያልሆኑ ረድፎችን እንዲደግም ወይም እንዲዘል በጭራሽ አያደርጉም።
 
 ## አረጋግጥ {#verify}
 
-ትክክለኛው የጎራ ማጣሪያ `wonderland.universal` ብቻ መመለስ አለበት። የተሳካ CLI መውጫን ብቻውን ከመቁጠር ይልቅ ውጤቱን ያረጋግጡ
+ትክክለኛው የጎራ ማጣሪያ `universal.universal` ብቻ መመለስ አለበት። የተሳካ CLI መውጫን ብቻውን ከመቁጠር ይልቅ ውጤቱን ያረጋግጡ
 
 ```bash
 iroha --config ./localnet/client.toml \
   --machine \
-  ledger domain list filter "$DOMAIN_PREDICATE" \
-  --limit 1 --offset 0 --fetch-size 1 \
-  | jq -e 'length == 1 and .[0] == "wonderland.universal"'
+  ledger domain list --filter "$DOMAIN_FILTER" --select id --limit 1 \
+  | jq -e '[.items[].id] == ["universal.universal"]'
 ```
 
-ለገጽ አፕሊኬሽን መጠይቆች፣ እንዲሁም መታወቂያዎች በገጾች ላይ እንደማይደገሙ፣ የተጠየቀው አመክንዮአዊ ገደብ በጭራሽ እንደማያልፍ እና ጊዜው ያለፈበት ጠቋሚ ከሰነድ የፍተሻ ነጥብ እንደገና ከጀመረ በኋላ እንደገና መሞከሩን ይሞክሩ።
+ለገጽ አፕሊኬሽን መጠይቆች፣ እንዲሁም መታወቂያዎች በገጾች ላይ እንደማይደገሙ፣ የተጠየቀው አመክንዮአዊ ገደብ በጭራሽ እንደማያልፍ እና ውድቅ የተደረገ ጠቋሚ በሰነድ ከተመዘገበ የፍተሻ ነጥብ እንደገና እንደሚጀምር ይሞክሩ።
 
 ## መላ ፍለጋ {#troubleshooting}
 
 - ነጠላ መጠይቅ ሊደጋገም የሚችል ማጣሪያ፣ መደርደር፣ ገጽ አወጣጥ ወይም መለኪያዎችን አምጡ አይቀበልም። እነዚያ መቆጣጠሪያዎች በሚያስፈልጉበት ጊዜ ተጓዳኝ የዝርዝር መጠይቁን ይጠቀሙ።
-- `fetch_size` ዜሮ ያልሆነ ባች ፍንጭ እንጂ አጠቃላይ የውጤት ገደብ አይደለም።. አሁን ያለው ነባሪ `100` ነው፣ እና የሶፍትዌር ማስፈጸሚያ አካባቢ ከከፍተኛው በላይ እሴቶችን ውድቅ ያደርጋል።
-- ያልታወቀ፣ ጊዜው ያለፈበት ወይም የውጭ ጠቋሚ ሆን ተብሎ እንደገና ጥቅም ላይ ሊውል አይችልም። ጥያቄውን እንደገና ያስጀምሩ; ግልጽ ያልሆነውን እሴት ለመጠገን አይሞክሩ.
-- ሜታዳታ መደርደር ከ አጠቃላይ የመስክ መደርደር ጋር ተመሳሳይ አይደለም። አንዳንድ እቃዎች የተመረጠው ቁልፍ ከሌላቸው ለጎደሉ ቁልፎች ቅደም ተከተል ይመዝግቡ ወይንም የተለየ ስትራቴጂ ይምረጡ
-- CLI `--select`ን ይተነትናል እና ያስተላልፋል፣ ነገር ግን የአሁኑ አገልጋይ ቀላል ክብደት ያለውን መራጭ ቱፕል አይገመግምም። ለተዘረጋው የሶፍትዌር ማስፈጸሚያ አካባቢ የአገልጋይ-ጎን መራጭ ድጋፍ ካልተረጋገጠ በስተቀር የደንበኛ-ጎን ትንበያን ይተግብሩ።
-- ሰፊ ያልተገደቡ መጠይቆች የአውታረ መረብ አቻ ስራን፣ የደንበኛ ማህደረ ትውስታን እና የጠቋሚ የህይወት ዘመን ስጋትን ይጨምራሉ። ለተጠቃሚው ተስማሚ የሆነ አመክንዮአዊ ገደብ እና የማምጣት መጠን ያዘጋጁ።
-- ይፋዊ JSON የመርጃ መለኪያዎች እና የተፈረሙ የተተየቡ መጠይቅ መለኪያዎች ተዛማጅ ናቸው ነገር ግን ሊለዋወጡ የሚችሉ ተከታታይ ቅርጸቶች አይደሉም። ለተተየቡ የመጠይቅ ውሂብ መያዣዎች SDK ወይም CLI ን ይምረጡ።
+- `limit` የገጽ መጠኑ ነው እንጂ አጠቃላይ ውጤቱ አይደለም፦ ቢያንስ 1 እና ቢበዛ የኖዱ `torii.app_api_max_list_limit` (ነባሪው 500)፤ የ Torii ነባሪ 100 ነው። ተጨማሪ ለማንበብ `next_cursor`ን፣ `--all`ን ወይም የ SDK ተደጋጋሚውን (iterator) ይከተሉ።
+- `invalid_cursor` ማለት ጠቋሚው የተበላሸ ነው ወይም ከተለየ ስብስብ፣ መንገድ፣ ማጣሪያ ወይም መደርደር የመጣ ነው ማለት ነው። ጥያቄውን እንደገና ያስጀምሩ፤ ግልጽ ያልሆነውን እሴት ለመጠገን አይሞክሩ።
+- ጥቂት ረድፎችን ብቻ የሚያዛምድ ማጣሪያ `null` ያልሆነ `next_cursor` ያለው አጭር ወይም ባዶ ገጽ ሊመልስ ይችላል። `null` እስኪሆን ድረስ መከተሉን ይቀጥሉ።
+- `--filter` እና የ HTTP `filter` መለኪያ የ Torii የጽሑፍ ሰዋሰውን ይቀበላሉ፣ ለምሳሌ `id = "universal.universal"` ወይም `exists(metadata.tier)`። የ JSON ቅድመ ሁኔታ ነገር (predicate object) የማጣሪያ ጽሑፍ አይደለም እና ልክ ያልሆነ `filter` ሆኖ አይሳካም።
+- ሰፊ ያልተገደቡ መጠይቆች የአውታረ መረብ አቻ ስራን እና የደንበኛ ማህደረ ትውስታን ይጨምራሉ። ለተጠቃሚው ተስማሚ የሆነ አመክንዮአዊ ገደብ እና የገጽ መጠን ያዘጋጁ።
+- የተፈረመው `/v1/query` የዝርዝር API አይደለም። ነጠላ መጠይቆችን እና ጥቂት ያልተጣሩ ሊደጋገሙ የሚችሉ የመጠይቅ መነሻዎችን ይቀበላል፣ ሌሎችን ደግሞ፣ ለምሳሌ `FindDomains` ወይም `FindAssetDefinitions`ን፣ በ`signed_query_shape_not_admitted` ውድቅ ያደርጋል። የስብስብ API የመጨረሻ ነጥቦች፣ የ CLI `list` ትዕዛዞች እና የ SDK ስብስብ አንባቢዎች አንድ አይነት የማጣሪያ፣ የመደርደር እና የጠቋሚ ሰዋሰው ይጋራሉ።
 
 ## ምንጭ እና ተዛማጅ ሰነዶች {#source-and-related-docs}
 
-- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ በጠቋሚ የተደገፈ የገጽ እጥፍ ውህደት ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs)
-- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የመጠይቅ ገንቢ እና መራጭ ባህሪ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs)
-- [የመጠይቅ መለኪያዎች እና ጠቋሚ ሞዴል በተሰካው የምንጭ-ኮድ ክለሳ ላይ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs)
+- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የ Torii ስብስብ መጠይቅ ውል](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/torii/collection_queries.md)
+- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የ Rust ስብስብ ንባቦች እና የጠቋሚ ተደጋጋሚ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/src/collections.rs)
+- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የተፈረሙ መጠይቆች ተቀባይነት](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/query_json.md)
 - [መጠይቆች](/am/blockchain/queries.md)
 - [የመጠይቅ ማጣቀሻ](/am/reference/queries.md)
 - [JavaScript እና TypeScript](/am/guide/tutorials/javascript.md)

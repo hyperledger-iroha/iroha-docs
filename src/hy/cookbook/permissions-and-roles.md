@@ -1,9 +1,9 @@
 ---
 translation_locale: hy
 translation_source: /cookbook/permissions-and-roles.md
-translation_source_hash: 8d6fd7101094ba21cfc2c5fb9a89d2acd7e67f13ff47b9f8c8e01bbbd7bf2836
+translation_source_hash: 40fe8b19344d8eff66b178dc8576e2e049fef50bd3212fbddc5c0d5f7f37fa03
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # թույլտվությունները եւ դերը {#permissions-and-roles}
@@ -14,13 +14,12 @@ translation_engine: nllb-200-ct2
 
 ## Նախադրյալներ {#prerequisites}
 
-- Taira ֆինանսավորվող հաճախորդի եւ վճարային մետադատա [ Կապակցեք Taira](./connect-to-taira.md):
+- Ֆինանսավորված Taira հաճախորդ՝ [Միացում Taira-ին](./connect-to-taira.md) էջից։
 - `TARGET_ACCOUNT` եւ `DELEGATE_ACCOUNT` սահմանված են քանոնիկ I105 հաշվին IDs:
-- ստորագրող հաշիվը պետք է թույլատրվի կառավարել նպատակային թույլտվությունները եւ դերերը: Taira-ում դա թույլտվությունների սահմանված վարչական գործողություն է. ստանալ `CanManageRoles` եւ անհրաժեշտ լիազոր հաշիվը, որպեսզի տրամադրի շրջանակային թույլտվի կամ գործարկել բաղադրատոմսը ստեղծված տեղական ցանցում:
+- Ստորագրող հաշիվը պետք է ունենա `CanManageRoles` և պետք է կարողանա պատվիրակել շրջանակով սահմանափակված թույլտվությունը: այն կա՛մ ինքն է `TARGET_ACCOUNT`-ը, կա՛մ այդ հաշվի համար արդեն ունի `CanModifyAccountMetadata`։ Taira-ում սա թույլտվությամբ պաշտպանված վարչական գործողություն է։ Ստեղծված տեղական ցանցի հաճախորդը չունի `CanManageRoles`, ուստի բաղադրատոմսին անհրաժեշտ է ցանց, որի ծագման բլոկը շնորհում է այն։
 
 ```bash
 CONFIG=./taira.client.toml
-FEE_METADATA=./taira.tx-metadata.json
 ROLE_ID=cookbook_metadata_editors
 test -n "$TARGET_ACCOUNT"
 test -n "$DELEGATE_ACCOUNT"
@@ -36,12 +35,11 @@ DELEGATE_CONFIG=./taira.delegate.toml
 
 ### 1. Գրանցեք դատարկ դեր: {#_1-register-an-empty-role}
 
-Վիճակ փոխող յուրաքանչյուր CLI հրաման բացահայտ նշում է fee payer-ին։ Metadata ֆայլը պարունակում է faucet-ի պատասխանից ստացված ընթացիկ Taira fee asset-ը։
+Վիճակը փոփոխող յուրաքանչյուր CLI հրաման բացահայտորեն նշում է վճարողին։ CLI-ն ստորագրելուց առաջ ստանում է ճշգրիտ վճարային առաջարկ Taira-ի վճարային ակտիվով։
 
 ```bash
 iroha --config "$CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
   ledger role register --id "$ROLE_ID"
 ```
 
@@ -54,7 +52,6 @@ jq -cn --arg account "$TARGET_ACCOUNT" \
   '{name:"CanModifyAccountMetadata",payload:{account:$account}}' |
   iroha --config "$CONFIG" \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
     ledger role permission grant --id "$ROLE_ID"
 ```
 
@@ -63,8 +60,7 @@ jq -cn --arg account "$TARGET_ACCOUNT" \
 ```bash
 iroha --config "$CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
-  ledger account role grant \
+  account role grant \
   --id "$DELEGATE_ACCOUNT" \
   --role "$ROLE_ID"
 ```
@@ -79,13 +75,12 @@ iroha --config "$CONFIG" \
 printf '"delegated"\n' |
   iroha --config "$DELEGATE_CONFIG" \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
-    ledger account meta set \
+    account meta set \
     --id "$TARGET_ACCOUNT" \
     --key cookbook_access
 ```
 
-Նույն մոդելը հասանելի է Rust հաճախորդների համար: Այստեղ `client` նշում է որպես `registrar_account`, որը դառնում է դերի սկզբնական սեփականատերը, ինչպես եւ այն անում է CLI հոսքում: Բոլոր երեք հաշիվային փոփոխականները արդեն վերլուծված են `AccountId` արժեքները:
+Նույն մոդելը հասանելի է Rust հաճախորդներին։ Այստեղ `client`-ը `iroha::blocking::Client` է, որը ստորագրում է որպես `registrar_account`, որն էլ դառնում է դերի սկզբնական սեփականատերը, ճիշտ ինչպես CLI-ի հոսքում։ Հաշվի բոլոր երեք փոփոխականներն արդեն վերլուծված `AccountId` արժեքներ են:
 
 ```rust
 use iroha::data_model::{prelude::*, transaction::FeePaymentIntent};
@@ -98,7 +93,7 @@ let role = Role::new(role_id.clone(), registrar_account).add_permission(
     },
 );
 
-client.submit_all_blocking::<InstructionBox>(
+client.submit_all::<InstructionBox>(
     [
         Register::role(role).into(),
         Grant::account_role(role_id, delegate_account).into(),
@@ -109,32 +104,35 @@ client.submit_all_blocking::<InstructionBox>(
 
 ## Փորձարկել {#verify}
 
-Հանձնարարության երկու կողմերն էլ ներկայացրեք, ապա կարդացեք պատվիրակվածի կողմից գրված ճշգրիտ արժեքը.
+Կարդացեք պատվիրակի գործող թույլտվությունները, որոնք ներառում են նաև դերերի միջոցով շնորհվածները, ապա կարդացեք պատվիրակի գրած ճշգրիտ արժեքը:
 
 ```bash
-iroha --config "$CONFIG" ledger role permission list --id "$ROLE_ID"
-iroha --config "$CONFIG" ledger account role list --id "$DELEGATE_ACCOUNT"
+iroha --config "$CONFIG" --machine account permission list \
+  --id "$DELEGATE_ACCOUNT" --all \
+  | jq -e --arg account "$TARGET_ACCOUNT" \
+    '.items | any(.name == "CanModifyAccountMetadata"
+      and .payload.account == $account)'
 
-iroha --config "$CONFIG" ledger account meta get \
+iroha --config "$CONFIG" account meta get \
   --id "$TARGET_ACCOUNT" \
   --key cookbook_access
 ```
 
-թույլտվությունների ցուցակը պետք է պարունակի `CanModifyAccountMetadata`, որը հասանելի է `TARGET_ACCOUNT`, պատվիրակվածի դերի ցանկը պետք է պարունակում է `ROLE_ID`, եւ ընթերցված մետադատաները պետք է վերադարձնեն `"delegated"`.
+Պատվիրակի գործող թույլտվությունները պետք է պարունակեն `TARGET_ACCOUNT`-ով սահմանափակված `CanModifyAccountMetadata`, իսկ մետատվյալների ընթերցումը պետք է վերադարձնի `"delegated"`։ Torii-ն մերժում է դերերի ցուցակները ստորագրված հարցումներով, ուստի նշանակման ստուգումը գործող թույլտվությունների ցուցակն է։
 
 ## Խնդիրների լուծում {#troubleshooting}
 
-- `Not permitted` գրանցման, խմբագրման կամ դերի նշանակման ժամանակ նշանակում է, որ ստորագրողը չունի պահանջվող Taira լիազորությունը: Մի փոխարինեք նպատակային տոկենը գլոբալով. խնդրեք ճշգրիտ օժանդակություն կամ օգտագործեք localnet.
+- Դերը գրանցելիս, խմբագրելիս կամ նշանակելիս `Not permitted` սխալը նշանակում է, որ ստորագրողը չունի Taira-ում պահանջվող լիազորությունը։ Մի՛ փոխարինեք շրջանակով սահմանափակված տոկենը գլոբալով; պահանջեք ճշգրիտ շնորհումը։
 - Օգտակար բեռի վերլուծման սխալը սովորաբար նշանակում է `account` տեղադրվել է կողքին `payload`, alias-ը մատակարարվել է փոխարեն I105 ID, կամ JSON արժեքը երկու անգամ մեջբերվել է:
-- Հարկի մերժումը պատկանում է այն ստորագրողին, ով ներկայացնում է այդ քայլը: Գումարը տրամադրվում է կառավարիչին եւ ինքնուրույն արտահանձնում եւ պահվում է գետնազարդից ստացված վճարային ակտիվների մետադատածները:
+- Վճարի մերժումը վերաբերում է այն ստորագրողին, որը ներկայացնում է տվյալ քայլը։ Կառավարչին և պատվիրակին ֆինանսավորեք առանձին՝ այն վճարային ակտիվով, որը նշված է յուրաքանչյուր վճարային առաջարկում։
 - Հաջողակ դերի շնորհումը չի գերազանցում իր տոքերներում կոդավորված տարածքը: Այս դերը կարող է փոփոխել միայն թույլտվության օգտակար բեռնվածքում նշված հաշիվը:
-- Պարզելու համար գործարկեք `ledger account role revoke`, ապա `ledger role permission revoke`, եւ վերջապես `ledger role unregister`: Յուրաքանչյուրը առանձին գրառում է եւ պետք է ներառի `--fee-payer authority` եւ վճարային մետադատա:
+- Մաքրելու համար գործարկեք `account role revoke`, ապա `ledger role permission revoke` և վերջում `ledger role unregister`; յուրաքանչյուրը առանձին գրառում է և պետք է ներառի `--fee-payer authority`։
 
 ## Աղբյուրը եւ դրա հետ կապված փաստաթղթերը {#source-and-related-docs}
 
-- [Դասերի ինտեգրման փորձարկումներ փակված commit-ում ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/roles.rs)
-- [Թույլտվությունների ինտեգրման փորձարկումները փակված commit վրա ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/permissions.rs)
-- [Մուտքագրված թույլտվությունների տվյալների մոդելը փաթեթավորված կոմիտեում](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/permission.rs)
+- [Դասերի ինտեգրման փորձարկումներ փակված commit-ում ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/roles.rs)
+- [Թույլտվությունների ինտեգրման փորձարկումները փակված commit վրա ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/permissions.rs)
+- [Մուտքագրված թույլտվությունների տվյալների մոդելը փաթեթավորված կոմիտեում](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_executor_data_model/src/permission.rs)
 - [թույլտվություններ եւ դերակատարություններ](/hy/blockchain/permissions.md)
 - [թույլտվության նշանների հղում](/hy/reference/permissions.md)
 - [Մետադատա](./metadata.md)

@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: f04e5e78329996d70926c4fd5dc034d41605d0a82fffd6460f67b252269480d9
+translation_source_hash: 631ec91b5ea398ae17253f0fd6307d76bc3820e2a2b6c8c9f79b30e0188ec170
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -379,7 +379,7 @@ iroha app kaigi end --domain kaigi.universal --call-name daily
 
 ### JavaScript שילוב {#javascript-integration}
 
-הדמו הנוכחית [Iroha JavaScript ](https://github.com/soramitsu/iroha-demo-javascript) מיישמת פרופיל פגישה אחד לאחד שקוף, מאושר. היא אינה חושפת את זרימת ההוכחה של הפרוטוקול `zk-roster-v1`. המוצג שלו יוצר הצעות ותשובות WebRTC, בעוד גשר מובטח משתמש בנקודת הקבלה המקומית [ `@iroha/iroha-js` ](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) כדי לציין, לחתום, להגיש ולחכות למבצעים סופיים Kaigi.
+הדמו הנוכחית [Iroha JavaScript ](https://github.com/soramitsu/iroha-demo-javascript) מיישמת פרופיל פגישה אחד לאחד שקוף, מאושר. היא אינה חושפת את זרימת ההוכחה של הפרוטוקול `zk-roster-v1`. המוצג שלו יוצר הצעות ותשובות WebRTC, בעוד גשר מובטח משתמש בנקודת הקבלה המקומית [ `@iroha/iroha-js` ](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js) כדי לציין, לחתום, להגיש ולחכות למבצעים סופיים Kaigi.
 
 ראו [Embed Kaigi באפליקציה JavaScript App](/he/guide/tutorials/kaigi.md) עבור האותנטיקה המדויקת של הנתיב, פורמט ההזמנה, גבול הגשר ופקודות הבדיקה הדמו הנוכחית.
 
@@ -438,6 +438,6 @@ iroha --config ./localnet/client.toml --operator-private-key-file "$IROHA_OPERAT
 
 ## ראשי תיקון מקדימה {#upstream-references}
 
-- [README API וניתוח מקיף של יכולת התצפיה](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/README.md)
-- [ISO 20022 יישום גשר](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/iso20022_bridge.rs)
+- [README API וניתוח מקיף של יכולת התצפיה](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/README.md)
+- [ISO 20022 יישום גשר](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/iso20022_bridge.rs)
 - [ביצועים ומטריקים ](/he/guide/advanced/metrics.md)

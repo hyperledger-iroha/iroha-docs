@@ -1,21 +1,21 @@
 ---
 translation_locale: he
 translation_source: /cookbook/metadata.md
-translation_source_hash: bb486994faabb29fb48609a886862e44e565148be4800ec1244218ef37e2e54b
+translation_source_hash: 88298912f083d79a9fdfe5e8d0a89d49acb97d814d3871db0c874cb40db5342b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # מטאדאטה {#metadata}
 
 ## התוצאה {#outcome}
 
-קראו metadata ב־Taira, הגדירו ואמתו ערך metadata אחד של חשבון באמצעות עסקה שמשלמת עמלה במפורש, ואז הסירו אותו. השאירו metadata של אובייקט בספר החשבונות בנפרד מ־metadata של עמלת העסקה.
+קראו metadata ב־Taira, הגדירו ואמתו ערך metadata אחד של חשבון באמצעות עסקה שמשלמת עמלה במפורש, ואז הסירו אותו. השאירו metadata של אובייקט בספר החשבונות בנפרד מ־metadata של העסקה.
 
 ## תנאים מוקדמים {#prerequisites}
 
 - `curl`, `jq`, Python 3.11 או מאוחר יותר, והזרם `iroha` CLI.
-- מימון `taira.client.toml` ו`taira.tx-metadata.json` מ [תקשורת ל Taira ](./connect-to-taira.md).
+- קובץ `taira.client.toml` של חשבון ממומן, מתוך [חיבור ל־Taira](./connect-to-taira.md).
 - סמכות על הנתונים המטריים של החשבון היעד. הדוגמה מכוונת לרשות המוגדרת עצמה; חשבון אחר דורש רשיון מדויק.
 
 ## צעדים {#steps}
@@ -27,8 +27,8 @@ translation_engine: nllb-200-ct2
 ```bash
 curl -fsS -H 'Accept: application/json' \
   'https://taira.sora.org/v1/assets/definitions?limit=100' \
-  | jq '.items[] \
-    | select((.metadata // {} | length) > 0) \
+  | jq '.items[]
+    | select((.metadata // {} | length) > 0)
     | {id, name, metadata}'
 
 curl -fsS -H 'Accept: application/json' \
@@ -57,7 +57,7 @@ export TAIRA_ACCOUNT_ID="$(
 
 ### הגדיר ערך אחד JSON {#_3-set-one-json-value}
 
-הערך JSON הנקרא מהכניסה הסטנדרטית הופך לערך `cookbook_profile` של החשבון. לעומת זאת, `--metadata ./taira.tx-metadata.json` מוסיף שדות עמלות למעטפת העסקאות. לשתי המפות יש מטרות ומטרות שונות.
+ערך ה־JSON שנקרא מהקלט הסטנדרטי הופך לערך `cookbook_profile` של החשבון. ה־metadata של העסקה, שמצורף באמצעות `--metadata <file>`, הוא מפה נפרדת במעטפת העסקה ולעולם אינו בוחר עמלות: את זה עושים `--fee-payer` והצעת העמלה המדויקת של ה־CLI, והלקוח דוחה metadata של עסקה שמכיל את המפתחות `gas_asset_id`, `gas_limit` או `fee_sponsor`.
 
 ```bash
 printf '%s\n' \
@@ -65,17 +65,16 @@ printf '%s\n' \
   | iroha --config ./taira.client.toml \
       --machine \
       --fee-payer authority \
-      --metadata ./taira.tx-metadata.json \
-      ledger account meta set \
+      account meta set \
       --id "$TAIRA_ACCOUNT_ID" \
       --key cookbook_profile
 ```
 
-ה־CLI מצטט את העמלה, חותם, מגיש וממתין כברירת מחדל. אל תוסיפו `--no-wait` כאשר הפעולה הבאה תלויה בערך זה.
+ה־CLI מקבל הצעת עמלה מדויקת, בנכס העמלה של Taira, לפני החתימה, ולאחר מכן מגיש וממתין לסופיות Applied לפני שהוא חוזר.
 
 ::: warning גבולת היתר
 
-המאשר הפעיל מחליט מי יכול לשנות את כל אובייקט. עדכון חשבון אחר דורש בדרך כלל `CanModifyAccountMetadata`; תחומים, הגדרות נכסים, NFTs, ומפעילים יש רשיונות מטאדאטה ספציפיים משלהם. אם Taira לא העניק את הסמכות הנדרשת, תפעילו את אותן פקודות החשבון עם `./localnet/client.toml`, תחליפו את הקנוניקה של סמכות הרשת המקומית שנוצרה I105 ID, ותעמידו את קבוצת הנתונים המטאלוגיות לתשלום Taira. שמרו על הבחירה המפורטת של משלם תשלום מקומי.
+ה־executor הפעיל מחליט מי רשאי לשנות כל אובייקט. עדכון חשבון אחר דורש בדרך כלל `CanModifyAccountMetadata`; לדומיינים, להגדרות נכסים, ל־NFTs ולטריגרים יש הרשאות metadata משלהם, הספציפיות ליעד. אם Taira לא העניקה את הסמכות הנדרשת, הריצו את אותן פקודות חשבון עם `./localnet/client.toml` והחליפו את ה־ID הקנוני מסוג I105 של הסמכות ב־localnet שנוצר. שמרו על בחירה מקומית מפורשת של משלם העמלה.
 
 :::
 
@@ -84,7 +83,7 @@ printf '%s\n' \
 ראשית לקרוא את הערך הנחויב, ולאחר מכן להגיש עסקה של הסרת נפרדת.
 
 ```bash
-iroha --config ./taira.client.toml --machine ledger account meta get \
+iroha --config ./taira.client.toml --machine account meta get \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile \
   | tee cookbook-profile.json
@@ -94,8 +93,7 @@ jq -e '.version == 1' cookbook-profile.json
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger account meta remove \
+  account meta remove \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile
 ```
@@ -107,10 +105,10 @@ iroha --config ./taira.client.toml \
 לאחר העסקה הקבועה, `meta get` חייב להחזיר את האובייקט עם `version: 1`. לאחר הסרת, חיפוש ישיר לא יכול להחזיר ערך:
 
 ```bash
-iroha --config ./taira.client.toml --machine ledger account get \
+iroha --config ./taira.client.toml --machine account get \
   --id "$TAIRA_ACCOUNT_ID" > /dev/null
 
-if iroha --config ./taira.client.toml --machine ledger account meta get \
+if iroha --config ./taira.client.toml --machine account meta get \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile; then
   printf '%s\n' 'metadata key still exists' >&2
@@ -133,8 +131,8 @@ fi
 
 ## מקור ומסמכים קשורים {#source-and-related-docs}
 
-- [בדיקות אינטגרציה של בקשת מטא-נתונים ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/queries/metadata.rs)
-- [Python SDK בונים עסקאות commit קשורות ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/README.md)
+- [בדיקות אינטגרציה של בקשת מטא-נתונים ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/queries/metadata.rs)
+- [Python SDK בונים עסקאות commit קשורות ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/README.md)
 - [מטא-נתונים](/he/blockchain/metadata.md)
 - [אפשרויות אחסון מטא-נתונים ומספרים ](/he/guide/configure/metadata-and-store-assets.md)
 - [תיקון הוראות ](/he/reference/instructions.md)

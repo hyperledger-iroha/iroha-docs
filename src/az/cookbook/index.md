@@ -1,21 +1,21 @@
 ---
 translation_locale: az
 translation_source: /cookbook/index.md
-translation_source_hash: 58f5247ece30d3755c38d4d24ae4553a35e0d0437476092d568a1be5c8a2ed28
+translation_source_hash: 9e13bcd28ad8ae356314041828f73af0ed25636af82ff4ea2948268b47dd73e6
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Iroha 3 Tətbiq Resept Kitabı {#iroha-3-application-cookbook}
 
-Əleyhinə qurmaq Iroha 3 kiçik, təsdiqlənə bilən reseptlərlə başlayır Taira testnet və saxlamaq Minamoto əsas şəbəkə yalnız-oxu. Hər bir resept onun ictimai oxu olub-olmadığını bildirir, normal maliyyələşdirilmiş hesab yazısı və ya icazə ilə məhdudlaşdırılmış əməliyyat. Əmrlər cari vəziyyəti istifadə edir I105 hesab identifikatorları, açıq rüsum seçimi və daxil edilmiş davranış Iroha protokolun yekunlaşdırılması [`0010c5a70039eac101a4846499ba9ceaf43eb65c`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c).
+Əleyhinə qurmaq Iroha 3 kiçik, təsdiqlənə bilən reseptlərlə başlayır Taira testnet və saxlamaq Minamoto əsas şəbəkə yalnız-oxu. Hər bir resept onun ictimai oxu olub-olmadığını bildirir, normal maliyyələşdirilmiş hesab yazısı və ya icazə ilə məhdudlaşdırılmış əməliyyat. Əmrlər cari vəziyyəti istifadə edir I105 hesab identifikatorları, açıq rüsum seçimi və daxil edilmiş davranış Iroha protokolun yekunlaşdırılması [`c8c872461e92f04325c350cdd952f4276e96f9dc`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc).
 
-[Taira-ə qoşul](./connect-to-taira.md) ilə başlayın. Bu, komanda xətti reseptləri tərəfindən təkrar istifadə olunan müştəri konfiqurasiyasını və ödəniş metadatayı yaradır. Heç vaxt bu sənədləşmədən ödəniş aktivinin ID-sini kopyalamayın: onu hazırki Taira testnet maliyyələşdirmə xidməti cavabından əldə edin.
+[Taira-ya qoşulun](./connect-to-taira.md) bələdçisi ilə başlayın. O, imzalayanı maliyyələşdirir və əmr sətri reseptlərinin təkrar istifadə etdiyi ödəniş aktivini qeyd edir. Ödəniş aktivi ID-sini heç vaxt bu sənədlərdən kopyalamayın: onu cari Taira testnet maliyyələşdirmə xidmətinin siyasətindən oxuyun.
 
 ## Giriş səviyyələri {#access-levels}
 
 - İctimai — heç bir kriptoqrafik imzalayan və ya şəbəkə icazəsi tələb edilmir.
-- Yazmağa hazır — maliyyələşdirilmiş Taira test hesabından, açıq ödəniş edən şəxsindən və testnet maliyyələşdirmə xidmətinin qaytardığı cari ödəniş aktivindən istifadə edin.
+- **Yazmağa hazır** — maliyyələşdirilmiş Taira test hesabından, açıq şəkildə seçilmiş ödəyicidən və testnet maliyyələşdirmə xidməti siyasətinin dərc etdiyi cari ödəniş aktivindən istifadə edin.
 - İcazə tələb olunur — Taira adlı proqram icra mühitinə və ya idarə olunan ad məkanına icazə verməlidir. Bu icazə mövcud olmadıqda yaradılmış yerli şəbəkədən istifadə edin; yerli uğur Taira avtorizasiya əsasını təmin etmir.
 
 Heç bir aşpaz kitabı resepti Minamoto ünvanına yazı göndərmir.

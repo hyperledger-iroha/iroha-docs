@@ -1,9 +1,9 @@
 ---
 translation_locale: my
 translation_source: /cookbook/multisig.md
-translation_source_hash: e1b57e1c4310dd0db8be8d9f5a15e1d4f693abb90b634772857eb4b1e86e4baf
+translation_source_hash: 7fca7feca0c27d41a14d1c38497c23aa9f1afe37c5ac19cd8e79c487dc35cc5e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # အလေးချိန် Multisig {#weighted-multisig}
@@ -16,14 +16,13 @@ Taira တွင် သုံးဦးအလေးချိန်ထားသေ�
 
 - သုံးခုတည်းသော ပရိုတိုကုတ်စံညွှန်း I105 လက်မှတ်ထိုး ID များ `SIGNER_A`, `SIGNER_B`, နှင့် `SIGNER_C`.
 - ငွေကြေးထောက်ပံ့ထားတဲ့ Taira ဖွဲ့စည်းပုံများအတွက် cryptographic signers A နှင့် C. အဆိုပြုသူနှင့် ခွင့်ပြုသူတိုင်းက သူတို့ကိုယ်တိုင် ငွေပေးချေမှုအတွက် ပေးဆပ်ပါတယ်။
-- `taira.tx-metadata.json` ကို လက်ရှိ testnet ဘဏ္ဍာရေး ဝန်ဆောင်မှု တုံ့ပြန်မှုကနေ တည်ဆောက်ထားပြီး ဘယ်တော့မှ ကူးယူထားတဲ့ အခွန်အရင်းအမြစ် ID ကနေမဟုတ်ဘူး။
-- Iroha အရင်းအမြစ်ကို ပြင်ဆင်ရန် Taira နှင့်အတူ မှတ်ပုံတင်မှု အဆင့်အတွက် ချိတ်ဆက်ထားသော Rust ဖောက်သည်စီမံကိန်း။ နောက်ပိုင်း အဆိုပြုချက်နှင့် ခွင့်ပြုချက် အဆင့်များတွင် CLI ကို အသုံးပြုသည်။
+- CLI ရေးသွင်းမှုများသည် `--fee-payer authority` ကို အသုံးပြုပြီး CLI သည် လက်မှတ်မထိုးမီ Taira ၏ အခွန်အရင်းအမြစ်ဖြင့် တိကျသော အခွန်ကို ခန့်မှန်းတွက်ချက်ပြသသည်။
+- မှတ်ပုံတင်ခြင်းအဆင့်အတွက် `iroha` နှင့် `iroha_model_base` ကို မှီခိုထားပြီး Taira နှင့် တူညီသော Iroha source revision သို့ ပုံသေချိတ်ထားသော Rust client project တစ်ခု။ နောက်ပိုင်း အဆိုပြုချက်နှင့် ခွင့်ပြုချက် အဆင့်များတွင် CLI ကို အသုံးပြုသည်။
 - လက်ရှိ အကောင်အထည်ဖော်သူ၏ multisig feature ကို enable လုပ်ထားသည်။ Iroha 3 software execution environment တွင် သာမန်စာရင်းများအတွက် မှတ်ပုံတင်နိုင်သည်၊ Taira မူဝါဒနှင့် အခွန်လက်ခံမှုမူဝါဒက ဆက်လက်သက်သာသော်လည်း အများပြည်သူ ဖြန့်ဖြူးခြင်းမှ ငြင်းဆိုပါက localnet ကိုအသုံးပြုပါ။
 
 ```bash
 SIGNER_A_CONFIG=./taira.signer-a.toml
 SIGNER_C_CONFIG=./taira.signer-c.toml
-FEE_METADATA=./taira.tx-metadata.json
 test -n "$SIGNER_A"
 test -n "$SIGNER_B"
 test -n "$SIGNER_C"
@@ -33,7 +32,7 @@ test -n "$SIGNER_C"
 
 ### (၁) အလေးချိန်ထားသော မူဝါဒကို မှတ်ပုံတင်ခြင်း {#_1-register-a-weighted-policy}
 
-cryptographic signer C မှာအလေးချိန် 2 ရှိတယ်၊ A နဲ့ B တို့မှာအလေးချိန် 1 ရှိတယ်။ 3 ရဲ့ quorum ကတော့ C + A သို့မဟုတ် B ကိုလိုအပ်ပါတယ်။ မှတ်ပုံတင်မတိုင်ခင် ဒီတိကျတဲ့ မူဝါဒကနေ single protocol-standard account ကို ထုတ်ယူပြီး တူညီတဲ့တန်ဖိုးကို `MultisigRegister::with_account` သို့ လွှဲပြောင်းပါ။
+လက်မှတ်ထိုးသူ C တွင် အလေးချိန် 2 ရှိပြီး A နှင့် B တို့တွင် တစ်ခုလျှင် အလေးချိန် 1 စီ ရှိသည်။ ထို့ကြောင့် quorum 3 အတွက် C နှင့်အတူ A သို့မဟုတ် B တစ်ခုခု လိုအပ်သည်။ ဤနေရာတွင် `registrar` သည် `iroha::blocking::Client` ဖြစ်ပြီး ၎င်း၏ `submit` သည် Applied finality ကို စောင့်ဆိုင်းသည်။ မှတ်ပုံတင်ခြင်းမပြုမီ ထိုတိကျသော မူဝါဒမှ canonical အကောင့်ကို ထုတ်ယူပြီးနောက် တူညီသောတန်ဖိုးကို `MultisigRegister::with_account` သို့ ပေးပို့ပါ:
 
 ```rust
 use std::{collections::BTreeMap, num::{NonZeroU16, NonZeroU64}};
@@ -44,9 +43,11 @@ use iroha::{
         transaction::FeePaymentIntent,
     },
     executor_data_model::isi::multisig::{
-        MultisigApprove, MultisigPropose, MultisigRegister, MultisigSpec,
+        MultisigApprove, MultisigProposalId, MultisigProposalNonce,
+        MultisigPropose, MultisigRegister, MultisigSpec,
     },
 };
+use iroha_model_base::domain::DomainId;
 
 let spec = MultisigSpec::new(
     BTreeMap::from([
@@ -77,7 +78,7 @@ let register = MultisigRegister::with_account(
     spec,
 );
 
-registrar.submit_blocking::<InstructionBox>(
+registrar.submit::<InstructionBox>(
     register.into(),
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
@@ -91,16 +92,16 @@ MULTISIG_ACCOUNT='<POLICY_DERIVED_I105_ACCOUNT_ID>'
 test -n "$MULTISIG_ACCOUNT"
 ```
 
-CLI မှတ်ပုံတင်အမိန့်သည် software စီမံခန့်ခွဲမှု ပတ်ဝန်းကျင်က ပြန်လည်ဖွင့်ရန်မတိုင်မီ ၎င်း၏ ယာယီမျိုးစေ့ကို ပုံနှိပ်သည်။ ထိုမျိုးစေ့အား ထိန်းချုပ်သူအဖြစ် ထပ်မံအသုံးပြုခြင်းမရှိပါ။ ထိန်းချုပ်သူ ပုဂ္ဂလိက သော့မရှိပေ။ multisig ခွင့်ပြုချက် မူလက ခွင့်ပြုထားသော အဆိုများမှသာ ရရှိသည်။
+ပုံသေသတ်မှတ်ထားသော commit တွင် CLI မှတ်ပုံတင် command သည် runtime က သော့အသစ်ပြန်မပြောင်းမီ ၎င်း၏ ယာယီ seed ကို ထုတ်ပြသည်။ ထို seed ကို controller အဖြစ် ပြန်မသုံးပါနှင့်။ controller ပုဂ္ဂလိကသော့ မရှိပါ- multisig authority သည် အတည်ပြုထားသော အဆိုပြုချက်များမှသာ ရရှိသည်။ ယင်းအစား CLI မှ မှတ်ပုံတင်လိုပါက မူဝါဒမှ ထုတ်ယူထားသောတန်ဖိုးကို `ledger multisig register --account` သို့ ပေးပို့ပါ။
 
 ### (၂) ညွှန်ကြားချက်တစ်ပုဒ်ကို မတင်ဘဲ တည်ဆောက်ပါ။ {#_2-build-one-instruction-without-submitting-it}
 
-ကမ္ဘာလုံးဆိုင်ရာ `-o` switch သည် ညွှန်ကြားချက် array ကို ပုံမှန်ထွက်ပေါက်သို့ serialize လုပ်သည်။ ၎င်းသည် ငွေပေးချေမှုတစ်ခုမှ မတင်သွင်းခြင်းမရှိဘဲ၊ ထို့ကြောင့် အခွန်မသုံးပါ။
+ကမ္ဘာလုံးဆိုင်ရာ `--emit-instructions` switch သည် ညွှန်ကြားချက် array ကို တင်သွင်းမည့်အစား standard output သို့ ထုတ်ပြသောကြောင့် အခွန် မသုံးစွဲပါ။
 
 ```bash
 printf '"approved"\n' |
-  iroha --config "$SIGNER_A_CONFIG" -o \
-    ledger account meta set \
+  iroha --config "$SIGNER_A_CONFIG" --emit-instructions \
+    account meta set \
     --id "$MULTISIG_ACCOUNT" \
     --key cookbook_quorum \
   > multisig-instructions.json
@@ -110,25 +111,32 @@ jq . multisig-instructions.json
 
 ### (၃) ဆန်းစစ်ရေး လက်မှတ်ထိုးသူအဖြစ် အဆိုပြုချက် A {#_3-propose-as-signer-a}
 
-အဆိုပြုသူသည် မိမိကိုယ်ပိုင်အလေးချိန်ကို အလိုအလျောက် ထည့်သွင်းသည်။ CLI မှ ပုံနှိပ်ထားသော တိကျတဲ့ ညွှန်ကြားချက် cryptographic hash ကိုဖမ်းယူပါ; ခွင့်ပြုချက်များက ထို cryptographic Hash သို့ ချိတ်ဆက်ပါ။
+အဆိုပြုသူသည် မိမိကိုယ်ပိုင်အလေးချိန်ကို အလိုအလျောက် ထည့်သွင်းသည်။ အဆိုပြုချက် nonce အသစ်တစ်ခုကို ဖန်တီးပြီး ထပ်မံကြိုးစားမှုတိုင်းအတွက် သိမ်းထားပါ။ CLI က ထုတ်ပြသော အဆိုပြုချက် ID နှင့် ညွှန်ကြားချက် hash ကို မှတ်သားထားပါ။ အတည်ပြုချက်များသည် ၎င်းနှစ်ခုလုံးနှင့် ချိတ်ဆက်ထားသည်။
 
 ```bash
+PROPOSAL_NONCE="$(openssl rand -hex 32)"
 PROPOSE_OUTPUT="$({
   iroha --config "$SIGNER_A_CONFIG" \
     --output-format text \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
     ledger multisig propose \
+    --proposal-nonce "$PROPOSAL_NONCE" \
     --account "$MULTISIG_ACCOUNT" \
     < multisig-instructions.json
 })"
 printf '%s\n' "$PROPOSE_OUTPUT"
 
+PROPOSAL_ID="$({
+  printf '%s\n' "$PROPOSE_OUTPUT" |
+    sed -n 's/^proposal_id: //p' |
+    head -n 1
+})"
 INSTRUCTIONS_HASH="$({
   printf '%s\n' "$PROPOSE_OUTPUT" |
     sed -n 's/^instructions_hash: //p' |
     head -n 1
 })"
+test -n "$PROPOSAL_ID"
 test -n "$INSTRUCTIONS_HASH"
 ```
 
@@ -146,13 +154,13 @@ A ရဲ့အလေးချိန် 1 နဲ့ C ရဲ့အလေးအစ
 ```bash
 iroha --config "$SIGNER_C_CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
   ledger multisig approve \
   --account "$MULTISIG_ACCOUNT" \
+  --proposal-id "$PROPOSAL_ID" \
   --instructions-hash "$INSTRUCTIONS_HASH"
 ```
 
-Rust ဖောက်သည်သည်သည် မူဝါဒမှသက်ရောက်သည့်စာရင်းနှင့် အထက်ပါ သက်တမ်းပတ်ဝန်းကျင် ညွှန်ကြားချက်နှစ်ခုကို ဆက်လက်သုံးစွဲနိုင်သည်။
+Rust client သည် မူဝါဒမှ ထုတ်ယူထားသော တူညီသည့်အကောင့်နှင့် အထက်တွင် အသုံးပြုခဲ့သော lifecycle ညွှန်ကြားချက် နှစ်ခုဖြင့် ဆက်လက်လုပ်ဆောင်နိုင်သည်။ လက်မှတ်ထိုးသူ client တစ်ခုစီသည် `iroha::blocking::Client` ဖြစ်ပြီး အဆိုပြုချက် ID ကို client ၏ ကွန်ရက်၊ multisig အကောင့်နှင့် nonce အသစ်တစ်ခုမှ ထုတ်ယူသည်:
 
 ```rust
 let instructions = vec![SetKeyValue::account(
@@ -161,12 +169,26 @@ let instructions = vec![SetKeyValue::account(
     Json::from("approved"),
 ).into()];
 let instructions_hash = HashOf::new(&instructions);
-signer_a_client.submit_blocking::<InstructionBox>(
-    MultisigPropose::new(multisig_account.clone(), instructions, None).into(),
+// A fresh nonzero nonce, for example from `openssl rand -hex 32`.
+let proposal_nonce: MultisigProposalNonce = "<FRESH_64_HEX_NONCE>".parse()?;
+let proposal_id = MultisigProposalId::derive(
+    signer_a_client.client().network_id(),
+    &multisig_account,
+    &proposal_nonce,
+);
+signer_a_client.submit::<InstructionBox>(
+    MultisigPropose::new(
+        multisig_account.clone(),
+        proposal_nonce,
+        instructions,
+        None,
+    )
+    .into(),
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
-signer_c_client.submit_blocking::<InstructionBox>(
-    MultisigApprove::new(multisig_account, instructions_hash).into(),
+signer_c_client.submit::<InstructionBox>(
+    MultisigApprove::new(multisig_account, proposal_id, instructions_hash)
+        .into(),
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 ```
@@ -176,7 +198,7 @@ signer_c_client.submit_blocking::<InstructionBox>(
 ပြည်နယ်အပြီး စာဖတ်ပြီး အဆိုပြုချက်ကို စောင့်ဆိုင်းနေခြင်း မရှိတော့ဘူးလို့ အတည်ပြုပါ။
 
 ```bash
-iroha --config "$SIGNER_A_CONFIG" ledger account meta get \
+iroha --config "$SIGNER_A_CONFIG" account meta get \
   --id "$MULTISIG_ACCOUNT" \
   --key cookbook_quorum
 
@@ -189,21 +211,21 @@ iroha --config "$SIGNER_A_CONFIG" ledger multisig inspect \
   jq .
 ```
 
-မီတာဒေတာတန်ဖိုးက `"approved"` ဖြစ်ရမည်၊ ဖမ်းယူထားသော ညွှန်ကြားချက် cryptographic hash ကတော့ စောင့်ဆိုင်းနေဆဲအဖြစ် ပေါ်မလာရတော့နှင့် စစ်ဆေးခံရသည့် ထိန်းချုပ်သူသည် အလေးချိန်များကို `1, 1, 2` ကို quorum `3` နှင့်အတူ ပြသရမည်။
+မီတာဒေတာတန်ဖိုးသည် `"approved"` ဖြစ်ရမည်၊ မှတ်သားထားသော အဆိုပြုချက် ID နှင့် ညွှန်ကြားချက် hash သည် ဆိုင်းငံ့ထားဆဲအဖြစ် ပေါ်မလာတော့ရပါ၊ စစ်ဆေးထားသော controller သည် `threshold` `3`၊ `total_weight` `4` နှင့် အဖွဲ့ဝင်အလေးချိန် 1၊ 1 နှင့် 2 ကို ပြသရမည်။ အဖွဲ့ဝင်များကို အများသုံးသော့ အစီအစဉ်အတိုင်း စာရင်းပြုစုထားသည်။
 
 ## ပြဿနာဖြေရှင်းခြင်း {#troubleshooting}
 
-- `signatory is not part of multisig` ဆိုသည်မှာ အဆိုပြုနေသော သို့မဟုတ် အတည်ပြုနေသော ဖောက်သည်သည်သည် မူဝါဒတွင် မှတ်ပုံတင်ထားသည့် I105 ID တစ်ခုနှင့် ကိုက်ညီခြင်းမရှိပါ။
+- `not qualified to propose multisig` သို့မဟုတ် `not qualified to approve multisig` ဆိုသည်မှာ အဆိုပြုနေသော သို့မဟုတ် အတည်ပြုနေသော client သည် မူဝါဒတွင် မှတ်ပုံတင်ထားသည့် I105 ID များအနက် တစ်ခုနှင့်မျှ မကိုက်ညီကြောင်း ဆိုလိုသည်။
 - multisig အကောင့်မှာ အဆိုပြုထားတဲ့ ညွှန်ကြားချက်တွေကို လုပ်ဆောင်ဖို့ ခွင့်ပြုချက်မရှိတဲ့အခါ နောက်ဆုံး အတည်ပြုချက်ကို ပယ်ချနိုင်ပါတယ် Multisig အကောင့်ကို ခွင့်ပြုမှု မူဝါဒပေးပြီး ၎င်းရဲ့ သီးခြား cryptographic လက်မှတ်ရေးထိုးသူတွေကိုသာမက ကျန်တဲ့ cryptographic signature ကိုလည်း ထပ်မံကြိုးစားခွင့်ပေးပါ။
-- မတွေ့ရှိသေးတဲ့ အဆိုပြုချက်တစ်ခုက TTL ကို သက်တမ်းကုန်ဆုံးသွားပြီ၊ (သို့) ညွှန်ကြားမှု hash/စာရင်းရွေးချယ်သူ မှားယွင်းခဲ့တယ်လို့ဆိုနိုင်ပါတယ်။ ထပ်ပြီး အဆိုပြုမလုပ်ခင် post-state ကို မေးပါ။
+- ဆိုင်းငံ့ထားသော အဆိုပြုချက် ပျောက်နေခြင်းသည် quorum ပြည့်ပြီးသွားခြင်း၊ TTL သက်တမ်းကုန်သွားခြင်း သို့မဟုတ် မှားယွင်းသော အဆိုပြုချက် ID၊ ညွှန်ကြားချက် hash သို့မဟုတ် အကောင့် selector ကို အသုံးပြုခဲ့ခြင်းကို ဆိုလိုနိုင်သည်။ nonce အသစ်ဖြင့် ထပ်မံမအဆိုပြုမီ post-state ကို query လုပ်ပါ။
 - ခွင့်ပြုချက် နှစ်မျိုးလုံးက အလေးချိန် မတိုးစေပါ။ မှတ်ပုံတင် လက်မှတ်ရေးထိုးသူတစ်ဦးစီဟာ ၎င်းရဲ့ ဖွဲ့စည်းထားသော အလေးချိန်ကို အများဆုံးတစ်ကြိမ်သာ ထည့်သွင်းပေးပါတယ်။
 - ထိန်းချုပ်သူအဖြစ် ပုံမှန် ငွေပေးချေမှုတစ်ခုကို တိုက်ရိုက်လက်မှတ်ထိုးတာ တားမြစ်ထားတယ်။ အမြဲတမ်း `MultisigPropose` နဲ့ `MultisigApprove` ကို အသုံးပြုပါ။
 - CLI မှတ်ပုံတင်မှုအတွင်း ပုံနှိပ်ထားသော အကောင့်ကို နောက်ပိုင်းမှာ command တွေက ရှာမတွေ့နိုင်ပါက ယာယီ seed ကို သိမ်းဆည်းလိုက်ပြီ ဖြစ်ပါသည်။ အမိန့်ချမှတ်ထားတဲ့ မူဝါဒကနေ single protocol-standard account ကို ထုတ်ယူပြီး အထက်ဖော်ပြထားသလို အဲဒီတန်ဖိုးနဲ့ register လုပ်ပါ။
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှုမှာ Multisig ပေါင်းစပ်မှု စမ်းသပ်ချက်များ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/multisig.rs)
-- [ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှုမှာ multisig ဒေတာပုံစံ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/isi.rs)
-- [CLI ပိတ်ထားသော အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှုတွင် multisig အကောင်အထည်ဖော်ခြင်း](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
+- [ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှုမှာ Multisig ပေါင်းစပ်မှု စမ်းသပ်ချက်များ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/multisig.rs)
+- [ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှုမှာ multisig ဒေတာပုံစံ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_executor_data_model/src/isi.rs)
+- [CLI ပိတ်ထားသော အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှုတွင် multisig အကောင်အထည်ဖော်ခြင်း](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs)
 - [ငွေပေးချေမှု](/my/blockchain/transactions.md)
 - [ခွင့်ပြုချက်များနှင့် ကဏ္ဍများ](./permissions-and-roles.md)

@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /cookbook/nfts.md
-translation_source_hash: db99dab483d4e2fb3fd84be84f6e4ef9f8373f0c16eb2f34952f1232c4587561
+translation_source_hash: b60c542052eac6a916350c4aaa779c9f46d248be64ecea9c9bda679a4d56dff3
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+claude-opus-5-5
 ---
 # NFTs {#nfts}
 
@@ -15,7 +15,7 @@ Taira NFT གནས་སྟངས བརྟག་ཞིབ་འབད། ད�
 
 - `curl`,`jq`, Python 3.11 ཡང་ན་ཤུལ་ལས་དང་ ད་ལྟོའི `iroha` CLI
 - ཀློག་ཐངས་རྐྱངམ་ཅིག་ Taira ཐོབ་ཚུགསཔ་ཨིན།
-- ཡིག་ཚང་གི་དོན་ལུ་ [ལས་ ས་གནས དྲ་རྒྱ ཐོན་སྐྱེད་འབད་ Iroha](/dz/get-started/launch-iroha.md)འགོ་བཙུགསཔ་ད་ `./localnet/client.toml` དང་ Torii ལུ་ `http://127.0.0.1:8080`.
+- འབྲི་ནིའི་ཚོང་འབྲེལ་ཚུ་གི་དོན་ལུ་ [Iroha འགོ་བཙུགས་](/dz/get-started/launch-iroha.md) ནང་བཟུམ་སྦེ་ `kagami localnet generate --peers 4 --out-dir ./localnet` གིས་བཟོ་མི་ ས་གནས་དྲ་རྒྱ་ཅིག་ `./localnet/client.toml` དང་ `http://127.0.0.1:8080` གུ་ཡོད་པའི་ Torii དང་གཅིག་ཁར་ དགོཔ་ཨིན། དེ་མ་ཚད་ དེ་གི་མིང་རྟགས་འགོད་མི་གིས་ བདག་དབང་འཛིན་མི་ NFT མངའ་ཁོངས་ཅིག་ཡང་ དགོཔ་ཨིན་ (རིམ་པ་ 2 ལུ་ བལྟ)།
 
 ## རིམ་པ་ཚུ་ {#steps}
 
@@ -25,20 +25,21 @@ Taira NFT གནས་སྟངས བརྟག་ཞིབ་འབད། ད�
 
 ```bash
 curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/nfts?limit=5' \
-  | jq '{total, nfts: [.items[] | {id, owned_by, content}]}'
+  'https://taira.sora.org/v1/nfts?limit=5&include_total=true' \
+  | jq '{total, nfts: [.items[] | {id, owned_by, metadata}]}'
 ```
 
-NFTs གིས་ ཁྱད་དུ་འཕགས་པའི་ཐོ་ཡིག་ཚུ་ཨིན། ཨང་གྲངས་ཀྱི་སྒྲོམ་མེན། ཁོང་ནང་ ID ཡོད་པའི་ཁར་ བདག་འཛིན་པ་གཅིག་ཡོདཔ་མ་ཚད་ `content` མེ་ཊ་ཌའི་ཊ་ཀ་པཡང་ཡོདཔ་ཨིན།
+NFTs འདི་ ཨང་གྲངས་ལྷག་ལུས་ མེན་པར་ ཐུན་མོང་མ་ཡིན་པའི་ ཐོ་ཡིག་ཚུ་ཨིན། དེ་ཚུ་ལུ་ ID གཅིག་དང་ ཇོ་བདག་གཅིག་ དེ་ལས་ བསྡུས་ཏོག་ཏོ་གི་ ནང་དོན་ཐོ་ཡིག་གཅིག་ ཡོདཔ་ཨིན། ནང་དོན་ཐོ་ཡིག་དེ་ Torii བསྡུ་ཚོགས་ཀྱི་ གྲལ་ཐིག་ཚུ་གིས་ `metadata` སྦེ་ ལོག་བྱིནམ་ཨིནམ་དང་ `ledger nft get` གིས་ `content` སྦེ་ ལོག་བྱིནམ་ཨིན།
 
 ### ས་གནས་ཀྱི་བདག་འཛིན་འཐབ་མི་ཚུ་ལུ་ གྲ་སྒྲིག་འབད་ IDs {#_2-prepare-local-owner-ids}
 
-འབྲི་དཔེ་འདི་གིས་ བརྟག་ཞིབ་འབད་ཡོད་པའི་ `wonderland.universal` མངའ་ཁོངས་འདི་ལག་ལེན་འཐབ་ཨིན། རིམ་སྒྲིག་འབད་ཡོད་པའི་དབང་ཚད་འདི་ དེ་གི་སྒེར་གྱི་ལྡེ་མིག་འདི་ གསལ་སྟོན་མ་འབད་བར་ འཐོབ་ཞིནམ་ལས་ སྤོ་བཤུད་འགྲོ་ཡུལ་སྦེ་ ཐོ་བཀོད་འབད་ཡོད་པའི་རྩིས་ཐོ་གཞན་མི་ཅིག་ གདམ་ཁ་རྐྱབས།
+འབྲི་ནིའི་དཔེ་འདི་ལུ་ མིང་རྟགས་འགོད་མི་རྩིས་ཐོ་གིས་ བདག་དབང་འཛིན་མི་ མངའ་ཁོངས་ཅིག་ ཡང་ན་ དེ་གི་དོན་ལུ་ `CanRegisterNft` ཆོག་ཐམ་གནང་བ་ཅིག་ དགོཔ་ཨིན། བཟོ་བཏོན་འབད་ཡོད་པའི་ ས་གནས་དྲ་རྒྱ་གིས་ དེ་གི་ཞབས་ཏོག་ལེན་མིའི་དོན་ལུ་ གློག་རིམ་མངའ་ཁོངས་ ག་ནི་ཡང་ ཐོ་བཀོད་མི་འབད། དེ་མ་ཚད་ མངའ་ཁོངས་ཐད་ཀར་ཐོ་བཀོད་འབད་ནི་འདི་ འགོ་ཐོག་སྡེབ་ཚན་གྱི་དོན་ལུ་རྐྱངམ་ཅིག་ ཉར་ཚགས་འབད་ཡོདཔ་ལས་ `NFT_DOMAIN` འདི་ ཁྱོད་ཀྱི་མིང་རྟགས་འགོད་མི་གིས་ ཚད་འཛིན་འབད་མི་ `name.dataspace` མངའ་ཁོངས་ཅིག་ལུ་ གཞི་སྒྲིག་འབད། རིམ་སྒྲིག་འབད་ཡོད་པའི་ དབང་འཛིན་འདི་ དེ་གི་སྒེར་གྱི་ལྡེ་མིག་ མ་སྟོན་པར་ བཏོན་ཞིནམ་ལས་ ཐོ་བཀོད་འབད་ཡོད་པའི་ རྩིས་ཐོ་གཞན་ཅིག་ སྤོ་བཤུད་ཀྱི་འགྲོ་ཡུལ་སྦེ་ གདམ་ཁ་རྐྱབ།
 
 ```bash
 LOCAL_ROOT='http://127.0.0.1:8080'
 LOCAL_CONFIG='./localnet/client.toml'
-NFT_ID='cookbook_badge$wonderland.universal'
+test -n "$NFT_DOMAIN"
+NFT_ID="cookbook_badge\$$NFT_DOMAIN"
 
 LOCAL_PUBLIC_KEY="$(python3 - <<'PY'
 import tomllib
@@ -58,7 +59,7 @@ NEW_OWNER="$(
 )"
 ```
 
-`$` དབྱེ་བྲག་འདི་ NFT ཡིག་སྣོད་ནང་ཚུད་ཡོདཔ་ཨིན། ཁྱོད་ཀྱིས་ `wonderland.universal` ཌོ་མེ་ནདང་ ཌ་ཊ་ས་བིསི་གི་རྒྱབ་སྒྲིལ་ཚུ་ཆ་མཉམ་སྦེ་བཞག་དགོ།
+`$` དབྱེ་རྟགས་འདི་ NFT གི་ ཡིག་ཐོག་རྣམ་པའི་ཆ་ཤས་ཨིན། ID ནང་ `name.dataspace` མངའ་ཁོངས་ཆ་ཚང་ བཞག།
 
 ### ༣༽ NFT དང་འབྲེལ་གྱི་དོན་ཚན་ཚུ་ནང་ ཐོ་བཀོད་འབད་ {#_3-register-the-nft-with-initial-content}
 
@@ -101,34 +102,28 @@ iroha --config "$LOCAL_CONFIG" \
 
 ::: warning ངོས་ལེན་གྱི་ཚད་ཐིག་
 
-Taira གུ་འབྲི་མི་ག་ར་ལུ་ཡང་ `--metadata ./taira.tx-metadata.json` དང་ གསལ་ཏོག་ཏོ་སྦེ་ འཐུས་སྤྲོད་མི་དགོཔ་ཨིན། ཐོ་བཀོད་དང་ སྤོ་བཤུད་ བཏོན་གཏང་ནི་ དེ་ལས་ མེ་ཊ་ཌེ་ཊ་དུས་མཐུན་བཟོ་ནི་ཚུ་ ཤུགས་ལྡན་མཉེན་ཆས་ལག་བསྟར་མཉེན་ཆས་ (`CanRegisterNft`, `CanTransferNft`, `CanUnregisterNft`, དང་ `CanModifyNftMetadata` སྔོན་སྒྲིག་གནང་བ་ཁ་ཐོག་ནང་) གིས་ཞིབ་དཔྱད་འབདཝ་ཨིན། ཁྱོད་རའི་གློག་རིམ་ལུ་འགན་སྤྲོད་འབད་ཡོད་པའི་མངའ་ཁོངས་ཅིག་ལག་ལེན་འཐབ། ཡང་ན་ འགྲུལ་ལམ་འདི་ ལོ་ཀཱལ་ནེཊི་གུ་བཞག།
+Taira གུ་ འབྲི་ནིའི་ཚོང་འབྲེལ་རེ་རེ་གིས་ `--fee-payer authority` ལག་ལེན་འཐབ་ཨིན། CLI གིས་ མིང་རྟགས་མ་བཀོད་པའི་ཧེ་མ་ Taira གི་འཐུས་རྒྱུ་དངོས་ནང་ འཐུས་ངེས་བདེན་གྱི་ གོང་ཚད་བཀོདཔ་ཨིན། ཐོ་བཀོད་དང་ སྤོ་བཤུད་ བཏོན་གཏང་ནི་ དེ་ལས་ ཟུར་གནས་གནད་སྡུད་དུས་མཐུན་བཟོ་ནི་ཚུ་ ད་ལྟོ་ལག་ལེན་འཐབ་དོ་ཡོད་པའི་ ལག་བསྟར་མཉེན་ཆས་ཀྱིས་ ཞིབ་དཔྱད་འབདཝ་ཨིན་ (སྔོན་སྒྲིག་ཆོག་ཐམ་གྱི་ཁྱབ་ཁོངས་ནང་ `CanRegisterNft`, `CanTransferNft`, `CanUnregisterNft`, དང་ `CanModifyNftMetadata`)། ཁྱོད་ཀྱི་རྩིས་ཐོ་གིས་ བདག་དབང་འཛིན་མི་ མངའ་ཁོངས་ཅིག་ ཡང་ན་ ཆོག་ཐམ་གནང་བ་འདི་ཚུ་ འཛིན་ཏེ་ཡོད་པའི་ མངའ་ཁོངས་ཅིག་ ལག་ལེན་འཐབ།
 
 :::
 
 གན་རྒྱ་བདག་དབང་ཡོད་པའི་ལཱ་གི་རྒྱུན་རིམ་ཚུ་གི་དོན་ལུ་ Kotodama ཡིག་དཔར་རྐྱབ་ཡོད་པའི་ NFT ཧོསིཊི་འབོད་བརྡ་ཚུ་ གསལ་སྟོན་འབདཝ་ཨིན། གཤམ་གསལ་འདི་ ཡིག་ཆ་བརྟག་དཔྱད་ཀྱི་ IVM ཡིག་ཆ་བརྟག་དཔྱད་ཀྱིས་ བསྡུ་སྒྲིག་འབད་དེ་ ལག་ལེན་འཐབ་ཡོད་པའི་ མི་ཚེའི་འཁོར་རིམ་བརྟག་དཔྱད་ཀྱི་ བརྡ་མཚོན་ངོ་མ་འདི་ཨིན།
 
 ```kotodama
+// Mint an NFT, transfer it, update metadata, and burn it using typed IDs.
 seiyaku NftFlow {
-    kotoage fn nft_issue_and_transfer() authorize("NftAuthority") {
-        let owner = AccountId::parse(
-            "sorauﾛ1PﾉｳﾇmEｴWｵebHﾑ6ﾔﾙｲヰiwuCWErJ7uｽoPGｱﾔnjﾑKﾋTCW2PV",
-        );
+    permission NftAuthority;
+    kotoage fn nft_issue_and_transfer() authorize(NftAuthority) {
+        let owner = AccountId::parse("sorauﾛ1PﾉｳﾇmEｴWｵebHﾑ6ﾔﾙｲヰiwuCWErJ7uｽoPGｱﾔnjﾑKﾋTCW2PV");
         let nft = NftId::parse("n0$wonderland.universal");
-        ledger::nft::mint(nft, owner);
-        let to = AccountId::parse(
-            "sorauﾛ1NfｷgﾉﾓﾉBｦKﾌﾘﾒoﾇﾂﾛrG81ﾋjWﾎﾕVncwﾌSｱ3pﾘﾋﾉhUS9Q76",
-        );
-        ledger::nft::transfer(
-            source: owner,
-            nft: nft,
-            destination: to,
-        );
+        ledger::nft::mint(nft: nft, owner: owner);
+        let to = AccountId::parse("sorauﾛ1NfｷgﾉﾓﾉBｦKﾌﾘﾒoﾇﾂﾛrG81ﾋjWﾎﾕVncwﾌSｱ3pﾘﾋﾉhUS9Q76");
+        ledger::nft::transfer(source: owner, nft: nft, destination: to);
         ledger::nft::set_metadata(
             nft: nft,
             key: Name::parse("issued"),
             value: Json::parse("{\"issued\":\"demo\"}"),
         );
-        ledger::nft::burn(nft);
+        ledger::nft::burn(nft: nft);
     }
 }
 ```
@@ -148,22 +143,23 @@ jq -e --arg owner "$NEW_OWNER" \
   cookbook-nft.json
 ```
 
-CLI གིས་ཐོ་ཡིག་འདི་ཐོན་སྐྱེད་ཁེབས་ནང་བཀབ་པ་ཅིན་ JSON འདི་ཚར་གཅིག་བརྟག་དཔྱད་འབད་ཞིནམ་ལས་ ནང་འཁོད་ལུ་ཡོད་པའི་ NFT དངོས་པོ་ལུ་ སྙན་ཞུ་དེ་ལག་ལེན་རྐྱབས། ངོས་འཛིན་ཅན་གྱི་འགྱུར་ལྡོག་ཚུ་ `id`, `owned_by` དང་ `content`ཨིན།
+CLI གིས་ NFT ཐོ་ཡིག་ རང་དངོས་ གསལ་སྟོནམ་ཨིན། བདེན་ཁུངས་ཅན་གྱི་ མི་འགྱུར་བའི་ཆ་རྐྱེན་ཚུ་ `id`, `owned_by`, དང་ `content` ཨིན།
 
 ## དཀའ་ངལ་སེལ་ཐབས། {#troubleshooting}
 
 - `name$domain` གིས་ དབྱེ་དཔྱད་པ་ལ་ལོ་ཅིག་ནང་ ཡོངས་ཁྱབ་གནད་སྡུད་ས་སྒོ་ལུ་ སྔོན་སྒྲིག་འབད་ཚུགས་ དེ་འབདཝ་ད་ བཞེས་སྒོ་འབད་ནིའི་ཀི་དེབ་དང་ གློག་རིམ་ཨའི་ཌི་ཚུ་གིས་ གསལ་ཏོག་ཏོ་ `name$domain.dataspace` འབྲི་ཤོག་འདི་ལག་ལེན་འཐབ་དགོ།
 - འདི་བཟུམ་སྦེ་ NFT ID གི་ ཐོ་བཀོད་ལོག་ལྟབ་སྦེ་འབད་ནི་དེ་ ཆ་མེད་བཏང་ཡོདཔ་ཨིན། ས་གནས་ཀྱི་དྲ་ལམ་གསརཔ་ཅིག་ལག་ལེན་འཐབ་ ཡང་ན་ དམིགས་བསལ་ཡིག་རྒྱུན་གྱི་དོན་ལུ་ གནས་བརྟན་གསརཔ་ ID གདམ་ཁ་རྐྱབས།
 - ཟུར་གནས་གནད་སྡུད ཨིན་པུཊའདི་ JSON ཚད་ལྡན་ནང་ཐོ་བཀོད་འབད་ནི་ཨིན། JSON གི་ཚིག་ཡིག་མ་བཀོད་པའི་ བཀའ་སྤྱོད་སྐོགས ཡིག་རྒྱུན འདི་ ཟུར་གནས་གནད་སྡུད གནས་གོང་ མིན་མེད་ཨིན།
-- ད་ལྟོའི་ཇོ་བདག་མེན་པའི་རྩིས་ཐོ་གཞན་ཅིག་གིས་ མིང་རྟགས་བཀོད་མི་ སྤོ་བཤུད་ལུ་ གནང་བ་ངེས་བདེན་དགོཔ་ཨིན། འགྱུར་བ `--from` གིས་མིང་རྟགས་བཀོད་མི་འདི་བསྒྱུར་བཅོས་མི་འབད།
-- བསྒྱུར་བཅོས་འབད་བའི་ཤུལ་ལས་ ངོ་མ་མགྲོན་པ་ལུ་ NFT བཟོ་བཀོད་བསྒྱུར་བཅོས་འབད་ནི་དང་ ཐོ་བཀོད་མ་རྐྱབ་པར་བཞག་ཚུགས། ལག་ལེན་པ་གསརཔ་གི་མིང་རྟགས་ཅན་ ཡང་ན་ ངོས་འཛིན་ཅན་གྱི་ལག་ལེན་འགོ་དཔོན་ཅིག་ལག་ལེན་འཐབ་དགོ།
+- ད་ལྟོའི་ཇོ་བདག་ མེན་པའི་ རྩིས་ཐོ་གཞན་ཅིག་གིས་ མིང་རྟགས་བཀོད་མི་ སྤོ་བཤུད་ཅིག་ལུ་ NFT གི་མངའ་ཁོངས་ལུ་ བདག་དབང་ ཡང་ན་ ངེས་བདེན་གྱི་ `CanTransferNft` ཆོག་ཐམ་གནང་བ་ཅིག་ དགོཔ་ཨིན། `--from` བསྒྱུར་རུང་ མིང་རྟགས་འགོད་མི་ མི་འགྱུར།
+- སྤོ་བཤུད་ཀྱིས་ `owned_by` རྐྱངམ་ཅིག་ བསྒྱུརཝ་ཨིན། ཟུར་གནས་གནད་སྡུད་དུས་མཐུན་བཟོ་ནི་དང་ ཐོ་བཀོད་བཏོན་གཏང་ནི་འདི་ མངའ་ཁོངས་ཀྱི་ཇོ་བདག་ ཡང་ན་ NFT དེ་གི་དོན་ལུ་ `CanModifyNftMetadata` ཡང་ན་ `CanUnregisterNft` འཛིན་མི་ རྩིས་ཐོ་ཅིག་ལུ་ ལུསཔ་ཨིན། ཇོ་བདག་གསརཔ་གིས་ དེ་ ཡང་ཅིག་ ཕར་ སྤོ་བཤུད་འབད་ཚུགས།
 - Taira གིས་ NFT ནང་ཁྲལ་སྟོངམ་ལོག་གཏང་ཚུགས། ཁྱོད་ཀྱིས་ `items: []` ལུ་ NFT གི་བཀོད་རྒྱ་ཚུ་མ་ཐོབ་པའི་ཁུངས་ཅིག་སྦེ་ལག་ལེན་འཐབ་མ་བཅུག།
 
 ## གཞི་རྟེན་དང་འབྲེལ་བའི་ཡིག་ཆ་ཚུ་ {#source-and-related-docs}
 
-- [NFT འབྲེལ་མཐུད་བརྟག་དཔྱད་ཚུ་ ཕིན་ཌ་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/nft.rs) ལུ་འབདཝ་ཨིན།
-- [Kotodama NFT མགྲོན་སྐྱོང་གློག་འཕྲུལ-ལས་རིམ་འབོད བརྟག་དཔྱད་ཚུ་ ཕིན་ཌ་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
-- [ཕྲང་བདེན་ Kotodama NFT སྲོལ་རྒྱུན་འཁོར་གྱི་བརྟག་དཔྱད་གནས་སྡུད་ཐོ་བཀོད་ནང་ — གཏན་སྦྱར་ཡོད་པའི Git commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko)
+- [NFT འབྲེལ་མཐུད་བརྟག་དཔྱད་ཚུ་ ཕིན་ཌ་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/nft.rs) ལུ་འབདཝ་ཨིན།
+- [Kotodama NFT མགྲོན་སྐྱོང་གློག་འཕྲུལ-ལས་རིམ་འབོད བརྟག་དཔྱད་ཚུ་ ཕིན་ཌ་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
+- [ཕྲང་བདེན་ Kotodama NFT སྲོལ་རྒྱུན་འཁོར་གྱི་བརྟག་དཔྱད་གནས་སྡུད་ཐོ་བཀོད་ནང་ — གཏན་སྦྱར་ཡོད་པའི Git commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/ivm/docs/examples/12_nft_flow.ko)
+- [གཏན་སྦྱར་ཡོད་པའི་ Git commit ནང་གི་ Kotodama ཡིག་ཆའི་དཔེ་ཚུ་གི་ བརྟག་དཔྱད་](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/ivm/tests/kotodama_documentation_examples.rs)
 - [NFTs](/dz/blockchain/nfts.md)
 - [ཟུར་གནས་གནད་སྡུད](/dz/blockchain/metadata.md)
 - [བརྡ་བཀོད་ཚུ་](/dz/blockchain/instructions.md)

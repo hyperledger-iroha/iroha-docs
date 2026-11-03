@@ -1,22 +1,22 @@
 ---
 translation_locale: ja
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: 68ef931f3d37b9bd40fcf61c9a77313539ca0bd648405834d161a018debb491a
+translation_source_hash: 866b7d3ca37be67878f6f319ce0b0e27eac52c581decad1f46096ef75ad1b10f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # ブロックチェーン台帳の状態を照会する {#query-ledger-state}
 
 ## 結果 {#outcome}
 
-リソース Taira JSON を読み取り、投影し、その後、フィルター、論理ページネーション、ソート、取得サイズ、および前方専用カーソルの継続を使用して型付き Iroha クエリを使用します。また、サーバーが転送された `--select` タプルを評価する前にセレクタ投影に依存することは避けます。
+Taira の JSON リソースを読み取って投影し、その後、CLI と Rust SDK から、フィルター、ソート、サーバー側の投影、ページ上限、および不透明な `next_cursor` による継続を使用して Torii のコレクションクエリを実行します。また、一覧の取得には署名付き型付きクエリを使用しません。署名付き型付きクエリは一覧のフィルタリング、ソート、投影を行わないためです。
 
 ## 前提条件 {#prerequisites}
 
 - `curl`、`jq`、Node.js 24、そして現在の`iroha` CLI。
 - 読み取り専用 Taira アクセス。
-- 署名付き型クエリの例については、Taira のクライアント設定または生成されたローカルネットワーク用の設定です。
+- CLI の例については、Taira のクライアント設定または生成されたローカルネットワーク用の設定です。
 - 例として Rust の場合、ターゲットネットワークと同じ Iroha ソースリビジョンに固定されたプロジェクト。
 
 ## ステップ {#steps}
@@ -30,25 +30,23 @@ translation_engine: bing-translator-llm
 ```bash [curl]
 curl -fsS -H 'Accept: application/json' --get \
   https://taira.sora.org/v1/domains \
-  --data-urlencode 'sort=id:asc' \
+  --data-urlencode 'sort=id' \
   --data-urlencode 'limit=5' \
-  --data-urlencode 'offset=0' \
-  --data-urlencode 'count_mode=exact' \
-  | jq '{total, ids: [.items[].id]}'
+  --data-urlencode 'include_total=true' \
+  | jq '{total, next_cursor, ids: [.items[].id]}'
 ```
 
 ```js [Node.js]
 const root = 'https://taira.sora.org'
-const limit = 5
 const seen = new Set()
+let cursor = null
 
-for (let offset = 0; ; offset += limit) {
+do {
   const url = new URL('/v1/domains', root)
   url.search = new URLSearchParams({
-    sort: 'id:asc',
-    limit: String(limit),
-    offset: String(offset),
-    count_mode: 'exact',
+    sort: 'id',
+    limit: '5',
+    ...(cursor ? { cursor } : {}),
   })
 
   const response = await fetch(url, {
@@ -63,106 +61,90 @@ for (let offset = 0; ; offset += limit) {
     seen.add(domain.id)
     console.log(domain.id)
   }
-  if (page.items.length < limit || seen.size >= page.total) break
-}
+  cursor = page.next_cursor
+} while (cursor)
 ```
 
 :::
 
-この HTTP サーフェスは `limit` と `offset` を使用します。ルートがより安価なカウントモードを使用する場合、省略されたまたは境界付きの `total` は通常のものとして扱います。
+この HTTP サーフェスは `limit` と不透明な `next_cursor` でページングします。`next_cursor` が `null` になるまで、それを変更せずに `cursor` として送り返してください。`total` は `include_total=true` を要求した場合にのみ表示され、その場合はフルスキャンのコストがかかります。
 
-### 2. 型付き CLI クエリをフィルタリングしてバッチ処理する {#_2-filter-and-batch-a-typed-cli-query}
+### 2. CLI でコレクションをフィルタリングする {#_2-filter-a-collection-with-the-cli}
 
-CLI は型付きイテラブルクエリをシリアライズし、内部的にサーバーの継続カーソルに従います。ここでは論理的な結果は1行に制限されており、一方 `--fetch-size 1` は1回の往復で取得される最大バッチを制御します。
+CLI はフィルター、投影、ページサイズをコレクションエンドポイントに送信し、1 ページ分の `{items, next_cursor}` を出力します。`next_cursor` が `null` になるまでたどるには `--all` を追加してください。
 
 ```bash
-DOMAIN_PREDICATE='{"equals":[{"field":"id","value":"wonderland.universal"}]}'
+DOMAIN_FILTER='id = "universal.universal"'
 
 iroha --config ./localnet/client.toml \
-  ledger domain list filter "$DOMAIN_PREDICATE" \
-  --limit 1 \
-  --offset 0 \
-  --fetch-size 1
+  ledger domain list \
+  --filter "$DOMAIN_FILTER" \
+  --select id \
+  --limit 1
 ```
 
-フィルタリングはページネーションの前に行われます。クエリ固有の型付き述語を使用してください。アカウントや資産の述語をドメインに安全に再利用することはできません。
+フィルタリングはページングの前に行われます。各コレクションは自身のフィールドのみを受け付けます。不明なフィールドは、何も一致しない結果ではなく `invalid_filter` を返します。
 
 ### 3. 安定したメタデータキーで並べ替える {#_3-sort-by-a-stable-metadata-key}
 
-入力されたクエリのソートは、1つのメタデータキーに対して辞書式順序になります。そのキーを持たない項目は、ソフトウェア実行時に定義された順序に従うため、コレクション全体で一貫して値が設定されているキーを使用してください。
+コレクションのソートキーには、宣言されたフィールドと `metadata.<key>` を指定できます。降順にするにはキーの前に `-` を付けてください。そのキーを持たない行は昇順では先頭に並び、同順位は行の識別子に従うため、コレクション全体で一貫して値が設定されているキーを使用してください。
 
 ```bash
 iroha --config ./localnet/client.toml \
   --machine \
-  ledger account list all \
-  --verbose \
-  --sort-by-metadata-key key \
-  --order asc \
+  account list \
+  --sort metadata.key \
   --limit 10 \
-  --offset 0 \
-  --fetch-size 2 \
-  | jq '[.[] | {id, metadata}]'
+  | jq '[.items[] | {id, metadata}]'
 ```
 
-チェックイン済みの CLI は `--select` JSON を解析し、セレクタタプルを転送しますが、現在のライトウェイトクエリ DSL はサーバーでそのセレクタを評価しません。まだそれに基づいてプロジェクション契約を構築しないでください。ターゲットソフトウェアのランタイムがサポートするようになった後にのみ、型付きの SDK プロジェクションを使用するか、上記のように`jq`または JavaScript を使用してクライアント側で検証済みの結果をプロジェクトしてください。
+`--select` はサーバー側の投影です。`--select id,metadata` はそれらのフィールドだけを返し、不明なフィールドは `invalid_select` を返します。署名付き型付きクエリは常にアイテム全体を返すため、その結果は上記のように `jq` または JavaScript を使用してクライアント側で投影してください。
 
 ### 4. Rust イテレーターを不透明なカーソルに従わせる {#_4-let-the-rust-iterator-follow-opaque-cursors}
 
-`Pagination` は論理結果セットを制限します。`FetchSize` は各サーバーバッチを制御します。返されるイテレータは、サーバー生成のカーソルを使用して継続要求を透過的に送信します。
+`limit` はページサイズを設定します。`list` が返すイテレータは、現在のページを消費した後にのみ、サーバーの `next_cursor` を使用して次のページを要求します。`take` は論理的な結果を制限します。ここで `client` は `iroha::blocking::Client` です。
 
 ```rust
-use std::num::NonZeroU64;
+use iroha::collections::{Collection, ListQuery, SortKey};
 
-use iroha::data_model::{
-    prelude::FindAssetsDefinitions,
-    query::{
-        builder::QueryBuilderExt as _,
-        parameters::{FetchSize, Pagination},
-    },
-};
+let query = ListQuery::new().sort_by(SortKey::asc("id")).limit(5);
 
-let definitions = client
-    .query(FindAssetsDefinitions::new())
-    .with_pagination(Pagination::new(NonZeroU64::new(25), 0))
-    .with_fetch_size(FetchSize::new(NonZeroU64::new(5)))
-    .execute_all()?;
-
-for definition in definitions {
-    println!("{} {}", definition.id(), definition.name());
+for definition in client.list(Collection::AssetDefinitions, query).take(25) {
+    let definition = definition?;
+    println!("{:?} {:?}", definition.get("id"), definition.get("name"));
 }
 ```
 
-A `ForwardCursor`は権限に縛られ、プロセスローカルで、前方のみです。決して解析したり、合成したり、認可主体間で共有したり、Torii インスタンス間でポータブルなレジュメトークンとして永続化したりしないでください。期限が切れた場合は、意図的なアプリケーションレベルのチェックポイントで元のクエリを再実行してください。
+`next_cursor` は、そのコレクション、パス、フィルター、ソートに結び付けられた不透明なキーセット位置です。決して解析したり合成したりせず、異なるフィルターやソートで再利用しないでください。Torii はそれを `invalid_cursor` で拒否します。ページ間で行が挿入または削除されても、後続のページで無関係な行が重複したりスキップされたりすることはありません。
 
 ## 確認する {#verify}
 
-正確なドメインフィルターは、`wonderland.universal` のみを返すべきです。単に成功した CLI の終了を数えるのではなく、結果を確認してください:
+正確なドメインフィルターは、`universal.universal` のみを返すべきです。単に成功した CLI の終了を数えるのではなく、結果を確認してください:
 
 ```bash
 iroha --config ./localnet/client.toml \
   --machine \
-  ledger domain list filter "$DOMAIN_PREDICATE" \
-  --limit 1 --offset 0 --fetch-size 1 \
-  | jq -e 'length == 1 and .[0] == "wonderland.universal"'
+  ledger domain list --filter "$DOMAIN_FILTER" --select id --limit 1 \
+  | jq -e '[.items[].id] == ["universal.universal"]'
 ```
 
-ページ分割されたアプリケーションのクエリについては、IDがページ間で重複しないこと、要求された論理的上限が決して超えられないこと、そして期限切れのカーソルの後で再試行すると文書化されたチェックポイントから再開されることもテストしてください。
+ページ分割されたアプリケーションのクエリについては、IDがページ間で重複しないこと、要求された論理的上限が決して超えられないこと、そして拒否されたカーソルの場合は文書化されたチェックポイントから再開されることもテストしてください。
 
 ## トラブルシューティング {#troubleshooting}
 
 - 単一のクエリは、反復可能なフィルター、ソート、ページネーション、フェッチパラメータを受け付けません。これらの制御が必要な場合は、対応するリストクエリを使用してください。
-- `fetch_size` は非ゼロのバッチヒントであり、合計結果の制限ではありません。現在のデフォルトは `100` であり、ソフトウェアの実行時はその最大値を超える値を拒否します。
-- 不明、期限切れ、または外部のカーソルは、意図的に再利用できません。クエリを再起動し、opaque値の修復を試みないでください。
-- メタデータの並べ替えは一般的なフィールドの並べ替えではありません。すべての項目が選択したキーを持っていない場合は、キーが欠落している順序を記録するか、別の戦略を選択してください。
-- CLI は`--select`を解析して転送しますが、現在のサーバーは軽量セレクタタプルを評価しません。展開されたソフトウェアランタイムでサーバーサイドセレクタのサポートが確認されるまで、クライアント側投影を適用してください。
-- 広範で制限のないクエリは、ネットワークのピア作業、クライアントのメモリ、カーソルの寿命リスクを増加させます。論理的な制限と、利用者に適したフェッチサイズを設定してください。
-- パブリック JSON リソースパラメータと署名付き型付きクエリパラメータは関連していますが、相互に置き換え可能なシリアル化形式ではありません。型付きクエリデータコンテナには SDK または CLI を使用してください。
+- `limit` はページサイズであり、合計結果ではありません。値は 1 以上、ノードの `torii.app_api_max_list_limit`（デフォルト 500）以下です。Torii のデフォルトは 100 です。さらに読み取るには、`next_cursor`、`--all`、または SDK イテレータに従ってください。
+- `invalid_cursor` は、カーソルの形式が不正であるか、別のコレクション、パス、フィルター、またはソートに属していることを意味します。クエリを再起動し、不透明な値の修復を試みないでください。
+- 選択的なフィルターは、`null` ではない `next_cursor` とともに、短いページや空のページを返すことがあります。`null` になるまでそれをたどり続けてください。
+- `--filter` と HTTP の `filter` パラメーターは、`id = "universal.universal"` や `exists(metadata.tier)` のような Torii のテキスト文法を受け付けます。JSON の述語オブジェクトはフィルターテキストではなく、無効な `filter` として失敗します。
+- 広範で制限のないクエリは、ネットワークのピア作業とクライアントのメモリを増加させます。論理的な制限と、利用者に適したページサイズを設定してください。
+- 署名付きの `/v1/query` は一覧取得用の API ではありません。単一のクエリと、フィルターなしの一部のイテラブルクエリの開始のみを受け付け、`FindDomains` や `FindAssetDefinitions` などのその他のクエリは `signed_query_shape_not_admitted` で拒否します。コレクションエンドポイント、CLI の `list` コマンド、および SDK のコレクションリーダーは、1 つのフィルター、ソート、カーソルの文法を共有します。
 
 ## ソースおよび関連文書 {#source-and-related-docs}
 
-- [ピン留めされたソースコードのリビジョンでのカーソルバック型ページネーション統合テスト](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs)
-- [ピン留めされたソースコードのリビジョンにおけるクエリビルダーとセレクターの動作](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs)
-- [ピン留めされたソースコードのリビジョンにおけるクエリパラメータとカーソルモデル](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs)
+- [固定されたソースコードのリビジョンでの Torii コレクションクエリの仕様](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/torii/collection_queries.md)
+- [ピン留めされたソースコードのリビジョンにおける Rust のコレクション読み取りとカーソルイテレータ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/src/collections.rs)
+- [ピン留めされたソースコードのリビジョンにおける署名付きクエリの受け入れ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/query_json.md)
 - [クエリ](/ja/blockchain/queries.md)
 - [問い合わせ参照](/ja/reference/queries.md)
 - [JavaScript と TypeScript](/ja/guide/tutorials/javascript.md)

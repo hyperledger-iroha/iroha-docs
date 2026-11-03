@@ -1,9 +1,9 @@
 ---
 translation_locale: ka
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 576e03924f19b63681cdfafa641b996672e35a992478fc9eaf5b83f0e7baa6da
+translation_source_hash: d399284a2baec507e4c979c762d6e216d8c3fbc5b4b4fe221b6bbb0049ee9fd9
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # ნაციონალური აქტივების დაფარვა {#native-asset-escrow}
@@ -15,8 +15,8 @@ translation_engine: nllb-200-ct2
 ## წინაპირობები {#prerequisites}
 
 - ნომერული აქტივის განსაზღვრა და გამხსნელი/გაყიდველი, რომელსაც აქვს საკმარისი რაოდენობა.
-- დაფინანსებული ერთგასაღებიანი I105 კლიენტები ყოველი მხარისთვის, რომელიც ნაბიჯს აგზავნის. გამოიყენეთ ავტორიტეტის მიერ გადახდილი მოქმედი `fee_payment` განზრახვა, რომლის საკომისიო აქტივი Taira-ს გამცემის მიმდინარე პასუხს ემთხვევა; დოკუმენტაციიდან აქტივის ID არ ჩასვათ.
-- ამჟამინდელი Rust ან Python SDK პროტოკოლიდან Iroha პროტოკოლის დასკვნით `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
+- დაფინანსებული, ერთგასაღებიანი I105 კლიენტები ყველა მხარისთვის, რომელიც ნაბიჯს აგზავნის. გამოიყენეთ უფლებამოსილი ანგარიშის მიერ გადახდილი მიმდინარე `fee_payment` განზრახვა, რომლის საფასურის აქტივი ემთხვევა Taira-ს გამცემის მიმდინარე პოლიტიკის მიერ გამოქვეყნებულ აქტივს; დოკუმენტაციიდან აქტივის ID არ ჩასვათ.
+- ამჟამინდელი Rust ან Python SDK პროტოკოლიდან Iroha პროტოკოლის დასკვნით `c8c872461e92f04325c350cdd952f4276e96f9dc`.
 - JavaScript კომპილერის მაგალითისთვის, Node.js 24 პლუს ნაშენები ადგილობრივ განვითარების გარემოში `@iroha/iroha-js` პაკეტი და მისი მშობლიური `iroha_js_host`; დაიცავით [JavaScript SDK წყარო ნაგებობის კონფიგურაცია](/ka/guide/tutorials/javascript.md#build-from-source). ბრაუზერის ნაგებობები უნდა უზრუნველყოს `compilerUrl` ნაცვლად ადგილობრივი მასპინძლის დატვირთვის.
 - Taira უნდა აღიაროს აქტივების გადაცემა და საფინანსო ინსტრუქცია. აქტივების მფლობელებს შეუძლიათ გამოიყენონ ჩვეულებრივი სიცოცხლის ციკლი, როდესაც მათი აქტივების პოლიტიკა ამის საშუალებას იძლევა; დავისთვის საჭიროა გლობალური `CanResolveEscrowDispute` ნებართვა. გამოიყენეთ წარმოქმნილი ლოკალური ქსელი, როდესაც საჭირო საჯარო ბლოკჩეინის ქსელის ავტორიზაციის პრინციპი არ არსებობს.
 
@@ -31,7 +31,7 @@ translation_engine: nllb-200-ct2
 ```rust
 use eyre::{Result, ensure};
 use iroha::{
-    client::Client,
+    blocking::Client,
     data_model::{
         isi::escrow::{
             AcceptAssetEscrow, MarkEscrowPaymentSent, OpenAssetEscrow,
@@ -51,7 +51,7 @@ fn complete_marketplace_escrow(
 ) -> Result<AssetEscrowRecord> {
     let fee = FeePaymentIntent::authority(Vec::new(), None);
 
-    seller.submit_blocking(
+    seller.submit(
         OpenAssetEscrow::with_evidence_hashes(
             escrow_id,
             asset_definition,
@@ -60,11 +60,13 @@ fn complete_marketplace_escrow(
         ),
         fee.clone(),
     )?;
-    buyer.submit_blocking(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
-    buyer.submit_blocking(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
-    seller.submit_blocking(ReleaseAssetEscrow::new(escrow_id), fee)?;
+    buyer.submit(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
+    buyer.submit(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
+    seller.submit(ReleaseAssetEscrow::new(escrow_id), fee)?;
 
-    let record = seller.query_single(FindAssetEscrowById::new(escrow_id))?;
+    let record = seller
+        .client()
+        .query_single(FindAssetEscrowById::new(escrow_id))?;
     ensure!(record.status == AssetEscrowStatus::Released);
     Ok(record)
 }
@@ -74,7 +76,7 @@ fn complete_marketplace_escrow(
 
 ### 2. გახსენით და ნაწილობრივ ამოიღეთ გენერული საკეტი Python {#_2-open-and-partially-draw-a-generic-lock-with-python}
 
-გათავისუფლების ნებართვის მდივანი გამოკითხავს ხელმოწერილი მშობლიური ჩანაწერს, სანამ ამოიღებს. ზუსტი `remaining_amount` გაცემა უზრუნველყოფს ოპტიმისტურ თანამედროვეობას: მოძველებული პარალელური თხოვნა უარყიდება იმის მაგივრად, რომ ორჯერ დააბრუნოს შენახვა.
+გათავისუფლებაზე უფლებამოსილი ანგარიში თანხის გამოტანამდე მოთხოვნით კითხულობს ხელმოწერილ ნატიურ ჩანაწერს. ზუსტად ამ `remaining_amount`-ის გადაცემა ოპტიმისტურ კონკურენტულობას უზრუნველყოფს: მოძველებული პარალელური მოთხოვნა უარიყოფა, ნაცვლად იმისა, რომ შენახული თანხა ორჯერ ჩამოიჭრას. `client` არის `ToriiClient`, რომელიც შექმნილია `local_signing_context=LocalSigningContext(network_id)`-ით და ქსელის `chain_discriminant`-ით; ტრანზაქციის დამხმარეები ქსელის იდენტობას ამ კონტექსტიდან იღებენ, ხელმოწერილი მოთხოვნები კი მას `network_id`-ად იღებენ.
 
 ```python
 import secrets
@@ -92,7 +94,6 @@ def escrow_status(record):
 def open_and_draw_lock(
     *,
     client,
-    chain_id,
     opener,
     opener_private_key,
     release_authority,
@@ -102,9 +103,9 @@ def open_and_draw_lock(
     fee_payment,
 ):
     escrow_id = f"cookbook_lock_{secrets.token_hex(12)}"
+    network_id = client.local_signing_context.network_id
 
     client.open_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=opener,
         private_key=opener_private_key,
         fee_payment=fee_payment,
@@ -120,10 +121,10 @@ def open_and_draw_lock(
     before = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
     client.drawdown_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=release_authority,
         private_key=release_private_key,
         fee_payment=fee_payment,
@@ -135,6 +136,7 @@ def open_and_draw_lock(
     after = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
 
@@ -150,8 +152,10 @@ Python SDK-ს შეუძლია ავტომატურად გამ
 Rust ჩაკეტვის ნაკადებისათვის, მიმდინარე კონსტრუქტორები ასევე ითხოვენ დაკვირვებულ რაოდენობას:
 
 ```rust
-let before = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-release_authority.submit_blocking(
+let before = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+release_authority.submit(
     DrawdownAssetLock::new(
         lock_id,
         Quantity::from(4_u64),
@@ -160,23 +164,26 @@ release_authority.submit_blocking(
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 
-let current = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-opener.submit_blocking(
+let current = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+opener.submit(
     CancelAssetLock::new(lock_id, current.remaining_amount),
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 ```
 
-`DrawdownAssetLock::new` იღებს სამ ღირებულებას; `CancelAssetLock::new` იღებს ორს. მოსალოდნელი დარჩენილი თანხის გამორიცხვა აღწერს ძველ, უსაფრთხო ტექნიკურ მოწოდების ფორმას.
+`DrawdownAssetLock::new` იღებს ჩაკეტვას, თანხას და დაკვირვებულ დარჩენილ თანხას; `CancelAssetLock::new` იღებს ჩაკეტვას და დაკვირვებულ დარჩენილ თანხას. რეესტრი ორივე ინსტრუქციას უარყოფს, თუ დარჩენილი თანხა მანამდე შეიცვალა.
 
 ### 3. შეადგინეთ Kotodama დაფარვის ზედაპირი JavaScript {#_3-compile-the-kotodama-escrow-surface-from-javascript}
 
-JavaScript არ საჭიროებს გამოიგონოს არატიპიზებული მშობლიური ინსტრუქციები. ამჟამინდელი კომპილერი ხსნის ბლოკჩეინის რეესტრი ესქრო ჩაშენებული Kotodama; განთავსება და ტექნიკური გამოძახებები შემდეგ მოჰყვება [შეიქმნას და განახორციელოს ჭკვიანი კონტრაქტი](./smart-contracts.md)
+JavaScript-ს არ სჭირდება ტიპიზაციის გარეშე ნატიური ინსტრუქციების მოგონება. მიმდინარე კომპილატორი Kotodama-ს რეესტრის ესქროს ჩაშენებულ ფუნქციებს აწვდის; განთავსება შემდეგ მიჰყვება გვერდს [ჭკვიანი კონტრაქტის აგება და განთავსება](./smart-contracts.md). `open_offer` შესასვლელი წერტილი არის `authorize(Admin)`, ამიტომ აღმასრულებელი მოითხოვს, რომ მის გამომძახებელს ჰქონდეს `CanUseContractPermission` განთავსებული მისამართისა და `permission: "Admin"`-ისთვის.
 
 შეინახეთ ეს როგორც `native_escrow.ko`:
 
 ```kotodama
 seiyaku NativeEscrowAitai {
+    permission Admin;
     error enum EscrowError {
         NonPositiveAmount = 1,
     }
@@ -185,7 +192,7 @@ seiyaku NativeEscrowAitai {
         Name offer,
         AssetDefinitionId asset_definition,
         quantity amount
-    ) authorize("Admin") {
+    ) authorize(Admin) {
         require(amount > 0, EscrowError::NonPositiveAmount);
         ledger::escrow::open_offer(
             offer: offer,
@@ -230,6 +237,7 @@ node ./compile-native-escrow.mjs
 record = client.get_asset_escrow(
     escrow_id=escrow_id,
     authority=release_authority,
+    network_id=client.local_signing_context.network_id,
     private_key=release_private_key,
 )
 assert escrow_status(record) == "Locked"
@@ -241,7 +249,7 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 ## პრობლემების აღმოფხვრა {#troubleshooting}
 
 - `Not permitted` გახსნის დროს, როგორც წესი, ნიშნავს, რომ ავტორიზაციის მფლობელმა არ შეიძლება გადასცეს შერჩეული აქტივი დაცვაში. დავების გადაწყვეტას აქვს ცალკე გლობალური კარიბჭე `CanResolveEscrowDispute`.
-- `expected remaining amount` უარყოფა არის ოპტიმიზმის კონფლიქტი-კონკურენცია. შეამოწმეთ რეკორდი, გადაწყვიტეთ იყო თუ არა განზრახული სხვა ამოღება / გაუქმება და ხელი მოაწერეთ ახალ ინსტრუქციას მხოლოდ იმ შემთხვევაში, თუ ახალი მდგომარეობა მისაღებია.
+- `asset lock remaining amount changed since the drawdown was prepared` (ან `...since the cancellation was prepared`) ოპტიმისტური კონკურენტულობის კონფლიქტია. ჩანაწერი ხელახლა მოითხოვეთ, გადაწყვიტეთ, იყო თუ არა სხვა გამოტანა/გაუქმება განზრახული, და ახალ ინსტრუქციას ხელი მოაწერეთ მხოლოდ მაშინ, თუ ახალი მდგომარეობა მისაღებია.
 - მხოლოდ კონფიგურირებული განთავისუფლების ავტორიზაციის ხელმძღვანელმა შეიძლება მოიპოვოს საიმედო საკეტი. დანიშნულების ადგილი ვერ გაათავისუფლებს მას მხოლოდ იმიტომ, რომ ის მიიღებს თანხებს.
 - ბაზარზე გათავისუფლება ძალაშია მხოლოდ მიღებისა და გადახდის გამოგზავნის შემდეგ; გაუქმება შეზღუდულია ადრეული სიცოცხლის ციკლის მდგომარეობებით.
 - ვადის გასვლა რეესტრის ავტორიტეტულ დროს იყენებს. ლოკალური სისტემური საათის ტაიმაუტი არ ჩათვალოთ იმის მტკიცებულებად, რომ `ExpireAssetLock` წარმატებით შესრულდება.
@@ -249,10 +257,10 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## წყარო და შესაბამისი დოკუმენტები {#source-and-related-docs}
 
-- [ორიენტირებული საფინანსო ინსტრუქციის მოდელი, ჩაკეტილი წყარო კოდის რევიზიით](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
-- [ადგილობრივი ესქრო ინტეგრაციის ტესტები დამაგრებული საწყისი კოდის რევიზიისას](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
-- [Python საფინანსო კლიენტის მეთოდები ჩაკეტილი წყარო კოდის გადახედვისას](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama ადგილობრივი საფინანსო ანაზღაურების ნიმუში ჩაკეტილი წყარო კოდის რევიზიისას](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [ორიენტირებული საფინანსო ინსტრუქციის მოდელი, ჩაკეტილი წყარო კოდის რევიზიით](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/isi/escrow.rs)
+- [ადგილობრივი ესქრო ინტეგრაციის ტესტები დამაგრებული საწყისი კოდის რევიზიისას](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/native_escrow.rs)
+- [Python საფინანსო კლიენტის მეთოდები ჩაკეტილი წყარო კოდის გადახედვისას](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama ადგილობრივი საფინანსო ანაზღაურების ნიმუში ჩაკეტილი წყარო კოდის რევიზიისას](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [ნაციონალური აქტივების საფინანსო დაფარვა](/ka/blockchain/escrow.md)
 - [ფუნქციური აქტივები](./fungible-assets.md)
 - [ნებართვები და როლები](./permissions-and-roles.md)

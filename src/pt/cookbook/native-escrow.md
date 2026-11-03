@@ -1,9 +1,9 @@
 ---
 translation_locale: pt
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 576e03924f19b63681cdfafa641b996672e35a992478fc9eaf5b83f0e7baa6da
+translation_source_hash: d399284a2baec507e4c979c762d6e216d8c3fbc5b4b4fe221b6bbb0049ee9fd9
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Escrow de Ativo Nativo {#native-asset-escrow}
@@ -15,8 +15,8 @@ Escolha entre um escrow de mercado e um bloqueio de ativo destinado, execute o c
 ## Pré-requisitos {#prerequisites}
 
 - Uma definição de ativo numérico e um abridor/vendedor que possui quantidade suficiente.
-- Clientes financiados de chave única I105 para cada parte que envia um passo. Use uma intenção `fee_payment` paga por autoridade ao vivo cujo ativo de taxa corresponda à resposta atual do serviço de financiamento do testnet Taira; não insira um ID de ativo da documentação.
-- O SDK Rust ou Python atual do Iroha no commit `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
+- Clientes financiados de chave única I105 para cada parte que envia um passo. Use uma intenção `fee_payment` ao vivo paga pela autoridade cujo ativo de taxa corresponda ao publicado pela política atual do serviço de financiamento da testnet Taira; não insira um ID de ativo da documentação.
+- O SDK Rust ou Python atual do Iroha no commit `c8c872461e92f04325c350cdd952f4276e96f9dc`.
 - Para o exemplo do compilador JavaScript, Node.js 24, um pacote `@iroha/iroha-js` compilado localmente e seu `iroha_js_host` nativo; siga a [configuração da compilação do SDK JavaScript a partir do código-fonte](/pt/guide/tutorials/javascript.md#build-from-source). Compilações para navegador devem fornecer `compilerUrl` em vez de carregar o host nativo.
 - Taira deve admitir a transferência de ativos e as instruções de custódia. Os proprietários de ativos podem usar o ciclo de vida normal quando sua política de ativos permitir; resolver uma disputa requer a permissão global `CanResolveEscrowDispute`. Use uma rede local gerada quando o principal de autorização da rede pública necessária estiver ausente.
 
@@ -31,7 +31,7 @@ Esta função recebe IDs reais digitados e clientes. Ela abre 40 unidades, permi
 ```rust
 use eyre::{Result, ensure};
 use iroha::{
-    client::Client,
+    blocking::Client,
     data_model::{
         isi::escrow::{
             AcceptAssetEscrow, MarkEscrowPaymentSent, OpenAssetEscrow,
@@ -51,7 +51,7 @@ fn complete_marketplace_escrow(
 ) -> Result<AssetEscrowRecord> {
     let fee = FeePaymentIntent::authority(Vec::new(), None);
 
-    seller.submit_blocking(
+    seller.submit(
         OpenAssetEscrow::with_evidence_hashes(
             escrow_id,
             asset_definition,
@@ -60,11 +60,13 @@ fn complete_marketplace_escrow(
         ),
         fee.clone(),
     )?;
-    buyer.submit_blocking(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
-    buyer.submit_blocking(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
-    seller.submit_blocking(ReleaseAssetEscrow::new(escrow_id), fee)?;
+    buyer.submit(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
+    buyer.submit(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
+    seller.submit(ReleaseAssetEscrow::new(escrow_id), fee)?;
 
-    let record = seller.query_single(FindAssetEscrowById::new(escrow_id))?;
+    let record = seller
+        .client()
+        .query_single(FindAssetEscrowById::new(escrow_id))?;
     ensure!(record.status == AssetEscrowStatus::Released);
     Ok(record)
 }
@@ -74,7 +76,7 @@ A conta de custódia é gerida pelo livro contábil. Conceder um token de transf
 
 ### 2. Abra e desenhe parcialmente um cadeado genérico com Python {#_2-open-and-partially-draw-a-generic-lock-with-python}
 
-O principal de autorização de liberação consulta o registro nativo assinado antes de efetuar o saque. Passar exatamente esse `remaining_amount` fornece concorrência otimista: uma solicitação paralela desatualizada é rejeitada em vez de debitar a custódia duas vezes.
+O principal de autorização de liberação consulta o registro nativo assinado antes de efetuar o saque. Passar exatamente esse `remaining_amount` fornece concorrência otimista: uma solicitação paralela desatualizada é rejeitada em vez de debitar a custódia duas vezes. `client` é um `ToriiClient` criado com `local_signing_context=LocalSigningContext(network_id)` e o `chain_discriminant` da rede; os auxiliares de transação obtêm a identidade da rede desse contexto, e as consultas assinadas a recebem como `network_id`.
 
 ```python
 import secrets
@@ -92,7 +94,6 @@ def escrow_status(record):
 def open_and_draw_lock(
     *,
     client,
-    chain_id,
     opener,
     opener_private_key,
     release_authority,
@@ -102,9 +103,9 @@ def open_and_draw_lock(
     fee_payment,
 ):
     escrow_id = f"cookbook_lock_{secrets.token_hex(12)}"
+    network_id = client.local_signing_context.network_id
 
     client.open_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=opener,
         private_key=opener_private_key,
         fee_payment=fee_payment,
@@ -120,10 +121,10 @@ def open_and_draw_lock(
     before = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
     client.drawdown_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=release_authority,
         private_key=release_private_key,
         fee_payment=fee_payment,
@@ -135,6 +136,7 @@ def open_and_draw_lock(
     after = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
 
@@ -150,8 +152,10 @@ O Python SDK pode consultar automaticamente quando `expected_remaining_amount` �
 Para os fluxos de bloqueio Rust, os construtores atuais também exigem a quantidade observada:
 
 ```rust
-let before = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-release_authority.submit_blocking(
+let before = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+release_authority.submit(
     DrawdownAssetLock::new(
         lock_id,
         Quantity::from(4_u64),
@@ -160,23 +164,26 @@ release_authority.submit_blocking(
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 
-let current = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-opener.submit_blocking(
+let current = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+opener.submit(
     CancelAssetLock::new(lock_id, current.remaining_amount),
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 ```
 
-`DrawdownAssetLock::new` aceita três valores; `CancelAssetLock::new` aceita dois. Omitir a quantidade restante esperada descreve uma forma de chamada antiga e insegura.
+`DrawdownAssetLock::new` aceita o bloqueio, a quantidade e a quantidade restante observada; `CancelAssetLock::new` aceita o bloqueio e a quantidade restante observada. O livro-razão rejeita qualquer uma das instruções se a quantidade restante tiver mudado antes.
 
 ### 3. Compile a superfície de custódia Kotodama a partir de JavaScript {#_3-compile-the-kotodama-escrow-surface-from-javascript}
 
-JavaScript não precisa inventar instruções nativas não tipadas. O compilador atual expõe os componentes integrados de escrows do livro-razão da blockchain para Kotodama; a implantação e as chamadas então seguem [Construir e implantar um contrato inteligente](./smart-contracts.md).
+JavaScript não precisa inventar instruções nativas não tipadas. O compilador atual expõe os componentes integrados de escrows do livro-razão da blockchain para Kotodama; a implantação então segue [Construir e implantar um contrato inteligente](./smart-contracts.md). O ponto de entrada `open_offer` é `authorize(Admin)`, então o executor exige que quem o chama tenha `CanUseContractPermission` para o endereço implantado e `permission: "Admin"`.
 
 Salve isto como `native_escrow.ko`:
 
 ```kotodama
 seiyaku NativeEscrowAitai {
+    permission Admin;
     error enum EscrowError {
         NonPositiveAmount = 1,
     }
@@ -185,7 +192,7 @@ seiyaku NativeEscrowAitai {
         Name offer,
         AssetDefinitionId asset_definition,
         quantity amount
-    ) authorize("Admin") {
+    ) authorize(Admin) {
         require(amount > 0, EscrowError::NonPositiveAmount);
         ledger::escrow::open_offer(
             offer: offer,
@@ -230,6 +237,7 @@ Para custódia de mercado, consulte `FindAssetEscrowById` e os ativos detidos po
 record = client.get_asset_escrow(
     escrow_id=escrow_id,
     authority=release_authority,
+    network_id=client.local_signing_context.network_id,
     private_key=release_private_key,
 )
 assert escrow_status(record) == "Locked"
@@ -241,7 +249,7 @@ Também consulte a posse de ativos do destino e confirme que ela aumentou em qua
 ## Solução de problemas {#troubleshooting}
 
 - `Not permitted` ao abrir geralmente significa que o titular da autorização não pode transferir o ativo selecionado para custódia. A resolução de disputas possui o portão global separado `CanResolveEscrowDispute`.
-- `expected remaining amount` a rejeição é um conflito de concorrência otimista. Reconsulte o registro, decida se a outra retirada/cancelamento foi intencional e assine uma nova instrução apenas se o novo estado for aceitável.
+- `asset lock remaining amount changed since the drawdown was prepared` (ou `...since the cancellation was prepared`) é um conflito de concorrência otimista. Reconsulte o registro, decida se a outra retirada/cancelamento foi intencional e assine uma nova instrução apenas se o novo estado for aceitável.
 - Apenas o principal autorizado para liberação configurado pode realizar um bloqueio confiável. O destino não pode liberá-lo apenas porque receberá os fundos.
 - O lançamento no marketplace é válido apenas após a aceitação e o estado de pagamento enviado; o cancelamento é limitado aos estados do ciclo de vida anteriores.
 - O vencimento utiliza o tempo do registro de blockchain autoritário. Não trate um tempo limite do relógio local como prova de que `ExpireAssetLock` irá expirar.
@@ -249,10 +257,10 @@ Também consulte a posse de ativos do destino e confirme que ela aumentou em qua
 
 ## Fonte e documentos relacionados {#source-and-related-docs}
 
-- [Modelo de instrução de escrow nativo no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
-- [Testes de integração nativa de escrow no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
-- [Python métodos do cliente de escrow no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama amostra de escrow nativa no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [Modelo de instrução de escrow nativo no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/isi/escrow.rs)
+- [Testes de integração nativa de escrow no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/native_escrow.rs)
+- [Python métodos do cliente de escrow no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama amostra de escrow nativa no commit fixado](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [Depósito em garantia de ativo nativo](/pt/blockchain/escrow.md)
 - [Ativos fungíveis](./fungible-assets.md)
 - [Permissões e funções](./permissions-and-roles.md)

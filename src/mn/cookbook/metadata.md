@@ -1,21 +1,21 @@
 ---
 translation_locale: mn
 translation_source: /cookbook/metadata.md
-translation_source_hash: bb486994faabb29fb48609a886862e44e565148be4800ec1244218ef37e2e54b
+translation_source_hash: 88298912f083d79a9fdfe5e8d0a89d49acb97d814d3871db0c874cb40db5342b
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Метадата {#metadata}
 
 ## Үр дүн {#outcome}
 
-Taira-ын метадатаг уншиж, нэг дансны метадатын утгыг тодорхой төлбөртэй гүйлгээ хийлгэж тохируулж, баталгаажуулж, дахин устгана. Та блокчэйн дэвтэрийн объектийн метадатыг гүйлгээний төлбөрийн метадататай тусгаарласан хэвээр хадгална.
+Taira дээрх метадатыг уншиж, төлбөрөө тодорхой заасан гүйлгээгээр дансны нэг метадатын утгыг тохируулж, баталгаажуулаад, утгыг дахин устгана. Та блокчэйн дэвтрийн объектын метадатыг гүйлгээний метадатаас тусад нь байлгана.
 
 ## Өмнөх шаардлага {#prerequisites}
 
 - `curl`, `jq`, Python 3.11 эсвэл дараа хувилбар, мөн одоогийн `iroha` CLI.
-- Санхүүжилт авсан `taira.client.toml` ба `taira.tx-metadata.json` нь [Taira-д холбогдох](./connect-to-taira.md)-оос.
+- [Taira-д холбогдох](./connect-to-taira.md) хэсгээс авсан, санхүүжүүлсэн `taira.client.toml`.
 - зорилтот дансны метадатад эрх олгох гол. Жишээ нь тохируулсан эрх олгох голийг өөрөө чиглүүлдэг; өөр данс нь яг зөв зөвшөөрлийг шаарддаг.
 
 ## Алхамууд {#steps}
@@ -27,8 +27,8 @@ Taira-ын метадатаг уншиж, нэг дансны метадатын
 ```bash
 curl -fsS -H 'Accept: application/json' \
   'https://taira.sora.org/v1/assets/definitions?limit=100' \
-  | jq '.items[] \
-    | select((.metadata // {} | length) > 0) \
+  | jq '.items[]
+    | select((.metadata // {} | length) > 0)
     | {id, name, metadata}'
 
 curl -fsS -H 'Accept: application/json' \
@@ -57,7 +57,7 @@ export TAIRA_ACCOUNT_ID="$(
 
 ### 3. Нэг JSON утга тавь {#_3-set-one-json-value}
 
-Стандарт орноос уншигдсан JSON нь дансны `cookbook_profile` утга болдог. Харин `--metadata ./taira.tx-metadata.json` нь гүйлгээний өгөгдлийн саванд шимтгэлийн талбаруудыг хавсаргана. Эдгээр хоёр газрын зураг нь өөр зорилго, зориулалттай.
+Стандарт оролтоос уншсан JSON нь дансны `cookbook_profile` утга болно. `--metadata <file>`-аар хавсаргадаг гүйлгээний метадата нь гүйлгээний өгөгдлийн сав дээрх тусдаа зураглал бөгөөд төлбөрийг хэзээ ч сонгодоггүй: үүнийг `--fee-payer` болон CLI-ийн яг төлбөрийн үнийн санал гүйцэтгэдэг бөгөөд `gas_asset_id`, `gas_limit` эсвэл `fee_sponsor` түлхүүр агуулсан гүйлгээний метадатыг клиент хүлээн авахаас татгалздаг.
 
 ```bash
 printf '%s\n' \
@@ -65,17 +65,16 @@ printf '%s\n' \
   | iroha --config ./taira.client.toml \
       --machine \
       --fee-payer authority \
-      --metadata ./taira.tx-metadata.json \
-      ledger account meta set \
+      account meta set \
       --id "$TAIRA_ACCOUNT_ID" \
       --key cookbook_profile
 ```
 
-CLI төлбөрийг иш татаж, гарын үсэг зураад, илгээж, анхдагчаар хүлээнэ. Дараагийн үйлдэл энэ утгаас хамаарах үед `--no-wait`-ыг битгий нэмээрэй.
+CLI нь гарын үсэг зурахаас өмнө яг төлбөрийг Taira-ийн төлбөрийн хөрөнгөөр тооцоолж, үнийн санал гаргаад, дараа нь гүйлгээг илгээж, буцахаасаа өмнө Applied эцсийн байдлыг хүлээдэг.
 
 ::: warning Өөрт олгосон зөвшөөрлийн хязгаар
 
-Идэвхтэй баталгаажуулагч нь ямар объектийг хэн өөрчилж болохыг шийддэг. Өөр дансыг шинэчлэхэд ихэвчлэн `CanModifyAccountMetadata` шаардлагатай; домэйнууд, хөрөнгийн тодорхойлолтууд, NFTs, болон триггерүүд нь өөрийн гэсэн зорилтот тодорхой метадата эрхтэй байдаг. Хэрэв Taira шаардлагатай зөвшөөрлийн эрхийг олгоогүй бол, нэг ижил дансны командыг `./localnet/client.toml` ашиглан ажиллуулж, үүсгэсэн localnet зөвшөөрлийн эрхийн нэг протокол-стандарт I105 ID-г орлуулж, Taira төлбөрийн мета өгөгдлийн файлыг орхино уу. Тодорхой орон нутгийн төлбөр төлөгчийг сонгохыг хадгалаарай.
+Объект бүрийг хэн өөрчилж болохыг идэвхтэй гүйцэтгэгч шийддэг. Өөр дансыг шинэчлэхэд ихэвчлэн `CanModifyAccountMetadata` шаардлагатай; домэйн, хөрөнгийн тодорхойлолт, NFTs болон триггерүүд тус бүр өөрийн зорилтот объектод зориулсан метадатын зөвшөөрөлтэй. Хэрэв Taira шаардлагатай эрх мэдлийг олгоогүй бол ижил дансны командуудыг `./localnet/client.toml`-оор ажиллуулж, үүсгэсэн localnet-ийн эрх бүхий дансны каноник I105 ID-г орлуулна. Локал төлбөр төлөгчийг тодорхой сонгосон хэвээр үлдээ.
 
 :::
 
@@ -84,7 +83,7 @@ CLI төлбөрийг иш татаж, гарын үсэг зураад, илг
 Эхлээд эцэслэгдсэн утгыг уншиж, дараа нь тусдаа устгах гүйлгээг илгээнэ үү.
 
 ```bash
-iroha --config ./taira.client.toml --machine ledger account meta get \
+iroha --config ./taira.client.toml --machine account meta get \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile \
   | tee cookbook-profile.json
@@ -94,8 +93,7 @@ jq -e '.version == 1' cookbook-profile.json
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger account meta remove \
+  account meta remove \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile
 ```
@@ -107,10 +105,10 @@ Python програмуудын хувьд таарах төрөлжүүлсэн
 Тогтоосон гүйлгээний дараа, `meta get` нь `version: 1`-той объект буцаах ёстой. Устгасны дараа шууд хайлт нь дахин утга буцаах ёсгүй:
 
 ```bash
-iroha --config ./taira.client.toml --machine ledger account get \
+iroha --config ./taira.client.toml --machine account get \
   --id "$TAIRA_ACCOUNT_ID" > /dev/null
 
-if iroha --config ./taira.client.toml --machine ledger account meta get \
+if iroha --config ./taira.client.toml --machine account meta get \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile; then
   printf '%s\n' 'metadata key still exists' >&2
@@ -133,8 +131,8 @@ fi
 
 ## Эх сурвалж ба холбогдох баримт бичгүүд {#source-and-related-docs}
 
-- [Тодорхойлсон эх кодын хувилбарт мета өгөгдлийн лавлагааны нэгдсэн туршилтууд](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/queries/metadata.rs)
-- [Python SDK батлагдсан эх кодын хувилбар дээрх гүйлгээний бүтээгчид](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/README.md)
+- [Тодорхойлсон эх кодын хувилбарт мета өгөгдлийн лавлагааны нэгдсэн туршилтууд](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/queries/metadata.rs)
+- [Python SDK батлагдсан эх кодын хувилбар дээрх гүйлгээний бүтээгчид](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/README.md)
 - [Метадата](/mn/blockchain/metadata.md)
 - [Мета өгөгдөл ба блокчэйн бүртгэл хадгалах сонголтууд](/mn/guide/configure/metadata-and-store-assets.md)
 - [Зааврын лавлагаа](/mn/reference/instructions.md)

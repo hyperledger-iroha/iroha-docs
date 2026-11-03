@@ -1,9 +1,9 @@
 ---
 translation_locale: ru
 translation_source: /cookbook/connect-to-taira.md
-translation_source_hash: e14be7d9314f26f40f6aa30678fddcfcfea39eda9b98016f1b2f84838203c548
+translation_source_hash: 31555f0c56bddb8892d09af250cef732a2dfdd39564c83de8b344200157751b9
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Подключиться к Taira {#connect-to-taira}
@@ -15,14 +15,14 @@ translation_engine: bing-translator-llm
 ## Предварительные требования {#prerequisites}
 
 - `curl`, `jq`, Python версии 3.11 или выше, а также текущие бинарные файлы `iroha` и `kagami`.
-- A `taira.client.toml`, созданный с использованием цепочки Taira, конечной точки API, профиля аккаунта и выделенного ключа тестовой сети. Следуйте [Создать клиентскую конфигурацию Taira](/ru/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config) и храните файл вне системы управления исходным кодом.
-- Готовый к запуску `taira_faucet_claim.py` от [Получить тестовую сеть XOR на Taira](/ru/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira), сохранённый рядом с конфигурацией клиента.
+- Файл `taira.client.toml`, созданный с использованием цепочки Taira, точного `network_id`, конечной точки API, профиля аккаунта и выделенного ключа тестовой сети. Следуйте [Создать клиентскую конфигурацию Taira](/ru/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config) и храните файл вне системы управления исходным кодом.
+- Доступный для записи рабочий каталог для журнала службы финансирования тестовой сети: `iroha taira account faucet prepare` создаёт `./taira-faucet` с закрытыми правами доступа и отказывается заменять существующий каталог.
 
 ## Шаги {#steps}
 
 ### 1. Разделите проверку живости и готовности {#_1-separate-liveness-from-readiness}
 
-`/livez` — это проверка работоспособности процесса в виде обычного текста. `/status`, `/health` и `/readyz` возвращают JSON. Рабочий узел может законно возвращать `503` из проверок готовности, когда необходимая подсистема заблокирована.
+`/livez`, `/health` и `/readyz` — это проверки в виде обычного текста; `/status` возвращает JSON. Рабочий узел может законно возвращать `503` из `/readyz`, когда допуск к консенсусу или другая необходимая подсистема недоступны.
 
 ```bash
 curl -fsS -H 'Accept: text/plain' https://taira.sora.org/livez
@@ -30,11 +30,11 @@ curl -fsS -H 'Accept: text/plain' https://taira.sora.org/livez
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
-curl -sS -H 'Accept: application/json' \
+curl -sS -H 'Accept: text/plain, application/json' \
   -w '\nHTTP %{http_code}\n' https://taira.sora.org/readyz
 ```
 
-Используйте `/livez` только для того, чтобы определить, отвечает ли процесс. Используйте `/readyz` для допуска трафика и проверьте его детали блокировщика JSON перед тем, как рассматривать `503` как сбой.
+Используйте `/livez` только для того, чтобы определить, отвечает ли процесс. Используйте `/readyz` для допуска трафика. Его `503` — это оболочка ошибки `service_unavailable` без сведений о блокировщике, поэтому выполните приведённую ниже диагностику, прежде чем считать это сбоем.
 
 ### 2. Запустите общедоступную диагностику {#_2-run-the-public-diagnostics}
 
@@ -48,7 +48,7 @@ iroha taira doctor --public-root https://taira.sora.org --json
 
 ### 3. Получите идентификатор аккаунта Taira, не выводя секрет {#_3-derive-the-taira-account-id-without-printing-a-secret}
 
-Считайте только открытый ключ из конфигурации, затем закодируйте его с помощью профиля Taira I105. Значение `[account].domain` обеспечивает контекст маршрутизации; оно не является частью идентификатора аккаунта.
+Считайте только открытый ключ из конфигурации, затем закодируйте его с помощью профиля Taira I105. Идентификатор аккаунта не содержит домена; `[account].profile` выбирает только его сетевой префикс.
 
 ```bash
 TAIRA_PUBLIC_KEY="$(python3 - <<'PY'
@@ -69,18 +69,29 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID"
 
 ### 4. Получите текущий актив комиссии Taira {#_4-claim-the-current-taira-fee-asset}
 
-Ответ службы финансирования тестовой сети является источником истины для определения актива комиссии. Сохраняйте возвращенный Base58 ID вместо того, чтобы копировать ID из другой сети или старого запуска.
+Политика службы финансирования тестовой сети указывает текущее определение актива комиссии. Сохраняйте его ID Base58 вместо того, чтобы копировать ID из другой сети или старого запуска. Политика — это неподписанные данные для обнаружения, поэтому автоматизация должна фиксировать ожидаемых эмитента, определение актива и сумму, а не доверять каждому ответу.
 
 ```bash
-python3 ./taira_faucet_claim.py "$TAIRA_ACCOUNT_ID" \
-  | tee taira-faucet.json
+curl -fsS -H 'Accept: application/json' \
+  https://taira.sora.org/v1/accounts/faucet/policy \
+  | tee taira-faucet-policy.json
 
-export TAIRA_FEE_ASSET="$(jq -er '.asset_definition_id' taira-faucet.json)"
-jq -n --arg gas_asset_id "$TAIRA_FEE_ASSET" \
-  '{gas_asset_id: $gas_asset_id}' > taira.tx-metadata.json
+export TAIRA_FEE_ASSET="$(
+  jq -er '.asset_definition_id' taira-faucet-policy.json
+)"
+
+iroha --config ./taira.client.toml --fee-payer authority \
+  taira account faucet prepare \
+  --journal ./taira-faucet \
+  --issuer "$(jq -er '.authority' taira-faucet-policy.json)" \
+  --asset-definition "$TAIRA_FEE_ASSET" \
+  --amount "$(jq -er '.amount' taira-faucet-policy.json)"
+
+iroha --config ./taira.client.toml \
+  taira account faucet submit --journal ./taira-faucet
 ```
 
-Проверяйте баланс не более одной минуты. Сервис финансирования тестовой сети может вернуть `202 Accepted` до того, как транзакция финансирования станет видимой.
+`prepare` решает задачу доказательства работы и сохраняет точную подписанную транзакцию; `submit` отправляет её один раз и возвращается после её применения. Если `submit` сообщает `Pending` или истекает время ожидания, выполните `taira account faucet resume` с той же конфигурацией и журналом вместо подготовки новой заявки. Затем проверяйте баланс не более одной минуты.
 
 ```bash
 funded=false
@@ -96,7 +107,7 @@ done
 test "$funded" = true
 ```
 
-`gas_asset_id` — это метаданные транзакции. Явный выбор `--fee-payer authority` привязан к подписи, и CLI получает точную оценку стоимости комиссии до того, как подпишет.
+Используйте `--fee-payer authority` для каждой записи в Taira. Выбор привязан к подписи, и CLI получает точную котировку комиссии в активе комиссии Taira до подписания.
 
 ## Проверить {#verify}
 
@@ -106,8 +117,7 @@ test "$funded" = true
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg 'cookbook-connect' \
+  tx ping --msg 'cookbook-connect' \
   > taira-connect-submission.json
 
 jq '{hash, fee_quote}' taira-connect-submission.json
@@ -115,27 +125,27 @@ TAIRA_TX_HASH="$(jq -er '.hash' taira-connect-submission.json)"
 
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction status \
+  tx status \
   --hash "$TAIRA_TX_HASH" \
   --wait \
   --timeout-ms 60000
 ```
 
-Окончательная команда выполняется только после того, как транзакция достигает состояния терминала по умолчанию `Applied`. Храните криптографический хэш в тестовых доказательствах; никогда не сохраняйте с ним приватный ключ или полную конфигурацию клиента.
+Окончательная команда выполняется успешно только после того, как точный глобальный статус сообщает о финальности `Applied`, подтверждённой состоянием. Храните криптографический хэш в тестовых доказательствах; никогда не сохраняйте с ним приватный ключ или полную конфигурацию клиента.
 
 ## Устранение неполадок {#troubleshooting}
 
-- `/livez` возвращает `406`, когда запрашивается JSON, потому что этот API конечный пункт `text/plain`. Отправьте `Accept: text/plain`, как показано выше.
-- `/health` или `/readyz` могут возвращать `503` с машинно-читаемым блокером, даже когда `/livez` и `/status` работают. Исправьте или дождитесь этого блокера; повторная генерация ключей не изменит готовность узла.
-- Служба финансирования тестовой сети `502`, тайм-аут или устаревший якорь доказательства работы являются сбоем публичной службы. Получите новую задачу и попробуйте позже.
+- `/livez`, `/health` и `/readyz` возвращают `406`, когда запрашивается только JSON, потому что они отвечают в `text/plain`. Отправляйте заголовки `Accept`, показанные выше.
+- `/readyz` может возвращать `503` с оболочкой ошибки `service_unavailable`, даже когда `/livez` и `/status` работают. Дождитесь готовности или выполните `iroha taira doctor`; повторная генерация ключей не изменит готовность узла.
+- Ответ `502` или тайм-аут службы финансирования тестовой сети во время `submit` оставляет результат заявки неизвестным: выполните `taira account faucet resume` с той же конфигурацией и журналом вместо подготовки новой заявки. Устаревший якорь доказательства работы приводит к сбою `prepare`; подготовьте заявку заново в новом каталоге журнала.
 - Ошибка префикса I105 означает, что открытый ключ был закодирован с неправильным профилем. Повторно выполните `iroha tools address convert --profile taira`.
-- Отклонение запроса на оплату обычно означает, что основной счет авторизации не был профинансирован, метаданные актива комиссии устарели или не был выбран явный плательщик комиссии.
+- Отклонение котировки комиссии обычно означает, что полномочный субъект не пополнен или настроенный `network_id` не принадлежит Taira. Отсутствие `--fee-payer` или ключ комиссии, например `gas_asset_id`, в `--metadata` приводит к локальной ошибке ещё до котировки.
 - Регистрация, выдача или управление пространством имён могут быть отклонены даже после успешного выполнения этого канарейки. Для этих операций требуются отдельные разрешения времени выполнения программного обеспечения; репетируйте их в созданной локальной сети, когда доступ Taira не предоставлен.
 
 ## Исходные и связанные документы {#source-and-related-docs}
 
-- [Taira CLI диагностика и пробный источник на закрепленной версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/taira.rs)
-- [Явный выбор комиссии и источник подачи CLI в закрепленной версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
+- [Диагностика CLI Taira и исходный код канареечной проверки](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/taira.rs) и [команды крана](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/taira_onboarding.rs) на закрепленной версии исходного кода
+- [Явный выбор комиссии и источник подачи CLI в закрепленной версии исходного кода](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs)
 - [Руководство по аккаунту Taira и услугам финансирования тестовой сети](/ru/get-started/sora-nexus-dataspaces.md)
 - [Конфигурация клиента](/ru/guide/configure/client-configuration.md)
 - [Транзакции](/ru/blockchain/transactions.md)

@@ -1,9 +1,9 @@
 ---
 translation_locale: he
 translation_source: /cookbook/stream-events.md
-translation_source_hash: 96f0a26000530fee15d121f815f9f5717a535dc3836cff9a2a447b1e5b70c41c
+translation_source_hash: d6202b208288688cdfd927491d6670f094f631ccaecd7ff62858a94267c5306a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # הזרם של אירועים {#stream-events}
@@ -22,10 +22,10 @@ translation_engine: nllb-200-ct2
 
 ### 1. אישר את תגובת SSE {#_1-confirm-the-sse-response}
 
-Taira משא ומתן כרגע על מסלול זה רק כאשר הכותרת של `Accept` כוללת את זרם האירועים המועדף על עצמו ואת ההפסקות של JSON. תבטיל את הגדרת ה- curl. הפקודה מסתיימת לאחר 15 שניות; קבלת תגובות בקצב הלב בלבד במהלך תקופה שקטה היא בתוקף .
+בקשו את זרם האירועים עם חלופת JSON: Torii מזרים `text/event-stream` ומדווח על בקשה שנדחתה, למשל מסנן לא תקין, כשגיאת JSON. השביתו את אגירת הפלט של curl. הפקודה מסתיימת לאחר 20 שניות. Torii שולח הערת heartbeat לאחר 15 שניות ללא פעילות, ולכן קבלת הערות heartbeat בלבד במהלך תקופה שקטה היא תקינה.
 
 ```bash
-curl -sS -N --max-time 15 \
+curl -sS -N --max-time 20 \
   -H 'Accept: text/event-stream, application/json' \
   https://taira.sora.org/v1/events/sse
 ```
@@ -34,15 +34,12 @@ curl -sS -N --max-time 15 \
 
 ### 2. להוסיף צרכן JavaScript מסנן. {#_2-add-a-filtered-javascript-consumer}
 
-שמור את הדברים הבאים כ `stream-taira.mjs`. הוא משתמש ב-Fetch ישירות כדי שהבקשה תוכל לשלוח Taira הוא נדרש מעורב `Accept` כותרת. הזרם `FilterExpr` בוחן את אירועי העסקה המאושרים, והמחקור צורב SSE צבעות ללא כורסור שידור.
+שמרו את הקוד הבא בשם `stream-taira.mjs`. הוא משתמש ישירות ב־Fetch כדי להציג את פורמט התעבורה ברשת. פרמטר השאילתה `filter` משתמש בדקדוק מסנני הטקסט של Torii כדי לבחור אירועי עסקה מאושרים, והמנתח צורך מסגרות SSE ללא סמן replay.
 
 ```js
 const baseUrl = 'https://taira.sora.org'
 const shutdown = new AbortController()
-const filter = {
-  op: 'eq',
-  args: ['tx_status', 'Approved'],
-}
+const filter = 'tx_status = "Approved"'
 
 process.once('SIGINT', () => shutdown.abort())
 process.once('SIGTERM', () => shutdown.abort())
@@ -52,7 +49,7 @@ const delay = (milliseconds) =>
 
 async function reconcile() {
   const response = await fetch(
-    `${baseUrl}/v1/explorer/transactions?page=1&per_page=25`,
+    `${baseUrl}/v1/explorer/transactions?limit=25`,
     { headers: { Accept: 'application/json' } },
   )
   if (!response.ok) {
@@ -63,7 +60,7 @@ async function reconcile() {
 
 async function* streamOnce() {
   const url = new URL('/v1/events/sse', baseUrl)
-  url.searchParams.set('filter', JSON.stringify(filter))
+  url.searchParams.set('filter', filter)
   const response = await fetch(url, {
     headers: { Accept: 'text/event-stream, application/json' },
     signal: shutdown.signal,
@@ -164,7 +161,7 @@ node ./stream-taira.mjs
 
 בקשה האחרונה של 25 חוקרים היא רק אבחון ציבורי. צרכן ייצור חייב להחליף או להרחיב `reconcile()` עם שאילתות עבור משאבי היישום המתמשכים שלו וקבילת התאוששות גדולה מספיק עבור נקודת הביקור שלה. תמונת הזריקה המוגבלת לבדה לא יכולה להוכיח כי אף אירוע לא נעלמה.
 
-ב-Pinned commit, `ToriiClient.streamEvents()` שולח רק `Accept: text/event-stream`; חי Taira דוחה את הכותרת הנמוכה יותר עם `406`. השתמש בצילום Fetch הגורם למעלה עד ש SDK והנקודת סוף ציבורית יוועדו על אותם סוגים של מדיה.
+`ToriiClient.streamEvents({ filter })` מתוך `@iroha/iroha-js` קורא את אותו זרם: העבירו `field('tx_status').eq('Approved')` או את מסנן הטקסט שלמעלה. הוא מחזיר את מסגרת הסיום `stream_error` לפני שהזרם מסתיים, ולכן כללי החיבור מחדש והתאמת המצב שלמעלה עדיין חלים.
 
 ## לאמת {#verify}
 
@@ -173,7 +170,7 @@ node ./stream-taira.mjs
 ```bash
 curl -fsS \
   -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=25' |
+  'https://taira.sora.org/v1/explorer/transactions?limit=25' |
   jq .
 ```
 
@@ -182,17 +179,17 @@ curl -fsS \
 ## פתרון בעיות {#troubleshooting}
 
 - חיבור שמקבל הערות heartbeat אך אינו מקבל אירועי נתונים הוא תקין; ייתכן שמצב שרשרת עיבוד העיבוד שנבחר פשוט אינו מפיק אירועים.
-- `406 Not Acceptable` בשידור חי Taira פירושו בדרך כלל את בקשה המפורסמת רק `text/event-stream`. לשלוח `text/event-stream, application/json` בדיוק כפי שנראה למעלה.
-- אירוע `stream_error` מצביע על כך שהשרת זיהה עיכוב או מצב זרם טרמינל אחר. Torii שולח את האירוע הזה פעם אחת ומסגר את הזרם; מקושר לפני חיבור מחדש.
+- `400` עם הקוד `invalid_filter` פירושו שה־`filter` אינו בדקדוק הטקסט של Torii או שהוא מציין שדה שזרמי אירועים אינם תומכים בו. זרמי אירועים מסננים לפי `tx_status`, `tx_hash`, `tx_block_height`, `tx_lane_id`, `tx_dataspace_id`, `block_status`, `block_height`, `proof_backend`, `proof_call_hash` ו־`proof_envelope_hash`.
+- אירוע `stream_error` מציין שהשרת זיהה עיכוב או מצב סיום אחר של הזרם. Torii שולח את האירוע הזה פעם אחת וסוגר את הזרם; פתחו זרם חלופי, ולאחר מכן בצעו התאמת מצב.
 - פרוקסי יכול להזיז את SSE גם כאשר Torii לא. תבטל את ההזיזת והתחפיסה של התגובה בפרוקסי, ותשמור על `curl -N` באבחון.
 - לעולם אל תמלאו פער שנוצר עקב ניתוק בהנחה שהאירוע הבא ממשיך את הקודם. לנקודת הקצה אין סמן replay; במקום זאת בצעו שאילתה על מצב ה-ledger הנוכחי.
 
 ## מקור ומסמכים קשורים {#source-and-related-docs}
 
-- [JavaScript טקסט זרימה ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs)
-- [ניסויים של אינטגרציה SSE בביצוע commit הקשורות ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs)
-- [המנתח Torii FilterExpr בקיומו הוסתר](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs)
-- [סיבוב אירוע Torii ב- commit ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
+- [JavaScript טקסט זרימה ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes/streaming.mjs)
+- [ניסויים של אינטגרציה SSE בביצוע commit הקשורות ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/events/sse_smoke.rs)
+- [דקדוק הטקסט של מסנני Torii ב־commit המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/src/list_query/text.rs)
+- [סיבוב אירוע Torii ב- commit ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/routing.rs)
 - [אירועים](/he/blockchain/events.md)
 - [נקודות קצה Torii ](/he/reference/torii-endpoints.md)
 - [שאילתת מצב ספר החשבונות](./query-ledger-state.md)

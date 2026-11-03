@@ -1,9 +1,9 @@
 ---
 translation_locale: he
 translation_source: /cookbook/triggers.md
-translation_source_hash: 5267fb9bb232d52d9df4bedee414d745ccc30dd52cbc30993df3c5b975a0bc38
+translation_source_hash: 946309958fe4e23a7454206b1eb4557f8e853171ce4e04d5373cb36f46b13970
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # טריגרים {#triggers}
@@ -14,13 +14,12 @@ translation_engine: nllb-200-ct2
 
 ## תנאים מוקדמים {#prerequisites}
 
-- חותם מיומן, `taira.client.toml`, `taira.tx-metadata.json`, ו `TAIRA_ACCOUNT_ID` מ [להתחבר Taira](./connect-to-taira.md).
+- חותם ממומן, `taira.client.toml` ו־`TAIRA_ACCOUNT_ID` מתוך [חיבור ל־Taira](./connect-to-taira.md). פעולות כתיבה משתמשות ב־`--fee-payer authority`; ה־CLI מקבל הצעת עמלה מדויקת, בנכס העמלה של Taira, לפני החתימה.
 - Taira אישור לרשום תפעול ל- `TAIRA_ACCOUNT_ID` ולפעול את התפעול המוצא. הסימנים הרלוונטיים הם `CanRegisterTrigger` עם טווח של `authority` ו `CanExecuteTrigger` עם טווח על ידי `trigger`.
 - אם הכספים האלה אינם זמינים, השתמשו ברשת מקומית שנוצרה ולקלינט מנהל שלה. סמכות ההפעיל גם זקוקה לכל הרשאות הנדרשות על ידי ההוראות שההפעיל יעשה.
 
 ```bash
 CONFIG=./taira.client.toml
-FEE_METADATA=./taira.tx-metadata.json
 TRIGGER_ID=cookbook_by_call_log
 test -n "$TAIRA_ACCOUNT_ID"
 ```
@@ -29,15 +28,14 @@ test -n "$TAIRA_ACCOUNT_ID"
 
 ### 1. רשום תפעיל עם הוראות {#_1-register-an-instruction-backed-trigger}
 
-`--instructions-stdin` מקבל מערך JSON של instructions. ההוראה `Log` משאירה את הדוגמה ממוקדת בהרשאת trigger במקום בהרשאות של אובייקט שני בספר החשבונות.
+`--instructions-stdin` מקבל את מערך הוראות ה־JSON ש־`--emit-instructions` מדפיס. הפקודה `tx ping` מפיקה הוראת `Log` אחת, שמשאירה את הדוגמה ממוקדת בהרשאת trigger במקום בהרשאות של אובייקט שני בספר החשבונות.
 
 ```bash
-printf '%s\n' \
-  '[{"Log":{"level":"INFO","message":"cookbook trigger executed"}}]' |
+iroha --config "$CONFIG" --emit-instructions \
+  tx ping --log-level INFO --msg 'cookbook trigger executed' |
   iroha --config "$CONFIG" \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
-    ledger trigger register \
+    trigger register \
     --id "$TRIGGER_ID" \
     --instructions-stdin \
     --repeats 3 \
@@ -50,11 +48,11 @@ printf '%s\n' \
 ### 2. לבדוק את ההצהרה לפני ביצועה. {#_2-inspect-the-declaration-before-execution}
 
 ```bash
-iroha --config "$CONFIG" ledger trigger get --id "$TRIGGER_ID"
-iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
+iroha --config "$CONFIG" trigger get --id "$TRIGGER_ID"
+iroha --config "$CONFIG" trigger inspect "$TRIGGER_ID"
 ```
 
-אישר את הסמכות I105, את מסנן ההפעלה, את החוזרות הנותרות והנחיות האחדות `Log` לפני שתוציא דמי נוסף.
+ודאו את סמכות ה־I105, את מסנן ההפעלה, את מספר החזרות שנותרו ואת ההוראה המקודדת היחידה שב־`executable` לפני שתוציאו עמלה נוספת.
 
 ### 3. לבצע ולחכות לשני שכבות. {#_3-execute-and-wait-for-both-layers}
 
@@ -63,32 +61,31 @@ iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 ```bash
 iroha --config "$CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
-  ledger trigger execute \
+  trigger execute \
   --wait \
   --trace \
   --timeout-ms 60000 \
   "$TRIGGER_ID"
 ```
 
-לקוחות Rust בונים את שתי ההוראות הדפוסים. כאן `authority` הוא סימנים `AccountId` ו `client` כמו חשבון זה:
+לקוחות Rust בונים את אותן שתי הוראות בעלות טיפוס. כאן `authority` הוא `AccountId`, ו־`client` הוא `iroha::blocking::Client` שחותם בתור החשבון הזה; `submit` ממתין לסופיות Applied:
 
 ```rust
 use iroha::data_model::{prelude::*, transaction::FeePaymentIntent};
 
 let trigger_id: TriggerId = "cookbook_by_call_log".parse()?;
 let action = Action::new(
-    vec![Log::new(Level::INFO, "cookbook trigger executed".to_owned()).into()],
+    vec![Log::new(Level::INFO, "cookbook trigger executed".to_owned())],
     Repeats::Exactly(3),
     authority.clone(),
     ExecuteTriggerEventFilter::new()
         .for_trigger(trigger_id.clone())
         .under_authority(authority),
-);
+)?;
 let fee = FeePaymentIntent::authority(Vec::new(), None);
 
-client.submit_blocking(Register::trigger(Trigger::new(trigger_id.clone(), action)), fee.clone())?;
-client.submit_blocking(ExecuteTrigger::new(trigger_id), fee)?;
+client.submit(Register::trigger(Trigger::new(trigger_id.clone(), action)), fee.clone())?;
+client.submit(ExecuteTrigger::new(trigger_id), fee)?;
 ```
 
 ## לאמת {#verify}
@@ -96,12 +93,12 @@ client.submit_blocking(ExecuteTrigger::new(trigger_id), fee)?;
 סורק את ההיסטוריה של בלוקים commit כדי להשלים ולבדוק את מספר ההפגנות המופחת:
 
 ```bash
-iroha --config "$CONFIG" ledger trigger completed list \
+iroha --config "$CONFIG" trigger completed list \
   --id "$TRIGGER_ID" \
   --outcome success \
   --limit 5
 
-iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
+iroha --config "$CONFIG" trigger inspect "$TRIGGER_ID"
 ```
 
 לפחות סיום אחד חייב לדווח על הצלחה. המפעיל חייב להישאר פעיל עם שנותרו שתי ביצועים. הצעת מוצלחת ללא סיום מוצלחת של המפעיל לא מספיקה לאמת.
@@ -110,15 +107,15 @@ iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 
 - רישום נדחה כלא מורשה פירושו שהחתם חסר `CanRegisterTrigger` לרשות המוצהרת. ביצוע זה דורש את הסימן `CanExecuteTrigger` בעל טווח נפרד.
 - העסקה יכולה להגיע Applied בעוד הפעולה המפעילה מדווחת כישלון. קרא את תוצאות השלמת הטעות; לאחר מכן בדוק את הרשאות של הרשות המפעילה עבור כל הוראה מותקנת.
-- `trigger not found` יכול להביע כי עסקאות הרישום נדחו או שימשו להגדרת שרשרת אחרת של Torii/שרשרת.
+- `Trigger with id … not found` יכול להביע כי עסקאות הרישום נדחו או שימשו להגדרת שרשרת אחרת של Torii/שרשרת.
 - כאשר חוזרים מגיעים לאפס, כותבת עוד חוזרים היא פריוויליזציה נוספת. אל תשנה בשקט את המתכון הזה למניע ללא הגדרה.
-- לצורך ניקוי, `ledger trigger unregister --id "$TRIGGER_ID"` דורש `CanUnregisterTrigger` עבור המפעיל הזה ועוד בחירת עמלה מפורשת.
+- לצורך ניקוי, `trigger unregister --id "$TRIGGER_ID"` דורש `CanUnregisterTrigger` עבור המפעיל הזה ועוד בחירת עמלה מפורשת.
 
 ## מקור ומסמכים קשורים {#source-and-related-docs}
 
-- [בדיקות אינטגרציה של תפעול ידי-קריאה בקביעת קישור ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/triggers/by_call_trigger.rs)
-- [בדיקות אינטגרציה של אירועים וניצולים ב- commit ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events_and_triggers.rs)
-- [ביצוע ההוראות של התניע ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
+- [בדיקות אינטגרציה של תפעול ידי-קריאה בקביעת קישור ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/triggers/by_call_trigger.rs)
+- [בדיקות אינטגרציה של אירועים וניצולים ב- commit ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/events_and_triggers.rs)
+- [ביצוע ההוראות של התניע ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
 - [טריגרים](/he/blockchain/triggers.md)
 - [דוגמאות להפעיל ](/he/blockchain/trigger-examples.md)
 - [אירועים](./stream-events.md)

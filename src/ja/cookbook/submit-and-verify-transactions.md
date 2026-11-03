@@ -1,9 +1,9 @@
 ---
 translation_locale: ja
 translation_source: /cookbook/submit-and-verify-transactions.md
-translation_source_hash: 98e5c7e9db1ba8468cfd5409409b0e8d02251311dc85492f7b71675e983dc4fd
+translation_source_hash: de608ef52ad3a999c0e253e6683e454f8f66f399a690dce4c2185c79d02334cd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # 取引を提出して確認する {#submit-and-verify-transactions}
@@ -14,7 +14,7 @@ translation_engine: bing-translator-llm
 
 ## 前提条件 {#prerequisites}
 
-- [Taira に接続する](./connect-to-taira.md)によって制作された、資金提供された`taira.client.toml`、`taira.tx-metadata.json`、および`TAIRA_ACCOUNT_ID`。
+- [Taira に接続する](./connect-to-taira.md)によって制作された、資金提供された`taira.client.toml`、`taira-faucet-policy.json`、および`TAIRA_ACCOUNT_ID`。書き込みでは `--fee-payer authority` を使用します。CLI は署名前に、Taira の手数料資産で表した正確な手数料の見積もりを提示します。
 - 現在の`iroha`CLI と`jq`です。
 - 使い捨ての Taira 暗号署名者。Minamoto でそのキーやこれらの書き込みコマンドを再使用しないでください。
 
@@ -22,15 +22,15 @@ translation_engine: bing-translator-llm
 
 ### 1. API エンドポイント、認証プリンシパル、および手数料残高をプレフライトする {#_1-preflight-the-endpoint-authority-and-fee-balance}
 
-まずキューのデータスナップショットを読み取り、その後、認証プリンシパルの手数料残高が表示されていることを確認します。接続レシピによって生成されたメタデータから、Base58の資産定義IDを読み取ります。
+まずキューのデータスナップショットを読み取り、その後、認証プリンシパルの手数料残高が表示されていることを確認します。接続レシピによって保存されたフォーセットポリシーから、Base58の資産定義IDを読み取ります。
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, queue_size, txs_approved, txs_rejected}'
 
-TAIRA_FEE_ASSET="$(jq -er '.gas_asset_id' taira.tx-metadata.json)"
+TAIRA_FEE_ASSET="$(jq -er '.asset_definition_id' taira-faucet-policy.json)"
 
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 iroha --config ./taira.client.toml ledger asset get \
@@ -48,8 +48,7 @@ CLI は、手数料の見積もりのために正確な署名されていない�
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg 'cookbook-submit-verify' \
+  tx ping --msg 'cookbook-submit-verify' \
   > taira-submission.json
 
 jq '{hash, fee_quote}' taira-submission.json
@@ -60,12 +59,12 @@ TAIRA_TX_HASH="$(jq -er '.hash' taira-submission.json)"
 
 ### 3. ターミナルソフトウェアの処理ワークフロー状態を待つ {#_3-wait-for-terminal-pipeline-state}
 
-成功を HTTP の受理やキューへの受け入れから推測するのではなく、入力されたステータスヘルパーを使用してください。`--wait`では、安全なルーティング範囲が自動的に選択され、デフォルトのターゲットは適用された確定性です。
+成功を HTTP の受理やキューへの受け入れから推測するのではなく、型付きのステータスヘルパーを使用してください。`--wait` を指定すると、CLI は正確なグローバルステータスをポーリングし、状態として解決された `Applied` の確定でのみ成功します。
 
 ```bash
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction status \
+  tx status \
   --hash "$TAIRA_TX_HASH" \
   --wait \
   --timeout-ms 60000 \
@@ -83,7 +82,7 @@ jq . taira-final-status.json
 ```bash
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction get --hash "$TAIRA_TX_HASH" \
+  tx get --hash "$TAIRA_TX_HASH" \
   > taira-transaction.json
 
 jq . taira-transaction.json
@@ -101,15 +100,17 @@ curl -fsS -H 'Accept: application/json' \
 
 ## 確認する {#verify}
 
-3つのレコードがすべて同じ暗号ハッシュで一致していること、およびエクスプローラーが保留状態を報告していないことを確認してください:
+3つのレコードがすべて同じ暗号ハッシュで一致していること、およびエクスプローラーが `Rejected` ではなく `Committed` を報告していることを確認してください:
 
 ```bash
-test "$(jq -r '.hash' taira-submission.json)" = "$TAIRA_TX_HASH"
+jq -e --arg hash "$TAIRA_TX_HASH" \
+  '.hash == $hash and .terminal_kind == "Applied"' taira-final-status.json
 
 curl -fsS -H 'Accept: application/json' \
   "https://taira.sora.org/v1/explorer/transactions/$TAIRA_TX_HASH" \
   | jq -e --arg hash "$TAIRA_TX_HASH" \
-    '.hash == $hash and .status == "Committed"'
+    '(.hash | ascii_downcase | ltrimstr("hash:") | split("#")[0]) == $hash
+      and .status == "Committed"'
 ```
 
 提出プロトコルの結果の記録と最終ステータスをテスト証拠として保持してください。それらには公開取引資料が含まれており、署名キーは含まれていません。
@@ -118,15 +119,15 @@ curl -fsS -H 'Accept: application/json' \
 
 - HTTP `202` またはキュー状態は入場のみを証明します。指定された状態が Applied、Rejected、Expired になるか、または制限時間に達するまで、状態のポーリングを続けてください。
 - 送信処理がハッシュを返した後にタイムアウトした場合は、別のトランザクションを作成する前にそのハッシュを照会してください。確認せずに再送信すると、手数料見積もり済みで署名済みの新しいペイロードが作成されます。
-- 料金見積もりは署名前に拒否することができます。`--fee-payer authority`、`gas_asset_id`、承認者の残高、ネットワークチェーンIDを確認してください。
+- 料金見積もりは署名前に拒否することができます。`--fee-payer authority`、承認者の残高、設定された `chain` と `network_id`、および `--metadata` に `gas_asset_id` などの手数料キーが含まれていないことを確認してください。
 - `Rejected` は通常、命令の検証、権限、手数料、または古い状態を示します。これは失敗した実行の確定的な証拠であり、通信の再試行として再分類されるべきではありません。
 - 探索者 `404` は Applied の直後にインデックス遅延が発生する可能性があります。読み取りを再試行してください。トランザクションを再送信しないでください。
 - 特権命令が生成されたローカルネットで動作する場合でも、Taira がこれを拒否する場合は、正確な Taira 権限または管理対象のネームスペースの割り当てを取得してください。ローカルの結果は、パブリックブロックチェーンネットワークの認可プリンシパルを付与するものではありません。
 
 ## ソースと関連ドキュメント {#source-and-related-docs}
 
-- [固定されたソースコードのリビジョンでのトランザクション送信および手数料見積もりの実装](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
-- [ピン留めされたソースコードのリビジョンでの取引確認の実装とテスト](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/src/client.rs)
+- [固定されたソースコードのリビジョンでのトランザクション送信および手数料見積もりの実装](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs)
+- [ピン留めされたソースコードのリビジョンでの取引確認の実装とテスト](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/src/client.rs)
 - [取引](/ja/blockchain/transactions.md)
 - [CLI ガイド](/ja/get-started/operate-iroha-via-cli.md)
 - [Torii API エンドポイント](/ja/reference/torii-endpoints.md)

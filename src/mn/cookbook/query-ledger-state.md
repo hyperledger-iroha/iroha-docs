@@ -1,22 +1,22 @@
 ---
 translation_locale: mn
 translation_source: /cookbook/query-ledger-state.md
-translation_source_hash: 68ef931f3d37b9bd40fcf61c9a77313539ca0bd648405834d161a018debb491a
+translation_source_hash: 866b7d3ca37be67878f6f319ce0b0e27eac52c581decad1f46096ef75ad1b10f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Блокчэйн бүртгэлийн төлөвийг лавлах {#query-ledger-state}
 
 ## Үр дүн {#outcome}
 
-Аруулагч ба төсөөлөгч Taira JSON нөөцүүдийг уншиж, дараа нь шүүлтүүр, логик хуудаслах, эрэмбэлэлт, татан авах хэмжээ, зөвхөн урд чиглэлийн курсор үргэлжлүүлэлттэй бичсэн Iroha асуулгуудыг ашиглана. Мөн сервер дамжуулсан `--select` хоёртын хувийг үнэлэхээс өмнө сонгогч төсөөлөгчид найдахгүй байх болно.
+Taira-ийн JSON нөөцүүдийг уншиж, проекц хийгээд, дараа нь CLI болон Rust SDK-аас Torii-ийн цуглуулгын асуулгуудыг шүүлтүүр, эрэмбэлэлт, сервер талын проекц, хуудасны хязгаар болон тунгалаг бус `next_cursor` үргэлжлүүлэлттэйгээр ашиглана. Мөн та жагсаалтуудыг гарын үсэгтэй төрөлжсөн асуулгаар авахгүй байх болно, учир нь тэдгээр нь жагсаалтыг шүүдэггүй, эрэмбэлдэггүй, проекц хийдэггүй.
 
 ## Өмнөх шаардлагууд {#prerequisites}
 
 - `curl`, `jq`, Node.js 24, ба одоогийн `iroha` CLI.
 - Зөвхөн унших Taira хандалт.
-- Гарын үсэг зурсан бичвэр хайлтын жишээний хувьд, Taira эсвэл үүссэн локал сүлжээний клиент тохиргоо.
+- CLI жишээнүүдэд: Taira эсвэл үүсгэсэн локал сүлжээний клиентийн тохиргоо.
 - Rust жишээний хувьд, зорьсон сүлжээтэй ижил Iroha эх үүсвэрийн шинэчлэлт дээр тогтсон төсөл.
 
 ## Алхамууд {#steps}
@@ -30,25 +30,23 @@ translation_engine: bing-translator-llm
 ```bash [curl]
 curl -fsS -H 'Accept: application/json' --get \
   https://taira.sora.org/v1/domains \
-  --data-urlencode 'sort=id:asc' \
+  --data-urlencode 'sort=id' \
   --data-urlencode 'limit=5' \
-  --data-urlencode 'offset=0' \
-  --data-urlencode 'count_mode=exact' \
-  | jq '{total, ids: [.items[].id]}'
+  --data-urlencode 'include_total=true' \
+  | jq '{total, next_cursor, ids: [.items[].id]}'
 ```
 
 ```js [Node.js]
 const root = 'https://taira.sora.org'
-const limit = 5
 const seen = new Set()
+let cursor = null
 
-for (let offset = 0; ; offset += limit) {
+do {
   const url = new URL('/v1/domains', root)
   url.search = new URLSearchParams({
-    sort: 'id:asc',
-    limit: String(limit),
-    offset: String(offset),
-    count_mode: 'exact',
+    sort: 'id',
+    limit: '5',
+    ...(cursor ? { cursor } : {}),
   })
 
   const response = await fetch(url, {
@@ -63,106 +61,90 @@ for (let offset = 0; ; offset += limit) {
     seen.add(domain.id)
     console.log(domain.id)
   }
-  if (page.items.length < limit || seen.size >= page.total) break
-}
+  cursor = page.next_cursor
+} while (cursor)
 ```
 
 :::
 
-Энэ HTTP гадаргуу нь `limit` ба `offset`-ийг ашигладаг. Зам хямд тооллын горимыг ашиглах үед орхигдсон эсвэл хязгаарлагдсан `total`-ийг энгийн гэж үзээрэй.
+Энэ HTTP гадаргуу `limit` болон тунгалаг бус `next_cursor`-оор хуудасладаг; түүнийг `null` болох хүртэл өөрчлөлгүйгээр `cursor` болгон буцааж илгээ. `total` нь зөвхөн `include_total=true`-г хүссэн үед гарч ирэх бөгөөд энэ нь бүрэн скан хийхийг шаарддаг.
 
-### 2. CLI асуулгыг шүүж, багцлах {#_2-filter-and-batch-a-typed-cli-query}
+### 2. CLI-ээр цуглуулгыг шүүх {#_2-filter-a-collection-with-the-cli}
 
-CLI нь төрөлжсөн давталттай асуулгыг дараалалд оруулж серверийн үргэлжлүүлэх курсоруудыг дотор нь дагадаг. Энд логик үр дүн нь нэг мөрөөр хязгаарлагдсан бол `--fetch-size 1` нь нэг тойрогт авсан хамгийн их багцыг хянадаг.
+CLI нь шүүлтүүр, проекц болон хуудасны хэмжээг цуглуулгын төгсгөл цэг рүү илгээж, нэг хуудас буюу `{items, next_cursor}`-г хэвлэдэг. `next_cursor`-ийг `null` болох хүртэл дагахын тулд `--all`-г нэм.
 
 ```bash
-DOMAIN_PREDICATE='{"equals":[{"field":"id","value":"wonderland.universal"}]}'
+DOMAIN_FILTER='id = "universal.universal"'
 
 iroha --config ./localnet/client.toml \
-  ledger domain list filter "$DOMAIN_PREDICATE" \
-  --limit 1 \
-  --offset 0 \
-  --fetch-size 1
+  ledger domain list \
+  --filter "$DOMAIN_FILTER" \
+  --select id \
+  --limit 1
 ```
 
-Шүүлтүүрийг хуудаслахын өмнө хийнэ. Тодорхой асуултад зориулсан төрөлжсөн өгөгдөл шалгуурийг ашигла; данс эсвэл хөрөнгийн шалгуурыг домайндаа аюулгүйгээр дахин ашиглах боломжгүй.
+Шүүлт хуудаслахаас өмнө хийгддэг. Цуглуулга бүр зөвхөн өөрийн талбаруудыг хүлээн авдаг; үл мэдэгдэх талбар юуг ч тааруулахгүй байхын оронд `invalid_filter` буцаадаг.
 
 ### 3. Тогтвортой мета өгөгдлийн түлхүүрээр эрэмбэлнэ {#_3-sort-by-a-stable-metadata-key}
 
-Татагдсан асуулгын эрэмбэлэлт нь нэг мета өгөгдлийн түлхүүрийн хувьд үсгээр эрэмбэлэгддэг. Тухайн түлхүүргүй зүйлс нь програм хангамжийн гүйцэтгэлийн орчны тодорхойлсон эрэмбэлэлтийг дагадаг, тиймээс цуглуулгын туршид тогтмол бөглөгддөг түлхүүрийг ашигла.
+Цуглуулгын эрэмбэлэх түлхүүрүүд зарлагдсан талбарууд болон `metadata.<key>`-г хүлээн авдаг; буурах дарааллаар эрэмбэлэхийн тулд түлхүүрийн өмнө `-` тавь. Өсөх дарааллаар эрэмбэлэхэд тухайн түлхүүргүй мөрүүд эхэнд орох бөгөөд ижил утгатай мөрүүд мөрийн таних тэмдгийн дагуу эрэмбэлэгддэг тул цуглуулгын туршид тогтмол бөглөгдсөн түлхүүрийг ашигла.
 
 ```bash
 iroha --config ./localnet/client.toml \
   --machine \
-  ledger account list all \
-  --verbose \
-  --sort-by-metadata-key key \
-  --order asc \
+  account list \
+  --sort metadata.key \
   --limit 10 \
-  --offset 0 \
-  --fetch-size 2 \
-  | jq '[.[] | {id, metadata}]'
+  | jq '[.items[] | {id, metadata}]'
 ```
 
-Бүртгэлтэй CLI нь `--select` JSON-г тайлбарлаж, сонгогчийн оюуланг илгээдэг боловч одоогийн хөнгөн жинтэй асуулга DSL дээр тэр сонгогчийг серверт үнэлдэггүй. Түрүүнд үүнд проекцийн гэрээ байгуулаарай гэж болохгүй. Зорилтот програм хангамжийн гүйцэтгэх орчин үүнийг дэмжсэний дараа л хэвлэж бичсэн SDK төсөөллийг хэрэглэ, эсвэл баталгаажуулсан үр дүнг клиент талд дээрхтэй адил `jq` эсвэл JavaScript-оор төсөөл.
+`--select` нь сервер талын проекц юм: `--select id,metadata` нь зөвхөн тэдгээр талбаруудыг буцааж, үл мэдэгдэх талбар `invalid_select` буцаадаг. Гарын үсэгтэй төрөлжсөн асуулгууд үргэлж бүтэн зүйлсийг буцаадаг тул тэдгээрийн үр дүнг дээрх шиг `jq` эсвэл JavaScript-ээр клиент талд проекц хий.
 
 ### 4. Rust давтагчийг бүдэг заагуудыг дагахыг зөвшөөр {#_4-let-the-rust-iterator-follow-opaque-cursors}
 
-`Pagination` нь логик үр дүнгийн багцыг хязгаарлана. `FetchSize` нь сервер бүрийн багцыг удирддаг. Буцаж ирсэн итератор нь серверээс үүсгэсэн курсорыг ашиглан үргэлжлэх хүсэлтүүдийг ил тод илгээдэг.
+`limit` нь хуудасны хэмжээг тогтоодог. `list`-ийн буцаасан итератор нь одоогийн хуудсыг бүрэн уншсаны дараа л серверийн `next_cursor`-оор дараагийн хуудсыг хүсдэг бөгөөд `take` нь логик үр дүнг хязгаарладаг. Энд `client` нь `iroha::blocking::Client` юм.
 
 ```rust
-use std::num::NonZeroU64;
+use iroha::collections::{Collection, ListQuery, SortKey};
 
-use iroha::data_model::{
-    prelude::FindAssetsDefinitions,
-    query::{
-        builder::QueryBuilderExt as _,
-        parameters::{FetchSize, Pagination},
-    },
-};
+let query = ListQuery::new().sort_by(SortKey::asc("id")).limit(5);
 
-let definitions = client
-    .query(FindAssetsDefinitions::new())
-    .with_pagination(Pagination::new(NonZeroU64::new(25), 0))
-    .with_fetch_size(FetchSize::new(NonZeroU64::new(5)))
-    .execute_all()?;
-
-for definition in definitions {
-    println!("{} {}", definition.id(), definition.name());
+for definition in client.list(Collection::AssetDefinitions, query).take(25) {
+    let definition = definition?;
+    println!("{:?} {:?}", definition.get("id"), definition.get("name"));
 }
 ```
 
-`ForwardCursor` нь эрх мэдэлд хамааралтай, процесс-дотроо хэрэглэгдэх, зөвхөн урагш чиглэлтэй байдаг. Хэзээ ч үүнийг задлан шинжлэж, нийлэгжүүлж, эрх олголтын эрх бүхий этгээдүүдийн хооронд хуваалцаж, эсвэл Torii тохиолдлуудад зөөвөрлөх боломжтой резюмэ токен байдлаар хадгалах ёсгүй. Хэрэв хугацаа нь дуусвал, анхны асуултыг санаатайгаар програмын түвшний чекпойнттойгоор дахин эхлүүлнэ.
+`next_cursor` нь өөрийн цуглуулга, зам, шүүлтүүр болон эрэмбэлэлтэд холбогдсон, тунгалаг бус түлхүүрийн олонлогийн (keyset) байрлал юм. Үүнийг хэзээ ч задлах эсвэл зохиож үүсгэх хэрэггүй бөгөөд өөр шүүлтүүр эсвэл эрэмбэлэлттэй дахин бүү ашигла; Torii үүнийг `invalid_cursor`-оор татгалздаг. Хуудсуудын хооронд нэмэгдсэн эсвэл устгагдсан мөрүүд хожмын хуудсанд хамааралгүй мөрүүдийг давтах эсвэл алгасахад хэзээ ч хүргэхгүй.
 
 ## Баталгаажуулах {#verify}
 
-Тодорхой домэйн шүүлт нь зөвхөн `wonderland.universal`-ийг буцаах ёстой. Зөвхөн амжилттай CLI гарцыг тоолохын оронд үр дүнг шалгаарай:
+Тодорхой домэйн шүүлт нь зөвхөн `universal.universal`-ийг буцаах ёстой. Зөвхөн амжилттай CLI гарцыг тоолохын оронд үр дүнг шалгаарай:
 
 ```bash
 iroha --config ./localnet/client.toml \
   --machine \
-  ledger domain list filter "$DOMAIN_PREDICATE" \
-  --limit 1 --offset 0 --fetch-size 1 \
-  | jq -e 'length == 1 and .[0] == "wonderland.universal"'
+  ledger domain list --filter "$DOMAIN_FILTER" --select id --limit 1 \
+  | jq -e '[.items[].id] == ["universal.universal"]'
 ```
 
-Хуудасласан програмын хүсэлтүүдийн хувьд мөн ID-үүд хуудсуудын хооронд давтагддаггүй, хүссэн логик хязгаар хэзээ ч давдаггүй, мөн хугацаа дууссан курсороос дахин оролдоход баримтжуулсан шалгах цэгээс дахин эхэлдэг эсэхийг шалгах хэрэгтэй.
+Хуудасладаг аппликейшны асуулгуудын хувьд мөн ID-ууд хуудсуудын хооронд давтагдахгүй, хүссэн логик хязгаараас хэзээ ч хэтрэхгүй, мөн татгалзсан курсорын дараа баримтжуулсан шалгах цэгээс дахин эхэлдэг эсэхийг туршиж шалга.
 
 ## Алдааг олох болон засах {#troubleshooting}
 
 - Ганц асуулт нь давталттай шүүлтүүр, эрэмбэлэлт, хуудаслах эсвэл татах параметрүүдийг хүлээн авдаггүй. Эдгээр хяналтууд хэрэгтэй бол холбогдох жагсаалтын асуултыг ашиглана уу.
-- `fetch_size` нь нийт үр дүнгийн хязгаараа биш, тэгээс ялгаатай багцын дохио юм. Одоогийн анхдагч утга нь `100` бөгөөд програм хангамжийн гүйцэтгэх орчин нь дээд утгаас давсан утгыг хүлээж авахгүй.
-- Тодорхойгүй, хугацаа нь дууссан эсвэл гадаад курсор санаатайгаар дахин ашиглагддаггүй. Асуултыг дахин эхлүүл; тунгалаг бус утгыг засах гэж оролдох хэрэггүй.
-- Метадатын ангилалт нь ерөнхий талбарын ангилалт биш юм. Хэрэв бүх зүйл сонгосон түлхүүрийг агуулдаггүй бол дутагдсан түлхүүрийн дарааллыг баримтлах эсвэл өөр стратеги сонгох хэрэгтэй.
-- CLI нь `--select`-г задлан илгээдэг боловч одоогийн сервер нь хөнгөн сонгогчийн түүврийг үнэлдэггүй. Сервер талын сонгогчийн дэмжлэгийг суулгасан программын гүйцэтгэлийн орчинд баталгаажуулсан тохиолдолд клиент талын проекцыг хэрэглэ.
-- Өргөн тэлсэн хязгааргүй асуултууд сүлжээний түншийн ажил, клиентийн санах ой, курсорын амьдралын хугацааны эрсдэлийг нэмэгдүүлдэг. Логик хязгаар тогтоож, хэрэглэгчид тохирсон авах хэмжээ (fetch size)-ийг тохируул.
-- Олон нийтийн JSON нөөцийн параметрүүд ба гарын үсэгтэй төрөлжсөн асуулгын параметрүүд нь хоорондоо холбоотой боловч солих боломжгүй сериалчлалын форматууд юм. Төрөлжсөн асуулгын өгөгдлийн саванд SDK эсвэл CLI-ийг илүүд үзнэ үү.
+- `limit` нь нийт үр дүн биш, хуудасны хэмжээ юм: хамгийн багадаа 1, хамгийн ихдээ зангилааны `torii.app_api_max_list_limit` (анхдагч нь 500); Torii-ийн анхдагч утга 100. Илүү ихийг уншихын тулд `next_cursor`, `--all` эсвэл SDK итераторыг дага.
+- `invalid_cursor` нь курсор буруу бүтэцтэй, эсвэл өөр цуглуулга, зам, шүүлтүүр эсвэл эрэмбэлэлтэд хамаардаг гэсэн үг. Асуулгыг дахин эхлүүл; тунгалаг бус утгыг засах гэж бүү оролд.
+- Нарийн сонголттой шүүлтүүр `null` биш `next_cursor`-тэй богино эсвэл хоосон хуудас буцааж болно. Түүнийг `null` болох хүртэл үргэлжлүүлэн дага.
+- `--filter` болон HTTP-ийн `filter` параметр нь `id = "universal.universal"` эсвэл `exists(metadata.tier)` зэрэг Torii-ийн текст дүрэм зүйг хүлээн авдаг. JSON шалгуурын объект нь шүүлтүүрийн текст биш тул хүчингүй `filter` болж амжилтгүй болдог.
+- Өргөн, хязгааргүй асуулгууд зангилаануудын ажил болон клиентийн санах ойн хэрэглээг нэмэгдүүлдэг. Хэрэглэгч талд тохирсон логик хязгаар болон хуудасны хэмжээг тогтоо.
+- Гарын үсэгтэй `/v1/query` нь жагсаалтын API биш. Энэ нь ганц үр дүнтэй асуулгууд болон цөөн хэдэн шүүлтүүргүй давтагдах асуулгын эхлэлийг хүлээн авч, `FindDomains` эсвэл `FindAssetDefinitions` зэрэг бусдыг `signed_query_shape_not_admitted`-ээр татгалздаг. Цуглуулгын төгсгөл цэгүүд, CLI-ийн `list` командууд болон SDK-ийн цуглуулга уншигчид шүүлтүүр, эрэмбэлэлт, курсорын нэг ижил дүрэм зүйг хуваалцдаг.
 
 ## Эх сурвалж ба холбогдох баримт бичгүүд {#source-and-related-docs}
 
-- [Савлагчийн арын хуудаслах интеграцийн туршилтууд ба тогтсон эх кодын хувилбар](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/pagination.rs)
-- [Бүртгэсэн эх кодын засвар дээрх асуулга үүсгэгч ба сонгогчийн зан байдал](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/builder/mod.rs)
-- [Бүртгэсэн эх кодын засвар дээрх асуулгын параметрүүд ба курсорын загвар](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/query/parameters.rs)
+- [Тогтоосон commit дахь Torii-ийн цуглуулгын асуулгын гэрээ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/torii/collection_queries.md)
+- [Тогтоосон commit дахь Rust-ийн цуглуулга унших функцууд болон курсорын итератор](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/src/collections.rs)
+- [Тогтоосон commit дахь гарын үсэгтэй асуулгыг хүлээн авах дүрэм](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/query_json.md)
 - [Асуултууд](/mn/blockchain/queries.md)
 - [Асуулгын лавлагаа](/mn/reference/queries.md)
 - [JavaScript ба TypeScript](/mn/guide/tutorials/javascript.md)

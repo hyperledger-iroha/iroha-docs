@@ -1,9 +1,9 @@
 ---
 translation_locale: ur
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 576e03924f19b63681cdfafa641b996672e35a992478fc9eaf5b83f0e7baa6da
+translation_source_hash: d399284a2baec507e4c979c762d6e216d8c3fbc5b4b4fe221b6bbb0049ee9fd9
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # مقامی اثاثہ جات کا حصول {#native-asset-escrow}
@@ -15,8 +15,8 @@ translation_engine: nllb-200-ct2
 ## لازمی شرائط {#prerequisites}
 
 - ایک عددی اثاثہ کی تعریف اور ایک کھولنے والا / بیچنے والا جو کافی مقدار کا مالک ہے.
-- ہر پارٹی کے لئے مالی اعانت یافتہ ، واحد کلید I105 کلائنٹ جو ایک قدم پیش کرتے ہیں۔ براہ راست مجاز اکاؤنٹس کی طرف سے ادا کردہ `fee_payment` ارادے کا استعمال کریں جس کی فیس اثاثہ موجودہ Taira فوسیٹ کے جواب سے ملتا ہے۔ دستاویزات میں اثاثہ ID کو شامل نہ کریں۔
-- موجودہ Rust یا Python SDK سے Iroha کی commit داری `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
+- ہر اس پارٹی کے لئے مالی اعانت یافتہ، واحد کلید I105 کلائنٹ جو ایک قدم پیش کرتی ہے۔ براہ راست، اتھارٹی کی ادا کردہ `fee_payment` ارادے کا استعمال کریں جس کا فیس اثاثہ اس اثاثے سے ملتا ہو جو موجودہ Taira فوسیٹ پالیسی شائع کرتی ہے؛ دستاویزات سے لیا گیا اثاثہ ID شامل نہ کریں۔
+- موجودہ Rust یا Python SDK سے Iroha کی commit داری `c8c872461e92f04325c350cdd952f4276e96f9dc`.
 - کے لئے JavaScript کمپائلر کی مثال، Node.js 24 پلس ایک مقامی طور پر تعمیر `@iroha/iroha-js` پیکج اور اس کی اصل `iroha_js_host`; مندرجہ ذیل [JavaScript SDK ماخذ کی تعمیر کا ترتیب](/ur/guide/tutorials/javascript.md#build-from-source). براؤزر کی تعمیرات فراہم کرنا ضروری ہے `compilerUrl` مقامی میزبان کو لوڈ کرنے کے بجائے.
 - Taira کو اثاثہ جات کی منتقلی اور ایسکرو ہدایات کا اعتراف کرنا ہوگا۔ اثاثوں کے مالکان عام زندگی سائیکل کا استعمال کرسکتے ہیں جب ان کی اثاثہ پالیسی اس کی اجازت دیتی ہے۔ تنازعہ حل کرنے کے لئے عالمی `CanResolveEscrowDispute` اجازت کی ضرورت ہوتی ہے۔ جب ضروری عوامی نیٹ ورک اتھارٹی غائب ہو تو ایک مقامی نیٹ ورک کا استعمال کریں.
 
@@ -31,7 +31,7 @@ translation_engine: nllb-200-ct2
 ```rust
 use eyre::{Result, ensure};
 use iroha::{
-    client::Client,
+    blocking::Client,
     data_model::{
         isi::escrow::{
             AcceptAssetEscrow, MarkEscrowPaymentSent, OpenAssetEscrow,
@@ -51,7 +51,7 @@ fn complete_marketplace_escrow(
 ) -> Result<AssetEscrowRecord> {
     let fee = FeePaymentIntent::authority(Vec::new(), None);
 
-    seller.submit_blocking(
+    seller.submit(
         OpenAssetEscrow::with_evidence_hashes(
             escrow_id,
             asset_definition,
@@ -60,11 +60,13 @@ fn complete_marketplace_escrow(
         ),
         fee.clone(),
     )?;
-    buyer.submit_blocking(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
-    buyer.submit_blocking(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
-    seller.submit_blocking(ReleaseAssetEscrow::new(escrow_id), fee)?;
+    buyer.submit(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
+    buyer.submit(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
+    seller.submit(ReleaseAssetEscrow::new(escrow_id), fee)?;
 
-    let record = seller.query_single(FindAssetEscrowById::new(escrow_id))?;
+    let record = seller
+        .client()
+        .query_single(FindAssetEscrowById::new(escrow_id))?;
     ensure!(record.status == AssetEscrowStatus::Released);
     Ok(record)
 }
@@ -74,7 +76,7 @@ fn complete_marketplace_escrow(
 
 ### Python کے ساتھ ایک عام لاک کھولیں اور جزوی طور پر کھینچیں۔ {#_2-open-and-partially-draw-a-generic-lock-with-python}
 
-ریلیز اتھارٹی دستخط شدہ مقامی ریکارڈ کو کھینچنے سے پہلے پوچھ گچھ کرتی ہے۔ اس عین مطابق `remaining_amount` کو پاس کرنا خوشگوار ہم وقت سازی فراہم کرتا ہے: ایک پرانی متوازی درخواست کو دو بار حراست میں لینے کے بجائے مسترد کردیا جاتا ہے.
+ریلیز اتھارٹی رقم نکالنے سے پہلے دستخط شدہ مقامی ریکارڈ کا استفسار کرتی ہے۔ عین وہی `remaining_amount` دینا پر امید ہم وقتی (optimistic concurrency) فراہم کرتا ہے: ایک پرانی متوازی درخواست تحویل سے دو بار رقم منہا کرنے کے بجائے مسترد کر دی جاتی ہے۔ `client` ایک `ToriiClient` ہے جو `local_signing_context=LocalSigningContext(network_id)` اور نیٹ ورک کے `chain_discriminant` کے ساتھ بنایا گیا ہے؛ ٹرانزیکشن مددگار نیٹ ورک کی شناخت اسی سیاق سے لیتے ہیں، اور دستخط شدہ استفسارات اسے `network_id` کے طور پر لیتے ہیں۔
 
 ```python
 import secrets
@@ -92,7 +94,6 @@ def escrow_status(record):
 def open_and_draw_lock(
     *,
     client,
-    chain_id,
     opener,
     opener_private_key,
     release_authority,
@@ -102,9 +103,9 @@ def open_and_draw_lock(
     fee_payment,
 ):
     escrow_id = f"cookbook_lock_{secrets.token_hex(12)}"
+    network_id = client.local_signing_context.network_id
 
     client.open_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=opener,
         private_key=opener_private_key,
         fee_payment=fee_payment,
@@ -120,10 +121,10 @@ def open_and_draw_lock(
     before = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
     client.drawdown_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=release_authority,
         private_key=release_private_key,
         fee_payment=fee_payment,
@@ -135,6 +136,7 @@ def open_and_draw_lock(
     after = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
 
@@ -150,8 +152,10 @@ Python SDK خود بخود استفسار کر سکتا ہے جب `expected_rema
 Rust lock flows کے لیے موجودہ constructors کو مشاہدہ شدہ مقدار بھی درکار ہوتی ہے:
 
 ```rust
-let before = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-release_authority.submit_blocking(
+let before = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+release_authority.submit(
     DrawdownAssetLock::new(
         lock_id,
         Quantity::from(4_u64),
@@ -160,23 +164,26 @@ release_authority.submit_blocking(
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 
-let current = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-opener.submit_blocking(
+let current = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+opener.submit(
     CancelAssetLock::new(lock_id, current.remaining_amount),
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 ```
 
-`DrawdownAssetLock::new` تین اقدار لیتا ہے؛ `CancelAssetLock::new` دو لیتا ہے۔ متوقع باقی رقم کو خارج کرنا ایک پرانی، غیر محفوظ کال فارم کی وضاحت کرتا ہے۔
+`DrawdownAssetLock::new` لاک، رقم اور مشاہدہ شدہ باقی رقم لیتا ہے؛ `CancelAssetLock::new` لاک اور مشاہدہ شدہ باقی رقم لیتا ہے۔ اگر باقی رقم پہلے بدل چکی ہو تو لیجر دونوں میں سے کوئی بھی ہدایت مسترد کر دیتا ہے۔
 
 ### JavaScript سے Kotodama ایسکرو سطح مرتب کریں۔ {#_3-compile-the-kotodama-escrow-surface-from-javascript}
 
-JavaScript کو غیر ٹائپ شدہ مقامی ہدایات کی ایجاد کرنے کی ضرورت نہیں ہے۔ موجودہ مرتب کنندہ لیجر ایسکرو بلٹ ان کو Kotodama کے سامنے رکھتا ہے؛ تعیناتی اور کالز پھر [بنانے اور ایک سمارٹ معاہدہ کو تعینات کرنے کے بعد ](./smart-contracts.md).
+JavaScript کو غیر ٹائپ شدہ مقامی ہدایات ایجاد کرنے کی ضرورت نہیں ہے۔ موجودہ مرتب کنندہ لیجر ایسکرو بلٹ ان کو Kotodama کے سامنے رکھتا ہے؛ اس کے بعد تعیناتی [ایک سمارٹ معاہدہ بنائیں اور تعینات کریں](./smart-contracts.md) کے مطابق ہوتی ہے۔ `open_offer` انٹری پوائنٹ `authorize(Admin)` ہے، اس لیے عملدرآمد کنندہ تقاضا کرتا ہے کہ اس کے کالر کے پاس تعینات شدہ ایڈریس اور `permission: "Admin"` کے لیے `CanUseContractPermission` ہو۔
 
 اس کو `native_escrow.ko` کے طور پر محفوظ کریں:
 
 ```kotodama
 seiyaku NativeEscrowAitai {
+    permission Admin;
     error enum EscrowError {
         NonPositiveAmount = 1,
     }
@@ -185,7 +192,7 @@ seiyaku NativeEscrowAitai {
         Name offer,
         AssetDefinitionId asset_definition,
         quantity amount
-    ) authorize("Admin") {
+    ) authorize(Admin) {
         require(amount > 0, EscrowError::NonPositiveAmount);
         ledger::escrow::open_offer(
             offer: offer,
@@ -230,6 +237,7 @@ node ./compile-native-escrow.mjs
 record = client.get_asset_escrow(
     escrow_id=escrow_id,
     authority=release_authority,
+    network_id=client.local_signing_context.network_id,
     private_key=release_private_key,
 )
 assert escrow_status(record) == "Locked"
@@ -241,7 +249,7 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 ## خرابی کا سراغ لگانا {#troubleshooting}
 
 - `Not permitted` کھولنے کے دوران عام طور پر اس کا مطلب یہ ہے کہ اختیار منتخب اثاثے کو تحویل میں منتقل نہیں کرسکتا ہے۔ تنازعہ حل کے لئے علیحدہ عالمی گیٹ `CanResolveEscrowDispute` موجود ہے۔
-- `expected remaining amount` مسترد کرنا ایک خوشگوار موازنہ تنازعہ ہے۔ ریکارڈ کو دوبارہ پوچھیں، فیصلہ کریں کہ آیا دوسری واپسی / منسوخی کا ارادہ کیا گیا تھا، اور صرف نئی ہدایات پر دستخط کریں اگر نئی ریاست قابل قبول ہے.
+- `asset lock remaining amount changed since the drawdown was prepared` (یا `...since the cancellation was prepared`) پر امید ہم وقتی کا تنازعہ ہے۔ ریکارڈ کا دوبارہ استفسار کریں، فیصلہ کریں کہ آیا دوسری واپسی / منسوخی کا ارادہ کیا گیا تھا، اور صرف اس صورت میں نئی ہدایت پر دستخط کریں جب نئی حالت قابل قبول ہو۔
 - صرف ترتیب شدہ ریلیز اتھارٹی ہی قابل اعتماد تالا کھینچ سکتی ہے۔ منزل اسے محض اس وجہ سے جاری نہیں کرسکتی ہے کہ وہ فنڈز وصول کرے گی۔
 - مارکیٹ پلیس ریلیز صرف قبولیت اور ادائیگی بھیجنے کی حالت کے بعد ہی درست ہے۔ منسوخی ابتدائی زندگی سائیکل ریاستوں تک محدود ہے.
 - ختم ہونے کا وقت مستند لیجر ٹائم کا استعمال کرتا ہے۔ مقامی دیوار کی گھڑی کے ٹائم آؤٹ کو اس بات کا ثبوت نہ سمجھیں کہ `ExpireAssetLock` گزر جائے گا۔
@@ -249,10 +257,10 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## ماخذ اور متعلقہ دستاویزات {#source-and-related-docs}
 
-- [پنڈٹ commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs) پر native escrow instruction model
-- [مقررہ کمیٹ پر مقامی ایایسکرو انٹیگریشن ٹیسٹ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
-- [Python مقررہ commit داری پر ایسکرو کلائنٹ کے طریقے](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama پنڈ commit پر native escrow sample](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [پنڈٹ commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/isi/escrow.rs) پر native escrow instruction model
+- [مقررہ کمیٹ پر مقامی ایایسکرو انٹیگریشن ٹیسٹ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/native_escrow.rs)
+- [Python مقررہ commit داری پر ایسکرو کلائنٹ کے طریقے](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama پنڈ commit پر native escrow sample](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [مقامی اثاثہ جات کا حامی ](/ur/blockchain/escrow.md)
 - [فنگبل اثاثے](./fungible-assets.md)
 - [اجازت اور کردار](./permissions-and-roles.md)

@@ -1,9 +1,9 @@
 ---
 translation_locale: am
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
+translation_source_hash: c1aee0c29332bd7c883500e72a1ec7812aebfca13b673e6681788cf4bc5ecbf1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # መለያዎች እና ተለዋጭ ስሞች {#accounts-and-aliases}
@@ -22,15 +22,19 @@ translation_engine: bing-translator-llm
 
 ### 1. በ Taira ላይ ነጠላ ፕሮቶኮል-መደበኛ መለያዎችን ይፈትሹ {#_1-inspect-canonical-accounts-on-taira}
 
-ይፋዊ መለያ ዝርዝር ሁልጊዜ ነጠላ ፕሮቶኮል-መደበኛ I105 መታወቂያዎችን ይመልሳል። ዋና ተለዋጭ ስም አማራጭ ነው እና ለብቻው ሪፖርት ይደረጋል።
+ይፋዊ መለያ ዝርዝር ሁልጊዜ ነጠላ ፕሮቶኮል-መደበኛ I105 መታወቂያዎችን ይመልሳል። ዋና ተለዋጭ ስም አማራጭ ነው፤ እሱን ለማየት የ`aliases` መስክን ይጠይቁ።
 
 ```bash
-curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+curl -fsS -H 'Accept: application/json' --get \
+  https://taira.sora.org/v1/accounts \
+  --data-urlencode 'limit=5' \
+  --data-urlencode 'select=id,aliases' \
+  | jq -r '.items[]
+    | [.id, (first(.aliases[]? | select(.is_primary) | .alias) // "-")]
+    | @tsv'
 ```
 
-ከ`.id` የመጣ መታወቂያ ለጥብቅ የመለያ መስኮች የሚሰራ ነው። ጎራ በእሱ ላይ አያያይዙት። ከ`.primary_alias` የመጣ ተለዋጭ ስም ለተጠቃሚው የሚመለከት የመፈለጊያ ቁልፍ እንጂ ሌላ ነጠላ ፕሮቶኮል-መደበኛ ማንነት አይደለም።
+ከ`.id` የመጣ መታወቂያ ለጥብቅ የመለያ መስኮች የሚሰራ ነው። ጎራ በእሱ ላይ አያያይዙት። ከ`.aliases[].alias` የመጣ ተለዋጭ ስም ለተጠቃሚው የሚመለከት የመፈለጊያ ቁልፍ እንጂ ሌላ ነጠላ ፕሮቶኮል-መደበኛ ማንነት አይደለም።
 
 ### 2. የእርስዎን Taira I105 መታወቂያ ያግኙ እና መደበኛ ያድርጉት {#_2-derive-and-normalize-your-taira-i105-id}
 
@@ -53,14 +57,14 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID" \
   | iroha tools address normalize --profile taira
 ```
 
-የተለመደው እሴት ከ `TAIRA_ACCOUNT_ID` ጋር ተመሳሳይ መሆን አለበት። በ TOML ፋይል ውስጥ ያለው የ`[account].domain` መቼት `wonderland.universal` ሊሆን ይችላል፣ ነገር ግን ያ እሴት በማዘዋወር እና ተለዋጭ ስም አውድ ላይ ብቻ ተጽዕኖ ያሳድራል።
+መደበኛ የተደረገው እሴት ከ `TAIRA_ACCOUNT_ID` ጋር ተመሳሳይ መሆን አለበት። የ`[account].profile` መቼት የሚመርጠው የ I105 አውታረ መረብ ቅድመ ቅጥያን ብቻ ነው፤ ጎራዎች የተለዋጭ ስሞች አካል ናቸው እንጂ በጭራሽ የመለያ መታወቂያው አካል አይደሉም።
 
 ### 3. መለያውን እና ንብረቶቹን ያንብቡ {#_3-read-the-account-and-its-assets}
 
 መለያው ከቀረበ በኋላ በቀጥታ ይጠይቁት እና የታሰረ የንብረት ገጽ ይዘርዝሩ። URL - በመንገድ ላይ ከመጠቀምዎ በፊት የ I105 እሴቱን ኮድ ያድርጉ።
 
 ```bash
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 ENCODED_ACCOUNT_ID="$(
@@ -69,7 +73,7 @@ ENCODED_ACCOUNT_ID="$(
 )"
 
 curl -fsS -H 'Accept: application/json' \
-  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10" \
+  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10&include_total=true" \
   | jq '{total, items}'
 ```
 
@@ -111,7 +115,7 @@ fi
 
 ::: warning የፍቃድ ወሰን
 
-የ Taira የቴስትኔት የገንዘብ ድጋፍ አገልግሎት ለይገባኛል ጥያቄ አቅራቢው መለያው ገንዘብ ሊሰጥ ይችላል፣ ነገር ግን ያ አጠቃላይ የመለያ-ምዝገባ ወይም ተለዋጭ ስም አስተዳደር ስልጣን አይሰጥም። ሌላ መለያ መመዝገብ በነቃ አረጋጋጩ ስር `CanRegisterAccount` ያስፈልገዋል። የመለያ ተለዋጭ ስሞች በመደበኛነት ንቁ SNS የሊዝ ውል እና ተገቢውን ተለዋጭ ስም ፈቃዶች ያስፈልጋቸዋል። የሚተዳደረውን የመሳፈሪያ/ተለዋጭ ስም እቅድ አውጪን ይጠቀሙ ወይም በተፈጠረው የአካባቢ አውታረ መረብ ላይ ምዝገባን ይለማመዱ።
+የ Taira የቴስትኔት የገንዘብ ድጋፍ አገልግሎት ለይገባኛል ጥያቄ አቅራቢው መለያው ገንዘብ ሊሰጥ ይችላል፣ ነገር ግን ያ አጠቃላይ የመለያ-ምዝገባ ወይም ተለዋጭ ስም አስተዳደር ስልጣን አይሰጥም። ሌላ መለያ መመዝገብ በነቃው አስፈፃሚ ስር `CanRegisterAccount` ያስፈልገዋል። የመለያ ተለዋጭ ስሞች በመደበኛነት እንዲሁም ንቁ SNS የሊዝ ውል እና ተገቢውን የተለዋጭ ስም ፈቃዶች ያስፈልጋቸዋል። የሚተዳደረውን የመሳፈሪያ/ተለዋጭ ስም እቅድ አውጪን ይጠቀሙ ወይም በተፈጠረው የአካባቢ አውታረ መረብ ላይ ምዝገባን ይለማመዱ።
 
 :::
 
@@ -121,9 +125,9 @@ fi
 iroha --config ./localnet/client.toml \
   --machine \
   --fee-payer authority \
-  ledger account register --id "$NEW_ACCOUNT_ID"
+  account register --id "$NEW_ACCOUNT_ID"
 
-iroha --config ./localnet/client.toml ledger account get \
+iroha --config ./localnet/client.toml account get \
   --id "$NEW_ACCOUNT_ID"
 ```
 
@@ -158,8 +162,8 @@ fi
 
 ## ምንጭ እና ተዛማጅ ሰነዶች {#source-and-related-docs}
 
-- [ነጠላ ፕሮቶኮል-መደበኛ የመለያ አድራሻ ትግበራ በተሰካው የምንጭ-ኮድ ክለሳ ላይ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
-- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ መለያ እና ተለዋጭ ስም Torii ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
+- [ነጠላ ፕሮቶኮል-መደበኛ የመለያ አድራሻ ትግበራ በተሰካው የምንጭ-ኮድ ክለሳ ላይ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/account/address.rs)
+- በተሰካው የምንጭ-ኮድ ክለሳ ላይ ያሉት [የ Torii መለያ API የመጨረሻ ነጥብ ፈጣን የማረጋገጫ ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/tests/accounts_endpoints.rs) እና [የተለዋጭ ስም መንገድ ሙከራዎች](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/tests/lib_tests/part_2.rs)
 - [መለያዎች](/am/blockchain/accounts.md)
 - [የውሂብ-ሞዴል ተለዋጭ ስሞች](/am/blockchain/data-model.md#aliases)
 - [ስምምነቶችን መሰየም](/am/reference/naming.md)

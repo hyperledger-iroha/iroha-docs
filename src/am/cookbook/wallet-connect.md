@@ -1,33 +1,33 @@
 ---
 translation_locale: am
 translation_source: /cookbook/wallet-connect.md
-translation_source_hash: 81b370bdc73a40ff2dbb8df0f91547ab4c279ed94600bdd6df367f29a949ec71
+translation_source_hash: 6bcb87693d4a4cdf45662029dd455c15d3a7a1d4a1e1586e92317ca91b587390
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Wallet ግንኙነት የንብረት ማስተላለፍን ያጽድቁ {#wallet-connect-approve-an-asset-transfer}
 
 ## ውጤት {#outcome}
 
-በአሳሽ ውስጥ የ Iroha የግንኙነት ክፍለ ጊዜ ይፍጠሩ፣ ለአንድ I105 የኪስ ቦርሳ ማንነት ምስጠራ ፍቃድ ያግኙ፣ ያ የኪስ ቦርሳ የ Torii ትክክለኛ የንብረት ማስተላለፍ የመነጨ ጀማሪ መዋቅር እንዲፈርም ይጠይቁ፣ የተነጠለውን ፊርማ ያስገቡ እና የተተገበረውን የመጨረሻነት ይጠብቁ።
+በአሳሽ ውስጥ የ Iroha Connect ክፍለ ጊዜ ይፍጠሩ፣ ለአንድ I105 የኪስ ቦርሳ ማንነት ምስጠራ ፍቃድ ያግኙ፣ ያ የኪስ ቦርሳ የ Torii ትክክለኛ ያልተፈረመ የንብረት ማስተላለፍ የውሂብ ጭነት እንዲፈርም ይጠይቁ፣ የተነጠለውን ፊርማ ያስገቡ እና የተተገበረውን የመጨረሻነት ይጠብቁ።
 
 ## ቅድመ ሁኔታዎች {#prerequisites}
 
 - `@iroha/iroha-js` እና HTTPS የሚጠቀም የአሳሽ መተግበሪያ።
-- Iroha v1ን ያገናኙ እና ባለ አንድ ቁልፍ Ed25519 I105 መለያን የሚቆጣጠር የኪስ ቦርሳ።
-- የአሁኑ Taira ሰንሰለት መታወቂያ እና ሰንሰለት መለያ፣ የኪስ ቦርሳው የተመዘገበው ትንሽ ሆሄያት Ed25519 የህዝብ ቁልፍ ሄክስ፣ በባለቤትነት ሊተላለፍ የሚችል ንብረት እና ነጠላ ፕሮቶኮል-ደረጃ I105 መድረሻ።
-- አሁን ባለው Taira የቴስትኔት የገንዘብ ድጋፍ አገልግሎት ምላሽ የተመለሰው የክፍያ ንብረት መታወቂያ። ምሳሌው የቀጥታ ክፍያ ዋጋ ግምት በዚያ መታወቂያ ላይ ያረጋግጣል; የተቀዳ የንብረት መለያን በጭራሽ አያካትትም።
-- ግንኙነት በተመረጠው Torii ላይ መንቃት አለበት። QR ወይም ጥልቅ አገናኝ ከማሳየትዎ በፊት ያረጋግጡ -
+- Iroha Connect v1ን የሚተገብር፣ ባለ አንድ ቁልፍ Ed25519 I105 መለያን የሚቆጣጠር እና የ`sign_transaction` እና `sign_raw` ዘዴዎችን የሚፈቅድ የኪስ ቦርሳ።
+- የአሁኑ የ Taira አውታረ መረብ መታወቂያ፣ የኪስ ቦርሳው የተመዘገበው ትንሽ ሆሄያት Ed25519 የህዝብ ቁልፍ ሄክስ፣ በባለቤትነት የተያዘ ሊተላለፍ የሚችል ንብረት እና ነጠላ ፕሮቶኮል-ደረጃ I105 መድረሻ።
+- በአሁኑ የ Taira የቴስትኔት የገንዘብ ድጋፍ አገልግሎት ፖሊሲ የታተመው የክፍያ ንብረት መታወቂያ። ምሳሌው የቀጥታ ክፍያ ዋጋ ግምቱን ከዚያ መታወቂያ ጋር ያረጋግጣል፤ የተቀዳ የንብረት መለያን በጭራሽ አያካትትም።
+- Connect በተመረጠው Torii ላይ መንቃት አለበት። QR ወይም ጥልቅ አገናኝ ከማሳየትዎ በፊት የአውታረ መረብ መታወቂያውን ከይፋዊ የመለያ ችሎታዎች ያንብቡ፦
 
 ```bash
 curl -fsS \
   -H 'Accept: application/json' \
-  https://taira.sora.org/v1/connect/status |
-  jq -e '{enabled, sessions_active} | select(.enabled == true)'
+  https://taira.sora.org/v1/accounts/capabilities |
+  jq -er '.network_id'
 ```
 
-Taira ማገናኘት ተሰናክሏል ወይም `404`/`503` ከመለሰ፣ ኮኔክሽን የነቃ የመነጨ የአካባቢ አውታረ መረብ ይጠቀሙ። ተራ የንብረት ማስተላለፍ የኪስ ቦርሳው በቂ የሚተላለፍ መጠን እና የክፍያ ቀሪ ሂሳብ እንዲኖረው ይጠይቃል።
+Torii ስም-አልባ የ Connect ሁኔታን አያቀርብም፦ `GET /v1/connect/status` የአንድን ክፍለ ጊዜ ሁኔታ ለዚያ ክፍለ ጊዜ የአስተዳደር ቶከን ያዥ ሪፖርት ያደርጋል፣ እና አጠቃላይ ሁኔታው የኦፕሬተር ፊርማ ይፈልጋል። ኖድ Connectን ሲያሰናክል፣ `registerConnectSession` በ HTTP `503` እና በኮድ `connect_disabled` አይሳካም (ግንባታው Connectን ሳያካትት ሲቀር `404`)፣ እና ምሳሌው ምንም QR ኮድ ወይም ጥልቅ አገናኝ አያሳይም፤ Connect የነቃበት የመነጨ የአካባቢ አውታረ መረብ ይጠቀሙ። ተራ የንብረት ማስተላለፍ እንዲሁም የኪስ ቦርሳው በቂ የሚተላለፍ መጠን እና የክፍያ ቀሪ ሂሳብ እንዲኖረው ይጠይቃል።
 
 ## እርምጃዎች {#steps}
 
@@ -43,16 +43,20 @@ Taira ማገናኘት ተሰናክሏል ወይም `404`/`503` ከመለሰ፣ �
 
 ### 2. ይፍጠሩ፣ ያጽድቁ፣ ይፈርሙ እና ያስገቡ {#_2-create-approve-sign-and-submit}
 
-ይህ የአሳሽ ሞጁል ከማመልከቻ ሁኔታዎ ተጨባጭ እሴቶችን ይቀበላል። የመጀመሪያው `POST /v1/assets/transfer` የመፈረም መስኮችን ትቶ የተስተካከለ የግብይት ማስጀመሪያ መዋቅር ከክፍያ ዋጋ ግምት ጋር ይመልሳል። ሁለተኛው ለተመሳሳይ የዝውውር ጥያቄ የኪስ ቦርሳውን የህዝብ ቁልፍ እና የተነጠለ ፊርማ ብቻ ይጨምራል።
+ይህ የአሳሽ ሞጁል ከመተግበሪያዎ ሁኔታ ተጨባጭ እሴቶችን ይቀበላል። የመጀመሪያው `POST /v1/assets/transfer` የመፈረም መስኮችን ትቶ የዋጋ ግምት የተሰጠበትን የክፍያ ዓላማ እና ያልተፈረመውን የግብይት የውሂብ ጭነት ይመልሳል። ሁለተኛው ለተመሳሳይ የዝውውር ጥያቄ የኪስ ቦርሳውን የህዝብ ቁልፍ እና የተነጠለ ፊርማ ብቻ ይጨምራል። Torii በሁለቱም ጥያቄዎች ላይ ነጠላ ፕሮቶኮል-መደበኛ የመለያ ፊርማ ይፈልጋል፣ ስለዚህ ሞጁሉ የኪስ ቦርሳው በ`createConnectCanonicalRequestAuth` በኩል እንዲፈርማቸው ያደርጋል።
 
 ```js
-import { AccountAddress } from '@iroha/iroha-js/address'
+import { buildCanonicalJsonRequest } from '@iroha/iroha-js/canonical-request'
 import {
+  NetworkId,
   createConnectAppSession,
+  createConnectCanonicalRequestAuth,
   createConnectSessionPreview,
   deleteConnectSession,
   registerConnectSession,
+  toHex,
 } from '@iroha/iroha-js/connect-browser'
+import { ToriiBrowserClient } from '@iroha/iroha-js/torii-browser'
 
 const baseUrl = 'https://taira.sora.org'
 const wait = (milliseconds) =>
@@ -63,14 +67,21 @@ const decodeBase64 = (value) =>
 const encodeBase64 = (bytes) =>
   btoa(Array.from(bytes, (byte) => String.fromCharCode(byte)).join(''))
 
-async function postJson(path, body) {
-  const response = await fetch(`${baseUrl}${path}`, {
+async function postSignedJson(path, body, auth, networkId) {
+  const request = await buildCanonicalJsonRequest({
+    nativeIdentity: auth.nativeIdentity,
+    accountId: auth.authAccountId,
+    networkId,
     method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
+    path,
+    baseUrl,
+    body,
+    sign: auth.sign,
+  })
+  const response = await fetch(`${baseUrl}${path}`, {
+    method: request.method,
+    headers: request.headers,
+    body: request.body,
   })
   if (!response.ok) {
     throw new Error(
@@ -87,6 +98,10 @@ async function waitForApplied(transactionHash) {
     const response = await fetch(url, {
       headers: { Accept: 'application/json' },
     })
+    if (response.status === 404) {
+      await wait(1_000)
+      continue
+    }
     if (!response.ok) {
       throw new Error(`pipeline status: HTTP ${response.status}`)
     }
@@ -102,8 +117,7 @@ async function waitForApplied(transactionHash) {
 }
 
 export async function transferWithWallet({
-  chainId,
-  chainDiscriminant,
+  networkIdLiteral,
   authority,
   publicKeyHex,
   assetDefinitionId,
@@ -114,21 +128,16 @@ export async function transferWithWallet({
   if (!/^[0-9a-f]{64}$/.test(publicKeyHex)) {
     throw new Error('publicKeyHex must be 32-byte lower-case Ed25519 hex')
   }
-  const derivedAuthority = AccountAddress.fromAccount({
-    publicKey: publicKeyHex,
-    algorithm: 'ed25519',
-  }).toI105(chainDiscriminant)
-  if (derivedAuthority !== authority) {
-    throw new Error('enrolled public key does not control authority')
-  }
+  const networkId = NetworkId.parse(networkIdLiteral)
+  const torii = new ToriiBrowserClient(baseUrl, { networkId })
 
   const preview = createConnectSessionPreview({
-    chainId,
+    networkId,
     node: baseUrl,
   })
   const relay = await registerConnectSession(
     baseUrl,
-    preview.sidBase64Url,
+    preview,
     {
       node: baseUrl,
     },
@@ -140,8 +149,10 @@ export async function transferWithWallet({
       baseUrl,
       preview,
       session: relay,
+      inspectAccountIdentity: (accountId, options) =>
+        torii.inspectAccountIdentity(accountId, options),
       permissions: {
-        methods: ['sign_transaction'],
+        methods: ['sign_transaction', 'sign_raw'],
         resources: [assetDefinitionId],
       },
       appMeta: { name: 'Iroha cookbook transfer' },
@@ -158,6 +169,10 @@ export async function transferWithWallet({
     if (approval.accountId !== authority) {
       throw new Error('wallet approved a different I105 account')
     }
+    if (toHex(approval.signingPublicKey) !== publicKeyHex) {
+      throw new Error('enrolled public key does not control authority')
+    }
+    const auth = await createConnectCanonicalRequestAuth(connect)
 
     const transfer = {
       authority,
@@ -167,16 +182,21 @@ export async function transferWithWallet({
       destination,
       fee_payment: {
         payer: 'authority',
-        value: { charge_limits: [] },
+        value: { charge_limits: [], gas_limit: null },
       },
       creation_time_ms: Date.now(),
       transaction_ttl_ms: 120_000,
       memo: 'iroha-cookbook-wallet-connect',
     }
 
-    const prepared = await postJson('/v1/assets/transfer', transfer)
+    const prepared = await postSignedJson(
+      '/v1/assets/transfer',
+      transfer,
+      auth,
+      networkId,
+    )
     if (!prepared.ok || prepared.submitted) {
-      throw new Error('Torii did not return a pending-signature scaffold')
+      throw new Error('Torii did not return an unsigned transaction payload')
     }
     const limits = prepared.intent.fee_payment.value.charge_limits
     if (
@@ -186,22 +206,27 @@ export async function transferWithWallet({
       )
     ) {
       throw new Error(
-        'live fee quote uses an asset other than the faucet response',
+        'live fee quote uses an asset other than the faucet policy asset',
       )
     }
 
     const signature = await connect.signTransaction(
-      decodeBase64(prepared.transaction_scaffold_base64),
+      decodeBase64(prepared.transaction_payload_b64),
     )
     if (signature.length !== 64) {
       throw new Error('wallet returned a non-Ed25519 signature length')
     }
 
-    const submitted = await postJson('/v1/assets/transfer', {
-      ...transfer,
-      public_key_hex: publicKeyHex,
-      signature_base64: encodeBase64(signature),
-    })
+    const submitted = await postSignedJson(
+      '/v1/assets/transfer',
+      {
+        ...transfer,
+        public_key_hex: publicKeyHex,
+        signature_base64: encodeBase64(signature),
+      },
+      auth,
+      networkId,
+    )
     if (!submitted.ok || !submitted.submitted) {
       throw new Error('signed transfer was not accepted')
     }
@@ -251,18 +276,18 @@ fn seal_wallet_signature(
 }
 ```
 
-የማከማቻው `connect_app` እና `connect_wallet` ምሳሌዎች የፕሮቶኮል የሙከራ አብነቶች ናቸው ዲተርሚኒስቲክ የመጓጓዣ ቁልፎችን ይጠቀማሉ፣ በውፅዓት ውስጥ ቶከኖችን ያጋልጣሉ፣ እና የኪስ ቦርሳ የሙከራ አብነት የዱሚ ፊርማ ይመልሳል። ክፈፎችን ብቻ ለማጥናት ይጠቀሙባቸው፣ በጭራሽ እንደ Taira የኪስ ቦርሳ ትግበራ።
+የማከማቻው `connect_app` እና `connect_wallet` ምሳሌዎች የፕሮቶኮል ማሳያዎች ናቸው፦ መተግበሪያው ቶከኑን ጨምሮ የኪስ ቦርሳውን URI ወደ መደበኛ ውፅዓት ያትማል፣ የኪስ ቦርሳውም ቶከኖቹን እንደ የትዕዛዝ-መስመር ነጋሪ እሴቶች ይቀበላል እና የተጠየቁትን ባይቶች ዲኮድ ሳያደርግ ወይም ሳያሳይ ይፈርማቸዋል። ክፈፎችን ለማጥናት ብቻ ይጠቀሙባቸው፣ በጭራሽ እንደ Taira የኪስ ቦርሳ ትግበራ አይጠቀሙባቸው።
 
 ## አረጋግጥ {#verify}
 
 የተመለሰውን ምስጠራ ሃሽ ያስቀምጡ እና የመድረሻውን ድህረ-ሁኔታ በሕዝብ ባለቤቶች API የመጨረሻ ነጥብ ያረጋግጡ -
 
 ```bash
+HOLDER_FILTER="account_id = \"$DESTINATION_ACCOUNT\" and scope = \"global\""
 curl -fsS -G \
   -H 'Accept: application/json' \
   "https://taira.sora.org/v1/assets/$ASSET_DEFINITION_ID/holders" \
-  --data-urlencode "account_id=$DESTINATION_ACCOUNT" \
-  --data-urlencode 'scope=global' |
+  --data-urlencode "filter=$HOLDER_FILTER" |
   jq .
 ```
 
@@ -270,20 +295,20 @@ curl -fsS -G \
 
 ## መላ ፍለጋ {#troubleshooting}
 
-- `404`፣ `503` ወይም `enabled: false` በግንኙነት ሁኔታ ውስጥ በዚያ ኖድ ላይ ምንም የማስተላለፊያ ክፍለ ጊዜ ሊፈጠር አይችልም ማለት ነው። ወደ ነቃ localnet ቀይር; መተግበሪያን ወይም የአስተዳደር ቶከኖችን እራስዎ ለማጓጓዝ አይመለሱ።
+- ከ`registerConnectSession` የሚመጣ `503` ከኮድ `connect_disabled` ጋር፣ ወይም `404`፣ በዚያ ኖድ ላይ ምንም የማስተላለፊያ ክፍለ ጊዜ ሊፈጠር አይችልም ማለት ነው። ወደ ነቃ localnet ቀይር፤ የመተግበሪያ ወይም የአስተዳደር ቶከኖችን እራስዎ ወደ ማጓጓዝ አይመለሱ።
 - `USER_DENIED` የኪስ ቦርሳ ውሳኔ ነው።. ተደጋጋሚ የማጽደቅ ጥያቄዎችን ከመቀስቀስ ይልቅ እንደ የመጨረሻ ተጠቃሚ ውጤት ያቆዩት።
 - የማጽደቅ-መለያ አለመመጣጠን ወይም ልክ ያልሆነ የማጽደቅ ፊርማ ክፍለ-ጊዜውን መዝጋት አለበት። የማንነት ማሰር ካልተሳካ በኋላ የኪስ ቦርሳው እንዲፈርም በጭራሽ አይጠይቁ።
 - `public_key_hex does not control authority` ማለት የምዝገባ ውሂብ እና የጸደቀው I105 ማንነት አይዛመዱም ማለት ነው። ጊዜያዊ የኪስ ቦርሳ ማጓጓዣ ቁልፍ በዚህ መስክ መጠቀም አይቻልም።
-- ፊርማ ወይም የመነጨ የጀማሪ መዋቅር አለመቀበል ማለት ብዙውን ጊዜ የጥያቄ መስክ ወይም የቀጥታ ክፍያ ዋጋ ግምት በማዘጋጀት እና በማስገባት መካከል ተቀይሯል። አዲስ ጥያቄ ይገንቡ; የድሮውን ፊርማ በጭራሽ አይተክሉ።
+- ውድቅ የተደረገ የተነጠለ ፊርማ ብዙውን ጊዜ የጥያቄ መስክ ወይም የቀጥታ ክፍያ ዋጋ ግምቱ በማዘጋጀት እና በማስገባት መካከል ተቀይሯል ማለት ነው። አዲስ ጥያቄ ይገንቡ፤ የድሮውን ፊርማ በጭራሽ አይተክሉ።
 - ቀደም ሲል ተቀባይነት ያለው የተፈረመ ጥያቄ ትክክለኛ ድጋሚ ማጫወት አይደምፖተንት ነው። የጊዜ ማብቂያውን እንደገና ለመጀመር እንደ ምክንያት ከመያዝዎ በፊት የተመለሰውን የግብይት ምስጠራ ሃሽ ይጠይቁ።
 
 ## ምንጭ እና ተዛማጅ ሰነዶች {#source-and-related-docs}
 
-- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የአሳሽ አገናኝ ትግበራ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/src/connect.browser.js)
-- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የአሳሽ አገናኝ ሙከራዎችን](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/test/connect.browser.test.js)
-- [Rust የመተግበሪያ ፍሬም ምሳሌ በተሰካው የምንጭ-ኮድ ክለሳ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_app.rs)
-- [Rust የኪስ ቦርሳ ፍሬም ምሳሌ በተሰካው የምንጭ-ኮድ ክለሳ ላይ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_wallet.rs)
-- [ተሰክቷል Torii OpenAPI እቅድ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/artifacts/openapi/torii.json)
+- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የአሳሽ አገናኝ ትግበራ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/src/connect.browser.js)
+- [በተሰካው የምንጭ-ኮድ ክለሳ ላይ የአሳሽ አገናኝ ሙከራዎችን](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/test/connect.browser.test.js)
+- [Rust የመተግበሪያ ፍሬም ምሳሌ በተሰካው የምንጭ-ኮድ ክለሳ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/examples/connect_app.rs)
+- [Rust የኪስ ቦርሳ ፍሬም ምሳሌ በተሰካው የምንጭ-ኮድ ክለሳ ላይ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/examples/connect_wallet.rs)
+- [ተሰክቷል Torii OpenAPI እቅድ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/artifacts/openapi/torii.json)
 - [SORA Nexus አገልግሎቶች](/am/blockchain/sora-nexus-services.md)
 - [ፈንገስ ሊሆኑ የሚችሉ ንብረቶች](./fungible-assets.md)
 - [ግብይቶችን ያስገቡ እና ያረጋግጡ](./submit-and-verify-transactions.md)

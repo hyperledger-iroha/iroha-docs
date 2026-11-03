@@ -1,36 +1,36 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 29f2bdb390fc93b97f8ed9108634f70e21ba747c8606fb84093d37e9586516c1
+translation_source_hash: 3287a6bbaf06ec92ebbe9ac33a8294d4e1d232bc01fd6a5da13ddd166c620965
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # Ҡатмарлы активтар {#fungible-assets}
 
 ## Һөҙөмтә {#outcome}
 
-Тере Taira активтар билдәләмәләрен тикшерегеҙ һәм туплаған урындағы селтәрҙә реестр, банкнота, күсереү, яндырыу һәм баланс тикшереү ағымын тулыландырығыҙ. рецепт ҡулланыла каноник prefixed Base58 актив билдәләмәһе IDs, домен-ҡвалификациялы ҡушаматтар, доменһыҙ I105 иҫәбенә IDs һәм асыҡ түләү өсөн.
+Эшләп торған Taira актив билдәләмәләрен тикшерегеҙ һәм генерацияланған локаль селтәрҙә сығарыу, күсереү, яндырыу һәм баланс тикшереү ағымын үтәгеҙ. Рецепт префикһыҙ каноник Base58 актив билдәләмәһе ID-ларын, доменһыҙ I105 иҫәп ID-ларын һәм комиссияны асыҡтан-асыҡ түләүҙе ҡуллана.
 
 ## Шарттар {#prerequisites}
 
-- `curl`, `jq`, Python 3.11 йәки унан һуңғы, Node.js 24, һәм ток `iroha` CLI.
+- `curl`, `jq`, Python 3.11 йәки унан һуңғы версия, Node.js 24 һәм хәҙерге `iroha` һәм `kagami` CLIs (командалар юлы ҡоралдары).
 - Taira уҡырға ғына инеү мөмкинлеге.
-- Яҙыу үтәү өсөн, [ла стартҡа сығыуҙан локаль селтәр барлыҡҡа килә Iroha](/ba/get-started/launch-iroha.md), `./localnet/client.toml` һәм Torii менән `http://127.0.0.1:8080`.
+- Яҙыу аҙымдары өсөн: [Iroha-ны эшләтеп ебәреү](/ba/get-started/launch-iroha.md) битендәгесә `kagami localnet generate --peers 4 --out-dir ./localnet` командаһы менән, уға `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa` өҫтәп, булдырылған локаль селтәр. Ул `./localnet/client.toml` файлын һәм `http://127.0.0.1:8080` адресындағы Torii-ны бирә.
 
 ## Аҙымдар {#steps}
 
 ### 1. Taira билдәләмәләрен ҡултамғасыһыҙ тикшерегеҙ. {#_1-inspect-taira-definitions-without-a-signer}
 
-Аҡса билдәләмәләре үтә күренмәле Base58 ID, дисплей исеме, mintability сәйәсәте, һанлы масштабы, факультатив алфавиты, хужаһы һәм дөйөм күләмгә эйә. Конкрет баланс шулай уҡ уның тотоусы иҫәбенә һәм ирекле мәғлүмәттәр киңлеге инә.
+Актив билдәләмәләрендә үтә күренмәҫ Base58 ID, күрһәтелә торған исем, сығарыу мөмкинлеге сәйәсәте, һанлы масштаб, ирекле ҡушамат, хужа, ирекле хужа домен йәки мәғлүмәттәр киңлеге, баланс сәйәсәте һәм дөйөм күләм була. Конкрет баланс шулай уҡ уның тотоусы иҫәбен һәм ирекле мәғлүмәттәр киңлеге даирәһен үҙ эсенә ала.
 
 ::: code-group
 
 ```bash [curl]
 curl -fsS -H 'Accept: application/json' \
   'https://taira.sora.org/v1/assets/definitions?limit=10' \
-  | jq -r '.items[] \
-    | [.id, .name, .mintable, (.spec.scale // "unconstrained"), .total_quantity] \
+  | jq -r '.items[]
+    | [.id, .name, .mintable, (.spec.scale // "unconstrained"), .total_quantity]
     | @tsv'
 ```
 
@@ -58,10 +58,9 @@ JavaScript формаһын `node taira-assets.mjs` менән үтәгеҙ. Й�
 
 ### 2. Урындағы хакимиәтте һәм тәғәйенләнешен әҙерләгеҙ {#_2-prepare-the-local-authority-and-destination}
 
-Generated config-тағы public key нигеҙендә local authority-ны сығарығыҙ һәм икенсе registered account-ты recipient итеп һайлағыҙ. Бер ниндәй private key сығарылмай.
+Генерацияланған конфигурациялағы асыҡ асҡыс нигеҙендә локаль вәкәләтле иҫәпте сығарып алығыҙ, һуңынан яңы алыусы иҫәп өсөн асҡыстар парын булдырығыҙ һәм был иҫәпте теркәгеҙ. Бер генә шәхси асҡыс та экранға сығарылмай.
 
 ```bash
-LOCAL_ROOT='http://127.0.0.1:8080'
 LOCAL_CONFIG='./localnet/client.toml'
 
 LOCAL_PUBLIC_KEY="$(python3 - <<'PY'
@@ -75,33 +74,28 @@ SOURCE_ACCOUNT="$(
   iroha --config "$LOCAL_CONFIG" tools address convert "$LOCAL_PUBLIC_KEY"
 )"
 
+kagami keys --out-dir ./cookbook-recipient
 DESTINATION_ACCOUNT="$(
-  curl -fsS -H 'Accept: application/json' "$LOCAL_ROOT/v1/accounts?limit=20" \
-    | jq -er --arg source "$SOURCE_ACCOUNT" \
-      '[.items[].id | select(. != $source)][0]'
+  iroha --config "$LOCAL_CONFIG" tools address convert \
+    "$(cat ./cookbook-recipient/public.key)"
 )"
+iroha --config "$LOCAL_CONFIG" \
+  --machine --fee-payer authority \
+  account register --id "$DESTINATION_ACCOUNT"
 ```
 
-### 3. Цифрлы билдәләмәне теркәгеҙ {#_3-register-a-numeric-definition}
+### 3. Клиентҡа ҡараған һанлы билдәләмәне ҡулланығыҙ {#_3-use-a-client-owned-numeric-definition}
 
-Был урындағы ғына ID - Base58 активтар билдәләмәһе адресы. Алфавит кеше уҡый торған `domain.dataspace` проекцияһын тәьмин итә. масштабы `2` ике киҫәк цифрға рөхсәт итә; `--mint-once` ҡалдырып ҡалдырыу `Infinitely` ҡағиҙәһен һаҡлай.
+Генезистан тыш билдәләмә ҡул ҡуйыусыға ҡараған хужа `--domain` аҫтында теркәлә, ә генерацияланған локаль селтәрҙең клиенты бер доменға ла хужа түгел. `--asset-definition-id` менән генерацияланған локаль селтәрҙә был билдәләмә инде бар: генезис уны сикләнмәгән масштаб менән теркәгән, клиентты уның хужаһы иткән һәм клиентҡа 1 000 000 000 берәмек сығарған.
 
 ```bash
 ASSET_DEFINITION_ID='66owaQmAQMuHxPzxUN3bqZ6FJfDa'
-ASSET_ALIAS='cookbook_credit#wonderland.universal'
 
-iroha --config "$LOCAL_CONFIG" \
-  --machine \
-  --fee-payer authority \
-  ledger asset definition register \
-  --id "$ASSET_DEFINITION_ID" \
-  --name cookbook_credit \
-  --description 'Local cookbook credit' \
-  --alias "$ASSET_ALIAS" \
-  --scale 2
+iroha --config "$LOCAL_CONFIG" ledger asset definition get \
+  --id "$ASSET_DEFINITION_ID"
 ```
 
-ID-ны ҡабаттан ҡулланырға ярамай Taira. Йәмәғәт селтәрендә теркәлеү яңы каноник ID талап итә, һеҙҙең ғаризаға бүленә торған домен/алмаш исем, түләүҙәр финанслау һәм ғәмәлгә ашырыу ваҡыты активтар теркәү рөхсәте.
+Был ID-ны Taira-ла ҡабат ҡулланмағыҙ. Асыҡ селтәрҙә теркәү өсөн яңы каноник ID, һеҙҙең иҫәбегеҙгә ҡараған хужа домен (`ledger asset definition register` командаһына `--domain` итеп бирелә), һәр ҡушамат өсөн бирелгән `CanManageAssetDefinitionAlias` рөхсәте һәм комиссия өсөн финанслау кәрәк.
 
 ### 4. Минт, күсермә һәм яндырыу {#_4-mint-transfer-and-burn}
 
@@ -131,11 +125,11 @@ iroha --config "$LOCAL_CONFIG" \
   --quantity 10.00
 ```
 
-Янғандан һуң сығанаҡ балансын `64.50`, тәғәйенләнешендәге балансты `25.50` һәм дөйөм күләмде `90.00` көтөгөҙ.
+Янғандан һуң сығанаҡ балансын `1000000064.50`, тәғәйенләнешендәге балансты `25.50` һәм дөйөм күләмде `1000000090.00` көтөгөҙ.
 
 ::: warning Рөхсәт сиктәре
 
-Taira буйынса, faucet-тан алынған `taira.tx-metadata.json`-ды беркетегеҙ һәм һәр write өсөн `--fee-payer authority` ҡулланығыҙ. Registration һәм minting active validator-ҙың permissions-ын талап итә; transfer һәм burn source balance өҫтөндә authority талап итә. Faucet аша финансланған account автоматик рәүештә issuer булып китмәй.
+Taira-ла һәр яҙыу өсөн `--fee-payer authority` ҡулланығыҙ; CLI ҡул ҡуйыр алдынан теүәл комиссияны Taira-ның түләү активында иҫәпләп күрһәтә. Теркәү өсөн билдәләмәнең `--domain` доменына хужа булыу кәрәк, ә ҡушамат өсөн шулай уҡ `CanManageAssetDefinitionAlias` кәрәк. Сығарыу өсөн билдәләмәгә хужа булыу йәки `CanMintAssetWithDefinition` йә `CanMintAssetToAccount` рөхсәтенә эйә булыу кәрәк; күсереү һәм яндырыу өсөн сығанаҡ баланс өҫтөндә вәкәләт кәрәк. Faucet аша финансланған иҫәп автоматик рәүештә эмитент булып китмәй.
 
 :::
 
@@ -163,14 +157,14 @@ iroha --config "$LOCAL_CONFIG" ledger asset definition get \
 - Һөҙөмтәлә ID составында `#` букмекер йәки конкрет баланс һүҙмә-һүҙ түгел, каноник актив билдәләмәһе ID. Base58 мәғәнәһен ҡулланығыҙ: `--definition`, йәки бәйләнгән прозвище менән `--definition-alias`.
 - `Scale` хатаһы: ниндәйҙер күләмдә билдәләмә рөхсәт иткәндән күберәк өлөшлө һандар бар.
 - `Mintability` кире ҡағыуы: `Once`, `Not` йәки `Limited(n)` сәйәсәте актив сығарыу мөмкинлеген бөтөргән йәки уны тыйған. Тарихты яңынан яҙырға ярамай; билдәләмә һорауы буйынса ҡайтарылған сәйәсәт ҡулланығыҙ.
-- 2-се аҙым иҫәбенә теркәлгән маҡсатлы иҫәп-хисап һайлай. әгәр активтар ҡабул итеү `ExplicitOnly`, тәғәйенләнгән баланс менән тәьмин итергә рөхсәт ителгән аша CLI шулай уҡ исемләнгән һаҡсы иҫәптә йәки баланста теркәлмәй; ул икенсе инструкция ҡушыу урынына аборттарҙы яһай.
-- Хаҡтарҙы кире ҡағыу ғәҙәттәгесә инструкция уңышҡа ирешер алдынан була. Түләүсене һайлағыҙ, селтәрҙең хаҡтар активтары метамәғлүмәттәрен файҙаланығыҙ һәм уның балансын тикшерегеҙ.
-- Әгәр ҙә урындағы билдәләмә элек тә булған булһа, яңы барлыҡҡа килгән локаль селтәрҙе ҡуҙғатыу йәки ғәмәлдәгеһе менән дауам итеү Бер ҡасан да яңылыш формалаштырылған осраҡлы ҡылды Base58 урынына алмаштырмағыҙ. ID.
+- 2-се аҙым тәғәйенләнеш иҫәбен асыҡтан-асыҡ теркәй, шуға күрә иҫәп ҡабул итеү `ExplicitOnly` булғанда ла күсереү эшләй. Оҡшаш исемле CLI һаҡлағысы иҫәпте лә, балансты ла теркәмәй; ул тағы бер инструкция өҫтәү урынына эште өҙә.
+- Комиссия буйынса кире ҡағыу инструкция ғәҙәттәгесә уңышлы үтәлгәнсе үк була. Түләүсене һайлағыҙ, CLI-ның комиссия иҫәбендәге түләү активын һәм максимум сумманы ҡарағыҙ һәм шул балансты тикшерегеҙ.
+- Шул уҡ локаль селтәрҙә ҡабат эшләтеү алдағы баланстарҙан башлана, ә `kagami keys` инде булған `./cookbook-recipient` менән эшләүҙән баш тарта. Яңы генерацияланған локаль селтәрҙе ебәрегеҙ һәм был каталогты юйығыҙ, йәки абсолют ҡиммәттәр урынына баланс үҙгәрештәрен сағыштырығыҙ. Base58 ID урынына бер ҡасан да дөрөҫ булмаған осраҡлы тамғалар теҙмәһен ҡуймағыҙ.
 
 ## Сығанаҡ һәм уның менән бәйле документтар {#source-and-related-docs}
 
-- [Аҡсаның ғүмере циклын интеграциялау һынауҙары ҡуйылған commit-та](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/asset.rs)
-- [Rust активтар төҙөлөшө миҫалдары ҡуйылған commit буйынса](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/examples/tutorial.rs)
+- [Аҡсаның ғүмере циклын интеграциялау һынауҙары ҡуйылған commit-та](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/asset.rs)
+- [Rust активтар төҙөлөшө миҫалдары ҡуйылған commit буйынса](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/examples/tutorial.rs)
 - [Активтар](/ba/blockchain/assets.md)
 - [Инструкциялар](/ba/blockchain/instructions.md)
 - [Разрешение токендары](/ba/reference/permissions.md)

@@ -1,9 +1,9 @@
 ---
 translation_locale: ka
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
+translation_source_hash: c1aee0c29332bd7c883500e72a1ec7812aebfca13b673e6681788cf4bc5ecbf1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
 # ანგარიშები და ალიასი {#accounts-and-aliases}
@@ -22,15 +22,19 @@ translation_engine: nllb-200-ct2
 
 ### 1. შეამოწმოს Taira კანონიკური ანგარიშები. {#_1-inspect-canonical-accounts-on-taira}
 
-საჯარო ანგარიშების სია ყოველთვის იბრუნებს კანონიკურ I105 ID-ებს. პირველადი ალიასი არ არის ნებადართული და ცალკე მითითებულია.
+საჯარო ანგარიშების სია ყოველთვის აბრუნებს კანონიკურ I105 ID-ებს. ძირითადი ალიასი არასავალდებულოა; მის სანახავად მოითხოვეთ `aliases` ველი.
 
 ```bash
-curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+curl -fsS -H 'Accept: application/json' --get \
+  https://taira.sora.org/v1/accounts \
+  --data-urlencode 'limit=5' \
+  --data-urlencode 'select=id,aliases' \
+  | jq -r '.items[]
+    | [.id, (first(.aliases[]? | select(.is_primary) | .alias) // "-")]
+    | @tsv'
 ```
 
-`.id`-დან მიღებული ID მკაცრი ანგარიშის ველებისთვისაა ვარგისი. მას დომენი არ დაუმატოთ. `.primary_alias`-დან მიღებული ალიასი მომხმარებლისთვის განკუთვნილი საძიებო გასაღებია და არა კიდევ ერთი კანონიკური იდენტობა.
+`.id`-დან მიღებული ID მკაცრი ანგარიშის ველებისთვისაა ვარგისი. მას დომენი არ დაუმატოთ. `.aliases[].alias`-დან მიღებული ალიასი მომხმარებლისთვის განკუთვნილი საძიებო გასაღებია და არა კიდევ ერთი კანონიკური იდენტობა.
 
 ### 2. გამოიყოთ და ნორმალიზეთ თქვენი Taira I105 ID. {#_2-derive-and-normalize-your-taira-i105-id}
 
@@ -53,14 +57,14 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID" \
   | iroha tools address normalize --profile taira
 ```
 
-ნორმალიზებული მნიშვნელობა უნდა იყოს იდენტიფიცირებული `TAIRA_ACCOUNT_ID`. `[account].domain` პარამეტრი ფაილში TOML შეიძლება იყოს `wonderland.universal`, მაგრამ ეს მნიშვნელობა გავლენას ახდენს მხოლოდ მარშრუტის და ალიასი კონტექსტზე.
+ნორმალიზებული მნიშვნელობა `TAIRA_ACCOUNT_ID`-ის იდენტური უნდა იყოს. `[account].profile` პარამეტრი მხოლოდ I105 ქსელის პრეფიქსს ირჩევს; დომენები ალიასებს ეკუთვნის და არასოდეს — ანგარიშის ID-ს.
 
 ### 3. წაიკითხეთ ანგარიში და მისი ქონებები {#_3-read-the-account-and-its-assets}
 
 ანგარიშის განთავსების შემდეგ, დაუკავშირდით მას პირდაპირ და ჩამოთვალეთ შეზღუდული აქტივის გვერდი. URL - კოდირება I105 ღირებულება სანამ გამოიყენებთ მის გზას.
 
 ```bash
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 ENCODED_ACCOUNT_ID="$(
@@ -69,7 +73,7 @@ ENCODED_ACCOUNT_ID="$(
 )"
 
 curl -fsS -H 'Accept: application/json' \
-  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10" \
+  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10&include_total=true" \
   | jq '{total, items}'
 ```
 
@@ -111,7 +115,7 @@ fi
 
 ::: warning ნებართვის საზღვარი
 
-Taira ტესტური მონეტების გამცემს შეუძლია უზრუნველყოს მისი მოთხოვნის მქონე ანგარიში, მაგრამ ეს არ იძლევა ზოგად ანგარიშის რეგისტრაციის ან ალიასი-მმართველობის ავტორიზაციის პრინციპს. სხვა ანგარიშის დარეგისტრირებისთვის საჭიროა `CanRegisterAccount` აქტიური ვალიდატორით. ანგარიშის ალიასი ჩვეულებრივ ასევე მოითხოვს აქტიურ SNS იჯარით და შესაბამისი ალიასის ნებართვებით. გამოიყენეთ განკუთვნილი ინბორდინგის / ალიასის დაგეგმვა, ან რეპეტიციაზე რეგისტრაცია გენერირებული ადგილობრივი ქსელის წინააღმდეგ.
+Taira-ს გამცემს შეუძლია მოთხოვნის წარმდგენი ანგარიშის მომზადება, მაგრამ ეს არ ანიჭებს ანგარიშების რეგისტრაციის ან ალიასების მართვის ზოგად უფლებამოსილებას. სხვა ანგარიშის რეგისტრაციას აქტიური აღმასრულებლის ქვეშ სჭირდება `CanRegisterAccount`. ანგარიშის ალიასებს ჩვეულებრივ ასევე სჭირდება აქტიური SNS იჯარა და ალიასის შესაბამისი ნებართვები. გამოიყენეთ მიერთებისა და ალიასების მმართველობითი დამგეგმავი, ან რეგისტრაცია წინასწარ გაიარეთ გენერირებულ ლოკალურ ქსელში.
 
 :::
 
@@ -121,9 +125,9 @@ Taira ტესტური მონეტების გამცემს �
 iroha --config ./localnet/client.toml \
   --machine \
   --fee-payer authority \
-  ledger account register --id "$NEW_ACCOUNT_ID"
+  account register --id "$NEW_ACCOUNT_ID"
 
-iroha --config ./localnet/client.toml ledger account get \
+iroha --config ./localnet/client.toml account get \
   --id "$NEW_ACCOUNT_ID"
 ```
 
@@ -158,8 +162,8 @@ fi
 
 ## წყარო და შესაბამისი დოკუმენტები {#source-and-related-docs}
 
-- [კანონიკური ანგარიშის მისამართის განხორციელება ჩაკეტილი წყარო კოდის რევიზიისას](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
-- [ანგარიშისა და ალიასი Torii ტესტები დამაგრებული წყარო კოდის რევიზიისას](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
+- [კანონიკური ანგარიშის მისამართის განხორციელება ჩაკეტილი წყარო კოდის რევიზიისას](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/account/address.rs)
+- [Torii-ის ანგარიშების წერტილის სწრაფი ტესტები](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/tests/accounts_endpoints.rs) და [ალიასის მარშრუტების ტესტები](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/tests/lib_tests/part_2.rs) დამაგრებულ რევიზიაზე
 - [ანგარიშები](/ka/blockchain/accounts.md)
 - [მონაცემთა მოდელის ალიასები](/ka/blockchain/data-model.md#aliases)
 - [კონვენციების დასახელება](/ka/reference/naming.md)

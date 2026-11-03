@@ -1,21 +1,21 @@
 ---
 translation_locale: pt
 translation_source: /cookbook/index.md
-translation_source_hash: 58f5247ece30d3755c38d4d24ae4553a35e0d0437476092d568a1be5c8a2ed28
+translation_source_hash: 9e13bcd28ad8ae356314041828f73af0ed25636af82ff4ea2948268b47dd73e6
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # Iroha 3 Manual de Aplicação {#iroha-3-application-cookbook}
 
-Construir contra Iroha 3 com receitas pequenas e verificáveis que começam no Taira testnet e manter Minamoto mainnet somente leitura. Cada receita indica se é uma leitura pública, uma escrita de conta financiada normal, ou uma operação com permissão restrita. Os comandos usam o atual I105 IDs de conta, seleção explícita de taxa e o comportamento verificado em Iroha comprometer [`0010c5a70039eac101a4846499ba9ceaf43eb65c`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c).
+Construir contra Iroha 3 com receitas pequenas e verificáveis que começam no Taira testnet e manter Minamoto mainnet somente leitura. Cada receita indica se é uma leitura pública, uma escrita de conta financiada normal, ou uma operação com permissão restrita. Os comandos usam o atual I105 IDs de conta, seleção explícita de taxa e o comportamento verificado em Iroha comprometer [`c8c872461e92f04325c350cdd952f4276e96f9dc`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc).
 
-Comece com [Conectar-se a Taira](./connect-to-taira.md). Ele cria a configuração do cliente e os metadados de taxa reutilizados pelas instruções da linha de comando. Nunca copie um ID de ativo de taxa desta documentação: derive-o a partir da resposta atual do serviço de financiamento do testnet Taira.
+Comece com [Conectar-se a Taira](./connect-to-taira.md). Ele financia o signatário criptográfico e registra o ativo de taxa reutilizado pelas receitas de linha de comando. Nunca copie um ID de ativo de taxa desta documentação: leia-o da política atual do serviço de financiamento da testnet Taira.
 
 ## Níveis de acesso {#access-levels}
 
 - Público — não é necessário nenhum signatário criptográfico ou permissão de rede.
-- Pronto para escrever — use uma conta de teste financiada na Taira, um pagador de taxa explícito e o ativo de taxa atual devolvido pelo dispensador.
+- Pronto para escrever — use uma conta de teste Taira financiada, um pagador de taxa explícito e o ativo de taxa atual publicado pela política de financiamento da testnet.
 - Permissão necessária — Taira deve conceder permissão ao tempo de execução do software nomeado ou ao namespace governado. Use uma rede local gerada quando essa concessão não estiver disponível; o sucesso local não confere ao principal de autorização Taira.
 
 Nenhuma receita de livro de receitas envia uma escrita para Minamoto.

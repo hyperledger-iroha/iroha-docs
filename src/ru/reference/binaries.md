@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /reference/binaries.md
-translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
+translation_source_hash: c617a21d50b28495c261d05d672e0b7803c282d53da577391dbebbc7f120d045
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -10,10 +10,10 @@ translation_engine: bing-translator-llm
 
 Рабочий процесс оператора Iroha 3 сосредоточен вокруг четырёх основных бинарных компонентов:
 
-- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) для запуска демона узла сети
+- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/irohad) для запуска демона узла сети
 - `iroha3d_taira` для канонического Taira процессора проверки
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli) для CLI и команды оператора
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) для ключей, блокчейн-генезиса, локальных сетей и профилей
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli) для CLI и команды оператора
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami) для ключей, блокчейн-генезиса, локальных сетей и профилей
 
 ## Собрать из исходников {#build-from-source}
 

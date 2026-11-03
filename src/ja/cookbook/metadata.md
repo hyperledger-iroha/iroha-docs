@@ -1,21 +1,21 @@
 ---
 translation_locale: ja
 translation_source: /cookbook/metadata.md
-translation_source_hash: bb486994faabb29fb48609a886862e44e565148be4800ec1244218ef37e2e54b
+translation_source_hash: 88298912f083d79a9fdfe5e8d0a89d49acb97d814d3871db0c874cb40db5342b
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+claude-opus-5-5
 ---
 
 # メタデータ {#metadata}
 
 ## 結果 {#outcome}
 
-Taira のメタデータを読み取り、明示的に手数料を支払うトランザクションで1つのアカウントメタデータ値を設定および確認し、再度その値を削除します。ブロックチェーン台帳オブジェクトのメタデータはトランザクション手数料のメタデータとは別に保持します。
+Taira のメタデータを読み取り、明示的に手数料を支払うトランザクションで1つのアカウントメタデータ値を設定および確認し、再度その値を削除します。ブロックチェーン台帳オブジェクトのメタデータはトランザクションのメタデータとは別に保持します。
 
 ## 前提条件 {#prerequisites}
 
 - `curl`、`jq`、Python 3.11以降、および現在の`iroha`CLI。
-- [Taira に接続する](./connect-to-taira.md)から資金提供を受けた`taira.client.toml`と`taira.tx-metadata.json`。
+- [Taira に接続する](./connect-to-taira.md) で用意した、資金提供済みの `taira.client.toml`。
 - 対象アカウントのメタデータに対する認可プリンシパル。例は設定された認可プリンシパル自体を対象としており、別のアカウントには正確な権限が必要です。
 
 ## ステップ {#steps}
@@ -27,8 +27,8 @@ Taira のメタデータを読み取り、明示的に手数料を支払うト�
 ```bash
 curl -fsS -H 'Accept: application/json' \
   'https://taira.sora.org/v1/assets/definitions?limit=100' \
-  | jq '.items[] \
-    | select((.metadata // {} | length) > 0) \
+  | jq '.items[]
+    | select((.metadata // {} | length) > 0)
     | {id, name, metadata}'
 
 curl -fsS -H 'Accept: application/json' \
@@ -57,7 +57,7 @@ export TAIRA_ACCOUNT_ID="$(
 
 ### 3. 1つの JSON の値を設定する {#_3-set-one-json-value}
 
-標準入力から読み取られた JSON はアカウントの `cookbook_profile` 値になります。それに対して、`--metadata ./taira.tx-metadata.json` は手数料フィールドを取引データコンテナに添付します。これら二つのマップは対象と目的が異なります。
+標準入力から読み取られた JSON はアカウントの `cookbook_profile` 値になります。`--metadata <file>` で添付するトランザクションメタデータは、取引データコンテナ上の別個のマップであり、手数料を選択することはありません。手数料を選択するのは `--fee-payer` と CLI の正確な手数料見積もりです。また、クライアントは `gas_asset_id`、`gas_limit`、または `fee_sponsor` キーを含むトランザクションメタデータを拒否します。
 
 ```bash
 printf '%s\n' \
@@ -65,17 +65,16 @@ printf '%s\n' \
   | iroha --config ./taira.client.toml \
       --machine \
       --fee-payer authority \
-      --metadata ./taira.tx-metadata.json \
-      ledger account meta set \
+      account meta set \
       --id "$TAIRA_ACCOUNT_ID" \
       --key cookbook_profile
 ```
 
-CLI はデフォルトで料金を見積もり、署名し、提出し、待機します。この値に次の操作が依存する場合は、`--no-wait` を追加しないでください。
+CLI は署名前に、Taira の手数料資産で表した正確な手数料の見積もりを提示し、その後送信して、適用済み（Applied）の確定を待ってから戻ります。
 
 ::: warning 許可境界
 
-アクティブなバリデーターは、各オブジェクトを変更できる人を決定します。別のアカウントを更新するには通常 `CanModifyAccountMetadata` が必要です。ドメイン、資産定義、NFTs、およびトリガーには、それぞれ特定のターゲットに対するメタデータ権限があります。もし Taira が必要な認可プリンシパルを付与していない場合、同じアカウントコマンドを`./localnet/client.toml`で実行し、生成されたlocalnet認可プリンシパルの正準 I105 IDを置き換え、Taira の手数料メタデータファイルを省略してください。明示的なローカルの手数料支払者の選択は保持してください。
+アクティブな実行者は、各オブジェクトを変更できる人を決定します。別のアカウントを更新するには通常 `CanModifyAccountMetadata` が必要です。ドメイン、資産定義、NFTs、およびトリガーには、それぞれ特定のターゲットに対するメタデータ権限があります。もし Taira が必要な認可プリンシパルを付与していない場合は、同じアカウントコマンドを `./localnet/client.toml` で実行し、生成されたローカルネットの認可プリンシパルの正準 I105 ID に置き換えてください。明示的なローカルの手数料支払者の選択は保持してください。
 
 :::
 
@@ -84,7 +83,7 @@ CLI はデフォルトで料金を見積もり、署名し、提出し、待機�
 まず確定した値を読み取り、その後別の削除トランザクションを送信してください。
 
 ```bash
-iroha --config ./taira.client.toml --machine ledger account meta get \
+iroha --config ./taira.client.toml --machine account meta get \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile \
   | tee cookbook-profile.json
@@ -94,8 +93,7 @@ jq -e '.version == 1' cookbook-profile.json
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger account meta remove \
+  account meta remove \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile
 ```
@@ -107,10 +105,10 @@ Python のアプリケーションには、対応する型付きビルダーは 
 設定された取引の後、`meta get` は `version: 1` を持つオブジェクトを返さなければなりません。削除後、直接の検索では値を返してはいけません。
 
 ```bash
-iroha --config ./taira.client.toml --machine ledger account get \
+iroha --config ./taira.client.toml --machine account get \
   --id "$TAIRA_ACCOUNT_ID" > /dev/null
 
-if iroha --config ./taira.client.toml --machine ledger account meta get \
+if iroha --config ./taira.client.toml --machine account meta get \
   --id "$TAIRA_ACCOUNT_ID" \
   --key cookbook_profile; then
   printf '%s\n' 'metadata key still exists' >&2
@@ -133,8 +131,8 @@ fi
 
 ## ソースと関連ドキュメント {#source-and-related-docs}
 
-- [固定されたソースコードリビジョンでのメタデータクエリ統合テスト](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/queries/metadata.rs)
-- [Python SDK ピン留めされたソースコードのリビジョンでのトランザクションビルダー](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/README.md)
+- [固定されたソースコードリビジョンでのメタデータクエリ統合テスト](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/queries/metadata.rs)
+- [Python SDK ピン留めされたソースコードのリビジョンでのトランザクションビルダー](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/README.md)
 - [メタデータ](/ja/blockchain/metadata.md)
 - [メタデータとブロックチェーン台帳の保存方法の選択](/ja/guide/configure/metadata-and-store-assets.md)
 - [指示の参照](/ja/reference/instructions.md)
