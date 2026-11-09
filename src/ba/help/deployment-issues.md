@@ -1,10 +1,11 @@
 ---
 translation_locale: ba
 translation_source: /help/deployment-issues.md
-translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
+translation_source_hash: 3e4042ed4e92a8df567f3500a84cfe32a3d10e22663204b07423ff4cf0fd0c5c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
+
 # Деployment проблемаларын хәл итеү {#troubleshooting-deployment-issues}
 
 Был бүлектә Iroha 3 урынлаштырыуҙар өсөн проблемаларҙы хәл итеү буйынса кәңәштәр бирелә. Әгәр һеҙ кисергән мәсьәлә бында һүрәтләнмәгән икән, беҙгә [Telegram](https://t.me/hyperledgeriroha) аша мөрәжәғәт итегеҙ.
@@ -62,9 +63,9 @@ Kubernetes өсөн һәр validator-ҙы торош һаҡлаусы инфра
 
 Әгәр модуль ҡат-ҡат яңынан эшләй башлаһа, модулдә күрһәтелгән конфигурацияны көтөлгән [`peer.template.toml`](/ba/reference/peer-config/index.md#template) менән сағыштырығыҙ һәм Peer иҫке Kura мәғлүмәтте ҡабатлаймы икәнлеген тикшерегеҙ.
 
-## Сора профиле {#sora-profile}
+## SORA Nexus профиле {#sora-profile}
 
-Шәхси йәки урындағы Iroha 3 урынлаштырыуҙар, уларҙа Nexus, SoraFS йәки күп юллы ағымдар ҡулланыла, стандарт демоны Sora профиле менән эшләй башлай:
+Ябыҡ йәки урындағы Iroha 3 мөхитендә SORA Nexus, SoraFS йәки бер нисә юл ҡулланылһа, ошо профилде ҡабыҙып, стандарт фон хеҙмәтен эшләтеп ебәрегеҙ.
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

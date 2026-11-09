@@ -1,16 +1,16 @@
 ---
 translation_locale: pt
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: ceff2952134931b4f1007a16e2cffba2ee720c5221d447b5c671f275a032ad3e
+translation_source_hash: 8d3ec8cf5a6ee09d9c05dd63c018ebb656f9e340f9d30f9e335baf2101c39055
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
 
-# Construir sobre SORA 3: Taira e Minamoto {#build-on-sora-3-taira-and-minamoto}
+# Desenvolver na SORA Nexus com Taira e Minamoto {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 é a faixa de implantação pública voltada para o aplicativo construída sobre Iroha 3 e SORA Nexus. Construa e ensaie primeiro em Taira, depois mova a mesma configuração de cliente para Minamoto somente quando você tiver chaves mainnet separadas, XOR reais para taxas e aprovação de produção.
+A SORA Nexus funciona sobre o Iroha 3. Desenvolva e teste sua aplicação primeiro na Taira. Use a mesma configuração de cliente na Minamoto somente quando tiver chaves separadas para a rede principal, XOR real para as taxas e autorização para operar em produção.
 
-Este tutorial mostra como configurar um cliente Iroha para as redes públicas SORA 3:
+Este guia mostra como configurar um cliente Iroha para as duas redes públicas da SORA Nexus.
 
 - Taira testnet em `https://taira.sora.org`
 - Minamoto mainnet em `https://minamoto.sora.org`
@@ -312,7 +312,7 @@ Converter uma chave pública Minamoto com o prefixo da mainnet:
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Use o ID da conta resultante sempre que um comando Nexus, API ou CLI solicitar um ID de conta canônico, por exemplo, o serviço de financiamento de testnet Taira `account_id` consultas de saldo, campos de conta rígidos ou associações de alias. Mantenha a chave privada correspondente na configuração do seu cliente e selecione a mesma rede pública com `[account].profile = "taira"` ou `[account].profile = "minamoto"`.
+Use o ID da conta resultante sempre que um comando SORA Nexus, API ou CLI solicitar um ID de conta canônico, por exemplo, o serviço de financiamento de testnet Taira `account_id` consultas de saldo, campos de conta rígidos ou associações de alias. Mantenha a chave privada correspondente na configuração do seu cliente e selecione a mesma rede pública com `[account].profile = "taira"` ou `[account].profile = "minamoto"`.
 
 Gerar o ID por si só não cria uma conta on-chain financiada. Em Taira, o serviço de financiamento da testnet pode criar e financiar a conta para gravações na testnet. Em Minamoto, use um processo de integração ou tesouraria aprovado na mainnet.
 
@@ -538,7 +538,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-O nível superior `chain` é o ID da cadeia principal (Nexus) atual. `[account].profile = "minamoto"` seleciona o discriminante de cadeia I105 Minamoto; o nome do host do endpoint API e o ID da cadeia não o selecionam implicitamente.
+O nível superior `chain` é o ID da cadeia principal (SORA Nexus) atual. `[account].profile = "minamoto"` seleciona o discriminante de cadeia I105 Minamoto; o nome do host do endpoint API e o ID da cadeia não o selecionam implicitamente.
 
 Converta uma chave pública Minamoto em seu ID de conta I105 canônico com o prefixo da mainnet:
 

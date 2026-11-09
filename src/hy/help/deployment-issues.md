@@ -1,10 +1,11 @@
 ---
 translation_locale: hy
 translation_source: /help/deployment-issues.md
-translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
+translation_source_hash: 3e4042ed4e92a8df567f3500a84cfe32a3d10e22663204b07423ff4cf0fd0c5c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
+
 # Տեղադրման խնդիրների լուծումը {#troubleshooting-deployment-issues}
 
 Այս բաժինը առաջարկում է խնդիրների լուծման խորհուրդներ Iroha 3 տեղակայումների համար: Եթե խնդիրը չի նկարագրվել այստեղ, կապվեք մեզ հետ [Telegram](https://t.me/hyperledgeriroha).
@@ -62,9 +63,9 @@ Kubernetes-ի դեպքում յուրաքանչյուր վավերացնող դ�
 
 Եթե պոդը վերսկսվում է բազմիցս, համեմատեք պոդում ներկայացված կոնֆիգը սպասվող [`peer.template.toml`](/hy/reference/peer-config/index.md#template)-ի հետ եւ ստուգեք, թե արդյոք հանգույցն կրկնում է հին Kura տվյալները:
 
-## Սորայի պրոֆիլ {#sora-profile}
+## SORA Nexus-ի պրոֆիլ {#sora-profile}
 
-Հատուկ կամ տեղական Iroha 3 տեղակայումները, որոնք օգտագործում են Nexus, SoraFS կամ բազմակողմանի հոսքերը, պետք է սկսեն ստանդարտ դեյմոնը՝ Սորա պրոֆիլը հնարավորություն տալով.
+Եթե Iroha 3-ի մասնավոր կամ տեղային միջավայրում օգտագործվում են SORA Nexus-ը, SoraFS-ը կամ մի քանի ուղիներ, միացրեք այս պրոֆիլը և գործարկեք ստանդարտ ֆոնային ծառայությունը։
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

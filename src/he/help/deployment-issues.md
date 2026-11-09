@@ -1,10 +1,11 @@
 ---
 translation_locale: he
 translation_source: /help/deployment-issues.md
-translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
+translation_source_hash: 3e4042ed4e92a8df567f3500a84cfe32a3d10e22663204b07423ff4cf0fd0c5c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
+
 # פתרון בעיות בהפעלה {#troubleshooting-deployment-issues}
 
 סעיף זה מציע עצות לפתרון בעיות בפריסות Iroha 3. אם הבעיה שאתם חווים אינה מתוארת כאן, פנו אלינו באמצעות [Telegram](https://t.me/hyperledgeriroha).
@@ -62,9 +63,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 אם קופסא מתחילה מחדש שוב ושוב, השווא את ההסדר המוצג בקופסה עם ה [`peer.template.toml`](/he/reference/peer-config/index.md#template) הנצפה ולבדוק אם הקופסא מחזירה מחדש נתונים ישנים של Kura.
 
-## פרופיל סורה {#sora-profile}
+## פרופיל SORA Nexus {#sora-profile}
 
-פיתוחים פרטיים או מקומיים Iroha 3 שמשתמשים ב Nexus, SoraFS או זרימות מרובות קווי צריכים להפעיל את הדיימון הסטנדרטי עם הפרופיל סורה פעיל:
+בפריסה פרטית או מקומית של Iroha 3 שמשתמשת ב־SORA Nexus, ב־SoraFS או במספר נתיבים, הפעילו את שירות הרקע הרגיל עם פרופיל זה.
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /help/deployment-issues.md
-translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
+translation_source_hash: 3e4042ed4e92a8df567f3500a84cfe32a3d10e22663204b07423ff4cf0fd0c5c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -63,9 +63,9 @@ Para o Kubernetes, trate cada validador como infraestrutura com estado:
 
 Se um pod reiniciar repetidamente, compare a configuração gerada no pod com a prevista em [`peer.template.toml`](/pt/reference/peer-config/index.md#template) e verifique se o par está reproduzindo dados antigos do Kura.
 
-## Perfil de Sora {#sora-profile}
+## Perfil da SORA Nexus {#sora-profile}
 
-Implantações privadas ou locais Iroha 3 que utilizam Nexus, SoraFS ou fluxos de múltiplas faixas devem iniciar o daemon padrão com o perfil Sora habilitado:
+Em uma implantação privada ou local de Iroha 3 que use SORA Nexus, SoraFS ou várias vias, inicie o serviço padrão com esse perfil ativado.
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

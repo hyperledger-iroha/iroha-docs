@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /help/deployment-issues.md
-translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
+translation_source_hash: 3e4042ed4e92a8df567f3500a84cfe32a3d10e22663204b07423ff4cf0fd0c5c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -63,9 +63,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 Если под перезапускается неоднократно, сравните сгенерированную конфигурацию в паде с ожидаемой [`peer.template.toml`](/ru/reference/peer-config/index.md#template) и проверить, воспроизводит ли сетевой узел старые данные Kura данные.
 
-## Профиль Соры {#sora-profile}
+## Профиль SORA Nexus {#sora-profile}
 
-Частные или локальные развертывания Iroha 3, которые используют Nexus, SoraFS или многополосные потоки, должны запускать стандартный демон с включенным профилем Sora:
+При частном или локальном развёртывании Iroha 3 с использованием SORA Nexus, SoraFS или нескольких полос запускайте стандартный демон с включённым профилем.
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

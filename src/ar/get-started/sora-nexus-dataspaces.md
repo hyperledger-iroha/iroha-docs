@@ -1,16 +1,16 @@
 ---
 translation_locale: ar
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: ceff2952134931b4f1007a16e2cffba2ee720c5221d447b5c671f275a032ad3e
+translation_source_hash: 8d3ec8cf5a6ee09d9c05dd63c018ebb656f9e340f9d30f9e335baf2101c39055
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
 
-# البناء على SORA 3: Taira و Minamoto {#build-on-sora-3-taira-and-minamoto}
+# التطوير على SORA Nexus باستخدام Taira وMinamoto {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 هو مسار النشر العام المواجه للتطبيق المبني على Iroha 3 و SORA Nexus. قم بالبناء والتدريب على Taira أولاً، ثم انقل نفس شكل العميل إلى Minamoto فقط عندما يكون لديك مفاتيح رئيسية منفصلة للشبكة الرئيسية، و XOR حقيقية للرسوم، والموافقة على الإنتاج.
+تعمل SORA Nexus على Iroha 3. طوّر تطبيقك واختبره أولاً على Taira. لا تنقل إعدادات العميل نفسها إلى Minamoto إلا بعد أن تحصل على مفاتيح مستقلة للشبكة الرئيسية، ورصيد حقيقي من XOR لدفع الرسوم، وموافقة على التشغيل في بيئة الإنتاج.
 
-يُوضح هذا الدليل كيفية تكوين عميل Iroha لشبكات SORA العامة 3:
+يوضح هذا الدليل كيفية إعداد عميل Iroha للعمل على الشبكتين العامتين لمنصة SORA Nexus.
 
 - Taira الشبكة التجريبية في `https://taira.sora.org`
 - Minamoto الشبكة الرئيسية على `https://minamoto.sora.org`
@@ -312,7 +312,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-استخدم معرف الحساب الناتج أينما طلبت أي من الأوامر Nexus أو API أو CLI معرف حساب قياسي واحد للبروتوكول، على سبيل المثال خدمة تمويل اختبار الشبكة Taira `account_id`، استعلامات الرصيد، حقول الحساب الصارمة، أو ربط الأسماء المستعارة. احتفظ بالمفتاح الخاص المطابق في إعدادات العميل الخاصة بك، واختر نفس الشبكة العامة مع `[account].profile = "taira"` أو `[account].profile = "minamoto"`.
+استخدم معرف الحساب الناتج أينما طلبت أي من الأوامر SORA Nexus أو API أو CLI معرف حساب قياسي واحد للبروتوكول، على سبيل المثال خدمة تمويل اختبار الشبكة Taira `account_id`، استعلامات الرصيد، حقول الحساب الصارمة، أو ربط الأسماء المستعارة. احتفظ بالمفتاح الخاص المطابق في إعدادات العميل الخاصة بك، واختر نفس الشبكة العامة مع `[account].profile = "taira"` أو `[account].profile = "minamoto"`.
 
 إن توليد المعرف بحد ذاته لا ينشئ حسابًا ممولًا على السلسلة. على Taira، يمكن لخدمة تمويل الشبكة التجريبية إنشاء الحساب وتمويله من أجل الكتابات على الشبكة التجريبية. على Minamoto، استخدم تدفق الانضمام أو الخزينة المعتمد على الشبكة الرئيسية.
 
@@ -538,7 +538,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-المستوى الأعلى `chain` هو معرف سلسلة الشبكة الرئيسية الحالي Nexus. يختار `[account].profile = "minamoto"` مميز سلسلة Minamoto I105؛ نقطة النهاية API واسم المضيف ومعرّف السلسلة لا يختارانه ضمنيًا.
+المستوى الأعلى `chain` هو معرف سلسلة الشبكة الرئيسية الحالي SORA Nexus. يختار `[account].profile = "minamoto"` مميز سلسلة Minamoto I105؛ نقطة النهاية API واسم المضيف ومعرّف السلسلة لا يختارانه ضمنيًا.
 
 حوّل مفتاح عام Minamoto إلى معرف حساب I105 القياسي لبروتوكول واحد مع بادئة الشبكة الرئيسية:
 

@@ -1,10 +1,11 @@
 ---
 translation_locale: ur
 translation_source: /help/deployment-issues.md
-translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
+translation_source_hash: 3e4042ed4e92a8df567f3500a84cfe32a3d10e22663204b07423ff4cf0fd0c5c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
+
 # تعیناتی کے مسائل کا حل {#troubleshooting-deployment-issues}
 
 اس سیکشن میں Iroha 3 تعیناتی کے لئے خرابیوں کا سراغ لگانے کے نکات پیش کیے گئے ہیں۔ اگر آپ کو جو مسئلہ درپیش ہے وہ یہاں بیان نہیں کیا گیا ہے تو ، ہم سے رابطہ کریں [ٹیلیگرام](https://t.me/hyperledgeriroha).
@@ -62,9 +63,9 @@ Kubernetes کے لیے، ہر توثیق کنندہ کو حالت برقرار �
 
 اگر ایک پوڈ بار بار دوبارہ شروع ہوتا ہے تو ، پوڈ میں پیش کردہ ترتیب کو متوقع [`peer.template.toml`](/ur/reference/peer-config/index.md#template) کے ساتھ موازنہ کریں اور چیک کریں کہ آیا ہم منصب پرانے Kura ڈیٹا کو دوبارہ کھیل رہا ہے۔
 
-## سورہ پروفائل {#sora-profile}
+## SORA Nexus پروفائل {#sora-profile}
 
-نجی یا مقامی Iroha 3 تعیناتی جو Nexus، SoraFS، یا کثیر لین کے بہاؤ کا استعمال کرتے ہیں، کو سورا پروفائل فعال ہونے کے ساتھ معیاری ڈییمون شروع کرنا چاہئے:
+اگر Iroha 3 کی نجی یا مقامی تنصیب میں SORA Nexus، SoraFS یا متعدد لین استعمال ہوتی ہیں تو معیاری پس منظر سروس کو اس پروفائل کے ساتھ چلائیں۔
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

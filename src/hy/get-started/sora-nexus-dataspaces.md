@@ -1,16 +1,16 @@
 ---
 translation_locale: hy
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: ceff2952134931b4f1007a16e2cffba2ee720c5221d447b5c671f275a032ad3e
+translation_source_hash: 8d3ec8cf5a6ee09d9c05dd63c018ebb656f9e340f9d30f9e335baf2101c39055
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Կառուցեք SORA 3-ի վրա: Taira եւ Minamoto {#build-on-sora-3-taira-and-minamoto}
+# Մշակում SORA Nexus-ում՝ Taira-ի և Minamoto-ի միջոցով {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 ծրագրի ուղղված հանրային տեղակայման ուղին է կառուցվել Iroha 3 եւ SORA Nexus. Կառուցել եւ փորձել Taira նախ, ապա տեղափոխել նույն հաճախորդի ձեւը Minamoto միայն այն դեպքում, երբ դուք ունեք առանձին mainnet բանալիներ, իրական XOR վճարների եւ արտադրության հաստատման համար:
+SORA Nexus-ն աշխատում է Iroha 3-ի հիման վրա։ Նախ մշակեք և փորձարկեք հավելվածը Taira-ում։ Հաճախորդի նույն կարգավորումը Minamoto տեղափոխեք միայն այն ժամանակ, երբ ունենաք հիմնական ցանցի առանձին բանալիներ, վճարները մարելու համար իրական XOR և արտադրական միջավայրում աշխատելու թույլտվություն։
 
-Այս դասընթացը ցույց է տալիս, թե ինչպես կարգավորել Iroha հաճախորդը հանրային SORA 3 ցանցերի համար.
+Այս ուղեցույցը ցույց է տալիս, թե ինչպես կարգավորել Iroha հաճախորդը SORA Nexus-ի երկու հանրային ցանցերի համար։
 
 - Taira փորձարկման ցանցը՝ `https://taira.sora.org`
 - Minamoto գլխավոր ցանց՝ `https://minamoto.sora.org`
@@ -312,7 +312,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Օգտագործեք ստացված հաշիվը ID այն դեպքում, երբ Nexus API կամ CLI հրամանը պահանջում է կանոնիկ հաշիվ ID, օրինակ՝ Taira faucet `account_id`, մնացորդի հարցումները, խիստ հաշիվների դաշտերը կամ alias- ի պարտավորությունները: Պահպանեք համապատասխան գաղտնի բանալին ձեր հաճախորդի կարգավորման մեջ եւ ընտրեք նույն հանրային ցանցը `[account].profile = "taira"` կամ `[account].profile = "minamoto"`:
+Օգտագործեք ստացված հաշիվը ID այն դեպքում, երբ SORA Nexus API կամ CLI հրամանը պահանջում է կանոնիկ հաշիվ ID, օրինակ՝ Taira faucet `account_id`, մնացորդի հարցումները, խիստ հաշիվների դաշտերը կամ alias- ի պարտավորությունները: Պահպանեք համապատասխան գաղտնի բանալին ձեր հաճախորդի կարգավորման մեջ եւ ընտրեք նույն հանրային ցանցը `[account].profile = "taira"` կամ `[account].profile = "minamoto"`:
 
 ID ստեղծելը ինքնուրույն չի ստեղծում ֆինանսավորվող շղթայի վրա հաշիվ: Taira -ի վրա faucet կարող է ստեղծել եւ ֆինանսավորել թեստային ցանցի գրառումների համար հաշիվը: Minamoto -ին, օգտագործեք հաստատված հիմնական ցանցի ներմուծում կամ գանձարանի հոսք:
 
@@ -538,7 +538,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-Բարձրագույն մակարդակը `chain` է հոսքը Nexus հիմնական ցանցի շղթան ID. `[account].profile = "minamoto"` ընտրում է Minamoto I105 շղթայի խտրական; վերջային կետի հյուրընկալող անունն ու շղթան ID մի ընտրեք այն անուղղակիորեն:
+Բարձրագույն մակարդակը `chain` է հոսքը SORA Nexus հիմնական ցանցի շղթան ID. `[account].profile = "minamoto"` ընտրում է Minamoto I105 շղթայի խտրական; վերջային կետի հյուրընկալող անունն ու շղթան ID մի ընտրեք այն անուղղակիորեն:
 
 Փոխակերպել Minamoto հանրային բանալին իր կանոնիկ I105 հաշիվի մեջ ID ՝ հիմնական ցանցի նախադրյալով.
 

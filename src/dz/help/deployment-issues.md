@@ -1,10 +1,11 @@
 ---
 translation_locale: dz
 translation_source: /help/deployment-issues.md
-translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
+translation_source_hash: 3e4042ed4e92a8df567f3500a84cfe32a3d10e22663204b07423ff4cf0fd0c5c
 translation_status: machine-validated
 translation_engine: human-reviewed
 ---
+
 # ཞབས་ཏོག་གི་དཀའ་ངལ་སེལ་ཐབས་ {#troubleshooting-deployment-issues}
 
 འ་ནི་ཐིག་ཁྲམ་འདི་ནང་ལུ་ Iroha 3 ལག་ལེན་ཚུ་གི་དོན་ལུ་ དཀའ་ངལ་སེལ་ཐབས་ཀྱི་བསླབ་བྱ་ཚུ་ གྲོས་འདེབས་འབདཝ་ཨིན། ཁྱོད་ཀྱིས་མྱོང་དོ་ཡོད་པའི་དཀའ་ངལ་འདི་ ནཱ་ལུ་མི་བཤད་པ་ཅིན་ ང་བཅས་དང་གཅིག་ཁར་ [Telegram](https://t.me/hyperledgeriroha) ཟེར་མི་ཁ་ཐུག་ལས་འབྲེལ་བ་འཐབ་ཚུགས།
@@ -62,9 +63,9 @@ Docker ནང་གཞི་རྟེན་ཨང་རྟགས་ཀྱི་�
 
 གློག་ཐག་ཅིག་ ལོག་སྟེ་ར་འགོ་བཙུགསཔ་ཨིན་པ་ཅིན་ གློག་ཐག་ནང་གི་ སྒྲིག་གཞི་འདི་ ཕབ་ལེན་འབད་ཡོད་པའི་ [`peer.template.toml`](/dz/reference/peer-config/index.md#template)དང་ཕྱདཔ་ད་ ལྟ་རྟོག་འབད་བ་ཅིན་ གློག་ཐག་འདི་གིས་ ཧེ་མ་གི་ Kura ཌེ་ཊའི་ཚུ་ ལོག་སྤྱོད་འབདཝ་ཨིན་ན་མེན་ཟེར་ བལྟ་དགོ།
 
-## Sora གི་ཐོ་ཡིག་ {#sora-profile}
+## SORA Nexus གི་གསལ་ཐོ {#sora-profile}
 
-Nexus, SoraFS ཡང་ན་ ལེན་ལམ་མང་རབས་ཅིག་ལག་ལེན་འཐབ་མི་ སྒེར་གྱི་དང་ཡང་ན་ ས་གནས་ཀྱི་ Iroha 3 ལག་ལེན་གྱིས་ Sora གསལ་ཐོ ཤུགས་ཅན་སྦེ་སྤྱོད་ཐོག་ལས་ རང་བཞིན་གྱི་ ཌེ་མོན འགོ་བཙུགས་དགོ།
+SORA Nexus, SoraFS ཡང་ན་ ལམ་ལེན་མང་རབས་ཅིག་ལག་ལེན་འཐབ་མི་ སྒེར་གྱི་ཡང་ན་ས་གནས་ཀྱི་ Iroha 3 བཀྲམ་སྤེལ་ནང་ གསལ་ཐོ་འདི་ལཱ་འབད་བཏུབ་བཟོ་སྟེ་ རྒྱབ་ཁུངས་ཞབས་ཏོག་གཡོག་བཀོལ།
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

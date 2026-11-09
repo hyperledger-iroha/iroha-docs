@@ -1,12 +1,11 @@
-# Build on SORA 3: Taira and Minamoto
+# Build on SORA Nexus with Taira and Minamoto {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 is the app-facing public deployment track built on Iroha 3 and SORA
-Nexus. Build and rehearse on Taira first, then move the same client shape
-to Minamoto only when you have separate mainnet keys, real XOR for fees,
-and production approval.
+SORA Nexus runs on Iroha 3. Develop and test your application on Taira first.
+Move the same client configuration to Minamoto only after you have separate
+mainnet keys, real XOR for fees, and production approval.
 
-This tutorial shows how to configure an Iroha client for the public SORA 3
-networks:
+This guide shows how to configure an Iroha client for the two public
+SORA Nexus networks.
 
 - Taira testnet at `https://taira.sora.org`
 - Minamoto mainnet at `https://minamoto.sora.org`
@@ -383,7 +382,7 @@ Convert a Minamoto public key with the mainnet prefix:
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Use the resulting account ID wherever a Nexus API or CLI command asks for a
+Use the resulting account ID wherever a SORA Nexus API or CLI command asks for a
 canonical account ID, for example the Taira faucet `account_id`, balance
 queries, strict account fields, or alias bindings. Keep the matching
 private key in your client config, and select the same public network with
@@ -643,7 +642,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-The top-level `chain` is the current Nexus mainnet chain ID.
+The top-level `chain` is the current SORA Nexus mainnet chain ID.
 `[account].profile = "minamoto"` selects the Minamoto I105 chain
 discriminant; the endpoint hostname and chain ID do not select it implicitly.
 

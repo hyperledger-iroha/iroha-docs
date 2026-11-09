@@ -1,16 +1,16 @@
 ---
 translation_locale: he
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: ceff2952134931b4f1007a16e2cffba2ee720c5221d447b5c671f275a032ad3e
+translation_source_hash: 8d3ec8cf5a6ee09d9c05dd63c018ebb656f9e340f9d30f9e335baf2101c39055
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# בנייה על SORA 3: Taira ו Minamoto {#build-on-sora-3-taira-and-minamoto}
+# פיתוח על SORA Nexus באמצעות Taira ו־Minamoto {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 הוא מסלול ההפצה הציבורי הפנימי של האפליקציה שנבנה על Iroha 3 ו SORA Nexus. לבנות ולחזור על Taira קודם, ולאחר מכן להעביר את אותו צורת הלקוח ל Minamoto רק כאשר יש לך מפתחות מרכזיות נפרדות, XOR אמיתי עבור דמי, והסכמה לייצור.
+SORA Nexus מבוססת על Iroha 3. תחילה פתחו ובדקו את היישום ב־Taira. העבירו את אותה תצורת לקוח ל־Minamoto רק לאחר שיש ברשותכם מפתחות נפרדים לרשת הראשית, XOR אמיתי לתשלום עמלות ואישור להפעלה בסביבת ייצור.
 
-הדרכה זו מראה כיצד להגדיר קלינט Iroha לרשתות ציבוריות SORA 3:
+מדריך זה מסביר כיצד להגדיר לקוח Iroha עבור שתי הרשתות הציבוריות של SORA Nexus.
 
 - רשת בדיקת Taira ב- `https://taira.sora.org`
 - רשת מרכזית Minamoto ב- `https://minamoto.sora.org`
@@ -312,7 +312,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-השתמשו בחשבון המוצא ID בכל מקום שבו פקודה Nexus API או CLI מבקשת חשבון קנוני ID, למשל, בנקודת Taira `account_id`, תשמור על המפתח הפרטי המתאימה בהקנה הלקוח שלך, ובחר את אותה רשת ציבורית עם `[account].profile = "taira"` או `[account].profile = "minamoto"`.
+השתמשו בחשבון המוצא ID בכל מקום שבו פקודה SORA Nexus API או CLI מבקשת חשבון קנוני ID, למשל, בנקודת Taira `account_id`, תשמור על המפתח הפרטי המתאימה בהקנה הלקוח שלך, ובחר את אותה רשת ציבורית עם `[account].profile = "taira"` או `[account].profile = "minamoto"`.
 
 יצירת ה־ID לבדה אינה יוצרת חשבון ממומן בשרשרת. ב־Taira, הברז יכול ליצור ולממן את החשבון לצורך כתיבות ברשת הבדיקה. ב־Minamoto, השתמשו בתהליך הצטרפות מאושר לרשת הראשית או בתהליך של האוצר.
 
@@ -538,7 +538,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-השדה `chain` ברמה העליונה הוא ה־chain ID העדכני של הרשת הראשית Nexus. ‏`[account].profile = "minamoto"` בוחר את מַבְחִין השרשרת I105 של Minamoto; שם המארח של נקודת הקצה וה־chain ID אינם בוחרים בו במשתמע.
+השדה `chain` ברמה העליונה הוא ה־chain ID העדכני של הרשת הראשית SORA Nexus. ‏`[account].profile = "minamoto"` בוחר את מַבְחִין השרשרת I105 של Minamoto; שם המארח של נקודת הקצה וה־chain ID אינם בוחרים בו במשתמע.
 
 להמיר מפתח ציבורי Minamoto לחשבון קנוני שלו I105 ID עם מקוד הרשת המרכזית:
 

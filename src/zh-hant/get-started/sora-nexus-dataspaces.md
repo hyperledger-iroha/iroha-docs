@@ -1,16 +1,16 @@
 ---
 translation_locale: zh-hant
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: ceff2952134931b4f1007a16e2cffba2ee720c5221d447b5c671f275a032ad3e
+translation_source_hash: 8d3ec8cf5a6ee09d9c05dd63c018ebb656f9e340f9d30f9e335baf2101c39055
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 建立在 SORA 3:Taira 和 Minamoto 上 {#build-on-sora-3-taira-and-minamoto}
+# 使用 Taira 和 Minamoto 在 SORA Nexus 上開發 {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3是基於 Iroha 3 和 SORA Nexus 構建的應用面向公眾部署軌道. 首先在 Taira 上構建和練習,然後將相同的客戶端形狀移動到 Minamoto,只有當您有單獨的主網鑰匙時,費用為真實 XOR 和生產批准.
+SORA Nexus 以 Iroha 3 為基礎。請先在 Taira 上開發和測試應用程式。只有在備妥主網專用金鑰、可用於支付手續費的真實 XOR，並取得正式環境的執行許可後，才將同一套用戶端設定移至 Minamoto。
 
-這本教程展示瞭如何配置一個 Iroha 客戶端為公共的 SORA 3個網路:
+本指南說明如何為 SORA Nexus 的兩個公開網路設定 Iroha 用戶端。
 
 - Taira 測試網在 `https://taira.sora.org`
 - Minamoto 主網在 `https://minamoto.sora.org`
@@ -312,7 +312,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-在 Nexus API 或 CLI 命令要求一個規範帳戶 ID 的情況下,使用結果的賬號 ID 例如 Taira 水龍頭 `account_id`,在您的客戶端配置中儲存匹配的私鑰,並選擇相同的公共網路以 `[account].profile = "taira"`或 `[account].profile = "minamoto"`.
+在 SORA Nexus API 或 CLI 命令要求一個規範帳戶 ID 的情況下,使用結果的賬號 ID 例如 Taira 水龍頭 `account_id`,在您的客戶端配置中儲存匹配的私鑰,並選擇相同的公共網路以 `[account].profile = "taira"`或 `[account].profile = "minamoto"`.
 
 生成 ID 本身並不能建立一個資助的連鎖帳戶.在 Taira 上,水龍頭可以建立和資助測試網寫帳戶.在 Minamoto 上,使用已批准的主網安裝或財政流程.
 
@@ -538,7 +538,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-頂級層次 `chain` 是電流 Nexus 主網鏈 ID. `[account].profile = "minamoto"` 選擇了 Minamoto I105 鏈區分器;端點主機名稱和鏈 ID 不要隱含地選擇它.
+頂級層次 `chain` 是電流 SORA Nexus 主網鏈 ID. `[account].profile = "minamoto"` 選擇了 Minamoto I105 鏈區分器;端點主機名稱和鏈 ID 不要隱含地選擇它.
 
 將 Minamoto 公共金鑰轉換為其規範的 I105 帳戶 ID,並附上主網前:
 

@@ -1,16 +1,16 @@
 ---
 translation_locale: ba
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: ceff2952134931b4f1007a16e2cffba2ee720c5221d447b5c671f275a032ad3e
+translation_source_hash: 8d3ec8cf5a6ee09d9c05dd63c018ebb656f9e340f9d30f9e335baf2101c39055
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# SORA 3 нигеҙендә төҙөлгән: Taira һәм Minamoto {#build-on-sora-3-taira-and-minamoto}
+# Taira һәм Minamoto ярҙамында SORA Nexus өсөн ҡушымта эшләү {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 - ҡушымтаға ҡараған асыҡ ҡулланыу трассаһы Iroha 3 һәм SORA Nexus. Төҙөү һәм күнекмәләр Taira тәүҙә, һуңынан шул уҡ клиент формаһын күсерергә Minamoto тик әгәр һеҙ айырым төп селтәр асҡыстары бар, реаль XOR түләүҙәр һәм етештереүҙе раҫлау.
+SORA Nexus Iroha 3 нигеҙендә эшләй. Ҡушымтағыҙҙы тәүҙә Taira селтәрендә эшләгеҙ һәм һынағыҙ. Төп селтәр өсөн айырым асҡыстарығыҙ, комиссия түләү өсөн ысын XOR һәм эш мөхитендә ҡулланыу рөхсәте булғас ҡына клиенттың шул уҡ көйләүҙәрен Minamoto селтәренә күсерегеҙ.
 
-Был дәреслек нисек конфигурировать күрһәтелә Iroha клиенты өсөн йәмәғәт SORA 3 селтәрҙәр:
+Был ҡулланма SORA Nexus-тың ике асыҡ селтәре өсөн Iroha клиентын көйләү тәртибен күрһәтә.
 
 - Taira һынау селтәре `https://taira.sora.org`
 - Minamoto төп селтәрендә `https://minamoto.sora.org`
@@ -312,7 +312,7 @@ Minamoto асыҡ асҡысын төп селтәр префиксы менән
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Һөҙөмтәлә алынған иҫәбен ҡулланығыҙ ID ҡайҙа Nexus API йәки CLI командование канонический отчет һорай ID, мәҫәлән, Taira faucet `account_id`, баланс һорауҙар, ҡаты иҫәп-хисап баҫыуҙары, йәки псевдоним бәйләнештәре. клиент конфигурацияһында шәхси асҡыс, һәм шул уҡ йәмәғәт селтәрен һайлағыҙ `[account].profile = "taira"` йәки `[account].profile = "minamoto"`.
+Һөҙөмтәлә алынған иҫәбен ҡулланығыҙ ID ҡайҙа SORA Nexus API йәки CLI командование канонический отчет һорай ID, мәҫәлән, Taira faucet `account_id`, баланс һорауҙар, ҡаты иҫәп-хисап баҫыуҙары, йәки псевдоним бәйләнештәре. клиент конфигурацияһында шәхси асҡыс, һәм шул уҡ йәмәғәт селтәрен һайлағыҙ `[account].profile = "taira"` йәки `[account].profile = "minamoto"`.
 
 ID генерацияһы үҙенән-үҙе финансланған сылбыр иҫәбенә барлыҡҡа килмәй. Taira өҫтөндә, faucet булдыра һәм тестнет яҙған өсөн иҫәпте финанслай ала. Minamoto өҫтөндә, раҫланған төп селтәрҙе ҡушыу йәки ҡаҙна ағымдарын ҡулланыу .
 
@@ -538,7 +538,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-Иң юғары кимәлдә `chain` ағым Nexus төп селтәр селтәре ID. `[account].profile = "minamoto"` һайлай Minamoto I105 Сылбыр айырмасыһы; һуңғы пункттың хост исеме һәм сылбыр ID уны йәшерен рәүештә һайламағыҙ.
+Иң юғары кимәлдә `chain` ағым SORA Nexus төп селтәр селтәре ID. `[account].profile = "minamoto"` һайлай Minamoto I105 Сылбыр айырмасыһы; һуңғы пункттың хост исеме һәм сылбыр ID уны йәшерен рәүештә һайламағыҙ.
 
 Minamoto асыҡ асҡысын уның I105 каноник иҫәбенә ID префиксы менән үҙгәртергә:
 

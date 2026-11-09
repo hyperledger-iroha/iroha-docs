@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /help/deployment-issues.md
-translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
+translation_source_hash: 3e4042ed4e92a8df567f3500a84cfe32a3d10e22663204b07423ff4cf0fd0c5c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -63,9 +63,9 @@ Kubernetes үшін әрбір валидациялаушыны күйге тә�
 
 Егер под үздіксіз қайта іске қосылса, подтағы көрсетілген конфигурацияны күтілгенімен салыстырыңыз [`peer.template.toml`](/kk/reference/peer-config/index.md#template) және желідегі әріптестің ескілерін қайта ойнатып жатқанын тексеру Kura деректер.
 
-## Сора профилі {#sora-profile}
+## SORA Nexus профилі {#sora-profile}
 
-Жеке немесе жергілікті Iroha 3 орналастырулар, Nexus, SoraFS немесе көпжолақты ағындарды қолданатын болса, стандартты демонды Sora профилімен қосылған түрде іске қосуы керек:
+SORA Nexus, SoraFS немесе бірнеше жолақ пайдаланылатын жеке не жергілікті Iroha 3 ортасында стандартты фондық қызметті осы профильді қосып іске қосыңыз.
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

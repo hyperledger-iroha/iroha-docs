@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /help/deployment-issues.md
-translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
+translation_source_hash: 3e4042ed4e92a8df567f3500a84cfe32a3d10e22663204b07423ff4cf0fd0c5c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -63,9 +63,9 @@ Kubernetes uchun har bir tasdiqlovchini holatli infratuzilma sifatida ko‘ring:
 
 Agar pod takror-takror qayta ishga tushsa, poddagi render qilingan konfiguratsiyani kutilgan bilan solishtiring [`peer.template.toml`](/uz/reference/peer-config/index.md#template) va tarmoq qo‘shnisi eski ma’lumotlarni qayta yuborayotganini tekshiring Kura ma'lumot.
 
-## Sora profili {#sora-profile}
+## SORA Nexus profili {#sora-profile}
 
-Maxfiy yoki mahalliy Iroha 3 joylashtirishlar, Nexus, SoraFS yoki ko‘p yo‘nalishli oqimlardan foydalangan holda, Sora profili yoqilgan holda standart daemonni ishga tushirishi kerak:
+SORA Nexus, SoraFS yoki bir nechta yo‘lakdan foydalanadigan xususiy yoki mahalliy Iroha 3 muhitida standart fon xizmatini ushbu profil yoqilgan holda ishga tushiring.
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

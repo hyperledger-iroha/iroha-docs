@@ -1,16 +1,16 @@
 ---
 translation_locale: my
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: ceff2952134931b4f1007a16e2cffba2ee720c5221d447b5c671f275a032ad3e
+translation_source_hash: 8d3ec8cf5a6ee09d9c05dd63c018ebb656f9e340f9d30f9e335baf2101c39055
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# SORA 3 ကို တည်ဆောက်ပါ: Taira နှင့် Minamoto {#build-on-sora-3-taira-and-minamoto}
+# Taira နှင့် Minamoto ကို အသုံးပြု၍ SORA Nexus ပေါ်တွင် တည်ဆောက်ခြင်း {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 သည် app ကို ဦးတည်ပြီး တည်ဆောက်ထားသော အများပြည်သူ ဖြန့်ချိရေးလမ်းကြောင်းဖြစ်သည်။ Iroha 3 နှင့် SORA Nexus. ဆောက်လုပ်ပြီး လေ့ကျင့်ပါ။ Taira ပထမဦးဆုံး၊ အဲဒီနောက်မှာ အလားတူ client shape ကို Minamoto သင်မှာ သီးခြားကလီးတွေရှိရင်သာ၊ တကယ့် XOR အခကြေးနဲ့ ထုတ်လုပ်မှု ခွင့်ပြုချက်အတွက်ပါ။
+SORA Nexus သည် Iroha 3 ပေါ်တွင် အလုပ်လုပ်သည်။ အက်ပ်ကို Taira ပေါ်တွင် ဦးစွာ တည်ဆောက်၍ စမ်းသပ်ပါ။ ပင်မကွန်ရက်အတွက် သီးခြားသော့များ၊ ဝန်ဆောင်ခပေးရန် XOR အစစ်နှင့် လက်တွေ့အသုံးပြုခွင့် အတည်ပြုချက် ရရှိပြီးမှ ထိုကလိုင်းယင့်ဆက်တင်များကို Minamoto သို့ ပြောင်းသုံးပါ။
 
-ဒီသင်ခန်းစာမှာ အများပြည်သူ SORA 3 ကွန်ရက်များအတွက် Iroha ဖောက်သည်ကိုဘယ်လို configure လုပ်ရမလဲပြသထားပါတယ်
+ဤလမ်းညွှန်တွင် SORA Nexus ၏ အများသုံးကွန်ရက်နှစ်ခုအတွက် Iroha ကလိုင်းယင့်ကို မည်သို့ သတ်မှတ်ရမည်ကို ရှင်းပြထားသည်။
 
 - Taira testnet ကို `https://taira.sora.org` တွင်
 - Minamoto အဓိကရထား `https://minamoto.sora.org`
@@ -538,7 +538,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-အထက်တန်းအဆင့် `chain` သည် လက်ရှိ Nexus mainnet ကွင်းဆက် ID ဖြစ်သည်။ `[account].profile = "minamoto"` သည် Minamoto I105 ကွင်းဆက် ခွဲခြားကိန်းကိုရွေးချယ်သည်။ API အဆုံးအသတ်မှတ် Hostname နှင့် Chain ID တို့သည် အလိုလိုမရွေးချယ်ပါ။
+အထက်တန်းအဆင့် `chain` သည် လက်ရှိ SORA Nexus mainnet ကွင်းဆက် ID ဖြစ်သည်။ `[account].profile = "minamoto"` သည် Minamoto I105 ကွင်းဆက် ခွဲခြားကိန်းကိုရွေးချယ်သည်။ API အဆုံးအသတ်မှတ် Hostname နှင့် Chain ID တို့သည် အလိုလိုမရွေးချယ်ပါ။
 
 Minamoto အများသုံးသော့ကို ၎င်း၏ တစ်ခုတည်းသော ပရိုတိုကုတ်စံညွှန်း I105 အကောင့် ID သို့ mainnet ကြိုတင်စာရင်းဖြင့် ပြောင်းပါ။
 

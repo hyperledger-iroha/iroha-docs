@@ -1,16 +1,16 @@
 ---
 translation_locale: az
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: ceff2952134931b4f1007a16e2cffba2ee720c5221d447b5c671f275a032ad3e
+translation_source_hash: 8d3ec8cf5a6ee09d9c05dd63c018ebb656f9e340f9d30f9e335baf2101c39055
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
 
-# SORA 3 üzərində qur: Taira və Minamoto {#build-on-sora-3-taira-and-minamoto}
+# Taira və Minamoto ilə SORA Nexus üzərində tətbiq hazırlamaq {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3, Iroha 3 və SORA Nexus üzərində qurulan, tətbiqlərə yönəlmiş ictimai yerləşdirmə xəttidir. Əvvəlcə Taira üzərində hazırlayın və məşq edin; yalnız ayrıca mainnet açarları, ödənişlər üçün həqiqi XOR və istehsal təsdiqi olduqda eyni müştəri quruluşunu Minamoto-ya köçürün.
+SORA Nexus Iroha 3 əsasında işləyir. Tətbiqinizi əvvəlcə Taira üzərində hazırlayın və sınaqdan keçirin. Eyni müştəri konfiqurasiyasını Minamoto şəbəkəsinə yalnız əsas şəbəkə üçün ayrıca açarlarınız, komissiya ödənişi üçün həqiqi XOR və istehsal mühitində fəaliyyət üçün təsdiqiniz olduqda köçürün.
 
-Bu dərslik göstərişləri verir necə Iroha müştərisini ictimai SORA 3 şəbəkələr üçün konfiqurasiya etməyə:
+Bu təlimat SORA Nexus-un iki açıq şəbəkəsi üçün Iroha müştərisinin necə konfiqurasiya edildiyini göstərir.
 
 - Taira testnet `https://taira.sora.org` ünvanında
 - Minamoto əsas şəbəkə `https://minamoto.sora.org` ünvanında
@@ -312,7 +312,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Alınan hesab ID-sindən hər yerdə istifadə edin, harada ki, Nexus, API və ya CLI əmri tək bir protokol-standart hesab ID-si tələb edir, məsələn, Taira testnet maliyyələşdirmə xidməti `account_id`, balans sorğuları, ciddi hesab sahələri və ya ləqəb bağlamaları. Uyğun olan şəxsi açarı müştəri konfiqurasiyanızda saxlayın və `[account].profile = "taira"` və ya `[account].profile = "minamoto"` ilə eyni ictimai şəbəkəni seçin.
+Alınan hesab ID-sindən hər yerdə istifadə edin, harada ki, SORA Nexus, API və ya CLI əmri tək bir protokol-standart hesab ID-si tələb edir, məsələn, Taira testnet maliyyələşdirmə xidməti `account_id`, balans sorğuları, ciddi hesab sahələri və ya ləqəb bağlamaları. Uyğun olan şəxsi açarı müştəri konfiqurasiyanızda saxlayın və `[account].profile = "taira"` və ya `[account].profile = "minamoto"` ilə eyni ictimai şəbəkəni seçin.
 
 ID yaratmaq özü-özlüyündə maliyyələşdirilmiş zəncir üzərində hesab yaratmır. Taira üzərində testnet maliyyələşdirmə xidməti testnet yazıları üçün hesab yaradıb maliyyələşdirə bilər. Minamoto üzərində isə təsdiqlənmiş mainnet qeydiyyat və ya xəzinə axınından istifadə edin.
 
@@ -538,7 +538,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-Ən üst səviyyəli `chain` cari Nexus əsasnet zəncir ID-sidir. `[account].profile = "minamoto"` Minamoto I105 zəncir fərqləndiricisini seçir; API son nöqtə host adı və zəncir ID-si onu dolayı yolla seçmir.
+Ən üst səviyyəli `chain` cari SORA Nexus əsasnet zəncir ID-sidir. `[account].profile = "minamoto"` Minamoto I105 zəncir fərqləndiricisini seçir; API son nöqtə host adı və zəncir ID-si onu dolayı yolla seçmir.
 
 Minamoto açıq açarını əsas şəbəkə prefiksi ilə onun tək protokol-standart I105 hesab ID-sinə çevirin:
 

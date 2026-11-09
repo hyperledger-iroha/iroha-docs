@@ -68,10 +68,10 @@ the expected
 [`peer.template.toml`](/reference/peer-config/index.md#template) and check
 whether the peer is replaying old Kura data.
 
-## Sora profile
+## SORA Nexus profile {#sora-profile}
 
-Private or local Iroha 3 deployments that use Nexus, SoraFS, or multi-lane
-flows should start the standard daemon with the Sora profile enabled:
+For a private or local Iroha 3 deployment that uses SORA Nexus, SoraFS, or
+multiple lanes, start the standard daemon with this profile enabled.
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

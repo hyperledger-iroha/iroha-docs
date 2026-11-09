@@ -1,16 +1,16 @@
 ---
 translation_locale: ur
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: ceff2952134931b4f1007a16e2cffba2ee720c5221d447b5c671f275a032ad3e
+translation_source_hash: 8d3ec8cf5a6ee09d9c05dd63c018ebb656f9e340f9d30f9e335baf2101c39055
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# SORA 3 پر تعمیر کریں: Taira اور Minamoto {#build-on-sora-3-taira-and-minamoto}
+# Taira اور Minamoto کے ساتھ SORA Nexus پر ایپلیکیشن تیار کرنا {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 اے پی پی کی طرف متوجہ عوامی تعیناتی ٹریک ہے Iroha 3 اور SORA Nexus. تعمیر کریں اور پر عمل کریں Taira سب سے پہلے، پھر ایک ہی کلائنٹ کی شکل منتقل کرنے کے لئے Minamoto صرف جب آپ کے پاس علیحدہ اہم نیٹ ورک کی چابیاں ہیں، حقیقی XOR فیسوں اور پیداوار کی منظوری کے لیے۔
+SORA Nexus کی بنیاد Iroha 3 ہے۔ اپنی ایپلیکیشن پہلے Taira پر تیار کریں اور آزمائیں۔ یہی کلائنٹ ترتیب Minamoto پر تبھی منتقل کریں جب آپ کے پاس مین نیٹ کے لیے الگ کلیدیں، فیس کے لیے حقیقی XOR اور عملی استعمال کی منظوری ہو۔
 
-یہ سبق دکھاتا ہے کہ عوامی SORA 3 نیٹ ورکس کے لیے Iroha کلائنٹ کو کیسے ترتیب دیا جائے:
+یہ رہنما SORA Nexus کے دونوں عوامی نیٹ ورکس کے لیے Iroha کلائنٹ کی ترتیب کا طریقہ بتاتا ہے۔
 
 - Taira ٹیسٹ نیٹ at `https://taira.sora.org`
 - Minamoto مین نیٹ پر `https://minamoto.sora.org`
@@ -312,7 +312,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-حاصل کردہ اکاؤنٹ کا استعمال کریں ID جہاں بھی ایک Nexus API یا CLI کمانڈ ایک کینونیکل اکاؤنٹ کے لئے پوچھتا ہے ID, مثلاً Taira فوسیٹ `account_id`, بیلنس کے استفسارات ، سخت اکاؤنٹ فیلڈز ، یا عرفی پابندیاں۔ ملاپ کو برقرار رکھیں آپ کے کلائنٹ کی ترتیب میں نجی کلید، اور منتخب کریں ایک ہی عوامی نیٹ ورک کے ساتھ `[account].profile = "taira"` یا `[account].profile = "minamoto"`.
+حاصل کردہ اکاؤنٹ کا استعمال کریں ID جہاں بھی ایک SORA Nexus API یا CLI کمانڈ ایک کینونیکل اکاؤنٹ کے لئے پوچھتا ہے ID, مثلاً Taira فوسیٹ `account_id`, بیلنس کے استفسارات ، سخت اکاؤنٹ فیلڈز ، یا عرفی پابندیاں۔ ملاپ کو برقرار رکھیں آپ کے کلائنٹ کی ترتیب میں نجی کلید، اور منتخب کریں ایک ہی عوامی نیٹ ورک کے ساتھ `[account].profile = "taira"` یا `[account].profile = "minamoto"`.
 
 ID پیدا کرنے سے خود میں فنڈ آن لائن اکاؤنٹ نہیں بنتا ہے۔ Taira پر ، فوسیٹ ٹیسٹ نیٹ لکھنے کے لئے اکاؤنٹ تشکیل دے سکتا ہے اور اسے فنڈ کرسکتا ہے۔ Minamoto پر ، ایک منظور شدہ مین نیٹ بورڈنگ یا خزانہ کے بہاؤ کا استعمال کریں۔
 
@@ -538,7 +538,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-سب سے اوپر کی سطح `chain` موجودہ ہے Nexus مین نیٹ چین ID. `[account].profile = "minamoto"` منتخب کرتا ہے Minamoto I105 سلسلہ امتیاز؛ اختتامی نقطہ میزبان نام اور سلسلہ ID اس کو ضمنی طور پر منتخب نہ کریں۔
+سب سے اوپر کی سطح `chain` موجودہ ہے SORA Nexus مین نیٹ چین ID. `[account].profile = "minamoto"` منتخب کرتا ہے Minamoto I105 سلسلہ امتیاز؛ اختتامی نقطہ میزبان نام اور سلسلہ ID اس کو ضمنی طور پر منتخب نہ کریں۔
 
 ایک Minamoto عوامی کلید کو اس کے کینیکل I105 اکاؤنٹ ID میں تبدیل کریں جس میں مین نیٹ پریفیکس شامل ہو:
 

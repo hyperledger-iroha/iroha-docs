@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /help/deployment-issues.md
-translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
+translation_source_hash: 3e4042ed4e92a8df567f3500a84cfe32a3d10e22663204b07423ff4cf0fd0c5c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -63,9 +63,9 @@ Pour Kubernetes, considérez chaque validateur comme une infrastructure avec ét
 
 Si un pod redémarre sans cesse, comparez sa configuration générée avec celle prévue dans [`peer.template.toml`](/fr/reference/peer-config/index.md#template) et vérifiez si le pair relit d’anciennes données Kura.
 
-## Profil de Sora {#sora-profile}
+## Profil SORA Nexus {#sora-profile}
 
-Les déploiements privés ou locaux Iroha 3 qui utilisent Nexus, SoraFS ou des flux multi-voies devraient démarrer le démon standard avec le profil Sora activé :
+Pour un déploiement Iroha 3 privé ou local utilisant SORA Nexus, SoraFS ou plusieurs voies, démarrez le service standard en activant ce profil.
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

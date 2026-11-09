@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /help/deployment-issues.md
-translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
+translation_source_hash: 3e4042ed4e92a8df567f3500a84cfe32a3d10e22663204b07423ff4cf0fd0c5c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -63,9 +63,9 @@ Kubernetes အတွက် validator တစ်ခုစီကို stateful အ
 
 pod သည် ထပ်ခါတလဲလဲ ပြန်စနေလျှင် pod အတွင်းရှိ အပြီးသတ်ထုတ်ပေးထားသော ပြင်ဆင်သတ်မှတ်မှုကို မျှော်မှန်းထားသော [`peer.template.toml`](/my/reference/peer-config/index.md#template) နှင့် နှိုင်းယှဉ်ပြီး peer က Kura ဒေတာဟောင်းကို ပြန်လည်လုပ်ဆောင်နေခြင်း ရှိမရှိ စစ်ဆေးပါ။
 
-## Sora ၏ ပရိုဖိုင် {#sora-profile}
+## SORA Nexus ပရိုဖိုင် {#sora-profile}
 
-SORA Nexus၊ SoraFS သို့မဟုတ် lane များစွာပါလုပ်ငန်းစဉ်များကို အသုံးပြုသော ပုဂ္ဂလိက သို့မဟုတ် စက်တွင်း Iroha 3 deployment များသည် ယင်းပရိုဖိုင်ကို ဖွင့်ထားသော စံ daemon ဖြင့် စတင်သင့်သည်။
+သီးသန့်ပတ်ဝန်းကျင် သို့မဟုတ် စက်တွင်းရှိ Iroha 3 က SORA Nexus၊ SoraFS သို့မဟုတ် လမ်းကြောင်းများစွာကို အသုံးပြုပါက ဤပရိုဖိုင်ကို ဖွင့်ပြီး ပုံမှန်နောက်ခံဝန်ဆောင်မှုကို စတင်ပါ။
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /help/deployment-issues.md
-translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
+translation_source_hash: 3e4042ed4e92a8df567f3500a84cfe32a3d10e22663204b07423ff4cf0fd0c5c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -63,9 +63,9 @@ Kubernetesの場合、各バリデーターをステートフルなインフラ�
 
 もしポッドが繰り返し再起動する場合、ポッド内でレンダリングされた設定と期待される設定を比較してください [`peer.template.toml`](/ja/reference/peer-config/index.md#template) そしてネットワークピアが古いものを再生しているかどうかを確認します Kura データ。
 
-## ソラのプロフィール {#sora-profile}
+## SORA Nexus プロファイル {#sora-profile}
 
-プライベートまたはローカルの Iroha 3 デプロイメントで Nexus、SoraFS、またはマルチレーンフローを使用する場合は、Sora プロファイルを有効にして標準デーモンを起動する必要があります:
+プライベートまたはローカルの Iroha 3 環境で SORA Nexus、SoraFS、複数のレーンのいずれかを利用する場合は、このプロファイルを有効にして標準デーモンを起動します。
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

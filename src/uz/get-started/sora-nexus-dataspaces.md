@@ -1,16 +1,16 @@
 ---
 translation_locale: uz
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: ceff2952134931b4f1007a16e2cffba2ee720c5221d447b5c671f275a032ad3e
+translation_source_hash: 8d3ec8cf5a6ee09d9c05dd63c018ebb656f9e340f9d30f9e335baf2101c39055
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# SORA 3-da qurilgan: Taira va Minamoto {#build-on-sora-3-taira-and-minamoto}
+# Taira va Minamoto orqali SORA Nexus uchun ilova yaratish {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 - Iroha 3 va SORA Nexus ustida qurilgan dasturga qaraydigan ommaviy ishga tushirish yo'li. Avvalo Taira ustida quring va mashq qiling, so'ngra o'sha xil mijoz shaklini faqat alohida asosiy tarmoq kalitlaringiz bo'lganda, to'lovlar uchun haqiqiy XOR va ishlab chiqarish ruxsatnomasi bo'lganida Minamoto ustiga ko'chiring:
+SORA Nexus Iroha 3 asosida ishlaydi. Ilovangizni avval Taira tarmog‘ida ishlab chiqing va sinab ko‘ring. Asosiy tarmoq uchun alohida kalitlar, komissiya to‘lash uchun haqiqiy XOR va ishlab chiqarish muhitida ishga tushirishga ruxsat olganingizdan keyingina mijozning shu konfiguratsiyasini Minamoto tarmog‘iga ko‘chiring.
 
-Ushbu qo‘llanma Iroha mijozini ommaviy SORA 3 tarmoqlari uchun qanday sozlashni ko‘rsatadi:
+Ushbu qo‘llanmada SORA Nexus’ning ikkita ochiq tarmog‘i uchun Iroha mijozini sozlash tushuntiriladi.
 
 - Taira sinov tarmog'i `https://taira.sora.org`
 - Minamoto asosiy tarmoq `https://minamoto.sora.org`
@@ -312,7 +312,7 @@ Minamoto ommaviy kalitni "mainnet" prefiksi bilan almashtirish:
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Nexus API yoki CLI buyruqida kanonik hisob ID so'ragan har qanday joyda hosil bo'lgan hisobdan ID foydalaning, masalan, Taira kranidan `account_id`; balans so'rovlari, qat'iy hisob maydonlari yoki alias bog'lashlar. O'xshash xususiy kalitni mijoz konfiguratsiyasida saqlang va `[account].profile = "taira"` yoki `[account].profile = "minamoto"` bilan bir xil ommaviy tarmoqni tanlang.
+SORA Nexus API yoki CLI buyruqida kanonik hisob ID so'ragan har qanday joyda hosil bo'lgan hisobdan ID foydalaning, masalan, Taira kranidan `account_id`; balans so'rovlari, qat'iy hisob maydonlari yoki alias bog'lashlar. O'xshash xususiy kalitni mijoz konfiguratsiyasida saqlang va `[account].profile = "taira"` yoki `[account].profile = "minamoto"` bilan bir xil ommaviy tarmoqni tanlang.
 
 ID ishlab chiqarish o'zidan-o'zi moliyalashtirilgan zanjirdagi hisobni yaratmaydi. Taira da kran testnet yozish uchun hisobni yarata oladi va mablag' bilan ta'minlaydi. Minamoto da, tasdiqlangan asosiy tarmoqlarni o'rnatish yoki xazina oqimidan foydalaning.
 
@@ -538,7 +538,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-Eng yuqori darajadagi `chain` joriy bo ' lsa Nexus asosiy tarmoq zanjirlari ID. `[account].profile = "minamoto"` tanlaydi Minamoto I105 zanjirni farqlovchi; oxirgi nuqta o'rinbosari nomi va zanjir ID uni yonma-yon tanlamang.
+Eng yuqori darajadagi `chain` joriy bo ' lsa SORA Nexus asosiy tarmoq zanjirlari ID. `[account].profile = "minamoto"` tanlaydi Minamoto I105 zanjirni farqlovchi; oxirgi nuqta o'rinbosari nomi va zanjir ID uni yonma-yon tanlamang.
 
 Minamoto ommaviy kalitini uning kanonik I105 hisob raqamiga ID mainnet prefiksi bilan o'zgartiring:
 

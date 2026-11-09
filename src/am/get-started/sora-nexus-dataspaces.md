@@ -1,16 +1,16 @@
 ---
 translation_locale: am
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: ceff2952134931b4f1007a16e2cffba2ee720c5221d447b5c671f275a032ad3e
+translation_source_hash: 8d3ec8cf5a6ee09d9c05dd63c018ebb656f9e340f9d30f9e335baf2101c39055
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
 
-# በ SORA 3 Taira እና Minamoto ላይ ይገንቡ {#build-on-sora-3-taira-and-minamoto}
+# በTaira እና Minamoto በመጠቀም በSORA Nexus ላይ መገንባት {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 በ Iroha 3 እና SORA Nexus ላይ የተገነባው መተግበሪያን የሚመለከት የህዝብ ማሰማራት ትራክ ነው። መጀመሪያ በ Taira ላይ ይገንቡ እና ይለማመዱ፣ ከዚያ ተመሳሳዩን የደንበኛ ቅርፅ ወደ Minamoto ያንቀሳቅሱት የተለየ የዋና መረብ ቁልፎች፣ እውነተኛ XOR ለክፍያ እና ለምርት ማጽደቅ ሲኖርዎት ብቻ ነው።
+SORA Nexus በIroha 3 ላይ ይሠራል። መተግበሪያዎን መጀመሪያ በTaira ላይ ይገንቡ እና ይፈትሹ። ለዋናው አውታረ መረብ የተለዩ ቁልፎች፣ ለክፍያ የሚሆን እውነተኛ XOR እና በምርት አካባቢ የመሥራት ፈቃድ ሲኖርዎት ብቻ ተመሳሳዩን የደንበኛ ውቅር ወደ Minamoto ያዛውሩ።
 
-ይህ አጋዥ ስልጠና የ Iroha ደንበኛን ለህዝብ SORA 3 አውታረ መረቦች እንዴት ማዋቀር እንደሚቻል ያሳያል -
+ይህ መመሪያ ለሁለቱ የ SORA Nexus ይፋዊ አውታረ መረቦች የIroha ደንበኛን እንዴት ማዋቀር እንደሚቻል ያሳያል።
 
 - Taira የሙከራ መረብ በ `https://taira.sora.org`
 - Minamoto ዋና መረብ በ `https://minamoto.sora.org`
@@ -312,7 +312,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-የ Nexus፣ API ወይም CLI ትዕዛዝ አንድ ነጠላ ፕሮቶኮል-መደበኛ መለያ መታወቂያ በሚጠይቅበት ቦታ ሁሉ የተገኘውን የመለያ መታወቂያ ይጠቀሙ፣ ለምሳሌ የ Taira የቴስትኔት የገንዘብ ድጋፍ አገልግሎት `account_id`፣ ቀሪ ሒሳብ መጠይቆች፣ ጥብቅ የመለያ መስኮች ወይም ተለዋጭ ስም ማሰሪያዎች። የሚዛመደውን የግል ቁልፍ በደንበኛ ውቅረትዎ ውስጥ ያስቀምጡት እና ከ`[account].profile = "taira"` ወይም `[account].profile = "minamoto"` ጋር ተመሳሳይ የህዝብ አውታረ መረብ ይምረጡ።
+የ SORA Nexus፣ API ወይም CLI ትዕዛዝ አንድ ነጠላ ፕሮቶኮል-መደበኛ መለያ መታወቂያ በሚጠይቅበት ቦታ ሁሉ የተገኘውን የመለያ መታወቂያ ይጠቀሙ፣ ለምሳሌ የ Taira የቴስትኔት የገንዘብ ድጋፍ አገልግሎት `account_id`፣ ቀሪ ሒሳብ መጠይቆች፣ ጥብቅ የመለያ መስኮች ወይም ተለዋጭ ስም ማሰሪያዎች። የሚዛመደውን የግል ቁልፍ በደንበኛ ውቅረትዎ ውስጥ ያስቀምጡት እና ከ`[account].profile = "taira"` ወይም `[account].profile = "minamoto"` ጋር ተመሳሳይ የህዝብ አውታረ መረብ ይምረጡ።
 
 መታወቂያውን ማመንጨት በራሱ በገንዘብ የተደገፈ በሰንሰለት ላይ መለያ አይፈጥርም። በ Taira ላይ፣ የቴስትኔት የገንዘብ ድጋፍ አገልግሎት ለቴስትኔት የመጻፍ ክዋኔዎች መለያውን መፍጠር እና መደገፍ ይችላል። በ Minamoto ላይ፣ የተፈቀደ የዋና መረብ መሳፈሪያ ወይም የግምጃ ቤት ፍሰት ይጠቀሙ።
 
@@ -538,7 +538,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-ከፍተኛው ደረጃ `chain` የአሁኑ Nexus የዋና መረብ ሰንሰለት መታወቂያ ነው። `[account].profile = "minamoto"` የ Minamoto I105 ሰንሰለት መለያን ይመርጣል; የ API የመጨረሻ ነጥብ አስተናጋጅ ስም እና የሰንሰለት መታወቂያ በተዘዋዋሪ አይመርጡትም።
+ከፍተኛው ደረጃ `chain` የአሁኑ SORA Nexus የዋና መረብ ሰንሰለት መታወቂያ ነው። `[account].profile = "minamoto"` የ Minamoto I105 ሰንሰለት መለያን ይመርጣል; የ API የመጨረሻ ነጥብ አስተናጋጅ ስም እና የሰንሰለት መታወቂያ በተዘዋዋሪ አይመርጡትም።
 
 የ Minamoto የህዝብ ቁልፍን ከዋና መረብ ቅድመ ቅጥያ ጋር ወደ ነጠላ ፕሮቶኮል-ስታንዳርድ I105 መለያ መታወቂያ ይለውጡ
 

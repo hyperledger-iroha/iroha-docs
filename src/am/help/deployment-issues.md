@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /help/deployment-issues.md
-translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
+translation_source_hash: 3e4042ed4e92a8df567f3500a84cfe32a3d10e22663204b07423ff4cf0fd0c5c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -63,9 +63,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 አንድ ፖድ በተደጋጋሚ እንደገና ከጀመረ፣ በፖድ ውስጥ የተሰራውን ውቅር ከተጠበቀው ጋር ያወዳድሩ [`peer.template.toml`](/am/reference/peer-config/index.md#template) እና የአውታረ መረብ አቻው ያረጀውን እየተጫወተ መሆኑን ያረጋግጡ Kura ውሂብ.
 
-## የሶራ መገለጫ {#sora-profile}
+## የSORA Nexus መገለጫ {#sora-profile}
 
-Nexus፣ SoraFS ወይም ባለብዙ መስመር ፍሰቶችን የሚጠቀሙ የግል ወይም የአካባቢ Iroha 3 ማሰማራቶች መደበኛውን ዴሞን በሶራ መገለጫ መጀመር አለባቸው -
+SORA Nexus፣ SoraFS ወይም በርካታ መስመሮችን በሚጠቀም የግል ወይም አካባቢያዊ የIroha 3 ዝርጋታ ላይ፣ ይህን መገለጫ አንቅተው መደበኛውን የበስተጀርባ አገልግሎት ያስጀምሩ።
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

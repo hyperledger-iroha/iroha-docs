@@ -1,10 +1,11 @@
 ---
 translation_locale: zh-hant
 translation_source: /help/deployment-issues.md
-translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
+translation_source_hash: 3e4042ed4e92a8df567f3500a84cfe32a3d10e22663204b07423ff4cf0fd0c5c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
+
 # 解決部署問題 {#troubleshooting-deployment-issues}
 
 本節為 Iroha 3 部署提供了故障解決技巧.如果您遇到的問題沒有描述在這裡,請透過 [電報](https://t.me/hyperledgeriroha)聯絡我們
@@ -62,9 +63,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 如果一個模組重啟一次,請將模組中的轉載配置與預期的 [`peer.template.toml`](/zh-hant/reference/peer-config/index.md#template)進行比較,並檢查對等節點是否正在播放舊的 Kura 資料.
 
-## 索拉的個人資料 {#sora-profile}
+## SORA Nexus 設定模式 {#sora-profile}
 
-使用 Nexus,SoraFS 或多行道流的私人或本地 Iroha 3 部署應啟動標準大emon,Sora配置檔案已實現:
+如果私有或本機 Iroha 3 部署使用 SORA Nexus、SoraFS 或多個通道，請啟用此設定模式並啟動標準背景服務。
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

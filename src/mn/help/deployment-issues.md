@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /help/deployment-issues.md
-translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
+translation_source_hash: 3e4042ed4e92a8df567f3500a84cfe32a3d10e22663204b07423ff4cf0fd0c5c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -63,9 +63,9 @@ Kubernetes-ийн хувьд, бүх нэгж баталгаажуулагчий
 
 Хэрэв под удаа дараа дахин эхэлж байвал, под дахь үүсгэсэн тохиргоог хүлээгдэж буй тохиргоотой харьцуул. [`peer.template.toml`](/mn/reference/peer-config/index.md#template) мөн сүлжээний хамтрагч хуучин мэдээллийг дахин тоглуулаж байгаа эсэхийг шалгана уу Kura өгөгдөл.
 
-## Сорагийн профайл {#sora-profile}
+## SORA Nexus профайл {#sora-profile}
 
-Хувийн эсвэл орон нутгийн Iroha 3 суурилуулалтууд нь Nexus, SoraFS эсвэл олон урсгалтай урсгалуудыг ашигладаг тохиолдолд стандарт демоныг Sora профайл идэвхтэйгээр эхлүүлэх ёстой:
+SORA Nexus, SoraFS эсвэл олон зурвас ашигладаг хувийн болон дотоод Iroha 3 орчинд энэ профайлыг идэвхжүүлж стандарт суурь үйлчилгээг эхлүүлнэ.
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

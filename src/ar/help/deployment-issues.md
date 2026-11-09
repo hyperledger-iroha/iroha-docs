@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /help/deployment-issues.md
-translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
+translation_source_hash: 3e4042ed4e92a8df567f3500a84cfe32a3d10e22663204b07423ff4cf0fd0c5c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -63,9 +63,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 إذا أعيد تشغيل البود بشكل متكرر، قارن التكوين المعروض في البود مع المتوقع [`peer.template.toml`](/ar/reference/peer-config/index.md#template) وتحقق مما إذا كان نظير الشبكة يعيد تشغيل القديم Kura بيانات.
 
-## ملف سوارا {#sora-profile}
+## ملف تعريف SORA Nexus {#sora-profile}
 
-ينبغي لعمليات النشر الخاصة أو المحلية Iroha 3 التي تستخدم Nexus، SoraFS، أو التدفقات متعددة المسارات أن تبدأ الخادم القياسي مع تمكين ملف تعريف Sora:
+عند نشر Iroha 3 في بيئة خاصة أو محلية تستخدم SORA Nexus أو SoraFS أو مسارات متعددة، شغّل الخدمة القياسية مع تفعيل ملف التعريف هذا.
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

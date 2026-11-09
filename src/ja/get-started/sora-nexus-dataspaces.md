@@ -1,16 +1,16 @@
 ---
 translation_locale: ja
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: ceff2952134931b4f1007a16e2cffba2ee720c5221d447b5c671f275a032ad3e
+translation_source_hash: 8d3ec8cf5a6ee09d9c05dd63c018ebb656f9e340f9d30f9e335baf2101c39055
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
 
-# SORA 3 を基にして: Taira と Minamoto {#build-on-sora-3-taira-and-minamoto}
+# Taira と Minamoto で SORA Nexus 向けアプリケーションを開発する {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 は、Iroha 3 と SORA Nexus に基づいて構築されたアプリ向けの公開デプロイトラックです。まず Taira でビルドとリハーサルを行い、その後に個別のメインネットキー、手数料用の実際の XOR、および本番承認がある場合にのみ、同じクライアント形状を Minamoto に移動してください。
+SORA Nexus は Iroha 3 を基盤としています。まず Taira でアプリケーションを開発・テストします。同じクライアント設定を Minamoto に移すのは、メインネット専用の鍵、手数料に使う実際の XOR、本番運用の承認がそろってからにしてください。
 
-このチュートリアルでは、パブリック SORA 3ネットワーク用の Iroha クライアントの設定方法を示します。
+このガイドでは、SORA Nexus の 2 つの公開ネットワークに接続する Iroha クライアントの設定方法を説明します。
 
 - Taira のテストネットは `https://taira.sora.org` にあります
 - Minamoto メインネットは `https://minamoto.sora.org` にて
@@ -312,7 +312,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-生成されたアカウントIDを、Nexus、API、または CLI のコマンドが正規のアカウントIDを求める場合に使用してください。例えば、Taira テストネット資金提供サービス `account_id` の場合です。残高照会、厳格なアカウントフィールド、またはエイリアスのバインディング。`[account].profile = "taira"` または `[account].profile = "minamoto"` で同じパブリックネットワークを選択し、クライアント設定に一致する秘密鍵を保持してください。
+生成されたアカウントIDを、SORA Nexus、API、または CLI のコマンドが正規のアカウントIDを求める場合に使用してください。例えば、Taira テストネット資金提供サービス `account_id` の場合です。残高照会、厳格なアカウントフィールド、またはエイリアスのバインディング。`[account].profile = "taira"` または `[account].profile = "minamoto"` で同じパブリックネットワークを選択し、クライアント設定に一致する秘密鍵を保持してください。
 
 ID を生成するだけでは、それ自体で資金が入ったオンチェーンアカウントは作成されません。Taira では、テストネットの資金提供サービスがアカウントを作成してテストネット用の書き込みに資金を提供することができます。Minamoto では、承認されたメインネットのオンボーディングまたは財務フローを使用してください。
 
@@ -538,7 +538,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-最上位の`chain`は現在の Nexus メインネットチェーンIDです。`[account].profile = "minamoto"`は Minamoto I105 チェーン識別子を選択します。API エンドポイントのホスト名とチェーンIDは暗黙的にそれを選択しません。
+最上位の`chain`は現在の SORA Nexus メインネットチェーンIDです。`[account].profile = "minamoto"`は Minamoto I105 チェーン識別子を選択します。API エンドポイントのホスト名とチェーンIDは暗黙的にそれを選択しません。
 
 Minamoto の公開鍵を、メインネット接頭辞付きの標準的な I105 アカウントIDに変換する:
 
