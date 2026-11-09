@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /reference/binaries.md
-translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
+translation_source_hash: 1bf3f4697e44b3c8ef571eb9e5c0e301a1acbf76aa1c0666b3cd86e108bba6bf
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -50,27 +50,7 @@ cargo run --bin kagami -- --help
 
 ## Docker Изображение {#docker-image}
 
-Верхнеуровневое рабочее пространство использует `kagami localnet` и `kagami docker` для генерации файлов Docker Compose, соответствующих проверенному коду. Изображение `hyperledger/iroha:dev` можно использовать с этими сгенерированными файлами.
-
-Запустите CLI в контейнере:
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-Запустите Kagami в контейнере:
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-Для запуска сетевого узла сначала сгенерируйте локальную сеть и файл Compose:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+В руководстве [Запуск Iroha 3](/ru/get-started/launch-iroha.md) описано, как собрать и запустить четыре валидатора в Docker, используя двоичные файлы одной ревизии.
 
 ## Какой бинарный файл мне использовать? {#which-binary-should-i-use}
 

@@ -1,14 +1,14 @@
 ---
 translation_locale: mn
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 96505bdba910beb902c399004f5cd24f5e5b0773f01df9cdcfdb49d019830d03
+translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
 
 # Халуун дахин ачаалалт Iroha нь Docker Саванд {#hot-reload-iroha-in-a-docker-container}
 
-Зөвхөн локал алдааг олж засахад халуун ачаалал ашигла. Энгийн локал хөгжүүлэлтэд хэв шинжийг дахин байгуулах эсвэл шинэ Kagami багцаас үүсгэсэн Docker Compose стекээ дахин эхлүүлэхийг илүүд үзнэ үү.
+Шууд дахин ачаалахыг зөвхөн дотоод орчинд алдаа оношлоход ашиглана уу. Нэг эх кодын хувилбараас бүтээсэн хоёртын файлуудаар Docker дээр дөрвөн баталгаажуулагч ажиллуулахдаа [Эхлүүлэх Iroha 3](/mn/get-started/launch-iroha.md) зааврыг дагана уу.
 
 ## Сүлжээний хамтрагч Binary-г солих {#replace-the-peer-binary}
 
@@ -25,20 +25,11 @@ docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/loca
 docker restart <container>
 ```
 
-Савны нэрийг нотлохын тулд `docker ps`-ийг ашиглана уу. Үүссэн стэкт сүлжээний түнш савнууд `./docker-compose.yml`-ээр тодорхойлогддог.
+Контейнерийг олохын тулд `docker ps` командыг ашиглана уу. Демоныг солихын өмнө дүрс дэх замыг нь шалгана уу.
 
 ## Нэг удаагийн сүлжээнд блокчэйн үүсгэгчийг дахин амлах {#recommit-genesis-in-a-disposable-network}
 
-Сүлжээний хамтрагч нь сан нь хоосон үед л блокчэйн генийг эхлүүлдэг. Түр хэрэглээний Docker сүлжээний хувьд багцыг зогсоож, үүсгэсэн төлөвийг устгаж, гарын үсэг зурсан блокчэйн гений багцыг дахин үүсгэх эсвэл солиж, дахин эхлүүлнэ:
-
-```bash
-docker compose -f ./docker-compose.yml down
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
-
-Төлөв байдал нь хадгалагдах ёстой сүлжээнд блокчейн генезисийг сольж болохгүй.
+Шинэ эхлэлийн блок ашиглахын тулд зангилааны хадгалах сан хоосон байх ёстой. Ижил сүлжээг дахин эхлүүлэхдээ эхлээд `python3 poc.py down`, дараа нь `python3 poc.py up` командыг ажиллуулна уу. `state/` лавлахыг сүлжээний дөрвөн Docker ботьтой хамт хадгална уу.
 
 ## Өөрийн тохиргоог ашиглах {#use-custom-configuration}
 

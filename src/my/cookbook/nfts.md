@@ -75,7 +75,7 @@ printf '%s\n' \
 
 ### ၄. အကြောင်းအရာ မြေပုံကို Update လုပ်ပါ။ {#_4-update-the-content-map}
 
-metadata values are JSON key inserts or replaces that single entry; it does not replace the entire NFT record. key insert or replace that one entry. key is inserted or replaced by a key.
+Metadata တန်ဖိုးများသည် JSON ဖြစ်သည်။ ကီးတစ်ခု သတ်မှတ်ခြင်းက ထိုမှတ်တမ်းတစ်ခုကိုသာ ထည့်သွင်းခြင်း သို့မဟုတ် အစားထိုးခြင်း ဖြစ်ပြီး NFT မှတ်တမ်းတစ်ခုလုံးကို အစားမထိုးပါ။
 
 ```bash
 printf '%s\n' '{"color":"blue","version":1}' \
@@ -89,7 +89,7 @@ iroha --config "$LOCAL_CONFIG" ledger nft meta get \
 
 ### (၅) လွှဲပြောင်းပိုင်ဆိုင်မှု {#_5-transfer-ownership}
 
-Single protocol-standard I105 account ID နှစ်ခုစလုံးပေးပါ။ အမည်မဖော်လိုခင်မှာ `--from` သို့မဟုတ် `--to` အဖြစ်သုံးဖို့ ဖြေရှင်းဖို့လိုပါတယ်။
+စံ I105 အကောင့် ID နှစ်ခုလုံးကို ပေးပါ။ Alias ကို `--from` သို့မဟုတ် `--to` အဖြစ် မသုံးမီ ဖြေရှင်းရှာဖွေရမည်။
 
 ```bash
 iroha --config "$LOCAL_CONFIG" \
@@ -155,7 +155,7 @@ jq -e --arg owner "$NEW_OWNER" \
 
 - `name$domain` သည် တစ်ချို့ parsers များတွင် အထွေထွေဒေတာနေရာသို့ အလိုအလျောက်အသုံးပြုနိုင်သော်လည်း Cookbook နှင့် Application ID များမှာ ရှင်းလင်းသော `name$domain.dataspace` ပုံစံကို အသုံးပြုသင့်သည်။
 - NFT ID တစ်ခုတည်းကို ထပ်ခါထပ်ခါ မှတ်ပုံတင်ခြင်းသည် ငြင်းပယ်ခံရသည်။ သီးခြားမှတ်တမ်းတစ်ခုအတွက် အသစ်အဆန်း localnet ကိုအသုံးပြုပါ (သို့) တည်ငြိမ်သော ID အသစ်တစ်ခုကိုရွေးချယ်ပါ။
-- metadata input ကို Standard input မှာ valid JSON ဖြစ်ရပါမယ်။ JSON ကို quote မလုပ်တဲ့ shell string ဟာ metadata value မဟုတ်ဘူး။
+- Metadata အဝင်ဒေတာသည် စံအဝင်မှ ပေးသော မှန်ကန်သည့် JSON ဖြစ်ရမည်။ JSON quotation အမှတ်များ မပါသော shell စာသားသည် metadata တန်ဖိုး မဟုတ်ပါ။
 - လက်ရှိပိုင်ရှင်မဟုတ်တဲ့ အကောင့်တစ်ခုက လက်မှတ်ထိုးထားတဲ့ ငွေလွှဲပြောင်းမှုအတွက် တိကျတဲ့ ခွင့်ပြုချက်လိုအပ်ပြီး `--from` ကိုပြောင်းလဲခြင်းသည် cryptographic signer ကိုမပြောင်းလဲပါ။
 - ငွေလွှဲပြောင်းပြီးနောက် မူလဖောက်သည် NFT ကိုပြောင်းလဲခြင်း (သို့) မှတ်ပုံတင်မဖျက်သိမ်းနိုင်တော့ပါ။ ပိုင်ရှင်သစ်၏ cryptographic signer သို့မဟုတ် ခွင့်ပြုထားတဲ့ controller ကို အသုံးပြုပါ။
 - Taira အလွတ်ကို ပြန်ပေးလို့ရတယ် NFT ကောက်ယူမှု မပြုလုပ်ပါနဲ့ `items: []` အထောက်အထားအဖြစ် NFT ညွှန်ကြားချက်တွေ မရဘူး။
@@ -163,7 +163,7 @@ jq -e --arg owner "$NEW_OWNER" \
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
 - [NFT ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှုတွင် ပေါင်းစပ်မှု စမ်းသပ်မှုများ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/nft.rs)
-- [Kotodama NFT host-technical invocation tests at the pinned source code revision](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
+- [သတ်မှတ်ထားသော မူရင်းဗားရှင်းရှိ Kotodama NFT အတွက် စက်ပေါ်ခေါ်သုံးမှု စမ်းသပ်ချက်များ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/tests/kotodama_pointer_roundtrips.rs)
 - [တိကျသော Kotodama NFT သက်တမ်းပတ်ဝန်းကျင် စမ်းသပ်မှု လက်ရာများ ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်ချက်တွင်](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/docs/examples/12_nft_flow.ko)
 - [NFTs](/my/blockchain/nfts.md)
 - [မီတာဒေတာ](/my/blockchain/metadata.md)

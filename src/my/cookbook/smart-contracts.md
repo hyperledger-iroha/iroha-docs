@@ -16,8 +16,8 @@ Kotodama V1 စာချုပ်ကို စစ်ဆေးပြီး စု
 
 - Iroha အရင်းအမြစ်ကုဒ်အလုပ်လုပ်စာရွက်စာတမ်းကို protocol finalisation `0010c5a70039eac101a4846499ba9ceaf43eb65c`, Rust နှင့် Cargo တွင်။
 - လက်ရှိ `iroha` CLI နှင့် Taira မှ ရင်းနှီးမြှုပ်နှံထားသော ဖောက်သည် [Taira သို့ ချိတ်ဆက်ပါ။](./connect-to-taira.md) ကို ပေါင်းစပ်ပါ။
-- `IROHA_CONFIG` နှင့် `IROHA_PRIVATE_KEY_FILE` တို့တွင် Absolute paths များဖြစ်သည်။ key file သည်ပိုင်ရှင်ထိန်းသိမ်းထားသော, single-link ပုံမှန်ဖိုင်တစ်ခုဖြစ်ရမည်ဖြစ်ပြီး mode `0600` ရှိရမည်။ deploy helper ကရည်ရွယ်ချက်ရှိပြီး inline private key argument ကိုမပါရှိပါ။
-- Taira operator approval. Contract code registration requires `CanRegisterSmartContractCode`, and protected deployments may require governance attribution and enactment. Taira က ဒီအခွင့်အလမ်းကိုမပေးခဲ့ဘူးဆိုရင်, blockchain genesis က ခွင့်ပြုချက် ပေးတဲ့ ဖန်တီးထားတဲ့ ဒေသတွင်းကွန်ရက်တစ်ခုမှာ deployment လုပ်ပါ။
+- `IROHA_CONFIG` နှင့် `IROHA_PRIVATE_KEY_FILE` တို့တွင် အကြွင်းမဲ့ ဖိုင်လမ်းကြောင်းများ လိုသည်။ သော့ဖိုင်သည် အသုံးပြုသူကိုယ်တိုင် ပိုင်ဆိုင်သည့်၊ လင့်ခ်တစ်ခုတည်းရှိသော ပုံမှန်ဖိုင်ဖြစ်ပြီး ခွင့်ပြုချက်မှာ `0600` ဖြစ်ရမည်။ ဖြန့်ချိရေးကိရိယာတွင် အမိန့်စာကြောင်းပေါ်မှ ကိုယ်ပိုင်သော့ကို တိုက်ရိုက်ပေးရန် ရွေးချယ်မှု မပါဝင်ပါ။
+- Taira ကွန်ရက်တာဝန်ခံ၏ ခွင့်ပြုချက်လိုသည်။ စာချုပ်ကုဒ် မှတ်ပုံတင်ရန် `CanRegisterSmartContractCode` လိုအပ်သည်။ ကာကွယ်ထားသော ဖြန့်ချိမှုများတွင် အုပ်ချုပ်ရေးဆုံးဖြတ်ချက်၏ ရင်းမြစ်ကို ဖော်ပြခြင်းနှင့် ဆုံးဖြတ်ချက်ကို အသက်သွင်းခြင်းတို့ လိုအပ်နိုင်သည်။ Taira တွင် ထိုခွင့်ပြုချက် မရထားပါက စတင်ဘလောက်တွင် လုပ်ပိုင်ခွင့်ပေးထားသော စက်တွင်းကွန်ရက်ကို ဖန်တီး၍ ဖြန့်ချိပါ။
 
 ```bash
 TORII_URL=https://taira.sora.org
@@ -89,7 +89,7 @@ cargo run -p ivm --bin koto -- \
   ./contracts/tuple_return_demo.ko
 ```
 
-ပထမ build သည် artefact နှင့် authenticated sidecars ကိုထုတ်ဝေသည်။ ဒုတိယသည် read-only `--verify` mode တွင်အလုပ်လုပ်ပြီးရှိဆဲထွက်ပေါက်တစ်ခုခုကလက်ရှိအရင်းအမြစ်နှင့်အတိအကျမညီပါက ကျရှုံးသည်။ `.to` ဖိုင်နှင့် ၎င်း၏နည်းပညာ manifest ကိုပြန်လည်သုံးသပ်ထားသော build output တစ်ခုအဖြစ်ပြုပြင်ပါ။
+ပထမ build က artifact နှင့် စစ်မှန်ကြောင်း အတည်ပြုထားသော sidecar များကို ထုတ်ဝေသည်။ ဒုတိယ build က ဖတ်ရှုရုံ `--verify` မုဒ်ဖြင့် လုပ်ဆောင်ပြီး ရှိပြီးသား အထွက်တစ်ခုခုသည် လက်ရှိ source နှင့် အတိအကျ မကိုက်ညီလျှင် ကျရှုံးသည်။ `.to` ဖိုင်နှင့် ၎င်း၏ manifest ကို ပြန်လည်သုံးသပ်ထားသော build အထွက်တစ်ခုတည်းအဖြစ် သဘောထားပါ။
 
 ### (၃) ဘိုင်တာကုဒ်ကို ဒေသတွင်းမှာ Run လုပ်ပါ။ {#_3-run-the-bytecode-locally}
 
@@ -135,7 +135,7 @@ jq '{contract_address, code_hash_hex, final, fee_quotes}' \
 
 ### (၅) တပ်ဆင်ထားသော ဝင်ရောက်မှတ်တိုင်ကို တုပပြီး ခေါ်ယူခြင်း {#_5-simulate-and-call-the-deployed-entrypoint}
 
-Simulation သည် Torii တွင် အများပြည်သူဝင်ရောက်မှုမှတ်တိုင်ကို တင်သွင်းခြင်းမရှိဘဲ လုပ်ဆောင်သည်။ အောက်ပါနည်းပညာခေါ်ဆိုချက်သည် ငွေပေးချေမှုတစ်ခုဖြစ်ပြီး ထို့ကြောင့် ခွင့်ပြုချက် မူလခ ပေးဆောင်သူကို တိတိကျကျရွေးချယ်သည်။ အမိန့်နှစ်ခုစလုံးက ငွေပေးချေးမှု အကုန်အကျ ၁,၅၀၀,၀၀၀ ကိုသတ်မှတ်ထားသည်။
+Simulation သည် Torii တွင် အများပြည်သူဝင်ရောက်မှုမှတ်တိုင်ကို တင်သွင်းခြင်းမရှိဘဲ လုပ်ဆောင်သည်။ အောက်ပါနည်းပညာခေါ်ဆိုချက်သည် ငွေပေးချေမှုတစ်ခုဖြစ်ပြီး ထို့ကြောင့် ခွင့်ပြုချက် မူလခ ပေးဆောင်သူကို တိတိကျကျရွေးချယ်သည်။ အမိန့်နှစ်ခုစလုံးက ငွေစာရင်းလုပ်ဆောင်ချက် အကုန်အကျ ၁,၅၀၀,၀၀၀ ကိုသတ်မှတ်ထားသည်။
 
 ```bash
 iroha --config "$IROHA_CONFIG" --machine contract call \
@@ -191,7 +191,7 @@ jq -e '.ok == true and .result == ["3", "5"]' \
   ./build/address-simulation.json
 ```
 
-Deployment သည် ပြန်လည်ပို့သောလိပ်စာသို့အမည်မဖော်လိုသည့်အခါသာ ပြီးပြည့်စုံသည်၊ Technical Manifesto ကို cryptographic hash, local နှင့် Torii simulation return `["3", "5"]` အောက်တွင်ဖတ်နိုင်ပြီး တင်သွင်းထားသော technical invocation သည် `Applied` သို့ရောက်ရှိသည်။
+Deployment သည် ပြန်လည်ပို့သောလိပ်စာသို့အခြားအမည်အခါသာ ပြီးပြည့်စုံသည်၊ Technical Manifesto ကို cryptographic hash, local နှင့် Torii simulation return `["3", "5"]` အောက်တွင်ဖတ်နိုင်ပြီး တင်သွင်းထားသော technical invocation သည် `Applied` သို့ရောက်ရှိသည်။
 
 ## ပြဿနာဖြေရှင်းခြင်း {#troubleshooting}
 
@@ -205,9 +205,9 @@ Deployment သည် ပြန်လည်ပို့သောလိပ်စ�
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [Kotodama V1 command implementation at the pinned source code revision (ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှု)](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
+- [သတ်မှတ်ထားသော ရင်းမြစ်ဗားရှင်းရှိ Kotodama V1 အမိန့်၏ အကောင်အထည်ဖော်ပုံ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/ivm/src/bin/koto.rs)
 - [ရင်းမြစ်ကုဒ် ပြင်ဆင်ချက်တွင် ပြန်လည်ဖြည့်ဆည်းမှု မူရင်းနမူနာကို](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
-- [ပိတ်ထားတဲ့ source code ကို ပြန်လည်ပြင်ဆင်ခြင်းမှာ native deployment assistant](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
+- [သတ်မှတ်ထားသော ရင်းမြစ်ဗားရှင်းရှိ စံဖြန့်ချိရေးကိရိယာ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/bin/ivm_contract_deploy.rs)
 - [ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်ချက်မှာ စာချုပ်ပေါင်းစပ်မှု စမ်းသပ်မှုတွေ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/contracts.rs)
 - [စမတ်စာချုပ်များ](/my/blockchain/smart-contracts.md)
 - [CLI ကိုးကားချက်](/my/get-started/operate-iroha-via-cli.md)

@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: 9d153d9cb8ce0341b35ba5a7e3823198e58464768e2a9a92ff8a5723f85e9351
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,27 +16,9 @@ translation_engine: nllb-200-ct2
 
 Երբ դուք օգտագործում եք Docker Compose տարբերակը Iroha, դուք կարող եք հանդիպել խնդրի մի զուգահեռ կոնտեյներները ձախողում է `Failed to deserialize raw genesis block` սխալ. Սա սովորաբար նշանակում է, որ հանգույցային, ստորագրված գենեզի գործարքը եւ ստեղծված կարգավորումը արտադրվել են տարբեր Iroha վերանայմաններ կամ պրոֆիլներ:
 
-Ստուգեք ձախողումը հետեւյալ քայլերով.
+Հավաքածուի գրացուցակից գործարկեք `python3 poc.py logs`՝ վավերացնող հանգույցների մատյանները դիտելու համար։ Docker-ում նույն վերանայման գործարկվող ֆայլերով չորս վավերացնող հանգույց կառուցելու և գործարկելու համար հետևեք [Լանչում Iroha 3](/hy/get-started/launch-iroha.md) ուղեցույցին։
 
-1. Օգտագործեք `docker ps` ՝ ներկա պահեստները ստուգելու համար: Կախված ստեղծված պրոֆիլից, դուք սովորաբար կտեսնեք `hyperledger/iroha:dev` պահեստներ: Սովորականը Docker Compose պարունակում է չորս հանգույցային պահեստներ, չնայած ձեր ստեղծված `docker-compose.yml` կարող է տարբերվել:
-
-2. Ստուգեք օրագրերը եւ փնտրեք `Failed to deserialize raw genesis block` սխալը: Եթե դուք սկսել եք ձեր Iroha դեյմոնային ռեժիմում `docker compose up -d`, օգտագործեք `docker compose logs` հրամանը:
-
-Նման խնդրի լուծման միջոցը կախված է Iroha օգտագործելուց: Եթե սա հիմնական ցուցադրություն է, եւ ձեզ հարկավոր չէ պահպանել հանգույցների տվյալները, վերականգնել համապատասխան տեղական ցանց կամ Docker Compose փաթեթ ՝ Kagami:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
-```
-
-Այնուհետեւ հեռացրեք հին պահեստային վիճակը եւ վերագործարկեք վերականգնված `genesis.signed.nrt`, հանգույցների `config.toml` եւ `client.toml` ֆայլերից:
-
-Եթե դուք պետք է վերականգնել Iroha օրինակային տվյալները, ապա կատարեք հետեւյալը.
-
-1. Կապվեք երկրորդ Iroha հանգույցին, որը կփոխանցի առաջին (խափանված) հանգույցը:
-2. Սպասեք, որ նոր հանգույցն առաջին հանգույցի հետ տվյալները համաժամեցնի:
-3. Թող նոր հանգույցն ակտիվ լինի:
-4. Թարմացրեք առաջին հանգույցի գենեզի եւ կոնֆիգուրացիոն ֆայլերը միայն համակարգված միգրացիայի մաս կազմելով:
+Նույն ցանցը վերագործարկելու համար գործարկեք `python3 poc.py down` և ապա `python3 poc.py up`։ `state/` գրացուցակը պահեք իր չորս Docker հատորների հետ միասին։
 
 ::: info
 

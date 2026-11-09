@@ -199,7 +199,7 @@ Norito Стриминг шул уҡ детерминистик алымды ме
 - [Torii сикләү пункттары](/ba/reference/torii-endpoints.md)
 - [Башланмыш шиғыры](/ba/reference/genesis.md)
 - [Мәғлүмәттәр моделе схемаһы](/ba/reference/data-model-schema.md)
-- [JavaScript /TypeScript SDK](/ba/guide/tutorials/javascript.md)
+- [JavaScript / TypeScript SDK](/ba/guide/tutorials/javascript.md)
 - [Python SDK](/ba/guide/tutorials/python.md)
 - [Swift һәм iOS SDK](/ba/guide/tutorials/swift.md)
 

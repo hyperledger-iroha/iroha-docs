@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Cryptographic Key များကို ထုတ်လုပ်ခြင်း {#generating-cryptographic-keys}
 
-`kagami keys` ကိုသုံးပြီး Iroha 3 အတွက် client, network peer နှင့် validator key material များကို ဖန်တီးပါ။
+Iroha 3 အတွက် client၊ peer နှင့် validator ကီးများ ဖန်တီးရန် `kagami keys` ကို အသုံးပြုပါ။
 
 ## အခြေခံ အသုံးပြုမှု {#basic-usage}
 
@@ -18,7 +18,7 @@ Iroha အရင်းအမြစ်ကုဒ်အတွက် အလုပ်�
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-မူရင်း directory ရှိပြီးသား ဖြစ်ရပါမယ်။ ရည်မှန်းချက်ဟာ အသစ် (သို့) လက်ရှိအသုံးပြုသူပိုင်ဆိုင်နေပြီဖြစ်ရပါမယ်။ `0700`, သင်္ကေတဆိုင်ရာ သံယောဇဉ်တွေ ကင်းလွတ်ပြီး အလွတ်ပါ။ `kagami` စာရေးသည် `public.key` နှင့် `private.key` mode နဲ့ `0600` key material တွေကို မနှိပ်ဘူး။ `--pop`, ဒါကလည်း ရေးထားတယ်။ `pop.hex`.
+မိခင်ဖိုင်တွဲသည် ရှိပြီးသား ဖြစ်ရမည်။ ပစ်မှတ်ဖိုင်တွဲသည် အသစ် သို့မဟုတ် လက်ရှိအသုံးပြုသူ ပိုင်ဆိုင်ထားပြီးသား ဖြစ်ရမည်၊ ခွင့်ပြုချက်ပုံစံ `0700` ရှိရမည်၊ သင်္ကေတလင့်ခ်များ မရှိရ၊ ဗလာဖြစ်ရမည်။ `kagami` က `public.key` နှင့် `private.key` ကို `0600` ပုံစံဖြင့် ရေးသားပြီး ကီးဒေတာကို မဖော်ပြပါ။ `--pop` ထည့်လျှင် `pop.hex` ကိုလည်း ရေးသားသည်။
 
 `--out-dir` သည် Kagami က ဤပိုင်ရှင်များသာရှိသော ဖိုင်စနစ်စည်းမျဉ်းများကို အကောင်အထည်ဖော်နိုင်ခြင်းမရှိသည့် ပလက်ဖောင်းများတွင်ပိတ်ရန် ပျက်ကွက်သည်. hardware (သို့) မတင်ပို့နိုင်သော ထုတ်လုပ်ရေး cryptographic signer ကို တင်သွင်းပြီး ခွင့်ပြုထားတဲ့ custody boundary ထဲကို တင်သွင်းပြီး deployment လုပ်နည်းအတိုင်း export ကို ဖယ်ရှားပါ။
 
@@ -28,7 +28,7 @@ cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 
 - `ed25519` ဖောက်သည်အကောင့်များနှင့် streaming အမည်များအတွက်။
 - `secp256k1` ဖောက်သည်စာရင်းအတွက် secp256k1 ကိုယ်ပိုင်လက္ခဏာလိုအပ်ပါက။
-- `bls_normal` node (သို့) network peer consensus identity တစ်ခုစီအတွက်။
+- နိုဒ် သို့မဟုတ် peer သဘောတူညီမှုအထောက်အထားတိုင်းအတွက် `bls_normal`။
 
 သင့်ရဲ့ build က ထောက်ပံ့တဲ့ အယ်လ်ဂိုရစ်သမ်တွေကို တိကျစွာ စစ်ဆေးပါ
 
@@ -50,24 +50,24 @@ cargo run --bin kagami -- keys --algorithm ed25519 \
 
 ## BLS သဘောတူညီချက်သော့များနှင့် ပိုင်ဆိုင်မှု အထောက်အထားများ {#bls-consensus-keys-and-proofs-of-possession}
 
-Iroha 3 node နှင့် network peer consensus identity များကို အသုံးပြုခြင်း BLS- ပုံမှန် ခလုတ်များ။ BLS- ပုံမှန် သော့နဲ့ ပိုင်ဆိုင်မှု အထောက်အထား (PoP) နှင့်:
+Iroha 3 နိုဒ်နှင့် peer သဘောတူညီမှုအထောက်အထားများသည် BLS-normal ကီးများကို အသုံးပြုသည်။ BLS-normal ကီးနှင့် ကီးပိုင်ဆိုင်ကြောင်းအထောက်အထား (PoP) ကို အောက်ပါအတိုင်း ဖန်တီးပါ။
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` သည် `bls_normal` နှင့်သာ သက်ဝင်သည်။ ၎င်းသည် ထိန်းသိမ်းမှုညွှန်ကြားချက်သို့ `pop.hex` ကိုထည့်သွင်းသည်။ လက်မှတ်ရေးထိုးထားသော blockchain မျိုးဆက်သည် မဲပေးသူတိုင်းအတွက်သင့်လျော်သည့် PoP ကိုလိုအပ်သည်။ Network peer configuration မှာ non-empty `trusted_peers_pop` map က validator subset ကို ရွေးချယ်တယ်။ အဲဒီ non-emptive map ထဲက လွတ်သွားတဲ့ trusted network peers တွေဟာ Observer တွေပါ။ မြေပုံက အလွတ်ရှိပါက BLS ပုံမှန် ယုံကြည်မှုရှိတဲ့ ကွန်ရက် တူညီသူအားလုံးသည် bootstrap ကိုယ်စားလှယ်စုထဲ ဝင်ကြပြီး မဲပေးသူ PoPs ကို လက်မှတ်ထိုးထားတဲ့ blockchain genesis ကနေ ဆက်လက်ဖြည့်ဆည်းပေးတယ်။
+`--pop` ကို `bls_normal` နှင့်သာ အသုံးပြုနိုင်ပြီး ကီးထိန်းသိမ်းရေးဖိုင်တွဲသို့ `pop.hex` ကို ထည့်ပေးသည်။ လက်မှတ်ထိုးထားသော genesis တွင် မဲပေးသော validator တိုင်းအတွက် ကိုက်ညီသော PoP လိုအပ်သည်။ peer ပြင်ဆင်သတ်မှတ်မှုတွင် ဗလာမဟုတ်သော `trusted_peers_pop` မြေပုံက validator အစုခွဲကို ရွေးချယ်သည်။ ထိုမြေပုံမှ ချန်ထားသော ယုံကြည်ထားသည့် peer များသည် လေ့လာသူများဖြစ်သည်။ မြေပုံက ဗလာဖြစ်လျှင် ယုံကြည်ထားသော BLS-normal peer အားလုံးသည် စတင်ချိတ်ဆက်မည့် ကိုယ်စားလှယ်လောင်းအစုသို့ ဝင်ပြီး မဲပေးသူ PoPs များကို လက်မှတ်ထိုးထားသော genesis ကပင် ပံ့ပိုးရသည်။
 
 ## ထိန်းသိမ်းမှု ထုတ်ကုန်များ {#custody-output}
 
-`kagami keys` လိုအပ်ချက် `--out-dir` Standard output ကို private key material ကို ဘယ်တော့မှ မရေးပါဘူး။ `public.key`, `private.key`, ရွေးချယ်စရာ `pop.hex` ဖိုင်တစ်ခုစီမှာ တစ်ခုတည်းသော ပရိုတိုကောစံညွှန်းတန်ဖိုးကိုပါ ၀ င်သည်။ နောက်မှာ newline တစ်ခုရှိတယ်၊ ဒါက ရှင်းလင်းတဲ့ file based automation ကို လွယ်ကူစေတယ်။
+`kagami keys` တွင် `--out-dir` လိုအပ်ပြီး ကိုယ်ပိုင်ကီးဒေတာကို ပုံမှန်အထွက်သို့ မည်သည့်အခါမျှ မရေးပါ။ ဖန်တီးထားသောဖိုင်တွဲမှ `public.key`၊ `private.key` နှင့် ရွေးချယ်နိုင်သော `pop.hex` ကို ဖတ်ပါ။ ဖိုင်တစ်ခုချင်းစီတွင် စံသတ်မှတ်တန်ဖိုးတစ်ခုနှင့် နောက်ဆက်တွဲစာကြောင်းအသစ်တစ်ခု ပါဝင်သောကြောင့် ဖိုင်အခြေပြု အလိုအလျောက်လုပ်ဆောင်မှုကို ရှင်းလင်းစွာ တည်ဆောက်နိုင်သည်။
 
 ```bash
 PUBLIC_KEY=$(tr -d '\n' < ./client-key/public.key)
 ```
 
-Full generated Kagami အကူအညီအတွက်-
+အလိုအလျောက်ထုတ်ပေးထားသော Kagami အကူအညီအပြည့်အစုံအတွက် အောက်ပါတို့ကို ကြည့်ပါ။
 
 ```bash
 cargo run -p iroha_kagami -- advanced markdown-help > crates/iroha_kagami/CommandLineHelp.md

@@ -1,16 +1,16 @@
 ---
 translation_locale: ja
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
+translation_source_hash: 8d3ec8cf5a6ee09d9c05dd63c018ebb656f9e340f9d30f9e335baf2101c39055
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
 
-# SORA 3 を基にして: Taira と Minamoto {#build-on-sora-3-taira-and-minamoto}
+# Taira と Minamoto で SORA Nexus 向けアプリケーションを開発する {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 は、Iroha 3 と SORA Nexus に基づいて構築されたアプリ向けの公開デプロイトラックです。まず Taira でビルドとリハーサルを行い、その後に個別のメインネットキー、手数料用の実際の XOR、および本番承認がある場合にのみ、同じクライアント形状を Minamoto に移動してください。
+SORA Nexus は Iroha 3 を基盤としています。まず Taira でアプリケーションを開発・テストします。同じクライアント設定を Minamoto に移すのは、メインネット専用の鍵、手数料に使う実際の XOR、本番運用の承認がそろってからにしてください。
 
-このチュートリアルでは、パブリック SORA 3ネットワーク用の Iroha クライアントの設定方法を示します。
+このガイドでは、SORA Nexus の 2 つの公開ネットワークに接続する Iroha クライアントの設定方法を説明します。
 
 - Taira のテストネットは `https://taira.sora.org` にあります
 - Minamoto メインネットは `https://minamoto.sora.org` にて
@@ -24,7 +24,7 @@ SORA 3 は、Iroha 3 と SORA Nexus に基づいて構築されたアプリ向�
 
 |ステップ| Taira テストネット| Minamoto メインネット |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|ネットワーク状態の読み取りを開始|キーなしのクエリ `/status`|キーなしのクエリ `/status`|
+|ネットワーク状態の読み取りを開始|キーなしのクエリ `/status`| 先にエンドポイントと TLS 証明書を確認する |
 |データスペースを選択してください|アプリが管理された実行レーンを必要としない限り、パブリック`universal`を使用してください|メインネットの承認後にのみ同じデータスペースを使用してください|
 | 手数料資産を取得 | 公開 Taira の faucet を使用 | 資金提供済みの Minamoto アカウントまたは承認済みのトレジャリー経路から XOR を受け取る |
 | 書き込みをテスト | faucet で取得した testnet XOR を使用 | テスト用ツールを使わない。書き込みでは実際の XOR を消費する |
@@ -68,20 +68,10 @@ wonderland.universal
 
 ## 2. 公開 Torii API エンドポイントを確認する {#_2-check-the-public-torii-endpoint}
 
-暗号署名者を設定する前に、対象の API エンドポイントが稼働していることを確認してください。
-
-〜のために Taira:
+`curl` と `jq` を使って Taira テストネットの状態を確認します。鍵やローカルノードは不要です。
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-Minamoto の場合：
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -94,7 +84,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-メインネットの場合は、同じコマンドを `https://minamoto.sora.org/status` と一緒に使用してください。
+Minamoto を利用する前に、運用担当者にメインネットのエンドポイントを確認し、TLS 証明書がホスト名と一致することを確かめてください。
 
 ## Taira MCP エージェント用 {#taira-mcp-for-agents}
 
@@ -197,19 +187,7 @@ Taira MCP をパブリックテストネットのコントロールサーフェ�
 
 ## 今すぐ試せるおもちゃの例 {#toy-examples-you-can-try-now}
 
-これらの例は、注記がない限り読み取り専用です。キーを生成する前でも動作し、公開ネットワークに対して実行しても安全です。
-
-Taira テストネットと Minamoto メインネットのヘルスを比較：
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+以下の例では、アカウントの鍵を使わずに Taira のデータを読み取ります。
 
 Taira によって公開されているパブリックデータスペース実行レーンを一覧表示してください:
 
@@ -217,16 +195,7 @@ Taira によって公開されているパブリックデータスペース実�
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-メインネットのビューが必要な場合は、同じコマンドを Minamoto に対して実行してください。
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -235,24 +204,16 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -351,7 +312,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-生成されたアカウントIDを、Nexus、API、または CLI のコマンドが正規のアカウントIDを求める場合に使用してください。例えば、Taira テストネット資金提供サービス `account_id` の場合です。残高照会、厳格なアカウントフィールド、またはエイリアスのバインディング。`[account].profile = "taira"` または `[account].profile = "minamoto"` で同じパブリックネットワークを選択し、クライアント設定に一致する秘密鍵を保持してください。
+生成されたアカウントIDを、SORA Nexus、API、または CLI のコマンドが正規のアカウントIDを求める場合に使用してください。例えば、Taira テストネット資金提供サービス `account_id` の場合です。残高照会、厳格なアカウントフィールド、またはエイリアスのバインディング。`[account].profile = "taira"` または `[account].profile = "minamoto"` で同じパブリックネットワークを選択し、クライアント設定に一致する秘密鍵を保持してください。
 
 ID を生成するだけでは、それ自体で資金が入ったオンチェーンアカウントは作成されません。Taira では、テストネットの資金提供サービスがアカウントを作成してテストネット用の書き込みに資金を提供することができます。Minamoto では、承認されたメインネットのオンボーディングまたは財務フローを使用してください。
 
@@ -555,6 +516,8 @@ with urllib.request.urlopen(request) as res:
 
 ## 5. Minamoto クライアント設定を作成する {#_5-create-a-minamoto-client-config}
 
+Minamoto を利用する前に、運用担当者にメインネットのエンドポイントを確認し、TLS 証明書がホスト名と一致することを確かめてください。
+
 Minamoto には別のキーペアを使用してください。Taira のキーをメインネットで再利用しないでください。
 
 `minamoto.client.toml`を作成する:
@@ -575,7 +538,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-最上位の`chain`は現在の Nexus メインネットチェーンIDです。`[account].profile = "minamoto"`は Minamoto I105 チェーン識別子を選択します。API エンドポイントのホスト名とチェーンIDは暗黙的にそれを選択しません。
+最上位の`chain`は現在の SORA Nexus メインネットチェーンIDです。`[account].profile = "minamoto"`は Minamoto I105 チェーン識別子を選択します。API エンドポイントのホスト名とチェーンIDは暗黙的にそれを選択しません。
 
 Minamoto の公開鍵を、メインネット接頭辞付きの標準的な I105 アカウントIDに変換する:
 

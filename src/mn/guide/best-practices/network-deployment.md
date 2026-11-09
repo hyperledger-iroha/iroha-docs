@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /guide/best-practices/network-deployment.md
-translation_source_hash: 7839268b8c1f6700b0c26652e3308fa4e8acef4717d8527c609b6f30fb8c84ab
+translation_source_hash: 489b174b9bdd21a4c4c2c896911686a6020e2833c8808304cfd37a5bf31c7780
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -25,6 +25,8 @@ translation_engine: bing-translator-llm
 - Багадаа дөрвөн баталгаажуулагчийг Бизнантын алдаанд тэсвэртэй минималь байршуулалтад ашигла.
 - Багтаамжийн төлөвлөлтөд хянагчдыг ажиглагчдаас тусгаарла. Ажиглагчид санал өгдөггүй, санал гаргадаггүй, мэдээлэл цуглуулдаггүй боловч тэд хадгалах сан, блокийн синк, сүлжээний өргөдлийг хэрэглэсээр байдаг.
 - Блокчэйн үүсгэгч, гүйцэтгэгч, тэгш хэмийн өөрчлөлтүүдийг нэг л хүнд зориулсан засвар гэхийн оронд зохицуулагдсан шилжилтүүд гэж үзээрэй.
+
+Docker ашиглан сүлжээг ажиллуулж, нэг баталгаажуулагчийг зогсоосны дараа сүлжээ хэрхэн сэргэхийг шалгахын тулд [дөрвөн баталгаажуулагч ажиллуулах зааврыг](/mn/get-started/launch-iroha.md) дагана уу.
 
 Үүнийг үзнэ үү [блокчэйн уг эх](/mn/reference/genesis.md), [сүлжээний хамтрагчийн удирдлага](/mn/guide/configure/peer-management.md), ба [Гүйцэтгэл ба үзүүлэлтүүд](/mn/guide/advanced/metrics.md#node-count-and-quorum).
 

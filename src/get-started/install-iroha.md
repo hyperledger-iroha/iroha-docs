@@ -3,6 +3,8 @@
 This page covers the current installation workflow for the Iroha 3 toolchain
 and binaries using the upstream `hyperledger-iroha/iroha` workspace.
 
+Use the Rust instructions below for a native installation. To run four validators with Docker, start with [Launch Iroha 3](/get-started/launch-iroha.md).
+
 ## 1. Prerequisites
 
 Install these first:

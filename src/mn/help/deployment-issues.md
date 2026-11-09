@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 3e4042ed4e92a8df567f3500a84cfe32a3d10e22663204b07423ff4cf0fd0c5c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -39,13 +39,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker ба Бүрдүүлэх {#docker-and-compose}
 
-Одоогийн Kagami localnet гаралтаас Compose үүсгээрэй, ингэснээр командын мөрийн аргументууд ба тохиргооны файлууд шалгагдсан кодтой таарч байна:
+Нэг эх кодын хувилбараас бүтээсэн хоёртын файлуудаар Docker дээр дөрвөн баталгаажуулагч ажиллуулахдаа [Эхлүүлэх Iroha 3](/mn/get-started/launch-iroha.md) зааврыг дагана уу.
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Баталгаажуулагчдын бүртгэлийг харахын тулд багцын лавлахаас `python3 poc.py logs` командыг ажиллуулна уу.
 
 Compose байршуулалт эхлээд дараа нь саатвал daemon логт дараах зүйлийг шалгана:
 
@@ -54,7 +50,7 @@ Compose байршуулалт эхлээд дараа нь саатвал daemo
 - контейнерийн сүлжээний дотор л ажилладаг сурталчилсан P2P хаягууд
 - blockchain-ийн эх үүсвэрийг дахин үүсгэсний дараа локаль хэмжээ дахин ашиглах
 
-Шинэ блокчэйн генесисийг туршихдаа стекээ дахин эхлүүлэхээс өмнө хуучин Kura багцуудыг устга. Шинэ блокчэйн генесистэйгээр хуучин блок хадгалыг хадгалах нь давталт бүтэлгүйтэхэд хүргэнэ.
+Шинэ эхлэлийн блок ашиглахын тулд зангилааны хадгалах сан хоосон байх ёстой. Ижил сүлжээг дахин эхлүүлэхдээ эхлээд `python3 poc.py down`, дараа нь `python3 poc.py up` командыг ажиллуулна уу. `state/` лавлахыг сүлжээний дөрвөн Docker ботьтой хамт хадгална уу.
 
 ## Кубернетес {#kubernetes}
 
@@ -67,9 +63,9 @@ Kubernetes-ийн хувьд, бүх нэгж баталгаажуулагчий
 
 Хэрэв под удаа дараа дахин эхэлж байвал, под дахь үүсгэсэн тохиргоог хүлээгдэж буй тохиргоотой харьцуул. [`peer.template.toml`](/mn/reference/peer-config/index.md#template) мөн сүлжээний хамтрагч хуучин мэдээллийг дахин тоглуулаж байгаа эсэхийг шалгана уу Kura өгөгдөл.
 
-## Сорагийн профайл {#sora-profile}
+## SORA Nexus профайл {#sora-profile}
 
-Хувийн эсвэл орон нутгийн Iroha 3 суурилуулалтууд нь Nexus, SoraFS эсвэл олон урсгалтай урсгалуудыг ашигладаг тохиолдолд стандарт демоныг Sora профайл идэвхтэйгээр эхлүүлэх ёстой:
+SORA Nexus, SoraFS эсвэл олон зурвас ашигладаг хувийн болон дотоод Iroha 3 орчинд энэ профайлыг идэвхжүүлж стандарт суурь үйлчилгээг эхлүүлнэ.
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

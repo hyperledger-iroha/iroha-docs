@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 3e4042ed4e92a8df567f3500a84cfe32a3d10e22663204b07423ff4cf0fd0c5c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -39,13 +39,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker və Yarat {#docker-and-compose}
 
-Cari Kagami localnet çıxışından Compose yaradın ki, əmr sətiri arqumentləri və konfiqurasiya faylları çıxarılmış kod ilə uyğun olsun:
+Docker-də eyni reviziyadan yığılmış icra faylları ilə dörd təsdiqləyici qovşaq qurub işə salmaq üçün [Iroha 3-i işə sal](/az/get-started/launch-iroha.md) təlimatına əməl edin.
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Təsdiqləyici qovşaqların jurnallarına baxmaq üçün dəstin qovluğunda `python3 poc.py logs` əmrini işlədin.
 
 Əgər bir compose yerləşdirilməsi başlayır və sonra dayanırsa, daemon qeydlərini yoxlayın:
 
@@ -54,7 +50,7 @@ docker compose -f ./docker-compose.yml up
 - reklamı verilmiş P2P ünvanlar yalnız konteyner şəbəkəsi daxilində işləyir
 - blokçeyn başlanğıcını yenidən yaratdıqdan sonra yerli həcm təkrar istifadəsi
 
-Yeni bir blockchain genesisini sınaqdan keçirərkən, yığın yenidən başlamazdan əvvəl köhnə Kura həcmləri silin. Köhnə blok saxlamağı yeni blockchain genesis ilə saxlamaq təkrar oynatma uğursuz olacaq.
+Yeni genezis bloku üçün qovşağın yaddaşı boş olmalıdır. Eyni şəbəkəni yenidən işə salmaq üçün əvvəl `python3 poc.py down`, sonra `python3 poc.py up` əmrlərini işlədin. `state/` qovluğunu şəbəkənin dörd Docker yaddaş bölməsi ilə birlikdə saxlayın.
 
 ## Kubernetes {#kubernetes}
 
@@ -67,9 +63,9 @@ Kubernetes üçün hər bir doğrulayıcıya vəziyyətli infrastruktur kimi yan
 
 Əgər pod təkrar-təkrar yenidən başlasa, poddakı yaradılmış konfiqurasiyanı gözlənilənlə müqayisə edin [`peer.template.toml`](/az/reference/peer-config/index.md#template) və şəbəkə iştirakçısının köhnə məlumatları təkrar oynadığını yoxlayın Kura məlumat.
 
-## Sora profili {#sora-profile}
+## SORA Nexus profili {#sora-profile}
 
-Şəxsi və ya yerli Iroha 3 yerləşdirmələrində Nexus, SoraFS və ya çox zolaqlı axınlardan istifadə edildikdə, standart daemon Sora profili aktivləşdirilmiş şəkildə başlamalıdır:
+SORA Nexus, SoraFS və ya bir neçə zolaqdan istifadə edən özəl və ya lokal Iroha 3 yerləşdirməsində standart fon xidmətini bu profil aktiv olmaqla başladın.
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

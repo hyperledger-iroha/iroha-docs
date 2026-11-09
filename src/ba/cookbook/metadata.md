@@ -75,7 +75,7 @@ CLI default буйынса fee-ны quote итә, transaction-ды sign һәм s
 
 ::: warning Рөхсәт сиктәре
 
-Әүҙем validator һәр объектты кем үҙгәртә алыуын хәл итә. Икенсе account-тың metadata-һын яңыртыу өсөн ғәҙәттә `CanModifyAccountMetadata` талап ителә; domain-дар, asset definition-дар, NFTs һәм trigger-ҙар өсөн маҡсатҡа хас metadata рөхсәттәре бар. Taira кәрәкле authority-ҙы бирмәһә, шул уҡ account командаларын `./localnet/client.toml` менән эшләтегеҙ, барлыҡҡа килгән localnet authority-һының canonical I105 ID-һын ҡулланығыҙ һәм Taira fee metadata файлын төшөрөп ҡалдырығыҙ. Local fee payer-ҙы һәр саҡ асыҡтан-асыҡ һайлағыҙ.
+Һәр объектты кем үҙгәртә алғанын ғәмәлдәге валидатор билдәләй. Башҡа иҫәптең метамәғлүмәтен яңыртыу өсөн ғәҙәттә `CanModifyAccountMetadata` кәрәк; домендар, актив билдәләмәләре, NFTs һәм триггерҙар өсөн маҡсатҡа хас рөхсәттәр ҡулланыла. Taira һеҙгә кәрәкле вәкәләтте бирмәһә, шул уҡ иҫәп бойороҡтарын `./localnet/client.toml` менән эшләтегеҙ, булдырылған урындағы вәкәләтле иҫәптең каноник I105 ID-һын ҡулланығыҙ һәм Taira комиссия метамәғлүмәте файлын төшөрөп ҡалдырығыҙ. Урындағы комиссия түләүсене аныҡ һайлағыҙ.
 
 :::
 
@@ -133,7 +133,7 @@ fi
 
 ## Сығанаҡ һәм уның менән бәйле документтар {#source-and-related-docs}
 
-- [](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/queries/metadata.rs) ҡуйылған commit-та метафайлдар һорауын интеграциялау һынауҙары.
+- [Билдәләнгән коммиттағы метамәғлүмәт һорауҙарының интеграция һынауҙары](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/queries/metadata.rs)
 - [Python SDK транзакция төҙөүселәре ҡуйылған commit буйынса](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/README.md)
 - [Метамәғлүмәттәре](/ba/blockchain/metadata.md)
 - [Метамәғлүмәттәрҙе һәм иҫәп-хисап яҙмаһын һаҡлау варианттары](/ba/guide/configure/metadata-and-store-assets.md)

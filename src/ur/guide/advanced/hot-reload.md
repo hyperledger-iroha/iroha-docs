@@ -1,14 +1,14 @@
 ---
 translation_locale: ur
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 96505bdba910beb902c399004f5cd24f5e5b0773f01df9cdcfdb49d019830d03
+translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # ایک Docker کنٹینر میں گرم ری لوڈ Iroha {#hot-reload-iroha-in-a-docker-container}
 
-hot reload صرف مقامی debugging کے لیے استعمال کریں۔ عام مقامی development میں image دوبارہ build کرنے یا تازہ Kagami bundle سے بنے Docker Compose stack کو restart کرنے کو ترجیح دیں۔
+ہاٹ ری لوڈ صرف مقامی ڈیبگنگ کے لیے استعمال کریں۔ ایک ہی نظرثانی سے بنی بائنری فائلوں کے ساتھ Docker میں چار توثیقی نوڈ بنانے اور چلانے کے لیے [لانچ Iroha 3](/ur/get-started/launch-iroha.md) کی ہدایات پر عمل کریں۔
 
 ## نیٹ ورک نوڈ بائنری کو تبدیل کریں {#replace-the-peer-binary}
 
@@ -25,20 +25,11 @@ docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/loca
 docker restart <container>
 ```
 
-کنٹینر کے نام کی تصدیق کرنے کے لئے `docker ps` کا استعمال کریں۔ پیدا ہونے والے اسٹیک میں نیٹ ورک نوڈ کنٹینرز کو `./docker-compose.yml` سے بیان کیا گیا ہے.
+کنٹینر تلاش کرنے کے لیے `docker ps` استعمال کریں۔ ڈیمن کو تبدیل کرنے سے پہلے امیج میں اس کا راستہ دیکھیں۔
 
 ## ایک ڈسپوزایبل نیٹ ورک میں جینیس کو دوبارہ شروع کریں {#recommit-genesis-in-a-disposable-network}
 
-ایک peer صرف اس وقت genesis commit کرتا ہے جب اس کا storage خالی ہو۔ disposable Docker network کے لیے stack روکیں، بنائی گئی state ہٹائیں، signed genesis bundle دوبارہ بنائیں یا بدلیں، اور پھر آغاز کریں:
-
-```bash
-docker compose -f ./docker-compose.yml down
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
-
-کسی ایسے نیٹ ورک پر پیدائش کی جگہ نہ لیں جس کی حالت کو برقرار رکھنا ضروری ہو۔
+نئے جینیسس بلاک کے لیے نوڈ کا ذخیرہ خالی ہونا چاہیے۔ اسی نیٹ ورک کو دوبارہ شروع کرنے کے لیے پہلے `python3 poc.py down` اور پھر `python3 poc.py up` چلائیں۔ `state/` کو اس کے چاروں Docker والیومز کے ساتھ محفوظ رکھیں۔
 
 ## اپنی مرضی کے مطابق ترتیب کا استعمال کریں {#use-custom-configuration}
 

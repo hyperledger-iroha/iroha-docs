@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /guide/best-practices/network-deployment.md
-translation_source_hash: 7839268b8c1f6700b0c26652e3308fa4e8acef4717d8527c609b6f30fb8c84ab
+translation_source_hash: 489b174b9bdd21a4c4c2c896911686a6020e2833c8808304cfd37a5bf31c7780
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -25,6 +25,8 @@ translation_engine: nllb-200-ct2
 - გამოიყენეთ მინიმუმ ოთხი ვალიდატორი ბიზანტიური ხარვეზის ტოლერანტობისთვის.
 - ცალკე ვალიდატორები და დამკვირვებლები სიმძლავრის დაგეგმვაში. დამკვირვებელი არ კენჭისყრა, წინადადება ან შეგროვება, მაგრამ ისინი მაინც მოიხმარენ შენახვას, ბლოკის სინქრონიზაციას და ქსელის მაჩვენებელზე სიგანეს.
 - ბლოკჩეინის გენეზისის, აღმასრულებლის და ტოპოლოგიის ცვლილებების შეფასება ერთპიროვნული რედაქტირების ნაცვლად, კოორდინირებული მიგრაციებით.
+
+[ოთხი ვალიდატორის გაშვების ინსტრუქციის](/ka/get-started/launch-iroha.md) მიხედვით გაუშვით ქსელი Docker-ით და შეამოწმეთ მისი აღდგენა ერთი ვალიდატორის გაჩერების შემდეგ.
 
 იხილეთ [ბლოკჩეინის გენეზისი](/ka/reference/genesis.md), [ქსელის კვანძების მართვა](/ka/guide/configure/peer-management.md) და [შესრულება და მაჩვენებლები](/ka/guide/advanced/metrics.md#node-count-and-quorum).
 

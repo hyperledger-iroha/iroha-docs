@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: 9d153d9cb8ce0341b35ba5a7e3823198e58464768e2a9a92ff8a5723f85e9351
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -16,27 +16,9 @@ Bu bölmə Iroha 3 konfiqurasiyası üçün problemlərin həlli tövsiyələrin
 
 Iroha proqramının Docker Compose versiyasından istifadə edərkən, şəbəkə həmkarı konteynerlərindən birinin `Failed to deserialize raw genesis block` xətası ilə uğursuz olma problemi ilə qarşılaşa bilərsiniz. Bu adətən şəbəkə tərəfdaşı, imzalanmış blokçeyn başlanğıc əməliyyatı və yaradılmış konfiqurasiyanın fərqli Iroha versiyaları və ya profilləri tərəfindən istehsal edildiyi deməkdir.
 
-Uğursuzluğu bu addımlarla yoxlayın:
+Təsdiqləyici qovşaqların jurnallarına baxmaq üçün dəstin qovluğunda `python3 poc.py logs` əmrini işlədin. Docker-də eyni reviziyadan yığılmış icra faylları ilə dörd təsdiqləyici qovşaq qurub işə salmaq üçün [Iroha 3-i işə sal](/az/get-started/launch-iroha.md) təlimatına əməl edin.
 
-1. `docker ps` istifadə edərək mövcud konteynerləri yoxlayın. Yaradılmış profilə görə adətən `hyperledger/iroha:dev` konteynerləri görəcəksiniz. Standart Docker Compose profili dörd şəbəkə həmkarı konteynerini ehtiva edir, baxmayaraq ki, sizin yaradılmış `docker-compose.yml` fərqli ola bilər.
-
-2. Jurnalları yoxlayın və `Failed to deserialize raw genesis block` xətasını axtarın. Əgər `docker compose up -d` ilə Iroha-inizi daemon rejimində başladırsınızsa, `docker compose logs` əmrdən istifadə edin.
-
-Belə bir problemi aradan qaldırmağın yolu Iroha istifadəsindən asılıdır. Əgər bu sadə bir demo-dursa və şəbəkə həmkarı məlumatlarını saxlamağa ehtiyacınız yoxdursa, uyğun bir localnet və ya Docker Compose paketini Kagami ilə yenidən yaradın:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
-```
-
-Sonra köhnə konteyner vəziyyətini silin və yenidən yaradılmış `genesis.signed.nrt`, şəbəkə həmkarı `config.toml` faylları və `client.toml`-dən yenidən başlayın.
-
-Əgər sizə Iroha nümunə məlumatlarını bərpa etmək lazım olsa, aşağıdakıları edin:
-
-1. Birinci (işləməyən) şəbəkə həmkarından məlumatı kopyalayacaq ikinci Iroha şəbəkə həmkarını qoşun.
-2. Yeni şəbəkə iştirakçısının məlumatları ilk şəbəkə iştirakçısı ilə sinxronlaşdırmasını gözləyin.
-3. Yeni şəbəkə həmkarını aktiv saxlayın.
-4. Koordinasiyalı miqrasiya çərçivəsində yalnız birinci şəbəkə həmkarının blokçeyn başlanğıc və konfiqurasiya fayllarını yeniləyin.
+Eyni şəbəkəni yenidən işə salmaq üçün əvvəl `python3 poc.py down`, sonra `python3 poc.py up` əmrlərini işlədin. `state/` qovluğunu şəbəkənin dörd Docker yaddaş bölməsi ilə birlikdə saxlayın.
 
 ::: info
 

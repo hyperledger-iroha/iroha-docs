@@ -1,16 +1,16 @@
 ---
 translation_locale: mn
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
+translation_source_hash: 8d3ec8cf5a6ee09d9c05dd63c018ebb656f9e340f9d30f9e335baf2101c39055
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
 
-# SORA 3 дээр барина: Taira ба Minamoto {#build-on-sora-3-taira-and-minamoto}
+# Taira болон Minamoto ашиглан SORA Nexus дээр хөгжүүлэх {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 нь Iroha 3 ба SORA Nexus дээр суурилсан апп-д зориулсан олон нийтийн байршуулалтын зам юм. Эхлээд Taira-д барьж, дадлага хий, дараа нь зөвхөн тусдаа mainnet түлхүүр, төлбөрт зориулсан жинхэнэ XOR, болон үйлдвэрлэлийн зөвшөөрөлтэй үедээ ижил хэрэглэгчийн хэлбэрийг Minamoto-д шилжүүл.
+SORA Nexus нь Iroha 3 дээр ажилладаг. Эхлээд Taira дээр програмаа хөгжүүлж туршина. Үндсэн сүлжээний тусдаа түлхүүр, шимтгэлд төлөх бодит XOR болон үйлдвэрлэлийн орчинд ажиллуулах зөвшөөрөл авсны дараа л клиент талын тэр тохиргоог Minamoto руу шилжүүлнэ.
 
-Энэ хичээл нь олон нийтийн SORA 3 сүлжээнд Iroha клиент хэрхэн тохируулахыг харуулдаг:
+Энэ заавар SORA Nexus-ийн нийтэд нээлттэй хоёр сүлжээнд Iroha клиентийг хэрхэн тохируулахыг харуулна.
 
 - Taira тестнет дээр `https://taira.sora.org`
 - Minamoto үндсэн сүлжээ `https://minamoto.sora.org` дээр
@@ -24,7 +24,7 @@ SORA 3 нь Iroha 3 ба SORA Nexus дээр суурилсан апп-д зор
 
 |Алхам| Taira Туршилтын сүлжээ| Minamoto Мэйннет |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|Сүлжээний төлөвийг уншиж эхлэх|Түлхүүргүй `/status` асуулга|Түлхүүргүй `/status` асуулга|
+|Сүлжээний төлөвийг уншиж эхлэх|Түлхүүргүй `/status` асуулга| Эхлээд үйлчилгээний хаяг болон TLS гэрчилгээг шалгана уу |
 |Өгөгдлийн санг сонгоно уу|Таны аппликейшн удирддаг гүйцэтгэлийн зам шаарддаггүй бол нийтийн `universal` ашигла.|Гол сүлжээний зөвшөөрөл авсны дараа л ижил дата орон зайг ашиглана уу|
 |Төлбөрийн хөрөнгө авах|Олон нийтийн Taira тестнет санхүүжүүлэх үйлчилгээг ашиглана уу|Санхүүжилт авсан Minamoto данс буюу батлагдсан сангийн урсгалаас XOR хүлээн авах|
 |Шалгалт бичдэг|Тестнетийн санхүүжсэн тестийг ашигла XOR|Туршилтын хэрэгслийг битгий ашигла; бичлэгүүд нь бодит XOR зарцуулдаг|
@@ -68,20 +68,10 @@ wonderland.universal
 
 ## 2. Олон нийтийн Torii API төгсгөлийн цэгийг шалгах {#_2-check-the-public-torii-endpoint}
 
-Криптографийн гарын үсэг үүсгэгчийг тохируулахын өмнө зорьсон API төгсгөл амьд байгаа эсэхийг шалгана уу.
-
-Taira-ийн хувьд:
+Taira туршилтын сүлжээний төлөвийг `curl` болон `jq` ашиглан шалгана уу. Үүнд түлхүүр эсвэл дотоод зангилаа шаардлагагүй.
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-Minamoto-ийн хувьд:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -94,7 +84,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-Mainnet-д зориулж `https://minamoto.sora.org/status` утгатай ижил тушаалыг ашиглана уу.
+Minamoto-г ашиглахаас өмнө үндсэн сүлжээний үйлчилгээний хаягийг оператороос лавлаж, TLS гэрчилгээ хостын нэртэй тохирч байгаа эсэхийг шалгана уу.
 
 ## Taira MCP Агентуудад зориулсан {#taira-mcp-for-agents}
 
@@ -197,19 +187,7 @@ Taira MCP-ийг олон нийтийн тестнетийн хяналтын �
 
 ## Одоо туршиж болох жишээ тоглоом {#toy-examples-you-can-try-now}
 
-Эдгээр жишээнүүд зөвхөн унших зориулалттай бөгөөд тэмдэглэгдээгүй бол бичиж болохгүй. Эдгээр нь түлхүүр үүсгэхээс өмнө ажиллаж, олон нийтийн сүлжээн дээр аюулгүй ажиллана.
-
-Тестнет Taira болон мэйннет Minamoto эрүүл мэндийг харьцуул:
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+Эдгээр жишээ нь дансны түлхүүр ашиглахгүйгээр Taira-аас өгөгдөл уншина.
 
 Taira-аар ил гаргасан олон нийтийн өгөгдлийн сангийн гүйцэтгэлийн зурвасуудыг жагсаана уу:
 
@@ -217,16 +195,7 @@ Taira-аар ил гаргасан олон нийтийн өгөгдлийн с
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-Үндсэн сүлжээний үзэлтийг авах шаардлагатай бол Minamoto-д ижил командыг ажиллуулна уу:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -235,24 +204,16 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -351,7 +312,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Гарах дансны ID-г нэг протокол стандартын дансны ID шаардагдах Nexus, API эсвэл CLI команд бүрт ашиглана уу, жишээлбэл Taira тестнет санхүүгийн үйлчилгээ `account_id`, үлдэгдлийн лавлагаа, хатуу дансны талбарууд, эсвэл овог нэрийн холболтууд. Тохирох нууц түлхүүрийг клиент тохиргоондоо хадгалах ба `[account].profile = "taira"` эсвэл `[account].profile = "minamoto"`-той адил нийтийн сүлжээг сонгоно уу.
+Гарах дансны ID-г нэг протокол стандартын дансны ID шаардагдах SORA Nexus, API эсвэл CLI команд бүрт ашиглана уу, жишээлбэл Taira тестнет санхүүгийн үйлчилгээ `account_id`, үлдэгдлийн лавлагаа, хатуу дансны талбарууд, эсвэл овог нэрийн холболтууд. Тохирох нууц түлхүүрийг клиент тохиргоондоо хадгалах ба `[account].profile = "taira"` эсвэл `[account].profile = "minamoto"`-той адил нийтийн сүлжээг сонгоно уу.
 
 ID үүсгэснээр дансаа санхүүжүүлсэн блокчэйн данс болгож чадахгүй. Taira дээр туршилтын сүлжээний санхүүжилтийн үйлчилгээ туршилтын сүлжээнд бичлэг хийх зориулалтаар дансыг үүсгэж, санхүүжүүлж чадна. Minamoto дээр зөвшөөрөгдсөн үндсэн сүлжээний бүртгэл эсвэл сангийн урсгалыг ашиглана.
 
@@ -555,6 +516,8 @@ Faucet нь зөвхөн Taira testnet-ийн хөрөнгөд зориулаг�
 
 ## 5. Minamoto Клиент тохиргоог үүсгэх {#_5-create-a-minamoto-client-config}
 
+Minamoto-г ашиглахаас өмнө үндсэн сүлжээний үйлчилгээний хаягийг оператороос лавлаж, TLS гэрчилгээ хостын нэртэй тохирч байгаа эсэхийг шалгана уу.
+
 Minamoto зориулж тусад нь түлхүүр хос хэрэглэ. Taira түлхүүрийг гол сүлжээнд дахин бүү ашигла.
 
 Бий болгох `minamoto.client.toml`:
@@ -575,7 +538,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-Дээд түвшний `chain` нь одоогийн Nexus үндсэн сүлжээний оюуны ID юм. `[account].profile = "minamoto"` нь Minamoto I105 сүлжээний ялгааг сонгодог; API төгсгөлийн хостын нэр болон сүлжээний ID нь үүнийг шууд сонгохгүй.
+Дээд түвшний `chain` нь одоогийн SORA Nexus үндсэн сүлжээний оюуны ID юм. `[account].profile = "minamoto"` нь Minamoto I105 сүлжээний ялгааг сонгодог; API төгсгөлийн хостын нэр болон сүлжээний ID нь үүнийг шууд сонгохгүй.
 
 Minamoto нийтийн түлхүүрийг гол сүлжээний урьдчилсан тэмдэгтэйгээр нэг протокол-стандартын I105 дансны ID болгон хөрвүүлэх:
 

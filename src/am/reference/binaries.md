@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /reference/binaries.md
-translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
+translation_source_hash: 1bf3f4697e44b3c8ef571eb9e5c0e301a1acbf76aa1c0666b3cd86e108bba6bf
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -50,27 +50,7 @@ cargo run --bin kagami -- --help
 
 ## Docker ምስል {#docker-image}
 
-የላይኛው ተፋሰስ የስራ ቦታ `kagami localnet` እና `kagami docker` ከተፈተሸው ኮድ ጋር የሚዛመዱ Docker Compose ፋይሎችን ለማመንጨት ይጠቀማል። የ `hyperledger/iroha:dev` ምስል ከእነዚያ የመነጩ ፋይሎች ጋር መጠቀም ይቻላል።
-
-CLI ን በእቃ መያዥያ ውስጥ ያሂዱ -
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-በ መያዣ ውስጥ Kagami ያሂዱ -
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-ለአውታረ መረብ አቻ ጅምር መጀመሪያ localnet ይፍጠሩ እና ፋይል ያዘጋጁ -
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+ከአንድ የምንጭ ኮድ ስሪት በተገነቡ ሁለትዮሽ ፋይሎች አራት አረጋጋጭ አንጓዎችን በDocker ለማስኬድ የ[አስጀምር Iroha 3](/am/get-started/launch-iroha.md) መመሪያን ይከተሉ።
 
 ## የትኛውን ሁለትዮሽ መጠቀም አለብኝ? {#which-binary-should-i-use}
 

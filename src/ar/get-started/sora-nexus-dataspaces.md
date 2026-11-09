@@ -1,16 +1,16 @@
 ---
 translation_locale: ar
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
+translation_source_hash: 8d3ec8cf5a6ee09d9c05dd63c018ebb656f9e340f9d30f9e335baf2101c39055
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
 
-# البناء على SORA 3: Taira و Minamoto {#build-on-sora-3-taira-and-minamoto}
+# التطوير على SORA Nexus باستخدام Taira وMinamoto {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 هو مسار النشر العام المواجه للتطبيق المبني على Iroha 3 و SORA Nexus. قم بالبناء والتدريب على Taira أولاً، ثم انقل نفس شكل العميل إلى Minamoto فقط عندما يكون لديك مفاتيح رئيسية منفصلة للشبكة الرئيسية، و XOR حقيقية للرسوم، والموافقة على الإنتاج.
+تعمل SORA Nexus على Iroha 3. طوّر تطبيقك واختبره أولاً على Taira. لا تنقل إعدادات العميل نفسها إلى Minamoto إلا بعد أن تحصل على مفاتيح مستقلة للشبكة الرئيسية، ورصيد حقيقي من XOR لدفع الرسوم، وموافقة على التشغيل في بيئة الإنتاج.
 
-يُوضح هذا الدليل كيفية تكوين عميل Iroha لشبكات SORA العامة 3:
+يوضح هذا الدليل كيفية إعداد عميل Iroha للعمل على الشبكتين العامتين لمنصة SORA Nexus.
 
 - Taira الشبكة التجريبية في `https://taira.sora.org`
 - Minamoto الشبكة الرئيسية على `https://minamoto.sora.org`
@@ -24,7 +24,7 @@ SORA 3 هو مسار النشر العام المواجه للتطبيق الم�
 
 |خطوة| Taira الشبكة التجريبية| Minamoto الشبكة الرئيسية |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|ابدأ في قراءة حالة الشبكة|استعلام `/status` بدون مفاتيح|استعلام `/status` بدون مفاتيح|
+|ابدأ في قراءة حالة الشبكة|استعلام `/status` بدون مفاتيح| تحقّق أولاً من عنوان الخدمة وشهادة TLS |
 |اختر فضاء البيانات|استخدم `universal` العام ما لم يكن تطبيقك بحاجة إلى مسار تنفيذ مُدار|استخدم نفس مساحة البيانات فقط بعد الموافقة على الشبكة الرئيسية|
 |الحصول على أصل الرسوم|استخدم خدمة تمويل شبكة الاختبار العامة Taira|استلام XOR من حساب Minamoto ممول أو تدفق خزينة معتمد|
 | عمليات كتابة اختبارية | استخدم XOR اختباريًا ممولًا من خدمة التمويل | لا تستخدم أدوات الاختبار؛ فعمليات الكتابة تنفق XOR حقيقيًا |
@@ -68,20 +68,10 @@ wonderland.universal
 
 ## 2. تحقق من نقطة النهاية العامة Torii API {#_2-check-the-public-torii-endpoint}
 
-تحقق من أن نقطة النهاية المستهدفة API تعمل قبل تكوين موقع التوقيع التشفيري.
-
-لـ Taira:
+استعلم عن حالة شبكة Taira التجريبية باستخدام `curl` و`jq`. يمكنك إجراء هذا الفحص من دون مفاتيح أو عقدة محلية.
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-لـ Minamoto:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -94,7 +84,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-استخدم نفس الأمر مع `https://minamoto.sora.org/status` للشبكة الرئيسية.
+قبل استخدام Minamoto، تأكّد من عنوان خدمة الشبكة الرئيسية لدى المشغّل، وتحقّق من أن شهادة TLS تطابق اسم المضيف.
 
 ## Taira MCP للوكلاء {#taira-mcp-for-agents}
 
@@ -197,19 +187,7 @@ verification result.
 
 ## أمثلة توضيحية يمكنك تجربتها الآن {#toy-examples-you-can-try-now}
 
-هذه الأمثلة للقراءة فقط ما لم يُذكر خلاف ذلك. تعمل قبل أن تقوم بتوليد المفاتيح وهي آمنة للتشغيل على كل من الشبكات العامة.
-
-قارن بين صحة testnet Taira و mainnet Minamoto:
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+تستعلم هذه الأمثلة عن بيانات Taira للقراءة فقط من دون استخدام مفاتيح الحساب.
 
 سرد مسارات تنفيذ فضاء البيانات العامة المعروضة بواسطة Taira:
 
@@ -217,16 +195,7 @@ done
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-قم بتشغيل نفس الأمر ضد Minamoto عندما تحتاج إلى عرض الشبكة الرئيسية:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -235,24 +204,16 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -351,7 +312,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-استخدم معرف الحساب الناتج أينما طلبت أي من الأوامر Nexus أو API أو CLI معرف حساب قياسي واحد للبروتوكول، على سبيل المثال خدمة تمويل اختبار الشبكة Taira `account_id`، استعلامات الرصيد، حقول الحساب الصارمة، أو ربط الأسماء المستعارة. احتفظ بالمفتاح الخاص المطابق في إعدادات العميل الخاصة بك، واختر نفس الشبكة العامة مع `[account].profile = "taira"` أو `[account].profile = "minamoto"`.
+استخدم معرف الحساب الناتج أينما طلبت أي من الأوامر SORA Nexus أو API أو CLI معرف حساب قياسي واحد للبروتوكول، على سبيل المثال خدمة تمويل اختبار الشبكة Taira `account_id`، استعلامات الرصيد، حقول الحساب الصارمة، أو ربط الأسماء المستعارة. احتفظ بالمفتاح الخاص المطابق في إعدادات العميل الخاصة بك، واختر نفس الشبكة العامة مع `[account].profile = "taira"` أو `[account].profile = "minamoto"`.
 
 إن توليد المعرف بحد ذاته لا ينشئ حسابًا ممولًا على السلسلة. على Taira، يمكن لخدمة تمويل الشبكة التجريبية إنشاء الحساب وتمويله من أجل الكتابات على الشبكة التجريبية. على Minamoto، استخدم تدفق الانضمام أو الخزينة المعتمد على الشبكة الرئيسية.
 
@@ -555,6 +516,8 @@ with urllib.request.urlopen(request) as res:
 
 ## 5. إنشاء إعدادات عميل Minamoto {#_5-create-a-minamoto-client-config}
 
+قبل استخدام Minamoto، تأكّد من عنوان خدمة الشبكة الرئيسية لدى المشغّل، وتحقّق من أن شهادة TLS تطابق اسم المضيف.
+
 استخدم زوج مفاتيح منفصل لـ Minamoto. لا تعيد استخدام مفاتيح Taira للشبكة الرئيسية.
 
 إنشاء `minamoto.client.toml`:
@@ -575,7 +538,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-المستوى الأعلى `chain` هو معرف سلسلة الشبكة الرئيسية الحالي Nexus. يختار `[account].profile = "minamoto"` مميز سلسلة Minamoto I105؛ نقطة النهاية API واسم المضيف ومعرّف السلسلة لا يختارانه ضمنيًا.
+المستوى الأعلى `chain` هو معرف سلسلة الشبكة الرئيسية الحالي SORA Nexus. يختار `[account].profile = "minamoto"` مميز سلسلة Minamoto I105؛ نقطة النهاية API واسم المضيف ومعرّف السلسلة لا يختارانه ضمنيًا.
 
 حوّل مفتاح عام Minamoto إلى معرف حساب I105 القياسي لبروتوكول واحد مع بادئة الشبكة الرئيسية:
 

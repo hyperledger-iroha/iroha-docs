@@ -23,7 +23,7 @@ Iroha 3 ڈیٹا ماڈل میں تعمیری کلیدی قدر کے اعداد 
 
 ## عددی اثاثہ جات اور NFTs {#numeric-assets-and-nfts}
 
-[اثاثہ جات ](/ur/blockchain/assets.md) اور [NFTs](/ur/blockchain/nfts.md) کا استعمال کریں جب ریاست قدر کی حامل ہو:
+اگر درج کی جانے والی حالت مالی قدر کی نمائندگی کرتی ہے تو [اثاثے](/ur/blockchain/assets.md) اور [NFTs](/ur/blockchain/nfts.md) استعمال کریں:
 
 - فنجیبل سالڈوں کے لئے عددی اثاثے
 - NFTs منفرد ملکیت کے ریکارڈوں کے لئے

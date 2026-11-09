@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /guide/best-practices/network-deployment.md
-translation_source_hash: 7839268b8c1f6700b0c26652e3308fa4e8acef4717d8527c609b6f30fb8c84ab
+translation_source_hash: 489b174b9bdd21a4c4c2c896911686a6020e2833c8808304cfd37a5bf31c7780
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -25,6 +25,8 @@ Bax [Şəbəkə Yerləşdirilməsi üçün Açarlar](/az/guide/configure/keys-fo
 - Minimum Bizans-səhv-tolerant yerləşdirmə üçün ən azı dörd təsdiqləyici istifadə edin.
 - Kapasitet planlamasında yoxlayıcıları müşahidəçilərdən ayırın. Müşahidəçilər səs vermir, təklif etmir və yığmır, amma hələ də yaddaş, blok sinxronizasiyası və şəbəkə keçidini istifadə edirlər.
 - Blokçeyn başlanğıcını, icraçısını və topologiya dəyişikliklərini tək paylı redaktələrdən daha çox koordinasiyalı köçlər kimi qəbul edin.
+
+Şəbəkəni Docker ilə başladıb bir təsdiqləyici dayandıqdan sonra bərpanı yoxlamaq üçün [dörd təsdiqləyicinin işə salınması təlimatını](/az/get-started/launch-iroha.md) izləyin.
 
 Baxın [blokçeyn genesis](/az/reference/genesis.md), [şəbəkə tərəfdaşının idarə edilməsi](/az/guide/configure/peer-management.md) və [Performans və Ölçülər](/az/guide/advanced/metrics.md#node-count-and-quorum).
 

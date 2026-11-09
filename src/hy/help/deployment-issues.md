@@ -1,10 +1,11 @@
 ---
 translation_locale: hy
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 3e4042ed4e92a8df567f3500a84cfe32a3d10e22663204b07423ff4cf0fd0c5c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
+
 # Տեղադրման խնդիրների լուծումը {#troubleshooting-deployment-issues}
 
 Այս բաժինը առաջարկում է խնդիրների լուծման խորհուրդներ Iroha 3 տեղակայումների համար: Եթե խնդիրը չի նկարագրվել այստեղ, կապվեք մեզ հետ [Telegram](https://t.me/hyperledgeriroha).
@@ -30,7 +31,7 @@ cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 - Torii եւ P2P նավահանգիստները դեռեւս չեն կապված այլ գործընթացի հետ:
 - Kura խանութների ցուցակը պատկանում է նույն շղթայի եւ չի կրկնվել մեկ այլ ցանցային պրոֆիլից:
 
-Օգտագործեք config tracing, երբ daemon- ը կարդում է ավելի քան մեկ TOML շերտ.
+Երբ դևմոնը կարդում է մի քանի TOML շերտ, միացրեք կազմաձևման աղբյուրների հետագծումը։
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
@@ -38,13 +39,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker եւ Համադրում {#docker-and-compose}
 
-Compose-ը ստեղծեք Kagami-ի ընթացիկ localnet ելքից, որպեսզի հրամանի տողի փաստարկներն ու կոնֆիգուրացիայի ֆայլերը համապատասխանեն ստուգված կոդին․
+Docker-ում նույն վերանայման գործարկվող ֆայլերով չորս վավերացնող հանգույց կառուցելու և գործարկելու համար հետևեք [Լանչում Iroha 3](/hy/get-started/launch-iroha.md) ուղեցույցին։
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Հավաքածուի գրացուցակից գործարկեք `python3 poc.py logs`՝ վավերացնող հանգույցների մատյանները դիտելու համար։
 
 Եթե կոմպոզատոր տեղադրումը սկսվում է, ապա կանգ է առնում, ստուգեք դեյմոնների օրագրերը ՝
 
@@ -53,7 +50,7 @@ docker compose -f ./docker-compose.yml up
 - գովազդված P2P հասցեներ, որոնք գործում են միայն կոնտեյներային ցանցում:
 - տեղական ծավալի վերաօգտագործումը վերականգնումից հետո
 
-Երբ փորձարկում եք նոր գեներեզ, հանեք հին Kura ծավալները, նախքան վերսկսելը: Հին բլոկների պահպանումը նոր գեենեզիսով թույլ կտա կրկնօրինակումը անհաջողություն ունենա.
+Նոր սկզբնաբլոկի համար հանգույցի պահոցը պետք է դատարկ լինի։ Նույն ցանցը վերագործարկելու համար գործարկեք `python3 poc.py down` և ապա `python3 poc.py up`։ `state/` գրացուցակը պահեք իր չորս Docker հատորների հետ միասին։
 
 ## Կուբերնետներ {#kubernetes}
 
@@ -66,9 +63,9 @@ Kubernetes-ի դեպքում յուրաքանչյուր վավերացնող դ�
 
 Եթե պոդը վերսկսվում է բազմիցս, համեմատեք պոդում ներկայացված կոնֆիգը սպասվող [`peer.template.toml`](/hy/reference/peer-config/index.md#template)-ի հետ եւ ստուգեք, թե արդյոք հանգույցն կրկնում է հին Kura տվյալները:
 
-## Սորայի պրոֆիլ {#sora-profile}
+## SORA Nexus-ի պրոֆիլ {#sora-profile}
 
-Հատուկ կամ տեղական Iroha 3 տեղակայումները, որոնք օգտագործում են Nexus, SoraFS կամ բազմակողմանի հոսքերը, պետք է սկսեն ստանդարտ դեյմոնը՝ Սորա պրոֆիլը հնարավորություն տալով.
+Եթե Iroha 3-ի մասնավոր կամ տեղային միջավայրում օգտագործվում են SORA Nexus-ը, SoraFS-ը կամ մի քանի ուղիներ, միացրեք այս պրոֆիլը և գործարկեք ստանդարտ ֆոնային ծառայությունը։
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

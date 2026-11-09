@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: f7f68228d219cc1c0ea5af128ba5dc956640df8a3d264ed3a4862447b3348a7d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -9,6 +9,8 @@ translation_engine: bing-translator-llm
 # Iroha 3 quraşdır {#install-iroha-3}
 
 Bu səhifə yuxarı axın `hyperledger-iroha/iroha` iş sahəsini istifadə edərək Iroha 3 alət dəsti və ikili faylların cari quraşdırma iş axışını əhatə edir.
+
+Birbaşa hostda quraşdırmaq üçün aşağıdakı Rust təlimatlarına əməl edin. Docker ilə dörd validatoru işə salmaq üçün [Iroha 3-ün işə salınması](/az/get-started/launch-iroha.md) təlimatından başlayın.
 
 ## 1. Tələblər {#_1-prerequisites}
 

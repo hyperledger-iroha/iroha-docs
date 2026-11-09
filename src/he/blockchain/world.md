@@ -13,13 +13,13 @@ translation_engine: nllb-200-ct2
 - Iroha [פרמטרים של הגדרות ](/he/guide/configure/client-configuration.md)
 - צמתים רשומים
 - שדות רשומים
-- טריגרים רשומים [ ](/he/blockchain/triggers.md)
-- חלקים רשומים [](/he/blockchain/permissions.md#permission-groups-roles)
+- [טריגרים](/he/blockchain/triggers.md) רשומים
+- [תפקידים](/he/blockchain/permissions.md#permission-groups-roles) רשומים
 - רשום [הגדרות של סימני רשות ](/he/blockchain/permissions.md#permission-tokens)
 - סימני רשות לכל החשבונות
 - [שרשרת מבקרי תקופת הפעולה ](/he/blockchain/permissions.md#runtime-validators)
 
-כאשר תחומים, צמתים או תפקידים נרשמים או לא נרשמים, `World` הוא המטרה של הוראת (לא) רישום [ ](/he/blockchain/instructions.md).
+כאשר רושמים או מסירים רישום של תחומים, צמתים או תפקידים, `World` הוא היעד של [הוראת הרישום או ביטול הרישום](/he/blockchain/instructions.md).
 
 ## תצוגת מצב העולם (WSV) {#world-state-view-wsv}
 

@@ -199,11 +199,11 @@ Streaming-specific codecs եւ entropy profiles- ը առանձին են հիմն
 - [Torii վերջնական կետեր](/hy/reference/torii-endpoints.md)
 - [Գենեզիսի հղում](/hy/reference/genesis.md)
 - [Տվյալների մոդելային սխեմա](/hy/reference/data-model-schema.md)
-- [JavaScript /TypeScript SDK ](/hy/guide/tutorials/javascript.md)
+- [JavaScript / TypeScript SDK](/hy/guide/tutorials/javascript.md)
 - [Python SDK](/hy/guide/tutorials/python.md)
 - [Swift եւ iOS SDK](/hy/guide/tutorials/swift.md)
 
 ## Վերածննդային հղումներ {#upstream-references}
 
 - [Norito ձեւաչափի բնութագրեր](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/norito.md)
-- [Norito տուփը README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)
+- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)

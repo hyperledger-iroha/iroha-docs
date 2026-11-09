@@ -1,16 +1,16 @@
 ---
 translation_locale: az
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
+translation_source_hash: 8d3ec8cf5a6ee09d9c05dd63c018ebb656f9e340f9d30f9e335baf2101c39055
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
 
-# SORA 3 üzərində qur: Taira və Minamoto {#build-on-sora-3-taira-and-minamoto}
+# Taira və Minamoto ilə SORA Nexus üzərində tətbiq hazırlamaq {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3, Iroha 3 və SORA Nexus üzərində qurulan, tətbiqlərə yönəlmiş ictimai yerləşdirmə xəttidir. Əvvəlcə Taira üzərində hazırlayın və məşq edin; yalnız ayrıca mainnet açarları, ödənişlər üçün həqiqi XOR və istehsal təsdiqi olduqda eyni müştəri quruluşunu Minamoto-ya köçürün.
+SORA Nexus Iroha 3 əsasında işləyir. Tətbiqinizi əvvəlcə Taira üzərində hazırlayın və sınaqdan keçirin. Eyni müştəri konfiqurasiyasını Minamoto şəbəkəsinə yalnız əsas şəbəkə üçün ayrıca açarlarınız, komissiya ödənişi üçün həqiqi XOR və istehsal mühitində fəaliyyət üçün təsdiqiniz olduqda köçürün.
 
-Bu dərslik göstərişləri verir necə Iroha müştərisini ictimai SORA 3 şəbəkələr üçün konfiqurasiya etməyə:
+Bu təlimat SORA Nexus-un iki açıq şəbəkəsi üçün Iroha müştərisinin necə konfiqurasiya edildiyini göstərir.
 
 - Taira testnet `https://taira.sora.org` ünvanında
 - Minamoto əsas şəbəkə `https://minamoto.sora.org` ünvanında
@@ -24,7 +24,7 @@ Bu dərslik göstərişləri verir necə Iroha müştərisini ictimai SORA 3 ş�
 
 |Addım| Taira Testnet | Minamoto Əsas şəbəkə |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|Şəbəkə vəziyyətini oxumağa başlayın|Açarlar olmadan Sorğu `/status`|Açarlar olmadan Sorğu `/status`|
+|Şəbəkə vəziyyətini oxumağa başlayın|Açarlar olmadan Sorğu `/status`| Əvvəlcə xidmət ünvanını və onun TLS sertifikatını yoxlayın |
 |Bir məlumat sahəsi seçin|Tətbiqinizə idarə olunan icra xətti lazım olmadıqca ictimai `universal`-dən istifadə edin|Yalnız əsas şəbəkə təsdiqindən sonra eyni məlumat sahəsindən istifadə edin|
 |Ödəniş aktivini əldə et|İctimai Taira testnet maliyyələşdirmə xidmətindən istifadə edin|Minamoto maliyyələşdirilmiş hesabdan və ya təsdiqlənmiş xəzinədarlıq axınından XOR alın|
 |Test yazır|Testnet-dən maliyyələşdirilmiş testi istifadə edin XOR|Test alətlərindən istifadə etməyin; yazılar həqiqi XOR xərcləyir|
@@ -68,20 +68,10 @@ wonderland.universal
 
 ## 2. İctimai Torii API nöqtəsini yoxlayın {#_2-check-the-public-torii-endpoint}
 
-Kriptoqrafik imzalayıcıyı konfiqurasiya etməzdən əvvəl təyinat API nöqtəsinin işlək olduğunu yoxlayın.
-
-Taira üçün:
+Taira sınaq şəbəkəsinin vəziyyətini `curl` və `jq` ilə yoxlayın. Bunun üçün açar və ya yerli qovşaq lazım deyil.
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-Minamoto üçün:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -94,7 +84,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-Əsas şəbəkə üçün `https://minamoto.sora.org/status` ilə eyni əmrdən istifadə edin.
+Minamoto-dan istifadə etməzdən əvvəl əsas şəbəkənin xidmət ünvanını operatorla dəqiqləşdirin və TLS sertifikatının host adına uyğun olduğunu yoxlayın.
 
 ## Taira MCP agentlər üçün {#taira-mcp-for-agents}
 
@@ -197,19 +187,7 @@ Taira MCP-ü ictimai testnet idarəetmə səthi kimi qəbul edin. Taira açarlar
 
 ## İndi Sınaqdan Keçirə Biləcəyiniz Toy Nümunələri {#toy-examples-you-can-try-now}
 
-Bu nümunələr qeyd olunmadığı təqdirdə yalnız oxunmaq üçündür. Onlar açarları yaratmadan əvvəl işləyir və həm ictimai şəbəkələrdə test etmək üçün təhlükəsizdir.
-
-Taira testnet və Minamoto mainnet sağlamlığını müqayisə et:
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+Bu nümunələr hesab açarları olmadan Taira-dan məlumat oxuyur.
 
 Taira tərəfindən göstərilən ictimai məlumat sahəsi icra zolaqlarını siyahıya alın:
 
@@ -217,16 +195,7 @@ Taira tərəfindən göstərilən ictimai məlumat sahəsi icra zolaqlarını si
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-Əsas şəbəkə görünüşünə ehtiyacınız olduqda eyni əmri Minamoto qarşı işlədin:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -235,24 +204,16 @@ Bir tablosu, botu və ya yerləşdirmə yoxlaması üçün kiçik bir Node.js v�
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -351,7 +312,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Alınan hesab ID-sindən hər yerdə istifadə edin, harada ki, Nexus, API və ya CLI əmri tək bir protokol-standart hesab ID-si tələb edir, məsələn, Taira testnet maliyyələşdirmə xidməti `account_id`, balans sorğuları, ciddi hesab sahələri və ya ləqəb bağlamaları. Uyğun olan şəxsi açarı müştəri konfiqurasiyanızda saxlayın və `[account].profile = "taira"` və ya `[account].profile = "minamoto"` ilə eyni ictimai şəbəkəni seçin.
+Alınan hesab ID-sindən hər yerdə istifadə edin, harada ki, SORA Nexus, API və ya CLI əmri tək bir protokol-standart hesab ID-si tələb edir, məsələn, Taira testnet maliyyələşdirmə xidməti `account_id`, balans sorğuları, ciddi hesab sahələri və ya ləqəb bağlamaları. Uyğun olan şəxsi açarı müştəri konfiqurasiyanızda saxlayın və `[account].profile = "taira"` və ya `[account].profile = "minamoto"` ilə eyni ictimai şəbəkəni seçin.
 
 ID yaratmaq özü-özlüyündə maliyyələşdirilmiş zəncir üzərində hesab yaratmır. Taira üzərində testnet maliyyələşdirmə xidməti testnet yazıları üçün hesab yaradıb maliyyələşdirə bilər. Minamoto üzərində isə təsdiqlənmiş mainnet qeydiyyat və ya xəzinə axınından istifadə edin.
 
@@ -555,6 +516,8 @@ Testnet maliyyələşdirmə xidməti yalnız Taira testnet vəsaitləri üçün 
 
 ## 5. Minamoto Müştəri Konfiqurasiyasını yaradın {#_5-create-a-minamoto-client-config}
 
+Minamoto-dan istifadə etməzdən əvvəl əsas şəbəkənin xidmət ünvanını operatorla dəqiqləşdirin və TLS sertifikatının host adına uyğun olduğunu yoxlayın.
+
 Minamoto üçün ayrı bir açar cütündən istifadə edin. Taira açarlarını mainnet üçün təkrar istifadə etməyin.
 
 `minamoto.client.toml` yarat
@@ -575,7 +538,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-Ən üst səviyyəli `chain` cari Nexus əsasnet zəncir ID-sidir. `[account].profile = "minamoto"` Minamoto I105 zəncir fərqləndiricisini seçir; API son nöqtə host adı və zəncir ID-si onu dolayı yolla seçmir.
+Ən üst səviyyəli `chain` cari SORA Nexus əsasnet zəncir ID-sidir. `[account].profile = "minamoto"` Minamoto I105 zəncir fərqləndiricisini seçir; API son nöqtə host adı və zəncir ID-si onu dolayı yolla seçmir.
 
 Minamoto açıq açarını əsas şəbəkə prefiksi ilə onun tək protokol-standart I105 hesab ID-sinə çevirin:
 

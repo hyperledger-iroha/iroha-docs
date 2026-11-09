@@ -1,16 +1,16 @@
 ---
 translation_locale: hy
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
+translation_source_hash: 8d3ec8cf5a6ee09d9c05dd63c018ebb656f9e340f9d30f9e335baf2101c39055
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Կառուցեք SORA 3-ի վրա: Taira եւ Minamoto {#build-on-sora-3-taira-and-minamoto}
+# Մշակում SORA Nexus-ում՝ Taira-ի և Minamoto-ի միջոցով {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 ծրագրի ուղղված հանրային տեղակայման ուղին է կառուցվել Iroha 3 եւ SORA Nexus. Կառուցել եւ փորձել Taira նախ, ապա տեղափոխել նույն հաճախորդի ձեւը Minamoto միայն այն դեպքում, երբ դուք ունեք առանձին mainnet բանալիներ, իրական XOR վճարների եւ արտադրության հաստատման համար:
+SORA Nexus-ն աշխատում է Iroha 3-ի հիման վրա։ Նախ մշակեք և փորձարկեք հավելվածը Taira-ում։ Հաճախորդի նույն կարգավորումը Minamoto տեղափոխեք միայն այն ժամանակ, երբ ունենաք հիմնական ցանցի առանձին բանալիներ, վճարները մարելու համար իրական XOR և արտադրական միջավայրում աշխատելու թույլտվություն։
 
-Այս դասընթացը ցույց է տալիս, թե ինչպես կարգավորել Iroha հաճախորդը հանրային SORA 3 ցանցերի համար.
+Այս ուղեցույցը ցույց է տալիս, թե ինչպես կարգավորել Iroha հաճախորդը SORA Nexus-ի երկու հանրային ցանցերի համար։
 
 - Taira փորձարկման ցանցը՝ `https://taira.sora.org`
 - Minamoto գլխավոր ցանց՝ `https://minamoto.sora.org`
@@ -24,7 +24,7 @@ SORA 3 ծրագրի ուղղված հանրային տեղակայման ուղ�
 
 |Քայլ |Taira Testnet |Minamoto Mainnet |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|Սկսեք կարդալ ցանցի վիճակը |Հարցում `/status` առանց բանալիների |Հարցում `/status` առանց բանալիների |
+|Սկսեք կարդալ ցանցի վիճակը |Հարցում `/status` առանց բանալիների | Նախ ստուգեք ծառայության հասցեն և դրա TLS վկայագիրը |
 |Ընտրեք տվյալների տարածք |Օգտագործեք հանրային `universal` , եթե ձեր հավելվածը չի պահանջում կառավարվող երթուղին |Օգտագործեք նույն տվյալների տարածքը միայն հիմնական ցանցի հաստատումից հետո: |
 |Ստացեք վճարային ակտիվ:|Օգտագործեք հանրային Taira faucet |Ստացեք XOR ֆինանսավորվող Minamoto հաշիվից կամ հաստատված գանձարանային հոսքից |
 |Թեստը գրում է |Օգտագործեք faucet ֆինանսավորվող փորձարկում XOR |Օգտագործել փորձարկման գործիքներ, գրում է ծախսել իրական XOR |
@@ -68,20 +68,10 @@ wonderland.universal
 
 ## 2. Ստուգեք հանրային Torii վերջնական կետը {#_2-check-the-public-torii-endpoint}
 
-Ստուգեք, որ թիրախային վերջնական կետը կենդանի է նախքան ստորագրողի կազմաձեւումը:
-
-Taira համար՝
+Ստուգեք Taira փորձնական ցանցի վիճակը `curl` և `jq` գործիքներով։ Ստուգման համար բանալիներ կամ տեղային հանգույց անհրաժեշտ չեն։
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-Minamoto համար՝
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -94,7 +84,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-Օգտագործեք նույն հրամանը `https://minamoto.sora.org/status` հիմնական ցանցի համար:
+Նախքան Minamoto-ն օգտագործելը՝ օպերատորի հետ ճշտեք հիմնական ցանցի ծառայության հասցեն և ստուգեք, որ TLS վկայագիրը համապատասխանում է հոսթի անվանը։
 
 ## Taira MCP գործակալների համար {#taira-mcp-for-agents}
 
@@ -138,7 +128,7 @@ curl -fsS https://taira.sora.org/v1/mcp \
 5. Պահանջում է գործակալին զեկուցել ցանցի արմատը, շղթան, լիազոր հաշվի հաշիվը, հրահանգների ամփոփումը, վճարային ակտիվը եւ սպասվող վիճակի փոփոխությունը նախքան ցանկացած գործարք ներկայացնելուց:
 6. Վերանայեք ստեղծված կոդը գաղտնի կառավարման, կրկին փորձելու վարքագծի, idempotency- ի եւ մերժման կառավարման համար ՝ այն առաջադրելուց առաջ CI կամ հիմնական ցանցի աշխատանքային հոսքերի վրա:
 
-Օգտակար միայն ընթերցվող MCP գործիքները մշակման համար ներառում են հաշիվների ակտիվների որոնում, alias լուծումը, բլոկային որոնում, գործարքների որոնում, փոխանցումների ցուցակներ եւ մշակման շղթայի կարգավիճակի ստուգումներ: Օգտագործեք դրանք վստահություն ստեղծելու համար նախքան ցանկացած ստորագրված օգնական ծանրաբեռնվածություն ուղարկելը.
+Մշակման ընթացքում MCP-ի միայն ընթերցման հրամաններով կարելի է գտնել հաշվի ակտիվները, որոշել այլանվանը համապատասխանող գրառումը, գտնել բլոկ կամ գործարք, ստանալ գործարքների ցանկը և ստուգել մշակման ընթացքի վիճակը։ Կատարեք այս ստուգումները նախքան ստորագրված տվյալներ ուղարկելը։
 
 ```text
 Use Taira MCP as a read-only inspector while developing this Iroha feature.
@@ -197,19 +187,7 @@ Taira MCP-ը վերաբերվում է որպես հանրային փորձար�
 
 ## Խաղալի օրինակներ, որոնք կարող եք փորձել հիմա {#toy-examples-you-can-try-now}
 
-Այս օրինակները միայն ընթերցելի են, եթե նշված չլինեն: Նրանք աշխատում են նախքան բանալիները ստեղծելը եւ անվտանգ են երկու հանրային ցանցերի դեմ գործելու համար.
-
-Համեմատեք Taira փորձարկման ցանցի եւ Minamoto գլխավոր ցանցի առողջությունը.
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+Այս օրինակներում Taira-ի տվյալները կարդացվում են առանց հաշվի բանալիների։
 
 Ցուցադրել Taira հրապարակային տվյալների տարածքի ուղիները.
 
@@ -217,16 +195,7 @@ done
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-Նույն հրամանը գործարկեք Minamoto-ի դեմ, երբ ձեզ անհրաժեշտ է հիմնական ցանցային տեսքը.
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -235,24 +204,16 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -309,7 +270,7 @@ iroha --config ./taira.client.toml taira write-canary \
   --json
 ```
 
-Canary- ն ներկայացնում է ստորագրված ping, սպասում է հաստատմանը եւ գրում է runtime signer config- ը, երբ տրամադրվում է `--write-config`: Taira հանրային փորձարկման ցանց է, այնպես որ հերթի հագեցվածությունը կարող է թույլ տալ, որ ստորագրված պինգը ձախողվի նույնիսկ այն ժամանակ, երբ ինքնուրույն faucet- ը աշխատում է: Եթե `taira doctor`- ն հայտնում է հագեցած հերթի մասին կամ կանարին վերադարձնում է `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`, սպասեք եւ կրկին փորձեք, նախքան այն դիտարկելը որպես հաճախորդի կազմավորման սխալ.
+Ստուգիչ հրամանն ուղարկում է ստորագրված փորձնական հաղորդագրություն, սպասում հաստատման և `--write-config` պարամետրի դեպքում գրում է ստորագրողի կազմաձևումը։ Taira-ն հանրային փորձնական ցանց է․ հերթի հագեցման դեպքում փորձնական հաղորդագրությունը կարող է ձախողվել, նույնիսկ երբ փորձնական միջոցներ տրամադրող ծառայությունն աշխատում է։ Եթե `taira doctor`-ը հայտնում է հերթի հագեցման մասին կամ ստացվում է `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`, սպասեք և կրկնեք փորձը՝ նախքան դա հաճախորդի կազմաձևման սխալ համարելը։
 
 Առանց վերահսկողության ծխի փորձարկումների համար կաթիլը փակեք սահմանված կրկնակի փորձարկման փուլում.
 
@@ -351,7 +312,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Օգտագործեք ստացված հաշիվը ID այն դեպքում, երբ Nexus API կամ CLI հրամանը պահանջում է կանոնիկ հաշիվ ID, օրինակ՝ Taira faucet `account_id`, մնացորդի հարցումները, խիստ հաշիվների դաշտերը կամ alias- ի պարտավորությունները: Պահպանեք համապատասխան գաղտնի բանալին ձեր հաճախորդի կարգավորման մեջ եւ ընտրեք նույն հանրային ցանցը `[account].profile = "taira"` կամ `[account].profile = "minamoto"`:
+Օգտագործեք ստացված հաշիվը ID այն դեպքում, երբ SORA Nexus API կամ CLI հրամանը պահանջում է կանոնիկ հաշիվ ID, օրինակ՝ Taira faucet `account_id`, մնացորդի հարցումները, խիստ հաշիվների դաշտերը կամ alias- ի պարտավորությունները: Պահպանեք համապատասխան գաղտնի բանալին ձեր հաճախորդի կարգավորման մեջ եւ ընտրեք նույն հանրային ցանցը `[account].profile = "taira"` կամ `[account].profile = "minamoto"`:
 
 ID ստեղծելը ինքնուրույն չի ստեղծում ֆինանսավորվող շղթայի վրա հաշիվ: Taira -ի վրա faucet կարող է ստեղծել եւ ֆինանսավորել թեստային ցանցի գրառումների համար հաշիվը: Minamoto -ին, օգտագործեք հաստատված հիմնական ցանցի ներմուծում կամ գանձարանի հոսք:
 
@@ -555,6 +516,8 @@ with urllib.request.urlopen(request) as res:
 
 ## 5. Ստեղծեք Minamoto հաճախորդի կարգավորումը {#_5-create-a-minamoto-client-config}
 
+Նախքան Minamoto-ն օգտագործելը՝ օպերատորի հետ ճշտեք հիմնական ցանցի ծառայության հասցեն և ստուգեք, որ TLS վկայագիրը համապատասխանում է հոսթի անվանը։
+
 Օգտագործեք Minamoto համար առանձին կոճակային զույգ, իսկ հիմնական ցանցի համար մի օգտագործեք Taira կոճակները.
 
 Ստեղծեք `minamoto.client.toml`:
@@ -575,7 +538,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-Բարձրագույն մակարդակը `chain` է հոսքը Nexus հիմնական ցանցի շղթան ID. `[account].profile = "minamoto"` ընտրում է Minamoto I105 շղթայի խտրական; վերջային կետի հյուրընկալող անունն ու շղթան ID մի ընտրեք այն անուղղակիորեն:
+Բարձրագույն մակարդակը `chain` է հոսքը SORA Nexus հիմնական ցանցի շղթան ID. `[account].profile = "minamoto"` ընտրում է Minamoto I105 շղթայի խտրական; վերջային կետի հյուրընկալող անունն ու շղթան ID մի ընտրեք այն անուղղակիորեն:
 
 Փոխակերպել Minamoto հանրային բանալին իր կանոնիկ I105 հաշիվի մեջ ID ՝ հիմնական ցանցի նախադրյալով.
 
@@ -667,7 +630,7 @@ iroha --config ./operator.client.toml app nexus lane-report --summary
 - համապատասխանող երթուղային մուտք կամ գոյություն ունեցող երթուղի նշանակում
 - տվյալների տարածքը `fault_tolerance`
 - երթուղային կանոններ հանձնարարականների կամ հաշիվի շրջանակների համար, որոնք պետք է վայրէջք կատարեն այնտեղ
-- Space Directory-ի մանիֆեստ կամ տեղակայման համարժեք ապացույց, երբ տվյալների տիրույթը տրամադրում է UAID հնարավորություններ
+- տարածքների տեղեկատուի մանիֆեստ կամ տեղակայման համարժեք ապացույց, եթե տվյալների տարածքը տրամադրում է UAID հնարավորություններ
 - Վավերացողի, համապատասխանության, կարգավորման եւ վերահսկողության քաղաքականության կառավարման հաստատումը
 
 Վերանայելի կոնֆիգերի կտորը նման է հետեւյալին.

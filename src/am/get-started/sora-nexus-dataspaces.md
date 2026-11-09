@@ -1,16 +1,16 @@
 ---
 translation_locale: am
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
+translation_source_hash: 8d3ec8cf5a6ee09d9c05dd63c018ebb656f9e340f9d30f9e335baf2101c39055
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
 
-# በ SORA 3 Taira እና Minamoto ላይ ይገንቡ {#build-on-sora-3-taira-and-minamoto}
+# በTaira እና Minamoto በመጠቀም በSORA Nexus ላይ መገንባት {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 በ Iroha 3 እና SORA Nexus ላይ የተገነባው መተግበሪያን የሚመለከት የህዝብ ማሰማራት ትራክ ነው። መጀመሪያ በ Taira ላይ ይገንቡ እና ይለማመዱ፣ ከዚያ ተመሳሳዩን የደንበኛ ቅርፅ ወደ Minamoto ያንቀሳቅሱት የተለየ የዋና መረብ ቁልፎች፣ እውነተኛ XOR ለክፍያ እና ለምርት ማጽደቅ ሲኖርዎት ብቻ ነው።
+SORA Nexus በIroha 3 ላይ ይሠራል። መተግበሪያዎን መጀመሪያ በTaira ላይ ይገንቡ እና ይፈትሹ። ለዋናው አውታረ መረብ የተለዩ ቁልፎች፣ ለክፍያ የሚሆን እውነተኛ XOR እና በምርት አካባቢ የመሥራት ፈቃድ ሲኖርዎት ብቻ ተመሳሳዩን የደንበኛ ውቅር ወደ Minamoto ያዛውሩ።
 
-ይህ አጋዥ ስልጠና የ Iroha ደንበኛን ለህዝብ SORA 3 አውታረ መረቦች እንዴት ማዋቀር እንደሚቻል ያሳያል -
+ይህ መመሪያ ለሁለቱ የ SORA Nexus ይፋዊ አውታረ መረቦች የIroha ደንበኛን እንዴት ማዋቀር እንደሚቻል ያሳያል።
 
 - Taira የሙከራ መረብ በ `https://taira.sora.org`
 - Minamoto ዋና መረብ በ `https://minamoto.sora.org`
@@ -24,7 +24,7 @@ SORA 3 በ Iroha 3 እና SORA Nexus ላይ የተገነባው መተግበሪ�
 
 |ደረጃ|Taira የሙከራ መረብ|Minamoto ዋና መረብ|
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|የአውታረ መረብ ሁኔታን ማንበብ ይጀምሩ|መጠይቅ `/status` ያለ ቁልፎች|መጠይቅ `/status` ያለ ቁልፎች|
+|የአውታረ መረብ ሁኔታን ማንበብ ይጀምሩ|መጠይቅ `/status` ያለ ቁልፎች| በመጀመሪያ የአገልግሎቱን አድራሻና የTLS ምስክር ወረቀት ያረጋግጡ |
 |የውሂብ ቦታ ይምረጡ|መተግበሪያዎ የሚተዳደር የማስፈጸሚያ መስመር ካልፈለገ በስተቀር ይፋዊ `universal` ይጠቀሙ|ተመሳሳዩን የውሂብ ቦታ ይጠቀሙ ከዋና ኔት ፈቃድ በኋላ ብቻ|
 |የክፍያ ንብረት ያግኙ|የህዝብ Taira የቴስትኔት የገንዘብ ድጋፍ አገልግሎትን ይጠቀሙ|XOR በገንዘብ ከተደገፈ Minamoto ሂሳብ ወይም ከተፈቀደ የግምጃ ቤት ፍሰት ይቀበሉ|
 | የሙከራ ክዋኔዎች | በገንዘብ አገልግሎቱ የተሞላ የሙከራ XOR ይጠቀሙ | የሙከራ መሣሪያ አይጠቀሙ፤ ክዋኔዎቹ እውነተኛ XOR ያወጣሉ |
@@ -68,20 +68,10 @@ wonderland.universal
 
 ## 2. ይፋዊ Torii API የመጨረሻ ነጥብ ያረጋግጡ {#_2-check-the-public-torii-endpoint}
 
-ምስጠራ ፈራሚን ከማዋቀርዎ በፊት የዒላማው API የመጨረሻ ነጥብ ቀጥታ መሆኑን ያረጋግጡ።
-
-ለ Taira
+የTaira የሙከራ አውታረ መረብ ሁኔታን በ`curl` እና `jq` ይፈትሹ። ለዚህ ምርመራ ቁልፎች ወይም አካባቢያዊ ኖድ አያስፈልጉም።
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-ለ Minamoto
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -94,7 +84,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-ለዋና መረብ ከ `https://minamoto.sora.org/status` ጋር ተመሳሳይ ትዕዛዝ ይጠቀሙ።
+Minamotoን ከመጠቀምዎ በፊት የዋናውን አውታረ መረብ አገልግሎት አድራሻ ከኦፕሬተሩ ጋር ያረጋግጡ፤ የTLS ምስክር ወረቀቱ ከአስተናጋጁ ስም ጋር መዛመዱንም ይፈትሹ።
 
 ## Taira MCP ለወኪሎች {#taira-mcp-for-agents}
 
@@ -197,19 +187,7 @@ Taira MCP ን እንደ ይፋዊ የቴስትኔት መቆጣጠሪያ ወለ�
 
 ## አሁን ሊሞክሯቸው የሚችሏቸው የአሻንጉሊት ምሳሌዎች {#toy-examples-you-can-try-now}
 
-እነዚህ ምሳሌዎች ካልተጠቀሱ በስተቀር ተነባቢ-ብቻ ናቸው። ቁልፎችን ከማመንጨትዎ በፊት ይሰራሉ እና በሁለቱም የህዝብ አውታረ መረቦች ላይ ለመስራት ደህና ናቸው።
-
-Taira testnet እና Minamoto mainnet healthን ያወዳድሩ -
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+እነዚህ ምሳሌዎች የመለያ ቁልፎችን ሳይጠቀሙ ከTaira መረጃ ያነባሉ።
 
 በ Taira የተጋለጡትን ይፋዊ የውሂብ ቦታ ማስፈጸሚያ መስመሮችን ይዘርዝሩ -
 
@@ -217,16 +195,7 @@ done
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-የዋና መረብ እይታ በሚፈልጉበት ጊዜ በ Minamoto ላይ ተመሳሳይ ትዕዛዝ ያሂዱ -
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -235,24 +204,16 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -351,7 +312,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-የ Nexus፣ API ወይም CLI ትዕዛዝ አንድ ነጠላ ፕሮቶኮል-መደበኛ መለያ መታወቂያ በሚጠይቅበት ቦታ ሁሉ የተገኘውን የመለያ መታወቂያ ይጠቀሙ፣ ለምሳሌ የ Taira የቴስትኔት የገንዘብ ድጋፍ አገልግሎት `account_id`፣ ቀሪ ሒሳብ መጠይቆች፣ ጥብቅ የመለያ መስኮች ወይም ተለዋጭ ስም ማሰሪያዎች። የሚዛመደውን የግል ቁልፍ በደንበኛ ውቅረትዎ ውስጥ ያስቀምጡት እና ከ`[account].profile = "taira"` ወይም `[account].profile = "minamoto"` ጋር ተመሳሳይ የህዝብ አውታረ መረብ ይምረጡ።
+የ SORA Nexus፣ API ወይም CLI ትዕዛዝ አንድ ነጠላ ፕሮቶኮል-መደበኛ መለያ መታወቂያ በሚጠይቅበት ቦታ ሁሉ የተገኘውን የመለያ መታወቂያ ይጠቀሙ፣ ለምሳሌ የ Taira የቴስትኔት የገንዘብ ድጋፍ አገልግሎት `account_id`፣ ቀሪ ሒሳብ መጠይቆች፣ ጥብቅ የመለያ መስኮች ወይም ተለዋጭ ስም ማሰሪያዎች። የሚዛመደውን የግል ቁልፍ በደንበኛ ውቅረትዎ ውስጥ ያስቀምጡት እና ከ`[account].profile = "taira"` ወይም `[account].profile = "minamoto"` ጋር ተመሳሳይ የህዝብ አውታረ መረብ ይምረጡ።
 
 መታወቂያውን ማመንጨት በራሱ በገንዘብ የተደገፈ በሰንሰለት ላይ መለያ አይፈጥርም። በ Taira ላይ፣ የቴስትኔት የገንዘብ ድጋፍ አገልግሎት ለቴስትኔት የመጻፍ ክዋኔዎች መለያውን መፍጠር እና መደገፍ ይችላል። በ Minamoto ላይ፣ የተፈቀደ የዋና መረብ መሳፈሪያ ወይም የግምጃ ቤት ፍሰት ይጠቀሙ።
 
@@ -555,6 +516,8 @@ with urllib.request.urlopen(request) as res:
 
 ## 5. የ Minamoto የደንበኛ ውቅር ይፍጠሩ {#_5-create-a-minamoto-client-config}
 
+Minamotoን ከመጠቀምዎ በፊት የዋናውን አውታረ መረብ አገልግሎት አድራሻ ከኦፕሬተሩ ጋር ያረጋግጡ፤ የTLS ምስክር ወረቀቱ ከአስተናጋጁ ስም ጋር መዛመዱንም ይፈትሹ።
+
 ለ Minamoto የተለየ የቁልፍ ጥንድ ይጠቀሙ። ለዋና መረብ Taira ቁልፎችን እንደገና አይጠቀሙ።
 
 `minamoto.client.toml` ይፍጠሩ
@@ -575,7 +538,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-ከፍተኛው ደረጃ `chain` የአሁኑ Nexus የዋና መረብ ሰንሰለት መታወቂያ ነው። `[account].profile = "minamoto"` የ Minamoto I105 ሰንሰለት መለያን ይመርጣል; የ API የመጨረሻ ነጥብ አስተናጋጅ ስም እና የሰንሰለት መታወቂያ በተዘዋዋሪ አይመርጡትም።
+ከፍተኛው ደረጃ `chain` የአሁኑ SORA Nexus የዋና መረብ ሰንሰለት መታወቂያ ነው። `[account].profile = "minamoto"` የ Minamoto I105 ሰንሰለት መለያን ይመርጣል; የ API የመጨረሻ ነጥብ አስተናጋጅ ስም እና የሰንሰለት መታወቂያ በተዘዋዋሪ አይመርጡትም።
 
 የ Minamoto የህዝብ ቁልፍን ከዋና መረብ ቅድመ ቅጥያ ጋር ወደ ነጠላ ፕሮቶኮል-ስታንዳርድ I105 መለያ መታወቂያ ይለውጡ
 

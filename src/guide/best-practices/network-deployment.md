@@ -30,6 +30,8 @@ See
 - Treat genesis, executor, and topology changes as coordinated migrations
   rather than single-peer edits.
 
+Follow the [four-validator launch guide](/get-started/launch-iroha.md) to start the network with Docker and test recovery after one validator stops.
+
 See [Genesis](/reference/genesis.md),
 [Peer Management](/guide/configure/peer-management.md), and
 [Performance and Metrics](/guide/advanced/metrics.md#node-count-and-quorum).

@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: 9d153d9cb8ce0341b35ba5a7e3823198e58464768e2a9a92ff8a5723f85e9351
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -16,27 +16,9 @@ translation_engine: bing-translator-llm
 
 የ Docker Compose ስሪት Iroha ሲጠቀሙ፣ ከአውታረ መረብ አቻ ኮንቴይነሮች አንዱ በ`Failed to deserialize raw genesis block` ስህተት ያልተሳካ ችግር ሊያጋጥምዎት ይችላል። ይህ ማለት ብዙውን ጊዜ የኔትወርክ አቻ፣ የተፈረመ የብሎክቼይን ጀነሲስ ግብይት እና የመነጨ ውቅር በተለያዩ Iroha ክለሳዎች ወይም መገለጫዎች ተዘጋጅቷል ማለት ነው።
 
-በእነዚህ ደረጃዎች ውድቀቱን ያረጋግጡ
+የአረጋጋጮቹን መዝገቦች ለማየት ከመሣሪያው ማውጫ `python3 poc.py logs` ያሂዱ። ከአንድ የምንጭ ኮድ ስሪት በተገነቡ ሁለትዮሽ ፋይሎች አራት አረጋጋጭ አንጓዎችን በDocker ለማስኬድ የ[አስጀምር Iroha 3](/am/get-started/launch-iroha.md) መመሪያን ይከተሉ።
 
-1. የአሁኑን ኮንቴይነሮች ለመፈተሽ `docker ps` ይጠቀሙ። በተፈጠረው መገለጫ ላይ በመመስረት ብዙውን ጊዜ `hyperledger/iroha:dev` ኮንቴይነሮችን ያያሉ። ነባሪው Docker Compose መገለጫ አራት የአውታረ መረብ አቻ ኮንቴይነሮችን ይዟል፣ ምንም እንኳን የእርስዎ የመነጨ `docker-compose.yml` ሊለያይ ይችላል።
-
-2. ምዝግብ ማስታወሻዎቹን ይፈትሹ እና `Failed to deserialize raw genesis block` ስህተቱን ይፈልጉ። የእርስዎን Iroha በዴሞን ሁነታ በ`docker compose up -d` ከጀመሩ `docker compose logs` ትዕዛዝን ይጠቀሙ።
-
-እንዲህ ዓይነቱን ችግር መላ ለመፈለግ የሚቻልበት መንገድ በ Iroha አጠቃቀም ላይ የተመሰረተ ነው. ይህ መሰረታዊ ማሳያ ከሆነ እና የአውታረ መረብ አቻ ውሂብን ማቆየት ካላስፈለገዎት ተዛማጅ localnet ወይም Docker Compose ጥቅልን ከ Kagami ጋር እንደገና ያድሱ -
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
-```
-
-ከዚያ የድሮውን የእቃ መያዢያ ሁኔታ ያስወግዱ እና እንደገና ከተፈጠረው `genesis.signed.nrt`፣ የአውታረ መረብ አቻ `config.toml` ፋይሎች እና `client.toml` እንደገና ያስጀምሩ።
-
-የ Iroha ምሳሌ ውሂብን ወደነበረበት መመለስ ከፈለጉ የሚከተሉትን ያድርጉ
-
-1. ውሂቡን ከመጀመሪያው (ያልተሳካ) የአውታረ መረብ አቻ የሚገለብጠውን ሁለተኛውን Iroha የአውታረ መረብ አቻ ያገናኙ።
-2. አዲሱ የአውታረ መረብ አቻ ውሂቡን ከመጀመሪያው የአውታረ መረብ አቻ ጋር እስኪያመሳስል ድረስ ይጠብቁ።
-3. አዲሱን የአውታረ መረብ አቻ ንቁ ይተውት።
-4. የመጀመሪያውን የአውታረ መረብ አቻ የብሎክቼይን ጀነሲስ እና ውቅር ፋይሎችን እንደ የተቀናጀ ፍልሰት አካል ብቻ ያዘምኑ።
+ተመሳሳዩን አውታረ መረብ እንደገና ለማስኬድ `python3 poc.py down` እና ከዚያ `python3 poc.py up` ያሂዱ። `state/` ከአራቱ የDocker ማከማቻ ጥራዞች ጋር ያስቀምጡ።
 
 ::: info
 

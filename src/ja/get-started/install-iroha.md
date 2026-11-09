@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: f7f68228d219cc1c0ea5af128ba5dc956640df8a3d264ed3a4862447b3348a7d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -9,6 +9,8 @@ translation_engine: bing-translator-llm
 # Iroha 3 をインストールする {#install-iroha-3}
 
 このページでは、上流の`hyperledger-iroha/iroha`ワークスペースを使用した Iroha 3 ツールチェーンとバイナリの現在のインストールワークフローについて説明します。
+
+ホストに直接インストールする場合は、このページの Rust の手順に従ってください。Docker でバリデータを 4 台起動する場合は、[Iroha 3 を起動する](/ja/get-started/launch-iroha.md)から始めてください。
 
 ## 1. 前提条件 {#_1-prerequisites}
 

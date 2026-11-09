@@ -1,10 +1,11 @@
 ---
 translation_locale: ur
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 3e4042ed4e92a8df567f3500a84cfe32a3d10e22663204b07423ff4cf0fd0c5c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
+
 # تعیناتی کے مسائل کا حل {#troubleshooting-deployment-issues}
 
 اس سیکشن میں Iroha 3 تعیناتی کے لئے خرابیوں کا سراغ لگانے کے نکات پیش کیے گئے ہیں۔ اگر آپ کو جو مسئلہ درپیش ہے وہ یہاں بیان نہیں کیا گیا ہے تو ، ہم سے رابطہ کریں [ٹیلیگرام](https://t.me/hyperledgeriroha).
@@ -38,13 +39,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker اور کمپوز {#docker-and-compose}
 
-تخلیق کریں موجودہ Kagami لوکل نیٹ آؤٹ پٹ سے تحریر کریں تاکہ کمانڈ لائن کی دلیلیں اور ترتیب فائلیں چیک آؤٹ کوڈ سے ملیں:
+ایک ہی نظرثانی سے بنی بائنری فائلوں کے ساتھ Docker میں چار توثیقی نوڈ بنانے اور چلانے کے لیے [لانچ Iroha 3](/ur/get-started/launch-iroha.md) کی ہدایات پر عمل کریں۔
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+کٹ کی ڈائریکٹری میں `python3 poc.py logs` چلائیں تاکہ توثیقی نوڈز کے لاگ دیکھ سکیں۔
 
 اگر کمپوز کی تعیناتی شروع ہوتی ہے اور پھر اسٹال ہوجاتی ہے تو ، ڈیمون لاگس کو چیک کریں تاکہ:
 
@@ -53,7 +50,7 @@ docker compose -f ./docker-compose.yml up
 - P2P ایڈریسز جو صرف کنٹینر نیٹ ورک کے اندر کام کرتی ہیں۔
 - regenerating genesis کے بعد مقامی حجم کا دوبارہ استعمال
 
-ایک نئی جینیس کی جانچ کرتے وقت ، اسٹیک کو دوبارہ شروع کرنے سے پہلے پرانے Kura حجم کو ہٹا دیں۔ نئے جینیس کے ساتھ پرانے بلاک اسٹوریج رکھنے سے دوبارہ پلے ناکام ہوجائے گا۔
+نئے جینیسس بلاک کے لیے نوڈ کا ذخیرہ خالی ہونا چاہیے۔ اسی نیٹ ورک کو دوبارہ شروع کرنے کے لیے پہلے `python3 poc.py down` اور پھر `python3 poc.py up` چلائیں۔ `state/` کو اس کے چاروں Docker والیومز کے ساتھ محفوظ رکھیں۔
 
 ## کوبرنیٹس {#kubernetes}
 
@@ -66,9 +63,9 @@ Kubernetes کے لیے، ہر توثیق کنندہ کو حالت برقرار �
 
 اگر ایک پوڈ بار بار دوبارہ شروع ہوتا ہے تو ، پوڈ میں پیش کردہ ترتیب کو متوقع [`peer.template.toml`](/ur/reference/peer-config/index.md#template) کے ساتھ موازنہ کریں اور چیک کریں کہ آیا ہم منصب پرانے Kura ڈیٹا کو دوبارہ کھیل رہا ہے۔
 
-## سورہ پروفائل {#sora-profile}
+## SORA Nexus پروفائل {#sora-profile}
 
-نجی یا مقامی Iroha 3 تعیناتی جو Nexus، SoraFS، یا کثیر لین کے بہاؤ کا استعمال کرتے ہیں، کو سورا پروفائل فعال ہونے کے ساتھ معیاری ڈییمون شروع کرنا چاہئے:
+اگر Iroha 3 کی نجی یا مقامی تنصیب میں SORA Nexus، SoraFS یا متعدد لین استعمال ہوتی ہیں تو معیاری پس منظر سروس کو اس پروفائل کے ساتھ چلائیں۔
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

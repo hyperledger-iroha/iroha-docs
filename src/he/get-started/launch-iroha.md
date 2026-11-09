@@ -1,94 +1,68 @@
 ---
 translation_locale: he
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
+translation_source_hash: 2be7788e2aaf422b34739028ee64a127cad67ac0293b32d93f0be959c94aea87
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# שיגור Iroha 3 {#launch-iroha-3}
+# השקה Iroha 3 {#launch-iroha-3}
 
-דף זה מעביר את זרימת הרשת המקומית הנוכחית עבור Iroha 3 באמצעות נכסי החלל העבודה המקובלים מהמחסן העליון.
+כדי לבדוק שילוב בסביבה פרטית, הפעילו ארבעה מאמתי Iroha 3 במכונה וירטואלית (VM) אחת של Linux. שלחו עסקה חתומה, עצרו מאמת אחד ובדקו ששלושת המאמְתים האחרים מאשרים עסקה נוספת. כך ייווצר מרשם עצמאי שההשתתפות בו מותנית בהרשאה. חיבורו ל־SORA Nexus כמרחב נתונים הכפוף לכללי ממשל דורש הקצאה נפרדת.
 
-## 1. ליצור רשת מקומית מרוב צמתים {#_1-generate-a-local-multi-peer-network}
+## הכן את VM {#prepare-the-vm}
 
-לייצר רשת מקומית של ארבעה צמתים מתוך הקוד הנוכחי Kagami:
+השתמש ב-Linux x86_64 עם Docker Engine, Buildx, Compose v2, Python 3.8 או מאוחר יותר, ו-`unzip`. החשבון שלך צריך גישה ל-Docker. הבנייה הראשונה דורשת גישה יוצאת ל-HTTPS אל GitHub, Docker Hub, מראות חבילות Debian ו-crates.io.
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+בנינו ובדקנו את הערכה על VM עם שישה vCPUs ו-32 GiB RAM בעזרת כמה עסקאות סינתטיות. כוונן את גודל האחסון עבור העומס והתקופת השמירה שלך. השתמש בעותק אחד של הערכה לכל מנוע Docker ותשמור על פורטים 18080–18083 זמינים.
+
+[הורד את ערכת הארבעה-מאמתים](/downloads/iroha-trade-poc.zip). זה כולל את הפעלן, רשימת תלות נעולה ואת התיקונים המשמשים לבניית המאמת והלקוח מאותה גרסת Iroha שנקבעה. מתוך התיקייה שמכילה את ההורדה, אמת ופרוס אותה.
+
+```sh
+echo 'b12d450f9f15c0126dfe5eca83cdfad8bc420c779a78f916d374f433a2b3da0e  iroha-trade-poc.zip' | sha256sum --check
+unzip iroha-trade-poc.zip
+cd iroha-trade-poc
 ```
 
-תיווך ההוצא מכיל קונפיגציות הצומת שלות מתאימות, `genesis.json`, `genesis.signed.nrt`, `client.toml` וסריפטים של עוזר.
+## התחל ואמת את כל הארבעה מאמתים {#start-and-verify-all-four-validators}
 
-עבור בדיקת עשן מקומית, תתחילו את הצמתים המובילים ישירות:
-
-```bash
-./localnet/start.sh
+```sh
+python3 poc.py up
+python3 poc.py verify
 ```
 
-עבור רצף קונטרייזד, ליצור Compose מאותו תיק של localnet:
+בהפעלה הראשונה נבנית תמונת הקונטיינר, ובמכונה הווירטואלית (VM) נוצרים מזהה השרשרת, המפתחות ובלוק הבראשית החתום. לכל מאמת אמצעי אחסון קבוע משלו. הבדיקה חותמת על עסקת ניסיון וממתינה עד שארבעת המאמתים ידווחו על שלושה עמיתים מחוברים ועל ערך גיבוב זהה לבלוק החדש. בלוק הבראשית כולל חשבונות לדוגמה. השתמשו בנתונים סינתטיים והשאירו את ממשקי ה־APIs בממשק הלולאה המקומית.
 
-```bash
-cargo run --bin kagami -- docker \
-  --peers 4 \
-  --config-dir ./localnet \
-  --image hyperledger/iroha:dev \
-  --out-file ./docker-compose.yml \
-  --force
+כדי לקרוא את מצב המאמת הראשון מ-VM, בקש את JSON במפורש.
 
-docker compose -f ./docker-compose.yml up
+```sh
+curl -fsS -H 'Accept: application/json' http://127.0.0.1:18080/status
 ```
 
-המערך שנוצר כברירת מחדל חושף:
+## בדוק כשל של מאמת {#test-a-validator-failure}
 
-- דלתות P2P `1337` ל- `1340`
-- דלתות Torii HTTP `8080` ל `8083`
-- קונפיגציה של לקוח מוכנה ב `./localnet/client.toml`
-
-## 2. בדוק אם הרשת פועלת {#_2-verify-that-the-network-is-up}
-
-בדקו את נקודת הקצה של המצב בצומת הראשון:
-
-```bash
-curl http://127.0.0.1:8080/status
+```sh
+python3 poc.py failover
 ```
 
-בדיקות הבריאות המקובלות משתמשות גם:
+הבדיקה עוצרת מאמת אחד, שולחת עסקה חדשה ובודקת את ערך הגיבוב של הבלוק שאישרו שלושת המאמתים הנותרים. לאחר מכן היא מפעילה מחדש את המאמת הרביעי וממתינה עד שהוא מגיע לאותו בלוק. אם המכונה הווירטואלית (VM) נופלת, כל ארבעת המאמתים נעצרים. כדי לבדוק נפילה של שרת פיזי אחד, הציבו מאמת אחד בכל אחד מארבעה שרתים עצמאיים.
 
-```bash
-curl http://127.0.0.1:8080/status/blocks
+## עצור והמשך {#stop-and-resume}
+
+```sh
+python3 poc.py down
+python3 poc.py up
 ```
 
-אתה יכול לכוון מיד את CLI לקונפיגציה של הלקוח המוספת:
+הריצו את שתי הפקודות מאותה תיקייה שאליה חילצתם את הערכה. שמרו יחד את התיקייה `state/` ואת ארבעת אמצעי האחסון של Docker כדי שהמאמתים יוכלו לפתוח מחדש את אותו מרשם לאחר ההפעלה מחדש. אם האתחול נתקע, הריצו באותה תיקייה את הפקודה `python3 poc.py logs`.
 
-```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+## נסה את נקודת הקצה הציבורית API {#try-the-public-endpoint}
+
+יישום יכול לקרוא את מרחב הנתונים האוניברסלי של SORA Nexus ברשת Taira בלי להפעיל מכונה וירטואלית (VM) עבור המרשם. מתחנת עבודה שבה מותקנים `curl` ו־`jq`, נסו את בקשת הקריאה הבאה לרשת הבדיקה.
+
+```sh
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
+  | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
-## 3. Nexus פרופיל {#_3-nexus-profile}
-
-האספקה שולחת גם פרופיל קונפיגציה של SORA Nexus תחת `defaults/nexus/`.
-
-כדי להפעיל צומתי native עם הפרופיל Nexus:
-
-```bash
-./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
-```
-
-להשתמש ב- `defaults/nexus/client.toml` עבור גישה ל- CLI לפרופיל זה.
-
-## 4. לעצור את הרשת המקומית. {#_4-stop-the-local-network}
-
-עבור רשת מקומית שנוצרת במקור:
-
-```bash
-./localnet/stop.sh
-```
-
-עבור סטק המוצר Compose:
-
-```bash
-docker compose -f ./docker-compose.yml down
-```
-
-לאחר שהרשת פועלת, המשך עם [פעיל Iroha 3 באמצעות CLI](/he/get-started/operate-iroha-via-cli.md).
+התשובה מציגה את מספר העמיתים המחוברים לצומת שנשאל, את מספר הבלוקים שאושרו, את מספר העסקאות שאושרו ואת מספר העסקאות בתור. לתכנון הפריסה ראו [פריסת הרשת](/he/guide/best-practices/network-deployment.md).

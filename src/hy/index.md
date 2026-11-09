@@ -36,7 +36,7 @@ nexusPortal:
         link: /hy/cookbook/submit-and-verify-transactions
       - title: "Գործունական ակտիվներ տեղափոխել"
         link: /hy/cookbook/fungible-assets
-      - title: "Հարցազրույցի գլխավոր գրքի վիճակը"
+      - title: "Գրանցամատյանի վիճակի հարցում"
         link: /hy/cookbook/query-ledger-state
       - title: "Ծրագրային իրադարձություններ"
         link: /hy/cookbook/stream-events

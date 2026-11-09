@@ -59,11 +59,7 @@
         "advanced",
         "schema"
       ],
-      "inputs": [
-        "crates/iroha_data_model",
-        "crates/iroha_kagami",
-        "crates/norito"
-      ],
+      "inputs": ["crates/iroha_data_model", "crates/iroha_kagami", "crates/norito"],
       "target": "src/snippets/data-model-schema.md",
       "sha256": "80128e0519fd3dfe1ba03982613062a21f123b778a2db21b17bdd4fdf68a39fe"
     },
@@ -84,9 +80,7 @@
         "tools",
         "markdown-help"
       ],
-      "inputs": [
-        "crates/iroha_cli"
-      ],
+      "inputs": ["crates/iroha_cli"],
       "target": "src/snippets/iroha-cli.md",
       "sha256": "85d5e1281b8b582154d0a98aafcf973af07fed5399e696c5b276352f900cec6a"
     },
@@ -103,21 +97,8 @@
       "id": "iroha3d-help",
       "kind": "command",
       "status": "pending-signed-source-commit",
-      "command": [
-        "cargo",
-        "run",
-        "--locked",
-        "--quiet",
-        "-p",
-        "irohad",
-        "--bin",
-        "iroha3d",
-        "--",
-        "--help"
-      ],
-      "inputs": [
-        "crates/irohad"
-      ],
+      "command": ["cargo", "run", "--locked", "--quiet", "-p", "irohad", "--bin", "iroha3d", "--", "--help"],
+      "inputs": ["crates/irohad"],
       "target": "src/snippets/iroha3d-help.md",
       "sha256": "a23ace55275e181368911bab6260074df30932ed408fb413b0db35f8c36ee16e"
     }

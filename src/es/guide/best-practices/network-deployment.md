@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /guide/best-practices/network-deployment.md
-translation_source_hash: 7839268b8c1f6700b0c26652e3308fa4e8acef4717d8527c609b6f30fb8c84ab
+translation_source_hash: 489b174b9bdd21a4c4c2c896911686a6020e2833c8808304cfd37a5bf31c7780
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -25,6 +25,8 @@ Ver [Claves para el Despliegue de la Red](/es/guide/configure/keys-for-network-d
 - Use al menos cuatro validadores para un despliegue mínimamente tolerante a fallos bizantinos.
 - Separe los validadores de los observadores en la planificación de capacidad. Los observadores no votan, no proponen ni recopilan, pero aún así consumen almacenamiento, sincronización de bloques y ancho de banda de red.
 - Trata los cambios de génesis, ejecutor y topología de la blockchain como migraciones coordinadas en lugar de ediciones de un solo nodo.
+
+Sigue la [guía de inicio con cuatro validadores](/es/get-started/launch-iroha.md) para iniciar la red con Docker y comprobar cómo se recupera tras detener un validador.
 
 Vea [génesis de la blockchain](/es/reference/genesis.md), [Gestión de pares de red](/es/guide/configure/peer-management.md) y [Rendimiento y Métricas](/es/guide/advanced/metrics.md#node-count-and-quorum).
 

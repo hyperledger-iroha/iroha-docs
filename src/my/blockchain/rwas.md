@@ -96,7 +96,7 @@ RWA ID ရဲ့ စာသားပုံစံက-
 }
 ```
 
-Controller အကောင့်များနှင့် Roles များသည် သက်ဆိုင်ရာ Boolean Flag များမှအခွင့်ပြုသောလုပ်ဆောင်ချက်များကိုသာဆောင်ရွက်နိုင်သည်။ လက်ရှိထိန်းချုပ်မှု အသုံးဝင်မှုတွင် Controller Identities နှင့် Operation Flag များပါဝင်သည်။ Transfer allow-lists နှင့် nested `transfers` စည်းမျဉ်းများသည်ဤအသုံးဝင်မှု၏အပြင်သို့ဖြစ်သည်။
+ထိန်းချုပ်သူ အကောင့်များနှင့် role များသည် သက်ဆိုင်ရာ boolean flag များက ဖွင့်ထားသော လုပ်ဆောင်မှုများကိုသာ ဆောင်ရွက်နိုင်သည်။ လက်ရှိ ထိန်းချုပ်မှု payload တွင် ထိန်းချုပ်သူ အထောက်အထားများနှင့် လုပ်ဆောင်မှု flag များ ပါဝင်သည်။ လွှဲပြောင်းခွင့်ပြုစာရင်းများနှင့် အတွင်းထပ်ထားသော `transfers` စည်းမျဉ်းများသည် ဤ payload တွင် မပါဝင်ပါ။
 
 ## မေးမြန်းချက်များ၊ ဖြစ်ရပ်များနှင့် APIs {#queries-events-and-apis}
 
@@ -148,7 +148,7 @@ for path in rwa_paths:
 
 ### Warehouse Protocol ရလဒ် မှတ်တမ်းကို မှတ်ပုံတင်ပါ။ {#register-a-warehouse-receipt}
 
-လုပ်ငန်းဆောင်ရွက်မှုတစ်ခုဟာ လက်မှတ်ထိုးထားတဲ့ ငွေပေးချေမှုတစ်ခု ဖြစ်လာတဲ့အခါ မူကြမ်းကို အသုံးပြုပါ။ စီးပွားရေးပရိုတိုကော ရလဒ် မှတ်တမ်းနံပါတ်သည် `primary_reference` သို့သွားပြီး ငွေပေးချေးမှု ပြီးဆုံးပြီးနောက် blockchain ledger ID ကို ဖန်တီးသည်။
+လုပ်ငန်းလုပ်ဆောင်ချက်တစ်ခုကို လက်မှတ်ထိုးထားသော transaction တစ်ခုအဖြစ် ပြုလုပ်လိုလျှင် မူကြမ်းကို သုံးပါ။ လုပ်ငန်းပြေစာနံပါတ်ကို `primary_reference` တွင် ထည့်ပြီး transaction commit ဖြစ်ပြီးနောက် လယ်ဂျာသတ်မှတ်နံပါတ်ကို ထုတ်ပေးသည်။
 
 ```python
 from iroha_python import TransactionConfig, TransactionDraft
@@ -457,5 +457,5 @@ Python ငွေပေးချေမှု အပြည့်အဝအတွက
 - [ပိုက်ဆံများ](/my/blockchain/assets.md)
 - [မီတာဒေတာ](/my/blockchain/metadata.md)
 - [Iroha သင်ကြားမှု လုပ်ငန်းများ](/my/blockchain/instructions.md)
-- [မေးခွန်းများ](/my/reference/queries.md#assets-nfts-and-rwas)
+- [Query များ](/my/reference/queries.md#assets-nfts-and-rwas)
 - [Torii API အဆုံးသတ်မှတ်ချက်များ](/my/reference/torii-endpoints.md#app-and-sora-route-families)

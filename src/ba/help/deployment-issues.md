@@ -1,10 +1,11 @@
 ---
 translation_locale: ba
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 3e4042ed4e92a8df567f3500a84cfe32a3d10e22663204b07423ff4cf0fd0c5c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
+
 # Деployment проблемаларын хәл итеү {#troubleshooting-deployment-issues}
 
 Был бүлектә Iroha 3 урынлаштырыуҙар өсөн проблемаларҙы хәл итеү буйынса кәңәштәр бирелә. Әгәр һеҙ кисергән мәсьәлә бында һүрәтләнмәгән икән, беҙгә [Telegram](https://t.me/hyperledgeriroha) аша мөрәжәғәт итегеҙ.
@@ -38,13 +39,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker һәм Композиция {#docker-and-compose}
 
-Генерациялау Хәҙерге Kagami локаль селтәр сығымынан яҙыу, шуға күрә команда һыҙығы аргументтары һәм конфигурация файлдар иҫкәртелгән кодҡа тап килә:
+Docker мөхитендә бер үк версиянан йыйылған башҡарылма файлдар менән дүрт валидатор төҙөү һәм эшләтеп ебәреү өсөн [Башлау Iroha 3](/ba/get-started/launch-iroha.md) ҡулланмаһын ҡарағыҙ.
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Валидаторҙарҙың журналдарын ҡарау өсөн йыйылма каталогында `python3 poc.py logs` командаһын башҡарығыҙ.
 
 Әгәр комплектты урынлаштырыу башлана һәм һуңынан туҡтап ҡалһа, демондар журналдарын тикшереп ҡарағыҙ:
 
@@ -53,7 +50,7 @@ docker compose -f ./docker-compose.yml up
 - P2P адрестары рекламалана, улар контейнерҙар селтәрендә генә эшләй
 - урындағы күләмде регенерацияланған генездан һуң ҡабаттан ҡулланыу
 
-Яңы генезисты һынағанда, стаканды яңынан башлар алдынан иҫке Kura күләмдәрҙе алып ташларға кәрәк. Иҫке блоктарҙы яңы генез менән һаҡлап ҡалыу реплейды уңышһыҙ итер.
+Яңы генезис блогы өсөн төйөндөң һаҡлағысы буш булырға тейеш. Шул уҡ селтәрҙе ҡабат эшләтеп ебәреү өсөн тәүҙә `python3 poc.py down`, унан `python3 poc.py up` командаларын башҡарығыҙ. `state/` каталогын селтәрҙең дүрт Docker томы менән бергә һаҡлағыҙ.
 
 ## Кубернеттар {#kubernetes}
 
@@ -66,9 +63,9 @@ Kubernetes өсөн һәр validator-ҙы торош һаҡлаусы инфра
 
 Әгәр модуль ҡат-ҡат яңынан эшләй башлаһа, модулдә күрһәтелгән конфигурацияны көтөлгән [`peer.template.toml`](/ba/reference/peer-config/index.md#template) менән сағыштырығыҙ һәм Peer иҫке Kura мәғлүмәтте ҡабатлаймы икәнлеген тикшерегеҙ.
 
-## Сора профиле {#sora-profile}
+## SORA Nexus профиле {#sora-profile}
 
-Шәхси йәки урындағы Iroha 3 урынлаштырыуҙар, уларҙа Nexus, SoraFS йәки күп юллы ағымдар ҡулланыла, стандарт демоны Sora профиле менән эшләй башлай:
+Ябыҡ йәки урындағы Iroha 3 мөхитендә SORA Nexus, SoraFS йәки бер нисә юл ҡулланылһа, ошо профилде ҡабыҙып, стандарт фон хеҙмәтен эшләтеп ебәрегеҙ.
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

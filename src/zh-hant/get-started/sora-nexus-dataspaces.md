@@ -1,16 +1,16 @@
 ---
 translation_locale: zh-hant
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
+translation_source_hash: 8d3ec8cf5a6ee09d9c05dd63c018ebb656f9e340f9d30f9e335baf2101c39055
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# 建立在 SORA 3:Taira 和 Minamoto 上 {#build-on-sora-3-taira-and-minamoto}
+# 使用 Taira 和 Minamoto 在 SORA Nexus 上開發 {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3是基於 Iroha 3 和 SORA Nexus 構建的應用面向公眾部署軌道. 首先在 Taira 上構建和練習,然後將相同的客戶端形狀移動到 Minamoto,只有當您有單獨的主網鑰匙時,費用為真實 XOR 和生產批准.
+SORA Nexus 以 Iroha 3 為基礎。請先在 Taira 上開發和測試應用程式。只有在備妥主網專用金鑰、可用於支付手續費的真實 XOR，並取得正式環境的執行許可後，才將同一套用戶端設定移至 Minamoto。
 
-這本教程展示瞭如何配置一個 Iroha 客戶端為公共的 SORA 3個網路:
+本指南說明如何為 SORA Nexus 的兩個公開網路設定 Iroha 用戶端。
 
 - Taira 測試網在 `https://taira.sora.org`
 - Minamoto 主網在 `https://minamoto.sora.org`
@@ -24,7 +24,7 @@ SORA 3是基於 Iroha 3 和 SORA Nexus 構建的應用面向公眾部署軌道. 
 
 |步驟|Taira 測試網|Minamoto 主要網|
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|開始閱讀網路狀態|查詢 `/status` 沒有鑰匙|查詢 `/status` 沒有鑰匙|
+|開始閱讀網路狀態|查詢 `/status` 沒有鑰匙| 先確認端點並驗證 TLS 憑證 |
 |選擇一個資料空間|使用公開 `universal` 除非您的應用程式需要一個受監管的路徑|僅在主網批准後使用相同的資料空間|
 |獲得費用資產.|使用公眾的 Taira 水龍頭|從資助的 Minamoto 帳戶或經批准的財政流通中獲得 XOR|
 |測試寫入|使用水龍頭資助的測試 XOR |不要使用測試工具; 寫入會耗用真正的 XOR |
@@ -68,20 +68,10 @@ wonderland.universal
 
 ## 2. 檢查公眾 Torii 端點 {#_2-check-the-public-torii-endpoint}
 
-在配置簽名器之前,請檢查目標終端直播.
-
-對於 Taira:
+使用 `curl` 和 `jq` 檢查 Taira 測試網的狀態。這項檢查不需要金鑰或本機節點。
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-對於 Minamoto:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -94,7 +84,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-使用 `https://minamoto.sora.org/status` 的相同命令用於主網.
+使用 Minamoto 前，請向營運方確認主網服務端點，並驗證 TLS 憑證與主機名稱相符。
 
 ## Taira MCP 用於代理人 {#taira-mcp-for-agents}
 
@@ -197,19 +187,7 @@ verification result.
 
 ## 你現在可以試玩具的例子 {#toy-examples-you-can-try-now}
 
-這些示例只能閱讀,除非註明.它們在你生成金鑰之前工作,並且可以安全地對付兩個公共網路.
-
-比較 Taira 測試網和 Minamoto 主網的健康:
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+以下範例只讀取 Taira 的資料，不需要帳戶金鑰。
 
 列出 Taira 所曝光的公共資料空間路徑:
 
@@ -217,16 +195,7 @@ done
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-當您需要主網檢視時,執行同樣的命令對 Minamoto:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -235,24 +204,16 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -351,7 +312,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-在 Nexus API 或 CLI 命令要求一個規範帳戶 ID 的情況下,使用結果的賬號 ID 例如 Taira 水龍頭 `account_id`,在您的客戶端配置中儲存匹配的私鑰,並選擇相同的公共網路以 `[account].profile = "taira"`或 `[account].profile = "minamoto"`.
+在 SORA Nexus API 或 CLI 命令要求一個規範帳戶 ID 的情況下,使用結果的賬號 ID 例如 Taira 水龍頭 `account_id`,在您的客戶端配置中儲存匹配的私鑰,並選擇相同的公共網路以 `[account].profile = "taira"`或 `[account].profile = "minamoto"`.
 
 生成 ID 本身並不能建立一個資助的連鎖帳戶.在 Taira 上,水龍頭可以建立和資助測試網寫帳戶.在 Minamoto 上,使用已批准的主網安裝或財政流程.
 
@@ -555,6 +516,8 @@ with urllib.request.urlopen(request) as res:
 
 ## 5. 建立一個 Minamoto 客戶端配置. {#_5-create-a-minamoto-client-config}
 
+使用 Minamoto 前，請向營運方確認主網服務端點，並驗證 TLS 憑證與主機名稱相符。
+
 使用 Minamoto 單獨的鍵組.不要重複使用 Taira 關鍵在主網上.
 
 建立 `minamoto.client.toml`:
@@ -575,7 +538,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-頂級層次 `chain` 是電流 Nexus 主網鏈 ID. `[account].profile = "minamoto"` 選擇了 Minamoto I105 鏈區分器;端點主機名稱和鏈 ID 不要隱含地選擇它.
+頂級層次 `chain` 是電流 SORA Nexus 主網鏈 ID. `[account].profile = "minamoto"` 選擇了 Minamoto I105 鏈區分器;端點主機名稱和鏈 ID 不要隱含地選擇它.
 
 將 Minamoto 公共金鑰轉換為其規範的 I105 帳戶 ID,並附上主網前:
 

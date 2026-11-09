@@ -27,6 +27,10 @@ pnpm build
 pnpm serve
 ```
 
+The build caps Node's old-space heap at 6 GiB. Static syntax-highlighted code
+is compiled as one HTML literal per fence so the multilingual site can keep
+its full local search index within that budget.
+
 Vercel publishes `main` at the domain root for `docs.iroha.tech`. The GitHub
 Actions workflow also builds with `/iroha-docs/` as its public path and deploys
 the backup through GitHub's official Pages actions. The repository Pages source
@@ -39,6 +43,12 @@ selector, and exposes a translated locale before reporting success. Vercel's
 project settings own its build and output configuration.
 
 ## Validation
+
+The four-validator example is maintained in `examples/iroha-trade-poc/`. After
+editing its source, run `python3 etc/package-four-validator-kit.py` to rebuild the
+public ZIP. Update the printed SHA-256 in the launch page and its translations.
+`pnpm validate:kit` checks the archive against the example files and the English
+guide without starting a network.
 
 Run the same focused checks used by CI:
 

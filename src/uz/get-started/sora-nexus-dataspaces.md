@@ -1,16 +1,16 @@
 ---
 translation_locale: uz
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
+translation_source_hash: 8d3ec8cf5a6ee09d9c05dd63c018ebb656f9e340f9d30f9e335baf2101c39055
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# SORA 3-da qurilgan: Taira va Minamoto {#build-on-sora-3-taira-and-minamoto}
+# Taira va Minamoto orqali SORA Nexus uchun ilova yaratish {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 - Iroha 3 va SORA Nexus ustida qurilgan dasturga qaraydigan ommaviy ishga tushirish yo'li. Avvalo Taira ustida quring va mashq qiling, so'ngra o'sha xil mijoz shaklini faqat alohida asosiy tarmoq kalitlaringiz bo'lganda, to'lovlar uchun haqiqiy XOR va ishlab chiqarish ruxsatnomasi bo'lganida Minamoto ustiga ko'chiring:
+SORA Nexus Iroha 3 asosida ishlaydi. Ilovangizni avval Taira tarmog‘ida ishlab chiqing va sinab ko‘ring. Asosiy tarmoq uchun alohida kalitlar, komissiya to‘lash uchun haqiqiy XOR va ishlab chiqarish muhitida ishga tushirishga ruxsat olganingizdan keyingina mijozning shu konfiguratsiyasini Minamoto tarmog‘iga ko‘chiring.
 
-Ushbu qo‘llanma Iroha mijozini ommaviy SORA 3 tarmoqlari uchun qanday sozlashni ko‘rsatadi:
+Ushbu qo‘llanmada SORA Nexus’ning ikkita ochiq tarmog‘i uchun Iroha mijozini sozlash tushuntiriladi.
 
 - Taira sinov tarmog'i `https://taira.sora.org`
 - Minamoto asosiy tarmoq `https://minamoto.sora.org`
@@ -24,7 +24,7 @@ Taira ni integratsiya sinovlari, kran mablag'i bilan ta'minlangan yozish kanarla
 
 |qadam |Taira Testnet |Minamoto Asosiy |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|Tarmoqning holatini oʻqishni boshlash |`/status` kalitsiz so'rovlar |`/status` kalitsiz so'rovlar |
+|Tarmoqning holatini oʻqishni boshlash |`/status` kalitsiz so'rovlar | Avval xizmat manzilini va uning TLS sertifikatini tekshiring |
 | Ma’lumotlar makonini tanlash | Ilovangiz boshqariladigan yo‘lakka muhtoj bo‘lmasa, ochiq `universal` makonidan foydalaning | Shu ma’lumotlar makonidan faqat asosiy tarmoq tasdiqlaganidan keyin foydalaning |
 |Toʻlov aktivini oling .|Ommaviy Taira krandan foydalanish |XOR mablag ' bilan ta ' minlangan Minamoto hisobidan yoki tasdiqlangan xazina oqimidan oling |
 | Sinov yozuvlari | Sinov uchun ajratilgan XOR mablag‘idan foydalaning | Sinov vositalarini ishlatmang; yozuvlar haqiqiy XOR sarflaydi |
@@ -68,20 +68,10 @@ Agar sizga yangi tashkiliy ma'lumotlar maydonchasi kerak bo'lsa, uni oddiy mijoz
 
 ## 2. Umumiy Torii yakuniy nuqtani tekshiring. {#_2-check-the-public-torii-endpoint}
 
-Foydalanuvchini sozlashdan oldin maqsadli oxirgi nuqta jonliligini tekshiring.
-
-Taira uchun:
+Taira sinov tarmog‘i holatini `curl` va `jq` bilan tekshiring. Buning uchun kalitlar yoki mahalliy tugun kerak emas.
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-Minamoto uchun:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -94,7 +84,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-Mainnet uchun `https://minamoto.sora.org/status` bilan bir xil buyruqdan foydalaning.
+Minamoto’dan foydalanishdan oldin asosiy tarmoq xizmatining manzilini operator bilan aniqlashtiring va TLS sertifikati xost nomiga mos kelishini tekshiring.
 
 ## Agentlar uchun Taira MCP {#taira-mcp-for-agents}
 
@@ -197,19 +187,7 @@ Taira MCP-ni test tarmog'ini boshqarishning ommaviy yuzi sifatida ko'rib chiqish
 
 ## Endi sinab ko'rishingiz mumkin bo'lgan o'yinchoq misollari {#toy-examples-you-can-try-now}
 
-Ushbu namunalar faqat o'qiladi, agar qayd etilmagan bo'lsa. Ular kalitlarni ishlab chiqarishdan oldin ishlaydi va ikkala ommaviy tarmoqga ham qarshi ishlash xavfsizdir.
-
-Taira sinov tarmog'i va Minamoto asosiy tarmog'ining salomatligini taqqoslang:
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+Bu misollar hisob kalitlarisiz Taira’dan ma’lumot o‘qiydi.
 
 Taira tomonidan aniqlangan ommaviy ma’lumotlar makoni yo'nalishlarining ro'yxatini ko'rsatish:
 
@@ -217,16 +195,7 @@ Taira tomonidan aniqlangan ommaviy ma’lumotlar makoni yo'nalishlarining ro'yxa
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-Mainnet ko'rinishi kerak bo'lganda Minamoto ga nisbatan bir xil buyruqni bajaring:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -235,24 +204,16 @@ Dashboard, bot yoki ishga tushirish tekshiruvi uchun kichik Node.js holatni teks
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -351,7 +312,7 @@ Minamoto ommaviy kalitni "mainnet" prefiksi bilan almashtirish:
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Nexus API yoki CLI buyruqida kanonik hisob ID so'ragan har qanday joyda hosil bo'lgan hisobdan ID foydalaning, masalan, Taira kranidan `account_id`; balans so'rovlari, qat'iy hisob maydonlari yoki alias bog'lashlar. O'xshash xususiy kalitni mijoz konfiguratsiyasida saqlang va `[account].profile = "taira"` yoki `[account].profile = "minamoto"` bilan bir xil ommaviy tarmoqni tanlang.
+SORA Nexus API yoki CLI buyruqida kanonik hisob ID so'ragan har qanday joyda hosil bo'lgan hisobdan ID foydalaning, masalan, Taira kranidan `account_id`; balans so'rovlari, qat'iy hisob maydonlari yoki alias bog'lashlar. O'xshash xususiy kalitni mijoz konfiguratsiyasida saqlang va `[account].profile = "taira"` yoki `[account].profile = "minamoto"` bilan bir xil ommaviy tarmoqni tanlang.
 
 ID ishlab chiqarish o'zidan-o'zi moliyalashtirilgan zanjirdagi hisobni yaratmaydi. Taira da kran testnet yozish uchun hisobni yarata oladi va mablag' bilan ta'minlaydi. Minamoto da, tasdiqlangan asosiy tarmoqlarni o'rnatish yoki xazina oqimidan foydalaning.
 
@@ -555,6 +516,8 @@ Fauxet faqat Taira testnet mablag'lari uchun ishlatiladi. XOR testnetdan, fauxet
 
 ## 5. Minamoto mijoz konfigini yaratish {#_5-create-a-minamoto-client-config}
 
+Minamoto’dan foydalanishdan oldin asosiy tarmoq xizmatining manzilini operator bilan aniqlashtiring va TLS sertifikati xost nomiga mos kelishini tekshiring.
+
 &amp; amp; uchun alohida tugmalar birikmasidan foydalanish Minamoto. Qayta ishlatmang . Taira asosiy tarmog'i kalitlari.
 
 `minamoto.client.toml` ni yaratish:
@@ -575,7 +538,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-Eng yuqori darajadagi `chain` joriy bo ' lsa Nexus asosiy tarmoq zanjirlari ID. `[account].profile = "minamoto"` tanlaydi Minamoto I105 zanjirni farqlovchi; oxirgi nuqta o'rinbosari nomi va zanjir ID uni yonma-yon tanlamang.
+Eng yuqori darajadagi `chain` joriy bo ' lsa SORA Nexus asosiy tarmoq zanjirlari ID. `[account].profile = "minamoto"` tanlaydi Minamoto I105 zanjirni farqlovchi; oxirgi nuqta o'rinbosari nomi va zanjir ID uni yonma-yon tanlamang.
 
 Minamoto ommaviy kalitini uning kanonik I105 hisob raqamiga ID mainnet prefiksi bilan o'zgartiring:
 

@@ -1,14 +1,14 @@
 ---
 translation_locale: ja
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 96505bdba910beb902c399004f5cd24f5e5b0773f01df9cdcfdb49d019830d03
+translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
 
 # Docker コンテナ内のホットリロード Iroha {#hot-reload-iroha-in-a-docker-container}
 
-ホットリロードはローカルデバッグ時のみに使用してください。通常のローカル開発では、イメージを再構築するか、新しい Kagami バンドルから生成された Docker Compose スタックを再起動することを推奨します。
+ホットリロードはローカルでのデバッグにのみ使用してください。 同じリビジョンのバイナリをビルドして Docker で 4 台のバリデータを起動する手順は、[Iroha 3 を起動](/ja/get-started/launch-iroha.md) を参照してください。
 
 ## ネットワークピアのバイナリを置き換える {#replace-the-peer-binary}
 
@@ -25,20 +25,11 @@ docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/loca
 docker restart <container>
 ```
 
-`docker ps`を使用してコンテナ名を確認します。生成されたスタックでは、ネットワークピアコンテナは`./docker-compose.yml`によって定義されています。
+`docker ps` で対象のコンテナを確認します。デーモンを置き換える前に、イメージ内のパスを確認してください。
 
 ## 使い捨てネットワークでブロックチェーンのジェネシスを再コミットする {#recommit-genesis-in-a-disposable-network}
 
-ネットワークピアは、そのストレージが空の場合にのみブロックチェーンのジェネシスを確定します。使い捨ての Docker ネットワークでは、スタックを停止し、生成された状態を削除し、署名されたブロックチェーンジェネシスバンドルを再生成または置き換え、再度開始します:
-
-```bash
-docker compose -f ./docker-compose.yml down
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
-
-状態を保持する必要があるネットワークでブロックチェーンのジェネシスを置き換えないでください。
+新しいジェネシスブロックを使用するには、ピアのストレージが空である必要があります。 同じネットワークを再起動するには、`python3 poc.py down`、`python3 poc.py up` の順に実行します。`state/` は 4 つの Docker ボリュームと一緒に保管してください。
 
 ## カスタム設定を使用 {#use-custom-configuration}
 

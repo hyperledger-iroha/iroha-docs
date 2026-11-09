@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /reference/binaries.md
-translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
+translation_source_hash: 1bf3f4697e44b3c8ef571eb9e5c0e301a1acbf76aa1c0666b3cd86e108bba6bf
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -50,27 +50,7 @@ cargo run --bin kagami -- --help
 
 ## Docker 画像 {#docker-image}
 
-上流のワークスペースは、チェックアウト済みのコードに一致する Docker Compose ファイルを生成するために`kagami localnet`と`kagami docker`を使用します。`hyperledger/iroha:dev`イメージは、これらの生成されたファイルと一緒に使用できます。
-
-コンテナ内で CLI を実行してください:
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-コンテナで Kagami を実行する:
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-ネットワークピアの起動のために、まずローカルネットとComposeファイルを生成します:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+同じリビジョンのバイナリをビルドして Docker で 4 台のバリデータを起動する手順は、[Iroha 3 を起動](/ja/get-started/launch-iroha.md) を参照してください。
 
 ## どのバイナリを使うべきですか？ {#which-binary-should-i-use}
 

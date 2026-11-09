@@ -1,16 +1,16 @@
 ---
 translation_locale: he
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
+translation_source_hash: 8d3ec8cf5a6ee09d9c05dd63c018ebb656f9e340f9d30f9e335baf2101c39055
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# בנייה על SORA 3: Taira ו Minamoto {#build-on-sora-3-taira-and-minamoto}
+# פיתוח על SORA Nexus באמצעות Taira ו־Minamoto {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 הוא מסלול ההפצה הציבורי הפנימי של האפליקציה שנבנה על Iroha 3 ו SORA Nexus. לבנות ולחזור על Taira קודם, ולאחר מכן להעביר את אותו צורת הלקוח ל Minamoto רק כאשר יש לך מפתחות מרכזיות נפרדות, XOR אמיתי עבור דמי, והסכמה לייצור.
+SORA Nexus מבוססת על Iroha 3. תחילה פתחו ובדקו את היישום ב־Taira. העבירו את אותה תצורת לקוח ל־Minamoto רק לאחר שיש ברשותכם מפתחות נפרדים לרשת הראשית, XOR אמיתי לתשלום עמלות ואישור להפעלה בסביבת ייצור.
 
-הדרכה זו מראה כיצד להגדיר קלינט Iroha לרשתות ציבוריות SORA 3:
+מדריך זה מסביר כיצד להגדיר לקוח Iroha עבור שתי הרשתות הציבוריות של SORA Nexus.
 
 - רשת בדיקת Taira ב- `https://taira.sora.org`
 - רשת מרכזית Minamoto ב- `https://minamoto.sora.org`
@@ -24,7 +24,7 @@ SORA 3 הוא מסלול ההפצה הציבורי הפנימי של האפלי�
 
 |שלב |רשת הבדיקה Taira |הרשת הראשית Minamoto |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|התחילו בקריאת מצב הרשת |שאילתת `/status` ללא מפתחות |שאילתת `/status` ללא מפתחות |
+|התחילו בקריאת מצב הרשת |שאילתת `/status` ללא מפתחות | תחילה יש לאמת את כתובת השירות ואת תעודת ה־TLS שלו |
 |בחרו מרחב נתונים |השתמשו ב־`universal` הציבורי, אלא אם היישום זקוק ל־lane מנוהלת |השתמשו באותו מרחב נתונים רק לאחר אישור ל־mainnet |
 |השיגו את נכס העמלה |השתמשו ב־faucet הציבורי של Taira |קבלו XOR מחשבון Minamoto ממומן או מתהליך treasury מאושר |
 |בדקו פעולות כתיבה |השתמשו ב־XOR לבדיקה שמומן מהברז |אל תשתמשו בכלי בדיקה; פעולות כתיבה מוציאות XOR אמיתי |
@@ -68,20 +68,10 @@ wonderland.universal
 
 ## 2. בדוק את נקודת הסיום הציבורית Torii {#_2-check-the-public-torii-endpoint}
 
-בדוק אם נקודת הסיום היעד היא חי לפני להגדיר חותם.
-
-עבור Taira:
+אפשר לבדוק את מצב רשת הבדיקה Taira באמצעות `curl` ו־`jq`. הבדיקה אינה דורשת מפתחות או צומת מקומי.
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-עבור Minamoto:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -94,7 +84,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-השתמשו באותו פקודה עם `https://minamoto.sora.org/status` עבור mainnet.
+לפני השימוש ב־Minamoto, יש לאמת עם המפעיל את כתובת השירות ברשת הראשית ולוודא שתעודת ה־TLS תואמת לשם המארח.
 
 ## Taira MCP לסוכנים {#taira-mcp-for-agents}
 
@@ -197,19 +187,7 @@ verification result.
 
 ## דוגמאות צעצועים שאתה יכול לנסות עכשיו {#toy-examples-you-can-try-now}
 
-דוגמאות אלה הן קריאה בלבד, אלא אם כן צוין. הם עובדים לפני שאתה מייצר מפתחות והם בטוחים להפעיל נגד שני רשתות ציבוריות.
-
-השוואה בין מערכת המבחן Taira לבריאות הרשת המרכזית Minamoto:
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+הדוגמאות הבאות קוראות נתונים מ־Taira ללא מפתחות חשבון.
 
 רשימה של קווי השטח הנתונים הציבורי שחשפו על ידי Taira:
 
@@ -217,16 +195,7 @@ done
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-תפעיל את אותה פקודה נגד Minamoto כאשר אתה צריך את התצוגה של הרשת הראשית:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -235,24 +204,16 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -351,7 +312,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-השתמשו בחשבון המוצא ID בכל מקום שבו פקודה Nexus API או CLI מבקשת חשבון קנוני ID, למשל, בנקודת Taira `account_id`, תשמור על המפתח הפרטי המתאימה בהקנה הלקוח שלך, ובחר את אותה רשת ציבורית עם `[account].profile = "taira"` או `[account].profile = "minamoto"`.
+השתמשו בחשבון המוצא ID בכל מקום שבו פקודה SORA Nexus API או CLI מבקשת חשבון קנוני ID, למשל, בנקודת Taira `account_id`, תשמור על המפתח הפרטי המתאימה בהקנה הלקוח שלך, ובחר את אותה רשת ציבורית עם `[account].profile = "taira"` או `[account].profile = "minamoto"`.
 
 יצירת ה־ID לבדה אינה יוצרת חשבון ממומן בשרשרת. ב־Taira, הברז יכול ליצור ולממן את החשבון לצורך כתיבות ברשת הבדיקה. ב־Minamoto, השתמשו בתהליך הצטרפות מאושר לרשת הראשית או בתהליך של האוצר.
 
@@ -555,6 +516,8 @@ with urllib.request.urlopen(request) as res:
 
 ## 5. ליצור תיקון לקוחות Minamoto {#_5-create-a-minamoto-client-config}
 
+לפני השימוש ב־Minamoto, יש לאמת עם המפעיל את כתובת השירות ברשת הראשית ולוודא שתעודת ה־TLS תואמת לשם המארח.
+
 השתמשו בזוג מפתחות נפרד עבור Minamoto. אל תשתמשו מחדש במפתחות Taira ברשת הראשית.
 
 ליצור `minamoto.client.toml`:
@@ -575,7 +538,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-השדה `chain` ברמה העליונה הוא ה־chain ID העדכני של הרשת הראשית Nexus. ‏`[account].profile = "minamoto"` בוחר את מַבְחִין השרשרת I105 של Minamoto; שם המארח של נקודת הקצה וה־chain ID אינם בוחרים בו במשתמע.
+השדה `chain` ברמה העליונה הוא ה־chain ID העדכני של הרשת הראשית SORA Nexus. ‏`[account].profile = "minamoto"` בוחר את מַבְחִין השרשרת I105 של Minamoto; שם המארח של נקודת הקצה וה־chain ID אינם בוחרים בו במשתמע.
 
 להמיר מפתח ציבורי Minamoto לחשבון קנוני שלו I105 ID עם מקוד הרשת המרכזית:
 

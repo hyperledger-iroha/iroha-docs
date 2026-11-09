@@ -1,12 +1,11 @@
-# Build on SORA 3: Taira and Minamoto
+# Build on SORA Nexus with Taira and Minamoto {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 is the app-facing public deployment track built on Iroha 3 and SORA
-Nexus. Build and rehearse on Taira first, then move the same client shape
-to Minamoto only when you have separate mainnet keys, real XOR for fees,
-and production approval.
+SORA Nexus runs on Iroha 3. Develop and test your application on Taira first.
+Move the same client configuration to Minamoto only after you have separate
+mainnet keys, real XOR for fees, and production approval.
 
-This tutorial shows how to configure an Iroha client for the public SORA 3
-networks:
+This guide shows how to configure an Iroha client for the two public
+SORA Nexus networks.
 
 - Taira testnet at `https://taira.sora.org`
 - Minamoto mainnet at `https://minamoto.sora.org`
@@ -22,7 +21,7 @@ activity. Both networks charge fees in XOR:
 
 | Step                        | Taira Testnet                                                | Minamoto Mainnet                                   |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-| Start reading network state | Query `/status` without keys                                 | Query `/status` without keys                       |
+| Start reading network state | Query `/status` without keys                                 | Confirm the endpoint and its TLS certificate first |
 | Pick a dataspace            | Use public `universal` unless your app needs a governed lane | Use the same dataspace only after mainnet approval |
 | Get fee asset               | Use the public Taira faucet                                  | Receive XOR from a funded Minamoto account or approved treasury flow |
 | Test writes                 | Use faucet-funded test XOR                                   | Do not use test tooling; writes spend real XOR     |
@@ -79,20 +78,10 @@ See [Provision a New Dataspace](#_8-provision-a-new-dataspace) below.
 
 ## 2. Check the Public Torii Endpoint
 
-Check that the target endpoint is live before configuring a signer.
-
-For Taira:
+Read the Taira testnet status with `curl` and `jq`. You can run this check without keys or a local node.
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-For Minamoto:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -105,7 +94,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-Use the same command with `https://minamoto.sora.org/status` for mainnet.
+Before using Minamoto, confirm the mainnet endpoint with the operator and verify that its TLS certificate matches the hostname.
 
 ## Taira MCP for Agents
 
@@ -250,20 +239,7 @@ Minamoto keys and production release workflows.
 
 ## Toy Examples You Can Try Now
 
-These examples are read-only unless noted. They work before you generate
-keys and are safe to run against both public networks.
-
-Compare Taira testnet and Minamoto mainnet health:
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+These read-only examples query Taira without account keys.
 
 List the public dataspace lanes exposed by Taira:
 
@@ -271,16 +247,7 @@ List the public dataspace lanes exposed by Taira:
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-Run the same command against Minamoto when you need the mainnet view:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -290,24 +257,16 @@ check:
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -423,7 +382,7 @@ Convert a Minamoto public key with the mainnet prefix:
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Use the resulting account ID wherever a Nexus API or CLI command asks for a
+Use the resulting account ID wherever a SORA Nexus API or CLI command asks for a
 canonical account ID, for example the Taira faucet `account_id`, balance
 queries, strict account fields, or alias bindings. Keep the matching
 private key in your client config, and select the same public network with
@@ -661,6 +620,8 @@ accounts, or Taira canary signers in Minamoto flows.
 
 ## 5. Create a Minamoto Client Config
 
+Before using Minamoto, confirm the mainnet endpoint with the operator and verify that its TLS certificate matches the hostname.
+
 Use a separate keypair for Minamoto. Do not reuse Taira keys for mainnet.
 
 Create `minamoto.client.toml`:
@@ -681,7 +642,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-The top-level `chain` is the current Nexus mainnet chain ID.
+The top-level `chain` is the current SORA Nexus mainnet chain ID.
 `[account].profile = "minamoto"` selects the Minamoto I105 chain
 discriminant; the endpoint hostname and chain ID do not select it implicitly.
 

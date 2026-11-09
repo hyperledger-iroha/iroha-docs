@@ -1,16 +1,16 @@
 ---
 translation_locale: ka
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
+translation_source_hash: 8d3ec8cf5a6ee09d9c05dd63c018ebb656f9e340f9d30f9e335baf2101c39055
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# SORA 3: Taira და Minamoto {#build-on-sora-3-taira-and-minamoto}
+# SORA Nexus-ზე შემუშავება Taira-სა და Minamoto-ს გამოყენებით {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 არის აპლიკაციების მიმართულებით შექმნილი საჯარო განთავსების გზა Iroha 3 და SORA Nexus. ააშენეთ და რეპეტირდით Taira ჯერ, შემდეგ გადაიტანეთ იგივე კლიენტის ფორმაში Minamoto მხოლოდ მაშინ, როდესაც თქვენ გაქვთ ცალკე ძირითადი ქსელი გასაღები, ნამდვილი XOR გადასახადებისა და წარმოების დამტკიცებისათვის.
+SORA Nexus მუშაობს Iroha 3-ის ბაზაზე. აპლიკაცია ჯერ Taira-ზე შეიმუშავეთ და გამოსცადეთ. იმავე კლიენტის კონფიგურაცია Minamoto-ზე გადაიტანეთ მხოლოდ მას შემდეგ, რაც გექნებათ მთავარი ქსელისთვის ცალკე გასაღებები, საკომისიოსთვის ნამდვილი XOR და საწარმოო გარემოში მუშაობის ნებართვა.
 
-აღნიშნული სახელმძღვანელო აჩვენებს, თუ როგორ უნდა კონფიგურდეს Iroha კლიენტი საზოგადოებისთვის SORA 3 ქსელი:
+ეს სახელმძღვანელო აღწერს Iroha კლიენტის გამართვას SORA Nexus-ის ორი საჯარო ქსელისთვის.
 
 - Taira საგამოცდო ქსელი `https://taira.sora.org`
 - Minamoto ძირითადი ქსელი: `https://minamoto.sora.org`
@@ -24,7 +24,7 @@ SORA 3 არის აპლიკაციების მიმართუ�
 
 |ნაბიჯი |Taira ტესტის ქსელი |Minamoto მაინეთ |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|დაიწყეთ წაკითხვა ქსელის მდგომარეობა |მოთხოვნა `/status` გარეშე გასაღები |მოთხოვნა `/status` გარეშე გასაღები |
+|დაიწყეთ წაკითხვა ქსელის მდგომარეობა |მოთხოვნა `/status` გარეშე გასაღები | ჯერ გადაამოწმეთ სერვისის მისამართი და მისი TLS სერტიფიკატი |
 |აირჩიეთ მონაცემთა სივრცე |გამოიყენეთ საჯარო `universal` თუ თქვენს აპლიკაციას არ სჭირდება მართული აღსრულების ზოლი |გამოიყენეთ იგივე მონაცემთა სივრცე მხოლოდ მას შემდეგ, რაც მთავარმა ქსელმა დაამტკიცა|
 |მიიღეთ საფასური აქტივი.|გამოიყენეთ საჯარო Taira სატესტო ქსელი-ის დაფინანსების სერვისი |მიიღეთ XOR დაფინანსებული Minamoto ანგარიშიდან ან დამტკიცებული სახაზინო ნაკადისგან |
 |ტესტი წერს |გამოყენება ტესტის ქსელის მიერ დაფინანსებული ტესტი XOR |არ გამოიყენოთ ტესტი ინსტრუმენტები; წერა ხარჯავს რეალური XOR |
@@ -68,20 +68,10 @@ wonderland.universal
 
 ## 2. შეამოწმეთ საჯარო Torii API საბოლოო წერტილი {#_2-check-the-public-torii-endpoint}
 
-შეამოწმეთ, რომ მიზნობრივი API საბოლოო წერტილი ცოცხალია კრიპტოგრაფიული ხელმოწერის კონფიგურაციამდე.
-
-Taira:
+`curl`-ისა და `jq`-ის გამოყენებით შეამოწმეთ Taira-ს სატესტო ქსელის მდგომარეობა. ამისთვის არც გასაღებები გჭირდებათ და არც ლოკალური კვანძი.
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-Minamoto:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -94,7 +84,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-გამოიყენეთ იგივე ბრძანება `https://minamoto.sora.org/status` ძირითადი ქსელისათვის.
+Minamoto-ს გამოყენებამდე ოპერატორთან დააზუსტეთ ძირითადი ქსელის სერვისის მისამართი და შეამოწმეთ, რომ TLS სერტიფიკატი ჰოსტის სახელს შეესაბამება.
 
 ## Taira MCP აგენტებისთვის {#taira-mcp-for-agents}
 
@@ -197,19 +187,7 @@ Taira MCP საჯარო ტესტნეტის მართვის �
 
 ## სათამაშოების მაგალითები, რომელთა გამოცდა შეგიძლიათ ახლა {#toy-examples-you-can-try-now}
 
-ეს მაგალითები არის მხოლოდ წაკითხვა, თუ არ აღინიშნება. ისინი მუშაობენ სანამ თქვენ გენერირებთ გასაღებს და უსაფრთხოა ორივე საჯარო ქსელის წინააღმდეგ.
-
-შედარება Taira სატესტო ქსელისა და Minamoto ძირითადი ქსელის ჯანმრთელობის შესახებ:
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+ამ მაგალითებში Taira-ს მონაცემებს ანგარიშის გასაღებების გარეშე კითხულობთ.
 
 ჩამოთვალეთ საჯარო მონაცემთა სივრცის განხორციელების ზოლები, რომლებიც Taira -ის მიერ არის გამოფენილი:
 
@@ -217,16 +195,7 @@ done
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-განახორციელეთ იგივე ბრძანება Minamoto -ის წინააღმდეგ, როდესაც საჭიროა ძირითადი ქსელის ხედი:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -235,24 +204,16 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -351,7 +312,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-გამოიყენეთ მიღებული ანგარიშის ID, სადაც Nexus API ან CLI ბრძანება მოითხოვს კანონიკური ანგარიშის იდენტიფიკაციას, მაგალითად, ტესტური მონეტების გამცემი Taira `account_id`, ბალანსი მოთხოვნები, მკაცრი ანგარიშის ველები ან ალიასი ვალდებულებები. შეინახეთ შესაბამისი კერძო გასაღები კლიენტის კონფიგურაციაში და აირჩიეთ იგივე საჯარო ქსელი `[account].profile = "taira"` ან `[account].profile = "minamoto"`.
+გამოიყენეთ მიღებული ანგარიშის ID, სადაც SORA Nexus API ან CLI ბრძანება მოითხოვს კანონიკური ანგარიშის იდენტიფიკაციას, მაგალითად, ტესტური მონეტების გამცემი Taira `account_id`, ბალანსი მოთხოვნები, მკაცრი ანგარიშის ველები ან ალიასი ვალდებულებები. შეინახეთ შესაბამისი კერძო გასაღები კლიენტის კონფიგურაციაში და აირჩიეთ იგივე საჯარო ქსელი `[account].profile = "taira"` ან `[account].profile = "minamoto"`.
 
 ID-ის გენერირება თავისთავად არ ქმნის ფინანსურ ქსელზე ანგარიშს. Taira -ზე, სატესტო ქსელი-ის დაფინანსების სამსახურს შეუძლია შექმნას და დაფინანსოს ანგარიში სატესტო ქსელი წერისათვის. Minamoto -ზე, გამოიყენეთ დამტკიცებული ძირითადი ქსელი-ის ჩართვა ან საგანგებო ნაკადი.
 
@@ -555,6 +516,8 @@ with urllib.request.urlopen(request) as res:
 
 ## 5. შექმნათ Minamoto კლიენტის კონფიგურაცია. {#_5-create-a-minamoto-client-config}
 
+Minamoto-ს გამოყენებამდე ოპერატორთან დააზუსტეთ ძირითადი ქსელის სერვისის მისამართი და შეამოწმეთ, რომ TLS სერტიფიკატი ჰოსტის სახელს შეესაბამება.
+
 გამოიყენეთ ცალკე საკვანძო წყვილი Minamoto. არ გამოვიყენოთ Taira საკვები ძირითადი ქსელისათვის.
 
 შეიქმნას `minamoto.client.toml`:
@@ -575,7 +538,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-ზედა დონის `chain` არის Nexus-ის მიმდინარე ძირითადი ქსელის ჯაჭვის ID. `[account].profile = "minamoto"` ირჩევს Minamoto I105-ის ჯაჭვის დისკრიმინანტს; API-ის საბოლოო წერტილის ჰოსტის სახელი და ჯაჭვის ID მას ავტომატურად არ ირჩევს.
+ზედა დონის `chain` არის SORA Nexus-ის მიმდინარე ძირითადი ქსელის ჯაჭვის ID. `[account].profile = "minamoto"` ირჩევს Minamoto I105-ის ჯაჭვის დისკრიმინანტს; API-ის საბოლოო წერტილის ჰოსტის სახელი და ჯაჭვის ID მას ავტომატურად არ ირჩევს.
 
 კონვერტირება Minamoto საჯარო გასაღები მისი ერთიანი პროტოკოლური სტანდარტის I105 ანგარიშის ID- ში ძირითადი ქსელის პრეფექსით:
 

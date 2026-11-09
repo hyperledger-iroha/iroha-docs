@@ -199,11 +199,11 @@ Norito Streaming מרחיב את אותה גישה דטרמיניסטית למד
 - [נקודות קצה של Torii](/he/reference/torii-endpoints.md)
 - [הפניה ל־Genesis](/he/reference/genesis.md)
 - [סכמת מודל הנתונים](/he/reference/data-model-schema.md)
-- [SDK ל־JavaScript / TypeScript](/he/guide/tutorials/javascript.md)
-- [SDK ל־Python](/he/guide/tutorials/python.md)
+- [JavaScript / TypeScript SDK](/he/guide/tutorials/javascript.md)
+- [Python SDK](/he/guide/tutorials/python.md)
 - [SDK ל־Swift ול־iOS](/he/guide/tutorials/swift.md)
 
 ## הפניות למקור {#upstream-references}
 
 - [מפרט הפורמט של Norito](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/norito.md)
-- [README של crate ‏Norito](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)
+- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)

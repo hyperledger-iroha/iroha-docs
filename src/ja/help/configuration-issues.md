@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: 9d153d9cb8ce0341b35ba5a7e3823198e58464768e2a9a92ff8a5723f85e9351
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -16,27 +16,9 @@ translation_engine: bing-translator-llm
 
 Iroha の Docker Compose バージョンを使用しているときに、ネットワークピアコンテナの1つが`Failed to deserialize raw genesis block`エラーで失敗する問題に遭遇する可能性があります。これは通常、ネットワークピア、署名されたブロックチェーンのジェネシストランザクション、および生成された構成が、異なる Iroha のリビジョンまたはプロファイルによって作成されたことを意味します。
 
-これらの手順で故障を確認してください:
+キットのディレクトリで `python3 poc.py logs` を実行すると、バリデータのログを確認できます。 同じリビジョンのバイナリをビルドして Docker で 4 台のバリデータを起動する手順は、[Iroha 3 を起動](/ja/get-started/launch-iroha.md) を参照してください。
 
-1. `docker ps` を使用して現在のコンテナを確認してください。生成されたプロファイルに応じて、通常は `hyperledger/iroha:dev` のコンテナが表示されます。デフォルトの Docker Compose プロファイルには 4 つのネットワークピアコンテナが含まれていますが、生成された `docker-compose.yml` は異なる場合があります。
-
-2. ログを確認して、`Failed to deserialize raw genesis block` エラーを探してください。`docker compose up -d` を使ってデーモンモードで Iroha を起動した場合は、`docker compose logs` コマンドを使用してください。
-
-このような問題をトラブルシューティングする方法は、Iroha の使用に依存します。これは基本的なデモであり、ネットワークピアのデータを保持する必要がない場合、Kagami を使用して、対応する localnet または Docker Compose バンドルを再生成してください：
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
-```
-
-次に、古いコンテナの状態を削除し、再生成された`genesis.signed.nrt`、ネットワークピア`config.toml`のファイル、および`client.toml`から再起動します。
-
-もし Iroha インスタンスのデータを復元する必要がある場合は、次の手順を行ってください:
-
-1. 最初の（故障した）ネットワークピアからデータをコピーする、2番目の Iroha ネットワークピアを接続します。
-2. 新しいネットワークピアが最初のネットワークピアとデータを同期するのを待ってください。
-3. 新しいネットワークピアをアクティブにしたままにしてください。
-4. 調整された移行の一環として、最初のネットワークピアのブロックチェーンのジェネシスおよび設定ファイルのみを更新します。
+同じネットワークを再起動するには、`python3 poc.py down`、`python3 poc.py up` の順に実行します。`state/` は 4 つの Docker ボリュームと一緒に保管してください。
 
 ::: info
 

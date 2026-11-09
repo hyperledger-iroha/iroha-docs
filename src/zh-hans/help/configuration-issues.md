@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: 9d153d9cb8ce0341b35ba5a7e3823198e58464768e2a9a92ff8a5723f85e9351
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,27 +16,9 @@ translation_engine: nllb-200-ct2
 
 当您使用 Docker Compose 的版本 Iroha, 你可能会遇到一个对等节点容器的故障问题 `Failed to deserialize raw genesis block` 这通常意味着对等节点,签署的创世交易和生成的配置是由不同的 Iroha 修订或个人资料.
 
-通过以下步骤检查故障:
+在工具包目录中运行 `python3 poc.py logs` 即可查看验证节点的日志。 请参阅 [启动 Iroha 3](/zh-hans/get-started/launch-iroha.md)，使用同一版本的可执行文件，在 Docker 中构建并启动四个验证节点。
 
-1. 使用 `docker ps`来检查当前的容器.根据生成的配置文件,您通常会看到`hyperledger/iroha:dev`容器.默认的 Docker Compose 配置文件包含四个对等节点容器,尽管您生成的 `docker-compose.yml`可能不同.
-
-2. 检查日志并寻找`Failed to deserialize raw genesis block`错误. 如果您启动了 Iroha 在 daemon模式中使用`docker compose up -d`,请使用 `docker compose logs`命令.
-
-解决此类问题的方法取决于使用 Iroha.如果这是一个基本的演示程序,并且不需要保存对等节点数据,请重建与 Kagami 相匹配的本地网络或 Docker Compose 捆绑:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
-```
-
-然后从再生的 `genesis.signed.nrt`,对等节点`config.toml`和 `client.toml`文件中删除旧容器状态,重新启动.
-
-如果您需要恢复 Iroha 实例数据,请执行以下操作:
-
-1. 连接第二个 Iroha 对等节点,将复制第一个 (失败) 对等节点的数据.
-2. 等新对等节点将数据与第一个对等节点同步.
-3. 让新对等节点活跃.
-4. 仅作为协调迁移的一部分更新第一个对等节点的生成和配置文件.
+依次运行 `python3 poc.py down` 和 `python3 poc.py up` 以重启同一网络。请将 `state/` 与其四个 Docker 数据卷一起保留。
 
 ::: info
 

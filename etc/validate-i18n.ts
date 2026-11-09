@@ -1566,8 +1566,7 @@ const SEMANTIC_FALSE_FRIEND_RULES: Readonly<Record<string, readonly SemanticFals
     },
     {
       source: /\bdigests?\b/iu,
-      localized:
-        /(?:የምግብ\s+)?(?:(?:ምስጠራ|ክሪፕቶግራፊክ)\s+)?(?:መፍጨ(?:ት|ቶች)|መፍጫ|መፈጨት)/u,
+      localized: /(?:የምግብ\s+)?(?:(?:ምስጠራ|ክሪፕቶግራፊክ)\s+)?(?:መፍጨ(?:ት|ቶች)|መፍጫ|መፈጨት)/u,
       description: 'cryptographic digest rendered as food digestion',
     },
     {
@@ -3438,13 +3437,8 @@ export async function validateI18n(options: I18nValidationOptions = {}): Promise
               ) ?? matchingIndexes[0])
           if (localizedIndex === undefined) continue
           const [localizedLink] = remainingLocalizedMarkdownLinks.splice(localizedIndex, 1)
-          if (
-            isPreservedTechnicalLinkLabel(englishLink.label) &&
-            localizedLink.label !== englishLink.label
-          ) {
-            errors.push(
-              `${locale.path}/${route}: link ${index + 1} must preserve technical label ${englishLink.label}`,
-            )
+          if (isPreservedTechnicalLinkLabel(englishLink.label) && localizedLink.label !== englishLink.label) {
+            errors.push(`${locale.path}/${route}: link ${index + 1} must preserve technical label ${englishLink.label}`)
           } else if (HUMAN_READABLE_LINK_LABELS.has(englishLink.label) && localizedLink.label === englishLink.label) {
             errors.push(`${locale.path}/${route}: link ${index + 1} has untranslated label ${englishLink.label}`)
           }

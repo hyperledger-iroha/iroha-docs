@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /guide/best-practices/network-deployment.md
-translation_source_hash: 7839268b8c1f6700b0c26652e3308fa4e8acef4717d8527c609b6f30fb8c84ab
+translation_source_hash: 489b174b9bdd21a4c4c2c896911686a6020e2833c8808304cfd37a5bf31c7780
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -24,6 +24,8 @@ Iroha نیٹ ورک کو مربوط نظام کے طور پر علاج کریں�
 - کم از کم بازنطینی خرابی برداشت کرنے والے تعیناتی کے لئے کم از کم چار تصدیق کنندہ استعمال کریں۔
 - صلاحیت کی منصوبہ بندی میں مبصرین سے علیحدہ تصدیق کنندہ۔ مبصرین ووٹ نہیں دیتے ، تجویز نہیں کرتے یا جمع نہیں کرتے ہیں ، لیکن وہ ابھی بھی اسٹوریج ، بلاک مطابقت پذیری اور نیٹ ورک بینڈوتھ کا استعمال کرتے ہیں۔
 - پیدائش، عملدرآمد اور ٹاپولوجی تبدیلیوں کو سنگل پیئر ترمیم کے بجائے ہم آہنگ ہجرت کے طور پر علاج کریں.
+
+Docker کے ذریعے نیٹ ورک چلانے اور ایک ویلیڈیٹر کے رکنے کے بعد بحالی کو جانچنے کے لیے [چار ویلیڈیٹر چلانے کی ہدایات](/ur/get-started/launch-iroha.md) دیکھیں۔
 
 [پیدائش](/ur/reference/genesis.md)، [پیئر مینجمنٹ](/ur/guide/configure/peer-management.md)، اور [ کارکردگی اور میٹرکس](/ur/guide/advanced/metrics.md#node-count-and-quorum) دیکھیں.
 
