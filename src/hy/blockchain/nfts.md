@@ -160,7 +160,7 @@ NFT գրանցման, ջնջման, փոխանցման եւ մետադատա տ�
 
 Նայեք նաեւ.
 
-- [Գործիքներ](/hy/blockchain/assets.md)
+- [Ակտիվներ](/hy/blockchain/assets.md)
 - [Մետադատա](/hy/blockchain/metadata.md)
 - [հրահանգներ](/hy/blockchain/instructions.md)
 - [Հարցումներ](/hy/blockchain/queries.md)

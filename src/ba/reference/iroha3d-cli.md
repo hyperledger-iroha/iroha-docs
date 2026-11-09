@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # `iroha3d` CLI {#iroha3d-cli}
 
-`iroha3d` - стандарт Iroha 3 peer daemon. Cargo пакеты исеме `irohad`, шуға күрә сығанаҡ иҫбатлауҙан бинарды саҡырығыҙ:
+`iroha3d` — Iroha 3 төйөнөнөң стандарт фон хеҙмәте. Cargo пакеты `irohad` тип атала; башҡарылмалы программаны сығанаҡ код күсермәһенән түбәндәгесә эшләтегеҙ:
 
 ```shell
 cargo run -p irohad --bin iroha3d -- --config path/to/config.toml

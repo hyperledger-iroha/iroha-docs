@@ -192,7 +192,7 @@ curl -fsS \
 - [JavaScript ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်ချက်မှာ streaming recipe](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs)
 - [SSE ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှုတွင် ပေါင်းစပ်မှု စမ်းသပ်မှုများ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs)
 - [Torii FilterExpr စာမေးပွဲကို ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှုမှာ စစ်ဆေးတယ်။](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs)
-- [Torii event routing at the pinned source code revision](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
+- [သတ်မှတ်ထားသော မူရင်းဗားရှင်းရှိ Torii ဖြစ်ရပ် လမ်းကြောင်းရွေးချယ်မှု](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
 - [ဖြစ်ရပ်များ](/my/blockchain/events.md)
 - [Torii API အဆုံးသတ်မှတ်ချက်များ](/my/reference/torii-endpoints.md)
 - [မေးမြန်းချက် blockchain ledger အခြေအနေ](./query-ledger-state.md)

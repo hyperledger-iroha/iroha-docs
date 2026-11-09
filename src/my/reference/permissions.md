@@ -12,7 +12,7 @@ translation_engine: nllb-200-ct2
 
 ခွင့်ပြုချက် စစ်ဆေးမှုများကို တက်ကြွသော ဆော့ဝဲ အကောင်အထည်ဖော်ရေး ပတ်ဝန်းကျင် အတည်ပြုသူက လုပ်ဆောင်သည်။ အောက်ပါ token အမျိုးအစားအမည်များသည် စံသတ်မှတ်ထားသည့် မူဝါဒမျက်နှာပြင်ကိုဖော်ပြသည်၊ သို့သော် ကွန်ရက်တစ်ခုသည် အကောင်အ ထည်ဖော်သူကို အဆင့်မြှင့်ခြင်းဖြင့် ဆော့ဝိုင်း အကောင်အက်ည်ဖော်ရေးပတ်ဝန်းကျင် အတည်ရှိမှုကို ပြုပြင်နိုင်သည်။
 
-## Default Tokens များ {#default-tokens}
+## ပုံမှန်တိုကင်များ {#default-tokens}
 
 |ခွင့်ပြုချက် လက်မှတ်|ကဏ္ဍ |လုပ်ဆောင်ချက်|
 | --- | --- | --- |
@@ -36,15 +36,15 @@ translation_engine: nllb-200-ct2
 |`CanUnregisterNft` |NFT |NFT စာရင်းကို ဖျက်သိမ်းပါ။ |
 |`CanTransferNft` |NFT |NFT ကို လွှဲပြောင်းပါ။ |
 |`CanModifyNftMetadata` |NFT |NFT metadata ကို ပြင်ဆင်ပါ။ |
-|`CanSetParameters` |ပမာဏများ |Chain ပေါ်က Configuration Parameters ကို သတ်မှတ်ပါ။ |
+| `CanSetParameters` | ပါရာမီတာများ | ဘလော့ခ်ချိန်းပေါ်ရှိ ပြင်ဆင်သတ်မှတ်မှုပါရာမီတာများကို သတ်မှတ်ခြင်း။ |
 |`CanManageRoles` |ကဏ္ဍများ |မှတ်ပုံတင်၊ မမှတ်ပုံတင်၊ ပေးအပ်ခြင်း သို့မဟုတ် ရုပ်သိမ်းခြင်း။ |
 |`CanRegisterTrigger` |Trigger ကို|trigger တစ်ခုကို မှတ်တမ်းတင်ပါ။|
 |`CanExecuteTrigger` |Trigger ကို|ထိုးထည့်လိုက်ပါ|
 |`CanUnregisterTrigger` |Trigger ကို|trigger ကို unregister လုပ်ပါ။ |
-|`CanModifyTrigger` |Trigger ကို|Trigger Configuration ကို ပြုပြင်ပါ။|
+| `CanModifyTrigger` | trigger | trigger ပြင်ဆင်သတ်မှတ်မှုကို ပြောင်းလဲခြင်း။ |
 |`CanModifyTriggerMetadata` |Trigger ကို|trigger metadata ကို ပြင်ပါ။ |
 |`CanUpgradeExecutor` |အမိန့်ချမှတ်သူ |ဆော့ဝဲ အကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင် အပြီးသတ်သူကို အဆင့်မြှင့်တင်ပါ။ |
-|`CanRegisterSmartContractCode` |အသိဉာဏ်ရှိတဲ့ စာချုပ်|Smart Contract Code ကို မှတ်ပုံတင်ပါ။|
+| `CanRegisterSmartContractCode` | စမတ်စာချုပ် | စမတ်စာချုပ်ကုဒ်ကို မှတ်ပုံတင်ခြင်း။ |
 |`CanUseFeeSponsor` |Nexus |Nexus အခွန်ကို သတ်မှတ်ထားသော ပံ့ပိုးသူအကောင့်သို့ ချပေးပါ။ |
 
 ## ပိုင်ဆိုင်မှု {#ownership}

@@ -75,4 +75,4 @@ public_key = "<PUBLIC_KEY>"
 - `kagami localnet`
 - `cargo xtask kagami-profiles`
 
-جنریٹر کے نفاذ اور کمانڈ کی تفصیلات کے لیے [Kagami کی README فائل](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md) دیکھیں۔
+جنریٹر کے نفاذ اور کمانڈ کی تفصیلات کے لیے [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md) دیکھیں۔

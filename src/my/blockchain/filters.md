@@ -25,9 +25,9 @@ event streams တွေကို ကျဉ်းမြောင်းစေပ�
 |အပြောင်းအလဲ|အဖြစ်အပျက် မိသားစု|
 | --- | --- |
 |`Any` |ဘယ်ဒေတာဖြစ်ရပ်မဆို |
-|`Peer` |Network peer lifecycle events များ |
+| `Peer` | Peer ၏ ဘဝစက်ဝန်း ဖြစ်ရပ်များ |
 |`Domain` |Domain lifecycle နှင့် metadata ဖြစ်ရပ်များ |
-|`Account` |အကောင့်သက်တမ်း စက်ဝန်း၊ မက်တာဒေတာများ၊ အမည်မဖော်လိုသူများနှင့် လက္ခဏာဖြစ်ရပ်များ |
+| `Account` | အကောင့် ဘဝစက်ဝန်း၊ metadata၊ alias နှင့် အထောက်အထား ဖြစ်ရပ်များ |
 |`Asset` |အရင်းအမြစ် balance နှင့် metadata ဖြစ်ရပ်များ |
 |`AssetDefinition` |Asset Definition Lifecycle၊ မူဝါဒနဲ့ metadata ဖြစ်ရပ်များ |
 |`Nft` |NFT ဘဝပတ်ဝန်းကျင်နှင့် metadata ဖြစ်ရပ်များ |
@@ -40,15 +40,15 @@ event streams တွေကို ကျဉ်းမြောင်းစေပ�
 |`Confidential` |လျှို့ဝှက်သော အရင်းအမြစ်ဖြစ်စဉ်များ |
 |`VerifyingKey` |Verifying-key မှတ်ပုံတင်ဖြစ်ရပ်များ |
 |`RuntimeUpgrade` |ဆော့ဖ်ဝဲ အကောင်အထည်ဖော်ရေး ပတ်ဝန်းကျင် အဆင့်မြှင့်တင်မှု ဖြစ်ရပ်များ |
-|`Soradns` |Directory governance events ကို ဖြေရှင်းပေးပါ |
+| `Soradns` | Resolver လမ်းညွှန်စာရင်း အုပ်ချုပ်မှု ဖြစ်ရပ်များ |
 |`Sorafs` |SoraFS gateway လိုက်နာမှုဖြစ်ရပ်များ |
-|`SpaceDirectory` |Space Directory နည်းပညာ manifest သက်တမ်းပတ်ဝန်းကျင်ဖြစ်ရပ်များ |
+| `SpaceDirectory` | Data space လမ်းညွှန်၏ manifest သက်တမ်းစက်ဝန်း ဖြစ်ရပ်များ |
 |`Escrow` |ပွင့်လင်းမြင်သာသော Native Assets Escrow Lifecycle ဖြစ်ရပ်များ |
 |`Offline` |Offline ဘဏ္ဍာရေး ငွေကြေးငွေချေမှုပွဲများ |
 |`Oracle` |Oracle feed ဖြစ်ရပ်များ |
 |`Social` |ဗိုင်းရပ်စ် လှုံ့ဆော်မှု ဖြစ်စဉ်များ |
 |`Bridge` |တံတားပွဲများ |
-|`Governance` |အုပ်ချုပ်ရေး feature ကို ဖွင့်ထားပါက Governance events |
+| `Governance` | အုပ်ချုပ်မှုလုပ်ဆောင်ချက် ဖွင့်ထားစဉ် ထုတ်ပေးသည့် အုပ်ချုပ်မှု ဖြစ်ရပ်များ |
 
 ကွန်ကရစ်စစ်ဆေးမှု အများစုသည် ရွေးချယ်စရာ ID ကိုက်ညီခြင်းနှင့် ဖြစ်ရပ်အစီအစဉ် နှာခေါင်းစည်းကိုလည်းခွင့်ပြုသည်။ ဥပမာ၊ အရင်းအမြစ်စစ်ဆေးမှုတစ်ခုသည်အရင်းအမြစ်တစ်ခုသို့မဟုတ်အရင်းအမြတ်ဖြစ်ရပ်တန်းတစ်ခုနှင့် ကိုက်ညီနိုင်ပြီး trigger filter သည် trigger ID နှင့် trigger event set တို့ကို ကိုက်ညီစေသည်။
 
@@ -75,7 +75,7 @@ Query Filters သည် Event Filter များနှင့် သီးခြ
 နောက်တစ်ချက်ကြည့်ပါ-
 
 - [ဖြစ်ရပ်များ](/my/blockchain/events.md)
-- [Native Asset Escrow](/my/blockchain/escrow.md#queries-and-events)
+- [ပိုင်ဆိုင်မှုများကို စံညွှန်ကြားချက်ဖြင့် ကြားခံထိန်းသိမ်းခြင်း](/my/blockchain/escrow.md#queries-and-events)
 - [နှိုးစက်များ](/my/blockchain/triggers.md)
-- [မေးခွန်းများ](/my/blockchain/queries.md)
+- [Query များ](/my/blockchain/queries.md)
 - [မေးမြန်းချက် အကိုးအကား](/my/reference/queries.md)

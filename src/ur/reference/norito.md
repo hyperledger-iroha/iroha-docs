@@ -206,4 +206,4 @@ Norito Streaming اسی قطعی طریقے کو میڈیا اور حقیقی و
 ## اپ اسٹریم حوالے {#upstream-references}
 
 - [Norito فارمیٹ کی تخصیص](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/norito.md)
-- [Norito crate کی README فائل](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)
+- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)

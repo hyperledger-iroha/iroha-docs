@@ -72,7 +72,7 @@ export NFT_DOMAIN=wonderland.universal
 export NFT_ID='badge_intro$wonderland.universal'
 ```
 
-Generated localnet ကို Setup လုပ်ပြီးသားပါ။ `wonderland.universal` ၎င်း၏ SNS ခြားနားတဲ့ ဒိုမင်တစ်ခု သုံးချင်ရင် ပထမဦးဆုံးအနေနဲ့ ကြေညာချက်နဲ့ ဖန်တီးပါ။ `app alias setup plan` နှင့် `app alias setup apply` Workflow ကို [ဒိုမင်များ](/my/blockchain/domains.md#registration).
+ထုတ်လုပ်ထားသော localnet တွင် `wonderland.universal` နှင့် ၎င်း၏ SNS အငှားခွင့်ကို တည်ဆောက်ထားပြီး ဖြစ်သည်။ အခြား domain ကို သုံးလိုပါက [Domain များ](/my/blockchain/domains.md#registration) တွင် ဖော်ပြထားသော ကြေညာသတ်မှတ်သည့် `app alias setup plan` နှင့် `app alias setup apply` လုပ်ငန်းစဉ်ဖြင့် ဦးစွာ ဖန်တီးပါ။
 
 NFT ကို မှတ်ပုံတင်ပါ။ မှတ်ပုံတင်သည် စံဝင်မှတ်သွင်းချက်မှ အစောပိုင်းစာရင်း JSON ကိုဖတ်သည်။
 
@@ -92,7 +92,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft list all --verbose
 ```
 
-metadata key ကိုထည့်ပြီး NFT ကိုပြန်ဖတ်ပါ။
+Metadata ကီးတစ်ခု ထည့်ပြီး NFT ကို ပြန်ဖတ်ပါ။
 
 ```bash
 printf '{"color":"blue","rarity":"tutorial"}\n' |
@@ -103,7 +103,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft get --id "$NFT_ID"
 ```
 
-metadata key ကို ဖယ်ရှားပါ။
+Metadata ကီးကို ဖယ်ရှားပါ။
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -130,7 +130,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft unregister --id "$NFT_ID"
 ```
 
-## မေးခွန်းများနှင့် ဖြစ်ရပ်များ {#queries-and-events}
+## Query များနှင့် ဖြစ်ရပ်များ {#queries-and-events}
 
 အသုံးပြုခြင်း [`FindNfts`](/my/reference/queries.md#assets-nfts-and-rwas) စာရင်းသွင်းရန် NFTs နှင့် [`FindNftsByAccountId`](/my/reference/queries.md#assets-nfts-and-rwas) စာရင်းသွင်းရန် NFTs အကောင့်တစ်ခုရဲ့ ပိုင်ရှင်ပါ။
 
@@ -138,7 +138,7 @@ NFT မှတ်ပုံတင်ခြင်း၊ ဖျက်သိမ်း
 
 ## ခွင့်ပြုချက်များ {#permissions}
 
-Default permission surface မှာ NFT သီးသန့် tokens တွေ ပါဝင်ပါတယ်။
+ပုံမှန်ခွင့်ပြုချက်များတွင် NFT အတွက် သီးသန့် token များ ပါဝင်သည်။
 
 - `CanRegisterNft`
 - `CanUnregisterNft`
@@ -163,4 +163,4 @@ fungible balance များအတွက် numeric asset ကိုသုံး
 - [ပိုက်ဆံများ](/my/blockchain/assets.md)
 - [မီတာဒေတာ](/my/blockchain/metadata.md)
 - [ညွှန်ကြားချက်](/my/blockchain/instructions.md)
-- [မေးခွန်းများ](/my/blockchain/queries.md)
+- [Query များ](/my/blockchain/queries.md)

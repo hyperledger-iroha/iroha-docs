@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2
 ## Նախադրյալներ {#prerequisites}
 
 - `curl`, `jq`, Python 3.11 կամ ավելի ուշ, եւ ընթացիկ `iroha` եւ `kagami` բինարներ:
-- A `taira.client.toml` ստեղծվել է Taira շղթայով, վերջային կետով, հաշիվի պրոֆիլով եւ հատուկ թեստնետի բանալիրով: Հետեւեք [ Ստեղծեք Taira Client Config](/hy/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config) եւ պահեք ֆայլը աղբյուրի վերահսկողությունից դուրս:
+- `taira.client.toml` ֆայլ՝ կազմված Taira-ի շղթայի նույնացուցիչով, հասցեով, հաշվի պրոֆիլով և միայն փորձնական ցանցի համար նախատեսված բանալիով։ Հետևեք [Taira-ի հաճախորդի կազմաձևման հրահանգներին](/hy/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config) և ֆայլը պահեք տարբերակների կառավարման համակարգից դուրս։
 - Պատրաստ գործելու համար `taira_faucet_claim.py` _ ից [Ստացեք Testnet- ը XOR բ) Taira](/hy/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira), պահված է հաճախորդի գաղտնիքի կողքին:
 
 ## Քայլեր {#steps}

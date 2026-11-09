@@ -6,11 +6,11 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Client Configuration ကို အသုံးပြုရန် {#client-configuration}
+# client ပြင်ဆင်သတ်မှတ်မှု {#client-configuration}
 
-Iroha CLI နှင့် SDK ဖောက်သည်များ အသုံးပြု TOML Configuration: repository က လက်ရှိ default ကို `defaults/client.toml`; ဒေသတွင်းကွန်ရက်များလည်းထုတ်လုပ်ထားသည် ကိုက်ညီသောရေးသား `client.toml` ၎င်းတို့ရဲ့ output directory ထဲကို ထည့်ပေးပါ။
+Iroha CLI နှင့် SDK client များသည် TOML ပြင်ဆင်သတ်မှတ်ချက်ကို အသုံးပြုသည်။ repository တွင် လက်ရှိမူလသတ်မှတ်ချက်ကို `defaults/client.toml` ၌ ထည့်ပေးထားသည်။ ထုတ်လုပ်ထားသော စက်တွင်းကွန်ရက်များကလည်း ကိုက်ညီသော `client.toml` ကို ၎င်းတို့၏ ရလဒ်ဖိုင်တွဲထဲသို့ ရေးထုတ်သည်။
 
-::: details Client Configuration Template ကို
+::: details client ပြင်ဆင်သတ်မှတ်မှုပုံစံခွက်
 
 <<< @/snippets/client.template.toml
 
@@ -18,7 +18,7 @@ Iroha CLI နှင့် SDK ဖောက်သည်များ အသုံ�
 
 ## Core Fields များ {#core-fields}
 
-အနည်းဆုံး Client Configuration တစ်ခုမှာ Chain, Torii API Endpoint နဲ့ Signing Account တွေကို သတ်မှတ်ထားတယ်။
+အနည်းဆုံးအားဖြင့် client ပြင်ဆင်သတ်မှတ်ချက်သည် ဘလော့ခ်ချိန်း၊ Torii endpoint နှင့် လက်မှတ်ထိုးအကောင့်ကို သတ်မှတ်ပေးသည်။
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000000"
@@ -66,7 +66,7 @@ nonce = false
 
 - `time_to_live_ms` သည် ငွေပေးချေမှုသက်တမ်းကို မီလီစက္ကန့်များတွင် သတ်မှတ်သည်။
 - `status_timeout_ms` ကောက်သည်က ငွေပေးချေမှုအခြေအနေကို ဘယ်လောက်ကြာ စောင့်နေတယ်ဆိုတာကို ထိန်းချုပ်တယ်။
-- `nonce = true` က client ကို cryptographic nonce value ထည့်သွင်းဖို့တောင်းဆိုသည်မှာ အကြိမ်ကြိမ်ပြုလုပ်တဲ့ ငွေချေးမှုတွေက မတူညီတဲ့ cryptographic hash တွေကို ဖြစ်ပေါ်စေဖို့ပါ။
+- `nonce = true` သည် ထပ်ခါတလဲလဲ transaction များမှ မတူညီသော ဟက်ရှ်များ ရရှိစေရန် client အား nonce တစ်ခု ထည့်ပေးရန် တောင်းဆိုသည်။
 
 ## Queue Settings ကို ချိတ်ဆက်ပါ {#connect-queue-settings}
 
@@ -77,7 +77,7 @@ nonce = false
 queue_root = "./queue"
 ```
 
-Workflow တစ်ခုအတွက် ရေရှည်တည်တံ့တဲ့ Client-side queue storage လိုတဲ့အခါ ဒါကို သုံးပါ။
+လုပ်ငန်းစဉ်တစ်ခုအတွက် client ဘက်တွင် စောင့်ဆိုင်းစာရင်းကို အမြဲတမ်းသိုလှောင်ထားရန် လိုအပ်သည့်အခါ ဤနည်းကို သုံးပါ။
 
 ## Configurations များကို ဖန်တီးခြင်း {#generating-configurations}
 

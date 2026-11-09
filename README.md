@@ -27,6 +27,10 @@ pnpm build
 pnpm serve
 ```
 
+The build caps Node's old-space heap at 6 GiB. Static syntax-highlighted code
+is compiled as one HTML literal per fence so the multilingual site can keep
+its full local search index within that budget.
+
 Vercel publishes `main` at the domain root for `docs.iroha.tech`. The GitHub
 Actions workflow also builds with `/iroha-docs/` as its public path and deploys
 the backup through GitHub's official Pages actions. The repository Pages source

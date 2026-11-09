@@ -45,7 +45,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-ارادے `payments.universal` کی نشاندہی کرتا ہے، اس کے عددی ڈیٹا اسپیس، کینونیکل I105 مالک، لیز حاصل کرنے کی مدت، اور موجودہ پالیسی / ادائیگی کوٹ گارڈ. منصوبہ ساز کے اختتامی نقطہ `POST /v1/aliases/setup/plan` ہے۔ اس کا واپس آنے والا منصوبہ سلسلہ ، اتھارٹی ، ریاست اور آخری تاریخ پر پابند ہے۔ ڈومین ہٹانا اب بھی استعمال کرتا ہے [`Unregister`](/ur/blockchain/instructions.md#un-register).
+درخواست میں `payments.universal`، اس کے ڈیٹا اسپیس کا عددی شناخت کنندہ، مالک کا معیاری I105 پتہ، لیز کی مدت اور موجودہ پالیسی و ادائیگی کے تخمینے کی شرط درج ہوتی ہے۔ منصوبہ بندی کا اینڈ پوائنٹ `POST /v1/aliases/setup/plan` ہے۔ اس کا دیا ہوا منصوبہ مخصوص زنجیر، مجاز اکاؤنٹ، لیجر کی حالت اور آخری وقت سے منسلک ہوتا ہے۔ ڈومین ہٹانے کے لیے اب بھی [`Unregister`](/ur/blockchain/instructions.md#un-register) استعمال ہوتا ہے۔
 
 ڈومین بنانے یا ہٹانے کے لئے فعال رن ٹائم ویلیڈیٹر کے تحت مناسب ڈومین مینجمنٹ اجازت کی ضرورت ہوتی ہے۔ ڈومین میٹا ڈیٹا کو [`SetKeyValue` اور `RemoveKeyValue`](/ur/blockchain/instructions.md#setkeyvalue-removekeyvalue) کے ساتھ اپ ڈیٹ کیا جاسکتا ہے جب اتھارٹی کو اس ڈومین میں ترمیم کرنے کا اختیار حاصل ہو۔
 

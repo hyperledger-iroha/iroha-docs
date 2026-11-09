@@ -10,8 +10,8 @@ translation_engine: nllb-200-ct2
 
 Iroha 3 အော်ပရေတာရဲ့ အလုပ်ခွင်ဟာ အဓိက ဘိုင်နရီ လေးခုကို လှည့်ပတ်ပါတယ်။
 
-- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) Network peer daemon ကို run လုပ်ဖို့
-- `iroha3d_taira` အတွက် Single Protocol Standard Taira validator launcher အတွက်
+- နိုဒ်၏ နောက်ကွယ်ဝန်ဆောင်မှုကို လည်ပတ်စေရန် [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) ကို သုံးသည်။
+- စံသတ်မှတ် Taira ၏ validator စတင်ကိရိယာအတွက် `iroha3d_taira`
 - [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli) အတွက် CLI operator command တွေနဲ့
 - [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) Key များ၊ blockchain genesis များ၊ localnets များနှင့် profile များအတွက်
 
@@ -64,7 +64,7 @@ Kagami ကို container တစ်ခုထဲထည့်ပါ။
 docker run -t hyperledger/iroha:dev kagami --help
 ```
 
-Network peer startup အတွက် localnet ကို Generate လုပ်ပြီး First Compose file ကို ရိုက်ထည့်ပါ။
+peer စတင်ရန် localnet နှင့် Compose ဖိုင်ကို ဦးစွာ ဖန်တီးပါ။
 
 ```bash
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
@@ -74,7 +74,7 @@ docker compose -f ./docker-compose.yml up
 
 ## ဘယ် Binary ကို သုံးရမလဲ။ {#which-binary-should-i-use}
 
-- အများပြည်သူ Taira validator release အပြင်မှာ network peers တွေကို start လုပ်နေစဉ် (သို့) operating လုပ်နေတဲ့အခါ `iroha3d` ကို အသုံးပြုပါ။
-- `iroha3d_taira --sora` ကို ပရိုတိုကော စံတစ်ခုတည်းသော Taira validator deployment အတွက်သာ အသုံးပြုပါ။ ၎င်းသည် Taira ၏ ချိတ်ဆက်မှု၊ သိုလှောင်ခြင်းနှင့် runtime-signer profile များကို အားဖြည့်စေသည်။
+- အများသုံး Taira ၏ validator ထုတ်ဝေမှုအပြင်ဘက်ရှိ peer များကို စတင် သို့မဟုတ် လည်ပတ်လျှင် `iroha3d` ကို အသုံးပြုပါ။
+- စံသတ်မှတ် Taira ၏ validator ဖြန့်ချိတပ်ဆင်မှု အတွက်သာ `iroha3d_taira --sora` ကို အသုံးပြုပါ။ ၎င်းသည် Taira ၏ chain၊ သိုလှောင်မှုနှင့် လည်ပတ်ချိန်လက်မှတ်ထိုးသူ ပရိုဖိုင်တို့ကို လိုက်နာစေသည်။
 - `iroha` ကို အသုံးပြုပြီး blockchain ledger ကို မေးမြန်းရန်၊ ငွေပေးချေမှု တင်ပြရန် သို့မဟုတ် operator API အဆုံးမှတ်များကို စစ်ဆေးရန် လိုအပ်ပါက။
-- `kagami` ကို သော့တွေ၊ blockchain genesis နည်းပညာ manifesto တွေ၊ profile bundles တွေ ဒါမှမဟုတ် localnet အရင်းအမြစ်တွေ လိုအပ်တဲ့အခါ သုံးပါ။
+- ကီးများ၊ genesis manifest များ၊ ပရိုဖိုင်အစုများ သို့မဟုတ် localnet ဒေတာများ လိုအပ်လျှင် `kagami` ကို အသုံးပြုပါ။

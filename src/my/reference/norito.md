@@ -16,13 +16,13 @@ Norito ရှိသည် Iroha ဒါက Network peers တွေမှာ သ�
 
 |မျက်နှာပြင်|Norito ကို အသုံးပြုပုံ |
 | --- | --- |
-|ငွေလဲလှယ်မှုနှင့် မေးမြန်းချက်များ|Torii မှတစ်ဆင့် ပေးပို့သော လက်မှတ်ရေးထိုးထားသော ငွေချေးမှုနှင့် မေးမြန်းချက်များအတွက် အသုံးဝင်ပစ္စည်းများကို Norito ဟု ကုဒ်သွင်းထားသည်။ |
+| transaction များနှင့် query များ | Torii မှတစ်ဆင့် တင်သွင်းသော လက်မှတ်ထိုး transaction နှင့် query payload များကို Norito အဖြစ် ကုဒ်သွင်းသည်။ |
 |blockchain ပေါ်ပေါက်ခြင်း |`kagami genesis sign` ဟာ လက်မှတ်ထိုးထားတဲ့ `.nrt` ဘလော့ကို ထုတ်ပေးပြီး Network peers တွေက startup မှာ load လုပ်ကြတယ်။ |
 |Torii ရိုက်ထည့်ထားတဲ့ တုံ့ပြန်မှု |API endpoints တွေမှာ typeed binary responses ကို support လုပ်တဲ့ endpoints က `Accept: application/x-norito` ကို အသုံးပြုတယ်။ |
 |SDKs | Rust, Python, JavaScript, Kotlin/Java, Swift, နှင့် Android ဖောက်သည်များ အသုံးပြု Norito လက်နဲ့လုပ်ထားတဲ့ byte တွေအစား builds (သို့) bindings တွေပါ။ |
 |Kura သိုလှောင်ခြင်း |Block payloads, recovery auxiliary records, rosters များနှင့် block-finalisation marker များကို Norito ဖွဲ့စည်းထားသော ဒေတာအဖြစ် သိမ်းဆည်းထားသည်။ |
-|နည်းပညာထုတ်ပြန်ချက်များ|Nexus, data availability, SoraFS, streaming, and app-facing technical manifests use Norito when the technical manifesto must be signed or hashed. |
-|Streaming ကို|Norito Streaming သည် Norito နည်းပညာ manifest များ၊ segment headers များ၊ ထိန်းချုပ်ရေး frame များနှင့် လိုက်နာမှု fixtures များကို အသုံးပြုသည်။ |
+| manifest များ | လက်မှတ်ထိုးရန် သို့မဟုတ် ဟက်ရှ်တွက်ရန် လိုအပ်သော SORA Nexus၊ ဒေတာရရှိနိုင်မှု၊ SoraFS၊ stream နှင့် အက်ပ်သုံး manifest များသည် Norito ကို အသုံးပြုသည်။ |
+| stream လုပ်ဆောင်မှု | Norito Streaming သည် Norito manifest များ၊ အပိုင်းခေါင်းစီးများ၊ ထိန်းချုပ် frame များနှင့် ကိုက်ညီမှုစမ်းသပ်ဒေတာများကို အသုံးပြုသည်။ |
 
 Norito သည် စမတ်စာချုပ်ဘာသာစကားမဟုတ်ပါ။ ငွေကြေးလုပ်ငန်းများ၊ စာချုပ်ခေါ်ဆိုမှုများ၊ နည်းပညာထုတ်ပြန်ချက်များနှင့် API ရိုက်ထည့်သော အသုံးဝင်ဝန်ဆောင်မှုများကို သယ်ယူပို့ဆောင်သည့် သတ်မှတ်ချက်ဆိုင်ရာဒေတာ ကွန်တိန်နာနှင့် ကိုဒီကပါ။
 
@@ -35,7 +35,7 @@ Norito သည် စမတ်စာချုပ်ဘာသာစကားမဟ
 |မှော်ဆန်ခြင်း|4 byte |ASCII `NRT0` ကို Norito မဟုတ်တဲ့ အချက်အလက်တွေကို အစောပိုင်းမှာ ပယ်ချဖို့ သုံးပါတယ်။ |
 |ဗိုလ်မှူး|1 byte |အဓိကဗားရှင်းကို Format လုပ်ပါ။ လက်ရှိ အသုံးအဆောင်များမှာ `0` ကို အသုံးပြုပါတယ်။ |
 |အသေးစား |1 byte |v1 အတွက် decode ညွှန်ပြချက်။ လက်ရှိတန်ဖိုးက `0x00` ။ အလံများ layout ကိုဖော်ပြသည်။ |
-|Schema ကို cryptographic hash |၁၆ ဘိုက်များ|မမျှော်လင့်တဲ့ အသုံးဝင်မှုများကို ပယ်ချရန် Typed Decoders များက အသုံးပြုသော Type Identity ကို။ |
+| schema ဟက်ရှ် | ၁၆ ဘိုက် | အမျိုးအစားသတ်မှတ် decoder များက မမျှော်မှန်းသော payload များကို ငြင်းပယ်ရန် အသုံးပြုသည့် အမျိုးအစားအထောက်အထား။ |
 |compression ကို|1 byte |`0 = None`, `1 = Zstd`. မသိတဲ့ တန်ဖိုးတွေကို ပယ်ချလိုက်ပါတယ်။ |
 |အသုံးဝင် ဝန်ဆောင်မှု အလျား|8 byte | သေးငယ်တဲ့ အန်ဒီယန်းအဖြစ် ဖိအားမရတဲ့ အသုံးဝင် ဝန်ဆောင်မှုအလျား `u64`. |
 |CRC64 |8 byte |CRC64-XZ ကန့်သတ်မထားတဲ့ အသုံးဝင် ဝန်ဆောင်မှုအတွက် စစ်ဆေးချက်အရေအတွက်။ |
@@ -45,7 +45,7 @@ Norito သည် စမတ်စာချုပ်ဘာသာစကားမဟ
 
 ## အလှဆင်အလံများ {#layout-flags}
 
-Norito နောက်ဆုံး header byte မှာ layout ရွေးချယ်မှုကို သိုလှောင်တယ်။ default v1 အကူတွေက emit လုပ်ပါတယ်။ `COMPACT_LEN` (`0x02`) အတွက် ကွန်ကက်တန်ဖိုးတိုင်းအလျား prefixes များအတွက်။ အမည်ပေးသူများ code ကို `flags = 0x00`.
+Norito သည် ဖွဲ့စည်းပုံရွေးချယ်ချက်များကို နောက်ဆုံး header ဘိုက်တွင် သိမ်းသည်။ ပုံမှန် v1 အကူကိရိယာများသည် တန်ဖိုးတစ်ခုချင်းစီအတွက် ကျစ်လျစ်သောအရှည်ရှေ့ဆက်များကို သုံးရန် `COMPACT_LEN` (`0x02`) ကို ထုတ်ပေးသည်။ ခေါ်ယူသူက `flags = 0x00` ဖြင့် ကုဒ်သွင်းလျှင် အတိအလင်းသတ်မှတ်ထားသော အကျယ်ပုံသေအရှည်ရှေ့ဆက်များကိုလည်း ဖတ်နိုင်သည်။
 
 |အလံ|Hex |အခြေအနေ |သက်ရောက်မှု |
 | --- | ---: | --- | --- |
@@ -67,10 +67,10 @@ Norito သည် Iroha ဒေတာပုံစံတွင်ဖော်ပြ
 - `COMPACT_LEN` မရှိပါက တန်ဖိုးတစ်ခုချင်းအလျားသည် 8-byte little-endian `u64` ဖြစ်ပါသည်။
 - Sequence length headers တွေကို v1 မှာ fixed 8-byte little-endian `u64` လို့ သတ်မှတ်ထားပါတယ်။
 - `Vec<u8>` ကို ဘိုက်တစ်ဘက် တစ်လျားအစား `[len_u64][raw-bytes]` အဖြစ် ကုဒ်သွင်းထားသည်။
-- Packaged sequences use `(len + 1)` monotonic `u64` offsets followed by the concatenated element payloads (ပိတ်ဆက်ထားသော အစိတ်အပိုင်းများ၏ အသုံးဝင်ဝန်ဆောင်မှုများ)
+- ကျစ်လျစ်စွာထုပ်ထားသော အစဉ်များသည် `(len + 1)` ခုရှိသော အစဉ်တိုး `u64` တည်နေရာအကွာအဝေးများကို အသုံးပြုပြီး နောက်တွင် အစိတ်အပိုင်း payload များကို ဆက်ထားသည်။
 - မြေပုံများတွင် `u64` နှင့် တည်ငြိမ်သော စာရင်းဝင်စာရင်းများကို ကုဒ်သွင်းထားပြီး သတ်မှတ်ချက်ဆိုင်ရာ သော့အစီအစဉ်ကို အသုံးပြုသည်။ `HashMap` စာရင်းများသည် ကုဒ်သွင်းရန်မတိုင်မီ သော့အလိုက် အမျိုးအစားခွဲခြားခြင်းခံထားရသည်၊ `BTreeMap` သည် ၎င်း၏ သဘာဝအစီစဉ်ကို အသုံးပြုသည်။
 - `BigInt` သည် `u32` byte အလျားနှင့် 512-bit cap နှင့်အတူအသေးစား endian နှစ်'s complement bytes ကိုအသုံးပြုသည်။
-- `Numeric` ကို `(mantissa, scale)` အဖြစ် ကုဒ်သွင်းထားပြီး mantissa က integer value ကို သိမ်းဆည်းပြီး scale က fractional digits တွေကို သိမ်းဆည်းပါတယ်။
+- `Numeric` ကို `(mantissa, scale)` အဖြစ် ကုဒ်သွင်းသည်။ mantissa တွင် ကိန်းပြည့်တန်ဖိုးကို သိမ်းပြီး scale တွင် ဒဿမနောက်ကိန်းအရေအတွက်ကို သိမ်းသည်။
 
 ဤစည်းမျဉ်းများသည် လက်မှတ်များနှင့် cryptographic hash များအတွက် အရေးပါသည်။ logical transaction တစ်ခုတည်းကို တည်ဆောက်သည့် SDKs နှစ်ခုသည်တူညီသော single protocol-standard byte ကိုထုတ်လုပ်ရမည်ဖြစ်သည်။
 
@@ -98,7 +98,7 @@ Hardware အရှိန်မြှင့်ခြင်းသည် decoded co
 
 Norito သည် API အပြီးသတ်မှတ်ချက်များနှင့် ကိရိယာများအတွက် JSON အမျိုးအစားစနစ်ကို မစွန့်ခွာဘဲ Norito ကိုဖယ်ရှားရန် လိုအပ်သော ဒေသခံ JSON stack ကိုပါ ၀ င်သည်။
 
-|JSON feature ကို |အသုံးပြုမှု ကိစ္စ|
+| JSON အင်္ဂါရပ် | အသုံးပြုပုံ |
 | --- | --- |
 |`norito::json::{to_json, from_json}` |Deterministic typeed JSON code/decode ကိုနှိပ်ပါ။ |
 |လှပပြီး စာရေးဆရာရဲ့ အကူအညီပေးသူပါ။|CLI ထုတ်ကုန်များ၊ စမ်းသပ်မှုပစ္စည်းများနှင့် streaming `std::io` ပေါင်းစပ်ခြင်း။ |
@@ -107,7 +107,7 @@ Norito သည် API အပြီးသတ်မှတ်ချက်မျာ�
 |Zero Copy Reader ကို အသုံးပြုပါ|သွင်းချက်ကနေ ကြိုးတွေကို ချေးယူတဲ့ အမှတ်တံဆိပ် စကင်လုပ်ခြင်း။ |
 |အဆင့် (၁) အရှိန်မြှင့်စက်များ |ရွေးချယ်စရာ AVX2, NEON, သတ္တု (သို့) CUDA တည်ဆောက်မှု အညွှန်းကိန်းချခြင်း scalar fallback ဖြင့်။ |
 
-Iroha code ကို prefer လုပ်သင့်ပါတယ်။ `norito::json` အထောက်အပံ့ပစ္စည်းများ API အသုံးဝင်သော ဝန်ဆောင်မှုများ။ `serde_json` ထုတ်လုပ်ရေးလမ်းကြောင်းများအတွက် စကေးနှင့် ကွင်းဆင်းလုပ်ကိုင်မှုအပြုအမူမှ ကွဲပြားသော အန္တရာယ်များ SDKs နှင့် Torii ထုတ်ယူသူ။
+Iroha ကုဒ်သည် အမျိုးအစားသတ်မှတ် API payload များအတွက် `norito::json` အကူကိရိယာများကို ဦးစားပေးသင့်သည်။ တကယ့်လုပ်ငန်းသုံးလမ်းကြောင်းများထဲသို့ ရိုးရိုး `serde_json` ကို ထည့်ခြင်းက SDKs နှင့် Torii ထုတ်ယူစစ်ဆေးသူများ မျှော်မှန်းသော schema နှင့် အကွက်ကိုင်တွယ်မှုအပြုအမူတို့မှ ကွဲလွဲနိုင်ခြေ ရှိသည်။
 
 ## ရင်းမြစ်ထောက်ပံ့မှု {#derive-support}
 
@@ -133,9 +133,9 @@ Derives များသည် encoded length အညွှန်းများ�
 |`derive` |ဘိုင်နရီ၊ စခီမားနဲ့ JSON ထုတ်ကုန်တွေအတွက် ပြန်လည်တင်ပို့တဲ့ လုပ်ငန်းစဉ် မက်ကရိုတွေ။ |
 |`compression` |Zstd ခေါင်းစဉ်ဖောင်ဒေးရှင်းများအတွက်အကူအညီ။ |
 |`packed-seq` |offset tables ကိုသုံးပြီး စုစည်းပုံ layout တွေကို packaged လုပ်ထားတယ်။ |
-|`packed-struct` |Packaged derived-generated struct layouts တွေ။ |
+| `packed-struct` | derive က ဖန်တီးပေးသော ကျစ်လျစ်စွာထုပ်ထားသည့် struct ဖွဲ့စည်းပုံများ။ |
 |`compact-len` |Varint အတိုင်းအတာအလျား ကြိုတင်စာရင်းများ|
-|`columnar` |Norito Column Blocks, adaptive AoS/NCB row codecs, and borrowed views for scan-heavy paths; default `node-codec` feature set ထဲမှာ ထည့်သွင်းထားပါတယ်။ |
+| `columnar` | Norito Column Blocks၊ လိုက်လျောညီထွေပြောင်းလဲသော AoS/NCB အတန်း codec များနှင့် စစ်ဆေးဖတ်ရှုမှုများသော လမ်းကြောင်းများအတွက် ငှားယူမြင်ကွင်းများ။ ပုံမှန် `node-codec` အင်္ဂါရပ်အစုတွင် ပါဝင်သည်။ |
 |`strict-safe` |မှားယွင်းနိုင်တဲ့ လမ်းကြောင်းတွေထဲက အကြောက်တရားတွေကို ဖွဲ့စည်းထားတဲ့ အမှားတွေအဖြစ် ပြောင်းတယ်။ |
 |`simd-accel` |CPU အရှိန်မြှင့်မှု ရှိပါက ဒေသခံကျဆင်းခြင်းနဲ့အတူ။ |
 |`json` |ဒေသခံ JSON parser, စာရေးသူ, DOM, ရိုက်ထည့်ထုတ်ကုန်များ, နှင့်မြန်နှုန်းလမ်းကြောင်းများ. |
@@ -165,7 +165,7 @@ API အပြီးသတ်မှတ်ချက်တစ်ခုက ကို
 Accept: application/x-norito, application/json
 ```
 
-Torii စာလုံးရိုက်ခြင်းအမှားများနှင့် တယ်လီမီထရီဖြင့် ရေတွက်ခြင်းအားဖြင့် decode ကျရှုံးမှုများကိုပေါ်လာစေသည်။ အများဆုံးအကြောင်းပြချက်များမှာ မတည်ငြိမ်သော မှော်ပညာ၊ မထောက်ပံ့သောဗားရှင်း၊ မထောက်ခံသော feature flag, checksum မညီမျှမှု၊ မှားယွင်းသောဖေါ်မြူတာ UTF-8၊ မတည်ငြင်းသော enum tag နှင့် schema မညီမျှခြင်းတို့ဖြစ်သည်။
+ကုဒ်ဖြည်ချို့ယွင်းမှုများကို အမျိုးအစားသတ်မှတ် Torii အမှားများအဖြစ် ဖော်ပြပြီး စောင့်ကြည့်တိုင်းတာမှုက ရေတွက်သည်။ အဖြစ်များသောအကြောင်းရင်းများတွင် မမှန်သော magic အမှတ်အသား၊ မပံ့ပိုးသောဗားရှင်း၊ မပံ့ပိုးသောအင်္ဂါရပ်အလံ၊ checksum မကိုက်ညီမှု၊ မမှန်သော UTF-8၊ မမှန်သော enum tag နှင့် schema မကိုက်ညီမှုတို့ ပါဝင်သည်။
 
 Norito RPC သယ်ယူပို့ဆောင်ရေးကို သယ်ယူ ပို့ဆောင်ရေး ညွှန်ကြားချက်စနစ်ဖြင့် ရွေးချယ်ပါတယ်။ Operator Dashboards request latency, failures, active connections, response bytes တွေကို ခြေရာခံထားသင့်ပြီး `torii_norito_decode_failures_total` ကွဲပြားစွာ JSON ယာဉ်ကြော။
 
@@ -173,14 +173,14 @@ Norito RPC သယ်ယူပို့ဆောင်ရေးကို သယ�
 
 Norito Streaming ဟာ မီဒီယာတွေနဲ့ အချိန်နဲ့တပြေးညီ သယ်ယူပို့ဆောင်ရေး မျက်နှာပြင်တွေကို တူညီတဲ့ သတ်မှတ်ချက်ဆိုင်ရာ ချဉ်းကပ်မှုကို ဖြန့်ချိပါတယ်။ အဓိက အပိုင်းတွေက:
 
-|Streaming feature ကို |ရည်ရွယ်ချက်|
+| stream အင်္ဂါရပ် | ရည်ရွယ်ချက် |
 | --- | --- |
-|နည်းပညာထုတ်ပြန်ချက်များ|segment cryptographic commitment values, privacy routes, capabilities, codec profile, encryption suite နဲ့ content key metadata တွေကို ကြေညာပါ။ |
+| manifest များ | အပိုင်းကတိပြုတန်ဖိုးများ၊ ကိုယ်ရေးလုံခြုံမှုလမ်းကြောင်းများ၊ စွမ်းဆောင်ရည်များ၊ codec ပရိုဖိုင်၊ စာဝှက်စနစ်အစုနှင့် အကြောင်းအရာကီး metadata တို့ကို ကြေညာသည်။ |
 |ကဏ္ဍခေါင်းစဉ်များ |Bind segment number, duration, chunk count, timing, entropy mode, audio summary နဲ့ Merkle root တွေကို ချိတ်ဆက်ပါ။ |
 |Cryptographic commitment values အစိတ်အပိုင်းများ |ကြည့်ရှုသူတွေနဲ့ relays တွေကို serve မလုပ်ခင် (သို့) decode မလုပ်ခင် အသုံးဝင် ဝန်ဆောင်မှု အပိုင်းတွေကို Technical Manifesto ကို စစ်ဆေးခွင့်ပြုပါ။ |
 |ထိန်းချုပ်ရေး ဘောင်များ |Technical manifest ကြေညာချက်များ၊ ပြန်ကြားချက်များ၊ အဓိက update များနှင့် စွမ်းဆောင်ရည် ညှိနှိုင်းမှုများကို ဆောင်ရွက်ပါ။ |
 |HPKE အဓိက သတင်းအချက်အလက်များ|ကုန်သွယ်ရေး လျှို့ဝှက်ချက်တွေကို ညှိနှိုင်းထားတဲ့ suite နဲ့ monotonously တိုးပွားနေတဲ့ counter တွေကို သုံးပြီး လည်ပတ်ပါ။ |
-|အရည်အချင်း ညှိနှိုင်းမှု |ထောက်ပံ့သော feature bits များ၊ datagram ကန့်သတ်ချက်များ၊ တုံ့ပြန်မှု cadence များနှင့် privacy လိုအပ်ချက်များကို ဖြတ်တောက်သည်။ |
+| စွမ်းဆောင်ရည်ညှိနှိုင်းခြင်း | ပံ့ပိုးထားသောအင်္ဂါရပ်ဘစ်များ၊ datagram ကန့်သတ်ချက်များ၊ တုံ့ပြန်ချက်အကြိမ်နှုန်းနှင့် ကိုယ်ရေးလုံခြုံမှုလိုအပ်ချက်များ၏ တူညီရာအစုကို ရွေးသည်။ |
 |FEC နှင့် ပြန်ကြားချက်များ |Loss realtime paths များအတွက် deterministic receiver အစီရင်ခံစာများနှင့် parity ဆုံးဖြတ်ချက်များကို အသုံးပြုသည်။ |
 |Conformity vectors များ|ဘာသာစကားစုံ စမ်းသပ်မှု လက်ရာတွေဟာ SDKs ကို တစ်နည်းတည်းသော နည်းပညာ manifesto တွေ၊ segment တွေနဲ့ entropy streams တွေကို dekode လုပ်ဖို့ သက်သေပြတယ်။ |
 
@@ -207,4 +207,4 @@ Streaming-specific codecs နဲ့ entropy profiles တွေဟာ core Norito
 ## အထက်ပိုင်းဆိုင်ရာ ရည်ညွှန်းချက်များ {#upstream-references}
 
 - [Norito ပုံစံ သတ်မှတ်ချက်](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/norito.md)
-- [Norito ဆော့ဝဲအိတ် README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)
+- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)

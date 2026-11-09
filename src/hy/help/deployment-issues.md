@@ -30,7 +30,7 @@ cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 - Torii եւ P2P նավահանգիստները դեռեւս չեն կապված այլ գործընթացի հետ:
 - Kura խանութների ցուցակը պատկանում է նույն շղթայի եւ չի կրկնվել մեկ այլ ցանցային պրոֆիլից:
 
-Օգտագործեք config tracing, երբ daemon- ը կարդում է ավելի քան մեկ TOML շերտ.
+Երբ դևմոնը կարդում է մի քանի TOML շերտ, միացրեք կազմաձևման աղբյուրների հետագծումը։
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config

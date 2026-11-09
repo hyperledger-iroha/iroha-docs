@@ -31,7 +31,7 @@ private_key = "802620..."
 ```
 
 - `chain` בוחר את שרשרת העסקאות המוצעות אליהן.
-- `torii_url` נקודות ב-peer Torii HTTP API.
+- `torii_url` מצביע על ה־API של Torii בצומת, הזמין דרך HTTP.
 - `[account].domain` משמשת על ידי קיצוצים CLI וקידוד בוחר כתובת; הקאנוניקלי `AccountId` עצמו הוא ללא תחום .
 - `[account].public_key` ו `[account].private_key` חותמים על עסקאות.
 

@@ -196,8 +196,14 @@ export function clarifyTechnicalTranslationSource(source: string): string {
     )
     .replace(/\btime events\b/giu, 'time-based event notifications')
     .replace(/\bEvents are emitted\b/gu, 'Typed event notifications are emitted')
-    .replace(/(?<!API )(?<![\p{L}\p{N}_/.`<>-])endpoints(?![\p{L}\p{N}_/`<>-]|\.[\p{L}\p{N}])/giu, 'API endpoints')
-    .replace(/(?<!API )(?<![\p{L}\p{N}_/.`<>-])endpoint(?![\p{L}\p{N}_/`<>-]|\.[\p{L}\p{N}])/giu, 'API endpoint')
+    .replace(
+      /(?<!network )(?<!API )(?<![\p{L}\p{N}_/.`<>-])endpoints(?![\p{L}\p{N}_/`<>-]|\.[\p{L}\p{N}])/giu,
+      'network endpoints',
+    )
+    .replace(
+      /(?<!network )(?<!API )(?<![\p{L}\p{N}_/.`<>-])endpoint(?![\p{L}\p{N}_/`<>-]|\.[\p{L}\p{N}])/giu,
+      'network endpoint',
+    )
     .replace(
       /(?<!software )(?<![\p{L}\p{N}_/.`<>-])runtimes(?![\p{L}\p{N}_/`<>-]|\.[\p{L}\p{N}])/giu,
       'software execution environments',
@@ -447,21 +453,21 @@ export function clarifyTechnicalTranslationSource(source: string): string {
       .replace(/\bCall (?=(?:the|an?|this|that)\b)/gu, 'Invoke ')
       .replace(/\bhost calls\b/giu, 'host-function invocations')
       .replace(/\bcontract calls\b/giu, 'contract invocations')
-      .replace(/\bread-only calls\b/giu, 'read-only API requests')
-      .replace(/\bservice calls\b/giu, 'service API requests')
+      .replace(/\bread-only calls\b/giu, 'read-only service requests')
+      .replace(/\bservice calls\b/giu, 'service requests')
       .replace(/\bnetwork calls\b/giu, 'network requests')
       .replace(/\bcalls\b/giu, 'technical invocations')
       .replace(/\bcall\b/giu, 'technical invocation')
   }
 
   // `API` is deliberately protected as a technical acronym, so its marker
-  // hides the prefix from the endpoint lookbehind above. Collapse only the
-  // exact clarification duplicate after restoring literals; this also keeps
-  // repeated clarification idempotent for already explicit source wording.
+  // hides the prefix from the endpoint lookbehind above. Preserve an explicit
+  // API endpoint exactly after restoring literals.
   return protectedSource
     .restore(clarified)
-    .replace(/\bAPI API endpoints\b/gu, 'API endpoints')
-    .replace(/\bAPI API endpoint\b/gu, 'API endpoint')
+    .replace(/\bAPI network endpoints\b/gu, 'API endpoints')
+    .replace(/\bAPI network endpoint\b/gu, 'API endpoint')
+    .replace(/\b(An|an) network endpoint\b/gu, (_match, article: string) => `${article[0]} network endpoint`)
     .replace(/\bsoftware execution environment environment\b/giu, 'software execution environment')
     .replace(/\bconsensus finalization consensus quorum\b/giu, 'consensus finalization quorum')
     .replace(/\bcryptographic commitment value cryptographic hash\b/giu, 'cryptographic hash of the binding value')
@@ -648,8 +654,7 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'የንብረት ፍቺው አሁንም ካኖኒካል እና ግልጽ ያልሆነ አድራሻ አለው። ከምዝገባ በኋላ ያንን አድራሻ ያከማቹ ወይም ይጠይቁ እና በቀስቅሴው እርምጃ ውስጥ ይጠቀሙበት።',
     "Set the trigger's technical account to a dedicated account when possible. A dedicated account makes it clear which permissions are required for trigger execution and avoids coupling the trigger to an operator's personal signing key.":
       'በሚቻልበት ጊዜ የቀስቅሴውን ቴክኒካዊ መለያ ወደ ተለየ መለያ ያዘጋጁ። ተለየ መለያ ለቀስቅሴ አፈጻጸም የሚያስፈልጉትን ፈቃዶች ግልጽ ያደርጋል እና ቀስቅሴውን ከኦፕሬተር የግል ፊርማ ቁልፍ ጋር ከማጣመር ይከላከላል።',
-    'Register the sponsor account through your private onboarding flow:':
-      'የስፖንሰር መለያውን በግል የመመዝገቢያ ፍሰትዎ በኩል ይመዝግቡ፦',
+    'Register the sponsor account through your private onboarding flow:': 'የስፖንሰር መለያውን በግል የመመዝገቢያ ፍሰትዎ በኩል ይመዝግቡ፦',
     'Production equivalent': 'የምርት አካባቢ አቻ',
     'The MCP bridge can submit a signed Iroha transaction, but it does not remove the normal transaction requirements. A transaction still needs a correct authority, permissions, fee funding, chain ID, metadata, and signature.':
       'የ MCP ድልድይ የተፈረመ የ Iroha ግብይት ማስገባት ይችላል፣ ነገር ግን መደበኛውን የግብይት መስፈርቶች አያስወግድም። ግብይት አሁንም ትክክለኛ የፈቃድ ባለቤት፣ ፈቃዶች፣ የክፍያ ገንዘብ፣ የሰንሰለት ID፣ ሜታዳታ እና ፊርማ ያስፈልገዋል።',
@@ -915,8 +920,7 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
     'A SORA Nexus account ID is a canonical I105 address derived from the account public key and the target network prefix. It is not the `[account].domain` value in client TOML. The same public key encodes to different IDs on Taira and Minamoto, and production users should generate a separate keypair for Minamoto.':
       'SORA Nexus иҫәбе идентификаторы — иҫәптең асыҡ асҡысынан һәм маҡсатлы селтәр префиксынан сығарылған каноник I105 адресы. Ул клиенттың TOML файлындағы `[account].domain` ҡиммәте түгел. Бер үк асыҡ асҡыс Taira һәм Minamoto өсөн төрлө идентификаторҙарға кодлана, ә етештереү мөхитендәге ҡулланыусылар Minamoto өсөн айырым асҡыстар парын булдырырға тейеш.',
     '- the sponsor account exists': '- спонсор иҫәбе бар',
-    '### 1. Inspect canonical accounts on Taira':
-      '### 1. Taira-ла каноник иҫәп яҙмаларын тикшерегеҙ',
+    '### 1. Inspect canonical accounts on Taira': '### 1. Taira-ла каноник иҫәп яҙмаларын тикшерегеҙ',
     'Grant and revoke instructions are used for account [permissions and roles](permissions.md).':
       'Рөхсәт биреү һәм кире алыу күрһәтмәләре иҫәп яҙмаһының [рөхсәттәре һәм ролдәре](permissions.md) өсөн ҡулланыла.',
     'Multilane execution additionally derives a deterministic payload-ownership hash and lane-local RBC instance hash for each lane subject. Those identities bind lane proposals and certificates to the global carrier; they are not a separate global consensus session. A block still finalizes only when the peer has a valid commit certificate and the matching payload locally.':
@@ -1118,7 +1122,7 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'השתמשו ב-DA כאשר יישום או מסלול Nexus זקוקים להבטחה גלויה בפנקס שהנתונים שמחוץ לשרשרת יישארו ניתנים לאחזור. דוגמאות נפוצות כוללות התחייבויות למטעני מסלול עבור תהליכי סליקה, כוונות הצמדה של SoraFS לתוכן שפורסם, חבילות הוכחה שיש לשמור לצורך אימות מאוחר יותר, ופריטי יישום שמצבם הציבורי צריך להיות תקציר ולא המטען המלא.',
     '4. The resolved route is checked against both catalogs. Unknown lanes, unknown dataspaces, and lane/dataspace mismatches are deterministic routing errors. If a transaction writes to two different dataspace targets, it is rejected as a conflicting route; cross-dataspace DVP/PVP settlement is routed through the universal coordinator lane.':
       '4. הנתיב שנפתר נבדק מול שני הקטלוגים. מסלולים לא מוכרים, מרחבי נתונים לא מוכרים ואי־התאמות בין מסלול למרחב נתונים הם שגיאות ניתוב דטרמיניסטיות. אם עסקה כותבת לשני יעדים שונים של מרחבי נתונים, היא נדחית עקב נתיב סותר; סליקת DVP/PVP חוצת־מרחבי־נתונים מנותבת דרך מסלול המתאם האוניברסלי.',
-    'On Taira, attach the faucet-derived `taira.tx-metadata.json` and use `--fee-payer authority` for every write. Registration and minting require the active validator\'s permissions; transfer and burn require authority over the source balance. A faucet-funded account is not automatically an issuer.':
+    "On Taira, attach the faucet-derived `taira.tx-metadata.json` and use `--fee-payer authority` for every write. Registration and minting require the active validator's permissions; transfer and burn require authority over the source balance. A faucet-funded account is not automatically an issuer.":
       'ב-Taira, צרפו את `taira.tx-metadata.json` שהתקבל משירות המימון והשתמשו ב-`--fee-payer authority` בכל כתיבה. רישום והנפקה דורשים את ההרשאות של המאמת הפעיל; העברה ושרפה דורשות סמכות על יתרת המקור. חשבון שמומן בשירות המימון אינו הופך אוטומטית למנפיק.',
     '- runtime configuration snapshots needed for deterministic block execution, such as cryptography, governance, pipeline, content, settlement, and Nexus settings':
       '- תמונות מצב של תצורת סביבת הריצה הנדרשות לביצוע דטרמיניסטי של בלוקים, כגון הגדרות קריפטוגרפיה, ממשל, שרשרת עיבוד, תוכן, סליקה ו־Nexus',
@@ -1365,7 +1369,7 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'ეს არის შინაარსის კონფიდენციალურობა და არა ტრაფიკის ნაკადის ანონიმურობა. დრო, მონაწილეთა რაოდენობა, მონაცემთა სივრცის იდენტობა და სტაბილური პულის აქტივობა საჯარო რჩება. მონაცემთა სივრცემ, რომელშიც მხოლოდ ერთი CBDC არის განთავსებული, შეიძლება აქტივი მარშრუტიდან გამოსაცნობიც გახადოს, მიუხედავად იმისა, რომ აქტივის პირდაპირი იდენტიფიკატორი არ ქვეყნდება.',
     'All production behavior comes from the node configuration. Environment variables cannot activate this path. The shipped default is `enabled = false`; leaving the feature disabled requires no settlement-specific configuration.':
       'საწარმოო გარემოში მთელი ქცევა კვანძის კონფიგურაციიდან მოდის. გარემოს ცვლადები ამ გზას ვერ ააქტიურებს. მიწოდებული ნაგულისხმევი მნიშვნელობაა `enabled = false`; ფუნქციის გამორთულად დატოვება ანგარიშსწორებისთვის სპეციფიკურ კონფიგურაციას არ მოითხოვს.',
-    'Use the privacy-governance-authorized `RotatePrivateSettlementPoolPolicyV1` instruction. It must name the exact current governance digest, keep the same route, pool, and asset-binding commitment, advance the governance revision by one, use a strictly newer key epoch and different policy/governance digests, and activate at the block that contains the rotation. The pool frontier, roots, nullifiers, outputs, replay sets, and finalized receipts are preserved. Do not include a receipt touching that same route/pool at the rotation\'s activation height; the instruction rejects that boundary.':
+    "Use the privacy-governance-authorized `RotatePrivateSettlementPoolPolicyV1` instruction. It must name the exact current governance digest, keep the same route, pool, and asset-binding commitment, advance the governance revision by one, use a strictly newer key epoch and different policy/governance digests, and activate at the block that contains the rotation. The pool frontier, roots, nullifiers, outputs, replay sets, and finalized receipts are preserved. Do not include a receipt touching that same route/pool at the rotation's activation height; the instruction rejects that boundary.":
       'გამოიყენეთ კონფიდენციალურობის მმართველობის მიერ ავტორიზებული `RotatePrivateSettlementPoolPolicyV1` ინსტრუქცია. მან ზუსტად უნდა მიუთითოს მმართველობის მიმდინარე დაიჯესტი, შეინარჩუნოს იგივე მარშრუტი, პული და აქტივთან დამაკავშირებელი ვალდებულება, მმართველობის რევიზია ერთით გაზარდოს, გამოიყენოს მკაცრად უფრო ახალი გასაღების ეპოქა და განსხვავებული პოლიტიკისა და მმართველობის დაიჯესტები და გააქტიურდეს როტაციის შემცველ ბლოკში. პულის საზღვარი, ფესვები, ნულიფიკატორები, შედეგები, განმეორებითი დაკვრის ნაკრებები და საბოლოო ქვითრები უცვლელად რჩება. როტაციის აქტივაციის სიმაღლეზე იმავე მარშრუტს ან პულს არ უნდა ეხებოდეს არცერთი ქვითარი; ინსტრუქცია ასეთ საზღვარს უარყოფს.',
     '- both formal layers: the 3/255-leg count-symmetry checks and the exact four-validator committee-indexed N=2 validator-focused plus full bounded- fault, paper-primary N=3 fault, N=4 clean, and N=3 expiry/replay configurations, with fault budgets independent per committee':
       '- ორივე ფორმალური ფენა: 3/255 ნაწილის რაოდენობის სიმეტრიის შემოწმებები და ზუსტად ოთხი ვალიდატორისგან შემდგარი, კომიტეტის ინდექსით განსაზღვრული N=2 ვალიდატორზე ორიენტირებული და სრულად შეზღუდული ხარვეზის, ნაშრომის ძირითადი N=3 ხარვეზის, N=4 სუფთა და N=3 ვადის გასვლის/განმეორებითი დაკვრის კონფიგურაციები; ხარვეზის ბიუჯეტი თითოეული კომიტეტისთვის დამოუკიდებელია',
@@ -1597,10 +1601,9 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
   },
   mn: {
     '# Iroha Special Instructions': '# Iroha-гийн тусгай зааврууд',
-    'When we spoke about [how Iroha operates](/blockchain/iroha-explained), we said that Iroha Special Instructions are the only way to modify the world state. So, what kind of special instructions do we have? If you\'ve read the language-specific guides in this tutorial, you\'ve already seen a couple of instructions: `Register<Account>` and `Mint<Numeric>`.':
+    "When we spoke about [how Iroha operates](/blockchain/iroha-explained), we said that Iroha Special Instructions are the only way to modify the world state. So, what kind of special instructions do we have? If you've read the language-specific guides in this tutorial, you've already seen a couple of instructions: `Register<Account>` and `Mint<Numeric>`.":
       'Бид [Iroha хэрхэн ажилладаг](/mn/blockchain/iroha-explained) талаар тайлбарлахдаа дэлхийн төлөвийг зөвхөн Iroha-гийн тусгай заавруудаар өөрчилдөг гэж хэлсэн. Тэгвэл ямар тусгай зааврууд байдаг вэ? Хэрэв та энэ зааврын хэл тус бүрийн гарын авлагыг уншсан бол `Register<Account>` болон `Mint<Numeric>` зэрэг хэд хэдэн заавартай аль хэдийн танилцсан.',
-    'Here is the full list of Iroha Special Instructions:':
-      'Iroha-гийн тусгай заавруудын бүрэн жагсаалт:',
+    'Here is the full list of Iroha Special Instructions:': 'Iroha-гийн тусгай заавруудын бүрэн жагсаалт:',
     '| Instruction                                               | Descriptions                                     |':
       '| Заавар | Тайлбар |',
     '| [Register/Unregister](#un-register)                       | Give an ID to a new entity on the blockchain.    |':
@@ -1831,7 +1834,7 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
     'A decoder must enforce the expected discriminant.':
       'decoder သည် မျှော်မှန်းထားသော discriminant ကို မဖြစ်မနေ စစ်ဆေးရမည်။',
     'Choosing an endpoint or chain ID does not implicitly choose the address profile.':
-      'endpoint သို့မဟုတ် chain ID ကို ရွေးခြင်းက address profile ကို အလိုအလျောက် ရွေးပေးခြင်းမဟုတ်ပါ။',
+      'endpoint သို့မဟုတ် chain ID ကို ရွေးချယ်ခြင်းက လိပ်စာပရိုဖိုင်ကို အလိုအလျောက် ရွေးပေးခြင်း မဟုတ်ပါ။',
     "The Taira form applies Taira's sentinel to the same payload:":
       'Taira ပုံစံသည် တူညီသော payload ပေါ်တွင် Taira sentinel ကို အသုံးပြုသည်:',
     'The `convert`, `normalize`, and `audit` commands operate on the lower-level `AccountAddress` codec.':
@@ -1847,9 +1850,9 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
     'All multi-byte integers below are unsigned and `big-endian`.':
       'အောက်ပါ multi-byte integer အားလုံးသည် unsigned ဖြစ်ပြီး `big-endian` ဖြစ်သည်။',
     'Use the compact form when the raw public-key payload is at most 255 bytes:':
-      'raw public-key payload သည် 255 ဘိုက်အထိသာ ရှိပါက compact form ကို အသုံးပြုပါ:',
+      'အများသုံးကီး payload အကြမ်းသည် အများဆုံး ၂၅၅ ဘိုက်ရှိလျှင် ကျစ်လျစ်သောပုံစံကို အသုံးပြုပါ။',
     '| `public_key` | `key_len` bytes | Raw public-key payload   |':
-      '| `public_key` | `key_len` ဘိုက် | raw public-key payload |',
+      '| `public_key` | `key_len` ဘိုက် | အများသုံးသော့၏ မူလဘိုက်ဒေတာ |',
     'Keys longer than 255 bytes use the extended form:':
       '255 ဘိုက်ထက်ရှည်သော key များသည် extended form ကို အသုံးပြုသည်:',
     'An extended encoding is not canonical for a key that fits the compact form.':
@@ -1859,7 +1862,7 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
     'A valid policy has at least one member, positive weights, no duplicate public keys, and a threshold from `1` through the sum of member weights.':
       'မှန်ကန်သော policy တစ်ခုတွင် အနည်းဆုံး member တစ်ဦး၊ သုညထက်ကြီးသော weight များ၊ duplicate public key မရှိခြင်းနှင့် `1` မှ member weight စုစုပေါင်းအထိရှိသည့် threshold တစ်ခု ပါရမည်။',
     "Canonical construction sorts members by the signing algorithm's stable name, a zero separator byte, and then the raw public-key bytes.":
-      'Canonical construction သည် member များကို signing algorithm ၏ stable name၊ zero separator byte၊ ထို့နောက် raw public-key bytes အလိုက် စီစဉ်သည်။',
+      'စံသတ်မှတ်တည်ဆောက်မှုတွင် အဖွဲ့ဝင်များကို လက်မှတ်ထိုး algorithm ၏ တည်ငြိမ်သောအမည်၊ သုညခြားနားဘိုက်နှင့် ထို့နောက် အများသုံးကီးဘိုက်အကြမ်းများအလိုက် အစဉ်လိုက်စီသည်။',
     'For an untrusted string, a conforming application should:':
       'မယုံကြည်ရသော string တစ်ခုအတွက် စံနှုန်းနှင့်ကိုက်ညီသော application သည် အောက်ပါတို့ကို လုပ်ဆောင်သင့်သည်:',
     '1. Trim only permitted transport whitespace around the complete value.':
@@ -2008,7 +2011,7 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '| طریقہ اور اینڈ پوائنٹ | توثیق اور مرئیت |',
     'Subscription reads and draft builders are inherited from the shared Torii client used by `iroha_python.ToriiClient`. Every mutation is admitted with a body-bound canonical account signature and returns an unsigned transaction draft. Torii never accepts a private key and does not submit the draft for you.':
       'سبسکرپشن ریڈز اور ڈرافٹ بلڈرز، `iroha_python.ToriiClient` کے زیرِ استعمال مشترکہ Torii کلائنٹ سے وراثت میں ملتے ہیں۔ ہر تغیر کو درخواست کے متن سے منسلک کینونیکل اکاؤنٹ دستخط کے ساتھ قبول کیا جاتا ہے اور جواب میں ایک غیر دستخط شدہ ٹرانزیکشن ڈرافٹ ملتا ہے۔ Torii کبھی نجی کلید قبول نہیں کرتا اور نہ آپ کی جانب سے ڈرافٹ جمع کراتا ہے۔',
-    'Use the privacy-governance-authorized `RotatePrivateSettlementPoolPolicyV1` instruction. It must name the exact current governance digest, keep the same route, pool, and asset-binding commitment, advance the governance revision by one, use a strictly newer key epoch and different policy/governance digests, and activate at the block that contains the rotation. The pool frontier, roots, nullifiers, outputs, replay sets, and finalized receipts are preserved. Do not include a receipt touching that same route/pool at the rotation\'s activation height; the instruction rejects that boundary.':
+    "Use the privacy-governance-authorized `RotatePrivateSettlementPoolPolicyV1` instruction. It must name the exact current governance digest, keep the same route, pool, and asset-binding commitment, advance the governance revision by one, use a strictly newer key epoch and different policy/governance digests, and activate at the block that contains the rotation. The pool frontier, roots, nullifiers, outputs, replay sets, and finalized receipts are preserved. Do not include a receipt touching that same route/pool at the rotation's activation height; the instruction rejects that boundary.":
       'رازداری کی حکمرانی سے مجاز `RotatePrivateSettlementPoolPolicyV1` ہدایت استعمال کریں۔ اس میں موجودہ حکمرانی کے عین ڈائجسٹ کا نام ہونا چاہیے، وہی راستہ، پول اور اثاثہ-بائنڈنگ کمٹمنٹ برقرار رہنا چاہیے، حکمرانی کی نظرثانی میں ایک کا اضافہ ہونا چاہیے، کلید کا دور لازماً نیا اور پالیسی و حکمرانی کے ڈائجسٹ مختلف ہونے چاہییں، اور گردش اسی بلاک میں فعال ہونی چاہیے جس میں وہ شامل ہو۔ پول کا فرنٹیئر، روٹس، نلفائرز، آؤٹ پٹس، ری پلے مجموعے اور حتمی رسیدیں محفوظ رہتی ہیں۔ گردش کے فعال ہونے کی اونچائی پر اسی راستے یا پول کو چھونے والی رسید شامل نہ کریں؛ ہدایت اس حد کو مسترد کرتی ہے۔',
     'The `base-105` body encodes a binary account payload, not a public-key string and not a Norito JSON object:':
       '`base-105` باڈی ایک بائنری اکاؤنٹ پے لوڈ کو انکوڈ کرتی ہے، نہ کہ عوامی کلید کی اسٹرنگ کو اور نہ ہی Norito JSON آبجیکٹ کو:',
@@ -2639,7 +2642,14 @@ function protectMachineTranslationLiterals(content: string): { masked: string; r
     return marker
   }
 
-  let masked = content.replace(/^ {0,3}(`{3,}|~{3,})[^\n]*\n[\s\S]*?^ {0,3}\1[^\n]*(?:\n|$)/gmu, protect)
+  // Protect full technical link labels before clarifying words such as "crate".
+  let masked = content
+  for (const link of directMarkdownLinks(content).reverse()) {
+    if (isPreservedTechnicalLinkLabel(link.label.trim())) {
+      masked = masked.slice(0, link.labelStart) + protect(link.label) + masked.slice(link.labelEnd)
+    }
+  }
+  masked = masked.replace(/^ {0,3}(`{3,}|~{3,})[^\n]*\n[\s\S]*?^ {0,3}\1[^\n]*(?:\n|$)/gmu, protect)
   masked = masked.replace(/(`+)([\s\S]*?)\1/gu, protect)
   masked = masked.replace(/\$\$[\s\S]*?\$\$/gu, protect)
   masked = masked.replace(/\\\[[\s\S]*?\\\]/gu, protect)
@@ -3071,9 +3081,7 @@ const AMHARIC_CONSUME_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, str
   ['የሚበላ', 'የሚጠቀም'],
 ]
 
-const AMHARIC_SIBLING_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
-  ['ወንድም እህት', 'አጎራባች'],
-]
+const AMHARIC_SIBLING_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [['ወንድም እህት', 'አጎራባች']]
 
 const AMHARIC_LINEAGE_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
   ['ዘር ሀረጉን', 'ተከታታይነቱን'],
@@ -3084,9 +3092,7 @@ const AMHARIC_LINEAGE_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, str
   ['ዘር ሐረግ', 'ተከታታይነት'],
 ]
 
-const AMHARIC_ROUTING_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
-  ['ማዞሪያ', 'ማስተላለፊያ'],
-]
+const AMHARIC_ROUTING_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [['ማዞሪያ', 'ማስተላለፊያ']]
 
 const AMHARIC_PAYLOAD_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
   ['የሁኔታ ክፍያ ጭነት', 'የሁኔታ ጭነት'],
@@ -3155,9 +3161,7 @@ const AMHARIC_MINT_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string
   ['አዝሙድ', 'ሚንት'],
 ]
 
-const AMHARIC_ISSUE_TIME_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
-  ['የጉዳይ ጊዜ', 'የተሰጠበት ጊዜ'],
-]
+const AMHARIC_ISSUE_TIME_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [['የጉዳይ ጊዜ', 'የተሰጠበት ጊዜ']]
 
 const AMHARIC_FAIL_CLOSED_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
   ['በመዘጋት ይከሽፋሉ', 'በአስተማማኝ ሁኔታ ውድቅ ይሆናሉ'],
@@ -3252,21 +3256,13 @@ const AMHARIC_BLOCKER_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, str
   ['ማገጃ', 'እንቅፋት'],
 ]
 
-const AMHARIC_ROUNDING_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
-  ['የማዞሪያ ሁነታ', 'የማጠጋጋት ሁነታ'],
-]
+const AMHARIC_ROUNDING_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [['የማዞሪያ ሁነታ', 'የማጠጋጋት ሁነታ']]
 
-const AMHARIC_STOCK_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
-  ['አክሲዮኑ', 'መደበኛው'],
-]
+const AMHARIC_STOCK_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [['አክሲዮኑ', 'መደበኛው']]
 
-const AMHARIC_STATE_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
-  ['ግዛት', 'ሁኔታ'],
-]
+const AMHARIC_STATE_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [['ግዛት', 'ሁኔታ']]
 
-const AMHARIC_FORK_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
-  ['ሹካ', 'ፎርክ'],
-]
+const AMHARIC_FORK_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [['ሹካ', 'ፎርክ']]
 
 const AMHARIC_EXECUTION_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
   ['ግድያዎችን', 'አፈጻጸሞችን'],
@@ -3276,9 +3272,7 @@ const AMHARIC_EXECUTION_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, s
   ['ግድያ', 'አፈጻጸም'],
 ]
 
-const AMHARIC_OUTBOX_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
-  ['የወጪ ሳጥን', 'የወጪ መልዕክት ሳጥን'],
-]
+const AMHARIC_OUTBOX_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [['የወጪ ሳጥን', 'የወጪ መልዕክት ሳጥን']]
 
 const AMHARIC_COMMITMENT_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
   ['ምስጠራ ቁርጠኝነት እሴቶችን', 'ክሪፕቶግራፊያዊ ኮሚትመንቶችን'],
@@ -3323,9 +3317,7 @@ const AMHARIC_LEDGER_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, stri
   ['ደብተር', 'መዝገብ'],
 ]
 
-const AMHARIC_STAKE_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
-  ['አክሲዮን', 'ድርሻ'],
-]
+const AMHARIC_STAKE_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [['አክሲዮን', 'ድርሻ']]
 
 const AMHARIC_BLOCK_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
   ['ማገጃዎችን', 'ብሎኮችን'],
@@ -3363,9 +3355,7 @@ const AMHARIC_BALANCE_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, str
   ['ሚዛን', 'ቀሪ ሒሳብ'],
 ]
 
-const AMHARIC_GENESIS_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
-  ['ዘፍጥረት', 'ጀነሲስ'],
-]
+const AMHARIC_GENESIS_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [['ዘፍጥረት', 'ጀነሲስ']]
 
 const AMHARIC_WRITE_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
   ['የጽሑፎቹን', 'የመጻፍ ክዋኔዎቹን'],
@@ -3407,9 +3397,7 @@ export function normalizeMachineTranslationArtifacts(content: string, locale: Do
     }
   }
   if (locale.key === 'kk') {
-    const sourceAwareRepairs: ReadonlyArray<
-      readonly [RegExp, ReadonlyArray<readonly [string, string]>]
-    > = [
+    const sourceAwareRepairs: ReadonlyArray<readonly [RegExp, ReadonlyArray<readonly [string, string]>]> = [
       [/\bledgers?\b/iu, KAZAKH_LEDGER_FALSE_FRIEND_REPLACEMENTS],
       [/(?:\bauthorit(?:y|ies)\b|\bprincipals?\b)/iu, KAZAKH_AUTHORITY_FALSE_FRIEND_REPLACEMENTS],
       [/\bexplorers?\b/iu, KAZAKH_EXPLORER_FALSE_FRIEND_REPLACEMENTS],
@@ -3417,7 +3405,8 @@ export function normalizeMachineTranslationArtifacts(content: string, locale: Do
     ]
     for (const [sourcePattern, replacements] of sourceAwareRepairs) {
       if (!sourcePattern.test(source)) continue
-      for (const [falseFriend, replacement] of replacements) normalized = normalized.replaceAll(falseFriend, replacement)
+      for (const [falseFriend, replacement] of replacements)
+        normalized = normalized.replaceAll(falseFriend, replacement)
     }
   }
   if (locale.key === 'ru' && /\bexplorers?\b/iu.test(source)) {
@@ -3447,9 +3436,7 @@ export function normalizeMachineTranslationArtifacts(content: string, locale: Do
     }
   }
   if (locale.key === 'az') {
-    const sourceAwareRepairs: ReadonlyArray<
-      readonly [RegExp, ReadonlyArray<readonly [string, string]>]
-    > = [
+    const sourceAwareRepairs: ReadonlyArray<readonly [RegExp, ReadonlyArray<readonly [string, string]>]> = [
       [/\bpeers?\b/iu, AZERBAIJANI_PEER_PROSE_REPLACEMENTS],
       [/\bvalidators?\b/iu, AZERBAIJANI_VALIDATOR_PROSE_REPLACEMENTS],
       [/\bruntime\b/iu, AZERBAIJANI_RUNTIME_PROSE_REPLACEMENTS],
@@ -3457,13 +3444,12 @@ export function normalizeMachineTranslationArtifacts(content: string, locale: Do
     ]
     for (const [sourcePattern, replacements] of sourceAwareRepairs) {
       if (!sourcePattern.test(source)) continue
-      for (const [falseFriend, replacement] of replacements) normalized = normalized.replaceAll(falseFriend, replacement)
+      for (const [falseFriend, replacement] of replacements)
+        normalized = normalized.replaceAll(falseFriend, replacement)
     }
   }
   if (locale.key === 'ka') {
-    const sourceAwareRepairs: ReadonlyArray<
-      readonly [RegExp, ReadonlyArray<readonly [string, string]>]
-    > = [
+    const sourceAwareRepairs: ReadonlyArray<readonly [RegExp, ReadonlyArray<readonly [string, string]>]> = [
       [/\bquer(?:y|ies)\b/iu, GEORGIAN_QUERY_FALSE_FRIEND_REPLACEMENTS],
       [/\balias(?:es)?\b/iu, GEORGIAN_ALIAS_FALSE_FRIEND_REPLACEMENTS],
       [/\bledgers?\b/iu, GEORGIAN_LEDGER_FALSE_FRIEND_REPLACEMENTS],
@@ -3473,21 +3459,17 @@ export function normalizeMachineTranslationArtifacts(content: string, locale: Do
     ]
     for (const [sourcePattern, replacements] of sourceAwareRepairs) {
       if (!sourcePattern.test(source)) continue
-      for (const [falseFriend, replacement] of replacements) normalized = normalized.replaceAll(falseFriend, replacement)
+      for (const [falseFriend, replacement] of replacements)
+        normalized = normalized.replaceAll(falseFriend, replacement)
     }
   }
   if (locale.key === 'am') {
-    const sourceAwareRepairs: ReadonlyArray<
-      readonly [RegExp, ReadonlyArray<readonly [string, string]>]
-    > = [
+    const sourceAwareRepairs: ReadonlyArray<readonly [RegExp, ReadonlyArray<readonly [string, string]>]> = [
       [/\b(?:recipes?|cookbooks?)\b/iu, AMHARIC_RECIPE_FALSE_FRIEND_REPLACEMENTS],
       [/\bdigests?\b/iu, AMHARIC_DIGEST_FALSE_FRIEND_REPLACEMENTS],
       [/\btokens?\b/iu, AMHARIC_TOKEN_FALSE_FRIEND_REPLACEMENTS],
       [/\bfixtures?\b/iu, AMHARIC_FIXTURE_FALSE_FRIEND_REPLACEMENTS],
-      [
-        /^(?![\s\S]*\bart[ei]facts?\b)[\s\S]*\bfixtures?\b/iu,
-        AMHARIC_BARE_FIXTURE_FALSE_FRIEND_REPLACEMENTS,
-      ],
+      [/^(?![\s\S]*\bart[ei]facts?\b)[\s\S]*\bfixtures?\b/iu, AMHARIC_BARE_FIXTURE_FALSE_FRIEND_REPLACEMENTS],
       [/\bart[ei]facts?\b/iu, AMHARIC_ARTIFACT_FALSE_FRIEND_REPLACEMENTS],
       [/\bconsum(?:e|es|ed|ing)\b/iu, AMHARIC_CONSUME_FALSE_FRIEND_REPLACEMENTS],
       [/\bsibling\b/iu, AMHARIC_SIBLING_FALSE_FRIEND_REPLACEMENTS],
@@ -3534,7 +3516,8 @@ export function normalizeMachineTranslationArtifacts(content: string, locale: Do
     ]
     for (const [sourcePattern, replacements] of sourceAwareRepairs) {
       if (!sourcePattern.test(source)) continue
-      for (const [falseFriend, replacement] of replacements) normalized = normalized.replaceAll(falseFriend, replacement)
+      for (const [falseFriend, replacement] of replacements)
+        normalized = normalized.replaceAll(falseFriend, replacement)
     }
   }
   normalized = normalized.replace(/^(\s*\[\^[^\]\n]+\])：/gmu, '$1:')
@@ -3825,6 +3808,13 @@ function sha256(content: string): string {
 
 /** Return exact technical tokens whose spelling translations must preserve. */
 export function technicalIdentifiers(source: string): Map<string, number> {
+  // Translation joins soft-wrapped prose and may omit emphasis delimiters.
+  // Count identifiers in the same visible prose on both sides; keep code literal.
+  const text = markdownTranslationUnits(source)
+    .map((unit) =>
+      unit.translate && unit.content.includes('_') ? removeTranslatableEmphasis(unit.content) : unit.content,
+    )
+    .join('')
   const counts = new Map<string, number>()
   for (const pattern of [
     TECHNICAL_TERM_PATTERN,
@@ -3832,16 +3822,16 @@ export function technicalIdentifiers(source: string): Map<string, number> {
     UPPERCASE_IDENTIFIER_PATTERN,
     DOMAIN_NAME_PATTERN,
   ]) {
-    for (const match of source.matchAll(pattern)) {
+    for (const match of text.matchAll(pattern)) {
       if (pattern === UPPERCASE_IDENTIFIER_PATTERN && !shouldProtectUppercaseIdentifier(match[0])) continue
       counts.set(match[0], (counts.get(match[0]) ?? 0) + 1)
     }
   }
-  const irohaVersionMatches = source.match(/\bIroha 3\b/gu) ?? []
+  const irohaVersionMatches = text.match(/\bIroha 3\b/gu) ?? []
   if (irohaVersionMatches.length > 0) {
     counts.set('Iroha', (counts.get('Iroha') ?? 0) + irohaVersionMatches.length)
   }
-  const nexusMatches = source.match(/\bNexus\b/gu) ?? []
+  const nexusMatches = text.match(/\bNexus\b/gu) ?? []
   if (nexusMatches.length > 0) counts.set('Nexus', nexusMatches.length)
   return counts
 }
@@ -6397,9 +6387,7 @@ export async function synchronizeReviewedTranslations(
 }
 
 /** Apply source-aware normalization repairs to existing translations without calling a provider. */
-export async function normalizeExistingTranslations(
-  options: NormalizeExistingTranslationOptions = {},
-): Promise<void> {
+export async function normalizeExistingTranslations(options: NormalizeExistingTranslationOptions = {}): Promise<void> {
   const sourceRoot = options.sourceRoot ?? path.resolve(process.cwd(), 'src')
   const locales = options.locales ?? TRANSLATED_LOCALES
   const availableRoutes = await englishRoutes(sourceRoot)
@@ -6686,7 +6674,9 @@ export function parseTranslationCli(argv: string[]): TranslationCliOptions {
     locales = locales.filter((locale) => BING_RECOMMENDED_LOCALE_KEY_SET.has(locale.key))
   }
   if ([normalizeExisting, synchronizeAnchors, synchronizeReviewed, synchronizeStructure].filter(Boolean).length > 1) {
-    throw new Error('--normalize-existing, --sync-anchors, --sync-reviewed, and --sync-structure are mutually exclusive')
+    throw new Error(
+      '--normalize-existing, --sync-anchors, --sync-reviewed, and --sync-structure are mutually exclusive',
+    )
   }
   const synchronizeOnly = normalizeExisting || synchronizeAnchors || synchronizeReviewed || synchronizeStructure
   if (!synchronizeOnly && providerName === 'nllb' && !model) {

@@ -31,11 +31,11 @@ blockchain ledger ဒေတာကို ပိုင်ဆိုင်မှု�
 ## မီတာဒေတာ {#metadata}
 
 - blockchain ledger အရာဝတ္ထုများ၏ အသေးစိတ်အရည်အသွေးများအတွက် metadata များကို အသုံးပြုပါ၊ ဥပမာ လိပ်စာများ၊ ပေါင်းစပ် ID များ၊ မူဝါဒ အလံများ၊ cryptographic hashes URIs သို့မဟုတ် content-addressed references တို့။
-- metadata keys တွေကို တည်ငြိမ်ပြီး မှတ်တမ်းတင်ထားပါ။ ဖောက်သည်တွေ မှီခိုပြီးနောက် key names ကိုပြောင်းတာဟာ ရွှေ့ပြောင်းပြဿနာတစ်ခု ဖန်တီးပါတယ်။
+- metadata ကီးများကို တည်ငြိမ်စွာ ထားပြီး မှတ်တမ်းတင်ပါ။ client များက ကီးအမည်များအပေါ် မှီခိုပြီးနောက် ပြောင်းလဲခြင်းသည် ဒေတာပြောင်းရွှေ့ရေးပြဿနာ ဖြစ်စေသည်။
 - ကြီးမားတဲ့ စာရွက်စာတမ်းများ၊ မှတ်စုများ၊ ပုဂ္ဂလိက အသုံးပြုသူ ဒေတာများ (သို့မဟုတ်) မြင့်မားသော ချန်ပီယံမှုရှိသည့် အက်ပလီကေးရှင်းအခြေအနေများကို တိုက်ရိုက် metadata များတွင် သိမ်းဆည်းမထားပါ။
-- metadata တွေက ကွင်းဆက်ပြင်ပ ဒေတာကို ညွှန်ပြတဲ့အခါ Content cryptographic hash, URI path, SoraFS path, technical manifest reference, or compact cryptographic commitment value တို့လို စစ်ဆေးလို့ရတဲ့ ရည်ညွှန်းချက်ကို သိမ်းထားပါ။
+- metadata က off-chain ဒေတာကို ညွှန်ပြသောအခါ အကြောင်းအရာဟက်ရှ်၊ URI၊ SoraFS လမ်းကြောင်း၊ manifest ရည်ညွှန်းချက် သို့မဟုတ် ကျစ်လျစ်သော ကတိပြုတန်ဖိုးကဲ့သို့ စစ်ဆေးအတည်ပြုနိုင်သည့် ရည်ညွှန်းချက်ကို သိမ်းပါ။
 
-[Metadata နှင့် blockchain ledger Storage Choices များ](/my/guide/configure/metadata-and-store-assets.md) နှင့် [မီတာဒေတာ](/my/blockchain/metadata.md) ကိုကြည့်ပါ။
+[metadata နှင့် လယ်ဂျာသိုလှောင်မှု ရွေးချယ်စရာများ](/my/guide/configure/metadata-and-store-assets.md) နှင့် [metadata](/my/blockchain/metadata.md) ကို ကြည့်ပါ။
 
 ## ပုံစံအလိုက် ခွင့်ပြုချက်များ {#permissions-by-model}
 

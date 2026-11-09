@@ -6,7 +6,7 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Native Asset Escrow {#native-asset-escrow}
+# ပိုင်ဆိုင်မှုများကို စံညွှန်ကြားချက်ဖြင့် ကြားခံထိန်းသိမ်းခြင်း {#native-asset-escrow}
 
 ## ရလဒ် {#outcome}
 
@@ -236,21 +236,21 @@ assert escrow_status(record) == "Locked"
 assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 ```
 
-ထို့အပြင် ရည်မှန်းချက် အရင်းအမြစ် ထိန်းသိမ်းမှုကို မေးမြန်းပြီး ၄ ယူနစ် တိုးမြှင့်ထားကြောင်း အတည်ပြုပါ။ ဂိုဏ်းမှတ်တမ်းနှင့် ရည်မှန်းချက် နောက်ပိုင်းအခြေအနေမရှိသော ငွေချေးမှု ပရိုတိုကော ရလဒ် မှတ်တမ်းတစ်ခုသည် မပြည့်စုံတဲ့ စစ်ဆေးခြင်းဖြစ်သည်။
+ဦးတည်ရာ၏ ပိုင်ဆိုင်မှုလက်ကျန်ကိုလည်း query လုပ်ပြီး ယူနစ်လေးခု တိုးလာကြောင်း အတည်ပြုပါ။ အာမခံအပ်နှံမှုမှတ်တမ်းနှင့် ဦးတည်ရာ၏ လုပ်ဆောင်ပြီးနောက် အခြေအနေမပါဘဲ transaction receipt တစ်ခုတည်းဖြင့် စစ်ဆေးခြင်းသည် မပြည့်စုံပါ။
 
 ## ပြဿနာဖြေရှင်းခြင်း {#troubleshooting}
 
 - `Not permitted` ဖွင့်နေစဉ်မှာ ခွင့်ပြုချက် ရင်းနှီးမြှုပ်နှံသူက ရွေးချယ်ထားတဲ့ အရင်းအမြစ်ကို ထိန်းသိမ်းမှုထဲ လွှဲပြောင်းလို့မရဘူးလို့ ဆိုလိုပါတယ်။ ပဋိပက္ခဖြေရှင်းရေးမှာ သီးခြားကမ္ဘာလုံးဆိုင်ရာ `CanResolveEscrowDispute` ဂိတ်ရှိသည်။
 - `expected remaining amount` ပယ်ချခြင်းသည် အကောင်းမြင်မှုနှင့် ပြိုင်ဆိုင်မှု ပဋိပက္ခဖြစ်ပါသည်။ မှတ်တမ်းကို ပြန်လည်မေးမြန်းခြင်း၊ အခြားထုတ်ယူ / ဖျက်သိမ်းခြင်းကို ရည်ရွယ်ထားသည်ကို ဆုံးဖြတ်ခြင်း၊ နိုင်ငံသစ်က လက်ခံနိုင်ပါကသာ ညွှန်ကြားချက်အသစ်တစ်စောင်ကို လက်မှတ်ထိုးပါ။
-- Configured Release Authorization Principal ကသာ ယုံကြည်စိတ်ချရတဲ့ Lock ကို ဆွဲနိုင်ပြီး ရည်ရွယ်ချက်က ငွေကြေးကို လက်ခံရရှိမှာမို့လို့ အဲဒါကို မထုတ်လွှတ်နိုင်ပါဘူး။
+- ပြင်ဆင်သတ်မှတ်ထားသော ထုတ်ပေးခွင့်ရှိသည့် authority အကောင့်ကသာ ယုံကြည်မှုအခြေပြု lock မှ ထုတ်ယူနိုင်သည်။ ဦးတည်ရာသည် ငွေလက်ခံရမည်ဆိုသည့် အကြောင်းရင်းတစ်ခုတည်းဖြင့် ၎င်းကို မထုတ်ပေးနိုင်ပါ။
 - စျေးကွက်ထုတ်လွှင့်မှုသည် လက်ခံခြင်းနှင့် ငွေပေးချေမှုပို့ခြင်းအခြေအနေမှသာ သက်ဝင်သည်။ ဖျက်သိမ်းခြင်းသည် ပိုမိုစောသော ဘဝပတ်ဝန်းကျင်အခြေအနေများဖြင့်သာ ကန့်သတ်ထားသည်။
 - Expiry သည် ခိုင်မာသော blockchain ledger အချိန်ကို အသုံးပြုသည်။ `ExpireAssetLock` ကို ဖြတ်သန်းသွားမည်ဟု သက်သေအဖြစ် ဒေသတွင်းဒေသခံစနစ်နာရီအချိန်ဖြတ်တောက်မှုကို မသုံးစွဲပါ။
 - Taira တွင် ရင်းနှီးမြှုပ်နှံသူ၊ ရောင်းသူ/ဖွင့်လှစ်သူနှင့် ထုတ်ပြန်ခွင့်ပြုမှု မူဝါဒကို လွတ်လပ်စွာတင်သွင်းခြင်း။
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [Native escrow instruction model at the pinned source-code revision (ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှု)](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
-- [Native escrow integration tests at the pinned source-code revision (ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှု)](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
+- [သတ်မှတ်ထားသော ရင်းမြစ်ဗားရှင်းရှိ ကြားခံထိန်းသိမ်းမှု စံညွှန်ကြားချက်မော်ဒယ်](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
+- [သတ်မှတ်ထားသော ရင်းမြစ်ဗားရှင်းရှိ ကြားခံထိန်းသိမ်းမှု ပေါင်းစပ်စမ်းသပ်ချက်များ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
 - [Python ပိတ်ထားသော အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှုတွင် ဂိုဏ်းဝယ်ယူသူနည်းလမ်းများ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
 - [Kotodama ဒေသခံ escrow နမူနာကို pinned source code ပြင်ဆင်မှု](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [မွေးမြူရင်းနှီးမြှုပ်နှံမှု အာမခံချက်](/my/blockchain/escrow.md)

@@ -77,4 +77,4 @@ cd kotlin
 - Android אינטגרציות טלמטריה של מחסן מפתח ומכשיר
 - Android תחבורה מקוונת QR, קרובה NFC
 
-לעיון ב־APIs ייחודיים למודולים ובפקודות הבנייה המדויקות, ראו את [קובץ README של Kotlin SDK](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md).
+לעיון ב־APIs ייחודיים למודולים ובפקודות הבנייה המדויקות, ראו את [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md).

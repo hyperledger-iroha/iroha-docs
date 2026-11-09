@@ -183,7 +183,7 @@ cargo run --bin iroha -- \
 - [SDK ٹیوٹوریلز](/ur/guide/tutorials/)
 - [Torii اختتام پوائنٹس](/ur/reference/torii-endpoints.md)
 - [Iroha بائنریوں کے ساتھ کام کرنا](/ur/reference/binaries.md)
-- [CLI کی README فائل](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/README.md)
+- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/README.md)
 
 ماخذ چیک آؤٹ سے مکمل مارک ڈاؤن امدادی سنیپ شاٹ کو بازیافت کرنے کے لئے، چلائیں:
 

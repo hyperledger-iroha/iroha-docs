@@ -6,7 +6,7 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Metadata နှင့် blockchain ledger Storage Choices များ {#metadata-and-ledger-storage-choices}
+# Metadata နှင့် လယ်ဂျာသိမ်းဆည်းမှုပုံစံ ရွေးချယ်ခြင်း {#metadata-and-ledger-storage-choices}
 
 Iroha 3 ဒေတာမော်ဒယ်မှာ အလိုလို key-value ဒေတာအတွက် သီးခြား `Store` အရင်းအမြစ်အမျိုးအစားမရှိပါ။ အောက်ပါ သိုလှောင်မှု ရွေးချယ်မှုကို အသုံးပြုပါ။
 

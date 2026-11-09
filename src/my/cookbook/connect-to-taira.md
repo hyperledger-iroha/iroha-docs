@@ -15,7 +15,7 @@ Taira ကိုရောက်ရှိနိုင်ကြောင်း အ�
 ## လိုအပ်ချက်များ {#prerequisites}
 
 - `curl`, `jq`, Python 3.11 သို့မဟုတ်နောက်ဆုံး၊နှင့် လက်ရှိ `iroha` နှင့် `kagami` ဘိုင်နရီများ။
-- A ကို `taira.client.toml` ဖန်တီးခဲ့သည် Taira သံကြိုး၊ API endpoint, account profile နဲ့ testnet key ကို လိုက်နာပါ။ [A ကို ဖန်တီးပါ။ Taira Client Config ကို](/my/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config) ပြီးတော့ ဖိုင်ကို အရင်းအမြစ် ထိန်းချုပ်မှုကနေ ထုတ်ပစ်ပါ။
+- Taira ကွန်ရက်၊ ချိတ်ဆက်လိပ်စာ၊ အကောင့်ဆိုင်ရာ သတ်မှတ်ချက်နှင့် စမ်းသပ်ကွန်ရက်အတွက် သီးခြားသော့တို့ဖြင့် ဖန်တီးထားသော `taira.client.toml` ဖိုင်။ [Taira အတွက် ကလိုင်းယင့်သတ်မှတ်ချက် ဖန်တီးခြင်း](/my/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config) ကို လိုက်နာပြီး ဤဖိုင်ကို ရင်းမြစ်ဗားရှင်း ထိန်းချုပ်မှုစနစ်ထဲ မထည့်ပါနှင့်။
 - Run-ready `taira_faucet_claim.py` from [Testnet XOR ကို Taira သို့ခေါ်ယူပါ။](/my/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ကနေ client configuration အနားမှာ သိမ်းထားတယ်။
 
 ## ခြေလှမ်း {#steps}
@@ -48,7 +48,7 @@ DNS ၊ TLS၊ ကွင်းဆက် (သို့) API အဆုံးသတ
 
 ### (၃) လျှို့ဝှက်ချက် မနှိပ်ဘဲ Taira အကောင့် ID ကို ရယူပါ။ {#_3-derive-the-taira-account-id-without-printing-a-secret}
 
-config ထဲက public key ကိုသာ ဖတ်ပြီး Taira I105 profile နဲ့ encode လုပ်ပါ။ `[account].domain` value က routing context ကို ပေးပါတယ်။ account ID မှာ မပါဝင်ပါဘူး။
+သတ်မှတ်ချက်ဖိုင်မှ အများသုံးသော့ကိုသာ ဖတ်ယူ၍ Taira I105 သတ်မှတ်ချက်ဖြင့် ကုဒ်သွင်းပါ။ `[account].domain` တန်ဖိုးသည် လမ်းကြောင်းရွေးချယ်ရန် အခြေအနေကို ပေးသည်။ ၎င်းသည် အကောင့် ID ၏ အစိတ်အပိုင်း မဟုတ်ပါ။
 
 ```bash
 TAIRA_PUBLIC_KEY="$(python3 - <<'PY'
@@ -121,7 +121,7 @@ iroha --config ./taira.client.toml \
   --timeout-ms 60000
 ```
 
-နောက်ဆုံးအမိန့်က ငွေကြေးပူးပေါင်းမှုသည် default `Applied` terminal state ကိုရောက်ရှိပြီးနောက်မှသာ အောင်မြင်သည်။ cryptographic hash ကို test evidence တွင် သိမ်းထားပါ။ private key သို့မဟုတ် complete client config ကို ဘယ်တော့မှ မသိမ်းဆည်းပါနဲ့။
+ငွေစာရင်းလုပ်ဆောင်ချက်သည် မူလနောက်ဆုံးအခြေအနေဖြစ်သော `Applied` သို့ ရောက်မှသာ နောက်ဆုံးအမိန့် အောင်မြင်မည်။ စမ်းသပ်မှုအထောက်အထားတွင် ဟက်ရှ်ကို သိမ်းပါ။ ကိုယ်ပိုင်သော့ သို့မဟုတ် ကလိုင်းယင့်သတ်မှတ်ချက်ဖိုင် အပြည့်အစုံကို ၎င်းနှင့်အတူ မသိမ်းပါနှင့်။
 
 ## ပြဿနာဖြေရှင်းခြင်း {#troubleshooting}
 

@@ -230,7 +230,7 @@ print(accounts.total, domains.total, definitions.total)
 print(time_now.now_ms)
 ```
 
-`/v1/time/status` һәм һәр `/v1/sumeragi/*` operator snapshot, state үҙгәртмәһә лә, exact-network operator signature талап итә. Anonymous node status өсөн `request_json("GET", "/status")` ҡулланығыҙ; consensus йәки node-local clock diagnostics өсөн payload һәм operator setup түбәндә күрһәтелгән. Connect session status — айырым protocol route һәм session management token талап итә.
+`/v1/time/status` һәм һәр `/v1/sumeragi/*` оператор күсермәһе, хәлде үҙгәртмәһә лә, тап ошо селтәр операторының ҡултамғаһын талап итә. Аноним төйөн статусы өсөн `request_json("GET", "/status")` ҡулланығыҙ; консенсус йәки урындағы сәғәт диагностикаһы өсөн аҫтағы оператор көйләүҙәрен ҡулланығыҙ. Connect сеансы статусы айырым протокол маршруты булып тора һәм ошо сеанстың идара итеү токенын талап итә.
 
 ## Төҙөүселәргә күрһәтмәләр {#instruction-builders}
 
