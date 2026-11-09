@@ -208,11 +208,7 @@ const LOCALE_NATIVE_ASCII_WORDS: Readonly<Record<string, ReadonlySet<string>>> =
   pt: new Set(['do', 'for', 'local', 'logs', 'real', 'use', 'volume', 'volumes']),
 }
 
-export function auditableEnglishLeakageWords(
-  locale: string,
-  sourceContent: string,
-  targetContent: string,
-): string[] {
+export function auditableEnglishLeakageWords(locale: string, sourceContent: string, targetContent: string): string[] {
   const nativeWords = LOCALE_NATIVE_ASCII_WORDS[locale] ?? new Set<string>()
   return englishLeakageWords(sourceContent, targetContent).filter((word) => !nativeWords.has(word))
 }

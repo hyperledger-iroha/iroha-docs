@@ -792,7 +792,11 @@ describe('i18n validation', () => {
       'Транзакцияны блок зерттеушісінен оқыңыз.',
       'blockchain explorer rendered as a researcher',
     ],
-    ['Use the generated invoice lot ID.', 'Жасалған шот-фактура топ ID-сін пайдаланыңыз.', 'RWA lot rendered as a generic group'],
+    [
+      'Use the generated invoice lot ID.',
+      'Жасалған шот-фактура топ ID-сін пайдаланыңыз.',
+      'RWA lot rendered as a generic group',
+    ],
     [
       'Record which authority may revoke the key.',
       'Қай принцип кілтті кері қайтара алатынын жазыңыз.',
@@ -1853,7 +1857,8 @@ describe('i18n validation', () => {
   })
 
   test('validates translated home-page frontmatter against its aligned source field', async () => {
-    const english = '---\nlayout: home\nfeatures:\n  - title: Reference\n    details: Consult the current binary and blockchain genesis reference pages\n---\n\n# Home\n'
+    const english =
+      '---\nlayout: home\nfeatures:\n  - title: Reference\n    details: Consult the current binary and blockchain genesis reference pages\n---\n\n# Home\n'
     const { sourceRoot, hash } = await fixture(english, 'index.md')
     await mkdir(path.join(sourceRoot, 'am'), { recursive: true })
     await writeFile(
@@ -1910,8 +1915,7 @@ describe('i18n validation', () => {
   })
 
   test('rejects inflected Amharic node, payload, and protocol-body false friends', async () => {
-    const english =
-      '# Recovery\n\nThe node receives payload chunks and recovers the canonical body.\n'
+    const english = '# Recovery\n\nThe node receives payload chunks and recovers the canonical body.\n'
     const { sourceRoot, hash } = await fixture(english)
     await mkdir(path.join(sourceRoot, 'am', 'guide'), { recursive: true })
     await writeFile(

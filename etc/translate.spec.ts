@@ -240,7 +240,7 @@ describe('Markdown translation protection', () => {
         'The runtime sends peers through one lane to the ledger endpoint after genesis, charges gas, advances the pacemaker, and stores a quorum certificate plus a commit certificate. Keep `runtime`, /peer, and LaneId unchanged.',
       ),
     ).toBe(
-      'The software execution environment sends network peers through one execution lane to the blockchain ledger API endpoint after blockchain genesis, charges transaction execution cost, advances the consensus pacemaker, and stores a consensus quorum certificate plus a consensus finalization certificate. Keep `runtime`, /peer, and LaneId unchanged.',
+      'The software execution environment sends network peers through one execution lane to the blockchain ledger network endpoint after blockchain genesis, charges transaction execution cost, advances the consensus pacemaker, and stores a consensus quorum certificate plus a consensus finalization certificate. Keep `runtime`, /peer, and LaneId unchanged.',
     )
   })
 
@@ -299,6 +299,19 @@ describe('Markdown translation protection', () => {
 
     expect(clarifyTechnicalTranslationSource(source)).toBe(source)
     expect(clarifyTechnicalTranslationSource(clarifyTechnicalTranslationSource(source))).toBe(source)
+  })
+
+  test('preserves technical link labels and the number of API identifiers during clarification', () => {
+    const source = '[Norito crate README](/reference/norito.md) lists an endpoint and an API endpoint.'
+    const clarified = clarifyTechnicalTranslationSource(source)
+    expect(clarified).toBe('[Norito crate README](/reference/norito.md) lists a network endpoint and an API endpoint.')
+    expect(technicalIdentifiers(clarified).get('API')).toBe(technicalIdentifiers(source).get('API'))
+  })
+
+  test('counts emphasized and soft-wrapped technical names in prose', () => {
+    expect(technicalIdentifiers('_Kura_ on SORA\nNexus').get('Kura')).toBe(1)
+    expect(technicalIdentifiers('_Kura_ on SORA\nNexus').get('SORA Nexus')).toBe(1)
+    expect(technicalIdentifiers('`internal_Kura_count`').has('Kura')).toBe(false)
   })
 
   test('does not disambiguate technical words inside fenced code', async () => {
@@ -517,18 +530,30 @@ describe('Markdown translation protection', () => {
 
   test('repairs Armenian asset false friends only when the aligned source discusses assets', () => {
     const mistranslation = 'Գրանցեք գործիքների սահմանումները և ստուգեք արտոնության ID-ն։'
-    expect(normalizeMachineTranslationArtifacts(mistranslation, armenian, 'Register asset definitions and check the asset ID.')).toBe(
-      'Գրանցեք ակտիվների սահմանումները և ստուգեք ակտիվի ID-ն։',
+    expect(
+      normalizeMachineTranslationArtifacts(
+        mistranslation,
+        armenian,
+        'Register asset definitions and check the asset ID.',
+      ),
+    ).toBe('Գրանցեք ակտիվների սահմանումները և ստուգեք ակտիվի ID-ն։')
+    expect(normalizeMachineTranslationArtifacts(mistranslation, armenian, 'Inspect the CLI tooling.')).toBe(
+      mistranslation,
     )
-    expect(normalizeMachineTranslationArtifacts(mistranslation, armenian, 'Inspect the CLI tooling.')).toBe(mistranslation)
   })
 
   test('repairs Kazakh ledger false friends only when the aligned source discusses a ledger', () => {
     const mistranslation = 'Блокчейн журналының күйі журналда сақталады.'
-    expect(normalizeMachineTranslationArtifacts(mistranslation, kazakh, 'The blockchain ledger state is stored in the ledger.')).toBe(
-      'Блокчейн тізілімінің күйі тізілімде сақталады.',
+    expect(
+      normalizeMachineTranslationArtifacts(
+        mistranslation,
+        kazakh,
+        'The blockchain ledger state is stored in the ledger.',
+      ),
+    ).toBe('Блокчейн тізілімінің күйі тізілімде сақталады.')
+    expect(normalizeMachineTranslationArtifacts(mistranslation, kazakh, 'Inspect the application log.')).toBe(
+      mistranslation,
     )
-    expect(normalizeMachineTranslationArtifacts(mistranslation, kazakh, 'Inspect the application log.')).toBe(mistranslation)
   })
 
   test('repairs Kazakh authority, explorer, and lot false friends only in aligned contexts', () => {
@@ -549,12 +574,12 @@ describe('Markdown translation protection', () => {
   })
 
   test('repairs Russian blockchain-explorer false friends only in aligned contexts', () => {
-    expect(normalizeMachineTranslationArtifacts('Маршрут исследователя и проводника.', russian, 'Use the explorer route.')).toBe(
-      'Маршрут обозревателя и обозревателя.',
-    )
-    expect(normalizeMachineTranslationArtifacts('Маршрут исследователя и проводника.', russian, 'Read a travel guide.')).toBe(
-      'Маршрут исследователя и проводника.',
-    )
+    expect(
+      normalizeMachineTranslationArtifacts('Маршрут исследователя и проводника.', russian, 'Use the explorer route.'),
+    ).toBe('Маршрут обозревателя и обозревателя.')
+    expect(
+      normalizeMachineTranslationArtifacts('Маршрут исследователя и проводника.', russian, 'Read a travel guide.'),
+    ).toBe('Маршрут исследователя и проводника.')
   })
 
   test('repairs Mongolian domain, asset-definition, and instruction false friends in aligned contexts', () => {
@@ -581,9 +606,7 @@ describe('Markdown translation protection', () => {
         azerbaijani,
         'The peers use the validator profile with the node/runtime build command.',
       ),
-    ).toBe(
-      'şəbəkə həmkarları təsdiqləyici profili ilə şəbəkə qovşağı/proqram icra mühiti qurma əmri istifadə edir.',
-    )
+    ).toBe('şəbəkə həmkarları təsdiqləyici profili ilə şəbəkə qovşağı/proqram icra mühiti qurma əmri istifadə edir.')
     expect(normalizeMachineTranslationArtifacts('peer validator runtime build', azerbaijani, 'A music review.')).toBe(
       'peer validator runtime build',
     )
@@ -593,24 +616,22 @@ describe('Markdown translation protection', () => {
     expect(normalizeMachineTranslationArtifacts('გამოკითხვის შედეგი', georgian, 'Return the query result.')).toBe(
       'მოთხოვნის შედეგი',
     )
-    expect(normalizeMachineTranslationArtifacts('მონაცემთა ბაზის საიდუმლო', georgian, 'Bind the dataspace alias.')).toBe(
-      'მონაცემთა სივრცის ალიასი',
-    )
+    expect(
+      normalizeMachineTranslationArtifacts('მონაცემთა ბაზის საიდუმლო', georgian, 'Bind the dataspace alias.'),
+    ).toBe('მონაცემთა სივრცის ალიასი')
     expect(normalizeMachineTranslationArtifacts('წიგნის მასპინძელი', georgian, 'Restart the ledger host.')).toBe(
       'რეესტრის ჰოსტი',
     )
-    expect(normalizeMachineTranslationArtifacts('წიგნის მასპინძელი', georgian, 'Read the library host biography.')).toBe(
-      'წიგნის მასპინძელი',
-    )
+    expect(
+      normalizeMachineTranslationArtifacts('წიგნის მასპინძელი', georgian, 'Read the library host biography.'),
+    ).toBe('წიგნის მასპინძელი')
   })
 
   test('repairs Amharic cooking and digestion false friends only in aligned documentation contexts', () => {
-    expect(normalizeMachineTranslationArtifacts('የምግብ አሰራር የምግብ መፍጫ እሴት', amharic, 'The recipe verifies the digest.')).toBe(
-      'የተግባር መመሪያ ዳይጀስት',
-    )
-    expect(normalizeMachineTranslationArtifacts('የምግብ አሰራር', amharic, 'Prepare dinner.')).toBe(
-      'የምግብ አሰራር',
-    )
+    expect(
+      normalizeMachineTranslationArtifacts('የምግብ አሰራር የምግብ መፍጫ እሴት', amharic, 'The recipe verifies the digest.'),
+    ).toBe('የተግባር መመሪያ ዳይጀስት')
+    expect(normalizeMachineTranslationArtifacts('የምግብ አሰራር', amharic, 'Prepare dinner.')).toBe('የምግብ አሰራር')
     expect(
       normalizeMachineTranslationArtifacts(
         'መስቀለኛ መንገድ በመቆጣጠሪያ አውሮፕላን ላይ የብሎክቼይን ደብተርን በአክሲዮን ማረጋገጫ ያስኬዳል።',
@@ -631,9 +652,7 @@ describe('Markdown translation protection', () => {
     expect(normalizeMachineTranslationArtifacts('ክፍያ የሚከፍል ጽሑፍ', amharic, 'Submit a fee-paying write.')).toBe(
       'ክፍያ የሚከፍል የመጻፍ ክዋኔ',
     )
-    expect(normalizeMachineTranslationArtifacts('ጽሁፉን ያረጋግጡ', amharic, 'Prove the write.')).toBe(
-      'የመጻፍ ክዋኔውን ያረጋግጡ',
-    )
+    expect(normalizeMachineTranslationArtifacts('ጽሁፉን ያረጋግጡ', amharic, 'Prove the write.')).toBe('የመጻፍ ክዋኔውን ያረጋግጡ')
     expect(normalizeMachineTranslationArtifacts('የጽሁፍ ፋይል', amharic, 'It writes a file.')).toBe('የጽሁፍ ፋይል')
   })
 
@@ -656,9 +675,7 @@ describe('Markdown translation protection', () => {
         amharic,
         'The fixtures and artifacts preserve lineage for the authority principal. Homomorphic encryption is a readiness blocker when the rounding mode differs in the stock Iroha CLI.',
       ),
-    ).toBe(
-      'የሙከራ አብነቶች፣ አርቲፋክቶች፣ ተከታታይነቱ፣ ባለቤት፣ ሆሞሞርፊክ ምስጠራ፣ እንቅፋት፣ የማጠጋጋት ሁነታ፣ መደበኛው Iroha CLI።',
-    )
+    ).toBe('የሙከራ አብነቶች፣ አርቲፋክቶች፣ ተከታታይነቱ፣ ባለቤት፣ ሆሞሞርፊክ ምስጠራ፣ እንቅፋት፣ የማጠጋጋት ሁነታ፣ መደበኛው Iroha CLI።')
 
     expect(
       normalizeMachineTranslationArtifacts(
@@ -720,13 +737,9 @@ describe('Markdown translation protection', () => {
         'Check nullifiers, the vanity host, and fallback values, then disable curl buffering.',
       ),
     ).toBe('ናሊፋየሮችን፣ ብጁ የአስተናጋጅ ስምን፣ ተተኪ እሴቶችን ይፈትሹ እና curl ቋት አጠቃቀምን ያሰናክሉ።')
-    expect(
-      normalizeMachineTranslationArtifacts(
-        'መመሪያ WebRTC ውድቀት',
-        amharic,
-        'Manual WebRTC fallback',
-      ),
-    ).toBe('በእጅ የሚደረግ WebRTC ተተኪ አማራጭ')
+    expect(normalizeMachineTranslationArtifacts('መመሪያ WebRTC ውድቀት', amharic, 'Manual WebRTC fallback')).toBe(
+      'በእጅ የሚደረግ WebRTC ተተኪ አማራጭ',
+    )
   })
 
   test('does not normalize protected code, paths, URLs, or wire-format identifiers', () => {
@@ -908,7 +921,7 @@ describe('Markdown translation protection', () => {
         locale: bashkir,
         source:
           'An empty `items` array is a valid response on a public testnet. It means there are no NFTs in the current page, not that NFT instructions are unavailable.',
-        expected: 'хәҙерге биттә NFT-лар юҡлығын аңлата',
+        expected: 'хәҙерге биттә NFTs юҡлығын аңлата',
       },
       {
         locale: armenian,
@@ -1479,11 +1492,7 @@ describe('Markdown translation protection', () => {
 
   test('rejects generated prose whose link label escaped the brackets', () => {
     expect(() =>
-      assertGeneratedMarkdownStructure(
-        'Use [Transfer](#transfer).',
-        'Utilisez [](#transfer) Transférer.',
-        french,
-      ),
+      assertGeneratedMarkdownStructure('Use [Transfer](#transfer).', 'Utilisez [](#transfer) Transférer.', french),
     ).toThrow('Markdown link label became empty for destination #transfer')
   })
 

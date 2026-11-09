@@ -3,9 +3,9 @@ import {
   auditableEnglishLeakageWords,
   auditableUntranslatedEnglishRuns,
   englishLeakageWords,
-  isPreservedTechnicalLinkLabel,
   untranslatedEnglishRuns,
 } from './audit-i18n-scripts'
+import { isPreservedTechnicalLinkLabel } from './translate'
 
 describe('translation audit English detection', () => {
   test('does not split accented localized words into English fragments', () => {
@@ -26,7 +26,9 @@ describe('translation audit English detection', () => {
 
   test('does not report ASCII words that are native to the selected locale', () => {
     expect(auditableEnglishLeakageWords('es', 'Use the real local profile.', 'Use el perfil local real.')).toEqual([])
-    expect(auditableEnglishLeakageWords('pt', 'Use local logs for real volume.', 'Use logs locais do volume real.')).toEqual([])
+    expect(
+      auditableEnglishLeakageWords('pt', 'Use local logs for real volume.', 'Use logs locais do volume real.'),
+    ).toEqual([])
     expect(
       auditableEnglishLeakageWords(
         'fr',
