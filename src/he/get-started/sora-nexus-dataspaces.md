@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
+translation_source_hash: ceff2952134931b4f1007a16e2cffba2ee720c5221d447b5c671f275a032ad3e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -24,7 +24,7 @@ SORA 3 הוא מסלול ההפצה הציבורי הפנימי של האפלי�
 
 |שלב |רשת הבדיקה Taira |הרשת הראשית Minamoto |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|התחילו בקריאת מצב הרשת |שאילתת `/status` ללא מפתחות |שאילתת `/status` ללא מפתחות |
+|התחילו בקריאת מצב הרשת |שאילתת `/status` ללא מפתחות | תחילה יש לאמת את כתובת השירות ואת תעודת ה־TLS שלו |
 |בחרו מרחב נתונים |השתמשו ב־`universal` הציבורי, אלא אם היישום זקוק ל־lane מנוהלת |השתמשו באותו מרחב נתונים רק לאחר אישור ל־mainnet |
 |השיגו את נכס העמלה |השתמשו ב־faucet הציבורי של Taira |קבלו XOR מחשבון Minamoto ממומן או מתהליך treasury מאושר |
 |בדקו פעולות כתיבה |השתמשו ב־XOR לבדיקה שמומן מהברז |אל תשתמשו בכלי בדיקה; פעולות כתיבה מוציאות XOR אמיתי |
@@ -68,20 +68,10 @@ wonderland.universal
 
 ## 2. בדוק את נקודת הסיום הציבורית Torii {#_2-check-the-public-torii-endpoint}
 
-בדוק אם נקודת הסיום היעד היא חי לפני להגדיר חותם.
-
-עבור Taira:
+אפשר לבדוק את מצב רשת הבדיקה Taira באמצעות `curl` ו־`jq`. הבדיקה אינה דורשת מפתחות או צומת מקומי.
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-עבור Minamoto:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -94,7 +84,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-השתמשו באותו פקודה עם `https://minamoto.sora.org/status` עבור mainnet.
+לפני השימוש ב־Minamoto, יש לאמת עם המפעיל את כתובת השירות ברשת הראשית ולוודא שתעודת ה־TLS תואמת לשם המארח.
 
 ## Taira MCP לסוכנים {#taira-mcp-for-agents}
 
@@ -197,19 +187,7 @@ verification result.
 
 ## דוגמאות צעצועים שאתה יכול לנסות עכשיו {#toy-examples-you-can-try-now}
 
-דוגמאות אלה הן קריאה בלבד, אלא אם כן צוין. הם עובדים לפני שאתה מייצר מפתחות והם בטוחים להפעיל נגד שני רשתות ציבוריות.
-
-השוואה בין מערכת המבחן Taira לבריאות הרשת המרכזית Minamoto:
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+הדוגמאות הבאות קוראות נתונים מ־Taira ללא מפתחות חשבון.
 
 רשימה של קווי השטח הנתונים הציבורי שחשפו על ידי Taira:
 
@@ -217,16 +195,7 @@ done
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-תפעיל את אותה פקודה נגד Minamoto כאשר אתה צריך את התצוגה של הרשת הראשית:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -235,24 +204,16 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -554,6 +515,8 @@ with urllib.request.urlopen(request) as res:
 שירות המימון מיועד לכספי רשת הבדיקה של Taira בלבד. אל תשתמשו ב־XOR של רשת הבדיקה, בחשבונות של שירות המימון או בחותמי הקנרית של Taira בתהליכי Minamoto.
 
 ## 5. ליצור תיקון לקוחות Minamoto {#_5-create-a-minamoto-client-config}
+
+לפני השימוש ב־Minamoto, יש לאמת עם המפעיל את כתובת השירות ברשת הראשית ולוודא שתעודת ה־TLS תואמת לשם המארח.
 
 השתמשו בזוג מפתחות נפרד עבור Minamoto. אל תשתמשו מחדש במפתחות Taira ברשת הראשית.
 

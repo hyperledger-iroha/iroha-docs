@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /reference/binaries.md
-translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
+translation_source_hash: 1bf3f4697e44b3c8ef571eb9e5c0e301a1acbf76aa1c0666b3cd86e108bba6bf
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -50,27 +50,7 @@ cargo run --bin kagami -- --help
 
 ## Docker تصویر {#docker-image}
 
-اپ اسٹریم کام کی جگہ استعمال کرتا ہے `kagami localnet` اور `kagami docker` پیدا کرنے کے لئے Docker Compose فائلیں جو چیک آؤٹ کوڈ سے ملتی ہیں. `hyperledger/iroha:dev` ان فائلوں کے ساتھ تصویر کا استعمال کیا جا سکتا ہے.
-
-CLI کو ایک کنٹینر میں چلائیں:
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-ایک کنٹینر میں Kagami چلائیں:
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-پیئر اسٹارٹ اپ کے لئے، ایک مقامی نیٹ ورک پیدا کریں اور سب سے پہلے فائل کو مرتب کریں:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+ایک ہی نظرثانی سے بنی بائنری فائلوں کے ساتھ Docker میں چار توثیقی نوڈ بنانے اور چلانے کے لیے [لانچ Iroha 3](/ur/get-started/launch-iroha.md) کی ہدایات پر عمل کریں۔
 
 ## مجھے کون سا بائنری استعمال کرنا چاہئے؟ {#which-binary-should-i-use}
 

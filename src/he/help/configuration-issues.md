@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: 9d153d9cb8ce0341b35ba5a7e3823198e58464768e2a9a92ff8a5723f85e9351
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,27 +16,9 @@ translation_engine: nllb-200-ct2
 
 כאשר אתה משתמש בגרסה Docker Compose של Iroha, ייתכן שתפגוש את הבעיה של אחד המכולות הצמתים נכשלים עם הטעות `Failed to deserialize raw genesis block`. זה בדרך כלל אומר כי הצמתים, עסקאות הגנזיס חתומות, וההקונפיגורציה שנוצרה נוצרו על ידי תיקונים או פרופילים שונים Iroha.
 
-בדוק את ההכשלת בצעדים הבאים:
+מתיקיית הערכה, הריצו `python3 poc.py logs` כדי לעיין ביומני המאמתים. במדריך [השקה Iroha 3](/he/get-started/launch-iroha.md) מוסבר כיצד לבנות ולהפעיל ארבעה מאמתים ב־Docker באמצעות קבצים בינאריים מאותה גרסת מקור.
 
-1. שימוש `docker ps` כדי לבדוק את המכולות הנוכחי. בהתאם לפרופיל שנוצר, אתה בדרך כלל תראה `hyperledger/iroha:dev` מיכלים. Docker Compose פרופיל מכיל ארבעה כלי צמתים, אם כי `docker-compose.yml` יכול להיות שונה.
-
-2. בדוק את הרישומים ותחפש את שגיאה `Failed to deserialize raw genesis block`. אם התחלת את Iroha שלך במצב דיימון עם `docker compose up -d`, השתמש ב`docker compose logs` הפקודה.
-
-הדרך לפתור בעיה כזו תלויה בשימוש Iroha. אם זהו דמו בסיסי ואינך צריך לשמור נתוני צמתים, לשחזר רשת מקומית מתאימה או חבילה של Docker Compose עם Kagami:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
-```
-
-לאחר מכן להסיר את מצב המכולה הישנה ולהתחיל מחדש מהמסמכים `genesis.signed.nrt`, peer `config.toml`, ו `client.toml` המתחדשים.
-
-אם אתה צריך לשחזר את הנתונים של הדגם Iroha, עשה את הדברים הבאים:
-
-1. לחבר את הצומת השני Iroha אשר יקתיב את הנתונים מהצומת הראשון (לא הצליח).
-2. חכו עד שהצומת החדש יחבר את הנתונים עם הצומת הראשון.
-3. השאירו את הצומת החדש פעיל.
-4. עדכן את הקבצים של הגנזה וההסדרים של הצמתים הראשונים רק כחלק ממגירה מתואמת.
+כדי להפעיל מחדש את אותה רשת, הריצו `python3 poc.py down` ואז `python3 poc.py up`. שמרו את `state/` יחד עם ארבעת כרכי האחסון של Docker.
 
 ::: info
 

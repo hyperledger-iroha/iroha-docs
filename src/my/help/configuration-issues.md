@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: 9d153d9cb8ce0341b35ba5a7e3823198e58464768e2a9a92ff8a5723f85e9351
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,27 +16,9 @@ translation_engine: nllb-200-ct2
 
 Iroha ရဲ့ Docker Compose ဗားရှင်းကို သုံးနေစဉ်မှာ `Failed to deserialize raw genesis block` အမှားနဲ့ ကျရှုံးနေတဲ့ ကွန်ရက် တူညီတဲ့ container တစ်ခုရဲ့ ပြဿနာကို တွေ့နိုင်ပါတယ်။ ဤသည်မှာ ပုံမှန်အားဖြင့်ကွန်ရက် peer, လက်မှတ်ရေးထိုး blockchain ကိုဗစ်လုပ်ငန်းစဉ်များနှင့်ဖန်တီးထားသော configuration များကို Iroha မတူညီသော revisions သို့မဟုတ် profile များဖြင့်ထုတ်လုပ်ခဲ့သည်။
 
-ဤအဆင့်များဖြင့် ပျက်ကွက်မှုကို စစ်ဆေးပါ-
+အတည်ပြုသူများ၏ မှတ်တမ်းကို ကြည့်ရန် ကိရိယာအစု၏ ဒိုင်ရက်ထရီတွင် `python3 poc.py logs` ကို လုပ်ဆောင်ပါ။ တူညီသော ရင်းမြစ်ဗားရှင်းမှ ဘိုင်နရီဖိုင်များကို တည်ဆောက်ပြီး Docker တွင် အတည်ပြုသူ လေးခုကို စတင်ရန် [လွှတ်တင်ခြင်း Iroha 3](/my/get-started/launch-iroha.md) လမ်းညွှန်ကို လိုက်နာပါ။
 
-1. လက်ရှိ container များကိုစစ်ဆေးရန် `docker ps` ကိုအသုံးပြုပါ။ ဖန်တီးထားသော profile ကိုအမှီပြု၍ `hyperledger/iroha:dev` containers များကိုတွေ့မြင်နိုင်သည်။ ကြိုတင်သွင်းထားသော Docker Compose profile တွင် network peer containers လေးခုပါဝင်သည်၊ သို့သော်လည်း သင်ဖန်တီးထားသော `docker-compose.yml` ကွာခြားနိုင်သည်။
-
-2. log များကို စစ်ဆေးပြီး `Failed to deserialize raw genesis block` အမှားကိုရှာပါ။ သင်သည် Iroha ကို daemon mode တွင် `docker compose up -d` ဖြင့်စတင်ခဲ့ပါက `docker compose logs` command ကိုအသုံးပြုပါ။
-
-Iroha ကို အသုံးပြုခြင်းဖြင့် ဤကဲ့သို့သော ပြဿနာကို ဖြေရှင်းရန် နည်းလမ်းသည် မူလ demo တစ်ခုဖြစ်ပါက Kagami နှင့် လိုက်ဖက်သော localnet သို့မဟုတ် Docker Compose ဘန်ဒယ်ကို ပြန်လည်ပြုပြင်ပါ။
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
-```
-
-ထို့နောက် ပြန်လည်ထုတ်လုပ်ထားသော `genesis.signed.nrt`, network peer `config.toml` နှင့် `client.toml` ဖိုင်များမှ container အခြေအနေဟောင်းကိုဖယ်ရှားပြီး restart လုပ်ပါ။
-
-Iroha instance data ကို ပြန်လည်ထူထောင်ရန် လိုအပ်ပါက အောက်ပါအတိုင်း လုပ်ပါ။
-
-1. ဒုတိယ Iroha network peer ကို ချိတ်ဆက်ပေးပါ ပထမ (မအောင်မြင်) network peer ကနေ ဒေတာကို ကူးယူပါမည်။
-2. Network peer အသစ်က ပထမဆုံး network peer နဲ့ ဒေတာကို synchronize လုပ်ဖို့ စောင့်ပါ။
-3. ကွန်ရက်အသစ်ရဲ့ peer ကို တက်ကြွအောင်လုပ်ပါ။
-4. ပထမဦးဆုံးကွန်ရက် peer ရဲ့ blockchain ဖြစ်စဉ်နဲ့ ဖွဲ့စည်းမှုဖိုင်တွေကို ညှိနှိုင်းထားတဲ့ ရွှေ့ပြောင်းမှုရဲ့ အစိတ်အပိုင်းအဖြစ်ပဲ Update လုပ်ပါ။
+တူညီသော ကွန်ရက်ကို ပြန်စရန် `python3 poc.py down` နှင့် `python3 poc.py up` ကို အစဉ်လိုက် လုပ်ဆောင်ပါ။ `state/` ကို ၎င်း၏ Docker သိုလှောင်မှုအတွဲ လေးခုနှင့်အတူ သိမ်းထားပါ။
 
 ::: info
 

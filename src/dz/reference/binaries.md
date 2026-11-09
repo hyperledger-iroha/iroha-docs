@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /reference/binaries.md
-translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
+translation_source_hash: 1bf3f4697e44b3c8ef571eb9e5c0e301a1acbf76aa1c0666b3cd86e108bba6bf
 translation_status: machine-validated
 translation_engine: human-reviewed
 ---
@@ -49,27 +49,7 @@ cargo run --bin kagami -- --help
 
 ## Docker པར་འདི་ {#docker-image}
 
-ཡར་ཐུག་ལུ་ལཱ་འབད་སའི་ས་ཁོངས་འདི་ `kagami localnet` དང་ `kagami docker`ཚུ་ལག་ལེན་འཐབ་ཐོག་ལས་ Docker Compose ཡིག་སྣོད་ཚུ་ བཟོ་སྐྲུན་འབད་དོ་ཡོདཔ་ད་ ཡིག་སྣོད་དེ་ ཐོ་བཀོད་འབད་ཚར་མི་ ལས་རིམ་ཨང་རྟགས དང་གཅིག་ཁར་ མཐོངམ་ཨིན། པར་བརྙན་ `hyperledger/iroha:dev` འདི་ཡང་ ཐོན་སྐྱེད་འབད་ཡོད་པའི་ཡིག་སྣོད་ཚུ་དང་གཅིག་ཁར་ ལག་ལེན་འཐབ་ཚུགས།
-
-CLI ཆ་ཚན་ནང་འབད།
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-Kagami སྦ་སྣོད་ནང་འབད།
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-མཉམ་རོགས་འགོ་བཙུགས་ནིའི་དོན་ལུ་ ལོ་ཀཱལ་ནེཊི་ཅིག་བཟོ་བཏོན་འབད་ཞིནམ་ལས་ དང་པ་རང་ ཡིག་སྣོད་བརྩམས།
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Docker ནང་གཞི་རྟེན་ཨང་རྟགས་ཀྱི་ཐོན་རིམ་གཅིག་ལས་བཟོ་ཡོད་པའི་ཡིག་སྣོད་ཚུ་ལག་ལེན་འཐབ་སྟེ་ ངེས་དཔྱད་འབད་མི་བཞི་འགོ་བཙུགས་ནིའི་དོན་ལུ་ [འགོ་བཙུགས Iroha 3](/dz/get-started/launch-iroha.md) ལམ་སྟོན་ལུ་གཟིགས།
 
 ## ང་གིས་ ལག་ལེན་འཐབ་དགོ་པའི་ སྦིན་རི་གང་ཡོདཔ་ཨིན་ན? {#which-binary-should-i-use}
 

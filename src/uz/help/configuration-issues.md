@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: 9d153d9cb8ce0341b35ba5a7e3823198e58464768e2a9a92ff8a5723f85e9351
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -16,27 +16,9 @@ Agar siz duch kelayotgan muammo bu yerda tavsiflanmagan bo'lsa, biz bilan [Teleg
 
 Iroha’ning Docker Compose versiyasidan foydalanganda tugun konteynerlaridan biri `Failed to deserialize raw genesis block` xatosi bilan ishga tushmasligi mumkin. Bu odatda tugun, imzolangan boshlang‘ich tranzaksiya va yaratilgan konfiguratsiya turli Iroha tahrirlari yoki profillaridan olinganini anglatadi.
 
-Muammoni quyidagi qadamlar bilan tekshiring:
+Validator jurnallarini koʻrish uchun toʻplam katalogida `python3 poc.py logs` buyrugʻini bajaring. Docker’da bir xil manba versiyasidan yigʻilgan bajariladigan fayllar bilan toʻrtta validatorni ishga tushirish uchun [Ishga tushurish Iroha 3](/uz/get-started/launch-iroha.md) qoʻllanmasiga amal qiling.
 
-1. Joriy konteynerlarni `docker ps` bilan tekshiring. Yaratilgan profilga qarab, odatda `hyperledger/iroha:dev` konteynerlari ko‘rinadi. Standart Docker Compose profilida to‘rtta tugun konteyneri bor, ammo yaratilgan `docker-compose.yml` boshqacha bo‘lishi mumkin.
-
-2. Loglarni tekshiring va `Failed to deserialize raw genesis block` xatosini qidiring. Agar siz Iroha ni daemon rejimida `docker compose up -d` bilan boshlagan bo'lsangiz, `docker compose logs` buyrug'idan foydalaning.
-
-Bunday muammoni aniqlash usuli Iroha dan foydalanishga bog‘liq. Agar bu oddiy demo bo‘lsa va siz tarmoq tengdosh ma’lumotlarini saqlashingiz shart bo‘lmasa, mos keluvchi localnet yoki Docker Compose paketini Kagami bilan qayta yarating:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
-```
-
-So‘ng eski konteyner holatini olib tashlang va qayta ishlab chiqarilgan `genesis.signed.nrt`, tarmoq tengdosh `config.toml` fayllaridan va `client.toml` dan boshlang.
-
-Agar siz Iroha instansiya maʼlumotlarini tiklamoqchi boʻlsangiz, quyidagilarni bajaring:
-
-1. Birinchi (muvaffaqiyatsiz) tarmoq tengdoshidan ma’lumotlarni nusxalaydigan ikkinchi Iroha tarmoq tengdoshi bilan ulaning.
-2. Yangi tarmoq hamkasbining birinchi tarmoq hamkasbi bilan ma’lumotlarni sinxronlashtirishini kuting.
-3. Yangi tarmoq hamkasbini faol qoldiring.
-4. Faqat muvofiqlashtirilgan migratsiya doirasida birinchi tarmoq ishtirokchisining blockchain boshlang‘ich va konfiguratsiya fayllarini yangilash.
+Oʻsha tarmoqni qayta ishga tushirish uchun avval `python3 poc.py down`, keyin `python3 poc.py up` buyrugʻini bajaring. `state/` katalogini tarmoqning toʻrtta Docker jildi bilan birga saqlang.
 
 ::: info
 

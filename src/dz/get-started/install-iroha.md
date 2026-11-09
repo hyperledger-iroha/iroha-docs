@@ -1,13 +1,15 @@
 ---
 translation_locale: dz
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: f7f68228d219cc1c0ea5af128ba5dc956640df8a3d264ed3a4862447b3348a7d
 translation_status: machine-validated
 translation_engine: human-reviewed
 ---
 # གཞི་བཙུགས་འབད་ Iroha 3 {#install-iroha-3}
 
 ཤོག་ལེབ་འདི་གིས་ ཡར་འཕར་ `hyperledger-iroha/iroha` ལཱ་གི་ས་སྒོ་ལག་ལེན་འཐབ་སྟེ་ Iroha 3 ལག་ཆས་རིམ་སྒྲིག་དང་གཉིས་ལྡན་ཚུ་གི་དོན་ལུ་ ད་ལྟོའི་གཞི་བཙུགས་ལཱ་གི་རྒྱུན་རིམ་འདི་ཁྱབ་ཚུགསཔ་ཨིན།
+
+ཧོསཊི་གུ་ཐད་ཀར་གཞི་བཙུགས་འབད་ནི་ལུ་ འོག་གི་ Rust ལམ་སྟོན་ལུ་གནས། Docker གིས་བདེན་དཔྱད་འབད་མི་བཞི་གཡོག་བཀོལ་ནི་ལུ་ [Iroha 3 འགོ་བཙུགས་ནི](/dz/get-started/launch-iroha.md) ལས་འགོ་བཙུགས།
 
 ## ༡ སྔོན་འགོག་གི་གནས་སྟངས་ཚུ་ {#_1-prerequisites}
 

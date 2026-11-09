@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
+translation_source_hash: ceff2952134931b4f1007a16e2cffba2ee720c5221d447b5c671f275a032ad3e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -24,7 +24,7 @@ Taira ni integratsiya sinovlari, kran mablag'i bilan ta'minlangan yozish kanarla
 
 |qadam |Taira Testnet |Minamoto Asosiy |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|Tarmoqning holatini oʻqishni boshlash |`/status` kalitsiz so'rovlar |`/status` kalitsiz so'rovlar |
+|Tarmoqning holatini oʻqishni boshlash |`/status` kalitsiz so'rovlar | Avval xizmat manzilini va uning TLS sertifikatini tekshiring |
 | Ma’lumotlar makonini tanlash | Ilovangiz boshqariladigan yo‘lakka muhtoj bo‘lmasa, ochiq `universal` makonidan foydalaning | Shu ma’lumotlar makonidan faqat asosiy tarmoq tasdiqlaganidan keyin foydalaning |
 |Toʻlov aktivini oling .|Ommaviy Taira krandan foydalanish |XOR mablag ' bilan ta ' minlangan Minamoto hisobidan yoki tasdiqlangan xazina oqimidan oling |
 | Sinov yozuvlari | Sinov uchun ajratilgan XOR mablag‘idan foydalaning | Sinov vositalarini ishlatmang; yozuvlar haqiqiy XOR sarflaydi |
@@ -68,20 +68,10 @@ Agar sizga yangi tashkiliy ma'lumotlar maydonchasi kerak bo'lsa, uni oddiy mijoz
 
 ## 2. Umumiy Torii yakuniy nuqtani tekshiring. {#_2-check-the-public-torii-endpoint}
 
-Foydalanuvchini sozlashdan oldin maqsadli oxirgi nuqta jonliligini tekshiring.
-
-Taira uchun:
+Taira sinov tarmog‘i holatini `curl` va `jq` bilan tekshiring. Buning uchun kalitlar yoki mahalliy tugun kerak emas.
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-Minamoto uchun:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -94,7 +84,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-Mainnet uchun `https://minamoto.sora.org/status` bilan bir xil buyruqdan foydalaning.
+Minamoto’dan foydalanishdan oldin asosiy tarmoq xizmatining manzilini operator bilan aniqlashtiring va TLS sertifikati xost nomiga mos kelishini tekshiring.
 
 ## Agentlar uchun Taira MCP {#taira-mcp-for-agents}
 
@@ -197,19 +187,7 @@ Taira MCP-ni test tarmog'ini boshqarishning ommaviy yuzi sifatida ko'rib chiqish
 
 ## Endi sinab ko'rishingiz mumkin bo'lgan o'yinchoq misollari {#toy-examples-you-can-try-now}
 
-Ushbu namunalar faqat o'qiladi, agar qayd etilmagan bo'lsa. Ular kalitlarni ishlab chiqarishdan oldin ishlaydi va ikkala ommaviy tarmoqga ham qarshi ishlash xavfsizdir.
-
-Taira sinov tarmog'i va Minamoto asosiy tarmog'ining salomatligini taqqoslang:
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+Bu misollar hisob kalitlarisiz Taira’dan ma’lumot o‘qiydi.
 
 Taira tomonidan aniqlangan ommaviy ma’lumotlar makoni yo'nalishlarining ro'yxatini ko'rsatish:
 
@@ -217,16 +195,7 @@ Taira tomonidan aniqlangan ommaviy ma’lumotlar makoni yo'nalishlarining ro'yxa
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-Mainnet ko'rinishi kerak bo'lganda Minamoto ga nisbatan bir xil buyruqni bajaring:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -235,24 +204,16 @@ Dashboard, bot yoki ishga tushirish tekshiruvi uchun kichik Node.js holatni teks
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -554,6 +515,8 @@ with urllib.request.urlopen(request) as res:
 Fauxet faqat Taira testnet mablag'lari uchun ishlatiladi. XOR testnetdan, fauxet hisoblaridan yoki Taira kanary imzolaridan foydalanmang Minamoto oqimlarida.
 
 ## 5. Minamoto mijoz konfigini yaratish {#_5-create-a-minamoto-client-config}
+
+Minamoto’dan foydalanishdan oldin asosiy tarmoq xizmatining manzilini operator bilan aniqlashtiring va TLS sertifikati xost nomiga mos kelishini tekshiring.
 
 &amp; amp; uchun alohida tugmalar birikmasidan foydalanish Minamoto. Qayta ishlatmang . Taira asosiy tarmog'i kalitlari.
 

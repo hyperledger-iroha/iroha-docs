@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: 9d153d9cb8ce0341b35ba5a7e3823198e58464768e2a9a92ff8a5723f85e9351
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -16,27 +16,9 @@ translation_engine: bing-translator-llm
 
 عند استخدامك لإصدار Docker Compose من Iroha، قد تواجه مشكلة فشل أحد حاويات نظير الشبكة بالخطأ `Failed to deserialize raw genesis block`. هذا عادة يعني أن نظير الشبكة، ومعاملة السلسلة الأصلية الموقعة، والتكوين المولد تم إنتاجها بواسطة إصدارات أو ملفات تعريف مختلفة لـ Iroha.
 
-تحقق من الفشل باستخدام هذه الخطوات:
+من دليل الحزمة، شغّل `python3 poc.py logs` لعرض سجلات عقد التحقق. اتبع دليل [إطلاق Iroha 3](/ar/get-started/launch-iroha.md) لبناء أربع عقد تحقق وتشغيلها في Docker باستخدام ملفات تنفيذية من المراجعة نفسها.
 
-1. استخدم `docker ps` للتحقق من الحاويات الحالية. بناءً على الملف الشخصي الذي تم إنشاؤه، سترى عادةً `hyperledger/iroha:dev` حاويات. يحتوي الملف الشخصي الافتراضي Docker Compose على أربع حاويات نظراء الشبكة، على الرغم من أن `docker-compose.yml` الذي تم إنشاؤه قد يختلف.
-
-2. تحقق من السجلات وابحث عن خطأ `Failed to deserialize raw genesis block`. إذا بدأت Iroha في وضع الخدمة مع `docker compose up -d`، استخدم الأمر `docker compose logs`.
-
-تختلف طريقة استكشاف مثل هذه المشكلة بناءً على استخدام Iroha. إذا كان هذا عرضًا تجريبيًا أساسيًا ولا تحتاج إلى الاحتفاظ ببيانات أقران الشبكة، فقم بإعادة إنشاء localnet أو حزمة Docker Compose المطابقة باستخدام Kagami:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
-```
-
-ثم قم بإزالة حالة الحاوية القديمة وأعد التشغيل من الملفات المعاد توليدها `genesis.signed.nrt`، ونظير الشبكة `config.toml`، و `client.toml`.
-
-إذا كنت بحاجة إلى استعادة بيانات المثيل Iroha، فافعل ما يلي:
-
-1. قم بتوصيل نظير الشبكة الثاني Iroha الذي سينسخ البيانات من نظير الشبكة الأول (الفاشل).
-2. انتظر حتى يقوم نظير الشبكة الجديد بمزامنة البيانات مع نظير الشبكة الأول.
-3. اترك الند الجديد في الشبكة نشطًا.
-4. قم بتحديث ملفات البلوكتشين الأصلية وملفات التكوين لزميل الشبكة الأول فقط كجزء من ترحيل منسق.
+لإعادة تشغيل الشبكة نفسها، استخدم `python3 poc.py down` ثم `python3 poc.py up`. احتفظ بالدليل `state/` مع وحدات تخزين Docker الأربع الخاصة بالشبكة.
 
 ::: info
 

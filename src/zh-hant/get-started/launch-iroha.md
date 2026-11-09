@@ -1,94 +1,68 @@
 ---
 translation_locale: zh-hant
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
+translation_source_hash: 2be7788e2aaf422b34739028ee64a127cad67ac0293b32d93f0be959c94aea87
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
 # 啟動 Iroha 3 {#launch-iroha-3}
 
-本頁面透過使用上游儲存庫中的預設工作空間資產來檢視 Iroha 3 的當前本地網路流動.
+在一台 Linux 虛擬機器 (VM)上執行四個 Iroha 3 驗證節點，以測試私有環境中的系統整合。先提交一筆已簽署的交易，再停止一個驗證節點，確認其餘三個節點能否確認第二筆交易。這個環境使用獨立的許可型帳本。若要將此帳本作為受治理的資料空間接入 SORA Nexus，還須另外配置。
 
-## 1. 建立一個地方多對等節點網路 {#_1-generate-a-local-multi-peer-network}
+## 準備 VM {#prepare-the-vm}
 
-從當前的 Kagami 程式碼生成一個四對子本地網路:
+使用 Linux x86_64，並安裝 Docker Engine、Buildx、Compose v2、Python 3.8 或更新版本，以及 `unzip`。目前的帳號必須有使用 Docker 的權限。首次建置時，虛擬機器必須能透過 HTTPS 連線至 GitHub、Docker Hub、Debian 套件鏡像站和 crates.io。
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+我們在配有 6 個 vCPU 和 32 GiB RAM 記憶體的 VM 上建置套件，並用少量模擬交易完成測試。請根據工作負載及資料保留期限決定儲存容量。每個 Docker Engine 執行個體只使用一份套件，並保持回送介面上的 18080–18083 連接埠可用。
+
+[下載四節點驗證套件](/downloads/iroha-trade-poc.zip)。套件內含啟動指令碼、鎖定版本的相依套件清單，以及從同一固定版本的 Iroha 原始碼建置驗證節點和用戶端所使用的修補檔。在下載目錄中驗證壓縮檔的校驗碼，然後解壓縮。
+
+```sh
+echo 'b12d450f9f15c0126dfe5eca83cdfad8bc420c779a78f916d374f433a2b3da0e  iroha-trade-poc.zip' | sha256sum --check
+unzip iroha-trade-poc.zip
+cd iroha-trade-poc
 ```
 
-輸出目錄包含相匹配的對等節點配置, `genesis.json`, `genesis.signed.nrt`, `client.toml`和輔助指令碼.
+## 啟動並驗證四個節點 {#start-and-verify-all-four-validators}
 
-在本地冒煙測試中,直接啟動生成的對等節點:
-
-```bash
-./localnet/start.sh
+```sh
+python3 poc.py up
+python3 poc.py verify
 ```
 
-在一個容器執行中,從同一 localnet目錄生成 Compose:
+首次啟動時，指令碼會建置容器映像檔，並在 VM 上產生鏈 ID、金鑰和已簽署的創世區塊。每個驗證節點都有獨立的持久化儲存卷。驗證指令碼會簽署一筆測試交易，再等待四個驗證節點各自回報已連線至三個對等節點，且新區塊的雜湊值一致。創世區塊含有範例帳號。請使用模擬資料，並僅透過回送介面開放 APIs。
 
-```bash
-cargo run --bin kagami -- docker \
-  --peers 4 \
-  --config-dir ./localnet \
-  --image hyperledger/iroha:dev \
-  --out-file ./docker-compose.yml \
-  --force
+從 VM 查詢第一個驗證節點的狀態時，請明確指定以 JSON 格式回應。
 
-docker compose -f ./docker-compose.yml up
+```sh
+curl -fsS -H 'Accept: application/json' http://127.0.0.1:18080/status
 ```
 
-預設生成的堆曝光:
+## 測試單一驗證節點故障 {#test-a-validator-failure}
 
-- 同等 P2P 埠 `1337`到 `1340`
-- Torii HTTP 港口 `8080`到 `8083`
-- 在 `./localnet/client.toml` 設定已完成的客戶端配置
-
-## 2. 檢查網路是否開通 {#_2-verify-that-the-network-is-up}
-
-檢查第一個對等節點狀態端點:
-
-```bash
-curl http://127.0.0.1:8080/status
+```sh
+python3 poc.py failover
 ```
 
-預設健康檢查還使用:
+測試會停止一個驗證節點、提交一筆新交易，並檢查其餘三個節點所確認區塊的雜湊值。接著指令碼會重新啟動第四個節點，等待它同步到同一個區塊。 VM 若故障，四個驗證節點都會停止。若要測試任一台實體主機故障的情況，請使用四台獨立主機，每台部署一個驗證節點。
 
-```bash
-curl http://127.0.0.1:8080/status/blocks
+## 停止及恢復執行 {#stop-and-resume}
+
+```sh
+python3 poc.py down
+python3 poc.py up
 ```
 
-您可以立即將 CLI 指向捆綁的客戶端配置:
+在解壓縮套件的同一個目錄執行這兩個指令。請一併保留 `state/` 目錄及四個 Docker 儲存卷，以便驗證節點重新啟動後能開啟同一份帳本。若啟動程序停滯，請在該目錄執行 `python3 poc.py logs`。
 
-```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+## 試用公開 API 端點 {#try-the-public-endpoint}
+
+應用程式可透過 Taira 讀取 SORA Nexus 的通用資料空間，無須執行自己的帳本 VM。在裝有 `curl` 和 `jq` 的工作站上，向測試網路傳送以下唯讀請求。
+
+```sh
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
+  | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
-## 3. Nexus 個人資料 {#_3-nexus-profile}
-
-儲存庫還將一個以 SORA Nexus 為導向的配置資料傳送到 `defaults/nexus/`.
-
-執行一個具有 Nexus 配置檔案的原生對等節點:
-
-```bash
-./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
-```
-
-使用 `defaults/nexus/client.toml`來獲取 CLI 該配置檔案.
-
-## 4. 停止本地網路 {#_4-stop-the-local-network}
-
-對於原生生成的本地網路:
-
-```bash
-./localnet/stop.sh
-```
-
-對於生成的Compose堆:
-
-```bash
-docker compose -f ./docker-compose.yml down
-```
-
-網路執行後,繼續使用 [透過 CLI](/zh-hant/get-started/operate-iroha-via-cli.md)執行 Iroha 3.
+回應會列出受查詢節點連線的對等節點數、已確認的區塊數、已核准的交易數，以及佇列中的交易數。關於部署規劃，請參閱[網路部署](/zh-hant/guide/best-practices/network-deployment.md)。

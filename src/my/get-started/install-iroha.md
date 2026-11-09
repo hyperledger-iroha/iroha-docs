@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: f7f68228d219cc1c0ea5af128ba5dc956640df8a3d264ed3a4862447b3348a7d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -10,13 +10,15 @@ translation_engine: nllb-200-ct2
 
 ဤစာမျက်နှာသည် Iroha 3 toolchain နှင့် upstream `hyperledger-iroha/iroha` workspace ကိုအသုံးပြုသော binaries များအတွက်လက်ရှိ install workflow ကိုဖော်ပြသည်။
 
+စက်ပေါ်တွင် တိုက်ရိုက်ထည့်သွင်းရန် အောက်ပါ Rust လမ်းညွှန်အတိုင်း လုပ်ဆောင်ပါ။ Docker ဖြင့် အတည်ပြုနိုဒ်လေးခုကို လုပ်ဆောင်လိုပါက [Iroha 3 ကို စတင်ခြင်း](/my/get-started/launch-iroha.md) လမ်းညွှန်မှ စတင်ပါ။
+
 ## (၁) ကြိုတင်လိုအပ်ချက်များ {#_1-prerequisites}
 
 ဒါတွေကို အရင်တပ်ပါ။
 
 - [rustup](https://www.rust-lang.org/tools/install) ဆိုတော့ ပိတ်ထားတဲ့ `rust-toolchain.toml` toolchain (`1.93.1`) ကို အလိုအလျောက် တပ်ဆင်ထားတယ်။
 - `git`
-- Docker နှင့် Docker Compose တို့ကို ရွေးချယ်၍ ဒေသတွင်း multi-peer quickstart အတွက်။
+- စက်တွင်း၌ နိုဒ်များစွာ အသုံးပြုမည့် အမြန်စတင်နည်းအတွက် လိုအပ်ပါက Docker နှင့် Docker Compose ကို ထည့်သွင်းပါ။
 
 ## (၂) Workspace ကို clone လုပ်ပါ။ {#_2-clone-the-workspace}
 
@@ -33,7 +35,7 @@ cd iroha
 cargo build --workspace
 ```
 
-operator-focused အသေးစား build အတွက် အဓိက binaries တွေကိုသာ compile လုပ်ပါ။
+စနစ်စီမံသူများအတွက် လိုအပ်သည့် အဓိကပရိုဂရမ်များကိုသာ စက်ကုဒ်အဖြစ် ပြောင်းလိုပါက အောက်ပါအတိုင်း လုပ်ဆောင်ပါ။
 
 ```bash
 cargo build --release \
@@ -55,16 +57,16 @@ cargo run --bin kagami -- --help
 
 ပုံမှန်သုံးတဲ့ ဘိုင်နရီ လေးခုက-
 
-- `iroha3d` ပုံမှန်ကွန်ရက် peer daemon အတွက်
-- `iroha3d_taira` အတွက် Single Protocol Standard Taira validator launcher အတွက်
-- `iroha` အတွက် CLI ရယူခွင့် Torii လုပ်ငန်းရှင်များ API အဆုံးသတ်မှတ်ချက်များ
-- `kagami` ခလုတ်များအတွက်၊ ဘလော့ကချ်ဗီဇ နည်းပညာထုတ်ပြန်ချက်များအတွက်နှင့် localnet profile များအတွက်
+- သာမန်ကွန်ရက်နိုဒ်၏ နောက်ခံလုပ်ငန်းစဉ်အတွက် `iroha3d`
+- Taira အတည်ပြုနိုဒ်များအတွက် စံသတ်မှတ်ထားသော စတင်ပရိုဂရမ်မှာ `iroha3d_taira` ဖြစ်သည်။
+- Torii နှင့် စီမံခန့်ခွဲသူသုံး လိပ်စာများကို CLI မှ ဆက်သွယ်ရန် `iroha`
+- သော့များ၊ ပထမဘလောက် ဖော်ပြချက်များနှင့် စက်တွင်းစမ်းသပ်ကွန်ရက် ဆက်တင်များအတွက် `kagami`
 
 ## 5. Localnet နှင့် Docker Path ကို ရွေးချယ်ပါ။ {#_5-optional-localnet-and-docker-path}
 
-လက်ရှိ source-backed localnet flow ကို Kagami ကဖန်တီးထားသည်။ ၎င်းသည်ကွန်ရက် peer config များ၊ blockchain genesis artifacts များ၊ client config များ, helper script များနှင့် checked out code နှင့်အံတူသော optional Compose ဖိုင်ကိုရေးသားထားပါသည်။
+Kagami က ရင်းမြစ်ကုဒ်မှ စက်တွင်းစမ်းသပ်ကွန်ရက်အတွက် လိုအပ်သည်များကို ပြင်ဆင်ပေးသည်။ ၎င်းက နိုဒ်ဆက်တင်များ၊ ပထမဘလောက်ဖိုင်များ၊ ကလိုင်းယင့်ဆက်တင်များ၊ အကူပရိုဂရမ်များနှင့် ရယူထားသည့်ကုဒ်နှင့် ကိုက်ညီသော ရွေးချယ်သုံးနိုင်သည့် Compose ဖိုင်ကို ရေးပေးသည်။
 
-- `kagami localnet` for native local network peer scripts
-- `kagami docker`အတွက် Docker Compose ကို localnet directory မှထုတ်လုပ်ထားသည်
+- စက်ပေါ်တွင် နိုဒ်များကို တိုက်ရိုက်စတင်ရန် အကူပရိုဂရမ်များ ရယူလိုပါက `kagami localnet` ကို သုံးပါ။
+- စက်တွင်းစမ်းသပ်ကွန်ရက်၏ လမ်းညွှန်မှ Docker Compose ဖိုင်ကို ထုတ်ရန် `kagami docker` ကို သုံးပါ။
 
 [လွှတ်တင်ခြင်း Iroha 3](/my/get-started/launch-iroha.md) ကို ဆက်လုပ်ပါ။

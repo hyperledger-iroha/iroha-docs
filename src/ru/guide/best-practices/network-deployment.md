@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /guide/best-practices/network-deployment.md
-translation_source_hash: 7839268b8c1f6700b0c26652e3308fa4e8acef4717d8527c609b6f30fb8c84ab
+translation_source_hash: 489b174b9bdd21a4c4c2c896911686a6020e2833c8808304cfd37a5bf31c7780
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -25,6 +25,8 @@ translation_engine: bing-translator-llm
 - Используйте как минимум четыре валидатора для минимальной устойчивой к византийским сбоям конфигурации.
 - Разделяйте валидаторов и наблюдателей при планировании емкости. Наблюдатели не голосуют, не предлагают и не собирают, но они все же потребляют память, синхронизацию блоков и пропускную способность сети.
 - Рассматривайте изменения генезиса блокчейна, исполнителя и топологии как скоординированные миграции, а не как правки одного узла.
+
+Следуйте [руководству по запуску сети с четырьмя валидаторами](/ru/get-started/launch-iroha.md), чтобы запустить сеть в Docker и проверить её восстановление после остановки одного из валидаторов.
 
 См. [генезис блокчейна](/ru/reference/genesis.md), [управление сетевыми узлами](/ru/guide/configure/peer-management.md) и [Производительность и метрики](/ru/guide/advanced/metrics.md#node-count-and-quorum).
 

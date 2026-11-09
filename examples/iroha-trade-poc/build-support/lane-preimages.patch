@@ -1,0 +1,187 @@
+--- a/crates/iroha_core/src/block.rs
++++ b/crates/iroha_core/src/block.rs
+@@ -107,47 +107,12 @@
+ #[cfg(feature = "telemetry")]
+ use ivm::ProgramMetadata;
+ use mv::storage::StorageReadOnly;
++use crate::sumeragi::main_loop::{LaneBlockSubjectPreimage, LanePayloadOwnershipPreimage, LaneRbcInstancePreimage};
+ use norito::codec::Encode;
+ #[cfg(feature = "bls")]
+ use norito::json::Value as JsonValue;
+ use rust_decimal::Decimal;
+ use sha2::Digest as _;
+-
+-#[derive(Clone, Debug, Encode)]
+-struct ExecutionContextLaneBlockSubjectPreimage {
+-    version: u8,
+-    lane_id: LaneId,
+-    dataspace_id: DataSpaceId,
+-    lane_block_height: u64,
+-    lane_block_view: u64,
+-    candidate_indices: Vec<u64>,
+-    qc_mode_tag: String,
+-}
+-
+-#[derive(Clone, Debug, Encode)]
+-struct ExecutionContextLanePayloadOwnershipPreimage {
+-    purpose: String,
+-    version: u8,
+-    lane_id: LaneId,
+-    dataspace_id: DataSpaceId,
+-    lane_block_height: u64,
+-    lane_block_view: u64,
+-    subject_hash: Hash,
+-    candidate_indices: Vec<u64>,
+-    qc_mode_tag: String,
+-}
+-
+-#[derive(Clone, Debug, Encode)]
+-struct ExecutionContextLaneRbcInstancePreimage {
+-    purpose: String,
+-    version: u8,
+-    lane_id: LaneId,
+-    dataspace_id: DataSpaceId,
+-    lane_block_height: u64,
+-    lane_block_view: u64,
+-    subject_hash: Hash,
+-    payload_ownership_hash: Hash,
+-}
+ 
+ const PUBLIC_TAIRA_CHAIN_ID: &str = "809574f5-fee7-5e69-bfcf-52451e42d50f";
+ 
+@@ -6628,7 +6593,7 @@
+                 }
+ 
+                 let expected_subject_hash = Self::execution_context_preimage_hash(
+-                    &ExecutionContextLaneBlockSubjectPreimage {
++                    &LaneBlockSubjectPreimage {
+                         version: 1,
+                         lane_id: ownership.lane_id,
+                         dataspace_id: ownership.dataspace_id,
+@@ -6646,7 +6611,7 @@
+                 }
+ 
+                 let expected_payload_ownership_hash = Self::execution_context_preimage_hash(
+-                    &ExecutionContextLanePayloadOwnershipPreimage {
++                    &LanePayloadOwnershipPreimage {
+                         purpose: "nexus:lane-payload-ownership:v1".to_string(),
+                         version: 1,
+                         lane_id: ownership.lane_id,
+@@ -6666,7 +6631,7 @@
+                 }
+ 
+                 let expected_rbc_instance_hash = Self::execution_context_preimage_hash(
+-                    &ExecutionContextLaneRbcInstancePreimage {
++                    &LaneRbcInstancePreimage {
+                         purpose: "nexus:lane-rbc-instance:v1".to_string(),
+                         version: 1,
+                         lane_id: ownership.lane_id,
+@@ -13711,7 +13676,7 @@
+             let qc_mode_tag =
+                 LaneRelayEnvelope::lane_qc_mode_tag_for(lane_id, dataspace_id, "block-test");
+             let subject_hash = Hash::new(
+-                norito::to_bytes(&ExecutionContextLaneBlockSubjectPreimage {
++                norito::to_bytes(&LaneBlockSubjectPreimage {
+                     version: 1,
+                     lane_id,
+                     dataspace_id,
+@@ -13723,7 +13688,7 @@
+                 .expect("lane block subject preimage encodes"),
+             );
+             let payload_ownership_hash = Hash::new(
+-                norito::to_bytes(&ExecutionContextLanePayloadOwnershipPreimage {
++                norito::to_bytes(&LanePayloadOwnershipPreimage {
+                     purpose: "nexus:lane-payload-ownership:v1".to_string(),
+                     version: 1,
+                     lane_id,
+@@ -13737,7 +13702,7 @@
+                 .expect("lane payload ownership preimage encodes"),
+             );
+             let rbc_instance_hash = Hash::new(
+-                norito::to_bytes(&ExecutionContextLaneRbcInstancePreimage {
++                norito::to_bytes(&LaneRbcInstancePreimage {
+                     purpose: "nexus:lane-rbc-instance:v1".to_string(),
+                     version: 1,
+                     lane_id,
+--- a/crates/iroha_core/src/sumeragi/main_loop.rs
++++ b/crates/iroha_core/src/sumeragi/main_loop.rs
+@@ -401,6 +401,7 @@
+ mod commit;
+ mod kura;
+ mod lane_scheduler;
++pub(crate) use lane_scheduler::{LaneBlockSubjectPreimage, LanePayloadOwnershipPreimage, LaneRbcInstancePreimage};
+ mod locked_qc;
+ mod mode;
+ mod pacing;
+--- a/crates/iroha_core/src/sumeragi/main_loop/lane_scheduler.rs
++++ b/crates/iroha_core/src/sumeragi/main_loop/lane_scheduler.rs
+@@ -701,40 +701,42 @@
+     candidate_indices: Vec<usize>,
+ }
+ 
++// The Norito frame header binds the schema identity. Proposal and validation must
++// encode these same types without moving them out of their original module.
+ #[derive(Clone, Debug, Encode)]
+-struct LaneBlockSubjectPreimage {
+-    version: u8,
+-    lane_id: LaneId,
+-    dataspace_id: DataSpaceId,
+-    lane_block_height: u64,
+-    lane_block_view: u64,
+-    candidate_indices: Vec<u64>,
+-    qc_mode_tag: String,
++pub(crate) struct LaneBlockSubjectPreimage {
++    pub(crate) version: u8,
++    pub(crate) lane_id: LaneId,
++    pub(crate) dataspace_id: DataSpaceId,
++    pub(crate) lane_block_height: u64,
++    pub(crate) lane_block_view: u64,
++    pub(crate) candidate_indices: Vec<u64>,
++    pub(crate) qc_mode_tag: String,
+ }
+ 
+ #[derive(Clone, Debug, Encode)]
+-struct LanePayloadOwnershipPreimage {
+-    purpose: String,
+-    version: u8,
+-    lane_id: LaneId,
+-    dataspace_id: DataSpaceId,
+-    lane_block_height: u64,
+-    lane_block_view: u64,
+-    subject_hash: Hash,
+-    candidate_indices: Vec<u64>,
+-    qc_mode_tag: String,
++pub(crate) struct LanePayloadOwnershipPreimage {
++    pub(crate) purpose: String,
++    pub(crate) version: u8,
++    pub(crate) lane_id: LaneId,
++    pub(crate) dataspace_id: DataSpaceId,
++    pub(crate) lane_block_height: u64,
++    pub(crate) lane_block_view: u64,
++    pub(crate) subject_hash: Hash,
++    pub(crate) candidate_indices: Vec<u64>,
++    pub(crate) qc_mode_tag: String,
+ }
+ 
+ #[derive(Clone, Debug, Encode)]
+-struct LaneRbcInstancePreimage {
+-    purpose: String,
+-    version: u8,
+-    lane_id: LaneId,
+-    dataspace_id: DataSpaceId,
+-    lane_block_height: u64,
+-    lane_block_view: u64,
+-    subject_hash: Hash,
+-    payload_ownership_hash: Hash,
++pub(crate) struct LaneRbcInstancePreimage {
++    pub(crate) purpose: String,
++    pub(crate) version: u8,
++    pub(crate) lane_id: LaneId,
++    pub(crate) dataspace_id: DataSpaceId,
++    pub(crate) lane_block_height: u64,
++    pub(crate) lane_block_view: u64,
++    pub(crate) subject_hash: Hash,
++    pub(crate) payload_ownership_hash: Hash,
+ }
+ 
+ /// Derive lane-local vote/QC domains for accepted work in a scheduled batch.

@@ -1,94 +1,68 @@
 ---
 translation_locale: ja
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
+translation_source_hash: 2be7788e2aaf422b34739028ee64a127cad67ac0293b32d93f0be959c94aea87
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
 
-# Iroha 3 を起動 {#launch-iroha-3}
+# Iroha 3 を起動する {#launch-iroha-3}
 
-このページでは、上流リポジトリのデフォルトワークスペース資産を使用して、Iroha 3 の現在のローカルネットワークフローについて説明します。
+Linux 仮想マシン（VM）1 台で Iroha 3 のバリデータを 4 台起動し、非公開の環境でシステム連携をテストします。署名済みトランザクションを送信した後、バリデータを 1 台停止し、残りの 3 台で別のトランザクションを確定できることを確認します。ここで構築するのは、参加者を制限した独立の台帳です。ガバナンスの対象となるデータスペースとして SORA Nexus に接続するには、別途設定が必要です。
 
-## 1. ローカルマルチピアネットワークを生成する {#_1-generate-a-local-multi-peer-network}
+## VM を準備する {#prepare-the-vm}
 
-現在の Kagami コードから、4ピアのローカルネットを生成する:
+x86_64 版 Linux に Docker Engine、Buildx、Compose v2、Python 3.8 以降、`unzip` を用意します。作業用アカウントには Docker を実行する権限が必要です。初回のビルドでは、GitHub、Docker Hub、Debian のパッケージミラー、crates.io への HTTPS 接続が必要です。
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+このキットは、6 vCPU、メモリ 32 GiB RAM の VM でビルドし、少数の模擬トランザクションで動作を確認しました。ストレージは想定する負荷とデータの保存期間に応じて確保してください。Docker Engine のインスタンスごとにキットを 1 組だけ使用し、ループバックインターフェースのポート 18080～18083 を空けておきます。
+
+[4 台構成のバリデータキットをダウンロード](/downloads/iroha-trade-poc.zip)します。キットには起動スクリプト、バージョンを固定した依存パッケージ一覧、バリデータとクライアントを同じ Iroha リビジョンからビルドするためのパッチが含まれています。ダウンロード先のディレクトリでチェックサムを確認し、アーカイブを展開します。
+
+```sh
+echo 'b12d450f9f15c0126dfe5eca83cdfad8bc420c779a78f916d374f433a2b3da0e  iroha-trade-poc.zip' | sha256sum --check
+unzip iroha-trade-poc.zip
+cd iroha-trade-poc
 ```
 
-出力ディレクトリには、対応するネットワークピアの設定ファイル `genesis.json`、`genesis.signed.nrt`、`client.toml` およびヘルパースクリプトが含まれています。
+## バリデータ 4 台を起動して検証する {#start-and-verify-all-four-validators}
 
-ネイティブのローカルスモークテストを行うには、生成されたネットワークピアを直接起動します:
-
-```bash
-./localnet/start.sh
+```sh
+python3 poc.py up
+python3 poc.py verify
 ```
 
-コンテナ化された実行の場合、同じ localnet ディレクトリから Compose を生成します:
+初回起動時に Docker イメージがビルドされ、VM 上でチェーン ID、鍵、署名済みのジェネシスブロックが生成されます。各バリデータは専用の永続ボリュームを使用します。検証スクリプトはテスト用トランザクションに署名し、4 台すべてが接続先のピア数を 3 と報告し、新しいブロックのハッシュ値が 4 台で一致するまで待ちます。ジェネシスブロックにはサンプルアカウントが含まれるため、テスト用データを使用し、APIs はループバックインターフェースでのみ公開してください。
 
-```bash
-cargo run --bin kagami -- docker \
-  --peers 4 \
-  --config-dir ./localnet \
-  --image hyperledger/iroha:dev \
-  --out-file ./docker-compose.yml \
-  --force
+VM から 1 台目のバリデータの状態を取得するには、応答形式に JSON を明示します。
 
-docker compose -f ./docker-compose.yml up
+```sh
+curl -fsS -H 'Accept: application/json' http://127.0.0.1:18080/status
 ```
 
-デフォルトで生成されたスタックは次のものを公開します:
+## バリデータ 1 台の停止をテストする {#test-a-validator-failure}
 
-- ネットワークピア P2P ポート `1337` から `1340` へ
-- Torii HTTP ポートを `8080` から `8083` へ
-- `./localnet/client.toml` にある既製のクライアント設定
-
-## 2. ネットワークが稼働していることを確認する {#_2-verify-that-the-network-is-up}
-
-最初のネットワークピアで API エンドポイントのステータスを確認してください:
-
-```bash
-curl http://127.0.0.1:8080/status
+```sh
+python3 poc.py failover
 ```
 
-デフォルトのヘルスチェックは次も使用します:
+テストではバリデータを 1 台停止し、新しいトランザクションを送信して、残りの 3 台で確定したブロックのハッシュ値を確認します。その後、4 台目を再起動して同じブロックに追いつくまで待ちます。VM 自体が停止すると 4 台とも停止します。物理ホスト 1 台の障害を検証するには、独立した 4 台のホストにバリデータを 1 台ずつ配置してください。
 
-```bash
-curl http://127.0.0.1:8080/status/blocks
+## 停止と再開 {#stop-and-resume}
+
+```sh
+python3 poc.py down
+python3 poc.py up
 ```
 
-バンドルされたクライアント設定にすぐに CLI を指すことができます：
+両方のコマンドを、キットを展開した同じディレクトリで実行します。再起動後も同じ台帳を開けるように、`state/` ディレクトリと 4 つの Docker ボリュームをセットで保持してください。起動が進まない場合は、そのディレクトリで `python3 poc.py logs` を実行します。
 
-```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+## 公開エンドポイントを試す {#try-the-public-endpoint}
+
+アプリケーションは、台帳用の VM を用意しなくても、Taira 上で SORA Nexus のユニバーサルデータスペースを参照できます。`curl` と `jq` が使える端末から、次の読み取り専用リクエストをテストネットに送信します。
+
+```sh
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
+  | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
-## 3. Nexus プロフィール {#_3-nexus-profile}
-
-このリポジトリは、`defaults/nexus/`の下で SORA Nexus 指向の設定プロファイルも提供します。
-
-Nexus プロファイルでネイティブネットワークピアを実行するには:
-
-```bash
-./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
-```
-
-そのプロフィールへの CLI アクセスには`defaults/nexus/client.toml`を使用してください。
-
-## 4. ローカルネットワークを停止する {#_4-stop-the-local-network}
-
-ネイティブ生成のローカルネットの場合:
-
-```bash
-./localnet/stop.sh
-```
-
-生成されたComposeスタックの場合：
-
-```bash
-docker compose -f ./docker-compose.yml down
-```
-
-ネットワークが稼働した後、[CLI を介して Iroha 3 を操作する](/ja/get-started/operate-iroha-via-cli.md) を続けてください。
+応答には、問い合わせ先のノードに接続しているピア数、確定したブロック数、承認済みトランザクション数、キュー内のトランザクション数が含まれます。構成を検討する際は、[ネットワークのデプロイ](/ja/guide/best-practices/network-deployment.md)を参照してください。

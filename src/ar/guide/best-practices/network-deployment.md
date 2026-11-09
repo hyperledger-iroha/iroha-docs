@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /guide/best-practices/network-deployment.md
-translation_source_hash: 7839268b8c1f6700b0c26652e3308fa4e8acef4717d8527c609b6f30fb8c84ab
+translation_source_hash: 489b174b9bdd21a4c4c2c896911686a6020e2833c8808304cfd37a5bf31c7780
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -25,6 +25,8 @@ translation_engine: bing-translator-llm
 - استخدم ما لا يقل عن أربعة مدققين لنشر يتحمل أخطاء بيزنطية على الأقل.
 - افصل بين المدققين والمراقبين في تخطيط السعة. لا يصوت المراقبون ولا يقترحون ولا يجمعون، لكنهم لا يزالون يستهلكون التخزين ومزامنة الكتل وعرض النطاق الترددي للشبكة.
 - اعتبر تغييرات البلوكشين في الأصل، والمنفذ، والطوبولوجيا كتحولات منسقة بدلًا من تعديلات من جانب واحد.
+
+اتبع [دليل تشغيل أربعة مدقّقين](/ar/get-started/launch-iroha.md) لتشغيل الشبكة باستخدام Docker واختبار تعافيها بعد إيقاف أحد المدقّقين.
 
 انظر [الكتلة الأولى في سلسلة الكتل](/ar/reference/genesis.md)، [إدارة نظير الشبكة](/ar/guide/configure/peer-management.md)، و[الأداء والمؤشرات](/ar/guide/advanced/metrics.md#node-count-and-quorum).
 

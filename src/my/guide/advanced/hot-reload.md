@@ -1,14 +1,14 @@
 ---
 translation_locale: my
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 96505bdba910beb902c399004f5cd24f5e5b0773f01df9cdcfdb49d019830d03
+translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # Docker ကွန်တိန်နာတွင် အပူပြန်တင်ခြင်း Iroha {#hot-reload-iroha-in-a-docker-container}
 
-ဒေသတွင်း debugging အတွက်သာ hot reload ကိုအသုံးပြုပါ။ ပုံမှန်ဒေသဆိုင်ရာဖွံ့ဖြိုးတိုးတက်မှုအတွက် ရုပ်ပုံကို ပြန်လည်တည်ဆောက်ခြင်း သို့မဟုတ် အသစ် Kagami ဘက်ကလစ်မှထုတ်လုပ်သော Docker Compose stack ကို restart လုပ်ရန် ပိုနှစ်သက်သည်။
+ချက်ချင်း ပြန်တင်ခြင်းကို စက်တွင်း အမှားရှာဖွေရန်သာ အသုံးပြုပါ။ တူညီသော ရင်းမြစ်ဗားရှင်းမှ ဘိုင်နရီဖိုင်များကို တည်ဆောက်ပြီး Docker တွင် အတည်ပြုသူ လေးခုကို စတင်ရန် [လွှတ်တင်ခြင်း Iroha 3](/my/get-started/launch-iroha.md) လမ်းညွှန်ကို လိုက်နာပါ။
 
 ## Network peer Binary ကို အစားထိုးပါ {#replace-the-peer-binary}
 
@@ -25,20 +25,11 @@ docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/loca
 docker restart <container>
 ```
 
-`docker ps` ကို အသုံးပြုပြီး container နာမည်ကို အတည်ပြုပါ။ ထုတ်လုပ်ထားတဲ့ stack မှာ network peer containers တွေကို `./docker-compose.yml` ဖြင့် သတ်မှတ်ထားတယ်။
+ကွန်တိန်နာကို ရှာရန် `docker ps` ကို သုံးပါ။ နောက်ကွယ်ရှိ ပရိုဂရမ်ကို မလဲမီ ပုံရိပ်ထဲရှိ ၎င်း၏ လမ်းကြောင်းကို စစ်ဆေးပါ။
 
 ## Disposable Network တွင် blockchain genesis ကိုပြန်လည်သုံးစွဲခြင်း {#recommit-genesis-in-a-disposable-network}
 
-Network peer သည် blockchain genesis ကို ၎င်း၏ သိုလှောင်မှုအလွတ်ရှိမှသာ ပြီးဆုံးစေသည်။ တစ်ခါသုံး Docker ကွန်ရက်အတွက်, stack ကိုရပ်တန့်ပါ, ထုတ်လုပ်သောအခြေအနေကိုဖယ်ရှားပါ, လက်မှတ်ရေးထိုးထားသော blockchain genesis bundle ကိုပြန်လည်ပြုပြင်ခြင်း (သို့မဟုတ်အစားထိုးပါ) နှင့်စတင်ပါ:
-
-```bash
-docker compose -f ./docker-compose.yml down
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
-
-၎င်းရဲ့အခြေအနေကို ထိန်းသိမ်းရန် လိုအပ်တဲ့ ကွန်ရက်တစ်ခုမှာ blockchain genesis ကို အစားထိုးမလုပ်ပါ။
+ကနဦးဘလောက်အသစ်ကို အသုံးပြုရန် နိုဒ်၏ သိုလှောင်နေရာသည် အလွတ်ဖြစ်ရမည်။ တူညီသော ကွန်ရက်ကို ပြန်စရန် `python3 poc.py down` နှင့် `python3 poc.py up` ကို အစဉ်လိုက် လုပ်ဆောင်ပါ။ `state/` ကို ၎င်း၏ Docker သိုလှောင်မှုအတွဲ လေးခုနှင့်အတူ သိမ်းထားပါ။
 
 ## Custom Configuration ကို အသုံးပြုပါ။ {#use-custom-configuration}
 

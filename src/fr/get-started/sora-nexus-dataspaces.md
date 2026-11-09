@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
+translation_source_hash: ceff2952134931b4f1007a16e2cffba2ee720c5221d447b5c671f275a032ad3e
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -24,7 +24,7 @@ Utilisez Taira pour les tests d'intégration, les canaris d'écriture financés 
 
 |Étape| Taira Testnet                                                | Minamoto Réseau principal                                   |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|Commencer à lire l'état du réseau|Requête `/status` sans clés|Requête `/status` sans clés|
+|Commencer à lire l'état du réseau|Requête `/status` sans clés| Confirmez d’abord l’adresse du service et son certificat TLS |
 |Choisir un espace de données|Utilisez l’espace public `universal`, sauf si l’application exige une voie gouvernée|Réutilisez cet espace seulement après l’approbation du réseau principal|
 |Obtenir l'actif de frais|Utilisez le service public de financement du testnet Taira|Recevoir XOR d'un compte Minamoto financé ou d'un flux de trésorerie approuvé|
 |Test écrit|Utilisez un test financé par le testnet XOR|Ne pas utiliser d'outils de test ; écrit des dépenses réelles XOR|
@@ -68,20 +68,10 @@ Si vous avez besoin d'un nouvel espace de données organisationnel, préparez un
 
 ## 2. Vérifiez le point de terminaison public Torii API {#_2-check-the-public-torii-endpoint}
 
-Vérifiez que le point de terminaison cible API est actif avant de configurer un signataire cryptographique.
-
-Pour Taira :
+Consultez l’état du réseau de test Taira avec `curl` et `jq`. Cette vérification ne nécessite ni clés ni nœud local.
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-Pour Minamoto :
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -94,7 +84,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-Utilisez la même commande avec `https://minamoto.sora.org/status` pour le réseau principal.
+Avant d’utiliser Minamoto, confirmez l’adresse du service du réseau principal auprès de son opérateur et vérifiez que le certificat TLS correspond au nom d’hôte.
 
 ## Taira MCP pour les agents {#taira-mcp-for-agents}
 
@@ -197,19 +187,7 @@ Traitez Taira MCP comme une surface de contrôle du testnet public. Les clés Ta
 
 ## Exemples de jouets que vous pouvez essayer maintenant {#toy-examples-you-can-try-now}
 
-Ces exemples sont en lecture seule sauf indication contraire. Ils fonctionnent avant que vous ne génériez des clés et sont sûrs à exécuter sur les réseaux publics.
-
-Comparer la santé du testnet Taira et du mainnet Minamoto :
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+Ces exemples en lecture seule interrogent Taira sans clé de compte.
 
 Listez les voies d'exécution de l'espace de données public exposées par Taira :
 
@@ -217,16 +195,7 @@ Listez les voies d'exécution de l'espace de données public exposées par Taira
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-Exécutez la même commande sur Minamoto lorsque vous avez besoin de la vue mainnet :
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -235,24 +204,16 @@ Construisez une petite sonde de statut Node.js pour un tableau de bord, un bot o
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -554,6 +515,8 @@ with urllib.request.urlopen(request) as res:
 Le distributeur fournit uniquement des fonds pour le réseau de test Taira. N’utilisez ni le XOR de test, ni les comptes du distributeur, ni les signataires canaris Taira dans les flux Minamoto.
 
 ## 5. Créer une configuration client Minamoto {#_5-create-a-minamoto-client-config}
+
+Avant d’utiliser Minamoto, confirmez l’adresse du service du réseau principal auprès de son opérateur et vérifiez que le certificat TLS correspond au nom d’hôte.
 
 Utilisez une paire de clés séparée pour Minamoto. Ne réutilisez pas les clés Taira pour le mainnet.
 

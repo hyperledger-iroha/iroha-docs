@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
+translation_source_hash: ceff2952134931b4f1007a16e2cffba2ee720c5221d447b5c671f275a032ad3e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -24,7 +24,7 @@ SORA 3 ծրագրի ուղղված հանրային տեղակայման ուղ�
 
 |Քայլ |Taira Testnet |Minamoto Mainnet |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|Սկսեք կարդալ ցանցի վիճակը |Հարցում `/status` առանց բանալիների |Հարցում `/status` առանց բանալիների |
+|Սկսեք կարդալ ցանցի վիճակը |Հարցում `/status` առանց բանալիների | Նախ ստուգեք ծառայության հասցեն և դրա TLS վկայագիրը |
 |Ընտրեք տվյալների տարածք |Օգտագործեք հանրային `universal` , եթե ձեր հավելվածը չի պահանջում կառավարվող երթուղին |Օգտագործեք նույն տվյալների տարածքը միայն հիմնական ցանցի հաստատումից հետո: |
 |Ստացեք վճարային ակտիվ:|Օգտագործեք հանրային Taira faucet |Ստացեք XOR ֆինանսավորվող Minamoto հաշիվից կամ հաստատված գանձարանային հոսքից |
 |Թեստը գրում է |Օգտագործեք faucet ֆինանսավորվող փորձարկում XOR |Օգտագործել փորձարկման գործիքներ, գրում է ծախսել իրական XOR |
@@ -68,20 +68,10 @@ wonderland.universal
 
 ## 2. Ստուգեք հանրային Torii վերջնական կետը {#_2-check-the-public-torii-endpoint}
 
-Ստուգեք, որ թիրախային վերջնական կետը կենդանի է նախքան ստորագրողի կազմաձեւումը:
-
-Taira համար՝
+Ստուգեք Taira փորձնական ցանցի վիճակը `curl` և `jq` գործիքներով։ Ստուգման համար բանալիներ կամ տեղային հանգույց անհրաժեշտ չեն։
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-Minamoto համար՝
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -94,7 +84,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-Օգտագործեք նույն հրամանը `https://minamoto.sora.org/status` հիմնական ցանցի համար:
+Նախքան Minamoto-ն օգտագործելը՝ օպերատորի հետ ճշտեք հիմնական ցանցի ծառայության հասցեն և ստուգեք, որ TLS վկայագիրը համապատասխանում է հոսթի անվանը։
 
 ## Taira MCP գործակալների համար {#taira-mcp-for-agents}
 
@@ -138,7 +128,7 @@ curl -fsS https://taira.sora.org/v1/mcp \
 5. Պահանջում է գործակալին զեկուցել ցանցի արմատը, շղթան, լիազոր հաշվի հաշիվը, հրահանգների ամփոփումը, վճարային ակտիվը եւ սպասվող վիճակի փոփոխությունը նախքան ցանկացած գործարք ներկայացնելուց:
 6. Վերանայեք ստեղծված կոդը գաղտնի կառավարման, կրկին փորձելու վարքագծի, idempotency- ի եւ մերժման կառավարման համար ՝ այն առաջադրելուց առաջ CI կամ հիմնական ցանցի աշխատանքային հոսքերի վրա:
 
-Օգտակար միայն ընթերցվող MCP գործիքները մշակման համար ներառում են հաշիվների ակտիվների որոնում, alias լուծումը, բլոկային որոնում, գործարքների որոնում, փոխանցումների ցուցակներ եւ մշակման շղթայի կարգավիճակի ստուգումներ: Օգտագործեք դրանք վստահություն ստեղծելու համար նախքան ցանկացած ստորագրված օգնական ծանրաբեռնվածություն ուղարկելը.
+Մշակման ընթացքում MCP-ի միայն ընթերցման հնարավորություններով կարող եք ստուգել հաշվի ակտիվները, պարզել, թե որ հաշվին է համապատասխանում անվան այլընտրանքային տարբերակը, գտնել բլոկը կամ գործարքը, դիտել գործարքների ցանկը և ստուգել մշակման ընթացքը։ Նախքան ստորագրված տվյալներ ուղարկելը՝ այս ստուգումներով համոզվեք, որ արդյունքները համապատասխանում են սպասվածին։
 
 ```text
 Use Taira MCP as a read-only inspector while developing this Iroha feature.
@@ -197,19 +187,7 @@ Taira MCP-ը վերաբերվում է որպես հանրային փորձար�
 
 ## Խաղալի օրինակներ, որոնք կարող եք փորձել հիմա {#toy-examples-you-can-try-now}
 
-Այս օրինակները միայն ընթերցելի են, եթե նշված չլինեն: Նրանք աշխատում են նախքան բանալիները ստեղծելը եւ անվտանգ են երկու հանրային ցանցերի դեմ գործելու համար.
-
-Համեմատեք Taira փորձարկման ցանցի եւ Minamoto գլխավոր ցանցի առողջությունը.
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+Այս օրինակներում Taira-ի տվյալները կարդացվում են առանց հաշվի բանալիների։
 
 Ցուցադրել Taira հրապարակային տվյալների տարածքի ուղիները.
 
@@ -217,16 +195,7 @@ done
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-Նույն հրամանը գործարկեք Minamoto-ի դեմ, երբ ձեզ անհրաժեշտ է հիմնական ցանցային տեսքը.
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -235,24 +204,16 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -554,6 +515,8 @@ with urllib.request.urlopen(request) as res:
 Փլաները նախատեսված են միայն Taira թեստնետային միջոցների համար: Չօգտագործեք XOR փորձնետային ցանցը, փլաների հաշիվները կամ Taira կանարի ստորագրիչները Minamoto հոսքներում.
 
 ## 5. Ստեղծեք Minamoto հաճախորդի կարգավորումը {#_5-create-a-minamoto-client-config}
+
+Նախքան Minamoto-ն օգտագործելը՝ օպերատորի հետ ճշտեք հիմնական ցանցի ծառայության հասցեն և ստուգեք, որ TLS վկայագիրը համապատասխանում է հոսթի անվանը։
 
 Օգտագործեք Minamoto համար առանձին կոճակային զույգ, իսկ հիմնական ցանցի համար մի օգտագործեք Taira կոճակները.
 

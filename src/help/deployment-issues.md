@@ -39,14 +39,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker and Compose
 
-Generate Compose from the current Kagami localnet output so the
-command-line arguments and config files match the checked-out code:
+Follow [Launch Iroha 3](/get-started/launch-iroha.md) to build and run four validators with matching binaries in Docker.
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+From the kit directory, run `python3 poc.py logs` to inspect the validator logs.
 
 If a compose deployment starts and then stalls, inspect the daemon logs
 for:
@@ -56,9 +51,7 @@ for:
 - advertised P2P addresses that only work inside the container network
 - local volume reuse after regenerating genesis
 
-When testing a fresh genesis, remove the old Kura volumes before restarting
-the stack. Keeping old block storage with a new genesis will make replay
-fail.
+A new genesis requires empty peer storage. Use `python3 poc.py down` and `python3 poc.py up` to restart the same network. Keep `state/` together with its four Docker volumes.
 
 ## Kubernetes
 

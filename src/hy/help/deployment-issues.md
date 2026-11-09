@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -38,13 +38,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker եւ Համադրում {#docker-and-compose}
 
-Compose-ը ստեղծեք Kagami-ի ընթացիկ localnet ելքից, որպեսզի հրամանի տողի փաստարկներն ու կոնֆիգուրացիայի ֆայլերը համապատասխանեն ստուգված կոդին․
+Docker-ում նույն վերանայման գործարկվող ֆայլերով չորս վավերացնող հանգույց կառուցելու և գործարկելու համար հետևեք [Լանչում Iroha 3](/hy/get-started/launch-iroha.md) ուղեցույցին։
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Հավաքածուի գրացուցակից գործարկեք `python3 poc.py logs`՝ վավերացնող հանգույցների մատյանները դիտելու համար։
 
 Եթե կոմպոզատոր տեղադրումը սկսվում է, ապա կանգ է առնում, ստուգեք դեյմոնների օրագրերը ՝
 
@@ -53,7 +49,7 @@ docker compose -f ./docker-compose.yml up
 - գովազդված P2P հասցեներ, որոնք գործում են միայն կոնտեյներային ցանցում:
 - տեղական ծավալի վերաօգտագործումը վերականգնումից հետո
 
-Երբ փորձարկում եք նոր գեներեզ, հանեք հին Kura ծավալները, նախքան վերսկսելը: Հին բլոկների պահպանումը նոր գեենեզիսով թույլ կտա կրկնօրինակումը անհաջողություն ունենա.
+Նոր սկզբնաբլոկի համար հանգույցի պահոցը պետք է դատարկ լինի։ Նույն ցանցը վերագործարկելու համար գործարկեք `python3 poc.py down` և ապա `python3 poc.py up`։ `state/` գրացուցակը պահեք իր չորս Docker հատորների հետ միասին։
 
 ## Կուբերնետներ {#kubernetes}
 

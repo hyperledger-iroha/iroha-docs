@@ -1,14 +1,14 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 96505bdba910beb902c399004f5cd24f5e5b0773f01df9cdcfdb49d019830d03
+translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # 熱的過載 Iroha 在一個 Docker 集裝箱 {#hot-reload-iroha-in-a-docker-container}
 
-僅將熱重新載入用於本機偵錯。對於一般本機開發，優先重新建置映像，或使用新的 Kagami 套件重新啟動所產生的 Docker Compose 堆疊。
+熱重載僅適用於本機除錯。 請參閱 [啟動 Iroha 3](/zh-hant/get-started/launch-iroha.md)，使用同一版本的執行檔，在 Docker 中建置並啟動四個驗證節點。
 
 ## 取代對等節點二進位制 {#replace-the-peer-binary}
 
@@ -25,20 +25,11 @@ docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/loca
 docker restart <container>
 ```
 
-使用 `docker ps`來確認容器名稱.在生成的堆中,對等節點容器由 `./docker-compose.yml`定義.
+使用 `docker ps` 找出容器，並在替換常駐程式前確認它在映像檔中的路徑。
 
 ## 在一次性網路中重複創世紀 {#recommit-genesis-in-a-disposable-network}
 
-對等節點僅在其儲存空白時提交創世區塊。對於一次性 Docker 網路，請停止堆疊、刪除產生的狀態、重新產生或替換已簽署的創世套件，然後重新啟動：
-
-```bash
-docker compose -f ./docker-compose.yml down
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
-
-不要在一個必須儲存狀態的網路上取代創世.
+使用新的創世區塊時，節點的儲存空間必須是空的。 依序執行 `python3 poc.py down` 和 `python3 poc.py up` 以重新啟動同一個網路。請將 `state/` 與其四個 Docker 儲存卷一併保留。
 
 ## 使用定製配置 {#use-custom-configuration}
 

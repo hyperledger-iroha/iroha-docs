@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /reference/binaries.md
-translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
+translation_source_hash: 1bf3f4697e44b3c8ef571eb9e5c0e301a1acbf76aa1c0666b3cd86e108bba6bf
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -50,27 +50,7 @@ cargo run --bin kagami -- --help
 
 ## Docker Rasm {#docker-image}
 
-Yuqqori darajadagi ish maydoni `kagami localnet` va `kagami docker` dan foydalangan holda tekshirilgan kodga mos keladigan Docker Compose fayllarini yaratadi. `hyperledger/iroha:dev` tasvir ushbu yaratilgan fayllar bilan ishlatilishi mumkin.
-
-Konteynerda CLI ni ishga tushiring:
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-Konteynerda Kagami ni ishga tushiring:
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-Tarmoq peerini ishga tushirish uchun avval localnet va Compose faylini yarating:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Docker’da bir xil manba versiyasidan yigʻilgan bajariladigan fayllar bilan toʻrtta validatorni ishga tushirish uchun [Ishga tushurish Iroha 3](/uz/get-started/launch-iroha.md) qoʻllanmasiga amal qiling.
 
 ## Qaysi ikkilikni ishlatishim kerak? {#which-binary-should-i-use}
 

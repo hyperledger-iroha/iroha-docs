@@ -1,14 +1,14 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 96505bdba910beb902c399004f5cd24f5e5b0773f01df9cdcfdb49d019830d03
+translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
 # 热的重载 Iroha 在一个 Docker 集装箱 {#hot-reload-iroha-in-a-docker-container}
 
-仅将热重载用于本地调试。对于普通本地开发，优先重新构建映像，或使用新的 Kagami 捆绑重新启动生成的 Docker Compose 栈。
+热重载仅适用于本地调试。 请参阅 [启动 Iroha 3](/zh-hans/get-started/launch-iroha.md)，使用同一版本的可执行文件，在 Docker 中构建并启动四个验证节点。
 
 ## 取代对等节点二进制 {#replace-the-peer-binary}
 
@@ -25,20 +25,11 @@ docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/loca
 docker restart <container>
 ```
 
-使用 `docker ps`来确认容器名称.在生成的堆中,对等节点容器由 `./docker-compose.yml`定义.
+使用 `docker ps` 查找容器，并在替换守护进程前确认它在镜像中的路径。
 
 ## 在一次性网络中重复创世纪 {#recommit-genesis-in-a-disposable-network}
 
-对等节点仅在其存储为空时提交创世区块。对于一次性 Docker 网络，请停止堆栈、删除生成的状态、重新生成或替换已签名的创世捆绑包，然后重新启动：
-
-```bash
-docker compose -f ./docker-compose.yml down
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
-
-不要在一个必须保存状态的网络上取代创世.
+使用新的创世区块时，节点的存储空间必须为空。 依次运行 `python3 poc.py down` 和 `python3 poc.py up` 以重启同一网络。请将 `state/` 与其四个 Docker 数据卷一起保留。
 
 ## 使用定制配置 {#use-custom-configuration}
 

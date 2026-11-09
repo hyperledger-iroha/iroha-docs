@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
+translation_source_hash: ceff2952134931b4f1007a16e2cffba2ee720c5221d447b5c671f275a032ad3e
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -24,7 +24,7 @@ Taira интеграциялық тесттер, testnet арқылы қаржы
 
 |Қадам| Taira Тест желісі                                                | Minamoto Негізгі желі |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|Желі күйін оқуды бастаңыз|Түйіндемелерсіз `/status` сұрау|Түйіндеме `/status` кілттерсіз|
+|Желі күйін оқуды бастаңыз|Түйіндемелерсіз `/status` сұрау| Алдымен қызметтің мекенжайы мен TLS сертификатын тексеріңіз |
 |Деректер кеңістігін таңдаңыз|Қоғамдық `universal`-ты пайдаланыңыз, егер сіздің қосымшаңыз басқарылатын орындау жолын қажет етпесе|Басты желі мақұлдағаннан кейін ғана сол деректер алаңын пайдаланыңыз|
 |Төлем активін алу|Қоғамдық Taira тест желісі қаржыландыру қызметін пайдаланыңыз|Қаржыландырылған Minamoto аккаунтынан немесе мақұлданған қаржы ағысынан XOR қабылдаңыз|
 | Сынақ жазбалары | Faucet қаржыландырған сынақ XOR-ын пайдаланыңыз | Сынақ құралдарын пайдаланбаңыз; жазу операциялары нақты XOR жұмсайды |
@@ -68,20 +68,10 @@ wonderland.universal
 
 ## 2. Қоғамдық Torii API нүктесін тексеру {#_2-check-the-public-torii-endpoint}
 
-Құпиялылық қолтаңбасын баптамас бұрын, мақсатты API нүктесінің жұмыс істеп тұрғанын тексеріңіз.
-
-Taira үшін:
+Taira сынақ желісінің күйін `curl` және `jq` арқылы тексеріңіз. Бұл үшін кілттер немесе жергілікті торап қажет емес.
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-Minamoto үшін:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -94,7 +84,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-Mainnet үшін `https://minamoto.sora.org/status` бірге сол команданы қолданыңыз.
+Minamoto желісін пайдаланбас бұрын негізгі желі қызметінің мекенжайын оператордан нақтылап, TLS сертификаты хост атауына сәйкес келетінін тексеріңіз.
 
 ## Taira MCP агенттер үшін {#taira-mcp-for-agents}
 
@@ -197,19 +187,7 @@ Taira MCP қоғамдық тесттік желі басқару бетінде
 
 ## Қазір Бастап Көре Алатын Қарапайым Мысалдар {#toy-examples-you-can-try-now}
 
-Бұл мысалдар тек оқу үшін болып табылады, егер басқаша көрсетілмеген болса. Олар кілттерді жасағанға дейін жұмыс істейді және қоғамдық желілерге қарсы қауіпсіз орындауға болады.
-
-Taira тест желісі мен Minamoto негізгі желінің күйін салыстыру:
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+Бұл мысалдар Taira желісінен тіркелгі кілттерінсіз дерек оқиды.
 
 Taira көрсеткен қоғамдық деректер ағыны орындау жолдарын тізімде:
 
@@ -217,16 +195,7 @@ Taira көрсеткен қоғамдық деректер ағыны орынд
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-Негізгі желінің көрінісін қажет еткенде Minamoto қарсы сол команданы іске қосыңыз:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -235,24 +204,16 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -554,6 +515,8 @@ with urllib.request.urlopen(request) as res:
 Тесттік желіні қаржыландыру қызметі тек Taira тесттік желі қаражатына арналған. Тесттік желі XOR, тесттік желіні қаржыландыру қызметінің аккаунттарын немесе Taira канариялық криптографиялық қол қойушыларды Minamoto ағымдарында пайдаланбаңыз.
 
 ## 5. Minamoto Клиенттік конфигурацияны жасаңыз {#_5-create-a-minamoto-client-config}
+
+Minamoto желісін пайдаланбас бұрын негізгі желі қызметінің мекенжайын оператордан нақтылап, TLS сертификаты хост атауына сәйкес келетінін тексеріңіз.
 
 Minamoto үшін бөлек кілт жұбын қолданыңыз. Негізгі желіде Taira кілттерін қайта пайдаланбаңыз.
 

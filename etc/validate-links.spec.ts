@@ -1,7 +1,24 @@
+import { mkdtemp, rm, writeFile } from 'node:fs/promises'
+import { tmpdir } from 'node:os'
+import path from 'node:path'
 import { describe, expect, test } from 'vitest'
-import { LinkOtherFile, LinkSelfAnchor, assertUrlWithinPublicPath, parseLink } from './validate-links'
+import { LinkOtherFile, LinkSelfAnchor, assertUrlWithinPublicPath, parseLink, scan } from './validate-links'
 
 describe('Parse link', () => {
+  test.each(['/', '/iroha-docs/'])('Check downloadable files at base %s', async (publicPath) => {
+    const root = await mkdtemp(path.join(tmpdir(), 'iroha-docs-links-'))
+    try {
+      const asset = path.join(root, 'example.zip')
+      await writeFile(path.join(root, 'index.html'), `<a href="${publicPath}example.zip">Download</a>`)
+      await writeFile(asset, Buffer.from([0, 255, 128]))
+      expect((await scan({ root, publicPath })).size).toBe(0)
+      await rm(asset)
+      expect((await scan({ root, publicPath })).size).toBe(1)
+    } finally {
+      await rm(root, { recursive: true, force: true })
+    }
+  })
+
   test('Parse self link', () => {
     const result = parseLink({
       root: '.',

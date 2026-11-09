@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/best-practices/network-deployment.md
-translation_source_hash: 7839268b8c1f6700b0c26652e3308fa4e8acef4717d8527c609b6f30fb8c84ab
+translation_source_hash: 489b174b9bdd21a4c4c2c896911686a6020e2833c8808304cfd37a5bf31c7780
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -24,6 +24,8 @@ translation_engine: nllb-200-ct2
 - 用至少四个验证器来实现最小的拜占庭错误耐受性部署.
 - 在能力规划中,与观察者分别进行验证. 观察者不会投票,提出或收集信息,但它们仍然消耗存储,区块同步和网络带宽.
 - 把创世,执行器和拓变化视为协调的迁移而不是单对等节点编辑.
+
+请按照[四个验证节点的启动指南](/zh-hans/get-started/launch-iroha.md)用 Docker 启动网络，并测试停止一个验证节点后的恢复流程。
 
 参见 [Genesis](/zh-hans/reference/genesis.md), [对等节点管理](/zh-hans/guide/configure/peer-management.md)和 [绩效和指标](/zh-hans/guide/advanced/metrics.md#node-count-and-quorum).
 

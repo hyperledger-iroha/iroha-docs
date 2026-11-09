@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -39,13 +39,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker и Compose {#docker-and-compose}
 
-Сгенерируйте Compose из текущего вывода локальной сети Kagami, чтобы аргументы командной строки и файлы конфигурации соответствовали выкачанному коду:
+В руководстве [Запуск Iroha 3](/ru/get-started/launch-iroha.md) описано, как собрать и запустить четыре валидатора в Docker, используя двоичные файлы одной ревизии.
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+В каталоге комплекта выполните `python3 poc.py logs`, чтобы просмотреть журналы валидаторов.
 
 Если развертывание Compose начинается, а затем останавливается, проверьте журналы демона на наличие:
 
@@ -54,7 +50,7 @@ docker compose -f ./docker-compose.yml up
 - рекламируемые P2P адреса, которые работают только внутри сети контейнера
 - повторное использование локального тома после восстановления генезиса блокчейна
 
-При тестировании нового блока генезиса блокчейна удалите старые тома Kura перед перезапуском стека. Сохранение старого хранилища блоков с новым генезисом блокчейна приведет к сбою воспроизведения.
+Для нового генезис-блока требуется пустое хранилище узла. Чтобы перезапустить ту же сеть, выполните `python3 poc.py down` и `python3 poc.py up`. Храните `state/` вместе с четырьмя томами Docker этой сети.
 
 ## Kubernetes {#kubernetes}
 

@@ -1,94 +1,68 @@
 ---
 translation_locale: az
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
+translation_source_hash: 2be7788e2aaf422b34739028ee64a127cad67ac0293b32d93f0be959c94aea87
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
 
-# Iroha 3 işə salın {#launch-iroha-3}
+# Iroha 3-i işə sal {#launch-iroha-3}
 
-Bu səhifə yuxarı axın deposundan standart iş sahəsi aktivlərindən istifadə edərək Iroha 3 üçün mövcud lokal şəbəkə axını üzrə keçid edir.
+Qapalı mühitdə inteqrasiyanı sınaqdan keçirmək üçün bir Linux virtual maşınında (VM) dörd Iroha 3 təsdiqləyicisini işə salın. İmzalanmış tranzaksiya göndərin, bir təsdiqləyicini dayandırın və qalan üçünün növbəti tranzaksiyanı təsdiqlədiyini yoxlayın. Beləliklə, iştirak üçün icazə tələb edən müstəqil reyestr yaranır. Onu idarə olunan məlumat məkanı kimi SORA Nexus şəbəkəsinə qoşmaq üçün ayrıca konfiqurasiya tələb olunur.
 
-## 1. Yerli Çoxqovşaqlı Şəbəkə Yaradın {#_1-generate-a-local-multi-peer-network}
+## VM-i hazırlayın {#prepare-the-vm}
 
-Cari Kagami kodundan dörd qonşulu yerli şəbəkə yaradın:
+Linux x86_64 sistemində Docker Engine, Buildx, Compose v2, Python 3.8 və ya daha yeni versiya, həmçinin `unzip` istifadə edin. Hesabınızın Docker-ə çıxışı olmalıdır. İlk yığım üçün GitHub, Docker Hub, Debian paket güzgüləri və crates.io ilə çıxış HTTPS bağlantısı tələb olunur.
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+Biz dəsti altı vCPU və 32 GiB RAM olan VM-də bəzi süni əməliyyatlarla qurub sınaqdan keçirdik. Öz iş yükünüz və saxlama müddətiniz üçün yaddaş ölçüsünü təyin edin. Hər Docker mühərriki üçün dəstin bir nüsxəsini istifadə edin və loopback portlarını 18080–18083 açıq saxlayın.
+
+[Dörd-təsdiqləyici dəstini yükləyin](/downloads/iroha-trade-poc.zip). Buna işə salıcı, kilidli asılılıqlar siyahısı və eyni pinlənmiş Iroha versiyasından təsdiqləyiciu və müştərini yaratmaq üçün istifadə olunan yamalar daxildir. Yükləməni ehtiva edən kataloqdan onu yoxlayın və açın.
+
+```sh
+echo 'b12d450f9f15c0126dfe5eca83cdfad8bc420c779a78f916d374f433a2b3da0e  iroha-trade-poc.zip' | sha256sum --check
+unzip iroha-trade-poc.zip
+cd iroha-trade-poc
 ```
 
-Çıxış qovluğu uyğun şəbəkə həmkar konfiqurasiyalarını, `genesis.json`, `genesis.signed.nrt`, `client.toml` və köməkçi skriptləri ehtiva edir.
+## Bütün dörd təsdiqləyicini işə salın və yoxlayın {#start-and-verify-all-four-validators}
 
-Yerli test üçün yaranmış şəbəkə tərəfdaşlarını birbaşa işə salın:
-
-```bash
-./localnet/start.sh
+```sh
+python3 poc.py up
+python3 poc.py verify
 ```
 
-Konteynerləşdirilmiş iş üçün, eyni localnet qovluğundan Compose yaradın:
+İlk işəsalma zamanı konteyner obrazı yığılır və virtual maşında (VM) zəncir identifikatoru, açarlar və imzalanmış başlanğıc bloku yaradılır. Hər təsdiqləyicinin öz daimi saxlama həcmi var. Yoxlama proqramı sınaq tranzaksiyasını imzalayır və dörd təsdiqləyicinin hər biri üç qonşu qovşağa qoşulduğunu və yeni blok üçün eyni heş aldığını bildirənədək gözləyir. Başlanğıc blokuna nümunə hesablar daxildir. Sintetik məlumatlardan istifadə edin və APIs-ləri yalnız yerli loopback interfeysində açın.
 
-```bash
-cargo run --bin kagami -- docker \
-  --peers 4 \
-  --config-dir ./localnet \
-  --image hyperledger/iroha:dev \
-  --out-file ./docker-compose.yml \
-  --force
+VM-dan ilk yoxlayıcının statusunu oxumaq üçün JSON-i açıq şəkildə tələb edin.
 
-docker compose -f ./docker-compose.yml up
+```sh
+curl -fsS -H 'Accept: application/json' http://127.0.0.1:18080/status
 ```
 
-Əsas yaradılan yığın aşağıdakıları göstərir:
+## Təsdiqləyici uğursuzluğunu sınaqdan keçirin {#test-a-validator-failure}
 
-- şəbəkə tərəfdaşı P2P portları `1337` dən `1340` ə
-- Torii HTTP portları `8080`-dən `8083`-ə
-- `./localnet/client.toml` ünvanında hazır müştəri konfiqurasiyası
-
-## 2. Şəbəkənin işlədiyini yoxlayın {#_2-verify-that-the-network-is-up}
-
-Birinci şəbəkə qoşulmasında API son nöqtənin vəziyyətini yoxlayın:
-
-```bash
-curl http://127.0.0.1:8080/status
+```sh
+python3 poc.py failover
 ```
 
-Varsayılan sağlamlıq yoxlamaları həmçinin istifadə edir:
+Sınaq bir təsdiqləyicini dayandırır, yeni tranzaksiya göndərir və işləyən üç təsdiqləyicidə təsdiqlənmiş blokun heşini yoxlayır. Sonra dördüncü təsdiqləyicini yenidən işə salır və onun da həmin bloka çatmasını gözləyir. Virtual maşın (VM) sıradan çıxsa, dörd təsdiqləyicinin hamısı dayanır. Bir fiziki hostun sıradan çıxmasını sınaqdan keçirmək üçün dörd müstəqil hostun hər birində bir təsdiqləyici yerləşdirin.
 
-```bash
-curl http://127.0.0.1:8080/status/blocks
+## Dayandır və davam et {#stop-and-resume}
+
+```sh
+python3 poc.py down
+python3 poc.py up
 ```
 
-Siz dərhal CLI-i paketlənmiş müştəri konfiqurasiyasına yönəldə bilərsiniz:
+Hər iki əmri dəsti açdığınız eyni qovluqda icra edin. Yenidən başladıqda validatorların əvvəlki reyestri aça bilməsi üçün `state/` qovluğunu və dörd Docker həcmini birlikdə saxlayın. İşəsalma dayanarsa, həmin qovluqda `python3 poc.py logs` əmrini icra edin.
 
-```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+## İctimai API son nöqtəsini sınayın {#try-the-public-endpoint}
+
+Tətbiq reyestr üçün virtual maşın (VM) işlətmədən Taira şəbəkəsində SORA Nexus universal məlumat məkanını oxuya bilər. `curl` və `jq` quraşdırılmış iş stansiyasından sınaq şəbəkəsinə bu yalnız oxuma sorğusunu göndərin.
+
+```sh
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
+  | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
-## 3. Nexus Profil {#_3-nexus-profile}
-
-Depo həmçinin `defaults/nexus/` altında SORA Nexus-yönümlü konfiqurasiya profilini göndərir.
-
-Yerel şəbəkə iştirakçısını Nexus profili ilə işə salmaq üçün:
-
-```bash
-./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
-```
-
-O profilə CLI giriş üçün `defaults/nexus/client.toml` istifadə edin.
-
-## 4. Lokal Şəbəkəni Dayandırın {#_4-stop-the-local-network}
-
-Yerli şəbəkə üçün yerli yaradılmış:
-
-```bash
-./localnet/stop.sh
-```
-
-Yaradılmış Compose yığını üçün:
-
-```bash
-docker compose -f ./docker-compose.yml down
-```
-
-Şəbəkə işlədikdən sonra [Iroha 3-i CLI vasitəsilə işlədin](/az/get-started/operate-iroha-via-cli.md) ilə davam edin.
+Cavab soruşulan node-un bağlı şəbəkə yoldaşlarını, tamamlanmış blokları, təsdiqlənmiş əməliyyatları və növbədəki əməliyyatları bildirir. Dağıtım planlaması üçün baxın [Şəbəkə İstismarı](/az/guide/best-practices/network-deployment.md).

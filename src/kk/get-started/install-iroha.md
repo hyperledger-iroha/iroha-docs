@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: f7f68228d219cc1c0ea5af128ba5dc956640df8a3d264ed3a4862447b3348a7d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -9,6 +9,8 @@ translation_engine: bing-translator-llm
 # Iroha 3 орнатыңыз {#install-iroha-3}
 
 Бұл бетте Iroha 3 құралдар жинағы мен бинарлық файлдарды жоғары деңгейлі `hyperledger-iroha/iroha` жұмыс кеңістігін пайдалана отырып қазіргі орнату жұмыс ағымы көрсетілген.
+
+Хостқа тікелей орнату үшін төмендегі Rust нұсқауларын орындаңыз. Docker көмегімен төрт валидаторды іске қосу үшін [Iroha 3-ті іске қосу](/kk/get-started/launch-iroha.md) нұсқаулығынан бастаңыз.
 
 ## 1. Алдын ала талаптар {#_1-prerequisites}
 

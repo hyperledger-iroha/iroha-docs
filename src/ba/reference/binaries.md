@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /reference/binaries.md
-translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
+translation_source_hash: 1bf3f4697e44b3c8ef571eb9e5c0e301a1acbf76aa1c0666b3cd86e108bba6bf
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -50,27 +50,7 @@ cargo run --bin kagami -- --help
 
 ## Docker Һүрәт {#docker-image}
 
-Өҫкө ағымындағы эш урындары ҡулланыла `kagami localnet` һәм `kagami docker` барлыҡҡа килтереү Docker Compose теркәлгән кодҡа тап килә. `hyperledger/iroha:dev` һүрәт ошо файлдар менән ҡулланырға мөмкин.
-
-CLI һауытта тотонорға:
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-Kagami һауытта йөрөтөлә:
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-Бер-береһе менән стартлау өсөн, локаль селтәр булдырыу һәм иң тәүҙә файл туплау:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Docker мөхитендә бер үк версиянан йыйылған башҡарылма файлдар менән дүрт валидатор төҙөү һәм эшләтеп ебәреү өсөн [Башлау Iroha 3](/ba/get-started/launch-iroha.md) ҡулланмаһын ҡарағыҙ.
 
 ## Ниндәй бинар ҡулланырға кәрәк? {#which-binary-should-i-use}
 

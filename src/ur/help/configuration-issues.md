@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: 9d153d9cb8ce0341b35ba5a7e3823198e58464768e2a9a92ff8a5723f85e9351
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -16,27 +16,9 @@ translation_engine: nllb-200-ct2
 
 جب آپ Docker Compose ورژن Iroha, آپ کو نیٹ ورک نوڈ کنٹینرز میں سے ایک کے مسئلہ کا سامنا کر سکتے ہیں ناکامی `Failed to deserialize raw genesis block` غلطی. اس کا مطلب یہ ہے کہ عام طور پر نیٹ ورک نوڈ، دستخط شدہ جینس ٹرانزیکشن، اور پیدا کردہ ترتیب مختلف Iroha جائزے یا پروفائلز۔
 
-ان مراحل سے ناکامی کی جانچ پڑتال کریں:
+کٹ کی ڈائریکٹری میں `python3 poc.py logs` چلائیں تاکہ توثیقی نوڈز کے لاگ دیکھ سکیں۔ ایک ہی نظرثانی سے بنی بائنری فائلوں کے ساتھ Docker میں چار توثیقی نوڈ بنانے اور چلانے کے لیے [لانچ Iroha 3](/ur/get-started/launch-iroha.md) کی ہدایات پر عمل کریں۔
 
-1. موجودہ کنٹینرز کو چیک کرنے کے لئے `docker ps` کا استعمال کریں۔ جنریٹڈ پروفائل پر منحصر ہے ، آپ عام طور پر `hyperledger/iroha:dev` کنٹینر دیکھیں گے۔ ڈیفالٹ Docker Compose پروفائل میں چار نیٹ ورک نوڈ کنٹینرس شامل ہیں ، حالانکہ آپ کی جنریٹ شدہ `docker-compose.yml` مختلف ہوسکتی ہے۔
-
-2. لاگ چیک کریں اور `Failed to deserialize raw genesis block` کی غلطی تلاش کریں۔ اگر آپ نے اپنے Iroha کو ڈییمون موڈ میں `docker compose up -d` کے ساتھ شروع کیا ہے تو ، `docker compose logs` کمانڈ کا استعمال کریں۔
-
-اس طرح کے مسئلے کو حل کرنے کا طریقہ Iroha کے استعمال پر منحصر ہے۔ اگر یہ ایک بنیادی ڈیمو ہے اور آپ کو نیٹ ورک نوڈ ڈیٹا کو محفوظ رکھنے کی ضرورت نہیں ہے تو ، Kagami کے ساتھ مماثل لوکل نیٹ یا Docker Compose بنڈل کو دوبارہ بنائیں:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
-```
-
-اس کے بعد پرانے کنٹینر کی حالت کو ہٹا دیں اور دوبارہ شروع کریں `genesis.signed.nrt` ، پیئر `config.toml` فائلوں، اور `client.toml` میں سے.
-
-اگر آپ کو Iroha مثال کے اعداد و شمار کو بحال کرنے کی ضرورت ہو تو، مندرجہ ذیل کریں:
-
-1. دوسرے Iroha نیٹ ورک نوڈ کو جوڑیں جو پہلے (فائل) نیٹ ورک نوڈ سے ڈیٹا کی کاپی کرے گا.
-2. نئے نیٹ ورک نوڈ کے اعداد و شمار کو پہلے نیٹ ورک نوڈ کے ساتھ مطابقت پذیر کرنے کا انتظار کریں۔
-3. نئے نیٹ ورک نوڈ کو فعال رکھیں۔
-4. پہلے نیٹ ورک نوڈ کی پیدائش اور ترتیب فائلوں کو صرف ایک مربوط منتقلی کے حصے کے طور پر اپ ڈیٹ کریں.
+اسی نیٹ ورک کو دوبارہ شروع کرنے کے لیے پہلے `python3 poc.py down` اور پھر `python3 poc.py up` چلائیں۔ `state/` کو اس کے چاروں Docker والیومز کے ساتھ محفوظ رکھیں۔
 
 ::: info
 

@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
+translation_source_hash: ceff2952134931b4f1007a16e2cffba2ee720c5221d447b5c671f275a032ad3e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -24,7 +24,7 @@ Taira ကို ပေါင်းစပ်မှု စမ်းသပ်ချ
 
 |အဆင့် |Taira Testnet |Minamoto Mainnet |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|ကွန်ရက်အခြေအနေကို စတင်ဖတ်ရှုပါ |သော့မရှိတဲ့ မေးခွန်း `/status` |သော့မရှိတဲ့ မေးခွန်း `/status` |
+| ကွန်ရက်အခြေအနေကို စစ်ဆေးခြင်း | သော့မသုံးဘဲ `/status` မှ ဒေတာကို ရယူပါ | ဝန်ဆောင်မှုလိပ်စာနှင့် TLS လက်မှတ်ကို ဦးစွာ အတည်ပြုပါ |
 |ဒေတာနေရာကို ရွေးချယ်ပါ။|အများသုံး `universal` ကို သုံးပါ၊ သင့်ရဲ့ app မှာ စီမံခန့်ခွဲထားတဲ့ အကောင်အထည်ဖော်ရေး လမ်းကြောင်း မလိုဘူးဆိုရင်|အလားတူ ဒေတာနေရာကို အဓိကကွန်ရက် အတည်ပြုပြီးနောက်သာ သုံးပါ။ |
 |အခွန်အရင်းအမြစ်ရယူပါ။|အများပြည်သူ Taira testnet ထောက်ပံ့မှု ဝန်ဆောင်မှုကို အသုံးပြုပါ။ |ငွေကြေးထောက်ပံ့ထားတဲ့ Minamoto အကောင့်မှ (သို့) ခွင့်ပြုထားသော ဘဏ္ဍာငွေစီးဆင်းမှုမှ XOR ကိုရယူခြင်း |
 |Test က ရေးထားတယ်|testnet မှ ရင်းနှီးမြှုပ်နှံသည့် စမ်းသပ်မှု XOR ကို အသုံးပြုပါ။ |စမ်းသပ်မှု tooling ကိုမသုံးပါနဲ့; စာရင်းအင်းစရိတ်စစ်မှန် XOR |
@@ -68,20 +68,10 @@ wonderland.universal
 
 ## (၂) အများပြည်သူ Torii API အဆုံးမှတ်ကို စစ်ဆေးပါ။ {#_2-check-the-public-torii-endpoint}
 
-ရည်မှန်းချက် API အဆုံးမှတ်သည် cryptographic signer ကို configure မလုပ်ခင် live ဖြစ်နေသည်ကို စစ်ဆေးပါ။
-
-Taira အတွက်:
+`curl` နှင့် `jq` ကို သုံးပြီး Taira စမ်းသပ်ကွန်ရက်၏ အခြေအနေကို စစ်ဆေးပါ။ ဤစစ်ဆေးမှုအတွက် သော့ သို့မဟုတ် ကိုယ်ပိုင်ကွန်ရက်ဆုံမှတ် မလိုပါ။
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-Minamoto အတွက်:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -94,7 +84,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-`https://minamoto.sora.org/status` နဲ့ အတူတူ command ကို mainnet အတွက် သုံးပါ။
+Minamoto ကို အသုံးမပြုမီ ပင်မကွန်ရက်ဝန်ဆောင်မှု၏ လိပ်စာကို ကွန်ရက်စီမံသူထံမှ အတည်ပြုပြီး TLS လက်မှတ်သည် ဆာဗာ၏ အမည်နှင့် ကိုက်ညီကြောင်း စစ်ဆေးပါ။
 
 ## Taira MCP Agents များအတွက် {#taira-mcp-for-agents}
 
@@ -119,9 +109,9 @@ URL ကို agent software အကောင်အထည်ဖော်မှု
 
 Taira နဲ့ ကောင်းမွန်စွာ အလုပ်လုပ်တဲ့ Agent prompt စည်းမျဉ်းတွေ
 
-- MCP ဆာဗာမှ ကိရိယာများကို ဖုန်းမခေါ်ခင် ရှာဖွေပါ။ ဆာဗားက `listChanged` အစီရင်ခံစာကို ပြန်လည်ရှာဖွေပါ။
+- ကိရိယာများကို မသုံးမီ MCP ဆာဗာမှ ရနိုင်သော ကိရိယာစာရင်းကို ရယူပါ။ ဆာဗာက `listChanged` ဟု အကြောင်းကြားလျှင် စာရင်းကို ပြန်လည်ရယူပါ။
 - `iroha.*` ကိရိယာတွေကို အသားတင် `torii.*` ကိရိယာတွေထက် ပိုနှစ်သက်တယ်။
-- စာရွက်စာတမ်းများ၊ အရင်းအမြစ်များ၊ အမည်မဖော်လိုသူများ၊ ဘလော့များ၊ အုပ်ချုပ်မှုအခြေအနေနှင့် ငွေပေးချေမှုအခြေအနေများကို တင်ပြရန် မတိုင်မီ စာဖတ်ခြင်းမှသာ စပါ။
+- ဒေတာပြောင်းလဲမှုတစ်ခု မတင်ပြမီ ဖတ်ရှုခြင်းဖြင့် စတင်ပါ။ ကွန်ရက်အခြေအနေ၊ အကောင့်များ၊ ပိုင်ဆိုင်မှုများ၊ အမည်လွှဲများ၊ ဘလောက်များ၊ စီမံအုပ်ချုပ်မှုအခြေအနေနှင့် လယ်ဂျာလုပ်ဆောင်ချက်များ၏ အခြေအနေကို စစ်ဆေးပါ။
 - Live testnet အပြောင်းအလဲမဖြစ်ခင် လူသားရဲ့ ရှင်းလင်းတဲ့ ညွှန်ကြားချက်တစ်ခု တောင်းဆိုပါ။ ကြိုတင်လက်မှတ်ထိုးထားတဲ့ ငွေကြေးဆိုင်ရာ ဒေတာ ကွန်တိန်နာများအတွက် `iroha.transactions.submit_and_wait` ကို အသုံးပြုပါ၊ ဒီတော့ ကိုယ်စားလှယ်က ရလဒ်ကို တင်ပေးတာအစား စောင့်ကြည့်တယ်။
 - Agent တုံ့ပြန်မှုမှာ transaction cryptographic hashes၊ နောက်ဆုံးအခြေအနေနဲ့ server validation error တွေကို စုစည်းပါ။
 
@@ -132,13 +122,13 @@ Iroha ဖောက်သည်များ၊ ငွေပေးချေမှ�
 လက်တွေ့ အလုပ်ဖြစ်စဉ်က-
 
 1. SDK ကုဒ်၊ CLI အမိန့်၊ (သို့) MCP ကိရိယာ အစီအစဉ်ကို စာရေးမပေးခင် သက်ဆိုင်ရာ Docs ကို စစ်ဆေးရန် Agent ကိုတောင်းဆိုပါ။
-2. အေဂျင့်က ပထမဆုံး အသေးဆုံး ဖောက်သည်လမ်းကြောင်းကို ရေးခိုင်းပါ။ အခြေအနေ စစ်ဆေးခြင်း၊ အကောင့်ရှာဖွေမှု၊ အမည်မဖော်လိုတဲ့ ဆုံးဖြတ်ချက် (သို့) ဟန်ချက်စာရင်း ရှာဖွေခြင်း။
+2. ပထမဆုံး အရိုးရှင်းဆုံး ကလိုင်းယင့်လုပ်ဆောင်ချက်တစ်ခုကို ရေးခိုင်းပါ။ ကွန်ရက်အခြေအနေ စစ်ဆေးခြင်း၊ အကောင့်ရှာဖွေခြင်း၊ အမည်လွှဲမှ သက်ဆိုင်ရာအကောင့်ကို ရှာဖွေခြင်း သို့မဟုတ် လက်ကျန်ငွေစစ်ဆေးခြင်းတို့မှ တစ်ခုကို ရွေးပါ။
 3. Read-only ကနေသာ Transaction Building Code ကိုထည့်ပါ။ API တောင်းဆိုချက်များ ဆန့်ကျင် Taira.
 4. တိုက်ရိုက်ကွန်ရက် စမ်းသပ်မှုများကို `TAIRA_LIVE=1` နောက်မှာ ရွေးချယ်ထားပါ။ ဒီတော့ ပုံမှန် unit test run တစ်ခုဟာ testnet ရင်းနှီးမြှုပ်နှံမှုကို ဘယ်တော့မှ ကုန်ကျခြင်းမဟုတ်ဘူး၊ ကွန်ရက်ရရှိနိုင်မှုအပေါ် မူတည်တယ်။
 5. ငွေပေးချေမှုတစ်ခုခု မတင်မီက ကွန်ရက် root, chain, authorization principal account, instruction summary, fee asset နှင့် expected state change ကို အစီရင်ခံရန် agent ကို တောင်းဆိုပါ။
 6. CI (သို့) mainnet အလုပ်ဖြစ်စဉ်များသို့ မတင်မီ လျှို့ဝှက်ကိုင်တွယ်မှု၊ ပြန်လည်စမ်းသပ်မှုအပြုအမူ၊ idempotency နှင့် rejection ကိုင်တွယ်ခြင်းအတွက် ဖန်တီးထားတဲ့ ကုဒ်ကို Review လုပ်ပါ။
 
-ဖွံ့ဖြိုးတိုးတက်ရေးအတွက် အသုံးဝင်သော ဖတ်နိုင်မှုသာရှိတဲ့ MCP ကိရိယာများမှာ အကောင့်အင်းအမြစ်ရှာဖွေမှု၊ အမည်မဖော်လိုတဲ့ အဖြေ၊ ဘလော့ရှာဖွေမှု၊ ငွေပေးချေမှု ရှာဖွေခြင်း၊ ငွေလဲလှယ်စာရင်းများနှင့် ဆော့ဝဲ စီမံခန့်ခွဲမှု အလုပ်ခွင်အခြေအနေ စစ်ဆေးခြင်းတို့ ပါဝင်ပါတယ်။ လက်မှတ်ထိုးထားတဲ့ အသုံးဝင်ဝန်ဆောင်မှုတစ်ခုခုကို မတင်မီ ယုံကြည်မှုကို တည်ဆောက်ဖို့ ဒါတွေကို အသုံးပြုပါ။
+ဖတ်ရှုရန်သာ အသုံးပြုသည့် MCP ကိရိယာများဖြင့် အကောင့်ပိုင်ဆိုင်မှုများကို ရှာဖွေခြင်း၊ အမည်လွှဲမှ အကောင့်ကို ရှာဖွေခြင်း၊ ဘလောက်တစ်ခု သို့မဟုတ် လယ်ဂျာလုပ်ဆောင်ချက်တစ်ခုကို ရှာဖွေခြင်း၊ လုပ်ဆောင်ချက်စာရင်းကို ဖတ်ရှုခြင်းနှင့် လုပ်ဆောင်မှုအဆင့်များ၏ အခြေအနေကို စစ်ဆေးခြင်းတို့ ပြုလုပ်နိုင်သည်။ လက်မှတ်ထိုးထားသည့် ဒေတာကို မပို့မီ ဤကိရိယာများဖြင့် ရလဒ်ကို စစ်ဆေးပါ။
 
 ```text
 Use Taira MCP as a read-only inspector while developing this Iroha feature.
@@ -149,19 +139,19 @@ say "submit this transaction".
 
 ### ငွေပေးချေမှု လုပ်ငန်းစဉ်များ Agent များမှတဆင့် {#transaction-workflow-through-agents}
 
-MCP တံတားသည် လက်မှတ်ရေးထိုးထားသော Iroha ငွေပေးချေမှုကို တင်ပြနိုင်သော်လည်း ပုံမှန်ငွေပေးချေမှုလိုအပ်ချက်များကို ဖယ်ရှားခြင်းမရှိပါ။ ငွေပေးချေးမှုတစ်ခုအတွက် မှန်ကန်သော ခွင့်ပြုချက် အရင်းအမြစ်၊ ခွင့်ပြုခွင့်များ၊ အခွန်ထောက်ပံ့မှု၊ ကွင်းဆက် ID, metadata နှင့်လက်မှတ်လိုအပ်သည်။
+MCP ချိတ်ဆက်မှုမှတစ်ဆင့် လက်မှတ်ထိုးထားသည့် Iroha လယ်ဂျာလုပ်ဆောင်ချက်ကို တင်သွင်းနိုင်သည်။ ထိုလုပ်ဆောင်ချက်အတွက် ပုံမှန်အတိုင်း မှန်ကန်သည့် လက်မှတ်ထိုးခွင့်ရှိသော အကောင့်၊ လိုအပ်သော ခွင့်ပြုချက်များ၊ အခကြေးငွေပေးရန် ရန်ပုံငွေ၊ ကွင်းဆက် ID၊ နောက်ခံအချက်အလက်များနှင့် လက်မှတ် လိုအပ်သည်။
 
-ရိုးရိုး Iroha ငွေပေးချေမှုအတွက် transaction data container ကို SDK (သို့) CLI ဆိုတဲ့ စာလုံးဖြင့် တည်ဆောက်ပြီး လက်မှတ်ရေးထိုးပါ ပြီးရင် agent ကို တစ်ခုတည်းသောစာလုံးကိုသာ ပေးပါ။ `body_base64` အဖြစ် ကုဒ်သွင်းထားသော ပရိုတိုကော်လစ် စံစံညွှန်း လက်မှတ်ထိုး ငွေချေးမှု ဘိုက်များ။ ကိုယ်စားလှယ်သည် အချက်အလက် ကွန်တိန်နာကို `iroha.transactions.submit_and_wait` ဖြင့်တင်ပြနိုင်ပြီး `iroha.transactions.submit` နှင့် `iroha.transactions.wait` ဖြင့် စစ်တမ်းတင်နိုင်သည်။
+Iroha လယ်ဂျာလုပ်ဆောင်ချက်ကို တိုက်ရိုက်တင်သွင်းရန် SDK သို့မဟုတ် CLI ဖြင့် လုပ်ဆောင်ချက်အထုပ်ကို ပြုစုပြီး လက်မှတ်ထိုးပါ။ ထို့နောက် စံပုံစံဖြင့် လက်မှတ်ထိုးပြီးသား ဘိုက်များကိုသာ `body_base64` အဖြစ် ကုဒ်ပြောင်း၍ အေဂျင့်ကို ပေးပါ။ အေဂျင့်သည် `iroha.transactions.submit_and_wait` ဖြင့် အထုပ်ကို တင်သွင်းပြီး ရလဒ်ကို စောင့်နိုင်သည်။ သို့မဟုတ် `iroha.transactions.submit` ဖြင့် တင်သွင်းကာ `iroha.transactions.wait` ဖြင့် အခြေအနေကို စစ်ဆေးနိုင်သည်။
 
 Private keys တွေကို agent prompt ထဲမှာ မထည့်ပါနဲ့။ agent က transaction တစ်ခု တည်ဆောက်ဖို့လိုတယ်ဆိုရင် user ရဲ့ software execution ပတ်ဝန်းကျင်ထဲက လျှို့ဝှက်ချက်တွေကို load လုပ်တဲ့ local code ကို ညွှန်ပြပါ။ environment, keychain, hardware cryptographic signer, or ignored testnet config file. agent က key material ကို Markdown, test artifacts, logs, or finalises ထဲမှာ ဘယ်တော့မှ မရေးသင့်ပါဘူး။
 
-ငွေပေးချေမှု မတင်မီ ကိုယ်စားလှယ်ကို ငွေပေးချေးမှု အစီအစဉ် အတိုထုတ်လုပ်ခိုင်းပါ။
+လယ်ဂျာလုပ်ဆောင်ချက် မတင်သွင်းမီ လုပ်ဆောင်မည့် အစီအစဉ်အကျဉ်းကို အေဂျင့်အား ပြုစုခိုင်းပါ။
 
 - `network`: Taira testnet root နှင့် chain ID
 - `authority`: စာရင်းမှတ်ပုံတင်ပြီး အခွန်ပေးသွင်းတဲ့စာရင်း
 - `instructions`: မှတ်ပုံတင်ခြင်း၊ ထုတ်ပေးခြင်း၊ ဖျက်ဆီးခြင်း၊ လွှဲပြောင်းခြင်း၊ မီတာဒေတာများ၊ ခွင့်ပြုချက်များ သို့မဟုတ် စာချုပ်ဆိုင်ရာ နည်းပညာခေါ်ယူမှု အကျဉ်းချုပ်
 - `fee asset`: Taira တွင် ငွေကောက်ခံမည့် အရင်းအမြစ်များ
-- `preflight reads`: အကောင့်၊ အရင်းအမြစ်စုဆောင်းမှု၊ ခွင့်ပြုချက်များ၊ အမည်မဖော်လိုသူများ (သို့မဟုတ်) ဘလော့စစ်ဆေးမှုများ
+- `preflight reads`၊ စစ်ဆေးထားသည့် အကောင့်၊ ပိုင်ဆိုင်မှုလက်ကျန်၊ ခွင့်ပြုချက်များ၊ အမည်လွှဲ သို့မဟုတ် ဘလောက်ဆိုင်ရာ အချက်အလက်များ
 - `expected result`: အတည်ပြုပြီးနောက် မြင်ရသင့်သော အခြေအနေ
 - `idempotency`: အလားတူတောင်းဆိုချက်ကို ထပ်မံစစ်ဆေးပါက ဘာတွေဖြစ်မလဲ။
 
@@ -197,19 +187,7 @@ verification result.
 
 ## ယခုစမ်းသပ်နိုင်သော ကစားစရာများ {#toy-examples-you-can-try-now}
 
-ဒီဥပမာတွေဟာ မှတ်သားမထားဘူးဆိုရင် ဖတ်လို့ ရနိုင်တာပါ၊ သော့တွေ မထုတ်ခင် အလုပ်ဖြစ်ပြီး အများသုံးကွန်ရက် နှစ်ခုစလုံးကို တိုက်ခိုက်ဖို့ ဘေးကင်းပါတယ်။
-
-Taira testnet နှင့် Minamoto mainnet ကျန်းမာရေးကို နှိုင်းယှဉ်ကြည့်ပါ-
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+ဤဥပမာများသည် အကောင့်သော့များမသုံးဘဲ Taira မှ အချက်အလက်များကို ဖတ်ရှုပါသည်။
 
 Taira က ဖော်ပြထားသော အများပြည်သူ ဒေတာနေရာ အကောင်အထည်ဖော်ရေးလမ်းကြောင်းများကို ဖော်ပြပါ-
 
@@ -217,16 +195,7 @@ Taira က ဖော်ပြထားသော အများပြည်သူ
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-Minamoto ကို အဓိကကွန်ရက်အမြင်ကိုလိုအပ်တဲ့အခါမှာ အလားတူ command ကို run လုပ်ပါ။
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -235,24 +204,16 @@ Dashboard, bot, သို့မဟုတ် deployment စစ်ဆေးရန�
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -554,6 +515,8 @@ with urllib.request.urlopen(request) as res:
 testnet ငွေကြေးထောက်ပံ့မှု ဝန်ဆောင်မှုသည် Taira testnet ရင်းနှီးမြှုပ်နှံမှုများအတွက်သာဖြစ်သည်။ testnet XOR၊ testnet ဘဏ္ဍာရေးဝန်ဆောင်မှု အကောင့်များ (သို့မဟုတ်) Taira ကန်နာရီ crypto signers များကို Minamoto စီးဆင်းမှုတွင် မသုံးပါ။
 
 ## (၅) Minamoto Client Config ကို ဖန်တီးပါ။ {#_5-create-a-minamoto-client-config}
+
+Minamoto ကို အသုံးမပြုမီ ပင်မကွန်ရက်ဝန်ဆောင်မှု၏ လိပ်စာကို ကွန်ရက်စီမံသူထံမှ အတည်ပြုပြီး TLS လက်မှတ်သည် ဆာဗာ၏ အမည်နှင့် ကိုက်ညီကြောင်း စစ်ဆေးပါ။
 
 Minamoto အတွက် သီးခြားသော့စုံကို အသုံးပြုပါ။ အဓိကကွန်ရက်အတွက် Taira သော့တွေကို ပြန်မသုံးပါနဲ့။
 

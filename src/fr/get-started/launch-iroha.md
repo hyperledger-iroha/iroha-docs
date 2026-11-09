@@ -1,94 +1,68 @@
 ---
 translation_locale: fr
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
+translation_source_hash: 2be7788e2aaf422b34739028ee64a127cad67ac0293b32d93f0be959c94aea87
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
 
-# Lancer Iroha 3 {#launch-iroha-3}
+# Démarrer Iroha 3 {#launch-iroha-3}
 
-Cette page explique le flux actuel du réseau local pour Iroha 3 en utilisant les ressources de l’espace de travail par défaut du dépôt en amont.
+Exécutez quatre validateurs Iroha 3 sur une machine virtuelle (VM) Linux pour tester une intégration privée. Vous enverrez une transaction signée, arrêterez un validateur et vérifierez que les trois autres valident une deuxième transaction. Vous obtiendrez un registre autonome à accès restreint. Son raccordement à SORA Nexus en tant qu’espace de données soumis à des règles de gouvernance exige un provisionnement distinct.
 
-## 1. Générer un réseau multi-pairs local {#_1-generate-a-local-multi-peer-network}
+## Préparer la VM {#prepare-the-vm}
 
-Générez un réseau local à quatre pairs à partir du code Kagami actuel :
+Utilisez Linux x86_64 avec Docker Engine, Buildx, Compose v2, Python 3.8 ou version ultérieure, et `unzip`. Votre compte doit avoir accès à Docker. La première compilation nécessite un accès HTTPS sortant à GitHub, Docker Hub, aux miroirs de paquets Debian et à crates.io.
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+Nous avons compilé et testé le kit sur une VM dotée de six vCPU et de 32 GiB de RAM, avec quelques transactions synthétiques. Dimensionnez le stockage en fonction de la charge et de la durée de conservation des données. Utilisez une seule copie du kit par moteur Docker et laissez libres les ports 18080 à 18083 sur l’interface de bouclage.
+
+[Téléchargez le kit de quatre validateurs](/downloads/iroha-trade-poc.zip). Il contient le lanceur, la liste des versions exactes des dépendances et les correctifs utilisés pour compiler le validateur et le client à partir de la même révision d’Iroha. Depuis le répertoire de téléchargement, vérifiez la somme de contrôle de l’archive et décompressez-la.
+
+```sh
+echo 'b12d450f9f15c0126dfe5eca83cdfad8bc420c779a78f916d374f433a2b3da0e  iroha-trade-poc.zip' | sha256sum --check
+unzip iroha-trade-poc.zip
+cd iroha-trade-poc
 ```
 
-Le répertoire de sortie contient les configurations de pairs réseau correspondantes, `genesis.json`, `genesis.signed.nrt`, `client.toml`, et des scripts d'assistance.
+## Démarrer et vérifier les quatre validateurs {#start-and-verify-all-four-validators}
 
-Pour un test rapide local natif, lancez directement les pairs du réseau générés :
-
-```bash
-./localnet/start.sh
+```sh
+python3 poc.py up
+python3 poc.py verify
 ```
 
-Pour une exécution conteneurisée, générez Compose à partir du même répertoire localnet :
+Au premier démarrage, le lanceur construit l’image et génère sur la VM l’identifiant de la chaîne, les clés et le bloc de genèse signé. Chaque validateur dispose d’un volume persistant distinct. La vérification signe une transaction de test et attend que les quatre validateurs signalent trois pairs connectés et la même empreinte pour le nouveau bloc. Le bloc de genèse contient des comptes d’exemple. Utilisez des données synthétiques et gardez les APIs sur l’interface de bouclage.
 
-```bash
-cargo run --bin kagami -- docker \
-  --peers 4 \
-  --config-dir ./localnet \
-  --image hyperledger/iroha:dev \
-  --out-file ./docker-compose.yml \
-  --force
+Pour consulter l’état du premier validateur depuis la VM, demandez explicitement une réponse au format JSON.
 
-docker compose -f ./docker-compose.yml up
+```sh
+curl -fsS -H 'Accept: application/json' http://127.0.0.1:18080/status
 ```
 
-La pile générée par défaut expose :
+## Tester la panne d’un validateur {#test-a-validator-failure}
 
-- pair réseau P2P ports `1337` à `1340`
-- Torii HTTP ports `8080` à `8083`
-- une configuration client prête à l'emploi à `./localnet/client.toml`
-
-## 2. Vérifiez que le réseau est opérationnel {#_2-verify-that-the-network-is-up}
-
-Vérifiez le statut de l'endpoint API sur le premier pair réseau :
-
-```bash
-curl http://127.0.0.1:8080/status
+```sh
+python3 poc.py failover
 ```
 
-Les contrôles de santé par défaut utilisent également :
+Le test arrête un validateur, soumet une nouvelle transaction et vérifie l’empreinte du bloc validé par les trois validateurs restants. Il redémarre ensuite le quatrième et attend que celui-ci atteigne le même bloc. La perte de la VM arrête les quatre validateurs. Pour simuler la perte d’un hôte physique, installez un validateur sur chacun de quatre hôtes indépendants.
 
-```bash
-curl http://127.0.0.1:8080/status/blocks
+## Arrêter et reprendre {#stop-and-resume}
+
+```sh
+python3 poc.py down
+python3 poc.py up
 ```
 
-Vous pouvez immédiatement pointer le CLI vers la configuration client fournie :
+Exécutez les deux commandes depuis le même répertoire d’extraction. Conservez le répertoire `state/` avec les quatre volumes Docker pour que les validateurs puissent rouvrir le même registre après leur redémarrage. Si le démarrage se bloque, exécutez `python3 poc.py logs` dans ce répertoire.
 
-```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+## Tester le point d’accès public {#try-the-public-endpoint}
+
+Une application peut lire l’espace de données universel de SORA Nexus sur Taira sans exploiter de VM pour le registre. Depuis un poste de travail équipé de `curl` et de `jq`, essayez cette requête en lecture seule sur le réseau de test.
+
+```sh
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
+  | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
-## 3. Nexus Profil {#_3-nexus-profile}
-
-Le dépôt fournit également un profil de configuration orienté SORA Nexus sous `defaults/nexus/`.
-
-Pour exécuter un nœud réseau natif avec le profil Nexus :
-
-```bash
-./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
-```
-
-Utilisez `defaults/nexus/client.toml` pour un accès CLI à ce profil.
-
-## 4. Arrêter le réseau local {#_4-stop-the-local-network}
-
-Pour un réseau local généré nativement :
-
-```bash
-./localnet/stop.sh
-```
-
-Pour la pile Compose générée :
-
-```bash
-docker compose -f ./docker-compose.yml down
-```
-
-Après que le réseau fonctionne, continuez avec [Faire fonctionner Iroha 3 via CLI](/fr/get-started/operate-iroha-via-cli.md).
+La réponse indique le nombre de pairs connectés au nœud interrogé, de blocs validés, de transactions approuvées et de transactions en attente. Pour préparer le déploiement, consultez [Déploiement du réseau](/fr/guide/best-practices/network-deployment.md).

@@ -1,14 +1,14 @@
 ---
 translation_locale: fr
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 96505bdba910beb902c399004f5cd24f5e5b0773f01df9cdcfdb49d019830d03
+translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
 
 # Rechargement à chaud Iroha dans un conteneur Docker {#hot-reload-iroha-in-a-docker-container}
 
-Utilisez le rechargement à chaud uniquement pour le débogage local. Pour le développement local normal, préférez reconstruire l'image ou redémarrer la pile générée Docker Compose à partir d'un nouveau bundle Kagami.
+Réservez le rechargement à chaud au débogage local. Suivez le guide [Lancer Iroha 3](/fr/get-started/launch-iroha.md) pour compiler et lancer quatre validateurs dans Docker avec des binaires issus de la même révision.
 
 ## Remplacer le pair réseau binaire {#replace-the-peer-binary}
 
@@ -25,20 +25,11 @@ docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/loca
 docker restart <container>
 ```
 
-Utilisez `docker ps` pour confirmer le nom du conteneur. Dans la pile générée, les conteneurs pair du réseau sont définis par `./docker-compose.yml`.
+Utilisez `docker ps` pour repérer le conteneur. Vérifiez le chemin du démon dans votre image avant de le remplacer.
 
 ## Recommencer la genèse de la blockchain dans un réseau jetable {#recommit-genesis-in-a-disposable-network}
 
-Un pair de réseau ne valide le bloc de genèse de la blockchain que lorsque son stockage est vide. Pour un réseau Docker jetable, arrêtez la pile, supprimez l'état généré, régénérez ou remplacez le paquet de genèse de la blockchain signé, puis redémarrez :
-
-```bash
-docker compose -f ./docker-compose.yml down
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
-
-Ne remplacez pas le genesis de la blockchain sur un réseau dont l'état doit être préservé.
+Un nouveau bloc de genèse nécessite un espace de stockage vide sur chaque pair. Utilisez `python3 poc.py down` et `python3 poc.py up` pour redémarrer le même réseau. Conservez `state/` avec ses quatre volumes Docker.
 
 ## Utiliser une configuration personnalisée {#use-custom-configuration}
 

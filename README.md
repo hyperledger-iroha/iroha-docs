@@ -40,6 +40,12 @@ project settings own its build and output configuration.
 
 ## Validation
 
+The four-validator example is maintained in `examples/iroha-trade-poc/`. After
+editing its source, run `python3 etc/package-four-validator-kit.py` to rebuild the
+public ZIP. Update the printed SHA-256 in the launch page and its translations.
+`pnpm validate:kit` checks the archive against the example files and the English
+guide without starting a network.
+
 Run the same focused checks used by CI:
 
 ```bash

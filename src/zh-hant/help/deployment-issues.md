@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -38,13 +38,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker 和複合 {#docker-and-compose}
 
-生成 從當前的 Kagami localnet輸出中編寫,以便命令列引數和配置檔案與已檢查出來的程式碼匹配:
+請參閱 [啟動 Iroha 3](/zh-hant/get-started/launch-iroha.md)，使用同一版本的執行檔，在 Docker 中建置並啟動四個驗證節點。
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+在套件目錄中執行 `python3 poc.py logs`，即可查看驗證節點的日誌。
 
 如果構建部署開始,然後停下來,請檢查 daemon日誌:
 
@@ -53,7 +49,7 @@ docker compose -f ./docker-compose.yml up
 - 廣告的 P2P 地址,僅在集裝箱網路內工作
 - 在再生產後的本地體積重複使用
 
-在測試新創世時,在重新啟動堆之前刪除舊的 Kura 卷.將舊塊儲存到新的創世中會導致重播失敗.
+使用新的創世區塊時，節點的儲存空間必須是空的。 依序執行 `python3 poc.py down` 和 `python3 poc.py up` 以重新啟動同一個網路。請將 `state/` 與其四個 Docker 儲存卷一併保留。
 
 ## 科伯尼特 {#kubernetes}
 

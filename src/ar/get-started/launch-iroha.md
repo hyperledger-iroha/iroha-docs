@@ -1,94 +1,68 @@
 ---
 translation_locale: ar
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
+translation_source_hash: 2be7788e2aaf422b34739028ee64a127cad67ac0293b32d93f0be959c94aea87
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
 
-# إطلاق Iroha 3 {#launch-iroha-3}
+# تشغيل Iroha 3 {#launch-iroha-3}
 
-تستعرض هذه الصفحة تدفق الشبكة المحلية الحالي لـ Iroha 3 باستخدام أصول مساحة العمل الافتراضية من المستودع العلوي.
+شغّل أربع عُقَد تحقق من Iroha 3 على آلة افتراضية (VM) واحدة بنظام Linux لاختبار التكامل في بيئة خاصة. سترسل معاملة موقعة، ثم توقف إحدى العُقَد وتتحقق من أن العُقَد الثلاث الأخرى تثبّت معاملة ثانية في السجل. بهذه الطريقة تُنشئ سجلاً مستقلاً لا يشارك فيه إلا من لديه إذن. ويتطلب ربطه بمنصة SORA Nexus بوصفه مساحة بيانات تخضع للحوكمة إعداداً منفصلاً.
 
-## ١. إنشاء شبكة محلية متعددة الأقران {#_1-generate-a-local-multi-peer-network}
+## إعداد VM {#prepare-the-vm}
 
-إنشاء شبكة محلية من أربعة أقران من الشيفرة الحالية Kagami:
+استخدم Linux x86_64 مع Docker Engine وBuildx وCompose v2 وPython 3.8 أو أحدث وأداة `unzip`. يحتاج حسابك إلى صلاحية استخدام Docker. يتطلب البناء الأول اتصالات HTTPS صادرة إلى GitHub وDocker Hub ومرايا حزم Debian وcrates.io.
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+بنينا الحزمة واختبرناها باستخدام عدد قليل من المعاملات الاصطناعية على VM مزودة بست وحدات vCPU وذاكرة RAM بسعة 32 GiB. حدّد سعة التخزين وفقاً لحجم العمل ومدة الاحتفاظ بالبيانات. استخدم نسخة واحدة من الحزمة لكل محرك Docker، واترك المنافذ من 18080 إلى 18083 متاحة على واجهة الاسترجاع المحلية.
+
+[نزّل حزمة عُقَد التحقق الأربع](/downloads/iroha-trade-poc.zip). تضم الحزمة برنامج التشغيل، وقائمة بإصدارات التبعيات المثبّتة، والتعديلات المستخدمة لبناء عقدة التحقق والعميل من المراجعة نفسها لشيفرة Iroha. من دليل التنزيل، تحقق من بصمة الملف ثم فك ضغطه.
+
+```sh
+echo 'b12d450f9f15c0126dfe5eca83cdfad8bc420c779a78f916d374f433a2b3da0e  iroha-trade-poc.zip' | sha256sum --check
+unzip iroha-trade-poc.zip
+cd iroha-trade-poc
 ```
 
-يحتوي دليل الإخراج على تكوينات أقران الشبكة المطابقة، `genesis.json`، `genesis.signed.nrt`، `client.toml`، وسيناريوهات مساعدة.
+## تشغيل عُقَد التحقق الأربع وفحصها {#start-and-verify-all-four-validators}
 
-لاختبار دخان محلي أصلي، ابدأ نظراء الشبكة المولدة مباشرة:
-
-```bash
-./localnet/start.sh
+```sh
+python3 poc.py up
+python3 poc.py verify
 ```
 
-لتشغيل مع الحاويات، قم بإنشاء ملف Compose من نفس دليل localnet:
+عند التشغيل الأول، يبني البرنامج صورة الحاوية وينشئ معرّف السلسلة والمفاتيح وكتلة التكوين الموقعة على VM. لكل عقدة تحقق وحدة تخزين دائمة خاصة بها. يوقّع الفحص معاملة تجريبية وينتظر حتى تفيد كل عقدة من العُقَد الأربع باتصالها بثلاث عُقَد نظيرة وبتطابق بصمة الكتلة الجديدة. تتضمن كتلة التكوين حسابات نموذجية. استخدم بيانات اصطناعية واقصر واجهات APIs على واجهة الاسترجاع المحلية.
 
-```bash
-cargo run --bin kagami -- docker \
-  --peers 4 \
-  --config-dir ./localnet \
-  --image hyperledger/iroha:dev \
-  --out-file ./docker-compose.yml \
-  --force
+لقراءة حالة عقدة التحقق الأولى من VM، اطلب تنسيق JSON صراحةً.
 
-docker compose -f ./docker-compose.yml up
+```sh
+curl -fsS -H 'Accept: application/json' http://127.0.0.1:18080/status
 ```
 
-النسخة الافتراضية المولدة من الستاك تكشف عن:
+## اختبار تعطل إحدى عُقَد التحقق {#test-a-validator-failure}
 
-- الند للشبكة P2P المنافذ `1337` إلى `1340`
-- Torii HTTP يربط `8080` بـ `8083`
-- تكوين عميل جاهز عند `./localnet/client.toml`
-
-## 2. تحقق من أن الشبكة تعمل {#_2-verify-that-the-network-is-up}
-
-تحقق من حالة نقطة النهاية API على النظير الشبكي الأول:
-
-```bash
-curl http://127.0.0.1:8080/status
+```sh
+python3 poc.py failover
 ```
 
-تستخدم فحوصات الصحة الافتراضية أيضًا:
+يوقف الاختبار عقدة تحقق واحدة، ويرسل معاملة جديدة، ويتحقق من بصمة الكتلة المثبّتة على العُقَد الثلاث المتبقية. ثم يعيد تشغيل العقدة الرابعة وينتظر حتى تصل إلى الكتلة نفسها. إذا تعطلت VM تتوقف العُقَد الأربع جميعاً. لاختبار تعطل أي مضيف مادي واحد، ضع عقدة تحقق واحدة على كل مضيف من أربعة مضيفين مستقلين.
 
-```bash
-curl http://127.0.0.1:8080/status/blocks
+## الإيقاف واستئناف التشغيل {#stop-and-resume}
+
+```sh
+python3 poc.py down
+python3 poc.py up
 ```
 
-يمكنك توجيه CLI فورًا نحو تكوين العميل المرفق:
+نفّذ الأمرين من الدليل نفسه الذي فككت فيه ضغط الحزمة. احتفظ بالدليل `state/` ووحدات تخزين Docker الأربع معاً حتى تتمكن العُقَد من فتح السجل نفسه بعد إعادة تشغيلها. إذا توقف بدء التشغيل عن إحراز تقدم، فنفّذ `python3 poc.py logs` من ذلك الدليل.
 
-```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+## تجربة نقطة الاتصال العامة {#try-the-public-endpoint}
+
+يمكن للتطبيق قراءة مساحة البيانات العامة الشاملة لمنصة SORA Nexus على Taira من دون تشغيل VM للسجل. من محطة عمل تتوفر فيها أداتا `curl` و`jq`، جرّب طلب القراءة التالي على شبكة الاختبار.
+
+```sh
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
+  | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
-## 3. Nexus الملف الشخصي {#_3-nexus-profile}
-
-يقوم المستودع أيضًا بشحن ملف تكوين موجه نحو SORA Nexus تحت `defaults/nexus/`.
-
-لتشغيل نظير شبكة محلي باستخدام ملف التعريف Nexus:
-
-```bash
-./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
-```
-
-استخدم `defaults/nexus/client.toml` للوصول إلى ذلك الملف الشخصي CLI.
-
-## 4. أوقف الشبكة المحلية {#_4-stop-the-local-network}
-
-لشبكة محلية تم إنشاؤها محليًا:
-
-```bash
-./localnet/stop.sh
-```
-
-للحزمة المُنشأة من Compose:
-
-```bash
-docker compose -f ./docker-compose.yml down
-```
-
-بعد تشغيل الشبكة، تابع مع [شغّل Iroha 3 عبر CLI](/ar/get-started/operate-iroha-via-cli.md).
+يبيّن الرد عدد العُقَد النظيرة المتصلة بالعقدة المستعلَم منها، وعدد الكتل المثبّتة، والمعاملات المعتمدة، والمعاملات المنتظرة في الطابور. للتخطيط للنشر، راجع [نشر الشبكة](/ar/guide/best-practices/network-deployment.md).

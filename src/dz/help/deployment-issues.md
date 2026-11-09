@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
 translation_status: machine-validated
 translation_engine: human-reviewed
 ---
@@ -38,13 +38,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker དང་ མཉམ་འབྲེལ་འབད་ {#docker-and-compose}
 
-བཟོ་སྐྲུན་འབད་ ད་ལྟོའི་ Kagami ས་གནས་བརྟག་དཔྱད་དྲ་རྒྱ ཐོན་ཐོ་བཀོད་ནང་ལས་ བསྡུ་སྒྲིག་རྐྱབས་ དེ་འབདཝ་ལས་ བཀའ་རྒྱ་གི་གྲལ་རིམ་གྱི་ གྲོས་བསྡུར་དང་ གཞི་སྒྲིག་ཡིག་སྣོད་ཚུ་ ཐོ་བཀོད་འབད་ཚར་མི་ ལས་རིམ་ཨང་རྟགས ལུ་ མཐུན་པ་འོང་།
+Docker ནང་གཞི་རྟེན་ཨང་རྟགས་ཀྱི་ཐོན་རིམ་གཅིག་ལས་བཟོ་ཡོད་པའི་ཡིག་སྣོད་ཚུ་ལག་ལེན་འཐབ་སྟེ་ ངེས་དཔྱད་འབད་མི་བཞི་འགོ་བཙུགས་ནིའི་དོན་ལུ་ [འགོ་བཙུགས Iroha 3](/dz/get-started/launch-iroha.md) ལམ་སྟོན་ལུ་གཟིགས།
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+ངེས་དཔྱད་འབད་མི་ཚུ་གི་དྲན་ཐོ་བལྟ་ནིའི་དོན་ལུ་ ལག་ཆའི་སྣོད་ཐོ་ནང་ལས་ `python3 poc.py logs` ལག་ལེན་འཐབ།
 
 གལ་སྲིད་ བརྩམ་སྒྲིག་བཀྲམ་སྤེལ་འགོ་བཙུགས་ཏེ་ དེ་ལས་ བཀག་ཆ་འབད་བ་ཅིན་ ཌེ་མཱོན་དྲན་ཐོ་ཚུ་ ཞིབ་དཔྱད་འབད།
 
@@ -53,7 +49,7 @@ docker compose -f ./docker-compose.yml up
 - ཁྱབ་བསྒྲགས་འབད་ཡོད་པའི་ P2P ཁ་བྱང་ཚུ་ དོས་ཆས་ཡོངས་འབྲེལ་ནང་ལུ་རྐྱངམ་ཅིག་ལཱ་འབདཝ་ཨིན།
 - རིགས་མཚན་བསྐྱར་གསོ་འབད་བའི་ཤུལ་ལས་ ས་གནས་ཀྱི་སྐད་ཤུགས་ལོག་སྤྱོད་འབད་ནི།
 
-སྒྲིག་གཞི་གསརཔ་ཅིག་ བརྟག་དཔྱད་འབད་བའི་སྐབས་ལུ་ ཨེབ་ཐག་དེ་ ལོག་འགོ་བཙུགས་པའི་ཧེ་མར་ Kura ཤོག་སྒྲིལ་རྙིངམ་ཚུ་བཏོན་གཏང་དགོ། ཨེབ་ཐག་གསརཔ་དང་གཅིག་ཁར་ རྡོ་རྙིངམ་བཞག་པ་ཅིན་ སླར་ལོག་འབད་ནི་ལུ་ ཕན་ཐོགས་འབྱུང་འོང་།
+འགོ་ཐོག་གི་བཀག་ཆ་གསརཔ་གི་དོན་ལུ་ མཉམ་རོགས་ཀྱི་གསོག་འཇོག་སྟོངམ་དགོ། ཡོངས་འབྲེལ་དེ་ཉིད་ལོག་འགོ་བཙུགས་ནིའི་དོན་ལུ་ `python3 poc.py down` དང་དེ་ལས་ `python3 poc.py up` ལག་ལེན་འཐབ། `state/` འདི་ Docker གི་གསོག་འཇོག་བཞི་དང་གཅིག་ཁར་བཞག།
 
 ## Kubernetes {#kubernetes}
 

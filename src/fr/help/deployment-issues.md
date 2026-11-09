@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -39,13 +39,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker et Docker Compose {#docker-and-compose}
 
-Générez Compose à partir de la sortie localnet actuelle Kagami afin que les arguments de la ligne de commande et les fichiers de configuration correspondent au code extrait :
+Suivez le guide [Lancer Iroha 3](/fr/get-started/launch-iroha.md) pour compiler et lancer quatre validateurs dans Docker avec des binaires issus de la même révision.
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Depuis le répertoire du kit, exécutez `python3 poc.py logs` pour consulter les journaux des validateurs.
 
 Si un déploiement Compose démarre puis se bloque, inspectez les journaux du démon pour :
 
@@ -54,7 +50,7 @@ Si un déploiement Compose démarre puis se bloque, inspectez les journaux du d�
 - adresses P2P annoncées qui ne fonctionnent que dans le réseau du conteneur
 - réutilisation du volume local après la régénération du genesis de la blockchain
 
-Lors du test d'une nouvelle genèse de blockchain, supprimez les anciens volumes Kura avant de redémarrer la pile. Conserver l'ancien stockage de blocs avec une nouvelle genèse de blockchain fera échouer la relecture.
+Un nouveau bloc de genèse nécessite un espace de stockage vide sur chaque pair. Utilisez `python3 poc.py down` et `python3 poc.py up` pour redémarrer le même réseau. Conservez `state/` avec ses quatre volumes Docker.
 
 ## Kubernetes {#kubernetes}
 

@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -39,13 +39,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker და კომპოზიტი {#docker-and-compose}
 
-გენერირება შეადგინეთ მიმდინარე Kagami ადგილობრივი ქსელის გამოშვებიდან, ასე რომ ბრძანების ხაზის არგუმენტები და კონფიგურაციის ფაილები შეესაბამებიან ამოღებულ კოდს:
+Docker-ში ერთი და იმავე რევიზიის ბინარული ფაილებით ოთხი ვალიდატორის ასაწყობად და გასაშვებად მიჰყევით სახელმძღვანელოს [გაშვება Iroha 3](/ka/get-started/launch-iroha.md).
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+ვალიდატორების ჟურნალების სანახავად ნაკრების საქაღალდიდან გაუშვით `python3 poc.py logs`.
 
 თუ კომპოზიციის განთავსება იწყება და შემდეგ ჩერდება, შეამოწმეთ დეიმონების ლოგები:
 
@@ -54,7 +50,7 @@ docker compose -f ./docker-compose.yml up
 - რეკლამირებული P2P მისამართები, რომლებიც მუშაობს მხოლოდ კონტეინერების ქსელში
 - ადგილობრივი მოცულობის განმეორებითი გამოყენება ბლოკჩეინის გენეზისი რეგენერაციის შემდეგ
 
-ახალი ბლოკჩეინის გენეზის ტესტირებისას, ამოიღეთ ძველი Kura მოცულობები სტაკის განახლების წინ. ძველი ბლოკის შენახვა ახალი ბლოკის გენეზიით შეინარჩუნებს რეპლეი-ს წარუმატებლობას.
+ახალი გენეზისის ბლოკისთვის კვანძის საცავი ცარიელი უნდა იყოს. იმავე ქსელის ხელახლა გასაშვებად გამოიყენეთ `python3 poc.py down` და შემდეგ `python3 poc.py up`. შეინახეთ `state/` მის ოთხ Docker ტომთან ერთად.
 
 ## კუბერნეტები {#kubernetes}
 

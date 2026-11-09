@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -27,7 +27,7 @@ Generated directory တွင် network peer config များ၊ blockchain 
 - `iroha3d --config <path>` အချက်အလက်များကို ကွန်ရက် peer's own TOML ဖိုင်တွင် ထည့်သွင်းထားပါသည်။
 - `public_key` နဲ့ `private_key` တို့ဟာ Network Peer Config ထဲမှာ တူညီတဲ့ Key Pair တစ်ခုတည်းပါ။
 - `genesis.public_key` ကတော့ blockchain Genesis Transaction ကို လက်မှတ်ရေးထိုးဖို့ အသုံးပြုခဲ့တဲ့ သော့နဲ့ တူပါတယ်။
-- validator network peer identities use BLS-Normal keys, and `trusted_peers_pop` contains proof of possession entries for the local key and trusted network peers.
+- အတည်ပြုသူနိုဒ်များကို BLS-Normal သော့များဖြင့် သတ်မှတ်ထားပြီး `trusted_peers_pop` တွင် စက်တွင်းနိုဒ်နှင့် ယုံကြည်ရသော အခြားနိုဒ်များ၏ သော့ပိုင်ဆိုင်မှု အထောက်အထားများ ပါဝင်သည်။
 - Torii နှင့် P2P အတွက်ဆိပ်ကမ်းများကို အခြားလုပ်ငန်းစဉ်တစ်ခုဖြင့် ချည်နှောင်ထားခြင်း မရှိပါ။
 - Kura store directory ဟာ တူညီတဲ့ ကွင်းဆက်ထဲ ပါဝင်ပြီး အခြားကွန်ရက် ပရိုဖိုင်တစ်ခုကနေ ကူးယူထားတာ မဟုတ်ဘူး။
 
@@ -39,13 +39,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker နှင့် Composite {#docker-and-compose}
 
-Generate Current Kagami localnet output မှပေါင်းစပ်ပါ command line arguments နှင့် config files များသည် check-out code ကိုက်ညီစေရန်:
+တူညီသော ရင်းမြစ်ဗားရှင်းမှ ဘိုင်နရီဖိုင်များကို တည်ဆောက်ပြီး Docker တွင် အတည်ပြုသူ လေးခုကို စတင်ရန် [လွှတ်တင်ခြင်း Iroha 3](/my/get-started/launch-iroha.md) လမ်းညွှန်ကို လိုက်နာပါ။
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+အတည်ပြုသူများ၏ မှတ်တမ်းကို ကြည့်ရန် ကိရိယာအစု၏ ဒိုင်ရက်ထရီတွင် `python3 poc.py logs` ကို လုပ်ဆောင်ပါ။
 
 compose deployment ကိုစတင်ပြီးနောက် stalks လုပ်ရင် daemon log တွေကို စစ်ဆေးပါ
 
@@ -54,7 +50,7 @@ compose deployment ကိုစတင်ပြီးနောက် stalks လ�
 - ကြော်ငြာပြုလုပ်ထားသော P2P လိပ်စာများမှာ ကွန်ပျူတာ ကွန်ရက်အတွင်းတွင်သာ အလုပ်ဖြစ်ပါသည်။
 - ဒေသတွင်းပမာဏကို ပြန်လည်သုံးစွဲပြီးနောက် blockchain genesis ကိုပြန်လည်ပြုပြင်ခြင်း
 
-အသစ်သော blockchain genesis ကိုစမ်းသပ်တဲ့အခါ stack ကိုပြန်လည်စတင်မလုပ်ခင် Kura အရွယ်အစားဟောင်းတွေကို ဖယ်ရှားပါ။ blockchain genesis အသစ်တစ်ခုနဲ့အဟောင်းဘလော့ကို သိုလှောင်ထားခြင်းက playback ကျရှုံးစေလိမ့်မယ်။
+ကနဦးဘလောက်အသစ်ကို အသုံးပြုရန် နိုဒ်၏ သိုလှောင်နေရာသည် အလွတ်ဖြစ်ရမည်။ တူညီသော ကွန်ရက်ကို ပြန်စရန် `python3 poc.py down` နှင့် `python3 poc.py up` ကို အစဉ်လိုက် လုပ်ဆောင်ပါ။ `state/` ကို ၎င်း၏ Docker သိုလှောင်မှုအတွဲ လေးခုနှင့်အတူ သိမ်းထားပါ။
 
 ## Kubernetes {#kubernetes}
 

@@ -1,14 +1,14 @@
 ---
 translation_locale: kk
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 96505bdba910beb902c399004f5cd24f5e5b0773f01df9cdcfdb49d019830d03
+translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
 
 # Ыстық қайта жүктеу Iroha Docker контейнерінде {#hot-reload-iroha-in-a-docker-container}
 
-Жергілікті отладка үшін ғана жылдам қайта жүктеуді пайдаланыңыз. Қалыпты жергілікті даму үшін кескінді қайта жасауға немесе жаңадан жасалған Kagami бандлынан пайда болған Docker Compose стекті қайта қосуға артықшылық беріңіз.
+Жедел қайта жүктеуді тек жергілікті жөндеу үшін қолданыңыз. Docker ішінде бір нұсқадан жиналған екілік файлдармен төрт валидаторды құрып, іске қосу үшін [Iroha 3 іске қосу](/kk/get-started/launch-iroha.md) нұсқаулығын қараңыз.
 
 ## Желідегі әріптес Binary-ді ауыстыру {#replace-the-peer-binary}
 
@@ -25,20 +25,11 @@ docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/loca
 docker restart <container>
 ```
 
-`docker ps` контейнердің атын растау үшін қолданыңыз. Жасалған стекде желідегі әріптес контейнерлер `./docker-compose.yml` арқылы анықталады.
+Контейнерді табу үшін `docker ps` пәрменін пайдаланыңыз. Демонды алмастырмас бұрын оның бейнедегі жолын тексеріңіз.
 
 ## Бір реттік желідегі блокчейннің генезисін қайта орындау {#recommit-genesis-in-a-disposable-network}
 
-Желілік түйін блокчейннің бастамасын тек оның сақтау орны бос болған кезде аяқтайды. Бір реттік Docker желі үшін стек өзгертпей тұрып тоқтатыңыз, жасалған күйді жойыңыз, қол қойылған блокчейн бастамасының пакетін қайта жасаңыз немесе ауыстырыңыз, және қайтадан іске қосыңыз:
-
-```bash
-docker compose -f ./docker-compose.yml down
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
-
-Жалпы жағдайын сақтау қажет желіде блокчейнгенезисті алмастырмаңыз.
+Жаңа генезис блогы үшін түйін қоймасы бос болуы керек. Сол желіні қайта іске қосу үшін алдымен `python3 poc.py down`, содан кейін `python3 poc.py up` пәрменін орындаңыз. `state/` каталогын желінің төрт Docker томымен бірге сақтаңыз.
 
 ## Теңшелген баптауларды пайдалану {#use-custom-configuration}
 

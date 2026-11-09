@@ -1,94 +1,68 @@
 ---
 translation_locale: ur
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
+translation_source_hash: 2be7788e2aaf422b34739028ee64a127cad67ac0293b32d93f0be959c94aea87
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: bing-translator-llm
 ---
 
-# لانچنگ Iroha 3 {#launch-iroha-3}
+# لانچ Iroha 3 {#launch-iroha-3}
 
-یہ صفحہ Iroha 3 کے لئے موجودہ مقامی نیٹ ورک فلو کو اپ اسٹریم ریپوزٹری سے پہلے سے طے شدہ کام کی جگہ اثاثوں کا استعمال کرتے ہوئے چلتا ہے۔
+نجی ماحول میں انضمام کی جانچ کے لیے ایک Linux ورچوئل مشین (VM) پر Iroha 3 کے چار توثیقی نوڈ چلائیں۔ پہلے ایک دستخط شدہ لین دین بھیجیں، پھر ایک نوڈ روکیں اور تصدیق کریں کہ باقی تین نوڈ اگلے لین دین کی توثیق کرتے ہیں۔ اس سے ایک الگ لیجر بنتا ہے جس میں شرکت کے لیے اجازت درکار ہے۔ اسے زیرِ انتظام ڈیٹا اسپیس کے طور پر SORA Nexus سے جوڑنے کے لیے الگ سے وسائل فراہم کرنا ہوں گے۔
 
-## 1۔ ایک مقامی کثیر نیٹ ورک نوڈ نیٹ ورک بنائیں {#_1-generate-a-local-multi-peer-network}
+## VM تیار کریں {#prepare-the-vm}
 
-موجودہ Kagami کوڈ سے چار پیر لوکل نیٹ پیدا کریں:
+Linux x86_64 کو Docker Engine، Buildx، Compose v2، Python 3.8 یا بعد میں، اور `unzip` کے ساتھ استعمال کریں۔ آپ کے اکاؤنٹ کو Docker تک رسائی کی ضرورت ہے۔ پہلی بلڈ کو HTTPS رسائی کی ضرورت ہے تاکہ وہ GitHub، Docker Hub، Debian پیکج مررز اور crates.io تک پہنچ سکے۔
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+ہم نے کٹ کو ایک VM پر بنایا اور ٹیسٹ کیا جس میں چھ vCPU اور 32 GiB RAM تھے، چند مصنوعی ٹرانزیکشنز استعمال کرتے ہوئے۔ اپنے اپنے ورک لوڈ اور برقرار رکھنے کی مدت کے لیے اسٹوریج کا سائز کریں۔ ہر Docker انجن کے لیے کٹ کی ایک کاپی استعمال کریں اور لوپ بیک پورٹس 18080–18083 دستیاب رکھیں۔
+
+[چار ویلیڈیٹر کٹ ڈاؤن لوڈ کریں](/downloads/iroha-trade-poc.zip)۔ اس میں لانچر، ایک لاک شدہ انحصاری فہرست اور پیچ شامل ہیں جو ایک ہی محفوظ کردہ Iroha ریویژن سے ویلیڈیٹر اور کلائنٹ بنانے کے لئے استعمال ہوئے۔ ڈاؤن لوڈ والے ڈائریکٹری سے اسے تصدیق کریں اور ان پیک کریں۔
+
+```sh
+echo 'b12d450f9f15c0126dfe5eca83cdfad8bc420c779a78f916d374f433a2b3da0e  iroha-trade-poc.zip' | sha256sum --check
+unzip iroha-trade-poc.zip
+cd iroha-trade-poc
 ```
 
-آؤٹ پٹ ڈائرکٹری میں مماثل نیٹ ورک نوڈ ترتیب، `genesis.json`، `genesis.signed.nrt`، `client.toml`، اور مددگار اسکرپٹس شامل ہیں.
+## تمام چار ویلڈیٹرز کو شروع کریں اور تصدیق کریں {#start-and-verify-all-four-validators}
 
-مقامی دھواں کے ٹیسٹ کے لئے، براہ راست پیدا کردہ نیٹ ورک نوڈ شروع کریں:
-
-```bash
-./localnet/start.sh
+```sh
+python3 poc.py up
+python3 poc.py verify
 ```
 
-ایک کنٹینر چلانے کے لئے، اسی مقامی نیٹ ورک ڈائرکٹری سے تخلیق کریں:
+پہلی شروعات امیج بناتی ہے اور آپ کے VM پر چین آئی ڈی، کیز اور دستخط شدہ بلاکچین جینیسس تیار کرتی ہے۔ ہر ویلیڈیٹر کا اپنا مستقل حجم ہوتا ہے۔ تصدیق ایک ٹیسٹ لین دین پر دستخط کرتی ہے اور انتظار کرتی ہے کہ تمام چار ویلڈیٹر تین جڑے ہوئے نیٹ ورک پیئرز اور ایک ہی نئے بلاک کرپٹوگرافک ہیش کی اطلاع دیں۔ بلاک چین جینیس میں نمونہ اکاؤنٹس شامل ہیں۔ مصنوعی ڈیٹا استعمال کریں اور APIs کو لوپ بیک پر رکھیں۔
 
-```bash
-cargo run --bin kagami -- docker \
-  --peers 4 \
-  --config-dir ./localnet \
-  --image hyperledger/iroha:dev \
-  --out-file ./docker-compose.yml \
-  --force
+پہلے ویلڈیٹر کی حالت VM سے پڑھنے کے لیے، JSON کو واضح طور پر درخواست کریں۔
 
-docker compose -f ./docker-compose.yml up
+```sh
+curl -fsS -H 'Accept: application/json' http://127.0.0.1:18080/status
 ```
 
-ڈیفالٹ کے طور پر پیدا کردہ اسٹیک:
+## ویلیڈیٹر کی ناکامی کا ٹیسٹ کریں {#test-a-validator-failure}
 
-- نیٹ ورک نوڈ P2P بندرگاہوں `1337` سے `1340`
-- Torii HTTP بندرگاہوں `8080` سے `8083`
-- `./localnet/client.toml` پر ایک تیار کلائنٹ ترتیب
-
-## 2۔ تصدیق کریں کہ نیٹ ورک فعال ہے یا نہیں۔ {#_2-verify-that-the-network-is-up}
-
-پہلے نیٹ ورک نوڈ پر اسٹیٹس اختتامی نقطہ چیک کریں:
-
-```bash
-curl http://127.0.0.1:8080/status
+```sh
+python3 poc.py failover
 ```
 
-ڈیفالٹ صحت کی جانچ میں بھی استعمال کیا جاتا ہے:
+ٹیسٹ ایک توثیقی نوڈ کو روکتا ہے، نیا لین دین بھیجتا ہے اور باقی تین نوڈز پر تصدیق شدہ بلاک کے ہیش کا موازنہ کرتا ہے۔ پھر چوتھے نوڈ کو دوبارہ شروع کرتا ہے اور انتظار کرتا ہے کہ وہ اسی بلاک تک پہنچ جائے۔ اگر ورچوئل مشین (VM) بند ہو جائے تو چاروں نوڈ رک جاتے ہیں۔ کسی ایک فزیکل ہوسٹ کی ناکامی جانچنے کے لیے چار الگ میزبانوں پر ایک ایک نوڈ چلائیں۔
 
-```bash
-curl http://127.0.0.1:8080/status/blocks
+## رکیں اور دوبارہ شروع کریں {#stop-and-resume}
+
+```sh
+python3 poc.py down
+python3 poc.py up
 ```
 
-آپ فوری طور پر CLI کی طرف اشارہ کر سکتے ہیں bundled کلائنٹ ترتیب:
+دونوں کمانڈز کو ایک ہی نکالی گئی ڈائریکٹری سے چلائیں۔ اس کا `state/` ڈائریکٹری اور چاروں Docker والیومز اکٹھے رکھیں تاکہ دوبارہ شروع کیے جانے والے ویلیڈیٹرز وہی بلاک چین لیجر کھول سکیں۔ اگر اسٹارٹ اپ رکے، تو وہاں `python3 poc.py logs` چلائیں۔
 
-```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+## عوامی API اینڈپوائنٹ کو آزمائیں {#try-the-public-endpoint}
+
+ایپلیکیشن لیجر کے لیے اپنی ورچوئل مشین (VM) چلائے بغیر Taira پر SORA Nexus کی یونیورسل ڈیٹا اسپیس پڑھ سکتی ہے۔ جس ورک اسٹیشن پر `curl` اور `jq` موجود ہوں، وہاں سے ٹیسٹ نیٹ کو صرف پڑھنے کی یہ درخواست بھیجیں۔
+
+```sh
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
+  | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
-## Nexus پروفائل {#_3-nexus-profile}
-
-ذخیرہ بھی SORA Nexus پر مبنی ترتیب پروفائل کو `defaults/nexus/` کے تحت بھیجتا ہے.
-
-Nexus پروفائل کے ساتھ ایک مقامی نیٹ ورک نوڈ چلانے کے لئے:
-
-```bash
-./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
-```
-
-اس پروفائل تک CLI رسائی کے لیے `defaults/nexus/client.toml` کا استعمال کریں۔
-
-## 4۔ مقامی نیٹ ورک کو بند کر دیں {#_4-stop-the-local-network}
-
-مقامی طور پر پیدا ہونے والے لوکل نیٹ ورک کے لئے:
-
-```bash
-./localnet/stop.sh
-```
-
-پیدا کردہ کمپوز اسٹیک کے لئے:
-
-```bash
-docker compose -f ./docker-compose.yml down
-```
-
-نیٹ ورک چلانے کے بعد، [CLI کے ذریعے Iroha 3 چلائیں](/ur/get-started/operate-iroha-via-cli.md) کے ذریعے جاری رکھیں.
+جواب میں پوچھے گئے نوڈ کے مربوط نیٹ ورک ساتھیوں، حتمی بلاکس، منظور شدہ ٹرانزیکشنز اور قطار میں رکھی گئی ٹرانزیکشنز کی رپورٹ شامل ہے۔ تعیناتی کی منصوبہ بندی کے لیے دیکھیں [نیٹ ورک نفاذ](/ur/guide/best-practices/network-deployment.md)۔

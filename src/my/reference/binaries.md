@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /reference/binaries.md
-translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
+translation_source_hash: 1bf3f4697e44b3c8ef571eb9e5c0e301a1acbf76aa1c0666b3cd86e108bba6bf
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -50,27 +50,7 @@ cargo run --bin kagami -- --help
 
 ## Docker ဓာတ်ပုံ {#docker-image}
 
-အထက်ပိုင်း လုပ်ငန်းခွင် အသုံးပြုမှု `kagami localnet` နှင့် `kagami docker` ထုတ်လုပ်ရန် Docker Compose စစ်ဆေးထားတဲ့ ကုဒ်နဲ့ ကိုက်ညီတဲ့ ဖိုင်တွေ။ `hyperledger/iroha:dev` Image တွေကို ထုတ်ပေးထားတဲ့ ဖိုင်တွေနဲ့အတူ သုံးနိုင်ပါတယ်။
-
-CLI ကို container တစ်ခုထဲ ထည့်ပေးပါ။
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-Kagami ကို container တစ်ခုထဲထည့်ပါ။
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-Network peer startup အတွက် localnet ကို Generate လုပ်ပြီး First Compose file ကို ရိုက်ထည့်ပါ။
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+တူညီသော ရင်းမြစ်ဗားရှင်းမှ ဘိုင်နရီဖိုင်များကို တည်ဆောက်ပြီး Docker တွင် အတည်ပြုသူ လေးခုကို စတင်ရန် [လွှတ်တင်ခြင်း Iroha 3](/my/get-started/launch-iroha.md) လမ်းညွှန်ကို လိုက်နာပါ။
 
 ## ဘယ် Binary ကို သုံးရမလဲ။ {#which-binary-should-i-use}
 

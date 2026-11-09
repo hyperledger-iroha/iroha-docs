@@ -1,94 +1,68 @@
 ---
 translation_locale: am
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 63eed8f987d33a487bb6329266eacbc09d10bb429027413997957579e31e80b4
+translation_source_hash: 2be7788e2aaf422b34739028ee64a127cad67ac0293b32d93f0be959c94aea87
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
 
 # አስጀምር Iroha 3 {#launch-iroha-3}
 
-ይህ ገጽ ከላይኛው ማከማቻ ነባሪ የስራ ቦታ ንብረቶችን በመጠቀም ለ Iroha 3 አሁን ባለው የአካባቢያዊ-አውታረ መረብ ፍሰት ውስጥ ያልፋል።
+የስርዓቶችን ውህደት በግል አካባቢ ለመፈተሽ አራት የIroha 3 አረጋጋጮችን በአንድ የLinux ምናባዊ ማሽን (VM) ላይ ያስኪዱ። የተፈረመ ግብይት ይላኩ፣ አንድ አረጋጋጭ ያቁሙና የቀሩት ሦስቱ ሁለተኛውን ግብይት ማረጋገጣቸውን ይፈትሹ። በዚህ መንገድ ፈቃድ ላላቸው ብቻ የሚከፈት ራሱን የቻለ መዝገብ ይፈጠራል። ይህን መዝገብ እንደ የሚተዳደር የውሂብ ቦታ ከ SORA Nexus ጋር ለማገናኘት የተለየ ዝግጅት ያስፈልጋል።
 
-## 1. የአካባቢ ባለብዙ አቻ አውታረ መረብ ይፍጠሩ {#_1-generate-a-local-multi-peer-network}
+## አዘጋጁ VM {#prepare-the-vm}
 
-ከአሁኑ Kagami ኮድ ባለአራት አቻ localnet ይፍጠሩ -
+Linux x86_64 ን ከDocker Engine፣ Buildx፣ Compose v2፣ Python 3.8 ወይም ከዚያ የበለጠ አዲስ ስሪት፣ እና `unzip` ጋር ይጠቀሙ። መለያዎ Docker ን የመጠቀም ፈቃድ ይፈልጋል። ለመጀመሪያው ግንባታ ወደ GitHub፣ Docker Hub፣ የDebian ጥቅል መስታወት አገልጋዮች እና crates.io በHTTPS የመገናኘት አቅም ያስፈልጋል።
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+ጥቂት ሰው ሠራሽ ግብይቶችን በመጠቀም ኪቱን በ VM በስድስት ቪሲፒዩዎች እና 32 GiB RAM ገንብተን ሞክረናል። ለራስዎ የስራ ጫና እና የማቆያ ጊዜ የመጠን ማከማቻ። በ Docker ሞተር አንድ የኪት ቅጂ ይጠቀሙ እና የ loopback ወደቦች 18080-18083 እንዲገኙ ያድርጉ።
+
+[ባለአራት-አረጋጋጭ ኪት ያውርዱ](/downloads/iroha-trade-poc.zip)። አስጀማሪውን፣ የተቆለፈ የጥገኝነት ዝርዝርን እና አረጋጋጩን እና ደንበኛውን ከተመሳሳይ የተሰካ Iroha ክለሳ ለመገንባት የሚያገለግሉ ጥገናዎችን ያካትታል። ማውረዱን ከያዘው ማውጫ ውስጥ ያረጋግጡ እና ይንቀሉት።
+
+```sh
+echo 'b12d450f9f15c0126dfe5eca83cdfad8bc420c779a78f916d374f433a2b3da0e  iroha-trade-poc.zip' | sha256sum --check
+unzip iroha-trade-poc.zip
+cd iroha-trade-poc
 ```
 
-የውጤት ማውጫው ተዛማጅ የአውታረ መረብ አቻ ውቅሮችን፣ `genesis.json`፣ `genesis.signed.nrt`፣ `client.toml` እና ረዳት ስክሪፕቶችን ይዟል።
+## አራቱንም አረጋጋጮች ይጀምሩ እና ያረጋግጡ {#start-and-verify-all-four-validators}
 
-ለቤተኛ የአካባቢ የመጀመሪያ የስራ ሙከራ፣ የመነጨውን የአውታረ መረብ እኩዮች በቀጥታ ይጀምሩ -
-
-```bash
-./localnet/start.sh
+```sh
+python3 poc.py up
+python3 poc.py verify
 ```
 
-ለኮንቴይነር አሂድ፣ ከተመሳሳይ localnet ማውጫ Compose ይፍጠሩ -
+ለመጀመሪያ ጊዜ ሲነሳ የኮንቴይነር ምስሉ ይገነባል። የሰንሰለቱ መታወቂያ፣ ቁልፎቹ እና የተፈረመው የመጀመሪያ ብሎክ በ VM ላይ ይፈጠራሉ። እያንዳንዱ አረጋጋጭ የራሱ ቋሚ ማከማቻ አለው። የሙከራ ፕሮግራሙ የሙከራ ግብይት ይፈርማል፤ አራቱም አረጋጋጮች እያንዳንዳቸው ከሦስት አቻዎች ጋር መገናኘታቸውንና የአዲሱ ብሎክ ሃሽ አንድ መሆኑን እስኪያሳውቁ ይጠብቃል። የመጀመሪያው ብሎክ የናሙና መለያዎችን ይዟል። ለሙከራ የተሠራ ውሂብ ይጠቀሙ፣ APIs በአካባቢያዊ loopback ብቻ እንዲደረስበት ያድርጉ።
 
-```bash
-cargo run --bin kagami -- docker \
-  --peers 4 \
-  --config-dir ./localnet \
-  --image hyperledger/iroha:dev \
-  --out-file ./docker-compose.yml \
-  --force
+የመጀመሪያውን አረጋጋጭ ሁኔታ ከ VM ለማንበብ JSON ን በግልፅ ይጠይቁ።
 
-docker compose -f ./docker-compose.yml up
+```sh
+curl -fsS -H 'Accept: application/json' http://127.0.0.1:18080/status
 ```
 
-ነባሪው የመነጨው ቁልል ያጋልጣል -
+## የማረጋገጫ ውድቀትን ይሞክሩ {#test-a-validator-failure}
 
-- የአውታረ መረብ አቻ P2P ወደቦች `1337` ወደ `1340`
-- Torii HTTP ወደቦች `8080` ወደ `8083`
-- ዝግጁ የሆነ የደንበኛ ውቅር በ `./localnet/client.toml`
-
-## 2. አውታረ መረቡ መጠናቀቁን ያረጋግጡ {#_2-verify-that-the-network-is-up}
-
-በመጀመሪያው የአውታረ መረብ አቻ ላይ ያለውን ሁኔታ API የመጨረሻ ነጥብ ያረጋግጡ -
-
-```bash
-curl http://127.0.0.1:8080/status
+```sh
+python3 poc.py failover
 ```
 
-ነባሪ የጤና ፍተሻዎች እንዲሁ ይጠቀሙ -
+ሙከራው አንድ አረጋጋጭ ያቆማል፣ አዲስ ግብይት ይልካል፣ የተረጋገጠውን ብሎክ ሃሽ በቀሩት ሦስት አረጋጋጮች ላይ ይፈትሻል። ከዚያም አራተኛውን አረጋጋጭ እንደገና አስነስቶ ያውን ብሎክ እስኪደርስ ይጠብቃል። VM ከተቋረጠ አራቱም ይቆማሉ። የማንኛውም አንድ አካላዊ አገልጋይ መቋረጥን ለመፈተሽ እያንዳንዱን አረጋጋጭ ከአራት ነጻ አገልጋዮች በአንዱ ላይ ያኑሩ።
 
-```bash
-curl http://127.0.0.1:8080/status/blocks
+## አቁም እና ከቆመበት ቀጥል {#stop-and-resume}
+
+```sh
+python3 poc.py down
+python3 poc.py up
 ```
 
-ወዲያውኑ CLI በተጠቀለለው የደንበኛ ውቅር ላይ መጠቆም ይችላሉ -
+ሁለቱንም ትዕዛዞች ከተመሳሳይ የወጣ ማውጫ ያሂዱ። እንደገና የተጀመሩት አረጋጋጮች ተመሳሳይ የብሎክቼይን መዝገብ መክፈት እንዲችሉ የ`state/` ማውጫውን እና አራቱን Docker ጥራዞች አንድ ላይ ያቆዩት። ጅምር ከቆመ `python3 poc.py logs`ን እዚያ ያሂዱ።
 
-```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+## ይፋዊውን API የመጨረሻ ነጥብ ይሞክሩ {#try-the-public-endpoint}
+
+መተግበሪያ ለመዝገቡ ምናባዊ ማሽን (VM) ሳያስኬድ በTaira ላይ ያለውን የ SORA Nexus ሁለንተናዊ የውሂብ ቦታ ማንበብ ይችላል። `curl` እና `jq` ከተጫነበት የሥራ ጣቢያ ይህን የንባብ ጥያቄ ወደ የሙከራ አውታረ መረብ ይላኩ።
+
+```sh
+curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
+  | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
-## 3. Nexus መገለጫ {#_3-nexus-profile}
-
-ማከማቻው በ`defaults/nexus/` ስር SORA Nexus ተኮር የውቅረት መገለጫ ይልካል።
-
-ቤተኛ የአውታረ መረብ አቻ ከ Nexus መገለጫ ጋር ለማስኬድ -
-
-```bash
-./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
-```
-
-ለዚያ መገለጫ CLI መዳረሻ `defaults/nexus/client.toml` ይጠቀሙ።
-
-## 4. የአካባቢውን አውታረ መረብ ያቁሙ {#_4-stop-the-local-network}
-
-ለቤተኛ የመነጨ የአካባቢ መረብ -
-
-```bash
-./localnet/stop.sh
-```
-
-ለተፈጠረው የ ጽሁፍ ቁልል -
-
-```bash
-docker compose -f ./docker-compose.yml down
-```
-
-አውታረ መረቡ ከሰራ በኋላ በ [Iroha 3 በ CLI በኩል ያሂዱ](/am/get-started/operate-iroha-via-cli.md) ይቀጥሉ።
+ምላሹ የተጠየቀውን ኖድ የተገናኙ የአውታረ መረብ እኩዮችን፣ የተጠናቀቁ ብሎኮችን፣ የጸደቁ ግብይቶችን እና ወረፋ ግብይቶችን ሪፖርት አድርጓል። ለማሰማራት እቅድ፣ [የአውታረ መረብ ማሰማራት](/am/guide/best-practices/network-deployment.md) ይመልከቱ።

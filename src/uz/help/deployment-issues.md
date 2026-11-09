@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -39,13 +39,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker va Tahrirlash {#docker-and-compose}
 
-Joriy Kagami localnet chiqishidan Compose yaratish, shunda komandani satr argumentlari va konfiguratsiya fayllari tekshirilgan kodga mos keladi:
+Docker’da bir xil manba versiyasidan yigʻilgan bajariladigan fayllar bilan toʻrtta validatorni ishga tushirish uchun [Ishga tushurish Iroha 3](/uz/get-started/launch-iroha.md) qoʻllanmasiga amal qiling.
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Validator jurnallarini koʻrish uchun toʻplam katalogida `python3 poc.py logs` buyrugʻini bajaring.
 
 Agar compose joylashtirish boshlansa va keyin to'xtab qolsa, daemon jurnallarini tekshiring:
 
@@ -54,7 +50,7 @@ Agar compose joylashtirish boshlansa va keyin to'xtab qolsa, daemon jurnallarini
 - reklama qilingan P2P manzillar faqat konteyner tarmog‘i ichida ishlaydi
 - blokcheyn boshlang'ichini qayta yaratgandan keyin mahalliy hajmni qayta ishlatish
 
-Yangi blockchain genesisini sinovdan o'tkazganda, stekni qayta ishga tushirishdan oldin eski Kura hajmlarini olib tashlang. Eski blok saqlashni yangi blockchain genesis bilan saqlash replayning muvaffaqiyatsiz bo‘lishiga olib keladi.
+Yangi genezis bloki uchun tugun ombori boʻsh boʻlishi kerak. Oʻsha tarmoqni qayta ishga tushirish uchun avval `python3 poc.py down`, keyin `python3 poc.py up` buyrugʻini bajaring. `state/` katalogini tarmoqning toʻrtta Docker jildi bilan birga saqlang.
 
 ## Kubernetes {#kubernetes}
 

@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /reference/binaries.md
-translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
+translation_source_hash: 1bf3f4697e44b3c8ef571eb9e5c0e301a1acbf76aa1c0666b3cd86e108bba6bf
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -50,27 +50,7 @@ cargo run --bin kagami -- --help
 
 ## Docker Сурет {#docker-image}
 
-Жоғары ағысты жұмыс кеңістігі `kagami localnet` және `kagami docker` қолдана отырып, тексеріп шығарылған кодқа сәйкес келетін Docker Compose файлдарын генерациялайды. Сол генерацияланған файлдармен `hyperledger/iroha:dev` бейнесін пайдалануға болады.
-
-Контейнерде CLI-ді іске қосыңыз:
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-Контейнерде Kagami-ді іске қосыңыз:
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-Желілік әріптесті іске қосу үшін алдымен localnet және Compose файлын жасаңыз:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Docker ішінде бір нұсқадан жиналған екілік файлдармен төрт валидаторды құрып, іске қосу үшін [Iroha 3 іске қосу](/kk/get-started/launch-iroha.md) нұсқаулығын қараңыз.
 
 ## Қай Бинарлық Файлды Қолдануым Керек? {#which-binary-should-i-use}
 

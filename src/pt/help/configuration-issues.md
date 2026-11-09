@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: 9d153d9cb8ce0341b35ba5a7e3823198e58464768e2a9a92ff8a5723f85e9351
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -16,27 +16,9 @@ Se o problema que você está enfrentando não estiver descrito aqui, entre em c
 
 Ao usar o Iroha com Docker Compose, um dos contêineres dos pares pode falhar com o erro `Failed to deserialize raw genesis block`. Isso geralmente significa que o par, a transação de gênese assinada e a configuração gerada vieram de revisões ou perfis diferentes do Iroha.
 
-Verifique a falha com estes passos:
+No diretório do kit, execute `python3 poc.py logs` para consultar os logs dos validadores. Siga o guia [Iniciar Iroha 3](/pt/get-started/launch-iroha.md) para compilar e executar quatro validadores no Docker com binários da mesma revisão.
 
-1. Use `docker ps` para verificar os contêineres atuais. Conforme o perfil gerado, você normalmente verá contêineres `hyperledger/iroha:dev`. O perfil padrão do Docker Compose contém quatro contêineres de pares, embora o `docker-compose.yml` gerado possa ser diferente.
-
-2. Verifique os logs e procure pelo erro `Failed to deserialize raw genesis block`. Se você iniciou seu Iroha no modo daemon com `docker compose up -d`, use o comando `docker compose logs`.
-
-A maneira de solucionar esse problema depende do uso de Iroha. Se isso for uma demonstração básica e você não precisar preservar os dados de pares da rede, regenere um localnet correspondente ou um pacote Docker Compose com Kagami:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
-```
-
-Depois, remova o estado antigo dos contêineres e reinicie usando os arquivos regenerados `genesis.signed.nrt`, os arquivos `config.toml` dos pares e `client.toml`.
-
-Se você precisar restaurar os dados da instância Iroha, faça o seguinte:
-
-1. Conecte um segundo par do Iroha para copiar os dados do primeiro par, o que falhou.
-2. Aguarde até que o novo par sincronize os dados com o primeiro.
-3. Mantenha o novo par ativo.
-4. Atualize os arquivos de gênese e configuração do primeiro par somente como parte de uma migração coordenada.
+Use `python3 poc.py down` e `python3 poc.py up` para reiniciar a mesma rede. Mantenha `state/` junto aos quatro volumes do Docker.
 
 ::: info
 

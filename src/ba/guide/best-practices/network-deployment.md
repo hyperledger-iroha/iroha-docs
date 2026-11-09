@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /guide/best-practices/network-deployment.md
-translation_source_hash: 7839268b8c1f6700b0c26652e3308fa4e8acef4717d8527c609b6f30fb8c84ab
+translation_source_hash: 489b174b9bdd21a4c4c2c896911686a6020e2833c8808304cfd37a5bf31c7780
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -24,6 +24,8 @@ Iroha селтәрен координацияланған система ите�
 - Минималь Византия хатаһын таҙартыу өсөн, кәм тигәндә дүрт валидатор ҡулланығыҙ.
 - Күҙәтеүселәр тауыш бирмәй, тәҡдим итмәй һәм йыя алмай, әммә улар барыбер һаҡлауҙы, блок синхронлаштырыуҙы һәм селтәрҙәрҙең биҙәк киңлеген ҡулланалар.
 - Генез, башҡарыусы һәм топология үҙгәрештәрен бер тигеҙ редакциялар урынына координацияланған миграциялар тип ҡарағыҙ.
+
+Селтәрҙе Docker ярҙамында эшләтеп ебәреү һәм бер валидатор туҡтағандан һуң тергеҙелеүен тикшереү өсөн [дүрт валидаторҙы эшләтеү ҡулланмаһына](/ba/get-started/launch-iroha.md) мөрәжәғәт итегеҙ.
 
 [Genesis](/ba/reference/genesis.md), [Пирҙар менән идара итеү](/ba/guide/configure/peer-management.md) һәм [Етештереүсәнлек һәм метрикалар](/ba/guide/advanced/metrics.md#node-count-and-quorum).
 

@@ -1,14 +1,14 @@
 ---
 translation_locale: am
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 96505bdba910beb902c399004f5cd24f5e5b0773f01df9cdcfdb49d019830d03
+translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
 
 # ትኩስ ዳግም ጫን Iroha በ Docker መያዣ ውስጥ {#hot-reload-iroha-in-a-docker-container}
 
-ለአካባቢያዊ ማረም ብቻ ትኩስ ዳግም መጫን ይጠቀሙ። ለመደበኛ የአካባቢ ልማት ምስሉን እንደገና መገንባት ወይም የተፈጠረውን Docker Compose ቁልል ከአዲስ Kagami ጥቅል እንደገና ማስጀመርን ይመርጣሉ።
+ወዲያውኑ መልሶ መጫንን ለአካባቢያዊ ማረም ብቻ ይጠቀሙ። ከአንድ የምንጭ ኮድ ስሪት በተገነቡ ሁለትዮሽ ፋይሎች አራት አረጋጋጭ አንጓዎችን በDocker ለማስኬድ የ[አስጀምር Iroha 3](/am/get-started/launch-iroha.md) መመሪያን ይከተሉ።
 
 ## የአውታረ መረብ አቻውን ይተኩ ሁለትዮሽ {#replace-the-peer-binary}
 
@@ -25,20 +25,11 @@ docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/loca
 docker restart <container>
 ```
 
-የመያዣውን ስም ለማረጋገጥ `docker ps` ይጠቀሙ። በተፈጠረው ቁልል ውስጥ የአውታረ መረብ አቻ ኮንቴይነሮች በ `./docker-compose.yml` ይገለፃሉ።
+መያዣውን ለማግኘት `docker ps` ይጠቀሙ። የዳራ ፕሮግራሙን ከመተካትዎ በፊት በምስሉ ውስጥ ያለውን ዱካ ያረጋግጡ።
 
 ## ሊጣል በሚችል አውታረ መረብ ውስጥ የብሎክቼይን ጀነሲስን እንደገና ይፈጽሙ {#recommit-genesis-in-a-disposable-network}
 
-የአውታረ መረብ አቻ የብሎክቼይን ጀነሲስን የሚያጠናቅቀው ማከማቻው ባዶ ሲሆን ብቻ ነው። ሊጣል ለሚችል Docker አውታረ መረብ፣ ቁልሉን ያቁሙ፣ የተፈጠረውን ሁኔታ ያስወግዱ፣ የተፈረመውን የብሎክቼይን ጀነሲስ ቅርቅብ እንደገና ያድሱ ወይም ይተኩ እና እንደገና ይጀምሩ -
-
-```bash
-docker compose -f ./docker-compose.yml down
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
-
-ግዛቱ ተጠብቆ መቆየት ያለበት አውታረ መረብ ላይ የብሎክቼይን ጀነሲስን አይተኩ።
+ለአዲስ የመነሻ ብሎክ የአንጓው ማከማቻ ባዶ መሆን አለበት። ተመሳሳዩን አውታረ መረብ እንደገና ለማስኬድ `python3 poc.py down` እና ከዚያ `python3 poc.py up` ያሂዱ። `state/` ከአራቱ የDocker ማከማቻ ጥራዞች ጋር ያስቀምጡ።
 
 ## ብጁ ውቅረትን ተጠቀም {#use-custom-configuration}
 

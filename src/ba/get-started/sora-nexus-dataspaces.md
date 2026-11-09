@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
+translation_source_hash: ceff2952134931b4f1007a16e2cffba2ee720c5221d447b5c671f275a032ad3e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -24,7 +24,7 @@ Taira-ны integration test-тар, faucet-funded write canary-ҙар һәм dep
 
 |Аҙым |Taira Тестнет |Minamoto Майннет |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|Сеть торошон уҡый башлағыҙ |Ключһыҙ һорау `/status` |Ключһыҙ һорау `/status` |
+|Сеть торошон уҡый башлағыҙ |Ключһыҙ һорау `/status` | Тәүҙә хеҙмәттең адресын һәм TLS сертификатын тикшерегеҙ |
 |Мәғлүмәттәр киңлеген һайлағыҙ |Ҡушымтағыҙға идара ителеүсе lane кәрәкмәгән осраҡта асыҡ `universal`-ды ҡулланығыҙ |Бер үк мәғлүмәттәр киңлеген төп селтәр өсөн хуплау алынғандан һуң ғына ҡулланығыҙ |
 |Түләү активын алығыҙ .|Йәмәғәт Taira faucet-ты ҡулланығыҙ |Финансландырылған Minamoto иҫәбенән йәки раҫланған казначейлыҡ ағымынан XOR алыу |
 |Тест яҙған |Ҡулланығыҙ faucet менән тәьмин ителгән һынау XOR |Тест инструмент ҡулланырға ярамай; яҙған аҡса реаль XOR |
@@ -68,20 +68,10 @@ wonderland.universal
 
 ## 2. Халыҡ-ара Torii йомғаҡлау пунктын тикшерегеҙ {#_2-check-the-public-torii-endpoint}
 
-Ҡулланыусыны конфигурациялағансы, маҡсатлы һуңғы нөктәнең тере булыуын тикшерегеҙ.
-
-Taira өсөн:
+Taira һынау селтәренең торошон `curl` һәм `jq` ярҙамында тикшерегеҙ. Бының өсөн асҡыстар ҙа, урындағы төйөн дә кәрәкмәй.
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-Minamoto өсөн:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -94,7 +84,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-Төп селтәр өсөн `https://minamoto.sora.org/status` менән шул уҡ команданы ҡулланығыҙ.
+Minamoto менән эшләр алдынан төп селтәр хеҙмәтенең адресын операторҙан белешегеҙ һәм TLS сертификатының хост исеменә тап килеүен тикшерегеҙ.
 
 ## Агенттар өсөн Taira MCP {#taira-mcp-for-agents}
 
@@ -135,7 +125,7 @@ Iroha клиенттары, транзакция төҙөүселәре, диа�
 2. Башта агентҡа иң бәләкәй клиент юлына яҙырға ҡуш: статус тикшереүе, иҫәп-хисап эҙләү, псевдонимы менән хәл итеү, йәки баланс эҙләү.
 3. Транзакция төҙөү кодын өҫтәү бары тик уҡырға ғына саҡырыуҙар Taira менән эшләгәндән һуң ғына.
 4. Тормош селтәре һынауҙарын һайлағыҙ, мәҫәлән `TAIRA_LIVE=1` артында тотоноғоҙ, шуға күрә ғәҙәти берәмектәге һынау барышында тест селтәренең аҡсаһы бер ҡасан да сарыф ителмәй йәки селтәрҙең булыуына бәйле.
-5. Агенттан ниндәй ҙә булһа транзакцияны тапшыр алдынан селтәрҙең тамыр, сылбыр, хакимиәт иҫәбенә, инструкцияларға йомғаҡ яһау, түләү активтары һәм көтөлә торған дәүләт үҙгәрештәрен хәбәр итеүҙе талап итергә.
+5. Агент транзакция ебәрер алдынан селтәрҙең төп адресын, сылбырҙы, вәкәләтле иҫәпте, инструкцияның ҡыҫҡаса йөкмәткеһен, комиссия түләнә торған активты һәм реестр торошонда көтөлгән үҙгәреште күрһәтергә тейеш.
 6. CI йәки төп селтәрҙәге эш ағымдарына күсерер алдынан, йәшерен эшкәртеү, ҡабаттан һынау тәртибе, idempotency һәм кире ҡағыу менән шөғөлләнеү өсөн булдырылған кодты ҡарағыҙ.
 
 Ҡушымталарҙы эшләү өсөн файҙалы, тик уҡыуға тәғәйенләнгән MCP ҡоралдарына иҫәп активтарын эҙләү, псевдонимды асыҡлау, блокты һәм транзакцияны эҙләү, транзакциялар исемлеген алыу һәм конвейер торошон тикшереү инә. Ҡултамғалы йөк ебәрер алдынан ошо ҡоралдар менән һөҙөмтәгә ышанысты арттырығыҙ.
@@ -171,7 +161,7 @@ Raw Iroha транзакциялар өсөн, һатыу конвертын т�
 - `Committed`, `Applied`, `Rejected` йәки `Expired` кеүек терминал статусы.
 - Блок йәки эксперименталь деталдәр, әгәр улар бар булһа
 - тикшеренеүҙәр һөҙөмтәләре
-- кире ҡағыу хәбәрен һәм уңышһыҙлыҡ рөхсәт, түләүҙәр, валидация, иҫкергән дәүләт йәки һуңғы пункттың булыуы кеүек күренәме
+- кире ҡағыу тураһындағы хәбәр һәм сәбәптең рөхсәттәргә, комиссияға, тикшереүгә, реестрҙың иҫкергән торошона йәки хеҙмәттең ҡулайлы булыуына бәйле булыу-булмауы
 
 Миҫал һаҡланған тиҙ арала:
 
@@ -197,19 +187,7 @@ Taira MCP-ны асыҡ һынау селтәре контроле өҫкө йө
 
 ## Хәҙер һынап ҡарағыҙ {#toy-examples-you-can-try-now}
 
-Был миҫалдар, әгәр билдәләнмәһә, уҡырға ғына мөмкин. Улар асҡыстар тыуҙырғанға тиклем эшләй һәм ике йәмәғәт селтәренә лә ҡаршы хәрәкәт итеү хәүефһеҙ.
-
-Taira тест селтәрен һәм Minamoto төп селтәрҙең һаулығын сағыштырығыҙ:
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+Был миҫалдар иҫәп яҙмаһының асҡыстарын ҡулланмайынса Taira селтәренән мәғлүмәт уҡый.
 
 Taira асыҡ мәғлүмәттәр киңлектәре юлдары исемлеген яҙығыҙ:
 
@@ -217,16 +195,7 @@ Taira асыҡ мәғлүмәттәр киңлектәре юлдары исем
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-Төп селтәр күренеше кәрәк саҡта Minamoto менән шул уҡ команданы үтәгеҙ:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -235,24 +204,16 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -555,6 +516,8 @@ Taira тест селтәре фонды өсөн генә тәғәйенлән�
 
 ## 5. Minamoto клиент конфигурацияһын булдырыу. {#_5-create-a-minamoto-client-config}
 
+Minamoto менән эшләр алдынан төп селтәр хеҙмәтенең адресын операторҙан белешегеҙ һәм TLS сертификатының хост исеменә тап килеүен тикшерегеҙ.
+
 Minamoto өсөн айырым асҡыс парын ҡулланығыҙ. Taira асҡыстарын төп селтәр өсөн ҡабатланмағыҙ.
 
 `minamoto.client.toml` булдырыу:
@@ -620,7 +583,7 @@ iroha --config ./taira.client.toml \
   app alias setup apply --plan-file ./taira-apps-domain.plan.json
 ```
 
-Minamoto өсөн айырым төп селтәрҙең ниәте һәм планын булдырыу һәм раҫлау. Пландар уларҙың сылбыр, вәкәләтле иҫәп, йәшәү дәүләте якорьына һәм ваҡытына бәйле, шуға күрә Taira планы тәҡдим ителә алмай йәки ҡабатлана алмай:
+Minamoto өсөн төп селтәрҙә үтәләсәк ғәмәлгә айырым ниәт һәм план төҙөгөҙ һәм раҫлағыҙ. Һәр план үҙ сылбырына, вәкәләтле иҫәпкә, реестрҙың ағымдағы торошон билдәләгән һылтанмаға һәм үтәү ваҡытына бәйле. Шуға күрә Taira планын төп селтәргә күсереп йәки ҡабатлап ҡулланып булмай.
 
 ```bash
 iroha --config ./minamoto.client.toml \

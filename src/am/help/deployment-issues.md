@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 3ac88d01410d26915299d64cf0a4fa0693ad92373f6a172acb67edc4fcbefe85
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -39,13 +39,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker እና ያፃፉ {#docker-and-compose}
 
-የትእዛዝ መስመር ክርክሮች እና አዋቅር ፋይሎች ከተፈተሸው ኮድ ጋር እንዲዛመዱ ከአሁኑ Kagami localnet ውፅዓት ያቅርቡ
+ከአንድ የምንጭ ኮድ ስሪት በተገነቡ ሁለትዮሽ ፋይሎች አራት አረጋጋጭ አንጓዎችን በDocker ለማስኬድ የ[አስጀምር Iroha 3](/am/get-started/launch-iroha.md) መመሪያን ይከተሉ።
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+የአረጋጋጮቹን መዝገቦች ለማየት ከመሣሪያው ማውጫ `python3 poc.py logs` ያሂዱ።
 
 የቅንብር ማሰማራት ከጀመረ እና ከቆመ፣ የዴሞን ምዝግብ ማስታወሻዎችን ለሚከተሉት ይፈትሹ -
 
@@ -54,7 +50,7 @@ docker compose -f ./docker-compose.yml up
 - በኮንቴይነር አውታረመረብ ውስጥ ብቻ የሚሰሩ የማስታወቂያ P2P አድራሻዎች
 - የብሎክቼይን ጀነሲስን እንደገና ካዳበረ በኋላ የአካባቢ መጠን እንደገና ጥቅም ላይ ይውላል
 
-አዲስ የብሎክቼይን ጀነሲስ ሲሞክሩ ቁልሉን እንደገና ከመጀመርዎ በፊት የድሮውን Kura ጥራዞች ያስወግዱ። የድሮውን የብሎክ ማከማቻ በአዲስ blockchain ጀነሲስ ማቆየት እንደገና ማጫወት እንዲሳካ ያደርገዋል።
+ለአዲስ የመነሻ ብሎክ የአንጓው ማከማቻ ባዶ መሆን አለበት። ተመሳሳዩን አውታረ መረብ እንደገና ለማስኬድ `python3 poc.py down` እና ከዚያ `python3 poc.py up` ያሂዱ። `state/` ከአራቱ የDocker ማከማቻ ጥራዞች ጋር ያስቀምጡ።
 
 ## ኩበርኔትስ {#kubernetes}
 

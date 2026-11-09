@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /reference/binaries.md
-translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
+translation_source_hash: 1bf3f4697e44b3c8ef571eb9e5c0e301a1acbf76aa1c0666b3cd86e108bba6bf
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -50,27 +50,7 @@ cargo run --bin kagami -- --help
 
 ## Image de conteneur Docker {#docker-image}
 
-L'espace de travail en amont utilise `kagami localnet` et `kagami docker` pour générer des fichiers Docker Compose qui correspondent au code extrait. L'image `hyperledger/iroha:dev` peut être utilisée avec ces fichiers générés.
-
-Exécutez le CLI dans un conteneur :
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-Exécutez Kagami dans un conteneur :
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-Pour le démarrage d'un pair réseau, générez d'abord un réseau local et un fichier Compose :
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Suivez le guide [Lancer Iroha 3](/fr/get-started/launch-iroha.md) pour compiler et lancer quatre validateurs dans Docker avec des binaires issus de la même révision.
 
 ## Quel binaire devrais-je utiliser ? {#which-binary-should-i-use}
 

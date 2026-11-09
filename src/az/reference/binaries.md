@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /reference/binaries.md
-translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
+translation_source_hash: 1bf3f4697e44b3c8ef571eb9e5c0e301a1acbf76aa1c0666b3cd86e108bba6bf
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -50,27 +50,7 @@ cargo run --bin kagami -- --help
 
 ## Docker Şəkil {#docker-image}
 
-Yuxarı axın iş sahəsi `kagami localnet` və `kagami docker`-dən istifadə edərək yoxlanmış kod ilə uyğun gələn Docker Compose faylları yaradır. `hyperledger/iroha:dev` şəkli həmin yaradılmış fayllarla istifadə oluna bilər.
-
-Konteynerdə CLI-i işə salın:
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-Bir konteynerdə Kagami-i işə salın:
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-Şəbəkə həmkarını işə salmaq üçün əvvəlcə bir localnet və Compose faylı yaradın:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Docker-də eyni reviziyadan yığılmış icra faylları ilə dörd təsdiqləyici qovşaq qurub işə salmaq üçün [Iroha 3-i işə sal](/az/get-started/launch-iroha.md) təlimatına əməl edin.
 
 ## Hansı ikili fayldan istifadə etməliyəm? {#which-binary-should-i-use}
 

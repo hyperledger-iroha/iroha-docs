@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
+translation_source_hash: ceff2952134931b4f1007a16e2cffba2ee720c5221d447b5c671f275a032ad3e
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -24,7 +24,7 @@ SORA 3 هو مسار النشر العام المواجه للتطبيق الم�
 
 |خطوة| Taira الشبكة التجريبية| Minamoto الشبكة الرئيسية |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|ابدأ في قراءة حالة الشبكة|استعلام `/status` بدون مفاتيح|استعلام `/status` بدون مفاتيح|
+|ابدأ في قراءة حالة الشبكة|استعلام `/status` بدون مفاتيح| تحقّق أولاً من عنوان الخدمة وشهادة TLS |
 |اختر فضاء البيانات|استخدم `universal` العام ما لم يكن تطبيقك بحاجة إلى مسار تنفيذ مُدار|استخدم نفس مساحة البيانات فقط بعد الموافقة على الشبكة الرئيسية|
 |الحصول على أصل الرسوم|استخدم خدمة تمويل شبكة الاختبار العامة Taira|استلام XOR من حساب Minamoto ممول أو تدفق خزينة معتمد|
 | عمليات كتابة اختبارية | استخدم XOR اختباريًا ممولًا من خدمة التمويل | لا تستخدم أدوات الاختبار؛ فعمليات الكتابة تنفق XOR حقيقيًا |
@@ -68,20 +68,10 @@ wonderland.universal
 
 ## 2. تحقق من نقطة النهاية العامة Torii API {#_2-check-the-public-torii-endpoint}
 
-تحقق من أن نقطة النهاية المستهدفة API تعمل قبل تكوين موقع التوقيع التشفيري.
-
-لـ Taira:
+استعلم عن حالة شبكة Taira التجريبية باستخدام `curl` و`jq`. يمكنك إجراء هذا الفحص من دون مفاتيح أو عقدة محلية.
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-لـ Minamoto:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -94,7 +84,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-استخدم نفس الأمر مع `https://minamoto.sora.org/status` للشبكة الرئيسية.
+قبل استخدام Minamoto، تأكّد من عنوان خدمة الشبكة الرئيسية لدى المشغّل، وتحقّق من أن شهادة TLS تطابق اسم المضيف.
 
 ## Taira MCP للوكلاء {#taira-mcp-for-agents}
 
@@ -197,19 +187,7 @@ verification result.
 
 ## أمثلة توضيحية يمكنك تجربتها الآن {#toy-examples-you-can-try-now}
 
-هذه الأمثلة للقراءة فقط ما لم يُذكر خلاف ذلك. تعمل قبل أن تقوم بتوليد المفاتيح وهي آمنة للتشغيل على كل من الشبكات العامة.
-
-قارن بين صحة testnet Taira و mainnet Minamoto:
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+تستعلم هذه الأمثلة عن بيانات Taira للقراءة فقط من دون استخدام مفاتيح الحساب.
 
 سرد مسارات تنفيذ فضاء البيانات العامة المعروضة بواسطة Taira:
 
@@ -217,16 +195,7 @@ done
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-قم بتشغيل نفس الأمر ضد Minamoto عندما تحتاج إلى عرض الشبكة الرئيسية:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -235,24 +204,16 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -554,6 +515,8 @@ with urllib.request.urlopen(request) as res:
 خدمة التمويل مخصّصة لأموال شبكة Taira التجريبية فقط. لا تستخدم XOR التجريبي أو حسابات خدمة التمويل أو موقّعي اختبار Taira في تدفقات Minamoto.
 
 ## 5. إنشاء إعدادات عميل Minamoto {#_5-create-a-minamoto-client-config}
+
+قبل استخدام Minamoto، تأكّد من عنوان خدمة الشبكة الرئيسية لدى المشغّل، وتحقّق من أن شهادة TLS تطابق اسم المضيف.
 
 استخدم زوج مفاتيح منفصل لـ Minamoto. لا تعيد استخدام مفاتيح Taira للشبكة الرئيسية.
 

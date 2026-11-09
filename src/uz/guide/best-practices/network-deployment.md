@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /guide/best-practices/network-deployment.md
-translation_source_hash: 7839268b8c1f6700b0c26652e3308fa4e8acef4717d8527c609b6f30fb8c84ab
+translation_source_hash: 489b174b9bdd21a4c4c2c896911686a6020e2833c8808304cfd37a5bf31c7780
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -25,6 +25,8 @@ Buni [Tarmoqni joylashtirish uchun kalitlar](/uz/guide/configure/keys-for-networ
 - Kamida to‘rt validatorni kamida Bizans nuqsoniga chidamli joylashtirish uchun ishlating.
 - Qobiliyat rejalashtirishda validatorlarni kuzatuvchilardan ajrating. Kuzatuvchilar ovoz bermaydi, taklif kiritsa yoki yig‘maydi, lekin ular hali ham xotirani, blok sinxronizatsiyasini va tarmoq kengligini iste’mol qiladi.
 - Blokcheyn boshlanishi, ijrochisi va topologiya o‘zgarishlarini yagona ishtirokchi tahrirlari sifatida emas, balki muvofiqlashtirilgan migratsiyalar sifatida ko‘ring.
+
+Tarmoqni Docker yordamida ishga tushirish va bitta validator to‘xtatilgach tarmoqning tiklanishini sinash uchun [to‘rtta validatorni ishga tushirish qo‘llanmasidan](/uz/get-started/launch-iroha.md) foydalaning.
 
 Qarang [blokcheyn genesis](/uz/reference/genesis.md), [tarmoq tengdosh boshqaruvi](/uz/guide/configure/peer-management.md), va [Ijro etish va o‘lchovlar](/uz/guide/advanced/metrics.md#node-count-and-quorum).
 

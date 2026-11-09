@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: 9d153d9cb8ce0341b35ba5a7e3823198e58464768e2a9a92ff8a5723f85e9351
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -16,27 +16,9 @@ translation_engine: bing-translator-llm
 
 Когда вы используете версию Docker Compose Iroha, вы можете столкнуться с проблемой, когда один из контейнеров сетевого узла завершает работу с ошибкой `Failed to deserialize raw genesis block`. Это обычно означает, что сетевой узел, подписанная начальная транзакция блокчейна и сгенерированная конфигурация были созданы разными версиями или профилями Iroha.
 
-Проверьте неисправность с помощью этих шагов:
+В каталоге комплекта выполните `python3 poc.py logs`, чтобы просмотреть журналы валидаторов. В руководстве [Запуск Iroha 3](/ru/get-started/launch-iroha.md) описано, как собрать и запустить четыре валидатора в Docker, используя двоичные файлы одной ревизии.
 
-1. Используйте `docker ps`, чтобы проверить текущие контейнеры. В зависимости от созданного профиля вы обычно увидите `hyperledger/iroha:dev` контейнеров. Профиль по умолчанию Docker Compose содержит четыре контейнера сетевых узлов, хотя ваш сгенерированный `docker-compose.yml` может отличаться.
-
-2. Проверьте журналы и найдите ошибку `Failed to deserialize raw genesis block`. Если вы запустили свой Iroha в режиме демона с `docker compose up -d`, используйте команду `docker compose logs`.
-
-Способ устранения такой проблемы зависит от использования Iroha. Если это базовая демонстрация и вам не нужно сохранять данные сетевых узлов, сгенерируйте заново подходящую локальную сеть или пакет Docker Compose с помощью Kagami:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
-```
-
-Затем удалите состояние старого контейнера и перезапустите с восстановленных файлов `genesis.signed.nrt`, сетевого узла `config.toml` и `client.toml`.
-
-Если вам нужно восстановить данные экземпляра Iroha, выполните следующие действия:
-
-1. Подключите второго сетевого узла Iroha, который будет копировать данные с первого (неисправного) сетевого узла.
-2. Подождите, пока новый сетевой узел не синхронизирует данные с первым сетевым узлом.
-3. Оставьте нового сетевого узла активным.
-4. Обновляйте только файлы генезиса блокчейна и конфигурационные файлы первого узла сети в рамках согласованной миграции.
+Чтобы перезапустить ту же сеть, выполните `python3 poc.py down` и `python3 poc.py up`. Храните `state/` вместе с четырьмя томами Docker этой сети.
 
 ::: info
 
