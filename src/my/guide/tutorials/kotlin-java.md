@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Kotlin၊ Android နှင့် Java {#kotlin-android-and-java}
 
-နိုင်ငံတကာ Kotlin SDK ကို default client stack ဖြစ်ပါတယ် JVM နှင့် Android Applications များ။ ၎င်းသည် `kotlin/` အထဲမှာ Iroha repository ကို platform ကွဲပြားပြီး portable code မရရှိနိုင်အောင် Android မှီခိုမှု။
+Kotlin SDK သည် JVM နှင့် Android အက်ပ်များအတွက် ပုံမှန် client နည်းပညာအစုဖြစ်သည်။ Iroha သိုလှောင်ရုံ၏ `kotlin/` အောက်တွင် ရှိပြီး အခြားပလက်ဖောင်းသို့ ရွှေ့နိုင်သောကုဒ်ထဲသို့ Android မှီခိုမှုများ မဝင်စေရန် ပလက်ဖောင်းအလိုက် ခွဲထားသည်။
 
 ## မော်ဂျူးများ {#modules}
 
@@ -77,4 +77,4 @@ Kotlin SDK တွင် အောက်ပါအချက်များပါ�
 - Android key store နှင့် device telemetry integration များ
 - Android အွန်လိုင်း QR၊ နီးစပ်ရာနှင့် NFC သယ်ယူပို့ဆောင်ရေး
 
-[Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md) ကို ကြည့်ပြီး module-specific APIs နဲ့ exact build command တွေကို ကြည့်ပါ။
+မော်ဂျူးတစ်ခုချင်းစီ၏ APIs နှင့် တိကျသော တည်ဆောက်ရေးအမိန့်များအတွက် [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md) ကို ကြည့်ပါ။

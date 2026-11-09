@@ -18,7 +18,7 @@ Iroha သင်ကြားမှု လုပ်ငန်းများ၏ အ
 |[Mint/Burn](#mint-burn) |Mint/burn ကိန်းဂဏန်းအရင်းအမြစ်များ (သို့) trigger ထပ်ကျော့ခြင်း။ |
 |[SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) |blockchain object metadata ကို update လုပ်ပါ။ |
 |[SetParameter](#setparameter) |Chainwide parameter ကို သတ်မှတ်ပါ။ |
-|[ထောက်ပံ့မှု / ပြန်လည်သိမ်းဆည်းခြင်း](#grant-revoke) |ခွင့်ပြုချက်များနှင့် အခန်းကဏ္ဍများကို ပေးပါ (သို့) ဖယ်ရှားပါ|
+|[Grant/Revoke](#grant-revoke) |ခွင့်ပြုချက်များနှင့် အခန်းကဏ္ဍများကို ပေးပါ (သို့) ဖယ်ရှားပါ|
 |[လွှဲပြောင်းခြင်း](#transfer) |ပိုင်ဆိုင်မှု သို့မဟုတ် အရင်းအမြစ်တန်ဖိုး လွှဲပြောင်းခြင်း။ |
 |[ရင်းနှီးမြှုပ်နှံမှု (native escrow) နှင့် အရင်းအမြစ်ပိတ်ခြင်း](#native-escrow-and-asset-locks) |ပရိုတိုကောလစ် ထိန်းသိမ်းမှုမှာ ကိန်းဂဏန်းအရင်းအမြစ်တွေကို Lock လုပ်ပါ။|
 |[အက်တမ် ပုဂ္ဂလိက ဘဏ္ဍာရေး ငွေပေးချေမှု ဖြေရှင်းခြင်း](#atomic-private-settlement) |Confidential protocol data groups နဲ့ atomic bundles တွေကို ထိန်းချုပ်ပါ။|
@@ -40,7 +40,7 @@ Iroha ညွှန်ကြားမှု လုပ်ဆောင်ချက�
 |[Mint/Burn](#mint-burn) |ကိန်းဂဏန်းအရင်းအမြစ်တွေ၊ အစပျိုးမှု ထပ်ခါထပ်ခါ |အကောင့်များ (သို့) trigger များ|
 |[SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) |[metadata များ](./metadata.md) ရှိသော အရာဝတ္ထုများ: ဒိုမင်များ၊ အကောင့်များ၊ အရင်းအမြစ်ဆိုင်ရာ အဓိပ္ပါယ်ဖွင့်ဆိုချက်များ NFTs၊ RWAs၊ trigger များ |                      |
 |[SetParameter](#setparameter) |ကွင်းဆက် parameters |                      |
-|[ထောက်ပံ့မှု / ပြန်လည်သိမ်းဆည်းခြင်း](#grant-revoke) |[ကဏ္ဍများ၊ ခွင့်ပြုချက် လက်မှတ်များ](/my/blockchain/permissions.md) |အကောင့်များ သို့မဟုတ် အခန်းကဏ္ဍများ |
+|[Grant/Revoke](#grant-revoke) |[ကဏ္ဍများ၊ ခွင့်ပြုချက် လက်မှတ်များ](/my/blockchain/permissions.md) |အကောင့်များ သို့မဟုတ် အခန်းကဏ္ဍများ |
 |[လွှဲပြောင်းခြင်း](#transfer) |ဒိုမင်များ၊ အရင်းအမြစ် အဓိပ္ပါယ်ဖွင့်ဆိုချက်များ, ကိန်းဂဏန်းအရင်းအမြစ်များ NFTs |အကောင့်များ|
 |[ရင်းနှီးမြှုပ်နှံမှု (native escrow) နှင့် အရင်းအမြစ်ပိတ်ခြင်း](#native-escrow-and-asset-locks) |ကိန်းဂဏန်းအရ အရင်းအမြစ် အချုပ်အခြာများ၊ ရင်းနှီးမြှုပ်နှံမှု ပိတ်သိမ်းချက်များ၊ အမည်မသိ အချုပ်အခမဲ့ cryptographic commitment values များ |ဝယ်ယူသူတွေ၊ ခရီးသွားနေရာတွေ (သို့) အငြင်းပွားမှု ကွဲပြားမှု |
 |[အက်တမ် ပုဂ္ဂလိက ဘဏ္ဍာရေး ငွေပေးချေမှု ဖြေရှင်းခြင်း](#atomic-private-settlement) |လမ်းကြောင်းကန့်သတ်ထားတဲ့ လျှို့ဝှက် ပရိုတိုကော ဒေတာအုပ်စုတွေ၊ မူဝါဒလည်ပတ်မှု၊ ပြီးဆုံးတဲ့ ဘက်လ်များနဲ့ ဖျက်သိမ်းရေး အမှတ်တံဆိပ်တွေပါ။|                      |
@@ -59,7 +59,7 @@ ISI ကို ကြည့်ဖို့ အခြားနည်းလမ်�
 |NFT |register/unregister NFTs, transfer ownership, update metadata  မှတ်ပုံတင်ခြင်းမရှိ|
 |RWA |စာရင်းအင်း၊ လွှဲပြောင်းမှုအရေအတွက်၊ ထိန်းသိမ်း/လွှတ်တင်ခြင်း၊ အေးခဲခြင်း/အေးဆေးခြင်း၊ ပြန်လည်ဖြည့်ဆည်းခြင်း၊ ပေါင်းစပ်ခြင်း၊ မီတာဒေတာများနှင့် ထိန်းချုပ်ချက်များကို ပြင်ဆင်ခြင်း |
 |Trigger ကို|register/unregister, mint/burn trigger repetitions, execute trigger, update trigger metadata များကို မှတ်ပုံတင်ရန်|
-|ကမ္ဘာကြီး|Register/unregister network peers and roles, parameters set, executor ကို upgrade လုပ်ပေး |
+| ကမ္ဘာလုံးဆိုင်ရာ | Peer များနှင့် role များကို မှတ်ပုံတင်ခြင်း/ပယ်ဖျက်ခြင်း၊ ပါရာမီတာများ သတ်မှတ်ခြင်း၊ executor ကို အဆင့်မြှင့်ခြင်း |
 
 ## CLI ဥပမာများ {#cli-examples}
 
@@ -79,7 +79,7 @@ export PEER_KEY="<BLS_PUBLIC_KEY_MULTIHASH>"
 export PEER_POP="<PROOF_OF_POSSESSION_HEX>"
 ```
 
-အများပြည်သူ Taira testnet ကို ပစ်မှတ်ထားတဲ့အခါ Taira client configuration ကိုသုံးပါ။ အခွန်ပေးတဲ့ နမူနာတွေကို မလုပ်ခင် testnet ဘဏ္ဍာရေး ဝန်ဆောင်မှု အကူအညီကို [Testnet XOR ကို Taira သို့ခေါ်ယူပါ။](/my/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) မှ `taira_faucet_claim.py` အဖြစ် သိမ်းဆည်းပြီး testnet ဘ႑ာရေးဝန်ဆောင်မှုကနေ testnet XOR ကို တောင်းဆိုလိုက်ပါ။
+အများသုံး Taira testnet ကို ပစ်မှတ်ထားသောအခါ Taira client ပြင်ဆင်သတ်မှတ်မှုကို သုံးပါ။ အခကြေးငွေပေးရသော ဥပမာများကို မလုပ်ဆောင်မီ [Taira တွင် Testnet XOR ရယူခြင်း](/my/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) မှ faucet အကူပရိုဂရမ်ကို `taira_faucet_claim.py` အဖြစ် သိမ်းပြီး faucet မှ testnet XOR ကို တောင်းယူပါ -
 
 ```bash
 export TAIRA_ACCOUNT_ID="<TAIRA_I105_ACCOUNT_ID>"
@@ -126,7 +126,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 မှတ်ပုံတင်လို့ရတဲ့ အရာတိုင်းဟာ `Registrable` နဲ့ `Identifiable` နှစ်ခုစလုံးပါ။ ဒါပေမဲ့ `Identifiable` ရှိသမျှဟာ `Registrable` မဟုတ်ဘူး။ အများစုဟာ တိုက်ရိုက်မှတ်ပုံတင်ခံရပေမဲ့ တချို့ကိစ္စတွေမှာ blockchain ထဲက ကိုယ်စားလှယ်မှုက သိသိသာသာ ပိုများတဲ့ ဒေတာတွေရှိပါတယ်။ လုံခြုံရေးနှင့် စွမ်းဆောင်ရည်ဆိုင်ရာ အကြောင်းပြချက်များအတွက် ကျွန်ုပ်တို့သည် ဤကဲ့သို့သော ဒေတာဖွဲ့စည်းမှု (ဥပမာ `NewAccount`) များအတွက် ဆောက်လုပ်သူများကို အသုံးပြုကြပြီး ကွန်ရက် peer မှတ်ပုံတင်တွင် ပိုင်ဆိုင်မှုကို သက်သေပြရန် သီးသန့် ညွှန်ကြားချက်တစ်ခုရှိသည်။ ပုံမှန်အားဖြင့် မှတ်ပုံတင်နိုင်သည့် အရာတိုင်းကိုလည်း မှတ်ပုံတင်ခြင်းမရှိနိုင်ပေ။ ဒါပေမဲ့ ဒါက ခက်ခဲပြီး မြန်ဆန်တဲ့ စည်းကမ်းမဟုတ်ပါ။
 
-Account များ၊ Asset Definitions NFTs ၊ Network Peers, Roles နှင့် Trigger များကို မှတ်ပုံတင်နိုင်သည်။ Domain Setup အသုံးပြုသည် `EnsureAlias`; Raw `Register::Domain` အသုံးဝင်မှု load ကို genesis/bootstrap. network peer registration uses `RegisterPeerWithPop`, which carries a proof of possession for the network peer key. entity names on restrictions on entities names ကိုသတ်မှတ်ထားသော ကန့်သတ်ချက်များအကြောင်းသိရှိလိုပါက ကျွန်ုပ်တို့၏ [ညီလာခံအမည်ပေးခြင်း](/my/reference/naming.md) ကိုကြည့်ပါ။
+အကောင့်များ၊ ပိုင်ဆိုင်မှုသတ်မှတ်ချက်များ၊ NFTs များ၊ peer များ၊ role များနှင့် trigger များကို မှတ်ပုံတင်နိုင်သည်။ Domain တည်ဆောက်မှုသည် `EnsureAlias` ကို သုံးသည်။ `Register::Domain` payload အကြမ်းကို genesis သို့မဟုတ် ကနဦးတည်ဆောက်မှုအတွက်သာ သီးသန့်ထားသည်။ Peer မှတ်ပုံတင်မှုသည် peer ကီး ပိုင်ဆိုင်ကြောင်း အထောက်အထားပါသော `RegisterPeerWithPop` ကို သုံးသည်။ အရာဝတ္ထုအမည်များအပေါ် ကန့်သတ်ချက်များကို သိရှိရန် ကျွန်ုပ်တို့၏ [အမည်ပေး စည်းမျဉ်းများ](/my/reference/naming.md) ကို ကြည့်ပါ။
 
 RWA အပိုဒ်များကို သီးသန့် `RegisterRwa` ညွှန်ကြားချက်ဖြင့် ဖန်တီးထားသည်။ လက်ရှိကုဒ်တွင် `UnregisterRwa` ညွှန်ပြချက်ကို ဖော်ပြခြင်းမရှိပေ။ `RedeemRwa` ကို ကိုယ်စားပြုသည့် ပမာဏကို ဖျက်သိမ်းရန် အသုံးပြုပါ။
 
@@ -248,7 +248,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   ledger peer unregister --key "$PEER_KEY"
 ```
 
-## Mint/Burn {#mint-burn}
+## ပိုင်ဆိုင်မှု ထပ်မံထုတ်ဝေခြင်းနှင့် ဖျက်သိမ်းခြင်း {#mint-burn}
 
 ထုတ်ဝေခြင်းနှင့် ဖျက်ဆီးခြင်းသည် ကိန်းဂဏန်းအရင်းအမြစ်များကို ရည်ညွှန်းနိုင်ပြီး အကြိမ်ကြိမ်ပြုလုပ်မှု အနည်းအကျဉ်းရှိသည့် trigger များဖြစ်သည်။ asset တစ်ချို့ကို non-mintable အဖြစ်ကြေညာနိုင်သည်မှာ မှတ်ပုံတင်ပြီးနောက်တစ်ကြိမ်သာ ထုတ်ပြန်နိုင်ခြင်းဖြစ်သည်။
 
@@ -329,7 +329,7 @@ Native escrow ညွှန်ကြားချက်များသည် block
 
 စျေးကွက်အမှတ်တံဆိပ်သုံးစွဲမှု `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, နှင့် `ResolveEscrowDispute`. ယေဘုယျ အရင်းအမြစ်ပိတ်ခြင်း အသုံးပြုမှု `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, နှင့် `ExpireAssetLock`. Anonymous escrow ဟာ စျေးကွက်ရဲ့ သက်တမ်း စက်ဝန်းကို ပုံဖော်ပါတယ်။ `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, နှင့် `ResolveAnonymousEscrowDispute`.
 
-ဤ ISIs များမှာ လက်ရှိတွင်ပထမတန်းစား CLI commands မရှိပါ။ ရိုက်နှိပ်ထားသော SDK builders သို့မဟုတ် serialized instruction payloads ကိုအသုံးပြုပြီး ဘဝပတ်လည် အသေးစိတ်၊ ခွင့်ပြုချက်များ၊ မေးမြန်းမှုများ၊ အဖြစ်အပျက်များနှင့် Rust နမူနာများအတွက် [Native Asset Escrow](/my/blockchain/escrow.md) ကိုကြည့်ပါ။
+ဤ ISIs များမှာ လက်ရှိတွင်ပထမတန်းစား CLI commands မရှိပါ။ ရိုက်နှိပ်ထားသော SDK builders သို့မဟုတ် serialized instruction payloads ကိုအသုံးပြုပြီး ဘဝပတ်လည် အသေးစိတ်၊ ခွင့်ပြုချက်များ၊ မေးမြန်းမှုများ၊ အဖြစ်အပျက်များနှင့် Rust နမူနာများအတွက် [ပိုင်ဆိုင်မှုများကို စံညွှန်ကြားချက်ဖြင့် ကြားခံထိန်းသိမ်းခြင်း](/my/blockchain/escrow.md) ကိုကြည့်ပါ။
 
 ## Atomic ပုဂ္ဂလိက ဘဏ္ဍာရေး ငွေပေးချေမှု ဖြေရှင်းခြင်း {#atomic-private-settlement}
 

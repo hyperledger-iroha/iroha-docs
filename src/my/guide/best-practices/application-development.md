@@ -12,12 +12,12 @@ Iroha Applications တွေက transaction behaviour ကို ရှင်း�
 
 ## Client ကို Setup လုပ်ခြင်း {#client-setup}
 
-- Application Source Code အပြင်မှာ Client Configuration ကို သိုလှောင်ပါ။ Chain ID Torii URL၊ Signing Account နဲ့ Transaction Settings တွေကို Environment-Specific Config ကနေ Load လုပ်ပါ။
+- client ပြင်ဆင်သတ်မှတ်ချက်ကို အက်ပ်ကုဒ်ပြင်ပတွင် သိမ်းပါ။ ဘလော့ခ်ချိန်း ID၊ Torii URL၊ လက်မှတ်ထိုးအကောင့်နှင့် transaction ဆက်တင်များကို ပတ်ဝန်းကျင်အလိုက် ပြင်ဆင်သတ်မှတ်ချက်မှ ဖတ်ယူပါ။
 - `client.toml` ဖိုင်များကို localnet, Taira, Minamoto နှင့် ပုဂ္ဂလိကွန်ရက်များအတွက် သီးခြားထားပါ။ ကူးယူထားသော testnet cryptographic signer သည် mainnet cryptographic signer ဖြစ်မလာသင့်ပါ။
 - Transaction lifetimes နဲ့ status timeouts တွေကို ကြံစည်စွာ သတ်မှတ်ပါ။ အရမ်းတိုတဲ့ ဘဝသက်တမ်းဟာ ပုံမှန်ကွန်ရက် စိတ်လှုပ်ရှားမှုအောက်မှာ ကုန်ဆုံးနိုင်ပြီး အရမ်းရှည်တာတစ်ခုကျတော့ duplicate submissions ကို ဆင်ခြင်ဖို့ ပိုခက်ခဲစေပါတယ်။
 - `nonce = true` ကို အကြိမ်ကြိမ်ပြုလုပ်သော ငွေပေးချေမှုမှာ cryptographic hash ကွဲပြားနေပါကသာ အသုံးပြုပါ။ idempotent စီးပွားရေးလုပ်ငန်းများအတွက် application request ID ကို သိမ်းဆည်းပြီး ပြန်လည်အသုံးပြုခြင်းဖြင့် retries များကို ခြေရာခံနိုင်သည်။
 
-လက်ရှိ TOML ကွင်းများအတွက် [Client Configuration ကို အသုံးပြုရန်](/my/guide/configure/client-configuration.md) ကိုကြည့်ပါ။
+လက်ရှိ TOML အကွက်များအတွက် [client ပြင်ဆင်သတ်မှတ်မှု](/my/guide/configure/client-configuration.md) ကို ကြည့်ပါ။
 
 ## ငွေပေးချေမှု {#transactions}
 
@@ -29,14 +29,14 @@ Iroha Applications တွေက transaction behaviour ကို ရှင်း�
 
 ငွေပေးချေမှု စက်ပစ္စည်းများအတွက် [ငွေပေးချေမှု](/my/blockchain/transactions.md) ကို ကြည့်ပါ။
 
-## မေးခွန်းများနှင့် ဖြစ်ရပ်များ {#queries-and-events}
+## query များနှင့် ဖြစ်ရပ်များ {#queries-and-events}
 
 - အပြောင်းအလဲ အသိပေးချက်များအတွက် လက်ရှိအခြေအနေနှင့်ဖြစ်ရပ်စီးကြောင်းများကို မေးမြန်းမှုများကို အသုံးပြုပါ။ ဖြစ်ရပ်ကိုင်တွယ်မှုကို အထပ်ထပ်ကျယ်ပြန့်သော မေးမြန်းမှုများဖြင့် အစားထိုးခြင်းကို ရှောင်ရှားပါ။
 - Account၊ asset နှင့် block listings ကဲ့သို့သော ကျယ်ပြန့်တဲ့ iterable queries များကို page လုပ်ပါ။
 - စာရင်းသွင်းခြင်းများနှင့် trigger များအတွက် သေးငယ်သော filter များကို ကြိုက်သည်။ ကျယ်ပြန့်သော filter များသည် ရောဂါရှာဖွေမှုအတွက် အသုံးဝင်သော်လည်း မလိုအပ်သော execution နှင့် client-side processing ကို ထည့်သွင်းနိုင်သည်။
-- API အဆုံးသတ်မှတ်ချက်ရှိမှုကို ရောဂါစစ်ဆေးဖို့ ပိုလွယ်အောင် စာရင်းထိုးထားတဲ့ ငွေချေးမှု စမ်းသပ်မှုတွေနဲ့ သီးခြားဖတ်လို့ရတဲ့ မီးခိုး စစ်ဆေးမှုတွေ ထားပါ။
+- endpoint ရရှိနိုင်မှုကို ပိုမိုလွယ်ကူစွာ စစ်ဆေးဖော်ထုတ်နိုင်ရန် ဖတ်ရှုခြင်းသက်သက် အခြေခံစစ်ဆေးမှုများကို လက်မှတ်ထိုးထားသော transaction စမ်းသပ်မှုများမှ သီးခြားထားပါ။
 
-[မေးခွန်းများ](/my/blockchain/queries.md)၊ [ဖြစ်ရပ်များ](/my/blockchain/events.md) နှင့် [Filters များ](/my/blockchain/filters.md) ကိုကြည့်ပါ။
+[query များ](/my/blockchain/queries.md)၊ [ဖြစ်ရပ်များ](/my/blockchain/events.md) နှင့် [စစ်ထုတ်ကိရိယာများ](/my/blockchain/filters.md) ကို ကြည့်ပါ။
 
 ## ကိုယ်စားလှယ်ကူညီသော ဖွံ့ဖြိုးမှု {#agent-assisted-development}
 
@@ -50,5 +50,5 @@ Taira MCP အလုပ်ဖြစ်စဉ်အတွက် [SORA ၃: Taira �
 ## SDK သန့်ရှင်းရေး {#sdk-hygiene}
 
 - Pin SDK နှင့် ဘိုင်နရီဗားရှင်းများကို [ကိုက်ညီမှု Matrix](/my/reference/compatibility-matrix.md) ကိုသုံးပြီး အတူတကွ အသုံးပြုပါ။
-- ထုတ်လုပ်ထားသော Client Code, snippets နှင့် နမူနာများကို Upstream Workspace revision နှင့်အတူ synchronized ထားပါ။
+- ထုတ်လုပ်ထားသော client ကုဒ်၊ ကုဒ်အပိုင်းအစများနှင့် နမူနာများကို သတ်မှတ်ချိတ်ထားသော မူရင်း workspace ဗားရှင်းနှင့် ကိုက်ညီအောင် ထိန်းသိမ်းပါ။
 - သင့်အက်ပ်လီကေးရှင်းပေါ် မူတည်တဲ့ စာဖတ်ရေး လမ်းကြောင်း အသေးဆုံးအတွက် ငွေကြေးပံ့ပိုးရေး ကုဒ်နဲ့ ပေါင်းစပ်မှု စမ်းသပ်မှုတွေအတွက် ယူနစ်စမ်းသပ်မှုတွေကို ထည့်သွင်းပါ။

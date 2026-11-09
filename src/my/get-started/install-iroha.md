@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 - [rustup](https://www.rust-lang.org/tools/install) ဆိုတော့ ပိတ်ထားတဲ့ `rust-toolchain.toml` toolchain (`1.93.1`) ကို အလိုအလျောက် တပ်ဆင်ထားတယ်။
 - `git`
-- Docker နှင့် Docker Compose တို့ကို ရွေးချယ်၍ ဒေသတွင်း multi-peer quickstart အတွက်။
+- စက်တွင်း peer အများအပြားဖြင့် အမြန်စတင်ရန် ရွေးချယ်နိုင်သော Docker နှင့် Docker Compose
 
 ## (၂) Workspace ကို clone လုပ်ပါ။ {#_2-clone-the-workspace}
 
@@ -55,16 +55,16 @@ cargo run --bin kagami -- --help
 
 ပုံမှန်သုံးတဲ့ ဘိုင်နရီ လေးခုက-
 
-- `iroha3d` ပုံမှန်ကွန်ရက် peer daemon အတွက်
-- `iroha3d_taira` အတွက် Single Protocol Standard Taira validator launcher အတွက်
+- ပုံမှန် peer နောက်ခံပရိုဂရမ် အတွက် `iroha3d`
+- စံ Taira ၏ validator စတင်ပေးသည့် ပရိုဂရမ်အတွက် `iroha3d_taira`
 - `iroha` အတွက် CLI ရယူခွင့် Torii လုပ်ငန်းရှင်များ API အဆုံးသတ်မှတ်ချက်များ
 - `kagami` ခလုတ်များအတွက်၊ ဘလော့ကချ်ဗီဇ နည်းပညာထုတ်ပြန်ချက်များအတွက်နှင့် localnet profile များအတွက်
 
 ## 5. Localnet နှင့် Docker Path ကို ရွေးချယ်ပါ။ {#_5-optional-localnet-and-docker-path}
 
-လက်ရှိ source-backed localnet flow ကို Kagami ကဖန်တီးထားသည်။ ၎င်းသည်ကွန်ရက် peer config များ၊ blockchain genesis artifacts များ၊ client config များ, helper script များနှင့် checked out code နှင့်အံတူသော optional Compose ဖိုင်ကိုရေးသားထားပါသည်။
+လက်ရှိ source နှင့် ကိုက်ညီသော localnet လုပ်ငန်းစဉ်ကို Kagami က ထုတ်လုပ်သည်။ ၎င်းက ထုတ်ယူထားသော ကုဒ်နှင့် ကိုက်ညီသည့် peer ပြင်ဆင်သတ်မှတ်မှုများ၊ genesis artifact များ၊ client ပြင်ဆင်သတ်မှတ်မှု၊ အကူ script များနှင့် ရွေးချယ်နိုင်သော Compose ဖိုင်ကို ရေးပေးသည် -
 
-- `kagami localnet` for native local network peer scripts
-- `kagami docker`အတွက် Docker Compose ကို localnet directory မှထုတ်လုပ်ထားသည်
+- စက်တွင်း peer များအတွက် မူရင်း script များကို `kagami localnet` ဖြင့် ထုတ်လုပ်ပါ။
+- Localnet ဖိုင်တွဲ မှ Docker Compose ထုတ်လုပ်ရန် `kagami docker` ကို သုံးပါ။
 
 [လွှတ်တင်ခြင်း Iroha 3](/my/get-started/launch-iroha.md) ကို ဆက်လုပ်ပါ။

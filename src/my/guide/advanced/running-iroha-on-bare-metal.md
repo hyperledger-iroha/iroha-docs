@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Iroha Bare Metal ပေါ်တွင် ပြေးဆွဲနေသည် {#running-iroha-on-bare-metal}
 
-Docker Compose မှတစ်ဆင့်အစား host များတွင် network peers ကို တိုက်ရိုက် run လုပ်ချင်ပါက ဤ workflow ကိုအသုံးပြုပါ။ လက်ရှိ source tree သည် Kagami generator များကိုပေးသည်၊ ၎င်းတို့သည် blockchain genesis, network peer config, client config နှင့် start/stop scripts တို့ကိုရေးသားသည်။
+Docker Compose မှတစ်ဆင့် မဟုတ်ဘဲ host များပေါ်တွင် peer များကို တိုက်ရိုက်လုပ်ဆောင်လိုသည့်အခါ ဤလုပ်ငန်းစဉ်ကို သုံးပါ။ လက်ရှိကုဒ်အစုတွင် ကိုက်ညီသော genesis၊ peer ပြင်ဆင်သတ်မှတ်ချက်များ၊ client ပြင်ဆင်သတ်မှတ်ချက်နှင့် စတင်/ရပ်တန့် script များကို ရေးထုတ်ပေးသော Kagami ထုတ်လုပ်ကိရိယာများ ပါဝင်သည်။
 
 ## (၁) ဘိုင်နရီများ တည်ဆောက်ခြင်း {#_1-build-the-binaries}
 
@@ -23,40 +23,40 @@ cargo build --release \
 
 ဒါကတော့:
 
-- `target/release/iroha3d` ကွန်ရက် peer daemon အတွက်
+- peer ၏ နောက်ခံဝန်ဆောင်မှုအတွက် `target/release/iroha3d`
 - `target/release/iroha` အတွက် CLI
 - `target/release/kagami` key, blockchain genesis နဲ့ localnet မျိုးဆက်အတွက်
 
 ## (၂) ဒေသတွင်းကွန်ရက်တစ်ခု ဖန်တီးခြင်း {#_2-generate-a-local-network}
 
-၄- peer Iroha 3 localnet ကိုဖန်တီးပါ။
+peer လေးခုပါသော Iroha 3 စက်တွင်းကွန်ရက်ကို ထုတ်လုပ်ပါ။
 
 ```bash
 target/release/kagami localnet --peers 4 --out-dir ./localnet
 ```
 
-Output directory မှာ generated `genesis.json`, `genesis.signed.nrt`, network peer `config.toml` files, `client.toml`, helper scripts နဲ့ အဲဒီ bundle အတွက် တိကျတဲ့ command တွေပါတဲ့ generated `README.md` ကို ထည့်ထားပါတယ်။
+ရလဒ်ဖိုင်တွဲတွင် ထုတ်လုပ်ထားသော `genesis.json`၊ `genesis.signed.nrt`၊ peer များ၏ `config.toml` ဖိုင်များ၊ `client.toml`၊ အကူ script များနှင့် ထိုအစုအတွက် တိကျသော command များပါသည့် ထုတ်လုပ်ထားသော `README.md` ပါဝင်သည်။
 
 ## (၃) ကွန်ရက်တူညီသူများကို စတင်ပါ။ {#_3-start-peers}
 
-Generated disposable localnet အတွက် generated script ကိုသုံးပါ။
+ထုတ်လုပ်ထားသော စွန့်ပစ်အစားထိုးနိုင်သည့် စက်တွင်းကွန်ရက်အတွက် ထုတ်လုပ်ထားသော script ကို သုံးပါ။
 
 ```bash
 ./localnet/start.sh
 ```
 
-Network peer တစ်ခုစီကို systemd ကဲ့သို့သော Process Manager ထဲသို့ wired လုပ်ရန်လိုအပ်ပါက, network peer တစ်ခုချင်းအတွက် `./localnet/README.md` တွင် မှတ်တမ်းတင်ထားသည့် launch command ကိုအသုံးပြုပါ။ network peerတစ်ခုစီ၏ `config.toml`၊ private key၊ storage directory နှင့် port များကို သီးခြားထားပါ။
+peer တစ်ခုချင်းကို systemd ကဲ့သို့ လုပ်ငန်းစဉ်စီမံခန့်ခွဲကိရိယာနှင့် ချိတ်ဆက်ရန် လိုအပ်ပါက peer တစ်ခုစီအတွက် `./localnet/README.md` တွင် မှတ်တမ်းတင်ထားသော စတင် command ကို သုံးပါ။ peer တစ်ခုစီ၏ `config.toml`၊ ကိုယ်ပိုင်ကီး၊ သိုလှောင်ဖိုင်တွဲနှင့် port များကို သီးခြားထားပါ။
 
 ## (၄) ကွန်ရက်ကို စီမံခန့်ခွဲခြင်း {#_4-operate-the-network}
 
-Generated client configuration ကို အသုံးပြုပါ
+ထုတ်လုပ်ထားသော client ပြင်ဆင်သတ်မှတ်ချက်ကို သုံးပါ။
 
 ```bash
 target/release/iroha --config ./localnet/client.toml ledger domain list all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 
-Generated localnet ကို:
+ထုတ်လုပ်ထားသော စက်တွင်းကွန်ရက်ကို အောက်ပါအတိုင်း ရပ်တန့်ပါ။
 
 ```bash
 ./localnet/stop.sh
@@ -65,8 +65,8 @@ Generated localnet ကို:
 ## (၅) ထုတ်ကုန် မှတ်စုများ {#_5-production-notes}
 
 - ထုတ်လုပ်မှုအတွက် ကိုယ်ပိုင် သော့သစ်တွေ ထုတ်ပြီး သိုလှောင်ရုံအပြင်မှာ သိမ်းပါ။
-- လက်မှတ်ရေးထိုးထားတဲ့ blockchain genesis transaction, topology, trusted network peers နဲ့ validator PoPs ကိုတော့ ကွန်ရက်ရဲ့ peer တွေအားလုံး သဘောတူအောင်လုပ်ပါ။
-- Network peer ကို တခြားစက်တွေကနေ မရောက်ရှိသင့်တဲ့ အချိန်မှာသာ host-local interfaces တွေကို Bind listener address တွေကို ဆက်သွယ်ပေးပါ။
+- peer အားလုံးတွင် တူညီသော လက်မှတ်ထိုးထားသည့် genesis transaction၊ ချိတ်ဆက်ဖွဲ့စည်းပုံ၊ ယုံကြည်ရသော peer များနှင့် validator များ၏ PoPs ရှိစေပါ။
+- peer ကို အခြားစက်များမှ မဆက်သွယ်သင့်သည့်အခါမှသာ နားထောင်လိပ်စာများကို host စက်တွင်း အင်တာဖေ့စ်များနှင့် ချိတ်ပါ။
 - Torii exposure, basic auth, TLS နဲ့ rate limiting အတွက် reverse proxy (သို့) firewall ကိုသုံးပါ။
 - ဘလော့ခ်ချ်ဖြစ်စဉ် (သို့) သဘောတူညီမှု ထိပ်ပိုင်းဆိုင်ရာ အပြောင်းအလဲများကို တစ်ပြိုင်နက် ဖိုင် တည်းဖြတ်ခြင်းမဟုတ်ဘဲ ညှိနှိုင်းထားတဲ့ ရွှေ့ပြောင်းမှုများအဖြစ် ရှုမြင်ပါ။
 

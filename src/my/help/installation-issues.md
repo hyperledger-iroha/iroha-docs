@@ -30,7 +30,7 @@ cargo metadata --no-deps
 
 `cargo metadata` ပျက်ကွက်ပါက `pnpm refresh:iroha --source /path/to/iroha` ကိုမဖွင့်ခင် ဒေသတွင်း toolchain ကိုပြင်ဆင်ပါ။ အကြောင်းက update က လက်ရှိ data-model schema ကိုဖန်တီးဖို့ Kagami ကိုခေါ်ဆောင်နိုင်လို့ပါ။
 
-## Troubleshooting Rust Toolchain {#troubleshooting-rust-toolchain}
+## Rust ကိရိယာအစု၏ ပြဿနာများကို ဖြေရှင်းခြင်း {#troubleshooting-rust-toolchain}
 
 တစ်ခါတစ်လေမှာ စီစဉ်ထားတဲ့အတိုင်း မဖြစ်တတ်ဘူး။ အထူးသဖြင့် သင်လုပ်ခဲ့ရင် `rust` သင့်ရဲ့စနစ်မှာ ခဏလောက်ရှိပေမဲ့ မတိုးတက်ခဲ့ဘူး။ အလားတူပြဿနာတစ်ခုက Python: XKCD ဒါက ဘယ်လိုပုံပေါက်မလဲဆိုတဲ့ နာမည်ကျော် နမူနာတစ်ခုရှိတယ်။
 
@@ -145,7 +145,7 @@ Python Wheel Package ကို [Python ဖောက်သည် setting](/my/gui
 
 `python -m pip install --upgrade pip`
 
-သေချာအောင်လုပ်ပါ။ `pip` Home Directory ထဲမှာ တပ်ဆင်ထားတာပါ။ ဒါကိုလုပ်ဖို့ Run `whereis pip` နောက်ပြီး စစ်ဆေးပါ `/home/username/.local/bin/pip` လမ်းကြောင်းတွေအကြားမှာရှိတယ် မဟုတ်ရင် သင့်ရဲ့ shell ကို update လုပ်လိုက်ပါ။ `PATH` အပြောင်းအလဲပါ။
+`pip` ကို သင့် home ဖိုင်တွဲ၌ ထည့်သွင်းထားကြောင်း သေချာပါစေ။ ထိုသို့စစ်ဆေးရန် `whereis pip` ကို လုပ်ဆောင်ပြီး လမ်းကြောင်းများတွင် `/home/username/.local/bin/pip` ပါမပါ ကြည့်ပါ။ မပါလျှင် သင့် shell ၏ `PATH` တန်ဖိုးကို ပြင်ဆင်ပါ။
 
 ဒီပြဿနာ ဆက်ရှိနေရင် [ကျွန်တော်တို့နဲ့ ဆက်သွယ်ပါ။](/my/help/) နဲ့ ထုတ်ကုန်တွေကို အစီရင်ခံပေးပါ။
 

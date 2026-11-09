@@ -10,18 +10,18 @@ translation_engine: nllb-200-ct2
 
 SORA Nexus သည် Iroha 3 အနီးတွင် app-facing service planes ကိုထည့်သွင်းသည်။ ဤဝန်ဆောင်မှုများသည် သီးခြား blockchain ledgers မဟုတ်ပါ။ ၎င်းတို့သည် Iroha ကမ္ဘာ့နိုင်ငံ၊ Norito နည်းပညာ manifest များ၊ အုပ်ချုပ်ရေးမှတ်တမ်းများနှင့် Torii လမ်းကြောင်းမိသားစုများမှချိတ်ဆက်ထားသည်။
 
-အသုံးပြုနိုင်မှုသည် node build နှင့် network profile များအပေါ် မူတည်သည်။ [`/openapi.json`](/my/reference/torii-endpoints.md#app-and-sora-route-families) ဖန်တီးထားတဲ့ app ကို ရှာဖွေဖို့-API ရည်မှန်းချက် အထုံးပေါ်က လမ်းကြောင်းများ SoraFS CID ဖြစ်ပေါ်လာတဲ့ စာရွက်စာတမ်းရဲ့ အပြင်ဘက်မှာ ကျွမ်းကျင်တဲ့ လမ်းကြောင်းတွေ တပ်ဆင်ထားတယ်။ ဒီတော့ ဖြန့်ချိမှုကို စစ်ဆေးတဲ့အခါ ဒီလမ်းကြောင်းတွေကို တိုက်ရိုက် စူးစမ်းပါ။
+ရရှိနိုင်မှုသည် နိုဒ် build နှင့် ကွန်ရက်ပရိုဖိုင်ပေါ် မူတည်သည်။ ပစ်မှတ်နိုဒ်တွင် ထုတ်လုပ်ထားသော အက်ပ် API လမ်းကြောင်းများကို ရှာဖွေရန် [`/openapi.json`](/my/reference/torii-endpoints.md#app-and-sora-route-families) ကို သုံးပါ။ အများသုံး စက်တွင်း SoraFS CID နှင့် လူသိများသော လမ်းကြောင်းများကို ထိုထုတ်လုပ်ထားသော စာတမ်းပြင်ပတွင် ချိတ်ထားသဖြင့် deployment ကို စစ်ဆေးရာ၌ ထိုလမ်းကြောင်းများကို တိုက်ရိုက်စမ်းသပ်ပါ။
 
 ## အစိတ်အပိုင်း မြေပုံ {#component-map}
 
 |အစိတ်အပိုင်း |ကဏ္ဍ |အဓိက မျက်နှာပြင်များ |
 | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-|Soracloud |Application deployment, hosted services, private model/ runtime state နဲ့ service lifecycle control တွေကို သုံးနိုင်ဖို့ပါ။ |`/v1/soracloud/*`, `/api/*`, `iroha soracloud service ...`|
+| Soracloud | အက်ပ် ဖြန့်ချိတပ်ဆင်မှု၊ host လုပ်ထားသော ဝန်ဆောင်မှုများ၊ သီးသန့် မော်ဒယ်/runtime အခြေအနေနှင့် ဝန်ဆောင်မှု သက်တမ်းစက်ဝန်း ထိန်းချုပ်မှု။ | `/v1/soracloud/*`၊ `/api/*`၊ `iroha soracloud service ...` |
 |အတွင်းပိုင်း|Soracloud ဟာ တိုက်ရိုက် HTTP လေယာဉ်လိုတဲ့ ဝန်ဆောင်မှု အပြောင်းအလဲတွေအတွက် HTTP ဆော့ဝဲ အကောင်အထည်ဖော်ရေး ပတ်ဝန်းကျင်ကို ဟိုတယ်ပေးထားတယ်။ |Soracloud ဆော့ဝဲ အကောင်အထည်ဖော်ရေး ပတ်ဝန်းကျင် ညွှန်ကြားချက်, host အရည်အသွေး ကြော်ငြာများ, replica software အကောင်အ ထည်ဖော်ရေးပတ်ဝန်းကျင်အခြေအနေ |
 |SoraNet |ဘက်ထရီများအတွက် သီးသန့်လွတ်လပ်မှုနှင့် ပို့ဆောင်ရေး overlay, relay traffic, VPN, ချိတ်ဆက်ခြင်းအခမ်းအနားများနှင့် streaming လမ်းကြောင်းများ။ |`/v1/connect/*`, `/v1/vpn/*`, SoraNet လမ်းကြောင်း metadata များ |
 |ဒေတာရရှိနိုင်မှု (DA) |Nexus အကောင်အထည်ဖော်ရေးလမ်းကြောင်းများ၊ SoraFS နည်းပညာထုတ်ပြန်ချက်များနှင့် သက်သေပြမှု စီးဆင်းမှုတို့တွင် ရည်ညွှန်းထားသော အသုံးဝင်ဝန်ဆောင်မှုများအတွက် ရင်းနှီးမြှုပ်နှံမှု တန်ဖိုး၊ cryptographic commitment value နှင့် pin-intent layer များ။ |`/v1/da/*`, `FindDaPinIntent*`, `[nexus.da]`|
-|SoraFS |Technical manifest များ၊ CAR payload များ၊ pinned content များ၊ gateway fetches များနှင့် proof of recovery flow များအတွက် content-addressed storage fabric များ။ |`/v1/sorafs/*`, `/sorafs/*`, `FindSorafsProviderOwner`|
-|SoraDNS |SORA hosted services နှင့် content များအတွက် deterministic naming and resolver-attestation layer များ။ |`/v1/soradns/*`, `/soradns/*`, Resolver directory events များ |
+| SoraFS | Manifest များ၊ CAR payload များ၊ pin လုပ်ထားသော အကြောင်းအရာ၊ gateway မှ ရယူမှုများနှင့် ပြန်လည်ရယူနိုင်ကြောင်း proof လုပ်ငန်းစဉ်များအတွက် အကြောင်းအရာအလိုက် လိပ်စာသတ်မှတ်သည့် သိုလှောင်မှုစနစ်။ | `/v1/sorafs/*`၊ `/sorafs/*`၊ `FindSorafsProviderOwner` |
+| SoraDNS | SORA Nexus တွင် host လုပ်ထားသော ဝန်ဆောင်မှုများနှင့် အကြောင်းအရာအတွက် တစ်သမတ်တည်း အမည်ပေးမှုနှင့် resolver သက်သေခံမှုအလွှာ။ | `/v1/soradns/*`၊ `/soradns/*`၊ resolver လမ်းညွှန် ဖြစ်ရပ်များ |
 |Aitai |App-level fiat နဲ့ asset financial transaction settlement corridor ကို native escrow records တွေက ထောက်ခံပေးတယ် သီးခြား blockchain ledger ကနေမဟုတ်ဘူး|`OpenAssetEscrow`, `FindAssetEscrow*`, `EscrowEventFilter`, Kotodama `escrow_*` အဆောက်အအုံများ |
 
 ```mermaid
@@ -60,7 +60,7 @@ flowchart LR
 |လမ်းကြောင်း|နောက်ခံ လေယာဉ် |ဘာကြောင့်လဲ|
 | ----------------- | --------------------- | ------------------------------------------------- |
 | `/`               |SoraFS တည်ငြိမ်မှု |ပြန်လည်ဖန်တီးနိုင်သော အကြောင်းအရာ root နှင့် gateway ကို cache လုပ်ခြင်း |
-|`/assets/*` |SoraFS တည်ငြိမ်မှု |Content-addressed assets and technical manifest proofs  အကြောင်းအရာများနှင့် ပတ်သက်သော အရင်းအမြစ်များ နှင့် နည်းပညာ အထောက်အထားများ|
+| `/assets/*` | SoraFS ၏ မပြောင်းလဲသော အကြောင်းအရာ | အကြောင်းအရာအလိုက် လိပ်စာသတ်မှတ်သော ပိုင်ဆိုင်မှုများနှင့် manifest proof များ |
 |`/api/auth*` |Soracloud IVM |ပြန်လည်ကစားရန် လုံခြုံသော စာရင်းအင်းနှင့် ငွေကြေးစွန့်စားမှုအခြေအနေ |
 |`/api/v1/user*` |Soracloud IVM |စီမံခန့်ခွဲမှုအတွက် ထိခိုက်လွယ်တဲ့ နိုင်ငံတော် အပြောင်းအလဲ |
 |`/api/v1/search*` |Soracloud Inrou |တိုက်ရိုက် HTTP ဝန်ဆောင်မှု, ကေရှ်, SSE, သို့မဟုတ် စုဆောင်းသူအခြေအနေ |
@@ -71,7 +71,7 @@ SoraFS ထုတ်ဝေမှုမှာ နာမည်တစ်ခုက �
 
 1. အသုံးဝင်တဲ့ ဝန်ဆောင်မှု (သို့) Directory ကို တည်ဆောက်ပါ။
 2. ဒါကို CAR စာရွက်စာတမ်းထဲထည့်ပြီး အစိတ်အပိုင်းအစီအစဉ်ကို လုပ်ပါ။
-3. Norito Technical Manifesto ကို pin policy နဲ့ governance data တွေနဲ့ ပြုလုပ်ပါ။
+3. Pin မူဝါဒနှင့် အုပ်ချုပ်မှုဒေတာပါသော Norito manifest ကို တည်ဆောက်ပါ။
 4. Technical manifest ကို Torii သို့ တင်ပြပါ။
 5. DA pin intent (သို့) availability cryptographic commitment value ကို မှတ်တမ်းတင်ပါ
 6. Technical manifest ကို SoraDNS နာမည် (သို့) Soracloud တည်ငြိမ်တဲ့ ရှေ့ပြေးလမ်းကြောင်းနဲ့ ချိတ်ဆက်ပါ။
@@ -81,7 +81,7 @@ SoraFS ထုတ်ဝေမှုမှာ နာမည်တစ်ခုက �
 SoraNet သည် SoraFS သို့မဟုတ် Soracloud ရှေ့မှာ ထိုင်နိုင်သည်-
 
 1. ဖောက်သည်က နာမည် (သို့) Technical Manifesto ကို ဖြေရှင်းတယ်။
-2. guard directory (သို့) route technical manifest မှာ entry နဲ့ exit relay တွေကို ရွေးချယ်ပါတယ်။
+2. Guard လမ်းညွှန် သို့မဟုတ် လမ်းကြောင်း manifest က အဝင်နှင့် အထွက် relay များကို ရွေးချယ်သည်။
 3. SoraNet ပတ်လမ်းကို ဖြတ်ပြီး ယာဉ်မောင်းတွေ ဖြည့်ပြီး ပို့ပေးတယ်။
 4. SoraFS ဂိတ်တံခါး၊ Torii စီးကြောင်း သို့မဟုတ် Soracloud လမ်းကြောင်းသို့ ထွက်ပေါက်ဆက်သွယ်မှု ရောက်ရှိသည်။
 
@@ -91,7 +91,7 @@ Aitai သည် SORA app corridor ဖြစ်ပြီး ဝယ်ယူသူ
 
 Native escrow သည် blockchain ledger တွင် custody ကို ထိန်းသိမ်းထားသည်။ ရောင်းသူသည် `OpenAssetEscrow` ဖြင့် ကမ်းလှမ်းမှုကိုဖွင့်ပြီး ၀ ယ်သူသည် `AcceptAssetEscrow` နှင့် `MarkEscrowPaymentSent` တို့ဖြင့် Off-chain ငွေပေးချေခြင်းကိုလက်ခံကာ အမှတ်တံဆိပ်ပေးသည်။ ရောင်းသူသည် `ReleaseAssetEscrow` ဖြင့်ထုတ်ပေးခြင်း သို့မဟုတ် ပေးချေမှုကို အမှတ်တံဆိပ်မထည့်မီ ဖျက်သိမ်းခြင်း။ ဝယ်သူနှင့်ရောင်းသူ သဘောမတူလျှင် နှစ်ဘက်စလုံးက ပဋိပက္ခဖွင့်နိုင်ပြီး `CanResolveEscrowDispute` နှင့်ဖြေရှင်းသူသည် ပိတ်ထားသောငွေကိုခွဲခြားနိုင်သည်။
 
-Rust အကောင်အထည်ဖော်မှု စက်ဝန်းတစ်ခုလုံး၊ ယေဘုယျအရင်းအမြစ်ပိတ်ခြင်း၊ အမည်မသိဂိုဏ်း၊ မေးမြန်းချက်များ၊ ဖြစ်ရပ်များနှင့် ဥပမာများအတွက် [Native Asset Escrow](/my/blockchain/escrow.md) ကိုကြည့်ရှုပါ။
+Rust အကောင်အထည်ဖော်မှု စက်ဝန်းတစ်ခုလုံး၊ ယေဘုယျအရင်းအမြစ်ပိတ်ခြင်း၊ အမည်မသိဂိုဏ်း၊ မေးမြန်းချက်များ၊ ဖြစ်ရပ်များနှင့် ဥပမာများအတွက် [ပိုင်ဆိုင်မှုများကို စံညွှန်ကြားချက်ဖြင့် ကြားခံထိန်းသိမ်းခြင်း](/my/blockchain/escrow.md) ကိုကြည့်ရှုပါ။
 
 |Aitai မျက်နှာပြင်|ဒါကို အသုံးပြုပါ။|
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
@@ -117,9 +117,9 @@ curl -fsS "$TORII_URL/openapi.json" \
 curl -fsS -H 'Accept: application/json' "$TORII_URL/status" | jq .
 ```
 
-`/openapi.json` သည် Single Protocol-Standard OpenAPI API အဆုံးသတ်မှတ်ချက်ဖြစ်သည်။ လမ်းကြောင်းတည်ရှိမှုအတိအကျသည် build features နှင့် network ဖွဲ့စည်းပုံအပေါ်မူတည်သည်။ ဒီစာရွက်စာတမ်းမှာ အများပြည်သူအတွက် ဒေသတွင်း SoraFS CID နဲ့ နာမည်ကြီး လမ်းကြောင်းတွေကို စာရင်းမပေးပါဘူး။ အောက်မှာဖော်ပြထားတဲ့အတိုင်း တိုက်ရိုက် API အဆုံးသတ်မှတ်ချက်တွေကို စစ်ဆေးပါ။
+`/openapi.json` သည် စံ OpenAPI endpoint ဖြစ်သည်။ မည်သည့်လမ်းကြောင်းများ ရရှိနိုင်သည်ဆိုသည်မှာ build လုပ်ဆောင်ချက်များနှင့် ကွန်ရက်ပြင်ဆင်သတ်မှတ်မှုအပေါ် မူတည်သည်။ စာတမ်းတွင် အများသုံး စက်တွင်း SoraFS CID နှင့် လူသိများသော လမ်းကြောင်းများကို မစာရင်းပြုထားပါ။ ထို endpoint များကို အောက်တွင် ဖော်ပြထားသည့်အတိုင်း တိုက်ရိုက်စစ်ဆေးပါ။
 
-### Taira Read-Only Smoke Checks များကို ဖတ်ရန် {#taira-read-only-smoke-checks}
+### Taira အခြေခံလုပ်ဆောင်မှုကို ဖတ်ရှုရုံဖြင့် စစ်ဆေးခြင်း {#taira-read-only-smoke-checks}
 
 အများပြည်သူ Taira API အကန့်အသတ်မှတ်ချက်ဟာ စာဖတ်ဘက် စစ်ဆေးမှုအတွက် အသုံးဝင်ပေမဲ့ ခွင့်ပြုထားတဲ့ အကောင့်ကို မောင်းနှင်ပြီး အများပြည်သူ testnet အခြေအနေကို ပြောင်းလဲဖို့ ရည်ရွယ်တာမဟုတ်ရင် ဗီဇပြောင်းတဲ့ နမူနာတွေအတွက်တော့ မသုံးပါနဲ့။
 
@@ -143,7 +143,7 @@ Taira သည် OpenAPI လမ်းကြောင်းမြေပုံတ�
 
 ## Soracloud {#soracloud}
 
-Soracloud သည် SORA application control plane ဖြစ်သည်။ ၎င်းသည် deployment bundles, service revisions, routing, rollout state, authoritative config entries, encrypted service secrets, model registry records, private inference sessions နှင့် software execution environment protocol result record များကို ခြေရာခံသည်။
+Soracloud သည် SORA Nexus အက်ပ်များ၏ ထိန်းချုပ်မှုအလွှာဖြစ်သည်။ ၎င်းသည် deployment bundle များ၊ ဝန်ဆောင်မှု revision များ၊ လမ်းကြောင်းသတ်မှတ်မှု၊ ဖြန့်ချိမှုအခြေအနေ၊ တရားဝင် ပြင်ဆင်သတ်မှတ်မှုမှတ်တမ်းများ၊ စာဝှက်ထားသော ဝန်ဆောင်မှုလျှို့ဝှက်ချက်များ၊ မော်ဒယ်မှတ်ပုံတင်စာရင်းများ၊ သီးသန့် inference session များနှင့် runtime receipt များကို ခြေရာခံသည်။
 
 Soracloud ဟာ စီမံခန့်ခွဲရေး လေယာဉ် နှစ်ခုကို သုံးပါတယ်။
 
@@ -152,7 +152,7 @@ Soracloud ဟာ စီမံခန့်ခွဲရေး လေယာဉ် �
 |`DeterministicService` |`Ivm` |Author, vault state, certified readings, ordered mailbox handleers, governance-sensitive mutations |
 |`HttpService` |`Inrou` |တိုက်ရိုက် HTTP APIs၊ စုဆောင်းရေး အလုပ်များ၊ ကေရှ်ထောက်ပံ့တဲ့ ဝန်ဆောင်မှုတွေ၊ SSE၊ ရှာဖွေရေးကိရိယာကူညီတဲ့ စီးဆင်းမှုတွေ |
 
-ထိန်းချုပ်ရေးအဆင့်က အာဏာရှိသည်။ ဖြန့်ချိခြင်း၊ အဆင့်မြှင့်တင်ခြင်း၊ ပြန်လည်ထည့်သွင်းခြင်း၊ ဖွဲ့စည်းခြင်း၊ လျှို့ဝှက်မှု၊ မော်ဒယ်နှင့်အခြေအနေအမိန့်များကို Torii မှတစ်ဆင့်ပို့ပြီး အဆုံးသတ်သောကမ္ဘာအခြေအနေကိုဖတ်ပါ။ ၎င်းတို့သည် သီးခြား CLI - ဒေသခံ မှန်ပေါ်မူတည်ခြင်းမရှိပါ။ အများပြည်သူ လမ်းညွှန်ခြင်းသည် အမြင့်ဆုံး ကြိုတင်စာရင်းကို အခြေခံထားသောကြောင့် မှတ်ပုံတင်ထားသည့် အိမ်ရှင်တစ်ဦးက တည်းခိုထားသော HTTP လမ်းကြောင်းများနှင့် သတ်မှတ်ထားသော API လမ်းကြောင်းများကြားတွင် ယာဉ်ကြောကို ခွဲခြားနိုင်သည်။
+ထိန်းချုပ်မှုအလွှာသည် အာဏာပိုင်မှတ်တမ်းဖြစ်သည်။ ဖြန့်ချိတပ်ဆင်ခြင်း၊ အဆင့်မြှင့်ခြင်း၊ နောက်ပြန်ပြောင်းခြင်း၊ ပြင်ဆင်သတ်မှတ်ခြင်း၊ လျှို့ဝှက်ချက်၊ မော်ဒယ်နှင့် အခြေအနေဆိုင်ရာ command များသည် Torii မှတစ်ဆင့် တင်သွင်းပြီး commit လုပ်ထားသော ကမ္ဘာလုံးဆိုင်ရာ အခြေအနေကို ဖတ်သည်။ သီးခြား CLI စက်တွင်း မိတ္တူကို အားမကိုးပါ။ အများသုံး လမ်းကြောင်းသတ်မှတ်မှုသည် အရှည်ဆုံး ရှေ့ဆက်အပေါ် အခြေခံသဖြင့် မှတ်ပုံတင်ထားသော host တစ်ခုက host လုပ်ထားသော HTTP လမ်းကြောင်းများနှင့် တစ်သမတ်တည်း API လမ်းကြောင်းများအကြား traffic ကို ခွဲပို့နိုင်သည်။
 
 ### Generated Starter Structure a Split App ကို {#scaffold-a-split-app}
 
@@ -220,7 +220,7 @@ iroha soracloud service rollback \
 
 ### လျှို့ဝှက်ပစ္စည်းများ {#config-and-secret-material}
 
-Soracloud config နှင့် secret entries တို့သည် authoritative deployment state ၏ အစိတ်အပိုင်းဖြစ်သည်။ လိုအပ်သော config သို့မဟုတ် secret bindings များပျောက်ကွယ်နေသည့် (သို့မဟုတ်) တက်ကြွသော နည်းပညာ manifest များနှင့်မညီသည့်အခါ Deploy, Upgrade နှင့် Rollback ကိုပိတ်နိုင်ခြင်းမရှိပါ။
+Soracloud ၏ ပြင်ဆင်သတ်မှတ်မှုနှင့် လျှို့ဝှက်ချက်မှတ်တမ်းများသည် အာဏာပိုင် deployment အခြေအနေ၏ အစိတ်အပိုင်းဖြစ်သည်။ လိုအပ်သော ပြင်ဆင်သတ်မှတ်မှု သို့မဟုတ် လျှို့ဝှက်ချက်ချိတ်ဆက်မှုများ ပျောက်နေပါက၊ သို့မဟုတ် အသက်ဝင် manifest များနှင့် မကိုက်ညီပါက ဖြန့်ချိတပ်ဆင်ခြင်း၊ အဆင့်မြှင့်ခြင်းနှင့် နောက်ပြန်ပြောင်းခြင်းကို လက်မခံဘဲ ပိတ်ပင်သည်။
 
 ```bash
 iroha soracloud service config-set \
@@ -255,7 +255,7 @@ Collector-heavy APIs, SSE streams, cache backed handleers သို့မဟု�
 - ဝန်ဆောင်မှုနည်းပညာထုတ်ပြန်ချက် အကောင်အထည်ဖော်ရေးစက်က `HttpService` ဖြစ်ရပါမယ်။
 - `HttpService + Inrou` အတိအကျ တစ်ခုကို လိုအပ်တယ်။ `PersistentRootLeaseVolume` တပ်ဆင်ထားသည် `/`.
 - Inrou ဝန်ဆောင်မှုများကို ပြန်လည်ဖန်တီးခြင်းသည်လည်း ပြောင်းလဲနိုင်သော မျှဝေထားသော အခြေအနေကို ထိန်းသိမ်းထားပါက မျှဝေထားသည့် ဝန်ဆောင်မှု (သို့) လျှို့ဝှက်ငှားစာရင်း သိုလှောင်ရန် လိုအပ်သည်။
-- Production hosting node တွေဟာ Inrou အရည်အသွေးကို ပရိုဂျက်အဖြစ်သာ လုပ်ကိုင်မယ့်အစား ကြော်ငြာပေးသင့်ပါတယ်။
+- Production တွင် host လုပ်သော နိုဒ်များသည် proxy အဖြစ်သာ လည်ပတ်မည့်အစား အမှန်တကယ်ရှိသော Inrou စွမ်းရည်ကို ကြေညာသင့်သည်။
 
 ### Technical Manifesto Fragment {#manifest-fragment}
 
@@ -344,11 +344,11 @@ SORACLOUD_LEASE_VOLUME_INDEX_STATE_MOUNT_PATH
 
 ## SoraNet {#soranet}
 
-SoraNet ဆိုသည်မှာ ပိုင်ဆိုင်မှုနှင့် သယ်ယူပို့ဆောင်ရေး အပေါ်လွှာခြင်းဖြစ်သည်။ ၎င်းသည် ရည်မှန်းချက်ဂိတ်သို့မဟုတ် ဝန်ဆောင်မှုသို့ တိုက်ရိုက်ဆက်သွယ်ရန် မလိုသော ယာဉ်ကြောအတွက် relay အခြေခံ လမ်းကြောင်းများကိုပေးသည်။ သယ်ယူပို့ဆောင်ရေး ဒီဇိုင်းမှာ ဝင်ရောက်မှု၊ အလယ်ပိုင်းနဲ့ ထွက်ပေါက် Relay Roles များ၊ QUIC ပို့ဆောင်မှုတွေ၊ Noise based hybrid handshake တွေ၊ အရည်အသွေး ညှိနှိုင်းမှု၊ Relay Directory metadata တွေနဲ့ Fixed-size padded cells တွေကို သုံးပါတယ်။
+SoraNet သည် ကိုယ်ရေးလုံခြုံမှုနှင့် ပို့ဆောင်မှုဆိုင်ရာ ထပ်ဆင့်ကွန်ရက်ဖြစ်သည်။ ပစ်မှတ် gateway သို့မဟုတ် ဝန်ဆောင်မှုကို တိုက်ရိုက်မချိတ်ဆက်သင့်သော traffic အတွက် relay အခြေပြု လမ်းကြောင်းများကို ပေးသည်။ ပို့ဆောင်မှုပုံစံသည် အဝင်၊ အလယ်နှင့် အထွက် relay တာဝန်များ၊ QUIC ပို့ဆောင်မှု၊ Noise အခြေပြု ပေါင်းစပ် handshake၊ လုပ်နိုင်စွမ်း ညှိနှိုင်းမှု၊ relay လမ်းညွှန် metadata နှင့် အရွယ်အစားတူအောင် ဖြည့်ထားသော cell များကို သုံးသည်။
 
-Nexus deployments များတွင်, SoraNet သည် content fetches, gateway traffic, VPN သို့မဟုတ် Connect sessions နှင့် Norito streaming routes များကိုဆောင်ရွက်နိုင်သည်။ directory entries များသည် `norito-stream` ကိုထောက်ပံ့သော relays များကိုမှတ်သားနိုင်ပြီး, ဤသည်မှာဖောက်သည်များအတွက်သင့်တော်သောအရာလမ်းကြောင်းများကိုရွေးချယ်ရန်ခွင့်ပြုသည် Torii RPC သို့မဟုတ် streaming traffic.
+SORA Nexus deployment များတွင် SoraNet သည် အကြောင်းအရာရယူမှုများ၊ gateway traffic၊ VPN သို့မဟုတ် Connect session များနှင့် Norito streaming လမ်းကြောင်းများကို သယ်ဆောင်နိုင်သည်။ လမ်းညွှန်မှတ်တမ်းများက `norito-stream` ကို ပံ့ပိုးသော relay များအား အမှတ်အသားပြုနိုင်သဖြင့် client များသည် Torii RPC သို့မဟုတ် streaming traffic အတွက် သင့်လျော်သော လမ်းကြောင်းများကို ဦးစားပေးနိုင်သည်။
 
-### Streaming Configuration ကို {#streaming-configuration}
+### Stream ပို့ဆောင်မှု ပြင်ဆင်သတ်မှတ်ခြင်း {#streaming-configuration}
 
 Nexus ပရိုဖိုင်သည် SoraNet ကို streaming လမ်းကြောင်းများအတွက် ထောက်ပံ့နိုင်စေသည်။
 
@@ -405,7 +405,7 @@ cargo run -p sorafs_orchestrator --features=local-quic-proxy --bin=sorafs_cli --
 
 `incentives.enable` မှန်ကန်ပါက `incentives.trusted_verifier_ids` တွင် အနည်းဆုံး ပရိုတိုကုတ်စံညွှန်းစာရင်း ID တစ်ခုသာ ပါဝင်ရမည်ဖြစ်သည်။ စာရင်းသည် 64 ကိုမကျော်ရပါ။ ဆော့ဖ်ဝဲ အကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင်က Deterministic Ordered Set အဖြစ် သိမ်းဆည်းထားပြီး Relay startup အတွင်းမှာ invalid roster geometry ကို ပယ်ချလိုက်ပါတယ်။
 
-`RelayBandwidthProofV1` တစ်ခုစီကို Fixed Frame/ Allocation Budget အောက်မှာ decod လုပ်ပြီး အပြည့်အဝ frame ကို စားသုံးရပါမယ်။ proof ရဲ့ verifier account က configured roster ထဲမှာ ရှိနေဖို့လိုပြီး `RelayBandwidthProofV1::verify_signature()` ဟာ relay lock မလုပ်ခင် ဒါမှမဟုတ် performance accumulator ကို ပြောင်းမသွားခင် အောင်မြင်မှုရမှာပါ။ ဒါကြောင့် ယုံကြည်မှုမရှိတဲ့ cryptographic လက်မှတ်ထိုးသူ (သို့) လက်မှတ်လက်မှတ်မမှန် / အတုလုပ်ထားတဲ့ သက်သေက တိုင်းတာမှုကို မကူညီနိုင်ဘူး၊ လှုံ့ဆော်မှု snapshot ကိုထုတ်လုပ်နိုင်မှာမဟုတ်ဘူး။
+`RelayBandwidthProofV1` တစ်ခုစီကို သတ်မှတ်ထားသော frame/မှတ်ဉာဏ်ခွဲဝေမှု ဘတ်ဂျက်အတွင်း decode လုပ်ပြီး frame တစ်ခုလုံးကို အသုံးပြုကုန်ရမည်။ Relay က ၎င်း၏ စွမ်းဆောင်ရည်စုစည်းကိန်းကို lock လုပ်ခြင်း သို့မဟုတ် ပြောင်းလဲခြင်း မပြုမီ proof ၏ စစ်ဆေးသူအကောင့်သည် ပြင်ဆင်သတ်မှတ်ထားသော စာရင်းတွင် ရှိရမည်ဖြစ်ပြီး `RelayBandwidthProofV1::verify_signature()` အောင်မြင်ရမည်။ ထို့ကြောင့် မယုံကြည်ရသော လက်မှတ်ထိုးသူ သို့မဟုတ် လက်မှတ်မမှန်သော/ပြုပြင်ခံထားရသော proof က တိုင်းတာချက် မထည့်ဝင်နိုင်သကဲ့သို့ ဆုကြေး snapshot ကိုလည်း မထုတ်လုပ်နိုင်ပါ။
 
 ## ဒေတာရရှိနိုင်မှု (DA) {#data-availability-da}
 
@@ -425,14 +425,14 @@ DA ကို အသုံးပြုပါ Application သို့မဟုတ
 | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
 |ရည်ရွယ်ချက်|Ticket, technical manifest reference, alias, lane/epoch/sequence reference, retention policy သို့မဟုတ် replication target များကို မှတ်တမ်းတင်ရန်။|
 |cryptographic commitment တန်ဖိုး |cryptographic digest value material ဟာ technical manifest, execution lane payload, proof bundle (သို့) content root တွေကို blockchain ledger record ထဲမှာ မြင်ရတဲ့ အရာတွေနဲ့ ချိတ်ဆက်ပေးပါတယ်။ |
-|အထောက်အထားများ|Availability votes, proof openings, provider attestations, or other profile-specific evidence accepted by the target network တို့ကို ပံ့ပိုးပေးသူများထံမှ လက်ခံထားရသည့် သက်သေခံချက်များ။|
-|မေးခွန်း|`FindDaPinIntentByTicket`, `FindDaPinIntentByManifest`, `FindDaPinIntentByAlias` သို့မဟုတ် `FindDaPinIntentByLaneEpochSequence` မှတစ်ဆင့် Pin-intent ရှာဖွေမှုများ။ |
+| အထောက်အထား | ရရှိနိုင်မှု မဲများ၊ proof ဖွင့်ပြချက်များ၊ provider သက်သေခံချက်များ သို့မဟုတ် ပစ်မှတ်ကွန်ရက်က လက်ခံသော ပရိုဖိုင်အလိုက် အခြားအထောက်အထားများ။ |
+| Query | `FindDaPinIntentByTicket`၊ `FindDaPinIntentByManifest`၊ `FindDaPinIntentByAlias` သို့မဟုတ် `FindDaPinIntentByLaneEpochSequence` မှတစ်ဆင့် pin ရည်ရွယ်ချက်ကို ရှာဖွေခြင်း။ |
 
 ပုံမှန် DA ထောက်ပံ့တဲ့ ထုတ်ဝေမှု စီးဆင်းမှုဟာ-
 
 1. WSV အပြင်မှာရှိတဲ့ အသုံးဝင် ဝန်ဆောင်မှုကို တည်ဆောက်ခြင်း (သို့) လက်ခံရရှိခြင်း၊ ဥပမာ SoraFS CAR ဖိုင် သို့မဟုတ် Nexus အကောင်အထည်ဖော်ရေးလမ်းကြောင်း အသုံးဝင်ဝန်ဆောင်မှုပါ။
 2. Norito Technical Manifesto (သို့) Route-Specific Cryptographic Engagement Value Record တွင် အသုံးဝင်သော ဝန်ဆောင်မှုကို ဖော်ပြရန်။
-3. `/v1/da/*` မှတစ်ဆင့် (သို့) ကွန်ရက်၏ လက်မှတ်ရေးထိုးထားသော ငွေချေးမှုလမ်းကြောင်းမှတဆင့်၊ လမ်းကြောင်းမိသားစုကို ဖွင့်ထားပါက Technical manifest၊ pin intent သို့မဟုတ် cryptographic commitment value ကို တင်ပါ။
+3. ထိုလမ်းကြောင်းအုပ်စုကို ဖွင့်ထားလျှင် `/v1/da/*` မှတစ်ဆင့်၊ သို့မဟုတ် ကွန်ရက်၏ လက်မှတ်ထိုးထားသော transaction လမ်းကြောင်းမှတစ်ဆင့် manifest၊ pin ရည်ရွယ်ချက် သို့မဟုတ် ကတိပြုတန်ဖိုးကို တင်သွင်းပါ။
 4. validator သို့မဟုတ် availability provider တွေကို Active Proof Policy က တောင်းဆိုတဲ့ အထောက်အထားတွေကို စုစည်းခွင့်ပြုပါ။
 5. ငွေကြေးလုပ်ငန်း settlement proof (သို့မဟုတ်) payload မှီခိုသော gateway route ကို promote မလုပ်ခင် resulting pin intent သို့မဟုတ် cryptographic commitment value ကို မေးမြန်းပါ။
 
@@ -442,11 +442,11 @@ DA သည် အသုံးဝင်သော ဝန်ဆောင်မှု
 
 1. Torii သည် `(lane_id, epoch, sequence)` နှင့်အတူ ၀ ယ်ယူမှုတောင်းဆိုချက်ကိုလက်ခံသည်၊ အသုံးဝင်ဘိုက်များ, ဖိနှိပ်ခြင်း metadata များ, အပိုင်းအရွယ်အစား, ဖျက်ပစ်ရေးပရိုဖိုင်, ထိန်းသိမ်းရေးမူဝါဒနှင့်ပို့သူ၏ လက်မှတ်. node က request လုပ်တဲ့အခါ gzip, deflate (သို့) Zstandard payload တွေကို decompress လုပ်ပြီး protocol တစ်ခုတည်းရဲ့ standard byte length ကို `total_size` နဲ့ညီတယ်ဆိုတာကို စစ်ဆေးပါတယ်။
 2. အကောင်အထည်ဖော်ရေးလမ်းကြောင်းနှင့် အပိုင်းသတ်မှတ်ချက်များကို ခိုင်ခံ့စေရန်။ အကောင်အ ထည်ဖော်ရေး လမ်းကြောင်းသည် Nexus အကောင်အတန့်လမ်းကြောင်းစာရင်းတွင် တည်ရှိရမည်ဖြစ်သည်။ `chunk_size` သည် သုညမဟုတ်သော စွမ်းအား ၂, အနည်းဆုံး ၂ ဘိုက်တာဖြစ်ရမည်။ ပြင်ဆင်ထားသော အမြင့်ဆုံးထက်မကြီးပါ။ ဖျက်ပစ်ရေးပရိုဖိုင်မှာ ဒေတာအပိုင်းအစများနှင့် အနည်းဆုံး parity shards နှစ်ခုပါဝင်ရမည်။ အကောင်အထည်ဖော်မှုလမ်းကြောင်းစာရင်းတွင် သက်သေခံစနစ် `merkle_sha256` သို့မဟုတ် `kzg_bls12_381` ကိုရွေးချယ်သည်။
-3. Network Policy ကို Apply လုပ်ပါ။ node သည် blob class အတွက် configured replication နှင့် retention baseline ကို နှိုးဆွပေးသည်။ အများပြည်သူ metadata များသည် plaintext ဖြစ်နေရန်လိုအပ်သည်။ အုပ်ချုပ်မှုသာရှိသော metadata တွေကို technical manifest သို့ရေးသားမတင်မီ node ၏ configured governance metadata key ဖြင့် encrypt လုပ်ထားသည်။
-4. အစိတ်အပိုင်းနှင့် ပရိုတိုကောလ်အဆုံးသတ်ခြင်း။ Single protocol-standard payload ကို fixed size profile ကနေထုတ်ယူထားသော `chunk_size`. Torii အသုံးဝင် ဝန်ဆောင်မှုအတွက် cryptographic digest value ကို တွက်ချက်ပြီး ပြန်လည်ရှာဖွေနိုင်စွမ်းကို သက်သေပြတဲ့ tree root ကို တွက်ချက်ပါတယ်။ ဒေတာအစိတ်အပိုင်းများတွင် သွင်းယူထားသော အချက်အလက် BLAKE3 ဘိုင်က်တွေထက် cryptographic commitment values တွေကိုပါ။
+3. **ကွန်ရက်မူဝါဒကို အသုံးချပါ။** နိုဒ်သည် blob အမျိုးအစားအတွက် ပြင်ဆင်သတ်မှတ်ထားသော မိတ္တူပြုလုပ်မှုနှင့် ထိန်းသိမ်းထားမှု အခြေခံသတ်မှတ်ချက်ကို အတည်ပြုကျင့်သုံးသည်။ အများမြင် metadata ကို မစာဝှက်ထားရပါ။ အုပ်ချုပ်မှုအတွက်သာ ဖြစ်သော metadata ကို manifest ထဲမရေးမီ နိုဒ်တွင် ပြင်ဆင်သတ်မှတ်ထားသော အုပ်ချုပ်မှု metadata ကီးဖြင့် စာဝှက်သည်။
+4. **အပိုင်းခွဲ၍ ကတိပြုတန်ဖိုး ဖွဲ့စည်းပါ။** စံ payload ကို `chunk_size` မှ ဆင်းသက်ထားသော အရွယ်အစားပုံသေ ပရိုဖိုင်ဖြင့် အပိုင်းခွဲသည်။ Torii သည် payload digest၊ ပြန်လည်ရယူနိုင်ကြောင်း proof သစ်ပင်၏ အမြစ်နှင့် အပိုင်းတစ်ခုစီ၏ ကတိပြုတန်ဖိုးများကို တွက်သည်။ ဒေတာအပိုင်းများတွင် ၎င်းတို့၏ byte များအပေါ် တွက်ထားသော BLAKE3 ကတိပြုတန်ဖိုးများ ပါဝင်သည်။
 5. `data_shards` ၏ strips များသို့စုစည်းထားသည်။ နောက်ဆုံး stripe တွင်ပျောက်ဆုံးဆဲလ်များသည် parity တွက်ချက်ရန် သုည padded ဖြစ်ပါသည်။ RS(16) parity သည် row/global parity shards များကိုဖန်တီးသည်; ရွေးချယ်စရာ `row_parity_stripes` သည် matrix တစ်လျှောက်တွင် column-style stripe parity ကိုထည့်သွင်းသည်။ parity shard cryptographic commitment တန်ဖိုးများမှာ BLAKE3 သေးငယ်သော endiaine `u16` သင်္ကေတများ၏ cryptographic digests ဖြစ်သည်။
-6. Technical Manifesto ကိုတည်ဆောက်ပါ။ `DaManifestV1` က အကောင်အထည်ဖော်ရေးလမ်းကြောင်း၊ ခေတ်ကာလ၊ ဘလော့ဘ်တန်းအစား၊ ကွန်ဒက်၊ အသုံးဝင်ဝန်ဆောင်မှု cryptographic digest တန်ဖိုး၊ chunk root, chunk size, erasure profile, retention policy, rent quote, chunk cryptographic commitment values, optional IPA cryptographic engagement value ကို မှတ်တမ်းတင်တယ်။ metadata နှင့် issue time တို့။ သိုလှောင်မှုလက်မှတ်သည် deterministic ဖြစ်သည်- node သည်ပထမဦးဆုံးအလွတ်လက်မှတ်နှင့်အတူ နည်းပညာ manifest နမူနာကို cryptographic hashs လုပ်ပြီးနောက် နောက်ဆုံး `storage_ticket` အဖြစ် လက်ဗွေဆစ်ကိုပြန်ရေးသားသည်။
-7. Replay ပဋိပက္ခကိုငြင်းပယ်ပါ။ replay key က `(lane_id, epoch, sequence, manifest_fingerprint)` ဖြစ်သည်။ လက်ဗွေရာတစ်ခုတည်းရှိ duplicate သည် idempotent ဖြစ်သည်။ သက်တမ်းမပြည့်မီသော အစဉ်တစ်ခုသို့မဟုတ် အခြားလက်ဗွေရာ တစ်ခုနှင့်အတူတူသော အစဉ်တစ်ခုကိုငြင်းဆန်သည်။
+6. **Manifest ကို တည်ဆောက်ပါ။** `DaManifestV1` သည် lane၊ epoch၊ blob အမျိုးအစား၊ codec၊ payload digest၊ အပိုင်းအမြစ်၊ အပိုင်းအရွယ်အစား၊ ဖျက်ပျောက်မှုခံနိုင်ရေး ပရိုဖိုင်၊ ထိန်းသိမ်းမှုမူဝါဒ၊ ငှားရမ်းခ quote၊ အပိုင်းကတိပြုတန်ဖိုးများ၊ ရွေးချယ်နိုင်သော IPA ကတိပြုတန်ဖိုး၊ metadata နှင့် ထုတ်ပေးချိန်တို့ကို မှတ်တမ်းတင်သည်။ သိုလှောင်မှု ticket သည် တစ်သမတ်တည်းဖြစ်သည်။ နိုဒ်က ticket အလွတ်ပါသော manifest ပုံစံ၏ ဟက်ရှ်ကို ဦးစွာတွက်ပြီး ထိုလက်ဗွေကို နောက်ဆုံး `storage_ticket` အဖြစ် ပြန်ရေးသည်။
+7. **ပြန်လည်တင်သွင်းမှု ပဋိပက္ခများကို ငြင်းပယ်ပါ။** ပြန်လည်တင်သွင်းမှု ကီးမှာ `(lane_id, epoch, sequence, manifest_fingerprint)` ဖြစ်သည်။ လက်ဗွေတူသော ထပ်တူတင်သွင်းမှုသည် ရလဒ်မပြောင်းပါ။ အစဉ်နံပါတ်ဟောင်း သို့မဟုတ် အစဉ်နံပါတ်တူသော်လည်း လက်ဗွေမတူသော တင်သွင်းမှုကို ငြင်းပယ်သည်။
 8. လက်မှတ်ထိုးလက်ရာများကို ထုတ်ပေးပါ။ Torii သည် PDP cryptographic commitment တန်ဖိုးကို တွက်ချက်ပြီး `DaIngestReceipt` ကို လက်မှတ်ရေးထိုးကာ `DaCommitmentRecord` ကို တည်ဆောက်ပြီး နည်းပညာထုတ်ပြန်ချက်အတွက် spool artefacts များ၊ PDP cryptographic engagement value, cryptographic commit value record တို့ကို ရေးသားသည်။ cryptographic commitment value schedule, pin intent, protocol result record file, and protocol result record log. protocol result record cursor ကို `(lane_id, epoch)` အတိုင်း monotonously advance လုပ်ပေးတယ်။
 
 cryptographic commitment value record တွေကို blocks တွေက သယ်ဆောင်ပါတယ်။ မှတ်တမ်းတစ်ခုက
@@ -468,7 +468,7 @@ Block တစ်ခုမှာ DA မှတ်တမ်းတွေ ထည့်
 - Merkle သတ်ဖြတ်မှုလမ်းကြောင်းများ ငြင်းပယ် KZG cryptographic commitment values များ၊ KZG အကောင်အထည်ဖော်မှုလမ်းကြောင်းများအတွက် သုညမဟုတ်သော KZG cryptographic commitment value ကို သတ်မှတ်ပေးပါ။
 - Pin ရည်ရွယ်ချက်များကို အကောင်အထည်ဖော်မှုလမ်းကြောင်း၊ နည်းပညာ manifest cryptographic hash, သိုလှောင်ရေးလက်မှတ်၊ ပိုင်ရှင်စာရင်းနှင့် alias တိုက်မိမှု စည်းမျဉ်းများဖြင့် ကန်နိုနီကာစီ၊ အမျိုးအစားခွဲခြားပြီး စစ်ဆေးသည်။
 
-Block header သည် DA သက်သေခံမူဝါဒများအတွက် cryptographic hash များ၊ cryptographic commitment တန်ဖိုးများနှင့် pin intent များကို သိမ်းဆည်းထားသည်။ အဖွဲ့ဝင်မှုအထောက်အထားများအတွက်, cryptographic engagement value bundle သည် Merkle root ကိုလည်းဖွင့်လှစ်ထားသည် Norito-encoded `DaCommitmentRecord` values. parent nodes cryptographic hash the concatenation of left and right children; a odd leaf is promoted unchanged to the next layer (ဘယ်ဘက်နှင့်ညာဘက်ကလေးများ၏ ချိတ်ဆက်မှု)
+ဘလော့ခ်ခေါင်းစီးသည် DA proof မူဝါဒများ၊ ကတိပြုတန်ဖိုးများနှင့် pin ရည်ရွယ်ချက်များအတွက် ဟက်ရှ်များကို သိမ်းသည်။ အဖွဲ့ဝင်ဖြစ်ကြောင်း proof များအတွက် ကတိပြုတန်ဖိုး bundle က Merkle အမြစ်ကိုလည်း ပေးသည်။ ၎င်း၏ အရွက်များမှာ စံ Norito ဖြင့် encode လုပ်ထားသော `DaCommitmentRecord` တန်ဖိုးများ၏ ဟက်ရှ်များဖြစ်သည်။ မိဘ node များသည် ဘယ်နှင့်ညာ ကလေးတို့ကို ဆက်ထားခြင်း၏ ဟက်ရှ်ကို တွက်သည်။ အဖော်မရှိသော နောက်ဆုံးအရွက်ကို မပြောင်းဘဲ နောက်အလွှာသို့ တင်ပေးသည်။
 
 ### အထောက်အထား စစ်ဆေးခြင်း {#proof-verification}
 
@@ -493,7 +493,7 @@ Network peer တစ်ခုဟာ ကိုယ်ခန္ဓာကို မ�
 
 ### လုပ်ငန်းရှင် မှတ်စုများ {#operator-notes}
 
-Iroha 3 သဘောတူညီချက် ပရိုဖိုင်များတွင် အမြဲတမ်း လက်မှတ်ရေးထိုးထားသော နည်းပညာထုတ်ပြန်ချက်နှင့် RS16 အသုံးဝင်ဝန်ဆောင်မှု ပျံ့နှံ့ခြင်း၊ ပြင်ဆင်မတိုင်မီ တစ်ကိုယ်လုံးအတည်ပြုခြင်း၊ DA ဘက်ဒယ်အတည်ပြုခြင်းနှင့် ကန့်သတ်ထားတဲ့ ပြန်လည်ထူထောင်ရေး တယ်လီမီထရီတို့ ပါဝင်ပါသည်။ Layout နှင့် protocol နယ်နိမိတ်များကို လက်မှတ်ထိုးထားသော အမြင့် အခြေအနေသို့ အေးခဲစေသည်၊ ၎င်းတို့ကိုပိတ်နိုင်သည့် (သို့) ပြန်လည်သတ်မှတ်နိုင်သော ဒေသတွင်း switch သို့မဟုတ် timeout profile မရှိပါ။ Node-local block နှင့် queue boundaries တို့သည် deployment ၏ လက်မှတ်ထိုးထားတဲ့ layout နှင့် workload ကိုအံဝင်သင့်သည်။
+Iroha 3 consensus ပရိုဖိုင်များတွင် လက်မှတ်ထိုးထားသော manifest နှင့် RS16 payload ဖြန့်ဝေမှု၊ Prepare မတိုင်မီ body အပြည့်အစုံ စစ်ဆေးမှု၊ DA bundle စစ်ဆေးမှုနှင့် ကန့်သတ်ထားသော ပြန်လည်ရယူမှု telemetry တို့ အမြဲပါဝင်သည်။ Layout နှင့် ပရိုတိုကောကန့်သတ်ချက်များကို လက်မှတ်ထိုးထားသော အမြင့်အကြောင်းအရာတွင် မပြောင်းလဲအောင် သတ်မှတ်ထားသည်။ ၎င်းတို့ကို ပိတ်နိုင် သို့မဟုတ် ပြန်သတ်မှတ်နိုင်သော စက်တွင်း ခလုတ် သို့မဟုတ် အချိန်ကုန်ဆုံးမှု ပရိုဖိုင် မရှိပါ။ နိုဒ်စက်တွင်း ဘလော့ခ်နှင့် တန်းစီစာရင်း ကန့်သတ်ချက်များသည် deployment ၏ လက်မှတ်ထိုးထားသော layout နှင့် အလုပ်ပမာဏကို လိုက်လျောညီထွေ ဖြစ်နေရန် လိုအပ်သေးသည်။
 
 လမ်းကြောင်းရှာဖွေရေးအတွက် node ရဲ့ OpenAPI စာရွက်စာတမ်းနဲ့စပါ။
 
@@ -502,17 +502,17 @@ curl -fsS "$TORII_URL/openapi.json" \
   | jq '.paths | keys[] | select(startswith("/v1/da/"))'
 ```
 
-လက်ရှိ DA မေးမြန်းချက်အမည်များအတွက် [မေးမြန်းချက် အချက်အလက်များ](/my/reference/queries.md#nexus-data-availability-and-packages) ကိုအသုံးပြုပြီး လျှောက်ထားမှုအဆင့် `[nexus.da]` သောက်သုံးမှု၊ နမူနာယူခြင်း၊ စစ်ဆေးခြင်းနှင့် ပြန်လည်ထူထောင်ရေး အကန့်အသတ်များ၊ ဒေသတွင်း Sumeragi ဘလော့နဲ့ တန်းအကန့်အသတ်များကို [Network peer configuration template ကို အသုံးပြုရန်](/my/reference/peer-config/) ကို အသုံးပြုပါ။
+လက်ရှိ DA query အမည်များအတွက် [query ကိုးကားချက်](/my/reference/queries.md#nexus-data-availability-and-packages) ကို သုံးပါ။ အက်ပ်အဆင့် `[nexus.da]` ဒေတာလက်ခံမှု၊ နမူနာယူမှု၊ စာရင်းစစ်မှု၊ ပြန်လည်ရယူမှု ကန့်သတ်ချက်များနှင့် စက်တွင်း Sumeragi ဘလော့ခ်နှင့် တန်းစီစာရင်း ကန့်သတ်ချက်များအတွက် [peer ပြင်ဆင်သတ်မှတ်မှု ပုံစံ](/my/reference/peer-config/) ကို သုံးပါ။
 
 ## SoraFS {#sorafs}
 
-SoraFS သည် decentralized content-addressed storage fabric ဖြစ်သည်။ ၎င်းသည် bytes များကို deterministic chunks, CAR archives နှင့် Norito technical manifest များသို့ထည့်သွင်းပြီး content roots, chunking profile များ၊ pin policy များနှင့် governance attestations တို့ကို ချိတ်ဆက်ပေးသည်။ သိုလှောင်မှုပေးသွင်းသူများက အရည်အသွေးနှင့် အကြောင်းအရာရရှိနိုင်မှုကို ကြော်ငြာကြပြီး ဂိတ်ဝက်ဆိုဒ်များအနေဖြင့် အကြောင်းအရာများကို ဖြန့်ဖြူးရန်မတိုင်မီတွင် နည်းပညာထုတ်ပြန်ချက်များနှင့် cryptographic commitment values များကို အစိတ်အပိုင်းများအဖြစ် စစ်ဆေးကြသည်။
+SoraFS သည် ဗဟိုချုပ်ကိုင်မှုမရှိသော အကြောင်းအရာအလိုက် လိပ်စာသတ်မှတ်သည့် သိုလှောင်မှုစနစ်ဖြစ်သည်။ ၎င်းသည် byte များကို တစ်သမတ်တည်း အပိုင်းများ၊ CAR archive များနှင့် အကြောင်းအရာအမြစ်၊ အပိုင်းခွဲပရိုဖိုင်၊ pin မူဝါဒနှင့် အုပ်ချုပ်မှုသက်သေခံချက်များကို ချည်နှောင်သော Norito manifest များအဖြစ် ထုပ်ပိုးသည်။ သိုလှောင်မှု provider များက စွမ်းရည်နှင့် အကြောင်းအရာရရှိနိုင်မှုကို ကြေညာပြီး gateway များက အကြောင်းအရာမပေးမီ manifest နှင့် အပိုင်းကတိပြုတန်ဖိုးများကို စစ်ဆေးသည်။
 
 သာမန် SoraFS အသုံးပြုမှုများမှာ static application assets များ၊ documentation builds များ၊ zone များ ပါဝင်သည်။ အုပ်ချုပ်မှု အထောက်အထားများ၊ မော်ဒယ် (သို့) လက်ရာအကိုးအကားများ။ Iroha ဒေတာပုံစံ ထုတ်ပြန်ချက်များ SoraFS Gateway ဖြစ်ရပ်များနှင့် [`FindSorafsProviderOwner`](/my/reference/queries.md#nexus-data-availability-and-packages) ပေးသွင်းသူပိုင်ခွင့်ဖြေရှင်းမှုအတွက် မေးမြန်းချက်။
 
-### Taira Testnet Profile {#taira-testnet-profile}
+### Taira စမ်းသပ်ကွန်ရက် ပရိုဖိုင် {#taira-testnet-profile}
 
-Taira တစ်ခုတည်းသော ပရိုတိုကုတ်စံညွှန်း အများပြည်သူ SoraFS testnet. ၎င်းရဲ့ check-in validator profile မှာ chain ကို သုံးပါတယ်။ `fc56984b-2be7-431d-840e-21514d1883f0` သံကြိုးခွဲခြားမှု `369`. နိုင်ငံတကာ `NetworkId` အောက်မှာ ပိုက်ထားတဲ့ current ရဲ့ တိကျတဲ့ လက္ခဏာပါ။ Taira ဘလော့ခ်ချ်ကို ဖန်တီးခြင်း။ Taira Reset က Chain Label ကို ထိန်းထားရင်း အဲဒီ cryptographic hash ကို ပြောင်းလဲနိုင်ပါတယ်။ ဒီတော့ လက်ရှိလက်မှတ်ထိုးထားတဲ့ ဖြန့်ချိမှု ပရိုဖိုင်ကနေ ပြန်လည်ဆန်းသစ်ပြီး အစဉ်အတန်းကနေ ဘယ်တော့မှ မထုတ်ယူပါ။ UUID. Taira ထိရောက်မှုရှိပါတယ် SoraFS setting တွေက:
+Taira သည် စံအများသုံး SoraFS စမ်းသပ်ကွန်ရက်ဖြစ်သည်။ Repository ထဲရှိ ၎င်း၏ validator ပရိုဖိုင်သည် chain `fc56984b-2be7-431d-840e-21514d1883f0` နှင့် chain ခွဲခြားတန်ဖိုး `369` ကို သုံးသည်။ အောက်ပါ `NetworkId` သည် လက်ရှိပုံသေသတ်မှတ်ထားသော Taira genesis ၏ အထောက်အထားအတိအကျဖြစ်သည်။ Taira ကို reset လုပ်လျှင် chain အမည်ကို ထိန်းထားသော်လည်း ထိုဟက်ရှ် ပြောင်းနိုင်သဖြင့် လက်ရှိ လက်မှတ်ထိုးထားသော deployment ပရိုဖိုင်မှ ၎င်းကို အသစ်ပြန်ယူပါ။ Chain UUID မှ လုံးဝ မဆင်းသက်တွက်ချက်ပါနှင့်။ Taira တွင် အကျိုးသက်ရောက်နေသော SoraFS ဆက်တင်များမှာ -
 
 - ကွန်ရက် ID: `hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94`
 - Gateway Base URL: `https://taira.sora.org`
@@ -577,11 +577,11 @@ require_council_signatures = false
 
 အဆင့်မြင့်ဂိတ်ဝေ့ (gateway) တန်ဖိုးသုံးခုဟာ အမွေခံရတဲ့ ကျရှုံးမှုပိတ်ထားတဲ့ ကြိုတင်အဓိပ္ပာယ်သတ်မှတ်ချက်တွေဖြစ်ပြီး အပိုဒ်ထဲက အခြားတန်ဖိုးအားလုံးက Taira ရဲ့ စစ်ဆေးထားတဲ့ ပရိုဖိုင်မှာ ရှင်းလင်းပါတယ်။ လုပ်ငန်းရှင်တစ်ဦးသည် ရှာဖွေတွေ့ရှိမှု-လက်မှတ်ထိုးနေရာပိုင်ရှင်များကို လက်မှတ်ရေးထိုးထားသော ဖြန့်ချိမှုပစ္စည်းဖြင့် အစားထိုးရမည်ဖြစ်သည်။ ပေးပို့သည့် တောင်းဆိုချက်တိုင်းတွင် နည်းပညာပြဌာန်းချက် အချက်အလက် ကွန်တိန်နာတစ်ခု၊ လက်မှတ်ပေးသွင်းသူလက်မှတ်ထိုးခြင်းနှင့် ကြော်ငြာပြုလုပ်ထားသော အရည်အသွေးကို အသုံးပြုရမည်။
 
-Taira validator တွေမှာ SoraFS storage, repair, and garbage collection disabled ကို embedded လုပ်ထားပြီး ၎င်းတို့ရဲ့ configured capacity က validator ရဲ့ တစ်စိတ်တစ်ပိုင်း ဖြစ်နေဆဲပါ။ disk-budget စစ်ဆေးခြင်းသည် validator သည် storage provider ဖြစ်သည်ဟု မဆိုလိုပါ။ စမ်းသပ်မှုမတိုင်မီတွင် လက်ရှိ configured gateway နှင့် pin destinations ကိုဖတ်ရန် `GET /v1/sorafs/storage/peers?limit=4` ကိုအသုံးပြုပါ။
+Taira validator များတွင် ထည့်သွင်းထားသော SoraFS သိုလှောင်မှု၊ ပြုပြင်မှုနှင့် အမှိုက်ရှင်းလင်းမှုကို ပိတ်ထားသည်။ ပြင်ဆင်သတ်မှတ်ထားသော စွမ်းရည်သည် validator ဒစ်ဘတ်ဂျက် စစ်ဆေးမှု၏ အစိတ်အပိုင်းဖြစ်နေဆဲဖြစ်ပြီး validator က သိုလှောင်မှု provider ဖြစ်ကြောင်း မဆိုလိုပါ။ မစမ်းသပ်မီ လက်ရှိ ပြင်ဆင်သတ်မှတ်ထားသော gateway နှင့် pin ဦးတည်ရာများကို ဖတ်ရန် `GET /v1/sorafs/storage/peers?limit=4` ကို သုံးပါ။
 
-Taira ရဲ့ schema configuration မှာ `live` နဲ့ `taira` CID - host suffix keys နှစ်ခုစလုံးကို လက်ခံပါတယ်။ အများသုံး testnet နည်းပညာ manifesto တွေ၊ မူရင်း စစ်ဆေးမှုတွေနဲ့ browser စမ်းသပ်မှုတွေမှာ `sorafs.taira.sora.org` ကို အသုံးပြုသင့်တယ်ဆိုတော့ ၎င်းတို့ရဲ့ မူရင်းဟာ Taira နဲ့ ထင်ရှားစွာ ချိတ်ဆက်ထားရမှာပါ။ လက်ခံထားတဲ့ `live` ခလုတ်ကို ထုတ်လုပ်မှုဆိုင်ရာ မူရင်းတစ်ခုအောက်မှာ စမ်းသပ်ရေးကွန်ရက် အကြောင်းအရာကို ထုတ်ဝေဖို့ အကြံပြုချက်အဖြစ် မယူဆရပါ။ အခြားဖြန့်ချိမှုက ၎င်းတို့ရဲ့ ကိုယ်ပိုင်ကွန်ယက်အမည်၊ အုပ်ချုပ်ရေးခလုတ်များ၊ ပေးသွင်းသူဝင်ခွင့်ပစ္စည်း၊ pin API အဆုံးသတ်မှတ်ချက်များနှင့် အရည်အသွေး/ပြင်ဆင်ရေးမူဝါဒကို အသုံးပြုရပါမယ်။
+Taira ၏ schema ပြင်ဆင်သတ်မှတ်မှုသည် CID host နောက်ဆက်ကီးများဖြစ်သည့် `live` နှင့် `taira` နှစ်ခုလုံးကို လက်ခံသည်။ အများသုံး စမ်းသပ်ကွန်ရက် manifest များ၊ origin စစ်ဆေးမှုများနှင့် browser စမ်းသပ်ချက်များသည် မိမိတို့၏ origin က Taira နှင့် ချိတ်ထားကြောင်း ထင်ရှားစေရန် `sorafs.taira.sora.org` ကို သုံးသင့်သည်။ `live` ကီးကို လက်ခံခြင်းအား production ဟု ထင်ရသော origin အောက်တွင် စမ်းသပ်ကွန်ရက် အကြောင်းအရာကို ထုတ်ဝေရန် အကြံပြုချက်ဟု မယူဆပါနှင့်။ အခြား deployment များသည် မိမိတို့၏ ကွန်ရက်အထောက်အထား၊ အုပ်ချုပ်မှုကီးများ၊ provider ဝင်ခွင့်ဆိုင်ရာ ပစ္စည်းများ၊ pin endpoint များနှင့် စွမ်းရည်/ပြုပြင်မှု မူဝါဒကို သုံးရမည်။
 
-### Public Local CID နှင့် Site Gateways များ {#public-local-cid-and-site-gateways}
+### အများသုံး စက်တွင်း CID နှင့် ဆိုက် Gateway များ {#public-local-cid-and-site-gateways}
 
 SoraFS အားသွင်းထားသော Torii node တစ်ခုစီသည် API ရွေးချယ်စရာ app ကို မတည်ဆောက်ပါကတောင်မှ ဤမည်မသိ အများသုံးလမ်းကြောင်းများကို တပ်ဆင်သည်။
 
@@ -594,13 +594,13 @@ SoraFS အားသွင်းထားသော Torii node တစ်ခုစ�
 
 ဤလမ်းကြောင်းများသည် `x-sorafs-stream-token` သို့မဟုတ် `x-sorafs-token-id` ကို ဘယ်တော့မှ လက်မခံပါ။ ခေါင်းစဉ်နှစ်ခုစလုံးရှိခြင်းသည်မကောင်းသောတောင်းဆိုချက်တစ်ခုဖြစ်သည်။ node ၏အာဏာပိုင် ဒေသတွင်းတွင်အခုပင်ရှိနေသည့် single protocol-standard technical manifest တစ်ခုတည်း။ သိုလှောင်သည် အများပြည်သူဖတ်နိုင်စွမ်းဖြစ်သည်; ကေရှ်ပျောက်ကွယ်မှုကဝေးလံပေးသွင်းသူ hydration ကိုခွင့်မပြုပါ။ ကာကွယ်သောပေးသွင်းသူ CAR နှင့် chunk လမ်းကြောင်းများသည် သီးခြားအတည်ပြုထားတဲ့ ပရိုတိုကောမျက်နှာပြင်များအဖြစ်ကျန်ရစ်သည်။
 
-Torii သည် byte များကို ဖတ်ရှုရန်မတိုင်မီ ဒေသဆိုင်ရာ နည်းပညာထုတ်ပြန်ချက်၏ တစ်ခုတည်းသော ပရိုတိုကောစံညွှန်းကုဒ်၊ အဓိပ္ပာယ်သတ်မှတ်မှု ကန့်သတ်ချက်များ၊ cryptographic digest value နှင့် root CID ကို validates။ ထို့နောက် CID နှင့် ပေးသွင်းသူအတွက် အာဏာရ ဒေသတွင်းပေးသွင်းသူရဲ့ ကိုယ်ပိုင်လက္ခဏာ၊ အုပ်ချုပ်မှု အသိအမှတ်ပြုချက်နှင့် စည်းကမ်းထားသော လိုက်နာမှုကို တောင်းဆိုသည်။ Gateway rate/ban policy သည် client address ကိုအသုံးပြုပြီး forwarded address များကို configured trusted proxies မှတစ်ဆင့်သာ honor လုပ်ပေးသည်။ ပျောက်နေသော policy၊ compliance, identity သို့မဟုတ် admission state ကိုပိတ်နိုင်ခြင်းမရှိပါ။
+Byte များကို မဖတ်မီ Torii သည် စက်တွင်း manifest ၏ စံ encoding၊ အဓိပ္ပာယ်ဆိုင်ရာ ကန့်သတ်ချက်များ၊ digest နှင့် root CID ကို စစ်ဆေးသည်။ ထို့နောက် manifest၊ CID နှင့် provider အတွက် အာဏာပိုင် စက်တွင်း provider အထောက်အထား၊ အုပ်ချုပ်မှုအရ ဝင်ခွင့်နှင့် အုပ်ချုပ်မှုဖြင့် သတ်မှတ်ထားသော စည်းကမ်းလိုက်နာမှုတို့ကို လိုအပ်သည်။ Gateway ၏ နှုန်းကန့်သတ်/ပိတ်ပင်မှု မူဝါဒသည် အကျိုးသက်ရောက်သော client လိပ်စာကို သုံးပြီး ပြင်ဆင်သတ်မှတ်ထားသော ယုံကြည်ရသည့် proxy များမှသာ ထပ်ဆင့်ပို့သောလိပ်စာကို လက်ခံသည်။ မူဝါဒ၊ စည်းကမ်းလိုက်နာမှု၊ အထောက်အထား သို့မဟုတ် ဝင်ခွင့်အခြေအနေ မရှိလျှင် လက်မခံဘဲ ပိတ်ပင်သည်။
 
-တောင်းဆိုချက်တစ်ခုမှာ အဆုံးမှ အဆုံးအထိ အများသုံးဂိတ်ခွင့်ရှိပြီး လုပ်ငန်းစဉ်တစ်ခုလုံးအတွက် ကန့်သတ်ချက်က တစ်ပြိုင်နက်ဖတ်ခြင်း ၆၄ ခုပါ။ အလွန်အကျွံတောင်းဆိုချက်များ ပြန်ပို့ခြင်း `503 Service Unavailable` နှင့် `Retry-After: 1`. Technical manifest response တွေကို ၁၆ အထိ သတ်မှတ်ထားတယ်။ MiB, file listings default to 50 entries and return at most 500, and a full file or single byte range is capped at 8 (ဖိုင်စာရင်းစာရင်းအမှတ် ၅၀ နှင့် အများဆုံး ၅၀၀) သို့ပြန်လာပြီးတစ်ခုတည်းသောဖိုင် (သို့မဟုတ်) တစ်ဘက်တာအကွာအဝေးကို ၈ တွင်သတ်မှတ်ထားသည်။ MiB. မေးမြန်းမှု ဆောက်လုပ်မှုအပေါ် မူတည်တယ်။ ပို့ဆောင်ရေးပါ။ `app_api` build သည် decoded unsigned 32-bit ကိုလက်ခံသည် `limit`, အခြား query keys တွေကို လျစ်လျူရှုပြီး နောက်ဆုံး key ကို ထပ်လုပ်ခွင့်ပြုတယ်။ `limit` win နဲ့ value ကို clamps `1..=500`. မပါဘဲ အနည်းဆုံး feature build တစ်ခု `app_api` တစ်ခုတည်းသော ပရိုတိုကောလံကိုသာ လက်ခံသည်။ `limit=1..500` မသိတဲ့၊ အထပ်ထပ်၊ ရာခိုင်နှုန်းကုဒ်ထားတဲ့ (သို့) တစ်ခုတည်းမဟုတ်တဲ့ ပရိုတိုကုတ်စံညွှန်း ပုံစံတွေကို ပယ်ချပါ။ `limit=<1..500>` အဆောက်အအုံတစ်ခုလုံးမှာ သယ်ဆောင်နိုင်တဲ့ အပြုအမူအတွက် စုံတွဲပါ။ CIDs, host များ၊ paths များနှင့် range headers တို့သည် build နှစ်ခုစလုံးတွင် single protocol-standard နှင့် single-value ဖြစ်နေသည်။ Active HTML, CSS, JavaScript, SVG, XML, PDF, (သို့) Wasm content ကို configured ကနေသာ ၀ န်ဆောင်ပေးသည်။ CID- ရယူထားသော သီးခြားရင်းမြစ် (သို့မဟုတ် အဲဒီကို ပြန်ညွှန်းထားသည်) သည် မျှဝေသော လမ်းကြောင်း-ဂိတ်ပေါက်ရင်းမြစ်မှ မယုံနိုင်စရာ အကြောင်းအရာများကို အကောင်အထည်ဖော်ခြင်းကို တားဆီးပေးသည်။
+တောင်းဆိုမှုတစ်ခုသည် အစမှအဆုံးအထိ အများသုံး gateway ခွင့်ပြုလက်မှတ်တစ်ခုကို ကိုင်ထားသည်။ Process တစ်ခုလုံး၌ တစ်ပြိုင်နက် ဖတ်ရှုမှု 64 ခုအထိသာ ခွင့်ပြုပြီး ပိုလျှံသော တောင်းဆိုမှုများကို `503 Service Unavailable` နှင့် `Retry-After: 1` ပြန်ပေးသည်။ Manifest အဖြေများကို 16 MiB အထိ ကန့်သတ်သည်။ ဖိုင်စာရင်းသည် မူလအတိုင်း မှတ်တမ်း 50 ခုဖြစ်ပြီး အများဆုံး 500 ခု ပြန်ပေးသည်။ ဖိုင်အပြည့် သို့မဟုတ် byte အပိုင်းအခြားတစ်ခုကို 8 MiB အထိ ကန့်သတ်သည်။ Query parse လုပ်ပုံသည် build ပေါ်မူတည်သည်။ ဖြန့်ချိသော `app_api` build သည် decode လုပ်ပြီးသော အပေါင်း/အနုတ်လက္ခဏာမပါသော 32-bit `limit` ကို လက်ခံပြီး အခြား query ကီးများကို လျစ်လျူရှုသည်။ `limit` ထပ်ပါလျှင် နောက်ဆုံးတန်ဖိုးကို ယူပြီး `1..=500` အတွင်းသို့ ကန့်သတ်ညှိပေးသည်။ `app_api` မပါသော လုပ်ဆောင်ချက်အနည်းဆုံး build သည် စံ `limit=1..500` အတွဲတစ်ခုတည်းကိုသာ လက်ခံပြီး မသိသော၊ ထပ်ပါသော၊ ရာခိုင်နှုန်းဖြင့် encode လုပ်ထားသော သို့မဟုတ် စံမဟုတ်သော ပုံစံများကို ငြင်းပယ်သည်။ Build များအကြား တူညီသော အပြုအမူရရန် `limit=<1..500>` အတွဲ တစ်ခုတည်းကို အတိအကျ ပို့ပါ။ CIDs၊ host များ၊ လမ်းကြောင်းများနှင့် range ခေါင်းစီးများသည် build နှစ်မျိုးလုံးတွင် စံပုံစံနှင့် တန်ဖိုးတစ်ခုတည်း ဖြစ်ရမည်။ လုပ်ဆောင်နိုင်သော HTML၊ CSS၊ JavaScript၊ SVG၊ XML၊ PDF သို့မဟုတ် Wasm အကြောင်းအရာကို ပြင်ဆင်သတ်မှတ်ထားသော CID မှ ဆင်းသက်သည့် သီးခြား origin မှသာ ပေးသည် (သို့မဟုတ် ထိုနေရာသို့ ပြန်ညွှန်သည်)။ ဤနည်းဖြင့် မျှဝေသုံးသော path gateway origin တွင် မယုံကြည်ရသော အကြောင်းအရာ လုပ်ဆောင်ခြင်းကို တားဆီးသည်။
 
 ### စုစည်းခြင်း၊ တည်ဆောက်ခြင်းနှင့် တင်ပြခြင်း {#pack-build-and-submit}
 
-အောက်ပါ အပြောင်းအလဲဥပမာမှာ လက်ရှိ pinned Taira `NetworkId`, pin API အဆုံးမှတ်, replication floor နဲ့ အုပ်ချုပ်ရေး မူဝါဒကို သုံးပါတယ်။ ငွေကြေးထောက်ပံ့တဲ့ testnet account နဲ့ disposable owner-only key file တစ်ခုပါ။ Taira ကောင်စီလက်မှတ်မပါဘဲ ခွင့်ပြုချက်မရှိတဲ့ pin တွေကို လက်ခံပေမဲ့ စည်းကမ်းထားတဲ့ အခကြေးကိုပဲ စရိတ်ပေးတယ်။
+အောက်ပါ ပြောင်းလဲရေးဥပမာသည် လက်ရှိပုံသေသတ်မှတ်ထားသော Taira `NetworkId`၊ pin endpoint၊ မိတ္တူအရေအတွက် အနိမ့်ဆုံးနှင့် အုပ်ချုပ်မှုမူဝါဒကို သုံးသည်။ ငွေရှိသော စမ်းသပ်ကွန်ရက်အကောင့်နှင့် ပိုင်ရှင်သာ ဖတ်နိုင်သည့် ယာယီကီးဖိုင်ကို သုံးပါ။ Taira သည် ကောင်စီလက်မှတ်မပါဘဲ ခွင့်ပြုချက်တောင်းစရာမလိုသော pin များကို လက်ခံသော်လည်း အုပ်ချုပ်မှုအရ သတ်မှတ်ထားသော အခကြေးငွေကို ကောက်ခံနေဆဲဖြစ်သည်။
 
 ```bash
 cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
@@ -641,7 +641,7 @@ cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
 
 ### စစ်ဆေးပြီး ယူလာပါ {#verify-and-fetch}
 
-Taira ၏ Provider Catalogue မှ Provider ID နှင့် ကြော်ငြာထားသော Base URL ကိုရယူပြီး Gateway Key နှင့် Stream Token ကို ထို Provider ၏ ဌာနမှတစ်ဆင့်ရရှိပါ။ Admission flow. ဤတန်ဖိုးများသည် validator-storage setting များမဟုတ်ပါ။ စစ်ဆေးထားသော Taira validators များတွင် storing disabled ကိုထည့်သွင်းထားသည်၊ ထို့ကြောင့် validator pin URL ကို Provider URL အတွက် အစားထိုးမပေးပါ။
+ကာကွယ်ထားသော fetch တန်ဖိုးတွဲသည် provider တစ်ခုစီအလိုက် သီးခြားဖြစ်သည်။ ၎င်း၏ provider ID နှင့် ကြေညာထားသော အခြေခံ URL ကို Taira ၏ provider catalog မှ ရယူပြီး gateway ကီးနှင့် stream token ကို ထို provider ၏ ဝင်ခွင့်လုပ်ငန်းစဉ်မှ ရယူပါ။ ဤတန်ဖိုးများသည် validator သိုလှောင်မှုဆက်တင်များ မဟုတ်ပါ။ Repository ထဲရှိ Taira validator များတွင် ထည့်သွင်းသိုလှောင်မှု ပိတ်ထားသဖြင့် provider URL အစား validator ၏ pin URL ကို မသုံးပါနှင့်။
 
 ```bash
 export TAIRA_ROOT=https://taira.sora.org
@@ -689,7 +689,7 @@ cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
 
 ## SoraDNS {#soradns}
 
-SoraDNS သည် SORA ဝန်ဆောင်မှုများနှင့် အကြောင်းအရာများအတွက် သတ်မှတ်ချက်ဆိုင်ရာ နာမည်သတ်မှတ်မှု အလွှာဖြစ်သည်။ ၎င်းသည်အမည်များကို ပုံမှန်ပြုပြင်ခြင်း၊ Iroha တွင် resolver directory update များကိုချိတ်ဆက်ခြင်း။ SoraFS မှတစ်ဆင့် လက်မှတ်ရေးထိုးထားတဲ့ဇုန် (သို့) Resolver ဘူးတွေကို ဖြန့်ဝေပေးတယ်။ Resolvers နဲ့ gateways တွေက Discovery metadata ကို ယုံကြည်ခင် Resolver attestation documents တွေကို စစ်ဆေးပါတယ်။
+SoraDNS သည် SORA Nexus ဝန်ဆောင်မှုများနှင့် အကြောင်းအရာအတွက် တစ်သမတ်တည်း အမည်ပေးအလွှာဖြစ်သည်။ ၎င်းသည် အမည်များကို စံညှိပြီး resolver လမ်းညွှန် ပြောင်းလဲမှုများကို Iroha တွင် အခြေခံချည်နှောင်ကာ လက်မှတ်ထိုးထားသော zone သို့မဟုတ် resolver bundle များကို SoraFS မှတစ်ဆင့် ဖြန့်ဝေသည်။ Resolver နှင့် gateway များသည် ရှာဖွေတွေ့ရှိမှု metadata ကို မယုံကြည်မီ resolver သက်သေခံစာတမ်းများကို စစ်ဆေးသည်။
 
 Browser access အတွက် SoraDNS သည် မှတ်ပုံတင်ထားသော FQDN မှ gateway host များကို ထုတ်ယူသည်။ မှတ်ပုံတင်ထားတဲ့ vanity host သည် single protocol-standard application origin ဖြစ်နေဆဲဖြစ်ပြီး ဖြန့်ဖြူးထားသော gateway profile များတွင် browser နှင့် Torii ၏ fallback routes များကို ထို Origin အတွက် ဖော်ပြထားသည်။
 
@@ -700,9 +700,9 @@ Browser access အတွက် SoraDNS သည် မှတ်ပုံတင်�
 |အချည်းနှီးမှု မူရင်း|`https://<fqdn>/<path>` |Single protocol-standard app URL ကို Technical Manifesto များနှင့် ထုတ်ပြန်ချက်များတွင် မှတ်တမ်းတင်ထားပါသည်။ |
 |Taira browser gateway ကို |`https://<fqdn>.mon.taira.sora.net/<path>` |Active alias အတွက် အများသုံး Browser gateway ကို |
 |Torii ကျောပြန်လမ်းကြောင်း|`https://taira.sora.org/soradns/<fqdn>/<path>` |Torii Active alias အတွက် Debug နဲ့ Fallback လမ်းကြောင်း |
-|Single protocol-standard cryptographic hash gateway ကို ချိတ်ဆက်ပေးရန်|`<base32(blake3(name))>.gw.sora.id` |Deterministic gateway identity နှင့် GAR စစ်ဆေးခြင်း |
+| စံဟက်ရှ် Gateway | `<base32(blake3(name))>.gw.sora.id` | တစ်သမတ်တည်း gateway အထောက်အထားနှင့် GAR စစ်ဆေးမှု |
 
-`/soradns/<alias>/...` fallback သည် အများပြည်သူအကြိုက်ဆုံးမဟုတ်သည် URL. tooling, app နည်းပညာ manifest များနှင့် frontend ဖွဲ့စည်းပုံသည် vanity host ကိုယ်တိုင်ကိုသာ ကြိုက်သင့်သည်။ Taira မှာ အမည်မဖော်လိုရင် browser gateway (သို့) fallback path က application routing မစခင် `404` ကိုပြန်ပို့နိုင်တယ် (သို့မဟုတ်) TLS ပျက်ကွက်နိုင်ပါတယ်။
+`/soradns/<alias>/...` အစားထိုးလမ်းကြောင်းသည် ဦးစားပေး အများသုံး URL မဟုတ်ပါ။ ကိရိယာများ၊ အက်ပ် manifest များနှင့် frontend ပြင်ဆင်သတ်မှတ်မှုများသည် သီးသန့်အမည်ပေးထားသော host ကိုယ်တိုင်ကို ဦးစားပေးသင့်သည်။ Taira တွင် alias အသက်မဝင်ပါက browser gateway သို့မဟုတ် အစားထိုးလမ်းကြောင်းသည် `404` ပြန်နိုင်သည်၊ သို့မဟုတ် အက်ပ်လမ်းကြောင်း သတ်မှတ်မှုမစမီ TLS ကျရှုံးနိုင်သည်။
 
 ### Derive Gateway Host များ {#derive-gateway-hosts}
 
@@ -731,7 +731,7 @@ console.log(hostPatternsCoverDerivedHosts(patterns, derived))
 
 GAR အသုံးဝင် ဝန်ဆောင်မှုတွေက Single Protocol-standard cryptographic hash host ကို ဖုံးအုပ်သင့်တယ်၊ Single protocol-standard wildcard နဲ့ ရွေးချယ်ထားတဲ့ pretty host ကိုပါ။
 
-### Resolver Directory point-in-time ဒေတာအမြင်ကိုယူပါ။ {#fetch-a-resolver-directory-snapshot}
+### Resolver လမ်းညွှန် Snapshot ကို ရယူခြင်း {#fetch-a-resolver-directory-snapshot}
 
 ```bash
 curl -i "$TORII_URL/v1/soradns/directory/latest"
@@ -745,7 +745,7 @@ soradns_resolver rad verify \
   --rad ./state/soradns-directory/rad/resolver-a.norito
 ```
 
-Gateways သည် Resolver attestation စာရွက်စာတမ်းပျောက်ဆုံး၊ သက်တမ်းကုန်ဆုံး၊ လက်မှတ်မထိုးထား၊ သို့မဟုတ် နောက်ဆုံး Merkle root directory တွင် ချိတ်ဆက်ခြင်းမရှိသော resolvers များကို ပယ်ချသင့်သည်။ Resolver directory မထုတ်ဝေသေးသည့်ကွန်ရက်တွင်, `/v1/soradns/directory/latest` သည်လမ်းကြောင်းဖွင့်ထားသော်လည်း `404` ကိုပြန်လည်ပို့နိုင်ပါသည်။
+Gateway များသည် resolver သက်သေခံစာတမ်း မရှိသော၊ သက်တမ်းကုန်သော၊ လက်မှတ်မပါသော သို့မဟုတ် နောက်ဆုံးလမ်းညွှန် Merkle အမြစ်တွင် အခြေခံမချည်နှောင်ထားသော resolver များကို ငြင်းပယ်သင့်သည်။ Resolver လမ်းညွှန် မထုတ်ဝေရသေးသော ကွန်ရက်တွင် လမ်းကြောင်းဖွင့်ထားသော်လည်း `/v1/soradns/directory/latest` က `404` ပြန်နိုင်သည်။
 
 ### ပြည်သူ့ DNS ကိုယ်စားလှယ်အဖွဲ့ {#public-dns-delegation}
 
@@ -760,29 +760,29 @@ SoraDNS host derivation က သာမန် အင်တာနက်ကို �
 FHE နှင့်စပ်လျဉ်း၍ Nexus ဝန်ဆောင်မှုများတွင်ရရှိနိုင်သော မျက်နှာပြင်များမှာ အောက်ပါအတိုင်းဖြစ်သည်။
 
 - `iroha_crypto::fhe_bfv` သည် scalar ciphertext evaluation အတွက် deterministic BFV support ကို အကောင်အထည်ဖော်သည်။ Identifier resolution က `BfvIdentifierPublicParameters` နှင့် `BfvIdentifierCiphertext` တို့ကို အသုံးပြုပြီး slot 0 သည် input byte အလျားကို သိမ်းဆည်းထားပြီး နောက်ပိုင်း slots များသည် encrypted byte တစ်ခုစီကို သိမ်းဆိုက်ထားသည်။
-- Soracloud state and job schemes model FHE governance-managed parameter sets, execution policies, ciphertext cryptographic commitment values, query data containers, and disclosure requests များနှင့်အတူ encryption text workloads ကို စီမံခန့်ခွဲမှုစီမံခန့်ခွဲထားသော parameters set များ၊ အကောင်အထည်ဖော်ရေး မူဝါဒများ၊ encrypted text cryptographic engagement value များ၊ query data ကွန်တိန်နာများနှင့် ထုတ်ပြန်ခြင်းတောင်းဆိုချက်များ။
+- Soracloud ၏ အခြေအနေနှင့် အလုပ် schema များသည် အုပ်ချုပ်မှုက စီမံသော ပါရာမီတာအစုများ၊ လုပ်ဆောင်မှုမူဝါဒများ၊ စာဝှက်ဒေတာ ကတိပြုတန်ဖိုးများ၊ query envelope များနှင့် ဖော်ထုတ်ခွင့်တောင်းဆိုချက်များဖြင့် FHE စာဝှက်ဒေတာ အလုပ်ပမာဏများကို မော်ဒယ်ဖွဲ့သည်။
 
 BFV identifier path ကို Privacy-preserving enrollment အတွက်အသုံးပြုသည်။ Client သည် Torii resolver သို့ encrypted identifier တစ်ခုကိုတင်ပြနိုင်ပါသည်။ resolver က၎င်းကို Active identifier policy ကိုသုံးပြီး `OpaqueAccountId` ကို ထုတ်ယူပြီး protocol result record တစ်ခုထုတ်ပေးပါတယ်။ `ClaimIdentifier` ကတော့ အဲဒီ protocol result record ကို target account နဲ့ ချိတ်ဆက်ထားတဲ့ UAID ကို ချိတ်ဆက်တယ်။
 
-နိုင်ငံတကာ UAID ဒီစီးဆင်းမှုအနီးမှာ ကိုယ်ပိုင်လက္ခဏာနဲ့ အရည်အသွေးကို ခိုင်မာစွာ ချမှတ်ထားတာပါ။ `UniversalAccountId` hash နဲ့ backed ဖြစ်ပြီး `uaid:<hash>`. Parsers တွေက နှစ်ခုစလုံးကို လက်ခံကြတယ်။ `uaid:<hash>` (သို့) ရိုးရိုး ၆၄ hex cryptographic digest value ကို `Account` နှင့် `NewAccount` ရွေးချယ်မှုပါ `uaid` နှင့် `opaque_ids` နယ်ပယ်များ။ ဆော့ဖ်ဝဲ အကောင်အထည်ဖော်ရေး ပတ်ဝန်းကျင် မှတ်ပုံတင်သည် တစ်-တစ်-တစ် UAID- အကောင့်အလိုက် အညွှန်းကိန်း၊ duplicate (သို့) colliding opaque identifiers ကိုငြင်းပယ်ပြီး opaque identifier တွေကို UAID. ဘယ်အချိန်မဆို UAID Account binding changes ကို software execution environment က space directory database bindings တွေကို ပြန်လည်တည်ဆောက်ပေးတယ် UAID.
+UAID သည် ထိုလုပ်ငန်းစဉ်၏ အထောက်အထားနှင့် လုပ်ပိုင်ခွင့်ဆိုင်ရာ အခြေခံချည်နှောင်ရာဖြစ်သည်။ ဒေတာမော်ဒယ်တွင် `UniversalAccountId` သည် ဟက်ရှ်အခြေပြုဖြစ်ပြီး `uaid:<hash>` အဖြစ် ပြသည်။ Parser များသည် `uaid:<hash>` သို့မဟုတ် hexadecimal 64 လုံးပါ digest အကြမ်းကို လက်ခံသည်။ `Account` နှင့် `NewAccount` တွင် ရွေးချယ်နိုင်သော `uaid` နှင့် `opaque_ids` အကွက်များ ပါဝင်သည်။ Runtime မှတ်ပုံတင်မှုသည် UAID နှင့် အကောင့်ကို တစ်ခုချင်းစီ အချိုးတူချိတ်သော အညွှန်းကို အတည်ပြုကျင့်သုံးသည်။ ထပ်နေသော သို့မဟုတ် တိုက်မိသော မဖော်ထုတ်နိုင်သည့် အမှတ်အသားများကို ငြင်းပယ်ပြီး UAID မပါသော မဖော်ထုတ်နိုင်သည့် အမှတ်အသားများကိုလည်း ငြင်းပယ်သည်။ UAID အကောင့်ချိတ်ဆက်မှု ပြောင်းတိုင်း runtime သည် ထို UAID အတွက် data space လမ်းညွှန်ချိတ်ဆက်မှုများကို ပြန်တည်ဆောက်သည်။
 
-Space Directory Technical Manifests သည် UAID ကိုအတတ်နိုင်စွမ်းများကိုချိတ်ဆက်သည်။ `AssetPermissionManifest` တွင် UAID၊ ဒေတာနေရာ၊ တက်ကြွမှုနှင့် ရွေးချယ်စရာ သက်တမ်းကုန်ဆုံးသည့် ကာလကိုအမည်ပေးထားပြီးဒေတာနေရာ၊ အစီအစဉ်၊ နည်းစနစ်၊ အရင်းအမြစ်နှင့် AMX အခန်းကဏ္ဍမှတစ်ဆင့် သတ်မှတ်ထားသော ခွင့်ပြု / ငြင်းပယ်ခြင်း စာရင်းများကိုစီစဉ်ထားသည်။ အကဲဖြတ်ခြင်းသည် ငြင်းပယ်မှု-အနိုင်ဖြစ်သည်: ပထမညီမျှသော ငြင်းပယ်ချက်ကတောင်းဆိုချက်ကိုငြင်းပယ်သည်၊ မဟုတ်လျှင်နောက်ဆုံးညီမျှခွင့်ပြုသူကိုပမာဏသတ်မှတ်ချက်တစ်ခုခုနှင့် စစ်ဆေးသည်။ ဤနည်းပညာထုတ်ပြန်ချက်များကို ထုတ်ဝေခြင်း၊ သက်တမ်းကုန်ကျခြင်း၊ ရုပ်သိမ်းခြင်းတို့ကို `CanPublishSpaceDirectoryManifest` ဖြင့်ကာကွယ်ထားသည်။
+Data space လမ်းညွှန် manifest များသည် UAID တစ်ခုတွင် လုပ်ပိုင်ခွင့်များကို တွဲပေးသည်။ `AssetPermissionManifest` သည် UAID၊ data space၊ အသက်ဝင် epoch နှင့် ရွေးချယ်နိုင်သော သက်တမ်းကုန် epoch တို့ကို အမည်သတ်မှတ်ပြီး data space၊ ပရိုဂရမ်၊ နည်းလမ်း၊ ပိုင်ဆိုင်မှုနှင့် AMX role အလိုက် ကန့်သတ်ထားသော အစဉ်လိုက် ခွင့်ပြု/ငြင်းပယ် မှတ်တမ်းများကို ဖော်ပြသည်။ အကဲဖြတ်ရာတွင် ငြင်းပယ်မှုကို ဦးစားပေးသည်။ ပထမဆုံး ကိုက်ညီသော ငြင်းပယ်မှုက တောင်းဆိုချက်ကို ငြင်းပယ်ပြီး မရှိပါက နောက်ဆုံး ကိုက်ညီသော ခွင့်ပြုချက်လောင်းကို ပမာဏကန့်သတ်ချက်ရှိသမျှနှင့် တိုက်စစ်သည်။ ဤ manifest များကို ထုတ်ဝေခြင်း၊ သက်တမ်းကုန်စေခြင်းနှင့် ရုပ်သိမ်းခြင်းအား `CanPublishSpaceDirectoryManifest` ဖြင့် ကာကွယ်ထားသည်။
 
 Soracloud FHE အခြေအနေအတွက် အကောင်အထည်ဖော်ထားသော အစီအစဉ်များမှာ:
 
 |အစီအစဉ်|ဒါက ဘာကို ထိန်းချုပ်လဲ။|
 | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-|`SoraStateBindingV1` နှင့် `FheCiphertext` |State key prefix အောက်က values တွေဟာ FHE encrypted text တွေဖြစ်တယ်လို့ ကြေညာပါတယ်။|
+| `FheCiphertext` ပါသော `SoraStateBindingV1` | အခြေအနေကီး ရှေ့ဆက်တစ်ခုအောက်ရှိ တန်ဖိုးများသည် FHE စာဝှက်ဒေတာ ဖြစ်ကြောင်း ကြေညာသည်။ |
 |`FheParamSetV1` |Scheme, backend, modulus chain, polynomial degree, slot count, security target, lifecycle နဲ့ parameter cryptographic digest value တွေကို အမည်ပေးထားပါတယ်။ |
 |`FheExecutionPolicyV1` |စာလုံးဝှက်စာသားအရွယ်အစား၊ သာမန်စာလုံးအရွယ်အစား၊ input/output အရေအတွက်၊ မြှောက်ခြင်း နက်ရှိုင်းမှု၊ လည်ပတ်မှုတွေ၊ bootstraps နဲ့ rounding mode ကို ကန့်သတ်ပါတယ်။ |
 |`FheGovernanceBundleV1` |Admission validation အတွက် အကောင်အထည်ဖော်မှု မူဝါဒတစ်ခုနဲ့ သတ်မှတ်ထားတဲ့ parameter တစ်ခုကို စုံတွဲပါ။ |
 |`FheJobSpecV1` |`Add`, `Multiply`, `RotateLeft` သို့မဟုတ် `Bootstrap` တို့ကို သွယ်ဝှက်စာသားအခြေအနေသော့များနှင့် cryptographic commitment တန်ဖိုးများအပေါ် သတ်မှတ်မှုဆိုင်ရာ အလုပ်ကိုဖော်ပြသည်။ |
-|`CiphertextQuerySpecV1` |Queries များသည် service, binding, key prefix, result limit, metadata level နှင့် optional inclusion proof တို့ဖြင့်စာလုံးဝှက်စာသားကိုသာ ဖော်ပြသည်။ |
+| `CiphertextQuerySpecV1` | စာဝှက်ဒေတာသက်သက် အခြေအနေကို ဝန်ဆောင်မှု၊ ချိတ်ဆက်မှု၊ ကီးရှေ့ဆက်၊ ရလဒ်ကန့်သတ်ချက်၊ metadata အဆင့်နှင့် ရွေးချယ်နိုင်သော ပါဝင်ကြောင်း proof အရ query လုပ်သည်။ |
 |`DecryptionRequestV1` |စာလုံးဝှက်စာသားတစ်ခုအတွက် decryption authority မူဝါဒအောက်မှာ cryptographic commitment value တစ်ခုကို ဖော်ပြဖို့ တောင်းဆိုတယ်။ |
 
 `FheJobSpecV1::validate_for_execution` သည် အလုပ်၊ အကောင်အထည်ဖော်ရေး မူဝါဒနှင့် ပမာဏ သတ်မှတ်ချက်သည် လက်ခံခြင်းမတိုင်မီ သဘောတူညီမှုရှိသည်ကို စစ်ဆေးသည်။ ၎င်းသည်လည်း လုပ်ဆောင်မှုဆိုင်ရာ သီးသန့်စည်းမျဉ်းများကို ချိုးဖောက်ပေးသည်- ပေါင်းထည့်ခြင်း၊ မြှောက်ခြင်းသည် အနည်းဆုံး input နှစ်ခုလိုအပ်သည် rotate နှင့် bootstrap တို့သည်အတိအကျတစ်ခုတည်းသော input ကိုလိုအပ်ပြီး requested depth, rotation count, bootstrap count, input count, payload bytes နှင့် deterministic output size များသည်မူဝါဒကန့်သတ်ချက်များအတွင်းတွင်နေရမည်ဖြစ်သည်။ ciphertext query ရလဒ်များသည် plaintext အတန်းများကိုပြန်မပို့ရ။
 
-UAID သည် ciphertext မဟုတ်ဘဲ FHE မူဝါဒကိုယ်တိုင်မဟုတ်ပါ။ ၀ န်ဆောင်မှု (သို့) ဒေတာနေရာစီးဆင်းမှုကို ခွင့်ပြုသည့် အကောင့်ရှာဖွေရေးအတွက်အသုံးပြုသော တည်ငြိမ်သောစာရင်းအရည်အသွေး အာကာသ၊ မရှင်းလင်းတဲ့အမှတ်တံဆိပ်တောင်းဆိုချက်များနှင့် Space Directory ချိတ်ဆက်ချက်များဖြစ်သည်။ FHE အစီအစဉ်များသည် parameters set များ၊ execution policies များ၊ ciphertext cryptographic commitment တန်ဖိုးများနှင့် decryption authorization မူလမူဝါဒများမှတဆင့် encrypted payload admit and execution တို့ကို သီးခြားစီအုပ်ချုပ်သည်။
+UAID သည် စာဝှက်ဒေတာ မဟုတ်သကဲ့သို့ FHE မူဝါဒကိုယ်တိုင်လည်း မဟုတ်ပါ။ ၎င်းသည် အကောင့်၊ မဖော်ထုတ်နိုင်သည့် အမှတ်အသား အခိုင်အမာပြောဆိုချက်များနှင့် ဝန်ဆောင်မှု သို့မဟုတ် data space လုပ်ငန်းစဉ်ကို ခွင့်ပြုသော data space လမ်းညွှန်ချိတ်ဆက်မှုများကို ရှာဖွေရန် သုံးသည့် တည်ငြိမ်သော အကောင့်လုပ်ပိုင်ခွင့် အခြေခံချည်နှောင်ရာဖြစ်သည်။ FHE schema များသည် ပါရာမီတာအစုများ၊ လုပ်ဆောင်မှုမူဝါဒများ၊ စာဝှက်ဒေတာ ကတိပြုတန်ဖိုးများနှင့် စာဝှက်ဖြည်ခွင့် မူဝါဒများမှတစ်ဆင့် စာဝှက်ထားသော payload ဝင်ခွင့်နှင့် လုပ်ဆောင်မှုကို သီးခြားအုပ်ချုပ်သည်။
 
 သက်ဆိုင်သော Torii မျက်နှာပြင်များမှာ အောက်ပါအတိုင်း ပါဝင်သည်။
 
@@ -797,21 +797,21 @@ UAID သည် ciphertext မဟုတ်ဘဲ FHE မူဝါဒကိုယ�
 - `/v1/soracloud/ciphertext/query`
 - `/v1/soracloud/decrypt/request`
 
-အများပိုင် metadata နယ်နိမိတ်ကို schema များတွင်ရှင်းလင်းစွာဖော်ပြထားသည်- UAID bindings, opaque identifier records, technical manifest lifecycle, state key cryptographic digests, ciphertext size, cipher text cryptographic commitment values, policy names, parameter set versions, job operations များ၊ output state keys များနှင့် Disclosure request metadata တို့ကို မြင်နိုင်ပါသည်။ Identifier plaintext များ၊ decrypted state များ၊ model inputs နှင့် outputs များနှင့် FHE လျှို့ဝှက်သော့များသည် အများပြည်သူ၏ query မှတ်တမ်းများအပြင်တွင်ရှိသည်။
+Schema များတွင် အများမြင် metadata ၏ နယ်နိမိတ်ကို တိတိကျကျ သတ်မှတ်ထားသည်။ UAID ချိတ်ဆက်မှုများ၊ မဖော်ထုတ်နိုင်သည့် အမှတ်အသားမှတ်တမ်းများ၊ manifest သက်တမ်းစက်ဝန်း၊ အခြေအနေကီး digest များ၊ စာဝှက်ဒေတာအရွယ်အစားများ၊ စာဝှက်ဒေတာ ကတိပြုတန်ဖိုးများ၊ မူဝါဒအမည်များ၊ ပါရာမီတာအစုဗားရှင်းများ၊ အလုပ်လုပ်ဆောင်မှုများ၊ အထွက်အခြေအနေကီးများနှင့် ဖော်ထုတ်ခွင့်တောင်းဆိုမှု metadata တို့ကို မြင်နိုင်သည်။ အမှတ်အသား၏ မစာဝှက်ထားသော စာသားများ၊ စာဝှက်ဖြည်ထားသော အခြေအနေ၊ မော်ဒယ်အဝင်နှင့် အထွက်များ၊ FHE လျှို့ဝှက်ကီးများသည် ဤအများသုံး query မှတ်တမ်းများတွင် မပါဝင်ပါ။
 
 ## စီမံခန့်ခွဲမှု စစ်ဆေးစာရင်း {#operational-checklist}
 
 - Torii node တွင် `/openapi.json` နှင့်အတူထုတ်လုပ်ထားသော ၀ န်ဆောင်မှုမိသားစုများအား အတည်ပြုပြီး ပြည်သူ့ဒေသတွင်း SoraFS CID နှင့် နာမည်ကြီး လမ်းကြောင်းများကို တိုက်ရိုက်စစ်ဆေးပါ။
-- Soracloud deployment technical manifest များ၊ SoraFS technical manifest များ، SoraDNS resolver directory records များ၊ SoraNet relay directory record များနှင့် DA pin intent များ သို့မဟုတ် availability cryptographic commitment values များကို governance-sensitive artefacts များအဖြစ် ပြုစုပါ။
+- Soracloud ဖြန့်ချိတပ်ဆင်မှု၏ manifest များ၊ SoraFS manifest များ၊ SoraDNS resolver လမ်းညွှန်မှတ်တမ်းများ၊ SoraNet relay လမ်းညွှန်မှတ်တမ်းများနှင့် DA pin ရည်ရွယ်ချက်များ သို့မဟုတ် ရရှိနိုင်မှု ကတိပြုတန်ဖိုးများကို အုပ်ချုပ်မှုဆိုင်ရာ ထိန်းချုပ်မှုလိုအပ်သော artifact များအဖြစ် သဘောထားပါ။
 - SORA Nexus ပရိုဖိုင်တစ်ခုတည်းကို ကွန်ရက်တစ်ခုအတွင်းရှိ validator များအကြား တစ်ချိန်လုံး အသုံးပြုပါ။
-- Ad hoc node-local paths ကို အားကိုးတာအစား Inrou root နဲ့ Shared lease volumes တွေကို Technical Manifesto ထဲမှာ သိမ်းထားပါ။
-- အကြောင်းအရာ အမည်မဖော်လိုခင် SoraFS အထောက်အထား စစ်ဆေးမှု အသုံးပြုပါ။
+- ယာယီသတ်မှတ်ထားသော နိုဒ်စက်တွင်း လမ်းကြောင်းများကို အားမကိုးဘဲ Inrou root နှင့် မျှဝေသုံး ငှားရမ်း volume များကို manifest များတွင် ထားပါ။
+- အကြောင်းအရာ alias များကို အဆင့်မမြှင့်မီ SoraFS proof စစ်ဆေးမှုကို သုံးပါ။
 - SoraNet လက်ဆွဲမှု ပျက်ကွက်မှု၊ Sumeragi ကိုယ်ခန္ဓာအခြေအနေနှင့် ပျောက်နေတဲ့ အသုံးဝင်ဝန်ဆောင်မှု ပြန်လည်ထူထောင်ရေး၊ SoraFS ဂိတ်တံခါး ငြင်းပယ်ချက်များ၊ SoraDNS RAD အသစ်အဆန်းဖြစ်ခြင်းနှင့် Soracloud ဖြန့်ဖြူးမှု ကျန်းမာရေးကို စောင့်ကြည့်ပါ။
-- အများပြည်သူ testnet အသုံးပြုမှုအတွက် Taira profile ကိုသုံးပြီး [SORA Nexus ဒေတာနေရာများနှင့် ချိတ်ဆက်ခြင်း](/my/get-started/sora-nexus-dataspaces.md) နဲ့စပါ။
+- အများသုံး စမ်းသပ်ကွန်ရက်ကို သုံးရန် Taira ပရိုဖိုင်ကို သုံးပြီး [SORA Nexus data space များသို့ ချိတ်ဆက်ခြင်း](/my/get-started/sora-nexus-dataspaces.md) မှ စတင်ပါ။
 
 အောက်ပါအတိုင်းလည်း ကြည့်ပါ။
 
 - [Torii API အဆုံးသတ်မှတ်ချက်များ](/my/reference/torii-endpoints.md)
 - [ဒေတာဖြစ်ရပ် စစ်ဆေးချက်များ](/my/blockchain/filters.md#data-event-filters)
 - [မေးမြန်းချက် အကိုးအကား](/my/reference/queries.md#nexus-data-availability-and-packages)
-- [Single protocol-standard Taira validator configuration at the pinned source code revision (ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်ချက်)](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/configs/soranexus/taira/config.toml)
+- [သတ်မှတ်ထားသော ရင်းမြစ်ဗားရှင်းရှိ စံ Taira အတည်ပြုသူနိုဒ် သတ်မှတ်ချက်](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/configs/soranexus/taira/config.toml)

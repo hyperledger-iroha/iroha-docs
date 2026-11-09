@@ -30,7 +30,7 @@ Common profiles တွေက Private Permissioned Networks နဲ့ Open Public
 
 ::: info
 
-[ကွန်ရက် peer management](peer-management.md) ကို အသေးစိတ်ဖတ်ရှုပါ။
+အသေးစိတ်အချက်အလက်များအတွက် [peer စီမံခန့်ခွဲမှု](peer-management.md) ကို ကြည့်ပါ။
 
 :::
 
@@ -48,7 +48,7 @@ Common profiles တွေက Private Permissioned Networks နဲ့ Open Public
 
 - မူရင်း ပုဂ္ဂလိက ကွန်ရက် ပုံစံမှာ ရှိနေတဲ့ အကောင့်တစ်ခုဟာ အသစ်တစ်ခုစီအတွက် မှတ်ပုံတင်ကို တင်ပေးတယ်။
 
-Default permission validators တွေက သာမန် ပုဂ္ဂလိက blockchain သုံးစွဲမှု ကိစ္စကို ဖုံးအုပ်ပါတယ်။
+ပုံမှန်ခွင့်ပြုချက်စစ်ဆေးသူများသည် အသုံးများသော ပုဂ္ဂလိကဘလော့ခ်ချိန်း အသုံးပြုမှုပုံစံကို ပံ့ပိုးပေးသည်။
 
 ::: info
 

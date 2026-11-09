@@ -76,7 +76,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=10' \
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-`taira.client.toml` ကို လက်မှတ်ရေးထိုးထားသော အမိန့်များကို စစ်ဆေးရန် အဆင်သင့်ဖြစ်ပါကသာ ဖန်တီးပါ။ config, testnet funding service နှင့် canary flow များအတွက် [SORA Nexus ဒေတာနေရာများနှင့် ချိတ်ဆက်ခြင်း](/my/get-started/sora-nexus-dataspaces.md) ကိုကြည့်ပါ။ testnet funding service fee asset ဖြင့် အကုန်မဆောင်ရွက်ခင်အထိ Taira ကိုတိုက်ရိုက် write commands ကို မပြေးပါနဲ့။
+လက်မှတ်ထိုးထားသော command များကို စမ်းသပ်ရန် အဆင်သင့်ဖြစ်သည့်အခါမှသာ `taira.client.toml` ကို ဖန်တီးပါ။ ပြင်ဆင်သတ်မှတ်မှု၊ faucet နှင့် canary လုပ်ငန်းစဉ်အတွက် [SORA Nexus data space များနှင့် ချိတ်ဆက်ခြင်း](/my/get-started/sora-nexus-dataspaces.md) ကို ကြည့်ပါ။ အကောင့်တွင် faucet မှ အခကြေးငွေပေးရန် ပိုင်ဆိုင်မှုကို ဖြည့်ပေးပြီးသည်အထိ Taira ပေါ်တွင် ဒေတာရေးသားသော command များကို မလုပ်ဆောင်ပါနှင့်။
 
 အခွန်ပေးခြင်းအတွက် Taira CLI ဥပမာ, testnet ဘဏ္ဍာရေးဝန်ဆောင်မှုကူညီသူကို Save [Testnet ကို ရယူပါ။ XOR အပေါ် Taira](/my/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) သို့ဖြစ်သည် `taira_faucet_claim.py`, ထို့နောက် claim testnet XOR ပထမက-
 

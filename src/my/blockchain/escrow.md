@@ -6,7 +6,7 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Native Asset Escrow {#native-asset-escrow}
+# ပိုင်ဆိုင်မှုများကို စံညွှန်ကြားချက်ဖြင့် ကြားခံထိန်းသိမ်းခြင်း {#native-asset-escrow}
 
 Native escrow ဆိုသည်မှာ ကိန်းဂဏန်းဆိုင်ရာ အရင်းအမြစ်များအတွက် blockchain ledger ထိန်းသိမ်းမှု ယန္တရားမှ စီမံခန့်ခွဲထားသော Native Escrow ဖြစ်သည်။ အဆိုပါစာရင်းကိုကာကွယ်ရန် လျှောက်လွှာကုဒ်၊ အချုပ်အခြာခံ ISIs တန်ဖိုးကို သတ်မှတ်ချက်ဆိုင်ရာ ပရိုတိုကောလစ် ထိန်းသိမ်းရေးစာရင်းသို့ပြောင်းပြီး ကမ္ဘာ့အခြေအနေတွင် အချုပ်အခမဲ့သက်တမ်းလည်ပတ်မှုကို မှတ်တမ်းတင်ပါ။
 
@@ -283,7 +283,7 @@ fn open_anonymous_escrow(
 }
 ```
 
-အခြေခံကာကွယ်ထားသော ငွေချေးမှုပုံစံအတွက် [အမည်မသိ ငွေပေးချေမှု](/my/blockchain/anonymous-transactions.md) ကိုကြည့်ပါ။
+အခြေခံ ကာကွယ်ထားသော transaction မော်ဒယ်ကို [အမည်မဖော်သော Transaction များ](/my/blockchain/anonymous-transactions.md) တွင် ကြည့်ပါ။
 
 ## SDK အသုံးပြုမှု {#sdk-usage}
 
@@ -465,11 +465,11 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 
 အမည်မသိ Swift ဆောက်လုပ်သူများသည် nullifier စာရင်းများ၊ output cryptographic commitment တန်ဖိုးစာရင်းများ၊ proof အဘိဓာန်နှင့် optional `rootHint` တန်ဖိုးများကိုယူသည်။ ပဋိပက္ခဖြေရှင်းခွင့်မှတ်တံဆိပ်ကို `NativeEscrowPermissions.canResolveEscrowDispute` အဖြစ်ရရှိနိုင်သည်။
 
-## မေးခွန်းများနှင့် ဖြစ်ရပ်များ {#queries-and-events}
+## Query များနှင့် ဖြစ်ရပ်များ {#queries-and-events}
 
 အခြေအနေ စာမျက်နှာများ၊ ညှိနှိုင်းမှု အလုပ်များနှင့် ထောက်ပံ့ရေး ကိရိယာများအတွက် Escrow မေးမြန်းချက်များကို အသုံးပြုပါ။
 
-|မေးခွန်း|ရည်ရွယ်ချက်|
+| Query | ရည်ရွယ်ချက် |
 | --- | --- |
 |`FindAssetEscrowById` |`EscrowId` မှာ ပွင့်လင်းမြင်သာတဲ့ ဂရိုတစ်ခု (သို့) Lock တစ်ခု ဖတ်ပါ။|
 |`FindAssetEscrows` |ပွင့်လင်းမြင်သာတဲ့ ဂိုဏ်းမှတ်တမ်းနဲ့ သော့မှတ်တမ်းတွေကို စာရင်းပေးပါ။ |

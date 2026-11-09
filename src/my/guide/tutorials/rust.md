@@ -28,7 +28,7 @@ cd iroha
 cargo build --workspace
 ```
 
-Reference client ကို check-in လုပ်ထားတဲ့ default client configuration နဲ့ run လုပ်ပါ။
+သိုလှောင်ရုံတွင် ထည့်ထားသော ပုံမှန် client ပြင်ဆင်သတ်မှတ်မှုဖြင့် အကိုးအကား client ကို လုပ်ဆောင်ပါ။
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
@@ -71,7 +71,7 @@ Rust မျက်နှာပြင်တွေကို လက်တွေ့�
 - `crates/iroha/README.md`
 - `crates/iroha_cli/README.md`
 
-blockchain ledger မှစီမံခန့်ခွဲသော escrow အလုပ်ဖြစ်စဉ်များအတွက် [Native Asset Escrow](/my/blockchain/escrow.md#rust-sdk) ကိုကြည့်ပါ။ Rust ဒေတာမော်ဒယ်သည် လက်ရှိတွင်စျေးကွက် escrow၊ ယေဘုယျအရင်းအမြစ် lock များ, အမည်မသိ escrow, မေးမြန်းချက်များနှင့်ဖြစ်ရပ်များအတွက်အပြည့်အဝရိုက်ကူးထားသည့်ကာကွယ်မှုတစ်ခုဖြစ်သည်။
+blockchain ledger မှစီမံခန့်ခွဲသော escrow အလုပ်ဖြစ်စဉ်များအတွက် [ပိုင်ဆိုင်မှုများကို စံညွှန်ကြားချက်ဖြင့် ကြားခံထိန်းသိမ်းခြင်း](/my/blockchain/escrow.md#rust-sdk) ကိုကြည့်ပါ။ Rust ဒေတာမော်ဒယ်သည် လက်ရှိတွင်စျေးကွက် escrow၊ ယေဘုယျအရင်းအမြစ် lock များ, အမည်မသိ escrow, မေးမြန်းချက်များနှင့်ဖြစ်ရပ်များအတွက်အပြည့်အဝရိုက်ကူးထားသည့်ကာကွယ်မှုတစ်ခုဖြစ်သည်။
 
 ဒေသခံ CLI အကူအညီ point-in-time data view ကို ပြန်လည်ဖန်တီးနိုင်သည်:
 

@@ -12,7 +12,7 @@ translation_engine: nllb-200-ct2
 
 ## ဖောက်သည်က ဆက်သွယ်လို့မရ {#client-cannot-connect}
 
-Client Config ကို Network Peer ရဲ့ Torii Address ကို ညွှန်ပြနေတာကို စစ်ဆေးပါ။
+client ပြင်ဆင်သတ်မှတ်မှုသည် peer ၏ Torii လိပ်စာသို့ ညွှန်နေကြောင်း စစ်ဆေးပါ။
 
 ```toml
 torii_url = "http://127.0.0.1:8080/"
@@ -40,9 +40,9 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
 
 ## ငွေပေးချေမှုများကို ပယ်ချခြင်း {#transactions-are-rejected}
 
-ငွေချေးမှု ကျရှုံးမှု အများစုဟာ ကိုယ်ပိုင်လက္ခဏာ (သို့) ခွင့်ပြုချက် မညီမျှခြင်းကြောင့် ဖြစ်ပေါ်တာပါ။
+transaction ချို့ယွင်းမှုအများစုသည် အထောက်အထား သို့မဟုတ် ခွင့်ပြုချက် မကိုက်ညီခြင်းကြောင့် ဖြစ်သည်။
 
-- Client Configuration ထဲက Account Public Key က Signage အတွက် အသုံးပြုတဲ့ Private Key နဲ့ မညီပါဘူး။
+- client ပြင်ဆင်သတ်မှတ်မှုရှိ အကောင့်အများသုံးကီးသည် လက်မှတ်ထိုးရာတွင် အသုံးပြုသော ကိုယ်ပိုင်ကီးနှင့် မကိုက်ညီခြင်း
 - အကောင့်ကို blockchain genesis မှာ မှတ်ပုံတင်ထားတာမဟုတ်ဘူး၊ အရင်က ငွေပေးချေမှုတစ်ခုမှာလည်း မှတ်ပုံတင်ထားတာမဟုတ်ဘူး။
 - account မှာ software execution environment validator က တောင်းဆိုတဲ့ permission token (သို့) role မရှိပါဘူး။
 - Domain ID တစ်ခုမှာ `domain.dataspace` လို ဒေတာနေရာ အရည်အသွေးမရှိပါ။

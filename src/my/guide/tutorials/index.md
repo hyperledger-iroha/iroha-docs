@@ -39,7 +39,7 @@ SDK စာမျက်နှာအားလုံးက လက်ရှိ Upstr
 - `python/iroha_python`
 - `javascript/iroha_js`
 - `kotlin`
-- `java/iroha_android` (Java Mirror of the Kotlin- ပထမ Android မျက်နှာပြင်)
+- `java/iroha_android` (Kotlin ကို ဦးစားပေးထားသော Android လုပ်ဆောင်ချက်များ၏ Java မိတ္တူ)
 - `IrohaSwift`
 - `crates/musubi`
 

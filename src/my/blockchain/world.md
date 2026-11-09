@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 `World` ဆိုသည်မှာ အခြားအဖွဲ့အစည်းများပါဝင်သော ကမ္ဘာလုံးဆိုင်ရာ အဖွဲ့အစည်းဖြစ်သည်။ `World` သည် အောက်ပါအရာများကို ပြုလုပ်ထားသည်။
 
-- Iroha [configuration parameters များ](/my/guide/configure/client-configuration.md)
+- Iroha [ပြင်ဆင်သတ်မှတ်မှု ပါရာမီတာများ](/my/guide/configure/client-configuration.md)
 - မှတ်ပုံတင်ထားသော ကွန်ရက် အဖော်များ
 - မှတ်ပုံတင် domain များ
 - မှတ်ပုံတင်ထားသော [trigger များ](/my/blockchain/triggers.md)
@@ -31,18 +31,18 @@ WSV က query တွေကို ဖတ်ပြီး block execution တွေ
 
 WSV သည် `World` အရာဝတ္ထုထက် ပိုကျယ်ပြန့်ပြီး လက်တွေ့တွင် အောက်ပါအတိုင်းပါဝင်သည်-
 
-- `World`: parameters, network peers, domains, accounts, assets, NFTs, roles, permissions, triggers, executor data, and other registered data-model objects
+- `World` - ပါရာမီတာများ၊ peer များ၊ domain များ၊ အကောင့်များ၊ ပိုင်ဆိုင်မှုများ၊ NFTs၊ role များ၊ ခွင့်ပြုချက်များ၊ trigger များ၊ executor ဒေတာနှင့် အခြား မှတ်ပုံတင်ထားသော ဒေတာမော်ဒယ် အရာများ
 - နောက်ဆုံးသတ်မှတ်ထားသော block cryptographic hashs နှင့် နောက်ဆုံးသတ်မှတ်ထားတဲ့ အမြင့်
 - Query တွေနဲ့ Protocol Result Record တွေမှာ အသုံးပြုတဲ့ transaction-to-block index တွေ
 - လက်ရှိနှင့် အရင်က သဘောတူညီချက်ဖြင့် အသုံးပြုသော ပရိုတိုကောလီးယား နောက်ဆုံးသတ်မှတ်မှု ထိပ်တန်းစနစ်
-- data-availability cryptographic commitment values, protocol result record cursors, pin intent and query projection markers တို့လို နောက်ဆုံးသတ်မှတ်ထားတဲ့ blocks များမှ ရယူထားသော in-memory index များ။
+- ဒေတာရရှိနိုင်မှု ကတိပြုတန်ဖိုးများ၊ receipt cursor များ၊ pin ရည်ရွယ်ချက်များနှင့် query ကိုယ်စားပြုမြင်ကွင်း အမှတ်အသားများကဲ့သို့ commit လုပ်ထားသော ဘလော့ခ်များမှ ဆင်းသက်ရရှိသော မှတ်ဉာဏ်တွင်း အညွှန်းများ
 - Software execution environment configuration deterministic block execution အတွက် လိုအပ်တဲ့ point-in-time data views တွေကို၊ ဥပမာ cryptography, governance, software processing workflow, content, financial transaction settlement နဲ့ Nexus setting တွေကို
 
 မေးမြန်းချက်များတွင် ပုံမှန်အားဖြင့် ဤဖွဲ့စည်းမှုများကို ဖတ်ခြင်းသာ `StateView` ကို ရရှိသည်။ ကြည့်ရှုမှုက မေးမြန်းမှု အကောင်အထည်ဖော်ရန်အတွက် အချိန်ကာလအတွင်း အချက်အလက် အမြင်တစ်ခုဖြစ်သည်၊ ၎င်းသည် WSV ၏ တိုက်ရိုက်ပြောင်းလဲမှုကို မခွင့်ပြုပါ။
 
 ### WSV ပြောင်းလဲပုံ {#how-the-wsv-changes}
 
-WSV အပြောင်းအလဲများကို နောက်ဆုံးမပြုလုပ်မီ အဆင့်သတ်မှတ်ထားသည်။ ဘလော့ကတ် အကောင်အထည်ဖော်မှုသည်ဘလော့ Scope State Overlay ကိုဖန်တီးပြီးလက်ခံသော ငွေချေးမှုတိုင်းမှာ ၎င်း၏ညွှန်ကြားချက်များကို Transaction-scoped overlay. ထို transactions များမှခေါ်ယူထားသော data trigger များသည် block context တစ်ခုတည်းတွင် run ဖြစ်ပါသည်။ time trigger များကို block အတွက် transaction effects များအပြီး evaluable ပြုလုပ်သည်။
+WSV ပြောင်းလဲမှုများကို commit မလုပ်မီ ယာယီအဆင့်တွင် စုစည်းထားသည်။ ဘလော့ခ်လုပ်ဆောင်မှုက ဘလော့ခ်အတွင်း အသုံးပြုမည့် အခြေအနေထပ်ဆင့်အလွှာကို ဖန်တီးပြီး လက်ခံထားသော transaction တစ်ခုစီက ၎င်း၏ ညွှန်ကြားချက်များကို transaction အတွင်း အသုံးပြုမည့် ထပ်ဆင့်အလွှာတွင် အသုံးချသည်။ ထို transaction များ ခေါ်ယူသော ဒေတာ trigger များသည် တူညီသော ဘလော့ခ်အကြောင်းအရာအတွင်း လုပ်ဆောင်သည်။ အချိန် trigger များကို ဘလော့ခ်၏ transaction အကျိုးသက်ရောက်မှုများပြီးမှ အကဲဖြတ်သည်။
 
 သဘောတူညီချက်က ဘလော့ကို အဆုံးသတ်ပြီးနောက်၊ ကွန်ရက် peer က နောက်ဆုံးသတ်မှတ်ထားတဲ့ ဘလော့ကို ပထမဦးဆုံးထည့်သွင်းတယ်။ Kura. ဒီချိတ်ဆက်မှု ခြေလှမ်း ကျရှုံးရင် WSV ဘလော့ကို လက်ခံပြီးနောက် အညီအမျှ loop က block payload ကို retries သို့မဟုတ် requesters လုပ်ပါတယ်။ Kura တန်းစီမှာ၊ Iroha အကောင်အထည်ဖော်ပြီးနောက် Block Effect တွေကို အသုံးချခြင်း၊ ထုတ်ယူထားတဲ့ index တွေကို update လုပ်ခြင်းနဲ့ အဆင့်သတ်မှတ်ထားတဲ့ WSV state-view lock အောက်မှာ ပြုလုပ်တဲ့ အပြောင်းအလဲတွေက စာဖတ်သူတွေကို တစ်စိတ်တစ်ပိုင်း ပြီးဆုံးထားတဲ့ ဘလော့ကို သတိမထားမိစေတယ်။
 
@@ -56,14 +56,14 @@ Replay သည် သိုလှောင်ထားသော ဘလော့�
 
 ## Kura သိုလှောင်ခြင်း {#kura-storage}
 
-Kura သည် Iroha ၏ တည်ငြိမ်သော Block Storage ဖြစ်သည်။ ၎င်းသည် လက်မှတ်ထိုးထားသော block များနှင့် ပြန်လည်ထူထောင်ရေး metadata များကို သိမ်းဆည်းသည်။ WSV ၏ ဒုတိယပြောင်းလဲနိုင်သော copy ကို မသိမ်းဆည်းပါ။
+_Kura_ သည် Iroha ၏ အမြဲတမ်း ဘလော့ခ်သိုလှောင်မှုဖြစ်သည်။ ၎င်းတွင် လက်မှတ်ထိုးထားသော ဘလော့ခ်များနှင့် ပြန်လည်ရယူမှု metadata ကို သိမ်းသည်။ ပြောင်းလဲနိုင်သော WSV ဒုတိယမိတ္တူကို မသိမ်းပါ။
 
 Kura သိုလှောင်ခြင်းသည် rooted at [`kura.store_dir`](/my/reference/peer-config/params.md#param-kura-store-dir). အဲဒီ root ထဲမှာ block data တွေကို execution lane (သို့) segment နဲ့ ခွဲခြားထားပါတယ်။ segment တစ်ခုအတွက် အဓိက file တွေက:
 
 |လမ်းကြောင်း|ရည်ရွယ်ချက်|
 | --- | --- |
 |`blocks/<segment>/blocks.data` |Norito ဖွဲ့စည်းထားသော လက်မှတ်ထိုးထားတဲ့ အစုအဝေး အသုံးဝင်ပစ္စည်းများ။ |
-|`blocks/<segment>/blocks.index` |Fixed-sized `(start, length)` entries that map block height to bytes in `blocks.data`. |
+| `blocks/<segment>/blocks.index` | ဘလော့ခ်အမြင့်ကို `blocks.data` ထဲရှိ byte များနှင့် ချိတ်ဆက်ပေးသော အရွယ်အစားပုံသေ `(start, length)` မှတ်တမ်းများ။ |
 |`blocks/<segment>/blocks.hashes` |အမြန်ရှာဖွေခြင်းနှင့် စတင်စစ်ဆေးမှုအတွက်အမြင့်အလိုက် cryptographic hashes ကိုပိတ်ပါ။ |
 |`blocks/<segment>/blocks.count.norito` |ရေရှည်တည်တံ့တဲ့ block-finalisation marker တွေကို မှတ်တမ်းတင်ပြီး Block index entries ဘယ်နှစ်ပုံသုံးဖို့ လုံခြုံတယ်ဆိုတာပါ။ |
 |`blocks/<segment>/da_blocks/` |`blocks.data` အပြင်မှာ ထိန်းသိမ်းထားသော block payloads ကို disk-budget enforcement သည် hot ဖိုင်မှအဟောင်းအလောင်းများကိုပြောင်းတဲ့အခါတွင်။ |

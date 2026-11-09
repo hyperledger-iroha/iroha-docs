@@ -8,13 +8,13 @@ translation_engine: nllb-200-ct2
 
 # `iroha3d` CLI {#iroha3d-cli}
 
-`iroha3d` သည် Iroha 3 network peer daemon ဖြစ်သည်။ Cargo package ကို `irohad` ဟုအမည်ပေးထားသည်၊ ထို့ကြောင့် ဘိုင်နရီကို အောက်ပါအတိုင်း source code အလုပ် copy မှခေါ်ယူပါ-
+`iroha3d` သည် စံ Iroha 3 peer အတွက် daemon ဖြစ်သည်။ Cargo ပက်ကေ့ချ်အမည်မှာ `irohad` ဖြစ်သောကြောင့် checkout လုပ်ထားသော ရင်းမြစ်မှ binary ကို အောက်ပါအတိုင်း ခေါ်ယူပါ။
 
 ```shell
 cargo run -p irohad --bin iroha3d -- --config path/to/config.toml
 ```
 
-အများပြည်သူအတွက် Taira testnet အတွက် release image က `iroha3d_taira` ကို အသုံးပြုပါတယ်။ ၎င်းက တူညီတဲ့ CLI ကို လက်ခံပေမဲ့ ထပ်မံ single protocol-standard ကို ထိုးဖောက်ပေးတယ်။ Taira ကွင်းဆက်၊ validator, storage နှင့် runtime-signer profile ကိုဖွင့်ရန်။ ဤကဲ့သို့သော software execution environment credentials များကိုမဖွင့်ဘဲ Taira configuration ကိုစစ်ဆေးပါ။
+အများသုံး Taira testnet အတွက် ထုတ်ဝေမှု image သည် `iroha3d_taira` ကို အသုံးပြုသည်။ တူညီသော CLI ကို လက်ခံသော်လည်း စံသတ်မှတ် Taira chain၊ validator၊ သိုလှောင်မှုနှင့် လည်ပတ်ချိန်လက်မှတ်ထိုးသူပရိုဖိုင်တို့ကို ထပ်မံလိုက်နာစေသည်။ လည်ပတ်ချိန်အထောက်အထားများကို မဖွင့်ဘဲ Taira ပြင်ဆင်သတ်မှတ်မှုကို အောက်ပါအတိုင်း စစ်ဆေးပါ။
 
 ```shell
 iroha3d_taira --sora \
@@ -22,7 +22,7 @@ iroha3d_taira --sora \
   --check-config
 ```
 
-Single protocol-standard ရဲ့ operator ရောင်ပြန်ကြားထားတဲ့ ပုံစံကို သုံးပါ။ Taira Profile: check-in template မှာ deployment placeholder တွေ ရှိနေဆဲပါ။ Nexus ဒါမှမဟုတ် ထုတ်လုပ်မှု SoraFS စစ်ဆေးရာတွင် setting များ Taira.
+အော်ပရေတာက အပြီးသတ်ထုတ်ပေးထားသော စံသတ်မှတ် Taira ပရိုဖိုင်ပုံစံကို အသုံးပြုပါ။ သိုလှောင်ရုံရှိ template တွင် deployment နေရာဖြည့်တန်ဖိုးများ ပါဝင်နေသေးသည်။ Taira နှင့် စမ်းသပ်ရာတွင် ယေဘုယျ SORA Nexus သို့မဟုတ် တကယ့်လုပ်ငန်းသုံး SoraFS သတ်မှတ်ချက်များဖြင့် အစားမထိုးပါနှင့်။
 
 ## `--config` {#arg-config}
 
@@ -62,7 +62,7 @@ Single protocol-standard ရဲ့ operator ရောင်ပြန်ကြာ
 - အမျိုးအစား: 64-digit hexadecimal value BLAKE3 cryptographic digest value
 - လိုအပ်ချက်များ: `--config`
 
-Configuration file bytes တွေကို ပေးပို့ထားတဲ့ cryptographic digest value နဲ့ ကိုက်ညီအောင် တောင်းဆိုပါ။ integrity bound ဖိုင်ကို flat လုပ်ရပါမယ်၊ `extends` မပါနိုင်ပါဘူး။
+ပြင်ဆင်သတ်မှတ်မှုဖိုင်၏ ဘိုက်များသည် ပေးထားသော digest နှင့် ကိုက်ညီရမည်။ ပြည့်စုံမှန်ကန်မှုအတွက် ချိတ်ထားသောဖိုင်သည် အလွှာအားလုံးပေါင်းစည်းထားရမည်ဖြစ်ပြီး `extends` မပါရပါ။
 
 ## `--terminal-colors` {#arg-terminal-colors}
 
