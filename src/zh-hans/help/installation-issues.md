@@ -147,7 +147,7 @@ $ rustup toolchain install stable
 
 确保在您的家庭目录中安装了 `pip`.要做到这一点,运行`whereis pip`并检查是否有 `/home/username/.local/bin/pip` 在路径中.如果没有,请更新 shell 的 `PATH`变量.
 
-如果问题持续下去,请联系我们 [ ](/zh-hans/help/)并报告输出.
+如果问题仍然存在，请[联系我们](/zh-hans/help/)并提供命令输出。
 
 ```
 python --version

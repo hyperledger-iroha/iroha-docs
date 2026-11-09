@@ -49,7 +49,7 @@ curl -fsS -N https://taira.sora.org/v1/events/sse
 
 ## אירועים בזמן {#time-events}
 
-אירועים בזמן נחשפים כאשר תצפית המצב העולמי מוכנה להתמודד עם גורמים מפעילים זמן [ ](./triggers.md#time-triggers).
+אירועי זמן נפלטים כאשר תצוגת מצב המערכת מוכנה לטפל ב[טריגרים מבוססי זמן](./triggers.md#time-triggers).
 
 ## אירועים להוציא לפועל {#trigger-execution-events}
 

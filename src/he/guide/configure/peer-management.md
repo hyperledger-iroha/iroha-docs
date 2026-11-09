@@ -34,7 +34,7 @@ translation_engine: nllb-200-ct2
 
 :::
 
-אנו מדברים על הרשויות והפקידים במפורש יותר בפרק נפרד [ ](/he/blockchain/permissions.md).
+ראו את [הפרק על הרשאות ותפקידים](/he/blockchain/permissions.md) להסבר מפורט.
 
 #### 2. קבעו צמתים {#_2-set-up-a-peer}
 

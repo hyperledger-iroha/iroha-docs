@@ -102,7 +102,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
 |`GET /v1/sumeragi/evidence/count` |JSON |Բացադրիչների թիվը:|
 |`GET /v1/runtime/abi/active` |JSON |Ակտիվ կատարման միջավայրի ABI-ի նկարագրություն |
 |`GET /v1/runtime/abi/hash` |JSON |Ակտիվ կատարման միջավայրի ABI-ի հեշ |
-|`GET /v1/runtime/metrics` |JSON |Runtime metrics snapshot |
+| `GET /v1/runtime/metrics` | JSON | Կատարման միջավայրի ընթացիկ չափումների պատկեր |
 |`GET /v1/runtime/upgrades` |JSON |Գործընթացային ժամանակի թարմացման ցուցակը |
 |`POST /v1/runtime/upgrades/propose` |JSON |Առաջարկել է վազման ժամանակի թարմացում |
 |`POST /v1/runtime/upgrades/activate/{id}` |JSON |Գործարկման ժամանակի թարմացման առաջարկը ակտիվացնել |
