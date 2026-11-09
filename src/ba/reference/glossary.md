@@ -144,11 +144,11 @@ Iroha ның абруйлы системаһы. Ул [ peers](#peer) менән 
 
 ### Ғәҙәттән тыш Iroha Махсус инструкция {#custom-iroha-special-instruction}
 
-[Iroha модулдәре](#iroha-modules), client-тар йәки third party-лар биргән инструкциялар. Уларҙы тик [Core Instructions](#core-iroha-special-instructions) ҡулланып төҙөргә мөмкин. Iroha source code-ын fork итеп үҙгәртеү тәҡдим ителмәй: Iroha deployment-ындағы [peer](#peer)-ҙар килешмәгән special instruction-дар fault тип һанала, шуға modified instance эшләткән [peer](#peer)-ҙарҙың access-ы revoke ителә.
+[Iroha модулдәре](#iroha-modules), клиенттар йәки өсөнсө яҡтар биргән инструкциялар тик [төп инструкциялар](#core-iroha-special-instructions) ярҙамында төҙөлә. Iroha-ның сығанаҡ кодын айырып үҙгәртеү тәҡдим ителмәй: Iroha селтәренең [төйөндәре](#peer) килешмәгән махсус инструкциялар етешһеҙлек тип ҡабул ителә. Шундай үҙгәртелгән экземпляр эшләткән [төйөндәрҙең](#peer) инеү хоҡуғы кире алына.
 
 ## Iroha Һорау {#iroha-query}
 
-Был күренеште үҙгәртмәйенсә "Донъя хәле ҡарашы"н уҡырға тәҡдим итеү. Һорауҙар тураһында күберәк бында [](/ba/blockchain/queries.md).
+Был күренеште үҙгәртмәйенсә "Донъя хәле ҡарашы"н уҡырға тәҡдим итеү. Тулыраҡ мәғлүмәт [һорауҙар бүлегендә](/ba/blockchain/queries.md) бирелгән.
 
 ## Күҙәтеү үҙгәреше {#view-change}
 

@@ -62,7 +62,7 @@ version = "^1.0.0"
 
 ## Конфигурация Taira SoraFS Ашырыу {#configure-taira-sorafs-fetching}
 
-Taira — был эш ағымы өсөн асыҡ testnet. Checked-in chain һәм хәҙерге pinned genesis-derived network identity булған Taira client configuration-ынан башлап, аҫтағы provider-specific authenticated fetch bindings-ты өҫтәгеҙ. Taira reset `NetworkId`-ны үҙгәртә ала; уны stable chain UUID-нан сығармағыҙ, signed deployment profile-дан яңыртығыҙ. Иҫәпкә ҡултамға ҡуйыу материалы һәм провайдер оператор асҡыстары хужа ғына уҡый алған runtime файлдарында һаҡланырға тейеш.
+Был эш барышы өсөн Taira асыҡ һынау селтәре булып тора. Теркәлгән сылбырҙы һәм ағымдағы башланғыс блоктан сығарылған аныҡ селтәр идентификаторын күрһәткән Taira клиент көйләүҙәренән башлағыҙ. Аҙаҡ аҫта бирелгән, провайдерға хас аутентификацияланған уҡыу бәйләнештәрен өҫтәгеҙ. Taira яңыртылғас, `NetworkId` үҙгәрергә мөмкин. Уны тотороҡло сылбыр UUID ҡиммәтенән фаразламағыҙ, ҡултамғалы урынлаштырыу профиленән яңыртығыҙ. Иҫәп ҡултамғаһы серҙәре һәм провайдер операторының асҡыстары эш барышында тик хужаһы уҡый алған файлдарҙа һаҡланырға тейеш.
 
 ```toml
 torii_url = "https://taira.sora.org/"
@@ -150,7 +150,7 @@ cargo run --manifest-path ../../Cargo.toml -p musubi -- \
 
 `package` яҙа `target/package/<namespace>-<name>-<version>.car`. CAR каноник пакет манифест, семантик сығарыу манифест бәйләй, теүәл тикшереү бикләү, сығанаҡ ағасы, интерфейс. digest һәм SoraFS архив йөкләмәһе. Тәүге сығарылышта `pack`, `--car-out`, `--sorafs-manifest-out` йәки `--source-plan-out` бойороҡтары юҡ CLI.
 
-Баҫтырып сығарыу — ҡултамғалы һәм дауам иттерелә алған network workflow. Һайланған `client.toml` талап ителгән `[musubi.publication]` binding-тарын, account һәм Taira network configuration-ды үҙ эсенә алырға тейеш. Workspace-тың тап бер member-ын package итегеҙ:
+Баҫтырып сығарыу — ҡултамға талап иткән һәм өҙөлгән урындан дауам итә алған селтәр процедураһы. Һайланған `client.toml` эсендә мотлаҡ `[musubi.publication]` бәйләнештәре, иҫәп һәм Taira селтәренең көйләүҙәре булырға тейеш. Эш киңлегенең бер генә ағзаһын пакетҡа индерегеҙ:
 
 ```bash
 cargo run --manifest-path ../../Cargo.toml -p musubi -- \

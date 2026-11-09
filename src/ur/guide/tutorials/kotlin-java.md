@@ -77,4 +77,4 @@ Kotlin SDK میں شامل ہیں:
 - Android کیسٹ اسٹور اور ڈیوائس ٹیلی میٹری انضمام۔
 - Android آف لائن QR، قریب اور NFC ٹرانسپورٹ
 
-ماڈیول سے مخصوص APIs اور عین بلڈ کمانڈز کے لیے [Kotlin SDK کی README فائل](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md) دیکھیں۔
+ماڈیول سے مخصوص APIs اور عین بلڈ کمانڈز کے لیے [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md) دیکھیں۔

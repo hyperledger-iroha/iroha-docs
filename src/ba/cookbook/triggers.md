@@ -116,7 +116,7 @@ iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
 
 ## Сығанаҡ һәм уның менән бәйле документтар {#source-and-related-docs}
 
-- [](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/triggers/by_call_trigger.rs) ҡуйылған commit-та ҡушымта ярҙамында интеграция һынауҙары
+- [Билдәләнгән коммиттағы саҡырыу буйынса триггерҙың интеграция һынауҙары](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/triggers/by_call_trigger.rs)
 - [Кисә һәм ҡуҙғатыу интеграцияһы һынауҙар ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events_and_triggers.rs)
 - [Триггер инструкцияһын ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs) буйынса үтәү
 - [Триггерҙар](/ba/blockchain/triggers.md)

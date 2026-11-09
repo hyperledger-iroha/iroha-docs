@@ -23,7 +23,7 @@ Metadata — world state-тың бер өлөшө һәм уны биләгән o
 
 ## Санлы активтар һәм NFTs {#numeric-assets-and-nfts}
 
-[активтар](/ba/blockchain/assets.md) һәм [NFTs](/ba/blockchain/nfts.md) дәүләте ҡиммәтле булған осраҡта ҡулланыу:
+Ҡиммәт сағылдырған хәл өсөн [активтар](/ba/blockchain/assets.md) һәм [NFTs](/ba/blockchain/nfts.md) ҡулланығыҙ:
 
 - Күсемле баланстар өсөн һанлы активтар
 - NFTs берҙән-бер милектәге яҙмалар өсөн
