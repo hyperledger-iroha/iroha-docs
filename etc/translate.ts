@@ -1834,7 +1834,7 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
     'A decoder must enforce the expected discriminant.':
       'decoder သည် မျှော်မှန်းထားသော discriminant ကို မဖြစ်မနေ စစ်ဆေးရမည်။',
     'Choosing an endpoint or chain ID does not implicitly choose the address profile.':
-      'endpoint သို့မဟုတ် chain ID ကို ရွေးခြင်းက address profile ကို အလိုအလျောက် ရွေးပေးခြင်းမဟုတ်ပါ။',
+      'endpoint သို့မဟုတ် chain ID ကို ရွေးချယ်ခြင်းက လိပ်စာပရိုဖိုင်ကို အလိုအလျောက် ရွေးပေးခြင်း မဟုတ်ပါ။',
     "The Taira form applies Taira's sentinel to the same payload:":
       'Taira ပုံစံသည် တူညီသော payload ပေါ်တွင် Taira sentinel ကို အသုံးပြုသည်:',
     'The `convert`, `normalize`, and `audit` commands operate on the lower-level `AccountAddress` codec.':
@@ -1850,9 +1850,9 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
     'All multi-byte integers below are unsigned and `big-endian`.':
       'အောက်ပါ multi-byte integer အားလုံးသည် unsigned ဖြစ်ပြီး `big-endian` ဖြစ်သည်။',
     'Use the compact form when the raw public-key payload is at most 255 bytes:':
-      'raw public-key payload သည် 255 ဘိုက်အထိသာ ရှိပါက compact form ကို အသုံးပြုပါ:',
+      'အများသုံးကီး payload အကြမ်းသည် အများဆုံး ၂၅၅ ဘိုက်ရှိလျှင် ကျစ်လျစ်သောပုံစံကို အသုံးပြုပါ။',
     '| `public_key` | `key_len` bytes | Raw public-key payload   |':
-      '| `public_key` | `key_len` ဘိုက် | raw public-key payload |',
+      '| `public_key` | `key_len` ဘိုက် | အများသုံးသော့၏ မူလဘိုက်ဒေတာ |',
     'Keys longer than 255 bytes use the extended form:':
       '255 ဘိုက်ထက်ရှည်သော key များသည် extended form ကို အသုံးပြုသည်:',
     'An extended encoding is not canonical for a key that fits the compact form.':
@@ -1862,7 +1862,7 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
     'A valid policy has at least one member, positive weights, no duplicate public keys, and a threshold from `1` through the sum of member weights.':
       'မှန်ကန်သော policy တစ်ခုတွင် အနည်းဆုံး member တစ်ဦး၊ သုညထက်ကြီးသော weight များ၊ duplicate public key မရှိခြင်းနှင့် `1` မှ member weight စုစုပေါင်းအထိရှိသည့် threshold တစ်ခု ပါရမည်။',
     "Canonical construction sorts members by the signing algorithm's stable name, a zero separator byte, and then the raw public-key bytes.":
-      'Canonical construction သည် member များကို signing algorithm ၏ stable name၊ zero separator byte၊ ထို့နောက် raw public-key bytes အလိုက် စီစဉ်သည်။',
+      'စံသတ်မှတ်တည်ဆောက်မှုတွင် အဖွဲ့ဝင်များကို လက်မှတ်ထိုး algorithm ၏ တည်ငြိမ်သောအမည်၊ သုညခြားနားဘိုက်နှင့် ထို့နောက် အများသုံးကီးဘိုက်အကြမ်းများအလိုက် အစဉ်လိုက်စီသည်။',
     'For an untrusted string, a conforming application should:':
       'မယုံကြည်ရသော string တစ်ခုအတွက် စံနှုန်းနှင့်ကိုက်ညီသော application သည် အောက်ပါတို့ကို လုပ်ဆောင်သင့်သည်:',
     '1. Trim only permitted transport whitespace around the complete value.':
