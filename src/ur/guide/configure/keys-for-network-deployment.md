@@ -39,7 +39,7 @@ cargo run --bin kagami -- keys --algorithm ed25519 \
   --out-dir ./client-key
 ```
 
-BLS validator مواد کے ساتھ Proof-of-Possession بھی شامل کریں:
+توثیقی نوڈ کی BLS کلیدوں کے ساتھ ان پر تصرف کا ثبوت بھی شامل کریں:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop \

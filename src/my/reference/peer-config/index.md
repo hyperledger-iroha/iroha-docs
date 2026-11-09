@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Iroha ကို ဖွဲ့စည်းခြင်း {#configuring-iroha}
 
-Local network peer configuration ကို set လုပ်ထားသည် TOML ဖိုင်တွေ။ ဒါက on-chain configuration ကွဲပြားပါတယ်။ [`SetParameter`](/my/blockchain/instructions.md#setparameter) ညွှန်ကြားချက်။ ထုတ်လုပ်မှု အပြုအမူကို ဖွဲ့စည်းပုံတစ်ခုမှာ ကိုယ်စားပြုဖို့လိုတယ်။ file သို့မဟုတ် on-chain parameter တစ်ခု၊ Environment variables တွေမှာ feature gates မရှိပါ။
+စက်တွင်း peer ပြင်ဆင်သတ်မှတ်မှုကို TOML ဖိုင်များတွင် သတ်မှတ်သည်။ ၎င်းသည် [`SetParameter`](/my/blockchain/instructions.md#setparameter) ညွှန်ကြားချက်များဖြင့် ပြောင်းလဲသော ဘလော့ခ်ချိန်းပေါ်ရှိ ပြင်ဆင်သတ်မှတ်မှုနှင့် ကွာခြားသည်။ တကယ့်လုပ်ငန်းသုံးအပြုအမူကို ပြင်ဆင်သတ်မှတ်မှုဖိုင် သို့မဟုတ် ဘလော့ခ်ချိန်းပေါ်ပါရာမီတာတွင် ဖော်ပြရမည်။ ပတ်ဝန်းကျင်တန်ဖိုးများကို အင်္ဂါရပ်ဖွင့်ပိတ်ကိရိယာအဖြစ် မသုံးရပါ။
 
 အသုံးပြုခြင်း [`--config`](../iroha3d-cli#arg-config) CLI ဖွဲ့စည်းမှုဖိုင်သို့ လမ်းကြောင်းကို သတ်မှတ်ရန် argument ကို။
 

@@ -499,6 +499,6 @@ printf '{
 
 - [Կապվեք SORA Nexus Տվյալների տիրույթներին](/hy/get-started/sora-nexus-dataspaces.md):
 - [Գործարկել Iroha 3 միջոցով CLI](/hy/get-started/operate-iroha-via-cli.md):
-- [Գործիքներ](/hy/blockchain/assets.md)
+- [Ակտիվներ](/hy/blockchain/assets.md)
 - [թույլտվություններ](/hy/blockchain/permissions.md)
 - [թույլտվության տոմսեր](/hy/reference/permissions.md)

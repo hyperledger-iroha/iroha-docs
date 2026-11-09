@@ -119,7 +119,7 @@ account_rabbit --> asset_rose : may receive balance
 |Նպատակ |Քանոնիկ թիրախ |Ալիեւ բառացի |Աջակցող մոդել |
 | -------------- | --------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------- |
 |Օգտագործողի հաշիվ |առանց տիրույթի `AccountId` կոդավորված՝ որպես I105 հասցե |`name@domain.dataspace` կամ `name@dataspace` |`AccountAlias`; առաջնային կեղծանունը `Account.label` է, լրացուցիչ կեղծանվանները պարտադիր են: |
-|Աշունների սահմանումը|Canonical `AssetDefinitionId` Base58 հասցե |`name#domain.dataspace` կամ `name#dataspace` |`AssetDefinitionAlias` կապված ակտիվի սահմանման հետ |
+| Ակտիվի սահմանում | կանոնական `AssetDefinitionId` Base58 հասցե | `name#domain.dataspace` կամ `name#dataspace` | ակտիվի սահմանմանը կապված `AssetDefinitionAlias` |
 |Պայմանագիր |Canonical Bech32m `ContractAddress` |`name::domain.dataspace` կամ `name::dataspace` |`ContractAlias` կապված տեղակայված պայմանագրի հասցեի հետ |
 |Դոմեյնային անուն |`DomainId` ձեւով `domain.dataspace` |`domain.dataspace` |SNS `domain` անունների տարածության գրանցում |
 |Տվյալների տարածքի անունը |թվային `DataSpaceId` ակտիվ Nexus կատալոգից |Տվյալների տարածքի կեղծանուններ, ինչպիսիք են `universal`, `paynet` կամ `zk` |SNS `dataspace` անունների տարածքի արձանագրություն գումարած ակտիվ տվյալների տարածքի կատալոգը |
@@ -136,7 +136,7 @@ account_rabbit --> asset_rose : may receive balance
 | -------------------------------------- | ------------------------------------------- |
 |Դոմեյններ| [Դոմեյններ](/hy/blockchain/domains.md) |
 |հաշիվներ | [Հաշվարկներ](/hy/blockchain/accounts.md) |
-|Գործիքներ| [Գործիքներ](/hy/blockchain/assets.md) |
+| Ակտիվներ | [Ակտիվներ](/hy/blockchain/assets.md) |
 |NFTs | [NFTs](/hy/blockchain/nfts.md) |
 |Իրական աշխարհի ակտիվներ | [Իրական աշխարհի ակտիվներ](/hy/blockchain/rwas.md) |
 |Մետադատա| [Մետադատա](/hy/blockchain/metadata.md) |

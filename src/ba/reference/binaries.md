@@ -11,7 +11,7 @@ translation_engine: nllb-200-ct2
 Iroha 3 операторҙың эш ағымдары дүрт төп бинар тирәләй әйләнә:
 
 - [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) бер-береһе менән бәйләнештә булыу өсөн
-- `iroha3d_taira` каноник Taira validator launcher өсөн
+- `iroha3d_taira` — Taira валидаторын эшләтеп ебәреү өсөн стандарт ҡорал
 - [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli) өсөн CLI һәм оператор командалары
 - [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) өсөн асҡыстар, генездар, локаль селтәрҙәр һәм профилдәр
 
@@ -55,6 +55,6 @@ Docker мөхитендә бер үк версиянан йыйылған баш
 ## Ниндәй бинар ҡулланырға кәрәк? {#which-binary-should-i-use}
 
 - Йәмәғәт Taira валидатор сығарылышынан ситтә пирҙарығыҙҙы башлаған йәки эшләгәндә `iroha3d` ҡулланығыҙ.
-- Taira validator deployment өсөн генә `iroha3d_taira --sora` ҡулланыу; ул Taira сылбыр, һаҡлау һәм йүгереү ваҡыты-тамғалаусы профилен үтәй.
+- `iroha3d_taira --sora` бойороғон стандарт Taira валидаторын урынлаштырғанда ғына ҡулланығыҙ: ул Taira сылбырына, һаҡлауға һәм эш барышында ҡултамға ҡуйыусыға ҡуйылған талаптарҙы үтәй.
 - `iroha` ҡулланып, иҫәп-хисапҡа һорау бирергә, транзакцияларҙы тапшырырға йәки операторҙың һуңғы пункттарын тикшереүгә кәрәк.
 - Ключтар, генез манифестары, профил тупланмалары йәки локаль селтәр активтары кәрәк булғанда `kagami` ҡулланығыҙ.

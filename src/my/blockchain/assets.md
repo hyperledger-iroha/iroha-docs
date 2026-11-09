@@ -17,7 +17,7 @@ Iroha အရင်းအမြစ်သည် အကောင့်တစ်ခ�
 - `id`: Single Protocol Standard အရင်းအမြစ်အဓိပ္ပါယ်ဖွင့်ဆိုချက်လိပ်စာ
 - `name`: လူဖတ်လို့ရတဲ့ မျက်နှာပြင်အမည်
 - `description`: လူဖတ်လို့ရတဲ့ ရွေးချယ်စရာ သရုပ်ဖော်ချက်
-- `alias`: `<name>#<domain>.<dataspace>` သို့မဟုတ် `<name>#<dataspace>` ပုံစံများတွင် ရွေးချယ်စရာ အမည်မဖော်လိုပါ။
+- `alias`: `<name>#<domain>.<dataspace>` သို့မဟုတ် `<name>#<dataspace>` ပုံစံဖြင့် ရွေးချယ်ထည့်နိုင်သော alias
 - `spec`: ငွေကြေးပမာဏအတွက် ကိန်းဂဏန်း တိကျမှုနှင့် ကန့်သတ်ချက်များ
 - `mintable`: အရင်းအမြစ်ထုတ်လွှင့်ရေးမူဝါဒ
 - `logo`: ရွေးချယ်စရာရှိသည် `SoraFS` URI
@@ -91,7 +91,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
 
 Taira တွင် အရင်းအမြစ်များကို ထုတ်လွှင့်ရန်၊ ဖျက်ဆီးရန် သို့မဟုတ် လွှဲပြောင်းရန် testnet မှ ရံပုံငွေပေးချေသည့်စာရင်းနှင့် [SORA Nexus ဒေတာနေရာများနှင့် ချိတ်ဆက်ခြင်း](/my/get-started/sora-nexus-dataspaces.md) တွင် ထိန်းသိမ်းထားသော စီးဆင်းမှုကို အသုံးပြုပါ။
 
-Taira အခွန်ပေးသော အရင်းအမြစ်ဥပမာအတွက် testnet ငွေကြေးထောက်ပံ့ရေး ဝန်ဆောင်မှု အကူအညီကို [Testnet XOR ကို Taira သို့ခေါ်ယူပါ။](/my/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) မှ `taira_faucet_claim.py` အဖြစ် သိမ်းဆည်းပြီး testnet ငွေချေးရေးဝန်ဆောင်မှုအရင်းအမြစ်ကို ပထမဦးဆုံး တောင်းဆိုကာ ငွေချေးမှု စီမံခန့်ခွဲမှု ကုန်ကျစရိတ်အရင်းအမြစ်ကို အသုံးပြုပါ။
+အခကြေးငွေပေးရသည့် Taira ပိုင်ဆိုင်မှု နမူနာအတွက် [Taira တွင် Testnet XOR ရယူခြင်း](/my/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) မှ faucet အကူပရိုဂရမ်ကို `taira_faucet_claim.py` အဖြစ် သိမ်းပါ။ ထို့နောက် faucet ပိုင်ဆိုင်မှုကို ဦးစွာရယူပြီး transaction ၏ gas ပိုင်ဆိုင်မှုအဖြစ် သုံးပါ။
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'

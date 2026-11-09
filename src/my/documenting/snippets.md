@@ -6,9 +6,9 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Code Snippets များ {#code-snippets}
+# ကုဒ်အပိုင်းအစများ {#code-snippets}
 
-Generated snippets တွေဟာ Iroha ပြင်ဆင်မှုကနေ ကုဒ်၊ ဖွဲ့စည်းပုံနဲ့ အစီအစဉ်တွေနဲ့ ဆက်စပ်ထားတဲ့ နမူနာတွေကို သိမ်းထားတယ်။
+ထုတ်လုပ်ထားသော ကုဒ်အပိုင်းအစများကြောင့် ဥပမာများသည် ၎င်းတို့ကို ထုတ်လုပ်ပေးသော Iroha revision ၏ ကုဒ်၊ ပြင်ဆင်သတ်မှတ်မှုနှင့် schema များနှင့် ချိတ်ဆက်နေသည်။
 
 ## Iroha အားကောင်းစရာ လက်ရာများ {#refreshing-iroha-artifacts}
 
@@ -22,7 +22,7 @@ pnpm refresh:iroha --source /path/to/iroha
 
 ## Snippets အပါအဝင် {#including-snippets}
 
-[VitePress code-snippet syntax ကို](https://vitepress.dev/guide/markdown#import-code-snippets) ကို အသုံးပြုပြီး generated (သို့) local source ကို ထည့်သွင်းပါ။
+ထုတ်လုပ်ထားသော သို့မဟုတ် စက်တွင်း source ကို ထည့်သွင်းရန် [VitePress ကုဒ်အပိုင်းအစ ထည့်သွင်းနည်း](https://vitepress.dev/guide/markdown#import-code-snippets) ကို သုံးပါ -
 
 ```md
 <<< @/snippets/client.template.toml

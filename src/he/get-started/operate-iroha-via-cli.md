@@ -183,7 +183,7 @@ cargo run --bin iroha -- \
 - [SDK לימודי הדרכה](/he/guide/tutorials/)
 - [נקודות קצה Torii ](/he/reference/torii-endpoints.md)
 - [עבודה עם Iroha בינרים](/he/reference/binaries.md)
-- [קובץ README של ה־CLI](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/README.md)
+- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/README.md)
 
 כדי לשחזר תמונת מצב מלאה של סיוע מרקדון מהמחאה המקורית, תפעול:
 

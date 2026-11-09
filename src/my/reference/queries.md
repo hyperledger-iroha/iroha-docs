@@ -6,7 +6,7 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# မေးခွန်းများ {#queries}
+# query များ {#queries}
 
 Iroha query တွေက blockchain ledger state ကို မပြောင်းဘဲ ဖတ်တယ်။ လက်ရှိ data model က query ပုံစံ နှစ်မျိုးကို ဖော်ပြပါတယ်။
 
@@ -17,24 +17,24 @@ SDK typeed builders (သို့) CLI ကို လက်နဲ့ query data c
 
 ## ဆော့ဖ်ဝဲ အကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင်နှင့် ဖွဲ့စည်းပုံ {#runtime-and-configuration}
 
-|မေးခွန်း|ရည်ရွယ်ချက်|
+|ဒေတာရှာဖွေတောင်းဆိုချက်|ရည်ရွယ်ချက်|
 | --- | --- |
 |`FindAbiVersion` |အကောင်အထည်ဖော်သူ ABI ကို ပြန်ပို့ပါ။ |
 |`FindExecutorDataModel` |အကောင်အထည်ဖော်သူ ဒေတာပုံစံ သရုပ်ဖော်ချက်ကို ပြန်ပို့ပါ။ |
-|`FindParameters` |ချိတ်ဆက်ထားတဲ့ executor configuration parameters တွေကို ပြန်ပေးပါ။ |
+| `FindParameters` | ဘလော့ခ်ချိန်းပေါ်ရှိ လုပ်ဆောင်ပေးသူ၏ ပြင်ဆင်သတ်မှတ်မှုပါရာမီတာများကို ပြန်ပေးခြင်း။ |
 
 ## အကောင့်များနှင့် ခွင့်ပြုချက်များ {#accounts-and-permissions}
 
-|မေးခွန်း|ရည်ရွယ်ချက်|
+|ဒေတာရှာဖွေတောင်းဆိုချက်|ရည်ရွယ်ချက်|
 | --- | --- |
 |`FindAccountById` |Single Protocol Standard Account ID ကို သုံးပြီး account တစ်ခုကို ရှာပါ။ |
-|`FindAccountByAlias` |အကောင့်တစ်ခုအတွက် အမည်မဖော်လိုတဲ့ အကောင့်ကို ဖြေရှင်းပါ။|
+| `FindAccountByAlias` | အကောင့် alias မှ အကောင့်ကို ရှာဖွေဖြေရှင်းခြင်း။ |
 |`FindAccounts` |မှတ်ပုံတင်ထားတဲ့ အကောင့်တွေကို စာရင်းပေးပါ။ |
 |`FindAccountIds` |မှတ်ပုံတင်ထားတဲ့ အကောင့် ID တွေကို စာရင်းပေးပါ။ |
 |`FindAccountsWithAsset` |သတ်မှတ်ထားတဲ့ အရင်းအမြစ် အဓိပ္ပါယ်ဖွင့်ဆိုချက် ရှိတဲ့ အကောင့်တွေကို စာရင်းပေးပါ။ |
-|`FindAliasesByAccountId` |အကောင့်တစ်ခုနဲ့ ချိတ်ဆက်ထားတဲ့ အမည်မဖော်လိုသူတွေကို စာရင်းပေးပါ။ |
-|`FindAccountRecoveryPolicyByAlias` |အမည်မဖော်လိုသူအတွက် ပြန်လည်ထူထောင်ရေး မူဝါဒကိုရှာပါ။|
-|`FindAccountRecoveryRequestByAlias` |အမည်မဖော်လိုတဲ့ recovery request ကိုရှာပါ။ |
+| `FindAliasesByAccountId` | အကောင့်တစ်ခုနှင့် ချိတ်ထားသော alias များကို စာရင်းပြခြင်း။ |
+| `FindAccountRecoveryPolicyByAlias` | alias အတွက် ပြန်လည်ရယူရေးမူဝါဒကို ရှာဖွေခြင်း။ |
+| `FindAccountRecoveryRequestByAlias` | alias အတွက် ပြန်လည်ရယူရေးတောင်းဆိုမှုကို ရှာဖွေခြင်း။ |
 |`FindRoles` |အခန်းကဏ္ဍတွေကို စာရင်းပေးပါ။|
 |`FindRoleIds` |အခန်းကဏ္ဍ ID တွေကို စာရင်းပေးပါ။ |
 |`FindRolesByAccountId` |အကောင့်ကို ပေးအပ်သော အခန်းကဏ္ဍများကို စာရင်းပေးပါ။ |
@@ -42,7 +42,7 @@ SDK typeed builders (သို့) CLI ကို လက်နဲ့ query data c
 
 ## ဒိုမင်များနှင့် ကွန်ရက်ပြိုင်ဘက်များ {#domains-and-peers}
 
-|မေးခွန်း|ရည်ရွယ်ချက်|
+|ဒေတာရှာဖွေတောင်းဆိုချက်|ရည်ရွယ်ချက်|
 | --- | --- |
 |`FindDomainById` |`DomainId` ကို domain တစ်ခုရှာပါ။ |
 |`FindDomains` |မှတ်ပုံတင်ထားတဲ့ domain တွေကို စာရင်းပေးပါ။ |
@@ -54,7 +54,7 @@ SDK typeed builders (သို့) CLI ကို လက်နဲ့ query data c
 
 ## အရင်းအမြစ်များ NFTs နှင့် RWAs {#assets-nfts-and-rwas}
 
-|မေးခွန်း|ရည်ရွယ်ချက်|
+|ဒေတာရှာဖွေတောင်းဆိုချက်|ရည်ရွယ်ချက်|
 | --- | --- |
 |`FindAssets` |အရင်းအမြစ်လက်ကျန်စာရင်း။ |
 |`FindAssetsDefinitions` |အရင်းအမြစ် အဓိပ္ပါယ်ဖွင့်ဆိုချက်တွေကို စာရင်းပေးပါ။ |
@@ -69,7 +69,7 @@ SDK typeed builders (သို့) CLI ကို လက်နဲ့ query data c
 
 [ရင်းနှီးမြှုပ်နှံမှု ISIs](/my/blockchain/escrow.md) မှဖန်တီးသော မှတ်တမ်းများကို စစ်ဆေးခြင်း၊ စျေးကွက်မှတ်တမ်းများ၊ ယေဘုယျအရင်းအမြစ်ပိတ်ရက်များနှင့် အမည်မသိမှတ်တမ်းများအပါအဝင်။
 
-|မေးခွန်း|ရည်ရွယ်ချက်|
+|ဒေတာရှာဖွေတောင်းဆိုချက်|ရည်ရွယ်ချက်|
 | --- | --- |
 |`FindAssetEscrows` |အရင်းအမြစ် အလှူခံ မှတ်တမ်းတွေကို စာရင်းပေးပါ။ |
 |`FindAssetEscrowById` |ID နဲ့ အရင်းအမြစ် တစ်ခုကို ရှာပါ။ |
@@ -88,13 +88,13 @@ SDK typeed builders (သို့) CLI ကို လက်နဲ့ query data c
 
 ## Nexus, ဒေတာရရှိနိုင်မှုနှင့် Packages {#nexus-data-availability-and-packages}
 
-|မေးခွန်း|ရည်ရွယ်ချက်|
+|ဒေတာရှာဖွေတောင်းဆိုချက်|ရည်ရွယ်ချက်|
 | --- | --- |
 |`FindRepoAgreements` |ကွင်းဆက်မှာ သိုလှောင်ထားတဲ့ မှတ်ပုံတင် သဘောတူညီချက်တွေကို စာရင်းပေးပါ။ |
 |`FindTwitterBindingByHash` |Cryptographic hash ဖြင့် Twitter binding ကို ဖြေရှင်းပါ။ |
 |`FindDaPinIntentByTicket` |Ticket ကေန Data Availability pin intent ကို ရှာပါ။ |
 |`FindDaPinIntentByManifest` |Technical Manifesto Reference နဲ့ pin intent ကို ရှာပါ။ |
-|`FindDaPinIntentByAlias` |အမည်မဖော်လိုတဲ့ ခလုတ် ရည်ရွယ်ချက်ကို ရှာပါ။|
+| `FindDaPinIntentByAlias` | alias ဖြင့် pin ရည်ရွယ်ချက်ကို ရှာဖွေခြင်း။ |
 |`FindDaPinIntentByLaneEpochSequence` |အပြီးသတ်မှုလမ်းကြောင်း၊ ခေတ်နဲ့ အစဉ်အတန်းကနေ pin intent ကိုရှာပါ။ |
 |`FindLaneRelayEnvelopeByRef` |မှန်ကန်တဲ့ Lane-relay ဒေတာ ကွန်တိန်နာကို ရှာပါ။ |
 |`FindSorafsProviderOwner` |SoraFS ပေးသွင်းသူ၏ ပိုင်ရှင်ကို ဖြေရှင်းပါ။ |
@@ -113,7 +113,7 @@ SDK typeed builders (သို့) CLI ကို လက်နဲ့ query data c
 
 ## ကြိုးပမ်းချက်များ၊ စာချုပ်များ၊ ငွေပေးချေမှုများနှင့် ပိတ်ပင်ခြင်း {#triggers-contracts-transactions-and-blocks}
 
-|မေးခွန်း|ရည်ရွယ်ချက်|
+|ဒေတာရှာဖွေတောင်းဆိုချက်|ရည်ရွယ်ချက်|
 | --- | --- |
 |`FindActiveTriggerIds` |Active trigger ID တွေကို စာရင်းထည့်ပါ။ |
 |`FindTriggers` |List trigger တွေ။|

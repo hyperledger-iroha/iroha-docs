@@ -65,7 +65,7 @@ Time trigger တွေက retry policy ကို ရွေးချယ်နိ�
 
 ထပ်မံစမ်းသပ်ဖို့ ဘတ်ဂျက်ကုန်သွားတဲ့အခါ trigger က မှတ်ပုံတင်မထားဘူး။
 
-## မေးခွန်းများ {#queries}
+## Query များ {#queries}
 
 trigger status ကို စစ်ဆေးဖို့ လက်ရှိ trigger queries တွေကို သုံးပါ။
 

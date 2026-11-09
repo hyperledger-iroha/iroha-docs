@@ -45,7 +45,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
 ```
 
-Ниәт `payments.universal`, уның һанлы мәғлүмәттәр киңлеге, каноник I105 хужаһы, ҡуртымға алыу срогы һәм ағымдағы сәйәсәт / түләү комиссия иҫәбе һаҡсыһын асыҡлай. планерҙың һуңғы нөктәһе `POST /v1/aliases/setup/plan`; кире ҡайтарылған планы сылбырлы, вәкәләтле иҫәп менән бәйле, дәүләт һәм сроклы. Доменды алып ташлау һаман да [`Unregister`](/ba/blockchain/instructions.md#un-register) ҡуллана.
+Ниәттә `payments.universal`, уның мәғлүмәт киңлегенең һанлы идентификаторы, хужаның каноник I105 адресы, ҡуртым ваҡыты һәм ағымдағы ҡағиҙәләр менән түләү хаҡын тикшереү шарты күрһәтелә. План төҙөү өсөн `POST /v1/aliases/setup/plan` ҡулланыла; ҡайтҡан план билдәле сылбырға, вәкәләтле иҫәпкә, реестрҙың хәленә һәм ғәмәлдә булыу ваҡытына бәйләнгән. Доменды алып ташлау өсөн һаман [`Unregister`](/ba/blockchain/instructions.md#un-register) ҡулланыла.
 
 Доменды булдырыу йәки алып ташлау өсөн домен менән идара итеүгә тейешле рөхсәт кәрәк. Домен метамәғлүмәттәре [`SetKeyValue` һәм `RemoveKeyValue`](/ba/blockchain/instructions.md#setkeyvalue-removekeyvalue) менән яңыртыла ала, әгәр хакимиәт был доменды үҙгәртергә рөхсәткә эйә булһа.
 

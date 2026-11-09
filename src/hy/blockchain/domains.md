@@ -97,6 +97,6 @@ iroha --config ./taira.client.toml \
 Նայեք նաեւ.
 
 - [Աշխարհ](/hy/blockchain/world.md)
-- [Գործիքներ](/hy/blockchain/assets.md)
+- [Ակտիվներ](/hy/blockchain/assets.md)
 - [Մետադատա](/hy/blockchain/metadata.md)
 - [Անունավորման կանոններ](/hy/reference/naming.md)

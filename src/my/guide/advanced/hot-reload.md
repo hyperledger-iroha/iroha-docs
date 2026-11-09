@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2
 
 ချက်ချင်း ပြန်တင်ခြင်းကို စက်တွင်း အမှားရှာဖွေရန်သာ အသုံးပြုပါ။ တူညီသော ရင်းမြစ်ဗားရှင်းမှ ဘိုင်နရီဖိုင်များကို တည်ဆောက်ပြီး Docker တွင် အတည်ပြုသူ လေးခုကို စတင်ရန် [လွှတ်တင်ခြင်း Iroha 3](/my/get-started/launch-iroha.md) လမ်းညွှန်ကို လိုက်နာပါ။
 
-## Network peer Binary ကို အစားထိုးပါ {#replace-the-peer-binary}
+## peer executable ဖိုင်ကို အစားထိုးခြင်း {#replace-the-peer-binary}
 
 Linux ကိုက်ညီသော Daemon Binary ကို Upstream Workspace မှတည်ဆောက်ပါ။
 
@@ -18,7 +18,7 @@ Linux ကိုက်ညီသော Daemon Binary ကို Upstream Workspace 
 cargo build --release -p irohad --bin iroha3d --target x86_64-unknown-linux-musl
 ```
 
-Running network peer container ထဲကို Copy လုပ်ပြီး အဲဒီ container ကို Restart လုပ်ပါ။
+၎င်းကို လုပ်ဆောင်နေသော peer ကွန်တိန်နာထဲသို့ ကူးထည့်ပြီး ထိုကွန်တိန်နာကို ပြန်စပါ။
 
 ```bash
 docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/local/bin/iroha3d
@@ -31,6 +31,6 @@ docker restart <container>
 
 ကနဦးဘလောက်အသစ်ကို အသုံးပြုရန် နိုဒ်၏ သိုလှောင်နေရာသည် အလွတ်ဖြစ်ရမည်။ တူညီသော ကွန်ရက်ကို ပြန်စရန် `python3 poc.py down` နှင့် `python3 poc.py up` ကို အစဉ်လိုက် လုပ်ဆောင်ပါ။ `state/` ကို ၎င်း၏ Docker သိုလှောင်မှုအတွဲ လေးခုနှင့်အတူ သိမ်းထားပါ။
 
-## Custom Configuration ကို အသုံးပြုပါ။ {#use-custom-configuration}
+## စိတ်ကြိုက်ပြင်ဆင်သတ်မှတ်ချက်ကို အသုံးပြုခြင်း {#use-custom-configuration}
 
 လက်ရှိကွန်ရက် peer ဖွဲ့စည်းချက်သည် TOML ဖြစ်သည်။ ထုတ်လုပ်ထားသော `config.toml`, `genesis.signed.nrt` နှင့် ဆက်စပ်သော အဓိကဖိုင်များကို container လမ်းကြောင်းများသို့ ချိတ်ဆက်ခြင်း (သို့မဟုတ်) ကူးယူခြင်း Kagami Run များမှ ဖိုင်များကို ရောနှောခြင်းသည် deserialization သို့မဟုတ် သဘောတူညီမှု ကျရှုံးမှုများဖြစ်စေနိုင်သည်။

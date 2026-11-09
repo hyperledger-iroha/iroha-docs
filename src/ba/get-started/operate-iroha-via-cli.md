@@ -75,7 +75,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=10' \
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-`taira.client.toml`-ды signed commands һынарға әҙер булғанда ғына булдырығыҙ. Config, faucet һәм canary flow өсөн [SORA Nexus Dataspaces-ҡа тоташыу](/ba/get-started/sora-nexus-dataspaces.md) бүлеген ҡарағыҙ. Account faucet fee asset менән fund ителмәйенсә Taira-ға write commands ебәрмәгеҙ.
+`taira.client.toml` файлын ҡултамғалы бойороҡтарҙы һынарға әҙер булғас ҡына булдырығыҙ. Көйләү, һынау активын алыу һәм контроль транзакция ебәреү тәртибе өсөн [SORA Nexus мәғлүмәт киңлектәренә тоташыу](/ba/get-started/sora-nexus-dataspaces.md) бүлеген ҡарағыҙ. Комиссия өсөн һынау активы иҫәпкә төшкәнсе Taira-ға яҙыу бойороҡтарын ебәрмәгеҙ.
 
 Һәр түләүле Taira CLI миҫал өсөн, faucet ярҙамсыһын һаҡлағыҙ [Testnet XOR алыу Taira](/ba/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) буйынса `taira_faucet_claim.py`, һуңынан тәүҙә testnet XOR талап итегеҙ:
 

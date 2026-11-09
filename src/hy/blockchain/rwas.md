@@ -453,7 +453,7 @@ Python գործարքի ամբողջական օրինակի համար տես [�
 
 ## Ծանոթացված փաստաթղթեր {#related-docs}
 
-- [Գործիքներ](/hy/blockchain/assets.md)
+- [Ակտիվներ](/hy/blockchain/assets.md)
 - [Մետադատա](/hy/blockchain/metadata.md)
 - [Iroha Հատուկ հրահանգներ](/hy/blockchain/instructions.md)
 - [Հարցումներ](/hy/reference/queries.md#assets-nfts-and-rwas)

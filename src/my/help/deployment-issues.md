@@ -18,20 +18,20 @@ Iroha 3 deployments များအတွက်ပြဿနာဖြေရှင
 cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 ```
 
-Generated directory တွင် network peer config များ၊ blockchain genesis ပစ္စည်းများ၊ start script များနှင့် README အတွက် Iroha 3 build line များပါဝင်သည်။
+ဖန်တီးထားသောဖိုင်တွဲတွင် peer ပြင်ဆင်သတ်မှတ်မှုများ၊ genesis ဒေတာ၊ စတင်ရေး script များနှင့် Iroha 3 build လမ်းကြောင်းအတွက် README ပါဝင်သည်။
 
 ## Network peer မစတင်တော့ဘူး {#peer-does-not-start}
 
 ဒီပစ္စည်းတွေကို အရင်စစ်ကြည့်ပါ။
 
 - `iroha3d --config <path>` အချက်အလက်များကို ကွန်ရက် peer's own TOML ဖိုင်တွင် ထည့်သွင်းထားပါသည်။
-- `public_key` နဲ့ `private_key` တို့ဟာ Network Peer Config ထဲမှာ တူညီတဲ့ Key Pair တစ်ခုတည်းပါ။
+- peer ပြင်ဆင်သတ်မှတ်မှုရှိ `public_key` နှင့် `private_key` သည် ကီးတွဲတစ်ခုတည်းမှ ဖြစ်ရမည်။
 - `genesis.public_key` ကတော့ blockchain Genesis Transaction ကို လက်မှတ်ရေးထိုးဖို့ အသုံးပြုခဲ့တဲ့ သော့နဲ့ တူပါတယ်။
-- အတည်ပြုသူနိုဒ်များကို BLS-Normal သော့များဖြင့် သတ်မှတ်ထားပြီး `trusted_peers_pop` တွင် စက်တွင်းနိုဒ်နှင့် ယုံကြည်ရသော အခြားနိုဒ်များ၏ သော့ပိုင်ဆိုင်မှု အထောက်အထားများ ပါဝင်သည်။
+- validator အဖြစ်ဆောင်ရွက်သော peer အထောက်အထားများသည် BLS-Normal ကီးများကို အသုံးပြုပြီး `trusted_peers_pop` တွင် စက်တွင်းကီးနှင့် ယုံကြည်ထားသော peer များအတွက် ကီးပိုင်ဆိုင်ကြောင်းအထောက်အထား မှတ်တမ်းများ ပါဝင်သည်။
 - Torii နှင့် P2P အတွက်ဆိပ်ကမ်းများကို အခြားလုပ်ငန်းစဉ်တစ်ခုဖြင့် ချည်နှောင်ထားခြင်း မရှိပါ။
-- Kura store directory ဟာ တူညီတဲ့ ကွင်းဆက်ထဲ ပါဝင်ပြီး အခြားကွန်ရက် ပရိုဖိုင်တစ်ခုကနေ ကူးယူထားတာ မဟုတ်ဘူး။
+- Kura သိုလှောင်ဖိုင်တွဲသည် တူညီသော chain နှင့် သက်ဆိုင်ပြီး အခြားကွန်ရက်ပရိုဖိုင်မှ ကူးယူထားခြင်း မဟုတ်ရ။
 
-Daemon က TOML အလွှာတစ်ခုထက်ပိုပြီးဖတ်တဲ့အခါ config tracing ကိုသုံးပါ။
+daemon က TOML အလွှာတစ်ခုထက်ပို ဖတ်လျှင် ပြင်ဆင်သတ်မှတ်မှုခြေရာခံခြင်းကို အသုံးပြုပါ။
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
@@ -43,7 +43,7 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 အတည်ပြုသူများ၏ မှတ်တမ်းကို ကြည့်ရန် ကိရိယာအစု၏ ဒိုင်ရက်ထရီတွင် `python3 poc.py logs` ကို လုပ်ဆောင်ပါ။
 
-compose deployment ကိုစတင်ပြီးနောက် stalks လုပ်ရင် daemon log တွေကို စစ်ဆေးပါ
+compose ဖြန့်ချိတပ်ဆင်မှု သည် စတင်ပြီးနောက် ရပ်တန့်နေလျှင် daemon မှတ်တမ်းများတွင် အောက်ပါတို့ကို စစ်ဆေးပါ။
 
 - မှားယွင်းသော `chain`
 - အခြား blockchain genesis transaction သို့မဟုတ် technical manifest ကိုသုံးတဲ့ network peer တစ်ခု
@@ -56,16 +56,16 @@ compose deployment ကိုစတင်ပြီးနောက် stalks လ�
 
 Kubernetes အတွက် validator တစ်ခုစီကို stateful အခြေခံအဆောက်အအုံတစ်ခုအဖြစ် ဆက်ဆံပါ။
 
-- Network peer တစ်ခုစီကို တည်ငြိမ်တဲ့ Identity Key နဲ့ တည်ငြိမ်နေတဲ့ Volume ကို ပေးပါ။
+- peer တစ်ခုချင်းစီအား တည်ငြိမ်သော အထောက်အထားကီးနှင့် တည်မြဲသောသိုလှောင် volume ပေးပါ
 - P2P Address တွေကို ဖေါ်ပြပါ အခြား Network Peers တွေက Cluster အတွင်းကနေ ဖြေရှင်းနိုင်ပါတယ်
 - မော်တော်ယာဉ် Config နှင့် blockchain ဘီလူးဖိုင်များအတွက်မပြောင်းလဲနိုင်သော config ကိုဖြန့်ချိရန်
 - ဘလော့ခ်ချ်ရဲ့ ဇာစ်မြစ် (သို့) ထိပ်ပိုင်းဆိုင်ရာ အပြောင်းအလဲအားလုံးကို အလိုအလျောက် မပြုပြင်ဘဲ ရည်ရွယ်ချက်ရှိပြီး ဖြန့်ဖြူးပေးပါ။
 
-Capsule တစ်ခုကို ထပ်ခါထပ်ခါ restart လုပ်ရင် Capsule ထဲက rendered config ကို မျှော်မှန်းချက်နဲ့ နှိုင်းယှဉ်ပါ။ [`peer.template.toml`](/my/reference/peer-config/index.md#template) network peer က အဟောင်းကို ပြန်လည်ကစားနေလားဆိုတာ စစ်ဆေးပါ။ Kura ဒေတာ။
+pod သည် ထပ်ခါတလဲလဲ ပြန်စနေလျှင် pod အတွင်းရှိ အပြီးသတ်ထုတ်ပေးထားသော ပြင်ဆင်သတ်မှတ်မှုကို မျှော်မှန်းထားသော [`peer.template.toml`](/my/reference/peer-config/index.md#template) နှင့် နှိုင်းယှဉ်ပြီး peer က Kura ဒေတာဟောင်းကို ပြန်လည်လုပ်ဆောင်နေခြင်း ရှိမရှိ စစ်ဆေးပါ။
 
 ## Sora ၏ ပရိုဖိုင် {#sora-profile}
 
-Nexus၊ SoraFS သို့မဟုတ် multi-lane စီးဆင်းမှုများကို အသုံးပြုသော ပုဂ္ဂလိက (သို့) ဒေသတွင်း Iroha 3 ဖြန့်ချိမှုများတွင် Sora profile ကို ဖွင့်ထားသည့် ပုံမှန် daemon ကို စတင်သင့်ပါသည်။
+SORA Nexus၊ SoraFS သို့မဟုတ် lane များစွာပါလုပ်ငန်းစဉ်များကို အသုံးပြုသော ပုဂ္ဂလိက သို့မဟုတ် စက်တွင်း Iroha 3 deployment များသည် ယင်းပရိုဖိုင်ကို ဖွင့်ထားသော စံ daemon ဖြင့် စတင်သင့်သည်။
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora
@@ -73,7 +73,7 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora
 
 ကွန်ရက်တစ်ခုတည်းရှိ validator များအကြားမှာ တူညီသော profile ကို တစ်ချိန်လုံးအသုံးပြုပါ။
 
-အများပြည်သူ Taira အတည်ပြုသူများက ရည်စူးထားသော စေလွှတ်စက်ကိုသုံးပြီး Taira ၏တိကျသောချိတ်ဆက်၊ စာရင်း၊ ပိတ်လိုက်သော embedded-SoraFS သိုလှောင်ခြင်းနှင့် runtime-signer profile ကိုအားပေးသည်။ ၎င်းကိုမစတင်မီ rendered Taira ဖွဲ့စည်းမှုကိုအတည်ပြုပါ:
+အများသုံး Taira validator များသည် Taira ၏ တိကျသော chain၊ အဖွဲ့ဝင်စာရင်း၊ အတွင်းထည့်သွင်းထားသော SoraFS သိုလှောင်မှုကို ပိတ်ထားခြင်းနှင့် လည်ပတ်ချိန်လက်မှတ်ထိုးသူပရိုဖိုင်တို့ကို အတင်းအကျပ်လိုက်နာစေသော သီးသန့်စတင်ကိရိယာကို အသုံးပြုသည်။ မစတင်မီ အပြီးသတ်ထုတ်ပေးထားသော Taira ပြင်ဆင်သတ်မှတ်မှုကို စစ်ဆေးပါ။
 
 ```bash
 iroha3d_taira --sora \
