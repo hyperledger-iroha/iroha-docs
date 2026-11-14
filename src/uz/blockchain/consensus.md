@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/consensus.md
-translation_source_hash: 06b3589a71dcb08aed5589290f4c9af9cb46b5cee0f875ae542043543360f623
+translation_source_hash: ebdf564d607b96f7f186637044d80b2f1bb7c9fbe6080a061d27d02ec6f8cf62
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -28,7 +28,7 @@ Sumeragi ruxsatli joylashtirishda ham, nominatsiyalangan ulush isboti (NPoS) aso
 
 Tasdiqlovchilar faqat mahalliy ravishda qayta hosil qila oladigan ma’lumotni imzolaydi. Ovoz berishdan oldin tasdiqlovchi taklif kutilgan zanjir, balandlik va ko‘rinishga tegishli ekanini; tranzaksiya imzolari va chegaralari yaroqliligini; yo‘lak bo‘yicha yo‘naltirish va ijrochi tekshiruvi deterministikligini tekshiradi. Mahalliy natija farq qilsa, tasdiqlovchi taklifga ovoz bermay, uni rad etadi.
 
-Ovozlar kichik, imzolangan konsensus xabarlaridir. Ular taklif qilingan blok, balandlik, ko‘rinish va tasdiqlovchi kimligini bog‘laydi. Birlashtirilgan imzolar tayyorlash va yakunlash kvorum sertifikatlarini hosil qiladi. Yakunlash sertifikati yetarli tasdiqlovchi ayni blok bo‘yicha bir xil natijaga erishganining ixcham dalilidir. Har bir tasdiqlovchi o‘z tayyorlash va yakunlash ovozlarini butun qo‘mitaga yuboradi; istalgan tasdiqlovchi kerakli tengdosh ovozlarini jamlab, hosil bo‘lgan sertifikatni tarqatishi mumkin.
+Ovozlar kichik, imzolangan konsensus xabarlaridir. Ular taklif qilingan blok, balandlik, ko‘rinish va tasdiqlovchi kimligini bog‘laydi. Tekshirilgan imzolar tayyorlash va yakunlash kvorum sertifikatlarini hosil qiladi. Yakunlash sertifikati yetarli tasdiqlovchi ayni blok bo‘yicha bir xil natijaga erishganining barqaror dalilidir. Odatda A to‘plamidagi tasdiqlovchilar o‘z tayyorlash va yakunlash ovozlarini raundning proksi-quyrug‘iga yuboradi; u aynan kerakli miqdordagi teng ovozlarni jamlaydi va sertifikatni tarqatadi. Sertifikat kechiksa, B to‘plamidagi tasdiqlovchilar ham proksi-quyruqqa ovoz beradi; so‘nggi chora sifatida har bir tasdiqlovchi o‘z ovozini hammaga tarqatadi va istalgan tasdiqlovchi sertifikatni jamlashi mumkin.
 
 ### Kvorum va kuzatuvchilar {#quorum-and-observers}
 
@@ -79,14 +79,14 @@ Belgilangan [yo‘lak amalga oshirilishi](https://github.com/hyperledger-iroha/i
 
 ## Ma’lumotlarning mavjudligi va foydali yukni tiklash {#data-availability-and-payload-recovery}
 
-Sumeragi V1 global foydali yuk mavjudligini imzolangan RS16 `PayloadManifest` va `PayloadChunk` xabarlari bilan ta’minlaydi. Yetakchi imzolangan manifestni butun qo‘mitaga yuboradi va dastlab deterministik bo‘laklarni Set A ga tarqatadi. Validator faqat kanonik blok tanasini qayta tiklab, manifest va bo‘lak xeshlarini tekshirib, tanani mustahkam saqlab va deterministik validatsiyani tugatgach Prepare ovozini bera oladi. Tezkor yo‘l to‘xtasa, tiklash bo‘lak yetkazishni Set B ga kengaytiradi. Tengdosh blok tanasini olishdan oldin yakuniylikni bilib qolsa, sertifikatlangan tanani tiklash va blok sinxronizatsiyasi chegaralangan tiklash yo‘lini beradi.
+Sumeragi V1 global foydali yuk mavjudligini imzolangan RS16 `PayloadManifest` va `PayloadChunk` xabarlari bilan ta’minlaydi. Yetakchi imzolangan manifestni va har bir imzolangan qatorni qo‘mitaning boshqa barcha a’zolariga hamda keyingi qo‘mitaga qo‘shilayotgan a’zolarga yuboradi. Validator faqat kanonik blok tanasini qayta tiklab, manifest va bo‘lak xeshlarini tekshirib, tanani mustahkam saqlab va deterministik validatsiyani tugatgach Prepare ovozini bera oladi. Qatorlari yetishmayotgan tengdosh ularni `PayloadRequest` orqali so‘raydi. Tengdosh blok tanasini olishdan oldin yakuniylikni bilib qolsa, sertifikatlangan tanani tiklash va blok sinxronizatsiyasi chegaralangan tiklash yo‘lini beradi.
 
 Har bir yo‘lak nusxasi mavjudlik va sertifikatning o‘z autentifikatsiyalangan kontekstidan foydalanadi. Global birlashtirish tekshiruvlari uning sertifikatlangan to‘plami va asl foydali yukini kutilgan avlod va tayanchga bog‘laydi. Tengdosh global yakuniylikni faqat mos global foydali yuk va yaroqli CommitQC mahalliy mavjud bo‘lganda qo‘llaydi.
 
 Alohida RBC so‘nggi nuqtasi o‘rniga autentifikatsiyalangan operator interfeyslaridan foydalaning:
 
 - `iroha --operator-private-key-file <path> --output-format text ops sumeragi status` vakolatli balandlik, ko‘rinish, bosqich, sertifikatlar va ishlash holatini ko‘rsatadi.
-- `iroha --operator-private-key-file <path> --output-format text ops sumeragi diagnostics` navbat, konveyer, NPoS, yo‘lak va ma’lumotlar makoni diagnostikasini, jumladan yo‘lak foydali yuki egaligini ko‘rsatadi; bu ma’lumotlar vakolatning ishonchli manbasi emas.
-- `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total` va `sumeragi_da_gate_satisfied_total` kabi Prometheus signallari yo‘qolgan blok tanasini tiklash, ma’lumotlar mavjudligi darvozalari va xabarlarni qayta ishlashni ajratib ko‘rsatadi; [Unumdorlik va ko‘rsatkichlar](/uz/guide/advanced/metrics.md) bo‘limiga qarang.
+- `iroha --operator-private-key-file <path> --output-format text ops sumeragi diagnostics` tranzaksiyalar navbatiga tushayotgan bosim, NPoS saylov holati va yo‘lak boshqaruvi manifesti holatini ko‘rsatadi; bu ma’lumotlar vakolatning ishonchli manbasi emas.
+- Har bir instansiya uchun alohida bo‘lgan `sumeragi_fetch_requests_total` (`kind="body"` yetishmayotgan tanalar uchun, `kind="sync"` quvib yetish uchun), `sumeragi_view_changes_total`, `sumeragi_round_stage` va `sumeragi_dropped_total` kabi Prometheus seriyalari `lane` yorlig‘ini olib yuradi hamda yetishmayotgan tanani tiklash, ko‘rinish almashinuvlari va chegaralangan navbatdan tashlab yuborishlarni ajratib ko‘rsatadi; [Unumdorlik va ko‘rsatkichlar](/uz/guide/advanced/metrics.md) bo‘limiga qarang.
 
 Yo‘lak blok omborlari birlashtirish va tiklash uchun kerakli sertifikatlangan to‘plamlar hamda manba yozuvlarini saqlaydi. Ularning hayotiy davri yo‘lakning commit qilingan avlodiga amal qiladi; ombor katalogi nomi yangi yo‘lak yoki bajarish ildiziga vakolat bermaydi.

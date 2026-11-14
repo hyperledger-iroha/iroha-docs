@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /reference/genesis.md
-translation_source_hash: 340921f59a6f8788f559190d520f046ea2473d65154f57a1c54212840c027bc0
+translation_source_hash: dda17468f39573a1fcf43474351bd01c4fea38e8b603fd4d8b21780b273c8649
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -20,6 +20,8 @@ blockchain genesis နည်းပညာ manifesto တစ်ခုက ဒီလ�
 - `executor`အတွက် ရွေးချယ်စရာ အကောင်အထည်ဖော်သူ upgrade bytecode လမ်းကြောင်း
 - `ivm_dir` အတွက် trigger များနှင့် upgrade များဖြင့် အသုံးပြုသော IVM စာြကည့်တိုက်များ
 - `consensus_mode` Technical Manifesto တွင် ကြော်ငြာထားသော အစောပိုင်းပုံစံအတွက်
+- `wire_protocol_version` ပထမထုတ်ဝေမှု၏ consensus ကွန်ရက်ပေးပို့မှု ပရိုတိုကော ဗားရှင်းအတွက်
+- `consensus_fingerprint` consensus ပါရာမီတာများ၏ ရွေးချယ်နိုင်သော အမျိုးအစားသတ်မှတ်ထားသည့် fingerprint အတွက်၊ JSON manifest များတွင် ၎င်းကို အတိအလင်း ဖော်ပြသည်
 - `transactions` အတိုင်းအတာ update များ၊ ညွှန်ကြားချက်များ၊ trigger များနှင့် topology များအတွက်
 - လက်မှတ်ထိုးထားသော Sumeragi အမြင့် context parameter များအတွက် `sumeragi_context`
 - ချိန်းက လက်ခံသော လက်မှတ်ထိုးခြင်းနှင့် controller algorithm အတိအကျများအတွက် `crypto_admission_policy`၊ ၎င်းတို့ကို `allowed_algorithms` တွင် စာရင်းပြုထားသည်
@@ -39,10 +41,12 @@ Template ထုတ်လုပ်ရန် Kagami ကို သုံးပါ�
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
+  --chain-id <CHAIN_ID> \
   --consensus-mode npos \
   --ivm-dir defaults \
   --genesis-public-key <PUBLIC_KEY> \
-  --allowed-signing ed25519 > genesis.json
+  --allowed-signing ed25519 \
+  --allowed-signing bls_normal > genesis.json
 ```
 
 အများသုံး SORA Nexus ဒေတာနယ်ပယ်အတွက် မျှော်မှန်းထားသော သဘောတူညီမှုနည်းလမ်းသည် `npos` ဖြစ်သည်။ အခြား Iroha 3 ဖြန့်ချိတပ်ဆင်မှုများတွင် ပစ်မှတ်ပရိုဖိုင်အပေါ် မူတည်၍ ခွင့်ပြုချက်အခြေပြုနည်းလမ်း သို့မဟုတ် NPoS ကို သုံးနိုင်သည်။
@@ -54,10 +58,11 @@ JSON ကို တည်းဖြတ်ပြီး အတည်ပြုပြ�
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
   --private-key-file <MODE_0600_PRIVATE_KEY_FILE> \
-  --out-file genesis.signed.nrt
+  --out-file genesis.signed.nrt \
+  --expected-hash-out genesis.expected_hash
 ```
 
-`kagami genesis sign` သည် manifest မှ genesis အများသုံးကီးကို ဖတ်ပြီး ဖြန့်ချိနိုင်သော လက်မှတ်ထိုးဘလော့ခ်ကို ထုတ်ပေးရန် ပိုင်ရှင်ထိန်းထားသော လင့်ခ်တစ်ခုတည်းရှိ ပုံမှန်ဖိုင်မှ ကိုယ်ပိုင်ကီးကို အသုံးပြုသည်။ ဖိုင်တွင် စံသတ်မှတ်ကိုယ်ပိုင်ကီး multihash တစ်ခုနှင့် နောက်ဆက်တွဲစာကြောင်းအသစ် ပါရမည်။ Kagami သည် သင်္ကေတလင့်ခ်များနှင့် `0600` မဟုတ်သော ခွင့်ပြုချက်ပုံစံများကို ငြင်းပယ်သည်။ command လိုင်းမှ ကိုယ်ပိုင်ကီးအကြမ်းများကို လက်မခံပါ။ ရလဒ်ဖိုင်ကို peer များက ၎င်းတို့၏ ပြင်ဆင်သတ်မှတ်မှုမှ ညွှန်းရမည်။
+`kagami genesis sign` သည် ပိုင်ရှင်ထိန်းထားသော လင့်ခ်တစ်ခုတည်းရှိ ပုံမှန်ဖိုင်ထဲရှိ ကိုယ်ပိုင်ကီးမှ genesis ကီးအတွဲကို ဆင်းသက်ထုတ်ယူပြီး ဖြန့်ချိနိုင်သော လက်မှတ်ထိုးဘလော့ခ်ကို ထုတ်ပေးသည်။ ၎င်းသည် ထုတ်ပြန်ထားသော genesis အများသုံးကီးနှင့် ကိုက်ညီရန် လိုအပ်စေလိုပါက `--expected-public-key` ကို ပေးပါ။ ဖိုင်တွင် စံသတ်မှတ်ကိုယ်ပိုင်ကီး multihash တစ်ခုနှင့် နောက်ဆက်တွဲစာကြောင်းအသစ် ပါရမည်။ Kagami သည် သင်္ကေတလင့်ခ်များနှင့် `0600` မဟုတ်သော ခွင့်ပြုချက်ပုံစံများကို ငြင်းပယ်သည်။ command လိုင်းမှ ကိုယ်ပိုင်ကီးအကြမ်းများကို လက်မခံပါ။ ရလဒ်ဖိုင်ကို peer များက ၎င်းတို့၏ ပြင်ဆင်သတ်မှတ်မှုမှ ညွှန်းရမည်။
 
 ## `iroha3d` ကို ဖွဲ့စည်းခြင်း {#configure-iroha3d}
 

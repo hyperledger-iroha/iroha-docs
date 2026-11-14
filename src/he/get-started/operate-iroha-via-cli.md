@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: 5fb7abd4e152ece715a8337e8ef8e75330f634d2a1b26e0c5bd8308f1f3793a9
+translation_source_hash: 40714a6cd124d4b0342b0f6ecf321f286e714c0e236afd6fd7834c0cf0ad1165
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -11,15 +11,14 @@ translation_engine: nllb-200-ct2+reviewed-delta
 
 ## 1. תנאים מוקדמים {#_1-prerequisites}
 
-להפעיל רשת מקומית קודם:
-
-- [שיגור Iroha 3](./launch-iroha.md)
-
-הדוגמאות הבאות מניעות את ההסדרים של הלקוח שנוצרו מהרשת המקומית שנוצרה ב [Lunch Iroha 3 ](./launch-iroha.md):
+מתוך עותק מקומי של Iroha בגרסת המקור המתועדת, צרו והפעילו רשת מקומית בת ארבעה עמיתים:
 
 ```bash
-./localnet/client.toml
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
+./localnet/start.sh
 ```
+
+הדוגמאות שלהלן משתמשות בתצורת הלקוח שנוצרה עבורה, `./localnet/client.toml`.
 
 ## 2. הגדרות בסיסיות CLI {#_2-basic-cli-setup}
 
@@ -61,7 +60,7 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-הצגת הדומיינים הציבוריים במרחב הנתונים `universal`:
+הצגת הדומיינים הגלויים לקורא שלא עבר אימות:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
@@ -147,7 +146,8 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 פקודות מפעיל הקונצנזוס מחייבות מפתח זמן ריצה שברשימת ההרשאה. השאירו אותו מחוץ ל־`client.toml` והעבירו את הקובץ, שהגישה אליו מוגבלת לבעלים, באמצעות הנתיב המוחלט שלו:
 
 ```bash
-: "${OPERATOR_KEY_FILE:=$PWD/secrets/operator.key}"
+# The generated localnet writes its allow-listed operator key here.
+: "${OPERATOR_KEY_FILE:=$PWD/localnet/runtime/operator-signer.key}"
 
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \

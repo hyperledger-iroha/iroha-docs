@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -34,7 +34,7 @@ cargo build --release \
 target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-آؤٹ پٹ ڈائرکٹری میں پیدا کردہ `genesis.json` ، `genesis.signed.nrt`، نیٹ ورک نوڈ `config.toml` فائلیں، `client.toml`، مددگار اسکرپٹس اور ایک جنریٹڈ `README.md` شامل ہیں جس میں اس بنڈل کے لئے عین مطابق کمانڈز ہیں۔
+آؤٹ پٹ ڈائرکٹری میں تیار کردہ `genesis.json`، `genesis.signed.nrt`، `genesis.expected_hash`، ہر ویلیڈیٹر کے لیے ایک `peerN.toml`، `client.toml`، `start.sh` اور `stop.sh` اسکرپٹس، اور ایک تیار کردہ `README.md` شامل ہیں جس میں اس بنڈل کے لیے عین کمانڈز درج ہیں۔
 
 ## 3۔ نیٹ ورک نوڈز کا آغاز کریں {#_3-start-peers}
 
@@ -44,7 +44,7 @@ target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ./localnet/start.sh
 ```
 
-اگر آپ کو systemd جیسے عمل مینیجر میں ہر نیٹ ورک نوڈ کو وائرنگ کرنے کی ضرورت ہو تو ، ہر نیٹ ورک نوڈ کے لئے `./localnet/README.md` میں ریکارڈ کردہ لانچ کمانڈ کا استعمال کریں۔ ہر نیٹ ورک نوڈ کی `config.toml` ، نجی کلید ، اسٹوریج ڈائرکٹری اور بندرگاہوں کو علیحدہ رکھیں.
+اگر آپ کو ہر پیئر کو systemd جیسے پراسیس مینیجر سے جوڑنا ہو تو `./localnet/start.sh` میں ہر پیئر کی کمانڈ پر عمل کریں: `<bundle>/state/peerN` سے `iroha3d --config <bundle>/peerN.toml` چلائیں، اور `--sumeragi-assert-fresh-key` صرف اس پیئر کے پہلے آغاز پر دیں۔ ہر پیئر کی `peerN.toml`، نجی کلید، اسٹوریج ڈائرکٹری اور پورٹس الگ رکھیں۔
 
 ## 4۔ نیٹ ورک کو چلانے کے لیے {#_4-operate-the-network}
 

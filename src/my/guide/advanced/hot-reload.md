@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
+translation_source_hash: 6edc0185196ab8e77ef8552723e05bf37cca1a088da86e2a43d441d58e779c11
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -32,4 +32,4 @@ docker restart <container>
 
 ## စိတ်ကြိုက်ပြင်ဆင်သတ်မှတ်ချက်ကို အသုံးပြုခြင်း {#use-custom-configuration}
 
-လက်ရှိ peer ပြင်ဆင်သတ်မှတ်မှုသည် TOML ဖြစ်သည်။ ထုတ်လုပ်ထားသော `config.toml`၊ `genesis.signed.nrt` နှင့် ဆက်စပ်ကီးဖိုင်များကို image က မျှော်မှန်းထားသော container လမ်းကြောင်းများတွင် bind mount လုပ်ပါ သို့မဟုတ် ကူးထည့်ပါ။ ထို့နောက် peer ကို ပြန်စတင်ပါ။ ထုတ်လုပ်ထားသော ဖိုင်များကို တစ်စုတည်း ထားပါ။ မတူသော Kagami လုပ်ဆောင်မှုများမှ ဖိုင်များကို ရောနှောလျှင် deserialize လုပ်ခြင်း သို့မဟုတ် consensus မအောင်မြင်မှု ဖြစ်နိုင်သည်။
+လက်ရှိ peer ပြင်ဆင်သတ်မှတ်မှုသည် TOML ဖြစ်သည်။ Kagami သည် validator တစ်ခုစီအတွက် `genesis.signed.nrt`၊ `genesis.public_key` နှင့် `genesis.expected_hash` ပါဝင်သော `peerN.toml` တစ်ခုစီကို ရေးသားပေးပြီး `kagami docker` မှ ထုတ်ပေးသော Compose ဖိုင်က ၎င်းတို့ကို container ထဲသို့ mount လုပ်သည်။ ဖိုင်များကို လက်ဖြင့် ကူးယူမည့်အစား ၎င်းကို ပြန်လည်ထုတ်လုပ်ပြီးနောက် peer ကို ပြန်စတင်ပါ။ ထုတ်လုပ်ထားသော ဖိုင်များကို တစ်စုတည်း ထားပါ။ မတူသော Kagami လုပ်ဆောင်မှုများမှ ဖိုင်များကို ရောနှောလျှင် deserialize လုပ်ခြင်း သို့မဟုတ် consensus မအောင်မြင်မှု ဖြစ်နိုင်သည်။

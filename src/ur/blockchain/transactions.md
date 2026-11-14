@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /blockchain/transactions.md
-translation_source_hash: 91c06ab61c7f8ec96554bc89b31b2f281bb3a7d7edd484defe61dcde5a3fb710
+translation_source_hash: d9227effcdb4d54ac76f6288ba213de20f2574e1585e13b96a5202c44b69f3be
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -71,7 +71,7 @@ Iroha کے پاس دو آف لائن لین دین ورک فلوز ہیں:
 - آف لائن دستخط ایک عام دستخط شدہ ٹرانزیکشن بناتا ہے جبکہ دستخط کرنے والا آلہ منقطع ہے۔ جب تک کہ آن لائن کلائنٹ Torii کو دستخط شدہ لفافہ پیش نہیں کرتا ، اس وقت تک یہ عمل پر عملدرآمد نہیں ہوتا ہے ، لہذا اسے ابھی بھی صحیح سلسلہ ID ، اتھارٹی ، اجازت نامے ، فیسوں اور لین دین کی زندگی کی ضرورت ہے۔
 - **Kagemusha آف لائن نقد** آن لائن حالت میں اندراج شدہ، ہارڈویئر سے تحفظ یافتہ والیٹ میں قدر لوڈ کرتی ہے، دونوں والیٹس آف لائن ہونے پر ان کے درمیان ادائیگی ممکن بناتی ہے، اور والیٹ دوبارہ آن لائن ہونے پر باقی قدر لیجر اکاؤنٹ میں واپس اتارتی ہے۔
 
-Torii، Kagemusha کا ایک راستہ `POST /v1/kagemusha/enrollment` فراہم کرتا ہے۔ یہ اکاؤنٹ سے مستند `application/x-norito` اندراج فریم قبول کرتا ہے اور نجی جوابات دیتا ہے جنہیں کیش نہیں کیا جانا چاہیے۔ اس دورِ حیات کا لیجر والا حصہ عام دستخط شدہ لین دین استعمال کرتا ہے جن میں `KagemushaWalletLedgerV1` ہدایت ہوتی ہے:
+Torii، Kagemusha کا تبدیلی کا ایک راستہ `POST /v1/kagemusha/enrollment` فراہم کرتا ہے۔ یہ اکاؤنٹ سے مستند `application/x-norito` اندراج فریم قبول کرتا ہے اور نجی جوابات دیتا ہے جنہیں کیش نہیں کیا جانا چاہیے۔ `/v1/kagemusha/{scheme}/wallets/{wallet}/` کے تحت اکاؤنٹ سے دستخط شدہ SDK پڑھنے کے راستے Load رسیدیں اور حتمیت کے ثبوت واپس کرتے ہیں؛ یہ `/openapi.json` میں درج نہیں ہیں۔ اس دورِ حیات کا لیجر والا حصہ عام دستخط شدہ لین دین استعمال کرتا ہے جن میں `KagemushaWalletLedgerV1` ہدایت ہوتی ہے:
 
 | کارروائی | مقصد |
 | --- | --- |
@@ -88,13 +88,21 @@ Torii، Kagemusha کا ایک راستہ `POST /v1/kagemusha/enrollment` فرا�
 3. آف لائن حالت میں والیٹس کے درمیان مقامی طور پر ادائیگیوں کا تبادلہ اور تصدیق کریں، اور ہر منتقلی کی تصدیق دینے سے پہلے والیٹ کی حالت پائیدار طور پر محفوظ کریں۔
 4. والیٹ دوبارہ آن لائن ہو تو اس کا Unload دعویٰ بھیجیں اور حتمیت کا انتظار کریں۔
 
+Kagemusha ابھی ریلیز کے لیے اہل قرار نہیں پایا: براہِ راست مالیاتی اہلیت کی جانچ، اور حقیقی آلات پر فون کی رجسٹریشن، فعال سازی اور ادائیگی ابھی باقی ہیں۔
+
 لیجر اس وقت تک متضاد آف لائن منتقلی نہیں دیکھ سکتا جب تک نوٹ کی حالت آن لائن لائف سائیکل کے ذریعے واپس نہ آئے۔ اس لیے بٹوے اور آپریٹر پالیسی کو قدر کی حدود، میعاد، منظور شدہ جاری کنندگان، پائیدار مقامی اسٹوریج اور ری پلے ونڈوز نافذ کرنا چاہئیں۔
 
 یہاں `Grant` ہدایات کے ساتھ ایک نیا لین دین بنانے کی ایک مثال ہے۔ اس لین دین میں ، Mouse، Alice کو مخصوص کردار (`role_id`) دے رہا ہے۔ مکمل مثال [ چیک کریں ](./permissions.md#register-a-new-role).
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```

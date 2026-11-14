@@ -1,20 +1,20 @@
 ---
 translation_locale: az
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
+translation_source_hash: c42adbe41e322c93509279f1f558d4450431de90c596f37eb3999754d4387f78
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
 # Şəbəkə Yerləşdirilməsi üçün Açarlar {#keys-for-network-deployment}
 
-Hər şəbəkəyə müştərilər, həmyaşıd qovşaqlar, genezisin imzalanması və NPoS və ya SORA Nexus profillərində BLS təsdiqləyici kimlikləri üçün ayrı açar materialları lazımdır.
+Hər şəbəkəyə müştərilər, genezisin imzalanması və sahiblik sübutları olan BLS-normal təsdiqləyici kimlikləri üçün ayrı açar materialları lazımdır.
 
 ## Açarların istifadə olunduğu yerlər {#where-keys-are-used}
 
 - Müştəri imza açarları `[account]` altında `client.toml` yerləşdirilir.
 - şəbəkə həmrəylik kimlik açarları hər bir şəbəkə həmrəyində `config.toml` olaraq `public_key` və `private_key` şəklində saxlanılır.
 - şəbəkə həmkarının aşkarlanması hər bir şəbəkə həmkarının açıq açarından `trusted_peers` istifadə edir.
-- BLS təsdiqedici Mülkiyyətin Sübutları NPoS profilləri üçün `trusted_peers_pop` daxilində saxlanılır.
+- BLS təsdiqləyici sahiblik sübutları konsensus rejimindən asılı olmayaraq hər təsdiqləyici üçün `trusted_peers_pop` daxilində saxlanılır.
 - Blockchain başlanğıc imzalama texniki manifest imzalanarkən şəbəkə həmkarı konfiqurasiyasında `[genesis].public_key` və uyğun şəxsi açardan istifadə edir.
 
 Yerli və ya test yerləşdirmələri üçün, bütün bu faylları birlikdə yaratmaq üçün Kagami-ə icazə verin:

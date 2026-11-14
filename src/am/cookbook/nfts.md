@@ -1,9 +1,9 @@
 ---
 translation_locale: am
 translation_source: /cookbook/nfts.md
-translation_source_hash: b6a85c2feb197588e3358a785e10280a687af3951d52de4e6b8d96eab5de873c
+translation_source_hash: 7d7a1ba8ff8678f420a6237bd0d074d2d197bf4349989c0c55f05e9769d15da7
 translation_status: machine-validated
-translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # NFTs {#nfts}
 
@@ -15,7 +15,7 @@ Taira NFT ሁኔታን ይፈትሹ፣ ከዚያ በመነጨ የአካባቢ �
 
 - `curl`፣ `jq`፣ Python 3.11 ወይም ከዚያ በኋላ፣ እና የአሁኑ `iroha` CLI።
 - ተነባቢ ብቻ Taira መዳረሻ።
-- ለመጻፍ ክዋኔዎች፣ በ[አስጀምር Iroha](/am/get-started/launch-iroha.md) ላይ እንደተገለጸው በ`kagami localnet generate --peers 4 --out-dir ./localnet` የተፈጠረ የአካባቢ አውታረ መረብ፣ ከ`./localnet/client.toml` እና በ`http://127.0.0.1:8080` ላይ ከሚሰራ Torii ጋር፣ እንዲሁም ፈራሚው በባለቤትነት የሚይዘው የ NFT ጎራ (ደረጃ 2ን ይመልከቱ)።
+- ለመጻፍ ክዋኔዎች፣ በ`kagami localnet generate --peers 4 --out-dir ./localnet` የተፈጠረ የአካባቢ አውታረ መረብ፣ ከ`./localnet/client.toml` እና በ`http://127.0.0.1:8080` ላይ ከሚሰራ Torii ጋር፣ እንዲሁም ፈራሚው በባለቤትነት የሚይዘው የ NFT ጎራ (ደረጃ 2ን ይመልከቱ)።
 
 ## እርምጃዎች {#steps}
 

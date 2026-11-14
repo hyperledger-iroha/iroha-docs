@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/accounts.md
-translation_source_hash: adc98cbf1fcadae4415d03dcc262eb03f8c95b429527e403d230934ae2f3243c
+translation_source_hash: d956bfb8c698fa463ef9fa84a91d50cf0e2100885eba670121ad78753f87d88d
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -44,7 +44,7 @@ private_key_file = "/absolute/path/to/private.key"
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+  | jq -r '.items[] | [.id, (.label // "-")] | @tsv'
 ```
 
 アカウントの資産を確認するには、最初の技術的呼び出しからアカウントIDをコピーし、パスに配置する前に URL でエンコードします。この Python スニペットは、最初にリストされたアカウントに対してそれを行います:
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-これらは公開の読み取り操作です。アカウントの作成や更新は署名済みトランザクションで行い、[SORA Nexus データスペースへの接続](/ja/get-started/sora-nexus-dataspaces.md)に記載された、フォーセットから資金供給を受けた Taira の環境が必要です。
+これらは公開の読み取り操作です。アカウントの作成や更新は署名済みトランザクションで行い、[Taira と Minamoto で SORA Nexus 向けアプリケーションを開発する](/ja/get-started/sora-nexus-dataspaces.md)に記載された、フォーセットから資金供給を受けた Taira の環境が必要です。
 
 ## 登録と許可 {#registration-and-permissions}
 

@@ -1,9 +1,9 @@
 ---
 translation_locale: am
 translation_source: /reference/queries.md
-translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
+translation_source_hash: baa9726c7ce7d14b8dd17e77447ef72233ca9ed779367d9a190aa8dde7da41ac
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # መጠይቆች {#queries}
 
@@ -56,7 +56,7 @@ Iroha መጠይቆች የብሎክቼይን መዝገብ ሁኔታን ሳይቀ�
 |መጠይቅ|ዓላማ|
 | --- | --- |
 |`FindAssets`|የንብረት ቀሪ ሂሳቦችን ይዘርዝሩ።|
-|`FindAssetsDefinitions`|የንብረት ትርጓሜዎችን ይዘርዝሩ።|
+|`FindAssetDefinitions`|የንብረት ትርጓሜዎችን ይዘርዝሩ።|
 |`FindAssetsByAccountId`|በመለያ የተያዙ ንብረቶችን ይዘርዝሩ።|
 |`FindAssetById`|አንድ የንብረት ቀሪ ሂሳብ በ `AssetId` ያግኙ።|
 |`FindAssetDefinitionById`|አንድ ያግኙ የንብረት ፍቺ በመታወቂያ.|
@@ -66,7 +66,7 @@ Iroha መጠይቆች የብሎክቼይን መዝገብ ሁኔታን ሳይቀ�
 
 ## Escrow እና የማረጋገጫ መዝገቦች {#escrow-and-proof-records}
 
-የ Escrow መጠይቆች በ[ቤተኛ የንብረት ማስያዣ ISIs](/am/blockchain/escrow.md) የተፈጠሩ መዝገቦችን ይመረምራሉ፣ የገበያ ቦታ ማስያዣዎችን፣ አጠቃላይ የንብረት መቆለፊያዎችን እና ማንነታቸው ያልታወቁ የማስያዣ መዝገቦችን ጨምሮ።
+የ Escrow መጠይቆች በ[ቤተኛ የንብረት ማስያዣ ISIs](/am/blockchain/escrow.md) የተፈጠሩ መዝገቦችን ይመረምራሉ፣ የገበያ ቦታ ማስያዣዎችን፣ አጠቃላይ የንብረት መቆለፊያዎችን እና ሁኔታዊ escrows ጨምሮ።
 
 |መጠይቅ|ዓላማ|
 | --- | --- |
@@ -75,11 +75,6 @@ Iroha መጠይቆች የብሎክቼይን መዝገብ ሁኔታን ሳይቀ�
 |`FindAssetEscrowsBySeller`|የንብረት ማስያዣዎችን በሻጭ ይዘርዝሩ።|
 |`FindAssetEscrowsByBuyer`|የንብረት ማስያዣዎችን በገዢ ይዘርዝሩ።|
 |`FindAssetEscrowsByStatus`|የንብረት ማስያዣዎችን በሁኔታ ይዘርዝሩ።|
-|`FindAnonymousAssetEscrows`|ማንነታቸው ያልታወቁ የንብረት ማስያዣ መዝገቦችን ይዘርዝሩ።|
-|`FindAnonymousAssetEscrowById`|አንድ ስም-አልባ የንብረት ማስያዣ በ መታወቂያ.|
-|`FindAnonymousAssetEscrowsBySeller`|በሻጭ የማይታወቁ escrows ይዘርዝሩ።|
-|`FindAnonymousAssetEscrowsByBuyer`|በገዢ የማይታወቁ escrows ይዘርዝሩ።|
-|`FindAnonymousAssetEscrowsByStatus`|ማንነታቸው ያልታወቁ escrows በሁኔታ ይዘርዝሩ።|
 |`FindProofRecordById`|አንድ የማረጋገጫ መዝገብ በ መታወቂያ.|
 |`FindProofRecords`|የማረጋገጫ መዝገቦችን ይዘርዝሩ።|
 |`FindProofRecordsByBackend`|ለማረጋገጫ ጀርባ የማረጋገጫ መዝገቦችን ይዘርዝሩ።|
@@ -89,15 +84,14 @@ Iroha መጠይቆች የብሎክቼይን መዝገብ ሁኔታን ሳይቀ�
 
 |መጠይቅ|ዓላማ|
 | --- | --- |
-|`FindRepoAgreements`|በሰንሰለት ላይ የተከማቹ የማከማቻ ስምምነቶችን ይዘርዝሩ።|
+|`FindRepoAgreements`|በሰንሰለት ላይ የተከማቹ የዳግም ግዥ እና የተገላቢጦሽ ዳግም ግዥ ስምምነቶችን ይዘርዝሩ።|
 |`FindTwitterBindingByHash`|የትዊተር ማሰሪያን በምስጠራ ሃሽ ይፍቱ።|
 |`FindDaPinIntentByTicket`|በቲኬት የውሂብ ተገኝነት ፒን ዓላማ ያግኙ።|
 |`FindDaPinIntentByManifest`|በቴክኒካል አንጸባራቂ ማጣቀሻ የፒን ዓላማን ያግኙ።|
 |`FindDaPinIntentByAlias`|በተለዋጭ ስም የፒን ዓላማን ያግኙ።|
 |`FindDaPinIntentByLaneEpochSequence`|በማስፈጸሚያ መስመር፣ ዘመን እና ቅደም ተከተል የፒን ዓላማን ያግኙ።|
-|`FindLaneRelayEnvelopeByRef`|የተረጋገጠ የሌይን-ማስተላለፊያ ውሂብ መያዣ ያግኙ።|
 |`FindSorafsProviderOwner`|የ SoraFS አቅራቢውን ባለቤት ይፍቱ።|
-|`FindDataspaceNameOwnerById`|የውሂብ ቦታ-ስም ባለቤትን ይፍቱ።|
+|`FindDataspaceNameOwnerById`|የውሂብ ቦታ ተለዋጭ ስም ንቁ የSNS ባለቤትን ይፍቱ።|
 |`FindMusubiExactPackageV1`|አንድ ትክክለኛ የጥቅል መዝገብ እና የአሁኑን ክለሳዎች ያንብቡ።|
 |`FindMusubiExactReleaseV1`|አንድ ትክክለኛ የመልቀቂያ ቅጽበታዊ ገጽ እይታን ያንብቡ።|
 |`FindMusubiProviderBundleAttestationV1`|የአንድ አቅራቢን ማህደር-ጥቅል ማረጋገጫ ያንብቡ።|
@@ -117,7 +111,7 @@ Iroha መጠይቆች የብሎክቼይን መዝገብ ሁኔታን ሳይቀ�
 |`FindActiveTriggerIds`|ንቁ ቀስቅሴ መታወቂያዎችን ይዘርዝሩ።|
 |`FindTriggers`|ቀስቅሴዎችን ይዘርዝሩ።|
 |`FindTriggerById`|አንዱን ያግኙ ቀስቅሴ በመታወቂያ.|
-|`FindContractManifestByCodeHash`|ስማርት-ኮንትራት ቴክኒካል ማኒፌስት በኮድ ምስጠራ ሃሽ ያግኙ።|
+|`FindContractManifestByArtifactId`|የስማርት-ኮንትራት ቴክኒካል ማኒፌስትን በውሂብ ቦታ አርቲፋክት መታወቂያው ያግኙ።|
 |`FindTransactions`|የተጠናቀቁ ግብይቶችን ይዘርዝሩ።|
 |`FindBlocks`|ብሎኮችን ይዘርዝሩ።|
 |`FindBlockHeaders`|የብሎክ ራስጌዎችን ይዘርዝሩ።|

@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /reference/genesis.md
-translation_source_hash: 340921f59a6f8788f559190d520f046ea2473d65154f57a1c54212840c027bc0
+translation_source_hash: dda17468f39573a1fcf43474351bd01c4fea38e8b603fd4d8b21780b273c8649
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -20,6 +20,8 @@ Bir blokçeyn genesis texniki manifesti aşağıdakıları təyin edə bilər:
 - `executor` ixtiyari icraçı təkmilləşdirmə bytecode yolu üçün
 - `ivm_dir` üçün IVM kitabxanaları tetikleyicilər və yeniləmələr tərəfindən istifadə olunur
 - `consensus_mode` texniki manifesto tərəfindən elan edilmiş ilkin rejim üçün
+- `wire_protocol_version` ilk buraxılışın konsensus ötürmə protokolu versiyası üçün
+- `consensus_fingerprint` konsensus parametrlərinin məcburi olmayan tipli barmaq izi üçün; JSON manifestləri onu açıq şəkildə göstərir
 - `transactions` sifariş edilmiş parametr yeniləmələri, təlimatlar, tetikleyicilər və topologiya üçün
 - imzalanmış Sumeragi hündürlük konteksti parametrləri üçün `sumeragi_context`
 - zəncirin qəbul etdiyi, `allowed_algorithms` daxilində sadalanan dəqiq imzalama və nəzarətçi alqoritmləri üçün `crypto_admission_policy`
@@ -39,10 +41,12 @@ Bir blokçeyn genesis texniki manifesti aşağıdakıları təyin edə bilər:
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
+  --chain-id <CHAIN_ID> \
   --consensus-mode npos \
   --ivm-dir defaults \
   --genesis-public-key <PUBLIC_KEY> \
-  --allowed-signing ed25519 > genesis.json
+  --allowed-signing ed25519 \
+  --allowed-signing bls_normal > genesis.json
 ```
 
 Açıq SORA Nexus məlumat məkanı üçün gözlənilən konsensus rejimi `npos`-dur. Digər Iroha 3 yerləşdirmələri hədəf profildən asılı olaraq icazəli rejim və ya NPoS istifadə edə bilər.
@@ -54,10 +58,11 @@ JSON redaktə edib təsdiqlədikdən sonra, onu yerləşdirilə bilən `.nrt` bl
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
   --private-key-file <MODE_0600_PRIVATE_KEY_FILE> \
-  --out-file genesis.signed.nrt
+  --out-file genesis.signed.nrt \
+  --expected-hash-out genesis.expected_hash
 ```
 
-`kagami genesis sign` texniki manifestdən blokçeyn başlanğıc açarını oxuyur və yerləşdirilə bilən imzalanmış bloku yaratmaq üçün sahib tərəfindən saxlanılan, tək bağlantılı adi fayldan şəxsi açardan istifadə edir. Fayl tək bir protokol-standartına uyğun xüsusi açar multihashini və onu izləyən yeni sətiri ehtiva etməlidir; Kagami simvolik keçidləri və `0600` istisna olmaqla digər modları rədd edir. Komanda sətrində xam xüsusi açarlar qəbul edilmir. Nəticə şəbəkə iştirakçılarının öz konfiqurasiyalarında istinad etməli olduqları fayldır.
+`kagami genesis sign` yerləşdirilə bilən imzalanmış bloku yaratmaq üçün genezis açar cütünü sahib tərəfindən saxlanılan, tək bağlantılı adi fayldakı şəxsi açardan törədir. Onun dərc edilmiş genezis açıq açarına uyğun gəlməsini tələb etmək üçün `--expected-public-key` ötürün. Fayl tək bir protokol-standartına uyğun xüsusi açar multihashini və onu izləyən yeni sətiri ehtiva etməlidir; Kagami simvolik keçidləri və `0600` istisna olmaqla digər modları rədd edir. Komanda sətrində xam xüsusi açarlar qəbul edilmir. Nəticə şəbəkə iştirakçılarının öz konfiqurasiyalarında istinad etməli olduqları fayldır.
 
 ## `iroha3d` Tənzimləmək {#configure-iroha3d}
 

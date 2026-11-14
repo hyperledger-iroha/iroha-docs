@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /get-started/private-dataspace-fee-sponsor.md
-translation_source_hash: 79410ebb9d0a18072d5ae2288348082390b622ed81225de79dcbd4000e268e51
+translation_source_hash: 2ca4fc00709839879fe9cb7ea5e5f697505e5e25d4e5a6cd0bd18d406f6e2846
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -13,7 +13,7 @@ Une entrée de catalogue d'espaces de données ne crée pas de racine signée in
 
 ## 1. Établir la politique de frais inscrite dans l’état validé {#_1-establish-the-committed-fee-policy}
 
-La genèse signée définit un paramètre personnalisé `root_fees_v1` contenant la `RootFeePolicy`. Il fixe la devise des frais, leur destination, le compte de garde des sponsors, les exemptions de demandes et les taux. Chaque bloc ordinaire et chaque devis utilisent la politique validée capturée pour eux. Les mises à jour de politique autorisées s'appliquent à partir du bloc suivant.
+La genèse signée définit un paramètre personnalisé `root_fees_v1` contenant la `RootFeePolicy`. Il fixe la devise des frais, leur destination, le compte de garde des sponsors, les exemptions de demandes et les taux. Chaque bloc ordinaire et chaque devis utilisent la politique validée capturée pour eux. Les modifications autorisées des taux, de la destination des frais et des exemptions de demandes s'appliquent à partir du bloc suivant ; la devise des frais et le compte de garde des sponsors ne peuvent plus changer après le premier bloc.
 
 Pour l'exécution globale, les frais natifs détruisent exactement la devise XOR du réseau signé. Le coffre du programme sponsor fournit cette devise. Les paramètres du nœud et les métadonnées des transactions ne sélectionnent pas de payeur et n'activent pas la prise en charge des frais.
 

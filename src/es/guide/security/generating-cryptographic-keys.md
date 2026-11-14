@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: b6e3bd79c50ea326930ac978350ea4beac8294b6f045ac0084aada257754ffa1
+translation_source_hash: bb1044edb9d34264e36848ee773d4d313bfbfd91b45da2eeb831f7ef8920e9b4
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -56,7 +56,7 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` es válido únicamente con `bls_normal`; añade `pop.hex` al directorio de custodia. La génesis de blockchain firmada requiere un PoP coincidente para cada validador votante. En la configuración de pares de red, un mapa `trusted_peers_pop` no vacío selecciona el subconjunto de validadores; los pares de red de confianza omitidos de ese mapa no vacío son observadores. Si el mapa está vacío, todos los pares de red confiables BLS-normales entran en el conjunto de candidatos a bootstrap, con el votante PoPs aún suministrado por el génesis de blockchain firmado.
+`--pop` es válido únicamente con `bls_normal`; añade `pop.hex` al directorio de custodia. El génesis firmado requiere un PoP coincidente para cada validador votante. En la configuración de pares de red, enumere el PoP de cada validador en `trusted_peers_pop`: los pares de red de confianza sin un PoP válido quedan excluidos de la lista de consenso, y un mapa vacío no produce ningún validador, por lo que un nodo cuyo mapa omite los validadores del génesis se niega a arrancar. Ejecute un nodo solo de sincronización con `[sumeragi] role = "observer"`.
 
 ## Salida de custodia {#custody-output}
 

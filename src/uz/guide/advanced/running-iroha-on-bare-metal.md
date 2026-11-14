@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -34,7 +34,7 @@ To‘rtta tugundan iborat Iroha 3 mahalliy tarmog‘ini yarating:
 target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-Chiqish katalogida yaratilgan `genesis.json`, `genesis.signed.nrt`, tarmoq ho‘kizi `config.toml` fayllari, `client.toml`, yordamchi skriptlar va o‘sha paket uchun aniq buyruqlar bilan yaratilgan `README.md` mavjud.
+Chiqish katalogida yaratilgan `genesis.json`, `genesis.signed.nrt`, `genesis.expected_hash`, har bir validator uchun bitta `peerN.toml`, `client.toml`, `start.sh` va `stop.sh` skriptlari hamda o‘sha paket uchun aniq buyruqlar yozilgan, yaratilgan `README.md` mavjud.
 
 ## 3. Tarmoq tengdoshlari ishga tushiriladi {#_3-start-peers}
 
@@ -44,7 +44,7 @@ Yaratilgan disposable localnet uchun, yaratilgan skriptdan foydalaning:
 ./localnet/start.sh
 ```
 
-Agar siz har bir tarmoq ishtirokchisini systemd kabi jarayon boshqaruvchisiga ulashingiz kerak bo'lsa, har bir tarmoq ishtirokchisi uchun `./localnet/README.md` da yozilgan ishga tushirish buyrug'idan foydalaning. Har bir tarmoq ishtirokchisining `config.toml`, shaxsiy kaliti, saqlash katalogi va portlarini alohida saqlang.
+Agar har bir tugunni systemd kabi jarayon boshqaruvchisiga ulash kerak bo‘lsa, `./localnet/start.sh` dagi har bir tugun uchun buyruqqa amal qiling: `<bundle>/state/peerN` katalogidan `iroha3d --config <bundle>/peerN.toml` ni ishga tushiring va `--sumeragi-assert-fresh-key` ni faqat shu tugunning birinchi ishga tushirilishida bering. Har bir tugunning `peerN.toml` fayli, shaxsiy kaliti, saqlash katalogi va portlarini alohida saqlang.
 
 ## 4. Tarmoqni boshqarish {#_4-operate-the-network}
 

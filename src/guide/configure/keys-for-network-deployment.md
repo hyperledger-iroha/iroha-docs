@@ -1,7 +1,7 @@
 # Keys for Network Deployment
 
-Every network needs distinct key material for clients, peers, genesis signing,
-and, for NPoS or SORA Nexus profiles, BLS validator identities.
+Every network needs distinct key material for clients, genesis signing, and
+BLS-normal validator identities with Proofs-of-Possession.
 
 ## Where Keys Are Used
 
@@ -9,8 +9,8 @@ and, for NPoS or SORA Nexus profiles, BLS validator identities.
 - Peer identity keys are stored in each peer `config.toml` as `public_key` and
   `private_key`.
 - Peer discovery uses each peer's public key in `trusted_peers`.
-- BLS validator Proofs-of-Possession are stored in `trusted_peers_pop` for NPoS
-  profiles.
+- BLS validator Proofs-of-Possession are stored in `trusted_peers_pop` for every
+  validator, whatever the consensus mode.
 - Genesis signing uses the `[genesis].public_key` in peer config and the
   matching private key when signing the manifest.
 

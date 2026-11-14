@@ -1,9 +1,9 @@
 ---
 translation_locale: es
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 0c4f2f3fc4efb9f883f597a3eea49c99431b711a0141eba70ac5a2524990dd73
+translation_source_hash: 50fac5ad01faf8d09441cba90f29472da04630dbeb3c80111a19f3fb50bb1224
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Muestras y recetas {#samples-and-recipes}
 
@@ -19,4 +19,4 @@ Use `IrohaSwift/Tests/IrohaSwiftTests` para ejemplos verificados con el actual S
 
 ## Android {#android}
 
-Para el nuevo trabajo Android, use los módulos Kotlin-first `core-jvm`, `client-android` y `offline-wallet-android` descritos en [Kotlin, Android, y Java](/es/guide/tutorials/kotlin-java.md). El Kotlin SDK es el punto de partida canónico para los consumidores de Android.
+Para el nuevo trabajo Android, use los módulos Kotlin-first `core-jvm`, `client-android` y `kagemusha-wallet-android` descritos en [Kotlin, Android, y Java](/es/guide/tutorials/kotlin-java.md). El Kotlin SDK es el punto de partida canónico para los consumidores de Android.

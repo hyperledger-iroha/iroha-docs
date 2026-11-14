@@ -1,9 +1,9 @@
 ---
 translation_locale: ru
 translation_source: /reference/naming.md
-translation_source_hash: 1d4d698597542d9c84284d0b87dae8a1825d3ab39ff38dd32bb204d41291c83d
+translation_source_hash: 15d095e674edf780c5859abe6f4615d53338e3304e8eedfa494017911204d4b6
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Соглашения об именовании {#naming-conventions}
 
@@ -15,10 +15,9 @@ translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
    - `#` зарезервировано для псевдонимов определения активов и литералов баланса активов
    - `::` зарезервировано для псевдонимов контрактов
    - `.` зарезервировано для квалификации домена и пространства данных
-   - `$` зарезервировано для текстовых форм с областью действия триггера
-   - `%` зарезервировано для текстовых форм в рамках валидатора
+   - `$` зарезервировано для идентификаторов NFT, таких как `name$domain.dataspace`
 
-2. Максимальное количество символов (включая символы UTF-8), которое может содержать имя, ограничено двумя факторами: `[0, u32::MAX]` и текущим выделенным пространством стека.
+2. Имя должно быть непустым, в форме Unicode NFC, длиной не более 255 байт UTF-8 и не должно содержать пробельных и управляющих символов, а также символов управления направлением текста.
 
 ## Запустите этот рабочий процесс на Taira {#try-it-on-taira}
 

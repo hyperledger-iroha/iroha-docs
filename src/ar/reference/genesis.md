@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /reference/genesis.md
-translation_source_hash: 340921f59a6f8788f559190d520f046ea2473d65154f57a1c54212840c027bc0
+translation_source_hash: dda17468f39573a1fcf43474351bd01c4fea38e8b603fd4d8b21780b273c8649
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -20,6 +20,8 @@ translation_engine: bing-translator-llm+reviewed-delta
 - `executor` لمسار بايت كود ترقية منفذ اختياري
 - `ivm_dir` للمكتبات IVM المستخدمة بواسطة المشغلات والترقيات
 - `consensus_mode` للوضع الأولي المعلن عنه بواسطة البيان الفني
+- `wire_protocol_version` لإصدار بروتوكول نقل الإجماع في الإصدار الأول
+- `consensus_fingerprint` للبصمة الاختيارية محددة النوع لمعلمات الإجماع، والتي تنص عليها بيانات JSON صراحةً
 - `transactions` لتحديثات المعلمات المطلوبة، التعليمات، المشغلات، والطوبولوجيا
 - `sumeragi_context` لمعاملات سياق ارتفاع Sumeragi الموقّعة
 - `crypto_admission_policy` لخوارزميات التوقيع والتحكم المحددة التي تقبلها السلسلة والمذكورة في `allowed_algorithms`
@@ -39,10 +41,12 @@ translation_engine: bing-translator-llm+reviewed-delta
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
+  --chain-id <CHAIN_ID> \
   --consensus-mode npos \
   --ivm-dir defaults \
   --genesis-public-key <PUBLIC_KEY> \
-  --allowed-signing ed25519 > genesis.json
+  --allowed-signing ed25519 \
+  --allowed-signing bls_normal > genesis.json
 ```
 
 لمساحة بيانات SORA Nexus العامة، يكون `npos` نمط الإجماع المتوقع. قد تستخدم عمليات نشر Iroha 3 الأخرى النمط المقيّد بالصلاحيات أو NPoS وفقًا لملف الإعداد المستهدف.
@@ -54,10 +58,11 @@ cargo run -p iroha_kagami -- genesis generate \
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
   --private-key-file <MODE_0600_PRIVATE_KEY_FILE> \
-  --out-file genesis.signed.nrt
+  --out-file genesis.signed.nrt \
+  --expected-hash-out genesis.expected_hash
 ```
 
-`kagami genesis sign` يقرأ مفتاح البداية العام للبلوكشين من البيان الفني ويستخدم المفتاح الخاص من ملف عادي ذو ارتباط واحد مملوك للمالك لإنتاج الكتلة الموقعة القابلة للنشر. يجب أن يحتوي الملف على مفتاح خاص واحد بصيغة multihash الكانونية متبوعًا بسطر جديد؛ Kagami يرفض الروابط الرمزية والأنماط غير `0600`. لا يتم قبول المفاتيح الخاصة الخام في سطر الأوامر. النتيجة هي الملف الذي يجب أن يشير إليه أقران الشبكة من خلال إعداداتهم.
+يشتق `kagami genesis sign` زوج مفاتيح التكوين الأولي من المفتاح الخاص الموجود في ملف عادي ذي ارتباط واحد يحتفظ به المالك، لإنتاج الكتلة الموقعة القابلة للنشر. مرّر `--expected-public-key` لاشتراط مطابقته للمفتاح العام المنشور للتكوين الأولي. يجب أن يحتوي الملف على مفتاح خاص واحد بصيغة multihash القياسية متبوعًا بسطر جديد؛ ويرفض Kagami الروابط الرمزية والأنماط غير `0600`. لا يتم قبول المفاتيح الخاصة الخام في سطر الأوامر. النتيجة هي الملف الذي يجب أن يشير إليه أقران الشبكة من خلال إعداداتهم.
 
 ## تكوين `iroha3d` {#configure-iroha3d}
 

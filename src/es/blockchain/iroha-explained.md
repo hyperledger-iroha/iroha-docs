@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /blockchain/iroha-explained.md
-translation_source_hash: 426adbea88da36cd92da17d8665c956a57b9d4cebfa0d2f35bc75469cccf84ee
+translation_source_hash: 16acd0a607bbec336ff336363478a3a0deeb24ad9a2ad59e753c9f65134b061f
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -45,11 +45,11 @@ Los carriles son los recursos de enrutamiento y certificación vinculados a esos
 
 La ruta de enrutamiento es:
 
-1. La configuración construye un `DataSpaceCatalog`, un `LaneCatalog` y una `LaneRoutingPolicy` validados. El enrutamiento de SORA Nexus es obligatorio. Para utilizar varios espacios de datos, varios carriles o un enrutamiento distinto del predeterminado, se emplean el perfil de SORA Nexus (`--sora`) y NPoS.
+1. La configuración construye un `DataSpaceCatalog`, un `LaneCatalog` y una `LaneRoutingPolicy` validados. El enrutamiento de SORA Nexus es obligatorio. En la raíz global, varios espacios de datos, varios carriles o un enrutamiento distinto del predeterminado requieren el perfil de SORA Nexus (`--sora`) y NPoS; una raíz de espacio de datos firmada de forma independiente se ejecuta en modo con permisos.
 2. La cola de transacciones determina un `RoutingPlan` a partir de la transacción y del estado confirmado. Cada ruta de coordinador o participante contiene un identificador de carril y otro de espacio de datos; los planes de AMX nativo conservan el conjunto completo de participantes.
 3. Para la ejecución global, los lotes completos del plano de control y los coordinadores entre espacios de datos utilizan el carril `0`. Los destinos concretos no universales de instrucciones o direcciones de contratos seleccionan un carril fijo admitido con el espacio de datos y el comité correspondientes, antes de aplicar las reglas de cuentas o de etiquetas de instrucciones. El resto del trabajo sigue las reglas explícitas confirmadas y el particionado predeterminado; los destinos universales concretos permanecen en carriles universales.
 4. Cada ruta se comprueba frente a los catálogos y al estado activo de los carriles. Se rechazan los identificadores desconocidos y las discrepancias entre carriles y espacios de datos; un destino privado no disponible no puede recurrir a la ejecución universal. Los destinos en varios espacios de datos pueden generar un plan de AMX nativo. Si el metadato de transacción `amx_policy` se establece en `reject_cross_dataspace`, se rechazan los planes entre espacios de datos. Un plan de enrutamiento por sí solo no autoriza ni completa la liquidación entre raíces independientes.
-5. Sumeragi y la telemetría mantienen visible la asignación mediante la actividad, el trabajo pendiente y las instantáneas de compromisos de los carriles y espacios de datos.
+5. La telemetría mantiene visible la asignación como actividad y trabajo pendiente por carril en la instantánea de carriles de `/status` (`teu_lane_commit`).
 
 Por eso importan los identificadores de objetos. Los dominios incluyen el alias del espacio de datos en su ID, por ejemplo `payments.universal`, por lo que las escrituras con alcance de dominio se pueden enrutar. Las cuentas permanecen canónicas y sin dominio, de modo que la misma cuenta puede vincularse en diferentes ámbitos de aplicación sin cambiar su `AccountId`. Las definiciones de activos pueden llevar una proyección de dominio/espacio de datos, lo que permite que las operaciones de activos hereden la ruta correcta del espacio de datos.
 
@@ -67,7 +67,7 @@ Los tres carriles incluidos son públicos y hacen referencia al mismo espacio de
 
 Estas relaciones están definidas por los [constructores de perfiles](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_config/src/parameters/actual.rs), la [implementación de carriles](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_core/src/sumeragi/lanes/mod.rs) y el [contrato de raíces independientes](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/sumeragi.md) de la revisión fijada.
 
-Sumeragi siempre utiliza la disponibilidad de datos y la transmisión confiable. Estos caminos forman parte del protocolo de consenso Iroha 3 y no se pueden desactivar mediante un perfil de implementación.
+Sumeragi siempre utiliza la disponibilidad de la carga útil RS16 firmada y la recuperación de cuerpos certificados. Estos caminos forman parte del protocolo de consenso Iroha 3 y no se pueden desactivar mediante un perfil de implementación.
 
 El comportamiento en tiempo de ejecución del software se origina a partir de archivos de configuración y parámetros en la cadena. Las variables de entorno no son puertas de función de producción.
 

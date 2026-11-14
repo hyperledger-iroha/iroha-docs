@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: b6e3bd79c50ea326930ac978350ea4beac8294b6f045ac0084aada257754ffa1
+translation_source_hash: bb1044edb9d34264e36848ee773d4d313bfbfd91b45da2eeb831f7ef8920e9b4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
@@ -56,7 +56,7 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` 仅可与 `bls_normal` 一起使用；它会在托管目录中添加 `pop.hex`。签名的创世配置要求每个投票验证器都有匹配的 PoP。在对等节点配置中，非空的 `trusted_peers_pop` 映射用于选择验证器子集；未列入该非空映射的受信任对等节点是观察者。如果映射为空，所有使用 BLS-normal 的受信任对等节点都会进入引导候选集，而投票者的 PoPs 仍由签名的创世配置提供。
+`--pop` 仅可与 `bls_normal` 一起使用；它会在托管目录中添加 `pop.hex`。签名的创世配置要求每个投票验证器都有匹配的 PoP。在对等节点配置中，请在 `trusted_peers_pop` 中列出每个验证器的 PoP：没有有效 PoP 的受信任对等节点会被排除在共识名单之外，而空映射不会产生任何验证器，因此映射中缺少创世验证器的节点会拒绝启动。若要运行仅同步的节点，请使用 `[sumeragi] role = "observer"`。
 
 ## 托管输出 {#custody-output}
 

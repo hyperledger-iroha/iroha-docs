@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /help/configuration-issues.md
-translation_source_hash: 9d153d9cb8ce0341b35ba5a7e3823198e58464768e2a9a92ff8a5723f85e9351
+translation_source_hash: cfd86e847651e71d40e8857c0531f9721ef94ea3c65bd80b6f6951081488f39d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -31,7 +31,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 
 如果您以前從未使用多哈什,那麼自然可以假設右邊不是六分之一.代表關鍵位元組 (每位元組的兩個符號),而更好的是編碼為 ASCII (或 UTF-8),並呼叫 `from_hex` 在兩個字串上, `public_key` 和 `private_key` 一個例項.
 
-也是自然的假設,在字串字母上呼叫 `PrivateKey::try_from_str`只會產生正確的鍵.所以如果你錯誤地讀取鍵中的位元數量,例如32位元組對64位元組,那就會引起一個錯誤資訊.
+人們也很自然地會認為，使用 `str::parse::<PrivateKey>()` 剖析該字串常值只會得到正確的金鑰。因此，如果金鑰的位元數弄錯了，例如 32 位元組與 64 位元組，就會引發錯誤訊息。
 
 這兩種假設都是錯誤的. 遺憾的是,錯誤資訊並沒有幫助解決這種特殊的失敗.
 
@@ -39,7 +39,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 
 ::: warning
 
-即使是 `try_from_str` 實現也無法驗證給定的字串是否是一個有效的 `PrivateKey`,並且警告你如果不是.
+即使是 `FromStr` 實現也無法驗證給定的字串是否是一個有效的 `PrivateKey`,並且警告你如果不是.
 
 它會發現一些明顯的錯誤,例如如果字串包含無效的符號.然而,由於我們旨在支援許多鍵格式,它不能做很多其他事情. 除非您提交指示外,它也無法判斷金鑰是否是給定的帳戶的正確私鑰.
 

@@ -72,7 +72,7 @@ The [Genesis block](/guide/configure/genesis.md) sets this information for the I
 
 ## Byzantine fault-tolerance (BFT)
 
-The property of being able to properly function with a network containing a certain percentage of malicious actors. Iroha is capable of functioning with up to 33% malicious actors in its peer-to-peer network.
+The property of being able to properly function with a network containing a certain percentage of malicious actors. A Sumeragi committee has exactly `3f + 1` validators and tolerates up to `f` Byzantine validators, fewer than one third of the committee.
 
 ## Iroha Components
 
@@ -100,7 +100,7 @@ A data structure used to validate and verify the state at each block height. Iro
 
 ### Smart contracts
 
-Smart contracts are blockchain-based programs that run when a specific set of conditions is met. In Iroha smart contracts are implemented using [core Iroha special instructions](#core-iroha-special-instructions).
+Smart contracts are blockchain-based programs that run when a specific set of conditions is met. In Iroha 3, smart contracts are written in Kotodama and compiled to IVM bytecode (`.to`); a contract changes state by issuing [Iroha special instructions](#core-iroha-special-instructions) through host calls.
 
 ### Triggers
 
@@ -112,7 +112,7 @@ Iroha 3's first release supports one canonical block-wire version. The `/v1/api/
 
 ### Hijiri (peer reputation system)
 
-Iroha's reputation system. It allows prioritising communication with [peers](#peer) that have a good track-record, and reducing the harm that can be caused by malicious [peers](#peer).
+Iroha's peer and account reputation system. Its consensus-owned parameters hold the Hijiri fee policy and account-risk records, and governed observer registries issue account attestations that adjust an account's risk score.
 
 ## Iroha Modules
 
@@ -124,7 +124,7 @@ A library of smart contracts provided with Iroha. These can be invoked via eithe
 
 #### Utility Iroha Special Instructions
 
-This set of [isi](#iroha-special-instructions-isi) contains logical instructions like `If`, I/O related like `Notify` and compositions like `Sequence`. They are mostly used as [custom instructions](#custom-iroha-special-instruction).
+This set of [isi](#iroha-special-instructions-isi) contains instructions that do not change a domain-specific entity, such as `Log`, `ExecuteTrigger`, `SetParameter`, and `Upgrade`. Iroha 3 has no `If`, `Notify`, or `Sequence` instructions.
 
 ### Core Iroha Special Instructions
 

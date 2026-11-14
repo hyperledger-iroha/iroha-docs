@@ -1,9 +1,9 @@
 ---
 translation_locale: ka
 translation_source: /blockchain/events.md
-translation_source_hash: aad93f1981a5b470966090b5e06ec07178738b15f1d870097947682b19f99595
+translation_source_hash: 2777cbe4e72a50c4790e50b59c3e695feb5814314cc9afccdfd994f6409c195e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # მოვლენები {#events}
 
@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 
 ## დამუშავების კონვეიერები მოვლენები {#pipeline-events}
 
-დამუშავების კონვეიერის მოვლენები გამოიცემა, როდესაც ტრანზაქციები გზავნილია, შესრულებულია ან დასრულებულია ბლოკში. პროგრამული უზრუნველყოფი პროცესის სამუშაო ნაკადის ღონისძიება შეიცავს შემდეგ ინფორმაციას: ღონისძიების (ტრანზაქციის ან ბლოკის) ტრიგერი სუბიექტის ტიპი, მისი კრიპტოგრაფიული ჰეში და სტატუსი . სტატუსი შეიძლება იყოს `Validating` (გამოწმება მიმდინარეობს), `Rejected` ან `Committed`. თუ სუბიექტს უარი უთხრეს, მითითებულია უარყოფის მიზეზი.
+დამუშავების კონვეიერის მოვლენები გამოიცემა, როდესაც ტრანზაქციები და ბლოკები კონვეიერში გადაადგილდება. ტრანზაქციის მოვლენა შეიცავს ტრანზაქციის ჰეშს, ბლოკის სიმაღლეს, არხისა და მონაცემთა სივრცის ID-ებს და სტატუსს: `Queued`, `Expired`, `Approved` ან `Rejected` უარყოფის მიზეზთან ერთად. ბლოკის მოვლენა შეიცავს ბლოკის სათაურს და სტატუსს: `Created`, `Approved`, `Rejected` მიზეზთან ერთად, `Committed` ან `Applied`.
 
 ### განახორციელეთ ეს სამუშაო პროცესი Taira {#try-it-on-taira}
 
@@ -30,8 +30,8 @@ curl -fsSI https://taira.sora.org/v1/events/sse \
 პუნქტის დროში მონაცემების ხედვისთვის, რომელიც შეგიძლიათ შეამოწმოთ ნაკადის გახსნის გარეშე, წაიკითხეთ ბოლოდროინდელი Explorer- ის ტრანზაქციები:
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
-  | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
+curl -fsS 'https://taira.sora.org/v1/explorer/transactions?limit=5' \
+  | jq '{next_cursor, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
 გახსენით SSE მარშრუტი ტერმინალში, როდესაც საჭიროებთ ცოცხალი ღონისძიებების ჩატარებას:

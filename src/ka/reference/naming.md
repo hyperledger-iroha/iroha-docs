@@ -1,9 +1,9 @@
 ---
 translation_locale: ka
 translation_source: /reference/naming.md
-translation_source_hash: 1d4d698597542d9c84284d0b87dae8a1825d3ab39ff38dd32bb204d41291c83d
+translation_source_hash: 15d095e674edf780c5859abe6f4615d53338e3304e8eedfa494017911204d4b6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # კონვენციების დასახელება {#naming-conventions}
 
@@ -15,10 +15,9 @@ translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
    - `#` განკუთვნილია აქტივების განსაზღვრის ალიასებისა და აქტივების ბალანსის ლიტერალებისთვის.
    - `::` განკუთვნილია ხელშეკრულების ალიასებისთვის
    - `.` განკუთვნილია დომენის და მონაცემთა სივრცეების კვალიფიკაციისთვის.
-   - `$` განკუთვნილია ტექსტური ფორმებისათვის, რომლებიც გააჩნია ტრიგერ-სკოპი.
-   - `%` განკუთვნილია ვალიდატორის მიერ დამტკიცებული ტექსტური ფორმებისათვის
+   - `$` განკუთვნილია NFT იდენტიფიკატორებისთვის, მაგალითად `name$domain.dataspace`
 
-2. დასახელების მაქსიმალური სიმბოლოების რაოდენობა (მათ შორის UTF-8 სიმბოლოები) ორი ფაქტორით არის შეზღუდული: `[0, u32::MAX]` და ამჟამად განკუთვნილი სტაკის სივრცე.
+2. სახელი არ უნდა იყოს ცარიელი, უნდა იყოს Unicode NFC ფორმაში, მაქსიმუმ 255 UTF-8 ბაიტის სიგრძის და არ უნდა შეიცავდეს ცარიელი ადგილის, მართვისა და ორმხრივი ტექსტის მართვის სიმბოლოებს.
 
 ## განახორციელეთ ეს სამუშაო პროცესი Taira {#try-it-on-taira}
 

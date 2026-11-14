@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /reference/genesis.md
-translation_source_hash: 340921f59a6f8788f559190d520f046ea2473d65154f57a1c54212840c027bc0
+translation_source_hash: dda17468f39573a1fcf43474351bd01c4fea38e8b603fd4d8b21780b273c8649
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -20,6 +20,8 @@ translation_engine: nllb-200-ct2+reviewed-delta
 - `executor` өсөн факультатив үтәүсе яңыртыу байтек коды юлы
 - `ivm_dir` өсөн IVM китапханалары триггерҙар һәм яңыртыуҙар менән ҡулланыла
 - `consensus_mode` манифеста иғлан ителгән тәүге режим өсөн
+- `wire_protocol_version` — беренсе релиздағы консенсус хәбәрҙәрен тапшырыу протоколы версияһы өсөн
+- `consensus_fingerprint` — консенсус параметрҙарының факультатив типлы контроль эҙе өсөн; JSON манифестары уны асыҡ күрһәтә
 - `transactions` тәртиптәге параметрҙар яңыртыуҙары, инструкциялар, ҡуҙғатыуҙар һәм топология өсөн
 - `sumeragi_context` — ҡул ҡуйылған Sumeragi бейеклек контексы параметрҙары өсөн
 - `crypto_admission_policy` — сылбыр ҡабул иткән һәм `allowed_algorithms` исемлегендә күрһәтелгән теүәл ҡул ҡуйыу һәм контроллер алгоритмдары өсөн
@@ -39,10 +41,12 @@ translation_engine: nllb-200-ct2+reviewed-delta
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
+  --chain-id <CHAIN_ID> \
   --consensus-mode npos \
   --ivm-dir defaults \
   --genesis-public-key <PUBLIC_KEY> \
-  --allowed-signing ed25519 > genesis.json
+  --allowed-signing ed25519 \
+  --allowed-signing bls_normal > genesis.json
 ```
 
 Асыҡ SORA Nexus мәғлүмәт киңлеге өсөн көтөлгән консенсус режимы — `npos`. Башҡа Iroha 3 урынлаштырыуҙары маҡсатлы профилгә ҡарап рөхсәттәргә нигеҙләнгән режимды йә NPoS ҡуллана ала.
@@ -54,10 +58,11 @@ JSON-ны мөхәррирләгәндән һәм раҫлағандан һуң,
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
   --private-key-file <MODE_0600_PRIVATE_KEY_FILE> \
-  --out-file genesis.signed.nrt
+  --out-file genesis.signed.nrt \
+  --expected-hash-out genesis.expected_hash
 ```
 
-`kagami genesis sign` манифесттан генезис асыҡ асҡысын уҡый һәм ҡулланыу мөмкин булған ҡул ҡуйылған блокты булдырыу өсөн хужаһы ҡараған, бер сылтамалы даими файлдың шәхси асҡысын ҡуллана. Файлда бер каноник шәхси асҡыслы мультихаш булырға тейеш, уның артынан яңы линия килә; Kagami символик бәйләнештәрҙе һәм `0600` булмаған режимдарҙы кире ҡаға. Сей шәхси асҡыстар команда юлында ҡабул ителмәй. Һөҙөмтәлә алынған файлға пирҙар үҙ конфигурацияларынан һылтанырға тейеш.
+`kagami genesis sign` урынлаштырыуға әҙер ҡул ҡуйылған блокты булдырыу өсөн генезис асҡыстар парын эйәһе тотҡан, бер генә һылтанмалы ғәҙәти файлдағы шәхси асҡыстан сығара. Уның баҫтырылған генезис асыҡ асҡысына тап килеүен талап итеү өсөн `--expected-public-key` бирегеҙ. Файлда бер каноник шәхси асҡыс мультихешы һәм уның артынан яңы юл билдәһе булырға тейеш; Kagami символик һылтанмаларҙы һәм `0600`-ҙән башҡа режимдарҙы кире ҡаға. Сей шәхси асҡыстар команда юлында ҡабул ителмәй. Һөҙөмтәлә алынған файлға тиңдәштәр үҙ конфигурацияларынан һылтанырға тейеш.
 
 ## `iroha3d` конфигурацияһы {#configure-iroha3d}
 

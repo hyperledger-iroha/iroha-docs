@@ -1,9 +1,9 @@
 ---
 translation_locale: am
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 0c4f2f3fc4efb9f883f597a3eea49c99431b711a0141eba70ac5a2524990dd73
+translation_source_hash: 50fac5ad01faf8d09441cba90f29472da04630dbeb3c80111a19f3fb50bb1224
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # ናሙናዎች እና የተግባር መመሪያዎች {#samples-and-recipes}
 
@@ -19,4 +19,4 @@ translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 
 ## Android {#android}
 
-ለአዲስ Android ስራ፣ በ[Kotlin፣ Android እና ጃቫ](/am/guide/tutorials/kotlin-java.md) ውስጥ የተገለጹትን Kotlin-የመጀመሪያ `core-jvm`፣ `client-android` እና `offline-wallet-android` ሞጁሎችን ይጠቀሙ። Kotlin SDK ለ Android ሸማቾች ነጠላ ፕሮቶኮል-መደበኛ መነሻ ነው።
+ለአዲስ Android ስራ፣ በ[Kotlin፣ Android እና ጃቫ](/am/guide/tutorials/kotlin-java.md) ውስጥ የተገለጹትን Kotlin-የመጀመሪያ `core-jvm`፣ `client-android` እና `kagemusha-wallet-android` ሞጁሎችን ይጠቀሙ። Kotlin SDK ለ Android ሸማቾች ነጠላ ፕሮቶኮል-መደበኛ መነሻ ነው።

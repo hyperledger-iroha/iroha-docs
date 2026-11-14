@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/accounts.md
-translation_source_hash: adc98cbf1fcadae4415d03dcc262eb03f8c95b429527e403d230934ae2f3243c
+translation_source_hash: d956bfb8c698fa463ef9fa84a91d50cf0e2100885eba670121ad78753f87d88d
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -44,7 +44,7 @@ Listez quelques identifiants de compte canoniques du testnet public Taira :
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+  | jq -r '.items[] | [.id, (.label // "-")] | @tsv'
 ```
 
 Pour inspecter les actifs d'un compte, copiez un identifiant de compte depuis le premier appel et codez-le en URL avant de le placer dans le chemin. Cet extrait Python le fait pour le premier compte listé :
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-Il s’agit d’opérations de lecture publiques. Créer ou modifier un compte nécessite une transaction signée et la configuration Taira alimentée par le faucet, décrite dans [Se connecter aux espaces de données SORA Nexus](/fr/get-started/sora-nexus-dataspaces.md).
+Il s’agit d’opérations de lecture publiques. Créer ou modifier un compte nécessite une transaction signée et la configuration Taira alimentée par le faucet, décrite dans [Développer sur SORA Nexus avec Taira et Minamoto](/fr/get-started/sora-nexus-dataspaces.md).
 
 ## Enregistrement et autorisations {#registration-and-permissions}
 

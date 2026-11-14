@@ -1,9 +1,9 @@
 ---
 translation_locale: mn
 translation_source: /reference/queries.md
-translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
+translation_source_hash: baa9726c7ce7d14b8dd17e77447ef72233ca9ed779367d9a190aa8dde7da41ac
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Асуултууд {#queries}
 
@@ -56,7 +56,7 @@ Iroha нь блокчэйн бүртгэлийн төлөвийг өөрчлөл
 |Асуулт|Зорилго|
 | --- | --- |
 | `FindAssets` |Хөрөнгийн үлдэгдлийг жагсаах.|
-| `FindAssetsDefinitions` |Хөрөнгийн тодорхойлолтыг жагсаах.|
+| `FindAssetDefinitions` |Хөрөнгийн тодорхойлолтыг жагсаах.|
 | `FindAssetsByAccountId` |Дансанд хадгалагдаж буй хөрөнгийг жагсаа.|
 | `FindAssetById` | `AssetId` дугаараар нэг хөрөнгийн үлдэгдлийг олно уу.|
 | `FindAssetDefinitionById` |ID-аар нэг хөрөнгийн тодорхойлолтыг олно уу.|
@@ -66,7 +66,7 @@ Iroha нь блокчэйн бүртгэлийн төлөвийг өөрчлөл
 
 ## Эскроу ба Баталгаажуулалтын Баримт {#escrow-and-proof-records}
 
-Эскроу асуултууд нь [үндэсний хөрөнгийн итгэмжлэл ISIs](/mn/blockchain/escrow.md)-аар бүтээгдсэн бүртгэлүүдийг шалгадаг бөгөөд үүнд зах зээлийн эскроу, ерөнхий хөрөнгийн түгжээ, нэргүй эскроу бүртгэлүүд орно.
+Эскроугийн асуулгууд нь [уугуул хөрөнгийн эскроугийн ISIs](/mn/blockchain/escrow.md)-ийн үүсгэсэн бичлэгүүдийг шалгадаг бөгөөд үүнд зах зээлийн эскроу, ерөнхий хөрөнгийн түгжээ болон нөхцөлт эскроу орно.
 
 |Асуулт|Зорилго|
 | --- | --- |
@@ -75,11 +75,6 @@ Iroha нь блокчэйн бүртгэлийн төлөвийг өөрчлөл
 | `FindAssetEscrowsBySeller` |Борлуулагчийн даатгуулсан хөрөнгийг жагсаах.|
 | `FindAssetEscrowsByBuyer` |Худалдан авагчаар хөрөнгийн хадгаламжийг жагсаах.|
 | `FindAssetEscrowsByStatus` |Хөрөнгө зуучлалын процессын статусын дагуу жагсаах.|
-| `FindAnonymousAssetEscrows` |Нэргүй хөрөнгийн эскроу бүртгэлүүдийг жагсаах.|
-| `FindAnonymousAssetEscrowById` |Нэгэн нэргүй хөрөнгийн эскроуг ID-ээр олно уу.|
-| `FindAnonymousAssetEscrowsBySeller` |Нэргүй хадгаламжийн дансыг борлуулагчийн дагуу жагсаах.|
-| `FindAnonymousAssetEscrowsByBuyer` |Худалдан авагчаар нэргүй эскроугаа жагсаа.|
-| `FindAnonymousAssetEscrowsByStatus` |Нэргүй хадгаламжийн дансуудыг статусын дагуу жагсаана уу.|
 | `FindProofRecordById` |Нэг баримтын бичлэгийг ID-аар олно уу.|
 | `FindProofRecords` |Баримт нотлох бичгүүдийг жагсаа.|
 | `FindProofRecordsByBackend` |Нотолгооны арын процессын нотолгооны бүртгэлийг жагсаана уу.|
@@ -89,15 +84,14 @@ Iroha нь блокчэйн бүртгэлийн төлөвийг өөрчлөл
 
 |Асуулт|Зорилго|
 | --- | --- |
-| `FindRepoAgreements` |Дансанд хадгалагдсан агуулахын гэрээнүүдийг жагсаа.|
+| `FindRepoAgreements` | Сүлжээнд хадгалагдсан репо болон урвуу репогийн гэрээнүүдийг жагсаана. |
 | `FindTwitterBindingByHash` |Криптографийн хэшээр Twitter-ийг холбохыг шийднэ үү.|
 | `FindDaPinIntentByTicket` |Тасалбарын дагуу өгөгдөл бэлэн байх төлөвийн зоригоо ол.|
 | `FindDaPinIntentByManifest` |Техникийн томьёоны лавлагаагаар пин зорилгыг олно уу.|
 | `FindDaPinIntentByAlias` |Дэвсгэрийн зорилыг нэрийн хаягаар ол.|
 | `FindDaPinIntentByLaneEpochSequence` |Гүйцэтгэх зам, үе ба дарааллаар пин зорилгыг ол.|
-| `FindLaneRelayEnvelopeByRef` |Баталгаажсан эстафетийн өгөгдлийн агуулахыг олно уу.|
 | `FindSorafsProviderOwner` |SoraFS үйлчилгээ үзүүлэгчийн эзэмшигчийг шийдвэрлэ.|
-| `FindDataspaceNameOwnerById` |Өгөгдөл сангийн нэрийн эзэмшигчийг шийдээрэй.|
+| `FindDataspaceNameOwnerById` | Өгөгдлийн орон зайн өөр нэрийн идэвхтэй SNS эзэмшигчийг тодорхойлно. |
 | `FindMusubiExactPackageV1` |Нэг тодорхой багцын бүртгэл ба түүний одоогийн шинэчлэлтүүдийг уншина уу.|
 | `FindMusubiExactReleaseV1` |Нэг яг тодорхой нийтлэлийн агшныг уншина уу.|
 | `FindMusubiProviderBundleAttestationV1` |Нэг үйлчилгээ үзүүлэгчийн архивын багц баталгааны мэдэгдлийг уншина уу.|
@@ -117,7 +111,7 @@ Iroha нь блокчэйн бүртгэлийн төлөвийг өөрчлөл
 | `FindActiveTriggerIds` |Идэвхтэй триггерийн ID-үүдийг жагсаана уу.|
 | `FindTriggers` |Шалгуур үзүүлэгчдийг жагсаах.|
 | `FindTriggerById` |Нэг триггерыг ID-аар олох.|
-| `FindContractManifestByCodeHash` |Кодын криптографийн хэшээр ухаалаг гэрээний техникийн гарын авлагыг олоорой.|
+| `FindContractManifestByArtifactId` | Ухаалаг гэрээний манифестийг өгөгдлийн орон зайн артефактын ID-аар нь олно. |
 | `FindTransactions` |Төгсгөл болсон гүйлгээг жагсаах.|
 | `FindBlocks` |Блокуудыг жагсаа.|
 | `FindBlockHeaders` |Блокын гарчгуудыг жагсаана уу.|

@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
+translation_source_hash: ad2bc9f8c53169d8161f7a2f23b1e660ebd24cf03cf8e05f4b00bbd27b7b11fe
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -23,8 +23,8 @@ Iroha өнімділігі жұмыс жүктемесіне, валидатор
 Бастапқыда қоғамдық түйіннің нақты уақыттағы деректер көрінісі мен Prometheus скрапын пайдаланыңыз, содан кейін оператор растамасымен консенсус күйі үшін CLI қолданыңыз. Оператор кілті мақсатты түйінмен рұқсат етілуі тиіс және тек бағдарламалық орындалу ортасында жүктеледі:
 
 ```bash
-export TORII=http://127.0.0.1:8180
-export OPERATOR_KEY_FILE=./secrets/operator.key
+export TORII=http://127.0.0.1:8080
+export OPERATOR_KEY_FILE="$PWD/localnet/runtime/operator-signer.key"
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s "$TORII/metrics" > metrics.prom
@@ -52,7 +52,7 @@ curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/now" \
-  | jq '{now_ms, offset_ms}'
+  | jq '{now, offset_ms}'
 ```
 
 Өз тіркеліміңіз үшін өндірістік қуат көрсеткіші ретінде қоғамдық тест желісінің бақылауларын пайдаланбаңыз.
@@ -187,13 +187,13 @@ iroha --config ./localnet/client.toml \
 | --- | --- | --- |
 |Қабылданған өткізу қабілеті| `sum(rate(txs{type="accepted"}[5m]))` |Тұрақты күйде мақсатты көрсеткіш TPS жету керек немесе одан жоғары болуы қажет|
 |Қабылдамау| `sum(rate(txs{type="rejected"}[5m]))` |Сынақ жоспары арқылы түсіндірілетін болуы тиіс|
-|протоколды аяқтау кешігуі| `histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |p95/p99 көрсеткіштерін кешігулер бюджетімен салыстыру|
+|протоколды аяқтау кешігуі| `histogram_quantile(0.95, sum by (le) (rate(sumeragi_commit_latency_ms_bucket{lane="global"}[5m])))`, `last_commit_time_ms` |p95/p99 көрсеткіштерін кешігулер бюджетімен салыстыру|
 |Кезектің тереңдігі| `queue_size`, `sumeragi_tx_queue_depth` |Шамадан тыс жүктеме кезінде шектеліп қалуы тиіс|
 |Кезектің қанығуы| `sumeragi_tx_queue_saturated` |Үздіксіз нөлден өзгеше мәндер артық жүктемені білдіреді|
-|Өзгерістерді қарау| `view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |Күшейіп жатқан мәндер уақытты, топологияны, жүктемені немесе желідегі ақауды көрсетеді|
-|Түсіп кеткен хабарламалар| `dropped_messages`, `sumeragi_consensus_message_handling_total` |Жүктеме кезінде тұйықталу көбінесе кешігу шарықтауын түсіндіреді|
-|Жүк және DA қалпына келтіру| `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` |Ұзаққа созылған сұраулар, жасы ұлғайған немесе қайталанатын DA қақпалар дене немесе бөлік алуда қиындықтарды білдіреді|
-|келісе шешім қабылдаудың соңғы кворумы| `sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |Саны есептелген қолтаңбалар қажет кворумға тез жетуі керек|
+|Өзгерістерді қарау| `view_changes`, `sumeragi_view_changes_total`, `sumeragi_timeout_votes_total` |Күшейіп жатқан мәндер уақытты, топологияны, жүктемені немесе желідегі ақауды көрсетеді|
+|Түсіп кеткен хабарламалар| `sumeragi_dropped_total`, `p2p_queue_dropped_total` |Жүктеме кезінде тұйықталу көбінесе кешігу шарықтауын түсіндіреді|
+|Пайдалы жүктеме мен қуып жету сұраулары| `sumeragi_fetch_requests_total{kind="body"}`, `sumeragi_fetch_requests_total{kind="sync"}` |Ұзаққа созылған дене немесе синхрондау сұраулары пайдалы жүктемені алуда немесе артта қалуды қуып жетуде ақаулық бар екенін білдіреді|
+|Аяқтау барысы| `sumeragi_committed_height`, `sumeragi_applied_height` |Сертификатталған және қолданылған биіктіктер бірге алға жылжуы керек|
 
 Метрика тек `/v1/sumeragi/status` жерде болғанда, Prometheus жинауымен бірдей орында алынған артефактілерде JSON уақыт нүктесінің деректер көрінісін тіркеңіз.
 
@@ -245,7 +245,7 @@ iroha --config ./localnet/client.toml \
 - қабылданды/қабылданбады TPS
 - p50/p95/p99 протоколын аяқтаудың кешігуі
 - кезек тереңдігі және қанығуы
-- өзгерістерді қарау, жіберілген хабарламалар, жоқ блоктарды алу және DA-қақпа санауыштары
+- көрініс өзгерістері, күту уақыты өткен дауыстар, Sumeragi түсіп қалулары, дене және синхрондау сұраулары
 - CPU, әр валидатор бойынша жады, диск және желі қолданылуы
 
 Осы мәліметтерсіз TPS нөмірі әңгіме ретінде қарастырылуы керек.

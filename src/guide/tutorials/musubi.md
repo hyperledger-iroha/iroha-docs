@@ -24,7 +24,7 @@ Exact release identifiers add a version:
 namespace/package@version
 ```
 
-There is no leading `@` before a namespace. A namespace is either a data space root such as `universal` or a domain-qualified data space such as `dex.universal`. The ledger binds that structural namespace to one stable home data space before a package can be claimed.
+There is no leading `@` before a namespace. A namespace is either a data space root such as `universal` or a domain-qualified namespace such as `dex.universal`. The ledger binds that structural namespace to one stable home data space before a package can be claimed.
 
 ## Manifest and Lockfile
 
@@ -60,10 +60,10 @@ Taira is the public testnet for this workflow. Start from a Taira client configu
 ```toml
 torii_url = "https://taira.sora.org/"
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
-network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 
 [musubi.fetch]
-network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 client_id = "musubi-taira"
 request_timeout_ms = 30000
 

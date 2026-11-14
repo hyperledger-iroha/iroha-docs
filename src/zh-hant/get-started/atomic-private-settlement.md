@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /get-started/atomic-private-settlement.md
-translation_source_hash: 22acbd9fdc8f9882f47f1a3d75d408f07b156c1e0240294b9d8a2f6a79195f51
+translation_source_hash: 803a99bfb590c0f133d8325d6caf8e1300f23d65a755eb6c26fe4fdd3e562873
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -35,9 +35,9 @@ translation_engine: nllb-200-ct2+reviewed-delta
 1. 每個參與資料空間恰好有四名驗證者，且各自具有不同的 BLS 共識金鑰與持有證明
 2. 強制性 Sumeragi DA/RBC 可用於每一個高度
 3. 每個資料空間都有受治理的機密結算池與初始根
-4. 一個活躍的 V1 私人筆記功能和單獨的結算證明配置檔案
+4. 可用的原生 `IrohaIvmPrivateNoteStarkV1` 實作、已提交的私人結算限額，以及 V1 政策權限
 5. 至少有一個受監管的本地 `PrivateSettlementAuditPolicyV1`,包括不同的審計簽名和混合加密金鑰,一個關鍵時代,高度有效性和批准門
-6. 在配置的保留期內,足夠的私人輔助記錄儲存
+6. 足夠的私人輔助記錄儲存空間，以涵蓋已提交的保留期
 7. 一個能夠提交最終公共承載交易的中立發起方帳戶
 
 審計員也可以執行驗證器,但必須使用單獨的共識,審計簽名和審計加密金鑰.在監管保留期內保留已停用的解密金鑰,或在停用前完成受治理且經過測試的膠囊重新包裝.
@@ -46,7 +46,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 
 ## 設定附屬資料保管 {#configure-sidecar-custody}
 
-已提交的隱私政策決定啟用、證明設定檔、參與者上限、到期與稽核者要求。受治理的能力，以及鏈上的池與稽核記錄，都必須先啟用，准入才會成功。
+已提交的隱私政策設定證明、膠囊與承載交易的限額、參與者上限、到期、保留期以及稽核者要求。准入還需要池政策的治理通知期，以及目前的鏈上池與稽核記錄。不存在節點啟用旗標或服務啟用高度。
 
 節點設定只控制加密附屬資料儲存的本機容量：
 
@@ -71,17 +71,17 @@ sidecar_max_total_bytes = 3221225472
 1. 將臨時加密材料上傳到全部四個驗證器，並取得規範的精確 3-of-4 可用性憑證。
 2. 讓授權稽核者取得並解密其膠囊，重新計算公開繫結，套用本機原則，並提交核准。
 3. 在投票之前,每個驗證者獨立檢查和穩定地進行分別測試.在每一個測試的響應者身上,保持可規定的3/4預備證明.
-4. 每個結算段都取得 Prepare 憑證後，建立不可變的完整 Prepare 屏障。請求並持久儲存規範的 3-of-4 Commit 憑證。如果協調器重新啟動，請向參與節點查詢其在本機持久儲存的 Prepare 和 Commit 憑證，選擇一份規範且達到等效法定人數要求的憑證，並在繼續之前重新分發；切勿從未經身分驗證的本機快取重建憑證。
-5. 讓清單贊助方簽署並提交恰好一個全域承載交易。該承載交易包含一條 `FinalizeAtomicPrivateSettlementV1` 指令和精確、完整、已認證的套件。協調器和 WSV 預檢會測量完整封裝的最終化指令，包括已註冊指令的框架。Torii 和核心的一次性承載交易繫結會對贊助方簽署的精確規範交易執行 `max_carrier_bytes`，其中包括權限、中繼資料、費用意圖和簽章。Torii 會拒絕在其權限內容之前提交的承載交易；若它在到期前仍可能達到最終性的最後准入高度或之後進入，或超出治理規定的到期區間，也會被拒絕。
+4. 每個結算段都取得 Prepare 憑證後，建立不可變的完整 Prepare 屏障。讓清單贊助方透過一個 `RegisterAtomicPrivateSettlementPrepareV1` 控制承載交易提交該屏障並等待最終性；Commit 投票者會參考這個已複寫的鎖。接著請求並持久儲存規範的 3-of-4 Commit 憑證。如果協調器重新啟動，請向參與節點查詢其在本機持久儲存的 Prepare 和 Commit 憑證，選擇一份規範且達到等效法定人數要求的憑證，並在繼續之前重新分發；切勿從未經身分驗證的本機快取重建憑證。
+5. 讓清單贊助方簽署並提交全域最終化承載交易。該承載交易包含一條 `FinalizeAtomicPrivateSettlementV1` 指令和精確、完整、已認證的套件。協調器和 WSV 預檢會測量完整封裝的最終化指令，包括已註冊指令的框架。Torii 和核心的一次性承載交易繫結會對贊助方簽署的精確規範交易執行 `max_carrier_bytes`，其中包括權限、中繼資料、費用意圖和簽章。Torii 會拒絕在其權限內容之前提交的承載交易；若它在到期前仍可能達到最終性的最後准入高度或之後進入，或超出治理規定的到期區間，也會被拒絕。
 6. 查詢公開捆綁狀態和回執,直到全球最終完成.處理本地輔助記錄狀態為暫時的,直到它調整了不可改變的全球終端記錄.
 
-Rust 客戶端透過包括`certify_and_upload_private_settlement_legs_v1`,`prepare_private_settlement_bundle_v1`,`commit_private_settlement_bundle_v1`和`submit_private_settlement_bundle_v1`在內的方法來暴露這種流動. 可安全因應重新啟動的協調流程使用 `recover_or_prepare_private_settlement_bundle_v1` 和 `recover_or_commit_private_settlement_bundle_v1`。委員會和審計人員的呼叫要求明確的角色憑證;它們不會重複使用普通帳戶簽字者.
+Rust 用戶端透過 `certify_and_upload_private_settlement_legs_v1`、`prepare_private_settlement_bundle_v1`、`register_private_settlement_prepare_and_wait_v1`、`commit_private_settlement_bundle_v1` 和 `submit_private_settlement_bundle_v1` 等方法提供此流程。可安全因應重新啟動的協調流程使用 `recover_or_prepare_private_settlement_bundle_v1` 和 `recover_or_commit_private_settlement_bundle_v1`。委員會與稽核者的呼叫需要明確的角色憑證；它們不會重複使用一般帳戶簽署者。
 
 ## 安全地轉換審計政策 {#rotate-an-auditor-policy-safely}
 
 使用隱私管理授權的 `RotatePrivateSettlementPoolPolicyV1`指令. 它必須指定當前的確切治理測試,保持相同的路線,合併和資產繫結承諾,提升治理修訂一項,使用更新的關鍵時代和不同的政策/治理測驗,並在包含旋轉的區塊上啟用. 池邊界、根、取消器、輸出、重播集和最終收據會被保留. 不要包含在輪換啟用高度觸及相同 route/pool 的收據;該指令會拒絕此邊界.
 
-公共集區投影保留完整的已取代原則修訂譜系。因此，在輪替前最終確定的收據在重新啟動後仍然有效，精確重放該收據仍具有冪等性。該譜系不授權未完成的工作：任何跨越啟用邊界的舊原則套件都會在全域狀態變更前以失敗關閉方式失敗。請保留開啟已儲存膠囊所需的每個舊解密金鑰，或在銷毀前完成受治理且經過測試的膠囊重新包裝。
+公共集區投影保留完整的已取代原則修訂譜系。因此，在輪替前最終確定的收據在重新啟動後仍然有效，而對該收據的精確重放會遭到拒絕，且不會變更狀態。該譜系不授權未完成的工作：任何跨越啟用邊界的舊原則套件都會在全域狀態變更前以失敗關閉方式失敗。請保留開啟已儲存膠囊所需的每個舊解密金鑰，或在銷毀前完成受治理且經過測試的膠囊重新封裝。
 
 ## Torii 路線家族 {#torii-route-family}
 
@@ -89,6 +89,7 @@ Rust 客戶端透過包括`certify_and_upload_private_settlement_legs_v1`,`prepa
 
 |行動|方法和路徑|主體|
 | ------------------ | -------------------------------------------------------------------------- | --------------------------- |
+|權限內容|`POST /v1/nexus/private-settlements/context/{height}`|規範帳戶簽名|
 |載入結算段|`POST /v1/nexus/private-settlements/legs`|規範帳戶簽名|
 |可用性分享|`POST /v1/nexus/private-settlements/legs/availability-shares`|規範帳戶簽名|
 |準備投票|`POST /v1/nexus/private-settlements/phases/prepare-votes`|規範帳戶簽名|
@@ -99,17 +100,17 @@ Rust 客戶端透過包括`certify_and_upload_private_settlement_legs_v1`,`prepa
 |委員會證明|`GET /v1/nexus/private-settlements/legs/{payload_digest}/committee-proof`|精確的清單驗證器|
 | 稽核膠囊 | `POST /v1/nexus/private-settlements/legs/{payload_digest}/audit-capsule` | 由治理指定的稽核者 |
 |審計員的批准|`POST /v1/nexus/private-settlements/legs/{payload_digest}/audit-approvals`|管理審計師|
-|提交最終確定/中止|`POST /v1/nexus/private-settlements/bundles`|公示贊助商|
+|提交承載交易|`POST /v1/nexus/private-settlements/bundles`|清單贊助方|
 |捆綁狀態|`GET /v1/nexus/private-settlements/bundles/{bundle_id}`|公共|
 |收到或取消|`GET /v1/nexus/private-settlements/bundles/{bundle_id}/receipt`|公共|
 
-公共狀態與收據 APIs 只公開有檔案記載的公共欄位。尤其是，一般結算結算段狀態不會揭露核准數量或治理規定的稽核員門檻。受限讀取會刻意把資料缺失、未獲授權及保留期已過這三種情況歸入同一個「不可用」回應類別。 提交路由只接受一項由贊助者直接簽署的最終確定或中止指令。其 `202` 回應只包含捆綁 ID、觀測到的受理高度與承載交易雜湊；這並不表示排入佇列的中止指令已經成為最終結果。SDKs 要求兩個識別碼均為格式規範且校驗和有效的 Norito `Hash` JSON 字面值，且高度必須是精確的 64 位元無號整數；欄位若缺少、多餘、型別錯誤、格式不規範、校驗和無效、為負數、負零、小數或溢位，都會採安全關閉方式拒絕。請使用捆綁狀態或收據取得權威的最終狀態。狀態碼同樣有精確要求：此承載交易受理路由必須回傳 `202`，其他所有私人結算 V1 成功回應則必須回傳 `200`。使用者端會將其他成功的 `2xx` 狀態碼視為契約偏移並予以拒絕，且不會透過使用者端錯誤重現未預期的回應本文。只有當伺服器拒絕碼符合 `[A-Za-z0-9_.:-]{1,128}` 時才會公開該碼，並捨棄回應解析或驗證的原因，以免回應本文或攻擊者選定的 JSON 欄位名稱重新出現在包含原因鏈的日誌中。
+公共狀態與收據 APIs 只公開有檔案記載的公共欄位。尤其是，一般結算段狀態不會揭露核准數量或治理規定的稽核員門檻。受限讀取會刻意把資料缺失、未獲授權及保留期已過這三種情況歸入同一個「不可用」回應類別。提交路由只接受一項由贊助者直接簽署的 Prepare 鎖註冊、最終確定或中止指令。其 `202` 回應只包含捆綁 ID、觀測到的受理高度與承載交易雜湊；這並不表示排入佇列的中止指令已經成為最終結果。SDKs 要求兩個識別碼均為格式規範且校驗和有效的 Norito `Hash` JSON 字面值，且高度必須是精確的 64 位元無號整數；欄位若缺少、多餘、型別錯誤、格式不規範、校驗和無效、為負數、負零、小數或溢位，都會採安全關閉方式拒絕。請使用捆綁狀態或收據取得權威的最終狀態。狀態碼同樣有精確要求：此承載交易受理路由必須回傳 `202`，其他所有私人結算 V1 成功回應則必須回傳 `200`。使用者端會將其他成功的 `2xx` 狀態碼視為契約偏移並予以拒絕，且不會透過使用者端錯誤重現未預期的回應本文。只有當伺服器拒絕碼符合 `[A-Za-z0-9_.:-]{1,128}` 時才會公開該碼，並捨棄回應解析或驗證的原因，以免回應本文或攻擊者選定的 JSON 欄位名稱重新出現在包含原因鏈的日誌中。
 
 ## 失敗和恢復 {#failure-and-recovery}
 
 在全球突變之前,缺失或過時的審計批准,不到三個驗證者投票,錯誤的根源或時代,重複廢除,替換的證明或囊,非規範的步驟順序,過期的捆綁和不匹配的退款條款都會失敗.提交證書永遠不會改變私人狀態.
 
-驗證者在確認輔助記錄、暫存差異和階段憑證之前先將其 fsync。重新啟動時，驗證者從規範的持久記錄重建保留項，然後協調不可變的全域收據、中止標記或到期狀態。即使沒有要協調的終結候選項，受監督的協調器也會在同步觀測到的權威高度執行終結保留清理，並在清理出錯時採用失敗關閉策略。只有權威的全域終結記錄才能釋放暫存鎖。重放完全相同的已最終確定收據具有冪等性；衝突重放會確定性失敗。
+驗證者在確認輔助記錄、暫存差異和階段憑證之前先將其 fsync。重新啟動時，驗證者從規範的持久記錄重建保留項，然後協調不可變的全域收據、中止標記或到期狀態。即使沒有要協調的終結候選項，受監督的協調器也會在同步觀測到的權威高度執行終結保留清理，並在清理出錯時採用失敗關閉策略。只有權威的全域終結記錄才能釋放暫存鎖。對已最終確定收據的精確重放會遭到拒絕，且不會變更狀態；衝突重放會確定性失敗。
 
 預訂身份包括完整的路線.池頭使用 `(route, pool_id, epoch, root)`,取消器使用 `(route, pool_id, nullifier)`,輸出使用 `(route, pool_id, commitment)`.在另一條路線上相同的不透明值是獨立的;重啟過程中仍然鎖定了精確路線碰撞.
 

@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
+translation_source_hash: 6edc0185196ab8e77ef8552723e05bf37cca1a088da86e2a43d441d58e779c11
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -32,4 +32,4 @@ docker restart <container>
 
 ## Үҙенсәлекле конфигурацияны ҡулланығыҙ {#use-custom-configuration}
 
-Ағымдағы тиңдәш конфигурацияһы TOML форматында. Булдырылған `config.toml`, `genesis.signed.nrt` һәм уларға бәйле асҡыс файлдарын образ көткән контейнер юлдарына бәйләп тоташтырығыҙ йәки күсерегеҙ, һуңынан тиңдәште яңынан эшләтегеҙ. Булдырылған файлдарҙы бергә һаҡлағыҙ; төрлө Kagami эшләтеүҙәренән алынған файлдарҙы ҡатнаштырыу десериализация йәки консенсус хаталарына килтерергә мөмкин.
+Ағымдағы тиңдәш конфигурацияһы TOML форматында. Kagami һәр валидатор өсөн `genesis.signed.nrt`, `genesis.public_key` һәм `genesis.expected_hash` менән бергә бер `peerN.toml` яҙа; `kagami docker` булдырған Compose файлы уларҙы контейнерға тоташтыра. Файлдарҙы ҡул менән күсереү урынына уны яңынан генерациялағыҙ, һуңынан тиңдәште яңынан эшләтегеҙ. Булдырылған файлдарҙы бергә һаҡлағыҙ; төрлө Kagami эшләтеүҙәренән алынған файлдарҙы ҡатнаштырыу десериализация йәки консенсус хаталарына килтерергә мөмкин.

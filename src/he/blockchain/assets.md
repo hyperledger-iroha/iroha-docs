@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /blockchain/assets.md
-translation_source_hash: 4d0a3f54a0c70d08d11160b9ec66d6538aa2c49c7771a13e4a070b61a9cb3e4b
+translation_source_hash: f5f0eb99e76287db695cc21b8580fd2a9b4dc2a989237c1a1d3d7333c14561ce
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -22,6 +22,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 - `logo`: בחופש `SoraFS` URI
 - `metadata`: מטא נתונים של ערך מפתח שרירותי.
 - `balance_scope_policy`: האם היתרות גלובליות או מוגבלות למרחב נתונים
+- `owning_domain`: הדומיין שבבעלותו נמצאת הגדרה בבעלות דומיין; אינו קיים עבור הגדרות שנרשמו ישירות במרחב נתונים
 - `owned_by`: החשבון שהרשם או בעל ההגדרה
 - `total_quantity`: כמות המונית הכוללת
 - `confidential_policy`: מדיניות על פעולות נכסים מוגנים
@@ -33,7 +34,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 `Asset` מכיל:
 
 - `id`: `AssetId`, אשר משלב את ההגדרה של הנכסים, חשבון הבעלים ואת טווח הסלון בחירה
-- `value`: יתרה של `Numeric`
+- `value`: יתרה של `Quantity`
 
 חשבון המחזיק הוא קנוני ונטול דומיין. ניתן להציג את הגדרת הנכס תחת דומיין שמצוין בו מרחב הנתונים, למשל `payments.universal`.
 
@@ -88,7 +89,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-כל שלוש הדוגמאות הן פעולות קריאה. כדי להנפיק, לשרוף או להעביר נכסים ב־Taira, השתמשו בחשבון שמומן משירות חלוקת כספי הניסוי ובתהליך הכולל בדיקות הגנה המתואר ב־[התחברות למרחבי הנתונים של SORA Nexus](/he/get-started/sora-nexus-dataspaces.md).
+כל שלוש הדוגמאות הן פעולות קריאה. כדי להנפיק, לשרוף או להעביר נכסים ב־Taira, השתמשו בחשבון שמומן משירות חלוקת כספי הניסוי ובתהליך הכולל בדיקות הגנה המתואר ב־[פיתוח על SORA Nexus באמצעות Taira ו־Minamoto](/he/get-started/sora-nexus-dataspaces.md).
 
 בדוגמת נכסים של Taira שמשלמת עמלה, תחילה מַמנו את החותם באמצעות התהליך המוכן של שירות חלוקת כספי הניסוי שב־[קבלת XOR לניסוי ב־Taira](/he/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira). לאחר מכן הוסיפו `--fee-payer authority` לפקודות `ledger asset mint`, ‏`ledger asset burn` ו־`ledger asset transfer`; ה־CLI מציג את העמלה המדויקת, בנכס העמלות של Taira, לפני החתימה:
 

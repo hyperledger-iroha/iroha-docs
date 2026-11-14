@@ -598,7 +598,7 @@ other artifact count or filename set.
 
 Fast inventories those five names and metadata-binds the payload and Merkle
 files, but does not read, hash, parse, or decode their contents. It builds
-a minimal World/SORA Nexus from the signed manifest, maps the exact Kura hash
+minimal World and SORA Nexus state from the signed manifest, maps the exact Kura hash
 prefix read-only, and leaves the snapshot World, block-hash array,
 transaction history, derived indexes, and durable recovery journals
 unopened. Merkle, canonical and semantic snapshot audits, historical

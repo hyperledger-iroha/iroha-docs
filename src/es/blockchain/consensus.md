@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /blockchain/consensus.md
-translation_source_hash: 06b3589a71dcb08aed5589290f4c9af9cb46b5cee0f875ae542043543360f623
+translation_source_hash: ebdf564d607b96f7f186637044d80b2f1bb7c9fbe6080a061d27d02ec6f8cf62
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -28,7 +28,7 @@ La misma canalización de procesamiento Sumeragi se utiliza tanto en implementac
 
 Los validadores firman solo los datos que pueden reproducir localmente. Antes de votar, un validador verifica que la propuesta pertenezca a la cadena, altura y vista esperadas; que las firmas de las transacciones y los límites cumplan con las reglas del protocolo; que el enrutamiento de la línea de ejecución y la validación del ejecutor sean deterministas; y que la ejecución de la carga útil produce la transición de estado esperada. Si el resultado local difiere, el validador rechaza la propuesta en lugar de votar a favor de ella.
 
-Los votos son pequeños mensajes de consenso firmados. Se refieren al bloque propuesto, la altura, la vista y la identidad del validador. Las firmas verificadas forman certificados de quórum de consenso de preparación y compromiso. Un certificado de compromiso de consenso es la prueba duradera de que suficientes validadores observaron el mismo resultado para el mismo bloque. Cada validador envía sus votos de Preparar y Comprometer al comité completo; cualquier validador puede agregar los votos iguales requeridos y difundir el certificado resultante.
+Los votos son pequeños mensajes de consenso firmados. Se refieren al bloque propuesto, la altura, la vista y la identidad del validador. Las firmas verificadas forman certificados de quórum de consenso de preparación y compromiso. Un certificado de compromiso de consenso es la prueba duradera de que suficientes validadores observaron el mismo resultado para el mismo bloque. Los validadores del conjunto A normalmente envían sus votos de Preparar y Comprometer a la cola proxy de la ronda, que agrega exactamente los votos iguales requeridos y difunde el certificado. Si un certificado se retrasa, los validadores del conjunto B también votan a la cola proxy; como último recurso, cada validador difunde su voto y cualquier validador puede agregar el certificado.
 
 ### Quórum y observadores {#quorum-and-observers}
 
@@ -79,14 +79,14 @@ Consulte la [implementación de carriles](https://github.com/hyperledger-iroha/i
 
 ## Disponibilidad de datos y recuperación de carga útil {#data-availability-and-payload-recovery}
 
-Sumeragi V1 proporciona disponibilidad global de la carga útil mediante mensajes RS16 firmados `PayloadManifest` y `PayloadChunk`. El líder envía el manifiesto firmado al comité completo y distribuye inicialmente fragmentos deterministas al conjunto A. Un validador solo puede votar en Prepare después de reconstruir el cuerpo canónico, validar el manifiesto y los hashes de los fragmentos, almacenar el cuerpo de forma duradera y completar la validación determinista. Si la vía rápida se atasca, la recuperación amplía la entrega de fragmentos al conjunto B. La recuperación de cuerpos certificados y la sincronización de bloques ofrecen una vía de recuperación acotada cuando un par conoce la finalidad antes de recibir el cuerpo.
+Sumeragi V1 proporciona disponibilidad global de la carga útil mediante mensajes RS16 firmados `PayloadManifest` y `PayloadChunk`. El líder envía el manifiesto firmado y cada fila firmada a todos los demás miembros del comité y a los miembros que se incorporan al siguiente comité. Un validador solo puede votar en Prepare después de reconstruir el cuerpo canónico, validar el manifiesto y los hashes de los fragmentos, almacenar el cuerpo de forma duradera y completar la validación determinista. Un par al que le faltan filas las solicita con `PayloadRequest`. La recuperación de cuerpos certificados y la sincronización de bloques ofrecen una vía de recuperación acotada cuando un par conoce la finalidad antes de recibir el cuerpo.
 
 Cada instancia de carril utiliza su propio contexto autenticado de disponibilidad y certificados. Las comprobaciones de fusión global vinculan su lote certificado y su carga útil original a la encarnación y al ancla esperadas. Un par solo aplica la finalidad global cuando dispone localmente de la carga útil global correspondiente y de un CommitQC válido.
 
 Utilice las superficies de operador autenticadas en lugar de un endpoint RBC API separado:
 
 - `iroha --operator-private-key-file <path> --output-format text ops sumeragi status` informa la altura, vista, fase, certificados y estado de vivacidad autorizados.
-- `iroha --operator-private-key-file <path> --output-format text ops sumeragi diagnostics` muestra diagnósticos no autoritativos de la cola, el flujo de procesamiento, NPoS, los carriles y los espacios de datos, incluida la titularidad de la carga útil de cada carril.
-- Señales de Prometheus como `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total` y `sumeragi_da_gate_satisfied_total` separan la recuperación de cuerpos faltantes, las puertas de disponibilidad de datos y el manejo de mensajes; ver [Rendimiento y métricas](/es/guide/advanced/metrics.md).
+- `iroha --operator-private-key-file <path> --output-format text ops sumeragi diagnostics` muestra, de forma no autoritativa, la presión de la cola de transacciones, el estado de la elección NPoS y el estado de los manifiestos de gobernanza de carriles.
+- Las series de Prometheus por instancia, como `sumeragi_fetch_requests_total` (`kind="body"` para cuerpos faltantes, `kind="sync"` para la puesta al día), `sumeragi_view_changes_total`, `sumeragi_round_stage` y `sumeragi_dropped_total`, llevan una etiqueta `lane` y separan la recuperación de cuerpos faltantes, los cambios de vista y los descartes de colas acotadas; ver [Rendimiento y métricas](/es/guide/advanced/metrics.md).
 
 Los almacenes de bloques de los carriles conservan los lotes certificados y los registros de origen necesarios para la fusión y la recuperación. Su ciclo de vida sigue la encarnación confirmada del carril; el nombre de un directorio de almacenamiento no autoriza un nuevo carril ni una nueva raíz de ejecución.

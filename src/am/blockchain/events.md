@@ -1,9 +1,9 @@
 ---
 translation_locale: am
 translation_source: /blockchain/events.md
-translation_source_hash: aad93f1981a5b470966090b5e06ec07178738b15f1d870097947682b19f99595
+translation_source_hash: 2777cbe4e72a50c4790e50b59c3e695feb5814314cc9afccdfd994f6409c195e
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # ክስተቶች {#events}
 
@@ -16,7 +16,7 @@ translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 
 ## የሶፍትዌር ሂደት የስራ ፍሰት ክስተቶች {#pipeline-events}
 
-የሶፍትዌር ማቀነባበሪያ የስራ ፍሰት ክስተቶች የሚለቀቁት ግብይቶች ሲቀርቡ፣ ሲፈጸሙ ወይም በብሎክ ሲጠናቀቁ ነው። የሶፍትዌር ማቀነባበሪያ የስራ ፍሰት ክስተት የሚከተለውን መረጃ ይዟል ክስተቱን ያስከተለው አካል አይነት (ግብይት ወይም ብሎክ)፣ ምስጠራው ሃሽ እና ሁኔታ። ሁኔታው `Validating` (ማረጋገጫው በሂደት ላይ)፣ `Rejected` ወይም `Committed` ሊሆን ይችላል። አንድ አካል ውድቅ ከተደረገ, ውድቅ የተደረገበት ምክንያት ቀርቧል.
+ግብይቶችና ብሎኮች በሶፍትዌር ማቀነባበሪያ የስራ ፍሰቱ ውስጥ ሲያልፉ የሶፍትዌር ማቀነባበሪያ የስራ ፍሰት ክስተቶች ይለቀቃሉ። የግብይት ክስተት የግብይቱን ሃሽ፣ የብሎክ ቁመት፣ የመስመር እና የውሂብ ቦታ መታወቂያዎችን እና ሁኔታን ይይዛል፦ `Queued`፣ `Expired`፣ `Approved` ወይም ከውድቅ ምክንያቱ ጋር `Rejected`። የብሎክ ክስተት የብሎኩን ራስጌ እና ሁኔታን ይይዛል፦ `Created`፣ `Approved`፣ ከምክንያቱ ጋር `Rejected`፣ `Committed` ወይም `Applied`።
 
 ### ይህንን የስራ ፍሰት በ Taira ላይ ያሂዱ {#try-it-on-taira}
 
@@ -30,8 +30,8 @@ curl -fsSI https://taira.sora.org/v1/events/sse \
 ዥረት ክፍት ሳያደርጉ መመርመር ለሚችሉት የጊዜ ዳታ እይታ፣ የቅርብ ጊዜ የአሳሽ ግብይቶችን ያንብቡ -
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
-  | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
+curl -fsS 'https://taira.sora.org/v1/explorer/transactions?limit=5' \
+  | jq '{next_cursor, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
 የቀጥታ ክስተቶች ሲፈልጉ የ SSE መንገዱን በተርሚናል ውስጥ ይክፈቱ -

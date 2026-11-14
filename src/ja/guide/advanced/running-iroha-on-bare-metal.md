@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -34,7 +34,7 @@ cargo build --release \
 target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-出力ディレクトリには、生成された`genesis.json`、`genesis.signed.nrt`、ネットワークピア`config.toml`ファイル、`client.toml`、ヘルパースクリプト、およびそのバンドルの正確なコマンドを含む生成された`README.md`が含まれています。
+出力ディレクトリには、生成された`genesis.json`、`genesis.signed.nrt`、`genesis.expected_hash`、バリデーターごとに 1 つの`peerN.toml`、`client.toml`、`start.sh` と `stop.sh` のスクリプト、およびそのバンドルの正確なコマンドを含む生成された`README.md`が含まれています。
 
 ## 3. ネットワークピアを開始する {#_3-start-peers}
 
@@ -44,7 +44,7 @@ target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ./localnet/start.sh
 ```
 
-各ネットワークピアを systemd のようなプロセスマネージャに接続する必要がある場合は、各ネットワークピアのために `./localnet/README.md` に記録された起動コマンドを使用してください。各ネットワークピアの `config.toml`、秘密鍵、ストレージディレクトリ、およびポートは別々に保管してください。
+各ネットワークピアを systemd のようなプロセスマネージャに接続する必要がある場合は、`./localnet/start.sh` にあるピアごとのコマンドに従ってください。`<bundle>/state/peerN` から `iroha3d --config <bundle>/peerN.toml` を実行し、`--sumeragi-assert-fresh-key` はそのピアの初回起動時にのみ渡します。各ネットワークピアの `peerN.toml`、秘密鍵、ストレージディレクトリ、およびポートは別々に保管してください。
 
 ## 4. ネットワークを操作する {#_4-operate-the-network}
 

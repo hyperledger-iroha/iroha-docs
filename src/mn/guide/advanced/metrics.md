@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
+translation_source_hash: ad2bc9f8c53169d8161f7a2f23b1e660ebd24cf03cf8e05f4b00bbd27b7b11fe
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -23,8 +23,8 @@ Iroha-ийн гүйцэтгэл нь ажлын ачаалал, баталгаа
 Олон нийтийн зангилааны цэгийн цаг үеийн өгөгдлийн үзэлт ба Prometheus скрэпээр эхлээд, дараа нь оператороор баталгаажсан консенсусын төлөвт CLI-ийг ашиглана. Операторын түлхүүрийг зорилтот зангилаа зөвшөөрсөн байх ёстой бөгөөд зөвхөн програмын гүйцэтгэлийн орчинд ачаалагдана:
 
 ```bash
-export TORII=http://127.0.0.1:8180
-export OPERATOR_KEY_FILE=./secrets/operator.key
+export TORII=http://127.0.0.1:8080
+export OPERATOR_KEY_FILE="$PWD/localnet/runtime/operator-signer.key"
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s "$TORII/metrics" > metrics.prom
@@ -52,7 +52,7 @@ curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/now" \
-  | jq '{now_ms, offset_ms}'
+  | jq '{now, offset_ms}'
 ```
 
 Өөрийн суурилуулалтанд зориулж олон нийтийн тест сүлжээний ажиглалтыг үйлдвэрлэлийн хүчин чадлын тоогоор битгий ашигла.
@@ -187,13 +187,13 @@ iroha --config ./localnet/client.toml \
 | --- | --- | --- |
 |Өргөтгөсөн дамжуулалт| `sum(rate(txs{type="accepted"}[5m]))` |Тогтмол нөхцөлд зорилт TPS-ийг хангах эсвэл давсан байх ёстой|
 |Татгалзсан| `sum(rate(txs{type="rejected"}[5m]))` |Төстөлгийн төлөвлөгөөнөөр тайлбарлагдах ёстой|
-|протоколын эцсийн шийдвэрийн хүлээлт| `histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |p95/p99-ийг хүлээлтийн төсөвтэй харьцуул|
+| Commit-ийн хоцрогдол | `histogram_quantile(0.95, sum by (le) (rate(sumeragi_commit_latency_ms_bucket{lane="global"}[5m])))`, `last_commit_time_ms` | p95/p99-ийг хоцрогдлын төсөвтэй харьцуулна |
 |Элсэнд орох дарааллын гүн| `queue_size`, `sumeragi_tx_queue_depth` |Дээд ачааллын үед хязгаарлагдмал байх ёстой|
 |Өөрчлөлттэй дараалал дүүрэлт| `sumeragi_tx_queue_saturated` |Тасралтгүй тэгээс ялгаатай утгууд нь ачааллын хэтрэлийг илтгэнэ|
-|Өөрчлөлтүүдийг үзэх| `view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |Өсч буй утгууд нь цаг хугацаа, топологи, ачаа материал эсвэл сүлжээний асуудлыг зааж байна|
-|Алдагдсан мессежүүд| `dropped_messages`, `sumeragi_consensus_message_handling_total` |Ачааллын үед бууралт нь ихэвчлэн хойшиллын огцом өсөлтийг тайлбардаг|
-|Тээвэрлэлт ба DA сэргээх| `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` |Тууштай хүсэл, нас нэмэгдэх эсвэл давтагдсан DA хаалтууд нь бие махбодь эсвэл хэсэг авахад асуудал байгааг илэрхийлнэ|
-|нэгдсэн шийдвэрийн эцсийн процессын оролцогчдын тоо| `sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |Тоологдсон гарын үсэг шаардлагатай кворумд хурдан хүрэх ёстой|
+|Өөрчлөлтүүдийг үзэх| `view_changes`, `sumeragi_view_changes_total`, `sumeragi_timeout_votes_total` |Өсч буй утгууд нь цаг хугацаа, топологи, ачаа материал эсвэл сүлжээний асуудлыг зааж байна|
+|Алдагдсан мессежүүд| `sumeragi_dropped_total`, `p2p_queue_dropped_total` |Ачааллын үед бууралт нь ихэвчлэн хойшиллын огцом өсөлтийг тайлбардаг|
+| Payload болон гүйцэх татан авалт | `sumeragi_fetch_requests_total{kind="body"}`, `sumeragi_fetch_requests_total{kind="sync"}` | Үргэлжилсэн агуулга эсвэл sync татан авалт нь payload авах эсвэл гүйцэх синхрончлолын асуудлыг илтгэнэ |
+| Commit-ийн явц | `sumeragi_committed_height`, `sumeragi_applied_height` | Гэрчилгээжсэн болон хэрэглэгдсэн өндрүүд хамт ахих ёстой |
 
 Хэрэв метрк зөвхөн `/v1/sumeragi/status`-д байдаг бол, Прометеусын скраптай ижил ажиллах урсгалын артефактуудад JSON цэг-цагийн өгөгдлийн үзэлтийг барина.
 
@@ -245,7 +245,7 @@ iroha --config ./localnet/client.toml \
 - зөвшөөрсөн/татгалзсан TPS
 - p50/p95/p99 протоколын эцсийн баталгаажлын хойшлогдол
 - ачуулгын гүн ба дүүргэлт
-- өөрчлөлтүүдийг үзэх, алдагдсан зурвасууд, ороогүй блокуудыг татах, болон DA-хаалга тоолуурууд
+- view өөрчлөлт, хугацаа хэтэрсэн санал, Sumeragi-ийн хаягдал, мөн агуулга болон sync татан авалт
 - CPU, баталгаажуулагчаар санах ой, диск ба сүлжээний хэрэглээ
 
 Эдгээр дэлгэрэнгүй мэдээлэлгүйгээр, TPS дугаарыг зүгээр л домог маягийн гэж үзэх ёстой.

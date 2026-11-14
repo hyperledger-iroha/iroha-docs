@@ -65,10 +65,10 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
 `--pop` is valid only with `bls_normal`; it adds `pop.hex` to the custody
 directory.
 Signed genesis requires a matching PoP for every voting validator. In peer
-configuration, a non-empty `trusted_peers_pop` map selects the validator
-subset; trusted peers omitted from that non-empty map are observers. If the map
-is empty, all BLS-normal trusted peers enter the bootstrap candidate set, with
-voter PoPs still supplied by signed genesis.
+configuration, list each validator's PoP in `trusted_peers_pop`: trusted peers
+without a valid PoP are excluded from the consensus roster, and an empty map
+yields no validators, so a node whose map omits the genesis validators refuses
+to start. Run a sync-only node with `[sumeragi] role = "observer"`.
 
 ## Custody Output
 

@@ -1,9 +1,9 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/permissions.md
-translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
+translation_source_hash: 7993d14839218fd3394d52dbcce264bffea32394f54e25dd261cd060c54f1fe1
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # 権限 {#permissions}
 
@@ -72,14 +72,20 @@ let register_role = Register::role(role);
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```
 
 ## 権限バリデーター {#permission-validators}
 
-アクセス許可は、必要な権限トークンを持つアカウントだけが保護された操作を実行できるように存在します。デフォルトの実行者は、命令、クエリ、および式の実行中にアクセス許可を確認します。
+アクセス許可は、必要な権限トークンを持つアカウントだけが保護された操作を実行できるように存在します。デフォルトの実行者は、トランザクションと命令の実行中、およびクエリの検証時にアクセス許可を確認します。
 
 デフォルトのバリデーターのサーフェスは、ブロックチェーン台帳のエリアごとにグループ化されています：
 
@@ -96,7 +102,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 
 権限チェックはアクティブな実行者によって施行されます。デフォルトの実行者は組み込みの権限バリデータとトークン定義を提供し、ネットワークは使用する実行者をアップグレードすることでポリシーを変更できます。
 
-検証者は検証の判定を返します。検証者は操作を許可することも、理由を付けて拒否することも、操作がその検証者の範囲外の場合はスキップすることもできます。選ばれた審査者はそれらの判定を組み合わせて、指示、クエリ、または式が進行できるかどうかを決定します。
+実行者は操作を許可するか、`ValidationFail` の理由を付けて拒否します。拒否された命令はそのトランザクションを拒否させ、拒否されたクエリは呼び出し元にエラーを返します。
 
 ## サポートされているクエリ {#supported-queries}
 

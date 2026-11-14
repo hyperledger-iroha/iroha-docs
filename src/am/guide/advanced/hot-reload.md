@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
+translation_source_hash: 6edc0185196ab8e77ef8552723e05bf37cca1a088da86e2a43d441d58e779c11
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -32,4 +32,4 @@ docker restart <container>
 
 ## ብጁ ውቅረትን ተጠቀም {#use-custom-configuration}
 
-የአሁኑ የአውታረ መረብ አቻ ውቅር TOML ነው። የመነጨውን `config.toml`፣ `genesis.signed.nrt` እና ተዛማጅ ቁልፍ ፋይሎችን በ በሚጠበቀው የእቃ መያዣ ዱካዎች ውስጥ ይጫኑ ወይም ይቅዱ ምስል፣ ከዚያ የአውታረ መረብ አቻውን እንደገና ያስጀምሩ። የተፈጠሩትን ፋይሎች አንድ ላይ ያስቀምጡ; ከተለያዩ Kagami ሩጫዎች ፋይሎችን መቀላቀል ተከታታይ ወይም የጋራ መግባባት ውድቀቶችን ሊያስከትል ይችላል።
+የአሁኑ የአውታረ መረብ አቻ ውቅር TOML ነው። Kagami ለእያንዳንዱ አረጋጋጭ ከ`genesis.signed.nrt`፣ `genesis.public_key` እና `genesis.expected_hash` ጋር አንድ `peerN.toml` ያመነጫል፤ ከ`kagami docker` የሚገኘው የCompose ፋይል እነዚህን ወደ ኮንቴይነሩ ይጭናል። ፋይሎችን በእጅ ከመቅዳት ይልቅ እሱን እንደገና ያመንጩ፣ ከዚያ የአውታረ መረብ አቻውን እንደገና ያስጀምሩ። የተፈጠሩትን ፋይሎች አንድ ላይ ያስቀምጡ፤ ከተለያዩ የKagami ሩጫዎች ፋይሎችን መቀላቀል የዲሴሪያላይዜሽን ወይም የጋራ መግባባት ውድቀቶችን ሊያስከትል ይችላል።

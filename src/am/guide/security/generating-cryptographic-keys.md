@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: b6e3bd79c50ea326930ac978350ea4beac8294b6f045ac0084aada257754ffa1
+translation_source_hash: bb1044edb9d34264e36848ee773d4d313bfbfd91b45da2eeb831f7ef8920e9b4
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -56,7 +56,7 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` የሚሰራው በ `bls_normal` ብቻ ነው። `pop.hex`ን ወደ ጥበቃ ማውጫው ያክላል። የተፈረመ የብሎክቼይን ጀነሲስ ለእያንዳንዱ የድምጽ መስጫ አረጋጋጭ ተዛማጅ PoP ያስፈልገዋል። በኔትወርክ አቻ ውቅር ውስጥ፣ ባዶ ያልሆነ `trusted_peers_pop` ካርታ የማረጋገጫ ንዑስ ስብስብን ይመርጣል። ከዚያ ባዶ ካልሆነ ካርታ የተተዉ የታመኑ የአውታረ መረብ እኩዮች ታዛቢዎች ናቸው። ካርታው ባዶ ከሆነ፣ ሁሉም BLS-መደበኛ የታመኑ የአውታረ መረብ እኩዮች ወደ ቡት ማሰሪያ እጩ ስብስብ ውስጥ ይገባሉ፣ መራጭ PoPs አሁንም በተፈረመው blockchain ጀነሲስ ቀርቧል።
+`--pop` የሚሰራው በ `bls_normal` ብቻ ነው፤ `pop.hex`ን ወደ ጥበቃ ማውጫው ያክላል። የተፈረመ የብሎክቼይን ጀነሲስ ለእያንዳንዱ የድምጽ መስጫ አረጋጋጭ ተዛማጅ PoP ያስፈልገዋል። በአውታረ መረብ አቻ ውቅር ውስጥ የእያንዳንዱን አረጋጋጭ PoP በ`trusted_peers_pop` ውስጥ ይዘርዝሩ፦ ትክክለኛ PoP የሌላቸው የታመኑ አቻዎች ከጋራ ስምምነት ዝርዝሩ ይገለላሉ፣ ባዶ ካርታ ደግሞ ምንም አረጋጋጭ አይሰጥም፤ ስለዚህ ካርታው የጀነሲስ አረጋጋጮችን የሚተው ኖድ ለመጀመር እምቢ ይላል። ማመሳሰል ብቻ የሚያደርግ ኖድን በ`[sumeragi] role = "observer"` ያሂዱ።
 
 ## የማሳደጊያ መረጃ {#custody-output}
 

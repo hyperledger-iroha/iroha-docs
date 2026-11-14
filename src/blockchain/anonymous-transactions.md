@@ -65,8 +65,8 @@ mode controls which flows are valid:
 6. Unshield only when the asset policy allows it. `Unshield` reveals the
    public amount and recipient account, spends the private note nullifier,
    and can create private change outputs.
-7. Audit by reading confidential events, proof records, nullifier status,
-   and anonymous escrow records through typed queries and Torii endpoints.
+7. Audit by reading confidential events, proof records, and nullifier status
+   through typed queries and Torii endpoints.
 
 ## CLI Examples
 
@@ -176,34 +176,6 @@ fn unshield_instruction(
 }
 ```
 
-## Anonymous Asset Escrow
-
-Anonymous asset escrow uses the same shielded transfer machinery for
-escrowed value. The parties and escrow state are still recorded in the
-escrow record, but the funding, release, cancellation, and resolution legs
-use shielded nullifiers and output commitments.
-
-For detailed escrow ISI behavior and examples, see
-[Native Asset Escrow](/blockchain/escrow.md#anonymous-escrow).
-
-The lifecycle is:
-
-1. `OpenAnonymousAssetEscrow` spends shielded funding notes and creates one
-   escrow commitment.
-2. `AcceptAnonymousAssetEscrow` records the buyer.
-3. `MarkAnonymousEscrowPaymentSent` records that the buyer sent payment
-   off-chain.
-4. `ReleaseAnonymousAssetEscrow` spends the escrow commitment to buyer
-   output commitments.
-5. `CancelAnonymousAssetEscrow` spends the escrow commitment back to seller
-   output commitments when payment has not been marked.
-6. `OpenAnonymousEscrowDispute` and `ResolveAnonymousEscrowDispute` handle
-   disputed escrows with evidence hashes and a resolver-controlled split.
-
-Use the anonymous escrow queries listed in
-[Queries](/reference/queries.md#escrow-and-proof-records) to inspect escrow
-records and statuses.
-
 ## Math
 
 The notation below describes the confidential asset flow. Implementations
@@ -288,7 +260,6 @@ following data can still be public:
 - nullifiers and output commitments
 - proof hashes, verifying-key references, and optional envelope hashes
 - public amount and recipient account for `Unshield`
-- anonymous escrow seller, buyer, status, timestamps, and evidence hashes
 
 Design applications so this public metadata does not reveal the business
 relationship you are trying to protect.

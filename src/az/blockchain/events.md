@@ -1,9 +1,9 @@
 ---
 translation_locale: az
 translation_source: /blockchain/events.md
-translation_source_hash: aad93f1981a5b470966090b5e06ec07178738b15f1d870097947682b19f99595
+translation_source_hash: 2777cbe4e72a50c4790e50b59c3e695feb5814314cc9afccdfd994f6409c195e
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Tədbirlər {#events}
 
@@ -16,7 +16,7 @@ Typed event bildirişləri blokzincir daxilində müəyyən hadisələr baş ver
 
 ## proqram təminatı işləmə iş axını Hadisələr {#pipeline-events}
 
-Proqram təminatı işləmə iş axını hadisələri, əməliyyatlar təqdim edildikdə, icra edildikdə və ya blokda yekunlaşdıqda yayımlanır. Proqram təminatı işləmə iş axını hadisəsi aşağıdakı məlumatları özündə ehtiva edir: hadisəyə səbəb olan obyektin növü (əməliyyat və ya blok), onun kriptoqrafik xəşi və statusu. Status ya `Validating` (təsdiqləmə davam edir), ya `Rejected`, ya da `Committed` ola bilər. Əgər bir vahid rədd edilibsə, rədd edilmə səbəbi göstərilir.
+Əməliyyatlar və bloklar emal konveyerindən keçdikcə konveyer hadisələri yayımlanır. Əməliyyat hadisəsi əməliyyatın həşini, blok hündürlüyünü, zolaq və məlumat məkanı ID-lərini və statusu daşıyır: `Queued`, `Expired`, `Approved` və ya rədd səbəbi ilə birlikdə `Rejected`. Blok hadisəsi blok başlığını və statusu daşıyır: `Created`, `Approved`, səbəbi ilə birlikdə `Rejected`, `Committed` və ya `Applied`.
 
 ### Bu iş axınını Taira üzərində işə sal {#try-it-on-taira}
 
@@ -30,8 +30,8 @@ curl -fsSI https://taira.sora.org/v1/events/sse \
 Axını açıq saxlamadan yoxlaya biləcəyiniz zaman nöqtəsində məlumat görüntüsü üçün, son tədqiqatçı əməliyyatlarını oxuyun:
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
-  | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
+curl -fsS 'https://taira.sora.org/v1/explorer/transactions?limit=5' \
+  | jq '{next_cursor, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
 Canlı hadisələrə ehtiyacınız olduqda terminalda SSE marşrutunu açın:

@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 98c351372551b08bda4911f52bfb3cc70c53b6125d8045c17abb205b27960f6d
+translation_source_hash: 96ca67b9bbf9d743de2f640e09487176f62a8a31052e4f1e15e15a771e985c48
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -24,7 +24,7 @@ Taira ကို ပေါင်းစပ်မှု စမ်းသပ်ချ
 |အဆင့် |Taira Testnet |Minamoto Mainnet |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
 | ကွန်ရက်အခြေအနေကို စစ်ဆေးခြင်း | သော့မသုံးဘဲ `/status` မှ ဒေတာကို ရယူပါ | ဝန်ဆောင်မှုလိပ်စာနှင့် TLS လက်မှတ်ကို ဦးစွာ အတည်ပြုပါ |
-|ဒေတာနေရာကို ရွေးချယ်ပါ။|အများသုံး `universal` ကို သုံးပါ၊ သင့်ရဲ့ app မှာ စီမံခန့်ခွဲထားတဲ့ အကောင်အထည်ဖော်ရေး လမ်းကြောင်း မလိုဘူးဆိုရင်|အလားတူ ဒေတာနေရာကို အဓိကကွန်ရက် အတည်ပြုပြီးနောက်သာ သုံးပါ။ |
+| Data space ကို ရွေးချယ်ပါ | သင့် app တွင် ကိုယ်ပိုင် အုပ်ချုပ်ထားသော data space မလိုအပ်ပါက အများသုံး `universal` ကို သုံးပါ | Mainnet အတည်ပြုချက် ရပြီးမှသာ တူညီသော data space ကို သုံးပါ |
 |အခွန်အရင်းအမြစ်ရယူပါ။|အများပြည်သူ Taira testnet ထောက်ပံ့မှု ဝန်ဆောင်မှုကို အသုံးပြုပါ။ |ငွေကြေးထောက်ပံ့ထားတဲ့ Minamoto အကောင့်မှ (သို့) ခွင့်ပြုထားသော ဘဏ္ဍာငွေစီးဆင်းမှုမှ XOR ကိုရယူခြင်း |
 |Test က ရေးထားတယ်|testnet မှ ရင်းနှီးမြှုပ်နှံသည့် စမ်းသပ်မှု XOR ကို အသုံးပြုပါ။ |စမ်းသပ်မှု tooling ကိုမသုံးပါနဲ့; စာရင်းအင်းစရိတ်စစ်မှန် XOR |
 | နောက်အဆင့်သို့ ပြောင်းသုံးခြင်း | ပြန်ကြိုးပမ်းမှု logic၊ စောင့်ကြည့်မှုနှင့် လက်မှတ်ထိုးသူ ကိုင်တွယ်မှုကို ထိန်းသိမ်းပါ | သီးခြားကီးများ၊ ငွေဖြည့်မှုနှင့် ထုတ်ဝေမှုထိန်းချုပ်ချက်များကို သုံးပါ |
@@ -63,7 +63,7 @@ SORA Nexus တွင် data space ကတ်တလောက်က data space မ
 wonderland.universal
 ```
 
-အဖွဲ့အစည်းဆိုင်ရာ data space အသစ် လိုအပ်ပါက ပုံမှန် client အကောင့်မှ မှတ်ပုံတင်ရန် ကြိုးစားမည့်အစား ကတ်တလောက်နှင့် လမ်းကြောင်းရွေးချယ်မှု အဆိုပြုချက်ကို ပြင်ဆင်ပါ။ အောက်ပါ [Data space အသစ် ဖန်တီးပြင်ဆင်ခြင်း](#_8-provision-a-new-data-space) ကို ကြည့်ပါ။
+အဖွဲ့အစည်းဆိုင်ရာ data space အသစ် လိုအပ်ပါက ပုံမှန် client အကောင့်မှ မှတ်ပုံတင်ရန် ကြိုးစားမည့်အစား ကတ်တလောက်နှင့် လမ်းကြောင်းရွေးချယ်မှု အဆိုပြုချက်ကို ပြင်ဆင်ပါ။ အောက်ပါ [Data space အသစ် ဖန်တီးပြင်ဆင်ခြင်း](#_8-provision-a-new-dataspace) ကို ကြည့်ပါ။
 
 ## 2. အများသုံး Torii ၏ Endpoint ကို စစ်ဆေးခြင်း {#_2-check-the-public-torii-endpoint}
 
@@ -192,7 +192,7 @@ Taira MCP ကို အများသုံး testnet ထိန်းချု
 
 ဤဥပမာများသည် အကောင့်သော့များမသုံးဘဲ Taira မှ အချက်အလက်များကို ဖတ်ရှုပါသည်။
 
-Taira က ဖော်ပြသော အများသုံး data space lane များကို စာရင်းပြုပါ:
+Taira lane တိုင်းကို ၎င်း၏ data space နှင့် မြင်နိုင်မှုအခြေအနေနှင့်အတူ စာရင်းပြုပါ:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -254,7 +254,7 @@ nonce = false
 စာဖတ်လို့ရတဲ့ စစ်ဆေးချက်တစ်ခု လုပ်ပါ။
 
 ```bash
-iroha --config ./taira.client.toml --output-format text ops sumeragi status
+iroha --config ./taira.client.toml ledger domain list --limit 5
 ```
 
 စာရေးတဲ့ စမ်းသပ်မှု မလုပ်ခင် အများပြည်သူ Taira ရောဂါစစ်ဆေးမှုကို လုပ်ပါ။
@@ -432,7 +432,7 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 mainnet အသုံးပြုသူအသစ်ထည့်သွင်းရေး သို့မဟုတ် အုပ်ချုပ်မှုလုပ်ငန်းစဉ်မှတစ်ဆင့် အကောင့်ကို ပြင်ဆင်ဖန်တီး၍ ရန်ပုံငွေဖြည့်ပြီးသည်အထိ ဖတ်ရှုဘက် စစ်ဆေးမှုများကိုသာ လုပ်ဆောင်ပါ။
 
 ```bash
-iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
+iroha --config ./minamoto.client.toml ledger domain list --limit 5
 ```
 
 Taira ၏ faucet သို့မဟုတ် အခြေခံစမ်းသပ်မှု command များကို Minamoto တွင် မလုပ်ဆောင်ပါနှင့်။
@@ -445,7 +445,7 @@ Minamoto အခကြေးကိုထုတ်လုပ်မှု XOR ဖြ
 
 Taira XOR သည် Minamoto အခွန်များကို မပေးနိုင်ပါ။ Testnet ကွင်းဆင်းငွေနှင့် testnet ငွေကြေးထောက်ပံ့မှု ဝန်ဆောင်မှု တောင်းဆိုချက်များသည် Minamoto သို့ လွှဲပြောင်းခြင်းမရှိပေ။
 
-## 7. ရှိပြီးသား Data space အတွင်း လုပ်ဆောင်ခြင်း {#_7-work-inside-an-existing-data-space}
+## 7. ရှိပြီးသား Data space အတွင်း လုပ်ဆောင်ခြင်း {#_7-work-inside-an-existing-dataspace}
 
 Data space အတွင်းရှိ လယ်ဂျာ object များအတွက် domain အမည်အပြည့်အစုံကို သုံးပါ။ ဥပမာ အများသုံး data space ရှိ စီမံကိန်း domain သည် အောက်ပါအတိုင်း သုံးသင့်သည်:
 
@@ -486,7 +486,7 @@ alice@universal
 
 တိကျသော အကောင့်အမျိုးအစား လိုအပ်သည့် field များတွင် စံ I105 အကောင့် ID များကိုသာ သုံးဆဲဖြစ်သည်။ Alias များကို စံအကောင့် ID သို့ ဖြေရှင်းပေးသော လူဖတ်လွယ် ချည်နှောင်မှုများအဖြစ် သဘောထားပါ။
 
-## 8. Data space အသစ် ဖန်တီးပြင်ဆင်ခြင်း {#_8-provision-a-new-data-space}
+## 8. Data space အသစ် ဖန်တီးပြင်ဆင်ခြင်း {#_8-provision-a-new-dataspace}
 
 Data space အသစ်သည် အော်ပရေတာနှင့် အုပ်ချုပ်မှုဆိုင်ရာ အပြောင်းအလဲဖြစ်သည်။ အများသုံး Torii ၏ endpoint သည် ပြင်ဆင်သတ်မှတ်ထားသော data space များသို့ အသွားအလာကို ပို့နိုင်သော်လည်း မသိသော data space alias များကို ငြင်းပယ်မည်။
 
@@ -529,7 +529,7 @@ metadata = {}
 [[nexus.dataspace_catalog]]
 alias = "payments"
 id = 20
-description = "Payments dataspace"
+description = "Payments data space"
 fault_tolerance = 1
 
 [[nexus.routing_policy.rules]]
@@ -537,12 +537,12 @@ lane = 5
 dataspace = "payments"
 [nexus.routing_policy.rules.matcher]
 instruction = "transfer::asset"
-description = "Route asset transfers to the payments dataspace"
+description = "Route asset transfers to the payments data space"
 ```
 
 Operator လက်ခံမှုမှာ အောက်ပါဂိတ်တွေ ပါဝင်သင့်ပါတယ်။
 
-- ဖြေရှင်းတွက်ချက်ပြီးဖြစ်သော နိုဒ်ပြင်ဆင်သတ်မှတ်ချက်အပေါ် `iroha3d --sora --config <config.toml> --trace-config` အောင်မြင်သည်
+- ဖြေရှင်းတွက်ချက်ပြီးဖြစ်သော နိုဒ်ပြင်ဆင်သတ်မှတ်ချက်အပေါ် `iroha3d --sora --config <config.toml> --check-config` အောင်မြင်သည်
 - ထုတ်လုပ်ထားသော သို့မဟုတ် ပြန်လည်သုံးသပ်ထားသော manifest ကို ဟက်ရှ်များ၊ လက်မှတ်များနှင့်အတူ မော်ကွန်းတင်ထားခြင်း
 - မီးခိုးစမ်းသပ်မှု Taira ကို Minamoto တိုးမြှင့်ခြင်းတစ်ခုခုမတိုင်မီ ဖြတ်သန်းပါ။
 - ပြောင်းလဲပြီးနောက် `/status` ကတ်တလောက်တွင် ရည်ရွယ်ထားသော lane နှင့် data space ကို ဖော်ပြခြင်း

@@ -1,9 +1,9 @@
 ---
 translation_locale: ja
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 8a8fd0d29d4c1c323b457595653077564ad100f397ea2f4b059b35451b76aa44
+translation_source_hash: ae0604c0e82db0a908e7ffc44c97f56b58fe2b5bb87553ded48562e8f9fcd36a
 translation_status: machine-validated
-translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # 代替可能資産 {#fungible-assets}
 
@@ -15,7 +15,7 @@ translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-na
 
 - `curl`、`jq`、Python 3.11以降、Node.js 24、そして現在の `iroha` および `kagami` CLIs。
 - 読み取り専用 Taira アクセス。
-- 書き込みの手順には、[Iroha を起動](/ja/get-started/launch-iroha.md) と同じく `kagami localnet generate --peers 4 --out-dir ./localnet` で生成し、`--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa` を追加したローカルネットワークを使用します。これにより、`./localnet/client.toml` と、`http://127.0.0.1:8080` 上の Torii が提供されます。
+- 書き込みの手順には、`kagami localnet generate --peers 4 --out-dir ./localnet` で生成し、`--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa` を追加したローカルネットワークを使用します。これにより、`./localnet/client.toml` と、`http://127.0.0.1:8080` 上の Torii が提供されます。
 
 ## ステップ {#steps}
 

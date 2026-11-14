@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /help/configuration-issues.md
-translation_source_hash: 9d153d9cb8ce0341b35ba5a7e3823198e58464768e2a9a92ff8a5723f85e9351
+translation_source_hash: cfd86e847651e71d40e8857c0531f9721ef94ea3c65bd80b6f6951081488f39d
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -31,7 +31,7 @@ Canlı şəbəkədə blokçeyn genesis-ini əvəz etmək üçün ümumi avtomati
 
 Əgər əvvəllər çoxlu hash ilə işləməyibsinizsə, sağ tərəfin açar baytlarının onaltılıq təmsili olmadığı qənaətinə gəlmək təbii olar (hər biri iki simvol) bayt), lakin ASCII (və ya UTF-8) kimi kodlanmış baytlardır və həm `public_key`, həm də `private_key` instansiyalaşdırmasında string literal üzərində `from_hex`-ı çağırın.
 
-Eyni zamanda, sətir ədədində `PrivateKey::try_from_str` çağırmağın yalnız düzgün açarı verəcəyini fərz etmək təbii olar. Beləliklə, əgər açarın bit sayını yanlış təyin etsəniz, məsələn, 32 bayt əvəzinə 64, bu, səhv mesajı verər.
+Eyni zamanda, sətir literalını `str::parse::<PrivateKey>()` ilə təhlil etməyin yalnız düzgün açarı verəcəyini fərz etmək təbii olar. Beləliklə, əgər açarın bit sayını yanlış təyin etsəniz, məsələn, 32 bayt əvəzinə 64, bu, səhv mesajı verər.
 
 Hər iki bu fərziyyə yanlışdır. Təəssüf ki, səhv mesajları bu xüsusi növ uğursuzluğu düzəltməkdə kömək etmir.
 
@@ -39,7 +39,7 @@ Düzəltmək üçün: `hex_literal` istifadə edin. Bu həm də çirkin simvolla
 
 ::: warning
 
-Hətta `try_from_str` tətbiqi də verilmiş stringin etibarlı `PrivateKey` olub olmadığını yoxlaya bilməz və əgər yoxdursa, sizi xəbərdar edə bilməz.
+Hətta `FromStr` tətbiqi də verilmiş stringin etibarlı `PrivateKey` olub olmadığını yoxlaya bilməz və əgər yoxdursa, sizi xəbərdar edə bilməz.
 
 O, bəzi açıq səhvləri aşkar edəcək, məsələn, əgər sətir etibarsız simvol ehtiva edirsə. Lakin, çoxlu açar formatlarını dəstəkləməyi nəzərdə tutduğumuz üçün, o, başqa çox bir şey edə bilmir. O, həmçinin açarın verilmiş hesab üçün düzgün şəxsi açar olub-olmadığını deyə bilməz, əgər siz göstəriş göndərməsəniz.
 

@@ -1,9 +1,9 @@
 ---
 translation_locale: ar
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: f1f922b9820587cd4b599e7407698a47d468616670fee2922e4028147bc3e9b0
+translation_source_hash: 804ef15b3d5ecdfae9fd559d3f312772571938ed9872f4adbd251baa3471e4e2
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Kotlin، Android، وجافا {#kotlin-android-and-java}
 
@@ -15,7 +15,7 @@ Kotlin SDK هو الكومة الافتراضية للعميل لتطبيقات 
 | --- | --- | --- |
 | `org.hyperledger.iroha.sdk:core-jvm` | JAR |النقي Kotlin/JVM Norito، نموذج البيانات، التشفير، المعاملة، Torii، وكود البروتوكول|
 | `org.hyperledger.iroha.sdk:client-android` | AAR | Android مخزن المفاتيح، قياس بيانات الجهاز، ودمج العملاء المدعوم بـ JNI|
-| `org.hyperledger.iroha.sdk:offline-wallet-android` | AAR | Android محفظة غير متصلة بالنقل والتكامل مبنية على `client-android` |
+| `org.hyperledger.iroha.sdk:kagemusha-wallet-android` | AAR | Android محفظة غير متصلة بالنقل والتكامل مبنية على `client-android` |
 
 لم يتم نشر القطع الأثرية بعد على Maven Central. قم ببنائها ونشرها محليًا من نسخة المصدر المثبتة Iroha:
 
@@ -36,21 +36,21 @@ dependencies {
     // Android client features:
     // implementation("org.hyperledger.iroha.sdk:client-android:0.1.0")
     // Android offline-wallet features:
-    // implementation("org.hyperledger.iroha.sdk:offline-wallet-android:0.1.0")
+    // implementation("org.hyperledger.iroha.sdk:kagemusha-wallet-android:0.1.0")
 }
 ```
 
-`core-jvm` لا يحتوي على أي تبعيات لـ Android. احتفظ برمز العميل ومخزن المفاتيح Android في `client-android`، واستخدم `offline-wallet-android` لتدفقات المحفظة غير المتصلة والعمليات الخاصة بـ Android-only و JNI.
+`core-jvm` لا يحتوي على أي تبعيات لـ Android. احتفظ برمز العميل ومخزن المفاتيح Android في `client-android`، واستخدم `kagemusha-wallet-android` لتدفقات المحفظة غير المتصلة والعمليات الخاصة بـ Android-only و JNI.
 
 ## Kotlin والتوافق مع جافا {#kotlin-and-java-compatibility}
 
-العامة API هي Kotlin-أول وتوفر التوافق مع جافا حيث يحتاج المتصلون بـ JVM إليه. يتم عكس التغييرات المكافئة في تنفيذ `java/` المقابل. يجب أن تبدأ التكاملات الجديدة لـ Android بالأدوات Kotlin أعلاه.
+واجهة API العامة تضع Kotlin أولًا، وهي التنفيذ القياسي للمستدعين من Java؛ وتختبرها مباشرةً اختباراتُ المستهلكين المكتوبة بمصدر Java في `core-jvm`. وتحتوي شجرة `java/` على تنفيذات مكررة يجري سحبها لصالح وحدات Kotlin. يجب أن تبدأ التكاملات الجديدة لـ Android بعناصر Kotlin المذكورة أعلاه.
 
 جميع وحدات Kotlin تفرض توافق JDK 8 API في وقت التجميع مع `-Xjdk-release=8`، على الرغم من أن سلسلة أدوات البناء نفسها تستخدم JDK 21. لا تستخدم JDK 9+ APIs في كود SDK.
 
 ## بناء واختبار {#build-and-test}
 
-قم بتشغيل اختبارات JVM المحمولة:
+شغّل اختبارات JVM باستخدام مكتبة `connect_norito_bridge` المبنية من المصدر نفسه في `IROHA_NATIVE_LIBRARY_PATH` و`kotlin-fixture-gen` في `IROHA_KOTLIN_FIXTURE_GEN_BIN`، كما هو موضح في README الخاص بـ Kotlin SDK؛ فبدونهما تفشل الاختبارات المعتمدة على المكونات الأصلية:
 
 ```bash
 cd kotlin
@@ -61,7 +61,7 @@ cd kotlin
 
 ```bash
 ./gradlew :client-android:assembleRelease \
-  :offline-wallet-android:assembleRelease --quiet
+  :kagemusha-wallet-android:assembleRelease --quiet
 ```
 
 ## التغطية الحالية {#current-coverage}

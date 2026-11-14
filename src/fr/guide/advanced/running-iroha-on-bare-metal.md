@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -34,7 +34,7 @@ Générez un localnet à quatre pairs Iroha 3 :
 target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-Le répertoire de sortie contient les fichiers générés `genesis.json`, `genesis.signed.nrt`, réseau pair `config.toml`, `client.toml`, les scripts d'aide, et un `README.md` généré avec les commandes exactes pour ce lot.
+Le répertoire de sortie contient les fichiers générés `genesis.json`, `genesis.signed.nrt`, `genesis.expected_hash`, un `peerN.toml` par validateur, `client.toml`, les scripts `start.sh` et `stop.sh`, et un `README.md` généré avec les commandes exactes pour ce lot.
 
 ## 3. Démarrer les pairs réseau {#_3-start-peers}
 
@@ -44,7 +44,7 @@ Pour un réseau local jetable généré, utilisez le script généré :
 ./localnet/start.sh
 ```
 
-Si vous devez connecter chaque pair réseau à un gestionnaire de processus tel que systemd, utilisez la commande de lancement enregistrée dans `./localnet/README.md` pour chaque pair réseau. Gardez séparés le `config.toml`, la clé privée, le répertoire de stockage et les ports de chaque pair réseau.
+Si vous devez connecter chaque pair réseau à un gestionnaire de processus tel que systemd, suivez la commande propre à chaque pair dans `./localnet/start.sh` : exécutez `iroha3d --config <bundle>/peerN.toml` depuis `<bundle>/state/peerN`, et ne passez `--sumeragi-assert-fresh-key` qu'au premier démarrage de ce pair. Gardez séparés le `peerN.toml`, la clé privée, le répertoire de stockage et les ports de chaque pair réseau.
 
 ## 4. Exploiter le réseau {#_4-operate-the-network}
 

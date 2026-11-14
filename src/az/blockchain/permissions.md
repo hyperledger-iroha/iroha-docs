@@ -1,9 +1,9 @@
 ---
 translation_locale: az
 translation_source: /blockchain/permissions.md
-translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
+translation_source_hash: 7993d14839218fd3394d52dbcce264bffea32394f54e25dd261cd060c54f1fe1
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # İcazələr {#permissions}
 
@@ -72,14 +72,20 @@ Rol qeydiyyatdan keçirildikdən sonra, Mouse onu Alice-ə verə bilər:
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```
 
 ## İcazə Yoxlayıcıları {#permission-validators}
 
-İcazələr yalnız tələb olunan icazə tokeninə malik olan hesabların qorunan əməliyyatı yerinə yetirməsinə imkan vermək üçün mövcuddur. Varsayılan icraçı təlimat, sorğu və ifadə icrası zamanı icazələri yoxlayır.
+İcazələr yalnız tələb olunan icazə tokeninə malik olan hesabların qorunan əməliyyatı yerinə yetirməsinə imkan vermək üçün mövcuddur. Defolt icraçı icazələri əməliyyat və təlimat icrası, həmçinin sorğu validasiyası zamanı yoxlayır.
 
 Əsas doğrulayıcı səthi blokçeyn dəftər sahəsinə görə qruplaşdırılır:
 
@@ -96,7 +102,7 @@ Dəqiq token siyahısı [İcazə Tokenləri istinadı](/az/reference/permissions
 
 İcazə yoxlamaları aktiv icraçı tərəfindən həyata keçirilir. Varsayılan icraçı daxili icazə yoxlayıcıları və token təriflərini təmin edir, və şəbəkə istifadə etdiyi icraçını yeniləməklə siyasəti dəyişə bilər.
 
-Təsdiqləyicilər təsdiq hökmü verirlər. Bir təsdiqləyici əməliyyatın icazəsini verə, səbəblə rədd edə, yaxud əməliyyat onun səlahiyyət sahəsinin xaricindədirsə onu ötürə bilər. Seçilmiş hakim bu hökmərin birləşməsini təmin edərək təlimatın, sorğunun və ya ifadənin davam edib-etməyəcəyinə qərar verir.
+İcraçı əməliyyata ya icazə verir, ya da onu `ValidationFail` səbəbi ilə rədd edir. Rədd edilmiş təlimat öz əməliyyatının da rədd edilməsinə səbəb olur, rədd edilmiş sorğu isə xətanı çağırana qaytarır.
 
 ## Dəstəklənən Sorğular {#supported-queries}
 

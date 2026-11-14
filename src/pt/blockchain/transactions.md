@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/transactions.md
-translation_source_hash: 91c06ab61c7f8ec96554bc89b31b2f281bb3a7d7edd484defe61dcde5a3fb710
+translation_source_hash: d9227effcdb4d54ac76f6288ba213de20f2574e1585e13b96a5202c44b69f3be
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -71,7 +71,7 @@ Iroha possui dois fluxos de trabalho de transações offline:
 - A assinatura offline cria uma transação assinada normal enquanto o dispositivo de assinatura está desconectado. A transação não é processada até que um cliente online envie o contêiner de dados assinado para Torii, portanto, ainda precisa do ID correto da cadeia, do principal de autorização, das permissões e das taxas, e tempo de vida da transação.
 - **Dinheiro offline Kagemusha** carrega valor em uma carteira cadastrada com proteção por hardware enquanto ela está online, permite pagamentos entre carteiras quando ambas estão offline e descarrega o valor restante para uma conta no registro quando a carteira volta a ficar online.
 
-Torii expõe uma única rota Kagemusha, `POST /v1/kagemusha/enrollment`. Ela aceita frames de cadastro `application/x-norito` autenticados pela conta e retorna respostas privadas que não devem ser armazenadas em cache. O lado do registro nesse ciclo de vida usa transações assinadas comuns que contêm uma instrução `KagemushaWalletLedgerV1`:
+Torii expõe uma única rota de mutação Kagemusha, `POST /v1/kagemusha/enrollment`. Ela aceita frames de cadastro `application/x-norito` autenticados pela conta e retorna respostas privadas que não devem ser armazenadas em cache. As rotas de leitura do SDK assinadas pela conta em `/v1/kagemusha/{scheme}/wallets/{wallet}/` retornam recibos de Load e evidências de finalização; elas não estão listadas em `/openapi.json`. O lado do registro nesse ciclo de vida usa transações assinadas comuns que contêm uma instrução `KagemushaWalletLedgerV1`:
 
 |Ação|Propósito|
 | --- | --- |
@@ -88,13 +88,21 @@ O fluxo típico é:
 3. Troque e verifique pagamentos entre carteiras localmente enquanto estiverem offline e persista o estado da carteira antes de confirmar cada transferência.
 4. Quando a carteira voltar a ficar online, envie sua solicitação Unload e aguarde a finalização definitiva.
 
+O Kagemusha não está qualificado para lançamento: continuam pendentes a qualificação monetária em operação real e o registro, a ativação e o pagamento de telefones em dispositivos físicos.
+
 O livro-razão da blockchain não pode observar uma transferência offline conflitante até que o estado da nota retorne através do ciclo de vida online. Portanto, a política da carteira e do operador deve impor limites de valor, validade, emissores aceitos, armazenamento local durável e janelas de reconciliação.
 
 Aqui está um exemplo de criação de uma nova transação com a instrução `Grant`. Nesta transação, Mouse está concedendo a Alice a função especificada (`role_id`). Verifique [o exemplo completo](./permissions.md#register-a-new-role).
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```

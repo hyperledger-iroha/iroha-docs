@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: 37e8be9b07a40e5c6b841a47b016320e42079853433fb3e53937e4021dc1304f
+translation_source_hash: 753ce1b5e0de4eae56b38e77962566b23fee56d4662a432a7bbe6ea807261422
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -29,20 +29,16 @@ targets: [
 ]
 ```
 
-Ilova uchun yo'lni o'zgartiring. Joriy `examples/ios/ConnectMinimalApp` yo'lini mavjud bo'lgani kabi nusxa ko'rsatmang; bu manifest `../../IrohaSwift` ni `examples/IrohaSwift` ga aylantiradi.
+Ilovangiz uchun yo‘lni moslang. `examples/ios/ConnectMinimalApp/Package.swift` xuddi shu bog‘liqlikni `../../../IrohaSwift` nisbiy yo‘li bilan ko‘rsatadi.
 
-To'plamni hal qilishdan oldin, ko'prik ish joyining ildizida mavjudligiga ishonch hosil qiling:
+Paketni hal qilishdan oldin joriy nativ ko‘prikni yig‘ing. Mahalliy ishlab chiqish va testlar uchun buni ish maydoni ildizidan ishga tushiring:
 
 ```bash
 cd /path/to/iroha
-make bridge-xcframework
+python3.12 scripts/test_swift_local.py
 ```
 
-Bu `dist/NoritoBridge.xcframework` ni hosil qiladi; `IrohaSwift/Package.swift` uni `../dist/NoritoBridge.xcframework` deb ataydi.
-
-## CocoaPods {#cocoapods}
-
-Kod bazasida `IrohaSwift/IrohaSwift.podspec` ham bor. `IrohaSwift` podi Swift 5.9 va iOS 15-ni maqsad qiladi. Podspec Swift manbalarini asosiy repozitoriydan oladi; tranzaksiya kodlash, Ed25519-dan tashqari imzolash va Connect kriptografiyasi uchun native bridge baribir mavjud va bog'langan bo'lishi kerak.
+Reliz yig‘malari `dist/NoritoBridge.xcframework` ni `make bridge-xcframework` yordamida hosil qiladi; bu `SOURCE_DATE_EPOCH`, `NORITO_BRIDGE_OUT_DIR`, `NORITO_BRIDGE_BUILD_DIR`, `NORITO_BRIDGE_ARCHIVE_OUTPUT` va `MOBILE_SDK_CARGO_LOCKFILE` ni talab qiladi. `IrohaSwift/Package.swift` ko‘prikka `../dist/NoritoBridge.xcframework` deb murojaat qiladi.
 
 ## Tez ishga tushirish {#quickstart}
 
@@ -51,13 +47,13 @@ import Foundation
 import IrohaSwift
 
 let torii = ToriiClient(baseURL: URL(string: "http://127.0.0.1:8080")!)
-let sdk = IrohaSDK(toriiClient: torii)
+let sdk = IrohaSDK(baseURL: torii.baseURL)
 
 let keypair = try Keypair.generate()
 let accountId = try keypair.accountId()
 
 if #available(iOS 15.0, macOS 12.0, *) {
-    let balances = try await torii.getAssets(accountId: accountId)
+    let balances = try await torii.accountAssets(of: accountId).page()
     print("balances:", balances)
 }
 ```
@@ -88,7 +84,7 @@ Transaksiyani tuzish va jo'natish uchun `IrohaSDK` yordamchisidan foydalaning. U
 
 ```swift
 let transfer = TransferRequest(
-    chainId: "00000000-0000-0000-0000-000000000000",
+    networkId: try NetworkId(literal: "<exact-network-id>"),
     authority: accountId,
     assetDefinitionId: "66owaQmAQMuHxPzxUN3bqZ6FJfDa",
     quantity: "1",
@@ -102,15 +98,15 @@ if #available(iOS 15.0, macOS 12.0, *) {
         transfer: transfer,
         keypair: keypair
     )
-    print(status.content.status.kind)
+    print(status.status.kind)
 }
 ```
 
-`TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest`, va `UnshieldRequest` kanonik hisobni tasdiqlash IDs va kanonik prefikssiz Base58 aktivlari ta'rifi IDs imzolashdan oldin.
+`TransferRequest`, `MintRequest` va `BurnRequest` imzolashdan oldin kanonik hisob identifikatorlarini va prefikssiz kanonik Base58 aktiv ta’rifi identifikatorlarini tekshiradi.
 
 ## Mahalliy eskrou {#native-escrow}
 
-Swift bozor va anonim eskrov ko'rsatmalarini Norito JSON yordamchilari orqali `NativeEscrowInstructionBuilders` yoki ekvivalent `IrohaSDK.build*Escrow*` yordamchilari sifatida yaratadi. Misollar uchun [Mahalliy aktiv eskrousi](/uz/blockchain/escrow.md#swift-and-ios), anonim dalillar maydonlari va nizolarni hal qilish ruxsatnomasi tokenini ko'ring.
+Swift bozor eskrousi ko‘rsatmalarini `NativeEscrowInstructionBuilders` yoki ularga teng `IrohaSDK.build*Escrow*` yordamchilari orqali Norito JSON foydali yuklari sifatida yaratadi. Misollar va nizoni hal qiluvchi ruxsat tokeni uchun [Mahalliy aktiv eskrousi](/uz/blockchain/escrow.md#swift-and-ios) bo‘limiga qarang.
 
 ## Imzolash {#signing}
 
@@ -143,8 +139,14 @@ let request = try ConnectClient.makeWebSocketRequest(
 let client = ConnectClient(request: request)
 await client.start()
 
-let session = ConnectSession(sessionID: sessionID, client: client)
 let keyPair = try ConnectCrypto.generateKeyPair()
+let session = try ConnectSession(
+    networkID: try NetworkId(literal: "<exact-network-id>"),
+    appPublicKey: keyPair.publicKey,
+    nonce: nonce,
+    relayToken: "<token>",
+    client: client
+)
 ```
 
 `ConnectSession` ochish va yopish boshqaruvlarini, shifrlangan konvertlarni o‘qishni, yo‘nalish kalitlarini, oqim boshqaruvini, hodisa oqimlarini, balans oqimlarini va diagnostika jurnallarini boshqaradi.
@@ -154,7 +156,7 @@ let keyPair = try ConnectCrypto.generateKeyPair()
 Swift manbai hozirda quyidagilarni o'z ichiga oladi:
 
 - `ToriiClient` hisoblar, aktivlar, taxalluslar, kuzatuvchi sahifalari, RWA, shartnomalar, ko‘p imzo, boshqaruv, obunalar, ma’lumotlar mavjudligi, maxfiy aktivlar, tugun va bajarish muhiti holati, sog‘lomlik, ko‘rsatkichlar hamda SSE oqimlari uchun HTTP yordamchilarini taqdim etadi
-- `IrohaSDK` tranzaksiya quruvchilari va transfer, mint, yoqish, shield, shieldsiz o'tkazish, ZK transfer, ZK aktivlarni ro'yxatga olish, metadatalar, identifikator talablari, multisig ro'yxatdan o'tkazish va boshqaruv yo'l-yo'riqlariga ko'maklashuvchilar
+- `IrohaSDK` tranzaksiya quruvchilari hamda o‘tkazma, chiqarish, yoqish, ZK aktivlarni ro‘yxatdan o‘tkazish, metama’lumotlar, identifikator da’volari, multiimzo ro‘yxatdan o‘tkazish, kontraktni joylashtirish va boshqaruv byulletenlari uchun yuborish/holatni so‘rash yordamchilari
 - `PendingTransactionQueue` va `FilePendingTransactionQueue` orqali amalga oshirilayotgan operatsiyalar safida qo'llab-quvvatlash
 - `AccountAddress` va `AccountId` orqali hisob-kitob manzili va I105 yordamchilari
 - Ed25519, secp256k1, ML-DSA, BLS, GOST va SM2 imzolash yuzalari, agar kerak bo'lsa, mahalliy ko'prikni qo'llab-quvvatlash
@@ -170,7 +172,6 @@ Umumiy amalga oshirish uchun `IrohaSwift/Sources/IrohaSwift` va bir xil manba te
 ## Ma'lumotlar manbai {#source-references}
 
 - `IrohaSwift/Package.swift`
-- `IrohaSwift/IrohaSwift.podspec`
 - `IrohaSwift/Sources/IrohaSwift/ToriiClient.swift`
 - `IrohaSwift/Sources/IrohaSwift/TxBuilder.swift`
 - `IrohaSwift/Sources/IrohaSwift/TransactionEncoder.swift`

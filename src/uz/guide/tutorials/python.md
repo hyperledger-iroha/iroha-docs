@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /guide/tutorials/python.md
-translation_source_hash: bd9ff4a38229cbdabbd77e21fe31a770f9213341d7db73a75ed0bd914c761849
+translation_source_hash: b862cfaa66da6dee6a0f9e057f42928270ed1738945b524ef4782ffb7e489f1d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -56,7 +56,7 @@ client = create_torii_client("https://taira.sora.org")
 
 # Public reads do not need an authority or private key.
 status = client.request_json("GET", "/status", expected_status=(200,))
-accounts = client.list_accounts_typed(limit=5)
+accounts = client.accounts.list(limit=5)
 
 print(status["build"]["version"])
 for account in accounts.items:
@@ -86,7 +86,7 @@ from iroha_python import (
 
 TORII_URL = "https://taira.sora.org"
 TAIRA_NETWORK_ID = NetworkId.parse(
-    "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+    "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 )
 AUTH_TOKEN = None
 
@@ -104,9 +104,9 @@ canonical_auth = ToriiCanonicalRequestAuth(
     signer=alice_pair.sign,
 )
 
-ROSE_DEFINITION = "rose#wonderland"
+ROSE_DEFINITION = "<rose-asset-definition-id>"  # canonical unprefixed Base58
 ROSE_ASSET = "<rose-asset-id>"
-BADGE_NFT = "badge$wonderland"
+BADGE_NFT = "badge$wonderland.universal"
 
 APP_METADATA = {"source": "python-docs"}
 # Torii replaces the empty maxima with an exact, validated live fee quote before
@@ -173,20 +173,16 @@ Yozuvlarni jo'natishdan oldin, ma'muriyat hisob raqamiga to'g'ri to'lov aktivlar
 
 ```python
 FEE_ASSET_DEFINITION = "6TEAJqbb8oEPmLncoNiMRbLEK6tw"
-# The faucet returns the concrete account asset ID to check here.
-FEE_ASSET_ID = "<fee-asset-id-from-faucet-response>"
-
 # Fail before submitting if the signer cannot pay gas.
-fee_assets = client.list_account_assets_typed(
-    alice,
+fee_assets = client.accounts.assets(alice).list(
+    filter=F.asset == FEE_ASSET_DEFINITION,
     limit=10,
-    asset_id=FEE_ASSET_ID,
 )
 if not fee_assets.items:
     raise RuntimeError("fund the authority account with the Taira fee asset first")
 ```
 
-Favqulodda ma'lumotlar bilan taqqoslash uchun beton `asset_id` ni qaytarib beradi. To'g'ri, jonli quote `FEE_ASSET_DEFINITION` to'laydi; muomala ushbu aktivni metadata orqali tanlashmaydi.
+Hisob balanslarini faucet mablag‘ o‘tkazgan komissiya aktivi ta’rifi bo‘yicha filtrlang. Jonli komissiya hisobi `FEE_ASSET_DEFINITION` bo‘yicha undirilishini tekshiring; tranzaksiya bu aktivni metama’lumotlar orqali tanlamaydi.
 
 Ilova metadatalari fakultativ bo'lib, hech qanday to'lov semantikasiga ega emas:
 
@@ -216,10 +212,10 @@ client = create_torii_client("https://taira.sora.org")
 status = client.request_json("GET", "/status", expected_status=(200,))
 parameters = client.request_json("GET", "/v1/parameters", expected_status=(200,))
 
-# Typed helpers parse pagination and records into dataclasses.
-accounts = client.list_accounts_typed(limit=1)
-domains = client.list_domains_typed(limit=1)
-definitions = client.list_asset_definitions_typed(limit=1)
+# Collection pages parse cursors and rows into typed records.
+accounts = client.accounts.list(limit=1, include_total=True)
+domains = client.domains.list(limit=1, include_total=True)
+definitions = client.asset_definitions.list(limit=1, include_total=True)
 
 # These calls inspect live node subsystems without mutating state.
 time_now = client.get_time_now()
@@ -240,10 +236,10 @@ Yozilgan yordamchilar mavjud bo'lganda afzalroq: ular Python qiymatlarini normal
 
 |Ta'lim oilasi |Python yuzasi |
 | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|Ro ' yxatga olish | `register_account`, `register_asset_definition_numeric`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` genesis/bootstrap asbob-uskunalari uchun ajratilgan |
+|Ro ' yxatga olish | `register_account`, `register_asset_definition`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` genesis/bootstrap asbob-uskunalari uchun ajratilgan |
 |Roʻyxatdan oʻtish |`unregister_trigger`; boshqa variantlar uchun `Instruction.from_json` ni ishlatish |
-|Mint/Burn |`mint_asset_numeric`, `burn_asset_numeric`, `mint_trigger_repetitions`, `burn_trigger_repetitions` |
-|Oʻtkazish | `transfer_asset_numeric`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa`                                                              |
+|Mint/Burn |`mint_asset_quantity`, `burn_asset_quantity`, `mint_trigger_repetitions`, `burn_trigger_repetitions` |
+|Oʻtkazish | `transfer_asset_quantity`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa`                                                              |
 |Metadotlar va nazoratlar |`set_account_key_value`, `remove_account_key_value`, `set_rwa_controls`, `set_rwa_key_value`, `remove_rwa_key_value` |
 |RWA hayot davri | `merge_rwas`, `redeem_rwa`, `freeze_rwa`, `unfreeze_rwa`, `hold_rwa`, `release_rwa`                                                                                                         |
 |ExecuteTrigger |`execute_trigger` |
@@ -251,7 +247,7 @@ Yozilgan yordamchilar mavjud bo'lganda afzalroq: ular Python qiymatlarini normal
 |Asosiy aktivni qulflash |`open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, `expire_asset_lock` va mijozning `*_and_wait` yordamchilari |
 |Grant/Revoque, SetParameter, Log, Custom, Upgrade va kamroq keng tarqalgan ro'yxatga olish / ro'yxatdan o'tish variantlari |`Instruction.from_json` yoki `TransactionBuilder.add_instruction_json` bilan kanonik `InstructionBox` JSON |
 
-Garov usulidagi shartli to'lovlar uchun [Mahalliy aktiv eskrousi](/uz/blockchain/escrow.md#python-asset-locks)-ni ko'ring. Python hozirda umumiy aktivlarni qulflash uchun birinchi darajali yordamchilarni kashf etadi; bozor va anonim garov yordamchilari hali birinchi darajadagi Python usullari emas.
+Eskrou uslubidagi shartli to‘lovlar uchun [Mahalliy aktiv eskrousi](/uz/blockchain/escrow.md#python-asset-locks) bo‘limiga qarang. Python hozirda umumiy aktiv qulflari uchun birinchi darajali yordamchilarni taqdim etadi; bozor va shartli eskrou yordamchilari hali birinchi darajali Python usullari emas.
 
 ### Domenlarni o'rnatish, keyin hisob va aktivlarni ro'yxatdan o'tkazish {#set-up-domains-then-register-accounts-and-assets}
 
@@ -264,12 +260,13 @@ Domenni o'rnatish rejasi amalga oshgandan so'ng, domen egalikidagi ob'ektlarni r
 submit(
     Instruction.register_account(alice, {"display_name": "Alice"}),
     Instruction.register_account(bob, {"display_name": "Bob"}),
-    Instruction.register_asset_definition_numeric(
+    Instruction.register_asset_definition(
         ROSE_DEFINITION,
-        owner=alice,
+        owning_domain=None,
+        balance_scope_policy="Global",
+        name="Rose",
         scale=2,
         mintable="Infinitely",
-        confidential_policy="TransparentOnly",
         metadata={"symbol": "ROS"},
     ),
 )
@@ -283,13 +280,13 @@ Ushbu qo'ng'iroqlar mavjud aktivdan ID foydalanadi. Avval aktivning ta'rifini ro
 
 ```python
 # Increase the account's asset balance.
-submit(Instruction.mint_asset_numeric(ROSE_ASSET, "100.00"))
+submit(Instruction.mint_asset_quantity(ROSE_ASSET, "100.00"))
 
 # Move part of the balance to another account.
-submit(Instruction.transfer_asset_numeric(ROSE_ASSET, "25.50", bob))
+submit(Instruction.transfer_asset_quantity(ROSE_ASSET, "25.50", bob))
 
 # Decrease the remaining balance.
-submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
+submit(Instruction.burn_asset_quantity(ROSE_ASSET, "10.00"))
 ```
 
 ### Oʻtkazilgan mulkdorlik {#transfer-ownership}
@@ -298,7 +295,7 @@ O'z mulkdorligini o'tkazishni o'zgartirish kim domeni nazorat qiladi, aktivni be
 
 ```python
 # The first argument is the current owner; the last is the new owner.
-submit(Instruction.transfer_domain(alice, "wonderland", bob))
+submit(Instruction.transfer_domain(alice, "wonderland.universal", bob))
 submit(Instruction.transfer_asset_definition(alice, ROSE_DEFINITION, bob))
 submit(Instruction.transfer_nft(alice, BADGE_NFT, bob))
 ```
@@ -380,7 +377,7 @@ draft.register_rwa(
 Ro'yxatdan o'tkazuvchi tranzaksiya commitlarini bajargandan so'ng, `FindRwas`, `/v1/rwas`, RWA hodisasi yoki hosil qilingan ID ni kashf etish uchun belgilangan qidiruvchi yo'lini ishlating:
 
 ```python
-page = client.list_rwas_typed(limit=20, offset=0)
+page = client.rwas.list(limit=20)
 
 for lot in page.items:
     print(lot.id)
@@ -464,7 +461,7 @@ Bajariluvchi qism boshqa ko'rsatmalar ketma-ketligidan iborat bo'lsa, triggerni 
 
 ```python
 # The trigger executable is just another instruction payload.
-reward = Instruction.mint_asset_numeric(ROSE_ASSET, "1")
+reward = Instruction.mint_asset_quantity(ROSE_ASSET, "1")
 
 # Time triggers run on a schedule once registered.
 register_hourly = Instruction.register_time_trigger(
@@ -619,7 +616,7 @@ Yaratilgan yoki shaffof bo'lmagan sinov ma’lumotlarini saqlashdan oldin JSON o
 
 ```python
 # Round trips are useful for validating fixtures generated by another tool.
-payload = Instruction.mint_asset_numeric(ROSE_ASSET, "1").to_json()
+payload = Instruction.mint_asset_quantity(ROSE_ASSET, "1").to_json()
 same_instruction = Instruction.from_json(payload)
 print(same_instruction.as_dict())
 ```
@@ -698,13 +695,13 @@ envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 Tiplangan so'rov yordamchilari xom JSON lug'atlari o'rniga ma'lumotlar sinflarini qaytarib beradi. Ular boshlashning eng oson usulidir, chunki SDK sahifalash va umumiy yozuv maydonlarini tahlil qiladi:
 
 ```python
-# Typed pages expose `.items` plus pagination metadata such as `.total`.
-accounts = client.list_accounts_typed(limit=25, sort="id")
+# Collection pages expose `.items`, `.next_cursor`, and `.total` (with include_total=True).
+accounts = client.accounts.list(limit=25, sort="id")
 for account in accounts.items:
     print(account.id, account.metadata)
 
-domains = client.list_domains_typed(limit=10)
-definitions = client.list_asset_definitions_typed(limit=10)
+domains = client.domains.list(limit=10, include_total=True)
+definitions = client.asset_definitions.list(limit=10, include_total=True)
 print(domains.total, definitions.total)
 ```
 
@@ -727,9 +724,9 @@ Hisobot inventariyasi yordamchilari tomonidan qabul qilingan hisob identifikator
 
 ```python
 # These helpers expect a canonical account ID or an alias the SDK can normalize.
-assets = client.list_account_assets_typed(alice, limit=10)
-transactions = client.query_account_transactions_typed(alice, limit=5)
-permissions = client.list_account_permissions_typed(alice, limit=20)
+assets = client.accounts.assets(alice).list(limit=10)
+transactions = client.accounts.transactions(alice).list(limit=5)
+permissions = client.accounts.permissions(alice).list(limit=20)
 
 print(len(assets.items), len(transactions.items), len(permissions.items))
 ```
@@ -739,13 +736,10 @@ print(len(assets.items), len(transactions.items), len(permissions.items))
 Streaming yordamchilari JSON fayl yuklarini andoza ravishda dekodlashadi. `with_metadata=True` ni o'tkazib yuboring, agar sizga SSE hodisa nomi, id, qayta urinib ko'rish va xom fayl yuklanishi kerak bo'lsa. Kanonik `/v1/events/sse` feed faqat jonli: u IDs takrorlamasini chiqarmaydi va takrorlash logini saqlamayapti, shuning uchun ushbu yordamchilar hech qanday kursor yoki takrorlash argumentiga ega emaslar. Qayta bog'lanish yangi obunalarni boshlaydi va bo'shliqga ega bo'lishi mumkin; to'liq kattalik tarixini talab qilganda `/v1/blocks/stream` dan foydalaning. Ushbu misollar jonli voqealarni kutadi, shuning uchun ularni oqim qo'llanilgan va faollashtirilgan nodga qarshi yuriting.
 
 ```python
-from iroha_python import DataEventFilter, SseStreamError
+from iroha_python import F, SseStreamError
 
-# Narrow the stream to proof events with the expected backend and proof hash.
-proof_filter = DataEventFilter.proof(
-    backend="halo2/ipa",
-    proof_hash_hex="deadbeef" * 8,
-)
+# Narrow the stream to proof events with the expected backend and call hash.
+proof_filter = (F.proof_backend == "halo2/ipa") & (F.proof_call_hash == "deadbeef" * 8)
 
 try:
     for event in client.stream_events(filter=proof_filter, with_metadata=True):
@@ -754,11 +748,7 @@ try:
 except SseStreamError as error:
     print(error.code, error.dropped_messages, error.replay_available)
 
-for event in client.stream_trigger_events(trigger_id="hourly_reward"):
-    print(event)
-    break
-
-for tx_event in client.stream_pipeline_transactions(status="Queued"):
+for tx_event in client.stream_events(filter=F.tx_status == "Queued"):
     print(tx_event)
     break
 ```
@@ -1261,8 +1251,7 @@ print(status["blocks"], status["txs_approved"])
 
 # Sumeragi and time-status endpoints use the operator client configured above.
 sumeragi = operator_client.get_sumeragi_status_typed()
-diagnostics = operator_client.get_sumeragi_diagnostics_typed()
-print(sumeragi.last_committed_height, diagnostics.tx_queue_saturated)
+print(sumeragi.committed_height, sumeragi.applied_height)
 
 time_now = client.get_time_now()
 time_status = operator_client.get_time_status()
@@ -1286,15 +1275,13 @@ Bu yordamchilar maqsad tugun tegishli SORA Nexus endpointlarini taqdim etganda m
 por_status = client.get_sorafs_por_status(manifest_hex="ab" * 32, status="verified")
 print(len(por_status))
 
-# UAID helpers inspect wallet/data-space bindings for one identifier.
-uaid = "aabb" * 16
+# UAID helpers inspect wallet and data space bindings for one identifier.
+uaid = "uaid:" + "aabb" * 16
 bindings = client.get_uaid_bindings_typed(uaid)
-manifests = client.list_space_directory_manifests_typed(
-    uaid,
-    dataspace=11,
-    status="active",
+manifests = client.uaid_manifests(uaid).list(
+    filter=(F.dataspace_id == 11) & (F.status == "Active"),
 )
-print(len(bindings.dataspaces), len(manifests.manifests))
+print(len(bindings.dataspaces), len(manifests.items))
 
 # Kaigi relay health is an operator snapshot, even though it is read-only.
 health = operator_client.get_kaigi_relays_health_typed()

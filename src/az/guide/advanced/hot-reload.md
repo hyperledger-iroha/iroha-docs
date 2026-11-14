@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
+translation_source_hash: 6edc0185196ab8e77ef8552723e05bf37cca1a088da86e2a43d441d58e779c11
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -32,4 +32,4 @@ Yeni genezis bloku üçün qovşağın yaddaşı boş olmalıdır. Eyni şəbək
 
 ## Fərdi Konfiqurasiyadan İstifadə Et {#use-custom-configuration}
 
-Cari şəbəkə həmkarı konfiqurasiyası TOML dir. Yaradılmış `config.toml`, `genesis.signed.nrt` və əlaqəli açar faylları konteynerdə gözlənilən yollarına bind mount edin və ya kopyalayın. şəkil, sonra isə şəbəkə həmkarını yenidən başladın. Yaradılmış faylları birlikdə saxlayın; müxtəlif Kagami işlərindən olan faylların qarışdırılması deserializasiya və ya konsensus uğursuzluqlarına səbəb ola bilər.
+Cari şəbəkə həmkarı konfiqurasiyası TOML formatındadır. Kagami hər təsdiqləyici üçün `genesis.signed.nrt`, `genesis.public_key` və `genesis.expected_hash` ilə bir `peerN.toml` yazır; `kagami docker` tərəfindən yaradılan Compose faylı onları konteynerə qoşur. Faylları əl ilə kopyalamaq əvəzinə onu yenidən yaradın, sonra şəbəkə həmkarını yenidən başladın. Yaradılmış faylları birlikdə saxlayın; müxtəlif Kagami işlərindən olan faylların qarışdırılması deserializasiya və ya konsensus uğursuzluqlarına səbəb ola bilər.

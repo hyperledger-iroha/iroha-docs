@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /reference/permissions.md
-translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -16,7 +16,6 @@ Les contrôles d'autorisation sont appliqués par le validateur d'exécution log
 |Jeton d'autorisation|Catégorie|Opération|
 | --- | --- | --- |
 | `CanManagePeers` |pair réseau|Enregistrez, désenregistrez ou gérez autrement les pairs du réseau.|
-| `CanManageLaneRelayEmergency` |pair réseau|Gérer les commandes de relais de voie d'urgence.|
 | `CanRegisterDomain` |Domaine|Enregistrer un domaine.|
 | `CanUnregisterDomain` |Domaine|Résilier l'enregistrement d'un domaine.|
 | `CanModifyDomainMetadata` |Domaine|Modifier les métadonnées du domaine.|
@@ -28,7 +27,7 @@ Les contrôles d'autorisation sont appliqués par le validateur d'exécution log
 | `CanMintAssetWithDefinition` |Actif|émission d'actifs pour une définition spécifique.|
 | `CanBurnAssetWithDefinition` |Actif|Brûler des actifs pour une définition spécifique.|
 | `CanTransferAssetWithDefinition` |Actif|Transférer des actifs pour une définition spécifique.|
-| `CanMintAsset` |Actif| émettre un solde d’actif spécifique. |
+| `CanMintAssetToAccount` |Actif| émettre un solde d’actif spécifique. |
 | `CanBurnAsset` |Actif|Brûler un solde d'actif spécifique.|
 | `CanTransferAsset` |Actif|Transférer un solde d'actif spécifique.|
 | `CanRegisterNft` | NFT |Enregistrer un NFT.|
@@ -43,7 +42,7 @@ Les contrôles d'autorisation sont appliqués par le validateur d'exécution log
 | `CanModifyTrigger` |Déclencheur|Modifier la configuration du déclencheur.|
 | `CanModifyTriggerMetadata` |Déclencheur|Modifier les métadonnées du déclencheur.|
 | `CanUpgradeExecutor` |Exécuteur|Mettre à jour l'exécuteur d'exécution du logiciel.|
-| `CanRegisterSmartContractCode` |Contrat intelligent|Enregistrer le code du contrat intelligent.|
+| `CanManageSmartContractCode` |Contrat intelligent|Supprimer les artefacts de code non référencés et déléguer les points d'entrée des contrats. Les comptes enregistrés peuvent créer des artefacts vérifiés sans cette permission.|
 | `CanManageFeeSponsorProgram` | SORA Nexus | Administrer les programmes détenus par le compte sponsor précisément désigné. |
 | `CanEnrollFeeSponsorProgram` | SORA Nexus | Gérer les bénéficiaires d’un programme sponsor précisément désigné. |
 

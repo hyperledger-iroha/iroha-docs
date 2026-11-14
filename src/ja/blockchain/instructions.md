@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/instructions.md
-translation_source_hash: ef50253c5478c9d8c3e14529dc4c2f3de67c344901c82c65be77ceb237a29598
+translation_source_hash: 86d253317376ad8d7a8c0e30689c7e0c0cd786af83299dd5ac1a904c653192f5
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -41,7 +41,7 @@ translation_engine: bing-translator-llm+reviewed-delta
 | [SetParameter](#setparameter)                             |チェーンパラメータ|                      |
 | [Grant/Revoke](#grant-revoke)                             | [役割、許可トークン](/ja/blockchain/permissions.md)                                                  |アカウントまたは役割|
 | [転送](#transfer)                                     |ドメイン、資産定義、数値資産、NFTs|アカウント|
-| [ネイティブエスクローと資産ロック](#native-escrow-and-asset-locks) |数値資産エスクロー、資産ロック、匿名エスクロー暗号コミットメント値|購入者、目的地、または紛争の分割|
+| [ネイティブエスクローと資産ロック](#native-escrow-and-asset-locks) |数値資産エスクロー、資産ロック、条件付きエスクロー|購入者、目的地、または紛争の分割|
 | [アトミックなプライベート金融取引決済](#atomic-private-settlement)   |ルートスコープの機密プロトコルデータグループ、ポリシーのローテーション、最終化されたバンドル、および中止マーカー|                      |
 |[ExecuteTrigger](#executetrigger)|トリガー|                      |
 | [Log/Custom/Upgrade](#other-instructions)                 |ログ、エグゼキュータ固有のペイロード、エグゼキュータのアップグレード|                      |
@@ -184,6 +184,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
+  --domain docs.universal \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
@@ -322,9 +323,9 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 
 ## ネイティブエスクローと資産ロック {#native-escrow-and-asset-locks}
 
-ネイティブエスクローの指示は、ブロックチェーン台帳プロトコルによって管理されるカストディで数値資産をロックします。これらは、マーケットプレイス形式の金融取引の清算、一般的な資産のロック、および匿名のシールドエスクローフローに使用されます。
+ネイティブエスクローの指示は、台帳が管理するプロトコルカストディで数値資産をロックします。これらは、マーケットプレイス形式の決済、一般的な資産のロック、およびアテスターに紐づく条件付きエスクローに使用されます。
 
-マーケットプレイスのエスクローは `OpenAssetEscrow`、`AcceptAssetEscrow`、`MarkEscrowPaymentSent`、`ReleaseAssetEscrow`、`CancelAssetEscrow`、`OpenEscrowDispute`、および `ResolveEscrowDispute` を使用します。一般的な資産ロックは `OpenAssetLock`、`DrawdownAssetLock` を使用します。 `CancelAssetLock` と `ExpireAssetLock`。匿名エスクローは、市場のライフサイクルを `OpenAnonymousAssetEscrow`、`AcceptAnonymousAssetEscrow`、`MarkAnonymousEscrowPaymentSent`、`ReleaseAnonymousAssetEscrow`、`CancelAnonymousAssetEscrow`、`OpenAnonymousEscrowDispute`、および `ResolveAnonymousEscrowDispute` と共に反映します。
+マーケットプレイスのエスクローは `OpenAssetEscrow`、`AcceptAssetEscrow`、`MarkEscrowPaymentSent`、`ReleaseAssetEscrow`、`CancelAssetEscrow`、`OpenEscrowDispute`、および `ResolveEscrowDispute` を使用します。一般的な資産ロックは `OpenAssetLock`、`DrawdownAssetLock`、`CancelAssetLock`、および `ExpireAssetLock` を使用します。条件付きエスクローは `OpenConditionalEscrow`、`AttestEscrowCondition`、および `ExpireConditionalEscrow` を使用します。
 
 これらの ISIs は現在、第一級の CLI コマンドを持っていません。型付き SDK ビルダーやシリアライズされた命令ペイロードを使用し、ライフサイクルの詳細、権限、クエリ、イベント、Rust の例については [ネイティブ資産エスクロー](/ja/blockchain/escrow.md) を参照してください。
 
@@ -418,7 +419,7 @@ printf '{"owner":"ops"}\n' |
 標準入力で単一のパラメータ JSON オブジェクトを渡すことでパラメータを設定します:
 
 ```bash
-printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
+printf '{"Sumeragi":{"MaxClockDriftMs":1000}}\n' |
   cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```

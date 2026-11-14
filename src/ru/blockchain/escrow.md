@@ -1,23 +1,22 @@
 ---
 translation_locale: ru
 translation_source: /blockchain/escrow.md
-translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e217bc6ac9
+translation_source_hash: f3c943ba5d18278382876db7bd7b3b116522811353d4318aafe1023d4b04ce03
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
 # Эскроу для родных активов {#native-asset-escrow}
 
 Нативный эскроу управляется распределённым регистром блокчейна и представляет собой механизм хранения числовых активов. Вместо того чтобы отправлять активы на счёт, принадлежащий приложению, и полагаться на код приложения для защиты этого аккаунта, эскроу ISIs переводит значение на счет хранения детерминированного протокола и фиксирует жизненный цикл эскроу в состоянии мира.
 
-Используйте встроенный эскроу для расчётов на торговых площадках, координации внецепочечных платежей в стиле Aitai, блокировок по этапам и защищённых операций эскроу, которым нужно видимое в реестре состояние жизненного цикла.
+Используйте встроенный эскроу для расчётов на торговых площадках, координации внецепочечных платежей в стиле Aitai, блокировок по этапам и условных выплат с привязкой к аттестаторам, которым нужно видимое в реестре состояние жизненного цикла.
 
 ## Концепции {#concepts}
 
 |Концепция|Описание|
 | --- | --- |
-| `EscrowId` |запрашивающий идентификатор, выбранный клиентом, инкапсулирующий криптографический хэш. Он должен быть уникальным для прозрачных и анонимных условных депозитов.|
+| `EscrowId` |Идентификатор, выбранный вызывающей стороной и инкапсулирующий криптографический хэш. Он должен быть уникальным среди всех записей эскроу.|
 | `AssetEscrowRecord` |Прозрачная запись условного хранения или блокировки числового актива.|
-| `AnonymousAssetEscrowRecord` | Защищённая эскроу-запись, подкреплённая нулификаторами, криптографическими обязательствами и вложениями доказательств. |
 |Кастодиальный счет|Детерминированный протокольный аккаунт, полученный из идентификатора цепочки, идентификатора эскроу и определения актива.|
 |Доказательства криптографических хешей|Доказательства криптографических хешей могут идентифицировать счета, судебные решения, сообщения, технические манифесты хранения или другие внецепочные доказательства. Сам полезный нагрузочный блок доказательства не хранится в записи эскроу.|
 
@@ -173,7 +172,7 @@ fn drawdown_and_close_asset_locks(
 }
 ```
 
-Python в настоящее время предоставляет высокоуровневые вспомогательные средства для универсальных блокировок: `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock` и `expire_asset_lock`. Для торговой площадки и анонимного эскроу из Python, используйте канонический `InstructionBox` JSON через аварийный люк JSON SDK, или отправьте через SDK, который открывает первых строителей условного депонирования.
+Python в настоящее время предоставляет высокоуровневые вспомогательные средства для универсальных блокировок: `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock` и `expire_asset_lock`. Для эскроу торговой площадки и условного эскроу из Python используйте канонический JSON `InstructionBox` через обходной JSON-механизм SDK или отправляйте инструкции через SDK, который предоставляет полноценные конструкторы эскроу.
 
 ## Споры {#disputes}
 
@@ -225,82 +224,33 @@ fn resolve_disputed_escrow(
 }
 ```
 
-## Анонимный эскроу {#anonymous-escrow}
+## Условный эскроу {#conditional-escrow}
 
-Анонимный эскроу использует тот же жизненный цикл торговой площадки, но передача средств и закрытие сделки защищены. Публичная запись по-прежнему хранит продавца, покупателя, состояние, хеши доказательств, временные метки и связанные с доказательствами записи перемещений. Суммы и получатели внутри защищённых нот представлены криптографическими обязательствами, нулификаторами и вложениями доказательств.
+Условный эскроу блокирует числовой актив в пользу бенефициара и освобождает его только после того, как по порядку выполнены все условия. Каждое условие указывает аккаунт аттестатора, предикат, который вычисляет реестр (`Equals` с типизированным значением или `QuantityAtMost` с границей), и свой порядковый номер, начиная с единицы. Необязательное окно времени реестра ограничивает все аттестации.
 
-|Прозрачный ISI|Анонимный ISI|
-| --- | --- |
-| `OpenAssetEscrow` | `OpenAnonymousAssetEscrow` |
-| `AcceptAssetEscrow` | `AcceptAnonymousAssetEscrow` |
-| `MarkEscrowPaymentSent` | `MarkAnonymousEscrowPaymentSent` |
-| `ReleaseAssetEscrow` | `ReleaseAnonymousAssetEscrow` |
-| `CancelAssetEscrow` | `CancelAnonymousAssetEscrow` |
-| `OpenEscrowDispute` | `OpenAnonymousEscrowDispute` |
-| `ResolveEscrowDispute` | `ResolveAnonymousEscrowDispute` |
-
-Инструменты кошелька или проверяющего должны создавать приложение доказательства и публичные входные данные. Открытие создает одно значение криптографического обязательства условного депонирования. Выпуск, отмена, и анонимное разрешение споров должно потратить ровно одно криптографическое значение обязательства эскроу и создать криптографические значения обязательств покупателя, продавца или распределенного вывода, требуемые действием.
-
-```rust
-use iroha::{
-    client::Client,
-    data_model::{
-        isi::escrow::{
-            AcceptAnonymousAssetEscrow, MarkAnonymousEscrowPaymentSent,
-            OpenAnonymousAssetEscrow,
-        },
-        prelude::*,
-        proof::ProofAttachment,
-    },
-};
-use iroha_crypto::Hash;
-
-fn open_anonymous_escrow(
-    seller_client: &Client,
-    buyer_client: &Client,
-    escrow_id: EscrowId,
-    asset_definition_id: AssetDefinitionId,
-    funding_nullifiers: Vec<[u8; 32]>,
-    escrow_commitment: [u8; 32],
-    proof: ProofAttachment,
-    root_hint: Option<[u8; 32]>,
-) -> eyre::Result<()> {
-    seller_client.submit_blocking(OpenAnonymousAssetEscrow::with_evidence_hashes(
-        escrow_id,
-        asset_definition_id,
-        funding_nullifiers,
-        escrow_commitment,
-        proof,
-        root_hint,
-        vec![Hash::new("shielded-invoice")],
-    ))?;
-
-    buyer_client.submit_blocking(AcceptAnonymousAssetEscrow::new(escrow_id))?;
-    buyer_client.submit_blocking(MarkAnonymousEscrowPaymentSent::new(escrow_id))?;
-
-    Ok(())
-}
-```
-
-Для базовой модели защищённой транзакции см. [Анонимные транзакции](/ru/blockchain/anonymous-transactions.md).
+| ISI | Вызывающая сторона | Действие |
+| --- | --- | --- |
+| `OpenConditionalEscrow` | Инициатор | Блокирует сумму под хранением протокола с неизменяемыми условиями и абсолютным сроком истечения. |
+| `AttestEscrowCondition` | Аттестатор условия | Предоставляет значение `Bool`, `Text` или `Quantity` для следующего условия. Эскроу выплачивается бенефициару, когда выполнено последнее условие. |
+| `ExpireConditionalEscrow` | Любой аккаунт | Возвращает средства инициатору после истечения срока, если эскроу не был освобождён. |
 
 ## SDK Использование {#sdk-usage}
 
-Поддержка эскроу представлена по-разному в SDKs. Rust имеет каноническую модель типизированных данных. Python в настоящее время предоставляет универсальные помощники для блокировки активов. JavaScript и TypeScript используют вызовы функций эскроу-хоста Kotodama. Kotlin/JVM и Swift предоставляют строители типизированных полезных нагрузок для рынка и анонимного эскроу.
+Поддержка эскроу представлена по-разному в SDKs. Rust имеет каноническую модель типизированных данных. Python в настоящее время предоставляет универсальные помощники для блокировки активов. JavaScript и TypeScript используют вызовы функций эскроу-хоста Kotodama. Kotlin/JVM и Swift предоставляют конструкторы типизированных полезных нагрузок для эскроу торговой площадки.
 
 | SDK |Используйте эту поверхность|Область|
 | --- | --- | --- |
-| [Rust](#rust-sdk) | `iroha::data_model::isi::escrow` |Эскроу на рынке, общие блокировки, анонимный эскроу, запросы и события.|
-| [Python](#python-asset-locks) |помощники `Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock` и клиента `*_and_wait`|Общие блокировки активов. Вспомогательные функции для маркетплейса и анонимного эскроу пока не являются методами первого класса Python.|
+| [Rust](#rust-sdk) | `iroha::data_model::isi::escrow` |Эскроу на рынке, общие блокировки, условный эскроу, запросы и события.|
+| [Python](#python-asset-locks) |помощники `Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock` и клиента `*_and_wait`|Общие блокировки активов. Вспомогательные функции для маркетплейса и условного эскроу пока не являются методами первого класса Python.|
 | [JavaScript / TypeScript](#javascript-and-typescript-kotodama) | `compileKotodamaProgram` от `@iroha/iroha-js/kotodama-compiler` |Вызовы хост-функций эскроу внутри контрактов Kotodama.|
-| [Kotlin / JVM](#kotlin-and-jvm) |`InstructionTemplate` классы в `org.hyperledger.iroha.sdk.core.model.instructions`|Шаблоны пользовательских инструкций для торговой площадки и анонимного эскроу.|
-| [Swift / iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders` и `IrohaSDK.build*Escrow*` помощники|Маркетплейс и анонимные эскроу Norito JSON данные инструкций.|
+| [Kotlin / JVM](#kotlin-and-jvm) |классы `InstructionTemplate` в `org.hyperledger.iroha.sdk.core.model.instructions`|Шаблоны пользовательских инструкций для эскроу торговой площадки.|
+| [Swift / iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders` и помощники `IrohaSDK.build*Escrow*`|Полезные нагрузки инструкций Norito JSON для эскроу торговой площадки.|
 
 Приведенные ниже примеры сосредоточены на построении инструкций. Финансирование счета, управление подписями и отправка транзакций следуют обычному порядку для каждого SDK.
 
 ### Rust SDK {#rust-sdk}
 
-Используйте Rust SDK, когда вам требуется полное нативное покрытие или поддержка запросов/событий. Примеры выше показывают выпуск на рынке, общий сокращение блокировки, разрешение споров и создание анонимного эскроу с `iroha::data_model::isi::escrow`.
+Используйте Rust SDK, когда вам требуется полное нативное покрытие или поддержка запросов/событий. Примеры выше показывают освобождение эскроу торговой площадки, частичное списание из общей блокировки и разрешение споров с `iroha::data_model::isi::escrow`.
 
 ```rust
 use iroha::{
@@ -396,7 +346,7 @@ if (compiled.diagnostics.length > 0) {
 }
 ```
 
-Для разрешения споров используйте `escrow_open_dispute(offer, evidence)` и `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`. Анонимные вызовы функций эскроу-хоста принимают байты полезной нагрузки запроса Norito, например `anonymous_escrow_open_offer(request)`.
+Для разрешения споров используйте `escrow_open_dispute(offer, evidence)` и `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`.
 
 ### Kotlin и JVM {#kotlin-and-jvm}
 
@@ -430,8 +380,6 @@ println(open.arguments)
 println(NativeEscrowPermissions.CAN_RESOLVE_ESCROW_DISPUTE)
 ```
 
-Анонимные шаблоны доступны как `OpenAnonymousAssetEscrowInstruction`, `AcceptAnonymousAssetEscrowInstruction`, `MarkAnonymousEscrowPaymentSentInstruction`, `ReleaseAnonymousAssetEscrowInstruction`, `CancelAnonymousAssetEscrowInstruction`, `OpenAnonymousEscrowDisputeInstruction` и `ResolveAnonymousEscrowDisputeInstruction`. Клиенты Java, которые делают запросы Android, могут использовать соответствующие конструкторы `NativeEscrowInstructions.*` из артефакта Android.
-
 ### Swift и iOS {#swift-and-ios}
 
 Swift SDK формирует инструкции условного депонирования в виде Norito JSON данных. Используйте `NativeEscrowInstructionBuilders` напрямую или вызовите эквивалентный помощник `IrohaSDK.build*Escrow*`, когда ваше приложение уже имеет экземпляр `IrohaSDK`.
@@ -462,7 +410,7 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 )
 ```
 
-Анонимные Swift строители берут списки аннулирующих элементов, выводят списки значений криптографических обязательств, словарь доказательств и необязательные значения `rootHint`. Токен разрешения разрешителя споров доступен как `NativeEscrowPermissions.canResolveEscrowDispute`.
+Токен разрешения для разрешения споров доступен как `NativeEscrowPermissions.canResolveEscrowDispute`.
 
 ## Запросы и события {#queries-and-events}
 
@@ -475,10 +423,8 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 | `FindAssetEscrowsBySeller` |Список записей, открытых продавцом или открывающим замки.|
 | `FindAssetEscrowsByBuyer` |Список депозитов торговой площадки, принимаемых покупателем, или блокировок, нацеленных на пункт назначения.|
 | `FindAssetEscrowsByStatus` |Список записей по `AssetEscrowStatus`.|
-| `FindAnonymousAssetEscrowById` |Прочитайте один анонимный эскроу от `EscrowId`.|
-| `FindAnonymousAssetEscrows*` |Список анонимных эскроу по всем записям, продавцу, покупателю или статусу.|
 
-`EscrowEventFilter` может подписываться на прозрачные нативные эскроу и события блокировки по идентификатору эскроу, продавцу, покупателю, статусу и маске набора событий. Семейство событий включает `Opened`, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed` и `Resolved`. Анонимные записи эскроу проверяются через анонимные запросы эскроу.
+`EscrowEventFilter` может подписываться на прозрачные нативные события эскроу и блокировок по идентификатору эскроу, продавцу, покупателю, статусу и маске набора событий. Семейство событий включает `Opened`, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed` и `Resolved`.
 
 ## Операционные заметки {#operational-notes}
 

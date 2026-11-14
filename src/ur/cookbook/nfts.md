@@ -1,9 +1,9 @@
 ---
 translation_locale: ur
 translation_source: /cookbook/nfts.md
-translation_source_hash: b6a85c2feb197588e3358a785e10280a687af3951d52de4e6b8d96eab5de873c
+translation_source_hash: 7d7a1ba8ff8678f420a6237bd0d074d2d197bf4349989c0c55f05e9769d15da7
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # NFTs {#nfts}
 
@@ -15,7 +15,7 @@ Taira پر NFT کی حالت دیکھیں۔ پھر بنائے گئے مقامی 
 
 - `curl`, `jq`, Python 3.11 یا اس سے زیادہ، اور موجودہ `iroha` CLI.
 - Taira تک رسائی صرف پڑھنے کے لئے۔
-- تحریری کارروائیوں کے لیے، [Iroha لانچ کریں](/ur/get-started/launch-iroha.md) کی طرح `kagami localnet generate --peers 4 --out-dir ./localnet` سے بنایا گیا مقامی نیٹ ورک، جس میں `./localnet/client.toml` اور `http://127.0.0.1:8080` پر Torii ہو، نیز ایک NFT ڈومین جس کا مالک اس کا دستخط کنندہ ہو (مرحلہ 2 دیکھیں)۔
+- تحریری کارروائیوں کے لیے، `kagami localnet generate --peers 4 --out-dir ./localnet` سے بنایا گیا مقامی نیٹ ورک، جس میں `./localnet/client.toml` اور `http://127.0.0.1:8080` پر Torii ہو، نیز ایک NFT ڈومین جس کا مالک اس کا دستخط کنندہ ہو (مرحلہ 2 دیکھیں)۔
 
 ## قدم {#steps}
 

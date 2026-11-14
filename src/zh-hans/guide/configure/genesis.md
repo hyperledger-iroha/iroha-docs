@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/configure/genesis.md
-translation_source_hash: 91be089c82a76991e35a43e1541f9e069fdf70d3fb5de2492b985c06c78a2372
+translation_source_hash: 2a4a43b6ac873cc0c860631e307e52b047ba6a08691bf3e4c5872cc22c81a0bd
 translation_status: machine-validated
 translation_engine: google-translate+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -9,7 +9,7 @@ translation_engine: google-translate+reviewed-delta+reviewed-first-release-sourc
 
 Genesis 定义了初始链状态。可编辑源是 JSON 显现， 和一个 Iroha 3 节点消耗一个签名的 Norito 交易文件。
 
-::: details 默认创世清单
+::: details 默认创世源模板（defaults/genesis.template.json）
 
 <<< @/snippets/genesis.json
 
@@ -36,7 +36,7 @@ public_key = "ed0120..."
 expected_hash_file = "./genesis.expected_hash"
 ```
 
-网络中的所有对等节点必须使用一致的已签名创世交易和创世公钥。首次启动和重启均需要预期哈希文件；`kagami genesis sign --expected-hash-out` 会写入该文件。
+网络中的所有对等节点必须使用一致的已签名创世交易和创世公钥。每次启动（无论是首次启动还是重启）都需要预期哈希：请在 `expected_hash_file` 与内联的 `expected_hash` 中恰好配置其一。`kagami genesis sign --expected-hash-out` 会写入该文件。
 
 ## 签署创世纪 {#signing-genesis}
 
@@ -52,7 +52,7 @@ cargo run --bin kagami -- genesis sign ./genesis.json \
 
 `GENESIS_PRIVATE_KEY_FILE` 必须是由所有者保管的普通文件，权限模式为 `0600` 且硬链接数为 1；文件内容必须是一个规范的私钥 multihash，末尾带换行符。Kagami 拒绝符号链接，且绝不接受通过命令行传入的原始创世私钥。
 
-对于 NPoS 或 SORA Nexus 配置，请包含所生成配置要求的拓扑和 BLS 持有证明。Kagami 的 `localnet generate`、`wizard` 和 `sora-network generate` 命令会自动处理这些细节。
+每个已签名的创世配置，无论是许可型还是 NPoS，都必须包含恰好 `3f + 1` 个验证者的拓扑，并为每个验证者提供 BLS 持有证明。Kagami 的 `localnet generate`、`wizard` 和 `sora-network generate` 命令会自动处理这些细节。
 
 ## 重新承诺创世纪 {#recommitting-genesis}
 

@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/transactions.md
-translation_source_hash: 91c06ab61c7f8ec96554bc89b31b2f281bb3a7d7edd484defe61dcde5a3fb710
+translation_source_hash: d9227effcdb4d54ac76f6288ba213de20f2574e1585e13b96a5202c44b69f3be
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -71,7 +71,7 @@ Iroha には2つのオフライントランザクションワークフローが�
 - オフライン署名は、署名デバイスが切断されている間に通常の署名済みトランザクションを作成します。このトランザクションは、オンラインクライアントが署名済みデータコンテナを Torii に提出するまで処理されないため、依然として正しいチェーンID、認可プリンシパル、権限、手数料が必要です。およびトランザクションの寿命。
 - **Kagemusha オフライン現金**では、登録済みでハードウェアに保護されたウォレットにオンライン時に価値をロードします。両方のウォレットがオフラインの間もウォレット間で支払いができ、再びオンラインになったときに残りの価値を台帳上のアカウントへアンロードできます。
 
-Torii が公開する Kagemusha の経路は `POST /v1/kagemusha/enrollment` の一つです。アカウント認証済みの `application/x-norito` 登録フレームを受け付け、キャッシュしてはならない非公開の応答を返します。このライフサイクルの台帳側の処理では、`KagemushaWalletLedgerV1` 命令を含む通常の署名済みトランザクションを使います。
+Torii が公開する Kagemusha の変更系ルートは `POST /v1/kagemusha/enrollment` の一つです。アカウント認証済みの `application/x-norito` 登録フレームを受け付け、キャッシュしてはならない非公開の応答を返します。`/v1/kagemusha/{scheme}/wallets/{wallet}/` 配下にあるアカウント署名付きの SDK 読み取りルートは、Load のレシートとファイナリティの証拠を返します。これらは `/openapi.json` には掲載されていません。このライフサイクルの台帳側の処理では、`KagemushaWalletLedgerV1` 命令を含む通常の署名済みトランザクションを使います。
 
 | 操作 | 目的 |
 | --- | --- |
@@ -88,13 +88,21 @@ Torii が公開する Kagemusha の経路は `POST /v1/kagemusha/enrollment` の
 3. 両方のウォレットがオフラインの間に、ローカルで支払いを交換して検証します。各送金の受領を通知する前に、ウォレットの状態を永続化してください。
 4. ウォレットが再びオンラインになったら、Unload 請求を送信してファイナリティを待ちます。
 
+Kagemusha はまだリリース適格性を満たしていません。本番環境での金銭面の適格性確認と、物理デバイス上でのスマートフォンの登録、有効化、支払いは未完了のままです。
+
 ブロックチェーン台帳は、ノートの状態がオンラインのライフサイクルを通じて戻るまで、矛盾するオフラインの引き渡しを検知することはできません。したがって、ウォレットおよびオペレーターのポリシーは、価値の上限、有効期限、受け入れ可能な発行者、耐久性のあるローカルストレージ、および照合ウィンドウを強制すべきです。
 
 こちらは、`Grant` 命令を使用して新しいトランザクションを作成する例です。このトランザクションでは、Mouse が Alice に指定された役割 (`role_id`) を付与しています。[完全な例](./permissions.md#register-a-new-role) を確認してください。
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```

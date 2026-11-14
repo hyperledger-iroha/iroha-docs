@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /reference/queries.md
-translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
+translation_source_hash: baa9726c7ce7d14b8dd17e77447ef72233ca9ed779367d9a190aa8dde7da41ac
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # So'rovlar {#queries}
 
@@ -56,7 +56,7 @@ SDK tipidagi quruvchilar yoki CLI dan foydalaning, so‘rov ma’lumotlari konte
 |So'rov| Maqsad |
 | --- | --- |
 | `FindAssets` |Aktiv balanslarini ro'yxatlang.|
-| `FindAssetsDefinitions` |Aktiv ta'riflarini ro'yxatlang.|
+| `FindAssetDefinitions` |Aktiv ta'riflarini ro'yxatlang.|
 | `FindAssetsByAccountId` |Hisobda saqlanayotgan aktivlarni ro'yxatlang.|
 | `FindAssetById` |`AssetId` bo‘yicha bitta aktiv balansini toping.|
 | `FindAssetDefinitionById` |ID bo‘yicha bitta aktiv ta’rifini toping.|
@@ -66,7 +66,7 @@ SDK tipidagi quruvchilar yoki CLI dan foydalaning, so‘rov ma’lumotlari konte
 
 ## Depozit va Dalillar Qaydnomalari {#escrow-and-proof-records}
 
-Escrow soʻrovlari [mahalliy aktiv depozit ISIs](/uz/blockchain/escrow.md) tomonidan yaratilgan yozuvlarni, jumladan, bozor escrowlarini, umumiy aktiv qulfini va anonim escrow yozuvlarini tekshiradi.
+Eskrou so‘rovlari [mahalliy aktiv eskrousi ISIs](/uz/blockchain/escrow.md) tomonidan yaratilgan yozuvlarni, jumladan bozor eskroulari, umumiy aktiv qulflari va shartli eskroularni tekshiradi.
 
 |So'rov| Maqsad |
 | --- | --- |
@@ -75,11 +75,6 @@ Escrow soʻrovlari [mahalliy aktiv depozit ISIs](/uz/blockchain/escrow.md) tomon
 | `FindAssetEscrowsBySeller` |Aktivlarni sotuvchi bo‘yicha ro‘yxatlang.|
 | `FindAssetEscrowsByBuyer` |Mijoz bo‘yicha aktivlarni garovga ro‘yxatlang.|
 | `FindAssetEscrowsByStatus` |Aktivlarni garov holatiga ko'ra ro‘yxatlang.|
-| `FindAnonymousAssetEscrows` |Anonim aktivlar omonat yozuvlarini ro'yxatlang.|
-| `FindAnonymousAssetEscrowById` |ID orqali bitta anonim aktiv eskrou toping.|
-| `FindAnonymousAssetEscrowsBySeller` |Sotuvchi bo‘yicha anonim eskroularni ro‘yxatlang.|
-| `FindAnonymousAssetEscrowsByBuyer` |Xaridor bo‘yicha anonim omonatlarni ro‘yxatlang.|
-| `FindAnonymousAssetEscrowsByStatus` |Anonim eskrolarni holatiga ko‘ra ro‘yxatlang.|
 | `FindProofRecordById` |ID bo‘yicha bitta tasdiqlash yozuvini toping.|
 | `FindProofRecords` |Isbot yozuvlarini ro‘yxatlang.|
 | `FindProofRecordsByBackend` |Isbot orqa tizimi uchun isbot yozuvlarini roʻyxatlash.|
@@ -89,15 +84,14 @@ Escrow soʻrovlari [mahalliy aktiv depozit ISIs](/uz/blockchain/escrow.md) tomon
 
 |So'rov| Maqsad |
 | --- | --- |
-| `FindRepoAgreements` |Zanjirda saqlangan ombor kelishuvlarini roʻyxatlang.|
+| `FindRepoAgreements` |Zanjirda saqlangan repo va teskari repo kelishuvlarini ro‘yxatlang.|
 | `FindTwitterBindingByHash` |Kriptografik xesh orqali Twitter bog‘lanishini hal qiling.|
 | `FindDaPinIntentByTicket` |Chipta orqali ma'lumot mavjudligi pin ni toping.|
 | `FindDaPinIntentByManifest` |Manifest havolasiga ko‘ra pin niyatini toping.|
 | `FindDaPinIntentByAlias` |Alias orqali pin maqsadini toping.|
 | `FindDaPinIntentByLaneEpochSequence` |Ishga tushirish yo‘lagi, davr va ketma-ketlik bo‘yicha pin ni toping.|
-| `FindLaneRelayEnvelopeByRef` |Tekshirilgan yo‘l-relay ma’lumot konteynerini toping.|
 | `FindSorafsProviderOwner` |SoraFS provayderining egasini aniqlang.|
-| `FindDataspaceNameOwnerById` |Dataspace-nomi egasini aniqlash.|
+| `FindDataspaceNameOwnerById` |Ma’lumotlar makoni taxallusining faol SNS egasini aniqlash.|
 | `FindMusubiExactPackageV1` |Bir aniq paket yozuvini va uning joriy tahririyatlarini o'qing.|
 | `FindMusubiExactReleaseV1` |Bir aniq chiqarilgan snapshotni o'qing.|
 | `FindMusubiProviderBundleAttestationV1` |Bir provayderning arxiv-paket tasdig'ini o'qing.|
@@ -117,7 +111,7 @@ Escrow soʻrovlari [mahalliy aktiv depozit ISIs](/uz/blockchain/escrow.md) tomon
 | `FindActiveTriggerIds` |Faol trigger identifikatorlarini ro'yxatlang.|
 | `FindTriggers` |Tetiklagichlarni ro'yxatlash.|
 | `FindTriggerById` |Bitta triggerni ID bo‘yicha toping.|
-| `FindContractManifestByCodeHash` |Kodning kriptografik xeshiga ko‘ra aqlli shartnoma manifestini toping.|
+| `FindContractManifestByArtifactId` |Aqlli shartnoma manifestini uning ma’lumotlar makoni artefakti identifikatori bo‘yicha toping.|
 | `FindTransactions` |Yakunlangan tranzaksiyalar ro'yxatini tuzing.|
 | `FindBlocks` |Bloklarni ro'yxatlash.|
 | `FindBlockHeaders` |Blok sarlavhalarini ro'yxatlang.|

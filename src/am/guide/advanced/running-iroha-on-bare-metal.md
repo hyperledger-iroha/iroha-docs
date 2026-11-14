@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -34,7 +34,7 @@ cargo build --release \
 target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-የውጤት ማውጫው የመነጨውን `genesis.json`፣ `genesis.signed.nrt`፣ የአውታረ መረብ አቻ `config.toml` ፋይሎች፣ `client.toml`፣ አጋዥ ስክሪፕቶች እና የመነጨ `README.md` ለዚያ ጥቅል ትክክለኛ ትዕዛዞችን ይዟል።
+የውጤት ማውጫው የመነጨውን `genesis.json`፣ `genesis.signed.nrt`፣ `genesis.expected_hash`፣ ለእያንዳንዱ አረጋጋጭ አንድ `peerN.toml`፣ `client.toml`፣ የ`start.sh` እና `stop.sh` ስክሪፕቶች እና ለዚያ ጥቅል ትክክለኛ ትዕዛዞችን የያዘ የመነጨ `README.md` ይዟል።
 
 ## 3. የአውታረ መረብ እኩዮችን ይጀምሩ {#_3-start-peers}
 
@@ -44,7 +44,7 @@ target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ./localnet/start.sh
 ```
 
-እያንዳንዱን የአውታረ መረብ አቻ እንደ systemd ወዳለው የሂደት አስተዳዳሪ ማገናኘት ከፈለጉ ለእያንዳንዱ የአውታረ መረብ አቻ በ`./localnet/README.md` የተመዘገበውን የማስጀመሪያ ትዕዛዝ ይጠቀሙ። የእያንዳንዱን የአውታረ መረብ አቻ `config.toml`፣ የግል ቁልፍ፣ የማከማቻ ማውጫ እና ወደቦች ይለያዩ።
+እያንዳንዱን የአውታረ መረብ አቻ እንደ systemd ወዳለው የሂደት አስተዳዳሪ ማገናኘት ከፈለጉ በ`./localnet/start.sh` ውስጥ ያለውን የእያንዳንዱን አቻ ትዕዛዝ ይከተሉ፦ `iroha3d --config <bundle>/peerN.toml`ን ከ`<bundle>/state/peerN` ያሂዱ፣ `--sumeragi-assert-fresh-key`ን ደግሞ በዚያ አቻ የመጀመሪያ ጅምር ላይ ብቻ ያስተላልፉ። የእያንዳንዱን የአውታረ መረብ አቻ `peerN.toml`፣ የግል ቁልፍ፣ የማከማቻ ማውጫ እና ወደቦች ይለያዩ።
 
 ## 4. አውታረ መረቡን ያሂዱ {#_4-operate-the-network}
 

@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/data-model.md
-translation_source_hash: f90139dee2eff97769cd47188bcaf60b31672f0250505d8afad9c8ee60815ddd
+translation_source_hash: fa1bbcbb2bad4e262a17eb04e67a94c3795d726ac52c0ab17370da9ec119e557
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-source-naming-amendment
+translation_engine: nllb-200-ct2+reviewed-source-naming-amendment+reviewed-delta
 ---
 # 数据模型 {#data-model}
 
@@ -121,9 +121,9 @@ account_rabbit --> asset_rose : may receive balance
 |资产定义|规范的 `AssetDefinitionId` Base58 地址 |`name#domain.dataspace`或 `name#dataspace` |`AssetDefinitionAlias` 绑定到资产定义|
 |合同|正文 Bech32m `ContractAddress` |`name::domain.dataspace`或 `name::dataspace` |`ContractAlias` 绑定到部署的合同地址|
 |域名| `DomainId` 在 `domain.dataspace` 形式               |`domain.dataspace`|SNS `domain`名称空间记录|
-| 数据空间名称 | 当前有效的 SORA Nexus 目录中的数值 `DataSpaceId` | 数据空间别名，例如 `universal`、`paynet` 或 `zk` | SNS 的 `dataspace` 命名空间记录，加上当前有效的数据空间目录 |
+| 数据空间名称 | 当前有效的 SORA Nexus 目录中的数值 `DataSpaceId` | 数据空间别名，例如 `universal` 或 `paynet` | SNS 的 `dataspace` 命名空间记录，加上当前有效的数据空间目录 |
 
-账户别名是面向用户的账户名称。账户重新设定密钥后，别名仍然有效，因为它会通过世界状态索引和账户密钥变更记录指向活跃的账户 ID。使用 `SetPrimaryAccountAlias` 设置账户的主要标签，使用 `SetAccountAliasBinding` 设置其他非主要别名，并使用 `FindAccountByAlias` 或 `FindAliasesByAccountId` 进行读取。账户别名通常需要一项有效的 SNS 账户别名租约，该租约通过 `AcquireAccountAliasLease` 获取，并通过 `RenewAccountAliasLease` 续期。
+账户别名是面向用户的账户名称。账户重新设定密钥后，别名仍然有效，因为它会通过世界状态索引和账户密钥变更记录指向活跃的账户 ID。使用 `EnsureAlias`（通常通过 `app alias setup` 的计划与应用流程）获取账户别名租约并绑定别名；使用 `CompareAndSetPrimaryAccountAlias` 更改主要标签；使用 `RebindAccountAlias` 将别名转移到另一个账户；并使用 `FindAccountByAlias` 或 `FindAliasesByAccountId` 进行读取。使用 `RenewAliasLease` 续期租约，或使用 `ConfigureAliasAutoRenew` 配置自动续期。
 
 资产别名命名的是资产定义，而不是单个账户余额。资产别名和合约别名把一个可读名称直接绑定到现有规范目标。使用 `SetAssetDefinitionAlias` 设置资产别名；别名的名称段必须与资产定义的显示名称或投影定义名称匹配。使用 `SetContractAlias` 设置合约别名；别名的数据空间必须与合约地址中编码的数据空间匹配。两种绑定都可以携带 `lease_expiry_ms`；到期后，宽限窗口一旦结束，它们就会停止解析，并从世界状态索引中清除。
 

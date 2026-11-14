@@ -5,16 +5,16 @@ ledger state, submit transactions, and inspect operator endpoints.
 
 ## 1. Prerequisites
 
-Start a local network first:
-
-- [Launch Iroha 3](./launch-iroha.md)
-
-The examples below assume the generated client configuration from the localnet
-created in [Launch Iroha 3](./launch-iroha.md):
+From an Iroha checkout at the documented source revision, generate and start
+a four-peer localnet:
 
 ```bash
-./localnet/client.toml
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
+./localnet/start.sh
 ```
+
+The examples below use its generated client configuration,
+`./localnet/client.toml`.
 
 ## 2. Basic CLI Setup
 
@@ -61,7 +61,7 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-List public domains in the `universal` data space:
+List the domains visible to an unauthenticated reader:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
@@ -162,7 +162,8 @@ Consensus operator commands require an allow-listed runtime key. Keep it out
 of `client.toml` and pass the owner-only file by its absolute path:
 
 ```bash
-: "${OPERATOR_KEY_FILE:=$PWD/secrets/operator.key}"
+# The generated localnet writes its allow-listed operator key here.
+: "${OPERATOR_KEY_FILE:=$PWD/localnet/runtime/operator-signer.key}"
 
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \

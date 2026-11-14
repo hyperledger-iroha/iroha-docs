@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /blockchain/transactions.md
-translation_source_hash: 91c06ab61c7f8ec96554bc89b31b2f281bb3a7d7edd484defe61dcde5a3fb710
+translation_source_hash: d9227effcdb4d54ac76f6288ba213de20f2574e1585e13b96a5202c44b69f3be
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -71,7 +71,7 @@ Iroha יש שתי זלילי עבודה של עסקאות מקוונת:
 - **חתימה לא מקוונת** יוצרת עסקה חתומה רגילה בזמן שמכשיר החתימה מנותק. העסקה אינה מעובדת עד שלקוח מקוון שולח את המעטפה החתומה ל-Torii, ולכן היא עדיין זקוקה ל-chain ID הנכון, לסמכות, להרשאות, לעמלות ולמשך חיי העסקה הנכונים.
 - **מזומן לא מקוון של Kagemusha** טוען ערך לארנק רשום הנתמך בחומרה בזמן שהוא מקוון, מאפשר תשלומים בין ארנקים כאשר שניהם לא מקוונים, ופורק את הערך הנותר לחשבון בספר החשבונות כשהארנק חוזר להיות מקוון.
 
-Torii חושף מסלול Kagemusha אחד, `POST /v1/kagemusha/enrollment`. הוא מקבל מסגרות רישום מסוג `application/x-norito` המאומתות באמצעות החשבון, ומחזיר תגובות פרטיות שאסור לשמור במטמון. הצד של ספר החשבונות במחזור החיים משתמש בעסקאות חתומות רגילות הנושאות הוראת `KagemushaWalletLedgerV1`:
+Torii חושף מסלול שינוי אחד של Kagemusha, ‏`POST /v1/kagemusha/enrollment`. הוא מקבל מסגרות רישום מסוג `application/x-norito` המאומתות באמצעות החשבון, ומחזיר תגובות פרטיות שאסור לשמור במטמון. מסלולי קריאה של ה־SDK החתומים באמצעות החשבון תחת `/v1/kagemusha/{scheme}/wallets/{wallet}/` מחזירים קבלות Load וראיות סופיות; הם אינם מופיעים ב־`/openapi.json`. הצד של ספר החשבונות במחזור החיים משתמש בעסקאות חתומות רגילות הנושאות הוראת `KagemushaWalletLedgerV1`:
 
 | פעולה | מטרה |
 | --- | --- |
@@ -88,13 +88,21 @@ Torii חושף מסלול Kagemusha אחד, `POST /v1/kagemusha/enrollment`. ה�
 3. החליפו ואמתו תשלומים מקומית בין הארנקים בזמן שהם לא מקוונים, ושמרו את מצב הארנק באופן עמיד לפני אישור כל העברה.
 4. כשהארנק חוזר להיות מקוון, שלחו את תביעת Unload שלו והמתינו לסופיות.
 
+Kagemusha עדיין לא עבר הסמכה לשחרור: ההסמכה המוניטרית בסביבה חיה, וכן רישום טלפונים, הפעלתם ותשלום באמצעותם במכשירים פיזיים, עדיין פתוחים.
+
 הספר הגדול לא יכול לציין העברת מקוונת סותרת עד מצב הערות חוזר במהלך מחזור החיים באינטרנט. מדיניות הארנק והמפעיל יש לפיכך ליישם גבולות ערך, ירידה, משקיעים מוכרים, אחסון מקומי קבוע, וחלונות פיצוי.
 
 הנה דוגמה של יצירת עסקאות חדשות עם ההוראה `Grant`. בעסקה זו, Mouse מעניק ל-Alice את התפקיד המפורט (`role_id`). בדוק [הדוגמה המלאה ](./permissions.md#register-a-new-role).
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```

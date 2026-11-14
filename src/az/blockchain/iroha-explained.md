@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /blockchain/iroha-explained.md
-translation_source_hash: 426adbea88da36cd92da17d8665c956a57b9d4cebfa0d2f35bc75469cccf84ee
+translation_source_hash: 16acd0a607bbec336ff336363478a3a0deeb24ad9a2ad59e753c9f65134b061f
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -45,11 +45,11 @@ Zolaqlar həmin məlumat məkanlarına bağlanmış marşrutlaşdırma və serti
 
 Marşrutlaşdırma yolu belədir:
 
-1. Konfiqurasiya yoxlanmış `DataSpaceCatalog`, `LaneCatalog` və `LaneRoutingPolicy` yaradır. SORA Nexus marşrutlaşdırması məcburidir. Bir neçə məlumat məkanı, zolaq və ya standartdan fərqli marşrutlaşdırma üçün SORA Nexus profili (`--sora`) və NPoS istifadə olunur.
+1. Konfiqurasiya yoxlanmış `DataSpaceCatalog`, `LaneCatalog` və `LaneRoutingPolicy` yaradır. SORA Nexus marşrutlaşdırması məcburidir. Qlobal kökdə bir neçə məlumat məkanı, zolaq və ya standartdan fərqli marşrutlaşdırma SORA Nexus profilini (`--sora`) və NPoS tələb edir; müstəqil imzalanmış məlumat məkanı kökü icazəli rejimdə işləyir.
 2. Əməliyyat növbəsi əməliyyatdan və təsdiqlənmiş vəziyyətdən `RoutingPlan` müəyyən edir. Hər əlaqələndirici və ya iştirakçı marşrutunda zolaq ID-si və məlumat məkanı ID-si var; Native AMX planları bütün iştirakçılar dəstini saxlayır.
 3. Qlobal icra üçün tam idarəetmə müstəvisi paketləri və məlumat məkanlarıarası əlaqələndiricilər `0` zolağından istifadə edir. Konkret qeyri-universal təlimat və ya müqavilə ünvanı hədəfləri hesab və ya təlimat etiketi qaydalarından əvvəl uyğun məlumat məkanı və komitəsi olan qəbul edilmiş sabit zolağı seçir. Digər iş təsdiqlənmiş açıq qaydalara və standart bölmələməyə əsaslanır; konkret universal hədəflər universal zolaqlarda qalır.
 4. Hər marşrut kataloqlara və aktiv zolaq vəziyyətinə qarşı yoxlanılır. Naməlum ID-lər və zolaq/məlumat məkanı uyğunsuzluqları rədd edilir; əlçatan olmayan özəl hədəf universal icraya keçə bilməz. Bir neçə məlumat məkanı hədəfi Native AMX planı yarada bilər. Əməliyyat metaməlumatında `amx_policy` üçün `reject_cross_dataspace` təyin edilməsi məlumat məkanlarıarası planları rədd edir. Təkcə marşrutlaşdırma planı müstəqil köklər arasında hesablaşmaya icazə vermir və onu tamamlamır.
-5. Sumeragi və telemetriya təyinatı zolaq və məlumat məkanı fəaliyyəti, gözləyən iş həcmi və kriptoqrafik öhdəliklərin anlıq görüntüləri kimi görünən saxlayır.
+5. Telemetriya təyinatı `/status` zolaq anlıq görüntüsündə (`teu_lane_commit`) hər zolaq üzrə fəaliyyət və gözləyən iş həcmi kimi görünən saxlayır.
 
 Obyekt identifikatorlarının əhəmiyyəti buradan gəlir. Domenlər öz ID-lərində məlumat məkanı ləqəbini, məsələn `payments.universal`, saxlayır ki, domen çərçivəsindəki yazmalar yönləndirilə bilsin. Hesablar kanonik və domensiz qalır; beləliklə eyni hesab `AccountId` dəyişmədən müxtəlif tətbiq çərçivələrinə bağlana bilər. Aktiv tərifləri domen/məlumat məkanı proyeksiyası daşıya bilər və bu, aktiv əməliyyatlarının düzgün məlumat məkanı marşrutunu miras almasına imkan verir.
 
@@ -67,7 +67,7 @@ Təqdim olunan hər üç zolaq açıqdır və eyni `universal` məlumat məkanı
 
 Bu əlaqələri sabitlənmiş [profil qurucuları](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_config/src/parameters/actual.rs), [zolaq tətbiqi](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_core/src/sumeragi/lanes/mod.rs) və [müstəqil kök müqaviləsi](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/sumeragi.md) müəyyən edir.
 
-Sumeragi həmişə məlumat əlçatanlığından və etibarlı yayımdan istifadə edir. Bu yollar Iroha 3 konsensus protokolunun bir hissəsidir və yerləşdirmə profili tərəfindən deaktiv edilə bilməz.
+Sumeragi həmişə imzalanmış RS16 yük əlçatanlığından və sertifikatlaşdırılmış gövdə bərpasından istifadə edir. Bu yollar Iroha 3 konsensus protokolunun bir hissəsidir və yerləşdirmə profili tərəfindən deaktiv edilə bilməz.
 
 Proqram təminatının icra mühiti davranışı konfiqurasiya fayllarından və zəncir üzərindəki parametrlərdən əldə olunur. Ətraf mühit dəyişənləri istehsal xüsusiyyət qapıları deyildir.
 

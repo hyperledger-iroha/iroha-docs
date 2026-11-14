@@ -1,9 +1,9 @@
 ---
 translation_locale: am
 translation_source: /blockchain/data-model.md
-translation_source_hash: f90139dee2eff97769cd47188bcaf60b31672f0250505d8afad9c8ee60815ddd
+translation_source_hash: fa1bbcbb2bad4e262a17eb04e67a94c3795d726ac52c0ab17370da9ec119e557
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-source-naming-amendment
+translation_engine: bing-translator-llm+reviewed-source-naming-amendment+reviewed-delta
 ---
 # የውሂብ ሞዴል {#data-model}
 
@@ -121,9 +121,9 @@ account_rabbit --> asset_rose : may receive balance
 |የንብረት ፍቺ|ነጠላ ፕሮቶኮል-መደበኛ `AssetDefinitionId` Base58 አድራሻ|`name#domain.dataspace` ወይም `name#dataspace`|`AssetDefinitionAlias` ከንብረት ፍቺ ጋር የተያያዘ|
 |ውል|ነጠላ ፕሮቶኮል-መደበኛ Bech32m `ContractAddress`|`name::domain.dataspace` ወይም `name::dataspace`|`ContractAlias` ከተሰማራ የኮንትራት አድራሻ ጋር የታሰረ|
 |የጎራ ስም|`DomainId` በ `domain.dataspace` ቅጽ|`domain.dataspace`|SNS `domain` የስም ቦታ መዝገብ|
-|የ ዳታ ቦታ ስም|ቁጥር `DataSpaceId` ከ ገባሪው SORA Nexus ካታሎግ|እንደ `universal`፣ `paynet`፣ ወይንም `zk` ያሉ የውሂብ ቦታ ተለዋጭ ስያሜዎች|SNS `dataspace` የስም ቦታ መዝገብ እና የነቃ የውሂብ ቦታ ካታሎግ|
+|የውሂብ ቦታ ስም|ቁጥር `DataSpaceId` ከ ገባሪው SORA Nexus ካታሎግ|እንደ `universal` ወይንም `paynet` ያሉ የውሂብ ቦታ ተለዋጭ ስያሜዎች|SNS `dataspace` የስም ቦታ መዝገብ እና የነቃ የውሂብ ቦታ ካታሎግ|
 
-የመለያ ተለዋጭ ስሞች ተጠቃሚን የሚመለከቱ የመለያ ስሞች ናቸው። ተለዋጭ ስሙ በአለም-ሁኔታ ኢንዴክሶች እና የመለያ ቁልፍ መዝገቦች በኩል ወደ ንቁ መለያ መታወቂያ ስለሚያመለክት ከመለያ ዳግም ቁልፍ ይተርፋሉ። ለመለያው ዋና መለያ `SetPrimaryAccountAlias`፣ `SetAccountAliasBinding` ለተጨማሪ ዋና ያልሆኑ ተለዋጭ ስሞች፣ እና `FindAccountByAlias` ወይም `FindAliasesByAccountId`ን ለማንበብ ይጠቀሙ። የመለያ ተለዋጭ ስሞች በመደበኛነት በ`AcquireAccountAliasLease` የተገኘ እና በ`RenewAccountAliasLease` የታደሰ ንቁ SNS መለያ-ተለዋጭ የሊዝ ውል ያስፈልጋቸዋል።
+የመለያ ተለዋጭ ስሞች ተጠቃሚን የሚመለከቱ የመለያ ስሞች ናቸው። ተለዋጭ ስሙ በአለም-ሁኔታ ኢንዴክሶች እና የመለያ ቁልፍ መዝገቦች በኩል ወደ ንቁ መለያ መታወቂያ ስለሚያመለክት ከመለያ ዳግም ቁልፍ ይተርፋሉ። የመለያ-ተለዋጭ ስም የሊዝ ውል ለማግኘትና ተለዋጭ ስሙን ለማሰር `EnsureAlias`ን (በመደበኛነት በ`app alias setup` የዕቅድና የትግበራ ሂደት በኩል)፣ ዋናውን መለያ ስም ለመቀየር `CompareAndSetPrimaryAccountAlias`ን፣ ተለዋጭ ስምን ወደ ሌላ መለያ ለማዛወር `RebindAccountAlias`ን፣ ለንባብ ደግሞ `FindAccountByAlias` ወይም `FindAliasesByAccountId`ን ይጠቀሙ። የሊዝ ውሎችን በ`RenewAliasLease` ያድሱ፣ ወይም ራስ-ሰር እድሳትን በ`ConfigureAliasAutoRenew` ያዋቅሩ።
 
 የንብረት ተለዋጭ ስሞች የስም የንብረት ፍቺዎች እንጂ የግለሰብ መለያ ቀሪ ሒሳቦች አይደሉም። የንብረት ተለዋጭ ስሞች እና የኮንትራት ተለዋጭ ስሞች ከሚነበብ ስም ወደ ነባር ነጠላ ፕሮቶኮል-መደበኛ ኢላማ ቀጥተኛ ማሰሪያዎች ናቸው። የንብረት ተለዋጭ ስሞች በ `SetAssetDefinitionAlias` ተዘጋጅተዋል; ተለዋጭ ስም ክፍሉ ከንብረት ፍቺ ማሳያ ስም ወይንም ከታቀደው የ ፍቺ ስም ጋር መዛመድ አለበት። የኮንትራት ተለዋጭ ስሞች በ `SetContractAlias` ተዘጋጅተዋል; ተለዋጭ ስም ዳታ ቦታ በኮንትራቱ አድራሻ ውስጥ ከተመሰጠረው የውሂብ ቦታ ጋር መዛመድ አለበት። ሁለቱም ማሰሪያዎች `lease_expiry_ms` ሊሸከሙ ይችላሉ; ጊዜው ካለፈ በኋላ፣ የጸጋ መስኮቱ ሲያልቅ እና ከአለም ሁኔታ ኢንዴክሶች ሲወገዱ መፍታት ያቆማሉ።
 

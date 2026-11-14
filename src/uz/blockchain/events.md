@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/events.md
-translation_source_hash: aad93f1981a5b470966090b5e06ec07178738b15f1d870097947682b19f99595
+translation_source_hash: 2777cbe4e72a50c4790e50b59c3e695feb5814314cc9afccdfd994f6409c195e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Hodisalar {#events}
 
@@ -16,7 +16,7 @@ Blokcheynda muayyan voqea, masalan yangi hisob yaratilishi yoki blok yakuniy yoz
 
 ## Konveyer hodisalari {#pipeline-events}
 
-Tranzaksiya yuborilganda, bajarilganda yoki blokka yakuniy yozilganda konveyer hodisasi chiqariladi. Unda hodisani keltirib chiqargan obyekt turi (tranzaksiya yoki blok), uning xeshi va holati bo‘ladi. Holat `Validating` (tekshirish davom etmoqda), `Rejected` yoki `Committed` bo‘lishi mumkin. Obyekt rad etilgan bo‘lsa, rad etish sababi ham beriladi.
+Tranzaksiyalar va bloklar konveyer bo‘ylab harakatlanar ekan, konveyer hodisalari chiqariladi. Tranzaksiya hodisasi tranzaksiya xeshi, blok balandligi, yo‘lak va ma’lumotlar makoni identifikatorlari hamda holatni olib yuradi: `Queued`, `Expired`, `Approved` yoki rad etish sababi bilan `Rejected`. Blok hodisasi blok sarlavhasi va holatni olib yuradi: `Created`, `Approved`, sababi bilan `Rejected`, `Committed` yoki `Applied`.
 
 ### Taira-da sinab ko‘rish {#try-it-on-taira}
 
@@ -30,8 +30,8 @@ curl -fsSI https://taira.sora.org/v1/events/sse \
 Oqimni ochiq saqlamasdan tekshiriladigan oniy tasvir uchun kuzatuvchidagi so‘nggi tranzaksiyalarni o‘qing:
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
-  | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
+curl -fsS 'https://taira.sora.org/v1/explorer/transactions?limit=5' \
+  | jq '{next_cursor, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
 Jonli hodisalar kerak bo‘lganda SSE yo‘nalishini terminalda oching:

@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/assets.md
-translation_source_hash: 4d0a3f54a0c70d08d11160b9ec66d6538aa2c49c7771a13e4a070b61a9cb3e4b
+translation_source_hash: f5f0eb99e76287db695cc21b8580fd2a9b4dc2a989237c1a1d3d7333c14561ce
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -22,6 +22,7 @@ Un `AssetDefinition` contient :
 - `logo` : facultatif `SoraFS` URI
 - `metadata` : métadonnées clé-valeur arbitraires
 - `balance_scope_policy` : si les soldes sont globaux ou limités à l'espace de données
+- `owning_domain` : le domaine propriétaire d'une définition détenue par un domaine ; absent pour les définitions enregistrées directement dans un espace de données
 - `owned_by` : le compte qui a enregistré ou possède la définition
 - `total_quantity` : quantité totale émise
 - `confidential_policy` : politique pour les opérations sur les actifs protégés
@@ -33,7 +34,7 @@ Les identifiants de définition d'actif sont des adresses opaques canoniques. Lo
 Un `Asset` contient :
 
 - `id` : un `AssetId`, qui combine la définition de l'actif, le compte du détenteur et l'éventuel périmètre du solde de l'actif
-- `value` : un solde `Numeric`
+- `value` : un solde `Quantity`
 
 Le compte détenteur est canonique et sans domaine. La définition d’actif peut être projetée sous un domaine qualifié par un espace de données, par exemple `payments.universal`.
 
@@ -88,7 +89,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-Les trois exemples sont des opérations de lecture. Pour émettre, détruire ou transférer des actifs sur Taira, utilisez un compte alimenté par le faucet et la procédure protégée décrite dans [Se connecter aux espaces de données SORA Nexus](/fr/get-started/sora-nexus-dataspaces.md).
+Les trois exemples sont des opérations de lecture. Pour émettre, détruire ou transférer des actifs sur Taira, utilisez un compte alimenté par le faucet et la procédure protégée décrite dans [Développer sur SORA Nexus avec Taira et Minamoto](/fr/get-started/sora-nexus-dataspaces.md).
 
 Pour un exemple d’actif Taira soumis à des frais, alimentez d’abord le compte signataire avec la procédure de faucet préparée dans [Obtenir des XOR de test sur Taira](/fr/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira). Passez ensuite `--fee-payer authority` aux commandes `ledger asset mint`, `ledger asset burn` et `ledger asset transfer` ; la CLI calcule les frais exacts, exprimés dans l’actif de frais de Taira, avant la signature :
 

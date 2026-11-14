@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /reference/permissions.md
-translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -16,7 +16,6 @@ translation_engine: bing-translator-llm+reviewed-delta
 |Рұқсат белгісі|Санат|Операция|
 | --- | --- | --- |
 | `CanManagePeers` |желілік тең|Желі түйіндерін тіркеу, тіркеуден шығару немесе басқа жолмен басқару.|
-| `CanManageLaneRelayEmergency` |желілік тең|Төтенше жағдайлардағы жол-қосқыш бақылауларын басқарыңыз.|
 | `CanRegisterDomain` |Домен|Доменді тіркеу.|
 | `CanUnregisterDomain` |Домен|Доменді тіркеуден шығару.|
 | `CanModifyDomainMetadata` |Домен|Доменнің метадеректерін өзгерту.|
@@ -28,7 +27,7 @@ translation_engine: bing-translator-llm+reviewed-delta
 | `CanMintAssetWithDefinition` |Актив|нақты анықтама үшін активтер шығару.|
 | `CanBurnAssetWithDefinition` |Актив|нақты анықтама үшін активтерді жою.|
 | `CanTransferAssetWithDefinition` |Актив|Белгілі бір анықтама үшін активтерді аудару.|
-| `CanMintAsset` |Актив|нақты актив балансын шығару|
+| `CanMintAssetToAccount` |Актив|нақты актив балансын шығару|
 | `CanBurnAsset` |Актив|арнайы актив балансын жою|
 | `CanTransferAsset` |Актив|Белгілі бір актив қалдығын аудару.|
 | `CanRegisterNft` | NFT |NFT тіркелу|
@@ -43,7 +42,7 @@ translation_engine: bing-translator-llm+reviewed-delta
 | `CanModifyTrigger` |Триггер|Триггер конфигурациясын өзгерту.|
 | `CanModifyTriggerMetadata` |Триггер|Триггер метадеректерін өзгерту.|
 | `CanUpgradeExecutor` |Орындаушы|Бағдарламалық қамтамасыз ету орындалу ортасының орындалушысын жаңартыңыз.|
-| `CanRegisterSmartContractCode` |Ақылды келісімшарт|Ақылды келісімшарт кодын тіркеу.|
+| `CanManageSmartContractCode` |Ақылды келісімшарт|Сілтеме жасалмаған код артефактілерін жою және келісімшарттың кіру нүктелерін өкілдік ету. Тіркелген есептік жазбалар бұл рұқсатсыз да тексерілген артефактілер жасай алады.|
 | `CanManageFeeSponsorProgram` | SORA Nexus | Нақты демеуші есептік жазба иеленетін бағдарламаларды басқару. |
 | `CanEnrollFeeSponsorProgram` | SORA Nexus | Бір нақты демеуші бағдарламасының бенефициарларын басқару. |
 

@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /reference/glossary.md
-translation_source_hash: 8b00758b5731a2f9e09a5b49ccb7f298229ab966b5adf2d7152e3b1416fe8737
+translation_source_hash: 4d3a8e3aa88291edbaac5b52039d2aad160d89fb83c085c21030a531c93258f4
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -79,7 +79,7 @@ Bir əmlak daha eyni növdən buraxıla bilirsə, o, çap edilə biləndir.
 
 ## Bizans səhv-dözümlülüyü (BFT) {#byzantine-fault-tolerance-bft}
 
-Şəbəkədə müəyyən faizdə zərərli iştirakçılar olsa belə düzgün işləyə bilmə xüsusiyyəti. Iroha bərabərhüquqlu şəbəkəndə 33%-ə qədər zərərli iştirakçı ilə işləyə bilir.
+Şəbəkədə müəyyən faizdə zərərli iştirakçılar olsa belə düzgün işləyə bilmə xüsusiyyəti. Sumeragi komitəsində dəqiq `3f + 1` təsdiqləyici olur və o, komitənin üçdə birindən az olan `f` sayda Bizans təsdiqləyicisinə qədər dözür.
 
 ## Iroha Komponentlər {#iroha-components}
 
@@ -107,7 +107,7 @@ Hər blok hündürlüyündə vəziyyəti yoxlamaq və təsdiqləmək üçün ist
 
 ### Ağıllı müqavilələr {#smart-contracts}
 
-Ağıllı müqavilələr müəyyən bir şərtlər dəsti yerinə yetirildikdə işləyən blokçeyn əsaslı proqramlardır. Iroha-də ağıllı müqavilələr [əsas Iroha təlim əməliyyatları](#core-iroha-special-instructions) istifadə edərək həyata keçirilir.
+Ağıllı müqavilələr müəyyən bir şərtlər dəsti yerinə yetirildikdə işləyən blokçeyn əsaslı proqramlardır. Iroha 3-də ağıllı müqavilələr Kotodama dilində yazılır və IVM bayt koduna (`.to`) kompilyasiya edilir; müqavilə vəziyyəti host çağırışları vasitəsilə [Iroha xüsusi təlimatları](#core-iroha-special-instructions) verməklə dəyişdirir.
 
 ### Səbəblər {#triggers}
 
@@ -119,7 +119,7 @@ Iroha 3-ün ilk buraxılışı blokların ötürülməsi üçün yalnız bir kan
 
 ### Hijiri (şəbəkə həmkarının nüfuz sistemi) {#hijiri-peer-reputation-system}
 
-Iroha-nin reputasiya sistemi. Bu, yaxşı keçmişi olan [şəbəkə əlaqəliləri](#peer) ilə ünsiyyəti prioritetləşdirməyə və zərərli [şəbəkə əlaqəliləri](#peer) tərəfindən yaradıla biləcək zərərləri azaltmağa imkan verir.
+Iroha-nın həmyaşıd qovşaq və hesab reputasiya sistemi. Onun konsensusa məxsus parametrləri Hijiri haqq siyasətini və hesab risk qeydlərini saxlayır, idarə olunan müşahidəçi reyestrləri isə hesabın risk balını tənzimləyən hesab attestasiyaları verir.
 
 ## Iroha Modullar {#iroha-modules}
 
@@ -131,7 +131,7 @@ Iroha ilə təmin edilmiş ağıllı müqavilələr kitabxanası. Bunlar ya əm�
 
 #### Kommunal Iroha Təlimat əməliyyatları {#utility-iroha-special-instructions}
 
-Bu [iş](#iroha-special-instructions-isi) dəsti `If` kimi məntiqi təlimatları, `Notify` kimi giriş/çıxış ilə əlaqəli və `Sequence` kimi tərkibləri ehtiva edir. Onlar əsasən [xüsusi təlimatlar](#custom-iroha-special-instruction) kimi istifadə olunur.
+Bu [isi](#iroha-special-instructions-isi) dəsti `Log`, `ExecuteTrigger`, `SetParameter` və `Upgrade` kimi domenə xas obyekti dəyişdirməyən təlimatları ehtiva edir. Iroha 3-də `If`, `Notify` və ya `Sequence` təlimatları yoxdur.
 
 ### Əsas Iroha Təlim əməliyyatları {#core-iroha-special-instructions}
 

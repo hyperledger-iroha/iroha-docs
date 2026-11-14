@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: 33617bc89d0aef5c2a086f45a216201d8980123f717e68f1e1a95eadeb906eb0
+translation_source_hash: dff2584fd47d6e1426ec18aca2d2003a7fdca4b9882296de484418f8c17806fe
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -90,13 +90,12 @@ Aitai — сатып алушы мен сатушы тізбектен тыс т
 
 Туынды эскроу блокчейн тізілімінде қарауды сақтайды. Сатушы `OpenAssetEscrow` арқылы ұсыныс ашады, сатып алушы қабылдайды және оффчейн төлемді `AcceptAssetEscrow` және `MarkEscrowPaymentSent` арқылы белгілейді, және сатушы `ReleaseAssetEscrow` арқылы босатады немесе төлем белгіленгенге дейін тоқтатады. Егер сатып алушы мен сатушы келісімге келе алмаса, кез келген тарап дау ашып, `CanResolveEscrowDispute` көмегімен шешуші құлыпталған соманы бөлісе алады.
 
-Толық өмірлік цикл үшін, жалпы актив құлпылары, анонимді эскроу, сұраулар, оқиғалар және Rust мысалдары үшін, қараңыз [Туынды активтерді сенімхатта сақтау](/kk/blockchain/escrow.md).
+Толық өмірлік цикл, жалпы актив құлыптары, шартты эскроу, сұраулар, оқиғалар және Rust мысалдары үшін [Туынды активтерді сенімхатта сақтау](/kk/blockchain/escrow.md) бөлімін қараңыз.
 
 |Айтай беті|Оны пайдаланыңыз|
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`                                                    |Төмендегі XOR номиналды қаржылық операцияларды есеп айырысу ағындарын қоса алғанда, мөлдір сандық актив ұсыныстар.|
-| `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`       |Қорғалатын ұсыныстар қаржыландыру және жабу әрекеттері үшін дәлел тіркемелерін пайдаланады.|
-| `OpenEscrowDispute`, `ResolveEscrowDispute`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute`                                                    |Дауларды тіркеу және сот үлгідегі шешім.|
+| `OpenEscrowDispute`, `ResolveEscrowDispute`                                                                                                                                |Дауларды тіркеу және сот үлгісіндегі шешім.|
 | `FindAssetEscrowById`, `FindAssetEscrowsBySeller`, `FindAssetEscrowsByBuyer`, `FindAssetEscrowsByStatus`|Қосымша күй беттері, салық есептері жұмыстары және қолдау құралдары.|
 | `EscrowEventFilter` |Эскроу идентификаторы, сатушы, сатып алушы, мәртебе немесе іс-шара түрі бойынша тікелей ашық эскроу жазылымдары.|
 | Kotodama `escrow_open_offer`, `escrow_accept`, `escrow_mark_payment_sent`, `escrow_release`, `escrow_cancel`, `escrow_open_dispute`, `escrow_resolve_dispute` | Kotodama келісімшарт шақырулары V1 эскроу жүйелік шақырулары арқылы қолдаулы. |
@@ -492,7 +491,7 @@ SoraFS әдетте қолданбаның статикалық ресурста
 
 Taira бірегей протокол-стандартты қоғамдық SoraFS тест желісі болып табылады. Оның тіркелген валидатор профилі `fc56984b-2be7-431d-840e-21514d1883f0` тізбегін және `369` тізбек дискриминантын пайдаланады. Төмендегі `NetworkId` қазіргі бекітілген Taira блокчейннің бастапқы нақты сәйкестігі болып табылады. A Taira қалпына келтіру сол криптографиялық хэшті өзгерте алады, бірақ тізбек белгіллесін сақтайды, сондықтан оны ағымдағы қол қойылған орналастыру профилінен жаңартыңыз және оны тізбектен UUID ешқашан шығармаңыз. Taira-ның тиімді SoraFS параметрлері:
 
-- желі идентификаторы: `hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94`
+- желі идентификаторы: `hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774`
 - қақпа базасы URL: `https://taira.sora.org`
 - штырь Torii URLs: `https://taira-validator-1.sora.org` арқылы `https://taira-validator-4.sora.org`
 - табу мүмкіндіктері: `torii_gateway`, `chunk_range_fetch`, және `potr_mldsa`
@@ -502,7 +501,7 @@ Taira бірегей протокол-стандартты қоғамдық Sora
 ```toml
 [sorafs.storage]
 enabled = false
-max_capacity_bytes = 13743895347
+max_capacity_bytes = 2684354560
 
 [sorafs.discovery]
 discovery_enabled = true
@@ -587,7 +586,7 @@ cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
   --summary-out=artifacts/site.car-summary.json
 
 : "${TAIRA_AUTHORITY:?set a funded Taira I105 account}"
-export TAIRA_NETWORK_ID='hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94'
+export TAIRA_NETWORK_ID='hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774'
 export TAIRA_PIN_TORII_URL=https://taira-validator-1.sora.org
 export TAIRA_PRIVATE_KEY_FILE="${TAIRA_PRIVATE_KEY_FILE:-./secrets/taira-authority.ed25519}"
 export TAIRA_RETENTION_EPOCH=$(( $(date -u +%s) + 86400 ))

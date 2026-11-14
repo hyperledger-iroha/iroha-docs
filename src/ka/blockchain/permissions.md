@@ -1,9 +1,9 @@
 ---
 translation_locale: ka
 translation_source: /blockchain/permissions.md
-translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
+translation_source_hash: 7993d14839218fd3394d52dbcce264bffea32394f54e25dd261cd060c54f1fe1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # ნებართვები {#permissions}
 
@@ -72,14 +72,20 @@ let register_role = Register::role(role);
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```
 
 ## ნებართვის ვალიდატორები {#permission-validators}
 
-ნებართვები არსებობს ისე, რომ მხოლოდ საჭირო ნებართვის ტოქნის მქონე ანგარიშებს შეუძლიათ დაცული მოქმედება განახორციელონ. დეფოლტური აღსრულებელი შეამოწმებს ნებართვებს ინსტრუქციის, მოთხოვნის და გამოხატვის შესრულების დროს.
+ნებართვები არსებობს იმისთვის, რომ დაცული მოქმედების შესრულება მხოლოდ საჭირო ნებართვის ტოკენის მქონე ანგარიშებს შეეძლოთ. ნაგულისხმევი შემსრულებელი ნებართვებს ამოწმებს ტრანზაქციებისა და ინსტრუქციების შესრულებისა და მოთხოვნების ვალიდაციის დროს.
 
 დეფოლტური ვალიდატორის ზედაპირი დაჯგუფებულია ბლოკჩეინ ლეგერზე:
 
@@ -96,7 +102,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 
 ნებართვის შემოწმებას ახორციელებს აქტიური აღმასრულებელი. დეფოლტურად აღმასრულებელმა უზრუნველყოფს ჩაშენებული ნებართვების ვალიდატორები და ტოქნის განსაზღვრები, ხოლო ქსელს შეუძლია შეცვალოს პოლიტიკა გამოყენებული აღმასრულებლის გაუმჯობესებით.
 
-ვალიდატორები უბრუნებენ დამტკიცების განაჩენს. ვალიდატორი შეიძლება დაუშვას ოპერაცია, უარყოს მას მიზეზით ან გადაიტოვოს ის, თუ ოპერაცია ამ ვალიდატორის მოქმედების ფარგლებს გარეთაა. შერჩეული მოსამართლე ამ განაჩენებს აერთიანებს იმის დასადგენად, შეიძლება თუ არა ინსტრუქციას, კითხვას ან გამოხატვას განაგრძო.
+შემსრულებელი ან უშვებს ოპერაციას, ან უარყოფს მას `ValidationFail` მიზეზით. უარყოფილი ინსტრუქცია მთელ ტრანზაქციას უარყოფს, ხოლო უარყოფილი მოთხოვნა შეცდომას გამომძახებელს უბრუნებს.
 
 ## მხარდაჭერილი კითხვები {#supported-queries}
 

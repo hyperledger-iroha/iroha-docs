@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 0c4f2f3fc4efb9f883f597a3eea49c99431b711a0141eba70ac5a2524990dd73
+translation_source_hash: 50fac5ad01faf8d09441cba90f29472da04630dbeb3c80111a19f3fb50bb1224
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Namunalari va Retseptlar {#samples-and-recipes}
 
@@ -19,4 +19,4 @@ Ayni Swift SDK ga nisbatan tasdiqlangan misollar uchun `IrohaSwift/Tests/IrohaSw
 
 ## Android {#android}
 
-Yangi Android ishlari uchun [Kotlin, Android, va Java](/uz/guide/tutorials/kotlin-java.md) da tavsiflangan Kotlin-birinchi `core-jvm`, `client-android` va `offline-wallet-android` modullaridan foydalaning. Kotlin SDK Android iste'molchilari uchun kanonik boshlang'ich nuqtadir.
+Yangi Android ishlari uchun [Kotlin, Android, va Java](/uz/guide/tutorials/kotlin-java.md) da tavsiflangan Kotlin-birinchi `core-jvm`, `client-android` va `kagemusha-wallet-android` modullaridan foydalaning. Kotlin SDK Android iste'molchilari uchun kanonik boshlang'ich nuqtadir.

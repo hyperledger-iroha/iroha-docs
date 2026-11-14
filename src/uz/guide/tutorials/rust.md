@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /guide/tutorials/rust.md
-translation_source_hash: fbe41bd6e7fa86d06c027724b446016c14246495964ccf521155e4b790d75041
+translation_source_hash: 9d9848de91a85c84221efc39bc7dfb8443f5c50b448d336207c06efce3bc07e8
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -53,7 +53,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-`taira.client.toml` yaratganingizdan so‘ng, xuddi shu ikkilik fayl imzolangan kanari buyruqlarini Taira ga qarshi ishga tushirishi mumkin. Ularni odatiy birlik testlaridan alohida saqlang, chunki ular testnet bilan moliyalashtirilgan hisob va jonli testnet mavjudligini talab qiladi.
+`taira.client.toml` yaratganingizdan so‘ng, xuddi shu ikkilik fayl `iroha taira account` yordamida hisobni ro‘yxatdan o‘tkazib, unga mablag‘ o‘tkazishi va Taira ga qarshi oddiy imzolangan reyestr buyruqlarini yuborishi mumkin. Ularni odatiy birlik testlaridan alohida saqlang, chunki ular faucet orqali mablag‘ bilan ta’minlangan hisob va jonli sinov tarmog‘i mavjudligini talab qiladi.
 
 ## Rust Mijoz dasturiy ta'minot paketidan foydalanish {#using-the-rust-client-crate}
 
@@ -70,7 +70,7 @@ Agar siz Rust sirtlarining amaliyotda qanday ishlatilishining eng to‘liq misol
 - `crates/iroha/README.md`
 - `crates/iroha_cli/README.md`
 
-Blokcheyn ledger eskrou ish oqimlari tomonidan boshqariladiganlar uchun, [Mahalliy Aktiv Depoziti](/uz/blockchain/escrow.md#rust-sdk) ga qarang. Hozirda Rust maʼlumot modeli bozor eskroulari, umumiy aktivlar qulflari, anonim eskrou, so‘rovlar va voqealar uchun eng to‘liq tiplangan qamrovga ega.
+Reyestr boshqaradigan eskrou jarayonlari uchun [Mahalliy aktiv eskrousi](/uz/blockchain/escrow.md#rust-sdk) bo‘limiga qarang. Hozirda Rust ma’lumotlar modeli bozor eskrousi, umumiy aktiv qulflari, shartli eskrou, so‘rovlar va hodisalar uchun eng to‘liq tiplashtirilgan qamrovga ega.
 
 Siz lokal CLI yordam nuqtasi-vaqt maʼlumotlar ko‘rinishini quyidagicha qayta yaratishingiz mumkin:
 

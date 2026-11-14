@@ -48,12 +48,12 @@ Before activation, operators need all of the following:
 2. mandatory Sumeragi DA/RBC enabled for every height
 3. a governed confidential settlement pool and initial root in every
    data space
-4. an active V1 private-note capability and the separate settlement proof
-   profile
+4. the available native `IrohaIvmPrivateNoteStarkV1` implementation,
+   committed private-settlement limits, and V1 policy permission
 5. at least one governed local `PrivateSettlementAuditPolicyV1`, including
    distinct auditor signing and hybrid-encryption keys, a key epoch, height
    validity, and an approval threshold
-6. enough private sidecar storage for the configured retention period
+6. enough private sidecar storage for the committed retention period
 7. a neutral sponsor account able to submit the final public carrier
 
 An auditor may also operate a validator, but must use separate consensus,
@@ -70,9 +70,10 @@ that same historical authority.
 
 ## Configure sidecar custody
 
-Committed privacy policy determines activation, proof profiles, participant
-limits, expiry, and auditor requirements. The governed capability and the
-on-chain pool and audit records must be active before admission succeeds.
+Committed privacy policy sets the proof, capsule, and carrier limits, participant
+limits, expiry, retention, and auditor requirements. Admission also needs the
+pool-policy governance notice period and current on-chain pool and audit
+records. There is no node enable flag or service activation height.
 
 Node configuration controls only the encrypted sidecar store's local capacity:
 
@@ -117,12 +118,14 @@ For each canonical leg, the coordinator then performs this sequence:
    Persist the canonical 3-of-4 Prepare certificate on every staged
    responder.
 4. After every leg has a Prepare certificate, build the immutable complete
-   Prepare barrier. Request and persist canonical 3-of-4 Commit
-   certificates. If the coordinator restarts, query participant nodes for
+   Prepare barrier. Have the manifest sponsor submit it in one
+   `RegisterAtomicPrivateSettlementPrepareV1` control carrier and wait for
+   finality; Commit voters consult that replicated lock. Then request and
+   persist canonical 3-of-4 Commit certificates. If the coordinator restarts, query participant nodes for
    their locally durable Prepare and Commit certificates, select a canonical
    quorum-equivalent certificate, and re-fan it out before continuing; never
    reconstruct a certificate from an unauthenticated local cache.
-5. Have the manifest sponsor sign and submit exactly one global carrier.
+5. Have the manifest sponsor sign and submit the global finalization carrier.
    The carrier contains one `FinalizeAtomicPrivateSettlementV1` instruction
    and the exact complete certified bundle. Coordinator and WSV preflight
    measure the complete boxed finalization instruction, including registered
@@ -138,6 +141,7 @@ For each canonical leg, the coordinator then performs this sequence:
 The Rust client exposes this flow through methods including
 `certify_and_upload_private_settlement_legs_v1`,
 `prepare_private_settlement_bundle_v1`,
+`register_private_settlement_prepare_and_wait_v1`,
 `commit_private_settlement_bundle_v1`, and
 `submit_private_settlement_bundle_v1`. Restart-safe coordination uses
 `recover_or_prepare_private_settlement_bundle_v1` and
@@ -159,7 +163,7 @@ rejects that boundary.
 
 The public pool projection retains the complete superseded policy-revision
 lineage. A receipt finalized before rotation therefore remains valid after
-restart, and replaying that exact receipt remains idempotent. The lineage does
+restart, and an exact replay of that receipt is rejected without changing state. The lineage does
 not authorize unfinished work: any old-policy bundle that crosses the
 activation boundary fails closed before global state changes. Retain every old
 decryption key needed to open stored capsules, or complete a governed and
@@ -173,6 +177,7 @@ behavior.
 
 | Operation          | Method and path                                                            | Principal                   |
 | ------------------ | -------------------------------------------------------------------------- | --------------------------- |
+| Authority context  | `POST /v1/nexus/private-settlements/context/{height}`                      | canonical account signature |
 | Upload leg         | `POST /v1/nexus/private-settlements/legs`                                  | canonical account signature |
 | Availability share | `POST /v1/nexus/private-settlements/legs/availability-shares`              | canonical account signature |
 | Prepare vote       | `POST /v1/nexus/private-settlements/phases/prepare-votes`                  | canonical account signature |
@@ -183,7 +188,7 @@ behavior.
 | Committee proof    | `GET /v1/nexus/private-settlements/legs/{payload_digest}/committee-proof`  | exact roster validator      |
 | Audit capsule      | `POST /v1/nexus/private-settlements/legs/{payload_digest}/audit-capsule`    | governed auditor            |
 | Auditor approval   | `POST /v1/nexus/private-settlements/legs/{payload_digest}/audit-approvals` | governed auditor            |
-| Submit final/abort | `POST /v1/nexus/private-settlements/bundles`                               | manifest sponsor            |
+| Submit carrier     | `POST /v1/nexus/private-settlements/bundles`                               | manifest sponsor            |
 | Bundle status      | `GET /v1/nexus/private-settlements/bundles/{bundle_id}`                    | public                      |
 | Receipt or abort   | `GET /v1/nexus/private-settlements/bundles/{bundle_id}/receipt`            | public                      |
 
@@ -192,8 +197,8 @@ In particular, ordinary leg status does not reveal approval counts or the
 governed auditor threshold. Restricted reads intentionally collapse missing,
 unauthorized, and retention-expired material into the same unavailable
 response class.
-The submit route accepts exactly one direct sponsor-signed finalization or
-abort instruction. Its `202` response contains the bundle ID, observed
+The submit route accepts exactly one direct sponsor-signed Prepare-lock
+registration, finalization, or abort instruction. Its `202` response contains the bundle ID, observed
 admission height, and carrier hash only; it does not claim a queued abort is
 already final. The SDKs require both identifiers to be canonical checksummed
 Norito `Hash` JSON literals and the height to be an exact unsigned 64-bit
@@ -222,9 +227,9 @@ durable records, then reconcile immutable global receipts, abort markers,
 or expiry. The supervised reconciler also runs terminal retention pruning at
 the synchronously observed authoritative height even when there is no terminal
 candidate to reconcile, and it fails closed on a pruning error. Only an
-authoritative global terminal record releases staged locks. Replaying an
-identical finalized receipt is idempotent; a conflicting replay fails
-deterministically.
+authoritative global terminal record releases staged locks. An exact
+replay of a finalized receipt is rejected without changing state; a
+conflicting replay fails deterministically.
 
 Reservation identity includes the complete route. Pool heads use
 `(route, pool_id, epoch, root)`, nullifiers use

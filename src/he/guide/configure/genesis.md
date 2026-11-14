@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /guide/configure/genesis.md
-translation_source_hash: 91be089c82a76991e35a43e1541f9e069fdf70d3fb5de2492b985c06c78a2372
+translation_source_hash: 2a4a43b6ac873cc0c860631e307e52b047ba6a08691bf3e4c5872cc22c81a0bd
 translation_status: machine-validated
 translation_engine: google-translate+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -9,7 +9,7 @@ translation_engine: google-translate+reviewed-delta+reviewed-first-release-sourc
 
 בראשית מגדיר את מצב השרשרת הראשוני.המקור הניתן לעריכה הוא א JSON לְהַפְגִין, ו- Iroha 3 צומת צורך סימן Norito קובץ עסקה.
 
-::: details מניפסט בראשית ברירת המחדל
+::: details תבנית המקור של בראשית המוגדרת כברירת מחדל (defaults/genesis.template.json)
 
 <<< @/snippets/genesis.json
 
@@ -36,7 +36,7 @@ public_key = "ed0120..."
 expected_hash_file = "./genesis.expected_hash"
 ```
 
-כל העמיתים ברשת חייבים להסכים על עסקת ה־genesis החתומה ועל המפתח הציבורי של ה־genesis. קובץ הגיבוב הצפוי נדרש בהפעלה ראשונית ובהפעלה מחדש; `kagami genesis sign --expected-hash-out` כותב אותו.
+כל העמיתים ברשת חייבים להסכים על עסקת ה־genesis החתומה ועל המפתח הציבורי של ה־genesis. כל הפעלה, ראשונית או מחודשת, זקוקה לגיבוב הצפוי: הגדירו בדיוק אחד מהשניים, `expected_hash_file` או `expected_hash` המוטבע. ‏`kagami genesis sign --expected-hash-out` כותב את הקובץ.
 
 ## חותם בראשית {#signing-genesis}
 
@@ -52,7 +52,7 @@ cargo run --bin kagami -- genesis sign ./genesis.json \
 
 `GENESIS_PRIVATE_KEY_FILE` חייב להיות מצב של בעלים-`0600`, קישור יחיד קובץ רגיל המכיל multihash אחד עם מפתח פרטי קנוני וסופי קו חדש. Kagami דוחה קישורים סמליים ולעולם לא מקבל הודעה פרטית גולמית מקש בשורת הפקודה.
 
-עבור פרופילי NPoS או SORA Nexus, כללו את הטופולוגיה ואת הוכחות ההחזקה ב־BLS שהפרופיל שנוצר מחייב. פקודות Kagami ‏`localnet generate`, ‏`wizard` ו־`sora-network generate` מטפלות בפרטים האלה אוטומטית.
+כל genesis חתום, בין אם מבוסס הרשאות ובין אם NPoS, חייב לכלול טופולוגיית מאמתים מדויקת של `3f + 1` עם הוכחת החזקה של BLS לכל מאמת. פקודות Kagami ‏`localnet generate`, ‏`wizard` ו־`sora-network generate` מטפלות בפרטים האלה אוטומטית.
 
 ## מתחייבים מחדש בראשית {#recommitting-genesis}
 

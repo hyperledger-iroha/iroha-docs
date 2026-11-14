@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
+translation_source_hash: 6edc0185196ab8e77ef8552723e05bf37cca1a088da86e2a43d441d58e779c11
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -32,4 +32,4 @@ docker restart <container>
 
 ## השתמשו בהקנה מותאמת {#use-custom-configuration}
 
-תצורת הצומת הנוכחית היא TOML. קשרו כ-bind mount או העתיקו את `config.toml`, את `genesis.signed.nrt` ואת קובצי המפתח הקשורים שנוצרו אל נתיבי המכולה שה-image מצפה להם, ולאחר מכן הפעילו מחדש את הצומת. שמרו את הקבצים שנוצרו יחד; ערבוב קבצים מהרצות Kagami שונות עלול לגרום לכשלי deserialization או consensus.
+תצורת הצומת הנוכחית היא TOML. ‏Kagami כותב קובץ `peerN.toml` אחד לכל מאמת, עם `genesis.signed.nrt`, ‏`genesis.public_key` ו־`genesis.expected_hash`; קובץ ה־Compose שנוצר באמצעות `kagami docker` מעגן אותם לתוך המכולה. צרו אותו מחדש במקום להעתיק קבצים ידנית, ולאחר מכן הפעילו מחדש את הצומת. שמרו את הקבצים שנוצרו יחד; ערבוב קבצים מהרצות Kagami שונות עלול לגרום לכשלי דה־סריאליזציה או לכשלי קונצנזוס.

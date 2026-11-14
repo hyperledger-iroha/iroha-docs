@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /reference/glossary.md
-translation_source_hash: 8b00758b5731a2f9e09a5b49ccb7f298229ab966b5adf2d7152e3b1416fe8737
+translation_source_hash: 4d3a8e3aa88291edbaac5b52039d2aad160d89fb83c085c21030a531c93258f4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -79,7 +79,7 @@ translation_engine: nllb-200-ct2+reviewed-delta+reviewed-first-release-source-am
 
 ## 拜占庭的故障耐受性 (BFT) {#byzantine-fault-tolerance-bft}
 
-能夠在包含一定比例的惡意行為者網路中正常執行的特性.Iroha 能夠與其同等網路中最多33%的惡意行為者進行操作.
+在包含一定比例惡意參與者的網路中仍能正常運作的特性。Sumeragi 委員會恰好有 `3f + 1` 個驗證者，最多可容忍 `f` 個拜占庭驗證者，即少於委員會的三分之一。
 
 ## Iroha 元件 {#iroha-components}
 
@@ -107,7 +107,7 @@ translation_engine: nllb-200-ct2+reviewed-delta+reviewed-first-release-source-am
 
 ### 智慧合同 {#smart-contracts}
 
-智慧合同是基於區塊鏈的程式,在滿足特定條件時執行. 在 Iroha 中,智慧合約使用[核心 Iroha 特殊指令](#core-iroha-special-instructions)實現.
+智慧合約是基於區塊鏈的程式，在滿足特定條件時執行。在 Iroha 3 中，智慧合約以 Kotodama 撰寫，並編譯為 IVM 位元組碼（`.to`）；合約透過主機呼叫發出 [Iroha 特殊指令](#core-iroha-special-instructions)來變更狀態。
 
 ### 觸發器 {#triggers}
 
@@ -119,7 +119,7 @@ Iroha 3 的首個版本只支援一種規範的區塊線上傳輸格式版本。
 
 ### 希吉里 (對等節點聲譽系統) {#hijiri-peer-reputation-system}
 
-Iroha 的聲譽系統.它允許優先與具有良好的軌跡記錄的[對等節點](#peer)進行溝通,並減少惡意的[對等節點](#peer)造成的傷害.
+Iroha 的對等節點與帳戶信譽系統。其由共識掌管的參數保存 Hijiri 費用政策與帳戶風險記錄，而受治理的觀察者登錄表會簽發帳戶證明，以調整帳戶的風險評分。
 
 ## Iroha 模組 {#iroha-modules}
 
@@ -131,7 +131,7 @@ Iroha 的第三方擴充套件,提供了定製功能.
 
 #### 實用性 Iroha 特殊指示 {#utility-iroha-special-instructions}
 
-這套 [isi](#iroha-special-instructions-isi)包含像 `If`這樣的邏輯指令,類似於 `Notify`這樣的I/O相關指令和`Sequence`這樣的組合.它們主要被用作[定製指令](#custom-iroha-special-instruction).
+這組 [isi](#iroha-special-instructions-isi) 包含不會變更特定於網域之實體的指令，例如 `Log`、`ExecuteTrigger`、`SetParameter` 和 `Upgrade`。Iroha 3 沒有 `If`、`Notify` 或 `Sequence` 指令。
 
 ### 核心 Iroha 特殊指示 {#core-iroha-special-instructions}
 

@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /cookbook/nfts.md
-translation_source_hash: b6a85c2feb197588e3358a785e10280a687af3951d52de4e6b8d96eab5de873c
+translation_source_hash: 7d7a1ba8ff8678f420a6237bd0d074d2d197bf4349989c0c55f05e9769d15da7
 translation_status: machine-validated
-translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # NFTs {#nfts}
 
@@ -15,7 +15,7 @@ Taira’dagi NFT holatini tekshiring, so‘ng yaratilgan mahalliy tarmoqda noyob
 
 - `curl`, `jq`, Python 3.11 yoki yangiroq versiyasi va joriy `iroha` CLI.
 - Taira’ga faqat o‘qish huquqi bilan kirish.
-- Yozish amallari uchun [Iroha’ni ishga tushirish](/uz/get-started/launch-iroha.md) bo‘yicha `kagami localnet generate --peers 4 --out-dir ./localnet` bilan yaratilgan mahalliy tarmoq, `./localnet/client.toml` va `http://127.0.0.1:8080` manzilidagi Torii, shuningdek imzolovchisi egalik qiladigan NFT domeni (2-bosqichga qarang).
+- Yozish amallari uchun `kagami localnet generate --peers 4 --out-dir ./localnet` bilan yaratilgan mahalliy tarmoq, `./localnet/client.toml` va `http://127.0.0.1:8080` manzilidagi Torii, shuningdek imzolovchisi egalik qiladigan NFT domeni (2-bosqichga qarang).
 
 ## Qadamlar {#steps}
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /reference/instructions.md
-translation_source_hash: 9999816502505026fb35d2ddaf4033f54768be697ca5b03550e1cf5949ada36c
+translation_source_hash: bbd8f9544aa863cd273d1b2089f39aff3d484ee0378fa5bcc7b565795a0671c6
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha Ko‘rsatma operatsiyalari {#iroha-special-instructions}
 
 Joriy ma'lumotlar modeli ushbu ichki ko'rsatma oilalarini ochib beradi:
@@ -28,7 +27,6 @@ Joriy ma'lumotlar modeli ushbu ichki ko'rsatma oilalarini ochib beradi:
 | [`CustomInstruction`](/uz/blockchain/instructions.md#other-instructions) |ijrochi-ga xos JSON yuk|
 | [Mahalliy aktiv depoziti](/uz/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
 | [Umumiy aktiv qulflari](/uz/blockchain/escrow.md#generic-asset-locks) | `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
-| [Anonim aktiv depoziti](/uz/blockchain/escrow.md#anonymous-escrow) |`OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute`|
 | [Atomik shaxsiy moliyaviy tranzaksiya hisob-kitobi](/uz/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
 Qo'shimcha Iroha 3 modullar domenga xos ko'rsatma turlarini ko'rsatmalar reestri orqali ro'yxatdan o'tkazishi mumkin. Tugun-avtorizatsiya qiluvchi sxema va uni ushlaydigan buyruq uchun [Ma'lumotlar modeli sxemasi](./data-model-schema.md) ga qarang.
@@ -85,7 +83,7 @@ class MetadataBoxes {
 class NativeEscrowInstructions {
     OpenAssetEscrow
     OpenAssetLock
-    OpenAnonymousAssetEscrow
+    OpenConditionalEscrow
     ResolveEscrowDispute
 }
 

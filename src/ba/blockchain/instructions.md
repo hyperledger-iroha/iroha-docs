@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /blockchain/instructions.md
-translation_source_hash: ef50253c5478c9d8c3e14529dc4c2f3de67c344901c82c65be77ceb237a29598
+translation_source_hash: 86d253317376ad8d7a8c0e30689c7e0c0cd786af83299dd5ac1a904c653192f5
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
@@ -41,7 +41,7 @@ Iroha Махсус күрһәтмәләрҙең тулы исемлеге:
 | [SetParameter](#setparameter) |сылбыр параметрҙары |                      |
 | [Grant/Revoke](#grant-revoke) | [ролдәр, рөхсәт билдәләре](/ba/blockchain/permissions.md) |иҫәптәр йәки ролдәр |
 | [Трансфер](#transfer) |домендар, активтар билдәләмәләре, һанлы активтар, NFTs |иҫәптәр |
-| [Һаҡлыҡ менән тәьмин итеү һәм активтарҙы һаҡлау](#native-escrow-and-asset-locks) |һанлы активтар депозиты, активтарҙы ябыу, аноним конфиденциаль бурыстар |һатып алыусылар, йүнәлештәр йәки бәхәстәр бүленә |
+| [Һаҡлыҡ менән тәьмин итеү һәм активтарҙы һаҡлау](#native-escrow-and-asset-locks) |һанлы актив эскроуҙары, актив бикләүҙәре, шартлы эскроуҙар |һатып алыусылар, йүнәлештәр йәки бәхәстәр бүленә |
 | [Атом шәхси иҫәпләшеүе](#atomic-private-settlement) | аныҡ маршрутҡа бәйләнгән йәшерен пулдар, сәйәсәт ротациялары, тамамланған пакеттар һәм туҡтатыу билдәләре | |
 | [ExecuteTrigger](#executetrigger) |триггерҙар |                      |
 | [Log/Custom/Upgrade](#other-instructions) | журнал яҙмалары, башҡарыусыға хас файҙалы йөктәр, башҡарыусы яңыртыуҙары | |
@@ -184,6 +184,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
+  --domain docs.universal \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
@@ -322,9 +323,9 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 
 ## Хаҡтарҙы һаҡлап ҡалыу һәм мөлкәт менән тәьмин итеү {#native-escrow-and-asset-locks}
 
-Протоколға индерелгән эскроу күрһәтмәләре һанлы активтарҙы реестр идара иткән протокол һаҡлау иҫәбендә бикләй. Улар баҙар рәүешендәге иҫәп-хисаплашыу, дөйөм активтарҙы бикләү һәм аноним һаҡланған эскроу ағымдары өсөн ҡулланыла.
+Протоколға индерелгән эскроу күрһәтмәләре һанлы активтарҙы реестр идара иткән протокол һаҡлау иҫәбендә бикләй. Улар баҙар рәүешендәге иҫәп-хисаплашыу, дөйөм активтарҙы бикләү һәм раҫлаусыға бәйле шартлы эскроуҙар өсөн ҡулланыла.
 
-Баҙарҙа депозит ҡулланыу `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, һәм `ResolveEscrowDispute`. Ғәҙәттәгесә активты ябыу ҡулланыу `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, һәм `ExpireAssetLock`. Anonymous escrow баҙарҙа йәшәү циклын сағылдыра `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, һәм `ResolveAnonymousEscrowDispute`.
+Баҙар эскроуы `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute` һәм `ResolveEscrowDispute` ҡуллана. Дөйөм актив бикләүҙәре `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock` һәм `ExpireAssetLock` ҡуллана. Шартлы эскроу `OpenConditionalEscrow`, `AttestEscrowCondition` һәм `ExpireConditionalEscrow` ҡуллана.
 
 Был ISIs өсөн әлегә беренсе класлы CLI командалары юҡ. Типланған SDK төҙөүселәрен йәки сериаллаштырылған инструкция payload-тарын ҡулланығыҙ; тормош циклы, рөхсәттәр, һорауҙар, ваҡиғалар һәм Rust миҫалдары өсөн [протоколға индерелгән актив эскроуын](/ba/blockchain/escrow.md) ҡарағыҙ.
 
@@ -418,7 +419,7 @@ printf '{"owner":"ops"}\n' |
 Стандарт инеү менән бер параметрлы JSON объектты үткәреп, параметрҙы билдәлә:
 
 ```bash
-printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
+printf '{"Sumeragi":{"MaxClockDriftMs":1000}}\n' |
   cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```

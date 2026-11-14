@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /reference/instructions.md
-translation_source_hash: 9999816502505026fb35d2ddaf4033f54768be697ca5b03550e1cf5949ada36c
+translation_source_hash: bbd8f9544aa863cd273d1b2089f39aff3d484ee0378fa5bcc7b565795a0671c6
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha Opérations d'instruction {#iroha-special-instructions}
 
 Le modèle de données actuel expose ces familles d'instructions intégrées :
@@ -28,7 +27,6 @@ Le modèle de données actuel expose ces familles d'instructions intégrées :
 | [`CustomInstruction`](/fr/blockchain/instructions.md#other-instructions) | charge utile spécifique à l'exécuteur JSON |
 | [Séquestre d'actifs natifs](/fr/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
 | [Verrous d'actifs génériques](/fr/blockchain/escrow.md#generic-asset-locks) | `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
-| [Séquestre d'actifs anonyme](/fr/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
 | [Règlement privé atomique](/fr/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
 Des modules supplémentaires Iroha 3 peuvent enregistrer des types d'instructions spécifiques au domaine via le registre des instructions. Pour le schéma autoritaire pour le nœud et une commande qui le capture, voir [Schéma du modèle de données](./data-model-schema.md).
@@ -85,7 +83,7 @@ class MetadataBoxes {
 class NativeEscrowInstructions {
     OpenAssetEscrow
     OpenAssetLock
-    OpenAnonymousAssetEscrow
+    OpenConditionalEscrow
     ResolveEscrowDispute
 }
 

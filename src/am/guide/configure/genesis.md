@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /guide/configure/genesis.md
-translation_source_hash: 91be089c82a76991e35a43e1541f9e069fdf70d3fb5de2492b985c06c78a2372
+translation_source_hash: 2a4a43b6ac873cc0c860631e307e52b047ba6a08691bf3e4c5872cc22c81a0bd
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -9,7 +9,7 @@ translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-so
 
 Blockchain ጀነሲስ የመጀመሪያውን ሰንሰለት ሁኔታ ይገልጻል። ሊስተካከል የሚችል ምንጭ JSON ቴክኒካል ማኒፌስት ነው፣ እና Iroha 3 ኖድ የተፈረመ Norito የግብይት ፋይል ይጠቀማል።
 
-::: details ነባሪ blockchain ጀነሲስ ቴክኒካዊ አንጸባራቂ
+::: details ነባሪ የጀነሲስ ምንጭ አብነት (defaults/genesis.template.json)
 
 <<< @/snippets/genesis.json
 
@@ -36,7 +36,7 @@ public_key = "ed0120..."
 expected_hash_file = "./genesis.expected_hash"
 ```
 
-በአውታረ መረቡ ያሉ ሁሉም አቻዎች በተፈረመው የgenesis ግብይትና በgenesis ይፋዊ ቁልፍ መስማማት አለባቸው። የሚጠበቀው ሃሽ ፋይል በመጀመሪያ ጅምርና በዳግም ጅምር ያስፈልጋል፤ `kagami genesis sign --expected-hash-out` ይጽፈዋል።
+በአውታረ መረቡ ያሉ ሁሉም አቻዎች በተፈረመው የgenesis ግብይትና በgenesis ይፋዊ ቁልፍ መስማማት አለባቸው። እያንዳንዱ ጅምር፣ አዲስም ሆነ ዳግም ጅምር፣ የሚጠበቀውን ሃሽ ይፈልጋል፦ ከ`expected_hash_file` ወይም ከውስጠ-መስመር `expected_hash` በትክክል አንዱን ያዋቅሩ። `kagami genesis sign --expected-hash-out` ፋይሉን ይጽፋል።
 
 ## የብሎክቼይን ጀነሲስ መፈረም {#signing-genesis}
 
@@ -52,7 +52,7 @@ cargo run --bin kagami -- genesis sign ./genesis.json \
 
 `GENESIS_PRIVATE_KEY_FILE` በባለቤት የተያዘ ሁነታ-`0600`፣ ነጠላ-አገናኝ መደበኛ ፋይል አንድ ነጠላ ፕሮቶኮል-ደረጃውን የጠበቀ የግል-ቁልፍ መልቲሃሽ እና የመጨረሻውን አዲስ መስመር የያዘ መሆን አለበት።. Kagami ምሳሌያዊ አገናኞችን አይቀበልም እና በትእዛዝ መስመሩ ላይ ጥሬ የብሎክቼይን ጀነሲስ የግል ቁልፍን በጭራሽ አይቀበልም።.
 
-ለNPoS ወይም SORA Nexus መገለጫዎች በተፈጠረው መገለጫ የሚፈለጉ አወቃቀርና የBLS ባለቤትነት ማስረጃዎችን ያካትቱ። የKagami `localnet generate`፣ `wizard` እና `sora-network generate` ትዕዛዞች እነዚህን ዝርዝሮች በራሳቸው ያስተናግዳሉ።
+እያንዳንዱ የተፈረመ genesis፣ በፈቃድ ላይ የተመሠረተም ሆነ NPoS፣ ለእያንዳንዱ አረጋጋጭ የBLS ባለቤትነት ማረጋገጫ ያለው ትክክለኛ የ`3f + 1` አረጋጋጭ አወቃቀር ማካተት አለበት። የKagami `localnet generate`፣ `wizard` እና `sora-network generate` ትዕዛዞች እነዚህን ዝርዝሮች በራሳቸው ያስተናግዳሉ።
 
 ## የብሎክቼይን ጀነሲስ እንደገና መፈጸም {#recommitting-genesis}
 

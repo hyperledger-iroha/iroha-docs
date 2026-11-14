@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 8a8fd0d29d4c1c323b457595653077564ad100f397ea2f4b059b35451b76aa44
+translation_source_hash: ae0604c0e82db0a908e7ffc44c97f56b58fe2b5bb87553ded48562e8f9fcd36a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # O‘zaro almashtiriladigan aktivlar {#fungible-assets}
 
@@ -15,7 +15,7 @@ Taira-dagi jonli aktiv ta’riflarini tekshiring va yaratilgan mahalliy tarmoqda
 
 - `curl`, `jq`, Python 3.11 yoki undan keyingi versiya, Node.js 24 hamda joriy `iroha` va `kagami` buyruq qatori vositalari (CLIs).
 - Taira-ga faqat o‘qish huquqi bilan kirish.
-- Yozish amaliyoti uchun [Iroha-ni ishga tushirish](/uz/get-started/launch-iroha.md) bo‘limidagidek `kagami localnet generate --peers 4 --out-dir ./localnet` buyrug‘iga `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa` qo‘shib yaratilgan mahalliy tarmoq. U `./localnet/client.toml` faylini va `http://127.0.0.1:8080` manzilidagi Torii-ni beradi.
+- Yozish amaliyoti uchun `kagami localnet generate --peers 4 --out-dir ./localnet` buyrug‘iga `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa` qo‘shib yaratilgan mahalliy tarmoq. U `./localnet/client.toml` faylini va `http://127.0.0.1:8080` manzilidagi Torii-ni beradi.
 
 ## Qadamlar {#steps}
 

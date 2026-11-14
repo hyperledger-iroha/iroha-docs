@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 8a8fd0d29d4c1c323b457595653077564ad100f397ea2f4b059b35451b76aa44
+translation_source_hash: ae0604c0e82db0a908e7ffc44c97f56b58fe2b5bb87553ded48562e8f9fcd36a
 translation_status: machine-validated
-translation_engine: human-reviewed+claude-opus-5-5+reviewed-supplemental-naming-link
+translation_engine: human-reviewed+claude-opus-5-5+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # འོག་གི་དངུལ་ཁང་ཚུ་ {#fungible-assets}
 
@@ -15,7 +15,7 @@ translation_engine: human-reviewed+claude-opus-5-5+reviewed-supplemental-naming-
 
 - `curl`, `jq`, Node.js 24, Python 3.11 ཡང་ན་ དེ་ལས་གསར་བའི་ཐོན་རིམ་ཅིག་ དེ་ལས་ ད་ལྟོའི་ `iroha` དང་ `kagami` CLIs།
 - ཀློག་ཐངས་རྐྱངམ་ཅིག་ Taira ཐོབ་ཚུགསཔ་ཨིན།
-- འབྲི་ནིའི་ཚོང་འབྲེལ་གྱི་ ལམ་སྟོན་གྱི་དོན་ལུ་ [Iroha འགོ་བཙུགས་](/dz/get-started/launch-iroha.md) ནང་བཟུམ་སྦེ་ `kagami localnet generate --peers 4 --out-dir ./localnet` གིས་བཟོ་མི་ ས་གནས་དྲ་རྒྱ་ཅིག་ `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa` ཁ་སྐོང་བརྐྱབ་སྟེ་ དགོཔ་ཨིན། དེ་གིས་ `./localnet/client.toml` དང་ `http://127.0.0.1:8080` གུ་ Torii བྱིནམ་ཨིན།
+- འབྲི་ནིའི་ལམ་སྟོན་གྱི་དོན་ལུ་ `kagami localnet generate --peers 4 --out-dir ./localnet` གིས་བཟོ་མི་ ས་གནས་དྲ་རྒྱ་ཅིག་ `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa` ཁ་སྐོང་བརྐྱབ་སྟེ་ དགོཔ་ཨིན། དེ་གིས་ `./localnet/client.toml` དང་ `http://127.0.0.1:8080` གུ་ Torii བྱིནམ་ཨིན།
 
 ## རིམ་པ་ཚུ་ {#steps}
 

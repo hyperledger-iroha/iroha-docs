@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /blockchain/instructions.md
-translation_source_hash: ef50253c5478c9d8c3e14529dc4c2f3de67c344901c82c65be77ceb237a29598
+translation_source_hash: 86d253317376ad8d7a8c0e30689c7e0c0cd786af83299dd5ac1a904c653192f5
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -41,7 +41,7 @@ translation_engine: bing-translator-llm+reviewed-delta
 | [SetParameter](#setparameter)                             |тізбек параметрлері|                      |
 | [Grant/Revoke](#grant-revoke)                             | [рөлдер, рұқсат белгілері](/kk/blockchain/permissions.md)                                                  |есепшоттар немесе рөлдер|
 | [Көшіру](#transfer)                                     |домендер, активтердің анықтамалары, сандық активтер, NFTs|есептік жазбалар|
-| [Туған жердегі эскроу және активтерді бұғаттау](#native-escrow-and-asset-locks) |сандық актив тіркеулері, актив құлыптары, анонимді тіркеу криптографиялық міндеттемелерінің мәндері|сатып алушылар, бағыттар немесе дауды бөлу|
+| [Жергілікті эскроу және активтерді бұғаттау](#native-escrow-and-asset-locks) |сандық актив эскроулары, актив құлыптары, шартты эскроулар|сатып алушылар, бағыттар немесе дауды бөлу|
 | [Атомдық жеке қаржылық транзакцияны есептеу](#atomic-private-settlement)   |жолға арналған құпия протокол деректер топтары, саясатты ауыстырулар, аяқталған бандлдар және тоқтату маркерлері|                      |
 | [ExecuteTrigger](#executetrigger)                         |триггерлер|                      |
 | [Log/Custom/Upgrade](#other-instructions)                 |журналдар, орындаушыға тән жүктемелер, орындаушыны жаңарту|                      |
@@ -184,6 +184,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
+  --domain docs.universal \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
@@ -322,9 +323,9 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 
 ## Туынды эскроу және активтерді бұғаттау {#native-escrow-and-asset-locks}
 
-Туған жердегі эскроу нұсқаулары сандық активтерді блокчейн тізілім протоколы арқылы басқарылатын қорғауда құлыптайды. Оларды нарықтағы қаржылық транзакцияларды есеп айырысу, жалпы активтерді құлыптау және анонимді қорғалған эскроу ағындары үшін қолданады.
+Жергілікті эскроу нұсқаулары сандық активтерді тізілім басқаратын протоколдық сақтауда құлыптайды. Оларды нарықтағы қаржылық транзакцияларды есеп айырысу, жалпы активтерді құлыптау және аттестаторға байланған шартты эскроулар үшін қолданады.
 
-Нарықтағы эскроу `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute` және `ResolveEscrowDispute` пайдаланады. Жалпы мүлік құлыптары `OpenAssetLock`, `DrawdownAssetLock` пайдаланады. `CancelAssetLock` және `ExpireAssetLock`. Анонимді эскроу нарықтық өмірлік циклді `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute` және `ResolveAnonymousEscrowDispute` арқылы бейнелейді.
+Нарықтық эскроу `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute` және `ResolveEscrowDispute` пайдаланады. Жалпы актив құлыптары `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock` және `ExpireAssetLock` пайдаланады. Шартты эскроу `OpenConditionalEscrow`, `AttestEscrowCondition` және `ExpireConditionalEscrow` пайдаланады.
 
 Осы ISIs қазіргі уақытта бірінші дәрежелі CLI командалары жоқ. Типтелген SDK құрылысушыларды немесе сериализацияланған нұсқау жүктемелерін пайдаланыңыз және өмірлік циклінің егжей-тегжейі, рұқсаттар, сұраулар, оқиғалар және Rust мысалдары үшін [Туынды активтерді сенімхатта сақтау](/kk/blockchain/escrow.md)-ге қараңыз.
 
@@ -418,7 +419,7 @@ printf '{"owner":"ops"}\n' |
 Параметрді стандартты енгізуде бір параметр JSON объектісін жіберу арқылы орнатыңыз:
 
 ```bash
-printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
+printf '{"Sumeragi":{"MaxClockDriftMs":1000}}\n' |
   cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```

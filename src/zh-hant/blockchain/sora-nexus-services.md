@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: 33617bc89d0aef5c2a086f45a216201d8980123f717e68f1e1a95eadeb906eb0
+translation_source_hash: dff2584fd47d6e1426ec18aca2d2003a7fdca4b9882296de484418f8c17806fe
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -90,13 +90,12 @@ Aitai 是 SORA Nexus 用於市集型結算的應用流程：買賣雙方協調�
 
 原生託管將託管資產保留在帳本中。賣方使用 `OpenAssetEscrow` 開立要約，買方使用 `AcceptAssetEscrow` 和 `MarkEscrowPaymentSent` 接受並標記鏈下付款，賣方使用 `ReleaseAssetEscrow` 釋放資產，或在付款被標記前取消要約。如果買賣雙方有分歧，任何一方都可以發起爭議，擁有 `CanResolveEscrowDispute` 的解決者可以拆分鎖定金額。
 
-對於整個生命週期,通用資產鎖定,匿名託管,查詢,事件和 Rust 的例子,請見 [原始資產託管](/zh-hant/blockchain/escrow.md).
+有關完整生命週期、通用資產鎖、條件式託管、查詢、事件與 Rust 範例，請參閱[原生資產託管](/zh-hant/blockchain/escrow.md)。
 
 |艾塔伊表面|用它來|
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`                                                    |透明數值資產報價,包括以 XOR 為單位的結算流動. |
-| `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`       |保護的報價使用證明附件對於資金和關閉活動.|
-|`OpenEscrowDispute`, `ResolveEscrowDispute`,`OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |糾紛和法庭方式的解決.|
+| `OpenEscrowDispute`、`ResolveEscrowDispute` |提出爭議以及法庭式裁決。|
 |`FindAssetEscrowById`, `FindAssetEscrowsBySeller`,`FindAssetEscrowsByBuyer`, `FindAssetEscrowsByStatus` |應用程式狀態頁面,調整工作和支援工具.|
 |`EscrowEventFilter`|按託管身份,賣家,買家,狀態或事件型別的透明託管訂閱.|
 | Kotodama `escrow_open_offer`, `escrow_accept`, `escrow_mark_payment_sent`, `escrow_release`, `escrow_cancel`, `escrow_open_dispute`, `escrow_resolve_dispute` |Kotodama 合同通話由 V1 託管系統支援. |
@@ -492,7 +491,7 @@ SoraFS 是分散的內容地址儲存布料. 它將位元組包裝成決定性�
 
 Taira 是正式的公用 SoraFS 測試網。其簽入的驗證器設定檔使用 chain `fc56984b-2be7-431d-840e-21514d1883f0` 和 chain discriminant `369`。下方的 `NetworkId` 是目前固定之 Taira genesis 的確切識別碼。重設 Taira 時，即使保留 chain label，也可能變更該雜湊；因此請從目前已簽署的部署設定檔重新取得它，切勿從 chain UUID 推導。Taira 實際採用的 SoraFS 設定如下：
 
-- 網路 ID: `hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94`
+- 網路 ID: `hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774`
 - 門口基 URL: `https://taira.sora.org`
 - 標籤: Torii URLs: `https://taira-validator-1.sora.org` 到`https://taira-validator-4.sora.org`
 - 發現能力: `torii_gateway`, `chunk_range_fetch`,和 `potr_mldsa`
@@ -502,7 +501,7 @@ Taira 是正式的公用 SoraFS 測試網。其簽入的驗證器設定檔使用
 ```toml
 [sorafs.storage]
 enabled = false
-max_capacity_bytes = 13743895347
+max_capacity_bytes = 2684354560
 
 [sorafs.discovery]
 discovery_enabled = true
@@ -587,7 +586,7 @@ cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
   --summary-out=artifacts/site.car-summary.json
 
 : "${TAIRA_AUTHORITY:?set a funded Taira I105 account}"
-export TAIRA_NETWORK_ID='hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94'
+export TAIRA_NETWORK_ID='hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774'
 export TAIRA_PIN_TORII_URL=https://taira-validator-1.sora.org
 export TAIRA_PRIVATE_KEY_FILE="${TAIRA_PRIVATE_KEY_FILE:-./secrets/taira-authority.ed25519}"
 export TAIRA_RETENTION_EPOCH=$(( $(date -u +%s) + 86400 ))

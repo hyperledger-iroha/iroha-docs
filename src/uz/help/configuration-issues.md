@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /help/configuration-issues.md
-translation_source_hash: 9d153d9cb8ce0341b35ba5a7e3823198e58464768e2a9a92ff8a5723f85e9351
+translation_source_hash: cfd86e847651e71d40e8857c0531f9721ef94ea3c65bd80b6f6951081488f39d
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -31,7 +31,7 @@ Agar siz [mijoz konfiguratsiyasi](/uz/guide/configure/client-configuration.md)ga
 
 Agar ilgari multi-hash bilan ishlamagan bo'lsangiz, o'ng tomondagi qism kalit baytlarining olti o'nlik emasligi (har bir uchun ikki belgi) deb hisoblash tabiiydir bayt), balki baytlar ASCII (yoki UTF-8) sifatida kodlangan bo‘lib, va `public_key` va `private_key` instantsiyalarda string literalga `from_hex` ni chaqiring.
 
-Shuningdek, satr literalida `PrivateKey::try_from_str` chaqirish faqat to‘g‘ri kalitni beradi, deb taxmin qilish tabiiydir. Shunday qilib, agar siz kalitdagi bitlar sonini noto‘g‘ri topsangiz, masalan 32 bayt o‘rniga 64, bu xato xabarini keltirib chiqaradi.
+Shuningdek, satr literalini `str::parse::<PrivateKey>()` bilan tahlil qilish faqat to‘g‘ri kalitni beradi, deb taxmin qilish tabiiydir. Shunday qilib, agar siz kalitdagi bitlar sonini noto‘g‘ri ko‘rsatsangiz, masalan 32 bayt o‘rniga 64, bu xato xabarini keltirib chiqaradi, deb kutish mumkin.
 
 Ikkala taxmin ham noto‘g‘ri. Afsuski, xato xabarlari aynan shu turdagi nosozlikni aniqlashda yordam bermaydi.
 
@@ -39,7 +39,7 @@ Qanday tuzatish: `hex_literal` ni ishlating. Bu shuningdek, xunuk belgilar ketma
 
 ::: warning
 
-Hatto `try_from_str` ijrosi ham berilgan satrning haqiqiy `PrivateKey` ekanligini tekshira olmaydi va agar bo'lmasa, ogohlantira olmaydi.
+Hatto `FromStr` ijrosi ham berilgan satrning haqiqiy `PrivateKey` ekanligini tekshira olmaydi va agar bo'lmasa, ogohlantira olmaydi.
 
 U ba'zi aniq xatolarni ushlaydi, masalan, agar satr noto'g'ri belgi o'z ichiga olsa. Biroq, biz ko'p kalit formatlarini qo'llab-quvvatlashni maqsad qilganimiz uchun, u boshqa biror narsani qilolmaydi. Shuningdek, u kalit berilgan hisob uchun to'g'ri shaxsiy kalit ekanligini aytolmaydi, agar siz ko'rsatma yubormasangiz.
 

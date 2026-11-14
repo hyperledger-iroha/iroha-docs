@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/assets.md
-translation_source_hash: 4d0a3f54a0c70d08d11160b9ec66d6538aa2c49c7771a13e4a070b61a9cb3e4b
+translation_source_hash: f5f0eb99e76287db695cc21b8580fd2a9b4dc2a989237c1a1d3d7333c14561ce
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -22,6 +22,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 - `logo`:可選的 `SoraFS` URI
 - `metadata`:任意的關鍵值後設資料
 - `balance_scope_policy`：餘額屬於全域，或受資料空間範圍限制
+- `owning_domain`：由網域擁有的定義所屬的網域；直接在資料空間中註冊的定義不含此欄位
 - `owned_by`:已註冊或擁有定義的帳戶
 - `total_quantity`:發行總量
 - `confidential_policy`:保護資產運營的政策
@@ -33,7 +34,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 一個 `Asset` 包含:
 
 - `id`:結合資產定義,持有者帳戶和可選餘額範圍的`AssetId`
-- `value`:一個 `Numeric`的餘額
+- `value`:一個 `Quantity`的餘額
 
 持有者帳戶採用不含網域的標準身分。資產定義可呈現在附有資料空間限定名稱的網域下，例如 `payments.universal`。
 
@@ -88,7 +89,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-這三個範例都是讀取操作。若要在 Taira 上鑄造、銷毀或轉移資產，請使用已由測試網資金服務注資的帳戶，並遵循[連線至 SORA Nexus 資料空間](/zh-hant/get-started/sora-nexus-dataspaces.md)中設有檢查保護的流程。
+這三個範例都是讀取操作。若要在 Taira 上鑄造、銷毀或轉移資產，請使用已由測試網資金服務注資的帳戶，並遵循[使用 Taira 和 Minamoto 在 SORA Nexus 上開發](/zh-hant/get-started/sora-nexus-dataspaces.md)中設有檢查保護的流程。
 
 執行需要支付費用的 Taira 資產範例前，請先透過[在 Taira 取得測試網 XOR](/zh-hant/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)所列的資金申領流程，為簽署帳戶注資。接著在 `ledger asset mint`、`ledger asset burn` 和 `ledger asset transfer` 命令中傳入 `--fee-payer authority`；CLI 會在簽署前，以 Taira 的費用資產計算確切費用：
 

@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /blockchain/assets.md
-translation_source_hash: 4d0a3f54a0c70d08d11160b9ec66d6538aa2c49c7771a13e4a070b61a9cb3e4b
+translation_source_hash: f5f0eb99e76287db695cc21b8580fd2a9b4dc2a989237c1a1d3d7333c14561ce
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -22,6 +22,7 @@ Iroha ንብረት በመለያ የተያዘ የቁጥር ቀሪ ሂሳብ ነ�
 - `logo` አማራጭ `SoraFS` URI
 - `metadata` የዘፈቀደ ቁልፍ-እሴት ሜታዳታ
 - `balance_scope_policy`፦ ቀሪ ሒሳቦች አጠቃላይ ወይም በውሂብ ቦታ የተገደቡ መሆናቸውን ይወስናል
+- `owning_domain`፦ በጎራ ባለቤትነት ለተያዘ ፍቺ ባለቤት የሆነው ጎራ፤ በቀጥታ በውሂብ ቦታ ውስጥ ለተመዘገቡ ፍቺዎች አይኖርም
 - `owned_by` የተመዘገበው ወይም የተመዘገበው መለያ
 - `total_quantity` ጠቅላላ የተሰጠ ብዛት
 - `confidential_policy` የተከለሉ ንብረት ስራዎች ፖሊሲ
@@ -33,7 +34,7 @@ Iroha ንብረት በመለያ የተያዘ የቁጥር ቀሪ ሂሳብ ነ�
 አንድ `Asset` የሚከተሉትን ያጠቃልላል
 
 - `id`፦ የንብረት ፍቺውን፣ የያዡን መለያ እና አማራጭ የቀሪ ሒሳብ ወሰን የሚያጣምር `AssetId`
-- `value` ሀ `Numeric` ቀሪ ሒሳብ
+- `value` ሀ `Quantity` ቀሪ ሒሳብ
 
 የንብረቱ ያዥ መለያ ቀኖናዊ እና ጎራ የሌለው ነው። የንብረቱ ፍቺ በውሂብ ቦታው በተለየ ጎራ፣ ለምሳሌ `payments.universal`፣ ስር ሊወከል ይችላል።
 
@@ -88,7 +89,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-ሦስቱም ምሳሌዎች የንባብ ክዋኔዎች ናቸው። በTaira ላይ ንብረቶችን ለማውጣት፣ ለማቃጠል ወይም ለማስተላለፍ ከፋውሴት ገንዘብ የተሞላለት መለያ እና በ[ከSORA Nexus የውሂብ ቦታዎች ጋር መገናኘት](/am/get-started/sora-nexus-dataspaces.md) ያለውን የተጠበቀ ሂደት ይጠቀሙ።
+ሦስቱም ምሳሌዎች የንባብ ክዋኔዎች ናቸው። በTaira ላይ ንብረቶችን ለማውጣት፣ ለማቃጠል ወይም ለማስተላለፍ ከፋውሴት ገንዘብ የተሞላለት መለያ እና [በTaira እና Minamoto በመጠቀም በSORA Nexus ላይ መገንባት](/am/get-started/sora-nexus-dataspaces.md) በሚለው ገጽ ያለውን የተጠበቀ ሂደት ይጠቀሙ።
 
 በTaira ላይ ክፍያ ለሚፈልግ የንብረት ምሳሌ፣ በመጀመሪያ በ[በTaira ላይ የሙከራ አውታረ መረብ XOR ማግኘት](/am/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ያለውን ቀድሞ የማዘጋጀት ፋውሴት ሂደት ተጠቅመው የፈራሚውን መለያ ይሙሉ። ከዚያ በ`ledger asset mint`፣ `ledger asset burn` እና `ledger asset transfer` ትዕዛዞች ላይ `--fee-payer authority` ይስጡ፤ CLI ከመፈረም በፊት ትክክለኛውን ክፍያ በTaira የክፍያ ንብረት ያስላል:
 

@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/transactions.md
-translation_source_hash: 91c06ab61c7f8ec96554bc89b31b2f281bb3a7d7edd484defe61dcde5a3fb710
+translation_source_hash: d9227effcdb4d54ac76f6288ba213de20f2574e1585e13b96a5202c44b69f3be
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -71,7 +71,7 @@ Iroha a deux flux de travail de transaction hors ligne :
 - La signature hors ligne crée une transaction signée normale tandis que le dispositif de signature est déconnecté. La transaction n'est pas traitée tant qu'un client en ligne ne soumet pas le conteneur de données signé à Torii, elle nécessite donc toujours l'ID de chaîne correct, le principal d'autorisation, les permissions, les frais, et durée de vie de la transaction.
 - **Le paiement en espèces hors ligne Kagemusha** charge de la valeur dans un portefeuille inscrit et protégé par du matériel lorsqu'il est en ligne, permet des paiements entre deux portefeuilles tous deux hors ligne, puis décharge la valeur restante vers un compte du registre lorsque le portefeuille est de nouveau en ligne.
 
-Torii expose une seule route Kagemusha, `POST /v1/kagemusha/enrollment`. Elle accepte des trames d'inscription `application/x-norito` authentifiées par le compte et renvoie des réponses privées qui ne doivent pas être mises en cache. La partie du cycle de vie gérée par le registre utilise des transactions signées ordinaires contenant une instruction `KagemushaWalletLedgerV1` :
+Torii expose une seule route Kagemusha de modification, `POST /v1/kagemusha/enrollment`. Elle accepte des trames d'inscription `application/x-norito` authentifiées par le compte et renvoie des réponses privées qui ne doivent pas être mises en cache. Les routes de lecture SDK signées par le compte sous `/v1/kagemusha/{scheme}/wallets/{wallet}/` renvoient les reçus Load et les preuves de finalité ; elles ne figurent pas dans `/openapi.json`. La partie du cycle de vie gérée par le registre utilise des transactions signées ordinaires contenant une instruction `KagemushaWalletLedgerV1` :
 
 | Action | Objectif |
 | --- | --- |
@@ -88,13 +88,21 @@ Le flux typique est :
 3. Échangez et vérifiez les paiements localement entre les portefeuilles hors ligne, et enregistrez durablement l'état du portefeuille avant d'accuser réception de chaque transfert.
 4. Lorsque le portefeuille est de nouveau en ligne, soumettez sa demande Unload et attendez la finalité.
 
+Kagemusha n'est pas encore qualifié pour une version publiée : la qualification monétaire sur le réseau réel ainsi que l'enregistrement des téléphones, l'activation et le paiement sur des appareils physiques restent en suspens.
+
 Le registre blockchain ne peut pas observer un transfert hors ligne conflictuel tant que l'état de la note ne revient pas à travers le cycle de vie en ligne. La politique du portefeuille et de l'opérateur doit donc appliquer des limites de valeur, des dates d'expiration, des émetteurs acceptés, un stockage local durable et des fenêtres de réconciliation.
 
 Voici un exemple de création d'une nouvelle transaction avec l'instruction `Grant`. Dans cette transaction, Mouse accorde à Alice le rôle spécifié (`role_id`). Vérifiez [l'exemple complet](./permissions.md#register-a-new-role).
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```

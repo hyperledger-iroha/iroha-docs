@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hant
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 8a8fd0d29d4c1c323b457595653077564ad100f397ea2f4b059b35451b76aa44
+translation_source_hash: ae0604c0e82db0a908e7ffc44c97f56b58fe2b5bb87553ded48562e8f9fcd36a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # 性資產 {#fungible-assets}
 
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-li
 
 - `curl`、`jq`、Python 3.11 或更新版本、Node.js 24，以及目前的 `iroha` 和 `kagami` CLIs。
 - 僅可讀的 Taira 訪問.
-- 對於寫入演練，需要一個按照 [啟動 Iroha](/zh-hant/get-started/launch-iroha.md) 的做法，以 `kagami localnet generate --peers 4 --out-dir ./localnet` 並加上 `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa` 生成的本地網路。它提供 `./localnet/client.toml`，以及位於 `http://127.0.0.1:8080` 的 Torii。
+- 對於寫入演練，需要一個以 `kagami localnet generate --peers 4 --out-dir ./localnet` 並加上 `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa` 生成的本地網路。它提供 `./localnet/client.toml`，以及位於 `http://127.0.0.1:8080` 的 Torii。
 
 ## 步驟 {#steps}
 

@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /blockchain/iroha-explained.md
-translation_source_hash: 426adbea88da36cd92da17d8665c956a57b9d4cebfa0d2f35bc75469cccf84ee
+translation_source_hash: 16acd0a607bbec336ff336363478a3a0deeb24ad9a2ad59e753c9f65134b061f
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -45,11 +45,11 @@ Iroha 3 የመጀመሪያው የተለቀቀው Hyperledger Iroha መድረክ 
 
 የማስተላለፊያው መንገድ የሚከተለው ነው -
 
-1. ውቅሩ የተረጋገጡ `DataSpaceCatalog`፣ `LaneCatalog` እና `LaneRoutingPolicy` ይገነባል። የSORA Nexus ማዘዋወር ግዴታ ነው። ብዙ የውሂብ ቦታዎች፣ መስመሮች ወይም ከነባሪው የተለየ ማዘዋወር የSORA Nexus መገለጫ (`--sora`) እና NPoS ይጠቀማሉ።
+1. ውቅሩ የተረጋገጡ `DataSpaceCatalog`፣ `LaneCatalog` እና `LaneRoutingPolicy` ይገነባል። የSORA Nexus ማዘዋወር ግዴታ ነው። በዓለም አቀፉ ሥር ላይ ብዙ የውሂብ ቦታዎች፣ መስመሮች ወይም ከነባሪው የተለየ ማዘዋወር የSORA Nexus መገለጫ (`--sora`) እና NPoS ይፈልጋሉ፤ ራሱን ችሎ የተፈረመ የውሂብ ቦታ ሥር በፈቃድ ላይ በተመሠረተ (Permissioned) ሁነታ ይሠራል።
 2. የግብይት ወረፋው ከግብይቱ እና commit ከተደረገው ሁኔታ `RoutingPlan` ያወጣል። እያንዳንዱ የአስተባባሪ ወይም የተሳታፊ መንገድ የመስመር ID እና የውሂብ ቦታ ID ይይዛል፤ የNative AMX ዕቅዶች ሙሉውን የተሳታፊ ስብስብ ያቆያሉ።
 3. ለዓለም አቀፍ አፈጻጸም የቁጥጥር ክፍሉ ሙሉ ስብስቦችና በውሂብ ቦታዎች መካከል ያሉ አስተባባሪዎች መስመር `0` ይጠቀማሉ። ግልጽ ከuniversal ውጭ ያሉ የመመሪያ ወይም የኮንትራት አድራሻ ዒላማዎች ከመለያ ወይም ከመመሪያ መለያ-ጽሑፍ ደንቦች በፊት ከተዛማጁ የውሂብ ቦታና ኮሚቴ ጋር የተቀበለ ቋሚ መስመር ይመርጣሉ። ሌላ ሥራ commit የተደረጉ ግልጽ ደንቦችንና ነባሪ ክፍፍልን ይከተላል፤ ግልጽ universal ዒላማዎች በuniversal መስመሮች ላይ ይቆያሉ።
 4. እያንዳንዱ መንገድ ከካታሎጎችና ከነቃ የመስመር ሁኔታ ጋር ይረጋገጣል። ያልታወቁ IDዎችና የመስመር/የውሂብ ቦታ አለመዛመድ ይከለከላሉ፤ የማይገኝ የግል ዒላማ ወደ universal አፈጻጸም መመለስ አይችልም። ብዙ የውሂብ ቦታ ዒላማዎች የNative AMX ዕቅድ ሊያመነጩ ይችላሉ። የግብይት ሜታዳታ `amx_policy` እሴቱ `reject_cross_dataspace` ከሆነ በውሂብ ቦታዎች መካከል ያሉ ዕቅዶችን ይከለክላል። የማዘዋወር ዕቅድ ብቻውን በገለልተኛ ሥሮች መካከል ሒሳብ ማጠናቀቅን አይፈቅድም ወይም አያጠናቅቅም።
-5. Sumeragi እና ቴሌሜትሪ ይህን ምደባ እንደ መስመርና የውሂብ ቦታ እንቅስቃሴ፣ የተጠባባቂ ሥራ እና የcommitment ቅጽበታዊ ቅጂዎች እንዲታይ ያደርጋሉ።
+5. ቴሌሜትሪ ይህን ምደባ በ`/status` የመስመር ቅጽበታዊ ቅጂ (`teu_lane_commit`) ውስጥ እንደ የእያንዳንዱ መስመር እንቅስቃሴ እና የተጠራቀመ ሥራ እንዲታይ ያደርጋል።
 
 ስለዚህ የነገር መለያዎች አስፈላጊ ናቸው። ጎራዎች በጎራው ወሰን ውስጥ ያሉ የሁኔታ ለውጥ ክዋኔዎች እንዲመሩ የውሂብ ቦታውን ተለዋጭ ስም በID ውስጥ ያካትታሉ፣ ለምሳሌ `payments.universal`። መለያዎች ቀኖናዊና ጎራ የሌላቸው ይቆያሉ፣ ስለዚህ ያው መለያ `AccountId`ን ሳይለውጥ ከተለያዩ የመተግበሪያ ወሰኖች ጋር ሊታሰር ይችላል። የንብረት ትርጉሞች የጎራ/የውሂብ ቦታ ፕሮጀክሽን ሊይዙ ይችላሉ፣ ይህም የንብረት ክዋኔዎች ትክክለኛውን የውሂብ ቦታ መንገድ እንዲወርሱ ያደርጋል።
 
@@ -67,7 +67,7 @@ Iroha 3 የመጀመሪያው የተለቀቀው Hyperledger Iroha መድረክ 
 
 እነዚህን ግንኙነቶች የሚወስኑት በተወሰነው ስሪት የታሰሩት [የመገለጫ ገንቢዎች](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_config/src/parameters/actual.rs)፣ [የመስመር ትግበራ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_core/src/sumeragi/lanes/mod.rs) እና [የገለልተኛ ሥር ውል](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/sumeragi.md) ናቸው።
 
-Sumeragi ሁልጊዜ የውሂብ ተገኝነት እና አስተማማኝ ስርጭትን ይጠቀማል።. እነዚህ መንገዶች የ Iroha 3 የጋራ ስምምነት ፕሮቶኮል አካል ናቸው እና በማሰማራት መገለጫ ሊሰናከሉ አይችሉም።.
+Sumeragi ሁልጊዜ የተፈረመ RS16 የጭነት ተገኝነትን እና የተረጋገጠ አካል መልሶ ማግኛን ይጠቀማል። እነዚህ መንገዶች የIroha 3 የጋራ ስምምነት ፕሮቶኮል አካል ናቸው፣ በማሰማራት መገለጫም ሊሰናከሉ አይችሉም።
 
 የሶፍትዌር ማስፈጸሚያ አካባቢ ባህሪ የሚመጣው ከማዋቀር ፋይሎች እና በሰንሰለት ላይ ያሉ መለኪያዎች ነው። የአካባቢ ተለዋዋጮች የምርት ባህሪ በሮች አይደሉም።
 

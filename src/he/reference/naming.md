@@ -1,9 +1,9 @@
 ---
 translation_locale: he
 translation_source: /reference/naming.md
-translation_source_hash: 1d4d698597542d9c84284d0b87dae8a1825d3ab39ff38dd32bb204d41291c83d
+translation_source_hash: 15d095e674edf780c5859abe6f4615d53338e3304e8eedfa494017911204d4b6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # כללי מתן שמות {#naming-conventions}
 
@@ -15,10 +15,9 @@ translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
    - `#` שמור לכינויים של הגדרות נכס ולליטרלים של יתרות נכס
    - `::` שמור לכינויי חוזים
    - `.` שמור לציון תחום ומרחב נתונים
-   - `$` שמור לצורות טקסטואליות בתחום של trigger
-   - `%` שמור לצורות טקסטואליות בתחום של validator
+   - `$` שמור למזהי NFT כגון `name$domain.dataspace`
 
-2. מספר התווים המרבי בשם, כולל תווי UTF-8, מוגבל על ידי שני גורמים: הטווח `[0, u32::MAX]` וגודל המחסנית שהוקצה כעת.
+2. שם חייב להיות לא ריק, בצורת Unicode NFC, באורך של 255 בתים לכל היותר ב־UTF-8, וללא רווחים לבנים, תווי בקרה ותווי בקרה דו־כיווניים.
 
 ## נסה את זה על Taira {#try-it-on-taira}
 

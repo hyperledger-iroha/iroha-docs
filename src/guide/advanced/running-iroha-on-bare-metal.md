@@ -30,8 +30,9 @@ target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
 The output directory contains the generated `genesis.json`,
-`genesis.signed.nrt`, peer `config.toml` files, `client.toml`, helper scripts,
-and a generated `README.md` with exact commands for that bundle.
+`genesis.signed.nrt`, `genesis.expected_hash`, one `peerN.toml` per
+validator, `client.toml`, the `start.sh` and `stop.sh` scripts, and a
+generated `README.md` with exact commands for that bundle.
 
 ## 3. Start Peers
 
@@ -41,9 +42,11 @@ For a generated disposable localnet, use the generated script:
 ./localnet/start.sh
 ```
 
-If you need to wire each peer into a process manager such as systemd, use the
-launch command recorded in `./localnet/README.md` for each peer. Keep each
-peer's `config.toml`, private key, storage directory, and ports separate.
+If you need to wire each peer into a process manager such as systemd, follow
+the per-peer command in `./localnet/start.sh`: run
+`iroha3d --config <bundle>/peerN.toml` from `<bundle>/state/peerN`, and pass
+`--sumeragi-assert-fresh-key` only on that peer's first start. Keep each
+peer's `peerN.toml`, private key, storage directory, and ports separate.
 
 ## 4. Operate the Network
 

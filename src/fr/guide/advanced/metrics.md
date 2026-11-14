@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
+translation_source_hash: ad2bc9f8c53169d8161f7a2f23b1e660ebd24cf03cf8e05f4b00bbd27b7b11fe
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -23,8 +23,8 @@ Utilisez cette page pour estimer si un déploiement se trouve dans un état de p
 Commencez avec la vue des données du point dans le temps du nœud public et la récupération Prometheus, puis utilisez le CLI pour l'état de consensus authentifié par l'opérateur. La clé de l'opérateur doit être autorisée par le nœud cible et est chargée uniquement au moment de l'exécution du logiciel :
 
 ```bash
-export TORII=http://127.0.0.1:8180
-export OPERATOR_KEY_FILE=./secrets/operator.key
+export TORII=http://127.0.0.1:8080
+export OPERATOR_KEY_FILE="$PWD/localnet/runtime/operator-signer.key"
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s "$TORII/metrics" > metrics.prom
@@ -52,7 +52,7 @@ curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/now" \
-  | jq '{now_ms, offset_ms}'
+  | jq '{now, offset_ms}'
 ```
 
 Ne pas utiliser les observations du testnet public comme chiffres de capacité de production pour votre propre déploiement.
@@ -187,13 +187,13 @@ Les signaux courants incluent :
 | --- | --- | --- |
 |Débit accepté| `sum(rate(txs{type="accepted"}[5m]))` |Doit atteindre ou dépasser l'objectif TPS à l'état stable|
 |Rejets| `sum(rate(txs{type="rejected"}[5m]))` |Devrait pouvoir être expliqué par le plan de test|
-|Latence de validation| `histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |Comparer p95/p99 avec le budget de latence|
+|Latence de validation| `histogram_quantile(0.95, sum by (le) (rate(sumeragi_commit_latency_ms_bucket{lane="global"}[5m])))`, `last_commit_time_ms` |Comparer p95/p99 avec le budget de latence|
 |Profondeur de la file d'attente| `queue_size`, `sumeragi_tx_queue_depth` |Doit rester limité pendant la charge de pointe|
 |Saturation de la file| `sumeragi_tx_queue_saturated` |Des valeurs non nulles soutenues signifient une surcharge|
-|Changements de vue| `view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |Une hausse signale des problèmes de temporisation, de topologie, de charge utile ou de réseau|
-|Messages perdus| `dropped_messages`, `sumeragi_consensus_message_handling_total` |Les baisses pendant la charge expliquent généralement les pics de latence|
-|Charge utile et récupération DA| `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` |Des demandes persistantes, un âge croissant ou des portes DA répétées indiquent des problèmes d'acquisition de corps ou de morceaux|
-|Quorum de commit| `sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |Les signatures comptées devraient atteindre rapidement le quorum requis|
+|Changements de vue| `view_changes`, `sumeragi_view_changes_total`, `sumeragi_timeout_votes_total` |Une hausse signale des problèmes de temporisation, de topologie, de charge utile ou de réseau|
+|Messages perdus| `sumeragi_dropped_total`, `p2p_queue_dropped_total` |Les baisses pendant la charge expliquent généralement les pics de latence|
+|Récupérations de charge utile et de rattrapage| `sumeragi_fetch_requests_total{kind="body"}`, `sumeragi_fetch_requests_total{kind="sync"}` |Des récupérations persistantes de corps ou de synchronisation indiquent des problèmes d'acquisition de charge utile ou de rattrapage|
+|Progression du commit| `sumeragi_committed_height`, `sumeragi_applied_height` |Les hauteurs certifiées et appliquées devraient progresser ensemble|
 
 Lorsqu’une métrique n’existe que dans `/v1/sumeragi/status`, capturez la vue des données à un instant donné JSON dans les mêmes artefacts de l’exécution que le scrape de Prometheus.
 
@@ -245,7 +245,7 @@ Publiez les chiffres de performance uniquement avec suffisamment de contexte pou
 - accepté/rejeté TPS
 - latence de commit p50/p95/p99
 - profondeur de file d'attente et saturation
-- voir les modifications, les messages abandonnés, les récupérations de blocs manquants et les compteurs DA-gate
+- les changements de vue, les votes de dépassement de délai, les rejets Sumeragi et les récupérations de corps et de synchronisation
 - CPU, utilisation de la mémoire, du disque et du réseau par validateur
 
 Sans ces détails, un numéro TPS devrait être considéré comme anecdotique.

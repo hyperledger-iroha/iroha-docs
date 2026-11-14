@@ -46,7 +46,7 @@ all you need is the object that you want to register.
 | [SetParameter](#setparameter)                             | chain parameters                                                                                        |                      |
 | [Grant/Revoke](#grant-revoke)                             | [roles, permission tokens](/blockchain/permissions.md)                                                  | accounts or roles    |
 | [Transfer](#transfer)                                     | domains, asset definitions, numeric assets, NFTs                                                        | accounts             |
-| [Native escrow and asset locks](#native-escrow-and-asset-locks) | numeric asset escrows, asset locks, anonymous escrow commitments                                    | buyers, destinations, or dispute splits |
+| [Native escrow and asset locks](#native-escrow-and-asset-locks) | numeric asset escrows, asset locks, conditional escrows                                              | buyers, destinations, or dispute splits |
 | [Atomic private settlement](#atomic-private-settlement)   | route-scoped confidential pools, policy rotations, finalized bundles, and abort markers                 |                      |
 | [ExecuteTrigger](#executetrigger)                         | triggers                                                                                                |                      |
 | [Log/Custom/Upgrade](#other-instructions)                 | logs, executor-specific payloads, executor upgrades                                                     |                      |
@@ -233,6 +233,7 @@ Register and unregister asset definitions:
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
+  --domain docs.universal \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
@@ -388,17 +389,14 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 
 Native escrow instructions lock numeric assets in ledger-managed protocol
 custody. They are used for marketplace-style settlement, generic asset
-locks, and anonymous shielded escrow flows.
+locks, and attestor-bound conditional escrows.
 
 Marketplace escrow uses `OpenAssetEscrow`, `AcceptAssetEscrow`,
 `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`,
 `OpenEscrowDispute`, and `ResolveEscrowDispute`. Generic asset locks use
 `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, and
-`ExpireAssetLock`. Anonymous escrow mirrors the marketplace lifecycle with
-`OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`,
-`MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`,
-`CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, and
-`ResolveAnonymousEscrowDispute`.
+`ExpireAssetLock`. Conditional escrow uses `OpenConditionalEscrow`,
+`AttestEscrowCondition`, and `ExpireConditionalEscrow`.
 
 These ISIs do not currently have first-class CLI commands. Use typed SDK
 builders or serialized instruction payloads, and see
@@ -521,7 +519,7 @@ Set a parameter by passing a single parameter JSON object on standard
 input:
 
 ```bash
-printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
+printf '{"Sumeragi":{"MaxClockDriftMs":1000}}\n' |
   cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```

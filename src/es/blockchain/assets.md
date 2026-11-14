@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /blockchain/assets.md
-translation_source_hash: 4d0a3f54a0c70d08d11160b9ec66d6538aa2c49c7771a13e4a070b61a9cb3e4b
+translation_source_hash: f5f0eb99e76287db695cc21b8580fd2a9b4dc2a989237c1a1d3d7333c14561ce
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -22,6 +22,7 @@ Un `AssetDefinition` contiene:
 - `logo`: opcional `SoraFS` URI
 - `metadata`: metadatos arbitrarios de clave-valor
 - `balance_scope_policy`: si los saldos son globales o restringidos al espacio de datos
+- `owning_domain`: el dominio propietario de una definición perteneciente a un dominio; ausente en las definiciones registradas directamente en un espacio de datos
 - `owned_by`: la cuenta que registró o posee la definición
 - `total_quantity`: cantidad total emitida
 - `confidential_policy`: política para operaciones con activos protegidos
@@ -33,7 +34,7 @@ Los ID de definición de activos son direcciones opacas canónicas. Cuando se co
 Un `Asset` contiene:
 
 - `id`: un `AssetId`, que combina la definición del activo, la cuenta del titular y el alcance opcional del saldo del activo
-- `value`: un saldo `Numeric`
+- `value`: un saldo `Quantity`
 
 La cuenta del titular es canónica y sin dominio. La definición del activo puede proyectarse bajo un dominio calificado por espacio de datos, por ejemplo `payments.universal`.
 
@@ -88,7 +89,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-Los tres ejemplos son lecturas. Para emitir, quemar o transferir activos en Taira, utilice una cuenta con fondos obtenidos del servicio de fondos de prueba y el flujo protegido de [Conectarse a los espacios de datos de SORA Nexus](/es/get-started/sora-nexus-dataspaces.md).
+Los tres ejemplos son lecturas. Para emitir, quemar o transferir activos en Taira, utilice una cuenta con fondos obtenidos del servicio de fondos de prueba y el flujo protegido de [Desarrollar sobre SORA Nexus con Taira y Minamoto](/es/get-started/sora-nexus-dataspaces.md).
 
 Para un ejemplo de activos de Taira que pagan comisiones, primero asigne fondos al firmante mediante el flujo preparado del servicio de fondos de prueba en [Obtener XOR de testnet en Taira](/es/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira). Después, pase `--fee-payer authority` a los comandos `ledger asset mint`, `ledger asset burn` y `ledger asset transfer`; la CLI indica la comisión exacta, expresada en el activo de comisiones de Taira, antes de firmar:
 

@@ -1,9 +1,9 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/events.md
-translation_source_hash: aad93f1981a5b470966090b5e06ec07178738b15f1d870097947682b19f99595
+translation_source_hash: 2777cbe4e72a50c4790e50b59c3e695feb5814314cc9afccdfd994f6409c195e
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # イベント {#events}
 
@@ -16,7 +16,7 @@ translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 
 ## ソフトウェア処理ワークフローイベント {#pipeline-events}
 
-ソフトウェア処理ワークフローイベントは、トランザクションがブロック内で送信、実行、または確定されたときに発行されます。ソフトウェア処理ワークフローイベントには、イベントを引き起こしたエンティティの種類（トランザクションまたはブロック）、その暗号化ハッシュ、およびステータスが含まれます。ステータスは、`Validating`（検証中）、`Rejected`、または`Committed`のいずれかです。エンティティが拒否された場合、拒否の理由が提供されます。
+ソフトウェア処理ワークフローイベントは、トランザクションとブロックが処理パイプラインを進むにつれて発行されます。トランザクションイベントには、トランザクションハッシュ、ブロック高さ、レーン ID とデータスペース ID、およびステータス（`Queued`、`Expired`、`Approved`、または拒否理由付きの `Rejected`）が含まれます。ブロックイベントには、ブロックヘッダーとステータス（`Created`、`Approved`、理由付きの `Rejected`、`Committed`、または `Applied`）が含まれます。
 
 ### Taira でこのワークフローを実行してください {#try-it-on-taira}
 
@@ -30,8 +30,8 @@ curl -fsSI https://taira.sora.org/v1/events/sse \
 ストリームを開いたままにせずに確認できるデータスナップショットについては、最近のエクスプローラーのトランザクションを読み取ってください:
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
-  | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
+curl -fsS 'https://taira.sora.org/v1/explorer/transactions?limit=5' \
+  | jq '{next_cursor, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
 ライブイベントが必要なときは、ターミナルで SSE ルートを開いてください:

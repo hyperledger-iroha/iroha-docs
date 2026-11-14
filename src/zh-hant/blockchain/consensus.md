@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/consensus.md
-translation_source_hash: 06b3589a71dcb08aed5589290f4c9af9cb46b5cee0f875ae542043543360f623
+translation_source_hash: ebdf564d607b96f7f186637044d80b2f1bb7c9fbe6080a061d27d02ec6f8cf62
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -28,7 +28,7 @@ Sumeragi 每次將帳本向前推進一個區塊高度。每個高度都有一�
 
 驗證節點只簽署能夠在本機重現的資料。投票前，驗證節點會檢查提案是否屬於預期的鏈、高度與檢視；交易簽章和限制是否有效；通道路由與執行器驗證是否具有確定性；以及執行有效負載是否產生預期的狀態轉換。如果本機結果不同，驗證節點會拒絕提案，而不會為其投票。
 
-投票是體積很小的已簽署共識訊息，其中參照了提議區塊、高度、檢視和驗證節點身分。通過驗證的簽章組成 Prepare 與 Commit 法定人數憑證。提交憑證是持久證明，證明已有足夠多的驗證節點針對同一區塊觀察到相同結果。每個驗證節點都會將 Prepare 與 Commit 投票傳送給整個委員會；任何驗證節點都可以彙總所需數量的相同投票，並廣播產生的憑證。
+投票是體積很小的已簽署共識訊息，其中參照了提議區塊、高度、檢視和驗證節點身分。通過驗證的簽章組成 Prepare 與 Commit 法定人數憑證。提交憑證是持久證明，證明已有足夠多的驗證節點針對同一區塊觀察到相同結果。集合 A 的驗證節點通常會將 Prepare 與 Commit 投票傳送給本輪的代理尾端節點，由其彙總恰好所需數量的相同投票並廣播憑證。若憑證逾時仍未形成，集合 B 的驗證節點也會向代理尾端節點投票；作為最後手段，每個驗證節點都會廣播自己的投票，任何驗證節點都可以彙總該憑證。
 
 ### 法定人數與觀察節點 {#quorum-and-observers}
 
@@ -79,14 +79,14 @@ Sumeragi 每次將帳本向前推進一個區塊高度。每個高度都有一�
 
 ## 資料可用性與有效負載復原 {#data-availability-and-payload-recovery}
 
-Sumeragi V1 透過簽署的 RS16 `PayloadManifest` 與 `PayloadChunk` 訊息提供全域負載可用性。領導者將簽署的清單傳給整個委員會，並先將確定性的資料分片分發給集合 A。驗證者必須重建標準主體、驗證清單與分片雜湊、持久儲存主體，並完成確定性驗證後，才能投出 Prepare 票。若快速路徑停滯，復原流程會將分片傳送範圍擴大到集合 B。當對等節點在收到主體前就得知最終性時，已認證主體復原與區塊同步提供有界的復原路徑。
+Sumeragi V1 透過簽署的 RS16 `PayloadManifest` 與 `PayloadChunk` 訊息提供全域負載可用性。領導者將簽署的清單與每個簽署的資料列傳給其他所有委員會成員，以及下一屆委員會的新加入成員。驗證者必須重建標準主體、驗證清單與分片雜湊、持久儲存主體，並完成確定性驗證後，才能投出 Prepare 票。缺少資料列的對等節點會以 `PayloadRequest` 請求這些資料列。當對等節點在收到主體前就得知最終性時，已認證主體復原與區塊同步提供有界的復原路徑。
 
 每個通道實例都有自己經過驗證的可用性與憑證脈絡。全域合併檢查會將其已認證批次與原始負載綁定到預期的世代及錨點。對等節點只有在本機具備相符的全域負載及有效 CommitQC 時，才會套用全域最終性。
 
 請使用經過身分驗證的營運方介面，而不是個別的 RBC 端點：
 
 - `iroha --operator-private-key-file <path> --output-format text ops sumeragi status` 報告權威的高度、檢視、階段、憑證和存活狀態。
-- `iroha --operator-private-key-file <path> --output-format text ops sumeragi diagnostics` 回報不具權威性的佇列、處理管線、NPoS、通道與資料空間診斷資訊，包括通道負載的所有權。
-- `sumeragi_missing_block_requests`、`sumeragi_missing_block_oldest_ms`、`sumeragi_missing_block_fetch_total`、`sumeragi_da_gate_block_total` 和 `sumeragi_da_gate_satisfied_total` 等 Prometheus 訊號可區分區塊本體缺失復原、資料可用性閘門和訊息處理；詳見[效能與指標](/zh-hant/guide/advanced/metrics.md)。
+- `iroha --operator-private-key-file <path> --output-format text ops sumeragi diagnostics` 回報不具權威性的交易佇列壓力、NPoS 選舉狀態，以及通道治理清單狀態。
+- `sumeragi_fetch_requests_total`（`kind="body"` 表示缺失的區塊本體，`kind="sync"` 表示追趕同步）、`sumeragi_view_changes_total`、`sumeragi_round_stage` 和 `sumeragi_dropped_total` 等依實例區分的 Prometheus 序列帶有 `lane` 標籤，可區分區塊本體缺失復原、檢視變更與有界佇列丟棄；詳見[效能與指標](/zh-hant/guide/advanced/metrics.md)。
 
 通道區塊儲存會保留合併與復原所需的已認證批次及來源記錄。其生命週期遵循已提交的通道世代；儲存目錄名稱不會授權建立新的通道或執行根。

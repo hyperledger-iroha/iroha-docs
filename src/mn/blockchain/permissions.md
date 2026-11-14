@@ -1,9 +1,9 @@
 ---
 translation_locale: mn
 translation_source: /blockchain/permissions.md
-translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
+translation_source_hash: 7993d14839218fd3394d52dbcce264bffea32394f54e25dd261cd060c54f1fe1
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Зөвшөөрөл {#permissions}
 
@@ -72,14 +72,20 @@ let register_role = Register::role(role);
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```
 
 ## Өөрчлөлт зөвшөөрөл шалгагчид {#permission-validators}
 
-Зөвшөөрөл нь зөвшөөрлийн токентэй дансууд л хамгаалагдсан үйлдлийг гүйцэтгэх боломжтой байхыг хангахын тулд байдаг. Анхны гүйцэтгэгч нь заавар, асуулт, илэрхийллийн гүйцэтгэлтийн үед зөвшөөрлийг шалгадаг.
+Зөвшөөрлүүд нь зөвхөн шаардлагатай зөвшөөрлийн токентой дансууд хамгаалагдсан үйлдлийг гүйцэтгэх боломжтой байхын тулд байдаг. Анхдагч гүйцэтгэгч гүйлгээ болон заавар гүйцэтгэх, мөн асуулга шалгах үед зөвшөөрлийг шалгана.
 
 Анхдагч баталгаажуулагчийн гадаргууг блокчэйн бүртгэлийн хэсгээр бүлэглэдэг:
 
@@ -96,7 +102,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 
 Зөвшөөрлийн шалгалтуудыг идэвхтэй гүйцэтгэгч хэрэгжүүлдэг. Урьдчилсан тохиргоотой гүйцэтгэгч нь суулгасан зөвшөөрлийн шалгагчид болон токений тодорхойлолтуудыг өгдөг бөгөөд сүлжээ нь ашиглаж буй гүйцэтгэгчээ шинэчлэх замаар бодлогыг өөрчилж болно.
 
-Баталгаажуулагчид баталгаажуулалтын дүгнэлт гаргадаг. Баталгаажуулагч нэг үйлдлийг зөвшөөрч болно, шалтгаан зааж татгалзаж болно, эсвэл үйлдэл нь тухайн баталгаажуулагчийн эрхлэх хүрээнээс гадна бол орхиж болно. Сонгогдсон шүүгч эдгээр дүгнэлтийг нэгтгэн заавар, лавлагаа, эсвэл илэрхийлэл цааш үргэлжлэх эсэхийг шийддэг.
+Гүйцэтгэгч үйлдлийг зөвшөөрөх эсвэл `ValidationFail` шалтгаанаар татгалзана. Татгалзсан заавар нь өөрийн гүйлгээг татгалзуулж, татгалзсан асуулга нь дуудагчид алдааг буцаана.
 
 ## Дэмжигдсэн асуултууд {#supported-queries}
 

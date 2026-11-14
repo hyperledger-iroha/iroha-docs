@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /get-started/install-iroha.md
-translation_source_hash: cef11a7036dcb5257647edf0c48ea1b9c144822e029df936b422998f46187b41
+translation_source_hash: b2ba22db6a25e3b67cf18dc6959f95f57bd861b232b1d4a9d881bbe3cdf7844a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 
 תקין את זה קודם:
 
-- [rustup](https://www.rust-lang.org/tools/install), כך שרשרת הכלים `rust-toolchain.toml` המחוברת (`1.93.1`) מותקנת באופן אוטומטי
+- [rustup](https://www.rust-lang.org/tools/install), כך שרשרת הכלים `rust-toolchain.toml` המחוברת (`1.99.1`) מותקנת באופן אוטומטי
 - `git`
 - באופן אופציונלי, Docker ו Docker Compose עבור ההתחלה המהירה המקומית של מספר צמתים
 

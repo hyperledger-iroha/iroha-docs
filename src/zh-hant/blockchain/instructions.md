@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/instructions.md
-translation_source_hash: ef50253c5478c9d8c3e14529dc4c2f3de67c344901c82c65be77ceb237a29598
+translation_source_hash: 86d253317376ad8d7a8c0e30689c7e0c0cd786af83299dd5ac1a904c653192f5
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
@@ -41,7 +41,7 @@ translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 | [SetParameter](#setparameter) |連鎖引數|                      |
 | [Grant/Revoke](#grant-revoke) | [角色,許可證程式碼](/zh-hant/blockchain/permissions.md) |帳戶或角色|
 | [轉移](#transfer)|域名,資產定義,數值資產, NFTs|帳戶|
-| [本地託管和資產鎖定](#native-escrow-and-asset-locks) |數字資產保證券,資產鎖定,匿名的保證券承諾 |購物者,目的地或爭端分歧|
+| [原生託管與資產鎖定](#native-escrow-and-asset-locks) |數值資產託管、資產鎖定、條件式託管|買方、目的地或爭議分配|
 | [原子私密結算](#atomic-private-settlement) | 繫結精確路由的機密 pool、政策輪替、已完成套件及中止標記 | |
 | [ExecuteTrigger](#executetrigger) |觸發器|                      |
 | [Log/Custom/Upgrade](#other-instructions) |記錄,執行者特定的有效載荷,執行器升級 |                      |
@@ -184,6 +184,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
+  --domain docs.universal \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
@@ -322,9 +323,9 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 
 ## 產業保險和資產鎖 {#native-escrow-and-asset-locks}
 
-本地保證指令將數字資產鎖定在賬本管理的協議保管中.它們用於市場式結算,通用資產鎖和匿名遮蔽的保證流動.
+原生託管指令將數值資產鎖定在由帳本管理的協議託管中。它們用於市場式結算、通用資產鎖，以及與證明方綁定的條件式託管。
 
-市場託管使用 `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, 和 `ResolveEscrowDispute`. 一般資產鎖的使用 `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, 和 `ExpireAssetLock`. 匿名託管反映了市場的生命週期 `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, 和 `ResolveAnonymousEscrowDispute`.
+市場託管使用 `OpenAssetEscrow`、`AcceptAssetEscrow`、`MarkEscrowPaymentSent`、`ReleaseAssetEscrow`、`CancelAssetEscrow`、`OpenEscrowDispute` 和 `ResolveEscrowDispute`。通用資產鎖使用 `OpenAssetLock`、`DrawdownAssetLock`、`CancelAssetLock` 和 `ExpireAssetLock`。條件式託管使用 `OpenConditionalEscrow`、`AttestEscrowCondition` 和 `ExpireConditionalEscrow`。
 
 這些 ISIs 目前沒有一流的 CLI 命令.使用型別 SDK 構建器或序列化指令有效載荷,並參見 [原生資產抵押](/zh-hant/blockchain/escrow.md)為生命週期詳細資訊,許可權,查詢,事件和 Rust 示例.
 
@@ -418,7 +419,7 @@ printf '{"owner":"ops"}\n' |
 在標準輸入時透過單個引數 JSON 物件設定引數:
 
 ```bash
-printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
+printf '{"Sumeragi":{"MaxClockDriftMs":1000}}\n' |
   cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```

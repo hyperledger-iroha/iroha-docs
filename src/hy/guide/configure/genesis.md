@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /guide/configure/genesis.md
-translation_source_hash: 91be089c82a76991e35a43e1541f9e069fdf70d3fb5de2492b985c06c78a2372
+translation_source_hash: 2a4a43b6ac873cc0c860631e307e52b047ba6a08691bf3e4c5872cc22c81a0bd
 translation_status: machine-validated
 translation_engine: google-translate+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -9,7 +9,7 @@ translation_engine: google-translate+reviewed-delta+reviewed-first-release-sourc
 
 Գենեզիսը սահմանում է շղթայի սկզբնական վիճակը:Խմբագրելի աղբյուրը ա JSON դրսևորվում է, և ան Iroha 3 հանգույցը սպառում է ստորագրված Norito գործարքի ֆայլ:
 
-::: details Կանխադրված ծագման դրսևորում
+::: details Գենեզիսի լռելյայն աղբյուրի ձևանմուշ (defaults/genesis.template.json)
 
 <<< @/snippets/genesis.json
 
@@ -36,7 +36,7 @@ public_key = "ed0120..."
 expected_hash_file = "./genesis.expected_hash"
 ```
 
-Ցանցի բոլոր հանգույցները պետք է համաձայնեն ստորագրված ծագման գործարքի և ծագման հանրային բանալու շուրջ։ Սպասվող հեշի ֆայլը պարտադիր է ինչպես առաջին, այնպես էլ կրկնակի մեկնարկի ժամանակ․ այն գրում է `kagami genesis sign --expected-hash-out`-ը։
+Ցանցի բոլոր հանգույցները պետք է համաձայնեն ստորագրված ծագման գործարքի և ծագման հանրային բանալու շուրջ։ Յուրաքանչյուր մեկնարկի ժամանակ՝ առաջին թե կրկնակի, անհրաժեշտ է սպասվող հեշը. կարգավորեք ճիշտ մեկը՝ `expected_hash_file`-ը կամ ներդրված `expected_hash`-ը։ Ֆայլը գրում է `kagami genesis sign --expected-hash-out`-ը։
 
 ## Ստորագրելով Գենեզիսը {#signing-genesis}
 
@@ -52,7 +52,7 @@ cargo run --bin kagami -- genesis sign ./genesis.json \
 
 `GENESIS_PRIVATE_KEY_FILE` պետք է լինի սեփականատիրոջ կողմից պահվող ռեժիմ-`0600`, միայնակ կապ սովորական ֆայլ, որը պարունակում է մեկ կանոնական մասնավոր բանալու մուլտիհեշ և վերջնական նոր գիծ. Kagami մերժում է խորհրդանշական կապերը և երբեք չի ընդունում հում ծագման մասնավորը բանալին հրամանի տողում:
 
-NPoS կամ SORA Nexus պրոֆիլների համար ներառեք ստեղծված պրոֆիլի պահանջած տոպոլոգիան և BLS տիրապետման ապացույցները։ Kagami-ի `localnet generate`, `wizard` և `sora-network generate` հրամաններն ավտոմատ մշակում են այդ մանրամասները։
+Յուրաքանչյուր ստորագրված ծագման վիճակ՝ թույլտվություններով սահմանափակված թե NPoS, պետք է ներառի ճիշտ `3f + 1` վավերացնողից բաղկացած տոպոլոգիա՝ յուրաքանչյուր վավերացնողի համար BLS տիրապետման ապացույցով։ Kagami-ի `localnet generate`, `wizard` և `sora-network generate` հրամաններն ավտոմատ մշակում են այդ մանրամասները։
 
 ## Գենեզիսի վերահաստատում {#recommitting-genesis}
 

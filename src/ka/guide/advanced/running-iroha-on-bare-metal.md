@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -34,7 +34,7 @@ cargo build --release \
 target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-გამოსასვლელი დირექტორი შეიცავს გენერირებულ `genesis.json`, `genesis.signed.nrt`, ქსელის კვანძური ფაილები `config.toml`, `client.toml`, დამხმარე სკრიპტები და გენერაციული `README.md` ზუსტი ბრძანებების ამ ბუნდისთვის.
+გამოსავალი დირექტორია შეიცავს გენერირებულ `genesis.json`-ს, `genesis.signed.nrt`-ს, `genesis.expected_hash`-ს, თითოეული ვალიდატორისთვის ერთ `peerN.toml`-ს, `client.toml`-ს, `start.sh` და `stop.sh` სკრიპტებს და გენერირებულ `README.md`-ს ამ ნაკრების ზუსტი ბრძანებებით.
 
 ## 3. დაიწყეთ ქსელის კვანძები {#_3-start-peers}
 
@@ -44,7 +44,7 @@ target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ./localnet/start.sh
 ```
 
-თუ თქვენ გჭირდებათ თითოეული ქსელის პარის გადამყვანა პროცესების მენეჯერში, როგორიცაა systemd , გამოიყენეთ საწყისი ბრძანება, რომელიც დაფიქსირებულია `./localnet/README.md` თითოეული ქსელური პარისთვის. შეინახეთ თითოეული ქსელი პარის `config.toml`, პირადი გასაღები, შენახვის დირექტორი და პორტები ცალკე.
+თუ თითოეული კვანძის პროცესების მენეჯერში ჩართვა გჭირდებათ, მაგალითად systemd-ში, მიჰყევით `./localnet/start.sh`-ში მოცემულ თითოეული კვანძის ბრძანებას: გაუშვით `iroha3d --config <bundle>/peerN.toml` დირექტორიიდან `<bundle>/state/peerN` და `--sumeragi-assert-fresh-key` გადაეცით მხოლოდ ამ კვანძის პირველი გაშვებისას. თითოეული კვანძის `peerN.toml`, პირადი გასაღები, საცავის დირექტორია და პორტები ცალკე შეინახეთ.
 
 ## 4. ქსელის მართვა {#_4-operate-the-network}
 

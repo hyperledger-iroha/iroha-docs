@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /blockchain/instructions.md
-translation_source_hash: ef50253c5478c9d8c3e14529dc4c2f3de67c344901c82c65be77ceb237a29598
+translation_source_hash: 86d253317376ad8d7a8c0e30689c7e0c0cd786af83299dd5ac1a904c653192f5
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
@@ -41,7 +41,7 @@ Iroha հատուկ հրահանգների ամբողջական ցանկը հետ
 | [SetParameter](#setparameter) |շղթայի պարամետրեր |                      |
 | [Grant/Revoke](#grant-revoke) | [դեր, թույլտվությունների տոքեր](/hy/blockchain/permissions.md) |հաշիվներ կամ դերակատարություններ |
 | [Տրանսֆեր](#transfer) |տիրույթներ, ակտիվների սահմանումներ, թվային ակտիվներ, NFTs |հաշվետվություններ|
-| [Բնային պահպանումների եւ ակտիվների կոճակները](#native-escrow-and-asset-locks) |թվային ակտիվների պահպանումներ, ակտիվների փակումներ, անանուն պահպանումի պարտավորություններ |գնորդներ, նպատակակետեր կամ վեճի բաժանումներ |
+| [Բնիկ էսկրոու և ակտիվների արգելափակումներ](#native-escrow-and-asset-locks) |թվային ակտիվների էսկրոուներ, ակտիվների արգելափակումներ, պայմանական էսկրոուներ |գնորդներ, նպատակակետեր կամ վեճի դեպքում գումարի բաժանումներ |
 | [Ատոմային մասնավոր հաշվարկ](#atomic-private-settlement) | երթուղուն կապված գաղտնի pool-եր, քաղաքականության ռոտացիաներ, վերջնականացված փաթեթներ և չեղարկման նշաններ | |
 | [ExecuteTrigger](#executetrigger) |գործարկիչներ |                      |
 | [Log/Custom/Upgrade](#other-instructions) | գրանցամատյաններ, կատարիչին հատուկ տվյալների բեռներ, կատարիչի արդիականացումներ | |
@@ -184,6 +184,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
+  --domain docs.universal \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
@@ -322,9 +323,9 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 
 ## Բնակչական գրավի եւ ակտիվների փակիչներ {#native-escrow-and-asset-locks}
 
-Native escrow հրահանգները հաշիվային ակտիվների կողպեքը պահվում են գլխավոր գրքի կառավարվող արձանագրության պահպանման մեջ: Նրանք օգտագործվում են շուկայական ոճի կարգավորման, ընդհանուր ակտիվների կողոպուտների եւ անանուն պաշտպանված հոսքերի համար:
+Բնիկ էսկրոուի հրահանգները թվային ակտիվներն արգելափակում են մատյանի կողմից կառավարվող արձանագրության պահառության ներքո։ Դրանք օգտագործվում են շուկայական ոճի հաշվարկների, ակտիվների ընդհանուր արգելափակումների և հավաստողին կապված պայմանական էսկրոուների համար։
 
-Շուկայի պահպանակների օգտագործումը `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, եւ `ResolveEscrowDispute`. Գնացական ակտիվների փակման օգտագործումը `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, եւ `ExpireAssetLock`. Anonymous escrow արտացոլում է շուկայական կյանքի ցիկլը `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, եւ `ResolveAnonymousEscrowDispute`.
+Շուկայական էսկրոուն օգտագործում է `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute` և `ResolveEscrowDispute` հրահանգները։ Ակտիվների ընդհանուր արգելափակումներն օգտագործում են `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock` և `ExpireAssetLock` հրահանգները։ Պայմանական էսկրոուն օգտագործում է `OpenConditionalEscrow`, `AttestEscrowCondition` և `ExpireConditionalEscrow` հրահանգները։
 
 Այս ISIs-ները ներկայումս չունեն առաջին դասի CLI հրամաններ: Օգտագործեք տիպված SDK կառուցապատողներ կամ շարականացված հրահանգների օգնական բեռներ, եւ տեսեք [Ակտիվների ներկառուցված էսքրո](/hy/blockchain/escrow.md) ՝ կյանքի ցիկլի մանրամասների, թույլտվությունների, հարցումների, իրադարձությունների եւ Rust օրինակների համար.
 
@@ -418,7 +419,7 @@ printf '{"owner":"ops"}\n' |
 Սահմանեք պարամետր' ստանդարտ մուտքի ժամանակ անցնելով մեկ պարամետրային JSON օբյեկտ.
 
 ```bash
-printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
+printf '{"Sumeragi":{"MaxClockDriftMs":1000}}\n' |
   cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```

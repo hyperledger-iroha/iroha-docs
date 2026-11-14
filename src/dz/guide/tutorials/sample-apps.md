@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 0c4f2f3fc4efb9f883f597a3eea49c99431b711a0141eba70ac5a2524990dd73
+translation_source_hash: 50fac5ad01faf8d09441cba90f29472da04630dbeb3c80111a19f3fb50bb1224
 translation_status: machine-validated
-translation_engine: human-reviewed+reviewed-supplemental-naming-link
+translation_engine: human-reviewed+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # དཔེ་ཚད་ལག་ལེན་ཚུ་དང་ ལག་ལེན་ལམ་སྟོན་ཚུ་ {#samples-and-recipes}
 
@@ -19,4 +19,4 @@ Swift SDK ད་ལྟོ་ གྱི་ཐད་ཁར་བརྟག་དཔ
 
 ## Android {#android}
 
-Android གསརཔ་གི་ལཱ་གི་དོན་ལུ་ [Kotlin, Android, དང་ Java](/dz/guide/tutorials/kotlin-java.md) ནང་བཤད་ཡོད་པའི་ Kotlin-དང་པ `core-jvm`, `client-android`, དང་ `offline-wallet-android` ཚད་གཞི ཚུ་ལག་ལེན་འཐབ། Kotlin SDK འདི་ Android ལག་ལེན་པ་ཚུ་གི་དོན་ལུ་ ཚད་ལྡན འགོ་བཙུགས་ས་ཨིན།
+Android གསརཔ་གི་ལཱ་གི་དོན་ལུ་ [Kotlin, Android, དང་ Java](/dz/guide/tutorials/kotlin-java.md) ནང་བཤད་ཡོད་པའི་ Kotlin-དང་པ `core-jvm`, `client-android`, དང་ `kagemusha-wallet-android` ཚད་གཞི ཚུ་ལག་ལེན་འཐབ། Kotlin SDK འདི་ Android ལག་ལེན་པ་ཚུ་གི་དོན་ལུ་ ཚད་ལྡན འགོ་བཙུགས་ས་ཨིན།

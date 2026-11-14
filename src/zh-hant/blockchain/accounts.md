@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/accounts.md
-translation_source_hash: adc98cbf1fcadae4415d03dcc262eb03f8c95b429527e403d230934ae2f3243c
+translation_source_hash: d956bfb8c698fa463ef9fa84a91d50cf0e2100885eba670121ad78753f87d88d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -44,7 +44,7 @@ private_key_file = "/absolute/path/to/private.key"
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+  | jq -r '.items[] | [.id, (.label // "-")] | @tsv'
 ```
 
 為了檢查帳戶資產,從第一次呼叫中複製一個帳戶 ID,然後在將其放入路徑之前編碼 URL.該 Python 片段為上市的第一個帳戶執行:
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-這些都是公開讀取操作。建立或更新帳戶需要簽署交易，並依照[連線至 SORA Nexus 資料空間](/zh-hant/get-started/sora-nexus-dataspaces.md)的說明，完成由測試網資金服務提供資金的 Taira 設定。
+這些都是公開讀取操作。建立或更新帳戶需要簽署交易，並依照[使用 Taira 和 Minamoto 在 SORA Nexus 上開發](/zh-hant/get-started/sora-nexus-dataspaces.md)的說明，完成由測試網資金服務提供資金的 Taira 設定。
 
 ## 登記和許可證 {#registration-and-permissions}
 

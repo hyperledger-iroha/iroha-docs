@@ -1,9 +1,9 @@
 ---
 translation_locale: hy
 translation_source: /reference/naming.md
-translation_source_hash: 1d4d698597542d9c84284d0b87dae8a1825d3ab39ff38dd32bb204d41291c83d
+translation_source_hash: 15d095e674edf780c5859abe6f4615d53338e3304e8eedfa494017911204d4b6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Կոնվենցիաների անվանումը {#naming-conventions}
 
@@ -15,10 +15,9 @@ translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
    - `#` պահվում է ակտիվների սահմանման կեղծանունների եւ ակտիվների մնացորդի բառերի համար
    - `::` պահպանվում է պայմանագրային կեղծանունների համար
    - `.` պահվում է տիրույթի եւ տվյալների տարածքի որակավորման համար
-   - `$` պահվում է գրական ձեւերի համար, որոնք օգտագործվում են trigger-scoped
-   - `%` պահված է վավերացողի կողմից ստացված տեքստային ձեւերի համար
+   - `$` պահվում է NFT նույնացուցիչների համար, օրինակ՝ `name$domain.dataspace`
 
-2. UTF-8 տառերի առավելագույն թիվը, որը կարող է ունենալ անվանումը, սահմանափակվում է երկու գործոններով. `[0, u32::MAX]` եւ ներկայումս հատկացված փաթեթային տարածությունը:
+2. Անունը պետք է լինի ոչ դատարկ, Unicode NFC ձևով, առավելագույնը 255 UTF-8 բայթ երկարությամբ և չպարունակի բացատային, կառավարման և երկկողմանի ուղղության կառավարման նիշեր։
 
 ## Փորձեք այն Taira {#try-it-on-taira}
 

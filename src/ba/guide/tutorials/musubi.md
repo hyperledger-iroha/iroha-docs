@@ -1,9 +1,9 @@
 ---
 translation_locale: ba
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 22d763aadf33d331fb9c16d3927e84e8bdb88829f3d73b974902daa8fde3c1b4
+translation_source_hash: 89d0874ca7ffe82099a1443d48713efccfbf3ec8042c2dde2ec8ae81717fb25b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Musubi Kotodama Пакеттар {#musubi-kotodama-packages}
 
@@ -31,7 +31,7 @@ namespace/package
 namespace/package@version
 ```
 
-Исемдәр арауығы алдынан `@` билдәһе юҡ. Исемдәр арауығы йәки мәғлүмәт арауығы тамыр, мәҫәлән: `universal` йәки домен-квалификациялы мәғлүмәт базаһы, мәҫәлән: `dex.universal`. Букмекер был структуралы исемдәр киңлеген бер тотороҡло төп мәғлүмәт киңлеге менән бәйләй, пакетты талап итеү мөмкин тиклем.
+Исемдәр киңлеге алдында `@` билдәһе ҡуйылмай. Исемдәр киңлеге йә `universal` кеүек мәғлүмәт киңлеге тамыры, йә `dex.universal` кеүек домен менән квалификацияланған исемдәр киңлеге була. Пакетҡа хоҡуҡ алыу мөмкин булғансы, реестр был структур исемдәр киңлеген бер тотороҡло төп мәғлүмәт киңлегенә бәйләй.
 
 ## Манифест һәм бикләү файлы {#manifest-and-lockfile}
 
@@ -67,10 +67,10 @@ version = "^1.0.0"
 ```toml
 torii_url = "https://taira.sora.org/"
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
-network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 
 [musubi.fetch]
-network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 client_id = "musubi-taira"
 request_timeout_ms = 30000
 

@@ -13,7 +13,6 @@ runtime validation by upgrading the executor.
 | Permission token | Category | Operation |
 | --- | --- | --- |
 | `CanManagePeers` | Peer | Register, unregister, or otherwise manage peers. |
-| `CanManageLaneRelayEmergency` | Peer | Manage emergency lane-relay controls. |
 | `CanRegisterDomain` | Domain | Register a domain. |
 | `CanUnregisterDomain` | Domain | Unregister a domain. |
 | `CanModifyDomainMetadata` | Domain | Modify domain metadata. |
@@ -25,7 +24,7 @@ runtime validation by upgrading the executor.
 | `CanMintAssetWithDefinition` | Asset | Mint assets for a specific definition. |
 | `CanBurnAssetWithDefinition` | Asset | Burn assets for a specific definition. |
 | `CanTransferAssetWithDefinition` | Asset | Transfer assets for a specific definition. |
-| `CanMintAsset` | Asset | Mint a specific asset balance. |
+| `CanMintAssetToAccount` | Asset | Mint a specific asset balance. |
 | `CanBurnAsset` | Asset | Burn a specific asset balance. |
 | `CanTransferAsset` | Asset | Transfer a specific asset balance. |
 | `CanRegisterNft` | NFT | Register an NFT. |
@@ -40,7 +39,7 @@ runtime validation by upgrading the executor.
 | `CanModifyTrigger` | Trigger | Modify trigger configuration. |
 | `CanModifyTriggerMetadata` | Trigger | Modify trigger metadata. |
 | `CanUpgradeExecutor` | Executor | Upgrade the runtime executor. |
-| `CanRegisterSmartContractCode` | Smart contract | Register smart contract code. |
+| `CanManageSmartContractCode` | Smart contract | Remove unreferenced code artifacts and delegate contract entrypoints. Registered accounts can create verified artifacts without it. |
 | `CanManageFeeSponsorProgram` | SORA Nexus | Administer programs owned by the exact sponsor account. |
 | `CanEnrollFeeSponsorProgram` | SORA Nexus | Manage beneficiaries of one exact sponsor program. |
 

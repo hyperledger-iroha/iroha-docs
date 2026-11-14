@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
+translation_source_hash: ad2bc9f8c53169d8161f7a2f23b1e660ebd24cf03cf8e05f4b00bbd27b7b11fe
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -23,8 +23,8 @@ Iroha ၏ စွမ်းဆောင်ရည်သည် အလုပ်ဝန
 အများမြင်နိုင်သော နိုဒ် snapshot နှင့် Prometheus ဒေတာစုဆောင်းမှုဖြင့် စတင်ပြီး အော်ပရေတာ၏ အထောက်အထားစစ်ဆေးမှုလိုသော သဘောတူညီမှုအခြေအနေအတွက် CLI ကို သုံးပါ။ အော်ပရေတာကီးကို ရည်မှန်းနိုဒ်က ခွင့်ပြုထားရမည်ဖြစ်ပြီး runtime တွင်သာ ဖတ်ယူသည်။
 
 ```bash
-export TORII=http://127.0.0.1:8180
-export OPERATOR_KEY_FILE=./secrets/operator.key
+export TORII=http://127.0.0.1:8080
+export OPERATOR_KEY_FILE="$PWD/localnet/runtime/operator-signer.key"
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s "$TORII/metrics" > metrics.prom
@@ -52,7 +52,7 @@ curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/now" \
-  | jq '{now_ms, offset_ms}'
+  | jq '{now, offset_ms}'
 ```
 
 သင့်ကိုယ်ပိုင် တပ်ဆင်မှုအတွက် ထုတ်လုပ်နိုင်စွမ်း ကိန်းဂဏန်းအဖြစ် အများပြည်သူ စမ်းသပ်ရေးကွန်ရက် လေ့လာချက်တွေကို မသုံးပါနဲ့။
@@ -187,13 +187,13 @@ iroha --config ./localnet/client.toml \
 | --- | --- | --- |
 |လက်ခံသော ထုတ်ကုန်များ |`sum(rate(txs{type="accepted"}[5m]))` |တည်ငြိမ်တဲ့ အခြေအနေမှာ ရည်မှန်းချက် TPS ကို ဖြည့်ဆည်းသင့်တယ် (သို့) ကျော်သင့်တယ် |
 |ငြင်းပယ်ခြင်း |`sum(rate(txs{type="rejected"}[5m]))` |စမ်းသပ်မှု အစီအစဉ်နဲ့ ရှင်းပြရမယ်။|
-|ပရိုတိုကောလ အပြီးသတ်ခြင်း နှောင့်နှေးမှု |`histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |P95/p99 ကို latency ဘတ်ဂျက်နဲ့ နှိုင်းယှဉ်ကြည့်ပါ။|
+| Commit နှောင့်နှေးချိန် | `histogram_quantile(0.95, sum by (le) (rate(sumeragi_commit_latency_ms_bucket{lane="global"}[5m])))`, `last_commit_time_ms` | p95/p99 ကို နှောင့်နှေးချိန် ဘတ်ဂျက်နှင့် နှိုင်းယှဉ်ပါ |
 |အတန်းအနက်|`queue_size`, `sumeragi_tx_queue_depth` |ဝန်ဆောင်မှု အမြင့်ဆုံးကာလအတွင်းမှာ ကန့်သတ်ထားသင့်ပါတယ်။|
 |queue saturation ကို |`sumeragi_tx_queue_saturated` |တည်ငြိမ်သော သုညမဟုတ်တဲ့ တန်ဖိုးများဆိုသည်မှာ ဝန်ထုပ်လျှော့ချမှုပါ။ |
-|အပြောင်းအလဲများကို ကြည့်ရှု |`view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total`|မြင့်တက်နေတဲ့ တန်ဖိုးတွေက အချိန်ကာလ၊ ထိပ်ပိုင်းဆိုင်ရာ၊ အသုံးဝင်တဲ့ ဝန်ဆောင်မှု (သို့) ကွန်ရက် ပြဿနာကို ညွှန်ပြတယ်။ |
-|ပိတ်ထားသော စာတိုများ |`dropped_messages`, `sumeragi_consensus_message_handling_total` |ဝန်ဆောင်မှုအတွင်း ကျဆင်းမှုဟာ မကြာခဏဆိုသလို နှောင့်နှေးမှု မြင့်တက်မှုကို ရှင်းပြပါတယ်။|
-|အသုံးဝင် ဝန်ဆောင်မှုနှင့် DA ပြန်လည်ထူထောင်ခြင်း |`sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` |အမြဲတမ်းတောင်းဆိုချက်တွေ၊ အသက်ကြီးလာတာ၊ (သို့) ထပ်ခါထပ်ခါ DA ဂိတ်တွေက ခန္ဓာကိုယ် (သို့) အစိတ်အပိုင်းဝယ်ယူမှု ပြဿနာကို ညွှန်ပြတယ်။|
-|သဘောတူညီချက် အပြီးသတ်ရေး ကော်မတီ |`sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |လက်မှတ်တွေ ရေတွက်ခံရရင် လိုအပ်တဲ့ ကွမ်အိုရမ်ကို အမြန်ဆုံး ရောက်ရှိသင့်ပါတယ်။|
+|အပြောင်းအလဲများကို ကြည့်ရှု |`view_changes`, `sumeragi_view_changes_total`, `sumeragi_timeout_votes_total`|မြင့်တက်နေတဲ့ တန်ဖိုးတွေက အချိန်ကာလ၊ ထိပ်ပိုင်းဆိုင်ရာ၊ အသုံးဝင်တဲ့ ဝန်ဆောင်မှု (သို့) ကွန်ရက် ပြဿနာကို ညွှန်ပြတယ်။ |
+|ပိတ်ထားသော စာတိုများ |`sumeragi_dropped_total`, `p2p_queue_dropped_total` |ဝန်ဆောင်မှုအတွင်း ကျဆင်းမှုဟာ မကြာခဏဆိုသလို နှောင့်နှေးမှု မြင့်တက်မှုကို ရှင်းပြပါတယ်။|
+| Payload နှင့် နောက်ကျမှုလိုက်မီရေး ရယူမှုများ | `sumeragi_fetch_requests_total{kind="body"}`, `sumeragi_fetch_requests_total{kind="sync"}` | ဆက်တိုက်ဖြစ်နေသော body သို့မဟုတ် sync ရယူမှုများသည် payload ရယူခြင်း သို့မဟုတ် နောက်ကျမှုလိုက်မီခြင်း ပြဿနာကို ညွှန်ပြသည် |
+| Commit တိုးတက်မှု | `sumeragi_committed_height`, `sumeragi_applied_height` | အတည်ပြုလက်မှတ်ရ အမြင့်နှင့် အသုံးချပြီး အမြင့်တို့သည် အတူတကွ တိုးတက်သင့်သည် |
 
 တိုင်းတာချက်တစ်ခုသည် `/v1/sumeragi/status` တွင်သာ ရှိပါက JSON snapshot ကို Prometheus ဒေတာစုဆောင်းမှုနှင့် တူညီသော စမ်းသပ်လုပ်ဆောင်မှု၏ ရလဒ်ဖိုင်များထဲတွင် သိမ်းပါ။
 
@@ -245,7 +245,7 @@ iroha --config ./localnet/client.toml \
 - လက်ခံရရှိ/ပယ်ချ TPS
 - p50/p95/p99 ပရိုတိုကောလ် အပြီးသတ်ခြင်း နှောင့်နှေးမှု
 - queue depth နဲ့ saturation တွေ
-- view ပြောင်းလဲမှုများ၊ ပျောက်ဆုံးသောသတင်းစကားများ၊ ပျောက်နေသောဘလော့ခ်များ ရယူမှုနှင့် DA ဝင်ခွင့်စစ်ဆေးမှု ကောင်တာများ
+- view ပြောင်းလဲမှုများ၊ timeout မဲများ၊ Sumeragi ဖယ်ချမှုများနှင့် body နှင့် sync ရယူမှုများ
 - CPU, မှတ်ဉာဏ်၊ disk နှင့် validator တစ်ခုစီအတွက် network အသုံးပြုမှု
 
 ဒီ အသေးစိတ်အချက်အလက်တွေမရှိရင် TPS ကိန်းဂဏန်းကို သရုပ်ဖော်ချက်တစ်ခုအဖြစ် ယူဆသင့်ပါတယ်။

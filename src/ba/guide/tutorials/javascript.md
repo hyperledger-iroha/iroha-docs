@@ -1,13 +1,13 @@
 ---
 translation_locale: ba
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: 92389d3ad83ab32e85b4ca83ede9829d1a38afaad6e86da035da2829a3aaedfb
+translation_source_hash: 471dc7c82f371e1bbdcf216d5a50b1263612b7d29fffb1ef36b708a6beb931b6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # JavaScript һәм TypeScript {#javascript-and-typescript}
 
-Ағым JavaScript SDK был `@iroha/iroha-js` пакеты Iroha сығанағы ағасы. Node.js- тәүҙә SDK өсөн Torii, Norito Төҙөүселәр, ҡултамғалау, биттәрҙе биҙәү, "Коннект" премьералары һәм Кагемуша командаһы транспорты.
+Хәҙерге JavaScript SDK — Iroha сығанаҡ ағасындағы `@iroha/iroha-js` пакеты. Ул Torii, Norito төҙөүселәре, ҡултамға ҡуйыу, биттәргә бүлеү һәм Connect алдан ҡарауҙары өсөн тәүге сиратта Node.js-ҡа йүнәлтелгән SDK.
 
 ## Сығышығыҙҙан төҙөгөҙ {#build-from-source}
 
@@ -31,6 +31,7 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 const torii = new ToriiClient("http://127.0.0.1:8080", {
   authToken: "dev-token",
+  allowInsecure: true, // local development only
 });
 
 const keys = generateKeyPair();

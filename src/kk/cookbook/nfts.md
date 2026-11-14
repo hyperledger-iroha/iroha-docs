@@ -1,9 +1,9 @@
 ---
 translation_locale: kk
 translation_source: /cookbook/nfts.md
-translation_source_hash: b6a85c2feb197588e3358a785e10280a687af3951d52de4e6b8d96eab5de873c
+translation_source_hash: 7d7a1ba8ff8678f420a6237bd0d074d2d197bf4349989c0c55f05e9769d15da7
 translation_status: machine-validated
-translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # NFTs {#nfts}
 
@@ -15,7 +15,7 @@ Taira NFT күйін тексеріп, кейін генерацияланған
 
 - `curl`, `jq`, Python 3.11 немесе одан кейінгі нұсқасы, және қазіргі `iroha` CLI.
 - Тек оқу үшін Taira қолжетімділік.
-- Жазу үшін: [Iroha-ны іске қосу](/kk/get-started/launch-iroha.md) бетіндегідей `kagami localnet generate --peers 4 --out-dir ./localnet` арқылы жасалған, `./localnet/client.toml` және `http://127.0.0.1:8080` мекенжайында Torii бар жергілікті желі, сондай-ақ қол қоюшысына тиесілі NFT домені (2-қадамды қараңыз).
+- Жазу үшін: `kagami localnet generate --peers 4 --out-dir ./localnet` арқылы жасалған, `./localnet/client.toml` және `http://127.0.0.1:8080` мекенжайында Torii бар жергілікті желі, сондай-ақ қол қоюшысына тиесілі NFT домені (2-қадамды қараңыз).
 
 ## Қадамдар {#steps}
 

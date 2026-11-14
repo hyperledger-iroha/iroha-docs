@@ -1,9 +1,9 @@
 ---
 translation_locale: ka
 translation_source: /reference/queries.md
-translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
+translation_source_hash: baa9726c7ce7d14b8dd17e77447ef72233ca9ed779367d9a190aa8dde7da41ac
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # კითხვები {#queries}
 
@@ -56,7 +56,7 @@ Iroha შეკითხვები ბლოკჩეინის რეეს
 |კითხვა |მიზანი |
 | --- | --- |
 |`FindAssets` |დასახელება აქტივების სალანსები. |
-|`FindAssetsDefinitions` |განსაზღვრული აქტივების ჩამონათვალი. |
+|`FindAssetDefinitions` |განსაზღვრული აქტივების ჩამონათვალი. |
 |`FindAssetsByAccountId` |ანგარიშზე არსებული აქტივების ჩამონათვალი. |
 |`FindAssetById` |მოძებნეთ ერთი აქტივის ბალანსი `AssetId`. |
 |`FindAssetDefinitionById` |მოძებნეთ ერთი აქტივის განსაზღვრა ID-ით. |
@@ -66,7 +66,7 @@ Iroha შეკითხვები ბლოკჩეინის რეეს
 
 ## საფინანსო და მტკიცებულების დოკუმენტები {#escrow-and-proof-records}
 
-[ნაციონალური აქტივების საფინანსო დავალიანება ISIs](/ka/blockchain/escrow.md) -ის მიერ შექმნილი ჩანაწერების, მათ შორის ბაზრის ესქროს ქაღალდების, გენერული აქტივების საკეტებისა და ანონიმური ესქრო ქაღალდის, შემოწმება ხდება.
+ესქროს მოთხოვნები ამოწმებს [ადგილობრივი აქტივების ესქროს ISIs](/ka/blockchain/escrow.md)-ის მიერ შექმნილ ჩანაწერებს, მათ შორის მარკეტპლეისის ესქროებს, აქტივების ზოგად საკეტებსა და პირობით ესქროებს.
 
 |კითხვა |მიზანი |
 | --- | --- |
@@ -75,11 +75,6 @@ Iroha შეკითხვები ბლოკჩეინის რეეს
 |`FindAssetEscrowsBySeller` |ჩამოთვალეთ აქტივების დაფარვა გამყიდველის მიხედვით. |
 |`FindAssetEscrowsByBuyer` |მყიდველის მიერ დაფარული აქტივების ჩამონათვალი. |
 |`FindAssetEscrowsByStatus` |ჩამოთვალეთ აქტივების აღრიცხვა სტატუსის მიხედვით. |
-|`FindAnonymousAssetEscrows` |ანონიმური აქტივების ესქროს ჩანაწერების სია. |
-|`FindAnonymousAssetEscrowById` |იპოვნეთ ერთი ანონიმური ქონების დაფარვა ID-ით. |
-|`FindAnonymousAssetEscrowsBySeller` |დაწვრილებით ანონიმური ესქროები გამყიდველის მიხედვით. |
-|`FindAnonymousAssetEscrowsByBuyer` |დაწერთ ანონიმურ ესქროებს მყიდველის მიხედვით. |
-|`FindAnonymousAssetEscrowsByStatus` |დასახელება ანონიმური სალაროების სტატუსის მიხედვით. |
 |`FindProofRecordById` |ნაპაგეთ ერთი მტკიცებულების ჩანაწერი იდენტობის მიხედვით. |
 |`FindProofRecords` |მტკიცებულებათა ჩანაწერების სია. |
 |`FindProofRecordsByBackend` |ჩამოთვალეთ მტკიცებულების ჩანაწერები მტკიცებულებების უკანასკნელი |
@@ -89,15 +84,14 @@ Iroha შეკითხვები ბლოკჩეინის რეეს
 
 |კითხვა |მიზანი |
 | --- | --- |
-|`FindRepoAgreements` |ჩამოთვალეთ ქსელზე შენახული რეპოზიტორების ხელშეკრულებები. |
+|`FindRepoAgreements` |ჩამოთვალეთ ჯაჭვში შენახული რეპო და უკუ-რეპო შეთანხმებები. |
 |`FindTwitterBindingByHash` |გადაწყვიტეთ Twitter- ის ბინდირება კრიპტოგრაფიული ჰეშით. |
 |`FindDaPinIntentByTicket` |ეძიეთ მონაცემთა ხელმისაწვდომობის პინი ბილეთის მიხედვით. |
 |`FindDaPinIntentByManifest` |იპოვნეთ პინი განზრახვა ტექნიკური მანიფესტი მითითებით. |
 |`FindDaPinIntentByAlias` |ნაპაგრაჟა ეა ჟვ ოპვკაგაქ.|
 |`FindDaPinIntentByLaneEpochSequence` |მიმაგრების განზრახვის პოვნა არხის, ეპოქისა და მიმდევრობის მიხედვით. |
-|`FindLaneRelayEnvelopeByRef` |იპოვნეთ დამადასტურებული სარკე-რელე მონაცემთა კონტეინერი.|
 |`FindSorafsProviderOwner` |SoraFS მომწოდებლის მფლობელის განსაზღვრა. |
-|`FindDataspaceNameOwnerById` |აღმოფხვრა მონაცემთა სივრცის სახელების მფლობელი. |
+|`FindDataspaceNameOwnerById` |მონაცემთა სივრცის ალიასის აქტიური SNS მფლობელის დადგენა. |
 |`FindMusubiExactPackageV1` |წაიკითხეთ ერთი ზუსტი ჩანაწერი და მისი ამჟამინდელი რევიზიები. |
 |`FindMusubiExactReleaseV1` |წაკითხეთ ერთი ზუსტი გამოსვლის სურათი. |
 |`FindMusubiProviderBundleAttestationV1` |წაიკითხეთ ერთ-ერთი პროვაიდერის არქივური ბუნდის ატესტაცია. |
@@ -117,7 +111,7 @@ Iroha შეკითხვები ბლოკჩეინის რეეს
 |`FindActiveTriggerIds` |სცენარზე აქტიური გამამოძრავებელი ID. |
 |`FindTriggers` |სია მაშველებს. |
 |`FindTriggerById` |ID-ით ერთი ტრიგერის პოვნა.|
-|`FindContractManifestByCodeHash` |იპოვნეთ ჭკვიანი ხელშეკრულების ტექნიკური მანიფესტი კოდი კრიპტოგრაფიული ჰეშით. |
+|`FindContractManifestByArtifactId` |ჭკვიანი კონტრაქტის მანიფესტის პოვნა მისი მონაცემთა სივრცის არტეფაქტის ID-ით. |
 |`FindTransactions` |განხორციელებული ოპერაციების ჩამონათვალი. |
 |`FindBlocks` |ბლოკების ჩამონათვალი.|
 |`FindBlockHeaders` |ბლოგის სათაურების ჩამონათვალი.|

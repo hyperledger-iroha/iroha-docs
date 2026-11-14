@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /blockchain/transactions.md
-translation_source_hash: 91c06ab61c7f8ec96554bc89b31b2f281bb3a7d7edd484defe61dcde5a3fb710
+translation_source_hash: d9227effcdb4d54ac76f6288ba213de20f2574e1585e13b96a5202c44b69f3be
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -71,7 +71,7 @@ Iroha-д хоёр офлайн гүйлгээний ажиллах урсгал 
 - Оффлайн гарын үсэг зурах нь гарын үсгийн төхөөрөмж салгасан үед хэвийн гарын үсэгтэй гүйлгээг үүсгэдэг. Гүйлгээ нь онлайн клиент гарын үсэгтэй өгөгдлийн савыг Torii-д илгээтэл боловсруулагдахгүй, тиймээс зөв гинжний ID, эрх олгох үндсэн элемент, зөвшөөрөл, төлбөр шаардлагатай хэвээр байна, буюу гүйлгээний амьдралын хугацаа.
 - **Kagemusha офлайн бэлэн мөнгө** нь бүртгэсэн, техник хангамжаар хамгаалсан хэтэвч онлайн үед нь дүн ачаалж, хоёр хэтэвч офлайн үед хоорондын төлбөрийг дэмжин, хэтэвч дахин онлайн болоход үлдэгдлийг бүртгэлийн дансанд буулгана.
 
-Torii нь нэг Kagemusha маршрут гаргана: `POST /v1/kagemusha/enrollment`. Энэ нь дансаар баталгаажсан `application/x-norito` бүртгэлийн хүрээг хүлээн авч, кэшлэх ёсгүй хувийн хариу буцаана. Амьдралын мөчлөгийн бүртгэлийн тал нь `KagemushaWalletLedgerV1` заавар агуулсан ердийн гарын үсэгтэй гүйлгээг ашиглана:
+Torii нь Kagemusha-ийн нэг өөрчлөлтийн маршрут болох `POST /v1/kagemusha/enrollment`-ийг гаргадаг. Энэ нь дансаар баталгаажсан `application/x-norito` бүртгэлийн хүрээг хүлээн авч, кэшлэх ёсгүй хувийн хариу буцаана. `/v1/kagemusha/{scheme}/wallets/{wallet}/` доорх дансны гарын үсэгтэй SDK унших маршрутууд Load баримт болон эцэслэлтийн нотолгоог буцаана; тэдгээр нь `/openapi.json`-д жагсаагдаагүй. Амьдралын мөчлөгийн блокчэйн бүртгэлийн тал нь `KagemushaWalletLedgerV1` заавар агуулсан ердийн гарын үсэгтэй гүйлгээг ашиглана:
 
 | Үйлдэл | Зорилго |
 | --- | --- |
@@ -88,13 +88,21 @@ Torii нь нэг Kagemusha маршрут гаргана: `POST /v1/kagemusha/e
 3. Хэтэвчүүд офлайн байх үед хооронд нь төлбөр солилцож, дотоодод шалган, шилжүүлэг бүрийг хүлээн авснаа батлахаас өмнө хэтэвчийн төлөвийг найдвартай хадгална.
 4. Хэтэвч дахин онлайн болоход Unload хүсэлтийг нь илгээж, эцэслэлтийг хүлээнэ.
 
+Kagemusha хувилбар гаргахад шаардлага хангасан нь батлагдаагүй: бодит сүлжээн дэх мөнгөний шалгалт болон биет төхөөрөмж дээрх утасны бүртгэл, идэвхжүүлэлт, төлбөрийн ажил нээлттэй хэвээр байна.
+
 Блокчэйн бичиглэл нь тэмдэгтийн байдал онлайн амьдралын мөчлөгөөр эргэж ирэх хүртэл зөрчилтэй оффлайн дамжуулалтыг ажиглаж чадахгүй. Иймээс түрийвч болон операторын бодлого нь үнэ цэнийн хязгаар, хүчин төгөлдөр хугацаа, хүлээн зөвшөөрөгдсөн гаргагчид, удаан хадгалах боломжтой орон нутгийн хадгалалт, мөн тохируулах цонхыг хэрэгжүүлэх ёстой.
 
 Энд `Grant` зааврыг ашиглан шинэ гүйлгээг үүсгэх жишээ байна. Энэ гүйлгээнд, Mouse нь Alice-д тодорхойлсон үүрэг (`role_id`) олгож байна. [бүрэн жишээ](./permissions.md#register-a-new-role)-ийг шалгаарай.
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```

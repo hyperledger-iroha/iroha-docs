@@ -484,8 +484,8 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'ዲተርሚኒስቲክ ብሎክቼይን መድረክ ለ SORA Nexus፣ SDKs እና ኦፕሬተር የስራ ፍሰቶች',
     "The trigger authority is the account used to invoke the executable. Use a dedicated technical account for long-lived triggers so the required permissions are explicit and isolated from an operator's personal account.":
       'የቀስቅሴው የፈቃድ ባለቤት ፈጻሚውን ለመጥራት የሚጠቀመው መለያ ነው። የሚፈለጉት ፈቃዶች ግልጽ እንዲሆኑ እና ከኦፕሬተሩ የግል መለያ እንዲለዩ፣ ለረጅም ጊዜ ለሚኖሩ ቀስቅሴዎች የተለየ ቴክኒካዊ መለያ ይጠቀሙ።',
-    'If you need a new organizational data space, prepare a catalog and routing proposal instead of trying to register it from an ordinary client account. See [Provision a New Data space](#_8-provision-a-new-data-space) below.':
-      'አዲስ የድርጅት የውሂብ ቦታ ከፈለጉ ከመደበኛ የደንበኛ መለያ ለመመዝገብ ከመሞከር ይልቅ የካታሎግና የማዘዋወር ሀሳብ ያዘጋጁ። ከታች [አዲስ የውሂብ ቦታ ያቋቁሙ](#_8-provision-a-new-data-space) ይመልከቱ።',
+    'If you need a new organizational data space, prepare a catalog and routing proposal instead of trying to register it from an ordinary client account. See [Provision a New Data space](#_8-provision-a-new-dataspace) below.':
+      'አዲስ የድርጅት የውሂብ ቦታ ከፈለጉ ከመደበኛ የደንበኛ መለያ ለመመዝገብ ከመሞከር ይልቅ የካታሎግና የማዘዋወር ሀሳብ ያዘጋጁ። ከታች [አዲስ የውሂብ ቦታ ያቋቁሙ](#_8-provision-a-new-dataspace) ይመልከቱ።',
     'Publish performance numbers only with enough context to reproduce them:':
       'የአፈጻጸም ቁጥሮችን እንደገና ለማግኘት የሚያስችል በቂ አውድ ሲኖር ብቻ ያትሙ፦',
     '- Generate fresh private keys for production and store them outside the repository.':
@@ -518,18 +518,14 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '- `id`፦ የንብረት ፍቺውን፣ የያዡን መለያ እና አማራጭ የቀሪ ሒሳብ ወሰን የሚያጣምር `AssetId`',
     'Creating or removing a domain requires the appropriate domain-management permission under the active runtime validator. Domain metadata can be updated with [`SetKeyValue` and `RemoveKeyValue`](/blockchain/instructions.md#setkeyvalue-removekeyvalue) when the authority has permission to modify that domain.':
       'ጎራን ለመፍጠር ወይም ለማስወገድ በንቁ የአፈጻጸም አካባቢ አረጋጋጭ ሥር ተገቢው የጎራ አስተዳደር ፈቃድ ያስፈልጋል። ባለሥልጣኑ ያንን ጎራ የማሻሻል ፈቃድ ሲኖረው፣ የጎራውን ሜታዳታ በ [`SetKeyValue` እና `RemoveKeyValue`](/am/blockchain/instructions.md#setkeyvalue-removekeyvalue) ማዘመን ይቻላል።',
-    'For the underlying shielded transaction model, see [Anonymous Transactions](/blockchain/anonymous-transactions.md).':
-      'ለመሠረታዊው የተከለለ ግብይት ሞዴል [ስም-አልባ ግብይቶች](/am/blockchain/anonymous-transactions.md)ን ይመልከቱ።',
     'Transparent numeric transfers create a structured transfer transcript when the instruction mutates balances. The transcript records:':
       'መመሪያው ቀሪ ሒሳቦችን ሲቀይር፣ ግልጽ የቁጥር ዝውውሮች የተዋቀረ የዝውውር መዝገብ ይፈጥራሉ። መዝገቡ የሚከተሉትን ይመዘግባል፦',
-    'Let `omega_T` be the trace-domain generator, `omega_E` the evaluation-domain generator, and `g` the configured coset offset. For a trace column with values `v_i`, interpolation produces coefficients `a_j` such that:':
-      '`omega_T` የመከታተያ ጎራ አመንጪ፣ `omega_E` የግምገማ ጎራ አመንጪ እና `g` የተዋቀረው የኮሴት ማካካሻ ይሁን። `v_i` እሴቶች ላሉት የመከታተያ አምድ፣ ኢንተርፖሌሽኑ የሚከተለውን የሚያሟሉ `a_j` ቅንጅቶችን ያመነጫል፦',
     'RWA lots are created through the dedicated `RegisterRwa` instruction. The current code does not expose an `UnregisterRwa` instruction; use `RedeemRwa` to retire represented quantity.':
       'የ RWA ሎቶች በተለየው `RegisterRwa` መመሪያ ይፈጠራሉ። የአሁኑ ኮድ የ `UnregisterRwa` መመሪያ አያቀርብም፤ የተወከለውን መጠን ከዝውውር ለማስወገድ `RedeemRwa`ን ይጠቀሙ።',
     "Remove the example NFT after the walkthrough. If you transferred it, either transfer it back or submit the unregister command with the current owner's account configuration.":
       'መመሪያውን ከጨረሱ በኋላ የምሳሌውን NFT ያስወግዱ። ካስተላለፉት ወደ ነበረበት ይመልሱት ወይም የአሁኑን ባለቤት መለያ ውቅር ተጠቅመው የምዝገባ-ማስወገጃ ትዕዛዙን ያስገቡ።',
-    'Permissions exist so that only accounts with the required permission token can perform a protected action. The default executor checks permissions during instruction, query, and expression execution.':
-      'ፈቃዶች ያሉት አስፈላጊው የፈቃድ ቶከን ያላቸው መለያዎች ብቻ የተጠበቀ ተግባር እንዲፈጽሙ ነው። ነባሪው አስፈጻሚ መመሪያዎች፣ መጠይቆች እና ኤክስፕሬሽኖች ሲፈጸሙ ፈቃዶችን ይፈትሻል።',
+    'Permissions exist so that only accounts with the required permission token can perform a protected action. The default executor checks permissions during transaction and instruction execution and query validation.':
+      'ፈቃዶች ያሉት አስፈላጊው የፈቃድ ቶከን ያላቸው መለያዎች ብቻ የተጠበቀ ተግባር እንዲፈጽሙ ነው። ነባሪው አስፈጻሚ ግብይቶችና መመሪያዎች ሲፈጸሙ እና መጠይቆች ሲረጋገጡ ፈቃዶችን ይፈትሻል።',
     'To encrypt a plaintext polynomial \\(m\\), the implementation seeds another ChaCha20 RNG from:':
       'የግልጽ ጽሑፍ ፖሊኖሚያል \\(m\\)ን ለማመስጠር፣ አተገባበሩ ለሌላ ChaCha20 RNG ከሚከተሉት የመነሻ ዘር ይሰጣል፦',
     'Identifier resolution does not use the generic backend `opaque_hash` as the user-facing opaque account identifier. It projects the RAM-LFE output hash through identifier-specific domains:':
@@ -586,8 +582,8 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'የገንዘብ አገልግሎቱ ለ Taira ሙከራ መረብ ገንዘብ ብቻ ነው። በ Minamoto ፍሰቶች ውስጥ የሙከራ XOR፣ የገንዘብ አገልግሎት መለያዎች ወይም የ Taira የቅድመ-ማስጠንቀቂያ ፈራሚዎችን አይጠቀሙ።',
     'All peers in the network must agree on the signed genesis transaction and the genesis public key.':
       'የአውታረ መረቡ እኩዮች ሁሉ በተፈረመው የጀነሲስ ግብይትና በጀነሲስ ይፋዊ ቁልፍ ላይ መስማማት አለባቸው።',
-    '`TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest`, and `UnshieldRequest` validate canonical account IDs and canonical unprefixed Base58 asset-definition IDs before signing.':
-      '`TransferRequest`፣ `MintRequest`፣ `BurnRequest`፣ `ShieldRequest` እና `UnshieldRequest` ከመፈረም በፊት ካኖኒካል የመለያ IDs እና ቅድመ-ቅጥያ የሌላቸው ካኖኒካል Base58 የንብረት-ፍቺ IDs ያረጋግጣሉ።',
+    '`TransferRequest`, `MintRequest`, and `BurnRequest` validate canonical account IDs and canonical unprefixed Base58 asset-definition IDs before signing.':
+      '`TransferRequest`፣ `MintRequest` እና `BurnRequest` ከመፈረም በፊት ካኖኒካል የመለያ IDs እና ቅድመ-ቅጥያ የሌላቸው ካኖኒካል Base58 የንብረት-ፍቺ IDs ያረጋግጣሉ።',
     'Public key of the peer. Consensus validator peers must use BLS-Normal keys.':
       'የእኩዩ ይፋዊ ቁልፍ። የጋራ ስምምነት አረጋጋጭ እኩዮች BLS-Normal ቁልፎችን መጠቀም አለባቸው።',
     '- Contract calls require a positive typed gas limit. The first-release call contract rejects top-level gas or fee-asset metadata.':
@@ -627,8 +623,8 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
     'Query ledger state': 'የብሎክቼይን መዝገብ ሁኔታን ይጠይቁ',
     '| Capability negotiation | Intersects supported feature bits, datagram limits, feedback cadence, and privacy requirements. |':
       '| የችሎታ ድርድር | ሁለቱም ወገኖች የሚደግፏቸውን የባህሪ ቢቶች፣ የዳታግራም ገደቦች፣ የግብረመልስ ድግግሞሽ እና የግላዊነት መስፈርቶች ይመርጣል። |',
-    'For the full lifecycle, generic asset locks, anonymous escrow, queries, events, and Rust examples, see [Native Asset Escrow](/blockchain/escrow.md).':
-      'ሙሉውን የሕይወት ዑደት፣ አጠቃላይ የንብረት መቆለፊያዎች፣ ስም-አልባ escrow፣ መጠይቆች፣ ክስተቶች እና የ Rust ምሳሌዎች ለማየት [ቤተኛ የንብረት Escrow](/am/blockchain/escrow.md)ን ይመልከቱ።',
+    'For the full lifecycle, generic asset locks, conditional escrow, queries, events, and Rust examples, see [Native Asset Escrow](/blockchain/escrow.md).':
+      'ሙሉውን የሕይወት ዑደት፣ አጠቃላይ የንብረት መቆለፊያዎች፣ ሁኔታዊ escrow፣ መጠይቆች፣ ክስተቶች እና የ Rust ምሳሌዎች ለማየት [ቤተኛ የንብረት Escrow](/am/blockchain/escrow.md)ን ይመልከቱ።',
     '### Fetch a Resolver Directory Snapshot': '### የ Resolver Directory የነጥብ-በ-ጊዜ ውሂብ እይታን ያምጡ',
     'The asset definition still has a canonical opaque address. Store or query that address after registration and use it in the trigger action.':
       'የንብረት ፍቺው አሁንም ካኖኒካል እና ግልጽ ያልሆነ አድራሻ አለው። ከምዝገባ በኋላ ያንን አድራሻ ያከማቹ ወይም ይጠይቁ እና በቀስቅሴው እርምጃ ውስጥ ይጠቀሙበት።',
@@ -658,8 +654,6 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
     '`AccountId` display and JSON use canonical I105.': 'የ `AccountId` ማሳያ እና JSON ካኖኒካል I105 ይጠቀማሉ።',
   },
   ar: {
-    'The final trace commitment is a byte hash over the domain, parameter set, trace shape, column digests, and trace root:':
-      'التزام التتبع النهائي هو تجزئة بايتية تُحسب على المجال، ومجموعة المعلمات، وشكل التتبع، وملخصات الأعمدة، وجذر التتبع:',
     '- stable opaque pool identifiers, roots, nullifiers, commitments, and fixed ciphertext slots':
       '- معرّفات التجمع المستقرة وغير الشفافة، والجذور، والمبطلات، والالتزامات، ومواضع النص المشفر ثابتة الحجم',
     '| [Atomic private settlement](#atomic-private-settlement)   | Govern confidential pools and atomic bundles.    |':
@@ -748,8 +742,8 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'عمليات الكتابة في Kaigi هي تعليمات داخل معاملات عادية حُدّدت رسومها ووُقّعت. أرسلها عبر `POST /v1/pipeline/transactions` وانتظر دليل الكتلة التي بلغت حالة النهائية.',
     '| Anonymous read calls                          | Yes                                  | Python package plus network access                                                                             |':
       '| استدعاءات القراءة المجهولة | نعم | حزمة Python بالإضافة إلى الوصول إلى الشبكة |',
-    'The faucet returns the concrete `asset_id` to use for the balance check. Verify that the live quote charges `FEE_ASSET_DEFINITION`; the transaction does not select that asset through metadata.':
-      'تعيد خدمة تمويل شبكة الاختبار معرّف `asset_id` الفعلي المستخدم للتحقق من الرصيد. تحقّق من أن عرض الرسوم المباشر يفرض `FEE_ASSET_DEFINITION`؛ فالمعاملة لا تحدد ذلك الأصل من خلال البيانات الوصفية.',
+    "Filter the account's balances by the fee asset definition that the faucet funded. Verify that the live quote charges `FEE_ASSET_DEFINITION`; the transaction does not select that asset through metadata.":
+      'صفِّ أرصدة الحساب حسب تعريف أصل الرسوم الذي موّلته خدمة تمويل شبكة الاختبار. تحقّق من أن عرض الرسوم المباشر يفرض `FEE_ASSET_DEFINITION`؛ فالمعاملة لا تحدد ذلك الأصل من خلال البيانات الوصفية.',
     'If you omit the fee intent, accept a quote for an unexpected asset, alter the payload after quoting, or sign with an unfunded account, the transaction must not be submitted.':
       'إذا حذفت نية الرسوم، أو قبلت عرض رسوم لأصل غير متوقع، أو غيّرت الحمولة بعد تسعيرها، أو وقّعت بحساب غير ممول، فيجب ألا تُرسل المعاملة.',
     'These calls use Taira routes whose catalog boundary admits anonymous reads:':
@@ -768,12 +762,6 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'اضبط دليلًا محليًا دائمًا في `torii.iso_bridge.store_dir` قبل قبول أي إرسال. حقل التكوين اختياري فقط للسماح للعقدة ببدء التشغيل في وضع القراءة فقط أو لأغراض التشخيص: تتطلب كل عملية إرسال ISO موثّقة هذا الدليل، وتعيد الخطأ القابل لإعادة المحاولة `503 Service Unavailable` عند غياب التخزين الدائم أو فشل كتابة سجل منع إعادة التشغيل أو السجل الغني.',
     "The current [Iroha JavaScript demo](https://github.com/soramitsu/iroha-demo-javascript) implements a transparent, authenticated one-to-one meeting profile. It does not expose the protocol's `zk-roster-v1` proof flow. Its renderer creates WebRTC offers and answers, while a privileged bridge uses the local [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js) checkout to quote, sign, submit, and wait for finalized Kaigi transactions.":
       'ينفذ [عرض Iroha التوضيحي بلغة JavaScript](https://github.com/soramitsu/iroha-demo-javascript) الحالي ملف تعريف اجتماع شفافًا وموثّقًا بين طرفين. وهو لا يتيح تدفق إثبات `zk-roster-v1` الخاص بالبروتوكول. ينشئ العارض عروض WebRTC وإجاباتها، بينما يستخدم جسر ذو صلاحيات نسخة العمل المحلية من [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js) لتحديد الرسوم والتوقيع والإرسال وانتظار بلوغ معاملات Kaigi حالة النهائية.',
-    '6. `OpenAnonymousEscrowDispute` and `ResolveAnonymousEscrowDispute` handle disputed escrows with evidence hashes and a resolver-controlled split.':
-      '6. تتولى `OpenAnonymousEscrowDispute` و`ResolveAnonymousEscrowDispute` معالجة حسابات الضمان المتنازع عليها باستخدام هاشات الأدلة وتقسيم يتحكم فيه حاسم النزاع.',
-    'The metadata hash, data space hash, and slot are stable across adjacent trace rows:':
-      'تظل تجزئة البيانات الوصفية، وتجزئة مساحة البيانات، والفتحة ثابتة عبر صفوف التتبع المتجاورة:',
-    'The SCCP canonical encoders write integers little-endian and encode variable-length byte arrays as:':
-      'تكتب مرمّزات SCCP المعيارية الأعداد الصحيحة بترتيب little-endian، وترمّز مصفوفات البايت متغيرة الطول كما يلي:',
     'For singular queries and small iterable queries, you can use `client.request` to submit a query and get the result in one go.':
       'بالنسبة إلى الاستعلامات المفردة والاستعلامات التكرارية الصغيرة، يمكنك استخدام `client.request` لإرسال استعلام والحصول على النتيجة دفعة واحدة.',
     '8. **Emit signed artifacts.** Torii computes a PDP commitment, signs a `DaIngestReceipt`, builds a `DaCommitmentRecord`, and writes spool artifacts for the manifest, PDP commitment, commitment record, commitment schedule, pin intent, receipt file, and receipt log. The receipt cursor advances monotonically per `(lane_id, epoch)`.':
@@ -873,8 +861,6 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '`AccountId` ekranı və JSON təqdimatı kanonik I105-dən istifadə edir.',
   },
   ba: {
-    'Wallet or prover tooling must build the proof attachment and public inputs. Opening creates one escrow commitment. Release, cancellation, and anonymous dispute resolution must spend exactly one escrow commitment and create the buyer, seller, or split output commitments required by the action.':
-      'Кошелёк йәки иҫбатлау ҡоралы иҫбатлау ҡушымтаһын һәм асыҡ инеүҙәрҙе төҙөргә тейеш. Асыу бер эскроу коммитментын булдыра. Азат итеү, ғәмәлдән сығарыу һәм аноним бәхәсте хәл итеү һәр береһе тап бер эскроу коммитментын тотонорға һәм ғәмәл талап иткән һатып алыусы, һатыусы йәки бүленгән сығыш коммитменттарын булдырырға тейеш.',
     '### 3. Read the account and its assets': '### 3. Иҫәп яҙмаһын һәм уның активтарын ҡарау',
     'The selected executor defines which permission checks apply. You can grant the default [permission tokens](/blockchain/permissions.md) in genesis to shape a private, administrator-managed network or a more open network. Once those permissions are active, the process of registering accounts is different.':
       'Һайланған башҡарыусы ниндәй рөхсәт тикшереүҙәре ҡулланылыуын билдәләй. Ябыҡ, администратор идара иткән селтәрҙе йәки асығыраҡ селтәрҙе формалаштырыу өсөн genesis-та ғәҙәти [рөхсәт токендарын](/ba/blockchain/permissions.md) бирә алаһығыҙ. Был рөхсәттәр әүҙемләшкәс, иҫәп яҙмаларын теркәү тәртибе үҙгәрә.',
@@ -1004,8 +990,6 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
   hy: {
     'The block header stores hashes for DA proof policies, commitments, and pin intents. For membership proofs, the commitment bundle also exposes a Merkle root whose leaves are hashes of canonical Norito-encoded `DaCommitmentRecord` values. Parent nodes hash the concatenation of left and right children; an odd leaf is promoted unchanged to the next layer.':
       'Բլոկի վերնագիրը պահպանում է DA-ի ապացույցների քաղաքականությունների, պարտավորությունների և ամրացման մտադրությունների հեշերը։ Անդամակցության ապացույցների համար պարտավորությունների փաթեթը նաև տրամադրում է Merkle-ի արմատ, որի տերևները կանոնիկ Norito-ով կոդավորված `DaCommitmentRecord` արժեքների հեշերն են։ Ծնող հանգույցները հեշավորում են ձախ և աջ զավակների միակցումը, իսկ կենտ տերևը անփոփոխ տեղափոխվում է հաջորդ շերտ։',
-    'The final trace commitment is a byte hash over the domain, parameter set, trace shape, column digests, and trace root:':
-      'Հետագծի վերջնական պարտավորությունը բայթային հեշ է՝ հաշվարկված տիրույթի, պարամետրերի հավաքածուի, հետագծի ձևի, սյունակների դայջեսթների և հետագծի արմատի հիման վրա․',
     'Soracloud config and secret entries are part of authoritative deployment state. Deploy, upgrade, and rollback fail closed when required config or secret bindings are missing or inconsistent with the active manifests.':
       'Soracloud-ի կազմաձևման և գաղտնիքների գրառումները տեղակայման հեղինակավոր վիճակի մաս են։ Տեղակայումը, թարմացումը և հետարկումը անվտանգորեն արգելափակվում են, եթե պահանջվող կազմաձևման կամ գաղտնիքի կապակցումները բացակայում են կամ չեն համապատասխանում ակտիվ մանիֆեստներին։',
     'The UAID is the identity and capability anchor around that flow. In the data model, `UniversalAccountId` is hash-backed and displays as `uaid:<hash>`. Parsers accept either `uaid:<hash>` or the raw 64-hex digest. `Account` and `NewAccount` include optional `uaid` and `opaque_ids` fields. Runtime registration enforces a one-to-one UAID-to-account index, rejects duplicate or colliding opaque identifiers, and rejects opaque identifiers without a UAID. Whenever a UAID account binding changes, the runtime rebuilds Space Directory data space bindings for that UAID.':
@@ -1022,8 +1006,6 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'Գործառնական անվտանգությունը պաշտպանում է Iroha-ի տեղակայումը սպասարկող մարդկանց, հոսթերը, մուտքային տվյալները և ընթացակարգերը։ Ռեեստրը գրանցում է ընդունված վիճակի փոփոխությունները։ Օպերատորները պետք է առանձին պաշտպանեն իրենց աշխատակայանները, ստորագրման բանալիները և միջադեպերին արձագանքելու գործընթացը։',
     'Plaintext coefficient vectors are encoded by scaling each coefficient:':
       'Բաց տեքստի գործակիցների վեկտորները կոդավորվում են՝ յուրաքանչյուր գործակիցը մասշտաբավորելով։',
-    'Lane relay envelopes also carry compact FastPQ proof material. The material is a digest over the lane id, data space id, block height, verification height, block header hash, settlement hash, and manifest root. A relay is merge admissible only when it has both a QC and valid FastPQ proof material.':
-      'Կատարման ուղու վերահաղորդման տվյալների ծրարները նաև պարունակում են FastPQ-ի սեղմ ապացուցողական նյութ։ Այդ նյութը կատարման ուղու ID-ի, տվյալների տարածքի ID-ի, բլոկի բարձրության, ստուգման բարձրության, բլոկի վերնագրի կրիպտոգրաֆիական հեշի, վերջնահաշվարկի կրիպտոգրաֆիական հեշի և տեխնիկական մանիֆեստի արմատի հիման վրա հաշվարկված դայջեսթ է։ Վերահաղորդումը միավորման համար ընդունելի է միայն այն դեպքում, երբ ունի և՛ QC, և՛ FastPQ-ի վավեր ապացուցողական նյութ։',
     '- the transaction entrypoint hash used as the batch hash':
       '- գործարքի մուտքային կետի հեշը, որն օգտագործվում է որպես խմբաքանակի հեշ',
     'Observer peers can synchronize committed blocks, but they do not propose, vote, or count toward the commit quorum. Use observers when a deployment needs local query capacity, indexing, monitoring, or regional block replication without increasing the number of voting validators.':
@@ -1083,8 +1065,6 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
     'Use a language-specific guide to register blockchain objects:':
       'השתמשו במדריך הייעודי לכל שפה כדי לרשום אובייקטים בבלוקצ׳יין:',
     '| `Offline` | Offline settlement events |': '| `Offline` | אירועי סליקה לא מקוונת |',
-    'Byte strings are packed into 7-byte little-endian limbs so every limb is strictly below `p`:':
-      'מחרוזות בתים נארזות ליחידות של 7 בתים בסדר little-endian, כך שכל יחידה קטנה ממש מ־`p`:',
     'Its sentinel identifies the intended network with a chain discriminant.':
       'הסנטינל שלו מזהה את הרשת המיועדת באמצעות מבחין השרשרת.',
     'A value such as `treasury@payments.universal` is an account alias, not another spelling of the I105 ID.':
@@ -1286,8 +1266,8 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '最初のビルドでは、成果物と認証済みの付随ファイルを生成します。2 回目のビルドは読み取り専用の `--verify` モードで実行され、既存の出力が現在のソースと完全に一致しない場合は失敗します。`.to` ファイルとそのマニフェストは、レビュー済みの 1 つのビルド出力として扱ってください。',
     '- If submission times out after returning a hash, query that hash before building another transaction. Blind resubmission creates a new quoted and signed payload.':
       '- 送信処理がハッシュを返した後にタイムアウトした場合は、別のトランザクションを作成する前にそのハッシュを照会してください。確認せずに再送信すると、手数料見積もり済みで署名済みの新しいペイロードが作成されます。',
-    '4. After every leg has a Prepare certificate, build the immutable complete Prepare barrier. Request and persist canonical 3-of-4 Commit certificates. If the coordinator restarts, query participant nodes for their locally durable Prepare and Commit certificates, select a canonical quorum-equivalent certificate, and re-fan it out before continuing; never reconstruct a certificate from an unauthenticated local cache.':
-      '4. すべての決済区間について Prepare 証明書がそろったら、変更不能な完全 Prepare バリアを構築します。標準形式の 3-of-4 Commit 証明書を要求して永続化します。コーディネーターが再起動した場合は、参加ノードにローカルで永続化された Prepare 証明書と Commit 証明書を照会し、標準形式でクォーラムと同等の証明書を選択して、処理を続行する前に再配布します。認証されていないローカルキャッシュから証明書を再構築してはいけません。',
+    '4. After every leg has a Prepare certificate, build the immutable complete Prepare barrier. Have the manifest sponsor submit it in one `RegisterAtomicPrivateSettlementPrepareV1` control carrier and wait for finality; Commit voters consult that replicated lock. Then request and persist canonical 3-of-4 Commit certificates. If the coordinator restarts, query participant nodes for their locally durable Prepare and Commit certificates, select a canonical quorum-equivalent certificate, and re-fan it out before continuing; never reconstruct a certificate from an unauthenticated local cache.':
+      '4. すべての決済区間について Prepare 証明書がそろったら、変更不能な完全 Prepare バリアを構築します。マニフェストのスポンサーに、それを 1 つの `RegisterAtomicPrivateSettlementPrepareV1` 制御用コンテナ取引で提出させ、ファイナリティを待ちます。Commit の投票者は、その複製されたロックを参照します。その後、標準形式の 3-of-4 Commit 証明書を要求して永続化します。コーディネーターが再起動した場合は、参加ノードにローカルで永続化された Prepare 証明書と Commit 証明書を照会し、標準形式でクォーラムと同等の証明書を選択して、処理を続行する前に再配布します。認証されていないローカルキャッシュから証明書を再構築してはいけません。',
     '- both formal layers: the 3/255-leg count-symmetry checks and the exact four-validator committee-indexed N=2 validator-focused plus full bounded- fault, paper-primary N=3 fault, N=4 clean, and N=3 expiry/replay configurations, with fault budgets independent per committee':
       '- 2 つの形式レイヤーの両方：3/255 区間の個数対称性チェックと、正確に 4 台のバリデータを使う委員会インデックス付き構成（N=2 のバリデータ重点構成と完全な有界障害構成、論文で主要対象とする N=3 障害構成、N=4 正常構成、N=3 有効期限切れ／リプレイ構成）。障害予算は委員会ごとに独立させます',
     '[^1]: `Register<Account>` creates ledger state for a canonical, domainless `AccountId`; domain routing and aliases are managed separately.':
@@ -1320,8 +1300,8 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '- ორივე ფორმალური ფენა: 3/255 ნაწილის რაოდენობის სიმეტრიის შემოწმებები და ზუსტად ოთხი ვალიდატორისგან შემდგარი, კომიტეტის ინდექსით განსაზღვრული N=2 ვალიდატორზე ორიენტირებული და სრულად შეზღუდული ხარვეზის, ნაშრომის ძირითადი N=3 ხარვეზის, N=4 სუფთა და N=3 ვადის გასვლის/განმეორებითი დაკვრის კონფიგურაციები; ხარვეზის ბიუჯეტი თითოეული კომიტეტისთვის დამოუკიდებელია',
     'Use `--seed-hex` only with an exact 32-byte hexadecimal secret for reproducible development fixtures. For production deployment, omit it so Kagami uses operating-system randomness, then move the unencrypted private-key export into the approved custody boundary. The command never prints private keys.':
       'გამოიყენეთ `--seed-hex` მხოლოდ ზუსტად 32-ბაიტიან თექვსმეტობით საიდუმლოსთან ერთად, განმეორებადი განვითარების სატესტო მონაცემებისთვის. საწარმოო განთავსებისას გამოტოვეთ იგი, რათა Kagami-მ ოპერაციული სისტემის შემთხვევითობის წყარო გამოიყენოს, შემდეგ კი დაშიფვრის გარეშე ექსპორტირებული პირადი გასაღები დამტკიცებულ დაცულ საზღვარში გადაიტანეთ. ბრძანება პირად გასაღებებს არასოდეს ბეჭდავს.',
-    'The current JavaScript SDK is the `@iroha/iroha-js` package in the Iroha source tree. It is the Node.js-first SDK for Torii, Norito builders, signing, pagination, Connect previews, and Kagemusha command transport.':
-      'მიმდინარე JavaScript SDK არის Iroha-ს წყაროს ხეში არსებული `@iroha/iroha-js` პაკეტი. ეს არის Node.js-ზე ორიენტირებული SDK Torii-სთვის, Norito-ს შემქმნელებისთვის, ხელმოწერისთვის, გვერდებად დაყოფისთვის, Connect-ის წინასწარი დათვალიერებისთვის და Kagemusha-ს ბრძანებების ტრანსპორტისთვის.',
+    'The current JavaScript SDK is the `@iroha/iroha-js` package in the Iroha source tree. It is the Node.js-first SDK for Torii, Norito builders, signing, pagination, and Connect previews.':
+      'მიმდინარე JavaScript SDK არის Iroha-ს წყაროს ხეში არსებული `@iroha/iroha-js` პაკეტი. ეს არის Node.js-ზე ორიენტირებული SDK Torii-სთვის, Norito-ს შემქმნელებისთვის, ხელმოწერისთვის, გვერდებად დაყოფისთვის და Connect-ის წინასწარი დათვალიერებისთვის.',
     '### JSON Escape Hatch {#json-escape-hatch}': '### JSON-ის სარეზერვო გზა {#json-escape-hatch}',
     '| Repo/settlement extensions                                                                     | `repo_initiate`, `repo_unwind`, `repo_margin_call`, `settlement_dvp`, `settlement_pvp`                                                                                                      |':
       '| რეპოს/ანგარიშსწორების გაფართოებები | `repo_initiate`, `repo_unwind`, `repo_margin_call`, `settlement_dvp`, `settlement_pvp` |',
@@ -1435,8 +1415,6 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
     '- [Torii endpoints](/reference/torii-endpoints.md)': '- [Torii соңғы нүктелері](/kk/reference/torii-endpoints.md)',
     '- **SORA Nexus service planes** add Soracloud, Inrou, SoraNet, SoraFS, and SoraDNS for app hosting, privacy transport, storage, and naming':
       '- **SORA Nexus сервис деңгейлері** қолданбаларды орналастыру, құпия трафикті тасымалдау, сақтау және атау қызметтері үшін Soracloud, Inrou, SoraNet, SoraFS және SoraDNS мүмкіндіктерін қосады',
-    'Challenge calls append the full digest to the transcript state. The replay order is:':
-      'Сынақ мәнін алу шақырулары толық дайджесті транскрипт күйіне қосады. Қайта ойнату реті:',
     '| Inrou                  | Soracloud hosted HTTP runtime for service revisions that need a live HTTP plane.                                                            | Soracloud runtime config, host capability adverts, replica runtime state                 |':
       '| Inrou | Тікелей HTTP деңгейін қажет ететін сервис нұсқаларына арналған Soracloud басқаратын HTTP орындау ортасы. | Soracloud орындау ортасының конфигурациясы, хост мүмкіндіктері туралы хабарландырулар, реплика орындау ортасының күйі |',
     '| Test writes                 | Use faucet-funded test XOR                                   | Do not use test tooling; writes spend real XOR     |':
@@ -1482,8 +1460,8 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '| `PACKED_STRUCT` | `0x04` | Қолдау көрсетіледі | derive арқылы жасалған құрылымдарды ықшам өріс жүктемелері ретінде кодтайды. |',
     'The current source-backed localnet flow is generated by Kagami. It writes peer configs, genesis artifacts, client config, helper scripts, and an optional Compose file that matches the checked-out code:':
       'Ағымдағы бастапқы кодқа негізделген жергілікті желі ағынын Kagami жасайды. Ол желі түйіндерінің конфигурацияларын, genesis артефактілерін, клиент конфигурациясын, көмекші сценарийлерді және жұмыс көшірмесіндегі кодқа сәйкес келетін міндетті емес Compose файлын жазады:',
-    '`--pop` is valid only with `bls_normal`; it adds `pop.hex` to the custody directory. Signed genesis requires a matching PoP for every voting validator. In peer configuration, a non-empty `trusted_peers_pop` map selects the validator subset; trusted peers omitted from that non-empty map are observers. If the map is empty, all BLS-normal trusted peers enter the bootstrap candidate set, with voter PoPs still supplied by signed genesis.':
-      '`--pop` тек `bls_normal` алгоритмімен жарамды; ол кілттерді сақтау каталогына `pop.hex` файлын қосады. Қол қойылған genesis әрбір дауыс беретін валидатор үшін сәйкес PoP талап етеді. Түйін конфигурациясындағы бос емес `trusted_peers_pop` картасы валидаторлар ішкі жиынын таңдайды; бұл картада жоқ сенімді түйіндер бақылаушы болады. Карта бос болса, барлық BLS-normal сенімді түйіндер бастапқы жүктеу үміткерлерінің жиынына кіреді, ал дауыс берушілердің PoPs мәндерін қол қойылған genesis береді.',
+    '`--pop` is valid only with `bls_normal`; it adds `pop.hex` to the custody directory. Signed genesis requires a matching PoP for every voting validator. In peer configuration, list each validator\'s PoP in `trusted_peers_pop`: trusted peers without a valid PoP are excluded from the consensus roster, and an empty map yields no validators, so a node whose map omits the genesis validators refuses to start. Run a sync-only node with `[sumeragi] role = "observer"`.':
+      '`--pop` тек `bls_normal` алгоритмімен жарамды; ол кілттерді сақтау каталогына `pop.hex` файлын қосады. Қол қойылған генезис әрбір дауыс беретін валидатор үшін сәйкес PoP талап етеді. Түйін конфигурациясында әр валидатордың PoP мәнін `trusted_peers_pop` ішінде көрсетіңіз: жарамды PoP мәні жоқ сенімді түйіндер консенсус тізімінен шығарылады, ал бос карта ешбір валидатор бермейді, сондықтан картасында генезис валидаторлары жоқ түйін іске қосылудан бас тартады. Тек синхрондайтын түйінді `[sumeragi] role = "observer"` арқылы іске қосыңыз.',
     'When a Python helper is not available, feed canonical data-model `InstructionBox` JSON into `Instruction.from_json`. This is the recommended path for `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, peer/role/NFT registration, and non-trigger unregister variants until those helpers are typed.':
       'Python көмекшісі қолжетімсіз болса, канондық деректер моделінің `InstructionBox` JSON мәнін `Instruction.from_json` функциясына беріңіз. Бұл көмекшілер типтелгенше, `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, түйін/рөл/NFT тіркеуі және триггерге қатысы жоқ тіркеуден шығару нұсқалары үшін осы жолды пайдалану ұсынылады.',
     "Iroha 3's first release supports one canonical block-wire version. The `/v1/api/version` endpoint reports `SignedBlock::WIRE_VERSION` after genesis is applied and returns an unavailable response before then. This reports the supported wire format; it does not negotiate compatibility between different protocol layouts or authorize a network upgrade.":
@@ -1561,8 +1539,8 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '| [Бүртгэх/Бүртгэлээс хасах](#un-register) | данс, хөрөнгийн тодорхойлолт, NFTs, үүрэг, триггер, peer-үүд; домэйн устгах | |',
     '| [Mint/Burn](#mint-burn)                                   | numeric assets, trigger repetitions                                                                     | accounts or triggers |':
       '| [Mint/Burn](#mint-burn) | тоон хөрөнгө, триггерийн давталт | данс эсвэл триггер |',
-    '| [Native escrow and asset locks](#native-escrow-and-asset-locks) | numeric asset escrows, asset locks, anonymous escrow commitments                                    | buyers, destinations, or dispute splits |':
-      '| [Протоколын эскроу ба хөрөнгийн түгжээ](#native-escrow-and-asset-locks) | тоон хөрөнгийн эскроу, хөрөнгийн түгжээ, нэргүй эскроугийн криптографийн коммитментууд | худалдан авагч, хүлээн авагч эсвэл маргааны хуваарилалт |',
+    '| [Native escrow and asset locks](#native-escrow-and-asset-locks) | numeric asset escrows, asset locks, conditional escrows                                              | buyers, destinations, or dispute splits |':
+      '| [Протоколын эскроу ба хөрөнгийн түгжээ](#native-escrow-and-asset-locks) | тоон хөрөнгийн эскроу, хөрөнгийн түгжээ, нөхцөлт эскроу | худалдан авагч, хүлээн авагч эсвэл маргааны хуваарилалт |',
     '| [Atomic private settlement](#atomic-private-settlement)   | route-scoped confidential pools, policy rotations, finalized bundles, and abort markers                 |                      |':
       '| [Атомар нууц тооцоо](#atomic-private-settlement) | маршрут тус бүрийн нууц пулууд, бодлогын сэлгэлт, эцэслэсэн багцууд болон цуцлалтын тэмдэглэгээ | |',
     '| [ExecuteTrigger](#executetrigger)                         | triggers                                                                                                |                      |':
@@ -1717,7 +1695,6 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '`AccountId`-ийн дэлгэц болон JSON дүрслэл каноник I105-г ашиглана.',
   },
   my: {
-    '## Anonymous Asset Escrow': '## အမည်မဖော် ပိုင်ဆိုင်မှု အာမခံအပ်နှံမှု',
     'The public ledger still records that a confidential operation happened. It records commitments, nullifiers, proof hashes, and events, but it does not record the note owner, recipient, or amount for shielded-to-shielded movement. The normal transaction envelope may still reveal the submitting account, so "anonymous" here means anonymous asset movement, not automatic network-level or account-level anonymity.':
       'အများမြင် လယ်ဂျာတွင် လျှို့ဝှက်လုပ်ဆောင်ချက် ဖြစ်ပွားခဲ့ကြောင်းကို မှတ်တမ်းတင်ထားဆဲဖြစ်သည်။ ကတိပြုတန်ဖိုးများ၊ နလီဖိုင်ယာများ၊ သက်သေ ဟက်ရှ်များနှင့် ဖြစ်ရပ်များကို မှတ်တမ်းတင်သော်လည်း အကာအကွယ်ပေးထားသည့်တန်ဖိုးကို အကာအကွယ်ပေးထားသည့်တန်ဖိုးသို့ လွှဲပြောင်းရာတွင် မှတ်စု၏ ပိုင်ရှင်၊ လက်ခံသူ သို့မဟုတ် ပမာဏကို မှတ်တမ်းမတင်ပါ။ ပုံမှန် ငွေလွှဲအိတ်ပုံစံသည် တင်သွင်းသည့် အကောင့်ကို ဖော်ပြနိုင်သေးသောကြောင့် ဤနေရာတွင် “အမည်မဖော်” ဆိုသည်မှာ ပိုင်ဆိုင်မှုတန်ဖိုး ရွှေ့ပြောင်းမှုကို အမည်မဖော်ခြင်းသာ ဖြစ်ပြီး ကွန်ရက်အဆင့် သို့မဟုတ် အကောင့်အဆင့် အမည်ဝှက်ခြင်းကို အလိုအလျောက် ဆိုလိုခြင်းမဟုတ်ပါ။',
     '- `Shield`: debits a public balance and appends a shielded note commitment.':
@@ -1736,8 +1713,6 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'လိမ်လည်မှု စောင့်ကြည့်ရေးကို အတည်ပြုသူထဲတွင် ထည့်သွင်းထားသော လော့ဂျစ်အဖြစ် မထားဘဲ သီးခြားဝန်ဆောင်မှုတစ်ခုအဖြစ် သတ်မှတ်ပါ။ ထိုဝန်ဆောင်မှုသည် ဘလော့ခ်ချိန်း စာရင်းလယ်ဂျာ လှုပ်ရှားမှုကို စာရင်းသွင်းနားထောင်ရမည်၊ ကွန်ရက်ပြင်ပ အန္တရာယ်ဆိုင်ရာ အကြောင်းအရာများဖြင့် ဖြည့်စွက်ရမည်၊ အထောက်အထားများကို ရေရှည်သိမ်းဆည်းရမည်၊ ထင်ရှားသော ခွင့်ပြုချက်များရှိသည့် အကောင့်များမှတစ်ဆင့်သာ တုံ့ပြန်ရေး ငွေလွှဲမှုများကို တင်သွင်းရမည်။',
     'For public Taira or Minamoto usage, treat the off-chain payment rail and any support or court workflow as application policy. Iroha records the custody state, lifecycle events, evidence hashes, and final asset movement; it does not verify fiat settlement by itself.':
       'အများသုံး Taira သို့မဟုတ် Minamoto အသုံးပြုမှုအတွက် off-chain ငွေပေးချေမှုလမ်းကြောင်းနှင့် ပံ့ပိုးကူညီမှု သို့မဟုတ် တရားရုံးဆိုင်ရာ လုပ်ငန်းစဉ်များကို အပလီကေးရှင်းမူဝါဒအဖြစ် သတ်မှတ်ပါ။ Iroha သည် ထိန်းသိမ်းပိုင်ခွင့်အခြေအနေ၊ သက်တမ်းစက်ဝန်းဖြစ်ရပ်များ၊ သက်သေအထောက်အထားဆိုင်ရာ cryptographic hash များနှင့် ပိုင်ဆိုင်မှု၏ နောက်ဆုံးရွှေ့ပြောင်းမှုကို မှတ်တမ်းတင်သည်။ fiat ငွေရှင်းခြင်းကို မိမိဘာသာ အတည်မပြုပါ။',
-    'Challenge calls append the full digest to the transcript state. The replay order is:':
-      'စိန်ခေါ်တန်ဖိုးကို တွက်ချက်သည့် ခေါ်ဆိုမှုများက ဟက်ရှ်အနှစ်ချုပ်တန်ဖိုး အပြည့်အစုံကို မှတ်တမ်းအခြေအနေထဲသို့ နောက်ဆက်တွဲ ပေါင်းထည့်သည်။ ပြန်လည်လုပ်ဆောင်သည့် အစီအစဉ်မှာ အောက်ပါအတိုင်းဖြစ်သည်-',
     '| Domain           | ensure domain setup, unregister domains, transfer domain ownership, update domain metadata                    |':
       '| ဒိုမိန်း | ဒိုမိန်းဖွဲ့စည်းမှုကို သေချာစေခြင်း၊ ဒိုမိန်းများကို မှတ်ပုံတင်မှ ပယ်ဖျက်ခြင်း၊ ဒိုမိန်းပိုင်ဆိုင်မှုကို လွှဲပြောင်းခြင်း၊ ဒိုမိန်း မက်တာဒေတာကို ပြင်ဆင်ခြင်း |',
     '- Select the network profile before encoding or validating an address.':
@@ -1848,8 +1823,6 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'Приложения должны сохранять бизнес-идентификатор в `primary_reference` или `metadata`, а затем получать созданный `RwaId` из `RwaEvent::Created`, `FindRwas`, `/v1/rwas` или набора маршрутов обозревателя после финализации транзакции.',
     'Torii exposes chain-state routes such as `/v1/rwas` and `/v1/rwas/query`, plus explorer routes such as `/v1/explorer/rwas` and `/v1/explorer/rwas/{rwa_id}` when that route family is enabled. Generated clients should prefer the live [`/openapi.json`](/reference/torii-endpoints.md#common-endpoints) document for the exact response shape exposed by a node.':
       'Torii предоставляет маршруты состояния цепочки, например `/v1/rwas` и `/v1/rwas/query`, а при включении соответствующего семейства — маршруты обозревателя, например `/v1/explorer/rwas` и `/v1/explorer/rwas/{rwa_id}`. Чтобы получить точную форму ответа конкретного узла, сгенерированные клиенты должны использовать актуальный документ [`/openapi.json`](/ru/reference/torii-endpoints.md#common-endpoints).',
-    'Challenge calls append the full digest to the transcript state. The replay order is:':
-      'Вызовы функции получения испытаний добавляют полный дайджест в состояние транскрипта. Порядок воспроизведения:',
     'The explorer is a second, read-only observation surface. It can lag briefly behind pipeline finality.':
       'Обозреватель — это вторичный интерфейс наблюдения только для чтения. Он может ненадолго отставать от финальности конвейера обработки.',
     '- An explorer `404` immediately after Applied can be indexing lag. Retry the read; do not resubmit the transaction.':
@@ -1920,8 +1893,6 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '- Проверьте процедуры восстановления учётных записей до запуска в промышленной среде.',
     'When a Python helper is not available, feed canonical data-model `InstructionBox` JSON into `Instruction.from_json`. This is the recommended path for `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, peer/role/NFT registration, and non-trigger unregister variants until those helpers are typed.':
       'Если вспомогательной функции Python нет, передайте канонический JSON модели данных `InstructionBox` в `Instruction.from_json`. Это рекомендуемый способ для `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, регистрации пиров, ролей и NFT, а также вариантов отмены регистрации, не связанных с триггерами, пока эти вспомогательные функции не получат типизированный интерфейс.',
-    'The optional single-delta transfer digest commits the encoded transfer preimage:':
-      'Необязательный дайджест передачи с одной дельтой криптографически связывает закодированный прообраз передачи:',
     '- a single-delta Poseidon digest, when present, must match the transcript preimage':
       '- дайджест Poseidon с одной дельтой, если он присутствует, должен совпадать с прообразом транскрипта',
     '| `GET /v1/identifiers/receipts/{receipt_hash}` | Look up a persisted identifier claim by receipt hash for audit and support tooling. |':
@@ -1950,8 +1921,8 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'اس قسم کی باریک غلطیوں سے، مثلاً سٹرنگ لٹرلز سے براہِ راست ڈی سیریلائز کر کے، یا جہاں مناسب ہو وہاں کلیدوں کا نیا جوڑا بنا کر، بچا جا سکتا ہے۔',
     '- When metadata points to off-chain data, store a verifiable reference such as a content hash, URI, SoraFS path, manifest reference, or compact commitment.':
       '- جب میٹا ڈیٹا آف چین ڈیٹا کی طرف اشارہ کرے تو قابل تصدیق حوالہ محفوظ کریں، مثلاً مواد کا کرپٹوگرافک ہیش، URI، SoraFS پاتھ، تکنیکی مینی فیسٹ کا حوالہ، یا مختصر کمٹمنٹ۔',
-    'Pipeline events are emitted when transactions are submitted, executed, or committed to a block. A pipeline event contains the following information: the kind of entity that caused an event (transaction or block), its hash and status. The status can be either `Validating` (validation in progress), `Rejected`, or `Committed`. If an entity was rejected, the reason for the rejection is provided.':
-      'پروسیسنگ پائپ لائن کے واقعات اس وقت خارج ہوتے ہیں جب لین دین جمع کرائے جائیں، چلائے جائیں یا کسی بلاک میں حتمی طور پر شامل کیے جائیں۔ پروسیسنگ پائپ لائن کا واقعہ درج ذیل معلومات رکھتا ہے: واقعہ پیدا کرنے والی ہستی کی قسم (لین دین یا بلاک)، اس کا کرپٹوگرافک ہیش، اور اس کی حالت۔ حالت `Validating` (توثیق جاری ہے)، `Rejected` یا `Committed` میں سے کوئی ایک ہو سکتی ہے۔ اگر کسی ہستی کو مسترد کیا گیا ہو تو اس کی وجہ بھی فراہم کی جاتی ہے۔',
+    'Pipeline events are emitted as transactions and blocks move through the pipeline. A transaction event carries the transaction hash, block height, lane and data space IDs, and a status: `Queued`, `Expired`, `Approved`, or `Rejected` with the rejection reason. A block event carries the block header and a status: `Created`, `Approved`, `Rejected` with the reason, `Committed`, or `Applied`.':
+      'پائپ لائن کے واقعات اس وقت خارج ہوتے ہیں جب لین دین اور بلاکس پائپ لائن سے گزرتے ہیں۔ لین دین کا واقعہ لین دین کا ہیش، بلاک کی اونچائی، لین اور ڈیٹا اسپیس کی شناختیں، اور ایک حالت رکھتا ہے: `Queued`، `Expired`، `Approved`، یا مسترد ہونے کی وجہ کے ساتھ `Rejected`۔ بلاک کا واقعہ بلاک ہیڈر اور ایک حالت رکھتا ہے: `Created`، `Approved`، وجہ کے ساتھ `Rejected`، `Committed`، یا `Applied`۔',
     '- Store and compare the canonical UTF-8 string exactly.':
       '- کینونیکل UTF-8 سٹرنگ کو بعینہٖ ذخیرہ کریں اور اسی طرح اس کا موازنہ کریں۔',
     '- Preserve letter case and do not apply `Unicode` normalization.':

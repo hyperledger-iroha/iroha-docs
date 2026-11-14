@@ -1,9 +1,9 @@
 ---
 translation_locale: my
 translation_source: /blockchain/permissions.md
-translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
+translation_source_hash: 7993d14839218fd3394d52dbcce264bffea32394f54e25dd261cd060c54f1fe1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # ခွင့်ပြုချက်များ {#permissions}
 
@@ -72,14 +72,20 @@ let register_role = Register::role(role);
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```
 
 ## ခွင့်ပြုချက် အတည်ပြုသူများ {#permission-validators}
 
-ခွင့်ပြုချက်များရှိသည့်ကြောင့် လိုအပ်သော ခွင့်ပြုမှု အမှတ်တံဆိပ်ပါ ၀ င်သည့် အကောင့်များသာ ကာကွယ်ထားသောလုပ်ဆောင်မှုကို လုပ်ဆောင်နိုင်သည်။ အလိုအလျောက် အကောင်အထည်ဖော်သူက ညွှန်ကြားချက်၊ မေးမြန်းချက်နှင့် ဖော်ပြချက် အကောင်အ ထည်လုပ်စဉ်မှာ ခွင့်ပြုချက်ကို စစ်ဆေးသည်။
+လိုအပ်သော ခွင့်ပြုချက် token ရှိသည့် အကောင့်များသာ ကာကွယ်ထားသော လုပ်ဆောင်ချက်ကို ဆောင်ရွက်နိုင်စေရန် ခွင့်ပြုချက်များ ရှိသည်။ ပုံသေ executor သည် transaction နှင့် ညွှန်ကြားချက် လုပ်ဆောင်ချိန်နှင့် မေးမြန်းချက် စစ်ဆေးချိန်တွင် ခွင့်ပြုချက်များကို စစ်ဆေးသည်။
 
 ပုံမှန် validator ၏ လုပ်ဆောင်ချက်များကို လယ်ဂျာကဏ္ဍအလိုက် အုပ်စုခွဲထားသည်။
 
@@ -96,7 +102,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 
 ခွင့်ပြုချက် စစ်ဆေးမှုများကို တက်ကြွတဲ့ အကောင်အထည်ဖော်သူက လုပ်ဆောင်ပေးသည်။ အလိုလျောက် အကောင်အ ထည်လုပ်သူသည် ထည့်သွင်းထားသော ခွင့်ပြုမှု အတည်ပြုသူများနှင့် အမှတ်တံဆိပ် အဓိပ္ပါယ်ဖွင့်ဆိုချက်များကို ပေးပြီး ကွန်ရက်တစ်ခုသည် ၎င်းအသုံးပြုသည့် အကောင်အတန့်ကို အဆင့်မြှင့်တင်ခြင်းဖြင့် မူဝါဒကိုပြောင်းလဲနိုင်ပါသည်။
 
-စစ်ဆေးသူများသည် **စစ်ဆေးမှု ဆုံးဖြတ်ချက်** ကို ပြန်ပေးသည်။ စစ်ဆေးသူတစ်ခုသည် လုပ်ဆောင်မှုတစ်ခုကို ခွင့်ပြုနိုင်သည်၊ အကြောင်းရင်းနှင့်တကွ ငြင်းပယ်နိုင်သည် သို့မဟုတ် ၎င်း၏ စစ်ဆေးမှုနယ်ပယ်အပြင်ဘက် ဖြစ်လျှင် ကျော်နိုင်သည်။ ရွေးချယ်ထားသော ဆုံးဖြတ်သူသည် ညွှန်ကြားချက်၊ query သို့မဟုတ် expression ကို ဆက်လက်လုပ်ဆောင်ခွင့် ရှိမရှိ ဆုံးဖြတ်ရန် ထိုဆုံးဖြတ်ချက်များကို ပေါင်းစည်းသည်။
+Executor သည် လုပ်ဆောင်ချက်တစ်ခုကို ခွင့်ပြုသည် သို့မဟုတ် `ValidationFail` အကြောင်းရင်းဖြင့် ငြင်းပယ်သည်။ ငြင်းပယ်ခံရသော ညွှန်ကြားချက်သည် ၎င်း၏ transaction ကို ငြင်းပယ်စေပြီး ငြင်းပယ်ခံရသော မေးမြန်းချက်သည် ခေါ်ဆိုသူထံ အမှားကို ပြန်ပေးသည်။
 
 ## ပံ့ပိုးထားသော Query များ {#supported-queries}
 

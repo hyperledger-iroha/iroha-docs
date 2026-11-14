@@ -1,9 +1,9 @@
 ---
 translation_locale: ka
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 0c4f2f3fc4efb9f883f597a3eea49c99431b711a0141eba70ac5a2524990dd73
+translation_source_hash: 50fac5ad01faf8d09441cba90f29472da04630dbeb3c80111a19f3fb50bb1224
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # ნიმუშები და რეცეპტები {#samples-and-recipes}
 
@@ -19,4 +19,4 @@ Iroha წყარო რეპოზიტორი შეიცავს SDK �
 
 ## Android {#android}
 
-ახალი Android მუშაობა, გამოიყენეთ Kotlin-პირველად `core-jvm`, `client-android`, და `offline-wallet-android` მოდულები აღწერილია: [Kotlin, Android, და ჯავა](/ka/guide/tutorials/kotlin-java.md). სააგენტო Kotlin SDK არის კანონიკური საწყისი წერტილი Android მომხმარებლისთვის.
+ახალი Android მუშაობა, გამოიყენეთ Kotlin-პირველად `core-jvm`, `client-android`, და `kagemusha-wallet-android` მოდულები აღწერილია: [Kotlin, Android, და ჯავა](/ka/guide/tutorials/kotlin-java.md). სააგენტო Kotlin SDK არის კანონიკური საწყისი წერტილი Android მომხმარებლისთვის.

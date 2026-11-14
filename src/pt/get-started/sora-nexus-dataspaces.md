@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 98c351372551b08bda4911f52bfb3cc70c53b6125d8045c17abb205b27960f6d
+translation_source_hash: 96ca67b9bbf9d743de2f640e09487176f62a8a31052e4f1e15e15a771e985c48
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -24,7 +24,7 @@ Use Taira para testes de integração, canários de escrita financiados por test
 |Passo                        | Taira Testnet                                                | Minamoto Mainnet                                   |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
 |Comece a ler o estado da rede|Consulta `/status` sem chaves| Confirme primeiro o endereço do serviço e seu certificado TLS |
-|Escolha um espaço de dados|Use o `universal` público, salvo se a aplicação precisar de uma via governada|Use o mesmo espaço de dados somente após a aprovação da rede principal|
+|Escolha um espaço de dados|Use o `universal` público, salvo se a aplicação precisar de seu próprio espaço de dados governado|Use o mesmo espaço de dados somente após a aprovação da rede principal|
 |Obter ativo de taxa|Use o serviço público de financiamento da testnet Taira|Receber XOR de uma conta Minamoto financiada ou fluxo de tesouraria aprovado|
 | Teste escreve                 |Use teste financiado pela testnet XOR|Não use ferramentas de teste; gastos escrevem XOR reais|
 |Promover|Mantenha a lógica de novas tentativas, o monitoramento e a gestão de signatários|Use chaves, fundos e controles de lançamento separados|
@@ -63,7 +63,7 @@ No SORA Nexus, o catálogo de espaços de dados define os espaços de dados. O c
 wonderland.universal
 ```
 
-Se você precisar de um novo espaço de dados organizacional, prepare um catálogo e uma proposta de roteamento em vez de tentar registrá-lo a partir de uma conta de cliente comum. Veja [Provisionar um Novo Espaço de Dados](#_8-provision-a-new-data-space) abaixo.
+Se você precisar de um novo espaço de dados organizacional, prepare um catálogo e uma proposta de roteamento em vez de tentar registrá-lo a partir de uma conta de cliente comum. Veja [Provisionar um Novo Espaço de Dados](#_8-provision-a-new-dataspace) abaixo.
 
 ## 2. Verificar o endpoint público do Torii {#_2-check-the-public-torii-endpoint}
 
@@ -192,7 +192,7 @@ Trate o Taira MCP como uma superfície de controle da rede de testes pública. C
 
 Estes exemplos de leitura consultam a Taira sem chaves de conta.
 
-Liste as faixas de execução dos espaços de dados públicos expostas pelo Taira:
+Liste todas as faixas de execução do Taira com seu espaço de dados e sua visibilidade:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -254,7 +254,7 @@ O `chain` de nível superior é o ID exato da cadeia de transações Taira, e `n
 Execute uma verificação apenas leitura:
 
 ```bash
-iroha --config ./taira.client.toml --output-format text ops sumeragi status
+iroha --config ./taira.client.toml ledger domain list --limit 5
 ```
 
 Execute os diagnósticos públicos Taira antes de escrever os testes:
@@ -432,7 +432,7 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 Execute apenas verificações do lado de leitura até que a conta seja provisionada e financiada através do fluxo de integração ou governança da mainnet:
 
 ```bash
-iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
+iroha --config ./minamoto.client.toml ledger domain list --limit 5
 ```
 
 Não execute os comandos do faucet ou dos testes básicos do Taira no Minamoto.
@@ -445,7 +445,7 @@ Verifique o ID de conta canônico e o financiamento com verificações somente l
 
 O XOR da Taira não pode pagar taxas da Minamoto. Saldos e solicitações de fundos da rede de testes não são transferidos para a Minamoto.
 
-## 7. Trabalhar dentro de um espaço de dados existente {#_7-work-inside-an-existing-data-space}
+## 7. Trabalhar dentro de um espaço de dados existente {#_7-work-inside-an-existing-dataspace}
 
 Use nomes de domínio totalmente qualificados para objetos do livro-razão da blockchain que residem dentro de um espaço de dados. Por exemplo, um domínio de projeto no espaço de dados público deve usar:
 
@@ -486,7 +486,7 @@ alice@universal
 
 Campos de conta estritos ainda usam IDs de conta canônicos I105. Trate alias como ligações legíveis por humanos que se resolvem em IDs de conta canônicos.
 
-## 8. Provisionar um Novo Espaço de Dados {#_8-provision-a-new-data-space}
+## 8. Provisionar um Novo Espaço de Dados {#_8-provision-a-new-dataspace}
 
 Um novo espaço de dados exige uma mudança de operação e governança. O endpoint público do Torii pode rotear tráfego para espaços de dados configurados, mas rejeita aliases de espaços de dados desconhecidos.
 
@@ -529,7 +529,7 @@ metadata = {}
 [[nexus.dataspace_catalog]]
 alias = "payments"
 id = 20
-description = "Payments dataspace"
+description = "Payments data space"
 fault_tolerance = 1
 
 [[nexus.routing_policy.rules]]
@@ -537,12 +537,12 @@ lane = 5
 dataspace = "payments"
 [nexus.routing_policy.rules.matcher]
 instruction = "transfer::asset"
-description = "Route asset transfers to the payments dataspace"
+description = "Route asset transfers to the payments data space"
 ```
 
 A aceitação pelo operador deve incluir estes portões:
 
-- `iroha3d --sora --config <config.toml> --trace-config` transmite a configuração do nó resolvido
+- `iroha3d --sora --config <config.toml> --check-config` transmite a configuração do nó resolvido
 - o manifesto técnico gerado ou revisado é arquivado com hashes e assinaturas criptográficas
 - os testes de fumaça passam em Taira antes de qualquer promoção de Minamoto
 - o catálogo de `/status` após a mudança mostra a faixa de execução e o espaço de dados pretendidos

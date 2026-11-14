@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: 33617bc89d0aef5c2a086f45a216201d8980123f717e68f1e1a95eadeb906eb0
+translation_source_hash: dff2584fd47d6e1426ec18aca2d2003a7fdca4b9882296de484418f8c17806fe
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -90,13 +90,12 @@ Aitai — прикладной коридор SORA Nexus для расчётов
 
 Нативный эскроу хранит попечение в распределенном реестре блокчейна. Продавец открывает предложение с `OpenAssetEscrow`, покупатель принимает его и отмечает оффчейн-платеж с `AcceptAssetEscrow` и `MarkEscrowPaymentSent`, и продавец освобождает с `ReleaseAssetEscrow` или отменяет до того, как оплата будет отмечена. Если покупатель и продавец не согласны, любая сторона может открыть спор, и разрешающий с `CanResolveEscrowDispute` может разделить заблокированную сумму.
 
-Для полного жизненного цикла, общих блокировок активов, анонимного эскроу, запросов, событий и примеров Rust см. [Эскроу для родных активов](/ru/blockchain/escrow.md).
+Для полного жизненного цикла, общих блокировок активов, условного эскроу, запросов, событий и примеров Rust см. [Эскроу для родных активов](/ru/blockchain/escrow.md).
 
 |Поверхность Aitai|Используйте это для|
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`                                                    |Прозрачные предложения числовых активов, включая потоки расчетов финансовых транзакций, номинированные в XOR.|
-| `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`       |Защищённые предложения используют доказательные приложения для финансирования и закрывающих операций.|
-| `OpenEscrowDispute`, `ResolveEscrowDispute`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute`                                                    |Внесение споров и разрешение в судебном стиле.|
+| `OpenEscrowDispute`, `ResolveEscrowDispute`                                                                                                                                |Внесение споров и разрешение в судебном стиле.|
 | `FindAssetEscrowById`, `FindAssetEscrowsBySeller`, `FindAssetEscrowsByBuyer`, `FindAssetEscrowsByStatus` |Страницы статуса приложений, задачи согласования и инструменты поддержки.|
 | `EscrowEventFilter` |Просматривайте прозрачные подписки эскроу по идентификатору эскроу, продавцу, покупателю, статусу или типу события.|
 |Kotodama `escrow_open_offer`, `escrow_accept`, `escrow_mark_payment_sent`, `escrow_release`, `escrow_cancel`, `escrow_open_dispute`, `escrow_resolve_dispute`| Kotodama вызовы контрактов поддерживаются V1 системными вызовами условного депонирования. |
@@ -492,7 +491,7 @@ SoraFS — это децентрализованная система хране
 
 Taira является каноническим публичным тестнетом SoraFS. Его проверенный профиль валидатора использует цепочку `fc56984b-2be7-431d-840e-21514d1883f0` и дискриминант цепочки `369`. Ниже `NetworkId` — это точная идентификация текущего закрепленного генезиса блокчейна Taira. Сброс Taira может изменить этот криптографический хэш, сохранив метку цепочки, поэтому обновите его из текущего подписанного профиля развертывания и никогда не выводите его из цепочки UUID. Эффективные настройки SoraFS Taira следующие:
 
-- ID сети: `hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94`
+- ID сети: `hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774`
 - шлюзовая база URL: `https://taira.sora.org`
 - штифт Torii URLs: `https://taira-validator-1.sora.org` через `https://taira-validator-4.sora.org`
 - возможности обнаружения: `torii_gateway`, `chunk_range_fetch` и `potr_mldsa`
@@ -502,7 +501,7 @@ Taira является каноническим публичным тестне�
 ```toml
 [sorafs.storage]
 enabled = false
-max_capacity_bytes = 13743895347
+max_capacity_bytes = 2684354560
 
 [sorafs.discovery]
 discovery_enabled = true
@@ -587,7 +586,7 @@ cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
   --summary-out=artifacts/site.car-summary.json
 
 : "${TAIRA_AUTHORITY:?set a funded Taira I105 account}"
-export TAIRA_NETWORK_ID='hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94'
+export TAIRA_NETWORK_ID='hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774'
 export TAIRA_PIN_TORII_URL=https://taira-validator-1.sora.org
 export TAIRA_PRIVATE_KEY_FILE="${TAIRA_PRIVATE_KEY_FILE:-./secrets/taira-authority.ed25519}"
 export TAIRA_RETENTION_EPOCH=$(( $(date -u +%s) + 86400 ))

@@ -1,9 +1,9 @@
 ---
 translation_locale: fr
 translation_source: /reference/queries.md
-translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
+translation_source_hash: baa9726c7ce7d14b8dd17e77447ef72233ca9ed779367d9a190aa8dde7da41ac
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Requêtes {#queries}
 
@@ -56,7 +56,7 @@ Utilisez les constructeurs typés SDK ou le CLI au lieu de construire manuelleme
 |Requête|But|
 | --- | --- |
 | `FindAssets` |Lister les soldes des actifs.|
-| `FindAssetsDefinitions` |Lister les définitions d'actifs.|
+| `FindAssetDefinitions` |Lister les définitions d'actifs.|
 | `FindAssetsByAccountId` |Lister les actifs détenus par un compte.|
 | `FindAssetById` |Trouvez le solde d'un actif par `AssetId`.|
 | `FindAssetDefinitionById` |Trouver une définition d’actif par ID.|
@@ -66,7 +66,7 @@ Utilisez les constructeurs typés SDK ou le CLI au lieu de construire manuelleme
 
 ## Compte séquestre et dossiers de preuve {#escrow-and-proof-records}
 
-Les requêtes d'entiercement inspectent les enregistrements créés par [séquestre d’actif natif ISIs](/fr/blockchain/escrow.md), y compris les séquestres de marché, les verrouillages d'actifs génériques et les enregistrements d'entiercement anonymes.
+Les requêtes d'entiercement inspectent les enregistrements créés par [séquestre d’actif natif ISIs](/fr/blockchain/escrow.md), y compris les séquestres de marché, les verrouillages d'actifs génériques et les séquestres conditionnels.
 
 |Requête|But|
 | --- | --- |
@@ -75,11 +75,6 @@ Les requêtes d'entiercement inspectent les enregistrements créés par [séques
 | `FindAssetEscrowsBySeller` |Lister les séquestres d'actifs par vendeur.|
 | `FindAssetEscrowsByBuyer` |Lister les séquestres d'actifs par acheteur.|
 | `FindAssetEscrowsByStatus` |Lister les séquestres d'actifs par statut.|
-| `FindAnonymousAssetEscrows` |Lister les dossiers d'entiercement d'actifs anonymes.|
-| `FindAnonymousAssetEscrowById` |Trouvez un séquestre d'actif anonyme par ID.|
-| `FindAnonymousAssetEscrowsBySeller` |Lister les séquestres anonymes par vendeur.|
-| `FindAnonymousAssetEscrowsByBuyer` |Lister les séquestres anonymes par acheteur.|
-| `FindAnonymousAssetEscrowsByStatus` |Lister les séquestres anonymes par statut.|
 | `FindProofRecordById` |Trouver un enregistrement de preuve par ID.|
 | `FindProofRecords` |Lister les dossiers de preuve.|
 | `FindProofRecordsByBackend` |Lister les enregistrements de preuve pour un backend de preuve.|
@@ -89,15 +84,14 @@ Les requêtes d'entiercement inspectent les enregistrements créés par [séques
 
 |Requête|But|
 | --- | --- |
-| `FindRepoAgreements` |Lister les accords de dépôt stockés sur la chaîne.|
+| `FindRepoAgreements` |Lister les accords de pension livrée et de pension livrée inversée stockés sur la chaîne.|
 | `FindTwitterBindingByHash` |Résoudre une liaison Twitter par hachage cryptographique.|
 | `FindDaPinIntentByTicket` |Trouvez une intention de broche de disponibilité des données par ticket.|
 | `FindDaPinIntentByManifest` |Trouver une intention de pin par référence au manifeste technique.|
 | `FindDaPinIntentByAlias` |Trouver une intention d'épingle par alias.|
 | `FindDaPinIntentByLaneEpochSequence` |Trouvez une intention d'épingle par voie d'exécution, époque et séquence.|
-| `FindLaneRelayEnvelopeByRef` |Trouvez un conteneur de données de relais de voie vérifié.|
 | `FindSorafsProviderOwner` |Résoudre le propriétaire d'un fournisseur SoraFS.|
-| `FindDataspaceNameOwnerById` |Résoudre un propriétaire de nom d'espace de données.|
+| `FindDataspaceNameOwnerById` |Résoudre le propriétaire SNS actif d'un alias d'espace de données.|
 | `FindMusubiExactPackageV1` |Lisez un enregistrement de package exact et ses révisions actuelles.|
 | `FindMusubiExactReleaseV1` |Lire un instantané de version exact.|
 | `FindMusubiProviderBundleAttestationV1` |Lisez l'attestation du lot d'archives d'un fournisseur.|
@@ -117,7 +111,7 @@ Les requêtes d'entiercement inspectent les enregistrements créés par [séques
 | `FindActiveTriggerIds` |Lister les ID de déclencheurs actifs.|
 | `FindTriggers` |Lister les déclencheurs.|
 | `FindTriggerById` |Trouvez un déclencheur par ID.|
-| `FindContractManifestByCodeHash` |Trouvez un manifeste technique de contrat intelligent par hachage cryptographique de code.|
+| `FindContractManifestByArtifactId` |Trouvez un manifeste technique de contrat intelligent par son identifiant d'artefact d'espace de données.|
 | `FindTransactions` |Lister les transactions validées.|
 | `FindBlocks` |Lister les blocs.|
 | `FindBlockHeaders` |Lister les en-têtes de bloc.|

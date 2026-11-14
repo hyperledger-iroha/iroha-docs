@@ -49,7 +49,7 @@ Use SDK typed builders or the CLI instead of constructing query envelopes by han
 | Query | Purpose |
 | --- | --- |
 | `FindAssets` | List asset balances. |
-| `FindAssetsDefinitions` | List asset definitions. |
+| `FindAssetDefinitions` | List asset definitions. |
 | `FindAssetsByAccountId` | List assets held by an account. |
 | `FindAssetById` | Find one asset balance by `AssetId`. |
 | `FindAssetDefinitionById` | Find one asset definition by ID. |
@@ -59,7 +59,7 @@ Use SDK typed builders or the CLI instead of constructing query envelopes by han
 
 ## Escrow and Proof Records
 
-Escrow queries inspect the records created by [native asset escrow ISIs](/blockchain/escrow.md), including marketplace escrows, generic asset locks, and anonymous escrow records.
+Escrow queries inspect the records created by [native asset escrow ISIs](/blockchain/escrow.md), including marketplace escrows, generic asset locks, and conditional escrows.
 
 | Query | Purpose |
 | --- | --- |
@@ -68,11 +68,6 @@ Escrow queries inspect the records created by [native asset escrow ISIs](/blockc
 | `FindAssetEscrowsBySeller` | List asset escrows by seller. |
 | `FindAssetEscrowsByBuyer` | List asset escrows by buyer. |
 | `FindAssetEscrowsByStatus` | List asset escrows by status. |
-| `FindAnonymousAssetEscrows` | List anonymous asset escrow records. |
-| `FindAnonymousAssetEscrowById` | Find one anonymous asset escrow by ID. |
-| `FindAnonymousAssetEscrowsBySeller` | List anonymous escrows by seller. |
-| `FindAnonymousAssetEscrowsByBuyer` | List anonymous escrows by buyer. |
-| `FindAnonymousAssetEscrowsByStatus` | List anonymous escrows by status. |
 | `FindProofRecordById` | Find one proof record by ID. |
 | `FindProofRecords` | List proof records. |
 | `FindProofRecordsByBackend` | List proof records for a proof backend. |
@@ -82,15 +77,14 @@ Escrow queries inspect the records created by [native asset escrow ISIs](/blockc
 
 | Query | Purpose |
 | --- | --- |
-| `FindRepoAgreements` | List repository agreements stored on-chain. |
+| `FindRepoAgreements` | List repo and reverse-repo agreements stored on-chain. |
 | `FindTwitterBindingByHash` | Resolve a Twitter binding by hash. |
 | `FindDaPinIntentByTicket` | Find a data-availability pin intent by ticket. |
 | `FindDaPinIntentByManifest` | Find a pin intent by manifest reference. |
 | `FindDaPinIntentByAlias` | Find a pin intent by alias. |
 | `FindDaPinIntentByLaneEpochSequence` | Find a pin intent by lane, epoch, and sequence. |
-| `FindLaneRelayEnvelopeByRef` | Find a verified lane-relay envelope. |
 | `FindSorafsProviderOwner` | Resolve the owner of a SoraFS provider. |
-| `FindDataspaceNameOwnerById` | Resolve a data space-name owner. |
+| `FindDataspaceNameOwnerById` | Resolve the active SNS owner of a data space alias. |
 | `FindMusubiExactPackageV1` | Read one exact package record and its current revisions. |
 | `FindMusubiExactReleaseV1` | Read one exact release snapshot. |
 | `FindMusubiProviderBundleAttestationV1` | Read one provider's archive-bundle attestation. |
@@ -110,7 +104,7 @@ Escrow queries inspect the records created by [native asset escrow ISIs](/blockc
 | `FindActiveTriggerIds` | List active trigger IDs. |
 | `FindTriggers` | List triggers. |
 | `FindTriggerById` | Find one trigger by ID. |
-| `FindContractManifestByCodeHash` | Find a smart-contract manifest by code hash. |
+| `FindContractManifestByArtifactId` | Find a smart-contract manifest by its data space artifact ID. |
 | `FindTransactions` | List committed transactions. |
 | `FindBlocks` | List blocks. |
 | `FindBlockHeaders` | List block headers. |

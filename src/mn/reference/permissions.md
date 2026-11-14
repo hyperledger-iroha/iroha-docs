@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /reference/permissions.md
-translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -16,7 +16,6 @@ translation_engine: bing-translator-llm+reviewed-delta
 |Өөрт нь зөвшөөрөл олгосон тэмдэг|Ангилал|Үйл ажиллагаа|
 | --- | --- | --- |
 | `CanManagePeers` |сүлжээний хамтрагч|Сүлжээний хамтрагчдыг бүртгэх, бүртгэлийг цуцлах эсвэл өөрөөр удирдах.|
-| `CanManageLaneRelayEmergency` |сүлжээний хамтрагч|Онцгой байдлын эгнээний дамжуулагчийг удирдана.|
 | `CanRegisterDomain` |Салбар|Домайн бүртгүүлэх.|
 | `CanUnregisterDomain` |Салбар|Домэйн нэрийг бүртгэлээс устгах.|
 | `CanModifyDomainMetadata` |Салбар|Домайн метадатаг өөрчил.|
@@ -28,7 +27,7 @@ translation_engine: bing-translator-llm+reviewed-delta
 | `CanMintAssetWithDefinition` |Хөрөнгө|тодорхой тодорхойлолтонд зориулж хөрөнгийг гаргах.|
 | `CanBurnAssetWithDefinition` |Хөрөнгө|тодорхой тодорхойлолтонд зориулж хөрөнгийг устгах.|
 | `CanTransferAssetWithDefinition` |Хөрөнгө|Тодорхой тодорхойлолтонд хөрөнгө шилжүүлэх.|
-| `CanMintAsset` |Хөрөнгө|тодорхой хөрөнгийн үлдэгдлийг гаргах.|
+| `CanMintAssetToAccount` |Хөрөнгө|тодорхой хөрөнгийн үлдэгдлийг гаргах.|
 | `CanBurnAsset` |Хөрөнгө|тодорхой хөрөнгийн тэнцлийг устгах|
 | `CanTransferAsset` |Хөрөнгө|Тодорхой хөрөнгийн үлдэгдлийг шилжүүлэх.|
 | `CanRegisterNft` | NFT |NFT-г бүртгүүлнэ үү.|
@@ -43,7 +42,7 @@ translation_engine: bing-translator-llm+reviewed-delta
 | `CanModifyTrigger` |Тогоох товчлуур|Триггер тохиргоог өөрчилнө үү.|
 | `CanModifyTriggerMetadata` |Тогоох товчлуур|Триггерийн мета өгөгдлийг өөрчлөх.|
 | `CanUpgradeExecutor` |Гүйцэтгэгч|Програм хангамжийн гүйцэтгэх орчны гүйцэтгэгчийг шинэчлэх.|
-| `CanRegisterSmartContractCode` |Өөрөө гүйцэтгэгдэх гэрээ|Ухаалаг гэрээний кодыг бүртгүүлэх.|
+| `CanManageSmartContractCode` | Ухаалаг гэрээ | Ишлэлгүй кодын артефактуудыг устгаж, гэрээний орох цэгүүдийг төлөөлүүлэн шилжүүлэх. Бүртгэлтэй дансууд үүнгүйгээр баталгаажсан артефакт үүсгэж болно. |
 | `CanManageFeeSponsorProgram` | SORA Nexus | Яг тухайн ивээн тэтгэгч дансны эзэмшдэг хөтөлбөрүүдийг удирдах. |
 | `CanEnrollFeeSponsorProgram` | SORA Nexus | Яг нэг ивээн тэтгэх хөтөлбөрийн хүртэгчдийг удирдах. |
 

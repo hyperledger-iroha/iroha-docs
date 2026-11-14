@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 98c351372551b08bda4911f52bfb3cc70c53b6125d8045c17abb205b27960f6d
+translation_source_hash: 96ca67b9bbf9d743de2f640e09487176f62a8a31052e4f1e15e15a771e985c48
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -24,7 +24,7 @@ SORA Nexus は Iroha 3 を基盤としています。まず Taira でアプリ�
 |ステップ| Taira テストネット| Minamoto メインネット |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
 |ネットワーク状態の読み取りを開始|キーなしのクエリ `/status`| 先にエンドポイントと TLS 証明書を確認する |
-|データスペースを選択してください|アプリが管理された実行レーンを必要としない限り、パブリック`universal`を使用してください|メインネットの承認後にのみ同じデータスペースを使用してください|
+|データスペースを選択してください|アプリが独自の管理されたデータスペースを必要としない限り、パブリック`universal`を使用してください|メインネットの承認後にのみ同じデータスペースを使用してください|
 | 手数料資産を取得 | 公開 Taira の faucet を使用 | 資金提供済みの Minamoto アカウントまたは承認済みのトレジャリー経路から XOR を受け取る |
 | 書き込みをテスト | faucet で取得した testnet XOR を使用 | テスト用ツールを使わない。書き込みでは実際の XOR を消費する |
 |促進する|リトライロジック、監視、および暗号署名処理を維持する|別々の鍵、資金、リリース管理を使用してください|
@@ -63,7 +63,7 @@ SORA Nexus では、データスペースカタログがデータスペースを
 wonderland.universal
 ```
 
-組織用の新しいデータスペースが必要な場合は、通常のクライアントアカウントから登録しようとせず、カタログとルーティングの提案を準備してください。後述の[新しいデータスペースを用意する](#_8-provision-a-new-data-space)を参照してください。
+組織用の新しいデータスペースが必要な場合は、通常のクライアントアカウントから登録しようとせず、カタログとルーティングの提案を準備してください。後述の[新しいデータスペースを用意する](#_8-provision-a-new-dataspace)を参照してください。
 
 ## 2. 公開 Torii エンドポイントを確認する {#_2-check-the-public-torii-endpoint}
 
@@ -192,7 +192,7 @@ Taira MCP をパブリックテストネットのコントロールサーフェ�
 
 以下の例では、アカウントの鍵を使わずに Taira のデータを読み取ります。
 
-Taira が公開する、公開データスペースのレーンを一覧表示します。
+Taira のすべてのレーンを、そのデータスペースと可視性とともに一覧表示します：
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -254,7 +254,7 @@ nonce = false
 読み取り専用チェックを実行する:
 
 ```bash
-iroha --config ./taira.client.toml --output-format text ops sumeragi status
+iroha --config ./taira.client.toml ledger domain list --limit 5
 ```
 
 書き込みテストの前に、公開 Taira の診断を実行してください。
@@ -432,7 +432,7 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 アカウントがメインネットのオンボーディングまたはガバナンスフローを通じてプロビジョニングされ、資金が投入されるまで、読み取り専用のチェックのみを実行してください：
 
 ```bash
-iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
+iroha --config ./minamoto.client.toml ledger domain list --limit 5
 ```
 
 Minamoto に対して、Taira のフォーセットやスモークテストのコマンドを実行しないでください。
@@ -445,7 +445,7 @@ Minamoto の手数料は生産された XOR で支払われ、Minamoto にはパ
 
 Taira XOR は Minamoto の手数料を支払うことができません。テストネットの残高およびテストネット資金提供サービスの請求は Minamoto に引き継がれません。
 
-## 7. 既存のデータスペース内で作業する {#_7-work-inside-an-existing-data-space}
+## 7. 既存のデータスペース内で作業する {#_7-work-inside-an-existing-dataspace}
 
 データスペース内の台帳オブジェクトには、完全修飾ドメイン名を使ってください。例えば、公開データスペースのプロジェクト用ドメインには、次の形式を使います。
 
@@ -486,7 +486,7 @@ alice@universal
 
 厳密なアカウントフィールドは依然として標準の I105 アカウントIDを使用します。エイリアスは、標準のアカウントIDに解決される人間が読みやすい結びつきとして扱ってください。
 
-## 8. 新しいデータスペースを用意する {#_8-provision-a-new-data-space}
+## 8. 新しいデータスペースを用意する {#_8-provision-a-new-dataspace}
 
 新しいデータスペースの追加は、運用とガバナンスの変更です。公開 Torii エンドポイントは、設定済みのデータスペースへ通信を振り分けられますが、未知のデータスペースエイリアスは拒否します。
 
@@ -529,7 +529,7 @@ metadata = {}
 [[nexus.dataspace_catalog]]
 alias = "payments"
 id = 20
-description = "Payments dataspace"
+description = "Payments data space"
 fault_tolerance = 1
 
 [[nexus.routing_policy.rules]]
@@ -537,12 +537,12 @@ lane = 5
 dataspace = "payments"
 [nexus.routing_policy.rules.matcher]
 instruction = "transfer::asset"
-description = "Route asset transfers to the payments dataspace"
+description = "Route asset transfers to the payments data space"
 ```
 
 オペレーターの受け入れには、これらのゲートを含めるべきです。
 
-- `iroha3d --sora --config <config.toml> --trace-config` は解決されたノード構成を渡します
+- `iroha3d --sora --config <config.toml> --check-config` は解決されたノード構成を渡します
 - 生成またはレビューされた技術マニフェストは、暗号ハッシュと署名とともにアーカイブされます
 - いかなる Minamoto への昇格の前に、Taira でスモークテストが合格する
 - 変更後の `/status` のカタログに、意図したレーンとデータスペースが表示されること

@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/transactions.md
-translation_source_hash: 91c06ab61c7f8ec96554bc89b31b2f281bb3a7d7edd484defe61dcde5a3fb710
+translation_source_hash: d9227effcdb4d54ac76f6288ba213de20f2574e1585e13b96a5202c44b69f3be
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -71,7 +71,7 @@ Iroha ikki xil oflayn tranzaksiya jarayoniga ega:
 - **Oflayn imzolash** imzolash qurilmasi uzilgan paytda odatiy imzolangan tranzaksiya yaratadi. Onlayn mijoz imzolangan qadoqni Torii ga yubormaguncha tranzaksiya qayta ishlanmaydi, shu sabab unga to‘g‘ri zanjir identifikatori, vakolat, ruxsatlar, haqlar va tranzaksiya amal muddati baribir kerak.
 - **Kagemusha oflayn naqd puli** ro‘yxatdan o‘tgan, apparat bilan himoyalangan hamyonga onlayn paytda qiymat yuklaydi, ikkala hamyon oflayn bo‘lganda ular o‘rtasida to‘lovni qo‘llaydi va hamyon yana onlayn bo‘lganda qolgan qiymatni reyestr hisobiga qaytaradi.
 
-Torii bitta Kagemusha marshrutini taqdim etadi: `POST /v1/kagemusha/enrollment`. U hisob orqali autentifikatsiyalangan `application/x-norito` ro‘yxatdan o‘tish freymlarini qabul qiladi va keshlanmasligi kerak bo‘lgan maxfiy javoblar qaytaradi. Hayotiy davrning reyestr tomoni `KagemushaWalletLedgerV1` ko‘rsatmasini tashuvchi oddiy imzolangan tranzaksiyalardan foydalanadi:
+Torii bitta Kagemusha o‘zgartirish marshrutini taqdim etadi: `POST /v1/kagemusha/enrollment`. U hisob orqali autentifikatsiyalangan `application/x-norito` ro‘yxatdan o‘tish freymlarini qabul qiladi va keshlanmasligi kerak bo‘lgan maxfiy javoblar qaytaradi. `/v1/kagemusha/{scheme}/wallets/{wallet}/` ostidagi hisob imzosi bilan ishlaydigan SDK o‘qish marshrutlari Load kvitansiyalari va yakuniylik dalillarini qaytaradi; ular `/openapi.json` ro‘yxatiga kiritilmagan. Hayotiy davrning reyestr tomoni `KagemushaWalletLedgerV1` ko‘rsatmasini olib yuruvchi oddiy imzolangan tranzaksiyalardan foydalanadi:
 
 | Amal | Maqsad |
 | --- | --- |
@@ -88,13 +88,21 @@ Oddiy oqim quyidagicha:
 3. Hamyonlar oflayn bo‘lganda ular orasida to‘lovlarni mahalliy almashing va tekshiring; har bir o‘tkazmani tasdiqlashdan oldin hamyon holatini mustahkam saqlang.
 4. Hamyon yana onlayn bo‘lganda uning Unload talabini yuboring va yakuniylikni kuting.
 
+Kagemusha reliz uchun malakalanmagan: real pul bilan jonli tarmoqda malaka sinovi, shuningdek jismoniy qurilmalarda telefonni ro‘yxatdan o‘tkazish, faollashtirish va to‘lov hali ochiq masala bo‘lib qolmoqda.
+
 Banknota holati onlayn hayot sikliga qaytmaguncha reyestr ziddiyatli oflayn topshirishni kuzata olmaydi. Shu sababli hamyon va operator siyosati qiymat chegaralari, amal qilish muddati, qabul qilinadigan emitentlar, ishonchli mahalliy saqlash va solishtirish muddatlarini majburiy qo‘llashi kerak.
 
 Bu yerda `Grant` ko‘rsatmasi bilan yangi tranzaksiya yaratish misoli berilgan. Bu tranzaksiyada Mouse Alice’ga belgilangan rolni (`role_id`) beradi. [To‘liq misolni](./permissions.md#register-a-new-role) ko‘ring.
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```

@@ -1,9 +1,9 @@
 ---
 translation_locale: am
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: f1f922b9820587cd4b599e7407698a47d468616670fee2922e4028147bc3e9b0
+translation_source_hash: 804ef15b3d5ecdfae9fd559d3f312772571938ed9872f4adbd251baa3471e4e2
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Kotlin፣ Android እና ጃቫ {#kotlin-android-and-java}
 
@@ -15,7 +15,7 @@ translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 | --- | --- | --- |
 |`org.hyperledger.iroha.sdk:core-jvm`|JAR|ንፁህ Kotlin/JVM Norito፣ የውሂብ ሞዴል፣ crypto፣ ግብይት፣ Torii እና የፕሮቶኮል ኮድ|
 |`org.hyperledger.iroha.sdk:client-android`|AAR|Android የቁልፍ ማከማቻ፣ የመሣሪያ ቴሌሜትሪ እና JNI የሚደገፉ የደንበኛ ውህደቶች|
-|`org.hyperledger.iroha.sdk:offline-wallet-android`|AAR|Android ከመስመር ውጭ የኪስ ቦርሳ መጓጓዣዎች እና ውህደት በ `client-android` ላይ የተገነባ|
+|`org.hyperledger.iroha.sdk:kagemusha-wallet-android`|AAR|Android ከመስመር ውጭ የኪስ ቦርሳ መጓጓዣዎች እና ውህደት በ `client-android` ላይ የተገነባ|
 
 አርቲፋክቶቹ ገና ወደ Maven Central አልታተሙም። ከተሰካው Iroha ምንጭ ክለሳ በአገር ውስጥ ይገንቡ እና ያትሙ -
 
@@ -36,21 +36,21 @@ dependencies {
     // Android client features:
     // implementation("org.hyperledger.iroha.sdk:client-android:0.1.0")
     // Android offline-wallet features:
-    // implementation("org.hyperledger.iroha.sdk:offline-wallet-android:0.1.0")
+    // implementation("org.hyperledger.iroha.sdk:kagemusha-wallet-android:0.1.0")
 }
 ```
 
-`core-jvm` ምንም Android ጥገኞች አልያዘም። የ Android ደንበኛ እና የቁልፍ ማከማቻ ኮድ በ`client-android` ውስጥ ያስቀምጡ እና `offline-wallet-android`ን ለ Android ብቻ ከመስመር ውጭ የኪስ ቦርሳ እና JNI ፍሰቶች ይጠቀሙ።
+`core-jvm` ምንም Android ጥገኞች አልያዘም። የ Android ደንበኛ እና የቁልፍ ማከማቻ ኮድ በ`client-android` ውስጥ ያስቀምጡ እና `kagemusha-wallet-android`ን ለ Android ብቻ ከመስመር ውጭ የኪስ ቦርሳ እና JNI ፍሰቶች ይጠቀሙ።
 
 ## Kotlin እና የጃቫ ተኳኋኝነት {#kotlin-and-java-compatibility}
 
-ህዝቡ API Kotlin-መጀመሪያ ነው እና JVM ደንበኞችን የሚጠይቁበት የጃቫ መስተጋብር ያቀርባል። ተመጣጣኝ ለውጦች በተዛማጅ `java/` አተገባበር ውስጥ ይንጸባረቃሉ። አዲስ Android ውህደቶች ከላይ ባሉት Kotlin አርቲፋክቶች መጀመር አለባቸው።
+ይፋዊው API Kotlin-ቀዳሚ ሲሆን ለJava ጠሪዎች ቀኖናዊ ትግበራ ነው፤ በ`core-jvm` ውስጥ ያሉ የJava-ምንጭ ተጠቃሚ ሙከራዎች በቀጥታ ይፈትኑታል። የ`java/` ዛፍ ወደ Kotlin ሞጁሎች እየተዋሃዱ የሚቋረጡ የተባዙ ትግበራዎችን ይዟል። አዲስ Android ውህደቶች ከላይ ባሉት Kotlin አርቲፋክቶች መጀመር አለባቸው።
 
 ሁሉም የ Kotlin ሞጁሎች JDK 8 API ተኳሃኝነትን ከ `-Xjdk-release=8` ጋር በማጠናቀር ጊዜ ያስፈጽማሉ፣ ምንም እንኳን የግንባታ መሳሪያው ራሱ JDK 21 ቢጠቀምም። በ SDK ኮድ ውስጥ JDK 9+ APIs አይጠቀሙ።
 
 ## ይገንቡ እና ይፈትሹ {#build-and-test}
 
-ተንቀሳቃሽ የ JVM ሙከራዎችን ያሂዱ
+በKotlin SDK README ውስጥ እንደተገለጸው፣ ከተመሳሳይ ምንጭ የተገነባውን `connect_norito_bridge` ላይብረሪ በ`IROHA_NATIVE_LIBRARY_PATH` እና `kotlin-fixture-gen`ን በ`IROHA_KOTLIN_FIXTURE_GEN_BIN` ውስጥ በማድረግ የJVM ሙከራዎችን ያሂዱ፤ እነዚህ ከሌሉ በቤተኛ ላይ የተመሰረቱ ሙከራዎች ይወድቃሉ፦
 
 ```bash
 cd kotlin
@@ -61,7 +61,7 @@ cd kotlin
 
 ```bash
 ./gradlew :client-android:assembleRelease \
-  :offline-wallet-android:assembleRelease --quiet
+  :kagemusha-wallet-android:assembleRelease --quiet
 ```
 
 ## የአሁኑ ሽፋን {#current-coverage}

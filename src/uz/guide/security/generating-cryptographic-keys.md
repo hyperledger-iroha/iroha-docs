@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: b6e3bd79c50ea326930ac978350ea4beac8294b6f045ac0084aada257754ffa1
+translation_source_hash: bb1044edb9d34264e36848ee773d4d313bfbfd91b45da2eeb831f7ef8920e9b4
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -56,7 +56,7 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` faqat `bls_normal` bilan amal qiladi; u saqlov katalogiga `pop.hex` ni qo‘shadi. Imzolangan boshlang‘ich holat har bir ovoz beruvchi tasdiqlovchi uchun mos PoP talab qiladi. Tugun konfiguratsiyasida bo‘sh bo‘lmagan `trusted_peers_pop` xaritasi tasdiqlovchilar to‘plamini tanlaydi; undan chiqarib tashlangan ishonchli tugunlar kuzatuvchidir. Xarita bo‘sh bo‘lsa, barcha BLS-normal ishonchli tugunlar dastlabki nomzodlar to‘plamiga kiradi, ammo ovoz beruvchilarning PoPs qiymatlarini baribir imzolangan boshlang‘ich holat belgilaydi.
+`--pop` faqat `bls_normal` bilan amal qiladi; u saqlov katalogiga `pop.hex` ni qo‘shadi. Imzolangan boshlang‘ich holat har bir ovoz beruvchi tasdiqlovchi uchun mos PoP talab qiladi. Tugun konfiguratsiyasida har bir tasdiqlovchining PoP qiymatini `trusted_peers_pop` da ko‘rsating: haqiqiy PoP qiymatiga ega bo‘lmagan ishonchli tugunlar konsensus ro‘yxatidan chiqariladi, bo‘sh xarita esa birorta ham tasdiqlovchi bermaydi, shuning uchun xaritasida boshlang‘ich holat tasdiqlovchilari bo‘lmagan tugun ishga tushishni rad etadi. Faqat sinxronlash bilan shug‘ullanadigan tugunni `[sumeragi] role = "observer"` bilan ishga tushiring.
 
 ## Hibs chiqarish {#custody-output}
 

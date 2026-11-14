@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: 5fb7abd4e152ece715a8337e8ef8e75330f634d2a1b26e0c5bd8308f1f3793a9
+translation_source_hash: 40714a6cd124d4b0342b0f6ecf321f286e714c0e236afd6fd7834c0cf0ad1165
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -11,15 +11,14 @@ translation_engine: bing-translator-llm+reviewed-delta
 
 ## 1. Требования {#_1-prerequisites}
 
-Сначала запустите локальную сеть:
-
-- [Запуск Iroha 3](./launch-iroha.md)
-
-Примеры ниже предполагают сгенерированную конфигурацию клиента из локальной сети, созданной в [Запуск Iroha 3](./launch-iroha.md):
+Из рабочей копии Iroha на задокументированной ревизии исходного кода сгенерируйте и запустите локальную сеть из четырёх узлов:
 
 ```bash
-./localnet/client.toml
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
+./localnet/start.sh
 ```
+
+В примерах ниже используется сгенерированная для неё конфигурация клиента `./localnet/client.toml`.
 
 ## 2. Базовая настройка CLI {#_2-basic-cli-setup}
 
@@ -61,7 +60,7 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-Выведите публичные домены пространства данных `universal`:
+Выведите домены, видимые неаутентифицированному читателю:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
@@ -147,7 +146,8 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 Команды оператора консенсуса требуют ключ среды исполнения из списка разрешённых. Храните его вне `client.toml` и передавайте абсолютный путь к файлу, доступному только владельцу:
 
 ```bash
-: "${OPERATOR_KEY_FILE:=$PWD/secrets/operator.key}"
+# The generated localnet writes its allow-listed operator key here.
+: "${OPERATOR_KEY_FILE:=$PWD/localnet/runtime/operator-signer.key}"
 
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \

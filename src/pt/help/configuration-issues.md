@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /help/configuration-issues.md
-translation_source_hash: 9d153d9cb8ce0341b35ba5a7e3823198e58464768e2a9a92ff8a5723f85e9351
+translation_source_hash: cfd86e847651e71d40e8857c0531f9721ef94ea3c65bd80b6f6951081488f39d
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -31,7 +31,7 @@ Na [configuração do cliente](/pt/guide/configure/client-configuration.md), as 
 
 Se você nunca trabalhou com multi-hash antes, é natural supor que o lado direito não seja uma representação hexadecimal dos bytes da chave (dois símbolos por byte), mas sim os bytes codificados como ASCII (ou UTF-8), e chamar `from_hex` no literal de string tanto na instanciação `public_key` quanto na `private_key`.
 
-Também é natural supor que chamar `PrivateKey::try_from_str` na literal de string resultaria apenas na chave correta. Portanto, se você errar o número de bits na chave, por exemplo, 32 bytes em vez de 64, isso geraria uma mensagem de erro.
+Também é natural supor que analisar a literal de string com `str::parse::<PrivateKey>()` resultaria apenas na chave correta. Portanto, se você errar o número de bits na chave, por exemplo, 32 bytes em vez de 64, isso geraria uma mensagem de erro.
 
 Ambas essas suposições estão erradas. Infelizmente, as mensagens de erro não ajudam a depurar esse tipo particular de falha.
 
@@ -39,7 +39,7 @@ Como consertar: use `hex_literal`. Isso também transformará uma string feia de
 
 ::: warning
 
-Mesmo a implementação `try_from_str` não pode verificar se uma determinada string é um `PrivateKey` válido e avisá-lo caso não seja.
+Mesmo a implementação `FromStr` não pode verificar se uma determinada string é um `PrivateKey` válido e avisá-lo caso não seja.
 
 Ele vai pegar alguns erros óbvios, por exemplo, se a string contiver um símbolo inválido. No entanto, como visamos suportar muitos formatos de chave, não pode fazer muito mais. Também não pode dizer se a chave é a chave privada correta para a conta fornecida, a menos que você envie uma instrução.
 

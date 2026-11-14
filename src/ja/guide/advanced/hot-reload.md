@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
+translation_source_hash: 6edc0185196ab8e77ef8552723e05bf37cca1a088da86e2a43d441d58e779c11
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -32,4 +32,4 @@ docker restart <container>
 
 ## カスタム設定を使用 {#use-custom-configuration}
 
-現在のネットワークピアの構成は TOML です。生成された `config.toml`、`genesis.signed.nrt`、および関連する鍵ファイルを、コンテナが期待するパスにバインドマウントまたはコピーしてください。イメージを作成したら、ネットワークピアを再起動してください。生成されたファイルはまとめて保持してください。異なる Kagami 実行からのファイルを混ぜると、逆シリアル化やコンセンサスの失敗が発生する可能性があります。
+現在のネットワークピアの構成は TOML です。Kagami はバリデーターごとに 1 つの `peerN.toml` を、`genesis.signed.nrt`、`genesis.public_key`、`genesis.expected_hash` とともに書き出し、`kagami docker` が生成する Compose ファイルがそれらをコンテナにマウントします。ファイルを手作業でコピーする代わりにそれを再生成し、その後ネットワークピアを再起動してください。生成されたファイルはまとめて保持してください。異なる Kagami 実行からのファイルを混ぜると、逆シリアル化やコンセンサスの失敗が発生する可能性があります。

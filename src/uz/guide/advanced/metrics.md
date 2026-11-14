@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
+translation_source_hash: ad2bc9f8c53169d8161f7a2f23b1e660ebd24cf03cf8e05f4b00bbd27b7b11fe
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -23,8 +23,8 @@ Ushbu sahifadan foydalanib, berilgan tugun soni, tarmoq kechikish chegarasi va m
 Jamoat tugunining nuqtai nazari vaqt ma'lumotlari ko'rinishidan va Prometheus skreplashidan boshlang, so'ng operatordan autentifikatsiyalangan konsensus holati uchun CLI dan foydalaning. Operator kaliti maqsad tugun tomonidan ruxsat berilishi kerak va faqat dasturiy ta'minot ishga tushirish muhitida yuklanadi:
 
 ```bash
-export TORII=http://127.0.0.1:8180
-export OPERATOR_KEY_FILE=./secrets/operator.key
+export TORII=http://127.0.0.1:8080
+export OPERATOR_KEY_FILE="$PWD/localnet/runtime/operator-signer.key"
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s "$TORII/metrics" > metrics.prom
@@ -52,7 +52,7 @@ curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/now" \
-  | jq '{now_ms, offset_ms}'
+  | jq '{now, offset_ms}'
 ```
 
 Ommaviy testnet kuzatuvlarini o'z joylashtirishingiz uchun ishlab chiqarish quvvati raqamlari sifatida ishlatmang.
@@ -187,13 +187,13 @@ Eng keng tarqalgan signalar quyidagilarni o'z ichiga oladi:
 | --- | --- | --- |
 |Qabul qilingan o'tkazuvchanlik| `sum(rate(txs{type="accepted"}[5m]))` |Barqaror holatda maqsad TPS ga yetishi yoki oshishi kerak|
 |Rad etishlar| `sum(rate(txs{type="rejected"}[5m]))` |Test rejasi bilan tushuntirilishi kerak|
-|protokolni yakunlash kechikishi| `histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |p95/p99 ni kechikish byudjeti bilan solishtiring|
+|Yakunlash kechikishi| `histogram_quantile(0.95, sum by (le) (rate(sumeragi_commit_latency_ms_bucket{lane="global"}[5m])))`, `last_commit_time_ms` |p95/p99 ni kechikish byudjeti bilan solishtiring|
 |Navbat chuqurligi| `queue_size`, `sumeragi_tx_queue_depth` |Eng yuqori yuklama paytida chegaralangan bo‘lishi kerak|
 |Navbat to‘lishi| `sumeragi_tx_queue_saturated` |Uzluksiz noldan farqli qiymatlar ortiqcha yuklamani anglatadi|
-|Oʻzgarishlarni koʻrish| `view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |O‘sib borayotgan qiymatlar vaqti, topologiyasi, yuklamasi yoki tarmoq muammosini ko‘rsatadi|
-|Tushirilgan xabarlar| `dropped_messages`, `sumeragi_consensus_message_handling_total` |Yuk yuklash paytida tushishlar odatda kechikish cho'qqilarini tushuntiradi|
-|Yuk va DA tiklash| `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` |Doimiy talablar, yoshning oshishi yoki takroriy DA eshiklar tanani yoki bo'lakni olish bilan bog'liq muammolarni ko'rsatadi|
-|konsensus yakunlanishi kvorumi| `sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |Sanalgan imzolar kerakli kvorumga tezda yetishi kerak|
+|Oʻzgarishlarni koʻrish| `view_changes`, `sumeragi_view_changes_total`, `sumeragi_timeout_votes_total` |O‘sib borayotgan qiymatlar vaqti, topologiyasi, yuklamasi yoki tarmoq muammosini ko‘rsatadi|
+|Tushirilgan xabarlar| `sumeragi_dropped_total`, `p2p_queue_dropped_total` |Yuk yuklash paytida tushishlar odatda kechikish cho'qqilarini tushuntiradi|
+|Foydali yuk va quvib yetish so‘rovlari| `sumeragi_fetch_requests_total{kind="body"}`, `sumeragi_fetch_requests_total{kind="sync"}` |Doimiy tana yoki sinxronizatsiya so‘rovlari foydali yukni olish yoki quvib yetish muammosini ko‘rsatadi|
+|Yakunlash jarayoni| `sumeragi_committed_height`, `sumeragi_applied_height` |Sertifikatlangan va qo‘llangan balandliklar birga oshib borishi kerak|
 
 Agar metrik faqat `/v1/sumeragi/status` da mavjud bo'lsa, JSON vaqt nuqtasi ma'lumotlar ko'rinishini Prometheus skrepi bilan bir xil ishlash artefaktlarida saqlang.
 
@@ -245,7 +245,7 @@ Ishlash ko‘rsatkichlarini faqat ularni qayta tiklash uchun yetarli kontekst bi
 - qabul qilingan/rad etilgan TPS
 - p50/p95/p99 protokolni yakunlash kechikishi
 - navbat chuqurligi va to'yinganlik
-- o‘zgarishlarni ko‘rish, tushib qolgan xabarlar, yetishmayotgan bloklarni olish va DA-shlyuz hisoblagichlari
+- ko‘rinish almashinuvlari, vaqt tugashi ovozlari, Sumeragi tashlab yuborgan xabarlar hamda tana va sinxronizatsiya so‘rovlari
 - har bir tasdiqlovchi bo‘yicha CPU, xotira, disk va tarmoqdan foydalanish
 
 Bu tafsilotlarsiz, TPS raqami hikoya sifatida qabul qilinishi kerak.

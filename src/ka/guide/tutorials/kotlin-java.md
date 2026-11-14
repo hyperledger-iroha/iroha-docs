@@ -1,9 +1,9 @@
 ---
 translation_locale: ka
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: f1f922b9820587cd4b599e7407698a47d468616670fee2922e4028147bc3e9b0
+translation_source_hash: 804ef15b3d5ecdfae9fd559d3f312772571938ed9872f4adbd251baa3471e4e2
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Kotlin, Android და ჯავა {#kotlin-android-and-java}
 
@@ -15,7 +15,7 @@ Kotlin SDK არის ჩვეულებრივი კლიენტი�
 | --- | --- | --- |
 |`org.hyperledger.iroha.sdk:core-jvm` |JAR |წმინდა Kotlin/JVM Norito, მონაცემთა მოდელი, კრიპტო, ტრანზაქცია, Torii და პროტოკოლის კოდი |
 |`org.hyperledger.iroha.sdk:client-android` |AAR |Android საკვანძო შენახვის, მოწყობილობის ტელემეტრიისა და JNI მხარდაჭერილი კლიენტთა ინტეგრაციის |
-|`org.hyperledger.iroha.sdk:offline-wallet-android` |AAR |Android ოფლაინ საფულის ტრანსპორტირება და ინტეგრაცია, რომელიც აგებულია `client-android`|
+|`org.hyperledger.iroha.sdk:kagemusha-wallet-android` |AAR |Android ოფლაინ საფულის ტრანსპორტირება და ინტეგრაცია, რომელიც აგებულია `client-android`|
 
 არტეფაქტები ჯერ არ არის გამოქვეყნებული Maven ცენტრალური. ააშენეთ და გამოაქვეყნეთ ისინი ადგილობრივად ჩაკეტილი Iroha წყარო რევიზიონიდან:
 
@@ -36,21 +36,21 @@ dependencies {
     // Android client features:
     // implementation("org.hyperledger.iroha.sdk:client-android:0.1.0")
     // Android offline-wallet features:
-    // implementation("org.hyperledger.iroha.sdk:offline-wallet-android:0.1.0")
+    // implementation("org.hyperledger.iroha.sdk:kagemusha-wallet-android:0.1.0")
 }
 ```
 
-`core-jvm` არ შეიცავს Android დამოკიდებულებებს. შეინახეთ Android კლიენტის კოდი და საკვანძო შენახვის კოდი `client-android` და გამოიყენეთ `offline-wallet-android` მხოლოდ Android-ის ოფლაინ ქაღალდისთვის და JNI ნაკადებისთვის.
+`core-jvm` არ შეიცავს Android დამოკიდებულებებს. შეინახეთ Android კლიენტის კოდი და საკვანძო შენახვის კოდი `client-android` და გამოიყენეთ `kagemusha-wallet-android` მხოლოდ Android-ის ოფლაინ ქაღალდისთვის და JNI ნაკადებისთვის.
 
 ## Kotlin და Java-ს თავსებადობა {#kotlin-and-java-compatibility}
 
-საზოგადოება API არის Kotlin-პირველად და უზრუნველყოფს Java თავსებადობა სადაც JVM მოთხოვნილ კლიენტებს ეს სჭირდებათ. ანალოგიური ცვლილებები ასახულია შესაბამის `java/` განხორციელება. ახალი Android ინტეგრაციები უნდა დაიწყოს: Kotlin ზემოდან არსებული არტეფაქტები.
+საჯარო API არის Kotlin-ზე ორიენტირებული და Java-დან გამომძახებლებისთვის კანონიკურ იმპლემენტაციას წარმოადგენს; `core-jvm`-ში Java-ის წყაროზე დაფუძნებული მომხმარებლის ტესტები მას პირდაპირ ამოწმებს. `java/` ხე შეიცავს დუბლირებულ იმპლემენტაციებს, რომლებიც ეტაპობრივად Kotlin-ის მოდულებში გადაიტანება და გაუქმდება. ახალი Android ინტეგრაციები ზემოთ მოცემული Kotlin არტეფაქტებით უნდა დაიწყოს.
 
 ყველა Kotlin მოდულები აღსრულება JDK 8 API კომპილიტაციის დროს თავსებადობა `-Xjdk-release=8`, მიუხედავად იმისა, რომ მშენებლობის ინსტრუმენტების ჯაჭვი თავად იყენებს JDK 21. არ გამოიყენოთ JDK 9+ APIs დაწვრილებით SDK კოდი.
 
 ## ააშენეთ და შეამოწმეთ {#build-and-test}
 
-ჩატარდეს პორტატული JVM ტესტები:
+გაუშვით JVM ტესტები იმავე წყაროდან აგებული `connect_norito_bridge` ბიბლიოთეკით `IROHA_NATIVE_LIBRARY_PATH`-ში და `kotlin-fixture-gen`-ით `IROHA_KOTLIN_FIXTURE_GEN_BIN`-ში, როგორც ეს Kotlin SDK-ის README-შია აღწერილი; მათ გარეშე ნატიურ კომპონენტებზე დამოკიდებული ტესტები ვერ გაივლის:
 
 ```bash
 cd kotlin
@@ -61,7 +61,7 @@ cd kotlin
 
 ```bash
 ./gradlew :client-android:assembleRelease \
-  :offline-wallet-android:assembleRelease --quiet
+  :kagemusha-wallet-android:assembleRelease --quiet
 ```
 
 ## ამჟამინდელი მოცულობა {#current-coverage}

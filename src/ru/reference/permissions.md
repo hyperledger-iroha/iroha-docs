@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /reference/permissions.md
-translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -16,7 +16,6 @@ translation_engine: bing-translator-llm+reviewed-delta
 |Токен разрешения|Категория|Операция|
 | --- | --- | --- |
 | `CanManagePeers` |сетевой узел|Зарегистрируйте, отмените регистрацию или иным образом управляйте сетевыми узлами.|
-| `CanManageLaneRelayEmergency` |сетевой узел|Управлять аварийными релейными элементами полосы движения.|
 | `CanRegisterDomain` |Домен|Зарегистрировать домен.|
 | `CanUnregisterDomain` |Домен|Отменить регистрацию домена.|
 | `CanModifyDomainMetadata` |Домен|Изменить метаданные домена.|
@@ -28,7 +27,7 @@ translation_engine: bing-translator-llm+reviewed-delta
 | `CanMintAssetWithDefinition` |Актив|выпускать активы для конкретного определения.|
 | `CanBurnAssetWithDefinition` |Актив|уничтожить активы для конкретного определения.|
 | `CanTransferAssetWithDefinition` |Актив|Передача активов для конкретного определения.|
-| `CanMintAsset` |Актив|выдать конкретный баланс актива.|
+| `CanMintAssetToAccount` |Актив|выдать конкретный баланс актива.|
 | `CanBurnAsset` |Актив|уничтожить конкретный баланс актива.|
 | `CanTransferAsset` |Актив|Перевести баланс конкретного актива.|
 | `CanRegisterNft` | NFT |Зарегистрируйте NFT.|
@@ -43,7 +42,7 @@ translation_engine: bing-translator-llm+reviewed-delta
 | `CanModifyTrigger` |Спусковой крючок|Изменить конфигурацию триггера.|
 | `CanModifyTriggerMetadata` |Триггер|Изменить метаданные триггера.|
 | `CanUpgradeExecutor` |Исполнитель|Обновите исполнитель времени выполнения программного обеспечения.|
-| `CanRegisterSmartContractCode` |Умный контракт|Зарегистрировать код смарт-контракта.|
+| `CanManageSmartContractCode` |Умный контракт|Удалять артефакты кода, на которые нет ссылок, и делегировать точки входа контрактов. Зарегистрированные аккаунты могут создавать проверенные артефакты без этого разрешения.|
 | `CanManageFeeSponsorProgram` | SORA Nexus | Управление программами, принадлежащими указанной учётной записи спонсора. |
 | `CanEnrollFeeSponsorProgram` | SORA Nexus | Управление бенефициарами одной конкретной программы спонсора. |
 

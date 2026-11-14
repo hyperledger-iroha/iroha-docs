@@ -1,9 +1,9 @@
 ---
 translation_locale: am
 translation_source: /blockchain/anonymous-transactions.md
-translation_source_hash: c5f10d1395e0b7704d29f4a535dd317b2cabe9c838208f76b7b776dd029089c0
+translation_source_hash: c498808369cd53406960e2dc7d88cea1d9c24affe1ba9a351a3192422959ed2e
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
 # ስም-አልባ ግብይቶች {#anonymous-transactions}
 
@@ -46,7 +46,7 @@ translation_engine: bing-translator-llm
 4. የህዝብ ገንዘቦችን በ`Shield` ይከላከሉ። የኪስ ቦርሳው ግብይቱን ከማቅረቡ በፊት ለተቀባዩ ማስታወሻ ክሪፕቶግራፊያዊ ኮሚትመንት ዋጋ እና የተመሰጠረ ጭነት ይፈጥራል።
 5. በ`ZkTransfer` በግል ያስተላልፉ። የኪስ ቦርሳው የግቤት ማስታወሻዎች ባለቤት መሆኑን፣ የግብአት እና የውጤት እሴቶቹ የቀሪ ሒሳብ መሆናቸውን እና እያንዳንዱ የወጪ ማስታወሻ በቅርብ ጊዜ ክሪፕቶግራፊያዊ ኮሚትመንት ዛፍ ላይ እንደተጣበቀ ማረጋገጫ ይፈጥራል።
 6. የንብረት ፖሊሲው ሲፈቅድ ብቻ መከላከያን ያንቀሳቅሱ። `Unshield` የህዝብ መጠን እና የተቀባዩ ሂሳብን ያሳያል፣ የግል ማስታወሻውን ያጠፋል እና የግል ለውጥ ውጤቶችን መፍጠር ይችላል።.
-7. ሚስጥራዊ ክስተቶችን፣ የማረጋገጫ መዝገቦችን፣ የዋጋ ሁኔታን እና ማንነታቸው ያልታወቁ የዋስትና መዝገቦችን በተተየቡ መጠይቆች እና Torii API የመጨረሻ ነጥቦችን በማንበብ ኦዲት ያድርጉ።
+7. ሚስጥራዊ ክስተቶችን፣ የማረጋገጫ መዝገቦችን እና የናሊፋየር ሁኔታን በተተየቡ መጠይቆች እና በTorii የመጨረሻ ነጥቦች በማንበብ ኦዲት ያድርጉ።
 
 ## CLI ምሳሌዎች {#cli-examples}
 
@@ -150,23 +150,6 @@ fn unshield_instruction(
 }
 ```
 
-## ስም-አልባ የንብረት Escrow {#anonymous-asset-escrow}
-
-ስም-አልባ የንብረት escrow ተመሳሳይ የተከለለ የማስተላለፊያ ማሽነሪዎችን ለተቀመጠ እሴት ይጠቀማል። ተዋዋይ ወገኖች እና የ escrow ሁኔታ አሁንም በ escrow መዝገብ ውስጥ ተመዝግበዋል, ነገር ግን የገንዘብ ድጋፍ, መለቀቅ, መሰረዝ, እና የመፍትሄ የፋይናንሺያል ማስተላለፊያ ክፍሎች የተከለሉ ኑሊፋየሮችን እና የውጤት ክሪፕቶግራፊያዊ ኮሚትመንቶችን ይጠቀማሉ።
-
-ለዝርዝር escrow ISI ባህሪ እና ምሳሌዎች፣ [ቤተኛ ንብረት Escrow](/am/blockchain/escrow.md#anonymous-escrow) ይመልከቱ።
-
-የሕይወት ዑደቱ የሚከተለው ነው-
-
-1. `OpenAnonymousAssetEscrow` የተከለሉ የገንዘብ ማስታወሻዎችን ያጠፋል እና አንድ የማስያዣ ክሪፕቶግራፊያዊ ኮሚትመንት ይፈጥራል።
-2. `AcceptAnonymousAssetEscrow` ገዢውን ይመዘግባል።
-3. `MarkAnonymousEscrowPaymentSent` ገዢው ክፍያ ከሰንሰለት ውጪ እንደላከ ይመዘግባል።
-4. `ReleaseAnonymousAssetEscrow` የ escrow ክሪፕቶግራፊያዊ ኮሚትመንት ዋጋን ለገዢ ውፅዓት ክሪፕቶግራፊያዊ ኮሚትመንቶችን ያጠፋል።
-5. `CancelAnonymousAssetEscrow` ክፍያው ምልክት በማይደረግበት ጊዜ የ escrow ክሪፕቶግራፊያዊ ኮሚትመንትን ወደ ሻጩ የውጤት ክሪፕቶግራፊያዊ ኮሚትመንቶች ይመልሳል።
-6. `OpenAnonymousEscrowDispute` እና `ResolveAnonymousEscrowDispute` አከራካሪ የሆኑ ማስያዣዎችን በማስረጃ ምስጠራ ሃሽ እና በመፍቺ ቁጥጥር ስር ያለ ክፍፍል ይያዛሉ።
-
-የ escrow መዝገቦችን እና ሁኔታዎችን ለመመርመር በ[መጠይቆች](/am/reference/queries.md#escrow-and-proof-records) ውስጥ የተዘረዘሩትን ማንነታቸው ያልታወቁ የዋስትና መጠይቆችን ይጠቀሙ።
-
 ## ሒሳብ {#math}
 
 ከታች ያለው ማስታወሻ ሚስጥራዊ የንብረት ፍሰትን ይገልጻል። ትግበራዎች ከንብረቱ ፖሊሲ እና አረጋጋጭ መዝገብ ቤት የነቃ ወረዳ እና መለኪያ መታወቂያዎችን ይጠቀማሉ፣ ስለዚህ ደንበኞች የክሪፕቶግራፊያዊ ኮሚትመንቶችን፣ ናሊፋየሮችን እና የማረጋገጫ ባይቶችን እንደ የኪስ ቦርሳ/አረጋጋጭ ግልጽ ያልሆኑ ውጤቶች አድርገው መያዝ አለባቸው።
@@ -235,7 +218,6 @@ $$
 - ቅጣቶች እና የውጤት ክሪፕቶግራፊያዊ ኮሚትመንቶች
 - የምስጠራ ማስታወሻዎች፣ የማረጋገጫ-ቁልፍ ማጣቀሻዎች እና አማራጭ የውሂብ መያዣ ምስጠራ ሃሽ
 - የህዝብ መጠን እና ተቀባይ መለያ ለ `Unshield`
-- ስም-አልባ የዋስትና ሻጭ፣ ገዢ፣ ሁኔታ፣ የጊዜ ማህተሞች እና ማስረጃ ምስጠራ ሃሽዎች
 
 ይህ ይፋዊ ሜታዳታ እርስዎ ለመጠበቅ እየሞከሩ ያለውን የንግድ ግንኙነት እንዳያሳይ አፕሊኬሽኖችን ይንደፉ።
 

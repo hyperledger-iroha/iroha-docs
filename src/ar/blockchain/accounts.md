@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /blockchain/accounts.md
-translation_source_hash: adc98cbf1fcadae4415d03dcc262eb03f8c95b429527e403d230934ae2f3243c
+translation_source_hash: d956bfb8c698fa463ef9fa84a91d50cf0e2100885eba670121ad78753f87d88d
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -44,7 +44,7 @@ private_key_file = "/absolute/path/to/private.key"
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+  | jq -r '.items[] | [.id, (.label // "-")] | @tsv'
 ```
 
 لفحص أصول الحساب، انسخ معرف الحساب من الاستدعاء الفني الأول وقم بترميزه باستخدام URL قبل وضعه في المسار. يقوم هذا المقطع Python بذلك للحساب المدرج أولاً:
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-هذه عمليات قراءة عامة. إنشاء حساب أو تحديثه معاملة موقعة، ويتطلب إعداد Taira مع تمويل الحساب من خدمة التمويل التجريبي كما هو موضح في [الاتصال بمساحات بيانات SORA Nexus](/ar/get-started/sora-nexus-dataspaces.md).
+هذه عمليات قراءة عامة. إنشاء حساب أو تحديثه معاملة موقعة، ويتطلب إعداد Taira مع تمويل الحساب من خدمة التمويل التجريبي كما هو موضح في [التطوير على SORA Nexus باستخدام Taira وMinamoto](/ar/get-started/sora-nexus-dataspaces.md).
 
 ## التسجيل والأذونات {#registration-and-permissions}
 

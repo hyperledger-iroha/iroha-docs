@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /blockchain/consensus.md
-translation_source_hash: 06b3589a71dcb08aed5589290f4c9af9cb46b5cee0f875ae542043543360f623
+translation_source_hash: ebdf564d607b96f7f186637044d80b2f1bb7c9fbe6080a061d27d02ec6f8cf62
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -28,7 +28,7 @@ Hər iki icazəli və Nominated Proof-of-Stake (NPoS) yerləşdirmələrində ey
 
 Təsdiq edənlər yalnız yerli olaraq reproduksiya edə biləcəkləri məlumatları imzalayırlar. Səsvermədən əvvəl, təsdiq edən yoxlayır ki, təklif gözlənilən zəncire, hündürlüyə və baxışa aiddir; əməliyyat imzaları və limitlər protokol qaydalarına uyğundur; icra yolunun istiqamətləndirilməsi və icraçı təsdiqi deterministdir; və yükün icra olunmasının gözlənilən vəziyyət keçidini yaratdığını. Əgər yerli nəticə fərqlidirsə, təsdiqçi səs vermək əvəzinə təklifi rədd edir.
 
-Səsvermələr kiçik imzalı konsensus mesajlarıdır. Onlar təklif olunan blok, hündürlük, baxış və təsdiqləyici şəxsiyyətinə istinad edir. Yoxlanılmış imzalar konsensus hazırlığı və yekunlaşdırma sertifikatlarını təşkil edir. Razılaşma yekunlaşdırma sertifikatı, kifayət qədər təstiqçi eyni blok üçün eyni nəticəni müşahidə etdiyini davamlı şəkildə sübut edən sənəddir. Hər bir təstiqçi özünü göndərir Tam komitəyə hazırlıq və yekunlaşdırma mərhələsi səsvermələri; hər hansı bir təsdiqləyici tələb olunan bərabər səsvermələri yığa və nəticədə yaranmış sertifikatı yayımlaya bilər.
+Səsvermələr kiçik imzalı konsensus mesajlarıdır. Onlar təklif olunan bloka, hündürlüyə, baxışa və təsdiqləyicinin kimliyinə istinad edir. Yoxlanılmış imzalar hazırlıq və yekunlaşdırma kvorum sertifikatlarını təşkil edir. Yekunlaşdırma sertifikatı kifayət qədər təsdiqləyicinin eyni blok üçün eyni nəticəni müşahidə etdiyinin davamlı sübutudur. A dəstinin təsdiqləyiciləri adətən Prepare və Commit səslərini raundun proksi quyruğuna göndərir; o, tam olaraq tələb olunan bərabər səsləri birləşdirir və sertifikatı yayımlayır. Sertifikat gecikərsə, B dəstinin təsdiqləyiciləri də proksi quyruğuna səs göndərir; son çarə olaraq hər təsdiqləyici öz səsini yayımlayır və istənilən təsdiqləyici sertifikatı birləşdirə bilər.
 
 ### Kvorum və müşahidəçilər {#quorum-and-observers}
 
@@ -79,14 +79,14 @@ Sabitlənmiş [zolaq tətbiqinə](https://github.com/hyperledger-iroha/iroha/blo
 
 ## Məlumatın mövcudluğu və yükün bərpası {#data-availability-and-payload-recovery}
 
-Sumeragi V1 qlobal yükün əlçatanlığını imzalanmış RS16 `PayloadManifest` və `PayloadChunk` mesajları ilə təmin edir. Lider imzalanmış manifesti tam komitəyə göndərir və əvvəlcə deterministik parçaları Set A dəstinə paylayır. Təsdiqləyici yalnız kanonik gövdəni yenidən qurduqdan, manifesti və parça həşlərini yoxladıqdan, gövdəni davamlı saxladıqdan və deterministik validasiyanı tamamladıqdan sonra Prepare səsi verə bilər. Sürətli yol dayanarsa, bərpa parça çatdırılmasını Set B dəstinə genişləndirir. Sertifikatlaşdırılmış gövdənin bərpası və blok sinxronizasiyası, həmyaşıd qovşaq gövdəni almadan əvvəl yekunluğu öyrəndikdə, məhdudlaşdırılmış bərpa yolunu təmin edir.
+Sumeragi V1 qlobal yükün əlçatanlığını imzalanmış RS16 `PayloadManifest` və `PayloadChunk` mesajları ilə təmin edir. Lider imzalanmış manifesti və hər imzalanmış sətri bütün digər komitə üzvlərinə və növbəti komitəyə qoşulan üzvlərə göndərir. Təsdiqləyici yalnız kanonik gövdəni yenidən qurduqdan, manifesti və parça həşlərini yoxladıqdan, gövdəni davamlı saxladıqdan və deterministik validasiyanı tamamladıqdan sonra Prepare səsi verə bilər. Sətirləri çatışmayan həmyaşıd qovşaq onları `PayloadRequest` ilə sorğulayır. Sertifikatlaşdırılmış gövdənin bərpası və blok sinxronizasiyası, həmyaşıd qovşaq gövdəni almadan əvvəl yekunluğu öyrəndikdə, məhdudlaşdırılmış bərpa yolunu təmin edir.
 
 Hər zolaq instansiyası öz autentifikasiya edilmiş əlçatanlıq və sertifikat kontekstindən istifadə edir. Qlobal birləşmə yoxlamaları onun sertifikatlaşdırılmış paketini və ilkin yükünü gözlənilən zolaq nəslinə və dayaq nöqtəsinə bağlayır. Həmyaşıd qovşaq qlobal yekunluğu yalnız uyğun qlobal yük və etibarlı CommitQC yerli olaraq mövcud olduqda tətbiq edir.
 
 Müstəqil RBC API son nöqtəsi yerinə autentifikasiya olunmuş operator səthlərindən istifadə edin:
 
 - `iroha --operator-private-key-file <path> --output-format text ops sumeragi status` səlahiyyətli hündürlüyü, baxışı, mərhələni, sertifikatları və canlılıq vəziyyətini bildirir.
-- `iroha --operator-private-key-file <path> --output-format text ops sumeragi diagnostics` növbə, emal konveyeri, NPoS, zolaq və məlumat məkanı üzrə səlahiyyətli vəziyyət mənbəyi sayılmayan diaqnostika verir; buna zolaq yükünün sahibliyi də daxildir.
-- Prometheus siqnalları kimi `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total` və `sumeragi_da_gate_satisfied_total` itkin-bədən bərpasını, məlumat-mövcudluq qapılarını və mesajın işlənməsini ayırır; bax [Performans və göstəricilər](/az/guide/advanced/metrics.md).
+- `iroha --operator-private-key-file <path> --output-format text ops sumeragi diagnostics` əməliyyat növbəsinə təzyiq, NPoS seçki vəziyyəti və zolaq idarəetməsi manifestinin statusu üzrə səlahiyyətli vəziyyət mənbəyi sayılmayan diaqnostika verir.
+- `sumeragi_fetch_requests_total` (itkin gövdələr üçün `kind="body"`, geriləməni aradan qaldırmaq üçün `kind="sync"`), `sumeragi_view_changes_total`, `sumeragi_round_stage` və `sumeragi_dropped_total` kimi hər instansiya üzrə Prometheus sıraları `lane` etiketi daşıyır və itkin gövdənin bərpasını, baxış dəyişikliklərini və məhdud növbədən atılmaları ayırır; bax [Performans və göstəricilər](/az/guide/advanced/metrics.md).
 
 Zolaq blok anbarları birləşmə və bərpa üçün lazım olan sertifikatlaşdırılmış paketləri və mənbə qeydlərini saxlayır. Onların həyat dövrü təsdiqlənmiş zolaq nəslinə uyğun gedir; saxlama qovluğunun adı yeni zolağa və ya icra kökünə səlahiyyət vermir.

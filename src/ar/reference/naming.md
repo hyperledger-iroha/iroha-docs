@@ -1,9 +1,9 @@
 ---
 translation_locale: ar
 translation_source: /reference/naming.md
-translation_source_hash: 1d4d698597542d9c84284d0b87dae8a1825d3ab39ff38dd32bb204d41291c83d
+translation_source_hash: 15d095e674edf780c5859abe6f4615d53338e3304e8eedfa494017911204d4b6
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # اتفاقيات التسمية {#naming-conventions}
 
@@ -15,10 +15,9 @@ translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
    - `#` محجوز لأسماء مستعارة لتعريف الأصول والقيم الحرفية لرصيد الأصول
    - `::` مخصص لأسماء العقود المستعارة
    - `.` مخصص لتأهيل النطاق ومساحة البيانات
-   - `$` مخصص للأشكال النصية ذات نطاق الزناد
-   - `%` مخصص للأشكال النصية ذات نطاق المصادق
+   - `$` مخصص لمعرفات NFT مثل `name$domain.dataspace`
 
-2. الحد الأقصى لعدد الأحرف (بما في ذلك الأحرف UTF-8) التي يمكن أن يحتويها الاسم يقتصر على عاملين: `[0, u32::MAX]` والمساحة المخصصة المتوفرة في المكدس حاليا.
+2. يجب أن يكون الاسم غير فارغ، وبصيغة NFC في يونيكود، وألا يتجاوز طوله 255 بايت بترميز UTF-8، وأن يكون خاليًا من المسافات البيضاء وأحرف التحكم وأحرف التحكم في الاتجاه الثنائي.
 
 ## جرّبه على Taira {#try-it-on-taira}
 

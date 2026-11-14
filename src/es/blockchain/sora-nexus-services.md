@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: 33617bc89d0aef5c2a086f45a216201d8980123f717e68f1e1a95eadeb906eb0
+translation_source_hash: dff2584fd47d6e1426ec18aca2d2003a7fdca4b9882296de484418f8c17806fe
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -90,13 +90,12 @@ Aitai es la vía de aplicaciones de SORA Nexus para liquidaciones de tipo mercad
 
 El depósito en garantía nativo mantiene la custodia en el libro mayor de la blockchain. El vendedor abre una oferta con `OpenAssetEscrow`, el comprador acepta y marca el pago fuera de la cadena con `AcceptAssetEscrow` y `MarkEscrowPaymentSent`, y el vendedor libera con `ReleaseAssetEscrow` o cancela antes de que se marque el pago. Si el comprador y el vendedor no están de acuerdo, cualquiera de las partes puede abrir una disputa y un resolutor con `CanResolveEscrowDispute` puede dividir el monto bloqueado.
 
-Para el ciclo de vida completo, bloqueos de activos genéricos, depósito en garantía anónimo, consultas, eventos y ejemplos Rust, consulte [Custodia de Activos Nativos](/es/blockchain/escrow.md).
+Para el ciclo de vida completo, bloqueos de activos genéricos, depósito en garantía condicional, consultas, eventos y ejemplos Rust, consulte [Custodia de Activos Nativos](/es/blockchain/escrow.md).
 
 |Superficie Aitai|Úsalo para|
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`                                                    |Ofertas de activos numéricos transparentes, incluidos los flujos de liquidación denominados en XOR.|
-| `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`       |Las ofertas protegidas usan adjuntos de prueba para movimientos de financiamiento y cierre.|
-| `OpenEscrowDispute`, `ResolveEscrowDispute`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute`                                                    |Entrada de disputa y resolución al estilo judicial.|
+| `OpenEscrowDispute`, `ResolveEscrowDispute`                                                                                                                                |Entrada de disputa y resolución al estilo judicial.|
 | `FindAssetEscrowById`, `FindAssetEscrowsBySeller`, `FindAssetEscrowsByBuyer`, `FindAssetEscrowsByStatus` |Páginas de estado de la aplicación, trabajos de conciliación y herramientas de soporte.|
 | `EscrowEventFilter` |Suscripciones de depósito en garantía en vivo por ID de depósito, vendedor, comprador, estado o tipo de evento.|
 | Kotodama `escrow_open_offer`, `escrow_accept`, `escrow_mark_payment_sent`, `escrow_release`, `escrow_cancel`, `escrow_open_dispute`, `escrow_resolve_dispute` | Kotodama contratos llaman respaldados por los V1 syscalls de depósito en garantía. |
@@ -492,7 +491,7 @@ típica SoraFS los usos incluyen activos de aplicaciones estáticas, compilacion
 
 Taira es la red de prueba pública canónica SoraFS. Su perfil de validador registrado utiliza la cadena `fc56984b-2be7-431d-840e-21514d1883f0` y el discriminante de cadena `369`. El `NetworkId` a continuación es la identidad exacta del génesis de la cadena de bloques Taira actual fijada. Un reinicio de Taira puede cambiar ese hash criptográfico mientras se mantiene la etiqueta de la cadena, así que actualízalo desde el perfil de implementación firmado actual y nunca lo derives de la cadena UUID. Los ajustes efectivos de Taira en SoraFS son:
 
-- ID de red: `hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94`
+- ID de red: `hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774`
 - base de puerta de enlace URL: `https://taira.sora.org`
 - pin Torii URLs: `https://taira-validator-1.sora.org` a través de `https://taira-validator-4.sora.org`
 - capacidades de descubrimiento: `torii_gateway`, `chunk_range_fetch` y `potr_mldsa`
@@ -502,7 +501,7 @@ Taira es la red de prueba pública canónica SoraFS. Su perfil de validador regi
 ```toml
 [sorafs.storage]
 enabled = false
-max_capacity_bytes = 13743895347
+max_capacity_bytes = 2684354560
 
 [sorafs.discovery]
 discovery_enabled = true
@@ -587,7 +586,7 @@ cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
   --summary-out=artifacts/site.car-summary.json
 
 : "${TAIRA_AUTHORITY:?set a funded Taira I105 account}"
-export TAIRA_NETWORK_ID='hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94'
+export TAIRA_NETWORK_ID='hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774'
 export TAIRA_PIN_TORII_URL=https://taira-validator-1.sora.org
 export TAIRA_PRIVATE_KEY_FILE="${TAIRA_PRIVATE_KEY_FILE:-./secrets/taira-authority.ed25519}"
 export TAIRA_RETENTION_EPOCH=$(( $(date -u +%s) + 86400 ))

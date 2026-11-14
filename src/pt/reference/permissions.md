@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /reference/permissions.md
-translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -16,7 +16,6 @@ As verificações de permissão são impostas pelo validador de tempo de execuç
 |Token de permissão|Categoria|Operação|
 | --- | --- | --- |
 | `CanManagePeers` |par de rede|Registrar, cancelar registro ou gerenciar pares de rede de outra forma.|
-| `CanManageLaneRelayEmergency` |par de rede|Gerenciar controles de relé da faixa de emergência.|
 | `CanRegisterDomain` |Domínio|Registrar um domínio.|
 | `CanUnregisterDomain` |Domínio|Cancelar o registro de um domínio.|
 | `CanModifyDomainMetadata` |Domínio|Modificar metadados do domínio.|
@@ -28,7 +27,7 @@ As verificações de permissão são impostas pelo validador de tempo de execuç
 | `CanMintAssetWithDefinition` |Ativo|emitir ativos para uma definição específica.|
 | `CanBurnAssetWithDefinition` |Ativo|Queimar ativos para uma definição específica.|
 | `CanTransferAssetWithDefinition` |Ativo|Transferir ativos para uma definição específica.|
-| `CanMintAsset` |Ativo|emitir um saldo específico de ativo.|
+| `CanMintAssetToAccount` |Ativo|emitir um saldo específico de ativo.|
 | `CanBurnAsset` |Ativo|Queime um saldo de ativo específico.|
 | `CanTransferAsset` |Ativo|Transferir um saldo de ativo específico.|
 | `CanRegisterNft` | NFT |Registrar um NFT.|
@@ -43,7 +42,7 @@ As verificações de permissão são impostas pelo validador de tempo de execuç
 | `CanModifyTrigger` |Gatilho|Modificar configuração do gatilho.|
 | `CanModifyTriggerMetadata` |Gatilho|Modificar metadados do gatilho.|
 | `CanUpgradeExecutor` |Executor|Atualize o executor de tempo de execução do software.|
-| `CanRegisterSmartContractCode` |Contrato inteligente|Registrar código de contrato inteligente.|
+| `CanManageSmartContractCode` |Contrato inteligente|Remover artefatos de código não referenciados e delegar pontos de entrada de contratos. Contas registradas podem criar artefatos verificados sem ela.|
 | `CanManageFeeSponsorProgram` | SORA Nexus |Administrar programas pertencentes à conta exata do patrocinador.|
 | `CanEnrollFeeSponsorProgram` | SORA Nexus |Gerenciar beneficiários de um programa específico de um patrocinador.|
 

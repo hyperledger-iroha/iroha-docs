@@ -1,9 +1,9 @@
 ---
 translation_locale: es
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 22d763aadf33d331fb9c16d3927e84e8bdb88829f3d73b974902daa8fde3c1b4
+translation_source_hash: 89d0874ca7ffe82099a1443d48713efccfbf3ec8042c2dde2ec8ae81717fb25b
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Musubi Kotodama Paquetes {#musubi-kotodama-packages}
 
@@ -31,7 +31,7 @@ Los identificadores de lanzamiento exactos agregan una versión:
 namespace/package@version
 ```
 
-No hay un `@` inicial antes de un espacio de nombres. Un espacio de nombres es o bien una raíz de espacio de datos como `universal` o un espacio de datos calificado por dominio como `dex.universal`. El libro mayor de la blockchain vincula ese espacio de nombres estructural a un espacio de datos de hogar estable antes de que se pueda reclamar un paquete.
+No hay un `@` inicial antes de un espacio de nombres. Un espacio de nombres es o bien una raíz de espacio de datos como `universal` o un espacio de nombres calificado por dominio como `dex.universal`. El libro mayor vincula ese espacio de nombres estructural a un espacio de datos de origen estable antes de que se pueda reclamar un paquete.
 
 ## manifiesto técnico y archivo de bloqueo {#manifest-and-lockfile}
 
@@ -67,10 +67,10 @@ Taira es la testnet pública para este flujo de trabajo. Comience desde una conf
 ```toml
 torii_url = "https://taira.sora.org/"
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
-network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 
 [musubi.fetch]
-network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 client_id = "musubi-taira"
 request_timeout_ms = 30000
 

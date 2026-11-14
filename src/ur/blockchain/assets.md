@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /blockchain/assets.md
-translation_source_hash: 4d0a3f54a0c70d08d11160b9ec66d6538aa2c49c7771a13e4a070b61a9cb3e4b
+translation_source_hash: f5f0eb99e76287db695cc21b8580fd2a9b4dc2a989237c1a1d3d7333c14561ce
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -22,6 +22,7 @@ Iroha اثاثہ ایک اکاؤنٹ کے زیر انتظام عددی بیلن�
 - `logo`: اختیاری `SoraFS` URI
 - `metadata`: تعمیری کلیدی قدر میٹا ڈیٹا۔
 - `balance_scope_policy`: آیا بیلنس عالمی ہیں یا کسی ڈیٹا اسپیس تک محدود
+- `owning_domain`: ڈومین کی ملکیت والی تعریف کا مالک ڈومین؛ کسی ڈیٹا اسپیس میں براہِ راست رجسٹر کی گئی تعریفوں کے لیے موجود نہیں ہوتا
 - `owned_by`: وہ اکاؤنٹ جس نے اس تعریف کو رجسٹر کیا یا اس کا مالک ہے۔
 - `total_quantity`: جاری کردہ کل مقدار
 - `confidential_policy`: حفاظتی اثاثوں کے آپریشنز کی پالیسی
@@ -33,7 +34,7 @@ Iroha اثاثہ ایک اکاؤنٹ کے زیر انتظام عددی بیلن�
 ایک `Asset` میں شامل ہیں:
 
 - `id`: ایک `AssetId`، جس میں اثاثہ کی تعریف، ہولڈر اکاؤنٹ اور اختیاری بیلنس کے دائرہ کار کو یکجا کیا جاتا ہے۔
-- `value`: ایک `Numeric` بیلنس
+- `value`: ایک `Quantity` بیلنس
 
 اثاثہ رکھنے والے کا اکاؤنٹ کینونیکل اور ڈومین سے آزاد ہے۔ اثاثے کی تعریف کو ڈیٹا اسپیس سے مکمل طور پر متعین ڈومین، مثلاً `payments.universal`، کے تحت پیش کیا جا سکتا ہے۔
 
@@ -88,7 +89,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-تینوں مثالیں صرف پڑھنے کی کارروائیاں ہیں۔ Taira پر اثاثے بنانے، جلانے یا منتقل کرنے کے لیے فوسیٹ سے فنڈ شدہ اکاؤنٹ اور [SORA Nexus ڈیٹا اسپیسز سے اتصال](/ur/get-started/sora-nexus-dataspaces.md) میں بیان کردہ حفاظتی جانچ والا عمل استعمال کریں۔
+تینوں مثالیں صرف پڑھنے کی کارروائیاں ہیں۔ Taira پر اثاثے بنانے، جلانے یا منتقل کرنے کے لیے فوسیٹ سے فنڈ شدہ اکاؤنٹ اور [Taira اور Minamoto کے ساتھ SORA Nexus پر ایپلیکیشن تیار کرنا](/ur/get-started/sora-nexus-dataspaces.md) میں بیان کردہ حفاظتی جانچ والا عمل استعمال کریں۔
 
 Taira پر فیس ادا کرنے والی اثاثے کی مثال کے لیے پہلے [Taira پر ٹیسٹ نیٹ XOR حاصل کریں](/ur/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) میں پیشگی تیاری والے فوسیٹ عمل سے دستخط کنندہ کا اکاؤنٹ فنڈ کریں۔ پھر `ledger asset mint`، `ledger asset burn` اور `ledger asset transfer` کمانڈز میں `--fee-payer authority` دیں؛ CLI دستخط سے پہلے Taira کے فیس والے اثاثے میں درست فیس معلوم کرتا ہے:
 

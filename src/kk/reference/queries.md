@@ -1,9 +1,9 @@
 ---
 translation_locale: kk
 translation_source: /reference/queries.md
-translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
+translation_source_hash: baa9726c7ce7d14b8dd17e77447ef72233ca9ed779367d9a190aa8dde7da41ac
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Сұраулар {#queries}
 
@@ -56,7 +56,7 @@ Iroha сұраулар блокчейн тіркелімінің күйін өз
 |Сұрау|Мақсат|
 | --- | --- |
 | `FindAssets` |Активтер қалдықтарын тізімдеңіз.|
-| `FindAssetsDefinitions` |Активтердің анықтамаларын тізімдеңіз.|
+| `FindAssetDefinitions` |Активтердің анықтамаларын тізімдеңіз.|
 | `FindAssetsByAccountId` |Есепшотта сақталатын активтерді тізімдеңіз.|
 | `FindAssetById` |`AssetId` бойынша бір актив қалдығын табыңыз.|
 | `FindAssetDefinitionById` |ID бойынша бір актив анықтамасын табыңыз.|
@@ -66,7 +66,7 @@ Iroha сұраулар блокчейн тіркелімінің күйін өз
 
 ## Эскроу және дәлел жазбалары {#escrow-and-proof-records}
 
-Эскроу сұраулары [түпнұсқа актив депозиті ISIs](/kk/blockchain/escrow.md) жасаған жазбаларды, соның ішінде нарық эскроулары, жалпы активтарды құлыптау және анонимді эскроу жазбаларын тексереді.
+Эскроу сұраулары [түпнұсқа актив депозиті ISIs](/kk/blockchain/escrow.md) жасаған жазбаларды, соның ішінде нарықтық эскроуларды, жалпы активтерді құлыптауды және шартты эскроуларды тексереді.
 
 |Сұрау|Мақсат|
 | --- | --- |
@@ -75,11 +75,6 @@ Iroha сұраулар блокчейн тіркелімінің күйін өз
 | `FindAssetEscrowsBySeller` |Сатушы бойынша активтік кепілдіктерді тізімдеу.|
 | `FindAssetEscrowsByBuyer` |Сатып алушы бойынша активтер депозиттерін тізімдеу.|
 | `FindAssetEscrowsByStatus` |Активтердің сенімхаттарын мәртебесіне қарай тізімдеңіз.|
-| `FindAnonymousAssetEscrows` |Анонимдік активтерді сенімхат жазбаларын тізімдеңіз.|
-| `FindAnonymousAssetEscrowById` |ID бойынша бір анонимдік актив эскроуын табыңыз.|
-| `FindAnonymousAssetEscrowsBySeller` |Сатушы бойынша анонимді депозиттерді тізімдеу.|
-| `FindAnonymousAssetEscrowsByBuyer` |Сатып алушы бойынша анонимді сақтауды тізімдеңіз.|
-| `FindAnonymousAssetEscrowsByStatus` |Статус бойынша анонимді депозиттерді тізімдеңіз.|
 | `FindProofRecordById` |ID бойынша бір дәлел жазбасын табыңыз.|
 | `FindProofRecords` |Дәлелдеу жазбаларын тізімдеңіз.|
 | `FindProofRecordsByBackend` |Дәлелдің артқы бөлімі үшін дәлел жазбаларын тізімдеңіз.|
@@ -89,15 +84,14 @@ Iroha сұраулар блокчейн тіркелімінің күйін өз
 
 |Сұрау|Мақсат|
 | --- | --- |
-| `FindRepoAgreements` |Тізімде сақталған репозиторий келісімдерін блокчейнде көрсетіңіз.|
+| `FindRepoAgreements` |Блокчейнде сақталған репо және кері репо келісімдерін тізімдеңіз.|
 | `FindTwitterBindingByHash` |Твиттерді шифрлық хэш арқылы байланыстыруды шешіңіз.|
 | `FindDaPinIntentByTicket` |Билетті пайдаланып деректердің қолжетімділігі пинін іздеңіз.|
 | `FindDaPinIntentByManifest` |Техникалық манифест сілтемесі арқылы PIN ниетін тауып алыңыз.|
 | `FindDaPinIntentByAlias` |Лақап аты бойынша PIN ниетін табыңыз.|
 | `FindDaPinIntentByLaneEpochSequence` |Өткізу жолы, кезең және тізбек бойынша PIN ниетін табыңыз.|
-| `FindLaneRelayEnvelopeByRef` |Расталған жол-қайта өткізгіш деректер контейнерін табыңыз.|
 | `FindSorafsProviderOwner` |SoraFS провайдерінің иесін анықтаңыз.|
-| `FindDataspaceNameOwnerById` |Деректер кеңістігінің ат иесін анықтаңыз.|
+| `FindDataspaceNameOwnerById` |Деректер кеңістігі лақап атының белсенді SNS иесін анықтаңыз.|
 | `FindMusubiExactPackageV1` |Бір нақты пакет жазбасы мен оның ағымдағы түзетулерін оқыңыз.|
 | `FindMusubiExactReleaseV1` |Бір нақты шығарылым снэпшотын оқыңыз.|
 | `FindMusubiProviderBundleAttestationV1` |Бір провайдердің архив-бандл растамасын оқыңыз.|
@@ -117,7 +111,7 @@ Iroha сұраулар блокчейн тіркелімінің күйін өз
 | `FindActiveTriggerIds` |Белсенді триггер идентификаторларын тізімдеңіз.|
 | `FindTriggers` |Триггерлер тізімін жасаңыз.|
 | `FindTriggerById` |ID арқылы бір триггерді табыңыз.|
-| `FindContractManifestByCodeHash` |Кодтың криптографиялық хэшінен смарт-келісімшардың техникалық сипаттамасын табыңыз.|
+| `FindContractManifestByArtifactId` |Смарт-келісімшарт манифестін оның деректер кеңістігіндегі артефакт ID-і бойынша табыңыз.|
 | `FindTransactions` |Аяқталған мәмілелердің тізімін жасаңыз.|
 | `FindBlocks` |Блоктарды тізімдеңіз.|
 | `FindBlockHeaders` |Блок тақырыптарын тізімдеу.|

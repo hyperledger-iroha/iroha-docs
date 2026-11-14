@@ -1,9 +1,9 @@
 ---
 translation_locale: az
 translation_source: /cookbook/nfts.md
-translation_source_hash: b6a85c2feb197588e3358a785e10280a687af3951d52de4e6b8d96eab5de873c
+translation_source_hash: 7d7a1ba8ff8678f420a6237bd0d074d2d197bf4349989c0c55f05e9769d15da7
 translation_status: machine-validated
-translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # NFTs {#nfts}
 
@@ -15,7 +15,7 @@ Taira NFT vəziyyətini yoxlayın, sonra bir unikal NFT i yaradılmış lokal ş
 
 - `curl`, `jq`, Python 3.11 və daha sonrakı versiyaları, həmçinin cari `iroha` CLI.
 - Yalnız oxumaq üçün Taira girişi.
-- Yazmalar üçün: [Iroha-nı işə salın](/az/get-started/launch-iroha.md) səhifəsindəki kimi `kagami localnet generate --peers 4 --out-dir ./localnet` ilə yaradılmış, `./localnet/client.toml` və `http://127.0.0.1:8080` ünvanında Torii olan lokal şəbəkə, üstəlik imzalayanına məxsus NFT domeni (2-ci addıma baxın).
+- Yazmalar üçün: `kagami localnet generate --peers 4 --out-dir ./localnet` ilə yaradılmış, `./localnet/client.toml` və `http://127.0.0.1:8080` ünvanında Torii olan lokal şəbəkə, üstəlik imzalayanına məxsus NFT domeni (2-ci addıma baxın).
 
 ## Addımlar {#steps}
 

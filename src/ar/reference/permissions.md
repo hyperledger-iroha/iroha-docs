@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /reference/permissions.md
-translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -16,7 +16,6 @@ translation_engine: bing-translator-llm+reviewed-delta
 |رمز الإذن|الفئة|عملية|
 | --- | --- | --- |
 | `CanManagePeers` |نظير الشبكة|سجّل أو ألغِ التسجيل أو قم بإدارة نظراء الشبكة بطريقة أخرى.|
-| `CanManageLaneRelayEmergency` |نظير الشبكة|إدارة ضوابط تحويل الحارة الطارئة.|
 | `CanRegisterDomain` |نطاق|قم بتسجيل نطاق.|
 | `CanUnregisterDomain` |نطاق|إلغاء تسجيل نطاق.|
 | `CanModifyDomainMetadata` |نطاق|تعديل بيانات تعريف النطاق.|
@@ -28,7 +27,7 @@ translation_engine: bing-translator-llm+reviewed-delta
 | `CanMintAssetWithDefinition` |أصل|إصدار الأصول لتعريف محدد.|
 | `CanBurnAssetWithDefinition` |أصل|تدمير الأصول لتعريف محدد.|
 | `CanTransferAssetWithDefinition` |أصل|نقل الأصول لتعريف محدد.|
-| `CanMintAsset` |أصل|إصدار رصيد أصل محدد.|
+| `CanMintAssetToAccount` |أصل|إصدار رصيد أصل محدد.|
 | `CanBurnAsset` |أصل|تدمير رصيد أصل محدد.|
 | `CanTransferAsset` |أصل|نقل رصيد أصل محدد.|
 | `CanRegisterNft` | NFT |سجّل NFT.|
@@ -43,7 +42,7 @@ translation_engine: bing-translator-llm+reviewed-delta
 | `CanModifyTrigger` |زناد|تعديل تكوين المحفز.|
 | `CanModifyTriggerMetadata` |زناد|تعديل بيانات تعريف المحفز.|
 | `CanUpgradeExecutor` |المنفذ|قم بترقية منفذ تنفيذ بيئة تشغيل البرنامج.|
-| `CanRegisterSmartContractCode` |العقد الذكي|تسجيل رمز العقد الذكي.|
+| `CanManageSmartContractCode` | العقد الذكي | إزالة عناصر الشيفرة غير المشار إليها وتفويض نقاط دخول العقود. يمكن للحسابات المسجلة إنشاء عناصر متحقق منها دون هذا الإذن. |
 | `CanManageFeeSponsorProgram` | SORA Nexus | إدارة البرامج التي يملكها حساب الراعي المحدد بدقة. |
 | `CanEnrollFeeSponsorProgram` | SORA Nexus | إدارة المستفيدين من برنامج رعاية واحد محدد بدقة. |
 

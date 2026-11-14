@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /guide/configure/genesis.md
-translation_source_hash: 91be089c82a76991e35a43e1541f9e069fdf70d3fb5de2492b985c06c78a2372
+translation_source_hash: 2a4a43b6ac873cc0c860631e307e52b047ba6a08691bf3e4c5872cc22c81a0bd
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -9,7 +9,7 @@ translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-so
 
 ブロックチェーンのジェネシスは初期のチェーン状態を定義します。編集可能なソースは JSON 技術マニフェストであり、Iroha 3 ノードは署名済みの Norito トランザクションファイルを消費します。
 
-::: details デフォルトのブロックチェーンジェネシス技術マニフェスト
+::: details デフォルトのジェネシスソーステンプレート (defaults/genesis.template.json)
 
 <<< @/snippets/genesis.json
 
@@ -36,7 +36,7 @@ public_key = "ed0120..."
 expected_hash_file = "./genesis.expected_hash"
 ```
 
-ネットワーク内のすべてのピアで、署名済みジェネシストランザクションとジェネシス公開鍵が一致する必要があります。期待ハッシュのファイルは新規起動時にも再起動時にも必要であり、`kagami genesis sign --expected-hash-out` がこのファイルを書き出します。
+ネットワーク内のすべてのピアで、署名済みジェネシストランザクションとジェネシス公開鍵が一致する必要があります。新規起動でも再起動でも、すべての起動で期待ハッシュが必要です。`expected_hash_file` またはインラインの `expected_hash` のどちらか一方だけを設定してください。`kagami genesis sign --expected-hash-out` がこのファイルを書き出します。
 
 ## ブロックチェーンのジェネシスに署名する {#signing-genesis}
 
@@ -52,7 +52,7 @@ cargo run --bin kagami -- genesis sign ./genesis.json \
 
 `GENESIS_PRIVATE_KEY_FILE` は、所有者保持モード-`0600` の単一リンク通常ファイルであり、1 つの正規のプライベートキー多重ハッシュと最終改行を含む必要があります。Kagami はシンボリックリンクを拒否し、コマンドライン上で生のブロックチェーンのジェネシスプライベートキーを決して受け入れません。
 
-NPoS または SORA Nexus のプロファイルでは、生成されたプロファイルが要求するトポロジーと BLS の所有証明を含めてください。Kagami の `localnet generate`、`wizard`、`sora-network generate` コマンドがこれらを自動的に処理します。
+署名済みのジェネシスは、パーミッション型か NPoS かを問わず、各バリデーターの BLS 所有証明を伴う、正確に `3f + 1` のバリデータートポロジーを含める必要があります。Kagami の `localnet generate`、`wizard`、`sora-network generate` コマンドがこれらを自動的に処理します。
 
 ## ブロックチェーンのジェネシスを再コミットする {#recommitting-genesis}
 

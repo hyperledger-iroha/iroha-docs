@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /blockchain/transactions.md
-translation_source_hash: 91c06ab61c7f8ec96554bc89b31b2f281bb3a7d7edd484defe61dcde5a3fb710
+translation_source_hash: d9227effcdb4d54ac76f6288ba213de20f2574e1585e13b96a5202c44b69f3be
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -71,7 +71,7 @@ Iroha ике офлайн-транзакция эш ағымдары бар:
 - **Оффлайн ҡул ҡуйыу** signing device селтәрҙән өҙөлгән саҡта ғәҙәти ҡул ҡуйылған transaction булдыра. Online client ҡул ҡуйылған envelope-ты Torii-ға ебәрмәйенсә transaction эшкәртелмәй, шуға күрә уға дөрөҫ chain ID, authority, permission, fee һәм transaction lifetime һаман да кәрәк.
 - **Kagemusha офлайн аҡсаһы** теркәлгән, аппарат менән һаҡланған янсыҡҡа ул селтәргә тоташҡан саҡта ҡиммәт йөкләй, ике янсыҡ та офлайн булғанда улар араһында түләүҙәрҙе тәьмин итә һәм янсыҡ яңынан селтәргә тоташҡас ҡалған ҡиммәтте реестр иҫәбенә сығара.
 
-Torii бер Kagemusha маршрутын — `POST /v1/kagemusha/enrollment` — тәҡдим итә. Ул иҫәп аша аутентификацияланған `application/x-norito` теркәү кадрҙарын ҡабул итә һәм кэшта һаҡларға ярамаған шәхси яуаптар ҡайтара. Йәшәү циклының реестр яғында `KagemushaWalletLedgerV1` инструкцияһын йөрөткән ғәҙәти ҡул ҡуйылған транзакциялар ҡулланыла:
+Torii Kagemusha өсөн бер үҙгәртеү маршрутын — `POST /v1/kagemusha/enrollment` — тәҡдим итә. Ул иҫәп аша аутентификацияланған `application/x-norito` теркәү кадрҙарын ҡабул итә һәм кэшта һаҡларға ярамаған шәхси яуаптар ҡайтара. `/v1/kagemusha/{scheme}/wallets/{wallet}/` эсендәге иҫәп ҡултамғаһы менән эшләгән SDK уҡыу маршруттары Load квитанцияларын һәм һуңғылыҡ дәлилдәрен ҡайтара; улар `/openapi.json` исемлегенә индерелмәгән. Йәшәү циклының реестр яғында `KagemushaWalletLedgerV1` инструкцияһын йөрөткән ғәҙәти ҡул ҡуйылған транзакциялар ҡулланыла:
 
 | Ғәмәл | Маҡсат |
 | --- | --- |
@@ -88,13 +88,21 @@ Torii бер Kagemusha маршрутын — `POST /v1/kagemusha/enrollment` �
 3. Янсыҡтар офлайн булғанда улар араһында түләүҙәрҙе урында алмашығыҙ һәм тикшерегеҙ; һәр күсереүҙе раҫлар алдынан янсыҡ торошон ышаныслы һаҡлауға яҙығыҙ.
 4. Янсыҡ яңынан селтәргә тоташҡас, уның Unload талабын ебәрегеҙ һәм һуңғылыҡты көтөгөҙ.
 
+Kagemusha релизға әҙер тип раҫланмаған: ысын аҡса менән эшсе селтәрҙә сифатлау, шулай уҡ физик ҡоролмаларҙа телефонды теркәү, әүҙемләштереү һәм түләү әле лә асыҡ мәсьәлә булып ҡала.
+
 Офлайн тапшырылған ҡиммәт тураһындағы яҙманың хәле онлайн эш барышына әйләнеп ҡайтмайынса, реестр бер-береһенә ҡаршы булған тапшырыуҙарҙы күрә алмай. Шуға күрә янсыҡ һәм оператор ҡағиҙәләре ҡиммәт сиктәрен, ғәмәлдә булыу ваҡытын, рөхсәт ителгән эмитенттарҙы, урындағы ышаныслы һаҡлауҙы һәм яраштырыу өсөн ваҡыт аралыҡтарын контролдә тоторға тейеш.
 
 Бында яңы транзакция булдырыу миҫалы `Grant` Инструкция. был транзакцияла Mouse Alice-ға билдәләнгән роль бирә (`role_id`Тейешле. [тулы миҫал](./permissions.md#register-a-new-role).
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```

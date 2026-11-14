@@ -1,13 +1,13 @@
 ---
 translation_locale: hy
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: 92389d3ad83ab32e85b4ca83ede9829d1a38afaad6e86da035da2829a3aaedfb
+translation_source_hash: 471dc7c82f371e1bbdcf216d5a50b1263612b7d29fffb1ef36b708a6beb931b6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # JavaScript եւ TypeScript {#javascript-and-typescript}
 
-Ներկայումս JavaScript SDK-ը `@iroha/iroha-js` փաթեթն է Iroha աղբյուրի ծառում: Այն Node.js-ի առաջին SDK է Torii, Norito շինարարների համար, ստորագրություն, էջավորումը, Connect նախադասությունները եւ Kagemusha հրաման տրանսպորտի համար:
+Ընթացիկ JavaScript SDK-ն Iroha-ի սկզբնական կոդի ծառում գտնվող `@iroha/iroha-js` փաթեթն է։ Այն Node.js-ին ուղղված SDK է Torii-ի, Norito կառուցիչների, ստորագրման, էջավորման և Connect-ի նախադիտումների համար։
 
 ## Կառուցեք աղբյուրից {#build-from-source}
 
@@ -31,6 +31,7 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 const torii = new ToriiClient("http://127.0.0.1:8080", {
   authToken: "dev-token",
+  allowInsecure: true, // local development only
 });
 
 const keys = generateKeyPair();

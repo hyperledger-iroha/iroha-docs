@@ -1,11 +1,10 @@
 ---
 translation_locale: hy
 translation_source: /reference/instructions.md
-translation_source_hash: 9999816502505026fb35d2ddaf4033f54768be697ca5b03550e1cf5949ada36c
+translation_source_hash: bbd8f9544aa863cd273d1b2089f39aff3d484ee0378fa5bcc7b565795a0671c6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Iroha Հատուկ հրահանգներ {#iroha-special-instructions}
 
 Ներկա տվյալների մոդելը բացահայտում է այս ներկառուցված հրահանգային ընտանիքները.
@@ -28,7 +27,6 @@ translation_engine: nllb-200-ct2
 | [`CustomInstruction`](/hy/blockchain/instructions.md#other-instructions) |իրականացնողին հատուկ JSON շահագործման բեռ |
 | [Բնական ակտիվների պահպանումը](/hy/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
 | [Գնացական ակտիվների փակիչներ](/hy/blockchain/escrow.md#generic-asset-locks) |`OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
-| [Անանուն ակտիվների պահպանումը](/hy/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
 | [Ատոմային մասնավոր հաշվարկ](/hy/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
 Iroha 3 լրացուցիչ մոդուլները կարող են գրանցել տիրույթի հատուկ հրահանգների տեսակներ հրահանգների ռեգիստրիի միջոցով: Հանգույցի տրամադրած սխեմայի և այն պահպանելու համար օգտագործվող հրամանի համար տես [Տվյալների մոդելի սխեման](./data-model-schema.md):
@@ -85,7 +83,7 @@ class MetadataBoxes {
 class NativeEscrowInstructions {
     OpenAssetEscrow
     OpenAssetLock
-    OpenAnonymousAssetEscrow
+    OpenConditionalEscrow
     ResolveEscrowDispute
 }
 

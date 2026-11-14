@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
+translation_source_hash: ad2bc9f8c53169d8161f7a2f23b1e660ebd24cf03cf8e05f4b00bbd27b7b11fe
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -23,8 +23,8 @@ Iroha һөҙөмтәлелеге эш йөкләмәһенә, валидатор
 Йәмәғәт узелы снайпшоты һәм Prometheus һыҙма менән башларға, һуңынан оператор раҫланған консенсус торошо өсөн CLI ҡулланырға. Оператор асҡысын маҡсатлы узел рөхсәт итергә тейеш һәм ул бары тик загружается ваҡытта:
 
 ```bash
-export TORII=http://127.0.0.1:8180
-export OPERATOR_KEY_FILE=./secrets/operator.key
+export TORII=http://127.0.0.1:8080
+export OPERATOR_KEY_FILE="$PWD/localnet/runtime/operator-signer.key"
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s "$TORII/metrics" > metrics.prom
@@ -52,7 +52,7 @@ curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/now" \
-  | jq '{now_ms, offset_ms}'
+  | jq '{now, offset_ms}'
 ```
 
 Йәмәғәт тест селтәрендәге күҙәтеүҙәрҙе үҙ файҙаланыуығыҙ өсөн етештереү ҡеүәте һандары итеп ҡулланырға ярамай.
@@ -187,13 +187,13 @@ iroha --config ./localnet/client.toml \
 | --- | --- | --- |
 |Ҡабул ителгән тапшырыу |`sum(rate(txs{type="accepted"}[5m]))` |Стационар хәлдә маҡсатлы TPS бурысын үтәү йәки уны арттырыу |
 |Ҡурҡҡандар |`sum(rate(txs{type="rejected"}[5m]))` |Был һынау планы менән аңлатылырға тейеш.|
-|Задержәне commit итергә |`histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |p95/p99-ны латенция бюджеты менән сағыштырығыҙ |
+|Раҫлап беркетеү тотҡарлығы |`histogram_quantile(0.95, sum by (le) (rate(sumeragi_commit_latency_ms_bucket{lane="global"}[5m])))`, `last_commit_time_ms` |p95/p99-ны латенция бюджеты менән сағыштырығыҙ |
 |Көҙгө тәрәнлеге |`queue_size`, `sumeragi_tx_queue_depth` |Иң юғары йөкләнеш ваҡытында сикләүҙәр һаҡланырға тейеш .|
 |Кәрәкле сираттың тығыҙлығы |`sumeragi_tx_queue_saturated` |Тотороҡло булмаған нуль кимәлендәге уртаса йөкләмә |
-|Үҙгәрештәрҙе ҡара |`view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |Үҫешле ҡиммәттәр ваҡытлыса, топология, файҙалы йөкләмә йәки селтәр проблемаһын күрһәтә. |
-|Ҡалған хәбәрҙәр |`dropped_messages`, `sumeragi_consensus_message_handling_total` |Йыш ҡына йөкләнеү ваҡытында түбән төшөүе latency spikes аңлата . |
-|Файҙалы йөк һәм DA теркәү |`sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` |Бер туҡтауһыҙ һорауҙар, үҫә торған йәше йәки ҡабатланған DA ҡапҡалар организмды йәки киҫәктәрҙе һатып алыу проблемаһын күрһәтә .|
-|Кворумға килегеҙ |`sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |Иҫәпләнгән ҡултамғалар тиҙ арала кәрәкле кворумға етергә тейеш .|
+|Үҙгәрештәрҙе ҡара |`view_changes`, `sumeragi_view_changes_total`, `sumeragi_timeout_votes_total` |Үҫешле ҡиммәттәр ваҡытлыса, топология, файҙалы йөкләмә йәки селтәр проблемаһын күрһәтә. |
+|Ҡалған хәбәрҙәр |`sumeragi_dropped_total`, `p2p_queue_dropped_total` |Йыш ҡына йөкләнеү ваҡытында түбән төшөүе latency spikes аңлата . |
+|Файҙалы йөк һәм ҡыуып етеү һоратыуҙары |`sumeragi_fetch_requests_total{kind="body"}`, `sumeragi_fetch_requests_total{kind="sync"}` |Блок тәнен йәки синхронлаштырыуҙы өҙлөкһөҙ һоратыу файҙалы йөктө алыу йәки ҡыуып етеү проблемаһын күрһәтә |
+|Раҫлап беркетеү барышы |`sumeragi_committed_height`, `sumeragi_applied_height` |Сертификатланған һәм ҡулланылған бейеклектәр бергә артырға тейеш |
 
 Әгәр метрика бары тик `/v1/sumeragi/status` эсендә булһа, JSON экземплярҙы Prometheus һыртыуы менән бер үк артефакттарҙа төшөрөп ҡуйығыҙ.
 
@@ -245,7 +245,7 @@ iroha --config ./localnet/client.toml \
 - ҡабул ителгән/ҡабул ителмәгән TPS
 - p50/p95/p99 commit latency
 - сират тәрәнлеге һәм тығыҙлығы
-- үҙгәрештәрҙе ҡарау, хәбәрҙәрҙе төшөрөү, юғалған блоктарҙы йыйыу һәм DA ҡапҡа иҫәпләүселәре
+- раунд алмашыныуҙары, ваҡыт сығыу тауыштары, Sumeragi ташлаған хәбәрҙәр һәм блок тәнен һәм синхронлаштырыуҙы һоратыуҙар
 - һәр валидатор өсөн CPU, хәтер, диск һәм селтәрҙе файҙаланыу
 
 Был мәғлүмәттәр булмаһа, TPS һанды анекдотик тип һанарға кәрәк.

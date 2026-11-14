@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /help/configuration-issues.md
-translation_source_hash: 9d153d9cb8ce0341b35ba5a7e3823198e58464768e2a9a92ff8a5723f85e9351
+translation_source_hash: cfd86e847651e71d40e8857c0531f9721ef94ea3c65bd80b6f6951081488f39d
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -31,7 +31,7 @@ En la [configuración del cliente](/es/guide/configure/client-configuration.md),
 
 Si nunca has trabajado con multi-hash antes, es natural asumir que el lado derecho no es una representación hexadecimal de los bytes de la clave (dos símbolos por byte), sino los bytes codificados como ASCII (o UTF-8), y llamar a `from_hex` en el literal de cadena tanto en la instanciación de `public_key` como en `private_key`.
 
-También es natural asumir que llamar a `PrivateKey::try_from_str` sobre el literal de cadena solo produciría la clave correcta. Así que si obtienes el número de bits en la clave incorrecto, por ejemplo 32 bytes en lugar de 64, eso generaría un mensaje de error.
+También es natural asumir que analizar el literal de cadena con `str::parse::<PrivateKey>()` solo produciría la clave correcta. Así que si obtienes el número de bits en la clave incorrecto, por ejemplo 32 bytes en lugar de 64, eso generaría un mensaje de error.
 
 Ambas suposiciones son incorrectas. Desafortunadamente, los mensajes de error no ayudan a depurar este tipo particular de falla.
 
@@ -39,7 +39,7 @@ Cómo arreglarlo: use `hex_literal`. Esto también convertirá una fea cadena de
 
 ::: warning
 
-Incluso la implementación de `try_from_str` no puede verificar si una cadena dada es un `PrivateKey` válido y avisarte si no lo es.
+Incluso la implementación de `FromStr` no puede verificar si una cadena dada es un `PrivateKey` válido y avisarte si no lo es.
 
 Detectará algunos errores obvios, por ejemplo, si la cadena contiene un símbolo inválido. Sin embargo, dado que nuestro objetivo es soportar muchos formatos de clave, no puede hacer mucho más. Tampoco puede decir si la clave es la clave privada correcta para la cuenta dada, a menos que envíe una instrucción.
 

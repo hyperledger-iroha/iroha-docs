@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /blockchain/transactions.md
-translation_source_hash: 91c06ab61c7f8ec96554bc89b31b2f281bb3a7d7edd484defe61dcde5a3fb710
+translation_source_hash: d9227effcdb4d54ac76f6288ba213de20f2574e1585e13b96a5202c44b69f3be
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -71,7 +71,7 @@ Iroha لديه مساران للمعاملات غير المتصلة بالإن�
 - التوقيع دون اتصال ينشئ معاملة موقعة عادية بينما يكون جهاز التوقيع غير متصل. لا تتم معالجة المعاملة حتى يقوم العميل المتصل بالإنترنت بإرسال حاوية البيانات الموقعة إلى Torii، لذلك لا يزال من الضروري وجود معرف السلسلة الصحيح، والجهة المصرح لها، والصلاحيات، والرسوم، وعمر المعاملة.
 - **النقد غير المتصل بالشبكة في Kagemusha** يحمّل قيمة إلى محفظة مسجّلة ومدعومة بالعتاد أثناء اتصالها بالشبكة، ويدعم الدفع بين محفظتين أثناء انقطاعهما عن الشبكة، ويعيد القيمة المتبقية إلى حساب في دفتر السجل عندما تتصل المحفظة بالشبكة مجددًا.
 
-يوفر Torii مسارًا واحدًا لـKagemusha، هو `POST /v1/kagemusha/enrollment`. يقبل إطارات تسجيل من نوع `application/x-norito` مصادقًا عليها بالحساب، ويعيد استجابات خاصة يجب عدم تخزينها مؤقتًا. يستخدم جانب دفتر السجل من دورة الحياة معاملات موقعة عادية تحمل تعليمة `KagemushaWalletLedgerV1`:
+يوفر Torii مسار تعديل واحدًا لـKagemusha، هو `POST /v1/kagemusha/enrollment`. يقبل إطارات تسجيل من نوع `application/x-norito` مصادقًا عليها بالحساب، ويعيد استجابات خاصة يجب عدم تخزينها مؤقتًا. تعيد مسارات القراءة الخاصة بـSDK والموقّعة بالحساب ضمن `/v1/kagemusha/{scheme}/wallets/{wallet}/` إيصالات Load وأدلة النهائية؛ وهي غير مدرجة في `/openapi.json`. يستخدم جانب دفتر السجل من دورة الحياة معاملات موقعة عادية تحمل تعليمة `KagemushaWalletLedgerV1`:
 
 | الإجراء | الغرض |
 | --- | --- |
@@ -88,13 +88,21 @@ Iroha لديه مساران للمعاملات غير المتصلة بالإن�
 3. تبادل المدفوعات بين المحافظ وتحقق منها محليًا أثناء عدم اتصالها بالشبكة، واحفظ حالة المحفظة حفظًا دائمًا قبل الإقرار بكل تحويل.
 4. عندما تتصل المحفظة بالشبكة مجددًا، أرسل مطالبة Unload الخاصة بها وانتظر النهائية.
 
+لم يجتز Kagemusha بعدُ تأهيل الإصدار: لا يزال التأهيل النقدي الحي، وتسجيل الهواتف وتفعيلها والدفع بها على أجهزة فعلية، أمورًا مفتوحة.
+
 لا يمكن لسجل البلوكشين ملاحظة نقل غير متزامن متعارض حتى تعود حالة الملاحظة من خلال دورة الحياة عبر الإنترنت. لذلك يجب على المحفظة وسياسة المشغل فرض حدود للقيمة، وتاريخ الانتهاء، والمصدرين المقبولين، والتخزين المحلي الدائم، ونوافذ التسوية.
 
 إليك مثال على إنشاء معاملة جديدة باستخدام تعليمات `Grant`. في هذه المعاملة، يقوم Mouse بمنح Alice الدور المحدد (`role_id`). تحقق من [المثال الكامل](./permissions.md#register-a-new-role).
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```

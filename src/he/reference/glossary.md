@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /reference/glossary.md
-translation_source_hash: 8b00758b5731a2f9e09a5b49ccb7f298229ab966b5adf2d7152e3b1416fe8737
+translation_source_hash: 4d3a8e3aa88291edbaac5b52039d2aad160d89fb83c085c21030a531c93258f4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -79,7 +79,7 @@ translation_engine: nllb-200-ct2+reviewed-delta+reviewed-first-release-source-am
 
 ## סובלנות פגמים ביזנטית (BFT) {#byzantine-fault-tolerance-bft}
 
-היכולת לפעול כראוי ברשת הכוללת שיעור מסוים של גורמים זדוניים. Iroha מסוגל לפעול כאשר עד 33% מהגורמים ברשת peer-to-peer שלו זדוניים.
+היכולת לפעול כראוי ברשת הכוללת שיעור מסוים של גורמים זדוניים. ועדת Sumeragi כוללת בדיוק `3f + 1` מאמתים ועומדת בפני עד `f` מאמתים ביזנטיים, כלומר פחות משליש מהוועדה.
 
 ## רכיבי Iroha {#iroha-components}
 
@@ -107,7 +107,7 @@ translation_engine: nllb-200-ct2+reviewed-delta+reviewed-first-release-source-am
 
 ### חוזים חכמים {#smart-contracts}
 
-חוזים חכמים הם תוכניות מבוססות blockchain הפועלות כאשר מתקיימת קבוצת תנאים מסוימת. ב־Iroha חוזים חכמים ממומשים באמצעות [הוראות הליבה המיוחדות של Iroha](#core-iroha-special-instructions).
+חוזים חכמים הם תוכניות מבוססות blockchain הפועלות כאשר מתקיימת קבוצת תנאים מסוימת. ב־Iroha 3, חוזים חכמים נכתבים ב־Kotodama ומהודרים לקוד בתים של IVM ‏(`.to`); חוזה משנה את המצב על ידי הנפקת [הוראות מיוחדות של Iroha](#core-iroha-special-instructions) באמצעות קריאות למארח.
 
 ### טריגרים {#triggers}
 
@@ -119,7 +119,7 @@ translation_engine: nllb-200-ct2+reviewed-delta+reviewed-first-release-source-am
 
 ### Hijiri (מערכת המוניטין של עמיתים) {#hijiri-peer-reputation-system}
 
-מערכת המוניטין של Iroha. היא מאפשרת להעדיף תקשורת עם [עמיתים](#peer) בעלי היסטוריה טובה ולהפחית את הנזק שעלולים לגרום [עמיתים](#peer) זדוניים.
+מערכת המוניטין של Iroha לעמיתים ולחשבונות. הפרמטרים שלה, שבבעלות הקונצנזוס, מחזיקים את מדיניות העמלות של Hijiri ואת רשומות הסיכון של החשבונות, ומרשמי משקיפים הכפופים לממשל מנפיקים אישורים לחשבונות שמשנים את ציון הסיכון של החשבון.
 
 ## מודולי Iroha {#iroha-modules}
 
@@ -131,7 +131,7 @@ translation_engine: nllb-200-ct2+reviewed-delta+reviewed-first-release-source-am
 
 #### הוראות מיוחדות מסייעות של Iroha {#utility-iroha-special-instructions}
 
-קבוצה זו של [isi](#iroha-special-instructions-isi) כוללת הוראות לוגיות כגון `If`, הוראות הקשורות ל־I/O כגון `Notify` והרכבות כגון `Sequence`. הן משמשות בעיקר בתור [הוראות מותאמות אישית](#custom-iroha-special-instruction).
+קבוצה זו של [isi](#iroha-special-instructions-isi) כוללת הוראות שאינן משנות ישות ספציפית לדומיין, כגון `Log`, ‏`ExecuteTrigger`, ‏`SetParameter` ו־`Upgrade`. ב־Iroha 3 אין הוראות `If`, ‏`Notify` או `Sequence`.
 
 ### הוראות מיוחדות ליבה של Iroha {#core-iroha-special-instructions}
 

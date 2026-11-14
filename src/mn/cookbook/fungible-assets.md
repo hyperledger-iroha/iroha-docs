@@ -1,9 +1,9 @@
 ---
 translation_locale: mn
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 8a8fd0d29d4c1c323b457595653077564ad100f397ea2f4b059b35451b76aa44
+translation_source_hash: ae0604c0e82db0a908e7ffc44c97f56b58fe2b5bb87553ded48562e8f9fcd36a
 translation_status: machine-validated
-translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Ширээний хөрөнгө {#fungible-assets}
 
@@ -15,7 +15,7 @@ translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-na
 
 - `curl`, `jq`, Python 3.11 эсвэл түүнээс шинэ хувилбар, Node.js 24, мөн одоогийн `iroha` болон `kagami` CLIs.
 - Зөвхөн унших Taira хандалт.
-- Бичих алхмуудад: [Iroha-г эхлүүлэх](/mn/get-started/launch-iroha.md) хэсэгт үзүүлсэн шиг `kagami localnet generate --peers 4 --out-dir ./localnet` командад `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa`-г нэмж үүсгэсэн локал сүлжээ. Энэ нь `./localnet/client.toml` болон `http://127.0.0.1:8080` дээрх Torii-г хангана.
+- Бичих алхмуудад: `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa`-г нэмсэн `kagami localnet generate --peers 4 --out-dir ./localnet`-ээр үүсгэсэн локал сүлжээ. Энэ нь `./localnet/client.toml` болон `http://127.0.0.1:8080` дээрх Torii-г хангана.
 
 ## Алхамууд {#steps}
 

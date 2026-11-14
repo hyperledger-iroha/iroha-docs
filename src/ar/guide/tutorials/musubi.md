@@ -1,9 +1,9 @@
 ---
 translation_locale: ar
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 22d763aadf33d331fb9c16d3927e84e8bdb88829f3d73b974902daa8fde3c1b4
+translation_source_hash: 89d0874ca7ffe82099a1443d48713efccfbf3ec8042c2dde2ec8ae81717fb25b
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Musubi Kotodama الحزم {#musubi-kotodama-packages}
 
@@ -31,7 +31,7 @@ namespace/package
 namespace/package@version
 ```
 
-لا يوجد `@` مقدم قبل مساحة الاسم. مساحة الاسم هي إما جذر مساحة البيانات مثل `universal` أو مساحة بيانات مؤهلة بالنطاق مثل `dex.universal`. يربط سجل البلوك تشين تلك مساحة الاسم الهيكلية بمساحة بيانات منزلية ثابتة قبل أن يمكن المطالبة بالحزمة.
+لا يوجد `@` في البداية قبل مساحة الاسم. مساحة الاسم هي إما جذر مساحة بيانات مثل `universal` أو مساحة اسم مؤهلة بنطاق مثل `dex.universal`. يربط دفتر السجل مساحة الاسم الهيكلية تلك بمساحة بيانات أصلية ثابتة واحدة قبل أن يمكن المطالبة بحزمة.
 
 ## البيان الفني وملف القفل {#manifest-and-lockfile}
 
@@ -67,10 +67,10 @@ Taira هو الشبكة الاختبارية العامة لهذا التدفق 
 ```toml
 torii_url = "https://taira.sora.org/"
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
-network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 
 [musubi.fetch]
-network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 client_id = "musubi-taira"
 request_timeout_ms = 30000
 

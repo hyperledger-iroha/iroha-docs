@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 98c351372551b08bda4911f52bfb3cc70c53b6125d8045c17abb205b27960f6d
+translation_source_hash: 96ca67b9bbf9d743de2f640e09487176f62a8a31052e4f1e15e15a771e985c48
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -24,7 +24,7 @@ SORA Nexus מבוססת על Iroha 3. תחילה פתחו ובדקו את היי
 |שלב |רשת הבדיקה Taira |הרשת הראשית Minamoto |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
 |התחילו בקריאת מצב הרשת |שאילתת `/status` ללא מפתחות | תחילה יש לאמת את כתובת השירות ואת תעודת ה־TLS שלו |
-|בחרו מרחב נתונים |השתמשו ב־`universal` הציבורי, אלא אם היישום זקוק ל־lane מנוהלת |השתמשו באותו מרחב נתונים רק לאחר אישור ל־mainnet |
+|בחרו מרחב נתונים |השתמשו ב־`universal` הציבורי, אלא אם היישום זקוק למרחב נתונים מנוהל משלו |השתמשו באותו מרחב נתונים רק לאחר אישור ל־mainnet |
 |השיגו את נכס העמלה |השתמשו ב־faucet הציבורי של Taira |קבלו XOR מחשבון Minamoto ממומן או מתהליך treasury מאושר |
 |בדקו פעולות כתיבה |השתמשו ב־XOR לבדיקה שמומן מהברז |אל תשתמשו בכלי בדיקה; פעולות כתיבה מוציאות XOR אמיתי |
 |עברו לייצור |תרגלו לוגיקת ניסיון חוזר, ניטור וטיפול בחותם |השתמשו במפתחות, במימון ובבקרות שחרור נפרדים |
@@ -63,7 +63,7 @@ SORA Nexus מבוססת על Iroha 3. תחילה פתחו ובדקו את היי
 wonderland.universal
 ```
 
-אם דרוש לכם מרחב נתונים ארגוני חדש, הכינו הצעת קטלוג וניתוב במקום לנסות לרשום אותו מחשבון לקוח רגיל. ראו [הקצאת מרחב נתונים חדש](#_8-provision-a-new-data-space) להלן.
+אם דרוש לכם מרחב נתונים ארגוני חדש, הכינו הצעת קטלוג וניתוב במקום לנסות לרשום אותו מחשבון לקוח רגיל. ראו [הקצאת מרחב נתונים חדש](#_8-provision-a-new-dataspace) להלן.
 
 ## 2. בדוק את נקודת הסיום הציבורית Torii {#_2-check-the-public-torii-endpoint}
 
@@ -192,7 +192,7 @@ verification result.
 
 הדוגמאות הבאות קוראות נתונים מ־Taira ללא מפתחות חשבון.
 
-הציגו את נתיבי מרחב הנתונים הציבורי ש־Taira חושפת:
+הציגו כל נתיב של Taira יחד עם מרחב הנתונים שלו ומידת הנראות שלו:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -254,7 +254,7 @@ nonce = false
 תבדקו רק קריאה:
 
 ```bash
-iroha --config ./taira.client.toml --output-format text ops sumeragi status
+iroha --config ./taira.client.toml ledger domain list --limit 5
 ```
 
 לבצע את האבחנה הציבורית Taira לפני בדיקות כתיבה:
@@ -432,7 +432,7 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 תפעילו רק בדיקות בצד קריאה עד שהחשבון יועבר ויימומן באמצעות הזרימת ה-mainnet או זרימת השלטון:
 
 ```bash
-iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
+iroha --config ./minamoto.client.toml ledger domain list --limit 5
 ```
 
 אל תפעילו את פקודות הברז או בדיקות העשן של Taira מול Minamoto.
@@ -445,7 +445,7 @@ iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
 
 Taira XOR לא יכול לשלם עמלות Minamoto. סולכות רשתות הבדיקה ודרשות למזרזים אינן מועברות ל Minamoto.
 
-## 7. עבודה בתוך מרחב נתונים קיים {#_7-work-inside-an-existing-data-space}
+## 7. עבודה בתוך מרחב נתונים קיים {#_7-work-inside-an-existing-dataspace}
 
 השתמשו בשמות דומיין מלאים עבור אובייקטים בספר החשבונות הנמצאים במרחב נתונים. למשל, דומיין של פרויקט במרחב הנתונים הציבורי צריך להשתמש ב־:
 
@@ -486,7 +486,7 @@ alice@universal
 
 שדות חשבון קפדניים עדיין משתמשים בחשבון קנוני I105 IDs. מתייחסים לכינויים כקשרים שניתן לקרוא על ידי אדם אשר מתפתחים לחשבון קנוני IDs.
 
-## 8. הקצאת מרחב נתונים חדש {#_8-provision-a-new-data-space}
+## 8. הקצאת מרחב נתונים חדש {#_8-provision-a-new-dataspace}
 
 יצירת מרחב נתונים חדש היא שינוי תפעולי וממשלי. נקודת הקצה הציבורית של Torii יכולה לנתב תעבורה למרחבי נתונים מוגדרים, אך היא תדחה כינויים לא מוכרים של מרחבי נתונים.
 
@@ -529,7 +529,7 @@ metadata = {}
 [[nexus.dataspace_catalog]]
 alias = "payments"
 id = 20
-description = "Payments dataspace"
+description = "Payments data space"
 fault_tolerance = 1
 
 [[nexus.routing_policy.rules]]
@@ -537,12 +537,12 @@ lane = 5
 dataspace = "payments"
 [nexus.routing_policy.rules.matcher]
 instruction = "transfer::asset"
-description = "Route asset transfers to the payments dataspace"
+description = "Route asset transfers to the payments data space"
 ```
 
 קבלה של המפעיל צריכה לכלול את השערים הבאים:
 
-- `iroha3d --sora --config <config.toml> --trace-config` מעביר את הקונפיגורציה של העמודה המפתרת
+- `iroha3d --sora --config <config.toml> --check-config` מעביר את הקונפיגורציה של העמודה המפתרת
 - המניפסט שנוצר או הוחזר מאורכיב עם חישובים וחתימות.
 - מבחני עשן עוברים על Taira לפני כל קידום Minamoto
 - קטלוג `/status` לאחר השינוי מציג את הנתיב ומרחב הנתונים המיועדים

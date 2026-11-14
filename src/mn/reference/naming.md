@@ -1,9 +1,9 @@
 ---
 translation_locale: mn
 translation_source: /reference/naming.md
-translation_source_hash: 1d4d698597542d9c84284d0b87dae8a1825d3ab39ff38dd32bb204d41291c83d
+translation_source_hash: 15d095e674edf780c5859abe6f4615d53338e3304e8eedfa494017911204d4b6
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Нэрлэх Ёс Зүй {#naming-conventions}
 
@@ -15,10 +15,9 @@ translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
    - `#` бол хөрөнгийн тодорхойлолтын орлон нэрүүд ба хөрөнгийн үлдэгдлийн тоон утгуудын хувьд зориулагдсан
    - `::` гэрээний хөших нэрэнд зориулсан
    - `.` нь домайн болон мэдээллийн орон зайн эрхийн баталгаанд зориулагдсан
-   - `$` триггерийн цар хүрээ бүхий текстийн хэлбэрүүдэд зориулагдсан
-   - `%` баталгаажуулагчийн хүрээнд текстийн хэлбэрүүдэд зориулагдсан
+   - `$` нь `name$domain.dataspace` зэрэг NFT таних тэмдгүүдэд зориулагдсан
 
-2. Нэрэнд байх боломжтой хамгийн их тэмдэгтийн тоо (UTF-8 тэмдэгтүүдийг орсон) хоёр хүчин зүйлээр хязгаарлагддаг: `[0, u32::MAX]` ба одоогоор хуваарилагдсан хадгалах сангийн зай.
+2. Нэр хоосон биш, Unicode NFC хэлбэртэй, хамгийн ихдээ 255 UTF-8 байт урттай бөгөөд хоосон зай, удирдлагын болон хоёр чиглэлийн удирдлагын тэмдэгтгүй байх ёстой.
 
 ## Энэ урсгалыг Taira-д ажиллуулна уу {#try-it-on-taira}
 

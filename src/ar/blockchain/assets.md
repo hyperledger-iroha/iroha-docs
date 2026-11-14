@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /blockchain/assets.md
-translation_source_hash: 4d0a3f54a0c70d08d11160b9ec66d6538aa2c49c7771a13e4a070b61a9cb3e4b
+translation_source_hash: f5f0eb99e76287db695cc21b8580fd2a9b4dc2a989237c1a1d3d7333c14561ce
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -22,6 +22,7 @@ translation_engine: bing-translator-llm+reviewed-delta
 - `logo`: اختياري `SoraFS` URI
 - `metadata`: بيانات وصفية عشوائية على شكل مفتاح-قيمة
 - `balance_scope_policy`: يحدد ما إذا كانت الأرصدة شاملة أو مقيّدة بمساحة بيانات
+- `owning_domain`: النطاق المالك لتعريف مملوك لنطاق؛ ويكون غائبًا في التعريفات المسجلة مباشرة في مساحة بيانات
 - `owned_by`: الحساب الذي سجل أو يملك التعريف
 - `total_quantity`: إجمالي الكمية المُصدرة
 - `confidential_policy`: سياسة عمليات الأصول المحمية
@@ -33,7 +34,7 @@ translation_engine: bing-translator-llm+reviewed-delta
 يشمل `Asset`:
 
 - `id`: `AssetId`، الذي يجمع بين تعريف الأصل، وحساب الحامل، ونطاق رصيد الأصل الاختياري
-- `value`: رصيد `Numeric`
+- `value`: رصيد `Quantity`
 
 حساب المالك معياري ولا يتضمن نطاقًا. ويمكن إظهار تعريف الأصل ضمن نطاق مؤهّل باسم مساحة البيانات، مثل `payments.universal`.
 
@@ -88,7 +89,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-الأمثلة الثلاثة كلها عمليات قراءة. لإصدار الأصول أو حرقها أو نقلها على Taira، استخدم حسابًا ممولًا من خدمة التمويل التجريبي والتدفق المحكوم بالتحققات في [الاتصال بمساحات بيانات SORA Nexus](/ar/get-started/sora-nexus-dataspaces.md).
+الأمثلة الثلاثة كلها عمليات قراءة. لإصدار الأصول أو حرقها أو نقلها على Taira، استخدم حسابًا ممولًا من خدمة التمويل التجريبي والتدفق المحكوم بالتحققات في [التطوير على SORA Nexus باستخدام Taira وMinamoto](/ar/get-started/sora-nexus-dataspaces.md).
 
 لتجربة مثال أصول يدفع الرسوم على Taira، موّل الموقّع أولًا باتباع تدفق خدمة التمويل التجريبي ذي مرحلة الإعداد في [الحصول على XOR التجريبي على Taira](/ar/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira). ثم مرّر `--fee-payer authority` إلى أوامر `ledger asset mint` و`ledger asset burn` و`ledger asset transfer`؛ تعرض CLI الرسوم الدقيقة بعملة رسوم Taira قبل التوقيع:
 

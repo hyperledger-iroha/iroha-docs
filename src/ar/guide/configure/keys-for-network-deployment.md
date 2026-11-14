@@ -1,20 +1,20 @@
 ---
 translation_locale: ar
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
+translation_source_hash: c42adbe41e322c93509279f1f558d4450431de90c596f37eb3999754d4387f78
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
 # مفاتيح نشر الشبكة {#keys-for-network-deployment}
 
-تحتاج كل شبكة إلى مواد مفاتيح منفصلة للعملاء والأقران وتوقيع التكوين الأولي، وإلى هويات مدققين بمفاتيح BLS في ملفات NPoS أو SORA Nexus.
+تحتاج كل شبكة إلى مواد مفاتيح منفصلة للعملاء وتوقيع التكوين الأولي، وإلى هويات مدققين بمفاتيح BLS العادية مع إثباتات الحيازة.
 
 ## أين تُستخدم المفاتيح {#where-keys-are-used}
 
 - تُخزن مفاتيح توقيع العميل في `client.toml` تحت `[account]`.
 - يتم تخزين مفاتيح هوية نظير الشبكة في كل نظير شبكة `config.toml` كـ `public_key` و `private_key`.
 - يستخدم اكتشاف نظراء الشبكة المفتاح العام لكل نظير في الشبكة في `trusted_peers`.
-- BLS تُخزَّن إثباتات الحيازة الخاصة بالمدقق في `trusted_peers_pop` لملفات NPoS.
+- تُخزَّن إثباتات حيازة مفاتيح BLS الخاصة بالمدققين في `trusted_peers_pop` لكل مدقق، أيًا كان وضع الإجماع.
 - تستخدم توقيع بداية البلوكتشين `[genesis].public_key` في تكوين نظير الشبكة والمفتاح الخاص المطابق عند توقيع البيان الفني.
 
 للنشر المحلي أو التجريبي، دع Kagami يولد كل هذه الملفات معًا:

@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/instructions.md
-translation_source_hash: ef50253c5478c9d8c3e14529dc4c2f3de67c344901c82c65be77ceb237a29598
+translation_source_hash: 86d253317376ad8d7a8c0e30689c7e0c0cd786af83299dd5ac1a904c653192f5
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
@@ -41,7 +41,7 @@ Ba’zi ko‘rsatmalar manzilni belgilashni talab qiladi. Masalan, aktivlarni o�
 | [SetParameter](#setparameter) |zanjir parametrlari |                      |
 | [Grant/Revoke](#grant-revoke) | [rollar, ruxsat tokenlari](/uz/blockchain/permissions.md) |hisoblar yoki rollar |
 | [Transfer](#transfer) |domenlar, aktiv ta’riflari, raqamli aktivlar, NFTs |hisoblar |
-| [Mahalliy eskrou va aktiv qulflari](#native-escrow-and-asset-locks) |raqamli aktiv eskroulari, aktiv qulflari, anonim eskrou majburiyatlari |xaridorlar, maqsad hisoblar yoki nizodagi taqsimotlar |
+| [Mahalliy eskrou va aktiv qulflari](#native-escrow-and-asset-locks) |raqamli aktiv eskroulari, aktiv qulflari, shartli eskroular |xaridorlar, maqsad hisoblar yoki nizodagi taqsimotlar |
 | [Atomik maxfiy hisob-kitob](#atomic-private-settlement) |muayyan yo‘nalish doirasidagi maxfiy jamg‘armalar, siyosat almashishlari, yakunlangan paketlar va to‘xtatish belgilari | |
 | [ExecuteTrigger](#executetrigger) |qoʻzgʻatuvchilar |                      |
 | [Log/Custom/Upgrade](#other-instructions) |jurnal yozuvlari, ijrochiga xos foydali yuklar, ijrochi yangilanishlari |                      |
@@ -184,6 +184,7 @@ Aktiv ta’riflarini ro‘yxatdan o‘tkazing va ro‘yxatdan chiqaring:
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
+  --domain docs.universal \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
@@ -322,9 +323,9 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 
 ## Mahalliy eskrou va aktiv qulflari {#native-escrow-and-asset-locks}
 
-Mahalliy eskrou ko‘rsatmalari raqamli aktivlarni reyestr boshqaradigan protokol saqlovida qulflaydi. Ular bozor uslubidagi hisob-kitoblar, umumiy aktiv qulflari va anonim himoyalangan eskrou jarayonlari uchun ishlatiladi.
+Mahalliy eskrou ko‘rsatmalari raqamli aktivlarni reyestr boshqaradigan protokol saqlovida qulflaydi. Ular bozor uslubidagi hisob-kitoblar, umumiy aktiv qulflari va attestatorga bog‘langan shartli eskroular uchun ishlatiladi.
 
-Bozor eskrousi `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute` va `ResolveEscrowDispute` ko‘rsatmalaridan foydalanadi. Umumiy aktiv qulflari `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock` va `ExpireAssetLock` ko‘rsatmalaridan foydalanadi. Anonim eskrou bozor eskrousi hayot siklini `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute` va `ResolveAnonymousEscrowDispute` orqali takrorlaydi.
+Bozor eskrousi `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute` va `ResolveEscrowDispute` ko‘rsatmalaridan foydalanadi. Umumiy aktiv qulflari `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock` va `ExpireAssetLock` ko‘rsatmalaridan foydalanadi. Shartli eskrou `OpenConditionalEscrow`, `AttestEscrowCondition` va `ExpireConditionalEscrow` ko‘rsatmalaridan foydalanadi.
 
 Bu ISIs uchun hozircha maxsus CLI buyruqlari yo‘q. Tiplashtirilgan SDK quruvchilari yoki ketma-ketlashtirilgan ko‘rsatma foydali yuklaridan foydalaning. Hayot sikli, ruxsatlar, so‘rovlar, hodisalar va Rust misollari uchun [Mahalliy aktiv eskrousi](/uz/blockchain/escrow.md) bo‘limiga qarang.
 
@@ -418,7 +419,7 @@ printf '{"owner":"ops"}\n' |
 Standart kirish orqali bitta parametr JSON obyektini uzatib parametrni sozlang:
 
 ```bash
-printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
+printf '{"Sumeragi":{"MaxClockDriftMs":1000}}\n' |
   cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```

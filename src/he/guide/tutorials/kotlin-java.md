@@ -1,9 +1,9 @@
 ---
 translation_locale: he
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: f1f922b9820587cd4b599e7407698a47d468616670fee2922e4028147bc3e9b0
+translation_source_hash: 804ef15b3d5ecdfae9fd559d3f312772571938ed9872f4adbd251baa3471e4e2
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Kotlin, Android, וJava {#kotlin-android-and-java}
 
@@ -15,7 +15,7 @@ Kotlin SDK הוא סטק הלקוח המקובל עבור יישומים של JV
 | --- | --- | --- |
 |`org.hyperledger.iroha.sdk:core-jvm` |JAR |טהור Kotlin/JVM Norito, מודל נתונים, קריפטו, עסקאות, Torii וקוד פרוטוקול |
 |`org.hyperledger.iroha.sdk:client-android` |AAR |Android אחסון מפתח, טלמטריה של מכשיר ואינטגרציות לקוחות תומכות ב- JNI |
-|`org.hyperledger.iroha.sdk:offline-wallet-android` |AAR |Android הניתוחים והאינטגרציה של ארנקים מקוונים המבוססים על `client-android` |
+|`org.hyperledger.iroha.sdk:kagemusha-wallet-android` |AAR |Android הניתוחים והאינטגרציה של ארנקים מקוונים המבוססים על `client-android` |
 
 הארטפקטים עדיין לא פורסמו למאוון סנטרל. לבנות ולפרסם אותם מקומו מתוך העדכון המקור Iroha:
 
@@ -36,21 +36,21 @@ dependencies {
     // Android client features:
     // implementation("org.hyperledger.iroha.sdk:client-android:0.1.0")
     // Android offline-wallet features:
-    // implementation("org.hyperledger.iroha.sdk:offline-wallet-android:0.1.0")
+    // implementation("org.hyperledger.iroha.sdk:kagemusha-wallet-android:0.1.0")
 }
 ```
 
-`core-jvm` לא מכיל Android תלויות. Android קוד הלקוח ומחסור המפתח `client-android`, ושימוש `offline-wallet-android` עבור Android-רק ארנק מקוון ו JNI זורמים.
+`core-jvm` לא מכיל Android תלויות. Android קוד הלקוח ומחסור המפתח `client-android`, ושימוש `kagemusha-wallet-android` עבור Android-רק ארנק מקוון ו JNI זורמים.
 
 ## תאימות Kotlin ו-Java {#kotlin-and-java-compatibility}
 
-הקהל API הוא Kotlin-ראשון ומספק אינטרופ ג'אבה כאשר מתקשרים JVM זקוקים לו. שינויים מקבילים משתקפים בהתאם `java/` יישום. האינטגרציות חדשות Android צריכות להתחיל עם האריפקטים של Kotlin למעלה .
+ה־API הציבורי מיועד בראש ובראשונה ל־Kotlin, והוא המימוש הקנוני עבור מתקשרים מ־Java; בדיקות צרכנים בקוד מקור Java בתוך `core-jvm` מפעילות אותו ישירות. העץ `java/` מכיל מימושים כפולים שנמצאים בתהליך הוצאה משימוש ושילוב במודולי Kotlin. אינטגרציות Android חדשות צריכות להתחיל בתוצרי Kotlin שלמעלה.
 
 כולם. Kotlin מודולים אימונים JDK 8 API תאימות בזמן הקבלה עם `-Xjdk-release=8`, למרות שרשרת הכלים של הבנייה עצמה משתמשת JDK 21. לא להשתמש JDK 9+ APIs ב SDK קוד.
 
 ## בנייה וניסוי {#build-and-test}
 
-להפעיל את בדיקות JVM ניידות:
+הריצו את בדיקות ה־JVM עם הספרייה `connect_norito_bridge` שנבנתה מאותו מקור ב־`IROHA_NATIVE_LIBRARY_PATH` ועם `kotlin-fixture-gen` ב־`IROHA_KOTLIN_FIXTURE_GEN_BIN`, כמתואר ב־README של Kotlin SDK; בלעדיהם הבדיקות התלויות ברכיבים מקוריים נכשלות:
 
 ```bash
 cd kotlin
@@ -61,7 +61,7 @@ cd kotlin
 
 ```bash
 ./gradlew :client-android:assembleRelease \
-  :offline-wallet-android:assembleRelease --quiet
+  :kagemusha-wallet-android:assembleRelease --quiet
 ```
 
 ## הכיסוי הנוכחי {#current-coverage}

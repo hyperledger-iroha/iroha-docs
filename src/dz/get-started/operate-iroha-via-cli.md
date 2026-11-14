@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: 5fb7abd4e152ece715a8337e8ef8e75330f634d2a1b26e0c5bd8308f1f3793a9
+translation_source_hash: 40714a6cd124d4b0342b0f6ecf321f286e714c0e236afd6fd7834c0cf0ad1165
 translation_status: machine-validated
 translation_engine: human-reviewed+reviewed-delta
 ---
@@ -11,15 +11,14 @@ translation_engine: human-reviewed+reviewed-delta
 
 ## ༡ སྔོན་འགོག་གི་གནས་སྟངས་ཚུ་ {#_1-prerequisites}
 
-ཉེ་གནས་ཡོངས་འབྲེལ་འགོ་བཙུགས།
-
-- [འགོ་འདྲེན་འཐབ་ Iroha 3](./launch-iroha.md)
-
-འོག་གི་དཔེ་སྟོན་ཚུ་ནང་ [Iroha 3 འགོ་བཙུགས་ནི།](./launch-iroha.md) ལུ་བཟོ་མི་ ས་གནས་བརྟག་དཔྱད་དྲ་རྒྱལས་ ཐོན་སྐྱེད་འབད་ཡོད་པའི་ ཞབས་ཏོག་ལེན་མི སྒྲིག་གཞི་འདི་བཀོད་ནུག
+ཡིག་ཆ་ནང་བཀོད་པའི་འབྱུང་ཁུངས་ཐོན་རིམ་ཀྱི་ Iroha འབྱུང་ཁུངས་འདྲ་བཤུས་ལས་ མཐུད་གྲོགས་བཞི་ཡོད་པའི་ ཉེ་གནས་ཡོངས་འབྲེལ་ཅིག་ བཟོ་སྟེ་ འགོ་བཙུགས་:
 
 ```bash
-./localnet/client.toml
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
+./localnet/start.sh
 ```
+
+འོག་གི་དཔེ་ཚུ་གིས་ དེ་གིས་བཟོ་བཏོན་འབད་མི་ མཁོ་མངགས་པའི་རིམ་སྒྲིག་ `./localnet/client.toml` ལག་ལེན་འཐབ་ཨིན།
 
 ## གཞི་རྟེན་ CLI གཞི་སྒྲིག་ {#_2-basic-cli-setup}
 
@@ -61,7 +60,7 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-`universal` གནད་སྡུད་ས་སྟོང་ནང་གི་མི་མང་མངའ་ཁོངས་ཚུའི་ཐོ་སྟོན།
+ངོ་སྤྲོད་བདེན་དཔྱད་མ་འབད་བའི་ ལྷག་མི་ལུ་ མཐོང་ཚུགས་པའི་ མངའ་ཁོངས་ཚུའི་ཐོ་སྟོན་:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
@@ -147,7 +146,8 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 མོས་མཐུན་ལག་ལེན་པའི་བརྡ་བཀོད་ཚུ་ལུ་ ཆོག་ཐོ་ནང་ཡོད་པའི་ལག་བསྟར་དུས་ཀྱི་ལྡེ་མིག་དགོ། འདི་ `client.toml` ནང་མ་བཙུགས་པར་ ཇོ་བདག་རྐྱངམ་ཅིག་གིས་སྤྱོད་ཚུགས་པའི་ཡིག་སྣོད་འདི་དེའི་ལམ་ཆ་ཚང་གིས་སྤྲོད།
 
 ```bash
-: "${OPERATOR_KEY_FILE:=$PWD/secrets/operator.key}"
+# The generated localnet writes its allow-listed operator key here.
+: "${OPERATOR_KEY_FILE:=$PWD/localnet/runtime/operator-signer.key}"
 
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \

@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 22d763aadf33d331fb9c16d3927e84e8bdb88829f3d73b974902daa8fde3c1b4
+translation_source_hash: 89d0874ca7ffe82099a1443d48713efccfbf3ec8042c2dde2ec8ae81717fb25b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Musubi Kotodama 包装 {#musubi-kotodama-packages}
 
@@ -31,7 +31,7 @@ namespace/package
 namespace/package@version
 ```
 
-没有领导者 `@` 名称空间是数据空间根,例如 `universal` 或一个域名合格的数据空间,如 `dex.universal`. 总账将结构名称空间绑定到一个稳定的家庭数据空间,然后才能索赔包.
+命名空间前面没有前导 `@`。命名空间要么是 `universal` 这样的数据空间根，要么是 `dex.universal` 这样的域限定命名空间。在包可以被认领之前，账本会将该结构化命名空间绑定到一个稳定的归属数据空间。
 
 ## 清单和锁文件 {#manifest-and-lockfile}
 
@@ -67,10 +67,10 @@ Taira 是此工作流的公开测试网络.从一个 Taira 客户端配置开始
 ```toml
 torii_url = "https://taira.sora.org/"
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
-network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 
 [musubi.fetch]
-network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 client_id = "musubi-taira"
 request_timeout_ms = 30000
 

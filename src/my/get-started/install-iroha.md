@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /get-started/install-iroha.md
-translation_source_hash: cef11a7036dcb5257647edf0c48ea1b9c144822e029df936b422998f46187b41
+translation_source_hash: b2ba22db6a25e3b67cf18dc6959f95f57bd861b232b1d4a9d881bbe3cdf7844a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 
 ဒါတွေကို အရင်တပ်ပါ။
 
-- [rustup](https://www.rust-lang.org/tools/install) ဆိုတော့ ပိတ်ထားတဲ့ `rust-toolchain.toml` toolchain (`1.93.1`) ကို အလိုအလျောက် တပ်ဆင်ထားတယ်။
+- [rustup](https://www.rust-lang.org/tools/install) ဆိုတော့ ပိတ်ထားတဲ့ `rust-toolchain.toml` toolchain (`1.99.1`) ကို အလိုအလျောက် တပ်ဆင်ထားတယ်။
 - `git`
 - စက်တွင်း peer အများအပြားဖြင့် အမြန်စတင်ရန် ရွေးချယ်နိုင်သော Docker နှင့် Docker Compose
 

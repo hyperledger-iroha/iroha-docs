@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: 5fb7abd4e152ece715a8337e8ef8e75330f634d2a1b26e0c5bd8308f1f3793a9
+translation_source_hash: 40714a6cd124d4b0342b0f6ecf321f286e714c0e236afd6fd7834c0cf0ad1165
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -11,15 +11,14 @@ translation_engine: bing-translator-llm+reviewed-delta
 
 ## 1. Tələblər {#_1-prerequisites}
 
-Əvvəlcə yerli şəbəkəni başladın:
-
-- [Başlat Iroha 3](./launch-iroha.md)
-
-Aşağıdakı nümunələr [Başlat Iroha 3](./launch-iroha.md)-da yaradılan localnet-dən əldə olunan müştəri konfiqurasiyasını nəzərdə tutur:
+Sənədləşdirilmiş mənbə reviziyasındakı Iroha nüsxəsindən dörd həmyaşıd qovşaqlı yerli şəbəkə yaradın və başladın:
 
 ```bash
-./localnet/client.toml
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
+./localnet/start.sh
 ```
+
+Aşağıdakı nümunələr onun yaratdığı müştəri konfiqurasiyasından, `./localnet/client.toml` faylından istifadə edir.
 
 ## 2. Əsas CLI Quraşdırma {#_2-basic-cli-setup}
 
@@ -61,7 +60,7 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-`universal` məlumat məkanındakı açıq domenləri sadalayın:
+Autentifikasiya olunmamış oxucuya görünən domenləri sadalayın:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
@@ -147,7 +146,8 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 Konsensus operatoru əmrləri icazə siyahısına daxil edilmiş icra mühiti açarı tələb edir. Onu `client.toml` daxilində saxlamayın və yalnız sahibin girişinə açıq faylı mütləq yolu ilə ötürün:
 
 ```bash
-: "${OPERATOR_KEY_FILE:=$PWD/secrets/operator.key}"
+# The generated localnet writes its allow-listed operator key here.
+: "${OPERATOR_KEY_FILE:=$PWD/localnet/runtime/operator-signer.key}"
 
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \

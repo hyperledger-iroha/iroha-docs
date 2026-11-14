@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: d85b4d725158e6fcfa70b2bb464efd690307844a5ff0946e51a0da6b75b24a64
+translation_source_hash: 32f53c1fad49ecd320c46636f707e105db86b2080a4500f6006a3a91e97b9c7f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -26,19 +26,19 @@ Torii 是 Iroha 3 的 HTTP、SSE 和 WebSocket 閘道。它同時提供面向帳
 |`GET /v1/events/ws`|WebSocket|訂閱活動流程|
 |`GET /v1/events/sse`|SSE|訂閱 SSE 以上的事件流|
 |`GET /v1/blocks/stream`|WebSocket|流動提交的區塊|
-|`GET /v1/peers`|JSON|Torii 所暴露的對等節點列表 |
+|`GET /v1/peers`|JSON|線上對等節點 ID；需要操作員請求簽章|
 |`GET /livez`|文字|只有流程活力;它並不意味著協議準備性 |
-| `GET /readyz` | 文字 | 共識准入、信標保管，以及必要持久儲存的就緒狀態 |
+| `GET /readyz` | 文字 | 當共識准入與信標保管可用時即為就緒；在緊急 Fast 啟動期間，或已設定的 ISO 20022 橋接無法持久儲存稽核記錄時回傳 `503` |
 | `GET /health` | 文字 | Torii 存活狀態；回傳 `Healthy` |
-|`GET /v1/api/version`|文字|現在的區塊標題版本|
+|`GET /v1/api/version`|文字|標準簽署區塊的傳輸格式版本；創世之前回傳 `503`|
 |`GET /status`|Norito 或 JSON |高階診斷狀態; 明確請求 JSON |
 |`GET /metrics`|普羅梅蒂烏斯|普羅梅斯的剪傷端點|
 |`GET /v1/schema`|JSON|當啟用時,節點服務的資料模型方案快照|
-|`GET /openapi.json`|JSON|OpenAPI 檔案,用於活躍的 Torii HTTP 航線|
+|`GET /openapi.json`|JSON|已簽入儲存庫的 OpenAPI 契約，已修剪為此建置的目錄路由|
 |`GET /v1/parameters`|JSON|節點引數快照|
 |`GET /v1/node/capabilities`|JSON|節點能力和資料模型後設資料|
 |`GET /v1/time/now`|JSON|節點牆時鐘快照|
-|`GET /v1/time/status`|JSON|時間同步狀態|
+|`GET /v1/time/status`|JSON|時間同步狀態；需要操作員請求簽章|
 
 對於 SSE 請求,廣告原始流量加上輸入後退:
 
@@ -48,7 +48,7 @@ Accept: text/event-stream, application/json
 
 Torii 首先在請求層上談判 JSON 或 Norito 的代表性,然後驗證原生`text/event-stream`響應.因此只傳送`text/event-stream`被拒絕使用`406`;[流事件操作指南](/zh-hant/cookbook/stream-events.md)使用完整標題.
 
-`/openapi.json` 是描述結構中所列路由的產生式契約。它包含 `/livez`、`/health` 與 `/readyz`；選用的應用程式能力不參與就緒探測。請依目標節點提供的文件產生路由用戶端，並直接檢查其探測端點。確切介面取決於編譯功能與執行時設定。使用 [Torii API 主控台](/zh-hant/reference/torii-api-console.md)，可載入該即時文件、測試 JSON 路由、複製 curl 請求，以及依目前結構描述產生用戶端程式碼。
+`/openapi.json` 是已簽入儲存庫的契約，涵蓋標記為納入 OpenAPI 投影的目錄路由。它包含 `/livez`、`/health` 與 `/readyz`。請依目標節點提供的文件產生路由用戶端，並直接檢查其探測端點。確切介面取決於編譯功能與執行時設定。使用 [Torii API 主控台](/zh-hant/reference/torii-api-console.md)，可載入該即時文件、測試 JSON 路由、複製 curl 請求，以及依目前結構描述產生用戶端程式碼。
 
 每個名單支援的 OpenAPI 操作都包含一個`x-iroha-route-auth`物件.名單支援 MCP 的工具都暴露出與 `_meta["iroha/routeAuth"]`相同的合同.兩個投影都攜帶`schemaVersion`, `stableRouteId`, `authentication`和 `admission`.處理版本 `1`作為一個準確的合同:拒絕不支援的 `schemaVersion` 而不是猜測其認證或錄取標籤應該如何解釋.路線後設資料描述了請求邊界;它不會取代該邊界所要求的憑證.
 
@@ -86,14 +86,14 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
 
 ## 達成共識和執行階段端點 {#consensus-and-runtime-endpoints}
 
-下列每條 Sumeragi 路由都要求操作員請求簽章。狀態、診斷、串流、通道、金鑰與參數路由，也要求使用啟用遙測的編譯版本。
+下列每條 Sumeragi 路由都要求操作員請求簽章。狀態、診斷、串流、通道、金鑰與參數路由，也要求使用啟用遙測的編譯版本。執行階段升級、發布與隔離處置路由同樣要求操作員請求簽章；`GET /v1/runtime/abi/active` 與 `GET /v1/runtime/metrics` 要求標準的帳戶請求簽章，而 `GET /v1/runtime/abi/hash` 則是公開的。
 
 |端點|格式| 用途                                                 |
 | ----------------------------------------- | -------------- | ------------------------------------------------------- |
 |`GET /v1/sumeragi/status`|Norito 或 JSON |權威的減產者持有的共識狀態|
 |`GET /v1/sumeragi/diagnostics`|JSON|無權威的管道,排隊和通道診斷|
 | `GET /v1/sumeragi/status/sse` | SSE | 持續的權威共識狀態串流 |
-| `GET /v1/sumeragi/lanes` | JSON | 通道共識診斷 |
+| `GET /v1/sumeragi/lanes` | Norito 或 JSON | 全域鏈中已提交的通道，以及本節點的通道實例狀態 |
 |`GET /v1/sumeragi/consensus-keys`|JSON|活躍的共識金鑰|
 |`GET /v1/sumeragi/bls-keys`|JSON|活躍的 BLS 共識金鑰|
 |`GET /v1/sumeragi/params`|JSON| 連鎖電流 Sumeragi 引數                    |
@@ -103,17 +103,17 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
 |`GET /v1/runtime/abi/hash`|JSON|活躍執行階段 ABI 雜湊|
 |`GET /v1/runtime/metrics`|JSON|執行階段指標快照|
 |`GET /v1/runtime/upgrades`|JSON|執行階段升級列表|
-|`POST /v1/runtime/upgrades/propose`|JSON|提議升級執行階段|
-| `POST /v1/runtime/upgrades/attest/{id}` | JSON | 為提出的執行環境升級提供證明 |
-| `GET /v1/runtime/release` | JSON | 已安裝原生發布版本的中繼資料 |
-| `GET /v1/runtime/containments` | JSON | 執行環境的隔離處置記錄 |
-|`POST /v1/runtime/upgrades/cancel/{id}`|JSON|取消擬議的執行階段升級|
+|`POST /v1/runtime/upgrades/propose`|JSON|起草排定執行階段變更集的 SORA 議會提案|
+| `POST /v1/runtime/upgrades/attest/{id}` | JSON | 為已排定的變更集簽署本節點的證明 |
+| `GET /v1/runtime/release` | JSON | 本節點的發布版本摘要，以及它是否執行已提交與已排定的執行階段選擇 |
+| `GET /v1/runtime/containments` | JSON | 已記錄的執行階段定義緊急隔離處置 |
+|`POST /v1/runtime/upgrades/cancel/{id}`|JSON|起草撤回已排定變更集的 SORA 議會提案|
 
 ## 應用程式與 SORA Nexus 路由族 {#app-and-sora-route-families}
 
 當 Torii 編譯時包含面向應用程式的功能集，就會提供額外的 JSON 路由族，用於區塊瀏覽器、SORA Nexus 服務、跨鏈橋流程、證明與儲存。這些路由族並非在每個網路設定檔中都會啟用。
 
-`/openapi.json`描述了在生成的app-API 目錄中註冊的路線;它對所包含的條目是權威的,而不是每個安裝的路線. 特別是公共局域 SoraFS CID 和已知路線在生成的檔案之外安裝,必須直接進行探測.
+`/openapi.json` 對其包含的操作具有權威性，但並不涵蓋程序所掛載的每一條路由。僅向產生的 SDKs 公開或完全未投影的目錄路由雖已掛載，卻不在該文件中。在固定的提交版本中，這些路由包括 Kaigi 通話路由、`/v1/app-api/*`、`/v1/kagemusha/{scheme}/wallets/*` 下的 KAGEMUSHA 錢包讀取路由，以及公開的 SoraFS `/sorafs/cid/*` 與 `/.well-known/sorafs/manifest` 路由。請直接探測這些路由。
 
 |路線家族| 用途                                                                                                                   |
 | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
@@ -136,7 +136,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
 |`/v1/connect/*`, `/v1/vpn/*` |Iroha 連線會話, WebSocket 運輸,VPN 會議,個人資料和收據|
 |`/v1/app-api/*`, `/v1/api/*`,`/v1/content/*` |應用程式 API 繫結和捆綁/CID 支援的內容路由 |
 |`/v1/operator/*`, `/v1/mcp` |運營商認證和本地 MCP JSON-RPC 橋樑 |
-| `/v1/kagemusha/enrollment`、`/v1/repo/*`、`/v1/space-directory/*`、`/v1/ram-lfe/*` | KAGEMUSHA 註冊、附買回協議、資料空間清單，以及 [RAM-LFE 輔助工具](/zh-hant/blockchain/ram-lfe.md#torii-routes) |
+| `/v1/kagemusha/*`、`/v1/repo/*`、`/v1/space-directory/*`、`/v1/ram-lfe/*` | KAGEMUSHA 註冊與錢包最終性讀取、附買回協議、資料空間清單，以及 [RAM-LFE 輔助工具](/zh-hant/blockchain/ram-lfe.md#torii-routes) |
 |`/v1/kaigi/*`, `/v1/webhooks/*`,`/v1/notify/*`, `/v1/telemetry/*` |合作,網路連線,推送通知和直播遠端測量整合|
 
 ## 帳戶身份驗證、可見性和 Explorer 遊標 {#account-authentication-visibility-and-explorer-cursors}
@@ -221,17 +221,17 @@ ISO 20022路線採用兩個獨立的檢查. 要求必須首先透過運營商許
 | `POST /v1/transactions/query` | 選用的標準帳戶簽章；套用呼叫者的資料空間可見範圍 |
 |`GET /v1/triggers/completed`|運營商請求籤名;讀取節點本地完成記錄|
 
-同一可見性物件會篩選帳戶、網域、資產定義、資產、NFT、RWA、持有者及 Explorer 的讀取結果。不存在的物件與位於呼叫者可見路由之外的物件，刻意設計為無法區分。只有交易所記錄的每個路由部分都可見時，才會顯示已提交的交易與指令歷史。因此，只要任一參與部分位於呼叫者範圍之外，跨資料空間交易就會被隱藏；缺失、過期或格式錯誤的路由脈絡，只有全域讀取者可見。
+同一可見性物件會篩選帳戶、網域、資產定義、資產、NFT、RWA、持有者及 Explorer 的讀取結果。不存在的物件與位於呼叫者可見路由之外的物件，刻意設計為無法區分。只有交易所記錄的每個路由部分都可見時，才會顯示已提交的交易與指令歷史。因此，只要任一參與部分位於呼叫者範圍之外，多資料空間交易就會被隱藏；缺失、過期或格式錯誤的路由脈絡，只有全域讀取者可見。
 
 由世界狀態支援的六個 Explorer 集合使用不透明的規範 base64url 鍵集遊標。預設頁面限制為 25，最大值為 100，每頁最多檢查 512 個候選鍵。每個遊標都繫結至其集合、篩選條件、規範最後鍵，以及呼叫者的可見路由集摘要，因此不能在另一個查詢中重放，也不能在呼叫者可見性發生變更後重放。
 
 區塊,交易,最新交易,指令和最新指令的歷史游標還會固定已提交快照的高度與區塊雜湊.響應顯示`pagination.limit`, `pagination.snapshot_height`, `pagination.snapshot_hash`, `pagination.next_cursor`,和 `pagination.has_more`.另一個路線或過濾器設定的導向器,改變的可見性摘要,或者節點不再可以驗證的快照被關閉.在阻塞工作者執行時,歷史掃描仍然存在於 Torii 的查詢錄取許可中.
 
-Explorer WebSocket 串流會輸出經篩選的摘要，並隨帳本權限變更重新計算可見範圍。原生 `GET /v1/blocks/stream` 路由則不同：它輸出完整簽署區塊，在交握時要求 `CanReadAllLedgerData`，並在該權限日後遭撤銷時關閉。不要將此原生串流用於範圍限於單一資料空間的區塊瀏覽器。
+Explorer WebSocket 串流會輸出經篩選的摘要，並隨帳本權限變更重新計算可見範圍。原生 `GET /v1/blocks/stream` 路由則不同：它輸出完整簽署區塊，在交握時要求 `CanReadAllLedgerData`，並在該權限日後遭撤銷時關閉。不要將此原生串流用於範圍限於資料空間的區塊瀏覽器。
 
 ## ISO 20022 橋 {#iso-20022-bridge}
 
-Torii 將 ISO 20022橋暴露在 `/v1/iso20022/*`下,當應用程式面向 API 和橋執行階段啟用時.橋是故意設定的:它不是一個一般用途的 ISO 20022清算閘道器,而是用於將選定的支付訊息轉換為簽署的 Iroha 轉賬和跟蹤其賬本狀態的支援子集.
+Torii 在每個建置中都會將 ISO 20022 橋接掛載於 `/v1/iso20022/*` 下；只有設定 `torii.iso_bridge.enabled` 時，它才會處理提交。此橋接的範圍是刻意限定的：它不是通用的 ISO 20022 清算閘道，而是一個受支援的子集，用於將選定的支付訊息轉換為已簽署的 Iroha 轉帳，並追蹤其帳本狀態。
 
 在允許任何提交之前配置一個持久的本地 `torii.iso_bridge.store_dir`. 配置欄位僅是可選的,因此節點可以啟動只用於閱讀或診斷使用:每個認證的 ISO 提交都需要目錄,並且在沒有永續性或重播重播防護標記或富記錄寫失敗時返回可複試`503 Service Unavailable`.
 
@@ -318,7 +318,7 @@ Kaigi 在 SORA Nexus 上提供付費的實時音訊/影片室. 使用它,當應�
 
 - `CreateKaigi`:在域名下建立呼叫,並儲存其政策,時間表,後設資料和可選的繼電說明書.
 - `JoinKaigi`:更新呼叫名單.在 `zk-roster-v1`模式下,公開呼叫檢視顯示了承諾和無效數量,而不是參與者帳戶 IDs.
-- `LeaveKaigi`:將參與者從透明呼叫中移除.私人模式的離開在首發協議中是離鏈的.
+- `LeaveKaigi`：移除參與者。在 `zk-roster-v1` 模式下，參與者會證明自己的離開，這會移除其名單承諾並記錄一個作廢標識符。
 - `RecordKaigiUsage`:新增計量時間和gas總數.
 - `EndKaigi`:結束會議並記錄最後的時刻.
 
@@ -327,6 +327,7 @@ Torii 揭示了以下面嚮應用程式的讀數:
 |路線|驗證| 用途                                    |
 | ----------------------------------- | --------------------------------------- | ------------------------------------------ |
 |`/v1/kaigi/calls/{call_id}`|公共|目前的呼叫記錄|
+|`/v1/kaigi/calls/{call_id}/participation`|標準的精確網路帳戶請求|已簽署呼叫者自身的參與狀態|
 |`/v1/kaigi/calls/{call_id}/signals`|準確網路帳戶要求|頁面化的提交訊號傳輸後設資料|
 |`/v1/kaigi/calls/{call_id}/events`|準確網路帳戶要求|呼叫生命週期流程|
 |`/v1/kaigi/relays`|允許上市的運營商請求|連線總結|
@@ -334,7 +335,9 @@ Torii 揭示了以下面嚮應用程式的讀數:
 |`/v1/kaigi/relays/health`|允許上市的運營商請求|綜合繼電器健康|
 |`/v1/kaigi/relays/events`|準確網路帳戶要求|連線註冊和健康活動流程|
 
-必須啟用應用程式 API。中繼摘要和健康狀態路由即使是唯讀的，也屬於營運者介面；未簽署的 `curl` 要求不是有效的可用性探測。工作階段狀態還會透過 `KaigiRosterSummary`、`KaigiRelayManifestUpdated`、`KaigiRelayHealthUpdated` 和 `KaigiUsageSummary` 等 Kaigi 網域事件反映。
+必須啟用應用程式 API。這四條通話路由不在 `/openapi.json` 中：通話記錄、參與和信令路由僅向產生的 SDKs 公開，而通話事件串流則未被投影。
+
+中繼摘要和健康狀態路由即使是唯讀的，也屬於營運者介面；未簽署的 `curl` 要求不是有效的可用性探測。工作階段狀態還會透過 `KaigiRosterSummary`、`KaigiRelayManifestUpdated`、`KaigiRelayHealthUpdated` 和 `KaigiUsageSummary` 等 Kaigi 網域事件反映。
 
 ### CLI 冒煙測試 {#cli-smoke-test}
 

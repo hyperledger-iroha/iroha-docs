@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 98c351372551b08bda4911f52bfb3cc70c53b6125d8045c17abb205b27960f6d
+translation_source_hash: 96ca67b9bbf9d743de2f640e09487176f62a8a31052e4f1e15e15a771e985c48
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -24,7 +24,7 @@ SORA Nexus በIroha 3 ላይ ይሠራል። መተግበሪያዎን መጀመ�
 |ደረጃ|Taira የሙከራ መረብ|Minamoto ዋና መረብ|
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
 |የአውታረ መረብ ሁኔታን ማንበብ ይጀምሩ|መጠይቅ `/status` ያለ ቁልፎች| በመጀመሪያ የአገልግሎቱን አድራሻና የTLS ምስክር ወረቀት ያረጋግጡ |
-|የውሂብ ቦታ ይምረጡ|መተግበሪያዎ የሚተዳደር የማስፈጸሚያ መስመር ካልፈለገ በስተቀር ይፋዊ `universal` ይጠቀሙ|ተመሳሳዩን የውሂብ ቦታ ይጠቀሙ ከዋና ኔት ፈቃድ በኋላ ብቻ|
+|የውሂብ ቦታ ይምረጡ|መተግበሪያዎ የራሱ የሚተዳደር የውሂብ ቦታ ካልፈለገ በስተቀር ይፋዊ `universal` ይጠቀሙ|ተመሳሳዩን የውሂብ ቦታ ከዋና ኔት ፈቃድ በኋላ ብቻ ይጠቀሙ|
 |የክፍያ ንብረት ያግኙ|የህዝብ Taira የቴስትኔት የገንዘብ ድጋፍ አገልግሎትን ይጠቀሙ|XOR በገንዘብ ከተደገፈ Minamoto ሂሳብ ወይም ከተፈቀደ የግምጃ ቤት ፍሰት ይቀበሉ|
 | የሙከራ ክዋኔዎች | በገንዘብ አገልግሎቱ የተሞላ የሙከራ XOR ይጠቀሙ | የሙከራ መሣሪያ አይጠቀሙ፤ ክዋኔዎቹ እውነተኛ XOR ያወጣሉ |
 |ያስተዋውቁ|አመክንዮ፣ ክትትል እና ምስጠራ ፈራሚ አያያዝን እንደገና ይሞክሩ|የተለዩ ቁልፎችን፣ የገንዘብ ድጋፍን እና የመልቀቂያ መቆጣጠሪያዎችን ይጠቀሙ|
@@ -63,7 +63,7 @@ SORA Nexus በIroha 3 ላይ ይሠራል። መተግበሪያዎን መጀመ�
 wonderland.universal
 ```
 
-አዲስ የድርጅት የውሂብ ቦታ ከፈለጉ ከመደበኛ የደንበኛ መለያ ለመመዝገብ ከመሞከር ይልቅ የካታሎግና የማዘዋወር ሀሳብ ያዘጋጁ። ከታች [አዲስ የውሂብ ቦታ ያቋቁሙ](#_8-provision-a-new-data-space) ይመልከቱ።
+አዲስ የድርጅት የውሂብ ቦታ ከፈለጉ ከመደበኛ የደንበኛ መለያ ለመመዝገብ ከመሞከር ይልቅ የካታሎግና የማዘዋወር ሀሳብ ያዘጋጁ። ከታች [አዲስ የውሂብ ቦታ ያቋቁሙ](#_8-provision-a-new-dataspace) ይመልከቱ።
 
 ## 2. ይፋዊ Torii የመጨረሻ ነጥብ ያረጋግጡ {#_2-check-the-public-torii-endpoint}
 
@@ -192,7 +192,7 @@ Taira MCP ን እንደ ይፋዊ የቴስትኔት መቆጣጠሪያ ወለ�
 
 እነዚህ ምሳሌዎች የመለያ ቁልፎችን ሳይጠቀሙ ከTaira መረጃ ያነባሉ።
 
-Taira የሚያቀርባቸውን የክፍት ውሂብ ቦታ መስመሮች ዘርዝሩ:
+እያንዳንዱን የTaira መስመር ከውሂብ ቦታው እና ከታይነቱ ጋር ዘርዝሩ፦
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -254,7 +254,7 @@ nonce = false
 ተነባቢ-ብቻ ቼክ ያሂዱ -
 
 ```bash
-iroha --config ./taira.client.toml --output-format text ops sumeragi status
+iroha --config ./taira.client.toml ledger domain list --limit 5
 ```
 
 ፈተናዎችን ከመጻፍዎ በፊት ይፋዊውን Taira ምርመራዎችን ያሂዱ -
@@ -432,7 +432,7 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 መለያው በዋና መረብ የመሳፈሪያ ወይም የአስተዳደር ፍሰት በኩል እስኪቀርብ እና እስኪደገፍ ድረስ የተነበበ ጎን ቼኮችን ብቻ ያሂዱ -
 
 ```bash
-iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
+iroha --config ./minamoto.client.toml ledger domain list --limit 5
 ```
 
 የTaira ፋውሴት ወይም መሠረታዊ ሙከራ ትዕዛዞችን በMinamoto ላይ አያስኪዱ።
@@ -445,7 +445,7 @@ Minamoto ክፍያዎች የሚከፈሉት በምርት XOR ነው፣ እና Mi
 
 Taira XOR የ Minamoto ክፍያዎችን አይከፍልም። የሙከራ መረብ ቀሪ ሂሳቦችና የገንዘብ ጥያቄዎች ወደ Minamoto አይተላለፉም።
 
-## 7. በነባር የውሂብ ቦታ ውስጥ ይሥሩ {#_7-work-inside-an-existing-data-space}
+## 7. በነባር የውሂብ ቦታ ውስጥ ይሥሩ {#_7-work-inside-an-existing-dataspace}
 
 በውሂብ ቦታ ውስጥ ለሚኖሩ የመዝገብ ነገሮች ሙሉ የተገለጹ የጎራ ስሞችን ይጠቀሙ። ለምሳሌ በክፍት የውሂብ ቦታ ያለ የፕሮጀክት ጎራ ይህን መጠቀም አለበት:
 
@@ -486,7 +486,7 @@ alice@universal
 
 ጥብቅ የመለያ መስኮች አሁንም ነጠላ ፕሮቶኮል-መደበኛ I105 መለያ መታወቂያዎችን ይጠቀማሉ። ተለዋጭ ስሞችን ወደ ነጠላ ፕሮቶኮል-መደበኛ መለያ መታወቂያዎች የሚፈቱ በሰው ሊነበቡ የሚችሉ ማሰሪያዎች አድርገው ይያዙ።
 
-## 8. አዲስ የውሂብ ቦታ ያቋቁሙ {#_8-provision-a-new-data-space}
+## 8. አዲስ የውሂብ ቦታ ያቋቁሙ {#_8-provision-a-new-dataspace}
 
 አዲስ የውሂብ ቦታ የኦፕሬተርና የአስተዳደር ለውጥ ነው። ክፍቱ የTorii መገናኛ ነጥብ ትራፊክን ወደ ተዋቀሩ የውሂብ ቦታዎች ሊመራ ይችላል፣ ያልታወቁ የውሂብ ቦታ ተለዋጭ ስሞችን ግን ይከለክላል።
 
@@ -529,7 +529,7 @@ metadata = {}
 [[nexus.dataspace_catalog]]
 alias = "payments"
 id = 20
-description = "Payments dataspace"
+description = "Payments data space"
 fault_tolerance = 1
 
 [[nexus.routing_policy.rules]]
@@ -537,12 +537,12 @@ lane = 5
 dataspace = "payments"
 [nexus.routing_policy.rules.matcher]
 instruction = "transfer::asset"
-description = "Route asset transfers to the payments dataspace"
+description = "Route asset transfers to the payments data space"
 ```
 
 የኦፕሬተር ተቀባይነት እነዚህን በሮች ማካተት አለበት -
 
-- `iroha3d --sora --config <config.toml> --trace-config` በተፈታው የኖድ ውቅር ላይ ያልፋል
+- `iroha3d --sora --config <config.toml> --check-config` በተፈታው የኖድ ውቅር ላይ ያልፋል
 - የተፈጠረው ወይም የተገመገመው ቴክኒካል ማኒፌስት በምስጠራ ሃሽዎች እና ፊርማዎች ተቀምጧል
 - የየመጀመሪያ የስራ ሙከራዎች ከማንኛውም Minamoto ማስተዋወቂያ በፊት Taira ያልፋሉ
 - ከለውጡ በኋላ ያለው `/status` ካታሎግ የታሰበውን መስመርና የውሂብ ቦታ ያሳያል

@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /cookbook/nfts.md
-translation_source_hash: b6a85c2feb197588e3358a785e10280a687af3951d52de4e6b8d96eab5de873c
+translation_source_hash: 7d7a1ba8ff8678f420a6237bd0d074d2d197bf4349989c0c55f05e9769d15da7
 translation_status: machine-validated
-translation_engine: human-reviewed+claude-opus-5-5+reviewed-supplemental-naming-link
+translation_engine: human-reviewed+claude-opus-5-5+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # NFTs {#nfts}
 
@@ -15,7 +15,7 @@ Taira NFT གནས་སྟངས བརྟག་ཞིབ་འབད། ད�
 
 - `curl`,`jq`, Python 3.11 ཡང་ན་ཤུལ་ལས་དང་ ད་ལྟོའི `iroha` CLI
 - ཀློག་ཐངས་རྐྱངམ་ཅིག་ Taira ཐོབ་ཚུགསཔ་ཨིན།
-- འབྲི་ནིའི་ཚོང་འབྲེལ་ཚུ་གི་དོན་ལུ་ [Iroha འགོ་བཙུགས་](/dz/get-started/launch-iroha.md) ནང་བཟུམ་སྦེ་ `kagami localnet generate --peers 4 --out-dir ./localnet` གིས་བཟོ་མི་ ས་གནས་དྲ་རྒྱ་ཅིག་ `./localnet/client.toml` དང་ `http://127.0.0.1:8080` གུ་ཡོད་པའི་ Torii དང་གཅིག་ཁར་ དགོཔ་ཨིན། དེ་མ་ཚད་ དེ་གི་མིང་རྟགས་འགོད་མི་གིས་ བདག་དབང་འཛིན་མི་ NFT མངའ་ཁོངས་ཅིག་ཡང་ དགོཔ་ཨིན་ (རིམ་པ་ 2 ལུ་ བལྟ)།
+- འབྲི་ནིའི་ཚོང་འབྲེལ་ཚུ་གི་དོན་ལུ་ `kagami localnet generate --peers 4 --out-dir ./localnet` གིས་བཟོ་མི་ ས་གནས་དྲ་རྒྱ་ཅིག་ `./localnet/client.toml` དང་ `http://127.0.0.1:8080` གུ་ཡོད་པའི་ Torii དང་གཅིག་ཁར་ དགོཔ་ཨིན། དེ་མ་ཚད་ དེ་གི་མིང་རྟགས་འགོད་མི་གིས་ བདག་དབང་འཛིན་མི་ NFT མངའ་ཁོངས་ཅིག་ཡང་ དགོཔ་ཨིན་ (རིམ་པ་ 2 ལུ་ བལྟ)།
 
 ## རིམ་པ་ཚུ་ {#steps}
 

@@ -1,9 +1,9 @@
 ---
 translation_locale: my
 translation_source: /cookbook/nfts.md
-translation_source_hash: b6a85c2feb197588e3358a785e10280a687af3951d52de4e6b8d96eab5de873c
+translation_source_hash: 7d7a1ba8ff8678f420a6237bd0d074d2d197bf4349989c0c55f05e9769d15da7
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # NFTs {#nfts}
 
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-li
 
 - `curl`, `jq`, Python 3.11 သို့မဟုတ်နောက်ဆုံး၊ current `iroha` CLI။
 - ဖတ်လို့သာရတဲ့ Taira ဝင်ခွင့်။
-- ရေးသွင်းမှုများအတွက် [လွှတ်တင်ခြင်း Iroha](/my/get-started/launch-iroha.md) တွင်ကဲ့သို့ `kagami localnet generate --peers 4 --out-dir ./localnet` ဖြင့် ဖန်တီးထားပြီး `./localnet/client.toml` နှင့် `http://127.0.0.1:8080` ပေါ်ရှိ Torii ပါဝင်သော ဒေသတွင်းကွန်ရက်တစ်ခုနှင့် ၎င်း၏ လက်မှတ်ထိုးသူ ပိုင်ဆိုင်သော NFT ဒိုမင်တစ်ခု (အဆင့် ၂ ကို ကြည့်ပါ)။
+- ရေးသွင်းမှုများအတွက် `kagami localnet generate --peers 4 --out-dir ./localnet` မှ ဖန်တီးထားပြီး `./localnet/client.toml` နှင့် `http://127.0.0.1:8080` ပေါ်ရှိ Torii ပါဝင်သော ဒေသတွင်းကွန်ရက်တစ်ခုနှင့် ၎င်း၏ လက်မှတ်ထိုးသူ ပိုင်ဆိုင်သော NFT ဒိုမင်တစ်ခု (အဆင့် ၂ ကို ကြည့်ပါ)။
 
 ## ခြေလှမ်း {#steps}
 

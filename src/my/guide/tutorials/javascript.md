@@ -1,13 +1,13 @@
 ---
 translation_locale: my
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: 92389d3ad83ab32e85b4ca83ede9829d1a38afaad6e86da035da2829a3aaedfb
+translation_source_hash: 471dc7c82f371e1bbdcf216d5a50b1263612b7d29fffb1ef36b708a6beb931b6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # JavaScript နှင့် TypeScript {#javascript-and-typescript}
 
-လက်ရှိ JavaScript SDK အဲဒါက `@iroha/iroha-js` အိတ်ထဲတွင် Iroha အရင်းအမြစ် သစ်ပင်ပါ။ Node.js- ပထမ SDK အတွက် Torii, Norito ဆောက်လုပ်သူတွေ၊ လက်မှတ်ရေးထိုးခြင်း၊ စာမျက်နှာပြုစုခြင်း၊ ချိတ်ဆက်မှု ကြိုတင်ကြည့်ရှုချက်များနှင့် Kagemusha command transport များ။
+လက်ရှိ JavaScript SDK သည် Iroha ရင်းမြစ်ကုဒ် ဖိုင်ဖွဲ့စည်းပုံရှိ `@iroha/iroha-js` package ဖြစ်သည်။ ၎င်းသည် Torii၊ Norito builder များ၊ လက်မှတ်ထိုးခြင်း၊ စာမျက်နှာခွဲခြင်းနှင့် Connect preview များအတွက် Node.js ကို ဦးစားပေးသော SDK ဖြစ်သည်။
 
 ## အရင်းအမြစ်မှ တည်ဆောက်ခြင်း {#build-from-source}
 
@@ -31,6 +31,7 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 const torii = new ToriiClient("http://127.0.0.1:8080", {
   authToken: "dev-token",
+  allowInsecure: true, // local development only
 });
 
 const keys = generateKeyPair();

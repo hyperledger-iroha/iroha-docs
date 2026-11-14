@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: 5fb7abd4e152ece715a8337e8ef8e75330f634d2a1b26e0c5bd8308f1f3793a9
+translation_source_hash: 40714a6cd124d4b0342b0f6ecf321f286e714c0e236afd6fd7834c0cf0ad1165
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -11,15 +11,14 @@ translation_engine: nllb-200-ct2+reviewed-delta
 
 ## 1. წინასწარი პირობები {#_1-prerequisites}
 
-პირველ რიგში დაიწყეთ ადგილობრივი ქსელი:
-
-- [გაშვება Iroha 3](./launch-iroha.md)
-
-ქვემოთ მოცემული მაგალითები წარმოადგენს კლიენტის კონფიგურაციას, რომელიც შეიქმნა [გაშვება Iroha 3](./launch-iroha.md) -ში შექმნილი ლოკალურ ქსელიდან:
+Iroha-ს წყაროს კოდის ასლიდან, დოკუმენტირებულ რევიზიაზე, დააგენერირეთ და გაუშვით ოთხკვანძიანი ლოკალური ქსელი:
 
 ```bash
-./localnet/client.toml
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
+./localnet/start.sh
 ```
+
+ქვემოთ მოცემული მაგალითები იყენებს მის მიერ გენერირებულ კლიენტის კონფიგურაციას, `./localnet/client.toml`.
 
 ## 2. ძირითადი CLI კონფიგურაცია {#_2-basic-cli-setup}
 
@@ -61,7 +60,7 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-ჩამოთვალეთ საჯარო დომენები `universal` მონაცემთა სივრცეში:
+ჩამოთვალეთ დომენები, რომლებიც ხილულია არაავთენტიფიცირებული მკითხველისთვის:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
@@ -147,7 +146,8 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 კონსენსუსის ოპერატორის ბრძანებებს დაშვებულ სიაში შეტანილი, შესრულების დროის გასაღები სჭირდება. ის `client.toml`-ში არ შეინახოთ; მხოლოდ მფლობელისთვის ხელმისაწვდომი ფაილი აბსოლუტური გზით გადასცით:
 
 ```bash
-: "${OPERATOR_KEY_FILE:=$PWD/secrets/operator.key}"
+# The generated localnet writes its allow-listed operator key here.
+: "${OPERATOR_KEY_FILE:=$PWD/localnet/runtime/operator-signer.key}"
 
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \

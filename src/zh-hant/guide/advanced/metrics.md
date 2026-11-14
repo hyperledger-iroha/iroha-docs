@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
+translation_source_hash: ad2bc9f8c53169d8161f7a2f23b1e660ebd24cf03cf8e05f4b00bbd27b7b11fe
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -23,8 +23,8 @@ Iroha 的效能取決於工作負載,驗證器拓撲,網路條件和共識設定
 開始使用公開節點快照和Prometheus抓取,然後使用 CLI 為操作員認證共識狀態.目標節點必須允許操作員金鑰,並且只有在執行時載入:
 
 ```bash
-export TORII=http://127.0.0.1:8180
-export OPERATOR_KEY_FILE=./secrets/operator.key
+export TORII=http://127.0.0.1:8080
+export OPERATOR_KEY_FILE="$PWD/localnet/runtime/operator-signer.key"
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s "$TORII/metrics" > metrics.prom
@@ -52,7 +52,7 @@ curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/now" \
-  | jq '{now_ms, offset_ms}'
+  | jq '{now, offset_ms}'
 ```
 
 不要用公共測試網觀測作為生產能力數字用於自己的部署.
@@ -187,13 +187,13 @@ iroha --config ./localnet/client.toml \
 | --- | --- | --- |
 |已接受的吞吐量|`sum(rate(txs{type="accepted"}[5m]))`|在穩定狀態下應達到或超過目標 TPS |
 |拒絕|`sum(rate(txs{type="rejected"}[5m]))`|應透過測試計劃解釋|
-|提交延遲|`histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))`|比較p95/p99與延遲預算|
+|提交延遲|`histogram_quantile(0.95, sum by (le) (rate(sumeragi_commit_latency_ms_bucket{lane="global"}[5m])))`、`last_commit_time_ms`|比較 p95/p99 與延遲預算|
 |排隊深度|`queue_size`, `sumeragi_tx_queue_depth` |應在高負載期間保持限制.|
 |排列度|`sumeragi_tx_queue_saturated`|持續的非零值平均過載量|
-|檢視變更|`view_changes`, `sumeragi_view_change_suggest_total`,`sumeragi_view_change_install_total` |增加的值表明時間,拓物質,有效載荷或網路問題|
-|丟棄的訊息|`dropped_messages`, `sumeragi_consensus_message_handling_total` |在負載期間的下降通常解釋了延遲峰值|
-|有效載荷和 DA 回收| `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` |持續出現的請求、不斷增加的等待時間或重複觸發的 DA 門控，表明區塊體或分片取得出現問題。|
-|提交定決數|`sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |已計數的簽名應該迅速達到所需的共數.|
+|檢視變更|`view_changes`, `sumeragi_view_changes_total`,`sumeragi_timeout_votes_total` |增加的值表明時間,拓物質,有效載荷或網路問題|
+|丟棄的訊息|`sumeragi_dropped_total`, `p2p_queue_dropped_total` |在負載期間的下降通常解釋了延遲峰值|
+|負載與追趕擷取| `sumeragi_fetch_requests_total{kind="body"}`、`sumeragi_fetch_requests_total{kind="sync"}` |持續出現的區塊本體或同步擷取，表示負載取得或追趕同步發生問題。|
+|提交進度|`sumeragi_committed_height`、`sumeragi_applied_height` |已認證高度與已套用高度應同步推進|
 
 如果僅在 `/v1/sumeragi/status` 中存在一個指標,則將 JSON 的快照捕捉到與Prometheus痕相同的執行構件中.
 
@@ -245,7 +245,7 @@ iroha --config ./localnet/client.toml \
 - 接受/拒絕 TPS
 - p50/p95/p99 提交延遲
 - 排隊深度和度
-- 檢視變化,丟棄的訊息,缺失區塊檢索和 DA 門計器
+- 檢視變更、逾時投票、Sumeragi 丟棄，以及區塊本體與同步擷取
 - CPU,每個驗證器的記憶體,磁碟和網路使用量
 
 缺少這些細節時，TPS 數字只能視為未經充分佐證的參考。

@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: 33617bc89d0aef5c2a086f45a216201d8980123f717e68f1e1a95eadeb906eb0
+translation_source_hash: dff2584fd47d6e1426ec18aca2d2003a7fdca4b9882296de484418f8c17806fe
 translation_status: machine-validated
 translation_engine: human-reviewed+reviewed-delta
 ---
@@ -90,13 +90,12 @@ Aitai འདི་ ཚོང་རའི་བཟོ་རྣམ་གྱི་�
 
 ས་གནས་ཀྱི་བདག་དབང་གིས་ རྩིས་ཐོ་ནང་ བདག་འཛིན་འཐབ་ཨིན། བཙོང་མི་གིས་ `OpenAssetEscrow` དང་ཅིག་ཁར་ མཁོ་སྤྲོད་ཅིག་ཁ་ཕྱེ་སྟེ་ ཉོ་མི་གིས་ `AcceptAssetEscrow` དང་ `MarkEscrowPaymentSent` དང་ཅིག་ཁར་ རིམ་སྒྲིག་ཕྱི་ཁའི་གླ་ཆ་འདི་ངོས་ལེན་འབད་དེ་ རྟགས་བཀལཝ་ཨིནམ་དང་ བཙོང་མི་གིས་ `ReleaseAssetEscrow` དང་ཅིག་ཁར་ བཏོན་གཏངམ་ཨིན་ ཡང་ན་ གླ་ཆ་འདི་རྟགས་མ་བཀལ་བའི་ཧེ་མ་ ཆ་མེད་བཏངམ་ཨིན། ཉོ་མི་དང་བཙོང་མི་གིས་ མོས་མཐུན་མེད་པ་ཅིན་ ཕྱོགས་གང་རུང་གིས་ རྩོད་རྙོགས་ཁ་ཕྱེ་ཚུགས་ནི་དང་ `CanResolveEscrowDispute` དང་ཅིག་ཁར་ སེལ་འཐུ་འབད་མི་ཅིག་གིས་ བསྡམ་བཞག་ཡོད་པའི་དངུལ་འབོར་འདི་ བགོ་བཤའ་རྐྱབ་ཚུགས།
 
-སྲོལ་རྒྱུན་གྱི་འཁོར་ལོའི་མཐའ་མ་ཚུ་གི་དོན་ལུ་ སྤྱིར་བཏང་བཅའ་ཡིག་གི་བཀག་སྡོམ་ཚུ་དང་ གསང་བའི་བར་གཏོགས་བདག་ཉརའི་རྩིས་ཐོ་ཚུ་ དྲི་བཀོད་དང་བྱུང་རྐྱེན་ཚུ་ དེ་ལས་ Rust དཔེ་འབད་བ་ཅིན་ [རང་སའི་རྒྱུ་དངོས་བཅོལ་ཉར](/dz/blockchain/escrow.md) ལུ་བལྟ་དགོ།
+ཚེ་རིམ་ཆ་ཚང་དང་ སྤྱིར་བཏང་རྒྱུ་དངོས་ཀྱི་བཀག་སྡོམ་ཚུ་ ཆ་རྐྱེན་ཅན་གྱི་བར་གཏོགས་བདག་ཉར་ དྲི་བཀོད་དང་བྱུང་རྐྱེན་ཚུ་ དེ་ལས་ Rust དཔེ་ཚུའི་དོན་ལུ་ [རང་སའི་རྒྱུ་དངོས་བཅོལ་ཉར](/dz/blockchain/escrow.md) ལུ་བལྟ།
 
 | Aitai ཁ་ངོས། | འདི་གི་དོན་ལུ་ལག་ལེན་འཐབ། |
 | ----------------------------------------------------------------------- ----------------------------------------------------------------- | |
 |`OpenAssetEscrow`, `AcceptAssetEscrow`,`MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow` |XOR ནང་གི་རྩིས་ཐོ་ཐོན་སྐྱེད་ཚུ་རྩིས་ཏེ་ དྭངས་འཕྲོས་འཕྲོས་སྦེ་ཡོད་མི་ ཨང་གྲངས་ཀྱི་རྒྱུ་དངོས་གྱི་ གྲལ་འདེབས་ཚུ་ཨིན། |
-| `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow` | མ་དངུལ་དང་ མཇུག་བསྡུའི་འགུལ་སྐྱོད་ཚུ་གི་དོན་ལུ་ བདེན་ཁུངས་མཉམ་སྦྲགས་ཚུ་ལག་ལེན་འཐབ་ཨིན། |
-| `OpenEscrowDispute`, `ResolveEscrowDispute`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` | རྩོད་རྙོགས་འཛུལ་ཞུགས་དང་ ཁྲིམས་ཁང་གི་ལུགས་སྲོལ་གྱི་ཐག་གཅོད། |
+| `OpenEscrowDispute`, `ResolveEscrowDispute` | རྩོད་གཞི་བཙུགས་ནི་དང་ ཁྲིམས་ཁང་བཟོ་རྣམ་གྱི་ཐག་གཅོད། |
 | `FindAssetEscrowById`, `FindAssetEscrowsBySeller`, `FindAssetEscrowsByBuyer`, `FindAssetEscrowsByStatus` | གློག་རིམ་གནས་ཚད་ཤོག་ལེབ་ཚུ་དང་ མཐུན་སྒྲིག་ལཱ་ཚུ་ དེ་ལས་ རྒྱབ་སྐྱོར་ལག་ཆས་ཚུ། |
 | `EscrowEventFilter` | དྭངས་གསལ་གྱི་ཨེསི་ཀོརོ་མིང་རྟགས་བཀོད་མི་ཚུ་ ཨེསི་ཀོརོ་ཨའི་ཌི་ བཙོང་མི་ ཉོ་མི་ གནས་རིམ་ ཡང་ན་ བྱུང་རིམ་གྱི་རིགས་ཚུ་གིས་ འཚོ་བ་སྐྱེལ་དགོ། |
 | Kotodama `escrow_open_offer`, `escrow_accept`, `escrow_mark_payment_sent`, `escrow_release`, `escrow_cancel`, `escrow_open_dispute`, `escrow_resolve_dispute` |Kotodama སྦ་སྒོའི་བརྡ་དོན་འདི་ V1 བར་གཏོགས་བདག་ཉར རིམ་ལུགས་འབོད གིས་རྒྱབ་སྐྱོར་འབད་ཡོདཔ་ཨིན།|
@@ -492,7 +491,7 @@ SoraFS གི་ལག་ལེན་འཐབ་ཐངས་ཚུ་ནང་ 
 
 Taira འདི་ ཀ་ནོ་ནིག མི༌མང༌ SoraFS བརྟག་དཔྱད་དྲ་རྒྱཨིན། འདི་ནང་ལུ་ མཛོད་ནང་བཙུགས་ཡོདཔ བདེན་དཔྱད་པ གསལ་ཐོ གིས་ སྡེབ་ཐག `fc56984b-2be7-431d-840e-21514d1883f0` དང་ སྡེབ་ཐག དབྱེ་འབྱེད་ཅན `369` ལག་ལེན་འཐབ་ཡོདཔ་ཨིན། འ་ནི་ `NetworkId` འདི་ ད་ལྟོ་ སྦྱར་ཡོདཔ Taira འགོ་ཐོག་གནས་སྟངས གི་བདེན་པའི་ངོ་རྟགས་ཨིན། Taira སླར་ལོག་བཟོཝ་གིས་ ལྕགས་ཀྱི་མིང་ཐོ་བཀོད་དེ་ བཞག་པའི་བསྒང་ལས་ ཧེཤ་འདི་བསྒྱུར་བཅོས་འབད་ཚུགས། འདི་འབདཝ་ལས་ ད་ལྟོའི་བཀོད་རྒྱ་ཅན་གྱི་གཞི་བཙུགས་ཡིག་གཟུགས་ནང་ལས་ གསར་གཏོགསཔ་ད་ UUID ལྕགས་ཐག་ནང་ལས་རྩ་ལས་རང་བཏོན་མ་ཚུགས། Taira གི་གྲུབ་འབྲས་ཅན་ SoraFS གཞི་སྒྲིག་ཚུ་འདི་:
 
-- ཡོངས་འབྲེལ་ཨའི་ཌི་: `hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94`
+- ཡོངས་འབྲེལ་ཨའི་ཌི་: `hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774`
 - སྒོ་སྒྲིག་གི་གཞི་རྟེན་ URL: `https://taira.sora.org`
 - གཏན་སྦྱར Torii URLs: `https://taira-validator-1.sora.org` བརྒྱུད་དེ་ `https://taira-validator-4.sora.org`
 - མཐུན་རྐྱེན་ཚུ་: `torii_gateway`, `chunk_range_fetch`,དང་ `potr_mldsa`
@@ -502,7 +501,7 @@ Taira འདི་ ཀ་ནོ་ནིག མི༌མང༌ SoraFS བརྟ�
 ```toml
 [sorafs.storage]
 enabled = false
-max_capacity_bytes = 13743895347
+max_capacity_bytes = 2684354560
 
 [sorafs.discovery]
 discovery_enabled = true
@@ -587,7 +586,7 @@ cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
   --summary-out=artifacts/site.car-summary.json
 
 : "${TAIRA_AUTHORITY:?set a funded Taira I105 account}"
-export TAIRA_NETWORK_ID='hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94'
+export TAIRA_NETWORK_ID='hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774'
 export TAIRA_PIN_TORII_URL=https://taira-validator-1.sora.org
 export TAIRA_PRIVATE_KEY_FILE="${TAIRA_PRIVATE_KEY_FILE:-./secrets/taira-authority.ed25519}"
 export TAIRA_RETENTION_EPOCH=$(( $(date -u +%s) + 86400 ))

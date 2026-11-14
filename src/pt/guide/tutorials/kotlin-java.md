@@ -1,9 +1,9 @@
 ---
 translation_locale: pt
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: f1f922b9820587cd4b599e7407698a47d468616670fee2922e4028147bc3e9b0
+translation_source_hash: 804ef15b3d5ecdfae9fd559d3f312772571938ed9872f4adbd251baa3471e4e2
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Kotlin, Android e Java {#kotlin-android-and-java}
 
@@ -15,7 +15,7 @@ O Kotlin SDK é a pilha de cliente padrão para aplicações JVM e Android. Ele 
 | --- | --- | --- |
 | `org.hyperledger.iroha.sdk:core-jvm` | JAR |Pure Kotlin/JVM Norito, modelo de dados, cripto, transação, Torii e código de protocolo|
 | `org.hyperledger.iroha.sdk:client-android` | AAR | Android keystore, telemetria do dispositivo e integrações de cliente suportadas por JNI |
-| `org.hyperledger.iroha.sdk:offline-wallet-android` | AAR | Android transportes de carteira offline e integração construídos em `client-android` |
+| `org.hyperledger.iroha.sdk:kagemusha-wallet-android` | AAR | Android transportes de carteira offline e integração construídos em `client-android` |
 
 Os artefatos ainda não foram publicados no Maven Central. Construa e publique-os localmente a partir da revisão de origem fixada Iroha:
 
@@ -36,21 +36,21 @@ dependencies {
     // Android client features:
     // implementation("org.hyperledger.iroha.sdk:client-android:0.1.0")
     // Android offline-wallet features:
-    // implementation("org.hyperledger.iroha.sdk:offline-wallet-android:0.1.0")
+    // implementation("org.hyperledger.iroha.sdk:kagemusha-wallet-android:0.1.0")
 }
 ```
 
-`core-jvm` não contém dependências de Android. Mantenha o código do cliente e do keystore de Android em `client-android`, e use `offline-wallet-android` apenas para fluxos offline-wallet e JNI de Android.
+`core-jvm` não contém dependências de Android. Mantenha o código do cliente e do keystore de Android em `client-android`, e use `kagemusha-wallet-android` apenas para fluxos offline-wallet e JNI de Android.
 
 ## Kotlin e Compatibilidade com Java {#kotlin-and-java-compatibility}
 
-O público API é Kotlin-primeiro e fornece interoperabilidade Java onde os chamadores JVM precisam. Mudanças equivalentes são espelhadas na implementação correspondente de `java/`. Novas integrações Android devem começar com os artefatos Kotlin acima.
+A API pública é voltada principalmente para Kotlin e é a implementação canônica para chamadores Java; os testes de consumidores com código-fonte Java em `core-jvm` a exercitam diretamente. A árvore `java/` contém implementações duplicadas que estão sendo retiradas e incorporadas aos módulos Kotlin. Novas integrações Android devem começar com os artefatos Kotlin acima.
 
 Todos os módulos Kotlin aplicam a compatibilidade JDK 8 API em tempo de compilação com `-Xjdk-release=8`, mesmo que a cadeia de ferramentas de compilação use JDK 21. Não use JDK 9+ APIs no código SDK.
 
 ## Construir e Testar {#build-and-test}
 
-Execute os testes portáteis JVM:
+Execute os testes JVM com a biblioteca `connect_norito_bridge` compilada a partir do mesmo código-fonte em `IROHA_NATIVE_LIBRARY_PATH` e `kotlin-fixture-gen` em `IROHA_KOTLIN_FIXTURE_GEN_BIN`, conforme descrito no README do SDK Kotlin; sem eles, os testes que dependem do código nativo falham:
 
 ```bash
 cd kotlin
@@ -61,7 +61,7 @@ Construa os artefatos Android:
 
 ```bash
 ./gradlew :client-android:assembleRelease \
-  :offline-wallet-android:assembleRelease --quiet
+  :kagemusha-wallet-android:assembleRelease --quiet
 ```
 
 ## Cobertura Atual {#current-coverage}

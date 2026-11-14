@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /blockchain/instructions.md
-translation_source_hash: ef50253c5478c9d8c3e14529dc4c2f3de67c344901c82c65be77ceb237a29598
+translation_source_hash: 86d253317376ad8d7a8c0e30689c7e0c0cd786af83299dd5ac1a904c653192f5
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -41,7 +41,7 @@ Bəzi təlimatlar bir təyinatın göstərilməsini tələb edir. Məsələn, ə
 | [SetParameter](#setparameter)                             |zəncir parametrləri|                      |
 | [Grant/Revoke](#grant-revoke)                             | [rollar, icazə tokenləri](/az/blockchain/permissions.md)                                                  |hesablar və ya rollar|
 | [Köçürmə](#transfer)                                     |domenlər, aktiv tərifləri, rəqəmsal aktivlər, NFTs|hesablar|
-| [Yerli etibar və aktiv kilidləri](#native-escrow-and-asset-locks) |rəqəmsal aktiv depozitləri, aktiv kilidləri, anonim depozit kriptoqrafik öhdəlik dəyərləri|alıcılar, təyinatlar və ya mübahisə bölgüləri|
+| [Yerli etibar və aktiv kilidləri](#native-escrow-and-asset-locks) |rəqəmsal aktiv depozitləri, aktiv kilidləri, şərti depozitlər|alıcılar, təyinatlar və ya mübahisə bölgüləri|
 | [Atomik şəxsi maliyyə əməliyyatının həlli](#atomic-private-settlement)   |marşrut üzrə məhdudlaşdırılmış gizli protokol məlumat qrupları, siyasət rotasiyaları, yekunlaşdırılmış paketlər və ləğv işarələri|                      |
 | [ExecuteTrigger](#executetrigger)                         |tetikləyir|                      |
 | [Log/Custom/Upgrade](#other-instructions)                 |jurnallar, icraçıya xüsusi fayllar, icraçı yeniləmələri|                      |
@@ -184,6 +184,7 @@ Aktiv təyinatlarını qeydiyyatdan keçirin və qeydiyyatdan silin:
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
+  --domain docs.universal \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
@@ -322,9 +323,9 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 
 ## Yerli Depozit və Aktiv Bloklamaları {#native-escrow-and-asset-locks}
 
-Yerleşik etibarnamə təlimatları rəqəmsal aktivləri blokçeyn dəftər protokolu tərəfindən idarə olunan mühafizədə kilidləyir. Onlar bazar tərzi maliyyə əməliyyatlarının həlli, ümumi aktiv kilidləri və anonim qorunan etibarnamə axınları üçün istifadə olunur.
+Yerli eskrou təlimatları rəqəmsal aktivləri reyestr tərəfindən idarə olunan protokol mühafizəsində kilidləyir. Onlar bazar tərzi maliyyə əməliyyatlarının həlli, ümumi aktiv kilidləri və attestatora bağlı şərti eskroular üçün istifadə olunur.
 
-Marketplace depoziti `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute` və `ResolveEscrowDispute`-dən istifadə edir. Ümumi aktiv kilidləri `OpenAssetLock`, `DrawdownAssetLock`-dən istifadə edir, `CancelAssetLock` və `ExpireAssetLock`. Anonim depozit `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute` və `ResolveAnonymousEscrowDispute` ilə bazar dövrünü əks etdirir.
+Bazar eskrousu `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute` və `ResolveEscrowDispute`-dən istifadə edir. Ümumi aktiv kilidləri `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock` və `ExpireAssetLock`-dan istifadə edir. Şərti eskrou `OpenConditionalEscrow`, `AttestEscrowCondition` və `ExpireConditionalEscrow`-dan istifadə edir.
 
 Bu ISIs hazırda birinci dərəcəli CLI əmrlərə malik deyil. Tipli SDK quruculardan və ya sıralanmış təlimat paketlərindən istifadə edin və həyat dövrü detalları, icazələr, sorğular, hadisələr və Rust nümunələri üçün [Yerli Aktiv Əmanət](/az/blockchain/escrow.md)-a baxın.
 
@@ -418,7 +419,7 @@ printf '{"owner":"ops"}\n' |
 Standart girişdə tək parametr JSON obyekti ötürərək parametri təyin edin:
 
 ```bash
-printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
+printf '{"Sumeragi":{"MaxClockDriftMs":1000}}\n' |
   cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```

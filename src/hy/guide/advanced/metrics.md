@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
+translation_source_hash: ad2bc9f8c53169d8161f7a2f23b1e660ebd24cf03cf8e05f4b00bbd27b7b11fe
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -23,8 +23,8 @@ Iroha կատարումը կախված է աշխատանքային բեռնված
 Սկսեք հանրային բջիջի ակնթարթից եւ Prometheus- ի հետ, այնուհետեւ օգտագործեք CLI օպերատորի կողմից հավաստագրված համաձայնության վիճակի համար: Օպերատորը պետք է թույլատրվի նպատակային բջջիջով եւ լցվում է միայն վազման ժամանակ:
 
 ```bash
-export TORII=http://127.0.0.1:8180
-export OPERATOR_KEY_FILE=./secrets/operator.key
+export TORII=http://127.0.0.1:8080
+export OPERATOR_KEY_FILE="$PWD/localnet/runtime/operator-signer.key"
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s "$TORII/metrics" > metrics.prom
@@ -52,7 +52,7 @@ curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/now" \
-  | jq '{now_ms, offset_ms}'
+  | jq '{now, offset_ms}'
 ```
 
 Մի օգտագործեք հանրային փորձարկման ցանցի դիտարկումները որպես արտադրական կարողությունների թվեր ձեր սեփական տեղակայման համար:
@@ -187,13 +187,13 @@ iroha --config ./localnet/client.toml \
 | --- | --- | --- |
 |Ընդունված արտահոսք |`sum(rate(txs{type="accepted"}[5m]))` |Կպահպանել կամ գերազանցել նպատակային TPS մակարդակը: |
 |Հրաժարականներ |`sum(rate(txs{type="rejected"}[5m]))` |Հարկ է բացատրել փորձաքննության պլանը:|
-|Պատվիրել ուշացում |`histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |Համեմատեք p95/p99-ը հետաձգման բյուջեի հետ |
+|Հաստատման ուշացում |`histogram_quantile(0.95, sum by (le) (rate(sumeragi_commit_latency_ms_bucket{lane="global"}[5m])))`, `last_commit_time_ms` |Համեմատեք p95/p99-ը ուշացման բյուջեի հետ |
 |Էջի խորությունը |`queue_size`, `sumeragi_tx_queue_depth` |Պետք է պահպանել սահմանը բեռնման բարձրության ժամանակ:|
 |Էջի հագեցածություն |`sumeragi_tx_queue_saturated` |Պահպանվող ոչ զրոյական արժեքները միջին գերբեռնվածություն |
-|Նայեք փոփոխությունները |`view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |Բարձրացվող արժեքները ցույց են տալիս ժամանակի, տոպոլոգիայի, օգտակար բեռնվածության կամ ցանցի խնդիրների |
-|Թողված հաղորդագրություններ |`dropped_messages`, `sumeragi_consensus_message_handling_total` |Լիցքավորման ընթացքում նվազումները սովորաբար բացատրում են լատենցիայի բարձրացումը |
-|Օգտակար բեռնվածք եւ DA վերականգնում |`sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` |Պարբերական պահանջները, տարիքի աճը կամ կրկնվող DA դռները ցույց են տալիս մարմնի կամ մասերի ձեռքբերման խնդիր |
-|Կատարեք քվորում:|`sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |Հաշվարկված ստորագրությունները պետք է արագ հասնեն պահանջվող քվորումին:|
+|Նայեք փոփոխությունները |`view_changes`, `sumeragi_view_changes_total`, `sumeragi_timeout_votes_total` |Բարձրացվող արժեքները ցույց են տալիս ժամանակի, տոպոլոգիայի, օգտակար բեռնվածության կամ ցանցի խնդիրների |
+|Թողված հաղորդագրություններ |`sumeragi_dropped_total`, `p2p_queue_dropped_total` |Լիցքավորման ընթացքում նվազումները սովորաբար բացատրում են լատենցիայի բարձրացումը |
+|Օգտակար բեռի և հետ մնացածի լրացման բեռնումներ |`sumeragi_fetch_requests_total{kind="body"}`, `sumeragi_fetch_requests_total{kind="sync"}` |Բովանդակության կամ համաժամացման մշտական բեռնումները ցույց են տալիս օգտակար բեռի ստացման կամ հետ մնացածի լրացման խնդիրներ |
+|Հաստատման առաջընթաց |`sumeragi_committed_height`, `sumeragi_applied_height` |Հավաստագրված և կիրառված բարձրությունները պետք է միասին աճեն |
 
 Երբ մետրիկան գոյություն ունի միայն `/v1/sumeragi/status`, նկարագրեք JSON ակնթարթային ակնթարթային պատճենը Prometheus- ի խեղդման նույն ընթացքի արվեստի գործիքների մեջ:
 
@@ -245,7 +245,7 @@ iroha --config ./localnet/client.toml \
 - ընդունված / մերժված TPS
 - p50/p95/p99 հանձնարարականի հետաձգում
 - հերթի խորությունը եւ լցվածությունը
-- դիտել փոփոխություններ, բաց թողնված հաղորդագրությունները, բացակայող բլոկների հավաքումը եւ DA դարպասային հաշվիչները:
+- տեսանկյան փոփոխություններ, ժամանակի սպառման քվեներ, Sumeragi-ի հեռացված հաղորդագրություններ և բովանդակության ու համաժամացման բեռնումներ
 - CPU, հիշողություն, սկավառակ եւ ցանցի օգտագործումը մեկ վավերացողի համար
 
 Առանց այդ մանրամասների, TPS թիվը պետք է դիտարկվի որպես անեկդոտիկ:

@@ -15,7 +15,9 @@ execution root before designing sponsorship.
 Signed genesis authors one `root_fees_v1` custom parameter containing the
 `RootFeePolicy`. It binds the fee currency, fee sink, sponsor custody account,
 claim exemptions, and rates. Each ordinary block and quote uses its captured
-committed policy. Authorized policy updates apply from the next block.
+committed policy. Authorized changes to the rates, fee sink, and claim
+exemptions apply from the next block; the fee currency and sponsor custody
+account cannot change after the first block.
 
 For global execution, the native fee burns the exact signed network XOR
 currency. The sponsor's program vault supplies that currency. Node settings

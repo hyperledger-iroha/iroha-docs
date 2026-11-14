@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /reference/naming.md
-translation_source_hash: 1d4d698597542d9c84284d0b87dae8a1825d3ab39ff38dd32bb204d41291c83d
+translation_source_hash: 15d095e674edf780c5859abe6f4615d53338e3304e8eedfa494017911204d4b6
 translation_status: machine-validated
-translation_engine: human-reviewed+reviewed-supplemental-naming-link
+translation_engine: human-reviewed+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # འཛོམས་འདུ་གི་མིང་། {#naming-conventions}
 
@@ -15,10 +15,9 @@ translation_engine: human-reviewed+reviewed-supplemental-naming-link
    - `#` འདི་ རྒྱུ་དངོས་ངེས་ཚིག་མིང་གཞན་དང་ རྒྱུ་དངོས་ལྷག་ལུས་ཡིག་འབྲུའི་དོན་ལུ་ བཀག་བཞག་ཡོདཔ་ཨིན།
    - `::` འདི་ གན་རྒྱ་མིང་གཞན་ཚུ་གི་དོན་ལུ་ བཀག་བཞག་ཡོདཔ་ཨིན།
    - `.` འདི་ ཌོ་མེན་དང་གནད་སྡུད་ས་སྟོང་གི་མིང་ཁྱབ་ཁོངས་གསལ་བཀོད་འབད་ནིའི་དོན་ལུ་ཟུར་བཞག་ཡོད།
-   - `$` འདི་ ཊི་གར་-ཁྱབ་ཚད་ཅན་གྱི་ཚིག་ཡིག་འབྲི་ཤོག་ཚུ་གི་དོན་ལུ་ གསོག་འཇོག་འབད་ཡོདཔ་ཨིན།
-   - `%` འདི་ བདེན་བཤད་འབད་མི་-ཁྱབ་ཚད་ཡོད་པའི་ཚིག་ཡིག་འབྲི་ཤོག་ཚུ་གི་དོན་ལུ་ བཀག་བཞག་ཡོདཔ་ཨིན།
+   - `$` འདི་ `name$domain.dataspace` བཟུམ་གྱི་ NFT ངོས་འཛིན་ཚུ་གི་དོན་ལུ་ བཀག་བཞག་ཡོདཔ་ཨིན།
 
-2. མིང་ཚིག་ཅིག་ནང་ ཨང་གྲངས་ཉུང་ཤོས་ (ཨང་གྲངས་ UTF-8 ཡོད་པའི་རྩིས་ཏེ་) འདི་ཅ་ལ་གཉིས་ལས་བརྒལ་མེད་ཨིན། `[0, u32::MAX]`དང་ ད་ལྟོ་ བགོ་བཀྲམ་འབད་ཡོད་མི་ བང་བསྒྲིག ས་སྟོང ཚུ་ཨིན་མས།
+2. མིང་ཅིག་ སྟོངམ་མེན་པ་ Unicode NFC རྣམ་པ་ནང་ཡོད་པ་ རིང་ཚད་ UTF-8 བཱའིཊི་ 255 ལས་མ་བརྒལ་བ་ དེ་ལས་ བར་སྟོང་དང་ ཚད་འཛིན་ ཕྱོགས་གཉིས་ཚད་འཛིན་གྱི་ཡིག་འབྲུ་ཚུ་ མེད་པ་ ཨིན་དགོ།
 
 ## Taira ལུ་ བརྟག་དཔྱད་རྐྱབས། {#try-it-on-taira}
 

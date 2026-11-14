@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/nfts.md
-translation_source_hash: 216f59f1cebd73001dab75dcf235306082fb1c0759437f65ce34ec9e1ed51d4f
+translation_source_hash: 76608347790f14eb5a2d58ac26f0e194ccc34b1cb5e8983e2d6ac390fcb60ec6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -26,7 +26,7 @@ Iroha NFT 是一個具有一個所有者的獨特賬本物件. 使用 NFTs 當�
 檢查公開 Taira 測試網是否目前擁有 NFT 記錄:
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/nfts?limit=5' \
+curl -fsS 'https://taira.sora.org/v1/nfts?limit=5&include_total=true' \
   | jq '{total, nft_ids: [.items[].id]}'
 ```
 

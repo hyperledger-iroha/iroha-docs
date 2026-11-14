@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /reference/instructions.md
-translation_source_hash: 9999816502505026fb35d2ddaf4033f54768be697ca5b03550e1cf5949ada36c
+translation_source_hash: bbd8f9544aa863cd273d1b2089f39aff3d484ee0378fa5bcc7b565795a0671c6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Iroha خصوصی ہدایات {#iroha-special-instructions}
 
 موجودہ ڈیٹا ماڈل ان بلٹ میں ہدایات کے خاندانوں کو بے نقاب کرتا ہے:
@@ -28,7 +27,6 @@ translation_engine: nllb-200-ct2
 | [`CustomInstruction`](/ur/blockchain/instructions.md#other-instructions) |عملدرآمد کنندہ کے لئے مخصوص JSON پے لوڈ |
 | [مقامی اثاثہ جات کی ضمانت ](/ur/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
 | [عام اثاثوں کے تالے](/ur/blockchain/escrow.md#generic-asset-locks) |`OpenAssetLock` ، `DrawdownAssetLock`، `CancelAssetLock`، `ExpireAssetLock`|
-| [گمنام اثاثوں کا ضامن](/ur/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
 | [ایٹمی نجی تصفیہ](/ur/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
 اضافی Iroha 3 ماڈیول ڈومین مخصوص ہدایات کی اقسام کو ہدایات کے رجسٹری کے ذریعے درج کرسکتے ہیں۔ نوڈ کے فراہم کردہ اسکیما اور اسے محفوظ کرنے کے لیے استعمال ہونے والی کمانڈ کے لیے [ڈیٹا ماڈل اسکیم](./data-model-schema.md) دیکھیں۔
@@ -85,7 +83,7 @@ class MetadataBoxes {
 class NativeEscrowInstructions {
     OpenAssetEscrow
     OpenAssetLock
-    OpenAnonymousAssetEscrow
+    OpenConditionalEscrow
     ResolveEscrowDispute
 }
 

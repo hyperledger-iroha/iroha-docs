@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /reference/instructions.md
-translation_source_hash: 9999816502505026fb35d2ddaf4033f54768be697ca5b03550e1cf5949ada36c
+translation_source_hash: bbd8f9544aa863cd273d1b2089f39aff3d484ee0378fa5bcc7b565795a0671c6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Iroha Махсус күрһәтмәләр {#iroha-special-instructions}
 
 Хәҙерге мәғлүмәттәр моделе был өйрәтеү ғаиләләрен асыҡлай:
@@ -28,7 +27,6 @@ translation_engine: nllb-200-ct2
 | [`CustomInstruction`](/ba/blockchain/instructions.md#other-instructions) |JSON башҡарыусыға ҡарата файҙалы йөкләмә |
 | [Протоколға индерелгән актив эскроуы](/ba/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
 | [Ғәҙәттәгесә, активты ябыу](/ba/blockchain/escrow.md#generic-asset-locks) |`OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
-| [Аноним активтар иҫәбенә депозит](/ba/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
 | [Атом шәхси иҫәпләшеүе](/ba/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
 Өҫтәмә Iroha 3 модулдәре инструкция реестры аша доменға ярашлы инструкциялар типтарын теркәй ала. Узел тәҡдим иткән схема һәм уны һаҡлау өсөн ҡулланылған команда тураһында [Мәғлүмәт моделе схемаһы](./data-model-schema.md) бүлеген ҡарағыҙ.
@@ -85,7 +83,7 @@ class MetadataBoxes {
 class NativeEscrowInstructions {
     OpenAssetEscrow
     OpenAssetLock
-    OpenAnonymousAssetEscrow
+    OpenConditionalEscrow
     ResolveEscrowDispute
 }
 

@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /guide/configure/genesis.md
-translation_source_hash: 91be089c82a76991e35a43e1541f9e069fdf70d3fb5de2492b985c06c78a2372
+translation_source_hash: 2a4a43b6ac873cc0c860631e307e52b047ba6a08691bf3e4c5872cc22c81a0bd
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -9,7 +9,7 @@ translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-so
 
 blokçeyn genesis ilkin zəncir vəziyyətini müəyyən edir. Redaktə edilə bilən mənbə JSON texniki manifestdir və Iroha 3 node imzalanmış Norito əməliyyat faylını istifadə edir.
 
-::: details Defolt blockchain genesis texniki manifesti
+::: details Defolt genezis mənbə şablonu (defaults/genesis.template.json)
 
 <<< @/snippets/genesis.json
 
@@ -36,7 +36,7 @@ public_key = "ed0120..."
 expected_hash_file = "./genesis.expected_hash"
 ```
 
-Şəbəkədəki bütün həmyaşıd qovşaqlar eyni imzalanmış genezis əməliyyatını və genezisin açıq açarını qəbul etməlidir. Gözlənilən həş faylı həm ilk, həm də təkrar işə salınmada tələb olunur; onu `kagami genesis sign --expected-hash-out` yazır.
+Şəbəkədəki bütün həmyaşıd qovşaqlar eyni imzalanmış genezis əməliyyatını və genezisin açıq açarını qəbul etməlidir. Hər işə salınma, istər ilk, istərsə də təkrar olsun, gözlənilən həşi tələb edir: `expected_hash_file` və ya daxili `expected_hash` parametrlərindən dəqiq birini konfiqurasiya edin. Faylı `kagami genesis sign --expected-hash-out` yazır.
 
 ## Blokçeyn başlanğıcının imzalanması {#signing-genesis}
 
@@ -52,7 +52,7 @@ cargo run --bin kagami -- genesis sign ./genesis.json \
 
 `GENESIS_PRIVATE_KEY_FILE` sahibi-ələ keçirilmiş rejim-`0600`, tək-bağlantılı adi fayl olmalıdır və bir tək protokol-standart özəl açar çoxhashı və sonuncu yeni sətiri ehtiva etməlidir. Kagami simvolik bağlantıları rədd edir və heç vaxt kommanda sətrində xam blokçeyn başlanğıc özəl açarını qəbul etmir.
 
-NPoS və ya SORA Nexus profilləri üçün yaradılmış profilin tələb etdiyi topologiyanı və BLS sahiblik sübutlarını daxil edin. Kagami-nin `localnet generate`, `wizard` və `sora-network generate` əmrləri bu detalları avtomatik idarə edir.
+İcazəli və ya NPoS olmasından asılı olmayaraq, hər imzalanmış genezis hər təsdiqləyici üçün BLS sahiblik sübutu ilə dəqiq `3f + 1` təsdiqləyici topologiyasını daxil etməlidir. Kagami-nin `localnet generate`, `wizard` və `sora-network generate` əmrləri bu detalları avtomatik idarə edir.
 
 ## Blok zəncirinin başlanğıcını yenidən təsdiqləmək {#recommitting-genesis}
 

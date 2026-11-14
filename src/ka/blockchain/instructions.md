@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /blockchain/instructions.md
-translation_source_hash: ef50253c5478c9d8c3e14529dc4c2f3de67c344901c82c65be77ceb237a29598
+translation_source_hash: 86d253317376ad8d7a8c0e30689c7e0c0cd786af83299dd5ac1a904c653192f5
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -41,7 +41,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 |[SetParameter](#setparameter) |ქსელის პარამეტრები |                      |
 |[Grant/Revoke](#grant-revoke) |[როლები, ნებართვის ნიშნები](/ka/blockchain/permissions.md) |ანგარიშები ან როლები |
 |[გადარიცხვა](#transfer) |დომენები, აქტივების განმარტებები, ციფრული აქტივები, NFTs |ანგარიშები |
-|[ნაციონალური საფინანსო და აქტივების ჩაკეტვა](#native-escrow-and-asset-locks) |ციფრული აქტივების დაფარვის, აქტივების ჩაკეტვის, ანონიმური დაფარების კრიპტოგრაფიული ვალდებულებების ღირებულებები |მყიდველები, მიმართულებები ან სადავო განხეთქილება |
+|[ადგილობრივი ესქრო და აქტივების საკეტები](#native-escrow-and-asset-locks) |რიცხვითი აქტივების ესქროები, აქტივების საკეტები, პირობითი ესქროები |მყიდველები, დანიშნულების ანგარიშები ან დავის დროს თანხის განაწილება |
 |[ატომური კერძო ფინანსური ოპერაციების ანგარიშსწორება](#atomic-private-settlement) |მარშრუტის მასშტაბით კონფიდენციალური პროტოკოლის მონაცემთა ჯგუფები, პოლიტიკის როტაციები, საბოლოო ბუნდები და გაწყვეტის მარკერები |                      |
 |[ExecuteTrigger](#executetrigger) |ტრიგერები |                      |
 |[Log/Custom/Upgrade](#other-instructions) |ჟურნალები, შემსრულებლისთვის სპეციფიკური დატვირთვები, შემსრულებლის განახლებები |                      |
@@ -184,6 +184,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
+  --domain docs.universal \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
@@ -322,9 +323,9 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 
 ## ადგილობრივი ესქრო და აქტივი ჩაკეტვა-ები {#native-escrow-and-asset-locks}
 
-ადგილობრივი ესქრო ინსტრუქციები ჩაკეტოს ციფრული აქტივები მენეჯირებული ბლოკჩეინის რეესტრი პროტოკოლის შენახვა. ისინი გამოიყენება ბაზრის სტილის ფინანსური ტრანზაქციის დაფარვისთვის, ზოგადი აქტივების საკეტები და ანონიმურად დაცული ესქრო ნაკადები.
+ადგილობრივი ესქროს ინსტრუქციები რიცხვით აქტივებს რეესტრის მიერ მართულ პროტოკოლის მეურვეობაში კეტავს. ისინი გამოიყენება მარკეტპლეისის სტილის ანგარიშსწორებისთვის, აქტივების ზოგადი საკეტებისთვის და ატესტატორზე მიბმული პირობითი ესქროებისთვის.
 
-საბაზრო ესქროების გამოყენება `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, და `ResolveEscrowDispute`. ზოგადი აქტივების ჩაკეტვის გამოყენება `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, და `ExpireAssetLock`. ანონიმური ესქრო ასახავს ბაზრის სიცოცხლის ციკლს `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, და `ResolveAnonymousEscrowDispute`.
+მარკეტპლეისის ესქრო იყენებს `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute` და `ResolveEscrowDispute` ინსტრუქციებს. აქტივების ზოგადი საკეტები იყენებს `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock` და `ExpireAssetLock` ინსტრუქციებს. პირობითი ესქრო იყენებს `OpenConditionalEscrow`, `AttestEscrowCondition` და `ExpireConditionalEscrow` ინსტრუქციებს.
 
 ესენი ISIs ამჟამად არ აქვს პირველი კლასის CLI ბრძანებები. გამოიყენეთ ტიპიზებული SDK მშენებლები ან სერიალიზებული ინსტრუქციის დატვირთვები, და იხილეთ [ნაციონალური აქტივების დაფარვა](/ka/blockchain/escrow.md) სიცოცხლის ციკლის დეტალების, ნებართვების, მოთხოვნების, მოვლენებისათვის და Rust მაგალითები.
 
@@ -418,7 +419,7 @@ printf '{"owner":"ops"}\n' |
 პარამეტრის დაყენება ერთი პარამეტრიანი JSON ობიექტის ჩაბარებით სტანდარტულ შესასვლელში:
 
 ```bash
-printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
+printf '{"Sumeragi":{"MaxClockDriftMs":1000}}\n' |
   cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```

@@ -26,7 +26,7 @@ verifiable reference on the NFT.
 Check whether the public Taira testnet currently has NFT records:
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/nfts?limit=5' \
+curl -fsS 'https://taira.sora.org/v1/nfts?limit=5&include_total=true' \
   | jq '{total, nft_ids: [.items[].id]}'
 ```
 

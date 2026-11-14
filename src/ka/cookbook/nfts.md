@@ -1,9 +1,9 @@
 ---
 translation_locale: ka
 translation_source: /cookbook/nfts.md
-translation_source_hash: b6a85c2feb197588e3358a785e10280a687af3951d52de4e6b8d96eab5de873c
+translation_source_hash: 7d7a1ba8ff8678f420a6237bd0d074d2d197bf4349989c0c55f05e9769d15da7
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # NFTs {#nfts}
 
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-li
 
 - `curl`, `jq`, Python 3.11 ან უფრო გვიან და მიმდინარე `iroha` CLI.
 - მხოლოდ წაკითხვის საშუალებით Taira.
-- ჩაწერისთვის: ლოკალური ქსელი ბრძანებით `kagami localnet generate --peers 4 --out-dir ./localnet`, როგორც გვერდზე [Iroha-ს გაშვება](/ka/get-started/launch-iroha.md), `./localnet/client.toml`-ითა და Torii-ით მისამართზე `http://127.0.0.1:8080`, ასევე NFT დომენი, რომელსაც მისი ხელმომწერი ფლობს (იხილეთ მე-2 ნაბიჯი).
+- ჩაწერისთვის: ლოკალური ქსელი ბრძანებით `kagami localnet generate --peers 4 --out-dir ./localnet`, `./localnet/client.toml`-ითა და Torii-ით მისამართზე `http://127.0.0.1:8080`, ასევე NFT დომენი, რომელსაც მისი ხელმომწერი ფლობს (იხილეთ მე-2 ნაბიჯი).
 
 ## ნაბიჯები {#steps}
 

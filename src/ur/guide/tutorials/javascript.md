@@ -1,13 +1,13 @@
 ---
 translation_locale: ur
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: 92389d3ad83ab32e85b4ca83ede9829d1a38afaad6e86da035da2829a3aaedfb
+translation_source_hash: 471dc7c82f371e1bbdcf216d5a50b1263612b7d29fffb1ef36b708a6beb931b6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # JavaScript اور TypeScript {#javascript-and-typescript}
 
-موجودہ JavaScript SDK Iroha ماخذ درخت میں `@iroha/iroha-js` پیکیج ہے۔ یہ Node.js-پہلا SDK ہے Torii ، Norito بلڈرز ، دستخط ، صفحہ بندی ، کنیکٹ پیش نظارہ ، اور کگیموشا کمانڈ ٹرانسپورٹ کے لئے۔
+موجودہ JavaScript SDK، Iroha کے ماخذ درخت میں `@iroha/iroha-js` پیکیج ہے۔ یہ Node.js کو اولیت دینے والا SDK ہے جو Torii، Norito بلڈرز، دستخط، صفحہ بندی اور Connect پیش نظاروں کے لیے ہے۔
 
 ## ماخذ سے تعمیر کریں {#build-from-source}
 
@@ -31,6 +31,7 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 const torii = new ToriiClient("http://127.0.0.1:8080", {
   authToken: "dev-token",
+  allowInsecure: true, // local development only
 });
 
 const keys = generateKeyPair();

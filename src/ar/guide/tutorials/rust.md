@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /guide/tutorials/rust.md
-translation_source_hash: fbe41bd6e7fa86d06c027724b446016c14246495964ccf521155e4b790d75041
+translation_source_hash: 9d9848de91a85c84221efc39bc7dfb8443f5c50b448d336207c06efce3bc07e8
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -53,7 +53,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-بعد إنشاء `taira.client.toml`، يمكن للملف الثنائي نفسه تشغيل أوامر كاناري موقعة ضد Taira. احتفظ بهذه منفصلة عن اختبارات الوحدة العادية لأنها تتطلب حسابًا ممولًا بشبكة تجريبية وتوافر شبكة تجريبية حية.
+بعد إنشاء `taira.client.toml`، يمكن للملف الثنائي نفسه تهيئة حساب وتمويله باستخدام `iroha taira account` وإرسال أوامر دفتر سجل موقعة عادية إلى Taira. احتفظ بهذه منفصلة عن اختبارات الوحدة العادية لأنها تتطلب حسابًا ممولًا من خدمة التمويل التجريبي وتوافر شبكة تجريبية حية.
 
 ## استخدام حزمة برامج العميل Rust {#using-the-rust-client-crate}
 
@@ -70,7 +70,7 @@ iroha = { git = "https://github.com/hyperledger-iroha/iroha.git", rev = "<IROHA_
 - `crates/iroha/README.md`
 - `crates/iroha_cli/README.md`
 
-لعمليات سير العمل الخاصة بالضمان المُدار بواسطة دفتر الأستاذ، انظر [ضمان الأصل المحلي](/ar/blockchain/escrow.md#rust-sdk). يحتوي نموذج البيانات Rust حاليًا على أكثر تغطية نوعية كاملة لسوق الضمان، الأقفال العامة للأصول، الضمان المجهول، الاستفسارات، والأحداث.
+لعمليات سير العمل الخاصة بالضمان المُدار بواسطة دفتر السجل، انظر [ضمان الأصل المحلي](/ar/blockchain/escrow.md#rust-sdk). يحتوي نموذج البيانات في Rust حاليًا على أكمل تغطية محددة الأنواع لضمان السوق، وأقفال الأصول العامة، والضمان المشروط، والاستعلامات، والأحداث.
 
 يمكنك إعادة توليد عرض بيانات نقطة الوقت المحلي CLI للمساعدة باستخدام:
 

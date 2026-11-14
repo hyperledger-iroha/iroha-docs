@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /reference/genesis.md
-translation_source_hash: 340921f59a6f8788f559190d520f046ea2473d65154f57a1c54212840c027bc0
+translation_source_hash: dda17468f39573a1fcf43474351bd01c4fea38e8b603fd4d8b21780b273c8649
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -20,6 +20,8 @@ Um manifesto técnico de gênese de blockchain pode definir:
 - `executor` para um caminho de bytecode de atualização de executor opcional
 - `ivm_dir` para IVM bibliotecas usadas por gatilhos e atualizações
 - `consensus_mode` para o modo inicial anunciado pelo manifesto técnico
+- `wire_protocol_version` para a versão do protocolo de comunicação do consenso da primeira versão
+- `consensus_fingerprint` para a impressão digital tipada opcional dos parâmetros de consenso, que os manifestos JSON declaram explicitamente
 - `transactions` para atualizações de parâmetros ordenadas, instruções, gatilhos e topologia
 - `sumeragi_context` para os parâmetros assinados do contexto de altura de Sumeragi
 - `crypto_admission_policy` para os algoritmos exatos de assinatura e de controlador admitidos pela cadeia, listados em `allowed_algorithms`
@@ -39,10 +41,12 @@ Use Kagami para gerar um modelo. Repita `--allowed-signing` para cada algoritmo 
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
+  --chain-id <CHAIN_ID> \
   --consensus-mode npos \
   --ivm-dir defaults \
   --genesis-public-key <PUBLIC_KEY> \
-  --allowed-signing ed25519 > genesis.json
+  --allowed-signing ed25519 \
+  --allowed-signing bls_normal > genesis.json
 ```
 
 Para o espaço de dados público do SORA Nexus, `npos` é o modo de consenso esperado. Outras implantações do Iroha 3 podem usar o modo permissionado ou NPoS, conforme o perfil de destino.
@@ -54,10 +58,11 @@ Após editar e validar o JSON, assine-o em um bloco `.nrt` implantável:
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
   --private-key-file <MODE_0600_PRIVATE_KEY_FILE> \
-  --out-file genesis.signed.nrt
+  --out-file genesis.signed.nrt \
+  --expected-hash-out genesis.expected_hash
 ```
 
-`kagami genesis sign` lê a chave pública gênese da blockchain do manifesto técnico e usa a chave privada de um arquivo regular de link único mantido pelo proprietário para produzir o bloco assinado implantável. O arquivo deve conter um multihash de chave privada canônica seguido por uma nova linha; Kagami rejeita links simbólicos e modos diferentes de `0600`. Chaves privadas em formato bruto não são aceitas na linha de comando. O resultado é o arquivo que os pares da rede devem referenciar em sua configuração.
+`kagami genesis sign` deriva o par de chaves da gênese a partir da chave privada contida em um arquivo regular de link único mantido pelo proprietário para produzir o bloco assinado implantável. Passe `--expected-public-key` para exigir que ele corresponda à chave pública da gênese publicada. O arquivo deve conter um multihash de chave privada canônica seguido por uma nova linha; Kagami rejeita links simbólicos e modos diferentes de `0600`. Chaves privadas em formato bruto não são aceitas na linha de comando. O resultado é o arquivo que os pares da rede devem referenciar em sua configuração.
 
 ## Configurar `iroha3d` {#configure-iroha3d}
 

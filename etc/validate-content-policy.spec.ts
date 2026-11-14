@@ -298,7 +298,7 @@ describe('content policy validation', () => {
       'torii_gateway chunk_range_fetch potr_mldsa',
       'https://{cid}.sorafs.taira.sora.org/{path}',
       '[sorafs.storage]\nenabled = false',
-      'max_capacity_bytes = 13743895347',
+      'max_capacity_bytes = 2684354560',
       '[sorafs.discovery]\ndiscovery_enabled = true',
       '[sorafs.discovery.admission]\nenabled = true',
       '[sorafs.gateway]\nrequire_manifest_envelope = true',

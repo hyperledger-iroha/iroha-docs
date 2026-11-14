@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /reference/permissions.md
-translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -16,7 +16,6 @@ translation_engine: nllb-200-ct2+reviewed-delta
 |ნებართვის ნიშანი|კატეგორია |ოპერაცია |
 | --- | --- | --- |
 |`CanManagePeers` |ქსელის კვანძი |რეგისტრაცია, არარეგისტრირება ან სხვაგვარად მართვა ქსელის კვანძები. |
-|`CanManageLaneRelayEmergency` |ქსელის კვანძი |მენეჯმენტი საგანგებო ზოლი-რელე კონტროლი. |
 |`CanRegisterDomain` |დომენი |დომენის რეგისტრაცია. |
 |`CanUnregisterDomain` |დომენი |დომენის დარეგისტრირება. |
 |`CanModifyDomainMetadata` |დომენი |შეცვალეთ დომენის მეტამონაცემები. |
@@ -28,7 +27,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 |`CanMintAssetWithDefinition` |აქტივები |გამოშვების აქტივები კონკრეტული განსაზღვრისთვის. |
 |`CanBurnAssetWithDefinition` |აქტივები |გაანადგუროს აქტივები კონკრეტული განსაზღვრისთვის. |
 |`CanTransferAssetWithDefinition` |აქტივები |აქტივების გადარიცხვა კონკრეტული განსაზღვრისთვის. |
-|`CanMintAsset` |აქტივები |გამოშვება კონკრეტული აქტივების ბალანსის. |
+|`CanMintAssetToAccount` |აქტივები |გამოშვება კონკრეტული აქტივების ბალანსის. |
 |`CanBurnAsset` |აქტივები |განადგურებს კონკრეტულ აქტივების ბალანსს. |
 |`CanTransferAsset` |აქტივები |გადარიცხა კონკრეტული აქტივების ბალანსი. |
 |`CanRegisterNft` |NFT |დარეგისტრირება NFT. |
@@ -43,7 +42,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 |`CanModifyTrigger` |ტრიგერი |ოპერატორის კონფიგურაცია შეცვალეთ. |
 |`CanModifyTriggerMetadata` |ტრიგერი |ტრიგერის მეტამონაცემების შეცვლა.|
 |`CanUpgradeExecutor` |აღმასრულებელი |განახლება შესრულების გარემოს აღმასრულებელი. |
-|`CanRegisterSmartContractCode` |ჭკვიანი კონტრაქტი |ჭკვიანი კონტრაქტის კოდის რეგისტრაცია. |
+|`CanManageSmartContractCode` |ჭკვიანი კონტრაქტი |კოდის იმ არტეფაქტების წაშლა, რომლებზეც მითითება არ არსებობს, და კონტრაქტის შესასვლელი წერტილების დელეგირება. რეგისტრირებულ ანგარიშებს შემოწმებული არტეფაქტების შექმნა მის გარეშეც შეუძლიათ. |
 | `CanManageFeeSponsorProgram` | SORA Nexus | ზუსტი სპონსორის ანგარიშის კუთვნილი პროგრამების მართვა. |
 | `CanEnrollFeeSponsorProgram` | SORA Nexus | ერთი ზუსტი სპონსორის პროგრამის ბენეფიციარების მართვა. |
 

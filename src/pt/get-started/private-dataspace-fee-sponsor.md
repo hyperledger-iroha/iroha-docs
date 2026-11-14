@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /get-started/private-dataspace-fee-sponsor.md
-translation_source_hash: 79410ebb9d0a18072d5ae2288348082390b622ed81225de79dcbd4000e268e51
+translation_source_hash: 2ca4fc00709839879fe9cb7ea5e5f697505e5e25d4e5a6cd0bd18d406f6e2846
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -13,7 +13,7 @@ Uma entrada no catálogo de espaços de dados não cria uma raiz com assinatura 
 
 ## 1. Estabelecer a política de taxas confirmada {#_1-establish-the-committed-fee-policy}
 
-A gênese assinada define um parâmetro personalizado `root_fees_v1` que contém a `RootFeePolicy`. Ele vincula a moeda de taxas, o destino das taxas, a conta de custódia do patrocinador, as isenções de solicitações e as tarifas. Cada bloco comum e cada cotação usam a política confirmada capturada para eles. Atualizações autorizadas da política passam a valer a partir do próximo bloco.
+A gênese assinada define um parâmetro personalizado `root_fees_v1` que contém a `RootFeePolicy`. Ele vincula a moeda de taxas, o destino das taxas, a conta de custódia do patrocinador, as isenções de solicitações e as tarifas. Cada bloco comum e cada cotação usam a política confirmada capturada para eles. Alterações autorizadas nas tarifas, no destino das taxas e nas isenções de solicitações passam a valer a partir do próximo bloco; a moeda de taxas e a conta de custódia do patrocinador não podem mudar após o primeiro bloco.
 
 Na execução global, a taxa nativa queima a moeda XOR exata da rede assinada. O cofre do programa de patrocínio fornece essa moeda. As configurações do nó e os metadados da transação não selecionam um pagador nem ativam o patrocínio.
 

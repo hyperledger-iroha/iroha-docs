@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
+translation_source_hash: 6edc0185196ab8e77ef8552723e05bf37cca1a088da86e2a43d441d58e779c11
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -32,4 +32,4 @@ Um novo bloco gênese exige que o armazenamento do nó esteja vazio. Use `python
 
 ## Usar Configuração Personalizada {#use-custom-configuration}
 
-A configuração atual do par de rede usa TOML. Faça uma montagem vinculada ou copie os arquivos gerados `config.toml`, `genesis.signed.nrt` e os arquivos de chave relacionados para os caminhos do contêiner esperados pela imagem; depois, reinicie o par. Mantenha os arquivos gerados juntos: misturar arquivos de execuções distintas do Kagami pode causar falhas de desserialização ou de consenso.
+A configuração atual do par de rede usa TOML. O Kagami grava um `peerN.toml` por validador com `genesis.signed.nrt`, `genesis.public_key` e `genesis.expected_hash`; o arquivo Compose gerado por `kagami docker` os monta no contêiner. Gere-o novamente em vez de copiar arquivos manualmente e, depois, reinicie o par. Mantenha os arquivos gerados juntos: misturar arquivos de execuções distintas do Kagami pode causar falhas de desserialização ou de consenso.

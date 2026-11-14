@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hans
 translation_source: /cookbook/nfts.md
-translation_source_hash: b6a85c2feb197588e3358a785e10280a687af3951d52de4e6b8d96eab5de873c
+translation_source_hash: 7d7a1ba8ff8678f420a6237bd0d074d2d197bf4349989c0c55f05e9769d15da7
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # NFTs {#nfts}
 
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-li
 
 - `curl`,`jq`, Python 3.11或以后的电流,以及 `iroha` CLI.
 - 仅可读的 Taira 访问.
-- 对于写入操作，需要一个按照 [启动 Iroha](/zh-hans/get-started/launch-iroha.md) 的做法以 `kagami localnet generate --peers 4 --out-dir ./localnet` 生成的本地网络，其中包含 `./localnet/client.toml` 和位于 `http://127.0.0.1:8080` 的 Torii，另外还需要一个由其签名者拥有的 NFT 域（见步骤 2）。
+- 对于写入操作，需要一个以 `kagami localnet generate --peers 4 --out-dir ./localnet` 生成的本地网络，其中包含 `./localnet/client.toml` 和位于 `http://127.0.0.1:8080` 的 Torii，另外还需要一个由其签名者拥有的 NFT 域（见步骤 2）。
 
 ## 步骤 {#steps}
 

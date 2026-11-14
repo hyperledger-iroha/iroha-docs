@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /guide/configure/genesis.md
-translation_source_hash: 91be089c82a76991e35a43e1541f9e069fdf70d3fb5de2492b985c06c78a2372
+translation_source_hash: 2a4a43b6ac873cc0c860631e307e52b047ba6a08691bf3e4c5872cc22c81a0bd
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -9,7 +9,7 @@ translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-so
 
 La genèse de la blockchain définit l'état initial de la chaîne. La source modifiable est un manifeste technique JSON, et un nœud Iroha 3 consomme un fichier de transaction signé Norito.
 
-::: details Manifeste technique génésique de la blockchain par défaut
+::: details Modèle source de genèse par défaut (defaults/genesis.template.json)
 
 <<< @/snippets/genesis.json
 
@@ -36,7 +36,7 @@ public_key = "ed0120..."
 expected_hash_file = "./genesis.expected_hash"
 ```
 
-Tous les pairs du réseau doivent s'accorder sur la transaction de genèse signée et la clé publique de genèse. Le fichier d'empreinte attendue est obligatoire au premier démarrage comme aux redémarrages ; `kagami genesis sign --expected-hash-out` l'écrit.
+Tous les pairs du réseau doivent s'accorder sur la transaction de genèse signée et la clé publique de genèse. Chaque démarrage, initial ou redémarrage, nécessite l'empreinte attendue : configurez exactement l'un des deux, `expected_hash_file` ou `expected_hash` en ligne. `kagami genesis sign --expected-hash-out` écrit le fichier.
 
 ## Signature de la genèse {#signing-genesis}
 
@@ -52,7 +52,7 @@ cargo run --bin kagami -- genesis sign ./genesis.json \
 
 `GENESIS_PRIVATE_KEY_FILE` doit être un fichier ordinaire à lien unique, appartenant à l’utilisateur et de mode `0600`, contenant un seul multihash canonique de clé privée suivi d’un saut de ligne. Kagami rejette les liens symboliques et n’accepte jamais de clé privée brute de genèse sur la ligne de commande.
 
-Pour les profils NPoS ou SORA Nexus, incluez la topologie et les preuves de possession BLS exigées par le profil généré. Les commandes Kagami `localnet generate`, `wizard` et `sora-network generate` gèrent automatiquement ces détails.
+Chaque genèse signée, en mode permissionné ou NPoS, doit inclure une topologie d'exactement `3f + 1` validateurs avec une preuve de possession BLS pour chaque validateur. Les commandes Kagami `localnet generate`, `wizard` et `sora-network generate` gèrent automatiquement ces détails.
 
 ## Nouvelle validation de la genèse {#recommitting-genesis}
 

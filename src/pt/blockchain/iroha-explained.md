@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/iroha-explained.md
-translation_source_hash: 426adbea88da36cd92da17d8665c956a57b9d4cebfa0d2f35bc75469cccf84ee
+translation_source_hash: 16acd0a607bbec336ff336363478a3a0deeb24ad9a2ad59e753c9f65134b061f
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -45,11 +45,11 @@ Faixas de execução são os recursos de roteamento e certificação vinculados 
 
 O caminho de roteamento é:
 
-1. A configuração constrói `DataSpaceCatalog`, `LaneCatalog` e `LaneRoutingPolicy` validados. O roteamento do SORA Nexus é obrigatório. Vários espaços de dados, várias faixas de execução ou roteamento diferente do padrão usam o perfil SORA Nexus (`--sora`) e NPoS.
+1. A configuração constrói `DataSpaceCatalog`, `LaneCatalog` e `LaneRoutingPolicy` validados. O roteamento do SORA Nexus é obrigatório. Na raiz global, vários espaços de dados, várias faixas de execução ou roteamento diferente do padrão exigem o perfil SORA Nexus (`--sora`) e NPoS; uma raiz de espaço de dados assinada de forma independente é executada no modo permissionado.
 2. A fila de transações resolve um `RoutingPlan` a partir da transação e do estado confirmado. Cada rota de coordenador ou participante contém um ID de faixa de execução e um ID de espaço de dados; planos Native AMX mantêm o conjunto completo de participantes.
 3. Na execução global, lotes completos do plano de controle e coordenadores entre espaços de dados usam a faixa de execução `0`. Destinos concretos não universais de instrução ou endereço de contrato selecionam uma faixa de execução fixa admitida, com o espaço de dados e o comitê correspondentes, antes das regras de conta ou rótulo de instrução. Os demais trabalhos seguem as regras explícitas confirmadas e a distribuição padrão em fragmentos; destinos universais concretos permanecem em faixas de execução universais.
 4. Cada rota é verificada em relação aos catálogos e ao estado ativo das faixas de execução. IDs desconhecidos e incompatibilidades entre faixa de execução e espaço de dados são rejeitados; um destino privado indisponível não pode recorrer à execução universal. Vários destinos de espaço de dados podem produzir um plano Native AMX. Os metadados de transação `amx_policy` definidos como `reject_cross_dataspace` rejeitam planos entre espaços de dados. Um plano de roteamento, por si só, não autoriza nem conclui a liquidação entre raízes independentes.
-5. Sumeragi e a telemetria mantêm a atribuição visível por meio da atividade, do trabalho pendente e dos instantâneos de compromissos criptográficos das faixas e dos espaços de dados.
+5. A telemetria mantém a atribuição visível como atividade e trabalho pendente por faixa no instantâneo de faixas de `/status` (`teu_lane_commit`).
 
 É por isso que os identificadores de objetos importam. Domínios incluem o alias do espaço de dados em seu ID, por exemplo `payments.universal`, para permitir o roteamento de operações de escrita com escopo de domínio. Contas permanecem canônicas e sem domínio, permitindo que a mesma conta seja vinculada a diferentes escopos de aplicação sem alterar seu `AccountId`. Definições de ativos podem conter uma projeção de domínio/espaço de dados, permitindo que as operações de ativos herdem a rota correta do espaço de dados.
 
@@ -67,7 +67,7 @@ As três faixas de execução incluídas são públicas e fazem referência ao m
 
 Essas relações são definidas pelos [construtores de perfil](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_config/src/parameters/actual.rs), pela [implementação das faixas de execução](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_core/src/sumeragi/lanes/mod.rs) e pelo [contrato das raízes independentes](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/sumeragi.md) no commit fixado.
 
-Sumeragi sempre usa disponibilidade de dados e transmissão confiável. Esses caminhos fazem parte do protocolo de consenso Iroha 3 e não podem ser desativados por um perfil de implantação.
+Sumeragi sempre usa disponibilidade de carga útil RS16 assinada e recuperação de corpos certificados. Esses caminhos fazem parte do protocolo de consenso Iroha 3 e não podem ser desativados por um perfil de implantação.
 
 O comportamento em tempo de execução do software é originado de arquivos de configuração e parâmetros on-chain. Variáveis de ambiente não são portões de recurso de produção.
 

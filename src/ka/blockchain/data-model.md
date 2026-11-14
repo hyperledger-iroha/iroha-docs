@@ -1,9 +1,9 @@
 ---
 translation_locale: ka
 translation_source: /blockchain/data-model.md
-translation_source_hash: f90139dee2eff97769cd47188bcaf60b31672f0250505d8afad9c8ee60815ddd
+translation_source_hash: fa1bbcbb2bad4e262a17eb04e67a94c3795d726ac52c0ab17370da9ec119e557
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-source-naming-amendment
+translation_engine: nllb-200-ct2+reviewed-source-naming-amendment+reviewed-delta
 ---
 # მონაცემთა მოდელი {#data-model}
 
@@ -121,9 +121,9 @@ account_rabbit --> asset_rose : may receive balance
 |აქტივის განსაზღვრა |კანონიკური `AssetDefinitionId` Base58 მისამართი |`name#domain.dataspace` ან `name#dataspace` |აქტივის განსაზღვრაზე მიბმული `AssetDefinitionAlias` |
 |კონტრაქტი |კანონიკური Bech32m `ContractAddress` |`name::domain.dataspace` ან `name::dataspace` |განთავსებული კონტრაქტის მისამართზე მიბმული `ContractAlias` |
 |დომენის სახელი |`DomainId` ფორმაში `domain.dataspace` |`domain.dataspace` |SNS `domain` სახელების სივრცის ჩანაწერი |
-|მონაცემთა სივრცის სახელი |აქტიური SORA Nexus კატალოგის რიცხვითი `DataSpaceId` |მონაცემთა სივრცის ალიასი, მაგალითად `universal`, `paynet` ან `zk` |SNS-ის `dataspace` სახელთა სივრცის ჩანაწერი და მონაცემთა სივრცეების აქტიური კატალოგი |
+|მონაცემთა სივრცის სახელი |აქტიური SORA Nexus კატალოგის რიცხვითი `DataSpaceId` |მონაცემთა სივრცის ალიასი, მაგალითად `universal` ან `paynet` |SNS-ის `dataspace` სახელთა სივრცის ჩანაწერი და მონაცემთა სივრცეების აქტიური კატალოგი |
 
-ანგარიშის ალიასები მომხმარებლისთვის განკუთვნილი ანგარიშის სახელებია. ანგარიშის გასაღების შეცვლის შემდეგაც ისინი ძალაში რჩება, რადგან ალიასი მსოფლიო მდგომარეობის ინდექსებისა და გასაღების შეცვლის ჩანაწერების მეშვეობით მოქმედ ანგარიშის ID-ზე მიუთითებს. ანგარიშის ძირითად წარწერად დასაყენებლად გამოიყენეთ `SetPrimaryAccountAlias`, დამატებითი ალიასებისთვის — `SetAccountAliasBinding`, ხოლო წასაკითხად — `FindAccountByAlias` ან `FindAliasesByAccountId`. ანგარიშის ალიასს, ჩვეულებრივ, სჭირდება მოქმედი SNS იჯარა, რომელიც `AcquireAccountAliasLease`-ით მიიღება და `RenewAccountAliasLease`-ით განახლდება.
+ანგარიშის ალიასები მომხმარებლისთვის განკუთვნილი ანგარიშის სახელებია. ანგარიშის გასაღების შეცვლის შემდეგაც ისინი ძალაში რჩება, რადგან ალიასი მსოფლიო მდგომარეობის ინდექსებისა და გასაღების შეცვლის ჩანაწერების მეშვეობით მოქმედ ანგარიშის ID-ზე მიუთითებს. ანგარიშის ალიასის იჯარის მისაღებად და ალიასის მისაბმელად გამოიყენეთ `EnsureAlias`, ჩვეულებრივ `app alias setup` გეგმისა და გამოყენების ნაკადის მეშვეობით; ძირითადი წარწერის შესაცვლელად — `CompareAndSetPrimaryAccountAlias`; ალიასის სხვა ანგარიშზე გადასატანად — `RebindAccountAlias`; ხოლო წასაკითხად — `FindAccountByAlias` ან `FindAliasesByAccountId`. იჯარები განაახლეთ `RenewAliasLease`-ით, ან ავტომატური განახლება დააყენეთ `ConfigureAliasAutoRenew`-ით.
 
 აქტივის ალიასი აქტივის განსაზღვრას ასახელებს და არა ანგარიშის ცალკეულ ნაშთს. აქტივისა და კონტრაქტის ალიასები კითხვად სახელს არსებულ კანონიკურ სამიზნესთან პირდაპირ აკავშირებს. აქტივის ალიასი `SetAssetDefinitionAlias`-ით დგინდება; ალიასის სახელის ნაწილი აქტივის განსაზღვრის საჩვენებელ ან პროექციულ სახელს უნდა ემთხვეოდეს. კონტრაქტის ალიასი `SetContractAlias`-ით დგინდება; მისი მონაცემთა სივრცე კონტრაქტის მისამართში კოდირებულ მონაცემთა სივრცეს უნდა ემთხვეოდეს. ორივე ბმას შეუძლია `lease_expiry_ms` შეიცავდეს; ვადის გასვლისა და შეღავათის ფანჯრის დასრულების შემდეგ ისინი აღარ გადაწყდება და მსოფლიო მდგომარეობის ინდექსებიდან იშლება.
 

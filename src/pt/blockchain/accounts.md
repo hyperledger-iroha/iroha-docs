@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/accounts.md
-translation_source_hash: adc98cbf1fcadae4415d03dcc262eb03f8c95b429527e403d230934ae2f3243c
+translation_source_hash: d956bfb8c698fa463ef9fa84a91d50cf0e2100885eba670121ad78753f87d88d
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -44,7 +44,7 @@ Liste algumas IDs de conta canônicas da testnet pública Taira:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+  | jq -r '.items[] | [.id, (.label // "-")] | @tsv'
 ```
 
 Para inspecionar os ativos da conta, copie um ID de conta da primeira chamada e codifique-o em URL antes de colocá-lo no caminho. Este trecho Python faz isso para a primeira conta listada:
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-Estas são leituras públicas. Criar ou atualizar uma conta é uma transação assinada e requer a configuração de Taira com fundos obtidos pelo faucet descrita em [Conectar-se aos espaços de dados do SORA Nexus](/pt/get-started/sora-nexus-dataspaces.md).
+Estas são leituras públicas. Criar ou atualizar uma conta é uma transação assinada e requer a configuração de Taira com fundos obtidos pelo faucet descrita em [Desenvolver na SORA Nexus com Taira e Minamoto](/pt/get-started/sora-nexus-dataspaces.md).
 
 ## Cadastro e permissões {#registration-and-permissions}
 

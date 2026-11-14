@@ -1,20 +1,20 @@
 ---
 translation_locale: he
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
+translation_source_hash: c42adbe41e322c93509279f1f558d4450431de90c596f37eb3999754d4387f78
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
 # מפתחות לשימוש ברשתים {#keys-for-network-deployment}
 
-כל רשת זקוקה לחומר מפתחות נפרד ללקוחות, לעמיתים, לחתימת genesis, ובפרופילי NPoS או SORA Nexus גם לזהויות מאמתים מסוג BLS.
+כל רשת זקוקה לחומר מפתחות נפרד ללקוחות, לחתימת genesis ולזהויות מאמתים מסוג BLS-normal עם הוכחות החזקה.
 
 ## היכן משתמשים במפתחות {#where-keys-are-used}
 
 - מפתחות החתימה של הלקוח מאוחסרות ב `client.toml` תחת `[account]`.
 - מפתחות הזהות של הצומת מאוחסנים בכל `config.toml` של צומת בתור `public_key` ו-`private_key`.
 - גילוי צמתים משתמש במפתח הציבורי של כל צומת ב-`trusted_peers`.
-- בדיקת BLS הוכחות רכוש מאוחסן ב- `trusted_peers_pop` לפרופילים של NPoS.
+- הוכחות ההחזקה של מאמתי BLS נשמרות ב־`trusted_peers_pop` עבור כל מאמת, יהא מצב הקונצנזוס אשר יהא.
 - חתימת בראשית משתמשת ב `[genesis].public_key` בהשוואה לצמתים ובפתח פרטי תואם בעת חתימה על המניפסט.
 
 עבור השימוש המקומי או במבחן, תן Kagami ליצור את כל הקבצים האלה יחד:

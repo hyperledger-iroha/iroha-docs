@@ -1,9 +1,9 @@
 ---
 translation_locale: hy
 translation_source: /blockchain/data-model.md
-translation_source_hash: f90139dee2eff97769cd47188bcaf60b31672f0250505d8afad9c8ee60815ddd
+translation_source_hash: fa1bbcbb2bad4e262a17eb04e67a94c3795d726ac52c0ab17370da9ec119e557
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-source-naming-amendment
+translation_engine: nllb-200-ct2+reviewed-source-naming-amendment+reviewed-delta
 ---
 # Տվյալների մոդել {#data-model}
 
@@ -121,9 +121,9 @@ account_rabbit --> asset_rose : may receive balance
 | Ակտիվի սահմանում | կանոնական `AssetDefinitionId` Base58 հասցե | `name#domain.dataspace` կամ `name#dataspace` | ակտիվի սահմանմանը կապված `AssetDefinitionAlias` |
 |Պայմանագիր |Canonical Bech32m `ContractAddress` |`name::domain.dataspace` կամ `name::dataspace` |`ContractAlias` կապված տեղակայված պայմանագրի հասցեի հետ |
 |Դոմեյնային անուն |`DomainId` ձեւով `domain.dataspace` |`domain.dataspace` |SNS `domain` անունների տարածության գրանցում |
-| Տվյալների տարածքի անուն | թվային `DataSpaceId`՝ SORA Nexus-ի ակտիվ կատալոգից | տվյալների տարածքի այլանուն, օրինակ՝ `universal`, `paynet` կամ `zk` | SNS-ի `dataspace` անվանատարածքի գրառում և տվյալների տարածքների ակտիվ կատալոգ |
+| Տվյալների տարածքի անուն | թվային `DataSpaceId`՝ SORA Nexus-ի ակտիվ կատալոգից | տվյալների տարածքի այլանուն, օրինակ՝ `universal` կամ `paynet` | SNS-ի `dataspace` անվանատարածքի գրառում և տվյալների տարածքների ակտիվ կատալոգ |
 
-Հաշվի կեղծանունները օգտատիրոջը ցուցադրվող հաշվի անուններն են։ Դրանք պահպանվում են հաշվի բանալու փոխարինման դեպքում, քանի որ կեղծանունը համաշխարհային վիճակի ինդեքսների և հաշվի բանալու փոխարինման գրառումների միջոցով մատնանշում է ակտիվ հաշվի ID-ն։ Հաշվի հիմնական պիտակի համար օգտագործեք `SetPrimaryAccountAlias`, լրացուցիչ ոչ հիմնական կեղծանունների համար՝ `SetAccountAliasBinding`, իսկ ընթերցման համար՝ `FindAccountByAlias` կամ `FindAliasesByAccountId`։ Հաշվի կեղծանունները սովորաբար պահանջում են SNS հաշվի կեղծանվան ակտիվ վարձակալություն, որը ձեռք է բերվում `AcquireAccountAliasLease`-ով և երկարաձգվում `RenewAccountAliasLease`-ով։
+Հաշվի կեղծանունները օգտատիրոջը ցուցադրվող հաշվի անուններն են։ Դրանք պահպանվում են հաշվի բանալու փոխարինման դեպքում, քանի որ կեղծանունը համաշխարհային վիճակի ինդեքսների և հաշվի բանալու փոխարինման գրառումների միջոցով մատնանշում է ակտիվ հաշվի ID-ն։ Հաշվի կեղծանվան վարձակալություն ձեռք բերելու և կեղծանունը կապելու համար օգտագործեք `EnsureAlias`-ը՝ սովորաբար `app alias setup` պլանավորման և կիրառման հոսքի միջոցով, հիմնական պիտակը փոխելու համար՝ `CompareAndSetPrimaryAccountAlias`, կեղծանունը մեկ այլ հաշվի տեղափոխելու համար՝ `RebindAccountAlias`, իսկ ընթերցման համար՝ `FindAccountByAlias` կամ `FindAliasesByAccountId`։ Վարձակալությունները երկարաձգեք `RenewAliasLease`-ով կամ կարգավորեք ավտոմատ երկարաձգումը `ConfigureAliasAutoRenew`-ով։
 
 Ակտիվների կեղծանունները անվանում են ակտիվների սահմանումները, ոչ թե առանձին հաշիվների մնացորդները։ Ակտիվների և պայմանագրերի կեղծանունները ընթեռնելի անունը գոյություն ունեցող կանոնական թիրախին կապող ուղղակի կապեր են։ Ակտիվի կեղծանունը սահմանվում է `SetAssetDefinitionAlias`-ով․ կեղծանվան անվան հատվածը պետք է համապատասխանի ակտիվի սահմանման ցուցադրվող կամ նախագծված անվանը։ Պայմանագրի կեղծանունը սահմանվում է `SetContractAlias`-ով․ կեղծանվան տվյալների տարածքը պետք է համապատասխանի պայմանագրի հասցեում կոդավորված տվյալների տարածքին։ Երկու կապերն էլ կարող են պարունակել `lease_expiry_ms`․ ժամկետը լրանալուց և արտոնյալ պատուհանն անցնելուց հետո դրանք այլևս չեն լուծվում և հեռացվում են համաշխարհային վիճակի ինդեքսներից։
 

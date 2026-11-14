@@ -1,20 +1,20 @@
 ---
 translation_locale: ba
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
+translation_source_hash: c42adbe41e322c93509279f1f558d4450431de90c596f37eb3999754d4387f78
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
 # Сетьте урынлаштырыу өсөн асҡыстар {#keys-for-network-deployment}
 
-Һәр селтәргә клиенттар, тиңдәштәр, genesis-ҡа ҡул ҡуйыу һәм NPoS йә SORA Nexus профилдәрендә BLS валидатор идентификаторҙары өсөн айырым асҡыс материалдары кәрәк.
+Һәр селтәргә клиенттар, генезисҡа ҡул ҡуйыу һәм эйә булыу иҫбаттары менән BLS-normal валидатор идентификаторҙары өсөн айырым асҡыс материалдары кәрәк.
 
 ## Ҡайҙа асҡыстар ҡулланыла {#where-keys-are-used}
 
 - Клиенттың ҡултамғалау асҡыстары `client.toml` аҫтында `[account]` һаҡлана.
 - Пирҙар менән танышыу өсөн асҡыстар һәр пирҙа һаҡлана `config.toml` тип `public_key` һәм `private_key`.
 - Селтәр төйөндәрен табыу өсөн `trusted_peers` исемлегендәге һәр төйөндөң асыҡ асҡысы ҡулланыла.
-- BLS раҫлаусы НПОС профилдәре өсөн милек иҫәбе `trusted_peers_pop` ҡатында һаҡланған.
+- BLS валидаторҙарының эйә булыу иҫбаттары консенсус режимына ҡарамаҫтан һәр валидатор өсөн `trusted_peers_pop` эсендә һаҡлана.
 - Яратылыш ҡултамғаһы манифестҡа ҡул ҡуйғанда `[genesis].public_key` тигеҙ конфигурацияһында һәм тейешле шәхси асҡыс менән ҡулланыла.
 
 Урындағы йәки һынау урынлаштырыу өсөн, Kagami был файлдарҙың бөтәһен дә бергә барлыҡҡа килтерергә тейеш:

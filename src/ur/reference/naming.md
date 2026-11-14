@@ -1,9 +1,9 @@
 ---
 translation_locale: ur
 translation_source: /reference/naming.md
-translation_source_hash: 1d4d698597542d9c84284d0b87dae8a1825d3ab39ff38dd32bb204d41291c83d
+translation_source_hash: 15d095e674edf780c5859abe6f4615d53338e3304e8eedfa494017911204d4b6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # اسمبلیوں کا نام {#naming-conventions}
 
@@ -15,10 +15,9 @@ translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
    - `#` اثاثہ کی تعریف کے ناموں اور اثاثہ بیلنس لٹریلز کے لئے محفوظ ہے
    - `::` معاہدے کے مستعار ناموں کے لئے محفوظ ہے
    - `.` ڈومین اور ڈیٹا اسپیس کے لئے مخصوص ہے
-   - `$` ٹرگر اسکینڈل ٹیکسٹ فارم کے لئے محفوظ ہے
-   - `%` توثیق کرنے والے دائرہ کار کے متن فارموں کے لئے محفوظ ہے
+   - `$` NFT شناخت کنندگان کے لیے مخصوص ہے، جیسے `name$domain.dataspace`
 
-2. ایک نام میں حروف کی زیادہ سے زیادہ تعداد (بشمول UTF-8 حروف) دو عوامل کے ذریعہ محدود ہے: `[0, u32::MAX]` اور فی الحال مختص کردہ اسٹیک جگہ.
+2. نام غیر خالی ہونا چاہیے، یونیکوڈ NFC صورت میں ہو، زیادہ سے زیادہ 255 UTF-8 بائٹس طویل ہو، اور خالی جگہ، کنٹرول اور دو طرفہ کنٹرول کے حروف سے پاک ہو۔
 
 ## Taira پر آزمائیں {#try-it-on-taira}
 

@@ -1,22 +1,22 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/world.md
-translation_source_hash: d6ecc7832a3925c105ddc0ddfbaf62ea54d465cdb7b98ce795e5a72c615361bd
+translation_source_hash: 3e03f6f778e5e53a95ab6e5b94c05da410fa415fcc26ad31aa387bdaf0d744bf
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-source-naming-amendment
+translation_engine: bing-translator-llm+reviewed-source-naming-amendment+reviewed-delta
 ---
 # 世界 {#world}
 
 `World` は他のエンティティを含むグローバルなエンティティです。`World` は以下で構成されています:
 
-- Iroha [構成パラメータ](/ja/guide/configure/client-configuration.md)
+- [ジェネシス](/ja/reference/genesis.md) と `SetParameter` によって設定される、オンチェーンのチェーンパラメータ
 - 登録済みネットワークピア
 - 登録済みドメイン
 - 登録済み [トリガー](/ja/blockchain/triggers.md)
 - 登録済み [役割](/ja/blockchain/permissions.md#permission-groups-roles)
 - 登録済み [許可トークンの定義](/ja/blockchain/permissions.md#permission-tokens)
 - すべてのアカウントの許可トークン
-- [ソフトウェア実行時バリデータのチェーン](/ja/blockchain/permissions.md#runtime-validators)
+- [アクティブなランタイム実行者](/ja/blockchain/permissions.md#runtime-validators)
 
 ドメイン、ネットワークピア、またはロールが登録または登録解除されると、`World` が (登録／登録解除) [指示](/ja/blockchain/instructions.md) の対象となります。
 
@@ -57,22 +57,19 @@ WSV の変更は、最終確定される前にステージされます。ブロ�
 
 Kura は Iroha の永続的なブロックストレージです。署名付きブロックとリカバリメタデータを保存します。WSV の2番目の可変コピーは保存しません。
 
-Kura ストレージは〜にルート化されています [`kura.store_dir`](/ja/reference/peer-config/params.md#param-kura-store-dir). そのルート内で、ブロックデータは実行レーンまたはセグメントごとに分割されます。セグメントの主なファイルは次の通りです:
+Kura ストレージのルートは [`kura.store_dir`](/ja/reference/peer-config/params.md#param-kura-store-dir) です。グローバルチェーンのブロックはチェーン単位の `blocks/canonical` ディレクトリに置かれ、レーンインスタンスはそれぞれ別のレーンブロックストアを保持します。主な正規ファイルは次のとおりです：
 
 |道|目的|
 | --- | --- |
-| `blocks/<segment>/blocks.data` |連続する Norito フレームの署名付きブロックペイロード。|
-| `blocks/<segment>/blocks.index` |固定サイズの`(start, length)`エントリで、`blocks.data`内のブロック高さをバイトにマッピングします。|
-| `blocks/<segment>/blocks.hashes` |高速な検索と起動時の検証のために、高さ別に暗号ハッシュをブロックします。|
-| `blocks/<segment>/blocks.count.norito` |ブロックインデックスのどのエントリが使用可能かを記録する耐久性のあるブロック確定マーカー。|
-| `blocks/<segment>/da_blocks/` |ディスク予算の管理により古いボディがホットファイルから移動されると、退去されたブロックのペイロードは`blocks.data`の外に保持されます。|
-| `blocks/<segment>/pipeline/sidecars.norito` と `sidecars.index` |ブロック高によってキー付けされたソフトウェア処理ワークフローの回復補助記録。|
-| `blocks/<segment>/pipeline/roster_sidecars.norito` と `roster_sidecars.index` |最近のプロトコルの確定－ブロック同期とリプレイで使用される名簿補助記録。|
-| `merge_ledger/<segment>.log` |ブロックチェーンのマージログエントリは、確定したブロックと整列しています。|
-| `commit-rosters.norito` |最近のブロックに対する保持されたコンセンサス最終化証明書とバリデータチェックポイント。|
+| `blocks/canonical/blocks.data` |連続する Norito フレームの署名付きブロックペイロード。|
+| `blocks/canonical/blocks.index` |固定サイズの`(start, length)`エントリで、`blocks.data`内のブロック高さをバイトにマッピングします。|
+| `blocks/canonical/blocks.hashes` |高速な検索と起動時の検証のために、高さ別に暗号ハッシュをブロックします。|
+| `blocks/canonical/blocks.count.norito` |ブロックインデックスのどのエントリが使用可能かを記録する耐久性のあるブロック確定マーカー。|
+| `blocks/canonical/da_blocks/` |ディスク予算の管理により古いボディがホットファイルから移動されると、退去されたブロックのペイロードは`blocks.data`の外に保持されます。|
+| `blocks/canonical/pipeline/sidecars.norito` と `sidecars.index` |ブロック高によってキー付けされたソフトウェア処理ワークフローの回復補助記録。|
 
 Kura チェーンのためのコンパクトなメモリ内ベクターを保持します：各高さにはブロックの暗号ハッシュと、必要に応じてブロック本体があります。 ブロックチェーンのジェネシスブロックはキャッシュされたままであり、最新のものも [`kura.blocks_in_memory`](/ja/reference/peer-config/params.md#param-kura-blocks-in-memory) 非ジェネシスブロックはその本体をメモリに保持します。古いブロック本体はメモリから破棄され、再読み込みされます Kura 必要なときにファイル
 
-初期化中に、`strict` モードはブロックペイロードから保存されたブロックを検証し、必要に応じて暗号ハッシュファイルを書き換えます。`fast` モードは保存されたところから開始しますハッシュ/インデックスのメタデータを使用し、そのメタデータが不一致の場合は厳密な初期化にフォールバックします。Kura が破損したテイルを検出すると、最後に検証されたブロックまでストレージをプルーニングします。
+初期化中、`strict` モード（デフォルト）はすべての正規ブロック本体と親リンクを検証します。`fast` は、`strict` がすでに初期化したストレージ向けの緊急モードです。現在の署名済みスナップショットと、永続化されたブロック数および先端を信頼し、ノードが `strict` モードで再起動するまで Sumeragi、トランザクションのゴシップ、ブロック生成を停止したままにします。起動時には、廃止された `merge_ledger`、`roster_sidecars`、`commit-rosters.norito` のアーティファクトを拒否します。Kura が破損したテイルを検出すると、最後に検証されたブロックまでストレージをプルーニングします。
 
 Kura はバックグラウンドライターを通じて新しいブロックを書き込みます。ライターはブロックのペイロード、暗号ハッシュ、およびインデックスエントリを追記し、その後、設定された fsync ポリシーに従って耐久カウントマーカーを進めます。ディスク予算の強制が有効な場合、Kura は、廃止されたセグメントをパージしたり、古いブロック本体を `da_blocks/` に退避させたりすることができますが、検証や参照のために暗号化ハッシュやインデックスエントリは利用可能なままにします。

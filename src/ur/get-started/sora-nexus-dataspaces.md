@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 98c351372551b08bda4911f52bfb3cc70c53b6125d8045c17abb205b27960f6d
+translation_source_hash: 96ca67b9bbf9d743de2f640e09487176f62a8a31052e4f1e15e15a771e985c48
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -24,7 +24,7 @@ SORA Nexus کی بنیاد Iroha 3 ہے۔ اپنی ایپلیکیشن پہلے T
 |مرحلہ |Taira ٹیسٹ نیٹ |Minamoto مین نیٹ |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
 |نیٹ ورک کی حالت پڑھنا شروع کریں |کلیدوں کے بغیر `/status` کا استفسار کریں | پہلے سروس کے پتے اور اس کے TLS سرٹیفکیٹ کی تصدیق کریں |
-|ڈیٹا اسپیس منتخب کریں |عوامی استعمال کریں `universal` جب تک کہ آپ کی ایپ کو ایک منظم لین کی ضرورت نہ ہو |صرف مین نیٹ کی منظوری کے بعد ایک ہی ڈیٹا اسپیس کا استعمال کریں |
+| ڈیٹا اسپیس منتخب کریں | عوامی `universal` استعمال کریں، جب تک آپ کی ایپ کو اپنی زیرِ حکمرانی ڈیٹا اسپیس کی ضرورت نہ ہو | یہی ڈیٹا اسپیس صرف مین نیٹ کی منظوری کے بعد استعمال کریں |
 |فیس کا اثاثہ حاصل کریں |عوامی Taira faucet استعمال کریں |فنڈ شدہ Minamoto اکاؤنٹ یا منظور شدہ خزانے کے بہاؤ سے XOR حاصل کریں |
 |تحریری کارروائیوں کی جانچ کریں |فوسیٹ سے حاصل کردہ ٹیسٹ XOR استعمال کریں |ٹیسٹ ٹولنگ استعمال نہ کریں؛ تحریری کارروائیوں میں حقیقی XOR خرچ ہوتا ہے |
 |پروڈکشن میں منتقل کریں |دوبارہ کوشش کی منطق، نگرانی اور دستخط کنندہ کے انتظام کی مشق کریں |الگ کلیدیں، فنڈنگ اور ریلیز کنٹرول استعمال کریں |
@@ -63,7 +63,7 @@ SORA Nexus میں ڈیٹا اسپیس کیٹلاگ ڈیٹا اسپیسز متع�
 wonderland.universal
 ```
 
-اگر آپ کو ادارے کی نئی ڈیٹا اسپیس درکار ہو تو عام کلائنٹ اکاؤنٹ سے رجسٹر کرنے کی کوشش کے بجائے کیٹلاگ اور روٹنگ کی تجویز تیار کریں۔ نیچے [نئی ڈیٹا اسپیس فراہم کریں](#_8-provision-a-new-data-space) دیکھیں۔
+اگر آپ کو ادارے کی نئی ڈیٹا اسپیس درکار ہو تو عام کلائنٹ اکاؤنٹ سے رجسٹر کرنے کی کوشش کے بجائے کیٹلاگ اور روٹنگ کی تجویز تیار کریں۔ نیچے [نئی ڈیٹا اسپیس فراہم کریں](#_8-provision-a-new-dataspace) دیکھیں۔
 
 ## پبلک Torii اختتامی نقطہ چیک کریں۔ {#_2-check-the-public-torii-endpoint}
 
@@ -192,7 +192,7 @@ Taira MCP کو عوامی ٹیسٹ نیٹ ورک کنٹرول سطح کے طور
 
 یہ مثالیں اکاؤنٹ کی کلیدوں کے بغیر Taira سے صرف ڈیٹا پڑھتی ہیں۔
 
-Taira کی فراہم کردہ عوامی ڈیٹا اسپیس لینز کی فہرست دیکھیں:
+Taira کی ہر لین کو اس کی ڈیٹا اسپیس اور مرئیت کے ساتھ فہرست میں دیکھیں:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -254,7 +254,7 @@ nonce = false
 صرف پڑھنے کے لئے چیک کریں:
 
 ```bash
-iroha --config ./taira.client.toml --output-format text ops sumeragi status
+iroha --config ./taira.client.toml ledger domain list --limit 5
 ```
 
 لکھنے کے ٹیسٹ سے پہلے عوامی Taira تشخیص کریں:
@@ -432,7 +432,7 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 اکاؤنٹ کو مین نیٹ ورک آن بورڈنگ یا گورننس فلو کے ذریعے ذخیرہ کرنے اور فنڈ دینے تک صرف پڑھنے کی طرف سے چیک کریں:
 
 ```bash
-iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
+iroha --config ./minamoto.client.toml ledger domain list --limit 5
 ```
 
 Taira کی فوسیٹ یا بنیادی تحریری جانچ کی کمانڈز Minamoto کے خلاف نہ چلائیں۔
@@ -445,7 +445,7 @@ Minamoto فیسوں کو پیداوار XOR کے ساتھ ادا کیا جاتا
 
 Taira XOR Minamoto فیس ادا نہیں کر سکتا۔ ٹیسٹ نیٹ بیلنس اور نلوں کے دعوے Minamoto پر منتقل نہیں ہوتے ہیں۔
 
-## 7. موجودہ ڈیٹا اسپیس کے اندر کام کریں {#_7-work-inside-an-existing-data-space}
+## 7. موجودہ ڈیٹا اسپیس کے اندر کام کریں {#_7-work-inside-an-existing-dataspace}
 
 ڈیٹا اسپیس کے اندر موجود لیجر اشیا کے لیے مکمل طور پر متعین ڈومین نام استعمال کریں۔ مثلاً عوامی ڈیٹا اسپیس میں منصوبے کے ڈومین کو یہ صورت استعمال کرنی چاہیے:
 
@@ -486,7 +486,7 @@ alice@universal
 
 سخت اکاؤنٹ فیلڈز اب بھی کینونیکل I105 اکاؤنٹ IDs کا استعمال کرتے ہیں۔ عرفی ناموں کو انسانی پڑھنے کے قابل پابندیاں سمجھیں جو کینونیکل اکاؤنٹ IDs پر حل ہوجاتی ہیں۔
 
-## 8. نئی ڈیٹا اسپیس فراہم کریں {#_8-provision-a-new-data-space}
+## 8. نئی ڈیٹا اسپیس فراہم کریں {#_8-provision-a-new-dataspace}
 
 نئی ڈیٹا اسپیس آپریٹر اور گورننس کی تبدیلی ہے۔ عوامی Torii اینڈ پوائنٹ ترتیب شدہ ڈیٹا اسپیسز کو ٹریفک بھیج سکتا ہے، مگر نامعلوم ڈیٹا اسپیس عرفی نام مسترد کرتا ہے۔
 
@@ -529,7 +529,7 @@ metadata = {}
 [[nexus.dataspace_catalog]]
 alias = "payments"
 id = 20
-description = "Payments dataspace"
+description = "Payments data space"
 fault_tolerance = 1
 
 [[nexus.routing_policy.rules]]
@@ -537,12 +537,12 @@ lane = 5
 dataspace = "payments"
 [nexus.routing_policy.rules.matcher]
 instruction = "transfer::asset"
-description = "Route asset transfers to the payments dataspace"
+description = "Route asset transfers to the payments data space"
 ```
 
 آپریٹر کی قبولیت میں درج ذیل دروازے شامل ہوں گے:
 
-- `iroha3d --sora --config <config.toml> --trace-config` حل شدہ نوڈ ترتیب کو منتقل کرتا ہے
+- `iroha3d --sora --config <config.toml> --check-config` حل شدہ نوڈ ترتیب کو منتقل کرتا ہے
 - جنریٹڈ یا نظرثانی شدہ دستاویز کو ہیش اور دستخطوں کے ساتھ محفوظ کیا جاتا ہے۔
 - کسی بھی Minamoto پروموشن سے پہلے دھواں کے ٹیسٹ Taira پر گزرنا
 - تبدیلی کے بعد `/status` کیٹلاگ مطلوبہ لین اور ڈیٹا اسپیس دکھائے

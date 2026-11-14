@@ -1,9 +1,9 @@
 ---
 translation_locale: kk
 translation_source: /blockchain/permissions.md
-translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
+translation_source_hash: 7993d14839218fd3394d52dbcce264bffea32394f54e25dd261cd060c54f1fe1
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Рұқсаттар {#permissions}
 
@@ -72,14 +72,20 @@ let register_role = Register::role(role);
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```
 
 ## Рұқсатты тексерушілер {#permission-validators}
 
-Құқықтар тек қажет рұқсат белгішесі бар есептік жазбалар қорғалатын әрекетті орындау үшін бар. Стандартты орындаушы нұсқаулық, сұрау және өрнекті орындау кезінде құқықтарды тексереді.
+Құқықтар тек қажетті рұқсат белгісі бар есептік жазбалар ғана қорғалатын әрекетті орындай алуы үшін бар. Әдепкі орындаушы құқықтарды транзакциялар мен нұсқауларды орындау және сұрауларды тексеру кезінде тексереді.
 
 Әдепкі валидация беті блокчейн жазбасы аймағы бойынша топтастырылған:
 
@@ -96,7 +102,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 
 Рұқсаттарды тексеру белсенді орындаушы арқылы жүзеге асырылады. Әдепкі орындаушы кіріктірілген рұқсат тексерушілерін және токен анықтамаларын ұсынады, ал желі пайдаланатын орындаушысын жаңарту арқылы саясатты өзгерте алады.
 
-Тексерушілер тексеру шешімін қайтарады. Тексеруші операцияны рұқсат ете алады, себебін көрсетіп бас тарта алады немесе операция тексерушінің ауқымынан тыс болса, оны өткізіп жібере алады. Таңдалған сот шешімдерді біріктіріп, нұсқаулықтың, сұраудың немесе өрнектің орындала ала ма, жоқ па, соны шешеді.
+Орындаушы операцияға рұқсат береді немесе оны `ValidationFail` себебімен қабылдамайды. Қабылданбаған нұсқау өз транзакциясының да қабылданбауына әкеледі, ал қабылданбаған сұрау қатені шақырушыға қайтарады.
 
 ## Қолданылатын сұраулар {#supported-queries}
 

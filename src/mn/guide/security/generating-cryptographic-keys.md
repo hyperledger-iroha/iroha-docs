@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: b6e3bd79c50ea326930ac978350ea4beac8294b6f045ac0084aada257754ffa1
+translation_source_hash: bb1044edb9d34264e36848ee773d4d313bfbfd91b45da2eeb831f7ef8920e9b4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
@@ -56,7 +56,7 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` нь зөвхөн `bls_normal`-тай хүчинтэй бөгөөд хамгаалалттай хадгалалтын санд `pop.hex` нэмнэ. Гарын үсэгтэй genesis нь санал өгөх баталгаажуулагч бүрт тохирох PoP шаардана. Зангилааны тохиргоонд хоосон биш `trusted_peers_pop` зураглал нь баталгаажуулагчдын дэд олонлогийг сонгоно; уг зураглалд ороогүй итгэмжлэгдсэн зангилаанууд ажиглагч байна. Зураглал хоосон бол бүх BLS-normal итгэмжлэгдсэн зангилаа ачаалах үеийн нэр дэвшигчдийн олонлогт орно, харин санал өгөгчдийн PoPs-ийг гарын үсэгтэй genesis заавал олгоно.
+`--pop` нь зөвхөн `bls_normal`-тай хүчинтэй бөгөөд хамгаалалттай хадгалалтын хавтаст `pop.hex`-ийг нэмнэ. Гарын үсэгтэй genesis нь санал өгөх баталгаажуулагч бүрт тохирох PoP шаардана. Зангилааны тохиргоонд баталгаажуулагч бүрийн PoP-г `trusted_peers_pop`-д жагсаана: хүчинтэй PoP-гүй итгэмжлэгдсэн зангилаануудыг зөвшилцлийн бүрэлдэхүүнээс хасах ба хоосон зураглал нэг ч баталгаажуулагч өгөхгүй тул зураглалдаа genesis-ийн баталгаажуулагчдыг орхисон зангилаа эхлэхээс татгалзана. Зөвхөн синхрончлол хийх зангилааг `[sumeragi] role = "observer"`-ээр ажиллуулна уу.
 
 ## Хадгалалтын гаралт {#custody-output}
 

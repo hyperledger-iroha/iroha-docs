@@ -22,7 +22,7 @@ activity. Both networks charge fees in XOR:
 | Step                        | Taira Testnet                                                | Minamoto Mainnet                                   |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
 | Start reading network state | Query `/status` without keys                                 | Confirm the endpoint and its TLS certificate first |
-| Pick a dataspace            | Use public `universal` unless your app needs a governed lane | Use the same dataspace only after mainnet approval |
+| Pick a data space            | Use public `universal` unless your app needs its own governed data space | Use the same data space only after mainnet approval |
 | Get fee asset               | Use the public Taira faucet                                  | Receive XOR from a funded Minamoto account or approved treasury flow |
 | Test writes                 | Use faucet-funded test XOR                                   | Do not use test tooling; writes spend real XOR     |
 | Promote                     | Keep retry logic, monitoring, and signer handling            | Use separate keys, funding, and release controls   |
@@ -72,7 +72,7 @@ wonderland.universal
 
 If you need a new organizational data space, prepare a catalog and routing
 proposal instead of trying to register it from an ordinary client account.
-See [Provision a New Data space](#_8-provision-a-new-data-space) below.
+See [Provision a New Data space](#_8-provision-a-new-dataspace) below.
 
 ## 2. Check the Public Torii Endpoint
 
@@ -244,7 +244,7 @@ Minamoto keys and production release workflows.
 
 These read-only examples query Taira without account keys.
 
-List the public data space lanes exposed by Taira:
+List every Taira lane with its data space and visibility:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -312,7 +312,7 @@ chain discriminant. The chain ID does not select the account profile.
 Run a read-only check:
 
 ```bash
-iroha --config ./taira.client.toml --output-format text ops sumeragi status
+iroha --config ./taira.client.toml ledger domain list --limit 5
 ```
 
 Run the public Taira diagnostics before write tests:
@@ -546,7 +546,7 @@ Run only read-side checks until the account is provisioned and funded
 through the mainnet onboarding or governance flow:
 
 ```bash
-iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
+iroha --config ./minamoto.client.toml ledger domain list --limit 5
 ```
 
 Do not run the Taira faucet or smoke-test commands against Minamoto.
@@ -566,7 +566,7 @@ assume a mainnet transaction can be reset.
 Taira XOR cannot pay Minamoto fees. Testnet balances and faucet claims do
 not transfer to Minamoto.
 
-## 7. Work Inside an Existing Data space
+## 7. Work Inside an Existing Data Space {#_7-work-inside-an-existing-dataspace}
 
 Use fully qualified domain names for ledger objects that live inside a
 data space. For example, a project domain in the public data space should
@@ -613,7 +613,7 @@ alice@universal
 Strict account fields still use canonical I105 account IDs. Treat aliases
 as human-readable bindings that resolve to canonical account IDs.
 
-## 8. Provision a New Data space
+## 8. Provision a New Data Space {#_8-provision-a-new-dataspace}
 
 A new data space is an operator and governance change. The public Torii
 endpoint can route traffic to configured data spaces, but it will reject
@@ -665,7 +665,7 @@ metadata = {}
 [[nexus.dataspace_catalog]]
 alias = "payments"
 id = 20
-description = "Payments dataspace"
+description = "Payments data space"
 fault_tolerance = 1
 
 [[nexus.routing_policy.rules]]
@@ -673,12 +673,12 @@ lane = 5
 dataspace = "payments"
 [nexus.routing_policy.rules.matcher]
 instruction = "transfer::asset"
-description = "Route asset transfers to the payments dataspace"
+description = "Route asset transfers to the payments data space"
 ```
 
 Operator acceptance should include these gates:
 
-- `iroha3d --sora --config <config.toml> --trace-config` passes on the
+- `iroha3d --sora --config <config.toml> --check-config` passes on the
   resolved node configuration
 - the generated or reviewed manifest is archived with hashes and signatures
 - smoke tests pass on Taira before any Minamoto promotion

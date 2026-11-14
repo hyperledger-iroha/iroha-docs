@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /reference/permissions.md
-translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -16,7 +16,6 @@ translation_engine: nllb-200-ct2+reviewed-delta
 |اجازت ٹوکن |زمرہ |آپریشن |
 | --- | --- | --- |
 |`CanManagePeers` |نیٹ ورک نوڈ |رجسٹر، غیر رجسٹریشن، یا دوسری صورت میں نیٹ ورک نوڈز کا انتظام. |
-|`CanManageLaneRelayEmergency` |نیٹ ورک نوڈ |ہنگامی لین ریلے کنٹرولز کا انتظام کریں. |
 |`CanRegisterDomain` |ڈومین |ایک ڈومین رجسٹر. |
 |`CanUnregisterDomain` |ڈومین |ایک ڈومین کو غیر رجسٹر کریں۔ |
 |`CanModifyDomainMetadata` |ڈومین |ڈومین میٹا ڈیٹا میں ترمیم کریں۔ |
@@ -28,7 +27,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 |`CanMintAssetWithDefinition` |اثاثہ |مخصوص تعریف کے لیے مائنٹ اثاثہ جات۔ |
 |`CanBurnAssetWithDefinition` |اثاثہ |مخصوص تعریف کے لیے اثاثے جلا دیں۔ |
 |`CanTransferAssetWithDefinition` |اثاثہ |ایک مخصوص تعریف کے لیے اثاثے منتقل کریں۔ |
-|`CanMintAsset` |اثاثہ |ایک مخصوص اثاثہ بیلنس بنانا۔ |
+|`CanMintAssetToAccount` |اثاثہ |ایک مخصوص اثاثہ بیلنس بنانا۔ |
 |`CanBurnAsset` |اثاثہ |ایک مخصوص اثاثہ بیلنس جلانے. |
 |`CanTransferAsset` |اثاثہ |ایک مخصوص اثاثہ بیلنس منتقل کریں۔ |
 |`CanRegisterNft` |NFT |ایک NFT رجسٹر کریں۔ |
@@ -43,7 +42,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 |`CanModifyTrigger` |ٹرگر |ٹرگر ترتیب کو تبدیل کریں. |
 |`CanModifyTriggerMetadata` |ٹرگر |ٹرگر میٹا ڈیٹا تبدیل کریں. |
 |`CanUpgradeExecutor` |کارروائی کرنے والا|رن ٹائم ایگزیکٹر کو اپ گریڈ کریں. |
-|`CanRegisterSmartContractCode` |ہوشیار معاہدہ |سمارٹ معاہدے کا کوڈ درج کریں. |
+| `CanManageSmartContractCode` | اسمارٹ کنٹریکٹ | غیر حوالہ شدہ کوڈ آرٹیفیکٹس ہٹانا اور کنٹریکٹ کے داخلی نقاط تفویض کرنا۔ رجسٹرڈ اکاؤنٹس اس کے بغیر تصدیق شدہ آرٹیفیکٹس بنا سکتے ہیں۔ |
 | `CanManageFeeSponsorProgram` | SORA Nexus | عین اسپانسر اکاؤنٹ کی ملکیت والے پروگراموں کا انتظام کرنا۔ |
 | `CanEnrollFeeSponsorProgram` | SORA Nexus | عین ایک اسپانسر پروگرام کے مستفید افراد کا انتظام کرنا۔ |
 

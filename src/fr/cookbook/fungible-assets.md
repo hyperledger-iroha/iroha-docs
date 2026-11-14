@@ -1,9 +1,9 @@
 ---
 translation_locale: fr
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 8a8fd0d29d4c1c323b457595653077564ad100f397ea2f4b059b35451b76aa44
+translation_source_hash: ae0604c0e82db0a908e7ffc44c97f56b58fe2b5bb87553ded48562e8f9fcd36a
 translation_status: machine-validated
-translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Actifs fongibles {#fungible-assets}
 
@@ -15,7 +15,7 @@ Inspectez les définitions d'actifs en direct de Taira et réalisez un flux d'é
 
 - `curl`, `jq`, Python 3.11 ou plus récent, Node.js 24, et les CLIs `iroha` et `kagami` actuels.
 - Accès en lecture seule Taira.
-- Pour le parcours d'écriture, un réseau local créé avec `kagami localnet generate --peers 4 --out-dir ./localnet` comme dans [Lancer Iroha](/fr/get-started/launch-iroha.md), en ajoutant `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa`. Il fournit `./localnet/client.toml` et Torii sur `http://127.0.0.1:8080`.
+- Pour le parcours d'écriture, un réseau local créé avec `kagami localnet generate --peers 4 --out-dir ./localnet`, en ajoutant `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa`. Il fournit `./localnet/client.toml` et Torii sur `http://127.0.0.1:8080`.
 
 ## Étapes {#steps}
 

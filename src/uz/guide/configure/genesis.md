@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /guide/configure/genesis.md
-translation_source_hash: 91be089c82a76991e35a43e1541f9e069fdf70d3fb5de2492b985c06c78a2372
+translation_source_hash: 2a4a43b6ac873cc0c860631e307e52b047ba6a08691bf3e4c5872cc22c81a0bd
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -9,7 +9,7 @@ translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-so
 
 blockchain genesis boshlang'ich zanjir holatini belgilaydi. Tahrir qilinadigan manba JSON manifest bo'lib, va Iroha 3 tugun imzolangan Norito tranzaksiya faylini ishlatadi.
 
-::: details Standart blokcheyn boshlang‘ich manifesti
+::: details Standart genezis manba shabloni (defaults/genesis.template.json)
 
 <<< @/snippets/genesis.json
 
@@ -36,7 +36,7 @@ public_key = "ed0120..."
 expected_hash_file = "./genesis.expected_hash"
 ```
 
-Tarmoqdagi barcha tengdoshlar imzolangan genesis tranzaksiyasi va genesis ochiq kaliti bo‘yicha kelishishi kerak. Kutilgan xesh fayli dastlabki va qayta ishga tushirishda zarur; uni `kagami genesis sign --expected-hash-out` yozadi.
+Tarmoqdagi barcha tengdoshlar imzolangan genezis tranzaksiyasi va genezis ochiq kaliti bo‘yicha kelishishi kerak. Har bir ishga tushirish — birinchi marta bo‘ladimi yoki qayta ishga tushirishmi — kutilgan xeshni talab qiladi: `expected_hash_file` yoki konfiguratsiyaga bevosita yozilgan `expected_hash` dan aynan bittasini sozlang. Faylni `kagami genesis sign --expected-hash-out` yozadi.
 
 ## Blokcheynning dastlabki imzolanishi {#signing-genesis}
 
@@ -52,7 +52,7 @@ cargo run --bin kagami -- genesis sign ./genesis.json \
 
 `GENESIS_PRIVATE_KEY_FILE` egasi tomonidan ushlab turiladigan moda-`0600`, bitta protokol-standart xususiy kalitli multihash va yakuniy yangi qatorni o‘z ichiga olgan bitta ulanadigan oddiy fayl bo‘lishi kerak. Kagami ramziy havolalarni rad etadi va buyruq satrida xom blokcheyn boshlang‘ich xususiy kalitni hech qachon qabul qilmaydi.
 
-NPoS yoki SORA Nexus profillari uchun yaratilgan profil talab qiladigan topologiya va BLS egalik isbotlarini kiriting. Kagami ning `localnet generate`, `wizard` va `sora-network generate` buyruqlari bu tafsilotlarni avtomatik boshqaradi.
+Ruxsatli yoki NPoS bo‘lishidan qat’i nazar, har bir imzolangan genezis har bir validator uchun BLS egalik isboti bilan aniq `3f + 1` validator topologiyasini o‘z ichiga olishi shart. Kagami ning `localnet generate`, `wizard` va `sora-network generate` buyruqlari bu tafsilotlarni avtomatik boshqaradi.
 
 ## Blokcheyn asosini qayta tasdiqlash {#recommitting-genesis}
 

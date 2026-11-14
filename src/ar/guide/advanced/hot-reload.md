@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
+translation_source_hash: 6edc0185196ab8e77ef8552723e05bf37cca1a088da86e2a43d441d58e779c11
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -32,4 +32,4 @@ docker restart <container>
 
 ## استخدام التكوين المخصص {#use-custom-configuration}
 
-تكوين نظير الشبكة الحالي هو TOML. قم بتركيب الربط أو نسخ الملفات المولدة `config.toml`، `genesis.signed.nrt`، والملفات المفتاحية ذات الصلة إلى مسارات الحاوية المتوقعة بواسطة الصورة، ثم أعد تشغيل نظير الشبكة. احتفظ بالملفات المولَّدة معًا؛ فمزج الملفات من تشغيلات مختلفة Kagami يمكن أن يؤدي إلى فشل في إلغاء التسلسل أو فشل في التوافق.
+تكوين نظير الشبكة الحالي هو TOML. يكتب Kagami ملف `peerN.toml` واحدًا لكل مدقق يتضمن `genesis.signed.nrt` و`genesis.public_key` و`genesis.expected_hash`؛ ويقوم ملف Compose الناتج عن `kagami docker` بتركيبها داخل الحاوية. أعد توليده بدلًا من نسخ الملفات يدويًا، ثم أعد تشغيل نظير الشبكة. احتفظ بالملفات المولَّدة معًا؛ فمزج الملفات من تشغيلات Kagami مختلفة يمكن أن يؤدي إلى فشل في إلغاء التسلسل أو فشل في التوافق.

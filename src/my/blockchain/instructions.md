@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /blockchain/instructions.md
-translation_source_hash: ef50253c5478c9d8c3e14529dc4c2f3de67c344901c82c65be77ceb237a29598
+translation_source_hash: 86d253317376ad8d7a8c0e30689c7e0c0cd786af83299dd5ac1a904c653192f5
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -41,7 +41,7 @@ Iroha ညွှန်ကြားမှု လုပ်ဆောင်ချက�
 |[SetParameter](#setparameter) |ကွင်းဆက် parameters |                      |
 | [Grant/Revoke](#grant-revoke) | [role များ၊ ခွင့်ပြုချက် token များ](/my/blockchain/permissions.md) | အကောင့်များ သို့မဟုတ် role များ |
 |[လွှဲပြောင်းခြင်း](#transfer) |ဒိုမင်များ၊ အရင်းအမြစ် အဓိပ္ပါယ်ဖွင့်ဆိုချက်များ, ကိန်းဂဏန်းအရင်းအမြစ်များ NFTs |အကောင့်များ|
-| [မူလပံ့ပိုးထားသော escrow နှင့် ပိုင်ဆိုင်မှု lock များ](#native-escrow-and-asset-locks) | ကိန်းဂဏန်းပိုင်ဆိုင်မှု escrow များ၊ ပိုင်ဆိုင်မှု lock များ၊ အမည်မဖော် escrow commitment များ | ဝယ်သူများ၊ ဦးတည်ရာများ သို့မဟုတ် အငြင်းပွားမှု ဖြေရှင်းရာတွင် ခွဲဝေပမာဏများ |
+| [မူလပံ့ပိုးထားသော escrow နှင့် ပိုင်ဆိုင်မှု lock များ](#native-escrow-and-asset-locks) | ကိန်းဂဏန်းပိုင်ဆိုင်မှု escrow များ၊ ပိုင်ဆိုင်မှု lock များ၊ အခြေအနေအလိုက် escrow များ | ဝယ်သူများ၊ ဦးတည်ရာများ သို့မဟုတ် အငြင်းပွားမှု ဖြေရှင်းရာတွင် ခွဲဝေပမာဏများ |
 |[အက်တမ် ပုဂ္ဂလိက ဘဏ္ဍာရေး ငွေပေးချေမှု ဖြေရှင်းခြင်း](#atomic-private-settlement) |လမ်းကြောင်းကန့်သတ်ထားတဲ့ လျှို့ဝှက် ပရိုတိုကော ဒေတာအုပ်စုတွေ၊ မူဝါဒလည်ပတ်မှု၊ ပြီးဆုံးတဲ့ ဘက်လ်များနဲ့ ဖျက်သိမ်းရေး အမှတ်တံဆိပ်တွေပါ။|                      |
 |[ExecuteTrigger](#executetrigger) |trigger များ|                      |
 |[Log/Custom/Upgrade](#other-instructions) |မှတ်တမ်းများ၊ အကောင်အထည်ဖော်သူဆိုင်ရာ အသုံးဝင်ဝန်ဆောင်မှုများ၊ အကောင် အထည်ဖော်မှု အဆင့်မြှင့်တင်ခြင်းများ |                      |
@@ -184,6 +184,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
+  --domain docs.universal \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
@@ -322,9 +323,9 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 
 ## Native Escrow နှင့် Asset Lock များ {#native-escrow-and-asset-locks}
 
-Native escrow ညွှန်ကြားချက်များသည် blockchain ledger ပရိုတိုကော ထိန်းသိမ်းမှုမှ စီမံခန့်ခွဲသော ကိန်းဂဏန်းအရင်းအမြစ်များကိုပိတ်ထားသည်။ ၎င်းတို့ကိုစျေးကွက်ပုံစံငွေကြေးဆောင်ရွက်မှုဖြေရှင်းရေး၊ ယေဘုယျအရင်းအမြစ်ကိုပိတ်ထားခြင်းနှင့်မည်မသိကာကွယ်ထားတဲ့ escrow စီးဆင်းမှုများအတွက် အသုံးပြုပါသည်။
+မူလပံ့ပိုးထားသော escrow ညွှန်ကြားချက်များသည် ကိန်းဂဏန်းပိုင်ဆိုင်မှုများကို လယ်ဂျာက စီမံခန့်ခွဲသော ပရိုတိုကော ထိန်းသိမ်းမှုတွင် lock လုပ်ထားသည်။ ၎င်းတို့ကို စျေးကွက်ပုံစံ ငွေစာရင်းရှင်းလင်းမှု၊ ယေဘုယျ ပိုင်ဆိုင်မှု lock များနှင့် သက်သေခံအတည်ပြုသူနှင့် ချိတ်ဆက်ထားသော အခြေအနေအလိုက် escrow များအတွက် အသုံးပြုသည်။
 
-စျေးကွက်အမှတ်တံဆိပ်သုံးစွဲမှု `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, နှင့် `ResolveEscrowDispute`. ယေဘုယျ အရင်းအမြစ်ပိတ်ခြင်း အသုံးပြုမှု `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, နှင့် `ExpireAssetLock`. Anonymous escrow ဟာ စျေးကွက်ရဲ့ သက်တမ်း စက်ဝန်းကို ပုံဖော်ပါတယ်။ `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, နှင့် `ResolveAnonymousEscrowDispute`.
+စျေးကွက် escrow သည် `OpenAssetEscrow`၊ `AcceptAssetEscrow`၊ `MarkEscrowPaymentSent`၊ `ReleaseAssetEscrow`၊ `CancelAssetEscrow`၊ `OpenEscrowDispute` နှင့် `ResolveEscrowDispute` ကို အသုံးပြုသည်။ ယေဘုယျ ပိုင်ဆိုင်မှု lock များသည် `OpenAssetLock`၊ `DrawdownAssetLock`၊ `CancelAssetLock` နှင့် `ExpireAssetLock` ကို အသုံးပြုသည်။ အခြေအနေအလိုက် escrow သည် `OpenConditionalEscrow`၊ `AttestEscrowCondition` နှင့် `ExpireConditionalEscrow` ကို အသုံးပြုသည်။
 
 ဤ ISIs များမှာ လက်ရှိတွင်ပထမတန်းစား CLI commands မရှိပါ။ ရိုက်နှိပ်ထားသော SDK builders သို့မဟုတ် serialized instruction payloads ကိုအသုံးပြုပြီး ဘဝပတ်လည် အသေးစိတ်၊ ခွင့်ပြုချက်များ၊ မေးမြန်းမှုများ၊ အဖြစ်အပျက်များနှင့် Rust နမူနာများအတွက် [ပိုင်ဆိုင်မှုများကို စံညွှန်ကြားချက်ဖြင့် ကြားခံထိန်းသိမ်းခြင်း](/my/blockchain/escrow.md) ကိုကြည့်ပါ။
 
@@ -418,7 +419,7 @@ printf '{"owner":"ops"}\n' |
 Standard input မှာ single parameter JSON object တစ်ခုကို ဖြတ်ပြီး parameter ကို သတ်မှတ်ပေးပါ
 
 ```bash
-printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
+printf '{"Sumeragi":{"MaxClockDriftMs":1000}}\n' |
   cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```

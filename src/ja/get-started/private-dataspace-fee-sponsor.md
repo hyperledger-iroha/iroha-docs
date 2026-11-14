@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /get-started/private-dataspace-fee-sponsor.md
-translation_source_hash: 79410ebb9d0a18072d5ae2288348082390b622ed81225de79dcbd4000e268e51
+translation_source_hash: 2ca4fc00709839879fe9cb7ea5e5f697505e5e25d4e5a6cd0bd18d406f6e2846
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -13,7 +13,7 @@ SORA Nexus の手数料スポンサープログラムは、プライベートデ
 
 ## 1. コミット済みの手数料ポリシーを確立する {#_1-establish-the-committed-fee-policy}
 
-署名済みジェネシスで、`RootFeePolicy` を含む一つのカスタムパラメーター `root_fees_v1` を作成します。これは、手数料通貨、手数料の受け取り先、スポンサーの保管アカウント、請求の免除、料率を結び付けます。通常の各ブロックと見積もりは、それぞれが取得したコミット済みポリシーを使います。認可されたポリシー更新は、次のブロックから適用されます。
+署名済みジェネシスで、`RootFeePolicy` を含む一つのカスタムパラメーター `root_fees_v1` を作成します。これは、手数料通貨、手数料の受け取り先、スポンサーの保管アカウント、請求の免除、料率を結び付けます。通常の各ブロックと見積もりは、それぞれが取得したコミット済みポリシーを使います。料率、手数料の受け取り先、請求の免除に対する認可された変更は、次のブロックから適用されます。手数料通貨とスポンサーの保管アカウントは、最初のブロックの後には変更できません。
 
 グローバル実行のネイティブ手数料では、署名により正確に指定されたネットワークの XOR 通貨をバーンします。この通貨は、スポンサーのプログラムボールトから供給されます。ノード設定やトランザクションのメタデータで、支払者を選択したりスポンサーによる支払いを有効化したりすることはできません。
 

@@ -2,7 +2,7 @@
 
 Genesis defines the initial chain state. The editable source is a JSON manifest, and an Iroha 3 node consumes a signed Norito transaction file.
 
-::: details Default genesis manifest
+::: details Default genesis source template (defaults/genesis.template.json)
 
 <<< @/snippets/genesis.json
 
@@ -29,7 +29,7 @@ public_key = "ed0120..."
 expected_hash_file = "./genesis.expected_hash"
 ```
 
-All peers in the network must agree on the signed genesis transaction and the genesis public key. The expected-hash file is required on fresh starts and restarts; `kagami genesis sign --expected-hash-out` writes it.
+All peers in the network must agree on the signed genesis transaction and the genesis public key. Every start, fresh or restart, needs the expected hash: configure exactly one of `expected_hash_file` or the inline `expected_hash`. `kagami genesis sign --expected-hash-out` writes the file.
 
 ## Signing Genesis
 
@@ -45,7 +45,7 @@ cargo run --bin kagami -- genesis sign ./genesis.json \
 
 `GENESIS_PRIVATE_KEY_FILE` must be an owner-held mode-`0600`, single-link regular file containing one canonical private-key multihash and a final newline. Kagami rejects symbolic links and never accepts a raw genesis private key on the command line.
 
-For NPoS or SORA Nexus profiles, include the topology and BLS Proofs-of-Possession required by the generated profile. The Kagami `localnet generate`, `wizard`, and `sora-network generate` commands handle those details automatically.
+Every signed genesis, permissioned or NPoS, must include an exact `3f + 1` validator topology with a BLS Proof-of-Possession for each validator. The Kagami `localnet generate`, `wizard`, and `sora-network generate` commands handle those details automatically.
 
 ## Recommitting Genesis
 

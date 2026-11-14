@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: 33617bc89d0aef5c2a086f45a216201d8980123f717e68f1e1a95eadeb906eb0
+translation_source_hash: dff2584fd47d6e1426ec18aca2d2003a7fdca4b9882296de484418f8c17806fe
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -90,13 +90,12 @@ Aitai нь худалдан авагч, худалдагч хоёр сүлжээ
 
 Native escrow нь хадгалалтыг блокчейн бүртгэл дээр хийдэг. Худалдагч `OpenAssetEscrow` ашиглан санал нээж, худалдан авагч хүлээн авч, off-chain төлбөрийг `AcceptAssetEscrow` ба `MarkEscrowPaymentSent` ашиглан тэмдэглэдэг, мөн худалдаалагч `ReleaseAssetEscrow`-оор чөлөөлдөг эсвэл төлбөр тэмдэглэгдэхээс өмнө цуцалдаг. Хэрэв худалдан авагч ба худалдаалагч санал нийлэхгүй бол аль аль тал маргаан нээж, `CanResolveEscrowDispute`-той шийдвэрлэгч түгжигдсэн дүнг хувааж болно.
 
-Бүтэн амьдралын мөчлөгийг, ерөнхий хөрөнгийн түгжээ, нэрээ нууцалсан хадгаламж, асуулт, үйл явдал, болон Rust жишээг харахын тулд [Уугуул хөрөнгийн эскроу](/mn/blockchain/escrow.md) үзнэ үү.
+Амьдралын мөчлөгийн бүрэн тайлбар, ерөнхий хөрөнгийн түгжээ, нөхцөлт эскроу, асуулга, үйл явдал болон Rust жишээнүүдийг [Уугуул хөрөнгийн эскроу](/mn/blockchain/escrow.md)-оос үзнэ үү.
 
 |Айтай гадаргуу|Үүнийг ашиглаарай|
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`                                                    | Ил тод тоон хөрөнгийн санал, үүнд XOR-ээр нэрлэгдсэн санхүүгийн гүйлгээний төлбөрийн урсгалууд орно.|
-| `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`       |Хамгаалагдсан саналууд нь санхүүжүүлэлт ба хаалтын хөдөлгөөнд нотлох баримтын хавсралтуудыг ашигладаг.|
-| `OpenEscrowDispute`, `ResolveEscrowDispute`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute`|Маргааны оролт ба шүүхийн хэв маягийн шийдвэрлэл.|
+| `OpenEscrowDispute`, `ResolveEscrowDispute` | Маргаан нээх болон шүүхийн маягийн шийдвэрлэлт. |
 | `FindAssetEscrowById`, `FindAssetEscrowsBySeller`, `FindAssetEscrowsByBuyer`, `FindAssetEscrowsByStatus`|Программын төлөв байдалын хуудсууд, нийлүүлэлтийн ажлууд, дэмжлэгийн хэрэгслүүд.|
 | `EscrowEventFilter` |Эскроу ID, худалдагч, худалдан авагч, төлөв эсвэл үйл явдлын төрөлөөр ил тод эскроу захиалгуудын амьд байдлыг харуулна.|
 | Kotodama `escrow_open_offer`, `escrow_accept`, `escrow_mark_payment_sent`, `escrow_release`, `escrow_cancel`, `escrow_open_dispute`, `escrow_resolve_dispute` | Kotodama гэрээ нь V1 хадгаламжийн системийн дуудлагуудаар дэмжигддэг. |
@@ -492,7 +491,7 @@ SoraFS нь төвлөрсөн бус агуулгаад хаягласан ха
 
 Taira нь ганц протокол-стандарт олон нийтийн SoraFS туршилтын сүлжээ юм. Үүний шалгасан баталгаажуулагчийн профайл нь `fc56984b-2be7-431d-840e-21514d1883f0` сүлжээ болон `369` сүлжээ ялгааг ашигладаг. Доорх `NetworkId` нь одоогийн тогтоосон Taira блокчэйн үүсгэгчийн яг таг таних мэдээлэл юм. Taira дахин тохиргоо нь хэлхэлийн шошгыг хадгалахтайгаа зэрэгцэн криптографын хэшийг өөрчлөх боломжтой, тиймээс үүнийг одоогийн гарын үсэг зурсан байрлуулалтын профилаас шинэчилж, хэлхээнээс UUID хэрхэн үүсгэгдсэнийг хэзээ ч бүү ав. Taira-ын үр дүнтэй SoraFS тохиргоонууд нь:
 
-- сүлжээний ID: `hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94`
+- сүлжээний ID: `hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774`
 - гарцын бааз URL: `https://taira.sora.org`
 - пин Torii URLs: `https://taira-validator-1.sora.org`-аас `https://taira-validator-4.sora.org` хүртэл
 - нээлтийн боломжууд: `torii_gateway`, `chunk_range_fetch`, ба `potr_mldsa`
@@ -502,7 +501,7 @@ Taira нь ганц протокол-стандарт олон нийтийн So
 ```toml
 [sorafs.storage]
 enabled = false
-max_capacity_bytes = 13743895347
+max_capacity_bytes = 2684354560
 
 [sorafs.discovery]
 discovery_enabled = true
@@ -587,7 +586,7 @@ cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
   --summary-out=artifacts/site.car-summary.json
 
 : "${TAIRA_AUTHORITY:?set a funded Taira I105 account}"
-export TAIRA_NETWORK_ID='hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94'
+export TAIRA_NETWORK_ID='hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774'
 export TAIRA_PIN_TORII_URL=https://taira-validator-1.sora.org
 export TAIRA_PRIVATE_KEY_FILE="${TAIRA_PRIVATE_KEY_FILE:-./secrets/taira-authority.ed25519}"
 export TAIRA_RETENTION_EPOCH=$(( $(date -u +%s) + 86400 ))

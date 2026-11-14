@@ -1,9 +1,9 @@
 ---
 translation_locale: ba
 translation_source: /reference/naming.md
-translation_source_hash: 1d4d698597542d9c84284d0b87dae8a1825d3ab39ff38dd32bb204d41291c83d
+translation_source_hash: 15d095e674edf780c5859abe6f4615d53338e3304e8eedfa494017911204d4b6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Конгресстарҙың исемдәре {#naming-conventions}
 
@@ -15,10 +15,9 @@ translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
    - `#` активтар билдәләмәһе алфавиттары һәм активтар балансы буквалдары өсөн һаҡланған
    - `::` контракт исемдәре өсөн һаҡлана
    - `.` домендар һәм мәғлүмәт майҙансыҡтары квалификацияһы өсөн тәғәйенләнгән
-   - `$` атрибуттар менән билдәләнгән текст формалары өсөн генә һаҡлана
-   - `%` раҫлаусы күләмдә яҙылған текст формалары өсөн һаҡлана
+   - `$` `name$domain.dataspace` кеүек NFT идентификаторҙары өсөн һаҡлана
 
-2. Исемдәге символдарҙың максималь һаны (UTF-8 символдарын да индереп) ике фактор менән сикләнә: `[0, u32::MAX]` диапазоны һәм әлеге ваҡытта бүленгән стек урыны.
+2. Исем буш булмаҫҡа, Unicode NFC формаһында булырға, оҙонлоғо 255 UTF-8 байттан артмаҫҡа һәм аралыҡ, идара итеү һәм ике яҡлы йүнәлеште идара итеү символдарын үҙ эсенә алмаҫҡа тейеш.
 
 ## Taira менән һынап ҡарағыҙ. {#try-it-on-taira}
 

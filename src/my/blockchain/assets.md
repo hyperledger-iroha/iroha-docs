@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /blockchain/assets.md
-translation_source_hash: 4d0a3f54a0c70d08d11160b9ec66d6538aa2c49c7771a13e4a070b61a9cb3e4b
+translation_source_hash: f5f0eb99e76287db695cc21b8580fd2a9b4dc2a989237c1a1d3d7333c14561ce
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -22,6 +22,7 @@ Iroha အရင်းအမြစ်သည် အကောင့်တစ်ခ�
 - `logo`: ရွေးချယ်စရာရှိသည် `SoraFS` URI
 - `metadata`: key value ကို အလိုလို metadata လုပ်ပါ။
 - `balance_scope_policy`: လက်ကျန်များသည် ကမ္ဘာလုံးဆိုင်ရာလား၊ data space အလိုက် ကန့်သတ်ထားသလား ဆိုသည်ကို သတ်မှတ်သည်
+- `owning_domain`: domain ပိုင် အဓိပ္ပါယ်ဖွင့်ဆိုချက်ကို ပိုင်ဆိုင်သော domain၊ data space တစ်ခုတွင် တိုက်ရိုက်မှတ်ပုံတင်ထားသော အဓိပ္ပါယ်ဖွင့်ဆိုချက်များအတွက် မပါဝင်ပါ
 - `owned_by`: အဓိပ္ပါယ်ဖွင့်ဆိုချက်ကို မှတ်ပုံတင်ထားသည့် သို့မဟုတ် ပိုင်ဆိုင်ထားသော စာရင်း
 - `total_quantity`: ထုတ်လွှင့်ထားသော စုစုပေါင်းပမာဏ
 - `confidential_policy`: ပိတ်ပင်ထားသော အရင်းအမြစ်လုပ်ငန်းများအတွက် မူဝါဒ
@@ -33,7 +34,7 @@ Asset Definition IDs သည် single protocol-standard ပွင့်လင်
 `Asset` တွင် အောက်ပါအချက်များ ပါဝင်သည် -
 
 - `id`: အရင်းအမြစ်အဓိပ္ပါယ်ဖွင့်ဆိုချက်၊ ပိုင်ရှင်စာရင်းနှင့် ရွေးချယ်စရာအရင်းအမြစ်လက်ကျန်ကဏ္ဍကို ပေါင်းစပ်ထားသော `AssetId`။
-- `value`: `Numeric` ငွေကြေးပမာဏ
+- `value`: `Quantity` ငွေကြေးပမာဏ
 
 ကိုင်ဆောင်သူ၏ အကောင့်သည် စံသတ်မှတ်ထားသော တစ်သမတ်တည်းပုံစံဖြစ်ပြီး domain မပါဝင်ပါ။ ပိုင်ဆိုင်မှု သတ်မှတ်ချက်ကို data space ဖြင့် အမည်အပြည့်အစုံ သတ်မှတ်ထားသော domain အောက်တွင် ဖော်ပြနိုင်သည်၊ ဥပမာ `payments.universal` ဖြစ်သည်။
 
@@ -88,7 +89,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-နမူနာသုံးခုစလုံးသည် ဖတ်ရှုမှုများဖြစ်သည်။ Taira တွင် ပိုင်ဆိုင်မှုများကို ထုတ်ဝေ၊ ဖျက်သိမ်း သို့မဟုတ် လွှဲပြောင်းရန် faucet မှ ငွေဖြည့်ထားသော အကောင့်နှင့် [SORA Nexus data space များနှင့် ချိတ်ဆက်ခြင်း](/my/get-started/sora-nexus-dataspaces.md) ရှိ စစ်ဆေးကာကွယ်ထားသော လုပ်ငန်းစဉ်ကို အသုံးပြုပါ။
+နမူနာသုံးခုစလုံးသည် ဖတ်ရှုမှုများဖြစ်သည်။ Taira တွင် ပိုင်ဆိုင်မှုများကို ထုတ်လုပ်ခြင်း၊ ဖျက်သိမ်းခြင်း သို့မဟုတ် လွှဲပြောင်းခြင်းပြုရန် faucet မှ ငွေဖြည့်ထားသော အကောင့်နှင့် [Taira နှင့် Minamoto ကို အသုံးပြု၍ SORA Nexus ပေါ်တွင် တည်ဆောက်ခြင်း](/my/get-started/sora-nexus-dataspaces.md) ရှိ စစ်ဆေးကာကွယ်ထားသော လုပ်ငန်းစဉ်ကို အသုံးပြုပါ။
 
 Taira တွင် အခကြေးငွေပေးရသော ပိုင်ဆိုင်မှုနမူနာအတွက် [Taira တွင် Testnet XOR ရယူခြင်း](/my/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ရှိ ကြိုတင်ပြင်ဆင်သည့် faucet လုပ်ငန်းစဉ်ဖြင့် လက်မှတ်ထိုးသူကို ဦးစွာ ငွေဖြည့်ပါ။ ထို့နောက် `ledger asset mint`၊ `ledger asset burn` နှင့် `ledger asset transfer` command များတွင် `--fee-payer authority` ကို ထည့်ပါ။ CLI သည် လက်မှတ်မထိုးမီ Taira ၏ အခကြေးငွေသုံး ပိုင်ဆိုင်မှုဖြင့် အခကြေးငွေအတိအကျကို တွက်ချက်ဖော်ပြသည်:
 

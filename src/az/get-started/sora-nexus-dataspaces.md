@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 98c351372551b08bda4911f52bfb3cc70c53b6125d8045c17abb205b27960f6d
+translation_source_hash: 96ca67b9bbf9d743de2f640e09487176f62a8a31052e4f1e15e15a771e985c48
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -24,7 +24,7 @@ Bu təlimat SORA Nexus-un iki açıq şəbəkəsi üçün Iroha müştərisinin 
 |Addım| Taira Testnet | Minamoto Əsas şəbəkə |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
 |Şəbəkə vəziyyətini oxumağa başlayın|Açarlar olmadan Sorğu `/status`| Əvvəlcə xidmət ünvanını və onun TLS sertifikatını yoxlayın |
-|Bir məlumat sahəsi seçin|Tətbiqinizə idarə olunan icra xətti lazım olmadıqca ictimai `universal`-dən istifadə edin|Yalnız əsas şəbəkə təsdiqindən sonra eyni məlumat sahəsindən istifadə edin|
+|Bir məlumat məkanı seçin|Tətbiqinizə öz idarə olunan məlumat məkanı lazım olmadıqca ictimai `universal`-dən istifadə edin|Yalnız əsas şəbəkə təsdiqindən sonra eyni məlumat məkanından istifadə edin|
 |Ödəniş aktivini əldə et|İctimai Taira testnet maliyyələşdirmə xidmətindən istifadə edin|Minamoto maliyyələşdirilmiş hesabdan və ya təsdiqlənmiş xəzinədarlıq axınından XOR alın|
 |Test yazır|Testnet-dən maliyyələşdirilmiş testi istifadə edin XOR|Test alətlərindən istifadə etməyin; yazılar həqiqi XOR xərcləyir|
 | İstehsala keçid | Təkrar cəhd məntiqini, monitorinqi və kriptoqrafik imzalayıcı idarəsini saxlayın | Ayrı açarlardan, maliyyələşdirmədən və buraxılış nəzarətlərindən istifadə edin |
@@ -63,7 +63,7 @@ SORA Nexus daxilində məlumat məkanı kataloqu məlumat məkanlarını müəyy
 wonderland.universal
 ```
 
-Yeni təşkilati məlumat məkanı lazımdırsa, onu adi müştəri hesabından qeydiyyata almağa çalışmaq əvəzinə kataloq və marşrutlaşdırma təklifi hazırlayın. Aşağıdakı [Yeni məlumat məkanı qurun](#_8-provision-a-new-data-space) bölməsinə baxın.
+Yeni təşkilati məlumat məkanı lazımdırsa, onu adi müştəri hesabından qeydiyyata almağa çalışmaq əvəzinə kataloq və marşrutlaşdırma təklifi hazırlayın. Aşağıdakı [Yeni məlumat məkanı qurun](#_8-provision-a-new-dataspace) bölməsinə baxın.
 
 ## 2. Açıq Torii son nöqtəsini yoxlayın {#_2-check-the-public-torii-endpoint}
 
@@ -192,7 +192,7 @@ Taira MCP-ü ictimai testnet idarəetmə səthi kimi qəbul edin. Taira açarlar
 
 Bu nümunələr hesab açarları olmadan Taira-dan məlumat oxuyur.
 
-Taira-nın təqdim etdiyi açıq məlumat məkanı zolaqlarını sadalayın:
+Hər Taira zolağını onun məlumat məkanı və görünürlüyü ilə birlikdə sadalayın:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -254,7 +254,7 @@ Yuxarı səviyyəli `chain` dəqiq Taira əməliyyat zənciri ID-sidir; `network
 Yalnız oxumaq üçün yoxlamanı işə salın:
 
 ```bash
-iroha --config ./taira.client.toml --output-format text ops sumeragi status
+iroha --config ./taira.client.toml ledger domain list --limit 5
 ```
 
 Yazma testlərindən əvvəl ictimai Taira diaqnostikalarını işə salın:
@@ -432,7 +432,7 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 Hesab əsas şəbəkə qoşulması və ya idarəetmə prosesi vasitəsilə təmin olunana və maliyyələşdirilənə qədər yalnız oxuma tərəfi yoxlamalarını aparın:
 
 ```bash
-iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
+iroha --config ./minamoto.client.toml ledger domain list --limit 5
 ```
 
 Taira vəsait paylama və ya ilkin işləkliyə dair sınaq əmrlərini Minamoto üzərində işlətməyin.
@@ -445,7 +445,7 @@ Yazma əməliyyatını təqdim etməzdən əvvəl oxumaq üçün yoxlamalarla t�
 
 Taira XOR Minamoto ödənişlərini ödəyə bilmir. Testnet balansları və testnet maliyyələşdirmə xidməti tələbləri Minamoto-yə köçürülmür.
 
-## 7. Mövcud məlumat məkanı daxilində işləyin {#_7-work-inside-an-existing-data-space}
+## 7. Mövcud məlumat məkanı daxilində işləyin {#_7-work-inside-an-existing-dataspace}
 
 Məlumat məkanında yerləşən reyestr obyektləri üçün tam müəyyənləşdirilmiş domen adlarından istifadə edin. Məsələn, açıq məlumat məkanındakı layihə domeni belə olmalıdır:
 
@@ -486,7 +486,7 @@ alice@universal
 
 Sərt hesab sahələri hələ də tək protokol-standart I105 hesab identifikatorlarından istifadə edir. Əlavələri tək protokol-standart hesab identifikatorlarına həll edən insan oxunaqlı əlaqələr kimi qəbul edin.
 
-## 8. Yeni məlumat məkanı qurun {#_8-provision-a-new-data-space}
+## 8. Yeni məlumat məkanı qurun {#_8-provision-a-new-dataspace}
 
 Yeni məlumat məkanı operator və idarəetmə dəyişikliyidir. Açıq Torii son nöqtəsi trafiki konfiqurasiya edilmiş məlumat məkanlarına yönləndirə bilər, lakin naməlum məlumat məkanı ləqəblərini rədd edəcək.
 
@@ -529,7 +529,7 @@ metadata = {}
 [[nexus.dataspace_catalog]]
 alias = "payments"
 id = 20
-description = "Payments dataspace"
+description = "Payments data space"
 fault_tolerance = 1
 
 [[nexus.routing_policy.rules]]
@@ -537,12 +537,12 @@ lane = 5
 dataspace = "payments"
 [nexus.routing_policy.rules.matcher]
 instruction = "transfer::asset"
-description = "Route asset transfers to the payments dataspace"
+description = "Route asset transfers to the payments data space"
 ```
 
 Operatorun qəbulu bu qapıları əhatə etməlidir:
 
-- `iroha3d --sora --config <config.toml> --trace-config` həll edilmiş düyün konfiqurasiyasını ötürür
+- `iroha3d --sora --config <config.toml> --check-config` həll edilmiş düyün konfiqurasiyasını ötürür
 - yaradılmış və ya nəzərdən keçirilmiş texniki manifesto kriptoqrafik xəş və imzalar ilə arxivləşdirilir
 - təqdim olunmadan əvvəl Taira-da sınaq yanğınları Minamoto təbliğindən əvvəl uğurla keçdi
 - dəyişiklikdən sonrakı `/status` kataloqu nəzərdə tutulan zolağı və məlumat məkanını göstərir

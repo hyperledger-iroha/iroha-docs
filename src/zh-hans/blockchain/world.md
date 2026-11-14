@@ -1,22 +1,22 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/world.md
-translation_source_hash: d6ecc7832a3925c105ddc0ddfbaf62ea54d465cdb7b98ce795e5a72c615361bd
+translation_source_hash: 3e03f6f778e5e53a95ab6e5b94c05da410fa415fcc26ad31aa387bdaf0d744bf
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-source-naming-amendment
+translation_engine: nllb-200-ct2+reviewed-source-naming-amendment+reviewed-delta
 ---
 # 世界 {#world}
 
 `World`是包含其他实体的全球实体. `World`由:
 
-- Iroha [配置参数](/zh-hans/guide/configure/client-configuration.md)
+- 链上的链参数，由[创世](/zh-hans/reference/genesis.md)设置，也可通过 `SetParameter` 设置
 - 已注册的对等节点
 - 已注册域名
 - 已注册的[触发器](/zh-hans/blockchain/triggers.md)
 - 注册的 [角色](/zh-hans/blockchain/permissions.md#permission-groups-roles)
 - 已注册的 [许可证代币定义](/zh-hans/blockchain/permissions.md#permission-tokens)
 - 所有账户的权限代币
-- [运行时验证器链](/zh-hans/blockchain/permissions.md#runtime-validators)
+- [当前生效的运行时执行器](/zh-hans/blockchain/permissions.md#runtime-validators)
 
 当域名,对等节点或角色已注册或未注册时, `World` 是 (非) 注册 [指示](/zh-hans/blockchain/instructions.md)的目标.
 
@@ -57,22 +57,19 @@ WSV 更改会在提交前暂存。区块执行会创建区块范围的状态覆�
 
 Kura 是 Iroha 的持久区块存储.它存储签署的区块和恢复元数据.它不存储 WSV 的第二份可变拷贝.
 
-Kura 存储器根植于[`kura.store_dir`](/zh-hans/reference/peer-config/params.md#param-kura-store-dir).在该根内,区块数据被分为通道或段.一个段的主要文件是:
+Kura 存储以 [`kura.store_dir`](/zh-hans/reference/peer-config/params.md#param-kura-store-dir) 为根目录。全局链的区块位于链范围的 `blocks/canonical` 目录中，执行通道实例则各自维护独立的执行通道区块存储。主要的规范文件包括：
 
 |路径|目的|
 | --- | --- |
-|`blocks/<segment>/blocks.data`|连接式 Norito 框架的签署区块有效载荷. |
-|`blocks/<segment>/blocks.index`|固定尺寸的 `(start, length)`输入,该地图块高度为 `blocks.data` 中的字节.|
-|`blocks/<segment>/blocks.hashes`|为快速查找和启动验证,按高度阻止哈希.|
-|`blocks/<segment>/blocks.count.norito`|具有耐用性的提交标记,记录了安全使用的区块索引项. |
-|`blocks/<segment>/da_blocks/`|当磁盘预算执法将旧区块体从热文件中移动时,被排除在 `blocks.data`之外的块实用载荷. |
-|`blocks/<segment>/pipeline/sidecars.norito`和 `sidecars.index` |按区块高度调节的管道恢复辅助记录. |
-|`blocks/<segment>/pipeline/roster_sidecars.norito`和 `roster_sidecars.index` |在区块同步和重播中使用的近期提交列表辅助记录.|
-|`merge_ledger/<segment>.log`|结合账本的条目与提交区块一致.|
-|`commit-rosters.norito`|保留近期区块的提交证书和验证器检查站. |
+|`blocks/canonical/blocks.data`|连接式 Norito 框架的签署区块有效载荷. |
+|`blocks/canonical/blocks.index`|固定尺寸的 `(start, length)`输入,该地图块高度为 `blocks.data` 中的字节.|
+|`blocks/canonical/blocks.hashes`|为快速查找和启动验证,按高度阻止哈希.|
+|`blocks/canonical/blocks.count.norito`|具有耐用性的提交标记,记录了安全使用的区块索引项. |
+|`blocks/canonical/da_blocks/`|当磁盘预算执法将旧区块体从热文件中移动时,被排除在 `blocks.data`之外的块实用载荷. |
+|`blocks/canonical/pipeline/sidecars.norito`和 `sidecars.index` |按区块高度调节的管道恢复辅助记录. |
 
 Kura 为链维护一个紧凑的内存向量：每个高度都包含区块哈希，并可选地包含区块体。创世区块始终保留在缓存中，最近的 [`kura.blocks_in_memory`](/zh-hans/reference/peer-config/params.md#param-kura-blocks-in-memory) 个非创世区块会将其区块体保留在内存中。较旧的区块体会从内存中移除，并在需要时从 Kura 文件重新加载。
 
-在启动过程中, `strict` 模式验证存储的区块从区块有效载荷和重写哈希文件如果需要. `fast` 模式从存储开始.如果 Kura 检测到损坏的尾巴,它将存储量调整至最后一个验证区块.
+初始化期间，`strict` 模式（默认）会验证每个规范区块体及其父链接。`fast` 是一种紧急模式，适用于已由 `strict` 完成初始化的存储：它信任当前的已签名快照以及持久化的计数和链尖，并在节点以 `strict` 模式重启之前，使 Sumeragi、交易传播和区块生产保持离线。启动时会拒绝已停用的 `merge_ledger`、`roster_sidecars` 和 `commit-rosters.norito` 工件。如果 Kura 检测到尾部损坏，会将存储裁剪到最后一个已验证的区块。
 
 Kura 通过背景编写器编写新区块. 作者添加区块有效载荷,哈希和索引输入,然后根据配置的fsync政策推进持久计数标记.当磁盘预算执行活动时, Kura 可以清除已停用的分段或将旧区块体移入 `da_blocks/`,同时保留哈希和索引项以供验证和搜索.

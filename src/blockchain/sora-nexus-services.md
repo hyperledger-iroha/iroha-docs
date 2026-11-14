@@ -104,15 +104,14 @@ with `ReleaseAssetEscrow` or cancels before payment is marked. If buyer and
 seller disagree, either party can open a dispute and a resolver with
 `CanResolveEscrowDispute` can split the locked amount.
 
-For the full lifecycle, generic asset locks, anonymous escrow, queries,
+For the full lifecycle, generic asset locks, conditional escrow, queries,
 events, and Rust examples, see
 [Native Asset Escrow](/blockchain/escrow.md).
 
 | Aitai surface                                                                                                                                                 | Use it for                                                                                |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`                                                    | Transparent numeric asset offers, including XOR-denominated settlement flows.             |
-| `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`       | Shielded offers use proof attachments for funding and closing movements.                  |
-| `OpenEscrowDispute`, `ResolveEscrowDispute`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute`                                                    | Dispute entry and court-style resolution.                                                 |
+| `OpenEscrowDispute`, `ResolveEscrowDispute`                                                                                                                                | Dispute entry and court-style resolution.                                                 |
 | `FindAssetEscrowById`, `FindAssetEscrowsBySeller`, `FindAssetEscrowsByBuyer`, `FindAssetEscrowsByStatus`                                                      | App status pages, reconciliation jobs, and support tooling.                               |
 | `EscrowEventFilter`                                                                                                                                           | Live transparent escrow subscriptions by escrow id, seller, buyer, status, or event kind. |
 | Kotodama `escrow_open_offer`, `escrow_accept`, `escrow_mark_payment_sent`, `escrow_release`, `escrow_cancel`, `escrow_open_dispute`, `escrow_resolve_dispute` | Kotodama contract calls backed by the V1 escrow syscalls.                                 |
@@ -682,7 +681,7 @@ profile and never derive it from the chain UUID. Taira's effective SoraFS
 settings are:
 
 - network ID:
-  `hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94`
+  `hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774`
 - gateway base URL: `https://taira.sora.org`
 - pin Torii URLs: `https://taira-validator-1.sora.org` through
   `https://taira-validator-4.sora.org`
@@ -695,7 +694,7 @@ settings are:
 ```toml
 [sorafs.storage]
 enabled = false
-max_capacity_bytes = 13743895347
+max_capacity_bytes = 2684354560
 
 [sorafs.discovery]
 discovery_enabled = true
@@ -826,7 +825,7 @@ cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
   --summary-out=artifacts/site.car-summary.json
 
 : "${TAIRA_AUTHORITY:?set a funded Taira I105 account}"
-export TAIRA_NETWORK_ID='hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94'
+export TAIRA_NETWORK_ID='hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774'
 export TAIRA_PIN_TORII_URL=https://taira-validator-1.sora.org
 export TAIRA_PRIVATE_KEY_FILE="${TAIRA_PRIVATE_KEY_FILE:-./secrets/taira-authority.ed25519}"
 export TAIRA_RETENTION_EPOCH=$(( $(date -u +%s) + 86400 ))

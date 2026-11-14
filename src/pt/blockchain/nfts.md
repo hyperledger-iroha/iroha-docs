@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/nfts.md
-translation_source_hash: 216f59f1cebd73001dab75dcf235306082fb1c0759437f65ce34ec9e1ed51d4f
+translation_source_hash: 76608347790f14eb5a2d58ac26f0e194ccc34b1cb5e8983e2d6ac390fcb60ec6
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -26,7 +26,7 @@ O campo `content` é um mapa `Metadata`. Mantenha-o compacto: armazene campos de
 Verifique se a testnet pública Taira atualmente possui NFT registros:
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/nfts?limit=5' \
+curl -fsS 'https://taira.sora.org/v1/nfts?limit=5&include_total=true' \
   | jq '{total, nft_ids: [.items[].id]}'
 ```
 

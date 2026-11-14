@@ -1,9 +1,9 @@
 ---
 translation_locale: ar
 translation_source: /reference/queries.md
-translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
+translation_source_hash: baa9726c7ce7d14b8dd17e77447ef72233ca9ed779367d9a190aa8dde7da41ac
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # استفسارات {#queries}
 
@@ -56,7 +56,7 @@ Iroha الاستعلامات تقرأ حالة دفتر الأستاذ البل�
 |استعلام|الغرض|
 | --- | --- |
 | `FindAssets` |قم بسرد أرصدة الأصول.|
-| `FindAssetsDefinitions` |قم بسرد تعريفات الأصول.|
+| `FindAssetDefinitions` |قم بسرد تعريفات الأصول.|
 | `FindAssetsByAccountId` |قائمة الأصول المحتفظ بها بواسطة حساب.|
 | `FindAssetById` |اعثر على رصيد أحد الأصول بواسطة `AssetId`.|
 | `FindAssetDefinitionById` |ابحث عن تعريف أصل واحد بالمعرّف.|
@@ -66,7 +66,7 @@ Iroha الاستعلامات تقرأ حالة دفتر الأستاذ البل�
 
 ## سجلات الحساب الضماني والإثبات {#escrow-and-proof-records}
 
-تستعرض استفسارات الضمان السجلات التي أنشأها [الضمان للأصل المحلي ISIs](/ar/blockchain/escrow.md)، بما في ذلك ضمانات السوق، وتأمينات الأصول العامة، وسجلات الضمان المجهولة.
+تستعرض استعلامات الضمان السجلات التي أنشأتها [تعليمات ISIs لضمان الأصل الأصلي](/ar/blockchain/escrow.md)، بما في ذلك ضمانات السوق، وأقفال الأصول العامة، والضمانات المشروطة.
 
 |استعلام|الغرض|
 | --- | --- |
@@ -75,11 +75,6 @@ Iroha الاستعلامات تقرأ حالة دفتر الأستاذ البل�
 | `FindAssetEscrowsBySeller` |قائمة الضمانات المالية للأصول حسب البائع.|
 | `FindAssetEscrowsByBuyer` |قائمة الضمانات المالية للأصول حسب المشتري.|
 | `FindAssetEscrowsByStatus` |قائمة الضمانات المالية للأصول حسب الحالة.|
-| `FindAnonymousAssetEscrows` |عرض سجلات الضمان للأصول المجهولة|
-| `FindAnonymousAssetEscrowById` |ابحث عن حساب ضمان أصول مجهول واحد بواسطة المعرف.|
-| `FindAnonymousAssetEscrowsBySeller` |قائمة الضمانات المجهولة حسب البائع.|
-| `FindAnonymousAssetEscrowsByBuyer` |قائمة الضمانات المجهولة حسب المشتري.|
-| `FindAnonymousAssetEscrowsByStatus` |قائمة الضمانات المجهولة حسب الحالة.|
 | `FindProofRecordById` |ابحث عن سجل إثبات واحد بواسطة المعرف.|
 | `FindProofRecords` |قم بسرد سجلات الإثبات.|
 | `FindProofRecordsByBackend` |عرض سجلات الإثبات لنظام إثبات خلفي.|
@@ -89,15 +84,14 @@ Iroha الاستعلامات تقرأ حالة دفتر الأستاذ البل�
 
 |استعلام|الغرض|
 | --- | --- |
-| `FindRepoAgreements` |قائمة اتفاقيات المستودع المخزنة على السلسلة.|
+| `FindRepoAgreements` | سرد اتفاقيات إعادة الشراء وإعادة الشراء العكسية المخزنة على السلسلة. |
 | `FindTwitterBindingByHash` |حل ربط تويتر بواسطة التجزئة التشفيرية.|
 | `FindDaPinIntentByTicket` |ابحث عن نية تثبيت توفر البيانات بواسطة التذكرة.|
 | `FindDaPinIntentByManifest` |ابحث عن نية الدبوس عن طريق مرجع المانيفست الفني.|
 | `FindDaPinIntentByAlias` |ابحث عن نية دبوس بواسطة الاسم المستعار.|
 | `FindDaPinIntentByLaneEpochSequence` |ابحث عن نية دبوس حسب مسار التنفيذ والعصر والتسلسل.|
-| `FindLaneRelayEnvelopeByRef` |ابحث عن حاوية بيانات تبديل الممرات الموثوقة.|
 | `FindSorafsProviderOwner` |حل صاحب مزود SoraFS.|
-| `FindDataspaceNameOwnerById` |حل مالك اسم مساحة البيانات.|
+| `FindDataspaceNameOwnerById` | حدّد المالك النشط في SNS لاسم مستعار لمساحة بيانات. |
 | `FindMusubiExactPackageV1` |اقرأ سجل حزمة واحد بالضبط ومراجعاته الحالية.|
 | `FindMusubiExactReleaseV1` |اقرأ لقطة إصدار واحدة بالضبط.|
 | `FindMusubiProviderBundleAttestationV1` |اقرأ تصريح حزمة الأرشيف لمزود واحد.|
@@ -117,7 +111,7 @@ Iroha الاستعلامات تقرأ حالة دفتر الأستاذ البل�
 | `FindActiveTriggerIds` |قائمة معرفات المشغلات النشطة.|
 | `FindTriggers` |قائمة المحفزات.|
 | `FindTriggerById` |اعثر على مشغل واحد بواسطة المعرف.|
-| `FindContractManifestByCodeHash` |ابحث عن تصريح تقني للعقد الذكي بواسطة تجزئة تشفيرية للكود.|
+| `FindContractManifestByArtifactId` | ابحث عن بيان العقد الذكي بواسطة معرّف العنصر الخاص به في مساحة البيانات. |
 | `FindTransactions` |قم بسرد المعاملات النهائية.|
 | `FindBlocks` |قائمة الكتل.|
 | `FindBlockHeaders` |قم بسرد رؤوس الكتل.|

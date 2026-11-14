@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/iroha-explained.md
-translation_source_hash: 426adbea88da36cd92da17d8665c956a57b9d4cebfa0d2f35bc75469cccf84ee
+translation_source_hash: 16acd0a607bbec336ff336363478a3a0deeb24ad9a2ad59e753c9f65134b061f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -45,11 +45,11 @@ Iroha 3 是首次发布的 Hyperledger Iroha 平台.同一个核心支持自主�
 
 路由路径是:
 
-1. 配置会构建经过验证的 `DataSpaceCatalog`、`LaneCatalog` 和 `LaneRoutingPolicy`。SORA Nexus 路由是强制性的。多个数据空间、执行通道或非默认路由使用 SORA Nexus 配置文件（`--sora`）和 NPoS。
+1. 配置会构建经过验证的 `DataSpaceCatalog`、`LaneCatalog` 和 `LaneRoutingPolicy`。SORA Nexus 路由是强制性的。在全局根上，多个数据空间、执行通道或非默认路由需要 SORA Nexus 配置文件（`--sora`）和 NPoS；独立签名的数据空间根以许可型模式运行。
 2. 交易队列根据交易及已提交状态解析 `RoutingPlan`。每个协调者或参与者路由都包含执行通道标识和数据空间标识；Native AMX 计划保留完整的参与者集合。
 3. 对于全局执行，完整的控制平面批次和跨数据空间协调者使用执行通道 `0`。具体的非通用空间指令目标或合约地址目标，会先选择与数据空间及委员会匹配、已获准的固定执行通道，然后才考虑账户或指令标签规则。其他工作遵循已提交的显式规则和默认分片；具体的通用空间目标仍留在通用空间执行通道上。
 4. 每个路由都根据目录和活跃执行通道状态进行检查。未知标识以及通道与数据空间不匹配的情况均被拒绝；不可用的私有目标不得回退到通用空间执行。多个数据空间目标可以生成 Native AMX 计划。交易元数据 `amx_policy` 设为 `reject_cross_dataspace` 时，会拒绝跨数据空间计划。路由计划本身不授权也不完成独立根之间的结算。
-5. Sumeragi 和遥测通过执行通道及数据空间的活动、积压和承诺快照，持续展示分配情况。
+5. 遥测通过 `/status` 执行通道快照（`teu_lane_commit`）中各执行通道的活动和积压，持续展示分配情况。
 
 这就是对象标识符的重要性。域标识包含数据空间别名，例如 `payments.universal`，使域范围内的写入能够正确路由。账户仍采用规范标识且不包含域，因此同一账户可绑定到不同应用范围，而无需改变其 `AccountId`。资产定义可以携带域或数据空间投影，使资产操作继承正确的数据空间路由。
 
@@ -67,7 +67,7 @@ Iroha 3 是首次发布的 Hyperledger Iroha 平台.同一个核心支持自主�
 
 这些关系由固定版本中的[配置构造函数](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_config/src/parameters/actual.rs)、[执行通道实现](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_core/src/sumeragi/lanes/mod.rs)及[独立根协议约定](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/sumeragi.md)确定。
 
-Sumeragi 始终使用数据可用性和可靠的广播.这些路径是 Iroha 3 共识协议的一部分,不能被部署配置文件禁用.
+Sumeragi 始终使用已签名的 RS16 载荷可用性和认证区块体恢复。这些路径是 Iroha 3 共识协议的一部分，无法通过部署配置文件禁用。
 
 运行时行为由配置文件和链上参数决定。环境变量不能用作生产环境中的功能开关。
 

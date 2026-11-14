@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 98c351372551b08bda4911f52bfb3cc70c53b6125d8045c17abb205b27960f6d
+translation_source_hash: 96ca67b9bbf9d743de2f640e09487176f62a8a31052e4f1e15e15a771e985c48
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -24,7 +24,7 @@ Taira ni integratsiya sinovlari, kran mablag'i bilan ta'minlangan yozish kanarla
 |qadam |Taira Testnet |Minamoto Asosiy |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
 |Tarmoqning holatini oʻqishni boshlash |`/status` kalitsiz so'rovlar | Avval xizmat manzilini va uning TLS sertifikatini tekshiring |
-| Ma’lumotlar makonini tanlash | Ilovangiz boshqariladigan yo‘lakka muhtoj bo‘lmasa, ochiq `universal` makonidan foydalaning | Shu ma’lumotlar makonidan faqat asosiy tarmoq tasdiqlaganidan keyin foydalaning |
+| Ma’lumotlar makonini tanlash | Ilovangizga o‘zining boshqariladigan ma’lumotlar makoni kerak bo‘lmasa, ochiq `universal` makonidan foydalaning | Shu ma’lumotlar makonidan faqat asosiy tarmoq tasdiqlaganidan keyin foydalaning |
 |Toʻlov aktivini oling .|Ommaviy Taira krandan foydalanish |XOR mablag ' bilan ta ' minlangan Minamoto hisobidan yoki tasdiqlangan xazina oqimidan oling |
 | Sinov yozuvlari | Sinov uchun ajratilgan XOR mablag‘idan foydalaning | Sinov vositalarini ishlatmang; yozuvlar haqiqiy XOR sarflaydi |
 |Taʼlim berish |Logika, monitoring va imzolashni qayta sinab ko'ring |alohida kalitlar, moliyalashtirish va ozod qilish nazoratlaridan foydalanish |
@@ -63,7 +63,7 @@ SORA Nexus tizimida ma’lumotlar makoni katalogi ma’lumotlar makonlarini belg
 wonderland.universal
 ```
 
-Tashkilot uchun yangi ma’lumotlar makoni kerak bo‘lsa, uni oddiy mijoz hisobidan ro‘yxatdan o‘tkazishga urinish o‘rniga katalog va marshrutlash taklifini tayyorlang. Quyidagi [Yangi ma’lumotlar makonini yaratish](#_8-provision-a-new-data-space)ga qarang.
+Tashkilot uchun yangi ma’lumotlar makoni kerak bo‘lsa, uni oddiy mijoz hisobidan ro‘yxatdan o‘tkazishga urinish o‘rniga katalog va marshrutlash taklifini tayyorlang. Quyidagi [Yangi ma’lumotlar makonini yaratish](#_8-provision-a-new-dataspace) bo‘limiga qarang.
 
 ## 2. Umumiy Torii yakuniy nuqtani tekshiring. {#_2-check-the-public-torii-endpoint}
 
@@ -192,7 +192,7 @@ Taira MCP-ni test tarmog'ini boshqarishning ommaviy yuzi sifatida ko'rib chiqish
 
 Bu misollar hisob kalitlarisiz Taira’dan ma’lumot o‘qiydi.
 
-Taira taqdim etgan ochiq ma’lumotlar makoni yo‘laklarini sanang:
+Taira’ning har bir yo‘lagini uning ma’lumotlar makoni va ko‘rinuvchanligi bilan birga sanab chiqing:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -254,7 +254,7 @@ Yuqori darajadagi `chain` — Taira tranzaksiyalarining aniq zanjir ID si, `netw
 Faqat oʻqish uchun tekshiruvni bajaring:
 
 ```bash
-iroha --config ./taira.client.toml --output-format text ops sumeragi status
+iroha --config ./taira.client.toml ledger domain list --limit 5
 ```
 
 Yozish testlaridan oldin ommaviy Taira diagnostikani o'tkazing:
@@ -432,7 +432,7 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 Hisobvaraqni o'qish-o'qish bilan ta'minlash va moliyalashtirish uchun asosiy tarmoqga kirish yoki boshqaruv oqimi orqali mablag' ajratilmaguncha faqat o'qib chiqish tomonini tekshirish:
 
 ```bash
-iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
+iroha --config ./minamoto.client.toml ledger domain list --limit 5
 ```
 
 Taira faucet yoki dastlabki yozish sinovi buyruqlarini Minamoto tarmog‘iga qarshi ishlatmang.
@@ -445,7 +445,7 @@ Yozib olishni taqdim etishdan oldin ID kanonik hisobini va moliyalashtirishni fa
 
 Taira XOR Minamoto to'lovlarini to'lay olmaydi. Testnet saldi va kran talablari Minamoto ga o'tkazilamaydi.
 
-## 7. Mavjud ma’lumotlar makonida ishlash {#_7-work-inside-an-existing-data-space}
+## 7. Mavjud ma’lumotlar makonida ishlash {#_7-work-inside-an-existing-dataspace}
 
 Ma’lumotlar makonidagi reyestr obyektlari uchun to‘liq aniqlashtirilgan domen nomlarini ishlating. Masalan, ochiq ma’lumotlar makonidagi loyiha domeni quyidagicha bo‘lishi kerak:
 
@@ -486,7 +486,7 @@ alice@universal
 
 Katta hisob maydonlari hali ham kanonikdan foydalanadi I105 hisob IDs. Aliaslarni inson o'qishi mumkin bo'lgan bog'liqliklar sifatida qabul qiling, ular kanonik hisobda hal qilinadi IDs.
 
-## 8. Yangi ma’lumotlar makonini yaratish {#_8-provision-a-new-data-space}
+## 8. Yangi ma’lumotlar makonini yaratish {#_8-provision-a-new-dataspace}
 
 Yangi ma’lumotlar makoni operator va boshqaruv darajasidagi o‘zgarishdir. Ochiq Torii endpointi trafikni sozlangan ma’lumotlar makonlariga yo‘naltira oladi, lekin noma’lum ma’lumotlar makoni taxalluslarini rad etadi.
 
@@ -529,7 +529,7 @@ metadata = {}
 [[nexus.dataspace_catalog]]
 alias = "payments"
 id = 20
-description = "Payments dataspace"
+description = "Payments data space"
 fault_tolerance = 1
 
 [[nexus.routing_policy.rules]]
@@ -537,12 +537,12 @@ lane = 5
 dataspace = "payments"
 [nexus.routing_policy.rules.matcher]
 instruction = "transfer::asset"
-description = "Route asset transfers to the payments dataspace"
+description = "Route asset transfers to the payments data space"
 ```
 
 Operatorning qabul qilishida quyidagi darvozalar bo'lishi kerak:
 
-- `iroha3d --sora --config <config.toml> --trace-config` hal qilingan nod konfiguratsiyasini o'tkazadi
+- `iroha3d --sora --config <config.toml> --check-config` hal qilingan nod konfiguratsiyasini o'tkazadi
 - hosil qilingan yoki ko'rib chiqilgan manifest hash va imzolar bilan arxivlanadi.
 - tutun sinovlari oʻtadi Taira har qanday Minamoto rag'batlantirish
 - o‘zgarishdan keyingi `/status` katalogi ko‘zlangan yo‘lak va ma’lumotlar makonini ko‘rsatishi

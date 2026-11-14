@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: b6e3bd79c50ea326930ac978350ea4beac8294b6f045ac0084aada257754ffa1
+translation_source_hash: bb1044edb9d34264e36848ee773d4d313bfbfd91b45da2eeb831f7ef8920e9b4
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -56,7 +56,7 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` صالح فقط مع `bls_normal`؛ يضيف `pop.hex` إلى دليل الحجز. تحتاج البلوكشين الموقعة على البداية إلى PoP مطابق لكل مصوّت شرعي. في تكوين أقران الشبكة، تُحدد خريطة `trusted_peers_pop` غير الفارغة مجموعة المدققين؛ الأقران الموثوقون في الشبكة الذين تم استبعادهم من تلك الخريطة غير الفارغة هم مراقبون. إذا كانت الخريطة فارغة، فإن جميع الأقران في الشبكة الموثوقة BLS-العادية يدخلون مجموعة مرشحي الإقلاع، مع تزويد الناخب PoPs بشكل مستمر بواسطة جينيسيس البلوك تشين الموقّع.
+`--pop` صالح فقط مع `bls_normal`؛ ويضيف `pop.hex` إلى دليل الحفظ. يتطلب التكوين الأولي الموقّع PoP مطابقًا لكل مدقق مصوّت. في تكوين أقران الشبكة، أدرج PoP لكل مدقق في `trusted_peers_pop`: يُستبعد الأقران الموثوقون الذين لا يملكون PoP صالحًا من قائمة الإجماع، والخريطة الفارغة لا تنتج أي مدققين، لذا ترفض العقدة التي تُسقط خريطتها مدققي التكوين الأولي بدء التشغيل. شغّل عقدة للمزامنة فقط باستخدام `[sumeragi] role = "observer"`.
 
 ## مخرجات الحضانة {#custody-output}
 

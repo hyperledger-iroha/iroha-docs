@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /reference/instructions.md
-translation_source_hash: 9999816502505026fb35d2ddaf4033f54768be697ca5b03550e1cf5949ada36c
+translation_source_hash: bbd8f9544aa863cd273d1b2089f39aff3d484ee0378fa5bcc7b565795a0671c6
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha Təlimat əməliyyatları {#iroha-special-instructions}
 
 Hazırkı məlumat modeli bu daxili təlimat ailələrini göstərir:
@@ -28,7 +27,6 @@ Hazırkı məlumat modeli bu daxili təlimat ailələrini göstərir:
 | [`CustomInstruction`](/az/blockchain/instructions.md#other-instructions) | icraçıya xas JSON faydalı yük |
 | [Yerli aktiv depoziti](/az/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
 | [Ümumi aktiv kilidləri](/az/blockchain/escrow.md#generic-asset-locks) | `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
-| [Anonim aktiv depoziti](/az/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
 | [Atomik şəxsi maliyyə əməliyyatının həlli](/az/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
 Əlavə Iroha 3 modullar təlimat reyestri vasitəsilə domen-spesifik təlimat tiplərini qeydiyyatdan keçirə bilərlər. Node-avtoritativ sxem və bunu əks etdirən bir komanda üçün baxın [Məlumat Modeli SXeması](./data-model-schema.md).
@@ -85,7 +83,7 @@ class MetadataBoxes {
 class NativeEscrowInstructions {
     OpenAssetEscrow
     OpenAssetLock
-    OpenAnonymousAssetEscrow
+    OpenConditionalEscrow
     ResolveEscrowDispute
 }
 

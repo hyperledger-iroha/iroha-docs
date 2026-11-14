@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /blockchain/assets.md
-translation_source_hash: 4d0a3f54a0c70d08d11160b9ec66d6538aa2c49c7771a13e4a070b61a9cb3e4b
+translation_source_hash: f5f0eb99e76287db695cc21b8580fd2a9b4dc2a989237c1a1d3d7333c14561ce
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -22,6 +22,7 @@ Bir `AssetDefinition` aşağıdakılardan ibarətdir:
 - `logo`: isteğe bağlı `SoraFS` URI
 - `metadata`: ixtiyari açar-dəyər metadatası
 - `balance_scope_policy`: balansların qlobal, yoxsa məlumat məkanı ilə məhdudlaşdırılmış olması
+- `owning_domain`: domenə məxsus təyinatın sahibi olan domen; birbaşa məlumat məkanında qeydiyyatdan keçmiş təyinatlar üçün mövcud deyil
 - `owned_by`: təyinatı qeydiyyatdan keçirən və ya ona sahib olan hesab
 - `total_quantity`: ümumi buraxılmış miqdar
 - `confidential_policy`: qorunan aktiv əməliyyatları üçün siyasət
@@ -33,7 +34,7 @@ Aktiv tərifi identifikatorları tək protokol-standart opak ünvanlardır. Bir 
 Bir `Asset` aşağıdakılardan ibarətdir:
 
 - `id`: bir `AssetId`, hansı ki, aktivin tərifini, sahibinin hesabını və əlavə aktiv balansı sahəsini birləşdirir
-- `value`: bir `Numeric` balans
+- `value`: bir `Quantity` balans
 
 Sahib hesabı kanonikdir və domen daşımır. Aktiv tərifi məlumat məkanı ilə tam müəyyənləşdirilmiş domen altında göstərilə bilər, məsələn, `payments.universal`.
 
@@ -88,7 +89,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-Hər üç nümunə oxuma əməliyyatıdır. Taira üzərində aktiv yaratmaq, yandırmaq və ya köçürmək üçün test vəsaiti paylama xidməti vasitəsilə maliyyələşdirilmiş hesabdan və [SORA Nexus məlumat məkanlarına qoşulma](/az/get-started/sora-nexus-dataspaces.md) bölməsindəki mühafizə yoxlamaları olan axından istifadə edin.
+Hər üç nümunə oxuma əməliyyatıdır. Taira üzərində aktiv yaratmaq, yandırmaq və ya köçürmək üçün test vəsaiti paylama xidməti vasitəsilə maliyyələşdirilmiş hesabdan və [Taira və Minamoto ilə SORA Nexus üzərində tətbiq hazırlamaq](/az/get-started/sora-nexus-dataspaces.md) bölməsindəki mühafizə yoxlamaları olan axından istifadə edin.
 
 Taira üzərində haqq tələb edən aktiv nümunəsi üçün əvvəlcə [Taira üzərində testnet XOR əldə etmək](/az/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) bölməsindəki əvvəlcədən hazırlanan vəsait alma axını ilə imzalayan hesabı maliyyələşdirin. Sonra `ledger asset mint`, `ledger asset burn` və `ledger asset transfer` əmrlərinə `--fee-payer authority` ötürün; CLI imzalamadan əvvəl dəqiq haqqı Taira-nın haqq aktivində hesablayıb göstərir:
 

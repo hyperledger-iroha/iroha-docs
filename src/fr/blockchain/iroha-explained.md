@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/iroha-explained.md
-translation_source_hash: 426adbea88da36cd92da17d8665c956a57b9d4cebfa0d2f35bc75469cccf84ee
+translation_source_hash: 16acd0a607bbec336ff336363478a3a0deeb24ad9a2ad59e753c9f65134b061f
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -45,11 +45,11 @@ Les voies sont les ressources de routage et de certification liées à ces espac
 
 Le chemin de routage est :
 
-1. La configuration construit des `DataSpaceCatalog`, `LaneCatalog` et `LaneRoutingPolicy` validés. Le routage SORA Nexus est obligatoire. Plusieurs espaces de données, plusieurs voies ou un routage non standard utilisent le profil SORA Nexus (`--sora`) et NPoS.
+1. La configuration construit des `DataSpaceCatalog`, `LaneCatalog` et `LaneRoutingPolicy` validés. Le routage SORA Nexus est obligatoire. Sur la racine globale, plusieurs espaces de données, plusieurs voies ou un routage non standard exigent le profil SORA Nexus (`--sora`) et NPoS ; une racine d’espace de données signée indépendamment fonctionne en mode Permissioned.
 2. La file d’attente des transactions détermine un `RoutingPlan` à partir de la transaction et de l’état validé. Chaque route de coordinateur ou de participant contient un ID de voie et un ID d’espace de données ; les plans AMX natifs conservent l’ensemble complet des participants.
 3. Pour l’exécution globale, les lots complets du plan de contrôle et les coordinateurs entre espaces de données utilisent la voie `0`. Les cibles précises non universelles d’instruction ou d’adresse de contrat sélectionnent une voie fixe admise, avec l’espace de données et le comité correspondants, avant l’application des règles de compte ou d’étiquette d’instruction. Les autres opérations suivent les règles explicites validées et le partitionnement par défaut ; les cibles universelles précises restent sur les voies universelles.
 4. Chaque route est vérifiée par rapport aux catalogues et à l’état actif des voies. Les IDs inconnus et les incompatibilités entre voie et espace de données sont rejetés ; une cible privée indisponible ne peut pas se rabattre sur l’exécution universelle. Plusieurs cibles d’espaces de données peuvent produire un plan AMX natif. La métadonnée de transaction `amx_policy` définie à `reject_cross_dataspace` rejette les plans entre espaces de données. Un plan de routage seul n’autorise ni n’achève un règlement entre racines indépendantes.
-5. Sumeragi et la télémétrie rendent l’affectation observable au moyen d’instantanés de l’activité, du travail en attente et des engagements des voies et des espaces de données.
+5. La télémétrie rend l’affectation observable sous forme d’activité et de travail en attente par voie dans l’instantané des voies de `/status` (`teu_lane_commit`).
 
 Les identifiants d’objets sont donc essentiels. Les domaines incluent l’alias d’espace de données dans leur ID, par exemple `payments.universal`, afin de permettre le routage des écritures portant sur un domaine. Les comptes restent canoniques et sans domaine : le même compte peut être lié à différents périmètres applicatifs sans changer son `AccountId`. Les définitions d’actifs peuvent porter une projection de domaine ou d’espace de données, permettant aux opérations sur les actifs d’hériter de la bonne route d’espace de données.
 
@@ -67,7 +67,7 @@ Les trois voies fournies sont publiques et référencent le même espace de donn
 
 Ces relations sont fixées, à la révision épinglée, par les [constructeurs de profils](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_config/src/parameters/actual.rs), [l’implémentation des voies](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_core/src/sumeragi/lanes/mod.rs) et [le contrat des racines indépendantes](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/sumeragi.md).
 
-Sumeragi utilise toujours la disponibilité des données et la diffusion fiable. Ces chemins font partie du protocole de consensus Iroha 3 et ne peuvent pas être désactivés par un profil de déploiement.
+Sumeragi utilise toujours la disponibilité des charges utiles RS16 signées et la récupération des corps certifiés. Ces chemins font partie du protocole de consensus Iroha 3 et ne peuvent pas être désactivés par un profil de déploiement.
 
 Le comportement d'exécution du logiciel provient des fichiers de configuration et des paramètres en chaîne. Les variables d'environnement ne sont pas des commutateurs de fonctionnalités en production.
 

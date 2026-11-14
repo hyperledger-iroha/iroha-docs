@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /guide/configure/genesis.md
-translation_source_hash: 91be089c82a76991e35a43e1541f9e069fdf70d3fb5de2492b985c06c78a2372
+translation_source_hash: 2a4a43b6ac873cc0c860631e307e52b047ba6a08691bf3e4c5872cc22c81a0bd
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -9,7 +9,7 @@ translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-so
 
 يحدد أصل البلوكتشين الحالة الأولية للسلسلة. المصدر القابل للتحرير هو بيان فني JSON، ويستهلك العقدة Iroha 3 ملف معاملة موقع Norito.
 
-::: details البيان الفني الأساسي لسلسلة الكتل الافتراضية
+::: details قالب المصدر الافتراضي للتكوين الأولي (defaults/genesis.template.json)
 
 <<< @/snippets/genesis.json
 
@@ -36,7 +36,7 @@ public_key = "ed0120..."
 expected_hash_file = "./genesis.expected_hash"
 ```
 
-يجب أن تتفق جميع الأقران في الشبكة على معاملة التكوين الأولي الموقّعة ومفتاحها العام. يلزم ملف التجزئة المتوقعة عند البدء من جديد وعند إعادة التشغيل؛ ويكتبه `kagami genesis sign --expected-hash-out`.
+يجب أن تتفق جميع الأقران في الشبكة على معاملة التكوين الأولي الموقّعة ومفتاحها العام. يحتاج كل تشغيل، سواء كان بدءًا جديدًا أو إعادة تشغيل، إلى التجزئة المتوقعة: اضبط واحدًا فقط من `expected_hash_file` أو `expected_hash` المضمّن. ويكتب `kagami genesis sign --expected-hash-out` الملف.
 
 ## توقيع جينيسيس البلوكشين {#signing-genesis}
 
@@ -52,7 +52,7 @@ cargo run --bin kagami -- genesis sign ./genesis.json \
 
 `GENESIS_PRIVATE_KEY_FILE` يجب أن يكون ملفًا عاديًا برابط واحد مملوكًا للمالك `0600` يحتوي على مفتاح خاص متعدد التجزئة واحد وفقًا للبروتوكول وسطر جديد نهائي. Kagami يرفض الروابط الرمزية ولا يقبل أبدًا مفتاح الجيل الأول للبلوكتشين على سطر الأوامر.
 
-لملفات NPoS أو SORA Nexus، ضمّن الطوبولوجيا وإثباتات حيازة مفاتيح BLS التي يتطلبها الملف المولّد. تتولى أوامر Kagami، وهي `localnet generate` و`wizard` و`sora-network generate`، هذه التفاصيل تلقائيًا.
+يجب أن يتضمن كل تكوين أولي موقّع، سواء كان مرخّصًا أو NPoS، طوبولوجيا مدققين بعدد `3f + 1` بالضبط مع إثبات حيازة BLS لكل مدقق. تتولى أوامر Kagami، وهي `localnet generate` و`wizard` و`sora-network generate`، هذه التفاصيل تلقائيًا.
 
 ## إعادة الالتزام ببلوكتشين البداية {#recommitting-genesis}
 

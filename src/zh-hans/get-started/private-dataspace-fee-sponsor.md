@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /get-started/private-dataspace-fee-sponsor.md
-translation_source_hash: 79410ebb9d0a18072d5ae2288348082390b622ed81225de79dcbd4000e268e51
+translation_source_hash: 2ca4fc00709839879fe9cb7ea5e5f697505e5e25d4e5a6cd0bd18d406f6e2846
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -13,7 +13,7 @@ SORA Nexus 费用赞助计划可支付路由至私有数据空间的合格交易
 
 ## 1. 确立已提交的费用策略 {#_1-establish-the-committed-fee-policy}
 
-已签名创世配置定义一个包含 `RootFeePolicy` 的 `root_fees_v1` 自定义参数。它绑定费用币种、费用归集账户、赞助托管账户、领取豁免及费率。每个普通区块和每次报价均使用其捕获的已提交策略。经授权的策略更新从下一个区块起生效。
+已签名创世配置定义一个包含 `RootFeePolicy` 的 `root_fees_v1` 自定义参数。它绑定费用币种、费用归集账户、赞助托管账户、领取豁免及费率。每个普通区块和每次报价均使用其捕获的已提交策略。经授权的费率、费用归集账户和领取豁免变更从下一个区块起生效；费用币种和赞助托管账户在第一个区块之后不可更改。
 
 对于全局执行，原生费用会销毁签名中准确指定的网络 XOR 币种。该币种由赞助方的计划金库提供。节点设置和交易元数据不会选择支付方，也不会启用赞助。
 

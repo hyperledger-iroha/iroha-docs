@@ -1,9 +1,9 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/events.md
-translation_source_hash: aad93f1981a5b470966090b5e06ec07178738b15f1d870097947682b19f99595
+translation_source_hash: 2777cbe4e72a50c4790e50b59c3e695feb5814314cc9afccdfd994f6409c195e
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Eventos {#events}
 
@@ -16,7 +16,7 @@ Eventos são emitidos quando certas coisas acontecem dentro da blockchain, por e
 
 ## Eventos do pipeline de processamento {#pipeline-events}
 
-Eventos do pipeline de processamento são emitidos quando transações são enviadas, executadas ou confirmadas em um bloco. Um evento do pipeline de processamento contém as seguintes informações: o tipo de entidade que causou o evento (transação ou bloco), seu hash criptográfico e status. O status pode ser `Validating` (validação em andamento), `Rejected` ou `Committed`. Se uma entidade foi rejeitada, o motivo da rejeição é fornecido.
+Eventos do pipeline de processamento são emitidos à medida que transações e blocos avançam pelo pipeline. Um evento de transação contém o hash da transação, a altura do bloco, os IDs da faixa e do espaço de dados e um status: `Queued`, `Expired`, `Approved` ou `Rejected` com o motivo da rejeição. Um evento de bloco contém o cabeçalho do bloco e um status: `Created`, `Approved`, `Rejected` com o motivo, `Committed` ou `Applied`.
 
 ### Experimente em Taira {#try-it-on-taira}
 
@@ -30,8 +30,8 @@ curl -fsSI https://taira.sora.org/v1/events/sse \
 Para inspecionar um instantâneo sem manter um fluxo aberto, leia as transações recentes do explorador:
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
-  | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
+curl -fsS 'https://taira.sora.org/v1/explorer/transactions?limit=5' \
+  | jq '{next_cursor, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
 Abra a rota SSE em um terminal quando precisar de eventos ao vivo:

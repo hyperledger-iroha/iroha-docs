@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /help/configuration-issues.md
-translation_source_hash: 9d153d9cb8ce0341b35ba5a7e3823198e58464768e2a9a92ff8a5723f85e9351
+translation_source_hash: cfd86e847651e71d40e8857c0531f9721ef94ea3c65bd80b6f6951081488f39d
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -31,7 +31,7 @@ translation_engine: bing-translator-llm+reviewed-delta
 
 ከዚህ በፊት ከብዙ ሃሽ ጋር ሰርተህ የማታውቅ ከሆነ፣ በቀኝ በኩል የቁልፍ ባይት ሄክሳዴሲማል ውክልና እንዳልሆነ መገመት ተፈጥሯዊ ነው (ሁለት ምልክቶች ይልቁንም በ ASCII (ወይም UTF-8) እና በሁለቱም `public_key` እና `private_key` ቅጽበታዊ በሆነው ሕብረቁምፊ ላይ `from_hex` ጥሪ [] በ [] እና [] ቅጽበት ውስጥ [] በ [] ውስጥ በ [] (ወይም []) የተመሰጠሩ ባይቶች (ወይም []) እና [] በሁለቱም [] እና [] ቅጽበታዊ በሆነ ሕብረቁምፊ ላይ [] ይጠሩ.
 
-እንዲሁም በሕብረቁምፊው ቃል በቃል `PrivateKey::try_from_str` መጥራት ትክክለኛውን ቁልፍ ብቻ ያስገኛል ብሎ ማሰብ ተፈጥሯዊ ነው። ስለዚህ በቁልፍ ውስጥ ያሉትን የቢቶች ብዛት ከተሳሳቱ ለምሳሌ 32 ባይት vs 64 የስህተት መልእክት ያስነሳል።
+እንዲሁም የሕብረቁምፊውን ቃል በቃል እሴት በ`str::parse::<PrivateKey>()` መተንተን ትክክለኛውን ቁልፍ ብቻ ያስገኛል ብሎ ማሰብ ተፈጥሯዊ ነው። ስለዚህ በቁልፉ ውስጥ ያሉትን የቢቶች ብዛት ከተሳሳቱ፣ ለምሳሌ ከ64 ይልቅ 32 ባይት፣ የስህተት መልእክት ያስነሳል ብሎ ማሰብም እንዲሁ ተፈጥሯዊ ነው።
 
 እነዚህ ሁለቱም ግምቶች የተሳሳቱ ናቸው. እንደ አለመታደል ሆኖ የስህተት መልእክቶች ይህን አይነት ውድቀት ለማረም አይረዱም።
 
@@ -39,7 +39,7 @@ translation_engine: bing-translator-llm+reviewed-delta
 
 ::: warning
 
-`try_from_str` አተገባበር እንኳን የተሰጠው ሕብረቁምፊ ትክክለኛ መሆኑን ማረጋገጥ አይችልም `PrivateKey` እና ካልሆነ ያስጠነቅቅዎታል።
+`FromStr` አተገባበር እንኳን የተሰጠው ሕብረቁምፊ ትክክለኛ መሆኑን ማረጋገጥ አይችልም `PrivateKey` እና ካልሆነ ያስጠነቅቅዎታል።
 
 አንዳንድ ግልጽ ስህተቶችን ይይዛል, ለምሳሌ, ሕብረቁምፊው ልክ ያልሆነ ምልክት ከያዘ. ነገር ግን፣ ብዙ ቁልፍ ቅርጸቶችን ለመደገፍ አላማ ስለምንሰጥ፣ ሌላ ብዙ ማድረግ አይችልም። እንዲሁም መመሪያ ካላቀረቡ በስተቀር ቁልፉ ለተሰጠው መለያ ትክክለኛው የግል ቁልፍ መሆኑን ማወቅ አይችልም።
 

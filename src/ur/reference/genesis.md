@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /reference/genesis.md
-translation_source_hash: 340921f59a6f8788f559190d520f046ea2473d65154f57a1c54212840c027bc0
+translation_source_hash: dda17468f39573a1fcf43474351bd01c4fea38e8b603fd4d8b21780b273c8649
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -20,6 +20,8 @@ translation_engine: nllb-200-ct2+reviewed-delta
 - `executor` ایک اختیاری ایگزیکیوٹر اپ گریڈ بائٹ کوڈ پاتھ کے لیے
 - `ivm_dir` کے لیے IVM محرکات اور اپ گریڈ کے ذریعہ استعمال ہونے والی لائبریریاں
 - `consensus_mode` مینی فیسٹ کے ذریعہ مشتہر کردہ ابتدائی وضع کے لیے
+- `wire_protocol_version`، پہلی ریلیز کے اتفاقِ رائے کے وائر پروٹوکول ورژن کے لیے
+- `consensus_fingerprint`، اتفاقِ رائے کے پیرامیٹرز کے اختیاری ٹائپ شدہ فنگر پرنٹ کے لیے، جسے JSON مینی فیسٹس واضح طور پر بیان کرتے ہیں
 - `transactions` آرڈر شدہ پیرامیٹر اپ ڈیٹس، ہدایات، محرکات اور ٹوپولوجی کے لیے
 - `sumeragi_context`، دستخط شدہ Sumeragi اونچائی سیاق کے پیرامیٹرز کے لیے
 - `crypto_admission_policy`، چین کے عین منظور شدہ دستخطی اور کنٹرولر الگورتھمز کے لیے، جن کی فہرست `allowed_algorithms` میں ہوتی ہے
@@ -39,10 +41,12 @@ translation_engine: nllb-200-ct2+reviewed-delta
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
+  --chain-id <CHAIN_ID> \
   --consensus-mode npos \
   --ivm-dir defaults \
   --genesis-public-key <PUBLIC_KEY> \
-  --allowed-signing ed25519 > genesis.json
+  --allowed-signing ed25519 \
+  --allowed-signing bls_normal > genesis.json
 ```
 
 عوامی SORA Nexus ڈیٹا اسپیس کے لیے متوقع اتفاقِ رائے موڈ `npos` ہے۔ دیگر Iroha 3 تنصیبات ہدف پروفائل کے مطابق اجازت یافتہ موڈ یا NPoS استعمال کر سکتی ہیں۔
@@ -54,10 +58,11 @@ cargo run -p iroha_kagami -- genesis generate \
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
   --private-key-file <MODE_0600_PRIVATE_KEY_FILE> \
-  --out-file genesis.signed.nrt
+  --out-file genesis.signed.nrt \
+  --expected-hash-out genesis.expected_hash
 ```
 
-`kagami genesis sign` مینی فیسٹ سے جینیسس پبلک کلید پڑھتا ہے اور استعمال کرتا ہے۔ پیدا کرنے کے لیے مالک کے قبضے میں، سنگل لنک ریگولر فائل کی نجی کلید قابل تعیناتی دستخط شدہ بلاک۔فائل میں ایک کینونیکل نجی کلید ہونی چاہیے۔ ملٹی ہیش کے بعد ایک نئی لائن۔ Kagami علامتی روابط اور دیگر طریقوں کو مسترد کرتا ہے۔ سے `0600`. خام نجی چابیاں کمانڈ لائن پر قبول نہیں کی جاتی ہیں۔نتیجہ وہ فائل ہے جس کا نیٹ ورک نوڈز کو اپنی تشکیل سے حوالہ دینا چاہئے۔
+`kagami genesis sign` مالک کے پاس موجود، ایک ہی لنک والی عام فائل میں رکھی نجی کلید سے جینیسس کلیدی جوڑا اخذ کرتا ہے تاکہ قابلِ تعیناتی دستخط شدہ بلاک تیار ہو۔ یہ لازم کرنے کے لیے کہ یہ شائع شدہ جینیسس عوامی کلید سے مطابقت رکھے، `--expected-public-key` دیں۔ فائل میں ایک کینونیکل نجی کلید کا ملٹی ہیش اور اس کے بعد نئی لائن ہونی چاہیے؛ Kagami علامتی روابط اور `0600` کے علاوہ دیگر موڈز مسترد کرتا ہے۔ خام نجی کلیدیں کمانڈ لائن پر قبول نہیں کی جاتیں۔ نتیجہ وہ فائل ہے جس کا حوالہ پیئرز کو اپنی ترتیب سے دینا چاہیے۔
 
 ## ترتیب دیں۔ `iroha3d` {#configure-iroha3d}
 

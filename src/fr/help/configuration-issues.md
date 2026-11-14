@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /help/configuration-issues.md
-translation_source_hash: 9d153d9cb8ce0341b35ba5a7e3823198e58464768e2a9a92ff8a5723f85e9351
+translation_source_hash: cfd86e847651e71d40e8857c0531f9721ef94ea3c65bd80b6f6951081488f39d
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -31,7 +31,7 @@ Dans la [configuration du client](/fr/guide/configure/client-configuration.md), 
 
 Si vous n'avez jamais travaillé avec un multi-hash auparavant, il est naturel de supposer que le côté droit n'est pas une représentation hexadécimale des octets de la clé (deux symboles par octet), mais plutôt les octets encodés comme ASCII (ou UTF-8), et appeler `from_hex` sur le littéral de chaîne à la fois dans l'instanciation `public_key` et `private_key`.
 
-Il est également naturel de supposer que l'appel de `PrivateKey::try_from_str` sur le littéral de chaîne ne donnerait que la clé correcte. Donc, si vous obtenez le nombre de bits de la clé incorrectement, par exemple 32 octets au lieu de 64, cela provoquerait un message d'erreur.
+Il est également naturel de supposer que l'analyse du littéral de chaîne avec `str::parse::<PrivateKey>()` ne donnerait que la clé correcte. Donc, si vous obtenez le nombre de bits de la clé incorrectement, par exemple 32 octets au lieu de 64, cela provoquerait un message d'erreur.
 
 Ces deux hypothèses sont incorrectes. Malheureusement, les messages d'erreur n'aident pas à déboguer ce type particulier de défaillance.
 
@@ -39,7 +39,7 @@ Comment réparer : utilisez `hex_literal`. Cela transformera également une cha�
 
 ::: warning
 
-Même l'implémentation `try_from_str` ne peut pas vérifier si une chaîne donnée est un `PrivateKey` valide et vous avertir si ce n'est pas le cas.
+Même l'implémentation `FromStr` ne peut pas vérifier si une chaîne donnée est un `PrivateKey` valide et vous avertir si ce n'est pas le cas.
 
 Il détectera certaines erreurs évidentes, par exemple si la chaîne contient un symbole invalide. Cependant, comme nous visons à supporter de nombreux formats de clés, il ne peut pas faire grand-chose d'autre. Il ne peut pas non plus dire si la clé est la clé privée correcte pour le compte donné, sauf si vous soumettez une instruction.
 

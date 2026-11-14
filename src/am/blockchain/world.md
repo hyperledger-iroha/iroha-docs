@@ -1,22 +1,22 @@
 ---
 translation_locale: am
 translation_source: /blockchain/world.md
-translation_source_hash: d6ecc7832a3925c105ddc0ddfbaf62ea54d465cdb7b98ce795e5a72c615361bd
+translation_source_hash: 3e03f6f778e5e53a95ab6e5b94c05da410fa415fcc26ad31aa387bdaf0d744bf
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-source-naming-amendment
+translation_engine: bing-translator-llm+reviewed-source-naming-amendment+reviewed-delta
 ---
 # ዓለም {#world}
 
 `World` ሌሎች አካላትን የያዘ ዓለም አቀፋዊ አካል ነው። `World` የሚከተሉትን ያጠቃልላል -
 
-- Iroha [የማዋቀር መለኪያዎች](/am/guide/configure/client-configuration.md)
+- በ[ጀነሲስ](/am/reference/genesis.md) እና በ`SetParameter` የሚዘጋጁ በሰንሰለት ላይ ያሉ የሰንሰለት መለኪያዎች
 - የተመዘገቡ የአውታረ መረብ እኩዮች
 - የተመዘገቡ ጎራዎች
 - የተመዘገበ [ቀስቅሴዎች](/am/blockchain/triggers.md)
 - የተመዘገበ [ሚናዎች](/am/blockchain/permissions.md#permission-groups-roles)
 - የተመዘገበ [የፍቃድ ቶከን ፍቺዎች](/am/blockchain/permissions.md#permission-tokens)
 - ለሁሉም መለያዎች የፍቃድ ምልክቶች
-- [የሶፍትዌር ማስፈጸሚያ አካባቢ አረጋጋጮች ሰንሰለት](/am/blockchain/permissions.md#runtime-validators)
+- [ንቁው የሶፍትዌር ማስፈጸሚያ አካባቢ አስፈጻሚ](/am/blockchain/permissions.md#runtime-validators)
 
 ጎራዎች፣ የአውታረ መረብ እኩዮች ወይም ሚናዎች ሲመዘገቡ ወይም ካልተመዘገቡ፣ `World` የ(un) መዝገብ [መመሪያ](/am/blockchain/instructions.md) ኢላማ ነው።
 
@@ -57,22 +57,19 @@ WSV ለውጦች ከመጠናቀቃቸው በፊት ይዘጋጃሉ። የብሎ
 
 Kura የ Iroha የማያቋርጥ የብሎክ ማከማቻ ነው። የተፈረሙ ብሎኮችን እና መልሶ ማግኛ ሜታዳታን ያከማቻል። የ WSV ሁለተኛ ተለዋዋጭ ቅጂ አያከማችም።
 
-Kura ማከማቻው ሥር የሰደደ ነው [`kura.store_dir`](/am/reference/peer-config/params.md#param-kura-store-dir). በዚያ ስር ውስጥ፣ የብሎክ ውሂብ በማስፈጸሚያ መስመር ወይም ክፍል ይከፈላል። የአንድ ክፍል ዋና ፋይሎች -
+Kura ማከማቻው ሥሩ [`kura.store_dir`](/am/reference/peer-config/params.md#param-kura-store-dir) ላይ ነው። የዓለም አቀፉ ሰንሰለት ብሎኮች በሰንሰለት ወሰን በተገደበው የ`blocks/canonical` ማውጫ ውስጥ ይቀመጣሉ፣ የመስመር ኢንስታንሶችም የተለዩ የመስመር ብሎክ ማከማቻዎችን ይይዛሉ። ዋናዎቹ ቀኖናዊ ፋይሎች የሚከተሉት ናቸው፦
 
 |መንገድ|ዓላማ|
 | --- | --- |
-|`blocks/<segment>/blocks.data`|ተያያዥ Norito-ፍሬም የተፈረመ የብሎክ ጭነቶች።|
-|`blocks/<segment>/blocks.index`|በ `blocks.data` ውስጥ ቁመትን ወደ ባይት የሚያግድ ቋሚ መጠን `(start, length)` ግቤቶች።|
-|`blocks/<segment>/blocks.hashes`|ለፈጣን ፍለጋ እና ጅምር ማረጋገጫ ምስጠራ ሃሽዎችን በከፍታ ያግዱ።|
-|`blocks/<segment>/blocks.count.norito`|ምን ያህል የብሎክ መረጃ ጠቋሚ ግቤቶች ለመጠቀም ደህና እንደሆኑ የሚመዘግብ ዘላቂ የብሎክ-ማጠናቀቂያ ምልክት ማድረጊያ።|
-|`blocks/<segment>/da_blocks/`|የዲስክ-በጀት ማስፈጸሚያ አሮጌ አካላትን ከሞቃት ፋይል ውስጥ ሲያወጣ የተባረሩ የብሎክ ጭነቶች ከ`blocks.data` ውጭ ይቀመጣሉ።|
-|`blocks/<segment>/pipeline/sidecars.norito` እና `sidecars.index`|የሶፍትዌር ማቀነባበሪያ የስራ ፍሰት መልሶ ማግኛ ረዳት መዝገቦች በብሎክ ቁመት ተቆልፈዋል።|
-|`blocks/<segment>/pipeline/roster_sidecars.norito` እና `roster_sidecars.index`|የቅርብ ጊዜ ፕሮቶኮል ማጠናቀቂያ - በብሎክ ማመሳሰል እና እንደገና ማጫወት ጥቅም ላይ የሚውሉ የስም ዝርዝር ረዳት መዝገቦች።|
-|`merge_ledger/<segment>.log`|ከተጠናቀቁ ብሎኮች ጋር የተጣጣሙ የብሎክቼይን ውህደት ምዝግብ ማስታወሻዎች።|
-|`commit-rosters.norito`|ለቅርብ ጊዜ ብሎኮች የጋራ መግባባት ማጠናቀቂያ የምስክር ወረቀቶች እና አረጋጋጭ ኬላዎች ተጠብቀዋል።|
+|`blocks/canonical/blocks.data`|ተያያዥ Norito-ፍሬም የተፈረመ የብሎክ ጭነቶች።|
+|`blocks/canonical/blocks.index`|በ `blocks.data` ውስጥ ቁመትን ወደ ባይት የሚያግድ ቋሚ መጠን `(start, length)` ግቤቶች።|
+|`blocks/canonical/blocks.hashes`|ለፈጣን ፍለጋ እና ጅምር ማረጋገጫ ምስጠራ ሃሽዎችን በከፍታ ያግዱ።|
+|`blocks/canonical/blocks.count.norito`|ምን ያህል የብሎክ መረጃ ጠቋሚ ግቤቶች ለመጠቀም ደህና እንደሆኑ የሚመዘግብ ዘላቂ የብሎክ-ማጠናቀቂያ ምልክት ማድረጊያ።|
+|`blocks/canonical/da_blocks/`|የዲስክ-በጀት ማስፈጸሚያ አሮጌ አካላትን ከሞቃት ፋይል ውስጥ ሲያወጣ የተባረሩ የብሎክ ጭነቶች ከ`blocks.data` ውጭ ይቀመጣሉ።|
+|`blocks/canonical/pipeline/sidecars.norito` እና `sidecars.index`|የሶፍትዌር ማቀነባበሪያ የስራ ፍሰት መልሶ ማግኛ ረዳት መዝገቦች በብሎክ ቁመት ተቆልፈዋል።|
 
 Kura ለሰንሰለቱ የታመቀ የማህደረ ትውስታ ቬክተር ይይዛል እያንዳንዱ ቁመት የብሎክ ምስጠራ ሃሽ እና እንደ አማራጭ የብሎክ አካል አለው። የብሎክቼይን ጀነሲስ ብሎክ ተሸጎጦ ይቆያል፣ እና በጣም የቅርብ ጊዜ [`kura.blocks_in_memory`](/am/reference/peer-config/params.md#param-kura-blocks-in-memory) የጀነሲስ ያልሆኑ ብሎኮች ሰውነታቸውን በማስታወስ ውስጥ ያስቀምጣሉ። የቆዩ የብሎክ አካላት ከማስታወስ ይጣላሉ እና እንደገና ተጭነዋል Kura አስፈላጊ ሆኖ ሲገኝ ፋይሎች.
 
-በሚነሳበት ጊዜ `strict` ሁነታ የተከማቹ ብሎኮችን ከብሎክ ጭነቶች ያረጋግጣል እና አስፈላጊ ከሆነ ምስጠራውን ሃሽ ፋይል እንደገና ይጽፋል። `fast` ሁነታ ከተከማቸ ይጀምራል ሃሽ/ኢንዴክስ ሜታዳታ እና ያ ሜታዳታ ወጥነት የሌለው ከሆነ ወደ ጥብቅ ጅምር ይመለሳል። Kura የተበላሸ ጅራት ካወቀ፣ ማከማቻውን ወደ መጨረሻው የተረጋገጠ ብሎክ ይቆርጣል።
+በሚነሳበት ጊዜ `strict` ሁነታ (ነባሪው) እያንዳንዱን ቀኖናዊ የብሎክ አካል እና የወላጅ አገናኝ ያረጋግጣል። `fast` `strict` አስቀድሞ ላስጀመረው ማከማቻ የሚያገለግል የአደጋ ጊዜ ሁነታ ነው፦ የአሁኑን የተፈረመ ቅጽበታዊ ቅጂ እና ቋሚውን ቆጠራ እና ጫፍ ያምናል፣ ኖዱ በ`strict` ሁነታ እንደገና እስኪጀመር ድረስም Sumeragi፣ የግብይት ስርጭትን እና የብሎክ ምርትን ከመስመር ውጭ ያቆያል። ጅምሩ የተቋረጡ `merge_ledger`፣ `roster_sidecars` እና `commit-rosters.norito` አርቲፋክቶችን ውድቅ ያደርጋል። Kura የተበላሸ ጅራት ካወቀ፣ ማከማቻውን ወደ መጨረሻው የተረጋገጠ ብሎክ ይቆርጣል።
 
 Kura የጀርባ ጸሐፊን በመጠቀም አዲስ ብሎኮችን ይጽፋል።. ጸሐፊው የብሎክ ጭነቶችን፣ ምስጠራ ሃሽዎችን እና የመረጃ ጠቋሚ ግቤቶችን ያያይላል፣ ከዚያም በተዋቀረው የ fsync ፖሊሲ መሰረት ዘላቂ ቆጠራ ጠቋሚውን ያዘምናል።. የዲስክ በጀት ማስፈጸሚያ ሲሰራ፣ Kura የተሰረዙ ክፍሎችን ማጽዳት ወይም የቆዩ የብሎክ አካላትን ወደ `da_blocks/` ማስወጣት ይችላል ምስጠራ ሃሽ እና የመረጃ ጠቋሚ ግቤቶችን ለማረጋገጫ እና ለመፈለግ ይገኛሉ።

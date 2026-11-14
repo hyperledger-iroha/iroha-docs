@@ -1,22 +1,22 @@
 ---
 translation_locale: ur
 translation_source: /blockchain/world.md
-translation_source_hash: d6ecc7832a3925c105ddc0ddfbaf62ea54d465cdb7b98ce795e5a72c615361bd
+translation_source_hash: 3e03f6f778e5e53a95ab6e5b94c05da410fa415fcc26ad31aa387bdaf0d744bf
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-source-naming-amendment
+translation_engine: nllb-200-ct2+reviewed-source-naming-amendment+reviewed-delta
 ---
 # دنیا {#world}
 
 `World` عالمی ادارہ ہے جس میں دیگر ادارے شامل ہیں۔ `World` میں شامل ہیں:
 
-- Iroha [کنفیگریشن پیرامیٹرز](/ur/guide/configure/client-configuration.md)
+- آن چین چین پیرامیٹرز، جو [جینیسس](/ur/reference/genesis.md) میں اور `SetParameter` کے ذریعے مقرر کیے جاتے ہیں
 - رجسٹرڈ نیٹ ورک نوڈ
 - رجسٹرڈ ڈومینز
 - رجسٹرڈ [ٹریکٹرز ](/ur/blockchain/triggers.md)
 - رجسٹرڈ [رولز ](/ur/blockchain/permissions.md#permission-groups-roles)
 - رجسٹرڈ [اجازت ٹوکن تعریفیں ](/ur/blockchain/permissions.md#permission-tokens)
 - تمام اکاؤنٹس کے لئے اجازت ٹوکن
-- [رن ٹائم ویلیڈیٹرز کا سلسلہ](/ur/blockchain/permissions.md#runtime-validators)
+- [فعال رن ٹائم ایگزیکیوٹر](/ur/blockchain/permissions.md#runtime-validators)
 
 جب ڈومینز، نیٹ ورک نوڈ یا کردار رجسٹرڈ ہوتے ہیں یا غیر رجسٹر شدہ ہوتے ہیں تو `World` (غیر) رجسٹر [ ہدف ہے ](/ur/blockchain/instructions.md).
 
@@ -57,22 +57,19 @@ WSV تبدیلیاں ان کے ارتکاب سے پہلے مرحلہ وار کی
 
 Kura Iroha کا مستقل بلاک اسٹوریج ہے۔ یہ دستخط شدہ بلاکس اور بازیافت کے میٹا ڈیٹا کو ذخیرہ کرتا ہے۔ یہ WSV کی دوسری تبدیلی پذیر کاپی نہیں رکھتا۔
 
-Kura اسٹوریج کو [`kura.store_dir`](/ur/reference/peer-config/params.md#param-kura-store-dir) پر جڑ دیا گیا ہے۔ اس جڑ کے اندر ، بلاک ڈیٹا کو لین یا سیگمنٹ میں تقسیم کیا جاتا ہے۔ کسی حصے کی بنیادی فائلیں یہ ہیں:
+Kura اسٹوریج کی جڑ [`kura.store_dir`](/ur/reference/peer-config/params.md#param-kura-store-dir) ہے۔ عالمی چین کے بلاکس چین کے دائرے والی `blocks/canonical` ڈائریکٹری میں رہتے ہیں، اور لین انسٹینسز لین کے الگ بلاک اسٹورز رکھتی ہیں۔ بنیادی کینونیکل فائلیں یہ ہیں:
 
 |راستہ |مقصد |
 | --- | --- |
-|`blocks/<segment>/blocks.data` |ملحقہ Norito فریم کے ساتھ دستخط شدہ بلاک پیلوڈ۔ |
-|`blocks/<segment>/blocks.index` |فکسڈ سائز `(start, length)` اندراجات جو نقشے کے بلاک کی اونچائی کو بائٹس میں `blocks.data` میں شامل کرتے ہیں۔ |
-|`blocks/<segment>/blocks.hashes` |تیزی سے تلاش اور اسٹارٹ اپ کی توثیق کے لئے اونچائی کی طرف سے ہیش کو بلاک کریں. |
-|`blocks/<segment>/blocks.count.norito` |پائیدار کمیٹ مارکر جو ریکارڈ کرتا ہے کہ کتنے بلاک انڈیکس اندراجات استعمال کرنے کے لئے محفوظ ہیں۔ |
-| `blocks/<segment>/da_blocks/` | بلاک پے لوڈز جو `blocks.data` سے باہر رکھے جاتے ہیں جب ڈسک بجٹ کا نفاذ پرانی بلاک باڈیز کو ہاٹ فائل سے نکالتا ہے۔ |
-|`blocks/<segment>/pipeline/sidecars.norito` اور `sidecars.index` |پائپ لائن ریکوری معاون ریکارڈز کو بلاک کی اونچائی کے مطابق چابی دی گئی ہے۔ |
-|`blocks/<segment>/pipeline/roster_sidecars.norito` اور `roster_sidecars.index` |بلاک ہم آہنگی اور دوبارہ کھیلنے کے لئے استعمال حالیہ commit-roster sidecars. |
-|`merge_ledger/<segment>.log` |ضم شدہ بلاکس کے ساتھ ہم آہنگ لیجر اندراجات |
-|`commit-rosters.norito` |حالیہ بلاکس کے لئے مقرر کردہ سرٹیفکیٹ اور تصدیق کرنے والے چیک پوائنٹس برقرار رکھے گئے۔ |
+|`blocks/canonical/blocks.data` |ملحقہ Norito فریم کے ساتھ دستخط شدہ بلاک پیلوڈ۔ |
+|`blocks/canonical/blocks.index` |فکسڈ سائز `(start, length)` اندراجات جو نقشے کے بلاک کی اونچائی کو بائٹس میں `blocks.data` میں شامل کرتے ہیں۔ |
+|`blocks/canonical/blocks.hashes` |تیزی سے تلاش اور اسٹارٹ اپ کی توثیق کے لئے اونچائی کی طرف سے ہیش کو بلاک کریں. |
+|`blocks/canonical/blocks.count.norito` |پائیدار کمیٹ مارکر جو ریکارڈ کرتا ہے کہ کتنے بلاک انڈیکس اندراجات استعمال کرنے کے لئے محفوظ ہیں۔ |
+| `blocks/canonical/da_blocks/` | بلاک پے لوڈز جو `blocks.data` سے باہر رکھے جاتے ہیں جب ڈسک بجٹ کا نفاذ پرانی بلاک باڈیز کو ہاٹ فائل سے نکالتا ہے۔ |
+|`blocks/canonical/pipeline/sidecars.norito` اور `sidecars.index` |پائپ لائن ریکوری معاون ریکارڈز کو بلاک کی اونچائی کے مطابق چابی دی گئی ہے۔ |
 
 Kura چین کے لیے ایک مختصر in-memory ویکٹر رکھتا ہے: ہر height پر block hash اور، اختیاری طور پر، block body ہوتا ہے۔ genesis block کیش میں رہتا ہے، اور تازہ ترین [`kura.blocks_in_memory`](/ur/reference/peer-config/params.md#param-kura-blocks-in-memory) non-genesis blocks اپنی بلاک باڈیز میموری میں رکھتے ہیں۔ پرانی بلاک باڈیز میموری سے خارج کر دی جاتی ہیں اور ضرورت پڑنے پر Kura files سے دوبارہ لوڈ ہوتی ہیں۔
 
-ابتدائیہ کاری کے دوران ، `strict` موڈ بلاک پے لوڈز سے ذخیرہ شدہ بلاکس کی توثیق کرتا ہے اور اگر ضرورت ہو تو ہیش فائل کو دوبارہ لکھتا ہے۔ `fast` موڈ اسٹور کردہ ہیش / انڈیکس میٹا ڈیٹا سے شروع ہوتا ہے اور اگر یہ میٹا ڈیٹا متضاد ہوتا ہے تو سخت ابتدائیہ کاری میں واپس آتا ہے۔ اگر Kura خراب دم کا پتہ لگاتا ہے تو ، یہ آخری تصدیق شدہ بلاک تک اسٹوریج کو پیونگ کرتا ہے۔
+ابتدائیہ کاری کے دوران `strict` موڈ (ڈیفالٹ) ہر کینونیکل بلاک باڈی اور پیرنٹ لنک کی توثیق کرتا ہے۔ `fast` اس اسٹوریج کے لیے ہنگامی موڈ ہے جسے `strict` پہلے ہی ابتدائیہ کر چکا ہو: یہ ایک موجودہ دستخط شدہ اسنیپ شاٹ اور پائیدار گنتی اور سرے پر بھروسہ کرتا ہے، اور نوڈ کے `strict` موڈ میں دوبارہ شروع ہونے تک Sumeragi، لین دین کی گپ شپ اور بلاک سازی کو بند رکھتا ہے۔ آغاز کے وقت متروک `merge_ledger`، `roster_sidecars` اور `commit-rosters.norito` آرٹیفیکٹس مسترد کر دیے جاتے ہیں۔ اگر Kura خراب سرا دریافت کرے تو وہ اسٹوریج کو آخری تصدیق شدہ بلاک تک تراش دیتا ہے۔
 
 Kura پس منظر کے مصنف کے ذریعے نئے بلاکس لکھتا ہے۔ مصنف بلاک پے لوڈ ، ہیشز اور انڈیکس اندراجات کو شامل کرتا ہے ، پھر ترتیب شدہ fsync پالیسی کے مطابق پائیدار گنتی مارکر کو آگے بڑھاتا ہے۔ جب ڈسک بجٹ نفاذ فعال ہے تو ، Kura ریٹائرڈ سیگمنٹ کو صاف کرسکتا ہے یا پرانے بلاک جسموں کو `da_blocks/` میں نکال سکتا ہے جبکہ ہیش اور انڈیکس اندراجات کی توثیق اور تلاش کے لئے دستیاب رکھ سکتا ہے۔.

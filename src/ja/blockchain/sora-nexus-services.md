@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: 33617bc89d0aef5c2a086f45a216201d8980123f717e68f1e1a95eadeb906eb0
+translation_source_hash: dff2584fd47d6e1426ec18aca2d2003a7fdca4b9882296de484418f8c17806fe
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -90,13 +90,12 @@ Aitai は、マーケットプレイス型の決済に使う SORA Nexus のア�
 
 ネイティブエスクローは、ブロックチェーン台帳でカストディを保持します。売り手は `OpenAssetEscrow` でオファーを開き、買い手はそれを受け入れ、`AcceptAssetEscrow` と `MarkEscrowPaymentSent` でオフチェーン支払いをマークします。そして、売り手は `ReleaseAssetEscrow` でのリリース、または支払いが記録される前にキャンセルします。購入者と売り手が意見の不一致の場合、どちらの当事者も紛争を開始でき、`CanResolveEscrowDispute` とともに紛争解決者がロックされた金額を分割することができます。
 
-フルライフサイクル、汎用資産ロック、匿名エスクロー、クエリ、イベント、および Rust の例については、[ネイティブ資産エスクロー](/ja/blockchain/escrow.md) を参照してください。
+フルライフサイクル、汎用資産ロック、条件付きエスクロー、クエリ、イベント、および Rust の例については、[ネイティブ資産エスクロー](/ja/blockchain/escrow.md) を参照してください。
 
 |会いたい表面|それに使用してください|
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`                                                    |透過的な数値資産の提供、XOR 建ての金融取引決済フローを含む。|
-| `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`       |シールド付きのオファーは、資金提供およびクロージングの動きに対して証明書添付を使用します。|
-| `OpenEscrowDispute`, `ResolveEscrowDispute`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute`                                                    |紛争の登録と裁判方式の解決。|
+| `OpenEscrowDispute`, `ResolveEscrowDispute`                                                                                                                                | 紛争の登録と裁判方式の解決。 |
 | `FindAssetEscrowById`, `FindAssetEscrowsBySeller`, `FindAssetEscrowsByBuyer`, `FindAssetEscrowsByStatus` |アプリのステータスページ、照合ジョブ、サポートツール。|
 | `EscrowEventFilter` |エスクローID、販売者、購入者、ステータス、またはイベントの種類によって、透明なエスクローサブスクリプションをライブで確認できます。|
 |Kotodama `escrow_open_offer`、`escrow_accept`、`escrow_mark_payment_sent`、`escrow_release`、`escrow_cancel`、`escrow_open_dispute`、`escrow_resolve_dispute`| Kotodama コントラクト呼び出しは V1 エスクロー syscall によってサポートされます。|
@@ -492,7 +491,7 @@ SoraFS は分散型コンテンツアドレス指定ストレージファブリ�
 
 Taira は標準的な公開 SoraFS テストネットです。チェックインされたバリデータプロファイルはチェーン `fc56984b-2be7-431d-840e-21514d1883f0` とチェーン区別子 `369` を使用しています。以下の `NetworkId` は、現在固定されている Taira ブロックチェーンのジェネシスの正確な識別です。 Taira のリセットは、チェーンラベルを保持したまま、その暗号化ハッシュを変更できます。そのため、現在の署名付きデプロイメントプロファイルからリフレッシュして、チェーン UUID から派生させないでください。Taira の有効な SoraFS 設定は次のとおりです:
 
-- ネットワークID: `hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94`
+- ネットワークID: `hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774`
 - ゲートウェイ基地 URL: `https://taira.sora.org`
 - ピン Torii URLs： `https://taira-validator-1.sora.org` から `https://taira-validator-4.sora.org` まで
 - 発見機能: `torii_gateway`、`chunk_range_fetch`、および`potr_mldsa`
@@ -502,7 +501,7 @@ Taira は標準的な公開 SoraFS テストネットです。チェックイン
 ```toml
 [sorafs.storage]
 enabled = false
-max_capacity_bytes = 13743895347
+max_capacity_bytes = 2684354560
 
 [sorafs.discovery]
 discovery_enabled = true
@@ -587,7 +586,7 @@ cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
   --summary-out=artifacts/site.car-summary.json
 
 : "${TAIRA_AUTHORITY:?set a funded Taira I105 account}"
-export TAIRA_NETWORK_ID='hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94'
+export TAIRA_NETWORK_ID='hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774'
 export TAIRA_PIN_TORII_URL=https://taira-validator-1.sora.org
 export TAIRA_PRIVATE_KEY_FILE="${TAIRA_PRIVATE_KEY_FILE:-./secrets/taira-authority.ed25519}"
 export TAIRA_RETENTION_EPOCH=$(( $(date -u +%s) + 86400 ))

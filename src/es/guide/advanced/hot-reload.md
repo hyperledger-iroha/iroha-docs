@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
+translation_source_hash: 6edc0185196ab8e77ef8552723e05bf37cca1a088da86e2a43d441d58e779c11
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -32,4 +32,4 @@ Un nuevo génesis requiere que el almacenamiento del nodo esté vacío. Usa `pyt
 
 ## Usar configuración personalizada {#use-custom-configuration}
 
-La configuración actual del par usa TOML. Monte o copie los archivos generados `config.toml`, `genesis.signed.nrt` y los archivos de claves asociados en las rutas del contenedor que espera la imagen; después reinicie el par. Mantenga juntos los archivos generados: mezclar archivos de distintas ejecuciones de Kagami puede causar fallos de deserialización o de consenso.
+La configuración actual del par usa TOML. Kagami escribe un `peerN.toml` por validador con `genesis.signed.nrt`, `genesis.public_key` y `genesis.expected_hash`; el archivo de Compose generado por `kagami docker` los monta en el contenedor. Regenérelo en lugar de copiar archivos a mano y después reinicie el par. Mantenga juntos los archivos generados: mezclar archivos de distintas ejecuciones de Kagami puede causar fallos de deserialización o de consenso.

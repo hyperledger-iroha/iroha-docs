@@ -65,14 +65,20 @@ After the role is registered, Mouse can grant it to Alice:
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```
 
 ## Permission Validators
 
-Permissions exist so that only accounts with the required permission token can perform a protected action. The default executor checks permissions during instruction, query, and expression execution.
+Permissions exist so that only accounts with the required permission token can perform a protected action. The default executor checks permissions during transaction and instruction execution and query validation.
 
 The default validator surface is grouped by ledger area:
 
@@ -89,7 +95,7 @@ The exact token list is source-backed in the [Permission Tokens reference](/refe
 
 Permission checks are enforced by the active executor. The default executor provides the built-in permission validators and token definitions, and a network can change policy by upgrading the executor it uses.
 
-Validators return a **validation verdict**. A validator can allow an operation, deny it with a reason, or skip it if the operation is outside of that validator's scope. The selected judge combines those verdicts to decide whether the instruction, query, or expression may proceed.
+The executor either allows an operation or rejects it with a `ValidationFail` reason. A rejected instruction rejects its transaction, and a rejected query returns the error to the caller.
 
 ## Supported Queries
 

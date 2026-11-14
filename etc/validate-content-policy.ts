@@ -163,7 +163,7 @@ const TAIRA_SORAFS_REQUIRED_TOKENS = [
   'chunk_range_fetch',
   'potr_mldsa',
   '[sorafs.storage]\nenabled = false',
-  'max_capacity_bytes = 13743895347',
+  'max_capacity_bytes = 2684354560',
   '[sorafs.discovery]\ndiscovery_enabled = true',
   '[sorafs.discovery.admission]\nenabled = true',
   '[sorafs.gateway]\nrequire_manifest_envelope = true',

@@ -1,22 +1,22 @@
 ---
 translation_locale: ar
 translation_source: /blockchain/world.md
-translation_source_hash: d6ecc7832a3925c105ddc0ddfbaf62ea54d465cdb7b98ce795e5a72c615361bd
+translation_source_hash: 3e03f6f778e5e53a95ab6e5b94c05da410fa415fcc26ad31aa387bdaf0d744bf
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-source-naming-amendment
+translation_engine: bing-translator-llm+reviewed-source-naming-amendment+reviewed-delta
 ---
 # العالم {#world}
 
 `World` هو الكيان العالمي الذي يحتوي على كيانات أخرى. يتكون `World` من:
 
-- Iroha [معلمات التكوين](/ar/guide/configure/client-configuration.md)
+- معلمات السلسلة المخزنة على السلسلة، المحددة في [التكوين الأولي](/ar/reference/genesis.md) وعبر `SetParameter`
 - الأقران المسجلون في الشبكة
 - النطاقات المسجلة
 - مسجل [المحفزات](/ar/blockchain/triggers.md)
 - مسجل [الأدوار](/ar/blockchain/permissions.md#permission-groups-roles)
 - مسجل [تعريفات رمز الإذن](/ar/blockchain/permissions.md#permission-tokens)
 - رموز الإذن لجميع الحسابات
-- [سلسلة مصدقات بيئة تنفيذ البرمجيات](/ar/blockchain/permissions.md#runtime-validators)
+- [منفذ بيئة التشغيل النشط](/ar/blockchain/permissions.md#runtime-validators)
 
 عندما يتم تسجيل المجالات أو نظراء الشبكة أو الأدوار أو إلغاء تسجيلها، يكون `World` هو الهدف من (إلغاء) تسجيل [تعليمات](/ar/blockchain/instructions.md).
 
@@ -57,22 +57,19 @@ WSV هو الحالة التي تستعلم القراءة عنها والتي �
 
 Kura هو التخزين الدائم للكتل الخاص بـ Iroha. يخزن الكتل الموقعة وبيانات الاسترداد الوصفية. لا يخزن نسخة ثانية قابلة للتغيير من WSV.
 
-Kura التخزين متجذر في [`kura.store_dir`](/ar/reference/peer-config/params.md#param-kura-store-dir). ضمن ذلك الجذر، يتم تقسيم بيانات الكتلة حسب مسار التنفيذ أو القسم. الملفات الأساسية للقسم هي:
+جذر تخزين Kura هو [`kura.store_dir`](/ar/reference/peer-config/params.md#param-kura-store-dir). توجد كتل السلسلة العالمية في الدليل `blocks/canonical` الخاص بنطاق السلسلة، وتحتفظ نسخ مسارات التنفيذ بمخازن كتل منفصلة خاصة بكل مسار. الملفات القياسية الأساسية هي:
 
 |مسار|الغرض|
 | --- | --- |
-| `blocks/<segment>/blocks.data` |الحمولات الكتلية الموقعة المؤطرة بـ Norito.|
-| `blocks/<segment>/blocks.index` |مدخلات ذات حجم ثابت `(start, length)` تربط ارتفاع الكتلة بالبايتات في `blocks.data`.|
-| `blocks/<segment>/blocks.hashes` |حظر التجزئات التشفيرية حسب الارتفاع للبحث السريع والتحقق عند بدء التشغيل.|
-| `blocks/<segment>/blocks.count.norito` |علامة إنهاء الكتلة الدائمة تسجل عدد إدخالات فهرس الكتلة الآمنة للاستخدام.|
-| `blocks/<segment>/da_blocks/` |يتم الاحتفاظ بحمولات الكتل المُخلَّصة خارج `blocks.data` عندما تقوم سياسة ميزانية القرص بنقل الأجسام القديمة من الملف الساخن.|
-| `blocks/<segment>/pipeline/sidecars.norito` و `sidecars.index` |استرداد سير عمل معالجة البرمجيات باستخدام سجلات مساعدة مفهرسة حسب ارتفاع الكتلة.|
-| `blocks/<segment>/pipeline/roster_sidecars.norito` و `roster_sidecars.index` |إتمام البروتوكول الأخير - السجلات المساعدة للقائمة المستخدمة بواسطة مزامنة الكتل وإعادة التشغيل.|
-| `merge_ledger/<segment>.log` |توافق سجلات دمج البلوكشين مع الكتل النهائية.|
-| `commit-rosters.norito` |تم الاحتفاظ بشهادات إتمام الإجماع ونقاط تحقق المدققين للكتل الأخيرة.|
+| `blocks/canonical/blocks.data` |الحمولات الكتلية الموقعة المؤطرة بـ Norito.|
+| `blocks/canonical/blocks.index` |مدخلات ذات حجم ثابت `(start, length)` تربط ارتفاع الكتلة بالبايتات في `blocks.data`.|
+| `blocks/canonical/blocks.hashes` |حظر التجزئات التشفيرية حسب الارتفاع للبحث السريع والتحقق عند بدء التشغيل.|
+| `blocks/canonical/blocks.count.norito` |علامة إنهاء الكتلة الدائمة تسجل عدد إدخالات فهرس الكتلة الآمنة للاستخدام.|
+| `blocks/canonical/da_blocks/` |يتم الاحتفاظ بحمولات الكتل المُخلَّصة خارج `blocks.data` عندما تقوم سياسة ميزانية القرص بنقل الأجسام القديمة من الملف الساخن.|
+| `blocks/canonical/pipeline/sidecars.norito` و `sidecars.index` |استرداد سير عمل معالجة البرمجيات باستخدام سجلات مساعدة مفهرسة حسب ارتفاع الكتلة.|
 
 Kura يحافظ على متجه مضغوط في الذاكرة للسلسلة: كل ارتفاع يحتوي على تجزئة التشفير للكتلة و، اختياريًا، جسم الكتلة. يظل كتلة التكوين الأساسية للبلوكشين مخزنة مؤقتًا، وآخر [`kura.blocks_in_memory`](/ar/reference/peer-config/params.md#param-kura-blocks-in-memory) الكتل غير الأولى تحتفظ بأجسادها في الذاكرة. يتم حذف أجساد الكتل الأقدم من الذاكرة وإعادة تحميلها من Kura الملفات عند الحاجة.
 
-أثناء التهيئة، يقوم وضع `strict` بالتحقق من الكتل المخزنة من حمولة الكتل ويعيد كتابة ملف التجزئة التشفيري إذا لزم الأمر. يبدأ وضع `fast` من المخزن بيانات تعريف التجزئة/الفهرس وتعود إلى التهيئة الصارمة إذا كانت بيانات التعريف تلك غير متسقة. إذا اكتشف Kura ذيلًا تالفًا، فإنه يقص التخزين إلى آخر كتلة تم التحقق من صحتها.
+أثناء التهيئة، يتحقق وضع `strict` (الافتراضي) من كل جسم كتلة قياسي ومن رابط الكتلة الأم. أما `fast` فهو وضع طوارئ لتخزين سبق أن هيّأه `strict`: إذ يثق بلقطة موقّعة حالية وبالعدد ورأس السلسلة المحفوظين بشكل دائم، ويُبقي Sumeragi ونشر المعاملات وإنتاج الكتل متوقفة حتى يُعاد تشغيل العقدة في وضع `strict`. يرفض بدء التشغيل عناصر `merge_ledger` و`roster_sidecars` و`commit-rosters.norito` الملغاة. إذا اكتشف Kura ذيلًا تالفًا، فإنه يقص التخزين إلى آخر كتلة تم التحقق من صحتها.
 
 Kura يكتب كتلًا جديدة من خلال كاتب خلفي. يقوم الكاتب بإلحاق بيانات الكتلة، والتجزئات التشفيرية، ومدخلات الفهرس، ثم يقدّم مؤشر عدد التحمل وفقًا لسياسة fsync المُهيأة. عندما يكون تطبيق ميزانية القرص نشطًا، يمكن لـ Kura حذف القطاعات المتقاعدة أو إبعاد أجسام الكتل الأقدم إلى `da_blocks/` مع الاحتفاظ بالتجزئات التشفيرية ومدخلات الفهرس متاحة للتحقق والبحث.

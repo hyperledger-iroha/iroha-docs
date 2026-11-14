@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/transactions.md
-translation_source_hash: 91c06ab61c7f8ec96554bc89b31b2f281bb3a7d7edd484defe61dcde5a3fb710
+translation_source_hash: d9227effcdb4d54ac76f6288ba213de20f2574e1585e13b96a5202c44b69f3be
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -71,7 +71,7 @@ Iroha 有兩種離線交易工作流程:
 - **離線簽署**會在簽署裝置中斷連線時建立一般的已簽署交易。線上上使用者端將已簽署封包提交給 Torii 之前，交易不會被處理，因此它仍需正確的鏈 ID、許可權主體、許可權、費用和交易生命週期。
 - **Kagemusha 離線現金**可在已註冊且受硬體保護的錢包連線時載入價值，支援兩個錢包都離線時的錢包間付款，並在錢包再次連線時將剩餘價值卸載至帳本帳戶。
 
-Torii 提供一條 Kagemusha 路由：`POST /v1/kagemusha/enrollment`。它接受經帳戶驗證的 `application/x-norito` 註冊框架，並傳回不得快取的私密回應。生命週期的帳本部分使用一般簽署交易，內含 `KagemushaWalletLedgerV1` 指令：
+Torii 提供一條 Kagemusha 變更路由：`POST /v1/kagemusha/enrollment`。它接受經帳戶驗證的 `application/x-norito` 註冊框架，並傳回不得快取的私密回應。`/v1/kagemusha/{scheme}/wallets/{wallet}/` 下由帳戶簽署的 SDK 讀取路由會傳回 Load 收據與最終性證據；這些路由未列於 `/openapi.json`。生命週期的帳本部分使用一般簽署交易，內含 `KagemushaWalletLedgerV1` 指令：
 
 | 動作 | 用途 |
 | --- | --- |
@@ -88,13 +88,21 @@ Torii 提供一條 Kagemusha 路由：`POST /v1/kagemusha/enrollment`。它接�
 3. 在錢包離線期間，於本機交換並驗證錢包間付款，且在確認每筆轉帳之前持久儲存錢包狀態。
 4. 錢包再次連線後，提交其 Unload 申領並等待最終性。
 
+Kagemusha 尚未通過發布資格認證：真實資金環境下的資格認證，以及在實體裝置上進行的手機註冊、啟用與付款，仍未完成。
+
 在票據狀態透過線上生命週期回傳之前，帳本無法發現互相衝突的離線交接。因此，錢包與營運方原則應強制執行價值上限、到期時間、核准發行方、持久化本機儲存與對帳時限。
 
 以下範例使用 `Grant` 指令建立新交易。在該交易中，Mouse 將指定角色（`role_id`）授予 Alice。請參閱[完整範例](./permissions.md#register-a-new-role)。
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```

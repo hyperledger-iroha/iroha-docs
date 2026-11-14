@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
+translation_source_hash: 6edc0185196ab8e77ef8552723e05bf37cca1a088da86e2a43d441d58e779c11
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -32,4 +32,4 @@ Un nouveau bloc de genèse nécessite un espace de stockage vide sur chaque pair
 
 ## Utiliser une configuration personnalisée {#use-custom-configuration}
 
-La configuration actuelle du pair est au format TOML. Montez ou copiez les fichiers générés `config.toml`, `genesis.signed.nrt` et les fichiers de clés associés aux emplacements du conteneur attendus par l’image, puis redémarrez le pair. Gardez les fichiers générés ensemble : mélanger des fichiers issus de différentes exécutions de Kagami peut provoquer des échecs de désérialisation ou de consensus.
+La configuration actuelle du pair est au format TOML. Kagami écrit un `peerN.toml` par validateur avec `genesis.signed.nrt`, `genesis.public_key` et `genesis.expected_hash` ; le fichier Compose produit par `kagami docker` les monte dans le conteneur. Régénérez-le au lieu de copier les fichiers à la main, puis redémarrez le pair. Gardez les fichiers générés ensemble : mélanger des fichiers issus de différentes exécutions de Kagami peut provoquer des échecs de désérialisation ou de consensus.

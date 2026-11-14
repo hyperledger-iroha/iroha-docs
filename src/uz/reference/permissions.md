@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /reference/permissions.md
-translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -16,7 +16,6 @@ Ruxsat tekshiruvlari faol dasturiy ta'minotni bajarish muhitini tasdiqlovchi tom
 |Ruxsatnoma tokeni|Kategoriya|Operatsiya|
 | --- | --- | --- |
 | `CanManagePeers` |tarmoq tengdosh|Tarmoq tengdoshlarini ro‘yxatdan o‘tkazish, ro‘yxatdan chiqarish yoki boshqa tarzda boshqarish.|
-| `CanManageLaneRelayEmergency` |tarmoq tengdosh|Favqulodda ehtimoliy yo‘l signalini boshqarishni boshqarish.|
 | `CanRegisterDomain` |Domen|Domenni ro'yxatdan o'tkazing.|
 | `CanUnregisterDomain` |Domen|Domenni ro‘yxatdan o‘chirish.|
 | `CanModifyDomainMetadata` |Domen|Domen metama'lumotlarini o'zgartirish.|
@@ -28,7 +27,7 @@ Ruxsat tekshiruvlari faol dasturiy ta'minotni bajarish muhitini tasdiqlovchi tom
 | `CanMintAssetWithDefinition` |Aktiv|ma'lum bir ta'rif uchun aktivlarni chiqarish.|
 | `CanBurnAssetWithDefinition` |Aktiv|ma'lum bir ta'rif uchun aktivlarni yo'q qilish.|
 | `CanTransferAssetWithDefinition` |Aktiv|Muayyan ta'rif uchun aktivlarni o'tkazish.|
-| `CanMintAsset` |Aktiv|aniq bir aktiv balansini chiqarish.|
+| `CanMintAssetToAccount` |Aktiv|aniq bir aktiv balansini chiqarish.|
 | `CanBurnAsset` |Aktiv|aniq bir aktiv balansini yo'q qilish.|
 | `CanTransferAsset` |Aktiv|Ma'lum bir aktiv balansini o'tkazing.|
 | `CanRegisterNft` | NFT |NFT uchun ro'yxatdan o'ting.|
@@ -43,7 +42,7 @@ Ruxsat tekshiruvlari faol dasturiy ta'minotni bajarish muhitini tasdiqlovchi tom
 | `CanModifyTrigger` |Tutrqich|Trigger konfiguratsiyasini o'zgartiring.|
 | `CanModifyTriggerMetadata` |Tutrqich|Trigger metama'lumotlarini o'zgartiring.|
 | `CanUpgradeExecutor` |Ijrochi|Dasturiy ta'minot bajarish muhiti ijrochisini yangilang.|
-| `CanRegisterSmartContractCode` |Aqlli shartnoma|Aqlli shartnoma kodini ro‘yxatdan o‘tkazing.|
+| `CanManageSmartContractCode` |Aqlli shartnoma|Hech qayerda havola qilinmagan kod artefaktlarini o‘chirish va shartnoma kirish nuqtalarini delegatsiya qilish. Ro‘yxatdan o‘tgan hisoblar tekshirilgan artefaktlarni bu ruxsatsiz ham yarata oladi.|
 | `CanManageFeeSponsorProgram` | SORA Nexus | Aynan homiy hisobiga tegishli dasturlarni boshqarish. |
 | `CanEnrollFeeSponsorProgram` | SORA Nexus | Aynan bitta homiy dasturining benefitsiarlarini boshqarish. |
 

@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /blockchain/accounts.md
-translation_source_hash: adc98cbf1fcadae4415d03dcc262eb03f8c95b429527e403d230934ae2f3243c
+translation_source_hash: d956bfb8c698fa463ef9fa84a91d50cf0e2100885eba670121ad78753f87d88d
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -44,7 +44,7 @@ Cari açar formatları üçün [müştəri konfiqurasiyası](/az/guide/configure
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+  | jq -r '.items[] | [.id, (.label // "-")] | @tsv'
 ```
 
 Hesab aktivlərini yoxlamaq üçün, ilk texniki çağırışdan bir hesab ID-sini kopyalayın və yolu daxil etməzdən əvvəl onu URL-kodlayın. Bu Python parçası siyahıda ilk olan hesab üçün bunu edir:
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-Bunlar açıq oxuma əməliyyatlarıdır. Hesabın yaradılması və ya yenilənməsi imzalanmış əməliyyatdır və [SORA Nexus məlumat məkanlarına qoşulma](/az/get-started/sora-nexus-dataspaces.md) bölməsində təsvir olunan, test vəsaiti paylama xidməti vasitəsilə maliyyələşdirilmiş Taira quruluşunu tələb edir.
+Bunlar açıq oxuma əməliyyatlarıdır. Hesabın yaradılması və ya yenilənməsi imzalanmış əməliyyatdır və [Taira və Minamoto ilə SORA Nexus üzərində tətbiq hazırlamaq](/az/get-started/sora-nexus-dataspaces.md) bölməsində təsvir olunan, test vəsaiti paylama xidməti vasitəsilə maliyyələşdirilmiş Taira quruluşunu tələb edir.
 
 ## Qeydiyyat və icazələr {#registration-and-permissions}
 

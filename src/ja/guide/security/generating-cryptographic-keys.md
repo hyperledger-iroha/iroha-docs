@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: b6e3bd79c50ea326930ac978350ea4beac8294b6f045ac0084aada257754ffa1
+translation_source_hash: bb1044edb9d34264e36848ee773d4d313bfbfd91b45da2eeb831f7ef8920e9b4
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -56,7 +56,7 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` は `bls_normal` と組み合わせた場合だけ有効で、保管ディレクトリに `pop.hex` を追加します。署名済みジェネシスでは、投票する各バリデーターに対応する PoP が必要です。ピア設定で空でない `trusted_peers_pop` マップを指定すると、バリデーターの部分集合が選ばれます。そのマップに含まれない信頼済みピアはオブザーバーです。マップが空の場合は、すべての BLS-Normal 信頼済みピアがブートストラップ候補集合に入り、投票者の PoPs は引き続き署名済みジェネシスから提供されます。
+`--pop` は `bls_normal` と組み合わせた場合だけ有効で、保管ディレクトリに `pop.hex` を追加します。署名済みジェネシスでは、投票する各バリデーターに対応する PoP が必要です。ピア設定では、各バリデーターの PoP を `trusted_peers_pop` に列挙します。有効な PoP を持たない信頼済みピアはコンセンサスのロスターから除外され、空のマップではバリデーターが 1 つも得られないため、マップにジェネシスのバリデーターが含まれていないノードは起動を拒否します。同期専用のノードは `[sumeragi] role = "observer"` で実行してください。
 
 ## 拘禁出力 {#custody-output}
 

@@ -1,9 +1,9 @@
 ---
 translation_locale: ja
 translation_source: /reference/naming.md
-translation_source_hash: 1d4d698597542d9c84284d0b87dae8a1825d3ab39ff38dd32bb204d41291c83d
+translation_source_hash: 15d095e674edf780c5859abe6f4615d53338e3304e8eedfa494017911204d4b6
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # 命名規則 {#naming-conventions}
 
@@ -15,10 +15,9 @@ translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
    - `#` 資産定義のエイリアスおよび資産残高リテラルに予約されています
    - `::` 契約エイリアス専用です
    - `.` ドメインおよびデータスペースの資格付けのために予約されています
-   - `$` トリガースコープのテキスト形式に予約されています
-   - `%` バリデータスコープのテキスト形式のために予約されています
+   - `$` は `name$domain.dataspace` のような NFT 識別子のために予約されています
 
-2. 名前が持てる最大文字数（UTF-8 文字を含む）は、`[0, u32::MAX]`と現在割り当てられているスタック領域の2つの要因によって制限されます。
+2. 名前は空でなく、Unicode NFC 形式で、UTF-8 で最大 255 バイトであり、空白文字、制御文字、双方向制御文字を含まない必要があります。
 
 ## Taira でこのワークフローを実行してください {#try-it-on-taira}
 

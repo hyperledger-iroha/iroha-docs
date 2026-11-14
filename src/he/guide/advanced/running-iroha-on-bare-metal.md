@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -34,7 +34,7 @@ cargo build --release \
 target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-קובץ ההוצא מכיל את הקבצים המופעלים `genesis.json`, `genesis.signed.nrt`, קבצים צמתים `config.toml`, `client.toml`, תסריטים עוזרים, ו- `README.md` עם פקודות מדויקות עבור חבורת זו.
+ספריית הפלט מכילה את הקבצים שנוצרו `genesis.json`, ‏`genesis.signed.nrt`, ‏`genesis.expected_hash`, קובץ `peerN.toml` אחד לכל מאמת, `client.toml`, את התסריטים `start.sh` ו־`stop.sh`, וכן `README.md` שנוצר ובו פקודות מדויקות עבור חבילה זו.
 
 ## 3. התחילו לצוותים {#_3-start-peers}
 
@@ -44,7 +44,7 @@ target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ./localnet/start.sh
 ```
 
-אם צריך לחבר כל צומת למנהל תהליכים כגון systemd, השתמשו עבור כל צומת בפקודת ההפעלה המתועדת ב-`./localnet/README.md`. שמרו בנפרד את `config.toml`, המפתח הפרטי, ספריית האחסון והיציאות של כל צומת.
+אם צריך לחבר כל צומת למנהל תהליכים כגון systemd, פעלו לפי הפקודה לכל צומת שב־`./localnet/start.sh`: הריצו את `iroha3d --config <bundle>/peerN.toml` מתוך `<bundle>/state/peerN`, והעבירו את `--sumeragi-assert-fresh-key` רק בהפעלה הראשונה של אותו צומת. שמרו בנפרד את `peerN.toml`, המפתח הפרטי, ספריית האחסון והיציאות של כל צומת.
 
 ## 4. לנהל את הרשת {#_4-operate-the-network}
 

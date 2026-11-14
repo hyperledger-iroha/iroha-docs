@@ -1,20 +1,20 @@
 ---
 translation_locale: ur
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
+translation_source_hash: c42adbe41e322c93509279f1f558d4450431de90c596f37eb3999754d4387f78
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
 # نیٹ ورک کے تعیناتی کی چابیاں {#keys-for-network-deployment}
 
-ہر نیٹ ورک کو کلائنٹس، پیئرز، جینیسس پر دستخط، اور NPoS یا SORA Nexus پروفائلز میں BLS ویلیڈیٹر شناختوں کے لیے الگ کلیدی مواد درکار ہوتا ہے۔
+ہر نیٹ ورک کو کلائنٹس، جینیسس پر دستخط، اور ملکیت کے ثبوتوں کے ساتھ BLS نارمل ویلیڈیٹر شناختوں کے لیے الگ کلیدی مواد درکار ہوتا ہے۔
 
 ## جہاں چابیاں استعمال کی جاتی ہیں {#where-keys-are-used}
 
 - کلائنٹ کے دستخط کی چابیاں `client.toml` میں محفوظ ہیں `[account]`.
 - نیٹ ورک نوڈ شناخت کی چابیاں ہر نیٹ ورک نوڈ `config.toml` میں `public_key` اور `private_key` کے طور پر ذخیرہ کی جاتی ہیں۔
 - نیٹ ورک نوڈ دریافت `trusted_peers` میں ہر نیٹ ورک نوڈ کی عوامی کلید کا استعمال کرتا ہے.
-- BLS توثیق کنندہ این پی او ایس پروفائلز کے لئے مالکیت کا ثبوت `trusted_peers_pop` میں محفوظ کیا جاتا ہے۔
+- BLS ویلیڈیٹر کی ملکیت کے ثبوت ہر ویلیڈیٹر کے لیے `trusted_peers_pop` میں محفوظ کیے جاتے ہیں، اتفاقِ رائے کا موڈ کچھ بھی ہو۔
 - پیدائش کے دستخط پر دستخط کرتے وقت پیئر ترتیب میں `[genesis].public_key` اور اسی طرح کی نجی کلید کا استعمال کیا جاتا ہے.
 
 مقامی یا ٹیسٹ کی تعیناتی کے لئے، Kagami کو ان تمام فائلوں کو ایک ساتھ پیدا کرنے دیں:

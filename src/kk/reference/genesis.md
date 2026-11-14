@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /reference/genesis.md
-translation_source_hash: 340921f59a6f8788f559190d520f046ea2473d65154f57a1c54212840c027bc0
+translation_source_hash: dda17468f39573a1fcf43474351bd01c4fea38e8b603fd4d8b21780b273c8649
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -20,6 +20,8 @@ translation_engine: bing-translator-llm+reviewed-delta
 - `executor` опциялы орындаушы жаңарту байткод жолы үшін
 - `ivm_dir` триггерлер мен жаңартулар қолданатын IVM кітапханалар үшін
 - `consensus_mode` техникалық манифестте жарнамаланған бастапқы режим үшін
+- `wire_protocol_version` бірінші шығарылымның консенсус тасымалдау хаттамасының нұсқасы үшін
+- `consensus_fingerprint` консенсус параметрлерінің міндетті емес типтелген саусақ ізі үшін; JSON манифесттері оны нақты көрсетеді
 - `transactions` тапсырыс берілген параметр жаңартулары, нұсқаулар, триггерлер және топология үшін
 - қол қойылған Sumeragi биіктік контекстінің параметрлеріне арналған `sumeragi_context`
 - тізбек қабылдайтын, `allowed_algorithms` ішінде тізілген нақты қол қою және контроллер алгоритмдеріне арналған `crypto_admission_policy`
@@ -39,10 +41,12 @@ translation_engine: bing-translator-llm+reviewed-delta
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
+  --chain-id <CHAIN_ID> \
   --consensus-mode npos \
   --ivm-dir defaults \
   --genesis-public-key <PUBLIC_KEY> \
-  --allowed-signing ed25519 > genesis.json
+  --allowed-signing ed25519 \
+  --allowed-signing bls_normal > genesis.json
 ```
 
 Ашық SORA Nexus деректер кеңістігі үшін күтілетін консенсус режимі — `npos`. Өзге Iroha 3 орналастырулары нысаналы профильге қарай рұқсаттық режимді немесе NPoS қолдана алады.
@@ -54,10 +58,11 @@ JSON өңделіп, тексерілгеннен кейін, оны орнал�
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
   --private-key-file <MODE_0600_PRIVATE_KEY_FILE> \
-  --out-file genesis.signed.nrt
+  --out-file genesis.signed.nrt \
+  --expected-hash-out genesis.expected_hash
 ```
 
-`kagami genesis sign` техникалық манифесттен блокчейннің бастапқы қоғамдық кілтін оқып, пайдаланушы иелігінде жатқан бір сілтемелі қарапайым файлдан жеке кілтті пайдаланып, орналастыруға болатын қол қойылған блокты шығарады. Файл бір протокол-стандартты жеке кілт мультихэштен тұруы керек және жаңа жолмен аяқталуы тиіс; Kagami символдық сілтемелерді және `0600`-ден өзгеше режимдерді қабылдамайды. Жеке кілттердің жаңа жолда командалық жолда көрсетілуі қабылданбайды. Нәтиже – бұл желідегі әріптестер өз конфигурацияларынан сілтеме жасауға тиіс файл.
+`kagami genesis sign` орналастыруға болатын қол қойылған блокты шығару үшін генезис кілт жұбын иесі ұстайтын бір сілтемелі қарапайым файлдағы жеке кілттен шығарады. Оның жарияланған генезис ашық кілтіне сәйкес келуін талап ету үшін `--expected-public-key` беріңіз. Файл бір протокол-стандартты жеке кілт мультихэштен тұруы керек және жаңа жолмен аяқталуы тиіс; Kagami символдық сілтемелерді және `0600`-ден өзгеше режимдерді қабылдамайды. Командалық жолда шикі жеке кілттер қабылданбайды. Нәтиже – бұл желідегі әріптестер өз конфигурацияларынан сілтеме жасауға тиіс файл.
 
 ## `iroha3d` баптау {#configure-iroha3d}
 

@@ -1,9 +1,9 @@
 ---
 translation_locale: hy
 translation_source: /blockchain/ram-lfe.md
-translation_source_hash: a07f2d06180425e4d1c1393810cf679fb88b3e993d49792b2483485cb1cc52fd
+translation_source_hash: c08b67e5a58fea2012fdba7bbfcb88dd9bc329b7a549e7d40011a5f4fb0ef68c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # RAM-LFE {#ram-lfe}
 
@@ -763,6 +763,5 @@ Torii Դեպքի մեջ է: RAM-LFE վազման ժամանակը կոմպուլ
 
 ## Կապակցված թեմաներ {#related-topics}
 
-- [Հատուկ տվյալների տարածքի համար հովանավորների վճարներ](/hy/get-started/private-dataspace-fee-sponsor.md)
 - [Torii Վերջնական կետեր](/hy/reference/torii-endpoints.md#app-and-sora-route-families)
 - [Անանուն գործարքներ](/hy/blockchain/anonymous-transactions.md)

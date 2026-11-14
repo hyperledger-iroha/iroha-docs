@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /blockchain/assets.md
-translation_source_hash: 4d0a3f54a0c70d08d11160b9ec66d6538aa2c49c7771a13e4a070b61a9cb3e4b
+translation_source_hash: f5f0eb99e76287db695cc21b8580fd2a9b4dc2a989237c1a1d3d7333c14561ce
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -22,6 +22,7 @@ Iroha აქტივი არის ციფრული ბალანს�
 - `logo`: არასწორია `SoraFS` URI
 - `metadata`: საკვანძო მნიშვნელობის თვითნებური მეტამონაცემები.
 - `balance_scope_policy`: ბალანსები გლობალურია თუ მონაცემთა სივრცით შეზღუდული
+- `owning_domain`: დომენის საკუთრებაში მყოფი განსაზღვრის მფლობელი დომენი; არ არსებობს იმ განსაზღვრებისთვის, რომლებიც პირდაპირ მონაცემთა სივრცეშია რეგისტრირებული
 - `owned_by`: ანგარიში, რომელმაც დაარეგისტრირა ან ფლობს განსაზღვრას
 - `total_quantity`: გამოშვებული საერთო რაოდენობა
 - `confidential_policy`: დაცული აქტივების ოპერაციების პოლიტიკა
@@ -33,7 +34,7 @@ Iroha აქტივი არის ციფრული ბალანს�
 `Asset` შეიცავს:
 
 - `id`: `AssetId`, რომელიც აერთიანებს აქტივების განსაზღვრას, მფლობელის ანგარიშს და ვალუტის ბალანსის ვარიანტს.
-- `value`: ბალანსი `Numeric`
+- `value`: ბალანსი `Quantity`
 
 მფლობელის ანგარიში კანონიკურია და დომენს არ შეიცავს. აქტივის განსაზღვრება შეიძლება წარმოდგენილი იყოს მონაცემთა სივრცით დაზუსტებულ დომენში, მაგალითად `payments.universal`.
 
@@ -88,7 +89,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-სამივე მაგალითი წაკითხვაა. Taira-ზე აქტივების გამოსაშვებად, დასაწვავად ან გადასარიცხად გამოიყენეთ სატესტო ტოკენების გამცემი სერვისით დაფინანსებული ანგარიში და გვერდზე [SORA Nexus-ის მონაცემთა სივრცეებთან დაკავშირება](/ka/get-started/sora-nexus-dataspaces.md) აღწერილი შემოწმებადი პროცესი.
+სამივე მაგალითი წაკითხვაა. Taira-ზე აქტივების გამოსაშვებად, დასაწვავად ან გადასარიცხად გამოიყენეთ სატესტო ტოკენების გამცემი სერვისით დაფინანსებული ანგარიში და გვერდზე [SORA Nexus-ზე შემუშავება Taira-სა და Minamoto-ს გამოყენებით](/ka/get-started/sora-nexus-dataspaces.md) აღწერილი შემოწმებადი პროცესი.
 
 Taira-ზე საკომისიოს მქონე აქტივის მაგალითისთვის ჯერ დააფინანსეთ ხელმომწერი გვერდზე [სატესტო XOR-ის მიღება Taira-ზე](/ka/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) აღწერილი მომზადების ეტაპიანი ტოკენების მიღების პროცესით. შემდეგ `ledger asset mint`, `ledger asset burn` და `ledger asset transfer` ბრძანებებს გადასცით `--fee-payer authority`; CLI ხელმოწერამდე ითვლის ზუსტ საკომისიოს Taira-ს საკომისიო აქტივში:
 

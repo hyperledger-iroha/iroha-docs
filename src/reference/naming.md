@@ -8,10 +8,9 @@ When you are naming accounts, domains, or assets, you have to keep in mind the f
    - `#` is reserved for asset definition aliases and asset balance literals
    - `::` is reserved for contract aliases
    - `.` is reserved for domain and data space qualification
-   - `$` is reserved for trigger-scoped textual forms
-   - `%` is reserved for validator-scoped textual forms
+   - `$` is reserved for NFT identifiers such as `name$domain.dataspace`
 
-2. The maximum number of characters (including UTF-8 characters) a name can have is limited by two factors: `[0, u32::MAX]` and the currently allocated stack space.
+2. A name must be non-empty, in Unicode NFC form, at most 255 UTF-8 bytes long, and free of whitespace, control, and bidirectional-control characters.
 
 ## Try It on Taira
 

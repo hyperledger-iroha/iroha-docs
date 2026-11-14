@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/events.md
-translation_source_hash: aad93f1981a5b470966090b5e06ec07178738b15f1d870097947682b19f99595
+translation_source_hash: 2777cbe4e72a50c4790e50b59c3e695feb5814314cc9afccdfd994f6409c195e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # 事件 {#events}
 
@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 
 ## 管道事件 {#pipeline-events}
 
-當交易被提交、執行或寫入已提交區塊時，會發出管線事件。管線事件包含以下資訊：引發事件的實體（交易或區塊）型別、其雜湊及狀態。狀態可以是 `Validating`（正在驗證）、`Rejected` 或 `Committed`。如果實體遭到拒絕，還會提供拒絕原因。
+交易與區塊在管線中流轉時會發出管線事件。交易事件包含交易雜湊、區塊高度、通道與資料空間 ID，以及一個狀態：`Queued`、`Expired`、`Approved`，或附帶拒絕原因的 `Rejected`。區塊事件包含區塊標頭與一個狀態：`Created`、`Approved`、附帶原因的 `Rejected`、`Committed` 或 `Applied`。
 
 ### 在 Taira 試看. {#try-it-on-taira}
 
@@ -30,8 +30,8 @@ curl -fsSI https://taira.sora.org/v1/events/sse \
 為了一張即時鏡頭,你可以檢查而不讓流量開放.閱讀最近的探索者交易:
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
-  | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
+curl -fsS 'https://taira.sora.org/v1/explorer/transactions?limit=5' \
+  | jq '{next_cursor, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
 當您需要現場活動時,在終端開啟 SSE 路線:

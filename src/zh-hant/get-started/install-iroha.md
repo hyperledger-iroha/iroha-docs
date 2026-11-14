@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /get-started/install-iroha.md
-translation_source_hash: cef11a7036dcb5257647edf0c48ea1b9c144822e029df936b422998f46187b41
+translation_source_hash: b2ba22db6a25e3b67cf18dc6959f95f57bd861b232b1d4a9d881bbe3cdf7844a
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 
 首先安裝這些:
 
-- [rustup](https://www.rust-lang.org/tools/install),因此固定的 `rust-toolchain.toml`工具鏈 (`1.93.1`) 已自動安裝
+- [rustup](https://www.rust-lang.org/tools/install),因此固定的 `rust-toolchain.toml`工具鏈 (`1.99.1`) 已自動安裝
 - `git`
 - 選項: Docker 和 Docker Compose 用於當地的多個對等節點快速啟動
 

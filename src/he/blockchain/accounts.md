@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /blockchain/accounts.md
-translation_source_hash: adc98cbf1fcadae4415d03dcc262eb03f8c95b429527e403d230934ae2f3243c
+translation_source_hash: d956bfb8c698fa463ef9fa84a91d50cf0e2100885eba670121ad78753f87d88d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -44,7 +44,7 @@ private_key_file = "/absolute/path/to/private.key"
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+  | jq -r '.items[] | [.id, (.label // "-")] | @tsv'
 ```
 
 כדי לבחון נכסי החשבון, העתק חשבון ID מהקריאה הראשונה ו URL - קוד אותו לפני שמצאת אותו בנתיב. קטע זה Python עושה זאת עבור החשבון הראשון המפורסם:
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-אלו פעולות קריאה ציבוריות. יצירה או עדכון של חשבון הם עסקה חתומה, ולכן נדרשת הגדרת Taira עם מימון משירות חלוקת כספי הניסוי, כמתואר ב־[התחברות למרחבי הנתונים של SORA Nexus](/he/get-started/sora-nexus-dataspaces.md).
+אלו פעולות קריאה ציבוריות. יצירה או עדכון של חשבון הם עסקה חתומה, ולכן נדרשת הגדרת Taira עם מימון משירות חלוקת כספי הניסוי, כמתואר ב־[פיתוח על SORA Nexus באמצעות Taira ו־Minamoto](/he/get-started/sora-nexus-dataspaces.md).
 
 ## רישום והרשיונות {#registration-and-permissions}
 

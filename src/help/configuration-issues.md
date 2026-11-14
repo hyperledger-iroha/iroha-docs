@@ -41,8 +41,8 @@ the right-hand-side is not a hexadecimal representation of the key bytes
 and call `from_hex` on the string literal in both the `public_key` and
 `private_key` instantiation.
 
-It is also natural to assume that calling `PrivateKey::try_from_str` on the
-string literal would yield only the correct key. So if you get the number
+It is also natural to assume that parsing the string literal with
+`str::parse::<PrivateKey>()` would yield only the correct key. So if you get the number
 of bits in the key wrong, e.g. 32 bytes vs 64, that it would raise an error
 message.
 
@@ -54,7 +54,7 @@ characters into a nice small table of obviously hexadecimal numbers.
 
 ::: warning
 
-Even the `try_from_str` implementation cannot verify if a given string is a
+Even the `FromStr` implementation cannot verify if a given string is a
 valid `PrivateKey` and warn you if it isn't.
 
 It will catch some obvious errors, e.g. if the string contains an invalid

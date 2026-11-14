@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /get-started/install-iroha.md
-translation_source_hash: cef11a7036dcb5257647edf0c48ea1b9c144822e029df936b422998f46187b41
+translation_source_hash: b2ba22db6a25e3b67cf18dc6959f95f57bd861b232b1d4a9d881bbe3cdf7844a
 translation_status: machine-validated
 translation_engine: human-reviewed+reviewed-delta
 ---
@@ -15,7 +15,7 @@ translation_engine: human-reviewed+reviewed-delta
 
 དང་པོ་འདི་དག་བཙུགས།
 
-- [rustup](https://www.rust-lang.org/tools/install) འདི་འབདཝ་ལས་ མཐུད་སྦྲེལ་འབད་ཡོད་པའི་ `rust-toolchain.toml` ལག་ཆས་སྤོག་ (`1.93.1`) འདི་ རང་བཞིན་གྱིས་བཙུགས་འབདཝ་ཨིན།
+- [rustup](https://www.rust-lang.org/tools/install) འདི་འབདཝ་ལས་ མཐུད་སྦྲེལ་འབད་ཡོད་པའི་ `rust-toolchain.toml` ལག་ཆས་སྤོག་ (`1.99.1`) འདི་ རང་བཞིན་གྱིས་བཙུགས་འབདཝ་ཨིན།
 - `git`
 - གདམ་ཁ་རྐྱབ་པ་ཅིན་ Docker དང་ Docker Compose གི་དོན་ལུ་ ས་གནས་ཀྱི་ སྣ་མང་ཆ་མཉམ་པ མགྱོགས་འགོ
 

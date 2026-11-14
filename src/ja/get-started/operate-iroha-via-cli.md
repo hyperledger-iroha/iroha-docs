@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: 5fb7abd4e152ece715a8337e8ef8e75330f634d2a1b26e0c5bd8308f1f3793a9
+translation_source_hash: 40714a6cd124d4b0342b0f6ecf321f286e714c0e236afd6fd7834c0cf0ad1165
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -11,15 +11,14 @@ translation_engine: bing-translator-llm+reviewed-delta
 
 ## 1. 前提条件 {#_1-prerequisites}
 
-まずローカルネットワークを始めてください:
-
-- [Iroha 3 を起動](./launch-iroha.md)
-
-以下の例は、[Iroha 3 を起動](./launch-iroha.md)で作成されたローカルネットから生成されたクライアント構成を前提としています。
+ドキュメントに記載されたソースリビジョンの Iroha チェックアウトから、4 ピアのローカルネットを生成して起動します：
 
 ```bash
-./localnet/client.toml
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
+./localnet/start.sh
 ```
+
+以下の例では、生成されたクライアント設定 `./localnet/client.toml` を使用します。
 
 ## 2. 基本 CLI 設定 {#_2-basic-cli-setup}
 
@@ -61,7 +60,7 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-`universal` データスペースの公開ドメインを一覧表示します。
+認証されていない読み手に見えるドメインを一覧表示します：
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
@@ -147,7 +146,8 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 合意形成の運用コマンドには、許可リストに登録されたランタイム鍵が必要です。鍵を `client.toml` に含めず、所有者だけがアクセスできるファイルを絶対パスで指定してください。
 
 ```bash
-: "${OPERATOR_KEY_FILE:=$PWD/secrets/operator.key}"
+# The generated localnet writes its allow-listed operator key here.
+: "${OPERATOR_KEY_FILE:=$PWD/localnet/runtime/operator-signer.key}"
 
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \

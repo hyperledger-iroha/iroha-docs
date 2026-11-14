@@ -1,9 +1,9 @@
 ---
 translation_locale: ur
 translation_source: /blockchain/permissions.md
-translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
+translation_source_hash: 7993d14839218fd3394d52dbcce264bffea32394f54e25dd261cd060c54f1fe1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # اجازت نامے {#permissions}
 
@@ -72,14 +72,20 @@ let register_role = Register::role(role);
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```
 
 ## اجازت کے تصدیق کنندہ {#permission-validators}
 
-اجازتیں موجود ہیں تاکہ صرف مطلوبہ اجازت ٹوکن والے اکاؤنٹس محفوظ کارروائی انجام دے سکیں۔ ڈیفالٹ ایگزیکٹر ہدایات ، استفسار اور اظہار کے عمل کے دوران اجازتوں کی جانچ پڑتال کرتا ہے۔
+اجازتیں اس لیے موجود ہیں تاکہ صرف مطلوبہ اجازت ٹوکن والے اکاؤنٹس محفوظ کارروائی انجام دے سکیں۔ ڈیفالٹ ایگزیکیوٹر لین دین اور ہدایات کے نفاذ اور استفسار کی توثیق کے دوران اجازتوں کی جانچ کرتا ہے۔
 
 ڈیفالٹ توثیق کنندہ سطح کو لیجر کے علاقے کی طرف سے گروپ کیا جاتا ہے:
 
@@ -96,7 +102,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 
 اجازت کی جانچ پڑتال کو فعال عملدرآمد کے ذریعہ نافذ کیا جاتا ہے۔ ڈیفالٹ عملدرآمد بلٹ میں اجازت کی توثیق کرنے والے اور ٹوکن تعریفیں فراہم کرتا ہے ، اور نیٹ ورک اس عملدرآمد کو اپ گریڈ کرکے پالیسی تبدیل کرسکتا ہے جس کا استعمال کرتا ہے۔
 
-توثیق کرنے والے ایک تصدیق کا فیصلہ واپس کرتے ہیں۔ توثیق کنندہ کسی آپریشن کی اجازت دے سکتا ہے ، اسے کسی وجہ سے مسترد کرسکتا ہے ، یا اگر آپریشن اس تصدیق کنندہ کے دائرہ کار سے باہر ہے تو اسے چھوڑ سکتا ہے۔ منتخب کردہ جج ان فیصلوں کو جوڑتا ہے تاکہ یہ فیصلہ کیا جاسکے کہ آیا ہدایات ، استفسار ، یا اظہار جاری ہوسکتا ہے۔
+ایگزیکیوٹر یا تو کسی آپریشن کی اجازت دیتا ہے یا اسے `ValidationFail` وجہ کے ساتھ مسترد کر دیتا ہے۔ مسترد شدہ ہدایت اپنے لین دین کو مسترد کر دیتی ہے، اور مسترد شدہ استفسار کال کرنے والے کو غلطی واپس کرتا ہے۔
 
 ## معاون استفسارات {#supported-queries}
 

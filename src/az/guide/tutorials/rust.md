@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /guide/tutorials/rust.md
-translation_source_hash: fbe41bd6e7fa86d06c027724b446016c14246495964ccf521155e4b790d75041
+translation_source_hash: 9d9848de91a85c84221efc39bc7dfb8443f5c50b448d336207c06efce3bc07e8
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -53,7 +53,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-Siz `taira.client.toml` yaratdıqdan sonra, eyni ikilik fayl imzalanmış kanarya əmrlərini Taira-ə qarşı işlədə bilər. Bunları adi vahid testlərdən ayırın, çünki onlar testnet-də maliyyələşən hesab və canlı testnet mövcudluğu tələb edir.
+Siz `taira.client.toml` yaratdıqdan sonra, eyni ikilik fayl `iroha taira account` ilə hesabı qoşa və maliyyələşdirə, həmçinin Taira-ya qarşı adi imzalanmış reyestr əmrlərini göndərə bilər. Bunları adi vahid testlərdən ayırın, çünki onlar testnet-də maliyyələşən hesab və canlı testnet mövcudluğu tələb edir.
 
 ## Rust Müştəri proqram təminat paketindən istifadə {#using-the-rust-client-crate}
 
@@ -70,7 +70,7 @@ iroha = { git = "https://github.com/hyperledger-iroha/iroha.git", rev = "<IROHA_
 - `crates/iroha/README.md`
 - `crates/iroha_cli/README.md`
 
-Blokçeyn dəftər hesabı vasitəsilə idarə olunan kirayə iş axınları üçün baxın [Yerli Aktiv Depoziti](/az/blockchain/escrow.md#rust-sdk). Rust məlumat modeli hal-hazırda bazar kirayəsi, ümumi aktiv kilidləri, anonim kirayə, sorğular və hadisələr üçün ən tam növ əhatəsini təmin edir.
+Reyestr tərəfindən idarə olunan eskrou iş axınları üçün [Yerli Aktiv Depoziti](/az/blockchain/escrow.md#rust-sdk) bölməsinə baxın. Rust məlumat modeli hal-hazırda bazar eskrousu, ümumi aktiv kilidləri, şərti eskrou, sorğular və hadisələr üçün ən tam tipli əhatəni təmin edir.
 
 Siz lokal CLI kömək nöqtəsi-vaxt məlumat baxışını aşağıdakıla yenidən yarada bilərsiniz:
 

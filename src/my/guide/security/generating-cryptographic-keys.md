@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: b6e3bd79c50ea326930ac978350ea4beac8294b6f045ac0084aada257754ffa1
+translation_source_hash: bb1044edb9d34264e36848ee773d4d313bfbfd91b45da2eeb831f7ef8920e9b4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -56,7 +56,7 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` ကို `bls_normal` နှင့်သာ အသုံးပြုနိုင်ပြီး ကီးထိန်းသိမ်းရေးဖိုင်တွဲသို့ `pop.hex` ကို ထည့်ပေးသည်။ လက်မှတ်ထိုးထားသော genesis တွင် မဲပေးသော validator တိုင်းအတွက် ကိုက်ညီသော PoP လိုအပ်သည်။ peer ပြင်ဆင်သတ်မှတ်မှုတွင် ဗလာမဟုတ်သော `trusted_peers_pop` မြေပုံက validator အစုခွဲကို ရွေးချယ်သည်။ ထိုမြေပုံမှ ချန်ထားသော ယုံကြည်ထားသည့် peer များသည် လေ့လာသူများဖြစ်သည်။ မြေပုံက ဗလာဖြစ်လျှင် ယုံကြည်ထားသော BLS-normal peer အားလုံးသည် စတင်ချိတ်ဆက်မည့် ကိုယ်စားလှယ်လောင်းအစုသို့ ဝင်ပြီး မဲပေးသူ PoPs များကို လက်မှတ်ထိုးထားသော genesis ကပင် ပံ့ပိုးရသည်။
+`--pop` ကို `bls_normal` နှင့်သာ အသုံးပြုနိုင်ပြီး ကီးထိန်းသိမ်းရေးဖိုင်တွဲသို့ `pop.hex` ကို ထည့်ပေးသည်။ လက်မှတ်ထိုးထားသော genesis တွင် မဲပေးသော validator တိုင်းအတွက် ကိုက်ညီသော PoP လိုအပ်သည်။ Peer ပြင်ဆင်သတ်မှတ်မှုတွင် validator တစ်ခုစီ၏ PoP ကို `trusted_peers_pop` တွင် စာရင်းသွင်းပါ- မှန်ကန်သော PoP မရှိသည့် ယုံကြည်ထားသော peer များကို consensus စာရင်းမှ ဖယ်ထုတ်ထားပြီး ဗလာမြေပုံသည် validator တစ်ခုမျှ မထုတ်ပေးသောကြောင့် genesis ၏ validator များကို မြေပုံတွင် ချန်လှပ်ထားသော node သည် စတင်ရန် ငြင်းဆန်သည်။ Sync သာလုပ်သော node ကို `[sumeragi] role = "observer"` ဖြင့် လည်ပတ်ပါ။
 
 ## ထိန်းသိမ်းမှု ထုတ်ကုန်များ {#custody-output}
 

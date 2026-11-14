@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /reference/permissions.md
-translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -16,7 +16,6 @@ translation_engine: nllb-200-ct2+reviewed-delta
 |թույլտվության նշան|Կատեգորիա|Օպերացիա|
 | --- | --- | --- |
 |`CanManagePeers` |Հանգույցներ|Գրանցվել, չգրանցվել կամ այլ կերպ կառավարել հանգույցները: |
-|`CanManageLaneRelayEmergency` |Հանգույցներ|Կառավարեք շտապ ճամփորդի ռեալի վերահսկողությունը: |
 |`CanRegisterDomain` |Դոմեյն |Գրանցեք դոմեյն:|
 |`CanUnregisterDomain` |Դոմեյն |Դոմենի գրանցումը չեղարկեք: |
 |`CanModifyDomainMetadata` |Դոմեյն |Փոխել դոմեյնային մետադատա: |
@@ -28,7 +27,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 |`CanMintAssetWithDefinition` |Գույք |Մինետային ակտիվներ՝ հատուկ սահմանման համար: |
 |`CanBurnAssetWithDefinition` |Գույք |Սառել ակտիվները հատուկ սահմանման համար: |
 |`CanTransferAssetWithDefinition` |Գույք |Տրանսֆերային ակտիվներ՝ հատուկ սահմանման համար: |
-|`CanMintAsset` |Գույք |Տեղադրեք որոշակի ակտիվների մնացորդ: |
+|`CanMintAssetToAccount` |Գույք |Տեղադրեք որոշակի ակտիվների մնացորդ: |
 |`CanBurnAsset` |Գույք |Պարզ ակտիվների մնացորդը այրեք:|
 |`CanTransferAsset` |Գույք |Տեղափոխել հատուկ ակտիվների մնացորդը: |
 |`CanRegisterNft` |NFT |Գրանցել NFT: |
@@ -43,7 +42,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 |`CanModifyTrigger` |Աջակցող |Փոփոխեք գործարկիչի կարգավորումը: |
 |`CanModifyTriggerMetadata` |Աջակցող |Փոփոխեք գործարկիչի մետադատները: |
 |`CanUpgradeExecutor` |Կատարող |Բարձրացրեք վազման ժամանակի գործարկիչը: |
-|`CanRegisterSmartContractCode` |Խելացի պայմանագիր |Գրանցեք խելացի պայմանագրի կոդը: |
+|`CanManageSmartContractCode` |Խելացի պայմանագիր |Չհղված կոդի արտեֆակտների հեռացում և պայմանագրի մուտքի կետերի պատվիրակում։ Գրանցված հաշիվները կարող են առանց դրա ստեղծել ստուգված արտեֆակտներ։ |
 | `CanManageFeeSponsorProgram` | SORA Nexus | Կառավարել ճշգրիտ հովանավոր հաշվին պատկանող ծրագրերը։ |
 | `CanEnrollFeeSponsorProgram` | SORA Nexus | Կառավարել մեկ ճշգրիտ հովանավոր ծրագրի շահառուներին։ |
 

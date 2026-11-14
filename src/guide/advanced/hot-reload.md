@@ -25,8 +25,10 @@ A new genesis requires empty peer storage. Use `python3 poc.py down` and `python
 
 ## Use Custom Configuration
 
-Current peer configuration is TOML. Bind mount or copy the generated
-`config.toml`, `genesis.signed.nrt`, and related key files into the container
-paths expected by the image, then restart the peer. Keep the generated files
+Current peer configuration is TOML. Kagami writes one `peerN.toml` per
+validator with `genesis.signed.nrt`, `genesis.public_key`, and
+`genesis.expected_hash`; the Compose file from `kagami docker` mounts them into
+the container. Regenerate it instead of copying files by hand, then restart
+the peer. Keep the generated files
 together; mixing files from different Kagami runs can produce deserialization or
 consensus failures.

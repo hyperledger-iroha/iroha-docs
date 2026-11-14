@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /guide/configure/genesis.md
-translation_source_hash: 91be089c82a76991e35a43e1541f9e069fdf70d3fb5de2492b985c06c78a2372
+translation_source_hash: 2a4a43b6ac873cc0c860631e307e52b047ba6a08691bf3e4c5872cc22c81a0bd
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -9,7 +9,7 @@ translation_engine: nllb-200-ct2+reviewed-delta+reviewed-first-release-source-am
 
 genesis သည် ဘလော့ခ်ချိန်း၏ ကနဦးအခြေအနေကို သတ်မှတ်သည်။ ပြင်ဆင်နိုင်သော မူရင်းသည် JSON manifest ဖြစ်ပြီး Iroha 3 နိုဒ်သည် လက်မှတ်ထိုးထားသော Norito transaction ဖိုင်ကို ဖတ်ယူအသုံးပြုသည်။
 
-::: details မူလသတ်မှတ်ထားသော genesis manifest
+::: details မူလ genesis ရင်းမြစ်ပုံစံခွက် (defaults/genesis.template.json)
 
 <<< @/snippets/genesis.json
 
@@ -36,7 +36,7 @@ public_key = "ed0120..."
 expected_hash_file = "./genesis.expected_hash"
 ```
 
-ကွန်ရက်ရှိ peer အားလုံးသည် လက်မှတ်ထိုးထားသော genesis transaction နှင့် genesis အများသုံးကီးအပေါ် သဘောတူညီရသည်။ မျှော်မှန်းဟက်ရှ်ဖိုင်သည် အသစ်စတင်ချိန်နှင့် ပြန်စတင်ချိန် နှစ်မျိုးစလုံးတွင် လိုအပ်ပြီး `kagami genesis sign --expected-hash-out` က ၎င်းကို ရေးသားသည်။
+ကွန်ရက်ရှိ peer အားလုံးသည် လက်မှတ်ထိုးထားသော genesis transaction နှင့် genesis အများသုံးကီးအပေါ် သဘောတူညီရသည်။ အသစ်စတင်ခြင်းဖြစ်စေ ပြန်စတင်ခြင်းဖြစ်စေ စတင်မှုတိုင်းတွင် မျှော်မှန်းဟက်ရှ် လိုအပ်သည်- `expected_hash_file` သို့မဟုတ် တိုက်ရိုက်ထည့်ထားသော `expected_hash` အနက် တစ်ခုတည်းကိုသာ အတိအကျ ပြင်ဆင်သတ်မှတ်ပါ။ `kagami genesis sign --expected-hash-out` က ဖိုင်ကို ရေးသားသည်။
 
 ## လက်မှတ်ရေးထိုးခြင်း blockchain genesis {#signing-genesis}
 
@@ -52,7 +52,7 @@ cargo run --bin kagami -- genesis sign ./genesis.json \
 
 `GENESIS_PRIVATE_KEY_FILE` သည် ပိုင်ရှင်က ထိန်းသိမ်းထားပြီး mode-`0600` သတ်မှတ်ထားသော လင့်ခ်တစ်ခုသာရှိသည့် ပုံမှန်ဖိုင်ဖြစ်ရမည်။ ထိုဖိုင်တွင် စံသတ်မှတ်ပုံစံ ကိုယ်ပိုင်ကီး multihash တစ်ခုနှင့် နောက်ဆုံးစာကြောင်းသစ်တစ်ခု ပါဝင်ရမည်။ Kagami သည် သင်္ကေတလင့်ခ်များကို ပယ်ချပြီး command စာကြောင်းပေါ်မှ မူရင်း genesis ကိုယ်ပိုင်ကီးကို လုံးဝ လက်မခံပါ။
 
-NPoS သို့မဟုတ် SORA Nexus ၏ profile များအတွက် ထုတ်လုပ်ထားသော profile က လိုအပ်သည့် ကွန်ရက်ချိတ်ဆက်ပုံနှင့် BLS ကီးပိုင်ဆိုင်ကြောင်း သက်သေများကို ထည့်ပါ။ Kagami ၏ `localnet generate`၊ `wizard` နှင့် `sora-network generate` command များက ဤအသေးစိတ်များကို အလိုအလျောက် ကိုင်တွယ်ပေးသည်။
+Permissioned ဖြစ်စေ NPoS ဖြစ်စေ လက်မှတ်ထိုးထားသော genesis တိုင်းတွင် validator တစ်ခုစီအတွက် BLS ပိုင်ဆိုင်ကြောင်း သက်သေ (Proof-of-Possession) ပါဝင်သော `3f + 1` validator ဖွဲ့စည်းပုံ အတိအကျ ပါဝင်ရမည်။ Kagami ၏ `localnet generate`၊ `wizard` နှင့် `sora-network generate` command များက ဤအသေးစိတ်များကို အလိုအလျောက် ကိုင်တွယ်ပေးသည်။
 
 ## blockchain ကို ပြန်လည်စတင်ခြင်း {#recommitting-genesis}
 

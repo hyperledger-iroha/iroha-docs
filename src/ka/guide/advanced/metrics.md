@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
+translation_source_hash: ad2bc9f8c53169d8161f7a2f23b1e660ebd24cf03cf8e05f4b00bbd27b7b11fe
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -23,8 +23,8 @@ Iroha შესრულება დამოკიდებულია სა
 დაიწყეთ საჯარო კვანძის წერტილის დროში მონაცემების ხედვით და Prometheus scrape- ით, შემდეგ გამოიყენეთ CLI ოპერატორის მიერ ავტორიზებული კონსენსუსის მდგომარეობისთვის. ოპერატორის გასაღები უნდა იყოს ნებადართული სამიზნე კვანჭით და დატვირთულია მხოლოდ შესრულების გარემოში:
 
 ```bash
-export TORII=http://127.0.0.1:8180
-export OPERATOR_KEY_FILE=./secrets/operator.key
+export TORII=http://127.0.0.1:8080
+export OPERATOR_KEY_FILE="$PWD/localnet/runtime/operator-signer.key"
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s "$TORII/metrics" > metrics.prom
@@ -52,7 +52,7 @@ curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/now" \
-  | jq '{now_ms, offset_ms}'
+  | jq '{now, offset_ms}'
 ```
 
 არ გამოიყენოთ საჯარო ტესტნეტის დაკვირვებები საკუთარი განთავსებისათვის წარმოების სიმძლავრის რიცხვებად.
@@ -187,13 +187,13 @@ iroha --config ./localnet/client.toml \
 | --- | --- | --- |
 |მიღებული გამტარობა |`sum(rate(txs{type="accepted"}[5m]))` |უნდა შეხვდეს ან გადააჭარბოს მიზანს TPS სტაბილურ მდგომარეობაში |
 |უარყოფა |`sum(rate(txs{type="rejected"}[5m]))` |ეს უნდა იყოს განმარტებული ტესტის გეგმით |
-|პროტოკოლის განხორციელების დაგვიანება |`histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |შეადარეთ p95/p99 და ლეტენციური ბიუჯეტი |
+|დადასტურების დაყოვნება |`histogram_quantile(0.95, sum by (le) (rate(sumeragi_commit_latency_ms_bucket{lane="global"}[5m])))`, `last_commit_time_ms` |შეადარეთ p95/p99 დაყოვნების ბიუჯეტს |
 |რიგის სიღრმე |`queue_size`, `sumeragi_tx_queue_depth` |უნდა დარჩეს შეზღუდული მატების პიკის დროს |
 |რიგის გაჯერება |`sumeragi_tx_queue_saturated` |მუდმივი ნულოვანი მნიშვნელობის საშუალო გადატვირთვა |
-|ნახეთ ცვლილებები |`view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |მზარდი ღირებულებები მიუთითებს დროის, ტოპოლოგიის, სასარგებლო დატვირთვის ან ქსელის პრობლემების |
-|წაშლილი შეტყობინებები |`dropped_messages`, `sumeragi_consensus_message_handling_total` |ტვირთის დროს შემცირება, როგორც წესი, ხსნის ლატენციის მაქსიმუმებს.|
-|დატვირთვა და DA აღდგენა | `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` |მუდმივი მოთხოვნები, ასაკის ზრდა ან განმეორებითი DA კარიბჭეები მიუთითებენ სხეულის ან ნაწილის შეძენის პრობლემებზე |
-|კონსენსუსის დასკვნითი კვორუმი |`sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |გათვლილი ხელმოწერები სასწრაფოდ უნდა მიაღწიონ საჭირო კვორუმს.|
+|ნახეთ ცვლილებები |`view_changes`, `sumeragi_view_changes_total`, `sumeragi_timeout_votes_total` |მზარდი ღირებულებები მიუთითებს დროის, ტოპოლოგიის, სასარგებლო დატვირთვის ან ქსელის პრობლემების |
+|წაშლილი შეტყობინებები |`sumeragi_dropped_total`, `p2p_queue_dropped_total` |ტვირთის დროს შემცირება, როგორც წესი, ხსნის ლატენციის მაქსიმუმებს.|
+|დატვირთვისა და ჩამორჩენის აღმოფხვრის მოთხოვნები | `sumeragi_fetch_requests_total{kind="body"}`, `sumeragi_fetch_requests_total{kind="sync"}` |სხეულის ან სინქრონიზაციის მუდმივი მოთხოვნები მიუთითებს დატვირთვის მიღების ან ჩამორჩენის აღმოფხვრის პრობლემებზე |
+|დადასტურების პროგრესი |`sumeragi_committed_height`, `sumeragi_applied_height` |სერტიფიცირებული და გამოყენებული სიმაღლეები ერთად უნდა იზრდებოდეს |
 
 როდესაც მეტრიკა არსებობს მხოლოდ `/v1/sumeragi/status`, დაიჭირეთ JSON წერტილის დროში მონაცემების ნახვა იმავე გაშვებით არტეფაქტებში, როგორც Prometheus-ის scrape.
 
@@ -245,7 +245,7 @@ iroha --config ./localnet/client.toml \
 - მიღებული/გარღვეული TPS
 - p50/p95/p99 პროტოკოლის განხორციელების ლატენცია
 - რიგის სიღრმე და სიმკვრივე
-- ნახვა ცვლილებები, წასული შეტყობინებები, დაკარგული ბლოკების მოძიება და DA კარიბჭეების მაჩვენებლები
+- ხედვის ცვლილებები, ვადის ამოწურვის ხმები, Sumeragi-ს მიერ გადაგდებული შეტყობინებები და სხეულისა და სინქრონიზაციის მოთხოვნები
 - CPU, მეხსიერება, დისკი და ქსელის გამოყენება თითოეული ვალდიტორის მიხედვით
 
 ამ დეტალების გარეშე, TPS ნომერი უნდა ჩაითვალოს ანეკდოტურად.

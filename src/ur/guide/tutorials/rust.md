@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /guide/tutorials/rust.md
-translation_source_hash: fbe41bd6e7fa86d06c027724b446016c14246495964ccf521155e4b790d75041
+translation_source_hash: 9d9848de91a85c84221efc39bc7dfb8443f5c50b448d336207c06efce3bc07e8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -53,7 +53,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-آپ `taira.client.toml` تخلیق کرنے کے بعد ، ایک ہی بائنری Taira کے خلاف دستخط شدہ کینری کمانڈز چلا سکتا ہے۔ ان کو عام یونٹ ٹیسٹوں سے الگ رکھیں کیونکہ انہیں فوسیٹ سے فنڈ اکاؤنٹ اور لائیو ٹیسٹ نیٹ کی دستیابی کی ضرورت ہوتی ہے۔
+`taira.client.toml` بنانے کے بعد وہی بائنری `iroha taira account` کے ذریعے اکاؤنٹ کو شامل اور فنڈ کر سکتی ہے اور Taira پر عام دستخط شدہ لیجر کمانڈز جمع کرا سکتی ہے۔ انہیں عام یونٹ ٹیسٹوں سے الگ رکھیں کیونکہ ان کے لیے فوسیٹ سے فنڈ شدہ اکاؤنٹ اور براہِ راست ٹیسٹ نیٹ کی دستیابی درکار ہوتی ہے۔
 
 ## Rust کلائنٹ کریٹ کا استعمال کرتے ہوئے {#using-the-rust-client-crate}
 
@@ -70,7 +70,7 @@ iroha = { git = "https://github.com/hyperledger-iroha/iroha.git", rev = "<IROHA_
 - `crates/iroha/README.md`
 - `crates/iroha_cli/README.md`
 
-لیجر کے زیر انتظام ایسکرو ورک فلوز کے لئے ، [نیٹیو اثاثہ ایسکرو ](/ur/blockchain/escrow.md#rust-sdk) ملاحظہ کریں۔ Rust ڈیٹا ماڈل اس وقت مارکیٹ پلیس ایسکرو، عمومی اثاثہ لاکس، گمنام ایسکرو، استفسارات اور واقعات کے لیے سب سے مکمل ٹائپ شدہ کوریج فراہم کرتا ہے۔
+لیجر کے زیرِ انتظام ایسکرو ورک فلوز کے لیے [مقامی اثاثہ ایسکرو](/ur/blockchain/escrow.md#rust-sdk) ملاحظہ کریں۔ Rust ڈیٹا ماڈل اس وقت مارکیٹ پلیس ایسکرو، عمومی اثاثہ تالوں، مشروط ایسکرو، استفسارات اور واقعات کے لیے سب سے مکمل ٹائپ شدہ کوریج فراہم کرتا ہے۔
 
 آپ کو ایک مقامی CLI مدد سنیپ شاٹ کی تجدید کر سکتے ہیں:
 

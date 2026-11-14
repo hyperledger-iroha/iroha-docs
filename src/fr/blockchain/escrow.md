@@ -1,23 +1,22 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/escrow.md
-translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e217bc6ac9
+translation_source_hash: f3c943ba5d18278382876db7bd7b3b116522811353d4318aafe1023d4b04ce03
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
 # Compte séquestre d'actif natif {#native-asset-escrow}
 
 Le séquestre natif est un mécanisme de garde géré par un grand livre pour les actifs numériques. Au lieu d'envoyer des actifs à un compte détenu par l'application et de compter sur le code de l'application pour protéger ce compte, mise sous séquestre ISIs transférer la valeur dans un compte de garde de protocole déterministe et enregistrer le cycle de vie du séquestre dans l'état mondial.
 
-Utilisez un séquestre natif pour le règlement de la place de marché, une coordination des paiements hors chaîne de style Aitai, des verrous d'étape et des flux de travail de séquestre protégés nécessitant un état du cycle de vie visible sur le grand livre.
+Utilisez un séquestre natif pour le règlement de la place de marché, une coordination des paiements hors chaîne de style Aitai, des verrous d'étape et des libérations conditionnelles liées à des attestateurs nécessitant un état du cycle de vie visible sur le grand livre.
 
 ## Concepts {#concepts}
 
 |Concept|Description|
 | --- | --- |
-| `EscrowId` |Identifiant sélectionné par l'appelant encapsulant un hachage cryptographique. Il doit être unique à travers les séquestres transparents et anonymes.|
+| `EscrowId` |Identifiant sélectionné par l'appelant encapsulant un hachage cryptographique. Il doit être unique parmi tous les enregistrements de séquestre.|
 | `AssetEscrowRecord` |Enregistrement transparent de séquestre ou de verrouillage d'actif numérique.|
-| `AnonymousAssetEscrowRecord` |Enregistrement séquestre protégé par des neutralisateurs, des engagements et des pièces justificatives de preuve.|
 |Compte de garde|Compte de protocole déterministe dérivé de l'ID de chaîne, de l'ID d'entiercement et de la définition de l'actif.|
 |Hachages de preuves|Ces hachages peuvent identifier des factures, des jugements, des messages, des manifestes de stockage ou d’autres preuves hors chaîne. La charge utile de la preuve elle-même n’est pas stockée dans l’enregistrement d’entiercement.|
 
@@ -173,7 +172,7 @@ fn drawdown_and_close_asset_locks(
 }
 ```
 
-Python expose actuellement des aides de haut niveau pour les verrous génériques : `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock` et `expire_asset_lock`. Pour la place de marché et l'entiercement anonyme à partir de Python, utilisez le `InstructionBox` canonique JSON par la trappe de secours JSON de SDK, ou soumettez via un SDK qui expose les constructeurs d'entiercement de première classe.
+Python expose actuellement des aides de haut niveau pour les verrous génériques : `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock` et `expire_asset_lock`. Pour le séquestre de place de marché et le séquestre conditionnel à partir de Python, utilisez le JSON canonique de `InstructionBox` via l'échappatoire JSON du SDK, ou soumettez via un SDK qui expose des constructeurs de séquestre de première classe.
 
 ## Litiges {#disputes}
 
@@ -225,82 +224,33 @@ fn resolve_disputed_escrow(
 }
 ```
 
-## Séquestre anonyme {#anonymous-escrow}
+## Séquestre conditionnel {#conditional-escrow}
 
-L'entiercement anonyme utilise le même cycle de vie du marché, mais le financement et la clôture des mouvements d'actifs sont protégés. Le registre public conserve toujours le vendeur, l'acheteur, le statut, des preuves de hachages cryptographiques, des horodatages et des enregistrements de mouvements liés par preuve. Les montants et les destinataires à l'intérieur des notes protégées sont représentés par des engagements, des annulateurs et des pièces jointes de preuve.
+Le séquestre conditionnel verrouille un actif numérique au profit d'un bénéficiaire et ne le libère qu'une fois toutes les conditions remplies, dans l'ordre. Chaque condition désigne le compte attestateur, un prédicat que le registre évalue (`Equals` une valeur typée ou `QuantityAtMost` une borne) et son rang dans la séquence, numéroté à partir de un. Une fenêtre facultative exprimée en temps du registre borne toutes les attestations.
 
-|Transparent ISI|Anonyme ISI|
-| --- | --- |
-| `OpenAssetEscrow` | `OpenAnonymousAssetEscrow` |
-| `AcceptAssetEscrow` | `AcceptAnonymousAssetEscrow` |
-| `MarkEscrowPaymentSent` | `MarkAnonymousEscrowPaymentSent` |
-| `ReleaseAssetEscrow` | `ReleaseAnonymousAssetEscrow` |
-| `CancelAssetEscrow` | `CancelAnonymousAssetEscrow` |
-| `OpenEscrowDispute` | `OpenAnonymousEscrowDispute` |
-| `ResolveEscrowDispute` | `ResolveAnonymousEscrowDispute` |
-
-L'outil de portefeuille ou de générateur de preuve doit construire la pièce justificative et les entrées publiques. L'ouverture crée un engagement d'entiercement. La libération, l'annulation et la résolution de litiges anonymes doivent consommer exactement un engagement d'entiercement et créer les engagements de sortie de l'acheteur, du vendeur ou partagés requis par l'action.
-
-```rust
-use iroha::{
-    client::Client,
-    data_model::{
-        isi::escrow::{
-            AcceptAnonymousAssetEscrow, MarkAnonymousEscrowPaymentSent,
-            OpenAnonymousAssetEscrow,
-        },
-        prelude::*,
-        proof::ProofAttachment,
-    },
-};
-use iroha_crypto::Hash;
-
-fn open_anonymous_escrow(
-    seller_client: &Client,
-    buyer_client: &Client,
-    escrow_id: EscrowId,
-    asset_definition_id: AssetDefinitionId,
-    funding_nullifiers: Vec<[u8; 32]>,
-    escrow_commitment: [u8; 32],
-    proof: ProofAttachment,
-    root_hint: Option<[u8; 32]>,
-) -> eyre::Result<()> {
-    seller_client.submit_blocking(OpenAnonymousAssetEscrow::with_evidence_hashes(
-        escrow_id,
-        asset_definition_id,
-        funding_nullifiers,
-        escrow_commitment,
-        proof,
-        root_hint,
-        vec![Hash::new("shielded-invoice")],
-    ))?;
-
-    buyer_client.submit_blocking(AcceptAnonymousAssetEscrow::new(escrow_id))?;
-    buyer_client.submit_blocking(MarkAnonymousEscrowPaymentSent::new(escrow_id))?;
-
-    Ok(())
-}
-```
-
-Pour le modèle de transaction protégé sous-jacent, voir [Transactions anonymes](/fr/blockchain/anonymous-transactions.md).
+| ISI | Appelant | Effet |
+| --- | --- | --- |
+| `OpenConditionalEscrow` | Initiateur | Verrouille le montant sous la garde du protocole avec des conditions immuables et une expiration absolue. |
+| `AttestEscrowCondition` | L'attestateur de la condition | Fournit une valeur `Bool`, `Text` ou `Quantity` pour la condition suivante. Le séquestre est libéré au profit du bénéficiaire lorsque la dernière condition est remplie. |
+| `ExpireConditionalEscrow` | N'importe quel compte | Rembourse l'initiateur après l'expiration si le séquestre n'a pas été libéré. |
 
 ## SDK Utilisation {#sdk-usage}
 
-Le support de l'entiercement est exposé différemment à travers le SDKs. Rust possède le modèle de données typé canonique. Python expose actuellement des assistants de verrouillage d'actifs génériques. JavaScript et TypeScript utilisent les appels hôtes d'entiercement Kotodama. Kotlin/JVM et Swift fournissent des constructeurs de charge utile typés pour le marché et l'entiercement anonyme.
+Le support de l'entiercement est exposé différemment à travers les SDKs. Rust possède le modèle de données typé canonique. Python expose actuellement des assistants de verrouillage d'actifs génériques. JavaScript et TypeScript utilisent les appels hôtes d'entiercement Kotodama. Kotlin/JVM et Swift fournissent des constructeurs de charge utile typés pour le séquestre de place de marché.
 
 | SDK |Utilisez cette surface|Portée|
 | --- | --- | --- |
-| [Rust](#rust-sdk) | `iroha::data_model::isi::escrow` |Séquestre du marché, verrous génériques, séquestre anonyme, requêtes et événements.|
-| [Python](#python-asset-locks) | `Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock`, et les assistants du client `*_and_wait` |Verrous d'actifs génériques. Les helpers de marché et d'entiercement anonyme ne sont pas encore des méthodes de première classe Python.|
+| [Rust](#rust-sdk) | `iroha::data_model::isi::escrow` |Séquestre du marché, verrous génériques, séquestre conditionnel, requêtes et événements.|
+| [Python](#python-asset-locks) | `Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock`, et les assistants du client `*_and_wait` |Verrous d'actifs génériques. Les assistants de marché et de séquestre conditionnel ne sont pas encore des méthodes Python de première classe.|
 | [JavaScript / TypeScript](#javascript-and-typescript-kotodama) | `compileKotodamaProgram` de `@iroha/iroha-js/kotodama-compiler` |L'hôte de séquestre appelle à l'intérieur des contrats Kotodama.|
-| [Kotlin / JVM](#kotlin-and-jvm) |`InstructionTemplate` classes in `org.hyperledger.iroha.sdk.core.model.instructions`|Modèles d'instructions personnalisées pour place de marché et séquestre anonyme.|
-| [Swift / iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders` et `IrohaSDK.build*Escrow*` assistants| Marché et charges utiles d'instructions de séquestre anonyme Norito JSON. |
+| [Kotlin / JVM](#kotlin-and-jvm) |classes `InstructionTemplate` dans `org.hyperledger.iroha.sdk.core.model.instructions`|Modèles d'instructions personnalisées pour le séquestre de place de marché.|
+| [Swift / iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders` et les assistants `IrohaSDK.build*Escrow*`| Charges utiles d'instructions Norito JSON pour le séquestre de place de marché. |
 
 Les exemples ci-dessous se concentrent sur la construction des instructions. Le financement des comptes, la gestion des signatures et la soumission des transactions suivent le flux normal pour chaque SDK.
 
 ### Rust SDK {#rust-sdk}
 
-Utilisez le Rust SDK lorsque vous avez besoin d'une couverture native complète ou du support pour les requêtes/événements. Les exemples ci-dessus montrent la publication sur le marché, le tirage générique de verrouillage, la résolution de litiges et la construction d'entiercement anonyme avec `iroha::data_model::isi::escrow`.
+Utilisez le Rust SDK lorsque vous avez besoin d'une couverture native complète ou du support pour les requêtes/événements. Les exemples ci-dessus montrent la libération d'un séquestre de marché, le tirage sur un verrou générique et la résolution de litiges avec `iroha::data_model::isi::escrow`.
 
 ```rust
 use iroha::{
@@ -396,7 +346,7 @@ if (compiled.diagnostics.length > 0) {
 }
 ```
 
-Pour les litiges, utilisez `escrow_open_dispute(offer, evidence)` et `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`. L'hôte d'entiercement anonyme accepte les appels Norito avec les octets de charge utile de la requête, par exemple `anonymous_escrow_open_offer(request)`.
+Pour les litiges, utilisez `escrow_open_dispute(offer, evidence)` et `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`.
 
 ### Kotlin et JVM {#kotlin-and-jvm}
 
@@ -430,8 +380,6 @@ println(open.arguments)
 println(NativeEscrowPermissions.CAN_RESOLVE_ESCROW_DISPUTE)
 ```
 
-Les modèles anonymes sont disponibles sous `OpenAnonymousAssetEscrowInstruction`, `AcceptAnonymousAssetEscrowInstruction`, `MarkAnonymousEscrowPaymentSentInstruction`, `ReleaseAnonymousAssetEscrowInstruction`, `CancelAnonymousAssetEscrowInstruction`, `OpenAnonymousEscrowDisputeInstruction` et `ResolveAnonymousEscrowDisputeInstruction`. Android Les appelants Java peuvent utiliser les constructeurs correspondants `NativeEscrowInstructions.*` de l'artifact Android.
-
 ### Swift et iOS {#swift-and-ios}
 
 Le Swift SDK crée des instructions d'entiercement en tant que charges utiles Norito JSON. Utilisez `NativeEscrowInstructionBuilders` directement, ou appelez l'assistant équivalent `IrohaSDK.build*Escrow*` lorsque votre application possède déjà une instance `IrohaSDK`.
@@ -462,7 +410,7 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 )
 ```
 
-Les constructeurs anonymes Swift prennent des listes de nullificateurs, des listes d'engagements de sortie, un dictionnaire de preuves, et des valeurs optionnelles `rootHint`. Le jeton de permission du résolveur de litiges est disponible en tant que `NativeEscrowPermissions.canResolveEscrowDispute`.
+Le jeton de permission du résolveur de litiges est disponible en tant que `NativeEscrowPermissions.canResolveEscrowDispute`.
 
 ## Requêtes et événements {#queries-and-events}
 
@@ -475,10 +423,8 @@ Utilisez des requêtes en fiducie pour les pages de statut, les tâches de rappr
 | `FindAssetEscrowsBySeller` |Lister les dossiers ouverts par un vendeur ou un ouvreur de serrure.|
 | `FindAssetEscrowsByBuyer` |Liste des séquestres de marché acceptés par un acheteur ou des verrous visant une destination.|
 | `FindAssetEscrowsByStatus` |Lister les enregistrements par `AssetEscrowStatus`.|
-| `FindAnonymousAssetEscrowById` |Lisez une séquestre anonyme par `EscrowId`.|
-| `FindAnonymousAssetEscrows*` |Lister les séquestres anonymes par tous les enregistrements, vendeur, acheteur ou statut.|
 
-`EscrowEventFilter` peut s'abonner à des événements d'entiercement natifs transparents et de verrouillage par ID d'entiercement, vendeur, acheteur, statut et masque d'ensemble d'événements. La famille d'événements inclut `Opened`, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed` et `Resolved`. Les dossiers d'entiercement anonymes sont inspectés via les requêtes d'entiercement anonymes.
+`EscrowEventFilter` peut s'abonner à des événements d'entiercement natifs transparents et de verrouillage par ID d'entiercement, vendeur, acheteur, statut et masque d'ensemble d'événements. La famille d'événements inclut `Opened`, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed` et `Resolved`.
 
 ## Notes opérationnelles {#operational-notes}
 

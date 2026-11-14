@@ -1,9 +1,9 @@
 ---
 translation_locale: kk
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 8a8fd0d29d4c1c323b457595653077564ad100f397ea2f4b059b35451b76aa44
+translation_source_hash: ae0604c0e82db0a908e7ffc44c97f56b58fe2b5bb87553ded48562e8f9fcd36a
 translation_status: machine-validated
-translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Ауыстырылатын мүлік {#fungible-assets}
 
@@ -15,7 +15,7 @@ translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-na
 
 - `curl`, `jq`, Python 3.11 немесе одан жаңа нұсқасы, Node.js 24 және ағымдағы CLIs: `iroha` мен `kagami`.
 - Тек оқу үшін Taira қолжетімділік.
-- Жазу қадамдары үшін: [Iroha-ны іске қосу](/kk/get-started/launch-iroha.md) бетіндегідей `kagami localnet generate --peers 4 --out-dir ./localnet` арқылы жасалған және `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa` қосылған жергілікті желі. Ол `./localnet/client.toml` файлын және `http://127.0.0.1:8080` мекенжайындағы Torii-ді береді.
+- Жазу қадамдары үшін: `kagami localnet generate --peers 4 --out-dir ./localnet` арқылы жасалған және `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa` қосылған жергілікті желі. Ол `./localnet/client.toml` файлын және `http://127.0.0.1:8080` мекенжайындағы Torii-ді береді.
 
 ## Қадамдар {#steps}
 

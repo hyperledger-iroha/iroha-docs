@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /blockchain/instructions.md
-translation_source_hash: ef50253c5478c9d8c3e14529dc4c2f3de67c344901c82c65be77ceb237a29598
+translation_source_hash: 86d253317376ad8d7a8c0e30689c7e0c0cd786af83299dd5ac1a904c653192f5
 translation_status: machine-validated
 translation_engine: human-reviewed+reviewed-delta
 ---
@@ -41,7 +41,7 @@ Iroha དམིགས་བསལ་བསླབ་བྱ་ཚུ་གི་�
 | [SetParameter](#setparameter) |ལྕགས་ཐག་གི་བརྡ་དོན་ཚུ་ |                      |
 | [Grant/Revoke](#grant-revoke) | [འགན་འཁྲི་ཚུ་དང་ ངོས་ལེན་གྱི་རྟགས་མཚན་](/dz/blockchain/permissions.md) |རྩིས་ཐོ་དང་ འགན་ཁུར་ཚུ་ |
 | [བསྒྱུར་བཅོས་](#transfer) |ས་ཁོངས་, རྒྱུ་དངོས་གི་འགྲེལ་བཤད་, ཨང་གྲངས་ཀྱི་རྒྱུ་དངོས་, NFTs |རྩིས་ཐོ་ |
-| [རང་ལུགས་ཀྱི་གཏའ་མ་དང་ རྒྱུ་དངོས་གི་བཀག་སྡོམ་ཚུ་ ](#native-escrow-and-asset-locks) |ཨང་གྲངས་ཀྱི་ རྒྱུ་དངོས་གི་བཅའ་ཁྲལ་དང་ རྒྱུ་དངོས་ཚུ་གི་བཅའ་ཁྲལ། ངོ་མ་ཤེས་པའི་བཅའ་ཁྲལཔ་ཚུ་ |ཚོང་ཉོ་མི་ཚུ་དང་ འགྲོ་འགྲུལ་འབད་སའི་ ས་ཁོངས་ཚུ་ ཡང་ན་ རྩོད་གཞི་ནང་ བཅའ་མར་གཏོགས་ནི་ |
+| [རང་ལུགས་ཀྱི་བར་གཏོགས་བདག་ཉར་དང་ རྒྱུ་དངོས་ཀྱི་བཀག་སྡོམ་ཚུ་](#native-escrow-and-asset-locks) |ཨང་གྲངས་རྒྱུ་དངོས་ཀྱི་བར་གཏོགས་བདག་ཉར་དང་ རྒྱུ་དངོས་ཀྱི་བཀག་སྡོམ་ ཆ་རྐྱེན་ཅན་གྱི་བར་གཏོགས་བདག་ཉར་ཚུ་ |ཉོ་མི་ཚུ་དང་ འགྲོ་ཡུལ་ཚུ་ ཡང་ན་ རྩོད་གཞིའི་བགོ་བཤའ་ཚུ་ |
 | [རང་རྐྱང་གི་བར་ནའི་མཐུན་རྐྱེན་ཚུ་](#atomic-private-settlement) | རྒྱུན་ལམ ལུ་བཀག་པའི་གསང་བའི་ གསོག་ཚོགས ཚུ་ སྲིད་བྱུས བསྐོར་བརྗེ ཚུ་ མཇུག་བསྡུ་ཡོད་པའི་ ཆ་ཚན ཚུ་དང་ བཀག མཚོན་རྟགས ཚུ་ | |
 | [ExecuteTrigger](#executetrigger) |སྐུལ་རྟེན |                      |
 | [Log/Custom/Upgrade](#other-instructions) |ཐོ་བཀོད་ཐོ་ཡིག་, ལག་ལེན་པ་ལུ་དམིགས་ཏེ་ ནང་དོན་གནད་སྡུད་གྱི་ཐོ་བཀོད་ཚུ་, ལག་ལེན་པའི་གནས་གོང་བཟོ། |                      |
@@ -184,6 +184,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
+  --domain docs.universal \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
@@ -322,9 +323,9 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 
 ## རང་ལུགས་ཀྱི་དངུལ་ཁང་དང་ རྒྱུ་དངོས་ཚུ་གི་བཀག་སྡོམ་ཚུ་ {#native-escrow-and-asset-locks}
 
-ནང་སྐྱེས བར་གཏོགས་བདག་ཉར བཀོད་རྒྱ་ཚུ གིས་ ཨང་གྲངས་ཀྱི་རྒྱུ་དངོས་ཚུ་ རྩིས་དེབ- འཛིན་སྐྱོང་འབད་ཡོད་མི་ གནས་སྤོ་ལམ་ལུགས བདག་ཉར ནང་ བཀག་སྡོམ འབདཝ་ཨིན། ཁོང་ ཚོང་ར བཟོ་རྣམ རྩིས་རྒྱག, སྤྱིར་བཏང རྒྱུ་དངོས བཀག་སྡོམ་ཚུ དང་ མིང་མེད ཉེན་སྲུང་ཅན བར་གཏོགས་བདག་ཉར བྱ་རིམ་ཚུ གི་དོན་ལུ་ལག་ལེན་འཐབ་ཨིན།
+ནང་སྐྱེས བར་གཏོགས་བདག་ཉར བཀོད་རྒྱ་ཚུ གིས་ ཨང་གྲངས་ཀྱི་རྒྱུ་དངོས་ཚུ་ རྩིས་དེབ་ཀྱིས་འཛིན་སྐྱོང་འབད་མི་ བྱ་རིམ་བདག་ཉར་ནང་ བཀག་སྡོམ འབདཝ་ཨིན། དེ་ཚུ་ ཚོང་ར་བཟོ་རྣམ་གྱི་རྩིས་རྒྱག་དང་ སྤྱིར་བཏང་རྒྱུ་དངོས་བཀག་སྡོམ་ཚུ་ དེ་ལས་ ངོས་སྦྱོར་འབད་མི་དང་འབྲེལ་བའི་ ཆ་རྐྱེན་ཅན་གྱི་བར་གཏོགས་བདག་ཉར་ཚུ་གི་དོན་ལུ་ ལག་ལེན་འཐབ་ཨིན།
 
-ཚོང་འབྲེལ་གྱི་ས་ཁོངས་ནང་ གཏན་འཁེལ་གྱི་ལག་ལེན་ཚུ་ `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, དང་ `ResolveEscrowDispute`. སྤྱིར་བཏང་རྒྱུ་དངོས་ཀྱི་བཀག་སྡོམ་ལག་ལེན་འཐབ་ནི་ `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, དང་ `ExpireAssetLock`. མིང་མེད བར་གཏོགས་བདག་ཉར གིས་ཚོང་ཁྲོམ་གྱི་ཚེ་རིང་ཚུ་ནང་ལུ་ `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, དང་ `ResolveAnonymousEscrowDispute`.
+ཚོང་འབྲེལ་གྱི་ས་ཁོངས་ཀྱི་བར་གཏོགས་བདག་ཉར་གྱིས་ `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, དང་ `ResolveEscrowDispute` ལག་ལེན་འཐབ་ཨིན། སྤྱིར་བཏང་རྒྱུ་དངོས་ཀྱི་བཀག་སྡོམ་ཚུ་གིས་ `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, དང་ `ExpireAssetLock` ལག་ལེན་འཐབ་ཨིན། ཆ་རྐྱེན་ཅན་གྱི་བར་གཏོགས་བདག་ཉར་གྱིས་ `OpenConditionalEscrow`, `AttestEscrowCondition`, དང་ `ExpireConditionalEscrow` ལག་ལེན་འཐབ་ཨིན།
 
 འ་ནི་ ISIs འདི་ནང་ ད་རེས་ དབྱེ་རིམ་༡ པའི་ CLI བཀའ་རྒྱ་ཚུ་མེད་ཨིན། ཁྱོད་ཀྱིས་ SDK བཟོ་སྐྲུན་འབད་མི་ཚུ་དང་ ཡང་ན་ གྲལ་སྒྲིག་ཅན་གྱི་བསླབ་བྱ་གི་ནང་དོན་གནད་སྡུད་འབག་མི་ཚུ་ལག་ལེན་འཐབ་སྟེ་བལྟ་ཞིནམ་ལས་ [རང་སའི་རྒྱུ་དངོས་བཅོལ་ཉར](/dz/blockchain/escrow.md) འཚོལ་བའི་ཚེ་ཚད་ཀྱི་ཐོ་ཡིག་དང་ ངོས་ལེན་དང་དྲི་བཀོད་དང་བྱུང་རྐྱེན་ དེ་ལས་ Rust དཔེ་ཚུགས།
 
@@ -418,7 +419,7 @@ printf '{"owner":"ops"}\n' |
 གནས་ཚད་ཅིག་ གཞི་སྒྲིག་འབད་ཞིནམ་ལས་ གནས་ཚད་གཅིག་ཨིན་པའི་ JSON འདྲ་ཕབ་འདི་ ཐོ་བཀོད་ལམ་ལུགས་ནང་ བཏོན་ཐོག་ལས་:
 
 ```bash
-printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
+printf '{"Sumeragi":{"MaxClockDriftMs":1000}}\n' |
   cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```

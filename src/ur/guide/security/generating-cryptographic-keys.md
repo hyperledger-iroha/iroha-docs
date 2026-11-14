@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: b6e3bd79c50ea326930ac978350ea4beac8294b6f045ac0084aada257754ffa1
+translation_source_hash: bb1044edb9d34264e36848ee773d4d313bfbfd91b45da2eeb831f7ef8920e9b4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
@@ -56,7 +56,7 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` صرف `bls_normal` کے ساتھ درست ہے اور تحویلی ڈائریکٹری میں `pop.hex` شامل کرتا ہے۔ دستخط شدہ ابتدائی بلاک میں ووٹ دینے والے ہر نوڈ کے لیے متعلقہ PoP ضروری ہے۔ ساتھی نوڈ کی ترتیب میں اگر `trusted_peers_pop` نقشہ خالی نہیں تو وہی طے کرتا ہے کہ کون سے نوڈ توثیق کریں گے؛ اس میں شامل نہ ہونے والے قابلِ اعتماد نوڈ مبصر ہیں۔ اگر نقشہ خالی ہے تو BLS کی نارمل قسم استعمال کرنے والے تمام قابلِ اعتماد نوڈ ابتدائی امیدواروں میں شامل ہوتے ہیں۔ ووٹروں کے PoPs پھر بھی دستخط شدہ ابتدائی بلاک سے آتے ہیں۔
+`--pop` صرف `bls_normal` کے ساتھ درست ہے اور تحویلی ڈائریکٹری میں `pop.hex` شامل کرتا ہے۔ دستخط شدہ جینیسس کو ووٹ دینے والے ہر ویلیڈیٹر کے لیے مطابقت رکھنے والا PoP درکار ہے۔ پیئر کی ترتیب میں ہر ویلیڈیٹر کا PoP `trusted_peers_pop` میں درج کریں: درست PoP کے بغیر قابلِ اعتماد پیئرز اتفاقِ رائے کی فہرست سے خارج کر دیے جاتے ہیں، اور خالی نقشے سے کوئی ویلیڈیٹر نہیں بنتا، اس لیے جس نوڈ کا نقشہ جینیسس ویلیڈیٹرز کو چھوڑ دے وہ شروع ہونے سے انکار کر دیتا ہے۔ صرف ہم وقت سازی والا نوڈ `[sumeragi] role = "observer"` کے ساتھ چلائیں۔
 
 ## تحویلی آؤٹ پٹ {#custody-output}
 

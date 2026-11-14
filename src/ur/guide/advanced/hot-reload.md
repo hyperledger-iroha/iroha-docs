@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
+translation_source_hash: 6edc0185196ab8e77ef8552723e05bf37cca1a088da86e2a43d441d58e779c11
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -32,4 +32,4 @@ docker restart <container>
 
 ## اپنی مرضی کے مطابق ترتیب کا استعمال کریں {#use-custom-configuration}
 
-موجودہ پیر کنفگریشن TOML ہے۔ تیار کردہ `config.toml`، ‏`genesis.signed.nrt` اور متعلقہ کلیدی فائلوں کو امیج کے متوقع کنٹینر راستوں میں ماؤنٹ یا نقل کریں، پھر پیر دوبارہ شروع کریں۔ تیار کردہ فائلوں کو ساتھ رکھیں؛ مختلف Kagami رنز کی فائلیں ملانے سے deserialization یا اتفاقِ رائے ناکام ہو سکتا ہے۔
+موجودہ پیر کنفگریشن TOML ہے۔ Kagami ہر ویلیڈیٹر کے لیے ایک `peerN.toml` لکھتا ہے جس میں `genesis.signed.nrt`، `genesis.public_key` اور `genesis.expected_hash` ہوتے ہیں؛ `kagami docker` سے بنی Compose فائل انہیں کنٹینر میں ماؤنٹ کرتی ہے۔ فائلیں ہاتھ سے نقل کرنے کے بجائے اسے دوبارہ تیار کریں، پھر پیر دوبارہ شروع کریں۔ تیار کردہ فائلوں کو ساتھ رکھیں؛ مختلف Kagami رنز کی فائلیں ملانے سے ڈی سیریلائزیشن یا اتفاقِ رائے ناکام ہو سکتا ہے۔

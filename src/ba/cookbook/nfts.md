@@ -1,9 +1,9 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/nfts.md
-translation_source_hash: b6a85c2feb197588e3358a785e10280a687af3951d52de4e6b8d96eab5de873c
+translation_source_hash: 7d7a1ba8ff8678f420a6237bd0d074d2d197bf4349989c0c55f05e9769d15da7
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # NFTs {#nfts}
 
@@ -15,7 +15,7 @@ Taira селтәрендә NFT хәлен тикшерегеҙ, һуңынан �
 
 - `curl`, `jq`, Python 3.11 йәки унан һуңғы, һәм ток `iroha` CLI.
 - Taira уҡырға ғына инеү мөмкинлеге.
-- Яҙыу операциялары өсөн: [Iroha-ны эшләтеп ебәреү](/ba/get-started/launch-iroha.md) битендәгесә `kagami localnet generate --peers 4 --out-dir ./localnet` менән булдырылған, `./localnet/client.toml` файлы һәм `http://127.0.0.1:8080` адресындағы Torii булған локаль селтәр, шулай уҡ уның ҡул ҡуйыусыһына ҡараған NFT домены (2-се аҙымды ҡарағыҙ).
+- Яҙыу операциялары өсөн: `kagami localnet generate --peers 4 --out-dir ./localnet` менән булдырылған, `./localnet/client.toml` файлы һәм `http://127.0.0.1:8080` адресындағы Torii булған локаль селтәр, шулай уҡ уның ҡул ҡуйыусыһына ҡараған NFT домены (2-се аҙымды ҡарағыҙ).
 
 ## Аҙымдар {#steps}
 

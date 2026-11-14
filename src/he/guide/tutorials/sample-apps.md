@@ -1,9 +1,9 @@
 ---
 translation_locale: he
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 0c4f2f3fc4efb9f883f597a3eea49c99431b711a0141eba70ac5a2524990dd73
+translation_source_hash: 50fac5ad01faf8d09441cba90f29472da04630dbeb3c80111a19f3fb50bb1224
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # דוגמאות ומכון {#samples-and-recipes}
 
@@ -19,4 +19,4 @@ translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 
 ## Android {#android}
 
-עבור עבודות חדשות Android, השתמשו במודולים Kotlin-הראשון `core-jvm`, `client-android`, ו `offline-wallet-android` המתוארים ב [Kotlin, Android, וג'אבה ](/he/guide/tutorials/kotlin-java.md). Kotlin SDK הוא נקודת ההתחלה הקנונית של צרכנים Android.
+עבור עבודות חדשות Android, השתמשו במודולים Kotlin-הראשון `core-jvm`, `client-android`, ו `kagemusha-wallet-android` המתוארים ב [Kotlin, Android, וג'אבה ](/he/guide/tutorials/kotlin-java.md). Kotlin SDK הוא נקודת ההתחלה הקנונית של צרכנים Android.

@@ -1,9 +1,9 @@
 ---
 translation_locale: az
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: f1f922b9820587cd4b599e7407698a47d468616670fee2922e4028147bc3e9b0
+translation_source_hash: 804ef15b3d5ecdfae9fd559d3f312772571938ed9872f4adbd251baa3471e4e2
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Kotlin, Android və Java {#kotlin-android-and-java}
 
@@ -15,7 +15,7 @@ Kotlin SDK JVM və Android tətbiqləri üçün standart müştəri yığınıd�
 | --- | --- | --- |
 | `org.hyperledger.iroha.sdk:core-jvm` | JAR |Təmiz Kotlin/JVM Norito, məlumat modeli, kripto, əməliyyat, Torii, və protokol kodu|
 | `org.hyperledger.iroha.sdk:client-android` | AAR | Android açar deposu, cihaz telemetrikası və JNI-dəstəklənən müştəri inteqrasiyaları |
-| `org.hyperledger.iroha.sdk:offline-wallet-android` | AAR | Android oflayn-ödəmə üsulu daşınması və `client-android` əsasında inteqrasiya|
+| `org.hyperledger.iroha.sdk:kagemusha-wallet-android` | AAR | Android oflayn-ödəmə üsulu daşınması və `client-android` əsasında inteqrasiya|
 
 Artefaktlar hələ Maven Central-a yayımlanmamışdır. Onları yerli olaraq pin edilmiş Iroha mənbə reviziyasından yaradıb yayımlayın:
 
@@ -36,21 +36,21 @@ dependencies {
     // Android client features:
     // implementation("org.hyperledger.iroha.sdk:client-android:0.1.0")
     // Android offline-wallet features:
-    // implementation("org.hyperledger.iroha.sdk:offline-wallet-android:0.1.0")
+    // implementation("org.hyperledger.iroha.sdk:kagemusha-wallet-android:0.1.0")
 }
 ```
 
-`core-jvm` heç bir Android asılılıq ehtiva etmir. Android müştəri və keystore kodunu `client-android`-də saxlayın və Android-yalnız offline-çəkmə və JNI axınları üçün `offline-wallet-android`-dən istifadə edin.
+`core-jvm` heç bir Android asılılıq ehtiva etmir. Android müştəri və keystore kodunu `client-android`-də saxlayın və Android-yalnız offline-çəkmə və JNI axınları üçün `kagemusha-wallet-android`-dən istifadə edin.
 
 ## Kotlin və Java Uyğunluğu {#kotlin-and-java-compatibility}
 
-İctimai API Kotlin-birinci sıradadır və JVM tələb edən müştərilərə Java interop təmin edir. Müvafiq dəyişikliklər uyğun `java/` həyata keçirməsində əks olunmuşdur. Yeni Android inteqrasiyalara yuxarıdakı Kotlin artefaktlarla başlamaq lazımdır.
+İctimai API Kotlin-birinci yanaşmaya əsaslanır və Java çağıranları üçün kanonik reallaşdırmadır; `core-jvm` daxilindəki Java mənbəli istehlakçı testləri onu birbaşa yoxlayır. `java/` ağacında Kotlin modullarına köçürülərək istifadədən çıxarılan təkrarlanan reallaşdırmalar saxlanılır. Yeni Android inteqrasiyalara yuxarıdakı Kotlin artefaktlarla başlamaq lazımdır.
 
 Bütün Kotlin modulları tərtib zamanı `-Xjdk-release=8` ilə JDK 8 API uyğunluğunu təmin edir, baxmayaraq ki, quruluş alət zənciri özü JDK 21-dən istifadə edir. SDK kodunda JDK 9+ APIs-dan istifadə etməyin.
 
 ## Yarat və Test et {#build-and-test}
 
-Daşınan JVM testlərini işə salın:
+Kotlin SDK README faylında təsvir edildiyi kimi, JVM testlərini `IROHA_NATIVE_LIBRARY_PATH` içində eyni mənbədən yığılmış `connect_norito_bridge` kitabxanası və `IROHA_KOTLIN_FIXTURE_GEN_BIN` içində `kotlin-fixture-gen` ilə işə salın; onlar olmadan yerli koddan asılı testlər uğursuz olur:
 
 ```bash
 cd kotlin
@@ -61,7 +61,7 @@ Android artefaktlarını qurun:
 
 ```bash
 ./gradlew :client-android:assembleRelease \
-  :offline-wallet-android:assembleRelease --quiet
+  :kagemusha-wallet-android:assembleRelease --quiet
 ```
 
 ## Cari Əhatə {#current-coverage}

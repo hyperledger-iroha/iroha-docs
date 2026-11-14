@@ -10,7 +10,7 @@ Use the Rust instructions below for a native installation. To run four validator
 Install these first:
 
 - [rustup](https://www.rust-lang.org/tools/install), so the pinned
-  `rust-toolchain.toml` toolchain (`1.93.1`) is installed automatically
+  `rust-toolchain.toml` toolchain (`1.99.1`) is installed automatically
 - `git`
 - optionally, Docker and Docker Compose for the local multi-peer quickstart
 

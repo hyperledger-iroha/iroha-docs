@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /blockchain/assets.md
-translation_source_hash: 4d0a3f54a0c70d08d11160b9ec66d6538aa2c49c7771a13e4a070b61a9cb3e4b
+translation_source_hash: f5f0eb99e76287db695cc21b8580fd2a9b4dc2a989237c1a1d3d7333c14561ce
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -22,6 +22,7 @@ Iroha актив - иҫәптә тотолған һанлы баланс. Һәр
 - `logo`: факультатив `SoraFS` URI
 - `metadata`: үҙаллы төп мәғәнәле метамәғлүмәт
 - `balance_scope_policy`: баланстарҙың глобаль йә мәғлүмәт киңлеге менән сикләнгән булыуын билдәләй
+- `owning_domain`: доменға ҡараған билдәләмәнең эйәһе булған домен; туранан-тура мәғлүмәт киңлегендә теркәлгән билдәләмәләрҙә булмай
 - `owned_by`: билдәләмәне теркәгән йәки уға эйә булған иҫәп
 - `total_quantity`: дөйөм сығарылған күләм
 - `confidential_policy`: һаҡланған активтар операциялары өсөн сәйәсәт
@@ -33,7 +34,7 @@ Iroha актив - иҫәптә тотолған һанлы баланс. Һәр
 `Asset` түбәндәгеләрҙе үҙ эсенә ала:
 
 - `id`: `AssetId`, ул активтарҙы билдәләүҙе, хужаның иҫәбен һәм факультатив баланс күләмен берләштерә.
-- `value`: `Numeric` балансы
+- `value`: `Quantity` балансы
 
 Эйә иҫәбе каноник һәм доменһыҙ. Актив билдәләмәһе мәғлүмәт киңлеге менән аныҡланған домен аҫтында күрһәтелә ала, мәҫәлән, `payments.universal`.
 
@@ -88,7 +89,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-Өс миҫал да уҡыу ғәмәлдәре булып тора. Taira-ла активтар сығарыу, яндырыу йәки күсереү өсөн һынау аҡсаһы биреү хеҙмәте аша аҡсаландырылған иҫәпте һәм [SORA Nexus мәғлүмәт киңлектәренә тоташыу](/ba/get-started/sora-nexus-dataspaces.md) бүлегендәге һаҡланған эш ағымын ҡулланығыҙ.
+Өс миҫал да уҡыу ғәмәлдәре булып тора. Taira-ла активтар сығарыу, яндырыу йәки күсереү өсөн һынау аҡсаһы биреү хеҙмәте аша аҡсаландырылған иҫәпте һәм [Taira һәм Minamoto ярҙамында SORA Nexus өсөн ҡушымта эшләү](/ba/get-started/sora-nexus-dataspaces.md) бүлегендәге һаҡланған эш ағымын ҡулланығыҙ.
 
 Taira-ла комиссия түләнә торған актив миҫалы өсөн башта [Taira-ла һынау селтәре өсөн XOR алыу](/ba/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) бүлегендәге әҙер һынау аҡсаһы биреү хеҙмәте ағымы аша ҡул ҡуйыусының иҫәбен аҡсаландырығыҙ. Һуңынан `ledger asset mint`, `ledger asset burn` һәм `ledger asset transfer` командаларына `--fee-payer authority` параметрын бирегеҙ; CLI ҡул ҡуйыр алдынан Taira комиссия активында теүәл комиссияны күрһәтә:
 

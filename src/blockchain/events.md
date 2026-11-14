@@ -9,7 +9,7 @@ Events are emitted when certain things happen within the blockchain, e.g. a new 
 
 ## Pipeline Events
 
-Pipeline events are emitted when transactions are submitted, executed, or committed to a block. A pipeline event contains the following information: the kind of entity that caused an event (transaction or block), its hash and status. The status can be either `Validating` (validation in progress), `Rejected`, or `Committed`. If an entity was rejected, the reason for the rejection is provided.
+Pipeline events are emitted as transactions and blocks move through the pipeline. A transaction event carries the transaction hash, block height, lane and data space IDs, and a status: `Queued`, `Expired`, `Approved`, or `Rejected` with the rejection reason. A block event carries the block header and a status: `Created`, `Approved`, `Rejected` with the reason, `Committed`, or `Applied`.
 
 ### Try It on Taira
 
@@ -23,8 +23,8 @@ curl -fsSI https://taira.sora.org/v1/events/sse \
 For a snapshot you can inspect without keeping a stream open, read recent explorer transactions:
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
-  | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
+curl -fsS 'https://taira.sora.org/v1/explorer/transactions?limit=5' \
+  | jq '{next_cursor, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
 Open the SSE route in a terminal when you need live events:

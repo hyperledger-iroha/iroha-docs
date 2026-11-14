@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /reference/glossary.md
-translation_source_hash: 8b00758b5731a2f9e09a5b49ccb7f298229ab966b5adf2d7152e3b1416fe8737
+translation_source_hash: 4d3a8e3aa88291edbaac5b52039d2aad160d89fb83c085c21030a531c93258f4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -79,7 +79,7 @@ Peer သည် အခြား peer များနှင့် client အက်
 
 ## Byzantine ချို့ယွင်းမှုခံနိုင်ရည် (BFT) {#byzantine-fault-tolerance-bft}
 
-မကောင်းဆိုးဝါးလုပ်ကိုင်သူတွေရဲ့ ရာခိုင်နှုန်းတစ်ခုပါဝင်တဲ့ ကွန်ရက်တစ်ခုနဲ့ စနစ်တကျ လုပ်ဆောင်နိုင်ခြင်းရဲ့ ဂုဏ်သတ္တိပါ။ Iroha သည် ၎င်း၏ peer-to-peer ကွန်ရက်တွင် မကောင်းဆိုးဝါးသော ပါဝင်သူ ၃၃% အထိနှင့် လုပ်ဆောင်နိုင်သည်။
+မကောင်းဆိုးဝါးလုပ်ကိုင်သူတွေရဲ့ ရာခိုင်နှုန်းတစ်ခုပါဝင်တဲ့ ကွန်ရက်တစ်ခုနဲ့ စနစ်တကျ လုပ်ဆောင်နိုင်ခြင်းရဲ့ ဂုဏ်သတ္တိပါ။ Sumeragi ကော်မတီတစ်ခုတွင် validator `3f + 1` ခု အတိအကျ ရှိပြီး ကော်မတီ၏ သုံးပုံတစ်ပုံထက် နည်းသော Byzantine validator `f` ခုအထိကို ခံနိုင်ရည်ရှိသည်။
 
 ## Iroha ပါဝင်ပစ္စည်းများ {#iroha-components}
 
@@ -107,7 +107,7 @@ Kura သည် လက်မှတ်ရေးထိုးထားသော ဘ�
 
 ### စမတ်စာချုပ်များ {#smart-contracts}
 
-Smart Contracts ဆိုတာ blockchain ကို အခြေခံတဲ့ ပရိုဂရမ်တွေဖြစ်ပြီး သတ်မှတ်ထားတဲ့ အခြေအနေတွေကို ဖြည့်ဆည်းတဲ့အခါ လုပ်ဆောင်ပါတယ်။ အတွင်းမှာ Iroha smart contracts တွေကို အသုံးပြုပြီး အကောင်အထည်ဖော်ပါတယ်။ [core ကို Iroha ညွှန်ကြားမှု လုပ်ငန်းများ](#core-iroha-special-instructions).
+စမတ်စာချုပ်များသည် သတ်မှတ်ထားသော အခြေအနေများ ပြည့်မီသည့်အခါ လည်ပတ်သော blockchain အခြေပြု ပရိုဂရမ်များ ဖြစ်သည်။ Iroha 3 တွင် စမတ်စာချုပ်များကို Kotodama ဖြင့် ရေးသားပြီး IVM bytecode (`.to`) သို့ compile လုပ်သည်။ စာချုပ်တစ်ခုသည် host ခေါ်ဆိုမှုများမှတစ်ဆင့် [Iroha အထူးညွှန်ကြားချက်များ](#core-iroha-special-instructions) ကို ထုတ်ပေးခြင်းဖြင့် အခြေအနေကို ပြောင်းလဲသည်။
 
 ### နှိုးစက်များ {#triggers}
 
@@ -119,7 +119,7 @@ Iroha 3 ၏ ပထမထုတ်ဝေမှုသည် စံဘလော့�
 
 ### Hijiri (နိုဒ်၏ နာမည်ကောင်းအကဲဖြတ်စနစ်) {#hijiri-peer-reputation-system}
 
-Iroha ရဲ့ ဂုဏ်သိက္ခာစနစ်။ ဒါက ကောင်းမွန်တဲ့ မှတ်တမ်းရှိတဲ့ [ကွန်ရက် အဖော်များ](#peer) နဲ့ ဆက်သွယ်မှုကို ဦးစားပေးခွင့်ပြုပြီး မကောင်းဆိုးဝါးတဲ့ [ကွန်ရက် အဖော်များ](#peer) ကြောင့် ဖြစ်စေနိုင်တဲ့ အန္တရာယ်ကို လျော့ကျစေပါတယ်။
+Iroha ၏ peer နှင့် အကောင့် ဂုဏ်သတင်းစနစ်။ ၎င်း၏ consensus ပိုင် ပါရာမီတာများတွင် Hijiri အခကြေးငွေ မူဝါဒနှင့် အကောင့်အန္တရာယ် မှတ်တမ်းများ ပါဝင်ပြီး အုပ်ချုပ်မှုအောက်ရှိ observer မှတ်ပုံတင်စာရင်းများက အကောင့်တစ်ခု၏ အန္တရာယ်ရမှတ်ကို ချိန်ညှိပေးသော အကောင့်သက်သေခံချက်များကို ထုတ်ပေးသည်။
 
 ## Iroha မော်ဂျူးများ {#iroha-modules}
 
@@ -131,7 +131,7 @@ Iroha ကိုထောက်ပံ့ထားသော စမတ်ကွန�
 
 #### အသုံးဝင်မှု Iroha ညွှန်ကြားချက်လုပ်ငန်းများ {#utility-iroha-special-instructions}
 
-ဒီအစုကို [အီစီ](#iroha-special-instructions-isi) ဒီလို ယုတ္တိတန်တဲ့ ညွှန်ကြားချက်တွေ ပါပါတယ်။ `If`, I/O နှင့်ဆိုင်သော ဥပမာများ `Notify` ပြီးတော့ သီချင်းတွေပေါ့။ `Sequence`. ဒါတွေကို အများအားဖြင့် အသုံးပြုပါတယ်။ [ကိုယ်ပိုင် ညွှန်ကြားချက်များ](#custom-iroha-special-instruction).
+ဤ [isi](#iroha-special-instructions-isi) အစုတွင် `Log`၊ `ExecuteTrigger`၊ `SetParameter` နှင့် `Upgrade` ကဲ့သို့ domain အလိုက် entity တစ်ခုကို မပြောင်းလဲသော ညွှန်ကြားချက်များ ပါဝင်သည်။ Iroha 3 တွင် `If`၊ `Notify` သို့မဟုတ် `Sequence` ညွှန်ကြားချက်များ မရှိပါ။
 
 ### Core Iroha ညွှန်ကြားမှုလုပ်ငန်းများ {#core-iroha-special-instructions}
 

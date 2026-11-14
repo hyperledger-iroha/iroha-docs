@@ -1,9 +1,9 @@
 ---
 translation_locale: ur
 translation_source: /blockchain/events.md
-translation_source_hash: aad93f1981a5b470966090b5e06ec07178738b15f1d870097947682b19f99595
+translation_source_hash: 2777cbe4e72a50c4790e50b59c3e695feb5814314cc9afccdfd994f6409c195e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # واقعات {#events}
 
@@ -16,7 +16,7 @@ translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 
 ## پائپ لائن کے واقعات {#pipeline-events}
 
-پروسیسنگ پائپ لائن کے واقعات اس وقت خارج ہوتے ہیں جب لین دین جمع کرائے جائیں، چلائے جائیں یا کسی بلاک میں حتمی طور پر شامل کیے جائیں۔ پروسیسنگ پائپ لائن کا واقعہ درج ذیل معلومات رکھتا ہے: واقعہ پیدا کرنے والی ہستی کی قسم (لین دین یا بلاک)، اس کا کرپٹوگرافک ہیش، اور اس کی حالت۔ حالت `Validating` (توثیق جاری ہے)، `Rejected` یا `Committed` میں سے کوئی ایک ہو سکتی ہے۔ اگر کسی ہستی کو مسترد کیا گیا ہو تو اس کی وجہ بھی فراہم کی جاتی ہے۔
+پائپ لائن کے واقعات اس وقت خارج ہوتے ہیں جب لین دین اور بلاکس پائپ لائن سے گزرتے ہیں۔ لین دین کا واقعہ لین دین کا ہیش، بلاک کی اونچائی، لین اور ڈیٹا اسپیس کی شناختیں، اور ایک حالت رکھتا ہے: `Queued`، `Expired`، `Approved`، یا مسترد ہونے کی وجہ کے ساتھ `Rejected`۔ بلاک کا واقعہ بلاک ہیڈر اور ایک حالت رکھتا ہے: `Created`، `Approved`، وجہ کے ساتھ `Rejected`، `Committed`، یا `Applied`۔
 
 ### Taira پر آزمائیں {#try-it-on-taira}
 
@@ -30,8 +30,8 @@ curl -fsSI https://taira.sora.org/v1/events/sse \
 ایک فوری شاٹ کے لئے آپ کو ایک سلسلہ کھولنے کے بغیر چیک کر سکتے ہیں، حالیہ explorer لین دین پڑھیں:
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
-  | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
+curl -fsS 'https://taira.sora.org/v1/explorer/transactions?limit=5' \
+  | jq '{next_cursor, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
 جب آپ کو براہ راست واقعات کی ضرورت ہو تو ٹرمینل میں SSE روٹ کھولیں:

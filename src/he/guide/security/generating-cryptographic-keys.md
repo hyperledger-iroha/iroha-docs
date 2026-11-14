@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: b6e3bd79c50ea326930ac978350ea4beac8294b6f045ac0084aada257754ffa1
+translation_source_hash: bb1044edb9d34264e36848ee773d4d313bfbfd91b45da2eeb831f7ef8920e9b4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
@@ -56,7 +56,7 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` תקף רק עם `bls_normal`; הוא מוסיף את `pop.hex` לספריית המשמורת. genesis חתום דורש PoP תואם לכל מאמת מצביע. בתצורת הצמתים, מפה לא ריקה של `trusted_peers_pop` בוחרת את קבוצת המשנה של המאמתים; צמתים מהימנים שאינם מופיעים במפה הלא ריקה הזאת הם משקיפים. אם המפה ריקה, כל הצמתים המהימנים בעלי BLS-normal נכנסים לקבוצת מועמדי האתחול, ו־PoPs של המצביעים עדיין מסופקים בידי ה־genesis החתום.
+`--pop` תקף רק עם `bls_normal`; הוא מוסיף את `pop.hex` לספריית המשמורת. genesis חתום דורש PoP תואם לכל מאמת מצביע. בתצורת הצמתים, ציינו את ה־PoP של כל מאמת ב־`trusted_peers_pop`: צמתים מהימנים ללא PoP תקף מוחרגים מרשימת הקונצנזוס, ומפה ריקה אינה מניבה מאמתים כלל, ולכן צומת שהמפה שלו משמיטה את מאמתי ה־genesis מסרב לעלות. הריצו צומת לסנכרון בלבד עם `[sumeragi] role = "observer"`.
 
 ## פלט למשמורת {#custody-output}
 

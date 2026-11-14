@@ -1,9 +1,9 @@
 ---
 translation_locale: my
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 0c4f2f3fc4efb9f883f597a3eea49c99431b711a0141eba70ac5a2524990dd73
+translation_source_hash: 50fac5ad01faf8d09441cba90f29472da04630dbeb3c80111a19f3fb50bb1224
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # နမူနာများနှင့် ချက်ပြုတ်ချက်များ {#samples-and-recipes}
 
@@ -19,4 +19,4 @@ Iroha source repository မှာ SDK recipe တွေနဲ့ test suites တ�
 
 ## Android {#android}
 
-အသစ်အတွက် Android အလုပ်ကိုသုံးပြီး Kotlin- ပထမ `core-jvm`, `client-android`, နှင့် `offline-wallet-android` မော်ဂျူးများ [Kotlin, Android, နှင့် Java](/my/guide/tutorials/kotlin-java.md). နိုင်ငံတကာ Kotlin SDK တစ်ခုတည်းသော ပရိုတိုကောလစ် စံချိန်တင်စတင်ချက်ဖြစ်သည် Android စားသုံးသူ။
+အသစ်အတွက် Android အလုပ်ကိုသုံးပြီး Kotlin- ပထမ `core-jvm`, `client-android`, နှင့် `kagemusha-wallet-android` မော်ဂျူးများ [Kotlin, Android, နှင့် Java](/my/guide/tutorials/kotlin-java.md). နိုင်ငံတကာ Kotlin SDK တစ်ခုတည်းသော ပရိုတိုကောလစ် စံချိန်တင်စတင်ချက်ဖြစ်သည် Android စားသုံးသူ။

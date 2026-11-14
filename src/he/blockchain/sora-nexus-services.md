@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: 33617bc89d0aef5c2a086f45a216201d8980123f717e68f1e1a95eadeb906eb0
+translation_source_hash: dff2584fd47d6e1426ec18aca2d2003a7fdca4b9882296de484418f8c17806fe
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -90,13 +90,12 @@ Aitai הוא מסלול יישומים של SORA Nexus לסליקה בסגנון
 
 Native escrow שומר את המשמורת ב-ledger. המוכר פותח הצעה באמצעות `OpenAssetEscrow`, הקונה מקבל ומסמן תשלום מחוץ לשרשרת באמצעות `AcceptAssetEscrow` ו-`MarkEscrowPaymentSent`, והמוכר משחרר באמצעות `ReleaseAssetEscrow` או מבטל לפני שהתשלום מסומן. אם הקונה והמוכר אינם מסכימים, כל אחד מהצדדים יכול לפתוח מחלוקת ו-resolver בעל `CanResolveEscrowDispute` יכול לפצל את הסכום הנעול.
 
-למחזור החיים המלא, נעילות נכסים כלליות, escrow אנונימי, שאילתות, אירועים ודוגמאות ב-Rust, ראו [escrow מובנה לנכסים](/he/blockchain/escrow.md).
+למחזור החיים המלא, לנעילות נכסים כלליות, לנאמנות מותנית, לשאילתות, לאירועים ולדוגמאות ב־Rust, ראו [נאמנות נכסים מובנית](/he/blockchain/escrow.md).
 
 |פני השטח Aitai |השתמשו בו עבור |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`                                                    |הצעות חותמות של נכסים מספריים, כולל זרמי הסדר במספרים XOR. |
-| `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`       |הצעות מוגנות משתמשות בתוספות ראיות עבור מימון וסיום תנועות. |
-|`OpenEscrowDispute`, `ResolveEscrowDispute`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |פתרון ויכוחים בסגנון בית המשפט. |
+| `OpenEscrowDispute`, `ResolveEscrowDispute`                                                                                                                                | פתיחת מחלוקת ופתרון בסגנון בית משפט. |
 |`FindAssetEscrowById`, `FindAssetEscrowsBySeller`, `FindAssetEscrowsByBuyer`, `FindAssetEscrowsByStatus` |דפים של מצב האפליקציה, עבודות הפיוס, וכלים לתמיכה. |
 |`EscrowEventFilter` |חתימות אשראי גלויות חיות על ידי זהת אשראי, מכר, קונה, מעמד או סוג אירוע. |
 | Kotodama `escrow_open_offer`, `escrow_accept`, `escrow_mark_payment_sent`, `escrow_release`, `escrow_cancel`, `escrow_open_dispute`, `escrow_resolve_dispute` |קריאות חוזה של Kotodama הנתמכות בידי קריאות המערכת V1 לנאמנות. |
@@ -492,7 +491,7 @@ SoraFS היא תשתית אחסון מבוזרת וממוענת־תוכן. הי�
 
 Taira היא רשת הבדיקה הציבורית הקנונית של SoraFS. פרופיל המאמת שנשמר במאגר משתמש בשרשרת `fc56984b-2be7-431d-840e-21514d1883f0` ובמבחין שרשרת `369`. ה־`NetworkId` להלן הוא הזהות המדויקת של בראשית המקובע הנוכחי של Taira. איפוס Taira יכול לשנות את הגיבוב תוך שמירה על תווית השרשרת; לכן יש לרענן אותו מפרופיל הפריסה החתום הנוכחי ולעולם לא לגזור אותו מ־UUID של השרשרת. הגדרות SoraFS התקפות של Taira הן:
 
-- רשת ID: `hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94`
+- רשת ID: `hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774`
 - בסיס שער URL: `https://taira.sora.org`
 - קישור Torii URLs: `https://taira-validator-1.sora.org` עד `https://taira-validator-4.sora.org`
 - יכולות גילוי: `torii_gateway`, `chunk_range_fetch`, ו `potr_mldsa`
@@ -502,7 +501,7 @@ Taira היא רשת הבדיקה הציבורית הקנונית של SoraFS. פ
 ```toml
 [sorafs.storage]
 enabled = false
-max_capacity_bytes = 13743895347
+max_capacity_bytes = 2684354560
 
 [sorafs.discovery]
 discovery_enabled = true
@@ -587,7 +586,7 @@ cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
   --summary-out=artifacts/site.car-summary.json
 
 : "${TAIRA_AUTHORITY:?set a funded Taira I105 account}"
-export TAIRA_NETWORK_ID='hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94'
+export TAIRA_NETWORK_ID='hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774'
 export TAIRA_PIN_TORII_URL=https://taira-validator-1.sora.org
 export TAIRA_PRIVATE_KEY_FILE="${TAIRA_PRIVATE_KEY_FILE:-./secrets/taira-authority.ed25519}"
 export TAIRA_RETENTION_EPOCH=$(( $(date -u +%s) + 86400 ))

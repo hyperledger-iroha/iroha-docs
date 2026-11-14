@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/permissions.md
-translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
+translation_source_hash: 7993d14839218fd3394d52dbcce264bffea32394f54e25dd261cd060c54f1fe1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Ruxsatlar {#permissions}
 
@@ -72,14 +72,20 @@ Rol ro‘yxatdan o‘tkazilgach, Mouse uni Alice’ga berishi mumkin:
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```
 
 ## Ruxsat tekshiruvchilari {#permission-validators}
 
-Ruxsatlar himoyalangan amalni faqat kerakli ruxsat tokeniga ega hisob bajarishini ta’minlaydi. Standart ijrochi ko‘rsatma, so‘rov va ifodalarni bajarishda ruxsatlarni tekshiradi.
+Ruxsatlar himoyalangan amalni faqat kerakli ruxsat tokeniga ega hisob bajarishini ta’minlaydi. Standart ijrochi ruxsatlarni tranzaksiya va ko‘rsatmalarni bajarishda hamda so‘rovlarni tekshirishda tekshiradi.
 
 Standart tekshiruvchilar reyestr sohasi bo‘yicha guruhlanadi:
 
@@ -96,7 +102,7 @@ Tokenlarning aniq, manba bilan tasdiqlangan ro‘yxati [Ruxsat tokenlari ma’lu
 
 Ruxsat tekshiruvlarini faol ijrochi majburiy qo‘llaydi. Standart ijrochi ichki ruxsat tekshiruvchilari va token ta’riflarini taqdim etadi; tarmoq foydalanayotgan ijrochini yangilash orqali siyosatini o‘zgartirishi mumkin.
 
-Tekshiruvchilar **tekshiruv hukmini** qaytaradi. Tekshiruvchi amalga ruxsat berishi, uni sabab bilan rad etishi yoki amal o‘z doirasidan tashqarida bo‘lsa o‘tkazib yuborishi mumkin. Tanlangan hakam shu hukmlarni birlashtirib, ko‘rsatma, so‘rov yoki ifoda davom etishiga ruxsat berish-bermaslikni hal qiladi.
+Ijrochi amalga yo ruxsat beradi, yoki uni `ValidationFail` sababi bilan rad etadi. Rad etilgan ko‘rsatma butun tranzaksiyaning rad etilishiga olib keladi, rad etilgan so‘rov esa xatoni chaqiruvchiga qaytaradi.
 
 ## Qo‘llab-quvvatlanadigan so‘rovlar {#supported-queries}
 

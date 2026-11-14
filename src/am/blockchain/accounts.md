@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /blockchain/accounts.md
-translation_source_hash: adc98cbf1fcadae4415d03dcc262eb03f8c95b429527e403d230934ae2f3243c
+translation_source_hash: d956bfb8c698fa463ef9fa84a91d50cf0e2100885eba670121ad78753f87d88d
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -44,7 +44,7 @@ private_key_file = "/absolute/path/to/private.key"
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+  | jq -r '.items[] | [.id, (.label // "-")] | @tsv'
 ```
 
 የመለያ ንብረቶችን ለመመርመር የመለያ መታወቂያን ከመጀመሪያው ቴክኒካል ጥሪ ይቅዱ እና በመንገዱ ላይ ከማስቀመጥዎ በፊት URL-ኮድ ያድርጉት። ይህ Python ቅንጭብ ለመጀመሪያው የተዘረዘረው መለያ ያንን ያደርጋል -
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-እነዚህ ለሁሉም ክፍት የንባብ ክዋኔዎች ናቸው። መለያ መፍጠር ወይም ማዘመን የተፈረመ ግብይት ነው፤ በ[ከSORA Nexus የውሂብ ቦታዎች ጋር መገናኘት](/am/get-started/sora-nexus-dataspaces.md) የተገለጸውን፣ ከፋውሴት ገንዘብ የተሞላለት የTaira ዝግጅት ይፈልጋል።
+እነዚህ ለሁሉም ክፍት የንባብ ክዋኔዎች ናቸው። መለያ መፍጠር ወይም ማዘመን የተፈረመ ግብይት ነው፤ [በTaira እና Minamoto በመጠቀም በSORA Nexus ላይ መገንባት](/am/get-started/sora-nexus-dataspaces.md) በሚለው ገጽ የተገለጸውን፣ ከፋውሴት ገንዘብ የተሞላለት የTaira ዝግጅት ይፈልጋል።
 
 ## ምዝገባ እና ፈቃዶች {#registration-and-permissions}
 

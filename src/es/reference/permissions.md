@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /reference/permissions.md
-translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -16,7 +16,6 @@ Las comprobaciones de permisos son aplicadas por el validador de tiempo de ejecu
 |Token de permiso|Categoría|Operación|
 | --- | --- | --- |
 | `CanManagePeers` |par de red|Registrar, cancelar el registro o gestionar de otra manera los pares de red.|
-| `CanManageLaneRelayEmergency` |par de red|Gestionar los controles de relevo de carril de emergencia.|
 | `CanRegisterDomain` |Dominio|Registrar un dominio.|
 | `CanUnregisterDomain` |Dominio|Cancelar el registro de un dominio.|
 | `CanModifyDomainMetadata` |Dominio|Modificar los metadatos del dominio.|
@@ -28,7 +27,7 @@ Las comprobaciones de permisos son aplicadas por el validador de tiempo de ejecu
 | `CanMintAssetWithDefinition` |Activo|emitir activos para una definición específica.|
 | `CanBurnAssetWithDefinition` |Activo| Quemar activos para una definición específica. |
 | `CanTransferAssetWithDefinition` |Activo|Transferir activos para una definición específica.|
-| `CanMintAsset` |Activo|emitir un saldo de activo específico.|
+| `CanMintAssetToAccount` |Activo|emitir un saldo de activo específico.|
 | `CanBurnAsset` |Activo| Quemar un saldo de un activo específico. |
 | `CanTransferAsset` |Activo|Transferir un saldo de activo específico.|
 | `CanRegisterNft` | NFT |Registrar un NFT.|
@@ -43,7 +42,7 @@ Las comprobaciones de permisos son aplicadas por el validador de tiempo de ejecu
 | `CanModifyTrigger` |Disparador|Modificar la configuración del disparador.|
 | `CanModifyTriggerMetadata` |Disparador|Modificar los metadatos del activador.|
 | `CanUpgradeExecutor` |ejecutora|Actualice el ejecutor de tiempo de ejecución del software.|
-| `CanRegisterSmartContractCode` |Contrato inteligente|Registrar código de contrato inteligente.|
+| `CanManageSmartContractCode` |Contrato inteligente|Eliminar artefactos de código no referenciados y delegar puntos de entrada de contratos. Las cuentas registradas pueden crear artefactos verificados sin él.|
 | `CanManageFeeSponsorProgram` | SORA Nexus | Administrar programas pertenecientes a la cuenta exacta del patrocinador. |
 | `CanEnrollFeeSponsorProgram` | SORA Nexus | Gestionar los beneficiarios de un programa de patrocinio concreto. |
 

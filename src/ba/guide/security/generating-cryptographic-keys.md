@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: b6e3bd79c50ea326930ac978350ea4beac8294b6f045ac0084aada257754ffa1
+translation_source_hash: bb1044edb9d34264e36848ee773d4d313bfbfd91b45da2eeb831f7ef8920e9b4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
@@ -56,7 +56,7 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` тик `bls_normal` менән генә дөрөҫ; ул һаҡлау каталогына `pop.hex` өҫтәй. Ҡул ҡуйылған генезис һәр тауыш биреүсе валидатор өсөн тап килгән PoP талап итә. Тиңдәш конфигурацияһында буш булмаған `trusted_peers_pop` картаһы валидаторҙарҙың өлөшләтә йыйылмаһын һайлай; ошо буш булмаған картаға инмәгән ышаныслы тиңдәштәр күҙәтеүсе була. Карта буш булһа, бөтә BLS-normal ышаныслы тиңдәштәр башланғыс кандидаттар йыйылмаһына инә, ә тауыш биреүселәрҙең PoPs-тары барыбер ҡул ҡуйылған генезис аша бирелә.
+`--pop` тик `bls_normal` менән генә дөрөҫ; ул һаҡлау каталогына `pop.hex` өҫтәй. Ҡул ҡуйылған генезис һәр тауыш биреүсе валидатор өсөн тап килгән PoP талап итә. Тиңдәш конфигурацияһында һәр валидаторҙың PoP-ын `trusted_peers_pop` эсендә күрһәтегеҙ: дөрөҫ PoP-ы булмаған ышаныслы тиңдәштәр консенсус исемлегенән төшөрөп ҡалдырыла, ә буш карта бер валидатор ҙа бирмәй, шуға күрә картаһында генезис валидаторҙары булмаған төйөн эшләтеп ебәреүҙән баш тарта. Тик синхронлаштырыу менән генә шөғөлләнгән төйөндө `[sumeragi] role = "observer"` менән эшләтегеҙ.
 
 ## Һаҡлау сығышы {#custody-output}
 

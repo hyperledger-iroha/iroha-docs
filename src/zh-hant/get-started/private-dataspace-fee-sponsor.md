@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /get-started/private-dataspace-fee-sponsor.md
-translation_source_hash: 79410ebb9d0a18072d5ae2288348082390b622ed81225de79dcbd4000e268e51
+translation_source_hash: 2ca4fc00709839879fe9cb7ea5e5f697505e5e25d4e5a6cd0bd18d406f6e2846
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -13,7 +13,7 @@ SORA Nexus 費用贊助方案可支付符合資格、且路由至私有資料空
 
 ## 1. 確立已提交的費用政策 {#_1-establish-the-committed-fee-policy}
 
-簽署的創世資料定義一個包含 `RootFeePolicy` 的 `root_fees_v1` 自訂參數，綁定費用貨幣、費用去向、贊助資金保管帳戶、申領豁免項目及費率。每個一般區塊與每次報價都使用各自捕獲的已提交政策。經授權的政策更新從下一個區塊開始生效。
+簽署的創世資料定義一個包含 `RootFeePolicy` 的 `root_fees_v1` 自訂參數，綁定費用貨幣、費用去向、贊助資金保管帳戶、申領豁免項目及費率。每個一般區塊與每次報價都使用各自捕獲的已提交政策。經授權的費率、費用去向與申領豁免項目變更從下一個區塊開始生效；費用貨幣與贊助資金保管帳戶在第一個區塊之後便無法變更。
 
 在全域執行中，原生費用會銷毀簽署網路所指定的確切 XOR 貨幣，由贊助方案的金庫提供該貨幣。節點設定與交易中繼資料不會選擇支付者，也不會啟用贊助。
 

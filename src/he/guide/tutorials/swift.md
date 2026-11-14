@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: 37e8be9b07a40e5c6b841a47b016320e42079853433fb3e53937e4021dc1304f
+translation_source_hash: 753ce1b5e0de4eae56b38e77962566b23fee56d4662a432a7bbe6ea807261422
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -29,20 +29,16 @@ targets: [
 ]
 ```
 
-התאימו את הנתיב ליישום שלכם. אל תעתיקו את הנתיב הנוכחי `examples/ios/ConnectMinimalApp` כמות שהוא; מניפסט זה פותר את `../../IrohaSwift` אל `examples/IrohaSwift`.
+התאימו את הנתיב ליישום שלכם. ‏`examples/ios/ConnectMinimalApp/Package.swift` מציג את אותה תלות עם הנתיב היחסי `../../../IrohaSwift`.
 
-לפני פתרון החבילה, ודא שהגשר קיים בשורש חלל העבודה:
+לפני פתרון החבילה, בנו את הגשר המקורי הנוכחי. לפיתוח ולבדיקות מקומיים, הריצו את הפקודה הזו משורש סביבת העבודה:
 
 ```bash
 cd /path/to/iroha
-make bridge-xcframework
+python3.12 scripts/test_swift_local.py
 ```
 
-זה מייצר `dist/NoritoBridge.xcframework`; `IrohaSwift/Package.swift` מתייחס אליו כ `../dist/NoritoBridge.xcframework`.
-
-## CocoaPods {#cocoapods}
-
-בסיס הקוד כולל גם `IrohaSwift/IrohaSwift.podspec`. הוא מכריז על `IrohaSwift` קופסה, Swift 5.9, ו-iOS 15. הפודספיק מושך Swift מקורות מאגף הראשי; הגשר המקומי עדיין חייב להיות נוכח וקשורים לקוד העסקאות, חתימה שאינה Ed25519, וConnect crypto.
+בניות שחרור מפיקות את `dist/NoritoBridge.xcframework` באמצעות `make bridge-xcframework`, הדורשת את `SOURCE_DATE_EPOCH`, ‏`NORITO_BRIDGE_OUT_DIR`, ‏`NORITO_BRIDGE_BUILD_DIR`, ‏`NORITO_BRIDGE_ARCHIVE_OUTPUT` ו־`MOBILE_SDK_CARGO_LOCKFILE`. ‏`IrohaSwift/Package.swift` מפנה אל הגשר בתור `../dist/NoritoBridge.xcframework`.
 
 ## התחלה מהירה {#quickstart}
 
@@ -51,13 +47,13 @@ import Foundation
 import IrohaSwift
 
 let torii = ToriiClient(baseURL: URL(string: "http://127.0.0.1:8080")!)
-let sdk = IrohaSDK(toriiClient: torii)
+let sdk = IrohaSDK(baseURL: torii.baseURL)
 
 let keypair = try Keypair.generate()
 let accountId = try keypair.accountId()
 
 if #available(iOS 15.0, macOS 12.0, *) {
-    let balances = try await torii.getAssets(accountId: accountId)
+    let balances = try await torii.accountAssets(of: accountId).page()
     print("balances:", balances)
 }
 ```
@@ -88,7 +84,7 @@ if #available(iOS 15.0, macOS 12.0, *) {
 
 ```swift
 let transfer = TransferRequest(
-    chainId: "00000000-0000-0000-0000-000000000000",
+    networkId: try NetworkId(literal: "<exact-network-id>"),
     authority: accountId,
     assetDefinitionId: "66owaQmAQMuHxPzxUN3bqZ6FJfDa",
     quantity: "1",
@@ -102,15 +98,15 @@ if #available(iOS 15.0, macOS 12.0, *) {
         transfer: transfer,
         keypair: keypair
     )
-    print(status.content.status.kind)
+    print(status.status.kind)
 }
 ```
 
-`TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest` ו `UnshieldRequest` מסכימים את החשבון הקנוני IDs והגדרת נכס Base58 הלא מקובלת קנונית IDs לפני חתימה.
+`TransferRequest`, ‏`MintRequest` ו־`BurnRequest` מאמתים מזהי חשבון קנוניים ומזהי הגדרות נכסים קנוניים בקידוד Base58 ללא קידומת לפני החתימה.
 
 ## משכנתא מקומי {#native-escrow}
 
-Swift בונה הוראות שוק ושל אבטחה אנונימית כצריכים מועילים של Norito JSON באמצעות `NativeEscrowInstructionBuilders` או עוזרים הוותיקים `IrohaSDK.build*Escrow*`. ראה [ אבטחת נכסים מקומיים ](/he/blockchain/escrow.md#swift-and-ios) לדוגמאות, שדות הוכחה אנונימיים, ואת סימן רשות פתרון מחלוקת.
+Swift בונה הוראות נאמנות שוק כמטעני Norito JSON באמצעות `NativeEscrowInstructionBuilders` או עזרי `IrohaSDK.build*Escrow*` המקבילים. ראו [נאמנות נכסים מובנית](/he/blockchain/escrow.md#swift-and-ios) לדוגמאות ולאסימון ההרשאה לפתרון מחלוקות.
 
 ## חתימה {#signing}
 
@@ -143,8 +139,14 @@ let request = try ConnectClient.makeWebSocketRequest(
 let client = ConnectClient(request: request)
 await client.start()
 
-let session = ConnectSession(sessionID: sessionID, client: client)
 let keyPair = try ConnectCrypto.generateKeyPair()
+let session = try ConnectSession(
+    networkID: try NetworkId(literal: "<exact-network-id>"),
+    appPublicKey: keyPair.publicKey,
+    nonce: nonce,
+    relayToken: "<token>",
+    client: client
+)
 ```
 
 `ConnectSession` מטפל בפיקוחים פתוחים וסגורים, קריאת קספת מוצפנת, מפתחות כיוון, בקרת זרימה, זרמי אירועים, זרמים של יתרה, וכתבי דיאגנוסטיקה.
@@ -154,7 +156,7 @@ let keyPair = try ConnectCrypto.generateKeyPair()
 מקור Swift כולל כיום:
 
 - `ToriiClient` HTTP עוזרים לחשבונות, נכסים, שם כינוי, דפים של חוקר, RWA, חוזים, מלטסיג, ממשל, מחברות, זמינות נתונים, נכסים סודיים, מצב הערך/זמן הפעלה, בריאות, מדידות, וזרמים SSE
-- `IrohaSDK` בונים עסקאות ועוזרים להגיש/הצבעה עבור העברה, הנפקה, שריפה, כיסוי, ללא כיסוי. ZK העברה, ZK רישום נכסים, מטא-מנתונים, דרישות מזהה, רישום רב סיג, הוראות לניהול.
+- בוני עסקאות של `IrohaSDK` ועזרי הגשה ובדיקת מצב חוזרת עבור העברה, הנפקה, שריפה, רישום נכסי ZK, מטא־נתונים, תביעות מזהים, רישום ריבוי חתימות, פריסת חוזים והצבעות ממשל
 - תמיכה בשורה של עסקאות בהמתנה דרך `PendingTransactionQueue` ו `FilePendingTransactionQueue`
 - כתובת חשבון ועוזרי I105 באמצעות `AccountAddress` ו `AccountId`
 - גבי חתימה Ed25519, secp256k1, ML-DSA, BLS, GOST ו SM2, עם תמיכה בישר מקומית, כאשר זה נחוץ.
@@ -170,7 +172,6 @@ let keyPair = try ConnectCrypto.generateKeyPair()
 ## מקורות ראיות {#source-references}
 
 - `IrohaSwift/Package.swift`
-- `IrohaSwift/IrohaSwift.podspec`
 - `IrohaSwift/Sources/IrohaSwift/ToriiClient.swift`
 - `IrohaSwift/Sources/IrohaSwift/TxBuilder.swift`
 - `IrohaSwift/Sources/IrohaSwift/TransactionEncoder.swift`

@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /get-started/private-dataspace-fee-sponsor.md
-translation_source_hash: 79410ebb9d0a18072d5ae2288348082390b622ed81225de79dcbd4000e268e51
+translation_source_hash: 2ca4fc00709839879fe9cb7ea5e5f697505e5e25d4e5a6cd0bd18d406f6e2846
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -13,7 +13,7 @@ Məlumat məkanı kataloqundakı qeyd müstəqil imzalanmış kök yaratmır. M�
 
 ## 1. Təsdiqlənmiş haqq siyasətini müəyyən edin {#_1-establish-the-committed-fee-policy}
 
-İmzalanmış genezis `RootFeePolicy` ehtiva edən bir `root_fees_v1` xüsusi parametri yaradır. O, haqq valyutasını, haqq qəbul edən hesabı, sponsorun mühafizə hesabını, tələb istisnalarını və tarifləri bağlayır. Hər adi blok və qiymət təklifi özünün qeydə aldığı təsdiqlənmiş siyasətdən istifadə edir. Səlahiyyətli siyasət yeniləmələri növbəti blokdan qüvvəyə minir.
+İmzalanmış genezis `RootFeePolicy` ehtiva edən bir `root_fees_v1` xüsusi parametri yaradır. O, haqq valyutasını, haqq qəbul edən hesabı, sponsorun mühafizə hesabını, tələb istisnalarını və tarifləri bağlayır. Hər adi blok və qiymət təklifi özünün qeydə aldığı təsdiqlənmiş siyasətdən istifadə edir. Tariflərə, haqq qəbul edən hesaba və tələb istisnalarına edilən səlahiyyətli dəyişikliklər növbəti blokdan qüvvəyə minir; haqq valyutası və sponsorun mühafizə hesabı ilk blokdan sonra dəyişdirilə bilməz.
 
 Qlobal icrada protokol haqqı imzalanmış şəbəkənin dəqiq XOR valyutasını yandırır. Sponsorun proqram anbarı bu valyutanı təmin edir. Qovşaq parametrləri və əməliyyat metaməlumatı ödəyici seçmir və sponsorluğu aktivləşdirmir.
 

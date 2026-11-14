@@ -1,9 +1,9 @@
 ---
 translation_locale: my
 translation_source: /reference/queries.md
-translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
+translation_source_hash: baa9726c7ce7d14b8dd17e77447ef72233ca9ed779367d9a190aa8dde7da41ac
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # query များ {#queries}
 
@@ -56,7 +56,7 @@ SDK typeed builders (သို့) CLI ကို လက်နဲ့ query data c
 |ဒေတာရှာဖွေတောင်းဆိုချက်|ရည်ရွယ်ချက်|
 | --- | --- |
 |`FindAssets` |အရင်းအမြစ်လက်ကျန်စာရင်း။ |
-|`FindAssetsDefinitions` |အရင်းအမြစ် အဓိပ္ပါယ်ဖွင့်ဆိုချက်တွေကို စာရင်းပေးပါ။ |
+|`FindAssetDefinitions` |အရင်းအမြစ် အဓိပ္ပါယ်ဖွင့်ဆိုချက်တွေကို စာရင်းပေးပါ။ |
 |`FindAssetsByAccountId` |အကောင့်တစ်ခုမှာရှိတဲ့ အရင်းအမြစ်တွေကို စာရင်းပေးပါ။ |
 |`FindAssetById` |`AssetId` ကနေ အရင်းအမြစ်စာရင်းတစ်ခုရှာပါ။ |
 |`FindAssetDefinitionById` |ID နဲ့ အရင်းအမြစ် အဓိပ္ပါယ်ဖွင့်ဆိုချက် တစ်ခု ရှာပါ။ |
@@ -66,7 +66,7 @@ SDK typeed builders (သို့) CLI ကို လက်နဲ့ query data c
 
 ## အာမခံစာရင်းနှင့် သက်သေခံစာရင်းများ {#escrow-and-proof-records}
 
-အာမခံအပ်နှံမှုဆိုင်ရာ မေးမြန်းချက်များသည် [မူလပိုင်ဆိုင်မှု အာမခံအပ်နှံရေး ISIs](/my/blockchain/escrow.md) က ဖန်တီးထားသော မှတ်တမ်းများကို စစ်ဆေးသည်။ ၎င်းတို့တွင် ဈေးကွက်အာမခံအပ်နှံမှုများ၊ ယေဘုယျပိုင်ဆိုင်မှုသော့ခတ်မှုများနှင့် အမည်မဖော်သော အာမခံအပ်နှံမှုမှတ်တမ်းများ ပါဝင်သည်။
+Escrow မေးမြန်းချက်များသည် [မူလပိုင်ဆိုင်မှု escrow ISIs](/my/blockchain/escrow.md) က ဖန်တီးထားသော မှတ်တမ်းများကို စစ်ဆေးသည်။ ၎င်းတို့တွင် စျေးကွက် escrow များ၊ ယေဘုယျ ပိုင်ဆိုင်မှု lock များနှင့် အခြေအနေအလိုက် escrow များ ပါဝင်သည်။
 
 |ဒေတာရှာဖွေတောင်းဆိုချက်|ရည်ရွယ်ချက်|
 | --- | --- |
@@ -75,11 +75,6 @@ SDK typeed builders (သို့) CLI ကို လက်နဲ့ query data c
 |`FindAssetEscrowsBySeller` |ရောင်းသူအလိုက် အရင်းအမြစ်တွေကို မှတ်ပုံတင်ပါ။ |
 |`FindAssetEscrowsByBuyer` |အရင်းအမြစ်များကို ဝယ်ယူသူအလိုက် မှတ်တမ်းတင်ပါ။ |
 |`FindAssetEscrowsByStatus` |အရင်းအမြစ်များကို အခြေအနေအလိုက် စာရင်းပေးပါ။ |
-|`FindAnonymousAssetEscrows` |အမည်မသိ အရင်းအမြစ်ဂိုဏ်း မှတ်တမ်းတွေကို စာရင်းပေးပါ။|
-|`FindAnonymousAssetEscrowById` |ID ကနေ အမည်မသိ အရင်းအမြစ် တစ်ခုကို ရှာပါ။|
-|`FindAnonymousAssetEscrowsBySeller` |ရောင်းသူအလိုက် အမည်မဲ့ ဂိုဏ်းစာရင်းပေးပါ။ |
-|`FindAnonymousAssetEscrowsByBuyer` |ဝယ်သူအလိုက် အမည်မဲ့ ဂိုဏ်းတွေကို စာရင်းပေးပါ။|
-|`FindAnonymousAssetEscrowsByStatus` |အမည်မဲ့ ငွေပေးချေသူတွေကို အခြေအနေအလိုက် စာရင်းပေးပါ။ |
 |`FindProofRecordById` |အထောက်အထား မှတ်တမ်း တစ်ခုကို ID နဲ့ ရှာပါ။|
 |`FindProofRecords` |အထောက်အထား မှတ်တမ်းတွေကို စာရင်းပေးပါ။|
 |`FindProofRecordsByBackend` |အထောက်အထား backend တစ်ခုအတွက် သက်သေခံ မှတ်တမ်းတွေကို စာရင်းပေးပါ။ |
@@ -89,15 +84,14 @@ SDK typeed builders (သို့) CLI ကို လက်နဲ့ query data c
 
 |ဒေတာရှာဖွေတောင်းဆိုချက်|ရည်ရွယ်ချက်|
 | --- | --- |
-|`FindRepoAgreements` |ကွင်းဆက်မှာ သိုလှောင်ထားတဲ့ မှတ်ပုံတင် သဘောတူညီချက်တွေကို စာရင်းပေးပါ။ |
+| `FindRepoAgreements` | ကွင်းဆက်ပေါ်တွင် သိမ်းဆည်းထားသော repo နှင့် reverse-repo သဘောတူညီချက်များကို စာရင်းပြုသည်။ |
 |`FindTwitterBindingByHash` |Cryptographic hash ဖြင့် Twitter binding ကို ဖြေရှင်းပါ။ |
 |`FindDaPinIntentByTicket` |Ticket ကေန Data Availability pin intent ကို ရှာပါ။ |
 |`FindDaPinIntentByManifest` |Technical Manifesto Reference နဲ့ pin intent ကို ရှာပါ။ |
 | `FindDaPinIntentByAlias` | alias ဖြင့် pin ရည်ရွယ်ချက်ကို ရှာဖွေခြင်း။ |
 |`FindDaPinIntentByLaneEpochSequence` |အပြီးသတ်မှုလမ်းကြောင်း၊ ခေတ်နဲ့ အစဉ်အတန်းကနေ pin intent ကိုရှာပါ။ |
-|`FindLaneRelayEnvelopeByRef` |မှန်ကန်တဲ့ Lane-relay ဒေတာ ကွန်တိန်နာကို ရှာပါ။ |
 |`FindSorafsProviderOwner` |SoraFS ပေးသွင်းသူ၏ ပိုင်ရှင်ကို ဖြေရှင်းပါ။ |
-|`FindDataspaceNameOwnerById` |ဒေတာနေရာအမည်ရှင်ကို ဖြေရှင်းပါ။ |
+| `FindDataspaceNameOwnerById` | ဒေတာနေရာ alias တစ်ခု၏ လက်ရှိ SNS ပိုင်ရှင်ကို ရှာဖွေဖော်ထုတ်သည်။ |
 |`FindMusubiExactPackageV1` |တိကျတဲ့ package record တစ်ခုနဲ့ လက်ရှိ ပြင်ဆင်ချက်တွေကို ဖတ်ပါ။|
 |`FindMusubiExactReleaseV1` |တိကျတဲ့ ထုတ်လွှင့်ချက် တစ်ပုံကို ဖတ်ပါ။|
 |`FindMusubiProviderBundleAttestationV1` |ပေးသွင်းသူတစ်ဦးရဲ့ မှတ်တမ်းစု အထောက်အထားကို ဖတ်ပါ။ |
@@ -117,7 +111,7 @@ SDK typeed builders (သို့) CLI ကို လက်နဲ့ query data c
 |`FindActiveTriggerIds` |Active trigger ID တွေကို စာရင်းထည့်ပါ။ |
 |`FindTriggers` |List trigger တွေ။|
 |`FindTriggerById` |ID နဲ့ trigger တစ်ခုရှာပါ။ |
-| `FindContractManifestByCodeHash` | ကုဒ်ဟက်ရှ်ဖြင့် စမတ်စာချုပ်မန်နီဖက်စ်ကို ရှာသည်။ |
+| `FindContractManifestByArtifactId` | စမတ်စာချုပ်မန်နီဖက်စ်ကို ၎င်း၏ ဒေတာနေရာ artifact ID ဖြင့် ရှာသည်။ |
 |`FindTransactions` |ပြီးဆုံးသွားတဲ့ ငွေပေးချေမှုစာရင်း။|
 |`FindBlocks` |စာရင်းအင်းတွေ။|
 |`FindBlockHeaders` |Block headers တွေကို စာရင်းပေးပါ။|

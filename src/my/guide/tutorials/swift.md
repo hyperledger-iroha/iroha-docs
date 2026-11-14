@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: 37e8be9b07a40e5c6b841a47b016320e42079853433fb3e53937e4021dc1304f
+translation_source_hash: 753ce1b5e0de4eae56b38e77962566b23fee56d4662a432a7bbe6ea807261422
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -29,20 +29,16 @@ targets: [
 ]
 ```
 
-သင့် app အတွက် လမ်းကြောင်းကို ပြင်ပါ။ လက်ရှိ `examples/ios/ConnectMinimalApp` လမ်းကြောင်းကို ဖြစ်နေပုံအတိုင်း မကူးယူပါနဲ့။ အဲဒီနည်းပညာထုတ်ပြန်ချက်မှာ `../../IrohaSwift` ကို `examples/IrohaSwift` သို့ ဖြေရှင်းပေးပါတယ်။
+သင့် app အတွက် လမ်းကြောင်းကို ပြင်ဆင်ပါ။ `examples/ios/ConnectMinimalApp/Package.swift` သည် တူညီသော dependency ကို ဆက်စပ်လမ်းကြောင်း `../../../IrohaSwift` ဖြင့် ပြသည်။
 
-Package ကို ဖြေရှင်းမပေးခင် တံတားဟာ workspace root မှာရှိတာကို သေချာအောင်လုပ်ပါ။
+Package ကို resolve မလုပ်မီ လက်ရှိ native bridge ကို တည်ဆောက်ပါ။ ဒေသတွင်း ဖွံ့ဖြိုးရေးနှင့် စမ်းသပ်မှုများအတွက် ၎င်းကို workspace root မှ လုပ်ဆောင်ပါ:
 
 ```bash
 cd /path/to/iroha
-make bridge-xcframework
+python3.12 scripts/test_swift_local.py
 ```
 
-`dist/NoritoBridge.xcframework` ကိုထုတ်ပေးပြီး `IrohaSwift/Package.swift` ကတော့ `../dist/NoritoBridge.xcframework` လို့ခေါ်ပါတယ်။
-
-## CocoaPods {#cocoapods}
-
-ဒီကုဒ်ဘေ့စ်မှာလည်း ပါဝင်ပါတယ်။ `IrohaSwift/IrohaSwift.podspec`. ၎င်းက ကြေညာသည် `IrohaSwift` အိတ်၊ Swift 5.9 နဲ့ iOS 15 တို့ပါ။ podspec က ဆွဲပေးတယ်။ Swift အဓိက သိုလှောင်ရုံမှ ရင်းမြစ်များ; မူလတံတားက ရှိနေဆဲပါ။ Transaction encoding, non-Ed25519 လက်မှတ်ထိုးခြင်းနဲ့ Connect crypto အတွက် ချိတ်ဆက်ထားတယ်။
+ထုတ်ဝေရေး build များသည် `make bridge-xcframework` ဖြင့် `dist/NoritoBridge.xcframework` ကို ထုတ်လုပ်ပြီး ၎င်းအတွက် `SOURCE_DATE_EPOCH`၊ `NORITO_BRIDGE_OUT_DIR`၊ `NORITO_BRIDGE_BUILD_DIR`၊ `NORITO_BRIDGE_ARCHIVE_OUTPUT` နှင့် `MOBILE_SDK_CARGO_LOCKFILE` လိုအပ်သည်။ `IrohaSwift/Package.swift` သည် bridge ကို `../dist/NoritoBridge.xcframework` အဖြစ် ရည်ညွှန်းသည်။
 
 ## အမြန်စတင်ခြင်း {#quickstart}
 
@@ -51,13 +47,13 @@ import Foundation
 import IrohaSwift
 
 let torii = ToriiClient(baseURL: URL(string: "http://127.0.0.1:8080")!)
-let sdk = IrohaSDK(toriiClient: torii)
+let sdk = IrohaSDK(baseURL: torii.baseURL)
 
 let keypair = try Keypair.generate()
 let accountId = try keypair.accountId()
 
 if #available(iOS 15.0, macOS 12.0, *) {
-    let balances = try await torii.getAssets(accountId: accountId)
+    let balances = try await torii.accountAssets(of: accountId).page()
     print("balances:", balances)
 }
 ```
@@ -88,7 +84,7 @@ UI နှင့် ပြန်ကြိုးစားမှုအပြုအ�
 
 ```swift
 let transfer = TransferRequest(
-    chainId: "00000000-0000-0000-0000-000000000000",
+    networkId: try NetworkId(literal: "<exact-network-id>"),
     authority: accountId,
     assetDefinitionId: "66owaQmAQMuHxPzxUN3bqZ6FJfDa",
     quantity: "1",
@@ -102,15 +98,15 @@ if #available(iOS 15.0, macOS 12.0, *) {
         transfer: transfer,
         keypair: keypair
     )
-    print(status.content.status.kind)
+    print(status.status.kind)
 }
 ```
 
-`TransferRequest`၊ `MintRequest`၊ `BurnRequest`၊ `ShieldRequest` နှင့် `UnshieldRequest` တို့သည် လက်မှတ်မထိုးမီ ကနွန်နစ်အကောင့် ID များနှင့် ရှေ့ဆက်စာသားမပါသော ကနွန်နစ် Base58 ပိုင်ဆိုင်မှုသတ်မှတ်ချက် ID များကို စစ်ဆေးအတည်ပြုသည်။
+`TransferRequest`၊ `MintRequest` နှင့် `BurnRequest` တို့သည် လက်မှတ်မထိုးမီ ကနွန်နစ်အကောင့် ID များနှင့် ရှေ့ဆက်စာသားမပါသော ကနွန်နစ် Base58 ပိုင်ဆိုင်မှုသတ်မှတ်ချက် ID များကို စစ်ဆေးအတည်ပြုသည်။
 
 ## စံညွှန်ကြားချက်ဖြင့် ကြားခံထိန်းသိမ်းခြင်း {#native-escrow}
 
-Swift သည် `NativeEscrowInstructionBuilders` သို့မဟုတ် ညီမျှသော `IrohaSDK.build*Escrow*` အကူအညီများမှတစ်ဆင့် Norito JSON အသုံးဝင်ဝန်ဆောင်မှုအဖြစ် စျေးကွက်နှင့် အမည်မသိ အာမခံ ညွှန်ကြားချက်များကို တည်ဆောက်သည်။ နမူနာများအတွက် [ပိုင်ဆိုင်မှုများကို စံညွှန်ကြားချက်ဖြင့် ကြားခံထိန်းသိမ်းခြင်း](/my/blockchain/escrow.md#swift-and-ios) ကိုကြည့်ပါ၊ အမည်မဲ့ သက်သေခံ ကွင်းများနှင့် ပဋိပက္ခဖြေရှင်းခွင့်လက်မှတ်ကို ကြည့်ပါ။
+Swift သည် `NativeEscrowInstructionBuilders` သို့မဟုတ် ညီမျှသော `IrohaSDK.build*Escrow*` အကူအညီပေး function များမှတစ်ဆင့် စျေးကွက် escrow ညွှန်ကြားချက်များကို Norito JSON payload များအဖြစ် တည်ဆောက်သည်။ ဥပမာများနှင့် အငြင်းပွားမှု ဖြေရှင်းသူ၏ ခွင့်ပြုချက် token အတွက် [ပိုင်ဆိုင်မှုများကို စံညွှန်ကြားချက်ဖြင့် ကြားခံထိန်းသိမ်းခြင်း](/my/blockchain/escrow.md#swift-and-ios) ကို ကြည့်ပါ။
 
 ## လက်မှတ်ရေးထိုးခြင်း {#signing}
 
@@ -143,8 +139,14 @@ let request = try ConnectClient.makeWebSocketRequest(
 let client = ConnectClient(request: request)
 await client.start()
 
-let session = ConnectSession(sessionID: sessionID, client: client)
 let keyPair = try ConnectCrypto.generateKeyPair()
+let session = try ConnectSession(
+    networkID: try NetworkId(literal: "<exact-network-id>"),
+    appPublicKey: keyPair.publicKey,
+    nonce: nonce,
+    relayToken: "<token>",
+    client: client
+)
 ```
 
 `ConnectSession` ဟာ ဖွင့်ပြီး ပိတ်တဲ့ ထိန်းချုပ်မှုတွေ၊ ကုဒ်သွင်းထားတဲ့ ဒေတာ ကွန်တိန်နာဖတ်တာ၊ လမ်းညွှန်ချက် ခလုတ်တွေ၊ စီးဆင်းမှု ထိန်းချုပ်မှု၊ ဖြစ်ရပ်စီးကြောင်းတွေ၊ ဟန်ချက်ညီမှုစီးကြောင်းတွေနဲ့ ရောဂါရှာဖွေရေး ဂျာနယ်တွေကို ကိုင်တွယ်ပါတယ်။
@@ -154,7 +156,7 @@ let keyPair = try ConnectCrypto.generateKeyPair()
 Swift အရင်းအမြစ်မှာ လက်ရှိတွင်:
 
 - အကောင့်၊ ပိုင်ဆိုင်မှု၊ alias၊ ရှာဖွေကြည့်ရှုစာမျက်နှာ၊ RWA၊ စာချုပ်၊ လက်မှတ်စုံ၊ အုပ်ချုပ်မှု၊ စာရင်းသွင်းမှု၊ ဒေတာရရှိနိုင်မှု၊ လျှို့ဝှက်ပိုင်ဆိုင်မှု၊ နိုဒ်နှင့်လည်ပတ်စနစ်အခြေအနေ၊ ကျန်းမာရေး၊ တိုင်းတာချက်နှင့် SSE stream များအတွက် `ToriiClient` HTTP အကူကိရိယာများ
-- `IrohaSDK` ငွေပေးချေမှု တည်ဆောက်သူများနှင့် လွှဲပြောင်းခြင်း၊ ထုတ်လွှင့်ခြင်း၊ ဖျက်ဆီးခြင်း၊ ပိုင်းခြားခြင်း၊ ပိုင်းခြားမထားခြင်း၊ ZK လွှဲပြောင်းမှု၊ ZK အရင်းအမြစ် မှတ်ပုံတင်ခြင်း၊ မီတာဒေတာများ၊ အမည်သတ်မှတ်ချက် တောင်းဆိုမှုများ၊ multisig မှတ်ပုံတင်ခြင်း နှင့် အုပ်ချုပ်ရေး ညွှန်ကြားချက်များအတွက် တင်ပြ/ရွေးချယ်သူများ။
+- လွှဲပြောင်းခြင်း၊ ထုတ်လုပ်ခြင်း၊ ဖျက်ဆီးခြင်း၊ ZK ပိုင်ဆိုင်မှု မှတ်ပုံတင်ခြင်း၊ metadata၊ identifier တောင်းဆိုမှုများ၊ multisig မှတ်ပုံတင်ခြင်း၊ contract ဖြန့်ကျက်ခြင်းနှင့် အုပ်ချုပ်မှု မဲပြားများအတွက် `IrohaSDK` transaction builder များနှင့် တင်သွင်းခြင်း/အခြေအနေစစ်ခြင်း အကူအညီပေး function များ
 - `PendingTransactionQueue` နှင့် `FilePendingTransactionQueue` မှတစ်ဆင့် ငွေပေးချေမှုလိုင်းထောက်ပံ့မှုကို စောင့်ဆိုင်းနေသည်
 - `AccountAddress` နှင့် `AccountId` မှတစ်ဆင့် အကူအညီပေးသူများအတွက် ငွေစာရင်းလိပ်စာနှင့် I105
 - Ed25519, secp256k1, ML-DSA, BLS, GOST နှင့် SM2 လက်မှတ်ထိုးတဲ့ မျက်နှာပြင်များ၊ လိုအပ်ပါက ပင်ကိုယ်တံတားအထောက်အပံ့ဖြင့်
@@ -170,7 +172,6 @@ Swift အရင်းအမြစ်မှာ လက်ရှိတွင်:
 ## အရင်းအမြစ် ကိုးကားချက်များ {#source-references}
 
 - `IrohaSwift/Package.swift`
-- `IrohaSwift/IrohaSwift.podspec`
 - `IrohaSwift/Sources/IrohaSwift/ToriiClient.swift`
 - `IrohaSwift/Sources/IrohaSwift/TxBuilder.swift`
 - `IrohaSwift/Sources/IrohaSwift/TransactionEncoder.swift`

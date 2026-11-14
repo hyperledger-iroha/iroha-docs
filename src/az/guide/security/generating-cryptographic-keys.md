@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: b6e3bd79c50ea326930ac978350ea4beac8294b6f045ac0084aada257754ffa1
+translation_source_hash: bb1044edb9d34264e36848ee773d4d313bfbfd91b45da2eeb831f7ef8920e9b4
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -56,7 +56,7 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` yalnız `bls_normal` ilə etibarlıdır; o, mühafizə kataloquna `pop.hex` əlavə edir. İmzalanmış blockchain genesis hər bir səs verən təsdiqləyici üçün uyğun PoP tələb edir. Şəbəkə şəbəkə həmkarı konfiqurasiyasında, boş olmayan `trusted_peers_pop` xəritə təsdiqləyici alt dəstini seçir; həmin boş olmayan xəritədən çıxarılan etibarlı şəbəkə həmkarları müşahidəçilərdir. Əgər xəritə boşdursa, bütün BLS-normal etibarlı şəbəkə həmkarları başlanğıc namizəd dəstinə daxil olur, seçici PoPs isə hələ də imzalanmış blokçeyn başlanğıcı tərəfindən təmin edilir.
+`--pop` yalnız `bls_normal` ilə etibarlıdır; o, mühafizə kataloquna `pop.hex` əlavə edir. İmzalanmış genezis hər bir səs verən təsdiqləyici üçün uyğun PoP tələb edir. Şəbəkə həmkarı konfiqurasiyasında hər təsdiqləyicinin PoP dəyərini `trusted_peers_pop` daxilində göstərin: etibarlı PoP dəyəri olmayan etibarlı şəbəkə həmkarları konsensus siyahısından çıxarılır, boş xəritə isə heç bir təsdiqləyici vermir, buna görə də xəritəsində genezis təsdiqləyiciləri olmayan qovşaq işə düşməkdən imtina edir. Yalnız sinxronizasiya edən qovşağı `[sumeragi] role = "observer"` ilə işə salın.
 
 ## Mühafizə çıxışı {#custody-output}
 

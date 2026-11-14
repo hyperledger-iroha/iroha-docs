@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /blockchain/assets.md
-translation_source_hash: 4d0a3f54a0c70d08d11160b9ec66d6538aa2c49c7771a13e4a070b61a9cb3e4b
+translation_source_hash: f5f0eb99e76287db695cc21b8580fd2a9b4dc2a989237c1a1d3d7333c14561ce
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -22,6 +22,7 @@ Iroha хөрөнгө нь дансанд хадгалагдсан тоон тэ�
 - `logo`: сонголттой `SoraFS` URI
 - `metadata`: дурын түлхүүр-утга metadata
 - `balance_scope_policy`: үлдэгдэл глобал эсвэл өгөгдлийн орон зайгаар хязгаарлагдсан эсэх
+- `owning_domain`: домэйны эзэмшлийн тодорхойлолтыг эзэмшдэг домэйн; өгөгдлийн орон зайд шууд бүртгэгдсэн тодорхойлолтод байхгүй
 - `owned_by`: бүртгэл үүсгэсэн эсвэл тодорхойлолтыг эзэмшдэг данс
 - `total_quantity`: нийт нийтлэгдсэн хэмжээ
 - `confidential_policy`: хамгаалалттай хөрөнгийн үйл ажиллагааны бодлого
@@ -33,7 +34,7 @@ Iroha хөрөнгө нь дансанд хадгалагдсан тоон тэ�
 Нэг `Asset` агуулна:
 
 - `id`: хөрөнгийн тодорхойлолт, эзэмшигчийн данс болон сонголттой үлдэгдлийн хамрах хүрээг нэгтгэсэн `AssetId`
-- `value`: нэг `Numeric` баланс
+- `value`: нэг `Quantity` баланс
 
 Эзэмшигч данс нь каноник бөгөөд домэйн агуулахгүй. Хөрөнгийн тодорхойлолтыг өгөгдлийн орон зайгаар бүрэн тодорхойлсон домэйн дор тусгаж болно, жишээлбэл `payments.universal`.
 
@@ -88,7 +89,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-Гурван жишээ бүгд унших үйлдэл юм. Taira дээр хөрөнгө шинээр гаргах, шатаах эсвэл шилжүүлэхдээ туршилтын хөрөнгө олгох үйлчилгээгээр санхүүжүүлсэн данс болон [SORA Nexus өгөгдлийн орон зайд холбогдох](/mn/get-started/sora-nexus-dataspaces.md) хэсгийн хамгаалалтын шалгалттай урсгалыг ашиглана уу.
+Гурван жишээ бүгд унших үйлдэл юм. Taira дээр хөрөнгө шинээр гаргах, шатаах эсвэл шилжүүлэхдээ туршилтын хөрөнгө олгох үйлчилгээгээр санхүүжүүлсэн данс болон [Taira болон Minamoto ашиглан SORA Nexus дээр хөгжүүлэх](/mn/get-started/sora-nexus-dataspaces.md) хэсгийн хамгаалалтын шалгалттай урсгалыг ашиглана уу.
 
 Taira дээр шимтгэлтэй хөрөнгийн жишээ ажиллуулахын өмнө [Taira дээр туршилтын XOR авах](/mn/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) хэсгийн урьдчилан бэлтгэдэг хөрөнгө авах урсгалаар гарын үсэг зурах дансыг санхүүжүүлнэ. Дараа нь `ledger asset mint`, `ledger asset burn`, `ledger asset transfer` командуудад `--fee-payer authority` дамжуулна; CLI гарын үсэг зурахаас өмнө яг шимтгэлийг Taira-гийн шимтгэлийн хөрөнгөөр тооцож харуулна:
 

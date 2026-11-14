@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /blockchain/transactions.md
-translation_source_hash: 91c06ab61c7f8ec96554bc89b31b2f281bb3a7d7edd484defe61dcde5a3fb710
+translation_source_hash: d9227effcdb4d54ac76f6288ba213de20f2574e1585e13b96a5202c44b69f3be
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -71,7 +71,7 @@ Iroha-ın iki oflayn əməliyyat iş axını var:
 - Offline imzalama cihaz bağlandıqda normal imzalanmış əməliyyat yaradır. Əməliyyat, imzalanmış məlumat konteynerini Torii ünvanına göndərən onlayn müştəri təqdim edənə qədər işlənmir, buna görə də hələ də düzgün zəncir ID-si, avtorizasiya prinsipi, icazələr, ödənişlər tələb olunur, və əməliyyat ömrü.
 - **Kagemusha oflayn nağd pul** qeydiyyatdan keçmiş, aparatla qorunan pul kisəsi onlayn olduqda ona dəyər yükləyir, hər iki pul kisəsi oflayn olduqda kisələrarası ödənişləri dəstəkləyir və pul kisəsi yenidən onlayn olduqda qalan dəyəri reyestr hesabına boşaldır.
 
-Torii bir Kagemusha marşrutu təqdim edir: `POST /v1/kagemusha/enrollment`. O, hesabla autentifikasiya edilmiş `application/x-norito` qeydiyyat çərçivələrini qəbul edir və keşlənməməli olan özəl cavablar qaytarır. Həyat dövrünün reyestr tərəfi `KagemushaWalletLedgerV1` təlimatı daşıyan adi imzalanmış əməliyyatlardan istifadə edir:
+Torii bir Kagemusha dəyişiklik marşrutu təqdim edir: `POST /v1/kagemusha/enrollment`. O, hesabla autentifikasiya edilmiş `application/x-norito` qeydiyyat çərçivələrini qəbul edir və keşlənməməli olan özəl cavablar qaytarır. `/v1/kagemusha/{scheme}/wallets/{wallet}/` altındakı hesabla imzalanan SDK oxuma marşrutları Load qəbzlərini və yekunluq sübutlarını qaytarır; onlar `/openapi.json` siyahısına daxil edilməyib. Həyat dövrünün reyestr tərəfi `KagemushaWalletLedgerV1` təlimatı daşıyan adi imzalanmış əməliyyatlardan istifadə edir:
 
 | Əməl | Məqsəd |
 | --- | --- |
@@ -88,13 +88,21 @@ Tipik axın belədir:
 3. Pul kisələri oflayn olduqda ödənişləri onların arasında yerli şəkildə mübadilə edin və yoxlayın; hər köçürməni təsdiqləməzdən əvvəl pul kisəsinin vəziyyətini davamlı saxlayın.
 4. Pul kisəsi yenidən onlayn olduqda onun Unload tələbini göndərin və yekunluğu gözləyin.
 
+Kagemusha buraxılış üçün kvalifikasiyadan keçməyib: canlı monetar kvalifikasiya, həmçinin fiziki cihazlarda telefon qeydiyyatı, aktivləşdirmə və ödəniş hələ açıq məsələ olaraq qalır.
+
 Blokçeyn dəftəri, qeyd vəziyyəti onlayn həyat dövrü vasitəsilə qayıtmayana qədər ziddiyyətli oflayn ötürməni görə bilməz. Buna görə də, cüzdan və operator siyasəti dəyər məhdudiyyətlərini, müddət bitməsini, qəbul edilmiş buraxanları, davamlı yerli saxlama və uyğunlaşdırma pəncərələrini tətbiq etməlidir.
 
 Burada `Grant` təlimatı ilə yeni bir əməliyyat yaratmaq nümunəsi var. Bu əməliyyatda, Mouse Alice-ə müəyyən edilmiş rol (`role_id`) verir. [tam nümunə](./permissions.md#register-a-new-role)-ni yoxlayın.
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```

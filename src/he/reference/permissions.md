@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /reference/permissions.md
-translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -16,7 +16,6 @@ translation_engine: nllb-200-ct2+reviewed-delta
 |סימן אישור|קטגוריה |מבצע |
 | --- | --- | --- |
 |`CanManagePeers` |בן זוג|להירשם, לא להירשם או אחרת לנהל עמינים. |
-|`CanManageLaneRelayEmergency` |בן זוג|לנהל את בקרות המנוחה למסלול חירום. |
 |`CanRegisterDomain` |תחום |רשום דומיין.|
 |`CanUnregisterDomain` |תחום |תבטל רישום תחום.|
 |`CanModifyDomainMetadata` |תחום |לשנות מטא נתונים של תחום. |
@@ -28,7 +27,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 |`CanMintAssetWithDefinition` |נכסים |להנפיק נכסים עבור הגדרה מסוימת. |
 |`CanBurnAssetWithDefinition` |נכסים |לשרוף נכסים עבור הגדרה ספציפית. |
 |`CanTransferAssetWithDefinition` |נכסים |העברת נכסים להגדרה ספציפית. |
-|`CanMintAsset` |נכסים |להנפיק יתרת נכס מסוימת. |
+|`CanMintAssetToAccount` |נכסים |להנפיק יתרת נכס מסוימת. |
 |`CanBurnAsset` |נכסים |לשרוף סכום נכסים ספציפי.|
 |`CanTransferAsset` |נכסים |להעביר סכום נכסים מסוים. |
 |`CanRegisterNft` |NFT |רשום NFT. |
@@ -43,7 +42,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 |`CanModifyTrigger` |טריגר |שינוי הגדרת טריגר. |
 |`CanModifyTriggerMetadata` |טריגר |שינוי מטא־הנתונים של טריגר. |
 |`CanUpgradeExecutor` |יצרן |לשפר את המפעיל של זמן ההפעלה. |
-|`CanRegisterSmartContractCode` |חוזה חכם.|רשום קוד חוזה חכם. |
+|`CanManageSmartContractCode` |חוזה חכם.|הסרת תוצרי קוד שאין אליהם הפניות והאצלת נקודות כניסה של חוזים. חשבונות רשומים יכולים ליצור תוצרים מאומתים גם בלעדיה. |
 | `CanManageFeeSponsorProgram` | SORA Nexus | ניהול תוכניות שבבעלות חשבון נותן החסות המדויק. |
 | `CanEnrollFeeSponsorProgram` | SORA Nexus | ניהול מוטבים של תוכנית מימון מדויקת אחת. |
 

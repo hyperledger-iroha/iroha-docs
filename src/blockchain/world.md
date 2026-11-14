@@ -2,14 +2,14 @@
 
 `World` is the global entity that contains other entities. The `World` consists of:
 
-- Iroha [configuration parameters](/guide/configure/client-configuration.md)
+- on-chain chain parameters, set in [genesis](/reference/genesis.md) and by `SetParameter`
 - registered peers
 - registered domains
 - registered [triggers](/blockchain/triggers.md)
 - registered [roles](/blockchain/permissions.md#permission-groups-roles)
 - registered [permission token definitions](/blockchain/permissions.md#permission-tokens)
 - permission tokens for all accounts
-- [the chain of runtime validators](/blockchain/permissions.md#runtime-validators)
+- [the active runtime executor](/blockchain/permissions.md#runtime-validators)
 
 When domains, peers, or roles are registered or unregistered, the `World` is the target of the (un)register [instruction](/blockchain/instructions.md).
 
@@ -50,22 +50,19 @@ Replay validates each stored block, reconstructs the commit roster for that heig
 
 _Kura_ is Iroha's persistent block storage. It stores signed blocks and recovery metadata. It does not store a second mutable copy of the WSV.
 
-Kura storage is rooted at [`kura.store_dir`](/reference/peer-config/params.md#param-kura-store-dir). Within that root, block data is split by lane or segment. The primary files for a segment are:
+Kura storage is rooted at [`kura.store_dir`](/reference/peer-config/params.md#param-kura-store-dir). The global chain's blocks live in the chain-scoped `blocks/canonical` directory, and lane instances keep separate lane block stores. The primary canonical files are:
 
 | Path | Purpose |
 | --- | --- |
-| `blocks/<segment>/blocks.data` | Contiguous Norito-framed signed block payloads. |
-| `blocks/<segment>/blocks.index` | Fixed-size `(start, length)` entries that map block height to bytes in `blocks.data`. |
-| `blocks/<segment>/blocks.hashes` | Block hashes by height for fast lookup and startup validation. |
-| `blocks/<segment>/blocks.count.norito` | Durable commit marker recording how many block index entries are safe to use. |
-| `blocks/<segment>/da_blocks/` | Evicted block payloads kept outside `blocks.data` when disk-budget enforcement moves old bodies out of the hot file. |
-| `blocks/<segment>/pipeline/sidecars.norito` and `sidecars.index` | Pipeline recovery sidecars keyed by block height. |
-| `blocks/<segment>/pipeline/roster_sidecars.norito` and `roster_sidecars.index` | Recent commit-roster sidecars used by block sync and replay. |
-| `merge_ledger/<segment>.log` | Merge-ledger entries aligned with committed blocks. |
-| `commit-rosters.norito` | Retained commit certificates and validator checkpoints for recent blocks. |
+| `blocks/canonical/blocks.data` | Contiguous Norito-framed signed block payloads. |
+| `blocks/canonical/blocks.index` | Fixed-size `(start, length)` entries that map block height to bytes in `blocks.data`. |
+| `blocks/canonical/blocks.hashes` | Block hashes by height for fast lookup and startup validation. |
+| `blocks/canonical/blocks.count.norito` | Durable commit marker recording how many block index entries are safe to use. |
+| `blocks/canonical/da_blocks/` | Evicted block payloads kept outside `blocks.data` when disk-budget enforcement moves old bodies out of the hot file. |
+| `blocks/canonical/pipeline/sidecars.norito` and `sidecars.index` | Pipeline recovery sidecars keyed by block height. |
 
 Kura keeps a compact in-memory vector for the chain: each height has the block hash and, optionally, the block body. The genesis block remains cached, and the most recent [`kura.blocks_in_memory`](/reference/peer-config/params.md#param-kura-blocks-in-memory) non-genesis blocks keep their bodies in memory. Older block bodies are dropped from memory and reloaded from Kura files when needed.
 
-During initialization, `strict` mode validates stored blocks from the block payloads and rewrites the hash file if needed. `fast` mode starts from stored hash/index metadata and falls back to strict initialization if that metadata is inconsistent. If Kura detects a corrupt tail, it prunes storage to the last validated block.
+During initialization, `strict` mode (the default) validates every canonical block body and parent link. `fast` is an emergency mode for storage that `strict` has already initialized: it trusts a current signed snapshot and the durable count and tip, and keeps Sumeragi, transaction gossip, and block production offline until the node restarts in `strict` mode. Startup rejects retired `merge_ledger`, `roster_sidecars`, and `commit-rosters.norito` artifacts. If Kura detects a corrupt tail, it prunes storage to the last validated block.
 
 Kura writes new blocks through a background writer. The writer appends block payloads, hashes, and index entries, then advances the durable count marker according to the configured fsync policy. When disk-budget enforcement is active, Kura can purge retired segments or evict older block bodies into `da_blocks/` while keeping hashes and index entries available for validation and lookup.

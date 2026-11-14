@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /blockchain/instructions.md
-translation_source_hash: ef50253c5478c9d8c3e14529dc4c2f3de67c344901c82c65be77ceb237a29598
+translation_source_hash: 86d253317376ad8d7a8c0e30689c7e0c0cd786af83299dd5ac1a904c653192f5
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
@@ -41,7 +41,7 @@ translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 | [SetParameter](#setparameter) |سلسلہ پیرامیٹرز |                      |
 | [Grant/Revoke](#grant-revoke) | [کردار، اجازت کے ٹوکن](/ur/blockchain/permissions.md) |اکاؤنٹس یا کردار |
 | [منتقلی](#transfer) |ڈومینز، اثاثوں کی تعریفیں، عددی اثاثے، NFTs |اکاؤنٹس |
-| [مقامی گرو اور اثاثوں کے تالے](#native-escrow-and-asset-locks) |اعداد و شمار کے اثاثوں کی ضمانتیں ، اثاثوں کو بند کرنا ، گمنام اثاثہ جات کی ذمہ داریاں |خریدار، منزل یا تنازعہ تقسیم |
+| [مقامی ایسکرو اور اثاثوں کے تالے](#native-escrow-and-asset-locks) | عددی اثاثوں کے ایسکرو، اثاثوں کے تالے، مشروط ایسکرو | خریدار، منزلیں یا تنازعہ کی تقسیم |
 | [ایٹمی نجی تصفیہ](#atomic-private-settlement) | مخصوص روٹ کے خفیہ پولز، پالیسی کی گردشیں، حتمی بنڈلز اور منسوخی کے نشانات | |
 | [ExecuteTrigger](#executetrigger) |ٹرگرز |                      |
 | [Log/Custom/Upgrade](#other-instructions) | لاگز، ایگزیکیوٹر سے مخصوص پے لوڈز، ایگزیکیوٹر کی اپ گریڈز | |
@@ -184,6 +184,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
+  --domain docs.universal \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
@@ -322,9 +323,9 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 
 ## مقامی کریڈٹ اور اثاثوں کے تالے {#native-escrow-and-asset-locks}
 
-مقامی ایایسکرو ہدایات لیجر کے زیر انتظام پروٹوکول کی دیکھ بھال میں عددی اثاثوں کو مقفل کرتی ہیں۔ وہ مارکیٹ اسٹائل تصفیہ ، عام اثاثوں کے مقفل اور گمنام شیلڈڈ ایایسکرو بہاؤ کے لئے استعمال ہوتے ہیں۔
+مقامی ایسکرو ہدایات عددی اثاثوں کو لیجر کے زیرِ انتظام پروٹوکول کی تحویل میں مقفل کرتی ہیں۔ یہ مارکیٹ پلیس طرز کے تصفیے، عام اثاثوں کے تالوں اور گواہی دہندگان سے بندھے مشروط ایسکرو کے لیے استعمال ہوتی ہیں۔
 
-مارکیٹ پلیس ایسرو کا استعمال `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, اور `ResolveEscrowDispute`. عام اثاثہ بندش کا استعمال `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, اور `ExpireAssetLock`. Anonymous escrow مارکیٹ لائف سائیکل کی عکاسی کرتا ہے `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, اور `ResolveAnonymousEscrowDispute`.
+مارکیٹ پلیس ایسکرو `OpenAssetEscrow`، `AcceptAssetEscrow`، `MarkEscrowPaymentSent`، `ReleaseAssetEscrow`، `CancelAssetEscrow`، `OpenEscrowDispute` اور `ResolveEscrowDispute` استعمال کرتا ہے۔ عام اثاثہ تالے `OpenAssetLock`، `DrawdownAssetLock`، `CancelAssetLock` اور `ExpireAssetLock` استعمال کرتے ہیں۔ مشروط ایسکرو `OpenConditionalEscrow`، `AttestEscrowCondition` اور `ExpireConditionalEscrow` استعمال کرتا ہے۔
 
 ان ISIs میں فی الحال فرسٹ کلاس CLI کمانڈز نہیں ہیں۔ ٹائپ شدہ SDK بلڈرز یا سیریل انسٹرکشن پے لوڈز کا استعمال کریں ، اور زندگی کے سائیکل کی تفصیلات ، اجازتیں ، استفسارات ، واقعات ، اور Rust مثالوں کے لئے [مقامی اثاثہ ایایسکرو](/ur/blockchain/escrow.md) کو دیکھیں.
 
@@ -418,7 +419,7 @@ printf '{"owner":"ops"}\n' |
 معیاری ان پٹ پر ایک واحد پیرامیٹر JSON آبجیکٹ کو منتقل کرکے ایک پیرامیٹر مقرر کریں:
 
 ```bash
-printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
+printf '{"Sumeragi":{"MaxClockDriftMs":1000}}\n' |
   cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```

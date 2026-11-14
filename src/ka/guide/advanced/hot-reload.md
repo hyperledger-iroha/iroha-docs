@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
+translation_source_hash: 6edc0185196ab8e77ef8552723e05bf37cca1a088da86e2a43d441d58e779c11
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -32,4 +32,4 @@ docker restart <container>
 
 ## გამოიყენეთ პერსონალური კონფიგურაცია {#use-custom-configuration}
 
-ქსელის კვანძის მიმდინარე კონფიგურაცია TOML ფორმატშია. გენერირებული `config.toml`, `genesis.signed.nrt` და შესაბამისი გასაღების ფაილები მიბმით დაამონტაჟეთ ან დააკოპირეთ გამოსახულების მიერ მოსალოდნელ კონტეინერის ბილიკებში, შემდეგ კი კვანძი ხელახლა გაუშვით. გენერირებული ფაილები ერთად შეინახეთ; Kagami-ს სხვადასხვა გაშვებებიდან ფაილების შერევამ შეიძლება დესერიალიზაციის ან კონსენსუსის შეცდომები გამოიწვიოს.
+ქსელის კვანძის მიმდინარე კონფიგურაცია TOML ფორმატშია. Kagami თითოეული ვალიდატორისთვის წერს ერთ `peerN.toml`-ს `genesis.signed.nrt`-თან, `genesis.public_key`-სა და `genesis.expected_hash`-თან ერთად; `kagami docker`-ის მიერ შექმნილი Compose ფაილი მათ კონტეინერში ამონტაჟებს. ფაილების ხელით კოპირების ნაცვლად ხელახლა დააგენერირეთ იგი, შემდეგ კი კვანძი ხელახლა გაუშვით. გენერირებული ფაილები ერთად შეინახეთ; Kagami-ს სხვადასხვა გაშვებებიდან ფაილების შერევამ შეიძლება დესერიალიზაციის ან კონსენსუსის შეცდომები გამოიწვიოს.

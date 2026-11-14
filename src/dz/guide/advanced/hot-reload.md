@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
+translation_source_hash: 6edc0185196ab8e77ef8552723e05bf37cca1a088da86e2a43d441d58e779c11
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # Docker ཆ་ཚན་ནང་ལུ་དྲོད་འབར་གྱི་བསྐྱར་བཅོས་འབད་ Iroha {#hot-reload-iroha-in-a-docker-container}
 
@@ -32,4 +32,4 @@ docker restart <container>
 
 ## རང་བཞིན་གྱི་སྒྲིག་གཞི་ལག་ལེན་འཐབ་ {#use-custom-configuration}
 
-ད་ལྟོའི་ཅོག་འཐདཔ་བཟོ་རྣམ་འདི་ TOML ཨིན། བཟོ་སྐྲུན་འབད་ཡོད་པའི་ `config.toml`, `genesis.signed.nrt` དང་འབྲེལ་བའི་ལྡེ་མིག་ཡིག་སྣོད་ཚུ་ འདྲ་པར་དེ་གིས་རེ་བ་བསྐྱེད་མི་ སྣོད ཡིག་ལམ་ཚུ ལུ་སྦྲེལ་འབད་ཞིནམ་ལས་ མཉམ་རོགས འདི་སླར་ལོག་འབད་ནི་ཨིན། བཟོ་སྐྲུན་འབད་ཡོད་པའི་ཡིག་སྣོད་ཚུ་ གཅིག་ཁར་བཞག་; Kagami རྒྱུན་ལས་སོ་སོར་ལས་ ཡིག་སྣོད་ཚུ་རྫོགསཔ་ད་ ཨེབ་གཏང་འབད་ནི་དང་ ཡང་ན་ མནོ་བསམ་གཏང་ཐངས་མ་མཐུན་པའི་ དཀའ་ངལ་འབྱུང་ཚུགས།
+ད་ལྟོའི་མཉམ་རོགས་རིམ་སྒྲིག་འདི་ TOML ཨིན། Kagami གིས་ བདེན་དཔྱད་འབད་མི་རེ་རེའི་དོན་ལུ་ `genesis.signed.nrt`, `genesis.public_key`, དང་ `genesis.expected_hash` ཡོད་པའི་ `peerN.toml` གཅིག་ བཟོ་བཏོན་འབདཝ་ཨིན། `kagami docker` ལས་ཐོན་མི་ Compose ཡིག་སྣོད་ཀྱིས་ དེ་ཚུ་ སྣོད་ཆས་ནང་ སྦྲེལ་བཙུགས་འབདཝ་ཨིན། ཡིག་སྣོད་ཚུ་ ལག་ཐོག་ལས་ འདྲ་བཤུས་མ་རྐྱབ་བར་ དེ་འདི་ ལོག་བཟོ་བཏོན་འབད་ཞིནམ་ལས་ མཉམ་རོགས་འདི་ ལོག་འགོ་བཙུགས། བཟོ་བཏོན་འབད་ཡོད་པའི་ཡིག་སྣོད་ཚུ་ གཅིག་ཁར་བཞག། Kagami གཡོག་བཀོལ་ཐེངས་སོ་སོ་ལས་ ཡིག་སྣོད་ཚུ་ བསྲེ་བ་ཅིན་ གནད་སྡུད་སླར་སྒྱུར་ ཡང་ན་ མོས་མཐུན་གྱི་འཐུས་ཤོར་ འབྱུང་ཚུགས།

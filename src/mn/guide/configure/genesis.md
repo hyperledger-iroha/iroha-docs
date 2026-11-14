@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /guide/configure/genesis.md
-translation_source_hash: 91be089c82a76991e35a43e1541f9e069fdf70d3fb5de2492b985c06c78a2372
+translation_source_hash: 2a4a43b6ac873cc0c860631e307e52b047ba6a08691bf3e4c5872cc22c81a0bd
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -9,7 +9,7 @@ translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-so
 
 блокчэйн эхлэл анхны гинжийн төлвийг тодорхойлно. Засварлах боломжтой эх сурвалж нь JSON техникийн тунхаглал бөгөөд Iroha 3 зангилаа гарын үсэг зурсан Norito гүйлгээний файлыг хэрэглэдэг.
 
-::: details Анхны блокчейн техник технологийн томъёолол
+::: details Анхдагч genesis эх загвар (defaults/genesis.template.json)
 
 <<< @/snippets/genesis.json
 
@@ -36,7 +36,7 @@ public_key = "ed0120..."
 expected_hash_file = "./genesis.expected_hash"
 ```
 
-Сүлжээний бүх зангилаа ижил гарын үсэгтэй эхлэл гүйлгээ болон эхлэл төлөвийн нийтийн түлхүүртэй байх ёстой. Хүлээгдэж буй хэшийн файл нь анхны болон дахин эхлүүлэхэд шаардлагатай; `kagami genesis sign --expected-hash-out` үүнийг бичнэ.
+Сүлжээний бүх зангилаа гарын үсэгтэй эхлэл гүйлгээ болон эхлэл төлөвийн нийтийн түлхүүр дээр санал нийлэх ёстой. Шинээр эхлэх эсвэл дахин эхлэх аль ч эхлэлд хүлээгдэж буй хэш хэрэгтэй: `expected_hash_file` эсвэл шууд бичсэн `expected_hash`-ийн яг нэгийг нь тохируулна уу. `kagami genesis sign --expected-hash-out` файлыг бичнэ.
 
 ## Блокчэйн генезисийг гарын үсэг зурах {#signing-genesis}
 
@@ -52,7 +52,7 @@ cargo run --bin kagami -- genesis sign ./genesis.json \
 
 `GENESIS_PRIVATE_KEY_FILE` нь эзэндээ хамаарах горим-`0600` байх ёстой бөгөөд нэг протокол-стандартын хувийн түлхүүрийн олон хэш болон төгсгөлийн шинэ мөр агуулах нэг холбоостой энгийн файл байх ёстой. Kagami нь дүрс холбоосыг няцааж, командын мөрөнд цэвэр блокчэйн генезисын хувийн түлхүүрийг огт хүлээж авдаггүй.
 
-NPoS эсвэл SORA Nexus профилийн хувьд үүсгэсэн профайлд шаардлагатай топологи болон BLS эзэмшлийн нотолгоог оруулна. Kagami-ийн `localnet generate`, `wizard`, `sora-network generate` командууд эдгээрийг автоматаар зохицуулна.
+Зөвшөөрөлтэй эсвэл NPoS горимын аль ч гарын үсэгтэй genesis нь баталгаажуулагч бүрт BLS эзэмшлийн нотолгоо (Proof-of-Possession) бүхий яг `3f + 1` баталгаажуулагчийн топологийг агуулах ёстой. Kagami-ийн `localnet generate`, `wizard` болон `sora-network generate` командууд эдгээр нарийн зүйлийг автоматаар зохицуулна.
 
 ## Блокчейн генезисийг дахин баталгаажуулах {#recommitting-genesis}
 

@@ -1,9 +1,9 @@
 ---
 translation_locale: kk
 translation_source: /blockchain/ram-lfe.md
-translation_source_hash: a07f2d06180425e4d1c1393810cf679fb88b3e993d49792b2483485cb1cc52fd
+translation_source_hash: c08b67e5a58fea2012fdba7bbfcb88dd9bc329b7a549e7d40011a5f4fb0ef68c
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # RAM-LFE {#ram-lfe}
 
@@ -763,6 +763,5 @@ Torii процесінің ішіндегі RAM-LFE орындау ортасы 
 
 ## Қатысты тақырыптар {#related-topics}
 
-- [Жеке деректер кеңістігіне демеуші төлемдері](/kk/get-started/private-dataspace-fee-sponsor.md)
 - [Torii API ұш нүктелер](/kk/reference/torii-endpoints.md#app-and-sora-route-families)
 - [Анонимдік транзакциялар](/kk/blockchain/anonymous-transactions.md)

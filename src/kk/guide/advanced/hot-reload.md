@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
+translation_source_hash: 6edc0185196ab8e77ef8552723e05bf37cca1a088da86e2a43d441d58e779c11
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -32,4 +32,4 @@ docker restart <container>
 
 ## Теңшелген баптауларды пайдалану {#use-custom-configuration}
 
-Ағымдағы желі серіктесінің конфигурациясы TOML. Жаратылған `config.toml`, `genesis.signed.nrt` және байланысты кілт файлдарын контейнер күтілетін жолдарға байлау немесе көшіру сурет, содан кейін желі әріптесін қайта жүктеңіз. Жасалған файлдарды бірге сақтаңыз; әртүрлі Kagami іске қосулардан алынған файлдарды араластыру десериализация немесе консенсус қателіктерін тудыруы мүмкін.
+Ағымдағы желі серіктесінің конфигурациясы — TOML. Kagami әр валидатор үшін `genesis.signed.nrt`, `genesis.public_key` және `genesis.expected_hash` мәндері бар бір `peerN.toml` жазады; `kagami docker` жасаған Compose файлы оларды контейнерге тіркейді. Файлдарды қолмен көшірудің орнына оны қайта жасаңыз, содан кейін желі серіктесін қайта іске қосыңыз. Жасалған файлдарды бірге сақтаңыз; әртүрлі Kagami іске қосуларынан алынған файлдарды араластыру десериализация немесе консенсус қателіктерін тудыруы мүмкін.

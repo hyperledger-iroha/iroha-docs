@@ -1,9 +1,9 @@
 ---
 translation_locale: fr
 translation_source: /reference/naming.md
-translation_source_hash: 1d4d698597542d9c84284d0b87dae8a1825d3ab39ff38dd32bb204d41291c83d
+translation_source_hash: 15d095e674edf780c5859abe6f4615d53338e3304e8eedfa494017911204d4b6
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Conventions de nommage {#naming-conventions}
 
@@ -15,10 +15,9 @@ Lorsque vous nommez des comptes, des domaines ou des actifs, vous devez garder �
    - `#` est réservé aux alias de définition d'actifs et aux littéraux de solde d'actifs
    - `::` est réservé aux alias de contrat
    - `.` est réservé à la qualification de domaine et d'espace de données
-   - `$` est réservé aux formes textuelles à portée de déclenchement
-   - `%` est réservé aux formes textuelles à l'échelle du validateur
+   - `$` est réservé aux identifiants NFT tels que `name$domain.dataspace`
 
-2. Le nombre maximum de caractères (y compris les caractères UTF-8) qu'un nom peut avoir est limité par deux facteurs : `[0, u32::MAX]` et l'espace de pile actuellement alloué.
+2. Un nom doit être non vide, en forme Unicode NFC, d'une longueur maximale de 255 octets UTF-8, et exempt de caractères d'espacement, de caractères de contrôle et de caractères de contrôle bidirectionnel.
 
 ## Essayez-le sur Taira {#try-it-on-taira}
 

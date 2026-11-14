@@ -1,9 +1,9 @@
 ---
 translation_locale: ru
 translation_source: /blockchain/data-model.md
-translation_source_hash: f90139dee2eff97769cd47188bcaf60b31672f0250505d8afad9c8ee60815ddd
+translation_source_hash: fa1bbcbb2bad4e262a17eb04e67a94c3795d726ac52c0ab17370da9ec119e557
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-source-naming-amendment
+translation_engine: bing-translator-llm+reviewed-source-naming-amendment+reviewed-delta
 ---
 # Модель данных {#data-model}
 
@@ -121,9 +121,9 @@ account_rabbit --> asset_rose : may receive balance
 |Определение актива|канонический `AssetDefinitionId` адрес Base58| `name#domain.dataspace` или `name#dataspace`            | `AssetDefinitionAlias` привязано к определению актива|
 |Контракт|канонический Bech32m `ContractAddress`| `name::domain.dataspace` или `name::dataspace`          |`ContractAlias` привязано к развернутому адресу контракта|
 |Доменное имя| `DomainId` в форме `domain.dataspace` | `domain.dataspace`                                    | SNS `domain` пространство имён запись |
-| Имя пространства данных | числовой `DataSpaceId` из активного каталога SORA Nexus | псевдоним пространства данных, например `universal`, `paynet` или `zk` | запись пространства имён `dataspace` в SNS и активный каталог пространств данных |
+| Имя пространства данных | числовой `DataSpaceId` из активного каталога SORA Nexus | псевдоним пространства данных, например `universal` или `paynet` | запись пространства имён `dataspace` в SNS и активный каталог пространств данных |
 
-Псевдонимы аккаунтов — это имена аккаунтов, видимые пользователю. Они сохраняются при смене ключа аккаунта, потому что псевдоним указывает на активный идентификатор аккаунта через индексы состояния мира и записи о смене ключа аккаунта. Используйте `SetPrimaryAccountAlias` для основного ярлыка аккаунта, `SetAccountAliasBinding` — для дополнительных неосновных псевдонимов, а `FindAccountByAlias` или `FindAliasesByAccountId` — для чтения. Псевдонимы аккаунта обычно требуют активной аренды псевдонима аккаунта SNS, полученной с помощью `AcquireAccountAliasLease` и продленной с помощью `RenewAccountAliasLease`.
+Псевдонимы аккаунтов — это имена аккаунтов, видимые пользователю. Они сохраняются при смене ключа аккаунта, потому что псевдоним указывает на активный идентификатор аккаунта через индексы состояния мира и записи о смене ключа аккаунта. Используйте `EnsureAlias`, обычно через процесс планирования и применения `app alias setup`, чтобы получить аренду псевдонима аккаунта и привязать псевдоним; `CompareAndSetPrimaryAccountAlias` — чтобы изменить основной ярлык; `RebindAccountAlias` — чтобы перенести псевдоним на другой аккаунт; а `FindAccountByAlias` или `FindAliasesByAccountId` — для чтения. Продлевайте аренду с помощью `RenewAliasLease` или настройте автоматическое продление с помощью `ConfigureAliasAutoRenew`.
 
 Псевдонимы активов именуют определения активов, а не отдельные балансы счетов. Псевдонимы активов и псевдонимы контрактов являются прямыми привязками от читаемого имени к существующей канонической цели. Псевдонимы активов задаются с помощью `SetAssetDefinitionAlias`; сегмент имени псевдонима должен соответствовать отображаемому имени определения актива или имени проецируемого определения. Псевдонимы контрактов задаются с помощью `SetContractAlias`; псевдоним пространства данных должен соответствовать пространству данных, закодированному в адресе контракта. Оба привязанных элемента могут содержать `lease_expiry_ms`; после истечения срока действия они перестают разрешаться, когда истекает льготный период, и удаляются из индексов состояния мира.
 

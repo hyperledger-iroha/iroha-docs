@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /reference/genesis.md
-translation_source_hash: 340921f59a6f8788f559190d520f046ea2473d65154f57a1c54212840c027bc0
+translation_source_hash: dda17468f39573a1fcf43474351bd01c4fea38e8b603fd4d8b21780b273c8649
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -20,6 +20,8 @@ translation_engine: bing-translator-llm+reviewed-delta
 - `executor` для необязательного пути обновления байткода исполнителя
 - `ivm_dir` для IVM библиотек, используемых триггерами и улучшениями
 - `consensus_mode` для первоначального режима, указанного в техническом манифесте
+- `wire_protocol_version` для версии сетевого протокола консенсуса первого выпуска
+- `consensus_fingerprint` для необязательного типизированного отпечатка параметров консенсуса, который манифесты JSON указывают явно
 - `transactions` для упорядоченного обновления параметров, инструкций, триггеров и топологии
 - `sumeragi_context` задаёт подписанные параметры контекста высоты Sumeragi
 - `crypto_admission_policy` задаёт точный перечень допускаемых цепочкой алгоритмов подписи и контроллеров в `allowed_algorithms`
@@ -39,10 +41,12 @@ translation_engine: bing-translator-llm+reviewed-delta
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
+  --chain-id <CHAIN_ID> \
   --consensus-mode npos \
   --ivm-dir defaults \
   --genesis-public-key <PUBLIC_KEY> \
-  --allowed-signing ed25519 > genesis.json
+  --allowed-signing ed25519 \
+  --allowed-signing bls_normal > genesis.json
 ```
 
 Для публичного пространства данных SORA Nexus ожидается режим консенсуса `npos`. Другие развёртывания Iroha 3 могут использовать режим с разрешённым набором участников или NPoS в зависимости от целевого профиля.
@@ -54,10 +58,11 @@ cargo run -p iroha_kagami -- genesis generate \
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
   --private-key-file <MODE_0600_PRIVATE_KEY_FILE> \
-  --out-file genesis.signed.nrt
+  --out-file genesis.signed.nrt \
+  --expected-hash-out genesis.expected_hash
 ```
 
-`kagami genesis sign` считывает публичный ключ генезиса блокчейна из технического манифеста и использует приватный ключ из хранимого владельцем однозвенного обычного файла для создания развертываемого подписанного блока. Файл должен содержать один канонический приватный ключ в виде многохеша, за которым следует переход на новую строку; Kagami отклоняет символические ссылки и режимы, отличные от `0600`. Сырые приватные ключи не принимаются в командной строке. Результатом является файл, на который сетевые узлы должны ссылаться в своей конфигурации.
+`kagami genesis sign` получает пару ключей генезиса из приватного ключа, хранящегося в принадлежащем владельцу однозвенном обычном файле, и создаёт развертываемый подписанный блок. Передайте `--expected-public-key`, чтобы потребовать её совпадения с опубликованным открытым ключом генезиса. Файл должен содержать один канонический приватный ключ в виде многохеша, за которым следует переход на новую строку; Kagami отклоняет символические ссылки и режимы, отличные от `0600`. Сырые приватные ключи не принимаются в командной строке. Результатом является файл, на который сетевые узлы должны ссылаться в своей конфигурации.
 
 ## Настроить `iroha3d` {#configure-iroha3d}
 

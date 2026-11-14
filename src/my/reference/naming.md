@@ -1,9 +1,9 @@
 ---
 translation_locale: my
 translation_source: /reference/naming.md
-translation_source_hash: 1d4d698597542d9c84284d0b87dae8a1825d3ab39ff38dd32bb204d41291c83d
+translation_source_hash: 15d095e674edf780c5859abe6f4615d53338e3304e8eedfa494017911204d4b6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # ညီလာခံ အမည်ပေးခြင်း {#naming-conventions}
 
@@ -15,10 +15,9 @@ translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
    - `#` ကို ပိုင်ဆိုင်မှုသတ်မှတ်ချက် alias များနှင့် ပိုင်ဆိုင်မှုလက်ကျန်တန်ဖိုးအတိအကျများအတွက် သီးသန့်ထားသည်
    - `::` စာချုပ်အမည်များအတွက် သီးသန့်ထားသည်
    - `.` ဒိုမင်နဲ့ ဒေတာနေရာ အရည်အချင်းအတွက် သီးသန့်ထားတာပါ။
-   - `$` trigger-scoped စာသားပုံစံများအတွက် သီးသန့်ထားသည်
-   - `%` validator scope ရှိ စာသားပုံစံများအတွက် သီးသန့်ထားပါသည်။
+   - `$` ကို `name$domain.dataspace` ကဲ့သို့သော NFT identifier များအတွက် သီးသန့်ထားသည်
 
-2. UTF-8 အက္ခရာများအပါအဝင် နာမည်တစ်ခုတွင် ရှိနိုင်သော အများဆုံး စာလုံးအရေအတွက်ကို အချက်နှစ်ချက်ဖြင့် ကန့်သတ်ထားသည်- `[0, u32::MAX]` နှင့် လက်ရှိဖြန့်ဝေထားသည့် stack space ကို။
+2. အမည်တစ်ခုသည် ဗလာမဖြစ်ရ၊ Unicode NFC ပုံစံဖြင့် ရှိရမည်၊ UTF-8 bytes 255 ထက် မရှည်ရဘဲ နေရာလွတ်စာလုံး၊ ထိန်းချုပ်စာလုံးနှင့် နှစ်ဘက်ဦးတည်ချက် ထိန်းချုပ်စာလုံးများ ကင်းရမည်။
 
 ## Taira တွင် ဤအလုပ်ခွင်ကို run လုပ်ပါ။ {#try-it-on-taira}
 

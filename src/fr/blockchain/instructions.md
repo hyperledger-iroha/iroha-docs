@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/instructions.md
-translation_source_hash: ef50253c5478c9d8c3e14529dc4c2f3de67c344901c82c65be77ceb237a29598
+translation_source_hash: 86d253317376ad8d7a8c0e30689c7e0c0cd786af83299dd5ac1a904c653192f5
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -41,7 +41,7 @@ Certaines instructions nécessitent qu'une destination soit spécifiée. Par exe
 | [SetParameter](#setparameter)                             |paramètres de chaîne|                      |
 | [Grant/Revoke](#grant-revoke)                             | [rôles, jetons d'autorisation](/fr/blockchain/permissions.md)                                                  |comptes ou rôles|
 | [Transférer](#transfer)                                     |domaines, définitions d'actifs, actifs numériques, NFTs|comptes|
-| [Verrouillages d'entiercement et d'actifs natifs](#native-escrow-and-asset-locks) | séquestres d'actifs numériques, verrous d'actifs, engagements d'entiercement anonymes |acheteurs, destinations ou partages de litiges|
+| [Verrouillages d'entiercement et d'actifs natifs](#native-escrow-and-asset-locks) | séquestres d'actifs numériques, verrous d'actifs, séquestres conditionnels |acheteurs, destinations ou partages de litiges|
 | [Règlement privé atomique](#atomic-private-settlement)   |ensembles confidentiels limités à la route, rotations de politiques, bundles finalisés et marqueurs d'abandon|                      |
 | [ExecuteTrigger](#executetrigger)                         |déclencheurs|                      |
 | [Log/Custom/Upgrade](#other-instructions)                 |journaux, charges utiles spécifiques à l'exécuteur, mises à niveau de l'exécuteur|                      |
@@ -184,6 +184,7 @@ Enregistrer et désenregistrer les définitions d'actifs :
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
+  --domain docs.universal \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
@@ -322,9 +323,9 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 
 ## Escrow natif et verrous d'actifs {#native-escrow-and-asset-locks}
 
-Les instructions d'entiercement natives verrouillent les actifs numériques dans la garde d'un protocole géré par un grand livre. Elles sont utilisées pour le règlement de type marché, les verrous d'actifs génériques et les flux d'entiercement anonymes protégés.
+Les instructions d'entiercement natives verrouillent les actifs numériques dans la garde d'un protocole géré par un grand livre. Elles sont utilisées pour le règlement de type marché, les verrous d'actifs génériques et les séquestres conditionnels liés à des attestateurs.
 
-L'entiercement du marché utilise `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, et `ResolveEscrowDispute`. Les verrous d'actifs génériques utilisent `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock` et `ExpireAssetLock`. L'entiercement anonyme reflète le cycle de vie du marché avec `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute` et `ResolveAnonymousEscrowDispute`.
+L'entiercement du marché utilise `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, et `ResolveEscrowDispute`. Les verrous d'actifs génériques utilisent `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock` et `ExpireAssetLock`. Le séquestre conditionnel utilise `OpenConditionalEscrow`, `AttestEscrowCondition` et `ExpireConditionalEscrow`.
 
 Ces ISIs n'ont actuellement pas de commandes CLI de première classe. Utilisez des constructeurs SDK typés ou des charges utiles d'instructions sérialisées, et consultez [Compte séquestre d'actifs natifs](/fr/blockchain/escrow.md) pour les détails sur le cycle de vie, les autorisations, les requêtes, les événements et des exemples Rust.
 
@@ -418,7 +419,7 @@ printf '{"owner":"ops"}\n' |
 Définissez un paramètre en passant un objet de paramètre unique JSON en entrée standard :
 
 ```bash
-printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
+printf '{"Sumeragi":{"MaxClockDriftMs":1000}}\n' |
   cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```

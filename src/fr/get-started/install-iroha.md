@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /get-started/install-iroha.md
-translation_source_hash: cef11a7036dcb5257647edf0c48ea1b9c144822e029df936b422998f46187b41
+translation_source_hash: b2ba22db6a25e3b67cf18dc6959f95f57bd861b232b1d4a9d881bbe3cdf7844a
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -15,7 +15,7 @@ Pour une installation native, suivez les instructions ci-dessous concernant Rust
 
 Installez ceux-ci en premier :
 
-- [rustup](https://www.rust-lang.org/tools/install), donc la chaîne d'outils `rust-toolchain.toml` épinglée (`1.93.1`) est installée automatiquement
+- [rustup](https://www.rust-lang.org/tools/install), donc la chaîne d'outils `rust-toolchain.toml` épinglée (`1.99.1`) est installée automatiquement
 - `git`
 - éventuellement, Docker et Docker Compose pour le démarrage rapide d’un réseau local à plusieurs pairs
 

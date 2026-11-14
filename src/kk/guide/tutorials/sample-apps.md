@@ -1,9 +1,9 @@
 ---
 translation_locale: kk
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 0c4f2f3fc4efb9f883f597a3eea49c99431b711a0141eba70ac5a2524990dd73
+translation_source_hash: 50fac5ad01faf8d09441cba90f29472da04630dbeb3c80111a19f3fb50bb1224
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Үлгілер мен рецепттер {#samples-and-recipes}
 
@@ -19,4 +19,4 @@ Iroha дерекқорында түйінмен бірдей нұсқаны ба
 
 ## Android {#android}
 
-Жаңа Android жұмысына [Kotlin, Android, және Java](/kk/guide/tutorials/kotlin-java.md)-те сипатталған Kotlin-бірінші `core-jvm`, `client-android`, және `offline-wallet-android` модульдерді пайдаланыңыз. Kotlin SDK Android тұтынушылары үшін бірегей протокол-стандартты бастапқы нүкте болып табылады.
+Жаңа Android жұмысына [Kotlin, Android, және Java](/kk/guide/tutorials/kotlin-java.md)-те сипатталған Kotlin-бірінші `core-jvm`, `client-android`, және `kagemusha-wallet-android` модульдерді пайдаланыңыз. Kotlin SDK Android тұтынушылары үшін бірегей протокол-стандартты бастапқы нүкте болып табылады.

@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/iroha-explained.md
-translation_source_hash: 426adbea88da36cd92da17d8665c956a57b9d4cebfa0d2f35bc75469cccf84ee
+translation_source_hash: 16acd0a607bbec336ff336363478a3a0deeb24ad9a2ad59e753c9f65134b061f
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -45,11 +45,11 @@ Iroha 3 は、初回リリースの Hyperledger Iroha プラットフォーム�
 
 ルーティングパスは次のとおりです：
 
-1. 設定から、検証済みの `DataSpaceCatalog`、`LaneCatalog`、`LaneRoutingPolicy` を構築します。SORA Nexus のルーティングは必須です。複数のデータスペースやレーン、または既定と異なるルーティングには、SORA Nexus プロファイル（`--sora`）と NPoS を使います。
+1. 設定から、検証済みの `DataSpaceCatalog`、`LaneCatalog`、`LaneRoutingPolicy` を構築します。SORA Nexus のルーティングは必須です。グローバルルートでは、複数のデータスペースやレーン、または既定と異なるルーティングには、SORA Nexus プロファイル（`--sora`）と NPoS が必要です。独立して署名されたデータスペースルートは Permissioned モードで動作します。
 2. トランザクションキューは、トランザクションとコミット済み状態から `RoutingPlan` を決定します。各コーディネーター経路と参加者経路には、レーン ID とデータスペース ID が含まれます。Native AMX プランは、参加者の集合全体を保持します。
 3. グローバル実行では、完全な制御プレーンのバッチと、データスペースをまたぐコーディネーターがレーン `0` を使います。命令やコントラクトアドレスがユニバーサル以外の具体的な対象を指定する場合は、アカウント規則や命令ラベル規則より先に、対象のデータスペースと委員会に一致する、受け入れ済みの固定レーンを選びます。それ以外の処理はコミット済みの明示的な規則と既定のシャーディングに従います。具体的なユニバーサルの対象は、ユニバーサルのレーン内に留まります。
 4. 各経路をカタログと稼働中レーンの状態に照らして検証します。不明な ID やレーンとデータスペースの不一致は拒否されます。利用できないプライベートの対象を、ユニバーサル実行に切り替えることはできません。複数のデータスペースを対象とする処理は、Native AMX プランを生成できます。トランザクションのメタデータ `amx_policy` が `reject_cross_dataspace` の場合は、データスペースをまたぐプランを拒否します。ルーティングプランだけでは、独立したルート間の決済は認可も完了もされません。
-5. Sumeragi とテレメトリにより、レーンやデータスペースの稼働状況、未処理量、コミットメントのスナップショットとして、割り当て状況を確認できます。
+5. テレメトリにより、割り当て状況は `/status` のレーンスナップショット（`teu_lane_commit`）で、レーンごとの稼働状況と未処理量として確認できます。
 
 オブジェクト識別子が重要なのはこのためです。ドメインの ID には、`payments.universal` のようにデータスペースのエイリアスが含まれるので、ドメインに属する書き込みの経路を決定できます。アカウントの識別子は正規形式でドメインを含まないため、同じアカウントの `AccountId` を変えずに、異なるアプリケーションの範囲へ関連付けられます。資産定義にはドメインとデータスペースへの対応付けを保持できるため、資産操作は正しいデータスペースの経路を引き継げます。
 
@@ -67,7 +67,7 @@ SORA Nexus の設定を上書きしない場合、ノードは単一のレーン
 
 これらの関係は、固定されたソースの[プロファイル構築処理](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_config/src/parameters/actual.rs)、[レーン実装](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_core/src/sumeragi/lanes/mod.rs)、[独立ルートの仕様](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/sumeragi.md)で定められています。
 
-Sumeragi は常にデータの利用可能性と信頼できるブロードキャストを使用します。これらの経路は Iroha 3 コンセンサスプロトコルの一部であり、デプロイメントプロファイルによって無効にすることはできません。
+Sumeragi は常に、署名付き RS16 ペイロードの可用性と認証済み本体の復旧を使用します。これらの経路は Iroha 3 コンセンサスプロトコルの一部であり、デプロイメントプロファイルによって無効にすることはできません。
 
 ソフトウェアの実行時の動作は、設定ファイルとオンチェーンのパラメータから生成されます。環境変数は本番の機能ゲートではありません。
 

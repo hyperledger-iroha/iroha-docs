@@ -1,20 +1,20 @@
 ---
 translation_locale: am
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
+translation_source_hash: c42adbe41e322c93509279f1f558d4450431de90c596f37eb3999754d4387f78
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
 # ለአውታረመረብ ማሰማራት ቁልፎች {#keys-for-network-deployment}
 
-እያንዳንዱ አውታረ መረብ ለደንበኞች፣ ለአቻዎች፣ ለgenesis ፊርማ እና በNPoS ወይም SORA Nexus መገለጫዎች ለBLS አረጋጋጭ ማንነቶች የተለያዩ የቁልፍ ቁሳቁሶች ይፈልጋል።
+እያንዳንዱ አውታረ መረብ ለደንበኞች፣ ለgenesis ፊርማ እና የባለቤትነት ማረጋገጫ ላላቸው BLS-normal አረጋጋጭ ማንነቶች የተለያዩ የቁልፍ ቁሳቁሶች ይፈልጋል።
 
 ## ቁልፎች ጥቅም ላይ የሚውሉባቸው ቦታዎች {#where-keys-are-used}
 
 - የደንበኛ ፊርማ ቁልፎች በ`client.toml` በ`[account]` ስር ተቀምጠዋል።
 - የአውታረ መረብ አቻ መለያ ቁልፎች በእያንዳንዱ የአውታረ መረብ አቻ `config.toml` እንደ `public_key` እና `private_key` ተከማችተዋል።
 - የአውታረ መረብ አቻ ግኝት የእያንዳንዱን የአውታረ መረብ አቻ የህዝብ ቁልፍ በ`trusted_peers` ይጠቀማል።
-- BLS አረጋጋጭ የይዞታ ማረጋገጫዎች በ `trusted_peers_pop` ውስጥ ለNPoS መገለጫዎች ተከማችተዋል።
+- BLS አረጋጋጭ የይዞታ ማረጋገጫዎች የጋራ ስምምነት ሁነታው ምንም ይሁን ምን ለእያንዳንዱ አረጋጋጭ በ`trusted_peers_pop` ውስጥ ይከማቻሉ።
 - የብሎክቼይን ጀነሲስ ፊርማ ቴክኒካል ማኒፌስት ሲፈርሙ `[genesis].public_key` በኔትወርክ አቻ ውቅር እና ተዛማጅ የግል ቁልፍን ይጠቀማል።
 
 ለአካባቢያዊ ወይም ለሙከራ ማሰማራት፣ Kagami እነዚህን ሁሉ ፋይሎች አንድ ላይ ያመነጩ -

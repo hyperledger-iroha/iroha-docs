@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
+translation_source_hash: ad2bc9f8c53169d8161f7a2f23b1e660ebd24cf03cf8e05f4b00bbd27b7b11fe
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -23,8 +23,8 @@ translation_engine: nllb-200-ct2+reviewed-delta
 התחל עם תמונת ההצלחה של הערך הציבורי ו-Prometheus scrape, ולאחר מכן השתמש ב CLI למצב הסכמה מאושרת על ידי המפעיל. מפתח המפעיל חייב להיות מורשה על ידי הערך היעד והוא מותקן רק בזמן הפעלה:
 
 ```bash
-export TORII=http://127.0.0.1:8180
-export OPERATOR_KEY_FILE=./secrets/operator.key
+export TORII=http://127.0.0.1:8080
+export OPERATOR_KEY_FILE="$PWD/localnet/runtime/operator-signer.key"
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s "$TORII/metrics" > metrics.prom
@@ -52,7 +52,7 @@ curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/now" \
-  | jq '{now_ms, offset_ms}'
+  | jq '{now, offset_ms}'
 ```
 
 אל תשתמשו בתצפיות מרשת בדיקה ציבורית כנתוני קיבולת ייצור עבור הפריסה שלכם.
@@ -187,13 +187,13 @@ iroha --config ./localnet/client.toml \
 | --- | --- | --- |
 |סיבוב מקובל|`sum(rate(txs{type="accepted"}[5m]))` |צריך לעמוד או להתגבר על המטרה TPS במצב יציב |
 |דחייה |`sum(rate(txs{type="rejected"}[5m]))` |זה צריך להיות מוסבר על ידי תוכנית הבדיקה |
-|מחייב איחור.|`histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |השוואה של p95/p99 עם התקציב לטיחות |
+|השהיית ה־commit |`histogram_quantile(0.95, sum by (le) (rate(sumeragi_commit_latency_ms_bucket{lane="global"}[5m])))`, `last_commit_time_ms` |השוואה של p95/p99 לתקציב ההשהיה |
 |עומק השורה |`queue_size`, `sumeragi_tx_queue_depth` |צריך להישאר מוגבל במהלך עוצמת עומס.|
 |סיפוק שורה |`sumeragi_tx_queue_saturated` |הערכים שאינם אפס קיימים הם המשמעות של עומס יתר |
-|צפו בשינויים |`view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |ערכי העלייה מצביעים על זמנים, טופולוגיה, מטען או בעיות ברשת |
-|הודעות שנפלו.|`dropped_messages`, `sumeragi_consensus_message_handling_total` |ירידה בזמן עומס בדרך כלל מסבירה ענקות באיחור.|
-|מטען וחיזוק DA | `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` |בקשות מתמשכות, גיל עולה, או שערות חוזרות DA מצביעות על בעיות רכישת גוף או חתיכה |
-|הקבע קוורום|`sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |חתימות ספורות צריכות להגיע במהירות לקורום הנדרש |
+|צפו בשינויים |`view_changes`, `sumeragi_view_changes_total`, `sumeragi_timeout_votes_total` |ערכי העלייה מצביעים על זמנים, טופולוגיה, מטען או בעיות ברשת |
+|הודעות שנפלו.|`sumeragi_dropped_total`, `p2p_queue_dropped_total` |ירידה בזמן עומס בדרך כלל מסבירה ענקות באיחור.|
+|שליפות מטען והשלמת פערים | `sumeragi_fetch_requests_total{kind="body"}`, `sumeragi_fetch_requests_total{kind="sync"}` |שליפות מתמשכות של גופים או של סנכרון מצביעות על בעיות ברכישת המטען או בהשלמת הפערים |
+|התקדמות ה־commit |`sumeragi_committed_height`, `sumeragi_applied_height` |הגבהים המאושרים והגבהים שהוחלו צריכים להתקדם יחד |
 
 כאשר מדד קיים רק ב `/v1/sumeragi/status`, לתפוס את תמונת המצב המהירה של JSON באותו זוג ארטיפקטים כמו סחיטה Prometheus.
 
@@ -245,7 +245,7 @@ iroha --config ./localnet/client.toml \
 - מקובל/מסרב TPS
 - עיתוי קבלן p50/p95/p99
 - עומק השורה ומלאה
-- תצוגה של שינויים, הודעות נעלמות, קביעות בלוק חסר, ומספרים של שער DA
+- החלפות תצוגה, קולות פסק זמן, השמטות של Sumeragi, ושליפות של גופים ושל סנכרון
 - CPU, זיכרון, דיסק ושימוש ברשת על מסמך
 
 ללא פרטים אלה, המספר TPS צריך להיות נחשב לאנקדוט.

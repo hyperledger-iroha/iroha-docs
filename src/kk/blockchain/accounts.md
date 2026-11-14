@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /blockchain/accounts.md
-translation_source_hash: adc98cbf1fcadae4415d03dcc262eb03f8c95b429527e403d230934ae2f3243c
+translation_source_hash: d956bfb8c698fa463ef9fa84a91d50cf0e2100885eba670121ad78753f87d88d
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -44,7 +44,7 @@ private_key_file = "/absolute/path/to/private.key"
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+  | jq -r '.items[] | [.id, (.label // "-")] | @tsv'
 ```
 
 Есептік жазба активтерін тексеру үшін, бірінші техникалық шақырудан есептік жазбаның идентификаторын көшіріп, оны жолға қоюдан бұрын URL бойынша кодтаңыз. Бұл Python үзінді бірінші көрсетілген есептік жазба үшін осылай жасайды:
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-Бұлар — ашық оқу операциялары. Есептік жазбаны жасау не жаңарту қол қойылған транзакция арқылы орындалады және [SORA Nexus деректер кеңістіктеріне қосылу](/kk/get-started/sora-nexus-dataspaces.md) бөлімінде сипатталған, тест токендерін беру қызметінен қаржыландырылған Taira баптауын қажет етеді.
+Бұлар — ашық оқу операциялары. Есептік жазбаны жасау не жаңарту қол қойылған транзакция арқылы орындалады және [Taira және Minamoto арқылы SORA Nexus жүйесінде қолданба әзірлеу](/kk/get-started/sora-nexus-dataspaces.md) бөлімінде сипатталған, тест токендерін беру қызметінен қаржыландырылған Taira баптауын қажет етеді.
 
 ## Тіркеу және рұқсаттар {#registration-and-permissions}
 

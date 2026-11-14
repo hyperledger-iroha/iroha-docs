@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /reference/permissions.md
-translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -16,7 +16,6 @@ translation_engine: nllb-200-ct2+reviewed-delta
 |Рөхсәт билдәһе |Категория |Операция |
 | --- | --- | --- |
 |`CanManagePeers` |Яҡындары |Яҡташтарығыҙҙы теркәгеҙ, теркәлмәгеҙ йәки башҡа юл менән идара итегеҙ. |
-|`CanManageLaneRelayEmergency` |Яҡындары |Ғәҙәттән тыш хәл режимы буйынса идара итеү. |
 |`CanRegisterDomain` |Домен |Доменды теркәгеҙ. |
 |`CanUnregisterDomain` |Домен |Доменды теркәүҙе бөтөрөү. |
 |`CanModifyDomainMetadata` |Домен |Домен метамәғлүмәттәрен үҙгәртергә. |
@@ -28,7 +27,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 |`CanMintAssetWithDefinition` |Активтар |Махсус билдәләү өсөн минтлау активтары. |
 |`CanBurnAssetWithDefinition` |Активтар |Билдәле билдәләү өсөн активтарҙы яндырыу. |
 |`CanTransferAssetWithDefinition` |Активтар |Конкрет билдәләү өсөн активтарҙы күсереү. |
-|`CanMintAsset` |Активтар |Билдәле активтар балансын һала. |
+|`CanMintAssetToAccount` |Активтар |Билдәле активтар балансын һала. |
 |`CanBurnAsset` |Активтар |Конкрет активтар балансын яндырығыҙ. |
 |`CanTransferAsset` |Активтар |Билдәле активтар балансын күсереү. |
 |`CanRegisterNft` |NFT |NFT теркәлгән. |
@@ -43,7 +42,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 |`CanModifyTrigger` |Триггер |Тэггер конфигурацияһын үҙгәртергә. |
 |`CanModifyTriggerMetadata` |Триггер |Утҡарыусы метамәғлүмәттәрҙе үҙгәртергә. |
 |`CanUpgradeExecutor` |Үтәүсе |Эшләү ваҡытын башҡарыусыны яңыртыу. |
-|`CanRegisterSmartContractCode` |Аҡыллы килешеү |Аҡыллы килешеү кодын теркәгеҙ. |
+|`CanManageSmartContractCode` |Аҡыллы килешеү |Һылтанма булмаған код артефакттарын юйыу һәм контракт инеү нөктәләрен делегациялау. Теркәлгән иҫәптәр тикшерелгән артефакттарҙы был рөхсәтһеҙ ҙә булдыра ала. |
 | `CanManageFeeSponsorProgram` | SORA Nexus | Теүәл бағыусы иҫәбенә ҡараған программаларҙы идара итеү. |
 | `CanEnrollFeeSponsorProgram` | SORA Nexus | Бер теүәл бағыусы программаһының файҙа алыусыларын идара итеү. |
 

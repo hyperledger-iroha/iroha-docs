@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /get-started/private-dataspace-fee-sponsor.md
-translation_source_hash: 79410ebb9d0a18072d5ae2288348082390b622ed81225de79dcbd4000e268e51
+translation_source_hash: 2ca4fc00709839879fe9cb7ea5e5f697505e5e25d4e5a6cd0bd18d406f6e2846
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -13,7 +13,7 @@ translation_engine: bing-translator-llm+reviewed-delta
 
 ## 1. commit የተደረገውን የክፍያ ፖሊሲ ያቋቁሙ {#_1-establish-the-committed-fee-policy}
 
-የተፈረመ genesis `RootFeePolicy` የያዘ አንድ `root_fees_v1` ብጁ መለኪያ ይመሠርታል። የክፍያ ምንዛሬን፣ የክፍያ መቀበያን፣ የስፖንሰር ጥበቃ መለያን፣ የጥያቄ ነፃነቶችንና ተመኖችን ያስራል። እያንዳንዱ መደበኛ ብሎክና የክፍያ ግምት የያዘውን commit የተደረገ ፖሊሲ ይጠቀማል። የተፈቀዱ የፖሊሲ ማዘመኛዎች ከሚቀጥለው ብሎክ ይተገበራሉ።
+የተፈረመ genesis `RootFeePolicy` የያዘ አንድ `root_fees_v1` ብጁ መለኪያ ይመሠርታል። የክፍያ ምንዛሬን፣ የክፍያ መቀበያን፣ የስፖንሰር ጥበቃ መለያን፣ የጥያቄ ነፃነቶችንና ተመኖችን ያስራል። እያንዳንዱ መደበኛ ብሎክና የክፍያ ግምት የያዘውን commit የተደረገ ፖሊሲ ይጠቀማል። በተመኖች፣ በክፍያ መቀበያ እና በጥያቄ ነፃነቶች ላይ የተፈቀዱ ለውጦች ከሚቀጥለው ብሎክ ይተገበራሉ፤ የክፍያ ምንዛሬው እና የስፖንሰር ጥበቃ መለያው ከመጀመሪያው ብሎክ በኋላ ሊቀየሩ አይችሉም።
 
 ለዓለም አቀፍ አፈጻጸም ናቲቭ ክፍያው በፊርማ የታሰረውን ትክክለኛ የአውታረ መረብ XOR ምንዛሬ ያቃጥላል። የስፖንሰሩ የፕሮግራም ካዝና ያንን ምንዛሬ ያቀርባል። የኖድ ቅንብሮችና የግብይት ሜታዳታ ከፋይ አይመርጡም ወይም ስፖንሰርሺፕ አያነቁም።
 

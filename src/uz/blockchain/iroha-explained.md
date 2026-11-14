@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/iroha-explained.md
-translation_source_hash: 426adbea88da36cd92da17d8665c956a57b9d4cebfa0d2f35bc75469cccf84ee
+translation_source_hash: 16acd0a607bbec336ff336363478a3a0deeb24ad9a2ad59e753c9f65134b061f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -45,11 +45,11 @@ Yo‘laklar shu ma’lumotlar makonlariga bog‘langan marshrutlash va sertifika
 
 Yo‘naltirish jarayoni quyidagicha:
 
-1. Sozlama tekshirilgan `DataSpaceCatalog`, `LaneCatalog` va `LaneRoutingPolicy`ni yaratadi. SORA Nexus marshrutlashi majburiy. Bir nechta ma’lumotlar makoni, yo‘lak yoki nostandart marshrutlash SORA Nexus profili (`--sora`) va NPoSdan foydalanadi.
+1. Sozlama tekshirilgan `DataSpaceCatalog`, `LaneCatalog` va `LaneRoutingPolicy`ni yaratadi. SORA Nexus marshrutlashi majburiy. Global ildizda bir nechta ma’lumotlar makoni, yo‘lak yoki nostandart marshrutlash SORA Nexus profili (`--sora`) va NPoSni talab qiladi; mustaqil imzolangan ma’lumotlar makoni ildizi ruxsatli rejimda ishlaydi.
 2. Tranzaksiya navbati tranzaksiya va commit qilingan holatdan `RoutingPlan`ni yechadi. Har bir koordinator yoki ishtirokchi marshruti yo‘lak ID si va ma’lumotlar makoni ID sini saqlaydi; Native AMX rejalari to‘liq ishtirokchilar to‘plamini saqlaydi.
 3. Global bajarish uchun boshqaruv qatlamining to‘liq to‘plamlari va ma’lumotlar makonlari orasidagi koordinatorlar yo‘lak `0`dan foydalanadi. Aniq universal bo‘lmagan ko‘rsatma yoki kontrakt manzili maqsadlari hisob yoki ko‘rsatma yorlig‘i qoidalaridan oldin mos ma’lumotlar makoni va qo‘mitasi bor qabul qilingan belgilangan yo‘lakni tanlaydi. Boshqa ish commit qilingan aniq qoidalar va standart shardingga amal qiladi; aniq universal maqsadlar universal yo‘laklarda qoladi.
 4. Har bir marshrut kataloglar va faol yo‘lak holatiga nisbatan tekshiriladi. Noma’lum ID lar va yo‘lak/ma’lumotlar makoni nomuvofiqligi rad etiladi; mavjud bo‘lmagan xususiy maqsad universal bajarishga o‘ta olmaydi. Bir nechta ma’lumotlar makoni maqsadi Native AMX rejasini hosil qilishi mumkin. `reject_cross_dataspace`ga teng `amx_policy` tranzaksiya metadatasi makonlararo rejalarni rad etadi. Faqat marshrutlash rejasi mustaqil ildizlar orasidagi hisob-kitobga vakolat bermaydi va uni tugatmaydi.
-5. Sumeragi va telemetriya bu taqsimotni yo‘lak va ma’lumotlar makoni faolligi, navbatdagi ish va commitment suratlari sifatida ko‘rsatib turadi.
+5. Telemetriya bu taqsimotni `/status` yo‘lak suratida (`teu_lane_commit`) har bir yo‘lak bo‘yicha faollik va navbatdagi ishlar sifatida ko‘rsatib turadi.
 
 Shu sababli obyekt identifikatorlari muhim. Domen ID si ma’lumotlar makoni taxallusini, masalan `payments.universal`ni o‘z ichiga oladi, shunda domen doirasidagi yozishlar yo‘naltiriladi. Hisoblar kanonik va domensiz qoladi, shu bois bitta hisobni uning `AccountId`sini o‘zgartirmasdan turli ilova doiralariga bog‘lash mumkin. Aktiv ta’riflari domen/ma’lumotlar makoni proyeksiyasini saqlashi mumkin, bu aktiv amallariga to‘g‘ri ma’lumotlar makoni marshrutini meros qilib beradi.
 
@@ -67,7 +67,7 @@ Birga yetkazilgan uchala yo‘lak ham ochiq va ayni `universal` ma’lumotlar ma
 
 Bu munosabatlar belgilangan [profil konstruktorlari](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_config/src/parameters/actual.rs), [yo‘lak amalga oshirilishi](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_core/src/sumeragi/lanes/mod.rs) va [mustaqil ildiz shartnomasi](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/sumeragi.md) bilan belgilanadi.
 
-Sumeragi har doim ma'lumotlar mavjudligi va ishonchli etkazib berishdan foydalanadi. Ushbu yo'llar Iroha 3 konsensus protokolining bir qismi bo'lib, ishga tushirish profillari tomonidan o'chirib qo'yilmaydi.
+Sumeragi har doim imzolangan RS16 foydali yuki mavjudligi va sertifikatlangan tanani tiklashdan foydalanadi. Ushbu yo‘llar Iroha 3 konsensus protokolining bir qismi bo‘lib, joylashtirish profili orqali o‘chirib qo‘yilmaydi.
 
 Bajarish muhiti xatti-harakati sozlama fayllari va zanjirdagi parametrlardan olinadi. Muhit o‘zgaruvchilari ishlab chiqarish imkoniyatlarini yoqish vositasi emas.
 

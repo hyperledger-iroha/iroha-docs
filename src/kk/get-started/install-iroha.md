@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /get-started/install-iroha.md
-translation_source_hash: cef11a7036dcb5257647edf0c48ea1b9c144822e029df936b422998f46187b41
+translation_source_hash: b2ba22db6a25e3b67cf18dc6959f95f57bd861b232b1d4a9d881bbe3cdf7844a
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -15,7 +15,7 @@ translation_engine: bing-translator-llm+reviewed-delta
 
 Бұларды бірінші орнатыңыз:
 
-- [rustup](https://www.rust-lang.org/tools/install), сондықтан бекітілген `rust-toolchain.toml` құралдар жиынтығы (`1.93.1`) автоматты түрде орнатылды
+- [rustup](https://www.rust-lang.org/tools/install), сондықтан бекітілген `rust-toolchain.toml` құралдар жиынтығы (`1.99.1`) автоматты түрде орнатылды
 - `git`
 - қалауы бойынша, жергілікті көпсерверлі жылдам бастау үшін Docker және Docker Compose
 

@@ -1,22 +1,22 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/world.md
-translation_source_hash: d6ecc7832a3925c105ddc0ddfbaf62ea54d465cdb7b98ce795e5a72c615361bd
+translation_source_hash: 3e03f6f778e5e53a95ab6e5b94c05da410fa415fcc26ad31aa387bdaf0d744bf
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-source-naming-amendment
+translation_engine: nllb-200-ct2+reviewed-source-naming-amendment+reviewed-delta
 ---
 # Global holat {#world}
 
 `World` — boshqa obyektlarni o‘z ichiga oladigan global obyekt. `World` quyidagilardan iborat:
 
-- Iroha [sozlama parametrlari](/uz/guide/configure/client-configuration.md);
+- zanjirda saqlanadigan zanjir parametrlari; ular [genezis](/uz/reference/genesis.md)da va `SetParameter` orqali belgilanadi;
 - ro‘yxatdan o‘tkazilgan tugunlar;
 - ro‘yxatdan o‘tkazilgan domenlar;
 - ro‘yxatdan o‘tkazilgan [qo‘zg‘atuvchilar](/uz/blockchain/triggers.md);
 - ro‘yxatdan o‘tkazilgan [rollar](/uz/blockchain/permissions.md#permission-groups-roles);
 - ro‘yxatdan o‘tkazilgan [ruxsat tokeni ta’riflari](/uz/blockchain/permissions.md#permission-tokens);
 - barcha hisoblarning ruxsat tokenlari;
-- [bajarish muhiti tekshiruvchilari zanjiri](/uz/blockchain/permissions.md#runtime-validators).
+- [faol bajarish muhiti ijrochisi](/uz/blockchain/permissions.md#runtime-validators).
 
 Domen, tugun yoki rol ro‘yxatdan o‘tkazilganda yoxud chiqarilganda, tegishli [ro‘yxatdan o‘tkazish/chiqarish ko‘rsatmasi](/uz/blockchain/instructions.md) `World` ni nishon qiladi.
 
@@ -57,22 +57,19 @@ Takrorlash har bir saqlangan blokni tekshiradi, shu balandlik uchun yakunlash ta
 
 _Kura_ — Iroha-ning doimiy blok saqlovi. U imzolangan bloklar va tiklash metama’lumotini saqlaydi; WSV-ning ikkinchi o‘zgaruvchan nusxasini saqlamaydi.
 
-Kura saqlovining ildizi [`kura.store_dir`](/uz/reference/peer-config/params.md#param-kura-store-dir) dir. Shu ildiz ichida blok ma’lumoti yo‘lak yoki segment bo‘yicha ajratiladi. Segmentning asosiy fayllari quyidagilar:
+Kura saqlovining ildizi [`kura.store_dir`](/uz/reference/peer-config/params.md#param-kura-store-dir) dir. Global zanjirning bloklari zanjir darajasidagi `blocks/canonical` katalogida saqlanadi, yo‘lak instansiyalari esa alohida yo‘lak blok omborlarini yuritadi. Asosiy kanonik fayllar quyidagilar:
 
 |Yoʻl |Maqsad|
 | --- | --- |
-|`blocks/<segment>/blocks.data` |Ketma-ket joylashgan, Norito kadrlaridagi imzolangan blok foydali yuklari. |
-|`blocks/<segment>/blocks.index` |Blok balandligini `blocks.data` dagi baytlarga bog‘laydigan qat’iy o‘lchamli `(start, length)` yozuvlari. |
-|`blocks/<segment>/blocks.hashes` |Tez qidirish va ishga tushirish tekshiruvi uchun balandlik bo‘yicha blok xeshlari. |
-|`blocks/<segment>/blocks.count.norito` |Qancha blok indeksi yozuvidan xavfsiz foydalanish mumkinligini qayd etadigan barqaror yakunlash belgisi. |
-|`blocks/<segment>/da_blocks/` |Disk budjeti siyosati eski tanalarni faol fayldan chiqarganda `blocks.data` tashqarisida saqlanadigan blok foydali yuklari. |
-|`blocks/<segment>/pipeline/sidecars.norito` va `sidecars.index` |Blok balandligi bo‘yicha kalitlangan konveyerni tiklash yordamchi yozuvlari. |
-|`blocks/<segment>/pipeline/roster_sidecars.norito` va `roster_sidecars.index` |Bloklarni sinxronlash va takrorlashda ishlatiladigan so‘nggi yakunlash tarkibi yordamchi yozuvlari. |
-|`merge_ledger/<segment>.log` |Yakuniy yozilgan bloklarga mos birlashtirish reyestri yozuvlari. |
-|`commit-rosters.norito` |So‘nggi bloklarning yakunlash sertifikatlari va tasdiqlovchi nazorat nuqtalari saqlanadi. |
+|`blocks/canonical/blocks.data` |Ketma-ket joylashgan, Norito kadrlaridagi imzolangan blok foydali yuklari. |
+|`blocks/canonical/blocks.index` |Blok balandligini `blocks.data` dagi baytlarga bog‘laydigan qat’iy o‘lchamli `(start, length)` yozuvlari. |
+|`blocks/canonical/blocks.hashes` |Tez qidirish va ishga tushirish tekshiruvi uchun balandlik bo‘yicha blok xeshlari. |
+|`blocks/canonical/blocks.count.norito` |Qancha blok indeksi yozuvidan xavfsiz foydalanish mumkinligini qayd etadigan barqaror yakunlash belgisi. |
+|`blocks/canonical/da_blocks/` |Disk budjeti siyosati eski tanalarni faol fayldan chiqarganda `blocks.data` tashqarisida saqlanadigan blok foydali yuklari. |
+|`blocks/canonical/pipeline/sidecars.norito` va `sidecars.index` |Blok balandligi bo‘yicha kalitlangan konveyerni tiklash yordamchi yozuvlari. |
 
 Kura zanjir uchun xotirada ixcham vektor saqlaydi: har bir balandlikda blok xeshi va ixtiyoriy ravishda blok tanasi bo‘ladi. Genezis bloki keshda qoladi; genezisdan tashqari eng so‘nggi [`kura.blocks_in_memory`](/uz/reference/peer-config/params.md#param-kura-blocks-in-memory) ta blok tanasini xotirada saqlaydi. Eski blok tanalari xotiradan chiqarilib, kerak bo‘lganda Kura fayllaridan qayta yuklanadi.
 
-Tayyorlash jarayonida `strict` rejimi blok foydali yuklaridan saqlangan bloklarni tekshiradi va kerak bo‘lsa xesh faylini qayta yozadi. `fast` rejimi saqlangan xesh/indeks metama’lumotidan boshlaydi va u nomuvofiq bo‘lsa qat’iy tayyorlashga qaytadi. Kura buzilgan oxirgi qismni aniqlasa, saqlovni so‘nggi tekshirilgan blokkacha qisqartiradi.
+Tayyorlash jarayonida `strict` rejimi (standart) har bir kanonik blok tanasi va ota-blok havolasini tekshiradi. `fast` — `strict` allaqachon tayyorlagan saqlov uchun favqulodda rejim: u joriy imzolangan oniy tasvirga, barqaror bloklar soni va so‘nggi blokka ishonadi, tugun `strict` rejimida qayta ishga tushmaguncha esa Sumeragi, tranzaksiyalarni tarqatish va blok ishlab chiqarishni o‘chirilgan holda ushlab turadi. Ishga tushishda iste’moldan chiqarilgan `merge_ledger`, `roster_sidecars` va `commit-rosters.norito` artefaktlari rad etiladi. Kura buzilgan oxirgi qismni aniqlasa, saqlovni so‘nggi tekshirilgan blokkacha qisqartiradi.
 
 Kura yangi bloklarni fondagi yozuvchi orqali yozadi. Yozuvchi blok foydali yuklari, xeshlar va indeks yozuvlarini qo‘shadi, so‘ng sozlangan fsync siyosatiga muvofiq barqaror sanoq belgisini oldinga siljitadi. Disk budjetini ta’minlash faol bo‘lsa, Kura foydalanishdan chiqqan segmentlarni tozalashi yoki eski blok tanalarini `da_blocks/` ga chiqarishi, xesh va indeks yozuvlarini esa tekshirish hamda qidirish uchun saqlab qolishi mumkin.

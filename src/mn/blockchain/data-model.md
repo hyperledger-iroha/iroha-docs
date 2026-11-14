@@ -1,9 +1,9 @@
 ---
 translation_locale: mn
 translation_source: /blockchain/data-model.md
-translation_source_hash: f90139dee2eff97769cd47188bcaf60b31672f0250505d8afad9c8ee60815ddd
+translation_source_hash: fa1bbcbb2bad4e262a17eb04e67a94c3795d726ac52c0ab17370da9ec119e557
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-source-naming-amendment
+translation_engine: bing-translator-llm+reviewed-source-naming-amendment+reviewed-delta
 ---
 # Өгөгдлийн загвар {#data-model}
 
@@ -121,9 +121,9 @@ account_rabbit --> asset_rose : may receive balance
 |Хөрөнгийн тодорхойлолт|Нэг процессын стандарт `AssetDefinitionId` Base58 хаяг| `name#domain.dataspace` эсвэл `name#dataspace`            | `AssetDefinitionAlias` хөрөнгийн тодорхойлолтод холбоотой|
 |Гэрээ|нэг протокол-стандарт Bech32m `ContractAddress`| `name::domain.dataspace` эсвэл `name::dataspace`          | `ContractAlias` байрлуулсан гэрээний хаягт холбогдсон|
 |Домэйн нэр| `DomainId` нь `domain.dataspace` хэлбэрээр | `domain.dataspace`                                    | SNS `domain` нэр орон бүртгэл|
-| Өгөгдлийн орон зайн нэр | идэвхтэй SORA Nexus каталогоос авсан тоон `DataSpaceId` | `universal`, `paynet` эсвэл `zk` зэрэг өгөгдлийн орон зайн өөр нэр | SNS-ийн `dataspace` нэрийн орон зайн бичлэг болон идэвхтэй өгөгдлийн орон зайн каталог |
+| Өгөгдлийн орон зайн нэр | идэвхтэй SORA Nexus каталогоос авсан тоон `DataSpaceId` | `universal` эсвэл `paynet` зэрэг өгөгдлийн орон зайн өөр нэр | SNS-ийн `dataspace` нэрийн орон зайн бичлэг болон идэвхтэй өгөгдлийн орон зайн каталог |
 
-Дансны өвөрмөц нэрүүд нь хэрэглэгчдэд харагддаг дансны нэрүүд юм. Эдгээр нь дансны дахин түлхүүр хийх үйл явцад ч хадгалагддаг бөгөөд учир нь өвөрмөц нэр нь идэвхтэй дансны ID-г дэлхийн төлөвлөгөөний индекс болон дансны дахин түлхүүрийн мэдээллээр зааж өгдөг. Бүртгэлээний үндсэн шошгын хувьд `SetPrimaryAccountAlias`-ийг, нэмэлт үндсэн бус нэршлгийн хувьд `SetAccountAliasBinding`-ийг, уншихад `FindAccountByAlias` эсвэл `FindAliasesByAccountId`-ийг ашиглана. Бүртгэлийн нэршлүүдэд ерөнхийдөө `AcquireAccountAliasLease`-оор олж авсан, `RenewAccountAliasLease`-оор шинэчилсэн идэвхитэй SNS бүртгэлийн нэршлийн түрээс хэрэгтэй байдаг.
+Дансны өөр нэрүүд нь хэрэглэгчдэд харагддаг дансны нэрс юм. Өөр нэр нь дэлхийн төлөвийн индексүүд болон дансны түлхүүр солилтын бичлэгээр дамжуулан идэвхтэй дансны ID-г заадаг тул дансны түлхүүрийг сольсон ч хадгалагдана. Дансны өөр нэрийн түрээс авч, өөр нэрийг холбохын тулд `EnsureAlias`-ийг ихэвчлэн `app alias setup`-ийн төлөвлөх ба хэрэгжүүлэх урсгалаар дамжуулан ашиглана; үндсэн шошгыг өөрчлөхөд `CompareAndSetPrimaryAccountAlias`-ийг, өөр нэрийг өөр данс руу шилжүүлэхэд `RebindAccountAlias`-ийг, уншихад `FindAccountByAlias` эсвэл `FindAliasesByAccountId`-ийг ашиглана. Түрээсийг `RenewAliasLease`-ээр сунгах, эсвэл автомат сунгалтыг `ConfigureAliasAutoRenew`-ээр тохируулна.
 
 Хөрөнгийн орлуулга нь дансны тус бүрийн үлдэгдлүүдийг биш, хөрөнгийн тодорхойлолтыг нэрлэдэг. Хөрөнгийн орлуулгууд болон гэрээний орлуулгууд нь уншиж болох нэрийг байгаа ганц протокол стандартын зорилготой шууд холбодог. Эд хөрөнгийн овог нэрийг `SetAssetDefinitionAlias` ашиглан тохируулдаг; овог нэрийн хэсэг нь эд хөрөнгийн тодорхойлолтын дэлгэцийн нэр эсвэл төсөөлсөн тодорхойлолтын нэртэй таарч байх ёстой. Гэрээний овог нэрийг `SetContractAlias` ашиглан тохируулдаг; нэрийн орон зай нь гэрээний хаягт кодлогдсон орон зайтай таарч байх ёстой. Аль алиныг нь `lease_expiry_ms` дамжуулж болно; хугацаа дууссаны дараа тэдгээр нь уучлалтын цонх дуусахад шийдэгдэхээ больж, дэлхийн төлөвийн индексээс арилдаг.
 

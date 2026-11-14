@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -34,7 +34,7 @@ cargo build --release \
 target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-Каталог вывода содержит сгенерированные файлы `genesis.json`, `genesis.signed.nrt`, узла сети `config.toml`, `client.toml`, вспомогательные скрипты и сгенерированный `README.md` с точными командами для этого пакета.
+Каталог вывода содержит сгенерированные файлы `genesis.json`, `genesis.signed.nrt`, `genesis.expected_hash`, по одному `peerN.toml` на каждый валидатор, `client.toml`, скрипты `start.sh` и `stop.sh` и сгенерированный `README.md` с точными командами для этого пакета.
 
 ## 3. Запустить сетевые узлы {#_3-start-peers}
 
@@ -44,7 +44,7 @@ target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ./localnet/start.sh
 ```
 
-Если вам нужно подключить каждого сетевого участника к менеджеру процессов, такому как systemd, используйте команду запуска, записанную в `./localnet/README.md`, для каждого сетевого участника. Сохраняйте `config.toml`, приватный ключ, каталог хранения и порты каждого сетевого участника отдельно.
+Если вам нужно подключить каждого сетевого участника к менеджеру процессов, такому как systemd, следуйте команде для каждого узла в `./localnet/start.sh`: запускайте `iroha3d --config <bundle>/peerN.toml` из `<bundle>/state/peerN` и передавайте `--sumeragi-assert-fresh-key` только при первом запуске этого узла. Сохраняйте `peerN.toml`, приватный ключ, каталог хранения и порты каждого сетевого участника отдельно.
 
 ## 4. Управлять сетью {#_4-operate-the-network}
 

@@ -1,9 +1,9 @@
 ---
 translation_locale: my
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 8a8fd0d29d4c1c323b457595653077564ad100f397ea2f4b059b35451b76aa44
+translation_source_hash: ae0604c0e82db0a908e7ffc44c97f56b58fe2b5bb87553ded48562e8f9fcd36a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # ငွေကြေးအထောက်အပံ့များ {#fungible-assets}
 
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-li
 
 - `curl`၊ `jq`၊ Python 3.11 သို့မဟုတ် နောက်ပိုင်းဗားရှင်း၊ Node.js 24 နှင့် လက်ရှိ `iroha` နှင့် `kagami` CLIs တို့။
 - ဖတ်လို့သာရတဲ့ Taira ဝင်ခွင့်။
-- စာရင်းရေးသွင်းခြင်း လမ်းညွှန်အတွက် [လွှတ်တင်ခြင်း Iroha](/my/get-started/launch-iroha.md) တွင်ကဲ့သို့ `kagami localnet generate --peers 4 --out-dir ./localnet` ကို `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa` ထပ်ထည့်၍ ဖန်တီးထားသော ဒေသတွင်းကွန်ရက်တစ်ခု လိုအပ်သည်။ ၎င်းသည် `./localnet/client.toml` နှင့် `http://127.0.0.1:8080` ပေါ်ရှိ Torii ကို ပံ့ပိုးပေးသည်။
+- ရေးသွင်းမှု လမ်းညွှန်ချက်အတွက် `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa` ထပ်ထည့်ထားသော `kagami localnet generate --peers 4 --out-dir ./localnet` မှ ဖန်တီးထားသော ဒေသတွင်းကွန်ရက်တစ်ခု။ ၎င်းသည် `./localnet/client.toml` နှင့် `http://127.0.0.1:8080` ပေါ်ရှိ Torii ကို ပံ့ပိုးပေးသည်။
 
 ## ခြေလှမ်း {#steps}
 

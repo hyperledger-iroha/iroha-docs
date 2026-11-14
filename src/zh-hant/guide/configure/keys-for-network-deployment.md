@@ -1,20 +1,20 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
+translation_source_hash: c42adbe41e322c93509279f1f558d4450431de90c596f37eb3999754d4387f78
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
 # 網路部署的關鍵 {#keys-for-network-deployment}
 
-每個網路都需要為用戶端、對等節點與創世簽署分別準備不同的金鑰材料；若採用 NPoS 或 SORA Nexus 設定檔，還需要 BLS 驗證者身分金鑰。
+每個網路都需要為用戶端、創世簽署，以及附帶持有證明的 BLS-normal 驗證者身分分別準備不同的金鑰材料。
 
 ## 用鑰匙的地方 {#where-keys-are-used}
 
 - 客戶簽名金鑰儲存在 `client.toml`下 `[account]`.
 - 每個對等節點身份金鑰 `config.toml` 儲存為 `public_key`和 `private_key`.
 - 在 `trusted_peers` 中,對等節點發現使用每個對等節點的公鑰.
-- BLS 驗證器 NPoS配置檔案的所有權證明儲存在 `trusted_peers_pop` 中.
+- 無論採用哪種共識模式，每個驗證者的 BLS 持有證明都儲存在 `trusted_peers_pop` 中。
 - 在簽署表時,Genesis簽字使用`[genesis].public_key`在對等節點配置中和相匹配的私鑰.
 
 在本地或測試部署中,讓 Kagami 將所有這些檔案生成在一起:

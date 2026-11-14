@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: 5fb7abd4e152ece715a8337e8ef8e75330f634d2a1b26e0c5bd8308f1f3793a9
+translation_source_hash: 40714a6cd124d4b0342b0f6ecf321f286e714c0e236afd6fd7834c0cf0ad1165
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -11,15 +11,14 @@ translation_engine: nllb-200-ct2+reviewed-delta
 
 ## 1. Кәрәкле шарттар {#_1-prerequisites}
 
-Иң тәүҙә урындағы селтәрҙе ҡуҙғатыу:
-
-- [Пуск Iroha 3](./launch-iroha.md)
-
-[Iroha 3-те эшләтеп ебәреү](./launch-iroha.md) локаль селтәрҙән барлыҡҡа килгән клиент конфигурацияһын түбәндәге миҫалдар ҡабул итә:
+Документта күрһәтелгән сығанаҡ ревизияһындағы Iroha сығанаҡ коды күсермәһенән дүрт тиңдәшле локаль селтәрҙе генерациялағыҙ һәм эшләтеп ебәрегеҙ:
 
 ```bash
-./localnet/client.toml
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
+./localnet/start.sh
 ```
+
+Түбәндәге миҫалдар уның генерацияланған клиент конфигурацияһын — `./localnet/client.toml` ҡуллана.
 
 ## 2. Башлыса CLI ҡоролмаһы {#_2-basic-cli-setup}
 
@@ -61,7 +60,7 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-`universal` мәғлүмәт киңлегендәге асыҡ домендарҙы күрһәтегеҙ:
+Аутентификацияланмаған уҡыусыға күренгән домендарҙы күрһәтегеҙ:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
@@ -147,7 +146,8 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 Консенсус операторы командалары рөхсәт исемлегендәге башҡарыу ваҡыты асҡысын талап итә. Уны `client.toml` эсенә ҡуймағыҙ һәм хужа ғына уҡый алған файлды абсолют юлы менән бирегеҙ:
 
 ```bash
-: "${OPERATOR_KEY_FILE:=$PWD/secrets/operator.key}"
+# The generated localnet writes its allow-listed operator key here.
+: "${OPERATOR_KEY_FILE:=$PWD/localnet/runtime/operator-signer.key}"
 
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \

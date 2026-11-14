@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /blockchain/accounts.md
-translation_source_hash: adc98cbf1fcadae4415d03dcc262eb03f8c95b429527e403d230934ae2f3243c
+translation_source_hash: d956bfb8c698fa463ef9fa84a91d50cf0e2100885eba670121ad78753f87d88d
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -44,7 +44,7 @@ private_key_file = "/absolute/path/to/private.key"
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+  | jq -r '.items[] | [.id, (.label // "-")] | @tsv'
 ```
 
 Дансны хөрөнгийг шалгахын тулд эхний техникийн дуудах ажиллагаанаас дансны ID-г хуулж, замд тавихаас өмнө URL кодчилгоотой болгоно. Энэ Python хэсэг нь жагсаасан эхний дансны хувьд үүнийг хийдэг:
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-Эдгээр нь нийтэд нээлттэй унших үйлдлүүд юм. Данс үүсгэх эсвэл шинэчлэх нь гарын үсэгтэй гүйлгээ бөгөөд [SORA Nexus өгөгдлийн орон зайд холбогдох](/mn/get-started/sora-nexus-dataspaces.md) хэсэгт тайлбарласан, туршилтын хөрөнгө олгох үйлчилгээгээр санхүүжүүлсэн Taira тохиргоог шаарддаг.
+Эдгээр нь нийтэд нээлттэй унших үйлдлүүд юм. Данс үүсгэх эсвэл шинэчлэх нь гарын үсэгтэй гүйлгээ бөгөөд [Taira болон Minamoto ашиглан SORA Nexus дээр хөгжүүлэх](/mn/get-started/sora-nexus-dataspaces.md) хэсэгт тайлбарласан, туршилтын хөрөнгө олгох үйлчилгээгээр санхүүжүүлсэн Taira тохиргоог шаарддаг.
 
 ## Бүртгэл ба зөвшөөрөл {#registration-and-permissions}
 

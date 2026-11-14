@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
+translation_source_hash: ad2bc9f8c53169d8161f7a2f23b1e660ebd24cf03cf8e05f4b00bbd27b7b11fe
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -23,8 +23,8 @@ translation_engine: bing-translator-llm+reviewed-delta
 Начните с снимка данных публичного узла и сбора данных Prometheus, затем используйте CLI для состояния консенсуса, аутентифицированного оператором. Ключ оператора должен быть разрешен целевым узлом и загружается только во время выполнения программного обеспечения:
 
 ```bash
-export TORII=http://127.0.0.1:8180
-export OPERATOR_KEY_FILE=./secrets/operator.key
+export TORII=http://127.0.0.1:8080
+export OPERATOR_KEY_FILE="$PWD/localnet/runtime/operator-signer.key"
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s "$TORII/metrics" > metrics.prom
@@ -52,7 +52,7 @@ curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/now" \
-  | jq '{now_ms, offset_ms}'
+  | jq '{now, offset_ms}'
 ```
 
 Не используйте данные наблюдений за публичным тестнетом в качестве показателей производственных мощностей для собственного развертывания.
@@ -187,13 +187,13 @@ iroha --config ./localnet/client.toml \
 | --- | --- | --- |
 |Принятая пропускная способность| `sum(rate(txs{type="accepted"}[5m]))` |Должен достигать или превышать цель TPS в устойчивом состоянии|
 |Отказы| `sum(rate(txs{type="rejected"}[5m]))` |Должно быть объяснимо с помощью плана тестирования|
-|задержка финализации протокола| `histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |Сравните p95/p99 с бюджетом задержки|
+|задержка финализации протокола| `histogram_quantile(0.95, sum by (le) (rate(sumeragi_commit_latency_ms_bucket{lane="global"}[5m])))`, `last_commit_time_ms` |Сравните p95/p99 с бюджетом задержки|
 |Глубина очереди| `queue_size`, `sumeragi_tx_queue_depth` |Должен оставаться ограниченным во время пиковых нагрузок|
 |Насыщение очереди| `sumeragi_tx_queue_saturated` |Постоянные ненулевые значения означают перегрузку|
-|Просмотреть изменения| `view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |Рост значений указывает на проблемы с синхронизацией, топологией, полезной нагрузкой или сетью|
-|Потерянные сообщения| `dropped_messages`, `sumeragi_consensus_message_handling_total` |Падения во время загрузки обычно объясняют всплески задержки|
-|Груз и восстановление DA| `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` |Постоянные запросы, возрастающий возраст или повторяющиеся DA ворота указывают на проблемы с приобретением тела или блока|
-|кворум для финализации консенсуса| `sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |Подсчитанные подписи должны быстро достичь необходимого кворума|
+|Просмотреть изменения| `view_changes`, `sumeragi_view_changes_total`, `sumeragi_timeout_votes_total` |Рост значений указывает на проблемы с синхронизацией, топологией, полезной нагрузкой или сетью|
+|Потерянные сообщения| `sumeragi_dropped_total`, `p2p_queue_dropped_total` |Падения во время загрузки обычно объясняют всплески задержки|
+|Получение полезной нагрузки и догоняющая синхронизация| `sumeragi_fetch_requests_total{kind="body"}`, `sumeragi_fetch_requests_total{kind="sync"}` |Постоянные запросы тел или синхронизации указывают на проблемы с получением полезной нагрузки или догоняющей синхронизацией|
+|прогресс финализации консенсуса| `sumeragi_committed_height`, `sumeragi_applied_height` |Сертифицированная и применённая высоты должны расти вместе|
 
 Когда метрика существует только в `/v1/sumeragi/status`, снимите снимок данных JSON в тех же артефактах запуска, что и сбор данных Prometheus.
 
@@ -245,7 +245,7 @@ iroha --config ./localnet/client.toml \
 - принято/отклонено TPS
 - латентность завершения протокола p50/p95/p99
 - глубина очереди и насыщение
-- просмотр изменений, потерянные сообщения, пропущенные выборки блоков и счетчики DA-шлюзов
+- смены вида, голоса тайм-аута, отбрасывания сообщений Sumeragi и запросы тел и синхронизации
 - CPU, использование памяти, диска и сети на каждого валидатора
 
 Без этих деталей номер TPS следует рассматривать как анекдотический.

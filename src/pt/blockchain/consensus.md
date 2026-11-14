@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/consensus.md
-translation_source_hash: 06b3589a71dcb08aed5589290f4c9af9cb46b5cee0f875ae542043543360f623
+translation_source_hash: ebdf564d607b96f7f186637044d80b2f1bb7c9fbe6080a061d27d02ec6f8cf62
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -28,7 +28,7 @@ O mesmo pipeline de processamento Sumeragi é usado em implantações tanto perm
 
 Os validadores assinam apenas os dados que podem reproduzir localmente. Antes de votar, um validador verifica se a proposta pertence à cadeia, altura e visão esperadas; se as assinaturas e limites das transações satisfazem as regras do protocolo; se o roteamento da via de execução e a validação do executor são determinísticos; e que a execução do payload produz a transição de estado esperada. Se o resultado local for diferente, o validador rejeita a proposta em vez de votar nela.
 
-Votos são pequenas mensagens de consenso assinadas. Eles se referem ao bloco proposto, à altura, à visão e à identidade do validador. Assinaturas verificadas formam certificados de quórum de preparação e de confirmação do consenso. Um certificado de commit de consenso é a prova durável de que validadores suficientes observaram o mesmo resultado para o mesmo bloco. Cada validador envia seus votos de Preparação e Commit para o comitê completo; qualquer validador pode agregar os votos iguais necessários e transmitir o certificado resultante.
+Votos são pequenas mensagens de consenso assinadas. Eles se referem ao bloco proposto, à altura, à visão e à identidade do validador. Assinaturas verificadas formam certificados de quórum de preparação e de confirmação do consenso. Um certificado de commit de consenso é a prova durável de que validadores suficientes observaram o mesmo resultado para o mesmo bloco. Os validadores do Conjunto A normalmente enviam seus votos de Preparação e Commit para a cauda proxy da rodada, que agrega exatamente os votos iguais necessários e transmite o certificado. Se um certificado estiver atrasado, os validadores do Conjunto B também votam para a cauda proxy; como último recurso, cada validador transmite seu voto e qualquer validador pode agregar o certificado.
 
 ### Quórum e observadores {#quorum-and-observers}
 
@@ -79,14 +79,14 @@ Consulte a [implementação das faixas](https://github.com/hyperledger-iroha/iro
 
 ## Disponibilidade de dados e recuperação de carga {#data-availability-and-payload-recovery}
 
-Sumeragi V1 fornece disponibilidade global da carga útil por meio das mensagens RS16 assinadas `PayloadManifest` e `PayloadChunk`. O líder envia o manifesto assinado a todo o comitê e distribui inicialmente fragmentos determinísticos ao Conjunto A. Um validador só pode emitir um voto Prepare após reconstruir o corpo canônico, validar o manifesto e os hashes dos fragmentos, armazenar o corpo de forma durável e concluir a validação determinística. Se o caminho rápido parar de avançar, a recuperação amplia a entrega de fragmentos para o Conjunto B. A recuperação de corpos certificados e a sincronização de blocos fornecem um caminho de recuperação com limites definidos quando um par toma conhecimento da finalização antes de receber o corpo.
+Sumeragi V1 fornece disponibilidade global da carga útil por meio das mensagens RS16 assinadas `PayloadManifest` e `PayloadChunk`. O líder envia o manifesto assinado e cada linha assinada a todos os outros membros do comitê e aos membros que ingressam no próximo comitê. Um validador só pode emitir um voto Prepare após reconstruir o corpo canônico, validar o manifesto e os hashes dos fragmentos, armazenar o corpo de forma durável e concluir a validação determinística. Um par ao qual faltam linhas as solicita com `PayloadRequest`. A recuperação de corpos certificados e a sincronização de blocos fornecem um caminho de recuperação com limites definidos quando um par toma conhecimento da finalização antes de receber o corpo.
 
 Cada instância de faixa de execução usa seu próprio contexto autenticado de disponibilidade e certificados. As verificações de mesclagem global vinculam o lote certificado e a carga útil original à encarnação e à âncora esperadas. Um par só aplica a finalização global quando dispõe localmente da carga útil global correspondente e de um CommitQC válido.
 
 Use as superfícies do operador autenticado em vez de um endpoint separado RBC API:
 
 - `iroha --operator-private-key-file <path> --output-format text ops sumeragi status` relata a altura, visão, fase, certificados e estado de vivacidade autoritativos.
-- `iroha --operator-private-key-file <path> --output-format text ops sumeragi diagnostics` apresenta diagnósticos da fila, do pipeline, de NPoS, das faixas e dos espaços de dados, incluindo a propriedade da carga útil de cada faixa. Esses diagnósticos não constituem uma fonte autoritativa.
-- Sinais do Prometheus, como `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total` e `sumeragi_da_gate_satisfied_total`, separam a recuperação de corpo ausente, portões de disponibilidade de dados e o manuseio de mensagens; veja [Desempenho e métricas](/pt/guide/advanced/metrics.md).
+- `iroha --operator-private-key-file <path> --output-format text ops sumeragi diagnostics` apresenta, de forma não autoritativa, a pressão da fila de transações, o estado da eleição NPoS e o status dos manifestos de governança das faixas.
+- Séries do Prometheus por instância, como `sumeragi_fetch_requests_total` (`kind="body"` para corpos ausentes, `kind="sync"` para recuperação de atraso), `sumeragi_view_changes_total`, `sumeragi_round_stage` e `sumeragi_dropped_total`, têm um rótulo `lane` e separam a recuperação de corpo ausente, as mudanças de visão e os descartes de filas limitadas; veja [Desempenho e métricas](/pt/guide/advanced/metrics.md).
 
 Os repositórios de blocos das faixas de execução retêm os lotes certificados e os registros de origem necessários para mesclagem e recuperação. Seu ciclo de vida acompanha a encarnação confirmada da faixa de execução; o nome de um diretório de armazenamento não autoriza uma nova faixa de execução nem uma nova raiz de execução.

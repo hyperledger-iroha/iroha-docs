@@ -1,23 +1,22 @@
 ---
 translation_locale: az
 translation_source: /blockchain/escrow.md
-translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e217bc6ac9
+translation_source_hash: f3c943ba5d18278382876db7bd7b3b116522811353d4318aafe1023d4b04ce03
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
 # Yerli Aktiv Depoziti {#native-asset-escrow}
 
 Yerli etibar blokçeyn dəftəri tərəfindən idarə olunan rəqəmsal aktivlər üçün saxlanma mexanizmidir. Aktivləri tətbiq-ə sahib olan hesaba göndərmək və buna üstünlük vermək əvəzinə Həmin hesabı qorumaq üçün tətbiq kodu, agentlik ISIs dəyəri deterministik protokol mülkiyyət hesabına köçürmək və agentlik həyat dövrünü qlobal vəziyyətdə qeyd etmək.
 
-Bazar maliyyə əməliyyatlarının həlli üçün yerli etibarlı depoziti istifadə edin, Aitai tərzi zəncirdən kənar ödəmə koordinasiyası, mərhələli kilidləmələr və blokçeyn jurnalının həyat dövrü vəziyyətində görünməyə ehtiyacı olan qorunan etibarlı depozit iş axınları.
+Bazar maliyyə əməliyyatlarının həlli, Aitai tərzi zəncirdən kənar ödəniş koordinasiyası, mərhələli kilidləmələr və reyestrdə görünən həyat dövrü vəziyyətinə ehtiyac duyan, attestatora bağlı şərti ödəniş buraxılışları üçün yerli eskroudan istifadə edin.
 
 ## Konseptlər {#concepts}
 
 |Konsept|Təsvir|
 | --- | --- |
-| `EscrowId` |müştəri tərəfindən seçilmiş və kriptoqrafik xəşi əhatə edən identifikatorun tələb olunması. Bu, həm şəffaf, həm də anonim əmanətlər üzrə yeganə olmalıdır.|
+| `EscrowId` |Çağıran tərəfindən seçilən və həşi əhatə edən identifikator. O, bütün eskrou qeydləri arasında unikal olmalıdır.|
 | `AssetEscrowRecord` |Şəffaf rəqəmsal aktiv depozit və ya kilid qeydi.|
-| `AnonymousAssetEscrowRecord` |Nullifikatorlar, kriptoqrafik öhdəlik dəyərləri və sübut əlavələri ilə dəstəklənən qorunan etibarlı rekord.|
 |Saxlama hesabı|Zəncir ID-sindən, eskro ID-sindən və aktiv tərifindən törədilmiş deterministik protokol hesabı.|
 |Sübut kriptoqrafik xəşlər|Dəlil kriptoqrafik xəşlər vasitəsilə fakturaları, məhkəmə qərarlarını, mesajları, saxlama texniki manifestlərini və ya digər off-chain dəlilləri müəyyən edə bilər. Dəlil məlumatlarının özü depozit qeydinə saxlanılmır.|
 
@@ -173,7 +172,7 @@ fn drawdown_and_close_asset_locks(
 }
 ```
 
-Python hazırda ümumi kilidlər üçün yüksək səviyyəli köməkçiləri təqdim edir: `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock` və `expire_asset_lock`. Python-dan bazar yeri və anonim depozit üçün, tək protokol-standart `InstructionBox` JSON istifadə edin SDK'in JSON qaçış qapağı vasitəsilə, və ya birinci dərəcəli əmanətçilər hazırlayan SDK vasitəsilə təqdim edin.
+Python hazırda ümumi kilidlər üçün yüksək səviyyəli köməkçiləri təqdim edir: `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock` və `expire_asset_lock`. Python-dan bazar yeri və şərti depozit üçün, tək protokol-standart `InstructionBox` JSON istifadə edin SDK'in JSON qaçış qapağı vasitəsilə, və ya birinci dərəcəli əmanətçilər hazırlayan SDK vasitəsilə təqdim edin.
 
 ## Münaqişələr {#disputes}
 
@@ -225,82 +224,33 @@ fn resolve_disputed_escrow(
 }
 ```
 
-## Anonim Əmanət {#anonymous-escrow}
+## Şərti eskrou {#conditional-escrow}
 
-Anonim escrow eyni bazar yeri həyat dövründən istifadə edir, amma maliyyələşdirmə və bağlanma aktivlərinin hərəkəti qorunur. İctimai qeyd hələ də satıcı, alıcı, statusu saxlayır, şahid kriptoqrafik xeshlər, zaman möhürləri və sübutla əlaqəli hərəkət qeydləri. Qorunan qeydlərin içindəki məbləğlər və alıcılar kriptoqrafik öhdəlik dəyərləri, nullifier-lər və sübut əlavə vasitəsilə təmsil olunur.
+Şərti eskrou rəqəmsal aktivi benefisiar üçün kilidləyir və onu yalnız bütün şərtlər ardıcıllıqla ödəndikdən sonra buraxır. Hər şərt attestator hesabını, reyestrin qiymətləndirdiyi predikatı (tipli dəyərə `Equals` və ya hədd üzrə `QuantityAtMost`) və birdən başlayan sıra nömrəsini göstərir. Məcburi olmayan reyestr vaxtı pəncərəsi bütün attestasiyaları məhdudlaşdırır.
 
-|Şəffaf ISI|Anonim ISI|
-| --- | --- |
-| `OpenAssetEscrow` | `OpenAnonymousAssetEscrow` |
-| `AcceptAssetEscrow` | `AcceptAnonymousAssetEscrow` |
-| `MarkEscrowPaymentSent` | `MarkAnonymousEscrowPaymentSent` |
-| `ReleaseAssetEscrow` | `ReleaseAnonymousAssetEscrow` |
-| `CancelAssetEscrow` | `CancelAnonymousAssetEscrow` |
-| `OpenEscrowDispute` | `OpenAnonymousEscrowDispute` |
-| `ResolveEscrowDispute` | `ResolveAnonymousEscrowDispute` |
-
-Cüzdan və ya prover alətləri sübut əlavəsini və ictimai girişləri hazırlamalıdır. Açılış bir ədəd depozit kriptoqrafik öhdəlik dəyəri yaradır. Buraxılış, ləğv, və anonim mübahisələrin həlli mütləq olaraq dəqiq bir eskro kriptoqrafik öhdəlik dəyərini xərcləməli və əməliyyat tərəfindən tələb olunan alıcı, satıcı və ya bölünmüş çıxış kriptoqrafik öhdəlik dəyərlərini yaratmalıdır.
-
-```rust
-use iroha::{
-    client::Client,
-    data_model::{
-        isi::escrow::{
-            AcceptAnonymousAssetEscrow, MarkAnonymousEscrowPaymentSent,
-            OpenAnonymousAssetEscrow,
-        },
-        prelude::*,
-        proof::ProofAttachment,
-    },
-};
-use iroha_crypto::Hash;
-
-fn open_anonymous_escrow(
-    seller_client: &Client,
-    buyer_client: &Client,
-    escrow_id: EscrowId,
-    asset_definition_id: AssetDefinitionId,
-    funding_nullifiers: Vec<[u8; 32]>,
-    escrow_commitment: [u8; 32],
-    proof: ProofAttachment,
-    root_hint: Option<[u8; 32]>,
-) -> eyre::Result<()> {
-    seller_client.submit_blocking(OpenAnonymousAssetEscrow::with_evidence_hashes(
-        escrow_id,
-        asset_definition_id,
-        funding_nullifiers,
-        escrow_commitment,
-        proof,
-        root_hint,
-        vec![Hash::new("shielded-invoice")],
-    ))?;
-
-    buyer_client.submit_blocking(AcceptAnonymousAssetEscrow::new(escrow_id))?;
-    buyer_client.submit_blocking(MarkAnonymousEscrowPaymentSent::new(escrow_id))?;
-
-    Ok(())
-}
-```
-
-Əsas qorunan əməliyyat modelinə baxın, bax [Anonim Əməliyyatlar](/az/blockchain/anonymous-transactions.md).
+| ISI | Çağıran | Nəticə |
+| --- | --- | --- |
+| `OpenConditionalEscrow` | Açan tərəf | Məbləği dəyişməz şərtlər və mütləq bitmə vaxtı ilə protokol mühafizəsində kilidləyir. |
+| `AttestEscrowCondition` | Şərtin attestatoru | Növbəti şərt üçün `Bool`, `Text` və ya `Quantity` dəyəri təqdim edir. Sonuncu şərt ödəndikdə eskrou benefisiara buraxılır. |
+| `ExpireConditionalEscrow` | İstənilən hesab | Eskrou buraxılmayıbsa, bitmə vaxtından sonra məbləği açan tərəfə qaytarır. |
 
 ## SDK İstifadə {#sdk-usage}
 
-Escrow dəstəyi SDKs arasında fərqli şəkildə təqdim olunur. Rust tək protokol-standartlı tiplənmiş məlumat modelinə malikdir. Python hazırda ümumi aktiv-bloklama yardımçıları təqdim edir. JavaScript və TypeScript Kotodama etibar depozit ev sahibi-funksiyası çağırışlarından istifadə edir. Kotlin/JVM və Swift bazar yeri və anonim etibar depoziti üçün yazılı yük qurucuları təmin edir.
+Escrow dəstəyi SDKs arasında fərqli şəkildə təqdim olunur. Rust tək protokol-standartlı tiplənmiş məlumat modelinə malikdir. Python hazırda ümumi aktiv-bloklama yardımçıları təqdim edir. JavaScript və TypeScript Kotodama etibar depozit ev sahibi-funksiyası çağırışlarından istifadə edir. Kotlin/JVM və Swift bazar yeri etibar depoziti üçün yazılı yük qurucuları təmin edir.
 
 | SDK |Bu səthdən istifadə edin|Sahə|
 | --- | --- | --- |
-| [Rust](#rust-sdk) | `iroha::data_model::isi::escrow` |Bazar yığıcı depoziti, ümumi kilidlər, anonim yığıcı depozit, sorğular və hadisələr.|
-| [Python](#python-asset-locks) |`Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock` və müştəri `*_and_wait` köməkçilər|Ümumi aktiv kilidləri. Bazar yeri və anonim depozit köməkçiləri hələ birinci dərəcəli Python metodlar deyildir.|
+| [Rust](#rust-sdk) | `iroha::data_model::isi::escrow` |Bazar yığıcı depoziti, ümumi kilidlər, şərti yığıcı depozit, sorğular və hadisələr.|
+| [Python](#python-asset-locks) |`Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock` və müştəri `*_and_wait` köməkçilər|Ümumi aktiv kilidləri. Bazar yeri və şərti depozit köməkçiləri hələ birinci dərəcəli Python metodlar deyildir.|
 | [JavaScript / TypeScript](#javascript-and-typescript-kotodama) | `compileKotodamaProgram` -dən `@iroha/iroha-js/kotodama-compiler` |Kotodama müqavilələri daxilində depozit host-funksiyası çağırışları.|
-| [Kotlin / JVM](#kotlin-and-jvm) | `InstructionTemplate` dərsləri `org.hyperledger.iroha.sdk.core.model.instructions`-də |Bazar yeri və anonim etibarlı depozit xüsusi təlimat şablonları.|
-| [Swift / iOS](#swift-and-ios) | `NativeEscrowInstructionBuilders` və `IrohaSDK.build*Escrow*` köməkçiləri |Bazar yeri və anonim eskro Norito JSON təlimat yükləri.|
+| [Kotlin / JVM](#kotlin-and-jvm) | `InstructionTemplate` dərsləri `org.hyperledger.iroha.sdk.core.model.instructions`-də |Bazar yeri etibarlı depozit xüsusi təlimat şablonları.|
+| [Swift / iOS](#swift-and-ios) | `NativeEscrowInstructionBuilders` və `IrohaSDK.build*Escrow*` köməkçiləri |Bazar yeri eskro Norito JSON təlimat yükləri.|
 
 Aşağıdakı nümunələr təlimatın hazırlanmasına diqqət yetirir. Hesabın maliyyələşdirilməsi, imza idarəçiliyi və əməliyyatın təqdim edilməsi hər bir SDK üçün normal axını izləyir.
 
 ### Rust SDK {#rust-sdk}
 
-Tam yerli əhatə və ya sorğu/ hadisə dəstəyi lazım olduqda Rust SDK-dən istifadə edin. Yuxarıdakı nümunələr bazar buraxılışı, ümumi kilid çəkilməsi, münaqişələrin həlli və `iroha::data_model::isi::escrow` ilə anonim depozit quruluşunu göstərir.
+Tam yerli əhatə və ya sorğu/ hadisə dəstəyi lazım olduqda Rust SDK-dən istifadə edin. Yuxarıdakı nümunələr `iroha::data_model::isi::escrow` ilə bazar buraxılışını, ümumi kilid çəkilməsini və münaqişələrin həllini göstərir.
 
 ```rust
 use iroha::{
@@ -396,7 +346,7 @@ if (compiled.diagnostics.length > 0) {
 }
 ```
 
-Mübahisələr üçün `escrow_open_dispute(offer, evidence)` və `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)` istifadə edin. Anonim kirayə mühafizəçi host-funksiyası çağırışları Norito sorğu yük baytlarını qəbul edir, məsələn `anonymous_escrow_open_offer(request)`.
+Mübahisələr üçün `escrow_open_dispute(offer, evidence)` və `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)` istifadə edin.
 
 ### Kotlin və JVM {#kotlin-and-jvm}
 
@@ -430,8 +380,6 @@ println(open.arguments)
 println(NativeEscrowPermissions.CAN_RESOLVE_ESCROW_DISPUTE)
 ```
 
-Anonim şablonlar `OpenAnonymousAssetEscrowInstruction`, `AcceptAnonymousAssetEscrowInstruction`, `MarkAnonymousEscrowPaymentSentInstruction`, `ReleaseAnonymousAssetEscrowInstruction`, `CancelAnonymousAssetEscrowInstruction`, `OpenAnonymousEscrowDisputeInstruction` və `ResolveAnonymousEscrowDisputeInstruction` kimi mövcuddur. Android Java tələb olunan müştərilər Android artefaktından uyğun `NativeEscrowInstructions.*` quruculardan istifadə edə bilərlər.
-
 ### Swift və iOS {#swift-and-ios}
 
 Swift SDK Norito JSON payloadları kimi depozit təlimatlarını qurur. `NativeEscrowInstructionBuilders`-ı birbaşa istifadə edin, ya da tətbiqiniz artıq bir `IrohaSDK` nümunəsinə sahib olduqda ekvivalent `IrohaSDK.build*Escrow*` köməkçisini çağırın.
@@ -462,7 +410,7 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 )
 ```
 
-Anonim Swift qurucular nullifikator siyahılarını, kriptoqrafik öhdəlik dəyəri siyahılarını, bir sübut lüğətini və isteğe bağlı `rootHint` dəyərləri alır. Münaqişə həll edici icazə tokeni `NativeEscrowPermissions.canResolveEscrowDispute` kimi mövcuddur.
+Münaqişə həll edici icazə tokeni `NativeEscrowPermissions.canResolveEscrowDispute` kimi mövcuddur.
 
 ## Sorğular və Tədbirlər {#queries-and-events}
 
@@ -475,10 +423,8 @@ Status səhifələri, uyğunlaşdırma işləri və dəstək vasitələri üçü
 | `FindAssetEscrowsBySeller` |Satıcı və ya kilid açan tərəfindən açılan qeydləri siyahıya alın.|
 | `FindAssetEscrowsByBuyer` |Alıcı tərəfindən qəbul edilən bazar yeri depozitlərini və ya müəyyən bir istiqaməti hədəfləyən kilidləri siyahıya alın.|
 | `FindAssetEscrowsByStatus` |`AssetEscrowStatus` üzrə qeydləri siyahıya alın.|
-| `FindAnonymousAssetEscrowById` |`EscrowId` tərəfindən yazılmış bir anonim depozit sənədini oxuyun.|
-| `FindAnonymousAssetEscrows*` |Bütün qeydlər, satıcı, alıcı və ya status üzrə anonim depozitləri siyahıya alın.|
 
-`EscrowEventFilter` şəffaf yerli depozit və kilid hadisələrini depozit ID-si, satıcı, alıcı, status və hadisə dəsti maskası üzrə izləyə bilər. Hadisə ailəsinə `Opened` daxildir, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed` və `Resolved`. Anonim eskro qeydləri anonim eskro sorğuları vasitəsilə yoxlanılır.
+`EscrowEventFilter` şəffaf yerli depozit və kilid hadisələrini depozit ID-si, satıcı, alıcı, status və hadisə dəsti maskası üzrə izləyə bilər. Hadisə ailəsinə `Opened`, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed` və `Resolved` daxildir.
 
 ## Əməliyyat qeydləri {#operational-notes}
 

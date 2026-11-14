@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -34,7 +34,7 @@ peer လေးခုပါသော Iroha 3 စက်တွင်းကွန်
 target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-ရလဒ်ဖိုင်တွဲတွင် ထုတ်လုပ်ထားသော `genesis.json`၊ `genesis.signed.nrt`၊ peer များ၏ `config.toml` ဖိုင်များ၊ `client.toml`၊ အကူ script များနှင့် ထိုအစုအတွက် တိကျသော command များပါသည့် ထုတ်လုပ်ထားသော `README.md` ပါဝင်သည်။
+ရလဒ်ဖိုင်တွဲတွင် ထုတ်လုပ်ထားသော `genesis.json`၊ `genesis.signed.nrt`၊ `genesis.expected_hash`၊ validator တစ်ခုစီအတွက် `peerN.toml` တစ်ခု၊ `client.toml`၊ `start.sh` နှင့် `stop.sh` script များနှင့် ထိုအစုအတွက် တိကျသော command များပါသည့် ထုတ်လုပ်ထားသော `README.md` ပါဝင်သည်။
 
 ## (၃) ကွန်ရက်တူညီသူများကို စတင်ပါ။ {#_3-start-peers}
 
@@ -44,7 +44,7 @@ target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ./localnet/start.sh
 ```
 
-peer တစ်ခုချင်းကို systemd ကဲ့သို့ လုပ်ငန်းစဉ်စီမံခန့်ခွဲကိရိယာနှင့် ချိတ်ဆက်ရန် လိုအပ်ပါက peer တစ်ခုစီအတွက် `./localnet/README.md` တွင် မှတ်တမ်းတင်ထားသော စတင် command ကို သုံးပါ။ peer တစ်ခုစီ၏ `config.toml`၊ ကိုယ်ပိုင်ကီး၊ သိုလှောင်ဖိုင်တွဲနှင့် port များကို သီးခြားထားပါ။
+peer တစ်ခုချင်းကို systemd ကဲ့သို့ လုပ်ငန်းစဉ်စီမံခန့်ခွဲကိရိယာနှင့် ချိတ်ဆက်ရန် လိုအပ်ပါက `./localnet/start.sh` ရှိ peer တစ်ခုချင်းအလိုက် command ကို လိုက်နာပါ- `<bundle>/state/peerN` မှ `iroha3d --config <bundle>/peerN.toml` ကို လုပ်ဆောင်ပြီး `--sumeragi-assert-fresh-key` ကို ထို peer ၏ ပထမဆုံး စတင်ချိန်တွင်သာ ပေးပါ။ peer တစ်ခုစီ၏ `peerN.toml`၊ ကိုယ်ပိုင်ကီး၊ သိုလှောင်ဖိုင်တွဲနှင့် port များကို သီးခြားထားပါ။
 
 ## (၄) ကွန်ရက်ကို စီမံခန့်ခွဲခြင်း {#_4-operate-the-network}
 

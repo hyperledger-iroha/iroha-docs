@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 98c351372551b08bda4911f52bfb3cc70c53b6125d8045c17abb205b27960f6d
+translation_source_hash: 96ca67b9bbf9d743de2f640e09487176f62a8a31052e4f1e15e15a771e985c48
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -24,7 +24,7 @@ translation_engine: bing-translator-llm+reviewed-delta
 |خطوة| Taira الشبكة التجريبية| Minamoto الشبكة الرئيسية |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
 |ابدأ في قراءة حالة الشبكة|استعلام `/status` بدون مفاتيح| تحقّق أولاً من عنوان الخدمة وشهادة TLS |
-|اختر فضاء البيانات|استخدم `universal` العام ما لم يكن تطبيقك بحاجة إلى مسار تنفيذ مُدار|استخدم نفس مساحة البيانات فقط بعد الموافقة على الشبكة الرئيسية|
+| اختر مساحة البيانات | استخدم `universal` العامة ما لم يكن تطبيقك بحاجة إلى مساحة بيانات خاصة به خاضعة للحوكمة | استخدم مساحة البيانات نفسها فقط بعد الموافقة على الشبكة الرئيسية |
 |الحصول على أصل الرسوم|استخدم خدمة تمويل شبكة الاختبار العامة Taira|استلام XOR من حساب Minamoto ممول أو تدفق خزينة معتمد|
 | عمليات كتابة اختبارية | استخدم XOR اختباريًا ممولًا من خدمة التمويل | لا تستخدم أدوات الاختبار؛ فعمليات الكتابة تنفق XOR حقيقيًا |
 |روّج|احتفظ بمنطق إعادة المحاولة والمراقبة ومعالجة الموقّع التشفيري|استخدم مفاتيح وتمويلات وعناصر تحكم إصدار منفصلة|
@@ -63,7 +63,7 @@ translation_engine: bing-translator-llm+reviewed-delta
 wonderland.universal
 ```
 
-إذا احتجت إلى مساحة بيانات مؤسسية جديدة، فأعد اقتراحًا للكتالوج والتوجيه بدلًا من محاولة تسجيلها من حساب عميل عادي. راجع [إنشاء مساحة بيانات جديدة](#_8-provision-a-new-data-space) أدناه.
+إذا احتجت إلى مساحة بيانات مؤسسية جديدة، فأعد اقتراحًا للكتالوج والتوجيه بدلًا من محاولة تسجيلها من حساب عميل عادي. راجع [إنشاء مساحة بيانات جديدة](#_8-provision-a-new-dataspace) أدناه.
 
 ## 2. فحص نقطة نهاية Torii العامة {#_2-check-the-public-torii-endpoint}
 
@@ -192,7 +192,7 @@ verification result.
 
 تستعلم هذه الأمثلة عن بيانات Taira للقراءة فقط من دون استخدام مفاتيح الحساب.
 
-اعرض مسارات التنفيذ لمساحات البيانات العامة التي يتيحها Taira:
+اعرض كل مسار تنفيذ في Taira مع مساحة بياناته ونطاق رؤيته:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -254,7 +254,7 @@ nonce = false
 قم بإجراء فحص للقراءة فقط:
 
 ```bash
-iroha --config ./taira.client.toml --output-format text ops sumeragi status
+iroha --config ./taira.client.toml ledger domain list --limit 5
 ```
 
 قم بتشغيل التشخيصات العامة Taira قبل كتابة الاختبارات:
@@ -432,7 +432,7 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 قم بتشغيل فحوصات جانب القراءة فقط حتى يتم تجهيز الحساب وتمويله من خلال الانضمام إلى الشبكة الرئيسية أو تدفق الحوكمة:
 
 ```bash
-iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
+iroha --config ./minamoto.client.toml ledger domain list --limit 5
 ```
 
 لا تشغّل أوامر خدمة التمويل التجريبي أو اختبارات التشغيل الأساسية الخاصة بـTaira على Minamoto.
@@ -445,7 +445,7 @@ iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
 
 Taira XOR لا يمكنه دفع رسوم Minamoto. أرصدة شبكة الاختبار ومطالبات خدمة تمويل شبكة الاختبار لا تنتقل إلى Minamoto.
 
-## 7. العمل داخل مساحة بيانات موجودة {#_7-work-inside-an-existing-data-space}
+## 7. العمل داخل مساحة بيانات موجودة {#_7-work-inside-an-existing-dataspace}
 
 استخدم أسماء نطاقات مؤهّلة بالكامل لكائنات دفتر السجل الموجودة داخل مساحة بيانات. مثلًا، ينبغي أن يستخدم نطاق مشروع في مساحة البيانات العامة ما يلي:
 
@@ -486,7 +486,7 @@ alice@universal
 
 تظل حقول الحساب الصارمة تستخدم معرّفات حساب I105 المعيارية. تعامل مع الأسماء المستعارة بوصفها روابط مقروءة للبشر تُحل إلى معرّفات الحساب المعيارية.
 
-## 8. إنشاء مساحة بيانات جديدة {#_8-provision-a-new-data-space}
+## 8. إنشاء مساحة بيانات جديدة {#_8-provision-a-new-dataspace}
 
 تتطلب مساحة بيانات جديدة تغييرًا من المشغّلين والحوكمة. يمكن لنقطة نهاية Torii العامة توجيه الحركة إلى مساحات البيانات المضبوطة، لكنها ترفض الأسماء المستعارة المجهولة لمساحات البيانات.
 
@@ -529,7 +529,7 @@ metadata = {}
 [[nexus.dataspace_catalog]]
 alias = "payments"
 id = 20
-description = "Payments dataspace"
+description = "Payments data space"
 fault_tolerance = 1
 
 [[nexus.routing_policy.rules]]
@@ -537,12 +537,12 @@ lane = 5
 dataspace = "payments"
 [nexus.routing_policy.rules.matcher]
 instruction = "transfer::asset"
-description = "Route asset transfers to the payments dataspace"
+description = "Route asset transfers to the payments data space"
 ```
 
 يجب أن تشمل قبول المشغل هذه البوابات:
 
-- `iroha3d --sora --config <config.toml> --trace-config` يمرر تكوين العقدة المحلولة
+- `iroha3d --sora --config <config.toml> --check-config` يمرر تكوين العقدة المحلولة
 - يتم أرشفة البيان الفني المولَّد أو المراجع مع تجزئات وتواقيع تشفيرية
 - اختبارات الدخان تجتاز على Taira قبل أي ترقية لـ Minamoto
 - أن يُظهر كتالوج `/status` بعد التغيير مسار التنفيذ ومساحة البيانات المقصودين

@@ -1,9 +1,9 @@
 ---
 translation_locale: pt
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 22d763aadf33d331fb9c16d3927e84e8bdb88829f3d73b974902daa8fde3c1b4
+translation_source_hash: 89d0874ca7ffe82099a1443d48713efccfbf3ec8042c2dde2ec8ae81717fb25b
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Musubi Kotodama Pacotes {#musubi-kotodama-packages}
 
@@ -31,7 +31,7 @@ Identificadores exatos de lançamento adicionam uma versão:
 namespace/package@version
 ```
 
-Não há `@` à frente de um namespace. Um namespace é ou uma raiz de espaço de dados, como `universal`, ou um espaço de dados qualificado por domínio, como `dex.universal`. O livro-razão da blockchain vincula esse namespace estrutural a um espaço de dados doméstico estável antes que um pacote possa ser reivindicado.
+Não há `@` à frente de um namespace. Um namespace é ou uma raiz de espaço de dados, como `universal`, ou um namespace qualificado por domínio, como `dex.universal`. O livro-razão vincula esse namespace estrutural a um espaço de dados de origem estável antes que um pacote possa ser reivindicado.
 
 ## manifesto técnico e Lockfile {#manifest-and-lockfile}
 
@@ -67,10 +67,10 @@ Taira é a testnet pública deste fluxo de trabalho. Comece com uma configuraç�
 ```toml
 torii_url = "https://taira.sora.org/"
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
-network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 
 [musubi.fetch]
-network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 client_id = "musubi-taira"
 request_timeout_ms = 30000
 

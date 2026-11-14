@@ -1,9 +1,9 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/data-model.md
-translation_source_hash: f90139dee2eff97769cd47188bcaf60b31672f0250505d8afad9c8ee60815ddd
+translation_source_hash: fa1bbcbb2bad4e262a17eb04e67a94c3795d726ac52c0ab17370da9ec119e557
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-source-naming-amendment
+translation_engine: bing-translator-llm+reviewed-source-naming-amendment+reviewed-delta
 ---
 # Modelo de Dados {#data-model}
 
@@ -121,9 +121,9 @@ Aliases são nomes voltados para humanos sobrepostos aos identificadores canôni
 |Definição de ativo|endereçamento Base58 canônico `AssetDefinitionId`| `name#domain.dataspace` ou `name#dataspace`            |`AssetDefinitionAlias` vinculado a uma definição de ativo|
 |Contrato|Bech32m canônico `ContractAddress`| `name::domain.dataspace` ou `name::dataspace`          | `ContractAlias` vinculado a um endereço de contrato implantado|
 |Nome de domínio| `DomainId` em `domain.dataspace` forma               | `domain.dataspace`                                    | SNS `domain` registro de namespace                                                 |
-|Nome do espaço de dados|numérico `DataSpaceId` do catálogo ativo SORA Nexus|alias de espaço de dados como `universal`, `paynet` ou `zk`| SNS `dataspace` registro de namespace mais o catálogo de espaço de dados ativo|
+|Nome do espaço de dados|numérico `DataSpaceId` do catálogo ativo SORA Nexus|alias de espaço de dados como `universal` ou `paynet`| SNS `dataspace` registro de namespace mais o catálogo de espaço de dados ativo|
 
-Aliases de conta são os nomes de conta visíveis ao usuário. Eles permanecem mesmo após a mudança de chave da conta porque o alias aponta para o ID da conta ativa através de índices do estado global e registros de mudança de chave da conta. Use `SetPrimaryAccountAlias` para o rótulo principal da conta, `SetAccountAliasBinding` para aliases adicionais não principais, e `FindAccountByAlias` ou `FindAliasesByAccountId` para leituras. Aliases de conta normalmente requerem um aluguel de alias de conta ativo SNS adquirido com `AcquireAccountAliasLease` e renovado com `RenewAccountAliasLease`.
+Aliases de conta são os nomes de conta visíveis ao usuário. Eles permanecem mesmo após a mudança de chave da conta porque o alias aponta para o ID da conta ativa através de índices do estado global e registros de mudança de chave da conta. Use `EnsureAlias`, normalmente por meio do fluxo de planejamento e aplicação de `app alias setup`, para adquirir um aluguel de alias de conta e vincular o alias; `CompareAndSetPrimaryAccountAlias` para alterar o rótulo principal; `RebindAccountAlias` para mover um alias para outra conta; e `FindAccountByAlias` ou `FindAliasesByAccountId` para leituras. Renove os aluguéis com `RenewAliasLease` ou configure a renovação automática com `ConfigureAliasAutoRenew`.
 
 Aliases de ativos nomeiam definições de ativos, não saldos individuais de contas. Aliases de ativos e aliases de contrato são ligações diretas de um nome legível para um destino canônico existente. Os aliases de ativos são definidos com `SetAssetDefinitionAlias`; o segmento do nome do alias deve corresponder ao nome de exibição da definição do ativo ou ao nome da definição projetada. Os aliases de contrato são definidos com `SetContractAlias`; o alias dataspace deve corresponder ao dataspace codificado no endereço do contrato. Ambas as vinculações podem carregar `lease_expiry_ms`; após a expiração, elas deixam de resolver quando a janela de carência termina e são removidas dos índices do estado mundial.
 

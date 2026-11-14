@@ -1,9 +1,9 @@
 ---
 translation_locale: az
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 8a8fd0d29d4c1c323b457595653077564ad100f397ea2f4b059b35451b76aa44
+translation_source_hash: ae0604c0e82db0a908e7ffc44c97f56b58fe2b5bb87553ded48562e8f9fcd36a
 translation_status: machine-validated
-translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Mübadilə Olunan Aktivlər {#fungible-assets}
 
@@ -15,7 +15,7 @@ Canlı Taira şəbəkəsindəki aktiv təriflərini yoxlayın və yaradılmış 
 
 - `curl`, `jq`, Python 3.11 və ya daha yeni versiya, Node.js 24 və cari CLIs: `iroha` və `kagami`.
 - Yalnız oxumaq Taira icazəsi.
-- Yazma addımları üçün: [Iroha-nı işə salın](/az/get-started/launch-iroha.md) səhifəsində olduğu kimi `kagami localnet generate --peers 4 --out-dir ./localnet` ilə yaradılmış və `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa` əlavə edilmiş lokal şəbəkə. O, `./localnet/client.toml` faylını və `http://127.0.0.1:8080` ünvanında Torii-ni təmin edir.
+- Yazma addımları üçün: `kagami localnet generate --peers 4 --out-dir ./localnet` ilə yaradılmış və `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa` əlavə edilmiş lokal şəbəkə. O, `./localnet/client.toml` faylını və `http://127.0.0.1:8080` ünvanında Torii-ni təmin edir.
 
 ## Addımlar {#steps}
 

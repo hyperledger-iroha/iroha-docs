@@ -1,9 +1,9 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/ram-lfe.md
-translation_source_hash: a07f2d06180425e4d1c1393810cf679fb88b3e993d49792b2483485cb1cc52fd
+translation_source_hash: c08b67e5a58fea2012fdba7bbfcb88dd9bc329b7a549e7d40011a5f4fb0ef68c
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # RAM-LFE {#ram-lfe}
 
@@ -763,6 +763,5 @@ Enregistrer une politique sur la chaîne n'est pas suffisant en soi. Un nœud ci
 
 ## Sujets liés {#related-topics}
 
-- [Frais de parrainage pour un espace de données privé](/fr/get-started/private-dataspace-fee-sponsor.md)
 - [Torii API points de terminaison](/fr/reference/torii-endpoints.md#app-and-sora-route-families)
 - [Transactions anonymes](/fr/blockchain/anonymous-transactions.md)

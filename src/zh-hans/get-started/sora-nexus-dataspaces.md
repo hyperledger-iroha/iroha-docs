@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 98c351372551b08bda4911f52bfb3cc70c53b6125d8045c17abb205b27960f6d
+translation_source_hash: 96ca67b9bbf9d743de2f640e09487176f62a8a31052e4f1e15e15a771e985c48
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -24,7 +24,7 @@ SORA Nexus 基于 Iroha 3 运行。请先在 Taira 上开发和测试应用。�
 |步骤|Taira 测试网|Minamoto 主要网|
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
 |开始阅读网络状态|查询 `/status` 没有钥匙| 先确认端点并验证 TLS 证书 |
-|选择一个数据空间|使用公开 `universal` 除非您的应用程序需要一个受监管的路径|仅在主网批准后使用相同的数据空间|
+|选择一个数据空间|使用公开的 `universal`，除非您的应用需要自己的受治理数据空间|仅在主网批准后使用相同的数据空间|
 |获得费用资产.|使用公众的 Taira 水龙头|从资助的 Minamoto 账户或经批准的财政流通中获得 XOR|
 |测试写入|使用水龙头资助的测试 XOR |不要使用测试工具; 写入会消耗真实 XOR |
 |促进|继续尝试逻辑,监测和签名处理|使用单独的钥匙,资金和释放控制|
@@ -63,7 +63,7 @@ SORA Nexus 基于 Iroha 3 运行。请先在 Taira 上开发和测试应用。�
 wonderland.universal
 ```
 
-若需要新的组织数据空间，应准备目录和路由提案，而非尝试通过普通客户端账户注册。请参阅下文[配置新的数据空间](#_8-provision-a-new-data-space)。
+若需要新的组织数据空间，应准备目录和路由提案，而非尝试通过普通客户端账户注册。请参阅下文[配置新的数据空间](#_8-provision-a-new-dataspace)。
 
 ## 2. 检查公众 Torii 端点 {#_2-check-the-public-torii-endpoint}
 
@@ -192,7 +192,7 @@ verification result.
 
 以下示例仅读取 Taira 的数据，无需账户密钥。
 
-列出 Taira 提供的公开数据空间执行通道：
+列出 Taira 的每个执行通道及其数据空间和可见性：
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -254,7 +254,7 @@ nonce = false
 执行仅阅读的检查:
 
 ```bash
-iroha --config ./taira.client.toml --output-format text ops sumeragi status
+iroha --config ./taira.client.toml ledger domain list --limit 5
 ```
 
 在写入测试之前,执行公开的 Taira 诊断:
@@ -432,7 +432,7 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 在账户通过主网上登录或管理流程提供储备和资金之前,仅进行阅读侧检查:
 
 ```bash
-iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
+iroha --config ./minamoto.client.toml ledger domain list --limit 5
 ```
 
 不要针对 Minamoto 运行 Taira 水龙头或冒烟测试命令。
@@ -445,7 +445,7 @@ Minamoto 费用由生产 XOR 支付,而 Minamoto 没有公共水龙头.通过批
 
 Taira XOR 不能支付 Minamoto 费用.测试网余额和水龙头索赔不会转移到 Minamoto.
 
-## 7. 在现有数据空间中工作 {#_7-work-inside-an-existing-data-space}
+## 7. 在现有数据空间中工作 {#_7-work-inside-an-existing-dataspace}
 
 对数据空间内的账本对象使用完全限定域名。例如，公开数据空间中的项目域应采用：
 
@@ -486,7 +486,7 @@ alice@universal
 
 严格账户字段仍然使用规范 I105 帐户 IDs.将别名视为可以读取的人类的绑定,并解决规范账户 IDs.
 
-## 8. 配置新的数据空间 {#_8-provision-a-new-data-space}
+## 8. 配置新的数据空间 {#_8-provision-a-new-dataspace}
 
 新增数据空间需要运维和治理变更。公开 Torii 端点可将流量路由至已配置的数据空间，但会拒绝未知的数据空间别名。
 
@@ -529,7 +529,7 @@ metadata = {}
 [[nexus.dataspace_catalog]]
 alias = "payments"
 id = 20
-description = "Payments dataspace"
+description = "Payments data space"
 fault_tolerance = 1
 
 [[nexus.routing_policy.rules]]
@@ -537,12 +537,12 @@ lane = 5
 dataspace = "payments"
 [nexus.routing_policy.rules.matcher]
 instruction = "transfer::asset"
-description = "Route asset transfers to the payments dataspace"
+description = "Route asset transfers to the payments data space"
 ```
 
 运营商的接受应包括以下门户:
 
-- `iroha3d --sora --config <config.toml> --trace-config` 传输已解决的节点配置
+- `iroha3d --sora --config <config.toml> --check-config` 传输已解决的节点配置
 - 生成或检查的清单是用哈希和签名存档的
 - 在任何 Minamoto 促销之前,冒烟测试通过 Taira
 - 变更后的 `/status` 目录显示预期的执行通道和数据空间

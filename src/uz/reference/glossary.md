@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /reference/glossary.md
-translation_source_hash: 8b00758b5731a2f9e09a5b49ccb7f298229ab966b5adf2d7152e3b1416fe8737
+translation_source_hash: 4d3a8e3aa88291edbaac5b52039d2aad160d89fb83c085c21030a531c93258f4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -79,7 +79,7 @@ Aktivning boshlang‘ich miqdori bir marta belgilanib, keyin o‘zgarmasa, u qo�
 
 ## Bizansdagi xatolarga chidamlilik (BFT) {#byzantine-fault-tolerance-bft}
 
-Tarmoq ishtirokchilarining muayyan qismi zararli bo‘lsa ham tizimning to‘g‘ri ishlay olish xususiyati. Iroha tugunlararo tarmog‘ida zararli tugunlar ulushi 33% gacha bo‘lganda ishlay oladi.
+Tarmoq ishtirokchilarining muayyan qismi zararli bo‘lsa ham tizimning to‘g‘ri ishlay olish xususiyati. Sumeragi qo‘mitasi aynan `3f + 1` ta validatordan iborat bo‘lib, `f` tagacha Vizantiya xatoli validatorga, ya’ni qo‘mitaning uchdan biridan kamiga bardosh beradi.
 
 ## Iroha komponentlari {#iroha-components}
 
@@ -107,7 +107,7 @@ Har bir blok balandligidagi holatni tasdiqlash va tekshirish uchun ishlatiladiga
 
 ### Aqlli shartnomalar {#smart-contracts}
 
-Aqlli shartnomalar — muayyan shartlar bajarilganda ishga tushadigan blokcheyn dasturlari. Iroha-da aqlli shartnomalar [asosiy Iroha maxsus ko‘rsatmalari](#core-iroha-special-instructions) yordamida amalga oshiriladi.
+Aqlli shartnomalar — muayyan shartlar bajarilganda ishga tushadigan blokcheyn dasturlari. Iroha 3 da aqlli shartnomalar Kotodama tilida yoziladi va IVM baytkodiga (`.to`) kompilyatsiya qilinadi; shartnoma holatni mezbon chaqiruvlari orqali [Iroha maxsus ko‘rsatmalari](#core-iroha-special-instructions)ni berib o‘zgartiradi.
 
 ### Qo‘zg‘atuvchilar {#triggers}
 
@@ -119,7 +119,7 @@ Iroha 3 ning birinchi chiqarilishi blokni uzatish formatining bitta kanonik vers
 
 ### Hijiri (tugunlar obro‘si tizimi) {#hijiri-peer-reputation-system}
 
-Iroha obro‘ tizimi yaxshi tarixga ega [tugunlar](#peer) bilan aloqani ustuvorlashtirish va zararli [tugunlar](#peer) yetkazishi mumkin bo‘lgan ziyonni kamaytirish imkonini beradi.
+Iroha’ning tugunlar va hisoblar uchun obro‘ tizimi. Uning konsensusga tegishli parametrlari Hijiri komissiya siyosati va hisob xavfi yozuvlarini saqlaydi, boshqariladigan kuzatuvchi reyestrlari esa hisobning xavf ballini o‘zgartiradigan hisob attestatsiyalarini beradi.
 
 ## Iroha modullari {#iroha-modules}
 
@@ -131,7 +131,7 @@ Iroha bilan birga taqdim etiladigan aqlli shartnomalar kutubxonasi. Ularni tranz
 
 #### Yordamchi Iroha maxsus ko‘rsatmalari {#utility-iroha-special-instructions}
 
-Bu [isi](#iroha-special-instructions-isi) to‘plamiga `If` kabi mantiqiy ko‘rsatmalar, `Notify` kabi kiritish-chiqarish amallari va `Sequence` kabi kompozitsiyalar kiradi. Ular asosan [maxsus ko‘rsatmalar](#custom-iroha-special-instruction) sifatida ishlatiladi.
+Bu [isi](#iroha-special-instructions-isi) to‘plamiga `Log`, `ExecuteTrigger`, `SetParameter` va `Upgrade` kabi domenga xos obyektni o‘zgartirmaydigan ko‘rsatmalar kiradi. Iroha 3 da `If`, `Notify` yoki `Sequence` ko‘rsatmalari yo‘q.
 
 ### Asosiy Iroha maxsus ko‘rsatmalari {#core-iroha-special-instructions}
 

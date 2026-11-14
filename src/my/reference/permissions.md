@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /reference/permissions.md
-translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -16,7 +16,6 @@ translation_engine: nllb-200-ct2+reviewed-delta
 |ခွင့်ပြုချက် လက်မှတ်|ကဏ္ဍ |လုပ်ဆောင်ချက်|
 | --- | --- | --- |
 | `CanManagePeers` | နိုဒ် | နိုဒ်များကို မှတ်ပုံတင်ခြင်း၊ မှတ်ပုံတင်ပယ်ဖျက်ခြင်း သို့မဟုတ် အခြားနည်းဖြင့် စီမံခန့်ခွဲခြင်း။ |
-| `CanManageLaneRelayEmergency` | နိုဒ် | လမ်းကြောင်းထပ်ဆင့်ပို့ဆောင်မှုဆိုင်ရာ အရေးပေါ်ထိန်းချုပ်မှုများကို စီမံခြင်း။ |
 |`CanRegisterDomain` |Domain ကို|Domain တစ်ခု မှတ်ပုံတင်ပါ။|
 |`CanUnregisterDomain` |Domain ကို|Domain တစ်ခုကို မှတ်ပုံတင်မထားပါ။ |
 |`CanModifyDomainMetadata` |Domain ကို|Domain metadata ကို ပြင်ဆင်ပါ။ |
@@ -28,7 +27,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 |`CanMintAssetWithDefinition` |အရင်းအမြစ်များ|တိကျတဲ့ အဓိပ္ပါယ်ဖွင့်ဆိုချက်အတွက် အရင်းအမြစ်ထုတ်ပြန်ခြင်း |
 |`CanBurnAssetWithDefinition` |အရင်းအမြစ်များ|တိကျတဲ့ အဓိပ္ပါယ်ဖွင့်ဆိုချက်အတွက် အရင်းအမြစ်တွေကို ဖျက်ဆီးတယ်။ |
 |`CanTransferAssetWithDefinition` |အရင်းအမြစ်များ|တိကျတဲ့ အဓိပ္ပါယ်ဖွင့်ဆိုချက်အတွက် အရင်းအမြစ်လွှဲပြောင်းခြင်း။ |
-|`CanMintAsset` |အရင်းအမြစ်များ|တိကျတဲ့ အရင်းအမြစ် balance ကို ထုတ်ပေးပါ။ |
+|`CanMintAssetToAccount` |အရင်းအမြစ်များ|တိကျတဲ့ အရင်းအမြစ် balance ကို ထုတ်ပေးပါ။ |
 |`CanBurnAsset` |အရင်းအမြစ်များ|တိကျတဲ့ အရင်းအမြစ် ဟန်ချက်ညီမှုကို ဖျက်ဆီးပါ။ |
 |`CanTransferAsset` |အရင်းအမြစ်များ|တိကျတဲ့ အရင်းအမြစ်စာရင်းကို လွှဲပြောင်းပါ။ |
 |`CanRegisterNft` |NFT |NFT ကို မှတ်ပုံတင်ပါ။|
@@ -43,7 +42,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 | `CanModifyTrigger` | trigger | trigger ပြင်ဆင်သတ်မှတ်မှုကို ပြောင်းလဲခြင်း။ |
 |`CanModifyTriggerMetadata` |Trigger ကို|trigger metadata ကို ပြင်ပါ။ |
 |`CanUpgradeExecutor` |အမိန့်ချမှတ်သူ |ဆော့ဝဲ အကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင် အပြီးသတ်သူကို အဆင့်မြှင့်တင်ပါ။ |
-| `CanRegisterSmartContractCode` | စမတ်စာချုပ် | စမတ်စာချုပ်ကုဒ်ကို မှတ်ပုံတင်ခြင်း။ |
+| `CanManageSmartContractCode` | စမတ်စာချုပ် | ရည်ညွှန်းမှုမရှိသော ကုဒ် artifact များကို ဖယ်ရှားပြီး contract entrypoint များကို လွှဲအပ်ခြင်း။ မှတ်ပုံတင်ထားသော အကောင့်များသည် ၎င်းမပါဘဲ စစ်ဆေးအတည်ပြုထားသော artifact များကို ဖန်တီးနိုင်သည်။ |
 | `CanManageFeeSponsorProgram` | SORA Nexus | အတိအကျ သတ်မှတ်ထားသော sponsor အကောင့် ပိုင်ဆိုင်သည့် အစီအစဉ်များကို စီမံခန့်ခွဲသည်။ |
 | `CanEnrollFeeSponsorProgram` | SORA Nexus | အတိအကျ သတ်မှတ်ထားသော sponsor အစီအစဉ်တစ်ခု၏ အကျိုးခံစားသူများကို စီမံခန့်ခွဲသည်။ |
 

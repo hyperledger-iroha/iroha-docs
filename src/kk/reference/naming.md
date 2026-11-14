@@ -1,9 +1,9 @@
 ---
 translation_locale: kk
 translation_source: /reference/naming.md
-translation_source_hash: 1d4d698597542d9c84284d0b87dae8a1825d3ab39ff38dd32bb204d41291c83d
+translation_source_hash: 15d095e674edf780c5859abe6f4615d53338e3304e8eedfa494017911204d4b6
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Атау қою дәстүрлері {#naming-conventions}
 
@@ -15,10 +15,9 @@ translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
    - `#` актив анықтамасының айырымдары мен актив балансы литералдары үшін сақталған
    - `::` келісімшарт ауыспалы атауларына арналған
    - `.` домен және деректер кеңістігін құжаттау үшін сақталған
-   - `$` триггерге арналған мәтіндік формаларға арналған
-   - `%` валидаторға арналған мәтіндік формалар үшін бос орын қалдырылған
+   - `$` `name$domain.dataspace` сияқты NFT идентификаторларына арналған
 
-2. Есімнің мазмұны (оның ішінде UTF-8 символдары) бойынша ең көп рұқсат етілген таңбалар саны екі фактормен шектеледі: `[0, u32::MAX]` және қазіргі таңда бөлінген стек кеңістігі.
+2. Атау бос болмауы, Unicode NFC пішінінде болуы, ұзындығы ең көбі 255 UTF-8 байт болуы және бос орын, басқару және екі бағытты басқару таңбаларынсыз болуы керек.
 
 ## Осы жұмыс ағынын Taira бойынша іске қосыңыз {#try-it-on-taira}
 

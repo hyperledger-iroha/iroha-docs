@@ -1,9 +1,9 @@
 ---
 translation_locale: kk
 translation_source: /blockchain/events.md
-translation_source_hash: aad93f1981a5b470966090b5e06ec07178738b15f1d870097947682b19f99595
+translation_source_hash: 2777cbe4e72a50c4790e50b59c3e695feb5814314cc9afccdfd994f6409c195e
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Оқиғалар {#events}
 
@@ -16,7 +16,7 @@ Typed оқиғалар туралы хабарламалар блокчейн і
 
 ## бағдарламалық қамтамасыз етуді өңдеу жұмыс ағыны оқиғалары {#pipeline-events}
 
-Бағдарламалық қамтамасыз ету өңдеу жұмысы оқиғалары транзакциялар жіберілгенде, орындалғанда немесе блокта аяқталған кезде шығарылады. Бағдарламалық қамтамасыз ету өңдеу жұмысы оқиғасы келесі ақпаратты қамтиды: оқиғаны тудырған субъектінің түрі (транзакция немесе блок), оның криптографиялық хэші және статусы. Статус келесі болуы мүмкін: `Validating` (тексеру жүргізілуде), `Rejected`, немесе `Committed`. Егер бірлік қабылданбаған болса, қабылданбау себебі көрсетіледі.
+Транзакциялар мен блоктар өңдеу тізбегі арқылы өткен сайын тізбек оқиғалары шығарылады. Транзакция оқиғасы транзакция хэшін, блок биіктігін, арна мен деректер кеңістігінің идентификаторларын және күйді алып жүреді: `Queued`, `Expired`, `Approved` немесе қабылдамау себебімен бірге `Rejected`. Блок оқиғасы блок тақырыбын және күйді алып жүреді: `Created`, `Approved`, себебімен бірге `Rejected`, `Committed` немесе `Applied`.
 
 ### Осы жұмыс ағынын Taira бойынша іске қосыңыз {#try-it-on-taira}
 
@@ -30,8 +30,8 @@ curl -fsSI https://taira.sora.org/v1/events/sse \
 Уақытша деректер көрінісі үшін, ағынды ашық ұстамай қарау үшін соңғы шолушы транзакцияларын оқыңыз:
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
-  | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
+curl -fsS 'https://taira.sora.org/v1/explorer/transactions?limit=5' \
+  | jq '{next_cursor, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
 Тірі оқиғалар қажет болғанда SSE маршрутын терминалда ашыңыз:

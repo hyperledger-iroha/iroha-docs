@@ -8,7 +8,7 @@ Inspect Taira NFT state, then register, update, transfer, and query a unique NFT
 
 - `curl`, `jq`, Python 3.11 or later, and the current `iroha` CLI.
 - Read-only Taira access.
-- For writes, a local network from `kagami localnet generate --peers 4 --out-dir ./localnet` as in [Launch Iroha](/get-started/launch-iroha.md), with `./localnet/client.toml` and Torii on `http://127.0.0.1:8080`, plus an NFT domain that its signer owns (see step 2).
+- For writes, a local network from `kagami localnet generate --peers 4 --out-dir ./localnet`, with `./localnet/client.toml` and Torii on `http://127.0.0.1:8080`, plus an NFT domain that its signer owns (see step 2).
 
 ## Steps
 

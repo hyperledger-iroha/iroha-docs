@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/accounts.md
-translation_source_hash: adc98cbf1fcadae4415d03dcc262eb03f8c95b429527e403d230934ae2f3243c
+translation_source_hash: d956bfb8c698fa463ef9fa84a91d50cf0e2100885eba670121ad78753f87d88d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -44,7 +44,7 @@ private_key_file = "/absolute/path/to/private.key"
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+  | jq -r '.items[] | [.id, (.label // "-")] | @tsv'
 ```
 
 为了检查账户资产,从第一次调用中复制一个帐户 ID,然后在将其放入路径之前编码 URL.该 Python 片段为上市的第一个账户执行:
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-这些都是公开读取操作。创建或更新账户需要提交签名交易，并完成[连接 SORA Nexus 数据空间](/zh-hans/get-started/sora-nexus-dataspaces.md)中介绍的 Taira 配置及水龙头资金领取流程。
+这些都是公开读取操作。创建或更新账户需要提交签名交易，并完成[使用 Taira 和 Minamoto 在 SORA Nexus 上开发](/zh-hans/get-started/sora-nexus-dataspaces.md)中介绍的 Taira 配置及水龙头资金领取流程。
 
 ## 登记和许可证 {#registration-and-permissions}
 

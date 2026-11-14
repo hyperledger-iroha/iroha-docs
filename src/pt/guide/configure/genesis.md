@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /guide/configure/genesis.md
-translation_source_hash: 91be089c82a76991e35a43e1541f9e069fdf70d3fb5de2492b985c06c78a2372
+translation_source_hash: 2a4a43b6ac873cc0c860631e307e52b047ba6a08691bf3e4c5872cc22c81a0bd
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -9,7 +9,7 @@ translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-so
 
 a gênese da blockchain define o estado inicial da cadeia. A fonte editável é um manifesto técnico JSON, e um nó Iroha 3 consome um arquivo de transação assinado Norito.
 
-::: details Manifesto técnico de gênese de blockchain padrão
+::: details Modelo de origem da gênese padrão (defaults/genesis.template.json)
 
 <<< @/snippets/genesis.json
 
@@ -36,7 +36,7 @@ public_key = "ed0120..."
 expected_hash_file = "./genesis.expected_hash"
 ```
 
-Todos os pares da rede devem concordar com a transação de gênese assinada e com a chave pública da gênese. O arquivo de hash esperado é obrigatório tanto na primeira inicialização quanto nas reinicializações; `kagami genesis sign --expected-hash-out` grava esse arquivo.
+Todos os pares da rede devem concordar com a transação de gênese assinada e com a chave pública da gênese. Toda inicialização, seja a primeira ou uma reinicialização, precisa do hash esperado: configure exatamente um entre `expected_hash_file` e o `expected_hash` em linha. `kagami genesis sign --expected-hash-out` grava o arquivo.
 
 ## Assinar a gênese {#signing-genesis}
 
@@ -52,7 +52,7 @@ cargo run --bin kagami -- genesis sign ./genesis.json \
 
 `GENESIS_PRIVATE_KEY_FILE` deve ser um arquivo comum de link único, pertencente ao usuário e no modo `0600`, que contenha um único multihash canônico de chave privada e termine com uma nova linha. Kagami rejeita links simbólicos e nunca aceita uma chave privada bruta de gênese na linha de comando.
 
-Para perfis NPoS ou SORA Nexus, inclua a topologia e as Provas-de-Posse BLS exigidas pelo perfil gerado. Os comandos Kagami `localnet generate`, `wizard` e `sora-network generate` tratam desses detalhes automaticamente.
+Toda gênese assinada, permissionada ou NPoS, deve incluir uma topologia exata de `3f + 1` validadores com uma Prova-de-Posse BLS para cada validador. Os comandos Kagami `localnet generate`, `wizard` e `sora-network generate` tratam desses detalhes automaticamente.
 
 ## Confirmar novamente a gênese {#recommitting-genesis}
 

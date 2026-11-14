@@ -1,9 +1,9 @@
 ---
 translation_locale: ar
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 0c4f2f3fc4efb9f883f597a3eea49c99431b711a0141eba70ac5a2524990dd73
+translation_source_hash: 50fac5ad01faf8d09441cba90f29472da04630dbeb3c80111a19f3fb50bb1224
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # عينات ووصفات {#samples-and-recipes}
 
@@ -19,4 +19,4 @@ translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 
 ## Android {#android}
 
-بالنسبة للعمل الجديد Android، استخدم الوحدات Kotlin-الأولى `core-jvm`، `client-android`، و`offline-wallet-android` الموضحة في [Kotlin، Android، وجافا](/ar/guide/tutorials/kotlin-java.md). يعد Kotlin SDK نقطة البداية الأساسية لمستهلكي Android.
+بالنسبة للعمل الجديد Android، استخدم الوحدات Kotlin-الأولى `core-jvm`، `client-android`، و`kagemusha-wallet-android` الموضحة في [Kotlin، Android، وجافا](/ar/guide/tutorials/kotlin-java.md). يعد Kotlin SDK نقطة البداية الأساسية لمستهلكي Android.

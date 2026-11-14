@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /blockchain/transactions.md
-translation_source_hash: 91c06ab61c7f8ec96554bc89b31b2f281bb3a7d7edd484defe61dcde5a3fb710
+translation_source_hash: d9227effcdb4d54ac76f6288ba213de20f2574e1585e13b96a5202c44b69f3be
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -71,7 +71,7 @@ Iroha tiene dos flujos de trabajo de transacciones fuera de línea:
 - La firma fuera de línea crea una transacción firmada normal mientras el dispositivo de firma está desconectado. La transacción no se procesa hasta que un cliente en línea envía el contenedor de datos firmado a Torii, por lo que todavía necesita el ID de cadena correcto, el principal de autorización, los permisos y las tarifas, y la duración de la transacción.
 - **El efectivo sin conexión de Kagemusha** carga valor en una billetera inscrita y respaldada por hardware mientras está conectada, permite pagos entre billeteras cuando ambas están desconectadas y devuelve el valor restante a una cuenta del libro mayor cuando la billetera vuelve a conectarse.
 
-Torii expone una ruta de Kagemusha, `POST /v1/kagemusha/enrollment`. Acepta tramas de inscripción `application/x-norito` autenticadas por la cuenta y devuelve respuestas privadas que no deben almacenarse en caché. La parte del ciclo de vida que corresponde al libro mayor utiliza transacciones firmadas ordinarias que contienen una instrucción `KagemushaWalletLedgerV1`:
+Torii expone una ruta de mutación de Kagemusha, `POST /v1/kagemusha/enrollment`. Acepta tramas de inscripción `application/x-norito` autenticadas por la cuenta y devuelve respuestas privadas que no deben almacenarse en caché. Las rutas de lectura del SDK firmadas por la cuenta bajo `/v1/kagemusha/{scheme}/wallets/{wallet}/` devuelven comprobantes de operaciones Load y evidencias de finalidad; no figuran en `/openapi.json`. La parte del ciclo de vida que corresponde al libro mayor utiliza transacciones firmadas ordinarias que contienen una instrucción `KagemushaWalletLedgerV1`:
 
 |Acción|Propósito|
 | --- | --- |
@@ -88,13 +88,21 @@ El flujo típico es:
 3. Intercambie y verifique los pagos localmente entre las billeteras mientras estén desconectadas, y guarde de forma persistente el estado de la billetera antes de confirmar cada transferencia.
 4. Cuando la billetera vuelva a conectarse, envíe su solicitud de Unload y espere a que alcance finalidad.
 
+Kagemusha no está calificado para su lanzamiento: siguen pendientes la calificación monetaria en vivo y el registro, la activación y el pago de teléfonos en dispositivos físicos.
+
 El libro mayor de la blockchain no puede observar una transferencia fuera de línea conflictiva hasta que el estado de la nota regrese a través del ciclo de vida en línea. Por lo tanto, la política de billetera y operadora debe hacer cumplir límites de valor, vencimiento, emisores aceptados, almacenamiento local duradero y ventanas de reconciliación.
 
 Aquí hay un ejemplo de cómo crear una nueva transacción con la instrucción `Grant`. En esta transacción, Mouse está otorgando a Alice el rol especificado (`role_id`). Consulte [el ejemplo completo](./permissions.md#register-a-new-role).
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```

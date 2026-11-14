@@ -1,9 +1,9 @@
 ---
 translation_locale: he
 translation_source: /blockchain/permissions.md
-translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
+translation_source_hash: 7993d14839218fd3394d52dbcce264bffea32394f54e25dd261cd060c54f1fe1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # רשיונות {#permissions}
 
@@ -72,14 +72,20 @@ let register_role = Register::role(role);
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```
 
 ## מדדני אישור {#permission-validators}
 
-הרשיונות קיימות כך שרק חשבונות עם סימן הרשיון הנדרש יכולים לבצע פעולה מוגנת. המפעיל המקובל בודק רשיונות במהלך ההוראה, שאילתת, וביצוע הביטוי.
+הרשאות קיימות כדי שרק חשבונות שמחזיקים באסימון ההרשאה הנדרש יוכלו לבצע פעולה מוגנת. המבצע המוגדר כברירת מחדל בודק הרשאות במהלך ביצוע עסקאות והוראות ובמהלך אימות שאילתות.
 
 ממשק המאמת המוגדר כברירת מחדל מקובץ לפי תחומים בספר החשבונות:
 
@@ -96,7 +102,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 
 בדיקות רשיונות מבוקשות על ידי המבצע הפעיל. המבצע המקובל מספק את אישורני הרשיונות המובנים והגדרות של הסימן, ורשת יכולה לשנות מדיניות על-ידי עדכון למבצע שהיא משתמשת בו.
 
-מאמתים מספקים פסקי הרשאה. מאמת יכול להתיר פעולה, לדחות אותה בצירוף סיבה או להימנע אם הפעולה מחוץ לתחומו. המכריע שנבחר משלב פסקי דין אלה כדי לקבוע אם ההוראה, השאילתה או הביטוי יכולים להמשיך.
+המבצע מתיר פעולה או דוחה אותה עם סיבת `ValidationFail`. הוראה שנדחתה גורמת לדחיית העסקה שלה, ושאילתה שנדחתה מחזירה את השגיאה למתקשר.
 
 ## שאילתות תומכות {#supported-queries}
 

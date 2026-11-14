@@ -19,6 +19,8 @@ An `AssetDefinition` contains:
 - `metadata`: arbitrary key-value metadata
 - `balance_scope_policy`: whether balances are global or
   data space-restricted
+- `owning_domain`: the owning domain of a domain-owned definition; absent for
+  definitions registered directly in a data space
 - `owned_by`: the account that registered or owns the definition
 - `total_quantity`: total issued quantity
 - `confidential_policy`: policy for shielded asset operations
@@ -34,7 +36,7 @@ An `Asset` contains:
 
 - `id`: an `AssetId`, which combines the asset definition, holder account,
   and optional balance scope
-- `value`: a `Numeric` balance
+- `value`: a `Quantity` balance
 
 The holder account is canonical and domainless. The asset definition may be
 projected under a data space-qualified domain, for example
@@ -96,7 +98,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
 
 All three examples are reads. To mint, burn, or transfer assets on Taira, use a
 faucet-funded account and the guarded flow in
-[Connect to SORA Nexus Data spaces](/get-started/sora-nexus-dataspaces.md).
+[Build on SORA Nexus with Taira and Minamoto](/get-started/sora-nexus-dataspaces.md).
 
 For a fee-paying Taira asset example, first fund the signer with the
 prepared faucet flow in

@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/transactions.md
-translation_source_hash: 91c06ab61c7f8ec96554bc89b31b2f281bb3a7d7edd484defe61dcde5a3fb710
+translation_source_hash: d9227effcdb4d54ac76f6288ba213de20f2574e1585e13b96a5202c44b69f3be
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -71,7 +71,7 @@ Iroha 有两种离线交易工作流程:
 - **离线签名**会在签名设备断开连接时创建普通的已签名交易。在在线客户端将已签名封包提交给 Torii 之前，交易不会被处理，因此它仍需正确的链 ID、权限主体、权限、费用和交易生命周期。
 - **Kagemusha 离线现金**在已注册、由硬件提供保障的钱包在线时向其装载价值，支持两个钱包均离线时进行钱包间支付，并在钱包重新联网后将剩余价值卸载到账本账户。
 
-Torii 提供一条 Kagemusha 路由：`POST /v1/kagemusha/enrollment`。它接受经过账户认证的 `application/x-norito` 注册帧，并返回不得缓存的私有响应。生命周期的账本侧使用携带 `KagemushaWalletLedgerV1` 指令的普通签名交易：
+Torii 提供一条 Kagemusha 变更路由：`POST /v1/kagemusha/enrollment`。它接受经过账户认证的 `application/x-norito` 注册帧，并返回不得缓存的私有响应。`/v1/kagemusha/{scheme}/wallets/{wallet}/` 下由账户签名的 SDK 读取路由会返回 Load 回执和最终性证据；这些路由未列入 `/openapi.json`。生命周期的账本侧使用携带 `KagemushaWalletLedgerV1` 指令的普通签名交易：
 
 |动作| 用途 |
 | --- | --- |
@@ -88,13 +88,21 @@ Torii 提供一条 Kagemusha 路由：`POST /v1/kagemusha/enrollment`。它接�
 3. 钱包离线时，在本地交换并验证钱包间支付；在确认每次转移之前，先持久化钱包状态。
 4. 钱包重新联网后，提交其 Unload 申领并等待最终性。
 
+Kagemusha 尚未通过发布资格认证：真实资金环境下的资格认证，以及在实体设备上进行的手机注册、激活和支付，仍未完成。
+
 在票据状态通过在线生命周期回传之前，账本无法发现相互冲突的离线交接。因此，钱包和运营方策略应强制执行价值上限、到期时间、获准发行方、持久化本地存储和对账时限。
 
 以下示例使用 `Grant` 指令创建新交易。在该交易中，Mouse 将指定角色（`role_id`）授予 Alice。请参阅[完整示例](./permissions.md#register-a-new-role)。
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```

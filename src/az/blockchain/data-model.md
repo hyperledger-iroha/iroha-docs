@@ -1,9 +1,9 @@
 ---
 translation_locale: az
 translation_source: /blockchain/data-model.md
-translation_source_hash: f90139dee2eff97769cd47188bcaf60b31672f0250505d8afad9c8ee60815ddd
+translation_source_hash: fa1bbcbb2bad4e262a17eb04e67a94c3795d726ac52c0ab17370da9ec119e557
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-source-naming-amendment
+translation_engine: bing-translator-llm+reviewed-source-naming-amendment+reviewed-delta
 ---
 # Məlumat Modeli {#data-model}
 
@@ -121,9 +121,9 @@ Aliaslər insan qarşısında görünən adlardır və tək protokol-standartlı
 |Aktivin tərifi|tək protokol-standart `AssetDefinitionId` Base58 ünvan| `name#domain.dataspace` və ya `name#dataspace`            | `AssetDefinitionAlias` bir aktiv tərifinə bağlı |
 |Müqavilə|tək protokol-standart Bech32m `ContractAddress`| `name::domain.dataspace` və ya `name::dataspace`          | `ContractAlias` yerləşdirilmiş müqavilə ünvanına bağlandı|
 |Domen adı| `DomainId` `domain.dataspace` formasında| `domain.dataspace` | SNS `domain` ad sahəsi qeydi|
-|Məlumat məkanı adı|aktiv SORA Nexus kataloqdan rəqəmsal `DataSpaceId`| `universal`, `paynet` və ya `zk` kimi məlumat məkanı aliası|SNS `dataspace` ad sahəsi qeydi ilə birlikdə aktiv məlumat sahəsi kataloqu|
+|Məlumat məkanı adı|aktiv SORA Nexus kataloqdan rəqəmsal `DataSpaceId`| `universal` və ya `paynet` kimi məlumat məkanı aliası|SNS `dataspace` ad sahəsi qeydi ilə birlikdə aktiv məlumat sahəsi kataloqu|
 
-Hesab ləqəbləri istifadəçiyə görünən hesab adlarıdır. Onlar hesabın açarlarının dəyişdirilməsindən qorunur, çünki ləqəb aktiv hesab ID-sinə dünya vəziyyəti indeksləri və hesab açar dəyişdirmə qeydləri vasitəsilə işarə edir. `SetPrimaryAccountAlias` hesabın əsas etiketi üçün, `SetAccountAliasBinding` əlavə qeyri-əsas ləqəblər üçün, və `FindAccountByAlias` və ya `FindAliasesByAccountId` isə oxumaq üçün istifadə edin. Hesab ləqəbləri adətən aktiv SNS hesab-ləqəb icarəsi tələb edir, bu icarə `AcquireAccountAliasLease` ilə əldə edilir və `RenewAccountAliasLease` ilə yenilənir.
+Hesab ləqəbləri istifadəçiyə görünən hesab adlarıdır. Onlar hesabın açarlarının dəyişdirilməsindən qorunur, çünki ləqəb aktiv hesab ID-sinə dünya vəziyyəti indeksləri və hesab açar dəyişdirmə qeydləri vasitəsilə işarə edir. Hesab ləqəbi icarəsi əldə etmək və ləqəbi bağlamaq üçün adətən `app alias setup` planı və tətbiqetmə axını vasitəsilə `EnsureAlias`, əsas etiketi dəyişdirmək üçün `CompareAndSetPrimaryAccountAlias`, ləqəbi başqa hesaba köçürmək üçün `RebindAccountAlias`, oxumaq üçün isə `FindAccountByAlias` və ya `FindAliasesByAccountId` istifadə edin. İcarələri `RenewAliasLease` ilə yeniləyin və ya `ConfigureAliasAutoRenew` ilə avtomatik yeniləməni konfiqurasiya edin.
 
 Əmlak ləqəbləri fərdi hesab balanslarını deyil, əmlak təyinatlarını adlandırır. Əmlak ləqəbləri və müqavilə ləqəbləri oxuna bilən bir addan mövcud olan tək bir protokol-standart hədəfə birbaşa bağlamalardır. Aktiv ləqəbləri `SetAssetDefinitionAlias` ilə təyin edilir; ləqəb adı seqmenti aktiv tərifi göstərilən adla və ya proqnozlaşdırılmış tərif adı ilə uyğun olmalıdır. Müqavilə ləqəbləri `SetContractAlias` ilə təyin edilir; Təxəllüs dataspace müqavilə ünvanında kodlaşdırılmış dataspace ilə uyğun olmalıdır. Hər iki bağlama `lease_expiry_ms` daşıya bilər; müddət başa çatdıqdan sonra, güzəşt pəncərəsi bitdikdə həll etməyi dayandırır və dünya vəziyyəti indekslərindən silinir.
 

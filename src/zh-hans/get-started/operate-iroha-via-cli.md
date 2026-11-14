@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: 5fb7abd4e152ece715a8337e8ef8e75330f634d2a1b26e0c5bd8308f1f3793a9
+translation_source_hash: 40714a6cd124d4b0342b0f6ecf321f286e714c0e236afd6fd7834c0cf0ad1165
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -11,15 +11,14 @@ translation_engine: nllb-200-ct2+reviewed-delta
 
 ## 1.先决条件 {#_1-prerequisites}
 
-首先启动一个本地网络:
-
-- [启动 Iroha 3](./launch-iroha.md)
-
-在 [启动 Iroha 3](./launch-iroha.md)中创建的本地网络中生成的客户端配置:
+在文档所述源代码修订版本的 Iroha 检出副本中，生成并启动一个四对等节点的本地网络：
 
 ```bash
-./localnet/client.toml
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
+./localnet/start.sh
 ```
+
+下面的示例使用其生成的客户端配置 `./localnet/client.toml`。
 
 ## 2. 基本的 CLI 设置 {#_2-basic-cli-setup}
 
@@ -61,7 +60,7 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-列出 `universal` 数据空间中的公开域：
+列出未经身份验证的读取者可见的域：
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
@@ -147,7 +146,8 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 共识运维命令要求使用列入允许列表的运行时密钥。不要将其放入 `client.toml`；应通过绝对路径提供仅允许所有者访问的密钥文件：
 
 ```bash
-: "${OPERATOR_KEY_FILE:=$PWD/secrets/operator.key}"
+# The generated localnet writes its allow-listed operator key here.
+: "${OPERATOR_KEY_FILE:=$PWD/localnet/runtime/operator-signer.key}"
 
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \

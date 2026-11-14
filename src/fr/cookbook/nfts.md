@@ -1,9 +1,9 @@
 ---
 translation_locale: fr
 translation_source: /cookbook/nfts.md
-translation_source_hash: b6a85c2feb197588e3358a785e10280a687af3951d52de4e6b8d96eab5de873c
+translation_source_hash: 7d7a1ba8ff8678f420a6237bd0d074d2d197bf4349989c0c55f05e9769d15da7
 translation_status: machine-validated
-translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # NFTs {#nfts}
 
@@ -15,7 +15,7 @@ Inspecter l'état de Taira NFT, puis enregistrer, mettre à jour, transférer et
 
 - `curl`, `jq`, Python 3.11 ou ultérieur, et le `iroha` CLI actuel.
 - Accès en lecture seule Taira.
-- Pour les écritures, un réseau local créé avec `kagami localnet generate --peers 4 --out-dir ./localnet` comme dans [Lancer Iroha](/fr/get-started/launch-iroha.md), avec `./localnet/client.toml` et Torii sur `http://127.0.0.1:8080`, ainsi qu'un domaine NFT que possède son signataire (voir l'étape 2).
+- Pour les écritures, un réseau local créé avec `kagami localnet generate --peers 4 --out-dir ./localnet`, avec `./localnet/client.toml` et Torii sur `http://127.0.0.1:8080`, ainsi qu'un domaine NFT que possède son signataire (voir l'étape 2).
 
 ## Étapes {#steps}
 

@@ -1,20 +1,20 @@
 ---
 translation_locale: my
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
+translation_source_hash: c42adbe41e322c93509279f1f558d4450431de90c596f37eb3999754d4387f78
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # ကွန်ရက် ဖြန့်ချိခြင်းအတွက် သော့ချက်များ {#keys-for-network-deployment}
 
-ကွန်ရက်တိုင်းတွင် client များ၊ peer များ၊ genesis လက်မှတ်ထိုးမှုနှင့် NPoS သို့မဟုတ် SORA Nexus ၏ profile များအတွက် BLS သုံး validator ၏ identity များအတွက် သီးခြားကီးပစ္စည်းများ လိုအပ်သည်။
+ကွန်ရက်တိုင်းတွင် client များ၊ genesis လက်မှတ်ထိုးမှုနှင့် ပိုင်ဆိုင်ကြောင်း သက်သေ (Proofs-of-Possession) ပါသော BLS-normal အမျိုးအစား validator အထောက်အထားများအတွက် သီးခြားကီးပစ္စည်းများ လိုအပ်သည်။
 
 ## သော့များ အသုံးပြုရာ {#where-keys-are-used}
 
 - ဖောက်သည် လက်မှတ်ရေးထိုးသော သော့များကို `client.toml` တွင် `[account]` အောက်တွင် သိမ်းထားပါသည်။
 - peer တစ်ခုချင်းစီ၏ အထောက်အထားကီးများကို ၎င်း၏ `config.toml` တွင် `public_key` နှင့် `private_key` အဖြစ် သိမ်းထားသည်။
 - peer ရှာဖွေမှုသည် `trusted_peers` ထဲရှိ peer တစ်ခုချင်းစီ၏ အများသုံးကီးကို အသုံးပြုသည်။
-- NPoS ပရိုဖိုင်များအတွက် BLS သုံး validator များ၏ ကီးပိုင်ဆိုင်ကြောင်းအထောက်အထားများကို `trusted_peers_pop` တွင် သိမ်းထားသည်။
+- Validator များ၏ BLS ပိုင်ဆိုင်ကြောင်း သက်သေများ (Proofs-of-Possession) ကို consensus မုဒ် မည်သို့ပင်ဖြစ်စေ validator တိုင်းအတွက် `trusted_peers_pop` တွင် သိမ်းဆည်းထားသည်။
 - genesis ကို လက်မှတ်ထိုးရာတွင် peer ပြင်ဆင်သတ်မှတ်မှုရှိ `[genesis].public_key` နှင့် manifest ကို လက်မှတ်ထိုးချိန်၌ ၎င်းနှင့်ကိုက်ညီသော ကိုယ်ပိုင်ကီးကို အသုံးပြုသည်။
 
 ဒေသတွင်း (သို့) စမ်းသပ်မှု ဖြန့်ချိချက်များအတွက် Kagami သည် ဤဖိုင်အားလုံးကို စုပေါင်းထုတ်လုပ်ပါ:

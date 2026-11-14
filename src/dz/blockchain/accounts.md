@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /blockchain/accounts.md
-translation_source_hash: adc98cbf1fcadae4415d03dcc262eb03f8c95b429527e403d230934ae2f3243c
+translation_source_hash: d956bfb8c698fa463ef9fa84a91d50cf0e2100885eba670121ad78753f87d88d
 translation_status: machine-validated
 translation_engine: human-reviewed+reviewed-delta
 ---
@@ -44,7 +44,7 @@ private_key_file = "/absolute/path/to/private.key"
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+  | jq -r '.items[] | [.id, (.label // "-")] | @tsv'
 ```
 
 རྩིས་ཐོ་གི་ རྒྱུ་དངོས་ཚུ་བརྟག་དཔྱད་འབད་ནིའི་དོན་ལུ་ ཨང་དང་པ་འབོ་པའི་ནང་ལས་ ID རྩིས་ཡིག་འདི་ ཡིག་སྣོད་སྦེ་ བཏོན་ཞིནམ་ལས་ URL-ལས་རིམ་ཨང་རྟགས དེ་ལམ་ནང་བཙུགས་མ་ཚར་བའི་ཧེ་མར་ བཏོན་གཏང་། འ་ནི་ Python ཤོག་ལེབ་འདི་གིས་ ཨང་དང་པ་བཀོད་ཡོད་པའི་རྩིས་ཐོ་གི་དོན་ལུ་ འདི་འབདཝ་ཨིན།
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-འདི་ཚུ་མི་མང་གི་ཀློག་ལེན་ཨིན། རྩིས་ཐོ་བཟོ་ནི་ཡང་ན་དུས་མཐུན་བཟོ་ནི་འདི་ མིང་རྟགས་བཀོད་པའི་ཚོང་འབྲེལ་ཨིནམ་ལས་ [SORA Nexus གནད་སྡུད་ས་སྟོང་ཚུ་ལུ་མཐུད་ནི](/dz/get-started/sora-nexus-dataspaces.md) ནང་བཤད་པའི་ བརྟག་དཔྱད་དངུལ་བྱིན་མི་ཞབས་ཏོག་ལས་མ་དངུལ་བཙུགས་པའི་ Taira གཞི་སྒྲིག་དགོ།
+འདི་ཚུ་མི་མང་གི་ཀློག་ལེན་ཨིན། རྩིས་ཐོ་བཟོ་ནི་ཡང་ན་དུས་མཐུན་བཟོ་ནི་འདི་ མིང་རྟགས་བཀོད་པའི་ཚོང་འབྲེལ་ཨིནམ་ལས་ [Taira དང་ Minamoto ལག་ལེན་འཐབ་སྟེ་ SORA Nexus གུ་བཟོ་སྐྲུན་འབད་ནི](/dz/get-started/sora-nexus-dataspaces.md) ནང་བཤད་པའི་ བརྟག་དཔྱད་དངུལ་བྱིན་མི་ཞབས་ཏོག་ལས་མ་དངུལ་བཙུགས་པའི་ Taira གཞི་སྒྲིག་དགོ།
 
 ## ཐོ་བཀོད་དང་ ངོས་ལེན་ {#registration-and-permissions}
 

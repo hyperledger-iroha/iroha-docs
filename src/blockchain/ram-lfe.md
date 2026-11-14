@@ -756,6 +756,5 @@ Registering a policy on-chain is not enough by itself. A target node must also e
 
 ## Related Topics
 
-- [Sponsor Fees for a Private Data space](/get-started/private-dataspace-fee-sponsor.md)
 - [Torii Endpoints](/reference/torii-endpoints.md#app-and-sora-route-families)
 - [Anonymous Transactions](/blockchain/anonymous-transactions.md)

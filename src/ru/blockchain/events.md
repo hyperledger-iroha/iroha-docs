@@ -1,9 +1,9 @@
 ---
 translation_locale: ru
 translation_source: /blockchain/events.md
-translation_source_hash: aad93f1981a5b470966090b5e06ec07178738b15f1d870097947682b19f99595
+translation_source_hash: 2777cbe4e72a50c4790e50b59c3e695feb5814314cc9afccdfd994f6409c195e
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # События {#events}
 
@@ -16,7 +16,7 @@ translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 
 ## рабочий процесс обработки событий программного обеспечения {#pipeline-events}
 
-События рабочего процесса обработки программного обеспечения генерируются, когда транзакции отправляются, выполняются или завершены в блоке. Событие рабочего процесса обработки программного обеспечения содержит следующую информацию: тип сущности, вызвавшей событие (транзакция или блок), её криптографический хэш и статус. Статус может быть либо `Validating` (проверка в процессе), `Rejected` или `Committed`. Если объект был отклонён, указывается причина отклонения.
+События конвейера обработки генерируются по мере прохождения транзакций и блоков через конвейер. Событие транзакции содержит криптографический хэш транзакции, высоту блока, идентификаторы линии и пространства данных, а также статус: `Queued`, `Expired`, `Approved` или `Rejected` с причиной отклонения. Событие блока содержит заголовок блока и статус: `Created`, `Approved`, `Rejected` с причиной, `Committed` или `Applied`.
 
 ### Запустите этот рабочий процесс на Taira {#try-it-on-taira}
 
@@ -30,8 +30,8 @@ curl -fsSI https://taira.sora.org/v1/events/sse \
 Для снимка данных, который вы можете проверить без открытия потока, прочитайте недавние транзакции в обозревателе:
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
-  | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
+curl -fsS 'https://taira.sora.org/v1/explorer/transactions?limit=5' \
+  | jq '{next_cursor, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
 Откройте маршрут SSE в терминале, когда вам нужны живые события:

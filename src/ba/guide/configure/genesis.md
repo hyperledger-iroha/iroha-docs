@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /guide/configure/genesis.md
-translation_source_hash: 91be089c82a76991e35a43e1541f9e069fdf70d3fb5de2492b985c06c78a2372
+translation_source_hash: 2a4a43b6ac873cc0c860631e307e52b047ba6a08691bf3e4c5872cc22c81a0bd
 translation_status: machine-validated
 translation_engine: google-translate+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -9,7 +9,7 @@ translation_engine: google-translate+reviewed-delta+reviewed-first-release-sourc
 
 Genesis башланғыс сылбыр хәлен билдәләй.Мөхәррирләнгән сығанаҡ — . JSON беленергә, һәм Iroha 3 төйөн ҡуллана ҡул ҡуйылған Norito транзакция файлы.
 
-::: details Ғәҙәттәге генезис манифесты
+::: details Ғәҙәттәге генезис сығанаҡ ҡалыбы (defaults/genesis.template.json)
 
 <<< @/snippets/genesis.json
 
@@ -36,7 +36,7 @@ public_key = "ed0120..."
 expected_hash_file = "./genesis.expected_hash"
 ```
 
-Селтәрҙәге бөтә тиңдәштәр ҡул ҡуйылған genesis транзакцияһы һәм genesis асыҡ асҡысы буйынса килешергә тейеш. Көтөлгән хэш файлы тәүге эшләтеүҙә лә, яңынан эшләтеүҙә лә кәрәк; уны `kagami genesis sign --expected-hash-out` яҙа.
+Селтәрҙәге бөтә тиңдәштәр ҡул ҡуйылған генезис транзакцияһы һәм генезис асыҡ асҡысы буйынса килешергә тейеш. Һәр эшләтеү, тәүгеһе булһынмы йәки ҡабаттанмы, көтөлгән хешты талап итә: `expected_hash_file` йәки конфигурацияға туранан-тура яҙылған `expected_hash` параметрҙарының теүәл береһен көйләгеҙ. Файлды `kagami genesis sign --expected-hash-out` яҙа.
 
 ## Ҡул ҡуйыу Genesis {#signing-genesis}
 
@@ -52,7 +52,7 @@ cargo run --bin kagami -- genesis sign ./genesis.json \
 
 `GENESIS_PRIVATE_KEY_FILE` хужаһы үткәргән режимда булырға тейеш-`0600`, бер һылтанмалы ғәҙәти файл, составында бер канонлы шәхси асҡыслы мультихеш һәм һуңғы яңы юл. Kagami символик һылтанмаларҙы кире ҡаға һәм бер ҡасан да сеймал генезис шәхси ҡабул итмәй команда юлында асҡыс.
 
-NPoS йәки SORA Nexus профилдәре өсөн булдырылған профиль талап иткән топологияны һәм BLS асҡыстарына эйә булыу иҫбаттарын индерегеҙ. Kagami-ның `localnet generate`, `wizard` һәм `sora-network generate` командалары был нескәлектәрҙе автоматик эшкәртә.
+Рөхсәтле йәки NPoS булыуына ҡарамаҫтан, һәр ҡул ҡуйылған генезис һәр валидатор өсөн BLS асҡысына эйә булыу иҫбаты менән теүәл `3f + 1` валидатор топологияһын үҙ эсенә алырға тейеш. Kagami-ның `localnet generate`, `wizard` һәм `sora-network generate` командалары был нескәлектәрҙе автоматик эшкәртә.
 
 ## Яңынан ғәмәлгә ашырыу Башланмыш {#recommitting-genesis}
 

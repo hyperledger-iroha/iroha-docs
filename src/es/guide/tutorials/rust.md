@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /guide/tutorials/rust.md
-translation_source_hash: fbe41bd6e7fa86d06c027724b446016c14246495964ccf521155e4b790d75041
+translation_source_hash: 9d9848de91a85c84221efc39bc7dfb8443f5c50b448d336207c06efce3bc07e8
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -53,7 +53,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-Después de crear `taira.client.toml`, el mismo binario puede ejecutar comandos de canario firmados contra Taira. Mantén esos separados de las pruebas unitarias ordinarias porque requieren una cuenta financiada en la red de prueba y la disponibilidad de la red de prueba en vivo.
+Después de crear `taira.client.toml`, el mismo binario puede incorporar y financiar una cuenta con `iroha taira account` y enviar comandos firmados ordinarios del libro mayor contra Taira. Mantén esos separados de las pruebas unitarias ordinarias porque requieren una cuenta financiada en la red de prueba y la disponibilidad de la red de prueba en vivo.
 
 ## Usando el paquete de software cliente Rust {#using-the-rust-client-crate}
 
@@ -70,7 +70,7 @@ Si necesita los ejemplos más completos de cómo se utilizan en la práctica las
 - `crates/iroha/README.md`
 - `crates/iroha_cli/README.md`
 
-Para los flujos de trabajo de depósito en garantía gestionados por libro mayor, consulte [Custodia de Activos Nativos](/es/blockchain/escrow.md#rust-sdk). El modelo de datos Rust actualmente tiene la cobertura tipada más completa para depósitos en garantía de mercado, bloqueos de activos genéricos, depósitos en garantía anónimos, consultas y eventos.
+Para los flujos de trabajo de depósito en garantía gestionados por libro mayor, consulte [Custodia de Activos Nativos](/es/blockchain/escrow.md#rust-sdk). El modelo de datos Rust actualmente tiene la cobertura tipada más completa para depósitos en garantía de mercado, bloqueos de activos genéricos, depósitos en garantía condicionales, consultas y eventos.
 
 Puede regenerar una captura local de la ayuda de la CLI con:
 

@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/consensus.md
-translation_source_hash: 06b3589a71dcb08aed5589290f4c9af9cb46b5cee0f875ae542043543360f623
+translation_source_hash: ebdf564d607b96f7f186637044d80b2f1bb7c9fbe6080a061d27d02ec6f8cf62
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -28,7 +28,7 @@ Le même pipeline de traitement Sumeragi est utilisé à la fois dans les déplo
 
 Les validateurs ne signent que les données qu'ils peuvent reproduire localement. Avant de voter, un validateur vérifie que la proposition appartient à la chaîne, à la hauteur et à la vue prévues ; que les signatures et les limites des transactions respectent les règles du protocole ; que le routage de la voie d'exécution et la validation de l'exécutant soient déterministes ; et que l'exécution de la charge utile produit la transition d'état attendue. Si le résultat local diffère, le validateur rejette la proposition au lieu de voter pour elle.
 
-Les votes sont de petits messages de consensus signés. Ils se réfèrent au bloc proposé, à la hauteur, à la vue et à l'identité du validateur. Les signatures vérifiées forment des certificats de quorum de préparation et d'engagement du consensus. Un certificat de commit de consensus est la preuve durable que suffisamment de validateurs ont observé le même résultat pour le même bloc. Chaque validateur envoie ses votes Prepare et Commit au comité complet ; tout validateur peut agréger le nombre de votes égaux requis et diffuser le certificat résultant.
+Les votes sont de petits messages de consensus signés. Ils se réfèrent au bloc proposé, à la hauteur, à la vue et à l'identité du validateur. Les signatures vérifiées forment des certificats de quorum de préparation et d'engagement du consensus. Un certificat de commit de consensus est la preuve durable que suffisamment de validateurs ont observé le même résultat pour le même bloc. Les validateurs de l'ensemble A envoient normalement leurs votes Prepare et Commit à la queue proxy (proxy tail) du tour, qui agrège exactement le nombre de votes égaux requis et diffuse le certificat. Si un certificat tarde, les validateurs de l'ensemble B votent aussi auprès de la queue proxy ; en dernier recours, chaque validateur diffuse son vote et tout validateur peut agréger le certificat.
 
 ### Quorum et observateurs {#quorum-and-observers}
 
@@ -79,14 +79,14 @@ Consultez, à la révision épinglée, [l’implémentation des voies](https://g
 
 ## Disponibilité des données et récupération de la charge utile {#data-availability-and-payload-recovery}
 
-Sumeragi V1 assure la disponibilité globale des charges utiles au moyen de messages RS16 signés `PayloadManifest` et `PayloadChunk`. Le chef envoie le manifeste signé à tout le comité et distribue initialement des fragments déterministes à l’ensemble A. Un validateur ne peut voter Prepare qu’après avoir reconstruit le corps canonique, validé le manifeste et les hachages des fragments, stocké durablement le corps et terminé la validation déterministe. Si la voie rapide se bloque, la récupération étend la livraison des fragments à l’ensemble B. La récupération des corps certifiés et la synchronisation des blocs fournissent une procédure de récupération bornée lorsqu’un pair apprend la finalité avant de recevoir le corps.
+Sumeragi V1 assure la disponibilité globale des charges utiles au moyen de messages RS16 signés `PayloadManifest` et `PayloadChunk`. Le chef envoie le manifeste signé et chaque ligne signée à tous les autres membres du comité ainsi qu’aux membres qui rejoignent le comité suivant. Un validateur ne peut voter Prepare qu’après avoir reconstruit le corps canonique, validé le manifeste et les hachages des fragments, stocké durablement le corps et terminé la validation déterministe. Un pair auquel il manque des lignes les demande avec `PayloadRequest`. La récupération des corps certifiés et la synchronisation des blocs fournissent une procédure de récupération bornée lorsqu’un pair apprend la finalité avant de recevoir le corps.
 
 Chaque instance de voie possède son propre contexte authentifié de disponibilité et de certificats. Les vérifications de fusion globale lient son lot certifié et sa charge utile d’origine à la génération et au point d’ancrage attendus. Un pair n’applique la finalité globale que si la charge utile globale correspondante et un CommitQC valide sont disponibles localement.
 
 Utilisez les interfaces de l'opérateur authentifié plutôt qu'un point de terminaison RBC API séparé :
 
 - `iroha --operator-private-key-file <path> --output-format text ops sumeragi status` rapporte la hauteur, la vue, la phase, les certificats et l'état de vivacité autoritatifs.
-- `iroha --operator-private-key-file <path> --output-format text ops sumeragi diagnostics` fournit des diagnostics sans valeur d’autorité sur la file d’attente, le pipeline, NPoS, les voies et les espaces de données, notamment sur la responsabilité de garde des charges utiles des voies.
-- Les signaux Prometheus tels que `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total` et `sumeragi_da_gate_satisfied_total` séparent la récupération des corps manquants, les portails de disponibilité des données et le traitement des messages ; voir [Performance et métriques](/fr/guide/advanced/metrics.md).
+- `iroha --operator-private-key-file <path> --output-format text ops sumeragi diagnostics` fournit des diagnostics sans valeur d’autorité sur la pression exercée sur la file d’attente des transactions, l’état de l’élection NPoS et le statut des manifestes de gouvernance des voies.
+- Les séries Prometheus par instance telles que `sumeragi_fetch_requests_total` (`kind="body"` pour les corps manquants, `kind="sync"` pour le rattrapage), `sumeragi_view_changes_total`, `sumeragi_round_stage` et `sumeragi_dropped_total` portent une étiquette `lane` et distinguent la récupération des corps manquants, les changements de vue et les rejets des files d’attente bornées ; voir [Performance et métriques](/fr/guide/advanced/metrics.md).
 
 Les magasins de blocs des voies conservent les lots certifiés et les enregistrements sources nécessaires à la fusion et à la récupération. Leur cycle de vie suit la génération de voie validée ; un nom de répertoire de stockage n’autorise ni une nouvelle voie ni une nouvelle racine d’exécution.

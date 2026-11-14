@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: 33617bc89d0aef5c2a086f45a216201d8980123f717e68f1e1a95eadeb906eb0
+translation_source_hash: dff2584fd47d6e1426ec18aca2d2003a7fdca4b9882296de484418f8c17806fe
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -90,13 +90,12 @@ Aitai-ն շուկայական տիպի փոխհաշվարկի SORA Nexus հավ�
 
 Native escrow-ը պահում է պահպանումը գլխավոր գրքում: Վաճառողը առաջարկ է բացում `OpenAssetEscrow`, գնորդը ընդունում եւ նշում է վճարումը `AcceptAssetEscrow` եւ `MarkEscrowPaymentSent`, եւ վաճառողը թողնում է `ReleaseAssetEscrow` կամ չեղյալ հայտարարում վճարումը նշելուց առաջ: Եթե գնորդը եւ վաճառողը համաձայն չեն, երկու կողմերը կարող են վեճ բացել, իսկ լուծողը՝ `CanResolveEscrowDispute`-ով, կարող է բաժանել փակված գումարը:
 
-Ամբողջ կյանքի ցիկլը, ընդհանուր ակտիվների փակումը, անանուն պահպանումները, հարցումները, իրադարձությունները եւ Rust օրինակները, տես [Ակտիվների ներկառուցված էսքրո](/hy/blockchain/escrow.md):
+Ամբողջական կյանքի ցիկլի, ակտիվների ընդհանուր արգելափակումների, պայմանական էսկրոուի, հարցումների, իրադարձությունների և Rust-ի օրինակների համար տես [Ակտիվների բնիկ էսկրոու](/hy/blockchain/escrow.md)։
 
 |Aitai մակերեսը |Օգտագործեք այն |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 |`OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow` |Թվային ակտիվների թափանցիկ առաջարկներ, ներառյալ XOR դոմինալացված հաշվետվությունների հոսքերը: |
-|`OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow` |Պաշտպանված առաջարկները ֆինանսավորման եւ փակման շարժումների համար օգտագործում են ապացույցների հավելվածներ: |
-|`OpenEscrowDispute`, `ResolveEscrowDispute`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |Բողոքի ակցիան եւ դատական կարգավորումը: |
+|`OpenEscrowDispute`, `ResolveEscrowDispute` |Վեճի բացում և դատական ոճի լուծում։ |
 |`FindAssetEscrowById`, `FindAssetEscrowsBySeller`, `FindAssetEscrowsByBuyer`, `FindAssetEscrowsByStatus` |Հավելվածների վիճակագրության էջեր, համատեղման աշխատանքներ եւ աջակցության գործիքներ: |
 |`EscrowEventFilter` |Կայուն թափանցիկ վարկային բաժանորդագրություններ՝ ըստ վարկային ID-ի, վաճառողի, գնորդի, կարգավիճակի կամ միջոցառման տեսակի: |
 | Kotodama `escrow_open_offer`, `escrow_accept`, `escrow_mark_payment_sent`, `escrow_release`, `escrow_cancel`, `escrow_open_dispute`, `escrow_resolve_dispute` |Kotodama պայմանագրային զանգեր, որոնք աջակցվում են V1 հանձնառու համակարգերի կողմից: |
@@ -492,7 +491,7 @@ SoraFS-ում սովորաբար պահվում են հավելվածների ս
 
 Taira է կանոնական հանրությունը SoraFS փորձարկման ցանց: Նրա ստուգված հավաստիացնող պրոֆիլը օգտագործում է շղթա `fc56984b-2be7-431d-840e-21514d1883f0` եւ շղթայական խտրական `369`. Գլխավոր էջ `NetworkId` ներքեւում է ճշգրիտ ինքնությունը հոսքի pinned Taira գեներեսը Taira reset կարող է փոխել, որ hash պահպանելով շղթայի նշանը, այնպես որ թարմացնել այն ներկա ստորագրված տեղակայման պրոֆիլից եւ երբեք չստեղծեք այն շղթայից UUID. Taira արդյունավետ է SoraFS կարգավորումները հետեւյալն են.
 
-- ցանց ID: `hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94`
+- ցանց ID: `hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774`
 - մուտքի շտեմարան URL: `https://taira.sora.org`
 - փաթեթ Torii URLs: `https://taira-validator-1.sora.org` մինչեւ `https://taira-validator-4.sora.org`
 - հայտնաբերման ունակությունները. `torii_gateway`, `chunk_range_fetch` եւ `potr_mldsa`
@@ -502,7 +501,7 @@ Taira է կանոնական հանրությունը SoraFS փորձարկման
 ```toml
 [sorafs.storage]
 enabled = false
-max_capacity_bytes = 13743895347
+max_capacity_bytes = 2684354560
 
 [sorafs.discovery]
 discovery_enabled = true
@@ -587,7 +586,7 @@ cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
   --summary-out=artifacts/site.car-summary.json
 
 : "${TAIRA_AUTHORITY:?set a funded Taira I105 account}"
-export TAIRA_NETWORK_ID='hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94'
+export TAIRA_NETWORK_ID='hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774'
 export TAIRA_PIN_TORII_URL=https://taira-validator-1.sora.org
 export TAIRA_PRIVATE_KEY_FILE="${TAIRA_PRIVATE_KEY_FILE:-./secrets/taira-authority.ed25519}"
 export TAIRA_RETENTION_EPOCH=$(( $(date -u +%s) + 86400 ))

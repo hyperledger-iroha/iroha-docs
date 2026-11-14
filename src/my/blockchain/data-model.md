@@ -1,9 +1,9 @@
 ---
 translation_locale: my
 translation_source: /blockchain/data-model.md
-translation_source_hash: f90139dee2eff97769cd47188bcaf60b31672f0250505d8afad9c8ee60815ddd
+translation_source_hash: fa1bbcbb2bad4e262a17eb04e67a94c3795d726ac52c0ab17370da9ec119e557
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-source-naming-amendment
+translation_engine: nllb-200-ct2+reviewed-source-naming-amendment+reviewed-delta
 ---
 # ဒေတာပုံစံ {#data-model}
 
@@ -121,9 +121,9 @@ Alias များသည် လယ်ဂျာ၏ စံသတ်မှတ်န
 | ပိုင်ဆိုင်မှု သတ်မှတ်ချက် | စံ `AssetDefinitionId` Base58 လိပ်စာ | `name#domain.dataspace` သို့မဟုတ် `name#dataspace` | ပိုင်ဆိုင်မှု သတ်မှတ်ချက်နှင့် ချည်နှောင်ထားသော `AssetDefinitionAlias` |
 |စာချုပ် |Single protocol-standard Bech32m `ContractAddress` |`name::domain.dataspace` သို့မဟုတ် `name::dataspace` |`ContractAlias` စေလွှတ်ထားတဲ့ စာချုပ်လိပ်စာနဲ့ ချည်နှောင်ထားတယ်။ |
 |ဒိုမင်နာမည် |`DomainId` ကို `domain.dataspace` ပုံစံမှာ |`domain.dataspace` |SNS `domain` နာမည်နေရာ မှတ်တမ်း |
-| ဒေတာနေရာအမည် | လက်ရှိအသုံးပြုနေသော SORA Nexus စာရင်းမှ ဂဏန်းတန်ဖိုး `DataSpaceId` | `universal`၊ `paynet` သို့မဟုတ် `zk` ကဲ့သို့ ဒေတာနေရာ၏ အမည်ပွား | SNS ၏ `dataspace` အမည်နယ်ပယ်မှတ်တမ်းနှင့် လက်ရှိအသုံးပြုနေသော ဒေတာနေရာစာရင်း |
+| ဒေတာနေရာအမည် | လက်ရှိအသုံးပြုနေသော SORA Nexus စာရင်းမှ ဂဏန်းတန်ဖိုး `DataSpaceId` | `universal` သို့မဟုတ် `paynet` ကဲ့သို့ ဒေတာနေရာ၏ အမည်ပွား | SNS ၏ `dataspace` အမည်နယ်ပယ်မှတ်တမ်းနှင့် လက်ရှိအသုံးပြုနေသော ဒေတာနေရာစာရင်း |
 
-Account aliases တွေဟာ user-facing account နာမည်တွေပါ။ alias world-state index များနှင့် account rekey မှတ်တမ်းများမှတဆင့် တက်ကြွသော အကောင့် ID ကိုမှတ်ချက်ပေးသည်။ `SetPrimaryAccountAlias` အကောင့်ရဲ့ အဓိက တံဆိပ်အတွက်၊ `SetAccountAliasBinding` နောက်ထပ် အဓိကမဟုတ်တဲ့ အမည်အမည်များအတွက်၊ `FindAccountByAlias` ဒါမှမဟုတ် `FindAliasesByAccountId` Account aliases တွေအတွက် ပုံမှန်အားဖြင့် Active ကို လိုအပ်ပါတယ်။ SNS ငွေပေးချေမှုအစီအစဉ် `AcquireAccountAliasLease` ပြန်လည်ပြုပြင်ခြင်း `RenewAccountAliasLease`.
+အကောင့် alias များသည် အသုံးပြုသူများ မြင်ရသော အကောင့်အမည်များ ဖြစ်သည်။ Alias သည် ကမ္ဘာ့အခြေအနေ အညွှန်းများနှင့် အကောင့် key ပြောင်းလဲမှုမှတ်တမ်းများမှတဆင့် လက်ရှိအသုံးပြုနေသော အကောင့် ID ကို ညွှန်ပြသောကြောင့် အကောင့်၏ key ကို ပြောင်းလဲသည့်တိုင် alias များ ဆက်လက်အသက်ဝင်နေသည်။ အကောင့်-alias ငှားရမ်းမှုကို ရယူပြီး alias ကို ချိတ်ဆက်ရန် `EnsureAlias` ကို ပုံမှန်အားဖြင့် `app alias setup` ၏ အစီအစဉ်ဆွဲခြင်းနှင့် အသုံးချခြင်း လုပ်ငန်းစဉ်မှတဆင့် အသုံးပြုပါ။ အဓိကအမည်တံဆိပ်ကို ပြောင်းရန် `CompareAndSetPrimaryAccountAlias`၊ alias ကို အခြားအကောင့်သို့ ရွှေ့ရန် `RebindAccountAlias` နှင့် ဖတ်ရှုရန်အတွက် `FindAccountByAlias` သို့မဟုတ် `FindAliasesByAccountId` ကို အသုံးပြုပါ။ ငှားရမ်းမှုများကို `RenewAliasLease` ဖြင့် သက်တမ်းတိုးပါ၊ သို့မဟုတ် `ConfigureAliasAutoRenew` ဖြင့် အလိုအလျောက် သက်တမ်းတိုးခြင်းကို ပြင်ဆင်သတ်မှတ်ပါ။
 
 ပိုင်ဆိုင်မှု alias များသည် အကောင့်တစ်ခုချင်းစီ၏ လက်ကျန်ပမာဏကို အမည်ပေးခြင်းမဟုတ်ဘဲ ပိုင်ဆိုင်မှုသတ်မှတ်ချက်များကို အမည်ပေးသည်။ ပိုင်ဆိုင်မှု alias နှင့် contract alias တို့သည် ဖတ်ရှုရလွယ်သော အမည်မှ ရှိနှင့်ပြီးသော စံပစ်မှတ်သို့ တိုက်ရိုက်ချိတ်ဆက်မှုများဖြစ်သည်။ ပိုင်ဆိုင်မှု alias များကို `SetAssetDefinitionAlias` ဖြင့် သတ်မှတ်သည်။ Alias ၏ အမည်အပိုင်းသည် ပိုင်ဆိုင်မှုသတ်မှတ်ချက်၏ ပြသအမည် သို့မဟုတ် ကိုယ်စားပြုသတ်မှတ်ချက်အမည်နှင့် ကိုက်ညီရမည်။ Contract alias များကို `SetContractAlias` ဖြင့် သတ်မှတ်သည်။ Alias ၏ data space သည် contract လိပ်စာတွင် encode လုပ်ထားသော data space နှင့် ကိုက်ညီရမည်။ ချိတ်ဆက်မှုနှစ်မျိုးလုံး၌ `lease_expiry_ms` ပါဝင်နိုင်သည်။ သက်တမ်းကုန်ပြီးနောက် ဆိုင်းငံ့ကာလပါ ကုန်ဆုံးသည့်အခါ ၎င်းတို့ကို ဖြေရှင်းရှာဖွေ၍ မရတော့ဘဲ ကမ္ဘာလုံးဆိုင်ရာ အခြေအနေအညွှန်းများမှ ရှင်းလင်းဖယ်ရှားသည်။
 

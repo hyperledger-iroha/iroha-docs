@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/accounts.md
-translation_source_hash: adc98cbf1fcadae4415d03dcc262eb03f8c95b429527e403d230934ae2f3243c
+translation_source_hash: d956bfb8c698fa463ef9fa84a91d50cf0e2100885eba670121ad78753f87d88d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -44,7 +44,7 @@ Ochiq Taira sinov tarmog‘idagi bir nechta kanonik hisob identifikatorini sanan
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+  | jq -r '.items[] | [.id, (.label // "-")] | @tsv'
 ```
 
 Hisob aktivlarini tekshirish uchun birinchi chaqiruvdan hisob identifikatorini nusxalang va yo‘lga qo‘yishdan avval URL usulida kodlang. Quyidagi Python parchasi ro‘yxatdagi birinchi hisob uchun shuni bajaradi:
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-Bular ochiq o‘qish amallaridir. Hisob yaratish yoki yangilash imzolangan tranzaksiya bo‘lib, [SORA Nexus ma’lumotlar makonlariga ulanish](/uz/get-started/sora-nexus-dataspaces.md)da bayon qilingan, faucet orqali mablag‘ bilan ta’minlangan Taira sozlamasini talab qiladi.
+Bular ochiq o‘qish amallaridir. Hisob yaratish yoki yangilash imzolangan tranzaksiya bo‘lib, [Taira va Minamoto orqali SORA Nexus uchun ilova yaratish](/uz/get-started/sora-nexus-dataspaces.md) bo‘limida bayon qilingan, faucet orqali mablag‘ bilan ta’minlangan Taira sozlamasini talab qiladi.
 
 ## Ro'yxatdan o'tish va ruxsatlar {#registration-and-permissions}
 

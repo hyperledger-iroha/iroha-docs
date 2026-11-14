@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /blockchain/accounts.md
-translation_source_hash: adc98cbf1fcadae4415d03dcc262eb03f8c95b429527e403d230934ae2f3243c
+translation_source_hash: d956bfb8c698fa463ef9fa84a91d50cf0e2100885eba670121ad78753f87d88d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -44,7 +44,7 @@ private_key_file = "/absolute/path/to/private.key"
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+  | jq -r '.items[] | [.id, (.label // "-")] | @tsv'
 ```
 
 Account assets တွေကို စစ်ဆေးဖို့ ပထမဦးဆုံး Technical invocation ကနေ account ID ကို ကူးယူပြီး path ထဲမထည့်ခင် URL-encode လုပ်ပါ။ ဒီ Python snippet ကတော့ ပထမဆုံးစာရင်းတင်ထားတဲ့ account အတွက် ဒီလိုလုပ်ပါတယ်။
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-ဤလုပ်ဆောင်ချက်များသည် အများပြည်သူ ဖတ်ရှုနိုင်သော လုပ်ဆောင်ချက်များဖြစ်သည်။ အကောင့်ဖန်တီးခြင်း သို့မဟုတ် ပြင်ဆင်ခြင်းသည် လက်မှတ်ထိုးထားသော transaction ဖြစ်ပြီး [SORA Nexus data space များနှင့် ချိတ်ဆက်ခြင်း](/my/get-started/sora-nexus-dataspaces.md) တွင် ဖော်ပြထားသည့် faucet မှ ငွေဖြည့်ထားသော Taira ပြင်ဆင်မှု လိုအပ်သည်။
+ဤလုပ်ဆောင်ချက်များသည် အများပြည်သူ ဖတ်ရှုနိုင်သော လုပ်ဆောင်ချက်များဖြစ်သည်။ အကောင့်ဖန်တီးခြင်း သို့မဟုတ် အပ်ဒိတ်လုပ်ခြင်းသည် လက်မှတ်ထိုးထားသော transaction ဖြစ်ပြီး [Taira နှင့် Minamoto ကို အသုံးပြု၍ SORA Nexus ပေါ်တွင် တည်ဆောက်ခြင်း](/my/get-started/sora-nexus-dataspaces.md) တွင် ဖော်ပြထားသည့် faucet မှ ငွေဖြည့်ထားသော Taira ပြင်ဆင်မှု လိုအပ်သည်။
 
 ## မှတ်ပုံတင်ခြင်းနှင့် ခွင့်ပြုချက်များ {#registration-and-permissions}
 

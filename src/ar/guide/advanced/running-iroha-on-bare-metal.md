@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -34,7 +34,7 @@ cargo build --release \
 target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-يحتوي دليل الإخراج على الملفات المولدة `genesis.json`، `genesis.signed.nrt`، نظير الشبكة `config.toml`، `client.toml`، البرامج النصية المساعدة، و`README.md` المولدة مع الأوامر الدقيقة لذلك الحزمة.
+يحتوي دليل الإخراج على الملفات المولدة `genesis.json` و`genesis.signed.nrt` و`genesis.expected_hash`، وملف `peerN.toml` واحد لكل مدقق، و`client.toml`، والبرنامجين النصيين `start.sh` و`stop.sh`، وملف `README.md` مولَّد يتضمن الأوامر الدقيقة لتلك الحزمة.
 
 ## 3. بدء أقران الشبكة {#_3-start-peers}
 
@@ -44,7 +44,7 @@ target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ./localnet/start.sh
 ```
 
-إذا كنت بحاجة إلى توصيل كل نظير شبكة بمدير العمليات مثل systemd، استخدم أمر الإطلاق المسجل في `./localnet/README.md` لكل نظير شبكة. حافظ على فصل `config.toml` لكل نظير شبكة والمفتاح الخاص ودليل التخزين والمنافذ.
+إذا كنت بحاجة إلى توصيل كل نظير شبكة بمدير عمليات مثل systemd، فاتبع الأمر الخاص بكل نظير في `./localnet/start.sh`: شغّل `iroha3d --config <bundle>/peerN.toml` من `<bundle>/state/peerN`، ومرّر `--sumeragi-assert-fresh-key` فقط عند أول تشغيل لذلك النظير. حافظ على فصل `peerN.toml` لكل نظير شبكة والمفتاح الخاص ودليل التخزين والمنافذ.
 
 ## 4. تشغيل الشبكة {#_4-operate-the-network}
 

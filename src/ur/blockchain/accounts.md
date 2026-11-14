@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /blockchain/accounts.md
-translation_source_hash: adc98cbf1fcadae4415d03dcc262eb03f8c95b429527e403d230934ae2f3243c
+translation_source_hash: d956bfb8c698fa463ef9fa84a91d50cf0e2100885eba670121ad78753f87d88d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -44,7 +44,7 @@ private_key_file = "/absolute/path/to/private.key"
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+  | jq -r '.items[] | [.id, (.label // "-")] | @tsv'
 ```
 
 اکاؤنٹ اثاثوں کا معائنہ کرنے کے لئے، پہلی کال سے ایک اکاؤنٹ ID کو کاپی کریں اور اسے راستے میں ڈالنے سے پہلے URL کوڈ کریں۔ یہ Python ٹکڑا پہلے درج کردہ اکاؤنٹ کے لئے ایسا کرتا ہے:
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-یہ عوامی پڑھنے کی کارروائیاں ہیں۔ اکاؤنٹ بنانا یا تبدیل کرنا ایک دستخط شدہ لین دین ہے اور اس کے لیے [SORA Nexus ڈیٹا اسپیسز سے اتصال](/ur/get-started/sora-nexus-dataspaces.md) میں بیان کردہ، فوسیٹ سے فنڈ شدہ Taira سیٹ اپ درکار ہے۔
+یہ عوامی پڑھنے کی کارروائیاں ہیں۔ اکاؤنٹ بنانا یا تبدیل کرنا ایک دستخط شدہ لین دین ہے اور اس کے لیے [Taira اور Minamoto کے ساتھ SORA Nexus پر ایپلیکیشن تیار کرنا](/ur/get-started/sora-nexus-dataspaces.md) میں بیان کردہ، فوسیٹ سے فنڈ شدہ Taira سیٹ اپ درکار ہے۔
 
 ## رجسٹریشن اور اجازت {#registration-and-permissions}
 

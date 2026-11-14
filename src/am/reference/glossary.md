@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /reference/glossary.md
-translation_source_hash: 8b00758b5731a2f9e09a5b49ccb7f298229ab966b5adf2d7152e3b1416fe8737
+translation_source_hash: 4d3a8e3aa88291edbaac5b52039d2aad160d89fb83c085c21030a531c93258f4
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -79,7 +79,7 @@ translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-so
 
 ## የባይዛንታይን ስህተት-መቻቻል (BFT) {#byzantine-fault-tolerance-bft}
 
-የተወሰነ መቶኛ ተንኮል አዘል ተዋናዮችን ከያዘ አውታረ መረብ ጋር በትክክል መስራት የመቻል ንብረት። Iroha በአቻ-ለ-አቻ አውታረመረብ ውስጥ እስከ 33% ተንኮል አዘል ተዋናዮች ጋር መስራት ይችላል።.
+የተወሰነ መቶኛ ተንኮል አዘል ተዋናዮችን ከያዘ አውታረ መረብ ጋር በትክክል መስራት የመቻል ባህሪ። የSumeragi ኮሚቴ በትክክል `3f + 1` አረጋጋጮች አሉት፣ እስከ `f` የሚደርሱ የባይዛንታይን አረጋጋጮችን፣ ማለትም ከኮሚቴው አንድ ሦስተኛ ያነሱትን፣ ይታገሣል።
 
 ## Iroha አካላት {#iroha-components}
 
@@ -107,7 +107,7 @@ Iroha ተግባርን የያዙ Rust ሞጁሎች።
 
 ### ብልጥ ኮንትራቶች {#smart-contracts}
 
-ስማርት ኮንትራቶች የተወሰኑ ሁኔታዎች ሲሟሉ የሚሰሩ በብሎክቼይን ላይ የተመሰረቱ ፕሮግራሞች ናቸው። በ Iroha ስማርት ኮንትራቶች [ዋና Iroha መመሪያ ስራዎች](#core-iroha-special-instructions) በመጠቀም ይተገበራሉ።
+ስማርት ኮንትራቶች የተወሰኑ ሁኔታዎች ሲሟሉ የሚሰሩ በብሎክቼይን ላይ የተመሰረቱ ፕሮግራሞች ናቸው። በIroha 3 ውስጥ ስማርት ኮንትራቶች በKotodama ይጻፋሉ እና ወደ IVM ባይትኮድ (`.to`) ይጠናቀራሉ፤ ኮንትራት በአስተናጋጅ ጥሪዎች በኩል [የIroha ልዩ መመሪያዎችን](#core-iroha-special-instructions) በማውጣት ሁኔታን ይቀይራል።
 
 ### ቀስቅሴዎች {#triggers}
 
@@ -119,7 +119,7 @@ Iroha ተግባርን የያዙ Rust ሞጁሎች።
 
 ### ሂጂሪ (የአውታረ መረብ አቻ ስም ስርዓት) {#hijiri-peer-reputation-system}
 
-Iroha መልካም ስም ስርዓት። ጥሩ ታሪክ ካላቸው [የአውታረ መረብ እኩዮች](#peer) ጋር ለመግባባት ቅድሚያ መስጠት እና በተንኮል አዘል [የአውታረ መረብ እኩዮች](#peer) ሊደርስ የሚችለውን ጉዳት ለመቀነስ ያስችላል።
+የIroha የአቻ እና የመለያ መልካም ስም ስርዓት። በጋራ ስምምነት የሚተዳደሩ መለኪያዎቹ የHijiri የክፍያ ፖሊሲን እና የመለያ-ስጋት መዝገቦችን ይይዛሉ፣ የሚተዳደሩ የታዛቢ መዝገቦችም የመለያን የስጋት ነጥብ የሚያስተካክሉ የመለያ ምስክርነቶችን ያወጣሉ።
 
 ## Iroha ሞጁሎች {#iroha-modules}
 
@@ -131,7 +131,7 @@ Iroha መልካም ስም ስርዓት። ጥሩ ታሪክ ካላቸው [የአ�
 
 #### መገልገያ Iroha የማስተማር ስራዎች {#utility-iroha-special-instructions}
 
-ይህ የ[ይዘቶች](#iroha-special-instructions-isi) ስብስብ እንደ `If`፣ ከI/O ጋር የተያያዙ እንደ `Notify` እና እንደ `Sequence` ያሉ ጥንቅሮች ያሉ አመክንዮአዊ መመሪያዎችን ይዟል። በአብዛኛው እንደ [ብጁ መመሪያዎች](#custom-iroha-special-instruction) ያገለግላሉ።
+ይህ የ[ልዩ መመሪያዎች](#iroha-special-instructions-isi) ስብስብ የጎራ-ተኮር አካልን የማይቀይሩ እንደ `Log`፣ `ExecuteTrigger`፣ `SetParameter` እና `Upgrade` ያሉ መመሪያዎችን ይዟል። Iroha 3 `If`፣ `Notify` ወይም `Sequence` መመሪያዎች የሉትም።
 
 ### ኮር Iroha የማስተማር ስራዎች {#core-iroha-special-instructions}
 

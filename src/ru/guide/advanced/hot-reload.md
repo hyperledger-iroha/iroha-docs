@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
+translation_source_hash: 6edc0185196ab8e77ef8552723e05bf37cca1a088da86e2a43d441d58e779c11
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -32,4 +32,4 @@ docker restart <container>
 
 ## Использовать пользовательскую конфигурацию {#use-custom-configuration}
 
-Текущая конфигурация сетевого узла: TOML. Выполните привязку монтирования или скопируйте сгенерированные файлы `config.toml`, `genesis.signed.nrt` и соответствующие ключевые файлы в пути контейнера, ожидаемые изображение, затем перезапустите сетевого узла. Держите сгенерированные файлы вместе; смешивание файлов из разных запусков Kagami может привести к сбоям десериализации или консенсуса.
+Текущая конфигурация сетевого узла: TOML. Kagami записывает по одному `peerN.toml` на каждый валидатор вместе с `genesis.signed.nrt`, `genesis.public_key` и `genesis.expected_hash`; файл Compose, созданный `kagami docker`, монтирует их в контейнер. Сгенерируйте его заново вместо ручного копирования файлов, затем перезапустите сетевой узел. Держите сгенерированные файлы вместе; смешивание файлов из разных запусков Kagami может привести к сбоям десериализации или консенсуса.

@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /get-started/private-dataspace-fee-sponsor.md
-translation_source_hash: 79410ebb9d0a18072d5ae2288348082390b622ed81225de79dcbd4000e268e51
+translation_source_hash: 2ca4fc00709839879fe9cb7ea5e5f697505e5e25d4e5a6cd0bd18d406f6e2846
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -13,7 +13,7 @@ Una entrada del catálogo de espacios de datos no crea una raíz firmada de form
 
 ## 1. Establecer la política de comisiones confirmada en el estado {#_1-establish-the-committed-fee-policy}
 
-El génesis firmado define un único parámetro personalizado `root_fees_v1` que contiene `RootFeePolicy`. Vincula la moneda de comisiones, su destino, la cuenta de custodia del patrocinador, las exenciones de reclamaciones y las tarifas. Cada bloque ordinario y cada cotización utilizan la política confirmada capturada para ellos. Las actualizaciones autorizadas de la política se aplican a partir del siguiente bloque.
+El génesis firmado define un único parámetro personalizado `root_fees_v1` que contiene `RootFeePolicy`. Vincula la moneda de comisiones, su destino, la cuenta de custodia del patrocinador, las exenciones de reclamaciones y las tarifas. Cada bloque ordinario y cada cotización utilizan la política confirmada capturada para ellos. Los cambios autorizados en las tarifas, el destino de las comisiones y las exenciones de reclamaciones se aplican a partir del siguiente bloque; la moneda de comisiones y la cuenta de custodia del patrocinador no pueden cambiar después del primer bloque.
 
 Para la ejecución global, la comisión nativa quema la moneda XOR exacta de la red firmada. La bóveda del programa del patrocinador suministra esa moneda. Los ajustes del nodo y los metadatos de la transacción no seleccionan un pagador ni activan el patrocinio.
 

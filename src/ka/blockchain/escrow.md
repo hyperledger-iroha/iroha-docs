@@ -1,23 +1,22 @@
 ---
 translation_locale: ka
 translation_source: /blockchain/escrow.md
-translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e217bc6ac9
+translation_source_hash: f3c943ba5d18278382876db7bd7b3b116522811353d4318aafe1023d4b04ce03
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # ადგილობრივი აქტივების ესქრო {#native-asset-escrow}
 
 ადგილობრივი ესქრო რიცხვითი აქტივების შენახვის მექანიზმია, რომელსაც რეესტრი მართავს. აქტივის აპლიკაციის კუთვნილ ანგარიშზე გაგზავნისა და ამ ანგარიშის დაცვაში აპლიკაციის კოდზე დაყრდნობის ნაცვლად, ესქროს ISIs ღირებულებას პროტოკოლის დეტერმინისტულ სადეპოზიტო ანგარიშზე გადააქვს და ესქროს სიცოცხლის ციკლს მსოფლიო მდგომარეობაში აღრიცხავს.
 
-ადგილობრივი ესქრო გამოიყენეთ მარკეტპლეისზე ანგარიშსწორებისთვის, Aitai-ის მსგავსი ქსელგარეშე გადახდის კოორდინაციისთვის, ეტაპობრივი ჩაკეტვებისა და ისეთი დაფარული ესქროს ნაკადებისთვის, რომელთა სიცოცხლის ციკლის მდგომარეობა რეესტრში უნდა ჩანდეს.
+ადგილობრივი ესქრო გამოიყენეთ მარკეტპლეისზე ანგარიშსწორებისთვის, Aitai-ის მსგავსი ქსელგარეშე გადახდის კოორდინაციისთვის, ეტაპობრივი ჩაკეტვებისა და ატესტატორზე მიბმული ისეთი პირობითი გათავისუფლებებისთვის, რომელთა სიცოცხლის ციკლის მდგომარეობა რეესტრში უნდა ჩანდეს.
 
 ## ცნებები {#concepts}
 
 |კონცეფცია |აღწერა |
 | --- | --- |
-|`EscrowId` |გამომძახებლის მიერ არჩეული იდენტიფიკატორი, რომელიც ჰეშს ფუთავს. ის გამჭვირვალე და ანონიმურ ესქროებს შორის უნიკალური უნდა იყოს. |
+|`EscrowId` |გამომძახებლის მიერ არჩეული იდენტიფიკატორი, რომელიც ჰეშს ფუთავს. ის ესქროს ყველა ჩანაწერს შორის უნიკალური უნდა იყოს. |
 |`AssetEscrowRecord` |გამჭვირვალე რიცხვითი აქტივის ესქროს ან ჩაკეტვის ჩანაწერი. |
-|`AnonymousAssetEscrowRecord` |ნულიფიკატორებით, ვალდებულებებითა და მტკიცებულების დანართებით გამყარებული დაფარული ესქროს ჩანაწერი. |
 |სადეპოზიტო ანგარიში |პროტოკოლის დეტერმინისტული ანგარიში, რომელიც ჯაჭვის ID-ის, ესქროს ID-ისა და აქტივის განსაზღვრისგან მიიღება. |
 |მტკიცებულების ჰეშები |ჰეშებით შეიძლება აღინიშნოს ინვოისი, განაჩენი, შეტყობინება, შენახვის მანიფესტი ან სხვა ქსელგარეშე მტკიცებულება. თავად მტკიცებულების დატვირთვა ესქროს ჩანაწერში არ ინახება. |
 
@@ -173,7 +172,7 @@ fn drawdown_and_close_asset_locks(
 }
 ```
 
-Python ამჟამად ზოგადი ჩაკეტვებისთვის მაღალი დონის დამხმარეებს გვთავაზობს: `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock` და `expire_asset_lock`. Python-იდან მარკეტპლეისის ან ანონიმური ესქროს გამოსაყენებლად კანონიკური `InstructionBox` JSON SDK-ის JSON-ის პირდაპირი წვდომით გადასცით, ან გამოიყენეთ SDK, რომელსაც ესქროს სრულფასოვანი შემქმნელები აქვს.
+Python ამჟამად ზოგადი ჩაკეტვებისთვის მაღალი დონის დამხმარეებს გვთავაზობს: `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock` და `expire_asset_lock`. Python-იდან მარკეტპლეისის ან პირობითი ესქროს გამოსაყენებლად კანონიკური `InstructionBox` JSON SDK-ის JSON-ის პირდაპირი წვდომით გადასცით, ან გამოიყენეთ SDK, რომელსაც ესქროს სრულფასოვანი შემქმნელები აქვს.
 
 ## დავები {#disputes}
 
@@ -225,82 +224,33 @@ fn resolve_disputed_escrow(
 }
 ```
 
-## ანონიმური ესქრო {#anonymous-escrow}
+## პირობითი ესქრო {#conditional-escrow}
 
-ანონიმური ესქრო მარკეტპლეისის იმავე სიცოცხლის ციკლს იყენებს, თუმცა დაფინანსებისა და დახურვისას აქტივის მოძრაობა დაფარულია. საჯარო ჩანაწერში კვლავ ინახება გამყიდველი, მყიდველი, მდგომარეობა, მტკიცებულების ჰეშები, დროის ნიშნულები და მტკიცებულებასთან დაკავშირებული მოძრაობის ჩანაწერები. დაფარულ ჩანაწერებში თანხები და მიმღებები ვალდებულებებით, ნულიფიკატორებითა და მტკიცებულების დანართებით არის წარმოდგენილი.
+პირობითი ესქრო ბენეფიციარისთვის რიცხვით აქტივს კეტავს და ათავისუფლებს მხოლოდ მას შემდეგ, რაც ყველა პირობა თანმიმდევრობით შესრულდება. თითოეულ პირობაში მითითებულია ატესტატორის ანგარიში, პრედიკატი, რომელსაც რეესტრი აფასებს (`Equals` ტიპიზებულ მნიშვნელობასთან ან `QuantityAtMost` ზღვართან), და მისი ერთიდან დაწყებული რიგითი ნომერი. რეესტრის დროის არასავალდებულო ფანჯარა ყველა ატესტაციას ზღუდავს.
 
-|გამჭვირვალე ISI |ანონიმური ISI |
-| --- | --- |
-|`OpenAssetEscrow` |`OpenAnonymousAssetEscrow` |
-|`AcceptAssetEscrow` |`AcceptAnonymousAssetEscrow` |
-|`MarkEscrowPaymentSent` |`MarkAnonymousEscrowPaymentSent` |
-|`ReleaseAssetEscrow` |`ReleaseAnonymousAssetEscrow` |
-|`CancelAssetEscrow` |`CancelAnonymousAssetEscrow` |
-|`OpenEscrowDispute` |`OpenAnonymousEscrowDispute` |
-|`ResolveEscrowDispute` |`ResolveAnonymousEscrowDispute` |
-
-საფულის ან პროვერის ინსტრუმენტმა მტკიცებულების დანართი და საჯარო შეყვანები უნდა შექმნას. გახსნა ესქროს ერთ ვალდებულებას ქმნის. გათავისუფლებამ, გაუქმებამ და ანონიმური დავის გადაწყვეტამ ზუსტად ერთი ესქროს ვალდებულება უნდა დახარჯოს და მოქმედების შესაბამისი მყიდველის, გამყიდველის ან გაყოფილი გამომავალი ვალდებულებები შექმნას.
-
-```rust
-use iroha::{
-    client::Client,
-    data_model::{
-        isi::escrow::{
-            AcceptAnonymousAssetEscrow, MarkAnonymousEscrowPaymentSent,
-            OpenAnonymousAssetEscrow,
-        },
-        prelude::*,
-        proof::ProofAttachment,
-    },
-};
-use iroha_crypto::Hash;
-
-fn open_anonymous_escrow(
-    seller_client: &Client,
-    buyer_client: &Client,
-    escrow_id: EscrowId,
-    asset_definition_id: AssetDefinitionId,
-    funding_nullifiers: Vec<[u8; 32]>,
-    escrow_commitment: [u8; 32],
-    proof: ProofAttachment,
-    root_hint: Option<[u8; 32]>,
-) -> eyre::Result<()> {
-    seller_client.submit_blocking(OpenAnonymousAssetEscrow::with_evidence_hashes(
-        escrow_id,
-        asset_definition_id,
-        funding_nullifiers,
-        escrow_commitment,
-        proof,
-        root_hint,
-        vec![Hash::new("shielded-invoice")],
-    ))?;
-
-    buyer_client.submit_blocking(AcceptAnonymousAssetEscrow::new(escrow_id))?;
-    buyer_client.submit_blocking(MarkAnonymousEscrowPaymentSent::new(escrow_id))?;
-
-    Ok(())
-}
-```
-
-დაფარული ტრანზაქციების ძირითადი მოდელისთვის იხილეთ [ანონიმური ტრანზაქციები](/ka/blockchain/anonymous-transactions.md).
+| ISI | გამომძახებელი | ეფექტი |
+| --- | --- | --- |
+| `OpenConditionalEscrow` | გამხსნელი | თანხას პროტოკოლის მეურვეობაში კეტავს უცვლელი პირობებითა და ვადის გასვლის აბსოლუტური დროით. |
+| `AttestEscrowCondition` | პირობის ატესტატორი | მომდევნო პირობისთვის აწვდის `Bool`, `Text` ან `Quantity` მნიშვნელობას. ბოლო პირობის შესრულებისას ესქრო ბენეფიციარს გადაეცემა. |
+| `ExpireConditionalEscrow` | ნებისმიერი ანგარიში | ვადის გასვლის შემდეგ თანხას გამხსნელს უბრუნებს, თუ ესქრო არ გათავისუფლებულა. |
 
 ## SDK გამოყენება {#sdk-usage}
 
-დაფარვის მხარდაჭერა განსხვავებულია SDKs. Rust აქვს კანონიკური ტიპირებული მონაცემთა მოდელი. Python ამჟამად გამოხატავს ზოგადი აქტივების ჩაკეტვის დამხმარე საშუალებების. JavaScript და TypeScript იყენებენ Kotodama საფინანსო ფუნქციის ჰოსტ-ინვაკაციებს. Kotlin/JVM და Swift უზრუნველყოფენ ბაზრისთვის ტიპირებულ დატვირთვის მშენებლობას და ანონიმურ საფინანსოს.
+ესქროს მხარდაჭერა სხვადასხვა SDKs-ში განსხვავებულად არის ხელმისაწვდომი. Rust-ს აქვს კანონიკური ტიპიზებული მონაცემთა მოდელი. Python ამჟამად აქტივების ზოგადი ჩაკეტვის დამხმარეებს გვთავაზობს. JavaScript და TypeScript იყენებენ Kotodama-ს ესქროს ჰოსტის გამოძახებებს. Kotlin/JVM და Swift მარკეტპლეისის ესქროსთვის ტიპიზებული დატვირთვის შემქმნელებს გვთავაზობენ.
 
 |SDK |გამოიყენეთ ეს ზედაპირი.|მოცულობა |
 | --- | --- | --- |
-|[Rust](#rust-sdk) |`iroha::data_model::isi::escrow` |ბაზარზე დაფინანსება, გენერული საკეტები, ანონიმური დაფინანსებები, მოთხოვნები და მოვლენები. |
-|[Python](#python-asset-locks) |`Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock`, და კლიენტის `*_and_wait` დამხმარეები |საბაზრო ბაზარი და ანონიმური საფინანსო დამხმარეები ჯერ არ არიან პირველი კლასის Python მეთოდები |
+|[Rust](#rust-sdk) |`iroha::data_model::isi::escrow` |მარკეტპლეისის ესქრო, ზოგადი საკეტები, პირობითი ესქრო, მოთხოვნები და მოვლენები. |
+|[Python](#python-asset-locks) |`Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock` და კლიენტის `*_and_wait` დამხმარეები |აქტივების ზოგადი საკეტები. მარკეტპლეისისა და პირობითი ესქროს დამხმარეები ჯერ სრულფასოვანი Python მეთოდები არ არის. |
 |[JavaScript / TypeScript](#javascript-and-typescript-kotodama) |`compileKotodamaProgram` დან `@iroha/iroha-js/kotodama-compiler` |Kotodama ხელშეკრულებების ფარგლებში საფინანსო ჰოსტ-ფუნქციის მოწოდებები. |
-|[Kotlin / JVM](#kotlin-and-jvm) |`InstructionTemplate` კლასები `org.hyperledger.iroha.sdk.core.model.instructions` |ბაზარი და ანონიმური საფინანსო ინსტრუქციის შაბლონები. |
-|[Swift / iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders` და `IrohaSDK.build*Escrow*` დამხმარეები |საბაზრო და ანონიმური ესქროს Norito JSON ინსტრუქციის დატვირთვები. |
+|[Kotlin / JVM](#kotlin-and-jvm) |`InstructionTemplate` კლასები `org.hyperledger.iroha.sdk.core.model.instructions`-ში |მარკეტპლეისის ესქროს მორგებული ინსტრუქციის შაბლონები. |
+|[Swift / iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders` და `IrohaSDK.build*Escrow*` დამხმარეები |მარკეტპლეისის ესქროს Norito JSON ინსტრუქციის დატვირთვები. |
 
 ქვემოთ მოცემული მაგალითები ყურადღებას აქცევს ინსტრუქციის კონსტრუქციას. ანგარიშის დაფინანსება, ხელმოწერების მართვა და ტრანზაქციის წარდგენა თითოეული SDK ნორმალური ნაკადის მიხედვით მიმდინარეობს.
 
 ### Rust SDK {#rust-sdk}
 
-გამოიყენეთ Rust SDK როდესაც თქვენ გჭირდებათ სრული ადგილობრივი დაფარვა ან მოთხოვნის / მოვლენების მხარდაჭერა. ზემოთ მოცემული მაგალითები აჩვენებს ბაზრის გათავისუფლებას, ზოგად ჩაკეტვას, დავების მოგვარებას და ანონიმურ საფინანსო კონსტრუქციას `iroha::data_model::isi::escrow`.
+გამოიყენეთ Rust SDK, როდესაც გჭირდებათ სრული ადგილობრივი დაფარვა ან მოთხოვნების/მოვლენების მხარდაჭერა. ზემოთ მოცემული მაგალითები აჩვენებს მარკეტპლეისის ესქროს გათავისუფლებას, ზოგადი საკეტიდან თანხის გამოტანას და დავის გადაწყვეტას `iroha::data_model::isi::escrow`-ით.
 
 ```rust
 use iroha::{
@@ -396,7 +346,7 @@ if (compiled.diagnostics.length > 0) {
 }
 ```
 
-კონფლიქტებისათვის გამოიყენეთ `escrow_open_dispute(offer, evidence)` და `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`. ანონიმური საპროცენტო ჰოსტი ფუნქციის ინვოკაციები იღებენ Norito მოთხოვნის დატვირთვის ბაიტებს, მაგალითად `anonymous_escrow_open_offer(request)`.
+დავებისთვის გამოიყენეთ `escrow_open_dispute(offer, evidence)` და `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`.
 
 ### Kotlin და JVM {#kotlin-and-jvm}
 
@@ -430,8 +380,6 @@ println(open.arguments)
 println(NativeEscrowPermissions.CAN_RESOLVE_ESCROW_DISPUTE)
 ```
 
-ანონიმური შაბლონები ხელმისაწვდომია როგორც `OpenAnonymousAssetEscrowInstruction`, `AcceptAnonymousAssetEscrowInstruction`, `MarkAnonymousEscrowPaymentSentInstruction`, `ReleaseAnonymousAssetEscrowInstruction`, `CancelAnonymousAssetEscrowInstruction`, `OpenAnonymousEscrowDisputeInstruction`, და `ResolveAnonymousEscrowDisputeInstruction`. Android Java- ს მოთხოვნის კლიენტებს შეუსაბამობა შეუძლია გამოიყენოს `NativeEscrowInstructions.*` მშენებლები Android არტეფაქტი.
-
 ### Swift და iOS {#swift-and-ios}
 
 Swift SDK აგებს დაფარვის ინსტრუქციას, როგორც Norito JSON დატვირთვები. გამოიყენეთ `NativeEscrowInstructionBuilders` პირდაპირ ან მოიხსენიეთ ექვივალენტი `IrohaSDK.build*Escrow*` დამხმარე, როდესაც თქვენი აპლიკაცია უკვე ფლობს `IrohaSDK` ინსტენსიას .
@@ -462,7 +410,7 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 )
 ```
 
-ანონიმური Swift მშენებლები იღებენ ნულიფიკატორის სიებს, გამოსაშვებ კრიპტოგრაფიულ ვალდებულების ღირებულებათა სიებს, დამტკიცების ლექსიკონს და ვარიანტული `rootHint` მნიშვნელობებს. დავების გადაწყვეტის ნებართვის ტოკი ხელმისაწვდომია როგორც `NativeEscrowPermissions.canResolveEscrowDispute`.
+დავის გადამწყვეტის ნებართვის ტოკენი ხელმისაწვდომია როგორც `NativeEscrowPermissions.canResolveEscrowDispute`.
 
 ## კითხვები და მოვლენები {#queries-and-events}
 
@@ -475,10 +423,8 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 |`FindAssetEscrowsBySeller` |ჩამოთვალეთ რეკორდები, რომლებიც გაიხსნა გამყიდველის ან საკეტი გახსნის მიერ. |
 |`FindAssetEscrowsByBuyer` |ჩამონათვალი ბაზრის მიერ მიღებული საფინანსო ან საკეტი მყიდველის მიერ დანიშნულების მიზნით. |
 |`FindAssetEscrowsByStatus` |სიაში ჩანაწერები `AssetEscrowStatus`.|
-|`FindAnonymousAssetEscrowById` |წაკითხეთ ერთი ანონიმური საფინანსო ფასი `EscrowId`. |
-|`FindAnonymousAssetEscrows*` |დაასახელეთ ანონიმური სესორები ყველა ჩანაწერით, გამყიდველის, მყიდველის ან სტატუსის მიხედვით. |
 
-`EscrowEventFilter` შეუძლია დარეგისტრირდეს გამჭვირვალე ადგილობრივი საფინანსო და საკეტო ღონისძიებებზე საფინანსოდ ID-ით; გამყიდველი, მყიდველი, სტატუსი და ღონისძიების შედგენის ნიღაბი. ღონისძიებების ოჯახში შედის `Opened`, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed`, და `Resolved`. ანონიმური ესქროები ინსპექტირდება ანონიმურ საფინანსოს კითხვებზე.
+`EscrowEventFilter`-ს შეუძლია გამოიწეროს გამჭვირვალე ადგილობრივი ესქროსა და საკეტების მოვლენები ესქროს ID-ის, გამყიდველის, მყიდველის, სტატუსისა და მოვლენების ნაკრების ნიღბის მიხედვით. მოვლენების ოჯახი მოიცავს `Opened`, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed` და `Resolved` მოვლენებს.
 
 ## საოპერაციო შენიშვნები {#operational-notes}
 

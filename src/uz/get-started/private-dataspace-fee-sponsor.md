@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /get-started/private-dataspace-fee-sponsor.md
-translation_source_hash: 79410ebb9d0a18072d5ae2288348082390b622ed81225de79dcbd4000e268e51
+translation_source_hash: 2ca4fc00709839879fe9cb7ea5e5f697505e5e25d4e5a6cd0bd18d406f6e2846
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -13,7 +13,7 @@ Ma’lumotlar makoni katalog yozuvi mustaqil imzolangan ildizni yaratmaydi. Must
 
 ## 1. Commit qilingan komissiya siyosatini belgilang {#_1-establish-the-committed-fee-policy}
 
-Imzolangan genesis `RootFeePolicy`ni saqlovchi bitta `root_fees_v1` maxsus parametrini yaratadi. U komissiya valyutasi, komissiya manzili, homiy saqlash hisobi, talab istisnolari va stavkalarni bog‘laydi. Har bir odatiy blok va komissiya hisobi o‘zi olgan commit qilingan siyosatdan foydalanadi. Vakolatli siyosat yangilanishlari keyingi blokdan qo‘llanadi.
+Imzolangan genezis `RootFeePolicy`ni saqlovchi bitta `root_fees_v1` maxsus parametrini yaratadi. U komissiya valyutasi, komissiya manzili, homiy saqlash hisobi, talab istisnolari va stavkalarni bog‘laydi. Har bir odatiy blok va komissiya hisobi o‘zi olgan, zanjirda qayd etilgan siyosatdan foydalanadi. Stavkalar, komissiya manzili va talab istisnolariga kiritilgan vakolatli o‘zgarishlar keyingi blokdan qo‘llanadi; komissiya valyutasi va homiy saqlash hisobi birinchi blokdan keyin o‘zgarishi mumkin emas.
 
 Global bajarishda nativ komissiya imzolangan tarmoqning aniq XOR valyutasini yoqadi. Bu valyutani homiy dasturining ombori ta’minlaydi. Tugun sozlamalari va tranzaksiya metadatasi to‘lovchini tanlamaydi va homiylikni faollashtirmaydi.
 

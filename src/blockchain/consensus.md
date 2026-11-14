@@ -45,9 +45,11 @@ Votes are small signed consensus messages. They refer to the proposed block,
 the height, the view, and the validator identity. Verified signatures form
 prepare and commit quorum certificates. A commit certificate is the durable
 proof that enough validators observed the same result for the same block.
-Each validator sends its Prepare and Commit votes to the full committee; any
-validator can aggregate the required equal votes and broadcast the resulting
-certificate.
+Set A validators normally send their Prepare and Commit votes to the round's
+proxy tail, which aggregates exactly the required equal votes and broadcasts
+the certificate. If a certificate is overdue, set B validators also vote to
+the proxy tail; as a last resort every validator broadcasts its vote and any
+validator can aggregate the certificate.
 
 ### Quorum and observers
 
@@ -162,12 +164,13 @@ and [qualification status](https://github.com/hyperledger-iroha/iroha/blob/c8c87
 
 Sumeragi V1 carries global payload availability through signed RS16
 `PayloadManifest` and `PayloadChunk` messages. The leader sends the signed
-manifest to the full committee and initially distributes deterministic chunks
-to Set A. A validator can Prepare-vote only after reconstructing the canonical
-body, validating the manifest and chunk hashes, storing the body durably, and
-completing deterministic validation. If the fast path stalls, recovery expands
-chunk delivery to Set B. Certified-body recovery and block sync provide the
-bounded recovery path when a peer learns finality before receiving the body.
+manifest and every signed row to all other committee members and to joining
+members of the next committee. A validator can Prepare-vote only after
+reconstructing the canonical body, validating the manifest and chunk hashes,
+storing the body durably, and completing deterministic validation. A peer that
+is missing rows requests them with `PayloadRequest`. Certified-body recovery
+and block sync provide the bounded recovery path when a peer learns finality
+before receiving the body.
 
 Each lane instance uses its own authenticated availability and certificate
 context. Global merge checks bind its certified batch and original payload to
@@ -180,13 +183,13 @@ Use the authenticated operator surfaces rather than a separate RBC endpoint:
   reports the authoritative height, view, phase, certificates, and liveness
   state.
 - `iroha --operator-private-key-file <path> --output-format text ops sumeragi diagnostics`
-  reports non-authoritative queue, pipeline, NPoS, lane, and data space
-  diagnostics, including lane payload ownership.
-- Prometheus signals such as `sumeragi_missing_block_requests`,
-  `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`,
-  `sumeragi_da_gate_block_total`, and `sumeragi_da_gate_satisfied_total`
-  separate missing-body recovery, data-availability gates, and message
-  handling; see
+  reports non-authoritative transaction-queue pressure, NPoS election state,
+  and lane-governance manifest status.
+- Per-instance Prometheus series such as `sumeragi_fetch_requests_total`
+  (`kind="body"` for missing bodies, `kind="sync"` for catch-up),
+  `sumeragi_view_changes_total`, `sumeragi_round_stage`, and
+  `sumeragi_dropped_total` carry a `lane` label and separate missing-body
+  recovery, view changes, and bounded-queue drops; see
   [Performance and metrics](/guide/advanced/metrics.md).
 
 Lane block stores retain the certified batches and source records needed for

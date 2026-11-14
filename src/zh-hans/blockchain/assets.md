@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/assets.md
-translation_source_hash: 4d0a3f54a0c70d08d11160b9ec66d6538aa2c49c7771a13e4a070b61a9cb3e4b
+translation_source_hash: f5f0eb99e76287db695cc21b8580fd2a9b4dc2a989237c1a1d3d7333c14561ce
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -22,6 +22,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 - `logo`:可选的 `SoraFS` URI
 - `metadata`:任意的关键值元数据
 - `balance_scope_policy`：余额是全局可用，还是受数据空间限制
+- `owning_domain`：由域拥有的定义所属的域；直接在数据空间中注册的定义不含此字段
 - `owned_by`:已注册或拥有定义的账户
 - `total_quantity`:发行总量
 - `confidential_policy`:保护资产运营的政策
@@ -33,7 +34,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 一个 `Asset` 包含:
 
 - `id`:结合资产定义,持有者账户和可选余额范围的`AssetId`
-- `value`:一个 `Numeric`的余额
+- `value`:一个 `Quantity`的余额
 
 持有者账户采用规范标识且不包含域。资产定义可以投影到由数据空间限定的域下，例如 `payments.universal`。
 
@@ -88,7 +89,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-这三个示例都是读取操作。要在 Taira 上铸造、销毁或转移资产，请使用通过水龙头获得资金的账户，并遵循[连接 SORA Nexus 数据空间](/zh-hans/get-started/sora-nexus-dataspaces.md)中的受校验流程。
+这三个示例都是读取操作。要在 Taira 上铸造、销毁或转移资产，请使用通过水龙头获得资金的账户，并遵循[使用 Taira 和 Minamoto 在 SORA Nexus 上开发](/zh-hans/get-started/sora-nexus-dataspaces.md)中的受校验流程。
 
 对于需要支付费用的 Taira 资产示例，先按[在 Taira 获取测试网 XOR](/zh-hans/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)中带有准备步骤的水龙头流程，为签名账户提供资金。然后在 `ledger asset mint`、`ledger asset burn` 和 `ledger asset transfer` 命令中传入 `--fee-payer authority`；CLI 会在签名前以 Taira 的费用资产给出准确报价：
 

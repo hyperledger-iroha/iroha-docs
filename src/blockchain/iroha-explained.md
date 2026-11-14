@@ -59,8 +59,10 @@ and deterministic key prefixes.
 The routing path is:
 
 1. Configuration builds a validated `DataSpaceCatalog`, `LaneCatalog`, and
-   `LaneRoutingPolicy`. SORA Nexus routing is mandatory. Multiple data spaces,
-   lanes, or non-default routing use the SORA Nexus profile (`--sora`) and NPoS.
+   `LaneRoutingPolicy`. SORA Nexus routing is mandatory. On the global root, multiple
+   data spaces, lanes, or non-default routing require the SORA Nexus profile
+   (`--sora`) and NPoS; an independently signed data space root runs in
+   Permissioned mode.
 2. The transaction queue resolves a `RoutingPlan` from the transaction and
    committed state. Each coordinator or participant route contains a lane ID
    and data space ID; Native AMX plans retain the full participant set.
@@ -76,8 +78,8 @@ The routing path is:
    targets can produce a Native AMX plan. Transaction metadata `amx_policy`
    set to `reject_cross_dataspace` rejects cross-data space plans. A routing
    plan alone does not authorize or complete settlement across independent roots.
-5. Sumeragi and telemetry keep the assignment visible as lane and data space
-   activity, backlog, and commitment snapshots.
+5. Telemetry keeps the assignment visible as per-lane activity and backlog in
+   the `/status` lane snapshot (`teu_lane_commit`).
 
 This is why object identifiers matter. Domains include the data space alias
 in their ID, for example `payments.universal`, so domain-scoped writes can
@@ -111,7 +113,7 @@ These relationships are fixed by the pinned
 [lane implementation](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_core/src/sumeragi/lanes/mod.rs),
 and [independent-root contract](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/sumeragi.md).
 
-Sumeragi always uses data availability and reliable broadcast. These paths are
+Sumeragi always uses signed RS16 payload availability and certified-body recovery. These paths are
 part of the Iroha 3 consensus protocol and cannot be disabled by a deployment
 profile.
 

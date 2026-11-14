@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: 37e8be9b07a40e5c6b841a47b016320e42079853433fb3e53937e4021dc1304f
+translation_source_hash: 753ce1b5e0de4eae56b38e77962566b23fee56d4662a432a7bbe6ea807261422
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -29,20 +29,16 @@ targets: [
 ]
 ```
 
-Үҙ ҡушымтағыҙ өсөн юлды көйләгеҙ. Хәҙерге `examples/ios/ConnectMinimalApp` юлына күсермәгеҙ; был манифест `../../IrohaSwift` менән `examples/IrohaSwift` билдәләнә.
+Үҙ ҡушымтағыҙ өсөн юлды көйләгеҙ. `examples/ios/ConnectMinimalApp/Package.swift` шул уҡ бәйлелекте `../../../IrohaSwift` тигән сағыштырма юл менән күрһәтә.
 
-Пакетты хәл итер алдынан күперҙең эш урыны тамырҙа булыуын тикшерегеҙ:
+Пакетты хәл итер алдынан ағымдағы натив күперҙе йыйығыҙ. Урындағы эшләү һәм һынауҙар өсөн быны эш киңлеге тамырынан эшләтегеҙ:
 
 ```bash
 cd /path/to/iroha
-make bridge-xcframework
+python3.12 scripts/test_swift_local.py
 ```
 
-Был `dist/NoritoBridge.xcframework` сығара; `IrohaSwift/Package.swift` уны `../dist/NoritoBridge.xcframework` тип атай.
-
-## CocoaPods {#cocoapods}
-
-Код базаһы шулай уҡ `IrohaSwift/IrohaSwift.podspec` бирә. Ул `IrohaSwift` pod-ын, Swift 5.9 һәм iOS 15-те иғлан итә. Podspec төп репозиторийҙағы Swift сығанаҡтарын ала; транзакцияларҙы кодлау, Ed25519 булмаған ҡултамғалар һәм Connect криптографияһы өсөн native күпер һаман да булырға һәм бәйләнергә тейеш.
+Релиз йыйылмалары `dist/NoritoBridge.xcframework` файлын `make bridge-xcframework` ярҙамында булдыра; был `SOURCE_DATE_EPOCH`, `NORITO_BRIDGE_OUT_DIR`, `NORITO_BRIDGE_BUILD_DIR`, `NORITO_BRIDGE_ARCHIVE_OUTPUT` һәм `MOBILE_SDK_CARGO_LOCKFILE` талап итә. `IrohaSwift/Package.swift` күпергә `../dist/NoritoBridge.xcframework` тип һылтана.
 
 ## Тиҙерәк старт {#quickstart}
 
@@ -51,13 +47,13 @@ import Foundation
 import IrohaSwift
 
 let torii = ToriiClient(baseURL: URL(string: "http://127.0.0.1:8080")!)
-let sdk = IrohaSDK(toriiClient: torii)
+let sdk = IrohaSDK(baseURL: torii.baseURL)
 
 let keypair = try Keypair.generate()
 let accountId = try keypair.accountId()
 
 if #available(iOS 15.0, macOS 12.0, *) {
-    let balances = try await torii.getAssets(accountId: accountId)
+    let balances = try await torii.accountAssets(of: accountId).page()
     print("balances:", balances)
 }
 ```
@@ -88,7 +84,7 @@ if #available(iOS 15.0, macOS 12.0, *) {
 
 ```swift
 let transfer = TransferRequest(
-    chainId: "00000000-0000-0000-0000-000000000000",
+    networkId: try NetworkId(literal: "<exact-network-id>"),
     authority: accountId,
     assetDefinitionId: "66owaQmAQMuHxPzxUN3bqZ6FJfDa",
     quantity: "1",
@@ -102,15 +98,15 @@ if #available(iOS 15.0, macOS 12.0, *) {
         transfer: transfer,
         keypair: keypair
     )
-    print(status.content.status.kind)
+    print(status.status.kind)
 }
 ```
 
-`TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest`, һәм `UnshieldRequest` каноник иҫәбен раҫлау IDs һәм каноник prefixed Base58 актив билдәләмәһе IDs ҡул ҡуйғанға тиклем.
+`TransferRequest`, `MintRequest` һәм `BurnRequest` ҡул ҡуйыр алдынан каноник иҫәп идентификаторҙарын һәм префиксһыҙ каноник Base58 актив билдәләмәһе идентификаторҙарын тикшерә.
 
 ## Протоколға индерелгән эскроу {#native-escrow}
 
-Swift `NativeEscrowInstructionBuilders` йәки тиң `IrohaSDK.build*Escrow*` ярҙамсылары аша баҙар һәм аноним эскроу инструкцияларына Norito JSON payload-тары төҙөй. Миҫалдар, аноним иҫбатлау яландары һәм бәхәсте хәл итеүсе рөхсәт токены өсөн [протоколға индерелгән актив эскроуын](/ba/blockchain/escrow.md#swift-and-ios) ҡарағыҙ.
+Swift баҙар эскроуы инструкцияларын `NativeEscrowInstructionBuilders` йәки уларға тиң `IrohaSDK.build*Escrow*` ярҙамсылары аша Norito JSON файҙалы йөктәре рәүешендә төҙөй. Миҫалдар һәм бәхәсте хәл итеүсе рөхсәт токены өсөн [протоколға индерелгән актив эскроуын](/ba/blockchain/escrow.md#swift-and-ios) ҡарағыҙ.
 
 ## Ҡул ҡуйыу {#signing}
 
@@ -143,8 +139,14 @@ let request = try ConnectClient.makeWebSocketRequest(
 let client = ConnectClient(request: request)
 await client.start()
 
-let session = ConnectSession(sessionID: sessionID, client: client)
 let keyPair = try ConnectCrypto.generateKeyPair()
+let session = try ConnectSession(
+    networkID: try NetworkId(literal: "<exact-network-id>"),
+    appPublicKey: keyPair.publicKey,
+    nonce: nonce,
+    relayToken: "<token>",
+    client: client
+)
 ```
 
 `ConnectSession` асыҡ һәм ябыҡ контроллерҙар, шифрланған конверт уҡый, йүнәлеш төймәләре, ағым контроле, ваҡиға ағымы, баланс ағымы һәм диагностика журналдары менән шөғөлләнә.
@@ -154,7 +156,7 @@ let keyPair = try ConnectCrypto.generateKeyPair()
 Swift сығанағына әлеге ваҡытта түбәндәгеләр инә:
 
 - `ToriiClient` HTTP иҫәбенә ярҙамсылар, активтар, ҡушаматтар, Explorer биттәрҙәре, RWA, килешеүҙәр, мультисиг, идара итеү, яҙылыуҙар, мәғлүмәттәрҙең булыуы, конфиденциаль активтар, узел/эш ваҡыты статусы, һаулыҡ, метрикалар һәм SSE ағымдар
-- `IrohaSDK` транзакция төҙөүселәр һәм күсереү өсөн тапшырыу/һайлау ярҙамсылары, минтлау, яндырыу, ҡалҡан, ҡалҡанһыҙ, ZK күсереү, ZK активтарҙы теркәү, метамәғлүмәттәр, идентификатор талаптары, күп тамғалы теркәү һәм идара итеү инструкциялары
+- `IrohaSDK` транзакция төҙөүселәре һәм күсереү, сығарыу, яндырыу, ZK активтарын теркәү, метамәғлүмәттәр, идентификатор дәғүәләре, мультиҡултамға теркәү, контракт урынлаштырыу һәм идара итеү бюллетендәре өсөн тапшырыу/һорап тороу ярҙамсылары
 - `PendingTransactionQueue` һәм `FilePendingTransactionQueue` аша күрелгән транзакция сираттары ярҙамы
 - иҫәбенә адрес һәм I105 ярҙамсылары аша `AccountAddress` һәм `AccountId`
 - Ed25519, secp256k1, ML-DSA, BLS, GOST һәм SM2 ҡултамғалау өҫкө йөҙҙәре, кәрәк саҡта күпер ярҙамы менән.
@@ -170,7 +172,6 @@ Swift сығанағына әлеге ваҡытта түбәндәгеләр и
 ## Сығанаҡтар {#source-references}
 
 - `IrohaSwift/Package.swift`
-- `IrohaSwift/IrohaSwift.podspec`
 - `IrohaSwift/Sources/IrohaSwift/ToriiClient.swift`
 - `IrohaSwift/Sources/IrohaSwift/TxBuilder.swift`
 - `IrohaSwift/Sources/IrohaSwift/TransactionEncoder.swift`

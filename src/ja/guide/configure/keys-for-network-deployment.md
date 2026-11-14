@@ -1,20 +1,20 @@
 ---
 translation_locale: ja
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
+translation_source_hash: c42adbe41e322c93509279f1f558d4450431de90c596f37eb3999754d4387f78
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
 # ネットワーク展開のための鍵 {#keys-for-network-deployment}
 
-どのネットワークでも、クライアント、ピア、ジェネシス署名には、それぞれ別の鍵が必要です。NPoS または SORA Nexus のプロファイルでは、BLS バリデータの識別にも別の鍵が必要です。
+どのネットワークでも、クライアント、ジェネシス署名、および所有証明を伴う BLS-normal バリデーター識別子には、それぞれ別の鍵素材が必要です。
 
 ## キーが使用される場所 {#where-keys-are-used}
 
 - クライアントの署名鍵は `[account]` の下の `client.toml` に保存されます。
 - ネットワークピアの識別キーは、各ネットワークピア `config.toml` に `public_key` および `private_key` として保存されます。
 - ネットワークピアの検出は、各ネットワークピアの公開鍵を`trusted_peers`で使用します。
-- BLS バリデーターの保有証明は、NPoS プロファイルのために `trusted_peers_pop` に保存されます。
+- BLS バリデーターの所有証明は、コンセンサスモードにかかわらず、すべてのバリデーターについて `trusted_peers_pop` に保存されます。
 - ブロックチェーンのジェネシス署名は、ネットワークピアの設定にある`[genesis].public_key`と、テクニカルマニフェストを署名する際の対応する秘密鍵を使用します。
 
 ローカルまたはテスト環境へのデプロイの場合、Kagami にこれらすべてのファイルを一緒に生成させてください:

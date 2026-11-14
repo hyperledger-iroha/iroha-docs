@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
+translation_source_hash: 6edc0185196ab8e77ef8552723e05bf37cca1a088da86e2a43d441d58e779c11
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -32,4 +32,4 @@ docker restart <container>
 
 ## Օգտագործեք հարմարվողական կազմաձեւում {#use-custom-configuration}
 
-Ներկայիս հանգույցային կոնֆիգուրացիան TOML է: Կապեք կամ պատճենեք առաջադրված `config.toml`, `genesis.signed.nrt` եւ դրանց հետ կապված հիմնական ֆայլերը պատկերով սպասվող պահեստային ուղիների մեջ, այնուհետեւ վերսկսեք հանգույցը: Պահպանեք ստեղծված ֆայլերը միասին. տարբեր Kagami երթեւեկություններից ֆայլերի խառնումը կարող է առաջացնել deserialization կամ համաձայնության ձախողումներ:
+Հանգույցի ընթացիկ կարգավորումը TOML ձևաչափով է։ Kagami-ն յուրաքանչյուր վավերացնողի համար գրում է մեկ `peerN.toml`՝ `genesis.signed.nrt`-ի, `genesis.public_key`-ի և `genesis.expected_hash`-ի հետ միասին. `kagami docker`-ի ստեղծած Compose ֆայլը դրանք միացնում է կոնտեյների մեջ։ Ֆայլերը ձեռքով պատճենելու փոխարեն վերստեղծեք այն, ապա վերագործարկեք հանգույցը։ Ստեղծված ֆայլերը պահեք միասին. տարբեր Kagami գործարկումներից ֆայլերի խառնումը կարող է առաջացնել ապասերիալացման կամ կոնսենսուսի ձախողումներ։

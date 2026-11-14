@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /reference/glossary.md
-translation_source_hash: 8b00758b5731a2f9e09a5b49ccb7f298229ab966b5adf2d7152e3b1416fe8737
+translation_source_hash: 4d3a8e3aa88291edbaac5b52039d2aad160d89fb83c085c21030a531c93258f4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -79,7 +79,7 @@ translation_engine: nllb-200-ct2+reviewed-delta+reviewed-first-release-source-am
 
 ## بازنطینی غلطی کی رواداری (BFT) {#byzantine-fault-tolerance-bft}
 
-نیٹ ورک کے ساتھ مناسب طریقے سے کام کرنے کی صلاحیت جس میں بدسلوکی اداکاروں کا ایک خاص فیصد ہوتا ہے۔ Iroha اپنے پیئر ٹو پیئر نیٹ ورک میں 33٪ تک بدسلوگی اداکاروں کے ساتھ کام کرنے کی قابل ہے۔
+ایسے نیٹ ورک کے ساتھ درست طریقے سے کام کرنے کی صلاحیت جس میں بدنیت عناصر کا ایک خاص فیصد موجود ہو۔ Sumeragi کمیٹی میں بالکل `3f + 1` ویلیڈیٹرز ہوتے ہیں اور یہ زیادہ سے زیادہ `f` بازنطینی ویلیڈیٹرز برداشت کرتی ہے، جو کمیٹی کے ایک تہائی سے کم ہیں۔
 
 ## Iroha اجزاء {#iroha-components}
 
@@ -107,7 +107,7 @@ Iroha ماڈیول جو اتفاق رائے کے ذمہ دار ہے۔
 
 ### ذہین معاہدے {#smart-contracts}
 
-سمارٹ معاہدے بلاکچین پر مبنی پروگرام ہیں جو اس وقت چلتے ہیں جب مخصوص شرائط کا ایک سیٹ پورا ہوتا ہے۔ Iroha میں سمارٹ کنٹریکٹس کو [کور Iroha کے ذریعہ خصوصی ہدایات](#core-iroha-special-instructions) کا استعمال کرتے ہوئے نافذ کیا جاتا ہے۔
+اسمارٹ کنٹریکٹس بلاک چین پر مبنی پروگرام ہیں جو اس وقت چلتے ہیں جب شرائط کا ایک مخصوص مجموعہ پورا ہو۔ Iroha 3 میں اسمارٹ کنٹریکٹس Kotodama میں لکھے جاتے ہیں اور IVM بائٹ کوڈ (`.to`) میں کمپائل کیے جاتے ہیں؛ کنٹریکٹ ہوسٹ کالز کے ذریعے [Iroha کی خصوصی ہدایات](#core-iroha-special-instructions) جاری کر کے حالت بدلتا ہے۔
 
 ### ٹرگرز {#triggers}
 
@@ -119,7 +119,7 @@ Iroha 3 کی پہلی ریلیز بلاک کی ترسیل کے ایک ہی مس�
 
 ### ہجری (پیر ساکھ کا نظام) {#hijiri-peer-reputation-system}
 
-Iroha کی ساکھ کا نظام۔ یہ [پیئرز](#peer) کے ساتھ مواصلات کو ترجیح دینے کی اجازت دیتا ہے جو اچھے ٹریک ریکارڈ رکھتے ہیں ، اور نقصان کو کم کرنا جو بدسلوکی [پیئرز ](#peer) سے پیدا ہوسکتا ہے۔
+Iroha کا پیئر اور اکاؤنٹ کی ساکھ کا نظام۔ اس کے اتفاقِ رائے کی ملکیت والے پیرامیٹرز Hijiri فیس پالیسی اور اکاؤنٹ کے خطرے کے ریکارڈ رکھتے ہیں، اور زیرِ حکمرانی مبصر رجسٹریاں اکاؤنٹ کی تصدیقات جاری کرتی ہیں جو کسی اکاؤنٹ کے خطرے کا اسکور بدلتی ہیں۔
 
 ## Iroha ماڈیولز {#iroha-modules}
 
@@ -131,7 +131,7 @@ Iroha کے ساتھ فراہم کردہ ذہین معاہدوں کی لائبر�
 
 #### افادیت Iroha خصوصی ہدایات {#utility-iroha-special-instructions}
 
-[isi](#iroha-special-instructions-isi) کے اس سیٹ میں منطقی ہدایات جیسے `If` ، I / O سے متعلقہ جیسے `Notify` اور ترکیبیں جیسے `Sequence` شامل ہیں۔ وہ زیادہ تر [ کسٹم ہدایات کے طور پر استعمال ہوتے ہیں ](#custom-iroha-special-instruction)۔
+[isi](#iroha-special-instructions-isi) کے اس سیٹ میں وہ ہدایات شامل ہیں جو کسی ڈومین سے مخصوص ہستی کو تبدیل نہیں کرتیں، جیسے `Log`، `ExecuteTrigger`، `SetParameter` اور `Upgrade`۔ Iroha 3 میں `If`، `Notify` یا `Sequence` ہدایات نہیں ہیں۔
 
 ### بنیادی Iroha خصوصی ہدایات {#core-iroha-special-instructions}
 

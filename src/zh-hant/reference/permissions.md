@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /reference/permissions.md
-translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -16,7 +16,6 @@ translation_engine: nllb-200-ct2+reviewed-delta
 |許可證符號|類別|行動|
 | --- | --- | --- |
 |`CanManagePeers`|對等節點|登記,撤銷或以其他方式管理對等節點.|
-|`CanManageLaneRelayEmergency`|對等節點|管理緊急通道連線控制.|
 |`CanRegisterDomain`|域名|登記一個域名.|
 |`CanUnregisterDomain`|域名|取消註冊域名.|
 |`CanModifyDomainMetadata`|域名|修改域名的後設資料.|
@@ -28,7 +27,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 |`CanMintAssetWithDefinition`|資產|鑄造特定定義的資產. |
 |`CanBurnAssetWithDefinition`|資產|為了一個特定的定義,銷毀資產.|
 |`CanTransferAssetWithDefinition`|資產|轉移資產以特定的定義.|
-|`CanMintAsset`|資產|一個特定的資產餘額. |
+|`CanMintAssetToAccount`|資產|一個特定的資產餘額. |
 |`CanBurnAsset`|資產|銷毀一個特定的資產餘額.|
 |`CanTransferAsset`|資產|轉移特定的資產餘額.|
 |`CanRegisterNft`|NFT|登記一個 NFT.|
@@ -43,7 +42,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 |`CanModifyTrigger`|觸發器|修改觸發器配置.|
 |`CanModifyTriggerMetadata`|觸發器|修改觸發器後設資料.|
 |`CanUpgradeExecutor`|執行者|升級執行階段執行器.|
-|`CanRegisterSmartContractCode`|智慧合同|登記智慧合同程式碼.|
+|`CanManageSmartContractCode`|智慧合約|移除未被參照的程式碼產物，並委派合約進入點。已註冊帳戶無需此權限即可建立經驗證的產物。|
 | `CanManageFeeSponsorProgram` | SORA Nexus | 管理指定贊助者帳戶擁有的方案。 |
 | `CanEnrollFeeSponsorProgram` | SORA Nexus | 管理某一指定贊助方案的受益者。 |
 

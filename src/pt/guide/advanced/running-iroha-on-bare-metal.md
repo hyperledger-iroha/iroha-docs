@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -34,7 +34,7 @@ Gerar uma localnet de quatro pares Iroha 3:
 target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-O diretório de saída contém os arquivos gerados `genesis.json`, `genesis.signed.nrt`, `config.toml` de pares de rede, `client.toml`, scripts auxiliares e um `README.md` gerado com comandos exatos para esse pacote.
+O diretório de saída contém os arquivos gerados `genesis.json`, `genesis.signed.nrt` e `genesis.expected_hash`, um `peerN.toml` por validador, `client.toml`, os scripts `start.sh` e `stop.sh` e um `README.md` gerado com comandos exatos para esse pacote.
 
 ## 3. Iniciar pares de rede {#_3-start-peers}
 
@@ -44,7 +44,7 @@ Para uma localnet descartável gerada, use o script gerado:
 ./localnet/start.sh
 ```
 
-Se você precisar conectar cada par de rede a um gerenciador de processos como systemd, use o comando de inicialização registrado em `./localnet/README.md` para cada par de rede. Mantenha o `config.toml`, a chave privada, o diretório de armazenamento e as portas de cada par de rede separados.
+Se você precisar conectar cada par de rede a um gerenciador de processos como systemd, siga o comando por par em `./localnet/start.sh`: execute `iroha3d --config <bundle>/peerN.toml` a partir de `<bundle>/state/peerN` e passe `--sumeragi-assert-fresh-key` somente na primeira inicialização desse par. Mantenha o `peerN.toml`, a chave privada, o diretório de armazenamento e as portas de cada par de rede separados.
 
 ## 4. Operar a Rede {#_4-operate-the-network}
 

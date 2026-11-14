@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: 5fb7abd4e152ece715a8337e8ef8e75330f634d2a1b26e0c5bd8308f1f3793a9
+translation_source_hash: 40714a6cd124d4b0342b0f6ecf321f286e714c0e236afd6fd7834c0cf0ad1165
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -11,15 +11,14 @@ translation_engine: nllb-200-ct2+reviewed-delta
 
 ## 1۔ ضروریات {#_1-prerequisites}
 
-سب سے پہلے مقامی نیٹ ورک شروع کریں:
-
-- [لانچنگ Iroha 3](./launch-iroha.md)
-
-مندرجہ ذیل مثالیں [ لانچ Iroha 3](./launch-iroha.md) میں تخلیق کردہ لوکل نیٹ ورک سے پیدا کردہ کلائنٹ ترتیب پر فرض کرتی ہیں:
+دستاویز میں درج ماخذ ورژن پر Iroha کی چیک آؤٹ شدہ کاپی سے، چار پیئرز والا مقامی نیٹ ورک بنائیں اور شروع کریں:
 
 ```bash
-./localnet/client.toml
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
+./localnet/start.sh
 ```
+
+نیچے دی گئی مثالیں اس کی تیار کردہ کلائنٹ ترتیب، `./localnet/client.toml`، استعمال کرتی ہیں۔
 
 ## بنیادی CLI سیٹ اپ۔ {#_2-basic-cli-setup}
 
@@ -61,7 +60,7 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-`universal` ڈیٹا اسپیس کے عوامی ڈومینز کی فہرست دیکھیں:
+ان ڈومینز کی فہرست دیکھیں جو غیر مصدقہ قاری کو نظر آتے ہیں:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
@@ -147,7 +146,8 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 اتفاقِ رائے کے آپریٹر کی کمانڈز کے لیے اجازت کی فہرست میں موجود رن ٹائم کلید لازم ہے۔ اسے `client.toml` سے باہر رکھیں اور صرف مالک کی رسائی والی فائل کا مطلق راستہ دیں:
 
 ```bash
-: "${OPERATOR_KEY_FILE:=$PWD/secrets/operator.key}"
+# The generated localnet writes its allow-listed operator key here.
+: "${OPERATOR_KEY_FILE:=$PWD/localnet/runtime/operator-signer.key}"
 
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \

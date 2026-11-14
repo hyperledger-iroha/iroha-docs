@@ -1,9 +1,9 @@
 ---
 translation_locale: ja
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 0c4f2f3fc4efb9f883f597a3eea49c99431b711a0141eba70ac5a2524990dd73
+translation_source_hash: 50fac5ad01faf8d09441cba90f29472da04630dbeb3c80111a19f3fb50bb1224
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # サンプルとレシピ {#samples-and-recipes}
 
@@ -19,4 +19,4 @@ Iroha ソースリポジトリには、ノードと同じリビジョンを追�
 
 ## Android {#android}
 
-新しい Android 作業には、[Kotlin、Android、そしてJava](/ja/guide/tutorials/kotlin-java.md)で説明されている Kotlin-最初の`core-jvm`、`client-android`、および`offline-wallet-android`モジュールを使用してください。Kotlin SDK は、Android の消費者にとって標準的な出発点です。
+新しい Android 作業には、[Kotlin、Android、そしてJava](/ja/guide/tutorials/kotlin-java.md)で説明されている Kotlin-最初の`core-jvm`、`client-android`、および`kagemusha-wallet-android`モジュールを使用してください。Kotlin SDK は、Android の消費者にとって標準的な出発点です。

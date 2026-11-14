@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /reference/glossary.md
-translation_source_hash: 8b00758b5731a2f9e09a5b49ccb7f298229ab966b5adf2d7152e3b1416fe8737
+translation_source_hash: 4d3a8e3aa88291edbaac5b52039d2aad160d89fb83c085c21030a531c93258f4
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -79,7 +79,7 @@ O [bloco gênese da blockchain](/pt/guide/configure/genesis.md) define essas inf
 
 ## Tolerância a falhas bizantinas (BFT) {#byzantine-fault-tolerance-bft}
 
-A propriedade de ser capaz de funcionar adequadamente em uma rede contendo uma certa porcentagem de agentes maliciosos. Iroha é capaz de funcionar com até 33% de agentes maliciosos em sua rede ponto a ponto.
+A propriedade de ser capaz de funcionar adequadamente em uma rede contendo uma certa porcentagem de agentes maliciosos. Um comitê do Sumeragi tem exatamente `3f + 1` validadores e tolera até `f` validadores bizantinos, menos de um terço do comitê.
 
 ## Iroha Componentes {#iroha-components}
 
@@ -107,7 +107,7 @@ Uma estrutura de dados usada para validar e verificar o estado em cada altura de
 
 ### Contratos inteligentes {#smart-contracts}
 
-Contratos inteligentes são programas baseados em blockchain que são executados quando um conjunto específico de condições é atendido. Em Iroha, contratos inteligentes são implementados usando [operações de instrução núcleo Iroha](#core-iroha-special-instructions).
+Contratos inteligentes são programas baseados em blockchain que são executados quando um conjunto específico de condições é atendido. No Iroha 3, contratos inteligentes são escritos em Kotodama e compilados para bytecode IVM (`.to`); um contrato altera o estado emitindo [instruções especiais do Iroha](#core-iroha-special-instructions) por meio de chamadas ao host.
 
 ### Gatilhos {#triggers}
 
@@ -119,7 +119,7 @@ A primeira versão do Iroha 3 oferece suporte a uma única versão canônica do 
 
 ### Hijiri (sistema de reputação de pares na rede) {#hijiri-peer-reputation-system}
 
-Sistema de reputação do Iroha. Ele permite priorizar a comunicação com [pares de rede](#peer) que têm um bom histórico e reduzir o dano que pode ser causado por [pares de rede](#peer) maliciosos.
+Sistema de reputação de pares de rede e contas do Iroha. Seus parâmetros, controlados pelo consenso, contêm a política de taxas do Hijiri e os registros de risco de contas, e registros governados de observadores emitem atestações de contas que ajustam a pontuação de risco de uma conta.
 
 ## Iroha Módulos {#iroha-modules}
 
@@ -131,7 +131,7 @@ Uma biblioteca de contratos inteligentes fornecida com Iroha. Eles podem ser inv
 
 #### Operações de instrução de utilitário Iroha {#utility-iroha-special-instructions}
 
-Este conjunto de [isi](#iroha-special-instructions-isi) contém instruções lógicas como `If`, relacionadas a E/S como `Notify` e composições como `Sequence`. Elas são usadas principalmente como [instruções personalizadas](#custom-iroha-special-instruction).
+Este conjunto de [isi](#iroha-special-instructions-isi) contém instruções que não alteram uma entidade específica de um domínio, como `Log`, `ExecuteTrigger`, `SetParameter` e `Upgrade`. O Iroha 3 não tem instruções `If`, `Notify` ou `Sequence`.
 
 ### Operações de instrução do Core Iroha {#core-iroha-special-instructions}
 

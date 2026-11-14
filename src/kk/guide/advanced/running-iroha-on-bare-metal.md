@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -34,7 +34,7 @@ cargo build --release \
 target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-Шығыс каталогында жасалған `genesis.json`, `genesis.signed.nrt`, желілік әріптес `config.toml` файлдары, `client.toml`, көмекші скрипттер және сол топтамаға арналған нақты командалары бар жасалған `README.md` бар.
+Шығыс каталогында жасалған `genesis.json`, `genesis.signed.nrt`, `genesis.expected_hash`, әр валидатор үшін бір `peerN.toml`, `client.toml`, `start.sh` және `stop.sh` скрипттері және сол топтамаға арналған нақты командалары бар жасалған `README.md` бар.
 
 ## 3. Желідегі әріптестерді бастау {#_3-start-peers}
 
@@ -44,7 +44,7 @@ target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ./localnet/start.sh
 ```
 
-Егер сізге әр желі әріптесін systemd сияқты процесс менеджеріне байлау қажет болса, әр желі әріпшісі үшін `./localnet/README.md`-де жазылған іске қосу командаларын пайдаланыңыз. Әр желі әріпшісінің `config.toml`-ін, жеке кілтін, сақтау каталогын және порттарын бөлек ұстаңыз.
+Егер сізге әр желі әріптесін systemd сияқты процесс менеджеріне байлау қажет болса, `./localnet/start.sh` ішіндегі әр желі әріптесіне арналған командаға сүйеніңіз: `<bundle>/state/peerN` каталогынан `iroha3d --config <bundle>/peerN.toml` іске қосыңыз және `--sumeragi-assert-fresh-key` параметрін тек сол желі әріптесінің алғашқы іске қосылуында беріңіз. Әр желі әріптесінің `peerN.toml` файлын, жеке кілтін, сақтау каталогын және порттарын бөлек ұстаңыз.
 
 ## 4. Желіні басқару {#_4-operate-the-network}
 

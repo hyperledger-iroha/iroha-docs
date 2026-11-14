@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: b6e3bd79c50ea326930ac978350ea4beac8294b6f045ac0084aada257754ffa1
+translation_source_hash: bb1044edb9d34264e36848ee773d4d313bfbfd91b45da2eeb831f7ef8920e9b4
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -56,7 +56,7 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` тек `bls_normal` алгоритмімен жарамды; ол кілттерді сақтау каталогына `pop.hex` файлын қосады. Қол қойылған genesis әрбір дауыс беретін валидатор үшін сәйкес PoP талап етеді. Түйін конфигурациясындағы бос емес `trusted_peers_pop` картасы валидаторлар ішкі жиынын таңдайды; бұл картада жоқ сенімді түйіндер бақылаушы болады. Карта бос болса, барлық BLS-normal сенімді түйіндер бастапқы жүктеу үміткерлерінің жиынына кіреді, ал дауыс берушілердің PoPs мәндерін қол қойылған genesis береді.
+`--pop` тек `bls_normal` алгоритмімен жарамды; ол кілттерді сақтау каталогына `pop.hex` файлын қосады. Қол қойылған генезис әрбір дауыс беретін валидатор үшін сәйкес PoP талап етеді. Түйін конфигурациясында әр валидатордың PoP мәнін `trusted_peers_pop` ішінде көрсетіңіз: жарамды PoP мәні жоқ сенімді түйіндер консенсус тізімінен шығарылады, ал бос карта ешбір валидатор бермейді, сондықтан картасында генезис валидаторлары жоқ түйін іске қосылудан бас тартады. Тек синхрондайтын түйінді `[sumeragi] role = "observer"` арқылы іске қосыңыз.
 
 ## Қамқорлық шығысы {#custody-output}
 

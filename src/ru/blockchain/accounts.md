@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /blockchain/accounts.md
-translation_source_hash: adc98cbf1fcadae4415d03dcc262eb03f8c95b429527e403d230934ae2f3243c
+translation_source_hash: d956bfb8c698fa463ef9fa84a91d50cf0e2100885eba670121ad78753f87d88d
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -44,7 +44,7 @@ private_key_file = "/absolute/path/to/private.key"
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+  | jq -r '.items[] | [.id, (.label // "-")] | @tsv'
 ```
 
 Чтобы проверить активы счета, скопируйте идентификатор счета из первого технического вызова и закодируйте его в формате URL перед тем, как вставить в путь. Этот фрагмент Python делает это для первого указанного счета:
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-Это публичные операции чтения. Создание или обновление учётной записи выполняется подписанной транзакцией и требует настройки Taira с пополнением через кран тестовой сети, описанной в разделе [Подключение к пространствам данных SORA Nexus](/ru/get-started/sora-nexus-dataspaces.md).
+Это публичные операции чтения. Создание или обновление учётной записи выполняется подписанной транзакцией и требует настройки Taira с пополнением через кран тестовой сети, описанной в разделе [Разработка на SORA Nexus с использованием Taira и Minamoto](/ru/get-started/sora-nexus-dataspaces.md).
 
 ## Регистрация и разрешения {#registration-and-permissions}
 

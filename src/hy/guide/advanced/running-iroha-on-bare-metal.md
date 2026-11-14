@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -34,7 +34,7 @@ cargo build --release \
 target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-Արտադրանքի ցուցակը պարունակում է առաջադրված `genesis.json`, `genesis.signed.nrt`, հանգույցային `config.toml` ֆայլեր, `client.toml`, օգնական սցենարներ եւ առաջադրվող `README.md` ՝ այդ փաթեթի համար ճշգրիտ հրամաններով:
+Ելքային գրացուցակը պարունակում է ստեղծված `genesis.json`, `genesis.signed.nrt`, `genesis.expected_hash` ֆայլերը, յուրաքանչյուր վավերացնողի համար մեկ `peerN.toml`, `client.toml`, `start.sh` և `stop.sh` սկրիպտները և ստեղծված `README.md`՝ այդ հավաքածուի համար ճշգրիտ հրամաններով։
 
 ## 3. Սկսեք հանգույցներ ունենալ {#_3-start-peers}
 
@@ -44,7 +44,7 @@ target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ./localnet/start.sh
 ```
 
-Եթե պետք է յուրաքանչյուր հանգույց միացնեք գործընթացների կառավարչի, օրինակ՝ systemd-ի, օգտագործեք յուրաքանչյուր հանգույցի համար `./localnet/README.md`-ում գրանցված գործարկման հրամանը։ Յուրաքանչյուր հանգույցի `config.toml`-ը, մասնավոր բանալին, պահեստավորման գրացուցակը և նավահանգիստները պահեք առանձին։
+Եթե պետք է յուրաքանչյուր հանգույց միացնեք գործընթացների կառավարչի, օրինակ՝ systemd-ի, հետևեք `./localnet/start.sh`-ում տրված յուրաքանչյուր հանգույցի հրամանին. գործարկեք `iroha3d --config <bundle>/peerN.toml`-ը `<bundle>/state/peerN`-ից և `--sumeragi-assert-fresh-key`-ը փոխանցեք միայն այդ հանգույցի առաջին գործարկման ժամանակ։ Յուրաքանչյուր հանգույցի `peerN.toml`-ը, մասնավոր բանալին, պահեստավորման գրացուցակը և պորտերը պահեք առանձին։
 
 ## 4. Կառավարել ցանցը {#_4-operate-the-network}
 

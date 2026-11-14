@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 0c4f2f3fc4efb9f883f597a3eea49c99431b711a0141eba70ac5a2524990dd73
+translation_source_hash: 50fac5ad01faf8d09441cba90f29472da04630dbeb3c80111a19f3fb50bb1224
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # 樣本和操作指南 {#samples-and-recipes}
 
@@ -19,4 +19,4 @@ Iroha 源儲存庫包含 SDK 操作指南和測試套件,跟蹤與節點相同�
 
 ## Android {#android}
 
-對於新的 Android 工作,使用 Kotlin-first `core-jvm`, `client-android`和 `offline-wallet-android`模組,描述在 [Kotlin, Android 和Java](/zh-hant/guide/tutorials/kotlin-java.md). Kotlin SDK 是 Android 消費者的規範起點.
+對於新的 Android 工作,使用 Kotlin-first `core-jvm`, `client-android`和 `kagemusha-wallet-android`模組,描述在 [Kotlin, Android 和Java](/zh-hant/guide/tutorials/kotlin-java.md). Kotlin SDK 是 Android 消費者的規範起點.

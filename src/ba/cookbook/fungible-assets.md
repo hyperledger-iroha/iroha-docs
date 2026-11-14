@@ -1,9 +1,9 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 8a8fd0d29d4c1c323b457595653077564ad100f397ea2f4b059b35451b76aa44
+translation_source_hash: ae0604c0e82db0a908e7ffc44c97f56b58fe2b5bb87553ded48562e8f9fcd36a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Ҡатмарлы активтар {#fungible-assets}
 
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-li
 
 - `curl`, `jq`, Python 3.11 йәки унан һуңғы версия, Node.js 24 һәм хәҙерге `iroha` һәм `kagami` CLIs (командалар юлы ҡоралдары).
 - Taira уҡырға ғына инеү мөмкинлеге.
-- Яҙыу аҙымдары өсөн: [Iroha-ны эшләтеп ебәреү](/ba/get-started/launch-iroha.md) битендәгесә `kagami localnet generate --peers 4 --out-dir ./localnet` командаһы менән, уға `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa` өҫтәп, булдырылған локаль селтәр. Ул `./localnet/client.toml` файлын һәм `http://127.0.0.1:8080` адресындағы Torii-ны бирә.
+- Яҙыу аҙымдары өсөн: `kagami localnet generate --peers 4 --out-dir ./localnet` командаһы менән, уға `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa` өҫтәп, булдырылған локаль селтәр. Ул `./localnet/client.toml` файлын һәм `http://127.0.0.1:8080` адресындағы Torii-ны бирә.
 
 ## Аҙымдар {#steps}
 

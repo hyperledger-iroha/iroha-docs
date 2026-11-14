@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -34,7 +34,7 @@ Dörd iştirakçıdan ibarət Iroha 3 yerli şəbəkəsi yaradın:
 target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-Çıxış qovluğu yaradılmış `genesis.json`, `genesis.signed.nrt`, şəbəkə həmrəyliyi `config.toml` fayllarını, `client.toml`, köməkçi skriptləri və həmin paket üçün dəqiq əmrləri olan yaradılmış `README.md` ehtiva edir.
+Çıxış qovluğu yaradılmış `genesis.json`, `genesis.signed.nrt`, `genesis.expected_hash` fayllarını, hər təsdiqləyici üçün bir `peerN.toml`, `client.toml`, `start.sh` və `stop.sh` skriptlərini və həmin paket üçün dəqiq əmrləri olan yaradılmış `README.md` faylını ehtiva edir.
 
 ## 3. Şəbəkə tərəfdaşlarını başlat {#_3-start-peers}
 
@@ -44,7 +44,7 @@ Yaradılmış birdəfəlik yerli şəbəkə üçün, yaradılmış skriptdən is
 ./localnet/start.sh
 ```
 
-Əgər hər bir şəbəkə yoldaşını systemd kimi bir proses menecerinə qoşmaq lazımdırsa, hər bir şəbəkə yoldaşı üçün `./localnet/README.md` da qeyd edilmiş işə salma əmrindən istifadə edin. Hər bir şəbəkə yoldaşının `config.toml` sini, şəxsi açarını, yaddaş qovluğunu və portlarını ayrı saxlayın.
+Əgər hər bir şəbəkə yoldaşını systemd kimi bir proses menecerinə qoşmaq lazımdırsa, `./localnet/start.sh` faylındakı hər şəbəkə yoldaşı üçün əmrə əməl edin: `<bundle>/state/peerN` qovluğundan `iroha3d --config <bundle>/peerN.toml` işə salın və `--sumeragi-assert-fresh-key` parametrini yalnız həmin şəbəkə yoldaşının ilk işə salınmasında ötürün. Hər bir şəbəkə yoldaşının `peerN.toml` faylını, şəxsi açarını, yaddaş qovluğunu və portlarını ayrı saxlayın.
 
 ## 4. Şəbəkəni İşlədin {#_4-operate-the-network}
 

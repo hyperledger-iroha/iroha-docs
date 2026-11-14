@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/iroha-explained.md
-translation_source_hash: 426adbea88da36cd92da17d8665c956a57b9d4cebfa0d2f35bc75469cccf84ee
+translation_source_hash: 16acd0a607bbec336ff336363478a3a0deeb24ad9a2ad59e753c9f65134b061f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -45,11 +45,11 @@ Iroha 3 是首次釋出的 Hyperledger Iroha 平臺.同一個核心支援自主�
 
 路由路徑是:
 
-1. 設定程序建立經驗證的 `DataSpaceCatalog`、`LaneCatalog` 與 `LaneRoutingPolicy`。SORA Nexus 路由是必要機制。多個資料空間、多個通道或非預設路由會使用 SORA Nexus 設定檔（`--sora`）與 NPoS。
+1. 設定程序建立經驗證的 `DataSpaceCatalog`、`LaneCatalog` 與 `LaneRoutingPolicy`。SORA Nexus 路由是必要機制。在全域根上，多個資料空間、多個通道或非預設路由需要 SORA Nexus 設定檔（`--sora`）與 NPoS；獨立簽署的資料空間根則以許可制模式執行。
 2. 交易佇列根據交易與已提交狀態解析出 `RoutingPlan`。每個協調者或參與者路由都包含通道 ID 與資料空間 ID；Native AMX 計畫會保留完整的參與者集合。
 3. 在全域執行中，完整控制平面批次及跨資料空間協調者使用通道 `0`。具體的非通用指令目標或合約位址目標，會先選取已准入且資料空間與委員會相符的固定通道，再考慮帳戶或指令標籤規則。其他工作遵循已提交的明確規則及預設分片方式；具體的通用目標仍留在通用通道上。
 4. 每條路由都會對照目錄與活動通道狀態進行檢查。未知 ID、通道與資料空間不符的情況都會遭到拒絕；無法使用的私有目標不能改以通用執行處理。多個資料空間目標可能產生 Native AMX 計畫。若交易中繼資料 `amx_policy` 設為 `reject_cross_dataspace`，跨資料空間計畫就會被拒絕。僅有路由計畫，並不足以授權或完成跨獨立根的結算。
-5. Sumeragi 與遙測會以通道及資料空間的活動、待處理工作量與承諾快照，持續呈現這些指派。
+5. 遙測會以 `/status` 通道快照（`teu_lane_commit`）中各通道的活動與待處理工作量，持續呈現這些指派。
 
 這正是物件識別碼重要的原因。網域 ID 包含資料空間別名，例如 `payments.universal`，讓網域範圍內的寫入操作可以路由。帳戶仍採用不含網域的標準身分，因此同一帳戶可以綁定到不同應用程式範圍，而不必更改 `AccountId`。資產定義可攜帶網域與資料空間投影，使資產操作沿用正確的資料空間路由。
 
@@ -67,7 +67,7 @@ Iroha 3 是首次釋出的 Hyperledger Iroha 平臺.同一個核心支援自主�
 
 這些關係由固定版本的[設定檔建構器](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_config/src/parameters/actual.rs)、[通道實作](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_core/src/sumeragi/lanes/mod.rs)及[獨立根規範](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/sumeragi.md)所確定。
 
-Sumeragi 始終使用資料可用性和可靠的廣播.這些路徑是 Iroha 3 共識協議的一部分,不能被部署配置檔案禁用.
+Sumeragi 始終使用簽署的 RS16 負載可用性與已認證主體復原。這些路徑是 Iroha 3 共識協定的一部分，無法透過部署設定檔停用。
 
 執行階段行為由設定檔和鏈上參數決定。環境變數不能用作正式環境中的功能開關。
 

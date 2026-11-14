@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -34,7 +34,7 @@ cargo build --release \
 target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-Гаралт директор нь үүсгэсэн `genesis.json`, `genesis.signed.nrt`, сүлжээний түнш `config.toml` файлууд, `client.toml`, туслах скриптүүд, болон тухайн багцад зориулсан яг командуудтай үүсгэгдсэн `README.md`-ийг агуулна.
+Гаралтын хавтас нь үүсгэсэн `genesis.json`, `genesis.signed.nrt`, `genesis.expected_hash`, баталгаажуулагч бүрт нэг `peerN.toml`, `client.toml`, `start.sh` болон `stop.sh` скриптүүд, мөн тухайн багцад зориулсан яг командуудтай үүсгэсэн `README.md`-г агуулна.
 
 ## 3. Сүлжээний хөршүүдийг эхлүүлэх {#_3-start-peers}
 
@@ -44,7 +44,7 @@ target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ./localnet/start.sh
 ```
 
-Хэрэв танд сүлжээний тус бүрийн түншийг systemd гэх процесс менежер рүү холбох шаардлагатай бол сүлжээний тус бүрийн түншийн хувьд `./localnet/README.md`-д бичигдсэн эхлүүлэх командыг ашигла. Сүлжээний тус бүрийн түншийн `config.toml`, хувийн түлхүүр, хадгалах хавтас, портуудыг тусгаарлаж байлга.
+Зангилаа бүрийг systemd зэрэг процессийн менежерт холбох шаардлагатай бол `./localnet/start.sh` доторх зангилаа тус бүрийн командыг дагана уу: `<bundle>/state/peerN`-ээс `iroha3d --config <bundle>/peerN.toml`-ийг ажиллуулж, `--sumeragi-assert-fresh-key`-ийг зөвхөн тухайн зангилааны анхны эхлэлд дамжуулна. Зангилаа бүрийн `peerN.toml`, хувийн түлхүүр, хадгалах хавтас болон портуудыг тусад нь байлгана уу.
 
 ## 4. Сүлжээг ажиллуулах {#_4-operate-the-network}
 

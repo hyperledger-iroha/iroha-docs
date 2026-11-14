@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
+translation_source_hash: 6edc0185196ab8e77ef8552723e05bf37cca1a088da86e2a43d441d58e779c11
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -32,4 +32,4 @@ docker restart <container>
 
 ## Өөрийн тохиргоог ашиглах {#use-custom-configuration}
 
-Одоогийн сүлжээний хөршийн тохиргоо нь TOML байна. Үүсгэсэн `config.toml`, `genesis.signed.nrt` ба холбогдох түлхүүр файлуудыг савны замууд руу холбох mount хийх эсвэл хуулж оруулна уу зураг, дараа нь сүлжээний хөршийг дахин эхлүүл. Үүсгэсэн файлуудыг нэгт байлга; өөр өөр Kagami ажиллуулсан файлуудыг холих нь десериализаци эсвэл нийцлийн алдаа үүсгэж болзошгүй.
+Одоогийн зангилааны тохиргоо нь TOML юм. Kagami баталгаажуулагч бүрт `genesis.signed.nrt`, `genesis.public_key` болон `genesis.expected_hash`-тай нэг `peerN.toml` бичдэг; `kagami docker`-оос гарсан Compose файл тэдгээрийг контейнерт холбож өгнө. Файлуудыг гараар хуулахын оронд түүнийг дахин үүсгээд, дараа нь зангилааг дахин эхлүүлнэ үү. Үүсгэсэн файлуудыг хамт байлгана уу; өөр өөр Kagami ажиллуулалтаас гарсан файлуудыг холивол десериализацийн эсвэл зөвшилцлийн алдаа гарч болзошгүй.

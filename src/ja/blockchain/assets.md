@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/assets.md
-translation_source_hash: 4d0a3f54a0c70d08d11160b9ec66d6538aa2c49c7771a13e4a070b61a9cb3e4b
+translation_source_hash: f5f0eb99e76287db695cc21b8580fd2a9b4dc2a989237c1a1d3d7333c14561ce
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -22,6 +22,7 @@ Iroha 資産とは、アカウントが保持する数値の残高です。す�
 - `logo`：任意 `SoraFS` URI
 - `metadata`：任意のキーと値のメタデータ
 - `balance_scope_policy`: 残高をグローバルに扱うか、データスペース内に制限するかを定めるポリシー
+- `owning_domain`: ドメイン所有の定義を所有するドメイン。データスペースに直接登録された定義では存在しません
 - `owned_by`: 定義を登録した、または所有しているアカウント
 - `total_quantity`：総発行数量
 - `confidential_policy`：シールド資産運用の方針
@@ -33,7 +34,7 @@ Iroha 資産とは、アカウントが保持する数値の残高です。す�
 一つの `Asset` 含む:
 
 - `id`：`AssetId`で、資産の定義、保有者アカウント、およびオプションの資産残高範囲を組み合わせたもの
-- `value`：`Numeric`のバランス
+- `value`：`Quantity`のバランス
 
 保有者のアカウントは、ドメインを含まない正規の識別子を持ちます。資産定義は、`payments.universal` など、データスペース名で修飾されたドメインの下に対応付けることができます。
 
@@ -88,7 +89,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-三つの例はいずれも読み取り操作です。Taira で資産を発行、焼却、送金する場合は、フォーセットから資金供給を受けたアカウントを使い、[SORA Nexus データスペースへの接続](/ja/get-started/sora-nexus-dataspaces.md)に記載されたガード付きの手順に従ってください。
+三つの例はいずれも読み取り操作です。Taira で資産を発行、焼却、送金する場合は、フォーセットから資金供給を受けたアカウントを使い、[Taira と Minamoto で SORA Nexus 向けアプリケーションを開発する](/ja/get-started/sora-nexus-dataspaces.md)に記載されたガード付きの手順に従ってください。
 
 手数料を支払う Taira の資産操作では、まず[Taira でテストネット XOR を取得する](/ja/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)に記載された、事前準備を伴うフォーセットの手順で署名者に資金を供給します。次に、`ledger asset mint`、`ledger asset burn`、`ledger asset transfer` の各コマンドに `--fee-payer authority` を指定します。CLI は署名前に、Taira の手数料資産建てで正確な手数料を見積もります。
 

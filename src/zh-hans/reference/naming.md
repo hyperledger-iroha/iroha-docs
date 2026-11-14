@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hans
 translation_source: /reference/naming.md
-translation_source_hash: 1d4d698597542d9c84284d0b87dae8a1825d3ab39ff38dd32bb204d41291c83d
+translation_source_hash: 15d095e674edf780c5859abe6f4615d53338e3304e8eedfa494017911204d4b6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # 命名会议 {#naming-conventions}
 
@@ -15,10 +15,9 @@ translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
    - `#` 专用于资产定义别名和资产余额字面
    - `::` 专用于合同别名
    - `.` 专用于域名和数据空间的资格
-   - `$` 专用于触发器扫描的文本形式
-   - `%` 专用于验证器范围的文本形式
+   - `$` 保留用于 NFT 标识符，例如 `name$domain.dataspace`
 
-2. 一个名称的最大字符数量 (包括 UTF-8 字符) 由两个因素限制:`[0, u32::MAX]`和目前分配的堆空间.
+2. 名称必须非空，采用 Unicode NFC 形式，长度不超过 255 个 UTF-8 字节，并且不得包含空白字符、控制字符和双向控制字符。
 
 ## 在 Taira 试看. {#try-it-on-taira}
 

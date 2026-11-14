@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /reference/genesis.md
-translation_source_hash: 340921f59a6f8788f559190d520f046ea2473d65154f57a1c54212840c027bc0
+translation_source_hash: dda17468f39573a1fcf43474351bd01c4fea38e8b603fd4d8b21780b273c8649
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -20,6 +20,8 @@ translation_engine: nllb-200-ct2+reviewed-delta
 - `executor` կամընտիր կատարողի արդիականացման բայթկոդի ուղու համար
 - `ivm_dir` համար IVM գրադարաններ, որոնք օգտագործվում են գործարկիչների և արդիականացման միջոցով
 - `consensus_mode` մանիֆեստի կողմից գովազդվող սկզբնական ռեժիմի համար
+- `wire_protocol_version`՝ առաջին թողարկման կոնսենսուսի փոխանցման արձանագրության տարբերակի համար
+- `consensus_fingerprint`՝ կոնսենսուսի պարամետրերի ընտրովի տիպավորված մատնահետքի համար, որը JSON մանիֆեստները բացահայտ նշում են
 - `transactions` պատվիրված պարամետրերի թարմացումների, հրահանգների, գործարկիչների և տոպոլոգիայի համար
 - `sumeragi_context`՝ ստորագրված Sumeragi բարձրության համատեքստի պարամետրերի համար
 - `crypto_admission_policy`՝ շղթայի թույլատրած ստորագրման և կառավարիչի ճշգրիտ ալգորիթմների համար, որոնք թվարկված են `allowed_algorithms`-ում
@@ -39,10 +41,12 @@ translation_engine: nllb-200-ct2+reviewed-delta
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
+  --chain-id <CHAIN_ID> \
   --consensus-mode npos \
   --ivm-dir defaults \
   --genesis-public-key <PUBLIC_KEY> \
-  --allowed-signing ed25519 > genesis.json
+  --allowed-signing ed25519 \
+  --allowed-signing bls_normal > genesis.json
 ```
 
 Հանրային SORA Nexus տվյալների տարածքի համար ակնկալվող կոնսենսուսի ռեժիմը `npos` է։ Այլ Iroha 3 տեղակայումները կարող են օգտագործել թույլտվությամբ ռեժիմ կամ NPoS՝ ըստ թիրախ պրոֆիլի։
@@ -54,10 +58,11 @@ cargo run -p iroha_kagami -- genesis generate \
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
   --private-key-file <MODE_0600_PRIVATE_KEY_FILE> \
-  --out-file genesis.signed.nrt
+  --out-file genesis.signed.nrt \
+  --expected-hash-out genesis.expected_hash
 ```
 
-`kagami genesis sign` կարդում է Գենեզիսի հանրային բանալին մանիֆեստից և օգտագործում մասնավոր բանալին սեփականատիրոջ կողմից պահվող, մեկ հղումով սովորական ֆայլից՝ արտադրելու համար տեղակայվող ստորագրված բլոկ:Ֆայլը պետք է պարունակի մեկ կանոնական մասնավոր բանալի multihash, որին հաջորդում է նոր տող; Kagami մերժում է խորհրդանշական հղումները և այլ եղանակներ քան `0600`. Հում անձնական բանալիները չեն ընդունվում հրամանի տողում:Արդյունքը այն ֆայլն է, որին հանգույցները պետք է հղում կատարեն իրենց կազմաձևից:
+`kagami genesis sign`-ը գենեզիսի բանալիների զույգը ստանում է սեփականատիրոջ կողմից պահվող, մեկ հղումով սովորական ֆայլում գտնվող մասնավոր բանալուց և ստեղծում տեղակայվող ստորագրված բլոկը։ Փոխանցեք `--expected-public-key`՝ պահանջելու, որ այն համապատասխանի հրապարակված գենեզիսի հանրային բանալուն։ Ֆայլը պետք է պարունակի մեկ կանոնական մասնավոր բանալու մուլտիհեշ, որին հաջորդում է նոր տող. Kagami-ն մերժում է սիմվոլիկ հղումները և `0600`-ից տարբեր ռեժիմները։ Հում մասնավոր բանալիները հրամանի տողում չեն ընդունվում։ Արդյունքն այն ֆայլն է, որին հանգույցները պետք է հղում կատարեն իրենց կարգավորումից։
 
 ## Կարգավորել `iroha3d` {#configure-iroha3d}
 

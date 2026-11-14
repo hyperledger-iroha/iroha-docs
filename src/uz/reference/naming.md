@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /reference/naming.md
-translation_source_hash: 1d4d698597542d9c84284d0b87dae8a1825d3ab39ff38dd32bb204d41291c83d
+translation_source_hash: 15d095e674edf780c5859abe6f4615d53338e3304e8eedfa494017911204d4b6
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Nomlash An'analari {#naming-conventions}
 
@@ -15,10 +15,9 @@ Hisoblar, domenlar yoki aktivlarni nomlayotganda, quyidagi Iroha da ishlatiladig
    - `#` aktiv qiymat ta'rifidagi taxallus va aktiv balans literalari uchun ajratilgan
    - `::` shartnoma laqablari uchun ajratilgan
    - `.` domen va ma’lumotlar makoni malakasiga ajratilgan
-   - `$` faqat trigger-doiraviy matn shakllari uchun ajratilgan
-   - `%` tekstual shakllar validator doirasiga ajratilgan
+   - `$` `name$domain.dataspace` kabi NFT identifikatorlari uchun ajratilgan
 
-2. Ismda bo'lishi mumkin bo'lgan maksimal belgilar soni (UTF-8 belgilarni o'z ichiga olgan holda) ikki omil bilan cheklangan: `[0, u32::MAX]` va hozir ajratilgan stek maydoni.
+2. Nom bo‘sh bo‘lmasligi, Unicode NFC shaklida bo‘lishi, uzunligi ko‘pi bilan 255 UTF-8 bayt bo‘lishi hamda bo‘shliq, boshqaruv va ikki tomonlama yo‘nalishni boshqarish belgilarini o‘z ichiga olmasligi shart.
 
 ## Ushbu ish oqimini Taira da ishga tushiring {#try-it-on-taira}
 

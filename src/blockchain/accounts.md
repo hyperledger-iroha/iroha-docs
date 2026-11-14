@@ -55,7 +55,7 @@ List a few canonical account IDs from the public Taira testnet:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+  | jq -r '.items[] | [.id, (.label // "-")] | @tsv'
 ```
 
 To inspect account assets, copy an account ID from the first call and URL-encode
@@ -82,7 +82,7 @@ PY
 
 These are public reads. Creating or updating an account is a signed transaction
 and requires the faucet-funded Taira setup described in
-[Connect to SORA Nexus Data spaces](/get-started/sora-nexus-dataspaces.md).
+[Build on SORA Nexus with Taira and Minamoto](/get-started/sora-nexus-dataspaces.md).
 
 ## Registration and permissions
 

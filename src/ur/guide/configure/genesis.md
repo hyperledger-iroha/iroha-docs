@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /guide/configure/genesis.md
-translation_source_hash: 91be089c82a76991e35a43e1541f9e069fdf70d3fb5de2492b985c06c78a2372
+translation_source_hash: 2a4a43b6ac873cc0c860631e307e52b047ba6a08691bf3e4c5872cc22c81a0bd
 translation_status: machine-validated
 translation_engine: google-translate+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -9,7 +9,7 @@ translation_engine: google-translate+reviewed-delta+reviewed-first-release-sourc
 
 پیدائش ابتدائی سلسلہ حالت کی وضاحت کرتی ہے۔قابل تدوین ذریعہ ہے a JSON ظاہر، اور ایک Iroha 3 نوڈ ایک دستخط شدہ استعمال کرتا ہے۔ Norito ٹرانزیکشن فائل.
 
-::: details ڈیفالٹ جینیسس مینی فیسٹ
+::: details ڈیفالٹ جینیسس ماخذ سانچہ (defaults/genesis.template.json)
 
 <<< @/snippets/genesis.json
 
@@ -36,7 +36,7 @@ public_key = "ed0120..."
 expected_hash_file = "./genesis.expected_hash"
 ```
 
-نیٹ ورک کے تمام پیئرز کو دستخط شدہ جینیسس لین دین اور جینیسس کی عوامی کلید پر متفق ہونا چاہیے۔ متوقع ہیش کی فائل پہلے آغاز اور دوبارہ آغاز دونوں پر لازم ہے؛ `kagami genesis sign --expected-hash-out` اسے لکھتا ہے۔
+نیٹ ورک کے تمام پیئرز کو دستخط شدہ جینیسس لین دین اور جینیسس کی عوامی کلید پر متفق ہونا چاہیے۔ ہر آغاز کو، خواہ نیا ہو یا دوبارہ آغاز، متوقع ہیش درکار ہے: `expected_hash_file` یا ان لائن `expected_hash` میں سے بالکل ایک ترتیب دیں۔ `kagami genesis sign --expected-hash-out` فائل لکھتا ہے۔
 
 ## پیدائش پر دستخط کرنا {#signing-genesis}
 
@@ -52,7 +52,7 @@ cargo run --bin kagami -- genesis sign ./genesis.json \
 
 `GENESIS_PRIVATE_KEY_FILE` مالک کے زیر انتظام موڈ ہونا چاہیے-`0600`, سنگل لنک باقاعدہ فائل جس میں ایک کیننیکل پرائیویٹ کلید ملٹی ہیش اور ایک فائنل شامل ہے۔ نئی لائن Kagami علامتی روابط کو مسترد کرتا ہے اور کبھی بھی خام جینیس نجی کو قبول نہیں کرتا ہے۔ کمانڈ لائن پر کلید.
 
-NPoS یا SORA Nexus پروفائلز کے لیے تیار کردہ پروفائل کی مطلوبہ ٹوپولوجی اور BLS ملکیت کے ثبوت شامل کریں۔ Kagami کی `localnet generate`، `wizard` اور `sora-network generate` کمانڈز یہ تفصیلات خود سنبھالتی ہیں۔
+ہر دستخط شدہ جینیسس، خواہ اجازت یافتہ ہو یا NPoS، میں بالکل `3f + 1` ویلیڈیٹرز کی ٹوپولوجی ہونی چاہیے جس میں ہر ویلیڈیٹر کے لیے BLS ملکیت کا ثبوت شامل ہو۔ Kagami کی `localnet generate`، `wizard` اور `sora-network generate` کمانڈز یہ تفصیلات خود سنبھالتی ہیں۔
 
 ## دوبارہ پیدا کرنا {#recommitting-genesis}
 

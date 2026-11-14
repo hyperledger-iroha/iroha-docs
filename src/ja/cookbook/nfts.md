@@ -1,9 +1,9 @@
 ---
 translation_locale: ja
 translation_source: /cookbook/nfts.md
-translation_source_hash: b6a85c2feb197588e3358a785e10280a687af3951d52de4e6b8d96eab5de873c
+translation_source_hash: 7d7a1ba8ff8678f420a6237bd0d074d2d197bf4349989c0c55f05e9769d15da7
 translation_status: machine-validated
-translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # NFTs {#nfts}
 
@@ -15,7 +15,7 @@ translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-na
 
 - `curl`、`jq`、Python 3.11以降、および現在の `iroha` CLI。
 - 読み取り専用 Taira アクセス。
-- 書き込みには、[Iroha を起動](/ja/get-started/launch-iroha.md) と同じく `kagami localnet generate --peers 4 --out-dir ./localnet` で生成したローカルネットワーク（`./localnet/client.toml` と `http://127.0.0.1:8080` 上の Torii を備えたもの）に加えて、その署名者が所有する NFT ドメイン（ステップ2を参照）が必要です。
+- 書き込みには、`kagami localnet generate --peers 4 --out-dir ./localnet` で生成したローカルネットワーク（`./localnet/client.toml` と `http://127.0.0.1:8080` 上の Torii を備えたもの）に加えて、その署名者が所有する NFT ドメイン（ステップ2を参照）が必要です。
 
 ## ステップ {#steps}
 

@@ -1,9 +1,9 @@
 ---
 translation_locale: he
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 8a8fd0d29d4c1c323b457595653077564ad100f397ea2f4b059b35451b76aa44
+translation_source_hash: ae0604c0e82db0a908e7ffc44c97f56b58fe2b5bb87553ded48562e8f9fcd36a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # נכסים בני־חליפין {#fungible-assets}
 
@@ -15,7 +15,7 @@ translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-li
 
 - `curl`, `jq`, Python 3.11 או חדש יותר, Node.js 24 וממשקי ה־CLIs העדכניים של `iroha` ושל `kagami`.
 - גישה לקריאה בלבד ב־Taira.
-- עבור המדריך של פעולות הכתיבה: רשת מקומית שנוצרה באמצעות `kagami localnet generate --peers 4 --out-dir ./localnet` כמו ב־[שיגור Iroha](/he/get-started/launch-iroha.md), בתוספת `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa`. היא מספקת את `./localnet/client.toml` ואת Torii בכתובת `http://127.0.0.1:8080`.
+- עבור המדריך של פעולות הכתיבה: רשת מקומית שנוצרה באמצעות `kagami localnet generate --peers 4 --out-dir ./localnet`, בתוספת `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa`. היא מספקת את `./localnet/client.toml` ואת Torii בכתובת `http://127.0.0.1:8080`.
 
 ## שלבים {#steps}
 

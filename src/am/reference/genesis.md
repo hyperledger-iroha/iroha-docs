@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /reference/genesis.md
-translation_source_hash: 340921f59a6f8788f559190d520f046ea2473d65154f57a1c54212840c027bc0
+translation_source_hash: dda17468f39573a1fcf43474351bd01c4fea38e8b603fd4d8b21780b273c8649
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -20,6 +20,8 @@ translation_engine: bing-translator-llm+reviewed-delta
 - `executor` ለአማራጭ አስፈፃሚ የማሻሻያ ባይት ኮድ መንገድ
 - `ivm_dir` ቀስቅሴዎች እና ማሻሻያዎች ጥቅም ላይ ለሚውሉ IVM ቤተ-መጻሕፍት
 - `consensus_mode` በቴክኒካዊ ማኒፌስት ለማስታወቂያው የመጀመሪያ ሁነታ
+- `wire_protocol_version` ለመጀመሪያው ልቀት የጋራ ስምምነት የማስተላለፊያ ፕሮቶኮል ስሪት
+- `consensus_fingerprint` ለጋራ ስምምነት መለኪያዎች አማራጭ የተተየበ የጣት አሻራ፤ JSON ማኒፌስቶች ይህንን በግልጽ ይገልጻሉ
 - `transactions` ለታዘዙ የመለኪያ ዝመናዎች፣ መመሪያዎች፣ ቀስቅሴዎች እና ቶፖሎጂ
 - ለተፈረሙ የSumeragi ከፍታ አውድ መለኪያዎች `sumeragi_context`
 - ሰንሰለቱ ለሚቀበላቸው፣ በ`allowed_algorithms` ለተዘረዘሩ ትክክለኛ የፊርማና የተቆጣጣሪ አልጎሪዝሞች `crypto_admission_policy`
@@ -39,10 +41,12 @@ translation_engine: bing-translator-llm+reviewed-delta
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
+  --chain-id <CHAIN_ID> \
   --consensus-mode npos \
   --ivm-dir defaults \
   --genesis-public-key <PUBLIC_KEY> \
-  --allowed-signing ed25519 > genesis.json
+  --allowed-signing ed25519 \
+  --allowed-signing bls_normal > genesis.json
 ```
 
 ለክፍቱ የSORA Nexus ውሂብ ቦታ የሚጠበቀው የመግባባት ሁነታ `npos` ነው። ሌሎች Iroha 3 ጭነቶች እንደ ዒላማ መገለጫው በፈቃድ የሚሠራ ሁነታ ወይም NPoS ሊጠቀሙ ይችላሉ።
@@ -54,10 +58,11 @@ JSON ን ካረትዑ እና ካረጋገጡ በኋላ ሊሰማራ በሚችል
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
   --private-key-file <MODE_0600_PRIVATE_KEY_FILE> \
-  --out-file genesis.signed.nrt
+  --out-file genesis.signed.nrt \
+  --expected-hash-out genesis.expected_hash
 ```
 
-`kagami genesis sign` የብሎክቼይን ጀነሲስ የህዝብ ቁልፍን ከቴክኒካል ማኒፌስት ያነባል እና ሊሰማራ የሚችል የተፈረመውን ብሎክ ለማዘጋጀት በባለቤቱ ከተያዘው ነጠላ-ማገናኛ መደበኛ ፋይል የግል ቁልፍን ይጠቀማል።. ፋይሉ አንድ ነጠላ ፕሮቶኮል-ደረጃውን የጠበቀ የግል-ቁልፍ መልቲሃሽ እና አዲስ መስመር መያዝ አለበት; . Kagami ከ `0600` ሌላ ምሳሌያዊ አገናኞችን እና ሁነታዎችን ውድቅ ያደርጋል። ጥሬ የግል ቁልፎች በትእዛዝ መስመሩ ላይ ተቀባይነት የላቸውም. ውጤቱም የአውታረ መረብ እኩዮች ከማዋቀራቸው መጥቀስ ያለባቸው ፋይል ነው።
+`kagami genesis sign` ሊሰማራ የሚችል የተፈረመ ብሎክ ለማዘጋጀት በባለቤቱ ከተያዘው ነጠላ-ማገናኛ መደበኛ ፋይል ውስጥ ካለው የግል ቁልፍ የጀነሲስ ቁልፍ ጥንዱን ያመነጫል። ከታተመው የጀነሲስ ይፋዊ ቁልፍ ጋር እንዲዛመድ ለመጠየቅ `--expected-public-key` ያስተላልፉ። ፋይሉ አንድ ነጠላ ፕሮቶኮል-ደረጃውን የጠበቀ የግል-ቁልፍ መልቲሃሽ እና ከዚያ አዲስ መስመር መያዝ አለበት፤ Kagami ምሳሌያዊ አገናኞችን እና ከ`0600` ሌላ ሁነታዎችን ውድቅ ያደርጋል። ጥሬ የግል ቁልፎች በትእዛዝ መስመሩ ላይ ተቀባይነት የላቸውም። ውጤቱም የአውታረ መረብ አቻዎች ከውቅራቸው መጥቀስ ያለባቸው ፋይል ነው።
 
 ## አዋቅር `iroha3d` {#configure-iroha3d}
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: kk
 translation_source: /reference/instructions.md
-translation_source_hash: 9999816502505026fb35d2ddaf4033f54768be697ca5b03550e1cf5949ada36c
+translation_source_hash: bbd8f9544aa863cd273d1b2089f39aff3d484ee0378fa5bcc7b565795a0671c6
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha Нұсқаулық операциялары {#iroha-special-instructions}
 
 Ағымдағы деректер моделі осы кірістірілген нұсқаулық отбасыларын көрсетеді:
@@ -28,7 +27,6 @@ translation_engine: bing-translator-llm
 | [`CustomInstruction`](/kk/blockchain/instructions.md#other-instructions) |орындаушыға-арналған JSON жүктеме|
 | [Табиғи активті эскроу](/kk/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
 | [Жалпы активтерді қамау](/kk/blockchain/escrow.md#generic-asset-locks) | `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
-| [Аноним активтерді сенімгерлікке беру](/kk/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
 | [Атомдық жеке қаржылық транзакцияны есептеу](/kk/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
 Қосымша Iroha 3 модульдер нұсқаулық тіркеу арқылы доменге тән нұсқаулық түрлерін тіркей алады. Түйінді-өкілетті схема және оны ұстайтын пәрмен үшін [Деректер моделі схемасы](./data-model-schema.md) қараңыз.
@@ -85,7 +83,7 @@ class MetadataBoxes {
 class NativeEscrowInstructions {
     OpenAssetEscrow
     OpenAssetLock
-    OpenAnonymousAssetEscrow
+    OpenConditionalEscrow
     ResolveEscrowDispute
 }
 

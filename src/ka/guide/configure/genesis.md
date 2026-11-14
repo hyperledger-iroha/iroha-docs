@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /guide/configure/genesis.md
-translation_source_hash: 91be089c82a76991e35a43e1541f9e069fdf70d3fb5de2492b985c06c78a2372
+translation_source_hash: 2a4a43b6ac873cc0c860631e307e52b047ba6a08691bf3e4c5872cc22c81a0bd
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -9,7 +9,7 @@ translation_engine: nllb-200-ct2+reviewed-delta+reviewed-first-release-source-am
 
 ბლოკჩეინის გენეზისი განსაზღვრავს საწყის ჯაჭვის მდგომარეობას. რედაქტირებადი წყარო არის JSON ტექნიკური მანიფესტი, ხოლო Iroha 3 კვანძი მოიხმარს ხელმოწერილი Norito ტრანზაქციის ფაილის.
 
-::: details ჩვეულებრივი ბლოკჩეინის წარმოების ტექნიკური მანიფესტი
+::: details გენეზისის ნაგულისხმევი წყაროს შაბლონი (defaults/genesis.template.json)
 
 <<< @/snippets/genesis.json
 
@@ -36,7 +36,7 @@ public_key = "ed0120..."
 expected_hash_file = "./genesis.expected_hash"
 ```
 
-ქსელის ყველა კვანძს ერთი და იგივე ხელმოწერილი გენეზის ტრანზაქცია და გენეზისის საჯარო გასაღები უნდა ჰქონდეს. მოსალოდნელი ჰეშის ფაილი საჭიროა როგორც პირველად, ისე ხელახალი გაშვებისას; მას `kagami genesis sign --expected-hash-out` წერს.
+ქსელის ყველა კვანძს ერთი და იგივე ხელმოწერილი გენეზის ტრანზაქცია და გენეზისის საჯარო გასაღები უნდა ჰქონდეს. ყოველ გაშვებას, პირველსაც და ხელახალსაც, მოსალოდნელი ჰეში სჭირდება: დააკონფიგურირეთ ზუსტად ერთი — `expected_hash_file` ან ჩაშენებული `expected_hash`. ფაილს `kagami genesis sign --expected-hash-out` წერს.
 
 ## ბლოკჩეინის გენეზის ხელმოწერა {#signing-genesis}
 
@@ -52,7 +52,7 @@ cargo run --bin kagami -- genesis sign ./genesis.json \
 
 `GENESIS_PRIVATE_KEY_FILE` უნდა იყოს მფლობელის მიერ განკუთვნილი რეჟიმი-`0600`, ერთი ბმულიანი რიგითი ფაილი, რომელიც შეიცავს კანონიკურ კერძო გასაღების მულტიჰეშს და საბოლოო ახალ ხაზს. Kagami უარყოფს სიმბოლურ ბმულებს და არასდროს იღებს ნედლევარჩევნო ბლოკჩეინის გენეზისის პირად გასაღებს ბრძანების ხაზზე.
 
-NPoS ან SORA Nexus პროფილებისთვის ჩართეთ გენერირებული პროფილის მიერ მოთხოვნილი ტოპოლოგია და BLS ფლობის მტკიცებულებები. Kagami-ის `localnet generate`, `wizard` და `sora-network generate` ბრძანებები ამ დეტალებს ავტომატურად ამუშავებს.
+ყოველი ხელმოწერილი გენეზისი, ნებართვიანი იქნება თუ NPoS, უნდა შეიცავდეს ზუსტად `3f + 1` ვალიდატორისგან შემდგარ ტოპოლოგიას და თითოეული ვალიდატორისთვის BLS ფლობის მტკიცებულებას. Kagami-ის `localnet generate`, `wizard` და `sora-network generate` ბრძანებები ამ დეტალებს ავტომატურად ამუშავებს.
 
 ## ბლოკჩეინის გენეზისის განახლება {#recommitting-genesis}
 

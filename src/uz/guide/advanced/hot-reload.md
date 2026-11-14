@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
+translation_source_hash: 6edc0185196ab8e77ef8552723e05bf37cca1a088da86e2a43d441d58e779c11
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -32,4 +32,4 @@ Yangi genezis bloki uchun tugun ombori boʻsh boʻlishi kerak. Oʻsha tarmoqni q
 
 ## Maxsus Sozlamalardan Foydalaning {#use-custom-configuration}
 
-Joriy tugun konfiguratsiyasi TOML formatida. Yaratilgan `config.toml`, `genesis.signed.nrt` va tegishli kalit fayllarini tasvir kutgan konteyner yo‘llariga ulang yoki ko‘chiring, keyin tugunni qayta ishga tushiring. Yaratilgan fayllarni birga saqlang; turli Kagami ishlaridagi fayllarni aralashtirish deserializatsiya yoki konsensus xatolariga olib kelishi mumkin.
+Joriy tugun konfiguratsiyasi TOML formatida. Kagami har bir validator uchun `genesis.signed.nrt`, `genesis.public_key` va `genesis.expected_hash` bilan birga bitta `peerN.toml` yozadi; `kagami docker` yaratgan Compose fayli ularni konteynerga ulaydi. Fayllarni qo‘lda ko‘chirish o‘rniga uni qayta yarating, keyin tugunni qayta ishga tushiring. Yaratilgan fayllarni birga saqlang; turli Kagami ishlaridagi fayllarni aralashtirish deserializatsiya yoki konsensus xatolariga olib kelishi mumkin.

@@ -1,9 +1,9 @@
 ---
 translation_locale: my
 translation_source: /blockchain/events.md
-translation_source_hash: aad93f1981a5b470966090b5e06ec07178738b15f1d870097947682b19f99595
+translation_source_hash: 2777cbe4e72a50c4790e50b59c3e695feb5814314cc9afccdfd994f6409c195e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # ဖြစ်ရပ်များ {#events}
 
@@ -16,7 +16,7 @@ Typed event notification တွေကို blockchain အတွင်းမှ�
 
 ## ဆော့ဖ်ဝဲ စီမံခန့်ခွဲမှု လုပ်ငန်းခွင်များ ဖြစ်ရပ်များ {#pipeline-events}
 
-Transaction များကို တင်သွင်းသည့်အခါ၊ လုပ်ဆောင်သည့်အခါ သို့မဟုတ် ဘလော့ခ်ထဲတွင် commit လုပ်သည့်အခါ pipeline ဖြစ်ရပ်များကို ထုတ်ပေးသည်။ Pipeline ဖြစ်ရပ်တွင် ဖြစ်ရပ်ကို ဖြစ်စေသော အရာ၏ အမျိုးအစား (transaction သို့မဟုတ် ဘလော့ခ်)၊ ၎င်း၏ ဟက်ရှ်နှင့် အခြေအနေတို့ ပါဝင်သည်။ အခြေအနေမှာ `Validating` (စစ်ဆေးနေဆဲ)၊ `Rejected` သို့မဟုတ် `Committed` ဖြစ်နိုင်သည်။ အရာတစ်ခုကို ငြင်းပယ်ခဲ့လျှင် ငြင်းပယ်ရသည့် အကြောင်းရင်းကို ဖော်ပြပေးသည်။
+Transaction များနှင့် ဘလော့ခ်များ pipeline ကို ဖြတ်သန်းသွားသည်နှင့်အမျှ pipeline ဖြစ်ရပ်များကို ထုတ်ပေးသည်။ Transaction ဖြစ်ရပ်တွင် transaction ဟက်ရှ်၊ ဘလော့ခ်အမြင့်၊ lane နှင့် data space ID များနှင့် အခြေအနေတစ်ခု ပါဝင်သည်- `Queued`၊ `Expired`၊ `Approved` သို့မဟုတ် ငြင်းပယ်ရသည့် အကြောင်းရင်းနှင့်အတူ `Rejected`။ ဘလော့ခ်ဖြစ်ရပ်တွင် ဘလော့ခ်ခေါင်းစီးနှင့် အခြေအနေတစ်ခု ပါဝင်သည်- `Created`၊ `Approved`၊ အကြောင်းရင်းနှင့်အတူ `Rejected`၊ `Committed` သို့မဟုတ် `Applied`။
 
 ### Taira တွင် ဤအလုပ်ခွင်ကို run လုပ်ပါ။ {#try-it-on-taira}
 
@@ -30,8 +30,8 @@ curl -fsSI https://taira.sora.org/v1/events/sse \
 Stream ကို ဖွင့်မထားဘဲ စစ်ဆေးနိုင်မယ့် point-in-time data view တစ်ခုအတွက် မကြာသေးခင်က explorer transaction တွေကို ဖတ်ရှုပါ။
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
-  | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
+curl -fsS 'https://taira.sora.org/v1/explorer/transactions?limit=5' \
+  | jq '{next_cursor, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
 SSE လမ်းကြောင်းကို တိုက်ရိုက်ပွဲတွေ လိုအပ်တဲ့အခါ Terminal တစ်ခုမှာ ဖွင့်ပါ။

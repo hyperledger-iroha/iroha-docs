@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: b6e3bd79c50ea326930ac978350ea4beac8294b6f045ac0084aada257754ffa1
+translation_source_hash: bb1044edb9d34264e36848ee773d4d313bfbfd91b45da2eeb831f7ef8920e9b4
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -56,7 +56,7 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` n'est valide qu'avec `bls_normal` ; il ajoute `pop.hex` au répertoire de garde. La genèse de la blockchain signée nécessite un PoP correspondant pour chaque validateur de vote. Dans la configuration des pairs du réseau, une carte `trusted_peers_pop` non vide sélectionne le sous-ensemble de validateurs ; les pairs de réseau de confiance omis de cette carte non vide sont des observateurs. Si la carte est vide, tous les pairs du réseau de confiance BLS-normaux entrent dans l'ensemble des candidats au bootstrap, le votant PoPs étant toujours fourni par la genèse du blockchain signée.
+`--pop` n'est valide qu'avec `bls_normal` ; il ajoute `pop.hex` au répertoire de garde. La genèse de la blockchain signée nécessite un PoP correspondant pour chaque validateur de vote. Dans la configuration des pairs du réseau, indiquez le PoP de chaque validateur dans `trusted_peers_pop` : les pairs de confiance sans PoP valide sont exclus de la liste de consensus, et une carte vide ne produit aucun validateur, de sorte qu'un nœud dont la carte omet les validateurs de la genèse refuse de démarrer. Exécutez un nœud de synchronisation seule avec `[sumeragi] role = "observer"`.
 
 ## Sortie de garde {#custody-output}
 

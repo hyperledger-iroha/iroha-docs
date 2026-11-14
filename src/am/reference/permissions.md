@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /reference/permissions.md
-translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -16,7 +16,6 @@ translation_engine: bing-translator-llm+reviewed-delta
 |የፍቃድ ቶከን|ምድቦች|ቀዶ ጥገና|
 | --- | --- | --- |
 |`CanManagePeers`|የአውታረ መረብ አቻ|የአውታረ መረብ እኩዮችን ይመዝገቡ፣ ይመዝገቡ ወይም በሌላ መንገድ ያስተዳድሩ።|
-|`CanManageLaneRelayEmergency`|የአውታረ መረብ አቻ|የአደጋ ጊዜ ሌይን-ማስተላለፊያ መቆጣጠሪያዎችን ያስተዳድሩ።|
 |`CanRegisterDomain`|ጎራ|ጎራ ይመዝገቡ።|
 |`CanUnregisterDomain`|ጎራ|ጎራ ይመዝገቡ።|
 |`CanModifyDomainMetadata`|ጎራ|የጎራ ሜታዳታን አሻሽል።|
@@ -28,7 +27,7 @@ translation_engine: bing-translator-llm+reviewed-delta
 |`CanMintAssetWithDefinition`|ንብረት|ለተወሰነ ፍቺ ንብረቶችን ያውጡ።|
 |`CanBurnAssetWithDefinition`|ንብረት|ለተወሰነ ፍቺ ንብረቶችን ያጥፋሉ።|
 |`CanTransferAssetWithDefinition`|ንብረት|ለተወሰነ ትርጉም ንብረቶችን ያስተላልፉ።|
-|`CanMintAsset`|ንብረት|የተወሰነ የንብረት ቀሪ ሂሳብ ያውጡ።|
+|`CanMintAssetToAccount`|ንብረት|የተወሰነ የንብረት ቀሪ ሂሳብ ያውጡ።|
 |`CanBurnAsset`|ንብረት|የተወሰነ የንብረት ቀሪ ሂሳብን ያጠፋል።|
 |`CanTransferAsset`|ንብረት|የተወሰነ የንብረት ቀሪ ሂሳብ ያስተላልፉ።|
 |`CanRegisterNft`|NFT|ይመዝገቡ NFT።|
@@ -43,7 +42,7 @@ translation_engine: bing-translator-llm+reviewed-delta
 |`CanModifyTrigger`|ቀስቅሴ|ቀስቅሴ ውቅረትን ያስተካክሉ።|
 |`CanModifyTriggerMetadata`|ቀስቅሴ|ቀስቅሴ ሜታዳታን አሻሽል።|
 |`CanUpgradeExecutor`|አስፈፃሚ|የሶፍትዌር ማስፈጸሚያ አካባቢ አስፈፃሚውን ያሻሽሉ።|
-|`CanRegisterSmartContractCode`|ስማርት ውል|ብልጥ የኮንትራት ኮድ ይመዝገቡ።|
+|`CanManageSmartContractCode`|ስማርት ውል|ያልተጠቀሱ የኮድ አርቲፋክቶችን ያስወግዱ እና የኮንትራት መግቢያ ነጥቦችን ውክልና ይስጡ። የተመዘገቡ መለያዎች ያለዚህ ፈቃድ የተረጋገጡ አርቲፋክቶችን መፍጠር ይችላሉ።|
 | `CanManageFeeSponsorProgram` | SORA Nexus | የተወሰነው ስፖንሰር መለያ የሚያዝዛቸውን ፕሮግራሞች ማስተዳደር። |
 | `CanEnrollFeeSponsorProgram` | SORA Nexus | የአንድ የተወሰነ ስፖንሰር ፕሮግራም ተጠቃሚዎችን ማስተዳደር። |
 

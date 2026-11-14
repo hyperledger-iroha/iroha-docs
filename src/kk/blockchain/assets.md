@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /blockchain/assets.md
-translation_source_hash: 4d0a3f54a0c70d08d11160b9ec66d6538aa2c49c7771a13e4a070b61a9cb3e4b
+translation_source_hash: f5f0eb99e76287db695cc21b8580fd2a9b4dc2a989237c1a1d3d7333c14561ce
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -22,6 +22,7 @@ Iroha активі есепшоттағы сандық баланс болып �
 - `logo`: міндетті емес `SoraFS` URI
 - `metadata`: кездейсоқ кілт-бағалы метадеректер
 - `balance_scope_policy`: баланстар жаһандық па, әлде деректер кеңістігімен шектелген бе
+- `owning_domain`: доменге тиесілі анықтаманың иесі болып табылатын домен; тікелей деректер кеңістігінде тіркелген анықтамалар үшін болмайды
 - `owned_by`: анықтаманы тіркеген немесе иелік ететін есептік жазба
 - `total_quantity`: жалпы шығарылған мөлшері
 - `confidential_policy`: қорғалған активтер операциялары бойынша саясат
@@ -33,7 +34,7 @@ Iroha активі есепшоттағы сандық баланс болып �
 Бір `Asset` мыналарды қамтиды:
 
 - `id`: актив анықтамасын, иесінің есеп-шотын және міндетті емес актив баланс шегін біріктіретін `AssetId`
-- `value`: `Numeric` қалдық
+- `value`: `Quantity` қалдық
 
 Иеленушінің есептік жазбасы канондық әрі доменсіз. Актив анықтамасы деректер кеңістігімен нақтыланған домен аясында көрсетілуі мүмкін, мысалы, `payments.universal`.
 
@@ -88,7 +89,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-Үш мысал да — оқу операциялары. Taira желісінде актив шығару, жою немесе аудару үшін тест токендерін беру қызметінен қаржыландырылған есептік жазбаны және [SORA Nexus деректер кеңістіктеріне қосылу](/kk/get-started/sora-nexus-dataspaces.md) бөліміндегі тексерілетін үдерісті пайдаланыңыз.
+Үш мысал да — оқу операциялары. Taira желісінде актив шығару, жою немесе аудару үшін тест токендерін беру қызметінен қаржыландырылған есептік жазбаны және [Taira және Minamoto арқылы SORA Nexus жүйесінде қолданба әзірлеу](/kk/get-started/sora-nexus-dataspaces.md) бөліміндегі тексерілетін үдерісті пайдаланыңыз.
 
 Taira желісіндегі комиссия төленетін актив мысалы үшін алдымен [Taira желісінде тестілік XOR алу](/kk/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) бөліміндегі дайындау қадамы бар токен беру үдерісі арқылы қол қоюшыны қаржыландырыңыз. Содан кейін `ledger asset mint`, `ledger asset burn` және `ledger asset transfer` пәрмендеріне `--fee-payer authority` параметрін беріңіз; CLI қол қою алдында нақты комиссияны Taira комиссия активімен бағалайды:
 

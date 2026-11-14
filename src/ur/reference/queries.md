@@ -1,9 +1,9 @@
 ---
 translation_locale: ur
 translation_source: /reference/queries.md
-translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
+translation_source_hash: baa9726c7ce7d14b8dd17e77447ef72233ca9ed779367d9a190aa8dde7da41ac
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # استفسارات {#queries}
 
@@ -56,7 +56,7 @@ Iroha استفسارات لیجر کی حالت کو تبدیل کیے بغیر 
 |استفسار |مقصد |
 | --- | --- |
 |`FindAssets` |اثاثوں کے بیلنس درج کریں۔ |
-|`FindAssetsDefinitions` |اثاثہ جات کی تعریفیں درج کریں۔ |
+|`FindAssetDefinitions` |اثاثہ جات کی تعریفیں درج کریں۔ |
 |`FindAssetsByAccountId` |ایک اکاؤنٹ کے ذریعہ رکھے گئے اثاثوں کی فہرست بنائیں۔ |
 |`FindAssetById` |`AssetId` سے ایک اثاثہ بیلنس تلاش کریں۔ |
 |`FindAssetDefinitionById` |ID سے اثاثہ کی ایک تعریف تلاش کریں۔ |
@@ -66,7 +66,7 @@ Iroha استفسارات لیجر کی حالت کو تبدیل کیے بغیر 
 
 ## ایایسکرو اور ثبوت ریکارڈ {#escrow-and-proof-records}
 
-ایایسکرو استفسارات [نیٹیو اثاثہ ایایسکرو ISIs](/ur/blockchain/escrow.md) کے ذریعہ بنائے گئے ریکارڈوں کا معائنہ کرتے ہیں ، بشمول مارکیٹ پلیس ایایسکرو ، عام اثاثہ تالے ، اور گمنام ایایسکرو ریکارڈز۔
+ایسکرو استفسارات [مقامی اثاثہ ایسکرو ISIs](/ur/blockchain/escrow.md) کے بنائے گئے ریکارڈز کا معائنہ کرتے ہیں، جن میں مارکیٹ پلیس ایسکرو، عام اثاثہ تالے اور مشروط ایسکرو شامل ہیں۔
 
 |استفسار |مقصد |
 | --- | --- |
@@ -75,11 +75,6 @@ Iroha استفسارات لیجر کی حالت کو تبدیل کیے بغیر 
 |`FindAssetEscrowsBySeller` |بیچنے والے کے مطابق اثاثوں کی فہرست بنائیں۔ |
 |`FindAssetEscrowsByBuyer` |خریدار کے ذریعہ اثاثوں کی فہرست بنائیں۔ |
 |`FindAssetEscrowsByStatus` |اسٹیٹس کے لحاظ سے اثاثہ جات کی فہرست بنائیں۔ |
-|`FindAnonymousAssetEscrows` |گمنام اثاثوں کے کریڈٹ ریکارڈز درج کریں۔ |
-|`FindAnonymousAssetEscrowById` |ID تک ایک گمنام اثاثہ ایسکرو تلاش کریں. |
-|`FindAnonymousAssetEscrowsBySeller` |بیچنے والے کے مطابق گمنام گروہوں کی فہرست بنائیں۔ |
-|`FindAnonymousAssetEscrowsByBuyer` |خریدار کی طرف سے گمنام کریڈٹ درج کریں۔ |
-|`FindAnonymousAssetEscrowsByStatus` |anonymous escrows کو status کے مطابق درج کریں۔ |
 |`FindProofRecordById` |ID سے ایک ثبوت ریکارڈ تلاش کریں. |
 |`FindProofRecords` |ثبوت ریکارڈ درج کریں. |
 |`FindProofRecordsByBackend` |ایک ثبوت بیک اینڈ کے لئے ثبوت ریکارڈز درج کریں. |
@@ -89,15 +84,14 @@ Iroha استفسارات لیجر کی حالت کو تبدیل کیے بغیر 
 
 |استفسار |مقصد |
 | --- | --- |
-|`FindRepoAgreements` |آن لائن ذخیرہ شدہ مخزن معاہدوں کی فہرست بنائیں۔ |
+| `FindRepoAgreements` | آن چین محفوظ ری پو اور ریورس ری پو معاہدوں کی فہرست بنائیں۔ |
 |`FindTwitterBindingByHash` |ہیش کے ذریعہ ٹویٹر بائنڈنگ کو حل کریں۔ |
 |`FindDaPinIntentByTicket` |ٹکٹ کے ذریعے ڈیٹا کی دستیابی پن کا ارادہ تلاش کریں. |
 |`FindDaPinIntentByManifest` |مینیفیس ریفرنس کے ذریعہ پن کی نیت تلاش کریں۔ |
 |`FindDaPinIntentByAlias` |عرف کی طرف سے ایک پن ارادہ تلاش کریں. |
 |`FindDaPinIntentByLaneEpochSequence` |لین، دورانیہ، اور ترتیب کے مطابق پن کا ارادہ تلاش کریں. |
-|`FindLaneRelayEnvelopeByRef` |ایک تصدیق شدہ لین ریلے لفافہ تلاش کریں. |
 |`FindSorafsProviderOwner` |SoraFS فراہم کنندہ کے مالک کو حل کریں. |
-|`FindDataspaceNameOwnerById` |ایک ڈیٹا اسپیس نام مالک کو حل کریں. |
+| `FindDataspaceNameOwnerById` | کسی ڈیٹا اسپیس عرف کے فعال SNS مالک کا تعین کریں۔ |
 |`FindMusubiExactPackageV1` |ایک عین مطابق پیکج ریکارڈ اور اس کے موجودہ نظر ثانیوں کو پڑھیں. |
 |`FindMusubiExactReleaseV1` |ایک عین مطابق ریلیز اسنیپ شاٹ پڑھیں۔ |
 |`FindMusubiProviderBundleAttestationV1` |ایک فراہم کنندہ کے آرکائیو کٹ کی تصدیق پڑھیں۔ |
@@ -117,7 +111,7 @@ Iroha استفسارات لیجر کی حالت کو تبدیل کیے بغیر 
 |`FindActiveTriggerIds` |فعال ٹرگر درج کریں IDs. |
 |`FindTriggers` |فہرست ٹرگرز. |
 |`FindTriggerById` |ID سے ایک ٹرگر تلاش کریں. |
-|`FindContractManifestByCodeHash` |کوڈ ہیش کے ذریعے ایک ذہین معاہدے کی دستاویزی تلاش کریں. |
+| `FindContractManifestByArtifactId` | اسمارٹ کنٹریکٹ کا مینی فیسٹ اس کی ڈیٹا اسپیس آرٹیفیکٹ ID کے ذریعے تلاش کریں۔ |
 |`FindTransactions` |مقررہ ٹرانزیکشنز کی فہرست |
 |`FindBlocks` |فہرست بلاکس. |
 |`FindBlockHeaders` |بلاک ہیڈرز کی فہرست. |

@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /blockchain/transactions.md
-translation_source_hash: 91c06ab61c7f8ec96554bc89b31b2f281bb3a7d7edd484defe61dcde5a3fb710
+translation_source_hash: d9227effcdb4d54ac76f6288ba213de20f2574e1585e13b96a5202c44b69f3be
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -71,7 +71,7 @@ Iroha ሁለት ከመስመር ውጭ የግብይት የስራ ፍሰቶች �
 - ከመስመር ውጭ መፈረም የፊርማ መሳሪያው ግንኙነቱ ሲቋረጥ መደበኛ የተፈረመ ግብይት ይፈጥራል። የመስመር ላይ ደንበኛ የተፈረመውን የውሂብ መያዣ ወደ Torii እስኪያቀርብ ድረስ ግብይቱ አይካሄድም፣ ስለዚህ አሁንም ትክክለኛውን የሰንሰለት መታወቂያ፣ የፈቃድ ባለቤት፣ ፈቃዶች፣ ክፍያዎች፣ እና የግብይት የህይወት ዘመን.
 - **የKagemusha ከመስመር ውጭ ጥሬ ገንዘብ** በሃርድዌር የተጠበቀ የተመዘገበ ቦርሳ በመስመር ላይ ሳለ እሴት ይጭናል፣ ሁለቱም ቦርሳዎች ከመስመር ውጭ ሲሆኑ በመካከላቸው ክፍያ ያስችላል፣ ቦርሳው እንደገና በመስመር ላይ ሲመጣም የቀረውን እሴት ወደ መዝገብ መለያ ይመልሳል።
 
-Torii አንድ የKagemusha መንገድ፣ `POST /v1/kagemusha/enrollment`፣ ያቀርባል። በመለያ የተረጋገጡ `application/x-norito` የምዝገባ ፍሬሞችን ይቀበላል፣ በመሸጎጫ መቀመጥ የሌለባቸውን የግል ምላሾችም ይመልሳል። የዚህ የሕይወት ዑደት የመዝገብ ክፍል `KagemushaWalletLedgerV1` መመሪያ የያዙ መደበኛ የተፈረሙ ግብይቶችን ይጠቀማል:
+Torii አንድ ሁኔታ የሚቀይር የKagemusha መንገድ፣ `POST /v1/kagemusha/enrollment`፣ ያቀርባል። በመለያ የተረጋገጡ `application/x-norito` የምዝገባ ፍሬሞችን ይቀበላል፣ በመሸጎጫ መቀመጥ የሌለባቸውን የግል ምላሾችም ይመልሳል። በ`/v1/kagemusha/{scheme}/wallets/{wallet}/` ስር ያሉ በመለያ የተፈረሙ የSDK የንባብ መንገዶች የእሴት መጫኛ (Load) ደረሰኞችን እና የመጨረሻነት ማስረጃን ይመልሳሉ፤ እነዚህ በ`/openapi.json` ውስጥ አልተዘረዘሩም። የዚህ የሕይወት ዑደት የመዝገብ ክፍል `KagemushaWalletLedgerV1` መመሪያ የያዙ መደበኛ የተፈረሙ ግብይቶችን ይጠቀማል፦
 
 | ክዋኔ | ዓላማ |
 | --- | --- |
@@ -88,13 +88,21 @@ Torii አንድ የKagemusha መንገድ፣ `POST /v1/kagemusha/enrollment`፣ 
 3. ቦርሳዎቹ ከመስመር ውጭ ሳሉ በመካከላቸው ክፍያዎችን በአካባቢው ይለዋወጡና ያረጋግጡ፤ እያንዳንዱን ዝውውር ከማረጋገጥዎ በፊት የቦርሳውን ሁኔታ በቋሚነት ያስቀምጡ።
 4. ቦርሳው እንደገና በመስመር ላይ ሲመጣ የUnload ጥያቄውን ይላኩና የመጨረሻነትን ይጠብቁ።
 
+Kagemusha ለልቀት ብቁ መሆኑ ገና አልተረጋገጠም፦ የቀጥታ የገንዘብ ብቃት ማረጋገጫ እንዲሁም በአካላዊ መሣሪያዎች ላይ የስልክ ምዝገባ፣ ማንቃት እና ክፍያ ገና ያልተጠናቀቁ ናቸው።
+
 የማስታወሻው ሁኔታ በመስመር ላይ የህይወት ኡደት እስኪዘምን ድረስ የብሎክቼይን መዝገብ የሚጋጭ ከመስመር ውጭ ዝውውርን መለየት አይችልም። ስለዚህ፣ የኪስ ቦርሳ እና ኦፕሬተር ፖሊሲዎች የእሴት ገደቦችን፣ ጊዜው የሚያበቃን፣ ተቀባይነት ያላቸው ሰጪዎችን፣ አስተማማኝ የአካባቢ ማከማቻን እና የማስታረቅ መስኮቶችን ማስፈጸም አለባቸው።
 
 ከ`Grant` መመሪያ ጋር አዲስ ግብይት የመፍጠር ምሳሌ ይኸውና። በዚህ ግብይት ውስጥ Mouse Alice የተገለጸውን ሚና (`role_id`) እየሰጠ ነው። [ሙሉ ምሳሌ](./permissions.md#register-a-new-role) ን ያረጋግጡ።
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```

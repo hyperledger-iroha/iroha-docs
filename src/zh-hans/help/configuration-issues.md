@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /help/configuration-issues.md
-translation_source_hash: 9d153d9cb8ce0341b35ba5a7e3823198e58464768e2a9a92ff8a5723f85e9351
+translation_source_hash: cfd86e847651e71d40e8857c0531f9721ef94ea3c65bd80b6f6951081488f39d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -31,7 +31,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 
 如果您以前从未使用多哈什,那么自然可以假设右边不是六分之一.代表关键字节 (每字节的两个符号),而更好的是编码为 ASCII (或 UTF-8),并调用 `from_hex` 在两个字符串上, `public_key` 和 `private_key` 一个实例.
 
-也是自然的假设,在字符串字母上调用 `PrivateKey::try_from_str`只会产生正确的键.所以如果你错误地读取键中的比特数量,例如32字节对64字节,那就会引起一个错误信息.
+人们也很自然地会认为，使用 `str::parse::<PrivateKey>()` 解析该字符串字面量只会得到正确的密钥。因此，如果密钥的位数弄错了，例如 32 字节与 64 字节，就会引发错误消息。
 
 这两种假设都是错误的. 遗憾的是,错误信息并没有帮助解决这种特殊的失败.
 
@@ -39,7 +39,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 
 ::: warning
 
-即使是 `try_from_str` 实现也无法验证给定的字符串是否是一个有效的 `PrivateKey`,并且警告你如果不是.
+即使是 `FromStr` 实现也无法验证给定的字符串是否是一个有效的 `PrivateKey`,并且警告你如果不是.
 
 它会发现一些明显的错误,例如如果字符串包含无效的符号.然而,由于我们旨在支持许多键格式,它不能做很多其他事情. 除非您提交指示外,它也无法判断密钥是否是给定的帐户的正确私钥.
 

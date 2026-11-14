@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: b6e3bd79c50ea326930ac978350ea4beac8294b6f045ac0084aada257754ffa1
+translation_source_hash: bb1044edb9d34264e36848ee773d4d313bfbfd91b45da2eeb831f7ef8920e9b4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
@@ -56,7 +56,7 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` 僅可與 `bls_normal` 一起使用；它會在託管目錄中加入 `pop.hex`。已簽署的創世設定要求每個投票驗證者都有相符的 PoP。在對等節點設定中，非空的 `trusted_peers_pop` 對映會選出驗證者子集；未列入該非空對映的受信任對等節點是觀察者。如果對映為空，所有使用 BLS-normal 的受信任對等節點都會進入啟動候選集合，而投票者的 PoPs 仍由已簽署的創世設定提供。
+`--pop` 僅可與 `bls_normal` 一起使用；它會在託管目錄中加入 `pop.hex`。已簽署的創世設定要求每個投票驗證者都有相符的 PoP。在對等節點設定中，請在 `trusted_peers_pop` 中列出每個驗證者的 PoP：沒有有效 PoP 的受信任對等節點會被排除在共識名單之外，而空對映不會產生任何驗證者，因此對映中缺少創世驗證者的節點會拒絕啟動。若要執行僅同步的節點，請使用 `[sumeragi] role = "observer"`。
 
 ## 託管輸出 {#custody-output}
 

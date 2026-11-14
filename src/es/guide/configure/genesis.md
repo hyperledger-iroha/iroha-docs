@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /guide/configure/genesis.md
-translation_source_hash: 91be089c82a76991e35a43e1541f9e069fdf70d3fb5de2492b985c06c78a2372
+translation_source_hash: 2a4a43b6ac873cc0c860631e307e52b047ba6a08691bf3e4c5872cc22c81a0bd
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -9,7 +9,7 @@ translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-so
 
 El génesis de la blockchain define el estado inicial de la cadena. La fuente editable es un manifiesto técnico JSON, y un nodo Iroha 3 consume un archivo de transacción firmado Norito.
 
-::: details Manifiesto técnico génesis de blockchain predeterminado
+::: details Plantilla de origen de génesis predeterminada (defaults/genesis.template.json)
 
 <<< @/snippets/genesis.json
 
@@ -36,7 +36,7 @@ public_key = "ed0120..."
 expected_hash_file = "./genesis.expected_hash"
 ```
 
-Todos los pares de la red deben coincidir en la transacción de génesis firmada y en la clave pública de génesis. El archivo con el hash esperado es obligatorio tanto en el primer arranque como en los reinicios; `kagami genesis sign --expected-hash-out` lo genera.
+Todos los pares de la red deben coincidir en la transacción de génesis firmada y en la clave pública de génesis. Cada arranque, ya sea el primero o un reinicio, necesita el hash esperado: configure exactamente uno entre `expected_hash_file` y el `expected_hash` en línea. `kagami genesis sign --expected-hash-out` genera el archivo.
 
 ## Firmar el génesis {#signing-genesis}
 
@@ -52,7 +52,7 @@ cargo run --bin kagami -- genesis sign ./genesis.json \
 
 `GENESIS_PRIVATE_KEY_FILE` debe ser un archivo normal de un solo enlace, propiedad del usuario y con modo `0600`, que contenga un único multihash canónico de clave privada y termine con un salto de línea. Kagami rechaza los enlaces simbólicos y nunca acepta una clave privada de génesis sin procesar en la línea de comandos.
 
-Para los perfiles NPoS o SORA Nexus, incluya la topología y las pruebas de posesión BLS requeridas por el perfil generado. Los comandos de Kagami `localnet generate`, `wizard` y `sora-network generate` se encargan de esos detalles automáticamente.
+Todo génesis firmado, ya sea con permisos o NPoS, debe incluir una topología de exactamente `3f + 1` validadores con una prueba de posesión BLS para cada validador. Los comandos de Kagami `localnet generate`, `wizard` y `sora-network generate` se encargan de esos detalles automáticamente.
 
 ## Volver a confirmar el génesis {#recommitting-genesis}
 

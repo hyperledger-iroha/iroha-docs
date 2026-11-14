@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
+translation_source_hash: ad2bc9f8c53169d8161f7a2f23b1e660ebd24cf03cf8e05f4b00bbd27b7b11fe
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -23,8 +23,8 @@ Bu səhifədən istifadə edərək müəyyən bir düyün sayı, şəbəkə geci
 İctimai node vaxt nöqtəsi məlumat baxışı və Prometheus yığımı ilə başlayın, sonra operator tərəfindən təsdiqlənmiş konsensus vəziyyəti üçün CLI istifadə edin. Operator açarı hədəf node tərəfindən icazə verilməli və yalnız proqram icra mühitində yüklənir:
 
 ```bash
-export TORII=http://127.0.0.1:8180
-export OPERATOR_KEY_FILE=./secrets/operator.key
+export TORII=http://127.0.0.1:8080
+export OPERATOR_KEY_FILE="$PWD/localnet/runtime/operator-signer.key"
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s "$TORII/metrics" > metrics.prom
@@ -52,7 +52,7 @@ curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/now" \
-  | jq '{now_ms, offset_ms}'
+  | jq '{now, offset_ms}'
 ```
 
 Öz yerləşdirməniz üçün istehsal tutumu rəqəmləri kimi ictimai testnet müşahidələrindən istifadə etməyin.
@@ -187,13 +187,13 @@ Metrlərin adları yoxlanılmış telemetriya kataloqundan gəlir. Seriyaların 
 | --- | --- | --- |
 |Qəbul edilmiş ötürmə sürəti| `sum(rate(txs{type="accepted"}[5m]))` |Sabit vəziyyətdə hədəf TPS-ə çatmalı və ya onu aşmalıdır|
 |Rədd etmələr| `sum(rate(txs{type="rejected"}[5m]))` |Test planı ilə izah edilə bilməlidir|
-|protokolun yekunlaşdırılma gecikməsi| `histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |p95/p99-i gecikmə büdcəsi ilə müqayisə edin|
+|protokolun yekunlaşdırılma gecikməsi| `histogram_quantile(0.95, sum by (le) (rate(sumeragi_commit_latency_ms_bucket{lane="global"}[5m])))`, `last_commit_time_ms` |p95/p99-i gecikmə büdcəsi ilə müqayisə edin|
 |Növbə dərinliyi| `queue_size`, `sumeragi_tx_queue_depth` |Yüksək yüklənmə zamanı məhdud qalmalıdır|
 |Növbənin doyması| `sumeragi_tx_queue_saturated` |Davamlı sıfırdan fərqli dəyərlər həddindən artıq yüklənmə deməkdir|
-|Dəyişiklikləri göstər| `view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |Yüksələn dəyərlər zamanlama, topologiya, yükləmə və ya şəbəkə problemi göstərir|
-|Atılmış mesajlar| `dropped_messages`, `sumeragi_consensus_message_handling_total` |Yük zamanı düşmələr adətən gecikmə artımlarını izah edir|
-|Yük və DA bərpası| `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` |Davamlı sorğular, artan yaş və ya təkrarlanan DA qapılar bədən və ya parça əldə etmə çətinliyini göstərir|
-|konsensusun yekunlaşdırılması üçün kvorum| `sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |Sayılan imzalar tələb olunan səs çoxluğuna tez çatmalıdır|
+|Dəyişiklikləri göstər| `view_changes`, `sumeragi_view_changes_total`, `sumeragi_timeout_votes_total` |Yüksələn dəyərlər zamanlama, topologiya, yükləmə və ya şəbəkə problemi göstərir|
+|Atılmış mesajlar| `sumeragi_dropped_total`, `p2p_queue_dropped_total` |Yük zamanı düşmələr adətən gecikmə artımlarını izah edir|
+|Yük və geriləməni aradan qaldırma sorğuları| `sumeragi_fetch_requests_total{kind="body"}`, `sumeragi_fetch_requests_total{kind="sync"}` |Davamlı gövdə və ya sinxronizasiya sorğuları yükün əldə edilməsində və ya geriləmənin aradan qaldırılmasında problem olduğunu göstərir|
+|Yekunlaşdırma irəliləyişi| `sumeragi_committed_height`, `sumeragi_applied_height` |Sertifikatlaşdırılmış və tətbiq edilmiş hündürlüklər birlikdə irəliləməlidir|
 
 Bir metrik yalnız `/v1/sumeragi/status` mövcud olduqda, JSON nöqtəsində vaxt məlumatlarının görünüşünü Prometheus skreypi ilə eyni işləmə artefaktlarında tutun.
 
@@ -245,7 +245,7 @@ Performans göstəricilərini yalnız onları təkrarlamaq üçün kifayət qəd
 - qəbul edildi/rədd edildi TPS
 - p50/p95/p99 protokolunun yekunlaşma gecikməsi
 - növbə dərinliyi və doyma
-- dəyişikləri baxın, batmış mesajlar, blok alınmalarının itməsi və DA-qapı sayğacları
+- baxış dəyişiklikləri, vaxt aşımı səsləri, Sumeragi atılmaları, gövdə və sinxronizasiya sorğuları
 - CPU, hər bir təsdiqləyici üzrə yaddaş, disk və şəbəkə istifadəsi
 
 Bu detallarsız, TPS nömrəsi hekayəvi kimi qəbul edilməlidir.

@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: f1f922b9820587cd4b599e7407698a47d468616670fee2922e4028147bc3e9b0
+translation_source_hash: 804ef15b3d5ecdfae9fd559d3f312772571938ed9872f4adbd251baa3471e4e2
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Kotlin,Android 和Java {#kotlin-android-and-java}
 
@@ -15,7 +15,7 @@ Kotlin SDK 是 JVM 和 Android 應用程式的預設客戶端堆.它在 Iroha �
 | --- | --- | --- |
 |`org.hyperledger.iroha.sdk:core-jvm`|JAR|純 Kotlin/JVM Norito,資料模型,加密貨幣,交易, Torii 和協議程式碼 |
 |`org.hyperledger.iroha.sdk:client-android`|AAR|Android 關鍵儲存,裝置遠端測量和 JNI 支援的客戶端整合|
-|`org.hyperledger.iroha.sdk:offline-wallet-android`|AAR|Android 基於`client-android`的離線錢包運輸和整合|
+|`org.hyperledger.iroha.sdk:kagemusha-wallet-android`|AAR|Android 基於`client-android`的離線錢包運輸和整合|
 
 這些構件還沒有在Maven Central上釋出. 從注入的 Iroha 來源修改中構建並本地釋出:
 
@@ -36,21 +36,21 @@ dependencies {
     // Android client features:
     // implementation("org.hyperledger.iroha.sdk:client-android:0.1.0")
     // Android offline-wallet features:
-    // implementation("org.hyperledger.iroha.sdk:offline-wallet-android:0.1.0")
+    // implementation("org.hyperledger.iroha.sdk:kagemusha-wallet-android:0.1.0")
 }
 ```
 
-`core-jvm`不包含 Android 的依賴性.在 `client-android`中儲存 Android 客戶端和金鑰儲存程式碼,並且僅使用`offline-wallet-android`用於 Android 的離線錢包和 JNI 流.
+`core-jvm`不包含 Android 的依賴性.在 `client-android`中儲存 Android 客戶端和金鑰儲存程式碼,並且僅使用`kagemusha-wallet-android`用於 Android 的離線錢包和 JNI 流.
 
 ## Kotlin 和Java相容性 {#kotlin-and-java-compatibility}
 
-公共 API 是 Kotlin 的首個,在 JVM 呼叫者需要時提供Java間接.相等變化反映在相應的 `java/`實現中.新的 Android 整合應該從上述 Kotlin 構件開始.
+公開 API 以 Kotlin 為優先，是面向 Java 呼叫方的標準實作；`core-jvm` 中的 Java 原始碼使用端測試會直接驗證它。`java/` 目錄樹中保存的是重複的實作，這些實作正逐步併入 Kotlin 模組並淘汰。新的 Android 整合應從上述 Kotlin 構件開始。
 
 所有的 Kotlin 模組執行 JDK 8 API 編譯時與 `-Xjdk-release=8`, 儘管構建工具鏈本身使用 JDK 21. 不要使用 JDK 9+ APIs 在 SDK 這個程式碼.
 
 ## 建立和測試 {#build-and-test}
 
-執行行動式 JVM 測試:
+依照 Kotlin SDK README 中的說明，在 `IROHA_NATIVE_LIBRARY_PATH` 中指定同源建置的 `connect_norito_bridge` 程式庫，在 `IROHA_KOTLIN_FIXTURE_GEN_BIN` 中指定 `kotlin-fixture-gen`，然後執行 JVM 測試；若缺少它們，依賴原生程式庫的測試會失敗：
 
 ```bash
 cd kotlin
@@ -61,7 +61,7 @@ cd kotlin
 
 ```bash
 ./gradlew :client-android:assembleRelease \
-  :offline-wallet-android:assembleRelease --quiet
+  :kagemusha-wallet-android:assembleRelease --quiet
 ```
 
 ## 目前覆蓋範圍 {#current-coverage}

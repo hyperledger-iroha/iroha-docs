@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
+translation_source_hash: 6edc0185196ab8e77ef8552723e05bf37cca1a088da86e2a43d441d58e779c11
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -32,4 +32,4 @@ docker restart <container>
 
 ## 使用定製配置 {#use-custom-configuration}
 
-目前的對等節點配置是 TOML.將生成的 `config.toml`, `genesis.signed.nrt` 和相關關鍵檔案繫結或複製到預期的容器路徑中.將生成的檔案放在一起;從不同的 Kagami 執行中混合檔案可能會導致消產或共識失敗.
+目前的對等節點設定採用 TOML 格式。Kagami 會為每個驗證者寫入一個 `peerN.toml`，並附帶 `genesis.signed.nrt`、`genesis.public_key` 與 `genesis.expected_hash`；由 `kagami docker` 產生的 Compose 檔案會將它們掛載到容器中。請重新產生，而不要手動複製檔案，然後重新啟動對等節點。請將產生的檔案放在一起；混用不同 Kagami 執行所產生的檔案，可能導致還原序列化或共識失敗。

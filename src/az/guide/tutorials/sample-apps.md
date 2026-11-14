@@ -1,9 +1,9 @@
 ---
 translation_locale: az
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 0c4f2f3fc4efb9f883f597a3eea49c99431b711a0141eba70ac5a2524990dd73
+translation_source_hash: 50fac5ad01faf8d09441cba90f29472da04630dbeb3c80111a19f3fb50bb1224
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Nümunələr və Reseptlər {#samples-and-recipes}
 
@@ -19,4 +19,4 @@ Mövcud Swift SDK-ə qarşı təsdiqlənmiş nümunələr üçün `IrohaSwift/Te
 
 ## Android {#android}
 
-Yeni Android işi üçün [Kotlin, Android və Java](/az/guide/tutorials/kotlin-java.md)-də təsvir olunan Kotlin-ilk `core-jvm`, `client-android` və `offline-wallet-android` modullarından istifadə edin. Kotlin SDK Android istehlakçıları üçün yeganə protokol-standart başlanğıc nöqtəsidir.
+Yeni Android işi üçün [Kotlin, Android və Java](/az/guide/tutorials/kotlin-java.md)-də təsvir olunan Kotlin-ilk `core-jvm`, `client-android` və `kagemusha-wallet-android` modullarından istifadə edin. Kotlin SDK Android istehlakçıları üçün yeganə protokol-standart başlanğıc nöqtəsidir.

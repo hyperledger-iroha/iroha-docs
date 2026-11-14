@@ -1,7 +1,7 @@
 ---
 translation_locale: ru
 translation_source: /guide/configure/genesis.md
-translation_source_hash: 91be089c82a76991e35a43e1541f9e069fdf70d3fb5de2492b985c06c78a2372
+translation_source_hash: 2a4a43b6ac873cc0c860631e307e52b047ba6a08691bf3e4c5872cc22c81a0bd
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -9,7 +9,7 @@ translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-so
 
 Генезис блокчейна определяет начальное состояние цепочки. Редактируемый источник является JSON техническим манифестом, а Iroha 3 узел потребляет подписанный Norito файл транзакции.
 
-::: details Технический манифест генезиса блокчейна по умолчанию
+::: details Исходный шаблон генезиса по умолчанию (defaults/genesis.template.json)
 
 <<< @/snippets/genesis.json
 
@@ -36,7 +36,7 @@ public_key = "ed0120..."
 expected_hash_file = "./genesis.expected_hash"
 ```
 
-Все узлы сети должны использовать одинаковые подписанную транзакцию генезиса и открытый ключ генезиса. Файл ожидаемого хеша обязателен при первом запуске и перезапусках; его записывает `kagami genesis sign --expected-hash-out`.
+Все узлы сети должны использовать одинаковые подписанную транзакцию генезиса и открытый ключ генезиса. Каждый запуск, первый или повторный, требует ожидаемого хеша: настройте ровно один из параметров — `expected_hash_file` или встроенный `expected_hash`. Файл записывает `kagami genesis sign --expected-hash-out`.
 
 ## Подписание генезиса блокчейна {#signing-genesis}
 
@@ -52,7 +52,7 @@ cargo run --bin kagami -- genesis sign ./genesis.json \
 
 `GENESIS_PRIVATE_KEY_FILE` должен быть файлом обычного типа с одной ссылкой, находящимся в режиме, удерживаемом владельцем-`0600`, содержащим один канонический мультихэш приватного ключа и завершающий перенос строки. Kagami отклоняет символические ссылки и никогда не принимает сырой приватный ключ genesis блокчейна через командную строку.
 
-Для профилей NPoS или SORA Nexus включите топологию и доказательства владения ключами BLS, требуемые сгенерированным профилем. Команды Kagami `localnet generate`, `wizard` и `sora-network generate` выполняют это автоматически.
+Каждый подписанный генезис, как в режиме с разрешениями, так и в NPoS, должен включать топологию ровно из `3f + 1` валидаторов с доказательством владения ключом BLS для каждого валидатора. Команды Kagami `localnet generate`, `wizard` и `sora-network generate` выполняют это автоматически.
 
 ## Повторное подтверждение генезиса блокчейна {#recommitting-genesis}
 

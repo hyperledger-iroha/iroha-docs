@@ -1,9 +1,9 @@
 ---
 translation_locale: ba
 translation_source: /reference/queries.md
-translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
+translation_source_hash: baa9726c7ce7d14b8dd17e77447ef72233ca9ed779367d9a190aa8dde7da41ac
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Һорауҙар {#queries}
 
@@ -56,7 +56,7 @@ Iroha һорауҙар иҫәп-хисап хәлен уҡый, уны үҙгә�
 |Һорау |Маҡсат |
 | --- | --- |
 |`FindAssets` |Активтар балансын исемлекләгеҙ. |
-|`FindAssetsDefinitions` |Активтарҙың билдәләмәләрен исемлеккә килтерегеҙ. |
+|`FindAssetDefinitions` |Активтарҙың билдәләмәләрен исемлеккә килтерегеҙ. |
 |`FindAssetsByAccountId` |Иҫәптә тотолған активтарҙы исемлеккә индер. |
 |`FindAssetById` |`AssetId` менән бер актив балансын табығыҙ. |
 |`FindAssetDefinitionById` |ID менән бер актив билдәләмәһен табығыҙ. |
@@ -66,7 +66,7 @@ Iroha һорауҙар иҫәп-хисап хәлен уҡый, уны үҙгә�
 
 ## Варианттар һәм иҫбатлау ҡағыҙҙары {#escrow-and-proof-records}
 
-Эскроу һорауҙары [ урындағы активтар эскроуы ISIs](/ba/blockchain/escrow.md) тарафынан булдырылған мәғлүмәттәрҙе тикшерә, шул иҫәптән баҙарҙағы депозиттарҙы, дөйөм активтарҙы бикләүҙәрҙе һәм аноним конфиденциаль депозиттар тураһында мәғлүмәтте.
+Эскроу һорауҙары [протоколға индерелгән актив эскроуы ISIs](/ba/blockchain/escrow.md) булдырған яҙмаларҙы тикшерә, шул иҫәптән баҙар эскроуҙарын, дөйөм актив бикләүҙәрен һәм шартлы эскроуҙарҙы.
 
 |Һорау |Маҡсат |
 | --- | --- |
@@ -75,11 +75,6 @@ Iroha һорауҙар иҫәп-хисап хәлен уҡый, уны үҙгә�
 |`FindAssetEscrowsBySeller` |Һатыусы тарафынан һаҡланған активтарҙы иҫкә алыу. |
 |`FindAssetEscrowsByBuyer` |Һатып алыусы тарафынан һаҡланған активтарҙы иҫкә алыу. |
 |`FindAssetEscrowsByStatus` |Статусы буйынса активтарҙы иҫкә алыу. |
-|`FindAnonymousAssetEscrows` |Анноним активтар иҫәбенә теркәлеү. |
-|`FindAnonymousAssetEscrowById` |ID менән бер аноним активты һаҡлап ҡалыуҙы табығыҙ. |
-|`FindAnonymousAssetEscrowsBySeller` |Һатыусы буйынса аноним һаҡсыларҙы исемлеккә килтерегеҙ. |
-|`FindAnonymousAssetEscrowsByBuyer` |Һатып алыусыға ҡарап аноним һаҡсыларҙы исемлеккә индер. |
-|`FindAnonymousAssetEscrowsByStatus` |Аноним банкроттарҙы статусына ҡарап исемлеккә индер. |
 |`FindProofRecordById` |ID менән бер иҫбатлау яҙмаһын табығыҙ. |
 |`FindProofRecords` |Дәлилдәрҙе яҙығыҙ. |
 |`FindProofRecordsByBackend` |Дәлилдәр өсөн иҫбатлау яҙмаларын яҙығыҙ. |
@@ -89,15 +84,14 @@ Iroha һорауҙар иҫәп-хисап хәлен уҡый, уны үҙгә�
 
 |Һорау |Маҡсат |
 | --- | --- |
-|`FindRepoAgreements` |Сылбырҙа һаҡланған депозитарлыҡ килешеүҙәрҙе исемлекләгеҙ. |
+|`FindRepoAgreements` |Сылбырҙа һаҡланған репо һәм кире репо килешеүҙәрен исемлекләгеҙ. |
 |`FindTwitterBindingByHash` |Хеш ярҙамында Twitter бәйләнешен хәл. |
 |`FindDaPinIntentByTicket` |Билет буйынса мәғлүмәттәр менән тәьмин итеү маҡсатын табығыҙ. |
 |`FindDaPinIntentByManifest` |Мәғлүмәт менән билдәләү маҡсатын табығыҙ. |
 |`FindDaPinIntentByAlias` |Исеме буйынса пин-интент тап. |
 |`FindDaPinIntentByLaneEpochSequence` |Юлдар, эпохалар һәм эҙемтәләр буйынса билдәләү маҡсатын табығыҙ. |
-|`FindLaneRelayEnvelopeByRef` |Тикшеренгән юл эстафетаһы табығыҙ. |
 |`FindSorafsProviderOwner` |SoraFS менән тәьмин итеүсе хужаһын хәл итергә. |
-|`FindDataspaceNameOwnerById` |Мәғлүмәт киңлеге исеме хужаһын хәл итеү. |
+|`FindDataspaceNameOwnerById` |Мәғлүмәт киңлеге псевдонимының әүҙем SNS эйәһен асыҡлау. |
 |`FindMusubiExactPackageV1` |Бер төп нөсхә һәм уның хәҙерге үҙгәрештәрен уҡығыҙ.|
 |`FindMusubiExactReleaseV1` |Дөрөҫөн генә әйткәндә, бер фотоны уҡығыҙ. |
 |`FindMusubiProviderBundleAttestationV1` |Бер провайдерҙың архив-банкет аттестацияһын уҡығыҙ. |
@@ -117,7 +111,7 @@ Iroha һорауҙар иҫәп-хисап хәлен уҡый, уны үҙгә�
 |`FindActiveTriggerIds` |Актив ҡуҙғытыусыны исемлеккә индер IDs. |
 |`FindTriggers` |Тылсымлы исемлек. |
 |`FindTriggerById` |ID менән бер атуарҙы табығыҙ. |
-|`FindContractManifestByCodeHash` |Аҡыллы килешеү манифестаһын код-хаш менән табығыҙ.|
+|`FindContractManifestByArtifactId` |Аҡыллы килешеү манифесын уның мәғлүмәт киңлеге артефакты идентификаторы буйынса табығыҙ.|
 |`FindTransactions` |Ваҡытлы килешеүҙәр исемлеге |
 |`FindBlocks` |Список блоктары. |
 |`FindBlockHeaders` |Блок башлыҡтары исемлеген яҙығыҙ. |

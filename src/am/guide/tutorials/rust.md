@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /guide/tutorials/rust.md
-translation_source_hash: fbe41bd6e7fa86d06c027724b446016c14246495964ccf521155e4b790d75041
+translation_source_hash: 9d9848de91a85c84221efc39bc7dfb8443f5c50b448d336207c06efce3bc07e8
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -53,7 +53,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-`taira.client.toml`ን ከፈጠሩ በኋላ፣ ያው ሁለትዮሽ የተፈረሙ የካናሪ ትዕዛዞችን በ Taira ላይ ማሄድ ይችላል። እነዚያን ከተራ አሃድ ፈተናዎች ይለዩ ምክንያቱም በቴስትኔት የተደገፈ መለያ እና የቀጥታ የቴስትኔት መገኘት ስለሚያስፈልጋቸው ነው።
+`taira.client.toml`ን ከፈጠሩ በኋላ፣ ያው ሁለትዮሽ ፕሮግራም በ`iroha taira account` መለያን ማስመዝገብና ገንዘብ መሙላት እንዲሁም መደበኛ የተፈረሙ የብሎክቼይን መዝገብ ትዕዛዞችን ወደ Taira ማስገባት ይችላል። እነዚያን ከተራ አሃድ ሙከራዎች ይለዩ፣ ምክንያቱም ከፋውሴት ገንዘብ የተሞላለት መለያ እና የቀጥታ የቴስትኔት መገኘት ስለሚያስፈልጋቸው ነው።
 
 ## የ Rust የደንበኛ ሶፍትዌር ጥቅልን በመጠቀም {#using-the-rust-client-crate}
 
@@ -70,7 +70,7 @@ iroha = { git = "https://github.com/hyperledger-iroha/iroha.git", rev = "<IROHA_
 - `crates/iroha/README.md`
 - `crates/iroha_cli/README.md`
 
-በብሎክቼይን መዝገብ escrow የስራ ፍሰቶች ለሚተዳደር፣ [ቤተኛ ንብረት Escrow](/am/blockchain/escrow.md#rust-sdk) ይመልከቱ። የ Rust የውሂብ ሞዴል በአሁኑ ጊዜ ለገበያ ቦታ escrow፣ አጠቃላይ የንብረት መቆለፊያዎች፣ ማንነታቸው ያልታወቀ escrow፣ መጠይቆች እና ክስተቶች በጣም የተሟላ የተተየበ ሽፋን አለው።
+በብሎክቼይን መዝገብ ለሚተዳደሩ escrow የስራ ፍሰቶች፣ [ቤተኛ ንብረት Escrow](/am/blockchain/escrow.md#rust-sdk) ይመልከቱ። የ Rust የውሂብ ሞዴል በአሁኑ ጊዜ ለገበያ ቦታ escrow፣ ለአጠቃላይ የንብረት መቆለፊያዎች፣ ለሁኔታዊ escrow፣ ለመጠይቆች እና ለክስተቶች በጣም የተሟላ የተተየበ ሽፋን አለው።
 
 የአካባቢያዊ CLI የእገዛ ነጥብ-በጊዜ ውሂብ እይታን በሚከተሉት መልኩ ማደስ ይችላሉ -
 

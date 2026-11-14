@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /blockchain/instructions.md
-translation_source_hash: ef50253c5478c9d8c3e14529dc4c2f3de67c344901c82c65be77ceb237a29598
+translation_source_hash: 86d253317376ad8d7a8c0e30689c7e0c0cd786af83299dd5ac1a904c653192f5
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -41,7 +41,7 @@ Algunas instrucciones requieren que se especifique un destino. Por ejemplo, si t
 | [SetParameter](#setparameter)                             |parámetros de la cadena|                      |
 | [Grant/Revoke](#grant-revoke)                             | [roles, tokens de permiso](/es/blockchain/permissions.md)                                                  |cuentas o roles|
 | [Transferir](#transfer)                                     |dominios, definiciones de activos, activos numéricos, NFTs|cuentas|
-| [Depósitos en garantía nativos y bloqueos de activos](#native-escrow-and-asset-locks) |depósitos de garantía de activos numéricos, bloqueos de activos, compromisos de depósito de garantía anónimos|compradores, destinos o divisiones de disputas|
+| [Depósitos en garantía nativos y bloqueos de activos](#native-escrow-and-asset-locks) |depósitos en garantía de activos numéricos, bloqueos de activos, depósitos en garantía condicionales|compradores, destinos o divisiones de disputas|
 | [Acuerdo privado atómico](#atomic-private-settlement)   |conjuntos confidenciales limitados a la ruta, rotaciones de políticas, paquetes finalizados y marcadores de aborto|                      |
 | [ExecuteTrigger](#executetrigger)                         |desencadena|                      |
 | [Log/Custom/Upgrade](#other-instructions)                 |registros, cargas específicas del ejecutor, actualizaciones del ejecutor|                      |
@@ -184,6 +184,7 @@ Registrar y anular el registro de definiciones de activos:
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
+  --domain docs.universal \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
@@ -322,9 +323,9 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 
 ## Depósitos en garantía nativos y bloqueos de activos {#native-escrow-and-asset-locks}
 
-Las instrucciones de fideicomiso nativas bloquean activos numéricos bajo la custodia del protocolo gestionado por el libro mayor. Se utilizan para la liquidación al estilo de mercado, bloqueos de activos genéricos y flujos de fideicomiso anónimos protegidos.
+Las instrucciones de fideicomiso nativas bloquean activos numéricos bajo la custodia del protocolo gestionado por el libro mayor. Se utilizan para la liquidación al estilo de mercado, bloqueos de activos genéricos y depósitos en garantía condicionales vinculados a atestadores.
 
-El depósito en garantía del mercado utiliza `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute` y `ResolveEscrowDispute`. Los bloqueos de activos genéricos utilizan `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock` y `ExpireAssetLock`. La custodia anónima refleja el ciclo de vida del mercado con `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute` y `ResolveAnonymousEscrowDispute`.
+El depósito en garantía del mercado utiliza `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute` y `ResolveEscrowDispute`. Los bloqueos de activos genéricos utilizan `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock` y `ExpireAssetLock`. El depósito en garantía condicional utiliza `OpenConditionalEscrow`, `AttestEscrowCondition` y `ExpireConditionalEscrow`.
 
 Estos ISIs actualmente no tienen comandos CLI de primera clase. Utilice constructores SDK tipados o cargas de instrucciones serializadas, y consulte [Custodia de Activos Nativos](/es/blockchain/escrow.md) para detalles del ciclo de vida, permisos, consultas, eventos y ejemplos de Rust.
 
@@ -418,7 +419,7 @@ printf '{"owner":"ops"}\n' |
 Establezca un parámetro pasando un objeto de parámetro único JSON en la entrada estándar:
 
 ```bash
-printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
+printf '{"Sumeragi":{"MaxClockDriftMs":1000}}\n' |
   cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```

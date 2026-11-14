@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/assets.md
-translation_source_hash: 4d0a3f54a0c70d08d11160b9ec66d6538aa2c49c7771a13e4a070b61a9cb3e4b
+translation_source_hash: f5f0eb99e76287db695cc21b8580fd2a9b4dc2a989237c1a1d3d7333c14561ce
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -22,6 +22,7 @@ Iroha aktivi hisobda saqlanadigan sonli qoldiqdir. Har bir aniq qoldiq `AssetDef
 - `logo`: ixtiyoriy ravishda `SoraFS` URI
 - `metadata`: ixtiyoriy kalit-qiymat metama’lumotlari
 - `balance_scope_policy`: balanslar global yoki ma’lumotlar makoni bilan cheklanganligini belgilaydi
+- `owning_domain`: domenga tegishli ta’rifning egasi bo‘lgan domen; to‘g‘ridan-to‘g‘ri ma’lumotlar makonida ro‘yxatdan o‘tkazilgan ta’riflarda bo‘lmaydi
 - `owned_by`: ta’rifni ro‘yxatdan o‘tkazgan yoki unga egalik qiladigan hisob
 - `total_quantity`: chiqarilgan umumiy miqdor
 - `confidential_policy`: himoya qilingan aktivlar operatsiyalari siyosati
@@ -33,7 +34,7 @@ Aktiv ta’rifi identifikatorlari kanonik yashirin manzillardir. Ta’rif domen 
 `Asset`da quyidagilar mavjud:
 
 - `id`: aktiv ta’rifi, ega hisobi va ixtiyoriy qoldiq doirasini birlashtiradigan `AssetId`;
-- `value`: `Numeric` balans
+- `value`: `Quantity` balans
 
 Aktiv egasining hisobi kanonik va domensiz. Aktiv ta’rifi ma’lumotlar makoni bilan aniqlashtirilgan domen, masalan `payments.universal`, ostida proyeksiya qilinishi mumkin.
 
@@ -88,7 +89,7 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-Uchala misol ham o‘qish amalidir. Taira tarmog‘ida aktiv chiqarish, yoqish yoki o‘tkazish uchun faucet orqali mablag‘ bilan ta’minlangan hisob va [SORA Nexus ma’lumotlar makonlariga ulanish](/uz/get-started/sora-nexus-dataspaces.md)dagi himoyalangan jarayondan foydalaning.
+Uchala misol ham o‘qish amalidir. Taira tarmog‘ida aktiv chiqarish, yoqish yoki o‘tkazish uchun faucet orqali mablag‘ bilan ta’minlangan hisob va [Taira va Minamoto orqali SORA Nexus uchun ilova yaratish](/uz/get-started/sora-nexus-dataspaces.md) bo‘limidagi himoyalangan jarayondan foydalaning.
 
 Taira tarmog‘idagi komissiyali aktiv misoli uchun avval [Taira tarmog‘ida testnet XOR oling](/uz/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)dagi oldindan tayyorlashga asoslangan faucet jarayoni bilan imzolovchi hisobini moliyalashtiring. So‘ng `ledger asset mint`, `ledger asset burn` va `ledger asset transfer` buyruqlarida `--fee-payer authority`ni bering; CLI imzolashdan oldin aniq komissiyani Taira tarmog‘ining komissiya aktivida hisoblatadi:
 

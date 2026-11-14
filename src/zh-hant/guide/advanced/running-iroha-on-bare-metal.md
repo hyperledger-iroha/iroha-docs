@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -34,7 +34,7 @@ cargo build --release \
 target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-輸出目錄包含生成的 `genesis.json`, `genesis.signed.nrt`,對等節點`config.toml`檔案, `client.toml`,輔助指令碼以及生成的 `README.md`,其中包含該捆綁的確切命令.
+輸出目錄包含產生的 `genesis.json`、`genesis.signed.nrt`、`genesis.expected_hash`、每個驗證者各一個的 `peerN.toml`、`client.toml`、`start.sh` 與 `stop.sh` 指令碼，以及一個產生的 `README.md`，其中包含該套件的確切命令。
 
 ## 3. 啟動對等節點 {#_3-start-peers}
 
@@ -44,7 +44,7 @@ target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ./localnet/start.sh
 ```
 
-如果您需要將每個對等節點連線到像 systemd 這樣的程序管理器中,請使用為每一個對等節點記錄在 `./localnet/README.md` 的啟動命令. 保持每個對等節點的 `config.toml`,私鑰,儲存目錄和埠分開.
+如果您需要將每個對等節點接入 systemd 等程序管理器，請遵循 `./localnet/start.sh` 中針對每個對等節點的命令：在 `<bundle>/state/peerN` 目錄下執行 `iroha3d --config <bundle>/peerN.toml`，並且僅在該對等節點首次啟動時傳入 `--sumeragi-assert-fresh-key`。請將每個對等節點的 `peerN.toml`、私鑰、儲存目錄與連接埠分開保存。
 
 ## 4. 運營網路 {#_4-operate-the-network}
 

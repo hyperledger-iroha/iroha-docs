@@ -1,20 +1,20 @@
 ---
 translation_locale: uz
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
+translation_source_hash: c42adbe41e322c93509279f1f558d4450431de90c596f37eb3999754d4387f78
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
 # Tarmoqni joylashtirish uchun kalitlar {#keys-for-network-deployment}
 
-Har bir tarmoqqa mijozlar, tengdoshlar, genesisni imzolash hamda NPoS yoki SORA Nexus profillaridagi validatorlarning BLS identifikatorlari uchun alohida kalit materiallari kerak.
+Har bir tarmoqqa mijozlar, genezisni imzolash hamda egalik isbotlariga ega BLS-normal tasdiqlovchi identifikatorlari uchun alohida kalit materiallari kerak.
 
 ## Kalitlar qaerda ishlatiladi {#where-keys-are-used}
 
 - Mijoz imzo kalitlari `client.toml` ichida `[account]` ostida saqlanadi.
 - Tugun identifikatsiya kalitlari har bir tugunning `config.toml` faylida `public_key` va `private_key` sifatida saqlanadi.
 - tarmoq hamkasbini aniqlash har bir tarmoq hamkasbining ochiq kalitidan `trusted_peers` da foydalanadi.
-- BLS tasdiqlovchi Proofs-of-Possession NPoS profillari uchun `trusted_peers_pop` da saqlanadi.
+- BLS validatorlarining egalik isbotlari konsensus rejimidan qat’i nazar, har bir validator uchun `trusted_peers_pop` da saqlanadi.
 - Boshlang‘ich holatni imzolash tugun konfiguratsiyasidagi `[genesis].public_key` va manifestni imzolashda unga mos maxfiy kalitdan foydalanadi.
 
 Mahalliy yoki sinov joylashtirishlar uchun, Kagami ushbu fayllarning barchasini birga yaratishga ruxsat bering:

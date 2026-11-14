@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /blockchain/accounts.md
-translation_source_hash: adc98cbf1fcadae4415d03dcc262eb03f8c95b429527e403d230934ae2f3243c
+translation_source_hash: d956bfb8c698fa463ef9fa84a91d50cf0e2100885eba670121ad78753f87d88d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -44,7 +44,7 @@ private_key_file = "/absolute/path/to/private.key"
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+  | jq -r '.items[] | [.id, (.label // "-")] | @tsv'
 ```
 
 Հաշվետու ակտիվները ստուգելու համար նախորդ զանգից ID հաշիվը կրկնօրինակեք եւ այն URL կոդավորեք, նախքան այն տեղադրելը ուղին: Այս Python հատվածը անում է դա առաջին ցուցակագրված հաշիվի համար.
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-Սրանք հանրային ընթերցման գործողություններ են։ Հաշվի ստեղծումը կամ թարմացումը ստորագրված գործարք է և պահանջում է փորձնական միջոցների տրամադրման ծառայությամբ ֆինանսավորված Taira կարգավորում, որը նկարագրված է [Միանալ SORA Nexus տվյալների տարածքներին](/hy/get-started/sora-nexus-dataspaces.md) բաժնում։
+Սրանք հանրային ընթերցման գործողություններ են։ Հաշվի ստեղծումը կամ թարմացումը ստորագրված գործարք է և պահանջում է փորձնական միջոցների տրամադրման ծառայությամբ ֆինանսավորված Taira կարգավորում, որը նկարագրված է [Մշակում SORA Nexus-ում՝ Taira-ի և Minamoto-ի միջոցով](/hy/get-started/sora-nexus-dataspaces.md) բաժնում։
 
 ## Գրանցում եւ թույլտվություններ {#registration-and-permissions}
 

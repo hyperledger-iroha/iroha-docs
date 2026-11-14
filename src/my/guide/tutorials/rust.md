@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /guide/tutorials/rust.md
-translation_source_hash: fbe41bd6e7fa86d06c027724b446016c14246495964ccf521155e4b790d75041
+translation_source_hash: 9d9848de91a85c84221efc39bc7dfb8443f5c50b448d336207c06efce3bc07e8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -53,7 +53,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-`taira.client.toml` ကို ဖန်တီးပြီးနောက် တူညီသော ဘိုင်နရီဖြင့် Taira သို့ လက်မှတ်ထိုးထားသော ထိန်းချုပ်စမ်းသပ်ကွန်မန်းများကို လုပ်ဆောင်နိုင်သည်။ ၎င်းတို့အတွက် စမ်းသပ်ရန်ပုံငွေပေးဝန်ဆောင်မှုမှ ငွေဖြည့်ထားသော အကောင့်နှင့် လက်ရှိစမ်းသပ်ကွန်ရက် ရရှိနိုင်မှု လိုအပ်သဖြင့် သာမန်ယူနစ်စမ်းသပ်မှုများနှင့် သီးခြားထားပါ။
+`taira.client.toml` ကို ဖန်တီးပြီးနောက် တူညီသော binary ဖြင့် `iroha taira account` ကို သုံး၍ အကောင့်တစ်ခုကို စတင်မှတ်ပုံတင်ပြီး ငွေဖြည့်နိုင်ကာ Taira သို့ ပုံမှန် လက်မှတ်ထိုးထားသော လယ်ဂျာ command များကို တင်သွင်းနိုင်သည်။ ၎င်းတို့အတွက် faucet မှ ငွေဖြည့်ထားသော အကောင့်နှင့် တိုက်ရိုက်လည်ပတ်နေသော testnet ရရှိနိုင်မှု လိုအပ်သဖြင့် သာမန် unit စမ်းသပ်မှုများနှင့် သီးခြားထားပါ။
 
 ## Rust Client Software Package ကို အသုံးပြုခြင်း {#using-the-rust-client-crate}
 
@@ -70,7 +70,7 @@ Rust အင်တာဖေ့စ်များကို လက်တွေ့�
 - `crates/iroha/README.md`
 - `crates/iroha_cli/README.md`
 
-blockchain ledger မှစီမံခန့်ခွဲသော escrow အလုပ်ဖြစ်စဉ်များအတွက် [ပိုင်ဆိုင်မှုများကို စံညွှန်ကြားချက်ဖြင့် ကြားခံထိန်းသိမ်းခြင်း](/my/blockchain/escrow.md#rust-sdk) ကိုကြည့်ပါ။ Rust ဒေတာမော်ဒယ်သည် လက်ရှိတွင်စျေးကွက် escrow၊ ယေဘုယျအရင်းအမြစ် lock များ, အမည်မသိ escrow, မေးမြန်းချက်များနှင့်ဖြစ်ရပ်များအတွက်အပြည့်အဝရိုက်ကူးထားသည့်ကာကွယ်မှုတစ်ခုဖြစ်သည်။
+လယ်ဂျာက စီမံခန့်ခွဲသော escrow လုပ်ငန်းစဉ်များအတွက် [ပိုင်ဆိုင်မှုများကို စံညွှန်ကြားချက်ဖြင့် ကြားခံထိန်းသိမ်းခြင်း](/my/blockchain/escrow.md#rust-sdk) ကို ကြည့်ပါ။ Rust ဒေတာမော်ဒယ်သည် လက်ရှိတွင် စျေးကွက် escrow၊ ယေဘုယျ ပိုင်ဆိုင်မှု lock များ၊ အခြေအနေအလိုက် escrow၊ မေးမြန်းချက်များနှင့် ဖြစ်ရပ်များအတွက် အပြည့်စုံဆုံး အမျိုးအစားသတ်မှတ် ပံ့ပိုးမှုကို ပေးသည်။
 
 ဒေသခံ CLI အကူအညီ point-in-time data view ကို ပြန်လည်ဖန်တီးနိုင်သည်:
 

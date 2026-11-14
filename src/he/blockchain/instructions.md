@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /blockchain/instructions.md
-translation_source_hash: ef50253c5478c9d8c3e14529dc4c2f3de67c344901c82c65be77ceb237a29598
+translation_source_hash: 86d253317376ad8d7a8c0e30689c7e0c0cd786af83299dd5ac1a904c653192f5
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
@@ -41,7 +41,7 @@ translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 | [SetParameter](#setparameter) |פרמטרים של שרשרת |                      |
 | [Grant/Revoke](#grant-revoke) | [תפקידים ואסימוני הרשאה](/he/blockchain/permissions.md) | חשבונות או תפקידים |
 | [העברת ](#transfer) |תחומים, הגדרות נכסים, נכסי מספרים, NFTs |חשבונות |
-| [נאמנות מובנית ונעילות נכסים](#native-escrow-and-asset-locks) |נאמנויות של נכסים מספריים, נעילות נכסים והתחייבויות נאמנות אנונימיות |קונים, יעדים או חלוקת מחלוקת|
+| [נאמנות מובנית ונעילות נכסים](#native-escrow-and-asset-locks) |נאמנויות של נכסים מספריים, נעילות נכסים ונאמנויות מותנות |קונים, יעדים או חלוקת מחלוקת|
 | [סליקה פרטית אטומית](#atomic-private-settlement) | מאגרים חסויים לפי מסלול, סבבי מדיניות, חבילות שהושלמו וסמני ביטול | |
 | [ExecuteTrigger](#executetrigger) |טריגרים.|                      |
 | [Log/Custom/Upgrade](#other-instructions) | יומנים, מטענים ייעודיים למבצע, שדרוגי המבצע | |
@@ -184,6 +184,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
+  --domain docs.universal \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
@@ -322,9 +323,9 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
 
 ## נאמנות מובנית ונעילות נכסים {#native-escrow-and-asset-locks}
 
-הוראות נאמנות מובנית נועלות נכסים מספריים במשמורת פרוטוקול שמנוהלת בידי ספר החשבונות. הן משמשות להסדרים בסגנון שוק, לנעילות נכסים כלליות ולתהליכי נאמנות אנונימית מוגנת.
+הוראות נאמנות מובנית נועלות נכסים מספריים במשמורת פרוטוקול שמנוהלת בידי ספר החשבונות. הן משמשות להסדרים בסגנון שוק, לנעילות נכסים כלליות ולנאמנויות מותנות הכפופות לגורם מאשר.
 
-נאמנות של זירת מסחר משתמשת ב־`OpenAssetEscrow`, ‏`AcceptAssetEscrow`, ‏`MarkEscrowPaymentSent`, ‏`ReleaseAssetEscrow`, ‏`CancelAssetEscrow`, ‏`OpenEscrowDispute` ו־`ResolveEscrowDispute`. נעילות נכסים כלליות משתמשות ב־`OpenAssetLock`, ‏`DrawdownAssetLock`, ‏`CancelAssetLock` ו־`ExpireAssetLock`. נאמנות אנונימית משקפת את מחזור החיים של זירת המסחר באמצעות `OpenAnonymousAssetEscrow`, ‏`AcceptAnonymousAssetEscrow`, ‏`MarkAnonymousEscrowPaymentSent`, ‏`ReleaseAnonymousAssetEscrow`, ‏`CancelAnonymousAssetEscrow`, ‏`OpenAnonymousEscrowDispute` ו־`ResolveAnonymousEscrowDispute`.
+נאמנות של זירת מסחר משתמשת ב־`OpenAssetEscrow`, ‏`AcceptAssetEscrow`, ‏`MarkEscrowPaymentSent`, ‏`ReleaseAssetEscrow`, ‏`CancelAssetEscrow`, ‏`OpenEscrowDispute` ו־`ResolveEscrowDispute`. נעילות נכסים כלליות משתמשות ב־`OpenAssetLock`, ‏`DrawdownAssetLock`, ‏`CancelAssetLock` ו־`ExpireAssetLock`. נאמנות מותנית משתמשת ב־`OpenConditionalEscrow`, ‏`AttestEscrowCondition` ו־`ExpireConditionalEscrow`.
 
 ל-ISIs אלה אין כרגע פקודות CLI ייעודיות. השתמשו בבוני SDK בעלי טיפוסים או במטעני הוראות מסודרים, וראו [escrow מובנה לנכסים](/he/blockchain/escrow.md) לפרטי מחזור החיים, הרשאות, שאילתות, אירועים ודוגמאות ב-Rust.
 
@@ -418,7 +419,7 @@ printf '{"owner":"ops"}\n' |
 להגדיר פרמטר על ידי העברת אובייקט פרמטר אחד JSON בהכנסת סטנדרטית:
 
 ```bash
-printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
+printf '{"Sumeragi":{"MaxClockDriftMs":1000}}\n' |
   cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```

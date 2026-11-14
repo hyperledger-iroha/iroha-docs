@@ -12,4 +12,4 @@ Use `IrohaSwift/Tests/IrohaSwiftTests` for examples verified against the current
 
 ## Android
 
-For new Android work, use the Kotlin-first `core-jvm`, `client-android`, and `offline-wallet-android` modules described in [Kotlin, Android, and Java](/guide/tutorials/kotlin-java.md). The Kotlin SDK is the canonical starting point for Android consumers.
+For new Android work, use the Kotlin-first `core-jvm`, `client-android`, and `kagemusha-wallet-android` modules described in [Kotlin, Android, and Java](/guide/tutorials/kotlin-java.md). The Kotlin SDK is the canonical starting point for Android consumers.

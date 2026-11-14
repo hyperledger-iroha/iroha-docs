@@ -1,9 +1,9 @@
 ---
 translation_locale: es
 translation_source: /blockchain/events.md
-translation_source_hash: aad93f1981a5b470966090b5e06ec07178738b15f1d870097947682b19f99595
+translation_source_hash: 2777cbe4e72a50c4790e50b59c3e695feb5814314cc9afccdfd994f6409c195e
 translation_status: machine-validated
-translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Eventos {#events}
 
@@ -16,7 +16,7 @@ Se emiten eventos cuando ocurren ciertas cosas dentro de la blockchain, por ejem
 
 ## Eventos de la canalización de procesamiento {#pipeline-events}
 
-Los eventos del canal de procesamiento se emiten cuando las transacciones son enviadas, ejecutadas o confirmadas en un bloque. Un evento del canal de procesamiento contiene la siguiente información: el tipo de entidad que causó un evento (transacción o bloque), su hash criptográfico y su estado. El estado puede ser `Validating` (validación en curso), `Rejected` o `Committed`. Si una entidad fue rechazada, se proporciona la razón del rechazo.
+Los eventos del canal de procesamiento se emiten a medida que las transacciones y los bloques avanzan por el canal de procesamiento. Un evento de transacción contiene el hash de la transacción, la altura del bloque, los IDs del carril y del espacio de datos, y un estado: `Queued`, `Expired`, `Approved` o `Rejected` con la razón del rechazo. Un evento de bloque contiene el encabezado del bloque y un estado: `Created`, `Approved`, `Rejected` con la razón, `Committed` o `Applied`.
 
 ### Pruébalo en Taira {#try-it-on-taira}
 
@@ -30,8 +30,8 @@ curl -fsSI https://taira.sora.org/v1/events/sse \
 Para una vista de datos en un momento específico que puede inspeccionar sin mantener un flujo abierto, lea las transacciones recientes del explorador:
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
-  | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
+curl -fsS 'https://taira.sora.org/v1/explorer/transactions?limit=5' \
+  | jq '{next_cursor, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
 Abre la ruta SSE en una terminal cuando necesites eventos en vivo:

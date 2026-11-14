@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -34,7 +34,7 @@ cargo build --release \
 target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-Сығыш каталогында булдырылған `genesis.json`, `genesis.signed.nrt`, тиңдәштәрҙең `config.toml` файлдары, `client.toml`, ярҙамсы скрипттар һәм ошо тупланма өсөн теүәл командалар яҙылған `README.md` бар.
+Сығыш каталогында булдырылған `genesis.json`, `genesis.signed.nrt`, `genesis.expected_hash`, һәр валидатор өсөн бер `peerN.toml`, `client.toml`, `start.sh` һәм `stop.sh` скрипттары һәм ошо тупланма өсөн теүәл командалар яҙылған, булдырылған `README.md` бар.
 
 ## 3. Пирҙарҙы эшләтеп ебәрегеҙ {#_3-start-peers}
 
@@ -44,7 +44,7 @@ target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ./localnet/start.sh
 ```
 
-Һәр тиңдәште systemd кеүек процестар идара итеүсеһенә тоташтырырға кәрәк булһа, шул тиңдәш өсөн `./localnet/README.md` файлында яҙылған эшләтеү командаһын ҡулланығыҙ. Һәр тиңдәштең `config.toml` файлын, шәхси асҡысын, һаҡлау каталогын һәм порттарын айырым тотоғоҙ.
+Һәр тиңдәште systemd кеүек процестар идара итеүсеһенә тоташтырырға кәрәк булһа, `./localnet/start.sh` эсендәге һәр тиңдәш өсөн командаға эйәрегеҙ: `<bundle>/state/peerN` каталогынан `iroha3d --config <bundle>/peerN.toml` эшләтегеҙ һәм `--sumeragi-assert-fresh-key` параметрын шул тиңдәштең тәүге эшләтелешендә генә бирегеҙ. Һәр тиңдәштең `peerN.toml` файлын, шәхси асҡысын, һаҡлау каталогын һәм порттарын айырым тотоғоҙ.
 
 ## 4. Сеть менән идара итеү {#_4-operate-the-network}
 

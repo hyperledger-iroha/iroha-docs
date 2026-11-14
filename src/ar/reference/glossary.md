@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /reference/glossary.md
-translation_source_hash: 8b00758b5731a2f9e09a5b49ccb7f298229ab966b5adf2d7152e3b1416fe8737
+translation_source_hash: 4d3a8e3aa88291edbaac5b52039d2aad160d89fb83c085c21030a531c93258f4
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -79,7 +79,7 @@ translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-so
 
 ## تحمل خطأ البيزنطي (BFT) {#byzantine-fault-tolerance-bft}
 
-خاصية القدرة على العمل بشكل صحيح مع شبكة تحتوي على نسبة معينة من الجهات الخبيثة. Iroha قادر على العمل مع ما يصل إلى 33% من الجهات الخبيثة في شبكته النظيرة للنظير.
+خاصية القدرة على العمل بشكل صحيح مع شبكة تحتوي على نسبة معينة من الجهات الخبيثة. تضم لجنة Sumeragi عدد `3f + 1` من المدققين بالضبط، وتتحمل ما يصل إلى `f` من المدققين البيزنطيين، أي أقل من ثلث اللجنة.
 
 ## Iroha مكونات {#iroha-components}
 
@@ -107,7 +107,7 @@ translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-so
 
 ### العقود الذكية {#smart-contracts}
 
-العقود الذكية هي برامج قائمة على البلوك تشين تعمل عندما يتم استيفاء مجموعة محددة من الشروط. في Iroha يتم تنفيذ العقود الذكية باستخدام [عمليات تعليمات النواة Iroha](#core-iroha-special-instructions).
+العقود الذكية هي برامج قائمة على البلوك تشين تعمل عندما يتم استيفاء مجموعة محددة من الشروط. في Iroha 3، تُكتب العقود الذكية بلغة Kotodama وتُترجم إلى بايت كود IVM (`.to`)؛ ويغيّر العقد الحالة بإصدار [تعليمات Iroha الخاصة](#core-iroha-special-instructions) عبر استدعاءات المضيف.
 
 ### المحفزات {#triggers}
 
@@ -119,7 +119,7 @@ translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-so
 
 ### هجري (نظام سمعة الأقران في الشبكة) {#hijiri-peer-reputation-system}
 
-نظام السمعة الخاص بـ Iroha. يسمح بإعطاء الأولوية للتواصل مع [أقران الشبكة](#peer) الذين لديهم سجل جيد، وتقليل الضرر الذي يمكن أن يتسبب به [أقران الشبكة](#peer) الضار.
+نظام السمعة الخاص بأقران الشبكة والحسابات في Iroha. تحتفظ معلماته المملوكة للإجماع بسياسة رسوم Hijiri وسجلات مخاطر الحسابات، وتُصدر سجلات المراقبين الخاضعة للحوكمة إقرارات للحسابات تعدّل درجة مخاطر الحساب.
 
 ## Iroha الوحدات {#iroha-modules}
 
@@ -131,7 +131,7 @@ translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-so
 
 #### عمليات تعليمات المرافق Iroha {#utility-iroha-special-instructions}
 
-تحتوي هذه المجموعة من [إيسي](#iroha-special-instructions-isi) على تعليمات منطقية مثل `If`، وتعليمات مرتبطة بالإدخال/الإخراج مثل `Notify` وتركيبات مثل `Sequence`. يتم استخدامها في الغالب كـ [تعليمات مخصصة](#custom-iroha-special-instruction).
+تحتوي هذه المجموعة من [إيسي](#iroha-special-instructions-isi) على تعليمات لا تغيّر كيانًا خاصًا بنطاق معين، مثل `Log` و`ExecuteTrigger` و`SetParameter` و`Upgrade`. لا يحتوي Iroha 3 على تعليمات `If` أو `Notify` أو `Sequence`.
 
 ### عمليات التعليمات الأساسية Iroha {#core-iroha-special-instructions}
 

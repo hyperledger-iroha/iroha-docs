@@ -1,20 +1,20 @@
 ---
 translation_locale: pt
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
+translation_source_hash: c42adbe41e322c93509279f1f558d4450431de90c596f37eb3999754d4387f78
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
 # Chaves para Implantação de Rede {#keys-for-network-deployment}
 
-Toda rede precisa de material criptográfico de chaves distinto para clientes, pares, assinatura da gênese e, nos perfis NPoS ou SORA Nexus, identidades BLS dos validadores.
+Toda rede precisa de material criptográfico de chaves distinto para clientes, assinatura da gênese e identidades BLS-normal dos validadores com Provas-de-Posse.
 
 ## Onde as Chaves São Usadas {#where-keys-are-used}
 
 - As chaves de assinatura do cliente são armazenadas em `client.toml` sob `[account]`.
 - As chaves de identidade dos pares de rede são armazenadas em cada par de rede `config.toml` como `public_key` e `private_key`.
 - a descoberta de pares de rede usa a chave pública de cada par de rede em `trusted_peers`.
-- BLS provas de posse do validador são armazenadas em `trusted_peers_pop` para perfis NPoS.
+- As Provas-de-Posse BLS dos validadores são armazenadas em `trusted_peers_pop` para cada validador, qualquer que seja o modo de consenso.
 - A assinatura da gênese usa o `[genesis].public_key` na configuração do par de rede e a chave privada correspondente ao assinar o manifesto.
 
 Para implantações locais ou de teste, deixe Kagami gerar todos esses arquivos juntos:

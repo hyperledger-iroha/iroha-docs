@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
+translation_source_hash: ad2bc9f8c53169d8161f7a2f23b1e660ebd24cf03cf8e05f4b00bbd27b7b11fe
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -23,8 +23,8 @@ Iroha کارکردگی ورک لوڈ ، توثیق کنندہ ٹاپولوجی �
 پہلے عوامی نوڈ کا اسنیپ شاٹ اور Prometheus کے جمع کردہ اعداد دیکھیں۔ پھر آپریٹر کی شناخت کے ساتھ اتفاقِ رائے کی حالت معلوم کرنے کے لیے CLI استعمال کریں۔ ہدف نوڈ پر آپریٹر کی کلید کی اجازت ضروری ہے؛ کلید صرف عمل درآمد کے وقت لوڈ ہوتی ہے:
 
 ```bash
-export TORII=http://127.0.0.1:8180
-export OPERATOR_KEY_FILE=./secrets/operator.key
+export TORII=http://127.0.0.1:8080
+export OPERATOR_KEY_FILE="$PWD/localnet/runtime/operator-signer.key"
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s "$TORII/metrics" > metrics.prom
@@ -52,7 +52,7 @@ curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/now" \
-  | jq '{now_ms, offset_ms}'
+  | jq '{now, offset_ms}'
 ```
 
 اپنے تعیناتی کے لیے عوامی ٹیسٹ نیٹ کی مشاہدات کو پیداواری صلاحیت کے اعداد و شمار کے طور پر استعمال نہ کریں۔
@@ -187,13 +187,13 @@ iroha --config ./localnet/client.toml \
 | --- | --- | --- |
 |قبول شدہ آؤٹ پٹ |`sum(rate(txs{type="accepted"}[5m]))` |مستحکم حالت میں ہدف TPS کو پورا کرنا یا اس سے زیادہ ہونا چاہئے |
 |مستردیاں |`sum(rate(txs{type="rejected"}[5m]))` |ٹیسٹ کے منصوبے کی طرف سے وضاحت کرنا چاہئے |
-|تاخیر کا پابند |`histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |تاخیر کے بجٹ کے ساتھ p95/p99 کا موازنہ کریں |
+| کمٹ کی تاخیر | `histogram_quantile(0.95, sum by (le) (rate(sumeragi_commit_latency_ms_bucket{lane="global"}[5m])))`، `last_commit_time_ms` | تاخیر کے بجٹ کے ساتھ p95/p99 کا موازنہ کریں |
 |قطار کی گہرائی |`queue_size`، `sumeragi_tx_queue_depth` |چوٹی لوڈ کے دوران محدود رہنا چاہئے |
 |قطار کی سیر |`sumeragi_tx_queue_saturated` |برقرار رکھنے والے غیر صفر اقدار کا مطلب ہے کہ زیادہ بوجھ |
-|منظر کی تبدیلیاں |`view_changes`، `sumeragi_view_change_suggest_total`، `sumeragi_view_change_install_total` |بڑھتی ہوئی اقدار، وقت بندی، topology، پے لوڈ یا نیٹ ورک کی خرابی کی نشاندہی کرتی ہیں۔ |
-|ڈراپ شدہ پیغامات |`dropped_messages`، `sumeragi_consensus_message_handling_total` |لوڈ کے دوران کمی عام طور پر تاخیر کی چوٹیوں کی وضاحت |
-|payload اور DA وصولی | `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` |مسلسل درخواستوں، بڑھتی ہوئی عمر، یا بار بار DA گیٹس جسم یا ٹکڑا حصول کے مسائل کی نشاندہی |
-|کمیٹ کووروم |`sumeragi_commit_signatures_counted`، `sumeragi_commit_signatures_required` |گنتی شدہ دستخطوں کو فوری طور پر مطلوبہ تعداد تک پہنچنا چاہئے۔|
+|منظر کی تبدیلیاں |`view_changes`، `sumeragi_view_changes_total`، `sumeragi_timeout_votes_total` |بڑھتی ہوئی اقدار، وقت بندی، topology، پے لوڈ یا نیٹ ورک کی خرابی کی نشاندہی کرتی ہیں۔ |
+|ڈراپ شدہ پیغامات |`sumeragi_dropped_total`، `p2p_queue_dropped_total` |لوڈ کے دوران کمی عام طور پر تاخیر کی چوٹیوں کی وضاحت |
+| پیلوڈ اور پیچھے رہ جانے کی تلافی کی بازیافتیں | `sumeragi_fetch_requests_total{kind="body"}`، `sumeragi_fetch_requests_total{kind="sync"}` | مسلسل باڈی یا ہم وقت سازی کی بازیافتیں پیلوڈ کے حصول یا پیچھے رہ جانے کی تلافی میں مسئلے کی نشاندہی کرتی ہیں |
+| کمٹ کی پیش رفت | `sumeragi_committed_height`، `sumeragi_applied_height` | تصدیق شدہ اور لاگو شدہ اونچائیاں ساتھ ساتھ آگے بڑھنی چاہئیں |
 
 جب ایک میٹرک صرف `/v1/sumeragi/status` میں موجود ہے، تو JSON اسنیپ شاٹ کو پرومیٹیئس سکریپ کے طور پر اسی رن آرٹیفیکٹس میں قبضہ کریں.
 
@@ -245,7 +245,7 @@ iroha --config ./localnet/client.toml \
 - قبول / مسترد TPS
 - p50/p95/p99 commit latency
 - قطار کی گہرائی اور تناؤ
-- تبدیلیاں دیکھیں، چھوڑ دیئے گئے پیغامات، لاپتہ بلاک کی وصولی، اور DA گیٹ کاؤنٹر
+- ویو کی تبدیلیاں، ٹائم آؤٹ ووٹ، Sumeragi کے گرائے گئے پیغامات، اور باڈی اور ہم وقت سازی کی بازیافتیں
 - CPU ، میموری، ڈسک اور نیٹ ورک کا استعمال فی ویلیڈیٹر
 
 ان تفصیلات کے بغیر، TPS نمبر کو غیر معمولی سمجھا جانا چاہئے.

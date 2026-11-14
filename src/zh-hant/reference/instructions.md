@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /reference/instructions.md
-translation_source_hash: 9999816502505026fb35d2ddaf4033f54768be697ca5b03550e1cf5949ada36c
+translation_source_hash: bbd8f9544aa863cd273d1b2089f39aff3d484ee0378fa5bcc7b565795a0671c6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # Iroha 特殊指令 {#iroha-special-instructions}
 
 目前的資料模型公開下列內建指令族群：
@@ -28,7 +27,6 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 | [`CustomInstruction`](/zh-hant/blockchain/instructions.md#other-instructions) | 執行器專用的 JSON 承載 |
 | [原生資產託管](/zh-hant/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
 | [通用資產鎖定](/zh-hant/blockchain/escrow.md#generic-asset-locks) | `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
-| [匿名資產託管](/zh-hant/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
 | [原子私密結算](/zh-hant/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
 其他 Iroha 3 模組可透過指令登入檔註冊特定領域的指令型別。 如需節點提供的結構描述及用於儲存它的命令，請參閱[資料模型結構描述](./data-model-schema.md)。
@@ -85,7 +83,7 @@ class MetadataBoxes {
 class NativeEscrowInstructions {
     OpenAssetEscrow
     OpenAssetLock
-    OpenAnonymousAssetEscrow
+    OpenConditionalEscrow
     ResolveEscrowDispute
 }
 

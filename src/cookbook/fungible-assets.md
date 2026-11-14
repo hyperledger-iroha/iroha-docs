@@ -8,7 +8,7 @@ Inspect live Taira asset definitions and complete a mint, transfer, burn, and ba
 
 - `curl`, `jq`, Python 3.11 or later, Node.js 24, and the current `iroha` and `kagami` CLIs.
 - Read-only Taira access.
-- For the write walkthrough, a local network from `kagami localnet generate --peers 4 --out-dir ./localnet` as in [Launch Iroha](/get-started/launch-iroha.md), with `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa` added. It provides `./localnet/client.toml` and Torii on `http://127.0.0.1:8080`.
+- For the write walkthrough, a local network from `kagami localnet generate --peers 4 --out-dir ./localnet`, with `--asset-definition-id 66owaQmAQMuHxPzxUN3bqZ6FJfDa` added. It provides `./localnet/client.toml` and Torii on `http://127.0.0.1:8080`.
 
 ## Steps
 

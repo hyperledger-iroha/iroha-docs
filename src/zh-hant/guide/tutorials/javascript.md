@@ -1,13 +1,13 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: 92389d3ad83ab32e85b4ca83ede9829d1a38afaad6e86da035da2829a3aaedfb
+translation_source_hash: 471dc7c82f371e1bbdcf216d5a50b1263612b7d29fffb1ef36b708a6beb931b6
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # JavaScript 和 TypeScript {#javascript-and-typescript}
 
-目前 JavaScript SDK 是`@iroha/iroha-js`源樹中的 Iroha 包.它是 Node.js-第一個 SDK 的 Torii,Norito 構建者,簽字,頁面化,連線預覽和Kagemusha命令運輸.
+目前的 JavaScript SDK 是 Iroha 原始碼樹中的 `@iroha/iroha-js` 套件。它是以 Node.js 為優先的 SDK，支援 Torii、Norito 建構器、簽署、分頁以及 Connect 預覽。
 
 ## 建立從源頭 {#build-from-source}
 
@@ -31,6 +31,7 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 const torii = new ToriiClient("http://127.0.0.1:8080", {
   authToken: "dev-token",
+  allowInsecure: true, // local development only
 });
 
 const keys = generateKeyPair();

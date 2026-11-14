@@ -94,9 +94,11 @@ Iroha has two offline transaction workflows:
   wallets are offline, and unloads the remaining value to a ledger account
   when the wallet is online again.
 
-Torii exposes one Kagemusha route, `POST /v1/kagemusha/enrollment`. It
+Torii exposes one Kagemusha mutation route, `POST /v1/kagemusha/enrollment`. It
 accepts account-authenticated `application/x-norito` enrollment frames and
-returns private responses that must not be cached. The ledger side of the
+returns private responses that must not be cached. Account-signed SDK read
+routes under `/v1/kagemusha/{scheme}/wallets/{wallet}/` return Load receipts
+and finality evidence; they are not listed in `/openapi.json`. The ledger side of the
 lifecycle uses ordinary signed transactions that carry a
 `KagemushaWalletLedgerV1` instruction:
 
@@ -122,6 +124,9 @@ The typical flow is:
 4. When the wallet is online again, submit its Unload claim and wait for
    finality.
 
+Kagemusha is not release-qualified: live monetary qualification and phone
+registration, activation, and payment on physical devices remain open.
+
 The ledger cannot observe a conflicting offline handoff until note state
 returns through the online lifecycle. Wallet and operator policy should
 therefore enforce value limits, expiry, accepted issuers, durable local
@@ -134,7 +139,13 @@ role (`role_id`). Check
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```

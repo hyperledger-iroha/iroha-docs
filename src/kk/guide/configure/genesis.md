@@ -1,7 +1,7 @@
 ---
 translation_locale: kk
 translation_source: /guide/configure/genesis.md
-translation_source_hash: 91be089c82a76991e35a43e1541f9e069fdf70d3fb5de2492b985c06c78a2372
+translation_source_hash: 2a4a43b6ac873cc0c860631e307e52b047ba6a08691bf3e4c5872cc22c81a0bd
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -9,7 +9,7 @@ translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-so
 
 блокчейн генезис бастапқы тізбек күйін анықтайды. Редакцияланатын көз JSON техникалық манифест болып табылады, және Iroha 3 түйін қол қойылған Norito транзакция файлын тұтынады.
 
-::: details Әдепкі блокчейн генезисінің техникалық манифесті
+::: details Әдепкі генезистің бастапқы үлгісі (defaults/genesis.template.json)
 
 <<< @/snippets/genesis.json
 
@@ -36,7 +36,7 @@ public_key = "ed0120..."
 expected_hash_file = "./genesis.expected_hash"
 ```
 
-Желідегі барлық торапта қол қойылған генезис транзакциясы мен генезис ашық кілті бірдей болуы тиіс. Күтілетін хэш файлы алғаш іске қосқанда да, қайта іске қосқанда да қажет; оны `kagami genesis sign --expected-hash-out` жазады.
+Желідегі барлық торапта қол қойылған генезис транзакциясы мен генезис ашық кілті бірдей болуы тиіс. Әр іске қосуға, алғашқы болсын, қайта іске қосу болсын, күтілетін хэш қажет: `expected_hash_file` немесе кірістірілген `expected_hash` параметрлерінің дәл біреуін баптаңыз. Файлды `kagami genesis sign --expected-hash-out` жазады.
 
 ## Блокчейн генерациясын қол қою {#signing-genesis}
 
@@ -52,7 +52,7 @@ cargo run --bin kagami -- genesis sign ./genesis.json \
 
 `GENESIS_PRIVATE_KEY_FILE` иеленуші ұстаған режим-`0600`, бір ғана протокол стандартты жеке кілт мультихешін және соңғы жаңа жолды қамтитын бір сілтемелі тұрақты файл болуы керек. Kagami символдық сілтемелерді қабылдамайды және командалық жолда ешқашан таза блокчейн генезис жеке кілтін қабылдамайды.
 
-NPoS не SORA Nexus профильдері үшін жасалған профиль талап ететін топологияны және BLS иелік дәлелдерін қосыңыз. Kagami құралындағы `localnet generate`, `wizard` және `sora-network generate` пәрмендері мұны автоматты түрде орындайды.
+Рұқсат етілген немесе NPoS болсын, әр қол қойылған генезис әр валидатор үшін BLS иелік дәлелі бар дәл `3f + 1` валидатор топологиясын қамтуы керек. Kagami құралындағы `localnet generate`, `wizard` және `sora-network generate` пәрмендері мұны автоматты түрде орындайды.
 
 ## Блокчейннің бастамасын қайта міндеттеу {#recommitting-genesis}
 

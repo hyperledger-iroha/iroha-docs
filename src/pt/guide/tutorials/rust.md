@@ -1,7 +1,7 @@
 ---
 translation_locale: pt
 translation_source: /guide/tutorials/rust.md
-translation_source_hash: fbe41bd6e7fa86d06c027724b446016c14246495964ccf521155e4b790d75041
+translation_source_hash: 9d9848de91a85c84221efc39bc7dfb8443f5c50b448d336207c06efce3bc07e8
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -53,7 +53,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-Depois que você criar `taira.client.toml`, o mesmo binário pode executar comandos canário assinados contra Taira. Mantenha-os separados dos testes unitários comuns, pois eles exigem uma conta financiada na testnet e disponibilidade da testnet ao vivo.
+Depois que você criar `taira.client.toml`, o mesmo binário pode integrar e financiar uma conta com `iroha taira account` e enviar comandos comuns e assinados do livro-razão contra Taira. Mantenha-os separados dos testes unitários comuns, pois eles exigem uma conta financiada na testnet e disponibilidade da testnet ao vivo.
 
 ## Usando o pacote de software do Cliente Rust {#using-the-rust-client-crate}
 
@@ -70,7 +70,7 @@ Se você precisar dos exemplos mais completos de como as superfícies Rust são 
 - `crates/iroha/README.md`
 - `crates/iroha_cli/README.md`
 
-Para fluxos de trabalho de escrow gerenciados em razão, veja [Custódia de Ativo Nativo](/pt/blockchain/escrow.md#rust-sdk). O modelo de dados Rust atualmente possui a cobertura tipada mais completa para escrow em marketplaces, bloqueios genéricos de ativos, escrow anônimo, consultas e eventos.
+Para fluxos de trabalho de escrow gerenciados em razão, veja [Custódia de Ativo Nativo](/pt/blockchain/escrow.md#rust-sdk). O modelo de dados Rust atualmente possui a cobertura tipada mais completa para escrow em marketplaces, bloqueios genéricos de ativos, escrow condicional, consultas e eventos.
 
 Você pode regenerar uma captura local da ajuda da CLI com:
 

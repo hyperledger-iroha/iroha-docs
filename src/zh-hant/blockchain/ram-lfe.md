@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/ram-lfe.md
-translation_source_hash: a07f2d06180425e4d1c1393810cf679fb88b3e993d49792b2483485cb1cc52fd
+translation_source_hash: c08b67e5a58fea2012fdba7bbfcb88dd9bc329b7a549e7d40011a5f4fb0ef68c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # RAM-LFE {#ram-lfe}
 
@@ -763,6 +763,5 @@ Torii 的程序中執行階段 RAM-LFE 設定在 `torii.ram_lfe.programs[*]`下,
 
 ## 相關主題 {#related-topics}
 
-- [個人資料空間的贊助費用](/zh-hant/get-started/private-dataspace-fee-sponsor.md)
 - [Torii 端點](/zh-hant/reference/torii-endpoints.md#app-and-sora-route-families)
 - [無名交易](/zh-hant/blockchain/anonymous-transactions.md)

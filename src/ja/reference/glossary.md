@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /reference/glossary.md
-translation_source_hash: 8b00758b5731a2f9e09a5b49ccb7f298229ab966b5adf2d7152e3b1416fe8737
+translation_source_hash: 4d3a8e3aa88291edbaac5b52039d2aad160d89fb83c085c21030a531c93258f4
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
@@ -79,7 +79,7 @@ translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-so
 
 ## ビザンチン障害耐性（BFT） {#byzantine-fault-tolerance-bft}
 
-ネットワーク内に一定割合の悪意ある参加者が含まれていても適切に機能できる特性。Iroha は、そのピアツーピアネットワーク内で最大33%の悪意ある参加者がいても機能することができる。
+ネットワーク内に一定割合の悪意ある参加者が含まれていても適切に機能できる特性。Sumeragi の委員会は正確に `3f + 1` 個のバリデーターで構成され、委員会の 3 分の 1 未満である最大 `f` 個のビザンチンバリデーターを許容する。
 
 ## Iroha コンポーネント {#iroha-components}
 
@@ -107,7 +107,7 @@ Rust は Iroha の機能を含むモジュールです。
 
 ### スマートコントラクト {#smart-contracts}
 
-スマートコントラクトは、特定の条件が満たされたときに実行されるブロックチェーンベースのプログラムです。Iroha では、スマートコントラクトは[コア Iroha 命令操作](#core-iroha-special-instructions)を使用して実装されています。
+スマートコントラクトは、特定の条件が満たされたときに実行されるブロックチェーンベースのプログラムです。Iroha 3 では、スマートコントラクトは Kotodama で記述され、IVM バイトコード（`.to`）にコンパイルされます。コントラクトは、ホスト呼び出しを通じて [Iroha 特殊命令](#core-iroha-special-instructions) を発行することで状態を変更します。
 
 ### トリガー {#triggers}
 
@@ -119,7 +119,7 @@ Iroha 3 の初回リリースは、正規のブロック通信形式のバージ
 
 ### 聖（ネットワークピア評価システム） {#hijiri-peer-reputation-system}
 
-Iroha の評価システム。これは、実績のある[ネットワークピア](#peer)とのコミュニケーションを優先し、悪意のある[ネットワークピア](#peer)によって引き起こされる被害を減らすことを可能にします。
+Iroha のピアおよびアカウントの評価システム。そのコンセンサスが所有するパラメーターは Hijiri の手数料ポリシーとアカウントリスク記録を保持し、ガバナンス管理下のオブザーバーレジストリが、アカウントのリスクスコアを調整するアカウントアテステーションを発行する。
 
 ## Iroha モジュール {#iroha-modules}
 
@@ -131,7 +131,7 @@ Iroha に付属するスマートコントラクトのライブラリ。これ�
 
 #### ユーティリティ Iroha 操作手順 {#utility-iroha-special-instructions}
 
-この[イシ](#iroha-special-instructions-isi)のセットには、`If`のような論理的指示、`Notify`のような入出力関連、`Sequence`のような構成があります。それらは主に[カスタム指示](#custom-iroha-special-instruction)として使用されます。
+この[isi](#iroha-special-instructions-isi)のセットには、`Log`、`ExecuteTrigger`、`SetParameter`、`Upgrade` など、ドメイン固有のエンティティを変更しない命令が含まれます。Iroha 3 には `If`、`Notify`、`Sequence` の命令はありません。
 
 ### コア Iroha 命令操作 {#core-iroha-special-instructions}
 
