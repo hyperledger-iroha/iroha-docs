@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /guide/security/storing-cryptographic-keys.md
-translation_source_hash: 168ee24e84f9225e81365658018717155476ae1508fefba5e0234e0bf6feefbd
+translation_source_hash: a95fe07f62d51a813a2f9fb02d67521ae421faf8467648e5f215e069c5d68572
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Kriptoqrafik Açarların Saxlanması {#storing-cryptographic-keys}
 
 Şəxsi açar, onun səlahiyyət verdiyi əsas tərəfindən icazə verilən hər bir əməliyyatı təsdiqləyə bilər. Heç vaxt şəxsi açarı paylaşmayın. Toxum materialını, bərpa sirlərini, daşıyıcı tokenləri və ixrac edilmiş açar fayllarını eyni diqqətlə qoruyun.
@@ -28,7 +27,7 @@ Yerli inkişaf, nəzarətli testlər və ya təhlükəsiz saxlanma təhvilvermə
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-Üst direktoriyanın mövcud olması vacibdir. Hədəf yeni olmalı və ya artıq cari istifadəçinin sahibi olmalıdır, rejim `0700`, simvolik keçidlərdən azad olmalı və boş olmalıdır. Kagami yazır `public.key` və `private.key` rejim `0600` ilə; `--pop` həmçinin `pop.hex` yazır. Əmr, Kagami yalnız sahiblər üçün fayl sistemi qaydalarını tətbiq edə bilmədiyi platformalarda uğursuz olur.
+Üst qovluq mövcud olmalıdır. Hədəf hətta boş qovluq kimi də mövcud olmamalıdır. Kagami onu `0700` rejimində yaradır, yalnız sahibə giriş verən fayl sistemi yoxlamalarını tətbiq edir, simvolik keçidləri rədd edir və `public.key` ilə `private.key` fayllarını `0600` rejimində yazır; `--pop` əlavə olaraq `pop.hex` yazır. Kagami-nin yalnız sahibə giriş qaydalarını təmin edə bilmədiyi platformalarda əmr uğursuz olur.
 
 Şəxsi açar faylı şifrələnməmiş ixracdır. Onu mənbə nəzarətində, paylaşılan qovluqlarda, qeydlərdə, biletlərdə, çatlarda və yığım artefaktlarında saxlamayın. İstehsal açarını təsdiqlənmiş mühafizə sərhədinə idxal edin, sonra isə ixracı yerləşdirmə proseduruna uyğun olaraq silin. İstehsalda inkişaf açarını yenidən istifadə etməyin.
 

@@ -23,8 +23,8 @@ Norito RPC guidance, see the [Norito reference](/reference/norito.md).
 | `GET /v1/blocks/stream`          | WebSocket      | Stream committed blocks                                          |
 | `GET /v1/peers`                  | JSON           | Peer list exposed by Torii                                       |
 | `GET /livez`                     | Text           | Process-only liveness; it does not imply protocol readiness      |
-| `GET /readyz`                    | JSON           | Complete node readiness, including mandatory offline-cash checks |
-| `GET /health`                    | JSON           | Readiness probe with the same offline-cash invariant             |
+| `GET /readyz`                    | Text           | Consensus admission, beacon custody, and required persistence readiness |
+| `GET /health`                    | Text           | Torii liveness; returns `Healthy`             |
 | `GET /v1/api/version`            | Text           | Current block-header version                                     |
 | `GET /status`                    | Norito or JSON | High-level diagnostic status; request JSON explicitly            |
 | `GET /metrics`                   | Prometheus     | Prometheus scrape endpoint                                       |
@@ -48,11 +48,10 @@ layer, then validates the native `text/event-stream` response. Sending only
 header.
 
 `/openapi.json` is the generated contract for routes represented in the
-schema, not a complete operational-probe inventory. The current document
-omits `/livez` and `/readyz`, and its `/health` description can lag the
-readiness handler. Generate route clients from the live document, but
-validate liveness and readiness directly against the running node and
-pinned handlers. The exact surface still depends on build features and
+schema. It includes `/livez`, `/health`, and `/readyz`; optional application
+capabilities do not participate in the readiness probe. Generate route
+clients from the document served by your target node, and check its probes
+directly. The exact surface depends on build features and
 runtime configuration. Use the
 [Torii API console](/reference/torii-api-console.md) to load that live
 document, test JSON routes, copy curl requests, and generate client code
@@ -106,7 +105,7 @@ debugging your client code.
 ## Consensus and Runtime Endpoints
 
 Every Sumeragi route below requires the operator request signature. The
-status, diagnostics, stream, leader, key, QC, and parameter routes also
+status, diagnostics, stream, lane, key, and parameter routes also
 require a telemetry-enabled build.
 
 | Endpoint                                  | Format         | Purpose                                                 |
@@ -114,8 +113,7 @@ require a telemetry-enabled build.
 | `GET /v1/sumeragi/status`                 | Norito or JSON | Authoritative reducer-owned consensus status            |
 | `GET /v1/sumeragi/diagnostics`            | JSON           | Non-authoritative pipeline, queue, and lane diagnostics |
 | `GET /v1/sumeragi/status/sse`             | SSE            | Continuous authoritative consensus status stream        |
-| `GET /v1/sumeragi/leader`                 | JSON           | Current leader information                              |
-| `GET /v1/sumeragi/qc`                     | Norito or JSON | Highest and locked quorum-certificate snapshots         |
+| `GET /v1/sumeragi/lanes`                  | JSON           | Lane consensus diagnostics                              |
 | `GET /v1/sumeragi/consensus-keys`         | JSON           | Active consensus keys                                   |
 | `GET /v1/sumeragi/bls-keys`               | JSON           | Active BLS consensus keys                               |
 | `GET /v1/sumeragi/params`                 | JSON           | Current on-chain Sumeragi parameters                    |
@@ -126,13 +124,15 @@ require a telemetry-enabled build.
 | `GET /v1/runtime/metrics`                 | JSON           | Runtime metrics snapshot                                |
 | `GET /v1/runtime/upgrades`                | JSON           | Runtime upgrade list                                    |
 | `POST /v1/runtime/upgrades/propose`       | JSON           | Propose a runtime upgrade                               |
-| `POST /v1/runtime/upgrades/activate/{id}` | JSON           | Activate a proposed runtime upgrade                     |
+| `POST /v1/runtime/upgrades/attest/{id}`   | JSON           | Attest a proposed runtime upgrade                       |
+| `GET /v1/runtime/release`                | JSON           | Installed native release metadata                       |
+| `GET /v1/runtime/containments`           | JSON           | Runtime containment records                             |
 | `POST /v1/runtime/upgrades/cancel/{id}`   | JSON           | Cancel a proposed runtime upgrade                       |
 
-## App and SORA Route Families
+## App and SORA Nexus Route Families {#app-and-sora-route-families}
 
 When Torii is built with the app-facing feature set, it exposes additional
-JSON families for explorers, SORA services, bridge flows, proofs, and
+JSON families for explorers, SORA Nexus services, bridge flows, proofs, and
 storage. These families are not all enabled on every network profile.
 
 `/openapi.json` describes the routes registered in the generated app-API
@@ -152,17 +152,17 @@ probed directly.
 | `/v1/multisig/*`, `/v1/controls/*`                                        | Multisig proposals, approvals, and transfer-control helpers                                                               |
 | `/v1/bridge/*`, `/v1/ledger/*`, `/v1/proofs/*`                            | Finality, state proof, block proof, proof retention, and proof query routes                                               |
 | `/v1/da/*`                                                                | Data-availability ingest, manifests, proof policies, commitments, and pin intents                                         |
-| `/v1/zk/*`                                                                | ZK roots, proof verification, IVM proving, vote tallying, verification keys, proof records, and attachments               |
+| `/v1/zk/*`                                                                | ZK roots, proof verification, vote tallying, verification keys, proof records, and attachments               |
 | `/v1/gov/*`, `/v1/ministry/*`                                             | Governance proposals, ballots, council state, protected namespaces, agenda proposals, enactment, and finalization         |
-| `/v1/nexus/*`, `/v1/sccp/*`                                               | Nexus lane, dataspace, and cross-chain proof helpers                                                                      |
+| `/v1/nexus/*`, `/v1/sccp/*`                                               | SORA Nexus data space, lane, and cross-chain proof helpers                                                                      |
 | `/v1/musubi/*`                                                            | Musubi package registry reads and instruction builders                                                                    |
 | `/v1/subscriptions/*`                                                     | Subscription plans, subscription lifecycle, usage, and charging helpers                                                   |
 | `/v1/sorafs/*`, `/sorafs/*`, `/.well-known/sorafs/*`                      | SoraFS provider discovery, capacity proofs, pinning, storage fetches, and public content serving                          |
-| `/v1/soracloud/*`, `/v1/soradns/*`, `/soradns/*`, `/api/*`                | SoraCloud service lifecycle, private compute/model flows, public discovery, and hosted app routing                        |
+| `/v1/soracloud/*`, `/v1/soradns/*`, `/api/*`                | SoraCloud service lifecycle, private compute/model flows, public discovery, and hosted app routing                        |
 | `/v1/connect/*`, `/v1/vpn/*`                                              | Iroha Connect sessions, WebSocket transport, VPN sessions, profiles, and receipts                                         |
 | `/v1/app-api/*`, `/v1/api/*`, `/v1/content/*`                             | App API bindings and bundle/CID-backed content routing                                                                    |
 | `/v1/operator/*`, `/v1/mcp`                                               | Operator authentication and native MCP JSON-RPC bridge                                                                    |
-| `/v1/offline/*`, `/v1/repo/*`, `/v1/space-directory/*`, `/v1/ram-lfe/*`   | Offline readiness, repository agreements, dataspace manifests, and [RAM-LFE helpers](/blockchain/ram-lfe.md#torii-routes) |
+| `/v1/kagemusha/enrollment`, `/v1/repo/*`, `/v1/space-directory/*`, `/v1/ram-lfe/*`   | KAGEMUSHA enrollment, repurchase agreements, data space manifests, and [RAM-LFE helpers](/blockchain/ram-lfe.md#torii-routes) |
 | `/v1/kaigi/*`, `/v1/webhooks/*`, `/v1/notify/*`, `/v1/telemetry/*`        | Collaboration, webhook, push notification, and live telemetry integrations                                                |
 
 ## Account Authentication, Visibility, and Explorer Cursors
@@ -287,9 +287,9 @@ described below.
 ### Ledger Visibility and Explorer Cursors
 
 App-facing ledger reads use the optional app account boundary above. An
-unsigned request receives only dataspaces configured as public. A valid
-signed request adds dataspaces bound to the caller's current UAID, each
-restricted dataspace named by an exact
+unsigned request receives only data spaces configured as public. A valid
+signed request adds data spaces bound to the caller's current UAID, each
+restricted data space named by an exact
 `CanReadRestrictedDataspace { dataspace }` permission, or all routes when
 the account has `CanReadAllLedgerData`.
 
@@ -297,8 +297,7 @@ Use the route that matches the caller's authority:
 
 | Method and endpoint                   | Authentication and visibility                                   |
 | ------------------------------------- | --------------------------------------------------------------- |
-| `POST /v1/transactions/visible/query` | Canonical account signature; applies the caller's visibility    |
-| `POST /v1/transactions/query`         | Operator request signature; permits the global operator view    |
+| `POST /v1/transactions/query`         | Optional canonical account signature; applies the caller's data space visibility |
 | `GET /v1/triggers/completed`          | Operator request signature; reads node-local completion records |
 
 The same visibility object filters account, domain, asset-definition,
@@ -306,7 +305,7 @@ asset, NFT, RWA, holder, and Explorer reads. An absent object and an object
 that is outside the caller's visible routes are intentionally
 indistinguishable. Committed transaction and instruction history is shown
 only when every route leg recorded for the transaction is visible. A
-mixed-dataspace transaction is therefore hidden when even one participant
+mixed-data space transaction is therefore hidden when even one participant
 leg is outside the caller's scope; missing, stale, or malformed routing
 context is visible only to a global reader.
 
@@ -330,7 +329,7 @@ Explorer WebSocket streams emit filtered summaries and recompute visibility
 as ledger permissions change. The native `GET /v1/blocks/stream` route is
 different: it emits complete signed blocks, requires `CanReadAllLedgerData`
 during the handshake, and closes if that permission is later revoked. Do
-not use the native stream for a dataspace-scoped explorer.
+not use the native stream for a data space-scoped explorer.
 
 ## ISO 20022 Bridge
 
@@ -589,9 +588,9 @@ dashboards:
 - `/status` exposes top-level peer, block, queue, and consensus fields
 - `/metrics` exposes Prometheus counters, gauges, and histograms
 
-On Nexus-enabled nodes, status output also includes lane and
-data-space-aware sections. When `nexus.enabled = false`, those sections are
-omitted.
+SORA Nexus routing is mandatory. Status output includes the configured
+data spaces and lanes; their catalogs and committed routing state determine
+the reported topology.
 
 ## JSON vs. Norito
 
@@ -605,7 +604,7 @@ Accept: application/json
 This is especially useful for:
 
 - `/v1/sumeragi/status`
-- `/v1/sumeragi/qc`
+- `/status`
 
 When an endpoint accepts or returns typed Norito directly, use
 `application/x-norito` as the content type or preferred `Accept` value. See
@@ -614,7 +613,7 @@ details.
 
 ## Telemetry Profiles
 
-Endpoint visibility depends on the node's `telemetry.profile` setting. The
+Endpoint visibility depends on the node's root-level `telemetry_profile` setting. The
 current configuration exposes five profile levels:
 
 | Profile     | `/status` | `/metrics` | Developer routes |

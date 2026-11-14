@@ -1,11 +1,10 @@
 ---
 translation_locale: ru
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
+translation_source_hash: 37e8be9b07a40e5c6b841a47b016320e42079853433fb3e53937e4021dc1304f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Swift и iOS {#swift-and-ios}
 
 Swift SDK, отправленный из вышестоящего рабочего пространства, является пакетом `IrohaSwift` Swift по `IrohaSwift/`. Его технический манифест пакета определяет три библиотечных продукта — `IrohaSwift`, `IrohaSwiftMobileTransports` и `IrohaSwiftTransferUI` — и ориентирован на iOS 15+ и macOS 12+ с инструментами Swift версии 5.9.
@@ -65,7 +64,7 @@ if #available(iOS 15.0, macOS 12.0, *) {
 
 ## Попробуйте Taira Только для чтения {#try-taira-read-only}
 
-Начните с простой HTTP пробной проверки, чтобы подтвердить, что устройство или симулятор может получить доступ к публичной Taira API конечной точке:
+Начните с простой проверки по HTTP, чтобы убедиться, что устройство или симулятор достигает публичной конечной точки Taira:
 
 ```swift
 import Foundation
@@ -161,7 +160,7 @@ let keyPair = try ConnectCrypto.generateKeyPair()
 - Ed25519, secp256k1, ML-DSA, BLS, GOST и SM2 поверхности подписания, с нативной поддержкой моста там, где это требуется
 - родные сборщики полезной нагрузки инструкций условного депонирования для рынка и анонимного условного депонирования
 - Подключите WebSocket, каркас, крипто, сессии, очередь, повтор, и средства диагностики
-- Готовность Kagemusha, типизированные пополнение и погашение, состояние операции, нота, пакет сетевых узлов, квитанция и модели потока QR
+- вспомогательные средства формата передачи KAGEMUSHA V1 и адаптер платформы iPhone для провайдера Advance нативного кошелька, регистрации, восстановления и допущенных вызовов обмена
 - SoraFS, помощники для доступности данных и прикрепления доказательств
 
 ## API Примеры {#api-examples}

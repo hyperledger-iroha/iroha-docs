@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # רשיונות {#permissions}
 
 החשבונות זקוקים לטוגנים של רשות עבור פעולות שונות ב-blockchain, לדוגמה, כדי להנפיק או לשרוף נכסים .
@@ -56,7 +55,7 @@ translation_engine: nllb-200-ct2
 
 ### רשום תפקיד חדש {#register-a-new-role}
 
-בואו נרשם תפקיד חדש, שכאשר יוענק, יאפשר לחשבון אחר גישה לתנתונים [](/he/blockchain/metadata.md) בחשבון של Mouse:
+נרשום תפקיד חדש, שהענקתו תאפשר לחשבון אחר לגשת ל[מטא־נתונים](/he/blockchain/metadata.md) בחשבון של Mouse:
 
 ```rust
 let role_id = RoleId::from_str("ACCESS_TO_MOUSE_METADATA")?;
@@ -82,14 +81,14 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 
 הרשיונות קיימות כך שרק חשבונות עם סימן הרשיון הנדרש יכולים לבצע פעולה מוגנת. המפעיל המקובל בודק רשיונות במהלך ההוראה, שאילתת, וביצוע הביטוי.
 
-משטחי ה־validator הרגילים מקובצים לפי תחום בספר החשבונות:
+ממשק המאמת המוגדר כברירת מחדל מקובץ לפי תחומים בספר החשבונות:
 
 - ניהול צמתים
 - תחומים וחשבות
 - נכסים, NFTs, ושכרות
 - טריגרים
 - תפקידים וזכויות
-- מבצע/זמן הפעלה, ראיות, גשרים ומודלים SORA/Nexus
+- מנוע הביצוע/סביבת הריצה, הוכחות, גשרים ומודולים של SORA Nexus
 
 רשימת הסימנים המדויקת נתמכת במקור ב [תייחסות סימני הרשות ](/he/reference/permissions.md).
 

@@ -9,7 +9,7 @@ aside: false
 pageClass: torii-api-console-page
 ---
 
-# Torii API Console {#torii-api-console}
+# Torii API ကွန်ဆိုးလ် {#torii-api-console}
 
 လမ်းကြောင်းများကို စစ်ဆေးရန်၊ စမ်းသပ်မှုတောင်းဆိုချက်များ ပို့ရန်၊ curl အမိန့်များကို ကူးယူရန်နှင့် ဖောက်သည်ကုဒ်ကို ထုတ်လုပ်ရန် ပြေးဆွဲနေသော Torii API အဆုံးမှတ်မှ တိုက်ရိုက် OpenAPI စာရွက်စာတမ်းကို အသုံးပြုပါ။
 
@@ -34,7 +34,7 @@ jq '{title: .info.title, version: .info.version, paths: (.paths | length)}' \
   /tmp/taira-openapi.json
 ```
 
-ထို့နောက် `https://taira.sora.org/openapi.json` ကို console ထဲသို့ paste လုပ်ပြီး `GET /status`, `GET /v1/domains` သို့မဟုတ် `GET /v1/assets/definitions` ကဲ့သို့သော read-only route တစ်ခုကို စမ်းပါ။ သင့်ရဲ့ software စီမံခန့်ခွဲမှု ပတ်ဝန်းကျင်မှ လျှို့ဝှက်ချက်များကို ထည့်သွင်းတဲ့ SDK (သို့) CLI ဖောက်သည်အတွက် လက်မှတ်ထိုးထားသော ငွေကြေးလွှဲပြောင်းခြင်းနှင့် private key စီးဆင်းမှုကို သိမ်းဆည်းပါ။
+ထို့နောက် `https://taira.sora.org/openapi.json` ကို ကွန်ဆိုးလ်ထဲသို့ ကူးထည့်ပြီး `GET /status`၊ `GET /v1/domains` သို့မဟုတ် `GET /v1/assets/definitions` ကဲ့သို့ ဖတ်ရှုရန်သီးသန့်လမ်းကြောင်းကို စမ်းပါ။ လက်မှတ်ထိုး transaction နှင့် ကိုယ်ပိုင်ကီးလုပ်ငန်းစဉ်များအတွက် လည်ပတ်ချိန်ပတ်ဝန်းကျင်မှ လျှို့ဝှက်တန်ဖိုးများကို ဖွင့်ယူသော SDK သို့မဟုတ် CLI client ကို အသုံးပြုပါ။
 
 ## ထုတ်လုပ်သော ဖောက်သည်များ {#generated-clients}
 
@@ -42,7 +42,7 @@ Generator command မှာ console က load လုပ်နေတဲ့ live Op
 
 လက်မှတ်ရေးထိုးထားတဲ့ blockchain ledger ငွေပေးချေမှုအတွက်၊ လက်မှတ်ရေးဆွဲထားသော မေးမြန်းချက်များနှင့် Norito - ဒေသခံ အသုံးဝင်ဝန်ဆောင်မှုများအတွက် တရားဝင် Iroha SDKs ကို ဦးစားပေးပါ။ OpenAPI ဖောက်သည်များသည်လက်မှတ်များကိုစုဆောင်းခြင်း၊ အကောင့်အဓိကအချက်အလက်များကို စီမံခန့်ခွဲခြင်း သို့မဟုတ် သင့်အတွက် Norito ငွေလဲလှယ်မှုအဖွဲ့အစည်းများကို ကုဒ်မသွင်းခြင်းမဟုတ်ပါ။
 
-OpenAPI Generator ကိုထောက်ပံ့တဲ့ generator တစ်ခုစီကို စစ်ဆေးဖို့ Run:
+OpenAPI Generator က ပံ့ပိုးသည့် ထုတ်လုပ်ကိရိယာအားလုံးကို ကြည့်ရန် အောက်ပါတိုင်း လုပ်ဆောင်ပါ။
 
 ```bash
 pnpm dlx @openapitools/openapi-generator-cli list

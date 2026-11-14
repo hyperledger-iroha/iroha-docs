@@ -1,11 +1,10 @@
 ---
 translation_locale: ka
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # ნებართვები {#permissions}
 
 ანგარიშებს სჭირდებათ ნებართვის ნიშნები სხვადასხვა ქმედებებისთვის ბლოკჩეინზე, მაგალითად, აქტივების გამოცემის ან განადგურებისათვის.
@@ -89,7 +88,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 - აქტივები, NFTs, და საფინანსო ვალდებულებები
 - ტრიგერი
 - როლები და ნებართვები
-- დამსრულებელი/მუშაობის დრო, მტკიცებულებები, ხიდები და SORA/Nexus მოდულები.
+- დამსრულებელი/მუშაობის დრო, მტკიცებულებები, ხიდები და SORA Nexus მოდულები.
 
 ზუსტი ტოკენების სია არის წყარო-დაჭერული [ნებართვის ტოკენების მითითება](/ka/reference/permissions.md).
 

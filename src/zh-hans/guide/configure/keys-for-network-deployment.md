@@ -1,14 +1,13 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # 网络部署的关键 {#keys-for-network-deployment}
 
-每个网络都需要针对客户,对等节点,创世签名和NPoS或 Nexus 个人资料, BLS 验证者身份.
+每个网络都需要为客户端、对等节点和创世签名分别准备独立的密钥材料；使用 NPoS 或 SORA Nexus 配置时，还需要独立的 BLS 验证者身份密钥。
 
 ## 用钥匙的地方 {#where-keys-are-used}
 
@@ -21,7 +20,7 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 在本地或测试部署中,让 Kagami 将所有这些文件生成在一起:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 对于现有网络或配置文件,使用导向流程:

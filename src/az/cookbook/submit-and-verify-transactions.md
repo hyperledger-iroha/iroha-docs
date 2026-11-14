@@ -16,7 +16,7 @@ Bir Taira əməliyyatını əvvəlcədən yoxlayın, dəqiq ödəniş qiymətini
 
 - [Taira-ya qoşulun](./connect-to-taira.md) bələdçisinin yaratdığı maliyyələşdirilmiş `taira.client.toml`, `taira-faucet-policy.json` və `TAIRA_ACCOUNT_ID`. Yazmalar `--fee-payer authority` istifadə edir; CLI imzalamadan əvvəl dəqiq haqqı Taira-nın ödəniş aktivində hesablayıb göstərir.
 - Cari `iroha` CLI və `jq`.
-- Bir dəfəlik istifadə olunan Taira kriptoqrafik imzalayıcı. Onun açarını və ya bu yazma əmrlərini Minamoto üzərində yenidən istifadə etməyin.
+- Müvəqqəti istifadə üçün Taira imzalayıcısı. Onun açarını və ya bu yazma əmrlərini Minamoto-da təkrar istifadə etməyin.
 
 ## Addımlar {#steps}
 

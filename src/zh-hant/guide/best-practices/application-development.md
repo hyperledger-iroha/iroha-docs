@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/best-practices/application-development.md
-translation_source_hash: f95261b0416abfcd87881135ceb9b604a1cdde2dd1afc79fecf9c113a256a8c7
+translation_source_hash: 045e2819368106c5da6ee47610c59a3500db312f4901108c0d9e36a027a50a95
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-source-title-amendment
 ---
-
 # 應用程式開發 {#application-development}
 
 Iroha 應用程式應該明確交易行為,保持簽名狀態包含,並以生產中容易觀察的方式使用查詢和事件.
@@ -45,7 +44,7 @@ Iroha 應用程式應該明確交易行為,保持簽名狀態包含,並以生產
 - 不要將私鑰,帳戶恢復材料, API 代幣或轉發的作者標題貼上到提示中.
 - 在任何代理提交實時測試網交易之前,需要一個交易計劃.該計劃應該命名網路,授權主體,指令,費用資產,航班前閱讀,預期結果和重複嘗試行為.
 
-對於 Taira MCP 工作流程,請見 [建立在 SORA 3: Taira 和 Minamoto](/zh-hant/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents).
+如需了解 Taira MCP 工作流程，請參閱[在 SORA Nexus 上建置：Taira 與 Minamoto](/zh-hant/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents)。
 
 ## SDK 衛生 {#sdk-hygiene}
 

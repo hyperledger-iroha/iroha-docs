@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /blockchain/ram-lfe.md
-translation_source_hash: 66436bfdcdfea9bcd52834436dc8b6abe9812549583e6bfca06cbe73d5f75d35
+translation_source_hash: a07f2d06180425e4d1c1393810cf679fb88b3e993d49792b2483485cb1cc52fd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # RAM-LFE {#ram-lfe}
 
 RAM-LFE Random-Access Machine Laconic Function Evaluation کے لئے کھڑا ہے۔ Iroha میں ، یہ ایسے پروگراموں کے لئے عام پوشیدہ فنکشن پرت ہے جن کی عوامی پالیسی سلسلہ پر ہے لیکن جن کا جائزہ لینے والا منطق ، خفیہ یا خام ان پٹ عالمی حالت کو نہیں لکھا جانا چاہئے۔ یہ SORA Nexus شناختی بہاؤ کے ذریعہ استعمال کیا جاتا ہے ، جیسے نجی فون یا ای میل کی تلاش ، اور جب ایک نوڈ پروفائل ایپ کا سامنا کرنے والے راستوں کو قابل بناتا ہے تو اسے عام Torii پروگرام عملدرآمد میں مددگار کے طور پر بھی بے نقاب کیا جاسکتا ہے۔
@@ -764,6 +763,6 @@ Torii کے عمل میں رن ٹائم RAM-LFE کو `torii.ram_lfe.programs[*]` 
 
 ## متعلقہ موضوعات {#related-topics}
 
-- [پرائیویٹ ڈیٹا اسپیس کے لئے سپانسر فیس](/ur/get-started/private-dataspace-fee-sponsor.md#_4-register-phone-and-email-privately-with-fhe)
+- [پرائیویٹ ڈیٹا اسپیس کے لئے سپانسر فیس](/ur/get-started/private-dataspace-fee-sponsor.md)
 - [Torii اختتامی مقامات](/ur/reference/torii-endpoints.md#app-and-sora-route-families)
 - [گمنام ٹرانزیکشنز](/ur/blockchain/anonymous-transactions.md)

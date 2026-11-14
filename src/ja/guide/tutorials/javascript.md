@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
+translation_source_hash: 92389d3ad83ab32e85b4ca83ede9829d1a38afaad6e86da035da2829a3aaedfb
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # JavaScript と TypeScript {#javascript-and-typescript}
 
 現在の JavaScript SDK は、Iroha ソースツリーの`@iroha/iroha-js`パッケージです。これは Node.js-最初の SDK で、Torii、Norito ビルダー、署名、ページ分割、Connectプレビュー、およびKagemushaコマンド転送向けです。
@@ -99,7 +98,6 @@ JavaScript と TypeScript のアプリケーションは、Kotodama コントラ
 - Ed25519 の署名と鍵生成
 - ページネーションおよび再試行ヘルパー
 - ブラウザブートストラップヘルパーを接続する
-- 影武者の準備、補充、償還、および稼働状況の輸送ヘルパー
 
 ## 上流参照 {#upstream-references}
 

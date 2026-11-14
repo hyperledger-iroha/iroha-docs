@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /guide/tutorials/rust.md
-translation_source_hash: 98b0c3a193c6dfe8b266bcc498d7016426cf2f838a7bf7ebfbef145ffdcc7944
+translation_source_hash: fbe41bd6e7fa86d06c027724b446016c14246495964ccf521155e4b790d75041
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Rust {#rust}
 
 L'implémentation Rust se trouve dans l'espace de travail principal et reste le moyen le plus direct de travailler avec la base de code Iroha 3.
@@ -31,7 +30,7 @@ cargo build --workspace
 Exécutez le client de référence avec la configuration client par défaut enregistrée :
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
 ## Essayer Taira Lecture seule {#try-taira-read-only}

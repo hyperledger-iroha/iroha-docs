@@ -1,11 +1,10 @@
 ---
 translation_locale: kk
 translation_source: /blockchain/data-model.md
-translation_source_hash: 147562d2286bf11e60a941969e6d52bffc1534c3cfc04d440e0bcf78598a1ca7
+translation_source_hash: f90139dee2eff97769cd47188bcaf60b31672f0250505d8afad9c8ee60815ddd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-naming-amendment
 ---
-
 # Деректер моделі {#data-model}
 
 Iroha блокчейн тізілімінің күйін `World` сақтайды. Оның бірінші шығарылым деректер моделі келесі бір ғана протокол-стандартты идентификаторлар мен нысандарды қолданады:
@@ -122,7 +121,7 @@ account_rabbit --> asset_rose : may receive balance
 |Активтің анықтамасы|жалғыз протокол-стандарт `AssetDefinitionId` Base58 мекенжай| `name#domain.dataspace` немесе `name#dataspace`            | `AssetDefinitionAlias` актив анықтамасына байланысты|
 |Шарт|бір протокол-стандарт Bech32m `ContractAddress`| `name::domain.dataspace` немесе `name::dataspace`          | `ContractAlias` орналастырылған келісім-шарт мекенжайына байланған|
 |Домен атауы| `DomainId` `domain.dataspace` формада | `domain.dataspace`                                    | SNS `domain` кеңістік атауы жазбасы|
-|Деректер кеңістігінің атауы|белсенді Nexus каталогынан сандық `DataSpaceId`| `universal`, `paynet` немесе `zk` сияқты деректер кеңістігінің лақап аты | SNS `dataspace` кеңістік жазбасы және белсенді деректер кеңістігі каталогы |
+| Деректер кеңістігінің атауы | белсенді SORA Nexus каталогындағы сандық `DataSpaceId` | `universal`, `paynet` немесе `zk` сияқты деректер кеңістігінің балама атауы | SNS жүйесінің `dataspace` атаулар кеңістігіндегі жазба және деректер кеңістіктерінің белсенді каталогы |
 
 Шоттық лақап аттары пайдаланушыға көрсетілетін шот атаулары болып табылады. Олар шотты қайта кілттеу кезінде сақталады, себебі лақап ат белсенді шот идентификаторына әлемдік күй индексі және шотты қайта кілттеу жазбалары арқылы нұсқайды. Шоттың негізгі жапсырмасы үшін `SetPrimaryAccountAlias`-ды, қосымша негізгі емес лақап аттар үшін `SetAccountAliasBinding`-ді, ал оқу үшін `FindAccountByAlias` немесе `FindAliasesByAccountId`-ді пайдаланыңыз. Шот лақап аттарына әдетте `AcquireAccountAliasLease` арқылы алынған және `RenewAccountAliasLease` арқылы жаңартылатын белсенді SNS шот-лқап келісімі қажет.
 

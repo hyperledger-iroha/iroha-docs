@@ -1,11 +1,10 @@
 ---
 translation_locale: mn
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 9388823f782eef86aedbaf141bd251dae39837957aefd224ed0cc97ba11ad97d
+translation_source_hash: f1f922b9820587cd4b599e7407698a47d468616670fee2922e4028147bc3e9b0
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Kotlin, Android, ба Java {#kotlin-android-and-java}
 
 Kotlin SDK нь JVM ба Android програмуудын анхдагч клиентийн стек юм. Энэ нь Iroha хадгалах сангийн `kotlin/` дор байрладаг ба платформоор хуваагддаг тул зөөвөрлөх боломжтой код нь Android хамаарлыг авахгүй.
@@ -73,7 +72,7 @@ Kotlin SDK нь дараах зүйлийг агуулна:
 - нэг протокол-стандарт данс болон хөрөнгийн хаягийн удирдлага
 - үйлдлийн барилга, гарын үсэг зурах, оффлайн өгөгдлийн савнууд
 - Torii HTTP, WebSocket, болон SSE үйлчлүүлэгчид
-- олон гарын үсэг, захиалга, SoraFS, Nexus, болон Холбоос загварууд
+- олон гарын үсэг, захиалга, SoraFS, SORA Nexus, болон Холбоос загварууд
 - Android түлхүүр хадгалах сан ба төхөөрөмжийн телеметри интеграцчлалууд
 - Android офлайн QR, ойрхон, ба NFC тээвэрлэлт
 

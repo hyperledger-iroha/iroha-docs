@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
+translation_source_hash: 37e8be9b07a40e5c6b841a47b016320e42079853433fb3e53937e4021dc1304f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Swift ו-iOS {#swift-and-ios}
 
 ה- Swift SDK שנשלח על ידי חלל העבודה העליון הוא החבילה `IrohaSwift` Swift תחת `IrohaSwift/`. מוניפסט החבילה שלו מגדיר שלושה מוצרי ספריה `IrohaSwift`, `IrohaSwiftMobileTransports`, ו `IrohaSwiftTransferUI`, ומטרת ל- iOS 15+ ו- macOS 12+ עם כלים של Swift 5.9.
@@ -161,7 +160,7 @@ let keyPair = try ConnectCrypto.generateKeyPair()
 - גבי חתימה Ed25519, secp256k1, ML-DSA, BLS, GOST ו SM2, עם תמיכה בישר מקומית, כאשר זה נחוץ.
 - הוראות אבטחה מקומית לבניית מטען נתונים לשוק ואבטחה אנונימית
 - חיבור WebSocket, מסגרת, קריפטו, ישיבה, בתור, חזרה, ועוזרי דיאגנסטיקה
-- הכנות של Kagemusha, תוספת וחיסוי טייפ, מצב הפעולה, פתק, חבילת צמתים, קבלה ומודלים של זרם QR
+- כלי עזר לפורמט התעבורה KAGEMUSHA V1 ומתאם פלטפורמת iPhone לספק Advance של הארנק הניטיבי, להרשמה, להתאוששות ולקריאות החלפה שאושרו לקבלה
 - SoraFS, סיועי זמינות הנתונים וחיבורת ראיות
 
 ## API דוגמא {#api-examples}

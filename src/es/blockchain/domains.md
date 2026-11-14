@@ -1,14 +1,13 @@
 ---
 translation_locale: es
 translation_source: /blockchain/domains.md
-translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
+translation_source_hash: 26e8efe6c728d0f819b12e7d8257777d3d4ea272f42fabf8aec727467146500f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Dominios {#domains}
 
-Los dominios son espacios de nombres con nombre registrados en el `World`. En el modelo de datos actual de Iroha 3, un dominio se califica por su espacio de datos principal, por lo que el identificador canónico es:
+Los dominios son espacios de nombres registrados con un nombre en `World`. En el modelo de datos actual de Iroha 3, un dominio está cualificado por el espacio de datos al que pertenece, por lo que su identificador canónico es:
 
 ```text
 domain.dataspace
@@ -39,13 +38,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./payments-domain.intent.json \
   --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
-La intención identifica `payments.universal`, su espacio de datos numérico, canónico I105 propietario, plazo de adquisición del arrendamiento y cotización actual de póliza/pago. El planificador API el punto final es `POST /v1/aliases/setup/plan`; su plan devuelto está limitado por la cadena, la autoridad, el estado y el plazo. La eliminación del dominio todavía usa [`Unregister`](/es/blockchain/instructions.md#un-register).
+La intención identifica `payments.universal`, su espacio de datos numérico, su propietario canónico en I105, el plazo de adquisición del arrendamiento y la condición que protege la cotización vigente de política y pago. El punto de acceso del planificador es `POST /v1/aliases/setup/plan`; el plan que devuelve queda vinculado a la cadena, la autoridad, el estado y el plazo. La eliminación del dominio sigue utilizando [`Unregister`](/es/blockchain/instructions.md#un-register).
 
 Crear o eliminar un dominio requiere la gestión de dominio apropiada permiso bajo el validador de tiempo de ejecución de software activo. Los metadatos del dominio se pueden actualizar con [`SetKeyValue` y `RemoveKeyValue`](/es/blockchain/instructions.md#setkeyvalue-removekeyvalue) cuando el principal de autorización tiene permiso para modificar ese dominio.
 
@@ -58,7 +57,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
   | jq -r '.items[].id'
 ```
 
-Mapea el catálogo de la vía de ejecución pública de nuevo a los alias del espacio de datos:
+Relacione el catálogo público de carriles con los alias de espacios de datos:
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -67,24 +66,17 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
     | @tsv'
 ```
 
-Utiliza el primer comando cuando una aplicación necesite comprobar si un dominio existe. Utiliza el catálogo de la vía de ejecución cuando necesites confirmar si un espacio de datos es público, restringido o está rezagado respecto a la vía de ejecución principal.
+Utilice el primer comando cuando una aplicación necesite comprobar si existe un dominio. Utilice el catálogo de carriles para inspeccionar los carriles asociados a un espacio de datos, incluida la visibilidad pública o restringida de cada carril y su estado de sincronización respecto al carril principal.
 
-Configurar un dominio es una escritura con tarifa. Antes de probarla en Taira, guarde el auxiliar de [Obtener XOR de prueba en Taira](/es/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) como `taira_faucet_claim.py`, financie al firmante mediante el dispensador público y adjunte los metadatos de tarifa:
+La configuración de un dominio es una operación de escritura que paga comisiones. Antes de probarla en Taira, asigne fondos al firmante mediante el flujo preparado del servicio de fondos de prueba en [Obtener XOR de testnet en Taira](/es/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) y, después, aplique el plan con un pagador explícito de comisiones. La CLI indica la comisión exacta antes de firmar:
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
   app alias setup plan \
   --intent-file ./taira-domain.intent.json \
   --plan-file ./taira-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # 許可證程式碼 {#permission-tokens}
 
 本頁面列出了當前曝光的預設許可權符號型別 Iroha 對於角色和許可權的概念指南,請見 [許可證](/zh-hant/blockchain/permissions.md).
@@ -45,7 +44,8 @@ translation_engine: nllb-200-ct2
 |`CanModifyTriggerMetadata`|觸發器|修改觸發器後設資料.|
 |`CanUpgradeExecutor`|執行者|升級執行階段執行器.|
 |`CanRegisterSmartContractCode`|智慧合同|登記智慧合同程式碼.|
-|`CanUseFeeSponsor`|Nexus|徵收 Nexus 費用到指定贊助商帳戶. |
+| `CanManageFeeSponsorProgram` | SORA Nexus | 管理指定贊助者帳戶擁有的方案。 |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | 管理某一指定贊助方案的受益者。 |
 
 ## 擁有權 {#ownership}
 

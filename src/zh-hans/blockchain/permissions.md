@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # 许可证 {#permissions}
 
 对于区块链上的各种操作,例如钱或烧毁资产,账户需要许可令牌.
@@ -89,7 +88,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 - 资产, NFTs,以及托管
 - 触发器
 - 角色和权限
-- 执行器/运行时,证明,桥梁和 SORA/Nexus 模块
+- 执行器/运行时,证明,桥梁和 SORA Nexus 模块
 
 准确的代币列表在 [Permission Tokens引用](/zh-hans/reference/permissions.md)中得到源支持.
 

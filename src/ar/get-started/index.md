@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /get-started/index.md
-translation_source_hash: 0c452291828ed262a2e9094c30def83e07f0b7b70060d47bbd0d32160559ac40
+translation_source_hash: cfd90fff9b7d2c4d217a09ba12b1d140d5b9fa1fdd20718e9c620187c68626dc
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Iroha 3 {#iroha-3}
 
 Iroha 3 هو منصة Hyperledger Iroha الإصدار الأول. وهي تدعم الشبكات المستضافة ذاتيًا ونموذج النشر متعدد مساحات البيانات SORA Nexus من قاعدة كود واحدة حتمية.

@@ -1,11 +1,10 @@
 ---
 translation_locale: ru
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 9388823f782eef86aedbaf141bd251dae39837957aefd224ed0cc97ba11ad97d
+translation_source_hash: f1f922b9820587cd4b599e7407698a47d468616670fee2922e4028147bc3e9b0
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Kotlin, Android и Java {#kotlin-android-and-java}
 
 Kotlin SDK является стандартным клиентским стеком для приложений JVM и Android. Он находится под `kotlin/` в репозитории Iroha и разделен по платформам, поэтому переносимый код не приобретает зависимости от Android.
@@ -73,7 +72,7 @@ Kotlin SDK включает:
 - каноническая обработка учетных записей и адресов активов
 - формирование транзакции, подпись и офлайн-контейнеры данных
 - Torii HTTP, WebSocket и SSE клиенты
-- мультиподпись, подписка, SoraFS, Nexus и модели Connect
+- мультиподпись, подписка, SoraFS, SORA Nexus и модели Connect
 - Android интеграции хранилища ключей и телеметрии устройства
 - Android оффлайн QR, поблизости и NFC транспортировки
 

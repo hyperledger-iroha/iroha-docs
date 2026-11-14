@@ -1,11 +1,10 @@
 ---
 translation_locale: ka
 translation_source: /guide/tutorials/rust.md
-translation_source_hash: 98b0c3a193c6dfe8b266bcc498d7016426cf2f838a7bf7ebfbef145ffdcc7944
+translation_source_hash: fbe41bd6e7fa86d06c027724b446016c14246495964ccf521155e4b790d75041
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Rust {#rust}
 
 Rust დანერგვა ცხოვრობს ძირითად სამუშაო სივრცეში და რჩება ყველაზე პირდაპირი გზა Iroha 3 კოდის ბაზასთან მუშაობისთვის.
@@ -31,7 +30,7 @@ cargo build --workspace
 განახორციელეთ რეფერენციური კლიენტი ჩანთებული შეტყობინებით კლიენტის კონფიგურაციით:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
 ## შეეცადეთ Taira მხოლოდ წაკითხვა {#try-taira-read-only}

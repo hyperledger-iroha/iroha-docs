@@ -8,17 +8,17 @@ translation_engine: nllb-200-ct2+claude-opus-5-5
 
 # ריבוי חתימות משוקלל {#weighted-multisig}
 
-## התוצאה {#outcome}
+## תוצאה {#outcome}
 
-רשמו ב־Taira חשבון multisig משוקלל בן שלושה חברים, הציעו הוראת metadata, אשרו אותה במשקל מספיק להשגת quorum, ואמתו את הביצוע מתוך מצב חשבון ה־multisig.
+רשמו ב־Taira חשבון ריבוי חתימות משוקלל בן שלושה חברים, הציעו הוראת מטא־נתונים, אשרו אותה במשקל המספיק להשגת המניין הדרוש, ואמתו את הביצוע מתוך מצב חשבון ריבוי החתימות.
 
 ## תנאים מוקדמים {#prerequisites}
 
-- שלוש קנוניקות I105 חתימה IDs ב `SIGNER_A`, `SIGNER_B`, ו `SIGNER_C`.
-- סיבובים Taira מיומנים עבור החותמים A ו-C. המציע וכל האישור משלם את העסקה שלהם.
+- שלושה מזהי חותמים קנוניים מסוג I105 ב־`SIGNER_A`, ב־`SIGNER_B` וב־`SIGNER_C`.
+- תצורות Taira עם חשבונות ממומנים עבור החותמים A ו־C. המציע וכל מאשר משלמים עבור העסקה שלהם.
 - פעולות כתיבה דרך ה־CLI משתמשות ב־`--fee-payer authority`; ה־CLI מקבל הצעת עמלה מדויקת, בנכס העמלה של Taira, לפני החתימה.
 - פרויקט לקוח ב־Rust שתלוי ב־`iroha` וב־`iroha_model_base`, ומקובע לאותה גרסת קוד מקור של Iroha כמו Taira, עבור שלב הרישום. שלבי ההצעה והאישור שבהמשך משתמשים ב־CLI.
-- תכונה multisig של המפעיל הנוכחי מופעלת. הרישום זמין לחשבונות רגילים בזמן הפתיחה הנדרש Iroha 3, אם כי עדיין תקף מדיניות ושימוש בתשלום Taira; השתמש ב-localnet אם ההפעלה הציבורית מכחישה זאת.
+- תכונת ריבוי החתימות של המבצע הנוכחי מופעלת. בסביבת הריצה המוגדרת כברירת מחדל ב־Iroha 3, הרישום זמין לחשבונות רגילים, אך מדיניות Taira וקבלת העמלות עדיין חלות; השתמשו ברשת מקומית אם הפריסה הציבורית דוחה אותו.
 
 ```bash
 SIGNER_A_CONFIG=./taira.signer-a.toml
@@ -28,9 +28,9 @@ test -n "$SIGNER_B"
 test -n "$SIGNER_C"
 ```
 
-## צעדים {#steps}
+## שלבים {#steps}
 
-### 1. רשום מדיניות משומכת {#_1-register-a-weighted-policy}
+### 1. רשמו מדיניות משוקללת {#_1-register-a-weighted-policy}
 
 לחותם C יש משקל 2; ל־A ול־B יש משקל 1 כל אחד. לכן קוורום של 3 דורש את C ועוד A או B. כאן `registrar` הוא `iroha::blocking::Client`, שה־`submit` שלו ממתין לסופיות Applied. גזרו את החשבון הקנוני מהמדיניות המדויקת הזאת לפני הרישום, ולאחר מכן העבירו את אותו ערך אל `MultisigRegister::with_account`:
 
@@ -85,7 +85,7 @@ registrar.submit::<InstructionBox>(
 println!("{}", multisig_account.canonical_i105()?);
 ```
 
-שמור את הערך המודפס עבור צעדי CLI:
+שמרו את הערך המודפס לשלבי ה־CLI:
 
 ```bash
 MULTISIG_ACCOUNT='<POLICY_DERIVED_I105_ACCOUNT_ID>'
@@ -94,7 +94,7 @@ test -n "$MULTISIG_ACCOUNT"
 
 ב־commit המקובע, פקודת הרישום של ה־CLI מדפיסה את הזרע הזמני שלה לפני שסביבת הריצה מחליפה את המפתח שלו. אל תשתמשו שוב בזרע הזה כבקר. אין מפתח פרטי לבקר: סמכות ה־multisig נובעת רק מהצעות שאושרו. כדי לבצע את הרישום דרך ה־CLI במקום זאת, העבירו את הערך שנגזר מהמדיניות אל `ledger multisig register --account`.
 
-### 2. לבנות הוראה אחת מבלי להגיש אותה {#_2-build-one-instruction-without-submitting-it}
+### 2. בנו הוראה אחת בלי לשלוח אותה {#_2-build-one-instruction-without-submitting-it}
 
 המתג הגלובלי `--emit-instructions` מדפיס את מערך ההוראות לפלט הסטנדרטי במקום להגיש אותו, ולכן אינו מוציא שום עמלה.
 
@@ -109,7 +109,7 @@ printf '"approved"\n' |
 jq . multisig-instructions.json
 ```
 
-### 3. תציעו כתיחת A {#_3-propose-as-signer-a}
+### 3. הגישו הצעה כחותם A {#_3-propose-as-signer-a}
 
 המציע תורם אוטומטית את המשקל שלו. צרו nonce חדש להצעה ושמרו אותו לכל ניסיון חוזר. שמרו את מזהה ההצעה ואת גיבוב ההוראה שה־CLI מדפיס; האישורים נקשרים לשניהם.
 
@@ -140,16 +140,16 @@ test -n "$PROPOSAL_ID"
 test -n "$INSTRUCTIONS_HASH"
 ```
 
-רשום את ההצעה המתמשכת עדיין עם בוחר מוגבל מפורש:
+הציגו את ההצעה שעדיין ממתינה באמצעות בורר מפורש וסופי:
 
 ```bash
 iroha --config "$SIGNER_A_CONFIG" ledger multisig list all \
   --multisig-selector "$MULTISIG_ACCOUNT"
 ```
 
-### 4. אישור כחתום C {#_4-approve-as-signer-c}
+### 4. אשרו כחותם C {#_4-approve-as-signer-c}
 
-המשקל של A 1 ועוד המשקל של C 2 מגיע לקוורום 3 ומפעיל את ההוראה המוצעת כחשבון מרובות סיג.
+משקלו של A, שהוא 1, יחד עם משקלו של C, שהוא 2, מגיעים למניין הדרוש של 3, וההוראה המוצעת מתבצעת בשם חשבון ריבוי החתימות.
 
 ```bash
 iroha --config "$SIGNER_C_CONFIG" \
@@ -193,9 +193,9 @@ signer_c_client.submit::<InstructionBox>(
 )?;
 ```
 
-## לאמת {#verify}
+## אימות {#verify}
 
-תקראו את ההודעה לאחר מכן ותוודאו שההצעה כבר לא נמשכת:
+קראו את המצב לאחר הפעולה וודאו שההצעה כבר אינה ממתינה:
 
 ```bash
 iroha --config "$SIGNER_A_CONFIG" account meta get \
@@ -216,16 +216,16 @@ iroha --config "$SIGNER_A_CONFIG" ledger multisig inspect \
 ## פתרון בעיות {#troubleshooting}
 
 - `not qualified to propose multisig` או `not qualified to approve multisig` פירושו שהלקוח המציע או המאשר אינו תואם לאף אחד ממזהי ה־I105 הרשומים במדיניות.
-- אישור סופי ניתן לסרב כאשר החשבון multisig חסר רשות לבצע את ההוראות המוצעות. להעניק סמכות לחשבון multisig, ולא רק לחתימיו הפרטיים, ואז לתת לחתום שנותר לנסות שוב.
-- הצעה ממתינה שחסרה עשויה להעיד שכבר הושג quorum, שה־TTL פג או שנעשה שימוש במזהה הצעה, בגיבוב הוראה או בבורר חשבון שגויים. בדקו את ה־post-state לפני שמציעים שוב עם nonce חדש.
+- האישור האחרון עלול להידחות אם לחשבון ריבוי החתימות חסרה הרשאה לבצע את ההוראות המוצעות. העניקו סמכות לחשבון ריבוי החתימות, ולא רק לחותמים הנפרדים שלו, ואז אפשרו לחותם שטרם אישר לנסות שוב.
+- הצעה ממתינה שחסרה עשויה להעיד שהמניין הדרוש כבר הושג, שה־TTL פג, או שנעשה שימוש במזהה הצעה, בגיבוב הוראה או בבורר חשבון שגויים. בדקו את המצב לאחר הפעולה לפני הגשת הצעה נוספת עם ערך חד־פעמי חדש.
 - אישורים כפולים אינם מוסיפים משקל. כל חותם רשום תורם את המשקל שהוגדר לו לכל היותר פעם אחת.
-- חתימה ישירה של עסקאות נורמליות כמעבד אסורה. תמיד להשתמש `MultisigPropose` ו `MultisigApprove`.
-- אם פקודות מאוחר יותר לא מצאו את החשבון המודפס במהלך הרישום של CLI, אתה תפס את הזרע הזמני. להוציא את החשבון הקנוני מהפוליטיקה המוזמנת ולהרשם עם ערך זה כפי שמראה למעלה.
+- אסור לחתום ישירות על עסקה רגילה בשם הבקר. השתמשו תמיד ב־`MultisigPropose` וב־`MultisigApprove`.
+- אם פקודות מאוחרות יותר אינן מוצאות את החשבון שהודפס במהלך רישום ב־CLI, שמרתם את הזרע הזמני. גזרו את החשבון הקנוני מהמדיניות המסודרת ורשמו אותו עם הערך הזה, כפי שמוצג לעיל.
 
-## מקור ומסמכים קשורים {#source-and-related-docs}
+## מקור ותיעוד קשור {#source-and-related-docs}
 
-- [בדיקות אינטגרציה מולטי-סיג'ים בקביט הנתקע ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/multisig.rs)
-- [מודל נתונים Multisig ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_executor_data_model/src/isi.rs)
-- [CLI יישום מרוב סיג'ים בביצוע commit קשורת ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs)
-- [עסקים](/he/blockchain/transactions.md)
-- [רשיונות ותפקידים ](./permissions-and-roles.md)
+- [בדיקות אינטגרציה של ריבוי חתימות בקומיט המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/multisig.rs)
+- [מודל הנתונים של ריבוי חתימות בקומיט המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_executor_data_model/src/isi.rs)
+- [מימוש ריבוי חתימות ב־CLI בקומיט המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs)
+- [עסקאות](/he/blockchain/transactions.md)
+- [הרשאות ותפקידים](./permissions-and-roles.md)

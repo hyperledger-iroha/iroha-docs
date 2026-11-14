@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /blockchain/data-model.md
-translation_source_hash: 147562d2286bf11e60a941969e6d52bffc1534c3cfc04d440e0bcf78598a1ca7
+translation_source_hash: f90139dee2eff97769cd47188bcaf60b31672f0250505d8afad9c8ee60815ddd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-naming-amendment
 ---
-
 # Modelo de Datos {#data-model}
 
 Iroha almacena el estado del libro mayor de blockchain en el `World`. Su modelo de datos de primera versión utiliza las siguientes identidades y entidades canónicas:
@@ -122,7 +121,7 @@ Los alias son nombres orientados a humanos que se superponen sobre los identific
 |Definición de activo|dirección Base58 canónica `AssetDefinitionId`| `name#domain.dataspace` o `name#dataspace`            | `AssetDefinitionAlias` vinculado a una definición de activo |
 |Contrato|Bech32m canónico `ContractAddress`| `name::domain.dataspace` o `name::dataspace`          | `ContractAlias` ligado a una dirección de contrato desplegada |
 |Nombre de dominio| `DomainId` en forma de `domain.dataspace`               | `domain.dataspace`                                    | SNS `domain` registro de espacio de nombres |
-|Nombre del espacio de datos| numérico `DataSpaceId` del catálogo activo Nexus |alias de espacio de datos como `universal`, `paynet` o `zk`| SNS `dataspace` registro de espacio de nombres más el catálogo de espacio de datos activo            |
+|Nombre del espacio de datos| numérico `DataSpaceId` del catálogo activo SORA Nexus |alias de espacio de datos como `universal`, `paynet` o `zk`| SNS `dataspace` registro de espacio de nombres más el catálogo de espacio de datos activo            |
 
 Los alias de cuenta son los nombres de cuenta visibles para el usuario. Sobreviven a la reconfiguración de la cuenta porque el alias apunta al ID de cuenta activo a través de índices del estado mundial y registros de reconfiguración de cuenta. Use `SetPrimaryAccountAlias` para la etiqueta principal de la cuenta, `SetAccountAliasBinding` para alias adicionales que no sean principales, y `FindAccountByAlias` o `FindAliasesByAccountId` para lecturas. Los alias de cuenta normalmente requieren un arrendamiento de alias de cuenta activo SNS adquirido con `AcquireAccountAliasLease` y renovado con `RenewAccountAliasLease`.
 

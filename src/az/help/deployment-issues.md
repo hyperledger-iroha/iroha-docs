@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Yerləşdirmə Problemlərinin Həlli {#troubleshooting-deployment-issues}
 
 Bu bölmə Iroha 3 yerləşdirmələri üçün problem həll etmə məsləhətləri təklif edir. Əgər yaşadığınız problem burada təsvir edilməyibsə, bizə [Telegram](https://t.me/hyperledgeriroha) vasitəsilə müraciət edin.
@@ -15,7 +14,7 @@ Bu bölmə Iroha 3 yerləşdirmələri üçün problem həll etmə məsləhətl�
 Yerli və test yerləşdirmələri üçün, əl ilə yazılmış şəbəkə həmkarı faylları əvəzinə Kagami tərəfindən yaradılan artefaktları üstün tutun:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Yaradılan kataloq şəbəkə həmkarı konfiqurasiyalarını, blockchain başlanğıc materiallarını, başlanğıc skriptlərini və Iroha 3 quruluş xətti üçün README-i ehtiva edir.
@@ -42,7 +41,7 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 Cari Kagami localnet çıxışından Compose yaradın ki, əmr sətiri arqumentləri və konfiqurasiya faylları çıxarılmış kod ilə uyğun olsun:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```
@@ -67,9 +66,9 @@ Kubernetes üçün hər bir doğrulayıcıya vəziyyətli infrastruktur kimi yan
 
 Əgər pod təkrar-təkrar yenidən başlasa, poddakı yaradılmış konfiqurasiyanı gözlənilənlə müqayisə edin [`peer.template.toml`](/az/reference/peer-config/index.md#template) və şəbəkə iştirakçısının köhnə məlumatları təkrar oynadığını yoxlayın Kura məlumat.
 
-## Sora profili {#sora-profile}
+## SORA Nexus profili {#sora-profile}
 
-Şəxsi və ya yerli Iroha 3 yerləşdirmələrində Nexus, SoraFS və ya çox zolaqlı axınlardan istifadə edildikdə, standart daemon Sora profili aktivləşdirilmiş şəkildə başlamalıdır:
+SORA Nexus, SoraFS və ya çoxzolaqlı axınlardan istifadə edən özəl və ya yerli Iroha 3 quruluşlarında standart xidmət prosesi SORA Nexus profili aktivləşdirilərək başladılmalıdır:
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

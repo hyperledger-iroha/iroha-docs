@@ -1,16 +1,11 @@
 # Queries
 
-Iroha queries read ledger state without mutating it. The current data model
-exposes two broad query shapes:
+Iroha queries read ledger state without mutating it. The current data model exposes two broad query shapes:
 
 - **singular queries**, which return one object or one value
-- **iterable queries**, which return a stream or collection and can be combined
-  with filtering, sorting, projection, and pagination where the query type
-  supports it
+- **iterable queries**, which return a stream or collection and can be combined with filtering, sorting, projection, and pagination where the query type supports it
 
-Use SDK typed builders or the CLI instead of constructing query envelopes by
-hand. The names below are the current query types exposed by
-`iroha_data_model::query`.
+Use SDK typed builders or the CLI instead of constructing query envelopes by hand. The names below are the current query types exposed by `iroha_data_model::query`.
 
 ## Runtime and Configuration
 
@@ -64,9 +59,7 @@ hand. The names below are the current query types exposed by
 
 ## Escrow and Proof Records
 
-Escrow queries inspect the records created by
-[native asset escrow ISIs](/blockchain/escrow.md), including marketplace
-escrows, generic asset locks, and anonymous escrow records.
+Escrow queries inspect the records created by [native asset escrow ISIs](/blockchain/escrow.md), including marketplace escrows, generic asset locks, and anonymous escrow records.
 
 | Query | Purpose |
 | --- | --- |
@@ -85,7 +78,7 @@ escrows, generic asset locks, and anonymous escrow records.
 | `FindProofRecordsByBackend` | List proof records for a proof backend. |
 | `FindProofRecordsByStatus` | List proof records by status. |
 
-## Nexus, Data Availability, and Packages
+## SORA Nexus, Data Availability, and Packages {#nexus-data-availability-and-packages}
 
 | Query | Purpose |
 | --- | --- |
@@ -97,7 +90,7 @@ escrows, generic asset locks, and anonymous escrow records.
 | `FindDaPinIntentByLaneEpochSequence` | Find a pin intent by lane, epoch, and sequence. |
 | `FindLaneRelayEnvelopeByRef` | Find a verified lane-relay envelope. |
 | `FindSorafsProviderOwner` | Resolve the owner of a SoraFS provider. |
-| `FindDataspaceNameOwnerById` | Resolve a dataspace-name owner. |
+| `FindDataspaceNameOwnerById` | Resolve a data space-name owner. |
 | `FindMusubiExactPackageV1` | Read one exact package record and its current revisions. |
 | `FindMusubiExactReleaseV1` | Read one exact release snapshot. |
 | `FindMusubiProviderBundleAttestationV1` | Read one provider's archive-bundle attestation. |
@@ -124,7 +117,4 @@ escrows, generic asset locks, and anonymous escrow records.
 
 ## Filtering and Pagination
 
-Iterable queries can expose predicate and selector support. Use query-specific
-typed filters from the SDK so the filter input matches the query output type.
-For large result sets, use query parameters such as cursor and limit instead
-of fetching every row at once.
+Iterable queries can expose predicate and selector support. Use query-specific typed filters from the SDK so the filter input matches the query output type. For large result sets, use query parameters such as cursor and limit instead of fetching every row at once.

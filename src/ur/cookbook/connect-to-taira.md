@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2+claude-opus-5-5
 
 ## نتیجہ {#outcome}
 
-تصدیق کریں کہ Taira قابل رسائی ہے، مقامی client configuration سے canonical I105 account ID اخذ کریں، signer کو testnet XOR سے فنڈ کریں، اور fee-quoted canary transaction جمع کریں۔ یہ recipe کبھی Minamoto پر write نہیں بھیجتی۔
+تصدیق کریں کہ Taira تک رسائی ممکن ہے، مقامی کلائنٹ ترتیب سے کینونیکل I105 اکاؤنٹ شناخت کنندہ اخذ کریں، دستخط کنندہ کو ٹیسٹ نیٹ XOR فراہم کریں، اور فیس کی منظور شدہ قیمت کے ساتھ ایک آزمائشی معاملہ جمع کرائیں۔ یہ طریقہ کبھی Minamoto پر لکھنے کی درخواست نہیں بھیجتا۔
 
 ## لازمی شرائط {#prerequisites}
 

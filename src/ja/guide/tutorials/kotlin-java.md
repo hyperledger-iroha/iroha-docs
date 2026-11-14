@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 9388823f782eef86aedbaf141bd251dae39837957aefd224ed0cc97ba11ad97d
+translation_source_hash: f1f922b9820587cd4b599e7407698a47d468616670fee2922e4028147bc3e9b0
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Kotlin、Android、そしてJava {#kotlin-android-and-java}
 
 Kotlin SDK は、JVM および Android アプリケーションのデフォルトのクライアントスタックです。これは Iroha リポジトリの`kotlin/`の下にあり、プラットフォームごとに分割されているため、ポータブルコードは Android 依存関係を取得しません。
@@ -73,7 +72,7 @@ Kotlin SDK には以下が含まれます：
 - 標準的なアカウントおよび資産アドレスの処理
 - トランザクションの作成、署名、オフラインデータコンテナ
 - Torii、HTTP、WebSocket、および SSE のクライアント
-- マルチシグネチャ、サブスクリプション、SoraFS、Nexus、およびConnectモデル
+- マルチシグネチャ、サブスクリプション、SoraFS、SORA Nexus、およびConnectモデル
 - Android キーストアおよびデバイステレメトリ統合
 - Android オフライン QR、近く、および NFC 輸送
 

@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2+claude-opus-5-5
 
 # Wallet Connect: אישור העברה של נכסים {#wallet-connect-approve-an-asset-transfer}
 
-## התוצאה {#outcome}
+## תוצאה {#outcome}
 
 צרו סשן של Iroha Connect בדפדפן, קבלו אישור קריפטוגרפי עבור זהות ארנק I105 אחת, בקשו מהארנק הזה לחתום על מטען העברת הנכס הלא חתום המדויק של Torii, הגישו את החתימה המנותקת והמתינו לסופיות Applied.
 
@@ -29,11 +29,11 @@ curl -fsS \
 
 Torii אינו מפרסם סטטוס Connect אנונימי: `GET /v1/connect/status` מדווח על סשן אחד לאסימון הניהול שלו, והסטטוס המצרפי דורש חתימת מפעיל. כאשר צומת משבית את Connect, `registerConnectSession` נכשל עם HTTP `503` והקוד `connect_disabled` (`404` כאשר הבנייה אינה כוללת את Connect), והדוגמה אינה מציגה קוד QR או קישור עמוק; השתמשו ברשת מקומית שנוצרה עם Connect מופעל. העברת נכס רגילה דורשת גם שבארנק תהיה כמות מספקת הניתנת להעברה ויתרת עמלה מספקת.
 
-## צעדים {#steps}
+## שלבים {#steps}
 
-### 1. לספק שליטה אחת לשיגור הארנק {#_1-provide-one-wallet-launch-control}
+### 1. ספקו פקד אחד לפתיחת הארנק {#_1-provide-one-wallet-launch-control}
 
-JavaScript בהמשך מצפה לרכיב הזה בדף הבקשה:
+קוד JavaScript שלהלן מצפה לרכיב הזה בדף היישום:
 
 ```html
 <a id="wallet-connect" hidden>Open this request in my Iroha wallet</a>
@@ -41,7 +41,7 @@ JavaScript בהמשך מצפה לרכיב הזה בדף הבקשה:
 
 הציגו את אותו URI כקוד QR עבור ארנק במכשיר אחר. ה־URI מכיל אסימון ממסר המוגבל לארנק, ולכן אל תכתבו אותו בנתוני ניתוח, ביומנים, בכותרות מפנה או בדוחות קריסה.
 
-### 2. ליצור, לאשר, לחתום ולהגיש {#_2-create-approve-sign-and-submit}
+### 2. צרו, אשרו, חתמו ושלחו {#_2-create-approve-sign-and-submit}
 
 מודול דפדפן זה מקבל ערכים ממשיים ממצב היישום שלכם. הקריאה הראשונה אל `POST /v1/assets/transfer` משמיטה את שדות החתימה ומחזירה את כוונת העמלה המתומחרת ואת מטען העסקה הלא חתום. הקריאה השנייה מוסיפה לאותה בקשת העברה רק את המפתח הציבורי של הארנק ואת החתימה המנותקת. Torii דורש חתימת חשבון קנונית על שתי הבקשות, ולכן המודול מבקש מהארנק לחתום עליהן באמצעות `createConnectCanonicalRequestAuth`.
 
@@ -246,9 +246,9 @@ export async function transferWithWallet({
 
 שמרו את `token_app`, `token_management` ו-`token_relay` בזיכרון האפליקציה. רק URI/token ההפעלה שבתחום הארנק עובר לארנק. אישור Connect נחתם בידי זהות החשבון; ה-`walletPublicKey` מסוג X25519 שבאישור הוא מפתח תעבורה זמני, לא מפתח החתימה Ed25519 של החשבון.
 
-### 3. השתמש בסוגים של מסגרת Rust בפעילות הארנק. {#_3-use-the-rust-frame-types-in-a-wallet-implementation}
+### 3. השתמשו בטיפוסי המסגרות של Rust במימוש הארנק {#_3-use-the-rust-frame-types-in-a-wallet-implementation}
 
-פני ה- Rust פרוטוקול יכול לחותם חתימה רק לאחר הארנק פיתח את העסקה הנדרשת, הראה את כוונתו המדויקת, מדיניות יישום, וחתום עם מפתח החשבון המאושר. עוזר זה מקבל את החתימה המאושרת; הוא לא יוצר אחת:
+ממשק הפרוטוקול ב־Rust יכול לאטום חתימה רק לאחר שהארנק פענח את העסקה המבוקשת, הציג את כוונתה המדויקת, החיל מדיניות וחתם באמצעות מפתח החשבון שאושר. פונקציית עזר זו מקבלת את החתימה המאומתת הזאת; היא אינה ממציאה חתימה:
 
 ```rust
 use iroha_crypto::{Algorithm, Signature};
@@ -278,9 +278,9 @@ fn seal_wallet_signature(
 
 הדוגמאות `connect_app` ו־`connect_wallet` שבמאגר הן הדגמות של הפרוטוקול: האפליקציה מדפיסה לפלט הסטנדרטי את ה־URI של הארנק, כולל האסימון שלו, והארנק מקבל את האסימונים שלו כארגומנטים בשורת הפקודה וחותם על הבתים המבוקשים בלי לפענח או להציג אותם. השתמשו בהן רק ללימוד מסגרות, ולעולם לא כמימוש של ארנק Taira.
 
-## לאמת {#verify}
+## אימות {#verify}
 
-שמרו על ה-hash שהחזרו ותוכיחו את מצב המוקדמת של היעד באמצעות נקודת הסיום של בעלי הציבור:
+שמרו את הגיבוב שהוחזר ואמתו את מצב היעד לאחר הפעולה באמצעות נקודת הקצה הציבורית של המחזיקים:
 
 ```bash
 HOLDER_FILTER="account_id = \"$DESTINATION_ACCOUNT\" and scope = \"global\""
@@ -296,19 +296,19 @@ curl -fsS -G \
 ## פתרון בעיות {#troubleshooting}
 
 - `503` עם הקוד `connect_disabled`, או `404`, מ־`registerConnectSession` פירושו שלא ניתן ליצור סשן ממסר בצומת הזה. עברו ל־localnet שבו Connect מופעל; אל תפנו כחלופה להעברה עצמית של אסימוני האפליקציה או הניהול.
-- `USER_DENIED` הוא החלטה של הארנק. שמרו אותו כתוצאה של משתמש סגור במקום לפתוח בקשות אישור חוזרות ונשנות.
-- אי התאמה בין חשבון ההסכמה או חתימת אישור לא חוקית חייבת לסגור את הפגישה. לעולם אל תבקשו מהמטבע לחתום לאחר שחיבור זהות נכשל.
-- `public_key_hex does not control authority` פירושו נתוני ההרשמה והסכמה בין זהות I105 המאושרת. המפתח לזמן קצר לתחבורה של הארנק לא ניתן להשתמש בשדה זה.
+- `USER_DENIED` היא החלטת הארנק. שמרו אותה כתוצאה סופית של המשתמש, במקום לפתוח בקשות אישור שוב ושוב.
+- אי־התאמה בחשבון שבאישור או חתימת אישור שאינה תקינה חייבות לסגור את הסשן. לעולם אל תבקשו מהארנק לחתום לאחר שקישור הזהות נכשל.
+- `public_key_hex does not control authority` פירושו שנתוני הרישום אינם תואמים לזהות I105 שאושרה. אי אפשר להשתמש במפתח התעבורה הזמני של הארנק בשדה הזה.
 - חתימה מנותקת שנדחתה פירושה בדרך כלל ששדה בבקשה או הצעת העמלה החיה השתנו בין ההכנה להגשה. בנו בקשה חדשה; לעולם אל תשתילו את החתימה הישנה.
-- replay מדויק של בקשה חתומה שכבר התקבלה הוא idempotent. בצעו שאילתה על hash העסקה שהוחזר לפני שתתייחסו לפסק זמן כסיבה להתחיל מחדש.
+- חזרה מדויקת על בקשה חתומה שכבר התקבלה אינה יוצרת השפעה נוספת. בצעו שאילתה על גיבוב העסקה שהוחזר לפני שתתייחסו לחריגה ממגבלת הזמן כסיבה להתחיל מחדש.
 
-## מקור ומסמכים קשורים {#source-and-related-docs}
+## מקור ותיעוד קשור {#source-and-related-docs}
 
-- [יישום Browser Connect ב-pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/src/connect.browser.js)
-- [בדיקות מחברת הדפדפן בקביט ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/test/connect.browser.test.js)
-- [Rust דוגמא של מסגרת אפליקציה ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/examples/connect_app.rs)
-- [Rust דוגמה של מסגרת הארנק ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/examples/connect_wallet.rs)
-- [תבנית Torii OpenAPI](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/artifacts/openapi/torii.json)
-- [SORA Nexus שירותים](/he/blockchain/sora-nexus-services.md)
-- [נכסים פונגביים](./fungible-assets.md)
-- [הגשת והבחינה של עסקאות ](./submit-and-verify-transactions.md)
+- [מימוש Connect בדפדפן בקומיט המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/src/connect.browser.js)
+- [בדיקות Connect בדפדפן בקומיט המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/test/connect.browser.test.js)
+- [דוגמת מסגרת ליישום ב־Rust בקומיט המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/examples/connect_app.rs)
+- [דוגמת מסגרת לארנק ב־Rust בקומיט המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/examples/connect_wallet.rs)
+- [סכמת Torii OpenAPI המקובעת](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/artifacts/openapi/torii.json)
+- [שירותי SORA Nexus](/he/blockchain/sora-nexus-services.md)
+- [נכסים בני־חליפין](./fungible-assets.md)
+- [שליחת עסקאות ואימותן](./submit-and-verify-transactions.md)

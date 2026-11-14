@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/configure/client-configuration.md
-translation_source_hash: 6da8a0abddc9723b16477a935a3953ebd497300f02eadd635e4e38027a11d095
+translation_source_hash: b3cfc8d8bf51a43b88cefb5ac7fe641717b347f7c89d983bf4c2de80944f1bb8
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # 客户端配置 {#client-configuration}
 
 Iroha CLI 和 SDK 客户使用 TOML 存储库将当前的默认设置发送到 `defaults/client.toml`; 创建的本地网络也会写出匹配 `client.toml` 在它们的输出目录中.
@@ -18,22 +17,24 @@ Iroha CLI 和 SDK 客户使用 TOML 存储库将当前的默认设置发送到 `
 
 ## 核心领域 {#core-fields}
 
-至少,客户端配置识别链, Torii 端点和签字帐户:
+客户端配置至少应指定链、网络身份、Torii 端点、账户的网络上下文及签名密钥：
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000000"
-torii_url = "http://127.0.0.1:8080"
+network_id = "hash:32C903E5B3497E34C2B844EBFE8A39C19E6CF8F95D44C1FFB8BA9DCB42F91149#A2F0"
+torii_url = "http://127.0.0.1:8080/"
 
 [account]
-domain = "wonderland.universal"
+chain_discriminant = 753
 public_key = "ed0120..."
 private_key = "802620..."
 ```
 
 - `chain`选择所提交交易属于的链.
+- `network_id` 是从创世配置派生的网络身份，每个已签名请求都与其绑定。必须且只能配置 `network_id` 或 `network_id_file` 之一；节点通过 `GET /v1/accounts/capabilities` 公布该值。
 - `torii_url`点在对等节点 Torii HTTP API.
-- `[account].domain`是由 CLI 快捷方式和地址选择器编码所使用的;规范 `AccountId`本身是无域名.
-- `[account].public_key`和`[account].private_key`签署交易.
+- `[account].chain_discriminant` 选择网络的 I105 账户前缀。公开网络也可改用 `[account].profile = "taira"` 或 `"minamoto"`。这两种方式必须选择其一，规范 `AccountId` 本身不包含域。
+- `[account].public_key` 和 `[account].private_key` 签署交易；`private_key_file` 可以替代 `private_key`。
 
 帐户必须已经在链上存在.对于默认的本地网络,这是由捆绑的创世表处理的.
 
@@ -70,25 +71,25 @@ nonce = false
 
 ## 连接排列设置 {#connect-queue-settings}
 
-目前的 Iroha 客户端也可以使用可选的 `[connect]` 部分进行本地队列状态:
+`iroha` CLI 还会读取可选的 `[connect]` 部分用于本地队列状态。可重用的 SDK 配置不接受它：
 
 ```toml
 [connect]
 queue_root = "./queue"
 ```
 
-如果工作流需要持久的客户端排队存储时,请使用此方法.
+当工作流需要持久的客户端队列存储时使用此选项。`connect.queue_root` 默认为 `~/.iroha/connect`，相对路径从包含客户端 TOML 文件的目录解析。
 
 ## 创建配置 {#generating-configurations}
 
 对于一次性本地网络,更喜欢 Kagami 因为它写出匹配的 Iroha 3 配置,创世,脚本和 README:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 使用生成的 `./localnet/client.toml`与 CLI:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```

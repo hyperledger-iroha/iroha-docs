@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 96505bdba910beb902c399004f5cd24f5e5b0773f01df9cdcfdb49d019830d03
+translation_source_hash: d4fd88de377b9c88e0293ed07f307ad38c3f8b05ed898fd051c5bfb738d66681
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # ایک Docker کنٹینر میں گرم ری لوڈ Iroha {#hot-reload-iroha-in-a-docker-container}
 
 hot reload صرف مقامی debugging کے لیے استعمال کریں۔ عام مقامی development میں image دوبارہ build کرنے یا تازہ Kagami bundle سے بنے Docker Compose stack کو restart کرنے کو ترجیح دیں۔
@@ -29,11 +28,11 @@ docker restart <container>
 
 ## ایک ڈسپوزایبل نیٹ ورک میں جینیس کو دوبارہ شروع کریں {#recommit-genesis-in-a-disposable-network}
 
-ایک peer صرف اس وقت genesis commit کرتا ہے جب اس کا storage خالی ہو۔ disposable Docker network کے لیے stack روکیں، بنائی گئی state ہٹائیں، signed genesis bundle دوبارہ بنائیں یا بدلیں، اور پھر آغاز کریں:
+ہم مرتبہ نوڈ ابتدائی حالت صرف تب درج کرتا ہے جب اس کا ذخیرہ خالی ہو۔ عارضی Docker نیٹ ورک کے لیے خدمات کا مجموعہ روکیں، بنائی گئی حالت ہٹائیں، دستخط شدہ ابتدائی حالت کا مجموعہ دوبارہ بنائیں یا بدلیں، اور پھر سے شروع کریں:
 
 ```bash
 docker compose -f ./docker-compose.yml down
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```

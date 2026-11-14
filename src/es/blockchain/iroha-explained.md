@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /blockchain/iroha-explained.md
-translation_source_hash: ba591b2c1aa819837177625b1ae457b5fa492197576dc690b19ca2897562a436
+translation_source_hash: 426adbea88da36cd92da17d8665c956a57b9d4cebfa0d2f35bc75469cccf84ee
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha Explicado {#iroha-explained}
 
 Iroha 3 es la plataforma Hyperledger Iroha de primera versión. El mismo núcleo soporta redes autoalojadas y el modelo de ejecución SORA Nexus para espacios de datos y enrutamiento de múltiples carriles.
@@ -25,44 +24,48 @@ Iroha 3 es la plataforma Hyperledger Iroha de primera versión. El mismo núcleo
 
 Cada cambio en el estado del mundo todavía ocurre a través de transacciones. Las transacciones llevan instrucciones o código byte IVM, y Torii es la forma principal en que los clientes las envían o observan sus efectos.
 
-- Las configuraciones conscientes de Nexus pueden definir múltiples carriles de ejecución
-- los espacios de datos aíslan las cargas de trabajo sin dejar de formar parte del mismo modelo de libro mayor
-- La política de enrutamiento decide qué carril de ejecución y espacio de datos manejan una clase de trabajo
+- los espacios de datos proporcionan entornos para los datos institucionales, la autoridad, las políticas y las aplicaciones
+- los carriles proporcionan capacidad de enrutamiento y certificación dentro de esos entornos
+- una raíz de espacio de datos firmada de forma independiente es titular de su propio State y de su finalidad local
 
-## Arquitectura Multi-Espacio de Datos {#multi-dataspace-architecture}
+## Espacios de datos y raíces de ejecución {#multi-dataspace-architecture}
 
-Un espacio de datos es un límite de enrutamiento y de espacio de nombres, no una blockchain separada. El entorno de ejecución sigue teniendo un solo `World`, un modelo de transacción y un canal de consenso. Nexus añade catálogos que indican al nodo cómo repartir el trabajo entre las vías de ejecución y cómo denominar los espacios de datos atendidos por ellas.
+Una entrada del catálogo de espacios de datos define un entorno y su identidad. Una entrada del catálogo por sí sola no establece una raíz de ejecución independiente. Los carriles públicos certifican lotes de transacciones para su ejecución en la cadena global; una raíz de espacio de datos firmada de forma independiente tiene su propio State, comité y finalidad local.
 
-En tiempo de ejecución del software, un espacio de datos se representa mediante un `DataSpaceId` numérico y metadatos del catálogo. `DataSpaceId::UNIVERSAL` está reservado como `0`; el catálogo predeterminado contiene el espacio de datos `universal`. Cada espacio de datos configurado tiene:
+`DataSpaceCatalog` define espacios de datos, mientras que `LaneCatalog` define carriles. Cada carril hace referencia a exactamente un espacio de datos mediante `dataspace_id`; un espacio de datos puede contener varios carriles. `DataSpaceId` y `LaneId` son identidades distintas, y un alias de carril no crea otro espacio de datos.
+
+Durante la ejecución, un espacio de datos se representa mediante un `DataSpaceId` numérico y metadatos del catálogo. `DataSpaceId::UNIVERSAL` está reservado como `0`; el catálogo predeterminado contiene el espacio de datos `universal`. Cada espacio de datos configurado tiene:
 
 - un ID numérico único
-- un alias único como `universal`, `governance` o `zk`
+- un alias único como `universal` o un nombre institucional registrado explícitamente
 - una descripción opcional para las superficies del operador
 - un valor `fault_tolerance` distinto de cero usado para dimensionar comités de relevos
 
-las vías de ejecución son las rutas de ejecución y almacenamiento vinculadas a esos espacios de datos. Una entrada de vía de ejecución lleva un `LaneId`, el `DataSpaceId` que sirve, un alias, visibilidad (`public` o `restricted`), perfil de almacenamiento (`full_replica`, `commitment_only` o `split_replica`), esquema de prueba y gobernanza opcional, liquidación y metadatos del programador. El tiempo de ejecución del software deriva la geometría de almacenamiento por carril a partir de este catálogo, incluidos los nombres de segmentos Kura y los prefijos de clave deterministas.
+Los carriles son los recursos de enrutamiento y certificación vinculados a esos espacios de datos. Una entrada de carril contiene un `LaneId`, el `DataSpaceId` al que sirve, un alias, la visibilidad (`public` o `restricted`), el perfil de almacenamiento (`full_replica`, `commitment_only` o `split_replica`), el esquema de prueba y, opcionalmente, metadatos de gobernanza, liquidación y planificación. El entorno de ejecución deriva de este catálogo la geometría de almacenamiento de cada carril, incluidos los nombres de segmentos de Kura y los prefijos deterministas de claves.
 
 La ruta de enrutamiento es:
 
-1. La configuración construye un `DataSpaceCatalog`, `LaneCatalog` y `LaneRoutingPolicy` validados. Varios carriles de ejecución, múltiples espacios de datos o enrutamiento no predeterminado requieren `nexus.enabled = true`.
-2. La cola de transacciones solicita al enrutador de carril de ejecución activo un `RoutingDecision` que contiene un ID de carril de ejecución y un ID de espacio de datos.
-3. Las reglas de enrutamiento explícitas pueden coincidir por autoridad/cuenta o por etiqueta de instrucción. Sin una regla coincidente, el enrutador puede derivar el espacio de datos a partir de IDs de dominio, proyecciones de definición de activos, permisos con alcance de espacio de datos, partes de transferencia de liquidación o el alcance de cuenta vinculado del principal de autorización.
-4. La ruta resuelta se verifica contra ambos catálogos. Carriles de ejecución desconocidos, espacios de datos desconocidos y desajustes entre carriles y espacios de datos son errores de enrutamiento determinísticos. Si una transacción escribe en dos objetivos de espacio de datos diferentes, se rechaza como una ruta en conflicto; la liquidación entre espacios de datos DVP/PVP se enruta a través del carril de ejecución del coordinador universal.
-5. Sumeragi y la telemetría mantienen la asignación visible como carril de ejecución y actividad del espacio de datos, instantáneas de acumulación y compromiso.
+1. La configuración construye un `DataSpaceCatalog`, un `LaneCatalog` y una `LaneRoutingPolicy` validados. El enrutamiento de SORA Nexus es obligatorio. Para utilizar varios espacios de datos, varios carriles o un enrutamiento distinto del predeterminado, se emplean el perfil de SORA Nexus (`--sora`) y NPoS.
+2. La cola de transacciones determina un `RoutingPlan` a partir de la transacción y del estado confirmado. Cada ruta de coordinador o participante contiene un identificador de carril y otro de espacio de datos; los planes de AMX nativo conservan el conjunto completo de participantes.
+3. Para la ejecución global, los lotes completos del plano de control y los coordinadores entre espacios de datos utilizan el carril `0`. Los destinos concretos no universales de instrucciones o direcciones de contratos seleccionan un carril fijo admitido con el espacio de datos y el comité correspondientes, antes de aplicar las reglas de cuentas o de etiquetas de instrucciones. El resto del trabajo sigue las reglas explícitas confirmadas y el particionado predeterminado; los destinos universales concretos permanecen en carriles universales.
+4. Cada ruta se comprueba frente a los catálogos y al estado activo de los carriles. Se rechazan los identificadores desconocidos y las discrepancias entre carriles y espacios de datos; un destino privado no disponible no puede recurrir a la ejecución universal. Los destinos en varios espacios de datos pueden generar un plan de AMX nativo. Si el metadato de transacción `amx_policy` se establece en `reject_cross_dataspace`, se rechazan los planes entre espacios de datos. Un plan de enrutamiento por sí solo no autoriza ni completa la liquidación entre raíces independientes.
+5. Sumeragi y la telemetría mantienen visible la asignación mediante la actividad, el trabajo pendiente y las instantáneas de compromisos de los carriles y espacios de datos.
 
 Por eso importan los identificadores de objetos. Los dominios incluyen el alias del espacio de datos en su ID, por ejemplo `payments.universal`, por lo que las escrituras con alcance de dominio se pueden enrutar. Las cuentas permanecen canónicas y sin dominio, de modo que la misma cuenta puede vincularse en diferentes ámbitos de aplicación sin cambiar su `AccountId`. Las definiciones de activos pueden llevar una proyección de dominio/espacio de datos, lo que permite que las operaciones de activos hereden la ruta correcta del espacio de datos.
 
-Sin las anulaciones de Nexus, el nodo usa una única vía de ejecución y el espacio de datos `universal`. El perfil empaquetado SORA lo reemplaza con un catálogo de tres vías: `core` para el carril de ejecución pública universal, `governance` para el tráfico de gobernanza, y `zk` para el tráfico de adjuntos de conocimiento cero y despliegue de contratos.
+Sin ajustes específicos de SORA Nexus, el nodo utiliza un único carril y el espacio de datos `universal`. El perfil incluido de SORA Nexus lo sustituye por un catálogo de tres carriles: `core` para el carril público universal, `governance` para el tráfico de gobernanza y `zk` para el tráfico de adjuntos de conocimiento cero y de despliegue de contratos.
 
-Esos tres valores predeterminados existen para separar las clases de carga de trabajo:
+Los tres carriles incluidos son públicos y hacen referencia al mismo espacio de datos `universal`. Separan las clases de cargas de trabajo:
 
-|Espacio de datos|carril de ejecución|Por qué existe|
+| Espacio de datos | Carril | Por qué existe |
 | ------------ | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `universal`  | `core`       |Espacio de datos predeterminado reservado (`DataSpaceId::UNIVERSAL == 0`) para el tráfico normal del libro mayor público y el enrutamiento de reserva.|
-| `governance` | `governance` |Carril de ejecución restringido para el tráfico de gobernanza y parlamento, de modo que la actividad del plano de control no se mezcle con las escrituras generales de la aplicación.|
-| `zk`         | `zk`         |Carril de ejecución restringido para pruebas de conocimiento cero, adjuntos y enrutamiento de despliegue de contratos, manteniendo los flujos de trabajo intensivos en pruebas separados de las escrituras normales.|
+| `universal` | `core` | Tráfico habitual del libro mayor público y enrutamiento predeterminado. |
+| `universal` | `governance` | Gobernanza pública y tráfico de SORA Parliament. |
+| `universal` | `zk` | Tráfico público de adjuntos de conocimiento cero y de despliegue de contratos. |
 
-Solo `universal` es la línea base reservada. `governance` y `zk` son opciones de perfil SORA codificadas en el catálogo y la política de enrutamiento incluidos; los operadores pueden definir un catálogo diferente cuando necesiten diferentes límites de espacio de datos.
+`DataSpaceId::UNIVERSAL == 0` es el valor de referencia reservado. Los nombres `governance` y `zk` anteriores identifican carriles, no espacios de datos independientes. Para establecer límites institucionales distintos se necesitan entradas explícitas de espacios de datos; la ejecución independiente requiere además una raíz autenticada de forma independiente.
+
+Estas relaciones están definidas por los [constructores de perfiles](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_config/src/parameters/actual.rs), la [implementación de carriles](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_core/src/sumeragi/lanes/mod.rs) y el [contrato de raíces independientes](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/sumeragi.md) de la revisión fijada.
 
 Sumeragi siempre utiliza la disponibilidad de datos y la transmisión confiable. Estos caminos forman parte del protocolo de consenso Iroha 3 y no se pueden desactivar mediante un perfil de implementación.
 

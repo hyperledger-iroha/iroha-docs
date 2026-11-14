@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /guide/security/storing-cryptographic-keys.md
-translation_source_hash: 168ee24e84f9225e81365658018717155476ae1508fefba5e0234e0bf6feefbd
+translation_source_hash: a95fe07f62d51a813a2f9fb02d67521ae421faf8467648e5f215e069c5d68572
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Armazenando Chaves Criptográficas {#storing-cryptographic-keys}
 
 Uma chave privada pode autorizar toda ação permitida ao seu principal de autorização. Nunca compartilhe uma chave privada. Proteja material de semente, segredos de recuperação, tokens portadores e arquivos de chave exportados com o mesmo cuidado.
@@ -28,7 +27,7 @@ Para desenvolvimento local, testes controlados ou uma transferência segura de c
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-O diretório pai deve existir. O destino deve ser novo ou já ser de propriedade do usuário atual, modo `0700`, livre de links simbólicos e vazio. Kagami grava `public.key` e `private.key` com o modo `0600`; `--pop` também escreve `pop.hex`. O comando falha em plataformas onde Kagami não pode impor as regras do sistema de arquivos apenas para o proprietário.
+O diretório pai deve existir. O destino não deve existir, nem mesmo como um diretório vazio. Kagami o cria com modo `0700`, aplica verificações de sistema de arquivos que restringem o acesso ao proprietário, rejeita links simbólicos e grava `public.key` e `private.key` com modo `0600`; `--pop` também grava `pop.hex`. O comando falha nas plataformas em que Kagami não consegue impor essas regras de acesso exclusivo do proprietário.
 
 O arquivo de chave privada é uma exportação não criptografada. Mantenha-o fora do controle de versão, pastas compartilhadas, logs, tickets, chats e artefatos de compilação. Importe uma chave de produção em seu limite de custódia aprovado e, em seguida, remova a exportação de acordo com o procedimento de implantação. Não reutilize uma chave de desenvolvimento em produção.
 

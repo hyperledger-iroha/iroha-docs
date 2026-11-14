@@ -1,11 +1,10 @@
 ---
 translation_locale: hy
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # թույլտվություններ {#permissions}
 
 Հաշվետիկները պահանջում են թույլտվության տոմսեր բլոկչեյնի վրա տարբեր գործողությունների համար, օրինակ՝ ակտիվների մինթման կամ այրելու համար।
@@ -89,7 +88,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 - ակտիվներ, NFTs, եւ վարկային գրավումներ
 - գործարկիչներ
 - դեր եւ թույլտվություններ
-- կատարող/կատարման ժամկետ, ապացույցներ, կամուրջներ եւ SORA/Nexus մոդուլներ
+- կատարող/կատարման միջավայր, ապացույցներ, կամուրջներ և SORA Nexus-ի մոդուլներ
 
 Հստակ տոքերների ցուցակը հաստատված է աղբյուրի կողմից [Permission Tokens հղումով ](/hy/reference/permissions.md).
 

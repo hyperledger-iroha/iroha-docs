@@ -1,11 +1,10 @@
 ---
 translation_locale: kk
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
+translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Таза темірде Iroha іске қосу {#running-iroha-on-bare-metal}
 
 Бұл жұмыс үрдісін сіз желілік түйіндерді Docker Compose арқылы емес, тікелей хосттарда іске қосқыңыз келгенде пайдаланыңыз. Ағымдағы қайнар код ағашы сәйкес блокчейн бастамасын, желілік түйін конфигурацияларын, клиент конфигурациясын және бастау/тоқтату скрипттерін жазатын Kagami генераторларын қамтамасыз етеді.
@@ -32,7 +31,7 @@ cargo build --release \
 Төрт түйінді Iroha 3 localnet жасаңыз:
 
 ```bash
-target/release/kagami localnet --peers 4 --out-dir ./localnet
+target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Шығыс каталогында жасалған `genesis.json`, `genesis.signed.nrt`, желілік әріптес `config.toml` файлдары, `client.toml`, көмекші скрипттер және сол топтамаға арналған нақты командалары бар жасалған `README.md` бар.
@@ -52,7 +51,7 @@ target/release/kagami localnet --peers 4 --out-dir ./localnet
 Жасалған клиент конфигурациясын пайдаланыңыз:
 
 ```bash
-target/release/iroha --config ./localnet/client.toml ledger domain list all
+target/release/iroha --config ./localnet/client.toml ledger domain list --all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 

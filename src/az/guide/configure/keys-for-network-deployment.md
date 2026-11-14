@@ -1,14 +1,13 @@
 ---
 translation_locale: az
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Şəbəkə Yerləşdirilməsi üçün Açarlar {#keys-for-network-deployment}
 
-Hər bir şəbəkə müştərilər, şəbəkə həmkarları, blokçeyn başlanğıc imzası və NPoS və ya Nexus profilləri üçün BLS təsdiqləyici kimlikləri üçün ayrı açar materialına ehtiyac duyur.
+Hər şəbəkəyə müştərilər, həmyaşıd qovşaqlar, genezisin imzalanması və NPoS və ya SORA Nexus profillərində BLS təsdiqləyici kimlikləri üçün ayrı açar materialları lazımdır.
 
 ## Açarların istifadə olunduğu yerlər {#where-keys-are-used}
 
@@ -21,7 +20,7 @@ Hər bir şəbəkə müştərilər, şəbəkə həmkarları, blokçeyn başlanğ
 Yerli və ya test yerləşdirmələri üçün, bütün bu faylları birlikdə yaratmaq üçün Kagami-ə icazə verin:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Mövcud şəbəkə və ya profil üçün istiqamətləndirilmiş prosesi istifadə edin:

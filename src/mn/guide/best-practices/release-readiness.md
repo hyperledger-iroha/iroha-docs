@@ -1,11 +1,10 @@
 ---
 translation_locale: mn
 translation_source: /guide/best-practices/release-readiness.md
-translation_source_hash: 984957526424a4e0ec9f29a6da1bb64699245bb135e8157bbe684bc3d87de4cc
+translation_source_hash: 75fccfa00f1582a8081df3e00331eee7ab21c108c8727a9d73129738cc4940cb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-source-title-amendment
 ---
-
 # Релизийн бэлэн байдал {#release-readiness}
 
 Iroha хэрэглээ эсвэл сүлжээний өөрчлөлтийг нэвтрүүлэхээс өмнө холбогдох эрсдэлийг илрүүлж чадах хамгийн жижиг орчинд ажиллагааг нь баталгаажуул. Дараа нь хамтарсан тестнет болон үйлдвэрлэлийн шалгууруудыг зориудын дарааллаар давна.
@@ -26,7 +25,7 @@ Iroha хэрэглээ эсвэл сүлжээний өөрчлөлтийг нэ
 - Шууд тестийн гүйлгээ бүрийг илгээхээс өмнө гарын үсэг зурагчийн санхүүжилт, шимтгэлийн хөрөнгийн мета өгөгдөл, эрх бүхий этгээдийн зөвшөөрөл болон хүлээгдэж буй төлөвийг шалгана.
 - Эцсийн төлөв иртэл хүлээгээд, үүссэн төлөвийг зөвхөн унших query-ээр баталгаажуулна.
 
-Та үзээрэй. [Үргэлжүүлээрэй SORA 3: Taira болон Minamoto](/mn/get-started/sora-nexus-dataspaces.md).
+[SORA Nexus дээр хөгжүүлэх: Taira ба Minamoto](/mn/get-started/sora-nexus-dataspaces.md) хэсгийг үзнэ үү.
 
 ## Төв сүлжээ эсвэл үйлдвэрлэлийн хаалга {#mainnet-or-production-gate}
 

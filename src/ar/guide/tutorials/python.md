@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /guide/tutorials/python.md
-translation_source_hash: d0ecbade221ceba455730e80c6e12db930c65a4cbcf9e643c1c2d4cba47b0940
+translation_source_hash: bd9ff4a38229cbdabbd77e21fe31a770f9213341d7db73a75ed0bd914c761849
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Python {#python}
 
 Python SDK في مساحة العمل العليا هو `iroha-python`. الإصدار الأول من Iroha 3 يستهدف السطوح الحالية Torii و Norito. قم بتثبيت إصدار الحزمة أو مراجعة المصدر المستخدمة في دمجك بحيث يظل SDK والعقدة على نفس إصدار تنسيق التسلسل.
@@ -46,7 +45,7 @@ PY
 
 ## البدء السريع {#quickstart}
 
-ابدأ بالنقاط النهائية العامة للقراءة فقط Taira API:
+ابدأ بنقاط نهاية Taira العامة المخصصة للقراءة فقط:
 
 ```python
 from iroha_python import (
@@ -709,7 +708,7 @@ definitions = client.list_asset_definitions_typed(limit=10)
 print(domains.total, definitions.total)
 ```
 
-استخدم مساعدات الطلب العامة عندما لا يكون لدى نقطة نهاية Torii API محول برمجي نوعي بعد:
+استخدم أدوات الطلبات العامة المساعدة عندما لا تملك نقطة نهاية Torii واجهة تغليف ذات أنواع محددة بعد:
 
 ```python
 from urllib.request import Request, urlopen
@@ -724,7 +723,7 @@ with urlopen(request, timeout=5) as response:
     metrics = response.read().decode("utf-8")
 ```
 
-تتطلب المساعدات الخاصة بجرد الحساب معرف حساب يتم قبوله من قبل موحد SDK. استخدم معرفات حسابات I105 وفقًا للبروتوكول القياسي الفردي أو الأسماء المستعارة على السلسلة؛ إذا أعاد مستكشف الكتل أو نقطة نهاية API الخام معرفًا يرفضه SDK، فقم بحله إلى معرف حساب واحد وفقًا لمعايير البروتوكول قبل استدعاء هذه المساعدات:
+تتطلب أدوات جرد الحسابات المساعدة معرّف حساب تقبله أداة التوحيد في SDK. استخدم معرّفات حسابات I105 المعيارية أو أسماء مستعارة على السلسلة؛ وإذا أعاد مستكشف كتل أو نقطة نهاية خام معرّفًا يرفضه SDK، فحلّه إلى معرّف حساب معياري قبل استدعاء هذه الأدوات:
 
 ```python
 # These helpers expect a canonical account ID or an alias the SDK can normalize.
@@ -1026,26 +1025,6 @@ client = create_torii_client(
 )
 ```
 
-## استعداد كاجيموشا {#kagemusha-readiness}
-
-يمكن لـ Python SDK الاستعلام عن مسار جاهزية JSON الحالي من خلال مساعد الطلب العام لـ Torii الخاص به:
-
-```python
-ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
-
-readiness = client.request_json(
-    "GET",
-    "/v1/offline/readiness",
-    params={"asset_definition_id": ASSET_DEFINITION_ID},
-    headers={"Accept": "application/json"},
-    expected_status=(200,),
-)
-print(readiness["ready"])
-print(readiness["blockers"])
-```
-
-Python لا يكشف عن منشئي أرشيفات التعبئة أو الاسترداد من نوع Kagemusha. استخدم محفظة من نوع Swift أو JVM لبناء أرشيفات V4 وفق المعيار البروتوكولي المفرد، ثم قدمها واستعلم عنها عبر عميل Kagemusha Torii المدعوم.
-
 ## الاشتراكات {#subscriptions}
 
 تُرث عمليات قراءة الاشتراك وبُناة المسودات من العميل المشترك Torii المستخدم بواسطة `iroha_python.ToriiClient`. ويتم قبول كل تعديل مع واحد مرتبط بالجسم توقيع الحساب وفقًا للبروتوكول-المعيار ويعيد مسودة معاملة غير موقعة. Torii لا يقبل أبدًا المفتاح الخاص ولا يقوم بتقديم المسودة نيابةً عنك.
@@ -1300,7 +1279,7 @@ if connect_status is not None:
 
 ## SoraFS، UAID، و Kaigi مساعدين {#sorafs-uaid-and-kaigi-helpers}
 
-تكون هذه المساعدات متاحة عندما يكشف العقدة الهدف النقاط النهائية المقابلة Nexus/SORA API. اعتبر القوائم الفارغة استجابة صالحة: قد يكون للمسار العام Taira ممكّنًا بدون بيانات للملف الفني التجريبي أو UAID.
+تتوفر هذه الدوال المساعدة عندما تتيح العقدة المستهدفة نقاط نهاية SORA Nexus المقابلة. اعتبر القوائم الفارغة استجابة صالحة: فقد يفعّل Taira العام المسار دون وجود بيانات للبيان أو UAID المستخدمين في المثال.
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
@@ -1324,7 +1303,7 @@ print(health.healthy_total, health.failovers_total)
 
 ## Norito RPC و GPU مساعدين {#norito-rpc-and-gpu-helpers}
 
-استخدم `NoritoRpcClient` عندما يكون لديك بالفعل Norito بايت وتحتاج إلى استدعاء نقطة نهاية ثنائية Torii API. المثال يتطلب حاوية بيانات موقعة من قالب معاملة سابق:
+استخدم `NoritoRpcClient` عندما تكون لديك بايتات Norito وتحتاج إلى استدعاء نقطة نهاية Torii ثنائية. يتطلب المثال غلافًا موقّعًا من قالب معاملة سابق:
 
 ```python
 from iroha_python import NoritoRpcClient, NoritoRpcConfig
@@ -1357,10 +1336,10 @@ if cuda_available():
 - منشئو التعليمات المكتوبة للإضافات الشائعة ISI والإضافات الخاصة بالمجال
 - مسودات المعاملات، المراسلات الفنية، التوقيع، وسير عمل حاويات بيانات المعاملات الموقعة
 - تدفقات الأحداث الحية والفلاتر المكتوبة؛ توفر تدفقات الكتل النهائية التاريخ الكامل
-- الوصول إلى جاهزية Kagemusha العامة ومساعدي الاشتراك Torii؛ لا يتم الكشف عن منشئي التعبئة العلوية والاسترداد المكتوبة
+- قراءات اشتراكات Torii وبناة مسودات المعاملات غير الموقّعة
 - عنوان الحساب، مساعدو التوقيع لجميع الخوارزميات، جولات متعددة التجزئة، SM2، GOST، ML-DSA، BLS، ومعالجة المفاتيح السرية
 - اتصل بـ URIs، الجلسات، الإطارات، مساعدي التشفير، وإدارة السجل
-- الحوكمة، ترقية بيئة تنفيذ البرامج، Sumeragi، مسؤول العقدة، SoraFS، UAID، و Kaigi API محولات برامج نقطة النهاية حيث تكشف العقدة عن تلك الميزات
+- واجهات تغليف نقاط نهاية الحوكمة وترقية بيئة التنفيذ وSumeragi وإدارة العقدة وSoraFS وUAID وKaigi عندما تتيح العقدة تلك الميزات
 
 ## المراجع العليا {#upstream-references}
 

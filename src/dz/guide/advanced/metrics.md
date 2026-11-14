@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # གྲུབ་འབྲས་དང་ ཐབས་བྱུས་ཚུ་ {#performance-and-metrics}
 
@@ -37,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -130,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### དོ་འགྲན་འབད་མི་དང་ འཛུལ་ཞུགས་འབད་ནིའི་ཚད་གཞི་ཚུ་ {#candidate-and-ingress-bounds}
 
-མཐུད་མཚམས-ས་གནས Sumeragi མཐའ་མཚམས་ཚུ གིས་ བདེན་དཔྱད་པ གྱིས་ ལག་ལེན་དང་སླར་གསོ་འབད་ནིའི་ལཱ་ག་དེམ་ཅིག་ བཞག་ཚུགས་མི་འདི་ གཏན་འབེབས་འབདཝ་ཨིན།
+སྡེབ་ཚན་གྱི་ཚད་དང་ཚོང་འབྲེལ་གྱི་ཚད་ཚུ་ མིང་རྟགས་བཀོད་པའི་འགོ་ཐོག་གནས་སྟངས་དང་གཏན་འཁེལ་སྡེབ་ཐག་ཚད་གཞི་ལས་འོངམ་ཨིན། མཐུད་གནས་ཉེ་གནས་ཀྱི་ `[sumeragi]` སྒྲིག་སྟངས་ཚུ་གིས་ བཅའ་མར་གཏོགས་པའི་འགན་ཁུར་ མིང་རྟགས་བདག་སྲུང་ ཉེན་སྲུང་ཐོ་ཡིག་ལམ་ དང་ཡིག་ཐོག་བཀོད་པའི་ཉེ་གནས་དུས་ཚད་དང་མཉམ་འབྱུང་ཚབ་སྒྲིག་ཚུ་ཁྱབཔ་ཨིན།
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies`དང་ `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks` དེ་ལས་ `sumeragi.queues.ready_bodies`
-
-མཐའ་མཚམས་ཆུང་དྲགས་ཚུ་གིས་ བང་རིམ་ཡང་ན་ པེ་ལོཌ་-སླར་གསོའི་གནོན་ཤུགས་བཟོཝ་ཨིན། མཐའ་མཚམས་ཚད་ལས་བརྒལ་མི་འདི་གིས་ དྲན་ཤེས་བཞག་སྟེ་ཡོད་མི་དང་ ལོག་སྤྱོད་འབད་མི་མཉམ་རོགས་ལུ་ ལཱ་གི་ཚད་གཞི་ཡར་སེང་འབདཝ་ཨིན། དུས་མཉམ་ལུ་ མཐའ་མཚམས་གཅིག་བསྒྱུར་བཅོས་མ་འབད་བའི་ཧེ་མ་ ལས་སྦྱོར་དྲན་ཚད་དང་ འཕྲིན་དོན་འཛིན་སྐྱོང་ དེ་ལས་ བརླག་སྟོར་ཤོར་མི་ གཟུགས་ཀྱི་མེ་ཊིགསི་ཚུ་དང་གཅིག་ཁར་ བརྟག་དཔྱད་ཀྱི་པར་ལེན་འདི་ ག་བསྡུར་འབད།
+དྲ་ལམ་ནང་འཛུལ་དང་ཚོང་འབྲེལ་གྲལ་རིམ་གྱི་ཚད་ཚུ་གིས་ ཉེ་གནས་ལུ་ཉར་པའི་ལས་ཀ་ཚད་འཛིན་འབདཝ་ཨིན། ལག་ལེན་ཚད་ཅིག་མ་བསྒྱུར་བའི་ཧེ་མ་ བརྟག་དཔྱད་གནས་སྟངས་འདྲ་བཤུས་འདི་ ལས་རིམ་དྲན་ཚད་ འཕྲིན་དོན་ལས་སྦྱོར་ དང་ནང་དོན་མ་ཐོབ་པའི་ཚད་འཇལ་ཚུ་དང་བསྡུར། དྲ་ལམ་གཅིག་གི་གཡོག་བཀོལ་སོ་སོ་བསྡུར་བའི་སྐབས་ མིང་རྟགས་བཀོད་པའི་སྡེབ་ཐག་ཚད་གཞི་ཚུ་གཏན་འཇགས་བཞག།
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -207,11 +200,11 @@ iroha --config ./localnet/client.toml \
 ## གཏན་འཁེལ་གྱི་ ལཱ་འབད་ཐངས་ {#estimation-workflow}
 
 1. གནས་སྟངས་འདི་ ངེས་པར་དུ་བཤད་ནི།
-- བདེན་དཔྱད་འབད་མི་གྱངས་ཁ་དང་ བལྟ་རྟོག་པ་གྱངས་ཁ།
-- མོས་མཐུན་ཐབས་ལམ།
+   - བདེན་དཔྱད་པའི་གྲངས་དང་ལྟ་རྟོག་པའི་གྲངས།
+   - མོས་མཐུན་ཐབས་ལམ།
    - དམིགས་གཏད་ TPS
-- p95 དང་ p99 ཁས་ལེན་-འགོར་འགྱངས་འཆར་དངུལ།
-- ཚོང་འབྲེལ་སླ་བསྲེ།
+   - p95 དང་ p99 གཏན་འཁེལ་འགོར་ཡུན་གྱི་ཆོག་ཚད་ཚུ།
+   - ཚོང་འབྲེལ་གྱི་འདྲེས་ཚུལ།
    - རེ་བ་ཡོད་པའི་ དྲ་རྒྱ RTT, དུས་འགྱུར དང་ རྒྱུན་ཞེང
 2. དངོས་གྲུབ་ཅན་གྱི་བཟོ་དབྱིབས་འདི་ཡིག་སྣོད་འབད་:
 
@@ -243,7 +236,7 @@ iroha --config ./localnet/client.toml \
 - བདེན་དཔྱད་འབད་མི་དང་བལྟ་རྟོག་འབད་མི་གི་གྱངས་ཁ།
 - གྲོས་བསྟུན་གྱི་གནས་སྟངས་དང་ བཀྲམ་སྤེལ་འབད་ཡོད་པའི་ སྦྲག་སྒྲོམ་ དེ་ལས་ DA བཟོ་བཀོད་
 - ཏག་ཏག་ `3f + 1` ཚོགས་ཆུང་དང་ ཚོགས་གྲངས་ དེ་ལས་ བལྟ་རྟོག་པའི་ཐོ་གཞུང་།
-- `sumeragi.block`, `sumeragi.queues`, `sumeragi.limits`, ཡོངས་འབྲེལ་-ནང་འཛུལ་, དང་ ཚོང་འབྲེལ་-གྲལ་ཐིག་མཐའ་མཚམས་ཚུ།
+- མིང་རྟགས་བཀོད་པའི་སྡེབ་ཐག་ཚད་གཞི་ ཉེ་གནས་ Sumeragi ཚབ་སྒྲིག་ དྲ་ལམ་ནང་འཛུལ་དང་ཚོང་འབྲེལ་གྲལ་རིམ་གྱི་ཚད་ཚུ།
 - བརྡ་འཕྲིན་ཚད་འཇལ་གྱི་གསལ་སྡུད།
 - མཐུན་རྐྱེན་དང་གསོག་འཇོག་ དེ་ལས་ OS ཁ་གསལ།
 - དྲ་རྒྱ་ RTT, ཇི་ཊར་, གྱོང་གུན་, དང་བང་རིམ་ཚོད་དཔག

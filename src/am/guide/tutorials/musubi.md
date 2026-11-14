@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 621d1795fd1c3cc62462a9a91af68fe684c0ff5293f5e77801420dc8318bac38
+translation_source_hash: 22d763aadf33d331fb9c16d3927e84e8bdb88829f3d73b974902daa8fde3c1b4
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Musubi Kotodama ጥቅሎች {#musubi-kotodama-packages}
 
 Musubi ለ Kotodama ምንጭ ፓኬጆች የመጀመሪያ ልቀት ጥቅል አስተዳዳሪ ነው።. በሰንሰለት ላይ ትክክለኛ ጥገኝነት ግራፍ ይፈታል፣ የ SoraFS ምንጭን ያረጋግጣል የተመረጠውን የስራ ቦታ ማህደር፣ ያጠናቅራል እና ይፈትሻል፣ ነጠላ ፕሮቶኮል-ስታንዳርድ CAR ማህደሮችን ይገነባል፣ እና የማይለወጡ ልቀቶችን በ Iroha ያትማል።
@@ -89,9 +88,9 @@ export TAIRA_ROOT=https://taira.sora.org
 curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
 ```
 
-የአቅራቢው ካታሎግ የአቅራቢ ማንነቶችን እና የማስታወቂያ API የመጨረሻ ነጥቦችን ያቀርባል። ከተመረጠው አቅራቢ ተጓዳኝ የኦፕሬተር ፍቃድ ያግኙ። የሶፍትዌር ማስፈጸሚያ አካባቢ የታሰሩ የዥረት ቶከኖችን ለመጠየቅ ያንን ቁልፍ ይጠቀማል; ቶከኖች CLI ክርክሮች ወይም የመቆለፊያ ፋይል ይዘት አይደሉም።
+የአቅራቢው ካታሎግ የአቅራቢ ማንነቶችን እና የማስታወቂያ የመጨረሻ ነጥቦችን ያቀርባል። ከተመረጠው አቅራቢ ተጓዳኝ የኦፕሬተር ፍቃድ ያግኙ። የሶፍትዌር ማስፈጸሚያ አካባቢ የታሰሩ የዥረት ቶከኖችን ለመጠየቅ ያንን ቁልፍ ይጠቀማል; ቶከኖች CLI ክርክሮች ወይም የመቆለፊያ ፋይል ይዘት አይደሉም።
 
-የ Taira አረጋጋጭ ፒን URL ን እንደ `url` አይጠቀሙ። ተመዝግበው የገቡት አረጋጋጮች SoraFS ማከማቻን ተካትተዋል። የእነሱ `https://taira-validator-{1,2,3,4}.sora.org` API የመጨረሻ ነጥቦቻቸው የፒን ምዝገባን ይቀበላሉ፣ የማህደር ንባብ ደግሞ የተመረጠውን የተቀበለውን አቅራቢ HTTPS አመጣጥ ይጠቀማሉ።
+የ Taira አረጋጋጭ ፒን URL ን እንደ `url` አይጠቀሙ። ተመዝግበው የገቡት አረጋጋጮች SoraFS ማከማቻን ተካትተዋል። የእነሱ `https://taira-validator-{1,2,3,4}.sora.org` የመጨረሻ ነጥቦቻቸው የፒን ምዝገባን ይቀበላሉ፣ የማህደር ንባብ ደግሞ የተመረጠውን የተቀበለውን አቅራቢ HTTPS አመጣጥ ይጠቀማሉ።
 
 ## አካባቢያዊ የሥራ ፍሰት {#local-workflow}
 
@@ -209,4 +208,4 @@ Musubi የመጀመሪያ ልቀት V1 መመሪያዎችን እና መጠይቆ
 |`FindMusubiArchiveLocationsV1`|የተጠናቀቁ በአቅራቢ የሚደገፉ የማህደር ቦታዎችን ያንብቡ።|
 |`FindMusubiAliasV1` / `FindMusubiAliasHistoryV1`|የአሁኑን ተለዋጭ ስም ኢላማ ወይም የማይለወጥ ታሪኩን ያንብቡ።|
 
-Torii በ`/v1/musubi/*` ስር የመተግበሪያውን መንገድ ቤተሰብ ያጋልጣል። MCP መሳሪያዎች የአሁኑን `iroha.musubi.queries.*` እና `iroha.musubi.instructions.*` ስሞችን ይጠቀማሉ። ለሰፊው API ካርታ [Torii API የመጨረሻ ነጥቦች](/am/reference/torii-endpoints.md) እና [የመጠይቅ ማጣቀሻ](/am/reference/queries.md) ይመልከቱ።
+Torii በ`/v1/musubi/*` ስር የመተግበሪያውን መንገድ ቤተሰብ ያጋልጣል። MCP መሳሪያዎች የአሁኑን `iroha.musubi.queries.*` እና `iroha.musubi.instructions.*` ስሞችን ይጠቀማሉ። ለሰፊው API ካርታ [Torii የመጨረሻ ነጥቦች](/am/reference/torii-endpoints.md) እና [የመጠይቅ ማጣቀሻ](/am/reference/queries.md) ይመልከቱ።

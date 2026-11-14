@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
+translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # 在裸機上執行 Iroha {#running-iroha-on-bare-metal}
 
 當您想透過 Docker Compose 而不是在主機上直接執行對等節點時使用此工作流程.當前的源樹提供 Kagami 生成器,用於編寫匹配創世組,對等節點配置,客戶端配置和啟動/停止指令碼.
@@ -32,7 +31,7 @@ cargo build --release \
 建立一個四對的 Iroha 3 本地網路:
 
 ```bash
-target/release/kagami localnet --peers 4 --out-dir ./localnet
+target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
 輸出目錄包含生成的 `genesis.json`, `genesis.signed.nrt`,對等節點`config.toml`檔案, `client.toml`,輔助指令碼以及生成的 `README.md`,其中包含該捆綁的確切命令.
@@ -52,7 +51,7 @@ target/release/kagami localnet --peers 4 --out-dir ./localnet
 使用生成的客戶端配置:
 
 ```bash
-target/release/iroha --config ./localnet/client.toml ledger domain list all
+target/release/iroha --config ./localnet/client.toml ledger domain list --all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 
@@ -64,7 +63,7 @@ target/release/iroha --config ./localnet/client.toml --output-format text ops su
 
 ## 5. 產品說明 {#_5-production-notes}
 
-- 建立生產的新私鑰,並將其儲存在倉庫外.
+- 為正式環境產生新的私鑰，並將其存放於程式碼儲存庫之外。
 - 讓每個對等節點都同意相同的簽名創世交易,拓,可信任的對等節點和驗證器 PoPs.
 - 只有在其他機器不能從對等節點到達時,將收聽器繫結到主機本地介面.
 - 使用反向代理或防火牆來對 Torii 曝光,基礎 auth, TLS 和速度限制.

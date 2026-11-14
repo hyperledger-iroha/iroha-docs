@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/fastpq.md
-translation_source_hash: d8dd61390f5df3dae09b70399e04e8f71716a912ef5dea9010feaf60573ed261
+translation_source_hash: dfeabbedbca85780c16ee0307a6497e43e19c02d3a27e0ea2f70987a2aeac0cd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # FastPQ {#fastpq}
 
 FastPQ est le chemin de preuve STARK de Iroha pour les effets d'exécution sélectionnés. Il ne remplace pas l'exécution normale des transactions ni le consensus. Les transactions restent exécuter ISI, IVM et Sumeragi comme d'habitude ; FastPQ consomme le témoin d'exécution déterministe et transforme les effets pris en charge en lots de preuves.
@@ -13,7 +12,7 @@ FastPQ est le chemin de preuve STARK de Iroha pour les effets d'exécution séle
 L'intégration actuelle de l'hôte comporte trois axes principaux :
 
 - transferts d'actifs numériques transparents enregistrés pendant l'exécution des blocs
-- Nexus relais de voie d'exécution vérifiés dont le conteneur de données de preuve AXT porte un lien FastPQ
+- les relais de voie vérifiés de SORA Nexus dont l’enveloppe de preuve AXT contient une liaison FastPQ
 - SCCP assistants de preuve de message transparent qui enveloppent une preuve FastPQ dans un conteneur de données à vérification ouverte
 
 ## Transférer le chemin du témoin {#transfer-witness-path}
@@ -45,7 +44,7 @@ Chaque lot de transition FastPQ comporte des entrées publiques qui lient la pre
 
 |Entrée|Sens|
 | ------------- | --------------------------------------------------------------- |
-| `dsid`        |Identifiant de l'espace de données encodé en tant qu'octets en format little-endian|
+| `dsid` | Identifiant d’espace de données encodé en octets little-endian |
 | `slot`        |Temps de création du bloc converti en nanosecondes|
 | `old_root`    |Racine de l'état parent dérivée du témoin d'exécution|
 | `new_root`    |Racine de l'état postérieure dérivée du témoin d'exécution|
@@ -932,9 +931,9 @@ Les limites de lecture par défaut incluent :
 | FRI couches         |      16 |
 |Rechercher des ouvertures|     128 |
 
-## Nexus Relais Vérifiés {#nexus-verified-relays}
+## Relais vérifiés de SORA Nexus {#sora-nexus-verified-relays}
 
-Nexus AXT les conteneurs de données de preuve peuvent intégrer un `AxtFastpqBinding`. Lorsque `RegisterVerifiedLaneRelay` s'exécute, Iroha :
+Les enveloppes de preuve AXT de SORA Nexus peuvent intégrer un `AxtFastpqBinding`. Lors de l’exécution de `RegisterVerifiedLaneRelay`, Iroha :
 
 1. vérifie le conteneur de données de relais de la voie d'exécution et le matériel de preuve FastPQ
 2. vérifie l’espace de données et la racine du manifeste technique
@@ -950,7 +949,7 @@ Les enveloppes de relais de voie transportent aussi du matériel de preuve FastP
 
 ### AXT Liaison Math {#axt-binding-math}
 
-Pour les conteneurs de données Nexus AXT, `AxtFastpqBinding` est canoniqué avant la relecture de la preuve. Les valeurs de paramètre vides par défaut sont `fastpq-lane-balanced` ; l'identifiant et la version vérificateur vides par défaut sont `fastpq` et `v1` ; le type de réclamation est tronqué et mis en minuscules.
+Pour les enveloppes AXT de SORA Nexus, `AxtFastpqBinding` est converti en forme canonique avant de rejouer la preuve. Les valeurs de paramètres vides prennent par défaut la valeur `fastpq-lane-balanced` ; l’identifiant et la version du vérificateur, s’ils sont vides, prennent respectivement les valeurs `fastpq` et `v1` ; le type de revendication est débarrassé de ses espaces en début et en fin, puis converti en minuscules.
 
 Les entrées publiques AXT FastPQ sont des hachages cryptographiques d'octets déterministes :
 
@@ -1121,7 +1120,7 @@ $$
 )
 $$
 
-L'identifiant d'espace de données FastPQ pour ce chemin de preuve est les seize premiers octets d'une autre valeur de hachage cryptographique Blake2b préfixée :
+L’identifiant d’espace de données FastPQ pour cette procédure de preuve correspond aux seize premiers octets d’un autre condensat Blake2b préfixé :
 
 $$
 \operatorname{dsid} =
@@ -1207,7 +1206,6 @@ metal_max_in_flight = 5
 metal_threadgroup_width = 128
 metal_trace = false
 metal_debug_enum = false
-metal_debug_fused = false
 ```
 
 Les mêmes étiquettes d'exécution et de télémétrie peuvent être remplacées depuis `iroha3d` :

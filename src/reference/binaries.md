@@ -42,8 +42,8 @@ cargo run --bin kagami -- --help
 
 ## Docker Image
 
-The upstream workspace uses `kagami localnet` and `kagami docker` to generate
-Docker Compose files that match the checked-out code. The `hyperledger/iroha:dev`
+The upstream workspace uses `kagami localnet generate` and `kagami docker` to
+generate Docker Compose files that match the checked-out code. The `hyperledger/iroha:dev`
 image can be used with those generated files.
 
 Run the CLI in a container:
@@ -61,7 +61,7 @@ docker run -t hyperledger/iroha:dev kagami --help
 For peer startup, generate a localnet and Compose file first:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```

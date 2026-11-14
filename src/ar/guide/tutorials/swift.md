@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
+translation_source_hash: 37e8be9b07a40e5c6b841a47b016320e42079853433fb3e53937e4021dc1304f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Swift ونظام iOS {#swift-and-ios}
 
 تم شحن Swift SDK من مساحة العمل العليا وهو حزمة `IrohaSwift` Swift تحت `IrohaSwift/`. يحدد بيان الحزمة الفني الخاص بها ثلاثة منتجات مكتبية — `IrohaSwift` و`IrohaSwiftMobileTransports` و`IrohaSwiftTransferUI` — ويستهدف iOS 15+ و macOS 12+ باستخدام أدوات Swift 5.9.
@@ -65,7 +64,7 @@ if #available(iOS 15.0, macOS 12.0, *) {
 
 ## حاول Taira للقراءة فقط {#try-taira-read-only}
 
-ابدأ بمسبار عادي HTTP لتأكيد أن الجهاز أو المحاكي يمكنه الوصول إلى نقطة النهاية العامة Taira API:
+ابدأ بفحص HTTP بسيط للتأكد من أن الجهاز أو المحاكي يستطيع الوصول إلى نقطة نهاية Taira العامة:
 
 ```swift
 import Foundation
@@ -161,7 +160,7 @@ let keyPair = try ConnectCrypto.generateKeyPair()
 - أسطح التوقيع Ed25519 وsecp256k1 و ML-DSA و BLS و GOST و SM2، مع دعم جسر أصلي حيثما كان مطلوبًا
 - بناة حمولة تعليمات الاحتجاز الأصلي للسوق والاحتجاز المجهول
 - الاتصال بـ WebSocket، الإطار، التشفير، الجلسة، الطابور، الإعادة، وأدوات التشخيص
-- استعداد كاجيموشا، تعبئة ورقية واسترداد، حالة العملية، ملاحظة، حزمة النظراء في الشبكة، سجل نتائج البروتوكول، ونماذج التدفق QR
+- أدوات تنسيق النقل المساعدة لـKAGEMUSHA V1 ومحوّل منصة iPhone لمزوّد Advance الأصلي للمحفظة، والتسجيل والاسترداد واستدعاءات التبادل المقبولة
 - SoraFS، توافر البيانات، ومساعدو إرفاق الأدلة
 
 ## API أمثلة {#api-examples}

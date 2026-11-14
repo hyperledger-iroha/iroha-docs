@@ -1,16 +1,15 @@
 ---
 translation_locale: my
 translation_source: /guide/configure/genesis.md
-translation_source_hash: a6b8b2b02e0074e6c90d9aa9337af3e2496a02beb2f57f575dc0780014df04b2
+translation_source_hash: 91be089c82a76991e35a43e1541f9e069fdf70d3fb5de2492b985c06c78a2372
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta+reviewed-first-release-source-amendment
 ---
-
 # blockchain ပေါ်ထွန်းမှု {#genesis}
 
-blockchain genesis ကစတင်ကွင်းအခြေအနေကိုသတ်မှတ်သည်။ ပြင်ဆင်နိုင်သောအရင်းအမြစ်သည် JSON နည်းပညာထုတ်ပြန်ချက်ဖြစ်ပြီး Iroha 3 node သည် လက်မှတ်ထိုးထားသော Norito ငွေချေးမှု ဖိုင်ကိုသုံးစွဲသည်။
+genesis သည် ဘလော့ခ်ချိန်း၏ ကနဦးအခြေအနေကို သတ်မှတ်သည်။ ပြင်ဆင်နိုင်သော မူရင်းသည် JSON manifest ဖြစ်ပြီး Iroha 3 နိုဒ်သည် လက်မှတ်ထိုးထားသော Norito transaction ဖိုင်ကို ဖတ်ယူအသုံးပြုသည်။
 
-::: details Default blockchain genesis နည်းပညာထုတ်ပြန်ချက်
+::: details မူလသတ်မှတ်ထားသော genesis manifest
 
 <<< @/snippets/genesis.json
 
@@ -18,41 +17,43 @@ blockchain genesis ကစတင်ကွင်းအခြေအနေကို�
 
 ## ဖိုင်များ {#files}
 
-`defaults/genesis.json` သို့ အလိုအလျောက် နည်းပညာထုတ်လွှင့်စာအုပ်ကို ပို့ပေးသည်။ Kagami မှ ထုတ်လုပ်သော ကွန်ရက်များသည် ၎င်းတို့၏ ကိုယ်ပိုင် နည်းပညာထုတ်လွှင့်စာအုပ်နှင့် လက်မှတ်ရေးထိုးထားသည့် ငွေချေးမှုများကို ထုတ်ကုန်ထုတ်လွှင့် စာရင်းထဲတွင် ရေးသားကြပါသည်။
+မူရင်း repository တွင် `defaults/genesis.template.json` ၌ ပုံသေမူရင်း template ပါဝင်သည်။ Template သည် မပြည့်စုံသေးသောကြောင့် `kagami genesis materialize` က manifest အဖြစ် မပြောင်းမချင်း စစ်ဆေး၊ လက်မှတ်ထိုး သို့မဟုတ် နိုဒ်က အသုံးပြု၍ မရပါ။ Kagami က ထုတ်လုပ်သော ကွန်ရက်များသည် ကိုယ်ပိုင် manifest နှင့် လက်မှတ်ထိုးထားသော transaction ကို ရလဒ်သိမ်း directory ထဲတွင် ရေးသားသည်:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
-ဒီစာရင်းထဲမှာ ဖန်တီးထားတဲ့ `README.md` ဟာ ရွေးချယ်ထားတဲ့ profile အတွက် တိကျတဲ့ file တွေနဲ့ launch command တွေကို မှတ်တမ်းတင်ပါတယ်။
+ထိုဖိုင်တွဲတွင် ထုတ်လုပ်ထားသော `README.md` သည် ရွေးချယ်ထားသော ပရိုဖိုင်အတွက် ဖိုင်အတိအကျနှင့် စတင် command များကို မှတ်တမ်းတင်ထားသည်။
 
-## ကွန်ရက် peer Configuration {#peer-configuration}
+## peer ပြင်ဆင်သတ်မှတ်မှု {#peer-configuration}
 
-`config.toml` ရဲ့ `[genesis]` အပိုင်းမှာ လက်မှတ်ထိုးထားတဲ့ blockchain genesis transaction ကို network peers က ထောက်ပြတယ်။
+Peer များသည် `config.toml` ၏ `[genesis]` အပိုင်းတွင် လက်မှတ်ထိုးထားသော genesis transaction ကို ညွှန်ပြပြီး မျှော်မှန်းထားသော ဟက်ရှ်ကို သီးခြားဖိုင်တစ်ခုတွင် သတ်မှတ်ချည်နှောင်ထားသည်:
 
 ```toml
 [genesis]
 file = "./genesis.signed.nrt"
 public_key = "ed0120..."
+expected_hash_file = "./genesis.expected_hash"
 ```
 
-ကွန်ရက်ထဲက ကွန်ယက်တူညီသူအားလုံးဟာ လက်မှတ်ရေးထိုးထားတဲ့ blockchain genesis ငွေကြေးပေးချေမှုနဲ့ blockchain genesis အများသုံး သော့ကို သဘောတူဖို့ လိုပါတယ်။
+ကွန်ရက်ရှိ peer အားလုံးသည် လက်မှတ်ထိုးထားသော genesis transaction နှင့် genesis အများသုံးကီးအပေါ် သဘောတူညီရသည်။ မျှော်မှန်းဟက်ရှ်ဖိုင်သည် အသစ်စတင်ချိန်နှင့် ပြန်စတင်ချိန် နှစ်မျိုးစလုံးတွင် လိုအပ်ပြီး `kagami genesis sign --expected-hash-out` က ၎င်းကို ရေးသားသည်။
 
 ## လက်မှတ်ရေးထိုးခြင်း blockchain genesis {#signing-genesis}
 
-Technical Manifesto ကို လက်နဲ့ တည်းဖြတ်ရင် Network Peers တွေကို မစတင်ခင် validate နဲ့ sign လုပ်ပါ။
+Manifest ကို လက်ဖြင့် ပြင်ဆင်လျှင် peer များ မစတင်မီ ၎င်းကို စစ်ဆေးပြီး လက်မှတ်ထိုးပါ။
 
 ```bash
 cargo run --bin kagami -- genesis validate ./genesis.json
 cargo run --bin kagami -- genesis sign ./genesis.json \
   --private-key-file "$GENESIS_PRIVATE_KEY_FILE" \
-  --out-file ./genesis.signed.nrt
+  --out-file ./genesis.signed.nrt \
+  --expected-hash-out ./genesis.expected_hash
 ```
 
-`GENESIS_PRIVATE_KEY_FILE` သည် ပိုင်ရှင်ထိန်းသိမ်းထားသော mode-`0600`၊ single-link ပုံမှန်ဖိုင်တစ်ခုဖြစ်ရမည်။ တစ်ခုတည်းသော protocol-standard private key multihash နှင့် နောက်ဆုံး newline ကိုပါ ၀ င်သည်။ Kagami က သင်္ကေတဆိုင်ရာ link များကိုငြင်းပယ်ပြီး command line တွင် raw blockchain genesis private key ကို ဘယ်တော့မှ လက်မခံပါ။
+`GENESIS_PRIVATE_KEY_FILE` သည် ပိုင်ရှင်က ထိန်းသိမ်းထားပြီး mode-`0600` သတ်မှတ်ထားသော လင့်ခ်တစ်ခုသာရှိသည့် ပုံမှန်ဖိုင်ဖြစ်ရမည်။ ထိုဖိုင်တွင် စံသတ်မှတ်ပုံစံ ကိုယ်ပိုင်ကီး multihash တစ်ခုနှင့် နောက်ဆုံးစာကြောင်းသစ်တစ်ခု ပါဝင်ရမည်။ Kagami သည် သင်္ကေတလင့်ခ်များကို ပယ်ချပြီး command စာကြောင်းပေါ်မှ မူရင်း genesis ကိုယ်ပိုင်ကီးကို လုံးဝ လက်မခံပါ။
 
-NPoS သို့မဟုတ် Nexus ပရိုဖိုင်များအတွက်၊ Topology နှင့် BLS Proof-of-Possession များကို Generated Profile တွင်လိုအပ်သည်။ Kagami `localnet`, `wizard` နှင့် Profile Generation Commands တို့တွင် ထိုအချက်အလက်များကို အလိုအလျောက် စီမံခန့်ခွဲနိုင်သည်။
+NPoS သို့မဟုတ် SORA Nexus ၏ profile များအတွက် ထုတ်လုပ်ထားသော profile က လိုအပ်သည့် ကွန်ရက်ချိတ်ဆက်ပုံနှင့် BLS ကီးပိုင်ဆိုင်ကြောင်း သက်သေများကို ထည့်ပါ။ Kagami ၏ `localnet generate`၊ `wizard` နှင့် `sora-network generate` command များက ဤအသေးစိတ်များကို အလိုအလျောက် ကိုင်တွယ်ပေးသည်။
 
 ## blockchain ကို ပြန်လည်စတင်ခြင်း {#recommitting-genesis}
 
-Network peer က blockchain ကို သိုလှောင်မှုအလွတ်ရှိမှသာ ပြီးဆုံးစေပါတယ်။ တစ်ခါသုံး localnet မှာ blockchain အသစ်ကို စမ်းသပ်ဖို့ network peers တွေကို ရပ်တန့်ပါ။ သူတို့ဖန်တီးထားတဲ့ State Directory ကိုဖယ်ရှားပြီး လက်မှတ်ထိုးထားတဲ့ blockchain genesis အသစ်ကနေစပါ။ validator တစ်ခုချင်းစီက တူညီတဲ့ ရွှေ့ပြောင်းမှုကို ညှိနှိုင်းမပေးရင် Running Network မှာ blockchain genesis ကို အစားမထိုးပါနဲ့။
+ကွန်ရက်အသစ်သည် ၎င်း၏ လက်မှတ်ထိုးထားသော genesis မှ စတင်သည်။ တစ်ခါသုံး localnet တွင် မတူသော genesis ကို စမ်းသပ်ရန် peer များကို ရပ်တန့်ပြီး ၎င်းတို့၏ ထုတ်လုပ်ထားသော အခြေအနေဖိုင်တွဲကို ဖယ်ရှားကာ လက်မှတ်ထိုးထားသော genesis အသစ်မှ စတင်ပါ။ လည်ပတ်နေသော ကွန်ရက်သည် အဆင့်မြှင့်နည်းအဖြစ် genesis ကို လုံးဝ အစားမထိုးရပါ။ Protocol သတ်မှတ်ချက်များ ပြောင်းလဲရန် အုပ်ချုပ်မှုအရ အတည်ပြုသော ရွေးချယ်မှုပြောင်းလဲမှုများနှင့် ရွေးချယ်ထားသော သတ်မှတ်ချက်များ၊ တာဝန်ဝတ္တရားများအတွက် အရည်အချင်းစစ်ဆေးမှု လိုအပ်သည်။

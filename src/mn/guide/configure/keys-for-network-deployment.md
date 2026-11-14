@@ -1,14 +1,13 @@
 ---
 translation_locale: mn
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # Сүлжээ байршуулалтын түлхүүрүүд {#keys-for-network-deployment}
 
-Бүх сүлжээнд клиент, зангилаа, genesis-ийн гарын үсэг зурагч болон NPoS эсвэл Nexus профайлын BLS баталгаажуулагчийг таних түлхүүрийн материал шаардлагатай.
+Сүлжээ бүрд үйлчлүүлэгч, зангилаа, эхлэл төлөвийн гарын үсэг болон NPoS эсвэл SORA Nexus профилийн BLS баталгаажуулагчийн таних тэмдэгт тус тус өөр түлхүүрийн материал хэрэгтэй.
 
 ## Хэрэглэгдэх түлхүүр {#where-keys-are-used}
 
@@ -21,7 +20,7 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 Орон нутгийн болон туршилтын хэрэглээний хувьд Kagami нь эдгээр файлуудыг нэгтгэн бүтээх болно:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Орчин үеийн сүлжээ эсвэл хувилбарын хувьд заасан урсгалыг ашиглах:

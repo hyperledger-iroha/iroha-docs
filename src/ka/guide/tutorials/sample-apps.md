@@ -1,18 +1,17 @@
 ---
 translation_locale: ka
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: c1432d8d2483f67b6ab81680f6c5457cab470db7944512626242a1446a7d501f
+translation_source_hash: 0c4f2f3fc4efb9f883f597a3eea49c99431b711a0141eba70ac5a2524990dd73
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # ნიმუშები და რეცეპტები {#samples-and-recipes}
 
 Iroha წყარო რეპოზიტორი შეიცავს SDK რეცეპტებს და ტესტის სუიტებს, რომლებიც აკონტროლებენ იმავე რევიზიონს, რაც კვანძია.
 
 ## JavaScript რეცეპტები {#javascript-recipes}
 
-[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes) შეიცავს კონკრეტულ მაგალითებს დეტერმინისტური ტრანზაქციების გადანაწილების შესახებ; Nexus აპლიკაციის გადარიცხვა, NFT და ანგარიშის განმეორება, ISO ხიდების ნაკადები და Torii ყველა რეცეპტი დოკუმენტებს, თუ ის მუშაობს ოფლაინ ან საჭიროებს პირდაპირი Torii API საბოლოო წერტილი.
+[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes) შეიცავს კონკრეტულ მაგალითებს დეტერმინისტური ტრანზაქციების გადანაწილების შესახებ; SORA Nexus აპლიკაციის გადარიცხვა, NFT და ანგარიშის განმეორება, ISO ხიდების ნაკადები და Torii ყველა რეცეპტი დოკუმენტებს, თუ ის მუშაობს ოფლაინ ან საჭიროებს პირდაპირი Torii API საბოლოო წერტილი.
 
 ## Swift და iOS {#swift-and-ios}
 

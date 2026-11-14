@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/fastpq.md
-translation_source_hash: d8dd61390f5df3dae09b70399e04e8f71716a912ef5dea9010feaf60573ed261
+translation_source_hash: dfeabbedbca85780c16ee0307a6497e43e19c02d3a27e0ea2f70987a2aeac0cd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # FastPQ {#fastpq}
 
@@ -12,7 +12,7 @@ FastPQ 是 Iroha 對選定的執行效果的 STARK 證明路徑.它不取代正�
 目前的主機整合有三個主要途徑:
 
 - 在區塊執行期間記錄的透明數值資產轉移
-- Nexus 經過驗證的通道繼電器,其 AXT 證明包裝載有 FastPQ 繫結
+- SORA Nexus 已驗證通道中繼，其 AXT 證明封裝包含 FastPQ 綁定
 - SCCP 透明資訊證明輔助器,將 FastPQ 證明包裝在一個開放的驗證封裝中
 
 ## 轉移證人的路徑 {#transfer-witness-path}
@@ -44,7 +44,7 @@ FastPQ 是 Iroha 對選定的執行效果的 STARK 證明路徑.它不取代正�
 
 |輸入|這意味著|
 | ------------- | --------------------------------------------------------------- |
-|`dsid`|資料空間識別符號編碼為小位元組.|
+| `dsid` | 編碼為小端序位元組的資料空間識別碼 |
 |`slot`|區塊建立時間轉換為納秒.|
 |`old_root`|來自執行證人的父母狀態根源|
 |`new_root`|從執行證人中得到的後狀態根源|
@@ -200,7 +200,7 @@ $$
 
 ### 公共輸入的約束力 {#public-input-binding}
 
-主機透過將其 `u64` 值寫入16位元組欄位的第八個小byte位元組來編碼一個資料空間 id:
+主機將資料空間識別碼的 `u64` 值以小端序寫入 16 位元組欄位的前八個位元組，以完成編碼：
 
 $$
 \operatorname{dsid\_bytes}(d)[0..8]=\operatorname{le64}(d),
@@ -393,7 +393,7 @@ S_i(a)=S_{i-1}(a)+
 \end{cases}
 $$
 
-數字後設資料和資料空間跟蹤列是從行物質化之前獲得的場地雜湊:
+中繼資料與資料空間的追蹤欄位，是在產生具體資料列之前衍生的有限域雜湊值：
 
 $$
 \operatorname{metadata\_hash} =
@@ -407,7 +407,7 @@ $$
 \operatorname{dsid\_trace}=H_D(\operatorname{public\_input\_dsid})
 $$
 
-在相鄰的跟蹤行中,後設資料雜湊,資料空間雜湊和插槽是穩定的:
+中繼資料雜湊、資料空間雜湊與槽位在相鄰追蹤資料列之間保持不變：
 
 $$
 \operatorname{metadata\_hash}_i=\operatorname{metadata\_hash}_{i+1}
@@ -931,12 +931,12 @@ FastPQ 證明驗證重建了規範批次承諾,並重復了公開轉錄.驗證�
 |FRI 層|      16 |
 |查詢開放時間|     128 |
 
-## Nexus 經過驗證的繼電器 {#nexus-verified-relays}
+## SORA Nexus 已驗證中繼 {#sora-nexus-verified-relays}
 
-Nexus AXT 證明封裝可以嵌入一個 `AxtFastpqBinding`.當 `RegisterVerifiedLaneRelay`執行時, Iroha:
+SORA Nexus AXT 證明封裝可內嵌 `AxtFastpqBinding`。執行 `RegisterVerifiedLaneRelay` 時，Iroha 會：
 
 1. 驗證通道繼電器封裝和 FastPQ 防材料
-2. 檢查資料空間和清單根
+2. 檢查資料空間與清單根
 3. 清除 AXT 證明封裝
 4. 需要一個 `fastpq_binding`
 5. 從該繫結中重建 FastPQ 批次
@@ -945,11 +945,11 @@ Nexus AXT 證明封裝可以嵌入一個 `AxtFastpqBinding`.當 `RegisterVerifie
 
 如果驗證成功, Iroha 將儲存一個包含繼電器參考,原始封裝,證明有效載荷雜湊,驗證高度,清單根和 FastPQ 繫結的 `VerifiedLaneRelayRecord`.
 
-Lane relay envelope 還攜帶緊湊的 FastPQ 證明材料。該材料是根據 lane ID、dataspace ID、區塊高度、驗證高度、區塊頭雜湊、結算雜湊和 manifest root 計算的摘要。只有同時具有 QC 和有效 FastPQ 證明材料的 relay 才允許合併。
+通道中繼封裝也攜帶精簡的 FastPQ 證明資料。這些資料是對通道識別碼、資料空間識別碼、區塊高度、驗證高度、區塊標頭雜湊、結算雜湊及清單根計算的摘要。中繼必須同時具備 QC 和有效 FastPQ 證明資料，才可獲准合併。
 
 ### AXT 繫結數學 {#axt-binding-math}
 
-對於 Nexus AXT 封,在驗證重播之前,`AxtFastpqBinding`被規範化.空引數預設值為 `fastpq-lane-balanced`;空驗證器 id 和版本預設值是 `fastpq`和 `v1`;索賠型別被剪下並降級.
+對於 SORA Nexus AXT 封裝，會在重播證明前將 `AxtFastpqBinding` 轉成標準形式。空白參數值預設為 `fastpq-lane-balanced`；空白驗證器識別碼與版本分別預設為 `fastpq` 和 `v1`；聲明類型則會去除首尾空白並轉為小寫。
 
 AXT FastPQ 公共輸入是確定性位元組雜湊:
 
@@ -1023,7 +1023,7 @@ $$
 \operatorname{le64}(\operatorname{policy\_commitment}[0..8])
 $$
 
-在 `compliance` 索賠中,插入兩個後設資料行:一個用於政策和另一個用於目標資料區.
+以及一個綁定授權政策的中繼資料列。`compliance` 聲明會插入兩個中繼資料列：一個用於政策，另一個用於目標資料空間。
 
 對於 `tx_predicate` 和 `value_conservation`,當結合物包含正源或目的量時,使用明確效果數值.否則程式碼將獲得有限的確定性數值:
 
@@ -1120,7 +1120,7 @@ $$
 )
 $$
 
-這個證明路徑的 FastPQ 資料空間ID是另一個前置Blake2b欄位的第十六個位元組:
+此證明路徑的 FastPQ 資料空間識別碼，是另一個帶有前綴的 Blake2b 摘要的前十六個位元組：
 
 $$
 \operatorname{dsid} =
@@ -1206,7 +1206,6 @@ metal_max_in_flight = 5
 metal_threadgroup_width = 128
 metal_trace = false
 metal_debug_enum = false
-metal_debug_fused = false
 ```
 
 同樣的執行和遠端測量標籤可以在 `iroha3d` 中取消:

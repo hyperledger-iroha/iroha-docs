@@ -1,9 +1,9 @@
 ---
 translation_locale: hy
 translation_source: /reference/norito.md
-translation_source_hash: 810f4378316f4717dee1be4aeffb07e27e81e47735e8031edff775818a48bf48
+translation_source_hash: 0446444ac147b80efcf1d0d07610ad7c81e6f02fb308fe032b8f213afe15bc74
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
 # Norito {#norito}
 
@@ -20,7 +20,7 @@ Norito է Iroha Կանոնիկ շարականացման շերտ. Այն օգտ�
 |Torii տիպված պատասխաններ |Վերջային կետերը, որոնք աջակցում են տիպված երկկողմ պատասխանների օգտագործման `Accept: application/x-norito`. |
 |SDKs | Rust, Python, JavaScript, Kotlin/Java, Swift, եւ Android հաճախորդների օգտագործումը Norito շինարարներ կամ կապեր ձեռքով հավաքված բայթների փոխարեն: |
 |Kura պահեստավորում |Բլոկային օգտակար բեռնվածքները, վերականգնման կողմնակի մեքենաները, ցուցակները եւ commit նշանները պահվում են որպես Norito շրջանակված տվյալներ: |
-|Մանիֆեսներ |Nexus, տվյալների մատչելիություն, SoraFS, հոսքային եւ հավելվածի դեմ ուղղված մանիֆեսները օգտագործվում են Norito, երբ մանիֆեսիոն պետք է ստորագրվի կամ վերանայվի: |
+|Մանիֆեսներ |SORA Nexus, տվյալների մատչելիություն, SoraFS, հոսքային եւ հավելվածի դեմ ուղղված մանիֆեսները օգտագործվում են Norito, երբ մանիֆեսիոն պետք է ստորագրվի կամ վերանայվի: |
 |Թողարկում |Norito Streaming- ը օգտագործում է Norito մանիֆեսներ, հատվածների գլխավորագրեր, վերահսկողության շրջանակներ եւ համապատասխանության թեստային տվյալներ: |
 
 Norito ոչ թե խելացի պայմանագրի լեզու է, այլ դետերմինիստական փաթեթ եւ կոդեկ, որը բեռնում է գործարքներ, պայմանագրային զանգեր, մանիֆեսներ եւ տիպավորվում API օգտակար ծանրաբեռնվածքներ:
@@ -199,11 +199,11 @@ Streaming-specific codecs եւ entropy profiles- ը առանձին են հիմն
 - [Torii վերջնական կետեր](/hy/reference/torii-endpoints.md)
 - [Գենեզիսի հղում](/hy/reference/genesis.md)
 - [Տվյալների մոդելային սխեմա](/hy/reference/data-model-schema.md)
-- [JavaScript /TypeScript SDK ](/hy/guide/tutorials/javascript.md)
+- [JavaScript / TypeScript SDK](/hy/guide/tutorials/javascript.md)
 - [Python SDK](/hy/guide/tutorials/python.md)
 - [Swift եւ iOS SDK](/hy/guide/tutorials/swift.md)
 
 ## Վերածննդային հղումներ {#upstream-references}
 
 - [Norito ձեւաչափի բնութագրեր](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/norito.md)
-- [Norito տուփը README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/norito/README.md)
+- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/norito/README.md)

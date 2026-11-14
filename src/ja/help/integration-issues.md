@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /help/integration-issues.md
-translation_source_hash: c5f169e423806fa2a9e9d198971588d1aa0b199a28d64e8b089b9f81727550a5
+translation_source_hash: 2146a236adb3a3b3b896a1992daeecf6713988183ca53e4412f9b616ed2e9085
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # 統合の問題のトラブルシューティング {#troubleshooting-integration-issues}
 
 このセクションでは、Iroha 3 統合のトラブルシューティングのヒントを提供します。ここに記載されていない問題が発生した場合は、[テレグラム](https://t.me/hyperledgeriroha)を通じてお問い合わせください。
@@ -21,7 +20,7 @@ torii_url = "http://127.0.0.1:8080/"
 CLI チェックの場合、同じファイルを明示的に渡してください:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 ネットワークピアが Docker または Kubernetes で実行されている場合、クライアントプロセスから到達可能なホストまたはサービスのアドレスを使用してください。コンテナ内の `127.0.0.1` はホストマシンではありません。
@@ -45,12 +44,12 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
 - クライアント設定のアカウント公開鍵が、署名に使用された秘密鍵と一致しません
 - そのアカウントはブロックチェーンのジェネシスまたは以前のトランザクションによって登録されていません
 - そのアカウントには、ソフトウェアランタイムバリデーターが必要とする権限トークンまたは役割がありません
-- ドメインIDにデータスペースの指定がありません。例えば `domain.dataspace` のような形式です。
+- ドメイン ID に、`domain.dataspace` のようなデータスペースによる修飾がない
 
 エラーを読みやすくするために、CLI コマンドをデバッグする際は `--output-format text` を使用してください:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ledger transaction ping --msg "hello"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority --output-format text tx ping --msg "hello"
 ```
 
 ## クエリは空の結果を返します {#queries-return-empty-results}
@@ -65,7 +64,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml --output-format text le
 ドメインチェックの場合は、最も広いクエリから始めます:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 ## イベントまたはブロックストリームが早期に停止する {#event-or-block-streams-stop-early}

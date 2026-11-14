@@ -1,14 +1,13 @@
 ---
 translation_locale: es
 translation_source: /blockchain/accounts.md
-translation_source_hash: 015a85d81c44b7ef7f13cdafb2ed8e493ef512b94dc500939655c70285eac3bd
+translation_source_hash: adc98cbf1fcadae4415d03dcc262eb03f8c95b429527e403d230934ae2f3243c
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Cuentas {#accounts}
 
-Una cuenta es un principal de autorización que puede firmar transacciones y poseer el estado del registro de la blockchain. En el modelo de datos actual Iroha 3, `AccountId` es canónico y sin dominio: se deriva del controlador de cuentas y se codifica de manera canónica como [I105](/es/reference/i105.md). El dominio legible por humanos y el contexto del espacio de datos pertenecen a enlaces de alias de cuentas separados.
+Una cuenta es una autoridad que puede firmar transacciones y ser titular de estado del libro mayor. En el modelo de datos actual de Iroha 3, `AccountId` es canónico y no contiene un dominio: se deriva del controlador de la cuenta y se codifica de forma canónica como [I105](/es/reference/i105.md). El contexto de dominio y de espacio de datos legible para las personas pertenece a vinculaciones separadas de alias de cuenta.
 
 ## Estructura {#structure}
 
@@ -17,12 +16,12 @@ Un `Account` registrado contiene:
 - `id`: el `AccountId` canónico
 - `metadata`: metadatos de cuenta arbitrarios
 - `label`: un alias estable opcional
-- `uaid`: un ID de Cuenta Universal opcional usado por los flujos de Nexus
+- `uaid`: un identificador universal de cuenta opcional que utilizan los flujos de SORA Nexus
 - `opaque_ids`: identificadores opacos vinculados a la UAID de la cuenta
 
 La carga útil de la transacción utilizada para crear una cuenta es `NewAccount`. Lleva la misma identidad, metadatos, etiqueta, UAID y campos de ID opaco utilizados por la cuenta registrada.
 
-`uaid` complementa al `AccountId` canónico; no lo reemplaza. Úselo cuando los servicios Nexus necesiten un identificador estable de usuario u organización en diversos espacios de datos, registro que preserve la privacidad o búsqueda de capacidades del servicio. El tiempo de ejecución del software mantiene un índice uno a uno UAID-a-cuenta, requiere que los identificadores opacos se adjunten a través de un UAID, y rechaza identificadores opacos duplicados o en colisión. Vea [FHE y UAID](/es/blockchain/sora-nexus-services.md#fhe-and-uaid) para el flujo de capa de servicio Nexus.
+`uaid` complementa al `AccountId` canónico; no lo sustituye. Utilícelo cuando los servicios de SORA Nexus necesiten un identificador estable de usuario u organización entre espacios de datos, un registro que preserve la privacidad o la consulta de capacidades de servicio. El entorno de ejecución mantiene un índice uno a uno entre UAID y cuentas, exige que los identificadores opacos se adjunten mediante un UAID y rechaza los identificadores opacos duplicados o que colisionen. Consulte [FHE y UAID](/es/blockchain/sora-nexus-services.md#fhe-and-uaid) para conocer el flujo de la capa de servicios de SORA Nexus.
 
 ## Controladores de cuentas {#account-controllers}
 
@@ -32,8 +31,9 @@ La configuración del cliente almacena el principal de autorización de firma po
 
 ```toml
 [account]
+profile = "taira"
 public_key = "ed0120..."
-private_key = { digest_function = "ed25519", payload = "..." }
+private_key_file = "/absolute/path/to/private.key"
 ```
 
 Consulte [configuración del cliente](/es/guide/configure/client-configuration.md) y [generación de claves](/es/guide/security/generating-cryptographic-keys.md) para los formatos de clave actuales.
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-Estas son lecturas públicas. Crear o actualizar una cuenta es una transacción firmada y requiere el Taira financiado en la testnet, según lo descrito en [Conectar a los Espacios de Datos SORA Nexus](/es/get-started/sora-nexus-dataspaces.md).
+Estas operaciones son lecturas públicas. Crear o actualizar una cuenta es una transacción firmada y requiere la configuración de Taira con fondos obtenidos del servicio de fondos de prueba descrita en [Conectarse a los espacios de datos de SORA Nexus](/es/get-started/sora-nexus-dataspaces.md).
 
 ## Registro y permisos {#registration-and-permissions}
 
@@ -80,7 +80,7 @@ Después del registro, una cuenta puede:
 - propios dominios
 - recibir roles y tokens de permiso
 - almacenar metadatos
-- participar en los flujos de alias, rekey, recuperación e identidad Nexus cuando esas funciones estén habilitadas
+- participar en los flujos de alias, cambio de claves, recuperación e identidad de SORA Nexus cuando esas funciones estén habilitadas
 
 ## Solución de problemas de identidad {#troubleshooting-identity-issues}
 
@@ -96,4 +96,4 @@ Véase también:
 - [Permisos](/es/blockchain/permissions.md)
 - [Metadatos](/es/blockchain/metadata.md)
 - [Configuración del cliente](/es/guide/configure/client-configuration.md)
-- [SORA Nexus espacios de datos](/es/get-started/sora-nexus-dataspaces.md)
+- [Espacios de datos de SORA Nexus](/es/get-started/sora-nexus-dataspaces.md)

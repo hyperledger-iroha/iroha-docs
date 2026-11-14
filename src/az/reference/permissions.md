@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # İcazə Jetonları {#permission-tokens}
 
 Bu səhifə hazırkı Iroha icraçı məlumat modelində açıqlanan standart icazə-jeton növlərini sadalayır. Rollar və icazələr üzrə konseptual bələdçi üçün [İcazələr](/az/blockchain/permissions.md)-a baxın.
@@ -45,7 +44,8 @@ Bu səhifə hazırkı Iroha icraçı məlumat modelində açıqlanan standart ic
 | `CanModifyTriggerMetadata` |Tətik|Tətik metadatasını dəyişdirin.|
 | `CanUpgradeExecutor` |İcraçı|Proqram təminatının icra mühiti yerinə yetiricisini yeniləyin.|
 | `CanRegisterSmartContractCode` |Ağıllı müqavilə|Ağıllı müqavilə kodunu qeydiyyatdan keçirin.|
-| `CanUseFeeSponsor` | Nexus |Müəyyən edilmiş sponsor hesabına Nexus ödənişləri yükləyin.|
+| `CanManageFeeSponsorProgram` | SORA Nexus | Məhz həmin sponsor hesabına məxsus proqramları idarə etmək. |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | Məhz bir sponsor proqramının faydalananlarını idarə etmək. |
 
 ## Sahiblik {#ownership}
 

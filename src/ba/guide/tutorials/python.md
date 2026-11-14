@@ -1,9 +1,9 @@
 ---
 translation_locale: ba
 translation_source: /guide/tutorials/python.md
-translation_source_hash: d0ecbade221ceba455730e80c6e12db930c65a4cbcf9e643c1c2d4cba47b0940
+translation_source_hash: bd9ff4a38229cbdabbd77e21fe31a770f9213341d7db73a75ed0bd914c761849
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # Python {#python}
 
@@ -29,7 +29,7 @@ translation_engine: nllb-200-ct2
 python -m pip install /path/to/iroha_python-*.whl
 ```
 
-Әгәр проект upstream эш киңлеген туранан-тура ҡулланһа, Python бәйлелектәрен урынлаштырығыҙ һәм `Instruction`, `TransactionDraft`, ҡултамғалау, крипто, SoraFS native ярҙамсылары, GPU ярҙамсылары йәки Connect frame codec-тары ҡулланылған миҫалдарҙы эшләтер алдынан native киңәйтеүҙе төҙөгөҙ. Upstream `python/iroha_python/README.md`-тағы build командаһын ҡулланығыҙ, һуңынан native экспорттарҙың йөкләнеүен тикшерегеҙ:
+Проектығыҙ төп репозиторийҙың эш киңлеген туранан-тура ҡулланһа, `Instruction`, `TransactionDraft`, ҡул ҡуйыу, криптография, SoraFS-тың натив ярҙамсылары, GPU ярҙамсылары йәки Connect кадр кодектары ҡулланылған миҫалдарҙы эшләтер алдынан Python бәйлелектәрен урынлаштырығыҙ һәм натив киңәйтеүҙе төҙөгөҙ. Төп репозиторийҙың `python/iroha_python/README.md` файлындағы төҙөү командаһын ҡулланығыҙ, һуңынан натив экспорттарҙың йөкләнеүен тикшерегеҙ:
 
 ```bash
 cd python/iroha_python
@@ -230,7 +230,7 @@ print(accounts.total, domains.total, definitions.total)
 print(time_now.now_ms)
 ```
 
-`/v1/time/status` һәм һәр `/v1/sumeragi/*` operator snapshot, state үҙгәртмәһә лә, exact-network operator signature талап итә. Anonymous node status өсөн `request_json("GET", "/status")` ҡулланығыҙ; consensus йәки node-local clock diagnostics өсөн payload һәм operator setup түбәндә күрһәтелгән. Connect session status — айырым protocol route һәм session management token талап итә.
+`/v1/time/status` һәм һәр `/v1/sumeragi/*` оператор торош күсермәһе, торошто үҙгәртмәһә лә, аныҡ селтәргә бәйләнгән оператор ҡултамғаһын талап итә. Аноним төйөн статусы өсөн `request_json("GET", "/status")`, ә консенсус йәки төйөндөң урындағы сәғәте диагностикаһы өсөн түбәндәге оператор көйләүен ҡулланығыҙ. Connect сессияһының статусы — айырым протокол маршруты; ул ошо сессияның идара итеү токенын талап итә.
 
 ## Төҙөүселәргә күрһәтмәләр {#instruction-builders}
 
@@ -305,7 +305,7 @@ submit(Instruction.transfer_nft(alice, BADGE_NFT, bob))
 
 ### Метамәғлүмәттәрҙе йыйыу һәм алып ташлау {#set-and-remove-metadata}
 
-JSON-сериализацияланған метамәғлүмәт ҡиммәттәренә эйә булырға тейеш. һеҙ `TransactionDraft` ҡулланғанда, `TransactionConfig`-ҙағы вәкәләтле иҫәп default маҡсатлы иҫәпкә әйләнә.
+Метамәғлүмәт ҡиммәттәре JSON форматына сериализациялана алырға тейеш. `TransactionDraft` ҡулланғанда, `TransactionConfig` эсендәге вәкәләтле иҫәп ғәҙәттәге маҡсатлы иҫәпкә әйләнә.
 
 ```python
 # Values are encoded as JSON metadata under the target account.
@@ -736,7 +736,7 @@ print(len(assets.items), len(transactions.items), len(permissions.items))
 
 ## Ваҡиғалар {#events}
 
-Streaming ярҙамсылары JSON payload-тарҙы default буйынса decode итә. SSE event name, id, retry hint һәм raw payload кәрәк булғанда `with_metadata=True` тапшырығыҙ. Canonical `/v1/events/sse` feed live-only: replay IDs сығармай һәм replay log һаҡламай, шуға ярҙамсылар cursor йәки resume argument бирмәй. Яңынан тоташыу яңы subscription башлай һәм gap булыуы мөмкин; тулы ledger history кәрәк булғанда, билдәле height-тан `/v1/blocks/stream` ҡулланығыҙ. Был миҫалдар live event-тарҙы көтә, шуға stream enabled һәм active булған node-та эшләтегеҙ.
+Ағым ярҙамсылары ғәҙәттә JSON мәғлүмәт йөгөн декодлай. SSE ваҡиғаһының исеме, идентификаторы, ҡабатлап ҡарау кәңәше һәм эшкәртелмәгән мәғлүмәт йөгө кәрәк булғанда `with_metadata=True` тапшырығыҙ. Каноник `/v1/events/sse` ағымы тик ағымдағы ваҡиғаларҙы бирә: ҡабат уйнатыу IDs-ын сығармай һәм ҡабат уйнатыу журналын һаҡламай, шуға күрә был ярҙамсылар курсор йәки дауам итеү аргументын бирмәй. Яңынан тоташыу яңы яҙылыуҙы башлай һәм арала өҙөклөк булыуы мөмкин; реестрҙың тулы тарихы кәрәк булғанда билдәле бейеклектән башлап `/v1/blocks/stream` ҡулланығыҙ. Был миҫалдар ағымдағы ваҡиғаларҙы көтә, шуға күрә уларҙы ағым ҡабыҙылған һәм әүҙем булған төйөндә эшләтегеҙ.
 
 ```python
 from iroha_python import DataEventFilter, SseStreamError
@@ -999,7 +999,7 @@ supports_sm2 = "sm2" in allowed and bool(sm and sm.enabled)
 print(supports_gost, supports_post_quantum, supports_sm2)
 ```
 
-Әгәр төйөн һеҙгә кәрәк алгоритмды иғлан итмәһә, асҡысты local йәки offline workflow өсөн генә ҡулланығыҙ. Шул алгоритм менән ҡул ҡуйылған transaction-дарҙы был төйөнгә ебәрмәгеҙ. Public Taira тикшереүе ваҡытында GOST һәм ML-DSA upstream Python китапханаһында SDK crypto helper-ҙары булараҡ бар ине, әммә төйөн уларҙы transaction signing өсөн иғлан итмәне.
+Төйөн һеҙгә кәрәкле алгоритмды иғлан итмәһә, асҡысты тик урындағы йәки селтәрһеҙ эш ағымдары өсөн ҡулланығыҙ. Шул алгоритм менән ҡул ҡуйылған транзакцияларҙы был төйөнгә ебәрмәгеҙ. Асыҡ Taira тикшереүе ваҡытында GOST һәм ML-DSA төп Python китапханаһында SDK криптография ярҙамсылары булараҡ бар ине, ләкин төйөн уларҙы транзакцияларға ҡул ҡуйыу өсөн иғлан итмәгәйне.
 
 ## Конфигурацияланған клиенттар булдырыу {#config-aware-client-creation}
 
@@ -1024,26 +1024,6 @@ client = create_torii_client(
     resolved_config=resolved,
 )
 ```
-
-## Кагемуша әҙерлеге {#kagemusha-readiness}
-
-Python SDK үҙенең генераль Torii заявка ярҙамсыһы аша ағымдағы JSON әҙерлек маршрутын һорарға мөмкин:
-
-```python
-ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
-
-readiness = client.request_json(
-    "GET",
-    "/v1/offline/readiness",
-    params={"asset_definition_id": ASSET_DEFINITION_ID},
-    headers={"Accept": "application/json"},
-    expected_status=(200,),
-)
-print(readiness["ready"])
-print(readiness["blockers"])
-```
-
-Python типланған Кагемуша тулыландырыу йәки ҡайтарыу архив төҙөүселәрҙе фаш итмәй. Swift йәки JVM тип яҙылған аҡса янсығын ҡулланып, каноник V4 архивтарын төҙөйһөгөҙ, һуңынан уларҙы Kagemusha Torii клиент аша тапшырығыҙ һәм һорау алыу үткәргеҙ.
 
 ## Абонементтар {#subscriptions}
 
@@ -1299,7 +1279,7 @@ if connect_status is not None:
 
 ## SoraFS, UAID һәм Kaigi ярҙамсылары {#sorafs-uaid-and-kaigi-helpers}
 
-Был ярҙамсылар маҡсатлы узел тейешле Nexus/SORA endpoint-тарын асҡанда ҡулланыла. Буш исемлекте дөрөҫ яуап тип ҡабул итегеҙ: йәмәғәт Taira-ла маршрут әүҙем булырға мөмкин, ләкин өлгө manifest йәки UAID өсөн мәғлүмәт булмауы ихтимал.
+Был ярҙамсылар маҡсатлы төйөн тейешле SORA Nexus нөктәләрен асҡанда ҡулланыла ала. Буш исемлектәрҙе дөрөҫ яуап тип ҡабул итегеҙ: асыҡ Taira-ла маршрут әүҙем булып, миҫал манифесты йә UAID өсөн мәғлүмәт булмауы мөмкин.
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
@@ -1356,10 +1336,10 @@ Python SDK инде түбәндәге ярҙамсыларҙы үҙ эсенә 
 - дөйөм ISI һәм доменға ярашлы киңәйтеүҙәр өсөн типлаштырылған инструкция төҙөүселәре
 - Транзакция проекттары, манифесттар, ҡултамғалау һәм ҡул ҡуйылған транзакция конверты эш ағымдары
 - тура ваҡиғалар ағымдары һәм типлаштырылған фильтрҙар; commit ителгән блок ағымдары тулы тарихты бирә
-- дөйөм Kagemusha әҙерлек инеү һәм Torii абонемент ярҙамсылары; типталған өҫтәмә һәм ҡайтарыу төҙөүселәр асыҡланмаған
+- Torii яҙылыуҙарын уҡыу һәм ҡул ҡуйылмаған транзакция өлгөләрен төҙөү ярҙамсылары
 - иҫәп адресы, бөтә алгоритм ҡултамғалау ярҙамсылары, күп һанлы шашкалар менән ҡайтыуҙар, SM2, GOST, ML-DSA, BLS һәм серле асҡыстар менән идара итеү.
 - URIs, сессиялар, кадрҙар, шифрлау ярҙамсылары һәм реестр администраторы тоташтырыу
-- node был мөмкинлектәрҙе тәҡдим иткәндә governance, runtime яңыртыу, Sumeragi, node administration, SoraFS, UAID һәм Kaigi endpoint-тарының программа wrapper-ҙары
+- төйөн ошо мөмкинлектәрҙе биргәндә, идара итеү, башҡарыу мөхитен яңыртыу, Sumeragi, төйөн менән идара итеү, SoraFS, UAID һәм Kaigi нөктәләренең программа ҡаплауҙары
 
 ## Үрге йүнәлештәге белешмәләр {#upstream-references}
 

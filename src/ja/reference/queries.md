@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # クエリ {#queries}
 
 Iroha は、ブロックチェーンの台帳状態を変更せずに読み取るクエリです。現在のデータモデルでは、2つの大まかなクエリ形態が公開されています。
@@ -86,7 +85,7 @@ Iroha は、ブロックチェーンの台帳状態を変更せずに読み取�
 | `FindProofRecordsByBackend` |プルーフバックエンドのプルーフ記録を一覧表示する。|
 | `FindProofRecordsByStatus` |ステータスごとに証明書の記録を一覧表示します。|
 
-## Nexus、データの利用可能性、及びパッケージ {#nexus-data-availability-and-packages}
+## SORA Nexus、データの利用可能性、及びパッケージ {#nexus-data-availability-and-packages}
 
 |クエリ|目的|
 | --- | --- |

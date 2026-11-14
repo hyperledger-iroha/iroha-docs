@@ -1,14 +1,13 @@
 ---
 translation_locale: kk
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Желіні енгізу кілттері {#keys-for-network-deployment}
 
-Әрбір желіде клиенттер, желі әріптестері, блокчейннің бастау жазбасын қол қою және NPoS немесе Nexus профильдері үшін BLS валидатор сәйкестендірулері сияқты әртүрлі кілт материалдары қажет.
+Әр желіге клиенттер, тораптар, генезиске қол қою және NPoS не SORA Nexus профильдеріндегі BLS валидатор сәйкестіктері үшін бөлек кілт материалы қажет.
 
 ## Пернетақтаны қашан қолданады {#where-keys-are-used}
 
@@ -21,7 +20,7 @@ translation_engine: bing-translator-llm
 Жергілікті немесе тестілік орналастырулар үшін Kagami барлық осы файлдарды бірге жасауы керек:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Бар желі немесе профиль үшін нұсқаулық ағынын пайдаланыңыз:

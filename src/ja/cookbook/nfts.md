@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /cookbook/nfts.md
-translation_source_hash: b60c542052eac6a916350c4aaa779c9f46d248be64ecea9c9bda679a4d56dff3
+translation_source_hash: b6a85c2feb197588e3358a785e10280a687af3951d52de4e6b8d96eab5de873c
 translation_status: machine-validated
-translation_engine: bing-translator-llm+claude-opus-5-5
+translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link
 ---
-
 # NFTs {#nfts}
 
 ## 結果 {#outcome}
@@ -152,7 +151,7 @@ CLI は NFT レコードそのものを出力します。権威ある不変条�
 - 同じ NFT ID の再登録は拒否されます。新しいローカルネットを使用するか、別のレコード用に安定した新しい ID を選択してください。
 - メタデータ入力は標準入力で有効でなければなりません JSON。引用なしのシェル文字列はメタデータ値ではありません JSON。
 - 現在の所有者以外のアカウントによって署名された譲渡には、NFT のドメインの所有権、または正確な `CanTransferNft` の付与が必要です。`--from`を変更しても暗号署名者は変わりません。
-- 譲渡で変わるのは `owned_by` だけです。メタデータの更新と登録解除は、引き続きドメインの所有者、またはその NFT に対する `CanModifyNftMetadata` か `CanUnregisterNft` を保持するアカウントが行います。新しい所有者は NFT をさらに譲渡できます。
+- 譲渡で変わるのは `owned_by` だけです。メタデータの更新と登録解除は、引き続きドメインの所有者、またはその NFT に対する `CanModifyNftMetadata` か `CanUnregisterNft` を保持するアカウントが行います。新しい所有者はそれをさらに譲渡できます。
 - Taira は空の NFT コレクションを返すことがあります。`items: []` を NFT の指示が利用できない証拠として扱わないでください。
 
 ## ソースと関連ドキュメント {#source-and-related-docs}

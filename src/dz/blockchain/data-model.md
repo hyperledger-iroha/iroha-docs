@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /blockchain/data-model.md
-translation_source_hash: 147562d2286bf11e60a941969e6d52bffc1534c3cfc04d440e0bcf78598a1ca7
+translation_source_hash: f90139dee2eff97769cd47188bcaf60b31672f0250505d8afad9c8ee60815ddd
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-source-naming-amendment
 ---
 # གནད་སྡུད་གི་རྣམ་གཞག་ {#data-model}
 
@@ -121,7 +121,7 @@ account_rabbit --> asset_rose : may receive balance
 | རྒྱུ་དངོས་ངེས་ཚིག | ཚད་ལྡན `AssetDefinitionId` གཞི་རྟེན་༥༨ ཁ་བྱང་ | `name#domain.dataspace` ཡང་ན་ `name#dataspace` | `AssetDefinitionAlias` རྒྱུ་དངོས་ངེས་ཚིག་ཅིག་ལུ་བསྡམ་ཡོདཔ་ |
 | གན་རྒྱ་ | ཚད་ལྡན བེཆ་༣༢ཨེམ་ `ContractAddress` | `name::domain.dataspace` ཡང་ན་ `name::dataspace` | `ContractAlias` བཀྲམ་སྤེལ་འབད་ཡོད་པའི་གན་རྒྱ་ཁ་བྱང་ཅིག་ལུ་བསྡམ་ཡོདཔ་ཨིན། |
 | མངའ་ཁོངས་མིང་ | `DomainId` འབྲི་ཤོག་ནང་ `domain.dataspace` | `domain.dataspace` | SNS `domain` མིང་གནས་དྲན་ཐོ། |
-|གནས་སྡུད་ཁ་གྲངས་གི་མིང་ |ཨང་གྲངས་ `DataSpaceId` ལས་འགུལ་ཅན་གྱི་ Nexus གི་ཐོ་ཡིག་ནང་ལས་ |ཌེ་ཊ་ས་པི་སི་གི་མིང་དཔེར་ན་ `universal`, `paynet`, ཡང་ན་ `zk`|SNS `dataspace` མིང་གི་ས་ཁོངས་ཀྱི་ཐོ་ཡིག་དང་འབྲེལ་བའི་ གནད་སྡུད ས་སྟོང་ཚུ གི་ལག་ལེན་གྱི་ཐོ་ཡིག་ |
+| གནད་སྡུད་ས་སྟོང་གི་མིང་ | ལག་ལེན་ནང་ཡོད་པའི་ SORA Nexus ཐོ་ཡིག་ལས་ཨང་གྲངས་ཀྱི་ `DataSpaceId` | `universal` དང་ `paynet` ཡང་ན་ `zk` བཟུམ་གྱི་གནད་སྡུད་ས་སྟོང་གི་མིང་གཞན་ | SNS གི་ `dataspace` མིང་ས་ཁོངས་ཀྱི་ཐོ་བཀོད་དང་ ལག་ལེན་ནང་ཡོད་པའི་གནད་སྡུད་ས་སྟོང་ཐོ་ཡིག་ |
 
 རྩིས་ཐོའི་མིང་གཞན་ཚུ་ ལག་ལེན་པ་ལུ་གདོང་ཐུག་འབད་མི་རྩིས་ཐོའི་མིང་ཚུ་ཨིན། འཛམ་གླིང་མངའ་སྡེའི་ཟུར་ཐོ་དང་ རྩིས་ཐོ་བསྐྱར་བཟོ་དྲན་ཐོ་ཚུ་བརྒྱུད་དེ་ རྩིས་ཐོ་ཨའི་ཌི་ཤུགས་ལྡན་ལུ་ མིང་གཞན་འདི་གིས་ རྩིས་ཐོ་བསྐྱར་བཟོ་འབད་བའི་སྐབས་ལུ་ ཁོང་ཆ་ཁྱབ་ མཐར་འཁྱོལ་ཚུགསཔ་ཨིན། རྩིས་ཐོའི་གཞི་རིམ་ཁ་ཡིག་གི་དོན་ལུ་ `SetPrimaryAccountAlias` དང་ གཞི་རིམ་མེན་པའི་མིང་གཞན་ཁ་སྐོང་དོན་ལུ་ `SetAccountAliasBinding` དེ་ལས་ ལྷག་ནིའི་དོན་ལུ་ `FindAccountByAlias` ཡང་ན་ `FindAliasesByAccountId` ལག་ལེན་འཐབ། རྩིས་ཐོའི་མིང་གཞན་ཚུ་ལུ་ སྤྱིར་བཏང་ལུ་ SNS རྩིས་ཐོའི་མིང་གཞན་གླ་ཁར་ལེན་མི་འདི་ `AcquireAccountAliasLease` དང་ `RenewAccountAliasLease` དང་གཅིག་ཁར་བསྐྱར་གསོ་འབད་དགོཔ་ཨིན།
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: kk
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Орнату мәселелерін шешу {#troubleshooting-deployment-issues}
 
 Бұл бөлім Iroha 3 енгізулеріне арналған ақауларды жою кеңестерін ұсынады. Егер сізге туындаған мәселе мұнда сипатталмаған болса, бізбен [Телеграм](https://t.me/hyperledgeriroha) арқылы хабарласыңыз.
@@ -15,7 +14,7 @@ translation_engine: bing-translator-llm
 Жергілікті және тестілеу орнатылымдары үшін қолмен жазылған желілік түйін файлдарына қарағанда Kagami жасаған артефактілерді таңдаңыз:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Жасалған каталог желілік түйін конфигурацияларын, блокчейннің басын материалдарын, бастау скрипттерін және Iroha 3 жинақ желісі үшін README қамтиды.
@@ -42,7 +41,7 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 Ағымдағы Kagami localnet нәтижесінен Compose жасаңыз, сонда командалық жол аргументтері мен конфигурация файлдары тексерілген кодқа сәйкес болады:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```
@@ -67,9 +66,9 @@ Kubernetes үшін әрбір валидациялаушыны күйге тә�
 
 Егер под үздіксіз қайта іске қосылса, подтағы көрсетілген конфигурацияны күтілгенімен салыстырыңыз [`peer.template.toml`](/kk/reference/peer-config/index.md#template) және желідегі әріптестің ескілерін қайта ойнатып жатқанын тексеру Kura деректер.
 
-## Сора профилі {#sora-profile}
+## SORA Nexus профилі {#sora-profile}
 
-Жеке немесе жергілікті Iroha 3 орналастырулар, Nexus, SoraFS немесе көпжолақты ағындарды қолданатын болса, стандартты демонды Sora профилімен қосылған түрде іске қосуы керек:
+SORA Nexus, SoraFS немесе көп арналы үдерістерді қолданатын жеке не жергілікті Iroha 3 орналастырулары стандартты демонды SORA Nexus профилін қосып іске қосуы тиіс:
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

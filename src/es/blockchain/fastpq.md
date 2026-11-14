@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /blockchain/fastpq.md
-translation_source_hash: d8dd61390f5df3dae09b70399e04e8f71716a912ef5dea9010feaf60573ed261
+translation_source_hash: dfeabbedbca85780c16ee0307a6497e43e19c02d3a27e0ea2f70987a2aeac0cd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # FastPQ {#fastpq}
 
 FastPQ es la ruta de prueba STARK de Iroha para los efectos de ejecución seleccionados. No reemplaza la ejecución normal de transacciones ni el consenso. Las transacciones aún ejecuta ISI, IVM y Sumeragi como de costumbre; FastPQ consume el testigo de ejecución determinista y convierte los efectos soportados en lotes de pruebas.
@@ -13,7 +12,7 @@ FastPQ es la ruta de prueba STARK de Iroha para los efectos de ejecución selecc
 La integración actual del host tiene tres caminos principales:
 
 - transferencias de activos numéricos transparentes registradas durante la ejecución del bloque
-- Nexus verificó los relés de carril de ejecución cuyo contenedor de datos de prueba AXT lleva un enlace FastPQ
+- relés verificados de carriles de SORA Nexus cuyo sobre de prueba AXT contiene una vinculación de FastPQ
 - SCCP asistentes de prueba de mensajes transparentes que envuelven una prueba FastPQ en un contenedor de datos de verificación abierta
 
 ## Ruta de transferencia de testigos {#transfer-witness-path}
@@ -201,7 +200,7 @@ El bloque final añade el elemento de relleno `1` antes de una última permutaci
 
 ### Vinculación de Entrada Pública {#public-input-binding}
 
-El anfitrión codifica un ID de espacio de datos escribiendo su valor `u64` en los primeros ocho bytes en formato little-endian del campo de 16 bytes:
+El sistema anfitrión codifica un identificador de espacio de datos escribiendo su valor `u64` en los primeros ocho bytes del campo de 16 bytes, en orden little-endian:
 
 $$
 \operatorname{dsid\_bytes}(d)[0..8]=\operatorname{le64}(d),
@@ -394,7 +393,7 @@ S_i(a)=S_{i-1}(a)+
 \end{cases}
 $$
 
-Las columnas de trazado de metadatos y espacio de datos son hashes criptográficos de campo derivados antes de la materialización de filas:
+Las columnas de traza de metadatos y de espacio de datos son hashes de campo derivados antes de materializar las filas:
 
 $$
 \operatorname{metadata\_hash} =
@@ -932,12 +931,12 @@ Los límites de repetición predeterminados incluyen:
 | FRI capas         |      16 |
 |Consultas abiertas|     128 |
 
-## Nexus Relevadores Verificados {#nexus-verified-relays}
+## Relés verificados de SORA Nexus {#sora-nexus-verified-relays}
 
-Nexus AXT los contenedores de datos de prueba pueden incrustar un `AxtFastpqBinding`. Cuando `RegisterVerifiedLaneRelay` se ejecuta, Iroha:
+Los sobres de prueba AXT de SORA Nexus pueden incorporar un `AxtFastpqBinding`. Cuando se ejecuta `RegisterVerifiedLaneRelay`, Iroha:
 
 1. verifica el contenedor de datos del relé de la vía de ejecución y el material de prueba FastPQ
-2. verifica el espacio de datos y la raíz del manifiesto técnico
+2. comprueba el espacio de datos y la raíz del manifiesto
 3. decodifica el contenedor de datos de prueba AXT
 4. requiere un `fastpq_binding`
 5. reconstruye el lote FastPQ de esa vinculación
@@ -946,11 +945,11 @@ Nexus AXT los contenedores de datos de prueba pueden incrustar un `AxtFastpqBind
 
 Si la verificación tiene éxito, Iroha almacena un `VerifiedLaneRelayRecord` que contiene la referencia de retransmisión, el contenedor de datos original, el hash criptográfico de la carga útil de prueba, la altura de verificación, la raíz del manifiesto técnico y la vinculación FastPQ.
 
-Los contenedores de datos del relé de la vía de ejecución también llevan material de prueba compacto FastPQ. El material es un valor de resumen criptográfico sobre el id de la vía de ejecución, id del espacio de datos, altura del bloque, altura de verificación, hash criptográfico del encabezado del bloque, hash criptográfico de liquidación y raíz del manifiesto técnico. Un relé solo es admisible para fusión cuando tiene tanto un QC como un material de prueba FastPQ válido.
+Los sobres de los relés de carriles también contienen material compacto de prueba FastPQ. Este material es un resumen del identificador del carril, el identificador del espacio de datos, la altura del bloque, la altura de verificación, el hash de la cabecera del bloque, el hash de liquidación y la raíz del manifiesto. Un relé solo es admisible para la fusión si cuenta tanto con un QC como con material válido de prueba FastPQ.
 
 ### AXT Matemáticas Vinculantes {#axt-binding-math}
 
-Para los contenedores de datos Nexus AXT, `AxtFastpqBinding` se normaliza en forma canónica antes de repetir la prueba. Los valores de parámetros vacíos por defecto son `fastpq-lane-balanced`; el identificador y la versión del verificador vacíos por defecto son `fastpq` y `v1`; el tipo de declaración se recorta y se convierte a minúsculas.
+Para los sobres AXT de SORA Nexus, `AxtFastpqBinding` se normaliza de forma canónica antes de volver a verificar la prueba. Los valores vacíos de los parámetros toman el valor predeterminado `fastpq-lane-balanced`; el identificador y la versión vacíos del verificador toman los valores predeterminados `fastpq` y `v1`; al tipo de declaración se le eliminan los espacios de los extremos y se lo convierte a minúsculas.
 
 Los AXT FastPQ insumos públicos son hashes criptográficos de bytes deterministas:
 
@@ -1024,7 +1023,7 @@ $$
 \operatorname{le64}(\operatorname{policy\_commitment}[0..8])
 $$
 
-y una fila de metadatos que vincula la política de autorización. La reclamación `compliance` inserta dos filas de metadatos: una para la política y otra para los espacios de datos de destino.
+y una fila de metadatos que vincula la política de autorización. La declaración `compliance` inserta dos filas de metadatos: una para la política y otra para los espacios de datos de destino.
 
 Para `tx_predicate` y `value_conservation`, se utiliza una cantidad de efecto explícita cuando la vinculación contiene una cantidad positiva de origen o destino. De lo contrario, el código deriva una cantidad determinista limitada:
 
@@ -1121,7 +1120,7 @@ $$
 )
 $$
 
-El identificador de espacio de datos FastPQ para este camino de prueba son los primeros dieciséis bytes de otro valor de resumen criptográfico Blake2b con prefijo:
+El identificador de espacio de datos de FastPQ para esta vía de prueba son los primeros dieciséis bytes de otro resumen Blake2b con prefijo:
 
 $$
 \operatorname{dsid} =
@@ -1207,7 +1206,6 @@ metal_max_in_flight = 5
 metal_threadgroup_width = 128
 metal_trace = false
 metal_debug_enum = false
-metal_debug_fused = false
 ```
 
 Las mismas etiquetas de ejecución y telemetría pueden ser sobrescritas desde `iroha3d`:

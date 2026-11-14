@@ -1,16 +1,15 @@
 ---
 translation_locale: am
 translation_source: /blockchain/transactions.md
-translation_source_hash: 6381e93ada6191d15b11f7359e983e5c3dac49e69323b20da09959d5e04331f9
+translation_source_hash: 91c06ab61c7f8ec96554bc89b31b2f281bb3a7d7edd484defe61dcde5a3fb710
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # ግብይቶች {#transactions}
 
 ግብይት በብሎክቼይን ላይ ስራን ለማስፈጸም የተፈረመ ጥያቄ ነው። ሊተገበር የሚችል ጭነት የታዘዘ ቅደም ተከተል [መመሪያዎች](./instructions.md)፣ የኮንትራት ቴክኒካል ጥሪ፣ IVM ባይት ኮድ ወይም የተረጋገጠ IVM አፈፃፀም ሊሆን ይችላል። ለአሁኑ የኮንትራት ማስፈጸሚያ ሞዴል [ስማርት ኮንትራቶች](./smart-contracts.md) ይመልከቱ።
 
-ግብይቶች ሁኔታን የሚቀይር ወይም ሊተገበር የሚችል ስራ ያከናውናሉ። ተነባቢ-ብቻ ፍተሻ የተፈረሙ መጠይቆችን ወይም ይፋዊ የተነበቡ API የመጨረሻ ነጥቦችን ይጠቀማል እና ግብይት አይፈጥርም።
+ግብይቶች ሁኔታን የሚቀይር ወይም የሚፈጸም ሥራ ያከናውናሉ። ለንባብ ብቻ የሚደረግ ምርመራ የተፈረሙ የውሂብ ጥያቄዎችን ወይም ክፍት የንባብ መገናኛ ነጥቦችን ይጠቀማል፣ ግብይትም አይፈጥርም።
 
 በተጠናቀቀው ብሎክ ውስጥ የተካተተ ግብይት ማንኛውንም የማስፈጸሚያ ውድቅ ማድረግን ጨምሮ ከአፈፃፀሙ ውጤት ጋር ይመዘገባል። በብሎክ ውስጥ ከመካተታቸው በፊት ውድቅ የተደረጉ ጥያቄዎች፣ ለምሳሌ ልክ ያልሆነ የውሂብ መያዣ ወይም በወረፋው ውድቅ የተደረገ ግብይት፣ በብሎክ ውስጥ አልተመዘገቡም።
 
@@ -39,32 +38,30 @@ curl -fsS "https://taira.sora.org/v1/explorer/transactions/$TX_HASH" \
   | jq '{hash, block, status, authority, executable}'
 ```
 
-ይህ አሁንም ተነባቢ-ብቻ ነው። ግብይትን ለማስገባት የተፈረመ Norito የውሂብ መያዣ፣ ትክክለኛ የሰንሰለት መታወቂያ፣ የክፍያ ሜታዳታ እና በቴስትኔት የተደገፈ Taira መለያ ያስፈልገዋል።
+ይህ አሁንም የንባብ ብቻ ክዋኔ ነው። ግብይት መላክ የተፈረመ Norito ኤንቨሎፕ፣ ትክክለኛ የሰንሰለት ID እና የአውታረ መረብ ID፣ በግልጽ የተጠቀሰ ከፋይ እና ከፋውሴት ገንዘብ የተሞላለት የTaira መለያ ይፈልጋል።
 
-በ Taira ላይ ክፍያ ለሚጠይቁ ምሳሌዎች፣ የገንዘብ ድጋፍ አጋዡን ከ [በ Taira የሙከራ መረብ XOR ያግኙ](/am/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ወስደው `taira_faucet_claim.py` በሚል ስም ያስቀምጡ፤ ከዚያ በመጀመሪያ ፈራሚውን በሕዝብ የገንዘብ ድጋፍ አገልግሎት በኩል ይሙሉ፦
+በTaira ላይ ክፍያ ለሚፈልጉ ምሳሌዎች፣ በ[በTaira ላይ የሙከራ አውታረ መረብ XOR ማግኘት](/am/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ያለውን ቀድሞ የማዘጋጀት ፋውሴት ሂደት ተጠቅመው የፈራሚውን መለያ ይሙሉ፣ ከዚያም የክፍያ ንብረቱን ቀሪ ሒሳብ ያረጋግጡ:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-የቴስትኔት የገንዘብ ድጋፍ አገልግሎት እንቆቅልሽ ወይም የይገባኛል ጥያቄ መንገድ ከተመለሰ `502`፣ ግብይቱን እራሱ ከማረምዎ በፊት ይጠብቁ እና እንደገና ይሞክሩ።
+የፋውሴት መንገድ `502` ከመለሰ ግብይቱን ራሱን ከመመርመርዎ በፊት ይጠብቁና እንደገና ይሞክሩ።
 
-ከዚያ ግብይቱን በሚያስገቡበት ጊዜ የ Taira ክፍያ ንብረት ሜታዳታ ያያይዙ -
+ከዚያ ግብይቱን ሲልኩ ከፋዩን ይምረጡ። በ`--fee-payer authority` ፈራሚው መለያ ይከፍላል፣ CLIም ከመፈረም በፊት ትክክለኛውን ክፍያ በTaira የክፍያ ንብረት ያስላል:
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg "faucet-funded taira transaction"
+  --fee-payer authority \
+  tx ping --msg "faucet-funded taira transaction"
 ```
 
 ## ከመስመር ውጭ ግብይቶች {#offline-transactions}
@@ -72,34 +69,24 @@ iroha --config ./taira.client.toml \
 Iroha ሁለት ከመስመር ውጭ የግብይት የስራ ፍሰቶች አሉት -
 
 - ከመስመር ውጭ መፈረም የፊርማ መሳሪያው ግንኙነቱ ሲቋረጥ መደበኛ የተፈረመ ግብይት ይፈጥራል። የመስመር ላይ ደንበኛ የተፈረመውን የውሂብ መያዣ ወደ Torii እስኪያቀርብ ድረስ ግብይቱ አይካሄድም፣ ስለዚህ አሁንም ትክክለኛውን የሰንሰለት መታወቂያ፣ የፈቃድ ባለቤት፣ ፈቃዶች፣ ክፍያዎች፣ እና የግብይት የህይወት ዘመን.
-- የካጌሙሻ ከመስመር ውጭ ጥሬ ገንዘብ በመስመር ላይ እያለ የኪስ ቦርሳውን ይሞላል፣ ሁለቱም የኪስ ቦርሳዎች ከመስመር ውጭ ሲሆኑ በተቀባዩ የተጀመረውን የኪስ ቦርሳ ወደ ቦርሳ ማስረጃዎችን ይደግፋል፣ እና ተቀባዩ በመስመር ላይ ሲመለስ የተገኘውን የማስታወሻ ሁኔታ ይመልሳል።
+- **የKagemusha ከመስመር ውጭ ጥሬ ገንዘብ** በሃርድዌር የተጠበቀ የተመዘገበ ቦርሳ በመስመር ላይ ሳለ እሴት ይጭናል፣ ሁለቱም ቦርሳዎች ከመስመር ውጭ ሲሆኑ በመካከላቸው ክፍያ ያስችላል፣ ቦርሳው እንደገና በመስመር ላይ ሲመጣም የቀረውን እሴት ወደ መዝገብ መለያ ይመልሳል።
 
-Torii በ`/v1/offline/*` ስር ያለውን ሙሉ የካጌሙሻ የሕይወት ዑደት ያጋልጣል -
+Torii አንድ የKagemusha መንገድ፣ `POST /v1/kagemusha/enrollment`፣ ያቀርባል። በመለያ የተረጋገጡ `application/x-norito` የምዝገባ ፍሬሞችን ይቀበላል፣ በመሸጎጫ መቀመጥ የሌለባቸውን የግል ምላሾችም ይመልሳል። የዚህ የሕይወት ዑደት የመዝገብ ክፍል `KagemushaWalletLedgerV1` መመሪያ የያዙ መደበኛ የተፈረሙ ግብይቶችን ይጠቀማል:
 
-|ዘዴ እና API የመጨረሻ ነጥብ|ዓላማ|
+| ክዋኔ | ዓላማ |
 | --- | --- |
-|`GET /v1/offline/readiness`|የካጌሙሻ ዝግጁነትን ለአንድ ይገምግሙ `asset_definition_id`|
-| `POST /v1/offline/receiver-lineage` | ለተፈረመ ተቀባይ ጥያቄ ማረጋገጫ ያለውን ንቁ የምዝገባ ተከታታይነት ይፍቱ |
-|`POST /v1/offline/top-up`|የተፈረመ ከመስመር ወደ መስመር ውጭ የመሙላት ስራ ያስገቡ|
-|`POST /v1/offline/redeem`|የተፈረመ ከመስመር ውጭ የመቤዠት ተግባር ያስገቡ|
-|`GET /v1/offline/operations/{operation_id}`|የመሙላት ወይም የመቤዠት ነጠላ ፕሮቶኮል-መደበኛ ሁኔታን ያንብቡ|
-
-ከመስመር ውጭ አሠራር ከመገንባትዎ በፊት ለንብረቱ ዝግጁነት ያረጋግጡ -
-
-```bash
-curl -fsS --get https://taira.sora.org/v1/offline/readiness \
-  --data-urlencode 'asset_definition_id=<canonical_asset_definition_id>' \
-  | jq '{ready, blockers, artifact_set}'
-```
-
-ዝግጁነት የኪስ ቦርሳውን ከገባሪው ድልድይ ABI 21 እና ከተረጋገጠ V4 አርቲፋክት ስብስብ ጋር ያገናኛል። የተከታታይነት፣ መሙላት እና የመቤዠት ጥያቄዎች የተተየቡ `application/x-norito` ማህደሮችን ይጠቀማሉ። መሙላት እና መቤዠት መመለሻ `202 Accepted` ከ `Location` ራስጌ ጋር ወደ ኦፕሬሽን ሀብቱ ይጠቁማል; የተከተተው ዜሮ ያልሆነ ኦፕሬሽን መታወቂያ የ idempotency ቁልፍን ያቀርባል።
+| `Activate` | የተመዘገበ ቦርሳ ማንቃት፤ ናቲቭ የመነሻ ማረጋገጥ ግዴታ ነው |
+| `IssueLoad` | ከከፋዩ ሒሳብ መቀነስ እና የቦርሳውን ቀጣይ Load በአንድ አቶሚክ ክዋኔ መመዝገብ |
+| `Unload` | ሙሉ Unload ጥያቄን ለተያያዘው መለያ ቢበዛ አንድ ጊዜ መክፈል |
+| `ClaimFee` | ሙሉ የክፍያ ጥያቄን ለተወሰነው ተጠቃሚ መክፈል |
+| `Abandon` | ያልተጠቀመ ምዝገባ መተው |
 
 የተለመደው ፍሰት የሚከተለው ነው-
 
-1. ዝግጁነትን ያረጋግጡ እና `ready` ውሸት ከሆነ ወይም ማንኛውም እንቅፋት የሚተገበር ከሆነ ያቁሙ።
-2. ነጠላ ፕሮቶኮል-ደረጃውን የጠበቀ የመሙያ ማህደር ለመገንባት፣ ለማስገባት እና ክዋኔው የመጨረሻው ሰንሰለት ሁኔታ ላይ እስኪደርስ ድረስ ሁለቱንም የግቤት ማስታወሻ ሁኔታ እና የኦፕሬሽን መታወቂያ ለማቆየት የተተየበ Swift ወይም JVM የኪስ ቦርሳ ይጠቀሙ።
-3. አስፈላጊ ሆኖ ሲገኝ የተቀባዩ ምዝገባ የተከታታይነት ይፍቱ፣ እያንዳንዱን የአውታረ መረብ አቻ ማስረጃ በአገር ውስጥ ይገንቡ እና ያረጋግጡ እና ዝውውሩን ከመቀበልዎ በፊት የተመሰጠረውን የማስታወሻ ሁኔታ ይቀጥሉ።
-4. ተቀባዩ መስመር ላይ ሲሆን ነጠላ ፕሮቶኮል-ደረጃውን የጠበቀ የመቤዠት ማህደር ይገንቡ፣ ያስገቡት እና የአሠራር ሀብቱን እስከ መጨረሻው ድረስ ይመርጡ።
+1. አይነት ያለው የSwift ወይም Android ቦርሳ በመጠቀም በ`/v1/kagemusha/enrollment` ቦርሳውን ይመዝግቡ፣ ከዚያም ያንቁት።
+2. `IssueLoad` ግብይት ይላኩ። አፈጻጸሙ የሚጠበቀውን ቀጣይ የLoad ቅደም ተከተል ቁጥር እና ዜሮ ያልሆነ የጥያቄ ID ያረጋግጣል፣ ስለዚህ ያረጀ ወይም የተለወጠ ዳግም ሙከራ ይከሽፋል። ምላሽ ከጠፋ ሌላ Load ከመፈረም ይልቅ ዋናውን የLoad ደረሰኝ ያንብቡ።
+3. ቦርሳዎቹ ከመስመር ውጭ ሳሉ በመካከላቸው ክፍያዎችን በአካባቢው ይለዋወጡና ያረጋግጡ፤ እያንዳንዱን ዝውውር ከማረጋገጥዎ በፊት የቦርሳውን ሁኔታ በቋሚነት ያስቀምጡ።
+4. ቦርሳው እንደገና በመስመር ላይ ሲመጣ የUnload ጥያቄውን ይላኩና የመጨረሻነትን ይጠብቁ።
 
 የማስታወሻው ሁኔታ በመስመር ላይ የህይወት ኡደት እስኪዘምን ድረስ የብሎክቼይን መዝገብ የሚጋጭ ከመስመር ውጭ ዝውውርን መለየት አይችልም። ስለዚህ፣ የኪስ ቦርሳ እና ኦፕሬተር ፖሊሲዎች የእሴት ገደቦችን፣ ጊዜው የሚያበቃን፣ ተቀባይነት ያላቸው ሰጪዎችን፣ አስተማማኝ የአካባቢ ማከማቻን እና የማስታረቅ መስኮቶችን ማስፈጸም አለባቸው።
 

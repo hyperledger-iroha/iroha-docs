@@ -1,11 +1,10 @@
 ---
 translation_locale: kk
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: 4c7c62c23166a19ccc3a6a4bb42d808038d755b8c05e87b9e2ce21fbbe31a6ac
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha 3 орнатыңыз {#install-iroha-3}
 
 Бұл бетте Iroha 3 құралдар жинағы мен бинарлық файлдарды жоғары деңгейлі `hyperledger-iroha/iroha` жұмыс кеңістігін пайдалана отырып қазіргі орнату жұмыс ағымы көрсетілген.
@@ -64,7 +63,8 @@ cargo run --bin kagami -- --help
 
 Ағымдағы бастапқы кодқа негізделген жергілікті желі ағынын Kagami жасайды. Ол желі түйіндерінің конфигурацияларын, genesis артефактілерін, клиент конфигурациясын, көмекші сценарийлерді және жұмыс көшірмесіндегі кодқа сәйкес келетін міндетті емес Compose файлын жазады:
 
-- `kagami localnet` жергілікті желідегі түпнұсқа процесс әріптестерінің скрипттері үшін
+- `kagami localnet up` — Kagami іске қосып, қадағалайтын басқарылатын жергілікті желі үшін
+- `kagami localnet generate` — нативті жергілікті торап скрипттері үшін
 - `kagami docker` үшін Docker Compose локальді желі каталогынан жасалған
 
 [Жіберу Iroha 3](/kk/get-started/launch-iroha.md) арқылы жалғастырыңыз.

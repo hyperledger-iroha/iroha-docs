@@ -1,9 +1,9 @@
 ---
 translation_locale: he
 translation_source: /guide/tutorials/python.md
-translation_source_hash: d0ecbade221ceba455730e80c6e12db930c65a4cbcf9e643c1c2d4cba47b0940
+translation_source_hash: bd9ff4a38229cbdabbd77e21fe31a770f9213341d7db73a75ed0bd914c761849
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # Python {#python}
 
@@ -510,7 +510,7 @@ details = client.get_trigger_typed("precommit_reward")
 
 ### הוראות לאישור וההסדר {#repo-and-settlement-instructions}
 
-עזרים ל־RWA ולהסדר דו־צדדי מוסיפים סוגי הוראות ייעודיים לתחום, בלי לחייב את המתקשר לבנות בעצמו מטעני Norito.
+כלי העזר להסכמי מכר חוזר ולסליקה דו־צדדית מוסיפים גרסאות של הוראות ייעודיות לתחום, בלי להרכיב ידנית מטעני Norito:
 
 ```python
 from iroha_python import (
@@ -1025,26 +1025,6 @@ client = create_torii_client(
 )
 ```
 
-## מוכנות Kagemusha {#kagemusha-readiness}
-
-Python SDK יכולה לבקש את נתיב המוכנות הנוכחי של JSON באמצעות עזר הבקשות הכללי שלה ל־Torii:
-
-```python
-ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
-
-readiness = client.request_json(
-    "GET",
-    "/v1/offline/readiness",
-    params={"asset_definition_id": ASSET_DEFINITION_ID},
-    headers={"Accept": "application/json"},
-    expected_status=(200,),
-)
-print(readiness["ready"])
-print(readiness["blockers"])
-```
-
-Python אינה מספקת בונים בעלי טיפוס מוגדר לחבילות Kagemusha של top-up או redemption. השתמשו בארנק בעל טיפוסים ב־Swift או ב־JVM כדי לבנות את מטעני V4 הקנוניים, ולאחר מכן שלחו אותם ועקבו אחריהם באמצעות לקוח Kagemusha התומך ב־Torii.
-
 ## חתימות {#subscriptions}
 
 קריאת ההרשמה והבניית הדו"ח מורשתים מהלקוח המשותף Torii המשמש על ידי `iroha_python.ToriiClient`. כל מוטציה מובנת עם חתימת חשבון קאנוניקה מחויבת לגוף ומחזרת דו"ח של עסקאות לא חתומה. Torii אף פעם לא מקבל מפתח פרטי ולא מספק את הדו"ה עבורך .
@@ -1299,7 +1279,7 @@ if connect_status is not None:
 
 ## SoraFS, UAID, ו Kaigi עוזרים {#sorafs-uaid-and-kaigi-helpers}
 
-עוזרים אלה זמינים כאשר הערך היעד חושף את נקודות הסיום המתאימות Nexus/SORA. להתייחס לרשימות ריקות כגובה תקנה: הציבורי Taira עשוי להפעיל את הנתיב ללא נתונים למניפסט הדגימה או UAID.
+כלי העזר האלה זמינים כאשר צומת היעד חושף את נקודות הקצה המתאימות של SORA Nexus. התייחסו לרשימות ריקות כתשובה תקפה: ייתכן שב־Taira הציבורית המסלול פעיל אך אין נתונים עבור המניפסט או ה־UAID שבדוגמה.
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
@@ -1356,10 +1336,10 @@ if cuda_available():
 - בונים של הוראות טפוטים למרחבים משותפים ISI ומרחבים ספציפיים לתחום.
 - תהליכי עבודה לחיבור עסקאות, מניפסטים, חתימות וחותמים
 - זרימות אירועים חיות ופילטרים מקובלים; זרימות בלוק commit מספקות היסטוריה מלאה.
-- גישה כללית למצב המוכנות של Kagemusha ומסייעי מנוי של Torii; בונים בעלי טיפוס ל־top-up ולארכיון redemption אינם חשופים
+- קריאות מנויים ב־Torii ובונים של טיוטות עסקאות לא חתומות
 - כתובת החשבון, עוזרים לחתימה של אלגוריתם כולו, נסיעות הלוך ושוב רבות, SM2, GOST, ML-DSA, BLS, וניהול מפתח סודי.
 - חיבור URIs, פגישות, מסדרים, עוזרים לחשוף ומנהל רישום
-- מעטפות תוכנה לנקודות הקצה של ממשל, שדרוג runtime,‏ Sumeragi, ניהול צומת, SoraFS,‏ UAID ו-Kaigi, כאשר הצומת מספק תכונות אלה
+- מעטפות תוכנה לנקודות הקצה של ממשל, שדרוג סביבת הריצה, Sumeragi, ניהול צומת, SoraFS, UAID ו־Kaigi, כאשר הצומת מספק תכונות אלה
 
 ## ראשי תיקון מקדימה {#upstream-references}
 

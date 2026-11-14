@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # שאילתות {#queries}
 
 דרישות Iroha קוראים את מצב הספר הגדול ללא שינוי בו. מודל הנתונים הנוכחי חושף שני צורות חיפוש רחבות:
@@ -86,12 +85,12 @@ translation_engine: nllb-200-ct2
 |`FindProofRecordsByBackend` |מציג רשומות הוכחה עבור מנגנון הוכחה. |
 |`FindProofRecordsByStatus` |מציג רשומות הוכחה לפי מצב. |
 
-## Nexus, זמינות הנתונים וארכיבים {#nexus-data-availability-and-packages}
+## SORA Nexus, זמינות הנתונים וארכיבים {#nexus-data-availability-and-packages}
 
 |שאילתה |מטרה.|
 | --- | --- |
 |`FindRepoAgreements` |רשימה של הסכמי אחסון שמוצאים על שרשרת. |
-|`FindTwitterBindingByHash` |לפתור קישור טוויטר באמצעות האש. |
+| `FindTwitterBindingByHash` | איתור קישור Twitter לפי גיבוב. |
 |`FindDaPinIntentByTicket` |תמצאו כוונה של קישור זמינות נתונים לפי כרטיס.|
 |`FindDaPinIntentByManifest` |תמצאו כוונה של סימן על ידי התייחסות מפורשת. |
 |`FindDaPinIntentByAlias` |תמצאי כוונה של סימן תחת השם.|
@@ -118,7 +117,7 @@ translation_engine: nllb-200-ct2
 |`FindActiveTriggerIds` |מציג IDs של טריגרים פעילים. |
 |`FindTriggers` |מציג טריגרים. |
 |`FindTriggerById` |מוצא טריגר אחד לפי ID. |
-|`FindContractManifestByCodeHash` |מצא מסמך חוזים חכמים על ידי קוד האש.|
+| `FindContractManifestByCodeHash` | חיפוש מניפסט של חוזה חכם לפי גיבוב הקוד. |
 |`FindTransactions` |רשימה של עסקאות commit. |
 |`FindBlocks` |בלוקים של רשימה.|
 |`FindBlockHeaders` |רשימה כותרות בלוק. |

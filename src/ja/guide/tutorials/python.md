@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /guide/tutorials/python.md
-translation_source_hash: d0ecbade221ceba455730e80c6e12db930c65a4cbcf9e643c1c2d4cba47b0940
+translation_source_hash: bd9ff4a38229cbdabbd77e21fe31a770f9213341d7db73a75ed0bd914c761849
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Python {#python}
 
 上流ワークスペースの Python SDK は`iroha-python`です。最初の Iroha 3 リリースは現在の Torii および Norito サーフェスを対象としています。統合で使用するパッケージバージョンまたはソースリビジョンを固定して、SDK とノードが同じシリアル化フォーマットリビジョンのままであるようにしてください。
@@ -46,7 +45,7 @@ PY
 
 ## クイックスタート {#quickstart}
 
-パブリックで読み取り専用の Taira API エンドポイントから始めます:
+パブリックで読み取り専用の Taira エンドポイントから始めます:
 
 ```python
 from iroha_python import (
@@ -709,7 +708,7 @@ definitions = client.list_asset_definitions_typed(limit=10)
 print(domains.total, definitions.total)
 ```
 
-型付きソフトウェアアダプターがまだ存在しない Torii API エンドポイントの場合は、汎用リクエストヘルパーを使用してください:
+Torii のエンドポイントに型付きラッパーがまだない場合は、汎用のリクエストヘルパーを使ってください。
 
 ```python
 from urllib.request import Request, urlopen
@@ -724,7 +723,7 @@ with urlopen(request, timeout=5) as response:
     metrics = response.read().decode("utf-8")
 ```
 
-アカウントインベントリヘルパーには、SDK のノーマライザーが受け入れるアカウント識別子が必要です。正規の I105 アカウントIDまたはオンチェーンのエイリアスを使用してください；ブロックエクスプローラーや生の API エンドポイントが SDK に拒否されるIDを返す場合、これらのヘルパーを呼び出す前に、それを正規のアカウントIDに解決してください:
+アカウントインベントリヘルパーには、SDK のノーマライザーが受け入れるアカウント識別子が必要です。正規の I105 アカウントIDまたはオンチェーンのエイリアスを使用してください；ブロックエクスプローラーや生の エンドポイントが SDK に拒否されるIDを返す場合、これらのヘルパーを呼び出す前に、それを正規のアカウントIDに解決してください:
 
 ```python
 # These helpers expect a canonical account ID or an alias the SDK can normalize.
@@ -1026,26 +1025,6 @@ client = create_torii_client(
 )
 ```
 
-## 影武者の準備 {#kagemusha-readiness}
-
-Python SDK は、汎用の Torii リクエストヘルパーを通じて、現在の JSON の準備状況ルートを問い合わせることができます:
-
-```python
-ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
-
-readiness = client.request_json(
-    "GET",
-    "/v1/offline/readiness",
-    params={"asset_definition_id": ASSET_DEFINITION_ID},
-    headers={"Accept": "application/json"},
-    expected_status=(200,),
-)
-print(readiness["ready"])
-print(readiness["blockers"])
-```
-
-Python は型付きの影武者のチャージや償還アーカイブビルダーを公開していません。型付きの Swift または JVM ウォレットを使用して、標準の V4 アーカイブを構築し、その後、サポートされている影武者の Torii クライアントを通じて送信およびポーリングしてください。
-
 ## サブスクリプション {#subscriptions}
 
 サブスクリプションの読み取りおよびドラフトビルダーは、`iroha_python.ToriiClient` によって使用される共有の Torii クライアントから継承されます。すべてのミューテーションはボディ結合された標準的なアカウント署名とともに受理され、署名されていないトランザクションドラフトを返します。Torii は決して秘密鍵を受け取らず、ドラフトを代わりに送信することはありません。
@@ -1300,7 +1279,7 @@ if connect_status is not None:
 
 ## SoraFS、UAID、および Kaigi ヘルパー {#sorafs-uaid-and-kaigi-helpers}
 
-これらのヘルパーは、ターゲットノードが対応する Nexus/SORA API エンドポイントを公開している場合に利用可能です。空のリストを有効な応答として扱ってください: public Taira は、サンプル技術マニフェストまたは UAID のデータなしでルートが有効になっている可能性があります。
+これらのヘルパーは、対象ノードが対応する SORA Nexus のエンドポイントを公開している場合に利用できます。空のリストも有効な応答として扱ってください。公開 Taira では、経路が有効でも、サンプルのマニフェストや UAID に対応するデータが存在しない場合があります。
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
@@ -1324,7 +1303,7 @@ print(health.healthy_total, health.failovers_total)
 
 ## Norito、RPC、および GPU ヘルパー {#norito-rpc-and-gpu-helpers}
 
-Norito バイトをすでに持っていて、バイナリ Torii API エンドポイントを呼び出す必要がある場合は、`NoritoRpcClient` を使用してください。この例では、前のトランザクションテンプレートからの署名済みデータコンテナが必要です。
+Norito のバイト列がすでにあり、バイナリ形式の Torii エンドポイントを呼び出す必要がある場合は、`NoritoRpcClient` を使います。この例では、前のトランザクションテンプレートで作成した署名済みエンベロープが必要です。
 
 ```python
 from iroha_python import NoritoRpcClient, NoritoRpcConfig
@@ -1357,7 +1336,7 @@ Python SDK には、すでに次のためのヘルパーが含まれています
 - 一般的な ISI およびドメイン固有の拡張のための型付き命令ビルダー
 - 取引ドラフト、技術マニフェスト、署名、および署名済み取引データコンテナのワークフロー
 - ライブイベントストリームと入力されたフィルター；確定済みブロックストリームは完全な履歴を提供します
-- 一般的な影武者の準備アクセスおよび Torii 購読ヘルパー；型付きのチャージおよび償還ビルダーは公開されていません
+- Torii のサブスクリプション読み取りと、未署名トランザクションのドラフトを組み立てるビルダー
 - アカウントアドレス、全アルゴリズム署名ヘルパー、マルチハッシュラウンドトリップ、SM2、GOST、ML-DSA、BLS、および機密キーの取り扱い
 - URIs、セッション、フレーム、暗号化ヘルパー、およびレジストリ管理者を接続する
 - ノードが対応する場合の、ガバナンス、ランタイム更新、Sumeragi、ノード管理、SoraFS、UAID、Kaigi 各エンドポイントのラッパー

@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /reference/binaries.md
-translation_source_hash: c617a21d50b28495c261d05d672e0b7803c282d53da577391dbebbc7f120d045
+translation_source_hash: 75848623e735abc80326f9ebda6f74ab438b67eaeddeacdd4d8c5509856a999e
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Trabalhando com Binários Iroha {#working-with-iroha-binaries}
 
 O fluxo de trabalho do operador Iroha 3 gira em torno de quatro binários principais:
@@ -50,7 +49,7 @@ cargo run --bin kagami -- --help
 
 ## Docker Imagem {#docker-image}
 
-O espaço de trabalho upstream usa `kagami localnet` e `kagami docker` para gerar arquivos Docker Compose que correspondem ao código retirado do repositório. A imagem `hyperledger/iroha:dev` pode ser usada com esses arquivos gerados.
+O workspace upstream usa `kagami localnet generate` e `kagami docker` para gerar arquivos Docker Compose correspondentes à revisão do código presente no checkout. A imagem `hyperledger/iroha:dev` pode ser usada com esses arquivos gerados.
 
 Execute o CLI em um contêiner:
 
@@ -67,7 +66,7 @@ docker run -t hyperledger/iroha:dev kagami --help
 Para o inicialização do par de rede, gere primeiro um localnet e um arquivo Compose:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```

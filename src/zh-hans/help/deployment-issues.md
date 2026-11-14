@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hans
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # 解决部署问题 {#troubleshooting-deployment-issues}
 
@@ -14,7 +14,7 @@ translation_engine: nllb-200-ct2
 对于本地和测试部署,优先使用 Kagami 生成的构件而不是手写的对等节点文件:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 生成的目录包含对等节点配置,创世材料,启动脚本以及 README 为 Iroha 3 构建线.
@@ -41,7 +41,7 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 生成 从当前的 Kagami localnet输出中编写,以便命令行参数和配置文件与已检查出来的代码匹配:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```
@@ -66,9 +66,9 @@ docker compose -f ./docker-compose.yml up
 
 如果一个模块重启一次,请将模块中的转载配置与预期的 [`peer.template.toml`](/zh-hans/reference/peer-config/index.md#template)进行比较,并检查对等节点是否正在播放旧的 Kura 数据.
 
-## 索拉的个人资料 {#sora-profile}
+## SORA Nexus 配置 {#sora-profile}
 
-使用 Nexus,SoraFS 或多行道流的私人或本地 Iroha 3 部署应启动标准大emon,Sora配置文件已实现:
+使用 SORA Nexus、SoraFS 或多执行通道流程的私有或本地 Iroha 3 部署，应启用 SORA Nexus 配置来启动标准守护进程：
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

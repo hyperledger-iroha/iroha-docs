@@ -1,11 +1,10 @@
 ---
 translation_locale: ka
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: ab0496d2cd36056dbc5486cd1ea288606476862290cc544e7afcf63a1641dd6d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # პრობლემების აღმოფხვრა კონფიგურაციის საკითხებში {#troubleshooting-configuration-issues}
 
 აღნიშნული განყოფილება გთავაზობთ Iroha 3 კონფიგურაციის პრობლემების მოგვარების რჩევებს. დარწმუნდით, რომ თქვენ [შეამოწმე გასაღები.](./overview.md#check-the-keys) პირველ რიგში, რადგან ეს არის ყველაზე გავრცელებული პრობლემების წყარო Iroha.
@@ -25,7 +24,7 @@ translation_engine: nllb-200-ct2
 ასეთი პრობლემის აღმოფხვრის გზა დამოკიდებულია Iroha გამოყენებაზე. თუ ეს არის ძირითადი დემო და თქვენ არ გჭირდებათ ქსელის კვანძების მონაცემების შენახვა, რეგენერირეთ შესაბამისი ლოკალურ ქსელზე ან Docker Compose ბუნდლი Kagami:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
 ```
 

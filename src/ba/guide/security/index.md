@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # Хәүефһеҙлек {#security}
 
-Sensitive data һәм value менән эш иткән башҡа system кеүек үк Iroha deployment-ты ла һаҡлағыҙ. Signing key, network access, node operation, monitoring һәм incident response-ты яҡлағыҙ. Ledger булыуы был control-дарға ихтыяжды бөтөрмәй.
+Iroha урынлаштырыуын йәшерен мәғлүмәт һәм ҡиммәт эшкәртеүсе башҡа система кеүек үк ҡурсалағыҙ. Ҡул ҡуйыу асҡыстарын, селтәргә инеүҙе, төйөн эшен, күҙәтеүҙе һәм инциденттарға яуап биреүҙе һаҡлағыҙ. Реестр был контролдәрҙең кәрәклеген бөтөрмәй.
 
 ### Навигация {#navigation}
 

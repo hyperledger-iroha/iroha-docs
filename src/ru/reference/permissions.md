@@ -1,11 +1,10 @@
 ---
 translation_locale: ru
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Токены разрешений {#permission-tokens}
 
 На этой странице перечислены типы токенов разрешений по умолчанию, доступные в текущей модели данных исполнителя Iroha. Для концептуального руководства по ролям и разрешениям смотрите [Разрешения](/ru/blockchain/permissions.md).
@@ -45,7 +44,8 @@ translation_engine: bing-translator-llm
 | `CanModifyTriggerMetadata` |Триггер|Изменить метаданные триггера.|
 | `CanUpgradeExecutor` |Исполнитель|Обновите исполнитель времени выполнения программного обеспечения.|
 | `CanRegisterSmartContractCode` |Умный контракт|Зарегистрировать код смарт-контракта.|
-| `CanUseFeeSponsor` | Nexus |Взимать Nexus сборы с указанного спонсорского счёта.|
+| `CanManageFeeSponsorProgram` | SORA Nexus | Управление программами, принадлежащими указанной учётной записи спонсора. |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | Управление бенефициарами одной конкретной программы спонсора. |
 
 ## Собственность {#ownership}
 

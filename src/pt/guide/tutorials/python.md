@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /guide/tutorials/python.md
-translation_source_hash: d0ecbade221ceba455730e80c6e12db930c65a4cbcf9e643c1c2d4cba47b0940
+translation_source_hash: bd9ff4a38229cbdabbd77e21fe31a770f9213341d7db73a75ed0bd914c761849
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Python {#python}
 
 O Python SDK no espaço de trabalho upstream é `iroha-python`. O primeiro lançamento de Iroha 3 tem como alvo as superfícies atuais Torii e Norito. Fixe a versão do pacote ou a revisão da fonte usada pela sua integração para que o SDK e o nó permaneçam na mesma revisão de formato de serialização.
@@ -46,7 +45,7 @@ Se `create_torii_client` for importado, mas `Instruction` ou `generate_ed25519_k
 
 ## Início Rápido {#quickstart}
 
-Comece com endpoints públicos e somente leitura Taira API:
+Comece com os endpoints públicos e somente leitura do Taira:
 
 ```python
 from iroha_python import (
@@ -709,7 +708,7 @@ definitions = client.list_asset_definitions_typed(limit=10)
 print(domains.total, definitions.total)
 ```
 
-Use os auxiliares de solicitação genéricos quando um endpoint Torii API ainda não tiver um adaptador de software tipado:
+Use os auxiliares genéricos de requisição quando um endpoint do Torii ainda não tiver um wrapper tipado:
 
 ```python
 from urllib.request import Request, urlopen
@@ -724,7 +723,7 @@ with urlopen(request, timeout=5) as response:
     metrics = response.read().decode("utf-8")
 ```
 
-Os auxiliares de inventário de contas requerem um identificador de conta aceito pelo normalizador do SDK. Use IDs de conta I105 canônicos ou aliases on-chain; se um explorador de blocos ou endpoint bruto API retornar um ID que o SDK rejeita, resolva-o para um ID de conta canônico antes de chamar esses helpers:
+Os auxiliares de inventário de contas exigem um identificador de conta aceito pelo normalizador do SDK. Use IDs de conta I105 canônicos ou aliases registrados na cadeia; se um explorador de blocos ou um endpoint bruto retornar um ID que o SDK rejeite, resolva-o para um ID de conta canônico antes de chamar esses auxiliares:
 
 ```python
 # These helpers expect a canonical account ID or an alias the SDK can normalize.
@@ -1026,26 +1025,6 @@ client = create_torii_client(
 )
 ```
 
-## Prontidão Kagemusha {#kagemusha-readiness}
-
-O Python SDK pode consultar a rota de prontidão atual do JSON através de seu auxiliar de requisição genérico Torii:
-
-```python
-ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
-
-readiness = client.request_json(
-    "GET",
-    "/v1/offline/readiness",
-    params={"asset_definition_id": ASSET_DEFINITION_ID},
-    headers={"Accept": "application/json"},
-    expected_status=(200,),
-)
-print(readiness["ready"])
-print(readiness["blockers"])
-```
-
-Python não expõe construtores de arquivos de recarga ou resgate Kagemusha tipados. Use uma carteira tipada Swift ou JVM para construir os arquivos V4 canônicos, depois envie-os e faça polling através de um cliente Torii Kagemusha suportado.
-
 ## Assinaturas {#subscriptions}
 
 Leituras de assinatura e construtores de rascunho são herdados do cliente compartilhado Torii usado por `iroha_python.ToriiClient`. Cada mutação é admitida com uma assinatura de conta canônica vinculada ao corpo e retorna um rascunho de transação não assinado. Torii nunca aceita uma chave privada e não envia o rascunho para você.
@@ -1300,7 +1279,7 @@ if connect_status is not None:
 
 ## SoraFS, UAID e Kaigi Ajudantes {#sorafs-uaid-and-kaigi-helpers}
 
-Esses auxiliares estão disponíveis quando o nó de destino expõe os endpoints correspondentes Nexus/SORA API. Trate listas vazias como uma resposta válida: Taira público pode ter a rota habilitada sem dados para o manifesto técnico de amostra ou UAID.
+Esses auxiliares estão disponíveis quando o nó de destino expõe os endpoints correspondentes do SORA Nexus. Trate listas vazias como respostas válidas: a rede pública Taira pode ter a rota habilitada sem dados para o manifesto ou UAID do exemplo.
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
@@ -1324,7 +1303,7 @@ print(health.healthy_total, health.failovers_total)
 
 ## Norito RPC e GPU Ajudantes {#norito-rpc-and-gpu-helpers}
 
-Use `NoritoRpcClient` quando você já tiver Norito bytes e precisar chamar um endpoint binário Torii API. O exemplo requer um contêiner de dados assinado de um modelo de transação anterior:
+Use `NoritoRpcClient` quando você já tiver bytes Norito e precisar chamar um endpoint binário do Torii. O exemplo exige um envelope assinado de um modelo de transação anterior:
 
 ```python
 from iroha_python import NoritoRpcClient, NoritoRpcConfig
@@ -1357,7 +1336,7 @@ O Python SDK já inclui auxiliares para:
 - construtores de instruções digitadas para extensões comuns ISI e específicas de domínio
 - rascunhos de transações, manifestos, assinatura e fluxos de envelopes de transações assinadas
 - streams de eventos ao vivo e filtros digitados; streams de blocos comprometidos fornecem histórico completo
-- prontidão de Kagemusha genérica, acesso e ajudantes de assinatura Torii; construtores tipados de recarga e resgate não são expostos
+- leituras de subscrições do Torii e construtores de rascunhos de transações não assinadas
 - endereço da conta, auxiliares de assinatura para todos os algoritmos, viagens de ida e volta de multihash, SM2, GOST, ML-DSA, BLS, e manuseio de chaves confidenciais
 - Conectar URIs, sessões, quadros, auxiliares de criptografia e administrador de registro
 - adaptadores de endpoint para governança, atualização do ambiente de execução, Sumeragi, administração do nó, SoraFS, UAID e Kaigi, quando o nó expõe esses recursos

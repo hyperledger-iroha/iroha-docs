@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/fastpq.md
-translation_source_hash: d8dd61390f5df3dae09b70399e04e8f71716a912ef5dea9010feaf60573ed261
+translation_source_hash: dfeabbedbca85780c16ee0307a6497e43e19c02d3a27e0ea2f70987a2aeac0cd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # FastPQ {#fastpq}
 
@@ -12,7 +12,7 @@ FastPQ — tanlangan bajarish ta’sirlari uchun Iroha-ning STARK isbot yo‘li.
 Joriy mezbon integratsiyasida uchta asosiy yo‘l bor:
 
 - blok bajarilishida qayd etilgan oshkora raqamli aktiv o‘tkazmalari;
-- AXT isbot konverti FastPQ bog‘lanishini olib yuradigan, Nexus tekshirgan yo‘lak uzatkichlari;
+- AXT isbot konvertida FastPQ bog‘lanishi bo‘lgan SORA Nexus tekshirilgan yo‘lak relelari
 - FastPQ isbotini ochiq tekshirish konvertiga joylaydigan SCCP oshkora xabar isboti yordamchilari.
 
 ## O‘tkazma guvohi yo‘li {#transfer-witness-path}
@@ -44,7 +44,7 @@ Har bir FastPQ o‘tish paketi isbotni blok va bajarish kontekstiga bog‘laydig
 
 |Kirish |Ma’nosi |
 | ------------- | --------------------------------------------------------------- |
-|`dsid` |Kichik bayt tartibida kodlangan ma’lumotlar makoni identifikatori |
+| `dsid` | Little-endian baytlarda kodlangan ma’lumotlar makoni identifikatori |
 |`slot` |Nanosekundlarga aylantirilgan blok yaratilish vaqti |
 |`old_root` |Bajarish guvohidan hosil qilingan ota holat ildizi |
 |`new_root` |Bajarish guvohidan hosil qilingan keyingi holat ildizi |
@@ -200,7 +200,7 @@ Yakuniy blok oxirgi permutatsiyadan avval `1` to‘ldirish elementini qo‘shadi
 
 ### Ochiq kirishlarni bog‘lash {#public-input-binding}
 
-Mezbon ma’lumotlar makoni identifikatorini `u64` qiymatini 16 baytli maydonning dastlabki sakkizta little-endian baytiga yozib kodlaydi:
+Host ma’lumotlar makoni ID sining `u64` qiymatini 16 baytli maydonning dastlabki sakkiz baytiga little-endian tartibida yozib kodlaydi:
 
 $$
 \operatorname{dsid\_bytes}(d)[0..8]=\operatorname{le64}(d),
@@ -393,7 +393,7 @@ S_i(a)=S_{i-1}(a)+
 \end{cases}
 $$
 
-Metama’lumot va ma’lumotlar makoni iz ustunlari satrlarni moddiylashtirishdan avval hosil qilingan maydon xeshlaridir:
+Metadata va ma’lumotlar makoni trace ustunlari qatorlar moddiylashtirilishidan oldin hosil qilingan maydon xeshlaridir:
 
 $$
 \operatorname{metadata\_hash} =
@@ -407,7 +407,7 @@ $$
 \operatorname{dsid\_trace}=H_D(\operatorname{public\_input\_dsid})
 $$
 
-Metama’lumot xeshi, ma’lumotlar makoni xeshi va slot qiymati qo‘shni iz satrlarida o‘zgarmaydi:
+Metadata xeshi, ma’lumotlar makoni xeshi va slot qo‘shni trace qatorlarida o‘zgarmaydi:
 
 $$
 \operatorname{metadata\_hash}_i=\operatorname{metadata\_hash}_{i+1}
@@ -931,12 +931,12 @@ Standart takrorlash chegaralari quyidagilarni o‘z ichiga oladi:
 |FRI qatlamlari |      16 |
 |So‘rov ochilishlari |     128 |
 
-## Nexus tekshirgan uzatkichlar {#nexus-verified-relays}
+## SORA Nexus tekshirilgan relelari {#sora-nexus-verified-relays}
 
-Nexus AXT isbot konverti `AxtFastpqBinding` ni o‘z ichiga olishi mumkin. `RegisterVerifiedLaneRelay` bajarilganda Iroha:
+SORA Nexus AXT isbot konvertlariga `AxtFastpqBinding`ni joylashtirish mumkin. `RegisterVerifiedLaneRelay` bajarilganda Iroha:
 
 1. yo‘lak uzatuvchi konverti va FastPQ isbot materialini tekshiradi;
-2. ma’lumotlar makoni va manifest ildizini tekshiradi;
+2. ma’lumotlar makoni va manifest ildizini tekshiradi
 3. AXT isbot konvertini dekodlaydi;
 4. `fastpq_binding` mavjudligini talab qiladi;
 5. shu bog‘lanishdan FastPQ paketini qayta yaratadi;
@@ -945,11 +945,11 @@ Nexus AXT isbot konverti `AxtFastpqBinding` ni o‘z ichiga olishi mumkin. `Regi
 
 Tekshiruv muvaffaqiyatli bo‘lsa, Iroha uzatuvchi havolasi, asl konvert, isbot foydali yuki xeshi, tekshirish balandligi, manifest ildizi va FastPQ bog‘lanishini o‘z ichiga olgan `VerifiedLaneRelayRecord` yozuvini saqlaydi.
 
-Yo‘lak uzatuvchi konvertlari ixcham FastPQ isbot materialini ham olib yuradi. Material yo‘lak identifikatori, ma’lumotlar makoni identifikatori, blok balandligi, tekshirish balandligi, blok sarlavhasi xeshi, hisob-kitob xeshi va manifest ildizi dayjestidir. Uzatuvchi yozuvi faqat QC va yaroqli FastPQ isbot materialiga ega bo‘lsa birlashtirishga qabul qilinadi.
+Yo‘lak relesi konvertlari ixcham FastPQ isbot materialini ham tashiydi. Bu material yo‘lak ID si, ma’lumotlar makoni ID si, blok balandligi, tekshirish balandligi, blok sarlavhasi xeshi, hisob-kitob xeshi va manifest ildizining digestidir. Rele faqat QC va yaroqli FastPQ isbot materiali ikkalasi ham bo‘lganda birlashtirishga qabul qilinadi.
 
 ### AXT bog‘lanishi matematikasi {#axt-binding-math}
 
-Nexus AXT konvertlari uchun `AxtFastpqBinding` isbotni takrorlashdan avval kanonlashtiriladi. Bo‘sh parametr qiymatlari standart `fastpq-lane-balanced` ga, bo‘sh tekshiruvchi identifikatori va versiyasi mos ravishda `fastpq` va `v1` ga almashtiriladi; da’vo turi chetlaridagi bo‘shliqlardan tozalanib, kichik harflarga o‘tkaziladi.
+SORA Nexus AXT konvertlari uchun `AxtFastpqBinding` isbot qayta bajarilishidan oldin kanoniklashtiriladi. Bo‘sh parametr qiymatlari `fastpq-lane-balanced`, bo‘sh verifier ID va versiyasi esa `fastpq` va `v1` bo‘ladi; da’vo turi atrofidagi bo‘shliqlar olib tashlanib, kichik harflarga o‘tkaziladi.
 
 AXT FastPQ ochiq kirishlari deterministik bayt xeshlaridir:
 
@@ -1023,7 +1023,7 @@ $$
 \operatorname{le64}(\operatorname{policy\_commitment}[0..8])
 $$
 
-va vakolat siyosatini bog‘laydigan metama’lumot qatori. `compliance` da’vosi ikkita metama’lumot qatorini kiritadi: biri siyosat, ikkinchisi maqsadli ma’lumotlar makonlari uchun.
+va vakolat siyosatini bog‘lovchi metadata qatori. `compliance` da’vosi ikkita metadata qatorini kiritadi: biri siyosat, ikkinchisi maqsad ma’lumotlar makonlari uchun.
 
 `tx_predicate` va `value_conservation` uchun bog‘lanish musbat manba yoki manzil miqdorini o‘z ichiga olsa, aniq ta’sir miqdori ishlatiladi. Aks holda kod chegaralangan deterministik miqdorni hosil qiladi:
 
@@ -1120,7 +1120,7 @@ $$
 )
 $$
 
-Bu isbot yo‘li uchun FastPQ ma’lumotlar makoni identifikatori boshqa bir prefiksli Blake2b dayjestining dastlabki o‘n olti baytidir:
+Bu isbot yo‘li uchun FastPQ ma’lumotlar makoni ID si yana bir prefiksli Blake2b digestining dastlabki o‘n olti baytidir:
 
 $$
 \operatorname{dsid} =
@@ -1206,7 +1206,6 @@ metal_max_in_flight = 5
 metal_threadgroup_width = 128
 metal_trace = false
 metal_debug_enum = false
-metal_debug_fused = false
 ```
 
 Ayni bajarish va telemetriya yorliqlarini `iroha3d` orqali qayta belgilash mumkin:

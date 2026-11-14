@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /blockchain/assets.md
-translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
+translation_source_hash: 4d0a3f54a0c70d08d11160b9ec66d6538aa2c49c7771a13e4a070b61a9cb3e4b
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Aktivlər {#assets}
 
 Bir Iroha aktiv hesab tərəfindən saxlanılan rəqəmsal balansdır. Hər bir konkret balans `AssetDefinition`-a işarə edir və tərif bu aktivin necə adlana, buraxıla, göstərilə və bölünə biləcəyini izah edir.
@@ -22,7 +21,7 @@ Bir `AssetDefinition` aşağıdakılardan ibarətdir:
 - `mintable`: aktivlərin buraxılış siyasəti siyasəti
 - `logo`: isteğe bağlı `SoraFS` URI
 - `metadata`: ixtiyari açar-dəyər metadatası
-- `balance_scope_policy`: balansların qlobal yoxsa məlumat sahəsi ilə məhdudlaşdırılıb-məhdudlaşdırılmadığı
+- `balance_scope_policy`: balansların qlobal, yoxsa məlumat məkanı ilə məhdudlaşdırılmış olması
 - `owned_by`: təyinatı qeydiyyatdan keçirən və ya ona sahib olan hesab
 - `total_quantity`: ümumi buraxılmış miqdar
 - `confidential_policy`: qorunan aktiv əməliyyatları üçün siyasət
@@ -36,7 +35,7 @@ Bir `Asset` aşağıdakılardan ibarətdir:
 - `id`: bir `AssetId`, hansı ki, aktivin tərifini, sahibinin hesabını və əlavə aktiv balansı sahəsini birləşdirir
 - `value`: bir `Numeric` balans
 
-Hesab sahibi tək protokol-standartlı və domeni olmayan şəxsdir. Aktiv tərifi, məsələn `payments.universal` kimi dataspace-səlahiyyətli bir domen altında layihələndirilə bilər.
+Sahib hesabı kanonikdir və domen daşımır. Aktiv tərifi məlumat məkanı ilə tam müəyyənləşdirilmiş domen altında göstərilə bilər, məsələn, `payments.universal`.
 
 ## Aktivlərin buraxılması siyasəti {#mintability}
 
@@ -56,9 +55,9 @@ Normal elastik aktivlər üçün `Infinitely` istifadə edin və sabit təchizat
 `balance_scope_policy` balansların necə bölünməsini idarə edir:
 
 - `Global`: hər hesab və aktiv tərifi üçün bir balans bölməsi
-- `DataspaceRestricted`: balanslar verilənlər məkanı konteksti üzrə bölünür
+- `DataspaceRestricted`: balanslar məlumat məkanı kontekstinə görə bölünür
 
-Məlumat sahəsi ilə məhdudlaşdırılmış balanslar, eyni aktiv təyinatı bir neçə Nexus məlumat sahəsində istifadə olunduqda faydalıdır, lakin balanslar izolyasiya edilmiş qalmalıdır.
+Eyni aktiv tərifi bir neçə SORA Nexus məlumat məkanında istifadə olunduğu, lakin balanslar ayrı saxlanmalı olduğu halda məlumat məkanı ilə məhdudlaşdırılmış balanslar faydalıdır.
 
 ## Bu iş axınını Taira üzərində işə sal {#try-it-on-taira}
 
@@ -89,19 +88,18 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-Üç nümunənin hamısı oxumalardır. Taira-də aktivləri vermək, məhv etmək və ya köçürmək üçün testnet-ə maliyyələşdirilmiş hesabdan və [SORA Nexus Məlumat Məkanlarına qoşul](/az/get-started/sora-nexus-dataspaces.md)-dakı qorunan axından istifadə edin.
+Hər üç nümunə oxuma əməliyyatıdır. Taira üzərində aktiv yaratmaq, yandırmaq və ya köçürmək üçün test vəsaiti paylama xidməti vasitəsilə maliyyələşdirilmiş hesabdan və [SORA Nexus məlumat məkanlarına qoşulma](/az/get-started/sora-nexus-dataspaces.md) bölməsindəki mühafizə yoxlamaları olan axından istifadə edin.
 
-Ödənişli Taira aktiv nümunəsi üçün testnet maliyyələşdirmə köməkçisini [Taira üzərində Testnet XOR əldə edin](/az/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) bölməsindən `taira_faucet_claim.py` adı ilə saxlayın. Əvvəlcə testnet maliyyələşdirmə xidmətindən aktivi alın, sonra onu əməliyyatın gas aktivi kimi istifadə edin:
+Taira üzərində haqq tələb edən aktiv nümunəsi üçün əvvəlcə [Taira üzərində testnet XOR əldə etmək](/az/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) bölməsindəki əvvəlcədən hazırlanan vəsait alma axını ilə imzalayan hesabı maliyyələşdirin. Sonra `ledger asset mint`, `ledger asset burn` və `ledger asset transfer` əmrlərinə `--fee-payer authority` ötürün; CLI imzalamadan əvvəl dəqiq haqqı Taira-nın haqq aktivində hesablayıb göstərir:
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
+iroha --config ./taira.client.toml --fee-payer authority \
+  ledger asset transfer \
+  --definition "<ASSET_DEFINITION_BASE58>" \
+  --account "<TAIRA_I105_ACCOUNT_ID>" \
+  --to "<RECIPIENT_I105_ACCOUNT_ID>" \
+  --quantity 1
 ```
-
-Sonra `ledger asset mint`, `ledger asset burn` və `ledger asset transfer` əmrlərində `--metadata ./taira.tx-metadata.json`-ı daxil edin.
 
 ## Təlimatlar {#instructions}
 

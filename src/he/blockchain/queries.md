@@ -60,7 +60,7 @@ let query = FindAssetsByAccountId::new(alice_id);
 
 עבור שאילתות יחידניות ושאילתות איטרטיביות קטנות, אפשר להשתמש ב-`client.request` כדי לשלוח שאילתה ולקבל את התוצאה בפעולה אחת.
 
-עם זאת, שאילתות iterable רחבות כגון `FindAccounts`, `FindAssets` או `FindBlocks` עלולות להחזיר קבוצות תוצאות גדולות. השתמשו בעימוד כדי להפחית את העומס על ה-peer ועל הלקוח.
+עם זאת, שאילתות רחבות המחזירות תוצאות שניתן לעבור עליהן באיטרציה, כגון `FindAccounts`, `FindAssets` או `FindBlocks`, עלולות להחזיר קבוצות תוצאות גדולות. השתמשו בעימוד כדי להפחית את העומס על העמית ועל הלקוח.
 
 כדי לבנות `Pagination`, אתה צריך להתקשר ל- `client.request_with_pagination(query, pagination)`, שם `pagination` נבנה כדלקמן:
 
@@ -86,4 +86,4 @@ Iroha יכול לסדר פריטים עם [מטא-נתונים](/he/blockchain/m
 
 ## תיקון {#reference}
 
-בדוק את רשימת השאילתות הקיימות [ ](/he/reference/queries.md) לקבלת מידע מפורט עליהם.
+עיינו ב[רשימת השאילתות הקיימות](/he/reference/queries.md) לקבלת מידע מפורט עליהן.

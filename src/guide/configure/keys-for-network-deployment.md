@@ -1,7 +1,7 @@
 # Keys for Network Deployment
 
 Every network needs distinct key material for clients, peers, genesis signing,
-and, for NPoS or Nexus profiles, BLS validator identities.
+and, for NPoS or SORA Nexus profiles, BLS validator identities.
 
 ## Where Keys Are Used
 
@@ -17,7 +17,7 @@ and, for NPoS or Nexus profiles, BLS validator identities.
 For local or test deployments, let Kagami generate all of these files together:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 For an existing network or profile, use the guided flow:

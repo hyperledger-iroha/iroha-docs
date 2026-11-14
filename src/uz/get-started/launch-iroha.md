@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 35a4caba21bf1e34cc015f79fa82bfe143b37603eddb5f1eb72513ad83a20f61
+translation_source_hash: 6fe2dd48dc64f896be539af2994fbc0ad3c2c5f7a5a4297cc4ff4b08667f0376
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Ishga tushurish Iroha 3 {#launch-iroha-3}
 
 Ushbu sahifa Iroha 3 uchun joriy mahalliy tarmoq oqimini yuqori darajadagi repozitoriyadan olingan standart ish maydoni aktivlaridan foydalanib tushuntirib beradi.
@@ -65,11 +64,11 @@ Siz darhol CLI ni biriktirilgan mijoz konfiguratsiyasiga yo'naltirishingiz mumki
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list
 ```
 
-## 3. Nexus Profil {#_3-nexus-profile}
+## 3. SORA Nexus Profil {#_3-nexus-profile}
 
 Ombor shuningdek `defaults/nexus/` ostida SORA Nexus-ga yo'naltirilgan konfiguratsiya profilini yuboradi.
 
-Nexus profil bilan mahalliy tarmoq ishtirokchisini ishga tushirish uchun:
+SORA Nexus profil bilan mahalliy tarmoq ishtirokchisini ishga tushirish uchun:
 
 ```bash
 ./target/release/iroha3d --sora --config ./defaults/nexus/config.toml

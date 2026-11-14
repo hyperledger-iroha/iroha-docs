@@ -1,9 +1,9 @@
 ---
 translation_locale: fr
 translation_source: /reference/peer-config/params.md
-translation_source_hash: 027486a17e7624cc301f939429baf9ea9ed1259564c3b99b8dc63cce17a7b26e
+translation_source_hash: ebc05275774a1a86c81d5c5667613ffc2d9ad115ac19e40ba804daa736ba4084
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 
 outline: [2, 3]
 ---
@@ -56,9 +56,9 @@ PUBLIC_KEY="ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7
 
 :::
 
-### `private_key` <Badge text="required" /> {#param-private-key}
+### `private_key` {#param-private-key}
 
-Clé privée du pair du réseau. Elle doit correspondre à `public_key` ; les pairs du réseau validateur de consensus doivent utiliser des clés BLS-Normales.
+Clé privée du pair. Configurez exactement l'un des paramètres `private_key` ou `private_key_file`, ce dernier donnant le chemin du fichier de clé accessible au seul propriétaire. La clé doit correspondre à `public_key` ; les pairs validateurs du consensus utilisent des clés BLS-Normal.
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
@@ -139,6 +139,8 @@ TRUSTED_PEERS_POP='[
 :::
 
 ## genèse de la blockchain {#genesis}
+
+Le premier démarrage comme les redémarrages exigent exactement une source de racine de confiance de genèse : `genesis.expected_hash` ou `genesis.expected_hash_file`. Les configurations de pairs générées utilisent la seconde, qui pointe vers `genesis.expected_hash` à côté du bloc signé. Conservez cette liaison lorsque vous copiez un profil généré.
 
 ### `genesis.file` {#param-genesis-file}
 
@@ -222,7 +224,7 @@ P2P_PUBLIC_ADDRESS=0.0.0.0:5000
 
 ### `network.block_gossip_size` {#param-network-block-gossip-size}
 
-Le nombre de blocs qui peuvent être envoyés dans un seul message de synchronisation.
+Plafond de diffusion des messages de synchronisation des blocs : échantillons de pairs et mises à jour de synchronisation des blocs.
 
 <param-table type=number default-value=4 />
 
@@ -324,7 +326,7 @@ API_ADDRESS=0.0.0.0:8080
 
 ### `torii.max_content_len` {#param-torii-max-content-len}
 
-Le nombre maximal d'octets dans un corps de requête brut accepté par le [Torii API points de terminaison](/fr/reference/torii-endpoints.md).
+Nombre maximal d'octets d'un corps de requête brut accepté par les [points d'accès Torii](/fr/reference/torii-endpoints.md).
 
 Cette limite est utilisée pour prévenir les attaques DOS.
 
@@ -430,12 +432,6 @@ LOG_LEVEL=INFO
 
 :::
 
-::: tip mise à jour de l’environnement d’exécution
-
-Ce paramètre peut être mis à jour dans la configuration de l’environnement d’exécution au moyen des points de terminaison opérateur de l’API Torii.
-
-:::
-
 ### `logger.filter` {#param-logger-filter}
 
 Filtres de journal affinés en plus de [`logger.level`](#param-logger-level). Permet de personnaliser la verbosité des journaux par cible.
@@ -475,12 +471,6 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 `logger.filter` travaille ensemble avec [`logger.level`](#param-logger-level) et aucun ne remplace un autre.
 
 Par exemple, si `logger.level` est défini sur `INFO` et `logger.filter` est défini sur `iroha_core=debug`, l'ensemble de filtres résultant sera `info,iroha_core=debug` (c'est-à-dire `info` pour tous les modules, `debug` pour `iroha_core`).
-
-:::
-
-::: tip mise à jour de l’environnement d’exécution
-
-Ce paramètre peut être mis à jour dans la configuration de l’environnement d’exécution au moyen des points de terminaison opérateur de l’API Torii.
 
 :::
 
@@ -547,7 +537,7 @@ Kura mode d'initialisation. `strict` est le mode normal et par défaut : il val
 
 `fast` est un mode d'urgence à service dégradé pour restaurer la visibilité opérationnelle lorsqu'un audit complet du démarrage risquerait une panne. Il nécessite un stockage préalablement initialisé par `strict` et une génération de vue des données à un point précis dans le temps contenant exactement cinq artefacts : `snapshot.data`, `snapshot.sha256`, `snapshot.sig`, `snapshot.fast.norito` et `snapshot.merkle.json`. Une signature d'opérateur séparée par domaine lie la valeur de l'empreinte cryptographique de la charge utile annoncée et le manifeste technique limité ; Le manifeste technique lie la longueur de la charge utile, l'identité de la chaîne/réseau, la hauteur/hash du terminal, le hash cryptographique de la politique SCCP, et la présence de la lignée de démarrage. Fast rejette la lignée bootstrap et nécessite exactement le même marqueur/compte/limite de tip que durable Kura. Les nœuds de première version acceptent exactement ces cinq artefacts et rejettent tout autre ensemble de compte ou de nom de fichier d'artefact.
 
-Le mode Fast inventorie ces cinq noms et lie par métadonnées les fichiers de charge utile et de Merkle, mais il ne lit, ne hache, n’analyse ni ne décode leur contenu. Il construit un World/Nexus minimal à partir du manifeste signé, mappe en lecture seule le préfixe exact du hachage de Kura et laisse fermés l’instantané de World, le tableau des hachages de blocs, l’historique des transactions, les index dérivés et les journaux de récupération durables. Les audits Merkle, canoniques et sémantiques des instantanés, la réconciliation historique des blocs, de la finalité et de SCCP, la récupération de la hauteur active de Sumeragi, les journaux de fusion et de requêtes, le manifeste de voie et les sources de conformité, les archives SoraFS adossées à Kura, la comptabilité récursive du stockage et les réconciliateurs de services facultatifs restent différés. L’admission des transactions locales, les propositions, le vote, les écritures canoniques et les producteurs auxiliaires restent désactivés. Kura refuse lui-même le démarrage d’un processus d’écriture et les mutations durables ; les files de persistance du pipeline et de FASTPQ rejettent immédiatement le travail au lieu de le conserver ou de l’encoder. Les APIs de lecture de Kura désactivent aussi la réparation et la synchronisation de durabilité : les fichiers auxiliaires temporaires ne sont pas promus, les artefacts de voie manquants ne sont pas publiés et les barrières de progression ne sont pas synchronisées sur disque par `fsync`. Sumeragi et la diffusion des transactions ne sont pas lancés. Torii n’expose que les opérations de santé, de disponibilité, de préparation, de pairs et de configuration ; la version d’API, l’état, les métriques et toutes les routes ordinaires d’état et d’historique restent indisponibles. La préparation reste indisponible jusqu’à un redémarrage en mode Strict.
+Le mode Fast inventorie ces cinq noms et lie par métadonnées les fichiers de charge utile et de Merkle, mais il ne lit, ne hache, n'analyse ni ne décode leur contenu. Il construit un World/SORA Nexus minimal à partir du manifeste signé, mappe en lecture seule le préfixe exact des empreintes de Kura et laisse fermés le World de l'instantané, le tableau des empreintes de blocs, l'historique des transactions, les index dérivés et les journaux de reprise durables. Les audits Merkle, canoniques et sémantiques des instantanés, la réconciliation historique des blocs, de la finalité et de SCCP, la reprise de la hauteur active de Sumeragi, les journaux de fusion et de requêtes, les sources de manifeste et de conformité des voies, les archives SoraFS adossées à Kura, la comptabilité récursive du stockage et les réconciliateurs des services facultatifs restent différés. L'admission des transactions locales, les propositions, le vote, les écritures canoniques et les producteurs auxiliaires restent désactivés. Kura refuse lui-même le démarrage d'un processus d'écriture et les modifications durables ; les files de persistance du pipeline et de FASTPQ rejettent immédiatement le travail au lieu de le conserver ou de l'encoder. Les APIs de lecture de Kura désactivent aussi la réparation et la synchronisation de durabilité : les fichiers auxiliaires temporaires ne sont pas promus, les artefacts de voie manquants ne sont pas publiés et les barrières de progression ne sont pas synchronisées par fsync. Sumeragi et la diffusion des transactions ne sont pas lancés. Torii expose uniquement les opérations de santé, de vivacité, de préparation, de pairs et de configuration ; la version d'API, l'état, les métriques et toutes les routes ordinaires d'état et d'historique restent indisponibles. La préparation reste indisponible jusqu'à un redémarrage en mode Strict.
 
 Utilisez `fast` uniquement pour un incident. Une fois que le service est stable, arrêtez le nœud, restaurez `strict`, et redémarrez afin que chaque vérification différée et reconstruction d'index s'exécute avant que la production ne reprenne. Le mode rapide ne nécessite pas le journal de fusion différée et ne crée, ne répare, ne tronque ni n'importe le stockage canonique ; les suffixes non publiés et les étapes de récupération auxiliaires en attente sont ignorés sans être lus ou modifiés, puis laissés pour la récupération stricte. La lignée de la vue de données ponctuelle uniquement avec hachage importée reste indisponible. Une vue de données ponctuelle actuelle manquante ou invalide échoue immédiatement ; Fast ne revient jamais à une reconstruction par rejouage du monde vide ou historique.
 
@@ -662,30 +652,20 @@ transaction_time_to_live_ms = 43_200_000
 
 ## Sumeragi {#sumeragi}
 
-### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
+`[sumeragi]` contient les paramètres de participation locaux au nœud, la garde des moyens de signature, les chemins des enregistrements de sécurité et les dérogations documentées aux délais et à la synchronisation. Le mode de consensus, la composition du comité, le quorum, la taille des blocs et les limites de transactions proviennent de la genèse signée et de l'état validé. L'injection de défaillances relève du simulateur déterministe.
 
-Interrupteur réservé au débogage pour tester les chemins de gestion du soft-fork Sumeragi. Laissez-le désactivé en dehors des tests contrôlés ; le modifier sur un réseau de production en fonctionnement peut provoquer des désaccords entre les pairs du réseau concernant le comportement du consensus.
+Consultez la [configuration](/fr/guide/configure/overview.md) et la [référence de configuration](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/references/configuration.md) à la révision fixée pour connaître les champs pris en charge.
 
-<param-table type=bool default-value=false />
+## Règlement privé atomique de SORA Nexus {#nexus-atomic-private-settlement}
 
-::: code-group
+`[nexus.atomic_private_settlement]` configure la conservation des données auxiliaires chiffrées sur un nœud. Cette section contient exactement deux limites locales de stockage :
 
-```toml [Config File]
-[sumeragi.debug]
-force_soft_fork = true
-```
+- `sidecar_max_records` : nombre maximal d’enregistrements chiffrés de règlement conservés.
+- `sidecar_max_total_bytes` : nombre maximal d’octets canoniques conservés.
 
-:::
+L'activation, les profils de preuve, les limites de paiement, l'expiration et la politique relative aux auditeurs proviennent de la politique de confidentialité inscrite dans l'état validé. La configuration du nœud ne peut ni activer ni modifier ces règles de validité.
 
-## Nexus Règlement Privé Atomique {#nexus-atomic-private-settlement}
-
-`[nexus.atomic_private_settlement]` régit le chemin séparé `AtomicPrivateSettlementV1`. Il est désactivé par défaut. La configuration de `enabled = true` nécessite également un `activation_height` ; l’admission échoue toujours de manière fermée à moins que la capacité en chaîne, le délai de préavis, le profil de preuve fixe et la gouvernance du pool/audit ne soient actifs.
-
-Les principales limites sont `max_participants`, `max_expiry_blocks`, `audit_timeout_blocks`, `prepare_timeout_blocks`, `commit_timeout_blocks`, `max_proof_bytes`, `max_capsule_bytes`, `max_carrier_bytes`, `sidecar_retention_blocks`, `sidecar_max_records`, et `sidecar_max_total_bytes`. `capsule_padding_classes_bytes` doit être un sous-ensemble strictement croissant des classes de remplissage V1. `permitted_policy_versions` n'accepte que V1.
-
-`max_capsule_bytes` mesure les Norito octets canoniques du `PrivateSettlementAuditCapsuleV1` complet, y compris AAD, la valeur de nonce cryptographique, le texte chiffré, le cadrage vectoriel, et chaque ligne DEK enveloppée par l'auditeur ; ce n'est pas une limite de texte chiffré uniquement. Chaque classe de remplissage activée doit s'adapter au conteneur de données à capsule complète conservateur pour au moins `default_min_auditor_approvals` auditeurs. Ce paramètre d'approbation est également un plancher régi : Torii rejette une politique nouvellement admise avec une valeur `min_approvals` inférieure et rejette toute capsule réelle dépassant la limite d'octets canonique.
-
-Ces paramètres n'ont aucun contournement d'activation de la variable d'environnement de production. Voir [Exécuter un règlement privé atomique inter-espaces de données](/fr/get-started/atomic-private-settlement) pour l'exemple complet de configuration et les exigences opérationnelles. Le chemin n'est pas qualifié pour la production tant que les étapes de validation externes documentées n'ont pas été franchies.
+Consultez [Exécuter un règlement privé atomique entre espaces de données](/fr/get-started/atomic-private-settlement.md) pour la configuration de conservation et les exigences opérationnelles. L'implémentation d'un composant n'établit pas sa qualification pour la production.
 
 ## vue des données à un moment donné {#snapshot}
 
@@ -766,26 +746,7 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 ## Télémétrie {#telemetry}
 
-La télémétrie exporte les diagnostics des pairs réseau vers un collecteur de télémétrie externe. Configurez à la fois `telemetry.name` et `telemetry.url` lorsqu'un pair réseau doit signaler à un collecteur ; omettez la section lorsque la télémétrie n'est pas utilisée.
-
-`name` et `url` doivent être appariés.
-
-Toute la section `telemetry` est facultative.
-
-### `telemetry.name` {#param-telemetry-name}
-
-Le nom du nœud à afficher sur la télémétrie.
-
-<param-table type=string />
-
-::: code-group
-
-```toml [Config File]
-[telemetry]
-name = "iroha"
-```
-
-:::
+La télémétrie exporte les diagnostics des pairs vers un collecteur de télémétrie externe. Configurez `telemetry.url` lorsqu'un pair doit transmettre ses diagnostics à un collecteur ; omettez cette section en l'absence de collecteur. Les délais des nouvelles tentatives se configurent dans la même table facultative.
 
 ### `telemetry.url` {#param-telemetry-url}
 

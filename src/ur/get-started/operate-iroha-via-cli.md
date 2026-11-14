@@ -1,9 +1,9 @@
 ---
 translation_locale: ur
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: d7edc74d06a9481123156520d7774e26d1790fee657607031d180aea172d9a98
+translation_source_hash: 5fb7abd4e152ece715a8337e8ef8e75330f634d2a1b26e0c5bd8308f1f3793a9
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # Iroha 3 کے ذریعے CLI پر کام کریں {#operate-iroha-3-via-cli}
 
@@ -31,16 +31,22 @@ cargo run --bin iroha -- --config ./localnet/client.toml --help
 
 CLI مندرجہ ذیل اعلیٰ سطح کے کمانڈ گروپوں میں منظم ہے:
 
-- `account` اکاؤنٹس پر مبنی شارٹ کٹ کے لئے
-- `tx` لین دین کی سطح پر معاونین کے لئے
+- `account`، اکاؤنٹ پڑھنے اور تبدیل کرنے کے لیے
+- `explorer`، مشترک فلٹرز اور صفحہ بندی والی ایکسپلورر فیڈز کے لیے
+- `tx`، لین دین کی حیثیت اور متعلقہ معاون کاموں کے لیے
 - `ledger` لیجر پر پڑھنے اور لکھنے کے لئے
+- `trigger`، ٹرگر پڑھنے، لکھنے اور چلانے کے لیے
 - `ops` آپریٹرز کی تشخیص کے لئے
 - `app` اپلی کیشن API کے معاونین کے لئے
-- `contract` معاہدے کی تعیناتی اور کالز کے لئے
+- `contract`، معاہدے کی کالز، ویوز اور مقامی ڈیبگنگ کے لیے؛ تنصیب `kagami contract deploy` یا `musubi deploy` سے کریں
 - `tools` تشخیصی اور ڈویلپر افادیتوں کے لئے
-- `taira` کے لئے Taira اور Nexus پر مبنی ورک فلوز
+- `dataspace`، ڈیٹا اسپیس کی تعریف کا منصوبہ بنانے، اسے لاگو کرنے اور جانچنے کے لیے
+- `taira`، Taira کی تشخیص اور اکاؤنٹ متعارف کرانے کے لیے
+- `offline`، آف لائن انکوڈرز، رپورٹس اور تشخیص کے لیے
+- `soracloud`، Soracloud ایپ پلیٹ فارم کے معاون کاموں کے لیے
+- `sccp`، SORA Cross-Chain Protocol میں پڑھنے، منتقلی اور ثبوتوں کے لیے
 
-`ledger` گروپ میں ڈومین مخصوص ٹرانزیکشن ہیلپرز بھی شامل ہیں جیسے کہ `ledger transaction`.
+لین دین بھیجنے والی ہر کمانڈ کو واضح فیس ادا کنندہ، مثلاً `--fee-payer authority`، درکار ہوتا ہے؛ CLI دستخط سے پہلے درست فیس معلوم کرتا ہے۔
 
 `--output-format text` کو انسانی پڑھنے کے قابل آپریٹر کی پیداوار اور `--machine` کو سخت آٹومیشن موڈ کے لئے استعمال کریں۔
 
@@ -55,7 +61,7 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-`universal` ڈیٹا اسپیس میں عوامی ڈومینز درج کریں:
+`universal` ڈیٹا اسپیس کے عوامی ڈومینز کی فہرست دیکھیں:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
@@ -75,32 +81,30 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=10' \
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-`taira.client.toml` صرف اسی وقت بنائیں جب آپ دستخط شدہ کمانڈز آزمانے کے لیے تیار ہوں۔ ترتیب، faucet اور canary کے طریقۂ کار کے لیے [SORA Nexus ڈیٹا اسپیس سے رابطہ کریں](/ur/get-started/sora-nexus-dataspaces.md) دیکھیں۔ جب تک اکاؤنٹ کو faucet کے فیس اثاثے سے فنڈ نہ کر دیا جائے، Taira پر write کمانڈز نہ چلائیں۔
+`taira.client.toml` صرف تب بنائیں جب آپ دستخط شدہ کمانڈز آزمانے کے لیے تیار ہوں۔ ترتیب، فوسیٹ اور بنیادی جانچ کے عمل کے لیے [SORA Nexus ڈیٹا اسپیسز سے اتصال](/ur/get-started/sora-nexus-dataspaces.md) دیکھیں۔ جب تک اکاؤنٹ فوسیٹ کے فیس والے اثاثے سے فنڈ نہ ہو، Taira میں لکھنے کی کمانڈز نہ چلائیں۔
 
-کسی بھی فیس کی ادائیگی کے لئے Taira CLI مثال کے طور پر، فوسیٹ کی مدد سے بچانے [ٹیسٹ نیٹ حاصل کریں XOR پر Taira](/ur/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) کے طور `taira_faucet_claim.py`, پھر دعویٰ ٹیسٹ نیٹ XOR پہلا:
+Taira CLI کی فیس ادا کرنے والی ہر مثال کے لیے [Taira پر ٹیسٹ نیٹ XOR حاصل کریں](/ur/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) میں پیشگی تیاری والے فوسیٹ عمل سے دستخط کنندہ کو فنڈ کریں، پھر بیلنس جانچیں:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-اگر فوسیٹ پزل یا دعوے کا راستہ `502` لوٹتا ہے تو ، انتظار کریں اور دوبارہ کوشش کریں۔ یہ عوامی ٹیسٹ نیٹ کی دستیابی کا مسئلہ ہے ، اکاؤنٹ کی چابیاں بحال کرنے کے لئے ایک اشارہ نہیں ہے۔
+اگر فوسیٹ کا راستہ `502` لوٹائے تو انتظار کریں اور دوبارہ کوشش کریں۔ یہ عوامی ٹیسٹ نیٹ کی دستیابی کا مسئلہ ہے، اکاؤنٹ کی کلیدیں دوبارہ بنانے کا اشارہ نہیں۔
 
-بیلنس دیکھنے کے بعد، فیس اثاثہ میٹا ڈیٹا لکھنے کے لئے منسلک کریں:
+بیلنس نظر آنے کے بعد `--fee-payer authority` کے ساتھ تحریری کارروائیاں بھیجیں۔ CLI دستخط سے پہلے Taira کے فیس والے اثاثے میں درست فیس معلوم کرتا ہے:
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg "hello from faucet-funded taira"
+  --fee-payer authority \
+  tx ping --msg "hello from faucet-funded taira"
 ```
 
 ## 4۔ بنیادی لیجر کمانڈز {#_4-basic-ledger-commands}
@@ -108,7 +112,7 @@ iroha --config ./taira.client.toml \
 تمام ڈومینز درج کریں:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 عام ڈومین کی تخلیق میں اعلاناتی عرفی منصوبہ ساز کا استعمال ہوتا ہے۔ `ledger domain` کمانڈ میں کوئی `register` ذیلی کمانڈ نہیں ہے۔ اپنی SDK یا آن بورڈنگ سروس کے ساتھ `docs.universal` کے لئے خفیہ فری `AliasSetupPlanRequestV1` نیت تیار کریں ، پھر اس کی منصوبہ بندی اور لاگو کریں:
@@ -119,16 +123,16 @@ cargo run --bin iroha -- --config ./localnet/client.toml \
   --intent-file ./docs-domain.intent.json \
   --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./localnet/client.toml \
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./docs-domain.plan.json
 ```
 
-انٹینٹ پینز ڈیٹا اسپیس ID ، کینونیکل مالک اکاؤنٹ ، لیز ٹرم ، اور موجودہ کوٹیشن گارڈ۔ منصوبہ ساز زندہ حالت کی تصدیق کرتا ہے اور جمع کرنے کے لئے عین مطابق ایٹمی `EnsureAlias` منصوبہ واپس کرتا ہے۔ کسی دوسرے نیٹ ورک سے گارڈ ویلیوز کی دستی کاپی نہ کریں.
+ارادہ ڈیٹا اسپیس ID، کینونیکل مالک اکاؤنٹ، لیز کی مدت اور موجودہ تخمینے کی حفاظتی شرط مقرر کرتا ہے۔ منصوبہ ساز موجودہ حالت کی تصدیق کرتا ہے اور بھیجنے کے لیے عین ایٹمی `EnsureAlias` منصوبہ واپس کرتا ہے۔ دوسرے نیٹ ورک سے حفاظتی قدریں دستی طور پر نقل نہ کریں۔
 
 ایک سادہ پینگ لین دین بھیجیں:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger transaction ping --msg "hello from iroha"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority tx ping --msg "hello from iroha"
 ```
 
 کسی حالیہ بلاک کو پڑھیں یا بلاک ایونٹس پر سبسکرائب کریں:
@@ -140,10 +144,10 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 
 ## 5۔ آپریٹر کمانڈز {#_5-operator-commands}
 
-اتفاق رائے آپریٹر کے احکامات میں اجازت کی فہرست میں رن ٹائم کلید کی ضرورت ہوتی ہے۔ اسے `client.toml` سے باہر رکھیں اور صریح طور پر صرف مالک فائل کو منتقل کریں:
+اتفاقِ رائے کے آپریٹر کی کمانڈز کے لیے اجازت کی فہرست میں موجود رن ٹائم کلید لازم ہے۔ اسے `client.toml` سے باہر رکھیں اور صرف مالک کی رسائی والی فائل کا مطلق راستہ دیں:
 
 ```bash
-: "${OPERATOR_KEY_FILE:=./secrets/operator.key}"
+: "${OPERATOR_KEY_FILE:=$PWD/secrets/operator.key}"
 
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \
@@ -160,13 +164,13 @@ cargo run --bin iroha -- \
   --output-format text ops sumeragi diagnostics
 ```
 
-سب سے زیادہ اور بند کووروم سرٹیفکیٹ:
+کمیٹ شدہ اتفاقِ رائے کی لینز اور اس نوڈ کی مثالوں کی حیثیت:
 
 ```bash
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format text ops sumeragi qc
+  --output-format text ops sumeragi lanes
 ```
 
 چین پر اتفاق رائے کے پیرامیٹرز:
@@ -183,10 +187,10 @@ cargo run --bin iroha -- \
 - [SDK ٹیوٹوریلز](/ur/guide/tutorials/)
 - [Torii اختتام پوائنٹس](/ur/reference/torii-endpoints.md)
 - [Iroha بائنریوں کے ساتھ کام کرنا](/ur/reference/binaries.md)
-- [CLI کی README فائل](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/README.md)
+- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/README.md)
 
-ماخذ چیک آؤٹ سے مکمل مارک ڈاؤن امدادی سنیپ شاٹ کو بازیافت کرنے کے لئے، چلائیں:
+ماخذ کی ورکنگ کاپی سے مدد کا مکمل Markdown اسنیپ شاٹ پرنٹ کرنے کے لیے چلائیں:
 
 ```bash
-cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md
+cargo run -p iroha_cli --bin iroha -- tools markdown-help > iroha-cli-help.md
 ```

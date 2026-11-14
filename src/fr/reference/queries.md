@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Requêtes {#queries}
 
 Iroha interroge l'état du grand livre blockchain sans le modifier. Le modèle de données actuel expose deux grandes formes de requêtes :
@@ -86,7 +85,7 @@ Les requêtes d'entiercement inspectent les enregistrements créés par [séques
 | `FindProofRecordsByBackend` |Lister les enregistrements de preuve pour un backend de preuve.|
 | `FindProofRecordsByStatus` |Lister les dossiers de preuve par statut.|
 
-## Nexus, Disponibilité des données et packages {#nexus-data-availability-and-packages}
+## SORA Nexus, Disponibilité des données et packages {#nexus-data-availability-and-packages}
 
 |Requête|But|
 | --- | --- |

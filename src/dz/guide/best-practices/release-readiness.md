@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /guide/best-practices/release-readiness.md
-translation_source_hash: 984957526424a4e0ec9f29a6da1bb64699245bb135e8157bbe684bc3d87de4cc
+translation_source_hash: 75fccfa00f1582a8081df3e00331eee7ab21c108c8727a9d73129738cc4940cb
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-source-title-amendment
 ---
 # གྲ་སྒྲིག་འབད་ནི་ {#release-readiness}
 
@@ -25,7 +25,7 @@ Iroha ལག་ལེན་ཅིག་ཡང་ན་ དྲ་རྒྱའི�
 - མིང་རྟགས་བཀོད་མི་གི་མ་དངུལ་དང་ འཐུས་རྒྱུ་དངོས་མེ་ཊ་ཌེ་ཊ་ དབང་འཛིན་གནང་བ་ དེ་ལས་ རེ་བ་བསྐྱེད་པའི་གནས་སྟངས་ཚུ་ ཐད་རི་བ་རི་བརྟག་དཔྱད་ཚོང་འབྲེལ་རེ་རེ་བཞིན་དུ་ མ་བཙུགས་པའི་ཧེ་མ་ བདེན་དཔྱད་འབད།
 - ཊར་མི་ནཱལ་གནས་ཚད་ཅིག་ལུ་སྒུག་ཞིནམ་ལས་ ལྷག་ནི་རྐྱངམ་ཅིག་འདྲི་དཔྱད་དང་གཅིག་ཁར་ གྲུབ་འབྲས་གནས་སྟངས་འདི་བདེན་དཔྱད་འབད།
 
-[SORA ༣ ལུ་གཞི་བཙུགས་འབད་: Taira དང་ Minamoto](/dz/get-started/sora-nexus-dataspaces.md).
+[SORA Nexus གུ་བཟོ་སྐྲུན་འབད་ནི་: Taira དང་ Minamoto](/dz/get-started/sora-nexus-dataspaces.md) ལུ་བལྟ།
 
 ## གློག་ཐག་ར་བ་ ཡང་ན་ བཟོ་སྐྲུན་སྒོ་ར་སྒོ་ {#mainnet-or-production-gate}
 

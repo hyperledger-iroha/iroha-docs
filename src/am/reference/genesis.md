@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /reference/genesis.md
-translation_source_hash: 8215489720e1bc2fc3b7c22c4cb2f8f7b1f0f15d1df4a4f596ee3caa2c6b7829
+translation_source_hash: 340921f59a6f8788f559190d520f046ea2473d65154f57a1c54212840c027bc0
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # blockchain ጀነሲስ ማጣቀሻ {#genesis-reference}
 
 አሁን ባለው Iroha 3 የስራ ሂደት፣ `genesis.json` ቴክኒካል ማኒፌስት አውታረ መረቡ ሲጀምር የሚተገበሩትን የመጀመሪያዎቹን ግብይቶች እና መለኪያዎች ይገልጻል።
@@ -17,11 +16,13 @@ translation_engine: bing-translator-llm
 የብሎክቼይን ጀነሲስ ቴክኒካል ማኒፌስት የሚከተሉትን ሊገልጽ ይችላል -
 
 - `chain` ለሰንሰለት መለያ
+- በማኒፌስቱ የመለያ ጽሑፍ እሴቶችን ለመቀየር ለሚያገለግለው I105 የአውታረ መረብ ቅድመ ቅጥያ `chain_discriminant`
 - `executor` ለአማራጭ አስፈፃሚ የማሻሻያ ባይት ኮድ መንገድ
 - `ivm_dir` ቀስቅሴዎች እና ማሻሻያዎች ጥቅም ላይ ለሚውሉ IVM ቤተ-መጻሕፍት
 - `consensus_mode` በቴክኒካዊ ማኒፌስት ለማስታወቂያው የመጀመሪያ ሁነታ
 - `transactions` ለታዘዙ የመለኪያ ዝመናዎች፣ መመሪያዎች፣ ቀስቅሴዎች እና ቶፖሎጂ
-- `crypto` ለመጀመሪያው የ crypto ነጥብ-በጊዜ ውሂብ እይታ
+- ለተፈረሙ የSumeragi ከፍታ አውድ መለኪያዎች `sumeragi_context`
+- ሰንሰለቱ ለሚቀበላቸው፣ በ`allowed_algorithms` ለተዘረዘሩ ትክክለኛ የፊርማና የተቆጣጣሪ አልጎሪዝሞች `crypto_admission_policy`
 
 በ`transactions` ውስጥ፣ የቶፖሎጂ ግቤቶች የአውታረ መረብ አቻ መታወቂያዎችን እና PoPs ን አንድ ላይ ያጣምራሉ -
 
@@ -34,16 +35,17 @@ translation_engine: bing-translator-llm
 
 ## ቴክኒካዊ ማኒስት ይፍጠሩ {#generate-a-manifest}
 
-አብነት ለማመንጨት Kagami ን ይጠቀሙ -
+አብነት ለማመንጨት Kagami ይጠቀሙ። ለእያንዳንዱ የተፈቀደ አልጎሪዝም `--allowed-signing`ን በእየጨመረ ቀኖናዊ ቅደም ተከተል ይድገሙ፤ Kagami የተተዉ አልጎሪዝሞችን በራሱ አይሞላም:
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
   --consensus-mode npos \
   --ivm-dir defaults \
-  --genesis-public-key <PUBLIC_KEY> > genesis.json
+  --genesis-public-key <PUBLIC_KEY> \
+  --allowed-signing ed25519 > genesis.json
 ```
 
-ለህዝብ SORA Nexus የውሂብ ቦታ፣ `npos` የሚጠበቀው የጋራ መግባባት ሁነታ ነው። ሌሎች Iroha 3 ማሰማራቶች እንደ ዒላማው መገለጫ የተፈቀደ ወይም NPoS ሊጠቀሙ ይችላሉ።
+ለክፍቱ የSORA Nexus ውሂብ ቦታ የሚጠበቀው የመግባባት ሁነታ `npos` ነው። ሌሎች Iroha 3 ጭነቶች እንደ ዒላማ መገለጫው በፈቃድ የሚሠራ ሁነታ ወይም NPoS ሊጠቀሙ ይችላሉ።
 
 ## ቴክኒካዊ ማኒፌስት ይፈርሙ {#sign-the-manifest}
 
@@ -59,12 +61,13 @@ cargo run -p iroha_kagami -- genesis sign genesis.json \
 
 ## አዋቅር `iroha3d` {#configure-iroha3d}
 
-ዴሞኑን በተፈረመው የብሎክቼይን ጀነሲስ ብሎክ ላይ ያመልክቱ -
+ለዴሞኑ የተፈረመውን የgenesis ብሎክ እና የሚጠበቀውን ሃሽ የሚይዘውን ፋይል ይጠቁሙ። `kagami genesis sign --expected-hash-out` ያንን ፋይል ይጽፋል፣ ኖዱም በመጀመሪያ ጅምርና በዳግም ጅምር ይፈልገዋል:
 
 ```toml
 [genesis]
 file = "genesis.signed.nrt"
 public_key = "<PUBLIC_KEY>"
+expected_hash_file = "genesis.expected_hash"
 ```
 
 ## ተዛማጅ መሣሪያዎች {#related-tools}
@@ -72,7 +75,7 @@ public_key = "<PUBLIC_KEY>"
 - `kagami genesis validate`
 - `kagami genesis normalize`
 - `kagami genesis embed-pop`
-- `kagami localnet`
+- `kagami localnet generate`
 - `cargo xtask kagami-profiles`
 
 ለጄነሬተር ትግበራ እና የትእዛዝ ዝርዝሮች፣ [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami/README.md) የሚለውን ይመልከቱ።

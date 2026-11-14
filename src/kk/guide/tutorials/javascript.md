@@ -1,11 +1,10 @@
 ---
 translation_locale: kk
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
+translation_source_hash: 92389d3ad83ab32e85b4ca83ede9829d1a38afaad6e86da035da2829a3aaedfb
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # JavaScript және TypeScript {#javascript-and-typescript}
 
 Қазіргі JavaScript SDK Iroha дереккөз ағашындағы `@iroha/iroha-js` пакеті болып табылады. Бұл Torii, Norito құрастырушылар, қол қою, бет нөмірлеу, Connect алдын ала қараулар және Kagemusha командасын тасымалдау үшін Node.js-бірінші SDK.
@@ -99,7 +98,6 @@ SDK назар аударады:
 - Ed25519 қол қою және кілт генерациясы
 - беттілеу және қайтадан көріп шығу көмекшілері
 - Браузерді қосуды бастапқы көмекшілермен қосу
-- Kagemusha дайындық, толықтыру, айырбастау және операциялық күйді тасымалдау көмекшілері
 
 ## Ағыстарға сілтемелер {#upstream-references}
 

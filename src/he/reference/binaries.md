@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /reference/binaries.md
-translation_source_hash: c617a21d50b28495c261d05d672e0b7803c282d53da577391dbebbc7f120d045
+translation_source_hash: 75848623e735abc80326f9ebda6f74ab438b67eaeddeacdd4d8c5509856a999e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # עבודה עם Iroha בינאריים {#working-with-iroha-binaries}
 
 זרימת העבודה של המפעיל Iroha 3 מסתובבת סביב ארבעה בינרים עיקריים:
@@ -50,7 +49,7 @@ cargo run --bin kagami -- --help
 
 ## Docker תמונה {#docker-image}
 
-מרחב העבודה העליון משתמש `kagami localnet` ו `kagami docker` כדי ליצור קבצים Docker Compose שמתאימים לקוד המוצא. תמונת `hyperledger/iroha:dev` יכולה לשמש עם הקבצים המובנים אלה.
+סביבת העבודה של מאגר המקור משתמשת ב־`kagami localnet generate` וב־`kagami docker` ליצירת קובצי Docker Compose התואמים לקוד בעותק המקומי. אפשר להשתמש בדמות `hyperledger/iroha:dev` עם הקבצים שנוצרו.
 
 תפעילו את CLI בקופסא:
 
@@ -67,7 +66,7 @@ docker run -t hyperledger/iroha:dev kagami --help
 עבור ההתחלתה של הצמתים, ליצור רשת מקומית ולהרכיב את הקובץ קודם:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```
@@ -75,6 +74,6 @@ docker compose -f ./docker-compose.yml up
 ## איזה בינארי אני צריך להשתמש? {#which-binary-should-i-use}
 
 - השתמש `iroha3d` כאשר אתה מתחיל או מפעיל צמתים מחוץ לשחרור האישור הציבורי Taira.
-- השתמש `iroha3d_taira --sora` רק לשימוש ב-validator Taira קנוני; זה מכיל את הפרופיל של שרשרת, אחסון ומחתרת זמן הפעלה של Taira.
+- השתמשו ב־`iroha3d_taira --sora` רק לפריסה קנונית של מאמת Taira; הוא אוכף את פרופיל השרשרת, האחסון והחותם בזמן הריצה של Taira.
 - השתמש `iroha` כאשר אתה צריך לדרוש את הספר הגדול, להגיש עסקאות או לבחון נקודות הסיום של המפעיל .
 - השתמשו ב־`kagami` כאשר דרושים מפתחות, מניפסטים של genesis, חבילות פרופיל או ארטיפקטים של רשת מקומית.

@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hant
 translation_source: /reference/norito.md
-translation_source_hash: 810f4378316f4717dee1be4aeffb07e27e81e47735e8031edff775818a48bf48
+translation_source_hash: 0446444ac147b80efcf1d0d07610ad7c81e6f02fb308fe032b8f213afe15bc74
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-supplemental-naming-link
 ---
 # Norito {#norito}
 
@@ -20,7 +20,7 @@ Norito 是 Iroha 的規範序列化層。當對等節點、SDKs、CLI 工具、T
 | Torii 強型別回應 | 支援強型別二進位回應的端點使用 `Accept: application/x-norito`。 |
 | SDKs | Rust、Python、JavaScript、Kotlin/Java、Swift 及 Android 使用者端使用 Norito 建構器或繫結，而不是手動組裝位元組。 |
 | Kura 儲存 | 區塊承載、復原 sidecar、名冊及提交標記會儲存為帶 Norito 框架的資料。 |
-| 資訊清單 | Nexus、資料可用性、SoraFS、串流及面向應用程式的資訊清單需要簽署或雜湊時，會使用 Norito。 |
+| 資訊清單 | SORA Nexus、資料可用性、SoraFS、串流及面向應用程式的資訊清單需要簽署或雜湊時，會使用 Norito。 |
 | 串流 | Norito Streaming 使用 Norito 資訊清單、片段標頭、控制框架及一致性測試資料。 |
 
 Norito 不是智慧合約語言。它是承載交易、合約呼叫、資訊清單及強型別 API 承載的確定性封套與編解碼器。
@@ -123,7 +123,7 @@ Rust 資料型別通常使用 derive 巨集，而不是手寫編解碼程式碼�
 
 derive 實作也會在可行時公開編碼長度提示及精確長度計算。編碼器利用這些提示預留緩衝區，避免額外複製。
 
-## Rust 套件功能族群 {#crate-feature-families}
+## 套件功能族群 {#crate-feature-families}
 
 從原始碼建置 Iroha 或 SDK 繫結時，Norito 功能會決定可用的輔助函式與加速器：
 

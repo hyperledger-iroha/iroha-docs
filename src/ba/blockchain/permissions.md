@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # Разрешениелар {#permissions}
 
 Хисапҡа блокчейн буйынса төрлө эштәр өсөн рөхсәт билдәләре кәрәк, мәҫәлән, активтарҙы йәшереү йәки яндырыу өсөн.
@@ -89,7 +88,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 - активтар, NFTs, һәм гарантиялар
 - триггерҙар
 - роле һәм рөхсәттәре
-- үтәүсе/эшләү ваҡыты, иҫбатлауҙар, күперҙәр һәм SORA/Nexus модулдәр
+- башҡарыусы/башҡарыу мөхите, иҫбатлауҙар, күперҙәр һәм SORA Nexus модулдәре
 
 Тулы билдәләр исемлеге сығанаҡ менән тәьмин ителгән [Permission Tokens шиғырында](/ba/reference/permissions.md).
 

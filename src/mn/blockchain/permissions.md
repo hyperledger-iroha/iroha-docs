@@ -1,11 +1,10 @@
 ---
 translation_locale: mn
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Зөвшөөрөл {#permissions}
 
 Данснууд блокчэйн дээр янз бүрийн үйлдэл хийхэд зөвшөөрлийн токен хэрэгтэй байдаг, жишээ нь хөрөнгийг гаргах эсвэл устгах.
@@ -89,7 +88,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 - хөрөнгүүд, NFTs, ба эскроу
 - триггерүүд
 - эрх үүрэг болон зөвшөөрөл
-- гүйцэтгэгч/байнгын орчин, нотолгоонууд, гүүрүүд, болон SORA/Nexus модульууд
+- гүйцэтгэгч/байнгын орчин, нотолгоонууд, гүүрүүд, болон SORA Nexus модульууд
 
 Яг түүний тэмдэгтийн жагсаалт нь [Зөвшөөрлийн Токенуудын лавлагаа](/mn/reference/permissions.md)-д эх сурвалжтай байна.
 

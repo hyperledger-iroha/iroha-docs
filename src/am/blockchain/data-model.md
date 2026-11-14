@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /blockchain/data-model.md
-translation_source_hash: 147562d2286bf11e60a941969e6d52bffc1534c3cfc04d440e0bcf78598a1ca7
+translation_source_hash: f90139dee2eff97769cd47188bcaf60b31672f0250505d8afad9c8ee60815ddd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-naming-amendment
 ---
-
 # የውሂብ ሞዴል {#data-model}
 
 Iroha የብሎክቼይን መዝገብ ሁኔታን በ`World` ውስጥ ያከማቻል። የመጀመሪያ የተለቀቀው የውሂብ ሞዴሉ የሚከተሉትን ነጠላ ፕሮቶኮል-መደበኛ ማንነቶችን እና አካላትን ይጠቀማል -
@@ -122,7 +121,7 @@ account_rabbit --> asset_rose : may receive balance
 |የንብረት ፍቺ|ነጠላ ፕሮቶኮል-መደበኛ `AssetDefinitionId` Base58 አድራሻ|`name#domain.dataspace` ወይም `name#dataspace`|`AssetDefinitionAlias` ከንብረት ፍቺ ጋር የተያያዘ|
 |ውል|ነጠላ ፕሮቶኮል-መደበኛ Bech32m `ContractAddress`|`name::domain.dataspace` ወይም `name::dataspace`|`ContractAlias` ከተሰማራ የኮንትራት አድራሻ ጋር የታሰረ|
 |የጎራ ስም|`DomainId` በ `domain.dataspace` ቅጽ|`domain.dataspace`|SNS `domain` የስም ቦታ መዝገብ|
-|የ ዳታ ቦታ ስም|ቁጥር `DataSpaceId` ከ ገባሪው Nexus ካታሎግ|እንደ `universal`፣ `paynet`፣ ወይንም `zk` ያሉ የውሂብ ቦታ ተለዋጭ ስያሜዎች|SNS `dataspace` የስም ቦታ መዝገብ እና የነቃ የውሂብ ቦታ ካታሎግ|
+|የ ዳታ ቦታ ስም|ቁጥር `DataSpaceId` ከ ገባሪው SORA Nexus ካታሎግ|እንደ `universal`፣ `paynet`፣ ወይንም `zk` ያሉ የውሂብ ቦታ ተለዋጭ ስያሜዎች|SNS `dataspace` የስም ቦታ መዝገብ እና የነቃ የውሂብ ቦታ ካታሎግ|
 
 የመለያ ተለዋጭ ስሞች ተጠቃሚን የሚመለከቱ የመለያ ስሞች ናቸው። ተለዋጭ ስሙ በአለም-ሁኔታ ኢንዴክሶች እና የመለያ ቁልፍ መዝገቦች በኩል ወደ ንቁ መለያ መታወቂያ ስለሚያመለክት ከመለያ ዳግም ቁልፍ ይተርፋሉ። ለመለያው ዋና መለያ `SetPrimaryAccountAlias`፣ `SetAccountAliasBinding` ለተጨማሪ ዋና ያልሆኑ ተለዋጭ ስሞች፣ እና `FindAccountByAlias` ወይም `FindAliasesByAccountId`ን ለማንበብ ይጠቀሙ። የመለያ ተለዋጭ ስሞች በመደበኛነት በ`AcquireAccountAliasLease` የተገኘ እና በ`RenewAccountAliasLease` የታደሰ ንቁ SNS መለያ-ተለዋጭ የሊዝ ውል ያስፈልጋቸዋል።
 

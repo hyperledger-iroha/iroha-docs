@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: 4c7c62c23166a19ccc3a6a4bb42d808038d755b8c05e87b9e2ce21fbbe31a6ac
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # تثبيت Iroha 3 {#install-iroha-3}
 
 تغطي هذه الصفحة سير عمل التثبيت الحالي لأدوات وسلاسل البرمجيات Iroha 3 والملفات الثنائية باستخدام مساحة العمل العليا `hyperledger-iroha/iroha`.
@@ -64,7 +63,8 @@ cargo run --bin kagami -- --help
 
 يتم إنشاء تدفق localnet المدعوم بالمصدر الحالي بواسطة Kagami. يقوم بكتابة إعدادات نظراء الشبكة وقطع بداية البلوكشين وإعدادات العميل والبرمجيات المساعدة وملف Compose اختياري يتطابق مع الكود الذي تم التحقق منه:
 
-- `kagami localnet` لبرمجيات الأقران المحلية الأصلية للشبكة
+- `kagami localnet up` لشبكة محلية مُدارة يبدأها Kagami ويشرف عليها
+- `kagami localnet generate` لتوليد نصوص تشغيل محلية أصلية للأقران
 - `kagami docker` لـ Docker Compose تم إنشاؤه من دليل localnet
 
 واصل مع [إطلاق Iroha 3](/ar/get-started/launch-iroha.md).

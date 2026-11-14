@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /reference/genesis.md
-translation_source_hash: 8215489720e1bc2fc3b7c22c4cb2f8f7b1f0f15d1df4a4f596ee3caa2c6b7829
+translation_source_hash: 340921f59a6f8788f559190d520f046ea2473d65154f57a1c54212840c027bc0
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # blokçeyn başlanğıc istinadı {#genesis-reference}
 
 Mövcud Iroha 3 iş axınında, `genesis.json` texniki manifesto şəbəkə başladıqda tətbiq olunacaq ilk əməliyyatları və parametrləri təsvir edir.
@@ -17,11 +16,13 @@ Mövcud Iroha 3 iş axınında, `genesis.json` texniki manifesto şəbəkə baş
 Bir blokçeyn genesis texniki manifesti aşağıdakıları təyin edə bilər:
 
 - `chain` zəncir identifikatoru üçün
+- manifestdəki hesab yazılışlarını kodlamaq üçün istifadə olunan I105 şəbəkə prefiksi üçün `chain_discriminant`
 - `executor` ixtiyari icraçı təkmilləşdirmə bytecode yolu üçün
 - `ivm_dir` üçün IVM kitabxanaları tetikleyicilər və yeniləmələr tərəfindən istifadə olunur
 - `consensus_mode` texniki manifesto tərəfindən elan edilmiş ilkin rejim üçün
 - `transactions` sifariş edilmiş parametr yeniləmələri, təlimatlar, tetikleyicilər və topologiya üçün
-- `crypto` ilkin kripto nöqtə-vaxt məlumat baxışı üçün
+- imzalanmış Sumeragi hündürlük konteksti parametrləri üçün `sumeragi_context`
+- zəncirin qəbul etdiyi, `allowed_algorithms` daxilində sadalanan dəqiq imzalama və nəzarətçi alqoritmləri üçün `crypto_admission_policy`
 
 `transactions` daxilində, topologiya qeydləri şəbəkə həmyaşıd id-lərini və PoPs birlikdə qoşur:
 
@@ -34,16 +35,17 @@ Bir blokçeyn genesis texniki manifesti aşağıdakıları təyin edə bilər:
 
 ## Texniki manifest yaradın {#generate-a-manifest}
 
-Şablon yaratmaq üçün Kagami-dən istifadə edin:
+Şablon yaratmaq üçün Kagami istifadə edin. Qəbul edilən hər alqoritm üçün `--allowed-signing` seçimini artan kanonik ardıcıllıqla təkrarlayın; Kagami buraxılmış alqoritmləri özü əlavə etmir:
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
   --consensus-mode npos \
   --ivm-dir defaults \
-  --genesis-public-key <PUBLIC_KEY> > genesis.json
+  --genesis-public-key <PUBLIC_KEY> \
+  --allowed-signing ed25519 > genesis.json
 ```
 
-İctimai SORA Nexus verilənlər məkanında, `npos` gözlənilən konsensus rejimidir. Digər Iroha 3 yerləşdirmələr hədəf profilindən asılı olaraq icazəli və ya NPoS istifadə edə bilər.
+Açıq SORA Nexus məlumat məkanı üçün gözlənilən konsensus rejimi `npos`-dur. Digər Iroha 3 yerləşdirmələri hədəf profildən asılı olaraq icazəli rejim və ya NPoS istifadə edə bilər.
 
 ## Texniki manifesti imzalayın {#sign-the-manifest}
 
@@ -59,12 +61,13 @@ cargo run -p iroha_kagami -- genesis sign genesis.json \
 
 ## `iroha3d` Tənzimləmək {#configure-iroha3d}
 
-Daimonu imzalanmış blokçeyn başlanğıc blokuna yönəldin:
+Xidmət prosesinə imzalanmış genezis blokunu və gözlənilən həşini sabitləyən faylı göstərin. Həmin faylı `kagami genesis sign --expected-hash-out` yazır və qovşaq onu həm ilk, həm də təkrar işə salınmada tələb edir:
 
 ```toml
 [genesis]
 file = "genesis.signed.nrt"
 public_key = "<PUBLIC_KEY>"
+expected_hash_file = "genesis.expected_hash"
 ```
 
 ## Əlaqəli Alətlər {#related-tools}
@@ -72,7 +75,7 @@ public_key = "<PUBLIC_KEY>"
 - `kagami genesis validate`
 - `kagami genesis normalize`
 - `kagami genesis embed-pop`
-- `kagami localnet`
+- `kagami localnet generate`
 - `cargo xtask kagami-profiles`
 
 Generatorun icrası və əmrlərin təfərrüatları üçün [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami/README.md)-a baxın.

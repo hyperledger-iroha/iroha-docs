@@ -1,7 +1,7 @@
 # Domains
 
 Domains are named namespaces registered in the `World`. In the current Iroha
-3 data model a domain is qualified by its parent dataspace, so the canonical
+3 data model a domain is qualified by its parent data space, so the canonical
 identifier is:
 
 ```text
@@ -9,13 +9,13 @@ domain.dataspace
 ```
 
 For example, `payments.universal` names the `payments` domain inside the
-`universal` dataspace.
+`universal` data space.
 
 ## Structure
 
 A registered `Domain` contains:
 
-- `id`: the dataspace-qualified `DomainId`
+- `id`: the data space-qualified `DomainId`
 - `logo`: an optional `SoraFS` URI for a domain logo
 - `metadata`: arbitrary key-value metadata
 - `owned_by`: the account that owns the domain, normally the account that
@@ -43,13 +43,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./payments-domain.intent.json \
   --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
-The intent identifies `payments.universal`, its numeric dataspace, canonical
+The intent identifies `payments.universal`, its numeric data space, canonical
 I105 owner, lease acquisition term, and current policy/payment quote guard.
 The planner endpoint is `POST /v1/aliases/setup/plan`; its returned plan is
 chain-, authority-, state-, and deadline-bound. Domain removal still uses
@@ -69,7 +69,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
   | jq -r '.items[].id'
 ```
 
-Map the public lane catalog back to dataspace aliases:
+Map the public lane catalog back to data space aliases:
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -79,29 +79,23 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
 ```
 
 Use the first command when an app needs to check whether a domain exists. Use
-the lane catalog when you need to confirm whether a dataspace is public,
-restricted, or lagging behind the core lane.
+the lane catalog to inspect the lanes associated with a data space, including
+each lane's public or restricted visibility and its synchronization status
+relative to the core lane.
 
-Domain setup is a fee-paying write. Before trying it on Taira, save the
-faucet helper from
-[Get Testnet XOR on Taira](/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)
-as `taira_faucet_claim.py`, fund the signer through the public faucet, and
-attach fee metadata:
+Domain setup is a fee-paying write. Before trying it on Taira, fund the
+signer with the prepared faucet flow in
+[Get Testnet XOR on Taira](/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira),
+then apply the plan with an explicit fee payer. The CLI quotes the exact
+fee before signing:
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
   app alias setup plan \
   --intent-file ./taira-domain.intent.json \
   --plan-file ./taira-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 

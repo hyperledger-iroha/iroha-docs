@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Performans və Ölçülər {#performance-and-metrics}
 
 Iroha performans iş yükündən, təsdiqləyici topologiyasından, şəbəkə şərtlərindən və konsensus parametrlərindən asılıdır. Buna görə də, tək bir TPS nömrəsi yalnız sabit konfiqurasiyaya malik benchmark icrası ilə əlaqələndirildiyi zaman faydalıdır.
@@ -38,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -131,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### Namizəd və Daxilolma Hüdudları {#candidate-and-ingress-bounds}
 
-Qovşaq-yerli Sumeragi sərhədlər, bir təsdiqləyicinin nə qədər namizəd və bərpa işi saxlaya biləcəyini müəyyən edir:
+Blok ölçüsü və əməliyyat hədləri imzalanmış genezisdən və təsdiqlənmiş zəncir parametrlərindən gəlir. Qovşağa məxsus yerli `[sumeragi]` parametrləri iştirak rolunu, imzalama materiallarının mühafizəsini, təhlükəsizlik qeydlərinin yollarını və sənədləşdirilmiş yerli vaxt aşımı və sinxronizasiya əvəzləmələrini əhatə edir.
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` və `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks` və `sumeragi.queues.ready_bodies`
-
-Çox kiçik sərhədlər növbə və ya yük bərpası təzyiqi yaradır; həddindən böyük sərhədlər isə saxlanılan yaddaşı və sui-istifadə edən şəbəkəyə mövcud iş miqdarını artırır Həmyaşıdı. Hər dəfə bir sərhədi dəyişdirməzdən əvvəl diaqnostikaların müəyyən zaman nöqtəsinə aid verilənlər görüntüsünü proses yaddaşı, mesaj işlənməsi və bədən çatışmazlığı göstəriciləri ilə müqayisə edin:
+Şəbəkə girişi və əməliyyat növbəsinin hədləri yerli saxlanılan işin miqdarını idarə edir. Əməliyyat həddini dəyişdirməzdən əvvəl diaqnostikanın anlıq görüntüsünü proses yaddaşı, mesaj emalı və çatışmayan gövdə metrikləri ilə müqayisə edin. Eyni şəbəkənin işə salınmalarını müqayisə edərkən imzalanmış zəncir parametrlərini dəyişməz saxlayın:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -244,7 +236,7 @@ Performans göstəricilərini yalnız onları təkrarlamaq üçün kifayət qəd
 - təsdiqləyici və müşahidəçi sayı
 - konsensus rejimi, imzalı blok kadençası və DA tərtibatı
 - dəqiq `3f + 1` komitə, kvorum və müşahidəçi siyahısı
-- `sumeragi.block`, `sumeragi.queues`, `sumeragi.limits`, şəbəkə-giriş və əməliyyat-növbəsi sərhədləri
+- imzalanmış zəncir parametrləri, yerli Sumeragi əvəzləmələri, şəbəkə girişi və əməliyyat növbəsinin hədləri
 - telemetriya profili
 - avadanlıq, saxlama və OS detallar
 - şəbəkə RTT, tərpənmə, itkilər və genişlik fərziyyələri

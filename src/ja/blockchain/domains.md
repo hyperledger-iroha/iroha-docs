@@ -1,26 +1,25 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/domains.md
-translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
+translation_source_hash: 26e8efe6c728d0f819b12e7d8257777d3d4ea272f42fabf8aec727467146500f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # ドメイン {#domains}
 
-ドメインは、`World` に登録された名前空間です。現在の Iroha 3 データモデルでは、ドメインはその親データスペースによって識別されるため、標準的な識別子は次の通りです:
+ドメインは `World` に登録される名前付きの名前空間です。現在の Iroha 3 のデータモデルでは、ドメイン名を親データスペース名で修飾するため、正規の識別子は次の形になります。
 
 ```text
 domain.dataspace
 ```
 
-例えば、`payments.universal` は `universal` データスペース内の `payments` ドメインの名前を付けます。
+例えば、`payments.universal` は `universal` データスペース内の `payments` ドメインを表します。
 
 ## 構造 {#structure}
 
 登録された`Domain`には以下が含まれます:
 
-- `id`：データスペース修飾された `DomainId`
+- `id`: データスペース名で修飾された `DomainId`
 - `logo`：ドメインロゴ用のオプションの`SoraFS`URI
 - `metadata`：任意のキーと値のメタデータ
 - `owned_by`：ドメインを所有しているアカウント、通常はそれを登録したアカウント
@@ -39,13 +38,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./payments-domain.intent.json \
   --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
-インテントは識別します `payments.universal`, それの数値データ空間、標準 I105 所有者、賃貸取得期間、そして現在のポリシー／支払い料金の価格確認ガード。プランナー API エンドポイントは `POST /v1/aliases/setup/plan`; 返されたプランはチェーンにバインドされ、トランザクションの承認が行われます アイデンティティ、ブロックチェーン台帳の状態、および期限。ドメインの削除は引き続き使用されます [`Unregister`](/ja/blockchain/instructions.md#un-register).
+このインテントは、`payments.universal`、そのデータスペースの数値識別子、正規の I105 形式の所有者、リース取得期間、現在のポリシーと支払い見積もりを検証するガードを指定します。プランナーのエンドポイントは `POST /v1/aliases/setup/plan` です。返されるプランは、チェーン、権限主体、状態、有効期限に結び付けられます。ドメインの削除には引き続き[`Unregister`](/ja/blockchain/instructions.md#un-register)を使います。
 
 ドメインを作成または削除するには、適切なドメイン管理が必要です アクティブなソフトウェアランタイムバリデータの下での許可。ドメインメタデータは以下で更新できます [`SetKeyValue` そして `RemoveKeyValue`](/ja/blockchain/instructions.md#setkeyvalue-removekeyvalue) 認可主体がそのドメインを変更する権限を持っているとき。
 
@@ -58,7 +57,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
   | jq -r '.items[].id'
 ```
 
-公開処刑レーンのカタログをデータスペースのエイリアスに戻す:
+公開レーンのカタログをデータスペースのエイリアスに対応付けます。
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -67,24 +66,17 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
     | @tsv'
 ```
 
-アプリがドメインの存在を確認する必要がある場合は、最初のコマンドを使用してください。データスペースが公開されているか、制限されているか、コア実行レーンに遅れているかを確認する必要がある場合は、実行レーンカタログを使用してください。
+アプリでドメインの存在を確認する場合は、最初のコマンドを使ってください。レーンカタログでは、データスペースに関連付けられたレーンを調べ、各レーンの可視性が公開か制限付きか、およびコアレーンに対する同期状態を確認できます。
 
-ドメイン設定は有料の書き込みです。Taira で試す前に、テストネット資金提供サービスヘルパーを[Taira でテストネット XOR を入手する](/ja/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)から`taira_faucet_claim.py`として保存し、公開テストネット資金提供サービスを通じて暗号署名者に資金を供給し、手数料メタデータを添付してください:
+ドメインの設定は、手数料が発生する書き込み操作です。Taira で試す前に、[Taira でテストネット XOR を取得する](/ja/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)に記載された、事前準備を伴うフォーセットの手順で署名者に資金を供給します。その後、手数料の支払者を明示してプランを適用します。CLI は署名前に正確な手数料を見積もります。
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
   app alias setup plan \
   --intent-file ./taira-domain.intent.json \
   --plan-file ./taira-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 

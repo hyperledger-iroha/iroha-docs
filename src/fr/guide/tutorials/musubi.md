@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 621d1795fd1c3cc62462a9a91af68fe684c0ff5293f5e77801420dc8318bac38
+translation_source_hash: 22d763aadf33d331fb9c16d3927e84e8bdb88829f3d73b974902daa8fde3c1b4
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Musubi Kotodama Paquets {#musubi-kotodama-packages}
 
 Musubi est le gestionnaire de paquets de première version pour les paquets sources Kotodama. Il résout un graphe de dépendances exact en chaîne et authentifie SoraFS les archives sources, compile et teste l'espace de travail sélectionné, construit des archives canoniques CAR, et publie des versions immuables via Iroha.
@@ -89,9 +88,9 @@ export TAIRA_ROOT=https://taira.sora.org
 curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
 ```
 
-Le catalogue fournit les identités des fournisseurs et les points de terminaison API annoncés. Obtenez auprès du fournisseur choisi l’autorisation d’opérateur correspondante. L’environnement d’exécution utilise cette clé pour demander des jetons de flux limités ; ces jetons ne sont ni des arguments de CLI ni le contenu du fichier de verrouillage.
+Le catalogue fournit les identités des fournisseurs et les points de terminaison annoncés. Obtenez auprès du fournisseur choisi l’autorisation d’opérateur correspondante. L’environnement d’exécution utilise cette clé pour demander des jetons de flux limités ; ces jetons ne sont ni des arguments de CLI ni le contenu du fichier de verrouillage.
 
-N'utilisez pas un Taira pin de validateur URL comme `url`. Les validateurs enregistrés ont le stockage intégré SoraFS désactivé. Leurs points de terminaison `https://taira-validator-{1,2,3,4}.sora.org` API acceptent l'enregistrement de pin, tandis que les lectures d'archive utilisent l'origine HTTPS du fournisseur admis sélectionné.
+N'utilisez pas un Taira pin de validateur URL comme `url`. Les validateurs enregistrés ont le stockage intégré SoraFS désactivé. Leurs points de terminaison `https://taira-validator-{1,2,3,4}.sora.org` acceptent l'enregistrement de pin, tandis que les lectures d'archive utilisent l'origine HTTPS du fournisseur admis sélectionné.
 
 ## Flux de travail local {#local-workflow}
 
@@ -209,4 +208,4 @@ Musubi utilise les instructions et requêtes V1 de première version :
 | `FindMusubiArchiveLocationsV1`                       |Lisez les emplacements d'archives finalisés pris en charge par le fournisseur.|
 | `FindMusubiAliasV1` / `FindMusubiAliasHistoryV1`     |Lisez la cible d'alias actuelle ou son historique immuable.|
 
-Torii expose la famille de routes de l'application sous `/v1/musubi/*`. Les outils MCP utilisent les noms actuels `iroha.musubi.queries.*` et `iroha.musubi.instructions.*`. Voir [Torii API points de terminaison](/fr/reference/torii-endpoints.md) et le [référence de requête](/fr/reference/queries.md) pour la carte plus large API.
+Torii expose la famille de routes de l'application sous `/v1/musubi/*`. Les outils MCP utilisent les noms actuels `iroha.musubi.queries.*` et `iroha.musubi.instructions.*`. Voir [Torii points de terminaison](/fr/reference/torii-endpoints.md) et le [référence de requête](/fr/reference/queries.md) pour la carte plus large API.

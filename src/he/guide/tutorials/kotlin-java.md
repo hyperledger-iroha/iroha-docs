@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 9388823f782eef86aedbaf141bd251dae39837957aefd224ed0cc97ba11ad97d
+translation_source_hash: f1f922b9820587cd4b599e7407698a47d468616670fee2922e4028147bc3e9b0
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # Kotlin, Android, וJava {#kotlin-android-and-java}
 
 Kotlin SDK הוא סטק הלקוח המקובל עבור יישומים של JVM ו Android. הוא חי תחת `kotlin/` במחסן של Iroha והוא מחולק על ידי פלטפורמה, כך שקוד נייד לא מקבל תלויות ב Android.
@@ -73,8 +72,8 @@ cd kotlin
 - ניהול חשבונות קנוניים וכתובת נכסים
 - בניית עסקאות, חתימה ומעטפות לא מקוונות
 - לקוחות Torii HTTP, WebSocket, ו SSE
-- דוגמאות של חתימה מרובה, מחתום, SoraFS, Nexus ו- Connect
+- דוגמאות של חתימה מרובה, מחתום, SoraFS, SORA Nexus ו- Connect
 - Android אינטגרציות טלמטריה של מחסן מפתח ומכשיר
 - Android תחבורה מקוונת QR, קרובה NFC
 
-לעיון ב־APIs ייחודיים למודולים ובפקודות הבנייה המדויקות, ראו את [קובץ README של Kotlin SDK](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/kotlin/README.md).
+לפרטים על APIs ייעודיים לכל מודול ועל פקודות הבנייה המדויקות, ראו [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/kotlin/README.md).

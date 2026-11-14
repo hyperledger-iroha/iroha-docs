@@ -18,7 +18,7 @@ translation_engine: nllb-200-ct2
 pnpm refresh:iroha --source /path/to/iroha
 ```
 
-זרימת העבודה `etc/refresh-iroha.ts` המודפסת בדיקת מקור נקי לעומת `provenance/iroha.json`, מגדירה את `/src/snippets` ואת תמונת ההצלחה Torii OpenAPI ומעדכנת את האש SHA-256. בדוק יחד את התוכן והשינויים בהיקף. ההתקנה הרגילה של התלות והבונים VitePress צורכים את הקבצים המזוהרים מבלי להביא ענף משתנה .
+תהליך העבודה `etc/refresh-iroha.ts`, השמור במאגר, מאמת את עותק המקור הנקי מול `provenance/iroha.json`, מייצר מחדש את `/src/snippets` ואת תמונת המצב של Torii OpenAPI, ומעדכן גיבובי SHA-256. סקרו יחד את שינויי התוכן ואת שינויי נתוני המקור. התקנת תלויות רגילה ובניות VitePress משתמשות בקבצים השמורים במאגר בלי למשוך ענף שניתן לשינוי.
 
 ## כולל חתיכות {#including-snippets}
 

@@ -1,9 +1,9 @@
 ---
 translation_locale: he
 translation_source: /reference/norito.md
-translation_source_hash: 810f4378316f4717dee1be4aeffb07e27e81e47735e8031edff775818a48bf48
+translation_source_hash: 0446444ac147b80efcf1d0d07610ad7c81e6f02fb308fe032b8f213afe15bc74
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
 # Norito {#norito}
 
@@ -20,7 +20,7 @@ Norito היא שכבת הסריאליזציה הקנונית של Iroha. זהו 
 | תגובות בעלות טיפוס של Torii | נקודות קצה התומכות בתגובות בינאריות בעלות טיפוס משתמשות ב־`Accept: application/x-norito`. |
 | SDKs | לקוחות Rust, ‏Python, ‏JavaScript, ‏Kotlin/Java, ‏Swift ו־Android משתמשים בבונים או בכריכות של Norito במקום להרכיב בתים ידנית. |
 | אחסון Kura | מטעני בלוקים, קובצי צד לשחזור, רשימות עמיתים וסמני commit נשמרים כנתונים הממוסגרים ב־Norito. |
-| מניפסטים | מניפסטים של Nexus, זמינות נתונים, SoraFS, הזרמה וממשקי אפליקציה משתמשים ב־Norito כאשר יש לחתום על המניפסט או לגבב אותו. |
+| מניפסטים | מניפסטים של SORA Nexus, זמינות נתונים, SoraFS, הזרמה וממשקי אפליקציה משתמשים ב־Norito כאשר יש לחתום על המניפסט או לגבב אותו. |
 | הזרמה | Norito Streaming משתמש במניפסטים של Norito, בכותרות מקטעים, במסגרות בקרה ובנתוני בדיקה לתאימות. |
 
 Norito אינה שפה לחוזים חכמים. זוהי המעטפת הדטרמיניסטית וה־codec הנושאים עסקאות, קריאות לחוזים, מניפסטים ומטעני API בעלי טיפוס.
@@ -199,11 +199,11 @@ Norito Streaming מרחיב את אותה גישה דטרמיניסטית למד
 - [נקודות קצה של Torii](/he/reference/torii-endpoints.md)
 - [הפניה ל־Genesis](/he/reference/genesis.md)
 - [סכמת מודל הנתונים](/he/reference/data-model-schema.md)
-- [SDK ל־JavaScript / TypeScript](/he/guide/tutorials/javascript.md)
-- [SDK ל־Python](/he/guide/tutorials/python.md)
+- [JavaScript / TypeScript SDK](/he/guide/tutorials/javascript.md)
+- [Python SDK](/he/guide/tutorials/python.md)
 - [SDK ל־Swift ול־iOS](/he/guide/tutorials/swift.md)
 
 ## הפניות למקור {#upstream-references}
 
 - [מפרט הפורמט של Norito](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/norito.md)
-- [README של crate ‏Norito](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/norito/README.md)
+- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/norito/README.md)

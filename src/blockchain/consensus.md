@@ -21,7 +21,7 @@ reproduced the same result and signed the commit certificate.
 Sumeragi runs the ledger forward one block height at a time. At each height,
 one validator acts as proposer for the current view. The proposer drains
 eligible transactions from the queue, builds a candidate block, and announces
-the proposal to the active validator set.
+the proposal to the active validator set. Idle chains produce no empty blocks.
 
 The same Sumeragi pipeline is used in both permissioned and Nominated
 Proof-of-Stake (NPoS) deployments:
@@ -55,7 +55,8 @@ The first-release protocol admits only an exact `3f + 1` voting committee,
 from 4 through 31 validators. Valid sizes are therefore 4, 7, 10, and so on,
 up to 31. For `n = 3f + 1`, the Byzantine fault budget is `f` and the commit
 quorum is `2f + 1`. Genesis generation and startup validation reject any other
-committee geometry.
+committee geometry. Every PrepareQC, CommitQC, and TimeoutCert carries exactly
+`q = n - f` equal validator votes; signer supersets are rejected.
 
 Observer peers can synchronize committed blocks, but they do not propose,
 vote, or count toward the commit quorum. Use observers when a
@@ -82,15 +83,16 @@ applies the block to the world state and Kura.
 The selected mode controls how the validator set is formed and operated. It
 is declared in signed genesis through
 [`consensus_mode`](/reference/genesis.md) and frozen into each height context.
-Local `[sumeragi]` configuration selects only the node role and finite block,
-queue, runtime, storage, and key-policy limits; it cannot override the mode or
-block cadence. Validators need the same signed genesis, topology, trusted peer
+Local `[sumeragi]` configuration selects the node role, signing custody,
+safety-record paths, and documented timeout and synchronization overrides.
+Block and transaction limits, consensus mode, and cadence come from signed
+genesis and committed state. Validators need the same signed genesis, topology, trusted peer
 data, and effective Sumeragi parameters.
 
 | Mode         | Best fit                                                                               | Validator set                                                                                                      | Operational focus                                                                                          |
 | ------------ | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
 | Permissioned | Private, consortium, and operator-managed networks                                     | Validators come from the trusted peer topology agreed by the deployment                                            | Keep all validators on the same signed genesis, trusted peers, peer keys, and Sumeragi parameters          |
-| NPoS         | Public or Nexus-oriented networks where validation follows nomination and stake policy | Validators are selected by the NPoS profile, usually across epochs, and require BLS keys plus Proofs-of-Possession | Keep stake snapshots, signed epoch and election inputs, validator PoPs, and immutable block cadence aligned across the network |
+| NPoS         | Public or SORA Nexus-oriented networks where validation follows nomination and stake policy | Validators are selected by the NPoS profile, usually across epochs, and require BLS keys plus Proofs-of-Possession | Keep stake snapshots, signed epoch and election inputs, validator PoPs, and immutable block cadence aligned across the network |
 
 ::: tip Permissioned mode
 
@@ -118,56 +120,47 @@ the stake or nomination state that feeds the next roster.
 
 ## Multilane consensus
 
-Iroha's multilane consensus path is implemented through Nexus lane and
-dataspace configuration. It does not start a separate consensus instance
-for each lane. Sumeragi still finalizes one ordered block stream; lanes
-describe how transactions are routed, scheduled, accounted for, and stored
-inside that stream.
+Data spaces define environments for data, authority, policy, and applications.
+Their lanes add dissemination and certification capacity. The catalogs are
+separate: `nexus.dataspace_catalog` defines data spaces, and
+`nexus.lane_catalog` defines lanes that each reference one data space. Several
+lanes may share the same data space.
 
-The runtime configuration builds three pieces of lane state:
+For public global execution, lane `0` is sequenced by the global Sumeragi
+instance. Each other active lane incarnation runs a separate instance of the
+same Sumeragi core with its pinned committee and consensus parameters. Its
+certified block contains an ordered transaction batch checked for admission
+against a committed global anchor. Lane certification does not mutate the
+global State.
 
-- `nexus.lane_catalog`: the configured lanes, each with a numeric `LaneId`,
-  alias, dataspace, visibility, storage profile, proof scheme, and
-  metadata.
-- `nexus.dataspace_catalog`: the configured dataspaces, each with a numeric
-  `DataSpaceId` and a fault-tolerance value used for relay committee
-  sizing.
-- `nexus.routing_policy`: the default lane/dataspace pair and ordered routing
-  rules that can match accounts or instruction paths.
+The global chain merges the next contiguous certified blocks from each lane.
+Executing the resulting global block applies those transactions in canonical
+order, and the global CommitQC finalizes that execution. A lane certificate
+alone is therefore insufficient to claim that a transaction changed global
+State. Lane identity, incarnation, anchor freshness, source custody, and
+contiguous merge frontiers remain checked throughout recovery and execution.
 
-When a transaction enters the queue, the lane router resolves it to a
-`RoutingDecision { lane_id, dataspace_id }`. In single-lane mode this is
-always lane `0` and the universal dataspace. In Nexus mode, the configured
-router applies dataspace-scoped rules, settlement routing, account rules,
-explicit routing rules, and finally the default route. The resolved lane
-and dataspace must exist in their catalogs, and the lane must be bound to
-the resolved dataspace; otherwise the transaction is rejected before it is
-queued.
+The committed `sumeragi_lane_policy` governs fixed lanes, routes, committees,
+and autoscaling. A configuration catalog alone does not activate a consensus
+lane. Concrete data space targets must resolve to an admitted matching lane;
+an unavailable private route is rejected instead of being executed as
+universal work. Complete control-plane batches route through lane `0` so
+catalog and activation transitions can progress.
 
-The queue keeps this routing decision with the transaction hash so that
-later stages do not have to infer it again. Proposal construction then uses
-the lane metadata in two ways:
+An independently signed data space root is a separate execution boundary with
+its own State and local finality. Registering a data space catalog entry does
+not create that root. Cross-root atomicity uses the separate AMX protocol.
+Monetary and whole-network qualification for that path remains open in the
+pinned candidate.
 
-- It interleaves transactions by lane so one lane does not dominate the
-  block just because its transactions were queued first.
-- It applies per-lane transaction execution unit (TEU) limits. Transactions
-  that would exceed a lane's configured capacity are deferred and requeued,
-  except that the first overweight transaction for a lane can be admitted
-  to avoid livelock.
-
-During candidate preparation, Sumeragi aggregates the proposed payload by lane
-and dataspace and derives the lane-local data-availability identities. The
-recorded totals include transaction count, chunks, payload bytes, and TEU.
-After commit, those totals become the lane and dataspace commitment snapshots
-exposed through authenticated Sumeragi diagnostics. If a
-block contains lane settlement receipts, block processing also creates lane
-settlement commitments and relay envelopes that bind the block header,
-commit certificate, data-availability commitment hash, settlement proof,
-and lane payload size.
+See the pinned [lane implementation](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_core/src/sumeragi/lanes/mod.rs),
+[lane contract](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/sumeragi_lanes.md),
+[independent data space contract](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/sumeragi.md),
+and [qualification status](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/sumeragi_goals.md).
 
 ## Data availability and payload recovery
 
-Sumeragi v2 carries global payload availability through signed RS16
+Sumeragi V1 carries global payload availability through signed RS16
 `PayloadManifest` and `PayloadChunk` messages. The leader sends the signed
 manifest to the full committee and initially distributes deterministic chunks
 to Set A. A validator can Prepare-vote only after reconstructing the canonical
@@ -176,11 +169,10 @@ completing deterministic validation. If the fast path stalls, recovery expands
 chunk delivery to Set B. Certified-body recovery and block sync provide the
 bounded recovery path when a peer learns finality before receiving the body.
 
-Multilane execution additionally derives a deterministic payload-ownership
-hash and lane-local RBC instance hash for each lane subject. Those identities
-bind lane proposals and certificates to the global carrier; they are not a
-separate global consensus session. A block still finalizes only when the peer
-has a valid commit certificate and the matching payload locally.
+Each lane instance uses its own authenticated availability and certificate
+context. Global merge checks bind its certified batch and original payload to
+the expected incarnation and anchor. A peer applies global finality only with
+the matching global payload and valid CommitQC locally available.
 
 Use the authenticated operator surfaces rather than a separate RBC endpoint:
 
@@ -188,7 +180,7 @@ Use the authenticated operator surfaces rather than a separate RBC endpoint:
   reports the authoritative height, view, phase, certificates, and liveness
   state.
 - `iroha --operator-private-key-file <path> --output-format text ops sumeragi diagnostics`
-  reports non-authoritative queue, pipeline, NPoS, lane, and dataspace
+  reports non-authoritative queue, pipeline, NPoS, lane, and data space
   diagnostics, including lane payload ownership.
 - Prometheus signals such as `sumeragi_missing_block_requests`,
   `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`,
@@ -197,8 +189,6 @@ Use the authenticated operator surfaces rather than a separate RBC endpoint:
   handling; see
   [Performance and metrics](/guide/advanced/metrics.md).
 
-Kura uses the derived lane configuration for storage layout. Each lane
-receives deterministic storage names such as `blocks/lane_000_core` and
-`merge_ledger/lane_000_core_merge.log`; lane lifecycle changes can
-provision, retire, or relabel those segments without changing the global
-block order.
+Lane block stores retain the certified batches and source records needed for
+merge and recovery. Their lifecycle follows the committed lane incarnation;
+a storage-directory name does not authorize a new lane or execution root.

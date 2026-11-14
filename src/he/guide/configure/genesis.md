@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /guide/configure/genesis.md
-translation_source_hash: a6b8b2b02e0074e6c90d9aa9337af3e2496a02beb2f57f575dc0780014df04b2
+translation_source_hash: 91be089c82a76991e35a43e1541f9e069fdf70d3fb5de2492b985c06c78a2372
 translation_status: machine-validated
-translation_engine: google-translate
+translation_engine: google-translate+reviewed-delta+reviewed-first-release-source-amendment
 ---
-
 # רֵאשִׁית {#genesis}
 
 בראשית מגדיר את מצב השרשרת הראשוני.המקור הניתן לעריכה הוא א JSON לְהַפְגִין, ו- Iroha 3 צומת צורך סימן Norito קובץ עסקה.
@@ -18,25 +17,26 @@ translation_engine: google-translate
 
 ## קבצים {#files}
 
-המאגר במעלה הזרם שולח מניפסט ברירת מחדל ב `defaults/genesis.json`. Kagami רשתות שנוצרו כותבות את המניפסט שלהן ועסקאות חתומות אליהן ספריית הפלט:
+מאגר המקור מספק תבנית ברירת מחדל ב־`defaults/genesis.template.json`. תבנית היא מסמך לא שלם שאי אפשר לאמת, לחתום עליו או להשתמש בו בצומת עד ש־`kagami genesis materialize` הופך אותו למניפסט. רשתות שנוצרו ב־Kagami כותבות את המניפסט ואת העסקה החתומה שלהן לתיקיית הפלט:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 הנוצר `README.md` בספרייה זו מתעד את הקבצים המדויקים והשקה פקודות עבור הפרופיל שנבחר.
 
 ## תצורת צמתים {#peer-configuration}
 
-צמתים מצביעים על עסקת בראשית החתומה ב- `[genesis]` סעיף של `config.toml`:
+העמיתים מפנים לעסקת ה־genesis החתומה במקטע `[genesis]` של `config.toml`, ומקבעים את הגיבוב הצפוי שלה בקובץ נפרד:
 
 ```toml
 [genesis]
 file = "./genesis.signed.nrt"
 public_key = "ed0120..."
+expected_hash_file = "./genesis.expected_hash"
 ```
 
-כל הצמתים ברשת חייבים להסכים על עסקת הבראשית החתומה ועל מפתח ציבורי בראשית.
+כל העמיתים ברשת חייבים להסכים על עסקת ה־genesis החתומה ועל המפתח הציבורי של ה־genesis. קובץ הגיבוב הצפוי נדרש בהפעלה ראשונית ובהפעלה מחדש; `kagami genesis sign --expected-hash-out` כותב אותו.
 
 ## חותם בראשית {#signing-genesis}
 
@@ -46,13 +46,14 @@ public_key = "ed0120..."
 cargo run --bin kagami -- genesis validate ./genesis.json
 cargo run --bin kagami -- genesis sign ./genesis.json \
   --private-key-file "$GENESIS_PRIVATE_KEY_FILE" \
-  --out-file ./genesis.signed.nrt
+  --out-file ./genesis.signed.nrt \
+  --expected-hash-out ./genesis.expected_hash
 ```
 
 `GENESIS_PRIVATE_KEY_FILE` חייב להיות מצב של בעלים-`0600`, קישור יחיד קובץ רגיל המכיל multihash אחד עם מפתח פרטי קנוני וסופי קו חדש. Kagami דוחה קישורים סמליים ולעולם לא מקבל הודעה פרטית גולמית מקש בשורת הפקודה.
 
-עבור NPoS או Nexus פרופילים, כוללים את הטופולוגיה ו BLS הוכחות החזקה נדרש על ידי הפרופיל שנוצר. Kagami `localnet`, `wizard`, ופרופיל פקודות הדור מטפלות בפרטים אלו באופן אוטומטי.
+עבור פרופילי NPoS או SORA Nexus, כללו את הטופולוגיה ואת הוכחות ההחזקה ב־BLS שהפרופיל שנוצר מחייב. פקודות Kagami ‏`localnet generate`, ‏`wizard` ו־`sora-network generate` מטפלות בפרטים האלה אוטומטית.
 
 ## מתחייבים מחדש בראשית {#recommitting-genesis}
 
-צומת מבצע בראשית רק כאשר האחסון שלו ריק.כדי לבדוק בראשית חדשה ב רשת מקומית חד פעמית, עצור את הצמתים, הסר את ספריית המצב שנוצרה שלהם, ולהתחיל מהבראשית החתום החדשה.אל תחליף בראשית בריצה רשת אלא אם כל מאמת מתאם את אותה הגירה.
+רשת חדשה מתחילה מנתוני הראשית החתומים שלה. כדי לבדוק נתוני ראשית אחרים ברשת מקומית חד־פעמית, עצרו את העמיתים, הסירו את ספריית המצב שנוצרה עבורם והתחילו מנתוני הראשית החתומים החדשים. רשת פועלת לעולם אינה רשאית להחליף את נתוני הראשית כמנגנון שדרוג. שינויים בהגדרות הפרוטוקול מחייבים מעברי בחירה הנשלטים בידי הממשל והסמכה עבור ההגדרות וההתחייבויות שנבחרו.

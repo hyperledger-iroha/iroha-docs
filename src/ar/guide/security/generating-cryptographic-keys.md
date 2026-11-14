@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
+translation_source_hash: b6e3bd79c50ea326930ac978350ea4beac8294b6f045ac0084aada257754ffa1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # توليد المفاتيح التشفيرية {#generating-cryptographic-keys}
 
 استخدم `kagami keys` لإنشاء مواد مفاتيح العميل، ونظير الشبكة، والمحقق لـ Iroha 3.
@@ -18,7 +17,7 @@ translation_engine: bing-translator-llm
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-يجب أن يكون الدليل الرئيسي موجودًا بالفعل. يجب أن يكون الهدف جديدًا أو مملوكًا بالفعل للمستخدم الحالي، بالوضع `0700`، خاليًا من الروابط الرمزية، وفارغًا. `kagami` يكتب `public.key` و`private.key` بالوضع `0600` ولا يطبع المواد الرئيسية. مع `--pop`، يكتب أيضًا `pop.hex`.
+يجب أن يكون الدليل الأب موجودًا بالفعل. ويجب ألا يكون الهدف موجودًا: يرفض Kagami حتى الدليل الموجود الفارغ. ينشئ الهدف بالأذونات `0700` مع فحوص نظام ملفات تقصر الوصول على المالك، ويرفض الروابط الرمزية. يكتب `kagami` الملفين `public.key` و`private.key` بالأذونات `0600` ولا يطبع مواد المفاتيح. وعند استخدام `--pop` يكتب `pop.hex` أيضًا.
 
 `--out-dir` يفشل في الإغلاق على المنصات حيث لا يمكن لـ Kagami فرض قواعد نظام الملفات الخاصة فقط بالمالك. ملف المفتاح الخاص هو تصدير غير مشفر، وليس جهاز توقيع تشفير الإنتاج المادي أو غير القابل للتصدير. قم باستيراده إلى حدود الحفظ المعتمدة وأزل التصدير وفقًا لإجراءات النشر.
 

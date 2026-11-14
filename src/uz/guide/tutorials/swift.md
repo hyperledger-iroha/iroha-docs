@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
+translation_source_hash: 37e8be9b07a40e5c6b841a47b016320e42079853433fb3e53937e4021dc1304f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Swift va iOS {#swift-and-ios}
 
 Yuqori oqimdagi ish maydoni taqdim etadigan Swift SDK — `IrohaSwift/` ichidagi `IrohaSwift` Swift paketi. Uning paket manifesti uchta kutubxona mahsulotini — `IrohaSwift`, `IrohaSwiftMobileTransports` va `IrohaSwiftTransferUI` — belgilaydi hamda Swift 5.9 vositalari bilan iOS 15+ va macOS 12+ ni nishonga oladi.
@@ -161,7 +160,7 @@ Swift manbai hozirda quyidagilarni o'z ichiga oladi:
 - Ed25519, secp256k1, ML-DSA, BLS, GOST va SM2 imzolash yuzalari, agar kerak bo'lsa, mahalliy ko'prikni qo'llab-quvvatlash
 - bozor va anonim depozit uchun mahalliy eskrov yo'l-yo'riqlari yordamchi yukni qurishchilar
 - WebSocket, ramka, kripto, seans, navbat, takrorlash va tashxis yordamchilari bilan bog'laning
-- Kagemusha tayyorligi, tiklangan to'ldirish va to'lov, operatsion holat, yozuv, tugunlar to'plami, rasvot va QR oqim modeli
+- KAGEMUSHA V1 wire yordamchilari va nativ hamyonning Advance provayderi, ro‘yxatdan o‘tish, tiklash hamda ruxsat etilgan almashinuv chaqiruvlari uchun iPhone platforma adapteri
 - SoraFS, ma'lumotlar mavjudligi va tasdiqlovchi ilovalar yordamchilari
 
 ## API Misollar {#api-examples}

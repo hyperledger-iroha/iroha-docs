@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/tutorials/python.md
-translation_source_hash: d0ecbade221ceba455730e80c6e12db930c65a4cbcf9e643c1c2d4cba47b0940
+translation_source_hash: bd9ff4a38229cbdabbd77e21fe31a770f9213341d7db73a75ed0bd914c761849
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # Python {#python}
 
@@ -1025,26 +1025,6 @@ client = create_torii_client(
 )
 ```
 
-## 卡蓋穆沙的準備 {#kagemusha-readiness}
-
-其他 Python SDK 能查詢電流 JSON 準備路線透過其通用 Torii 要求助理:
-
-```python
-ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
-
-readiness = client.request_json(
-    "GET",
-    "/v1/offline/readiness",
-    params={"asset_definition_id": ASSET_DEFINITION_ID},
-    headers={"Accept": "application/json"},
-    expected_status=(200,),
-)
-print(readiness["ready"])
-print(readiness["blockers"])
-```
-
-Python 尚未提供具型別的 Kagemusha 儲值或贖回封存建構器。請使用具型別的 Swift 或 JVM 錢包建構規範 V4 封存，然後透過受支援的 Kagemusha Torii 用戶端提交並輪詢。
-
 ## 訂閱 {#subscriptions}
 
 `iroha_python.ToriiClient`使用的共享 Torii 客戶端繼承了訂閱閱閱和草案構建器.每個突變都使用繫結請求正文的規範帳戶簽名予以准入,並返回未簽署的交易草案. Torii 從來沒有接受私鑰,也不為您提交草案.
@@ -1299,7 +1279,7 @@ if connect_status is not None:
 
 ## SoraFS,UAID 和 Kaigi 的輔助人員 {#sorafs-uaid-and-kaigi-helpers}
 
-當目標節點暴露相應的 Nexus/SORA 端點時,這些輔助器可用.將空清單視為有效的響應:公眾 Taira 可能會在沒有樣本表或 UAID 的資料的情況下啟用路線.
+當目標節點提供相應的 SORA Nexus 端點時，即可使用這些輔助工具。空清單也是有效回應：公開 Taira 可能已啟用路由，但沒有範例清單或 UAID 對應的資料。
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
@@ -1356,7 +1336,7 @@ Python SDK 已經包括以下型別的助手:
 - 為常見 ISI 和特定域的擴充套件型別指令構建器
 - 交易草案,清單,簽署和簽署的交易封裝工作流程
 - 現場事件流和具型別過濾器;提交的區塊流提供完整的歷史記錄
-- 一般Kagemusha準備訪問和 Torii 訂閱輔助員;打字補充和贖回構建者不暴露
+- Torii 訂閱讀取與未簽署交易草稿建構器
 - 帳戶地址,全演算法簽字輔助器,多個雜湊回來旅行, SM2, GOST, ML-DSA, BLS 以及機金鑰處理
 - 連線 URIs,會議,框架,加密輔助器和登錄檔管理員
 - 當節點提供相應功能時，用於治理、執行階段升級、Sumeragi、節點管理、SoraFS、UAID 和 Kaigi 端點的封裝器

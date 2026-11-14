@@ -1,9 +1,9 @@
 ---
 translation_locale: hy
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: d7edc74d06a9481123156520d7774e26d1790fee657607031d180aea172d9a98
+translation_source_hash: 5fb7abd4e152ece715a8337e8ef8e75330f634d2a1b26e0c5bd8308f1f3793a9
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # Գործարկել Iroha 3 միջոցով CLI {#operate-iroha-3-via-cli}
 
@@ -31,16 +31,22 @@ cargo run --bin iroha -- --config ./localnet/client.toml --help
 
 CLI կազմակերպվում է հետեւյալ բարձր մակարդակի հրամանատարական խմբերի մեջ.
 
-- `account` հաշիվային ուղղված կարճատեւների համար
-- `tx` գործարքային մակարդակի օգնականների համար
+- `account`՝ հաշվի ընթերցումների և փոփոխությունների համար
+- `explorer`՝ ընդհանուր զտիչներով և էջավորմամբ բլոկների դիտարկիչի հոսքերի համար
+- `tx`՝ գործարքի վիճակի և գործարքների օգնականների համար
 - `ledger` հաշվապահական գրասենյակի համար
+- `trigger`՝ գործարկիչների ընթերցման, գրառման և կատարման համար
 - `ops` օպերատորի ախտորոշման համար
 - `app` հավելվածի API օգնականների համար
-- `contract` պայմանագրային տեղակայման եւ հրավիրումների համար
+- `contract`՝ պայմանագրի կանչերի, դիտումների և տեղային վրիպազերծման համար․ տեղակայեք `kagami contract deploy` կամ `musubi deploy`-ով
 - `tools` ախտորոշման եւ զարգացման համար նախատեսված ծառայություններ
-- `taira`՝ Taira եւ Nexus ուղղված աշխատանքային հոսքերի համար
+- `dataspace`՝ տվյալների տարածքի սահմանումը պլանավորելու, կիրառելու և ուսումնասիրելու համար
+- `taira`՝ Taira ախտորոշման և հաշվի սկզբնական պատրաստման համար
+- `offline`՝ անցանց կոդավորիչների, հաշվետվությունների և ախտորոշման համար
+- `soracloud`՝ Soracloud հավելվածային հարթակի օգնականների համար
+- `sccp`՝ SORA Cross-Chain Protocol ընթերցումների, փոխանցումների և ապացույցների համար
 
-`ledger` խումբը պարունակում է նաեւ դոմեյնային հատուկ գործարքների օգնականներ, ինչպիսիք են `ledger transaction`.
+Գործարք ուղարկող յուրաքանչյուր հրաման պահանջում է բացահայտ վճարող, օրինակ՝ `--fee-payer authority`․ CLI-ն ստորագրելուց առաջ հաշվարկում և ցույց է տալիս ճշգրիտ վճարը։
 
 Օգտագործեք `--output-format text` մարդու համար ընթերցելի օպերատորի արտադրանքի եւ `--machine` խիստ ավտոմատացման ռեժիմի համար:
 
@@ -55,7 +61,7 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-`universal` տվյալների տարածքում հանրային տիրույթները ցուցադրեք.
+Թվարկեք `universal` տվյալների տարածքի հանրային տիրույթները՝
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
@@ -75,32 +81,30 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=10' \
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-Ստեղծեք `taira.client.toml` միայն այն ժամանակ, երբ պատրաստ եք փորձարկել ստորագրված հրամանները: Նայեք [SORA Nexus Տվյալների տիրույթներին ](/hy/get-started/sora-nexus-dataspaces.md) ՝ կոնֆիգավորման, faucet եւ կանարի հոսքի համար: Մի գործադրեք գրելու հրամաններ Taira- ի դեմ, մինչեւ հաշիվը ֆինանսավորվի ջրահեղի վճարային ակտիվով.
+`taira.client.toml` ստեղծեք միայն այն ժամանակ, երբ պատրաստ եք փորձարկել ստորագրված հրամաններ։ Կարգավորման, փորձնական միջոցների ստացման և սկզբնական աշխատունակության փորձարկման հոսքի համար տես [Միանալ SORA Nexus տվյալների տարածքներին](/hy/get-started/sora-nexus-dataspaces.md)։ Taira-ի դեմ գրառման հրամաններ մի՛ գործարկեք, մինչև հաշիվը ֆինանսավորվի ծառայության տրամադրած վճարային ակտիվով։
 
-Ցանկացած վճարովի Taira CLI օրինակ, պահեք faucet օգնականը [Ստանալ թեստային ցանցի XOR Taira-ում](/hy/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) որպես `taira_faucet_claim.py`, ապա նախ պահանջեք testnet XOR:
+Ցանկացած վճարովի Taira CLI օրինակի համար ֆինանսավորեք ստորագրող հաշիվը [Ստանալ փորձնական XOR Taira-ում](/hy/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) բաժնի նախապես պատրաստվող միջոցների ստացման հոսքով, ապա ստուգեք մնացորդը․
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-Եթե faucet հանելուկը կամ պահանջի երթուղին վերադարձնում է `502`, սպասեք եւ կրկին փորձեք: Դա հանրային թեստնետի մատչելիության խնդիր է, այլ ոչ թե հաշիվի բանալիների վերականգնման ազդանշան:
+Եթե փորձնական միջոցների տրամադրման երթուղին վերադարձնում է `502`, սպասեք և կրկին փորձեք։ Դա հանրային փորձնական ցանցի հասանելիության խնդիր է, ոչ թե հաշվի բանալիները կրկին ստեղծելու ազդանշան։
 
-Բալանսը տեսանելի դարձնելուց հետո, միացրեք վճարային ակտիվի մետադատները գրելու համար.
+Մնացորդը տեսանելի դառնալուց հետո գրառումները ուղարկեք `--fee-payer authority`-ով։ CLI-ն ստորագրելուց առաջ հաշվարկում և ցույց է տալիս ճշգրիտ վճարը՝ Taira-ի վճարային ակտիվով․
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg "hello from faucet-funded taira"
+  --fee-payer authority \
+  tx ping --msg "hello from faucet-funded taira"
 ```
 
 ## 4. Ռեեստրի հիմնական հրամանները {#_4-basic-ledger-commands}
@@ -108,7 +112,7 @@ iroha --config ./taira.client.toml \
 Ցուցադրել բոլոր տիրույթները.
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 Սովորական տիրույթի ստեղծումը օգտագործում է հայտարարական alias պլանավորիչը. `ledger domain` հրամանը չունի `register` ենթհրամանատար: Նախապատրաստեք գաղտնիքազերծված `AliasSetupPlanRequestV1` մտադրություն `docs.universal` ՝ ձեր SDK կամ ներբորդման ծառայության միջոցով, ապա պլանավորել եւ կիրառել այն:
@@ -119,16 +123,16 @@ cargo run --bin iroha -- --config ./localnet/client.toml \
   --intent-file ./docs-domain.intent.json \
   --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./localnet/client.toml \
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./docs-domain.plan.json
 ```
 
-Intent- ը փայլում է տվյալների տարածքը ID, կանոնիկ սեփականատերերի հաշիվը, վարձակալության ժամկետը եւ ընթացիկ կոտաժի պահպանումը: Պլանավորողը ստուգում է կենդանի վիճակը եւ վերադարձնում է հստակ ատոմային `EnsureAlias` ծրագիրը ներկայացնելու համար: Մի ձեռքով պատճենեք այլ ցանցից պահպանումի արժեքները.
+Մտադրությունն ամրագրում է տվյալների տարածքի ID-ն, կանոնական սեփականատեր հաշիվը, վարձակալության ժամկետը և ընթացիկ գնառաջարկի ստուգման պայմանը։ Պլանավորողը ստուգում է գործող վիճակը և վերադարձնում ուղարկվելիք ճշգրիտ ատոմային `EnsureAlias` պլանը։ Ստուգման պայմանների արժեքները ձեռքով մի՛ պատճենեք մեկ այլ ցանցից։
 
 Հեռացրեք մի պարզ պինգ գործարք.
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger transaction ping --msg "hello from iroha"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority tx ping --msg "hello from iroha"
 ```
 
 Կարդացեք վերջին բլոկը կամ բաժանորդագրվեք բլոկի իրադարձություններին.
@@ -140,10 +144,10 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 
 ## 5. Օպերատորի հրամանատարներ {#_5-operator-commands}
 
-Համաձայնության օպերատորի հրամանները պահանջում են թույլատրելի ցուցակում գտնվող վազման բանալին: Պահպանեք այն `client.toml` եւ բացարձակապես փոխանցեք միայն սեփականատիրոջ ֆայլը.
+Կոնսենսուսի օպերատորի հրամանները պահանջում են թույլատրացուցակում ներառված կատարման բանալի։ Այն մի՛ պահեք `client.toml`-ում և միայն սեփականատիրոջ համար հասանելի ֆայլը փոխանցեք բացարձակ ուղիով․
 
 ```bash
-: "${OPERATOR_KEY_FILE:=./secrets/operator.key}"
+: "${OPERATOR_KEY_FILE:=$PWD/secrets/operator.key}"
 
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \
@@ -160,13 +164,13 @@ cargo run --bin iroha -- \
   --output-format text ops sumeragi diagnostics
 ```
 
-Բարձրագույն եւ փակ քվորումի վկայականներ.
+Հաստատված կոնսենսուսի գոտիները և այս հանգույցի օրինակի վիճակը՝
 
 ```bash
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format text ops sumeragi qc
+  --output-format text ops sumeragi lanes
 ```
 
 Շղթայի վրա համաձայնության պարամետրեր.
@@ -185,8 +189,8 @@ cargo run --bin iroha -- \
 - [Աշխատել Iroha բինարների հետ](/hy/reference/binaries.md)
 - [CLI README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/README.md)
 
-Որպեսզի վերականգնել ամբողջ Markdown օգնության snapshot աղբյուրի ստուգման, գործարկել:
+Աղբյուրի պատճենից ամբողջական Markdown օգնության ակնթարթային պատկերը արտածելու համար գործարկեք․
 
 ```bash
-cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md
+cargo run -p iroha_cli --bin iroha -- tools markdown-help > iroha-cli-help.md
 ```

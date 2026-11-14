@@ -1,9 +1,9 @@
 ---
 translation_locale: ba
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # Деployment проблемаларын хәл итеү {#troubleshooting-deployment-issues}
 
@@ -14,7 +14,7 @@ translation_engine: nllb-200-ct2
 Урындағы һәм һынау эштәрен башҡарыу өсөн Kagami тарафынан сығарылған артефакттарҙы ҡулдан яҙылған файлдар урынына өҫтөнлөк бирегеҙ:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Булдырылған каталогта пир конфигурациялары, генез материалы, старт скрипттары һәм README өсөн Iroha 3 төҙөлөш һыҙығы бар.
@@ -26,7 +26,7 @@ cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
 - `iroha3d --config <path>` пункттары үҙ файлында TOML.
 - `public_key` һәм `private_key` пир конфигурацияһында бер үк асҡыс парына ҡарай.
 - `genesis.public_key` генез операцияһына ҡул ҡуйыу өсөн ҡулланылған асҡыс менән тап килә.
-- validator һәм peer идентификаторҙары BLS-Normal асҡыстарын ҡуллана, ә `trusted_peers_pop` урындағы асҡыс һәм ышаныслы peers өсөн хужа булыуҙы иҫбатлау яҙмаларын үҙ эсенә ала.
+- валидатор тиңдәштәрҙең идентификаторҙары BLS-Normal асҡыстарын ҡуллана, ә `trusted_peers_pop` урындағы асҡыс һәм ышаныслы тиңдәштәр өсөн асҡысҡа эйә булыу иҫбатлау яҙмаларын үҙ эсенә ала.
 - Torii һәм P2P порттары башҡа процесс менән бәйле түгел.
 - Kura магазиндар каталогы бер үк сылбырға ҡарай һәм башҡа селтәр профиленән күсерелмәгән.
 
@@ -41,7 +41,7 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 Генерациялау Хәҙерге Kagami локаль селтәр сығымынан яҙыу, шуға күрә команда һыҙығы аргументтары һәм конфигурация файлдар иҫкәртелгән кодҡа тап килә:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```
@@ -57,18 +57,18 @@ docker compose -f ./docker-compose.yml up
 
 ## Кубернеттар {#kubernetes}
 
-Kubernetes өсөн һәр validator-ҙы торош һаҡлаусы инфраструктура тип ҡарағыҙ:
+Kubernetes өсөн һәр валидаторҙы торош һаҡлаусы инфраструктура тип ҡарағыҙ:
 
 - һәр бер яҡташтарына тотороҡло идентификация асҡысы һәм тотороҡһоҙ даими күләме биреү
 - P2P адрестарын асыҡларға, уларҙы башҡа пирҙары кластер эсендә хәл итә ала.
 - монтаж конфигурация һәм генез файлдар булараҡ үҙгәрешһеҙ конфигурацияһы өсөн развертывание
 - Бөтә генез йәки топология үҙгәрештәрен автоматлаштырылған конфигурация картаһын яңыртыу рәүешендә түгел, ә аңлы рәүештә файҙаланырға
 
-Әгәр модуль ҡат-ҡат яңынан эшләй башлаһа, модулдә күрһәтелгән конфигурацияны көтөлгән [`peer.template.toml`](/ba/reference/peer-config/index.md#template) менән сағыштырығыҙ һәм Peer иҫке Kura мәғлүмәтте ҡабатлаймы икәнлеген тикшерегеҙ.
+Pod ҡат-ҡат яңынан эшләһә, уның эсендә булдырылған конфигурацияны көтөлгән [`peer.template.toml`](/ba/reference/peer-config/index.md#template) менән сағыштырығыҙ һәм тиңдәштең иҫке Kura мәғлүмәттәрен ҡабат уйнауын тикшерегеҙ.
 
-## Сора профиле {#sora-profile}
+## SORA Nexus профиле {#sora-profile}
 
-Шәхси йәки урындағы Iroha 3 урынлаштырыуҙар, уларҙа Nexus, SoraFS йәки күп юллы ағымдар ҡулланыла, стандарт демоны Sora профиле менән эшләй башлай:
+SORA Nexus, SoraFS йә күп һыҙатлы ағымдар ҡулланған шәхси йәки урындағы Iroha 3 урынлаштырыуҙары стандарт демонды SORA Nexus профиле әүҙем булғанда эшләтергә тейеш:
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

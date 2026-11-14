@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/transactions.md
-translation_source_hash: 6381e93ada6191d15b11f7359e983e5c3dac49e69323b20da09959d5e04331f9
+translation_source_hash: 91c06ab61c7f8ec96554bc89b31b2f281bb3a7d7edd484defe61dcde5a3fb710
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # 交易 {#transactions}
 
 **交易**是執行區塊鏈作業的已簽署請求。其可執行的 payload 可以是依序排列的[指令](./instructions.md)、合約呼叫、IVM 位元組碼，或附帶證明的 IVM 執行。現行合約執行模型請參閱[智慧合約](./smart-contracts.md)。
@@ -39,32 +38,30 @@ curl -fsS "https://taira.sora.org/v1/explorer/transactions/$TX_HASH" \
   | jq '{hash, block, status, authority, executable}'
 ```
 
-這仍然是唯讀操作。提交交易需要已簽署的 Norito 封包、正確的鏈 ID、費用中繼資料，以及透過水龍頭取得資金的 Taira 帳戶。
+這仍然是唯讀操作。提交交易需要簽署的 Norito 封裝、正確的鏈 ID 與網路 ID、明確的費用支付者，以及已由測試網資金服務注資的 Taira 帳戶。
 
-對於支付費用的例子 Taira, 拯救水龍頭助手 [獲取測試網 XOR 在 Taira](/zh-hant/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) 作為 `taira_faucet_claim.py`, 然後透過公共水龍頭來資助簽署者:
+執行 Taira 上需要支付費用的範例前，請透過[在 Taira 取得測試網 XOR](/zh-hant/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)所列的資金申領流程，先為簽署帳戶注資，再檢查費用資產餘額：
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-如果水龍頭拼圖或索賠路徑返回 `502`,在除錯交易之前,等待並再次嘗試.
+若測試網資金服務的路由回傳 `502`，請先等待並重試，再對交易本身進行偵錯。
 
-然後,在提交交易時附加 Taira 費用資產的後設資料:
+接著在提交交易時選擇費用支付者。指定 `--fee-payer authority` 時，由簽署帳戶支付；CLI 會在簽署前以 Taira 的費用資產計算確切費用：
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg "faucet-funded taira transaction"
+  --fee-payer authority \
+  tx ping --msg "faucet-funded taira transaction"
 ```
 
 ## 離線交易 {#offline-transactions}
@@ -72,34 +69,24 @@ iroha --config ./taira.client.toml \
 Iroha 有兩種離線交易工作流程:
 
 - **離線簽署**會在簽署裝置中斷連線時建立一般的已簽署交易。線上上使用者端將已簽署封包提交給 Torii 之前，交易不會被處理，因此它仍需正確的鏈 ID、許可權主體、許可權、費用和交易生命週期。
-- **Kagemusha 離線現金**會在錢包上線時儲值，支援兩個錢包均離線時由接收方發起的錢包間交接，並在接收方恢復上線後贖回產生的票據狀態。
+- **Kagemusha 離線現金**可在已註冊且受硬體保護的錢包連線時載入價值，支援兩個錢包都離線時的錢包間付款，並在錢包再次連線時將剩餘價值卸載至帳本帳戶。
 
-Torii 透過 `/v1/offline/*` 提供完整的 Kagemusha 生命週期：
+Torii 提供一條 Kagemusha 路由：`POST /v1/kagemusha/enrollment`。它接受經帳戶驗證的 `application/x-norito` 註冊框架，並傳回不得快取的私密回應。生命週期的帳本部分使用一般簽署交易，內含 `KagemushaWalletLedgerV1` 指令：
 
-| 方法與端點 | 用途 |
+| 動作 | 用途 |
 | --- | --- |
-| `GET /v1/offline/readiness` | 評估一個 `asset_definition_id` 的 Kagemusha 就緒狀態 |
-| `POST /v1/offline/receiver-lineage` | 為已簽署的接收方請求解析附有證明的有效註冊譜系 |
-| `POST /v1/offline/top-up` | 提交已簽署的線上轉離線儲值操作 |
-| `POST /v1/offline/redeem` | 提交已簽署的離線贖回操作 |
-| `GET /v1/offline/operations/{operation_id}` | 讀取儲值或贖回的規範狀態 |
-
-建構離線操作前，請檢查該資產的就緒狀態：
-
-```bash
-curl -fsS --get https://taira.sora.org/v1/offline/readiness \
-  --data-urlencode 'asset_definition_id=<canonical_asset_definition_id>' \
-  | jq '{ready, blockers, artifact_set}'
-```
-
-就緒檢查會將錢包繫結至目前啟用的橋接 ABI 21 與已驗證的 V4 成品集。註冊譜系、儲值和贖回請求使用具型別的 `application/x-norito` 封存檔。儲值和贖回會回傳 `202 Accepted`，其 `Location` 標頭指向操作資源；其中內嵌的非零操作 ID 用作冪等鍵。
+| `Activate` | 啟用已註冊的錢包；原生啟動驗證為必要步驟 |
+| `IssueLoad` | 以原子方式扣除支付者餘額，並記錄錢包的下一筆 Load |
+| `Unload` | 將完整 Unload 申領支付至其綁定帳戶，最多支付一次 |
+| `ClaimFee` | 將完整費用申領支付至其固定受益者 |
+| `Abandon` | 放棄尚未使用的註冊 |
 
 典型流程如下：
 
-1. 查詢就緒狀態；如果 `ready` 為 false 或存在任何阻斷項目，便停止。
-2. 使用型別安全的 Swift 或 JVM 錢包建構並提交規範儲值封存檔；在操作達到最終鏈上狀態前，保留輸入票據狀態和操作 ID。
-3. 必要時解析接收方註冊譜系，在本機建構並驗證每次點對點交接；確認轉移前，持久儲存加密的票據狀態。
-4. 接收方上線後，建構並提交規範贖回封存檔，然後輪詢其操作資源，直到達到最終狀態。
+1. 使用具備型別介面的 Swift 或 Android 錢包，透過 `/v1/kagemusha/enrollment` 註冊錢包，然後啟用它。
+2. 提交 `IssueLoad` 交易。執行時會檢查預期的下一筆 Load 序號，以及非零的請求 ID，因此過期或經修改的重試會失敗。若回應遺失，請讀取原始 Load 收據，而不是再簽署另一筆 Load。
+3. 在錢包離線期間，於本機交換並驗證錢包間付款，且在確認每筆轉帳之前持久儲存錢包狀態。
+4. 錢包再次連線後，提交其 Unload 申領並等待最終性。
 
 在票據狀態透過線上生命週期回傳之前，帳本無法發現互相衝突的離線交接。因此，錢包與營運方原則應強制執行價值上限、到期時間、核准發行方、持久化本機儲存與對帳時限。
 

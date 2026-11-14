@@ -20,7 +20,7 @@ iroha3d_taira --sora \
 
 Use the operator-rendered form of the canonical Taira profile; the checked-in
 template still contains deployment placeholders. Do not substitute the generic
-Nexus or production SoraFS settings when testing against Taira.
+SORA Nexus or production SoraFS settings when testing against Taira.
 
 ## `--config` {#arg-config}
 
@@ -40,16 +40,53 @@ Optional genesis manifest JSON used for consensus validation.
 Validate the resolved configuration and available genesis material, then exit
 without binding network sockets.
 
-## Kagemusha qualification seals
+## `--json` {#arg-json}
 
-These file-path options require `--check-config` and perform full Kagemusha
-qualification before writing a canonical seal:
+- **Type:** flag
+- **Requires:** `--check-config`
 
-- `--write-kagemusha-catalog-qualification-seal <PATH>` qualifies the catalog.
-- `--write-kagemusha-validator-qualification-seal <PATH>` qualifies the local
-  validator against the configured signed promotion reservation.
+Print this build's and configuration's compatibility values as one Norito
+JSON object instead of the `Ready` or `Pending` line.
 
-The two seal options conflict with each other.
+## `--check-storage` {#arg-check-storage}
+
+- **Type:** flag
+- **Conflicts with:** `--check-config`
+
+Inspect the stopped node's Kura store and newest snapshot read-only with this
+build's decoders, print the result as one Norito JSON object, and exit
+nonzero on failure. The check takes the Kura store-root lock, so it refuses a
+store that a running node owns. It never mutates the store and never opens
+runtime-only secrets.
+
+## `--check-replay` {#arg-check-replay}
+
+- **Type:** flag
+- **Conflicts with:** `--check-config`, `--check-storage`
+
+Replay a copy of the stopped node's store with this build and print the
+result as one Norito JSON object. The command copies the blocks into a
+temporary directory, restores the newest snapshot there or re-executes the
+signed genesis, and re-executes every later block. It exits nonzero when a
+block does not reproduce its certified result or a needed block body is
+missing, and it never writes the store or opens runtime-only secrets.
+
+## `--require-genesis-inrou-deployment-authority` {#arg-require-genesis-inrou-deployment-authority}
+
+- **Type:** account ID
+- **Requires:** `--check-config`
+
+During offline validation, require this registered account to retain
+SoraCloud deployment authority after the exact signed genesis executes.
+
+## `--sumeragi-assert-fresh-key` {#arg-sumeragi-assert-fresh-key}
+
+- **Type:** flag
+
+Assert, at this boot only, that the node's consensus keys never signed for
+this chain. Sumeragi keeps a safety record per key and signs nothing without
+one until it has proof that the record was not lost. Pass this flag once, at
+the first boot of a new key, and never after a data loss.
 
 ## `--trace-config` {#arg-trace-config}
 
@@ -86,7 +123,7 @@ Override the system language used for daemon messages.
 - **Type:** flag
 - **Environment:** `IROHA_SORA_PROFILE`
 
-Enable the Sora Nexus profile used by SoraFS, the SoraNet handshake, and
+Enable the SORA Nexus profile used by SoraFS, the SoraNet handshake, and
 multi-lane consensus. The Taira launcher is always invoked with this flag.
 
 ## FastPQ overrides
@@ -110,10 +147,8 @@ iroha3d --fastpq-execution-mode gpu \
 
 ## Generated help
 
-The option summary above is verified against the current `iroha3d` argument
-definitions. The checked-in generated help snapshot is intentionally not
-rendered while its provenance status is pending. To inspect the exact help for
-your checkout, run:
+The option summary above follows the `iroha3d` argument definitions at the
+pinned Iroha commit. To inspect the exact help for your checkout, run:
 
 ```shell
 cargo run --locked -p irohad --bin iroha3d -- --help

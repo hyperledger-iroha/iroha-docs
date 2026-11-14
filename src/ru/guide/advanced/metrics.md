@@ -1,11 +1,10 @@
 ---
 translation_locale: ru
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Производительность и метрики {#performance-and-metrics}
 
 Производительность Iroha зависит от рабочей нагрузки, топологии валидатора, состояния сети и настроек консенсуса. Поэтому один показатель TPS полезен только в том случае, если он привязан к тестированию с фиксированной конфигурацией.
@@ -38,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -131,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### Кандидат и границы входа {#candidate-and-ingress-bounds}
 
-Локальные для узла Sumeragi пределы определяют, сколько кандидатской и восстановительной работы валидатор может сохранить:
+Размер блока и ограничения транзакций берутся из подписанного генезиса и зафиксированных параметров цепочки. Локальные настройки `[sumeragi]` задают роль участия узла, хранение средств подписи, пути к записям безопасности и документированные локальные переопределения тайм-аутов и синхронизации.
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` и `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks` и `sumeragi.queues.ready_bodies`
-
-Слишком маленькие границы создают давление на очередь или восстановление полезной нагрузки; слишком большие границы увеличивают удерживаемую память и объем работы, доступной злоупотребляющему сетевому узлу. Сравните снимок данных диагностики с памятью процесса, обработкой сообщений и метриками отсутствующих тел перед изменением одной границы за раз:
+Ограничения входящего сетевого потока и очереди транзакций управляют объёмом локально удерживаемой работы. Прежде чем менять эксплуатационный предел, сопоставьте диагностический снимок с потреблением памяти процессом, обработкой сообщений и метриками отсутствующих тел блоков. При сравнении запусков одной сети сохраняйте подписанные параметры цепочки неизменными:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -244,7 +236,7 @@ iroha --config ./localnet/client.toml \
 - количество валидаторов и наблюдателей
 - режим консенсуса, каденс подписанных блоков и макет DA
 - точный `3f + 1` комитет, кворум и список наблюдателей
-- `sumeragi.block`, `sumeragi.queues`, `sumeragi.limits`, границы сетевого входа и очереди транзакций
+- подписанные параметры цепочки, локальные переопределения Sumeragi, ограничения входящего сетевого потока и очереди транзакций
 - профиль телеметрии
 - аппаратное обеспечение, хранение и OS детали
 - сеть RTT, джиттер, потери и предположения о пропускной способности

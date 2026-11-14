@@ -1,14 +1,13 @@
 ---
 translation_locale: my
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 9388823f782eef86aedbaf141bd251dae39837957aefd224ed0cc97ba11ad97d
+translation_source_hash: f1f922b9820587cd4b599e7407698a47d468616670fee2922e4028147bc3e9b0
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # Kotlin၊ Android နှင့် Java {#kotlin-android-and-java}
 
-နိုင်ငံတကာ Kotlin SDK ကို default client stack ဖြစ်ပါတယ် JVM နှင့် Android Applications များ။ ၎င်းသည် `kotlin/` အထဲမှာ Iroha repository ကို platform ကွဲပြားပြီး portable code မရရှိနိုင်အောင် Android မှီခိုမှု။
+Kotlin SDK သည် JVM နှင့် Android အက်ပ်များအတွက် ပုံမှန် client နည်းပညာအစုဖြစ်သည်။ Iroha သိုလှောင်ရုံ၏ `kotlin/` အောက်တွင် ရှိပြီး အခြားပလက်ဖောင်းသို့ ရွှေ့နိုင်သောကုဒ်ထဲသို့ Android မှီခိုမှုများ မဝင်စေရန် ပလက်ဖောင်းအလိုက် ခွဲထားသည်။
 
 ## မော်ဂျူးများ {#modules}
 
@@ -73,8 +72,8 @@ Kotlin SDK တွင် အောက်ပါအချက်များပါ�
 - Single Protocol Standard Account နဲ့ Asset Address ကို စီမံခန့်ခွဲမှု
 - Transaction building၊ signing နဲ့ offline data containers တွေကို
 - Torii HTTP၊ WebSocket နှင့် SSE ဝန်ထမ်းများ
-- multisignature, subscription, SoraFS, Nexus နှင့် Connect ပုံစံများ
+- multisignature, subscription, SoraFS, SORA Nexus နှင့် Connect ပုံစံများ
 - Android key store နှင့် device telemetry integration များ
 - Android အွန်လိုင်း QR၊ နီးစပ်ရာနှင့် NFC သယ်ယူပို့ဆောင်ရေး
 
-[Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/kotlin/README.md) ကို ကြည့်ပြီး module-specific APIs နဲ့ exact build command တွေကို ကြည့်ပါ။
+မော်ဂျူးအလိုက် APIs နှင့် တည်ဆောက်ရေးကွန်မန်းအတိအကျများအတွက် [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/kotlin/README.md) ကို ကြည့်ပါ။

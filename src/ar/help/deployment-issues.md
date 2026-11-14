@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # استكشاف مشكلات النشر وإصلاحها {#troubleshooting-deployment-issues}
 
 يقدم هذا القسم نصائح لحل المشكلات المتعلقة بنشر Iroha 3. إذا لم يتم وصف المشكلة التي تواجهها هنا، فاتصل بنا عبر [تليغرام](https://t.me/hyperledgeriroha).
@@ -15,7 +14,7 @@ translation_engine: bing-translator-llm
 للنشر المحلي والاختباري، يُفضل استخدام القطع البرمجية المولَّدة بواسطة Kagami بدلاً من ملفات نظراء الشبكة المكتوبة يدويًا:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 يحتوي الدليل المُنشأ على تكوينات الأقران الشبكيين ومواد التأسيس للبلوكتشين وبرامج البدء و README لخط البناء Iroha 3.
@@ -42,7 +41,7 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 قم بإنشاء Compose من ناتج localnet الحالي Kagami بحيث تتطابق وسائط سطر الأوامر وملفات التكوين مع الكود الذي تم التحقق منه:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```
@@ -67,9 +66,9 @@ docker compose -f ./docker-compose.yml up
 
 إذا أعيد تشغيل البود بشكل متكرر، قارن التكوين المعروض في البود مع المتوقع [`peer.template.toml`](/ar/reference/peer-config/index.md#template) وتحقق مما إذا كان نظير الشبكة يعيد تشغيل القديم Kura بيانات.
 
-## ملف سوارا {#sora-profile}
+## ملف SORA Nexus {#sora-profile}
 
-ينبغي لعمليات النشر الخاصة أو المحلية Iroha 3 التي تستخدم Nexus، SoraFS، أو التدفقات متعددة المسارات أن تبدأ الخادم القياسي مع تمكين ملف تعريف Sora:
+ينبغي لعمليات نشر Iroha 3 الخاصة أو المحلية التي تستخدم SORA Nexus أو SoraFS أو تدفقات متعددة مسارات التنفيذ أن تبدأ خدمة الخلفية القياسية مع تفعيل ملف SORA Nexus:
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

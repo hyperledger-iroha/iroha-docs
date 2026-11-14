@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/fastpq.md
-translation_source_hash: d8dd61390f5df3dae09b70399e04e8f71716a912ef5dea9010feaf60573ed261
+translation_source_hash: dfeabbedbca85780c16ee0307a6497e43e19c02d3a27e0ea2f70987a2aeac0cd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # FastPQ {#fastpq}
 
 FastPQ は、選択された実行効果に対する Iroha の STARK 証明パスです。これは通常のトランザクション実行やコンセンサスを置き換えるものではありません。トランザクションは依然として通常どおり ISI、IVM、および Sumeragi を実行してください；FastPQ は決定論的実行証人を消費し、サポートされている効果を証明バッチに変換します。
@@ -13,7 +12,7 @@ FastPQ は、選択された実行効果に対する Iroha の STARK 証明パ�
 現在のホスト統合には、主に3つの方法があります：
 
 - ブロック実行中に記録された透明な数値資産の移転
-- Nexus 検証済み実行レーンリレーで、AXT 証明データコンテナが FastPQ バインディングを保持しているもの
+- AXT 証明エンベロープに FastPQ バインディングを含む、SORA Nexus の検証済みレーンリレー
 - SCCP オープン検証データコンテナ内で FastPQ 証明をラップする透明なメッセージ証明ヘルパー
 
 ## 証人移送経路 {#transfer-witness-path}
@@ -45,7 +44,7 @@ FastPQ は、選択された実行効果に対する Iroha の STARK 証明パ�
 
 |入力|意味|
 | ------------- | --------------------------------------------------------------- |
-|`dsid`|リトルエンディアンバイトとしてエンコードされたデータスペース識別子|
+| `dsid` | リトルエンディアンのバイト列で符号化したデータスペース識別子 |
 | `slot`        |ブロック作成時間をナノ秒に変換|
 | `old_root`    |実行証明から派生した親状態ルート|
 | `new_root`    |実行証明から導出された後状態ルート|
@@ -201,7 +200,7 @@ $$
 
 ### パブリック入力バインディング {#public-input-binding}
 
-ホストは16バイトフィールドの最初の8バイト（リトルエンディアン）にその`u64`の値を書き込むことで、データスペースIDをエンコードします:
+ホストは、16バイトのフィールドの先頭8バイトに `u64` 値をリトルエンディアンで書き込むことで、データスペース識別子を符号化します。
 
 $$
 \operatorname{dsid\_bytes}(d)[0..8]=\operatorname{le64}(d),
@@ -394,7 +393,7 @@ S_i(a)=S_{i-1}(a)+
 \end{cases}
 $$
 
-メタデータおよびデータスペーストレース列は、行の具現化前に導出されたフィールド暗号ハッシュです:
+メタデータとデータスペースのトレース列には、行を具体化する前に導出したフィールドハッシュが入ります。
 
 $$
 \operatorname{metadata\_hash} =
@@ -408,7 +407,7 @@ $$
 \operatorname{dsid\_trace}=H_D(\operatorname{public\_input\_dsid})
 $$
 
-メタデータの暗号ハッシュ、データスペースの暗号ハッシュ、およびスロットは、隣接するトレース行間で安定しています:
+メタデータのハッシュ、データスペースのハッシュ、スロットは、隣接するトレース行の間で変わりません。
 
 $$
 \operatorname{metadata\_hash}_i=\operatorname{metadata\_hash}_{i+1}
@@ -932,12 +931,12 @@ FastPQ 証明検証は、標準的なバッチ暗号コミットメント値を�
 | FRI レイヤー|      16 |
 |求人情報の照会|     128 |
 
-## Nexus 確認済みリレー {#nexus-verified-relays}
+## SORA Nexus の検証済みリレー {#sora-nexus-verified-relays}
 
-Nexus AXT 証明データコンテナは `AxtFastpqBinding` を埋め込むことができます。`RegisterVerifiedLaneRelay` が実行されると、Iroha:
+SORA Nexus の AXT 証明エンベロープには `AxtFastpqBinding` を埋め込めます。`RegisterVerifiedLaneRelay` の実行時に、Iroha は次を行います。
 
 1. 実行レーンリレーデータコンテナおよび FastPQ 証明資料を検証します
-2. データスペースと技術マニフェストのルートをチェックする
+2. データスペースとマニフェストのルートを検査する
 3. AXT 証明データコンテナをデコードします
 4. には`fastpq_binding`が必要です
 5. そのバインディングから FastPQ バッチを再構築します
@@ -946,11 +945,11 @@ Nexus AXT 証明データコンテナは `AxtFastpqBinding` を埋め込むこ�
 
 検証が成功した場合、Iroha はリレー参照、元のデータコンテナ、証明ペイロードの暗号ハッシュ、検証高さ、技術マニフェストルート、および FastPQ バインディングを含む `VerifiedLaneRelayRecord` を保存します。
 
-実行レーンのリレーデータコンテナには、コンパクトな FastPQ 証拠資料も含まれます。この資料は、実行レーンID、データスペースID、ブロック高、検証高に対する暗号学的ダイジェスト値です。ブロックヘッダーの暗号化ハッシュ、金融取引決済の暗号化ハッシュ、および技術的マニフェストルート。リレーは、QC および有効な FastPQ 証明資料の両方を持っている場合にのみマージ可能です。
+レーンリレーのエンベロープには、コンパクトな FastPQ 証明データも含まれます。このデータは、レーン識別子、データスペース識別子、ブロック高、検証高、ブロックヘッダーのハッシュ、決済ハッシュ、マニフェストのルートを対象とするダイジェストです。リレーを取り込めるのは、QC と有効な FastPQ 証明データの両方がある場合だけです。
 
 ### AXT バインディング数学 {#axt-binding-math}
 
-Nexus AXT データコンテナについて、証明の再生前に `AxtFastpqBinding` が正規化されます。空のパラメータ値はデフォルトで `fastpq-lane-balanced` となります。空の検証者IDおよびバージョンはそれぞれデフォルトで `fastpq` および `v1` となります。クレームタイプはトリムされ、小文字に変換されます。
+SORA Nexus の AXT エンベロープでは、証明のリプレイ前に `AxtFastpqBinding` を正規化します。空のパラメーター値には `fastpq-lane-balanced`、空の検証器識別子とバージョンにはそれぞれ `fastpq` と `v1` を使います。クレーム種別は前後の空白を除去し、小文字に変換します。
 
 AXT FastPQ の公開入力は決定論的なバイト暗号ハッシュです：
 
@@ -1024,7 +1023,7 @@ $$
 \operatorname{le64}(\operatorname{policy\_commitment}[0..8])
 $$
 
-および認可ポリシーをバインドするメタデータ行。`compliance` クレームは、ポリシー用とターゲットデータスペース用の2つのメタデータ行を挿入します。
+さらに、認可ポリシーを結び付けるメタデータ行を含みます。`compliance` クレームでは、ポリシー用と対象データスペース用の二つのメタデータ行を挿入します。
 
 〜のために `tx_predicate` そして `value_conservation`, 結合に正のソースが含まれている場合、明示的な効果量が使用されます 宛先の金額。そうでなければ、コードは制限付きの決定的な金額を導き出します:
 
@@ -1121,7 +1120,7 @@ $$
 )
 $$
 
-この証明パスの FastPQ データスペース ID は、別のプレフィックス付き Blake2b 暗号ダイジェスト値の最初の16バイトです：
+この証明経路の FastPQ データスペース識別子には、別の接頭辞付き Blake2b ダイジェストの先頭16バイトを使います。
 
 $$
 \operatorname{dsid} =
@@ -1207,7 +1206,6 @@ metal_max_in_flight = 5
 metal_threadgroup_width = 128
 metal_trace = false
 metal_debug_enum = false
-metal_debug_fused = false
 ```
 
 同じ実行およびテレメトリラベルは、`iroha3d` から上書きすることができます。

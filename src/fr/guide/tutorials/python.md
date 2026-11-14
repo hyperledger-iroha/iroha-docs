@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /guide/tutorials/python.md
-translation_source_hash: d0ecbade221ceba455730e80c6e12db930c65a4cbcf9e643c1c2d4cba47b0940
+translation_source_hash: bd9ff4a38229cbdabbd77e21fe31a770f9213341d7db73a75ed0bd914c761849
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Python {#python}
 
 Le Python SDK dans l'espace de travail en amont est `iroha-python`. La première version Iroha 3 cible les surfaces Torii et Norito actuelles. Épinglez la version du paquet ou la révision source utilisée par votre intégration afin que le SDK et le nœud restent sur la même révision du format de sérialisation.
@@ -46,7 +45,7 @@ Si `create_torii_client` s'importe mais que `Instruction` ou `generate_ed25519_k
 
 ## Démarrage rapide {#quickstart}
 
-Commencez avec des points de terminaison publics en lecture seule Taira API :
+Commencez par les points d'accès publics Taira en lecture seule :
 
 ```python
 from iroha_python import (
@@ -709,7 +708,7 @@ definitions = client.list_asset_definitions_typed(limit=10)
 print(domains.total, definitions.total)
 ```
 
-Utilisez les assistants de requête génériques lorsqu'un point de terminaison Torii API n'a pas encore d'adaptateur logiciel typé :
+Utilisez les utilitaires de requête génériques lorsqu'un point d'accès Torii n'a pas encore d'adaptateur typé :
 
 ```python
 from urllib.request import Request, urlopen
@@ -724,7 +723,7 @@ with urlopen(request, timeout=5) as response:
     metrics = response.read().decode("utf-8")
 ```
 
-Les assistants d'inventaire de compte nécessitent un identifiant de compte accepté par le normaliseur de SDK. Utilisez les identifiants de compte I105 canoniques ou les alias on-chain ; si un explorateur de blocs ou un endpoint brut API renvoie un ID que SDK rejette, résolvez-le en un ID de compte canonique avant d'appeler ces helpers :
+Les utilitaires d'inventaire de compte exigent un identifiant de compte accepté par le normaliseur du SDK. Utilisez des identifiants de compte I105 canoniques ou des alias sur la chaîne ; si un explorateur de blocs ou un point d'accès brut renvoie un identifiant rejeté par le SDK, résolvez-le en identifiant de compte canonique avant d'appeler ces utilitaires :
 
 ```python
 # These helpers expect a canonical account ID or an alias the SDK can normalize.
@@ -1026,26 +1025,6 @@ client = create_torii_client(
 )
 ```
 
-## Disponibilité de Kagemusha {#kagemusha-readiness}
-
-Le Python SDK peut interroger la route de préparation actuelle de JSON via son assistant de requête générique Torii :
-
-```python
-ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
-
-readiness = client.request_json(
-    "GET",
-    "/v1/offline/readiness",
-    params={"asset_definition_id": ASSET_DEFINITION_ID},
-    headers={"Accept": "application/json"},
-    expected_status=(200,),
-)
-print(readiness["ready"])
-print(readiness["blockers"])
-```
-
-Python n'expose pas de générateurs d'archives de recharge ou de rachat Kagemusha typés. Utilisez un portefeuille typé Swift ou JVM pour construire les archives V4 canoniques, puis soumettez-les et interrogez-les via un client Kagemusha Torii pris en charge.
-
 ## Abonnements {#subscriptions}
 
 Les lectures d'abonnement et les générateurs de brouillons sont hérités du client partagé Torii utilisé par `iroha_python.ToriiClient`. Chaque mutation est admise avec une signature de compte canonique liée au corps et renvoie un brouillon de transaction non signé. Torii n'accepte jamais de clé privée et ne soumet pas le brouillon pour vous.
@@ -1300,7 +1279,7 @@ if connect_status is not None:
 
 ## SoraFS, UAID et Kaigi Aides {#sorafs-uaid-and-kaigi-helpers}
 
-Ces assistants sont disponibles lorsque le nœud cible expose les points de terminaison correspondants Nexus/SORA API. Traitez les listes vides comme une réponse valide : le Taira public peut avoir la route activée sans données pour le manifeste technique d'exemple ou UAID.
+Ces utilitaires sont disponibles lorsque le nœud cible expose les points de terminaison SORA Nexus correspondants. Considérez une liste vide comme une réponse valide : le testnet public Taira peut avoir activé la route sans disposer de données pour le manifeste d’exemple ou l’UAID.
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
@@ -1324,7 +1303,7 @@ print(health.healthy_total, health.failovers_total)
 
 ## Norito RPC et GPU Aides {#norito-rpc-and-gpu-helpers}
 
-Utilisez `NoritoRpcClient` lorsque vous avez déjà Norito octets et que vous devez appeler un point de terminaison binaire Torii API. L'exemple nécessite un conteneur de données signé à partir d'un modèle de transaction précédent :
+Utilisez `NoritoRpcClient` lorsque vous disposez déjà d'octets Norito et devez appeler un point d'accès binaire Torii. L'exemple exige une enveloppe signée issue d'un modèle de transaction précédent :
 
 ```python
 from iroha_python import NoritoRpcClient, NoritoRpcConfig
@@ -1357,7 +1336,7 @@ Le Python SDK inclut déjà des aides pour :
 - constructeurs d'instructions typées pour les extensions courantes ISI et spécifiques au domaine
 - brouillons de transaction, manifestes techniques, signature et flux de travail des conteneurs de données de transaction signés
 - flux d'événements en direct et filtres tapés ; les flux de blocs engagés fournissent un historique complet
-- accès générique à la préparation Kagemusha et aides à l'abonnement Torii ; les générateurs de recharge et de rachat typés ne sont pas exposés
+- lectures des abonnements Torii et constructeurs de brouillons de transactions non signées
 - adresse de compte, aides à la signature tous-algorithmes, aller-retour multihash, SM2, GOST, ML-DSA, BLS, et gestion de clé confidentielle
 - Connecter URIs, les sessions, les trames, les aides à l'encryption et l'administration du registre
 - adaptateurs de points de terminaison pour la gouvernance, les mises à niveau de l’environnement d’exécution, Sumeragi, l’administration du nœud, SoraFS, UAID et Kaigi, lorsque le nœud expose ces fonctions

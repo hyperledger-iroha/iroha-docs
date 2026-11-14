@@ -1,16 +1,15 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: c1aee0c29332bd7c883500e72a1ec7812aebfca13b673e6681788cf4bc5ecbf1
+translation_source_hash: e500328ac93578b9af21b6ef3d01e13e051b1d9a0f6050293e65650da66fbbbb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+claude-opus-5-5
+translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link
 ---
-
 # Иҫәптәр һәм исемдәр {#accounts-and-aliases}
 
 ## Һөҙөмтә {#outcome}
 
-Доменһыҙ Canonical менән хәүефһеҙ эшләй I105 иҫәбенә IDs һәм айырым бәйләнгән кеше уҡый алғы исемдәр, мәҫәлән: `treasury@payments.universal`. Һеҙ тикшерәсәкһегеҙ Taira иҫәбенә, үҙ каноник сығарыу ID, һәм маршрут контексты менән шәхесте бутамайынса ялған исемдәрҙе хәл итеү.
+Доменһыҙ каноник I105 иҫәп идентификаторҙары һәм `treasury@payments.universal` кеүек айырым бәйләнгән, кеше уҡый алған ҡушаматтар менән хәүефһеҙ эшләгеҙ. Һеҙ Taira иҫәптәрен тикшерәсәкһегеҙ, үҙегеҙҙең каноник идентификаторҙы сығарасаҡһығыҙ һәм йүнәлтеү контексын шәхес менән бутамайынса ҡушаматтарҙы хәл итәсәкһегеҙ.
 
 ## Шарттар {#prerequisites}
 
@@ -20,7 +19,7 @@ translation_engine: nllb-200-ct2+claude-opus-5-5
 
 ## Аҙымдар {#steps}
 
-### 1. Taira буйынса каноник иҫәптәрҙе тикшереү {#_1-inspect-canonical-accounts-on-taira}
+### 1. Taira-ла каноник иҫәп яҙмаларын тикшерегеҙ {#_1-inspect-canonical-accounts-on-taira}
 
 Асыҡ иҫәптәр исемлеге һәр ваҡыт каноник I105 ID-ларын ҡайтара. Төп ҡушамат мотлаҡ түгел; уны күреү өсөн `aliases` яланын һорағыҙ.
 
@@ -59,7 +58,7 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID" \
 
 Нормальләштерелгән ҡиммәт `TAIRA_ACCOUNT_ID` менән бер тигеҙ булырға тейеш. `[account].profile` көйләүе I105 селтәр префиксын ғына һайлай; домендар ҡушаматтарға ҡарай, иҫәп ID-һына бер ҡасан да ҡарамай.
 
-### 3. Бухгалтер иҫәбен һәм уның активтарын уҡығыҙ. {#_3-read-the-account-and-its-assets}
+### 3. Иҫәп яҙмаһын һәм уның активтарын ҡарау {#_3-read-the-account-and-its-assets}
 
 Иҫәпкә резерв индерелгәндән һуң, уны туранан-тура һорағыҙ һәм сикләнгән активтар битен исемлеккә килтерегеҙ. URL - уны һуҡмаҡҡа ҡулланыр алдынан I105 ҡиммәтен кодлау.
 
@@ -93,7 +92,7 @@ curl -fsS -H 'Accept: application/json' \
   | jq '{account_id, total, items}'
 ```
 
-`total: 0` ғәмәлдә: иҫәпкә ялған исем кәрәкмәй. Ҡатнашыусы булған осраҡта, уның тулыһынса тулы хоҡуҡлы ялған исемен асыҡлағыҙ һәм кире ҡайтарылған иҫәбкә ID ҡарағыҙ:
+`total: 0` дөрөҫ яуап: иҫәпкә ҡушамат кәрәк булмаҫҡа ла мөмкин. Бәйләнеш бар икән, уның аныҡ тулы квалификациялы ҡушаматын хәл итегеҙ һәм ҡайтарылған иҫәп идентификаторын сағыштырығыҙ:
 
 ```bash
 ALIAS_WAS_RESOLVED=false

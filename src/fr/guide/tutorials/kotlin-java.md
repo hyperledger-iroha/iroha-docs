@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 9388823f782eef86aedbaf141bd251dae39837957aefd224ed0cc97ba11ad97d
+translation_source_hash: f1f922b9820587cd4b599e7407698a47d468616670fee2922e4028147bc3e9b0
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Kotlin, Android, et Java {#kotlin-android-and-java}
 
 La pile client Kotlin SDK est la pile client par défaut pour les applications JVM et Android. Elle se trouve sous `kotlin/` dans le dépôt Iroha et est séparée par plateforme afin que le code portable n'acquière pas de dépendances Android.
@@ -73,7 +72,7 @@ Le Kotlin SDK inclut :
 - gestion des comptes canoniques et des adresses d'actifs
 - construction de transaction, signature et conteneurs de données hors ligne
 - Torii HTTP, WebSocket, et SSE clients
-- multisignature, abonnement, SoraFS, Nexus, et modèles Connect
+- multisignature, abonnement, SoraFS, SORA Nexus, et modèles Connect
 - Android intégrations de keystore et de télémétrie de l'appareil
 - Android hors ligne QR, à proximité, et NFC transports
 

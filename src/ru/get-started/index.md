@@ -1,11 +1,10 @@
 ---
 translation_locale: ru
 translation_source: /get-started/index.md
-translation_source_hash: 0c452291828ed262a2e9094c30def83e07f0b7b70060d47bbd0d32160559ac40
+translation_source_hash: cfd90fff9b7d2c4d217a09ba12b1d140d5b9fa1fdd20718e9c620187c68626dc
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Iroha 3 {#iroha-3}
 
 Iroha 3 — это платформа первого выпуска Hyperledger Iroha. Она поддерживает сети с саморазмещением и модель развертывания мульти-пространства данных SORA Nexus из одной детерминированной кодовой базы.

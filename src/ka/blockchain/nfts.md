@@ -1,11 +1,10 @@
 ---
 translation_locale: ka
 translation_source: /blockchain/nfts.md
-translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
+translation_source_hash: 216f59f1cebd73001dab75dcf235306082fb1c0759437f65ce34ec9e1ed51d4f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # NFTs {#nfts}
 
 Iroha NFT არის უნიკალური ბლოკჩეინის რეესტრის ობიექტი, რომელსაც აქვს ერთი მფლობელი. გამოიყენეთ NFTs როდესაც ჩანაწერს სჭირდება საკუთარი იდენტობა, მეტამონაცემები, სიცოცხლის ციკლის მოვლენები და საკუთრების გადაცემის სემანიტიკა, მაგრამ არ საჭიროებს რიცხვობრივ ბალანსს.
@@ -49,7 +48,7 @@ name$domain
 name$domain.dataspace
 ```
 
-მაგალითად, `badge$docs.universal` იდენტიფიცირებს `badge` NFT დომენში `docs.universal`. თუ მონაცემთა სივრცე გამორიცხულია, მიმდინარე პარსერი იყენებს `universal` მონაცემთა სიფართოს, ასე რომ `badge$docs` გადაწყდება `badge$docs.universal`.
+მაგალითად, `badge$docs.universal` აღნიშნავს `badge` NFT-ს `docs.universal` დომენში. თუ მონაცემთა სივრცე გამოტოვებულია, მიმდინარე პარსერი იყენებს `universal` მონაცემთა სივრცეს, ამიტომ `badge$docs` ამოიხსნება როგორც `badge$docs.universal`.
 
 გამოიყენეთ სტაბილური სახელები NFT ID-ებისთვის. ID არის ობიექტის იდენტობა, რომელსაც იყენებენ ინსტრუქციები, კითხვები, ნებართვები, მოვლენების ფილტრები და აპლიკაციების რეფერენციები.
 
@@ -68,17 +67,17 @@ NFT სიცოცხლის ციკლის ოპერაციებ�
 
 ```bash
 export IROHA_CONFIG=./localnet/client.toml
-export NFT_DOMAIN=wonderland.universal
-export NFT_ID='badge_intro$wonderland.universal'
+export NFT_DOMAIN='<OWNED_DOMAIN>.universal'
+export NFT_ID="badge_intro\$$NFT_DOMAIN"
 ```
 
-გენერირებული ლოკალურმა ქსელმა უკვე დააყენა `wonderland.universal` და მისი SNS იჯარის ხელშეკრულება. სხვა დომენის გამოყენების მიზნით, შეიქმნას ის ჯერ დეკლარაციური `app alias setup plan` და `app alias setup apply` სამუშაო პროცესით, რომელიც აღწერილია [დომენები](/ka/blockchain/domains.md#registration).
+გენერირებული ლოკალური ქსელი თავისი კლიენტისთვის აპლიკაციის დომენს არ არეგისტრირებს. `NFT_DOMAIN` მიუთითეთ დომენზე, რომელსაც ხელმომწერი ანგარიში ფლობს ან რომლისთვისაც აქვს `CanRegisterNft` ნებართვა. ახლის შესაქმნელად გამოიყენეთ გვერდზე [დომენები](/ka/blockchain/domains.md#registration) აღწერილი დეკლარაციული `app alias setup plan` და `app alias setup apply` პროცესი.
 
 დარეგისტრირება NFT. რეგისტრაციაში იკითხება სტანდარტული შესასვლელიდან საწყისი შინაარსი JSON:
 
 ```bash
 printf '{"kind":"badge","level":"intro","issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft register --id "$NFT_ID"
 ```
 
@@ -89,14 +88,14 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft get --id "$NFT_ID"
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger nft list all --verbose
+  ledger nft list --all
 ```
 
 დაამატეთ მეტამონაცემების გასაღები და წაიკითხეთ NFT კიდევ ერთხელ:
 
 ```bash
 printf '{"color":"blue","rarity":"tutorial"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta set --id "$NFT_ID" --key traits
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -106,27 +105,27 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 ამოიღეთ მეტამონაცემების გასაღები:
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
-ვარიანტით გადაიტანეთ NFT. გამოიყენეთ `ledger nft get` იმისთვის, რომ წაიკითხოთ მიმდინარე მფლობელი `owned_by`-დან და გამოიყენეთ `ledger account list all` მიზნობრივი ანგარიშის ID-ის მოსაძებნად.
+სურვილისამებრ გადარიცხეთ NFT. `ledger nft get`-ით წაიკითხეთ მიმდინარე მფლობელი `owned_by`-დან, ხოლო `account list --all`-ით იპოვეთ მიმღები ანგარიშის ID.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger account list all
+  account list --all
 
 export CURRENT_OWNER='<account-id-from-owned_by>'
 export NEW_OWNER='<destination-account-id>'
 
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
 ამოიღეთ მაგალითი NFT გასვლის შემდეგ. თუ გადაიტანა, ან გადაიტანეთ იგი უკან ან წარუდგინეთ არარეგისტრირების ბრძანება მიმდინარე მფლობელის ანგარიშის კონფიგურაციით.
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft unregister --id "$NFT_ID"
 ```
 

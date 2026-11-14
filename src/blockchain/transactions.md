@@ -48,36 +48,37 @@ curl -fsS "https://taira.sora.org/v1/explorer/transactions/$TX_HASH" \
 ```
 
 This is still read-only. Submitting a transaction requires a signed Norito
-envelope, correct chain ID, fee metadata, and a faucet-funded Taira account.
+envelope, the correct chain ID and network ID, an explicit fee payer, and a
+faucet-funded Taira account.
 
-For fee-paying examples on Taira, save the faucet helper from
-[Get Testnet XOR on Taira](/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)
-as `taira_faucet_claim.py`, then fund the signer through the public faucet
-first:
+For fee-paying examples on Taira, fund the signer with the prepared faucet
+flow in
+[Get Testnet XOR on Taira](/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira),
+then check the fee asset balance:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-If the faucet puzzle or claim route returns `502`, wait and retry before
-debugging the transaction itself.
+If a faucet route returns `502`, wait and retry before debugging the
+transaction itself.
 
-Then attach the Taira fee asset metadata when submitting the transaction:
+Then select the fee payer when submitting the transaction. With
+`--fee-payer authority`, the signing account pays, and the CLI quotes the
+exact fee in Taira's fee asset before signing:
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg "faucet-funded taira transaction"
+  --fee-payer authority \
+  tx ping --msg "faucet-funded taira transaction"
 ```
 
 ## Offline Transactions
@@ -88,46 +89,38 @@ Iroha has two offline transaction workflows:
   device is disconnected. The transaction is not processed until an online
   client submits the signed envelope to Torii, so it still needs the
   correct chain ID, authority, permissions, fees, and transaction lifetime.
-- **Kagemusha offline cash** tops up a wallet while it is online, supports
-  receiver-initiated wallet-to-wallet handoffs while both wallets are
-  offline, and redeems the resulting note state when the recipient returns
-  online.
+- **Kagemusha offline cash** loads value into an enrolled hardware-backed
+  wallet while it is online, supports wallet-to-wallet payments while both
+  wallets are offline, and unloads the remaining value to a ledger account
+  when the wallet is online again.
 
-Torii exposes the complete Kagemusha lifecycle under `/v1/offline/*`:
+Torii exposes one Kagemusha route, `POST /v1/kagemusha/enrollment`. It
+accepts account-authenticated `application/x-norito` enrollment frames and
+returns private responses that must not be cached. The ledger side of the
+lifecycle uses ordinary signed transactions that carry a
+`KagemushaWalletLedgerV1` instruction:
 
-| Method and endpoint | Purpose |
+| Action | Purpose |
 | --- | --- |
-| `GET /v1/offline/readiness` | Evaluate Kagemusha readiness for one `asset_definition_id` |
-| `POST /v1/offline/receiver-lineage` | Resolve proof-bearing active registration lineage for a signed receiver request |
-| `POST /v1/offline/top-up` | Submit a signed online-to-offline top-up operation |
-| `POST /v1/offline/redeem` | Submit a signed offline redemption operation |
-| `GET /v1/offline/operations/{operation_id}` | Read the canonical status of a top-up or redemption |
-
-Check readiness for the asset before constructing an offline operation:
-
-```bash
-curl -fsS --get https://taira.sora.org/v1/offline/readiness \
-  --data-urlencode 'asset_definition_id=<canonical_asset_definition_id>' \
-  | jq '{ready, blockers, artifact_set}'
-```
-
-Readiness binds the wallet to the active bridge ABI 21 and authenticated V4
-artifact set. The lineage, top-up, and redemption requests use typed
-`application/x-norito` archives. Top-up and redemption return `202 Accepted`
-with a `Location` header pointing to the operation resource; the embedded
-nonzero operation ID supplies the idempotency key.
+| `Activate` | Activate an enrolled wallet; native bootstrap verification is mandatory |
+| `IssueLoad` | Debit the payer and record the wallet's next Load atomically |
+| `Unload` | Pay a complete Unload claim to its bound account at most once |
+| `ClaimFee` | Pay a complete fee claim to its fixed beneficiary |
+| `Abandon` | Abandon an unused enrollment |
 
 The typical flow is:
 
-1. Query readiness and stop if `ready` is false or any blocker applies.
-2. Use a typed Swift or JVM wallet to build the canonical top-up archive,
-   submit it, and retain both the input note state and operation ID until
-   the operation reaches a final chain state.
-3. Resolve receiver registration lineage when required, construct and
-   verify each peer handoff locally, and persist the encrypted note state
-   before acknowledging the transfer.
-4. When the recipient is online, build the canonical redemption archive,
-   submit it, and poll its operation resource to finality.
+1. Enroll the wallet through `/v1/kagemusha/enrollment` with a typed Swift
+   or Android wallet, then activate it.
+2. Submit an `IssueLoad` transaction. Execution checks the expected next
+   Load ordinal and the nonzero request ID, so a stale or changed retry
+   fails. After a lost response, read the original Load receipt instead of
+   signing another Load.
+3. Exchange and verify payments between wallets locally while they are
+   offline, and persist the wallet state before acknowledging each
+   transfer.
+4. When the wallet is online again, submit its Unload claim and wait for
+   finality.
 
 The ledger cannot observe a conflicting offline handoff until note state
 returns through the online lifecycle. Wallet and operator policy should

@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/world.md
-translation_source_hash: 61657e1736d3163965063c38e347ed7dbfe040633ddf24eb1a37904922cb354d
+translation_source_hash: d6ecc7832a3925c105ddc0ddfbaf62ea54d465cdb7b98ce795e5a72c615361bd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-source-naming-amendment
 ---
-
 # 世界 {#world}
 
 `World`是包含其他实体的全球实体. `World`由:
@@ -36,7 +35,7 @@ WSV 比`World`对象更广泛,实际上它包含:
 - 在查询和收据中使用的交易到区块索引
 - 通过共识使用的当前和以前的提交拓
 - 从承诺区块中获得的内存索引,例如数据可用性承诺,回执缓冲器,固定意图和查询投影标记
-- 对于确定性区块执行所需的运行时配置快照,例如加密,治理,管道,内容,结算和 Nexus 设置
+- 确定性区块执行所需的运行时配置快照，例如密码学、治理、处理流程、内容、结算及 SORA Nexus 设置
 
 查询通常在这些结构上只能读取 `StateView`.一个视图是查询执行的一致的快照;它不允许直接突变 WSV.
 

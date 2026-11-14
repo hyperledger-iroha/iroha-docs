@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 9388823f782eef86aedbaf141bd251dae39837957aefd224ed0cc97ba11ad97d
+translation_source_hash: f1f922b9820587cd4b599e7407698a47d468616670fee2922e4028147bc3e9b0
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Kotlin, Android e Java {#kotlin-android-and-java}
 
 O Kotlin SDK é a pilha de cliente padrão para aplicações JVM e Android. Ele fica em `kotlin/` no repositório Iroha e é dividido por plataforma para que o código portátil não adquira dependências Android.
@@ -73,7 +72,7 @@ O Kotlin SDK inclui:
 - manuseio de contas canônicas e endereços de ativos
 - construção de transação, assinatura e contêineres de dados offline
 - Clientes Torii, HTTP, WebSocket e SSE
-- multassinatura, assinatura, SoraFS, Nexus e modelos Connect
+- multassinatura, assinatura, SoraFS, SORA Nexus e modelos Connect
 - Android integrações de keystore e telemetria de dispositivo
 - Android offline QR, Próximo, e NFC transportes
 

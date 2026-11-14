@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /guide/tutorials/rust.md
-translation_source_hash: 98b0c3a193c6dfe8b266bcc498d7016426cf2f838a7bf7ebfbef145ffdcc7944
+translation_source_hash: fbe41bd6e7fa86d06c027724b446016c14246495964ccf521155e4b790d75041
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Rust {#rust}
 
 יישום Rust חי במרחב העבודה העיקרי ונשאר הדרך המובילה ביותר לעבוד עם בסיס הקוד Iroha 3.
@@ -31,7 +30,7 @@ cargo build --workspace
 תפעיל את לקלינט ההשוואה עם הגדרת הלקוח המקובל הנעברת:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
 ## נסה Taira לקרוא בלבד {#try-taira-read-only}

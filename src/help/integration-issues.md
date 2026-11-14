@@ -15,7 +15,7 @@ torii_url = "http://127.0.0.1:8080/"
 For CLI checks, pass the same file explicitly:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 If the peer runs in Docker or Kubernetes, use the host or service address that
@@ -45,14 +45,14 @@ Most transaction failures are caused by identity or authorization mismatch:
 - the account is not registered in genesis or by a prior transaction
 - the account lacks the permission token or role required by the runtime
   validator
-- a domain ID is missing its dataspace qualification, such as
+- a domain ID is missing its data space qualification, such as
   `domain.dataspace`
 
 Use `--output-format text` while debugging CLI commands so errors are easier
 to read:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ledger transaction ping --msg "hello"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority --output-format text tx ping --msg "hello"
 ```
 
 ## Queries return empty results
@@ -67,7 +67,7 @@ Empty query results do not always mean the query failed. Check:
 For domain checks, start with the broadest query:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 ## Event or block streams stop early

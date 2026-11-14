@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
+translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Executando Iroha em Hardware Nativo {#running-iroha-on-bare-metal}
 
 Use este fluxo de trabalho para executar pares de rede diretamente nos hosts, em vez de usar o Docker Compose. A árvore de código-fonte atual fornece geradores do Kagami que gravam a gênese correspondente, as configurações dos pares e do cliente e os scripts de inicialização e parada.
@@ -32,7 +31,7 @@ Isso produz:
 Gerar uma localnet de quatro pares Iroha 3:
 
 ```bash
-target/release/kagami localnet --peers 4 --out-dir ./localnet
+target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
 O diretório de saída contém os arquivos gerados `genesis.json`, `genesis.signed.nrt`, `config.toml` de pares de rede, `client.toml`, scripts auxiliares e um `README.md` gerado com comandos exatos para esse pacote.
@@ -52,7 +51,7 @@ Se você precisar conectar cada par de rede a um gerenciador de processos como s
 Use a configuração de cliente gerada:
 
 ```bash
-target/release/iroha --config ./localnet/client.toml ledger domain list all
+target/release/iroha --config ./localnet/client.toml ledger domain list --all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 

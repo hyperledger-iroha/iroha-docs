@@ -1,9 +1,9 @@
 ---
 translation_locale: ja
 translation_source: /reference/peer-config/params.md
-translation_source_hash: 027486a17e7624cc301f939429baf9ea9ed1259564c3b99b8dc63cce17a7b26e
+translation_source_hash: ebc05275774a1a86c81d5c5667613ffc2d9ad115ac19e40ba804daa736ba4084
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 
 outline: [2, 3]
 ---
@@ -56,9 +56,9 @@ PUBLIC_KEY="ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7
 
 :::
 
-### `private_key` <Badge text="required" /> {#param-private-key}
+### `private_key` {#param-private-key}
 
-ネットワークピアの秘密鍵。`public_key` と一致する必要があります。コンセンサスのバリデーターピアは BLS-Normal 鍵を使用する必要があります。
+ピアの秘密鍵です。`private_key` に鍵を指定するか、`private_key_file` に所有者だけがアクセスできる鍵ファイルのパスを指定するか、どちらか一方だけを設定してください。鍵は `public_key` と対応している必要があります。合意形成に参加するバリデータのピアには BLS-Normal 鍵を使います。
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
@@ -139,6 +139,8 @@ TRUSTED_PEERS_POP='[
 :::
 
 ## ブロックチェーンのジェネシス {#genesis}
+
+新規起動時にも再起動時にも、ジェネシスの信頼の起点として、`genesis.expected_hash` または `genesis.expected_hash_file` のどちらか一方だけが必要です。生成されたピア設定は後者を使用し、署名済みブロックと同じディレクトリの `genesis.expected_hash` を参照します。生成されたプロファイルをコピーする際も、この対応を保ってください。
 
 ### `genesis.file` {#param-genesis-file}
 
@@ -222,7 +224,7 @@ P2P_PUBLIC_ADDRESS=0.0.0.0:5000
 
 ### `network.block_gossip_size` {#param-network-block-gossip-size}
 
-1つの同期メッセージで送信できるブロックの数。
+ブロック同期のゴシップで、ピアのサンプルとブロック同期の更新を送る先の数の上限です。
 
 <param-table type=number default-value=4 />
 
@@ -324,7 +326,7 @@ API_ADDRESS=0.0.0.0:8080
 
 ### `torii.max_content_len` {#param-torii-max-content-len}
 
-[Torii API エンドポイント](/ja/reference/torii-endpoints.md) が受け入れる生リクエストボディの最大バイト数。
+[Torii エンドポイント](/ja/reference/torii-endpoints.md) が受け入れる生リクエストボディの最大バイト数。
 
 この制限は、DOS 攻撃を防ぐために使用されます。
 
@@ -430,12 +432,6 @@ LOG_LEVEL=INFO
 
 :::
 
-::: tip ソフトウェアランタイムの更新
-
-このパラメータは、Torii オペレーターの API エンドポイントを通じて、ソフトウェアの実行時構成の更新の対象となります。
-
-:::
-
 ### `logger.filter` {#param-logger-filter}
 
 に加えて洗練されたログフィルター [`logger.level`](#param-logger-level). ターゲットごとにログの詳細度をカスタマイズできるようにします。
@@ -475,12 +471,6 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 `logger.filter` 一緒に働く [`logger.level`](#param-logger-level) そして、どちらももう一方を上書きしません。
 
 例えば、`logger.level` が `INFO` に設定され、`logger.filter` が `iroha_core=debug` に設定されている場合、結果として得られるフィルターセットは `info,iroha_core=debug` になります（すなわち、すべてのモジュールに対して `info`、`iroha_core` に対して `debug`）。
-
-:::
-
-::: tip ソフトウェアランタイムの更新
-
-このパラメータは、Torii オペレーター API エンドポイントを通じてソフトウェアの実行時設定更新の対象となります。
 
 :::
 
@@ -547,7 +537,7 @@ Kura 初期化モード。`strict` は通常かつデフォルトのモードで
 
 `fast` は、完全な起動監査を行うと停止のリスクがある場合に、運用の可視性を回復するための緊急のサービス低下モードです。これは、以前に `strict` によって初期化されたストレージと、正確に5つのアーティファクトを含む現在のデータスナップショット生成を必要とします。 `snapshot.data`、`snapshot.sha256`、`snapshot.sig`、`snapshot.fast.norito`、および`snapshot.merkle.json`。ドメイン分離されたオペレーター署名は、広告されたペイロードの暗号ダイジェスト値と制約された技術マニフェストを結びつけます。技術的マニフェストは、ペイロードの長さ、チェーン/ネットワークの識別、端末の高さ/ハッシュ、SCCP ポリシー暗号ハッシュ、およびブートストラップ系統の存在を結びつけます。Fastはブートストラップ系統を拒否し、durable Kura からのまったく同じマーカー/カウント/チップ境界を必要とします。初回リリースノードは、まさにこれらの5つのアーティファクトのみを受け入れ、他のすべてのアーティファクトのカウントやファイル名セットを拒否します。
 
-Fastはその五つの名前とメタデータをペイロードおよびMerkleファイルに結び付けますが、それらの内容を読み取ったり、暗号学的ハッシュを計算したり、解析したり、デコードしたりはしません。署名された技術マニフェストから最小限の World/Nexus を構築し、正確な Kura 暗号ハッシュの接頭辞を読み取り専用でマッピングし、データスナップショットの World、ブロックハッシュ配列、トランザクション履歴、派生インデックス、および耐久リカバリジャーナルは開かないままにします。メルクル、正準およびセマンティックデータスナップショット監査、履歴ブロック／最終確定／SCCP 照合、Sumeragi アクティブ高さ回復、マージおよびクエリジャーナル、実行レーンマニフェスト／コンプライアンスソース、Kura 支援 SoraFS アーカイブ、再帰的ストレージ会計、そしてオプションのサービス和解者は引き続き延期されています。ローカルトランザクションの承認、提案、投票、標準的な書き込み、および補助的なプロデューサーは引き続き無効のままです。Kura 自体はライターの起動や永続的な変更を拒否します。ソフトウェア処理のワークフローおよび FASTPQ 永続キューは、作業を保持またはエンコードするのではなく、直ちに処理を拒否します。 Kura は APIs を読み取り、修復および耐久性同期の動作も無効にします: 一時的な補助レコードは昇格されず、欠落している実行レーンのアーティファクトは公開されず、進行のバリアは fsync されません。 Sumeragi およびトランザクションのゴシップも起動されません。Torii はヘルス、ライブネス、レディネス、ネットワークピア、および構成の操作のみを公開します。API のバージョン、ステータス、メトリクス、およびすべての通常の状態/履歴ルートは利用できません。レディネスは厳格な再起動まで利用できません。
+Fastはその五つの名前とメタデータをペイロードおよびMerkleファイルに結び付けますが、それらの内容を読み取ったり、暗号学的ハッシュを計算したり、解析したり、デコードしたりはしません。署名された技術マニフェストから最小限の World/SORA Nexus を構築し、正確な Kura 暗号ハッシュの接頭辞を読み取り専用でマッピングし、データスナップショットの World、ブロックハッシュ配列、トランザクション履歴、派生インデックス、および耐久リカバリジャーナルは開かないままにします。メルクル、正準およびセマンティックデータスナップショット監査、履歴ブロック／最終確定／SCCP 照合、Sumeragi アクティブ高さ回復、マージおよびクエリジャーナル、実行レーンマニフェスト／コンプライアンスソース、Kura 支援 SoraFS アーカイブ、再帰的ストレージ会計、そしてオプションのサービス和解者は引き続き延期されています。ローカルトランザクションの承認、提案、投票、標準的な書き込み、および補助的なプロデューサーは引き続き無効のままです。Kura 自体はライターの起動や永続的な変更を拒否します。ソフトウェア処理のワークフローおよび FASTPQ 永続キューは、作業を保持またはエンコードするのではなく、直ちに処理を拒否します。 Kura は APIs を読み取り、修復および耐久性同期の動作も無効にします: 一時的な補助レコードは昇格されず、欠落している実行レーンのアーティファクトは公開されず、進行のバリアは fsync されません。 Sumeragi およびトランザクションのゴシップも起動されません。Torii はヘルス、ライブネス、レディネス、ネットワークピア、および構成の操作のみを公開します。API のバージョン、ステータス、メトリクス、およびすべての通常の状態/履歴ルートは利用できません。レディネスは厳格な再起動まで利用できません。
 
 `fast`はインシデントのみに使用してください。サービスが安定したら、ノードを停止し、`strict`を復元して再起動し、すべての延期されたチェックとインデックスの再構築が本番再開前に実行されるようにしてください。高速モードでは、遅延マージログは不要であり、標準ストレージの作成、修復、切り捨て、インポートは行われません。未公開のサフィックスや保留中の補助回復ステージは、読み取ったり変更したりせずに無視され、その後Strict回復のために残されます。インポートされたハッシュのみのデータスナップショット系統は利用できません。現在のデータスナップショットが存在しないか無効な場合、即座に失敗します。Fastは決して空のワールドや過去のリプレイ再構築にフォールバックしません。
 
@@ -630,7 +620,7 @@ capacity = 1_048_576
 
 ### `queue.capacity_per_user` {#param-queue-capacity-per-user}
 
-単一ユーザーの待機中の取引数の上限。
+単一ユーザーについて、キューで待機できるトランザクション数の上限。
 
 このオプションを使用してスロットリングを適用してください。
 
@@ -662,30 +652,20 @@ transaction_time_to_live_ms = 43_200_000
 
 ## Sumeragi {#sumeragi}
 
-### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
+`[sumeragi]` には、ノードローカルの参加設定、署名鍵の管理、安全性記録のパス、文書化されたタイムアウトと同期設定の上書きを記述します。合意形成のモード、委員会の構成条件、定足数、ブロックサイズ、トランザクションの上限は、署名済みジェネシスとコミット済み状態から得られます。障害の注入は決定論的シミュレーターで行います。
 
-デバッグ専用のスイッチで、Sumeragi ソフトフォークの処理パスを実行できます。制御されたテスト以外では無効のままにしてください。稼働中の本番ネットワークでこれを変更すると、ネットワークのピアがコンセンサスの挙動について意見が合わなくなる可能性があります。
+対応するフィールドは、[設定](/ja/guide/configure/overview.md)と、固定した版の[設定リファレンス](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/references/configuration.md)を参照してください。
 
-<param-table type=bool default-value=false />
+## SORA Nexus アトミックな個人金融取引決済 {#nexus-atomic-private-settlement}
 
-::: code-group
+`[nexus.atomic_private_settlement]` は、一つのノードで暗号化された補助レコードを保持するための設定です。次の二つのローカルストレージ上限だけを含みます。
 
-```toml [Config File]
-[sumeragi.debug]
-force_soft_fork = true
-```
+- `sidecar_max_records`: 保持する暗号化決済記録の最大件数。
+- `sidecar_max_total_bytes`: 保持する正規形式のバイト列の最大総量。
 
-:::
+有効化、証明プロファイル、支払上限、有効期限、監査人のポリシーは、コミット済みのプライバシーポリシーで決まります。ノード設定では、これらの妥当性規則を有効化したり変更したりできません。
 
-## Nexus アトミックな個人金融取引決済 {#nexus-atomic-private-settlement}
-
-`[nexus.atomic_private_settlement]`は、個別の`AtomicPrivateSettlementV1`パスを管理します。デフォルトでは無効になっています。`enabled = true`を設定するには`activation_height`も必要です；オンチェーン機能、通知期間、固定証明プロファイル、およびプール/監査ガバナンスが有効でない限り、入場は依然として閉じた状態で失敗します。
-
-主な境界は`max_participants`、`max_expiry_blocks`、`audit_timeout_blocks`、`prepare_timeout_blocks`、`commit_timeout_blocks`、`max_proof_bytes`、`max_capsule_bytes`、`max_carrier_bytes`、`sidecar_retention_blocks`、`sidecar_max_records`、および`sidecar_max_total_bytes`です。`capsule_padding_classes_bytes`は V1 パディングクラスの厳密に増加する部分集合でなければなりません。`permitted_policy_versions`は V1 のみを受け入れます。
-
-`max_capsule_bytes` は、暗号化テキストのみの制限ではなく、`PrivateSettlementAuditCapsuleV1` の完全な Norito バイト、AAD、暗号用ノンス値、暗号文、ベクターフレーミング、そしてすべての監査人がラップした DEK 行を含めて測定します。すべての有効なパディングクラスは、少なくとも`default_min_auditor_approvals`人の監査人向けに、保守的な全カプセルデータコンテナに適合しなければなりません。その承認設定はまた規制された下限でもあります：Torii は、より低い`min_approvals`値を持つ新規承認ポリシーを拒否し、標準バイト制限を超える実際のカプセルも拒否します。
-
-これらの設定には、本番環境の環境変数アクティベーションのバイパスはありません。完全な構成例と運用要件については[アトミックなプライベートクロスデータスペースの金融取引決済を実行する](/ja/get-started/atomic-private-settlement)を参照してください。文書化された外部リリースゲートが通過するまでは、パスは本番適格ではありません。
+保管の設定と運用要件については、[データスペース間のアトミックなプライベート決済を実行する](/ja/get-started/atomic-private-settlement.md)を参照してください。コンポーネントの実装だけでは、本番環境での適格性を確認したことにはなりません。
 
 ## データスナップショット {#snapshot}
 
@@ -766,26 +746,7 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 ## テレメトリー {#telemetry}
 
-テレメトリはネットワークピアの診断情報を外部テレメトリコレクターにエクスポートします。ネットワークピアがコレクターにレポートする必要がある場合は、`telemetry.name` と `telemetry.url` の両方を設定してください。テレメトリを使用しない場合は、このセクションを省略してください。
-
-`name` と `url` はペアにする必要があります。
-
-すべての`telemetry`セクションは任意です。
-
-### `telemetry.name` {#param-telemetry-name}
-
-テレメトリに表示されるノードの名前。
-
-<param-table type=string />
-
-::: code-group
-
-```toml [Config File]
-[telemetry]
-name = "iroha"
-```
-
-:::
+テレメトリは、ピアの診断情報を外部のテレメトリ収集サービスへ送ります。ピアから収集サービスへ報告する場合は `telemetry.url` を設定し、収集サービスを使わない場合はこのセクションを省略してください。再試行の間隔も、同じ任意の設定テーブルで指定します。
 
 ### `telemetry.url` {#param-telemetry-url}
 

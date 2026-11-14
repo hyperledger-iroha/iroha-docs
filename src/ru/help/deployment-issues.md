@@ -1,11 +1,10 @@
 ---
 translation_locale: ru
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Устранение неполадок развертывания {#troubleshooting-deployment-issues}
 
 Этот раздел предлагает советы по устранению неполадок для развертываний Iroha 3. Если описанная проблема не соответствует вашей, свяжитесь с нами через [Телеграм](https://t.me/hyperledgeriroha).
@@ -15,7 +14,7 @@ translation_engine: bing-translator-llm
 Для локальных и тестовых развертываний предпочтительно использовать артефакты, сгенерированные Kagami, вместо вручную написанных файлов узлов сети:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Созданный каталог содержит конфигурации сетевых узлов, материалы генезиса блокчейна, стартовые скрипты и README для сборочной линии Iroha 3.
@@ -42,7 +41,7 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 Сгенерируйте Compose из текущего вывода локальной сети Kagami, чтобы аргументы командной строки и файлы конфигурации соответствовали выкачанному коду:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```
@@ -67,9 +66,9 @@ docker compose -f ./docker-compose.yml up
 
 Если под перезапускается неоднократно, сравните сгенерированную конфигурацию в паде с ожидаемой [`peer.template.toml`](/ru/reference/peer-config/index.md#template) и проверить, воспроизводит ли сетевой узел старые данные Kura данные.
 
-## Профиль Соры {#sora-profile}
+## Профиль SORA Nexus {#sora-profile}
 
-Частные или локальные развертывания Iroha 3, которые используют Nexus, SoraFS или многополосные потоки, должны запускать стандартный демон с включенным профилем Sora:
+В частных или локальных развёртываниях Iroha 3, использующих SORA Nexus, SoraFS или несколько линий, запускайте стандартный демон с включённым профилем SORA Nexus:
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

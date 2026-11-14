@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/world.md
-translation_source_hash: 61657e1736d3163965063c38e347ed7dbfe040633ddf24eb1a37904922cb354d
+translation_source_hash: d6ecc7832a3925c105ddc0ddfbaf62ea54d465cdb7b98ce795e5a72c615361bd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-source-naming-amendment
 ---
-
 # 世界 {#world}
 
 `World`是包含其他實體的全球實體. `World`由:
@@ -36,7 +35,7 @@ WSV 比`World`物件更廣泛,實際上它包含:
 - 在查詢和收據中使用的交易到區塊索引
 - 透過共識使用的當前和以前的提交拓
 - 從承諾區塊中獲得的記憶體索引,例如資料可用性承諾,回執緩衝器,釘選意圖和查詢投影標記
-- 對於確定性區塊執行所需的執行階段配置快照,例如加密,治理,管道,內容,結算和 Nexus 設定
+- 確定性區塊執行所需的執行期設定快照，例如密碼學、治理、處理流程、內容、結算及 SORA Nexus 設定
 
 查詢通常在這些結構上只能讀取 `StateView`.一個檢視是查詢執行的一致的快照;它不允許直接突變 WSV.
 

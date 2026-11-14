@@ -1,14 +1,13 @@
 ---
 translation_locale: ur
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # نیٹ ورک کے تعیناتی کی چابیاں {#keys-for-network-deployment}
 
-ہر نیٹ ورک کو کلائنٹس، نیٹ ورک نوڈ، جینس دستخط اور NPoS یا Nexus پروفائلز کے لئے BLS تصدیق کنندہ کی شناختوں کے لئے الگ الگ کلیدی مواد کی ضرورت ہوتی ہے.
+ہر نیٹ ورک کو کلائنٹس، پیئرز، جینیسس پر دستخط، اور NPoS یا SORA Nexus پروفائلز میں BLS ویلیڈیٹر شناختوں کے لیے الگ کلیدی مواد درکار ہوتا ہے۔
 
 ## جہاں چابیاں استعمال کی جاتی ہیں {#where-keys-are-used}
 
@@ -21,7 +20,7 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 مقامی یا ٹیسٹ کی تعیناتی کے لئے، Kagami کو ان تمام فائلوں کو ایک ساتھ پیدا کرنے دیں:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 ایک موجودہ نیٹ ورک یا پروفائل کے لئے، ہدایت شدہ بہاؤ کا استعمال کریں:
@@ -39,7 +38,7 @@ cargo run --bin kagami -- keys --algorithm ed25519 \
   --out-dir ./client-key
 ```
 
-BLS validator مواد کے ساتھ Proof-of-Possession بھی شامل کریں:
+BLS توثیق کنندہ کے مواد کے لیے، کلید رکھنے کا ثبوت شامل کریں:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop \

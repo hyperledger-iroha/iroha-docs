@@ -1,11 +1,10 @@
 ---
 translation_locale: kk
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Рұқсат белгішелері {#permission-tokens}
 
 Бұл бет қазіргі Iroha орындаушы деректер моделінде көрсетілген әдепкі рұқсат-токен түрлерін көрсетеді. Рөлдер мен рұқсаттарға арналған ұғымдық нұсқаулық үшін [Рұқсаттар](/kk/blockchain/permissions.md) қараңыз.
@@ -45,7 +44,8 @@ translation_engine: bing-translator-llm
 | `CanModifyTriggerMetadata` |Триггер|Триггер метадеректерін өзгерту.|
 | `CanUpgradeExecutor` |Орындаушы|Бағдарламалық қамтамасыз ету орындалу ортасының орындалушысын жаңартыңыз.|
 | `CanRegisterSmartContractCode` |Ақылды келісімшарт|Ақылды келісімшарт кодын тіркеу.|
-| `CanUseFeeSponsor` | Nexus |Белгіленген демеуші есепшотына Nexus алымды салыңыз.|
+| `CanManageFeeSponsorProgram` | SORA Nexus | Нақты демеуші есептік жазба иеленетін бағдарламаларды басқару. |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | Бір нақты демеуші бағдарламасының бенефициарларын басқару. |
 
 ## Меншік {#ownership}
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /guide/best-practices/security-and-access.md
-translation_source_hash: f0163734d618d91337b437da703743014d01c57c4cb603fbc2e66316f3654779
+translation_source_hash: b1cb0cdbeec55f7db03f1c64b6581a21c09fc80a57344cf6e27df1d126c0ec92
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # セキュリティとアクセス {#security-and-access}
 
 Iroha におけるセキュリティ実践は、限定的な認可の原則、管理された鍵の保管、明示的なネットワーク露出、および監査可能な変更に基づくべきです。
@@ -23,7 +22,7 @@ Iroha におけるセキュリティ実践は、限定的な認可の原則、�
 
 - ワークフローをサポートする最小の権限トークンまたはロールを付与してください。
 - サービス、トリガー、エージェント、および自動化には専用の技術アカウントを使用することを推奨します。個人のオペレーターアカウントを通じて長時間実行される自動化は避けてください。
-- 本番リリース前に、ネットワークピア管理、メタデータの変更、発行、破棄、トリガー登録、実行者の変更、および SORA/Nexus ガバナンスの権限を確認してください。
+- 本番リリース前に、ネットワークピア管理、メタデータの変更、発行、破棄、トリガー登録、実行者の変更、および SORA Nexus ガバナンスの権限を確認してください。
 - メンテナンス時間やそれを必要とした移行後に、一時的な権限を取り消します。
 
 [権限](/ja/blockchain/permissions.md) と [許可トークン](/ja/reference/permissions.md) を参照してください。

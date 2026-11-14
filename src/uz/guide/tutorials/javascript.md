@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
+translation_source_hash: 92389d3ad83ab32e85b4ca83ede9829d1a38afaad6e86da035da2829a3aaedfb
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # JavaScript va TypeScript {#javascript-and-typescript}
 
 Hozirgi JavaScript SDK Iroha manba daraxtidagi `@iroha/iroha-js` paketidir. Bu Torii, Norito quruvchilar, imzolash, sahifalash, Connect ko‘rinishlari va Kagemusha buyruq uzatish uchun Node.js-birinchi SDK hisoblanadi.
@@ -99,7 +98,6 @@ SDK quyidagilarga e'tibor qaratadi:
 - Ed25519 imzolash va kalit yaratish
 - sahifalash va qayta urinib ko‘rish yordamchilari
 - Brauzer bootstrap yordamchilariga ulaning
-- Kagemusha tayyorgarlik, to'ldirish, qaytarib olish va operatsiya-holati tashish yordamchilari
 
 ## Oliy darajadagi manbalar {#upstream-references}
 

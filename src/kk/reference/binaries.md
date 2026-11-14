@@ -1,11 +1,10 @@
 ---
 translation_locale: kk
 translation_source: /reference/binaries.md
-translation_source_hash: c617a21d50b28495c261d05d672e0b7803c282d53da577391dbebbc7f120d045
+translation_source_hash: 75848623e735abc80326f9ebda6f74ab438b67eaeddeacdd4d8c5509856a999e
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha Бинарларымен жұмыс істеу {#working-with-iroha-binaries}
 
 Iroha 3 оператордың жұмыс үрдісі төрт негізгі екілік файлдарға негізделген:
@@ -50,7 +49,7 @@ cargo run --bin kagami -- --help
 
 ## Docker Сурет {#docker-image}
 
-Жоғары ағысты жұмыс кеңістігі `kagami localnet` және `kagami docker` қолдана отырып, тексеріп шығарылған кодқа сәйкес келетін Docker Compose файлдарын генерациялайды. Сол генерацияланған файлдармен `hyperledger/iroha:dev` бейнесін пайдалануға болады.
+Негізгі жұмыс кеңістігі жұмыс көшірмесіндегі кодқа сәйкес Docker Compose файлдарын жасау үшін `kagami localnet generate` және `kagami docker` пайдаланады. Жасалған файлдармен `hyperledger/iroha:dev` бейнесін қолдануға болады.
 
 Контейнерде CLI-ді іске қосыңыз:
 
@@ -67,7 +66,7 @@ docker run -t hyperledger/iroha:dev kagami --help
 Желілік әріптесті іске қосу үшін алдымен localnet және Compose файлын жасаңыз:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```
@@ -77,4 +76,4 @@ docker compose -f ./docker-compose.yml up
 - Қоғамдық Taira тексеруші нұсқасынан тыс желі серіктестерін бастағанда немесе жұмыс істегенде `iroha3d` пайдаланыңыз.
 - `iroha3d_taira --sora` тек бір протокол стандартындағы Taira валидатор орналастыру үшін қолданыңыз; бұл Taira тізбегінің, сақтау орнын және орындау-қолтаңба профилін жүзеге асырады.
 - `iroha` блокчейн есептік тізілімін сұрау, транзакцияларды жіберу немесе оператор API нүктелерін тексеру қажет болғанда қолданыңыз.
-- `kagami` қажет болғанда кілттерді, блокчейннің генезис техникалық манифесттерін, профиль бандлдарын немесе localnet активтерін пайдаланыңыз.
+- Кілттер, генезис манифесттері, профиль топтамалары немесе жергілікті желі активтері қажет болғанда `kagami` пайдаланыңыз.

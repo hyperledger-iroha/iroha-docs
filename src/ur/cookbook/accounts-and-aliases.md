@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: c1aee0c29332bd7c883500e72a1ec7812aebfca13b673e6681788cf4bc5ecbf1
+translation_source_hash: e500328ac93578b9af21b6ef3d01e13e051b1d9a0f6050293e65650da66fbbbb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+claude-opus-5-5
+translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link
 ---
-
 # اکاؤنٹس اور عرفی نام {#accounts-and-aliases}
 
 ## نتیجہ {#outcome}
@@ -34,7 +33,7 @@ curl -fsS -H 'Accept: application/json' --get \
     | @tsv'
 ```
 
-`.id` سے حاصل ہونے والا ID سخت اکاؤنٹ فیلڈز کے لیے درست ہے۔ اس کے ساتھ ڈومین منسلک نہ کریں۔ `.aliases[].alias` سے حاصل ہونے والا alias صارف کے لیے lookup key ہے، کوئی دوسری کینونیکل شناخت نہیں۔
+`.id` سے حاصل کردہ شناخت کنندہ سخت اکاؤنٹ فیلڈز کے لیے درست ہے۔ اس کے ساتھ ڈومین نہ جوڑیں۔ `.aliases[].alias` سے حاصل کردہ عرف، صارف کے لیے تلاش کی کلید ہے، کوئی دوسری کینونیکل شناخت نہیں۔
 
 ### اپنے Taira I105 ID کو حاصل کریں اور اسے معمول پر لائیں۔ {#_2-derive-and-normalize-your-taira-i105-id}
 
@@ -135,7 +134,7 @@ iroha --config ./localnet/client.toml account get \
 
 ## تصدیق کریں {#verify}
 
-ثابت کریں کہ config عوامی کلید، I105 کوڈنگ، اور بائنڈنگ عرفات سبھی ایک ہی کینونیکل اکاؤنٹ ID پر ملتے ہیں:
+ثابت کریں کہ ترتیب میں موجود عوامی کلید، I105 انکوڈنگ اور عرف کی وابستگی سب ایک ہی کینونیکل اکاؤنٹ ID پر پہنچتے ہیں:
 
 ```bash
 NORMALIZED_ACCOUNT_ID="$(

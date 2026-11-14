@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # ፈቃዶች {#permissions}
 
 መለያዎች በብሎክቼይን ላይ ለተለያዩ ድርጊቶች የፍቃድ ቶከኖች ያስፈልጋቸዋል፣ ለምሳሌ ንብረቶችን ለማውጣት ወይም ለማጥፋት።
@@ -56,7 +55,7 @@ translation_engine: bing-translator-llm
 
 ### አዲስ ሚና ይመዝገቡ {#register-a-new-role}
 
-በ Mouse መለያ ውስጥ ወደ [ሜታዳታ](/am/blockchain/metadata.md) ሌላ መለያ እንዲደርስ የሚፈቅድ አዲስ ሚና እንመዘግባለን -
+ሲሰጥ ሌላ መለያ በMouse መለያ ውስጥ ያለውን [ሜታዳታ](/am/blockchain/metadata.md) እንዲያገኝ የሚፈቅድ አዲስ ሚና እናስመዝግብ፦
 
 ```rust
 let role_id = RoleId::from_str("ACCESS_TO_MOUSE_METADATA")?;
@@ -89,7 +88,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 - NFTs እና የ ‹SEO› እና የ ‹SEO› ን
 - ቀስቅሴዎች
 - ሚናዎች እና ፈቃዶች
-- አስፈፃሚ/የአሂድ ጊዜ፣ ማረጋገጫዎች፣ ድልድዮች እና SORA/Nexus ሞጁሎች
+- አስፈፃሚ/የአሂድ ጊዜ፣ ማረጋገጫዎች፣ ድልድዮች እና SORA Nexus ሞጁሎች
 
 ትክክለኛው የቶከን ዝርዝር በ [የፍቃድ ቶከኖች ማጣቀሻ](/am/reference/permissions.md) ውስጥ በምንጭ የተደገፈ ነው።
 

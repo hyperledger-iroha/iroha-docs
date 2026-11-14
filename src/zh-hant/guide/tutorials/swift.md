@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
+translation_source_hash: 37e8be9b07a40e5c6b841a47b016320e42079853433fb3e53937e4021dc1304f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Swift 和iOS {#swift-and-ios}
 
 上游工作空間提供的 Swift SDK 是 `IrohaSwift/` 下的 `IrohaSwift` Swift 套件。其套件 manifest 定義三個函式庫產品：`IrohaSwift`、`IrohaSwiftMobileTransports` 和 `IrohaSwiftTransferUI`，並以 Swift 5.9 工具支援 iOS 15+ 與 macOS 12+。
@@ -161,7 +160,7 @@ let keyPair = try ConnectCrypto.generateKeyPair()
 - Ed25519, secp256k1, ML-DSA, BLS,GOST 和 SM2 的簽字表面,在需要時具有原生橋樑支
 - 用於市場型和匿名託管的原生託管指令承載資料建構器
 - 連線 WebSocket,框架,加密,會議,排隊,重播和診斷輔助器
-- 卡蓋穆沙準備,打字補充和贖回,運營狀態,筆記,對等節點捆綁,收據和 QR 流模型
+- KAGEMUSHA V1 傳輸格式輔助工具，以及供原生錢包 Advance 提供者、註冊、復原與已准入交換呼叫使用的 iPhone 平台介面
 - SoraFS,資料可用性和驗證附件輔助器
 
 ## API 舉例 {#api-examples}

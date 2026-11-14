@@ -1,11 +1,10 @@
 ---
 translation_locale: kk
 translation_source: /blockchain/assets.md
-translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
+translation_source_hash: 4d0a3f54a0c70d08d11160b9ec66d6538aa2c49c7771a13e4a070b61a9cb3e4b
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Активтер {#assets}
 
 Iroha активі есепшоттағы сандық баланс болып табылады. Әр нақты баланс `AssetDefinition`-қа нұсқайды, ал анықтама ол активтің қалай аталуына, шығарылуына, көрсетілуіне және бөлінуіне сипаттайды.
@@ -22,7 +21,7 @@ Iroha активі есепшоттағы сандық баланс болып �
 - `mintable`: активтерді шығару саясаты саясаты
 - `logo`: міндетті емес `SoraFS` URI
 - `metadata`: кездейсоқ кілт-бағалы метадеректер
-- `balance_scope_policy`: қалдықтар жаһандық па немесе деректер кеңістігімен шектелген бе
+- `balance_scope_policy`: баланстар жаһандық па, әлде деректер кеңістігімен шектелген бе
 - `owned_by`: анықтаманы тіркеген немесе иелік ететін есептік жазба
 - `total_quantity`: жалпы шығарылған мөлшері
 - `confidential_policy`: қорғалған активтер операциялары бойынша саясат
@@ -36,7 +35,7 @@ Iroha активі есепшоттағы сандық баланс болып �
 - `id`: актив анықтамасын, иесінің есеп-шотын және міндетті емес актив баланс шегін біріктіретін `AssetId`
 - `value`: `Numeric` қалдық
 
-Ұстаушы есепшот бір протоколдық стандартқа сай және доменсіз. Активтің анықтамасы мәліметтер кеңістігіне сәйкес домен астында көрсетілуі мүмкін, мысалы `payments.universal`.
+Иеленушінің есептік жазбасы канондық әрі доменсіз. Актив анықтамасы деректер кеңістігімен нақтыланған домен аясында көрсетілуі мүмкін, мысалы, `payments.universal`.
 
 ## Активтерді шығару саясаты {#mintability}
 
@@ -56,9 +55,9 @@ Iroha активі есепшоттағы сандық баланс болып �
 `balance_scope_policy` баланстар қалай бөлінетінін бақылайды:
 
 - `Global`: әр есеп тіркелгісі мен актив анықтамасы үшін бір баланс бөлімі
-- `DataspaceRestricted`: баланстар деректер кеңістігі контексті бойынша бөлінеді
+- `DataspaceRestricted`: баланстар деректер кеңістігінің контексті бойынша бөлінеді
 
-Деректер кеңістігімен шектелген қалдықтар бірдей актив анықтамасы бірнеше Nexus деректер кеңістігінде қолданылған кезде пайдалы, бірақ қалдықтар оқшауланған күйде қалуы керек.
+Бір актив анықтамасы бірнеше SORA Nexus деректер кеңістігінде қолданылып, бірақ баланстар оқшау қалуы керек болса, деректер кеңістігімен шектелген баланстар пайдалы.
 
 ## Осы жұмыс ағынын Taira нөмірінде іске қосыңыз {#try-it-on-taira}
 
@@ -89,19 +88,18 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-Үш мысалдың барлығы оқу болып табылады. Taira бойынша активтерді шығару, жою немесе аудару үшін тестнетке қаражат қосылған есепшотты және [SORA Nexus Деректер кеңістіктеріне қосылу](/kk/get-started/sora-nexus-dataspaces.md)-дағы қорғалған процесті пайдаланыңыз.
+Үш мысал да — оқу операциялары. Taira желісінде актив шығару, жою немесе аудару үшін тест токендерін беру қызметінен қаржыландырылған есептік жазбаны және [SORA Nexus деректер кеңістіктеріне қосылу](/kk/get-started/sora-nexus-dataspaces.md) бөліміндегі тексерілетін үдерісті пайдаланыңыз.
 
-Ақы төлейтін Taira актив мысалы үшін, [Taira сайтынан XOR тест желісін алыңыз](/kk/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)-дегі тесттік желіні қаржыландыру қызметі көмекшісін `taira_faucet_claim.py` ретінде сақтаңыз, содан кейін тесттік желіні қаржыландыру қызметінің активін бірінші болып талап етіп, оны транзакцияны орындау шығын активі ретінде пайдаланыңыз:
+Taira желісіндегі комиссия төленетін актив мысалы үшін алдымен [Taira желісінде тестілік XOR алу](/kk/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) бөліміндегі дайындау қадамы бар токен беру үдерісі арқылы қол қоюшыны қаржыландырыңыз. Содан кейін `ledger asset mint`, `ledger asset burn` және `ledger asset transfer` пәрмендеріне `--fee-payer authority` параметрін беріңіз; CLI қол қою алдында нақты комиссияны Taira комиссия активімен бағалайды:
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
+iroha --config ./taira.client.toml --fee-payer authority \
+  ledger asset transfer \
+  --definition "<ASSET_DEFINITION_BASE58>" \
+  --account "<TAIRA_I105_ACCOUNT_ID>" \
+  --to "<RECIPIENT_I105_ACCOUNT_ID>" \
+  --quantity 1
 ```
-
-Содан кейін `--metadata ./taira.tx-metadata.json` командаларын `ledger asset mint`, `ledger asset burn` және `ledger asset transfer` қосыңыз.
 
 ## Нұсқаулар {#instructions}
 

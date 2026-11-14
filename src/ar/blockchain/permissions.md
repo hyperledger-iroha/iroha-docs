@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # الأذونات {#permissions}
 
 تحتاج الحسابات إلى رموز إذن للقيام بإجراءات مختلفة على البلوكشين، مثل إصدار أو حرق الأصول.
@@ -89,7 +88,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 - الأصول، NFTs، والحسابات الضمان
 - المحفزات
 - الأدوار والأذونات
-- المنفذ/وقت التشغيل، الإثباتات، الجسور، ووحدات SORA/Nexus
+- المنفذ/وقت التشغيل، الإثباتات، الجسور، ووحدات SORA Nexus
 
 قائمة الرموز الدقيقة مدعومة بالمصدر في [مرجع رموز الإذن](/ar/reference/permissions.md).
 

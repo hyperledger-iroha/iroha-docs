@@ -1,11 +1,10 @@
 ---
 translation_locale: mn
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Өөрт нь зөвшөөрөл өгөх тэмдэг {#permission-tokens}
 
 Энэ хуудас нь одоогийн Iroha гүйцэтгэгчийн өгөгдлийн загвараас ил болсон анхдагч зөвшөөрлийн токен төрөлүүдийг жагсаасан болно. Үүрэг, зөвшөөрлийн ойлголтын гарын авлагын хувьд [Зөвшөөрөл](/mn/blockchain/permissions.md)-ыг үзнэ үү.
@@ -45,7 +44,8 @@ translation_engine: bing-translator-llm
 | `CanModifyTriggerMetadata` |Тогоох товчлуур|Триггерийн мета өгөгдлийг өөрчлөх.|
 | `CanUpgradeExecutor` |Гүйцэтгэгч|Програм хангамжийн гүйцэтгэх орчны гүйцэтгэгчийг шинэчлэх.|
 | `CanRegisterSmartContractCode` |Өөрөө гүйцэтгэгдэх гэрээ|Ухаалаг гэрээний кодыг бүртгүүлэх.|
-| `CanUseFeeSponsor` | Nexus |Тодорхойлогдсон ивээн тэтгэгчийн дансанд Nexus төлбөрийг төлнө.|
+| `CanManageFeeSponsorProgram` | SORA Nexus | Яг тухайн ивээн тэтгэгч дансны эзэмшдэг хөтөлбөрүүдийг удирдах. |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | Яг нэг ивээн тэтгэх хөтөлбөрийн хүртэгчдийг удирдах. |
 
 ## Эзэмшил {#ownership}
 

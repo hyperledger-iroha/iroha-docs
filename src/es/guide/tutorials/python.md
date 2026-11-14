@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /guide/tutorials/python.md
-translation_source_hash: d0ecbade221ceba455730e80c6e12db930c65a4cbcf9e643c1c2d4cba47b0940
+translation_source_hash: bd9ff4a38229cbdabbd77e21fe31a770f9213341d7db73a75ed0bd914c761849
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Python {#python}
 
 El Python SDK en el espacio de trabajo ascendente es `iroha-python`. La primera versión de Iroha 3 apunta a las superficies actuales Torii y Norito. Fije la versión del paquete o la revisión de la fuente utilizada por su integración para que el SDK y el nodo permanezcan en la misma revisión del formato de serialización.
@@ -46,7 +45,7 @@ Si `create_torii_client` se importa pero `Instruction` o `generate_ed25519_keypa
 
 ## Inicio rápido {#quickstart}
 
-Comience con los endpoints públicos de solo lectura Taira API:
+Comience con los puntos de acceso públicos de solo lectura de Taira:
 
 ```python
 from iroha_python import (
@@ -709,7 +708,7 @@ definitions = client.list_asset_definitions_typed(limit=10)
 print(domains.total, definitions.total)
 ```
 
-Utilice los ayudantes de solicitud genéricos cuando un endpoint Torii API aún no tenga un adaptador de software tipado:
+Utilice las funciones auxiliares genéricas de solicitud cuando un punto de acceso de Torii aún no tenga un adaptador tipado:
 
 ```python
 from urllib.request import Request, urlopen
@@ -724,7 +723,7 @@ with urlopen(request, timeout=5) as response:
     metrics = response.read().decode("utf-8")
 ```
 
-Los auxiliares de inventario de cuentas requieren un identificador de cuenta aceptado por el normalizador de SDK. Utilice IDs de cuenta canónicos de I105 o alias en la cadena; si un explorador de bloques o un endpoint sin procesar API devuelve un ID que el SDK rechaza, resuélvelo a un ID de cuenta canónica antes de llamar a estos asistentes:
+Las funciones auxiliares de inventario de cuentas requieren un identificador de cuenta aceptado por el normalizador del SDK. Utilice IDs de cuenta I105 canónicos o alias en cadena; si un explorador de bloques o un punto de acceso sin procesamiento devuelve un ID que el SDK rechaza, resuélvalo a un ID de cuenta canónico antes de llamar a estas funciones:
 
 ```python
 # These helpers expect a canonical account ID or an alias the SDK can normalize.
@@ -1026,26 +1025,6 @@ client = create_torii_client(
 )
 ```
 
-## Preparación de Kagemusha {#kagemusha-readiness}
-
-El Python SDK puede consultar la ruta de disponibilidad actual de JSON a través de su ayudante de solicitudes genérico Torii:
-
-```python
-ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
-
-readiness = client.request_json(
-    "GET",
-    "/v1/offline/readiness",
-    params={"asset_definition_id": ASSET_DEFINITION_ID},
-    headers={"Accept": "application/json"},
-    expected_status=(200,),
-)
-print(readiness["ready"])
-print(readiness["blockers"])
-```
-
-Python no expone constructores de archivos de recarga o redención Kagemusha tipados. Utiliza una billetera Swift o JVM tipada para construir los archivos canónicos V4, luego envíalos y consúltalos a través de un cliente Kagemusha Torii compatible.
-
 ## Suscripciones {#subscriptions}
 
 Las lecturas de suscripción y los generadores de borradores se heredan del cliente compartido Torii utilizado por `iroha_python.ToriiClient`. Cada mutación se admite con una firma de cuenta canónica vinculada al cuerpo y devuelve un borrador de transacción no firmado. Torii nunca acepta una clave privada y no envía el borrador por usted.
@@ -1300,7 +1279,7 @@ if connect_status is not None:
 
 ## SoraFS, UAID y Kaigi Ayudantes {#sorafs-uaid-and-kaigi-helpers}
 
-Estos ayudantes están disponibles cuando el nodo objetivo expone los endpoints correspondientes Nexus/SORA API. Trate las listas vacías como una respuesta válida: el público Taira puede tener la ruta habilitada sin datos para el manifiesto técnico de muestra o UAID.
+Estas funciones auxiliares están disponibles cuando el nodo de destino expone los puntos de acceso correspondientes de SORA Nexus. Considere las listas vacías una respuesta válida: la red pública Taira puede tener la ruta habilitada sin datos para el manifiesto de ejemplo o el UAID.
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
@@ -1324,7 +1303,7 @@ print(health.healthy_total, health.failovers_total)
 
 ## Norito RPC y GPU Ayudantes {#norito-rpc-and-gpu-helpers}
 
-Use `NoritoRpcClient` cuando ya tienes Norito bytes y necesitas llamar a un endpoint binario Torii API. El ejemplo requiere un contenedor de datos firmado de una plantilla de transacción anterior:
+Utilice `NoritoRpcClient` cuando ya disponga de bytes Norito y necesite llamar a un punto de acceso binario de Torii. El ejemplo requiere un sobre firmado de una plantilla de transacción anterior:
 
 ```python
 from iroha_python import NoritoRpcClient, NoritoRpcConfig
@@ -1357,10 +1336,10 @@ El Python SDK ya incluye asistentes para:
 - constructores de instrucciones tipadas para extensiones comunes ISI y específicas de dominio
 - borradores de transacciones, manifiestos técnicos, firma y flujos de trabajo de contenedores de datos de transacciones firmadas
 - transmisiones de eventos en vivo y filtros tipeados; las transmisiones de bloques comprometidos proporcionan historial completo
-- acceso genérico a preparación de Kagemusha y ayudantes de suscripción Torii; los constructores tipados de recarga y redención no están expuestos
+- lecturas de suscripciones de Torii y constructores de borradores de transacciones sin firmar
 - dirección de cuenta, auxiliares de firma para todos los algoritmos, viajes de ida y vuelta de multihash, SM2, GOST, ML-DSA, BLS, y manejo de claves confidenciales
 - Conectar URIs, sesiones, marcos, asistentes de cifrado y administrador del registro
-- gobernanza, actualización del tiempo de ejecución del software, Sumeragi, administrador de nodo, SoraFS, UAID y Kaigi API adaptadores de software de punto de conexión donde el nodo expone esas funciones
+- adaptadores para puntos de acceso de gobernanza, actualización del entorno de ejecución, Sumeragi, administración del nodo, SoraFS, UAID y Kaigi, cuando el nodo exponga esas funciones
 
 ## Referencias ascendentes {#upstream-references}
 

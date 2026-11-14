@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/world.md
-translation_source_hash: 61657e1736d3163965063c38e347ed7dbfe040633ddf24eb1a37904922cb354d
+translation_source_hash: d6ecc7832a3925c105ddc0ddfbaf62ea54d465cdb7b98ce795e5a72c615361bd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-naming-amendment
 ---
-
 # 世界 {#world}
 
 `World` は他のエンティティを含むグローバルなエンティティです。`World` は以下で構成されています:
@@ -36,7 +35,7 @@ WSV は `World` オブジェクトよりも広範です。実際には、次の�
 - クエリおよびプロトコル結果記録によって使用されるトランザクション対ブロックのインデックス
 - コンセンサスによって使用される現在および以前のプロトコル最終化トポロジー
 - 確定したブロックから派生したインメモリインデックス、例えばデータ可用性の暗号学的コミットメント値、プロトコル結果記録カーソル、ピン意図、およびクエリ投影マーカー
-- 暗号、ガバナンス、ソフトウェア処理ワークフロー、コンテンツ、金融取引清算、及び Nexus 設定など、決定論的なブロック実行に必要なソフトウェアランタイム構成データのスナップショット
+- 暗号、ガバナンス、ソフトウェア処理ワークフロー、コンテンツ、金融取引清算、及び SORA Nexus 設定など、決定論的なブロック実行に必要なソフトウェアランタイム構成データのスナップショット
 
 クエリは通常、これらの構造体に対して読み取り専用の `StateView` を受け取ります。ビューはクエリ実行時の一貫したデータスナップショットであり、WSV の直接的な変更は許可されません。
 

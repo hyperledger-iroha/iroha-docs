@@ -1,11 +1,10 @@
 ---
 translation_locale: hy
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: 4c7c62c23166a19ccc3a6a4bb42d808038d755b8c05e87b9e2ce21fbbe31a6ac
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # տեղադրել Iroha 3 {#install-iroha-3}
 
 Այս էջը ներառում է Iroha 3 գործիքների շղթայի եւ բինարների ներկա տեղադրման աշխատանքային հոսքը ՝ օգտագործելով վերեւում գտնվող `hyperledger-iroha/iroha` աշխատատեղը:
@@ -64,7 +63,8 @@ cargo run --bin kagami -- --help
 
 Ներկայիս աղբյուրի աջակցությամբ տեղական ցանցային հոսքը ստեղծվում է Kagami: Այն գրում է հանգույցների կոնֆիգներ, գենեզիզ արվեստախաղեր, հաճախորդների կոնֆիդ, օգնական սցենարներ եւ ընտրանքային Compose ֆայլ, որը համապատասխանում է ստուգված կոդին.
 
-- `kagami localnet` ներկառուցված տեղական հանգույցային գրքերի համար
+- `kagami localnet up`՝ Kagami-ի մեկնարկած և վերահսկած կառավարվող տեղային ցանցի համար
+- `kagami localnet generate`՝ տեղային հանգույցները անմիջապես աշխատեցնող սկրիպտների համար
 - `kagami docker` Docker Compose համար, որը ստեղծվել է տեղական ցանցի ցուցակից
 
 Շարունակեք [Բեռնելը Iroha 3](/hy/get-started/launch-iroha.md):

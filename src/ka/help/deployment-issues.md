@@ -1,11 +1,10 @@
 ---
 translation_locale: ka
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # პრობლემების გადაჭრა განთავსების საკითხებში {#troubleshooting-deployment-issues}
 
 ამ განყოფილებაში მოცემულია პრობლემების მოგვარების რჩევები Iroha 3 დანერგვისთვის. თუ პრობლემა არ არის აღწერილი აქ, დაგვიკავშირდით ტელეფონით [ტელეგრამი](https://t.me/hyperledgeriroha).
@@ -15,7 +14,7 @@ translation_engine: nllb-200-ct2
 ადგილობრივი და სატესტო დანერგვისთვის, სასურველია Kagami-ის მიერ შექმნილი არტეფაქტები ხელით დაწერილი ქსელური თანასწორი ფაილების ნაცვლად:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 გენერირებული დირექტორია შეიცავს ქსელის კვანძების კონფიგურაციას, ბლოკჩეინის წარმოქმნის მასალას, საწყისი სცენარებს და README Iroha 3 მშენებლობის ხაზისთვის.
@@ -42,7 +41,7 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 გენერირება შეადგინეთ მიმდინარე Kagami ადგილობრივი ქსელის გამოშვებიდან, ასე რომ ბრძანების ხაზის არგუმენტები და კონფიგურაციის ფაილები შეესაბამებიან ამოღებულ კოდს:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```
@@ -67,9 +66,9 @@ Kubernetes- ისთვის, თითოეული ვალიდატ�
 
 თუ კადრი განმეორებით იწყება, შეადარეთ კადრში წარმოდგენილი კონფიგურაცია მოსალოდნელით [`peer.template.toml`](/ka/reference/peer-config/index.md#template) და შეამოწმეთ, თუ არა ქსელის კვანძები ძველი თამაშობს Kura მონაცემები.
 
-## Sora- ს პროფილი {#sora-profile}
+## SORA Nexus პროფილი {#sora-profile}
 
-კერძო ან ადგილობრივი Iroha 3 განთავსებისათვის, რომლებიც იყენებენ Nexus, SoraFS ან მრავალგზის ნაკადებს, უნდა დაიწყოს სტანდარტული დეიმონი Sora-ის პროფილის ჩართულობით:
+კერძო ან ლოკალური Iroha 3 განთავსებები, რომლებიც SORA Nexus-ს, SoraFS-ს ან მრავალარხიან პროცესებს იყენებს, სტანდარტულ დემონს ჩართული SORA Nexus პროფილით უნდა უშვებდეს:
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

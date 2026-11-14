@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 35a4caba21bf1e34cc015f79fa82bfe143b37603eddb5f1eb72513ad83a20f61
+translation_source_hash: 6fe2dd48dc64f896be539af2994fbc0ad3c2c5f7a5a4297cc4ff4b08667f0376
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # 启动 Iroha 3 {#launch-iroha-3}
 
 本页面通过使用上游存储库中的默认工作空间资产来查看 Iroha 3 的当前本地网络流动.
@@ -65,11 +64,11 @@ curl http://127.0.0.1:8080/status/blocks
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list
 ```
 
-## 3. Nexus 个人资料 {#_3-nexus-profile}
+## 3. SORA Nexus 个人资料 {#_3-nexus-profile}
 
 存储库还将一个以 SORA Nexus 为导向的配置资料发送到 `defaults/nexus/`.
 
-运行一个具有 Nexus 配置文件的原生对等节点:
+运行一个具有 SORA Nexus 配置文件的原生对等节点:
 
 ```bash
 ./target/release/iroha3d --sora --config ./defaults/nexus/config.toml

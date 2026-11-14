@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
+translation_source_hash: 92389d3ad83ab32e85b4ca83ede9829d1a38afaad6e86da035da2829a3aaedfb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # JavaScript اور TypeScript {#javascript-and-typescript}
 
 موجودہ JavaScript SDK Iroha ماخذ درخت میں `@iroha/iroha-js` پیکیج ہے۔ یہ Node.js-پہلا SDK ہے Torii ، Norito بلڈرز ، دستخط ، صفحہ بندی ، کنیکٹ پیش نظارہ ، اور کگیموشا کمانڈ ٹرانسپورٹ کے لئے۔
@@ -99,7 +98,6 @@ SDK پر توجہ مرکوز کرتا ہے:
 - Ed25519 دستخط اور کلیدی نسل
 - صفحہ بندی اور دوبارہ کوشش کرنے والے مددگار
 - براؤزر بوٹسٹریپ ہیلپرز کو مربوط کریں
-- کاگیموشا کی تیاری، بھرتی، واپسی اور آپریشن کے مقام پر ٹرانسپورٹ معاون
 
 ## اوور اسٹریم ریفرنسز {#upstream-references}
 

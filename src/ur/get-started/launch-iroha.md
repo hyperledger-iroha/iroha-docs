@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 35a4caba21bf1e34cc015f79fa82bfe143b37603eddb5f1eb72513ad83a20f61
+translation_source_hash: 6fe2dd48dc64f896be539af2994fbc0ad3c2c5f7a5a4297cc4ff4b08667f0376
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # لانچنگ Iroha 3 {#launch-iroha-3}
 
 یہ صفحہ Iroha 3 کے لئے موجودہ مقامی نیٹ ورک فلو کو اپ اسٹریم ریپوزٹری سے پہلے سے طے شدہ کام کی جگہ اثاثوں کا استعمال کرتے ہوئے چلتا ہے۔
@@ -65,11 +64,11 @@ curl http://127.0.0.1:8080/status/blocks
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list
 ```
 
-## Nexus پروفائل {#_3-nexus-profile}
+## SORA Nexus پروفائل {#_3-nexus-profile}
 
 ذخیرہ بھی SORA Nexus پر مبنی ترتیب پروفائل کو `defaults/nexus/` کے تحت بھیجتا ہے.
 
-Nexus پروفائل کے ساتھ ایک مقامی نیٹ ورک نوڈ چلانے کے لئے:
+SORA Nexus پروفائل کے ساتھ ایک مقامی نیٹ ورک نوڈ چلانے کے لئے:
 
 ```bash
 ./target/release/iroha3d --sora --config ./defaults/nexus/config.toml

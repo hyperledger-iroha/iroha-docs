@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /help/integration-issues.md
-translation_source_hash: c5f169e423806fa2a9e9d198971588d1aa0b199a28d64e8b089b9f81727550a5
+translation_source_hash: 2146a236adb3a3b3b896a1992daeecf6713988183ca53e4412f9b616ed2e9085
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # استكشاف مشكلات التكامل {#troubleshooting-integration-issues}
 
 يقدم هذا القسم نصائح لحل المشكلات المتعلقة بتكامل Iroha 3. إذا كانت المشكلة التي تواجهها غير مذكورة هنا، فاتصل بنا عبر [تليغرام](https://t.me/hyperledgeriroha).
@@ -21,7 +20,7 @@ torii_url = "http://127.0.0.1:8080/"
 بالنسبة لشيكات CLI، مرر نفس الملف بشكل صريح:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 إذا كان نظير الشبكة يعمل في Docker أو Kubernetes، استخدم عنوان المضيف أو الخدمة الذي يمكن الوصول إليه من عملية العميل. `127.0.0.1` داخل الحاوية ليس جهاز المضيف.
@@ -45,12 +44,12 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
 - مفتاح الحساب العام في تكوين العميل لا يتطابق مع المفتاح الخاص المستخدم للتوقيع
 - الحساب غير مسجل في جينيسيس البلوكشين أو بواسطة معاملة سابقة
 - الحساب يفتقر إلى رمز الإذن أو الدور المطلوب من قبل مدقق وقت تشغيل البرنامج
-- معرّف المجال يفتقد إلى تأهيل مساحة البيانات الخاصة به، مثل `domain.dataspace`
+- افتقار معرّف النطاق إلى تأهيله بمساحة البيانات، مثل `domain.dataspace`
 
 استخدم `--output-format text` أثناء تصحيح أوامر CLI حتى تكون الأخطاء أسهل في القراءة:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ledger transaction ping --msg "hello"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority --output-format text tx ping --msg "hello"
 ```
 
 ## الاستعلامات تُعيد نتائج فارغة {#queries-return-empty-results}
@@ -65,7 +64,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml --output-format text le
 لتحقق من النطاقات، ابدأ بأوسع استعلام:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 ## تتوقف تدفقات الأحداث أو الكتل مبكرًا {#event-or-block-streams-stop-early}

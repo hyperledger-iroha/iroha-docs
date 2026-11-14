@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /blockchain/data-model.md
-translation_source_hash: 147562d2286bf11e60a941969e6d52bffc1534c3cfc04d440e0bcf78598a1ca7
+translation_source_hash: f90139dee2eff97769cd47188bcaf60b31672f0250505d8afad9c8ee60815ddd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-source-naming-amendment
 ---
-
 # Мәғлүмәт моделе {#data-model}
 
 Iroha иҫәп-хисап ҡаҙнаһын `World` иҫәбендә һаҡлай. Уның тәүге сығарылыш мәғлүмәттәр моделе түбәндәге каноник шәхестәрҙе һәм субъекттарҙы ҡуллана:
@@ -122,7 +121,7 @@ Alias-тар — каноник реестр идентификаторҙары 
 |Активтар билдәләмәһе |`AssetDefinitionId` Base58 адресы |`name#domain.dataspace` йәки `name#dataspace` |`AssetDefinitionAlias` актив билдәләмәһе менән бәйле |
 |Килешеү |Canonical Bech32m `ContractAddress` |`name::domain.dataspace` йәки `name::dataspace` |`ContractAlias` ҡулланылған контракт адресына бәйләнгән |
 |Домен исеме |`DomainId` формаһында `domain.dataspace` |`domain.dataspace` |SNS `domain` исемдәр арауығы рекорды |
-|Мәғлүмәт биҫтәһе исеме |`DataSpaceId` актив Nexus каталогынан һанлы |`universal`, `paynet` йәки `zk` кеүек мәғлүмәт киңлектәре исемдәре. |SNS `dataspace` исемдәр арауығы рекорды һәм актив мәғлүмәттәр арауығы каталогы |
+| Мәғлүмәт киңлеге исеме | әүҙем SORA Nexus каталогындағы һанлы `DataSpaceId` | `universal`, `paynet` йәки `zk` кеүек мәғлүмәт киңлегенең альтернатив исеме | SNS системаһының `dataspace` исемдәр киңлегендәге яҙмаһы һәм мәғлүмәт киңлектәренең әүҙем каталогы |
 
 Иҫәп alias-тары — ҡулланыусы күргән иҫәп исемдәре. Alias world-state индекстары һәм account rekey яҙмалары аша active account ID-ға күрһәтеүе арҡаһында, account rekeying-тан һуң да һаҡлана. Төп label өсөн `SetPrimaryAccountAlias`, өҫтәмә non-primary alias-тар өсөн `SetAccountAliasBinding`, уҡыу өсөн `FindAccountByAlias` йәки `FindAliasesByAccountId` ҡулланығыҙ. Account alias-ҡа ғәҙәттә `AcquireAccountAliasLease` менән алынған һәм `RenewAccountAliasLease` менән яңыртылған active SNS account-alias lease кәрәк.
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /guide/best-practices/application-development.md
-translation_source_hash: f95261b0416abfcd87881135ceb9b604a1cdde2dd1afc79fecf9c113a256a8c7
+translation_source_hash: 045e2819368106c5da6ee47610c59a3500db312f4901108c0d9e36a027a50a95
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-title-amendment
 ---
-
 # Desarrollo de Aplicaciones {#application-development}
 
 Las aplicaciones Iroha deben hacer que el comportamiento de las transacciones sea explícito, mantener el estado de firma contenido y usar consultas y eventos de maneras que sean fáciles de observar en producción.
@@ -34,7 +33,7 @@ Para la mecánica de la transacción, consulte [Transacciones](/es/blockchain/tr
 - Utilice consultas para el estado actual y flujos de eventos para las notificaciones de cambios. Evite reemplazar el manejo de eventos con consultas amplias repetidas.
 - Paginación de consultas iterables amplias como listados de cuentas, activos y bloques.
 - Prefiera filtros estrechos para suscripciones y disparadores. Los filtros amplios son útiles para diagnósticos, pero pueden añadir ejecución innecesaria y procesamiento del lado del cliente.
-- Mantenga las verificaciones de humo solo de lectura separadas de las pruebas de transacciones firmadas para que la disponibilidad del endpoint API sea más fácil de diagnosticar.
+- Mantenga las comprobaciones básicas de funcionamiento de solo lectura separadas de las pruebas de transacciones firmadas para facilitar el diagnóstico de la disponibilidad del punto de acceso.
 
 Vea [Consultas](/es/blockchain/queries.md), [Eventos](/es/blockchain/events.md) y [Filtros](/es/blockchain/filters.md).
 
@@ -45,7 +44,7 @@ Vea [Consultas](/es/blockchain/queries.md), [Eventos](/es/blockchain/events.md) 
 - No pegues claves privadas, material de recuperación de cuentas, tokens API o encabezados de autenticación reenviados en los mensajes.
 - Requerir un plan de transacción antes de que cualquier agente envíe una transacción en la red de prueba en vivo. El plan debe nombrar la red, el principal de autorización, las instrucciones, el activo de la tarifa, las lecturas previas, el resultado esperado y el comportamiento de reintento.
 
-Para el flujo de trabajo Taira MCP, vea [Construir sobre SORA 3: Taira y Minamoto](/es/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents).
+Para el flujo de trabajo de Taira MCP, consulte [Desarrollar sobre SORA Nexus: Taira y Minamoto](/es/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents).
 
 ## SDK Higiene {#sdk-hygiene}
 

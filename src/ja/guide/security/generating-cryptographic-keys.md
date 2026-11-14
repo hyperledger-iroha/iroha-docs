@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
+translation_source_hash: b6e3bd79c50ea326930ac978350ea4beac8294b6f045ac0084aada257754ffa1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # 暗号鍵の生成 {#generating-cryptographic-keys}
 
 `kagami keys` を使用して Iroha 3 のクライアント、ネットワークピア、バリデータの鍵素材を生成します。
@@ -18,7 +17,7 @@ Iroha ソースコード作業用コピーから：
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-親ディレクトリは既に存在している必要があります。ターゲットは新規であるか、既に現在のユーザーが所有している必要があり、モード`0700`で、シンボリックリンクがなく、空でなければなりません。`kagami`は`public.key`および`private.key`をモード`0600`で書き込み、キー情報は出力しません。`--pop`を使用すると、`pop.hex`も書き込みます。
+親ディレクトリはあらかじめ存在している必要があります。出力先は存在してはならず、空のディレクトリも拒否されます。Kagami は所有者だけがアクセスできることをファイルシステム上で検査し、シンボリックリンクを拒否したうえで、モード `0700` の出力先を作成します。`kagami` は `public.key` と `private.key` をモード `0600` で書き込み、鍵の内容を表示しません。`--pop` を指定すると `pop.hex` も書き込みます。
 
 `--out-dir` は、Kagami がこれらのオーナー専用のファイルシステムルールを強制できないプラットフォームでは閉じた状態になります。プライベートキーのファイルは暗号化されていないエクスポートであり、ではありません ハードウェアまたは輸出不可能な生産用暗号署名器。それを承認された保管境界にインポートし、展開手順に従って輸出を削除してください。
 

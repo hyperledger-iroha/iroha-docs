@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Ijro etish va o‘lchovlar {#performance-and-metrics}
 
 Iroha unumdorligi ish yukiga, tasdiqlovchilar topologiyasiga, tarmoq sharoitlari va konsensus sozlamalariga bog‘liq. Shu sabab bir TPS raqami faqat ma’lum konfiguratsiyadagi mezon sinovi bilan birga berilganda foydali.
@@ -38,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -131,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### Nomzod va Kirish Chegaralari {#candidate-and-ingress-bounds}
 
-Tugundagi Sumeragi chegaralari tasdiqlovchi qancha nomzod va tiklash ishini saqlay olishini belgilaydi:
+Blok hajmi va tranzaksiya chegaralari imzolangan genesis va commit qilingan zanjir parametrlaridan keladi. Tugunning mahalliy `[sumeragi]` sozlamalari ishtirok roli, imzolash materiallari saqlanishi, xavfsizlik yozuvi yo‘llari hamda hujjatlashtirilgan mahalliy vaqt cheklovi va sinxronizatsiya o‘zgartirishlarini qamrab oladi.
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` va `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks`, va `sumeragi.queues.ready_bodies`
-
-Juda kichik chegaralar navbat yoki foydali yukni tiklash bosimini keltiradi; haddan tashqari katta chegaralar esa saqlanadigan xotira va yovuz tugun foydalanishi mumkin bo‘lgan ish hajmini oshiradi. Bir chegarani o‘zgartirishdan oldin diagnostika oniy nusxasini jarayon xotirasi, xabarlarni qayta ishlash va yo‘q tana metrikalari bilan solishtiring:
+Tarmoq kirishi va tranzaksiya navbati chegaralari mahalliy saqlanadigan ishni boshqaradi. Amaliy chegarani o‘zgartirishdan oldin diagnostika suratini jarayon xotirasi, xabarlarni qayta ishlash va yetishmayotgan blok tanasi metrikalari bilan solishtiring. Ayni tarmoq ishga tushirishlarini solishtirganda zanjirning imzolangan parametrlarini o‘zgartirmang:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -244,7 +236,7 @@ Ishlash ko‘rsatkichlarini faqat ularni qayta tiklash uchun yetarli kontekst bi
 - tasdiqlovchi va kuzatuvchi sonlari
 - konsensus rejimi, imzolangan blok kadenasi va DA tartibi
 - aniq `3f + 1` qo‘mita, kvorum va kuzatuvchi ro‘yxati
-- `sumeragi.block`, `sumeragi.queues`, `sumeragi.limits`, tarmoq-kirish, va tranzaksiya-navbati chegaralari
+- zanjirning imzolangan parametrlari, mahalliy Sumeragi o‘zgartirishlari, tarmoq kirishi va tranzaksiya navbati chegaralari
 - telemetriya profili
 - apparat ta'minoti, saqlash va OS tafsilotlari
 - tarmoq RTT, tebranish, yo‘qotish va keng polosali taxminlar
@@ -261,6 +253,6 @@ Bu tafsilotlarsiz, TPS raqami hikoya sifatida qabul qilinishi kerak.
 ## Tegishli sahifalar {#related-pages}
 
 - [Izanami bilan Chaqiriq Sinovi](./chaos-testing.md)
-- [Torii API oxir nuqtalar](../../reference/torii-endpoints.md)
+- [Torii endpointlari](../../reference/torii-endpoints.md)
 - [Iroha 3 ni CLI orqali boshqaring](../../get-started/operate-iroha-via-cli.md)
 - [tarmoq tengdosh konfiguratsiyasi ma'lumotnomasi](../../reference/peer-config/params.md)

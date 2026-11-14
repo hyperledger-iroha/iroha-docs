@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /guide/best-practices/security-and-access.md
-translation_source_hash: f0163734d618d91337b437da703743014d01c57c4cb603fbc2e66316f3654779
+translation_source_hash: b1cb0cdbeec55f7db03f1c64b6581a21c09fc80a57344cf6e27df1d126c0ec92
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Təhlükəsizlik və Giriş {#security-and-access}
 
 Iroha üzrə təhlükəsizlik təcrübəsi dar icazə prinsipi, idarə olunan açar saxlanması, açıq şəbəkə açıqlığı və audit edilə bilən dəyişikliklər əsasında qurulmalıdır.
@@ -23,7 +22,7 @@ Baxın [Kriptoqrafik Açarların Yaradılması](/az/guide/security/generating-cr
 
 - İş axışını dəstəkləyən ən kiçik icazə tokenini və ya rolu verin.
 - Xidmətlər, tetikleyicilər, agentlər və avtomatlaşdırma üçün xüsusi texniki hesabları üstün tutun. Uzunmüddətli avtomatlaşdırmanı şəxsi operator hesabı vasitəsilə işlətməkdən çəkinin.
-- İstehsal buraxılışından əvvəl şəbəkə bərabərinin idarə olunması, metadata dəyişiklikləri, buraxılış, məhv etmə, tetik qeydiyyatı, icraçı dəyişiklikləri və SORA/Nexus idarəçiliyi üçün icazələri nəzərdən keçirin.
+- İstehsal buraxılışından əvvəl şəbəkə bərabərinin idarə olunması, metadata dəyişiklikləri, buraxılış, məhv etmə, tetik qeydiyyatı, icraçı dəyişiklikləri və SORA Nexus idarəçiliyi üçün icazələri nəzərdən keçirin.
 - Müvəqqəti icazələri onlara ehtiyac olan texniki xidmət pəncərəsindən və ya köçürmədən sonra ləğv edin.
 
 Baxın [İcazələr](/az/blockchain/permissions.md) və [İcazə Jetonları](/az/reference/permissions.md).
@@ -32,7 +31,7 @@ Baxın [İcazələr](/az/blockchain/permissions.md) və [İcazə Jetonları](/az
 
 - Mühitə uyğun olaraq həmyaşıdlarla, Torii, telemetriya və operator marşrutlarını məhdudlaşdırın. İctimai oxuma girişi ictimai yazma və ya operator girişini ifadə etmir.
 - Quraşdırma üçün uyğun olan yerlərdə VPNs, firewall-lar, tərs proksi serverlər, TLS dayandırılması və sürət məhdudiyyətlərindən istifadə edin.
-- Əsas autentifikasiya məlumatlarını, proksi tokenlərini və göndərilən başlıqları mənbə nəzarətində saxlanılan konfiqurasiyadan kənarda saxlayın.
+- Basic autentifikasiyasının giriş məlumatlarını, proksi tokenlərini və ötürülən başlıqları versiya nəzarətinə daxil edilmiş konfiqurasiyadan kənarda saxlayın.
 - Səlahiyyətsiz müştərilərin məhdudlaşdırılmış marşrutlara çata bilmədiyini yoxlayın.
 
 Baxın [Virtual Özəl Şəbəkələr](/az/guide/security/vpn.md) və [Torii API son nöqtələr](/az/reference/torii-endpoints.md).

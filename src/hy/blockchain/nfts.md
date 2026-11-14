@@ -1,11 +1,10 @@
 ---
 translation_locale: hy
 translation_source: /blockchain/nfts.md
-translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
+translation_source_hash: 216f59f1cebd73001dab75dcf235306082fb1c0759437f65ce34ec9e1ed51d4f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # NFTs {#nfts}
 
 Iroha NFT-ը եզակի գրասենյակային օբյեկտ է, որը ունի մեկ սեփականատեր: Օգտագործեք NFTs, երբ արձանագրությունը պահանջում է իր ինքնությունը, մեթադատները, կյանքի շրջանի իրադարձությունները եւ տիրապետության փոխանցման սեմանտիկան, բայց չի պահանջում թվային մնացորդ:
@@ -49,7 +48,7 @@ name$domain
 name$domain.dataspace
 ```
 
-Օրինակ, `badge$docs.universal` բացահայտում է `badge` NFT `docs.universal` տիրույթում: Եթե տվյալների տարածքը բացակայում է, ընթացիկ զննարկիչը օգտագործում է `universal` տվյալների տարածությունը, այնպես որ `badge$docs` լուծվում է որպես `badge$docs.universal`.
+Օրինակ՝ `badge$docs.universal`-ը նույնացնում է `docs.universal` տիրույթի `badge` NFT-ն։ Եթե տվյալների տարածքը բաց է թողնված, ընթացիկ վերլուծիչն օգտագործում է `universal` տվյալների տարածքը, ուստի `badge$docs`-ը լուծվում է որպես `badge$docs.universal`։
 
 Օգտագործեք կայուն անուններ NFT IDs. ID-ը օբյեկտային նույնականությունն է, որն օգտագործվում է հրահանգների, հարցումների, թույլտվությունների, իրադարձությունների ֆիլտրերի եւ հավելվածի հղումների համար:
 
@@ -68,17 +67,17 @@ NFT կյանքի շրջանակի գործողությունների օգտագ�
 
 ```bash
 export IROHA_CONFIG=./localnet/client.toml
-export NFT_DOMAIN=wonderland.universal
-export NFT_ID='badge_intro$wonderland.universal'
+export NFT_DOMAIN='<OWNED_DOMAIN>.universal'
+export NFT_ID="badge_intro\$$NFT_DOMAIN"
 ```
 
-Ստեղծված տեղական ցանցը արդեն ստեղծում է `wonderland.universal` եւ իր SNS վարձակալության պայմանագիրը: Օգտագործելու համար այլ տիրույթ, նախ ստեղծեք այն հայտարարագրային `app alias setup plan` եւ `app alias setup apply` աշխատանքային հոսքի միջոցով, որոնք նկարագրվում են [Տիրույթներում](/hy/blockchain/domains.md#registration):
+Ստեղծված տեղային ցանցն իր հաճախորդի համար հավելվածի տիրույթ չի գրանցում։ `NFT_DOMAIN`-ը սահմանեք որպես տիրույթ, որը պատկանում է ստորագրող հաշվին, կամ որի համար այն ունի `CanRegisterNft` իրավունք։ Այն ստեղծելու համար օգտագործեք [Տիրույթներ](/hy/blockchain/domains.md#registration) բաժնում նկարագրված դեկլարատիվ `app alias setup plan` և `app alias setup apply` հոսքը։
 
 Գրանցել NFT: Գրանցումը կարդում է սկզբնական բովանդակությունը JSON ստանդարտ մուտքից.
 
 ```bash
 printf '{"kind":"badge","level":"intro","issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft register --id "$NFT_ID"
 ```
 
@@ -89,14 +88,14 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft get --id "$NFT_ID"
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger nft list all --verbose
+  ledger nft list --all
 ```
 
 Մետադատա բանալին ավելացրեք եւ կրկին կարդացեք NFT:
 
 ```bash
 printf '{"color":"blue","rarity":"tutorial"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta set --id "$NFT_ID" --key traits
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -106,27 +105,27 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 Հեռացրեք մետադատա բանալին.
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
-Ընտրական կերպով փոխանցել NFT. Օգտագործել `ledger nft get` կարդալ ներկայիս սեփականատերը `owned_by`, եւ օգտագործումը `ledger account list all` նպատակային հաշիվ գտնելու համար ID.
+Ըստ ցանկության փոխանցեք NFT-ն։ Ընթացիկ սեփականատիրոջը `owned_by`-ից կարդալու համար օգտագործեք `ledger nft get`, իսկ ստացող հաշվի ID-ն գտնելու համար՝ `account list --all`։
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger account list all
+  account list --all
 
 export CURRENT_OWNER='<account-id-from-owned_by>'
 export NEW_OWNER='<destination-account-id>'
 
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
 Հեռացրեք NFT օրինակը անցնելուց հետո: Եթե այն փոխանցել եք, կամ վերափոխեք այն կամ ներկայիս սեփականատիրոջ հաշիվի կարգավորմամբ ուղարկեք չկանխատեսելու հրամանը.
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft unregister --id "$NFT_ID"
 ```
 
@@ -160,7 +159,7 @@ NFT գրանցման, ջնջման, փոխանցման եւ մետադատա տ�
 
 Նայեք նաեւ.
 
-- [Գործիքներ](/hy/blockchain/assets.md)
+- [Ակտիվներ](/hy/blockchain/assets.md)
 - [Մետադատա](/hy/blockchain/metadata.md)
 - [հրահանգներ](/hy/blockchain/instructions.md)
 - [Հարցումներ](/hy/blockchain/queries.md)

@@ -1,559 +1,133 @@
-# Sponsor Fees for a Private Dataspace
+# Sponsor Fees for a Private Data Space
 
-Fee sponsorship lets users submit private-dataspace transactions without
-holding XOR. The user still signs the transaction. The transaction metadata
-points at a sponsor account, and the runtime debits the sponsor's XOR balance
-for the network fee.
+A SORA Nexus fee sponsor program can pay the global execution fees of eligible
+transactions routed to a private data space. The user still signs the complete
+transaction. Its typed `FeePaymentIntent` selects an exact sponsor program and
+immutable revision, a gas bound where required, and maximum charges.
 
-The integration has three moving parts:
+A data space catalog entry does not create an independently signed root. An
+independent data space root has its own committed fee currency and policy;
+public sponsor vaults cannot authorize its private-root fees. Establish the
+execution root before designing sponsorship.
 
-1. the node allows fee sponsorship
-2. the sponsor account exists and has XOR
-3. each user has `CanUseFeeSponsor` for that sponsor
+## 1. Establish the Committed Fee Policy
 
-After that, every sponsored user transaction only needs this metadata:
+Signed genesis authors one `root_fees_v1` custom parameter containing the
+`RootFeePolicy`. It binds the fee currency, fee sink, sponsor custody account,
+claim exemptions, and rates. Each ordinary block and quote uses its captured
+committed policy. Authorized policy updates apply from the next block.
 
-```json
-{
-  "fee_sponsor": "<SPONSOR_ACCOUNT_I105>"
-}
-```
+For global execution, the native fee burns the exact signed network XOR
+currency. The sponsor's program vault supplies that currency. Node settings
+and transaction metadata do not select a payer or activate sponsorship.
 
-This page shows two common patterns:
+Use the network's canonical currency and account identities. Alias resolution
+must not redirect committed currency, custody, or sink identities.
 
-- **Free user writes**: the sponsor pays XOR and the user pays nothing.
-- **Local-token fees**: the user pays the sponsor in an app token, and the
-  sponsor pays the network in XOR.
+## 2. Create and Fund a Sponsor Program
 
-Use Taira or a private test network first. A new private dataspace is an
-operator and governance change; it is not created by client configuration.
+The program ID has the form `<canonical-sponsor-account>/<program-name>`.
+Provision it through the typed instructions exposed by the current SDK and
+data model:
 
-## Example Values
+| Instruction | Purpose |
+| --- | --- |
+| `CreateFeeSponsorProgram` | Create the staged program with its mandatory payout account. |
+| `StageFeeSponsorProgramRevision` | Define one immutable eligibility, operation, and budget policy. |
+| `EnrollFeeSponsorBeneficiary` | Record an eligible beneficiary on chain. |
+| `FundFeeSponsorProgram` | Transfer assets into custody and credit the exact program vault. |
+| `ActivateFeeSponsorProgramRevision` | Schedule the staged revision's earliest activation height. |
 
-The commands below use these placeholders:
+The sponsor or an exact delegated manager authorizes program administration.
+Withdrawals require the sponsor itself and return funds only to the program's
+recorded payout account while the program is paused or closing.
 
-```bash
-export DATASPACE="team"
-export USER="<USER_ACCOUNT_I105>"
-export SPONSOR="<SPONSOR_ACCOUNT_I105>"
-export TREASURY="<TREASURY_ACCOUNT_I105>"
-export XOR_ASSET="xor#universal"
-export BILLING_DOMAIN="billing.team"
-export LOCAL_FEE_ASSET="usage#billing.team"
-export LOCAL_FEE_ASSET_ID="<LOCAL_FEE_ASSET_DEFINITION_BASE58>"
-export USER_ALIAS="alice@team"
-export PHONE_POLICY="phone#team"
-export EMAIL_POLICY="email#team"
-export POLICY_OWNER="<IDENTIFIER_POLICY_OWNER_ACCOUNT_I105>"
-```
+Each revision specifies:
 
-Use canonical I105 account IDs unless your deployment has active account
-aliases for the same accounts.
+- explicit enrollment, or enrollment plus permitted route-default eligibility;
+- allow and deny rules over exact native instruction wire IDs or contract
+  addresses, code hashes, and entrypoints;
+- per-asset transaction, block, program-epoch, and beneficiary-epoch limits;
+- a reserve floor and deterministic epoch length.
 
-## 1. Prepare the Dataspace
+A deny rule takes precedence over an allow rule. A data space's
+`fee_sponsor_program_id` grants route-default eligibility only if the active
+revision permits it; the transaction must still name its exact program and
+revision. Activation can be postponed until outstanding allocations from the
+previous revision expire.
 
-Start from the private dataspace catalog and routing work described in
-[Connect to SORA Nexus Dataspaces](/get-started/sora-nexus-dataspaces.md#_8-provision-a-new-dataspace).
-An operator-facing fragment looks like this:
+Sponsor vault assets must use the `Global` balance policy. Funding the sponsor's
+ordinary account alone does not fund the isolated program vault, and one
+program cannot consume another program's balance.
 
-```toml
-[[nexus.lane_catalog]]
-index = 5
-alias = "team-private"
-description = "Private team lane"
-dataspace = "team"
-visibility = "private"
-metadata = {}
+## 3. Quote, Sign, and Submit the Exact Transaction
 
-[[nexus.dataspace_catalog]]
-alias = "team"
-id = 42
-description = "Private team dataspace"
-fault_tolerance = 1
+An SDK integration performs these steps:
 
-[[nexus.routing_policy.rules]]
-lane = 5
-dataspace = "team"
-[nexus.routing_policy.rules.matcher]
-account_prefix = "team."
-description = "Route team domains to the private dataspace"
-```
+1. Construct the unsigned `TransactionPayload` with the authority, executable,
+   timestamps, nonce, metadata, exact sponsor-program revision, and any
+   required gas limit. Charge maxima can initially be empty.
+2. Account-sign `POST /v1/fees/quote` with `{"payload": <payload>}`. The request
+   signer must be the transaction authority.
+3. Inspect the observed height, resolved data space route, fee components,
+   debit source, and sponsor capacity. Verify that the response preserves
+   the selected payer, revision, and gas bound.
+4. Replace only `payload.fee_payment` with the recommended intent, then sign
+   and submit that exact payload.
+5. Track the transaction to state-resolved `Applied` finality and retain its
+   receipt, including the actual sponsor program, revision, and charge.
 
-Before moving to user transactions, check that:
+A quote observes the ledger; it does not reserve capacity. Queue admission
+rechecks eligibility and reserves the signed maxima. A sponsor refusal rejects
+the transaction without falling back to charging the user.
 
-- the private lane appears in the node `/status` response
-- user accounts are admitted by your private onboarding flow
-- the sponsor account exists
-- the XOR fee asset and fee sink account are valid on the network
-
-## 2. Register Assets in the Dataspace
-
-Register the asset definitions that users will hold inside the private
-dataspace before you wire them into application logic. For the local-token fee
-pattern, the tutorial uses `usage#billing.team`:
-
-```text
-<asset-name>#<domain>.<dataspace>
-usage#billing.team
-```
-
-First set up the domain and SNS lease that own the asset namespace. Create a
-secret-free `AliasSetupPlanRequestV1` intent for `$BILLING_DOMAIN`, including
-the numeric `team` dataspace ID, canonical owner, lease term, and current quote
-guard:
+The CLI names the same fee source explicitly. For example, after the program
+allows this exact asset transfer and the account is eligible:
 
 ```bash
-iroha --config ./operator.client.toml \
-  app alias setup plan \
-  --intent-file ./billing-domain.intent.json \
-  --plan-file ./billing-domain.plan.json
-
-iroha --config ./operator.client.toml \
-  app alias setup apply --plan-file ./billing-domain.plan.json
-```
-
-Then register the asset definition. The canonical `--id` is the network-level
-asset definition ID. The alias is what developers and end users should use in
-dataspace code:
-
-```bash
-iroha --config ./operator.client.toml \
-  ledger asset definition register \
-  --id "$LOCAL_FEE_ASSET_ID" \
-  --name usage \
-  --alias "$LOCAL_FEE_ASSET" \
-  --scale 0
-```
-
-Mint or transfer the local token to a user during onboarding:
-
-```bash
-iroha --config ./operator.client.toml \
-  ledger asset mint \
-  --definition-alias "$LOCAL_FEE_ASSET" \
-  --account "$USER" \
-  --quantity 100
-```
-
-Check the user's balance:
-
-```bash
-iroha --config ./operator.client.toml \
-  ledger asset get \
-  --definition-alias "$LOCAL_FEE_ASSET" \
-  --account "$USER"
-```
-
-Use the same pattern for application assets in the dataspace. Register one
-asset definition per token, give each one a dataspace alias, and refer to the
-alias from SDK code instead of hard-coding canonical asset definition IDs.
-
-## 3. Register User Aliases
-
-Accounts are still canonical I105 account IDs. User-facing names are account
-aliases, and aliases should be non-sensitive handles such as `alice@team` or
-`alice@members.team`. Do not use phone numbers or email addresses as aliases.
-Those belong in the private identifier flow in the next section.
-
-Alias setup uses the same declarative planner as domain setup. Have the SDK or
-onboarding service create a secret-free `AliasSetupPlanRequestV1` intent whose
-account-alias entry targets `$USER`, selects the primary role, pins the numeric
-dataspace ID, and carries the current lease quote guard. Then plan and apply it
-as one atomic transaction:
-
-```bash
-iroha --config ./operator.client.toml \
-  app alias setup plan \
-  --intent-file ./user-alias.intent.json \
-  --plan-file ./user-alias.plan.json
-
-iroha --config ./operator.client.toml \
-  app alias setup apply --plan-file ./user-alias.plan.json
-```
-
-If the user should not pay XOR, use the approved sponsor-aware onboarding
-service to construct and submit the setup transaction. Do not split lease
-acquisition and alias binding into independent application transactions.
-
-After the alias is bound, verify it from the CLI:
-
-```bash
-iroha --config ./operator.client.toml \
-  app alias resolve --alias "$USER_ALIAS"
-
-iroha --config ./operator.client.toml \
-  app alias by-account \
-  --account-id "$USER" \
-  --dataspace "$DATASPACE"
-```
-
-For new account creation, prefer an onboarding service that builds
-`NewAccount` with a stable `uaid` and, if needed, an initial `label`. The
-simple `ledger account register --id` command only registers the canonical
-account ID.
-
-## 4. Register Phone and Email Privately with FHE
-
-Use phone numbers and email addresses as private identifier claims, not public
-aliases. The FHE-backed flow keeps raw identifiers out of account aliases,
-transaction metadata, and world state:
-
-1. the operator registers a
-   [RAM-LFE/FHE program policy](/blockchain/ram-lfe.md) for phone and email
-2. the operator registers active identifier policies such as `phone#team` and
-   `email#team`
-3. the wallet normalizes the phone or email locally
-4. the wallet sends the encrypted value to the resolver
-5. the resolver returns an `IdentifierResolutionReceipt`
-6. the user submits `ClaimIdentifier` with the receipt
-7. the chain stores an opaque identifier and receipt hash, not the raw phone or
-   email value
-
-The operator-side policy setup is an SDK or service task. Build and submit
-these instruction pairs for each identifier type:
-
-```text
-RegisterRamLfeProgramPolicy(
-  program_id = "phone_team",
-  owner = "$POLICY_OWNER",
-  backend = "bfv-programmed-sha3-256-v1",
-  verification_mode = "signed",
-  commitment = "<HIDDEN_PROGRAM_POLICY_COMMITMENT>",
-  resolver_public_key = "<RESOLVER_PUBLIC_KEY>"
-)
-ActivateRamLfeProgramPolicy(program_id = "phone_team")
-
-RegisterIdentifierPolicy(
-  id = "$PHONE_POLICY",
-  owner = "$POLICY_OWNER",
-  normalization = "PhoneE164",
-  program_id = "phone_team",
-  note = "Private phone registration for team dataspace"
-)
-ActivateIdentifierPolicy(policy_id = "$PHONE_POLICY")
-```
-
-Repeat it for email with:
-
-```text
-program_id = "email_team"
-policy_id = "$EMAIL_POLICY"
-normalization = "EmailAddress"
-```
-
-During onboarding, the wallet or backend should normalize locally:
-
-```text
-PhoneE164: "+15551234567"
-EmailAddress: "alice@example.com"
-```
-
-After the sponsor metadata file is created in step 8, submit a user-signed
-claim instruction with that metadata:
-
-```text
-ClaimIdentifier(
-  account = "$USER",
-  receipt = IdentifierResolutionReceipt {
-    payload: {
-      policy_id: "$PHONE_POLICY",
-      opaque_id: "<OPAQUE_ACCOUNT_ID>",
-      uaid: "<USER_UAID>",
-      account_id: "$USER",
-      ...
-    },
-    attestation: "<RESOLVER_SIGNATURE_OR_PROOF>"
-  }
-)
-```
-
-The current CLI does not expose typed commands for these identity
-instructions. Generate serialized `InstructionBox` values with the SDK and
-submit them through `ledger transaction stdin`:
-
-```bash
-printf '["<BASE64_CLAIM_IDENTIFIER_INSTRUCTION_BOX>"]\n' |
-  iroha --config ./alice.client.toml \
-    --metadata ./sponsored-fee.json \
-    ledger transaction stdin
-```
-
-Keep these guardrails in the onboarding service:
-
-- account aliases are human-readable handles only
-- raw phone and email values never appear in aliases, metadata, logs, or
-  transaction payloads
-- the account has a `uaid` before it claims private identifiers
-- receipts bind `policy_id`, `opaque_id`, `uaid`, `account_id`, and expiry
-- resolver keys and hidden-program commitments are controlled by governance
-
-## 5. Enable Sponsorship on the Node
-
-Fee sponsorship is a node/runtime policy. Enable it in the Nexus fee config:
-
-```toml
-[nexus.fees]
-fee_asset_id = "xor#universal"
-fee_sink_account_id = "<FEE_SINK_ACCOUNT_I105_OR_ALIAS>"
-base_fee = "0"
-per_byte_fee = "0"
-per_instruction_fee = "0.001"
-per_gas_unit_fee = "0.00005"
-sponsorship_enabled = true
-sponsor_max_fee = "0"
-```
-
-`fee_asset_id` is the network fee asset. For SORA Nexus this is XOR. Use the
-active XOR alias or canonical XOR asset definition ID exposed by your network.
-
-`sponsor_max_fee = "0"` means there is no per-transaction sponsor cap. For
-production, set a non-zero cap after you know the normal size and gas profile
-of your dataspace transactions.
-
-Restart or roll this config through your normal operator process.
-
-## 6. Create and Fund the Sponsor
-
-Generate a sponsor key pair if needed:
-
-```bash
-kagami keys --algorithm ed25519 --out-dir ./fee-sponsor-key
-```
-
-Convert the public key into the account format for your network:
-
-```bash
-iroha tools address convert \
-  --network-prefix <CHAIN_DISCRIMINANT> \
-  <SPONSOR_ED25519_PUBLIC_KEY_HEX>
-```
-
-Register the sponsor account through your private onboarding flow:
-
-```bash
-iroha --config ./operator.client.toml \
-  ledger account register --id "$SPONSOR"
-```
-
-Fund the sponsor with XOR from a treasury, claim account, or another funded
-account:
-
-```bash
-iroha --config ./treasury.client.toml \
+iroha --config ./user.client.toml \
+  --fee-payer sponsor \
+  --fee-program '<SPONSOR_CANONICAL_I105>/team-payments' \
+  --fee-program-revision 1 \
   ledger asset transfer \
-  --definition-alias "$XOR_ASSET" \
-  --account "$TREASURY" \
-  --to "$SPONSOR" \
-  --quantity 1000
-```
-
-For Taira rehearsals, save the faucet helper from
-[Get Testnet XOR on Taira](/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)
-as `taira_faucet_claim.py`, then fund the sponsor with the public faucet
-instead of a treasury transfer:
-
-```bash
-export SPONSOR='<SPONSOR_TAIRA_I105_ACCOUNT_ID>'
-export XOR_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$SPONSOR"
-
-iroha --config ./sponsor.client.toml \
-  ledger asset get \
-  --definition "$XOR_ASSET" \
-  --account "$SPONSOR"
-```
-
-Check the sponsor's XOR balance:
-
-```bash
-iroha --config ./operator.client.toml \
-  ledger asset get \
-  --definition-alias "$XOR_ASSET" \
-  --account "$SPONSOR"
-```
-
-## 7. Grant a User Access to the Sponsor
-
-The sponsor must grant each user permission to charge fees to it. The grant is
-what prevents users from naming arbitrary sponsor accounts.
-
-Run this as the sponsor account, or as an operational account allowed by your
-runtime policy:
-
-```bash
-printf '{
-  "name": "CanUseFeeSponsor",
-  "payload": {
-    "sponsor": "%s"
-  }
-}\n' "$SPONSOR" |
-  iroha --config ./sponsor.client.toml \
-    ledger account permission grant --id "$USER"
-```
-
-For onboarding services, make this a normal account-provisioning step and log:
-
-- user account
-- sponsor account
-- dataspace or application
-- approval ticket or governance decision
-
-To inspect a user's grants:
-
-```bash
-iroha --config ./operator.client.toml \
-  ledger account permission list --id "$USER"
-```
-
-## 8. Attach Sponsor Metadata
-
-Create a reusable metadata file:
-
-```bash
-printf '{
-  "fee_sponsor": "%s"
-}\n' "$SPONSOR" > sponsored-fee.json
-```
-
-Any write submitted with this metadata is charged to the sponsor:
-
-```bash
-iroha --config ./alice.client.toml \
-  --metadata ./sponsored-fee.json \
-  ledger transaction ping --msg "sponsored private-dataspace write"
-```
-
-For SDKs, attach the same transaction metadata object to the signed
-transaction. The user signs the transaction with the user's key. The sponsor
-does not sign every user transaction because the prior `CanUseFeeSponsor`
-grant is the authorization.
-
-## Pattern 1: Users Pay No Fees
-
-Use this when the application or operator absorbs all network fees.
-
-Developer checklist:
-
-1. Keep the user's normal transaction payload unchanged.
-2. Add transaction metadata with `fee_sponsor`.
-3. Sign as the user.
-4. Submit through the private dataspace route.
-
-The user account does not need a XOR balance. The sponsor account must keep
-enough XOR to cover the configured Nexus fees.
-
-## Pattern 2: Users Pay a Local Token
-
-Use this when users should not hold XOR, but the dataspace still wants an
-internal app fee, credit spend, or quota token.
-
-In this pattern, the local token is an application payment. It is not the
-network fee asset. The sponsor still pays the network fee in XOR.
-
-For example, use a local token in the private dataspace:
-
-```text
-usage#billing.team
-```
-
-Fund users with `usage#billing.team` during onboarding, subscription renewal,
-or quota allocation. Then make the user transaction atomic:
-
-1. transfer local tokens from the user to the sponsor
-2. perform the requested app operation
-3. include `fee_sponsor` metadata so the sponsor pays XOR
-
-A minimal CLI smoke test is just the local-token transfer sponsored by XOR:
-
-```bash
-iroha --config ./alice.client.toml \
-  --metadata ./sponsored-fee.json \
-  ledger asset transfer \
-  --definition-alias "$LOCAL_FEE_ASSET" \
-  --account "$USER" \
-  --to "$SPONSOR" \
+  --definition '<ASSET_DEFINITION_BASE58>' \
+  --account '<USER_CANONICAL_I105>' \
+  --to '<RECIPIENT_CANONICAL_I105>' \
   --quantity 1
 ```
 
-For a real app, do not submit the local-token payment as a separate
-best-effort transaction. Build one signed transaction containing both the
-payment and the business instruction, or expose a contract entrypoint that
-collects the local token before applying the business operation.
+Use the active revision and exact identifiers from your network. The user
+config contains only that user's signer; the sponsor's private key is not
+needed to submit an eligible sponsored transaction.
 
-Keep conversion policy in your app or contract:
+## 4. Decide Whether the User Pays an Application Fee
 
-- which operation costs how many local token units
-- how local token inflow maps to sponsor XOR top-ups
-- what happens when user balance is too low
-- what happens when sponsor XOR balance is too low
+A sponsor can cover global fees while the application charges the user nothing.
+If the application collects a local token, author that transfer or contract
+rule explicitly in the user's signed executable. Include every operation in
+the sponsor revision's policy and inspect the quote for the complete payload.
+Do not infer an application-token transfer from the network fee intent.
 
-::: warning
+## Diagnose a Refusal
 
-Do not use `gas_asset_id` for the "local-token fee" pattern unless you want
-the sponsor to be charged in that gas asset too. In the current runtime,
-`fee_sponsor` also makes the sponsor the payer for configured pipeline-gas
-asset debits. For local-token user fees, collect the token explicitly with a
-transfer or contract rule.
+Use the stable fee code and remediation details returned by the node:
 
-:::
-
-## Debug Failed Sponsored Transactions
-
-Common rejection reasons usually point to one missing setup step:
-
-| Error text | What to check |
+| Code | Check |
 | --- | --- |
-| `fee sponsorship is disabled` | `nexus.fees.sponsorship_enabled` is still `false` on the node. |
-| `fee sponsor is not authorized` | The user does not have `CanUseFeeSponsor` for this sponsor. |
-| `fee asset ... is missing` | The sponsor does not hold the configured XOR fee asset. |
-| `fee balance ... is insufficient` | Top up the sponsor's XOR balance. |
-| `fee exceeds sponsor_max_fee` | Raise `sponsor_max_fee` or reduce transaction size/gas. |
-| `invalid nexus fee asset id` | Fix `nexus.fees.fee_asset_id` or the XOR asset alias. |
+| `program_not_found` | Exact canonical program identity. |
+| `revision_not_active`, `program_not_active` | Revision activation and program lifecycle. |
+| `beneficiary_not_eligible` | Enrollment or permitted route-default eligibility. |
+| `operation_not_allowed`, `operation_denied` | Every exact signed operation and deny rule. |
+| `invalid_gas_limit`, `signed_limit_exceeded` | Gas bound and signed maxima against a fresh quote. |
+| `vault_insufficient` | Funded balance of this program's exact currency vault. |
+| Budget-exhaustion codes | Transaction, block, program-epoch, and beneficiary-epoch capacity. |
 
-When debugging pattern 2, check both balances:
+Keep the original transaction hash and fee rejection details when investigating
+an ambiguous submission. Confirm its status before building a replacement.
 
-```bash
-iroha --config ./operator.client.toml \
-  ledger asset get \
-  --definition-alias "$XOR_ASSET" \
-  --account "$SPONSOR"
+## Pinned Sources
 
-iroha --config ./operator.client.toml \
-  ledger asset get \
-  --definition-alias "$LOCAL_FEE_ASSET" \
-  --account "$USER"
-```
-
-## Operate the Sponsor
-
-Treat the sponsor as a treasury account:
-
-- keep separate sponsor keys for testnet, staging, and mainnet
-- alert before the sponsor XOR balance reaches the admission floor
-- set a non-zero `sponsor_max_fee` cap once traffic is characterized
-- rate-limit sponsored writes in your application or gateway
-- revoke `CanUseFeeSponsor` when users leave the dataspace
-- reconcile user transaction hashes, local-token payments, and sponsor XOR
-  debits
-
-Revoke sponsorship for a user:
-
-```bash
-printf '{
-  "name": "CanUseFeeSponsor",
-  "payload": {
-    "sponsor": "%s"
-  }
-}\n' "$SPONSOR" |
-  iroha --config ./sponsor.client.toml \
-    ledger account permission revoke --id "$USER"
-```
-
-## Related Pages
-
-- [Connect to SORA Nexus Dataspaces](/get-started/sora-nexus-dataspaces.md)
-- [Operate Iroha 3 via CLI](/get-started/operate-iroha-via-cli.md)
-- [Assets](/blockchain/assets.md)
-- [Permissions](/blockchain/permissions.md)
-- [Permission Tokens](/reference/permissions.md)
+- [Fee policy, program lifecycle, and quote protocol](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/nexus_fee_model.md)
+- [Typed sponsor-program instructions](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/isi/nexus.rs)
+- [CLI fee-source flags and asset transfer](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/README.md)
+- [Data space setup](/get-started/sora-nexus-dataspaces.md)

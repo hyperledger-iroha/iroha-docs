@@ -6,7 +6,7 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
-# မေးမြန်းချက် blockchain ledger ပြည်နယ် {#query-ledger-state}
+# လယ်ဂျာအခြေအနေကို Query လုပ်ခြင်း {#query-ledger-state}
 
 ## ရလဒ် {#outcome}
 
@@ -85,7 +85,7 @@ iroha --config ./localnet/client.toml \
 
 Filtering သည် စာမျက်နှာခွဲခြင်းမတိုင်မီ ဖြစ်ပေါ်သည်။ collection တစ်ခုစီသည် ၎င်း၏ ကိုယ်ပိုင် field များကိုသာ လက်ခံသည်။ မသိသော field တစ်ခုသည် ဘာနှင့်မျှ မကိုက်ညီခြင်းအစား `invalid_filter` ကို ပြန်ပေးသည်။
 
-### (၃) တည်ငြိမ်တဲ့ metadata key နဲ့ sort လုပ်ပါ။ {#_3-sort-by-a-stable-metadata-key}
+### 3. တည်ငြိမ်သော Metadata ကီးဖြင့် စီပါ {#_3-sort-by-a-stable-metadata-key}
 
 collection ၏ စီရန် key များသည် ကြေညာထားသော field များနှင့် `metadata.<key>` ကို လက်ခံသည်။ ကြီးစဉ်ငယ်လိုက်စီရန် key ၏ ရှေ့တွင် `-` ကို ထည့်ပါ။ key မပါသော row များသည် ငယ်စဉ်ကြီးလိုက် အစီအစဉ်တွင် အရင်ဆုံးနေရာယူပြီး တူညီနေသည့် row များသည် row ၏ အထောက်အထားအတိုင်း စီသောကြောင့် collection တစ်ခုလုံးတွင် တသမတ်တည်း ဖြည့်သွင်းထားသော key ကို အသုံးပြုပါ။
 
@@ -145,6 +145,6 @@ iroha --config ./localnet/client.toml \
 - [ပုံသေသတ်မှတ်ထားသော commit ရှိ Torii collection query သတ်မှတ်ချက်](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/torii/collection_queries.md)
 - [ပုံသေသတ်မှတ်ထားသော commit ရှိ Rust collection ဖတ်ရှုမှုများနှင့် cursor iterator](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/src/collections.rs)
 - [ပုံသေသတ်မှတ်ထားသော commit ရှိ လက်မှတ်ထိုးထားသော query ဝင်ခွင့်](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/query_json.md)
-- [မေးခွန်းများ](/my/blockchain/queries.md)
+- [Query များ](/my/blockchain/queries.md)
 - [မေးမြန်းချက် အကိုးအကား](/my/reference/queries.md)
 - [JavaScript နှင့် TypeScript](/my/guide/tutorials/javascript.md)

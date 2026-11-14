@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /blockchain/nfts.md
-translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
+translation_source_hash: 216f59f1cebd73001dab75dcf235306082fb1c0759437f65ce34ec9e1ed51d4f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # NFTs {#nfts}
 
 يعد Iroha NFT كائن دفتر أستاذ فريد في سلسلة الكتل له مالك واحد. استخدم NFTs عندما يحتاج السجل إلى هويته الخاصة وبيانات التعريف الخاصة به وأحداث دورة الحياة وخصائص نقل الملكية، ولكنه لا يحتاج إلى رصيد رقمي.
@@ -49,7 +48,7 @@ name$domain
 name$domain.dataspace
 ```
 
-على سبيل المثال، `badge$docs.universal` يحدد `badge` NFT في مجال `docs.universal`. إذا تم حذف مساحة البيانات، يستخدم المحلل الحالي مساحة البيانات `universal`، لذلك `badge$docs` يتحول إلى `badge$docs.universal`.
+مثلًا، يحدد `badge$docs.universal` الرمز NFT المسمى `badge` في نطاق `docs.universal`. إذا حُذفت مساحة البيانات، يستخدم المحلل الحالي مساحة البيانات `universal`، ولذلك يُحل `badge$docs` إلى `badge$docs.universal`.
 
 استخدم أسماء ثابتة لمعرفات NFT. المعرف هو هوية الكائن المستخدمة من قبل التعليمات والاستعلامات والأذونات ومرشحات الأحداث ومراجع التطبيقات.
 
@@ -68,17 +67,17 @@ NFT عمليات دورة الحياة تستخدم Iroha عمليات التع�
 
 ```bash
 export IROHA_CONFIG=./localnet/client.toml
-export NFT_DOMAIN=wonderland.universal
-export NFT_ID='badge_intro$wonderland.universal'
+export NFT_DOMAIN='<OWNED_DOMAIN>.universal'
+export NFT_ID="badge_intro\$$NFT_DOMAIN"
 ```
 
-يقوم الشبكة المحلية المولدة بالفعل بإعداد `wonderland.universal` وعقدها SNS. لاستخدام نطاق مختلف، قم بإنشائه أولاً باستخدام `app alias setup plan` و`app alias setup apply` التوضيحيين كما هو موضح في [النطاقات](/ar/blockchain/domains.md#registration).
+لا تسجّل الشبكة المحلية المُولّدة أي نطاق تطبيق لعميلها. اضبط `NFT_DOMAIN` على نطاق يملكه حساب التوقيع أو يحمل إذن `CanRegisterNft` عليه. لإنشاء نطاق، استخدم سير العمل التصريحي `app alias setup plan` و`app alias setup apply` الموضح في [النطاقات](/ar/blockchain/domains.md#registration).
 
 سجّل NFT. تقوم عملية التسجيل بقراءة المحتوى الأولي JSON من الإدخال القياسي:
 
 ```bash
 printf '{"kind":"badge","level":"intro","issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft register --id "$NFT_ID"
 ```
 
@@ -89,14 +88,14 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft get --id "$NFT_ID"
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger nft list all --verbose
+  ledger nft list --all
 ```
 
 أضف مفتاح بيانات وصفية واقرأ NFT مرة أخرى:
 
 ```bash
 printf '{"color":"blue","rarity":"tutorial"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta set --id "$NFT_ID" --key traits
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -106,27 +105,27 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 أزل مفتاح البيانات الوصفية:
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
-يمكنك نقل NFT اختياريًا. استخدم `ledger nft get` لقراءة المالك الحالي من `owned_by`، واستخدم `ledger account list all` للعثور على معرف حساب الوجهة.
+يمكنك نقل NFT اختياريًا. استخدم `ledger nft get` لقراءة المالك الحالي من `owned_by`، واستخدم `account list --all` للعثور على معرف حساب الوجهة.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger account list all
+  account list --all
 
 export CURRENT_OWNER='<account-id-from-owned_by>'
 export NEW_OWNER='<destination-account-id>'
 
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
 قم بإزالة المثال NFT بعد الإرشادات. إذا قمت بنقله، إما أن تعيده مرة أخرى أو تقدم أمر إلغاء التسجيل باستخدام إعدادات حساب المالك الحالي.
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft unregister --id "$NFT_ID"
 ```
 

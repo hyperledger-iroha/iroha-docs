@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /blockchain/assets.md
-translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
+translation_source_hash: 4d0a3f54a0c70d08d11160b9ec66d6538aa2c49c7771a13e4a070b61a9cb3e4b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Активтар {#assets}
 
 Iroha актив - иҫәптә тотолған һанлы баланс. Һәр конкрет баланс `AssetDefinition` иҫәбенә йүнәлтелә, һәм билдәләмә был активтың нисек аталыуы, һуғылыуы, күрһәтелеүе һәм бүленеүе мөмкинлеген һүрәтләй.
@@ -22,7 +21,7 @@ Iroha актив - иҫәптә тотолған һанлы баланс. Һәр
 - `mintable`: минтабильлек сәйәсәте
 - `logo`: факультатив `SoraFS` URI
 - `metadata`: үҙаллы төп мәғәнәле метамәғлүмәт
-- `balance_scope_policy`: баланстар глобаль йәки мәғлүмәт киңлеге менән сикләнгәнме?
+- `balance_scope_policy`: баланстарҙың глобаль йә мәғлүмәт киңлеге менән сикләнгән булыуын билдәләй
 - `owned_by`: билдәләмәне теркәгән йәки уға эйә булған иҫәп
 - `total_quantity`: дөйөм сығарылған күләм
 - `confidential_policy`: һаҡланған активтар операциялары өсөн сәйәсәт
@@ -36,7 +35,7 @@ Iroha актив - иҫәптә тотолған һанлы баланс. Һәр
 - `id`: `AssetId`, ул активтарҙы билдәләүҙе, хужаның иҫәбен һәм факультатив баланс күләмен берләштерә.
 - `value`: `Numeric` балансы
 
-Хәүеф тотоусы иҫәбенең каноник һәм доменһыҙ булыуы мөмкин. Аҡса билдәләмәһе, мәҫәлән, `payments.universal` мәғлүмәт киңлеге буйынса квалификациялы домен аҫтында күҙаллана ала.
+Эйә иҫәбе каноник һәм доменһыҙ. Актив билдәләмәһе мәғлүмәт киңлеге менән аныҡланған домен аҫтында күрһәтелә ала, мәҫәлән, `payments.universal`.
 
 ## Ҡулланырлыҡ {#mintability}
 
@@ -56,9 +55,9 @@ Iroha актив - иҫәптә тотолған һанлы баланс. Һәр
 `balance_scope_policy` баланстарҙың нисек һалыныуын контролдә тота:
 
 - `Global`: бер иҫәп һәм активтар билдәләмәһе буйынса баланс һауыты
-- `DataspaceRestricted`: баланстар мәғлүмәт майҙансығы контексты буйынса бүленә
+- `DataspaceRestricted`: баланстар мәғлүмәт киңлеге контексы буйынса бүленә
 
-Мәғлүмәт киңлеге менән сикләнгән баланстар бер үк актив билдәләмәһе Nexus мәғлүмәт киңлектәрендә ҡулланылған осраҡта файҙалы була, әммә баланстар айырым һаҡланырға тейеш.
+Бер үк актив билдәләмәһе бер нисә SORA Nexus мәғлүмәт киңлегендә ҡулланылып, баланстар айырым ҡалырға тейеш булғанда, мәғлүмәт киңлеге менән сикләнгән баланстар файҙалы.
 
 ## Taira менән һынап ҡарағыҙ. {#try-it-on-taira}
 
@@ -89,19 +88,18 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-Өс миҫал да уҡыла. Taira буйынса активтарҙы минтлау, яндырыу йәки күсереү өсөн faucet менән тәьмин ителгән иҫәп һәм һаҡланған ағымды ҡулланығыҙ [SORA Nexus Мәғлүмәт биттәренә тоташтырыу ](/ba/get-started/sora-nexus-dataspaces.md).
+Өс миҫал да уҡыу ғәмәлдәре булып тора. Taira-ла активтар сығарыу, яндырыу йәки күсереү өсөн һынау аҡсаһы биреү хеҙмәте аша аҡсаландырылған иҫәпте һәм [SORA Nexus мәғлүмәт киңлектәренә тоташыу](/ba/get-started/sora-nexus-dataspaces.md) бүлегендәге һаҡланған эш ағымын ҡулланығыҙ.
 
-Түләүле Taira актив миҫалы өсөн, faucet ярҙамсыһын һаҡлағыҙ [Taira-ла тест селтәре XOR-ын алыу](/ba/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) as `taira_faucet_claim.py`, һуңынан башта faucet активын талап итегеҙ һәм уны транзакция газ активы итеп ҡулланығыҙ:
+Taira-ла комиссия түләнә торған актив миҫалы өсөн башта [Taira-ла һынау селтәре өсөн XOR алыу](/ba/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) бүлегендәге әҙер һынау аҡсаһы биреү хеҙмәте ағымы аша ҡул ҡуйыусының иҫәбен аҡсаландырығыҙ. Һуңынан `ledger asset mint`, `ledger asset burn` һәм `ledger asset transfer` командаларына `--fee-payer authority` параметрын бирегеҙ; CLI ҡул ҡуйыр алдынан Taira комиссия активында теүәл комиссияны күрһәтә:
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
+iroha --config ./taira.client.toml --fee-payer authority \
+  ledger asset transfer \
+  --definition "<ASSET_DEFINITION_BASE58>" \
+  --account "<TAIRA_I105_ACCOUNT_ID>" \
+  --to "<RECIPIENT_I105_ACCOUNT_ID>" \
+  --quantity 1
 ```
-
-Һуңынан `ledger asset mint`, `ledger asset burn` һәм `ledger asset transfer` командаларында `--metadata ./taira.tx-metadata.json` индерергә.
 
 ## Инструкциялар {#instructions}
 

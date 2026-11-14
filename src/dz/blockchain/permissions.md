@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-supplemental-naming-link
 ---
 # ངོས་ལེན་ཚུ་ {#permissions}
 
@@ -88,7 +88,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 - རྒྱུ་དངོས་ཚུ་ NFTs དང་ གཏན་འཁེལ་གྱི་ཁྲལ་ཚུ་
 - འབྱུང་ཁུངས།
 - འགན་ཁུར་དང་གནང་བ་ཚུ།
-- ལག་བསྟར་སྤྱོད་/ལག་ལེན་གྱི་དུས་ཚོད་དང་ བརྟག་ཞིབ་ཚུ་ དེ་ལས་ SORA/Nexus ཚད་གཞག་ཚུ་
+- ལག་བསྟར་འབད་མི་/ལག་ལེན་སྐབས་ཀྱི་མཐའ་འཁོར་ བདེན་དཔང་ ཟམ་པ་ དེ་ལས་ SORA Nexus ཀྱི་སྡེ་ཚན་ཚུ།
 
 བརྡ་མཚོན་ཐོ་ཡིག་ངོ་མ་འདི་ [གནང་བ་བརྡ་མཚོན་གཞི་བསྟུན་](/dz/reference/permissions.md) ནང་ལུ་འབྱུང་ཁུངས་རྒྱབ་སྐྱོར་འབད་ཡོདཔ་ཨིན།
 

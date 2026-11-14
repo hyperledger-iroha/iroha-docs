@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 621d1795fd1c3cc62462a9a91af68fe684c0ff5293f5e77801420dc8318bac38
+translation_source_hash: 22d763aadf33d331fb9c16d3927e84e8bdb88829f3d73b974902daa8fde3c1b4
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Musubi Kotodama Paketlər {#musubi-kotodama-packages}
 
 Musubi Kotodama mənbə paketləri üçün ilk buraxılış paket meneceridir. O, dəqiq zəncirdəki asılılıq qrafını həll edir, SoraFS mənbəni autentifikasiya edir seçilmiş iş sahəsini arxivləşdirir, tərtib edir və sınaqdan keçirir, tək protokol-standart CAR arxivlərini qurur və dəyişməz versiyaları Iroha vasitəsilə yayımlayır.
@@ -89,9 +88,9 @@ export TAIRA_ROOT=https://taira.sora.org
 curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
 ```
 
-Təchizatçı kataloqu təchizatçı kimliklərini və elan edilmiş API son nöqtələrini təqdim edir. Seçilmiş təchizatçıdan uyğun operator icazəsini əldə edin. Proqramın icra mühiti həmin açardan bağlı axın tokenlərini tələb etmək üçün istifadə edir; tokenlər həm CLI arqumentləri, həm də kilidləmə faylı məzmunu deyildir.
+Təchizatçı kataloqu təchizatçı kimliklərini və elan edilmiş son nöqtələrini təqdim edir. Seçilmiş təchizatçıdan uyğun operator icazəsini əldə edin. Proqramın icra mühiti həmin açardan bağlı axın tokenlərini tələb etmək üçün istifadə edir; tokenlər həm CLI arqumentləri, həm də kilidləmə faylı məzmunu deyildir.
 
-İstifadə etməyin Taira doğrulayıcı pin URL kimi `url`. Qeydiyyatdan keçmiş təsdiqləyicilər daxil edilib SoraFS yaddaş deaktiv edilib. Onların `https://taira-validator-{1,2,3,4}.sora.org` API son nöqtələr pin qeydiyyatını qəbul edir, arxiv oxumaları isə seçilmiş təsdiqlənmiş provayderdən istifadə edir HTTPS mənbə
+İstifadə etməyin Taira doğrulayıcı pin URL kimi `url`. Qeydiyyatdan keçmiş təsdiqləyicilər daxil edilib SoraFS yaddaş deaktiv edilib. Onların `https://taira-validator-{1,2,3,4}.sora.org` son nöqtələr pin qeydiyyatını qəbul edir, arxiv oxumaları isə seçilmiş təsdiqlənmiş provayderdən istifadə edir HTTPS mənbə
 
 ## Yerli İş Axını {#local-workflow}
 
@@ -209,4 +208,4 @@ Musubi ilk buraxılış V1 təlimatları və sorğularından istifadə edir:
 | `FindMusubiArchiveLocationsV1`                       |Təklif olunmuş təminatçı tərəfindən dəstəklənən arxiv yerlərini oxuyun.|
 | `FindMusubiAliasV1` / `FindMusubiAliasHistoryV1`     |Cari alias hədəfini və ya onun dəyişməz tarixçəsini oxuyun.|
 
-Torii tətbiq marşrutu ailəsini `/v1/musubi/*` altında göstərir. MCP alətləri mövcud `iroha.musubi.queries.*` və `iroha.musubi.instructions.*` adlarından istifadə edir. Daha geniş API xəritəsi üçün [Torii API son nöqtələr](/az/reference/torii-endpoints.md) və [sorğu istinadı](/az/reference/queries.md) baxın.
+Torii tətbiq marşrutu ailəsini `/v1/musubi/*` altında göstərir. MCP alətləri mövcud `iroha.musubi.queries.*` və `iroha.musubi.instructions.*` adlarından istifadə edir. Daha geniş API xəritəsi üçün [Torii son nöqtələr](/az/reference/torii-endpoints.md) və [sorğu istinadı](/az/reference/queries.md) baxın.

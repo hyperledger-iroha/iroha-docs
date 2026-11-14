@@ -1,11 +1,10 @@
 ---
 translation_locale: mn
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
+translation_source_hash: 92389d3ad83ab32e85b4ca83ede9829d1a38afaad6e86da035da2829a3aaedfb
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # JavaScript ба TypeScript {#javascript-and-typescript}
 
 Одоогийн JavaScript SDK нь Iroha эх үүсвэр модны `@iroha/iroha-js` багц юм. Энэ нь Torii, Norito баригчид, гарын үсэг зурах, хуудаслах, Connect урьдчилсан үзэлт, болон Kagemusha команд дамжуулалтын хувьд Node.js-р SDK юм.
@@ -99,7 +98,6 @@ SDK нь дараах зүйлд төвлөрдөг:
 - Ed25519 гарын үсэг зуралт ба түлхүүр үүсгэх
 - хуудаслал болон дахин оролдох туслагчид
 - Хөтчийн bootstrap туслах хэрэгслүүдтэй холбох
-- Кагемуша бэлэн байдал, нөхөх, буцаан авах, ба үйлдлийн төлөвийг тээвэрлэх туслахууд
 
 ## Дээшээ чиглэсэн лавлагаа {#upstream-references}
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/ram-lfe.md
-translation_source_hash: 66436bfdcdfea9bcd52834436dc8b6abe9812549583e6bfca06cbe73d5f75d35
+translation_source_hash: a07f2d06180425e4d1c1393810cf679fb88b3e993d49792b2483485cb1cc52fd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # RAM-LFE {#ram-lfe}
 
 RAM-LFE signifie Évaluation de Fonction Laconic sur Machine à Accès Aléatoire. Dans Iroha, il s'agit de la couche générique de fonction cachée pour les programmes dont la politique publique est sur la blockchain mais dont la logique de l'évaluateur, le secret ou l'entrée brute ne doit pas être écrite dans l'état mondial. Il est utilisé par les flux d'identification SORA Nexus, tels que la recherche de téléphone privé ou d'e-mail, et peut également être exposé comme un assistant d'exécution de programme Torii générique lorsque le profil d'un nœud active les routes accessibles par l'application.
@@ -764,6 +763,6 @@ Enregistrer une politique sur la chaîne n'est pas suffisant en soi. Un nœud ci
 
 ## Sujets liés {#related-topics}
 
-- [Frais de parrainage pour un espace de données privé](/fr/get-started/private-dataspace-fee-sponsor.md#_4-register-phone-and-email-privately-with-fhe)
+- [Frais de parrainage pour un espace de données privé](/fr/get-started/private-dataspace-fee-sponsor.md)
 - [Torii API points de terminaison](/fr/reference/torii-endpoints.md#app-and-sora-route-families)
 - [Transactions anonymes](/fr/blockchain/anonymous-transactions.md)

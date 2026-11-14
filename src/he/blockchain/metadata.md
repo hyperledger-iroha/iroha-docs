@@ -85,6 +85,6 @@ MetadataChanged --> DomainMetadataChanged
 
 ## שאילתות {#queries}
 
-מטא-נתונים מוחזרים כחלק מהאובייקט שעליו בוצעה השאילתה. לדוגמה, השתמשו ב-[`FindAccountById`](/he/reference/queries.md#accounts-and-permissions), ב-[`FindDomainById`](/he/reference/queries.md#domains-and-peers) או ב-[`FindAssetDefinitionById`](/he/reference/queries.md#assets-nfts-and-rwas). השתמשו ב-[`FindNfts`](/he/reference/queries.md#assets-nfts-and-rwas) או ב-[`FindNftsByAccountId`](/he/reference/queries.md#assets-nfts-and-rwas) עבור NFTs, וב-[`FindRwas`](/he/reference/queries.md#assets-nfts-and-rwas) עבור אצוות RWA. לאחר מכן קראו את שדה הנתונים המתאים של האובייקט. תשובות לשאילתות NFT חושפות את מפת ה-`content` של ה-NFT כמטא-נתונים רשומים.
+מטא-נתונים מוחזרים כחלק מהאובייקט שעליו בוצעה השאילתה. לדוגמה, השתמשו ב-[`FindAccountById`](/he/reference/queries.md#accounts-and-permissions), ב-[`FindDomainById`](/he/reference/queries.md#domains-and-peers) או ב-[`FindAssetDefinitionById`](/he/reference/queries.md#assets-nfts-and-rwas). השתמשו ב-[`FindNfts`](/he/reference/queries.md#assets-nfts-and-rwas) או ב-[`FindNftsByAccountId`](/he/reference/queries.md#assets-nfts-and-rwas) עבור NFTs, וב-[`FindRwas`](/he/reference/queries.md#assets-nfts-and-rwas) עבור אצוות RWA. לאחר מכן קראו את שדה המטא־נתונים של האובייקט. תשובות לשאילתות NFT חושפות את מפת ה-`content` של ה-NFT כמטא־נתונים של הרשומה.
 
 מפתחות המטא-נתונים הם חלק ממצב הספרים, אז לשמור אותם יציבים ולהימנע מקודד גרסה ספציפית יישום ל-churn לתוך שם המפתח כאשר ערך JSON יכול לשאת את הגרסה הזו באופן בולט.

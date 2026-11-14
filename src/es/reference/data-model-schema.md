@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /reference/data-model-schema.md
-translation_source_hash: cf27b1f313a695b648ae450564a51120af0e3e39641ed140a187d128b930da97
+translation_source_hash: c4f0305c73f9470d1652b70e6787b59de2553a08b6c96603a9369512efbdb1af
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Esquema del Modelo de Datos {#data-model-schema}
 
 Consulta el esquema desde el nodo exacto al que apunta tu integración. Torii proporciona el esquema del modelo de datos activo en `GET /v1/schema` cuando esa superficie está habilitada:
@@ -17,4 +16,4 @@ curl -fsS -H 'Accept: application/json' "$TORII_URL/v1/schema" \
   > iroha-data-model-schema.json
 ```
 
-No genere vinculaciones a partir del fragmento de documentación registrado mientras su estado de procedencia esté pendiente. La respuesta del nodo en vivo es autoritaria para el modelo de datos compilado de ese nodo; manténgala fija junto con la compilación del nodo utilizada por su integración.
+Genere los enlaces de lenguaje a partir de esa respuesta, en lugar de usar una copia publicada para otra compilación. La respuesta del nodo en vivo es la fuente de autoridad para el modelo de datos compilado de ese nodo; consérvela fijada junto con la compilación del nodo utilizada por su integración.

@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /blockchain/events.md
-translation_source_hash: 16b8cacc9bdf156d4b1e1a93b720085adcabb0002a34b9dc564a9926f573de63
+translation_source_hash: aad93f1981a5b470966090b5e06ec07178738b15f1d870097947682b19f99595
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # אירועים {#events}
 
 אירועים יוצרים כאשר דברים מסוימים מתרחשים בתוך blockchain, למשל חשבון חדש נוצר או בלוק נחויב. ישנם סוגים שונים של אירועים:
@@ -45,11 +44,11 @@ curl -fsS -N https://taira.sora.org/v1/events/sse
 
 ## אירועים נתונים {#data-events}
 
-אירועי נתונים יוצרים כאשר מתרחשים שינויים הקשורים לנתונים של הספרים הגדולים כגון צמתים, דומנים, חשבונות, נכסים, הגדרות נכסים, NFTs, טריגרים, תפקידים, קונפיגורת שרשרת, מצב המבצע, הוכחות, נכסים סודיים, גשרים או אובייקטים ספציפיים של SORA/Nexus. סוגים אלה של אירועים משמשים ב-filters [ של אירועי נתונים ](./filters.md#data-event-filters).
+אירועי נתונים יוצרים כאשר מתרחשים שינויים הקשורים לנתונים של הספרים הגדולים כגון צמתים, דומנים, חשבונות, נכסים, הגדרות נכסים, NFTs, טריגרים, תפקידים, קונפיגורת שרשרת, מצב המבצע, הוכחות, נכסים סודיים, גשרים או אובייקטים ספציפיים של SORA Nexus. סוגים אלה של אירועים משמשים ב-filters [ של אירועי נתונים ](./filters.md#data-event-filters).
 
 ## אירועים בזמן {#time-events}
 
-אירועים בזמן נחשפים כאשר תצפית המצב העולמי מוכנה להתמודד עם גורמים מפעילים זמן [ ](./triggers.md#time-triggers).
+אירועי זמן נפלטים כאשר תצוגת מצב העולם מוכנה לטפל ב[טריגרים מבוססי זמן](./triggers.md#time-triggers).
 
 ## אירועים להוציא לפועל {#trigger-execution-events}
 

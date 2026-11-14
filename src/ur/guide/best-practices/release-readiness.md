@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /guide/best-practices/release-readiness.md
-translation_source_hash: 984957526424a4e0ec9f29a6da1bb64699245bb135e8157bbe684bc3d87de4cc
+translation_source_hash: 75fccfa00f1582a8081df3e00331eee7ab21c108c8727a9d73129738cc4940cb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-source-title-amendment
 ---
-
 # آزاد کرنے کی تیاری {#release-readiness}
 
 Iroha ایپلی کیشن یا نیٹ ورک تبدیلی کو فروغ دینے سے پہلے، اس چھوٹے سے ماحول میں رویے کو ثابت کریں جو متعلقہ خطرے کو بے نقاب کرسکتے ہیں، پھر جان بوجھ کر مشترکہ ٹیسٹ نیٹ اور پروڈکشن گیٹس کے ذریعے منتقل کریں.
@@ -24,9 +23,9 @@ Iroha ایپلی کیشن یا نیٹ ورک تبدیلی کو فروغ دینے
 - اختتامی پوائنٹ کے رویے، فیسوں، اکاؤنٹ فنڈنگ، تاخیر اور آپریشنل rehearsals کے لئے Taira یا ایک اور مشترکہ ٹیسٹ نیٹ استعمال کریں.
 - براہ راست ٹیسٹ نیٹ لکھتا ہے تاکہ عام ٹیسٹ رن نیٹ ورک کی دستیابی پر منحصر نہ ہوں یا ٹیسٹ نیٹ فنڈز خرچ کریں.
 - ہر براہ راست ٹیسٹ ٹرانزیکشن جمع کرنے سے پہلے دستخط کنندہ کی مالی اعانت، فیس اثاثوں کے میٹا ڈیٹا، اتھارٹی اجازت نامے، اور متوقع حالت کی تصدیق کریں۔
-- ٹرمینل کی حیثیت کا انتظار کریں، پھر صرف پڑھنے کے لئے استفسار کے ساتھ نتیجہ ریاست کی تصدیق کریں.
+- آخری اسٹیٹس کا انتظار کریں، پھر صرف پڑھنے کی کوئری سے حاصل شدہ حالت کی تصدیق کریں۔
 
-دیکھیں [پہلے درجے کی SORA 3: Taira اور Minamoto](/ur/get-started/sora-nexus-dataspaces.md).
+[SORA Nexus پر تعمیر کریں: Taira اور Minamoto](/ur/get-started/sora-nexus-dataspaces.md) دیکھیں۔
 
 ## مین نیٹ یا پروڈکشن گیٹ {#mainnet-or-production-gate}
 

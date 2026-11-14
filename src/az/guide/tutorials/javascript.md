@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
+translation_source_hash: 92389d3ad83ab32e85b4ca83ede9829d1a38afaad6e86da035da2829a3aaedfb
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # JavaScript və TypeScript {#javascript-and-typescript}
 
 Cari JavaScript SDK Iroha mənbə ağacında `@iroha/iroha-js` paketidir. Bu, Torii, Norito qurucular, imzalama, səhifələmə, Connect önizləmələri və Kagemusha əmr daşınması üçün Node.js-ilk SDK-dir.
@@ -99,7 +98,6 @@ SDK aşağıdakılara diqqət yetirir:
 - Ed25519 imzalama və açar yaradılması
 - səhifələmə və təkrar köməkçiləri
 - Brauzer başlanğıc köməkçilərini qoşun
-- Kagemusha hazırlığı, doldurma, geri ödəmə və əməliyyat-statusu nəqliyyat köməkçiləri
 
 ## Yuxarı Axın İstinadları {#upstream-references}
 

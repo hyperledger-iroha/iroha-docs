@@ -1,11 +1,10 @@
 ---
 translation_locale: ka
 translation_source: /reference/binaries.md
-translation_source_hash: c617a21d50b28495c261d05d672e0b7803c282d53da577391dbebbc7f120d045
+translation_source_hash: 75848623e735abc80326f9ebda6f74ab438b67eaeddeacdd4d8c5509856a999e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # მუშაობა Iroha ბინარებით {#working-with-iroha-binaries}
 
 Iroha 3 ოპერატორის სამუშაო მიმდინარეობა ოთხი ძირითადი ბინარის ირგვლივ ბრუნავს:
@@ -50,7 +49,7 @@ cargo run --bin kagami -- --help
 
 ## Docker ფოტო {#docker-image}
 
-აღმავალი სამუშაო სივრცე იყენებს `kagami localnet` და `kagami docker` წარმოქმნის Docker Compose ფაილები, რომლებიც შეესაბამება ამოწმებულ კოდს. `hyperledger/iroha:dev` გამოსახულება შეიძლება გამოყენებულ იქნას იმ გენერირებული ფაილებთან ერთად.
+ძირითადი სამუშაო სივრცე იყენებს `kagami localnet generate`-სა და `kagami docker`-ს სამუშაო ასლის კოდთან შესაბამისი Docker Compose ფაილების შესაქმნელად. ამ გენერირებულ ფაილებთან შეიძლება `hyperledger/iroha:dev` იმიჯის გამოყენება.
 
 გაუშვით CLI კონტეინერში:
 
@@ -67,7 +66,7 @@ docker run -t hyperledger/iroha:dev kagami --help
 ქსელის კვანძის სტარტაპისთვის, შეიქმნას localnet და შეადგინეთ ფაილი ჯერ:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```

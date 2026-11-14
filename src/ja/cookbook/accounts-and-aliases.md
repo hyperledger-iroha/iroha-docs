@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: c1aee0c29332bd7c883500e72a1ec7812aebfca13b673e6681788cf4bc5ecbf1
+translation_source_hash: e500328ac93578b9af21b6ef3d01e13e051b1d9a0f6050293e65650da66fbbbb
 translation_status: machine-validated
-translation_engine: bing-translator-llm+claude-opus-5-5
+translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link
 ---
-
 # アカウントとエイリアス {#accounts-and-aliases}
 
 ## 結果 {#outcome}
@@ -154,7 +153,7 @@ fi
 ## トラブルシューティング {#troubleshooting}
 
 - パースエラーやプレフィックスエラーは通常、アドレスが異なるネットワークプロファイル用にエンコードされていることを意味します。`--profile taira`で正規化し、不一致は拒否してください。
-- テストネット資金提供サービス `202` の後のアカウント `404` は伝播遅延が発生する可能性があります。書き込みを送信する前に、アカウントまたは資金提供された資産を確認してください。
+- フォーセットから `202` が返った後にアカウントへの照会が `404` になる場合、反映の遅延が原因かもしれません。書き込みを送信する前に、アカウントまたは入金された資産を繰り返し照会してください。
 - リバースリゾルバからの`total: 0`は、表示されるエイリアスがバインドされていないことを意味します。これはアカウントの検索失敗ではありません。
 - `401` または `403` がエイリアス経路から返される場合、それは制限されたデータスペースまたは十分な正確な解決権限がないことを示します。フォールバックとして広範なプレフィックス検索を使用しないでください。
 - 読み取り可能な`name@domain.dataspace`値は、標準的な I105 IDが必要なすべての場所で受け入れられるわけではありません。まずそれを解決してください。

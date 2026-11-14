@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # አፈጻጸም እና መለኪያዎች {#performance-and-metrics}
 
 Iroha አፈጻጸም በስራ ጫና፣ በአረጋጋጭ ቶፖሎጂ፣ በአውታረ መረብ ሁኔታዎች እና በስምምነት ቅንጅቶች ላይ የተመሰረተ ነው።. ስለዚህ አንድ ነጠላ TPS ቁጥር ጠቃሚ የሚሆነው ከቋሚ ውቅር ጋር ካለው የቤንችማርክ ሩጫ ጋር ሲገናኝ ብቻ ነው።.
@@ -38,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -131,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### እጩ እና የመግቢያ ድንበሮች {#candidate-and-ingress-bounds}
 
-የኖድ አካባቢያዊ Sumeragi ድንበሮች አንድ አረጋጋጭ ምን ያህል እጩ እና የመልሶ ማግኛ ስራ እንደሚይዝ ይወስናሉ -
+የብሎክ መጠንና የግብይት ገደቦች ከተፈረመ genesis እና commit ከተደረጉ የሰንሰለት መለኪያዎች ይመጣሉ። አካባቢያዊ የኖድ `[sumeragi]` ቅንብሮች የተሳትፎ ሚና፣ የፊርማ ቁሳቁስ ጥበቃ፣ የደህንነት መዝገብ መንገዶች እና በሰነድ የተገለጹ አካባቢያዊ የጊዜ ገደብና ማመሳሰል ለውጦችን ይይዛሉ።
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` እና `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`፣ `sumeragi.queues.chunks` እና `sumeragi.queues.ready_bodies`
-
-በጣም ትንሽ ድንበሮች ወረፋ ወይም ጭነት-መልሶ ማግኛ ግፊት ይፈጥራሉ; ከመጠን በላይ የሆኑ ድንበሮች የተያዘ ማህደረ ትውስታን እና ለተሳዳቢ አውታረመረብ ያለውን የስራ መጠን ይጨምራሉ አቻ. በአንድ ጊዜ አንድ ማሰሪያ ከመቀየርዎ በፊት የምርመራውን ነጥብ-በጊዜ ውሂብ እይታ ከሂደት ማህደረ ትውስታ፣ የመልእክት አያያዝ እና የጎደለው የውሂብ አካል መለኪያዎች ጋር ያወዳድሩ -
+የአውታረ መረብ መግቢያና የግብይት ወረፋ ገደቦች በኖዱ የሚቀመጥ ሥራን ይቆጣጠራሉ። የሥራ ገደብ ከመቀየርዎ በፊት የምርመራ ቅጽበታዊ ቅጂውን ከፕሮሰስ ማህደረ ትውስታ፣ ከመልዕክት አያያዝ እና ከጎደለ የብሎክ አካል መለኪያዎች ጋር ያወዳድሩ። የተመሳሳይ አውታረ መረብ ሙከራዎችን ሲያወዳድሩ የተፈረሙ የሰንሰለት መለኪያዎችን አይቀይሩ:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -244,7 +236,7 @@ iroha --config ./localnet/client.toml \
 - አረጋጋጭ እና ታዛቢ ይቆጥራል
 - የጋራ ስምምነት ሁነታ፣ የተፈረመ የብሎክ ምት እና DA አቀማመጥ
 - ትክክለኛ `3f + 1` ኮሚቴ፣ ምልአተ ጉባኤ እና የታዛቢዎች ዝርዝር
-- `sumeragi.block`፣ `sumeragi.queues`፣ `sumeragi.limits`፣ የአውታረ መረብ መግቢያ እና የግብይት-ወረፋ ወሰን
+- የተፈረሙ የሰንሰለት መለኪያዎች፣ አካባቢያዊ የSumeragi ለውጦች፣ የአውታረ መረብ መግቢያ እና የግብይት ወረፋ ገደቦች
 - የቴሌሜትሪ መገለጫ
 - ሃርድዌር፣ ማከማቻ እና OS ዝርዝሮች
 - አውታረ መረብ RTT፣ መንቀጥቀጥ፣ ኪሳራ እና የመተላለፊያ ይዘት ግምቶች
@@ -261,6 +253,6 @@ iroha --config ./localnet/client.toml \
 ## ተዛማጅ ገጾች {#related-pages}
 
 - [ከኢዛናሚ ጋር ትርምስ ሙከራ](./chaos-testing.md)
-- [Torii API የመጨረሻ ነጥቦች](../../reference/torii-endpoints.md)
+- [Torii የመጨረሻ ነጥቦች](../../reference/torii-endpoints.md)
 - [Iroha 3 በ CLI በኩል ያሂዱ](../../get-started/operate-iroha-via-cli.md)
 - [የአውታረ መረብ አቻ ውቅር ማጣቀሻ](../../reference/peer-config/params.md)

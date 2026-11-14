@@ -1,11 +1,10 @@
 ---
 translation_locale: mn
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: ab0496d2cd36056dbc5486cd1ea288606476862290cc544e7afcf63a1641dd6d
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Тохиргооны асуудлыг шийдвэрлэх {#troubleshooting-configuration-issues}
 
 Энэ хэсэг нь Iroha 3 тохиргооны алдааг оношлох зөвлөмжүүдийг санал болгодог. Юуны түрүүнд [түлхүүрүүдийг шалгасан](./overview.md#check-the-keys)-ыг хийхийг баталгаажуулна уу, учир нь энэ нь Iroha-д гардаг хамгийн нийтлэг асуудлын эх үүсвэр юм.
@@ -25,7 +24,7 @@ translation_engine: bing-translator-llm
 Ийм асуудлыг шийдвэрлэх арга Iroha-ийн хэрэглээнээс хамаарна. Хэрэв энэ нь энгийн демо бөгөөд та сүлжээний түншийн өгөгдлийг хадгалах шаардлагагүй бол Kagami-оор нийцэж буй localnet эсвэл Docker Compose багцыг дахин үүсгээрэй:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
 ```
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/ram-lfe.md
-translation_source_hash: 66436bfdcdfea9bcd52834436dc8b6abe9812549583e6bfca06cbe73d5f75d35
+translation_source_hash: a07f2d06180425e4d1c1393810cf679fb88b3e993d49792b2483485cb1cc52fd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # RAM-LFE {#ram-lfe}
 
 RAM-LFE Random-Access Machine Laconic Function Evaluation degan ma’noni anglatadi. Iroha-da bu ommaviy siyosati zanjirda saqlanadigan, lekin baholovchi mantiqi, siri yoki xom kirishi global holatga yozilmasligi kerak bo‘lgan dasturlar uchun umumiy yashirin funksiya qatlamidir. U maxfiy telefon yoki elektron pochta qidiruvi kabi SORA Nexus identifikator oqimlarida ishlatiladi va tugun profili ilovaga yo‘naltirilgan marshrutlarni yoqqanda umumiy Torii dastur-ijro yordamchisi sifatida ham taqdim etilishi mumkin.
@@ -764,6 +763,6 @@ Siyosatni zanjirda ro‘yxatdan o‘tkazishning o‘zi yetarli emas. Maqsad tugu
 
 ## Bog'liq mavzular {#related-topics}
 
-- [Xususiy ma'lumotlar maydoni uchun homiylik to'lovlari](/uz/get-started/private-dataspace-fee-sponsor.md#_4-register-phone-and-email-privately-with-fhe)
+- [Xususiy ma'lumotlar maydoni uchun homiylik to'lovlari](/uz/get-started/private-dataspace-fee-sponsor.md)
 - [Torii so‘nggi nuqtalari](/uz/reference/torii-endpoints.md#app-and-sora-route-families)
 - [Anonim tranzaksiyalar](/uz/blockchain/anonymous-transactions.md)

@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 9388823f782eef86aedbaf141bd251dae39837957aefd224ed0cc97ba11ad97d
+translation_source_hash: f1f922b9820587cd4b599e7407698a47d468616670fee2922e4028147bc3e9b0
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # Kotlin,Android 和Java {#kotlin-android-and-java}
 
 Kotlin SDK 是 JVM 和 Android 應用程式的預設客戶端堆.它在 Iroha 儲存庫中存在於 `kotlin/` 下,並按平臺分開,因此便攜程式碼不會獲得 Android 依賴性.
@@ -73,7 +72,7 @@ cd kotlin
 - 規範帳戶和資產地址處理
 - 交易構建,簽署和離線封裝
 - Torii HTTP,WebSocket 和 SSE 的客戶
-- 多簽名,訂閱, SoraFS, Nexus 和連線型號
+- 多簽名,訂閱, SoraFS, SORA Nexus 和連線型號
 - Android 鍵儲存和裝置遠端測量整合
 - Android 離線運輸 QR,附近運輸和 NFC
 

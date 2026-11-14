@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 35a4caba21bf1e34cc015f79fa82bfe143b37603eddb5f1eb72513ad83a20f61
+translation_source_hash: 6fe2dd48dc64f896be539af2994fbc0ad3c2c5f7a5a4297cc4ff4b08667f0376
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Iniciar Iroha 3 {#launch-iroha-3}
 
 Esta página explica o fluxo atual da rede local para Iroha 3 usando os recursos padrão do espaço de trabalho do repositório upstream.
@@ -65,11 +64,11 @@ Você pode apontar imediatamente o CLI para a configuração do cliente incluíd
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list
 ```
 
-## 3. Nexus Perfil {#_3-nexus-profile}
+## 3. SORA Nexus Perfil {#_3-nexus-profile}
 
 O repositório também fornece um perfil de configuração orientado para SORA Nexus sob `defaults/nexus/`.
 
-Para executar um par de rede nativo com o perfil Nexus:
+Para executar um par de rede nativo com o perfil SORA Nexus:
 
 ```bash
 ./target/release/iroha3d --sora --config ./defaults/nexus/config.toml

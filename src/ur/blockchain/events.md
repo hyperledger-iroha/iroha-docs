@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /blockchain/events.md
-translation_source_hash: 16b8cacc9bdf156d4b1e1a93b720085adcabb0002a34b9dc564a9926f573de63
+translation_source_hash: aad93f1981a5b470966090b5e06ec07178738b15f1d870097947682b19f99595
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # واقعات {#events}
 
 واقعات جاری کیے جاتے ہیں جب بلاکچین کے اندر کچھ چیزیں ہوتی ہیں ، مثال کے طور پر نیا اکاؤنٹ بنایا جاتا ہے یا بلاک کیا جاتا ہے۔ مختلف قسم کے واقعات ہوتے ہیں:
@@ -45,7 +44,7 @@ curl -fsS -N https://taira.sora.org/v1/events/sse
 
 ## ڈیٹا واقعات {#data-events}
 
-ڈیٹا واقعات جاری کیے جاتے ہیں جب لیجر کے اعداد و شمار جیسے نیٹ ورک نوڈ، ڈومینز، اکاؤنٹس، اثاثے، اثاثوں کی تعریفیں، NFTs، ٹرگرز، رولز، آن چین ترتیب، عملدرآمد ریاست، ثبوت، خفیہ اثاثوں، پلوں، یا SORA/Nexus مخصوص اشیاء سے متعلق تبدیلی ہوتی ہے۔. ان قسم کے واقعات [ڈیٹا ایونٹ فلٹرز ](./filters.md#data-event-filters) میں استعمال ہوتے ہیں۔
+ڈیٹا کے واقعات اس وقت جاری ہوتے ہیں جب لیجر کے ڈیٹا سے متعلق کوئی تبدیلی ہو، مثلاً پیئرز، ڈومینز، اکاؤنٹس، اثاثے، اثاثوں کی تعریفیں، NFTs، ٹرگرز، کردار، آن چین ترتیب، ایگزیکیوٹر کی حالت، ثبوت، خفیہ اثاثے، بریجز یا SORA Nexus سے مخصوص آبجیکٹس میں۔ اس قسم کے واقعات [ڈیٹا ایونٹ فلٹرز](./filters.md#data-event-filters) میں استعمال ہوتے ہیں۔
 
 ## وقت کے واقعات {#time-events}
 

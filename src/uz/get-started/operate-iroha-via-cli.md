@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: d7edc74d06a9481123156520d7774e26d1790fee657607031d180aea172d9a98
+translation_source_hash: 5fb7abd4e152ece715a8337e8ef8e75330f634d2a1b26e0c5bd8308f1f3793a9
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # Iroha 3 orqali CLI orqali harakatlaning {#operate-iroha-3-via-cli}
 
@@ -31,16 +31,22 @@ cargo run --bin iroha -- --config ./localnet/client.toml --help
 
 CLI ushbu yuqori darajadagi qo'mondonlik guruhlariga joylashtirilgan:
 
-- `account` hisob-kitobga yo'naltirilgan qisqartmalar uchun
-- `tx` tranzaksiya darajasida yordamchilar uchun
+- hisoblarni o‘qish va o‘zgartirish uchun `account`
+- umumiy filtrlar va sahifalashli explorer tasmalar uchun `explorer`
+- tranzaksiya holati va yordamchi amallar uchun `tx`
 - `ledger` uchun hisobda o'qish va yozish uchun
+- triggerlarni o‘qish, yozish va bajarish uchun `trigger`
 - Operator diagnostikasi uchun `ops`
 - `app` uchun qo'llanma API yordamchilari
-- `contract` shartnomalarni ishga tushirish va qo'ng'iroqlar uchun
+- kontrakt chaqiruvlari, viewlar va mahalliy nosozlik tahlili uchun `contract`; joylashtirish uchun `kagami contract deploy` yoki `musubi deploy`
 - `tools` diagnostika va ishlab chiquvchi qo'llab-quvvatlash vositalari uchun
-- `taira` uchun Taira va Nexus-maqsadli ish oqimlari
+- ma’lumotlar makoni ta’rifini rejalash, qo‘llash va tekshirish uchun `dataspace`
+- Taira diagnostikasi va hisoblarni boshlang‘ich sozlash uchun `taira`
+- oflayn kodlagichlar, hisobotlar va diagnostika uchun `offline`
+- Soracloud ilova platformasi yordamchilari uchun `soracloud`
+- SORA Cross-Chain Protocol o‘qishlari, o‘tkazmalari va isbotlari uchun `sccp`
 
-`ledger` guruhi, shuningdek, `ledger transaction` kabi domenga oid tranzaksiya yordamchilari ham mavjud.
+Tranzaksiya yuboradigan har bir buyruqqa `--fee-payer authority` kabi aniq komissiya to‘lovchisi kerak; CLI imzolashdan oldin aniq komissiyani hisoblatadi.
 
 Inson tomonidan o'qiladigan operator ishlab chiqarishi uchun `--output-format text` va qat'iy avtomatlashtirish rejimi uchun `--machine` dan foydalaning.
 
@@ -55,7 +61,7 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-`universal` ma’lumotlar makonida ommaviy domenlarni ro'yxatdan o'tkazish:
+`universal` ma’lumotlar makonidagi ochiq domenlarni ko‘rsating:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
@@ -75,32 +81,30 @@ Agar sizda hozirgi `iroha` ikkilamchi bo'lsa, Taira diagnostik yordamchisini ish
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-`taira.client.toml` faylini faqat imzolangan buyruqlarni sinashga tayyor bo‘lganda yarating. Sozlash, sinov mablag‘ini olish va nazorat tranzaksiyasi jarayoni uchun [SORA Nexus ma’lumotlar makonlariga ulanish](/uz/get-started/sora-nexus-dataspaces.md) bo‘limiga qarang. Hisob sinov mablag‘i xizmati orqali haq aktivi bilan ta’minlanmaguncha Taira-ga yozish buyruqlarini yubormang.
+`taira.client.toml`ni faqat imzolangan buyruqlarni sinashga tayyor bo‘lganda yarating. Sozlama, faucet va dastlabki tekshiruv jarayoni uchun [SORA Nexus ma’lumotlar makonlariga ulanish](/uz/get-started/sora-nexus-dataspaces.md)ga qarang. Hisob faucet komissiya aktivi bilan moliyalashtirilmaguncha Taira tarmog‘iga yozish buyruqlarini bajarmang.
 
-Har qanday haq to'lash uchun Taira CLI Misol uchun, kran yordamchisini saqlash [Testnetni olish XOR bilan Taira](/uz/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) koʻrsatilgan `taira_faucet_claim.py`, so'ngra talabnoma testnet XOR Birinchidan:
+Har qanday komissiyali Taira CLI misoli uchun [Taira tarmog‘ida testnet XOR oling](/uz/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)dagi oldindan tayyorlashga asoslangan faucet jarayoni bilan imzolovchini moliyalashtiring, so‘ng balansni tekshiring:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-Agar kran puzzli yoki talabnoma yo'nalishi `502` qaytarsa, kuting va yana sinab ko'ring. Bu testnetning ochiq mavjudligi muammosi, hisob kalitlarini qayta tiklash uchun signal emasdir.
+Faucet marshruti `502` qaytarsa, kuting va qayta urining. Bu hisob kalitlarini qayta yaratish belgisi emas, ochiq testnet mavjudligi muammosidir.
 
-Saldo ko'rinadigan bo'lganidan so'ng, to'lov aktivlari metadatalarini quyidagicha yozish uchun ilova qiling:
+Balans ko‘ringach, yozishlarni `--fee-payer authority` bilan yuboring. CLI imzolashdan oldin aniq komissiyani Taira tarmog‘ining komissiya aktivida hisoblatadi:
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg "hello from faucet-funded taira"
+  --fee-payer authority \
+  tx ping --msg "hello from faucet-funded taira"
 ```
 
 ## 4. Reyestrning asosiy buyruqlari {#_4-basic-ledger-commands}
@@ -108,7 +112,7 @@ iroha --config ./taira.client.toml \
 Barcha domenlarni roʻyxatdan oʻtkazish:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 Oddiy domen yaratish deklarativ alias rejalashtiruvchidan foydalanadi; `ledger domain` buyruqida `register` kichik buyruq yo'q. `docs.universal` uchun sirsiz `AliasSetupPlanRequestV1` niyatni SDK yoki onboarding xizmati bilan tayyorlang, so'ngra uni rejalashtiring va qo'llash:
@@ -119,16 +123,16 @@ cargo run --bin iroha -- --config ./localnet/client.toml \
   --intent-file ./docs-domain.intent.json \
   --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./localnet/client.toml \
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./docs-domain.plan.json
 ```
 
-Niyat pinslar ma’lumotlar makoni ID, kanonik egasi hisob raqami, ijara muddati va joriy quote himoya. rejalashtiruvchi jonli holatni tekshiradi va taqdim etish uchun aniq atom `EnsureAlias` rejasini qaytarib beradi. Boshqa tarmoqdan qo'l nusxasi saqlanish qiymatlari emas.
+Niyat ma’lumotlar makoni ID si, kanonik ega hisobi, ijara muddati va joriy hisob himoya shartini mahkamlaydi. Rejalashtiruvchi joriy holatni tekshirib, yuboriladigan aniq atomik `EnsureAlias` rejasini qaytaradi. Himoya qiymatlarini boshqa tarmoqdan qo‘lda ko‘chirmang.
 
 Sodda ping-transaksiya yuboring:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger transaction ping --msg "hello from iroha"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority tx ping --msg "hello from iroha"
 ```
 
 Oxirgi blokni oʻqing yoki blok tadbirlariga obuna boʻling:
@@ -140,10 +144,10 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 
 ## 5. Operatorlar qo'mondonlari {#_5-operator-commands}
 
-Konsens operatorining buyruqlari uchun ruxsatnomalar ro'yxatidan o'tkaziladigan ishga tushirish kalitini talab qiladi. Uni `client.toml` dan saqlang va faqat egasiga tegishli faylni aniq ko'rsating:
+Konsensus operator buyruqlariga ruxsat ro‘yxatidagi bajarish vaqti kaliti kerak. Uni `client.toml`dan tashqarida saqlang va faqat egaga ochiq faylni mutlaq yo‘li bilan bering:
 
 ```bash
-: "${OPERATOR_KEY_FILE:=./secrets/operator.key}"
+: "${OPERATOR_KEY_FILE:=$PWD/secrets/operator.key}"
 
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \
@@ -160,13 +164,13 @@ cargo run --bin iroha -- \
   --output-format text ops sumeragi diagnostics
 ```
 
-Eng yuqori va qulfli quorum sertifikatlari:
+Commit qilingan konsensus yo‘laklari va shu tugun nusxalari holati:
 
 ```bash
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format text ops sumeragi qc
+  --output-format text ops sumeragi lanes
 ```
 
 Zaryaddagi konsensus parametrlari:
@@ -185,8 +189,8 @@ cargo run --bin iroha -- \
 - [Iroha ikkilamchilar bilan ishlash](/uz/reference/binaries.md)
 - [CLI README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/README.md)
 
-Manba hisobidan to'liq Markdown yordam snapshotini qayta tiklash uchun quyidagilarni ishga tushiring:
+Manba ish nusxasidan to‘liq Markdown yordam suratini chop etish uchun bajaring:
 
 ```bash
-cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md
+cargo run -p iroha_cli --bin iroha -- tools markdown-help > iroha-cli-help.md
 ```

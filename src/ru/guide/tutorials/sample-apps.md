@@ -1,18 +1,17 @@
 ---
 translation_locale: ru
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: c1432d8d2483f67b6ab81680f6c5457cab470db7944512626242a1446a7d501f
+translation_source_hash: 0c4f2f3fc4efb9f883f597a3eea49c99431b711a0141eba70ac5a2524990dd73
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Образцы и рецепты {#samples-and-recipes}
 
 Исходный репозиторий Iroha содержит SDK рецептов и тестовых наборов, которые отслеживают ту же редакцию, что и узел.
 
 ## JavaScript Рецепты {#javascript-recipes}
 
-[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes) содержит конкретные примеры для детерминированной пакетной обработки транзакций, Nexus переводы через приложение NFT и итерация учётной записи, ISO мостовые потоки, и Torii потоковая передача. Каждый рецепт указывает, работает ли он офлайн или требует подключения в реальном времени Torii API конечная точка.
+[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes) содержит конкретные примеры для детерминированной пакетной обработки транзакций, SORA Nexus переводы через приложение NFT и итерация учётной записи, ISO мостовые потоки, и Torii потоковая передача. Каждый рецепт указывает, работает ли он офлайн или требует подключения в реальном времени Torii API конечная точка.
 
 ## Swift и iOS {#swift-and-ios}
 

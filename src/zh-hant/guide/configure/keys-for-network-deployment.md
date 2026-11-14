@@ -1,14 +1,13 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # 網路部署的關鍵 {#keys-for-network-deployment}
 
-每個網路都需要針對客戶,對等節點,創世簽名和NPoS或 Nexus 個人資料, BLS 驗證者身份.
+每個網路都需要為用戶端、對等節點與創世簽署分別準備不同的金鑰材料；若採用 NPoS 或 SORA Nexus 設定檔，還需要 BLS 驗證者身分金鑰。
 
 ## 用鑰匙的地方 {#where-keys-are-used}
 
@@ -21,7 +20,7 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 在本地或測試部署中,讓 Kagami 將所有這些檔案生成在一起:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 對於現有網路或配置檔案,使用導向流程:

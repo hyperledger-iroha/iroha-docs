@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: ab0496d2cd36056dbc5486cd1ea288606476862290cc544e7afcf63a1641dd6d
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Konfiqurasiya Problemlərinin Həlli {#troubleshooting-configuration-issues}
 
 Bu bölmə Iroha 3 konfiqurasiyası üçün problemlərin həlli tövsiyələrini təqdim edir. Əvvəlcə [açarları yoxladı](./overview.md#check-the-keys) olduğunuzdan əmin olun, çünki bu, Iroha dakı problemlərin ən yayılmış mənbəyidir.
@@ -25,7 +24,7 @@ Uğursuzluğu bu addımlarla yoxlayın:
 Belə bir problemi aradan qaldırmağın yolu Iroha istifadəsindən asılıdır. Əgər bu sadə bir demo-dursa və şəbəkə həmkarı məlumatlarını saxlamağa ehtiyacınız yoxdursa, uyğun bir localnet və ya Docker Compose paketini Kagami ilə yenidən yaradın:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
 ```
 

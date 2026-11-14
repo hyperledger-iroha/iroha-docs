@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /blockchain/ram-lfe.md
-translation_source_hash: 66436bfdcdfea9bcd52834436dc8b6abe9812549583e6bfca06cbe73d5f75d35
+translation_source_hash: a07f2d06180425e4d1c1393810cf679fb88b3e993d49792b2483485cb1cc52fd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # RAM-LFE {#ram-lfe}
 
 RAM-LFE Təsadüfi Giriş Maşını Loqonik Funksiya Qiymətləndirməsinin qısaltmasıdır. Iroha-də isə bu, ictimai siyasəti zəncirdə olan, lakin qiymətləndirici loqikası, sirri və ya xam girişi dünya vəziyyətinə yazılmamalı olan proqramlar üçün ümumi gizli-funksiya təbəqəsidir. O, şəxsi telefon və ya e-poçt axtarışı kimi SORA Nexus identifikator axınları tərəfindən istifadə olunur və həmçinin bir node profili tətbiqə açılan marşrutları aktivləşdirdikdə ümumi Torii proqram-icra köməkçisi kimi təqdim edilə bilər.
@@ -189,7 +188,7 @@ RAM-LFE üçün BFV şifrələnmiş giriş mexanizmi kimi istifadə olunur:
 2. Cüzdan baytları kiçik tam ədəd yerlərinə çevirir.
 3. Hər yuva çözümleyicinin BFV açıq açarı ilə şifrələnir.
 4. Resolver proqram təminatı icra mühiti həmin şifrəli mətnlər üzərində gizli proqramı qiymətləndirir.
-5. Proqram təminatının icra mühiti yalnız gizli proqram çıxışını deşifrə edir və ya protokol nəticəsi qeydi üçün imza atır və ya sübut göstərir.
+5. İcra mühiti yalnız gizli proqramın nəticəsini deşifrə edir, sonra nəticə qəbzini imzalayır və ya onun üçün sübut yaradır.
 
 BFV dəqiq tam ədəd hesablamasıdır, təxminən hesablaması deyil. Buna görə də bunun daha uyumlu olduğu tanımlayıcı baytlar və kiçik modullu hesablama əməliyyatları, üzən nöqtə model təxminindən daha çox. İçində Iroha'nin cari BFV istifadə, hər şifrələnmiş yuva bir skalyar dəyəri modulda daşıyır \(t\), adətən bir bayt və ya bayt uzunluğunda bir sahə. Şifrlənmiş mətn özü çox daha böyük bir tam ədədlə modul üzrə yerləşir \(q\). Arasındakı boşluq \(q\) və \(t\) şifrələmə və homomorfik əməliyyatların yaratdığı səs-küy üçün deşifrə otağı təmin edir.
 
@@ -749,7 +748,7 @@ Bu marşrutlara qarşı qurmazdan əvvəl həmişə hədəf düyününün `/open
 
 ## Node proqram təminatı icra mühiti {#node-runtime}
 
-Torii-nin prosesdə olan RAM-LFE proqram təminatı icra mühiti `torii.ram_lfe.programs[*]` çərçivəsində konfiqurasiya olunub, `program_id` ilə açarlaşdırılıb. Hər bir konfiqurasiya olunmuş proqram blok zəncirdəki siyasət kriptoqrafik öhdəlik dəyəri ilə uyğun olmalı və qiymətləndirmək və təsdiqləmək üçün lazım olan proqram təminatı icra mühiti materialını təmin etməlidir. protokol nəticə qeydləri. Identifikator marşrutları eyni proqram icra mühitini təkrar istifadə edir; onlar ayrıca identifikator-həll edici konfiqurasiya səthinə ehtiyac duymurlar.
+Torii-nin prosesdaxili RAM-LFE icra mühiti `torii.ram_lfe.programs[*]` altında, `program_id` açarı ilə konfiqurasiya edilir. Hər konfiqurasiya edilmiş proqram zəncirdəki siyasətin kriptoqrafik öhdəliyinə uyğun olmalı, hesablamanı yerinə yetirmək və nəticə qəbzlərini təsdiqləmək üçün lazım olan icra materialını təmin etməlidir. İdentifikator marşrutları da bu icra mühitindən istifadə edir; ayrıca identifikator həll edicisi üçün konfiqurasiya tələb olunmur.
 
 Polisini zəncirdə qeydiyyatdan keçirmək özü kifayət deyil. Hədəf node həm də marşrut ailəsini açıq etməli və icra etməsi gözlənilən proqramlar üçün uyğun proqram təminatı icra mühiti materialına malik olmalıdır.
 
@@ -764,6 +763,6 @@ Polisini zəncirdə qeydiyyatdan keçirmək özü kifayət deyil. Hədəf node h
 
 ## Əlaqəli Mövzular {#related-topics}
 
-- [Şəxsi Verilənlər Məkanı üçün Sponsor Haqları](/az/get-started/private-dataspace-fee-sponsor.md#_4-register-phone-and-email-privately-with-fhe)
+- [Şəxsi Verilənlər Məkanı üçün Sponsor Haqları](/az/get-started/private-dataspace-fee-sponsor.md)
 - [Torii API son nöqtələr](/az/reference/torii-endpoints.md#app-and-sora-route-families)
 - [Anonim Əməliyyatlar](/az/blockchain/anonymous-transactions.md)

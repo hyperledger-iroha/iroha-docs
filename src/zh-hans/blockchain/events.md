@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/events.md
-translation_source_hash: 16b8cacc9bdf156d4b1e1a93b720085adcabb0002a34b9dc564a9926f573de63
+translation_source_hash: aad93f1981a5b470966090b5e06ec07178738b15f1d870097947682b19f99595
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # 事件 {#events}
 
 在区块链中发生某些事情时发出事件,例如创建新的帐户或提交一个区块. 有不同的类型的事件:
@@ -45,7 +44,7 @@ curl -fsS -N https://taira.sora.org/v1/events/sse
 
 ## 数据事件 {#data-events}
 
-当账本数据发生相关变化时，系统会发出数据事件，例如对等节点、域、账户、资产、资产定义、NFTs、触发器、角色、链上配置、执行器状态、证明、机密资产、桥接或 SORA/Nexus 特有对象的变化。这些事件类型用于[数据事件过滤器](./filters.md#data-event-filters)。
+当账本数据发生相关变化时，系统会发出数据事件，例如对等节点、域、账户、资产、资产定义、NFTs、触发器、角色、链上配置、执行器状态、证明、机密资产、桥接或 SORA Nexus 特有对象的变化。这些事件类型用于[数据事件过滤器](./filters.md#data-event-filters)。
 
 ## 时间事件 {#time-events}
 

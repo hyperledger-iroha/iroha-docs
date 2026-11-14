@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
+translation_source_hash: 92389d3ad83ab32e85b4ca83ede9829d1a38afaad6e86da035da2829a3aaedfb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # JavaScript 和 TypeScript {#javascript-and-typescript}
 
 目前 JavaScript SDK 是`@iroha/iroha-js`源树中的 Iroha 包.它是 Node.js-第一个 SDK 的 Torii,Norito 构建者,签字,页面化,连接预览和Kagemusha命令运输.
@@ -99,7 +98,6 @@ SDK 专注于:
 - Ed25519 签字和关键生成
 - 页面化和重试辅助器
 - 连接浏览器启动辅助器
-- 卡盖穆沙备用,补充,赎回和运营状态的交通辅助人员
 
 ## 上游引用 {#upstream-references}
 

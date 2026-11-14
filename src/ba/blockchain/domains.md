@@ -1,26 +1,25 @@
 ---
 translation_locale: ba
 translation_source: /blockchain/domains.md
-translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
+translation_source_hash: 26e8efe6c728d0f819b12e7d8257777d3d4ea272f42fabf8aec727467146500f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Домендар {#domains}
 
-Домендар `World` мәғлүмәттәрендә теркәлгән исемдәр киңлектәре тип атала. Хәҙерге Iroha 3 мәғлүмәт моделендә домен үҙенең атамаһы мәғлүмәт киңлеге менән квалификациялана, шуға күрә канон идентификаторы:
+Домендар — `World` эсендә теркәлгән исемле исемдәр киңлектәре. Хәҙерге Iroha 3 мәғлүмәт моделендә домен уны үҙ эсенә алған мәғлүмәт киңлеге менән аныҡлана, шуға күрә каноник идентификатор түбәндәгесә:
 
 ```text
 domain.dataspace
 ```
 
-Мәҫәлән, `payments.universal` `payments` доменды `universal` мәғлүмәт киңлеге эсендә атаған.
+Мәҫәлән, `payments.universal` — `universal` мәғлүмәт киңлегендәге `payments` доменының исеме.
 
 ## Структураһы {#structure}
 
 `Domain` теркәлгән исемлектә:
 
-- `id`: мәғлүмәт киңлеге буйынса квалификациялы `DomainId`
+- `id`: мәғлүмәт киңлеге менән аныҡланған `DomainId`
 - `logo`: домен логотибы өсөн факультатив `SoraFS` URI
 - `metadata`: үҙаллы төп мәғәнәле метамәғлүмәт
 - `owned_by`: доменға хужа булған иҫәп, ғәҙәттә уны теркәгән иҫәп
@@ -39,13 +38,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./payments-domain.intent.json \
   --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
-Ниәт `payments.universal`, уның һанлы мәғлүмәттәр киңлеге, каноник I105 хужаһы, ҡуртымға алыу срогы һәм ағымдағы сәйәсәт / түләү комиссия иҫәбе һаҡсыһын асыҡлай. планерҙың һуңғы нөктәһе `POST /v1/aliases/setup/plan`; кире ҡайтарылған планы сылбырлы, вәкәләтле иҫәп менән бәйле, дәүләт һәм сроклы. Доменды алып ташлау һаман да [`Unregister`](/ba/blockchain/instructions.md#un-register) ҡуллана.
+Ниәт `payments.universal` доменын, уның мәғлүмәт киңлегенең һанлы идентификаторын, каноник I105 хужаһын, ҡуртымға алыу ваҡытын һәм ағымдағы сәйәсәт менән түләү тәҡдимен тикшереү шартын билдәләй. Планлаштырыу нөктәһе — `POST /v1/aliases/setup/plan`; ул ҡайтарған план сылбырға, вәкәләтле иҫәпкә, торошҡа һәм һуңғы ваҡытҡа бәйләнгән. Доменды юйыу өсөн әле лә [`Unregister`](/ba/blockchain/instructions.md#un-register) ҡулланыла.
 
 Доменды булдырыу йәки алып ташлау өсөн домен менән идара итеүгә тейешле рөхсәт кәрәк. Домен метамәғлүмәттәре [`SetKeyValue` һәм `RemoveKeyValue`](/ba/blockchain/instructions.md#setkeyvalue-removekeyvalue) менән яңыртыла ала, әгәр хакимиәт был доменды үҙгәртергә рөхсәткә эйә булһа.
 
@@ -58,7 +57,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
   | jq -r '.items[].id'
 ```
 
-Йәмәғәт юлдары каталогын мәғлүмәттәр киңлеге исемдәренә ҡайтарыу картаһы:
+Асыҡ һыҙаттар каталогын мәғлүмәт киңлектәре псевдонимдары менән сағыштырығыҙ:
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -67,24 +66,17 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
     | @tsv'
 ```
 
-Домендың бармы-юҡмы икәнен тикшереү өсөн беренсе команданы ҡулланығыҙ. Мәғлүмәт киңлеге асыҡ, сикләнгән йәки төп юл артында ҡалғанын раҫларға кәрәк булғанда трасса каталогын ҡулланығыҙ.
+Ҡушымтаға домендың барлығын тикшерергә кәрәк булғанда беренсе команданы ҡулланығыҙ. Мәғлүмәт киңлеге менән бәйләнгән һыҙаттарҙы, шул иҫәптән һәр һыҙаттың асыҡ йә сикләнгән күренеүен һәм төп һыҙатҡа ҡарата синхронлаштырыу торошон ҡарау өсөн һыҙаттар каталогын ҡулланығыҙ.
 
-Domain setup — fee-paying write. Taira-ла уны һынағанға тиклем [Taira-ла Testnet XOR алыу](/ba/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) бүлегендәге faucet helper-ҙы `taira_faucet_claim.py` итеп һаҡлағыҙ, signer-ҙы public faucet аша финанслағыҙ һәм fee metadata ҡушығыҙ:
+Доменды көйләү — комиссия түләнә торған яҙыу ғәмәле. Уны Taira-ла һынап ҡарар алдынан [Taira-ла һынау селтәре өсөн XOR алыу](/ba/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) бүлегендәге әҙер һынау аҡсаһы биреү хеҙмәте ағымы аша ҡул ҡуйыусының иҫәбен аҡсаландырығыҙ, һуңынан комиссия түләүсене аныҡ күрһәтеп планды ҡулланығыҙ. CLI ҡул ҡуйыр алдынан теүәл комиссияны күрһәтә:
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
   app alias setup plan \
   --intent-file ./taira-domain.intent.json \
   --plan-file ./taira-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 

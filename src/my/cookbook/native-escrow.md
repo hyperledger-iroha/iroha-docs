@@ -6,7 +6,7 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
-# Native Asset Escrow {#native-asset-escrow}
+# မူရင်းပိုင်ဆိုင်မှု အာမခံအပ်နှံမှု {#native-asset-escrow}
 
 ## ရလဒ် {#outcome}
 
@@ -223,7 +223,7 @@ console.log({
 })
 ```
 
-ကြိုတင်လိုအပ်ချက်များတွင်ဖော်ပြထားသော source-built package environment မှ run လုပ်ပါ:
+ကြိုတင်လိုအပ်ချက်များတွင် ဖော်ပြထားသော source မှ တည်ဆောက်သည့် package ပတ်ဝန်းကျင်မှ ၎င်းကို လုပ်ဆောင်ပါ။
 
 ```bash
 node ./compile-native-escrow.mjs
@@ -244,21 +244,21 @@ assert escrow_status(record) == "Locked"
 assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 ```
 
-ထို့အပြင် ရည်မှန်းချက် အရင်းအမြစ် ထိန်းသိမ်းမှုကို မေးမြန်းပြီး ၄ ယူနစ် တိုးမြှင့်ထားကြောင်း အတည်ပြုပါ။ ဂိုဏ်းမှတ်တမ်းနှင့် ရည်မှန်းချက် နောက်ပိုင်းအခြေအနေမရှိသော ငွေချေးမှု ပရိုတိုကော ရလဒ် မှတ်တမ်းတစ်ခုသည် မပြည့်စုံတဲ့ စစ်ဆေးခြင်းဖြစ်သည်။
+ဦးတည်ရာ၏ ပိုင်ဆိုင်မှုလက်ကျန်ကိုလည်း query လုပ်ပြီး ယူနစ်လေးခု တိုးလာကြောင်း အတည်ပြုပါ။ အာမခံအပ်နှံမှုမှတ်တမ်းနှင့် ဦးတည်ရာ၏ လုပ်ဆောင်ပြီးနောက် အခြေအနေမပါဘဲ transaction receipt တစ်ခုတည်းဖြင့် စစ်ဆေးခြင်းသည် မပြည့်စုံပါ။
 
 ## ပြဿနာဖြေရှင်းခြင်း {#troubleshooting}
 
 - `Not permitted` ဖွင့်နေစဉ်မှာ ခွင့်ပြုချက် ရင်းနှီးမြှုပ်နှံသူက ရွေးချယ်ထားတဲ့ အရင်းအမြစ်ကို ထိန်းသိမ်းမှုထဲ လွှဲပြောင်းလို့မရဘူးလို့ ဆိုလိုပါတယ်။ ပဋိပက္ခဖြေရှင်းရေးမှာ သီးခြားကမ္ဘာလုံးဆိုင်ရာ `CanResolveEscrowDispute` ဂိတ်ရှိသည်။
 - `asset lock remaining amount changed since the drawdown was prepared` (သို့မဟုတ် `...since the cancellation was prepared`) သည် optimistic-concurrency ပဋိပက္ခ ဖြစ်သည်။ မှတ်တမ်းကို ပြန်လည်မေးမြန်းပါ၊ အခြား drawdown/cancel ကို ရည်ရွယ်ထားခြင်း ရှိမရှိ ဆုံးဖြတ်ပါ၊ အခြေအနေသစ်ကို လက်ခံနိုင်မှသာ ညွှန်ကြားချက်အသစ်တစ်ခုကို လက်မှတ်ထိုးပါ။
-- Configured Release Authorization Principal ကသာ ယုံကြည်စိတ်ချရတဲ့ Lock ကို ဆွဲနိုင်ပြီး ရည်ရွယ်ချက်က ငွေကြေးကို လက်ခံရရှိမှာမို့လို့ အဲဒါကို မထုတ်လွှတ်နိုင်ပါဘူး။
+- ပြင်ဆင်သတ်မှတ်ထားသော ထုတ်ပေးခွင့်ရှိသည့် authority အကောင့်ကသာ ယုံကြည်မှုအခြေပြု lock မှ ထုတ်ယူနိုင်သည်။ ဦးတည်ရာသည် ငွေလက်ခံရမည်ဆိုသည့် အကြောင်းရင်းတစ်ခုတည်းဖြင့် ၎င်းကို မထုတ်ပေးနိုင်ပါ။
 - စျေးကွက်ထုတ်လွှင့်မှုသည် လက်ခံခြင်းနှင့် ငွေပေးချေမှုပို့ခြင်းအခြေအနေမှသာ သက်ဝင်သည်။ ဖျက်သိမ်းခြင်းသည် ပိုမိုစောသော ဘဝပတ်ဝန်းကျင်အခြေအနေများဖြင့်သာ ကန့်သတ်ထားသည်။
 - Expiry သည် ခိုင်မာသော blockchain ledger အချိန်ကို အသုံးပြုသည်။ `ExpireAssetLock` ကို ဖြတ်သန်းသွားမည်ဟု သက်သေအဖြစ် ဒေသတွင်းဒေသခံစနစ်နာရီအချိန်ဖြတ်တောက်မှုကို မသုံးစွဲပါ။
-- Taira တွင် ရင်းနှီးမြှုပ်နှံသူ၊ ရောင်းသူ/ဖွင့်လှစ်သူနှင့် ထုတ်ပြန်ခွင့်ပြုမှု မူဝါဒကို လွတ်လပ်စွာတင်သွင်းခြင်း။
+- အခကြေးငွေဆိုင်ရာ မအောင်မြင်မှုသည် ထိုသက်တမ်းစက်ဝန်းအဆင့်ကို တင်သွင်းသော ပါဝင်သူနှင့် သက်ဆိုင်သည်။ Taira တွင် ဝယ်သူ၊ ရောင်းသူ/ဖွင့်ခဲ့သူနှင့် ထုတ်ပေးခွင့်ရှိသော authority အကောင့်တို့ကို သီးခြားစီ ငွေဖြည့်ပါ။
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [Native escrow instruction model at the pinned source-code revision (ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှု)](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/isi/escrow.rs)
-- [Native escrow integration tests at the pinned source-code revision (ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှု)](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/native_escrow.rs)
+- [ပုံသေသတ်မှတ်ထားသော commit ရှိ မူရင်းအာမခံအပ်နှံမှု ညွှန်ကြားချက်မော်ဒယ်](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/isi/escrow.rs)
+- [ပုံသေသတ်မှတ်ထားသော commit ရှိ မူရင်းအာမခံအပ်နှံမှု ပေါင်းစည်းစမ်းသပ်ချက်များ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/native_escrow.rs)
 - [Python ပိတ်ထားသော အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှုတွင် ဂိုဏ်းဝယ်ယူသူနည်းလမ်းများ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/src/iroha_python/client.py)
 - [Kotodama ဒေသခံ escrow နမူနာကို pinned source code ပြင်ဆင်မှု](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [မွေးမြူရင်းနှီးမြှုပ်နှံမှု အာမခံချက်](/my/blockchain/escrow.md)

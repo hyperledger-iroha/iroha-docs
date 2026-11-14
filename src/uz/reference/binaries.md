@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /reference/binaries.md
-translation_source_hash: c617a21d50b28495c261d05d672e0b7803c282d53da577391dbebbc7f120d045
+translation_source_hash: 75848623e735abc80326f9ebda6f74ab438b67eaeddeacdd4d8c5509856a999e
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha Binarlar bilan ishlash {#working-with-iroha-binaries}
 
 Iroha 3 operator ish jarayoni to'rtta asosiy ikkilik atrofida aylanadi:
@@ -50,7 +49,7 @@ cargo run --bin kagami -- --help
 
 ## Docker Rasm {#docker-image}
 
-Yuqqori darajadagi ish maydoni `kagami localnet` va `kagami docker` dan foydalangan holda tekshirilgan kodga mos keladigan Docker Compose fayllarini yaratadi. `hyperledger/iroha:dev` tasvir ushbu yaratilgan fayllar bilan ishlatilishi mumkin.
+Asosiy ish maydoni tekshirilayotgan kodga mos Docker Compose fayllarini yaratish uchun `kagami localnet generate` va `kagami docker`dan foydalanadi. `hyperledger/iroha:dev` tasvirini shu yaratilgan fayllar bilan ishlatish mumkin.
 
 Konteynerda CLI ni ishga tushiring:
 
@@ -67,7 +66,7 @@ docker run -t hyperledger/iroha:dev kagami --help
 Tarmoq peerini ishga tushirish uchun avval localnet va Compose faylini yarating:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```
@@ -76,5 +75,5 @@ docker compose -f ./docker-compose.yml up
 
 - Ochiq Taira tasdiqlovchi relizidan tashqaridagi tugunlarni ishga tushirish yoki boshqarish uchun `iroha3d` dan foydalaning.
 - `iroha3d_taira --sora` dan faqat kanonik Taira tasdiqlovchi tugunini joylashtirishda foydalaning; u Taira zanjiri, saqlash va bajarish muhiti imzolovchisi profilini majburiy qo‘llaydi.
-- `iroha` dan blockchain daftarini so‘rash, tranzaksiyalarni yuborish yoki operator API tugunlarini tekshirish kerak bo‘lganda foydalaning.
+- Reyestrga so‘rov berish, tranzaksiyalar yuborish yoki operator endpointlarini tekshirish zarur bo‘lsa, `iroha`dan foydalaning.
 - Kalitlar, boshlang‘ich holat manifestlari, profil to‘plamlari yoki mahalliy tarmoq resurslari kerak bo‘lsa, `kagami` dan foydalaning.

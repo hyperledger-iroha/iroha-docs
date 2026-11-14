@@ -1,11 +1,10 @@
 ---
 translation_locale: mn
 translation_source: /reference/binaries.md
-translation_source_hash: c617a21d50b28495c261d05d672e0b7803c282d53da577391dbebbc7f120d045
+translation_source_hash: 75848623e735abc80326f9ebda6f74ab438b67eaeddeacdd4d8c5509856a999e
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha Байнариудтай ажиллах {#working-with-iroha-binaries}
 
 Тэр Iroha 3 операторын ажлын урсгал дөрвөн үндсэн хоёртын системийн эргэн тойронд эргэлддэг:
@@ -50,7 +49,7 @@ cargo run --bin kagami -- --help
 
 ## Docker Зураг {#docker-image}
 
-Дээд түвшний ажлын талбар нь шалгаж гаргаж авсан кодтой таарах Docker Compose файлуудыг үүсгэхийн тулд `kagami localnet` ба `kagami docker`-ийг ашигладаг. `hyperledger/iroha:dev` зургийг эдгээр үүсгэсэн файлуудтай ашиглаж болно.
+Үндсэн эх кодын ажлын орчин сонгосон кодтой тохирох Docker Compose файлууд үүсгэхдээ `kagami localnet generate` болон `kagami docker` ашигладаг. `hyperledger/iroha:dev` контейнерийн дүрсийг эдгээр үүсгэсэн файлтай ашиглаж болно.
 
 Контейнер дотор CLI-ийг ажиллуулна уу:
 
@@ -67,7 +66,7 @@ docker run -t hyperledger/iroha:dev kagami --help
 Сүлжээний ижил зэрэглэлийн системийг эхлүүлэхийн тулд эхлээд localnet ба Compose файлыг үүсгээрэй:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```
@@ -76,5 +75,5 @@ docker compose -f ./docker-compose.yml up
 
 - Нийт олон Taira батлагчийн хувилбараас гадуур сүлжээний хамтрагчийг эхлүүлэх буюу ажиллуулах үед `iroha3d`-ыг ашиглана уу.
 - `iroha3d_taira --sora`-г зөвхөн каноник Taira баталгаажуулагч байршуулалтад ашиглана; энэ нь Taira-ийн сүлжээ, хадгалалт болон гүйцэтгэх орчны гарын үсэг зурагчийн профайлыг мөрдүүлнэ.
-- Blockchain бүртгэлийн түүхийг асууж, гүйлгээ явуулах эсвэл операторын API төгсгөлүүдийг шалгах хэрэгтэй бол `iroha`-ыг ашиглана уу.
+- Бүртгэлээс асуух, гүйлгээ илгээх эсвэл операторын төгсгөлийн цэгийг шалгах шаардлагатай үед `iroha` ашиглана.
 - Түлхүүр, блокчэйн genesis техникийн баримт бичиг, профайл багц, эсвэл localnet хөрөнгүүд хэрэгтэй бол `kagami` ашиглана уу.

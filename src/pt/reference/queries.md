@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Consultas {#queries}
 
 Iroha consultas leem o estado do livro-razão da blockchain sem modificá-lo. O modelo de dados atual expõe dois formatos amplos de consulta:
@@ -86,7 +85,7 @@ As consultas de escrow inspecionam os registros criados por [custódia de ativo 
 | `FindProofRecordsByBackend` |Listar registros de prova para um backend de prova.|
 | `FindProofRecordsByStatus` |Listar registros de prova por status.|
 
-## Nexus, Disponibilidade de Dados e Pacotes {#nexus-data-availability-and-packages}
+## SORA Nexus, Disponibilidade de Dados e Pacotes {#nexus-data-availability-and-packages}
 
 |Consulta|Propósito|
 | --- | --- |

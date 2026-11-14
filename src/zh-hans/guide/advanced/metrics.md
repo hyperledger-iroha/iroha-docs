@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # 绩效和指标 {#performance-and-metrics}
 
@@ -37,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -130,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### 候选人和入境限制 {#candidate-and-ingress-bounds}
 
-节点本地 Sumeragi 界限确定验证器可以保留多少候选和恢复工作:
+区块大小和交易限制来自已签名创世配置及已提交的链参数。节点本地 `[sumeragi]` 设置涵盖参与角色、签名密钥保管、安全记录路径，以及文档规定的本地超时和同步覆盖项。
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies`和`sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks`,和 `sumeragi.queues.ready_bodies`
-
-太小的界限会产生队列或有效负载恢复压力;大尺寸的界限增加了保留的内存和对虐待对等节点可用的工作量.在一次改变一个界限之前,比较诊断快照与过程内存,信息处理和缺失体度指标:
+网络入口和交易队列上限控制本地保留的工作量。调整运行上限之前，请将诊断快照与进程内存、消息处理及缺失区块体指标进行比较。比较同一网络的不同运行结果时，应保持已签名链参数不变：
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -243,7 +236,7 @@ iroha --config ./localnet/client.toml \
 - 验证器和观察员的数量
 - 共识模式,签署的区块序列和 DA 布局
 - 确切的 `3f + 1`委员会,常委会和观察员名单
-- `sumeragi.block`,`sumeragi.queues`, `sumeragi.limits`,网络入口和交易队列限制
+- 已签名链参数、本地 Sumeragi 覆盖项、网络入口和交易队列上限
 - 远程测量资料
 - 硬件,存储和 OS 详细信息
 - 网络 RTT, jitter,损失和带宽假设

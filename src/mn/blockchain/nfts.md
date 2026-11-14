@@ -1,11 +1,10 @@
 ---
 translation_locale: mn
 translation_source: /blockchain/nfts.md
-translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
+translation_source_hash: 216f59f1cebd73001dab75dcf235306082fb1c0759437f65ce34ec9e1ed51d4f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # NFTs {#nfts}
 
 Iroha NFT нь нэг эзэмшигчтэй, давтагдашгүй бүртгэлийн объект юм. Бичлэгт өөрийн ID, metadata, амьдралын мөчлөгийн үйл явдал болон өмчлөл шилжүүлэх семантик хэрэгтэй боловч тоон үлдэгдэл хэрэггүй үед NFTs ашиглана.
@@ -49,7 +48,7 @@ name$domain
 name$domain.dataspace
 ```
 
-Тухайлбал, `badge$docs.universal` нь `badge` NFT доменийн `docs.universal` доменийг тодорхойлдог. Хэрэв өгөгдлийн орон зай орхигдсаны дараа одоогийн шалгуурч `universal` өгөгдлийг ашигладаг тул `badge$docs` нь `badge$docs.universal` гэж тогтоно.
+Жишээлбэл, `badge$docs.universal` нь `docs.universal` домэйн дахь `badge` NFT-г тодорхойлно. Өгөгдлийн орон зайг орхивол одоогийн задлагч `universal` өгөгдлийн орон зайг ашигладаг тул `badge$docs` нь `badge$docs.universal` болж тайлагдана.
 
 NFT IDs-ийн хувьд тогтвортой нэр ашиглах. ID нь заавар, хайлт, зөвшөөрөл, үйл явдлын филтр, хэрэглэлийн сүлжээнд ашиглагддаг объектын тодорхойлолт юм.
 
@@ -68,17 +67,17 @@ NFT амьдралын мөрийн үйл ажиллагааны хэрэглэ
 
 ```bash
 export IROHA_CONFIG=./localnet/client.toml
-export NFT_DOMAIN=wonderland.universal
-export NFT_ID='badge_intro$wonderland.universal'
+export NFT_DOMAIN='<OWNED_DOMAIN>.universal'
+export NFT_ID="badge_intro\$$NFT_DOMAIN"
 ```
 
-Өргөдсөн локаль сүлжээ нь `wonderland.universal` болон түүний SNS түрээсийн гэрээг байгуулж байна. Өөр доменийг ашиглахын тулд эхлээд `app alias setup plan` болон `app alias setup apply` ажлын урсгалыг [Domains](/mn/blockchain/domains.md#registration)-д тодорхойлсон .
+Үүсгэсэн дотоод сүлжээ үйлчлүүлэгчдээ хэрэглээний домэйн бүртгэдэггүй. `NFT_DOMAIN`-г гарын үсэг зурах дансны эзэмшдэг эсвэл тухайн данс `CanRegisterNft` эрхтэй домэйнд тохируулна. Домэйн үүсгэхийн тулд [Домэйн](/mn/blockchain/domains.md#registration) хэсгийн мэдэгдлийн `app alias setup plan` болон `app alias setup apply` урсгалыг ашиглана.
 
 NFT нэвтрүүлэгт бүртгүүлэхэд стандарт өгөгдлийн эхлүүлсэн утгыг JSON уншдаг:
 
 ```bash
 printf '{"kind":"badge","level":"intro","issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft register --id "$NFT_ID"
 ```
 
@@ -89,14 +88,14 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft get --id "$NFT_ID"
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger nft list all --verbose
+  ledger nft list --all
 ```
 
 Metadata товчийг нэмж, NFT дугаарыг дахин уншина уу:
 
 ```bash
 printf '{"color":"blue","rarity":"tutorial"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta set --id "$NFT_ID" --key traits
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -106,27 +105,27 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 Мета өгөгдөлний түлхэгийг зайлуул:
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
-NFT-ийг сонгох ёсоор шилжүүлнэ. `ledger nft get` -ыг ашиглан одоогийн эзэн `owned_by`-ээс уншихын тулд ашиглаж, `ledger account list all` -ийг ашиглан ID -ийн чиглэлийн дансыг олохын тулд ашиглаж болно.
+Хүсвэл NFT-г шилжүүлнэ. Одоогийн эзэмшигчийг `owned_by`-оос уншихдаа `ledger nft get`, хүлээн авах дансны ID-г олохдоо `account list --all` ашиглана.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger account list all
+  account list --all
 
 export CURRENT_OWNER='<account-id-from-owned_by>'
 export NEW_OWNER='<destination-account-id>'
 
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
 Зааврыг туршиж дууссаны дараа жишээ NFT-г устгана уу. Хэрэв та үүнийг шилжүүлсэн бол буцааж шилжүүлэх эсвэл одоогийн эзэмшигчийн дансны тохиргоог ашиглан бүртгэлээс хасах командыг илгээнэ үү.
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft unregister --id "$NFT_ID"
 ```
 

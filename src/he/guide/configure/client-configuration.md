@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /guide/configure/client-configuration.md
-translation_source_hash: 6da8a0abddc9723b16477a935a3953ebd497300f02eadd635e4e38027a11d095
+translation_source_hash: b3cfc8d8bf51a43b88cefb5ac7fe641717b347f7c89d983bf4c2de80944f1bb8
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # הגדרת הלקוח {#client-configuration}
 
 לקוחות Iroha CLI ו SDK משתמשים בקונפיגירציה של TOML. האספנה שולחת את ההפסד הנוכחי ל `defaults/client.toml`; רשתות מקומיות שנוצרות כותבות גם קישור מתאים `client.toml` בתיקון ההוצאת שלהם.
@@ -18,22 +17,24 @@ translation_engine: nllb-200-ct2
 
 ## שדות הליבה {#core-fields}
 
-לכל הפחות, קונפיגורציה של לקוח מזהה את שרשרת, נקודת סוף Torii ואת חשבון החתימה:
+לכל הפחות, תצורת לקוח מזהה את השרשרת, את זהות הרשת שלה, את נקודת הקצה של Torii, את הקשר הרשת של החשבון ואת מפתח החתימה:
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000000"
-torii_url = "http://127.0.0.1:8080"
+network_id = "hash:32C903E5B3497E34C2B844EBFE8A39C19E6CF8F95D44C1FFB8BA9DCB42F91149#A2F0"
+torii_url = "http://127.0.0.1:8080/"
 
 [account]
-domain = "wonderland.universal"
+chain_discriminant = 753
 public_key = "ed0120..."
 private_key = "802620..."
 ```
 
 - `chain` בוחר את שרשרת העסקאות המוצעות אליהן.
-- `torii_url` נקודות ב-peer Torii HTTP API.
-- `[account].domain` משמשת על ידי קיצוצים CLI וקידוד בוחר כתובת; הקאנוניקלי `AccountId` עצמו הוא ללא תחום .
-- `[account].public_key` ו `[account].private_key` חותמים על עסקאות.
+- `network_id` הוא זהות הרשת הנגזרת מה־genesis, שאליה נקשרת כל בקשה חתומה. הגדירו בדיוק אחד מבין `network_id` ו־`network_id_file`; צומת מפרסם את הערך ב־`GET /v1/accounts/capabilities`.
+- `torii_url` מצביע על API ה־HTTP של Torii בעמית.
+- `[account].chain_discriminant` בוחר את קידומת חשבונות I105 של הרשת. ברשתות הציבוריות אפשר להשתמש במקום זאת ב־`[account].profile = "taira"` או ב־`"minamoto"`. אחד מהשניים נדרש, וה־`AccountId` הקנוני עצמו נטול דומיין.
+- `[account].public_key` ו־`[account].private_key` משמשים לחתימה על עסקאות; `private_key_file` יכול להחליף את `private_key`.
 
 החשבון חייב כבר להתקיים בשרשרת. ברשת המקומית המוגדרת כברירת מחדל, מניפסט ה־genesis המצורף מטפל בכך.
 
@@ -70,25 +71,25 @@ nonce = false
 
 ## קישור הגדרות {#connect-queue-settings}
 
-לקוחות Iroha הנוכחיים יכולים גם להשתמש בקטע `[connect]` בחופשי למצב הזדר המקומי:
+ה־CLI של `iroha` קורא גם מקטע `[connect]` אופציונלי למצב תור מקומי. תצורת ה־SDK לשימוש חוזר אינה מקבלת אותו:
 
 ```toml
 [connect]
 queue_root = "./queue"
 ```
 
-השתמש בזה כאשר זרימת עבודה זקוקה לאחסון קבוע בצד הלקוח.
+השתמשו בכך כשתהליך עבודה זקוק לאחסון תור עמיד בצד הלקוח. ברירת המחדל של `connect.queue_root` היא `~/.iroha/connect`, ונתיב יחסי נפתר מתוך התיקייה המכילה את קובץ ה־TOML של הלקוח.
 
 ## יצירת הגדרות {#generating-configurations}
 
 עבור רשתות מקומיות חד פעמיות, מעדיפים Kagami כי הוא כותב קונפיג'ים מתאימים Iroha 3, גנזה, תסריטים, ו README:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 השתמשו ב- `./localnet/client.toml` עם CLI:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```

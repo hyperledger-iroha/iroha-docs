@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/world.md
-translation_source_hash: 61657e1736d3163965063c38e347ed7dbfe040633ddf24eb1a37904922cb354d
+translation_source_hash: d6ecc7832a3925c105ddc0ddfbaf62ea54d465cdb7b98ce795e5a72c615361bd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-naming-amendment
 ---
-
 # Monde {#world}
 
 `World` est l'entité mondiale qui contient d'autres entités. Le `World` se compose de :
@@ -36,7 +35,7 @@ Le WSV est plus large que l'objet `World`. En pratique, il contient :
 - index de transaction à bloc utilisés par les requêtes et les enregistrements de résultats du protocole
 - la topologie des commits actuelle et précédente utilisée par le consensus
 - index en mémoire dérivés des blocs engagés, tels que les engagements de disponibilité des données, les curseurs d’enregistrement des résultats du protocole, les intentions de verrouillage et les marqueurs de projection de requête
-- vues de données ponctuelles de configuration d'exécution logicielle nécessaires pour l'exécution déterministe des blocs, telles que la cryptographie, la gouvernance, le pipeline de traitement, le contenu, le règlement et les paramètres Nexus
+- vues de données ponctuelles de configuration d'exécution logicielle nécessaires pour l'exécution déterministe des blocs, telles que la cryptographie, la gouvernance, le pipeline de traitement, le contenu, le règlement et les paramètres SORA Nexus
 
 Les requêtes reçoivent normalement un `StateView` en lecture seule sur ces structures. Une vue est une vue cohérente des données à un instant donné pour l'exécution des requêtes ; elle ne permet pas la modification directe du WSV.
 

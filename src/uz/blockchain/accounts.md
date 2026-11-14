@@ -1,14 +1,13 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/accounts.md
-translation_source_hash: 015a85d81c44b7ef7f13cdafb2ed8e493ef512b94dc500939655c70285eac3bd
+translation_source_hash: adc98cbf1fcadae4415d03dcc262eb03f8c95b429527e403d230934ae2f3243c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Hisoblar {#accounts}
 
-Hisob — tranzaksiyalarni imzolashi va reyestr holatiga egalik qilishi mumkin bo‘lgan vakolatli subyekt. Joriy Iroha 3 ma’lumotlar modelida `AccountId` kanonik va domensiz: u hisob boshqaruvchisidan hosil qilinadi va [I105](/uz/reference/i105.md) shaklida kanonik kodlanadi. Inson o‘qiy oladigan domen va ma’lumotlar makoni konteksti alohida hisob-taxallus bog‘lanishlarida saqlanadi.
+Hisob — tranzaksiyalarni imzolashi va reyestr holatiga egalik qilishi mumkin bo‘lgan vakolatli subyekt. Joriy Iroha 3 ma’lumotlar modelida `AccountId` kanonik va domensiz: u hisob boshqaruvchisidan hosil qilinadi va [I105](/uz/reference/i105.md) shaklida kanonik kodlanadi. Inson o‘qiy oladigan domen va ma’lumotlar makoni konteksti alohida hisob taxallusi bog‘lanishlarida saqlanadi.
 
 ## Tuzilishi {#structure}
 
@@ -17,12 +16,12 @@ Ro‘yxatdan o‘tgan `Account` quyidagilarni o‘z ichiga oladi:
 - `id`: kanonik `AccountId`
 - `metadata`: hisobning ixtiyoriy metama’lumotlari;
 - `label`: ixtiyoriy barqaror taxallus;
-- `uaid`: Nexus jarayonlarida ishlatiladigan ixtiyoriy universal hisob identifikatori;
+- `uaid`: SORA Nexus jarayonlarida ishlatiladigan ixtiyoriy universal hisob IDsi
 - `opaque_ids`: hisobning UAID qiymatiga bog‘langan oshkor etilmaydigan identifikatorlar.
 
 Hisob yaratish uchun ishlatiladigan tranzaksiya foydali yuki `NewAccount` dir. U ro‘yxatdan o‘tgan hisobdagi ayni identifikator, metama’lumot, yorliq, UAID va oshkor etilmaydigan identifikator maydonlarini olib yuradi.
 
-`uaid` kanonik `AccountId` ni to‘ldiradi, uning o‘rnini bosmaydi. Nexus xizmatlariga ma’lumotlar makonlari bo‘ylab barqaror foydalanuvchi yoki tashkilot tutqichi, maxfiylikni saqlovchi ro‘yxatga olish yoxud xizmat imkoniyatini izlash zarur bo‘lsa, undan foydalaning. Bajarish muhiti UAID bilan hisob orasida birga-bir indeksni saqlaydi, oshkor etilmaydigan identifikatorlar UAID orqali biriktirilishini talab qiladi va takroriy yoki to‘qnashuvchi identifikatorlarni rad etadi. Nexus xizmat qatlami jarayoni uchun [FHE va UAID](/uz/blockchain/sora-nexus-services.md#fhe-and-uaid) bo‘limiga qarang.
+`uaid` kanonik `AccountId`ni to‘ldiradi, uning o‘rnini bosmaydi. SORA Nexus xizmatlariga ma’lumotlar makonlari bo‘ylab foydalanuvchi yoki tashkilotning barqaror identifikatori, maxfiylikni saqlovchi ro‘yxatga olish yoki xizmat imkoniyatlarini izlash zarur bo‘lsa, undan foydalaning. Bajarish muhiti UAID va hisob o‘rtasida birga-bir indeksni saqlaydi, oshkor etilmaydigan identifikatorlar UAID orqali biriktirilishini talab qiladi hamda takroriy yoki to‘qnashuvchi identifikatorlarni rad etadi. SORA Nexus xizmat qatlami jarayoni uchun [FHE va UAID](/uz/blockchain/sora-nexus-services.md#fhe-and-uaid)ga qarang.
 
 ## Hisob boshqaruvchilari {#account-controllers}
 
@@ -32,8 +31,9 @@ Mijoz sozlamasi imzolash vakolatini tugun sozlamasidan alohida saqlaydi:
 
 ```toml
 [account]
+profile = "taira"
 public_key = "ed0120..."
-private_key = { digest_function = "ed25519", payload = "..." }
+private_key_file = "/absolute/path/to/private.key"
 ```
 
 Joriy kalit formatlari uchun [mijoz sozlamasi](/uz/guide/configure/client-configuration.md) va [kriptografik kalitlarni yaratish](/uz/guide/security/generating-cryptographic-keys.md) bo‘limlariga qarang.
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-Bular ochiq o‘qish amallaridir. Hisob yaratish yoki yangilash imzolangan tranzaksiya bo‘lib, [SORA Nexus ma’lumotlar makonlariga ulanish](/uz/get-started/sora-nexus-dataspaces.md) bo‘limida bayon qilingan sinov mablag‘i bilan ta’minlangan Taira sozlamasini talab qiladi.
+Bular ochiq o‘qish amallaridir. Hisob yaratish yoki yangilash imzolangan tranzaksiya bo‘lib, [SORA Nexus ma’lumotlar makonlariga ulanish](/uz/get-started/sora-nexus-dataspaces.md)da bayon qilingan, faucet orqali mablag‘ bilan ta’minlangan Taira sozlamasini talab qiladi.
 
 ## Ro'yxatdan o'tish va ruxsatlar {#registration-and-permissions}
 
@@ -80,7 +80,7 @@ Ro‘yxatdan o‘tgach, hisob quyidagilarni bajarishi mumkin:
 - domenlarga egalik qilish
 - rollar va ruxsat tokenlarini olish
 - metama’lumotlarni saqlash
-- bu imkoniyatlar yoqilganda taxallus, kalitni almashtirish, tiklash va Nexus identifikatsiyasi jarayonlarida qatnashish
+- tegishli imkoniyatlar yoqilganda taxallus, kalitni almashtirish, tiklash va SORA Nexus identifikatsiyasi jarayonlarida qatnashish
 
 ## Identifikatsiya muammolarini bartaraf etish {#troubleshooting-identity-issues}
 
@@ -96,4 +96,4 @@ Shuningdek qarang:
 - [Ruxsatnomalar](/uz/blockchain/permissions.md)
 - [Metama’lumotlar](/uz/blockchain/metadata.md)
 - [Mijoz sozlamasi](/uz/guide/configure/client-configuration.md)
-- [SORA Nexus ma'lumotlar maydonlari](/uz/get-started/sora-nexus-dataspaces.md)
+- [SORA Nexus ma’lumotlar makonlari](/uz/get-started/sora-nexus-dataspaces.md)

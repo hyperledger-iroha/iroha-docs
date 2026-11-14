@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/consensus.md
-translation_source_hash: fdc9a35ac2e43acda076104063b5a364feb5060a70473b51cf016b8adb1306d3
+translation_source_hash: 06b3589a71dcb08aed5589290f4c9af9cb46b5cee0f875ae542043543360f623
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Consensus {#consensus}
 
 Les transactions entrent dans une file d'attente avant que Sumeragi ne les propose dans un bloc. Les validateurs valident et exécutent indépendamment la proposition, puis signent uniquement la transition d'état qu'ils peuvent reproduire. Un bloc est validé après que le quorum requis de validateurs est d'accord sur ce résultat et que la charge utile correspondante est disponible.
@@ -18,7 +17,7 @@ Sumeragi est le moteur de consensus tolérant aux fautes byzantines de Iroha. Il
 
 ### Proposition et chemin de commit {#proposal-and-commit-path}
 
-Sumeragi fait avancer le registre blockchain d'un bloc à la fois. À chaque hauteur, un validateur agit en tant que proposant pour la vue actuelle. Le proposant puise les transactions éligibles dans la file d'attente, construit un bloc candidat et annonce la proposition à l'ensemble actif des validateurs.
+Sumeragi fait progresser le registre d’une hauteur de bloc à la fois. À chaque hauteur, un validateur est le proposant de la vue courante. Il prélève les transactions admissibles dans la file d’attente, construit un bloc candidat et annonce sa proposition à l’ensemble actif des validateurs. Les chaînes inactives ne produisent aucun bloc vide.
 
 Le même pipeline de traitement Sumeragi est utilisé à la fois dans les déploiements avec permission et dans ceux utilisant le Proof-of-Stake Nominé (NPoS) :
 
@@ -33,7 +32,7 @@ Les votes sont de petits messages de consensus signés. Ils se réfèrent au blo
 
 ### Quorum et observateurs {#quorum-and-observers}
 
-Le protocole de première version n’admet qu’un comité de vote exact de taille `3f + 1`, compris entre 4 et 31 validateurs. Les tailles valides sont donc 4, 7, 10, et ainsi de suite jusqu’à 31. Pour `n = 3f + 1`, la tolérance aux fautes byzantines vaut `f` et le quorum de validation `2f + 1`. La génération de la genèse et la validation au démarrage rejettent toute autre taille de comité.
+Le protocole de la première version n’admet qu’un comité votant de taille exactement `3f + 1`, comprenant de 4 à 31 validateurs. Les tailles valides sont donc 4, 7, 10, et ainsi de suite jusqu’à 31. Pour `n = 3f + 1`, le nombre de fautes byzantines tolérées est `f` et le quorum de commit est `2f + 1`. La génération de la genèse et la validation au démarrage rejettent toute autre taille de comité. Chaque PrepareQC, CommitQC et TimeoutCert contient exactement `q = n - f` votes de validateurs de poids égal ; tout ensemble de signataires excédant ce nombre est rejeté.
 
 Les pairs observateurs du réseau peuvent synchroniser les blocs validés, mais ils ne proposent pas, ne votent pas et ne comptent pas pour le quorum de validation. Utilisez des observateurs lorsqu'un déploiement a besoin de capacité de requête locale, d'indexation, de surveillance ou de réplication régionale des blocs sans augmenter le nombre de validateurs votants.
 
@@ -45,12 +44,12 @@ La récupération de la charge utile est distincte de la décision de finalité.
 
 ### Modes de consensus {#consensus-modes}
 
-Le mode sélectionné détermine la formation et le fonctionnement de l’ensemble des validateurs. Il est déclaré par [`consensus_mode`](/fr/reference/genesis.md) dans la genèse signée et figé dans le contexte de chaque hauteur. La configuration locale `[sumeragi]` ne choisit que le rôle du nœud et les limites finies des blocs, de la file d’attente, de l’environnement d’exécution, du stockage et de la politique de clés ; elle ne peut remplacer ni le mode ni la cadence des blocs. Tous les validateurs doivent partager la même genèse signée, la même topologie, les mêmes données de pairs de confiance et les mêmes paramètres effectifs de Sumeragi.
+Le mode sélectionné détermine la formation et le fonctionnement de l’ensemble des validateurs. Il est déclaré dans la genèse signée au moyen de [`consensus_mode`](/fr/reference/genesis.md) et figé dans le contexte de chaque hauteur. La configuration locale `[sumeragi]` sélectionne le rôle du nœud, la garde des clés de signature, les chemins des enregistrements de sûreté ainsi que les dérogations documentées aux délais et à la synchronisation. Les limites de blocs et de transactions, le mode de consensus et la cadence proviennent de la genèse signée et de l’état validé. Les validateurs doivent partager la même genèse signée, la même topologie, les mêmes données de pairs de confiance et les mêmes paramètres Sumeragi effectifs.
 
 |Mode|Meilleure adaptation|Ensemble de validateurs|Focus opérationnel|
 | ------------ | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
 |Avec permission|Réseaux privés, de consortium ou gérés par un opérateur|Les validateurs proviennent de la topologie des pairs de confiance convenue pour le déploiement|Maintenez identiques sur tous les validateurs la genèse signée, les pairs de confiance, leurs clés et les paramètres de Sumeragi|
-|NPoS|Réseaux publics ou orientés Nexus où la validation suit les politiques de nomination et de participation|Le profil NPoS sélectionne les validateurs, généralement entre les époques, et exige des clés BLS et des preuves de possession|Maintenez alignés dans tout le réseau les instantanés de participation, les entrées signées d’époque et d’élection, les PoPs des validateurs et la cadence immuable des blocs|
+| NPoS | Réseaux publics ou orientés SORA Nexus dont la validation suit les règles de nomination et de mise en jeu | Les validateurs sont sélectionnés par le profil NPoS, généralement par époques, et doivent posséder des clés BLS accompagnées de preuves de possession | Maintenir la cohérence entre les instantanés des mises, les entrées signées des époques et élections, les PoPs des validateurs et la cadence immuable des blocs sur tout le réseau |
 
 ::: tip Mode autorisé
 
@@ -66,33 +65,28 @@ Utilisez le mode NPoS lorsque le profil de déploiement s'attend à ce que la pa
 
 ## Consensus multivoie {#multilane-consensus}
 
-Le chemin de consensus multi-voies de Iroha est mis en œuvre via la voie d'exécution Nexus et la configuration de l'espace de données. Il ne démarre pas une instance de consensus distincte pour chaque voie d'exécution. Sumeragi finalise toujours un flux de blocs commandé ; les voies d'exécution décrivent comment les transactions sont acheminées, planifiées, comptabilisées et stockées dans ce flux.
+Les espaces de données définissent les environnements des données, de l’autorité, des politiques et des applications. Leurs voies ajoutent de la capacité de diffusion et de certification. Les catalogues sont distincts : `nexus.dataspace_catalog` définit les espaces de données et `nexus.lane_catalog` définit les voies, chacune référençant un espace de données. Plusieurs voies peuvent partager le même espace de données.
 
-La configuration d'exécution du logiciel construit trois éléments de l'état de voie d'exécution :
+Pour l’exécution globale publique, la voie `0` est séquencée par l’instance Sumeragi globale. Chaque autre génération active de voie exécute une instance distincte du même cœur Sumeragi, avec son comité et ses paramètres de consensus fixés. Son bloc certifié contient un lot ordonné de transactions dont l’admission est vérifiée par rapport à un point d’ancrage global validé. La certification d’une voie ne modifie pas l’état global.
 
-- `nexus.lane_catalog` : les voies d'exécution configurées, chacune avec un `LaneId` numérique, un alias, un espace de données, une visibilité, un profil de stockage, un schéma de preuve et des métadonnées.
-- `nexus.dataspace_catalog` : les espaces de données configurés, chacun avec un `DataSpaceId` numérique et une valeur de tolérance aux pannes utilisée pour le dimensionnement du comité de relais.
-- `nexus.routing_policy` : la paire de voie/espaces de données par défaut et les règles de routage ordonnées qui peuvent correspondre aux comptes ou aux chemins d'instructions.
+La chaîne globale fusionne les blocs certifiés suivants de chaque voie, dans la continuité des précédents. L’exécution du bloc global résultant applique ces transactions dans l’ordre canonique, et le CommitQC global finalise cette exécution. Un certificat de voie seul ne suffit donc pas à affirmer qu’une transaction a modifié l’état global. L’identité de la voie, sa génération, la fraîcheur du point d’ancrage, la garde des sources et les limites contiguës de fusion restent vérifiées pendant toute la récupération et l’exécution.
 
-Lorsqu'une transaction entre dans la file d'attente, le routeur de la voie d'exécution la résout en un `RoutingDecision { lane_id, dataspace_id }`. En mode à voie unique, il s'agit toujours de la voie d'exécution `0` et de l'espace de données universel. En mode Nexus, le routeur configuré applique des règles à l'échelle du domaine de données, le routage de règlement, les règles de compte, les règles de routage explicites, et enfin la route par défaut. La voie d'exécution résolue et l'espace de données doivent exister dans leurs catalogues, et la voie d'exécution doit être liée à l'espace de données résolu ; sinon, la transaction est rejetée avant d'être mise en file d'attente.
+La politique `sumeragi_lane_policy` validée gouverne les voies fixes, les routes, les comités et l’ajustement automatique de capacité. Un catalogue de configuration seul n’active pas une voie de consensus. Les cibles précises d’espaces de données doivent correspondre à une voie admise ; une route privée indisponible est rejetée au lieu d’être exécutée comme du travail universel. Les lots complets du plan de contrôle empruntent la voie `0` pour permettre la progression des transitions de catalogue et d’activation.
 
-La file d'attente conserve cette décision de routage avec le hachage cryptographique de la transaction afin que les étapes suivantes n'aient pas à la déduire à nouveau. La construction de la proposition utilise ensuite les métadonnées de la voie d'exécution de deux manières :
+Une racine d’espace de données signée indépendamment constitue une frontière d’exécution distincte, avec son propre état et sa finalité locale. Enregistrer une entrée au catalogue des espaces de données ne crée pas cette racine. L’atomicité entre racines utilise le protocole AMX distinct. La qualification monétaire et celle du réseau complet pour cette voie restent à établir pour le candidat épinglé.
 
-- Il entrelace les transactions par voie d'exécution afin qu'une voie d'exécution ne domine pas le bloc simplement parce que ses transactions ont été mises en file d'attente en premier.
-- Il s'applique aux limites par unité d'exécution de transaction par voie (TEU). Les transactions qui dépasseraient la capacité configurée d'une voie d'exécution sont reportées et remises en file d'attente, sauf que la première transaction surchargée pour une voie d'exécution peut être admise pour éviter un blocage vivant.
-
-Lors de la préparation du candidat, Sumeragi agrège la charge utile proposée par voie d'exécution et espace de données et dérive les identités de disponibilité des données locales à la voie. Les totaux enregistrés incluent le nombre de transactions, les segments, les octets de charge utile et TEU. Après l'engagement, ces totaux deviennent la voie d'exécution et les vues de données ponctuelles d'engagement de l'espace de données exposées via des diagnostics authentifiés Sumeragi. Si un bloc contient des enregistrements de résultat du protocole de règlement de voie d'exécution, le traitement du bloc crée également des engagements de règlement de voie d'exécution et des données de relais conteneurs qui lient l'en-tête de bloc, le certificat de validation du consensus, le hachage cryptographique de l'engagement de disponibilité des données, la preuve de règlement et la taille de la charge utile de la voie d'exécution.
+Consultez, à la révision épinglée, [l’implémentation des voies](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_core/src/sumeragi/lanes/mod.rs), [le contrat des voies](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/sumeragi_lanes.md), [le contrat des espaces de données indépendants](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/sumeragi.md) et [l’état de qualification](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/sumeragi_goals.md).
 
 ## Disponibilité des données et récupération de la charge utile {#data-availability-and-payload-recovery}
 
-Sumeragi v2 transporte la disponibilité globale de la charge utile via des messages signés RS16 `PayloadManifest` et `PayloadChunk`. Le leader envoie le manifeste technique signé au comité complet et distribue initialement des morceaux déterministes à l’Ensemble A. Un validateur peut préparer un vote uniquement après avoir reconstruit le corps canonique, validé le manifeste technique et les hachages cryptographiques des segments, et stocké le corps de manière durable. et en complétant la validation déterministe. Si le chemin rapide s'interrompt, la récupération élargit la livraison des segments au Jeu B. La récupération du corps certifié et la synchronisation des blocs fournissent le chemin de récupération borné lorsqu'un pair du réseau prend connaissance de la finalité avant de recevoir le corps.
+Sumeragi V1 assure la disponibilité globale des charges utiles au moyen de messages RS16 signés `PayloadManifest` et `PayloadChunk`. Le chef envoie le manifeste signé à tout le comité et distribue initialement des fragments déterministes à l’ensemble A. Un validateur ne peut voter Prepare qu’après avoir reconstruit le corps canonique, validé le manifeste et les hachages des fragments, stocké durablement le corps et terminé la validation déterministe. Si la voie rapide se bloque, la récupération étend la livraison des fragments à l’ensemble B. La récupération des corps certifiés et la synchronisation des blocs fournissent une procédure de récupération bornée lorsqu’un pair apprend la finalité avant de recevoir le corps.
 
-L'exécution multilane dérive en outre un hachage cryptographique déterministe de propriété de charge utile et un hachage cryptographique d'instance RBC local à la voie pour chaque sujet de voie d'exécution. Ces identités lient les propositions de voie d'exécution et les certificats à la transaction porteuse globale ; elles ne constituent pas une session de consensus global distincte. Un bloc se finalise toujours uniquement lorsque le pair du réseau dispose d'un certificat de validation de consensus valide et de la charge utile correspondante localement.
+Chaque instance de voie possède son propre contexte authentifié de disponibilité et de certificats. Les vérifications de fusion globale lient son lot certifié et sa charge utile d’origine à la génération et au point d’ancrage attendus. Un pair n’applique la finalité globale que si la charge utile globale correspondante et un CommitQC valide sont disponibles localement.
 
 Utilisez les interfaces de l'opérateur authentifié plutôt qu'un point de terminaison RBC API séparé :
 
 - `iroha --operator-private-key-file <path> --output-format text ops sumeragi status` rapporte la hauteur, la vue, la phase, les certificats et l'état de vivacité autoritatifs.
-- `iroha --operator-private-key-file <path> --output-format text ops sumeragi diagnostics` affiche des diagnostics non contraignants sur la file, le pipeline, NPoS, les voies et les espaces de données, notamment la propriété de la charge utile de chaque voie.
+- `iroha --operator-private-key-file <path> --output-format text ops sumeragi diagnostics` fournit des diagnostics sans valeur d’autorité sur la file d’attente, le pipeline, NPoS, les voies et les espaces de données, notamment sur la responsabilité de garde des charges utiles des voies.
 - Les signaux Prometheus tels que `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total` et `sumeragi_da_gate_satisfied_total` séparent la récupération des corps manquants, les portails de disponibilité des données et le traitement des messages ; voir [Performance et métriques](/fr/guide/advanced/metrics.md).
 
-Kura utilise la configuration de voie d'exécution dérivée pour la disposition du stockage. Chaque voie d'exécution reçoit des noms de stockage déterministes tels que `blocks/lane_000_core` et `merge_ledger/lane_000_core_merge.log` ; les changements dans le cycle de vie de la voie d'exécution peuvent provisionner, mettre hors service ou renommer ces segments sans modifier l'ordre global des blocs.
+Les magasins de blocs des voies conservent les lots certifiés et les enregistrements sources nécessaires à la fusion et à la récupération. Leur cycle de vie suit la génération de voie validée ; un nom de répertoire de stockage n’autorise ni une nouvelle voie ni une nouvelle racine d’exécution.

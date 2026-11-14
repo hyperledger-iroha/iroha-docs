@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 9388823f782eef86aedbaf141bd251dae39837957aefd224ed0cc97ba11ad97d
+translation_source_hash: f1f922b9820587cd4b599e7407698a47d468616670fee2922e4028147bc3e9b0
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Kotlin, Android, va Java {#kotlin-android-and-java}
 
 Kotlin SDK JVM va Android ilovalari uchun standart mijoz steki hisoblanadi. U Iroha repozitoriyasidagi `kotlin/` ostida joylashgan va platforma bo‘yicha ajratilgan, shuning uchun ko‘chma kod Android bog‘liqliklarini olmaydi.
@@ -73,7 +72,7 @@ Kotlin SDK quyidagilarni o'z ichiga oladi:
 - kanonik hisob va aktiv manzilini boshqarish
 - operatsiya qurilishi, imzolash va oflayn ma’lumot konteynerlari
 - Torii HTTP, WebSocket, va SSE mijozlar
-- ko‘p imzo, obuna, SoraFS, Nexus, va Connect modellari
+- ko‘p imzo, obuna, SoraFS, SORA Nexus, va Connect modellari
 - Android keystore va qurilma telemetriya integratsiyalari
 - Android oflayn QR, Yaqinida, va NFC transportlar
 

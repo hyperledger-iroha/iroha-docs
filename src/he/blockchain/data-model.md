@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /blockchain/data-model.md
-translation_source_hash: 147562d2286bf11e60a941969e6d52bffc1534c3cfc04d440e0bcf78598a1ca7
+translation_source_hash: f90139dee2eff97769cd47188bcaf60b31672f0250505d8afad9c8ee60815ddd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-source-naming-amendment
 ---
-
 # מודל נתונים {#data-model}
 
 Iroha מאחסן את מצב ספר החשבונות ב- `World`. מודל הנתונים הראשון שלה משתמש באותיות ונושאים קנוניים הבאים:
@@ -122,7 +121,7 @@ Aliases הם שמות קריאים לאדם שמונחים מעל מזהים ק�
 |הגדרה של נכסים |כתובת קנוניקה `AssetDefinitionId` Base58 |`name#domain.dataspace` או `name#dataspace` |`AssetDefinitionAlias` מחויבת להגדרה של נכס |
 |חוזה|קאנוניקה Bech32m `ContractAddress` |`name::domain.dataspace` או `name::dataspace` |`ContractAlias` מחויבת כתובת חוזה משמשת |
 |שם דומיין |`DomainId` בצורה `domain.dataspace` |`domain.dataspace` |SNS `domain` רישום מקום שמות |
-|שם חלקי נתונים |מספר `DataSpaceId` מהקטלוג פעיל Nexus |שם כינוי למרחב נתונים כגון `universal`, `paynet`, או `zk` |SNS `dataspace` רישום חלל שמות ועוד קטלוג החלל נתונים הפעיל |
+| שם מרחב הנתונים | `DataSpaceId` מספרי מתוך קטלוג SORA Nexus הפעיל | כינוי למרחב נתונים, כגון `universal`, `paynet` או `zk` | רשומת מרחב השמות `dataspace` ב־SNS יחד עם קטלוג מרחבי הנתונים הפעיל |
 
 הכינויים של חשבונות הם שמות החשבונות המופנים בפני המשתמש. הם שרדים את ריקיוי החשבון כי הכינוי מצביע על החשבון הפעיל ID באמצעות אינדיקסים של מצבי העולם ורישומים של רקיוי חשבון. השתמש `SetPrimaryAccountAlias` עבור התווית העיקרית של החשבון, `SetAccountAliasBinding` עבור כינויים נוספים שאינם ראשוניים, ו `FindAccountByAlias` או `FindAliasesByAccountId` עבור קריאה. כינוי החשבון דורש בדרך כלל רכישה פעילה של כינוי חשבון SNS שנרכשת עם `AcquireAccountAliasLease` ונחדשת עם `RenewAccountAliasLease`.
 

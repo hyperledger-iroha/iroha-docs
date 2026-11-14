@@ -1,11 +1,10 @@
 ---
 translation_locale: kk
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: ca6fd12e33df43b73a72dd6327133115aa44256cf579387c11bf0693797bf96e
+translation_source_hash: f1d7f1e54fa01550ad5de65b18a725bc98452dcff8f9c08ebe427fb5ae857968
 translation_status: machine-validated
-translation_engine: bing-translator-llm+claude-opus-5-5
+translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link
 ---
-
 # Ақылды келісімді құру және орналастыру {#build-and-deploy-a-smart-contract}
 
 ## Нәтиже {#outcome}
@@ -196,7 +195,7 @@ jq -e '.ok == true and .result == ["3", "5"]' \
 - `fee quote changed ... gas bound` дегеніміз сұралған жазбаша ниет пен нақты баға сәйкес келмейді дегенді білдіреді. Қол қойылған транзакцияны өзгертудің орнына қайта тексеруді орындаңыз.
 - Үзілген орналастыру өзінің қол қойылған жоспарын журналда сақтайды. Жаңа жоспарға қол қоюдың орнына оны `musubi deploy --resume <JOURNAL>` арқылы қалпына келтіріңіз.
 - `is read-only and cannot be invoked as a transaction` немесе `is not a kotoage or lifecycle entrypoint` `compute` шақыру командасына жіберілгенін білдіреді. Бұл үлгі `view fn` жариялайды, сондықтан жергілікті түрде `debug-view`, ал Torii-де `view` пайдаланыңыз.
-- шарттама шақыруларына оң типтелген транзакцияны орындау шығыны шегі қажет. Бірінші шығарылымдағы техникалық шақыру шарты жоғарғы деңгейдегі транзакцияны орындау шығыны немесе төлем активінің метадеректерін қабылдамайды.
+- Келісімшарт шақырулары оң типтелген газ шегін талап етеді. Алғашқы шығарылымның шақыру ережесі жоғарғы деңгейдегі газ немесе комиссия активі метадеректерін қабылдамайды.
 
 ## Дереккөз және қатысты құжаттар {#source-and-related-docs}
 

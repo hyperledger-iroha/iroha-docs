@@ -1,14 +1,13 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/accounts.md
-translation_source_hash: 015a85d81c44b7ef7f13cdafb2ed8e493ef512b94dc500939655c70285eac3bd
+translation_source_hash: adc98cbf1fcadae4415d03dcc262eb03f8c95b429527e403d230934ae2f3243c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # 帳戶 {#accounts}
 
-帳戶是能夠簽署交易並擁有帳本狀態的授權主體。在目前 Iroha 3 資料模型中，`AccountId` 是規範且無網域的：它派生自帳戶控制器，並以 [I105](/zh-hant/reference/i105.md) 規範編碼。人類可讀的網域和資料空間內容屬於個別的帳戶別名繫結。
+帳戶是可簽署交易並擁有帳本狀態的授權主體。在目前的 Iroha 3 資料模型中，`AccountId` 是不含網域的標準身分：它由帳戶控制器衍生，並以 [I105](/zh-hant/reference/i105.md) 標準形式編碼。人類可讀的網域與資料空間脈絡，則屬於獨立的帳戶別名綁定。
 
 ## 結構 {#structure}
 
@@ -17,12 +16,12 @@ translation_engine: nllb-200-ct2
 - `id`:規範`AccountId`
 - `metadata`:任意的帳戶後設資料
 - `label`:可選的穩定別名
-- `uaid`:可選的通用帳戶 ID 用於 Nexus 流.
+- `uaid`：SORA Nexus 流程使用的選用通用帳戶 ID
 - `opaque_ids`:與帳戶的 UAID 繫結的不透明識別符號
 
 建立帳戶所使用的交易有效載荷為 `NewAccount`.它攜帶相同的身份,後設資料,標籤, UAID 和不透明的 ID 欄位,被註冊帳戶使用.
 
-`uaid` 是對規範 `AccountId` 的補充，而不是替代。當 Nexus 服務需要跨資料空間的穩定使用者或組織控制程式碼、保護隱私的註冊流程或服務能力查詢時，請使用它。執行階段維護一對一的 UAID 到帳戶索引，要求不透明識別碼透過 UAID 附加，並拒絕重複或衝突的不透明識別碼。有關 Nexus 服務層流程，請參閱 [FHE 和 UAID](/zh-hant/blockchain/sora-nexus-services.md#fhe-and-uaid)。
+`uaid` 補充標準的 `AccountId`，並不取代它。當 SORA Nexus 服務需要跨資料空間的穩定使用者或組織識別、保護隱私的註冊流程，或服務能力查詢時，可使用此欄位。執行環境維護一對一的 UAID 與帳戶索引，要求不透明識別碼必須透過 UAID 附加，並拒絕重複或衝突的不透明識別碼。SORA Nexus 服務層流程請參閱 [FHE 與 UAID](/zh-hant/blockchain/sora-nexus-services.md#fhe-and-uaid)。
 
 ## 帳戶控制者 {#account-controllers}
 
@@ -32,8 +31,9 @@ translation_engine: nllb-200-ct2
 
 ```toml
 [account]
+profile = "taira"
 public_key = "ed0120..."
-private_key = { digest_function = "ed25519", payload = "..." }
+private_key_file = "/absolute/path/to/private.key"
 ```
 
 檢視當前關鍵格式[客戶端配置](/zh-hant/guide/configure/client-configuration.md)和 [關鍵生成](/zh-hant/guide/security/generating-cryptographic-keys.md).
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-建立或更新一個帳戶是一個簽署的交易,需要以下頁面所述、由 faucet 提供資金的 Taira 設定： [連線到 SORA Nexus 資料空間](/zh-hant/get-started/sora-nexus-dataspaces.md).
+這些都是公開讀取操作。建立或更新帳戶需要簽署交易，並依照[連線至 SORA Nexus 資料空間](/zh-hant/get-started/sora-nexus-dataspaces.md)的說明，完成由測試網資金服務提供資金的 Taira 設定。
 
 ## 登記和許可證 {#registration-and-permissions}
 
@@ -80,7 +80,7 @@ PY
 - 自己的域名
 - 接收角色和許可權令牌
 - 儲存後設資料
-- 當這些功能被啟用時,參與別名, rekey,回收和 Nexus 身份流
+- 在相關功能啟用時，參與別名、金鑰更換、復原及 SORA Nexus 身分流程
 
 ## 解決身份問題 {#troubleshooting-identity-issues}
 

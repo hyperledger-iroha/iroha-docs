@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /reference/glossary.md
-translation_source_hash: ab484310e7e0b0662c1d4bb133e7ae337c71b09b5fdc8e678581234d74ee9b29
+translation_source_hash: 8b00758b5731a2f9e09a5b49ccb7f298229ab966b5adf2d7152e3b1416fe8737
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
-
 # Lüğət <!-- omit in toc --> {#glossary}
 
 Burada siz bütün Iroha-ilə əlaqəli obyektlərin təriflərini tapa bilərsiniz.
@@ -42,7 +41,7 @@ Orta əsrlərdə mühasibat dəftərləri ictimai baxış və dəqiqlik yoxlamas
 
 ## şəbəkə əlaqəsi {#peer}
 
-Iroha-də bir şəbəkə həmkarı o deməkdir ki, digər Iroha prosesləri və müştəri tətbiqləri qoşula biləcəyi bir Iroha proses nümunəsidir. Bir maşın bir neçə Iroha şəbəkə həmkarına ev sahibliyi edə bilər. Şəbəkə iştirakçıları öz resursları və imkanları baxımından bərabərdirlər, lakin vacib bir istisna var: yalnız şəbəkə iştirakçılarından biri Iroha şəbəkəsinin başlanğıc mərhələsində blockchain başlanğıc blokunu işləyir.
+Qovşaq digər qovşaqlardan və müştəri tətbiqlərindən bağlantıları qəbul edən Iroha qovşaq prosesidir. Bir maşında ayrı konfiqurasiya və yaddaşa malik bir neçə qovşaq işləyə bilər. Boş vəziyyətdən konsensusa başlayan hər qovşaq şəbəkənin imzalanmış başlanğıc blokunun həqiqiliyini yoxlayır və onu tətbiq edir; həqiqiliyi yoxlanmış vəziyyət görüntülərindən bərpa olunan qovşaqlar həmin vəziyyətdən davam edir.
 
 Digər blok zəncirləri eyni anlayışı bir node və ya təsdiqçi kimi istinad edə bilər.
 
@@ -92,7 +91,7 @@ Iroha konsensusdan məsul modul.
 
 ### Torii (Darvaza) {#torii-gate}
 
-[şəbəkə əlaqəsi](#peer) üçün gələn sorğuların işlənməsi məntiqi moduludur. Bu modul gələn təlimatları və HTTP sorğularını qəbul etmək, yönləndirmək və işlətmək, eləcə də işləmə zamanı konfiqurasiya yeniləmələrini həyata keçirmək üçün istifadə olunur.
+[Həmyaşıd qovşağa](#peer) daxil olan sorğuların emalı məntiqini ehtiva edən modul. Daxil olan təlimatları, HTTP sorğularını və operatorun konfiqurasiya yoxlamalarını almaq, qəbul etmək və yönləndirmək üçün istifadə olunur.
 
 ### Kura (Anbar) {#kura-warehouse}
 
@@ -116,7 +115,7 @@ Spesifik blokun başa çatdırılmasında, vaxtında (bəzi məhdudiyyətlərlə
 
 ### Versiyalaşdırma {#versioning}
 
-Hər sorğu ona aid olan API versiyası ilə etiketlənir. Bu, Iroha müştəri/şəbəkə həmkarı proqramının fərqli ikili versiyalarının qarşılıqlı işləməsinə imkan verir ki, bu da öz növbəsində Iroha şəbəkəsində proqram təminatının yenilənməsinə imkan yaradır.
+Iroha 3-ün ilk buraxılışı blokların ötürülməsi üçün yalnız bir kanonik format versiyasını dəstəkləyir. Başlanğıc bloku tətbiq edildikdən sonra `/v1/api/version` son nöqtəsi `SignedBlock::WIRE_VERSION` dəyərini bildirir, bundan əvvəl isə əlçatmazlıq cavabı qaytarır. Bu məlumat dəstəklənən ötürmə formatını göstərir; müxtəlif protokol düzülüşləri arasında uyğunluğu razılaşdırmır və şəbəkə yeniləməsinə icazə vermir.
 
 ### Hijiri (şəbəkə həmkarının nüfuz sistemi) {#hijiri-peer-reputation-system}
 
@@ -160,4 +159,4 @@ Cari blokçeyn vəziyyətinin yaddaşdakı təmsil olunması. WSV `World`, yekun
 
 ## Lider {#leader}
 
-Bir Iroha şəbəkəsində, şəbəkə iştirakçısı təsadüfi olaraq seçilir və növbəti bloku yaratmaq üçün xüsusi bir imtiyaz verilir. Bu imtiyaz, [baxış dəyişiklik](#view-change) vasitəsilə [Bizans səhv dözümlülüyü](#byzantine-fault-tolerance-bft)-a çatmış şəbəkələrdə ləğv edilə bilər.
+Hər hündürlük və görünüş üçün Sumeragi təklif edəni komitə, həqiqiliyi yoxlanmış lider toxumu və ötürülmüş liderlərin təsdiqlənmiş tarixçəsi əsasında deterministik şəkildə müəyyən edir. [Görünüş dəyişikliyi](#view-change) eyni [Bizans xətalarına dözümlülük](#byzantine-fault-tolerance-bft) qaydaları ilə növbəni komitənin növbəti uyğun üzvünə keçirir.

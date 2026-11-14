@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # اجازت نامے {#permissions}
 
 ایک بلاکچین پر مختلف کارروائیوں کے لئے اکاؤنٹس کو اجازت ٹوکن کی ضرورت ہوتی ہے، مثال کے طور پر اثاثہ جات کو پیسنے یا جلانے کے لئے.
@@ -89,7 +88,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 - اثاثہ جات، NFTs، اور ایسکرور
 - ٹرگرز
 - کردار اور اجازت نامے
-- عملدرآمد / رن ٹائم ، ثبوت ، پل اور SORA/Nexus ماڈیولز
+- عملدرآمد / رن ٹائم ، ثبوت ، پل اور SORA Nexus ماڈیولز
 
 ٹوکن کی عین مطابق فہرست [Permission Tokens ریفرنس ](/ur/reference/permissions.md) میں ماخذ کے ذریعہ تائید ہے.
 

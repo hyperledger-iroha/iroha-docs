@@ -1,11 +1,10 @@
 ---
 translation_locale: hy
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: c1aee0c29332bd7c883500e72a1ec7812aebfca13b673e6681788cf4bc5ecbf1
+translation_source_hash: e500328ac93578b9af21b6ef3d01e13e051b1d9a0f6050293e65650da66fbbbb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+claude-opus-5-5
+translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link
 ---
-
 # Հաշիվներ եւ անանուն անուններ {#accounts-and-aliases}
 
 ## Արդյունքը {#outcome}
@@ -135,7 +134,7 @@ iroha --config ./localnet/client.toml account get \
 
 ## Փորձարկել {#verify}
 
-Ապացուցեք, որ config հանրային բանալին, I105 կոդավորումը եւ կապող անանունները համընկնում են մեկ կանոնիկ հաշիվի վրա ID:
+Ապացուցեք, որ կարգավորումներում նշված բաց բանալին, I105 կոդավորումը և այլանվան կապումը հանգում են մեկ կանոնական հաշվի ID-ի․
 
 ```bash
 NORMALIZED_ACCOUNT_ID="$(

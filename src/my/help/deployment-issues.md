@@ -1,37 +1,36 @@
 ---
 translation_locale: my
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # ဖြန့်ချိမှု ပြဿနာများ ဖြေရှင်းခြင်း {#troubleshooting-deployment-issues}
 
 Iroha 3 deployments များအတွက်ပြဿနာဖြေရှင်းရေး အကြံပေးချက်များကို ဤအခန်းတွင်ဖော်ပြထားပါသည်။ သင်တွေ့နေရတဲ့ ပြဿနာကို ဒီမှာ ဖော်ပြခြင်းမရှိပါက [အွန်လိုင်း](https://t.me/hyperledgeriroha) မှတစ်ဆင့် ကျွန်ုပ်တို့နှင့် ဆက်သွယ်ပါ။
 
 ## ဖန်တီးထားတဲ့ လက်ရာတွေနဲ့ စတင်ပါ။ {#start-with-generated-artifacts}
 
-ဒေသတွင်း (သို့) စမ်းသပ်မှု အကောင်အထည်ဖော်မှုအတွက် Kagami မှထုတ်လုပ်ထားသော လက်ကိုင်ရေးသားထားတဲ့ ကွန်ရက် peer ဖိုင်တွေအစား ရှေးဟောင်းပစ္စည်းတွေကို ဦးစားပေးပါ။
+စက်တွင်းနှင့် စမ်းသပ်ဖြန့်ချိတပ်ဆင်မှုများအတွက် ကိုယ်တိုင်ရေးသားထားသော အဆင့်တူနိုဒ်ဖိုင်များအစား Kagami က ဖန်တီးပေးသော ထုတ်ကုန်ဖိုင်များကို ဦးစားပေးပါ။
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
-Generated directory တွင် network peer config များ၊ blockchain genesis ပစ္စည်းများ၊ start script များနှင့် README အတွက် Iroha 3 build line များပါဝင်သည်။
+ဖန်တီးထားသော ဖိုင်တွဲတွင် အဆင့်တူနိုဒ် ပြင်ဆင်သတ်မှတ်ချက်များ၊ ကနဦးဘလောက်ဒေတာ၊ စတင်ရေးစခရစ်များနှင့် Iroha 3 တည်ဆောက်မှုမျိုးဆက်အတွက် README ပါဝင်သည်။
 
-## Network peer မစတင်တော့ဘူး {#peer-does-not-start}
+## အဆင့်တူနိုဒ် မစတင်နိုင်ခြင်း {#peer-does-not-start}
 
 ဒီပစ္စည်းတွေကို အရင်စစ်ကြည့်ပါ။
 
 - `iroha3d --config <path>` အချက်အလက်များကို ကွန်ရက် peer's own TOML ဖိုင်တွင် ထည့်သွင်းထားပါသည်။
-- `public_key` နဲ့ `private_key` တို့ဟာ Network Peer Config ထဲမှာ တူညီတဲ့ Key Pair တစ်ခုတည်းပါ။
+- အဆင့်တူနိုဒ် ပြင်ဆင်သတ်မှတ်ချက်ရှိ `public_key` နှင့် `private_key` တို့သည် ကီးတွဲတစ်ခုတည်းမှ ဖြစ်ရမည်။
 - `genesis.public_key` ကတော့ blockchain Genesis Transaction ကို လက်မှတ်ရေးထိုးဖို့ အသုံးပြုခဲ့တဲ့ သော့နဲ့ တူပါတယ်။
-- validator network peer identities use BLS-Normal keys, and `trusted_peers_pop` contains proof of possession entries for the local key and trusted network peers.
+- အတည်ပြုသူအဖြစ် ဆောင်ရွက်သော အဆင့်တူနိုဒ်အထောက်အထားများသည် BLS-Normal ကီးများကို အသုံးပြုပြီး `trusted_peers_pop` တွင် စက်တွင်းကီးနှင့် ယုံကြည်ထားသော အဆင့်တူနိုဒ်များအတွက် ကီးပိုင်ဆိုင်ကြောင်း သက်သေပြမှတ်တမ်းများ ပါဝင်သည်။
 - Torii နှင့် P2P အတွက်ဆိပ်ကမ်းများကို အခြားလုပ်ငန်းစဉ်တစ်ခုဖြင့် ချည်နှောင်ထားခြင်း မရှိပါ။
-- Kura store directory ဟာ တူညီတဲ့ ကွင်းဆက်ထဲ ပါဝင်ပြီး အခြားကွန်ရက် ပရိုဖိုင်တစ်ခုကနေ ကူးယူထားတာ မဟုတ်ဘူး။
+- Kura သိုလှောင်ဖိုင်တွဲသည် တူညီသော chain နှင့် သက်ဆိုင်ပြီး အခြားကွန်ရက်ပရိုဖိုင်မှ ကူးယူထားခြင်း မဟုတ်ရ။
 
-Daemon က TOML အလွှာတစ်ခုထက်ပိုပြီးဖတ်တဲ့အခါ config tracing ကိုသုံးပါ။
+daemon က TOML အလွှာတစ်ခုထက်ပို ဖတ်လျှင် ပြင်ဆင်သတ်မှတ်မှုခြေရာခံခြင်းကို အသုံးပြုပါ။
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
@@ -39,18 +38,18 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker နှင့် Composite {#docker-and-compose}
 
-Generate Current Kagami localnet output မှပေါင်းစပ်ပါ command line arguments နှင့် config files များသည် check-out code ကိုက်ညီစေရန်:
+command လိုင်းအာဂျူမင့်များနှင့် ပြင်ဆင်သတ်မှတ်မှုဖိုင်များသည် checkout လုပ်ထားသောကုဒ်နှင့် ကိုက်ညီစေရန် လက်ရှိ Kagami localnet အထွက်မှ Compose ကို ဖန်တီးပါ။
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```
 
-compose deployment ကိုစတင်ပြီးနောက် stalks လုပ်ရင် daemon log တွေကို စစ်ဆေးပါ
+compose ဖြန့်ချိတပ်ဆင်မှု သည် စတင်ပြီးနောက် ရပ်တန့်နေလျှင် daemon မှတ်တမ်းများတွင် အောက်ပါတို့ကို စစ်ဆေးပါ။
 
 - မှားယွင်းသော `chain`
-- အခြား blockchain genesis transaction သို့မဟုတ် technical manifest ကိုသုံးတဲ့ network peer တစ်ခု
+- မတူညီသော ကနဦးထရန်ဇက်ရှင် သို့မဟုတ် မန်နီဖက်စ်ကို အသုံးပြုနေသော အဆင့်တူနိုဒ်တစ်ခု
 - ကြော်ငြာပြုလုပ်ထားသော P2P လိပ်စာများမှာ ကွန်ပျူတာ ကွန်ရက်အတွင်းတွင်သာ အလုပ်ဖြစ်ပါသည်။
 - ဒေသတွင်းပမာဏကို ပြန်လည်သုံးစွဲပြီးနောက် blockchain genesis ကိုပြန်လည်ပြုပြင်ခြင်း
 
@@ -58,26 +57,26 @@ compose deployment ကိုစတင်ပြီးနောက် stalks လ�
 
 ## Kubernetes {#kubernetes}
 
-Kubernetes အတွက် validator တစ်ခုစီကို stateful အခြေခံအဆောက်အအုံတစ်ခုအဖြစ် ဆက်ဆံပါ။
+Kubernetes အတွက် အတည်ပြုသူတစ်ဦးစီကို အခြေအနေဒေတာ ထိန်းသိမ်းသည့် အခြေခံအဆောက်အအုံအဖြစ် သတ်မှတ်ပါ။
 
-- Network peer တစ်ခုစီကို တည်ငြိမ်တဲ့ Identity Key နဲ့ တည်ငြိမ်နေတဲ့ Volume ကို ပေးပါ။
-- P2P Address တွေကို ဖေါ်ပြပါ အခြား Network Peers တွေက Cluster အတွင်းကနေ ဖြေရှင်းနိုင်ပါတယ်
-- မော်တော်ယာဉ် Config နှင့် blockchain ဘီလူးဖိုင်များအတွက်မပြောင်းလဲနိုင်သော config ကိုဖြန့်ချိရန်
+- အဆင့်တူနိုဒ်တစ်ခုစီအား တည်ငြိမ်သော အထောက်အထားကီးနှင့် တည်ငြိမ်သော အမြဲတမ်းသိုလှောင်နေရာကို ပေးပါ
+- ကလပ်စတာအတွင်းရှိ အခြားအဆင့်တူနိုဒ်များက လိပ်စာဖြေရှင်းနိုင်သော P2P လိပ်စာများကို ဖွင့်ပေးပါ
+- ဖြန့်ချိမှုတစ်ကြိမ်အတွက် ပြင်ဆင်သတ်မှတ်ချက်နှင့် ကနဦးဘလောက်ဖိုင်များကို မပြောင်းလဲနိုင်သော ပြင်ဆင်သတ်မှတ်ချက်အဖြစ် ချိတ်ဆက်တပ်ဆင်ပါ
 - ဘလော့ခ်ချ်ရဲ့ ဇာစ်မြစ် (သို့) ထိပ်ပိုင်းဆိုင်ရာ အပြောင်းအလဲအားလုံးကို အလိုအလျောက် မပြုပြင်ဘဲ ရည်ရွယ်ချက်ရှိပြီး ဖြန့်ဖြူးပေးပါ။
 
-Capsule တစ်ခုကို ထပ်ခါထပ်ခါ restart လုပ်ရင် Capsule ထဲက rendered config ကို မျှော်မှန်းချက်နဲ့ နှိုင်းယှဉ်ပါ။ [`peer.template.toml`](/my/reference/peer-config/index.md#template) network peer က အဟောင်းကို ပြန်လည်ကစားနေလားဆိုတာ စစ်ဆေးပါ။ Kura ဒေတာ။
+ပေါ့ဒ်တစ်ခု ထပ်ခါတလဲလဲ ပြန်စနေပါက ၎င်းအတွင်း ထုတ်ပေးထားသော ပြင်ဆင်သတ်မှတ်ချက်ကို မျှော်မှန်းထားသော [`peer.template.toml`](/my/reference/peer-config/index.md#template) နှင့် နှိုင်းယှဉ်ပြီး အဆင့်တူနိုဒ်က Kura ဒေတာဟောင်းကို ပြန်လည်လုပ်ဆောင်နေခြင်း ရှိမရှိ စစ်ဆေးပါ။
 
-## Sora ၏ ပရိုဖိုင် {#sora-profile}
+## SORA Nexus ပရိုဖိုင် {#sora-profile}
 
-Nexus၊ SoraFS သို့မဟုတ် multi-lane စီးဆင်းမှုများကို အသုံးပြုသော ပုဂ္ဂလိက (သို့) ဒေသတွင်း Iroha 3 ဖြန့်ချိမှုများတွင် Sora profile ကို ဖွင့်ထားသည့် ပုံမှန် daemon ကို စတင်သင့်ပါသည်။
+SORA Nexus၊ SoraFS သို့မဟုတ် လမ်းသွယ်အများအပြားသုံး လုပ်ငန်းစဉ်များကို အသုံးပြုသော သီးသန့် သို့မဟုတ် စက်တွင်း Iroha 3 ဖြန့်ချိတပ်ဆင်မှုများသည် SORA Nexus ပရိုဖိုင်ကို ဖွင့်ထားပြီး စံနောက်ခံဝန်ဆောင်မှုကို စတင်သင့်သည်။
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora
 ```
 
-ကွန်ရက်တစ်ခုတည်းရှိ validator များအကြားမှာ တူညီသော profile ကို တစ်ချိန်လုံးအသုံးပြုပါ။
+ကွန်ရက်တစ်ခုတည်းရှိ အတည်ပြုသူများအားလုံးတွင် တူညီသော ပရိုဖိုင်ကို တစ်သမတ်တည်း အသုံးပြုပါ။
 
-အများပြည်သူ Taira အတည်ပြုသူများက ရည်စူးထားသော စေလွှတ်စက်ကိုသုံးပြီး Taira ၏တိကျသောချိတ်ဆက်၊ စာရင်း၊ ပိတ်လိုက်သော embedded-SoraFS သိုလှောင်ခြင်းနှင့် runtime-signer profile ကိုအားပေးသည်။ ၎င်းကိုမစတင်မီ rendered Taira ဖွဲ့စည်းမှုကိုအတည်ပြုပါ:
+အများသုံး Taira validator များသည် Taira ၏ တိကျသော chain၊ အဖွဲ့ဝင်စာရင်း၊ အတွင်းထည့်သွင်းထားသော SoraFS သိုလှောင်မှုကို ပိတ်ထားခြင်းနှင့် လည်ပတ်ချိန်လက်မှတ်ထိုးသူပရိုဖိုင်တို့ကို အတင်းအကျပ်လိုက်နာစေသော သီးသန့်စတင်ကိရိယာကို အသုံးပြုသည်။ မစတင်မီ အပြီးသတ်ထုတ်ပေးထားသော Taira ပြင်ဆင်သတ်မှတ်မှုကို စစ်ဆေးပါ။
 
 ```bash
 iroha3d_taira --sora \
@@ -85,4 +84,4 @@ iroha3d_taira --sora \
   --check-config
 ```
 
-လူထုကို မစတင်ပါနဲ့ Taira အထွေထွေသုံး validator `iroha3d`; ကြည့်ပါ [`iroha3d` CLI ရည်ညွှန်းချက်](/my/reference/iroha3d-cli.md) အတင်းအကျပ် ချုပ်ဆိုထားမှုအတွက်ပါ။
+အများသုံး Taira အတည်ပြုသူကို ယေဘုယျသုံး `iroha3d` ဖြင့် မစတင်ပါနှင့်။ မဖြစ်မနေကျင့်သုံးသော ပရိုဖိုင်အတွက် [`iroha3d` CLI အကိုးအကား](/my/reference/iroha3d-cli.md) ကို ကြည့်ပါ။

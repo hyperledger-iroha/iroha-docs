@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/best-practices/operations.md
-translation_source_hash: de9e8129467b1111a58cee07acf43382d6cf3c352211a1511659ced422b46778
+translation_source_hash: 44df6cc409b8434e5b45286e02500036bb9eda80251f4b6a50205bf4a3de3968
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-first-release-source-amendment
 ---
-
 # 運營 {#operations}
 
 操作準備意味著網路可以觀察,更改,備份和恢復而不需要依賴於即興訪問驗證器主機.
@@ -38,7 +37,7 @@ translation_engine: nllb-200-ct2
 ## 變革管理 {#change-management}
 
 - 將鏈上設定變更視為需要審查、變更前讀取、授權和變更後驗證的交易。
-- 推出相容性計劃和反彈決定點的對等節點二進位制升級.
+- 安裝對等節點軟體版本前，請確認該版本實作了網路已驗證的執行期選擇，以及其啟動檢查點以上的歷史所需內容。協定定義的變更必須經由已通過資格驗證且由治理控制的選擇轉換；啟用之後，復原應使用修正性的轉換，而不是降級至不相容的二進位程式。
 - 避免在同一維護視窗中改變對等節點拓,共識時間和應用工作負載,除非遷移計劃要求這樣做.
 - 記錄交易雜湊和區塊高度,以進行操作變化.
 

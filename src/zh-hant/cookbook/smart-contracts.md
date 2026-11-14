@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: ca6fd12e33df43b73a72dd6327133115aa44256cf579387c11bf0693797bf96e
+translation_source_hash: f1d7f1e54fa01550ad5de65b18a725bc98452dcff8f9c08ebe427fb5ae857968
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+claude-opus-5-5
+translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link
 ---
-
 # 建立和部署智慧合同 {#build-and-deploy-a-smart-contract}
 
 ## 結果 {#outcome}

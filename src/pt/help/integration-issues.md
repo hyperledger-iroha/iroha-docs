@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /help/integration-issues.md
-translation_source_hash: c5f169e423806fa2a9e9d198971588d1aa0b199a28d64e8b089b9f81727550a5
+translation_source_hash: 2146a236adb3a3b3b896a1992daeecf6713988183ca53e4412f9b616ed2e9085
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Solução de Problemas de Integração {#troubleshooting-integration-issues}
 
 Esta seção oferece dicas de solução de problemas para a integração Iroha 3. Se o problema que você está enfrentando não estiver descrito aqui, entre em contato conosco via [Telegram](https://t.me/hyperledgeriroha).
@@ -21,7 +20,7 @@ torii_url = "http://127.0.0.1:8080/"
 Para verificações CLI, passe o mesmo arquivo explicitamente:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 Se o par de rede estiver executando em Docker ou Kubernetes, use o endereço do host ou do serviço que seja acessível a partir do processo cliente. `127.0.0.1` dentro de um contêiner não é a máquina host.
@@ -50,7 +49,7 @@ A maioria das falhas de transação é causada por incompatibilidade de identida
 Use `--output-format text` ao depurar comandos CLI para que os erros sejam mais fáceis de ler:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ledger transaction ping --msg "hello"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority --output-format text tx ping --msg "hello"
 ```
 
 ## Consultas retornam resultados vazios {#queries-return-empty-results}
@@ -65,7 +64,7 @@ Resultados de consulta vazios nem sempre significam que a consulta falhou. Verif
 Para verificações de domínio, comece com a consulta mais ampla:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 ## Fluxos de eventos ou blocos param cedo {#event-or-block-streams-stop-early}

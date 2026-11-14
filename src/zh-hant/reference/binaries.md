@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /reference/binaries.md
-translation_source_hash: c617a21d50b28495c261d05d672e0b7803c282d53da577391dbebbc7f120d045
+translation_source_hash: 75848623e735abc80326f9ebda6f74ab438b67eaeddeacdd4d8c5509856a999e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # 使用 Iroha 二進位程式 {#working-with-iroha-binaries}
 
 Iroha 3 操作員的工作流程圍繞四個主要二進位制:
@@ -50,7 +49,7 @@ cargo run --bin kagami -- --help
 
 ## Docker 影象 {#docker-image}
 
-上游工作空間使用 `kagami localnet` 和 `kagami docker` 產生 Docker Compose 檔案與檢查出來的程式碼相匹配. `hyperledger/iroha:dev` 影象可以與生成的檔案一起使用.
+上游工作區使用 `kagami localnet generate` 和 `kagami docker`，產生與目前原始碼版本相符的 Docker Compose 檔案。`hyperledger/iroha:dev` 映像可搭配這些產生的檔案使用。
 
 執行 CLI 在一個容器中:
 
@@ -67,7 +66,7 @@ docker run -t hyperledger/iroha:dev kagami --help
 為對等節點啟動,先生成一個本地網,然後編寫檔案:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```

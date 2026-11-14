@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
+translation_source_hash: 37e8be9b07a40e5c6b841a47b016320e42079853433fb3e53937e4021dc1304f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Swift e iOS {#swift-and-ios}
 
 O Swift SDK enviado pelo espaço de trabalho a montante é o pacote `IrohaSwift` Swift sob `IrohaSwift/`. Seu manifesto técnico de pacote define três produtos de biblioteca—`IrohaSwift`, `IrohaSwiftMobileTransports` e `IrohaSwiftTransferUI`—e tem como alvo iOS 15+ e macOS 12+ com ferramentas Swift 5.9.
@@ -65,7 +64,7 @@ if #available(iOS 15.0, macOS 12.0, *) {
 
 ## Tentar Taira Somente Leitura {#try-taira-read-only}
 
-Comece com uma sonda simples HTTP para confirmar que o dispositivo ou simulador pode alcançar o endpoint público Taira API:
+Comece com uma sondagem HTTP simples para confirmar que o dispositivo ou simulador consegue alcançar o endpoint público do Taira:
 
 ```swift
 import Foundation
@@ -161,7 +160,7 @@ A fonte Swift atualmente inclui:
 - Superfícies de assinatura Ed25519, secp256k1, ML-DSA, BLS, GOST e SM2, com suporte nativo de ponte onde necessário
 - construtores de payload de instrução de escrow nativos para mercado e escrow anônimo
 - Conecte WebSocket, estrutura, cripto, sessão, fila, reprodução e auxiliares de diagnóstico
-- Prontidão Kagemusha, recarga e resgate digitados, status da operação, observação, pacote de pares de rede, registro de resultado do protocolo e modelos de fluxo QR
+- auxiliares do formato de transmissão KAGEMUSHA V1 e o adaptador da plataforma iPhone para o provedor nativo de Advance da carteira, cadastro, recuperação e chamadas admitidas de troca
 - SoraFS, disponibilidade de dados e auxiliares de anexos de prova
 
 ## API Exemplos {#api-examples}

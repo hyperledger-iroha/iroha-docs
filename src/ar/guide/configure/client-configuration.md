@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /guide/configure/client-configuration.md
-translation_source_hash: 6da8a0abddc9723b16477a935a3953ebd497300f02eadd635e4e38027a11d095
+translation_source_hash: b3cfc8d8bf51a43b88cefb5ac7fe641717b347f7c89d983bf4c2de80944f1bb8
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # تكوين العميل {#client-configuration}
 
 يستخدم العملاء Iroha و CLI و SDK تكوين TOML. تقوم المستودعات بشحن الافتراضي الحالي في `defaults/client.toml`؛ كما تقوم الشبكات المحلية المولدة أيضًا بكتابة `client.toml` المطابق في دليل الإخراج الخاص بها.
@@ -18,22 +17,24 @@ translation_engine: bing-translator-llm
 
 ## الحقول الأساسية {#core-fields}
 
-على الأقل، تحدد تهيئة العميل السلسلة، ونقطة النهاية Torii API، وحساب التوقيع:
+يحدد إعداد العميل، كحد أدنى، السلسلة وهوية شبكتها ونقطة نهاية Torii وسياق شبكة الحساب ومفتاح التوقيع:
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000000"
-torii_url = "http://127.0.0.1:8080"
+network_id = "hash:32C903E5B3497E34C2B844EBFE8A39C19E6CF8F95D44C1FFB8BA9DCB42F91149#A2F0"
+torii_url = "http://127.0.0.1:8080/"
 
 [account]
-domain = "wonderland.universal"
+chain_discriminant = 753
 public_key = "ed0120..."
 private_key = "802620..."
 ```
 
 - `chain` يحدد السلسلة التي تنتمي إليها المعاملات المقدمة.
+- `network_id` هو هوية الشبكة المشتقة من التكوين الأولي التي يرتبط بها كل طلب موقّع. اضبط واحدًا بالضبط من `network_id` أو `network_id_file`؛ وتعلن العقدة القيمة عند `GET /v1/accounts/capabilities`.
 - `torii_url` يشير إلى نظيره في الشبكة Torii HTTP API.
-- `[account].domain` يُستخدم بواسطة اختصارات CLI وترميز محدد العنوان؛ المعيار البروتوكولي الوحيد `AccountId` نفسه بلا نطاق.
-- `[account].public_key` و `[account].private_key` يوقّعان المعاملات.
+- يحدد `[account].chain_discriminant` بادئة حسابات I105 للشبكة. يمكن للشبكات العامة استخدام `[account].profile = "taira"` أو `"minamoto"` بدلًا منه. يلزم أحد الخيارين، ولا يتضمن معرّف الحساب المعياري `AccountId` نفسه نطاقًا.
+- `[account].public_key` و `[account].private_key` يوقعان المعاملات؛ يمكن لـ `private_key_file` استبدال `private_key`.
 
 يجب أن يكون الحساب موجودًا مسبقًا على السلسلة. وفي الشبكة المحلية الافتراضية، يتولى بيان genesis المضمّن ذلك.
 
@@ -70,25 +71,25 @@ nonce = false
 
 ## إعدادات قائمة الانتظار للاتصال {#connect-queue-settings}
 
-يمكن للعملاء الحاليين Iroha أيضًا استخدام القسم الاختياري `[connect]` لحالة قائمة الانتظار المحلية:
+تقرأ CLI الخاصة بـ`iroha` أيضًا قسمًا اختياريًا `[connect]` لحالة الطابور المحلي. لا يقبل إعداد SDK القابل لإعادة الاستخدام هذا القسم:
 
 ```toml
 [connect]
 queue_root = "./queue"
 ```
 
-استخدم هذا عندما يحتاج سير العمل إلى تخزين قائمة انتظار على جانب العميل بشكل دائم.
+استخدم هذا عندما يتطلب سير العمل تخزينًا دائمًا لطابور جانب العميل. القيمة الافتراضية لـ`connect.queue_root` هي `~/.iroha/connect`، ويُحل المسار النسبي انطلاقًا من الدليل الذي يحتوي ملف TOML الخاص بالعميل.
 
 ## توليد التكوينات {#generating-configurations}
 
 لشبكات محلية قابلة للاستخدام مرة واحدة، يفضل استخدام Kagami لأنه يكتب تكوينات Iroha 3 المطابقة، منشأ البلوكشين، السكربتات، و README:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 استخدم `./localnet/client.toml` الذي تم إنشاؤه مع CLI:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```

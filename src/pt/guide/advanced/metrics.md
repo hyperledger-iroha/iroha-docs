@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Desempenho e Métricas {#performance-and-metrics}
 
 O desempenho do Iroha depende da carga de trabalho, da topologia do validador, das condições da rede e das configurações de consenso. Um único número TPS é, portanto, útil apenas quando está vinculado a uma execução de benchmark com uma configuração fixa.
@@ -38,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -131,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### Candidatos e Limites de Ingresso {#candidate-and-ingress-bounds}
 
-Os limites locais do nó Sumeragi determinam quanto trabalho de candidato e de recuperação um validador pode reter:
+O tamanho dos blocos e os limites de transação vêm da gênese assinada e dos parâmetros confirmados da cadeia. As configurações locais do nó em `[sumeragi]` abrangem a função de participação, a custódia das chaves de assinatura, os caminhos dos registros de segurança e os ajustes locais documentados de tempo limite e sincronização.
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` e `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks` e `sumeragi.queues.ready_bodies`
-
-Limites muito pequenos criam pressão na fila ou na recuperação de carga útil; limites grandes demais aumentam a memória retida e a quantidade de trabalho disponível para uma rede abusiva par. Compare a visualização dos dados de diagnóstico em um dado momento com a memória do processo, o manuseio de mensagens e as métricas de corpo ausente antes de alterar um limite de cada vez:
+Os limites de entrada da rede e da fila de transações controlam o trabalho retido localmente. Compare o instantâneo de diagnósticos com a memória do processo, o tratamento de mensagens e as métricas de corpos ausentes antes de alterar um limite operacional. Mantenha fixos os parâmetros assinados da cadeia ao comparar execuções da mesma rede:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -244,7 +236,7 @@ Publique os números de desempenho apenas com contexto suficiente para reproduzi
 - contagens de validadores e observadores
 - modo de consenso, cadência de blocos assinados e layout DA
 - comitê `3f + 1` exato, quórum e lista de observadores
-- `sumeragi.block`, `sumeragi.queues`, `sumeragi.limits`, limites de entrada de rede e de fila de transações
+- parâmetros assinados da cadeia, ajustes locais de Sumeragi e limites de entrada da rede e da fila de transações
 - perfil de telemetria
 - hardware, armazenamento e detalhes OS
 - rede RTT, jitter, perda e suposições de largura de banda

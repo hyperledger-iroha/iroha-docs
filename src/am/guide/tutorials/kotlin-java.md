@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 9388823f782eef86aedbaf141bd251dae39837957aefd224ed0cc97ba11ad97d
+translation_source_hash: f1f922b9820587cd4b599e7407698a47d468616670fee2922e4028147bc3e9b0
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Kotlin፣ Android እና ጃቫ {#kotlin-android-and-java}
 
 የ Kotlin SDK ለ JVM እና Android መተግበሪያዎች ነባሪ የደንበኛ ቁልል ነው። በ`kotlin/` በ Iroha ማከማቻ ውስጥ ይኖራል እና ተንቀሳቃሽ ኮድ Android ጥገኞችን እንዳያገኝ በመድረክ የተከፈለ ነው።
@@ -73,7 +72,7 @@ Kotlin SDK የሚከተሉትን ያጠቃልላል
 - ነጠላ ፕሮቶኮል-መደበኛ መለያ እና የንብረት አድራሻ አያያዝ
 - የግብይት ግንባታ፣ መፈረም እና ከመስመር ውጭ የውሂብ መያዣዎች
 - Torii HTTP፣ WebSocket እና SSE ደንበኞች
-- ባለብዙ ፊርማ፣ የደንበኝነት ምዝገባ፣ SoraFS፣ Nexus እና ሞዴሎችን ያገናኙ
+- ባለብዙ ፊርማ፣ የደንበኝነት ምዝገባ፣ SoraFS፣ SORA Nexus እና ሞዴሎችን ያገናኙ
 - Android የቁልፍ መደብር እና የመሣሪያ ቴሌሜትሪ ውህደቶች
 - Android ከመስመር ውጭ QR፣ በአቅራቢያ እና NFC ማጓጓዣዎች
 

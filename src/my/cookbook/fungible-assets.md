@@ -1,11 +1,10 @@
 ---
 translation_locale: my
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 3287a6bbaf06ec92ebbe9ac33a8294d4e1d232bc01fd6a5da13ddd166c620965
+translation_source_hash: 8a8fd0d29d4c1c323b457595653077564ad100f397ea2f4b059b35451b76aa44
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+claude-opus-5-5
+translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link
 ---
-
 # ငွေကြေးအထောက်အပံ့များ {#fungible-assets}
 
 ## ရလဒ် {#outcome}
@@ -20,7 +19,7 @@ translation_engine: nllb-200-ct2+claude-opus-5-5
 
 ## ခြေလှမ်း {#steps}
 
-### 1. Taira အဓိပ္ပါယ်ဖွင့်ဆိုချက်များကို cryptographic signer မပါဘဲ စစ်ဆေးပါ။ {#_1-inspect-taira-definitions-without-a-signer}
+### 1. လက်မှတ်ထိုးသူ မပါဘဲ Taira သတ်မှတ်ချက်များကို စစ်ဆေးခြင်း {#_1-inspect-taira-definitions-without-a-signer}
 
 အရင်းအမြစ်အဓိပ္ပါယ်ဖွင့်ဆိုချက်များတွင် ပွင့်လင်းမြင်သာမှုမရှိသော Base58 ID၊ ပြသမည့်အမည်၊ ထုတ်ပေးနိုင်မှုမူဝါဒ၊ ကိန်းဂဏန်း scale၊ ရွေးချယ်နိုင်သော alias၊ ပိုင်ရှင်၊ ရွေးချယ်နိုင်သော ပိုင်ရှင်ဒိုမင် သို့မဟုတ် ဒေတာနေရာ၊ လက်ကျန်မူဝါဒနှင့် စုစုပေါင်းပမာဏတို့ ပါဝင်သည်။ တိကျသော လက်ကျန်တွင် ၎င်းကို ကိုင်ဆောင်ထားသည့် အကောင့်နှင့် ရွေးချယ်နိုင်သော ဒေတာနေရာ နယ်ပယ်လည်း ပါဝင်သည်။
 
@@ -54,7 +53,7 @@ for (const definition of items) {
 
 :::
 
-JavaScript ပုံစံကို `node taira-assets.mjs` ဖြင့် run လုပ်ပါ။ အများပြည်သူအရင်းအမြစ် ID များသည် Base58 တန်ဖိုးများသာရှိပြီး `cookbook_credit#wonderland.universal` ကဲ့သို့သော ဖတ်ရှုနိုင်သည့်တန်ဖိုးတစ်ခုသည် ထို ID တစ်ခုအတွက်အမည်မဖော်လိုပါ ။
+JavaScript ပုံစံကို `node taira-assets.mjs` ဖြင့် လုပ်ဆောင်ပါ။ အများသုံး ပိုင်ဆိုင်မှု ID များသည် Base58 တန်ဖိုးသက်သက် ဖြစ်သည်။ `cookbook_credit#wonderland.universal` ကဲ့သို့ ဖတ်ရှုရလွယ်သော တန်ဖိုးသည် ထို ID များထဲမှ တစ်ခုသို့ ဖြေရှင်းပေးသော alias ဖြစ်သည်။
 
 ### (၂) ဒေသဆိုင်ရာ ခွင့်ပြုချက် အရေအတွက်နှင့် ရည်ရွယ်ချက် ပြင်ဆင်ပါ။ {#_2-prepare-the-local-authority-and-destination}
 
@@ -99,7 +98,7 @@ Taira တွင် ထို ID ကို ပြန်မသုံးပါန�
 
 ### (၄) ထုတ်ပေးခြင်း၊ လွှဲပြောင်းခြင်းနှင့် ဖျက်ဆီးခြင်း {#_4-mint-transfer-and-burn}
 
-All write commands select the authorization principal as fee payer explicitly. CLI သည် လက်မှတ်ထိုးရန်မတိုင်မီတိကျသော ငွေပေးချေမှုကို ကိုးကားပြီး အလိုအလျောက် စောင့်ဆိုင်းသည်။
+ရေးသားမှု command အားလုံးက authority အကောင့်ကို အခကြေးငွေပေးသူအဖြစ် အတိအကျ ရွေးသည်။ CLI သည် လက်မှတ်မထိုးမီ transaction အတိအကျ၏ အခကြေးငွေ quote ကို ရယူပြီး မူလအတိုင်းဆိုလျှင် ရလဒ်ကို စောင့်သည်။
 
 ```bash
 iroha --config "$LOCAL_CONFIG" \
@@ -135,7 +134,7 @@ Taira တွင် ရေးသွင်းမှုတိုင်းအတွ�
 
 ## စစ်ဆေးပါ {#verify}
 
-ဒီ post-state မေးမြန်းချက်တွေဟာ အောင်မြင်မှု သတ်မှတ်ချက်ပါ၊ တင်ပြရေး ပရိုတိုကောရဲ့ ရလဒ် မှတ်တမ်းတစ်ခုတည်းက မဟုတ်ဘူး။
+တိကျသော လက်ကျန်နှစ်ခုလုံးကို ဖတ်ပြီးနောက် သတ်မှတ်ချက်ကို ဖတ်ပါ။ ပြောင်းလဲပြီးနောက် အခြေအနေကို ဖတ်သည့် ဤ query များသည် အောင်မြင်မှုစံဖြစ်ပြီး တင်သွင်းမှု receipt တစ်ခုတည်းက ထိုစံ မဟုတ်ပါ။
 
 ```bash
 iroha --config "$LOCAL_CONFIG" ledger asset get \
@@ -154,7 +153,7 @@ iroha --config "$LOCAL_CONFIG" ledger asset definition get \
 
 ## ပြဿနာဖြေရှင်းခြင်း {#troubleshooting}
 
-- `#` ကိုပါဝင်သော ID သည် ပရိုတိုကုတ်စံညွှန်းအရ အရင်းအမြစ်အဓိပ္ပါယ်ဖွင့်ဆိုမှု ID တစ်ခုမဟုတ်ဘဲ အမည်မဖော်လိုသူ (သို့) ဘိလပ်မြေညီမျှခြင်း စာလုံးတစ်လုံးဖြစ်သည်။ Base58 တန်ဖိုးကို `--definition` ဖြင့်သုံးပြီး (သို့) ချိတ်ဆက်ထားသည့် alias ကို `--definition-alias` ဖြင့် ဖြတ်သန်းပါ။
+- `#` ပါသော ID သည် alias သို့မဟုတ် တိကျသော လက်ကျန် literal ဖြစ်ပြီး စံပိုင်ဆိုင်မှုသတ်မှတ်ချက် ID မဟုတ်ပါ။ `--definition` နှင့် Base58 တန်ဖိုးသက်သက်ကို သုံးပါ၊ သို့မဟုတ် `--definition-alias` ဖြင့် ချိတ်ဆက်ထားသော alias ကို ပေးပါ။
 - `Scale` အမှားတွေက အဓိပ္ပါယ်ဖွင့်ဆိုချက်က ခွင့်ပြုတာထက် အရေအတွက်တစ်ခုမှာ နံပါတ်ပိုင်းအရေအတွက် ပိုများတယ်လို့ ဆိုလိုတာပါ။
 - `Mintability` ပယ်ချခြင်းဆိုသည်မှာ `Once`၊ `Not` သို့မဟုတ် `Limited(n)` မူဝါဒများ ထုတ်လွှင့်မှု ကုန်ဆုံးသွားပြီ (သို့မဟုတ်) ခွင့်ပြုထားခြင်းမရှိပါ။ သမိုင်းကို ပြန်မရေးပါနဲ့။ အဓိပ္ပါယ်သတ်မှတ်ချက် မေးမြန်းချက်ဖြင့်ပြန်ပို့သော မူဝါဒကိုအသုံးပြုပါ။
 - အဆင့် (၂) သည် ဦးတည်ရာအကောင့်ကို တိတိကျကျ မှတ်ပုံတင်သောကြောင့် အကောင့်လက်ခံမှုမူဝါဒသည် `ExplicitOnly` ဖြစ်သည့်အခါတွင်လည်း လွှဲပြောင်းမှု အလုပ်လုပ်သည်။ အမည်ဆင်တူသော CLI guard သည် အကောင့် သို့မဟုတ် လက်ကျန်ကို မှတ်ပုံတင်ခြင်းမရှိဘဲ အခြားညွှန်ကြားချက်တစ်ခု ထပ်ဖြည့်ခြင်းအစား abort လုပ်သည်။
@@ -163,7 +162,7 @@ iroha --config "$LOCAL_CONFIG" ledger asset definition get \
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [Asset lifecycle integration tests at the pinned source-code revision (ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှု)](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/asset.rs)
+- [ပုံသေသတ်မှတ်ထားသော commit ရှိ ပိုင်ဆိုင်မှုသက်တမ်းစက်ဝန်း ပေါင်းစည်းစမ်းသပ်ချက်များ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/asset.rs)
 - [Rust ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ်ကို ပြန်လည်သုံးသပ်မှုမှာ ရင်းနှီးမြှုပ်နှံမှု တည်ဆောက်ပုံဥပမာများ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/examples/tutorial.rs)
 - [ပိုက်ဆံများ](/my/blockchain/assets.md)
 - [ညွှန်ကြားချက်](/my/blockchain/instructions.md)

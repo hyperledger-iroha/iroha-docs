@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Rendimiento y Métricas {#performance-and-metrics}
 
 El rendimiento de Iroha depende de la carga de trabajo, la topología del validador, las condiciones de la red y la configuración del consenso. Por lo tanto, un solo número de TPS solo es útil cuando está asociado a una prueba de referencia con una configuración fija.
@@ -38,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -131,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### Candidatos y Límites de Ingreso {#candidate-and-ingress-bounds}
 
-Los límites locales del nodo Sumeragi determinan cuánto trabajo de candidato y recuperación puede retener un validador:
+El tamaño de los bloques y los límites de las transacciones proceden del génesis firmado y de los parámetros de cadena confirmados en el estado. La configuración local del nodo en `[sumeragi]` abarca el rol de participación, la custodia de las claves de firma, las rutas de los registros de seguridad y los ajustes locales documentados de tiempos de espera y sincronización.
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` y `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks` y `sumeragi.queues.ready_bodies`
-
-Los límites demasiado pequeños crean presión sobre la cola o la recuperación de la carga útil; los límites demasiado grandes aumentan la memoria retenida y la cantidad de trabajo disponible para una red abusiva pares. Compare la vista de datos de diagnóstico en un momento específico con la memoria del proceso, el manejo de mensajes y las métricas de cuerpo faltante antes de cambiar un límite a la vez:
+Los límites de entrada de la red y de la cola de transacciones controlan el trabajo retenido localmente. Compare la captura de diagnóstico con la memoria del proceso y las métricas de procesamiento de mensajes y de cuerpos ausentes antes de cambiar un límite operativo. Mantenga fijos los parámetros de cadena firmados al comparar ejecuciones de la misma red:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -244,7 +236,7 @@ Publica los números de rendimiento solo con suficiente contexto para reproducir
 - recuentos de validadores y observadores
 - modo de consenso, cadencia de bloques firmados y diseño DA
 - comité exacto `3f + 1`, quórum y lista de observadores
-- `sumeragi.block`, `sumeragi.queues`, `sumeragi.limits`, límites de entrada de red y de la cola de transacciones
+- parámetros de cadena firmados, ajustes locales de Sumeragi y límites de entrada de la red y de la cola de transacciones
 - perfil de telemetría
 - hardware, almacenamiento y detalles de OS
 - red RTT, jitter, pérdida y suposiciones de ancho de banda
@@ -261,6 +253,6 @@ Sin estos detalles, un número TPS debe considerarse anecdótico.
 ## Páginas relacionadas {#related-pages}
 
 - [Pruebas de caos con Izanami](./chaos-testing.md)
-- [Torii API puntos finales](../../reference/torii-endpoints.md)
+- [Puntos de acceso de Torii](../../reference/torii-endpoints.md)
 - [Operar Iroha 3 a través de CLI](../../get-started/operate-iroha-via-cli.md)
 - [referencia de configuración de par de red](../../reference/peer-config/params.md)

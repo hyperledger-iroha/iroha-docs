@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: ab0496d2cd36056dbc5486cd1ea288606476862290cc544e7afcf63a1641dd6d
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Solución de problemas de configuración {#troubleshooting-configuration-issues}
 
 Esta sección ofrece consejos para resolver problemas de configuración de Iroha 3. Asegúrese de [revisar primero las claves](./overview.md#check-the-keys), pues son la causa más habitual de problemas en Iroha.
@@ -25,7 +24,7 @@ Verifique el fallo con estos pasos:
 La forma de solucionar un problema de este tipo depende del uso de Iroha. Si se trata de una demostración básica y no necesita conservar los datos de los pares de la red, regenere una red local coincidente o un paquete Docker Compose con Kagami:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
 ```
 

@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: ab0496d2cd36056dbc5486cd1ea288606476862290cc544e7afcf63a1641dd6d
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # གྲོས་སྒྲིག་གི་དཀའ་ངལ་སེལ་ཐབས། {#troubleshooting-configuration-issues}
 
@@ -24,7 +24,7 @@ translation_engine: human-reviewed
 གནད་དོན་འདི་སེལ་ནིའི་ཐབས་ལམ་དེ་ Iroha གི་ལག་ལེན་འཐབ་ཐངས་ལས་བབས་ཏེ་ཡོདཔ་ཨིན། འ་ནི་གཞི་རྟེན་དཔེ་སྟོན་ཅིག་ཨིན་པ་ཅིན་ ཁྱོད་ཀྱིས་ མཐུད་མཚམས་ཡིག་ཆ་ཚུ་བཞག་དགོཔ་མེད་པ་ཅིན་ ས་གནས་བརྟག་དཔྱད་དྲ་རྒྱ ཡང་ན་ Docker Compose ཆ་ཚན་འདི་ Kagami ལུ་སླར་གསོ་འབད་:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
 ```
 

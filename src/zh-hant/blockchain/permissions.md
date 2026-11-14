@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # 許可證 {#permissions}
 
 對於區塊鏈上的各種操作,例如錢或燒燬資產,帳戶需要許可令牌.
@@ -89,7 +88,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 - 資產, NFTs,以及託管
 - 觸發器
 - 角色和許可權
-- 執行器/執行階段,證明,橋樑和 SORA/Nexus 模組
+- 執行器/執行階段,證明,橋樑和 SORA Nexus 模組
 
 準確的代幣列表在 [Permission Tokens引用](/zh-hant/reference/permissions.md)中得到源支援.
 

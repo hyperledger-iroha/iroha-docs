@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /guide/tutorials/python.md
-translation_source_hash: d0ecbade221ceba455730e80c6e12db930c65a4cbcf9e643c1c2d4cba47b0940
+translation_source_hash: bd9ff4a38229cbdabbd77e21fe31a770f9213341d7db73a75ed0bd914c761849
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Python {#python}
 
 Yuxarı axın iş sahəsindəki Python SDK `iroha-python` səviyyəsindədir. İlk Iroha 3 buraxılışı cari Torii və Norito səthlərini hədəfləyir. Paket versiyasını və ya inteqrasiyanız tərəfindən istifadə olunan mənbə tənzimləməsini sabitləyin ki, SDK və node eyni seriyalaşdırma formatının versiyasında qalsın.
@@ -46,7 +45,7 @@ PY
 
 ## Tez Başlanğıc {#quickstart}
 
-İctimai, yalnız oxumaq üçün Taira API son nöqtələrlə başlayın:
+Açıq, yalnız oxuma üçün olan Taira son nöqtələrindən başlayın:
 
 ```python
 from iroha_python import (
@@ -709,7 +708,7 @@ definitions = client.list_asset_definitions_typed(limit=10)
 print(domains.total, definitions.total)
 ```
 
-Torii API son nöqtəsi hələ tipli proqram təminatı adapterinə malik olmadıqda ümumi sorğu köməkçilərindən istifadə edin:
+Torii son nöqtəsinin hələ tipləşdirilmiş örtük interfeysi yoxdursa, ümumi sorğu köməkçilərindən istifadə edin:
 
 ```python
 from urllib.request import Request, urlopen
@@ -724,7 +723,7 @@ with urlopen(request, timeout=5) as response:
     metrics = response.read().decode("utf-8")
 ```
 
-Hesab inventar köməkçiləri SDK tərəfindən qəbul edilən hesab identifikatorunu tələb edir. Tək protokol-standartlı I105 hesab ID-lərindən və ya zəncirdəki təxəllüslərdən istifadə edin; Əgər bir blok vasitəçisi və ya xam API son nöqtəsi SDK tərəfindən rədd edilən bir ID qaytarırsa, bu köməkçiləri çağırmadan əvvəl onu tək bir protokol-standart hesab ID-sinə həll edin:
+Hesab inventarı köməkçiləri SDK-nın normallaşdırıcısının qəbul etdiyi hesab identifikatorunu tələb edir. Kanonik I105 hesab ID-ləri və ya zəncirdəki ləqəblərdən istifadə edin; blok tədqiqatçısı və ya birbaşa son nöqtə SDK-nın rədd etdiyi ID qaytararsa, bu köməkçiləri çağırmazdan əvvəl onu kanonik hesab ID-sinə həll edin:
 
 ```python
 # These helpers expect a canonical account ID or an alias the SDK can normalize.
@@ -1026,26 +1025,6 @@ client = create_torii_client(
 )
 ```
 
-## Kagemusha Hazırlığı {#kagemusha-readiness}
-
-Python SDK cari JSON hazırlıq marşrutunu onun ümumi Torii sorğu yardımçısı vasitəsilə sorğu edə bilər:
-
-```python
-ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
-
-readiness = client.request_json(
-    "GET",
-    "/v1/offline/readiness",
-    params={"asset_definition_id": ASSET_DEFINITION_ID},
-    headers={"Accept": "application/json"},
-    expected_status=(200,),
-)
-print(readiness["ready"])
-print(readiness["blockers"])
-```
-
-Python tipli Kagemusha balans artırma və ya geri alma arxiv generatorlarını açmır. Tək protokol-standart V4 arxivləri yaratmaq üçün tipli Swift və ya JVM pulqabısından istifadə edin, sonra onları dəstəklənən Kagemusha Torii klienti vasitəsilə göndərin və sorğu edin.
-
 ## Abunəliklər {#subscriptions}
 
 Abunə oxumaları və layihə qurucuları `iroha_python.ToriiClient` tərəfindən istifadə olunan paylaşılmış Torii müştəridən miras alınır. Hər mutasiya bədənə bağlı tək bir şeylə qəbul edilir protokol-standart hesab imzası və imzasız əməliyyat layihəsini qaytarır. Torii heç vaxt şəxsi açarı qəbul etmir və layihəni sizin üçün təqdim etmir.
@@ -1300,7 +1279,7 @@ if connect_status is not None:
 
 ## SoraFS, UAID və Kaigi Köməkçilər {#sorafs-uaid-and-kaigi-helpers}
 
-Bu köməkçilər hədəf düyün müvafiq Nexus/SORA API son nöqtələrini təqdim etdikdə mövcuddur. Boş siyahıları etibarlı cavab kimi qəbul edin: ictimai Taira nümunə texniki manifest və ya UAID üçün məlumat olmadan marşrutun aktiv ola bilər.
+Bu köməkçilər hədəf qovşaq müvafiq SORA Nexus son nöqtələrini təqdim etdikdə əlçatandır. Boş siyahıları etibarlı cavab sayın: açıq Taira şəbəkəsində nümunə manifest və ya UAID üçün məlumat olmadan da marşrut aktiv ola bilər.
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
@@ -1324,7 +1303,7 @@ print(health.healthy_total, health.failovers_total)
 
 ## Norito RPC və GPU Köməkçilər {#norito-rpc-and-gpu-helpers}
 
-`NoritoRpcClient`-dan istifadə edin, əgər sizdə artıq Norito bayt varsa və Torii API ikili son nöqtəsini çağırmaq lazımdır. Nümunə əvvəlki əməliyyat şablonundan imzalanmış məlumat konteyneri tələb edir:
+Artıq Norito baytlarınız varsa və ikili Torii son nöqtəsini çağırmalısınızsa, `NoritoRpcClient` istifadə edin. Nümunə əvvəlki əməliyyat şablonundan imzalanmış zərf tələb edir:
 
 ```python
 from iroha_python import NoritoRpcClient, NoritoRpcConfig
@@ -1357,10 +1336,10 @@ Python SDK artıq aşağıdakılar üçün köməkçiləri ehtiva edir:
 - ümumi ISI və sahəyə xas genişlənmələr üçün yazılmış təlimat yaradıcıları
 - əməliyyat layihələri, texniki manifestlər, imzalama və imzalanmış əməliyyat məlumat konteyneri iş axınları
 - canlı tədbir yayım və yazılmış filtrlər; yekun blok axınları tam tarixçəni təmin edir
-- genel Kagemusha hazırlıq girişi və Torii abunə köməkçiləri; tiplənmiş balans doldurma və geri alım yaradıcıları açıq deyildir
+- Torii abunəlik oxumaları və imzalanmamış əməliyyat layihələrinin qurucuları
 - hesab ünvanı, bütün-alqoritm imzalama köməkçiləri, çoxhash dövrü səyahətlər, SM2, GOST, ML-DSA, BLS, və məxfi açar idarəsi
 - URIs-ə, sessiyalara, ramklara, şifrələmə köməkçilərinə və qeyd dəftərinin admininə qoşul
-- idarəetmə, proqram təminatının icra mühiti yeniləməsi, Sumeragi, node-admin, SoraFS, UAID və Kaigi API son nöqtə proqram təminatı adapterləri, burada node bu xüsusiyyətləri göstərir
+- qovşaq müvafiq funksiyaları təqdim etdikdə idarəetmə, icra mühitinin yenilənməsi, Sumeragi, qovşaq inzibatçılığı, SoraFS, UAID və Kaigi son nöqtələrinin örtük interfeysləri
 
 ## Yuxarı Axın İstinadları {#upstream-references}
 

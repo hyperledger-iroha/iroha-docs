@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 3287a6bbaf06ec92ebbe9ac33a8294d4e1d232bc01fd6a5da13ddd166c620965
+translation_source_hash: 8a8fd0d29d4c1c323b457595653077564ad100f397ea2f4b059b35451b76aa44
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+claude-opus-5-5
+translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link
 ---
-
 # 性资产 {#fungible-assets}
 
 ## 结果 {#outcome}

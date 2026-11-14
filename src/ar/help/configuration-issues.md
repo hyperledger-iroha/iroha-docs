@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: ab0496d2cd36056dbc5486cd1ea288606476862290cc544e7afcf63a1641dd6d
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # استكشاف مشكلات التكوين {#troubleshooting-configuration-issues}
 
 يقدم هذا القسم نصائح لحل المشكلات المتعلقة بتكوين Iroha 3. تأكد من [تحقق من المفاتيح](./overview.md#check-the-keys) أولاً، حيث إنه المصدر الأكثر شيوعًا للمشكلات في Iroha.
@@ -25,7 +24,7 @@ translation_engine: bing-translator-llm
 تختلف طريقة استكشاف مثل هذه المشكلة بناءً على استخدام Iroha. إذا كان هذا عرضًا تجريبيًا أساسيًا ولا تحتاج إلى الاحتفاظ ببيانات أقران الشبكة، فقم بإعادة إنشاء localnet أو حزمة Docker Compose المطابقة باستخدام Kagami:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
 ```
 

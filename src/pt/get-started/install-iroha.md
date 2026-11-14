@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: 4c7c62c23166a19ccc3a6a4bb42d808038d755b8c05e87b9e2ce21fbbe31a6ac
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Instalar Iroha 3 {#install-iroha-3}
 
 Esta página aborda o fluxo de instalação atual para o toolchain e binários Iroha 3 usando o espaço de trabalho upstream `hyperledger-iroha/iroha`.
@@ -64,7 +63,8 @@ Os quatro binários que você normalmente usará são:
 
 O fluxo localnet atual com suporte a fonte é gerado por Kagami. Ele escreve as configurações de pares da rede, artefatos de gênese do blockchain, configuração do cliente, scripts auxiliares e um arquivo Compose opcional que corresponde ao código verificado:
 
-- `kagami localnet` para scripts de pares nativos de rede local
+- `kagami localnet up` para uma rede local gerenciada que Kagami inicia e supervisiona
+- `kagami localnet generate` para scripts de pares nativos de rede local
 - `kagami docker` para Docker Compose gerado a partir de um diretório localnet
 
 Continue com [Iniciar Iroha 3](/pt/get-started/launch-iroha.md).

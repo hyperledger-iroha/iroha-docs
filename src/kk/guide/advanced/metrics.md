@@ -1,11 +1,10 @@
 ---
 translation_locale: kk
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Өнімділік және көрсеткіштер {#performance-and-metrics}
 
 Iroha өнімділігі жұмыс жүктемесіне, валидатор топологиясына, желі жағдайларына және консенсус параметрлеріне байланысты. Сондықтан бір ғана TPS саны тек тұрақты конфигурациямен жүргізілген бенчмаркпен байланысты болған жағдайда ғана пайдалы.
@@ -38,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -131,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### Кандидат және кіріс шектері {#candidate-and-ingress-bounds}
 
-Түйін-локалды Sumeragi шектер валидатор қанша кандидатты және қалпына келтіру жұмысын сақтай алатынын анықтайды:
+Блок өлшемі мен транзакция шектері қол қойылған генезис пен бекітілген тізбек параметрлерінен алынады. Түйінге жергілікті `[sumeragi]` параметрлері қатысу рөлін, қол қою кілттерінің сақталуын, қауіпсіздік жазбаларының жолдарын және құжатталған жергілікті күту уақыты мен синхрондау түзетулерін қамтиды.
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` және `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks`, және `sumeragi.queues.ready_bodies`
-
-Тым төмен шектер кезекке немесе пайдалы жүктемені қалпына келтіруге қысым түсіреді; тым жоғары шектер сақталатын жадты және жүйені теріс пайдаланатын түйін орындай алатын жұмыс көлемін арттырады. Әр жолы бір шекті өзгертпес бұрын диагностикадағы күй кескінін процесс жадымен, хабарларды өңдеумен және денесі жетіспейтін хабар метрикаларымен салыстырыңыз:
+Желі кірісі мен транзакция кезегінің шектері жергілікті сақталатын жұмысты басқарады. Операциялық шекті өзгертпес бұрын диагностика кескінін процесс жадымен, хабарламаларды өңдеу және жетіспейтін денелер метрикаларымен салыстырыңыз. Бір желідегі іске қосуларды салыстырғанда қол қойылған тізбек параметрлерін өзгертпеңіз:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -244,7 +236,7 @@ iroha --config ./localnet/client.toml \
 - валидатор және бақылаушы санақтары
 - консенсус режимі, қол қойылған блок қатары және DA орналасуы
 - нақты `3f + 1` комитеті, кворум және бақылаушы тізімі
-- `sumeragi.block`, `sumeragi.queues`, `sumeragi.limits`, желі-куу, және транзакция-кезек шектері
+- қол қойылған тізбек параметрлері, жергілікті Sumeragi түзетулері, желі кірісі және транзакция кезегінің шектері
 - телеметрия профилі
 - аппараттық құрал, сақтау және OS деректері
 - желі RTT, діріл, жоғалту және өткізу қабілеті болжамдары

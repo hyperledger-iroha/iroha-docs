@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /reference/glossary.md
-translation_source_hash: ab484310e7e0b0662c1d4bb133e7ae337c71b09b5fdc8e678581234d74ee9b29
+translation_source_hash: 8b00758b5731a2f9e09a5b49ccb7f298229ab966b5adf2d7152e3b1416fe8737
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
-
 # Glossário <!-- omit in toc --> {#glossary}
 
 Aqui você pode encontrar definições de todas as entidades relacionadas a Iroha.
@@ -42,7 +41,7 @@ Durante a época medieval, os livros de registros em blockchain eram abertos à 
 
 ## par de rede {#peer}
 
-Um par de rede em Iroha significa uma instância de processo Iroha à qual outros processos Iroha e aplicativos clientes podem se conectar. Uma única máquina pode hospedar vários pares de rede Iroha. os pares da rede são iguais em relação aos seus recursos e capacidades, com uma exceção importante: apenas um dos pares da rede executa o bloco gênese da blockchain na fase de inicialização da rede Iroha.
+Um nó par é um processo de nó Iroha que aceita conexões de outros nós pares e de aplicações cliente. Uma máquina pode hospedar vários nós pares com configuração e armazenamento separados. Cada nó par que inicia o consenso a partir de um estado vazio autentica e aplica o gênese assinado da rede; nós pares restaurados de instantâneos autenticados retomam a operação a partir desse estado.
 
 Outras blockchains podem se referir ao mesmo conceito como um nó ou um validador.
 
@@ -92,7 +91,7 @@ O módulo Iroha responsável pelo consenso.
 
 ### Torii (Portão) {#torii-gate}
 
-Módulo com a lógica de manipulação de solicitações recebidas para o [par de rede](#peer). É usado para receber, aceitar e direcionar instruções recebidas e consultas HTTP, bem como atualizações de configuração em tempo de execução.
+Módulo com a lógica de tratamento das solicitações recebidas pelo [par](#peer). Ele recebe, aceita e encaminha instruções, consultas HTTP e solicitações de inspeção da configuração pelo operador.
 
 ### Kura (Armazém) {#kura-warehouse}
 
@@ -116,7 +115,7 @@ Um tipo de evento que permite invocar uma instrução especial Iroha em commit d
 
 ### Versionamento {#versioning}
 
-Cada solicitação é rotulada com a versão API à qual pertence. Isso permite uma combinação de diferentes versões binárias do software cliente/par Iroha para interoperar, o que por sua vez permite atualizações de software na rede Iroha.
+A primeira versão do Iroha 3 oferece suporte a uma única versão canônica do formato de transmissão de blocos. O endpoint `/v1/api/version` informa `SignedBlock::WIRE_VERSION` após a aplicação do gênese e retorna uma resposta de indisponibilidade antes disso. Essa informação descreve o formato de transmissão suportado; não negocia compatibilidade entre diferentes estruturas de protocolo nem autoriza uma atualização da rede.
 
 ### Hijiri (sistema de reputação de pares na rede) {#hijiri-peer-reputation-system}
 
@@ -160,4 +159,4 @@ Representação na memória do estado atual da blockchain. O WSV contém os `Wor
 
 ## Líder {#leader}
 
-Em uma rede Iroha, um par de rede é selecionado aleatoriamente e concedido o privilégio especial de formar o próximo bloco. Este privilégio pode ser revogado em redes que atingem [Tolerância a falhas bizantinas](#byzantine-fault-tolerance-bft) por meio de [alteração de visualização](#view-change).
+Para cada altura e visão, o Sumeragi determina o proponente de forma determinística a partir do comitê, da semente autenticada de seleção do líder e do histórico confirmado de líderes ignorados. Uma [mudança de visão](#view-change) passa a vez ao próximo membro elegível do comitê sob as mesmas regras de [tolerância a falhas bizantinas](#byzantine-fault-tolerance-bft).

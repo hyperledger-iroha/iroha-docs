@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
+translation_source_hash: 37e8be9b07a40e5c6b841a47b016320e42079853433fb3e53937e4021dc1304f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Swift اور iOS {#swift-and-ios}
 
 اپ اسٹریم workspace کی Swift SDK، ‏`IrohaSwift/` کے تحت `IrohaSwift` Swift package ہے۔ اس کا package مینی فیسٹ تین library products—`IrohaSwift`، ‏`IrohaSwiftMobileTransports` اور `IrohaSwiftTransferUI`—متعین کرتا ہے، اور Swift tools 5.9 کے ساتھ iOS 15+ اور macOS 12+ کو ہدف بناتا ہے۔
@@ -161,7 +160,7 @@ Swift ذریعہ میں فی الحال شامل ہیں:
 - Ed25519، secp256k1، ML-DSA، BLS، GOST، اور SM2 پر دستخط کرنے والی سطحیں، جہاں ضروری ہو مقامی پل کی حمایت کے ساتھ
 - مارکیٹ پلیس اور گمنام ایسکرو کے لئے مقامی سپلائی ہدایات کی پے لوڈ بنانے والے
 - WebSocket ، فریم، کرپٹو، سیشن، قطار، دوبارہ چلائیں، اور تشخیص کے مددگاروں کو مربوط کریں
-- Kagemusha کی تیاری، ٹائپ کردہ بھرنے اور واپسی، آپریشن کی حیثیت، نوٹ، نیٹ ورک نوڈ بنڈل، رسید، اور QR سٹریم ماڈلز
+- KAGEMUSHA V1 وائر معاون افعال اور نَیٹو والیٹ کے Advance فراہم کنندہ، اندراج، بازیابی اور منظور شدہ تبادلے کی کالز کے لیے iPhone پلیٹ فارم اڈاپٹر
 - SoraFS ، اعداد و شمار کی دستیابی اور ثبوت منسلک کرنے میں مدد
 
 ## API مثالیں {#api-examples}

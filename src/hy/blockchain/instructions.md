@@ -1,11 +1,10 @@
 ---
 translation_locale: hy
 translation_source: /blockchain/instructions.md
-translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
+translation_source_hash: ef50253c5478c9d8c3e14529dc4c2f3de67c344901c82c65be77ceb237a29598
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # Iroha Հատուկ հրահանգներ {#iroha-special-instructions}
 
 Երբ խոսեցինք [Iroha-ի աշխատանքի մասին](/hy/blockchain/iroha-explained), ասացինք, որ Iroha-ի հատուկ հրահանգները համաշխարհային վիճակը փոփոխելու միակ եղանակն են։ Իսկ ի՞նչ հատուկ հրահանգներ կան։ Եթե կարդացել եք այս ձեռնարկի լեզուներին հատուկ ուղեցույցները, արդեն հանդիպել եք մի քանիսին՝ `Register<Account>` և `Mint<Numeric>`։
@@ -23,7 +22,7 @@ Iroha հատուկ հրահանգների ամբողջական ցանկը հետ
 | [Բնային պահպանումների եւ ակտիվների կոճակները](#native-escrow-and-asset-locks) |Փակեք թվային ակտիվները արձանագրության պահեստում: |
 | [Ատոմային մասնավոր հաշվարկ](#atomic-private-settlement) | Կառավարում է գաղտնի pool-երը և ատոմային փաթեթները։ |
 | [ExecuteTrigger](#executetrigger) |Գործադրեք գործարկիչները: |
-| [Լոգ/Մշակութային/Աջատում](#other-instructions) |Գրեք, երկարացրեք կամ բարելավեք վազման ժամանակի վարքագիծը: |
+| [Log/Custom/Upgrade](#other-instructions) | Գրանցել, ընդլայնել կամ արդիականացնել կատարման միջավայրի վարքը։ |
 
 Եկեք սկսենք Iroha հատուկ հրահանգների ամփոփմամբ, թե ինչ օբյեկտներ կարող են կանչվել յուրաքանչյուր հրահանգի համար եւ ինչ հրահանգներ կան յուրաքանչյուր օբյակի համար:
 
@@ -35,7 +34,7 @@ Iroha հատուկ հրահանգների ամբողջական ցանկը հետ
 
 |Ուսուցում |Նյութեր |Կայքում |
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- |
-| [EnsureAlias](#ensurealias) |սովորական տիրույթների, տվյալների տարածքի եւ հաշիվների կարգավորումը|                      |
+| [EnsureAlias](#ensurealias) | սովորական տիրույթի, տվյալների տարածքի այլանվան և հաշվի այլանվան կարգավորում | |
 | [Գրանցում/բացառություն](#un-register) |հաշիվներ, ակտիվների սահմանումներ, NFTs, դերակատարություններ, առաջադրանքներ, հանգույցներ; տիրույթի հեռացում |                      |
 | [Mint/Burn](#mint-burn) |թվային ակտիվներ, կրկնումները |հաշիվներ կամ գործարկիչներ |
 | [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) |այն օբյեկտները, որոնք ունեն [մետադատա](./metadata.md). տիրույթներ, հաշիվներ, ակտիվների սահմանումներ, NFTs, RWAs, գործարկիչներ |                      |
@@ -45,7 +44,7 @@ Iroha հատուկ հրահանգների ամբողջական ցանկը հետ
 | [Բնային պահպանումների եւ ակտիվների կոճակները](#native-escrow-and-asset-locks) |թվային ակտիվների պահպանումներ, ակտիվների փակումներ, անանուն պահպանումի պարտավորություններ |գնորդներ, նպատակակետեր կամ վեճի բաժանումներ |
 | [Ատոմային մասնավոր հաշվարկ](#atomic-private-settlement) | երթուղուն կապված գաղտնի pool-եր, քաղաքականության ռոտացիաներ, վերջնականացված փաթեթներ և չեղարկման նշաններ | |
 | [ExecuteTrigger](#executetrigger) |գործարկիչներ |                      |
-| [Լոգ/Մշակութային/Աջատում](#other-instructions) |օրագրեր, կատարողին հատուկ օգտակար բեռներ, կատարողի թարմացումներ |                      |
+| [Log/Custom/Upgrade](#other-instructions) | գրանցամատյաններ, կատարիչին հատուկ տվյալների բեռներ, կատարիչի արդիականացումներ | |
 
 ISI-ի դիտարկման եւս մեկ տարբերակ կա, ըստ գրասենյակային օբյեկտի, որը նրանք դիպչում են.
 
@@ -53,7 +52,7 @@ ISI-ի դիտարկման եւս մեկ տարբերակ կա, ըստ գրասե
 | ---------------- | ------------------------------------------------------------------------------------------------------------ |
 |Հաշիվ |գրանցել/բացառել հաշիվներ, ստանալ ակտիվներ, թարմացնել հաշիվի մետադատները, տրամադրել/վերականգնել թույլտվությունները եւ դերը |
 |Դոմեյն |ապահովել տիրույթի կարգավորումը, չեղարկել տիրույթները, փոխանցել տիրապետման սեփականությունը, թարմացնել տիրույթի մետադատաները |
-|Աշունների սահմանումը|գրանցման/հեղափոխման սահմանումները, տիրապետության փոխանցումը, մետադատաների թարմացումը |
+| Ակտիվի սահմանում | գրանցել կամ ապագրանցել սահմանումները, փոխանցել սեփականությունը, թարմացնել մետատվյալները |
 |Գույք |Թվային քանակություն, տրանսֆերային քանակությունը |
 |Հավաքագրություն|բացել, ընդունել, նշել ուղարկված վճարումը, ազատ արձակել, չեղյալ հայտարարել, վեճ լուծել, հանել կամ լրանալ ներկառուցված պահապանության գրառումները |
 |NFT |գրանցում/բացառություն NFTs, տիրապետության փոխանցում, մետադատա թարմացում |
@@ -69,7 +68,7 @@ ISI-ի դիտարկման եւս մեկ տարբերակ կա, ըստ գրասե
 cargo run --bin iroha -- --config ./defaults/client.toml <command>
 ```
 
-Եթե դուք տեղադրել է `iroha` բինար, օգտագործեք `iroha --config ./defaults/client.toml` փոխարենը. Փոխանակել ստորեւ տեղակալները արժեքներով ձեր ցանցից:
+Եթե տեղադրել եք `iroha` կատարվող ֆայլը, փոխարենը օգտագործեք `iroha --config ./defaults/client.toml`։ Գործարք ուղարկող հրամանները նաև փոխանցում են `--fee-payer authority`, որով վճարը գանձվում է ստորագրող հաշվից․ CLI-ն ստորագրելուց առաջ հաշվարկում և ցույց է տալիս ճշգրիտ վճարը։ Ստորև բերված տեղապահերը փոխարինեք ձեր ցանցի արժեքներով․
 
 ```bash
 export ALICE="<ALICE_ACCOUNT_I105>"
@@ -79,34 +78,32 @@ export PEER_KEY="<BLS_PUBLIC_KEY_MULTIHASH>"
 export PEER_POP="<PROOF_OF_POSSESSION_HEX>"
 ```
 
-Հանրային Taira թեստային ցանցը թիրախավորելիս օգտագործեք Taira-ի հաճախորդի կոնֆիգուրացիա։ Վճարովի օրինակները գործարկելուց առաջ [Ստացեք թեստային XOR Taira-ում](/hy/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) էջից `taira_faucet_claim.py` անունով պահպանեք faucet-ի օժանդակ սկրիպտը, այնուհետև faucet-ից պահանջեք թեստային XOR-ը․
+Հանրային Taira փորձնական ցանցին դիմելիս օգտագործեք Taira հաճախորդի կարգավորումը և ֆինանսավորեք դրա հաշիվը [Ստանալ փորձնական XOR Taira-ում](/hy/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) բաժնի նախապես պատրաստվող միջոցների ստացման հոսքով։ Վճարովի օրինակներն աշխատեցնելուց առաջ ստուգեք, որ վճարային ակտիվի մնացորդը տեսանելի է․
 
 ```bash
 export TAIRA_ACCOUNT_ID="<TAIRA_I105_ACCOUNT_ID>"
-export TAIRA_FEE_ASSET="6TEAJqbb8oEPmLncoNiMRbLEK6tw"
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-Գազի գազով ֆինանսավորվող ակտիվը տեսանելի դարձնելուց հետո անհրաժեշտ գազային ակտիվների մետադատածները միացրեք գործարքները գրելու համար.
+Taira-ի գրառման գործողություններն օգտագործում են նույն `--fee-payer authority` ընտրությունը, և CLI-ն վճարը հաշվարկում է Taira-ի վճարային ակտիվով։ `gas_asset_id`-ի նման վճարային բանալիներ մի՛ կցեք որպես գործարքի մետատվյալներ․ հաճախորդը դրանք մերժում է․
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 cargo run --bin iroha -- \
   --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+  --fee-payer authority \
   <command>
 ```
 
 ## EnsureAlias {#ensurealias}
 
-`EnsureAlias` տիրույթների ստեղծման եւ դրանց SNS վարձակալության համար սովորական առաջին թողարկման ուղին է: Այն հայտարարաբար կապում է տվյալների ճշգրիտ տարածքը, սեփականատերը, վարձակալման ժամկետը եւ գծագրային պահապանը, այնուհետեւ ստեղծել կամ վերանորոգել բոլոր պահանջվող վիճակը ատոմիկորեն: Օգտագործեք վավերացված `POST /v1/aliases/setup/plan` վերջային կետը կամ համապատասխանող CLI աշխատանքային հոսքը.
+`EnsureAlias`-ը առաջին թողարկման սովորական ուղին է տիրույթներ և դրանց SNS վարձակալություններ ստեղծելու համար։ Այն դեկլարատիվ կերպով կապում է ճշգրիտ տվյալների տարածքը, սեփականատիրոջը, վարձակալության ժամկետը և գնառաջարկի ստուգման պայմանը, ապա ատոմային կերպով ստեղծում կամ վերականգնում է ամբողջ անհրաժեշտ վիճակը։ Օգտագործեք նույնականացում պահանջող `POST /v1/aliases/setup/plan` վերջնակետը կամ համապատասխան CLI հոսքը․
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -114,7 +111,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./domain.intent.json \
   --plan-file ./domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./domain.plan.json
 ```
 
@@ -165,34 +162,34 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./docs-domain.intent.json \
   --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain unregister --id docs.universal
 ```
 
 Գրանցման եւ չեղարկման հաշիվներ
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account register --id "$BOB"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account register --id "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account unregister --id "$BOB"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account unregister --id "$BOB"
 ```
 
 Գրանցման եւ չեղարկման ակտիվների սահմանումները.
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
   --scale 0
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition unregister --id "$ASSET_DEF"
 ```
 
@@ -200,37 +197,37 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ```bash
 printf '{"kind":"badge","level":"intro"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft register --id 'badge$docs.universal'
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft unregister --id 'badge$docs.universal'
 ```
 
 Գրանցման եւ չեղարկման դեր:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role register --id operators
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role unregister --id operators
 ```
 
 Register եւ unregister triggers. Trigger գրանցման կարիք կա՛մ կազմված IVM բայթ կոդը, կա՛մ սերիալացված հրահանգների ցուցակ: Այս օրինակում կառուցվում է `Log` հրահանգի հետ CLI եւ խողովակներ այն դեպի trigger գրանցման:.
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml -o \
-  ledger transaction ping --log-level INFO --msg "hourly cleanup" |
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger register --id hourly_cleanup \
+cargo run --bin iroha -- --config ./defaults/client.toml --emit-instructions \
+  tx ping --log-level INFO --msg "hourly cleanup" |
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger register --id hourly_cleanup \
   --instructions-stdin \
   --filter time \
   --time-start 5m \
   --time-period-ms 3600000
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger unregister --id hourly_cleanup
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger unregister --id hourly_cleanup
 ```
 
 Գրանցել եւ չեղարկել հանգույցները: Ստեղծեք BLS բանալին եւ PoP ՝ `kagami`, եթե դուք դեռ չունեք դրանք.
@@ -241,10 +238,10 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
 PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
 PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer unregister --key "$PEER_KEY"
 ```
 
@@ -252,7 +249,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 Մինթինգը եւ այրումը կարող են վերաբերել թվային ակտիվներին եւ առաջացնում են սահմանափակ կրկնությունների քանակով: Որոշ ակտիվներ կարող են հայտարարվել որպես ոչ-մինտացվող, ինչը նշանակում է, որ դրանք կարող են մինետվել միայն մեկ անգամ գրանցումից հետո:
 
-Աշունները հաշվարկվում են հատուկ հաշիվ, սովորաբար այն հաշիվը, որը առաջին հերթին գրանցել է ակտիվը: Գույքի քանակությունը ոչ բացասական է, այնպես որ դուք երբեք չեք կարող ունենալ `$-1.0` ակտիվի կամ այրել բացասական գումար եւ ստանալ mint.
+Ակտիվները թողարկվում են որոշակի հաշվին, սովորաբար՝ այն հաշվին, որն ի սկզբանե գրանցել է ակտիվը։ Ակտիվների քանակները ոչ բացասական են, ուստի ակտիվից երբեք չեք կարող ունենալ `$-1.0` կամ բացասական քանակ այրելով ստանալ նոր թողարկում։
 
 Օգտագործեք լեզվական հատուկ ուղեցույց ՝ Mint blockchain ակտիվների համար.
 
@@ -270,13 +267,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 Մինետային եւ այրվող թվային ակտիվներ
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset mint \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
   --quantity 100
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset burn \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
@@ -286,11 +283,11 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 Մինետի եւ այրման սխալի կրկնությունները.
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger mint --id hourly_cleanup --repetitions 5
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger mint --id hourly_cleanup --repetitions 5
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger burn --id hourly_cleanup --repetitions 1
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger burn --id hourly_cleanup --repetitions 1
 ```
 
 ## Փոխանցում {#transfer}
@@ -302,7 +299,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 Թվային ակտիվների փոխանցում.
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset transfer \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
@@ -313,13 +310,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 Տեղափոխման տիրույթը, ակտիվի սահմանումը եւ NFT սեփականությունը.
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain transfer --id docs.universal --from "$ALICE" --to "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition transfer --id "$ASSET_DEF" --from "$ALICE" --to "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft transfer --id 'badge$docs.universal' --from "$ALICE" --to "$BOB"
 ```
 
@@ -333,11 +330,11 @@ Native escrow հրահանգները հաշիվային ակտիվների կո�
 
 ## Ատոմային մասնավոր հաշվարկ {#atomic-private-settlement}
 
-Կառավարման ենթակա ատոմային մասնավոր հաշվարկի հրահանգները տարանջատված են թափանցիկ Native AMX-ից։ `ActivatePrivateSettlementPoolV1`-ը խմբագրված կառավարման պրոյեկցիայից և կանոնական սկզբնաղբյուրի պարտավորություններից ճշգրիտ երթուղու համար ստեղծում է մեկ գաղտնի `pool`։ `FinalizeAtomicPrivateSettlementV1`-ը ատոմային կերպով կիրառում է բոլոր մասնակից կոմիտեների կողմից վավերացված ամբողջական փաթեթը։ `AbortAtomicPrivateSettlementV1`-ը հրապարակում է միայն հովանավորի կողմից թույլատրված հանրային վերջնական նշանը։
+Կառավարվող ատոմային մասնավոր փոխհաշվարկի հրահանգների ընտանիքն առանձին է թափանցիկ Native AMX-ից։ `ActivatePrivateSettlementPoolV1`-ը գաղտնի տվյալներից մաքրված կառավարման արտապատկերումից և կանոնական ծագման կրիպտոգրաֆիկ ամրագրումներից ստեղծում է մեկ երթուղով սահմանափակված գաղտնի համախումբ։ `FinalizeAtomicPrivateSettlementV1`-ը ատոմային կերպով կիրառում է կոմիտեով հավաստագրված մեկ ամբողջական խումբ, իսկ `AbortAtomicPrivateSettlementV1`-ը հրապարակում է միայն հովանավորի լիազորած հանրային ավարտական նշիչը։
 
-`RotatePrivateSettlementPoolPolicyV1`-ը կարող է կատարել միայն գաղտնիության կառավարումը։ Հրահանգը պահանջում է գործող կառավարման ճշգրիտ digest-ը, պահպանում է երթուղին, `pool`-ը, ակտիվի կապակցման պարտավորությունը, վիճակի սահմանը, replay set-երը և վերջնականացված անդորրագրերը, հանրային revision-ը մեծացնում է մեկով և օգտագործում աուդիտորի բանալիի ավելի նոր epoch։ Ռոտացիան ակտիվանում է ներառման բարձրության վրա, և նույն բարձրության վրա նույն երթուղու ու `pool`-ի անդորրագիրը չի կարող վերջնականացվել։ Հանրային revision-ների շղթան ռոտացիայից առաջ վերջնականացված անդորրագրերը վերագործարկումից հետո էլ վավեր է պահում, իսկ դրանց ճշգրիտ կրկնությունը idempotent է։ Հին քաղաքականությամբ ընթացիկ փաթեթները վիճակը փոխելուց առաջ fail closed են լինում։ Օպերատորները պետք է պահեն հին ապակոդավորման բանալիները կամ բանալիները ոչնչացնելուց առաջ կառավարվող կերպով վերափաթեթավորեն capsule-ները և փորձարկեն արդյունքը։
+`RotatePrivateSettlementPoolPolicyV1`-ը սահմանափակված է գաղտնիության կառավարմամբ։ Այն պահանջում է ընթացիկ կառավարման ճշգրիտ ամփոփ հեշը, պահպանում է երթուղին, համախումբը, ակտիվի կապակցման կրիպտոգրաֆիկ ամրագրումը, վիճակի սահմանը, կրկնակի կիրառումը վերահսկող բազմությունները և վերջնականացված անդորրագրերը, հանրային տարբերակն ավելացնում է մեկով և օգտագործում աուդիտորի բանալու ավելի նոր դարաշրջան։ Փոփոխությունն ակտիվանում է իր ներառման բարձրության վրա և չի կարող այդ բարձրությունը կիսել նույն երթուղու ու համախմբի անդորրագրի հետ։ Հանրային տարբերակների հաջորդականությունը փոփոխությունից առաջ վերջնականացված անդորրագրերը վավեր է պահում վերագործարկումից հետո, իսկ դրանց ճշգրիտ կրկնակի կիրառումը չի փոխում արդյունքը․ հին քաղաքականությամբ ընթացիկ խմբերը ձախողվում են՝ փակ պահելով մուտքը։ Օպերատորները պետք է պահեն պահպանված կապսուլաների հին վերծանման բանալիները կամ դրանց ոչնչացումից առաջ կառավարվող կերպով վերափաթեթավորեն կապսուլաները և փորձարկեն արդյունքը։
 
-Այս ուղին լռելյայն անջատված է և արտադրական օգտագործման համար որակավորված չէ։ Կազմաձևման, լիազորությունների, աուդիտի, վերականգնման և թողարկման պահանջների համար տես [ատոմային մասնավոր հաշվարկ տվյալների տարածքների միջև](/get-started/atomic-private-settlement)։
+Այս ուղին լռելյայն մնում է անջատված և արտադրական օգտագործման համար որակավորված չէ։ Կարգավորման, լիազորության, աուդիտի, վերականգնման և թողարկման պահանջների համար տես [Կատարել տվյալների տարածքների միջև ատոմային մասնավոր փոխհաշվարկ](/hy/get-started/atomic-private-settlement)։
 
 ## Գրանտ/Վերահսկում {#grant-revoke}
 
@@ -348,34 +345,34 @@ Native escrow հրահանգները հաշիվային ակտիվների կո�
 Հաշվետու դերակատարություն տրամադրել եւ վերացնել:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account role grant --id "$BOB" --role operators
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account role grant --id "$BOB" --role operators
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account role revoke --id "$BOB" --role operators
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account role revoke --id "$BOB" --role operators
 ```
 
 Grant եւ revocate թույլտվությունների տոքեր. թույլտվության հրամանները ընթերցում են թույլտվություն օբյեկտը ստանդարտ մուտքի:
 
 ```bash
 printf '{"name":"CanSetParameters","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account permission grant --id "$BOB"
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account permission grant --id "$BOB"
 
 printf '{"name":"CanSetParameters","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account permission revoke --id "$BOB"
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account permission revoke --id "$BOB"
 ```
 
 Դասերի համար թույլտվություններ տրամադրել եւ վերացնել.
 
 ```bash
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role permission grant --id operators
 
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role permission revoke --id operators
 ```
 
@@ -387,10 +384,10 @@ Metadata `set` հրամանները կարդում են JSON արժեքը ստա
 
 ```bash
 printf '"production"\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain meta set --id docs.universal --key environment
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain meta remove --id docs.universal --key environment
 ```
 
@@ -398,20 +395,20 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ```bash
 printf '{"display_name":"Alice"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account meta set --id "$ALICE" --key profile
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account meta set --id "$ALICE" --key profile
 
 printf '{"issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition meta set --id "$ASSET_DEF" --key issuer
 
 printf '{"color":"blue"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft meta set --id 'badge$docs.universal' --key traits
 
 printf '{"owner":"ops"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger meta set --id hourly_cleanup --key owner
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger meta set --id hourly_cleanup --key owner
 ```
 
 ## `SetParameter` {#setparameter}
@@ -422,7 +419,7 @@ printf '{"owner":"ops"}\n' |
 
 ```bash
 printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```
 
@@ -430,15 +427,14 @@ printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
 
 Այս հրահանգը օգտագործվում է [ գործարկիչների](./triggers.md) կատարման համար:
 
-CLI-ը կարող է գրանցել գործարկիչները եւ ուղղակիորեն բաժանորդագրվել գործարկման իրադարձություններին: Այն չի տրամադրում տիպված `execute trigger` հրաման, ուստի պետք է ուղարկի ձեռագիր `ExecuteTrigger` հրահանգ. Սերիալացված `InstructionBox` ստեղծում է SDK կամ կատարող գործիքով եւ արդյունաբերված JSON շարքը անցնում `ledger transaction stdin`:
+CLI-ն լռելյայն `execute` զտիչով գրանցված գործարկիչի համար ուղարկում է ձեռքով `ExecuteTrigger` հրահանգ, ըստ ցանկության՝ JSON արգումենտներով, և կարող է բաժանորդագրվել գործարկիչի կատարման իրադարձություններին․
 
 ```bash
-printf '["<BASE64_EXECUTE_TRIGGER_INSTRUCTION_BOX>"]\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction stdin
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger execute docs_on_call --args-json '{"reason":"manual run"}'
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger events trigger-execute --timeout 30s
+  ledger events --timeout 30s trigger-execute
 ```
 
 ## Այլ հրահանգներ {#other-instructions}
@@ -452,21 +448,21 @@ Iroha բացատրում է նաեւ վարման ժամանակի եւ կատա
 Պինգի օգնականին `Log` հրահանգ ուղարկեք.
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction ping --log-level INFO --msg "hello from docs"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  tx ping --log-level INFO --msg "hello from docs"
 ```
 
 Ներկայացրեք անհատական կատարողի հրահանգ ՝ որպես սերիալացված `InstructionBox`: Օգտակար բեռի ձեւը հատուկ է կատարողի համար, այնպես որ առաջադրեք հրահանգը համապատասխանող SDK կամ կատարողի գործիքային սարքավորմամբ.
 
 ```bash
 printf '["<BASE64_CUSTOM_INSTRUCTION_BOX>"]\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction stdin
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  tx stdin
 ```
 
 Բարձրացրեք կատարողը կազմված IVM բայթքոդային ֆայլից.
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ops executor upgrade --path ./target/ivm/executor.ivm
 ```

@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/events.md
-translation_source_hash: 16b8cacc9bdf156d4b1e1a93b720085adcabb0002a34b9dc564a9926f573de63
+translation_source_hash: aad93f1981a5b470966090b5e06ec07178738b15f1d870097947682b19f99595
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Eventos {#events}
 
 Eventos são emitidos quando certas coisas acontecem dentro da blockchain, por exemplo, quando uma nova conta é criada ou um bloco é confirmado. Existem diferentes tipos de eventos:
@@ -45,7 +44,7 @@ Se nenhuma transação for enviada enquanto o fluxo estiver aberto, o comando po
 
 ## Eventos de Dados {#data-events}
 
-Eventos de dados são emitidos quando há uma mudança relacionada aos dados do registro blockchain, como pares de rede, domínios, contas, ativos, definições de ativos, NFTs, gatilhos, funções, configuração on-chain, estado do executor, provas, ativos confidenciais, pontes ou objetos específicos de SORA/Nexus. Esses tipos de eventos são usados em [filtros de evento de dados](./filters.md#data-event-filters).
+Eventos de dados são emitidos quando há uma mudança relacionada aos dados do registro blockchain, como pares de rede, domínios, contas, ativos, definições de ativos, NFTs, gatilhos, funções, configuração on-chain, estado do executor, provas, ativos confidenciais, pontes ou objetos específicos de SORA Nexus. Esses tipos de eventos são usados em [filtros de evento de dados](./filters.md#data-event-filters).
 
 ## Eventos de Tempo {#time-events}
 

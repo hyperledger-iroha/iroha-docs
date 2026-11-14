@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # ངོས་ལེན་རྟགས་ཚུ་ {#permission-tokens}
 
@@ -44,7 +44,8 @@ translation_engine: human-reviewed
 | `CanModifyTriggerMetadata` | འབྱུང་ཁུངས་ | ཊི་གར་མེ་ཊ་ཌེ་ཊ་ལེགས་བཅོས་འབད། |
 | `CanUpgradeExecutor` | ལག་ལེན་འཐབ་མི | ལག་བསྟར་མཉེན་ཆས་ལག་ལེན་འཐབ་མི་འདི་ཡར་བསྐྱེད་འབད། |
 | `CanRegisterSmartContractCode` | གན་རྒྱ་རིག་པ། | གན་རྒྱ་ཨང་རྟགས་རིག་པ་ཅན་ཐོ་བཀོད་འབད། |
-|`CanUseFeeSponsor` |Nexus |ཟད་འགྲོ་ Nexus རྩིས་སྤྲོད་འབད་ནིའི་དོན་ལས་ འབྲི་ཤོག་བཀོད་ཡོད་པའི་རྩིས་ཐོ་ཅིག་ལུ་ སྤྲོད་དགོ།|
+| `CanManageFeeSponsorProgram` | SORA Nexus | རྒྱབ་སྐྱོར་པའི་རྩིས་ཐོ་ཏག་ཏག་དེའི་བདག་དབང་ནང་ཡོད་པའི་ལས་རིམ་ཚུ་བདག་སྐྱོང་འབད། |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | རྒྱབ་སྐྱོར་པའི་ལས་རིམ་གཅིག་ཏག་ཏག་གི་ཕན་ཐོགས་ཐོབ་མི་ཚུ་འཛིན་སྐྱོང་འབད། |
 
 ## ཚོང་འབྲེལ་འཐབ་ནི་ {#ownership}
 

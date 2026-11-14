@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/nfts.md
-translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
+translation_source_hash: 216f59f1cebd73001dab75dcf235306082fb1c0759437f65ce34ec9e1ed51d4f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # NFTs {#nfts}
 
 「Iroha NFT」は、所有者が1人のユニークなブロックチェーン台帳オブジェクトです。記録に独自のID、メタデータ、ライフサイクルイベント、および所有権移転の意味を持たせたい場合に NFTs を使用しますが、数値の残高は必要ありません。
@@ -68,17 +67,17 @@ NFT ライフサイクル操作は Iroha 指示操作を使用します:
 
 ```bash
 export IROHA_CONFIG=./localnet/client.toml
-export NFT_DOMAIN=wonderland.universal
-export NFT_ID='badge_intro$wonderland.universal'
+export NFT_DOMAIN='<OWNED_DOMAIN>.universal'
+export NFT_ID="badge_intro\$$NFT_DOMAIN"
 ```
 
-生成されたローカルネットはすでに`wonderland.universal`とその SNS リースを設定しています。別のドメインを使用するには、まず[ドメイン](/ja/blockchain/domains.md#registration)に記載されている宣言型`app alias setup plan`および`app alias setup apply`ワークフローでドメインを作成してください。
+生成したローカルネットワークでは、クライアント用のアプリケーションドメインは登録されません。`NFT_DOMAIN` には、署名アカウントが所有するドメイン、またはそのアカウントが `CanRegisterNft` 権限を持つドメインを指定してください。ドメインの作成には、[ドメイン](/ja/blockchain/domains.md#registration)に記載された宣言型の `app alias setup plan` と `app alias setup apply` の手順を使います。
 
 NFT を登録します。登録は標準入力から初期内容 JSON を読み取ります:
 
 ```bash
 printf '{"kind":"badge","level":"intro","issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft register --id "$NFT_ID"
 ```
 
@@ -89,14 +88,14 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft get --id "$NFT_ID"
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger nft list all --verbose
+  ledger nft list --all
 ```
 
 メタデータキーを追加して、再度 NFT を読み取ります:
 
 ```bash
 printf '{"color":"blue","rarity":"tutorial"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta set --id "$NFT_ID" --key traits
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -106,27 +105,27 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 メタデータキーを削除する:
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
-オプションで NFT を転送します。`owned_by`から現在の所有者を読み取るには`ledger nft get`を使用し、宛先アカウントIDを見つけるには`ledger account list all`を使用します。
+必要に応じて NFT を移転します。`ledger nft get` の `owned_by` から現在の所有者を確認し、`account list --all` で移転先のアカウント ID を探します。
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger account list all
+  account list --all
 
 export CURRENT_OWNER='<account-id-from-owned_by>'
 export NEW_OWNER='<destination-account-id>'
 
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
 ウォークスルーの後に例 NFT を削除してください。もし転送した場合は、元に戻すか、現在の所有者のアカウント設定で登録解除コマンドを送信してください。
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft unregister --id "$NFT_ID"
 ```
 

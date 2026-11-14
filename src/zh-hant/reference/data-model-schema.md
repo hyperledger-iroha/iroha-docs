@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hant
 translation_source: /reference/data-model-schema.md
-translation_source_hash: cf27b1f313a695b648ae450564a51120af0e3e39641ed140a187d128b930da97
+translation_source_hash: c4f0305c73f9470d1652b70e6787b59de2553a08b6c96603a9369512efbdb1af
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # 資料模型方案 {#data-model-schema}
 
@@ -16,4 +16,4 @@ curl -fsS -H 'Accept: application/json' "$TORII_URL/v1/schema" \
   > iroha-data-model-schema.json
 ```
 
-在其來源狀態等待時,不要從註冊文件片段生成繫結.現場節點響應對該節點的編譯資料模型是權威的;保持它與您的整合所使用的節點構建一起固定.
+請根據該回應產生繫結，而不是使用為其他編譯版本發布的副本。執行中節點的回應，才是該節點已編譯資料模型的權威依據；請將此回應與整合所用的節點編譯版本一併固定保存。

@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/instructions.md
-translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
+translation_source_hash: ef50253c5478c9d8c3e14529dc4c2f3de67c344901c82c65be77ceb237a29598
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # Iroha 特殊指令 {#iroha-special-instructions}
 
 當我們談到 [如何 Iroha 運營](/zh-hant/blockchain/iroha-explained), 我們說 Iroha 特殊指示是改變世界狀態的唯一方法.我們有什麼特殊指令呢?在本教程中,你已經看到了幾條指令: `Register<Account>` 和 `Mint<Numeric>`.
@@ -35,7 +34,7 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 
 |指示|物體|目的地|
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- |
-| [EnsureAlias](#ensurealias) |普通域名,資料空間號和帳戶號設定|                      |
+| [EnsureAlias](#ensurealias) | 一般網域、資料空間別名與帳戶別名的設定 | |
 | [登記/退出登記](#un-register) |帳戶,資產定義, NFTs,角色,觸發因素,對等節點;域名移除 |                      |
 | [Mint/Burn](#mint-burn)|數字資產,觸發重複|帳戶或觸發器|
 | [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) |具有 [後設資料](./metadata.md)的物件:域名,帳戶,資產定義, NFTs, RWAs,觸發器|                      |
@@ -69,7 +68,7 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 cargo run --bin iroha -- --config ./defaults/client.toml <command>
 ```
 
-如果已安裝 `iroha` 二進位檔，請改用 `iroha --config ./defaults/client.toml`。請將下列預留位置替換為您網路中的值：
+若已安裝 `iroha` 執行檔，請改用 `iroha --config ./defaults/client.toml`。提交交易的命令還須傳入 `--fee-payer authority`，由簽署帳戶支付費用；CLI 會在簽署前計算確切費用。請將下列預留值替換為您網路中的值：
 
 ```bash
 export ALICE="<ALICE_ACCOUNT_I105>"
@@ -79,34 +78,32 @@ export PEER_KEY="<BLS_PUBLIC_KEY_MULTIHASH>"
 export PEER_POP="<PROOF_OF_POSSESSION_HEX>"
 ```
 
-當針對公眾時 Taira 測試網,使用一個 Taira 在執行支付費用的例子之前,儲存水龍頭助手從 [獲取測試網 XOR 在 Taira](/zh-hant/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) 作為 `taira_faucet_claim.py`, 然後索賠測試網 XOR 在水龍頭上:
+使用公開 Taira 測試網時，請採用 Taira 用戶端設定，並透過[在 Taira 取得測試網 XOR](/zh-hant/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)所列的資金申領流程為帳戶注資。在執行需要支付費用的範例前，請確認費用資產餘額已可見：
 
 ```bash
 export TAIRA_ACCOUNT_ID="<TAIRA_I105_ACCOUNT_ID>"
-export TAIRA_FEE_ASSET="6TEAJqbb8oEPmLncoNiMRbLEK6tw"
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-在頭資產可見之後,新增所需的gas資產後設資料來記錄交易:
+Taira 的寫入操作同樣選用 `--fee-payer authority`，CLI 會以 Taira 的費用資產計算費用。不要將 `gas_asset_id` 等費用鍵附加為交易中繼資料；用戶端會拒絕它們：
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 cargo run --bin iroha -- \
   --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+  --fee-payer authority \
   <command>
 ```
 
 ## EnsureAlias {#ensurealias}
 
-`EnsureAlias` 是首個版本中建立網域及其 SNS 租約的普通路徑。它以宣告方式繫結確切的資料空間、擁有者、租期和報價保護，然後以原子方式建立或修復所有必要狀態。請使用經過驗證的 `POST /v1/aliases/setup/plan` 端點或對應的 CLI 工作流程：
+`EnsureAlias` 是首版用於建立網域及其 SNS 租約的一般途徑。它以宣告方式綁定確切的資料空間、擁有者、租期與報價檢查條件，然後原子性地建立或修復所有必要狀態。請使用需要驗證的 `POST /v1/aliases/setup/plan` 端點，或對應的 CLI 流程：
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -114,7 +111,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./domain.intent.json \
   --plan-file ./domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./domain.plan.json
 ```
 
@@ -165,34 +162,34 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./docs-domain.intent.json \
   --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain unregister --id docs.universal
 ```
 
 登記和登出帳戶:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account register --id "$BOB"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account register --id "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account unregister --id "$BOB"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account unregister --id "$BOB"
 ```
 
 註冊和退出註冊資產定義:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
   --scale 0
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition unregister --id "$ASSET_DEF"
 ```
 
@@ -200,37 +197,37 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ```bash
 printf '{"kind":"badge","level":"intro"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft register --id 'badge$docs.universal'
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft unregister --id 'badge$docs.universal'
 ```
 
 登記和退出登記的角色:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role register --id operators
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role unregister --id operators
 ```
 
 註冊和取消註冊的觸發器.觸發器註冊需要編譯 IVM 位元組碼或序列指令列表.本示例使用 CLI 構建一個 `Log` 指令,並將其輸入到觸發器登記中:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml -o \
-  ledger transaction ping --log-level INFO --msg "hourly cleanup" |
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger register --id hourly_cleanup \
+cargo run --bin iroha -- --config ./defaults/client.toml --emit-instructions \
+  tx ping --log-level INFO --msg "hourly cleanup" |
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger register --id hourly_cleanup \
   --instructions-stdin \
   --filter time \
   --time-start 5m \
   --time-period-ms 3600000
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger unregister --id hourly_cleanup
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger unregister --id hourly_cleanup
 ```
 
 註冊和退出註冊的對等節點. 如果您尚未擁有 BLS 金鑰,則將 PoP 和 `kagami` 發明:
@@ -241,10 +238,10 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
 PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
 PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer unregister --key "$PEER_KEY"
 ```
 
@@ -270,13 +267,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 鑄鑄造和銷毀數值資產:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset mint \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
   --quantity 100
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset burn \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
@@ -286,11 +283,11 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 鑄鑄造和銷毀觸發器重複:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger mint --id hourly_cleanup --repetitions 5
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger mint --id hourly_cleanup --repetitions 5
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger burn --id hourly_cleanup --repetitions 1
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger burn --id hourly_cleanup --repetitions 1
 ```
 
 ## 轉移 {#transfer}
@@ -302,7 +299,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 轉移數值資產:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset transfer \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
@@ -313,13 +310,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 轉讓域名,資產定義和 NFT 所有權:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain transfer --id docs.universal --from "$ALICE" --to "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition transfer --id "$ASSET_DEF" --from "$ALICE" --to "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft transfer --id 'badge$docs.universal' --from "$ALICE" --to "$BOB"
 ```
 
@@ -333,11 +330,11 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ## 原子私密結算 {#atomic-private-settlement}
 
-受治理的原子私密結算指令與透明的 Native AMX 相互獨立。`ActivatePrivateSettlementPoolV1` 根據經刪減的治理投影與規範來源承諾，為精確路由建立一個機密 `pool`。`FinalizeAtomicPrivateSettlementV1` 以原子方式套用由所有參與委員會認證的完整套件。`AbortAtomicPrivateSettlementV1` 僅釋出經發起方授權的公開終止標記。
+受治理的原子私密結算指令族獨立於透明的 Native AMX。`ActivatePrivateSettlementPoolV1` 依據隱去敏感內容的治理投影與標準來源承諾，建立一個範圍限於特定路由的機密池。`FinalizeAtomicPrivateSettlementV1` 以原子方式套用一個完整且經委員會認證的套件，而 `AbortAtomicPrivateSettlementV1` 只發布由贊助者授權的公開終止標記。
 
-只有隱私治理可以執行 `RotatePrivateSettlementPoolPolicyV1`。此指令要求與目前治理摘要完全相符；它保留路由、`pool`、資產繫結承諾、狀態前緣、重放集合及已完成收據，將公開修訂版加一，並使用較新的稽核者金鑰 epoch。輪替在指令納入的高度生效，同一路由與 `pool` 的收據不得在該高度完成。公開修訂版譜系使輪替前完成的收據在重啟後仍然有效，且完全相同的重放具有冪等性。啟用時仍在處理的舊政策套件會在變更狀態前以 fail-closed 方式失敗。營運者必須保留舊解密金鑰，或在銷毀金鑰前，以治理程式重新包裝膠囊並驗證結果。
+`RotatePrivateSettlementPoolPolicyV1` 僅限隱私治理使用。它要求確切的目前治理摘要，保留路由、池、資產綁定承諾、狀態前緣、重播集合及已獲最終性的收據，將公開修訂版加一，並採用更新的稽核者金鑰時期。輪替在其納入區塊的高度生效，且不能與同一路由與池的收據共用該高度。公開修訂歷程使輪替前已獲最終性的收據在重啟後仍然有效，且完全相同的重播保持冪等性；仍在處理中的舊政策套件則會安全地拒絕繼續處理。營運者必須保留已儲存膠囊的舊解密金鑰，或在銷毀金鑰前，透過治理執行並測試膠囊重新封裝。
 
-此路徑預設停用，尚未透過正式環境資格驗證。設定、許可權、稽核、復原與釋出要求請參閱[執行跨資料空間原子私密結算](/get-started/atomic-private-settlement)。
+這條路徑預設仍為停用，且尚未通過生產環境資格驗證。設定、權限、稽核、復原及發布要求，請參閱[執行跨資料空間的原子私密結算](/zh-hant/get-started/atomic-private-settlement)。
 
 ## 授予/撤銷 {#grant-revoke}
 
@@ -348,34 +345,34 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 授予和撤銷一個帳戶的角色:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account role grant --id "$BOB" --role operators
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account role grant --id "$BOB" --role operators
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account role revoke --id "$BOB" --role operators
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account role revoke --id "$BOB" --role operators
 ```
 
 授予和撤銷許可權代幣.允許命令從標準輸入中讀取一個許可權物件:
 
 ```bash
 printf '{"name":"CanSetParameters","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account permission grant --id "$BOB"
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account permission grant --id "$BOB"
 
 printf '{"name":"CanSetParameters","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account permission revoke --id "$BOB"
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account permission revoke --id "$BOB"
 ```
 
 授予或撤銷角色的許可權:
 
 ```bash
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role permission grant --id operators
 
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role permission revoke --id operators
 ```
 
@@ -387,10 +384,10 @@ printf '{"name":"CanRegisterDomain","payload":null}\n' |
 
 ```bash
 printf '"production"\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain meta set --id docs.universal --key environment
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain meta remove --id docs.universal --key environment
 ```
 
@@ -398,20 +395,20 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ```bash
 printf '{"display_name":"Alice"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account meta set --id "$ALICE" --key profile
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account meta set --id "$ALICE" --key profile
 
 printf '{"issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition meta set --id "$ASSET_DEF" --key issuer
 
 printf '{"color":"blue"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft meta set --id 'badge$docs.universal' --key traits
 
 printf '{"owner":"ops"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger meta set --id hourly_cleanup --key owner
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger meta set --id hourly_cleanup --key owner
 ```
 
 ## `SetParameter` {#setparameter}
@@ -422,7 +419,7 @@ printf '{"owner":"ops"}\n' |
 
 ```bash
 printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```
 
@@ -430,15 +427,14 @@ printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
 
 該指令用於執行 [觸發](./triggers.md).
 
-CLI 可以直接記錄觸發器,並訂閱觸發執行事件.它不提供輸入`execute trigger`命令,因此要提交一個 手動 `ExecuteTrigger` 指令,用 SDK 或執行工具生成序列式 `InstructionBox`,並透過 `ledger transaction stdin` 傳輸結果的 JSON 陣列:
+CLI 可對以預設 `execute` 篩選器註冊的觸發器提交手動 `ExecuteTrigger` 指令，也可附上選用的 JSON 參數，並訂閱觸發器執行事件：
 
 ```bash
-printf '["<BASE64_EXECUTE_TRIGGER_INSTRUCTION_BOX>"]\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction stdin
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger execute docs_on_call --args-json '{"reason":"manual run"}'
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger events trigger-execute --timeout 30s
+  ledger events --timeout 30s trigger-execute
 ```
 
 ## 其他指令 {#other-instructions}
@@ -452,21 +448,21 @@ Iroha 還揭示了執行階段和執行器整合的較低階別指示:
 提交一個 `Log` 指令與助手:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction ping --log-level INFO --msg "hello from docs"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  tx ping --log-level INFO --msg "hello from docs"
 ```
 
 提交一個定製執行器指令作為序列式 `InstructionBox`.有效載荷形狀是執行器特定的,所以使用匹配的 SDK 或執行器工具生成該指令:
 
 ```bash
 printf '["<BASE64_CUSTOM_INSTRUCTION_BOX>"]\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction stdin
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  tx stdin
 ```
 
 升級執行器從編譯的 IVM 位元組碼檔案中:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ops executor upgrade --path ./target/ivm/executor.ivm
 ```

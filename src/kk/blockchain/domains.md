@@ -1,26 +1,25 @@
 ---
 translation_locale: kk
 translation_source: /blockchain/domains.md
-translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
+translation_source_hash: 26e8efe6c728d0f819b12e7d8257777d3d4ea272f42fabf8aec727467146500f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Домендер {#domains}
 
-Домендер `World` жүйесінде тіркелген аталған ат кеңістіктері болып табылады. Қазіргі Iroha 3 мәліметтер моделінде домен өз ата-аналық мәлімет кеңістігі арқылы анықталады, сондықтан бір ғана протокол-стандартты идентификатор бар:
+Домендер — `World` ішінде тіркелген атаулы кеңістіктер. Қазіргі Iroha 3 деректер моделінде домен өзінің ата-аналық деректер кеңістігімен нақтыланады, сондықтан канондық идентификаторы мынадай:
 
 ```text
 domain.dataspace
 ```
 
-Мысалы, `payments.universal` `universal` деректер кеңістігіндегі `payments` доменін атайды.
+Мысалы, `payments.universal` атауы `universal` деректер кеңістігіндегі `payments` доменін білдіреді.
 
 ## Құрылым {#structure}
 
 Тіркелген `Domain` мыналарды қамтиды:
 
-- `id`: мәліметтер кеңістігімен анықталған `DomainId`
+- `id`: деректер кеңістігімен нақтыланған `DomainId`
 - `logo`: домен логотипі үшін міндетті емес `SoraFS` URI
 - `metadata`: кездейсоқ кілт-бағалы метадеректер
 - `owned_by`: доменді иеленетін есептік жазба, әдетте оны тіркеген есептік жазба
@@ -39,13 +38,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./payments-domain.intent.json \
   --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
-Мақсатты анықтайды `payments.universal`, оның сандық деректер кеңістігі, бір протокол-стандарт I105 иесі, жалға алу мерзімін алу, және ағымдағы саясат/төлем ақысының бағасын тексеру қоры. Жоспарлаушы API соңғы нүкте `POST /v1/aliases/setup/plan`; оның қайтарылған жоспары тізбекке байланысты, транзакцияны растау тұлға, блокчейн есеп журналының жағдайы және мерзім. Доменді жою әлі де пайдаланады [`Unregister`](/kk/blockchain/instructions.md#un-register).
+Ниет `payments.universal` атауын, оның сандық деректер кеңістігін, канондық I105 иесін, жалға алу мерзімін және ағымдағы саясат/төлем бағасының тексеру шартын анықтайды. Жоспарлаушының соңғы нүктесі — `POST /v1/aliases/setup/plan`; қайтарылған жоспар тізбекке, өкілетті субъектіге, күйге және соңғы мерзімге байланған. Доменді жою үшін [`Unregister`](/kk/blockchain/instructions.md#un-register) қолданылады.
 
 Доменді құру немесе жою үшін тиісті доменді басқару рұқсаты қажет белсенді бағдарламалық қамтамасыз ету орындалу ортасын тексеруші. Домен метадеректерін жаңартуға болады [`SetKeyValue` және `RemoveKeyValue`](/kk/blockchain/instructions.md#setkeyvalue-removekeyvalue) уәкілетті субъектіде сол доменді өзгертуге рұқсаты бар кезде.
 
@@ -58,7 +57,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
   | jq -r '.items[].id'
 ```
 
-Қоғамдық атқару жолының каталогын деректер алаңының жарнамаларына қайта салыстырыңыз:
+Ашық орындау арнасының каталогын деректер кеңістігінің бүркеншік аттарымен сәйкестендіріңіз:
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -67,24 +66,17 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
     | @tsv'
 ```
 
-Қолданба доменнің бар-жоғын тексеруі қажет болғанда бірінші команданы пайдаланыңыз. Деректер кеңістігінің жалпыға қолжетімді, шектеулі немесе негізгі орындалу жолынан артта қалғанын тексеру қажет болғанда орындалу жолы каталогын пайдаланыңыз.
+Қолданбаға доменнің бар-жоғын тексеру қажет болса, бірінші пәрменді пайдаланыңыз. Арна каталогы арқылы деректер кеңістігімен байланысты арналарды, соның ішінде әр арнаның ашық не шектеулі көрінуін және негізгі арнаға қатысты синхрондау күйін тексеріңіз.
 
-Доменді орнату – бұл ақы төленетін жазба. Оны Taira үстінде сынамас бұрын, тесттік желідегі қаржыландыру қызметінің көмегін [Taira сайтынан XOR тест желісін алыңыз](/kk/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) арқылы `taira_faucet_claim.py` ретінде сақтаңыз, криптографиялық қол қойғышты қоғамдық тесттік желі қаржыландыру қызметі арқылы қаржыландырыңыз және ақы метадеректерін тіркеңіз:
+Доменді баптау — комиссия төленетін жазу операциясы. Оны Taira желісінде сынамас бұрын [Taira желісінде тестілік XOR алу](/kk/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) бөліміндегі дайындау қадамы бар токен беру үдерісі арқылы қол қоюшыны қаржыландырыңыз, содан кейін жоспарды нақты комиссия төлеушімен қолданыңыз. CLI қол қою алдында нақты комиссия бағасын береді:
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
   app alias setup plan \
   --intent-file ./taira-domain.intent.json \
   --plan-file ./taira-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 

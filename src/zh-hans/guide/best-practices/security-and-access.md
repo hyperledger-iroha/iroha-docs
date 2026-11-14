@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/best-practices/security-and-access.md
-translation_source_hash: f0163734d618d91337b437da703743014d01c57c4cb603fbc2e66316f3654779
+translation_source_hash: b1cb0cdbeec55f7db03f1c64b6581a21c09fc80a57344cf6e27df1d126c0ec92
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # 安全与获取 {#security-and-access}
 
 Iroha 的安全实践应基于严格授权主体,控制密钥保管,明确网络曝光和可审计的变化.
@@ -23,7 +22,7 @@ Iroha 的安全实践应基于严格授权主体,控制密钥保管,明确网络
 
 - 允许支持工作流程的最小权限符号或角色.
 - 最好为服务,触发器,代理和自动化提供专用技术账户. 避免通过个人运营商帐户运行长期自动化.
-- 在生产启动之前,审查对等节点管理,元数据突变,铸造、销毁,触发注册,执行器更改和 SORA/Nexus 治理权.
+- 在生产启动之前,审查对等节点管理,元数据突变,铸造、销毁,触发注册,执行器更改和 SORA Nexus 治理权.
 - 在需要这些临时权限的维护时段或迁移完成后，撤销这些权限。
 
 查看 [许可证](/zh-hans/blockchain/permissions.md)和 [许可证代币 ](/zh-hans/reference/permissions.md).

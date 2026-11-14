@@ -1,8 +1,6 @@
 # Kotlin, Android, and Java
 
-The Kotlin SDK is the default client stack for JVM and Android applications.
-It lives under `kotlin/` in the Iroha repository and is split by platform so
-portable code does not acquire Android dependencies.
+The Kotlin SDK is the default client stack for JVM and Android applications. It lives under `kotlin/` in the Iroha repository and is split by platform so portable code does not acquire Android dependencies.
 
 ## Modules
 
@@ -12,8 +10,7 @@ portable code does not acquire Android dependencies.
 | `org.hyperledger.iroha.sdk:client-android` | AAR | Android keystore, device telemetry, and JNI-backed client integrations |
 | `org.hyperledger.iroha.sdk:offline-wallet-android` | AAR | Android offline-wallet transports and integration built on `client-android` |
 
-The artifacts are not yet published to Maven Central. Build and publish them
-locally from the pinned Iroha source revision:
+The artifacts are not yet published to Maven Central. Build and publish them locally from the pinned Iroha source revision:
 
 ```bash
 cd kotlin
@@ -36,20 +33,13 @@ dependencies {
 }
 ```
 
-`core-jvm` contains no Android dependencies. Keep Android client and keystore
-code in `client-android`, and use `offline-wallet-android` for Android-only
-offline-wallet and JNI flows.
+`core-jvm` contains no Android dependencies. Keep Android client and keystore code in `client-android`, and use `offline-wallet-android` for Android-only offline-wallet and JNI flows.
 
 ## Kotlin and Java Compatibility
 
-The public API is Kotlin-first and provides Java interop where JVM callers need
-it. Equivalent changes are mirrored in the corresponding `java/`
-implementation. New Android integrations should start with the Kotlin
-artifacts above.
+The public API is Kotlin-first and provides Java interop where JVM callers need it. Equivalent changes are mirrored in the corresponding `java/` implementation. New Android integrations should start with the Kotlin artifacts above.
 
-All Kotlin modules enforce JDK 8 API compatibility at compile time with
-`-Xjdk-release=8`, even though the build toolchain itself uses JDK 21. Do not
-use JDK 9+ APIs in SDK code.
+All Kotlin modules enforce JDK 8 API compatibility at compile time with `-Xjdk-release=8`, even though the build toolchain itself uses JDK 21. Do not use JDK 9+ APIs in SDK code.
 
 ## Build and Test
 
@@ -75,9 +65,8 @@ The Kotlin SDK includes:
 - canonical account and asset address handling
 - transaction building, signing, and offline envelopes
 - Torii HTTP, WebSocket, and SSE clients
-- multisignature, subscription, SoraFS, Nexus, and Connect models
+- multisignature, subscription, SoraFS, SORA Nexus, and Connect models
 - Android keystore and device telemetry integrations
 - Android offline QR, Nearby, and NFC transports
 
-See the [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/kotlin/README.md)
-for module-specific APIs and exact build commands.
+See the [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/kotlin/README.md) for module-specific APIs and exact build commands.

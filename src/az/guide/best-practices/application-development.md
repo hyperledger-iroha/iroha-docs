@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /guide/best-practices/application-development.md
-translation_source_hash: f95261b0416abfcd87881135ceb9b604a1cdde2dd1afc79fecf9c113a256a8c7
+translation_source_hash: 045e2819368106c5da6ee47610c59a3500db312f4901108c0d9e36a027a50a95
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-title-amendment
 ---
-
 # Tətbiq İnkişafı {#application-development}
 
 Iroha tətbiqləri əməliyyat davranışını açıq şəkildə göstərməli, imzalama vəziyyətini daxildə saxlamalı və sorğularla hadisələrdən istehsalda müşahidə etmək asan olan yollarla istifadə etməlidir.
@@ -34,7 +33,7 @@ Cari TOML sahələri üçün [Müştəri Konfiqurasiyası](/az/guide/configure/c
 - Cari vəziyyət üçün sorğulardan və dəyişiklik bildirişləri üçün hadisə axınlarından istifadə edin. Hadisə idarəsini təkrarlanan geniş sorğularla əvəz etməkdən çəkinin.
 - Hesab, aktiv və blok siyahıları kimi geniş təkrarlana bilən sorğuları səhifələyin.
 - Abunəliklər və tetikleyicilər üçün dar süzgəcləri seçin. Geniş süzgəclər diaqnostika üçün faydalıdır, lakin əlavə icra və müştəri tərəfi emalına səbəb ola bilər.
-- Yalnız oxumaq üçün tüstü yoxlamalarını imzalanmış əməliyyat testlərindən ayrı saxlayın ki, API son nöqtəsinin mövcudluğunu diaqnoz etmək daha asan olsun.
+- Son nöqtənin əlçatanlığını daha asan yoxlamaq üçün yalnız oxuma rejimində əsas işləkliyə dair ilkin yoxlamaları imzalanmış tranzaksiya sınaqlarından ayrı saxlayın.
 
 Baxın [Sorğular](/az/blockchain/queries.md), [Tədbirlər](/az/blockchain/events.md) və [Filtrlər](/az/blockchain/filters.md).
 
@@ -45,7 +44,7 @@ Baxın [Sorğular](/az/blockchain/queries.md), [Tədbirlər](/az/blockchain/even
 - Xahiş edirəm göstərişlərə şəxsi açarları, hesab bərpa materiallarını, API tokenlərini və ya ötürülmüş avtorizasiya başlıqlarını yapışdırmayın.
 - Hər hansı bir agent canlı testnet əməliyyatı göndərmədən əvvəl əməliyyat planı tələb edin. Plan şəbəkəni, səlahiyyət prinsipi, təlimatları, ödəniş aktivini, əvvəlcədən oxumaları, gözlənilən nəticəni və təkrar davranışı göstərməlidir.
 
-Taira MCP iş axını üçün [SORA 3 üzərində qurun: Taira və Minamoto](/az/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents)-a baxın.
+Taira MCP iş axını üçün [SORA Nexus üzərində qurun: Taira və Minamoto](/az/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents) bölməsinə baxın.
 
 ## SDK Gigiyena {#sdk-hygiene}
 

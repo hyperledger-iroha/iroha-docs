@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /guide/configure/genesis.md
-translation_source_hash: a6b8b2b02e0074e6c90d9aa9337af3e2496a02beb2f57f575dc0780014df04b2
+translation_source_hash: 91be089c82a76991e35a43e1541f9e069fdf70d3fb5de2492b985c06c78a2372
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
-
 # ブロックチェーンのジェネシス {#genesis}
 
 ブロックチェーンのジェネシスは初期のチェーン状態を定義します。編集可能なソースは JSON 技術マニフェストであり、Iroha 3 ノードは署名済みの Norito トランザクションファイルを消費します。
@@ -18,25 +17,26 @@ translation_engine: bing-translator-llm
 
 ## ファイル {#files}
 
-上流のリポジトリは `defaults/genesis.json` でデフォルトの技術マニフェストを提供します。Kagami によって生成されたネットワークは、それぞれ独自の技術マニフェストと署名付きトランザクションを出力ディレクトリに書き込みます:
+上流リポジトリには、デフォルトのソーステンプレート `defaults/genesis.template.json` が含まれます。テンプレートは不完全であり、`kagami genesis materialize` でマニフェストに変換するまで、検証、署名、ノードでの使用はできません。Kagami が生成するネットワークでは、固有のマニフェストと署名済みトランザクションを出力ディレクトリに書き込みます。
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 そのディレクトリに生成された`README.md`は、選択されたプロファイルの正確なファイルと起動コマンドを記録します。
 
 ## ネットワークピアの設定 {#peer-configuration}
 
-ネットワークのピアは、`config.toml` の `[genesis]` セクションにある署名済みブロックチェーンジェネシストランザクションを指します:
+ピアは `config.toml` の `[genesis]` セクションで署名済みジェネシストランザクションを指定し、その期待ハッシュを別のファイルで固定します。
 
 ```toml
 [genesis]
 file = "./genesis.signed.nrt"
 public_key = "ed0120..."
+expected_hash_file = "./genesis.expected_hash"
 ```
 
-ネットワーク内のすべてのピアは、署名されたブロックチェーンの創世トランザクションとブロックチェーンの創世公開鍵に同意しなければなりません。
+ネットワーク内のすべてのピアで、署名済みジェネシストランザクションとジェネシス公開鍵が一致する必要があります。期待ハッシュのファイルは新規起動時にも再起動時にも必要であり、`kagami genesis sign --expected-hash-out` がこのファイルを書き出します。
 
 ## ブロックチェーンのジェネシスに署名する {#signing-genesis}
 
@@ -46,13 +46,14 @@ public_key = "ed0120..."
 cargo run --bin kagami -- genesis validate ./genesis.json
 cargo run --bin kagami -- genesis sign ./genesis.json \
   --private-key-file "$GENESIS_PRIVATE_KEY_FILE" \
-  --out-file ./genesis.signed.nrt
+  --out-file ./genesis.signed.nrt \
+  --expected-hash-out ./genesis.expected_hash
 ```
 
 `GENESIS_PRIVATE_KEY_FILE` は、所有者保持モード-`0600` の単一リンク通常ファイルであり、1 つの正規のプライベートキー多重ハッシュと最終改行を含む必要があります。Kagami はシンボリックリンクを拒否し、コマンドライン上で生のブロックチェーンのジェネシスプライベートキーを決して受け入れません。
 
-NPoS または Nexus プロファイルの場合、生成されたプロファイルで必要なトポロジーおよび BLS 所有権証明を含めてください。Kagami `localnet`、`wizard`、およびプロファイル生成コマンドはこれらの詳細を自動的に処理します。
+NPoS または SORA Nexus のプロファイルでは、生成されたプロファイルが要求するトポロジーと BLS の所有証明を含めてください。Kagami の `localnet generate`、`wizard`、`sora-network generate` コマンドがこれらを自動的に処理します。
 
 ## ブロックチェーンのジェネシスを再コミットする {#recommitting-genesis}
 
-ピアはストレージが空の場合にのみジェネシストランザクションを確定します。使い捨てのローカルネットで新しいジェネシスをテストするには、ピアを停止し、生成済みの状態ディレクトリを削除して、新しい署名済みジェネシスから起動します。すべてのバリデーターが同じ移行を協調して実施している場合を除き、稼働中のネットワークでジェネシスを置き換えないでください。
+新しいネットワークは、署名済みジェネシスから起動します。使い捨てのローカルネットで別のジェネシスを試すには、ピアを停止し、生成された状態ディレクトリを削除して、新しい署名済みジェネシスから起動します。稼働中のネットワークで、アップグレードの手段としてジェネシスを置き換えてはいけません。プロトコル定義の変更には、ガバナンスに基づく選択の遷移と、選択する定義および履行義務に対する適格性の検証が必要です。

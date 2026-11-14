@@ -1,18 +1,17 @@
 ---
 translation_locale: my
 translation_source: /help/integration-issues.md
-translation_source_hash: c5f169e423806fa2a9e9d198971588d1aa0b199a28d64e8b089b9f81727550a5
+translation_source_hash: 2146a236adb3a3b3b896a1992daeecf6713988183ca53e4412f9b616ed2e9085
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # ပေါင်းစပ်မှု ပြဿနာများ ဖြေရှင်းခြင်း {#troubleshooting-integration-issues}
 
 ဤအခန်းတွင် Iroha 3 ပေါင်းစပ်မှုအတွက် ပြဿနာဖြေရှင်းရေး အကြံပေးချက်များကို ဖော်ပြထားပါသည်။ သင်တွေ့နေသည့်ပြဿနာကို ဒီမှာဖော်ပြခြင်းမရှိပါက [အွန်လိုင်း](https://t.me/hyperledgeriroha) မှတစ်ဆင့် ဆက်သွယ်ပါ။
 
 ## ဖောက်သည်က ဆက်သွယ်လို့မရ {#client-cannot-connect}
 
-Client Config ကို Network Peer ရဲ့ Torii Address ကို ညွှန်ပြနေတာကို စစ်ဆေးပါ။
+client ပြင်ဆင်သတ်မှတ်မှုသည် peer ၏ Torii လိပ်စာသို့ ညွှန်နေကြောင်း စစ်ဆေးပါ။
 
 ```toml
 torii_url = "http://127.0.0.1:8080/"
@@ -21,10 +20,10 @@ torii_url = "http://127.0.0.1:8080/"
 CLI စစ်ဆေးမှုအတွက် ထပ်တူသော ဖိုင်ကို ရှင်းလင်းစွာ ပေးပို့ပါ။
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
-ကွန်ရက် peer ကို Docker သို့မဟုတ် Kubernetes တွင် run လုပ်ပါက client process မှရောက်ရှိနိုင်သော host (သို့) service address ကိုအသုံးပြုပါ။ container တစ်ခုအတွင်းတွင် `127.0.0.1` သည် host machine မဟုတ်ပါ။
+အဆင့်တူနိုဒ်သည် Docker သို့မဟုတ် Kubernetes တွင် လည်ပတ်နေပါက ကလိုင်းယင့်ပရိုဆက်စ်မှ ရောက်ရှိနိုင်သော လက်ခံကွန်ပျူတာ သို့မဟုတ် ဝန်ဆောင်မှုလိပ်စာကို အသုံးပြုပါ။ ကွန်တိန်နာအတွင်းရှိ `127.0.0.1` သည် လက်ခံကွန်ပျူတာ မဟုတ်ပါ။
 
 အများပြည်သူ Taira စမ်းသပ်မှုအတွက် လက်မှတ်မထိုးသေးတဲ့ API အဆုံးအဖြတ်စက်နဲ့ စတင်ပါ။
 
@@ -40,17 +39,17 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
 
 ## ငွေပေးချေမှုများကို ပယ်ချခြင်း {#transactions-are-rejected}
 
-ငွေချေးမှု ကျရှုံးမှု အများစုဟာ ကိုယ်ပိုင်လက္ခဏာ (သို့) ခွင့်ပြုချက် မညီမျှခြင်းကြောင့် ဖြစ်ပေါ်တာပါ။
+transaction ချို့ယွင်းမှုအများစုသည် အထောက်အထား သို့မဟုတ် ခွင့်ပြုချက် မကိုက်ညီခြင်းကြောင့် ဖြစ်သည်။
 
-- Client Configuration ထဲက Account Public Key က Signage အတွက် အသုံးပြုတဲ့ Private Key နဲ့ မညီပါဘူး။
+- client ပြင်ဆင်သတ်မှတ်မှုရှိ အကောင့်အများသုံးကီးသည် လက်မှတ်ထိုးရာတွင် အသုံးပြုသော ကိုယ်ပိုင်ကီးနှင့် မကိုက်ညီခြင်း
 - အကောင့်ကို blockchain genesis မှာ မှတ်ပုံတင်ထားတာမဟုတ်ဘူး၊ အရင်က ငွေပေးချေမှုတစ်ခုမှာလည်း မှတ်ပုံတင်ထားတာမဟုတ်ဘူး။
-- account မှာ software execution environment validator က တောင်းဆိုတဲ့ permission token (သို့) role မရှိပါဘူး။
-- Domain ID တစ်ခုမှာ `domain.dataspace` လို ဒေတာနေရာ အရည်အသွေးမရှိပါ။
+- အကောင့်တွင် လည်ပတ်မှုပတ်ဝန်းကျင်၏ စစ်ဆေးအတည်ပြုသူက လိုအပ်သော ခွင့်ပြုချက်တိုကင် သို့မဟုတ် အခန်းကဏ္ဍ မရှိခြင်း
+- domain ID တွင် `domain.dataspace` ကဲ့သို့ data space ဖြင့် အမည်အပြည့်အစုံ သတ်မှတ်မှု မပါဝင်ခြင်း
 
 `--output-format text` ကို အသုံးပြုပြီး CLI command များကို Debug လုပ်နေစဉ် အမှားများကို ဖတ်ရန် ပိုလွယ်ကူစေရန်:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ledger transaction ping --msg "hello"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority --output-format text tx ping --msg "hello"
 ```
 
 ## မေးမြန်းချက်များတွင် ပလပ်သော ရလဒ်များ ပြန်လာသည် {#queries-return-empty-results}
@@ -65,12 +64,12 @@ cargo run --bin iroha -- --config ./localnet/client.toml --output-format text le
 ဒိုမင် စစ်ဆေးမှုအတွက် အကြီးမားဆုံး မေးမြန်းချက်နဲ့စပါ။
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 ## Event (သို့) Block stream တွေကို အစောပိုင်းမှာ ရပ်တန့်ပေးတယ်။ {#event-or-block-streams-stop-early}
 
-Block နှင့် Event Stream နမူနာများမှာ Torii streaming API အဆုံးသတ်မှတ်ချက်များကို အားကိုးသည်။ ကွန်ရက် peer ကိုအလုပ်လုပ်နေဆဲကိုစစ်ဆေးပြီးနောက် timeout ဖြင့်စမ်းသပ်ပါ။
+ဘလောက်နှင့် ဖြစ်ရပ်စီးကြောင်း နမူနာများသည် Torii စီးကြောင်းဝင်ပေါက်များကို အသုံးပြုသည်။ အဆင့်တူနိုဒ် လည်ပတ်နေဆဲဖြစ်ကြောင်း စစ်ဆေးပြီးနောက် အချိန်ကန့်သတ်ချက်ဖြင့် စမ်းသပ်ပါ။
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger blocks 1 --timeout 30s

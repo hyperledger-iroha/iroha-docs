@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
+translation_source_hash: 37e8be9b07a40e5c6b841a47b016320e42079853433fb3e53937e4021dc1304f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Swift 和iOS {#swift-and-ios}
 
 上游工作区提供的 Swift SDK 是 `IrohaSwift/` 下的 `IrohaSwift` Swift 包。其包清单定义了三个库产品：`IrohaSwift`、`IrohaSwiftMobileTransports` 和 `IrohaSwiftTransferUI`，并使用 Swift 5.9 工具面向 iOS 15+ 和 macOS 12+。
@@ -161,7 +160,7 @@ let keyPair = try ConnectCrypto.generateKeyPair()
 - Ed25519, secp256k1, ML-DSA, BLS,GOST 和 SM2 的签字表面,在需要时具有原生桥梁支
 - 用于市场型和匿名托管的原生托管指令载荷构建器
 - 连接 WebSocket,框架,加密,会议,排队,重播和诊断辅助器
-- 卡盖穆沙准备,打字补充和赎回,运营状态,笔记,对等节点捆绑,收据和 QR 流模型
+- KAGEMUSHA V1 传输格式辅助方法，以及供原生钱包 Advance 提供者、注册、恢复和获准交换调用使用的 iPhone 平台适配器
 - SoraFS,数据可用性和验证附件辅助器
 
 ## API 举例 {#api-examples}

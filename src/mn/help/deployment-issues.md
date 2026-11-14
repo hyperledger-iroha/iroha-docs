@@ -1,11 +1,10 @@
 ---
 translation_locale: mn
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Тархалтын асуудлыг шийдвэрлэх {#troubleshooting-deployment-issues}
 
 Энэ хэсэг нь Iroha 3 шийдлүүдийг суурилуулах үед гарч болох асуудлыг шийдэх зөвлөмжийг санал болгодог. Хэрэв таны тулгарч буй асуудал энд дурдсанаас өөр бол, [Телеграм](https://t.me/hyperledgeriroha)-ээр бидэнтэй холбоо барина уу.
@@ -15,7 +14,7 @@ translation_engine: bing-translator-llm
 Орон нутгийн болон туршилтын байршуулалтын хувьд гараар бичсэн сүлжээний хөрш файлуудын оронд Kagami-аас үүсгэсэн бүтээлүүдийг ашиглахыг илүүд үзнэ:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Үүсгэсэн директор нь сүлжээний хөршийн тохиргоо, блокчэйн үүсэх материал, эхлүүлэх скриптүүд, мөн Iroha 3 барилгын шугамын README-ийг агуулна.
@@ -42,7 +41,7 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 Одоогийн Kagami localnet гаралтаас Compose үүсгээрэй, ингэснээр командын мөрийн аргументууд ба тохиргооны файлууд шалгагдсан кодтой таарч байна:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```
@@ -67,9 +66,9 @@ Kubernetes-ийн хувьд, бүх нэгж баталгаажуулагчий
 
 Хэрэв под удаа дараа дахин эхэлж байвал, под дахь үүсгэсэн тохиргоог хүлээгдэж буй тохиргоотой харьцуул. [`peer.template.toml`](/mn/reference/peer-config/index.md#template) мөн сүлжээний хамтрагч хуучин мэдээллийг дахин тоглуулаж байгаа эсэхийг шалгана уу Kura өгөгдөл.
 
-## Сорагийн профайл {#sora-profile}
+## SORA Nexus профайл {#sora-profile}
 
-Хувийн эсвэл орон нутгийн Iroha 3 суурилуулалтууд нь Nexus, SoraFS эсвэл олон урсгалтай урсгалуудыг ашигладаг тохиолдолд стандарт демоныг Sora профайл идэвхтэйгээр эхлүүлэх ёстой:
+SORA Nexus, SoraFS эсвэл олон эгнээний урсгал ашигладаг хувийн эсвэл дотоод Iroha 3 байршуулалт стандарт үйлчилгээг SORA Nexus профайлыг идэвхжүүлэн эхлүүлэх ёстой:
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

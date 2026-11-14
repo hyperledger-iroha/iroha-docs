@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /blockchain/data-model.md
-translation_source_hash: 147562d2286bf11e60a941969e6d52bffc1534c3cfc04d440e0bcf78598a1ca7
+translation_source_hash: f90139dee2eff97769cd47188bcaf60b31672f0250505d8afad9c8ee60815ddd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-naming-amendment
 ---
-
 # Məlumat Modeli {#data-model}
 
 Iroha blokçeyn jurnal vəziyyətini `World`da saxlayır. Onun ilk buraxılış məlumat modeli aşağıdakı tək protokol-standart identitetlər və vahidləri istifadə edir:
@@ -122,7 +121,7 @@ Aliaslər insan qarşısında görünən adlardır və tək protokol-standartlı
 |Aktivin tərifi|tək protokol-standart `AssetDefinitionId` Base58 ünvan| `name#domain.dataspace` və ya `name#dataspace`            | `AssetDefinitionAlias` bir aktiv tərifinə bağlı |
 |Müqavilə|tək protokol-standart Bech32m `ContractAddress`| `name::domain.dataspace` və ya `name::dataspace`          | `ContractAlias` yerləşdirilmiş müqavilə ünvanına bağlandı|
 |Domen adı| `DomainId` `domain.dataspace` formasında| `domain.dataspace` | SNS `domain` ad sahəsi qeydi|
-|Məlumat məkanı adı|aktiv Nexus kataloqdan rəqəmsal `DataSpaceId`| `universal`, `paynet` və ya `zk` kimi məlumat məkanı aliası|SNS `dataspace` ad sahəsi qeydi ilə birlikdə aktiv məlumat sahəsi kataloqu|
+|Məlumat məkanı adı|aktiv SORA Nexus kataloqdan rəqəmsal `DataSpaceId`| `universal`, `paynet` və ya `zk` kimi məlumat məkanı aliası|SNS `dataspace` ad sahəsi qeydi ilə birlikdə aktiv məlumat sahəsi kataloqu|
 
 Hesab ləqəbləri istifadəçiyə görünən hesab adlarıdır. Onlar hesabın açarlarının dəyişdirilməsindən qorunur, çünki ləqəb aktiv hesab ID-sinə dünya vəziyyəti indeksləri və hesab açar dəyişdirmə qeydləri vasitəsilə işarə edir. `SetPrimaryAccountAlias` hesabın əsas etiketi üçün, `SetAccountAliasBinding` əlavə qeyri-əsas ləqəblər üçün, və `FindAccountByAlias` və ya `FindAliasesByAccountId` isə oxumaq üçün istifadə edin. Hesab ləqəbləri adətən aktiv SNS hesab-ləqəb icarəsi tələb edir, bu icarə `AcquireAccountAliasLease` ilə əldə edilir və `RenewAccountAliasLease` ilə yenilənir.
 

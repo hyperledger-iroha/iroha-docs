@@ -1,11 +1,10 @@
 ---
 translation_locale: ru
 translation_source: /help/integration-issues.md
-translation_source_hash: c5f169e423806fa2a9e9d198971588d1aa0b199a28d64e8b089b9f81727550a5
+translation_source_hash: 2146a236adb3a3b3b896a1992daeecf6713988183ca53e4412f9b616ed2e9085
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Устранение проблем с интеграцией {#troubleshooting-integration-issues}
 
 Этот раздел предлагает советы по устранению неполадок интеграции Iroha 3. Если описанная здесь проблема не соответствует вашей, свяжитесь с нами через [Телеграм](https://t.me/hyperledgeriroha).
@@ -21,7 +20,7 @@ torii_url = "http://127.0.0.1:8080/"
 Для проверок CLI передайте тот же файл явно:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 Если сетевой узел работает в Docker или Kubernetes, используйте адрес хоста или службы, доступный из клиентского процесса. `127.0.0.1` внутри контейнера не является хост-машиной.
@@ -45,12 +44,12 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
 - публичный ключ аккаунта в конфигурации клиента не совпадает с приватным ключом, используемым для подписи
 - учетная запись не зарегистрирована в генезисе блокчейна или в результате предыдущей транзакции
 - учетной записи не хватает токена разрешения или роли, требуемой проверяющим среду выполнения программного обеспечения
-- у идентификатора домена отсутствует квалификация пространства данных, например `domain.dataspace`
+- в идентификаторе домена не указано пространство данных, как в форме `domain.dataspace`
 
 Используйте `--output-format text` при отладке команд CLI, чтобы ошибки было легче читать:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ledger transaction ping --msg "hello"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority --output-format text tx ping --msg "hello"
 ```
 
 ## Запросы возвращают пустые результаты {#queries-return-empty-results}
@@ -65,7 +64,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml --output-format text le
 Для проверки доменов начните с самого широкого запроса:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 ## Потоки событий или блоков останавливаются преждевременно {#event-or-block-streams-stop-early}

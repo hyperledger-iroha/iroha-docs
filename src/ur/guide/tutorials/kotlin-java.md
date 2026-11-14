@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 9388823f782eef86aedbaf141bd251dae39837957aefd224ed0cc97ba11ad97d
+translation_source_hash: f1f922b9820587cd4b599e7407698a47d468616670fee2922e4028147bc3e9b0
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # Kotlin،Android، اور جاوا {#kotlin-android-and-java}
 
 Kotlin SDK JVM اور Android ایپلی کیشنز کے لئے ڈیفالٹ کلائنٹ اسٹیک ہے۔ یہ Iroha ریپوزٹری میں `kotlin/` کے تحت رہتا ہے اور پلیٹ فارم کے ذریعہ تقسیم کیا جاتا ہے تاکہ پورٹیبل کوڈ Android انحصار حاصل نہیں کرتا ہے۔
@@ -73,8 +72,8 @@ Kotlin SDK میں شامل ہیں:
 - کینونیکل اکاؤنٹ اور اثاثہ ایڈریس ہینڈلنگ
 - ٹرانزیکشن کی تعمیر، دستخط اور آف لائن لفافے
 - Torii HTTP،WebSocket، اور SSE کلائنٹس
-- ملٹی دستخط، سبسکرپشن، SoraFS، Nexus، اور کنیکٹ ماڈل
+- ملٹی دستخط، سبسکرپشن، SoraFS، SORA Nexus، اور کنیکٹ ماڈل
 - Android کیسٹ اسٹور اور ڈیوائس ٹیلی میٹری انضمام۔
 - Android آف لائن QR، قریب اور NFC ٹرانسپورٹ
 
-ماڈیول سے مخصوص APIs اور عین بلڈ کمانڈز کے لیے [Kotlin SDK کی README فائل](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/kotlin/README.md) دیکھیں۔
+ماڈیول سے مخصوص APIs اور عین بلڈ احکامات کے لیے [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/kotlin/README.md) دیکھیں۔

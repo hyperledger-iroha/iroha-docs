@@ -50,8 +50,8 @@ name$domain.dataspace
 ```
 
 For example, `badge$docs.universal` identifies the `badge` NFT in the
-`docs.universal` domain. If the dataspace is omitted, the current parser
-uses the `universal` dataspace, so `badge$docs` resolves to
+`docs.universal` domain. If the data space is omitted, the current parser
+uses the `universal` data space, so `badge$docs` resolves to
 `badge$docs.universal`.
 
 Use stable names for NFT IDs. The ID is the object identity used by
@@ -77,12 +77,13 @@ generated client configuration from the
 
 ```bash
 export IROHA_CONFIG=./localnet/client.toml
-export NFT_DOMAIN=wonderland.universal
-export NFT_ID='badge_intro$wonderland.universal'
+export NFT_DOMAIN='<OWNED_DOMAIN>.universal'
+export NFT_ID="badge_intro\$$NFT_DOMAIN"
 ```
 
-The generated localnet already sets up `wonderland.universal` and its SNS
-lease. To use a different domain, create it first with the declarative
+A generated localnet registers no application domain for its client. Set
+`NFT_DOMAIN` to a domain that the signing account owns, or for which it
+holds `CanRegisterNft`. To create one, use the declarative
 `app alias setup plan` and `app alias setup apply` workflow described in
 [Domains](/blockchain/domains.md#registration).
 
@@ -91,7 +92,7 @@ input:
 
 ```bash
 printf '{"kind":"badge","level":"intro","issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft register --id "$NFT_ID"
 ```
 
@@ -102,14 +103,14 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft get --id "$NFT_ID"
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger nft list all --verbose
+  ledger nft list --all
 ```
 
 Add a metadata key and read the NFT again:
 
 ```bash
 printf '{"color":"blue","rarity":"tutorial"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta set --id "$NFT_ID" --key traits
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -119,22 +120,22 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 Remove the metadata key:
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
 Optionally transfer the NFT. Use `ledger nft get` to read the current owner
-from `owned_by`, and use `ledger account list all` to find a destination
+from `owned_by`, and use `account list --all` to find a destination
 account ID.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger account list all
+  account list --all
 
 export CURRENT_OWNER='<account-id-from-owned_by>'
 export NEW_OWNER='<destination-account-id>'
 
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
@@ -143,7 +144,7 @@ transfer it back or submit the unregister command with the current owner's
 account configuration.
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft unregister --id "$NFT_ID"
 ```
 

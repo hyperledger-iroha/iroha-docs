@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: 4c7c62c23166a19ccc3a6a4bb42d808038d755b8c05e87b9e2ce21fbbe31a6ac
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # གཞི་བཙུགས་འབད་ Iroha 3 {#install-iroha-3}
 
@@ -63,7 +63,8 @@ cargo run --bin kagami -- --help
 
 ད་ལྟོའི་འབྱུང་ཁུངས་རྒྱབ་སྐྱོར་འབད་མི་ ལོ་ཀཱལ་ནེཊི་རྒྱུན་རིམ་འདི་ Kagami གིས་བཟོ་བཏོན་འབད་ཡོདཔ་ཨིན། འདི་གིས་ ཡོངས་འབྲེལ་གྱི་མཉམ་རོགས་རིམ་སྒྲིག་དང་ བཀག་ཆ་རིགས་མཚན་གྱི་ཅ་ཆས་ མཁོ་སྤྲོད་འབད་མི་རིམ་སྒྲིག་ གྲོགས་རམ་ཡིག་ཚུགས་ཚུ་ དེ་ལས་ བརྟག་ཞིབ་འབད་ཡོད་པའི་ཨང་རྟགས་དང་མཐུན་སྒྲིག་འབད་མི་ གདམ་ཁ་ཅན་གྱི་རྩོམ་སྒྲིག་ཡིག་སྣོད་ཚུ་བྲིསཝ་ཨིན།
 
-- `kagami localnet` ས་གནས་ཀྱི་ཉེ་གནས་མཉམ་རོགས་ཡིག་གཟུགས་ཚུ་གི་དོན་ལུ་
+- Kagami གིས་འགོ་བཙུགས་ཏེ་ལྟ་རྟོག་འབད་པའི་ འཛིན་སྐྱོང་ཅན་གྱི་ཉེ་གནས་དྲ་ལམ་དོན་ལུ་ `kagami localnet up`།
+- རང་བྱུང་ཉེ་གནས་མཐུད་གྲོགས་ཀྱི་བཀོད་ཡིག་ཚུའི་དོན་ལུ་ `kagami localnet generate`།
 - `kagami docker` གི་དོན་ལུ་ Docker Compose འདི་ ས་གནས་བརྟག་དཔྱད་དྲ་རྒྱ ཐོ་བཀོད་ནང་ལས་ ཐོན་ཡོདཔ་ཨིན།
 
 [འགོ་བཙུགསཔ་ད་ Iroha 3](/dz/get-started/launch-iroha.md).

@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /reference/binaries.md
-translation_source_hash: c617a21d50b28495c261d05d672e0b7803c282d53da577391dbebbc7f120d045
+translation_source_hash: 75848623e735abc80326f9ebda6f74ab438b67eaeddeacdd4d8c5509856a999e
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha İkilik Fayllarla İş {#working-with-iroha-binaries}
 
 Iroha 3 operator iş axını dörd əsas binar ətrafında fırlanır:
@@ -50,7 +49,7 @@ cargo run --bin kagami -- --help
 
 ## Docker Şəkil {#docker-image}
 
-Yuxarı axın iş sahəsi `kagami localnet` və `kagami docker`-dən istifadə edərək yoxlanmış kod ilə uyğun gələn Docker Compose faylları yaradır. `hyperledger/iroha:dev` şəkli həmin yaradılmış fayllarla istifadə oluna bilər.
+Əsas mənbə iş sahəsi seçilmiş kod versiyasına uyğun Docker Compose faylları yaratmaq üçün `kagami localnet generate` və `kagami docker` istifadə edir. `hyperledger/iroha:dev` konteyner obrazı həmin yaradılmış fayllarla istifadə oluna bilər.
 
 Konteynerdə CLI-i işə salın:
 
@@ -67,7 +66,7 @@ docker run -t hyperledger/iroha:dev kagami --help
 Şəbəkə həmkarını işə salmaq üçün əvvəlcə bir localnet və Compose faylı yaradın:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```

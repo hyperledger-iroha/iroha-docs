@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/security/storing-cryptographic-keys.md
-translation_source_hash: 168ee24e84f9225e81365658018717155476ae1508fefba5e0234e0bf6feefbd
+translation_source_hash: a95fe07f62d51a813a2f9fb02d67521ae421faf8467648e5f215e069c5d68572
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # 儲存密碼金鑰 {#storing-cryptographic-keys}
 
 私鑰可以授權其授權主體所允許的每項操作。切勿分享私鑰；種子材料、復原秘密、Bearer 權杖及匯出的金鑰檔案，都必須以同等謹慎的方式保護。
@@ -28,7 +27,7 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-父目錄必須存在。目標目錄必須是新目錄，或已由目前使用者擁有、模式為 `0700`、不含符號連結且內容為空。Kagami 會以模式 `0600` 寫入 `public.key` 與 `private.key`；`--pop` 也會寫入 `pop.hex`。若 Kagami 無法強制執行僅限擁有者的檔案系統規則，此命令會失敗。
+父目錄必須存在，目標目錄則不得存在，即使是空目錄也不行。Kagami 以 `0700` 模式建立目標，強制執行僅限擁有者存取的檔案系統檢查，拒絕符號連結，並以 `0600` 模式寫入 `public.key` 和 `private.key`；`--pop` 也會寫入 `pop.hex`。若所在平台無法讓 Kagami 強制執行這些僅限擁有者存取的規則，命令就會失敗。
 
 私鑰檔是未加密的匯出物。不得將它放入原始碼控制、共用資料夾、日誌、工單、聊天或建置成品。請將生產金鑰匯入經核准的保管邊界，再依部署程式移除匯出物。切勿在生產環境重複使用開發金鑰。
 

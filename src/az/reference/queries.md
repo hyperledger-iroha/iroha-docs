@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Sorğular {#queries}
 
 Iroha sorğuları blokçeyn dəftərxana vəziyyətini dəyişdirmədən oxuyur. Mövcud məlumat modeli iki əsas sorğu formasını ortaya qoyur:
@@ -86,7 +85,7 @@ Escrow sorğuları [yerli aktiv eskro ISIs](/az/blockchain/escrow.md) tərəfind
 | `FindProofRecordsByBackend` |Bir sübut backend-i üçün sübut qeydlərini siyahıya alın.|
 | `FindProofRecordsByStatus` |Sənəd sübut qeydlərini statusa görə siyahıya alın.|
 
-## Nexus, Məlumatın Mövcudluğu və Paketlər {#nexus-data-availability-and-packages}
+## SORA Nexus, Məlumatın Mövcudluğu və Paketlər {#nexus-data-availability-and-packages}
 
 |Sorğu|Məqsəd|
 | --- | --- |

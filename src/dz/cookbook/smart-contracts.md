@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: ca6fd12e33df43b73a72dd6327133115aa44256cf579387c11bf0693797bf96e
+translation_source_hash: f1d7f1e54fa01550ad5de65b18a725bc98452dcff8f9c08ebe427fb5ae857968
 translation_status: machine-validated
-translation_engine: human-reviewed+claude-opus-5-5
+translation_engine: human-reviewed+claude-opus-5-5+reviewed-supplemental-naming-link
 ---
 # རིག་རྩལ་ཅན་གྱི་ཆིངས་ཡིག་བཟོ་ནི་དང་ ལག་ལེན་འཐབ་ནི་ {#build-and-deploy-a-smart-contract}
 
@@ -79,7 +79,7 @@ cargo run -p kotodama_toolchain --bin koto -- \
 
 ### 3. བའི་ཊི་ཀོཌ་འདི་ ས་གནས་ནང་ལུ་ལག་ལེན་འཐབ་དགོ། {#_3-run-the-bytecode-locally}
 
-`compute` འདི་ མི་མང་གི་ ལྷག་ནི་རྐྱངམ་ཅིག་གི་ `view fn` ཅིག་ཨིན། དེ་ `debug-view` གིས་ གཡོག་བཀོལ། `debug-view` གིས་ བསྡུ་སྒྲིག་འབད་ཡོད་པའི་ བཱའིཊི་ཀོཌ་འདི་ ས་གནས་ནང་ གདམ་ཁ་ཅན་གྱི་ བརྟག་དཔྱད་གནས་སྡུད་ཚུ་གུ་ ཚོང་འབྲེལ་ཕུལ་ནི་ ཡང་ན་ དེ་གི་དོན་ལུ་ འཐུས་སྤྲོད་ནི་ མེད་པར་ ལག་བསྟར་འབདཝ་ཨིན།
+`compute` འདི་ མི་མང་གི་ ལྷག་ནི་རྐྱངམ་ཅིག་གི་ `view fn` ཅིག་ཨིན། དེ་ `debug-view` གིས་ གཡོག་བཀོལ། དེ་གིས་ བསྡུ་སྒྲིག་འབད་ཡོད་པའི་ བཱའིཊི་ཀོཌ་འདི་ ས་གནས་ནང་ གདམ་ཁ་ཅན་གྱི་ བརྟག་དཔྱད་གནས་སྡུད་ཚུ་གུ་ ཚོང་འབྲེལ་ཕུལ་ནི་ ཡང་ན་ དེ་གི་དོན་ལུ་ འཐུས་སྤྲོད་ནི་ མེད་པར་ ལག་བསྟར་འབདཝ་ཨིན།
 
 ```bash
 iroha --config "$IROHA_CONFIG" --machine contract debug-view \

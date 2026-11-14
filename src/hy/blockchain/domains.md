@@ -1,26 +1,25 @@
 ---
 translation_locale: hy
 translation_source: /blockchain/domains.md
-translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
+translation_source_hash: 26e8efe6c728d0f819b12e7d8257777d3d4ea272f42fabf8aec727467146500f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Դոմեյններ {#domains}
 
-Դոմեյնները անվանում են `World` տվյալների մոդելում գրանցված անունային տարածքներ: Ներկայիս Iroha 3 տվյալների մոդելում դոմեյնը որակավորվում է իր հիմնական տվյալների տարածքով, այնպես որ քանոնիկ նույնականացողը հետեւյալն է՝
+Տիրույթները `World`-ում գրանցված անվանված անվանատարածքներ են։ Iroha 3-ի ընթացիկ տվյալների մոդելում տիրույթն ամբողջությամբ որոշվում է իր ծնող տվյալների տարածքով, ուստի կանոնական նույնացուցիչն է՝
 
 ```text
 domain.dataspace
 ```
 
-Օրինակ, `payments.universal` անվանում է `payments` տիրույթը `universal` տվյալների տարածքում:
+Օրինակ՝ `payments.universal`-ը նշանակում է `universal` տվյալների տարածքում գտնվող `payments` տիրույթը։
 
 ## Կազմակերպություն {#structure}
 
 Գրանցված `Domain` պարունակում է:
 
-- `id`: տվյալների տարածքի համար հավասար `DomainId`:
+- `id`՝ տվյալների տարածքով ամբողջությամբ որոշված `DomainId`
 - `logo`: տիրույթի լոգոյի համար նախընտրական `SoraFS` URI
 - `metadata`: առանցքային արժեքի կամայական մետադատա
 - `owned_by`: տիրույթի սեփականատերը, սովորաբար այն հաշիվը, որը գրանցել է այն:
@@ -39,13 +38,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./payments-domain.intent.json \
   --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
-Intent-ը նույնականացնում է `payments.universal`-ը, դրա թվային տվյալների տարածքը, կանոնական I105 սեփականատիրոջը, lease-ի ձեռքբերման ժամկետը և ընթացիկ policy/payment quote guard-ը։ Planner endpoint-ը `POST /v1/aliases/setup/plan` է․ վերադարձված պլանը կապված է շղթայի, իրավասության, վիճակի և վերջնաժամկետի հետ։ Դոմենի հեռացման համար շարունակում է կիրառվել [`Unregister`](/hy/blockchain/instructions.md#un-register)-ը։
+Մտադրությունը նշում է `payments.universal`-ը, դրա թվային տվյալների տարածքը, կանոնական I105 սեփականատիրոջը, վարձակալության ձեռքբերման ժամկետը և ընթացիկ քաղաքականության/վճարի գնառաջարկի ստուգման պայմանը։ Պլանավորողի վերջնակետը `POST /v1/aliases/setup/plan` է․ վերադարձված պլանը կապված է շղթային, լիազորված սուբյեկտին, վիճակին և վերջնաժամկետին։ Տիրույթի հեռացման համար շարունակում է օգտագործվել [`Unregister`](/hy/blockchain/instructions.md#un-register)-ը։
 
 Դոմենի ստեղծումը կամ հեռացումը պահանջում է համապատասխան դոմենի կառավարման թույլտվությունը ակտիվ վավերացողի ներքո: Դոմենի մետադատները կարող են թարմացվել [`SetKeyValue` եւ `RemoveKeyValue`](/hy/blockchain/instructions.md#setkeyvalue-removekeyvalue), երբ լիազոր հաշիվն իրավունք ունի փոփոխել այդ դոմենը:
 
@@ -58,7 +57,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
   | jq -r '.items[].id'
 ```
 
-Համացանցային գոտու կատալոգը քարտեզագրեք տվյալների տարածքի անանուններին.
+Հանրային գոտիների կատալոգը համապատասխանեցրեք տվյալների տարածքների այլանուններին՝
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -67,24 +66,17 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
     | @tsv'
 ```
 
-Օգտագործեք առաջին հրամանը, երբ հավելվածը պետք է ստուգի, թե արդյոք դոմեյն կա: Օգտագործիր գոտու կատալոգը, երբ դուք պետք է հաստատեք, թե արդյոք տվյալների տարածքը հանրային է, սահմանափակվում է կամ ուշանում է հիմնական գոտուից.
+Առաջին հրամանն օգտագործեք, երբ հավելվածը պետք է ստուգի տիրույթի գոյությունը։ Գոտիների կատալոգով ուսումնասիրեք տվյալների տարածքին կապված գոտիները, ներառյալ յուրաքանչյուրի հանրային կամ սահմանափակ տեսանելիությունը և հիմնական գոտու նկատմամբ համաժամացման վիճակը։
 
-Դոմեյնային կարգավորումը վճարովի գրառում է: Նախքան փորձելը Taira, պահեք faucet օգնականը [Ստանալ թեստային ցանցի XOR Taira-ում](/hy/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) որպես `taira_faucet_claim.py`, ֆինանսավորեք ստորագրողը հանրային ջրհաղթի միջոցով եւ միացրեք վճարային մետադատա.
+Տիրույթի կարգավորումը վճարովի գրառման գործողություն է։ Taira-ում այն փորձելուց առաջ ֆինանսավորեք ստորագրող հաշիվը [Ստանալ փորձնական XOR Taira-ում](/hy/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) բաժնի նախապես պատրաստվող միջոցների ստացման հոսքով, ապա կիրառեք պլանը՝ բացահայտ նշելով վճարողին։ CLI-ն ստորագրելուց առաջ հաշվարկում և ցույց է տալիս ճշգրիտ վճարը՝
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
   app alias setup plan \
   --intent-file ./taira-domain.intent.json \
   --plan-file ./taira-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 
@@ -97,6 +89,6 @@ iroha --config ./taira.client.toml \
 Նայեք նաեւ.
 
 - [Աշխարհ](/hy/blockchain/world.md)
-- [Գործիքներ](/hy/blockchain/assets.md)
+- [Ակտիվներ](/hy/blockchain/assets.md)
 - [Մետադատա](/hy/blockchain/metadata.md)
 - [Անունավորման կանոններ](/hy/reference/naming.md)

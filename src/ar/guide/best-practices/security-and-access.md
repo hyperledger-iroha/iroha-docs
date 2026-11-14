@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /guide/best-practices/security-and-access.md
-translation_source_hash: f0163734d618d91337b437da703743014d01c57c4cb603fbc2e66316f3654779
+translation_source_hash: b1cb0cdbeec55f7db03f1c64b6581a21c09fc80a57344cf6e27df1d126c0ec92
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # الأمن والوصول {#security-and-access}
 
 يجب أن تكون ممارسات الأمن في Iroha قائمة على مبدأ التفويض الضيق، وحفظ المفاتيح تحت السيطرة، والتعرض الشبكي الصريح، والتغييرات القابلة للتدقيق.
@@ -21,9 +20,9 @@ translation_engine: bing-translator-llm
 
 ## الأذونات {#permissions}
 
-- امنح أصغر رمز أو دور إذن يدعم سير العمل.
+- امنح أضيق رمز صلاحية أو دور يتيح سير العمل.
 - يفضل استخدام حسابات تقنية مخصصة للخدمات والمحفزات والوكلاء والأتمتة. تجنب تشغيل الأتمتة طويلة الأمد من خلال حساب مشغل شخصي.
-- راجع الأذونات لإدارة النظراء في الشبكة، تعديل البيانات الوصفية، الإصدار، الإحراق، تسجيل المشغلات، تغييرات المنفذ، وحوكمة SORA/Nexus قبل إطلاق الإنتاج.
+- راجع الأذونات لإدارة النظراء في الشبكة، تعديل البيانات الوصفية، الإصدار، الإحراق، تسجيل المشغلات، تغييرات المنفذ، وحوكمة SORA Nexus قبل إطلاق الإنتاج.
 - إلغاء الأذونات المؤقتة بعد نافذة الصيانة أو الترحيل التي كانت تتطلبها.
 
 انظر [الأذونات](/ar/blockchain/permissions.md) و [رموز الإذن](/ar/reference/permissions.md).

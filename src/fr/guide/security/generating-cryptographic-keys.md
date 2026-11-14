@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
+translation_source_hash: b6e3bd79c50ea326930ac978350ea4beac8294b6f045ac0084aada257754ffa1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Génération de clés cryptographiques {#generating-cryptographic-keys}
 
 Utilisez `kagami keys` pour générer le matériel de clé client, pair réseau et validateur pour Iroha 3.
@@ -18,7 +17,7 @@ Utilisez `kagami keys` pour générer le matériel de clé client, pair réseau 
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-Le répertoire parent doit déjà exister. La cible doit être nouvelle ou déjà possédée par l'utilisateur actuel, en mode `0700`, sans liens symboliques et vide. `kagami` écrit `public.key` et `private.key` en mode `0600` et n'affiche pas le matériel de clé. Avec `--pop`, il écrit également `pop.hex`.
+Le répertoire parent doit déjà exister. Le répertoire cible ne doit pas exister : Kagami refuse même un répertoire existant vide. Il crée la cible avec le mode `0700`, applique les contrôles du système de fichiers réservant l’accès au propriétaire et rejette les liens symboliques. `kagami` écrit `public.key` et `private.key` avec le mode `0600` sans afficher les clés. Avec `--pop`, il écrit aussi `pop.hex`.
 
 `--out-dir` échoue en position fermée sur les plateformes où Kagami ne peut pas appliquer ces règles de système de fichiers réservées au propriétaire. Le fichier de clé privée est une exportation non chiffrée, pas un matériel ou signataire cryptographique de production non exportable. Importez-le dans la limite de garde approuvée et supprimez l'exportation selon la procédure de déploiement.
 

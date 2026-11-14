@@ -1,11 +1,10 @@
 ---
 translation_locale: ka
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # ნებართვის ტოკენები {#permission-tokens}
 
 ამ გვერდზე მოცემულია განსაზღვრული ნებართვის ნიშნის ტიპები, რომლებიც გამოქვეყნებულია მიმდინარე Iroha აღმასრულებლის მონაცემთა მოდელის მიერ. როლებისა და ნებართვების კონცეფციური სახელმძღვანელოსთვის იხილეთ [ნებართვები](/ka/blockchain/permissions.md).
@@ -45,7 +44,8 @@ translation_engine: nllb-200-ct2
 |`CanModifyTriggerMetadata` |ტრიგერი |ტრიგერის მეტამონაცემების შეცვლა.|
 |`CanUpgradeExecutor` |აღმასრულებელი |განახლება შესრულების გარემოს აღმასრულებელი. |
 |`CanRegisterSmartContractCode` |ჭკვიანი კონტრაქტი |ჭკვიანი კონტრაქტის კოდის რეგისტრაცია. |
-|`CanUseFeeSponsor` |Nexus |Nexus გადასახადების დარიცხვა განსაზღვრული სპონსორის ანგარიშზე. |
+| `CanManageFeeSponsorProgram` | SORA Nexus | ზუსტი სპონსორის ანგარიშის კუთვნილი პროგრამების მართვა. |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | ერთი ზუსტი სპონსორის პროგრამის ბენეფიციარების მართვა. |
 
 ## საკუთრება {#ownership}
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: ka
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 9388823f782eef86aedbaf141bd251dae39837957aefd224ed0cc97ba11ad97d
+translation_source_hash: f1f922b9820587cd4b599e7407698a47d468616670fee2922e4028147bc3e9b0
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # Kotlin, Android და ჯავა {#kotlin-android-and-java}
 
 Kotlin SDK არის ჩვეულებრივი კლიენტის სტეიკი JVM და Android პროგრამებისთვის. იგი ცხოვრობს `kotlin/` ქვეშ Iroha საცავში და განკუთვნილია პლატფორმაზე, ასე რომ პორტაბილური კოდი არ იღებს დამოკიდებულებებს Android.
@@ -73,7 +72,7 @@ Kotlin SDK მოიცავს:
 - კანონიკური ანგარიშის და აქტივების მისამართების მართვა
 - ტრანზაქციების შექმნა, ხელმოწერა და ოფლაინ მონაცემთა კონტეინერები
 - Torii HTTP, WebSocket და SSE კლიენტები
-- მულტიხელმოწერით, აბონენტობით, SoraFS, Nexus და Connect-ის მოდელებით
+- მულტიხელმოწერით, აბონენტობით, SoraFS, SORA Nexus და Connect-ის მოდელებით
 - Android საკვანძო შენახვისა და მოწყობილობის ტელემეტრიის ინტეგრაციები
 - Android ოფლაინ QR, ახლომდებარე და NFC ტრანსპორტები
 

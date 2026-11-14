@@ -1,14 +1,13 @@
 ---
 translation_locale: my
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: d7edc74d06a9481123156520d7774e26d1790fee657607031d180aea172d9a98
+translation_source_hash: 5fb7abd4e152ece715a8337e8ef8e75330f634d2a1b26e0c5bd8308f1f3793a9
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # လည်ပတ်မှု Iroha 3 မှတဆင့် CLI {#operate-iroha-3-via-cli}
 
-`iroha` ဘိုင်နရီသည် Iroha 3 အတွက် command-line client ဖြစ်သည်။ ၎င်းကို blockchain ledger ၏အခြေအနေကိုမေးမြန်းရန်၊ ငွေလဲလှယ်မှုတင်သွင်းရန်နှင့် operator API အဆုံးမှတ်များကိုစစ်ဆေးရန်အသုံးပြုပါ။
+`iroha` binary သည် Iroha 3 အတွက် command-line client ဖြစ်သည်။ လယ်ဂျာ အခြေအနေကို ရှာဖွေဖတ်ရှုရန်၊ transaction များ တင်သွင်းရန်နှင့် အော်ပရေတာ endpoint များ စစ်ဆေးရန် သုံးပါ။
 
 ## (၁) ကြိုတင်လိုအပ်ချက်များ {#_1-prerequisites}
 
@@ -32,16 +31,22 @@ cargo run --bin iroha -- --config ./localnet/client.toml --help
 
 CLI ကို အောက်ပါ အဆင့်မြင့် အမိန့်အုပ်စုများအဖြစ် စုစည်းထားသည်-
 
-- `account` ငွေစာရင်းကို ဦးတည်သော ဖြတ်လမ်းများ
-- `tx` ငွေပေးချေမှုအဆင့် အကူအညီများအတွက်
+- အကောင့် ဖတ်ရှုမှုနှင့် ပြောင်းလဲမှုများအတွက် `account`
+- မျှဝေထားသော စစ်ထုတ်မှုနှင့် စာမျက်နှာခွဲမှုပါ explorer ဒေတာစီးကြောင်းများအတွက် `explorer`
+- transaction အခြေအနေနှင့် အကူလုပ်ဆောင်ချက်များအတွက် `tx`
 - `ledger` အတွက် blockchain ledger ကိုဖတ်ပြီးရေးသား
+- trigger ဖတ်ရှုမှု၊ ရေးသားမှုနှင့် လုပ်ဆောင်မှုအတွက် `trigger`
 - `ops` လုပ်ငန်းရှင်များအတွက် ရောဂါစစ်ဆေးခြင်း
 - `app` app API အကူအညီများအတွက်
-- `contract` စာချုပ်တင်သွင်းခြင်းနှင့် နည်းပညာဖောက်သည်များအတွက်
+- စာချုပ်ခေါ်ယူမှု၊ ဖတ်ရှုမြင်ကွင်းနှင့် ဒေသတွင်း အမှားရှာမှုအတွက် `contract`၊ ဖြန့်ချိတပ်ဆင်ရန် `kagami contract deploy` သို့မဟုတ် `musubi deploy` ကို သုံးပါ
 - `tools` ရောဂါစစ်ဆေးရေးနှင့် ဖွံ့ဖြိုးရေး လုပ်ငန်းများအတွက်
-- `taira` အတွက် Taira နှင့် Nexus- ဦးတည်တဲ့ အလုပ်ဖြစ်စဉ်များ
+- data space သတ်မှတ်ချက်ကို စီစဉ်၊ အသုံးချ၊ စစ်ဆေးရန် `dataspace`
+- Taira စစ်ဆေးရေးနှင့် အကောင့်စတင်ပြင်ဆင်မှုအတွက် `taira`
+- အော့ဖ်လိုင်း ကုဒ်သွင်းကိရိယာများ၊ အစီရင်ခံစာများနှင့် စစ်ဆေးရေးအတွက် `offline`
+- Soracloud အက်ပ် platform အကူလုပ်ဆောင်ချက်များအတွက် `soracloud`
+- SORA Cross-Chain Protocol ၏ ဖတ်ရှုမှုများ၊ လွှဲပြောင်းမှုများနှင့် သက်သေများအတွက် `sccp`
 
-`ledger` အုပ်စုမှာ `ledger transaction` လို ဒိုမင်စpecified transaction assistants တွေလည်း ပါဝင်ပါတယ်။
+Transaction တင်သွင်းသော command တိုင်းတွင် `--fee-payer authority` ကဲ့သို့ အခကြေးငွေပေးသူကို တိတိကျကျ သတ်မှတ်ရသည်။ CLI သည် လက်မှတ်မထိုးမီ အခကြေးငွေအတိအကျကို တွက်ချက်ဖော်ပြသည်။
 
 `--output-format text` ကို လူသားဖတ်လို့ရတဲ့ အော်ပရေတာထုတ်လုပ်မှုအတွက် အသုံးပြုပြီး `--machine` ကို တင်းကျပ်တဲ့ အလိုအလျောက်ဖြစ်စဉ်အတွက် အသုံးပြုပါ။
 
@@ -56,7 +61,7 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-`universal` ဒေတာဇုန်မှာ အများသုံးဒိုမီနာတွေကို စာရင်းပေးပါ။
+`universal` data space ရှိ အများသုံး domain များကို စာရင်းပြုပါ:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
@@ -70,38 +75,36 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=10' \
   | jq -r '.items[] | [.id, .name, .mintable, .total_quantity] | @tsv'
 ```
 
-လက်ရှိ `iroha` ဘိုင်နရီ ရှိရင် Taira ရောဂါရှာဖွေရေး အကူကို run လုပ်ပါ။
+လက်ရှိ `iroha` binary ရှိလျှင် Taira ပြဿနာရှာဖွေစစ်ဆေးရေး အကူပရိုဂရမ်ကို လုပ်ဆောင်ပါ။
 
 ```bash
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-`taira.client.toml` ကို လက်မှတ်ရေးထိုးထားသော အမိန့်များကို စစ်ဆေးရန် အဆင်သင့်ဖြစ်ပါကသာ ဖန်တီးပါ။ config, testnet funding service နှင့် canary flow များအတွက် [SORA Nexus ဒေတာနေရာများနှင့် ချိတ်ဆက်ခြင်း](/my/get-started/sora-nexus-dataspaces.md) ကိုကြည့်ပါ။ testnet funding service fee asset ဖြင့် အကုန်မဆောင်ရွက်ခင်အထိ Taira ကိုတိုက်ရိုက် write commands ကို မပြေးပါနဲ့။
+လက်မှတ်ထိုးထားသော command များကို စမ်းသပ်ရန် အသင့်ဖြစ်မှသာ `taira.client.toml` ကို ဖန်တီးပါ။ ပြင်ဆင်သတ်မှတ်မှု၊ faucet နှင့် အခြေခံစမ်းသပ်မှု လုပ်ငန်းစဉ်ကို [SORA Nexus ၏ data space များနှင့် ချိတ်ဆက်ခြင်း](/my/get-started/sora-nexus-dataspaces.md) တွင် ကြည့်ပါ။ အကောင့်ကို faucet မှ အခကြေးငွေသုံး ပိုင်ဆိုင်မှုဖြင့် ငွေမဖြည့်မချင်း Taira သို့ ရေးသားသော command များ မလုပ်ဆောင်ပါနှင့်။
 
-အခွန်ပေးခြင်းအတွက် Taira CLI ဥပမာ, testnet ဘဏ္ဍာရေးဝန်ဆောင်မှုကူညီသူကို Save [Testnet ကို ရယူပါ။ XOR အပေါ် Taira](/my/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) သို့ဖြစ်သည် `taira_faucet_claim.py`, ထို့နောက် claim testnet XOR ပထမက-
+အခကြေးငွေပေးရသော Taira ၏ CLI နမူနာတိုင်းအတွက် [Taira တွင် Testnet XOR ရယူခြင်း](/my/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ရှိ ကြိုတင်ပြင်ဆင်သည့် faucet လုပ်ငန်းစဉ်ဖြင့် လက်မှတ်ထိုးသူကို ငွေဖြည့်ပြီး လက်ကျန်ကို စစ်ဆေးပါ:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-testnet ဘဏ္ဍာရေး ဝန်ဆောင်မှု ပဟေဠိ (သို့) လျှောက်လွှာလမ်းကြောင်း `502` ပြန်လာရင် စောင့်ပြီး ထပ်မံကြိုးစားပါ။ ဒါက အများပြည်သူအတွက် testnet ရရှိနိုင်မှု ပြဿနာတစ်ခုဖြစ်ပြီး အကောင့်ကလီးတွေကို ပြန်လည်ဖန်တီးဖို့ အချက်ပြချက်မဟုတ်ပါဘူး။
+Faucet လမ်းကြောင်းက `502` ပြန်ပေးပါက စောင့်ပြီး ပြန်ကြိုးစားပါ။ ၎င်းသည် အများသုံး testnet ရရှိနိုင်မှု ပြဿနာဖြစ်ပြီး အကောင့်ကီးများ ပြန်ထုတ်လုပ်ရန် အချက်ပြခြင်း မဟုတ်ပါ။
 
-ငွေကြေးစာရင်းကို မြင်နိုင်ပြီးနောက် အခွန်လက်မှတ် metadata ကို attach လုပ်ပြီး ရေးသားပါ-
+လက်ကျန်ကို မြင်ရပြီးနောက် ရေးသားမှုများကို `--fee-payer authority` ဖြင့် တင်သွင်းပါ။ CLI သည် လက်မှတ်မထိုးမီ Taira ၏ အခကြေးငွေသုံး ပိုင်ဆိုင်မှုဖြင့် အခကြေးငွေအတိအကျကို တွက်ချက်ဖော်ပြသည်:
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg "hello from faucet-funded taira"
+  --fee-payer authority \
+  tx ping --msg "hello from faucet-funded taira"
 ```
 
 ## Basic blockchain ledger Commands များ {#_4-basic-ledger-commands}
@@ -109,7 +112,7 @@ iroha --config ./taira.client.toml \
 ဒိုမင်အားလုံးကို စာရင်းပေးပါ:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 သာမန်ဒိုမင်ဖန်တီးမှုမှာ Declarative alias Planner ကိုသုံးပါတယ်။ `ledger domain` command မှာ `register` subcommand မရှိပါဘူး။ `docs.universal` အတွက် လျှို့ဝှက်မဲ့ `AliasSetupPlanRequestV1` ရည်ရွယ်ချက်တစ်ခု ပြင်ဆင်ပြီး သင့်ရဲ့ SDK (သို့) Onboarding ဝန်ဆောင်မှုကို သုံးပြီး စီစဉ်ပြီး အသုံးချလိုက်ပါ။
@@ -120,16 +123,16 @@ cargo run --bin iroha -- --config ./localnet/client.toml \
   --intent-file ./docs-domain.intent.json \
   --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./localnet/client.toml \
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./docs-domain.plan.json
 ```
 
-Intent pin က data space ID ၊ single protocol-standard owner account၊ lease term နဲ့ current fee-price validation guard ကို ပစ်မှတ်ထားတယ်။ Planner က live state ကို စစ်ဆေးပြီး တင်ပြဖို့ တိကျတဲ့ atomic `EnsureAlias` plan ကိုပြန်ပေးပါတယ်။ အခြားကွန်ရက်တစ်ခုကနေ guard value တွေကို လက်နဲ့မကူးယူပါနဲ့။
+ရည်ရွယ်ချက်သည် data space ID၊ စံပိုင်ရှင်အကောင့်၊ ငှားရမ်းသက်တမ်းနှင့် လက်ရှိ quote စစ်ဆေးချက်ကို သတ်မှတ်ချည်နှောင်သည်။ အစီအစဉ်ရေးဆွဲသူသည် လက်ရှိအခြေအနေကို စစ်ဆေးပြီး တင်သွင်းရမည့် ခွဲမရသော `EnsureAlias` အစီအစဉ်အတိအကျကို ပြန်ပေးသည်။ အခြားကွန်ရက်မှ စစ်ဆေးကာကွယ်မှုတန်ဖိုးများကို လက်ဖြင့် မကူးယူပါနှင့်။
 
 ရိုးရှင်းတဲ့ ping ငွေပေးချေမှု ပေးပို့ပါ။
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger transaction ping --msg "hello from iroha"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority tx ping --msg "hello from iroha"
 ```
 
 မကြာသေးခင်က ဘလော့ကို ဖတ်ရှုရန် (သို့) ဘလော့အစီအစဉ်များကို လက်မှတ်ထိုးရန်:
@@ -141,10 +144,10 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 
 ## (၅) Operator Command များ {#_5-operator-commands}
 
-Consensus Operator commands များတွင် allow-listed software execution environment key ကိုလိုအပ်သည်။ `client.toml` မှထွက်၍ ပိုင်ရှင်များအတွက်သာ ဖိုင်ကို ရှင်းလင်းစွာပေးပို့ပါ။
+Consensus အော်ပရေတာ command များတွင် ခွင့်ပြုစာရင်းဝင် လုပ်ဆောင်ချိန်ကီး လိုအပ်သည်။ ၎င်းကို `client.toml` ထဲ မထည့်ဘဲ ပိုင်ရှင်သာ ဝင်ရောက်နိုင်သော ဖိုင်၏ လမ်းကြောင်းအပြည့်အစုံဖြင့် ပေးပါ:
 
 ```bash
-: "${OPERATOR_KEY_FILE:=./secrets/operator.key}"
+: "${OPERATOR_KEY_FILE:=$PWD/secrets/operator.key}"
 
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \
@@ -161,13 +164,13 @@ cargo run --bin iroha -- \
   --output-format text ops sumeragi diagnostics
 ```
 
-အမြင့်ဆုံးနှင့် ပိတ်ထားသော သဘောတူညီချက် အချိုးအမှတ် လက်မှတ်များ:
+Commit လုပ်ပြီးသော consensus lane များနှင့် ဤနိုဒ်၏ instance အခြေအနေ:
 
 ```bash
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format text ops sumeragi qc
+  --output-format text ops sumeragi lanes
 ```
 
 ကွင်းဆက်အလိုက် သဘောတူညီမှု ပမာဏများ-
@@ -182,12 +185,12 @@ cargo run --bin iroha -- \
 ## ၆။ နောက်ဘယ်ကိုသွားရမလဲ {#_6-where-to-go-next}
 
 - [SDK သင်တန်းများ](/my/guide/tutorials/)
-- [Torii API အဆုံးသတ်မှတ်ချက်များ](/my/reference/torii-endpoints.md)
+- [Torii ၏ endpoint များ](/my/reference/torii-endpoints.md)
 - [Iroha ဘိုင်နရီများနှင့် အလုပ်လုပ်ခြင်း](/my/reference/binaries.md)
 - [CLI README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/README.md)
 
-အရင်းအမြစ်ကုဒ် အလုပ်လက်မှတ်မှ Markdown အကူအညီအပြည့်အဝ Point-in-time ဒေတာမြင်ကွင်းကို ပြန်လည်ဖန်တီးရန် run:
+မူရင်း checkout မှ Markdown အကူအညီ snapshot အပြည့်အစုံကို ဖော်ပြရန် အောက်ပါအတိုင်း လုပ်ဆောင်ပါ:
 
 ```bash
-cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md
+cargo run -p iroha_cli --bin iroha -- tools markdown-help > iroha-cli-help.md
 ```

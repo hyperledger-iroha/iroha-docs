@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/events.md
-translation_source_hash: 16b8cacc9bdf156d4b1e1a93b720085adcabb0002a34b9dc564a9926f573de63
+translation_source_hash: aad93f1981a5b470966090b5e06ec07178738b15f1d870097947682b19f99595
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # Hodisalar {#events}
 
 Blokcheynda muayyan voqea, masalan yangi hisob yaratilishi yoki blok yakuniy yozilishi sodir bo‘lganda hodisa chiqariladi. Hodisalarning quyidagi turlari mavjud:
@@ -45,7 +44,7 @@ Oqim ochiq turganida tranzaksiya yuborilmasa, yo‘nalish sog‘lom bo‘lsa ham
 
 ## Ma'lumotlar hodisalari {#data-events}
 
-Tugunlar, domenlar, hisoblar, aktivlar, aktiv ta’riflari, NFTs, qo‘zg‘atuvchilar, rollar, zanjirdagi sozlama, ijrochi holati, isbotlar, maxfiy aktivlar, ko‘priklar yoki SORA/Nexus-ga xos obyektlar kabi reyestr ma’lumotlari o‘zgarganda ma’lumot hodisasi chiqariladi. Bu hodisalar [ma’lumot hodisasi filtrlarida](./filters.md#data-event-filters) ishlatiladi.
+Tugunlar, domenlar, hisoblar, aktivlar, aktiv ta’riflari, NFTs, qo‘zg‘atuvchilar, rollar, zanjirdagi sozlama, ijrochi holati, isbotlar, maxfiy aktivlar, ko‘priklar yoki SORA Nexus-ga xos obyektlar kabi reyestr ma’lumotlari o‘zgarganda ma’lumot hodisasi chiqariladi. Bu hodisalar [ma’lumot hodisasi filtrlarida](./filters.md#data-event-filters) ishlatiladi.
 
 ## Vaqt hodisalari {#time-events}
 

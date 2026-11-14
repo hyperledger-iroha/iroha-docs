@@ -30,7 +30,7 @@ See [Launch Iroha 3](/get-started/launch-iroha.md) and
   read-only query.
 
 See
-[Build on SORA 3: Taira and Minamoto](/get-started/sora-nexus-dataspaces.md).
+[Build on SORA Nexus: Taira and Minamoto](/get-started/sora-nexus-dataspaces.md).
 
 ## Mainnet or Production Gate
 

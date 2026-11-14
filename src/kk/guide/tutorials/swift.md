@@ -1,11 +1,10 @@
 ---
 translation_locale: kk
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
+translation_source_hash: 37e8be9b07a40e5c6b841a47b016320e42079853433fb3e53937e4021dc1304f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Swift және iOS {#swift-and-ios}
 
 Жоғары деңгейлі жұмыс кеңістігі арқылы жіберілген Swift SDK — бұл `IrohaSwift/` астындағы `IrohaSwift` Swift пакеті. Оның пакет техникалық манифесті үш кітапхана өнімін анықтайды — `IrohaSwift`, `IrohaSwiftMobileTransports` және `IrohaSwiftTransferUI` — және iOS 15+ және macOS 12+ нұсқаларына Swift құралдар 5.9 көмегімен бағытталған.
@@ -65,7 +64,7 @@ if #available(iOS 15.0, macOS 12.0, *) {
 
 ## Сынап көріңіз Taira Тек оқу үшін {#try-taira-read-only}
 
-Құрылғы немесе симулятор қоғамдық Taira API соңғы нүктеге жете алатынын растау үшін қарапайым HTTP зондпен бастаңыз:
+Құрылғы не симулятор ашық Taira соңғы нүктесіне жете алатынын растау үшін қарапайым HTTP тексеруінен бастаңыз:
 
 ```swift
 import Foundation
@@ -107,7 +106,7 @@ if #available(iOS 15.0, macOS 12.0, *) {
 }
 ```
 
-`TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest` және `UnshieldRequest` қол қоймас бұрын бір протоколдық стандарттағы есеп-шот идентификаторларын және бір протоколдық стандарттағы префикссіз Base58 актив анықтамасы идентификаторларын тексереді.
+`TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest` және `UnshieldRequest` қол қою алдында канондық есептік жазба идентификаторларын және канондық, префикссіз Base58 актив анықтамасы идентификаторларын тексереді.
 
 ## Табиғи сенімгерлік есеп {#native-escrow}
 
@@ -161,7 +160,7 @@ Swift көзі қазіргі уақытта мыналарды қамтиды:
 - Ed25519, secp256k1, ML-DSA, BLS, GOST, және SM2 қолтаңба беттері, қажет болған жағдайда жергілікті көпірді қолдаумен
 - нарық және анонимді эскроу үшін жергілікті эскроу нұсқаулығының жүктемесін құрастыру құралдары
 - WebSocket, frame, crypto, session, queue, replay және диагностика көмекшілерін қосу
-- Kagemusha дайындық, терілген қайта толтыру және өтеу, операция статусі, ескерту, желілік әріптес пакеті, протокол нәтижесі жазбасы және QR ағын үлгілері
+- KAGEMUSHA V1 сым пішімінің көмекші құралдары және нативті әмиянның Advance провайдері, тіркелу, қалпына келтіру мен қабылданған алмасу шақыруларына арналған iPhone платформа адаптері
 - SoraFS, мәліметтердің қолжетімділігі және дәлел-қосымша көмекшілері
 
 ## API Мысалдар {#api-examples}

@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /reference/binaries.md
-translation_source_hash: c617a21d50b28495c261d05d672e0b7803c282d53da577391dbebbc7f120d045
+translation_source_hash: 75848623e735abc80326f9ebda6f74ab438b67eaeddeacdd4d8c5509856a999e
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # العمل مع الثنائيات Iroha {#working-with-iroha-binaries}
 
 تدور سير عمل مشغل Iroha 3 حول أربعة ثنائيات أساسية:
@@ -50,7 +49,7 @@ cargo run --bin kagami -- --help
 
 ## Docker صورة {#docker-image}
 
-يستخدم مساحة العمل العليا `kagami localnet` و `kagami docker` لتوليد ملفات Docker Compose التي تتطابق مع الكود الذي تم سحبه. يمكن استخدام صورة `hyperledger/iroha:dev` مع تلك الملفات المولدة.
+تستخدم مساحة العمل الأصلية `kagami localnet generate` و`kagami docker` لتوليد ملفات Docker Compose المطابقة للكود الموجود في نسخة العمل. يمكن استخدام الصورة `hyperledger/iroha:dev` مع تلك الملفات المولّدة.
 
 شغّل CLI في حاوية:
 
@@ -67,7 +66,7 @@ docker run -t hyperledger/iroha:dev kagami --help
 لبدء تشغيل نظير الشبكة، قم أولاً بإنشاء شبكة محلية وملف Compose:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```

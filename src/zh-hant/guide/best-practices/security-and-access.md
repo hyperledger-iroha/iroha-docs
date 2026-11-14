@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/best-practices/security-and-access.md
-translation_source_hash: f0163734d618d91337b437da703743014d01c57c4cb603fbc2e66316f3654779
+translation_source_hash: b1cb0cdbeec55f7db03f1c64b6581a21c09fc80a57344cf6e27df1d126c0ec92
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # 安全與獲取 {#security-and-access}
 
 Iroha 的安全實踐應基於嚴格授權主體,控制金鑰保管,明確網路曝光和可審計的變化.
@@ -23,7 +22,7 @@ Iroha 的安全實踐應基於嚴格授權主體,控制金鑰保管,明確網路
 
 - 允許支援工作流程的最小許可權符號或角色.
 - 最好為服務,觸發器,代理和自動化提供專用技術帳戶. 避免透過個人運營商帳戶執行長期自動化.
-- 在生產啟動之前,審查對等節點管理,後設資料突變,鑄造、銷毀,觸發註冊,執行器更改和 SORA/Nexus 治理權.
+- 在生產啟動之前,審查對等節點管理,後設資料突變,鑄造、銷毀,觸發註冊,執行器更改和 SORA Nexus 治理權.
 - 在需要這些臨時許可權的維護時段或遷移完成後，撤銷這些許可權。
 
 檢視 [許可證](/zh-hant/blockchain/permissions.md)和 [許可證代幣 ](/zh-hant/reference/permissions.md).

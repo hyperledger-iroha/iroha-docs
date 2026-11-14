@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
+translation_source_hash: 92389d3ad83ab32e85b4ca83ede9829d1a38afaad6e86da035da2829a3aaedfb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # JavaScript һәм TypeScript {#javascript-and-typescript}
 
 Ағым JavaScript SDK был `@iroha/iroha-js` пакеты Iroha сығанағы ағасы. Node.js- тәүҙә SDK өсөн Torii, Norito Төҙөүселәр, ҡултамғалау, биттәрҙе биҙәү, "Коннект" премьералары һәм Кагемуша командаһы транспорты.
@@ -87,7 +86,7 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 ## Протоколға индерелгән эскроу {#native-escrow}
 
-JavaScript һәм TypeScript ҡушымталары Kotodama contracts аша native escrow ҡуллана ала. Escrow host calls-ты `@iroha/iroha-js/kotodama-compiler` менән compile итегеҙ; JavaScript SDK әлегә direct native escrow transaction builders тәҡдим итмәй. Escrow host-call миҫалын [JavaScript һәм TypeScript Kotodama](/ba/blockchain/escrow.md#javascript-and-typescript-kotodama) бүлегендә ҡарағыҙ.
+JavaScript һәм TypeScript ҡушымталары Kotodama контракттары аша үҙәк эскроуҙы ҡуллана ала. Эскроу өсөн башҡарыусы мөхит саҡырыуҙарын `@iroha/iroha-js/kotodama-compiler` менән компиляциялағыҙ; JavaScript SDK әлегә үҙәк эскроу транзакцияларын туранан-тура төҙөү сараларын тәҡдим итмәй. Эскроуҙың башҡарыусы мөхит саҡырыуы миҫалы өсөн [Активтарҙың үҙәк эскроуы](/ba/blockchain/escrow.md#javascript-and-typescript-kotodama) бүлеген ҡарағыҙ.
 
 ## Хәҙерге яҡтыртыу {#current-coverage}
 
@@ -99,7 +98,6 @@ SDK түбәндәгеләргә иғтибар итә:
 - Ed25519 ҡултамғалау һәм асҡыс генерацияһы
 - һылтанма һәм ҡабаттан һынау ярҙамсылары
 - Браузерҙы стартлау ярҙамсыларын тоташтырыу
-- Кагемушаға әҙерлек, өҫтәмәләр, түләүҙәр һәм хеҙмәтләндереү статусы буйынса транспорт ярҙамсылары
 
 ## Үрге йүнәлештәге белешмәләр {#upstream-references}
 

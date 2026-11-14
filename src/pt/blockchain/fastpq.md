@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/fastpq.md
-translation_source_hash: d8dd61390f5df3dae09b70399e04e8f71716a912ef5dea9010feaf60573ed261
+translation_source_hash: dfeabbedbca85780c16ee0307a6497e43e19c02d3a27e0ea2f70987a2aeac0cd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # FastPQ {#fastpq}
 
 FastPQ é o caminho de prova STARK de Iroha para os efeitos de execução selecionados. Ele não substitui a execução normal de transações ou o consenso. As transações ainda execute ISI, IVM e Sumeragi como de costume; FastPQ consome a prova de execução determinística e transforma efeitos suportados em lotes de prova.
@@ -13,7 +12,7 @@ FastPQ é o caminho de prova STARK de Iroha para os efeitos de execução seleci
 A integração atual do host possui três caminhos principais:
 
 - transferências numéricas de ativos transparentes registradas durante a execução do bloco
-- Nexus relés de faixa de execução verificados cujo contêiner de dados de prova AXT carrega uma ligação FastPQ
+- retransmissões verificadas de faixas de execução do SORA Nexus cujo envelope de prova AXT contém um vínculo FastPQ
 - SCCP auxiliares de prova de mensagem transparente que envolvem uma prova FastPQ em um contêiner de dados de verificação aberta
 
 ## Caminho da Testemunha de Transferência {#transfer-witness-path}
@@ -394,7 +393,7 @@ S_i(a)=S_{i-1}(a)+
 \end{cases}
 $$
 
-Colunas de rastreamento de metadados e dataspace são hashes criptográficos de campo derivados antes da materialização da linha:
+As colunas de metadados e de espaço de dados do traço são hashes de campo derivados antes da materialização das linhas:
 
 $$
 \operatorname{metadata\_hash} =
@@ -932,12 +931,12 @@ Os limites padrão de repetição incluem:
 | FRI camadas         |      16 |
 |Aberturas de consulta|     128 |
 
-## Nexus Relés Verificados {#nexus-verified-relays}
+## Retransmissões verificadas do SORA Nexus {#sora-nexus-verified-relays}
 
-Nexus AXT os contêineres de dados de prova podem incorporar um `AxtFastpqBinding`. Quando `RegisterVerifiedLaneRelay` é executado, Iroha:
+Os envelopes de prova AXT do SORA Nexus podem incorporar um `AxtFastpqBinding`. Quando `RegisterVerifiedLaneRelay` é executado, o Iroha:
 
 1. verifica o contêiner de dados do relé da pista de execução e o material de prova FastPQ
-2. verifica o espaço de dados e o root do manifesto técnico
+2. verifica o espaço de dados e a raiz do manifesto
 3. decodifica o contêiner de dados de prova AXT
 4. requer um `fastpq_binding`
 5. reconstrói o lote FastPQ a partir dessa vinculação
@@ -946,11 +945,11 @@ Nexus AXT os contêineres de dados de prova podem incorporar um `AxtFastpqBindin
 
 Se a verificação for bem-sucedida, Iroha armazena um `VerifiedLaneRelayRecord` contendo a referência do relé, o contêiner de dados original, o hash criptográfico da carga de prova, a altura de verificação, a raiz do manifesto técnico e a vinculação FastPQ.
 
-Os envelopes de retransmissão das vias também transportam material compacto de prova FastPQ. Esse material resume o ID da via, o ID do espaço de dados, a altura do bloco, a altura de verificação, o hash do cabeçalho do bloco, o hash de liquidação e a raiz do manifesto. Uma retransmissão só pode ser mesclada quando contém um QC e material de prova FastPQ válido.
+Os envelopes de retransmissão de faixas também contêm material compacto de prova FastPQ. Esse material é um resumo criptográfico do ID da faixa, do ID do espaço de dados, da altura do bloco, da altura de verificação, do hash do cabeçalho do bloco, do hash de liquidação e da raiz do manifesto. Uma retransmissão só é admissível para mesclagem quando contém tanto um QC quanto material válido de prova FastPQ.
 
 ### AXT Vinculação Matemática {#axt-binding-math}
 
-Para os contêineres de dados Nexus AXT, `AxtFastpqBinding` é normalizado em forma canônica antes da repetição da prova. Valores de parâmetros vazios usam `fastpq-lane-balanced` por padrão; identificador e versão vazios do verificador usam `fastpq` e `v1`; o tipo de declaração é aparado e convertido para minúsculas.
+Nos envelopes AXT do SORA Nexus, `AxtFastpqBinding` é normalizado em forma canônica antes da reexecução da prova. Valores de parâmetros vazios usam `fastpq-lane-balanced` por padrão; o ID e a versão do verificador, quando vazios, usam `fastpq` e `v1`; o tipo de declaração tem os espaços em branco das extremidades removidos e é convertido para minúsculas.
 
 Os AXT FastPQ inputs públicos são hashes criptográficos de bytes determinísticos:
 
@@ -1024,7 +1023,7 @@ $$
 \operatorname{le64}(\operatorname{policy\_commitment}[0..8])
 $$
 
-e uma linha de metadados vinculando a política de autorização. A reivindicação `compliance` insere duas linhas de metadados: uma para a política e outra para os dataspaces de destino.
+e uma linha de metadados que vincula a política de autorização. A declaração `compliance` insere duas linhas de metadados: uma para a política e outra para os espaços de dados de destino.
 
 Para `tx_predicate` e `value_conservation`, um valor explícito de efeito é usado quando a vinculação contém um valor de origem ou destino positivo. Caso contrário, o código deriva um valor determinístico limitado:
 
@@ -1207,7 +1206,6 @@ metal_max_in_flight = 5
 metal_threadgroup_width = 128
 metal_trace = false
 metal_debug_enum = false
-metal_debug_fused = false
 ```
 
 Os mesmos rótulos de execução e telemetria podem ser substituídos a partir de `iroha3d`:

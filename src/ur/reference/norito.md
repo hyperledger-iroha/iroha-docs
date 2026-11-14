@@ -1,9 +1,9 @@
 ---
 translation_locale: ur
 translation_source: /reference/norito.md
-translation_source_hash: 810f4378316f4717dee1be4aeffb07e27e81e47735e8031edff775818a48bf48
+translation_source_hash: 0446444ac147b80efcf1d0d07610ad7c81e6f02fb308fe032b8f213afe15bc74
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
 # Norito {#norito}
 
@@ -20,7 +20,7 @@ Norito، Iroha کی معیاری سیریلائزیشن تہہ ہے۔ یہ وہ 
 | Torii کے ٹائپ شدہ جوابات | ٹائپ شدہ بائنری جواب دینے والے اینڈ پوائنٹس `Accept: application/x-norito` استعمال کرتے ہیں۔ |
 | SDKs | Rust، Python، JavaScript، Kotlin/Java، Swift اور Android کلائنٹس ہاتھ سے بائٹس جوڑنے کے بجائے Norito بلڈرز یا بائنڈنگز استعمال کرتے ہیں۔ |
 | Kura اسٹوریج | بلاک پے لوڈ، بازیابی کے ضمنی ریکارڈ، روسٹر اور کمیٹ مارکر Norito فریم شدہ ڈیٹا کے طور پر محفوظ ہوتے ہیں۔ |
-| مینی فیسٹس | Nexus، ڈیٹا دستیابی، SoraFS، اسٹریمنگ اور ایپ کے مینی فیسٹس پر دستخط یا ان کی ہیشنگ ضروری ہو تو وہ Norito استعمال کرتے ہیں۔ |
+| مینی فیسٹس | SORA Nexus، ڈیٹا دستیابی، SoraFS، اسٹریمنگ اور ایپ کے مینی فیسٹس پر دستخط یا ان کی ہیشنگ ضروری ہو تو وہ Norito استعمال کرتے ہیں۔ |
 | اسٹریمنگ | Norito Streaming میں Norito مینی فیسٹس، سیگمنٹ ہیڈرز، کنٹرول فریمز اور مطابقت کے ٹیسٹ نمونے استعمال ہوتے ہیں۔ |
 
 Norito اسمارٹ کانٹریکٹ کی زبان نہیں ہے۔ یہ ایک قطعی لفافہ اور کوڈیک ہے جو ٹرانزیکشنز، کانٹریکٹ کالز، مینی فیسٹس اور ٹائپ شدہ API پے لوڈ لے جاتا ہے۔
@@ -206,4 +206,4 @@ Norito Streaming اسی قطعی طریقے کو میڈیا اور حقیقی و
 ## اپ اسٹریم حوالے {#upstream-references}
 
 - [Norito فارمیٹ کی تخصیص](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/norito.md)
-- [Norito crate کی README فائل](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/norito/README.md)
+- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/norito/README.md)

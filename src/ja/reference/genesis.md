@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /reference/genesis.md
-translation_source_hash: 8215489720e1bc2fc3b7c22c4cb2f8f7b1f0f15d1df4a4f596ee3caa2c6b7829
+translation_source_hash: 340921f59a6f8788f559190d520f046ea2473d65154f57a1c54212840c027bc0
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # ブロックチェーン ジェネシス リファレンス {#genesis-reference}
 
 現在の Iroha 3 ワークフローでは、`genesis.json`技術マニフェストが、ネットワーク開始時に適用される最初のトランザクションとパラメータを記述します。
@@ -17,11 +16,13 @@ translation_engine: bing-translator-llm
 ブロックチェーンのジェネシス技術マニフェストは以下を定義することができる：
 
 - チェーン識別子のための`chain`
+- `chain_discriminant`: マニフェスト内のアカウントリテラルを符号化する際に使う I105 のネットワーク接頭辞
 - `executor` オプションの実行者アップグレードバイトコードパス用
 - IVM のトリガーおよびアップグレードで使用される `ivm_dir` ライブラリ
 - `consensus_mode` 技術マニフェストで宣伝されている初期モード用
 - `transactions` は、順序付けられたパラメータ更新、指示、トリガー、およびトポロジー用です
-- `crypto` 初期の暗号データスナップショット用
+- `sumeragi_context`: 署名付き Sumeragi ブロック高コンテキストのパラメーター
+- `crypto_admission_policy`: チェーンで許可する署名アルゴリズムとコントローラーのアルゴリズムを、`allowed_algorithms` に明示的に列挙したもの
 
 `transactions` 内で、トポロジーエントリはネットワークピアIDと PoPs をペアにします:
 
@@ -34,13 +35,14 @@ translation_engine: bing-translator-llm
 
 ## 技術的なマニフェストを生成する {#generate-a-manifest}
 
-Kagami を使用してテンプレートを生成する：
+Kagami を使ってテンプレートを生成します。許可するすべてのアルゴリズムについて、正規の昇順で `--allowed-signing` を繰り返し指定してください。Kagami は省略されたアルゴリズムを補いません。
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
   --consensus-mode npos \
   --ivm-dir defaults \
-  --genesis-public-key <PUBLIC_KEY> > genesis.json
+  --genesis-public-key <PUBLIC_KEY> \
+  --allowed-signing ed25519 > genesis.json
 ```
 
 公共の SORA Nexus データスペースでは、`npos` が期待されるコンセンサスモードです。他の Iroha 3 の展開では、対象プロファイルに応じてパーミッション型または NPoS を使用する場合があります。
@@ -59,12 +61,13 @@ cargo run -p iroha_kagami -- genesis sign genesis.json \
 
 ## `iroha3d` を設定する {#configure-iroha3d}
 
-デーモンを署名済みブロックチェーンのジェネシスブロックに向ける:
+署名済みのジェネシスブロックと、その期待ハッシュを固定するファイルをデーモンに指定します。`kagami genesis sign --expected-hash-out` がこのファイルを書き出し、ノードは新規起動時にも再起動時にもこのファイルを必要とします。
 
 ```toml
 [genesis]
 file = "genesis.signed.nrt"
 public_key = "<PUBLIC_KEY>"
+expected_hash_file = "genesis.expected_hash"
 ```
 
 ## 関連ツール {#related-tools}
@@ -72,7 +75,7 @@ public_key = "<PUBLIC_KEY>"
 - `kagami genesis validate`
 - `kagami genesis normalize`
 - `kagami genesis embed-pop`
-- `kagami localnet`
+- `kagami localnet generate`
 - `cargo xtask kagami-profiles`
 
 ジェネレーターの実装およびコマンドの詳細については、[Kagami README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami/README.md)を参照してください。

@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta+reviewed-source-amendment
 ---
-
 # 展開の問題のトラブルシューティング {#troubleshooting-deployment-issues}
 
 このセクションでは、Iroha 3 の導入に関するトラブルシューティングのヒントを提供します。ここに記載されていない問題が発生した場合は、[テレグラム](https://t.me/hyperledgeriroha) を通じてお問い合わせください。
@@ -15,7 +14,7 @@ translation_engine: bing-translator-llm
 ローカルおよびテストのデプロイでは、手書きのネットワークピアファイルの代わりに、Kagami によって生成されたアーティファクトを使用してください。
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 生成されたディレクトリには、ネットワークピアの設定、ブロックチェーンのジェネシス資料、起動スクリプト、そして Iroha 3 ビルドライン用の README が含まれています。
@@ -42,7 +41,7 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 現在の Kagami ローカルネット出力から Compose を生成し、コマンドライン引数と設定ファイルがチェックアウトされたコードと一致するようにしてください:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```
@@ -67,9 +66,9 @@ Kubernetesの場合、各バリデーターをステートフルなインフラ�
 
 もしポッドが繰り返し再起動する場合、ポッド内でレンダリングされた設定と期待される設定を比較してください [`peer.template.toml`](/ja/reference/peer-config/index.md#template) そしてネットワークピアが古いものを再生しているかどうかを確認します Kura データ。
 
-## ソラのプロフィール {#sora-profile}
+## SORA Nexus プロファイル {#sora-profile}
 
-プライベートまたはローカルの Iroha 3 デプロイメントで Nexus、SoraFS、またはマルチレーンフローを使用する場合は、Sora プロファイルを有効にして標準デーモンを起動する必要があります:
+SORA Nexus、SoraFS、複数レーンの処理を利用するプライベートまたはローカルの Iroha 3 環境では、SORA Nexus プロファイルを有効にして標準デーモンを起動してください。
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

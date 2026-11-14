@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: ab0496d2cd36056dbc5486cd1ea288606476862290cc544e7afcf63a1641dd6d
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # የማዋቀር ችግሮችን መላ መፈለግ {#troubleshooting-configuration-issues}
 
 ይህ ክፍል ለ Iroha 3 ውቅር የመላ መፈለጊያ ምክሮችን ይሰጣል። በ Iroha ውስጥ በጣም የተለመደው የጉዳዮች ምንጭ ስለሆነ መጀመሪያ [ቁልፎቹን ፈትሸዋል](./overview.md#check-the-keys)ን ያረጋግጡ።
@@ -25,7 +24,7 @@ translation_engine: bing-translator-llm
 እንዲህ ዓይነቱን ችግር መላ ለመፈለግ የሚቻልበት መንገድ በ Iroha አጠቃቀም ላይ የተመሰረተ ነው. ይህ መሰረታዊ ማሳያ ከሆነ እና የአውታረ መረብ አቻ ውሂብን ማቆየት ካላስፈለገዎት ተዛማጅ localnet ወይም Docker Compose ጥቅልን ከ Kagami ጋር እንደገና ያድሱ -
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
 ```
 

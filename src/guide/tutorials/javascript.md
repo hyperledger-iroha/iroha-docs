@@ -107,8 +107,6 @@ The SDK focuses on:
 - Ed25519 signing and key generation
 - pagination and retry helpers
 - Connect browser bootstrap helpers
-- Kagemusha readiness, top-up, redemption, and operation-status transport
-  helpers
 
 ## Upstream References
 

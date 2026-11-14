@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 621d1795fd1c3cc62462a9a91af68fe684c0ff5293f5e77801420dc8318bac38
+translation_source_hash: 22d763aadf33d331fb9c16d3927e84e8bdb88829f3d73b974902daa8fde3c1b4
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Musubi Kotodama Pacotes {#musubi-kotodama-packages}
 
 Musubi é o gerenciador de pacotes de primeira versão para pacotes de origem Kotodama. Ele resolve um gráfico de dependências exato na cadeia, autentica SoraFS arquiva fontes, compila e testa o espaço de trabalho selecionado, constrói arquivos canônicos CAR e publica versões imutáveis através do Iroha.
@@ -89,9 +88,9 @@ export TAIRA_ROOT=https://taira.sora.org
 curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
 ```
 
-O catálogo de provedores fornece identidades de provedores e endpoints anunciados API. Obtenha a autorização correspondente do operador junto ao provedor escolhido. O tempo de execução do software usa essa chave para solicitar tokens de stream limitados; os tokens não são argumentos CLI nem conteúdo de arquivo de bloqueio.
+O catálogo de provedores fornece identidades de provedores e endpoints anunciados. Obtenha a autorização correspondente do operador junto ao provedor escolhido. O tempo de execução do software usa essa chave para solicitar tokens de stream limitados; os tokens não são argumentos CLI nem conteúdo de arquivo de bloqueio.
 
-Não use um pino de validador Taira URL como `url`. Os validadores registrados têm o armazenamento incorporado SoraFS desativado. Seus pontos de extremidade `https://taira-validator-{1,2,3,4}.sora.org` API aceitam registro de pino, enquanto leituras de arquivo usam a origem HTTPS do provedor admitido selecionado.
+Não use um pino de validador Taira URL como `url`. Os validadores registrados têm o armazenamento incorporado SoraFS desativado. Seus pontos de extremidade `https://taira-validator-{1,2,3,4}.sora.org` aceitam registro de pino, enquanto leituras de arquivo usam a origem HTTPS do provedor admitido selecionado.
 
 ## Fluxo de Trabalho Local {#local-workflow}
 
@@ -209,4 +208,4 @@ Musubi usa instruções e consultas V1 de primeira versão:
 | `FindMusubiArchiveLocationsV1`                       |Leia locais de arquivo finalizados suportados pelo provedor.|
 | `FindMusubiAliasV1` / `FindMusubiAliasHistoryV1`     |Leia o alvo do alias atual ou seu histórico imutável.|
 
-Torii expõe a família de rotas do aplicativo sob `/v1/musubi/*`. As ferramentas MCP usam os nomes atuais de `iroha.musubi.queries.*` e `iroha.musubi.instructions.*`. Veja [Torii API pontos de extremidade](/pt/reference/torii-endpoints.md) e o [referência de consulta](/pt/reference/queries.md) para o mapa mais amplo de API.
+Torii expõe a família de rotas do aplicativo sob `/v1/musubi/*`. As ferramentas MCP usam os nomes atuais de `iroha.musubi.queries.*` e `iroha.musubi.instructions.*`. Veja [Torii pontos de extremidade](/pt/reference/torii-endpoints.md) e o [referência de consulta](/pt/reference/queries.md) para o mapa mais amplo de API.

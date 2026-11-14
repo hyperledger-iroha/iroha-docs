@@ -1,11 +1,10 @@
 ---
 translation_locale: mn
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
+translation_source_hash: 37e8be9b07a40e5c6b841a47b016320e42079853433fb3e53937e4021dc1304f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Swift ба iOS {#swift-and-ios}
 
 Дээд түвшний ажлын орчмоор илгээсэн Swift SDK нь `IrohaSwift/`-ны дорх `IrohaSwift` Swift багц юм. Түүний багцын техникийн жагсаалтад гурван сангийн бүтээгдэхүүн тодорхойлогдсон—`IrohaSwift`, `IrohaSwiftMobileTransports`, ба `IrohaSwiftTransferUI`—мөн iOS 15+ ба macOS 12+-ийг Swift хэрэгслээр 5.9 хувилбартай чиглүүлдэг.
@@ -65,7 +64,7 @@ if #available(iOS 15.0, macOS 12.0, *) {
 
 ## Оролдоно уу Taira Зөвхөн унших {#try-taira-read-only}
 
-Төхөөрөмж эсвэл симулятор олон нийтийн Taira API төгсгөлийн цэгт хүрч чадах эсэхийг баталгаажуулахын тулд энгийн HTTP илрүүлэгчээр эхлүүлээрэй:
+Төхөөрөмж эсвэл симулятор нийтэд нээлттэй Taira төгсгөлийн цэгт хүрч байгааг батлахын тулд энгийн HTTP шалгалтаас эхэлнэ:
 
 ```swift
 import Foundation
@@ -161,7 +160,7 @@ let keyPair = try ConnectCrypto.generateKeyPair()
 - Ed25519, secp256k1, ML-DSA, BLS, GOST, ба SM2 гарын үсгийн гадаргуу, шаардлагатай тохиолдолд уугуул гүүрийн дэмжлэгтэй
 - зах зээл ба нэргүй эскроугаар дамжуулан байгалийн эх үүсвэрийн эскроу зааврын өгөгдлийн бүтээгчид
 - Холбох WebSocket, хүрээ, крипто, сесс, дараалал, дахин тоглуулах, болон оношилгооны туслахууд
-- Kagemusha бэлэн байдал, төрөлжсөн нөхөх болон худалдаж авах, ажиллагааны төлөв, тэмдэглэл, сүлжээний хамтрагч багц, протоколын үр дүнгийн бүртгэл, болон QR урсгалын загварууд
+- KAGEMUSHA V1 дамжуулах форматын туслахууд болон платформ дээр шууд ажиллах хэтэвчийн Advance үйлчилгээ, бүртгэл, сэргээх ажиллагаа, зөвшөөрөгдсөн солилцооны дуудлагуудад зориулсан iPhone платформын адаптер
 - SoraFS, өгөгдлийн боломжтой байдал, баталгааны хавсралтын тэтгэгчид
 
 ## API Жишээ {#api-examples}

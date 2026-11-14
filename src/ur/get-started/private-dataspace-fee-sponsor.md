@@ -1,504 +1,100 @@
 ---
 translation_locale: ur
 translation_source: /get-started/private-dataspace-fee-sponsor.md
-translation_source_hash: 37a2c29dccf3d2abacbbba16869d65b70b93545875a122470601194231c2263b
+translation_source_hash: 79410ebb9d0a18072d5ae2288348082390b622ed81225de79dcbd4000e268e51
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
+# نجی ڈیٹا اسپیس کی فیس اسپانسر کریں {#sponsor-fees-for-a-private-data-space}
 
-# نجی ڈیٹا اسپیس کے لئے سپانسر فیس {#sponsor-fees-for-a-private-dataspace}
+SORA Nexus کا فیس اسپانسر پروگرام نجی ڈیٹا اسپیس کی طرف بھیجے گئے اہل لین دین کی عالمی اجرا کی فیس ادا کر سکتا ہے۔ صارف پھر بھی پورے لین دین پر دستخط کرتا ہے۔ اس کا ٹائپ شدہ `FeePaymentIntent` عین اسپانسر پروگرام اور غیر متغیر ریویژن، جہاں لازم ہو گیس کی حد، اور زیادہ سے زیادہ چارجز منتخب کرتا ہے۔
 
-فیس سپانسرنگ صارفین کو XOR کے بغیر نجی ڈیٹا اسپیس ٹرانزیکشنز جمع کرانے کی اجازت دیتی ہے۔ صارف ابھی بھی ٹرانزیکشن پر دستخط کرتا ہے۔ ٹرانسمیشن میٹا ڈیٹا ایک اسپانسر اکاؤنٹ پر پوائنٹس دیتا ہے ، اور رن ٹائم نیٹ ورک فیس کے لئے اسپانسر کے XOR بیلنس کا ڈیبٹ کرتا ہے۔
+ڈیٹا اسپیس کی کیٹلاگ اندراج الگ دستخط شدہ روٹ نہیں بناتی۔ آزاد ڈیٹا اسپیس روٹ کی اپنی کمیٹ شدہ فیس کرنسی اور پالیسی ہوتی ہے؛ عوامی اسپانسر والٹس اس کے نجی روٹ کی فیس کا اختیار نہیں دے سکتے۔ اسپانسرشپ کی ترتیب بنانے سے پہلے اجرا کا روٹ قائم کریں۔
 
-انضمام میں تین متحرک حصے ہیں:
+## 1. کمیٹ شدہ فیس پالیسی قائم کریں {#_1-establish-the-committed-fee-policy}
 
-1. نوڈ فیس سپانسرشپ کی اجازت دیتا ہے
-2. سپانسر اکاؤنٹ موجود ہے اور اس میں XOR ہے۔
-3. ہر صارف کے پاس `CanUseFeeSponsor` اس سپانسر کے لئے ہے
+دستخط شدہ جینیسس ایک کسٹم پیرامیٹر `root_fees_v1` مقرر کرتا ہے جس میں `RootFeePolicy` ہوتی ہے۔ یہ فیس کرنسی، فیس کی منزل، اسپانسر کی تحویلی اکاؤنٹ، دعووں کی استثناؤں اور شرحوں کو باندھتی ہے۔ ہر عام بلاک اور فیس تخمینہ اپنی حاصل کردہ کمیٹ شدہ پالیسی استعمال کرتا ہے۔ مجاز پالیسی تبدیلیاں اگلے بلاک سے لاگو ہوتی ہیں۔
 
-اس کے بعد، ہر سپانسرڈ صارف ٹرانزیکشن صرف اس میٹا ڈیٹا کی ضرورت ہے:
+عالمی اجرا میں نَیٹو فیس نیٹ ورک کی عین دستخط شدہ XOR کرنسی جلاتی ہے۔ اسپانسر کے پروگرام کا والٹ یہ کرنسی فراہم کرتا ہے۔ نوڈ ترتیبات اور لین دین کا میٹاڈیٹا نہ ادا کنندہ منتخب کرتے ہیں اور نہ اسپانسرشپ فعال کرتے ہیں۔
 
-```json
-{
-  "fee_sponsor": "<SPONSOR_ACCOUNT_I105>"
-}
-```
+نیٹ ورک کی کینونیکل کرنسی اور اکاؤنٹ شناختیں استعمال کریں۔ عرفی نام کا حل کمیٹ شدہ کرنسی، تحویل یا فیس کی منزل کی شناخت دوسری طرف نہیں موڑنا چاہیے۔
 
-اس صفحے پر دو عام نمونہ دکھایا گیا ہے:
+## 2. اسپانسر پروگرام بنائیں اور فنڈ کریں {#_2-create-and-fund-a-sponsor-program}
 
-- مفت صارف لکھتا ہے: سپانسر XOR ادا کرتا ہے اور صارف کچھ بھی نہیں ادا کرتا ہے۔
-- مقامی ٹوکن فیس: صارف سپانسر کو ایپ ٹوکن میں ادا کرتا ہے، اور اسپانسر نیٹ ورک کو XOR میں ادا کرتا ہے۔
+پروگرام ID کی صورت `<canonical-sponsor-account>/<program-name>` ہے۔ اسے موجودہ SDK اور ڈیٹا ماڈل کی فراہم کردہ ٹائپ شدہ ہدایات سے قائم کریں:
 
-پہلے Taira یا ایک نجی ٹیسٹ نیٹ ورک کا استعمال کریں۔ نیا نجی ڈیٹا اسپیس آپریٹر اور گورننس کی تبدیلی ہے؛ یہ کلائنٹ ترتیب کے ذریعہ نہیں بنایا جاتا ہے۔
+| ہدایت | مقصد |
+| --- | --- |
+| `CreateFeeSponsorProgram` | لازمی ادائیگی اکاؤنٹ کے ساتھ تیار شدہ پروگرام بنانا۔ |
+| `StageFeeSponsorProgramRevision` | اہلیت، کارروائی اور بجٹ کی ایک غیر متغیر پالیسی متعین کرنا۔ |
+| `EnrollFeeSponsorBeneficiary` | اہل مستفید فرد کو چین پر درج کرنا۔ |
+| `FundFeeSponsorProgram` | اثاثے تحویل میں منتقل کرنا اور عین پروگرام کے والٹ میں جمع کرنا۔ |
+| `ActivateFeeSponsorProgramRevision` | تیار شدہ ریویژن کی جلد ترین فعالیت کی اونچائی مقرر کرنا۔ |
 
-## مثال کی اقدار {#example-values}
+اسپانسر یا عین تفویض شدہ منتظم پروگرام کے انتظام کو اختیار دیتا ہے۔ رقم نکالنے کے لیے خود اسپانسر لازم ہے اور رقم صرف پروگرام کے درج شدہ ادائیگی اکاؤنٹ کو، پروگرام رکا یا بند ہو رہا ہو تب، واپس جاتی ہے۔
 
-مندرجہ ذیل کمانڈوں میں ان جگہ ہولڈر کا استعمال کیا جاتا ہے:
+ہر ریویژن متعین کرتی ہے:
 
-```bash
-export DATASPACE="team"
-export USER="<USER_ACCOUNT_I105>"
-export SPONSOR="<SPONSOR_ACCOUNT_I105>"
-export TREASURY="<TREASURY_ACCOUNT_I105>"
-export XOR_ASSET="xor#universal"
-export BILLING_DOMAIN="billing.team"
-export LOCAL_FEE_ASSET="usage#billing.team"
-export LOCAL_FEE_ASSET_ID="<LOCAL_FEE_ASSET_DEFINITION_BASE58>"
-export USER_ALIAS="alice@team"
-export PHONE_POLICY="phone#team"
-export EMAIL_POLICY="email#team"
-export POLICY_OWNER="<IDENTIFIER_POLICY_OWNER_ACCOUNT_I105>"
-```
+- واضح اندراج، یا اندراج کے ساتھ راستے کی اجازت یافتہ بنیادی اہلیت؛
+- عین نَیٹو ہدایت کے وائر IDs یا معاہدے کے پتوں، کوڈ ہیشز اور داخلے کے مقامات پر اجازت و ممانعت کے قواعد؛
+- ہر اثاثے کے لیے لین دین، بلاک، پروگرام ایپوک اور مستفید فرد کے ایپوک کی حدود؛
+- کم از کم محفوظ رقم اور متعین ایپوک دورانیہ۔
 
-کینونیکل I105 اکاؤنٹ IDs کا استعمال کریں جب تک کہ آپ کے تعیناتی میں ایک ہی اکاؤنٹس کے لئے فعال اکاؤنٹ عرفی نام نہ ہوں۔
+ممانعت کا قاعدہ اجازت کے قاعدے پر مقدم ہے۔ ڈیٹا اسپیس کا `fee_sponsor_program_id` راستے کی بنیادی اہلیت صرف تب دیتا ہے جب فعال ریویژن اجازت دے؛ لین دین کو پھر بھی اپنے عین پروگرام اور ریویژن کا نام دینا ہوتا ہے۔ پچھلی ریویژن کی زیرِ التوا مختص رقوم کی میعاد ختم ہونے تک فعالیت مؤخر ہو سکتی ہے۔
 
-## 1۔ ڈیٹا اسپیس تیار کریں۔ {#_1-prepare-the-dataspace}
+اسپانسر والٹ کے اثاثوں کے لیے `Global` بیلنس پالیسی لازم ہے۔ صرف اسپانسر کے عام اکاؤنٹ میں فنڈ ڈالنے سے الگ پروگرام والٹ فنڈ نہیں ہوتا، اور ایک پروگرام دوسرے پروگرام کا بیلنس خرچ نہیں کر سکتا۔
 
-[ میں بیان کردہ نجی ڈیٹا اسپیس کیٹلاگ اور روٹنگ کے کام سے شروع کریں SORA Nexus ڈیٹا اسپیسز ](/ur/get-started/sora-nexus-dataspaces.md#_8-provision-a-new-dataspace) سے رابطہ کریں۔ ایک آپریٹر کا سامنا کرنے والا ٹکڑا اس طرح لگتا ہے:
+## 3. عین لین دین کی فیس معلوم کریں، دستخط کریں اور بھیجیں {#_3-quote-sign-and-submit-the-exact-transaction}
 
-```toml
-[[nexus.lane_catalog]]
-index = 5
-alias = "team-private"
-description = "Private team lane"
-dataspace = "team"
-visibility = "private"
-metadata = {}
+SDK انٹیگریشن یہ مراحل انجام دیتی ہے:
 
-[[nexus.dataspace_catalog]]
-alias = "team"
-id = 42
-description = "Private team dataspace"
-fault_tolerance = 1
+1. اختیار، قابلِ اجرا مواد، وقت کی مہروں، nonce، میٹاڈیٹا، عین اسپانسر پروگرام ریویژن اور مطلوبہ گیس حد کے ساتھ غیر دستخط شدہ `TransactionPayload` بنائیں۔ ابتدا میں زیادہ سے زیادہ چارجز خالی ہو سکتے ہیں۔
+2. `{"payload": <payload>}` کے ساتھ `POST /v1/fees/quote` درخواست پر اکاؤنٹ سے دستخط کریں۔ درخواست کا دستخط کنندہ لین دین کا بااختیار اکاؤنٹ ہونا چاہیے۔
+3. مشاہدہ شدہ اونچائی، حل شدہ ڈیٹا اسپیس راستہ، فیس کے اجزا، رقم منہا کرنے کا ماخذ اور اسپانسر کی گنجائش جانچیں۔ تصدیق کریں کہ جواب منتخب ادا کنندہ، ریویژن اور گیس حد برقرار رکھتا ہے۔
+4. صرف `payload.fee_payment` کو تجویز کردہ ارادے سے بدلیں، پھر عین اسی پیلوڈ پر دستخط کر کے بھیجیں۔
+5. لین دین کو حالت سے متعین `Applied` حتمیت تک ٹریک کریں اور اس کی رسید محفوظ رکھیں، جس میں اصل اسپانسر پروگرام، ریویژن اور چارج شامل ہو۔
 
-[[nexus.routing_policy.rules]]
-lane = 5
-dataspace = "team"
-[nexus.routing_policy.rules.matcher]
-account_prefix = "team."
-description = "Route team domains to the private dataspace"
-```
+فیس کا تخمینہ لیجر کی حالت دیکھتا ہے؛ گنجائش محفوظ نہیں کرتا۔ قطار میں داخلہ اہلیت دوبارہ جانچتا اور دستخط شدہ زیادہ سے زیادہ رقوم محفوظ کرتا ہے۔ اسپانسر کا انکار لین دین مسترد کرتا ہے، صارف سے چارج لینے پر واپس نہیں جاتا۔
 
-صارف ٹرانزیکشنز پر جانے سے پہلے، چیک کریں کہ:
-
-- نجی لین `/status` جواب میں ظاہر ہوتا ہے
-- آپ کے نجی آن بورڈنگ فلو کی طرف سے صارف اکاؤنٹس کو قبول کیا جاتا ہے
-- سپانسر اکاؤنٹ موجود ہے
-- XOR فیس اثاثہ اور فیس ڈنک اکاؤنٹ نیٹ ورک پر درست ہیں
-
-## ڈیٹا اسپیس میں اثاثوں کو رجسٹر کریں۔ {#_2-register-assets-in-the-dataspace}
-
-درخواست کی منطق میں ان کو وائرنگ کرنے سے پہلے صارفین کو نجی ڈیٹا اسپیس کے اندر رکھنے والی اثاثہ تعریفیں درج کریں۔ مقامی ٹوکن فیس پیٹرن کے لئے ، ٹیوٹوریل `usage#billing.team` کا استعمال کرتا ہے:
-
-```text
-<asset-name>#<domain>.<dataspace>
-usage#billing.team
-```
-
-سب سے پہلے ڈومین اور SNS لیز پر قائم کریں جو اثاثہ ناموں کی جگہ کے مالک ہیں۔ `$BILLING_DOMAIN` کے لئے ایک خفیہ مفت `AliasSetupPlanRequestV1` ارادے بنائیں ، بشمول عددی `team` ڈیٹا اسپیس ID ، کینونیکل مالک ، لیز ٹرم ، اور موجودہ کوٹ گارڈ:
+CLI بھی فیس کا یہی ماخذ واضح طور پر متعین کرتا ہے۔ مثلاً پروگرام میں اس عین اثاثے کی منتقلی کی اجازت اور اکاؤنٹ کی اہلیت کے بعد:
 
 ```bash
-iroha --config ./operator.client.toml \
-  app alias setup plan \
-  --intent-file ./billing-domain.intent.json \
-  --plan-file ./billing-domain.plan.json
-
-iroha --config ./operator.client.toml \
-  app alias setup apply --plan-file ./billing-domain.plan.json
-```
-
-اس کے بعد اثاثہ کی تعریف درج کریں۔ کینونیکل `--id` نیٹ ورک کی سطح پر اثاثے کی تعریف ہے ID. عرفی وہ ہے جو ڈویلپرز اور اختتامی صارفین کو ڈیٹا اسپیس کوڈ میں استعمال کرنا چاہئے:
-
-```bash
-iroha --config ./operator.client.toml \
-  ledger asset definition register \
-  --id "$LOCAL_FEE_ASSET_ID" \
-  --name usage \
-  --alias "$LOCAL_FEE_ASSET" \
-  --scale 0
-```
-
-منٹ یا آن بورڈنگ کے دوران مقامی ٹوکن کو صارف کو منتقل کریں:
-
-```bash
-iroha --config ./operator.client.toml \
-  ledger asset mint \
-  --definition-alias "$LOCAL_FEE_ASSET" \
-  --account "$USER" \
-  --quantity 100
-```
-
-صارف کی بیلنس چیک کریں:
-
-```bash
-iroha --config ./operator.client.toml \
-  ledger asset get \
-  --definition-alias "$LOCAL_FEE_ASSET" \
-  --account "$USER"
-```
-
-ڈیٹا اسپیس میں ایپلی کیشن اثاثوں کے لئے ایک ہی پیٹرن کا استعمال کریں۔ ٹوکن پر ایک اثاثہ تعریف درج کریں ، ہر ایک کو ڈیٹا اسپیس عرفیت دیں ، اور ہارڈ کوڈنگ کینیکل اثاثہ وضاحت IDs کے بجائے SDK کوڈ سے مستعار نام سے رجوع کریں.
-
-## 3۔ صارف ناموں کو رجسٹر کریں۔ {#_3-register-user-aliases}
-
-اکاؤنٹس اب بھی کینونیکل ہیں I105 اکاؤنٹ IDs. صارف کے سامنے نام اکاؤنٹس کا مستعار ہیں ، اور مستعار غیر حساس ہینڈل جیسے `alice@team` یا `alice@members.team` ہونا چاہئے۔ فون نمبرز یا ای میل پتوں کو مستعار کے طور پر استعمال نہ کریں۔ وہ اگلے حصے میں نجی شناخت کنندہ بہاؤ میں شامل ہیں۔
-
-نام نہاد سیٹ اپ ڈومین سیٹ اپ کے طور پر ایک ہی اعلاناتی منصوبہ ساز کا استعمال کرتا ہے۔ SDK یا آن بورڈنگ سروس کو ایک خفیہ مفت `AliasSetupPlanRequestV1` نیت بنائیں جس کا اکاؤنٹ نام نہاد اندراج اہداف `$USER` ، بنیادی کردار منتخب کریں ، عددی ڈیٹا اسپیس ID کو پن کریں ، اور موجودہ لیز کوٹیشن کی گارڈ لے جائیں۔ اس کے بعد منصوبہ بندی کریں اور اسے ایک ایٹمی لین دین کے طور پر لاگو کریں:
-
-```bash
-iroha --config ./operator.client.toml \
-  app alias setup plan \
-  --intent-file ./user-alias.intent.json \
-  --plan-file ./user-alias.plan.json
-
-iroha --config ./operator.client.toml \
-  app alias setup apply --plan-file ./user-alias.plan.json
-```
-
-اگر صارف کو XOR ادا نہیں کرنا چاہئے تو ، انسٹالیشن ٹرانزیکشن کی تعمیر اور جمع کروانے کے لئے منظور شدہ سپانسر سے آگاہ آن بورڈنگ سروس کا استعمال کریں۔ لیز حصول اور عرفی پابند کو آزاد درخواست کے معاملات میں تقسیم نہ کریں.
-
-CLI سے اس کا پتہ لگانے کے بعد، اس کی تصدیق کریں:
-
-```bash
-iroha --config ./operator.client.toml \
-  app alias resolve --alias "$USER_ALIAS"
-
-iroha --config ./operator.client.toml \
-  app alias by-account \
-  --account-id "$USER" \
-  --dataspace "$DATASPACE"
-```
-
-نئے اکاؤنٹ بنانے کے لئے ، ایک آن بورڈنگ سروس کو ترجیح دیں جو `NewAccount` کو مستحکم `uaid` اور ، اگر ضرورت ہو تو ، ابتدائی `label` کے ساتھ بناتا ہے۔ سادہ `ledger account register --id` کمانڈ صرف کینونیکل اکاؤنٹ ID کو رجسٹر کرتا ہے۔
-
-## FHE سے فون اور ای میل کو نجی طور پر رجسٹر کریں۔ {#_4-register-phone-and-email-privately-with-fhe}
-
-فون نمبر اور ای میل ایڈریس کو پرائیویٹ شناختی دعوے کے طور پر استعمال کریں ، عوامی ناموں کے طور پر نہیں۔ FHE کی حمایت یافتہ بہاؤ اکاؤنٹ کے ناموں ، ٹرانزیکشن میٹا ڈیٹا اور عالمی حالت سے خام شناخت کنندگان کو دور رکھتا ہے۔:
-
-1. آپریٹر ٹیلی فون اور ای میل کے لئے [RAM-LFE/FHE پروگرام کی پالیسی](/ur/blockchain/ram-lfe.md) رجسٹر کرتا ہے۔
-2. آپریٹر فعال شناخت کی پالیسیوں کو رجسٹر کرتا ہے جیسے `phone#team` اور `email#team`
-3. بٹوے نے مقامی طور پر فون یا ای میل کو معمول میں لایا
-4. بٹوے کو خفیہ کردہ قدر ریزولور کو بھیجتا ہے۔
-5. حل کرنے والا ایک `IdentifierResolutionReceipt` واپس کرتا ہے
-6. صارف `ClaimIdentifier` کو رسید کے ساتھ جمع کراتا ہے۔
-7. سلسلہ ایک غیر شفاف شناخت کنندہ اور رسید ہیش کو اسٹور کرتا ہے ، خام فون یا ای میل کی قیمت نہیں
-
-آپریٹر کی طرف سے پالیسی سیٹ اپ ایک SDK یا سروس ٹاسک ہے. ہر شناخت کنندہ قسم کے لئے ان ہدایات کے جوڑے بنائیں اور جمع کروائیں:
-
-```text
-RegisterRamLfeProgramPolicy(
-  program_id = "phone_team",
-  owner = "$POLICY_OWNER",
-  backend = "bfv-programmed-sha3-256-v1",
-  verification_mode = "signed",
-  commitment = "<HIDDEN_PROGRAM_POLICY_COMMITMENT>",
-  resolver_public_key = "<RESOLVER_PUBLIC_KEY>"
-)
-ActivateRamLfeProgramPolicy(program_id = "phone_team")
-
-RegisterIdentifierPolicy(
-  id = "$PHONE_POLICY",
-  owner = "$POLICY_OWNER",
-  normalization = "PhoneE164",
-  program_id = "phone_team",
-  note = "Private phone registration for team dataspace"
-)
-ActivateIdentifierPolicy(policy_id = "$PHONE_POLICY")
-```
-
-ای میل کے لئے اسے دوبارہ کریں:
-
-```text
-program_id = "email_team"
-policy_id = "$EMAIL_POLICY"
-normalization = "EmailAddress"
-```
-
-آن بورڈنگ کے دوران، بٹوے یا بیک اینڈ کو مقامی طور پر معمول بنانا چاہئے:
-
-```text
-PhoneE164: "+15551234567"
-EmailAddress: "alice@example.com"
-```
-
-مرحلہ 8 میں سپانسر میٹا ڈیٹا فائل تخلیق ہونے کے بعد ، اس میٹا ڈیٹا کے ساتھ صارف کی دستخط شدہ دعوے کی ہدایت پیش کریں:
-
-```text
-ClaimIdentifier(
-  account = "$USER",
-  receipt = IdentifierResolutionReceipt {
-    payload: {
-      policy_id: "$PHONE_POLICY",
-      opaque_id: "<OPAQUE_ACCOUNT_ID>",
-      uaid: "<USER_UAID>",
-      account_id: "$USER",
-      ...
-    },
-    attestation: "<RESOLVER_SIGNATURE_OR_PROOF>"
-  }
-)
-```
-
-موجودہ CLI ان شناخت کی ہدایات کے لئے ٹائپ کردہ کمانڈوں کو ظاہر نہیں کرتا ہے۔ SDK کے ساتھ ترتیب شدہ `InstructionBox` اقدار تیار کریں اور انہیں `ledger transaction stdin` کے ذریعے بھیجیں:
-
-```bash
-printf '["<BASE64_CLAIM_IDENTIFIER_INSTRUCTION_BOX>"]\n' |
-  iroha --config ./alice.client.toml \
-    --metadata ./sponsored-fee.json \
-    ledger transaction stdin
-```
-
-ان محافظوں کو بورڈنگ سروس میں رکھیں:
-
-- اکاؤنٹ کا نام صرف انسانوں کے پڑھنے کے قابل ہینڈلز ہیں
-- خام فون اور ای میل کی اقدار کبھی بھی عرفات ، میٹا ڈیٹا ، نوشتہ جات یا لین دین کے استعمال میں نہیں دکھائی دیتی ہیں۔
-- اکاؤنٹ میں `uaid` ہے اس سے پہلے کہ وہ نجی شناخت دہندگان کا دعوی کرے۔
-- رسیدیں پابند `policy_id` ، `opaque_id`، `uaid`، `account_id`، اور ختم ہونے والی
-- حل کرنے والے چابیاں اور پوشیدہ پروگرام کے وعدوں کو گورننس کی طرف سے کنٹرول کیا جاتا ہے
-
-## نوڈ پر اسپانسرشپ کو فعال کریں۔ {#_5-enable-sponsorship-on-the-node}
-
-فیس سپانسرشپ ایک نوڈ / رن ٹائم پالیسی ہے. Nexus فیس ترتیب میں اس کو فعال کریں:
-
-```toml
-[nexus.fees]
-fee_asset_id = "xor#universal"
-fee_sink_account_id = "<FEE_SINK_ACCOUNT_I105_OR_ALIAS>"
-base_fee = "0"
-per_byte_fee = "0"
-per_instruction_fee = "0.001"
-per_gas_unit_fee = "0.00005"
-sponsorship_enabled = true
-sponsor_max_fee = "0"
-```
-
-`fee_asset_id` نیٹ ورک فیس اثاثہ ہے۔ SORA Nexus کے لئے یہ XOR ہے۔ اپنے نیٹ ورک کی طرف سے بے نقاب ہونے والے فعال XOR عرفی یا کینیکل XOR اثاثہ تعریف ID کا استعمال کریں۔
-
-`sponsor_max_fee = "0"` کا مطلب ہے کہ ہر ٹرانزیکشن کے لئے کوئی سپانسر کی حد نہیں ہے۔ پیداوار کے ل a ، جب آپ اپنے ڈیٹا اسپیس لین دین کے عام سائز اور گیس پروفائل کو جانتے ہو تو صفر سے باہر کی حد طے کریں۔
-
-اپنے معمول کے آپریٹر کے عمل کے ذریعے اس ترتیب کو دوبارہ شروع یا رول کریں.
-
-## 6۔ اسپانسر کی تشکیل اور مالی اعانت {#_6-create-and-fund-the-sponsor}
-
-اگر ضرورت ہو تو سپانسر کی چابی کا جوڑا تیار کریں۔
-
-```bash
-kagami keys --algorithm ed25519 --out-dir ./fee-sponsor-key
-```
-
-عوامی کلید کو اپنے نیٹ ورک کے لئے اکاؤنٹ فارمیٹ میں تبدیل کریں:
-
-```bash
-iroha tools address convert \
-  --network-prefix <CHAIN_DISCRIMINANT> \
-  <SPONSOR_ED25519_PUBLIC_KEY_HEX>
-```
-
-اپنے نجی آن بورڈنگ فلو کے ذریعے اسپانسر اکاؤنٹ رجسٹر کریں:
-
-```bash
-iroha --config ./operator.client.toml \
-  ledger account register --id "$SPONSOR"
-```
-
-XOR کے ساتھ سپانسر کو خزانہ، دعوے اکاؤنٹ یا کسی دوسرے مالی اعانت والے اکاؤنٹ سے فنڈ کریں:
-
-```bash
-iroha --config ./treasury.client.toml \
+iroha --config ./user.client.toml \
+  --fee-payer sponsor \
+  --fee-program '<SPONSOR_CANONICAL_I105>/team-payments' \
+  --fee-program-revision 1 \
   ledger asset transfer \
-  --definition-alias "$XOR_ASSET" \
-  --account "$TREASURY" \
-  --to "$SPONSOR" \
-  --quantity 1000
-```
-
-کے لئے Taira پریکٹس، فوسیٹ کے مددگار کو بچانے سے [ٹیسٹ نیٹ حاصل کریں XOR پر Taira](/ur/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) کے طور `taira_faucet_claim.py`, پھر ایک خزانہ کی منتقلی کے بجائے اسپانسر کو عوامی فوسیٹ سے فنڈ دیں:
-
-```bash
-export SPONSOR='<SPONSOR_TAIRA_I105_ACCOUNT_ID>'
-export XOR_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$SPONSOR"
-
-iroha --config ./sponsor.client.toml \
-  ledger asset get \
-  --definition "$XOR_ASSET" \
-  --account "$SPONSOR"
-```
-
-سپانسر کی XOR بیلنس چیک کریں:
-
-```bash
-iroha --config ./operator.client.toml \
-  ledger asset get \
-  --definition-alias "$XOR_ASSET" \
-  --account "$SPONSOR"
-```
-
-## 7۔ صارف کو اسپانسر تک رسائی فراہم کریں۔ {#_7-grant-a-user-access-to-the-sponsor}
-
-اسپانسر کو ہر صارف کو اپنے نام پر فیس عائد کرنے کی اجازت دینی ہوگی۔ یہی grant صارفین کو من مانے sponsor accounts کا نام دینے سے روکتی ہے۔
-
-اس کو اسپانسر اکاؤنٹ کے طور پر چلائیں، یا آپ کی رن ٹائم پالیسی کی طرف سے اجازت دی گئی ایک آپریشنل اکاؤنٹ کے طور:
-
-```bash
-printf '{
-  "name": "CanUseFeeSponsor",
-  "payload": {
-    "sponsor": "%s"
-  }
-}\n' "$SPONSOR" |
-  iroha --config ./sponsor.client.toml \
-    ledger account permission grant --id "$USER"
-```
-
-آن بورڈنگ سروسز کے لئے، یہ ایک عام اکاؤنٹ کی فراہمی کا مرحلہ بنانا اور لاگ:
-
-- صارف اکاؤنٹ
-- سپانسر اکاؤنٹ
-- ڈیٹا اسپیس یا درخواست
-- منظوری کا ٹکٹ یا گورننس فیصلہ
-
-صارف کی اجازتوں کا معائنہ کرنے کے لیے:
-
-```bash
-iroha --config ./operator.client.toml \
-  ledger account permission list --id "$USER"
-```
-
-## 8۔ اسپانسر میٹا ڈیٹا منسلک کریں۔ {#_8-attach-sponsor-metadata}
-
-ایک بار پھر استعمال میٹا ڈیٹا فائل بنائیں:
-
-```bash
-printf '{
-  "fee_sponsor": "%s"
-}\n' "$SPONSOR" > sponsored-fee.json
-```
-
-اس میٹا ڈیٹا کے ساتھ پیش کردہ ہر تحریر سپانسر سے وصول کی جاتی ہے:
-
-```bash
-iroha --config ./alice.client.toml \
-  --metadata ./sponsored-fee.json \
-  ledger transaction ping --msg "sponsored private-dataspace write"
-```
-
-SDKs کے لئے ، ایک ہی ٹرانزیکشن میٹا ڈیٹا آبجیکٹ کو دستخط شدہ لین دین سے منسلک کریں۔ صارف صارف کی کلید کے ساتھ لین دین پر دستخط کرتا ہے۔ سپانسر ہر صارف کے کاروبار پر دستخط نہیں کرتا کیونکہ سابقہ `CanUseFeeSponsor` تفویض کردہ اجازت ہے۔
-
-## نمونہ ۱: صارفین مفت ادائیگی کرتے ہیں {#pattern-1-users-pay-no-fees}
-
-اس کا استعمال جب ایپلی کیشن یا آپریٹر تمام نیٹ ورک فیسوں کو جذب کرے۔
-
-ڈویلپر چیک لسٹ:
-
-1. صارف کے عام ٹرانزیکشن بوجھ میں کوئی تبدیلی نہ کریں۔
-2. `fee_sponsor` کے ساتھ ٹرانزیکشن میٹا ڈیٹا شامل کریں۔
-3. صارف کے طور پر دستخط کریں.
-4. نجی ڈیٹا اسپیس روٹ کے ذریعے جمع کروائیں.
-
-صارف اکاؤنٹ کو XOR بیلنس کی ضرورت نہیں ہے۔ سپانسر اکاؤنٹ کو تشکیل شدہ Nexus فیسوں کو پورا کرنے کے لئے کافی مقدار میں XOR رکھنا ہوگا۔
-
-## نمونہ 2: صارفین مقامی ٹوکن ادا کرتے ہیں {#pattern-2-users-pay-a-local-token}
-
-اس کا استعمال کریں جب صارفین کو XOR نہیں رکھنا چاہئے، لیکن ڈیٹا اسپیس اب بھی ایک داخلی ایپ فیس، کریڈٹ اخراجات یا کوٹ ٹوکن چاہتا ہے.
-
-اس پیٹرن میں، مقامی ٹوکن ایک درخواست کی ادائیگی ہے. یہ نیٹ ورک فیس اثاثہ نہیں ہے. سپانسر اب بھی نیٹ ورک فیس ادا کرتا ہے XOR.
-
-مثال کے طور پر، نجی ڈیٹا اسپیس میں مقامی ٹوکن کا استعمال کریں:
-
-```text
-usage#billing.team
-```
-
-`usage#billing.team` کے ساتھ فنڈ صارفین کو ان بورڈنگ، رکنیت کی تجدید یا کوٹہ مختص کرنے کے دوران. پھر صارف ٹرانزیکشن کو ایٹمی بنائیں:
-
-1. صارف سے اسپانسر کو مقامی ٹوکن منتقل کرنا۔
-2. درخواست کردہ ایپ آپریشن انجام دیں۔
-3. `fee_sponsor` میٹا ڈیٹا شامل کریں تاکہ اسپانسر XOR ادا کرے۔
-
-ایک کم از کم CLI دھواں ٹیسٹ صرف مقامی ٹوکن کی منتقلی ہے جو XOR کے زیر اہتمام ہے:
-
-```bash
-iroha --config ./alice.client.toml \
-  --metadata ./sponsored-fee.json \
-  ledger asset transfer \
-  --definition-alias "$LOCAL_FEE_ASSET" \
-  --account "$USER" \
-  --to "$SPONSOR" \
+  --definition '<ASSET_DEFINITION_BASE58>' \
+  --account '<USER_CANONICAL_I105>' \
+  --to '<RECIPIENT_CANONICAL_I105>' \
   --quantity 1
 ```
 
-ایک حقیقی ایپ کے لئے، مقامی ٹوکن کی ادائیگی کو علیحدہ بہترین کوشش کی لین دین کے طور پر پیش نہ کریں. ادائیگی اور کاروباری ہدایات دونوں پر مشتمل ایک دستخط شدہ ٹرانزیکشن بنائیں، یا ایک معاہدے کا داخلہ نقطہ ظاہر کریں جو کاروباری آپریشن کو لاگو کرنے سے پہلے مقامی ٹوکر جمع کرتا ہے.
+اپنے نیٹ ورک کی فعال ریویژن اور عین شناخت کنندگان استعمال کریں۔ صارف کی ترتیب میں صرف اسی صارف کا دستخط کنندہ ہوتا ہے؛ اہل اسپانسر شدہ لین دین بھیجنے کے لیے اسپانسر کی نجی کلید درکار نہیں۔
 
-اپنی ایپ یا معاہدے میں تبادلوں کی پالیسی رکھیں:
+## 4. طے کریں کہ صارف ایپلیکیشن فیس ادا کرے گا یا نہیں {#_4-decide-whether-the-user-pays-an-application-fee}
 
-- کس آپریشن کی لاگت کتنی مقامی ٹوکن یونٹس
-- XOR ٹاپ اپ کو سپانسر کرنے کے لئے مقامی ٹوکن انفیلو نقشے کیسے
-- اگر صارف کا بیلنس بہت کم ہو تو کیا ہوتا ہے؟
-- جب سپانسر XOR بیلنس بہت کم ہو تو کیا ہوتا ہے؟
+اسپانسر عالمی فیس ادا کر سکتا ہے جبکہ ایپلیکیشن صارف سے کچھ نہ لے۔ اگر ایپ مقامی ٹوکن لیتی ہو تو اس منتقلی یا معاہدے کے قاعدے کو صارف کے دستخط شدہ قابلِ اجرا مواد میں واضح طور پر لکھیں۔ ہر کارروائی اسپانسر ریویژن کی پالیسی میں شامل کریں اور پورے پیلوڈ کا فیس تخمینہ جانچیں۔ نیٹ ورک فیس کے ارادے سے ایپلیکیشن ٹوکن کی منتقلی فرض نہ کریں۔
 
-::: warning
+## انکار کی تشخیص کریں {#diagnose-a-refusal}
 
-"لوکل ٹوکن فیس" پیٹرن کے لئے `gas_asset_id` کا استعمال نہ کریں جب تک کہ آپ نہیں چاہتے کہ اسپانسر کو اس گیس اثاثے میں بھی چارج کیا جائے۔ موجودہ رن ٹائم میں ، `fee_sponsor` اسپانسر کو پیپ لائن-گیس اثاثہ ڈیبٹس کے لئے ادائیگی کرنے والا بھی بناتا ہے۔ مقامی ٹوکن صارف فیسوں کے لئے، ٹوکن کو صریح طور پر منتقلی یا معاہدے کے اصول کے ساتھ جمع کریں.
+نوڈ کے واپس کردہ مستقل فیس کوڈ اور اصلاح کی تفصیلات استعمال کریں:
 
-:::
-
-## ناکام اسپانسرڈ ٹرانزیکشنز کو ڈیبگ کریں {#debug-failed-sponsored-transactions}
-
-عام ردعمل کی وجوہات عام طور پر ایک لاپتہ ترتیب کے مرحلے کی طرف اشارہ کرتی ہیں:
-
-|غلطی کا متن |کیا چیک کرنا ہے |
+| کوڈ | کیا جانچیں |
 | --- | --- |
-|`fee sponsorship is disabled` |`nexus.fees.sponsorship_enabled` اب بھی node پر `false` ہے. |
-|`fee sponsor is not authorized` |صارف کے پاس اس اسپانسر کے لیے `CanUseFeeSponsor` نہیں ہے۔ |
-|`fee asset ... is missing` |سپانسر کے پاس مقررہ XOR فیس اثاثہ نہیں ہے۔ |
-|`fee balance ... is insufficient` |سپانسر کے XOR بیلنس میں اضافہ کریں. |
-|`fee exceeds sponsor_max_fee` |`sponsor_max_fee` بڑھانا یا ٹرانزیکشن سائز / گیس کو کم کرنا۔ |
-|`invalid nexus fee asset id` |فکسڈ `nexus.fees.fee_asset_id` یا XOR اثاثہ کا نام۔ |
+| `program_not_found` | پروگرام کی عین کینونیکل شناخت۔ |
+| `revision_not_active`, `program_not_active` | ریویژن کی فعالیت اور پروگرام کا دورِ حیات۔ |
+| `beneficiary_not_eligible` | اندراج یا راستے کی اجازت یافتہ بنیادی اہلیت۔ |
+| `operation_not_allowed`, `operation_denied` | ہر عین دستخط شدہ کارروائی اور ممانعت کا قاعدہ۔ |
+| `invalid_gas_limit`, `signed_limit_exceeded` | تازہ فیس تخمینے کے مقابل گیس حد اور دستخط شدہ زیادہ سے زیادہ رقوم۔ |
+| `vault_insufficient` | اس پروگرام کی عین کرنسی کے والٹ کا فنڈ شدہ بیلنس۔ |
+| بجٹ ختم ہونے کے کوڈز | لین دین، بلاک، پروگرام ایپوک اور مستفید فرد کے ایپوک کی گنجائش۔ |
 
-جب ڈیبگ پیٹرن 2، دونوں بیلنس چیک کریں:
+غیر واضح نتیجے والی ارسال کی تحقیق میں اصل لین دین ہیش اور فیس انکار کی تفصیلات محفوظ رکھیں۔ متبادل بنانے سے پہلے اس کی حیثیت کی تصدیق کریں۔
 
-```bash
-iroha --config ./operator.client.toml \
-  ledger asset get \
-  --definition-alias "$XOR_ASSET" \
-  --account "$SPONSOR"
+## مقررہ ماخذ {#pinned-sources}
 
-iroha --config ./operator.client.toml \
-  ledger asset get \
-  --definition-alias "$LOCAL_FEE_ASSET" \
-  --account "$USER"
-```
-
-## اسپانسر کو چلائیں {#operate-the-sponsor}
-
-اسپانسر کو خزانہ اکاؤنٹ کے طور پر علاج کریں:
-
-- ٹیسٹ نیٹ، اسٹیجنگ اور مین نیٹ کے لئے الگ الگ سپانسر چابیاں رکھیں
-- سپانسر XOR بیلنس داخلہ کی منزل تک پہنچنے سے پہلے انتباہ
-- ٹریفک کی خصوصیت کے بعد غیر صفر `sponsor_max_fee` کی حد مقرر کریں۔
-- آپ کی درخواست یا گیٹ وے میں شرح کی حد سپانسرڈ لکھتا ہے
-- `CanUseFeeSponsor` منسوخ کریں جب صارفین ڈیٹا اسپیس چھوڑ دیں۔
-- صارف ٹرانزیکشن ہیشز، مقامی ٹوکن کی ادائیگیوں اور سپانسر XOR ڈیبٹس کو موازنہ کریں
-
-ایک صارف کے لئے اسپانسر شپ منسوخ کریں:
-
-```bash
-printf '{
-  "name": "CanUseFeeSponsor",
-  "payload": {
-    "sponsor": "%s"
-  }
-}\n' "$SPONSOR" |
-  iroha --config ./sponsor.client.toml \
-    ledger account permission revoke --id "$USER"
-```
-
-## متعلقہ صفحات {#related-pages}
-
-- [SORA Nexus ڈیٹا بیسز](/ur/get-started/sora-nexus-dataspaces.md) سے رابطہ قائم کریں۔
-- [Iroha 3 کے ذریعے CLI](/ur/get-started/operate-iroha-via-cli.md) پر کام کریں
-- [اثاثہ جات](/ur/blockchain/assets.md)
-- [اجازت نامے](/ur/blockchain/permissions.md)
-- [اجازت کے ٹوکن](/ur/reference/permissions.md)
+- [فیس پالیسی، پروگرام کا دورِ حیات اور تخمینے کا پروٹوکول](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/nexus_fee_model.md)
+- [اسپانسر پروگرام کی ٹائپ شدہ ہدایات](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/isi/nexus.rs)
+- [CLI کے فیس ماخذ فلیگز اور اثاثے کی منتقلی](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/README.md)
+- [ڈیٹا اسپیس کی ترتیب](/ur/get-started/sora-nexus-dataspaces.md)

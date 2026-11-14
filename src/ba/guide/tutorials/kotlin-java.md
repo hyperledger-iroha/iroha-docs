@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 9388823f782eef86aedbaf141bd251dae39837957aefd224ed0cc97ba11ad97d
+translation_source_hash: f1f922b9820587cd4b599e7407698a47d468616670fee2922e4028147bc3e9b0
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # Kotlin, Android һәм Java {#kotlin-android-and-java}
 
 Kotlin SDK - JVM һәм Android программалары өсөн алдан билдәләнгән клиент стегы. Ул Iroha һаҡлағысында `kotlin/` аҫтында йәшәй һәм платформаға бүленгән, шуға күрә портатив код Android бәйлелектәре ала алмай.
@@ -73,7 +72,7 @@ Kotlin SDK үҙ эсенә:
 - Канон иҫәбенә һәм актив адрестары менән идара итеү
 - транзакция төҙөү, ҡул ҡуйыу һәм офлайн конверттар
 - Torii HTTP, WebSocket һәм SSE клиенттары
-- Күп ҡултамғалар, яҙылыу, SoraFS, Nexus һәм Connect моделе
+- Күп ҡултамғалар, яҙылыу, SoraFS, SORA Nexus һәм Connect моделе
 - Android клавиатура һәм ҡоролмалар телеметрияһы интеграциялары
 - Android офлайн QR, Яҡын һәм NFC транспорты
 

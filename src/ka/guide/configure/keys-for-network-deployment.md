@@ -1,14 +1,13 @@
 ---
 translation_locale: ka
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # ქსელის განთავსების გასაღები {#keys-for-network-deployment}
 
-თითოეულ ქსელს სჭირდება განსხვავებული საკვანძო მასალა კლიენტებისთვის, ქსელის კვანძებისთვის, ბლოკჩეინის გენეზისზე ხელმოწერისთვის და NPoS ან Nexus პროფილისთვის BLS ვალიდატორების იდენტობისთვის.
+ყოველ ქსელს ცალკე გასაღების მასალა სჭირდება კლიენტებისთვის, კვანძებისთვის, გენეზისის ხელმოწერისთვის და NPoS ან SORA Nexus პროფილებში BLS ვალიდატორების იდენტობებისთვის.
 
 ## სადაც გამოიყენება გასაღები {#where-keys-are-used}
 
@@ -21,7 +20,7 @@ translation_engine: nllb-200-ct2
 ადგილობრივი ან ტესტის განთავსებისათვის, Kagami უნდა შექმნას ყველა ეს ფაილი ერთად:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 არსებული ქსელის ან პროფილისთვის, გამოიყენეთ გაიდებული ნაკადი:

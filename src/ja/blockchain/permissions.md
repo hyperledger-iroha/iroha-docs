@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # 権限 {#permissions}
 
 アカウントは、ブロックチェーン上でさまざまなアクションを行うための許可トークンを必要とします。例えば、資産を発行したり破壊したりする場合です。
@@ -89,7 +88,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 - 資産、NFTs、およびエスクロー
 - トリガー
 - 役割と権限
-- エグゼキューター／ランタイム、証明、ブリッジ、SORA／Nexus モジュール
+- エグゼキューター／ランタイム、証明、ブリッジ、SORA Nexus モジュール
 
 正確なトークンリストは[許可トークンの参照](/ja/reference/permissions.md)でソースに基づいています。
 

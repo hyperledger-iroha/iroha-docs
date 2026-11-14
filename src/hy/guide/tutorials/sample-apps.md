@@ -1,18 +1,17 @@
 ---
 translation_locale: hy
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: c1432d8d2483f67b6ab81680f6c5457cab470db7944512626242a1446a7d501f
+translation_source_hash: 0c4f2f3fc4efb9f883f597a3eea49c99431b711a0141eba70ac5a2524990dd73
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # Նմուշներ եւ բաղադրատոմսեր {#samples-and-recipes}
 
 Iroha աղբյուրի պահեստը պարունակում է SDK բաղադրատոմսեր եւ փորձարկման հավաքածուներ, որոնք հետեւում են նույն վերանորոգմանը, ինչպես բջիջը:
 
 ## JavaScript բաղադրատոմսեր {#javascript-recipes}
 
-[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes) պարունակում է դետերմինիստական գործարքների խմբավորման կենտրոնացված օրինակներ, Nexus հավելվածների փոխանցում, NFT եւ հաշիվների կրկնությունը, ISO կամուրջի հոսքեր, եւ Torii Յուրաքանչյուր բաղադրատոմս փաստագրում է, թե արդյոք այն աշխատում է անջատ կամ կարիք ունի կենդանի Torii վերջնական կետ:
+[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes) պարունակում է դետերմինիստական գործարքների խմբավորման կենտրոնացված օրինակներ, SORA Nexus հավելվածների փոխանցում, NFT եւ հաշիվների կրկնությունը, ISO կամուրջի հոսքեր, եւ Torii Յուրաքանչյուր բաղադրատոմս փաստագրում է, թե արդյոք այն աշխատում է անջատ կամ կարիք ունի կենդանի Torii վերջնական կետ:
 
 ## Swift եւ iOS {#swift-and-ios}
 

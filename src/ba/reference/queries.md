@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # Һорауҙар {#queries}
 
 Iroha һорауҙар иҫәп-хисап хәлен уҡый, уны үҙгәртмәйенсә. хәҙерге мәғлүмәттәр моделе ике киң һорау формаларын аса:
@@ -50,7 +49,7 @@ Iroha һорауҙар иҫәп-хисап хәлен уҡый, уны үҙгә�
 |`FindDomainEndorsements` |Домендар менән танышыу документтарын яҙығыҙ. |
 |`FindDomainEndorsementPolicy` |Доменды раҫлау сәйәсәтен кире ҡайтарығыҙ. |
 |`FindDomainCommittee` |Домен комитетын кире ҡайтарығыҙ. |
-|`FindPeers` |Реестрға билдәле trusted peer-ҙарҙы исемлеккә сығарығыҙ. |
+| `FindPeers` | Реестрға билдәле ышаныслы тиңдәштәрҙе исемлеккә сығарығыҙ. |
 
 ## NFTs һәм RWAs активтары {#assets-nfts-and-rwas}
 
@@ -86,7 +85,7 @@ Iroha һорауҙар иҫәп-хисап хәлен уҡый, уны үҙгә�
 |`FindProofRecordsByBackend` |Дәлилдәр өсөн иҫбатлау яҙмаларын яҙығыҙ. |
 |`FindProofRecordsByStatus` |Хәлдәр буйынса иҫбатлау яҙмаларын исемлеккә индер. |
 
-## Nexus, мәғлүмәттәрҙең булыуы һәм пакеттар {#nexus-data-availability-and-packages}
+## SORA Nexus, мәғлүмәттәрҙең булыуы һәм пакеттар {#nexus-data-availability-and-packages}
 
 |Һорау |Маҡсат |
 | --- | --- |

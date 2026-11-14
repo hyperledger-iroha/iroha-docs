@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /reference/genesis.md
-translation_source_hash: 8215489720e1bc2fc3b7c22c4cb2f8f7b1f0f15d1df4a4f596ee3caa2c6b7829
+translation_source_hash: 340921f59a6f8788f559190d520f046ea2473d65154f57a1c54212840c027bc0
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Башланмыш китабынан өҙөктәр {#genesis-reference}
 
 Хәҙерге Iroha 3 эш ағымында, `genesis.json` манифеста беренсе транзакциялар һәм селтәр башланғанда ҡулланыласаҡ параметрҙар һүрәтләнә.
@@ -17,11 +16,13 @@ translation_engine: nllb-200-ct2
 Генезис манифесты билдәләй ала:
 
 - `chain` өсөн сылбыр идентификаторы
+- `chain_discriminant` — манифесттағы иҫәп литералдарын кодлауҙа ҡулланылған I105 селтәр префиксы өсөн
 - `executor` өсөн факультатив үтәүсе яңыртыу байтек коды юлы
 - `ivm_dir` өсөн IVM китапханалары триггерҙар һәм яңыртыуҙар менән ҡулланыла
 - `consensus_mode` манифеста иғлан ителгән тәүге режим өсөн
 - `transactions` тәртиптәге параметрҙар яңыртыуҙары, инструкциялар, ҡуҙғатыуҙар һәм топология өсөн
-- `crypto` тәүге crypto snapshot өсөн
+- `sumeragi_context` — ҡул ҡуйылған Sumeragi бейеклек контексы параметрҙары өсөн
+- `crypto_admission_policy` — сылбыр ҡабул иткән һәм `allowed_algorithms` исемлегендә күрһәтелгән теүәл ҡул ҡуйыу һәм контроллер алгоритмдары өсөн
 
 `transactions` эсендә топологияға индереүҙәр бер-береһенә тиң идентификаторҙар һәм PoPs менән бергә:
 
@@ -34,16 +35,17 @@ translation_engine: nllb-200-ct2
 
 ## Манифест яһағыҙ {#generate-a-manifest}
 
-Шаблон булдырыу өсөн Kagami ҡулланығыҙ:
+Шаблон булдырыу өсөн Kagami ҡулланығыҙ. Һәр ҡабул ителгән алгоритм өсөн `--allowed-signing`-ды каноник үҫеү тәртибендә ҡабатлағыҙ; Kagami төшөрөп ҡалдырылған алгоритмдарҙы өҫтәмәй:
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
   --consensus-mode npos \
   --ivm-dir defaults \
-  --genesis-public-key <PUBLIC_KEY> > genesis.json
+  --genesis-public-key <PUBLIC_KEY> \
+  --allowed-signing ed25519 > genesis.json
 ```
 
-Йәмәғәт SORA Nexus мәғлүмәт киңлеге өсөн, `npos` - күҙалланған консенсус режимы. башҡа Iroha 3 урынлаштырыуҙар маҡсатлы профилгә ҡарап рөхсәт ителгән йәки NPoS ҡулланырға мөмкин.
+Асыҡ SORA Nexus мәғлүмәт киңлеге өсөн көтөлгән консенсус режимы — `npos`. Башҡа Iroha 3 урынлаштырыуҙары маҡсатлы профилгә ҡарап рөхсәттәргә нигеҙләнгән режимды йә NPoS ҡуллана ала.
 
 ## Манифестҡа ҡул ҡуйығыҙ {#sign-the-manifest}
 
@@ -59,12 +61,13 @@ cargo run -p iroha_kagami -- genesis sign genesis.json \
 
 ## `iroha3d` конфигурацияһы {#configure-iroha3d}
 
-Демонды ҡул ҡуйылған генез блогына йүнәлтегеҙ:
+Демонға ҡул ҡуйылған genesis блогын һәм уның көтөлгән хэшын беркеткән файлды күрһәтегеҙ. `kagami genesis sign --expected-hash-out` ошо файлды яҙа, һәм төйөн уны тәүге эшләтеүҙә лә, яңынан эшләтеүҙә лә талап итә:
 
 ```toml
 [genesis]
 file = "genesis.signed.nrt"
 public_key = "<PUBLIC_KEY>"
+expected_hash_file = "genesis.expected_hash"
 ```
 
 ## Төрлө инструменттар {#related-tools}
@@ -72,7 +75,7 @@ public_key = "<PUBLIC_KEY>"
 - `kagami genesis validate`
 - `kagami genesis normalize`
 - `kagami genesis embed-pop`
-- `kagami localnet`
+- `kagami localnet generate`
 - `cargo xtask kagami-profiles`
 
 Генераторҙы ғәмәлгә ашырыу һәм команда мәғлүмәттәре өсөн [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami/README.md) ҡарағыҙ.

@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
+translation_source_hash: 92389d3ad83ab32e85b4ca83ede9829d1a38afaad6e86da035da2829a3aaedfb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # JavaScript ו TypeScript {#javascript-and-typescript}
 
 ערכת JavaScript SDK הנוכחית היא החבילה `@iroha/iroha-js` בעץ המקור של Iroha. זוהי ערכת SDK המיועדת בראש ובראשונה ל־Node.js, עם תמיכה ב־Torii, בוני Norito, חתימה, חלוקה לעמודים, תצפיות Connect והעברת פקודות Kagemusha.
@@ -99,7 +98,6 @@ SDK מתמקד ב:
 - Ed25519 חתימה ודור מפתח
 - סיועי דף וניסיון מחדש
 - קישור עוזרים לחיזוק הדפדפן
-- סיועי תחבורה של Kagemusha מוכנים, מחומקים, משוחררים ומבצעים
 
 ## ראשי תיקון מקדימה {#upstream-references}
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: ka
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 35a4caba21bf1e34cc015f79fa82bfe143b37603eddb5f1eb72513ad83a20f61
+translation_source_hash: 6fe2dd48dc64f896be539af2994fbc0ad3c2c5f7a5a4297cc4ff4b08667f0376
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # გაშვება Iroha 3 {#launch-iroha-3}
 
 ეს გვერდი გადის მიმდინარე ადგილობრივი ქსელის ნაკადში Iroha 3 გამოყენებით სამუშაო სივრცის დეფოლტური აქტივები ზემოთ განლაგებული რეპროდუქციისგან.
@@ -65,11 +64,11 @@ curl http://127.0.0.1:8080/status/blocks
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list
 ```
 
-## 3. Nexus პროფილი {#_3-nexus-profile}
+## 3. SORA Nexus პროფილი {#_3-nexus-profile}
 
 რეპოზიტორი ასევე გზავნის SORA Nexus ორიენტირებულ კონფიგურაციის პროფილი `defaults/nexus/` ქვეშ.
 
-Nexus პროფილის მქონე მშობლიური ქსელის პერის ჩასატარებლად:
+SORA Nexus პროფილის მქონე მშობლიური ქსელის პერის ჩასატარებლად:
 
 ```bash
 ./target/release/iroha3d --sora --config ./defaults/nexus/config.toml

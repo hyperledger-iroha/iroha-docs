@@ -1,11 +1,10 @@
 ---
 translation_locale: ru
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: ca6fd12e33df43b73a72dd6327133115aa44256cf579387c11bf0693797bf96e
+translation_source_hash: f1d7f1e54fa01550ad5de65b18a725bc98452dcff8f9c08ebe427fb5ae857968
 translation_status: machine-validated
-translation_engine: bing-translator-llm+claude-opus-5-5
+translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link
 ---
-
 # Создать и развернуть смарт-контракт {#build-and-deploy-a-smart-contract}
 
 ## Результат {#outcome}
@@ -196,7 +195,7 @@ jq -e '.ok == true and .result == ["3", "5"]' \
 - `fee quote changed ... gas bound` означает, что запрашиваемое типизированное намерение и текущая котировка не совпадают. Выполните повторную проверку, а не изменяйте подписанную транзакцию.
 - Прерванное развертывание сохраняет свой подписанный план в журнале. Восстановите его с помощью `musubi deploy --resume <JOURNAL>` вместо того, чтобы подписывать новый план.
 - `is read-only and cannot be invoked as a transaction` или `is not a kotoage or lifecycle entrypoint` означает, что `compute` был отправлен команде вызова. В этом примере объявлена `view fn`, поэтому используйте `debug-view` локально и `view` на Torii.
-- Вызовы контрактов требуют положительного предела стоимости выполнения транзакции с указанным типом. Контракт технического вызова первой версии отклоняет метаданные стоимости выполнения транзакции верхнего уровня или активов оплаты.
+- Вызовам контрактов нужен положительный типизированный лимит газа. Правила вызова первой версии отклоняют метаданные верхнего уровня, задающие газ или актив для оплаты комиссии.
 
 ## Исходные и сопутствующие документы {#source-and-related-docs}
 

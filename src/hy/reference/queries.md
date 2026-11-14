@@ -1,11 +1,10 @@
 ---
 translation_locale: hy
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # Հարցումներ {#queries}
 
 Iroha հարցումները կարդում են գլխավոր գրքի վիճակը ՝ առանց դրա մուտացիայի: Ներկայիս տվյալների մոդելը բացահայտում է երկու լայն հարցման ձեւեր.
@@ -52,7 +51,7 @@ Iroha հարցումները կարդում են գլխավոր գրքի վիճ�
 |`FindDomainCommittee` |Վերադարձ տիրույթի հանձնաժողովը: |
 |`FindPeers` |Հաշվապահական գրքում հայտնի վստահելի հանգույցների ցանկ։ |
 
-## Գործիքներ, NFTs եւ RWAs {#assets-nfts-and-rwas}
+## Ակտիվներ, NFTs և RWAs {#assets-nfts-and-rwas}
 
 |Հարցում |Նպատակ |
 | --- | --- |
@@ -86,7 +85,7 @@ Iroha հարցումները կարդում են գլխավոր գրքի վիճ�
 |`FindProofRecordsByBackend` |Ցուցադրեք ապացույցների փաստաթղթերը ապացույցի հետագա վերջի համար: |
 |`FindProofRecordsByStatus` |Թողարկեք ապացույցների փաստաթղթերը ըստ վիճակի: |
 
-## Nexus, Տվյալների մատչելիությունը եւ փաթեթները {#nexus-data-availability-and-packages}
+## SORA Nexus, Տվյալների մատչելիությունը եւ փաթեթները {#nexus-data-availability-and-packages}
 
 |Հարցում |Նպատակ |
 | --- | --- |

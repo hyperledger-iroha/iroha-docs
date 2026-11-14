@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
+translation_source_hash: b6e3bd79c50ea326930ac978350ea4beac8294b6f045ac0084aada257754ffa1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Gerando Chaves Criptográficas {#generating-cryptographic-keys}
 
 Use `kagami keys` para gerar material de chave de cliente, par de rede e validador para Iroha 3.
@@ -18,7 +17,7 @@ Da cópia de trabalho do código-fonte Iroha:
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-O diretório pai deve já existir. O destino deve ser novo ou já pertencente ao usuário atual, modo `0700`, livre de links simbólicos e vazio. `kagami` escreve `public.key` e `private.key` com modo `0600` e não imprime material de chave. Com `--pop`, ele também escreve `pop.hex`.
+O diretório pai já deve existir. O destino não deve existir: Kagami recusa até mesmo um diretório vazio existente. Ele cria o destino com modo `0700`, aplica verificações de sistema de arquivos que restringem o acesso ao proprietário e rejeita links simbólicos. `kagami` grava `public.key` e `private.key` com modo `0600` e não imprime material de chaves. Com `--pop`, também grava `pop.hex`.
 
 `--out-dir` falha de forma fechada nas plataformas em que o Kagami não consegue aplicar essas regras de sistema de arquivos exclusivas do proprietário. O arquivo de chave privada é uma exportação não criptografada, não um signatário criptográfico de hardware para produção nem um signatário não exportável. Importe-o para o perímetro de custódia aprovado e remova a exportação conforme o procedimento de implantação.
 

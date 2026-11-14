@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
+translation_source_hash: 37e8be9b07a40e5c6b841a47b016320e42079853433fb3e53937e4021dc1304f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Swift と iOS {#swift-and-ios}
 
 上流ワークスペースから出荷された Swift SDK は、`IrohaSwift/`の下にある`IrohaSwift` Swift パッケージです。そのパッケージの技術マニフェストは、`IrohaSwift`、`IrohaSwiftMobileTransports`、`IrohaSwiftTransferUI`の3つのライブラリ製品を定義しており、Swift ツール5.9でiOS 15+およびmacOS 12+をターゲットにしています。
@@ -65,7 +64,7 @@ if #available(iOS 15.0, macOS 12.0, *) {
 
 ## 試す Taira 読み取り専用 {#try-taira-read-only}
 
-まず、プレーンな HTTP プローブを使用して、デバイスまたはシミュレーターがパブリック Taira API エンドポイントに到達できることを確認します:
+まず単純な HTTP リクエストで、端末やシミュレーターから公開 Taira のエンドポイントに到達できることを確認します。
 
 ```swift
 import Foundation
@@ -161,7 +160,7 @@ let keyPair = try ConnectCrypto.generateKeyPair()
 - Ed25519、secp256k1、ML-DSA、BLS、GOST、および SM2 の署名面で、必要に応じてネイティブブリッジサポート付き
 - マーケットプレイスおよび匿名エスクロー用のネイティブエスクロー指示ペイロードビルダー
 - WebSocket、フレーム、暗号、セッション、キュー、リプレイ、および診断ヘルパーを接続する
-- 影武者の準備、入力したチャージと償還、操作状況、メモ、ネットワークピアバンドル、プロトコル結果記録、および QR ストリームモデル
+- KAGEMUSHA V1 のワイヤー形式を扱うヘルパーと、ネイティブウォレットの Advance プロバイダー、登録、復旧、受け入れ済み交換呼び出しに対応する iPhone プラットフォームアダプター
 - SoraFS、データ利用可能性、および証明添付ヘルパー
 
 ## API 例 {#api-examples}

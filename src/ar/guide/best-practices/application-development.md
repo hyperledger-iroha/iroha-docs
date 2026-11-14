@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /guide/best-practices/application-development.md
-translation_source_hash: f95261b0416abfcd87881135ceb9b604a1cdde2dd1afc79fecf9c113a256a8c7
+translation_source_hash: 045e2819368106c5da6ee47610c59a3500db312f4901108c0d9e36a027a50a95
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-title-amendment
 ---
-
 # تطوير التطبيقات {#application-development}
 
 يجب على تطبيقات Iroha جعل سلوك المعاملات صريحًا، والحفاظ على حالة التوقيع محصورًا، واستخدام الاستفسارات والأحداث بطرق يسهل مراقبتها في الإنتاج.
@@ -34,7 +33,7 @@ translation_engine: bing-translator-llm
 - استخدم الاستعلامات للحالة الحالية وتدفقات الأحداث لإشعارات التغيير. تجنب استبدال معالجة الأحداث بالاستعلامات العامة المتكررة.
 - قسّم الاستعلامات القابلة للتكرار الواسعة مثل قوائم الحسابات والأصول والكتل إلى صفحات.
 - يفضل استخدام الفلاتر الضيقة للاشتراكات والمحفزات. الفلاتر العريضة مفيدة للتشخيص لكنها قد تضيف تنفيذًا غير ضروري ومعالجة على جانب العميل.
-- احتفظ بفحوصات التدخين للقراءة فقط منفصلة عن اختبارات المعاملات الموقعة حتى يصبح من الأسهل تشخيص توفر نقطة النهاية API.
+- افصل فحوصات التشغيل الأولية للقراءة فقط عن اختبارات المعاملات الموقعة، لتسهيل تشخيص مدى توفر نقطة النهاية.
 
 انظر [استفسارات](/ar/blockchain/queries.md)، [الأحداث](/ar/blockchain/events.md)، و[الفلاتر](/ar/blockchain/filters.md).
 
@@ -45,7 +44,7 @@ translation_engine: bing-translator-llm
 - لا تقم بلصق المفاتيح الخاصة أو مواد استعادة الحساب أو رموز API أو رؤوس المصادقة المعاد توجيهها في المطالبات.
 - يشترط وجود خطة للمعاملة قبل أن يقوم أي وكيل بإرسال معاملة على شبكة الاختبار الحية. يجب أن تتضمن الخطة اسم الشبكة، والجهة المخولة، والتعليمات، وأصل الرسوم، وقراءات ما قبل التنفيذ، والنتيجة المتوقعة، وسلوك إعادة المحاولة.
 
-بالنسبة لتدفق العمل Taira MCP، انظر إلى [البناء على SORA 3: Taira و Minamoto](/ar/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents).
+للاطلاع على سير عمل Taira MCP، راجع [التطوير على SORA Nexus: Taira وMinamoto](/ar/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents).
 
 ## SDK النظافة {#sdk-hygiene}
 

@@ -1,16 +1,15 @@
 ---
 translation_locale: mn
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 7ebe42f3b220f16a023f1b780c08764a09e520ae7594b8eab9f47765d6020076
+translation_source_hash: 3d2285e5a27819897b6dcc6d165c468baead29d2922420728fcfbe2433d36fdd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
+# SORA Nexus дээр хөгжүүлэх: Taira ба Minamoto {#build-on-sora-3-taira-and-minamoto}
 
-# SORA 3 дээр барина: Taira ба Minamoto {#build-on-sora-3-taira-and-minamoto}
+SORA Nexus нь Iroha 3 дээр суурилсан нийтэд нээлттэй байршуулалтын орчнуудтай. Эхлээд Taira дээр хөгжүүлж, туршаад, тусдаа үндсэн сүлжээний түлхүүр, шимтгэлд хэрэглэх бодит XOR болон үйлдвэрлэлийн зөвшөөрөлтэй болсон үед л ижил үйлчлүүлэгчийн бүтцийг Minamoto руу шилжүүлнэ.
 
-SORA 3 нь Iroha 3 ба SORA Nexus дээр суурилсан апп-д зориулсан олон нийтийн байршуулалтын зам юм. Эхлээд Taira-д барьж, дадлага хий, дараа нь зөвхөн тусдаа mainnet түлхүүр, төлбөрт зориулсан жинхэнэ XOR, болон үйлдвэрлэлийн зөвшөөрөлтэй үедээ ижил хэрэглэгчийн хэлбэрийг Minamoto-д шилжүүл.
-
-Энэ хичээл нь олон нийтийн SORA 3 сүлжээнд Iroha клиент хэрхэн тохируулахыг харуулдаг:
+Энэ заавар нийтэд нээлттэй SORA Nexus сүлжээнд Iroha үйлчлүүлэгчийг тохируулахыг харуулна:
 
 - Taira тестнет дээр `https://taira.sora.org`
 - Minamoto үндсэн сүлжээ `https://minamoto.sora.org` дээр
@@ -25,14 +24,14 @@ SORA 3 нь Iroha 3 ба SORA Nexus дээр суурилсан апп-д зор
 |Алхам| Taira Туршилтын сүлжээ| Minamoto Мэйннет |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
 |Сүлжээний төлөвийг уншиж эхлэх|Түлхүүргүй `/status` асуулга|Түлхүүргүй `/status` асуулга|
-|Өгөгдлийн санг сонгоно уу|Таны аппликейшн удирддаг гүйцэтгэлийн зам шаарддаггүй бол нийтийн `universal` ашигла.|Гол сүлжээний зөвшөөрөл авсны дараа л ижил дата орон зайг ашиглана уу|
+| Өгөгдлийн орон зай сонгох | Хэрэглээнд засаглалаар удирдах эгнээ хэрэггүй бол нийтэд нээлттэй `universal` ашиглана | Үндсэн сүлжээний зөвшөөрлийн дараа л ижил өгөгдлийн орон зайг ашиглана |
 |Төлбөрийн хөрөнгө авах|Олон нийтийн Taira тестнет санхүүжүүлэх үйлчилгээг ашиглана уу|Санхүүжилт авсан Minamoto данс буюу батлагдсан сангийн урсгалаас XOR хүлээн авах|
 |Шалгалт бичдэг|Тестнетийн санхүүжсэн тестийг ашигла XOR|Туршилтын хэрэгслийг битгий ашигла; бичлэгүүд нь бодит XOR зарцуулдаг|
 |Өргөж дэмжих|Дахин оролдох логик, хяналт, криптографын гарын үсэг зурлагчийг удирдахийг хадгалах|Тусгай түлхүүр, санхүүжилт, гаргах хяналтуудыг ашиглана уу|
 
 Практик урсгал нь:
 
-1. Клиентийг Taira-тэй нийцүүлэн бүтээж, нийтийн `universal` мэдээллийн санг ашиглана уу.
+1. Үйлчлүүлэгчийг Taira-д зориулан хөгжүүлж, нийтэд нээлттэй `universal` өгөгдлийн орон зайг ашиглана.
 2. Криптографийн гарын үсэг оруулж, түүнийг Taira тестнет санхүүжүүлэх үйлчилгээтэйгээр санхүүжүүл.
 3. Аппликейшнийхээ логикыг Taira-той туршиж үзээрэй, алдаанууд уйтгартай бөгөөд ажиглагдахуйц болох хүртэл.
 4. Minamoto-д зориулсан тусдаа гарын үсэг зурагч үүсгэж, бодит XOR-аар санхүүжүүлээд, зөвхөн туршилтаар баталсан ижил үйлдлүүдийг mainnet-д шилжүүлнэ.
@@ -53,22 +52,22 @@ SORA 3 нь Iroha 3 ба SORA Nexus дээр суурилсан апп-д зор
 
 ## 1. Та юу тохируулж байгаагаа ойлгох {#_1-understand-what-you-are-setting-up}
 
-SORA Nexus-д, дата орон зайн хэсэг нь сүлжээний гүйцэтгэх зурвас ба маршрутын каталогийн хэсэг юм. Клиент шинэ олон нийтийн дата орон зайг зөвхөн `client.toml`-г сольсноор үүсгэдэггүй. Клиентийн тохиргоо хоёр зүйлийг хийдэг:
+SORA Nexus-д өгөгдлийн орон зайн каталог өгөгдлийн орон зайг тодорхойлно. Эгнээний каталог эгнээнүүдийг тусад нь тодорхойлно: эгнээ бүр нэг өгөгдлийн орон зайд зааж, нэг өгөгдлийн орон зай хэд хэдэн эгнээтэй байж болно. Үйлчлүүлэгч зөвхөн `client.toml` өөрчлөөд нийтэд нээлттэй шинэ өгөгдлийн орон зай үүсгэхгүй. Үйлчлүүлэгчийн тохиргоо хоёр зүйл хийнэ:
 
-1. клиентийг зөв Torii API тэгшлэлд чиглүүлдэг
-2. өөрийн ганц протокол стандартад нийцсэн дансны хувьд домайн ба өгөгдлийн зайны чиглүүлэх контекстийг сонгодог
+1. үйлчлүүлэгчийг зөв Torii төгсгөлийн цэгт чиглүүлнэ
+2. каноник дансныхаа сүлжээний нөхцөл болон гарын үсгийн түлхүүрийг сонгоно
 
-`AccountId` нь үргэлж ганц протокол-стандарт ба домэйнгүй байдаг. `client.toml`-т байгаа `[account].domain` утга нь чиглэл болон_ALIAS_ контекстийг хангадаг; энэ нь дансны танилцуулгын хэсэг болдоггүй. Төвөггүй програмуудын ихэнхэд нийтийн `universal` өгөгдлийн сангаас эхлэх хэрэгтэй. Домэйн контекст нь `domain.dataspace` хэлбэрийг ашигладаг, жишээ нь:
+`AccountId` үргэлж каноник, домэйнгүй бөгөөд `client.toml` домэйны тохиргоогүй: `[account].profile` зөвхөн сүлжээний I105 угтварыг сонгоно. Домэйны нөхцөл өөр нэр болон домэйны эзэмшдэг объектод хамаарна. Ихэнх хэрэглээнд нийтэд нээлттэй `universal` өгөгдлийн орон зайгаас эхэлнэ. Домэйны нөхцөл `domain.dataspace` хэлбэртэй, жишээлбэл:
 
 ```text
 wonderland.universal
 ```
 
-Хэрэв танд шинэ байгууллагын өгөгдлийн сан шаардлагатай бол энгийн хэрэглэгчийн дансаас бүртгэхийн оронд каталог ба маршрут төлөвлөлтийг бэлдээрэй. Доор [Шинэ өгөгдлийн санг хангах](#_8-provision-a-new-dataspace) үзнэ үү.
+Байгууллагын шинэ өгөгдлийн орон зай хэрэгтэй бол ердийн үйлчлүүлэгчийн данснаас бүртгэх гэж оролдохын оронд каталог ба маршрутчиллын санал бэлтгэнэ. Доорх [Шинэ өгөгдлийн орон зай байгуулах](#_8-provision-a-new-data-space) хэсгийг үзнэ үү.
 
-## 2. Олон нийтийн Torii API төгсгөлийн цэгийг шалгах {#_2-check-the-public-torii-endpoint}
+## 2. Нийтэд нээлттэй Torii төгсгөлийн цэгийг шалгана {#_2-check-the-public-torii-endpoint}
 
-Криптографийн гарын үсэг үүсгэгчийг тохируулахын өмнө зорьсон API төгсгөл амьд байгаа эсэхийг шалгана уу.
+Гарын үсэг зурах тохиргоог хийхээс өмнө зорилтот төгсгөлийн цэг ажиллаж байгааг шалгана.
 
 Taira-ийн хувьд:
 
@@ -86,7 +85,7 @@ curl -fsS https://minamoto.sora.org/status \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
-Толгойноос ил гаргасан өгөгдлийн зай болон гүйцэтгэх замыг харах:
+Зангилааны гаргаж буй өгөгдлийн орон зай болон эгнээний харагдацыг шалгана:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -102,17 +101,21 @@ Taira мөн агентын програм хангамжийн гүйцэтгэ
 
 |Тохиргоо|Үнэлэмж|
 | --- | --- |
-| MCP API төгсгөл цэг | `https://taira.sora.org/v1/mcp` |
+| MCP төгсгөлийн цэг | `https://taira.sora.org/v1/mcp` |
 |Сүлжээний үндэс| `https://taira.sora.org` |
 |Зориулалтын хэрэглээ| Taira тестнет уншлагууд болон тестнетээр санхүүжүүлсэн бичлэгийн дадлага|
-|Үйлдвэрлэлийн тэнцүү| Энэ орох хэсгийг чиглүүлэхгүй байх Minamoto гол сүлжээ байхгүй бол MCP API төгсгөл болон гаргах хяналтыг ил тод зөвшөөрсөн |
+| Үйлдвэрлэлийн орчны дүйцэх хувилбар | Үндсэн сүлжээний MCP төгсгөлийн цэг болон хувилбар гаргах хяналтыг илэрхий зөвшөөрөөгүй бол энэ бичлэгийг Minamoto руу бүү чиглүүл |
 
-Гэрчилгээний материал нэмэхээсээ өмнө гүүрний метадатыг шалгаарай:
+Гүүр зөвхөн төлөв хадгалахгүй JSON-RPC `POST` хүсэлтийг хүлээн авна. Гарын үсгийн материал нэмэхээс өмнө илрүүлэлтийн метадатаг нь шалгана:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
   -H 'Accept: application/json' \
-  | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
+  -H 'Content-Type: application/json' \
+  -H 'MCP-Protocol-Version: 2026-07-28' \
+  -H 'Mcp-Method: server/discover' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"server/discover","params":{"_meta":{"io.modelcontextprotocol/protocolVersion":"2026-07-28","io.modelcontextprotocol/clientCapabilities":{}}}}' \
+  | jq '{versions: .result.supportedVersions, server: .result._meta["io.modelcontextprotocol/serverInfo"].name, toolset: .result.capabilities.extensions["org.hyperledger.iroha/tools"].toolsetVersion}'
 ```
 
 URL-ыг агентын гүйцэтгэх орчинд хэрэглэгчийн дотоод MCP серверээр тохируулна. Агентын MCP тохиргоо, API токен, дамжуулсан баталгаажуулалтын header, `authority` эсвэл `private_key` утгыг энэ баримтын эсвэл аппликейшний репозиторт хувилбарын хяналтаар бүү хадгал.
@@ -133,7 +136,7 @@ Agent-ийн зааварчилгааны дүрэмүүд Taira-д сайн а�
 
 1. Төлөөлөгчөөс код бичихээсээ өмнө холбогдох баримт бичиг, SDK код, CLI тушаал, эсвэл MCP хэрэгслийн схемийг шалгахыг гуй.
 2. Агент хамгийн жижиг клиент замыг эхэнд нь бичнэ үү: төлөв байдлыг шалгах, дансны хайлт, нэрийн шийдэл, эсвэл үлдэгдлийн хайлт.
-3. Гүйлгээ үүсгэх кодуудыг зөвхөн зөвхөн унших API хүсэлтүүд Taira-ийг ажиллуулсны дараа нэмнэ үү.
+3. Зөвхөн унших дуудлагууд Taira дээр ажилласны дараа л гүйлгээ үүсгэх код нэмнэ.
 4. Амьд сүлжээний туршилтуудыг сонголттой байлга, жишээлбэл `TAIRA_LIVE=1`-ын ард, ингэснээр энгийн нэгж тестийн гүйцэтгэл туршилтын сүлжээний санхүүг зарцуулах эсвэл сүлжээний боломжтой байдлаас хамаарахгүй.
 5. Агентээс ямар ч гүйлгээ илгээхийн өмнө сүлжээний үндэс, сүлжээний гинжин холбоо, эрх олголтын гол данс, зааврын товлосон агууламж, төлбөрийн хөрөнгө ба хүлээгдэж буй төлөвийн өөрчлөлтийг тайлагнахыг шаард.
 6. Нууцын удирдлага, дахин оролдлогын зан байдал, идемпотент байдлын болон татгалзах ажиллагааг хянаж, CI эсвэл mainnet урсгал руу шилжүүлэхээс өмнө үүсгэсэн кодыг шалгаарай.
@@ -171,7 +174,7 @@ MCP гүүр нь гарын үсэгтэй Iroha гүйлгээ илгээж ч
 - терминалын байдал гэх мэт `Committed`, `Applied`, `Rejected`, эсвэл `Expired`
 - боломжтой үед блок эсвэл судалгааны дэлгэрэнгүй
 - баталгаажуулалтын уншсан үр дүн
-- татгалзсан мессеж ба амжилтгүйдлийн шалтгаан нь зөвшөөрөл, төлбөр, баталгаажуулалт, хуучирсан төлөв эсвэл API төгсгөлд ашиглах боломжтой эсэхээс хамаарч байгаа эсэх
+- няцаасан мессеж болон алдаа нь эрх, шимтгэл, шалгалт, хуучирсан төлөв эсвэл төгсгөлийн цэгийн хүртээмжтэй холбоотой мэт эсэх
 
 Жишээ болгох хамгаалагдсан процесс:
 
@@ -211,7 +214,7 @@ for network in taira minamoto; do
 done
 ```
 
-Taira-аар ил гаргасан олон нийтийн өгөгдлийн сангийн гүйцэтгэлийн зурвасуудыг жагсаана уу:
+Taira-гийн гаргасан нийтэд нээлттэй өгөгдлийн орон зайн эгнээнүүдийг жагсаана:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -271,7 +274,7 @@ kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 ```toml
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
 # The exact `network_id` from https://taira.sora.org/v1/accounts/capabilities
-network_id = "<TAIRA_NETWORK_ID>"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 torii_url = "https://taira.sora.org/"
 
 [account]
@@ -285,7 +288,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-Топ түвшний `chain` нь яг Taira гүйлгээний сүлжээний ID юм. `[account].profile = "taira"` тохиргоо нь Taira I105 сүлжээний ялгагчийг бие даан сонгодог. Сүлжээний ID нь дансны профайлийг сонгодоггүй.
+Үндсэн түвшний `chain` нь Taira гүйлгээний яг блокчейний ID, `network_id` нь гарын үсэг бүрийн холбогдох яг сүлжээний таних тэмдэг юм. `network_id` эсвэл `network_id_file`-ийн яг нэгийг тохируулна. `[account].profile = "taira"` тохиргоо Taira I105 сүлжээ ялгах утгыг тусад нь сонгоно. Блокчейний ID дансны профайлыг сонгохгүй.
 
 Зөвхөн унших горимд шалгалт ажиллуулна:
 
@@ -299,28 +302,24 @@ iroha --config ./taira.client.toml --output-format text ops sumeragi status
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-Төлбөртэй бичих үйлдэл ажиллуулахын өмнө Taira дансыг faucet-аар санхүүжүүлнэ. Шууд faucet урсгалыг [Taira-аас testnet XOR авах](#_4-get-testnet-xor-on-taira) хэсэгт тайлбарласан.
+Шимтгэлтэй бичих үйлдэл ажиллуулахын өмнө Taira дансыг туршилтын хөрөнгө олгох үйлчилгээгээр санхүүжүүлнэ. Урьдчилан бэлтгэдэг хөрөнгө авах урсгалыг [Taira дээр туршилтын XOR авах](#_4-get-testnet-xor-on-taira) хэсгээс үзнэ үү.
 
-Тестнет тэтгэлэгийн үйлчилгээний хүсэлтийг хүлээн авч, дансанд санхүүжилт орсны дараа, Taira канар хэвлэж бичих туршилт нь сонголттой юм:
+Данс санхүүжсэний дараа гарын үсэгтэй бүртгэлийн зааврыг бичих ажиллагааны анхан шатны сорил болгон сонгон ашиглаж болно. Илгээсэн гүйлгээ бүр шимтгэл төлөгчөө нэрлэж, CLI гарын үсэг зурахаас өмнө яг шимтгэлийг тооцож харуулна:
 
 ```bash
-iroha --config ./taira.client.toml taira write-canary \
-  --public-root https://taira.sora.org \
-  --write-config ./taira.canary.client.toml \
-  --json
+iroha --config ./taira.client.toml --fee-payer authority \
+  tx ping --msg "taira smoke test"
 ```
 
-Canary нь гарын үсэгтэй ping илгээж, баталгаажуулалтыг хүлээгээд, `--write-config` өгсөн бол гүйцэтгэх орчны гарын үсэг зурагчийн тохиргоог бичнэ. Taira нь нийтийн testnet тул faucet өөрөө ажиллаж байсан ч дараалал дүүрэхэд гарын үсэгтэй ping амжилтгүй болж болно. Хэрэв `taira doctor` дараалал дүүрснийг мэдээлэх эсвэл canary `PRTRY:NEXUS_FEE_ADMISSION_REJECTED` буцаавал клиент тохиргооны алдаа гэж үзэхээсээ өмнө хүлээгээд дахин оролдоно уу.
+Команд баталгаажуулалтыг хүлээнэ. Taira нийтэд нээлттэй туршилтын сүлжээ тул хөрөнгө олгох үйлчилгээ хэвийн байсан ч дараалал дүүрэхэд ping бүтэлгүйтэж болно. `taira doctor` дараалал дүүрснийг мэдээлэх эсвэл ping `PRTRY:NEXUS_FEE_ADMISSION_REJECTED` буцаавал үйлчлүүлэгчийн тохиргооны алдаа гэж үзэхээс өмнө хүлээж, дахин оролдоно.
 
-Анхааралгүй утааны туршилтын хувьд, канарийг хязгаарлагдмал дахин оролдлогын давталтанд оруулна:
+Хүн хянахгүй анхан шатны ажиллагааны сорилд ping-ийг оролдлогын тоо хязгаартай давталтад оруулна:
 
 ```bash
 ok=false
 for attempt in 1 2 3 4 5; do
-  iroha --config ./taira.client.toml taira write-canary \
-    --public-root https://taira.sora.org \
-    --write-config ./taira.canary.client.toml \
-    --json && ok=true && break
+  iroha --config ./taira.client.toml --fee-payer authority \
+    tx ping --msg "taira smoke test" && ok=true && break
 
   sleep 60
 done
@@ -332,7 +331,7 @@ test "$ok" = true
 
 ## SORA Nexus дансны ID үүсгэх {#generate-a-sora-nexus-account-id}
 
-A SORA Nexus дансны ID нь дансны олон нийтийн түлхүүр болон зорилтот сүлжээний урьдчилсан хэсгээс гаралтай нэг протокол-стандартын I105 хаяг юм. Энэ нь `[account].domain` утга биш юм клиент TOML-д. Тухайн нийтэд зориулсан түлхүүр Taira ба Minamoto-д өөр ID-үүдээр кодлогдож байна, мөн үйлдвэрлэлийн хэрэглэгчид Minamoto-д зориулж тусдаа түлхүүрийн хос үүсгэх шаардлагатай.
+SORA Nexus дансны ID нь дансны нийтийн түлхүүр болон зорилтот сүлжээний угтвараас үүссэн каноник I105 хаяг юм. Ижил нийтийн түлхүүр Taira ба Minamoto дээр өөр ID болж кодлогдох бөгөөд үйлдвэрлэлийн хэрэглэгчид Minamoto-д тусдаа түлхүүрийн хос үүсгэх ёстой.
 
 Дансны менежмент хийх Ed25519 түлхүүр хосыг үүсгэх эсвэл ачааллах:
 
@@ -352,7 +351,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Гарах дансны ID-г нэг протокол стандартын дансны ID шаардагдах Nexus, API эсвэл CLI команд бүрт ашиглана уу, жишээлбэл Taira тестнет санхүүгийн үйлчилгээ `account_id`, үлдэгдлийн лавлагаа, хатуу дансны талбарууд, эсвэл овог нэрийн холболтууд. Тохирох нууц түлхүүрийг клиент тохиргоондоо хадгалах ба `[account].profile = "taira"` эсвэл `[account].profile = "minamoto"`-той адил нийтийн сүлжээг сонгоно уу.
+SORA Nexus API эсвэл CLI команд каноник дансны ID асуух бүрд үүссэн дансны ID-г ашиглана, тухайлбал үлдэгдлийн асуулга, хатуу дансны талбар болон өөр нэрийн холболтод. Таарах хувийн түлхүүрийг үйлчлүүлэгчийн тохиргоонд хадгалж, `[account].profile = "taira"` эсвэл `[account].profile = "minamoto"`-оор ижил нийтэд нээлттэй сүлжээг сонгоно.
 
 ID үүсгэснээр дансаа санхүүжүүлсэн блокчэйн данс болгож чадахгүй. Taira дээр туршилтын сүлжээний санхүүжилтийн үйлчилгээ туршилтын сүлжээнд бичлэг хийх зориулалтаар дансыг үүсгэж, санхүүжүүлж чадна. Minamoto дээр зөвшөөрөгдсөн үндсэн сүлжээний бүртгэл эсвэл сангийн урсгалыг ашиглана.
 
@@ -373,184 +372,66 @@ ID үүсгэснээр дансаа санхүүжүүлсэн блокчэйн
 
 ## 4. Taira-ээс XOR тестнетийг авах {#_4-get-testnet-xor-on-taira}
 
-Олон нийтийн тестнет санхүүжилтийн үйлчилгээг шууд ашиглана уу. Урсгал нь:
+CLI-ийн урьдчилан бэлтгэдэг хөрөнгө авах урсгалаар туршилтын XOR авна. Хөрөнгө олгох үйлчилгээ `taira.client.toml`-д тохируулсан дансыг санхүүжүүлж, данс байхгүй бол эхлээд бүртгэнэ. Урсгал нь:
 
-1. Криптографийн гарын үсэг гаргаж эсвэл ачаалж, түүний нэг протоколын стандарт Taira дансны ID-г тооцоолно уу.
-2. Одоогийн тестнет санхүүгийн үйлчилгээний тааврыг олж ав.
-3. Хэрвээ `difficulty_bits` нь `0` -ээс их бол тааврыг шийд.
-4. Тестнетийн санхүүжилтийн үйлчилгээний хүсэлтийг илгээнэ үү.
-5. Төлбөртэй бичлэгүүдийг илгээхээсээ өмнө данс буюу хөрөнгийн үлдэгдэл харагдахыг хүлээнэ үү.
+1. Нийтэд нээлттэй хөрөнгө олгох бодлогыг уншина: үйлчилгээний эрх бүхий этгээд, шимтгэлийн хөрөнгө болон дүн.
+2. Хөрөнгө авах хүсэлтийг бэлтгэнэ. CLI ажлын нотолгоог бодож, Torii-гийн бэлтгэн гарын үсэг зурсан яг гүйлгээг шалгаад, илгээхгүйгээр хувийн журналын хавтсанд хадгална.
+3. Хадгалсан гүйлгээг нэг удаа илгээнэ.
+4. Шимтгэлтэй бичих үйлдэл илгээхээс өмнө хөрөнгийн үлдэгдэл харагдахыг хүлээнэ.
 
-Нийтийн түлхүүрийг тестнетийн санхүүжүүлэх үйлчилгээ хүлээж буй Taira I105 дансны ID болгон хөрвүүлнэ:
-
-```bash
-iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
-```
-
-Тоглоомын тааврыг ав:
+Бодлогыг уншина:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
   -H 'Accept: application/json' \
+  | tee ./taira-faucet-policy.json \
   | jq .
 ```
-
-Тестнет санхүүжүүлэх үйлчилгээ нь нийтийн тестнет үйлчилгээ юм. Хэрвээ таавар эсвэл claim API эцсийн цэг `502`, хугацаа дуусах эсвэл бусад gateway-тэй холбоотой алдаа буцааж өгвөл, түлхүүр эсвэл клиент тохиргоогоо өөрчлөхийн өмнө түр хүлээж, дахин оролдоно уу.
 
 Хариу нь дараах хэлбэртэй байна:
 
 ```json
 {
-  "algorithm": "scrypt-leading-zero-bits-v1",
-  "difficulty_bits": 8,
-  "anchor_height": 741,
-  "anchor_block_hash_hex": "05d2...",
-  "challenge_salt_hex": null,
-  "scrypt_log_n": 13,
-  "scrypt_r": 8,
-  "scrypt_p": 1,
-  "max_anchor_age_blocks": 6
+  "schema_version": 1,
+  "network_id": "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774",
+  "network_prefix": 369,
+  "authority": "<TAIRA_FAUCET_AUTHORITY_I105>",
+  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "amount": "25000"
 }
 ```
 
-Хэрэв `difficulty_bits` нь `0` бол, зөвхөн дансны ID-г илгээнэ үү:
+Бодлого нь гарын үсэггүй илрүүлэлтийн өгөгдөл юм. Автоматжуулалт хариу бүрд итгэхийн оронд хүлээгдэж буй эрх бүхий этгээд, хөрөнгийн тодорхойлолт болон дүнг тогтоох ёстой. `prepare` нь дамжуулсан утгаас өөр бэлтгэсэн гүйлгээг няцаана.
+
+Хөрөнгө авах хүсэлтийг бэлтгэж, илгээнэ:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet \
-  -H 'Accept: application/json' \
-  -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
-  | tee ./taira-faucet-response.json \
-  | jq .
+export TAIRA_FEE_ASSET="$(
+  jq -er '.asset_definition_id' ./taira-faucet-policy.json
+)"
+
+iroha --config ./taira.client.toml --fee-payer authority \
+  taira account faucet prepare \
+  --journal ./taira-faucet \
+  --issuer "$(jq -er '.authority' ./taira-faucet-policy.json)" \
+  --asset-definition "$TAIRA_FEE_ASSET" \
+  --amount "$(jq -er '.amount' ./taira-faucet-policy.json)"
+
+iroha --config ./taira.client.toml \
+  taira account faucet submit --journal ./taira-faucet
 ```
 
-Хэрэв `difficulty_bits` нь `0`-ээс их байвал, тааврыг шийдэж, бэхэлгээний өндөр болон криптографийн nonce утгыг оруулна уу:
-
-```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet \
-  -H 'Accept: application/json' \
-  -H 'content-type: application/json' \
-  -d '{
-    "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-    "pow_anchor_height": 741,
-    "pow_nonce_hex": "<NONCE_HEX>"
-  }' \
-  | tee ./taira-faucet-response.json \
-  | jq .
-```
-
-Тааварын алгоритм нь:
-
-1. Сорилыг SHA-256 дээр барь.
-   - `iroha:accounts:faucet:pow:v2`-ийн байтууд
-   - UTF-8 дансны ID
-   - `anchor_height` их-байршилт `u64`
-   - `anchor_block_hash_hex` бит болгон задлав
-   - `challenge_salt_hex` байт болгон задлагдсан үед, байвал
-2. Том эцсийн 8-н баайттай утга шиг кодлогдсон `u64` криптографийн nonce утгуудыг туршаад үз.
-3. Нэг бүрийн криптографийн nonce утгын хувьд scrypt-ийг ашиглана:
-   - нууц үг: 8-байт криптографийн nonce утга
-   - давс: 32-байт сорилт
-   - `N = 2^scrypt_log_n`
-   - `r = scrypt_r`
-   - `p = scrypt_p`
-   - гаралтын урт: 32 байт
-4. Ялагч криптографийн nonce утга нь хамгийн багадаа `difficulty_bits` урд нь тэг биттэй анхны криптографийн дайджест утга юм.
-
-Faucet-ийн хариу нь санхүүжүүлсэн хөрөнгө болон дараалалд оруулсан гүйлгээний хэшийг агуулна:
-
-```json
-{
-  "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
-  "asset_id": "...",
-  "amount": "<FUNDED_AMOUNT>",
-  "tx_hash_hex": "...",
-  "status": "QUEUED"
-}
-```
-
-Хариу нь одоогоор HTTP `202 Accepted` -оор буруу өгөгдсөн байна. Үүний `asset_definition_id` нь олон нийтийн туршилтын сүлжээний санхүүжилтийн үйлчилгээгээр санхүүжүүлсэн одоогийн Taira төлбөрийн хөрөнгө юм; Тооцоог жишээ ID хуулбарлахын оронд хариулаас гаргаж ав. Туршилтын сүлжээний санхүүгийн үйлчилгээ нь `tx_hash_hex` ба `status: "QUEUED"`-г буцаахад хүсэлтийг хүлээн авсан болно.
+`prepare` журналын хавтсыг хувийн хандалттай үүсгэж, өмнө байгаа хавтсыг орлуулахгүй тул хүсэлт бүрд шинэ хавтас ашиглана. Хөрөнгө олгох үйлчилгээ нь нийтэд нээлттэй туршилтын үйлчилгээ юм. `submit` нь `Pending` мэдээлэх, хугацаа хэтрэх эсвэл `502` авах үед өөр хүсэлт бэлтгэхийн оронд ижил тохиргоо, журналтай `taira account faucet resume` ажиллуулна. Ажлын нотолгооны тулгуур хуучирвал `prepare` бүтэлгүйтэнэ; шинэ журналын хавтсанд дахин бэлтгэнэ.
 
 Дараа нь өөрийн төлбөртэй гүйлгээг илгээхээс өмнө санхүүжүүлсэн хөрөнгийг санал хураа.
 
 ```bash
-TAIRA_FEE_ASSET_DEFINITION=$(
-  jq -er '.asset_definition_id' ./taira-faucet-response.json
-)
-
 iroha --config ./taira.client.toml ledger asset get \
-  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
+  --definition "$TAIRA_FEE_ASSET" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
-Хэрэв тестнет санхүүжүүлэх үйлчилгээний хүсэлтийг хүлээн авсан боловч данс эсвэл хөрөнгө харагдаж эхлээгүй бол гүйлгээ нь одоо ч олон нийтийн тестнетийн ээлжинд боловсруулагдаж байна. Бичлэгүүдийг илгээхээс өмнө уншихыг хүлээж, дахин оролд.
-
-Шуурхай ажиллах бэлэн шууд API шалгалт хийхийн тулд үүнийг `taira_faucet_claim.py` гэж хадгалаад Taira I105 дансны ID-г дамжуулна уу:
-
-```python
-#!/usr/bin/env python3
-import hashlib
-import json
-import sys
-import urllib.request
-
-
-def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
-    full, rem = divmod(bits, 8)
-    if digest[:full] != b"\0" * full:
-        return False
-    return rem == 0 or digest[full] >> (8 - rem) == 0
-
-
-root = "https://taira.sora.org"
-account_id = sys.argv[1]
-
-puzzle_request = urllib.request.Request(
-    f"{root}/v1/accounts/faucet/puzzle",
-    headers={"Accept": "application/json"},
-)
-
-with urllib.request.urlopen(puzzle_request) as res:
-    puzzle = json.load(res)
-
-claim = {"account_id": account_id}
-difficulty = int(puzzle["difficulty_bits"])
-
-if difficulty > 0:
-    challenge = hashlib.sha256()
-    challenge.update(b"iroha:accounts:faucet:pow:v2")
-    challenge.update(account_id.encode())
-    challenge.update(int(puzzle["anchor_height"]).to_bytes(8, "big"))
-    challenge.update(bytes.fromhex(puzzle["anchor_block_hash_hex"]))
-    if puzzle.get("challenge_salt_hex"):
-        challenge.update(bytes.fromhex(puzzle["challenge_salt_hex"]))
-
-    n = 1 << int(puzzle["scrypt_log_n"])
-    r = int(puzzle["scrypt_r"])
-    p = int(puzzle["scrypt_p"])
-    salt = challenge.digest()
-
-    for nonce in range(1_000_000):
-        nonce_bytes = nonce.to_bytes(8, "big")
-        digest = hashlib.scrypt(nonce_bytes, salt=salt, n=n, r=r, p=p, dklen=32)
-        if has_leading_zero_bits(digest, difficulty):
-            claim["pow_anchor_height"] = puzzle["anchor_height"]
-            claim["pow_nonce_hex"] = nonce_bytes.hex()
-            break
-    else:
-        raise SystemExit("faucet nonce not found")
-
-request = urllib.request.Request(
-    f"{root}/v1/accounts/faucet",
-    data=json.dumps(claim).encode(),
-    headers={"Accept": "application/json", "content-type": "application/json"},
-    method="POST",
-)
-
-with urllib.request.urlopen(request) as res:
-    print(json.dumps(json.load(res), indent=2))
-```
+Хүсэлт хэрэгжсэн боловч хөрөнгө хараахан харагдахгүй бол бичих үйлдэл илгээхээс өмнө хүлээж, унших үйлдлийг дахин оролдоно.
 
 Faucet нь зөвхөн Taira testnet-ийн хөрөнгөд зориулагдсан. Testnet XOR, faucet данс эсвэл Taira canary гарын үсэг зурагчийг Minamoto урсгалд бүү ашигла.
 
@@ -562,10 +443,11 @@ Minamoto зориулж тусад нь түлхүүр хос хэрэглэ. Ta
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000753"
+# The exact `network_id` from https://minamoto.sora.org/v1/accounts/capabilities
+network_id = "<MINAMOTO_NETWORK_ID>"
 torii_url = "https://minamoto.sora.org/"
 
 [account]
-domain = "wonderland.universal"
 profile = "minamoto"
 public_key = "<ED25519_PUBLIC_KEY_HEX>"
 private_key = "<ED25519_PRIVATE_KEY_HEX>"
@@ -576,7 +458,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-Дээд түвшний `chain` нь одоогийн Nexus үндсэн сүлжээний оюуны ID юм. `[account].profile = "minamoto"` нь Minamoto I105 сүлжээний ялгааг сонгодог; API төгсгөлийн хостын нэр болон сүлжээний ID нь үүнийг шууд сонгохгүй.
+Үндсэн түвшний `chain` нь одоогийн SORA Nexus үндсэн сүлжээний блокчейний ID, `network_id` нь Minamoto-гийн яг сүлжээний таних тэмдэг; эхний гарын үсэгтэй үйлдлийн өмнө боломжийн маршрутаас уншина. `[account].profile = "minamoto"` нь Minamoto I105 сүлжээ ялгах утгыг сонгоно; төгсгөлийн цэгийн хост нэр болон блокчейний ID үүнийг далд байдлаар сонгохгүй.
 
 Minamoto нийтийн түлхүүрийг гол сүлжээний урьдчилсан тэмдэгтэйгээр нэг протокол-стандартын I105 дансны ID болгон хөрвүүлэх:
 
@@ -590,7 +472,7 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
 ```
 
-Тестнет санхүүжилтийн Taira үйлчилгээг эсвэл Minamoto-тэй эсрэг write-canary туслахыг ажиллуулахаас зайлсхий.
+Taira хөрөнгө олгох эсвэл анхан шатны ажиллагааны сорилын командуудыг Minamoto дээр бүү ажиллуул.
 
 ## 6. XOR дээр Minamoto дансыг санхүүжүүлэх {#_6-fund-a-minamoto-account-with-xor}
 
@@ -600,9 +482,9 @@ Minamoto-ийн шимтгэл нь үйлдвэрлэл XOR-ээр төлөгд
 
 Taira XOR-оор Minamoto-ийн шимтгэл төлөх боломжгүй. Testnet үлдэгдэл болон faucet claim Minamoto руу шилжихгүй.
 
-## 7. Бодсон өгөгдлийн орон дотор ажиллах {#_7-work-inside-an-existing-dataspace}
+## 7. Одоо байгаа өгөгдлийн орон зайд ажиллах {#_7-work-inside-an-existing-data-space}
 
-Өгөгдлийн зайд орших блокчэйн бүртгэлийн объектоор бүрэн тодорхойлогдсон домайн нэрийг ашиглана. Жишээлбэл, олон нийтийн өгөгдөлд орших төслийн домайн нь дараах байдлаар ашиглах ёстой:
+Өгөгдлийн орон зай доторх бүртгэлийн объектод бүрэн тодорхойлсон домэйн нэр ашиглана. Жишээлбэл, нийтэд нээлттэй өгөгдлийн орон зайн төслийн домэйн:
 
 ```text
 apps.universal
@@ -616,8 +498,7 @@ iroha --config ./taira.client.toml \
   --intent-file ./taira-apps-domain.intent.json \
   --plan-file ./taira-apps-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-apps-domain.plan.json
 ```
 
@@ -629,11 +510,11 @@ iroha --config ./minamoto.client.toml \
   --intent-file ./minamoto-apps-domain.intent.json \
   --plan-file ./minamoto-apps-domain.plan.json
 
-iroha --config ./minamoto.client.toml \
+iroha --config ./minamoto.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./minamoto-apps-domain.plan.json
 ```
 
-Дансны овгууд ижил өгөгдлийн сангийн дэд нэрийг ашигладаг:
+Дансны өөр нэр ижил өгөгдлийн орон зайн дагавар ашиглана:
 
 ```text
 alice@apps.universal
@@ -642,9 +523,9 @@ alice@universal
 
 Хатуу дансны талбарууд одоо ч ганц протокол стандарттай I105 дансны ID-уудыг ашигладаг. Нэрийн өөр хувилбаруудыг ганц протокол стандарттай дансны ID-д задалдаг хүний уншиж болох холбоосууд гэж үзээрэй.
 
-## 8. Шинэ өгөгдлийн санг бэлтгэх {#_8-provision-a-new-dataspace}
+## 8. Шинэ өгөгдлийн орон зай байгуулах {#_8-provision-a-new-data-space}
 
-Шинэ өгөгдлийн орон зай нь оператор болон удирдлагын өөрчлөлт юм. Олон нийтийн Torii API эцсийн цэг нь замын хөдөлгөөнийг тохируулсан өгөгдлийн орон зай руу чиглүүлж чадна, гэхдээ танигдаагүй өгөгдлийн орон зайгийн овгийг татгалзах болно.
+Шинэ өгөгдлийн орон зай нь оператор болон засаглалын өөрчлөлт юм. Нийтэд нээлттэй Torii төгсгөлийн цэг урсгалыг тохируулсан өгөгдлийн орон зайд чиглүүлж болох ч үл мэдэгдэх өгөгдлийн орон зайн өөр нэрийг няцаана.
 
 Өөрчлөлт хийхээс өмнө одоогийн амьд каталогийг хадгалаарай:
 
@@ -660,15 +541,15 @@ curl -fsS https://taira.sora.org/status \
 iroha --config ./operator.client.toml app nexus lane-report --summary
 ```
 
-Гүйцэтгэх эгнээний ID, өгөгдлийн сангийн ID, баталгаажуулагчийн багц, алдааг тэсвэрлэх чадвар, техникийн тайлбар, чиглүүлэх дүрэм, үйл ажиллагааны эзэн бүгдийг хамтдаа хянаагүй бол шинэ нэрийг сурталчлаарай. Шаардагдах эрхтэй энгийн хэрэглэгчийн данс нь алиас төлөвлөгчийн тусламжтайгаар домайн болон түүний SNS түрээсийг одоо байгаа өгөгдлийн орон зайд авах боломжтой; шинэ нийтийн өгөгдлийн орон зайг аюулгүйгээр нэмэх боломжгүй.
+Эгнээний ID, өгөгдлийн орон зайн ID, баталгаажуулагчдын бүрэлдэхүүн, гэмтэл даах чадвар, манифест, маршрутчиллын дүрэм болон ашиглалтын хариуцагчийг хамт хянахаас нааш шинэ өөр нэрийг ашиглалтад бүү оруул. Шаардлагатай эрхтэй ердийн хэрэглэгчийн данс өөр нэрийн төлөвлөгчөөр одоо байгаа өгөгдлийн орон зайд домэйн, түүний SNS түрээсийг авч болно; харин нийтэд нээлттэй шинэ өгөгдлийн орон зайг аюулгүй нэмж чадахгүй.
 
-Хувийн болон байгууллагын өгөгдлийн сангийн хувьд дараахтай хамт каталогийн өөрчлөлтийг бэлдэнэ үү:
+Хувийн эсвэл байгууллагын өгөгдлийн орон зайд дараахыг агуулсан каталогийн өөрчлөлт бэлтгэнэ:
 
-- онцгой өгөгдлийн сангийн овог ба тоон `id`
+- давтагдахгүй өгөгдлийн орон зайн өөр нэр болон тоон `id`
 - таарах гүйцэтгэх урсгалын орох эсвэл одоо байгаа гүйцэтгэх урсгалын үүрэг
-- өгөгдлийн сан `fault_tolerance`
+- өгөгдлийн орон зайн `fault_tolerance`
 - тэнд хүрэх ёстой зааварчилгаа эсвэл дансны хүрээний чиглэл тогтоох дүрмүүд
-- датаспейс UAID чадамж олгодог бол Орон зайн лавлахын манифест эсвэл түүнтэй дүйцэх нэвтрүүлэлтийн нотолгоо
+- өгөгдлийн орон зай UAID боломж гаргавал Орон зайн лавлахын манифест эсвэл дүйцэх нэвтрүүлэлтийн баримт
 - баталгаажуулагчийн засаглалын баталгаа, нийцэл, санхүүгийн гүйлгээний шийдвэрлэлт, хяналтын бодлого
 
 Хянан үзэх боломжтой тохиргооны хэсэг ингэж харагддаг:
@@ -692,8 +573,8 @@ fault_tolerance = 1
 lane = 5
 dataspace = "payments"
 [nexus.routing_policy.rules.matcher]
-account_prefix = "payments."
-description = "Route payments domains to the payments dataspace"
+instruction = "transfer::asset"
+description = "Route asset transfers to the payments dataspace"
 ```
 
 Операторын хүлээн зөвшөөрөлд эдгээр хаалтууд орсон байх ёстой:
@@ -701,7 +582,7 @@ description = "Route payments domains to the payments dataspace"
 - `iroha3d --sora --config <config.toml> --trace-config` шийдэгдсэн зангилааны тохиргоог дамжуулдаг
 - Үүсгэсэн эсвэл хянагдсан техникийн мэдүүлгийг криптографийн хэш болон гарын үсэгтэйгээр архивладаг
 - утаж үзэх тестүүд Taira-д ямар нэг Minamoto дэвшүүлэлтээс өмнө амжилттай болдог
-- солигдсоны дараах `/status` каталогт төлөвлөсөн гүйцэтгэх зурвас ба өгөгдлийн сан харагдана
+- өөрчлөлтийн дараах `/status` каталог зорьсон эгнээ болон өгөгдлийн орон зайг харуулна
 - `iroha app nexus lane-report --summary` шаардлагатай техник үзүүлэлтүүд дутуу байгааг мэдээлэхгүй байна
 
 ```bash
@@ -710,12 +591,12 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 
-Ижил датасын зайг зөвхөн Taira байршуулалт, сорилтын тестүүд, хяналт, засаглалын нотолгоо дууссаны дараа Minamoto руу шилжүүлэх.
+Taira байршуулалт, анхан шатны ажиллагааны сорил, хяналт болон засаглалын баримт бүрэн болсны дараа л ижил өгөгдлийн орон зайг Minamoto руу шилжүүлнэ.
 
 ## Холбогдсон хуудаснууд {#related-pages}
 
 - [Суурилуулах Iroha 3](/mn/get-started/install-iroha.md)
 - [Iroha 3 -г CLI ашиглан ажиллуулна](/mn/get-started/operate-iroha-via-cli.md)
-- [Хувийн өгөгдлийн сангийн ивээн тэтгэгчийн төлбөр](/mn/get-started/private-dataspace-fee-sponsor.md)
-- [Torii API төгсгөлийн цэгүүд](/mn/reference/torii-endpoints.md)
+- [Хувийн өгөгдлийн орон зайн шимтгэлийг ивээн тэтгэх](/mn/get-started/private-dataspace-fee-sponsor.md)
+- [Torii төгсгөлийн цэгүүд](/mn/reference/torii-endpoints.md)
 - [блокчэйн үүсгэж эхлэх лавлагаа](/mn/reference/genesis.md)

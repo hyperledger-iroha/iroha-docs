@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta+reviewed-source-amendment
 ---
-
 # Résolution des problèmes de déploiement {#troubleshooting-deployment-issues}
 
 Cette section offre des conseils de dépannage pour les déploiements Iroha 3. Si le problème que vous rencontrez n'est pas décrit ici, contactez-nous via [Télégramme](https://t.me/hyperledgeriroha).
@@ -15,7 +14,7 @@ Cette section offre des conseils de dépannage pour les déploiements Iroha 3. S
 Pour les déploiements locaux et de test, privilégiez les artefacts générés par Kagami plutôt que les fichiers de pairs réseau écrits à la main :
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Le répertoire généré contient des configurations de pairs réseau, du matériel de genèse de blockchain, des scripts de démarrage et un README pour la ligne de construction Iroha 3.
@@ -42,7 +41,7 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 Générez Compose à partir de la sortie localnet actuelle Kagami afin que les arguments de la ligne de commande et les fichiers de configuration correspondent au code extrait :
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```
@@ -67,9 +66,9 @@ Pour Kubernetes, considérez chaque validateur comme une infrastructure avec ét
 
 Si un pod redémarre sans cesse, comparez sa configuration générée avec celle prévue dans [`peer.template.toml`](/fr/reference/peer-config/index.md#template) et vérifiez si le pair relit d’anciennes données Kura.
 
-## Profil de Sora {#sora-profile}
+## Profil SORA Nexus {#sora-profile}
 
-Les déploiements privés ou locaux Iroha 3 qui utilisent Nexus, SoraFS ou des flux multi-voies devraient démarrer le démon standard avec le profil Sora activé :
+Les déploiements privés ou locaux d’Iroha 3 utilisant SORA Nexus, SoraFS ou des opérations sur plusieurs voies doivent démarrer le daemon standard avec le profil SORA Nexus activé :
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

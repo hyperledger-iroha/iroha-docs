@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
+translation_source_hash: 37e8be9b07a40e5c6b841a47b016320e42079853433fb3e53937e4021dc1304f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Swift et iOS {#swift-and-ios}
 
 Le Swift SDK expédié par l’espace de travail en amont est le `IrohaSwift` Swift sous `IrohaSwift/`. Son manifeste technique de package définit trois produits de bibliothèque—`IrohaSwift`, `IrohaSwiftMobileTransports`, et `IrohaSwiftTransferUI`—et cible iOS 15+ et macOS 12+ avec les outils Swift 5.9.
@@ -65,7 +64,7 @@ if #available(iOS 15.0, macOS 12.0, *) {
 
 ## Essayer Taira Lecture seule {#try-taira-read-only}
 
-Commencez avec une sonde HTTP simple pour confirmer que le dispositif ou le simulateur peut atteindre le point de terminaison public Taira API :
+Commencez par une simple requête de contrôle HTTP pour vérifier que l'appareil ou le simulateur peut atteindre le point d'accès public Taira :
 
 ```swift
 import Foundation
@@ -161,7 +160,7 @@ La source Swift inclut actuellement :
 - Ed25519, secp256k1, ML-DSA, BLS, GOST et SM2 surfaces de signature, avec un support natif pour les passerelles lorsque nécessaire
 - constructeurs de charges utiles d'instructions d'entiercement natives pour le marché et l'entiercement anonyme
 - Connectez WebSocket, aide-mémoire pour cadre, crypto, session, file d'attente, lecture, et diagnostics
-- Préparation Kagemusha, rechargement et remboursement tapés, état de l'opération, note, paquet de pairs réseau, enregistrement du résultat du protocole, et modèles de flux QR
+- utilitaires du format de transmission KAGEMUSHA V1 et adaptateur de plateforme iPhone pour le fournisseur Advance du portefeuille natif, l’inscription, la récupération et les appels d’échange autorisés
 - SoraFS, disponibilité des données et assistants de pièce justificative
 
 ## API Exemples {#api-examples}

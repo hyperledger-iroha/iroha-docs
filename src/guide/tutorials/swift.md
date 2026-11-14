@@ -194,8 +194,8 @@ The Swift source currently includes:
   escrow
 - Connect WebSocket, frame, crypto, session, queue, replay, and diagnostics
   helpers
-- Kagemusha readiness, typed top-up and redemption, operation status, note,
-  peer bundle, receipt, and QR stream models
+- KAGEMUSHA V1 wire helpers and the iPhone platform adapter for the native
+  wallet Advance provider, enrollment, recovery, and admitted exchange calls
 - SoraFS, data-availability, and proof-attachment helpers
 
 ## API Examples

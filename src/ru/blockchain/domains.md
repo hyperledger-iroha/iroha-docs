@@ -1,26 +1,25 @@
 ---
 translation_locale: ru
 translation_source: /blockchain/domains.md
-translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
+translation_source_hash: 26e8efe6c728d0f819b12e7d8257777d3d4ea272f42fabf8aec727467146500f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Домены {#domains}
 
-Домены — это именованные пространства, зарегистрированные в `World`. В текущей модели данных Iroha 3 домен определяется его родительским пространством данных, поэтому канонический идентификатор выглядит следующим образом:
+Домены — это именованные пространства имён, зарегистрированные в `World`. В текущей модели данных Iroha 3 имя домена дополняется родительским пространством данных, поэтому канонический идентификатор имеет вид:
 
 ```text
 domain.dataspace
 ```
 
-Например, `payments.universal` называет домен `payments` внутри пространства данных `universal`.
+Например, `payments.universal` обозначает домен `payments` внутри пространства данных `universal`.
 
 ## Структура {#structure}
 
 Зарегистрированный `Domain` содержит:
 
-- `id`: квалифицированный по пространству данных `DomainId`
+- `id`: идентификатор `DomainId`, дополненный пространством данных
 - `logo`: необязательный `SoraFS` URI для логотипа домена
 - `metadata`: произвольные метаданные в формате ключ-значение
 - `owned_by`: аккаунт, который владеет доменом, обычно аккаунт, который его зарегистрировал
@@ -39,13 +38,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./payments-domain.intent.json \
   --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
-Намерение идентифицирует `payments.universal`, его числовое пространство данных, каноническое I105 владелец, срок приобретения по лизингу и текущая политика/плата за оплату - проверка цены. Планировщик API конечная точка является `POST /v1/aliases/setup/plan`; его возвращенный план привязан к цепочке, идентификатору авторизации транзакции, распределённое состояние реестра блокчейна и крайний срок. Удаление домена всё ещё использует [`Unregister`](/ru/blockchain/instructions.md#un-register).
+Намерение задаёт `payments.universal`, числовой идентификатор его пространства данных, канонического владельца в формате I105, приобретаемый срок аренды и защитную проверку текущей политики и расчёта платежа. Конечная точка планировщика — `POST /v1/aliases/setup/plan`. Возвращённый план привязан к цепочке, субъекту полномочий, состоянию и сроку действия. Для удаления домена по-прежнему используется [`Unregister`](/ru/blockchain/instructions.md#un-register).
 
 Создание или удаление домена требует соответствующих прав управления доменом разрешение в рамках активного проверяющего программного обеспечения. Метаданные домена могут быть обновлены с помощью [`SetKeyValue` и `RemoveKeyValue`](/ru/blockchain/instructions.md#setkeyvalue-removekeyvalue) когда у уполномоченного субъекта есть разрешение на изменение этого домена.
 
@@ -58,7 +57,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
   | jq -r '.items[].id'
 ```
 
-Отобразите каталог публичной линии исполнения обратно на псевдонимы пространства данных:
+Сопоставьте публичный каталог линий с псевдонимами пространств данных:
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -67,24 +66,17 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
     | @tsv'
 ```
 
-Используйте первую команду, когда приложению нужно проверить, существует ли домен. Используйте каталог исполнительной линии, когда необходимо подтвердить, является ли дата-пространство публичным, ограниченным или отстающим от основной исполнительной линии.
+Используйте первую команду, когда приложению нужно проверить существование домена. Каталог линий позволяет просмотреть линии, связанные с пространством данных, включая публичную или ограниченную видимость каждой линии и её состояние синхронизации относительно основной линии.
 
-Настройка домена является платной записью. Перед тем как попробовать это на Taira, сохраните помощника службы финансирования тестовой сети из [Получить тестовую сеть XOR на Taira](/ru/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) как `taira_faucet_claim.py`, профинансируйте криптографического подписанта через публичную службу финансирования тестовой сети и прикрепите метаданные сборов:
+Настройка домена — это операция записи с комиссией. Перед её выполнением в Taira пополните учётную запись подписанта по процедуре с предварительной подготовкой запроса к крану из раздела [Получение тестовых XOR в Taira](/ru/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira), затем примените план, явно указав плательщика комиссии. Перед подписанием CLI рассчитывает точную комиссию.
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
   app alias setup plan \
   --intent-file ./taira-domain.intent.json \
   --plan-file ./taira-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 

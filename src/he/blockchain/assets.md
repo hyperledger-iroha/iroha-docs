@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /blockchain/assets.md
-translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
+translation_source_hash: 4d0a3f54a0c70d08d11160b9ec66d6538aa2c49c7771a13e4a070b61a9cb3e4b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # נכסים {#assets}
 
 נכס Iroha הוא ברירה מספרית שנחזקת על ידי חשבון. כל ברירה ספציפית מצביעה ל- `AssetDefinition`, וההגדרה מתארת כיצד ניתן להעלות את השם של נכס זה, לצייר אותו, להציג אותו ולחלוק אותו.
@@ -22,7 +21,7 @@ translation_engine: nllb-200-ct2
 - `mintable`: מדיניות מינויה
 - `logo`: בחופש `SoraFS` URI
 - `metadata`: מטא נתונים של ערך מפתח שרירותי.
-- `balance_scope_policy`: האם הסלונות הם גלובליים או מוגבלים למרחב נתונים.
+- `balance_scope_policy`: האם היתרות גלובליות או מוגבלות למרחב נתונים
 - `owned_by`: החשבון שהרשם או בעל ההגדרה
 - `total_quantity`: כמות המונית הכוללת
 - `confidential_policy`: מדיניות על פעולות נכסים מוגנים
@@ -36,7 +35,7 @@ translation_engine: nllb-200-ct2
 - `id`: `AssetId`, אשר משלב את ההגדרה של הנכסים, חשבון הבעלים ואת טווח הסלון בחירה
 - `value`: יתרה של `Numeric`
 
-חשבון הבעלים הוא קנוני ובלתי דומיין. הגדרת הנכסים עשויה להיות מתוכננת תחת דומיין מוסמך למרחב נתונים, למשל `payments.universal`.
+חשבון המחזיק הוא קנוני ונטול דומיין. ניתן להציג את הגדרת הנכס תחת דומיין שמצוין בו מרחב הנתונים, למשל `payments.universal`.
 
 ## יכולת סיבוב {#mintability}
 
@@ -56,9 +55,9 @@ translation_engine: nllb-200-ct2
 `balance_scope_policy` פיקוח איך משווקים מופעלים:
 
 - `Global`: קופסת סולן אחת לכל חשבון והגדרה של נכס
-- `DataspaceRestricted`: היתרות מחולקות לפי קונקסט של חלל נתונים
+- `DataspaceRestricted`: היתרות מופרדות לפי ההקשר של מרחב הנתונים
 
-סכומים מוגבלים למרחב נתונים הם שימושיים כאשר את אותה ההגדרה של נכסים משמשת במספר מערכות נתונים Nexus, אך סכומים חייבים להישאר מבודדים.
+יתרות המוגבלות למרחב נתונים מועילות כאשר אותה הגדרת נכס משמשת בכמה מרחבי נתונים של SORA Nexus, אך יש לשמור על הפרדה בין היתרות.
 
 ## נסה את זה על Taira {#try-it-on-taira}
 
@@ -89,19 +88,18 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-כל שלוש הדוגמאות הן פעולות קריאה. כדי להנפיק, לשרוף או להעביר נכסים ב-Taira, השתמשו בחשבון שמומן מה-faucet ובתהליך הארנק המאובטח שב-[התחברות למרחבי הנתונים של SORA Nexus](/he/get-started/sora-nexus-dataspaces.md).
+כל שלוש הדוגמאות הן פעולות קריאה. כדי להנפיק, לשרוף או להעביר נכסים ב־Taira, השתמשו בחשבון שמומן משירות חלוקת כספי הניסוי ובתהליך הכולל בדיקות הגנה המתואר ב־[התחברות למרחבי הנתונים של SORA Nexus](/he/get-started/sora-nexus-dataspaces.md).
 
-לדוגמה של נכס Taira ששילם תשלום, שמור את עוזר ה-faucet מ [Get Testnet XOR ב Taira](/he/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) כ- `taira_faucet_claim.py`, ואז תדרוש קודם את נכס ה-faucet ותשתמש בו כמכשיר הגז העסקי:
+בדוגמת נכסים של Taira שמשלמת עמלה, תחילה מַמנו את החותם באמצעות התהליך המוכן של שירות חלוקת כספי הניסוי שב־[קבלת XOR לניסוי ב־Taira](/he/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira). לאחר מכן הוסיפו `--fee-payer authority` לפקודות `ledger asset mint`, ‏`ledger asset burn` ו־`ledger asset transfer`; ה־CLI מציג את העמלה המדויקת, בנכס העמלות של Taira, לפני החתימה:
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
+iroha --config ./taira.client.toml --fee-payer authority \
+  ledger asset transfer \
+  --definition "<ASSET_DEFINITION_BASE58>" \
+  --account "<TAIRA_I105_ACCOUNT_ID>" \
+  --to "<RECIPIENT_I105_ACCOUNT_ID>" \
+  --quantity 1
 ```
-
-לאחר מכן רשום `--metadata ./taira.tx-metadata.json` ב`ledger asset mint`, `ledger asset burn` ו `ledger asset transfer` פקודות.
 
 ## הוראות {#instructions}
 

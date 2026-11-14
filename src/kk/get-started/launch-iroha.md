@@ -1,11 +1,10 @@
 ---
 translation_locale: kk
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 35a4caba21bf1e34cc015f79fa82bfe143b37603eddb5f1eb72513ad83a20f61
+translation_source_hash: 6fe2dd48dc64f896be539af2994fbc0ad3c2c5f7a5a4297cc4ff4b08667f0376
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Жіберу Iroha 3 {#launch-iroha-3}
 
 Бұл бет Iroha 3 үшін ағымдағы жергілікті желі ағынын тізбектеп көрсетеді, используя жоғарғы репозиторийден алынған әдепкі жұмыс кеңістігі активтерін.
@@ -65,11 +64,11 @@ curl http://127.0.0.1:8080/status/blocks
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list
 ```
 
-## 3. Nexus Профиль {#_3-nexus-profile}
+## 3. SORA Nexus Профиль {#_3-nexus-profile}
 
 Репозиторий сонымен қатар `defaults/nexus/` астында SORA Nexus-бағытталған конфигурациялық профильді жеткізеді.
 
-Nexus профилімен жергілікті желі серіктесін іске қосу үшін:
+SORA Nexus профилімен жергілікті желі серіктесін іске қосу үшін:
 
 ```bash
 ./target/release/iroha3d --sora --config ./defaults/nexus/config.toml

@@ -1,13 +1,13 @@
 ---
 translation_locale: dz
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # མཐུན་རྐྱེན་ལག་ལེན་གྱི་དོན་ལུ་ ལྡེ་མིག {#keys-for-network-deployment}
 
-ཡོངས་འབྲེལ་ག་ར་ལུ་ མཁོ་མངགས་འབད་མི་དང་ མཉམ་རོགས་ རིགས་མཚན་མཚན་རྟགས་བཀོད་ནི་དང་ NPoS ཡང་ན་ Nexus གསལ་སྡུད་ཚུ་གི་དོན་ལུ་ BLS བདེན་དཔྱད་འབད་མི་ངོ་རྟགས་ཚུ་གི་དོན་ལུ་ ལྡེ་མིག་རྒྱུ་ཆ་སོ་སོ་དགོཔ་ཨིན།
+དྲ་ལམ་རེ་རེ་ལུ་ མཁོ་མངགས་པ་ མཐུད་གྲོགས་ འགོ་ཐོག་གནས་སྟངས་ལུ་མིང་རྟགས་བཀོད་ནི་ དང་ NPoS ཡང་ན་ SORA Nexus གསལ་སྡུད་ཀྱི་དོན་ལུ་ BLS བདེན་དཔྱད་པའི་ངོ་རྟགས་ཚུའི་ལྡེ་མིག་རྒྱུ་ཆ་སོ་སོ་དགོ།
 
 ## ལག་ལེན་འཐབ་སའི་ལྡེ་མིག་ཚུ་ {#where-keys-are-used}
 
@@ -20,7 +20,7 @@ translation_engine: human-reviewed
 ས་གནས་ཀྱི་ ཡང་ན་ བརྟག་དཔྱད་ལག་ལེན་ཚུ་གི་དོན་ལུ་ Kagami གིས་ འ་ནི་ཡིག་སྣོད་ཚུ་ གཅིག་ཁར་སྤེལ་གཏང་དགོ།
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 ད་ལྟོ་ཡོད་པའི་ཡོངས་འབྲེལ་ཡང་ན་གསལ་སྡུད་ཅིག་གི་དོན་ལུ་ ལམ་སྟོན་འབད་ཡོད་པའི་རྒྱུན་རིམ་འདི་ལག་ལེན་འཐབ།

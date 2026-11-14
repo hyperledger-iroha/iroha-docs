@@ -26,7 +26,7 @@ This produces:
 Generate a four-peer Iroha 3 localnet:
 
 ```bash
-target/release/kagami localnet --peers 4 --out-dir ./localnet
+target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
 The output directory contains the generated `genesis.json`,
@@ -50,7 +50,7 @@ peer's `config.toml`, private key, storage directory, and ports separate.
 Use the generated client config:
 
 ```bash
-target/release/iroha --config ./localnet/client.toml ledger domain list all
+target/release/iroha --config ./localnet/client.toml ledger domain list --all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 

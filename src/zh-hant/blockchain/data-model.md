@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/data-model.md
-translation_source_hash: 147562d2286bf11e60a941969e6d52bffc1534c3cfc04d440e0bcf78598a1ca7
+translation_source_hash: f90139dee2eff97769cd47188bcaf60b31672f0250505d8afad9c8ee60815ddd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-source-naming-amendment
 ---
-
 # 資料模型 {#data-model}
 
 Iroha 在 `World` 中儲存帳本狀態。其首個版本的資料模型使用以下規範身分和實體：
@@ -122,7 +121,7 @@ account_rabbit --> asset_rose : may receive balance
 |資產定義|規範的 `AssetDefinitionId` Base58 位址 |`name#domain.dataspace`或 `name#dataspace` |`AssetDefinitionAlias` 繫結至資產定義|
 |合同|正文 Bech32m `ContractAddress` |`name::domain.dataspace`或 `name::dataspace` |`ContractAlias` 繫結到部署的合同地址|
 |域名| `DomainId` 在 `domain.dataspace` 形式               |`domain.dataspace`|SNS `domain`名稱空間記錄|
-|資料域名 |從活躍的 Nexus 目錄中的數值 `DataSpaceId` |資料空間別名,例如 `universal`, `paynet`或 `zk` |SNS `dataspace`名區記錄加上活躍的資料空間目錄 |
+| 資料空間名稱 | 目前有效的 SORA Nexus 目錄中的數值 `DataSpaceId` | 資料空間別名，例如 `universal`、`paynet` 或 `zk` | SNS 的 `dataspace` 命名空間記錄，加上目前有效的資料空間目錄 |
 
 帳戶別名是面向使用者的帳戶名稱。帳戶重新設定金鑰後，別名仍然有效，因為它會透過世界狀態索引和帳戶金鑰變更記錄指向作用中的帳戶 ID。使用 `SetPrimaryAccountAlias` 設定帳戶的主要標籤，使用 `SetAccountAliasBinding` 設定其他非主要別名，並使用 `FindAccountByAlias` 或 `FindAliasesByAccountId` 進行讀取。帳戶別名通常需要一項有效的 SNS 帳戶別名租約，該租約透過 `AcquireAccountAliasLease` 取得，並透過 `RenewAccountAliasLease` 續期。
 

@@ -1,9 +1,9 @@
 ---
 translation_locale: ur
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # تعیناتی کے مسائل کا حل {#troubleshooting-deployment-issues}
 
@@ -14,7 +14,7 @@ translation_engine: nllb-200-ct2
 مقامی اور ٹیسٹ کی تعیناتی کے لئے، ہاتھ سے تحریری نیٹ ورک نوڈ فائلوں کے بجائے Kagami کی طرف سے پیدا کردہ آثار کو ترجیح دیں:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 جنریٹڈ ڈائرکٹری میں نیٹ ورک نوڈ تشکیلات، ابتداء مواد، شروع اسکرپٹس، اور README کی تعمیر لائن کے لئے ایک Iroha 3 شامل ہے.
@@ -41,7 +41,7 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 تخلیق کریں موجودہ Kagami لوکل نیٹ آؤٹ پٹ سے تحریر کریں تاکہ کمانڈ لائن کی دلیلیں اور ترتیب فائلیں چیک آؤٹ کوڈ سے ملیں:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```
@@ -66,9 +66,9 @@ Kubernetes کے لیے، ہر توثیق کنندہ کو حالت برقرار �
 
 اگر ایک پوڈ بار بار دوبارہ شروع ہوتا ہے تو ، پوڈ میں پیش کردہ ترتیب کو متوقع [`peer.template.toml`](/ur/reference/peer-config/index.md#template) کے ساتھ موازنہ کریں اور چیک کریں کہ آیا ہم منصب پرانے Kura ڈیٹا کو دوبارہ کھیل رہا ہے۔
 
-## سورہ پروفائل {#sora-profile}
+## SORA Nexus پروفائل {#sora-profile}
 
-نجی یا مقامی Iroha 3 تعیناتی جو Nexus، SoraFS، یا کثیر لین کے بہاؤ کا استعمال کرتے ہیں، کو سورا پروفائل فعال ہونے کے ساتھ معیاری ڈییمون شروع کرنا چاہئے:
+نجی یا مقامی Iroha 3 تنصیبات جو SORA Nexus، SoraFS یا متعدد لینز کے عمل استعمال کرتی ہیں، انہیں SORA Nexus پروفائل فعال کر کے معیاری ڈیمَن شروع کرنا چاہیے:
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

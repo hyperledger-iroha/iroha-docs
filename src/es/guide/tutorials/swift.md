@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
+translation_source_hash: 37e8be9b07a40e5c6b841a47b016320e42079853433fb3e53937e4021dc1304f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Swift y iOS {#swift-and-ios}
 
 El Swift SDK enviado por el espacio de trabajo ascendente es el paquete `IrohaSwift` Swift bajo `IrohaSwift/`. Su manifiesto técnico de paquete define tres productos de biblioteca: `IrohaSwift`, `IrohaSwiftMobileTransports` y `IrohaSwiftTransferUI`, y apunta a iOS 15+ y macOS 12+ con herramientas Swift 5.9.
@@ -65,7 +64,7 @@ if #available(iOS 15.0, macOS 12.0, *) {
 
 ## Probar Taira Solo lectura {#try-taira-read-only}
 
-Comience con una sonda simple HTTP para confirmar que el dispositivo o simulador puede alcanzar el punto final público Taira API:
+Comience con una comprobación HTTP sencilla para confirmar que el dispositivo o simulador puede alcanzar el punto de acceso público de Taira:
 
 ```swift
 import Foundation
@@ -161,7 +160,7 @@ La fuente Swift actualmente incluye:
 - Ed25519, secp256k1, ML-DSA, BLS, GOST y SM2 superficies de firma, con soporte de puente nativo donde sea necesario
 - constructores de cargas de instrucciones de custodia nativa para mercado y custodia anónima
 - Conectar WebSocket, marco, criptografía, sesión, cola, reproducción y auxiliares de diagnóstico
-- Preparación de Kagemusha, recarga y redención tipeadas, estado de operación, nota, paquete de pares de red, registro de resultados del protocolo y modelos de flujo QR
+- funciones auxiliares para el formato de transmisión de KAGEMUSHA V1 y el adaptador de plataforma de iPhone para el proveedor nativo Advance de la cartera, el registro, la recuperación y las llamadas de intercambio admitidas
 - SoraFS, disponibilidad de datos y asistentes de adjunto de pruebas
 
 ## API Ejemplos {#api-examples}

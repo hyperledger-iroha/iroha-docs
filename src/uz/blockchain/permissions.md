@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # Ruxsatlar {#permissions}
 
 Hisoblar blokcheynda aktiv chiqarish yoki yoqish kabi turli amallarni bajarishi uchun ruxsat tokenlariga muhtoj.
@@ -89,7 +88,7 @@ Standart tekshiruvchilar reyestr sohasi bo‘yicha guruhlanadi:
 - aktivlar, NFTs va eskroular
 - qo‘zg‘atuvchilar
 - rollar va ruxsatlar
-- ijrochi/bajarish muhiti, isbotlar, ko‘priklar va SORA/Nexus modullari
+- ijrochi/bajarish muhiti, isbotlar, ko‘priklar va SORA Nexus modullari
 
 Tokenlarning aniq, manba bilan tasdiqlangan ro‘yxati [Ruxsat tokenlari ma’lumotnomasida](/uz/reference/permissions.md) berilgan.
 

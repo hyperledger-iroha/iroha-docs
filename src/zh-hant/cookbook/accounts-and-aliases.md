@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: c1aee0c29332bd7c883500e72a1ec7812aebfca13b673e6681788cf4bc5ecbf1
+translation_source_hash: e500328ac93578b9af21b6ef3d01e13e051b1d9a0f6050293e65650da66fbbbb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+claude-opus-5-5
+translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link
 ---
-
 # 帳戶和姓名 {#accounts-and-aliases}
 
 ## 結果 {#outcome}

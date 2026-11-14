@@ -1,11 +1,10 @@
 ---
 translation_locale: mn
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Гүйцэтгэл ба үзүүлэлтүүд {#performance-and-metrics}
 
 Iroha-ийн гүйцэтгэл нь ажлын ачаалал, баталгаажуулагчийн хэв шинж, сүлжээний нөхцөл байдал, зөвшилцөх тохиргооноос хамаарна. Тиймээс нэг TPS тоо нь зөвхөн тогтмол тохиргоотой бенчмаркийн гүйцэтгэлийн талаар холбогдсон үед ашигтай байдаг.
@@ -38,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -131,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### Нэр дэвшигч ба Орж ирэх хязгаарууд {#candidate-and-ingress-bounds}
 
-Нод-дотоод Sumeragi хязгаар нь батлагч хэчнээн олон нэр дэвшигч болон сэргээх ажлыг хадгалах боломжтойг тодорхойлдог:
+Блокийн хэмжээ болон гүйлгээний хязгаарууд гарын үсэгтэй эхлэл төлөв, батлагдсан сүлжээний параметрүүдээс ирнэ. Зангилааны дотоод `[sumeragi]` тохиргоо нь оролцох үүрэг, гарын үсгийн материалын хамгаалалт, аюулгүй байдлын бүртгэлийн зам болон баримтжуулсан дотоод хугацаа, синхрончлолын орлуулах утгуудыг хамарна.
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` ба `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks`, ба `sumeragi.queues.ready_bodies`
-
-Хэт жижиг хязгаарууд нь ээлж эсвэл өгөгдөл сэргээх дарамт үүсгэдэг; хэт том хязгаарууд нь хадгалсан санах ой болон хэвлэж болох ажлын хэмжээг нэмэгдүүлдэг. тэнцүүлэгч. Нэг хязгаарыг нэгэн зэрэг өөрчлөхийн өмнө оношилгооны цэгийн цагийн өгөгдлийн харагдах байдлыг процессын санах ой, мессежийг боловсруулах болон алга болсон биеийн хэмжигдэхүүнтэй харьцуулах:
+Сүлжээний оролт болон гүйлгээний дарааллын хязгаарууд дотоодод хадгалах ажлын хэмжээг удирдана. Ашиглалтын хязгаарыг өөрчлөхөөс өмнө оношилгооны агшин төлөвийг процессын санах ой, мессеж боловсруулалт болон дутуу агуулгын хэмжүүртэй харьцуулна. Ижил сүлжээний ажиллуулалтуудыг харьцуулахдаа гарын үсэгтэй сүлжээний параметрүүдийг тогтмол байлгана:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -244,7 +236,7 @@ iroha --config ./localnet/client.toml \
 - баталгаажуулах болон ажиглагчдын тоо
 - аюулгүй горим, гарын үсэгтэй блокын хэмнэл, ба DA зохион байгуулалт
 - яг `3f + 1` хороо, кворум, болон ажиглагчдын нэрсийн жагсаалт
-- `sumeragi.block`, `sumeragi.queues`, `sumeragi.limits`, сүлжээ-орж ирэлт, болон гүйлгээ-өрөг хязгаарууд
+- гарын үсэгтэй сүлжээний параметрүүд, дотоод Sumeragi орлуулах утгууд, сүлжээний оролт болон гүйлгээний дарааллын хязгаарууд
 - телеметрийн профайл
 - техникийн тоног төхөөрөмж, хадгалах газар, ба OS дэлгэрэнгүй мэдээлэл
 - сүлжээ RTT, чичрэлт, алдагдал, ба өргөн зурвасын таамаглал
@@ -261,6 +253,6 @@ iroha --config ./localnet/client.toml \
 ## Холбогдсон хуудаснууд {#related-pages}
 
 - [Изанамитэй Хаос Туршилт](./chaos-testing.md)
-- [Torii API төгсгөлүүд](../../reference/torii-endpoints.md)
+- [Torii төгсгөлийн цэгүүд](../../reference/torii-endpoints.md)
 - [Iroha 3 -г CLI ашиглан ажиллуулна](../../get-started/operate-iroha-via-cli.md)
 - [сүлжээний хөршийн тохиргооны лавлагаа](../../reference/peer-config/params.md)

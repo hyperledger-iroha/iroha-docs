@@ -2,26 +2,19 @@
 
 ## Outcome
 
-Inspect Taira NFT state, then register, update, transfer, and query a
-unique NFT on a generated local network. The workflow uses a fully
-qualified `name$domain.dataspace` NFT ID and canonical I105 owner IDs.
+Inspect Taira NFT state, then register, update, transfer, and query a unique NFT on a generated local network. The workflow uses a fully qualified `name$domain.dataspace` NFT ID and canonical I105 owner IDs.
 
 ## Prerequisites
 
 - `curl`, `jq`, Python 3.11 or later, and the current `iroha` CLI.
 - Read-only Taira access.
-- For writes, a local network from
-  `kagami localnet generate --peers 4 --out-dir ./localnet` as in
-  [Launch Iroha](/get-started/launch-iroha.md), with
-  `./localnet/client.toml` and Torii on `http://127.0.0.1:8080`, plus an
-  NFT domain that its signer owns (see step 2).
+- For writes, a local network from `kagami localnet generate --peers 4 --out-dir ./localnet` as in [Launch Iroha](/get-started/launch-iroha.md), with `./localnet/client.toml` and Torii on `http://127.0.0.1:8080`, plus an NFT domain that its signer owns (see step 2).
 
 ## Steps
 
 ### 1. Inspect the public Taira collection
 
-An empty page is a successful read: it means no visible NFTs are in the
-requested page.
+An empty page is a successful read: it means no visible NFTs are in the requested page.
 
 ```bash
 curl -fsS -H 'Accept: application/json' \
@@ -29,18 +22,11 @@ curl -fsS -H 'Accept: application/json' \
   | jq '{total, nfts: [.items[] | {id, owned_by, metadata}]}'
 ```
 
-NFTs are unique records, not numeric balances. They have an ID, one owner,
-and a compact content map, which Torii collection rows return as
-`metadata` and `ledger nft get` returns as `content`.
+NFTs are unique records, not numeric balances. They have an ID, one owner, and a compact content map, which Torii collection rows return as `metadata` and `ledger nft get` returns as `content`.
 
 ### 2. Prepare local owner IDs
 
-The write example needs a domain that the signing account owns, or a
-`CanRegisterNft` grant for it. A generated localnet registers no
-application domain for its client, and raw domain registration is reserved
-for genesis, so set `NFT_DOMAIN` to a `name.dataspace` domain your signer
-controls. Derive the configured authority without exposing its private
-key, then choose another registered account as the transfer destination.
+The write example needs a domain that the signing account owns, or a `CanRegisterNft` grant for it. A generated localnet registers no application domain for its client, and raw domain registration is reserved for genesis, so set `NFT_DOMAIN` to a `name.dataspace` domain your signer controls. Derive the configured authority without exposing its private key, then choose another registered account as the transfer destination.
 
 ```bash
 LOCAL_ROOT='http://127.0.0.1:8080'
@@ -66,13 +52,11 @@ NEW_OWNER="$(
 )"
 ```
 
-The `$` separator belongs to the NFT text form. Keep the complete
-`name.dataspace` domain in the ID.
+The `$` separator belongs to the NFT text form. Keep the complete `name.dataspace` domain in the ID.
 
 ### 3. Register the NFT with initial content
 
-The CLI reads the initial JSON object from standard input. The current
-authority becomes the owner.
+The CLI reads the initial JSON object from standard input. The current authority becomes the owner.
 
 ```bash
 printf '%s\n' \
@@ -84,8 +68,7 @@ printf '%s\n' \
 
 ### 4. Update the content map
 
-Metadata values are JSON. Setting a key inserts or replaces that one entry;
-it does not replace the entire NFT record.
+Metadata values are JSON. Setting a key inserts or replaces that one entry; it does not replace the entire NFT record.
 
 ```bash
 printf '%s\n' '{"color":"blue","version":1}' \
@@ -99,8 +82,7 @@ iroha --config "$LOCAL_CONFIG" ledger nft meta get \
 
 ### 5. Transfer ownership
 
-Supply both canonical I105 account IDs. An alias must be resolved before it
-is used as `--from` or `--to`.
+Supply both canonical I105 account IDs. An alias must be resolved before it is used as `--from` or `--to`.
 
 ```bash
 iroha --config "$LOCAL_CONFIG" \
@@ -113,18 +95,11 @@ iroha --config "$LOCAL_CONFIG" \
 
 ::: warning Permission boundary
 
-On Taira, every write uses `--fee-payer authority`; the CLI quotes the
-exact fee, in Taira's fee asset, before signing. Registration, transfer,
-removal, and metadata updates are checked by the active runtime
-(`CanRegisterNft`, `CanTransferNft`, `CanUnregisterNft`, and
-`CanModifyNftMetadata` in the default permission surface). Use a domain
-your account owns, or one for which it holds these grants.
+On Taira, every write uses `--fee-payer authority`; the CLI quotes the exact fee, in Taira's fee asset, before signing. Registration, transfer, removal, and metadata updates are checked by the active runtime (`CanRegisterNft`, `CanTransferNft`, `CanUnregisterNft`, and `CanModifyNftMetadata` in the default permission surface). Use a domain your account owns, or one for which it holds these grants.
 
 :::
 
-For contract-owned workflows, Kotodama exposes typed NFT host calls. The
-following is the exact lifecycle fixture compiled and executed by the
-pinned IVM documentation test:
+For contract-owned workflows, Kotodama exposes typed NFT host calls. The following is the exact lifecycle fixture compiled and executed by the pinned IVM documentation test:
 
 ```kotodama
 // Mint an NFT, transfer it, update metadata, and burn it using typed IDs.
@@ -146,18 +121,11 @@ seiyaku NftFlow {
 }
 ```
 
-The two fixed I105 values are upstream test fixtures; the harness registers
-the destination before execution. They are not `CURRENT_OWNER` and
-`NEW_OWNER` from the CLI walkthrough. For an application contract, supply
-its actual canonical accounts, then compile, test, deploy, and call it
-through [Smart contracts](./smart-contracts.md). Do not submit unreviewed
-bytecode to Taira, and remember that contract execution still passes
-runtime authorization.
+The two fixed I105 values are upstream test fixtures; the harness registers the destination before execution. They are not `CURRENT_OWNER` and `NEW_OWNER` from the CLI walkthrough. For an application contract, supply its actual canonical accounts, then compile, test, deploy, and call it through [Smart contracts](./smart-contracts.md). Do not submit unreviewed bytecode to Taira, and remember that contract execution still passes runtime authorization.
 
 ## Verify
 
-Read the NFT directly and assert that its owner changed while its content
-remained attached:
+Read the NFT directly and assert that its owner changed while its content remained attached:
 
 ```bash
 iroha --config "$LOCAL_CONFIG" --machine ledger nft get --id "$NFT_ID" \
@@ -168,26 +136,16 @@ jq -e --arg owner "$NEW_OWNER" \
   cookbook-nft.json
 ```
 
-The CLI prints the NFT record itself. The authoritative invariants are
-`id`, `owned_by`, and `content`.
+The CLI prints the NFT record itself. The authoritative invariants are `id`, `owned_by`, and `content`.
 
 ## Troubleshooting
 
-- `name$domain` can default to the universal dataspace in some parsers, but
-  cookbook and application IDs should use the explicit
-  `name$domain.dataspace` form.
-- A repeated registration of the same NFT ID is rejected. Use a fresh
-  localnet or choose a stable new ID for a distinct record.
-- Metadata input must be valid JSON on standard input. A shell string
-  without JSON quoting is not a metadata value.
-- A transfer signed by an account other than the current owner needs
-  ownership of the NFT's domain or an exact `CanTransferNft` grant;
-  changing `--from` does not change the signer.
-- Transfer changes only `owned_by`. Metadata updates and unregistration
-  stay with the domain owner or an account holding `CanModifyNftMetadata`
-  or `CanUnregisterNft` for that NFT; the new owner can transfer it onward.
-- Taira can return an empty NFT collection. Do not treat `items: []` as
-  proof that NFT instructions are unavailable.
+- `name$domain` can default to the universal data space in some parsers, but cookbook and application IDs should use the explicit `name$domain.dataspace` form.
+- A repeated registration of the same NFT ID is rejected. Use a fresh localnet or choose a stable new ID for a distinct record.
+- Metadata input must be valid JSON on standard input. A shell string without JSON quoting is not a metadata value.
+- A transfer signed by an account other than the current owner needs ownership of the NFT's domain or an exact `CanTransferNft` grant; changing `--from` does not change the signer.
+- Transfer changes only `owned_by`. Metadata updates and unregistration stay with the domain owner or an account holding `CanModifyNftMetadata` or `CanUnregisterNft` for that NFT; the new owner can transfer it onward.
+- Taira can return an empty NFT collection. Do not treat `items: []` as proof that NFT instructions are unavailable.
 
 ## Source and related docs
 

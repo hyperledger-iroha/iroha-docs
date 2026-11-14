@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /blockchain/instructions.md
-translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
+translation_source_hash: ef50253c5478c9d8c3e14529dc4c2f3de67c344901c82c65be77ceb237a29598
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha የመመሪያ ክዋኔዎች {#iroha-special-instructions}
 
 ስለ [Iroha እንዴት እንደሚሰራ](/am/blockchain/iroha-explained) ስናወራ Iroha የዓለም መንግስትን ለመለወጥ ብቸኛው መንገድ የማስተማሪያ ስራዎች ናቸው ብለናል። ስለዚህ ምን ዓይነት ትምህርት ነው ክዋኔዎች አሉን? በዚህ አጋዥ ስልጠና ውስጥ ቋንቋ-ተኮር መመሪያዎችን ካነበቡ፣ ሁለት መመሪያዎችን አስቀድመው አይተዋል `Register<Account>` እና `Mint<Numeric>`።
@@ -35,7 +34,7 @@ translation_engine: bing-translator-llm
 
 |መመሪያ|ነገሮች|መዳረሻ|
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- |
-|[EnsureAlias](#ensurealias)|ተራ ጎራ፣ ዳታ ስፔስ-ተለዋጭ ስም እና የመለያ-ተለዋጭ ስም ማዋቀር|                      |
+| [EnsureAlias](#ensurealias) | መደበኛ ጎራ፣ የውሂብ ቦታ ተለዋጭ ስም እና የመለያ ተለዋጭ ስም ማዋቀር | |
 |[ይመዝገቡ/ይመዝገቡ](#un-register)|መለያዎች፣ የንብረት ፍቺዎች፣ NFTs፣ ሚናዎች፣ ቀስቅሴዎች፣ የአውታረ መረብ እኩዮች; የጎራ ማስወገድ|                      |
 |[Mint/Burn](#mint-burn)|የቁጥር ንብረቶች፣ ድግግሞሾችን ቀስቅሴ|መለያዎች ወይም ቀስቅሴዎች|
 |[SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue)|[ሜታዳታ](./metadata.md) ያላቸው ነገሮች ጎራዎች፣ መለያዎች፣ የንብረት ፍቺዎች፣ NFTs፣ RWAs፣ ቀስቅሴዎች|                      |
@@ -69,7 +68,7 @@ translation_engine: bing-translator-llm
 cargo run --bin iroha -- --config ./defaults/client.toml <command>
 ```
 
-`iroha` ሁለትዮሽ ከጫኑ በምትኩ `iroha --config ./defaults/client.toml` ይጠቀሙ። ከታች ያሉትን ቦታ ያዢዎች ከአውታረ መረብዎ እሴቶች ጋር ይተኩ -
+የ`iroha` ፕሮግራም ከተጫነ በምትኩ `iroha --config ./defaults/client.toml` ይጠቀሙ። ግብይት የሚልኩ ትዕዛዞች ከፈራሚው መለያ ክፍያ የሚቀንሰውን `--fee-payer authority`ም ይሰጣሉ፤ CLI ከመፈረም በፊት ትክክለኛውን ክፍያ ያስላል። ከታች ያሉ ጊዜያዊ እሴቶችን በአውታረ መረብዎ እሴቶች ይተኩ:
 
 ```bash
 export ALICE="<ALICE_ACCOUNT_I105>"
@@ -79,34 +78,32 @@ export PEER_KEY="<BLS_PUBLIC_KEY_MULTIHASH>"
 export PEER_POP="<PROOF_OF_POSSESSION_HEX>"
 ```
 
-የህዝብ Taira የሙከራ መረብን ሲያነጣጥሩ የ Taira የደንበኛ ውቅር ይጠቀሙ። ክፍያ የሚከፍሉ ምሳሌዎችን ከማስኬድዎ በፊት፣ የቴስትኔት የገንዘብ ድጋፍ አገልግሎት አጋዥን ከ[Testnet XOR ን በ Taira ያግኙ](/am/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) እንደ `taira_faucet_claim.py` ያስቀምጡ፣ ከዚያ ቴስትኔት XOR ከቴስትኔት የገንዘብ ድጋፍ አገልግሎት ይጠይቁ -
+ክፍቱን የTaira ሙከራ አውታረ መረብ ሲጠቀሙ የTaira ደንበኛ ውቅር ይጠቀሙ፣ በ[በTaira ላይ የሙከራ አውታረ መረብ XOR ማግኘት](/am/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ያለውን ቀድሞ የማዘጋጀት ፋውሴት ሂደት ተጠቅመው መለያውን ይሙሉ። ክፍያ የሚፈልጉ ምሳሌዎችን ከማስኬድዎ በፊት የክፍያ ንብረቱ ቀሪ ሒሳብ እንደሚታይ ያረጋግጡ:
 
 ```bash
 export TAIRA_ACCOUNT_ID="<TAIRA_I105_ACCOUNT_ID>"
-export TAIRA_FEE_ASSET="6TEAJqbb8oEPmLncoNiMRbLEK6tw"
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-በቴስትኔት የተደገፈው ንብረት ከታየ በኋላ፣ ግብይቶችን ለመፃፍ አስፈላጊውን የግብይት ማስፈጸሚያ ወጪ የንብረት ሜታዳታ ያያይዙ -
+የTaira ሁኔታን የሚቀይር ክዋኔዎችም `--fee-payer authority`ን ይመርጣሉ፣ CLI ደግሞ ክፍያውን በTaira የክፍያ ንብረት ያስላል። እንደ `gas_asset_id` ያሉ የክፍያ ቁልፎችን እንደ ግብይት ሜታዳታ አያያዙ፤ ደንበኛው ይከለክላቸዋል:
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 cargo run --bin iroha -- \
   --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+  --fee-payer authority \
   <command>
 ```
 
 ## EnsureAlias {#ensurealias}
 
-`EnsureAlias` ጎራዎችን እና SNS የኪራይ ውሉን ለመፍጠር ተራው የመጀመሪያ ልቀት መንገድ ነው።. ትክክለኛውን የውሂብ ቦታ፣ ባለቤት፣ የሊዝ ውል ውል በመግለፅ ያስራል፣ እና የክፍያ-ዋጋ ማረጋገጫ ጠባቂ፣ ከዚያ ሁሉንም አስፈላጊ ሁኔታዎችን በአቶሚክ ይፈጥራል ወይም ይጠግናል። የተረጋገጠውን `POST /v1/aliases/setup/plan` API የመጨረሻ ነጥብ ወይም ተዛማጅ CLI የስራ ፍሰት ይጠቀሙ -
+`EnsureAlias` በመጀመሪያው ልቀት ጎራዎችን እና የSNS ኪራዮቻቸውን ለመፍጠር የሚያገለግል መደበኛ መንገድ ነው። ትክክለኛውን የውሂብ ቦታ፣ ባለቤት፣ የኪራይ ጊዜ እና የግምት መከላከያ ሁኔታ በአዋጅ መሰል መንገድ ያስራል፣ ከዚያ ሁሉንም የሚፈለግ ሁኔታ በአንድ አቶሚክ ክዋኔ ይፈጥራል ወይም ይጠግናል። የተረጋገጠውን `POST /v1/aliases/setup/plan` መገናኛ ነጥብ ወይም ተዛማጁን የCLI ሂደት ይጠቀሙ:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -114,7 +111,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./domain.intent.json \
   --plan-file ./domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./domain.plan.json
 ```
 
@@ -165,34 +162,34 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./docs-domain.intent.json \
   --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain unregister --id docs.universal
 ```
 
 መለያዎችን ይመዝገቡ እና ይመዝገቡ -
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account register --id "$BOB"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account register --id "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account unregister --id "$BOB"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account unregister --id "$BOB"
 ```
 
 የንብረት ፍቺዎችን ይመዝገቡ እና ይመዝገቡ -
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
   --scale 0
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition unregister --id "$ASSET_DEF"
 ```
 
@@ -200,37 +197,37 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ```bash
 printf '{"kind":"badge","level":"intro"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft register --id 'badge$docs.universal'
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft unregister --id 'badge$docs.universal'
 ```
 
 ሚናዎችን ይመዝገቡ እና ይመዝገቡ -
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role register --id operators
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role unregister --id operators
 ```
 
 ቀስቅሴዎችን ይመዝገቡ እና ይመዝገቡ። ቀስቅሴ ምዝገባ የተጠናቀረ IVM ባይት ኮድ ወይም ተከታታይ የመመሪያ ዝርዝር ያስፈልገዋል። ይህ የቀደመው ምሳሌ `Log` መመሪያን ከ CLI ጋር ይገነባል እና ወደ ቀስቅሴ ምዝገባ ያስገባል -
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml -o \
-  ledger transaction ping --log-level INFO --msg "hourly cleanup" |
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger register --id hourly_cleanup \
+cargo run --bin iroha -- --config ./defaults/client.toml --emit-instructions \
+  tx ping --log-level INFO --msg "hourly cleanup" |
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger register --id hourly_cleanup \
   --instructions-stdin \
   --filter time \
   --time-start 5m \
   --time-period-ms 3600000
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger unregister --id hourly_cleanup
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger unregister --id hourly_cleanup
 ```
 
 የአውታረ መረብ እኩዮችን ይመዝገቡ እና ይመዝገቡ። የ BLS ቁልፍን እና PoP ከሌሉዎት በ `kagami` ይፍጠሩ -
@@ -241,10 +238,10 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
 PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
 PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer unregister --key "$PEER_KEY"
 ```
 
@@ -270,13 +267,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 የቁጥር ንብረቶችን ማውጣት እና ማጥፋት -
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset mint \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
   --quantity 100
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset burn \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
@@ -286,11 +283,11 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 ቀስቅሴ ድግግሞሾችን ያውጡ እና ያጥፉ -
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger mint --id hourly_cleanup --repetitions 5
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger mint --id hourly_cleanup --repetitions 5
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger burn --id hourly_cleanup --repetitions 1
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger burn --id hourly_cleanup --repetitions 1
 ```
 
 ## ማስተላለፍ {#transfer}
@@ -302,7 +299,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 የቁጥር ንብረቶችን ያስተላልፉ;
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset transfer \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
@@ -313,13 +310,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 ጎራ፣ የንብረት ፍቺ እና NFT ባለቤትነት ያስተላልፉ
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain transfer --id docs.universal --from "$ALICE" --to "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition transfer --id "$ASSET_DEF" --from "$ALICE" --to "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft transfer --id 'badge$docs.universal' --from "$ALICE" --to "$BOB"
 ```
 
@@ -337,7 +334,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 `RotatePrivateSettlementPoolPolicyV1` በግላዊነት አስተዳደር የተገደበ ነው። ትክክለኛውን የአሁኑን የአስተዳደር ክሪፕቶግራፊያዊ ዳይጀስትን ይጠይቃል፣ መንገዱን፣ የፕሮቶኮል መረጃ ቡድንን፣ ንብረትን አስገዳጅ ክሪፕቶግራፊያዊ ኮሚትመንትን፣ የስቴት ድንበርን፣ የድጋሚ አጫውት ስብስቦችን እና የተጠናቀቁ የደረሰኞችን ይጠብቃል፣ የህዝብ ክለሳውን በአንድ ያራምዳል፣ እና አዲስ የኦዲተር ቁልፍ ዘመን ይጠቀማል። ሽክርክሪቱ በማካተት ቁመቱ ላይ ይሠራል እና ያንን ቁመት ለተመሳሳይ መንገድ/ፑል ከደረሰኝ ጋር ማጋራት አይችልም። የህዝብ ክለሳ የተከታታይነት የደረሰኞችን ከማሽከርከር በፊት መጠናቀቁን ያቆያል፣ እንደገና መጀመር፣ ትክክለኛ እና ትክክለኛ-ድጋሚ አጫውት። በበረራ ውስጥ ያሉ የድሮ ፖሊሲ ቅርቅቦች ተዘግተዋል። ኦፕሬተሮች ለተከማቹ ካፕሱሎች የቆዩ ዲክሪፕት ቁልፎችን መያዝ አለባቸው ወይም ከማጥፋታቸው በፊት የካፕሱል መጠቅለልን ማስተዳደር እና መሞከር አለባቸው።
 
-መንገዱ በነባሪነት ተሰናክሏል እና ለምርት ብቁ አይደለም። ለማዋቀር፣ ለፍቃድ ዋና፣ ለኦዲት፣ ለማገገም እና ለመልቀቂያ መስፈርቶች [አቶሚክ የግል አቋራጭ-ዳታስፔስ የፋይናንስ ግብይት ማጠናቀቂያን ያሂዱ](/am/get-started/atomic-private-settlement)ን ይመልከቱ።
+ይህ መንገድ በነባሪነት ተዘግቷል፣ ለእውነተኛ ሥራ አካባቢም ብቁ መሆኑ አልተረጋገጠም። ለውቅር፣ ለፈቃድ አሰጣጥ፣ ለኦዲት፣ ለመልሶ ማግኛ እና ለልቀት መስፈርቶች [በውሂብ ቦታዎች መካከል አቶሚክ የግል ሒሳብ ማጠናቀቅ](/am/get-started/atomic-private-settlement) ይመልከቱ።
 
 ## ስጦታ / መሻር {#grant-revoke}
 
@@ -348,34 +345,34 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 በመለያ ላይ ሚና ይስጡ እና ይሰርዙ -
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account role grant --id "$BOB" --role operators
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account role grant --id "$BOB" --role operators
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account role revoke --id "$BOB" --role operators
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account role revoke --id "$BOB" --role operators
 ```
 
 የፍቃድ ቶከኖችን ይስጡ እና ይሰርዙ። የፍቃድ ትዕዛዞች የፍቃድ ነገርን ከመደበኛ ግቤት ያነባሉ -
 
 ```bash
 printf '{"name":"CanSetParameters","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account permission grant --id "$BOB"
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account permission grant --id "$BOB"
 
 printf '{"name":"CanSetParameters","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account permission revoke --id "$BOB"
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account permission revoke --id "$BOB"
 ```
 
 በአንድ ሚና ላይ ፈቃዶችን ይስጡ እና ይሰርዙ -
 
 ```bash
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role permission grant --id operators
 
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role permission revoke --id operators
 ```
 
@@ -387,10 +384,10 @@ printf '{"name":"CanRegisterDomain","payload":null}\n' |
 
 ```bash
 printf '"production"\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain meta set --id docs.universal --key environment
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain meta remove --id docs.universal --key environment
 ```
 
@@ -398,20 +395,20 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ```bash
 printf '{"display_name":"Alice"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account meta set --id "$ALICE" --key profile
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account meta set --id "$ALICE" --key profile
 
 printf '{"issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition meta set --id "$ASSET_DEF" --key issuer
 
 printf '{"color":"blue"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft meta set --id 'badge$docs.universal' --key traits
 
 printf '{"owner":"ops"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger meta set --id hourly_cleanup --key owner
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger meta set --id hourly_cleanup --key owner
 ```
 
 ## `SetParameter` {#setparameter}
@@ -422,7 +419,7 @@ printf '{"owner":"ops"}\n' |
 
 ```bash
 printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```
 
@@ -430,15 +427,14 @@ printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
 
 ይህ መመሪያ [ቀስቅሴዎች](./triggers.md) ለማስፈጸም ጥቅም ላይ ይውላል።
 
-CLI ቀስቅሴዎችን መመዝገብ እና የማስፈጸሚያ ክስተቶችን በቀጥታ ለመቀስቀስ መመዝገብ ይችላል። የተተየበ `execute trigger` ትዕዛዝ አይሰጥም፣ ስለዚህ ሀ ለማስገባት በእጅ `ExecuteTrigger` መመሪያ፣ ተከታታይ `InstructionBox` በ SDK ወይም አስፈፃሚ መሳሪያ ያመነጩ እና የተገኘውን JSON ድርድር በ`ledger transaction stdin` በኩል ያስተላልፉ -
+CLI በነባሪው `execute` ማጣሪያ ለተመዘገበ ትሪገር፣ ከአማራጭ JSON አርግመንቶች ጋር፣ በእጅ የሚላክ `ExecuteTrigger` መመሪያ ይልካል፣ የትሪገር አፈጻጸም ክስተቶችንም መከታተል ይችላል:
 
 ```bash
-printf '["<BASE64_EXECUTE_TRIGGER_INSTRUCTION_BOX>"]\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction stdin
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger execute docs_on_call --args-json '{"reason":"manual run"}'
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger events trigger-execute --timeout 30s
+  ledger events --timeout 30s trigger-execute
 ```
 
 ## ሌሎች መመሪያዎች {#other-instructions}
@@ -452,21 +448,21 @@ Iroha እንዲሁም ለሶፍትዌር ማስፈጸሚያ አካባቢ እና 
 ከፒንግ ረዳት ጋር `Log` መመሪያ ያስገቡ -
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction ping --log-level INFO --msg "hello from docs"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  tx ping --log-level INFO --msg "hello from docs"
 ```
 
-ብጁ አስፈፃሚ መመሪያን እንደ ተከታታይ `InstructionBox` ያስገቡ። ጭነቱ ቅርፅ አስፈፃሚ-ተኮር ነው፣ ስለዚህ መመሪያውን በተዛመደ SDK ወይም አስፈፃሚ መሳሪያ ያመነጩ -
+ብጁ የአስፈጻሚ መመሪያን በባይት ቅደም ተከተል የተወከለ `InstructionBox` አድርገው ያቅርቡ። የጭነቱ ቅርጽ በአስፈጻሚው ላይ የተመሠረተ ስለሆነ መመሪያውን በተዛማጅ SDK ወይም የአስፈጻሚ መሣሪያዎች ያመንጩ፦
 
 ```bash
 printf '["<BASE64_CUSTOM_INSTRUCTION_BOX>"]\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction stdin
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  tx stdin
 ```
 
 አስፈፃሚውን ከተጠናቀረ IVM የባይት ኮድ ፋይል ያሻሽሉ -
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ops executor upgrade --path ./target/ivm/executor.ivm
 ```

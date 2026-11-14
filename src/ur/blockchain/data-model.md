@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /blockchain/data-model.md
-translation_source_hash: 147562d2286bf11e60a941969e6d52bffc1534c3cfc04d440e0bcf78598a1ca7
+translation_source_hash: f90139dee2eff97769cd47188bcaf60b31672f0250505d8afad9c8ee60815ddd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-source-naming-amendment
 ---
-
 # ڈیٹا ماڈل {#data-model}
 
 Iroha `World` میں لیجر کی حالت کو ذخیرہ کرتا ہے۔ اس کا پہلا ریلیز ڈیٹا ماڈل مندرجہ ذیل کینونیکل شناختوں اور اداروں کا استعمال کرتا ہے:
@@ -122,7 +121,7 @@ account_rabbit --> asset_rose : may receive balance
 |اثاثہ جات کی تعریف |`AssetDefinitionId` Base58 ایڈریس |`name#domain.dataspace` یا `name#dataspace` |`AssetDefinitionAlias` ایک اثاثہ کی تعریف سے منسلک |
 |معاہدہ |canonical Bech32m `ContractAddress` |`name::domain.dataspace` یا `name::dataspace` |`ContractAlias` ایک تعینات معاہدہ ایڈریس سے منسلک |
 |ڈومین کا نام |`DomainId` فارم میں `domain.dataspace` |`domain.dataspace` |SNS `domain` ناموں کی جگہ ریکارڈ |
-|ڈیٹا بیس کا نام |فعال Nexus کیٹلاگ میں سے عددی `DataSpaceId` |`universal`، `paynet`، یا `zk` جیسے ڈیٹا اسپیس عرفات |SNS `dataspace` ناموں کی جگہ کا ریکارڈ پلس فعال ڈیٹا اسپیس کیٹلاگ |
+| ڈیٹا اسپیس کا نام | فعال SORA Nexus کیٹلاگ سے عددی `DataSpaceId` | `universal`، `paynet` یا `zk` جیسا ڈیٹا اسپیس کا عرف | SNS کے `dataspace` ناموں کی جگہ کا ریکارڈ اور فعال ڈیٹا اسپیس کیٹلاگ |
 
 اکاؤنٹ عرفی نام صارف کے سامنے اکاؤنٹس کے نام ہیں۔ وہ اکاؤنٹ ریکیائنگ سے زندہ رہتے ہیں کیونکہ عرفی نام عالمی حالت انڈیکس اور اکاؤنٹ ریکی ریکارڈز کے ذریعہ فعال اکاؤنٹ ID پر اشارہ کرتا ہے۔ اکاؤنٹ کے بنیادی لیبل کے لئے `SetPrimaryAccountAlias` کا استعمال کریں، `SetAccountAliasBinding` اضافی غیر بنیادی ناموں کے لئے، اور `FindAccountByAlias` یا `FindAliasesByAccountId` پڑھنے کے لئے۔ اکاؤنٹ کے ناموں کو عام طور پر ایک فعال SNS اکاؤنٹ کے نام لیز کی ضرورت ہوتی ہے جو `AcquireAccountAliasLease` سے حاصل کیا جاتا ہے اور `RenewAccountAliasLease` کے ساتھ تجدید کیا جاتا ہے۔
 

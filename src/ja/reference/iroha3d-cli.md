@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /reference/iroha3d-cli.md
-translation_source_hash: bf4a63b05a149f0c935190b63cdb838b0a0265e99baedfc9b5bf00a9e621b108
+translation_source_hash: 846370e45fe0e0d605016d6722b1d50c39981f954c7d9040b87fc385eb12ac68
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # `iroha3d` CLI {#iroha3d-cli}
 
 `iroha3d` は標準の Iroha 3 ネットワークピアデーモンです。Cargo パッケージは `irohad` と名前が付けられているので、ソースコードの作業コピーからバイナリを呼び出してください:
@@ -22,7 +21,7 @@ iroha3d_taira --sora \
   --check-config
 ```
 
-標準的な Taira プロファイルのオペレーターがレンダリングした形式を使用してください。チェックインされたテンプレートにはまだデプロイメントのプレースホルダーが含まれています。Taira に対してテストする際に、汎用の Nexus や本番の SoraFS 設定を置き換えないでください。
+標準的な Taira プロファイルのオペレーターがレンダリングした形式を使用してください。チェックインされたテンプレートにはまだデプロイメントのプレースホルダーが含まれています。Taira に対してテストする際に、汎用の SORA Nexus や本番の SoraFS 設定を置き換えないでください。
 
 ## `--config` {#arg-config}
 
@@ -41,14 +40,39 @@ iroha3d_taira --sora \
 
 解決された設定と利用可能なブロックチェーンのジェネシス資料を検証し、その後、ネットワークソケットをバインドせずに終了します。
 
-## 影武者資格印 {#kagemusha-qualification-seals}
+## `--json` {#arg-json}
 
-これらのファイルパスオプションは `--check-config` を必要とし、正規の印章を書き込む前に完全な影武者資格を実行します:
+- **型:** フラグ
+- **必須の併用オプション:** `--check-config`
 
-- `--write-kagemusha-catalog-qualification-seal <PATH>` はカタログに適格です。
-- `--write-kagemusha-validator-qualification-seal <PATH>` は、構成された署名付きプロモーション予約に対してローカルバリデーターを検証します。
+`Ready` または `Pending` の行に代えて、このビルドと設定の互換性に関する値を、一つの Norito JSON オブジェクトとして出力します。
 
-その2つの封印オプションは互いに矛盾しています。
+## `--check-storage` {#arg-check-storage}
+
+- **型:** フラグ
+- **同時に指定できないオプション:** `--check-config`
+
+停止中ノードの Kura ストアと最新のスナップショットを、このビルドのデコーダーで読み取り専用で検査し、結果を一つの Norito JSON オブジェクトとして出力します。失敗時の終了コードはゼロ以外です。検査では Kura ストアのルートロックを取得するため、稼働中のノードが所有するストアは拒否します。ストアを変更せず、実行時専用の秘密情報を開くこともありません。
+
+## `--check-replay` {#arg-check-replay}
+
+- **型:** フラグ
+- **同時に指定できないオプション:** `--check-config`, `--check-storage`
+
+停止中ノードのストアのコピーをこのビルドでリプレイし、結果を一つの Norito JSON オブジェクトとして出力します。コマンドはブロックを一時ディレクトリにコピーし、そこで最新のスナップショットを復元するか、署名済みジェネシスを再実行した後、それ以降のすべてのブロックを再実行します。ブロックが証明済みの結果を再現しない場合や、必要なブロック本体が欠落している場合は、ゼロ以外で終了します。元のストアに書き込むことも、実行時専用の秘密情報を開くこともありません。
+
+## `--require-genesis-inrou-deployment-authority` {#arg-require-genesis-inrou-deployment-authority}
+
+- **型:** アカウント ID
+- **必須の併用オプション:** `--check-config`
+
+オフライン検証時に、対象の署名済みジェネシスを実行した後も、指定された登録済みアカウントが SoraCloud のデプロイ権限を保持していることを要求します。
+
+## `--sumeragi-assert-fresh-key` {#arg-sumeragi-assert-fresh-key}
+
+- **型:** フラグ
+
+今回の起動に限り、ノードの合意形成用の鍵が、このチェーンで過去に一度も署名していないことを表明します。Sumeragi は鍵ごとに安全性記録を保持し、その記録がない場合は、記録の紛失ではないという証拠を得るまで署名しません。このフラグは新しい鍵での初回起動時に一度だけ指定し、データを失った後には決して使用しないでください。
 
 ## `--trace-config` {#arg-trace-config}
 
@@ -83,7 +107,7 @@ ANSI 色の出力を制御する。
 - 種類: 旗
 - 環境: `IROHA_SORA_PROFILE`
 
-SoraFS によって使用される Sora Nexus プロファイル、SoraNet ハンドシェイク、およびマルチレーンコンセンサスを有効にします。Taira ランチャーは常にこのフラグで呼び出されます。
+SoraFS、SoraNet のハンドシェイク、複数レーンの合意形成で使う SORA Nexus プロファイルを有効にします。Taira のランチャーは常にこのフラグ付きで呼び出されます。
 
 ## FastPQ の上書き {#fastpq-overrides}
 
@@ -105,7 +129,7 @@ iroha3d --fastpq-execution-mode gpu \
 
 ## 生成されたヘルプ {#generated-help}
 
-上記のオプションの概要は、現在の`iroha3d`引数定義と照合されています。チェックインされた生成済みヘルプデータのスナップショットは、出所ステータスが保留中の間、意図的に表示されません。チェックアウトの正確なヘルプを確認するには、次のコマンドを実行してください:
+上記のオプション一覧は、固定した Iroha コミットの `iroha3d` 引数定義に基づきます。チェックアウトしたコードの正確なヘルプを確認するには、次を実行してください。
 
 ```shell
 cargo run --locked -p irohad --bin iroha3d -- --help

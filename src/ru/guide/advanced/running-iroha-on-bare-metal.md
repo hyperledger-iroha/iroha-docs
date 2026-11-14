@@ -1,11 +1,10 @@
 ---
 translation_locale: ru
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
+translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Запуск Iroha на «голом железе» {#running-iroha-on-bare-metal}
 
 Используйте этот рабочий процесс, когда вы хотите запускать сетевых узлов прямо на хостах, а не через Docker Compose. Текущая исходная ветка предоставляет генераторы Kagami, которые создают соответствующие файлы genesis блокчейна, конфигурации сетевых узлов, конфигурацию клиента, а также скрипты запуска и остановки.
@@ -32,7 +31,7 @@ cargo build --release \
 Создайте четырёхпировую Iroha 3 локальную сеть:
 
 ```bash
-target/release/kagami localnet --peers 4 --out-dir ./localnet
+target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Каталог вывода содержит сгенерированные файлы `genesis.json`, `genesis.signed.nrt`, узла сети `config.toml`, `client.toml`, вспомогательные скрипты и сгенерированный `README.md` с точными командами для этого пакета.
@@ -52,7 +51,7 @@ target/release/kagami localnet --peers 4 --out-dir ./localnet
 Используйте сгенерированную конфигурацию клиента:
 
 ```bash
-target/release/iroha --config ./localnet/client.toml ledger domain list all
+target/release/iroha --config ./localnet/client.toml ledger domain list --all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 

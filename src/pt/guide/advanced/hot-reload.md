@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 96505bdba910beb902c399004f5cd24f5e5b0773f01df9cdcfdb49d019830d03
+translation_source_hash: d4fd88de377b9c88e0293ed07f307ad38c3f8b05ed898fd051c5bfb738d66681
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Hot Reload Iroha em um Contêiner Docker {#hot-reload-iroha-in-a-docker-container}
 
 Use o recarregamento a quente apenas para depuração local. Para desenvolvimento local normal, prefira reconstruir a imagem ou reiniciar a pilha Docker Compose gerada a partir de um novo pacote Kagami.
@@ -33,7 +32,7 @@ Um par de rede realiza o gênesis da blockchain apenas quando seu armazenamento 
 
 ```bash
 docker compose -f ./docker-compose.yml down
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```

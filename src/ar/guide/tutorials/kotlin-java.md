@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 9388823f782eef86aedbaf141bd251dae39837957aefd224ed0cc97ba11ad97d
+translation_source_hash: f1f922b9820587cd4b599e7407698a47d468616670fee2922e4028147bc3e9b0
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Kotlin، Android، وجافا {#kotlin-android-and-java}
 
 Kotlin SDK هو الكومة الافتراضية للعميل لتطبيقات JVM و Android. يقع تحت `kotlin/` في مستودع Iroha ويتم تقسيمه حسب النظام الأساسي بحيث لا يكتسب الكود القابل للنقل تبعيات Android.
@@ -73,7 +72,7 @@ cd kotlin
 - المعالجة القياسية للحساب والعناوين الأصلية للأصول
 - بناء المعاملة، التوقيع، وحاويات البيانات غير المتصلة بالإنترنت
 - عملاء Torii HTTP، WebSocket، و SSE
-- نماذج التوقيع المتعدد، الاشتراك، SoraFS، Nexus، وConnect
+- نماذج التوقيع المتعدد، الاشتراك، SoraFS، SORA Nexus، وConnect
 - Android تكاملات مخزن المفاتيح وتليمتري الجهاز
 - Android غير متصل QR، بالقرب من، و NFC وسائل النقل
 

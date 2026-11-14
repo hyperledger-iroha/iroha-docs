@@ -20,7 +20,7 @@ translation_engine: nllb-200-ct2
    - [JavaScript / TypeScript](/my/guide/tutorials/javascript.md)
    - [Kotlin, Android နှင့် Java](/my/guide/tutorials/kotlin-java.md)
    - [Swift နှင့် iOS](/my/guide/tutorials/swift.md)
-4. [နမူနာ app များ](/my/guide/tutorials/sample-apps.md) ကို အပြည့်အဝ ဝယ်သူ လျှောက်လွှာ ရည်ညွှန်းချက်လိုတဲ့အခါ ပြန်ကြည့်ပါ။
+4. ပြည့်စုံသော ကလိုင်းယင့်အက်ပ် အကိုးအကားလိုအပ်သည့်အခါ [နမူနာအက်ပ်များ](/my/guide/tutorials/sample-apps.md) ကို လေ့လာပါ။
 5. [Embedded Kaigi](/my/guide/tutorials/kaigi.md) ကို သုံးပြီး သင့်ရဲ့ app ထဲမှာ ပိုက်ဆံအိတ်ကို ထောက်ပံ့ထားတဲ့ အသံ/ဗီဒီယို အစည်းအဝေးတွေ ထည့်ချင်တဲ့အခါမှာ သုံးပါ။
 6. [Musubi ထုတ်ကုန်များ](/my/guide/tutorials/musubi.md) ကို ချိတ်ဆက်ထားသော ကွင်းဆက်ပေါ်က မှတ်ပုံတင် မှီခိုချက်များနှင့်အတူ ပြန်လည်အသုံးပြုနိုင်သော Kotodama အရင်းအမြစ်စာကြည့်တိုက်များလိုအပ်ပါက အသုံးပြုပါ။
 
@@ -39,7 +39,7 @@ SDK စာမျက်နှာအားလုံးက လက်ရှိ Upstr
 - `python/iroha_python`
 - `javascript/iroha_js`
 - `kotlin`
-- `java/iroha_android` (Java Mirror of the Kotlin- ပထမ Android မျက်နှာပြင်)
+- `java/iroha_android` (Kotlin ကို ဦးစားပေးထားသော Android လုပ်ဆောင်ချက်များ၏ Java မိတ္တူ)
 - `IrohaSwift`
 - `crates/musubi`
 

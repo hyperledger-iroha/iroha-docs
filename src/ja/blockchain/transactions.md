@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/transactions.md
-translation_source_hash: 6381e93ada6191d15b11f7359e983e5c3dac49e69323b20da09959d5e04331f9
+translation_source_hash: 91c06ab61c7f8ec96554bc89b31b2f281bb3a7d7edd484defe61dcde5a3fb710
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # 取引 {#transactions}
 
 トランザクションは、ブロックチェーン上で作業を実行するための署名付きリクエストです。実行可能なペイロードは、[指示](./instructions.md) の順序付けられたシーケンス、契約の技術的呼び出し、IVM バイトコード、または証明された IVM 実行である可能性があります。現在の契約実行モデルについては [スマートコントラクト](./smart-contracts.md) を参照してください。
@@ -39,32 +38,30 @@ curl -fsS "https://taira.sora.org/v1/explorer/transactions/$TX_HASH" \
   | jq '{hash, block, status, authority, executable}'
 ```
 
-これはまだ読み取り専用です。トランザクションを送信するには、署名済みの Norito データコンテナ、正しいチェーンID、手数料メタデータ、そしてテストネットで資金が供給された Taira アカウントが必要です。
+ここまでは読み取り専用の操作です。トランザクションの送信には、署名済みの Norito エンベロープ、正しいチェーン ID とネットワーク ID、明示的な手数料支払者、フォーセットから資金を受け取った Taira アカウントが必要です。
 
-手数料支払いの例については、Taira で、テストネット資金提供サービスヘルパーを[Taira でテストネット XOR を入手](/ja/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)から`taira_faucet_claim.py`として保存し、まず公開テストネット資金提供サービスを通じて暗号署名者に資金を提供してください。
+Taira で手数料が発生する例を試すには、[Taira でテストネット XOR を取得する](/ja/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)に記載された、事前準備を伴うフォーセットの手順で署名者に資金を供給し、手数料資産の残高を確認してください。
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-テストネットの資金提供サービスのパズルまたは請求ルートが `502` を返す場合は、トランザクション自体をデバッグする前に待って再試行してください。
+フォーセットの経路が `502` を返した場合は、トランザクション自体を調査する前に、しばらく待って再試行してください。
 
-それから、取引を提出する際に Taira 手数料資産のメタデータを添付してください：
+次に、トランザクションの送信時に手数料支払者を選択します。`--fee-payer authority` を指定すると署名アカウントが支払い、CLI は署名前に Taira の手数料資産で正確な手数料を見積もります。
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg "faucet-funded taira transaction"
+  --fee-payer authority \
+  tx ping --msg "faucet-funded taira transaction"
 ```
 
 ## オフライントランザクション {#offline-transactions}
@@ -72,34 +69,24 @@ iroha --config ./taira.client.toml \
 Iroha には2つのオフライントランザクションワークフローがあります：
 
 - オフライン署名は、署名デバイスが切断されている間に通常の署名済みトランザクションを作成します。このトランザクションは、オンラインクライアントが署名済みデータコンテナを Torii に提出するまで処理されないため、依然として正しいチェーンID、認可プリンシパル、権限、手数料が必要です。およびトランザクションの寿命。
-- 影武者オフラインキャッシュは、ウォレットがオンラインのときにトップアップし、両方のウォレットがオフラインのときでも受信者主導のウォレット間譲渡をサポートし、受信者がオンラインに戻ったときに生成されたノート状態を換金します。
+- **Kagemusha オフライン現金**では、登録済みでハードウェアに保護されたウォレットにオンライン時に価値をロードします。両方のウォレットがオフラインの間もウォレット間で支払いができ、再びオンラインになったときに残りの価値を台帳上のアカウントへアンロードできます。
 
-Torii は、`/v1/offline/*` の下で完全なカゲムシャのライフサイクルを公開します:
+Torii が公開する Kagemusha の経路は `POST /v1/kagemusha/enrollment` の一つです。アカウント認証済みの `application/x-norito` 登録フレームを受け付け、キャッシュしてはならない非公開の応答を返します。このライフサイクルの台帳側の処理では、`KagemushaWalletLedgerV1` 命令を含む通常の署名済みトランザクションを使います。
 
-|メソッドと API エンドポイント|目的|
+| 操作 | 目的 |
 | --- | --- |
-| `GET /v1/offline/readiness` |Kagemusha の準備状況を `asset_definition_id` に対して評価する|
-| `POST /v1/offline/receiver-lineage` |署名付き受信者リクエストの証明保持アクティブ登録系譜を解決する|
-| `POST /v1/offline/top-up` |署名済みのオンラインからオフラインへのチャージ操作を提出する|
-| `POST /v1/offline/redeem` |署名済みのオフライン償還操作を送信する|
-| `GET /v1/offline/operations/{operation_id}` |トップアップまたは償還の正典的地位を読む|
-
-オフライン操作を構築する前に、資産の準備状況を確認してください：
-
-```bash
-curl -fsS --get https://taira.sora.org/v1/offline/readiness \
-  --data-urlencode 'asset_definition_id=<canonical_asset_definition_id>' \
-  | jq '{ready, blockers, artifact_set}'
-```
-
-準備状態はウォレットをアクティブなブリッジ ABI 21および認証済み V4 アーティファクトセットに結び付けます。系統、チャージ、および償還リクエストは型付き`application/x-norito`アーカイブを使用します。チャージおよび償還の戻り値 `202 Accepted` は、操作リソースを指す `Location` ヘッダーを伴う；埋め込まれたゼロでない操作IDが冪等性キーを提供する。
+| `Activate` | 登録済みウォレットを有効にする。ネイティブのブートストラップ検証は必須 |
+| `IssueLoad` | 支払者の残高を引き落とし、ウォレットの次の Load をアトミックに記録する |
+| `Unload` | 完全な Unload 請求に対し、その請求に結び付けられたアカウントへ最大一度だけ支払う |
+| `ClaimFee` | 完全な手数料請求に対し、固定された受益者へ支払う |
+| `Abandon` | 未使用の登録を放棄する |
 
 典型的な流れは次の通りです：
 
-1. 準備状況を確認し、`ready` が false である場合、または何らかのブロッカーが適用される場合は停止してください。
-2. 型付きの Swift または JVM ウォレットを使用して、正規のチャージアーカイブを構築し、提出し、操作が最終的なチェーン状態に達するまで、入力ノートの状態と操作IDの両方を保持してください。
-3. 必要な場合には受信者登録の系統を解決し、各ネットワークピアの引き継ぎをローカルで構築して確認し、転送を承認する前に暗号化されたノートの状態を保持します。
-4. 受信者がオンラインのとき、標準的な引換アーカイブを作成し、提出し、その操作リソースを最終段階までポーリングします。
+1. 型付き API を備えた Swift または Android のウォレットで `/v1/kagemusha/enrollment` を通じて登録し、その後ウォレットを有効にします。
+2. `IssueLoad` トランザクションを送信します。実行時には、次の Load の期待通番と、リクエスト ID がゼロでないことを検査するため、古い要求や内容を変更した再試行は失敗します。応答を受け取れなかった場合は、別の Load に署名せず、元の Load の受領記録を読み取ってください。
+3. 両方のウォレットがオフラインの間に、ローカルで支払いを交換して検証します。各送金の受領を通知する前に、ウォレットの状態を永続化してください。
+4. ウォレットが再びオンラインになったら、Unload 請求を送信してファイナリティを待ちます。
 
 ブロックチェーン台帳は、ノートの状態がオンラインのライフサイクルを通じて戻るまで、矛盾するオフラインの引き渡しを検知することはできません。したがって、ウォレットおよびオペレーターのポリシーは、価値の上限、有効期限、受け入れ可能な発行者、耐久性のあるローカルストレージ、および照合ウィンドウを強制すべきです。
 

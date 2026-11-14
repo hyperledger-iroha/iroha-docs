@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: 4c7c62c23166a19ccc3a6a4bb42d808038d755b8c05e87b9e2ce21fbbe31a6ac
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha 3 をインストールする {#install-iroha-3}
 
 このページでは、上流の`hyperledger-iroha/iroha`ワークスペースを使用した Iroha 3 ツールチェーンとバイナリの現在のインストールワークフローについて説明します。
@@ -64,7 +63,8 @@ cargo run --bin kagami -- --help
 
 現在のソースバック付きローカルネットフローは Kagami によって生成されます。これはネットワークピアの設定、ブロックチェーンのジェネシスアーティファクト、クライアント設定、ヘルパースクリプト、およびチェックアウトされたコードに一致するオプションのComposeファイルを書き込みます:
 
-- `kagami localnet` ネイティブのローカルネットワークピアスクリプト用
+- `kagami localnet up`: Kagami が起動して監視する、管理されたローカルネットワーク用
+- `kagami localnet generate`: ネイティブのローカルピアを実行するスクリプトの生成用
 - Docker Compose のための `kagami docker` がローカルネットディレクトリから生成されました
 
 [Iroha 3 を起動](/ja/get-started/launch-iroha.md)を続けてください。

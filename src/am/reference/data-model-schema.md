@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /reference/data-model-schema.md
-translation_source_hash: cf27b1f313a695b648ae450564a51120af0e3e39641ed140a187d128b930da97
+translation_source_hash: c4f0305c73f9470d1652b70e6787b59de2553a08b6c96603a9369512efbdb1af
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # የውሂብ ሞዴል ንድፍ {#data-model-schema}
 
 የውህደትዎ ዒላማዎች ካደረጉት ትክክለኛ ኖድ መርሃግብሩን ይጠይቁ። Torii ያ ወለል ሲነቃ በ `GET /v1/schema` ላይ የነቃውን የውሂብ-ሞዴል መርሃ ግብር ያገለግላል -
@@ -17,4 +16,4 @@ curl -fsS -H 'Accept: application/json' "$TORII_URL/v1/schema" \
   > iroha-data-model-schema.json
 ```
 
-የመነሻ ሁኔታው በመጠባበቅ ላይ እያለ ከተመዝግቧል ሰነድ ቅንጭብ ማያያዣዎችን አያመነጩ። የቀጥታ ኖድ ምላሽ ለዚያ ኖድ የተጠናቀረ የውሂብ ሞዴል ስልጣን ያለው ነው; . በእርስዎ ውህደት ከሚጠቀመው የኖድ ግንባታ ጎን ለጎን እንዲሰካ ያድርጉት።
+ማሰሪያዎችን ለሌላ ግንባታ ከታተመ ቅጂ ሳይሆን ከዚያው ምላሽ ያመንጩ። የሚሠራው ኖድ ምላሽ ለዚያ ኖድ የተጠናቀረ የውሂብ ሞዴል የታመነ ምንጭ ነው፤ ከውህደትዎ የሚጠቀምበት የኖድ ግንባታ ጋር አብረው ያስቀምጡት።

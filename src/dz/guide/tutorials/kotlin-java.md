@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 9388823f782eef86aedbaf141bd251dae39837957aefd224ed0cc97ba11ad97d
+translation_source_hash: f1f922b9820587cd4b599e7407698a47d468616670fee2922e4028147bc3e9b0
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-supplemental-naming-link
 ---
 # Kotlin, Android དེ་ལས་ Java {#kotlin-android-and-java}
 
@@ -72,7 +72,7 @@ Kotlin SDK འདི་ནང་ལུ་:
 - རྩིས་ཐོ་དང་ རྒྱུ་དངོས་ཀྱི་ཁ་བྱང་ལག་ལེན་
 - ཚོང་འབྲེལ་སྒྲིང་ཁྱིམ་དང་མིང་རྟགས་ དེ་ལས་ ཡོངས་འབྲེལ་མེད་པའི་ཡིག་ཤུབས་ཚུ།
 - Torii HTTP, WebSocket དང་ SSE གྱི་མགྲོན་པ་ཚུ་
-- མང་སྡེ་མཚན་རྟགས་དང་ ཐོ་བཀོད་ SoraFS, Nexus དེ་ལས་ མཐུད་སྦྲེལ བཟོ་རྣམ་ཚུ་ཨིན།
+- མང་སྡེ་མཚན་རྟགས་དང་ ཐོ་བཀོད་ SoraFS, SORA Nexus དེ་ལས་ མཐུད་སྦྲེལ བཟོ་རྣམ་ཚུ་ཨིན།
 - Android ཀི་ཝིན་ཌོ་ར་དང་ སེལ་འཐུ་འབད་ཡོད་པའི་ གློག་ཐག་ར་བ་ཚུ་ གཅིག་སྒྲིལ་འབདཝ་ཨིན།
 - Android ཕྱི་ཁ་ལུ་སྐྱེལ་འདྲེན་འབད་ QR, ཉེ་འདབས་ལུ་སྐྱེལ་འདྲེན་འབད་ནི་དང་ NFC
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: c1aee0c29332bd7c883500e72a1ec7812aebfca13b673e6681788cf4bc5ecbf1
+translation_source_hash: e500328ac93578b9af21b6ef3d01e13e051b1d9a0f6050293e65650da66fbbbb
 translation_status: machine-validated
-translation_engine: bing-translator-llm+claude-opus-5-5
+translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link
 ---
-
 # الحسابات والاسميات المستعارة {#accounts-and-aliases}
 
 ## نتيجة {#outcome}
@@ -163,7 +162,7 @@ fi
 ## المصدر والمستندات ذات الصلة {#source-and-related-docs}
 
 - [تنفيذ عنوان حساب قياسي لبروتوكول واحد عند مراجعة الشيفرة المصدرية المثبتة](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/account/address.rs)
-- [اختبارات الدخان لنقاط نهاية الحسابات في Torii](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/tests/accounts_endpoints.rs) و[اختبارات مسارات الأسماء المستعارة](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/tests/lib_tests/part_2.rs) عند نسخة الشيفرة المصدرية المثبتة
+- [اختبارات التحقق الأولية لنقاط نهاية الحسابات في Torii](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/tests/accounts_endpoints.rs) و[اختبارات مسارات الأسماء المستعارة](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/tests/lib_tests/part_2.rs) عند نسخة الشيفرة المصدرية المثبتة
 - [الحسابات](/ar/blockchain/accounts.md)
 - [أسماء مستعارة لنموذج البيانات](/ar/blockchain/data-model.md#aliases)
 - [قواعد التسمية](/ar/reference/naming.md)

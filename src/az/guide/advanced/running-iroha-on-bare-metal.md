@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
+translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Bare Metal-də Iroha işlətmək {#running-iroha-on-bare-metal}
 
 Bu iş axınından istifadə edin, əgər şəbəkə yoldaşlarını Docker Compose vasitəsilə deyil, birbaşa hostlarda işlətmək istəyirsinizsə. Mövcud mənbə ağacı Kagami generatorları təqdim edir ki, bunlar uyğun blockchain genesis, şəbəkə yoldaşı konfiqurasiyaları, müştəri konfiqurasiyası və başlatmaq/dayandırmaq skriptlərini yaradır.
@@ -32,7 +31,7 @@ Bu nəticə verir:
 Dörd iştirakçıdan ibarət Iroha 3 yerli şəbəkəsi yaradın:
 
 ```bash
-target/release/kagami localnet --peers 4 --out-dir ./localnet
+target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Çıxış qovluğu yaradılmış `genesis.json`, `genesis.signed.nrt`, şəbəkə həmrəyliyi `config.toml` fayllarını, `client.toml`, köməkçi skriptləri və həmin paket üçün dəqiq əmrləri olan yaradılmış `README.md` ehtiva edir.
@@ -52,7 +51,7 @@ Yaradılmış birdəfəlik yerli şəbəkə üçün, yaradılmış skriptdən is
 Yaradılmış müştəri konfiqurasiyasından istifadə edin:
 
 ```bash
-target/release/iroha --config ./localnet/client.toml ledger domain list all
+target/release/iroha --config ./localnet/client.toml ledger domain list --all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 

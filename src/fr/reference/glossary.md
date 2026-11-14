@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /reference/glossary.md
-translation_source_hash: ab484310e7e0b0662c1d4bb133e7ae337c71b09b5fdc8e678581234d74ee9b29
+translation_source_hash: 8b00758b5731a2f9e09a5b49ccb7f298229ab966b5adf2d7152e3b1416fe8737
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
-
 # Glossaire <!-- omit in toc --> {#glossary}
 
 Ici, vous pouvez trouver des définitions de toutes les entités liées à Iroha.
@@ -42,7 +41,7 @@ Pendant le Moyen Âge, les registres de la blockchain étaient ouverts à la con
 
 ## pair réseau {#peer}
 
-Un pair réseau dans Iroha signifie une instance de processus Iroha à laquelle d'autres processus Iroha et applications clientes peuvent se connecter. Une seule machine peut héberger plusieurs pairs réseau Iroha. Les pairs du réseau sont égaux en ce qui concerne leurs ressources et leurs capacités, avec une exception importante : un seul des pairs du réseau exécute le bloc de genèse de la blockchain lors de l'étape de démarrage du réseau Iroha.
+Un pair est un processus de nœud Iroha qui accepte les connexions d’autres pairs et d’applications clientes. Une machine peut héberger plusieurs pairs, chacun ayant sa propre configuration et son propre stockage. Chaque pair qui démarre le consensus à partir d’un état vide authentifie et applique la genèse signée du réseau ; les pairs restaurés à partir d’instantanés authentifiés reprennent à partir de cet état.
 
 D'autres blockchains peuvent se référer au même concept en tant que nœud ou validateur.
 
@@ -92,7 +91,7 @@ Le module Iroha responsable du consensus.
 
 ### Torii (Porte) {#torii-gate}
 
-Module avec la logique de gestion des requêtes entrantes pour le [pair réseau](#peer). Il est utilisé pour recevoir, accepter et acheminer les instructions entrantes, ainsi que les requêtes HTTP, ainsi que les mises à jour de configuration en temps réel.
+Module contenant la logique de traitement des requêtes entrantes du [pair](#peer). Il reçoit, accepte et achemine les instructions entrantes et les requêtes HTTP, et permet à l’opérateur d’inspecter la configuration.
 
 ### Kura (Entrepôt) {#kura-warehouse}
 
@@ -116,7 +115,7 @@ Un type d'événement qui permet d'invoquer une instruction spéciale Iroha lors
 
 ### Gestion des versions {#versioning}
 
-Chaque requête porte la version d’API à laquelle elle appartient. Différentes versions binaires des logiciels clients et pairs d’Iroha peuvent ainsi interopérer, ce qui permet de mettre à niveau le logiciel au sein du réseau Iroha.
+La première version d’Iroha 3 prend en charge une seule version canonique du format de transmission des blocs. Le point d’accès `/v1/api/version` renvoie `SignedBlock::WIRE_VERSION` après l’application de la genèse et une réponse d’indisponibilité avant celle-ci. Il indique le format de transmission pris en charge ; il ne négocie pas la compatibilité entre des dispositions de protocole différentes et n’autorise pas une mise à niveau du réseau.
 
 ### Hijiri (système de réputation des pairs du réseau) {#hijiri-peer-reputation-system}
 
@@ -160,4 +159,4 @@ Représentation en mémoire de l'état actuel de la blockchain. Le WSV contient 
 
 ## Leader {#leader}
 
-Dans un réseau Iroha, un pair du réseau est sélectionné au hasard et reçoit le privilège spécial de former le bloc suivant. Ce privilège peut être révoqué dans les réseaux qui atteignent [Tolérance aux fautes byzantines](#byzantine-fault-tolerance-bft) via [changer de vue](#view-change).
+Pour chaque hauteur et chaque vue, Sumeragi détermine le proposant de façon déterministe à partir du comité, de la graine authentifiée de sélection du leader et de l’historique validé des leaders ignorés. Un [changement de vue](#view-change) passe au prochain membre admissible du comité selon les mêmes règles de [tolérance aux fautes byzantines](#byzantine-fault-tolerance-bft).

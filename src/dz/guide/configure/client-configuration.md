@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /guide/configure/client-configuration.md
-translation_source_hash: 6da8a0abddc9723b16477a935a3953ebd497300f02eadd635e4e38027a11d095
+translation_source_hash: b3cfc8d8bf51a43b88cefb5ac7fe641717b347f7c89d983bf4c2de80944f1bb8
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # ཞི་གཡོགཔ་ཚུ་ གཞི་སྒྲིག་འབདཝ་ཨིན། {#client-configuration}
 
@@ -17,22 +17,24 @@ Iroha CLI དང་ SDK མཁོ་སྤྲོད་འབད་མི་ཚ�
 
 ## གཞི་རྟེན་ས་ཁོངས་ཚུ་ {#core-fields}
 
-ཁྱོད་ཀྱིས་ Torii མཐའ་མཇུག་གི་སྒོ་སྒྲིག་དང་མིང་རྟགས་བཀོད་པའི་རྩིས་ཐོ་ཚུ་ ངེས་པར་དུ་ལག་ལེན་ཅན་གྱི་ཡིག་སྣོད་ནང་བཙུགས་དགོཔ་ཨིན།
+མཁོ་མངགས་པའི་རིམ་སྒྲིག་ནང་ཉུང་མཐའ་ལུ་ སྡེབ་ཐག་ དེའི་དྲ་ལམ་ངོ་རྟགས་ Torii མཐའ་མཚམས་ རྩིས་ཐོའི་དྲ་ལམ་སྐབས་དོན་ དང་མིང་རྟགས་ཀྱི་ལྡེ་མིག་ངོས་འཛིན་འབད་དགོ།
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000000"
-torii_url = "http://127.0.0.1:8080"
+network_id = "hash:32C903E5B3497E34C2B844EBFE8A39C19E6CF8F95D44C1FFB8BA9DCB42F91149#A2F0"
+torii_url = "http://127.0.0.1:8080/"
 
 [account]
-domain = "wonderland.universal"
+chain_discriminant = 753
 public_key = "ed0120..."
 private_key = "802620..."
 ```
 
 - `chain` གིས་ བཙུགས་ཡོད་པའི་ཚོང་འབྲེལ་ཚུ་ ག་ལུ་ཚུདཔ་ཨིན་ན་ རིམ་སྒྲིག་འདི་སེལ་འཐུ་འབདཝ་ཨིན།
+- `network_id` འདི་ འགོ་ཐོག་གནས་སྟངས་ལས་བཏོན་པའི་དྲ་ལམ་ངོ་རྟགས་ཨིནམ་དང་ མིང་རྟགས་ཅན་གྱི་ཞུ་བ་རེ་རེ་འདི་ལུ་བཅིངསཔ་ཨིན། `network_id` ཡང་ན་ `network_id_file` གཅིག་རྐྱངམ་ཅིག་རིམ་སྒྲིག་འབད། མཐུད་གནས་ཀྱིས་གནས་གོང་འདི་ `GET /v1/accounts/capabilities` ལུ་ཁྱབ་བསྒྲགས་འབདཝ་ཨིན།
 - `torii_url` མཐུད་མཚམས་གི་ཐིག་ཚད་ Torii HTTP API
-- `[account].domain` འདི་ CLI མགྱོགས་ཐབས་དང་ཁ་བྱང་-སེལ་འཐུ་འབད་མི་ཨེན་ཀོ་ཌིང་གིས་ལག་ལེན་འཐབ་ཨིན། ཁྲིམས་ལུགས་ `AccountId` དེ་རང་ མངའ་ཁོངས་མེདཔ་ཨིན།
-- `[account].public_key` དང་ `[account].private_key` མིང་རྟགས་ཚོང་འབྲེལ་ཚུ།
+- `[account].chain_discriminant` གིས་དྲ་ལམ་གྱི་ I105 རྩིས་ཐོའི་སྔོན་འཇུག་གདམ་ཁ་རྐྱབཔ་ཨིན། མི་མང་དྲ་ལམ་ཚུ་གིས་དེའི་ཚབ་ལུ་ `[account].profile = "taira"` ཡང་ན་ `"minamoto"` ལག་ལེན་འཐབ་ཚུགས། གཉིས་ལས་གཅིག་དགོཔ་ཨིནམ་དང་ ཚད་ལྡན་ `AccountId` རང་ལུ་མངའ་ཁོངས་མེད།
+- `[account].public_key` དང་ `[account].private_key` གིས་ཚོང་འབྲེལ་ལུ་མིང་རྟགས་བཀོདཔ་ཨིན། `private_key_file` གིས་ `private_key` གི་ཚབ་འབད་ཚུགས།
 
 རྩིས་ཐོ་འདི་ ཧེ་མ་ལས་རང་ རིམ་སྒྲིག་ནང་ཡོདཔ་དགོ། སྔོན་སྒྲིག་ཉེ་གནས་ཡོངས་འབྲེལ་གྱི་དོན་ལུ་ འ་ནི་འདི་ བང་སྒྲིག་འབད་ཡོད་པའི་རིགས་མཚན་གསལ་སྟོན་གྱིས་ འཛིན་སྐྱོང་འཐབ་ཨིན།
 
@@ -69,25 +71,25 @@ nonce = false
 
 ## ཤོག་སྒྲིལ་ གཞི་སྒྲིག་ཚུ་མཐུད་སྦྲེལ་འབད་ {#connect-queue-settings}
 
-ད་ལྟོའི་ Iroha ཞབས་ཏོག་ལེན་མི་ཚུ་གིས་ ས་གནས་ཀྱི་གྲལ་ཐིག་གནས་སྟངས་ཀྱི་དོན་ལུ་ གདམ་ཁ་ཅན་གྱི་ `[connect]` དོན་ཚན་ཡང་ལག་ལེན་འཐབ་ཚུགས།
+`iroha` CLI གིས་ ཉེ་གནས་གྲལ་རིམ་གནས་སྟངས་དོན་ལུ་ གདམ་ཁ་ཅན་གྱི་ `[connect]` དབྱེ་ཚན་ཡང་ལྷགཔ་ཨིན། བསྐྱར་སྤྱོད་བཏུབ་པའི་ SDK རིམ་སྒྲིག་གིས་འདི་ངོས་ལེན་མི་འབད།
 
 ```toml
 [connect]
 queue_root = "./queue"
 ```
 
-ལཱ་གི་རྒྱུན་རིམ་ཅིག་ལུ་ ཐུབ་ཚད་ཅན་གྱི་ མཁོ་སྤྲོད་ཕྱོགས་ཀྱི་གྲལ་ཐིག་གསོག་འཇོག་དགོཔ་ད་ འདི་ལག་ལེན་འཐབ།
+ལས་རིམ་ཅིག་ལུ་ མཁོ་མངགས་པའི་ཕྱོགས་ནང་བརྟན་ཏོག་ཏོ་སྦེ་གྲལ་རིམ་བསགས་དགོ་པའི་སྐབས་འདི་ལག་ལེན་འཐབ། `connect.queue_root` གི་སྔོན་སྒྲིག་འདི་ `~/.iroha/connect` ཨིན། འབྲེལ་ལམ་ཅིག་འདི་ མཁོ་མངགས་པའི་ TOML ཡིག་སྣོད་ཡོད་པའི་སྣོད་ཐོ་ལས་ཐག་བཅདཔ་ཨིན།
 
 ## སྒྲིག་གཞི་བཟོ་ཐབས། {#generating-configurations}
 
 ཐོ་བཀོད་འབད་བཏུབ་པའི་ ས་གནས་ཁ་ཐུག་གི་དྲ་རྒྱ་ཚུ་གི་དོན་ལུ་ Kagami གདམ་ཁ་རྐྱབས། ག་ཅི་སྨོ་ཟེར་བ་ཅིན་ འདི་གིས་ Iroha 3 སྒྲིག་གཞི་ཚུ་དང་ འགོ་ཐོག, ཡིག་ཚུགས་ལས་རིམ་ཚུ དེ་ལས་ README འདི་མཉམ་བསྡུར་རྐྱབ་དོ་ཡོདཔ་:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 བཟོ་སྐྲུན་འབད་མི་ `./localnet/client.toml` འདི་ CLI དང་གཅིག་ཁར་ལག་ལེན་འཐབ་དགོ།
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```

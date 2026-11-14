@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # ကိုက်ညီမှု Matrix {#compatibility-matrix}
 
-ကိုက်ညီမှု မေထရစ်က Cross-SDK လက်ရှိအခြေအနေအတွက် စင်္ကြန်အကာအကွယ် Iroha 3 Docs set ကို default အနေနဲ့ စာမျက်နှာက pinned ကနေထုတ်လုပ်ထားတဲ့ bundled point-in-time data view ကို load လုပ်ပေးပါတယ်။ [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) ပြင်ဆင်ခြင်း။
+ကိုက်ညီမှုဇယားသည် လက်ရှိ Iroha 3 စာတမ်းအစုအတွက် SDK များအကြား စမ်းသပ်အခြေအနေများ၏ လွှမ်းခြုံမှုကို ပြသည်။ မူလသတ်မှတ်ချက်အရ စာမျက်နှာသည် သတ်မှတ်ထားသော [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) ရင်းမြစ်ဗားရှင်းမှ ထုတ်လုပ်ပြီး အတူထည့်ပေးထားသည့် အခြေအနေမိတ္တူကို ဖွင့်တင်သည်။
 
 Matrix က အောက်ပါအတိုင်း ပါဝင်ပါတယ်။
 

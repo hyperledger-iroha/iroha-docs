@@ -1,11 +1,10 @@
 ---
 translation_locale: mn
 translation_source: /reference/genesis.md
-translation_source_hash: 8215489720e1bc2fc3b7c22c4cb2f8f7b1f0f15d1df4a4f596ee3caa2c6b7829
+translation_source_hash: 340921f59a6f8788f559190d520f046ea2473d65154f57a1c54212840c027bc0
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # блокчэйн үүсгэж эхлэх лавлагаа {#genesis-reference}
 
 Одоогийн Iroha 3 ажлын урсгалд, `genesis.json` техникийн тайлан нь сүлжээ эхлэхэд анх хэрэглэгдэх гүйлгээ болон параметрүүдийг тодорхойлдог.
@@ -17,11 +16,13 @@ translation_engine: bing-translator-llm
 Блокчэйн үүсгэлийн техникийн баримт бичиг дараах зүйлийг тодорхойлж болно:
 
 - `chain` гинжийн таних тэмдгийн хувьд
+- манифест дэх дансны бичлэгийг кодлох I105 сүлжээний угтварт `chain_discriminant`
 - `executor` сонголтоор гүйцэтгэгчийг шинэчлэх баайт код замын хувьд
 - `ivm_dir` нь тригер ба шинэчлэлтүүдэд ашиглагддаг IVM сангууд
 - `consensus_mode` техникийн тайлбарласан анхны горимд зориулагдсан
 - `transactions` захиалгат параметрийн шинэчлэл, заавар, триггер болон топологийн хувьд
-- `crypto` анхны крипто цаг хугацааны төлөв байдалтай мэдээллийн харагдацад
+- гарын үсэгтэй Sumeragi өндөр бүрийн нөхцөлийн параметрт `sumeragi_context`
+- сүлжээний зөвшөөрөх, `allowed_algorithms`-д жагсаасан яг гарын үсэг болон хянагчийн алгоритмуудад `crypto_admission_policy`
 
 `transactions` дотор топологи оруулгууд сүлжээний хамилагчийн ID болон PoPs-ийг хослуулдаг:
 
@@ -34,16 +35,17 @@ translation_engine: bing-translator-llm
 
 ## Техникийн тунхаглал үүсгэх {#generate-a-manifest}
 
-Загварыг үүсгэхийн тулд Kagami ашигла:
+Kagami ашиглан загвар үүсгэнэ. Зөвшөөрөх алгоритм бүрд `--allowed-signing`-ийг өсөх каноник дарааллаар давтана; Kagami орхисон алгоритмыг өөрөө нэмэхгүй:
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
   --consensus-mode npos \
   --ivm-dir defaults \
-  --genesis-public-key <PUBLIC_KEY> > genesis.json
+  --genesis-public-key <PUBLIC_KEY> \
+  --allowed-signing ed25519 > genesis.json
 ```
 
-Нийтийн SORA Nexus датaспэйсийн хувьд, `npos` нь хүлээгдэж буй зөвшлөлттэй горим юм. Бусад Iroha 3 байрлуулалтууд нь зорьсон профайлд нийцүүлэн зөвшөөрөлтэй эсвэл NPoS-г ашиглаж болно.
+Нийтэд нээлттэй SORA Nexus өгөгдлийн орон зайд хүлээгдэж буй зөвшилцлийн горим нь `npos`. Бусад Iroha 3 байршуулалт зорилтот профайлаас хамааран зөвшөөрөлтэй горим эсвэл NPoS ашиглаж болно.
 
 ## Техникийн үзүүлэнг гарын үсэг зурах {#sign-the-manifest}
 
@@ -59,12 +61,13 @@ cargo run -p iroha_kagami -- genesis sign genesis.json \
 
 ## `iroha3d`-г тохируулах {#configure-iroha3d}
 
-Демонг гарын үсэгтэй блокчэйн үүсгэлийн блок руу чиглүүл:
+Үйлчилгээний процесст гарын үсэгтэй эхлэл блок болон хүлээгдэж буй хэшийг нь тогтоосон файлыг заана. `kagami genesis sign --expected-hash-out` тэр файлыг бичих бөгөөд зангилаа анхны болон дахин эхлүүлэхэд үүнийг шаарддаг:
 
 ```toml
 [genesis]
 file = "genesis.signed.nrt"
 public_key = "<PUBLIC_KEY>"
+expected_hash_file = "genesis.expected_hash"
 ```
 
 ## Холбогдсон хэрэгслүүд {#related-tools}
@@ -72,7 +75,7 @@ public_key = "<PUBLIC_KEY>"
 - `kagami genesis validate`
 - `kagami genesis normalize`
 - `kagami genesis embed-pop`
-- `kagami localnet`
+- `kagami localnet generate`
 - `cargo xtask kagami-profiles`
 
 Генераторыг хэрэгжүүлэх ба командын дэлгэрэнгүй мэдээллийг [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami/README.md)-аас харна уу.

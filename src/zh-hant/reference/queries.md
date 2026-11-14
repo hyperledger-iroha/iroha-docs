@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # 查詢 {#queries}
 
 Iroha 查詢可讀取分類帳狀態而不加以變更。目前的資料模型公開兩種主要查詢形式：
@@ -86,7 +85,7 @@ Iroha 查詢可讀取分類帳狀態而不加以變更。目前的資料模型�
 | `FindProofRecordsByBackend` | 列出某證明後端的證明記錄。 |
 | `FindProofRecordsByStatus` | 依狀態列出證明記錄。 |
 
-## Nexus、資料可用性與套件 {#nexus-data-availability-and-packages}
+## SORA Nexus、資料可用性與套件 {#nexus-data-availability-and-packages}
 
 | 查詢 | 用途 |
 | --- | --- |

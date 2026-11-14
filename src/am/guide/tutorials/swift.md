@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
+translation_source_hash: 37e8be9b07a40e5c6b841a47b016320e42079853433fb3e53937e4021dc1304f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Swift እና iOS {#swift-and-ios}
 
 በላይኛው የስራ ቦታ የተላከው Swift SDK በ`IrohaSwift/` ስር ያለው `IrohaSwift` Swift ጥቅል ነው። የእሱ ጥቅል ቴክኒካል ማኒፌስት ሶስት የቤተ-መጽሐፍት ምርቶችን ይገልፃል - `IrohaSwift`፣ `IrohaSwiftMobileTransports` እና `IrohaSwiftTransferUI` - እና iOS 15+ እና macOS 12+ በ Swift መሳሪያዎች 5.9 ያነጣጠረ ነው።
@@ -65,7 +64,7 @@ if #available(iOS 15.0, macOS 12.0, *) {
 
 ## ይሞክሩ Taira ተነባቢ-ብቻ {#try-taira-read-only}
 
-መሳሪያው ወይም አስመሳዩ ለህዝብ Taira API የመጨረሻ ነጥብ መድረስ መቻሉን ለማረጋገጥ በግልጽ HTTP ምርመራ ይጀምሩ -
+መሳሪያው ወይም አስመሳዩ ለህዝብ Taira የመጨረሻ ነጥብ መድረስ መቻሉን ለማረጋገጥ በግልጽ HTTP ምርመራ ይጀምሩ -
 
 ```swift
 import Foundation
@@ -161,7 +160,7 @@ let keyPair = try ConnectCrypto.generateKeyPair()
 - Ed25519፣ secp256k1፣ ML-DSA፣ BLS፣ GOST እና SM2 ፊርማ ቦታዎች፣ አስፈላጊ ሆኖ ሲገኝ ቤተኛ ድልድይ ድጋፍ
 - ቤተኛ escrow መመሪያ ጭነት ግንበኞች ለገበያ ቦታ እና ስም-አልባ escrow
 - WebSocket፣ ፍሬም፣ ክሪፕቶ፣ ክፍለ ጊዜ፣ ወረፋ፣ ድጋሚ ማጫወት እና የምርመራ አጋዥዎችን ያገናኙ
-- የካጌሙሻ ዝግጁነት፣ የተተየበ መሙላት እና መቤዠት፣ የክወና ሁኔታ፣ ማስታወሻ፣ የአውታረ መረብ አቻ ጥቅል፣ የደረሰኝ እና QR የዥረት ሞዴሎች
+- የKAGEMUSHA V1 የሽቦ ቅርጽ ረዳቶች እና ለናቲቭ ቦርሳ Advance አቅራቢ፣ ምዝገባ፣ መልሶ ማግኛ እና ለተፈቀዱ የልውውጥ ጥሪዎች የiPhone መድረክ አስማሚ
 - SoraFS፣ የውሂብ ተገኝነት እና ማረጋገጫ-አባሪ ረዳቶች
 
 ## API ምሳሌዎች {#api-examples}

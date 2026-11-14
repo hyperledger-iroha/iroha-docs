@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: ca6fd12e33df43b73a72dd6327133115aa44256cf579387c11bf0693797bf96e
+translation_source_hash: f1d7f1e54fa01550ad5de65b18a725bc98452dcff8f9c08ebe427fb5ae857968
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+claude-opus-5-5
+translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link
 ---
-
 # Аҡыллы килешеү төҙөү һәм уны ҡулланыу {#build-and-deploy-a-smart-contract}
 
 ## Һөҙөмтә {#outcome}
@@ -202,7 +201,7 @@ jq -e '.ok == true and .result == ["3", "5"]' \
 
 - [Kotodama V1 командаһының ҡуйылған commit-тағы тормошҡа ашырылышы](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_toolchain/src/bin/koto.rs)
 - [Тупль кире ҡайтарыу сығанағы өлгөһө ҡуйылған commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
-- Ҡуйылған commit-тағы [Musubi урынлаштырыу командаһы](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/musubi/src/command_deploy.rs) һәм [Iroha-ның үҙ килешеү урынлаштырыу хеҙмәте](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_contract_deploy/src/lib.rs)
+- Беркетелгән коммиттағы [Musubi урынлаштырыу командаһы](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/musubi/src/command_deploy.rs) һәм [платформаға индерелгән контракт урынлаштырыу хеҙмәте](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_contract_deploy/src/lib.rs)
 - [Контрактлы интеграция һынауҙары ҡуйылған commit буйынса](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/contracts.rs)
 - [Аҡыллы килешеүҙәр](/ba/blockchain/smart-contracts.md)
 - [CLI ссылка](/ba/get-started/operate-iroha-via-cli.md)

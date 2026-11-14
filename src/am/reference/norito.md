@@ -1,16 +1,15 @@
 ---
 translation_locale: am
 translation_source: /reference/norito.md
-translation_source_hash: 810f4378316f4717dee1be4aeffb07e27e81e47735e8031edff775818a48bf48
+translation_source_hash: 0446444ac147b80efcf1d0d07610ad7c81e6f02fb308fe032b8f213afe15bc74
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Norito {#norito}
 
 Norito የ Iroha ነጠላ ፕሮቶኮል-መደበኛ ተከታታይ ንብርብር ነው።. የአውታረ መረብ እኩዮች፣ SDKs፣ CLI መሳሪያዎች፣ Torii፣ Kura እና የተፈጠሩ አርቲፋክቶች በትክክል በተመሳሳይ ጭነት ላይ መስማማት ሲፈልጉ ጥቅም ላይ የሚውለው የባይት ቅርጸት ነው።
 
-ውሂቡ የመግባባት፣ የመፈረም፣ የሃሺንግ፣ ጽናት ወይም የመስቀል-SDK መስተጋብር አካል ሲሆን Norito ን ይጠቀሙ። API የመጨረሻ ነጥብ ለኦፕሬተሮች፣ ዳሽቦርዶች ወይም ፈጣን ማረም በሰው ሊነበብ የሚችል ትንበያ በግልፅ ሲያቀርብ JSON ን ይጠቀሙ።
+ውሂቡ የመግባባት፣ የመፈረም፣ የሃሺንግ፣ ጽናት ወይም የመስቀል-SDK መስተጋብር አካል ሲሆን Norito ን ይጠቀሙ። የመጨረሻ ነጥብ ለኦፕሬተሮች፣ ዳሽቦርዶች ወይም ፈጣን ማረም በሰው ሊነበብ የሚችል ትንበያ በግልፅ ሲያቀርብ JSON ን ይጠቀሙ።
 
 ## Norito የት እንደሚታይ {#where-norito-appears}
 
@@ -18,10 +17,10 @@ Norito የ Iroha ነጠላ ፕሮቶኮል-መደበኛ ተከታታይ ንብ�
 | --- | --- |
 |ግብይቶች እና መጠይቆች|በ Torii በኩል የቀረቡት የተፈረሙ ግብይቶች እና የጥያቄ ጭነቶች እንደ Norito ተቀምጠዋል።|
 |blockchain ጀነሲስ|`kagami genesis sign` የአውታረ መረብ እኩዮች በሚነሳበት ጊዜ የሚጭኑትን የተፈረመ `.nrt` ብሎክ ያዘጋጃል።|
-|Torii የተተየቡ ምላሾች|API የተተየቡ ሁለትዮሽ ምላሾችን የሚደግፉ የመጨረሻ ነጥቦች `Accept: application/x-norito` ይጠቀማሉ።|
+|Torii የተተየቡ ምላሾች|የተተየቡ ሁለትዮሽ ምላሾችን የሚደግፉ የመጨረሻ ነጥቦች `Accept: application/x-norito` ይጠቀማሉ።|
 |SDKs|Rust፣ Python፣ JavaScript፣ Kotlin/ጃቫ፣ Swift እና Android ደንበኞች በእጅ ከተሰበሰቡ ባይቶች ይልቅ Norito ግንበኞችን ወይም ማሰሪያዎችን ይጠቀማሉ።|
 |Kura ማከማቻ|የብሎክ ጭነቶች፣ የመልሶ ማግኛ ረዳት መዝገቦች፣ ዝርዝሮች እና የብሎክ-ማጠናቀቂያ ማርከሮች እንደ Norito ፍሬም ውሂብ ተከማችተዋል።|
-|የቴክኒክ መገለጫዎች|Nexus፣ የውሂብ መገኘት፣ SoraFS፣ ዥረት እና መተግበሪያን የሚመለከቱ ቴክኒካል ማኒፌሰሮች ቴክኒካል ማኒፌስት መፈረም ወይም ሃሽ መሆን ሲኖርበት Norito ይጠቀማሉ።|
+|የቴክኒክ መገለጫዎች|SORA Nexus፣ የውሂብ መገኘት፣ SoraFS፣ ዥረት እና መተግበሪያን የሚመለከቱ ቴክኒካል ማኒፌሰሮች ቴክኒካል ማኒፌስት መፈረም ወይም ሃሽ መሆን ሲኖርበት Norito ይጠቀማሉ።|
 |በዥረት መልቀቅ|Norito በዥረት መልቀቅ Norito ቴክኒካዊ መግለጫዎችን፣ የክፍል ራስጌዎችን፣ የመቆጣጠሪያ ፍሬሞችን እና የተስማሚነት መገልገያዎችን ይጠቀማል።|
 
 Norito ብልጥ የኮንትራት ቋንቋ አይደለም።. ግብይቶችን፣ የኮንትራት ጥሪዎችን፣ ቴክኒካል ማኒፌስቶችን እና የተተየቡ API ጭነቶችን የሚሸከመው ዲተርሚኒስቲክ የውሂብ መያዣ እና ኮዴክ ነው።
@@ -96,7 +95,7 @@ Norito አመክንዮአዊ ጭነቱን ሳይቀይሩ ግልጽ እና የ�
 
 ## JSON አማርኛ {#json-support}
 
-Norito የአገሬው ተወላጅ ያካትታል JSON ቁልል ለ API የሚያስፈልጋቸው የመጨረሻ ነጥቦች እና መሳሪያዎች JSON ሳይለቁ Norito ዓይነት ስርዓት.
+Norito የአገሬው ተወላጅ ያካትታል JSON ቁልል ለ የሚያስፈልጋቸው የመጨረሻ ነጥቦች እና መሳሪያዎች JSON ሳይለቁ Norito ዓይነት ስርዓት.
 
 |JSON ባህሪ|ጉዳይ ተጠቀም|
 | --- | --- |
@@ -152,14 +151,14 @@ Iroha ወይንም SDK ማሰሪያዎችን ከምንጩ ሲገነቡ Norito �
 
 Torii ለብዙ ኦፕሬተር መስመሮች JSON ን ያጋልጣል፣ ነገር ግን የተተየቡ ሁለትዮሽ መስመሮች Norito ይጠቀማሉ። ለአሁኑ የተተየቡ Norito HTTP አካላት የሚዲያ አይነት `application/x-norito` ነው።
 
-API የመጨረሻ ነጥብ ሲቀበል ወይም ሲመልስ እነዚህን ራስጌዎች ይጠቀሙ Norito
+የመጨረሻ ነጥብ ሲቀበል ወይም ሲመልስ እነዚህን ራስጌዎች ይጠቀሙ Norito
 
 ```http
 Content-Type: application/x-norito
 Accept: application/x-norito
 ```
 
-የ API የመጨረሻ ነጥብ ሁለቱንም ውክልናዎች ሲደግፍ ደንበኞች ግልጽ የሆነ የምርጫ ዝርዝር መላክ ይችላሉ -
+የ የመጨረሻ ነጥብ ሁለቱንም ውክልናዎች ሲደግፍ ደንበኞች ግልጽ የሆነ የምርጫ ዝርዝር መላክ ይችላሉ -
 
 ```http
 Accept: application/x-norito, application/json
@@ -192,12 +191,12 @@ Norito በዥረት መልቀቅ ለሚዲያ እና ለእውነተኛ ጊዜ �
 - የመርሃግብር አለመመጣጠን እንደ ስሪት ወይም የሙከራ አብነት ችግር ይያዙት እንጂ እንደ ጊዜያዊ የአውታረ መረብ ውድቀት አይደለም።
 - ማህደር `.nrt`፣ `.norito` እና ቴክኒካል አንጸባራቂ አርቲፋክቶች በተለቀቀው ወይም በክስተት ጥቅል ውስጥ።
 - ለተፈረመ፣ ለተስተካከለ ወይም ለቀጣይነት ያለው ውሂብ Norito ን እንደ የእውነት ምንጭ ይጠቀሙ። ለዳሽቦርዶች እና በእጅ ፍተሻ JSON ትንበያዎችን ይጠቀሙ።
-- አዲስ የተተየበ Torii API የመጨረሻ ነጥብ ሲጨምሩ JSON፣ Norito ወይም ሁለቱንም ይቀበላል እና በ`/openapi.json` ውስጥ የሚደገፉትን የይዘት አይነቶች ያጋልጡ።
+- አዲስ የተተየበ Torii የመጨረሻ ነጥብ ሲጨምሩ JSON፣ Norito ወይም ሁለቱንም ይቀበላል እና በ`/openapi.json` ውስጥ የሚደገፉትን የይዘት አይነቶች ያጋልጡ።
 - አፋጣኝ ከማንቃትዎ በፊት በስካላር ውፅዓት ላይ የእኩልነት ሙከራዎችን ያሂዱ። አፋጣኝ ካልተሳካ፣ ዲተርሚኒስቲክ የሆነውን ስካላር ተተኪ አማራጭ ይጠቀሙ። ጭነት ትርጓሜ ሳይለወጥ መቆየት አለበት።
 
 ## ተዛማጅ ገጾች {#related-pages}
 
-- [Torii API የመጨረሻ ነጥቦች](/am/reference/torii-endpoints.md)
+- [Torii የመጨረሻ ነጥቦች](/am/reference/torii-endpoints.md)
 - [የብሎክቼይን ጀነሲስ ማጣቀሻ](/am/reference/genesis.md)
 - [የውሂብ ሞዴል ንድፍ](/am/reference/data-model-schema.md)
 - [JavaScript / TypeScript SDK](/am/guide/tutorials/javascript.md)

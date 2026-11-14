@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /guide/best-practices/application-development.md
-translation_source_hash: f95261b0416abfcd87881135ceb9b604a1cdde2dd1afc79fecf9c113a256a8c7
+translation_source_hash: 045e2819368106c5da6ee47610c59a3500db312f4901108c0d9e36a027a50a95
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-title-amendment
 ---
-
 # アプリケーション開発 {#application-development}
 
 Iroha アプリケーションは、トランザクションの挙動を明確にし、署名の状態を閉じた状態に保ち、クエリやイベントを本番環境で観察しやすい方法で使用する必要があります。
@@ -13,7 +12,7 @@ Iroha アプリケーションは、トランザクションの挙動を明確�
 ## クライアント設定 {#client-setup}
 
 - アプリケーションのソースコードの外部にクライアント設定を保存します。チェーンID、Torii URL、署名アカウント、およびトランザクション設定を環境別の設定から読み込みます。
-- ローカルネット、Taira、Minamoto、およびプライベートネットワーク用の`client.toml`ファイルは分けて保持してください。コピーされたテストネットの暗号署名者がメインネットの暗号署名者になることは決してありません。
+- ローカルネット、Taira、Minamoto、プライベートネットワークごとに `client.toml` ファイルを分けて管理してください。テストネットの署名者をコピーしてメインネットの署名者として使ってはいけません。
 - トランザクションの有効期間とステータスタイムアウトを意図的に設定してください。非常に短い有効期間は通常のネットワークの揺らぎの下で期限切れになる可能性があり、非常に長い有効期間は重複送信の管理を難しくする可能性があります。
 - `nonce = true` は、繰り返しの取引で異なる暗号ハッシュが必要な場合にのみ使用してください。冪等性のあるビジネス操作では、アプリケーション要求 ID を保存して再利用することで、再試行を追跡可能にします。
 
@@ -34,7 +33,7 @@ Iroha アプリケーションは、トランザクションの挙動を明確�
 - 現在の状態にはクエリを使用し、変更通知にはイベントストリームを使用します。イベント処理を繰り返しの広範なクエリで置き換えることは避けてください。
 - アカウント、資産、ブロックの一覧など、幅広い反復可能なクエリをページ分割します。
 - サブスクリプションやトリガーには狭いフィルターを使用することをお勧めします。広いフィルターは診断には役立ちますが、不必要な実行やクライアント側の処理を追加する可能性があります。
-- 読み取り専用のスモークチェックを署名済みトランザクションのテストとは分けて行い、API エンドポイントの可用性を診断しやすくしてください。
+- 読み取り専用のスモークチェックを署名済みトランザクションのテストとは分けて行い、エンドポイントの可用性を診断しやすくしてください。
 
 [クエリ](/ja/blockchain/queries.md)、[イベント](/ja/blockchain/events.md)、および[フィルター](/ja/blockchain/filters.md)を参照してください。
 
@@ -45,7 +44,7 @@ Iroha アプリケーションは、トランザクションの挙動を明確�
 - プライベートキー、アカウント回復用資料、API トークン、または転送された認証ヘッダーをプロンプトに貼り付けないでください。
 - エージェントがライブテストネットのトランザクションを送信する前に、トランザクション計画を要求してください。計画には、ネットワーク名、認可主体、指示、手数料資産、事前読み取り、予想される結果、および再試行の動作を記載する必要があります。
 
-Taira MCP ワークフローについては、[SORA 3 を基に構築する: Taira と Minamoto](/ja/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents) を参照してください。
+Taira MCP のワークフローについては、[SORA Nexus 上で開発する：Taira と Minamoto](/ja/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents)を参照してください。
 
 ## SDK 衛生 {#sdk-hygiene}
 

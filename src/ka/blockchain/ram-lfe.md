@@ -1,11 +1,10 @@
 ---
 translation_locale: ka
 translation_source: /blockchain/ram-lfe.md
-translation_source_hash: 66436bfdcdfea9bcd52834436dc8b6abe9812549583e6bfca06cbe73d5f75d35
+translation_source_hash: a07f2d06180425e4d1c1393810cf679fb88b3e993d49792b2483485cb1cc52fd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # RAM-LFE {#ram-lfe}
 
 RAM-LFE ნიშნავს შემთხვევითი წვდომის მანქანით ლაკონური ფუნქციის შეფასებას. Iroha-ში ეს არის დამალული ფუნქციების ზოგადი ფენა პროგრამებისთვის, რომელთა საჯარო პოლიტიკა ჯაჭვზეა, მაგრამ შემფასებლის ლოგიკა, საიდუმლო ან ნედლი შესატანი მსოფლიო მდგომარეობაში არ უნდა ჩაიწეროს. მას SORA Nexus-ის იდენტიფიკატორების ნაკადები იყენებს, მაგალითად, ტელეფონის ნომრის ან ელფოსტის პირადი ძიება; ის ასევე შეიძლება გამოქვეყნდეს Torii-ის პროგრამის შესრულების ზოგად დამხმარედ, როდესაც კვანძის პროფილი აპლიკაციისკენ მიმართულ მარშრუტებს რთავს.
@@ -764,6 +763,6 @@ Torii-ს პროცესშიდა RAM-LFE შესრულების 
 
 ## დაკავშირებული თემები {#related-topics}
 
-- [სპონსორის გადასახადები კერძო მონაცემთა სივრცეზე](/ka/get-started/private-dataspace-fee-sponsor.md#_4-register-phone-and-email-privately-with-fhe)
+- [სპონსორის გადასახადები კერძო მონაცემთა სივრცეზე](/ka/get-started/private-dataspace-fee-sponsor.md)
 - [Torii API საბოლოო ნიშნები](/ka/reference/torii-endpoints.md#app-and-sora-route-families)
 - [ანონიმური ოპერაციები](/ka/blockchain/anonymous-transactions.md)

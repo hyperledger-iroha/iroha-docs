@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # الأداء والمؤشرات {#performance-and-metrics}
 
 يعتمد أداء Iroha على حجم العمل، وتوبولوجيا المصدق، وظروف الشبكة، وإعدادات التوافق. لذلك، فإن رقم TPS الفردي يكون مفيدًا فقط عندما يكون مرتبطًا بتشغيل معيار بتهيئة ثابتة.
@@ -38,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -131,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### حدود المرشح والدخول {#candidate-and-ingress-bounds}
 
-تحدد الحدود المحلية للعقدة Sumeragi كمية العمل المرشح وعمليات الاسترداد التي يمكن للمحقق الاحتفاظ بها:
+يأتي حجم الكتل وحدود المعاملات من التكوين الأولي الموقّع ومعاملات السلسلة المثبتة. تغطي إعدادات `[sumeragi]` المحلية للعقدة دور المشاركة وحفظ مفاتيح التوقيع ومسارات سجلات السلامة والتجاوزات المحلية الموثقة للمهلة والمزامنة.
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` و `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`، `sumeragi.queues.chunks`، و`sumeragi.queues.ready_bodies`
-
-الحدود الصغيرة جدًا تخلق ضغطًا على قائمة الانتظار أو استعادة الحمولة؛ الحدود الكبيرة جدًا تزيد من الذاكرة المحتفظ بها وكمية العمل المتاحة لشبكة مسيئة نظير. قارن عرض بيانات التشخيص اللحظي مع ذاكرة العملية، ومعالجة الرسائل، وقياسات الجسم المفقود قبل تغيير حد واحد في كل مرة:
+تتحكم حدود إدخال الشبكة وطابور المعاملات في العمل المحتفظ به محليًا. قارن لقطة التشخيصات بذاكرة العملية ومقاييس معالجة الرسائل والأجسام المفقودة قبل تغيير أي حد تشغيلي. أبقِ معاملات السلسلة الموقّعة ثابتة عند مقارنة تشغيلات الشبكة نفسها:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -244,7 +236,7 @@ iroha --config ./localnet/client.toml \
 - عدد المدققين والمراقبين
 - وضع التوافق، إيقاع الكتل الموقعة، وتصميم DA
 - اللجنة الدقيقة `3f + 1`، النصاب، وقائمة المراقبين
-- `sumeragi.block`، `sumeragi.queues`، `sumeragi.limits`، حدود دخول الشبكة، وحدود قائمة انتظار المعاملات
+- معاملات السلسلة الموقّعة وتجاوزات Sumeragi المحلية وحدود إدخال الشبكة وطابور المعاملات
 - ملف تعريف القياس عن بُعد
 - الأجهزة، التخزين، وتفاصيل OS
 - الشبكة RTT، التذبذب، الفقد، وافتراضات عرض النطاق الترددي

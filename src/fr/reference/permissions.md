@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Jetons de permission {#permission-tokens}
 
 Cette page répertorie les types de jetons d'autorisation par défaut exposés par le modèle de données de l'exécuteur actuel Iroha. Pour le guide conceptuel des rôles et des permissions, voir [Autorisations](/fr/blockchain/permissions.md).
@@ -45,7 +44,8 @@ Les contrôles d'autorisation sont appliqués par le validateur d'exécution log
 | `CanModifyTriggerMetadata` |Déclencheur|Modifier les métadonnées du déclencheur.|
 | `CanUpgradeExecutor` |Exécuteur|Mettre à jour l'exécuteur d'exécution du logiciel.|
 | `CanRegisterSmartContractCode` |Contrat intelligent|Enregistrer le code du contrat intelligent.|
-| `CanUseFeeSponsor` | Nexus |Facturer les frais Nexus à un compte sponsor spécifié.|
+| `CanManageFeeSponsorProgram` | SORA Nexus | Administrer les programmes détenus par le compte sponsor précisément désigné. |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | Gérer les bénéficiaires d’un programme sponsor précisément désigné. |
 
 ## Propriété {#ownership}
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: ru
 translation_source: /blockchain/data-model.md
-translation_source_hash: 147562d2286bf11e60a941969e6d52bffc1534c3cfc04d440e0bcf78598a1ca7
+translation_source_hash: f90139dee2eff97769cd47188bcaf60b31672f0250505d8afad9c8ee60815ddd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-naming-amendment
 ---
-
 # Модель данных {#data-model}
 
 Iroha хранит состояние распределенного реестра блокчейна в `World`. Модель данных первой версии использует следующие канонические идентичности и сущности:
@@ -122,7 +121,7 @@ account_rabbit --> asset_rose : may receive balance
 |Определение актива|канонический `AssetDefinitionId` адрес Base58| `name#domain.dataspace` или `name#dataspace`            | `AssetDefinitionAlias` привязано к определению актива|
 |Контракт|канонический Bech32m `ContractAddress`| `name::domain.dataspace` или `name::dataspace`          |`ContractAlias` привязано к развернутому адресу контракта|
 |Доменное имя| `DomainId` в форме `domain.dataspace` | `domain.dataspace`                                    | SNS `domain` пространство имён запись |
-|Имя пространства данных|цифровой `DataSpaceId` из активного Nexus каталога|псевдоним пространства данных, такой как `universal`, `paynet` или `zk`|SNS `dataspace` пространство имен записи плюс активный каталог области данных|
+| Имя пространства данных | числовой `DataSpaceId` из активного каталога SORA Nexus | псевдоним пространства данных, например `universal`, `paynet` или `zk` | запись пространства имён `dataspace` в SNS и активный каталог пространств данных |
 
 Псевдонимы аккаунтов — это имена аккаунтов, видимые пользователю. Они сохраняются при смене ключа аккаунта, потому что псевдоним указывает на активный идентификатор аккаунта через индексы состояния мира и записи о смене ключа аккаунта. Используйте `SetPrimaryAccountAlias` для основного ярлыка аккаунта, `SetAccountAliasBinding` — для дополнительных неосновных псевдонимов, а `FindAccountByAlias` или `FindAliasesByAccountId` — для чтения. Псевдонимы аккаунта обычно требуют активной аренды псевдонима аккаунта SNS, полученной с помощью `AcquireAccountAliasLease` и продленной с помощью `RenewAccountAliasLease`.
 

@@ -1,17 +1,16 @@
 ---
 translation_locale: ba
 translation_source: /reference/binaries.md
-translation_source_hash: c617a21d50b28495c261d05d672e0b7803c282d53da577391dbebbc7f120d045
+translation_source_hash: 75848623e735abc80326f9ebda6f74ab438b67eaeddeacdd4d8c5509856a999e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Iroha бинарҙар менән эшләү {#working-with-iroha-binaries}
 
 Iroha 3 операторҙың эш ағымдары дүрт төп бинар тирәләй әйләнә:
 
 - [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/irohad) бер-береһе менән бәйләнештә булыу өсөн
-- `iroha3d_taira` каноник Taira validator launcher өсөн
+- каноник Taira валидаторын эшләтеү өсөн `iroha3d_taira`
 - [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli) өсөн CLI һәм оператор командалары
 - [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami) өсөн асҡыстар, генездар, локаль селтәрҙәр һәм профилдәр
 
@@ -50,7 +49,7 @@ cargo run --bin kagami -- --help
 
 ## Docker Һүрәт {#docker-image}
 
-Өҫкө ағымындағы эш урындары ҡулланыла `kagami localnet` һәм `kagami docker` барлыҡҡа килтереү Docker Compose теркәлгән кодҡа тап килә. `hyperledger/iroha:dev` һүрәт ошо файлдар менән ҡулланырға мөмкин.
+Төп репозиторийҙың эш киңлеге `kagami localnet generate` һәм `kagami docker` аша эш күсермәһендәге кодҡа тап килгән Docker Compose файлдарын булдыра. `hyperledger/iroha:dev` образын ошо булдырылған файлдар менән ҡулланырға мөмкин.
 
 CLI һауытта тотонорға:
 
@@ -67,7 +66,7 @@ docker run -t hyperledger/iroha:dev kagami --help
 Бер-береһе менән стартлау өсөн, локаль селтәр булдырыу һәм иң тәүҙә файл туплау:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```
@@ -75,6 +74,6 @@ docker compose -f ./docker-compose.yml up
 ## Ниндәй бинар ҡулланырға кәрәк? {#which-binary-should-i-use}
 
 - Йәмәғәт Taira валидатор сығарылышынан ситтә пирҙарығыҙҙы башлаған йәки эшләгәндә `iroha3d` ҡулланығыҙ.
-- Taira validator deployment өсөн генә `iroha3d_taira --sora` ҡулланыу; ул Taira сылбыр, һаҡлау һәм йүгереү ваҡыты-тамғалаусы профилен үтәй.
+- `iroha3d_taira --sora` командаһын тик каноник Taira валидаторын урынлаштырыу өсөн ҡулланығыҙ; ул Taira сылбыры, һаҡлағыс һәм эш ваҡытында ҡул ҡуйыусы профиленең үтәлеүен тәьмин итә.
 - `iroha` ҡулланып, иҫәп-хисапҡа һорау бирергә, транзакцияларҙы тапшырырға йәки операторҙың һуңғы пункттарын тикшереүгә кәрәк.
 - Ключтар, генез манифестары, профил тупланмалары йәки локаль селтәр активтары кәрәк булғанда `kagami` ҡулланығыҙ.

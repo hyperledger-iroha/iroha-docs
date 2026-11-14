@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /guide/configure/genesis.md
-translation_source_hash: a6b8b2b02e0074e6c90d9aa9337af3e2496a02beb2f57f575dc0780014df04b2
+translation_source_hash: 91be089c82a76991e35a43e1541f9e069fdf70d3fb5de2492b985c06c78a2372
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
-
 # الكتلة الأولى في سلسلة الكتل {#genesis}
 
 يحدد أصل البلوكتشين الحالة الأولية للسلسلة. المصدر القابل للتحرير هو بيان فني JSON، ويستهلك العقدة Iroha 3 ملف معاملة موقع Norito.
@@ -18,25 +17,26 @@ translation_engine: bing-translator-llm
 
 ## ملفات {#files}
 
-يقوم المستودع الرئيسي بشحن بيان تقني افتراضي على `defaults/genesis.json`. الشبكات التي تم إنشاؤها بواسطة Kagami تكتب بيانها التقني الخاص والمعاملة الموقعة في دليل الإخراج:
+يوفر المستودع الأصلي قالب مصدر افتراضيًا في `defaults/genesis.template.json`. القالب غير مكتمل، ولا يمكن التحقق منه أو توقيعه أو استخدامه في عقدة حتى يحوّله `kagami genesis materialize` إلى بيان. تكتب الشبكات المولّدة بواسطة Kagami بيانها الخاص ومعاملتها الموقّعة في دليل الإخراج:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 يسجل `README.md` الذي تم إنشاؤه في ذلك الدليل الملفات الدقيقة وأوامر التشغيل للملف التعريفي المحدد.
 
 ## تكوين نظير الشبكة {#peer-configuration}
 
-تشير نظراء الشبكة إلى معاملة البداية الموقعة للبلوكتشين في قسم `[genesis]` من `config.toml`:
+تشير الأقران إلى معاملة التكوين الأولي الموقّعة في قسم `[genesis]` من `config.toml`، وتثبّت تجزئتها المتوقعة في ملف منفصل:
 
 ```toml
 [genesis]
 file = "./genesis.signed.nrt"
 public_key = "ed0120..."
+expected_hash_file = "./genesis.expected_hash"
 ```
 
-يجب على جميع الأقران في الشبكة الموافقة على معاملة البلوكشين الأصلية الموقعة والمفتاح العام للبلوكشين الأصلي.
+يجب أن تتفق جميع الأقران في الشبكة على معاملة التكوين الأولي الموقّعة ومفتاحها العام. يلزم ملف التجزئة المتوقعة عند البدء من جديد وعند إعادة التشغيل؛ ويكتبه `kagami genesis sign --expected-hash-out`.
 
 ## توقيع جينيسيس البلوكشين {#signing-genesis}
 
@@ -46,13 +46,14 @@ public_key = "ed0120..."
 cargo run --bin kagami -- genesis validate ./genesis.json
 cargo run --bin kagami -- genesis sign ./genesis.json \
   --private-key-file "$GENESIS_PRIVATE_KEY_FILE" \
-  --out-file ./genesis.signed.nrt
+  --out-file ./genesis.signed.nrt \
+  --expected-hash-out ./genesis.expected_hash
 ```
 
 `GENESIS_PRIVATE_KEY_FILE` يجب أن يكون ملفًا عاديًا برابط واحد مملوكًا للمالك `0600` يحتوي على مفتاح خاص متعدد التجزئة واحد وفقًا للبروتوكول وسطر جديد نهائي. Kagami يرفض الروابط الرمزية ولا يقبل أبدًا مفتاح الجيل الأول للبلوكتشين على سطر الأوامر.
 
-بالنسبة لملفات تعريف NPoS أو Nexus، قم بتضمين الطوبولوجيا و BLS إثباتات الملكية المطلوبة بواسطة الملف التعريفي المُنشأ. تقوم أوامر Kagami و`localnet` و`wizard` وتوليد الملف التعريفي بإدارة تلك التفاصيل تلقائيًا.
+لملفات NPoS أو SORA Nexus، ضمّن الطوبولوجيا وإثباتات حيازة مفاتيح BLS التي يتطلبها الملف المولّد. تتولى أوامر Kagami، وهي `localnet generate` و`wizard` و`sora-network generate`، هذه التفاصيل تلقائيًا.
 
 ## إعادة الالتزام ببلوكتشين البداية {#recommitting-genesis}
 
-يقوم نظير الشبكة بإنهاء الجينيسيس في البلوكشين فقط عندما يكون التخزين الخاص به فارغًا. لاختبار جينيسيس بلوكشين جديد في شبكة محلية قابلة للتخلص، قم بإيقاف نظراء الشبكة، إزالة دليل الحالة الذي تم إنشاؤه لديهم، والبدء من جينيس البلوكتشين الموقع الجديد. لا تقم باستبدال جينيس البلوكتشين على شبكة تعمل ما لم يكن جميع المحققين ينسقون نفس الترقية.
+تبدأ الشبكة الجديدة من كتلة التكوين الموقعة الخاصة بها. لاختبار كتلة تكوين مختلفة في شبكة محلية مؤقتة، أوقف النظراء واحذف دليل الحالة الذي أنشؤوه، ثم ابدأ من كتلة التكوين الموقعة الجديدة. يجب ألا تستبدل شبكة قيد التشغيل كتلة التكوين أبدًا بوصف ذلك آلية للترقية. تتطلب تغييرات تعريفات البروتوكول انتقالات في الاختيار تعتمدها الحوكمة وتأهيلًا للتعريفات والالتزامات المختارة.

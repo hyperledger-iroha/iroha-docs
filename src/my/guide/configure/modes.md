@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # အများပြည်သူနှင့် ပုဂ္ဂလိက ဘလော့ခ်ချိုင်းများ {#public-and-private-blockchains}
 
-Iroha ကို configurations အမျိုးမျိုးမှာ run လုပ်နိုင်ပါတယ်။ သင့်ရဲ့ ကိုယ်ပိုင်ကွန်ရက်ရဲ့ administrator အနေနဲ့ ဘယ်အကောင်အထည်ဖော်သူနဲ့ ခွင့်ပြုချက် မူဝါဒဟာ ငွေပေးချေမှုတစ်ခု လက်ခံခံရလားဆိုတာ ဆုံးဖြတ်ပါတယ်။
+Iroha ကို ပြင်ဆင်သတ်မှတ်မှုပုံစံ အမျိုးမျိုးဖြင့် လည်ပတ်နိုင်သည်။ မိမိကွန်ရက်၏ စီမံခန့်ခွဲသူအဖြစ် transaction တစ်ခုကို လက်ခံမလားဟု ဆုံးဖြတ်ပေးမည့် executor နှင့် ခွင့်ပြုချက်မူဝါဒကို သင်ရွေးချယ်သည်။
 
 Common profiles တွေက Private Permissioned Networks နဲ့ Open Public Networks တို့ပါ။ နှစ်ခုစလုံးဟာ သီးခြား node binaries တွေကနေမဟုတ်ပဲ blockchain genesis state နဲ့ executor policy တွေကနေ ဖွဲ့စည်းထားတာပါ။
 
@@ -26,11 +26,11 @@ Common profiles တွေက Private Permissioned Networks နဲ့ Open Public
 
 ## ကွန်ရက် အဖော်များ {#peers}
 
-အများပြည်သူ blockchain တွင်, ကွန်ရက် peer admittion သည်ကွင်းဆက်မူဝါဒ၏တစ်စိတ်တစ်ပိုင်းဖြစ်သည်။ ပုဂ္ဂလိက blockchain အတွက်, deployments များသောအားဖြင့် configuration နှင့် blockchain မျိုးစေ့တွင်သတ်မှတ်ထားသောယုံကြည်မှု network peer ကို pin လုပ်သည်။
+_အများသုံး_ blockchain တွင် peer လက်ခံမှုသည် ချိန်းမူဝါဒ၏ အစိတ်အပိုင်းဖြစ်သည်။ _ပုဂ္ဂလိက_ blockchain အတွက် deployment များသည် ယုံကြည်ရသော peer အစုကို ပြင်ဆင်သတ်မှတ်မှုနှင့် genesis တွင် ပုံသေသတ်မှတ်ထားလေ့ရှိသည်။
 
 ::: info
 
-[ကွန်ရက် peer management](peer-management.md) ကို အသေးစိတ်ဖတ်ရှုပါ။
+အသေးစိတ်အချက်အလက်များအတွက် [peer စီမံခန့်ခွဲမှု](peer-management.md) ကို ကြည့်ပါ။
 
 :::
 
@@ -48,7 +48,7 @@ Common profiles တွေက Private Permissioned Networks နဲ့ Open Public
 
 - မူရင်း ပုဂ္ဂလိက ကွန်ရက် ပုံစံမှာ ရှိနေတဲ့ အကောင့်တစ်ခုဟာ အသစ်တစ်ခုစီအတွက် မှတ်ပုံတင်ကို တင်ပေးတယ်။
 
-Default permission validators တွေက သာမန် ပုဂ္ဂလိက blockchain သုံးစွဲမှု ကိစ္စကို ဖုံးအုပ်ပါတယ်။
+ပုံမှန်ခွင့်ပြုချက်စစ်ဆေးသူများသည် အသုံးများသော ပုဂ္ဂလိကဘလော့ခ်ချိန်း အသုံးပြုမှုပုံစံကို ပံ့ပိုးပေးသည်။
 
 ::: info
 
@@ -56,6 +56,6 @@ Default permission validators တွေက သာမန် ပုဂ္ဂလိ
 
 :::
 
-[ညွှန်ကြားချက်](/my/blockchain/instructions.md#un-register) အပိုင်းကို `Register<Account>` ညွှန်ကြားချက်များနှင့် ပတ်သက်၍ အသေးစိတ်သိရှိလိုပါက။
+`Register<Account>` ညွှန်ကြားချက်များအကြောင်း အသေးစိတ်အတွက် [ညွှန်ကြားချက်များ](/my/blockchain/instructions.md#un-register) အပိုင်းကို ကြည့်ပါ။
 
 [^1]: `Register<Account>` သည် တစ်ခုတည်းသော ပရိုတိုကော-စံညွှန်း, ဒိုမင်မဲ့ `AccountId` အတွက် blockchain ledger အခြေအနေကိုဖန်တီးသည်; ဒိုမိုင်း Routing နှင့် aliases ကို သီးခြားစီစီစီမံခန့်ခွဲသည်။

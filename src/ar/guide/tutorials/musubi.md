@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 621d1795fd1c3cc62462a9a91af68fe684c0ff5293f5e77801420dc8318bac38
+translation_source_hash: 22d763aadf33d331fb9c16d3927e84e8bdb88829f3d73b974902daa8fde3c1b4
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Musubi Kotodama الحزم {#musubi-kotodama-packages}
 
 Musubi هو مدير الحزم للإصدار الأول لحزم المصدر Kotodama. يقوم بحل رسم بياني للاعتمادية الدقيقة على السلسلة، ويصادق على مصدر SoraFS يؤرشف ويجمع ويختبر مساحة العمل المحددة، ويقوم ببناء أرشيفات بمواصفة بروتوكول واحدة CAR، وينشر الإصدارات الثابتة من خلال Iroha.
@@ -89,9 +88,9 @@ export TAIRA_ROOT=https://taira.sora.org
 curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
 ```
 
-يقدّم فهرس الموفر هويات الموفر ونقاط النهاية المعلَن عنها API. احصل على تفويض المشغل المطابق من الموفر المختار. يستخدم بيئة تنفيذ البرمجيات هذا المفتاح لطلب رموز التدفق المحدودة؛ الرموز ليست CLI وسائط أو محتوى ملف القفل.
+يقدّم فهرس الموفر هويات الموفر ونقاط النهاية المعلَن عنها. احصل على تفويض المشغل المطابق من الموفر المختار. يستخدم بيئة تنفيذ البرمجيات هذا المفتاح لطلب رموز التدفق المحدودة؛ الرموز ليست CLI وسائط أو محتوى ملف القفل.
 
-لا تستخدم Taira رمز التحقق URL كـ `url`. المدققون المسجلون قد تم دمجهم SoraFS التخزين معطل. لهم `https://taira-validator-{1,2,3,4}.sora.org` API النقاط النهائية تقبل تسجيل الرقم السري، في حين أن قراءة الأرشيف تستخدم مزود الخدمة المقبول المختار HTTPS الأصل.
+لا تستخدم Taira رمز التحقق URL كـ `url`. المدققون المسجلون قد تم دمجهم SoraFS التخزين معطل. لهم `https://taira-validator-{1,2,3,4}.sora.org` النقاط النهائية تقبل تسجيل الرقم السري، في حين أن قراءة الأرشيف تستخدم مزود الخدمة المقبول المختار HTTPS الأصل.
 
 ## سير العمل المحلي {#local-workflow}
 
@@ -209,4 +208,4 @@ Musubi يستخدم تعليمات واستفسارات V1 الإصدار الأ
 | `FindMusubiArchiveLocationsV1`                       |اقرأ مواقع الأرشيف المدعومة من المزود النهائية.|
 | `FindMusubiAliasV1` / `FindMusubiAliasHistoryV1`     |اقرأ الهدف الحالي للاسم المستعار أو تاريخه الثابت.|
 
-Torii يكشف عن عائلة مسار التطبيق تحت `/v1/musubi/*`. أدوات MCP تستخدم الأسماء الحالية `iroha.musubi.queries.*` و `iroha.musubi.instructions.*`. انظر إلى [Torii API نقاط النهاية](/ar/reference/torii-endpoints.md) و [مرجع الاستعلام](/ar/reference/queries.md) للخريطة الأوسع API.
+Torii يكشف عن عائلة مسار التطبيق تحت `/v1/musubi/*`. أدوات MCP تستخدم الأسماء الحالية `iroha.musubi.queries.*` و `iroha.musubi.instructions.*`. انظر إلى [Torii نقاط النهاية](/ar/reference/torii-endpoints.md) و [مرجع الاستعلام](/ar/reference/queries.md) للخريطة الأوسع API.

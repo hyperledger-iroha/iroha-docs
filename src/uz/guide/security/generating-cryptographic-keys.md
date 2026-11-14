@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
+translation_source_hash: b6e3bd79c50ea326930ac978350ea4beac8294b6f045ac0084aada257754ffa1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Kriptografik Kalitlarni Yaratish {#generating-cryptographic-keys}
 
 Iroha 3 uchun mijoz, tugun va tasdiqlovchi kalit materialini yaratishda `kagami keys` dan foydalaning.
@@ -18,7 +17,7 @@ Iroha manba-kodi ishlaydigan nusxasidan:
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-Ota katalogi allaqachon mavjud bo‘lishi kerak. Maqsad yangi bo‘lishi yoki joriy foydalanuvchi tomonidan allaqachon egalik qilinishi, rejim `0700`ga ega bo‘lishi, simbollik bog‘lanmalardan xoli bo‘lishi va bo‘sh bo‘lishi kerak. `kagami` `public.key` va `private.key` ni rejim `0600` bilan yozadi va kalit materialini chop etmaydi. `--pop` bilan u shuningdek `pop.hex` ni ham yozadi.
+Ota katalog oldindan mavjud bo‘lishi kerak. Maqsad mavjud bo‘lmasligi kerak: Kagami hatto mavjud bo‘sh katalogni ham rad etadi. U faqat egaga ruxsat beruvchi fayl tizimi tekshiruvlari ostida maqsadni `0700` rejimida yaratadi va ramziy havolalarni rad etadi. `kagami` `public.key` va `private.key`ni `0600` rejimida yozadi, kalit materialini chop etmaydi. `--pop` bilan u `pop.hex`ni ham yozadi.
 
 `--out-dir` egalar uchun mo‘ljallangan fayl tizimi qoidalarini Kagami amalga oshira olmagan platformalarda yopiq holatda ishlaydi. Maxfiy kalit fayli shifrlanmagan eksport faylidir, emas apparatli yoki eksport qilinmaydigan ishlab chiqarish kriptografik imzolagichi. Uni tasdiqlangan saqlash chegarasiga import qiling va tarqatish protsedurasiga muvofiq eksportni o‘chiring.
 

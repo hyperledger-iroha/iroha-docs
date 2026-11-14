@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
+translation_source_hash: 92389d3ad83ab32e85b4ca83ede9829d1a38afaad6e86da035da2829a3aaedfb
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # JavaScript እና TypeScript {#javascript-and-typescript}
 
 የአሁኑ JavaScript SDK በ Iroha ምንጭ ዛፍ ውስጥ ያለው `@iroha/iroha-js` ጥቅል ነው። ለ Torii፣ Norito ግንበኞች፣ ፊርማ፣ ገጽ ማድረግ፣ ቅድመ እይታዎችን ያገናኙ እና የካጌሙሻ ትዕዛዝ መጓጓዣ Node.js-የመጀመሪያው SDK ነው።
@@ -99,7 +98,6 @@ SDK በሚከተሉት ላይ ያተኩራል -
 - Ed25519 ፊርማ እና ቁልፍ ማመንጨት
 - Pagination እና እንደገና ይሞክሩ ረዳቶች
 - የአሳሽ ማስነሻ ረዳቶችን ያገናኙ
-- የካጌሙሻ ዝግጁነት፣ መሙላት፣ መቤዠት እና የአሠራር ሁኔታ የትራንስፖርት ረዳቶች
 
 ## የላይኛው ማጣቀሻዎች {#upstream-references}
 

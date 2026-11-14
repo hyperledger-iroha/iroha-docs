@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: ab0496d2cd36056dbc5486cd1ea288606476862290cc544e7afcf63a1641dd6d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # 解決配置問題 {#troubleshooting-configuration-issues}
 
 本節提供 Iroha 3 配置的故障解決技巧.請先檢查 [鍵](./overview.md#check-the-keys),因為這是 Iroha 中最常見的問題.
@@ -25,7 +24,7 @@ translation_engine: nllb-200-ct2
 解決此類問題的方法取決於使用 Iroha.如果這是一個基本的演示程式,並且不需要儲存對等節點資料,請重建與 Kagami 相匹配的本地網路或 Docker Compose 捆綁:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
 ```
 

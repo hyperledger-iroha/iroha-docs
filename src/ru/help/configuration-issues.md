@@ -1,11 +1,10 @@
 ---
 translation_locale: ru
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: ab0496d2cd36056dbc5486cd1ea288606476862290cc544e7afcf63a1641dd6d
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Устранение неполадок конфигурации {#troubleshooting-configuration-issues}
 
 Этот раздел предлагает советы по устранению неполадок при настройке Iroha 3. Убедитесь, что вы сначала [проверил ключи](./overview.md#check-the-keys), так как это является самой частой причиной проблем в Iroha.
@@ -25,7 +24,7 @@ translation_engine: bing-translator-llm
 Способ устранения такой проблемы зависит от использования Iroha. Если это базовая демонстрация и вам не нужно сохранять данные сетевых узлов, сгенерируйте заново подходящую локальную сеть или пакет Docker Compose с помощью Kagami:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
 ```
 

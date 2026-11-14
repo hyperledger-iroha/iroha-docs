@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Permisos {#permissions}
 
 Las cuentas necesitan tokens de permiso para varias acciones en una cadena de bloques, por ejemplo, para emitir o quemar activos.
@@ -89,7 +88,7 @@ La superficie de validación predeterminada está agrupada por área del libro m
 - activos, NFTs, y cuentas de depósito en garantía
 - desencadenantes
 - roles y permisos
-- ejecutor/tiempo de ejecución, pruebas, puentes y módulos SORA/Nexus
+- ejecutor/tiempo de ejecución, pruebas, puentes y módulos SORA Nexus
 
 La lista exacta de tokens está respaldada por la fuente en el [Referencia de Tokens de Permiso](/es/reference/permissions.md).
 

@@ -1,14 +1,13 @@
 ---
 translation_locale: hy
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
+translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Iroha-ի գործարկում ֆիզիկական սերվերի վրա {#running-iroha-on-bare-metal}
 
-Օգտագործեք այս աշխատանքային հոսքը, երբ ցանկանում եք գործարկել հանգույցները ուղղակիորեն հյուրերի վրա, այլ ոչ թե Docker Compose միջոցով: Ներկայիս աղբյուրի ծառը տրամադրում է Kagami գեներատորներ, որոնք գրում են համընկնում genesis, peer config, client config եւ start / stop սցենարները:
+Օգտագործեք այս ընթացակարգը, երբ ցանկանում եք հանգույցները գործարկել անմիջապես հոսթերի վրա՝ Docker Compose-ի փոխարեն։ Ընթացիկ սկզբնաղբյուրի ծառը տրամադրում է Kagami գեներատորներ, որոնք գրում են իրար համապատասխան սկզբնական բլոկ, հանգույցների կազմաձևեր, հաճախորդի կազմաձև և գործարկման ու դադարեցման սկրիպտներ։
 
 ## 1. Բինարների կառուցում {#_1-build-the-binaries}
 
@@ -32,7 +31,7 @@ cargo build --release \
 Ստեղծեք չորս հանգույցային Iroha 3 տեղական ցանց.
 
 ```bash
-target/release/kagami localnet --peers 4 --out-dir ./localnet
+target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Արտադրանքի ցուցակը պարունակում է առաջադրված `genesis.json`, `genesis.signed.nrt`, հանգույցային `config.toml` ֆայլեր, `client.toml`, օգնական սցենարներ եւ առաջադրվող `README.md` ՝ այդ փաթեթի համար ճշգրիտ հրամաններով:
@@ -52,7 +51,7 @@ target/release/kagami localnet --peers 4 --out-dir ./localnet
 Օգտագործեք ստեղծված հաճախորդի կարգավորումը.
 
 ```bash
-target/release/iroha --config ./localnet/client.toml ledger domain list all
+target/release/iroha --config ./localnet/client.toml ledger domain list --all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 

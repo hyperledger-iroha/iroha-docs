@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/data-model.md
-translation_source_hash: 147562d2286bf11e60a941969e6d52bffc1534c3cfc04d440e0bcf78598a1ca7
+translation_source_hash: f90139dee2eff97769cd47188bcaf60b31672f0250505d8afad9c8ee60815ddd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-naming-amendment
 ---
-
 # Modèle de données {#data-model}
 
 Iroha stocke l'état du registre blockchain dans le `World`. Son modèle de données de première version utilise les identités et entités canoniques suivantes :
@@ -122,7 +121,7 @@ Les alias sont des noms destinés aux humains superposés aux identifiants canon
 |Définition de l'actif|adresse canonique Base58 `AssetDefinitionId`| `name#domain.dataspace` ou `name#dataspace`            |`AssetDefinitionAlias` lié à une définition d'actif|
 |Contrat|adresse canonique Bech32m `ContractAddress`                 | `name::domain.dataspace` ou `name::dataspace`          |`ContractAlias` lié à une adresse de contrat déployé|
 |Nom de domaine| `DomainId` dans le formulaire `domain.dataspace` | `domain.dataspace`                                    | SNS `domain` enregistrement d'espace de noms |
-|Nom de l'espace de données|numérique `DataSpaceId` du catalogue actif Nexus|alias d’espace de données tel que `universal`, `paynet`, ou `zk`| SNS `dataspace` enregistrement de l'espace de noms plus le catalogue de l'espace de données actif|
+|Nom de l'espace de données|numérique `DataSpaceId` du catalogue actif SORA Nexus|alias d’espace de données tel que `universal`, `paynet`, ou `zk`| SNS `dataspace` enregistrement de l'espace de noms plus le catalogue de l'espace de données actif|
 
 Les alias de compte sont les noms de compte visibles par l'utilisateur. Ils survivent à la réaffectation de clé du compte car l'alias pointe vers l'identifiant de compte actif via les index de l'état mondial et les enregistrements de réaffectation de clé de compte. Utilisez `SetPrimaryAccountAlias` pour l'étiquette principale du compte, `SetAccountAliasBinding` pour les alias supplémentaires non principaux, et `FindAccountByAlias` ou `FindAliasesByAccountId` pour les lectures. Les alias de compte nécessitent normalement un bail actif SNS d'alias de compte obtenu avec `AcquireAccountAliasLease` et renouvelé avec `RenewAccountAliasLease`.
 

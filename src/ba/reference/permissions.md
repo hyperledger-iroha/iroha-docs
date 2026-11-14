@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Рөхсәт биреү билдәләре {#permission-tokens}
 
 Был биттәрҙә хәҙерге Iroha башҡарыусы мәғлүмәт моделе менән асыҡланған дифолт рөхсәт-токен төрҙәре исемләнә. Рольдәр һәм рөхсәттәргә концептуаль етәкселек өсөн ҡарағыҙ [Хәҡиҡәттәре](/ba/blockchain/permissions.md).
@@ -45,7 +44,8 @@ translation_engine: nllb-200-ct2
 |`CanModifyTriggerMetadata` |Триггер |Утҡарыусы метамәғлүмәттәрҙе үҙгәртергә. |
 |`CanUpgradeExecutor` |Үтәүсе |Эшләү ваҡытын башҡарыусыны яңыртыу. |
 |`CanRegisterSmartContractCode` |Аҡыллы килешеү |Аҡыллы килешеү кодын теркәгеҙ. |
-|`CanUseFeeSponsor` |Nexus |Nexus түләүҙәр билдәләнгән спонсор иҫәбенә түләнә. |
+| `CanManageFeeSponsorProgram` | SORA Nexus | Теүәл бағыусы иҫәбенә ҡараған программаларҙы идара итеү. |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | Бер теүәл бағыусы программаһының файҙа алыусыларын идара итеү. |
 
 ## Хужалыҡ {#ownership}
 

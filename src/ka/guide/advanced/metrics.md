@@ -1,11 +1,10 @@
 ---
 translation_locale: ka
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # შესრულება და მაჩვენებლები {#performance-and-metrics}
 
 Iroha შესრულება დამოკიდებულია სამუშაო დატვირთვაზე, ვალიდატორების ტოპოლოგიაზე, ქსელის პირობებსა და კონსენსუსის პარამეტრებზე. ამდენად ერთიანი TPS ნომერი სასარგებლოა მხოლოდ მაშინ, როდესაც ის არის დაკავშირებული სტანდარტული რეგულირების ჩატარებასთან მუდმივ კონფიგურაციით.
@@ -38,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -131,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### კანდიდატის და მიღების საზღვრები {#candidate-and-ingress-bounds}
 
-კვანძების ადგილობრივი Sumeragi საზღვრები განსაზღვრავს, თუ რამდენი კანდიდატი და აღდგენითი სამუშაო შეიძლება შეინარჩუნოს ვალიდატორს:
+ბლოკის ზომა და ტრანზაქციის ზღვრები ხელმოწერილი გენეზისიდან და ჯაჭვის დამტკიცებული პარამეტრებიდან მოდის. კვანძის ლოკალური `[sumeragi]` პარამეტრები მოიცავს მონაწილეობის როლს, ხელმოწერის გასაღებების დაცვას, უსაფრთხოების ჩანაწერების გზებს და დოკუმენტირებულ ლოკალურ დაყოვნებისა და სინქრონიზაციის გადაფარვებს.
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` და `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks`, და `sumeragi.queues.ready_bodies`
-
-ზედმეტად პატარა საზღვრები ქმნის რიგის ან დატვირთვების აღდგენის წნეხს; ზედმეტი ზომის საზღვრებს ზრდიან შენახული მეხსიერება და მუშაობის რაოდენობა, რომელიც ხელმისაწვდომია ბოროტად გამოყენებულ ქსელში პარტნიორი. შეადარეთ დიაგნოსტიკური დროის მონაცემების ნახვა პროცესის მეხსიერებასთან, შეტყობინებების მენეჯმენტთან და დაკარგული სხეულების მაჩვენებლებთან, სანამ ერთჯერადად ერთი ზღვარი შეცვლით:
+ქსელის შემომავალი ნაკადისა და ტრანზაქციის რიგის ზღვრები ადგილობრივად შენარჩუნებულ სამუშაოს აკონტროლებს. ოპერაციული ზღვრის შეცვლამდე დიაგნოსტიკის ასლი შეადარეთ პროცესის მეხსიერებას, შეტყობინებების დამუშავებასა და დაკარგული სხეულების მეტრიკებს. ერთი ქსელის გაშვებების შედარებისას ჯაჭვის ხელმოწერილი პარამეტრები უცვლელი დატოვეთ:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -244,7 +236,7 @@ iroha --config ./localnet/client.toml \
 - ვალიდატორისა და დამკვირვებლის რაოდენობა
 - კონსენსუსის რეჟიმი, ბლოკის კადენცია და DA განლაგება
 - ზუსტი `3f + 1` კომიტეტი, კვორუმი და დამკვირვებლის სია.
-- `sumeragi.block`,`sumeragi.queues`, `sumeragi.limits`, ქსელის შესვლის და ტრანზაქციების რიგის საზღვრები
+- ჯაჭვის ხელმოწერილი პარამეტრები, Sumeragi-ის ლოკალური გადაფარვები, ქსელის შემომავალი ნაკადისა და ტრანზაქციის რიგის ზღვრები
 - ტელემეტრიის პროფილი
 - აღჭურვილობა, შენახვა და OS დეტალები
 - ქსელის RTT, jitter, დანაკლისი და ზღვრის სიგანის ვარაუდები

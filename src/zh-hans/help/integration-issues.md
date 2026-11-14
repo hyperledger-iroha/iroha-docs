@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /help/integration-issues.md
-translation_source_hash: c5f169e423806fa2a9e9d198971588d1aa0b199a28d64e8b089b9f81727550a5
+translation_source_hash: 2146a236adb3a3b3b896a1992daeecf6713988183ca53e4412f9b616ed2e9085
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # 解决整合问题 {#troubleshooting-integration-issues}
 
 这个节目提供了解决问题的建议 Iroha 3 如果您所遇到的问题不详细介绍,请通过 [电报](https://t.me/hyperledgeriroha).
@@ -21,7 +20,7 @@ torii_url = "http://127.0.0.1:8080/"
 对于 CLI 检查,明确传递相同的文件:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 如果对等节点走进 Docker 或Kubernetes,使用客户端进程可访问的主机或服务地址. `127.0.0.1` 在容器内,不是主机.
@@ -45,12 +44,12 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
 - 客户端配置中的帐户公钥不匹配签名所使用的私钥
 - 账户没有在创世或之前的交易中注册
 - 账户缺乏运行时验证器所要求的许可令牌或角色
-- 一个域名 ID 缺乏其数据空间资格,例如 `domain.dataspace`
+- 域标识缺少数据空间限定，例如 `domain.dataspace`
 
 使用 `--output-format text` 在调试 CLI 命令时,以便更容易读取错误:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ledger transaction ping --msg "hello"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority --output-format text tx ping --msg "hello"
 ```
 
 ## 查询返回空结果 {#queries-return-empty-results}
@@ -65,7 +64,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml --output-format text le
 对于域名检查,请从最广泛的查询开始:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 ## 事件或区块流早点停止 {#event-or-block-streams-stop-early}

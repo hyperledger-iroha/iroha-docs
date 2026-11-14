@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /blockchain/events.md
-translation_source_hash: 16b8cacc9bdf156d4b1e1a93b720085adcabb0002a34b9dc564a9926f573de63
+translation_source_hash: aad93f1981a5b470966090b5e06ec07178738b15f1d870097947682b19f99595
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # ክስተቶች {#events}
 
 የተተየቡ የክስተት ማሳወቂያዎች የሚለቀቁት በብሎክቼይን ውስጥ አንዳንድ ነገሮች ሲከሰቱ ለምሳሌ አዲስ መለያ ሲፈጠር ወይም ብሎክ ሲጠናቀቅ። የተለያዩ አይነት ክስተቶች አሉ -
@@ -45,7 +44,7 @@ curl -fsS -N https://taira.sora.org/v1/events/sse
 
 ## የውሂብ ክስተቶች {#data-events}
 
-የውሂብ ክስተቶች የሚለቀቁት ከብሎክቼይን መዝገብ ውሂብ ጋር የተያያዘ ለውጥ ሲኖር እንደ የአውታረ መረብ እኩዮች፣ ጎራዎች፣ መለያዎች፣ ንብረቶች፣ የንብረት ፍቺዎች፣ NFTs፣ ቀስቅሴዎች፣ ሚናዎች፣ በሰንሰለት ላይ ውቅር፣ አስፈፃሚ ሁኔታ፣ ማረጋገጫዎች፣ ሚስጥራዊ ንብረቶች፣ ድልድዮች ወይም SORA/Nexus -ተኮር ነገሮች። እንደነዚህ ዓይነቶቹ ክስተቶች በ [የውሂብ ክስተት ማጣሪያዎች](./filters.md#data-event-filters) ውስጥ ጥቅም ላይ ይውላሉ.
+የውሂብ ክስተቶች የሚለቀቁት ከብሎክቼይን መዝገብ ውሂብ ጋር የተያያዘ ለውጥ ሲኖር እንደ የአውታረ መረብ እኩዮች፣ ጎራዎች፣ መለያዎች፣ ንብረቶች፣ የንብረት ፍቺዎች፣ NFTs፣ ቀስቅሴዎች፣ ሚናዎች፣ በሰንሰለት ላይ ውቅር፣ አስፈፃሚ ሁኔታ፣ ማረጋገጫዎች፣ ሚስጥራዊ ንብረቶች፣ ድልድዮች ወይም SORA Nexus -ተኮር ነገሮች። እንደነዚህ ዓይነቶቹ ክስተቶች በ [የውሂብ ክስተት ማጣሪያዎች](./filters.md#data-event-filters) ውስጥ ጥቅም ላይ ይውላሉ.
 
 ## በጊዜ ላይ የተመሰረተ የክስተት ማሳወቂያዎች {#time-events}
 

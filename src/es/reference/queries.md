@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Consultas {#queries}
 
 Iroha las consultas leen el estado del libro mayor de la blockchain sin modificarlo. El modelo de datos actual expone dos formas generales de consulta:
@@ -86,7 +85,7 @@ Las consultas de depósito en garantía inspeccionan los registros creados por [
 | `FindProofRecordsByBackend` |Listar registros de prueba para un backend de prueba.|
 | `FindProofRecordsByStatus` |Listar registros de prueba por estado.|
 
-## Nexus, Disponibilidad de Datos y Paquetes {#nexus-data-availability-and-packages}
+## SORA Nexus, Disponibilidad de Datos y Paquetes {#nexus-data-availability-and-packages}
 
 |Consulta|Propósito|
 | --- | --- |

@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /guide/tutorials/python.md
-translation_source_hash: d0ecbade221ceba455730e80c6e12db930c65a4cbcf9e643c1c2d4cba47b0940
+translation_source_hash: bd9ff4a38229cbdabbd77e21fe31a770f9213341d7db73a75ed0bd914c761849
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Python {#python}
 
 በላይኛው የስራ ቦታ ውስጥ ያለው Python SDK `iroha-python` ነው። የመጀመሪያው Iroha 3 ልቀት የአሁኑን Torii እና Norito ንጣፎችን ያነጣጠረ ነው። SDK እና ኖድ በተመሳሳይ ተከታታይ ቅርጸት ክለሳ ላይ እንዲቆዩ በውህደትዎ ጥቅም ላይ የዋለውን የጥቅል ስሪት ወይም የምንጭ ክለሳ ይሰኩት።
@@ -46,7 +45,7 @@ PY
 
 ## ፈጣን ጅምር {#quickstart}
 
-ይፋዊ፣ ተነባቢ-ብቻ Taira API የመጨረሻ ነጥቦች ጀምር
+ይፋዊ፣ ተነባቢ-ብቻ Taira የመጨረሻ ነጥቦች ጀምር
 
 ```python
 from iroha_python import (
@@ -461,7 +460,7 @@ draft.force_transfer_rwa(
 
 ### ቀስቅሴዎች {#triggers}
 
-አስፈፃሚው ሌላ የመመሪያ ቅደም ተከተል ሲሆን ቀስቅሴ ምዝገባ ረዳቶችን ይጠቀሙ -
+የሚፈጸመው ይዘት ሌላ የመመሪያ ቅደም ተከተል ሲሆን የቀስቅሴ ምዝገባ ረዳቶችን ይጠቀሙ፦
 
 ```python
 # The trigger executable is just another instruction payload.
@@ -709,7 +708,7 @@ definitions = client.list_asset_definitions_typed(limit=10)
 print(domains.total, definitions.total)
 ```
 
-Torii API የመጨረሻ ነጥብ ገና የተተየበ የሶፍትዌር አስማሚ ከሌለው አጠቃላይ የጥያቄ ረዳቶችን ይጠቀሙ -
+የTorii መገናኛ ነጥብ ገና አይነት ያለው መጠቅለያ ካልኖረው፣ አጠቃላይ የጥያቄ ረዳቶችን ይጠቀሙ:
 
 ```python
 from urllib.request import Request, urlopen
@@ -724,7 +723,7 @@ with urlopen(request, timeout=5) as response:
     metrics = response.read().decode("utf-8")
 ```
 
-የመለያ ክምችት ረዳቶች በ SDK መደበኛነት ተቀባይነት ያለው መለያ መለያ ያስፈልጋቸዋል። ነጠላ ፕሮቶኮል-መደበኛ I105 መለያ መታወቂያዎችን ወይም በሰንሰለት ላይ ያሉ ተለዋጭ ስሞችን ይጠቀሙ; የብሎክ አሳሽ ወይም ጥሬ API የመጨረሻ ነጥብ SDK ውድቅ ያደረገውን መታወቂያ ከመለሰ፣ እነዚህን ረዳቶች ከመደወልዎ በፊት ወደ አንድ ፕሮቶኮል-መደበኛ መለያ መታወቂያ ይፍቱት።
+የመለያ ዝርዝር ረዳቶች በSDK መደበኛ ቅርጽ አድራጊ ተቀባይነት ያለውን የመለያ መታወቂያ ይፈልጋሉ። ቀኖናዊ I105 የመለያ IDዎች ወይም በሰንሰለቱ ላይ ያሉ ተለዋጭ ስሞችን ይጠቀሙ፤ የብሎክ አሳሽ ወይም ጥሬ መገናኛ ነጥብ SDK የማይቀበለውን ID ከመለሰ፣ ረዳቶቹን ከመጥራትዎ በፊት ወደ ቀኖናዊ የመለያ ID ይፍቱት:
 
 ```python
 # These helpers expect a canonical account ID or an alias the SDK can normalize.
@@ -1026,26 +1025,6 @@ client = create_torii_client(
 )
 ```
 
-## የካጌሙሻ ዝግጁነት {#kagemusha-readiness}
-
-የ Python SDK የአሁኑን JSON ዝግጁነት መንገድ በአጠቃላይ Torii ጥያቄ ረዳት በኩል መጠየቅ ይችላል -
-
-```python
-ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
-
-readiness = client.request_json(
-    "GET",
-    "/v1/offline/readiness",
-    params={"asset_definition_id": ASSET_DEFINITION_ID},
-    headers={"Accept": "application/json"},
-    expected_status=(200,),
-)
-print(readiness["ready"])
-print(readiness["blockers"])
-```
-
-Python የተተየቡ የካጌሙሻ መሙያ ወይም መቤዠት ማህደር ግንበኞችን አያጋልጥም።. ነጠላ ፕሮቶኮል-ስታንዳርድ V4 ማህደሮችን ለመገንባት የተተየበ Swift ወይም JVM የኪስ ቦርሳ ይጠቀሙ፣ ከዚያ በሚደገፍ የKagemusha Torii ደንበኛ በኩል ያስገቡ እና ይመርጧቸው።
-
 ## የደንበኝነት ምዝገባዎች {#subscriptions}
 
 የደንበኝነት ምዝገባ ንባቦች እና ረቂቅ ግንበኞች በ`iroha_python.ToriiClient` ጥቅም ላይ ከሚውለው የጋራ Torii ደንበኛ ይወርሳሉ። እያንዳንዱ ሚውቴሽን ከውሂብ አካል ጋር በተያያዘ ነጠላ ይቀበላል ፕሮቶኮል-መደበኛ መለያ ፊርማ እና ያልተፈረመ የግብይት ረቂቅ ይመልሳል። Torii የግል ቁልፍን በጭራሽ አይቀበልም እና ረቂቁን አያቀርብልዎትም።.
@@ -1300,7 +1279,7 @@ if connect_status is not None:
 
 ## SoraFS፣ UAID እና Kaigi ረዳቶች {#sorafs-uaid-and-kaigi-helpers}
 
-እነዚህ ረዳቶች የሚገኙት የዒላማው ኖድ ተጓዳኝ Nexus/SORA API የመጨረሻ ነጥቦችን ሲያጋልጥ ነው። ባዶ ዝርዝሮችን እንደ ትክክለኛ ምላሽ ይያዙ ይፋዊ Taira መንገዱ ያለ ውሂብ ሊነቃ ይችላል ቴክኒካል ማኒፌስት ወይም UAID።
+እነዚህ ረዳቶች የታለመው ኖድ ተዛማጅ የSORA Nexus መገናኛ ነጥቦችን ሲያቀርብ ይገኛሉ። ባዶ ዝርዝሮችን እንደ ትክክለኛ ምላሽ ይቁጠሩ፤ ክፍቱ Taira መንገዱን አንቅቶ ለምሳሌው ማኒፌስት ወይም UAID ውሂብ ላይኖረው ይችላል።
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
@@ -1324,7 +1303,7 @@ print(health.healthy_total, health.failovers_total)
 
 ## Norito RPC እና GPU ረዳቶች {#norito-rpc-and-gpu-helpers}
 
-አስቀድመው Norito ባይት ሲኖርዎት እና ሁለትዮሽ Torii API የመጨረሻ ነጥብ መጥራት ሲፈልጉ `NoritoRpcClient` ይጠቀሙ። ምሳሌው ከቀዳሚው የግብይት አብነት የተፈረመ የውሂብ መያዣ ያስፈልገዋል -
+አስቀድመው የNorito ባይቶች ካሉዎት እና ሁለትዮሽ የTorii መገናኛ ነጥብ መጥራት ከፈለጉ `NoritoRpcClient` ይጠቀሙ። ምሳሌው ከቀደመ የግብይት አብነት የመጣ የተፈረመ ኤንቨሎፕ ይፈልጋል:
 
 ```python
 from iroha_python import NoritoRpcClient, NoritoRpcConfig
@@ -1354,13 +1333,13 @@ if cuda_available():
 Python SDK አስቀድሞ ረዳቶችን ያካትታል -
 
 - Torii ማስረከቢያ፣ ሁኔታ፣ መጠይቅ እና የአስተዳዳሪ ፍሰቶች
-- የተተየቡ መመሪያ ገንቢዎች ለጋራ ISI እና ጎራ-ተኮር ቅጥያዎች
+- ለተለመዱ ISI እና ለጎራ-ተኮር ቅጥያዎች በውሂብ ዓይነቶች የተወሰኑ የመመሪያ ገንቢዎች
 - የግብይት ረቂቆች፣ ቴክኒካዊ መግለጫዎች፣ ፊርማ እና የተፈረመ የግብይት ውሂብ መያዣ የስራ ፍሰቶች
 - የቀጥታ ክስተት ዥረቶች እና የተተየቡ ማጣሪያዎች; የተጠናቀቁ የብሎክ ዥረቶች የተሟላ ታሪክ ይሰጣሉ
-- አጠቃላይ የ Kagemusha ዝግጁነት መዳረሻ እና Torii የደንበኝነት ምዝገባ ረዳቶች; የተተየቡ መሙያ እና መቤዠት ግንበኞች አይጋለጡም
+- የTorii ደንበኝነት ንባቦች እና ያልተፈረሙ የግብይት ረቂቅ ገንቢዎች
 - የመለያ አድራሻ፣ ሁሉም-አልጎሪዝም ፊርማ ረዳቶች፣ ባለብዙ ሃሽ ክብ ጉዞዎች፣ SM2፣ GOST፣ ML-DSA፣ BLS እና ሚስጥራዊ ቁልፍ አያያዝ
 - URIs ን፣ ክፍለ-ጊዜዎችን፣ ክፈፎችን፣ ምስጠራ ረዳቶችን እና የመመዝገቢያ አስተዳዳሪን ያገናኙ
-- አስተዳደር፣ የሶፍትዌር ማስፈጸሚያ አካባቢ ማሻሻል፣ Sumeragi፣ ኖድ-አስተዳዳሪ፣ SoraFS፣ UAID እና Kaigi API የመጨረሻ ነጥብ ሶፍትዌር አስማሚዎች ኖድ እነዚያን ባህሪያት የሚያጋልጥባቸው
+- አስተዳደር፣ የሶፍትዌር ማስፈጸሚያ አካባቢ ማሻሻል፣ Sumeragi፣ ኖድ-አስተዳዳሪ፣ SoraFS፣ UAID እና Kaigi የመጨረሻ ነጥብ ሶፍትዌር አስማሚዎች ኖድ እነዚያን ባህሪያት የሚያጋልጥባቸው
 
 ## የላይኛው ማጣቀሻዎች {#upstream-references}
 

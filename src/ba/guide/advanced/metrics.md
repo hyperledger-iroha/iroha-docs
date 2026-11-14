@@ -1,9 +1,9 @@
 ---
 translation_locale: ba
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # Эшмәкәрлек һәм күрһәткестәр {#performance-and-metrics}
 
@@ -37,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -130,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### Кандидат һәм ҡабул итеү сикләүҙәре {#candidate-and-ingress-bounds}
 
-Нод-локаль Sumeragi сиктәре билдәләй, күпме кандидат һәм тергеҙеү эше менән валидатор һаҡлай ала:
+Блок ҙурлығы һәм транзакция сиктәре ҡул ҡуйылған genesis менән раҫланған сылбыр параметрҙарынан килә. Төйөндәге урындағы `[sumeragi]` көйләүҙәре ҡатнашыу ролен, ҡул ҡуйыу асҡыстарының һаҡланыуын, хәүефһеҙлек яҙмалары юлдарын һәм документлаштырылған урындағы көтөү ваҡыты менән синхронлаштырыу үҙгәртеүҙәрен үҙ эсенә ала.
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` һәм `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks` һәм `sumeragi.queues.ready_bodies`
-
-Өҫтәмә ҙурлыҡтағы сикләүҙәр сиратҡа йәки файҙалы йөк менән ҡайтарыу баҫымына килтерә; артыҡ ҙурлыҡтәге сикләүҙәр һаҡланған хәтерҙе һәм йәберләүсе пирына эш күләмен арттырыу. Диагностика снапшотын процесстар иҫтәлеге, хәбәрҙәр менән эш итеү менән сағыштырығыҙ. һәм бер-бер артлы һыҙатты үҙгәрткәнгә тиклем юғалған кәүҙә күрһәткестәре:
+Селтәрҙән инеү һәм транзакциялар сираты сиктәре урында һаҡланған эште көйләй. Эшләү сиген үҙгәртер алдынан диагностика күренешен процесс хәтере, хәбәрҙәрҙе эшкәртеү һәм етмәгән блок тәндәре метрикалары менән сағыштырығыҙ. Бер үк селтәрҙең эшләтеүҙәрен сағыштырғанда ҡул ҡуйылған сылбыр параметрҙарын үҙгәртмәгеҙ:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -243,7 +236,7 @@ iroha --config ./localnet/client.toml \
 - раҫлаусы һәм күҙәтеүсе иҫәптәре
 - консенсус режимы, ҡул ҡуйылған блок-каденс һәм DA пластинка
 - `3f + 1` комитеты, кворум һәм күҙәтеүсе исемлеге
-- `sumeragi.block`, `sumeragi.queues`, `sumeragi.limits`, селтәргә инеү һәм транзакция сираттағы сикләүҙәре
+- ҡул ҡуйылған сылбыр параметрҙары, урындағы Sumeragi үҙгәртеүҙәре, селтәрҙән инеү һәм транзакциялар сираты сиктәре
 - телеметрия профиле
 - ҡорамалдар, һаҡлау һәм OS мәғлүмәттәре
 - селтәр RTT, jitter, юғалтыу һәм биҙәк киңлеге фараздары
@@ -253,7 +246,7 @@ iroha --config ./localnet/client.toml \
 - p50/p95/p99 commit latency
 - сират тәрәнлеге һәм тығыҙлығы
 - үҙгәрештәрҙе ҡарау, хәбәрҙәрҙе төшөрөү, юғалған блоктарҙы йыйыу һәм DA ҡапҡа иҫәпләүселәре
-- CPU, иҫтәлек, диск һәм селтәрҙе файҙаланыу бер validator
+- һәр валидатор өсөн CPU, хәтер, диск һәм селтәрҙе файҙаланыу
 
 Был мәғлүмәттәр булмаһа, TPS һанды анекдотик тип һанарға кәрәк.
 

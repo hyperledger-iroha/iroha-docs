@@ -18,7 +18,7 @@ Iroha-тан алынған өҙөктәре ябай сайттар төҙөү 
 pnpm refresh:iroha --source /path/to/iroha
 ```
 
-Checked-in `etc/refresh-iroha.ts` workflow clean source checkout-ты `provenance/iroha.json` менән verify итә, `/src/snippets` һәм Torii OpenAPI snapshot-ты яңынан generate итә һәм SHA-256 hashes-ты яңырта. Content һәм provenance changes-ты бергә review итегеҙ. Normal dependency install һәм VitePress build checked-in files-ты mutable branch fetch итмәйенсә ҡуллана.
+Репозиторийҙа һаҡланған `etc/refresh-iroha.ts` эш ағымы үҙгәртелмәгән сығанаҡ күсермәһен `provenance/iroha.json` менән сағыштырып тикшерә, `/src/snippets` һәм Torii OpenAPI торош күсермәһен яңынан булдыра, шулай уҡ SHA-256 хэштарын яңырта. Йөкмәтке һәм килеп сығыш мәғлүмәтендәге үҙгәрештәрҙе бергә ҡарап сығығыҙ. Ғәҙәти бәйлелектәрҙе урынлаштырыу һәм VitePress төҙөү ғәмәлдәре үҙгәреүсән тармаҡты йөкләмәйенсә репозиторийҙа һаҡланған файлдарҙы ҡуллана.
 
 ## Сниппеттар ҙа шул иҫәптән {#including-snippets}
 

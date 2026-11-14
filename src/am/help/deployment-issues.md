@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # የማሰማራት ችግሮችን መላ መፈለግ {#troubleshooting-deployment-issues}
 
 ይህ ክፍል ለ Iroha 3 ማሰማራት የመላ መፈለጊያ ምክሮችን ይሰጣል። እያጋጠመዎት ያለው ችግር እዚህ ካልተገለጸ፣ በ[ቴሌግራም](https://t.me/hyperledgeriroha) በኩል ያግኙን።
@@ -15,7 +14,7 @@ translation_engine: bing-translator-llm
 ለአካባቢያዊ እና ለሙከራ ማሰማራት፣ በእጅ ከተጻፉ የአውታረ መረብ አቻ ፋይሎች ይልቅ በ Kagami የተፈጠሩ አርቲፋክቶችን ይምረጡ -
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 የተፈጠረው ማውጫ የአውታረ መረብ አቻ ውቅሮችን፣ የብሎክቼይን ጀነሲስ ቁሳቁሶችን፣ የመነሻ ስክሪፕቶችን እና README ለ Iroha 3 የግንባታ መስመር ይዟል።
@@ -42,7 +41,7 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 የትእዛዝ መስመር ክርክሮች እና አዋቅር ፋይሎች ከተፈተሸው ኮድ ጋር እንዲዛመዱ ከአሁኑ Kagami localnet ውፅዓት ያቅርቡ
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```
@@ -67,9 +66,9 @@ docker compose -f ./docker-compose.yml up
 
 አንድ ፖድ በተደጋጋሚ እንደገና ከጀመረ፣ በፖድ ውስጥ የተሰራውን ውቅር ከተጠበቀው ጋር ያወዳድሩ [`peer.template.toml`](/am/reference/peer-config/index.md#template) እና የአውታረ መረብ አቻው ያረጀውን እየተጫወተ መሆኑን ያረጋግጡ Kura ውሂብ.
 
-## የሶራ መገለጫ {#sora-profile}
+## SORA Nexus መገለጫ {#sora-profile}
 
-Nexus፣ SoraFS ወይም ባለብዙ መስመር ፍሰቶችን የሚጠቀሙ የግል ወይም የአካባቢ Iroha 3 ማሰማራቶች መደበኛውን ዴሞን በሶራ መገለጫ መጀመር አለባቸው -
+SORA Nexus፣ SoraFS ወይም ብዙ መስመር ያላቸው ሂደቶችን የሚጠቀሙ የግል ወይም አካባቢያዊ Iroha 3 ጭነቶች መደበኛውን ዴሞን የSORA Nexus መገለጫ ነቅቶ ማስጀመር አለባቸው:
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

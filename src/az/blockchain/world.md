@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /blockchain/world.md
-translation_source_hash: 61657e1736d3163965063c38e347ed7dbfe040633ddf24eb1a37904922cb354d
+translation_source_hash: d6ecc7832a3925c105ddc0ddfbaf62ea54d465cdb7b98ce795e5a72c615361bd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-naming-amendment
 ---
-
 # Dünya {#world}
 
 `World` digər vahidləri ehtiva edən qlobal varlıqdır. `World` aşağıdakılardan ibarətdir:
@@ -36,7 +35,7 @@ WSV `World` obyektindən daha genişdir. Təcrübədə o, aşağıdakıları eht
 - sorğular və protokol nəticə qeydləri tərəfindən istifadə olunan əməliyyat-dən-blok indeksləri
 - konsensus tərəfindən istifadə olunan cari və əvvəlki protokolun yekunlaşdırılma topologiyası
 - tamamlanmış bloklardan əldə edilən yaddaşdaxili indekslər, məsələn, məlumat-mövcudluğu kriptoqrafik öhdəlik dəyərləri, protokol nəticə qeyd göstəriciləri, pin niyyətləri və sorğu proyeksiya markerləri
-- determinist blok icrası üçün lazım olan proqram təminatı icra mühiti konfiqurasiyası nöqtə-vaxt məlumat baxışları, məsələn, kriptoqrafiya, idarəetmə, proqram təminatı işləmə iş axını, məzmun, maliyyə əməliyyatlarının həlli və Nexus parametrləri
+- blokların deterministik icrası üçün lazım olan icra mühiti konfiqurasiyasının anlıq görüntüləri, məsələn, kriptoqrafiya, idarəetmə, emal xətti, məzmun, hesablaşma və SORA Nexus parametrləri
 
 Sorğular adətən bu strukturlar üzərində yalnız oxumağa icazə verilmiş `StateView` əldə edirlər. Görünüş sorğunun icrası üçün vaxt nöqtəsində ardıcıl məlumat görünüşüdür; bu, WSV-in birbaşa dəyişdirilməsinə imkan vermir.
 

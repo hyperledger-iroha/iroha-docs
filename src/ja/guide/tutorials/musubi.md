@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 621d1795fd1c3cc62462a9a91af68fe684c0ff5293f5e77801420dc8318bac38
+translation_source_hash: 22d763aadf33d331fb9c16d3927e84e8bdb88829f3d73b974902daa8fde3c1b4
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Musubi Kotodama パッケージ {#musubi-kotodama-packages}
 
 Musubi は Kotodama ソースパッケージの初回リリース用パッケージマネージャーです。これは正確なオンチェーン依存関係グラフを解決し、SoraFS を認証します。ソースをアーカイブし、選択したワークスペースをコンパイルしてテストし、標準的な CAR アーカイブを作成し、Iroha を通じて不変のリリースを公開します。
@@ -89,9 +88,9 @@ export TAIRA_ROOT=https://taira.sora.org
 curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
 ```
 
-プロバイダカタログはプロバイダの識別情報と公開された API エンドポイントを提供します。選択したプロバイダから一致するオペレーター認証を取得してください。ソフトウェアランタイムはそのキーを使用して制限付きストリームトークンを要求します。トークンは CLI 引数でもロックファイルの内容でもありません。
+プロバイダカタログはプロバイダの識別情報と公開された エンドポイントを提供します。選択したプロバイダから一致するオペレーター認証を取得してください。ソフトウェアランタイムはそのキーを使用して制限付きストリームトークンを要求します。トークンは CLI 引数でもロックファイルの内容でもありません。
 
-Taira バリデータピン URL を `url` として使用しないでください。チェックインされたバリデータには埋め込み SoraFS ストレージが無効になっています。それらの `https://taira-validator-{1,2,3,4}.sora.org` API エンドポイントはピン登録を受け入れますが、アーカイブの読み取りは選択された承認プロバイダの HTTPS オリジンを使用します。
+Taira バリデータピン URL を `url` として使用しないでください。チェックインされたバリデータには埋め込み SoraFS ストレージが無効になっています。それらの `https://taira-validator-{1,2,3,4}.sora.org` エンドポイントはピン登録を受け入れますが、アーカイブの読み取りは選択された承認プロバイダの HTTPS オリジンを使用します。
 
 ## ローカルワークフロー {#local-workflow}
 
@@ -209,4 +208,4 @@ Musubi は初回リリースの V1 の指示とクエリを使用します:
 | `FindMusubiArchiveLocationsV1`                       |確定したプロバイダ支援のアーカイブ場所を読み取ります。|
 | `FindMusubiAliasV1` / `FindMusubiAliasHistoryV1`     |現在のエイリアスのターゲットまたはその不変の履歴を読み取ります。|
 
-Torii は `/v1/musubi/*` の下でアプリルートファミリーを公開します。MCP ツールは現在の `iroha.musubi.queries.*` および `iroha.musubi.instructions.*` の名前を使用します。[Torii API エンドポイント](/ja/reference/torii-endpoints.md) および [問い合わせ参照](/ja/reference/queries.md) を参照して、より広範な API マップをご覧ください。
+Torii は `/v1/musubi/*` の下でアプリルートファミリーを公開します。MCP ツールは現在の `iroha.musubi.queries.*` および `iroha.musubi.instructions.*` の名前を使用します。[Torii エンドポイント](/ja/reference/torii-endpoints.md) および [問い合わせ参照](/ja/reference/queries.md) を参照して、より広範な API マップをご覧ください。

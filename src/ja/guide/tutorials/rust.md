@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /guide/tutorials/rust.md
-translation_source_hash: 98b0c3a193c6dfe8b266bcc498d7016426cf2f838a7bf7ebfbef145ffdcc7944
+translation_source_hash: fbe41bd6e7fa86d06c027724b446016c14246495964ccf521155e4b790d75041
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Rust {#rust}
 
 Rust の実装はメインワークスペースに存在し、Iroha 3 コードベースを扱う最も直接的な方法のままです。
@@ -31,7 +30,7 @@ cargo build --workspace
 チェックインされたデフォルトクライアント設定でリファレンスクライアントを実行します:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
 ## 試す Taira 読み取り専用 {#try-taira-read-only}

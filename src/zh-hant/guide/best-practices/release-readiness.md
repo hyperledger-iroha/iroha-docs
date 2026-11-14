@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/best-practices/release-readiness.md
-translation_source_hash: 984957526424a4e0ec9f29a6da1bb64699245bb135e8157bbe684bc3d87de4cc
+translation_source_hash: 75fccfa00f1582a8081df3e00331eee7ab21c108c8727a9d73129738cc4940cb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-source-title-amendment
 ---
-
 # 發布準備 {#release-readiness}
 
 在將 Iroha 應用程式或網路變更推進到下一階段前，先在足以暴露相關風險的最小環境中驗證其行為，再審慎透過共享測試網與正式環境的關卡。
@@ -26,7 +25,7 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 - 提交每筆即時測試交易前，確認簽署者資金、費用資產中繼資料、許可權與預期狀態。
 - 等待交易進入最終狀態，再以唯讀查詢驗證產生的狀態。
 
-請參閱[在 SORA 3 上建置：Taira 與 Minamoto](/zh-hant/get-started/sora-nexus-dataspaces.md)。
+請參閱[在 SORA Nexus 上建置：Taira 與 Minamoto](/zh-hant/get-started/sora-nexus-dataspaces.md)。
 
 ## 主網或正式環境關卡 {#mainnet-or-production-gate}
 

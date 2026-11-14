@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: 4c7c62c23166a19ccc3a6a4bb42d808038d755b8c05e87b9e2ce21fbbe31a6ac
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha 3 quraşdır {#install-iroha-3}
 
 Bu səhifə yuxarı axın `hyperledger-iroha/iroha` iş sahəsini istifadə edərək Iroha 3 alət dəsti və ikili faylların cari quraşdırma iş axışını əhatə edir.
@@ -64,7 +63,8 @@ Siz adətən istifadə edəcəyiniz dörd ikilik bunlardır:
 
 Cari mənbə dəstəklənən lokalnet axını Kagami tərəfindən yaradılır. Bu, şəbəkə həmkarı konfiqurasiyalarını, blockchain genesis sənədlərini, müştəri konfiqurasiyasını, köməkçi skriptləri və çıxarılan kodla uyğunlaşan istəyə bağlı Compose faylını yazır:
 
-- `kagami localnet` yerli yerli şəbəkə həmkarı skriptləri üçün
+- Kagami tərəfindən başladılan və nəzarət olunan yerli şəbəkə üçün `kagami localnet up`
+- yerli həmyaşıd qovşaqların birbaşa işləyən skriptləri üçün `kagami localnet generate`
 - `kagami docker` üçün Docker Compose localnet qovluğundan yaradıldı
 
 [Başlat Iroha 3](/az/get-started/launch-iroha.md) ilə davam et.

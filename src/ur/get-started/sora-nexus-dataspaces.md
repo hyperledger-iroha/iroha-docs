@@ -1,16 +1,15 @@
 ---
 translation_locale: ur
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 7ebe42f3b220f16a023f1b780c08764a09e520ae7594b8eab9f47765d6020076
+translation_source_hash: 3d2285e5a27819897b6dcc6d165c468baead29d2922420728fcfbe2433d36fdd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
+# SORA Nexus پر تعمیر کریں: Taira اور Minamoto {#build-on-sora-3-taira-and-minamoto}
 
-# SORA 3 پر تعمیر کریں: Taira اور Minamoto {#build-on-sora-3-taira-and-minamoto}
+SORA Nexus، Iroha 3 پر مبنی عوامی تنصیب کے راستے فراہم کرتا ہے۔ پہلے Taira پر بنائیں اور مشق کریں، پھر کلائنٹ کی وہی ساخت Minamoto پر صرف تب منتقل کریں جب آپ کے پاس الگ مین نیٹ کلیدیں، فیس کے لیے حقیقی XOR اور صنعتی استعمال کی منظوری ہو۔
 
-SORA 3 اے پی پی کی طرف متوجہ عوامی تعیناتی ٹریک ہے Iroha 3 اور SORA Nexus. تعمیر کریں اور پر عمل کریں Taira سب سے پہلے، پھر ایک ہی کلائنٹ کی شکل منتقل کرنے کے لئے Minamoto صرف جب آپ کے پاس علیحدہ اہم نیٹ ورک کی چابیاں ہیں، حقیقی XOR فیسوں اور پیداوار کی منظوری کے لیے۔
-
-یہ سبق دکھاتا ہے کہ عوامی SORA 3 نیٹ ورکس کے لیے Iroha کلائنٹ کو کیسے ترتیب دیا جائے:
+یہ رہنما دکھاتا ہے کہ عوامی SORA Nexus نیٹ ورکس کے لیے Iroha کلائنٹ کیسے ترتیب دیں:
 
 - Taira ٹیسٹ نیٹ at `https://taira.sora.org`
 - Minamoto مین نیٹ پر `https://minamoto.sora.org`
@@ -25,14 +24,14 @@ SORA 3 اے پی پی کی طرف متوجہ عوامی تعیناتی ٹریک 
 |مرحلہ |Taira ٹیسٹ نیٹ |Minamoto مین نیٹ |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
 |نیٹ ورک کی حالت پڑھنا شروع کریں |کلیدوں کے بغیر `/status` کا استفسار کریں |کلیدوں کے بغیر `/status` کا استفسار کریں |
-|ڈیٹا اسپیس منتخب کریں |عوامی استعمال کریں `universal` جب تک کہ آپ کی ایپ کو ایک منظم لین کی ضرورت نہ ہو |صرف مین نیٹ کی منظوری کے بعد ایک ہی ڈیٹا اسپیس کا استعمال کریں |
+| ڈیٹا اسپیس منتخب کریں | عوامی `universal` استعمال کریں، جب تک ایپ کو گورننس کے زیرِ انتظام لین درکار نہ ہو | مین نیٹ کی منظوری کے بعد ہی وہی ڈیٹا اسپیس استعمال کریں |
 |فیس کا اثاثہ حاصل کریں |عوامی Taira faucet استعمال کریں |فنڈ شدہ Minamoto اکاؤنٹ یا منظور شدہ خزانے کے بہاؤ سے XOR حاصل کریں |
 |تحریری کارروائیوں کی جانچ کریں |فوسیٹ سے حاصل کردہ ٹیسٹ XOR استعمال کریں |ٹیسٹ ٹولنگ استعمال نہ کریں؛ تحریری کارروائیوں میں حقیقی XOR خرچ ہوتا ہے |
 |پروڈکشن میں منتقل کریں |دوبارہ کوشش کی منطق، نگرانی اور دستخط کنندہ کے انتظام کی مشق کریں |الگ کلیدیں، فنڈنگ اور ریلیز کنٹرول استعمال کریں |
 
 عملی بہاؤ یہ ہے:
 
-1. کلائنٹ کو Taira کے خلاف بنائیں اور عوامی `universal` ڈیٹا اسپیس استعمال کریں۔
+1. کلائنٹ Taira کے لیے بنائیں اور عوامی `universal` ڈیٹا اسپیس استعمال کریں۔
 2. ایک دستخط شامل کریں اور اسے Taira فوسیٹ کے ساتھ فنڈ دیں۔
 3. Taira کے خلاف آپ کی ایپ منطق کا استعمال کریں جب تک کہ ناکامی بورنگ اور مشاہدہ نہیں ہوتی۔
 4. ایک علیحدہ Minamoto دستخط کنندہ بنائیں، اسے اصلی XOR کے ساتھ فنڈ کریں، اور صرف وہی ثابت شدہ آپریشنز کو مین نیٹ پر منتقل کریں۔
@@ -53,18 +52,18 @@ SORA 3 اے پی پی کی طرف متوجہ عوامی تعیناتی ٹریک 
 
 ## ۱۔ سمجھیں کہ آپ کیا کر رہے ہیں {#_1-understand-what-you-are-setting-up}
 
-SORA Nexus میں ، ڈیٹا اسپیس نیٹ ورک لین اور روٹنگ کیٹلاگ کا حصہ ہے۔ ایک کلائنٹ صرف `client.toml` کو تبدیل کرکے نیا عوامی ڈیٹا اسپیس نہیں بناتا ہے۔ کلائنٹ سیٹ اپ دو چیزیں کرتا ہے: -
+SORA Nexus میں ڈیٹا اسپیس کیٹلاگ ڈیٹا اسپیسز متعین کرتا ہے۔ لین کیٹلاگ الگ سے لینز متعین کرتا ہے: ہر لین ایک ڈیٹا اسپیس کا حوالہ دیتی ہے، اور ایک ڈیٹا اسپیس میں متعدد لینز ہو سکتی ہیں۔ کلائنٹ صرف `client.toml` بدل کر نئی عوامی ڈیٹا اسپیس نہیں بناتا۔ کلائنٹ کی ترتیب دو کام کرتی ہے:
 
 1. کلائنٹ کو دائیں Torii اختتامی نقطہ نظر پر اشارہ کرتا ہے
-2. اپنے کینونیکل اکاؤنٹ کے لئے ڈومین اور ڈیٹا اسپیس روٹنگ سیاق و سباق کا انتخاب کرتا ہے۔
+2. اپنے کینونیکل اکاؤنٹ کے لیے نیٹ ورک سیاق اور دستخطی کلید منتخب کرتی ہے
 
-`AccountId` ہمیشہ کینونیکل اور domainless ہوتا ہے۔ `client.toml` میں `[account].domain` کی قدر routing اور alias context فراہم کرتی ہے؛ یہ account identity کا حصہ نہیں بنتی۔ زیادہ تر applications کے لیے عوامی `universal` ڈیٹا اسپیس سے شروع کریں۔ domain context، `domain.dataspace` کی شکل استعمال کرتا ہے، مثلاً:
+`AccountId` ہمیشہ کینونیکل اور ڈومین سے آزاد ہوتا ہے، اور `client.toml` میں ڈومین کی ترتیب نہیں ہے: `[account].profile` صرف نیٹ ورک کا I105 سابقہ منتخب کرتا ہے۔ ڈومین کا سیاق عرفی ناموں اور ڈومین کی ملکیت والی اشیا سے متعلق ہے۔ اکثر ایپلیکیشنز کے لیے عوامی `universal` ڈیٹا اسپیس سے شروع کریں۔ ڈومین سیاق `domain.dataspace` کی صورت استعمال کرتا ہے، مثلاً:
 
 ```text
 wonderland.universal
 ```
 
-اگر آپ کو نئی تنظیمی ڈیٹا اسپیس کی ضرورت ہو تو ، کسی عام کلائنٹ اکاؤنٹ سے اس کی رجسٹریشن کرنے کی کوشش کرنے کے بجائے ایک کیٹلاگ اور روٹنگ تجویز تیار کریں۔ ذیل میں [ نیا ڈیٹا اسپیس فراہم کریں ](#_8-provision-a-new-dataspace) دیکھیں.
+اگر آپ کو ادارے کی نئی ڈیٹا اسپیس درکار ہو تو عام کلائنٹ اکاؤنٹ سے رجسٹر کرنے کی کوشش کے بجائے کیٹلاگ اور روٹنگ کی تجویز تیار کریں۔ نیچے [نئی ڈیٹا اسپیس فراہم کریں](#_8-provision-a-new-data-space) دیکھیں۔
 
 ## پبلک Torii اختتامی نقطہ چیک کریں۔ {#_2-check-the-public-torii-endpoint}
 
@@ -86,7 +85,7 @@ curl -fsS https://minamoto.sora.org/status \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
-نوڈ کے ذریعہ ظاہر کردہ ڈیٹا اسپیس اور لین ویو کی جانچ پڑتال کریں:
+نوڈ کی فراہم کردہ ڈیٹا اسپیس اور لین کا منظر جانچیں:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -107,15 +106,19 @@ Taira ایجنٹ کے رن ٹائمز کے لئے Torii - مقامی ماڈل ک
 |مطلوبہ استعمال |Taira ٹیسٹنیٹ پڑھتا ہے اور فوسیٹ کی طرف سے فنڈ لکھنے کے rehearsals |
 |پیداوار کا مساوی |اس اندراج کو Minamoto پر اشارہ نہ کریں جب تک کہ مرکزی نیٹ ورک MCP کے اختتام پوائنٹ اور ریلیز کنٹرول واضح طور پر منظور نہ ہوں |
 
-دستخط کے مواد کو شامل کرنے سے پہلے پل میٹا ڈیٹا چیک کریں:
+برج صرف حالت محفوظ نہ رکھنے والی JSON-RPC `POST` درخواستیں قبول کرتا ہے۔ دستخطی مواد شامل کرنے سے پہلے اس کا دریافت میٹاڈیٹا جانچیں:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
   -H 'Accept: application/json' \
-  | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
+  -H 'Content-Type: application/json' \
+  -H 'MCP-Protocol-Version: 2026-07-28' \
+  -H 'Mcp-Method: server/discover' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"server/discover","params":{"_meta":{"io.modelcontextprotocol/protocolVersion":"2026-07-28","io.modelcontextprotocol/clientCapabilities":{}}}}' \
+  | jq '{versions: .result.supportedVersions, server: .result._meta["io.modelcontextprotocol/serverInfo"].name, toolset: .result.capabilities.extensions["org.hyperledger.iroha/tools"].toolsetVersion}'
 ```
 
-ایجنٹ رن ٹائم میں URL کو صارف مقامی MCP سرور کے طور پر ترتیب دیں۔ اس docs repository یا کسی application repository میں agent MCP config، API tokens، forward کیے گئے auth headers، `authority` یا `private_key` کی اقدار commit نہ کریں۔
+ایجنٹ کے رن ٹائم میں URL کو صارف کے مقامی MCP سرور کے طور پر ترتیب دیں۔ ایجنٹ کی MCP ترتیب، API ٹوکنز، آگے بھیجے گئے توثیقی ہیڈرز، `authority` یا `private_key` کی قدریں اس دستاویزی ریپوزٹری یا کسی ایپلی کیشن ریپوزٹری میں کمٹ نہ کریں۔
 
 ایجنٹ فوری قواعد جو Taira کے ساتھ اچھی طرح کام کرتے ہیں:
 
@@ -127,7 +130,7 @@ curl -fsS https://taira.sora.org/v1/mcp \
 
 ### ایجنٹوں کے ساتھ ترقیاتی کام کا بہاؤ {#development-workflow-with-agents}
 
-Iroha کلائنٹس ، ٹرانزیکشن بلڈرز ، تشخیصی اسکرپٹ ، اور ٹیسٹ نیٹ رن بکس کے لئے ایجنٹوں کو ترقیاتی معاونین کے طور پر استعمال کریں۔ ایجنٹ کی اتھارٹی کو محدود رکھیں: یہ کوڈ کا معائنہ کر سکتا ہے، Taira ریاست پڑھ سکتا ہے، تبدیلیوں کی تجویز پیش کرسکتا ہے، اور مقامی ٹیسٹ چلا سکتا ہے، لیکن اس کو زندہ نیٹ ورک کو تبدیل نہیں کرنا چاہئے جب تک کہ انسان نے عین عمل کی منظوری نہ دی ہو۔
+ایجنٹس کو Iroha کلائنٹس، معاملہ بنانے والے ٹولز، تشخیصی اسکرپٹس اور ٹیسٹ نیٹ کے عملی دستور بنانے میں معاون کے طور پر استعمال کریں۔ ایجنٹ کا اختیار محدود رکھیں: وہ کوڈ کا معائنہ، Taira کی حالت پڑھنے، تبدیلیاں تجویز کرنے اور مقامی ٹیسٹ چلانے کا کام کر سکتا ہے، لیکن جب تک کوئی انسان عین کارروائی کی منظوری نہ دے، اسے فعال نیٹ ورک میں تبدیلی نہیں کرنی چاہیے۔
 
 ایک عملی کام کا بہاؤ یہ ہے:
 
@@ -136,7 +139,7 @@ Iroha کلائنٹس ، ٹرانزیکشن بلڈرز ، تشخیصی اسکرپ
 3. Taira کے خلاف صرف پڑھنے والے کالز کام کرنے کے بعد ہی لین دین کی تعمیر کا کوڈ شامل کریں۔
 4. لائیو نیٹ ورک کے ٹیسٹ کو opt-in رکھیں، مثال کے طور پر `TAIRA_LIVE=1` کے پیچھے، تاکہ ایک عام یونٹ ٹیسٹ رن کبھی بھی ٹیسٹ نیٹ فنڈز خرچ نہیں کرتا یا نیٹ ورک کی دستیابی پر منحصر ہوتا ہے.
 5. ایجنٹ کو کسی بھی ٹرانزیکشن جمع کروانے سے پہلے نیٹ ورک روٹ، چین، اتھارٹی اکاؤنٹ، ہدایات کا خلاصہ، فیس اثاثہ، اور متوقع حالت کی تبدیلی کی اطلاع دینا ضروری ہے.
-6. تیار کردہ code کو CI یا mainnet workflows میں منتقل کرنے سے پہلے رازوں کے انتظام، دوبارہ کوشش کے رویے، idempotency اور مسترد کیے جانے کے انتظام کے لیے جانچیں۔
+6. تیار کردہ کوڈ کو CI یا مرکزی نیٹ ورک کے طریقۂ کار میں شامل کرنے سے پہلے اس میں رازوں کے انتظام، دوبارہ کوشش کے رویے، ایک ہی عمل دہرانے پر نتیجہ نہ بدلنے کی خاصیت، اور مسترد ہونے کی صورت میں رویے کا جائزہ لیں۔
 
 ترقی کے لیے مفید صرف پڑھنے والے MCP tools میں account asset lookup، alias resolution، block lookup، transaction lookup، transaction lists اور pipeline status checks شامل ہیں۔ کسی بھی signed payload کو بھیجنے سے پہلے اعتماد حاصل کرنے کے لیے انہیں استعمال کریں۔
 
@@ -153,7 +156,7 @@ MCP پل ایک دستخط شدہ Iroha ٹرانزیکشن جمع کروا سک�
 
 خام کے لئے Iroha ٹرانزیکشنز، تعمیر اور ایک کے ساتھ ٹرانزیکشن envelope دستخط SDK یا CLI سب سے پہلے، پھر ایجنٹ کو صرف canonical دستخط شدہ ٹرانزیکشن بائٹس کوڈ کے طور پر دیں `body_base64`. ایجنٹ کو لفافہ جمع کروا سکتے ہیں `iroha.transactions.submit_and_wait`, یا جمع کروائیں `iroha.transactions.submit` اور سروے `iroha.transactions.wait`.
 
-کسی agent prompt میں نجی کلیدیں paste نہ کریں۔ اگر agent کو transaction بنانی ہو تو اسے ایسے مقامی code کی طرف اشارہ کریں جو صارف کے runtime environment، keychain، hardware signer یا نظرانداز شدہ testnet config file سے secrets load کرے۔ Agent کو key material کبھی بھی Markdown، آزمائشی ڈیٹا، logs یا commits میں نہیں لکھنا چاہیے۔
+ایجنٹ کے پرامپٹ میں نجی کلیدیں نہ چسپاں کریں۔ اگر ایجنٹ کو معاملہ بنانا ہو تو اسے مقامی کوڈ کی طرف رہنمائی دیں جو صارف کے رن ٹائم ماحول، کی چین، ہارڈویئر دستخط کنندہ یا نظر انداز کردہ ٹیسٹ نیٹ ترتیب فائل سے راز لوڈ کرتا ہو۔ ایجنٹ کو کلید کا مواد کبھی Markdown، ٹیسٹ ڈیٹا، لاگز یا کمٹس میں نہیں لکھنا چاہیے۔
 
 ٹرانزیکشن جمع کروانے سے پہلے، ایجنٹ کو ایک مختصر ٹرانزیکشن پلان تیار کرنے کے لئے کہیں:
 
@@ -211,7 +214,7 @@ for network in taira minamoto; do
 done
 ```
 
-Taira کے ذریعہ پبلک ڈیٹا اسپیس لینز کی فہرست بنائیں:
+Taira کی فراہم کردہ عوامی ڈیٹا اسپیس لینز کی فہرست دیکھیں:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -271,7 +274,7 @@ kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 ```toml
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
 # The exact `network_id` from https://taira.sora.org/v1/accounts/capabilities
-network_id = "<TAIRA_NETWORK_ID>"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 torii_url = "https://taira.sora.org/"
 
 [account]
@@ -285,7 +288,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-سب سے اوپر کی سطح `chain` کیا یہ درست ہے Taira لین دین کا سلسلہ ID. انگریزی میں `[account].profile = "taira"` سیٹنگ آزادانہ طور پر منتخب کرتا ہے Taira I105 زنجیروں کا فرقہ. chain ID اکاؤنٹ profile کا انتخاب نہیں کرتی۔
+اوپری سطح کا `chain`، Taira کے لین دین کا عین چین ID ہے، اور `network_id` نیٹ ورک کی عین شناخت ہے جس سے ہر دستخط بندھا ہوتا ہے۔ `network_id` یا `network_id_file` میں سے عین ایک ترتیب دیں۔ `[account].profile = "taira"` آزادانہ طور پر Taira کا I105 چین امتیاز منتخب کرتا ہے۔ چین ID اکاؤنٹ کا پروفائل منتخب نہیں کرتا۔
 
 صرف پڑھنے کے لئے چیک کریں:
 
@@ -299,28 +302,24 @@ iroha --config ./taira.client.toml --output-format text ops sumeragi status
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-Taira اکاؤنٹ کو آپ کی فیس ادا کرنے والی تحریریں چلانے سے پہلے فوسیٹ کے ذریعے فنڈ کریں۔ فوسیٹ کا براہ راست بہاؤ [Get Testnet XOR پر ہے Taira](#_4-get-testnet-xor-on-taira).
+فیس ادا کرنے والی تحریری کارروائیوں سے پہلے Taira اکاؤنٹ فوسیٹ سے فنڈ کریں۔ پیشگی تیاری والا فوسیٹ عمل [Taira پر ٹیسٹ نیٹ XOR حاصل کریں](#_4-get-testnet-xor-on-taira) میں ہے۔
 
-فوسیٹ کے دعوے کو قبول کرنے اور اکاؤنٹ کی مالی اعانت حاصل کرنے کے بعد، Taira کینری ایک اختیاری تحریری دھواں ٹیسٹ ہے:
+اکاؤنٹ فنڈ ہونے کے بعد دستخط شدہ لاگ ہدایت اختیاری تحریری بنیادی جانچ ہے۔ ہر بھیجا گیا لین دین اپنا فیس ادا کنندہ متعین کرتا ہے، اور CLI دستخط سے پہلے درست فیس معلوم کرتا ہے:
 
 ```bash
-iroha --config ./taira.client.toml taira write-canary \
-  --public-root https://taira.sora.org \
-  --write-config ./taira.canary.client.toml \
-  --json
+iroha --config ./taira.client.toml --fee-payer authority \
+  tx ping --msg "taira smoke test"
 ```
 
-کینری ایک دستخط شدہ پنگ بھیجتا ہے، تصدیق کا انتظار کرتا ہے، اور رن ٹائم دستخط کنفیگریشن لکھتا ہے `--write-config` فراہم کی جاتی ہے۔ Taira ایک عوامی ٹیسٹ نیٹ ورک ہے، لہذا قطار کے saturation دستخط شدہ پنگ ناکام ہو سکتا ہے یہاں تک کہ جب فوسیٹ خود کام کرتا ہے. اگر `taira doctor` ایک بھرپور قطار یا کینری کی واپسی کی اطلاع دیتا ہے `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`, انتظار کریں اور اسے کلائنٹ ترتیب کی خرابی کے طور پر علاج کرنے سے پہلے دوبارہ کوشش کریں۔
+کمانڈ تصدیق کا انتظار کرتی ہے۔ Taira عوامی ٹیسٹ نیٹ ہے، اس لیے قطار بھرنے سے ping ناکام ہو سکتا ہے خواہ فوسیٹ خود کام کر رہا ہو۔ اگر `taira doctor` بھری قطار بتائے یا ping، `PRTRY:NEXUS_FEE_ADMISSION_REJECTED` دے تو اسے کلائنٹ کی ترتیب کا مسئلہ سمجھنے سے پہلے انتظار کریں اور دوبارہ کوشش کریں۔
 
-بے نگرانی دھواں ٹیسٹ کے لئے، کینری کو ایک محدود دوبارہ آزمائشی لوپ میں لفافہ کریں:
+بغیر نگرانی کی بنیادی جانچوں کے لیے ping کو محدود دوبارہ کوشش والے لوپ میں رکھیں:
 
 ```bash
 ok=false
 for attempt in 1 2 3 4 5; do
-  iroha --config ./taira.client.toml taira write-canary \
-    --public-root https://taira.sora.org \
-    --write-config ./taira.canary.client.toml \
-    --json && ok=true && break
+  iroha --config ./taira.client.toml --fee-payer authority \
+    tx ping --msg "taira smoke test" && ok=true && break
 
   sleep 60
 done
@@ -332,7 +331,7 @@ test "$ok" = true
 
 ## ایک SORA Nexus اکاؤنٹ بنائیں ID {#generate-a-sora-nexus-account-id}
 
-SORA Nexus اکاؤنٹ ID اکاؤنٹ پبلک کلید اور ہدف نیٹ ورک پریفیکس سے اخذ کردہ ایک کینیکل I105 ایڈریس ہے۔ یہ کلائنٹ میں `[account].domain` قدر نہیں ہے TOML. ایک ہی عوامی کلید کو IDs پر مختلف Taira اور Minamoto کوڈ کرتا ہے، اور پیداوار صارفین کو Minamoto کے لئے علیحدہ کلیدی جوڑا پیدا کرنا چاہئے.
+SORA Nexus اکاؤنٹ ID، اکاؤنٹ کی عوامی کلید اور ہدف نیٹ ورک کے سابقے سے اخذ کردہ کینونیکل I105 پتہ ہے۔ ایک ہی عوامی کلید Taira اور Minamoto میں الگ IDs بناتی ہے، اور صنعتی صارفین کو Minamoto کے لیے الگ کلیدی جوڑا بنانا چاہیے۔
 
 ایڈ25519 کلید جو اکاؤنٹ کو کنٹرول کرے گا پیدا یا لوڈ کریں:
 
@@ -352,7 +351,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-حاصل کردہ اکاؤنٹ کا استعمال کریں ID جہاں بھی ایک Nexus API یا CLI کمانڈ ایک کینونیکل اکاؤنٹ کے لئے پوچھتا ہے ID, مثلاً Taira فوسیٹ `account_id`, بیلنس کے استفسارات ، سخت اکاؤنٹ فیلڈز ، یا عرفی پابندیاں۔ ملاپ کو برقرار رکھیں آپ کے کلائنٹ کی ترتیب میں نجی کلید، اور منتخب کریں ایک ہی عوامی نیٹ ورک کے ساتھ `[account].profile = "taira"` یا `[account].profile = "minamoto"`.
+جہاں SORA Nexus API یا CLI کمانڈ کینونیکل اکاؤنٹ ID مانگے، مثلاً بیلنس کوئریز، سخت اکاؤنٹ فیلڈز یا عرفی ناموں کی وابستگیوں میں، حاصل شدہ اکاؤنٹ ID استعمال کریں۔ متعلقہ نجی کلید اپنی کلائنٹ ترتیب میں رکھیں اور `[account].profile = "taira"` یا `[account].profile = "minamoto"` سے وہی عوامی نیٹ ورک منتخب کریں۔
 
 ID پیدا کرنے سے خود میں فنڈ آن لائن اکاؤنٹ نہیں بنتا ہے۔ Taira پر ، فوسیٹ ٹیسٹ نیٹ لکھنے کے لئے اکاؤنٹ تشکیل دے سکتا ہے اور اسے فنڈ کرسکتا ہے۔ Minamoto پر ، ایک منظور شدہ مین نیٹ بورڈنگ یا خزانہ کے بہاؤ کا استعمال کریں۔
 
@@ -362,7 +361,7 @@ ID پیدا کرنے سے خود میں فنڈ آن لائن اکاؤنٹ نہی
 
 SORA Nexus اکاؤنٹس کے لئے ان طریقوں کا استعمال کریں:
 
-- نجی کلیدیں encrypted password manager، hardware-backed keystore یا مخصوص signing service میں محفوظ کریں۔ کلیدوں کو source control میں commit نہ کریں، اور پیداواری کلیدیں shell history، logs، chat، tickets یا غیر مرموز backups میں نہ چھوڑیں۔
+- نجی کلیدیں رمز شدہ پاس ورڈ مینیجر، ہارڈویئر سے محفوظ کلیدی ذخیرے یا مخصوص دستخطی خدمت میں محفوظ کریں۔ کلیدوں کو ماخذ کوڈ کے نسخہ کنٹرول میں درج نہ کریں، اور پیداواری کلیدیں شیل کی تاریخ، لاگز، گفتگو، ٹکٹوں یا غیر رمز شدہ احتیاطی نقول میں نہ چھوڑیں۔
 - ہر خفیہ خانے یا پروڈکشن دستخط کے لئے ایک منفرد ہائی اینٹروپی پاس ورڈ استعمال کریں۔ پاس ورڈ مینیجر یا تقسیم شدہ اسٹوریج کے عمل میں پاس ورڈز کو ذخیرہ کریں ، نہ کہ خفیہ کردہ نجی کلید کے ساتھ ایک ہی فائل یا بیک اپ بنڈل۔
 - Taira اور Minamoto چابیاں الگ رکھیں۔ Taira چابیاں ایک بار استعمال ہونے والے ٹیسٹ نیٹ مواد کے طور پر اور Minamoto چابیاں پیداوار فنڈز اتھارٹی کے طور پر سنبھالیں۔
 - نجی کلید ، عوامی کلید ، اکاؤنٹ ID ، اکاؤنٹ پروفائل ، اور کسی بھی اکاؤنٹ کی بازیابی یا دستخط کرنے والے کو بحال کرنے کے لئے درکار اسٹوری نوٹس کا بیک اپ کریں۔ نیٹ ورک کے تناظر کے بغیر ایک نجی کلید بازیافت کے دوران غلط استعمال کرنا آسان ہے۔
@@ -373,184 +372,66 @@ SORA Nexus اکاؤنٹس کے لئے ان طریقوں کا استعمال کر
 
 ## ٹیسٹ نیٹ XOR کو Taira پر حاصل کریں۔ {#_4-get-testnet-xor-on-taira}
 
-براہ راست عوامی فوسیٹ کا استعمال کریں. بہاؤ:
+CLI کے پیشگی تیاری والے فوسیٹ عمل سے ٹیسٹ نیٹ XOR طلب کریں۔ فوسیٹ `taira.client.toml` کے اکاؤنٹ کو فنڈ کرتا ہے اور اگر وہ پہلے موجود نہ ہو تو اسے رجسٹر بھی کرتا ہے۔ عمل یہ ہے:
 
-1. ایک دستخط کنندہ پیدا کریں یا لوڈ کریں اور اس کا کینونیکل Taira اکاؤنٹ ID حساب لگائیں۔
-2. موجودہ فوسیٹ پزل لے لو.
-3. جب `difficulty_bits` `0` سے زیادہ ہو تو پزل کو حل کریں۔
-4. فوسیٹ کی درخواست جمع کروائیں۔
-5. فیس ادا کرنے والی تحریریں بھیجنے سے پہلے اکاؤنٹ یا اثاثے کا بیلنس ظاہر ہونے کا انتظار کریں۔
+1. فوسیٹ کی عوامی پالیسی پڑھیں: فوسیٹ کا اختیار، فیس کا اثاثہ اور رقم۔
+2. دعویٰ تیار کریں۔ CLI پروف آف ورک حل کرتا ہے، Torii کے تیار اور دستخط کردہ عین لین دین کی تصدیق کرتا ہے، اور اسے بھیجے بغیر نجی جرنل ڈائریکٹری میں محفوظ کرتا ہے۔
+3. محفوظ لین دین صرف ایک بار بھیجیں۔
+4. فیس ادا کرنے والی تحریری کارروائیوں سے پہلے اثاثے کا بیلنس نظر آنے کا انتظار کریں۔
 
-ایک عوامی کلید کو Taira I105 اکاؤنٹ ID میں تبدیل کریں جس کی توقع فوسیٹ سے ہوتی ہے:
-
-```bash
-iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
-```
-
-پہیلی لانا:
+پالیسی پڑھیں:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
   -H 'Accept: application/json' \
+  | tee ./taira-faucet-policy.json \
   | jq .
 ```
-
-فوسیٹ ایک عوامی ٹیسٹ نیٹ سروس ہے۔ اگر پہیلی یا دعویٰ اختتامی نقطہ `502` ، ٹائم آؤٹ ، یا گیٹ وے کی سطح کی کسی اور غلطی کو واپس کرتا ہے تو ، اپنی چابیاں یا کلائنٹ ترتیب تبدیل کرنے سے پہلے انتظار کریں اور دوبارہ کوشش کریں۔
 
 جواب اس طرح کا ہے:
 
 ```json
 {
-  "algorithm": "scrypt-leading-zero-bits-v1",
-  "difficulty_bits": 8,
-  "anchor_height": 741,
-  "anchor_block_hash_hex": "05d2...",
-  "challenge_salt_hex": null,
-  "scrypt_log_n": 13,
-  "scrypt_r": 8,
-  "scrypt_p": 1,
-  "max_anchor_age_blocks": 6
+  "schema_version": 1,
+  "network_id": "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774",
+  "network_prefix": 369,
+  "authority": "<TAIRA_FAUCET_AUTHORITY_I105>",
+  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "amount": "25000"
 }
 ```
 
-جب `difficulty_bits` `0` ہو تو، صرف اکاؤنٹ ID جمع کرو:
+پالیسی غیر دستخط شدہ دریافت کا ڈیٹا ہے۔ خودکاری کو ہر جواب پر اعتماد کے بجائے متوقع اختیار، اثاثے کی تعریف اور رقم مقرر کرنی چاہیے۔ `prepare` ایسا تیار لین دین مسترد کرتا ہے جو آپ کی دی ہوئی قدروں سے مختلف ہو۔
+
+دعویٰ تیار کریں اور بھیجیں:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet \
-  -H 'Accept: application/json' \
-  -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
-  | tee ./taira-faucet-response.json \
-  | jq .
+export TAIRA_FEE_ASSET="$(
+  jq -er '.asset_definition_id' ./taira-faucet-policy.json
+)"
+
+iroha --config ./taira.client.toml --fee-payer authority \
+  taira account faucet prepare \
+  --journal ./taira-faucet \
+  --issuer "$(jq -er '.authority' ./taira-faucet-policy.json)" \
+  --asset-definition "$TAIRA_FEE_ASSET" \
+  --amount "$(jq -er '.amount' ./taira-faucet-policy.json)"
+
+iroha --config ./taira.client.toml \
+  taira account faucet submit --journal ./taira-faucet
 ```
 
-جب `difficulty_bits` `0` سے زیادہ ہو تو، پہیلی کو حل کریں اور لنگر کی اونچائی کے علاوہ nonce شامل کریں:
-
-```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet \
-  -H 'Accept: application/json' \
-  -H 'content-type: application/json' \
-  -d '{
-    "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-    "pow_anchor_height": 741,
-    "pow_nonce_hex": "<NONCE_HEX>"
-  }' \
-  | tee ./taira-faucet-response.json \
-  | jq .
-```
-
-پہیلی الگورتھم یہ ہے:
-
-1. چیلنج کو SHA-256 کے طور پر تعمیر کریں:
-   - `iroha:accounts:faucet:pow:v2` کے بائٹس
-   - UTF-8 اکاؤنٹ ID
-   - `anchor_height` کے طور پر big-endian `u64`
-   - `anchor_block_hash_hex` بائٹس کے طور پر ڈیکوڈ
-   - `challenge_salt_hex` جب موجود ہو تو بائٹس کے طور پر ڈیکوڈ کریں
-2. `u64` nonces کوڈ بڑے اینڈین 8 بائٹ اقدار کے طور پر کوشش کریں.
-3. ہر نونس کے لئے، اسکرپٹ کے ساتھ چلائیں:
-   - پاس ورڈ: 8 بائٹ نونس
-   - نمک: 32 بائٹ چیلنج
-   - `N = 2^scrypt_log_n`
-   - `r = scrypt_r`
-   - `p = scrypt_p`
-   - آؤٹ پٹ لمبائی: 32 بائٹس
-4. جیتنے والا نونس پہلا ڈائجسٹ ہے جس میں کم از کم `difficulty_bits` صفر بٹس سے آگے ہے۔
-
-فوسیٹ جواب میں فنڈ شدہ اثاثہ اور قطار ٹرانزیکشن ہیش شامل ہیں:
-
-```json
-{
-  "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
-  "asset_id": "...",
-  "amount": "<FUNDED_AMOUNT>",
-  "tx_hash_hex": "...",
-  "status": "QUEUED"
-}
-```
-
-جواب فی الحال واپس کیا جاتا ہے HTTP `202 Accepted`. اس کا `asset_definition_id` موجودہ ہے Taira عوامی فوسیٹ کی طرف سے فنڈ کردہ فیس اثاثہ؛ ایک مثال کاپی کرنے کے بجائے جواب سے اخذ کریں. ID. فوسیٹ نے درخواست قبول کر لی ہے جب وہ واپس آئے `tx_hash_hex` اور `status: "QUEUED"`.
+`prepare` جرنل ڈائریکٹری نجی طور پر بناتا ہے اور موجودہ ڈائریکٹری کی جگہ لینے سے انکار کرتا ہے، اس لیے ہر دعوے کے لیے نئی ڈائریکٹری استعمال کریں۔ فوسیٹ عوامی ٹیسٹ نیٹ خدمت ہے۔ اگر `submit`، `Pending` بتائے، ٹائم آؤٹ ہو یا `502` ملے تو نیا دعویٰ تیار کرنے کے بجائے اسی ترتیب اور جرنل کے ساتھ `taira account faucet resume` چلائیں۔ پرانا پروف آف ورک اینکر `prepare` ناکام کرتا ہے؛ نئی جرنل ڈائریکٹری میں دوبارہ تیاری کریں۔
 
 پھر اپنی فیس ادا کرنے والی ٹرانزیکشنز جمع کروانے سے پہلے فنڈ شدہ اثاثے کے لئے سروے کریں:
 
 ```bash
-TAIRA_FEE_ASSET_DEFINITION=$(
-  jq -er '.asset_definition_id' ./taira-faucet-response.json
-)
-
 iroha --config ./taira.client.toml ledger asset get \
-  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
+  --definition "$TAIRA_FEE_ASSET" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
-اگر فوسیٹ کا دعوی قبول کیا گیا تھا لیکن اکاؤنٹ یا اثاثہ ابھی تک نظر نہیں آتا ہے تو ، ٹرانزیکشن اب بھی عوامی ٹیسٹ نیٹ ورک قطار پروسیسنگ کے پیچھے ہے۔ اگلی write بھیجنے سے پہلے انتظار کریں اور read دوبارہ آزمائیں۔
-
-براہ راست API کی تیار جانچ کے لیے اسے `taira_faucet_claim.py` کے نام سے محفوظ کریں اور Taira کا I105 اکاؤنٹ ID دیں:
-
-```python
-#!/usr/bin/env python3
-import hashlib
-import json
-import sys
-import urllib.request
-
-
-def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
-    full, rem = divmod(bits, 8)
-    if digest[:full] != b"\0" * full:
-        return False
-    return rem == 0 or digest[full] >> (8 - rem) == 0
-
-
-root = "https://taira.sora.org"
-account_id = sys.argv[1]
-
-puzzle_request = urllib.request.Request(
-    f"{root}/v1/accounts/faucet/puzzle",
-    headers={"Accept": "application/json"},
-)
-
-with urllib.request.urlopen(puzzle_request) as res:
-    puzzle = json.load(res)
-
-claim = {"account_id": account_id}
-difficulty = int(puzzle["difficulty_bits"])
-
-if difficulty > 0:
-    challenge = hashlib.sha256()
-    challenge.update(b"iroha:accounts:faucet:pow:v2")
-    challenge.update(account_id.encode())
-    challenge.update(int(puzzle["anchor_height"]).to_bytes(8, "big"))
-    challenge.update(bytes.fromhex(puzzle["anchor_block_hash_hex"]))
-    if puzzle.get("challenge_salt_hex"):
-        challenge.update(bytes.fromhex(puzzle["challenge_salt_hex"]))
-
-    n = 1 << int(puzzle["scrypt_log_n"])
-    r = int(puzzle["scrypt_r"])
-    p = int(puzzle["scrypt_p"])
-    salt = challenge.digest()
-
-    for nonce in range(1_000_000):
-        nonce_bytes = nonce.to_bytes(8, "big")
-        digest = hashlib.scrypt(nonce_bytes, salt=salt, n=n, r=r, p=p, dklen=32)
-        if has_leading_zero_bits(digest, difficulty):
-            claim["pow_anchor_height"] = puzzle["anchor_height"]
-            claim["pow_nonce_hex"] = nonce_bytes.hex()
-            break
-    else:
-        raise SystemExit("faucet nonce not found")
-
-request = urllib.request.Request(
-    f"{root}/v1/accounts/faucet",
-    data=json.dumps(claim).encode(),
-    headers={"Accept": "application/json", "content-type": "application/json"},
-    method="POST",
-)
-
-with urllib.request.urlopen(request) as res:
-    print(json.dumps(json.load(res), indent=2))
-```
+اگر دعویٰ لاگو ہو گیا ہو مگر اثاثہ ابھی نظر نہ آئے تو تحریری کارروائیوں سے پہلے انتظار کریں اور پڑھنے کی کارروائی دہرائیں۔
 
 فوسیٹ صرف Taira ٹیسٹ نیٹ فنڈز کے لئے ہے۔ XOR ٹسٹ نیٹ ، فوسیٹ اکاؤنٹس ، یا Taira کینری دستخطوں کا استعمال نہ کریں Minamoto بہاؤ میں۔
 
@@ -562,10 +443,11 @@ Minamoto کے لئے علیحدہ کلیدی جوڑی کا استعمال کری
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000753"
+# The exact `network_id` from https://minamoto.sora.org/v1/accounts/capabilities
+network_id = "<MINAMOTO_NETWORK_ID>"
 torii_url = "https://minamoto.sora.org/"
 
 [account]
-domain = "wonderland.universal"
 profile = "minamoto"
 public_key = "<ED25519_PUBLIC_KEY_HEX>"
 private_key = "<ED25519_PRIVATE_KEY_HEX>"
@@ -576,7 +458,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-سب سے اوپر کی سطح `chain` موجودہ ہے Nexus مین نیٹ چین ID. `[account].profile = "minamoto"` منتخب کرتا ہے Minamoto I105 سلسلہ امتیاز؛ اختتامی نقطہ میزبان نام اور سلسلہ ID اس کو ضمنی طور پر منتخب نہ کریں۔
+اوپری سطح کا `chain` موجودہ SORA Nexus مین نیٹ کا چین ID ہے، اور `network_id`، Minamoto کی عین نیٹ ورک شناخت ہے؛ پہلی دستخط شدہ کارروائی سے پہلے اسے صلاحیتوں کے راستے سے پڑھیں۔ `[account].profile = "minamoto"`، Minamoto کا I105 چین امتیاز منتخب کرتا ہے؛ اینڈ پوائنٹ کا ہوسٹ نام اور چین ID اسے خودبخود منتخب نہیں کرتے۔
 
 ایک Minamoto عوامی کلید کو اس کے کینیکل I105 اکاؤنٹ ID میں تبدیل کریں جس میں مین نیٹ پریفیکس شامل ہو:
 
@@ -590,7 +472,7 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
 ```
 
-Taira faucet یا write-canary helper کو Minamoto کے خلاف نہ چلائیں۔
+Taira کی فوسیٹ یا بنیادی تحریری جانچ کی کمانڈز Minamoto کے خلاف نہ چلائیں۔
 
 ## XOR کے ساتھ ایک Minamoto اکاؤنٹ کو فنڈ کریں۔ {#_6-fund-a-minamoto-account-with-xor}
 
@@ -600,9 +482,9 @@ Minamoto فیسوں کو پیداوار XOR کے ساتھ ادا کیا جاتا
 
 Taira XOR Minamoto فیس ادا نہیں کر سکتا۔ ٹیسٹ نیٹ بیلنس اور نلوں کے دعوے Minamoto پر منتقل نہیں ہوتے ہیں۔
 
-## 7۔ ایک موجودہ ڈیٹا اسپیس میں کام کریں {#_7-work-inside-an-existing-dataspace}
+## 7. موجودہ ڈیٹا اسپیس کے اندر کام کریں {#_7-work-inside-an-existing-data-space}
 
-ڈیٹا اسپیس کے اندر رہنے والے لیجر اشیاء کے لئے مکمل طور پر اہل ڈومین ناموں کا استعمال کریں۔ مثال کے طور پر ، عوامی ڈیٹا اسپیس میں پروجیکٹ ڈومین کو استعمال کرنا چاہئے:
+ڈیٹا اسپیس کے اندر موجود لیجر اشیا کے لیے مکمل طور پر متعین ڈومین نام استعمال کریں۔ مثلاً عوامی ڈیٹا اسپیس میں منصوبے کے ڈومین کو یہ صورت استعمال کرنی چاہیے:
 
 ```text
 apps.universal
@@ -616,12 +498,11 @@ iroha --config ./taira.client.toml \
   --intent-file ./taira-apps-domain.intent.json \
   --plan-file ./taira-apps-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-apps-domain.plan.json
 ```
 
-Minamoto کے لئے ، ایک علیحدہ مین نیٹٹ نیت اور منصوبہ تیار کریں اور اس کی منظوری دیں۔ منصوبے ان کے سلسلے ، اتھارٹی ، زندہ ریاست لنگر ، اور آخری تاریخ سے پابند ہیں ، لہذا Taira منصوبے کو فروغ یا دوبارہ نہیں دیا جاسکتا:
+Minamoto کے لیے الگ مین نیٹ ارادہ اور منصوبہ بنائیں اور منظور کریں۔ منصوبے اپنی چین، مجاز اکاؤنٹ، موجودہ حالت کے لنگر اور آخری وقت سے بندھے ہوتے ہیں، اس لیے Taira کا منصوبہ وہاں منتقل یا دوبارہ چلایا نہیں جا سکتا:
 
 ```bash
 iroha --config ./minamoto.client.toml \
@@ -629,11 +510,11 @@ iroha --config ./minamoto.client.toml \
   --intent-file ./minamoto-apps-domain.intent.json \
   --plan-file ./minamoto-apps-domain.plan.json
 
-iroha --config ./minamoto.client.toml \
+iroha --config ./minamoto.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./minamoto-apps-domain.plan.json
 ```
 
-اکاؤنٹ کے ناموں میں ڈیٹا اسپیس کا ایک ہی ضمیمہ استعمال کیا جاتا ہے:
+اکاؤنٹ کے عرفی نام بھی ڈیٹا اسپیس کا یہی لاحقہ استعمال کرتے ہیں:
 
 ```text
 alice@apps.universal
@@ -642,9 +523,9 @@ alice@universal
 
 سخت اکاؤنٹ فیلڈز اب بھی کینونیکل I105 اکاؤنٹ IDs کا استعمال کرتے ہیں۔ عرفی ناموں کو انسانی پڑھنے کے قابل پابندیاں سمجھیں جو کینونیکل اکاؤنٹ IDs پر حل ہوجاتی ہیں۔
 
-## 8۔ نیا ڈیٹا اسپیس فراہم کرنا {#_8-provision-a-new-dataspace}
+## 8. نئی ڈیٹا اسپیس فراہم کریں {#_8-provision-a-new-data-space}
 
-ایک نیا ڈیٹا اسپیس آپریٹر اور گورننس کی تبدیلی ہے۔ عوامی Torii اختتامی نقطہ ٹریفک کو تشکیل شدہ ڈیٹا اسپیس پر رائیٹ کرسکتا ہے ، لیکن یہ نامعلوم ڈیٹا اسپیس عرفی ناموں کو مسترد کرے گا۔
+نئی ڈیٹا اسپیس آپریٹر اور گورننس کی تبدیلی ہے۔ عوامی Torii اینڈ پوائنٹ ترتیب شدہ ڈیٹا اسپیسز کو ٹریفک بھیج سکتا ہے، مگر نامعلوم ڈیٹا اسپیس عرفی نام مسترد کرتا ہے۔
 
 تبدیلی تیار کرنے سے پہلے، موجودہ لائیو کیٹلاگ پر قبضہ کریں:
 
@@ -660,15 +541,15 @@ curl -fsS https://taira.sora.org/status \
 iroha --config ./operator.client.toml app nexus lane-report --summary
 ```
 
-ایک نئے عرفی نام کو فروغ نہ دیں جب تک کہ لین ID ، ڈیٹا اسپیس ID ، تصدیق کنندہ سیٹ ، خرابی کی رواداری ، مانیٹر ، روٹنگ کے قواعد اور آپریشنل مالک کا مل کر جائزہ نہیں لیا گیا ہے۔ مطلوبہ اجازتوں کے ساتھ ایک عام صارف اکاؤنٹ موجودہ ڈیٹا اسپیس کے اندر ایک ڈومین حاصل کرسکتا ہے اور اس کا SNS کرایہ نامہ منصوبہ ساز کے ذریعے؛ یہ محفوظ طریقے سے نیا عوامی ڈیٹا اسپیس شامل نہیں کرسکتا ہے۔
+نئے عرفی نام کو اس وقت تک فعال استعمال میں نہ لائیں جب تک لین ID، ڈیٹا اسپیس ID، ویلیڈیٹر مجموعہ، خرابی برداشت، مانیفیسٹ، روٹنگ قواعد اور عملی ذمہ دار کا مشترکہ جائزہ نہ ہو جائے۔ مطلوبہ اجازتوں والا عام صارف اکاؤنٹ عرفی نام کے منصوبہ ساز سے موجودہ ڈیٹا اسپیس کے اندر ڈومین اور اس کی SNS لیز حاصل کر سکتا ہے؛ وہ محفوظ طور پر نئی عوامی ڈیٹا اسپیس نہیں بڑھا سکتا۔
 
-ایک نجی یا تنظیمی ڈیٹا اسپیس کے لئے، مندرجہ ذیل کیٹلاگ تبدیلیاں تیار کریں:
+نجی یا ادارے کی ڈیٹا اسپیس کے لیے کیٹلاگ کی تبدیلی میں یہ چیزیں تیار کریں:
 
-- ایک منفرد ڈیٹا اسپیس عرفی اور عددی `id`
+- ڈیٹا اسپیس کا منفرد عرفی نام اور عددی `id`
 - ایک مماثل لین اندراج یا ایک موجودہ لین تفویض
-- ڈیٹا اسپیس `fault_tolerance`
+- ڈیٹا اسپیس کی `fault_tolerance`
 - ان ہدایات یا اکاؤنٹس کے دائرہ کار کے لئے روٹنگ قواعد جو وہاں اترنے چاہئیں
-- ایک خلائی ڈائرکٹری مینی فیسٹ یا مساوی رول آؤٹ ثبوت، جب ڈیٹا اسپیس UAID کی صلاحیتوں کو بے نقاب کرتا ہے
+- اگر ڈیٹا اسپیس UAID صلاحیتیں فراہم کرتی ہو تو اسپیس ڈائریکٹری مانیفیسٹ یا مساوی اجرا کے شواہد
 - ویلیڈیٹر، تعمیل، تصفیہ اور نگرانی کی پالیسی کے لئے گورننس کی منظوری
 
 ایک جائزہ لینے کے قابل ترتیب ٹکڑا اس طرح لگتا ہے:
@@ -692,8 +573,8 @@ fault_tolerance = 1
 lane = 5
 dataspace = "payments"
 [nexus.routing_policy.rules.matcher]
-account_prefix = "payments."
-description = "Route payments domains to the payments dataspace"
+instruction = "transfer::asset"
+description = "Route asset transfers to the payments dataspace"
 ```
 
 آپریٹر کی قبولیت میں درج ذیل دروازے شامل ہوں گے:
@@ -701,7 +582,7 @@ description = "Route payments domains to the payments dataspace"
 - `iroha3d --sora --config <config.toml> --trace-config` حل شدہ نوڈ ترتیب کو منتقل کرتا ہے
 - جنریٹڈ یا نظرثانی شدہ دستاویز کو ہیش اور دستخطوں کے ساتھ محفوظ کیا جاتا ہے۔
 - کسی بھی Minamoto پروموشن سے پہلے دھواں کے ٹیسٹ Taira پر گزرنا
-- تبدیلی کے بعد کیٹلاگ `/status` میں منصوبہ بندی شدہ لین اور ڈیٹا اسپیس دکھایا گیا ہے۔
+- تبدیلی کے بعد `/status` کیٹلاگ مطلوبہ لین اور ڈیٹا اسپیس دکھائے
 - `iroha app nexus lane-report --summary` مطلوبہ دستاویزات کی کمی کے بارے میں اطلاع نہیں دیتا
 
 ```bash
@@ -710,12 +591,12 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 
-ایک ہی ڈیٹا اسپیس کو Minamoto تک صرف اس کے بعد فروغ دینا کہ Taira کی تعیناتی ، دھواں ٹیسٹ ، نگرانی اور گورننس ثبوت مکمل ہوجائیں۔
+اسی ڈیٹا اسپیس کو Minamoto میں صرف Taira کی تنصیب، بنیادی جانچوں، نگرانی اور گورننس کے شواہد مکمل ہونے کے بعد منتقل کریں۔
 
 ## متعلقہ صفحات {#related-pages}
 
 - [Iroha 3](/ur/get-started/install-iroha.md) انسٹال کریں
 - [Iroha 3 کے ذریعے CLI](/ur/get-started/operate-iroha-via-cli.md) پر کام کریں
-- [نجی ڈیٹا اسپیس کے لئے سپانسر فیس](/ur/get-started/private-dataspace-fee-sponsor.md)
+- [نجی ڈیٹا اسپیس کی فیس اسپانسر کریں](/ur/get-started/private-dataspace-fee-sponsor.md)
 - [Torii اختتام پوائنٹس](/ur/reference/torii-endpoints.md)
 - [پیدائش کا حوالہ](/ur/reference/genesis.md)

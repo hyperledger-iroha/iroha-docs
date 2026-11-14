@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Autorisations {#permissions}
 
 Les comptes ont besoin de jetons d'autorisation pour diverses actions sur une blockchain, par exemple pour émettre ou brûler des actifs.
@@ -89,7 +88,7 @@ La surface de validation par défaut est regroupée par zone du registre de la b
 - actifs, NFTs, et séquestres
 - déclencheurs
 - rôles et autorisations
-- exécuteur et environnement d’exécution, preuves, passerelles et modules SORA/Nexus
+- exécuteur et environnement d’exécution, preuves, passerelles et modules SORA Nexus
 
 La liste exacte des jetons est soutenue par la source dans le [Référence des jetons d'autorisation](/fr/reference/permissions.md).
 

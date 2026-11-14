@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
+translation_source_hash: 37e8be9b07a40e5c6b841a47b016320e42079853433fb3e53937e4021dc1304f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Swift һәм iOS {#swift-and-ios}
 
 Swift SDK өҫкө ағымындағы эш киңлеге тарафынан ебәрелгән `IrohaSwift` Swift пакеты `IrohaSwift/`. Уның пакеты манифестаһы өс китапхана продукцияһын билдәләй`IrohaSwift`, `IrohaSwiftMobileTransports` һәм `IrohaSwiftTransferUI`һәм iOS 15+ һәм macOS 12+ менән маҡсатҡа ҡуйыла Swift инструменттары 5.9.
@@ -161,7 +160,7 @@ Swift сығанағына әлеге ваҡытта түбәндәгеләр и
 - Ed25519, secp256k1, ML-DSA, BLS, GOST һәм SM2 ҡултамғалау өҫкө йөҙҙәре, кәрәк саҡта күпер ярҙамы менән.
 - баҙар өсөн файҙалы йөк төҙөүселәр һәм анонимлыҡ менән тәьмин итеү
 - WebSocket, кадр, криптовалюта, сессия, сират, ҡабаттан уйнау һәм диагностика ярҙамсыларын тоташтырыу
-- Кагемуша әҙерлеге, типография менән тулыландырыу һәм түләтеү, эксплуатация торошо, иҫкәрмә, пир төркөмө, квитанция һәм QR ағым моделе
+- KAGEMUSHA V1 сым форматы ярҙамсылары һәм натив янсыҡтың Advance провайдеры, теркәү, тергеҙеү һәм ҡабул ителгән алмашыу саҡырыуҙары өсөн iPhone платформа адаптеры
 - SoraFS, мәғлүмәттәр менән тәьмин итеү һәм иҫбатлау ҡушыу ярҙамсылары
 
 ## API Миҫалдар {#api-examples}

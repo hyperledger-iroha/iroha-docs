@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /guide/tutorials/python.md
-translation_source_hash: d0ecbade221ceba455730e80c6e12db930c65a4cbcf9e643c1c2d4cba47b0940
+translation_source_hash: bd9ff4a38229cbdabbd77e21fe31a770f9213341d7db73a75ed0bd914c761849
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # Python {#python}
 
@@ -1025,26 +1025,6 @@ client = create_torii_client(
 )
 ```
 
-## Kagemusha tayyorgarligi {#kagemusha-readiness}
-
-Python SDK o'zining umumiy Torii so'rov yordamchisi orqali joriy JSON tayyorgarlik yo'nalishini so'rash mumkin:
-
-```python
-ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
-
-readiness = client.request_json(
-    "GET",
-    "/v1/offline/readiness",
-    params={"asset_definition_id": ASSET_DEFINITION_ID},
-    headers={"Accept": "application/json"},
-    expected_status=(200,),
-)
-print(readiness["ready"])
-print(readiness["blockers"])
-```
-
-Python tegmalashtirilgan Kagemusha top-up yoki redemption arxiv quruvchilarini oshkor qilmaydi. Kanonik V4 arxivlarini qurish uchun Swift yoki JVM tugmachasidan foydalaning, so'ngra ularni qo'llab-quvvatlanadigan Kagemusha Torii mijozi orqali taqdim eting va so'rov qiling.
-
 ## Abonnementlar {#subscriptions}
 
 `iroha_python.ToriiClient` tomonidan ishlatiladigan umumiy Torii mijozidan abonent o'qiladi va loyihalari meros bo'lib qoladi. Har bir mutatsiya tanasiga bog'liq kanonik hisob imzosi bilan qabul qilinadi va imzolangan tranzaksiya loyihasini qaytarib beradi. Torii hech qachon xususiy kalitni qabul qilmaydi va siz uchun loyihani taqdim etmaydi.
@@ -1299,7 +1279,7 @@ if connect_status is not None:
 
 ## SoraFS, UAID va Kaigi yordamchilar {#sorafs-uaid-and-kaigi-helpers}
 
-Ushbu yordamchilar maqsadli nod tegishli Nexus/SORA oxirgi nuqtalarini ochib berganda mavjud. Bo'sh ro'yxatlarni to'g'ri javob sifatida ko'rib chiqish: ommaviy Taira yo'nalishi namuna manifesti yoki UAID uchun ma'lumotlarsiz qo'llanilishi mumkin.
+Bu yordamchilar maqsad tugun tegishli SORA Nexus endpointlarini taqdim etganda mavjud bo‘ladi. Bo‘sh ro‘yxatlarni yaroqli javob deb qabul qiling: ochiq Taira namunaviy manifest yoki UAID uchun ma’lumotsiz ham marshrutni yoqqan bo‘lishi mumkin.
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
@@ -1356,7 +1336,7 @@ Python SDK allaqachon quyidagilar uchun yordamchilarni o'z ichiga oladi:
 - umumiy ISI va domenga oid kengaytmalar uchun bosma ko'rsatkichlar ishlab chiqaruvchilar
 - Transaksiya loyihalari, manifestlari, imzolash va imzolangan tranzaksiya zarfining ish oqimlari
 - jonli hodisa oqimlari va yozib olingan filtrlar; qat'iy blok oqimlari to'liq tarixni taqdim etadi .
-- umumiy Kagemusha tayyorligi kirish va Torii obuna yordamchilari; to'ldirish va to'lov qurilmalarini yozish bilan ta'minlanuvchi qurilmalar ochiq emas
+- Torii obunalarini o‘qish va imzolanmagan tranzaksiya qoralamalarini qurish vositalari
 - hisob manzili, barcha algoritmlarni imzolash yordamchilari, SM2, GOST, ML-DSA va BLS ko'p hashli qaytarib olishlar va maxfiy kalitlarni boshqarish
 - URIs, seanslar, ramkalar, shifrlash yordamchilari va ro'yxat boshqaruvchisi bilan bog'lanish
 - tugun bu imkoniyatlarni taqdim etganda boshqaruv, bajarish muhitini yangilash, Sumeragi, tugun ma’muriyati, SoraFS, UAID va Kaigi yo‘nalishlari uchun dasturiy o‘ramlar

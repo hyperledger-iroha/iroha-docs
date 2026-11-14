@@ -1,11 +1,10 @@
 ---
 translation_locale: mn
 translation_source: /blockchain/data-model.md
-translation_source_hash: 147562d2286bf11e60a941969e6d52bffc1534c3cfc04d440e0bcf78598a1ca7
+translation_source_hash: f90139dee2eff97769cd47188bcaf60b31672f0250505d8afad9c8ee60815ddd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-naming-amendment
 ---
-
 # Өгөгдлийн загвар {#data-model}
 
 Iroha блокчейн бүртгэлийн төлөвийг `World`-д хадгалдаг. Түүний анхны хувилбарын өгөгдлийн загвар нь дараах нэг протокол стандартад нийцсэн танилт болон объектуудыг ашиглана:
@@ -122,7 +121,7 @@ account_rabbit --> asset_rose : may receive balance
 |Хөрөнгийн тодорхойлолт|Нэг процессын стандарт `AssetDefinitionId` Base58 хаяг| `name#domain.dataspace` эсвэл `name#dataspace`            | `AssetDefinitionAlias` хөрөнгийн тодорхойлолтод холбоотой|
 |Гэрээ|нэг протокол-стандарт Bech32m `ContractAddress`| `name::domain.dataspace` эсвэл `name::dataspace`          | `ContractAlias` байрлуулсан гэрээний хаягт холбогдсон|
 |Домэйн нэр| `DomainId` нь `domain.dataspace` хэлбэрээр | `domain.dataspace`                                    | SNS `domain` нэр орон бүртгэл|
-|Өгөгдлийн сангийн нэр| идэвхтэй Nexus каталогийн тоон `DataSpaceId` | `universal`, `paynet`, эсвэл `zk` гэсэн dataspace овог нэр| SNS `dataspace` нэр оронгийн бичлэг болон идэвхтэй өгөгдлийн сангийн каталог|
+| Өгөгдлийн орон зайн нэр | идэвхтэй SORA Nexus каталогоос авсан тоон `DataSpaceId` | `universal`, `paynet` эсвэл `zk` зэрэг өгөгдлийн орон зайн өөр нэр | SNS-ийн `dataspace` нэрийн орон зайн бичлэг болон идэвхтэй өгөгдлийн орон зайн каталог |
 
 Дансны өвөрмөц нэрүүд нь хэрэглэгчдэд харагддаг дансны нэрүүд юм. Эдгээр нь дансны дахин түлхүүр хийх үйл явцад ч хадгалагддаг бөгөөд учир нь өвөрмөц нэр нь идэвхтэй дансны ID-г дэлхийн төлөвлөгөөний индекс болон дансны дахин түлхүүрийн мэдээллээр зааж өгдөг. Бүртгэлээний үндсэн шошгын хувьд `SetPrimaryAccountAlias`-ийг, нэмэлт үндсэн бус нэршлгийн хувьд `SetAccountAliasBinding`-ийг, уншихад `FindAccountByAlias` эсвэл `FindAliasesByAccountId`-ийг ашиглана. Бүртгэлийн нэршлүүдэд ерөнхийдөө `AcquireAccountAliasLease`-оор олж авсан, `RenewAccountAliasLease`-оор шинэчилсэн идэвхитэй SNS бүртгэлийн нэршлийн түрээс хэрэгтэй байдаг.
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /get-started/index.md
-translation_source_hash: 0c452291828ed262a2e9094c30def83e07f0b7b70060d47bbd0d32160559ac40
+translation_source_hash: cfd90fff9b7d2c4d217a09ba12b1d140d5b9fa1fdd20718e9c620187c68626dc
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # Iroha 3 {#iroha-3}
 
 Iroha 3 беренсе тапҡыр сығарылған Hyperledger Iroha Платформа. Ул үҙ-хост селтәрҙәрен һәм күп-мәғлүмәттәр киңлеген тәьмин итә. SORA Nexus ҡулланыу моделе бер детерминистик код базаһынан.

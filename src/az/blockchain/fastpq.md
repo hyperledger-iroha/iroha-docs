@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /blockchain/fastpq.md
-translation_source_hash: d8dd61390f5df3dae09b70399e04e8f71716a912ef5dea9010feaf60573ed261
+translation_source_hash: dfeabbedbca85780c16ee0307a6497e43e19c02d3a27e0ea2f70987a2aeac0cd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # FastPQ {#fastpq}
 
 FastPQ seçilmiş icra təsirləri üçün Iroha-ın STARK sübut yoludur. Bu, normal əməliyyat icrasını və ya konsensusu əvəz etmir. Əməliyyatlar hələ də adətən olduğu kimi ISI, IVM və Sumeragi üzərindən keçin; FastPQ deterministik icra şahidini istifadə edir və dəstəklənən təsirləri sübut paketlərinə çevirir.
@@ -13,7 +12,7 @@ FastPQ seçilmiş icra təsirləri üçün Iroha-ın STARK sübut yoludur. Bu, n
 Cari host inteqrasiyasının üç əsas yolu var:
 
 - blok icrası zamanı qeydə alınan şəffaf rəqəmsal aktiv köçürmələri
-- Nexus təsdiqlənmiş icra zolağı releləri, hansının ki AXT sübut məlumat konteyneri FastPQ bağlaması daşıyır
+- AXT sübut zərfi FastPQ bağlaması daşıyan SORA Nexus yoxlanmış zolaq ötürmələri
 - SCCP açıq yoxlama məlumat konteynerində FastPQ sübutunu bükən şəffaf mesaj sübut köməkçiləri
 
 ## Şahid Transferi Yolu {#transfer-witness-path}
@@ -45,7 +44,7 @@ Hər FastPQ keçid partiyası bloka və icra kontekstinə sübutu bağlayan icti
 
 |Giriş|Mənası|
 | ------------- | --------------------------------------------------------------- |
-| `dsid`        |Kiçik sonlu baytlar kimi kodlaşdırılmış Dataspace identifikatoru|
+| `dsid` | Kiçik bayt əvvəl sırası ilə baytlara kodlanmış məlumat məkanı identifikatoru |
 | `slot`        |Blok yaradılma vaxtı nanosaniyələrə çevrildi|
 | `old_root`    |İcraya dair şahidlikdən götürülmüş əsas dövlət kökü|
 | `new_root`    |İcraya dair şahidlikdən törəyən post-dövlət kökü|
@@ -201,7 +200,7 @@ Son blok bir son permutasiyadan əvvəl `1` doldurma elementini əlavə edir. Ç
 
 ### İctimai Giriş Bağlantısı {#public-input-binding}
 
-Ev sahibi, bir verilənlər sahəsi ID-sini 16 baytlıq sahənin ilk səkkiz kiçik-endian baytına onun `u64` dəyərini yazaraq kodlayır:
+Ev sahibi məlumat məkanı identifikatorunu kodlayarkən onun `u64` qiymətini 16 baytlıq sahənin ilk səkkiz baytına kiçik bayt əvvəl sırası ilə yazır:
 
 $$
 \operatorname{dsid\_bytes}(d)[0..8]=\operatorname{le64}(d),
@@ -394,7 +393,7 @@ S_i(a)=S_{i-1}(a)+
 \end{cases}
 $$
 
-Metaməlumat və məlumatlar sahəsi iz sütunları sıra materializasiyasından əvvəl əldə edilən sahə kriptoqrafik xeslərdir:
+Metaməlumat və məlumat məkanı iz sütunları sətirlər formalaşdırılmadan əvvəl törədilən cisim həşləridir:
 
 $$
 \operatorname{metadata\_hash} =
@@ -408,7 +407,7 @@ $$
 \operatorname{dsid\_trace}=H_D(\operatorname{public\_input\_dsid})
 $$
 
-Metaməlumat kriptoqrafik hash, məlumat sahəsi kriptoqrafik hash və yuva qonşu iz sətirləri arasında sabitdir:
+Metaməlumat həşi, məlumat məkanı həşi və yuva qonşu iz sətirləri boyunca sabit qalır:
 
 $$
 \operatorname{metadata\_hash}_i=\operatorname{metadata\_hash}_{i+1}
@@ -932,12 +931,12 @@ Standart cavab limitlərinə daxildir:
 | FRI qatlar         |      16 |
 |Sorğu açılışları|     128 |
 
-## Nexus Yoxlanılmış Keçidlər {#nexus-verified-relays}
+## SORA Nexus yoxlanmış ötürmələri {#sora-nexus-verified-relays}
 
-Nexus AXT sübut məlumat konteynerləri `AxtFastpqBinding` yerləşdirə bilər. `RegisterVerifiedLaneRelay` icra olunduqda, Iroha:
+SORA Nexus AXT sübut zərfləri `AxtFastpqBinding` daxil edə bilər. `RegisterVerifiedLaneRelay` icra edildikdə Iroha:
 
 1. icra yolu rele məlumat konteynerini və FastPQ sübut materialını təsdiqləyir
-2. dataspace və texniki manifest kökünü yoxlayır
+2. məlumat məkanını və manifest kökünü yoxlayır
 3. AXT sübut məlumat konteynerini deşifr edir
 4. bir `fastpq_binding` tələb edir
 5. o bağlamadan FastPQ partiyasını yenidən qurur
@@ -946,11 +945,11 @@ Nexus AXT sübut məlumat konteynerləri `AxtFastpqBinding` yerləşdirə bilər
 
 Əgər yoxlama uğurlu olarsa, Iroha keçid istinadı, orijinal məlumat konteyneri, sübut yükləmə kriptoqrafik xəşi, yoxlama hündürlüyü, texniki manifest kökü və FastPQ bağlamasını ehtiva edən `VerifiedLaneRelayRecord`-ı saxlayır.
 
-icra zolağı ötürücü məlumat konteynerləri həmçinin kompakt FastPQ sübut materialını da daşıyır. Material icra zolağı identifikatoru, məlumat sahəsi identifikatoru, blok hündürlüyü, yoxlama hündürlüyü üzərində kriptoqrafik xülasə dəyəridir, blok başlığı kriptoqrafik xəş, maliyyə əməliyyatlarının tənzimlənməsi kriptoqrafik xəşi və texniki manifest kökü. Bir relenin birləşmə üçün uyğun olması üçün həm QC, həm də etibarlı FastPQ sübut materialına malik olması lazımdır.
+Zolaq ötürmə zərfləri həmçinin yığcam FastPQ sübut materialı daşıyır. Bu material zolaq identifikatoru, məlumat məkanı identifikatoru, blok hündürlüyü, yoxlama hündürlüyü, blok başlığı həşi, hesablaşma həşi və manifest kökü üzərindən hesablanan xülasədir. Ötürmə yalnız həm QC-yə, həm də etibarlı FastPQ sübut materialına malik olduqda birləşmə üçün qəbul edilə bilər.
 
 ### AXT Tətbiq olunan Riyaziyyat {#axt-binding-math}
 
-Nexus AXT məlumat konteynerləri üçün, `AxtFastpqBinding` sübutu təkrar oynatmadan əvvəl kanonikləşdirilir. Boş parametr dəyərləri `fastpq-lane-balanced`-ə görə təyin olunur; boş yoxlayıcı identifikatoru və versiyası `fastpq` və `v1`-ə görə təyin olunur; tələb növü qısaldılır və kiçik hərflərə çevrilir.
+SORA Nexus AXT zərflərində sübut yenidən icra edilməzdən əvvəl `AxtFastpqBinding` kanonik formaya salınır. Boş parametr qiymətləri üçün standart dəyər `fastpq-lane-balanced`, boş yoxlayıcı identifikatoru və versiya üçün isə müvafiq olaraq `fastpq` və `v1` olur; iddia növünün kənar boşluqları silinir və hərfləri kiçik hərfə çevrilir.
 
 AXT FastPQ ictimai girişləri deterministik bayt kriptoqrafik xəşlərdir:
 
@@ -1024,7 +1023,7 @@ $$
 \operatorname{le64}(\operatorname{policy\_commitment}[0..8])
 $$
 
-və avtorizasiya siyasətini bağlayan bir metadata sətri. `compliance` iddiası iki metadata sətri əlavə edir: biri siyasət üçün, biri isə hədəf məlumat sahələri üçün.
+və səlahiyyətləndirmə siyasətini bağlayan bir metaməlumat sətri. `compliance` iddiası iki metaməlumat sətri əlavə edir: biri siyasət, digəri hədəf məlumat məkanları üçün.
 
 `tx_predicate` və `value_conservation` üçün, bağlama müsbət mənbə və ya təyinat məbləği ehtiva edərkən açıq təsir məbləği istifadə olunur. Əks halda, kod məhdudlaşdırılmış deterministik məbləği çıxarır:
 
@@ -1121,7 +1120,7 @@ $$
 )
 $$
 
-Bu sübut yolunun FastPQ verilənlər sahəsi identifikatoru başqa bir prefiksli Blake2b kriptoqrafik həzm dəyərinin ilk on altı baytıdır:
+Bu sübut yolunun FastPQ məlumat məkanı identifikatoru başqa bir prefiksli Blake2b xülasəsinin ilk on altı baytıdır:
 
 $$
 \operatorname{dsid} =
@@ -1207,7 +1206,6 @@ metal_max_in_flight = 5
 metal_threadgroup_width = 128
 metal_trace = false
 metal_debug_enum = false
-metal_debug_fused = false
 ```
 
 Eyni icra və telemetriya etiketi `iroha3d` tərəfindən dəyişdirilə bilər:

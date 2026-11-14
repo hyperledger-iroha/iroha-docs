@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # استفسارات {#queries}
 
 Iroha استفسارات لیجر کی حالت کو تبدیل کیے بغیر پڑھتے ہیں۔ موجودہ ڈیٹا ماڈل دو وسیع استفسار شکلوں کا پتہ چلتا ہے:
@@ -50,7 +49,7 @@ Iroha استفسارات لیجر کی حالت کو تبدیل کیے بغیر 
 |`FindDomainEndorsements` |ڈومین کی منظوری کے ریکارڈ درج کریں۔ |
 |`FindDomainEndorsementPolicy` |ڈومین کی منظوری کی پالیسی واپس کریں۔ |
 |`FindDomainCommittee` |ڈومین کمیٹی واپس. |
-|`FindPeers` |ان قابلِ اعتماد peers کی فہرست دیں جو رجسٹر کو معلوم ہیں۔ |
+| `FindPeers` | لیجر کو معلوم قابلِ اعتماد ہم مرتبہ نوڈز کی فہرست دیں۔ |
 
 ## اثاثہ جات، NFTs، اور RWAs {#assets-nfts-and-rwas}
 
@@ -86,7 +85,7 @@ Iroha استفسارات لیجر کی حالت کو تبدیل کیے بغیر 
 |`FindProofRecordsByBackend` |ایک ثبوت بیک اینڈ کے لئے ثبوت ریکارڈز درج کریں. |
 |`FindProofRecordsByStatus` |حیثیت کے لحاظ سے ثبوت ریکارڈ درج کریں۔ |
 
-## Nexus، ڈیٹا کی دستیابی اور پیکیج {#nexus-data-availability-and-packages}
+## SORA Nexus، ڈیٹا کی دستیابی اور پیکیج {#nexus-data-availability-and-packages}
 
 |استفسار |مقصد |
 | --- | --- |

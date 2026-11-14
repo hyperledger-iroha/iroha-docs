@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 35a4caba21bf1e34cc015f79fa82bfe143b37603eddb5f1eb72513ad83a20f61
+translation_source_hash: 6fe2dd48dc64f896be539af2994fbc0ad3c2c5f7a5a4297cc4ff4b08667f0376
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Iroha 3 を起動 {#launch-iroha-3}
 
 このページでは、上流リポジトリのデフォルトワークスペース資産を使用して、Iroha 3 の現在のローカルネットワークフローについて説明します。
@@ -65,11 +64,11 @@ curl http://127.0.0.1:8080/status/blocks
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list
 ```
 
-## 3. Nexus プロフィール {#_3-nexus-profile}
+## 3. SORA Nexus プロフィール {#_3-nexus-profile}
 
 このリポジトリは、`defaults/nexus/`の下で SORA Nexus 指向の設定プロファイルも提供します。
 
-Nexus プロファイルでネイティブネットワークピアを実行するには:
+SORA Nexus プロファイルでネイティブネットワークピアを実行するには:
 
 ```bash
 ./target/release/iroha3d --sora --config ./defaults/nexus/config.toml

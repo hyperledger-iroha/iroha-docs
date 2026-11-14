@@ -6,22 +6,22 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
-# רישומים של מצב ספר החשבונות {#query-ledger-state}
+# שאילתות על מצב הפנקס {#query-ledger-state}
 
-## התוצאה {#outcome}
+## תוצאה {#outcome}
 
 קראו משאבי JSON של Taira והפיקו מהם את השדות הדרושים, ולאחר מכן השתמשו בשאילתות אוסף של Torii מתוך ה־CLI ומתוך ה־SDK של Rust, עם מסננים, מיון, הטלת שדות בצד השרת, מגבלות גודל עמוד והמשך באמצעות `next_cursor` אטום. כמו כן, לא תשתמשו בשאילתות חתומות בעלות טיפוס לקבלת רשימות, משום שהן אינן מסננות, ממיינות או מטילות שדות על רשימות.
 
 ## תנאים מוקדמים {#prerequisites}
 
-- `curl`, `jq`, Node.js 24, והזרם `iroha` CLI.
-- גישה בקריאה בלבד Taira.
+- `curl`, `jq`, Node.js 24 וה־CLI העדכני של `iroha`.
+- גישה לקריאה בלבד ב־Taira.
 - עבור הדוגמאות של ה־CLI: תצורת לקוח עבור Taira או עבור רשת מקומית שנוצרה.
-- לדוגמה Rust, פרויקט מחובר לאותו תיקון מקור Iroha כמו רשת המטרה.
+- לדוגמת Rust, פרויקט המקובע לאותה גרסת מקור של Iroha כמו רשת היעד.
 
-## צעדים {#steps}
+## שלבים {#steps}
 
-### דף דרך מקור ציבורי Taira {#_1-page-through-a-public-taira-resource}
+### 1. עברו בין דפים של משאב ציבורי ב־Taira {#_1-page-through-a-public-taira-resource}
 
 נתיבי משאבים שימושיים ללוחות מחוונים ולבדיקות smoke. בקשו JSON, הגבילו כל דף, ולאחר אימות התגובה הפיקו רק את השדות שהיישום צריך.
 
@@ -85,7 +85,7 @@ iroha --config ./localnet/client.toml \
 
 הסינון מתבצע לפני העימוד. כל אוסף מקבל רק את השדות שלו; שדה לא מוכר מחזיר `invalid_filter` במקום להתאים לאפס שורות.
 
-### 3. לסדר לפי מפתח מטא נתונים יציבים {#_3-sort-by-a-stable-metadata-key}
+### 3. מיינו לפי מפתח מטא־נתונים קבוע {#_3-sort-by-a-stable-metadata-key}
 
 מפתחות המיון של אוסף מקבלים שדות מוצהרים ו־`metadata.<key>`; הוסיפו `-` לפני מפתח כדי למיין בסדר יורד. שורות ללא המפתח ממוינות ראשונות בסדר עולה, ושוויונות מוכרעים לפי זהות השורה, ולכן השתמשו במפתח שמאוכלס באופן עקבי בכל האוסף.
 
@@ -100,7 +100,7 @@ iroha --config ./localnet/client.toml \
 
 `--select` הוא הטלת שדות בצד השרת: `--select id,metadata` מחזיר רק את השדות האלה, ושדה לא מוכר מחזיר `invalid_select`. שאילתות חתומות בעלות טיפוס מחזירות תמיד פריטים שלמים, ולכן הפיקו את השדות הדרושים מהתוצאות שלהן בצד הלקוח באמצעות `jq` או JavaScript, כפי שמוצג לעיל.
 
-### 4. תנו למשתתף Rust לעקוב אחרי מסמנים לא ברורים {#_4-let-the-rust-iterator-follow-opaque-cursors}
+### 4. תנו לאיטרטור של Rust לעקוב אחר סמנים אטומים {#_4-let-the-rust-iterator-follow-opaque-cursors}
 
 `limit` קובע את גודל העמוד. האיטרטור ש־`list` מחזיר מבקש את העמוד הבא עם ה־`next_cursor` של השרת רק לאחר שהעמוד הנוכחי נצרך, ו־`take` מגביל את התוצאה הלוגית. כאן `client` הוא `iroha::blocking::Client`.
 
@@ -117,9 +117,9 @@ for definition in client.list(Collection::AssetDefinitions, query).take(25) {
 
 `next_cursor` הוא מיקום אטום בעימוד מבוסס מפתחות, הקשור לאוסף, לנתיב, למסנן ולמיון שלו. לעולם אל תנתחו אותו או תייצרו אותו באופן מלאכותי, ואל תשתמשו בו שוב עם מסנן או מיון אחרים; Torii דוחה זאת עם `invalid_cursor`. שורות שנוספו או הוסרו בין עמודים לעולם אינן גורמות לעמוד מאוחר יותר לחזור על שורות שאינן קשורות או לדלג עליהן.
 
-## לאמת {#verify}
+## אימות {#verify}
 
-הגדרת הדומיין המדויקת צריכה להחזיר רק `universal.universal`. בדוק את התוצאה במקום לספור מוצא מצליח CLI לבד:
+מסנן הדומיין המדויק אמור להחזיר רק `universal.universal`. אמתו את התוצאה עצמה, ולא רק את הצלחת סיום פקודת ה־CLI:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -132,7 +132,7 @@ iroha --config ./localnet/client.toml \
 
 ## פתרון בעיות {#troubleshooting}
 
-- חיפוש ייחודי לא מקבל מסנן, סורט, פגינציה או קבלת פרמטרים חוזרים. השתמש בקשירת רשימת המתאימה כאשר חוקים אלה נדרשים .
+- שאילתה על פריט יחיד אינה מקבלת פרמטרים של סינון, מיון, עימוד או שליפה המיועדים לרשימות. השתמשו בשאילתת הרשימה המקבילה כשאפשרויות אלה נדרשות.
 - `limit` הוא גודל העמוד, לא התוצאה הכוללת: לפחות 1 ולכל היותר `torii.app_api_max_list_limit` של הצומת (ברירת מחדל 500); ברירת המחדל של Torii היא 100. עקבו אחר `next_cursor`, השתמשו ב־`--all` או באיטרטור של ה־SDK כדי לקרוא עוד.
 - `invalid_cursor` פירושו שהסמן פגום או שייך לאוסף, לנתיב, למסנן או למיון אחרים. הפעילו מחדש את השאילתה; אל תנסו לתקן את הערך האטום.
 - מסנן סלקטיבי עשוי להחזיר עמוד קצר או ריק עם `next_cursor` שאינו null. המשיכו לעקוב אחריו עד שהוא `null`.
@@ -140,11 +140,11 @@ iroha --config ./localnet/client.toml \
 - שאילתות רחבות ללא הגבלה מגדילות את עבודת הצמתים ואת צריכת הזיכרון של הלקוח. קבעו מגבלה לוגית וגודל עמוד שמתאימים לצרכן.
 - `/v1/query` החתום אינו ה־API לרשימות. הוא מקבל שאילתות של פריט יחיד ומספר קטן של שאילתות איטרביליות ללא מסנן, ודוחה אחרות, כגון `FindDomains` או `FindAssetDefinitions`, עם `signed_query_shape_not_admitted`. נקודות הקצה של האוספים, פקודות `list` של ה־CLI וקוראי האוספים של ה־SDK חולקים דקדוק אחד למסננים, למיון ולסמנים.
 
-## מקור ומסמכים קשורים {#source-and-related-docs}
+## מקור ותיעוד קשור {#source-and-related-docs}
 
 - [חוזה שאילתות האוספים של Torii ב־commit המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/torii/collection_queries.md)
 - [קריאות אוספים ואיטרטור הסמנים ב־Rust ב־commit המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/src/collections.rs)
 - [קבלת שאילתות חתומות ב־commit המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/query_json.md)
 - [שאילתות](/he/blockchain/queries.md)
-- [רשיון השאילתות](/he/reference/queries.md)
+- [מדריך השאילתות](/he/reference/queries.md)
 - [JavaScript ו TypeScript ](/he/guide/tutorials/javascript.md)

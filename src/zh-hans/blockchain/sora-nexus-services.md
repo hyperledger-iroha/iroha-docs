@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/sora-nexus-services.md
-translation_source_hash: c42f039ab38de29d8182d4232e130a327b8b3cf9224c0a66e25deea979591580
+translation_source_hash: 33617bc89d0aef5c2a086f45a216201d8980123f717e68f1e1a95eadeb906eb0
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # SORA Nexus 服务 {#sora-nexus-services}
 
@@ -18,9 +18,9 @@ SORA Nexus 在 Iroha 3 周边增加面向应用的服务层。这些服务不是
 |Soracloud|应用部署,托管服务,私人模型/运行时状态以及服务生命周期控制. |`/v1/soracloud/*`, `/api/*`,`iroha soracloud service ...` |
 |Inrou|Soracloud 托管的 HTTP 运行时，供需要实时 HTTP 层的服务修订使用。|Soracloud 运行时配置、主机能力公告、副本运行时状态|
 |SoraNet|电路,继电流, VPN,连接会议和流媒体线路的隐私和运输覆盖. |`/v1/connect/*`,`/v1/vpn/*`, SoraNet 的路线元数据 |
-|数据可用性 (DA) |在 Nexus 通道, SoraFS 清单和证据流程中引用的有效载荷的可用性证明,承诺和准意图层. |`/v1/da/*`, `FindDaPinIntent*`,`[nexus.da]` |
+| 数据可用性（DA） | 为 SORA Nexus 执行通道、SoraFS 清单和证明流程引用的载荷提供可用性证据、承诺及固定存储意图层。 | `/v1/da/*`, `FindDaPinIntent*`, `[nexus.da]` |
 |SoraFS|文件表, CAR 有效载荷,固定内容,网关检索和可回收性证明流的内容定位存储布料. |`/v1/sorafs/*`, `/sorafs/*`,`FindSorafsProviderOwner` |
-|SoraDNS|对于 SORA 托管的服务和内容,确定性命名和解决器认证层. |`/v1/soradns/*`, `/soradns/*`,解决方程式事件|
+| SoraDNS | 为 SORA Nexus 托管的服务和内容提供确定性命名及解析器证明层。 | `/v1/soradns/*`、解析器目录事件 |
 |艾塔伊|应用程序级的法定和资产结算走廊,由本地托管记录支持,而不是单独的账本.|`OpenAssetEscrow`, `FindAssetEscrow*`,`EscrowEventFilter`, Kotodama `escrow_*`的建筑物|
 
 ```mermaid
@@ -86,7 +86,7 @@ SoraNet 可以坐在 SoraFS 或 Soracloud 前面:
 
 ## 艾塔伊 {#aitai}
 
-Aitai是市场式结算的 SORA 应用程序走廊,买方和卖方在链外协调支付,而 Iroha 则控制了 在链上存储资产.它应使用本地托管指令家族,而不是合同所有的托管账户用于新数值资产托管流动.
+Aitai 是 SORA Nexus 面向市场交易结算的应用路径：买卖双方协调链外支付，而 Iroha 控制链上资产保管。新的数值资产保管流程应使用原生托管指令族，而不是合约拥有的托管账户。
 
 原生托管将托管资产保留在账本中。卖方使用 `OpenAssetEscrow` 开立要约，买方使用 `AcceptAssetEscrow` 和 `MarkEscrowPaymentSent` 接受并标记链下付款，卖方使用 `ReleaseAssetEscrow` 释放资产，或在付款被标记前取消要约。如果买卖双方有分歧，任何一方都可以发起争议，拥有 `CanResolveEscrowDispute` 的解决者可以拆分锁定金额。
 
@@ -142,7 +142,7 @@ Taira 可能会公开未列在 OpenAPI 路由图中的部署专用控制层路�
 
 ## Soracloud {#soracloud}
 
-Soracloud 是 SORA 应用的控制层。它跟踪部署包、服务修订、路由、推出状态、权威配置条目、加密的服务机密、模型注册表记录、私有推理会话和运行时回执。
+Soracloud 是 SORA Nexus 应用的控制层。它跟踪部署包、服务修订、路由、推出状态、权威配置条目、加密的服务机密、模型注册表记录、私有推理会话和运行时回执。
 
 Soracloud 使用两个执行层：
 
@@ -345,28 +345,7 @@ SORACLOUD_LEASE_VOLUME_INDEX_STATE_MOUNT_PATH
 
 SoraNet 是隐私和运输覆盖层.它为交通提供了基于继电的路线,该路线不应直接连接到目标门口或服务.运输设计采用入口,中部和出口继电器角色, QUIC 运输,基于噪音的混合握手,能力谈判,继电器目录元数据以及固定尺寸接式细胞.
 
-在 Nexus 部署中,SoraNet 可以携带内容获取,网关流量, VPN 或连接会议和 Norito 流媒体路线.目录入口可标记支持 `norito-stream`的继电器,这使客户能够更好地选择适合 Torii RPC 或流媒体流量的路线.
-
-### 流媒体配置 {#streaming-configuration}
-
-Nexus 的配置使 SoraNet 为流媒体路线提供:
-
-```toml
-[streaming]
-feature_bits = 0b11
-
-[streaming.soranet]
-enabled = true
-exit_multiaddr = "/dns/torii/udp/9443/quic"
-padding_budget_ms = 25
-access_kind = "authenticated"
-provision_spool_dir = "./storage/streaming/soranet_routes"
-provision_spool_max_bytes = 0
-provision_window_segments = 4
-provision_queue_capacity = 256
-```
-
-使用 `access_kind = "read-only"`在不需要观众身份验证的内容路线上.使用 `authenticated`当退出继电器必须在连接到 Torii 或托管服务之前强制执行票或观众身份时.
+在 SORA Nexus 部署中，SoraNet 可承载内容获取、网关流量、VPN 或 Connect 会话，以及 Norito 流式传输路由。目录条目可标记支持 `norito-stream` 的中继，使客户端优先选择适合 Torii RPC 或流式流量的路由。
 
 ### SoraNet-意识到 SoraFS 带来 {#soranet-aware-sorafs-fetch}
 
@@ -416,7 +395,7 @@ DA 不取代 Kura 或 SoraFS:
 - SoraFS 存储并提供内容地址字节,CAR 实用载荷和公开文件.
 - DA 记录承诺,证明政策,证明开放,并将这些字节安排,审计和链接到账本状态的标记.
 
-使用 DA 当应用程序或 Nexus 通道需要在账本中可见的承诺,即链外数据仍然可回收.常见例子包括对结算流程的通道实用负载承诺,发布内容的 SoraFS 固定意图;必须保存以后进行验证的证明捆绑,以及公共状态应该是摘要而不是全部有效载荷的应用构件.
+当应用或 SORA Nexus 执行通道需要账本可见的保证，以确保链外数据持续可取回时，可使用 DA。常见用途包括结算流程的执行通道载荷承诺、已发布内容的 SoraFS 固定存储意图、必须保留供后续验证的证明包，以及公开状态只应暴露摘要而非完整载荷的应用工件。
 
 ### 生命周期 {#lifecycle}
 
@@ -429,7 +408,7 @@ DA 不取代 Kura 或 SoraFS:
 
 一个典型的 DA 支持的出版流量是:
 
-1. 在 WSV 之外构建或接收有效载荷,例如一个 SoraFS CAR 文件或 Nexus 通道有效载荷.
+1. 在 WSV 之外构建或接收载荷，例如 SoraFS CAR 文件或 SORA Nexus 执行通道载荷。
 2. 在 Norito 清单或路线特定的承诺记录中描述有效载荷.
 3. 在启用该路线家族时,通过 `/v1/da/*` 或网络签署的交易途径提交明示表,固定意图或承诺.
 4. 让验证者或可用性提供者收集根据活跃证明政策所要求的证据.
@@ -440,7 +419,7 @@ DA 不取代 Kura 或 SoraFS:
 DA 将一个有效载荷转化为签署的,反弹保护的,区块索引承诺.重要算法是确定性的,所以验证器和网关可以从相同字节中重新计算相同的摘要.
 
 1. **规范化提交的有效载荷。** Torii 接受摄取请求，其中包含 `(lane_id, epoch, sequence)`、有效载荷字节、压缩元数据、分块大小、纠删配置、保留策略和提交者签名。节点会在请求时解压缩 gzip、deflate 或 Zstandard 有效载荷，然后验证规范字节长度等于 `total_size`。
-2. **验证通道和分块参数。** 通道必须存在于 Nexus 通道目录中。`chunk_size` 必须是非零的二次幂，至少为两个字节，且不得大于配置的最大值。纠删配置必须包含数据分片和至少两个奇偶校验分片。通道目录会选择证明方案，即 `merkle_sha256` 或 `kzg_bls12_381`。
+2. **验证执行通道和分块参数。**执行通道必须存在于 SORA Nexus 执行通道目录中。`chunk_size` 必须是非零的 2 的幂，至少为两个字节，且不超过配置上限。纠删码配置必须包含数据分片和至少两个校验分片。执行通道目录选择证明方案：`merkle_sha256` 或 `kzg_bls12_381`。
 3. **应用网络策略。** 节点对该数据块类别强制执行配置的复制和保留基线。公共元数据必须保持明文；仅限治理的元数据在写入清单之前，会使用节点配置的治理元数据密钥加密。
 4. **分片并提交。** 规范有效载荷按照从 `chunk_size` 派生的固定大小配置进行分片。Torii 计算有效载荷摘要、可检索性证明树根以及每个分片的承诺。数据分片携带其字节的 BLAKE3 承诺。
 5. **添加纠删承诺。** 分块按 `data_shards` 分组成条带。最终条带中缺失的单元用零填充以计算奇偶校验。RS(16) 奇偶校验会生成行／全局奇偶校验分片；可选的 `row_parity_stripes` 会在矩阵中添加列式条带奇偶校验。奇偶校验分片承诺是小端 `u16` 符号的 BLAKE3 摘要。
@@ -530,9 +509,7 @@ discovery_enabled = true
 known_capabilities = ["torii_gateway", "chunk_range_fetch", "potr_mldsa"]
 
 [sorafs.discovery.admission]
-envelopes_dir = "configs/soranexus/taira/sorafs_admission"
-trusted_council_keys = ["REPLACE_WITH_TAIRA_SORAFS_COUNCIL_PUBLIC_KEY"]
-signature_threshold = "REPLACE_WITH_TAIRA_SORAFS_COUNCIL_SIGNATURE_THRESHOLD"
+enabled = true
 
 [sorafs.discovery.publish]
 gateway_base_url = "https://taira.sora.org"
@@ -574,7 +551,7 @@ retention_grace_secs = 86400
 require_council_signatures = false
 ```
 
-顶层的三个网关值继承自失败时关闭的默认值；此片段中其他所有值都在 Taira 已检入的配置文件中显式设定。运营方必须用已签名的部署材料替换发现准入占位符。每个对外提供的请求都必须携带清单封套、通过提供者准入检查，并使用已广播的功能。
+该配置片段选择原生提供者准入授权。准入由其已提交记录决定；节点本地委员会密钥和封装目录不提供这种授权。每个被服务的请求都必须携带清单封装、通过提供者准入检查，并使用已公告的能力。使用这些示例端点前，请检查目标部署当前的提供者目录。
 
 Taira 验证节点禁用了内置的 SoraFS 存储、修复和垃圾回收功能。已配置的容量仍会纳入验证节点的磁盘预算检查，但这并不意味着验证节点是存储提供者。测试前，请使用 `GET /v1/sorafs/storage/peers?limit=4` 读取当前配置的网关和固定目标。
 
@@ -688,9 +665,9 @@ cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
 
 ## SoraDNS {#soradns}
 
-SoraDNS 是 SORA 服务和内容的确定性命名层。它会规范化名称，将解析器目录更新锚定到 Iroha，并通过 SoraFS 分发已签名的区域或解析器捆绑包。解析器和网关在信任发现元数据之前会验证解析器证明文档。
+SoraDNS 是 SORA Nexus 服务和内容的确定性命名层。它会规范化名称，将解析器目录更新锚定到 Iroha，并通过 SoraFS 分发已签名的区域或解析器捆绑包。解析器和网关在信任发现元数据之前会验证解析器证明文档。
 
-对于浏览器访问, SoraDNS 从注册的 FQDN 中导出网关主机. 注册的虚无性主机仍然是规范应用程序来源,而部署的网关配置文件则暴露了该来源的浏览器和 Torii 倒退路线.
+对于浏览器访问，SoraDNS 从已注册的 FQDN 派生网关主机名。已注册的自定义主机名仍是应用的规范源，而部署的网关配置为该源提供浏览器路由。
 
 ### 主机形式 {#host-forms}
 
@@ -698,10 +675,9 @@ SoraDNS 是 SORA 服务和内容的确定性命名层。它会规范化名称，
 | ---------------------- | ---------------------------------------------- | --------------------------------------------------------- |
 |虚荣的起源|`https://<fqdn>/<path>`|URL 记录在清单和发布说明中|
 |Taira 浏览器网关|`https://<fqdn>.mon.taira.sora.net/<path>`|公共浏览器网关为活跃的名|
-|Torii 倒车路径|`https://taira.sora.org/soradns/<fqdn>/<path>`|Torii  active alias 的调试和回归路线|
 |佳能式哈希网关|`<base32(blake3(name))>.gw.sora.id`|确定性门口身份和 GAR 验证 |
 
-`/soradns/<alias>/...` 倒退不是首选的公众 URL.工具,应用程序清单和前端配置应该更喜欢虚无主机本身.如果在 Taira 上不活跃的别名,浏览器网关或倒退路径可以在应用程序路由启动之前返回`404`或失败 TLS.
+工具、应用清单和前端配置应使用已注册的自定义主机名。如果别名尚未在 Taira 激活，浏览器网关可能在应用路由开始之前返回 `404` 或发生 TLS 失败。
 
 ### 导入网关主机 {#derive-gateway-hosts}
 
@@ -756,16 +732,16 @@ SoraDNS 主机衍生程序不取代普通互联网 DNS 委托程序.如果一个
 
 ## FHE 和 UAID {#fhe-and-uaid}
 
-在 Nexus 服务中可用的与 FHE 有关的表面包括:
+SORA Nexus 服务可用的 FHE 相关接口包括：
 
 - `iroha_crypto::fhe_bfv` 实现确定性 BFV 支持 skalar ciphertext评价.识别器分辨率使用 `BfvIdentifierPublicParameters` 和 `BfvIdentifierCiphertext`, 在此,插槽0存储输入字节长度,后来的插槽存储每一个加密字节.
 - Soracloud 状态和职位方案模型 FHE 密码文本工作负载与管理管理参数组,执行政策,密码文档承诺,查询封以及披露请求.
 
 BFV 识别器路径用于保护隐私的注册. 客户端可以提交加密识别器到 Torii 解决方案中.根据活跃识别器政策,获得一个 `OpaqueAccountId`,并发出一个收据. `ClaimIdentifier`然后将该收据绑定到目标账户附带的 UAID.
 
-其他 UAID 而在数据模型中, `UniversalAccountId` 是哈希支持的,显示为 `uaid:<hash>`. 解析者接受了两种 `uaid:<hash>` 或是原始的64 Hex摘要. `Account` 和 `NewAccount` 包含可选 `uaid` 和 `opaque_ids` 运行时登记执行一个对一个的 UAID 到账户索引,拒绝复制或碰撞的不透明标识符,并且拒绝没有 UAID. 每当一个 UAID 运行时重建空间目录数据空间的绑定. UAID.
+UAID 是该流程的身份和能力锚点。在数据模型中，`UniversalAccountId` 以哈希为基础，显示为 `uaid:<hash>`。解析器接受 `uaid:<hash>` 或原始的 64 个十六进制字符组成的摘要。`Account` 和 `NewAccount` 包含可选的 `uaid` 与 `opaque_ids` 字段。运行时注册强制维护 UAID 与账户的一对一索引，拒绝重复或冲突的不透明标识符，也拒绝不关联 UAID 的不透明标识符。每当 UAID 与账户的绑定发生变化，运行时都会为该 UAID 重建空间目录中的数据空间绑定。
 
-空间目录表达了将功能添加到 UAID.一个 `AssetPermissionManifest` 命名 UAID,数据空间,激活和可选的过期时代,并按数据空间,程序,方法,资产和 AMX 角色进行排序允许/拒绝输入.评价是拒绝胜利:第一个匹配拒绝拒绝请求,否则最新匹配允许候选人与任何数额限制进行检查.发布,过期和撤销这些清单由 `CanPublishSpaceDirectoryManifest`保护.
+空间目录清单将能力关联到 UAID。`AssetPermissionManifest` 指定 UAID、数据空间、激活纪元和可选的过期纪元，以及有序的允许/拒绝条目；条目作用域由数据空间、程序、方法、资产和 AMX 角色限定。评估遵循拒绝优先：首个匹配的拒绝条目会拒绝请求；否则，对最后一个匹配的允许候选项检查相应金额上限。发布、使清单过期和撤销清单均受 `CanPublishSpaceDirectoryManifest` 权限控制。
 
 对于 Soracloud FHE 状态,实施的计划是:
 
@@ -781,7 +757,7 @@ BFV 识别器路径用于保护隐私的注册. 客户端可以提交加密识�
 
 `FheJobSpecV1::validate_for_execution` 检查工作,执行政策和参数设置在录取前是否一致.它还强制执行特定操作规则:添加和乘法需要至少两个输入,旋转和启动带需要一个输入,要求的深度,旋转数量,启动带数量,输入数量,有效载荷字节和确定性输出尺寸必须保持在政策界限内.密码文字查询结果不得返回直文行.
 
-UAID 不是加密文本,也不是 FHE 政策本身.它是用于查找帐户,不透明的标识符索赔和空间目录绑定的稳定账户功能,允许服务或数据空间流程.FHE 方案通过参数集合,执行政策,密码文本承诺和解密授权主体政策分别管理加密有效载荷的输入和执行.
+UAID 既不是密文，也不是 FHE 策略本身。它是稳定的账户能力锚点，用于查找账户、不透明标识符声明，以及授权服务或数据空间流程的空间目录绑定。FHE 模式通过参数集、执行策略、密文承诺和解密授权策略，独立管理加密载荷的准入与执行。
 
 相关的 Torii 表面包括:
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
+translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Iroha کو براہ راست فزیکل سرور پر چلانا {#running-iroha-on-bare-metal}
 
 جب آپ Docker Compose کے بجائے میزبانوں پر براہ راست نیٹ ورک نوڈ چلانے کا ارادہ رکھتے ہیں تو اس ورک فلو کا استعمال کریں۔ موجودہ ماخذ درخت Kagami جنریٹرز فراہم کرتا ہے جو مماثلت جینیس ، نیٹ ورک نوڈ ترتیب ، کلائنٹ ترتیب اور شروع / اسٹاپ اسکرپٹ لکھتے ہیں۔
@@ -32,7 +31,7 @@ cargo build --release \
 چار پیئر Iroha 3 لوکل نیٹ پیدا کریں:
 
 ```bash
-target/release/kagami localnet --peers 4 --out-dir ./localnet
+target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
 آؤٹ پٹ ڈائرکٹری میں پیدا کردہ `genesis.json` ، `genesis.signed.nrt`، نیٹ ورک نوڈ `config.toml` فائلیں، `client.toml`، مددگار اسکرپٹس اور ایک جنریٹڈ `README.md` شامل ہیں جس میں اس بنڈل کے لئے عین مطابق کمانڈز ہیں۔
@@ -52,7 +51,7 @@ target/release/kagami localnet --peers 4 --out-dir ./localnet
 تخلیق کردہ کلائنٹ ترتیب کا استعمال کریں:
 
 ```bash
-target/release/iroha --config ./localnet/client.toml ledger domain list all
+target/release/iroha --config ./localnet/client.toml ledger domain list --all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 

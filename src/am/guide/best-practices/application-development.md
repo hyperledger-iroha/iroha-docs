@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /guide/best-practices/application-development.md
-translation_source_hash: f95261b0416abfcd87881135ceb9b604a1cdde2dd1afc79fecf9c113a256a8c7
+translation_source_hash: 045e2819368106c5da6ee47610c59a3500db312f4901108c0d9e36a027a50a95
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-title-amendment
 ---
-
 # የመተግበሪያ ልማት {#application-development}
 
 Iroha አፕሊኬሽኖች የግብይት ባህሪን ግልጽ ማድረግ፣ የመፈረሚያ ሁኔታን መቀጠል እና መጠይቆችን እና ክስተቶችን በምርት ውስጥ በቀላሉ ሊታዩ በሚችሉ መንገዶች መጠቀም አለባቸው።
@@ -34,7 +33,7 @@ Iroha አፕሊኬሽኖች የግብይት ባህሪን ግልጽ ማድረግ�
 - ለለውጥ ማሳወቂያዎች ለአሁኑ ሁኔታ እና የክስተት ዥረቶች መጠይቆችን ይጠቀሙ። የክስተት አያያዝን በተደጋጋሚ ሰፊ መጠይቆች ከመተካት ይቆጠቡ።
 - እንደ መለያ፣ ንብረት እና የብሎክ ዝርዝሮች ያሉ ሰፊ ሊደጋገሙ የሚችሉ መጠይቆችን ገጽ ያድርጉ።
 - ለደንበኝነት ምዝገባዎች እና ቀስቅሴዎች ጠባብ ማጣሪያዎችን ይምረጡ። ሰፊ ማጣሪያዎች ለምርመራ ጠቃሚ ናቸው ነገር ግን አላስፈላጊ አፈፃፀም እና የደንበኛ-ጎን ሂደትን ሊጨምሩ ይችላሉ።
-- API የመጨረሻ ነጥብ ተገኝነት ለመመርመር ቀላል እንዲሆን የተነበበ-ብቻ የጭስ ፍተሻዎችን ከተፈረሙ የግብይት ሙከራዎች ይለዩ።
+- የመጨረሻ ነጥቡ ተደራሽነት ችግርን መለየት ቀላል እንዲሆን፣ የማንበብ ብቻ መሠረታዊ አሠራር ፍተሻዎችን ከተፈረሙ ግብይቶች ሙከራዎች ይለዩ።
 
 [መጠይቆች](/am/blockchain/queries.md)፣ [ክስተቶች](/am/blockchain/events.md) እና [ማጣሪያዎች](/am/blockchain/filters.md) ተመልከት።
 
@@ -45,7 +44,7 @@ Iroha አፕሊኬሽኖች የግብይት ባህሪን ግልጽ ማድረግ�
 - የግል ቁልፎችን፣ የመለያ መልሶ ማግኛ ቁሳቁሶችን፣ API ቶከኖችን ወይም የማረጋገጫ ራስጌዎችን ወደ መጠየቂያዎች አያስተላልፉ።
 - ማንኛውም ወኪል የቀጥታ የቴስትኔት ግብይት ከማቅረቡ በፊት የግብይት እቅድ ይጠይቁ። እቅዱ ኔትወርክን፣ የፍቃድ ርዕሰ መምህራን፣ መመሪያዎችን፣ የክፍያ ንብረቱን፣ የቅድመ በረራ ንባቦችን፣ የሚጠበቀውን ውጤት እና ባህሪን እንደገና መሞከር አለበት።
 
-ለ Taira MCP የስራ ፍሰት፣ [በ SORA 3 Taira እና Minamoto ላይ ይገንቡ](/am/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents) ይመልከቱ።
+ለ Taira MCP የሥራ ሂደት፣ [በ SORA Nexus ላይ ይገንቡ፦ Taira እና Minamoto](/am/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents) ይመልከቱ።
 
 ## SDK ንፅህና መጠበቂያ {#sdk-hygiene}
 

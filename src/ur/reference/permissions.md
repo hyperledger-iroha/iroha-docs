@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # اجازت ٹوکن {#permission-tokens}
 
 اس صفحے پر موجودہ Iroha ایگزیکٹر ڈیٹا ماڈل کے ذریعہ ظاہر کردہ ڈیفالٹ اجازت ٹوکن کی اقسام کی فہرست ہے۔ کردار اور اجازتوں کی تصوراتی رہنمائی کے لئے ، [Permissions](/ur/blockchain/permissions.md) دیکھیں۔
@@ -45,7 +44,8 @@ translation_engine: nllb-200-ct2
 |`CanModifyTriggerMetadata` |ٹرگر |ٹرگر میٹا ڈیٹا تبدیل کریں. |
 |`CanUpgradeExecutor` |کارروائی کرنے والا|رن ٹائم ایگزیکٹر کو اپ گریڈ کریں. |
 |`CanRegisterSmartContractCode` |ہوشیار معاہدہ |سمارٹ معاہدے کا کوڈ درج کریں. |
-|`CanUseFeeSponsor` |Nexus |ایک مخصوص اسپانسر اکاؤنٹ پر Nexus فیس وصول کریں۔ |
+| `CanManageFeeSponsorProgram` | SORA Nexus | عین اسپانسر اکاؤنٹ کی ملکیت والے پروگراموں کا انتظام کرنا۔ |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | عین ایک اسپانسر پروگرام کے مستفید افراد کا انتظام کرنا۔ |
 
 ## ملکیت {#ownership}
 

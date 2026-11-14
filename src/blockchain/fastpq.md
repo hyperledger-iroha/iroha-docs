@@ -9,7 +9,7 @@ batches.
 The current host integration has three main paths:
 
 - transparent numeric asset transfers recorded during block execution
-- Nexus verified lane relays whose AXT proof envelope carries a FastPQ
+- SORA Nexus verified lane relays whose AXT proof envelope carries a FastPQ
   binding
 - SCCP transparent message proof helpers that wrap a FastPQ proof in an
   open-verification envelope
@@ -50,7 +50,7 @@ the block and execution context:
 
 | Input         | Meaning                                                         |
 | ------------- | --------------------------------------------------------------- |
-| `dsid`        | Dataspace identifier encoded as little-endian bytes             |
+| `dsid`        | Data space identifier encoded as little-endian bytes             |
 | `slot`        | Block creation time converted to nanoseconds                    |
 | `old_root`    | Parent state root derived from the execution witness            |
 | `new_root`    | Post-state root derived from the execution witness              |
@@ -221,7 +221,7 @@ permutation. The output is `x_0`.
 
 ### Public Input Binding
 
-The host encodes a dataspace id by writing its `u64` value into the first
+The host encodes a data space id by writing its `u64` value into the first
 eight little-endian bytes of the 16-byte field:
 
 $$
@@ -428,7 +428,7 @@ S_i(a)=S_{i-1}(a)+
 \end{cases}
 $$
 
-Metadata and dataspace trace columns are field hashes derived before row
+Metadata and data space trace columns are field hashes derived before row
 materialization:
 
 $$
@@ -443,7 +443,7 @@ $$
 \operatorname{dsid\_trace}=H_D(\operatorname{public\_input\_dsid})
 $$
 
-The metadata hash, dataspace hash, and slot are stable across adjacent
+The metadata hash, data space hash, and slot are stable across adjacent
 trace rows:
 
 $$
@@ -1026,13 +1026,13 @@ Default replay limits include:
 | FRI layers         |      16 |
 | Query openings     |     128 |
 
-## Nexus Verified Relays
+## SORA Nexus Verified Relays
 
-Nexus AXT proof envelopes can embed an `AxtFastpqBinding`. When
+SORA Nexus AXT proof envelopes can embed an `AxtFastpqBinding`. When
 `RegisterVerifiedLaneRelay` executes, Iroha:
 
 1. verifies the lane relay envelope and FastPQ proof material
-2. checks the dataspace and manifest root
+2. checks the data space and manifest root
 3. decodes the AXT proof envelope
 4. requires a `fastpq_binding`
 5. rebuilds the FastPQ batch from that binding
@@ -1044,14 +1044,14 @@ containing the relay reference, original envelope, proof payload hash,
 verification height, manifest root, and FastPQ binding.
 
 Lane relay envelopes also carry compact FastPQ proof material. The material
-is a digest over the lane id, dataspace id, block height, verification
+is a digest over the lane id, data space id, block height, verification
 height, block header hash, settlement hash, and manifest root. A relay is
 merge admissible only when it has both a QC and valid FastPQ proof
 material.
 
 ### AXT Binding Math
 
-For Nexus AXT envelopes, `AxtFastpqBinding` is canonicalized before proof
+For SORA Nexus AXT envelopes, `AxtFastpqBinding` is canonicalized before proof
 replay. Empty parameter values default to `fastpq-lane-balanced`; empty
 verifier id and version default to `fastpq` and `v1`; claim type is trimmed
 and lowercased.
@@ -1129,7 +1129,7 @@ $$
 $$
 
 and a metadata row binding the authorization policy. The `compliance` claim
-inserts two metadata rows: one for policy and one for target dataspaces.
+inserts two metadata rows: one for policy and one for target data spaces.
 
 For `tx_predicate` and `value_conservation`, an explicit effect amount is
 used when the binding contains a positive source or destination amount.
@@ -1238,7 +1238,7 @@ $$
 )
 $$
 
-The FastPQ dataspace id for this proof path is the first sixteen bytes of
+The FastPQ data space id for this proof path is the first sixteen bytes of
 another prefixed Blake2b digest:
 
 $$
@@ -1334,7 +1334,6 @@ metal_max_in_flight = 5
 metal_threadgroup_width = 128
 metal_trace = false
 metal_debug_enum = false
-metal_debug_fused = false
 ```
 
 The same execution and telemetry labels can be overridden from `iroha3d`:

@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/assets.md
-translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
+translation_source_hash: 4d0a3f54a0c70d08d11160b9ec66d6538aa2c49c7771a13e4a070b61a9cb3e4b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Aktivlar {#assets}
 
 Iroha aktivi hisobda saqlanadigan sonli qoldiqdir. Har bir aniq qoldiq `AssetDefinition` ga ishora qiladi; ta’rif aktiv qanday nomlanishi, zarb qilinishi, ko‘rsatilishi va bo‘linishini belgilaydi.
@@ -22,7 +21,7 @@ Iroha aktivi hisobda saqlanadigan sonli qoldiqdir. Har bir aniq qoldiq `AssetDef
 - `mintable`: zarb qilish siyosati
 - `logo`: ixtiyoriy ravishda `SoraFS` URI
 - `metadata`: ixtiyoriy kalit-qiymat metama’lumotlari
-- `balance_scope_policy`: balanslar global yoki ma’lumotlar makoni bilan cheklanishini belgilaydi
+- `balance_scope_policy`: balanslar global yoki ma’lumotlar makoni bilan cheklanganligini belgilaydi
 - `owned_by`: ta’rifni ro‘yxatdan o‘tkazgan yoki unga egalik qiladigan hisob
 - `total_quantity`: chiqarilgan umumiy miqdor
 - `confidential_policy`: himoya qilingan aktivlar operatsiyalari siyosati
@@ -36,7 +35,7 @@ Aktiv ta’rifi identifikatorlari kanonik yashirin manzillardir. Ta’rif domen 
 - `id`: aktiv ta’rifi, ega hisobi va ixtiyoriy qoldiq doirasini birlashtiradigan `AssetId`;
 - `value`: `Numeric` balans
 
-Ega hisob kanonik va domensiz. Aktiv ta’rifi ma’lumotlar makoni bilan aniqlashtirilgan domen ostida, masalan `payments.universal`, proyeksiya qilinishi mumkin.
+Aktiv egasining hisobi kanonik va domensiz. Aktiv ta’rifi ma’lumotlar makoni bilan aniqlashtirilgan domen, masalan `payments.universal`, ostida proyeksiya qilinishi mumkin.
 
 ## Zarb qilish imkoniyati {#mintability}
 
@@ -58,7 +57,7 @@ Odatiy moslashuvchan aktivlar uchun `Infinitely`, qat’iy yoki chegaralangan ta
 - `Global`: har bir hisob va aktiv ta’rifi jufti uchun bitta qoldiq yo‘li
 - `DataspaceRestricted`: balanslar ma’lumotlar makoni konteksti bo‘yicha ajratiladi
 
-Ma’lumotlar makoni bilan cheklangan balanslar ayni aktiv ta’rifi bir nechta Nexus ma’lumotlar makonida ishlatilsa-yu, balanslar ajratilgan holda qolishi kerak bo‘lganda foydali.
+Bir xil aktiv ta’rifi bir nechta SORA Nexus ma’lumotlar makonida ishlatilsa, ammo balanslar alohida qolishi kerak bo‘lsa, ma’lumotlar makoni bilan cheklangan balanslar foydali bo‘ladi.
 
 ## Taira da sinab ko‘rish {#try-it-on-taira}
 
@@ -89,19 +88,18 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-Uchala misol ham faqat o‘qiydi. Taira da aktiv zarb qilish, yoqish yoki o‘tkazish uchun sinov mablag‘i bilan ta’minlangan hisob va [SORA Nexus ma’lumotlar makonlariga ulanish](/uz/get-started/sora-nexus-dataspaces.md) bo‘limidagi himoyalangan jarayondan foydalaning.
+Uchala misol ham o‘qish amalidir. Taira tarmog‘ida aktiv chiqarish, yoqish yoki o‘tkazish uchun faucet orqali mablag‘ bilan ta’minlangan hisob va [SORA Nexus ma’lumotlar makonlariga ulanish](/uz/get-started/sora-nexus-dataspaces.md)dagi himoyalangan jarayondan foydalaning.
 
-Taira-da haq talab qiladigan aktiv misoli uchun [Taira-da sinov tarmog‘i XOR aktivini olish](/uz/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) bo‘limidagi yordamchini `taira_faucet_claim.py` sifatida saqlang. Avval sinov mablag‘i aktivini oling, keyin uni tranzaksiyaning gaz aktivi sifatida ishlating:
+Taira tarmog‘idagi komissiyali aktiv misoli uchun avval [Taira tarmog‘ida testnet XOR oling](/uz/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)dagi oldindan tayyorlashga asoslangan faucet jarayoni bilan imzolovchi hisobini moliyalashtiring. So‘ng `ledger asset mint`, `ledger asset burn` va `ledger asset transfer` buyruqlarida `--fee-payer authority`ni bering; CLI imzolashdan oldin aniq komissiyani Taira tarmog‘ining komissiya aktivida hisoblatadi:
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
+iroha --config ./taira.client.toml --fee-payer authority \
+  ledger asset transfer \
+  --definition "<ASSET_DEFINITION_BASE58>" \
+  --account "<TAIRA_I105_ACCOUNT_ID>" \
+  --to "<RECIPIENT_I105_ACCOUNT_ID>" \
+  --quantity 1
 ```
-
-So‘ng `ledger asset mint`, `ledger asset burn` va `ledger asset transfer` buyruqlariga `--metadata ./taira.tx-metadata.json` ni qo‘shing.
 
 ## Ko‘rsatmalar {#instructions}
 

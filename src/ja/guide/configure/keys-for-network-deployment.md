@@ -1,14 +1,13 @@
 ---
 translation_locale: ja
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # ネットワーク展開のための鍵 {#keys-for-network-deployment}
 
-すべてのネットワークは、クライアント、ネットワークピア、ブロックチェーンのジェネシス署名、そしてNPoSまたは Nexus プロファイルの場合は BLS バリデータの識別情報のために、異なる鍵素材を必要とします。
+どのネットワークでも、クライアント、ピア、ジェネシス署名には、それぞれ別の鍵が必要です。NPoS または SORA Nexus のプロファイルでは、BLS バリデータの識別にも別の鍵が必要です。
 
 ## キーが使用される場所 {#where-keys-are-used}
 
@@ -21,7 +20,7 @@ translation_engine: bing-translator-llm
 ローカルまたはテスト環境へのデプロイの場合、Kagami にこれらすべてのファイルを一緒に生成させてください:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 既存のネットワークまたはプロファイルの場合は、ガイド付きフローを使用してください。

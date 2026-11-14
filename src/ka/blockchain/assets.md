@@ -1,11 +1,10 @@
 ---
 translation_locale: ka
 translation_source: /blockchain/assets.md
-translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
+translation_source_hash: 4d0a3f54a0c70d08d11160b9ec66d6538aa2c49c7771a13e4a070b61a9cb3e4b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # აქტივები {#assets}
 
 Iroha აქტივი არის ციფრული ბალანსი, რომელსაც ფლობს ანგარიში. თითოეული კონკრეტული ბალანზი მიუთითებს `AssetDefinition`, და განსაზღვრება აღწერს იმას, თუ როგორ შეიძლება ამ აქტივის დასახელება, გამოშვება, ჩვენება და გაყოფა.
@@ -22,7 +21,7 @@ Iroha აქტივი არის ციფრული ბალანს�
 - `mintable`: აქტივების გამოშვების პოლიტიკის პოლიტიკა
 - `logo`: არასწორია `SoraFS` URI
 - `metadata`: საკვანძო მნიშვნელობის თვითნებური მეტამონაცემები.
-- `balance_scope_policy`: არის თუ არა ბალანსები გლობალური ან მონაცემთა სივრცეში შეზღუდული;
+- `balance_scope_policy`: ბალანსები გლობალურია თუ მონაცემთა სივრცით შეზღუდული
 - `owned_by`: ანგარიში, რომელმაც დაარეგისტრირა ან ფლობს განსაზღვრას
 - `total_quantity`: გამოშვებული საერთო რაოდენობა
 - `confidential_policy`: დაცული აქტივების ოპერაციების პოლიტიკა
@@ -36,7 +35,7 @@ Iroha აქტივი არის ციფრული ბალანს�
 - `id`: `AssetId`, რომელიც აერთიანებს აქტივების განსაზღვრას, მფლობელის ანგარიშს და ვალუტის ბალანსის ვარიანტს.
 - `value`: ბალანსი `Numeric`
 
-ანგარიშის მფლობელი არის კანონიკური და დომენების გარეშე. აქტივების განსაზღვრა შეიძლება იყოს პროექტირებული მონაცემთა სივრცე-კვალიფიციური დომენის ქვეშ, მაგალითად `payments.universal`.
+მფლობელის ანგარიში კანონიკურია და დომენს არ შეიცავს. აქტივის განსაზღვრება შეიძლება წარმოდგენილი იყოს მონაცემთა სივრცით დაზუსტებულ დომენში, მაგალითად `payments.universal`.
 
 ## აქტივების ემისიის პოლიტიკა {#mintability}
 
@@ -56,9 +55,9 @@ Iroha აქტივი არის ციფრული ბალანს�
 `balance_scope_policy` აკონტროლებს, თუ როგორ ხდება ბალანსების გაყოფა:
 
 - `Global`: ერთი ბალანდის გაყოფა ანგარიშზე და აქტივების განსაზღვრა
-- `DataspaceRestricted`: ანგარიშსწორებები დაყოფილია მონაცემთა სივრცის კონტექსტით.
+- `DataspaceRestricted`: ბალანსები მონაცემთა სივრცის კონტექსტის მიხედვით იყოფა
 
-მონაცემთა სივრცეზე შეზღუდული ბალანსი სასარგებლოა, როდესაც ერთსა და იმავე აქტივის განსაზღვრა გამოიყენება მრავალ Nexus მონაცემთა სფეროში, მაგრამ ბალანციები უნდა დარჩეს იზოლირებული.
+მონაცემთა სივრცით შეზღუდული ბალანსები გამოსადეგია, როცა აქტივის ერთი განსაზღვრება SORA Nexus-ის რამდენიმე მონაცემთა სივრცეში გამოიყენება, მაგრამ ბალანსები იზოლირებული უნდა დარჩეს.
 
 ## განახორციელეთ ეს სამუშაო პროცესი Taira {#try-it-on-taira}
 
@@ -89,19 +88,18 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-სამივე მაგალითი წაკითხულია. Taira-ზე აქტივების გამოსაცემად, განადგურებისთვის ან გადასატანისთვის გამოიყენეთ ტესტნეტის მიერ დაფინანსებული ანგარიში და დაცული ნაკადი [დაკავშირება SORA Nexus მონაცემთა სივრცეებთან](/ka/get-started/sora-nexus-dataspaces.md).
+სამივე მაგალითი წაკითხვაა. Taira-ზე აქტივების გამოსაშვებად, დასაწვავად ან გადასარიცხად გამოიყენეთ სატესტო ტოკენების გამცემი სერვისით დაფინანსებული ანგარიში და გვერდზე [SORA Nexus-ის მონაცემთა სივრცეებთან დაკავშირება](/ka/get-started/sora-nexus-dataspaces.md) აღწერილი შემოწმებადი პროცესი.
 
-Taira-ზე საკომისიოს გადამხდელი აქტივის მაგალითისთვის [Taira-ზე სატესტო XOR-ის მიღების](/ka/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) დამხმარე სკრიპტი შეინახეთ როგორც `taira_faucet_claim.py`, ჯერ გამცემიდან მოითხოვეთ აქტივი და შემდეგ ის ტრანზაქციის შესრულების საკომისიო აქტივად გამოიყენეთ:
+Taira-ზე საკომისიოს მქონე აქტივის მაგალითისთვის ჯერ დააფინანსეთ ხელმომწერი გვერდზე [სატესტო XOR-ის მიღება Taira-ზე](/ka/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) აღწერილი მომზადების ეტაპიანი ტოკენების მიღების პროცესით. შემდეგ `ledger asset mint`, `ledger asset burn` და `ledger asset transfer` ბრძანებებს გადასცით `--fee-payer authority`; CLI ხელმოწერამდე ითვლის ზუსტ საკომისიოს Taira-ს საკომისიო აქტივში:
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
+iroha --config ./taira.client.toml --fee-payer authority \
+  ledger asset transfer \
+  --definition "<ASSET_DEFINITION_BASE58>" \
+  --account "<TAIRA_I105_ACCOUNT_ID>" \
+  --to "<RECIPIENT_I105_ACCOUNT_ID>" \
+  --quantity 1
 ```
-
-შემდეგ შეიყვანეთ `--metadata ./taira.tx-metadata.json` ბრძანებებზე `ledger asset mint`, `ledger asset burn` და `ledger asset transfer`.
 
 ## ინსტრუქციები {#instructions}
 

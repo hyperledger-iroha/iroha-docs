@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-supplemental-naming-link
 ---
 # དྲི་བཀོད་ཚུ་ {#queries}
 
@@ -85,7 +85,7 @@ SDK ཡིག་སྣོད་བཟོ་སྐྲུན་འབད་མི�
 | `FindProofRecordsByBackend` | བདེན་ཁུངས་རྒྱབ་གཞི་ཅིག་གི་དོན་ལུ་ བདེན་ཁུངས་དྲན་ཐོ་ཚུ་ཐོ་བཀོད་འབད། |
 | `FindProofRecordsByStatus` | གནས་ཚད་དང་འཁྲིལ་ཏེ་ བདེན་ཁུངས་དྲན་ཐོ་ཚུ་ཐོ་བཀོད་འབད། |
 
-## Nexus ཌའི་ཊ་གི་ཐོབ་ཐངས་དང་ ཅ་ཆས་ཚུ་ {#nexus-data-availability-and-packages}
+## SORA Nexus ཌའི་ཊ་གི་ཐོབ་ཐངས་དང་ ཅ་ཆས་ཚུ་ {#nexus-data-availability-and-packages}
 
 | འདྲི་དཔྱད་ | དམིགས་ཡུལ། |
 | --- | --- |

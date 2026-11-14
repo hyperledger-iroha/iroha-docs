@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /blockchain/assets.md
-translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
+translation_source_hash: 4d0a3f54a0c70d08d11160b9ec66d6538aa2c49c7771a13e4a070b61a9cb3e4b
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # الأصول {#assets}
 
 الأصل Iroha هو رصيد رقمي يحتفظ به حساب. كل رصيد ملموس يشير إلى `AssetDefinition`، وتعبر التعريفات عن كيفية تسمية هذا الأصل وإصداره وعرضه وتقسيمه.
@@ -22,7 +21,7 @@ translation_engine: bing-translator-llm
 - `mintable`: سياسة إصدار الأصول
 - `logo`: اختياري `SoraFS` URI
 - `metadata`: بيانات وصفية عشوائية على شكل مفتاح-قيمة
-- `balance_scope_policy`: سواء كانت الأرصدة عامة أو مقيدة بمساحة البيانات
+- `balance_scope_policy`: يحدد ما إذا كانت الأرصدة شاملة أو مقيّدة بمساحة بيانات
 - `owned_by`: الحساب الذي سجل أو يملك التعريف
 - `total_quantity`: إجمالي الكمية المُصدرة
 - `confidential_policy`: سياسة عمليات الأصول المحمية
@@ -36,7 +35,7 @@ translation_engine: bing-translator-llm
 - `id`: `AssetId`، الذي يجمع بين تعريف الأصل، وحساب الحامل، ونطاق رصيد الأصل الاختياري
 - `value`: رصيد `Numeric`
 
-حساب الحامل هو بروتوكول قياسي مفرد وخالي من النطاق. يمكن عرض تعريف الأصل تحت نطاق مؤهل بمساحة البيانات، على سبيل المثال `payments.universal`.
+حساب المالك معياري ولا يتضمن نطاقًا. ويمكن إظهار تعريف الأصل ضمن نطاق مؤهّل باسم مساحة البيانات، مثل `payments.universal`.
 
 ## سياسة إصدار الأصول {#mintability}
 
@@ -58,7 +57,7 @@ translation_engine: bing-translator-llm
 - `Global`: قسم رصيد واحد لكل حساب وتحديد الأصل
 - `DataspaceRestricted`: يتم تقسيم الأرصدة حسب سياق مساحة البيانات
 
-الرصيد المحدود بمساحة البيانات مفيد عندما يتم استخدام تعريف الأصول نفسه عبر عدة مساحات بيانات Nexus ولكن يجب أن تظل الأرصدة معزولة.
+تفيد الأرصدة المقيّدة بمساحة بيانات عندما يُستخدم تعريف الأصل نفسه عبر عدة مساحات بيانات في SORA Nexus مع ضرورة بقاء الأرصدة معزولة.
 
 ## شغّل سير العمل هذا على Taira {#try-it-on-taira}
 
@@ -89,19 +88,18 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-جميع الأمثلة الثلاثة هي للقراءة. لإصدار أو تدمير أو نقل الأصول على Taira، استخدم حسابًا ممولًا من الشبكة الاختبارية وتدفق محمي في [الاتصال بمساحات البيانات SORA Nexus](/ar/get-started/sora-nexus-dataspaces.md).
+الأمثلة الثلاثة كلها عمليات قراءة. لإصدار الأصول أو حرقها أو نقلها على Taira، استخدم حسابًا ممولًا من خدمة التمويل التجريبي والتدفق المحكوم بالتحققات في [الاتصال بمساحات بيانات SORA Nexus](/ar/get-started/sora-nexus-dataspaces.md).
 
-لمثال على أصل في Taira يتطلب دفع رسوم، احفظ أداة خدمة تمويل الاختبار من [الحصول على XOR لشبكة Taira التجريبية](/ar/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) باسم `taira_faucet_claim.py`، ثم اطلب أصل الاختبار أولًا واستخدمه أصلًا لرسوم تنفيذ المعاملة:
+لتجربة مثال أصول يدفع الرسوم على Taira، موّل الموقّع أولًا باتباع تدفق خدمة التمويل التجريبي ذي مرحلة الإعداد في [الحصول على XOR التجريبي على Taira](/ar/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira). ثم مرّر `--fee-payer authority` إلى أوامر `ledger asset mint` و`ledger asset burn` و`ledger asset transfer`؛ تعرض CLI الرسوم الدقيقة بعملة رسوم Taira قبل التوقيع:
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
+iroha --config ./taira.client.toml --fee-payer authority \
+  ledger asset transfer \
+  --definition "<ASSET_DEFINITION_BASE58>" \
+  --account "<TAIRA_I105_ACCOUNT_ID>" \
+  --to "<RECIPIENT_I105_ACCOUNT_ID>" \
+  --quantity 1
 ```
-
-ثم قم بتضمين `--metadata ./taira.tx-metadata.json` على أوامر `ledger asset mint` و `ledger asset burn` و `ledger asset transfer`.
 
 ## تعليمات {#instructions}
 

@@ -1,8 +1,6 @@
 # Iroha 3
 
-Iroha 3 is the first-release Hyperledger Iroha platform. It supports
-self-hosted networks and the multi-dataspace SORA Nexus deployment model from
-one deterministic codebase.
+Iroha 3 is the first-release Hyperledger Iroha platform. It supports self-hosted networks and the multi-data space SORA Nexus deployment model from one deterministic codebase.
 
 At a high level, Iroha 3 combines:
 
@@ -20,8 +18,8 @@ If you are starting from scratch, follow these pages in order:
 1. [Install Iroha 3](/get-started/install-iroha.md)
 2. [Launch Iroha 3](/get-started/launch-iroha.md)
 3. [Operate Iroha 3 via CLI](/get-started/operate-iroha-via-cli.md)
-4. [Connect to SORA Nexus dataspaces](/get-started/sora-nexus-dataspaces.md)
-5. [Sponsor private dataspace fees](/get-started/private-dataspace-fee-sponsor.md)
+4. [Connect to SORA Nexus data spaces](/get-started/sora-nexus-dataspaces.md)
+5. [Sponsor private data space fees](/get-started/private-dataspace-fee-sponsor.md)
 
 ## SDKs
 
@@ -40,8 +38,8 @@ The pages you will use most often while running a network are:
 - [Working with Iroha binaries](/reference/binaries.md)
 - [Genesis reference](/reference/genesis.md)
 - [Torii endpoints](/reference/torii-endpoints.md)
-- [Connect to SORA Nexus dataspaces](/get-started/sora-nexus-dataspaces.md)
-- [Sponsor private dataspace fees](/get-started/private-dataspace-fee-sponsor.md)
+- [Connect to SORA Nexus data spaces](/get-started/sora-nexus-dataspaces.md)
+- [Sponsor private data space fees](/get-started/private-dataspace-fee-sponsor.md)
 - [Compatibility matrix](/reference/compatibility-matrix.md)
 
 ## Learn More

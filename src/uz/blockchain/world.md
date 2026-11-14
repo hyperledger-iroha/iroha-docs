@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/world.md
-translation_source_hash: 61657e1736d3163965063c38e347ed7dbfe040633ddf24eb1a37904922cb354d
+translation_source_hash: d6ecc7832a3925c105ddc0ddfbaf62ea54d465cdb7b98ce795e5a72c615361bd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-source-naming-amendment
 ---
-
 # Global holat {#world}
 
 `World` — boshqa obyektlarni o‘z ichiga oladigan global obyekt. `World` quyidagilardan iborat:
@@ -23,7 +22,7 @@ Domen, tugun yoki rol ro‘yxatdan o‘tkazilganda yoxud chiqarilganda, tegishli
 
 ## Global holat ko‘rinishi (WSV) {#world-state-view-wsv}
 
-Global holat ko‘rinishi (WSV) — blokcheynning joriy holatini xotirada ifodalovchi tuzilma. U `World`, yakuniy yozilgan blok xeshlari, tranzaksiya indekslari va joriy davr uchun saylangan tugunlarni o‘z ichiga oladi. Bloklarning butun foydali yuklari o‘zgaruvchan WSV ma’lumoti sifatida takrorlanmaydi, balki Kura-dan taqdim etiladi.
+Global holat ko‘rinishi — blokcheynning joriy holatini xotirada ifodalovchi tuzilma. U `World`, yakuniy yozilgan blok xeshlari, tranzaksiya indekslari va joriy davr uchun saylangan tugunlarni o‘z ichiga oladi. Bloklarning butun foydali yuklari o‘zgaruvchan WSV ma’lumoti sifatida takrorlanmaydi, balki Kura-dan taqdim etiladi.
 
 WSV — so‘rovlar o‘qiydigan va blok bajarilishi o‘zgartiradigan holat; uning o‘zi barqaror haqiqat manbai emas. Barqaror tarix [Kura](#kura-storage) da saqlanadi. WSV-ni Kura bloklaridan qayta qurish yoki holatning oniy tasviridan yuklab, keyingi Kura bloklarini takrorlash orqali yangilash mumkin.
 
@@ -36,7 +35,7 @@ WSV `World` obyektidan kengroq. Amalda u quyidagilarni o‘z ichiga oladi:
 - so‘rovlar va kvitansiyalar ishlatadigan tranzaksiyadan blokka indekslar;
 - konsensus foydalanadigan joriy va avvalgi yakunlash topologiyasi
 - yakuniy yozilgan bloklardan hosil qilingan, ma’lumotlar mavjudligi majburiyatlari, kvitansiya kursorlari, mahkamlash niyatlari va so‘rov proyeksiyasi belgilari kabi xotiradagi indekslar;
-- bloklarni deterministik bajarish uchun zarur kriptografiya, boshqaruv, konveyer, kontent, hisob-kitob va Nexus sozlamalari kabi bajarish muhiti sozlamasining oniy tasvirlari.
+- bloklarni deterministik bajarish uchun zarur kriptografiya, boshqaruv, konveyer, kontent, hisob-kitob va SORA Nexus sozlamalari kabi bajarish muhiti sozlamasining oniy tasvirlari.
 
 So‘rovlar odatda bu tuzilmalar ustidagi faqat o‘qiladigan `StateView` ni oladi. Ko‘rinish so‘rov bajarilishi uchun izchil oniy tasvirdir; u WSV-ni bevosita o‘zgartirishga ruxsat bermaydi.
 

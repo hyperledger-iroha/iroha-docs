@@ -1,9 +1,9 @@
 ---
 translation_locale: ur
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # کارکردگی اور پیمائش {#performance-and-metrics}
 
@@ -20,7 +20,7 @@ Iroha کارکردگی ورک لوڈ ، توثیق کنندہ ٹاپولوجی �
 
 ## کیا ناپنا ہے {#what-to-measure}
 
-پبلک نوڈ اسنیپ شاٹ اور پرومیتھوس سکریپ سے شروع کریں ، پھر آپریٹر کی تصدیق شدہ اتفاق رائے ریاست کے لئے CLI کا استعمال کریں۔ ہدف نوڈ کی طرف سے آپریٹر کلید کی اجازت ہونی چاہئے اور صرف رن ٹائم میں بھری ہوئی ہے:
+عوامی نوڈ کی تصویر اور Prometheus کی جمع کردہ پیمائشوں سے آغاز کریں، پھر آپریٹر کی تصدیق کے ساتھ اتفاق رائے کی حالت کے لیے CLI استعمال کریں۔ آپریٹر کی کلید کو ہدف نوڈ کی اجازت حاصل ہونی چاہیے اور اسے صرف رن ٹائم پر لوڈ کیا جاتا ہے:
 
 ```bash
 export TORII=http://127.0.0.1:8180
@@ -37,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -130,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### امیدوار اور داخلے کی حدود {#candidate-and-ingress-bounds}
 
-نوڈ لوکل Sumeragi حدود کا تعین کرتے ہیں کہ ایک تصدیق کنندہ کتنا امیدوار اور بازیابی کام برقرار رکھ سکتا ہے:
+بلاک کا حجم اور لین دین کی حدود دستخط شدہ جینیسس اور چین کے کمیٹ شدہ پیرامیٹرز سے آتی ہیں۔ نوڈ کی مقامی `[sumeragi]` ترتیبات شرکت کا کردار، دستخطی مواد کی تحویل، حفاظتی ریکارڈ کے راستے، اور دستاویزی مقامی ٹائم آؤٹ و ہم وقت سازی کی تبدیلیاں متعین کرتی ہیں۔
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` اور `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes` ، `sumeragi.queues.chunks`، اور `sumeragi.queues.ready_bodies`
-
-بہت چھوٹی حدیں قطار یا پے لوڈ کی بازیابی کا دباؤ پیدا کرتی ہیں۔ زیادہ سائز کی حدیں برقرار رکھنے والی میموری اور بدسلوکی نیٹ ورک نوڈ کے لئے دستیاب کام کی مقدار میں اضافہ کرتی ہیں۔ ایک بار میں ایک حد کو تبدیل کرنے سے پہلے تشخیصی اسنیپ شاٹ کو پروسیس میموری ، پیغام ہینڈلنگ ، اور لاپتہ جسم کی پیمائش کے ساتھ موازنہ کریں:
+نیٹ ورک میں داخلے اور لین دین کی قطار کی حدود مقامی طور پر محفوظ کام کو قابو کرتی ہیں۔ کسی عملی حد کو بدلنے سے پہلے تشخیصی اسنیپ شاٹ کا موازنہ پروسیس میموری، پیغامات کی کارروائی اور غائب باڈی کی میٹرکس سے کریں۔ ایک ہی نیٹ ورک کے رنز کا موازنہ کرتے وقت چین کے دستخط شدہ پیرامیٹرز یکساں رکھیں:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -243,7 +236,7 @@ iroha --config ./localnet/client.toml \
 - تصدیق کنندہ اور ناظرین کی گنتی
 - اتفاق رائے کا موڈ، دستخط شدہ بلاک کیڈنسی، اور DA ترتیب
 - درست `3f + 1` کمیٹی، کووروم اور مبصرین کی فہرست
-- `sumeragi.block` ، `sumeragi.queues`، `sumeragi.limits`، نیٹ ورک میں داخلے اور لین دین کی قطار کی حدیں
+- چین کے دستخط شدہ پیرامیٹرز، مقامی Sumeragi تبدیلیاں، نیٹ ورک میں داخلے اور لین دین کی قطار کی حدود
 - ٹیلی میٹری پروفائل
 - ہارڈویئر، اسٹوریج اور OS کی تفصیلات
 - نیٹ ورک RTT، jitter، نقصان، اور بینڈوڈتھ مفروضے

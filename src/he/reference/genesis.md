@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /reference/genesis.md
-translation_source_hash: 8215489720e1bc2fc3b7c22c4cb2f8f7b1f0f15d1df4a4f596ee3caa2c6b7829
+translation_source_hash: 340921f59a6f8788f559190d520f046ea2473d65154f57a1c54212840c027bc0
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # הפניה בראשית {#genesis-reference}
 
 בזרם Iroha 3 זרימת עבודה, א `genesis.json` מניפסט מתאר את הראשון עסקאות ופרמטרים שיופעלו כאשר הרשת תתחיל.
@@ -17,11 +16,13 @@ translation_engine: nllb-200-ct2
 מניפסט בראשית יכול להגדיר:
 
 - `chain` עבור מזהה השרשרת
+- `chain_discriminant` עבור קידומת הרשת I105 המשמשת לקידוד ערכי חשבון מילוליים במניפסט
 - `executor` עבור נתיב קוד בתים לשדרוג מבצע אופציונלי
 - `ivm_dir` עֲבוּר IVM ספריות בשימוש על ידי טריגרים ושדרוגים
 - `consensus_mode` עבור המצב הראשוני שמפרסם המניפסט
 - `transactions` עבור עדכוני פרמטרים מסודרים, הוראות, טריגרים וטופולוגיה
-- `crypto` עבור תמונת המצב הקריפטו הראשונית
+- `sumeragi_context` עבור פרמטרי הקשר הגובה החתומים של Sumeragi
+- `crypto_admission_policy` עבור אלגוריתמי החתימה והבקרים המדויקים שהשרשרת מקבלת, המפורטים ב־`allowed_algorithms`
 
 בְּתוֹך `transactions`, ערכי טופולוגיה צמד מזהי צמתים ו PoPs יַחַד:
 
@@ -34,16 +35,17 @@ translation_engine: nllb-200-ct2
 
 ## צור מניפסט {#generate-a-manifest}
 
-לְהִשְׁתַמֵשׁ Kagami כדי ליצור תבנית:
+השתמשו ב־Kagami ליצירת תבנית. חזרו על `--allowed-signing` עבור כל אלגוריתם שמותר לקבל, בסדר קנוני עולה; Kagami אינו משלים אלגוריתמים שהושמטו:
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
   --consensus-mode npos \
   --ivm-dir defaults \
-  --genesis-public-key <PUBLIC_KEY> > genesis.json
+  --genesis-public-key <PUBLIC_KEY> \
+  --allowed-signing ed25519 > genesis.json
 ```
 
-למען הציבור SORA Nexus מרחב נתונים, `npos` הוא מצב הקונצנזוס הצפוי. אַחֵר Iroha 3 פריסות עשויות להשתמש בהרשאה או NPoS בהתאם ליעד פּרוֹפִיל.
+עבור מרחב הנתונים הציבורי של SORA Nexus, ‏`npos` הוא מצב הקונצנזוס הצפוי. פריסות אחרות של Iroha 3 עשויות להשתמש במצב מבוסס הרשאות או ב־NPoS, בהתאם לפרופיל היעד.
 
 ## חתמו על המניפסט {#sign-the-manifest}
 
@@ -59,12 +61,13 @@ cargo run -p iroha_kagami -- genesis sign genesis.json \
 
 ## הגדר `iroha3d` {#configure-iroha3d}
 
-כוון את הדמון אל גוש הבראשית החתום:
+הפנו את הדמון לבלוק ה־genesis החתום ולקובץ המקבע את הגיבוב הצפוי שלו. `kagami genesis sign --expected-hash-out` כותב את הקובץ הזה, והצומת דורש אותו בהפעלה ראשונית ובהפעלה מחדש:
 
 ```toml
 [genesis]
 file = "genesis.signed.nrt"
 public_key = "<PUBLIC_KEY>"
+expected_hash_file = "genesis.expected_hash"
 ```
 
 ## כלים קשורים {#related-tools}
@@ -72,7 +75,7 @@ public_key = "<PUBLIC_KEY>"
 - `kagami genesis validate`
 - `kagami genesis normalize`
 - `kagami genesis embed-pop`
-- `kagami localnet`
+- `kagami localnet generate`
 - `cargo xtask kagami-profiles`
 
-לפרטי מימוש המחולל והפקודות, ראו את [קובץ README של Kagami](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami/README.md).
+למימוש המחולל ולפרטי הפקודות, ראו [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami/README.md).

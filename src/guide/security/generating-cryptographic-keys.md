@@ -11,8 +11,9 @@ From the Iroha source checkout:
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-The parent directory must already exist. The target must be new or already
-owned by the current user, mode `0700`, free of symbolic links, and empty.
+The parent directory must already exist. The target must not exist: Kagami
+refuses even an existing empty directory. It creates the target with mode
+`0700` under owner-only filesystem checks and rejects symbolic links.
 `kagami` writes `public.key` and `private.key` with mode `0600` and does not
 print key material. With `--pop`, it also writes `pop.hex`.
 

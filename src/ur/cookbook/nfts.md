@@ -1,16 +1,15 @@
 ---
 translation_locale: ur
 translation_source: /cookbook/nfts.md
-translation_source_hash: b60c542052eac6a916350c4aaa779c9f46d248be64ecea9c9bda679a4d56dff3
+translation_source_hash: b6a85c2feb197588e3358a785e10280a687af3951d52de4e6b8d96eab5de873c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+claude-opus-5-5
+translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link
 ---
-
 # NFTs {#nfts}
 
 ## نتیجہ {#outcome}
 
-Taira کی NFT state کا معائنہ کریں، پھر generated local network پر ایک منفرد NFT کو register، update اور transfer کریں اور اس پر استفسار کریں۔ workflow مکمل qualified `name$domain.dataspace` NFT ID اور canonical I105 owner IDs استعمال کرتا ہے۔
+Taira پر NFT کی حالت کا معائنہ کریں، پھر بنائی گئی مقامی نیٹ ورک پر ایک منفرد NFT رجسٹر کریں، اپ ڈیٹ کریں، منتقل کریں اور کوئری کریں۔ یہ طریقہ مکمل `name$domain.dataspace` NFT شناخت کنندہ اور مالکان کے کینونیکل I105 شناخت کنندگان استعمال کرتا ہے۔
 
 ## لازمی شرائط {#prerequisites}
 
@@ -129,7 +128,7 @@ seiyaku NftFlow {
 }
 ```
 
-دونوں مقررہ I105 قدریں اپ اسٹریم پروجیکٹ کا آزمائشی ڈیٹا ہیں؛ آزمائشی نظام عمل درآمد سے پہلے منزل کو رجسٹر کرتا ہے۔ یہ CLI رہنما میں موجود `CURRENT_OWNER` اور `NEW_OWNER` نہیں ہیں۔ ایپلیکیشن کنٹریکٹ کے لیے اس کے اصل کینونیکل اکاؤنٹس فراہم کریں، پھر اسے [اسمارٹ کنٹریکٹس](./smart-contracts.md) کے ذریعے کمپائل کریں، جانچیں، تعینات کریں اور کال کریں۔ غیر جائزہ شدہ bytecode کو Taira پر جمع نہ کریں؛ یاد رکھیں کہ کنٹریکٹ پر عمل درآمد اب بھی runtime authorization سے گزرتا ہے۔
+دو مقررہ I105 قدریں اصل پروجیکٹ کے ٹیسٹ ڈیٹا کا حصہ ہیں؛ ٹیسٹ ہارنس عمل درآمد سے پہلے منزل کو رجسٹر کرتا ہے۔ یہ CLI کی مثال والے `CURRENT_OWNER` اور `NEW_OWNER` نہیں ہیں۔ ایپلی کیشن کنٹریکٹ کے لیے اس کے حقیقی کینونیکل اکاؤنٹس فراہم کریں، پھر [اسمارٹ کنٹریکٹس](./smart-contracts.md) کے ذریعے اسے کمپائل، ٹیسٹ اور تعینات کریں اور کال کریں۔ غیر جائزہ شدہ بائٹ کوڈ Taira پر جمع نہ کرائیں، اور یاد رکھیں کہ کنٹریکٹ کا عمل درآمد اب بھی رن ٹائم کی اجازت سے گزرتا ہے۔
 
 ## تصدیق کریں {#verify}
 

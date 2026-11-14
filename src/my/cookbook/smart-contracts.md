@@ -1,11 +1,10 @@
 ---
 translation_locale: my
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: ca6fd12e33df43b73a72dd6327133115aa44256cf579387c11bf0693797bf96e
+translation_source_hash: f1d7f1e54fa01550ad5de65b18a725bc98452dcff8f9c08ebe427fb5ae857968
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+claude-opus-5-5
+translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link
 ---
-
 # စမတ်ကျတဲ့ စာချုပ်တစ်ခု တည်ဆောက်ပြီး အသုံးချပါ။ {#build-and-deploy-a-smart-contract}
 
 ## ရလဒ် {#outcome}
@@ -17,7 +16,7 @@ Kotodama V1 စာချုပ်တစ်ခုကို စစ်ဆေးပ�
 - Iroha အရင်းအမြစ်ကုဒ်အလုပ်လုပ်စာရွက်စာတမ်းကို protocol finalisation `c8c872461e92f04325c350cdd952f4276e96f9dc`, Rust နှင့် Cargo တွင်။
 - လက်ရှိ `iroha` CLI နှင့် `musubi` (checkout ထဲတွင် `cargo run -p musubi --` အဖြစ် လုပ်ဆောင်သည်) အပြင် [Taira သို့ ချိတ်ဆက်ပါ](./connect-to-taira.md) မှ ငွေထည့်ထားသော Taira client တစ်ခု။
 - `IROHA_CONFIG` တွင် absolute path တစ်ခု။ Musubi ၏ network binding သည် ဤ client ဖိုင်ကို ရည်ညွှန်းချက်အဖြစ် သိမ်းဆည်းပြီး ၎င်း၏ အကောင့်သော့ဖြင့် ဖြန့်ချိမှုကို လက်မှတ်ထိုးသည်။
-- alias ဆိုင်ရာ ခွင့်အာဏာ။ executor သည် တိကျသော contract alias သို့မဟုတ် ၎င်း၏ မိခင် scope အတွက် `CanManageAccountAlias` ကို လိုအပ်သည်- `name::domain.dataspace` အတွက် ပိုင်ရှင်ဒိုမင်၊ သို့မဟုတ် `name::dataspace` အတွက် ဒေတာနေရာ။ မှတ်ပုံတင်ထားသော အကောင့်များသည် သီးခြား ကုဒ်မှတ်ပုံတင်ခွင့်ပြုချက် မလိုအပ်ဘဲ ကာကွယ်ထားသော namespace များသည် ကွန်ရက်၏ governance လုပ်ငန်းစဉ်ကိုလည်း လိုအပ်သည်။ ဥပမာများသည် `cookbook_tuple::universal` ကို အသုံးပြုသည်။ Taira တွင် ၎င်းကို သင်ပိုင်ဆိုင်သော ဒိုမင်ရှိ alias တစ်ခုဖြင့် အစားထိုးပါ၊ သို့မဟုတ် genesis က alias scope ကို ခွင့်ပြုချက်ပေးအပ်ထားသော ဖန်တီးထားသည့် ဒေသတွင်းကွန်ရက်တစ်ခုပေါ်တွင် ဖြန့်ချိပါ။
+- Alias ဆိုင်ရာ ခွင့်အာဏာ။ Executor သည် စာချုပ် alias အတိအကျ သို့မဟုတ် ၎င်း၏ အထက်အဆင့် နယ်ပယ်အတွက် `CanManageAccountAlias` ကို လိုအပ်သည်။ `name::domain.dataspace` အတွက် ပိုင်ရှင် domain၊ `name::dataspace` အတွက် data space ဖြစ်သည်။ မှတ်ပုံတင်ထားသော အကောင့်များတွင် သီးခြား ကုဒ်မှတ်ပုံတင်ခွင့် မလိုပါ။ ကာကွယ်ထားသော namespace များတွင် ကွန်ရက်၏ အုပ်ချုပ်မှုလုပ်ငန်းစဉ်လည်း လိုအပ်သည်။ ဥပမာများက `cookbook_tuple::universal` ကို သုံးသည်။ Taira တွင် သင်ပိုင်သော domain ရှိ alias ဖြင့် အစားထိုးပါ၊ သို့မဟုတ် genesis က ထို alias နယ်ပယ်အတွက် ခွင့်ပြုထားသော ထုတ်လုပ်ထားသည့် ဒေသတွင်းကွန်ရက်တွင် ဖြန့်ချိပါ။
 
 ```bash
 IROHA_SOURCE=/absolute/path/to/iroha
@@ -76,9 +75,9 @@ cargo run -p kotodama_toolchain --bin koto -- \
   ./contracts/tuple_return_demo.ko
 ```
 
-ပထမ build သည် artefact နှင့် authenticated sidecars ကိုထုတ်ဝေသည်။ ဒုတိယသည် read-only `--verify` mode တွင်အလုပ်လုပ်ပြီးရှိဆဲထွက်ပေါက်တစ်ခုခုကလက်ရှိအရင်းအမြစ်နှင့်အတိအကျမညီပါက ကျရှုံးသည်။ `.to` ဖိုင်နှင့် ၎င်း၏နည်းပညာ manifest ကိုပြန်လည်သုံးသပ်ထားသော build output တစ်ခုအဖြစ်ပြုပြင်ပါ။
+ပထမ build က artifact နှင့် စစ်မှန်ကြောင်း အတည်ပြုထားသော sidecar များကို ထုတ်ဝေသည်။ ဒုတိယ build က ဖတ်ရှုရုံ `--verify` မုဒ်ဖြင့် လုပ်ဆောင်ပြီး ရှိပြီးသား အထွက်တစ်ခုခုသည် လက်ရှိ source နှင့် အတိအကျ မကိုက်ညီလျှင် ကျရှုံးသည်။ `.to` ဖိုင်နှင့် ၎င်း၏ manifest ကို ပြန်လည်သုံးသပ်ထားသော build အထွက်တစ်ခုတည်းအဖြစ် သဘောထားပါ။
 
-### (၃) ဘိုင်တာကုဒ်ကို ဒေသတွင်းမှာ Run လုပ်ပါ။ {#_3-run-the-bytecode-locally}
+### 3. Bytecode ကို ဒေသတွင်း လုပ်ဆောင်ခြင်း {#_3-run-the-bytecode-locally}
 
 `compute` သည် အများသုံး read-only `view fn` ဖြစ်သည်။ ၎င်းကို `debug-view` ဖြင့် လုပ်ဆောင်ပါ။ ၎င်းသည် compile လုပ်ထားသော bytecode ကို ရွေးချယ်နိုင်သော စမ်းသပ်ဒေတာများနှင့် ဒေသတွင်း၌ လုပ်ဆောင်ပြီး transaction ကို တင်သွင်းခြင်း သို့မဟုတ် ပေးချေခြင်း မပြုပါ။
 
@@ -191,12 +190,12 @@ jq -e '.ok == true and .result == ["3", "5"]' \
 ## ပြဿနာဖြေရှင်းခြင်း {#troubleshooting}
 
 - `deployment authority lacks CanManageAccountAlias` သို့မဟုတ် executor ၏ `authority is not permitted to manage contract alias` ဆိုသည်မှာ အကောင့်သည် ထို alias ကို bind လုပ်ခွင့်မရှိကြောင်း ဆိုလိုသည်။ သင်ပိုင်ဆိုင်သော ဒိုမင်ရှိ alias တစ်ခုကို အသုံးပြုပါ၊ သို့မဟုတ် ထို scope ၏ ပိုင်ရှင်ထံမှ တိကျသော alias ခွင့်ပြုချက်ပေးအပ်မှု သို့မဟုတ် ၎င်း၏ ဒိုမင် သို့မဟုတ် ဒေတာနေရာ ခွင့်ပြုချက်ပေးအပ်မှုကို ရယူပါ။ localnet တွင် ၎င်းကို genesis ၌ ခွင့်ပြုချက်ပေးအပ်ပါ။
-- ကာကွယ်ထားသော namespace ငြင်းပယ်မှုဆိုသည်မှာ alias namespace ကို governance ဖြင့် ထိန်းချုပ်ထားကြောင်း ဆိုလိုသည်။ အတည်ပြုသူ အကောင့် ID များကို စာရင်းပြုစုခြင်းသည် အတည်ပြုချက် အထောက်အထား မဟုတ်ပါ။ ထို namespace အတွက် ကွန်ရက်၏ governance လုပ်ငန်းစဉ် (`iroha app gov deploy propose`) ကို အသုံးပြုပါ၊ သို့မဟုတ် ၎င်း၏ ပြင်ပရှိ alias တစ်ခုကို ရွေးချယ်ပါ။
+- ကာကွယ်ထားသော namespace ကြောင့် ငြင်းပယ်ခြင်းသည် alias namespace ကို အုပ်ချုပ်မှုဖြင့် ထိန်းချုပ်ထားကြောင်း ဆိုလိုသည်။ အတည်ပြုသူ အကောင့် ID များကို စာရင်းပြခြင်းသည် အတည်ပြုချက်သက်သေ မဟုတ်ပါ။ ထို namespace အတွက် ကွန်ရက်၏ အုပ်ချုပ်မှုလုပ်ငန်းစဉ် (`iroha app gov deploy propose`) ကို သုံးပါ၊ သို့မဟုတ် ၎င်းပြင်ပရှိ alias ကို ရွေးပါ။
 - manifest သို့မဟုတ် ABI မကိုက်ညီမှုဆိုသည်မှာ bytecode၊ manifest နှင့် node ၏ runtime တို့သည် တူညီသော artifact ကို ဖော်ပြခြင်း မရှိကြောင်း ဆိုလိုသည်။ ပုံသေသတ်မှတ်ထားသော commit တွင် ပြန်လည်တည်ဆောက်ပြီးနောက် `--verify` ဖြင့် တည်ဆောက်မှုကို ပြန်လည်လုပ်ဆောင်ပါ။
 - `fee quote changed ... gas bound` ဆိုသည်မှာ requested typed intent နှင့် live quote ကွဲပြားမှုပါ။ လက်မှတ်ရေးထိုးထားသော ငွေပေးချေမှုကို ပြင်ဆင်ခြင်းထက် ပြန်လည် ကြိုတင်ပြင်ဆင်ပါ။
 - ကြားဖြတ်ရပ်တန့်သွားသော ဖြန့်ချိမှုသည် ၎င်း၏ လက်မှတ်ထိုးထားသော အစီအစဉ်ကို journal တစ်ခုတွင် သိမ်းဆည်းထားသည်။ အစီအစဉ်အသစ်ကို လက်မှတ်ထိုးမည့်အစား ၎င်းကို `musubi deploy --resume <JOURNAL>` ဖြင့် ပြန်လည်ရယူပါ။
 - `is read-only and cannot be invoked as a transaction` သို့မဟုတ် `is not a kotoage or lifecycle entrypoint` ဆိုသည်မှာ `compute` ကို call command သို့ ပေးပို့ခဲ့ကြောင်း ဆိုလိုသည်။ ဤနမူနာသည် `view fn` ကို ကြေညာထားသောကြောင့် ဒေသတွင်း၌ `debug-view` ကိုလည်းကောင်း၊ Torii ပေါ်တွင် `view` ကိုလည်းကောင်း အသုံးပြုပါ။
-- Contract invocations တွေအတွက် positive typeed transaction execution cost limit လိုပါတယ်။ ပထမဆုံးထုတ်ပြန်တဲ့ technical invocation contract မှာ ထိပ်ဆုံးအဆင့် transaction executions cost (သို့) fee-asset metadata တွေကို ပယ်ချတယ်။
+- စာချုပ်ခေါ်ဆိုမှုများတွင် အမျိုးအစားသတ်မှတ်ထားသော အပေါင်း gas ကန့်သတ်ချက် လိုအပ်သည်။ ပထမထုတ်ဝေမှု ခေါ်ဆိုမှုစည်းမျဉ်းသည် ထိပ်ဆုံးအဆင့် gas သို့မဟုတ် fee-asset metadata ကို ပယ်ချသည်။
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 

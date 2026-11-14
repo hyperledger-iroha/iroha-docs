@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/nfts.md
-translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
+translation_source_hash: 216f59f1cebd73001dab75dcf235306082fb1c0759437f65ce34ec9e1ed51d4f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # NFTs {#nfts}
 
 Iroha NFT si — bitta egaga ega noyob reyestr obyekti. Yozuvga o‘z identifikatori, metama’lumoti, hayot davri hodisalari va egalikni o‘tkazish semantikasi kerak bo‘lib, sonli qoldiq talab qilinmasa, NFTs dan foydalaning.
@@ -49,7 +48,7 @@ name$domain
 name$domain.dataspace
 ```
 
-Masalan, `badge$docs.universal` qiymati `docs.universal` domenidagi `badge` NFT sini bildiradi. Ma’lumotlar makoni ko‘rsatilmasa, joriy tahlilchi `universal` makonidan foydalanadi; shu sababli `badge$docs` qiymati `badge$docs.universal` ga yechiladi.
+Masalan, `badge$docs.universal` — `docs.universal` domenidagi `badge` NFT identifikatori. Ma’lumotlar makoni ko‘rsatilmasa, joriy parser `universal` ma’lumotlar makonidan foydalanadi, shuning uchun `badge$docs` manzili `badge$docs.universal`ga yechiladi.
 
 NFT identifikatorlari uchun barqaror nomlardan foydalaning. Identifikator — ko‘rsatmalar, so‘rovlar, ruxsatlar, hodisa filtrlari va ilova havolalari ishlatadigan obyekt identifikatsiyasidir.
 
@@ -68,17 +67,17 @@ Bu misollarda mahalliy tarmoq ishga tushirilgan va [CLI qo‘llanmasi](/uz/get-s
 
 ```bash
 export IROHA_CONFIG=./localnet/client.toml
-export NFT_DOMAIN=wonderland.universal
-export NFT_ID='badge_intro$wonderland.universal'
+export NFT_DOMAIN='<OWNED_DOMAIN>.universal'
+export NFT_ID="badge_intro\$$NFT_DOMAIN"
 ```
 
-Hosil qilingan mahalliy tarmoq `wonderland.universal` va uning SNS ijarasini allaqachon sozlaydi. Boshqa domendan foydalanish uchun avval uni [Domenlar](/uz/blockchain/domains.md#registration) bo‘limidagi deklarativ `app alias setup plan` va `app alias setup apply` jarayoni bilan yarating.
+Yaratilgan localnet o‘z mijozi uchun ilova domenini ro‘yxatdan o‘tkazmaydi. `NFT_DOMAIN`ni imzolovchi hisob egalik qiladigan yoki unga `CanRegisterNft` ruxsati berilgan domenga sozlang. Domen yaratish uchun [Domenlar](/uz/blockchain/domains.md#registration)da tavsiflangan deklarativ `app alias setup plan` va `app alias setup apply` jarayonidan foydalaning.
 
 NFT ni ro‘yxatdan o‘tkazing. Ro‘yxatga olish dastlabki kontent JSON ini standart kirishdan o‘qiydi:
 
 ```bash
 printf '{"kind":"badge","level":"intro","issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft register --id "$NFT_ID"
 ```
 
@@ -89,14 +88,14 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft get --id "$NFT_ID"
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger nft list all --verbose
+  ledger nft list --all
 ```
 
 Metama’lumot kalitini qo‘shing va NFT-ni yana o‘qing:
 
 ```bash
 printf '{"color":"blue","rarity":"tutorial"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta set --id "$NFT_ID" --key traits
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -106,27 +105,27 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 Metama’lumot kalitini olib tashlang:
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
-Ixtiyoriy ravishda NFT ni o‘tkazing. Joriy egani `owned_by` dan o‘qish uchun `ledger nft get`, maqsad hisob identifikatorini topish uchun `ledger account list all` dan foydalaning.
+Ixtiyoriy ravishda NFT aktivini o‘tkazing. Joriy egani `owned_by`dan o‘qish uchun `ledger nft get`, qabul qiluvchi hisob ID sini topish uchun esa `account list --all`dan foydalaning.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger account list all
+  account list --all
 
 export CURRENT_OWNER='<account-id-from-owned_by>'
 export NEW_OWNER='<destination-account-id>'
 
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
 Ko‘rsatmalarni bajargach namunaviy NFT ni olib tashlang. Uni o‘tkazgan bo‘lsangiz, avval qaytaring yoki joriy eganing hisob sozlamasi bilan ro‘yxatdan chiqarish buyrug‘ini yuboring.
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft unregister --id "$NFT_ID"
 ```
 

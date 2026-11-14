@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /guide/best-practices/release-readiness.md
-translation_source_hash: 984957526424a4e0ec9f29a6da1bb64699245bb135e8157bbe684bc3d87de4cc
+translation_source_hash: 75fccfa00f1582a8081df3e00331eee7ab21c108c8727a9d73129738cc4940cb
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-title-amendment
 ---
-
 # Préparation à la mise en production {#release-readiness}
 
 Avant de promouvoir une application ou un changement de réseau Iroha, prouvez le comportement dans l'environnement le plus petit pouvant exposer le risque pertinent, puis passez délibérément par les étapes du testnet partagé et de la production.
@@ -21,12 +20,12 @@ Voir [Lancer Iroha 3](/fr/get-started/launch-iroha.md) et [SDK Tutoriels](/fr/gu
 
 ## Passerelle Testnet Partagée {#shared-testnet-gate}
 
-- Utilisez Taira ou un autre testnet partagé pour le comportement du point de terminaison API, les frais, le financement des comptes, la latence et les répétitions opérationnelles.
+- Utilisez Taira ou un autre testnet partagé pour le comportement du point de terminaison , les frais, le financement des comptes, la latence et les répétitions opérationnelles.
 - Gardez les écritures sur le testnet en direct optionnelles afin que les tests ordinaires ne dépendent pas de la disponibilité du réseau ou ne dépensent des fonds du testnet.
 - Vérifiez le financement du signataire cryptographique, les métadonnées de l'actif de frais, les autorisations du principal d'autorisation et l'état attendu avant de soumettre chaque transaction de test en direct.
 - Attendez un état terminal, puis vérifiez l'état résultant avec une requête en lecture seule.
 
-Voir [Construire sur SORA 3 : Taira et Minamoto](/fr/get-started/sora-nexus-dataspaces.md).
+Consultez [Développer sur SORA Nexus : Taira et Minamoto](/fr/get-started/sora-nexus-dataspaces.md).
 
 ## Réseau principal ou passerelle de production {#mainnet-or-production-gate}
 
@@ -46,7 +45,7 @@ Voir [Construire sur SORA 3 : Taira et Minamoto](/fr/get-started/sora-nexus-data
 
 - La configuration est spécifique à l'environnement et ne contient pas de secrets réservés aux tests.
 - Le comportement de réessai des transactions est idempotent ou explicitement limité.
-- L'application peut distinguer le rejet, l'expiration, le délai d'attente et les échecs de disponibilité du point de terminaison API.
+- L’application peut distinguer le rejet, l’expiration, le dépassement du délai d’attente et les défaillances de disponibilité du point d’accès.
 - La surveillance couvre le débit, la latence, la profondeur de la file d'attente, les rejets, les changements de vue et les événements commerciaux pertinents.
 - Les opérateurs ont des guides d'exploitation pour les modes de défaillance prévus.
 - La revue de sécurité a couvert la garde des clés, les permissions, l'exposition du réseau et le principe d'autorisation de l'automatisation.

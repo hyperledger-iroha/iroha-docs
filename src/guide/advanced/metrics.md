@@ -36,7 +36,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -152,21 +152,15 @@ more visible rather than increasing sustainable throughput.
 
 ### Candidate and Ingress Bounds
 
-Node-local Sumeragi bounds determine how much candidate and recovery work a
-validator can retain:
+Block size and transaction limits come from signed genesis and committed
+chain parameters. Node-local `[sumeragi]` settings cover the participation
+role, signing custody, safety-record paths, and the documented local timeout
+and synchronization overrides.
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` and `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks`, and
-  `sumeragi.queues.ready_bodies`
-
-Too-small bounds create queue or payload-recovery pressure; oversized bounds
-increase retained memory and the amount of work available to an abusive peer.
+Network ingress and transaction-queue bounds control local retained work.
 Compare the diagnostics snapshot with process memory, message handling, and
-missing-body metrics before changing one bound at a time:
+missing-body metrics before changing an operational bound. Keep the signed
+chain parameters fixed when comparing runs of the same network:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -277,7 +271,7 @@ Publish performance numbers only with enough context to reproduce them:
 - validator and observer counts
 - consensus mode, signed block cadence, and DA layout
 - exact `3f + 1` committee, quorum, and observer roster
-- `sumeragi.block`, `sumeragi.queues`, `sumeragi.limits`, network-ingress, and
+- signed chain parameters, local Sumeragi overrides, network-ingress, and
   transaction-queue bounds
 - telemetry profile
 - hardware, storage, and OS details

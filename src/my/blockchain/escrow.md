@@ -6,7 +6,7 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
 
-# Native Asset Escrow {#native-asset-escrow}
+# မူရင်းပံ့ပိုးထားသော ပိုင်ဆိုင်မှု အာမခံအပ်နှံခြင်း {#native-asset-escrow}
 
 Native escrow ဆိုသည်မှာ ကိန်းဂဏန်းဆိုင်ရာ အရင်းအမြစ်များအတွက် blockchain ledger ထိန်းသိမ်းမှု ယန္တရားမှ စီမံခန့်ခွဲထားသော Native Escrow ဖြစ်သည်။ အဆိုပါစာရင်းကိုကာကွယ်ရန် လျှောက်လွှာကုဒ်၊ အချုပ်အခြာခံ ISIs တန်ဖိုးကို သတ်မှတ်ချက်ဆိုင်ရာ ပရိုတိုကောလစ် ထိန်းသိမ်းရေးစာရင်းသို့ပြောင်းပြီး ကမ္ဘာ့အခြေအနေတွင် အချုပ်အခမဲ့သက်တမ်းလည်ပတ်မှုကို မှတ်တမ်းတင်ပါ။
 
@@ -107,7 +107,7 @@ Asset locks တွေမှာ custody record အမျိုးအစားတ�
 |`OpenAssetLock` |အရင်းအမြစ်စာရင်း|အပြုသဘောဆောင်တဲ့ ပမာဏကို ပိတ်ထားပြီး မှတ်တမ်းဝယ်သူအဖြစ် ရည်ရွယ်ချက်မှတ်တမ်းတင်ထားပြီး အခြေအနေကို `Locked` သို့ သတ်မှတ်တယ်။ |
 |`DrawdownAssetLock` |လွတ်မြောက်ခွင့်ပြုမှု မူလစာရင်း (သို့) လွှတ်ထွက်ခွင့်ပြုမှုမူလစာရင်း မသတ်မှတ်ပါက ရည်ရွယ်ချက် |ကျန်ရှိနေသေးတဲ့ ထိန်းသိမ်းမှုကို တစ်စိတ်တစ်ပိုင်း (သို့) အပြည့်အဝ ရည်မှန်းချက်နေရာကို လွှဲပြောင်းတယ်။ |
 |`CancelAssetLock` |Lock opener ကို|Active lock ကို ဖျက်ပြီး ကျန်တဲ့ပမာဏကို ဖွင့်သူဆီ ပြန်ပေးပါတယ်။ |
-|`ExpireAssetLock` |နောက်ဆုံးအချိန်အပြီးမှာ ငွေပေးချေခွင့်ပြုမှု အရင်းအမြစ်များ|`expires_at_ms` နဲ့ ပိတ်ထားပြီးနောက် ကျန်တဲ့ပမာဏကို ဖွင့်ပေးသူဆီ ပြန်ပို့တယ်။ |
+| `ExpireAssetLock` | သတ်မှတ်နောက်ဆုံးအချိန် ကျော်ပြီးနောက် မည်သည့် transaction authority အကောင့်မဆို | `expires_at_ms` က အတိတ်အချိန် ဖြစ်နေသော lock ကို သက်တမ်းကုန်စေပြီး ကျန်ပမာဏကို ဖွင့်ခဲ့သူထံ ပြန်အမ်းသည်။ |
 
 `DrawdownAssetLock` သည် `Locked` တွင် မှတ်တမ်းကို ထိန်းသိမ်းထားပြီး တစ်ချို့ပမာဏများ ကျန်ရှိနေသည်။ ကျန်သောပမာဏက သုညသို့ရောက်တဲ့အခါ အခြေအနေသည် `DrawnDown` ဖြစ်လာပြီး မှတ်တမ်းကို ပိတ်ထားသည်။
 
@@ -283,7 +283,7 @@ fn open_anonymous_escrow(
 }
 ```
 
-အခြေခံကာကွယ်ထားသော ငွေချေးမှုပုံစံအတွက် [အမည်မသိ ငွေပေးချေမှု](/my/blockchain/anonymous-transactions.md) ကိုကြည့်ပါ။
+အခြေခံ ကာကွယ်ထားသော transaction မော်ဒယ်ကို [အမည်မဖော်သော Transaction များ](/my/blockchain/anonymous-transactions.md) တွင် ကြည့်ပါ။
 
 ## SDK အသုံးပြုမှု {#sdk-usage}
 
@@ -365,7 +365,7 @@ client.expire_asset_lock_and_wait(
 
 JavaScript SDK တွင် လက်ရှိတွင် တိုက်ရိုက်ရင်းနှီးမြှုပ်နှံမှု ငွေကြေးပေးချေမှု တည်ဆောက်သူများကို ဖော်ပြခြင်းမရှိပါ။ Kotodama စာချုပ်များ ဖြန့်ဖြူးသော JavaScript သို့မဟုတ် TypeScript အက်ပ်များအတွက် Kotodama စာရေးသူနှင့်အတူ ငွေကြေးထောက်ပံ့မှု အိမ်ရှင် လုပ်ဆောင်ချက်ဖောက်သည်များကို စုစည်းပါ။
 
-Native escrow host function invocations များတွင် explicit access hints များလိုအပ်သည်၊ အကြောင်းက compiler သည် opaque escrow ISIs အတွက် ကျဉ်းမြောင်းသော access sets များကို ထုတ်ယူနိုင်ခြင်းမရှိပါ။ Technical invocation `escrow_*` ကို တည်ဆောက်ထားသည့် ပြည်ပပို့ဆောင်မှုဝင်ပေါက်များတွင် wildcard အညွှန်းများကို အသုံးပြုပါ။
+Compiler သည် အတွင်းပိုင်းကို မသိနိုင်သော escrow ISIs များအတွက် ပိုမိုကျဉ်းမြောင်းသော ဝင်ရောက်သုံးစွဲမည့် အစုများကို မတွက်ထုတ်နိုင်သောကြောင့် native escrow host ခေါ်ဆိုမှုများတွင် ဝင်ရောက်သုံးစွဲမှုဆိုင်ရာ အညွှန်းများကို ရှင်းလင်းစွာ ပေးရသည်။ `escrow_*` builtin များကို ခေါ်ဆိုသည့် ပြင်ပမှ ခေါ်သုံးနိုင်သော ဝင်ပေါက်များတွင် wildcard အညွှန်းများကို သုံးပါ။
 
 ```js
 import { compileKotodamaProgram } from "@iroha/iroha-js/kotodama-compiler";
@@ -465,16 +465,16 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 
 အမည်မသိ Swift ဆောက်လုပ်သူများသည် nullifier စာရင်းများ၊ output cryptographic commitment တန်ဖိုးစာရင်းများ၊ proof အဘိဓာန်နှင့် optional `rootHint` တန်ဖိုးများကိုယူသည်။ ပဋိပက္ခဖြေရှင်းခွင့်မှတ်တံဆိပ်ကို `NativeEscrowPermissions.canResolveEscrowDispute` အဖြစ်ရရှိနိုင်သည်။
 
-## မေးခွန်းများနှင့် ဖြစ်ရပ်များ {#queries-and-events}
+## Query များနှင့် ဖြစ်ရပ်များ {#queries-and-events}
 
 အခြေအနေ စာမျက်နှာများ၊ ညှိနှိုင်းမှု အလုပ်များနှင့် ထောက်ပံ့ရေး ကိရိယာများအတွက် Escrow မေးမြန်းချက်များကို အသုံးပြုပါ။
 
-|မေးခွန်း|ရည်ရွယ်ချက်|
+| Query | ရည်ရွယ်ချက် |
 | --- | --- |
 |`FindAssetEscrowById` |`EscrowId` မှာ ပွင့်လင်းမြင်သာတဲ့ ဂရိုတစ်ခု (သို့) Lock တစ်ခု ဖတ်ပါ။|
 |`FindAssetEscrows` |ပွင့်လင်းမြင်သာတဲ့ ဂိုဏ်းမှတ်တမ်းနဲ့ သော့မှတ်တမ်းတွေကို စာရင်းပေးပါ။ |
 |`FindAssetEscrowsBySeller` |ရောင်းသူ (သို့) Lock Opener က ဖွင့်ထားတဲ့ မှတ်တမ်းတွေကို စာရင်းပေးပါ။ |
-|`FindAssetEscrowsByBuyer` |ဝယ်သူက လက်ခံတဲ့ စျေးကွက်စာရင်း (သို့) ပန်းတိုင်ကို ပစ်မှတ်ထားသော lock များ။ |
+| `FindAssetEscrowsByBuyer` | ဝယ်သူက လက်ခံထားသော စျေးကွက် escrow များ သို့မဟုတ် ဦးတည်လိပ်စာတစ်ခုကို ပစ်မှတ်ထားသော lock များကို စာရင်းပြသည်။ |
 |`FindAssetEscrowsByStatus` |`AssetEscrowStatus` မှ စာရင်းမှတ်တမ်းများ။ |
 |`FindAnonymousAssetEscrowById` |`EscrowId` ကနေ အမည်မသိ ဂိုဏ်းတစ်ခု ဖတ်ပါ။ |
 |`FindAnonymousAssetEscrows*` |ရောင်းသူ၊ ဝယ်သူ (သို့) အခြေအနေအားလုံးဖြင့် အမည်မသိ ဂိုဏ်းငွေစာရင်းများကို စာရင်းပေးပါ။ |

@@ -8,15 +8,15 @@ translation_engine: nllb-200-ct2+claude-opus-5-5
 
 # טריגרים {#triggers}
 
-## התוצאה {#outcome}
+## תוצאה {#outcome}
 
-רשום תפעול קריאה קצרה על Taira, פעל אותו פעם אחת, חכה לסיום יישום, ותוכיח את השלמתו בהצלחה מתוך היסטוריה של בלוק commit.
+רשמו ב־Taira טריגר המופעל בקריאה עם מספר הפעלות מוגבל, הפעילו אותו פעם אחת, המתינו לסופיות במצב Applied ואמתו את השלמתו המוצלחת מתוך היסטוריית הבלוקים שקובעו.
 
 ## תנאים מוקדמים {#prerequisites}
 
 - חותם ממומן, `taira.client.toml` ו־`TAIRA_ACCOUNT_ID` מתוך [חיבור ל־Taira](./connect-to-taira.md). פעולות כתיבה משתמשות ב־`--fee-payer authority`; ה־CLI מקבל הצעת עמלה מדויקת, בנכס העמלה של Taira, לפני החתימה.
-- Taira אישור לרשום תפעול ל- `TAIRA_ACCOUNT_ID` ולפעול את התפעול המוצא. הסימנים הרלוונטיים הם `CanRegisterTrigger` עם טווח של `authority` ו `CanExecuteTrigger` עם טווח על ידי `trigger`.
-- אם הכספים האלה אינם זמינים, השתמשו ברשת מקומית שנוצרה ולקלינט מנהל שלה. סמכות ההפעיל גם זקוקה לכל הרשאות הנדרשות על ידי ההוראות שההפעיל יעשה.
+- הרשאה ב־Taira לרשום טריגר עבור `TAIRA_ACCOUNT_ID` ולהפעיל את הטריגר שנוצר. האסימונים הרלוונטיים הם `CanRegisterTrigger` המוגבל לפי `authority`, ו־`CanExecuteTrigger` המוגבל לפי `trigger`.
+- אם הרשאות אלה אינן זמינות, השתמשו ברשת מקומית שנוצרה ובלקוח המנהל שלה. חשבון הסמכות של הטריגר זקוק גם לכל הרשאה הנדרשת להוראות שהטריגר יבצע.
 
 ```bash
 CONFIG=./taira.client.toml
@@ -24,9 +24,9 @@ TRIGGER_ID=cookbook_by_call_log
 test -n "$TAIRA_ACCOUNT_ID"
 ```
 
-## צעדים {#steps}
+## שלבים {#steps}
 
-### 1. רשום תפעיל עם הוראות {#_1-register-an-instruction-backed-trigger}
+### 1. רשמו טריגר המבוסס על הוראות {#_1-register-an-instruction-backed-trigger}
 
 `--instructions-stdin` מקבל את מערך הוראות ה־JSON ש־`--emit-instructions` מדפיס. הפקודה `tx ping` מפיקה הוראת `Log` אחת, שמשאירה את הדוגמה ממוקדת בהרשאת trigger במקום בהרשאות של אובייקט שני בספר החשבונות.
 
@@ -43,9 +43,9 @@ iroha --config "$CONFIG" --emit-instructions \
     --filter execute
 ```
 
-המפעיל יכול לפעול עד שלוש פעמים. הסמכות המוצהרת שלו, לא המתקשר שמוצא אותו, מאשרת את ההוראות בתוך הפעולה.
+הטריגר יכול לפעול שלוש פעמים לכל היותר. חשבון הסמכות המוצהר שלו, ולא החשבון שקורא להפעלתו, הוא שמעניק את ההרשאה להוראות שבתוך הפעולה.
 
-### 2. לבדוק את ההצהרה לפני ביצועה. {#_2-inspect-the-declaration-before-execution}
+### 2. בדקו את ההצהרה לפני ההפעלה {#_2-inspect-the-declaration-before-execution}
 
 ```bash
 iroha --config "$CONFIG" trigger get --id "$TRIGGER_ID"
@@ -54,9 +54,9 @@ iroha --config "$CONFIG" trigger inspect "$TRIGGER_ID"
 
 ודאו את סמכות ה־I105, את מסנן ההפעלה, את מספר החזרות שנותרו ואת ההוראה המקודדת היחידה שב־`executable` לפני שתוציאו עמלה נוספת.
 
-### 3. לבצע ולחכות לשני שכבות. {#_3-execute-and-wait-for-both-layers}
+### 3. הפעילו והמתינו לשתי השכבות {#_3-execute-and-wait-for-both-layers}
 
-למבצע ההוצאה והפעולה המניע יש ראיות נפרדות. `--wait` מחכה לסיום העסקה המשמשת; `--trace` מדווח גם על דיאגנוסטיקה של השלמת זמן הפעלה.
+לעסקת ההפעלה ולפעולת הטריגר יש ראיות נפרדות. `--wait` ממתין לסופיות העסקה במצב Applied; `--trace` מדווח גם על אבחון השלמת הביצוע בסביבת הריצה.
 
 ```bash
 iroha --config "$CONFIG" \
@@ -88,9 +88,9 @@ client.submit(Register::trigger(Trigger::new(trigger_id.clone(), action)), fee.c
 client.submit(ExecuteTrigger::new(trigger_id), fee)?;
 ```
 
-## לאמת {#verify}
+## אימות {#verify}
 
-סורק את ההיסטוריה של בלוקים commit כדי להשלים ולבדוק את מספר ההפגנות המופחת:
+סרקו את היסטוריית הבלוקים שקובעו כדי למצוא את ההשלמה, ובדקו שמספר החזרות שנותרו קטן:
 
 ```bash
 iroha --config "$CONFIG" trigger completed list \
@@ -101,21 +101,21 @@ iroha --config "$CONFIG" trigger completed list \
 iroha --config "$CONFIG" trigger inspect "$TRIGGER_ID"
 ```
 
-לפחות סיום אחד חייב לדווח על הצלחה. המפעיל חייב להישאר פעיל עם שנותרו שתי ביצועים. הצעת מוצלחת ללא סיום מוצלחת של המפעיל לא מספיקה לאמת.
+לפחות תוצאת השלמה אחת חייבת לדווח על הצלחה. הטריגר חייב להישאר פעיל עם שתי הפעלות שנותרו. שליחה מוצלחת ללא השלמה מוצלחת של הטריגר אינה אימות מספק.
 
 ## פתרון בעיות {#troubleshooting}
 
-- רישום נדחה כלא מורשה פירושו שהחתם חסר `CanRegisterTrigger` לרשות המוצהרת. ביצוע זה דורש את הסימן `CanExecuteTrigger` בעל טווח נפרד.
-- העסקה יכולה להגיע Applied בעוד הפעולה המפעילה מדווחת כישלון. קרא את תוצאות השלמת הטעות; לאחר מכן בדוק את הרשאות של הרשות המפעילה עבור כל הוראה מותקנת.
-- `Trigger with id … not found` יכול להביע כי עסקאות הרישום נדחו או שימשו להגדרת שרשרת אחרת של Torii/שרשרת.
-- כאשר חוזרים מגיעים לאפס, כותבת עוד חוזרים היא פריוויליזציה נוספת. אל תשנה בשקט את המתכון הזה למניע ללא הגדרה.
-- לצורך ניקוי, `trigger unregister --id "$TRIGGER_ID"` דורש `CanUnregisterTrigger` עבור המפעיל הזה ועוד בחירת עמלה מפורשת.
+- דחיית הרישום עקב חוסר הרשאה פירושה שלחותם חסר `CanRegisterTrigger` עבור חשבון הסמכות המוצהר. ההפעלה דורשת את אסימון `CanExecuteTrigger`, שהיקפו מוגדר בנפרד.
+- עסקה יכולה להגיע למצב Applied בזמן שפעולת הטריגר מדווחת על כישלון. קראו את תוצאת ההשלמה ואת השגיאה, ואז בדקו את הרשאות חשבון הסמכות של הטריגר עבור כל הוראה כלולה.
+- `Trigger with id … not found` עשוי להעיד שעסקת הרישום נדחתה, או שבהפעלה נעשה שימוש בתצורת Torii או שרשרת אחרת.
+- כאשר מספר החזרות מגיע לאפס, הנפקת חזרות נוספות היא פעולת כתיבה נוספת הדורשת הרשאה. אל תשנו בשקט את המתכון לטריגר שמספר הפעלותיו אינו מוגבל.
+- לצורך ניקוי, `trigger unregister --id "$TRIGGER_ID"` דורש `CanUnregisterTrigger` עבור אותו טריגר, וכן בחירה מפורשת של משלם העמלה.
 
-## מקור ומסמכים קשורים {#source-and-related-docs}
+## מקור ותיעוד קשור {#source-and-related-docs}
 
-- [בדיקות אינטגרציה של תפעול ידי-קריאה בקביעת קישור ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/triggers/by_call_trigger.rs)
-- [בדיקות אינטגרציה של אירועים וניצולים ב- commit ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/events_and_triggers.rs)
-- [ביצוע ההוראות של התניע ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
+- [בדיקות אינטגרציה של טריגר המופעל בקריאה בקומיט המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/triggers/by_call_trigger.rs)
+- [בדיקות אינטגרציה של אירועים וטריגרים בקומיט המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/events_and_triggers.rs)
+- [ביצוע הוראות טריגר בקומיט המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
 - [טריגרים](/he/blockchain/triggers.md)
-- [דוגמאות להפעיל ](/he/blockchain/trigger-examples.md)
+- [דוגמאות לטריגרים](/he/blockchain/trigger-examples.md)
 - [אירועים](./stream-events.md)

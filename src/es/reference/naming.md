@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /reference/naming.md
-translation_source_hash: d757024fca471ec55f1fe4857e88e01a9a0a18e0d79e8cb4fdb3da0cb250f4be
+translation_source_hash: 1d4d698597542d9c84284d0b87dae8a1825d3ab39ff38dd32bb204d41291c83d
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Convenciones de nomenclatura {#naming-conventions}
 
 Cuando estés nombrando cuentas, dominios o activos, debes tener en cuenta las siguientes convenciones utilizadas en Iroha:

@@ -1,9 +1,9 @@
 ---
 translation_locale: he
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # פתרון בעיות בהפעלה {#troubleshooting-deployment-issues}
 
@@ -14,7 +14,7 @@ translation_engine: nllb-200-ct2
 עבור יישומים מקומיים וניסויים, מעדיפים ארטפקטים שנוצרו על ידי Kagami במקום קובצי צמתים כתובים ידנית:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 תיק המוצר מכיל קונפיגציות הצומת שלות, חומר גנזה, תסריטים התחלה, ו README לקו הבנייה של Iroha 3 .
@@ -41,7 +41,7 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 יצר תור על פי ההוצאת של הרשת המקומית הנוכחית Kagami כך שתדברי קו הפקודה וקובצי הקונפיגציה יתאימו לקוד הנמלא:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```
@@ -57,7 +57,7 @@ docker compose -f ./docker-compose.yml up
 
 ## קובורנטיס {#kubernetes}
 
-עבור Kubernetes, התייחסו לכל validator כתשתית בעלת מצב:
+עבור Kubernetes, התייחסו לכל מאמת כתשתית בעלת מצב:
 
 - לתת לכל צומת מפתח זהות יציב ואמצעי אחסון מתמשך יציב.
 - לחשוף כתובות P2P שאחרים יכולים לפתור מבפנים של הקלאסטר
@@ -66,9 +66,9 @@ docker compose -f ./docker-compose.yml up
 
 אם קופסא מתחילה מחדש שוב ושוב, השווא את ההסדר המוצג בקופסה עם ה [`peer.template.toml`](/he/reference/peer-config/index.md#template) הנצפה ולבדוק אם הקופסא מחזירה מחדש נתונים ישנים של Kura.
 
-## פרופיל סורה {#sora-profile}
+## פרופיל SORA Nexus {#sora-profile}
 
-פיתוחים פרטיים או מקומיים Iroha 3 שמשתמשים ב Nexus, SoraFS או זרימות מרובות קווי צריכים להפעיל את הדיימון הסטנדרטי עם הפרופיל סורה פעיל:
+פריסות פרטיות או מקומיות של Iroha 3 המשתמשות ב־SORA Nexus, ב־SoraFS או בתהליכים מרובי נתיבים צריכות להפעיל את הדמון הרגיל כשפרופיל SORA Nexus פעיל:
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

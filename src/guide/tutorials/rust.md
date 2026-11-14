@@ -25,7 +25,7 @@ cargo build --workspace
 Run the reference client with the checked-in default client config:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
 ## Try Taira Read-Only

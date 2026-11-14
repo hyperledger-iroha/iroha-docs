@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /reference/binaries.md
-translation_source_hash: c617a21d50b28495c261d05d672e0b7803c282d53da577391dbebbc7f120d045
+translation_source_hash: 75848623e735abc80326f9ebda6f74ab438b67eaeddeacdd4d8c5509856a999e
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha バイナリとの作業 {#working-with-iroha-binaries}
 
 Iroha 3 オペレーターのワークフローは、4つの主要なバイナリを中心に展開します:
@@ -50,7 +49,7 @@ cargo run --bin kagami -- --help
 
 ## Docker 画像 {#docker-image}
 
-上流のワークスペースは、チェックアウト済みのコードに一致する Docker Compose ファイルを生成するために`kagami localnet`と`kagami docker`を使用します。`hyperledger/iroha:dev`イメージは、これらの生成されたファイルと一緒に使用できます。
+上流のワークスペースでは、`kagami localnet generate` と `kagami docker` を使い、チェックアウトしたコードに対応する Docker Compose ファイルを生成します。生成したファイルとともに `hyperledger/iroha:dev` イメージを使用できます。
 
 コンテナ内で CLI を実行してください:
 
@@ -67,7 +66,7 @@ docker run -t hyperledger/iroha:dev kagami --help
 ネットワークピアの起動のために、まずローカルネットとComposeファイルを生成します:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```

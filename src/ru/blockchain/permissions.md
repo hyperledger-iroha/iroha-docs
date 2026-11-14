@@ -1,11 +1,10 @@
 ---
 translation_locale: ru
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 150a1ae1503e9b9f5ac77159de68c07ce063d75dfeacfb3c42e5ddf30509c78b
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Разрешения {#permissions}
 
 Аккаунтам необходимы токены разрешений для различных действий в блокчейне, например, для выпуска или уничтожения активов.
@@ -89,7 +88,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 - активы, NFTs и эскроу
 - триггеры
 - роли и разрешения
-- исполнитель/время выполнения, доказательства, мосты и модули SORA/Nexus
+- исполнитель/время выполнения, доказательства, мосты и модули SORA Nexus
 
 Точный список токенов поддерживается источником в [Справочник по токенам разрешений](/ru/reference/permissions.md).
 

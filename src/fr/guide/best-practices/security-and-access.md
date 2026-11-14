@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /guide/best-practices/security-and-access.md
-translation_source_hash: f0163734d618d91337b437da703743014d01c57c4cb603fbc2e66316f3654779
+translation_source_hash: b1cb0cdbeec55f7db03f1c64b6581a21c09fc80a57344cf6e27df1d126c0ec92
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Sécurité et accès {#security-and-access}
 
 La pratique de sécurité dans Iroha devrait être basée sur le principe d'autorisation restreinte, la garde contrôlée des clés, l'exposition explicite du réseau et les changements auditables.
@@ -23,7 +22,7 @@ Voir [Génération de clés cryptographiques](/fr/guide/security/generating-cryp
 
 - Attribuez le jeton ou le rôle de permission le plus petit qui prend en charge le flux de travail.
 - Privilégiez les comptes techniques dédiés pour les services, les déclencheurs, les agents et l'automatisation. Évitez d'exécuter des automatisations de longue durée via un compte opérateur personnel.
-- Vérifiez les autorisations pour la gestion des pairs réseau, la modification des métadonnées, l'émission, la combustion, l'enregistrement des déclencheurs, les modifications de l'exécuteur et la gouvernance SORA/Nexus avant le lancement en production.
+- Vérifiez les autorisations pour la gestion des pairs réseau, la modification des métadonnées, l'émission, la combustion, l'enregistrement des déclencheurs, les modifications de l'exécuteur et la gouvernance SORA Nexus avant le lancement en production.
 - Révoquez les permissions temporaires après la fenêtre de maintenance ou la migration qui les nécessitait.
 
 Voir [Autorisations](/fr/blockchain/permissions.md) et [Jetons de permission](/fr/reference/permissions.md).

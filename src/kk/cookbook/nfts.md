@@ -1,11 +1,10 @@
 ---
 translation_locale: kk
 translation_source: /cookbook/nfts.md
-translation_source_hash: b60c542052eac6a916350c4aaa779c9f46d248be64ecea9c9bda679a4d56dff3
+translation_source_hash: b6a85c2feb197588e3358a785e10280a687af3951d52de4e6b8d96eab5de873c
 translation_status: machine-validated
-translation_engine: bing-translator-llm+claude-opus-5-5
+translation_engine: bing-translator-llm+claude-opus-5-5+reviewed-supplemental-naming-link
 ---
-
 # NFTs {#nfts}
 
 ## Нәтиже {#outcome}
@@ -90,7 +89,7 @@ iroha --config "$LOCAL_CONFIG" ledger nft meta get \
 
 ### 5. Меншік құқығын беру {#_5-transfer-ownership}
 
-Екі бірегей протокол-стандартты I105 есеп шот идентификаторын қамтамасыз етіңіз. Алиас `--from` немесе `--to` ретінде қолданылмас бұрын шешілуі тиіс.
+Екі канондық I105 есептік жазба идентификаторын да беріңіз. Бүркеншік ат `--from` немесе `--to` ретінде қолданылғанға дейін шешілуі тиіс.
 
 ```bash
 iroha --config "$LOCAL_CONFIG" \

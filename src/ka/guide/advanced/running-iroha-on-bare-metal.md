@@ -1,11 +1,10 @@
 ---
 translation_locale: ka
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
+translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # გაშვება Iroha ფიზიკურ სერვერზე- ზე {#running-iroha-on-bare-metal}
 
 გამოიყენეთ ეს სამუშაო ნაკადი, როდესაც გსურთ ქსელის პარების მართვა უშუალოდ მასპინძლებზე და არა Docker Compose. ამჟამინდელი წყარო ხე უზრუნველყოფს Kagami გენერატორებს, რომლებიც წერენ შესაბამის ბლოკჩეინის წარმოქმნას, ქსელის პარის კონფიგურაციას, კლიენტის კონფიგირებას და სტარტ / შეწყვეტის სკრიპტებს.
@@ -32,7 +31,7 @@ cargo build --release \
 შექმენით Iroha 3-ის ოთხკვანძიანი ლოკალური ქსელი:
 
 ```bash
-target/release/kagami localnet --peers 4 --out-dir ./localnet
+target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
 გამოსასვლელი დირექტორი შეიცავს გენერირებულ `genesis.json`, `genesis.signed.nrt`, ქსელის კვანძური ფაილები `config.toml`, `client.toml`, დამხმარე სკრიპტები და გენერაციული `README.md` ზუსტი ბრძანებების ამ ბუნდისთვის.
@@ -52,7 +51,7 @@ target/release/kagami localnet --peers 4 --out-dir ./localnet
 გამოიყენეთ შექმნილი კლიენტის კონფიგურაცია:
 
 ```bash
-target/release/iroha --config ./localnet/client.toml ledger domain list all
+target/release/iroha --config ./localnet/client.toml ledger domain list --all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 

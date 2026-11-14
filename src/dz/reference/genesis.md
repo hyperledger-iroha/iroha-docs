@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /reference/genesis.md
-translation_source_hash: 8215489720e1bc2fc3b7c22c4cb2f8f7b1f0f15d1df4a4f596ee3caa2c6b7829
+translation_source_hash: 340921f59a6f8788f559190d520f046ea2473d65154f57a1c54212840c027bc0
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # འགོ་ཐོག་བཀག་རྡོག་གི་གཞི་བསྟུན་ {#genesis-reference}
 
@@ -16,11 +16,13 @@ translation_engine: human-reviewed
 རིགས་མཚན་གསལ་སྟོན་གྱིས་ངེས་ཚིག་འགྲེལ་ཚུགས།
 
 - རིམ་སྒྲིག་ངོས་འཛིན་འབད་མི་གི་དོན་ལུ་ `chain`
+- གསལ་སྟོན་ཡིག་ཆ་ནང་རྩིས་ཐོའི་ཡིག་རྣམ་ཨང་བཀོད་འབད་ནི་ལུ་ལག་ལེན་འཐབ་པའི་ I105 དྲ་ལམ་སྔོན་འཇུག་དོན་ལུ་ `chain_discriminant`།
 - གདམ་ཁ་ཅན་གྱི་ལག་ལེན་འཐབ་མི་ཡར་བསྐྱེད་བཱའིཊི་ཀོཌི་འགྲུལ་ལམ་གྱི་དོན་ལུ་ `executor`
 - `ivm_dir` དོན་ལུ་ IVM ཊི་གར་དང་ཡར་བསྐྱེད་ཚུ་གིས་ལག་ལེན་འཐབ་མི་དཔེ་མཛོད་ཚུ།
 - `consensus_mode` གསལ་སྟོན་གྱིས་ཁྱབ་བསྒྲགས་འབད་ཡོད་པའི་འགོ་ཐོག་ཐབས་ལམ་གྱི་དོན་ལུ་
 - བཀོད་སྒྲིག་འབད་ཡོད་པའི་ཚད་གཞི་དུས་མཐུན་བཟོ་ནི་དང་ བཀོད་རྒྱ་ འབྱུང་ཁུངས་ཚུ་ དེ་ལས་ ཊོ་པོ་ལོ་ཇི་ཚུ་གི་དོན་ལུ་ `transactions`
-- འགོ་ཐོག་ཀིརིཔ་ཊོ་པར་ལེན་གྱི་དོན་ལུ་ `crypto`
+- མིང་རྟགས་ཅན་གྱི་ Sumeragi མཐོ་ཚད་སྐབས་དོན་གྱི་ཚད་གཞི་ཚུའི་དོན་ལུ་ `sumeragi_context`།
+- སྡེབ་ཐག་གིས་ཞུགས་ཆོག་པའི་ མིང་རྟགས་དང་འཛིན་སྐྱོང་པའི་རྩིས་ཐབས་ཏག་ཏག་ `allowed_algorithms` ནང་ཐོ་བཀོད་འབད་པ་ཚུའི་དོན་ལུ་ `crypto_admission_policy`།
 
 ནང་འཁོད `transactions`, ཊོ་པོ་ལོ་ཇི་ཐོ་བཀོད་ཚུ་ མཐུད་མཚམསའི་ཨའི་ཌི་ཚུ་དང་ PoPs གཅིག༌ཁར:
 
@@ -33,16 +35,17 @@ translation_engine: human-reviewed
 
 ## གསལ་སྟོན་ཅིག་བཟོ་བཏོན་འབད། {#generate-a-manifest}
 
-ལག་ལེན་འཐབ་ནི Kagami ཊེམ་པེལེཊི་ཅིག་བཟོ་བཏོན་འབད་ནི་ལུ་:
+དཔེ་གཞི་བཟོ་ནི་ལུ་ Kagami ལག་ལེན་འཐབ། ཞུགས་ཆོག་པའི་རྩིས་ཐབས་རེ་རེའི་དོན་ལུ་ ཡར་འཛེགས་ཚད་ལྡན་གོ་རིམ་ནང་ `--allowed-signing` བསྐྱར་བཀོད་འབད། Kagami གིས་མ་བཀོད་པའི་རྩིས་ཐབས་ཚུ་ཁ་སྐོང་མི་འབད།
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
   --consensus-mode npos \
   --ivm-dir defaults \
-  --genesis-public-key <PUBLIC_KEY> > genesis.json
+  --genesis-public-key <PUBLIC_KEY> \
+  --allowed-signing ed25519 > genesis.json
 ```
 
-མི་མང་གི་དོན་ལུ། SORA Nexus གནད་སྡུད་ས་སྟོང་, `npos` འདི་ རེ་བ་བསྐྱེད་པའི་མོས་མཐུན་ཐབས་ལམ་ཨིན། གཞན Iroha 3 བཀྲམ་སྤེལ་ཚུ་གིས་ དམིགས་གཏད་ལུ་གཞི་བཞག་སྟེ་ གནང་བ་ཡོད་མི་ཡང་ན་ ཨེན་པི་ཨོ་ཨེསི་ལག་ལེན་འཐབ་བཏུབ། གདོང་ཤོག།
+མི་མང་ SORA Nexus གནད་སྡུད་ས་སྟོང་གི་དོན་ལུ་ `npos` འདི་རེ་བ་ཡོད་པའི་མོས་མཐུན་ཐབས་ལམ་ཨིན། Iroha 3 བཀྲམ་སྤེལ་གཞན་ཚུ་གིས་ དམིགས་གཏད་གསལ་སྡུད་ལུ་བརྟེན་ཏེ་གནང་བ་དགོ་པའི་ཐབས་ལམ་ཡང་ན་ NPoS ལག་ལེན་འཐབ་ཚུགས།
 
 ## ཁས་བླངས་གསལ་བསྒྲགས་ལུ་མིང་རྟགས་བཀོད། {#sign-the-manifest}
 
@@ -58,12 +61,13 @@ cargo run -p iroha_kagami -- genesis sign genesis.json \
 
 ## རིམ་སྒྲིག་འབད། `iroha3d` {#configure-iroha3d}
 
-མིང་རྟགས་བཀོད་ཡོད་པའི་རིགས་མཚན་སྡེབ་ཚན་ནང་ལུ་ ཌེ་མཱོན་འདི་སྟོན།
+རྒྱབ་ལས་གློག་རིམ་འདི་ མིང་རྟགས་ཅན་གྱི་འགོ་ཐོག་སྡེབ་ཚན་དང་ དེའི་རེ་བ་ཡོད་པའི་བསྡུས་རྟགས་གཏན་འཁེལ་བཞག་པའི་ཡིག་སྣོད་ལུ་གཞི་བཞག་འབད། `kagami genesis sign --expected-hash-out` གིས་ཡིག་སྣོད་དེ་བྲིཝ་ཨིནམ་དང་ མཐུད་གནས་ལུ་འགོ་བཙུགས་གསརཔ་དང་ལོག་འགོ་བཙུགས་གཉིས་ཆ་ར་ལུ་འདི་དགོ།
 
 ```toml
 [genesis]
 file = "genesis.signed.nrt"
 public_key = "<PUBLIC_KEY>"
+expected_hash_file = "genesis.expected_hash"
 ```
 
 ## འབྲེལ་ཡོད་ལག་ཆ། {#related-tools}
@@ -71,7 +75,7 @@ public_key = "<PUBLIC_KEY>"
 - `kagami genesis validate`
 - `kagami genesis normalize`
 - `kagami genesis embed-pop`
-- `kagami localnet`
+- `kagami localnet generate`
 - `cargo xtask kagami-profiles`
 
 བཟོ་བསྐྲུན་པ་ལག་ལེན་འཐབ་ནི་དང་བརྡ་བཀོད་ཁ་གསལ་གྱི་དོན་ལུ་ བལྟ། [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami/README.md).

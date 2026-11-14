@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: 4c7c62c23166a19ccc3a6a4bb42d808038d755b8c05e87b9e2ce21fbbe31a6ac
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha 3 ን ጫን {#install-iroha-3}
 
 ይህ ገጽ የአሁኑን የመጫኛ የስራ ሂደት ለ Iroha 3 የመሳሪያ ሰንሰለት እና ሁለትዮሽ የላይኛውን `hyperledger-iroha/iroha` የስራ ቦታ ይሸፍናል።
@@ -57,14 +56,15 @@ cargo run --bin kagami -- --help
 
 - `iroha3d` ለመደበኛ አውታረ መረብ አቻ ዴሞን
 - `iroha3d_taira` ለነጠላ ፕሮቶኮል-ስታንዳርድ Taira አረጋጋጭ አስጀማሪ
-- `iroha` ለ CLI መዳረሻ ወደ Torii እና ኦፕሬተር API የመጨረሻ ነጥቦች
+- `iroha` ለ CLI መዳረሻ ወደ Torii እና ኦፕሬተር የመጨረሻ ነጥቦች
 - `kagami` ለቁልፎች፣ የብሎክቼይን ጀነሲስ ቴክኒካል ማኒፌስት እና የሎካልኔት መገለጫዎች
 
 ## 5. አማራጭ Localnet እና Docker መንገድ {#_5-optional-localnet-and-docker-path}
 
 የአሁኑ ምንጭ የተደገፈ የሎካልኔት ፍሰት የሚመነጨው በ Kagami ነው። የአውታረ መረብ አቻ ውቅሮችን፣ የብሎክቼይን ጀነሲስ አርቲፋክቶችን፣ የደንበኛ ውቅረትን፣ አጋዥ ስክሪፕቶችን እና ከተፈተሸው ኮድ ጋር የሚዛመድ አማራጭ የጽሁፍ ፋይል ይጽፋል -
 
-- `kagami localnet` ለቤተኛ የአካባቢ አውታረ መረብ አቻ ስክሪፕቶች
+- Kagami የሚያስነሳውና የሚቆጣጠረው የሚተዳደር አካባቢያዊ አውታረ መረብ ለማግኘት `kagami localnet up`
+- ለናቲቭ አካባቢያዊ አቻ ስክሪፕቶች `kagami localnet generate`
 - `kagami docker` Docker Compose ከ Localnet ማውጫ የመነጨ
 
 በ [አስጀምር Iroha 3](/am/get-started/launch-iroha.md) ይቀጥሉ።

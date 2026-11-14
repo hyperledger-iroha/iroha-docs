@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /reference/data-model-schema.md
-translation_source_hash: cf27b1f313a695b648ae450564a51120af0e3e39641ed140a187d128b930da97
+translation_source_hash: c4f0305c73f9470d1652b70e6787b59de2553a08b6c96603a9369512efbdb1af
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Məlumat Modeli SXeması {#data-model-schema}
 
 İnteqrasiyanızın hədəf aldığı dəqiq noddan sxemi sorğulayın. Torii səthi aktiv olduqda `GET /v1/schema` ünvanında aktiv məlumat modeli sxemini təqdim edir:
@@ -17,4 +16,4 @@ curl -fsS -H 'Accept: application/json' "$TORII_URL/v1/schema" \
   > iroha-data-model-schema.json
 ```
 
-Təsdiq edilmiş sənədləşdirmə parçacığından bağımlılıqlar yaratmayın, əgər onun mənşə statusu gözləmədədirsə. Canlı nodun cavabı həmin nodun tərtib edilmiş məlumat modeli üçün səlahiyyətlidir; onu inteqrasiyanızda istifadə olunan node quruluşu ilə yanaşı sabitləyin.
+Bağlamaları başqa yığım üçün yayımlanmış nüsxədən deyil, həmin cavabdan yaradın. Canlı qovşağın cavabı onun kompilyasiya edilmiş məlumat modeli üçün səlahiyyətli mənbədir; onu inteqrasiyanızın istifadə etdiyi qovşaq yığımı ilə yanaşı sabitləyin.

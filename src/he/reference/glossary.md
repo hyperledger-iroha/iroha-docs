@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /reference/glossary.md
-translation_source_hash: ab484310e7e0b0662c1d4bb133e7ae337c71b09b5fdc8e678581234d74ee9b29
+translation_source_hash: 8b00758b5731a2f9e09a5b49ccb7f298229ab966b5adf2d7152e3b1416fe8737
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta+reviewed-first-release-source-amendment
 ---
-
 # מילון מונחים <!-- omit in toc --> {#glossary}
 
 כאן תוכלו למצוא הגדרות של ישויות ומונחים הקשורים ל־Iroha.
@@ -42,9 +41,9 @@ translation_engine: nllb-200-ct2
 
 ## עמית {#peer}
 
-עמית ב־Iroha הוא מופע של תהליך Iroha שאליו יכולים להתחבר תהליכי Iroha אחרים ויישומי לקוח. מכונה אחת יכולה לארח כמה עמיתי Iroha. העמיתים שווים במשאביהם וביכולותיהם, למעט חריג חשוב: בשלב ה־bootstrap של רשת Iroha רק אחד העמיתים מריץ את בלוק Genesis.
+עמית הוא תהליך של צומת Iroha המקבל חיבורים מעמיתים אחרים ומיישומי לקוח. מכונה אחת יכולה לארח כמה עמיתים, עם תצורה ואחסון נפרדים. כל עמית שמתחיל את תהליך ההסכמה ממצב ריק מאמת ומחיל את נתוני הראשית החתומים של הרשת; עמיתים ששוחזרו מתמונות מצב מאומתות ממשיכים מאותו מצב.
 
-רשתות blockchain אחרות עשויות לכנות אותו מושג node או validator.
+רשתות בלוקצ׳יין אחרות עשויות לכנות אותו מושג צומת או מאמת.
 
 עמית יכול לפעול כתהליך במערכת המארחת. הוא יכול גם לפעול בתוך קונטיינר Docker או pod של Kubernetes.
 
@@ -92,7 +91,7 @@ translation_engine: nllb-200-ct2
 
 ### Torii (שער) {#torii-gate}
 
-מודול המכיל את לוגיקת הטיפול בבקשות נכנסות עבור [העמית](#peer). הוא מקבל ומנתב הוראות ושאילתות HTTP נכנסות, וכן עדכוני תצורה של סביבת הריצה.
+מודול עם לוגיקת הטיפול בבקשות הנכנסות עבור ה־[עמית](#peer). הוא משמש לקבלה, לאישור ולניתוב של הוראות נכנסות, שאילתות HTTP ובדיקת תצורה בידי המפעיל.
 
 ### Kura (מחסן) {#kura-warehouse}
 
@@ -116,7 +115,7 @@ translation_engine: nllb-200-ct2
 
 ### ניהול גרסאות {#versioning}
 
-כל בקשה מסומנת בגרסת ה־API שאליה היא שייכת. כך גרסאות בינאריות שונות של תוכנת לקוח/עמית של Iroha יכולות לפעול זו עם זו, ואפשר לשדרג תוכנה ברשת Iroha.
+המהדורה הראשונה של Iroha 3 תומכת בגרסה קנונית אחת של פורמט העברת הבלוקים. נקודת הקצה `/v1/api/version` מדווחת על `SignedBlock::WIRE_VERSION` לאחר החלת נתוני הראשית, ולפני כן מחזירה תשובה של אי־זמינות. דיווח זה מציין את פורמט ההעברה הנתמך; הוא אינו מנהל משא ומתן על תאימות בין פריסות שונות של הפרוטוקול ואינו מאשר שדרוג רשת.
 
 ### Hijiri (מערכת המוניטין של עמיתים) {#hijiri-peer-reputation-system}
 
@@ -132,7 +131,7 @@ translation_engine: nllb-200-ct2
 
 #### הוראות מיוחדות מסייעות של Iroha {#utility-iroha-special-instructions}
 
-קבוצה זו של [ISI](#iroha-special-instructions-isi) כוללת הוראות לוגיות כגון `If`, הוראות I/O כגון `Notify` והרכבות כגון `Sequence`. הן משמשות בעיקר בתוך [הוראות מותאמות אישית](#custom-iroha-special-instruction).
+קבוצה זו של [isi](#iroha-special-instructions-isi) כוללת הוראות לוגיות כגון `If`, הוראות הקשורות ל־I/O כגון `Notify` והרכבות כגון `Sequence`. הן משמשות בעיקר בתור [הוראות מותאמות אישית](#custom-iroha-special-instruction).
 
 ### הוראות מיוחדות ליבה של Iroha {#core-iroha-special-instructions}
 
@@ -160,4 +159,4 @@ translation_engine: nllb-200-ct2
 
 ## מנהיג {#leader}
 
-ברשת Iroha נבחר צומת עמית באקראי ומקבל הרשאה מיוחדת ליצור את הבלוק הבא. ברשתות המשיגות [עמידות לתקלות ביזנטיות](#byzantine-fault-tolerance-bft), אפשר לבטל הרשאה זו באמצעות [שינוי תצוגה](#view-change).
+בכל גובה ובכל תצוגה, Sumeragi גוזר את המציע באופן דטרמיניסטי מתוך הוועדה, זרע המנהיג המאומת וההיסטוריה המקובעת של מנהיגים שדולגו. [שינוי תצוגה](#view-change) מעביר את התור לחבר הוועדה הכשיר הבא, לפי אותם כללי [סבילות לתקלות ביזנטיות](#byzantine-fault-tolerance-bft).

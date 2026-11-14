@@ -3,7 +3,7 @@
 An account is an authority that can sign transactions and own ledger state.
 In the current Iroha 3 data model, `AccountId` is canonical and domainless:
 it is derived from the account controller and encoded canonically as
-[I105](/reference/i105.md). Human-readable domain and dataspace context belongs
+[I105](/reference/i105.md). Human-readable domain and data space context belongs
 to separate account-alias bindings.
 
 ## Structure
@@ -13,7 +13,7 @@ A registered `Account` contains:
 - `id`: the canonical `AccountId`
 - `metadata`: arbitrary account metadata
 - `label`: an optional stable alias
-- `uaid`: an optional Universal Account ID used by Nexus flows
+- `uaid`: an optional Universal Account ID used by SORA Nexus flows
 - `opaque_ids`: opaque identifiers bound to the account's UAID
 
 The transaction payload used to create an account is `NewAccount`. It carries
@@ -21,12 +21,12 @@ the same identity, metadata, label, UAID, and opaque ID fields used by the
 registered account.
 
 `uaid` complements the canonical `AccountId`; it does not replace it. Use it
-when Nexus services need a stable user or organization handle across
-dataspaces, privacy-preserving enrollment, or service capability lookup. The
+when SORA Nexus services need a stable user or organization handle across
+data spaces, privacy-preserving enrollment, or service capability lookup. The
 runtime keeps a one-to-one UAID-to-account index, requires opaque identifiers
 to be attached through a UAID, and rejects duplicate or colliding opaque
 identifiers. See
-[FHE and UAID](/blockchain/sora-nexus-services.md#fhe-and-uaid) for the Nexus
+[FHE and UAID](/blockchain/sora-nexus-services.md#fhe-and-uaid) for the SORA Nexus
 service-layer flow.
 
 ## Account controllers
@@ -40,8 +40,9 @@ configuration:
 
 ```toml
 [account]
+profile = "taira"
 public_key = "ed0120..."
-private_key = { digest_function = "ed25519", payload = "..." }
+private_key_file = "/absolute/path/to/private.key"
 ```
 
 See [client configuration](/guide/configure/client-configuration.md) and
@@ -81,7 +82,7 @@ PY
 
 These are public reads. Creating or updating an account is a signed transaction
 and requires the faucet-funded Taira setup described in
-[Connect to SORA Nexus Dataspaces](/get-started/sora-nexus-dataspaces.md).
+[Connect to SORA Nexus Data spaces](/get-started/sora-nexus-dataspaces.md).
 
 ## Registration and permissions
 
@@ -97,7 +98,7 @@ After registration, an account can:
 - own domains
 - receive roles and permission tokens
 - store metadata
-- participate in alias, rekey, recovery, and Nexus identity flows when those
+- participate in alias, rekey, recovery, and SORA Nexus identity flows when those
   features are enabled
 
 ## Troubleshooting identity issues
@@ -115,4 +116,4 @@ See also:
 - [Permissions](/blockchain/permissions.md)
 - [Metadata](/blockchain/metadata.md)
 - [Client configuration](/guide/configure/client-configuration.md)
-- [SORA Nexus dataspaces](/get-started/sora-nexus-dataspaces.md)
+- [SORA Nexus data spaces](/get-started/sora-nexus-dataspaces.md)

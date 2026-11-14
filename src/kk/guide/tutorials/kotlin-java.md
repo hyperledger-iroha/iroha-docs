@@ -1,11 +1,10 @@
 ---
 translation_locale: kk
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 9388823f782eef86aedbaf141bd251dae39837957aefd224ed0cc97ba11ad97d
+translation_source_hash: f1f922b9820587cd4b599e7407698a47d468616670fee2922e4028147bc3e9b0
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Kotlin, Android, және Java {#kotlin-android-and-java}
 
 Kotlin SDK JVM және Android қосымшалары үшін әдепкі клиент стекі болып табылады. Ол Iroha репозиторийіндегі `kotlin/` астында орналасқан және платформаға бөлінген, сондықтан портативті код Android тәуелділіктерін алмайды.
@@ -73,7 +72,7 @@ Kotlin SDK мыналарды қамтиды:
 - бір протокол-стандартты есепшот пен актив мекенжайын өңдеу
 - операцияны құру, қол қою және офлайн деректер контейнерлері
 - Torii HTTP, WebSocket және SSE клиенттер
-- көпқолтаңба, жазылым, SoraFS, Nexus, және Connect модельдері
+- көпқолтаңба, жазылым, SoraFS, SORA Nexus, және Connect модельдері
 - Android кілт сақтау қоймасы және құрылғы телеметриясын біріктіру
 - Android офлайн QR, Жақын жерде және NFC көліктер
 

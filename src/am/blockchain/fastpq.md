@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /blockchain/fastpq.md
-translation_source_hash: d8dd61390f5df3dae09b70399e04e8f71716a912ef5dea9010feaf60573ed261
+translation_source_hash: dfeabbedbca85780c16ee0307a6497e43e19c02d3a27e0ea2f70987a2aeac0cd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # FastPQ {#fastpq}
 
 FastPQ ለተመረጡት የማስፈጸሚያ ውጤቶች የ Iroha STARK ማረጋገጫ መንገድ ነው። መደበኛውን የግብይት አፈፃፀም ወይም መግባባትን አይተካም። ግብይቶች አሁንም እንደተለመደው በ ISI፣ IVM እና Sumeragi ውስጥ መሮጥ; FastPQ ዲተርሚኒስቲክ የማስፈጸሚያ ምስክርን ይጠቀማል እና የሚደገፉ ውጤቶችን ወደ ማስረጃ ስብስቦች ይለውጠዋል።
@@ -13,7 +12,7 @@ FastPQ ለተመረጡት የማስፈጸሚያ ውጤቶች የ Iroha STARK ማ
 የአሁኑ የአስተናጋጅ ውህደት ሶስት ዋና መንገዶች አሉት -
 
 - በብሎክ አፈፃፀም ወቅት የተመዘገቡ ግልጽ የቁጥር ንብረት ዝውውሮች
-- Nexus የተረጋገጠ የማስፈጸሚያ መስመር ማስተላለፊያዎች AXT የማረጋገጫ የውሂብ ኮንቴይነር FastPQ አስገዳጅ
+- የAXT ማስረጃ ኤንቨሎፓቸው FastPQ ማሰሪያ የያዘ የSORA Nexus የተረጋገጡ የመስመር ሪሌዎች
 - SCCP FastPQ ማረጋገጫን በክፍት ማረጋገጫ የውሂብ መያዣ ውስጥ የሚጠቀለሉ ግልጽ የመልእክት ማረጋገጫ ረዳቶች
 
 ## የዝውውር ምስክር መንገድ {#transfer-witness-path}
@@ -45,7 +44,7 @@ FastPQ ለተመረጡት የማስፈጸሚያ ውጤቶች የ Iroha STARK ማ
 
 |ግቤት|ትርጉም|
 | ------------- | --------------------------------------------------------------- |
-|`dsid`|የውሂብ ቦታ መለያ እንደ ትንሽ-ኢንዲያን ባይት ኮድ ተደርጓል|
+| `dsid` | በlittle-endian ባይቶች የተቀየረ የውሂብ ቦታ መለያ |
 |`slot`|የብሎክ የመፍጠሪያ ጊዜ ወደ ናኖሰከንዶች ተቀይሯል|
 |`old_root`|የወላጅ ሁኔታ ሥር ከአፈጻጸም ምስክርነት የተገኘ|
 |`new_root`|የድህረ-ሁኔታ ሥር የተገኘ ከአፈጻጸሙ ምስክርነት|
@@ -201,7 +200,7 @@ $$
 
 ### የህዝብ ግቤት ማሰሪያ {#public-input-binding}
 
-አስተናጋጁ የ `u64` እሴቱን በ16-ባይት መስክ የመጀመሪያዎቹ ስምንት ትንሽ-ኢንዲያን ባይት በመጻፍ የውሂብ ቦታ መታወቂያን ኮድ ያደርጋል።
+አስተናጋጁ የውሂብ ቦታ IDን ለመቀየር የ`u64` እሴቱን በ16 ባይት መስኩ መጀመሪያ ስምንት ባይቶች በlittle-endian ቅደም ተከተል ይጽፋል:
 
 $$
 \operatorname{dsid\_bytes}(d)[0..8]=\operatorname{le64}(d),
@@ -394,7 +393,7 @@ S_i(a)=S_{i-1}(a)+
 \end{cases}
 $$
 
-ሜታዳታ እና የውሂብ ቦታ መከታተያ አምዶች ከረድፍ ቁሳቁስ በፊት የተገኙ የመስክ ምስጠራ ሃሽዎች ናቸው።
+የሜታዳታና የውሂብ ቦታ የtrace ዓምዶች ረድፎች ከመፈጠራቸው በፊት የተመነጩ የፊልድ ሃሾች ናቸው:
 
 $$
 \operatorname{metadata\_hash} =
@@ -408,7 +407,7 @@ $$
 \operatorname{dsid\_trace}=H_D(\operatorname{public\_input\_dsid})
 $$
 
-የሜታዳታ ምስጠራ ሃሽ፣ ዳታ ስፔስ ምስጠራ ሃሽ እና ማስገቢያ በአጎራባች የመከታተያ ረድፎች ላይ የተረጋጉ ናቸው።
+የሜታዳታ ሃሽ፣ የውሂብ ቦታ ሃሽ እና ስሎት በተጎራባች የtrace ረድፎች መካከል አይለወጡም:
 
 $$
 \operatorname{metadata\_hash}_i=\operatorname{metadata\_hash}_{i+1}
@@ -633,7 +632,7 @@ $$
 \operatorname{LDE}_f(i)=f(g\cdot\omega_E^i)
 $$
 
-አተገባበሩ ይህንን ያሰላል ቅንጅቶችን ከ FFT በፊት በኮሴት ማካካሻ ሃይሎች በማባዛት -
+አተገባበሩ ከFFT በፊት ኮኤፊሺየንቶችን በኮሴት ማፈንገጫው ኃይሎች በማባዛት ይህንን ያሰላል፦
 
 $$
 a'_j = a_j g^j
@@ -932,12 +931,12 @@ FastPQ የማረጋገጫ ማረጋገጫ ነጠላ ፕሮቶኮል-ደረጃው
 |FRI ንብርብሮች|      16 |
 |የመጠይቅ ክፍት ቦታዎች|     128 |
 
-## Nexus የተረጋገጡ ቅብብሎሽ {#nexus-verified-relays}
+## SORA Nexus የተረጋገጡ ሪሌዎች {#sora-nexus-verified-relays}
 
-Nexus AXT የማረጋገጫ ውሂብ መያዣዎች `AxtFastpqBinding` መክተት ይችላሉ። `RegisterVerifiedLaneRelay` ሲፈጽም Iroha
+የSORA Nexus AXT ማስረጃ ኤንቨሎፖች `AxtFastpqBinding` ሊያካትቱ ይችላሉ። `RegisterVerifiedLaneRelay` ሲፈጸም Iroha:
 
 1. የማስፈጸሚያ መስመር ማስተላለፊያ ዳታ መያዣ እና FastPQ የማረጋገጫ ቁሳቁስ ያረጋግጣል
-2. የውሂብ ቦታን እና ቴክኒካዊ ማያያዣ ስርወውን ይፈትሻል
+2. የውሂብ ቦታውን እና የማኒፌስቱን ሥር ይፈትሻል
 3. የ AXT ማረጋገጫ ዳታ መያዣን ይፈታ
 4. ያስፈልገዋል `fastpq_binding`
 5. FastPQ ባሌን ከዚያ ማሰሪያ እንደገና ይገነባል
@@ -946,11 +945,11 @@ Nexus AXT የማረጋገጫ ውሂብ መያዣዎች `AxtFastpqBinding` መክ
 
 ማረጋገጫው ከተሳካ፣ Iroha የማስተላለፊያ ማመሳከሪያውን፣ ኦሪጅናል የውሂብ መያዣውን፣ የማረጋገጫ ጭነት ምስጠራ ሃሽን፣ የማረጋገጫ ቁመትን፣ ቴክኒካል አንጸባራቂ ሥር እና FastPQ ማያያዣን የያዘ `VerifiedLaneRelayRecord` ያከማቻል።
 
-የማስፈጸሚያ ሌይን ማስተላለፊያ ዳታ ኮንቴይነሮች የታመቀ FastPQ የማረጋገጫ ቁሳቁስ ይይዛሉ። ቁሱ በማስፈጸሚያ ሌይን መታወቂያ፣ ዳታ ቦታ መታወቂያ፣ የብሎክ ቁመት፣ የማረጋገጫ ቁመት፣ የብሎክ ራስጌ ምስጠራ ሃሽ፣ የፋይናንሺያል ግብይት ማጠናቀቂያ፣ ምስጠራ ሃሽ እና ቴክኒካል አንጸባራቂ root። ቅብብል ውህደት ተቀባይነት የሚኖረው ሁለቱም QC እና የሚሰራ FastPQ የማረጋገጫ ቁሳቁስ ሲኖረው ብቻ ነው።
+የመስመር ሪሌ ኤንቨሎፖች አነስተኛ የFastPQ ማስረጃ ቁሳቁስም ይይዛሉ። ይህ ቁሳቁስ የመስመር ID፣ የውሂብ ቦታ ID፣ የብሎክ ከፍታ፣ የማረጋገጫ ከፍታ፣ የብሎክ ራስጌ ሃሽ፣ የሒሳብ ማጠናቀቂያ ሃሽ እና የማኒፌስት ሥር ዳይጀስት ነው። ሪሌ ለውህደት ተቀባይነት የሚኖረው QC እና ትክክለኛ የFastPQ ማስረጃ ቁሳቁስ ሁለቱም ሲኖሩት ብቻ ነው።
 
 ### AXT ሂሳብ አስገዳጅ {#axt-binding-math}
 
-ለ Nexus AXT የውሂብ ኮንቴይነሮች፣ `AxtFastpqBinding` ከማረጋገጫው ድጋሚ አጫውት በፊት ቀኖናዊ ነው። ባዶ የመለኪያ እሴቶች ነባሪ ወደ `fastpq-lane-balanced`; ባዶ አረጋጋጭ መታወቂያ እና ስሪት ነባሪ ወደ `fastpq` እና `v1`; የይገባኛል ጥያቄ አይነት ተቆርጧል እና ዝቅ ብሏል።
+ለSORA Nexus AXT ኤንቨሎፖች ማስረጃው እንደገና ከመፈጸሙ በፊት `AxtFastpqBinding` ቀኖናዊ ቅርጽ ይሰጠዋል። ባዶ የመለኪያ እሴቶች `fastpq-lane-balanced` ይሆናሉ፤ ባዶ የአረጋጋጭ ID እና ስሪት በቅደም ተከተል `fastpq` እና `v1` ይሆናሉ፤ የጥያቄው አይነት ዙሪያ ያለ ክፍተት ተወግዶ ወደ ትንንሽ ፊደሎች ይቀየራል።
 
 የ AXT FastPQ የህዝብ ግብዓቶች ዲተርሚኒስቲክ ባይት ምስጠራ ሃሽዎች ናቸው -
 
@@ -1024,7 +1023,7 @@ $$
 \operatorname{le64}(\operatorname{policy\_commitment}[0..8])
 $$
 
-እና የፍቃድ ፖሊሲውን የሚያስገናኝ ሜታዳታ ረድፍ። የ`compliance` የይገባኛል ጥያቄ ሁለት ሜታዳታ ረድፎችን ያስገባል አንዱ ለፖሊሲው እና አንድ ለታለመላቸው የውሂብ ቦታዎች።
+እና የፈቃድ ፖሊሲውን የሚያስር የሜታዳታ ረድፍ። የ`compliance` ጥያቄ ሁለት የሜታዳታ ረድፎችን ይጨምራል፤ አንዱ ለፖሊሲ፣ ሌላው ለታለሙ የውሂብ ቦታዎች።
 
 ለ `tx_predicate` እና `value_conservation` ግልጽ የሆነ የውጤት መጠን ጥቅም ላይ ይውላል ማሰሪያው አዎንታዊ ምንጭ ወይንም የመድረሻ መጠን ሲይዝ አለበለዚያ ኮዱ የወሰነ የተወሰነ መጠን ያመጣል
 
@@ -1121,7 +1120,7 @@ $$
 )
 $$
 
-የዚህ የማረጋገጫ መንገድ የ FastPQ የውሂብ ቦታ መታወቂያ የሌላ ቅድመ ቅጥያ Blake2b ክሪፕቶግራፊያዊ ዳይጀስት የመጀመሪያዎቹ አስራ ስድስት ባይት ነው።
+ለዚህ የማስረጃ መንገድ የFastPQ ውሂብ ቦታ ID ሌላ ቅድመ ቅጥያ ያለው የBlake2b ዳይጀስት መጀመሪያ አሥራ ስድስት ባይቶች ነው:
 
 $$
 \operatorname{dsid} =
@@ -1207,7 +1206,6 @@ metal_max_in_flight = 5
 metal_threadgroup_width = 128
 metal_trace = false
 metal_debug_enum = false
-metal_debug_fused = false
 ```
 
 ተመሳሳይ የማስፈጸሚያ እና የቴሌሜትሪ መለያዎች ከ `iroha3d` ሊሻሩ ይችላሉ -

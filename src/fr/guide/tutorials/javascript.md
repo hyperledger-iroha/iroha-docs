@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
+translation_source_hash: 92389d3ad83ab32e85b4ca83ede9829d1a38afaad6e86da035da2829a3aaedfb
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # JavaScript et TypeScript {#javascript-and-typescript}
 
 Le JavaScript SDK actuel est le package `@iroha/iroha-js` dans l'arborescence source Iroha. C'est le Node.js-premier SDK pour Torii, les constructeurs Norito, la signature, la pagination, les aperçus Connect et le transport de commandes Kagemusha.
@@ -99,7 +98,6 @@ Le SDK se concentre sur :
 - Signature et génération de clés Ed25519
 - assistants de pagination et de réessai
 - Connecter les assistants de démarrage du navigateur
-- Aides au transport pour la préparation de Kagemusha, le rechargement, le remboursement et l'état de fonctionnement
 
 ## Références en amont {#upstream-references}
 

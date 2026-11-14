@@ -1,14 +1,13 @@
 ---
 translation_locale: ar
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # مفاتيح نشر الشبكة {#keys-for-network-deployment}
 
-كل شبكة تحتاج إلى مواد مفتاح مميزة للعملاء، نظراء الشبكة، توقيع التأسيس للبلوكتشين، ولكل من ملفات تعريف NPoS أو Nexus، هويات المدققين BLS.
+تحتاج كل شبكة إلى مواد مفاتيح منفصلة للعملاء والأقران وتوقيع التكوين الأولي، وإلى هويات مدققين بمفاتيح BLS في ملفات NPoS أو SORA Nexus.
 
 ## أين تُستخدم المفاتيح {#where-keys-are-used}
 
@@ -21,7 +20,7 @@ translation_engine: bing-translator-llm
 للنشر المحلي أو التجريبي، دع Kagami يولد كل هذه الملفات معًا:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 بالنسبة لشبكة أو ملف شخصي موجود، استخدم التدفق الإرشادي:

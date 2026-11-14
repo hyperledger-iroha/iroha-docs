@@ -1,9 +1,9 @@
 ---
 translation_locale: hy
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # Արդյունավետություն եւ չափանիշներ {#performance-and-metrics}
 
@@ -37,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -130,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### Առաջնորդների եւ մուտքի սահմանները {#candidate-and-ingress-bounds}
 
-Node-lokal Sumeragi սահմանները որոշում են, թե որքան հավակնորդ եւ վերականգնման աշխատանք կարող է պահել վավերացողը.
+Բլոկի չափը և գործարքների սահմանները գալիս են ստորագրված ծագման վիճակից և հաստատված շղթայի պարամետրերից։ Հանգույցի տեղային `[sumeragi]` կարգավորումները ներառում են մասնակցության դերը, ստորագրման նյութերի պահպանությունը, անվտանգության գրառումների ուղիները և փաստագրված տեղային ժամանակային ու համաժամացման փոխարինող արժեքները։
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` եւ `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks`, եւ `sumeragi.queues.ready_bodies`
-
-Չափազանց փոքր սահմանները ստեղծում են հերթի կամ օգտակար բեռների վերականգնման ճնշում: Չափից մեծ սահմանները ավելացնում են պահպանված հիշողությունը եւ չարաշահող հանգույցի համար մատչելի աշխատանքային քանակը: Համեմատեք ախտորոշման ակնթարթը գործընթացային հիշողության, հաղորդագրությունների կառավարման եւ բացակայում է մարմնի չափանիշների հետ մեկ անգամ փոխելուց առաջ.
+Ցանցային մուտքի և գործարքների հերթի սահմանները կառավարում են տեղում պահպանվող աշխատանքի ծավալը։ Գործառնական սահմանը փոխելուց առաջ ախտորոշման ակնթարթային վիճակը համեմատեք գործընթացի հիշողության, հաղորդագրությունների մշակման և բացակայող բովանդակության չափումների հետ։ Նույն ցանցի գործարկումները համեմատելիս ստորագրված շղթայի պարամետրերը պահեք անփոփոխ․
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -243,7 +236,7 @@ iroha --config ./localnet/client.toml \
 - վավերացողի եւ դիտորդի հաշվարկը
 - համաձայնության ռեժիմը, ստորագրված բլոկային քանդենցիան եւ DA դասակարգումը:
 - ճշգրիտ `3f + 1` կոմիտե, քվորում եւ դիտորդների ցուցակ
-- `sumeragi.block`, `sumeragi.queues`, `sumeragi.limits` ցանցային մուտքի եւ գործարքների հերթի սահմանները
+- ստորագրված շղթայի պարամետրերը, տեղային Sumeragi փոխարինումները, ցանցային մուտքի և գործարքների հերթի սահմանները
 - հեռաչափության պրոֆիլ
 - Hardware, պահեստավորման եւ OS մանրամասներ
 - ցանց RTT, jitter, կորուստ եւ թողունակության ենթադրությունները

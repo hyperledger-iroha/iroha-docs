@@ -1,19 +1,13 @@
 # Data Model
 
-Iroha stores ledger state in the `World`. Its first-release data model uses
-the following canonical identities and entities:
+Iroha stores ledger state in the `World`. Its first-release data model uses the following canonical identities and entities:
 
-- domains are dataspace-qualified, for example `payments.universal`
-- accounts are canonical and domainless; the account ID is derived from the
-  account controller
-- asset definitions can keep a domain/name projection, but their canonical
-  textual address is an opaque Base58 identifier
+- domains are data space-qualified, for example `payments.universal`
+- accounts are canonical and domainless; the account ID is derived from the account controller
+- asset definitions can keep a domain/name projection, but their canonical textual address is an opaque Base58 identifier
 - assets are balances held by accounts for a specific asset definition
-- NFTs are uniquely owned records with domain-qualified IDs and metadata
-  content
-- RWAs are generated-ID lots that represent off-chain assets with current
-  owner, quantity, provenance, metadata, holds, freezes, and lifecycle
-  controls
+- NFTs are uniquely owned records with domain-qualified IDs and metadata content
+- RWAs are generated-ID lots that represent off-chain assets with current owner, quantity, provenance, metadata, holds, freezes, and lifecycle controls
 
 ```mermaid
 classDiagram
@@ -83,13 +77,7 @@ Rwa --> Account : owned_by
 
 ## Example
 
-In an Iroha 3 network, `wonderland.universal` is a domain inside the
-`universal` dataspace. The canonical accounts in this example are controlled
-by their keys or policies and encoded as domainless I105 account IDs. Readable
-labels such as `alice@wonderland.universal` are separate aliases bound to those
-IDs. A projected asset definition can still be constructed from a domain and
-name such as `rose` in `wonderland.universal`, while the canonical asset
-definition address used on the wire is the generated Base58 address.
+In an Iroha 3 network, `wonderland.universal` is a domain inside the `universal` data space. The canonical accounts in this example are controlled by their keys or policies and encoded as domainless I105 account IDs. Readable labels such as `alice@wonderland.universal` are separate aliases bound to those IDs. A projected asset definition can still be constructed from a domain and name such as `rose` in `wonderland.universal`, while the canonical asset definition address used on the wire is the generated Base58 address.
 
 ```mermaid
 classDiagram
@@ -118,9 +106,7 @@ account_rabbit --> asset_rose : may receive balance
 
 ## Aliases
 
-Aliases are human-facing names layered over canonical ledger identifiers.
-They are useful at API, CLI, wallet, and explorer boundaries, but canonical
-IDs remain the stable identifiers stored in strict ledger fields.
+Aliases are human-facing names layered over canonical ledger identifiers. They are useful at API, CLI, wallet, and explorer boundaries, but canonical IDs remain the stable identifiers stored in strict ledger fields.
 
 | Target         | Canonical target                                    | Alias literal                                          | Backing model                                                                 |
 | -------------- | --------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------- |
@@ -128,30 +114,13 @@ IDs remain the stable identifiers stored in strict ledger fields.
 | Asset definition | canonical `AssetDefinitionId` Base58 address     | `name#domain.dataspace` or `name#dataspace`            | `AssetDefinitionAlias` bound to an asset definition                           |
 | Contract       | canonical Bech32m `ContractAddress`                 | `name::domain.dataspace` or `name::dataspace`          | `ContractAlias` bound to a deployed contract address                          |
 | Domain name    | `DomainId` in `domain.dataspace` form               | `domain.dataspace`                                    | SNS `domain` namespace record                                                 |
-| Dataspace name | numeric `DataSpaceId` from the active Nexus catalog | dataspace alias such as `universal`, `paynet`, or `zk` | SNS `dataspace` namespace record plus the active dataspace catalog            |
+| Data space name | numeric `DataSpaceId` from the active SORA Nexus catalog | data space alias such as `universal`, `paynet`, or `zk` | SNS `dataspace` namespace record plus the active data space catalog            |
 
-Account aliases are the user-facing account names. They survive account
-rekeying because the alias points at the active account ID through world-state
-indexes and account rekey records. Use `SetPrimaryAccountAlias` for the
-account's primary label, `SetAccountAliasBinding` for additional non-primary
-aliases, and `FindAccountByAlias` or `FindAliasesByAccountId` for reads.
-Account aliases normally require an active SNS account-alias lease acquired
-with `AcquireAccountAliasLease` and renewed with `RenewAccountAliasLease`.
+Account aliases are the user-facing account names. They survive account rekeying because the alias points at the active account ID through world-state indexes and account rekey records. Use `SetPrimaryAccountAlias` for the account's primary label, `SetAccountAliasBinding` for additional non-primary aliases, and `FindAccountByAlias` or `FindAliasesByAccountId` for reads. Account aliases normally require an active SNS account-alias lease acquired with `AcquireAccountAliasLease` and renewed with `RenewAccountAliasLease`.
 
-Asset aliases name asset definitions, not individual account balances. Asset
-aliases and contract aliases are direct bindings from a readable name to an
-existing canonical target. Asset aliases are set with `SetAssetDefinitionAlias`;
-the alias name segment must match the asset definition display name or
-projected definition name. Contract aliases are set with `SetContractAlias`;
-the alias dataspace must match the dataspace encoded in the contract address.
-Both bindings can carry `lease_expiry_ms`; after expiry they stop resolving
-when the grace window elapses and are swept from world-state indexes.
+Asset aliases name asset definitions, not individual account balances. Asset aliases and contract aliases are direct bindings from a readable name to an existing canonical target. Asset aliases are set with `SetAssetDefinitionAlias`; the alias name segment must match the asset definition display name or projected definition name. Contract aliases are set with `SetContractAlias`; the alias data space must match the data space encoded in the contract address. Both bindings can carry `lease_expiry_ms`; after expiry they stop resolving when the grace window elapses and are swept from world-state indexes.
 
-Domains do not have a separate `DomainAlias` object. A domain identifier is
-already a dataspace-qualified name such as `payments.universal`. SNS tracks
-lease ownership for domain names in the `domain` namespace and for dataspace
-aliases in the `dataspace` namespace. The reserved `universal` dataspace alias
-must remain defined.
+Domains do not have a separate `DomainAlias` object. A domain identifier is already a data space-qualified name such as `payments.universal`. SNS tracks lease ownership for domain names in the `domain` namespace and for data space aliases in the `dataspace` namespace. The reserved `universal` data space alias must remain defined.
 
 ## Related docs
 

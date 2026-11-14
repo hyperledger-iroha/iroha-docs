@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
+translation_source_hash: b6e3bd79c50ea326930ac978350ea4beac8294b6f045ac0084aada257754ffa1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Kriptoqrafik Açarların Yaradılması {#generating-cryptographic-keys}
 
 `kagami keys` istifadə edərək Iroha 3 üçün müştəri, şəbəkə həmkarı və doğrulayıcı açar materialını yaradın.
@@ -18,7 +17,7 @@ translation_engine: bing-translator-llm
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-Üst kataloq artıq mövcud olmalıdır. Hədəf yeni olmalı və ya artıq mövcud istifadəçi tərəfindən sahib olunmalı, `0700` rejimində, simvolik bağlantılardan azad və boş olmalıdır. `kagami`, `0600` rejimində `public.key` və `private.key`-ü yazır və açar materialını çap etmir. `--pop` ilə, o, həmçinin `pop.hex`-ı yazır.
+Üst qovluq əvvəlcədən mövcud olmalıdır. Hədəf mövcud olmamalıdır: Kagami hətta mövcud boş qovluğu da rədd edir. O, yalnız sahibin girişini təmin edən fayl sistemi yoxlamaları ilə hədəfi `0700` rejimində yaradır və simvolik keçidləri rədd edir. `kagami` `public.key` və `private.key` fayllarını `0600` rejimində yazır və açar materialını ekrana çıxarmır. `--pop` ilə əlavə olaraq `pop.hex` yazır.
 
 `--out-dir` platformalarda bağlı olur Kagami bu yalnız sahibi üçün olan fayl sistemi qaydalarını tətbiq edə bilmir. Şəxsi açar faylı şifrlənməmiş ixracdır, hardware və ya ixrac edilməyən istehsal kriptoqrafik imzalayıcı deyil. Təsdiqlənmiş qoruma sərhədinə idxal edin və ixracı yerləşdirmə proseduruna uyğun olaraq silin.
 

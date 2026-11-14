@@ -1,11 +1,10 @@
 ---
 translation_locale: ru
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: 4c7c62c23166a19ccc3a6a4bb42d808038d755b8c05e87b9e2ce21fbbe31a6ac
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Установите Iroha 3 {#install-iroha-3}
 
 На этой странице рассматривается текущий процесс установки инструментальной цепочки и бинарных файлов Iroha 3 с использованием исходного рабочего пространства `hyperledger-iroha/iroha`.
@@ -64,7 +63,8 @@ cargo run --bin kagami -- --help
 
 Текущий поток локальной сети с поддержкой исходного кода генерируется Kagami. Он записывает конфигурации сетевых узлов, артефакты генезиса блокчейна, конфигурацию клиента, вспомогательные скрипты и необязательный файл Compose, который соответствует проверенному коду:
 
-- `kagami localnet` для скриптов локальных сетевых пиров
+- `kagami localnet up` для управляемой локальной сети, которую Kagami запускает и контролирует
+- `kagami localnet generate` для создания скриптов запуска нативных локальных узлов
 - `kagami docker` для Docker Compose, сгенерированный из каталога localnet
 
 Продолжить с [Запуск Iroha 3](/ru/get-started/launch-iroha.md).

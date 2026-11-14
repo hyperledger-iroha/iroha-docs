@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
+translation_source_hash: 92389d3ad83ab32e85b4ca83ede9829d1a38afaad6e86da035da2829a3aaedfb
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # JavaScript و TypeScript {#javascript-and-typescript}
 
 الحزمة الحالية JavaScript SDK هي الحزمة `@iroha/iroha-js` في شجرة مصدر Iroha. إنها Node.js-الأولى SDK لـ Torii، وبناة Norito، والتوقيع، والتقسيم إلى صفحات، ومعاينات Connect، ونقل أوامر Kagemusha.
@@ -99,7 +98,6 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 - توقيع Ed25519 وتوليد المفاتيح
 - مساعدو الترقيم وإعادة المحاولة
 - الاتصال بمساعدي التمهيد للمتصفح
-- مساعدو نقل جاهزية كاجيموشا، التعبئة، الاسترداد، وحالة التشغيل
 
 ## المراجع العليا {#upstream-references}
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # So'rovlar {#queries}
 
 Iroha so‘rovlari reyestr holatini o‘zgartirmasdan o‘qiydi. Joriy ma’lumot modeli ikki keng so‘rov shaklini taqdim etadi:
@@ -86,7 +85,7 @@ Escrow soʻrovlari [mahalliy aktiv depozit ISIs](/uz/blockchain/escrow.md) tomon
 | `FindProofRecordsByBackend` |Isbot orqa tizimi uchun isbot yozuvlarini roʻyxatlash.|
 | `FindProofRecordsByStatus` |Dalil yozuvlarini holatga ko‘ra ro‘yxatlang.|
 
-## Nexus, Ma'lumotlarning mavjudligi va Paketlar {#nexus-data-availability-and-packages}
+## SORA Nexus, Ma'lumotlarning mavjudligi va Paketlar {#nexus-data-availability-and-packages}
 
 |So'rov| Maqsad |
 | --- | --- |

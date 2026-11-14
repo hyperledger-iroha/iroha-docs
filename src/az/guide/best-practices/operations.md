@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /guide/best-practices/operations.md
-translation_source_hash: de9e8129467b1111a58cee07acf43382d6cf3c352211a1511659ced422b46778
+translation_source_hash: 44df6cc409b8434e5b45286e02500036bb9eda80251f4b6a50205bf4a3de3968
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-first-release-source-amendment
 ---
-
 # Əməliyyatlar {#operations}
 
 Əməliyyat hazırlığı o deməkdir ki, şəbəkə müşahidə edilə, dəyişdirilə, ehtiyat nüsxəsi yaradıla və bərpa oluna bilər, təsdiqləyici hostlara müvəqqəti girişə güvənmədən.
@@ -32,13 +31,13 @@ Bax [Əməliyyat Təhlükəsizliyi](/az/guide/security/operational-security.md).
 
 - Təqdimat tərəfindən tələb olunan bərpa nöqtəsinə uyğun olaraq şəbəkə həmkarı yaddaşını ehtiyat nüsxəsini çıxarın. Qeyri-istehsal hostlarında bərpaları yoxlayın.
 - İmzalanmış blockchain genesis, buraxılış metadata, şəbəkə həmkarı konfiqurasiyası və açar saxlanması qeydlərinin, hətta bir təsdiqləyici hostu mövcud olmasa belə bərpa edilə bilinməsini təmin edin.
-- Qurtarma prosedurunun blokzincir başlanğıcından yenidən qurulub-qurulmadığını, müəyyən vaxt nöqtəsindəki məlumat görüntüsündən bərpa edilib-edilmədiyini və ya uğursuz şəbəkə iştirakçısının yeni identitetlə əvəz olunub-olunmadığını sənədləşdirin.
+- Bərpa prosedurunun ilkin zəncir vəziyyətindən yenidən qurduğunu, vəziyyətin saxlanmış surətindən bərpa etdiyini, yoxsa sıradan çıxmış qovşağı yeni identifikatorla əvəz etdiyini sənədləşdirin.
 - Heç vaxt bərpa prosedurlarını istehsal hadisəsi zamanı ilk dəfə sınaqdan keçirməyin.
 
 ## Dəyişiklik İdarəetməsi {#change-management}
 
 - Zəncirüstü konfiqurasiya dəyişikliklərini nəzərdən keçirilməyi, əvvəlcədən oxunmağı, icazəni və dəyişiklik sonrası yoxlamanı tələb edən əməliyyatlar kimi qəbul edin.
-- Şəbəkə həmkarı ikili yeniləmələrini uyğunluq planı və geri qaytarma qərar nöqtəsi ilə həyata keçirin.
+- Qovşaq proqramının buraxılışını quraşdırmazdan əvvəl onun şəbəkənin həqiqiliyi yoxlanmış icra mühiti seçimini və başlanğıc yoxlama nöqtəsindən sonrakı tarixçəni reallaşdırdığını yoxlayın. Protokol təriflərində dəyişikliklər idarəetmə qaydaları ilə təsdiqlənən və uyğunluğu yoxlanmış seçim keçidi tələb edir; aktivləşdirmədən sonra bərpa uyğun olmayan ikili proqramın əvvəlki versiyasına qayıtmaqla deyil, düzəldici keçidlə aparılır.
 - Əgər miqrasiya planı tələb etmirsə, eyni texniki qulluq pəncərəsində şəbəkə həmkarlarının topologiyasını, konsensus vaxtlamasını və tətbiq iş yükünü dəyişməkdən çəkinin.
 - Əməliyyat dəyişiklikləri üçün əməliyyat kriptoqrafik xəşləri və blok hündürlüklərini qeyd edin.
 

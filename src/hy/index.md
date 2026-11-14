@@ -9,8 +9,8 @@ layout: home
 
 hero:
   name: Hyperledger Iroha 3
-  text: "Տեղեկատվություն"
-  tagline: "SORA Nexus, SDKs եւ օպերատորների աշխատանքային հոսքերի համար դետերմինիստական բլոկչեյն պլատֆորմ"
+  text: "Փաստաթղթավորում"
+  tagline: "Դետերմինիստական բլոկչեյն հարթակ՝ SORA Nexus-ի, SDKs-ի և օպերատորների աշխատանքային ընթացակարգերի համար"
   image:
     src: /icon.svg
     alt: "Hyperledger Iroha 3 լոգոն"
@@ -21,24 +21,24 @@ hero:
 
 nexusPortal:
   eyebrow: SORA Nexus
-  title: "Կառուցեք Iroha 3 / SORA Nexus"
-  details: "Սկսեք Taira փորձարկման ցանցից, սովորեք ընթացիկ գործարքների հոսքը եւ օգտագործեք կենտրոնացված բաղադրատոմսեր արտադրության պատրաստի ծրագրերի ստեղծման համար:"
+  title: "Մշակեք Iroha 3 / SORA Nexus հարթակում"
+  details: "Սկսեք Taira փորձնական ցանցից, սովորեք գործարքների ընթացիկ հոսքը և օգտվեք նպատակային գործնական օրինակներից՝ արտադրական օգտագործման պատրաստ հավելվածներ ստեղծելու համար։"
   primaryAction:
-    text: "Սկսեք Taira"
+    text: "Սկսեք Taira-ում"
     link: /hy/get-started/sora-nexus-dataspaces
   secondaryAction:
-    text: "Գնահատեք խոհանոցային գիրքը"
+    text: "Դիտեք գործնական օրինակները"
     link: /hy/cookbook/
   recipes:
-    title: "Հանրահայտ բաղադրատոմսեր"
+    title: "Հանրաճանաչ գործնական օրինակներ"
     items:
-      - title: "Գործարքի ներկայացում եւ ստուգում"
+      - title: "Ներկայացրեք և ստուգեք գործարք"
         link: /hy/cookbook/submit-and-verify-transactions
-      - title: "Գործունական ակտիվներ տեղափոխել"
+      - title: "Փոխանցեք փոխարինելի ակտիվներ"
         link: /hy/cookbook/fungible-assets
-      - title: "Հարցազրույցի գլխավոր գրքի վիճակը"
+      - title: "Հարցմամբ ստացեք մատյանի վիճակը"
         link: /hy/cookbook/query-ledger-state
-      - title: "Ծրագրային իրադարձություններ"
+      - title: "Ստացեք իրադարձությունների հոսքը"
         link: /hy/cookbook/stream-events
 
 features:
@@ -46,25 +46,25 @@ features:
       dark: /start.svg
       light: /start-light.svg
     title: "Սկսեք"
-    details: "Ստեղծեք ներկա աշխատանքային տարածքը, գործարկեք տեղական ցանց եւ սկսեք օգտագործել Iroha 3 CLI"
+    details: "Կառուցեք ընթացիկ աշխատանքային տարածքը, գործարկեք տեղային ցանց և սկսեք օգտագործել Iroha 3 CLI-ն"
     link: /hy/get-started/
   - icon:
       dark: /build.svg
       light: /build-light.svg
-    title: "Գլխավոր էջ"
-    details: "Գտեք SDKs, լավագույն փորձերը, կազմաձեւումը, անվտանգությունը եւ օպերատորի աշխատանքային հոսքերը"
+    title: "Ուղեցույց"
+    details: "Գտեք SDKs-ը, լավագույն գործելակերպերը, կազմաձևումը, անվտանգության և օպերատորների աշխատանքային ընթացակարգերը"
     link: /hy/guide/
   - icon:
       dark: /explained.svg
       light: /explained-light.svg
-    title: "ճարտարապետություն"
-    details: "Հասկանալ Torii, Sumeragi, Norito, IVM եւ տվյալների տարածքի մոդելը Nexus"
+    title: "Ճարտարապետություն"
+    details: "Հասկացեք Torii-ն, Sumeragi-ն, Norito-ն, IVM-ը և SORA Nexus-ի տվյալների տարածքի մոդելը"
     link: /hy/blockchain/iroha-explained
   - icon:
       dark: /reference.svg
       light: /reference-light.svg
-    title: "Հաղորդում"
-    details: "Դիտեք ներկայիս բինարային, գենեզի, Torii, եւ համատեղելիության հղման էջերը"
+    title: "Տեղեկատու"
+    details: "Դիմեք բինարների, սկզբնական բլոկի, Torii-ի և համատեղելիության ընթացիկ տեղեկատու էջերին"
     link: /hy/reference/
 footer: true
 ---

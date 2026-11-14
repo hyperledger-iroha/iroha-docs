@@ -1,14 +1,13 @@
 ---
 translation_locale: hy
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # Համացանցի տեղակայման բանալիները {#keys-for-network-deployment}
 
-Յուրաքանչյուր ցանց պահանջում է հաճախորդների, հանգույցների, գենեզի ստորագրման եւ NPoS կամ Nexus պրոֆիլների համար տարբեր հիմնական նյութեր BLS վավերացնող նույնականացման համար:
+Յուրաքանչյուր ցանցի պետք են առանձին բանալիային նյութեր հաճախորդների, հանգույցների, ծագման ստորագրման և, NPoS կամ SORA Nexus պրոֆիլների դեպքում, BLS վավերացնողների նույնությունների համար։
 
 ## Որտեղ են օգտագործվում բանալիները {#where-keys-are-used}
 
@@ -21,7 +20,7 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 Տեղական կամ փորձարկման տեղակայման համար, թույլ տվեք Kagami ստեղծել բոլոր այս ֆայլերը միասին:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Ներկայացած ցանցի կամ պրոֆիլի համար օգտագործեք ուղեցույցային հոսքը.

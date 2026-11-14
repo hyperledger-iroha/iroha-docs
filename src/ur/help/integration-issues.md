@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /help/integration-issues.md
-translation_source_hash: c5f169e423806fa2a9e9d198971588d1aa0b199a28d64e8b089b9f81727550a5
+translation_source_hash: 2146a236adb3a3b3b896a1992daeecf6713988183ca53e4412f9b616ed2e9085
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # انضمام کے مسائل کو حل کرنا {#troubleshooting-integration-issues}
 
 اس سیکشن میں Iroha 3 انضمام کے لئے خرابیوں سے نمٹنے کے نکات پیش کیے گئے ہیں۔ اگر آپ کا مسئلہ یہاں بیان نہیں کیا گیا ہے تو ، ہم سے رابطہ کریں [ٹیلیگرام](https://t.me/hyperledgeriroha).
@@ -21,7 +20,7 @@ torii_url = "http://127.0.0.1:8080/"
 CLI چیک کے لئے، واضح طور پر ایک ہی فائل کو منتقل کریں:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 اگر نیٹ ورک نوڈ Docker یا Kubernetes میں چلتا ہے، تو میزبان یا سروس ایڈریس کا استعمال کریں جو کلائنٹ کے عمل سے قابل رسائی ہے۔ ایک کنٹینر کے اندر `127.0.0.1` میزبان مشین نہیں ہے.
@@ -45,12 +44,12 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
 - کلائنٹ ترتیب میں اکاؤنٹ کی عوامی کلید دستخط کے لئے استعمال ہونے والی نجی کلید سے مطابقت نہیں رکھتی
 - اکاؤنٹ پیدائش میں یا کسی سابقہ ٹرانزیکشن کے ذریعہ رجسٹرڈ نہیں ہے
 - اکاؤنٹ میں اجازت ٹوکن یا رول نہیں ہے جو رن ٹائم کی توثیق کرنے والے کی ضرورت ہے۔
-- ایک ڈومین ID کو اپنی ڈیٹا اسپیس کی اہلیت سے محروم ہے، جیسے `domain.dataspace`
+- ڈومین ID میں اس کی ڈیٹا اسپیس کی تعیین، جیسے `domain.dataspace`، موجود نہیں
 
 `--output-format text` کا استعمال کریں جبکہ ڈیبگنگ CLI کمانڈ تاکہ غلطیوں کو پڑھنے میں آسان ہو:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ledger transaction ping --msg "hello"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority --output-format text tx ping --msg "hello"
 ```
 
 ## استفسارات خالی نتائج لوٹاتے ہیں {#queries-return-empty-results}
@@ -65,7 +64,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml --output-format text le
 ڈومین چیک کے لئے، سب سے زیادہ وسیع استفسار سے شروع کریں:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 ## ایونٹ یا بلاک سٹریم ابتدائی طور پر رک جاتے ہیں {#event-or-block-streams-stop-early}

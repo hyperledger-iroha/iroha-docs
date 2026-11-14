@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
+translation_source_hash: 37e8be9b07a40e5c6b841a47b016320e42079853433fb3e53937e4021dc1304f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Swift və iOS {#swift-and-ios}
 
 Upstream iş sahəsi tərəfindən göndərilən Swift SDK `IrohaSwift/` altında `IrohaSwift` Swift paketidir. Onun paket texniki manifesti üç kitabxana məhsulu müəyyən edir—`IrohaSwift`, `IrohaSwiftMobileTransports` və `IrohaSwiftTransferUI`—və iOS 15+ və macOS 12+ üçün Swift alətləri 5.9 ilə hədəfləyir.
@@ -65,7 +64,7 @@ if #available(iOS 15.0, macOS 12.0, *) {
 
 ## Sına Taira Yalnız Oxumaq {#try-taira-read-only}
 
-Cihazın və ya simulyatorun ictimai Taira API son nöqtəsinə çata biləcəyini təsdiqləmək üçün sadə bir HTTP probe ilə başlayın:
+Cihazın və ya simulyatorun açıq Taira son nöqtəsinə çata bildiyini təsdiqləmək üçün sadə HTTP yoxlaması ilə başlayın:
 
 ```swift
 import Foundation
@@ -161,7 +160,7 @@ Swift mənbə hazırda aşağıdakılardan ibarətdir:
 - Ed25519, secp256k1, ML-DSA, BLS, GOST və SM2 imzalama səthləri, tələb olunduqda yerli körpü dəstəyi ilə
 - bazar yeri və anonim əmanət üçün yerli əmanət təlimatı yükü yaradıcısı
 - WebSocket, çərçivə, kripto, sessiya, növbə, təkrar oynatma və diaqnostika köməkçilərinə qoşulun
-- Kagemusha hazırlığı, tipləşdirilmiş balans artırma və geri alma, əməliyyat vəziyyəti, qeyd, iştirakçı paketi, qəbz və QR axını modelləri
+- KAGEMUSHA V1 ötürmə formatı köməkçiləri və birbaşa platformada işləyən pul kisəsinin Advance təminatçısı, qeydiyyat, bərpa və qəbul edilmiş mübadilə çağırışları üçün iPhone platforma adapteri
 - SoraFS, məlumat-mövcudluğu və sübut-qaynaq yardımçıları
 
 ## API Nümunələr {#api-examples}

@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/iroha-explained.md
-translation_source_hash: ba591b2c1aa819837177625b1ae457b5fa492197576dc690b19ca2897562a436
+translation_source_hash: 426adbea88da36cd92da17d8665c956a57b9d4cebfa0d2f35bc75469cccf84ee
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Iroha 解釋 {#iroha-explained}
 
 Iroha 3 是首次釋出的 Hyperledger Iroha 平臺.同一個核心支援自主託管網路和 SORA Nexus 資料空間和多行道路由執行模型.
@@ -25,44 +24,48 @@ Iroha 3 是首次釋出的 Hyperledger Iroha 平臺.同一個核心支援自主�
 
 每個世界狀態的變化都是透過交易發生的.交易包含指令或 IVM 位元組碼,並且 Torii 是客戶提交或觀察它們的主要方式.的效果.
 
-- Nexus - 意識配置可以定義多條通道
-- 資料空間將工作負載隔離,同時仍然是同一帳本模型的一部分
-- 路由政策決定哪個通道和資料空間處理一個型別的工作
+- 資料空間為機構資料、權限、政策與應用程式提供環境
+- 通道在這些環境中提供路由與認證容量
+- 獨立簽署的資料空間根擁有自己的狀態與本地最終性
 
-## 多資料空間架構 {#multi-dataspace-architecture}
+## 資料空間與執行根 {#multi-dataspace-architecture}
 
-資料空間是一個路由和名稱空間的邊界,而不是一個單獨的區塊鏈.執行階段仍然有一個 `World`,一個交易模型和一個共識管道. Nexus 新增了目錄,告訴節點如何線上條之間進行分割槽工作以及如何命名這些線條服務的資料區域.
+資料空間目錄項目定義環境及其身分，單靠目錄項目並不會建立獨立的執行根。公開通道認證交易批次，供全域鏈執行；獨立簽署的資料空間根則擁有自己的狀態、委員會與本地最終性。
 
-在執行時,一個資料空間由數值 `DataSpaceId` 和目錄後設資料表示. `DataSpaceId::UNIVERSAL`被保留為`0`;預設目錄包含`universal`的資料空間.每個配置的資料空間有:
+`DataSpaceCatalog` 定義資料空間，`LaneCatalog` 則定義通道。每個通道透過 `dataspace_id` 恰好參照一個資料空間；一個資料空間可包含多個通道。`DataSpaceId` 與 `LaneId` 是不同的身分，而通道別名不會建立另一個資料空間。
+
+在執行時，資料空間以數值 `DataSpaceId` 和目錄中繼資料表示。`DataSpaceId::UNIVERSAL` 保留為 `0`；預設目錄包含 `universal` 資料空間。每個已設定的資料空間都有：
 
 - 一個單獨的數字 ID
-- 一個獨特的別名,例如 `universal`, `governance`或 `zk`
+- 唯一別名，例如 `universal` 或明確登記的機構名稱
 - 操作者表面的可選描述
 - 用於測量繼電委員會的非零值 `fault_tolerance`
 
-路線是與這些資料空間的執行和儲存路線. `LaneId`, 其他 `DataSpaceId` 它提供了一個別名,可見性 (`public` 或 `restricted`),儲存資料 (`full_replica`, `commitment_only`, 或 `split_replica`),證明方案,以及可選的治理,結算和規劃者後設資料.執行階段從本目錄中得出每條通道儲存幾何,包括 Kura 細分名稱和確定性關鍵前置.
+通道是綁定到這些資料空間的路由與認證資源。通道項目包含 `LaneId`、所服務的 `DataSpaceId`、別名、可見性（`public` 或 `restricted`）、儲存設定檔（`full_replica`、`commitment_only` 或 `split_replica`）、證明機制，以及選用的治理、結算與排程器中繼資料。執行環境依據此目錄衍生各通道的儲存配置，包括 Kura 區段名稱與確定性金鑰前綴。
 
 路由路徑是:
 
-1. 配置構建驗證的 `DataSpaceCatalog`,`LaneCatalog`和 `LaneRoutingPolicy`.多條路徑,多個資料空間或非預設路由需要 `nexus.enabled = true`.
-2. 交易佇列要求主軌路由器查詢一個 `RoutingDecision` 包含一條 ID 的通道和資料空間 ID.
-3. 顯而易見的路由規則可以根據授權主體/帳戶或指令標籤匹配.沒有匹配規則,路由器可以從域名 IDs,資產定義投影,資料空間範圍許可證,結算段或授權主體的繫結帳戶範圍中匯出資料空間.
-4. 已解決的路線與兩個目錄進行檢查.未知路徑,未知的資料區和路徑/資料區不匹配是確定性路線錯誤.如果一個交易寫入兩個不同的資料空間目標,則將被拒絕為相互矛盾的路線;跨資料空間 DVP/PVP 結算透過通用協調者通道進行.
-5. Sumeragi 和遠端測量將任務視為通道和資料空間活動,後期記錄和承諾快照.
+1. 設定程序建立經驗證的 `DataSpaceCatalog`、`LaneCatalog` 與 `LaneRoutingPolicy`。SORA Nexus 路由是必要機制。多個資料空間、多個通道或非預設路由會使用 SORA Nexus 設定檔（`--sora`）與 NPoS。
+2. 交易佇列根據交易與已提交狀態解析出 `RoutingPlan`。每個協調者或參與者路由都包含通道 ID 與資料空間 ID；Native AMX 計畫會保留完整的參與者集合。
+3. 在全域執行中，完整控制平面批次及跨資料空間協調者使用通道 `0`。具體的非通用指令目標或合約位址目標，會先選取已准入且資料空間與委員會相符的固定通道，再考慮帳戶或指令標籤規則。其他工作遵循已提交的明確規則及預設分片方式；具體的通用目標仍留在通用通道上。
+4. 每條路由都會對照目錄與活動通道狀態進行檢查。未知 ID、通道與資料空間不符的情況都會遭到拒絕；無法使用的私有目標不能改以通用執行處理。多個資料空間目標可能產生 Native AMX 計畫。若交易中繼資料 `amx_policy` 設為 `reject_cross_dataspace`，跨資料空間計畫就會被拒絕。僅有路由計畫，並不足以授權或完成跨獨立根的結算。
+5. Sumeragi 與遙測會以通道及資料空間的活動、待處理工作量與承諾快照，持續呈現這些指派。
 
-這就是為什麼物件識別器很重要.域名包括資料空間的號在他們的 ID 中,例如 `payments.universal`,因此可以將網域範圍寫入導向.帳戶仍然是規範性和無域名的,因此同一個帳戶可以在不改變其 `AccountId`應用範圍的情況下被繫結到不同的應用範圍.資產定義可以攜帶一個域/資料空間投影,這使得資產操作繼承正確的資料空間路線.
+這正是物件識別碼重要的原因。網域 ID 包含資料空間別名，例如 `payments.universal`，讓網域範圍內的寫入操作可以路由。帳戶仍採用不含網域的標準身分，因此同一帳戶可以綁定到不同應用程式範圍，而不必更改 `AccountId`。資產定義可攜帶網域與資料空間投影，使資產操作沿用正確的資料空間路由。
 
-沒有 Nexus 過關,節點使用單條通道和 `universal` 資料空間.捆綁的 SORA 配置檔案取代了三條通道目錄:`core`用於通用公共通道,`governance`用於治理交通,和`zk`用於零知識附加和合同部署交通.
+若沒有 SORA Nexus 覆寫設定，節點會使用單一通道與 `universal` 資料空間。隨附的 SORA Nexus 設定檔會改用三通道目錄：`core` 是通用公開通道，`governance` 用於治理流量，`zk` 用於零知識附件與合約部署流量。
 
-這些三個預設設定存在於分離工作負載類:
+這三個隨附通道都是公開通道，並參照同一個 `universal` 資料空間。它們用來區分工作負載類別：
 
-|資料空間|萊恩|為什麼它存在?|
+| 資料空間 | 通道 | 用途 |
 | ------------ | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-|`universal`|`core`|為普通公開賬本流量和倒車路由而保留的預設資料空間 (`DataSpaceId::UNIVERSAL == 0`) |
-|`governance`|`governance`|用於治理和議會流量的受限通道，使控制層活動不會與一般應用寫入混在一起。|
-|`zk`|`zk`|限制對零知識證明,附件和合同部署路由的通道,保持檢測重的工作流程與一般寫入分開. |
+| `universal` | `core` | 一般公開帳本流量與預設路由。 |
+| `universal` | `governance` | 公開治理與 SORA 議會流量。 |
+| `universal` | `zk` | 處理公開零知識附件及合約部署所產生的流量。 |
 
-只有 `universal` 是保留的基線. `governance` 和 `zk` 在捆綁目錄和路由政策中編碼 SORA 配置檔案選項;運營商在需要不同的資料空間界限時可以定義不同的目錄.
+`DataSpaceId::UNIVERSAL == 0` 是保留的基準值。上述 `governance` 與 `zk` 名稱識別的是通道，而不是獨立資料空間。不同機構邊界需要明確的資料空間項目；獨立執行還需要經過獨立驗證的根。
+
+這些關係由固定版本的[設定檔建構器](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_config/src/parameters/actual.rs)、[通道實作](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_core/src/sumeragi/lanes/mod.rs)及[獨立根規範](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/sumeragi.md)所確定。
 
 Sumeragi 始終使用資料可用性和可靠的廣播.這些路徑是 Iroha 3 共識協議的一部分,不能被部署配置檔案禁用.
 

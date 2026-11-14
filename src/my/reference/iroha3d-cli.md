@@ -1,20 +1,19 @@
 ---
 translation_locale: my
 translation_source: /reference/iroha3d-cli.md
-translation_source_hash: bf4a63b05a149f0c935190b63cdb838b0a0265e99baedfc9b5bf00a9e621b108
+translation_source_hash: 846370e45fe0e0d605016d6722b1d50c39981f954c7d9040b87fc385eb12ac68
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # `iroha3d` CLI {#iroha3d-cli}
 
-`iroha3d` သည် Iroha 3 network peer daemon ဖြစ်သည်။ Cargo package ကို `irohad` ဟုအမည်ပေးထားသည်၊ ထို့ကြောင့် ဘိုင်နရီကို အောက်ပါအတိုင်း source code အလုပ် copy မှခေါ်ယူပါ-
+`iroha3d` သည် စံ Iroha 3 နိုဒ်၏ နောက်ခံလုပ်ငန်းစဉ်ဖြစ်သည်။ Cargo ပက်ကေ့ချ်အမည်မှာ `irohad` ဖြစ်သောကြောင့် ရင်းမြစ်ကုဒ်မိတ္တူမှ အလုပ်လုပ်နိုင်သောဖိုင်ကို အောက်ပါအတိုင်း ခေါ်ယူပါ။
 
 ```shell
 cargo run -p irohad --bin iroha3d -- --config path/to/config.toml
 ```
 
-အများပြည်သူအတွက် Taira testnet အတွက် release image က `iroha3d_taira` ကို အသုံးပြုပါတယ်။ ၎င်းက တူညီတဲ့ CLI ကို လက်ခံပေမဲ့ ထပ်မံ single protocol-standard ကို ထိုးဖောက်ပေးတယ်။ Taira ကွင်းဆက်၊ validator, storage နှင့် runtime-signer profile ကိုဖွင့်ရန်။ ဤကဲ့သို့သော software execution environment credentials များကိုမဖွင့်ဘဲ Taira configuration ကိုစစ်ဆေးပါ။
+အများသုံး Taira စမ်းသပ်ကွန်ရက်အတွက် ထုတ်ဝေဆော့ဖ်ဝဲပုံရိပ်သည် `iroha3d_taira` ကို အသုံးပြုသည်။ တူညီသော CLI ကို လက်ခံသော်လည်း စံသတ်မှတ် Taira ဘလော့ခ်ချိန်း၊ အတည်ပြုနိုဒ်၊ သိုလှောင်မှုနှင့် လည်ပတ်ချိန်လက်မှတ်ထိုးသူ ပရိုဖိုင်တို့ကို ထပ်မံလိုက်နာစေသည်။ လည်ပတ်ချိန်သုံး လျှို့ဝှက်ဝင်ရောက်ခွင့်အချက်အလက်များကို မဖွင့်ဘဲ Taira ပြင်ဆင်သတ်မှတ်မှုကို အောက်ပါအတိုင်း စစ်ဆေးပါ။
 
 ```shell
 iroha3d_taira --sora \
@@ -22,14 +21,14 @@ iroha3d_taira --sora \
   --check-config
 ```
 
-Single protocol-standard ရဲ့ operator ရောင်ပြန်ကြားထားတဲ့ ပုံစံကို သုံးပါ။ Taira Profile: check-in template မှာ deployment placeholder တွေ ရှိနေဆဲပါ။ Nexus ဒါမှမဟုတ် ထုတ်လုပ်မှု SoraFS စစ်ဆေးရာတွင် setting များ Taira.
+စံ Taira ပရိုဖိုင်၏ အော်ပရေတာက တန်ဖိုးဖြည့်ပြင်ဆင်ပြီးသောပုံစံကို သုံးပါ။ ရင်းမြစ်ကုဒ်သိုလှောင်ရာတွင် ပါဝင်သော ပုံစံခွက်၌ ဖြန့်ချိတပ်ဆင်မှုအတွက် အစားထိုးဖြည့်ရမည့်တန်ဖိုးများ ပါနေဆဲဖြစ်သည်။ Taira နှင့် စမ်းသပ်ရာတွင် ယေဘုယျ SORA Nexus သို့မဟုတ် ထုတ်လုပ်ရေးသုံး SoraFS သတ်မှတ်ချက်များဖြင့် အစားမထိုးပါနှင့်။
 
 ## `--config` {#arg-config}
 
 - အမျိုးအစား: ဖိုင်လမ်းကြောင်း
 - အမည်အမည်: `-c`
 
-[ကွန်ရက် peer ဖွဲ့စည်းမှု](/my/reference/peer-config/index.md) သို့ လမ်းကြောင်း။
+[နိုဒ်ပြင်ဆင်သတ်မှတ်မှု](/my/reference/peer-config/index.md) သို့ လမ်းကြောင်း။
 
 ## `--genesis-manifest-json` {#arg-genesis-manifest-json}
 
@@ -41,14 +40,39 @@ Single protocol-standard ရဲ့ operator ရောင်ပြန်ကြာ
 
 ဖြေရှင်းထားတဲ့ ဖွဲ့စည်းပုံနဲ့ ရနိုင်တဲ့ blockchain genesis ပစ္စည်းကို အတည်ပြုပြီး ကွန်ရက် sockets တွေ မချိတ်ဆက်ဘဲ ထွက်ပါ။
 
-## Kagemusha အရည်အချင်း တံဆိပ်များ {#kagemusha-qualification-seals}
+## `--json` {#arg-json}
 
-ဒီဖိုင်လမ်းကြောင်းရွေးချယ်မှုများသည် `--check-config` ကိုလိုအပ်ပြီး တစ်ခုတည်းသော ပရိုတိုကောစံညွှန်း တံဆိပ်မရေးခင် Kagemusha အရည်အချင်းပြည့်စုံအောင်မြင်ခြင်း:
+- **အမျိုးအစား:** flag
+- **လိုအပ်ချက်:** `--check-config`
 
-- `--write-kagemusha-catalog-qualification-seal <PATH>` က စာရင်းကို အရည်အသွေးပေးတယ်။
-- `--write-kagemusha-validator-qualification-seal <PATH>` ကော်မတီက လက်မှတ်ထိုးထားတဲ့ တိုးမြှင့်မှု မှတ်ပုံတင်ချက်အတွက် ဒေသခံ အတည်ပြုသူကို သတ်မှတ်ပေးတယ်။
+`Ready` သို့မဟုတ် `Pending` စာကြောင်းအစား ဤ build နှင့် ပြင်ဆင်သတ်မှတ်မှု၏ ကိုက်ညီမှုတန်ဖိုးများကို Norito JSON object တစ်ခုအဖြစ် ဖော်ပြသည်။
 
-တံဆိပ် ရွေးချယ်မှု နှစ်ခုဟာ အချင်းချင်း ပဋိပက္ခဖြစ်နေတယ်။
+## `--check-storage` {#arg-check-storage}
+
+- **အမျိုးအစား:** flag
+- **တွဲသုံး၍မရသောအရာ:** `--check-config`
+
+ရပ်ထားသော နိုဒ်၏ Kura သိုလှောင်မှုနှင့် နောက်ဆုံး snapshot ကို ဤ build ၏ decoder များဖြင့် ဖတ်ရှုမှုသက်သက် စစ်ဆေးပြီး ရလဒ်ကို Norito JSON object တစ်ခုအဖြစ် ဖော်ပြကာ မအောင်မြင်ပါက သုညမဟုတ်သော exit code ဖြင့် ထွက်သည်။ စစ်ဆေးမှုက Kura သိုလှောင်မှု root lock ကို ယူသဖြင့် လည်ပတ်နေသော နိုဒ်က ပိုင်ဆိုင်ထားသည့် သိုလှောင်မှုကို ငြင်းပယ်သည်။ သိုလှောင်မှုကို မည်သည့်အခါမျှ မပြောင်းလဲသလို လုပ်ဆောင်ချိန်သီးသန့် လျှို့ဝှက်ချက်များကိုလည်း မဖွင့်ပါ။
+
+## `--check-replay` {#arg-check-replay}
+
+- **အမျိုးအစား:** flag
+- **တွဲသုံး၍မရသောအရာ:** `--check-config`၊ `--check-storage`
+
+ရပ်ထားသော နိုဒ်၏ သိုလှောင်မှုမိတ္တူကို ဤဆော့ဖ်ဝဲတည်ဆောက်မှုဖြင့် ပြန်လုပ်ဆောင်ပြီး ရလဒ်ကို Norito JSON အရာဝတ္ထုတစ်ခုအဖြစ် ထုတ်ပြသည်။ ညွှန်ကြားချက်သည် ဘလော့ခ်များကို ယာယီဖိုင်တွဲသို့ ကူးယူကာ ထိုနေရာတွင် နောက်ဆုံးအခြေအနေမိတ္တူကို ပြန်ရယူခြင်း သို့မဟုတ် လက်မှတ်ထိုးထားသော ကနဦးဘလော့ခ်ကို ပြန်လုပ်ဆောင်ခြင်းပြုလုပ်ပြီး နောက်ပိုင်းဘလော့ခ်တိုင်းကို ပြန်လုပ်ဆောင်သည်။ ဘလော့ခ်တစ်ခု၏ အတည်ပြုလက်မှတ်ရရလဒ်ကို ပြန်မရလျှင် သို့မဟုတ် လိုအပ်သော ဘလော့ခ်အကြောင်းအရာ ပျောက်နေလျှင် သုညမဟုတ်သော ထွက်ခွာကုဒ်ဖြင့် အဆုံးသတ်သည်။ မူရင်းသိုလှောင်မှုသို့ မည်သည့်အခါမျှ မရေးသလို လည်ပတ်ချိန်သီးသန့် လျှို့ဝှက်ချက်များကိုလည်း မဖွင့်ပါ။
+
+## `--require-genesis-inrou-deployment-authority` {#arg-require-genesis-inrou-deployment-authority}
+
+- **အမျိုးအစား:** အကောင့် ID
+- **လိုအပ်ချက်:** `--check-config`
+
+အော့ဖ်လိုင်း စစ်ဆေးချိန်တွင် လက်မှတ်ထိုးထားသော genesis အတိအကျကို လုပ်ဆောင်ပြီးနောက် ဤမှတ်ပုံတင်ထားသော အကောင့်၌ SoraCloud ဖြန့်ချိတပ်ဆင်ခွင့် authority ဆက်ရှိရန် လိုအပ်သည်။
+
+## `--sumeragi-assert-fresh-key` {#arg-sumeragi-assert-fresh-key}
+
+- **အမျိုးအစား:** flag
+
+ဤစတင်မှုတစ်ကြိမ်အတွက်သာ နိုဒ်၏ consensus ကီးများသည် ဤချိန်းအတွက် မည်သည့်အခါမျှ လက်မှတ်မထိုးဖူးကြောင်း အခိုင်အမာ ကြေညာသည်။ Sumeragi သည် ကီးတစ်ခုစီအတွက် ဘေးကင်းရေးမှတ်တမ်းကို ထိန်းသိမ်းပြီး မှတ်တမ်းမပျောက်ဆုံးကြောင်း သက်သေမရမချင်း မှတ်တမ်းမရှိဘဲ မည်သည့်အရာကိုမျှ လက်မှတ်မထိုးပါ။ ဤ flag ကို ကီးအသစ်၏ ပထမစတင်မှုတွင် တစ်ကြိမ်သာ ပေးပြီး ဒေတာပျောက်ဆုံးပြီးနောက် မည်သည့်အခါမျှ မပေးပါနှင့်။
 
 ## `--trace-config` {#arg-trace-config}
 
@@ -62,7 +86,7 @@ Single protocol-standard ရဲ့ operator ရောင်ပြန်ကြာ
 - အမျိုးအစား: 64-digit hexadecimal value BLAKE3 cryptographic digest value
 - လိုအပ်ချက်များ: `--config`
 
-Configuration file bytes တွေကို ပေးပို့ထားတဲ့ cryptographic digest value နဲ့ ကိုက်ညီအောင် တောင်းဆိုပါ။ integrity bound ဖိုင်ကို flat လုပ်ရပါမယ်၊ `extends` မပါနိုင်ပါဘူး။
+ပြင်ဆင်သတ်မှတ်မှုဖိုင်၏ ဘိုက်များသည် ပေးထားသော digest နှင့် ကိုက်ညီရမည်။ ပြည့်စုံမှန်ကန်မှုအတွက် ချိတ်ထားသောဖိုင်သည် အလွှာအားလုံးပေါင်းစည်းထားရမည်ဖြစ်ပြီး `extends` မပါရပါ။
 
 ## `--terminal-colors` {#arg-terminal-colors}
 
@@ -83,7 +107,7 @@ Daemon စာတိုများအတွက် အသုံးပြုသေ
 - အမျိုးအစား: အလံ
 - ပတ်ဝန်းကျင်: `IROHA_SORA_PROFILE`
 
-SoraFS မှအသုံးပြုသော Sora Nexus ပရိုဖိုင်၊ SoraNet လက်ဆွဲခြင်းနှင့် multi-lane သဘောတူညီချက်များကို Activate လုပ်ပါ။ Taira လွှတ်တင်စက်ကို ဤအလံဖြင့်အမြဲတမ်းခေါ်ယူသည်။
+SoraFS၊ SoraNet ဆက်သွယ်မှုစတင်သဘောတူညီချက်နှင့် လမ်းကြောင်းများစွာသုံး သဘောတူညီမှုအတွက် အသုံးပြုသော SORA Nexus ပရိုဖိုင်ကို ဖွင့်သည်။ Taira စတင်ပေးသည့်ကိရိယာကို ဤရွေးချယ်မှုဖြင့် အမြဲခေါ်ယူသည်။
 
 ## FastPQ အပိုဒ်များ {#fastpq-overrides}
 
@@ -105,7 +129,7 @@ iroha3d --fastpq-execution-mode gpu \
 
 ## ရလာသော အကူအညီ {#generated-help}
 
-အထက်ပါ option summary ကို လက်ရှိ `iroha3d` argument definition တွေနဲ့ စစ်ဆေးပါတယ်။ check-in လုပ်ထားတဲ့ help point-in-time data view ကို ၎င်းရဲ့ provenance status ကို စောင့်ဆိုင်းနေတုန်းမှာ ရည်ရွယ်ချက်အရ render မလုပ်ပါဘူး။ checkout အတွက် တိကျတဲ့ အကူအညီကို စစ်ဆေးဖို့ run:
+အထက်ပါ ရွေးချယ်စရာအကျဉ်းချုပ်သည် သတ်မှတ်ထားသော Iroha commit ရှိ `iroha3d` argument သတ်မှတ်ချက်များကို လိုက်နာသည်။ သင့် checkout ၏ အကူအညီအတိအကျကို စစ်ဆေးရန်:
 
 ```shell
 cargo run --locked -p irohad --bin iroha3d -- --help

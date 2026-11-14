@@ -1,11 +1,10 @@
 ---
 translation_locale: mn
 translation_source: /help/integration-issues.md
-translation_source_hash: c5f169e423806fa2a9e9d198971588d1aa0b199a28d64e8b089b9f81727550a5
+translation_source_hash: 2146a236adb3a3b3b896a1992daeecf6713988183ca53e4412f9b616ed2e9085
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Интеграцийн асуудлыг шийдвэрлэх {#troubleshooting-integration-issues}
 
 Энэ хэсэг нь Iroha 3 интеграцтай холбоотой асуудлыг шийдвэрлэх зөвлөмжийг санал болгодог. Хэрэв та тулгарч буй асуудал энд тайлбарлагдаагүй бол бидэнтэй [Телеграм](https://t.me/hyperledgeriroha) хаягаар холбоо барина уу.
@@ -21,12 +20,12 @@ torii_url = "http://127.0.0.1:8080/"
 Файл CLI шалгалтанд зориулж, ижил файлыг тодорхой зааж өг:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 Хэрэв сүлжээний хамтрагч Docker эсвэл Kubernetes дээр ажиллаж байвал, клиент процессоос хүрч болох хост эсвэл үйлчилгээний хаягийг ашиглана уу. Савны дотор байгаа `127.0.0.1` нь хост машин биш юм.
 
-Нийтийн Taira туршилтуудын хувьд, гарын үсэггүй API төгсгөлийн цэгийн шалгаагаар эхлүүлнэ:
+Нийтэд нээлттэй Taira туршилтыг гарын үсэггүй төгсгөлийн цэгийн шалгалтаас эхэлнэ:
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -36,7 +35,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
   | jq -r '.items[].id'
 ```
 
-Хэрэв эдгээр тушаалууд `502`, TLS, DNS эсвэл хугацаа дууссан алдаатай тулвал, сүлжээний хүрэлцээтэй байдалд засвар хийж эсвэл нийтийн тестнет API төгсгөлийн цэгийг хүлээж, дараа нь дансны түлхүүрүүд эсвэл гүйлгээний мэдээллийг алдааг олж засах хэрэгтэй.
+Эдгээр команд `502`, TLS, DNS эсвэл хугацаа хэтэрсэн алдаа гаргавал дансны түлхүүр, гүйлгээний агуулгыг шалгахаас өмнө сүлжээний холболтыг засах эсвэл нийтэд нээлттэй туршилтын төгсгөлийн цэгийг хүлээнэ.
 
 ## Гүйлгээүүд татгалзагдана {#transactions-are-rejected}
 
@@ -45,12 +44,12 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
 - клиентийн тохиргооны дансны олон нийтэд зориулсан түлхүүр нь гарын үсэг зурахад ашиглагдсан нууц түлхүүртэй таарахгүй байна
 - тогтмол бүртгэл нь блокчэйн дээд эхлэлд эсвэл өмнөх гүйлгээгээр бүртгэгдээгүй байна
 - тэнцвэржүүлэгч програмын гүйцэтгэлийн орчны шаарддаг зөвшөөрлийн токен эсвэл үүрэг бүртгэлд байхгүй байна
-- доменийн ID нь өөрийн өгөгдлийн орон зайтай холбоотой тодорхойлолтгүй байна, жишээлбэл `domain.dataspace`
+- домэйны ID-д `domain.dataspace` зэрэг өгөгдлийн орон зайгаар бүрэн тодорхойлох хэсэг дутсан
 
 CLI командыг алдаа гарсан тохиолдолд илүү амархан уншихын тулд дибаг хийх үед `--output-format text`-г ашиглаарай:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ledger transaction ping --msg "hello"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority --output-format text tx ping --msg "hello"
 ```
 
 ## Асуултууд хоосон үр дүнг буцаана {#queries-return-empty-results}
@@ -65,16 +64,16 @@ cargo run --bin iroha -- --config ./localnet/client.toml --output-format text le
 Салбар шалгалт хийхдээ хамгийн өргөн хайлтаас эхэлнэ үү:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 ## Үйл явдал эсвэл блок урсгалууд эрт зогсдог {#event-or-block-streams-stop-early}
 
-Блок ба эвентийн урсгалын жишээнүүд нь Torii урсгал API төгсгөлүүд дээр тулгуурладаг. Сүлжээний хамтрагч нь одоо ч ажиллаж байгаа эсэхийг шалгаад, хугацаа хэтэрсэн туршилтыг хийнэ үү:
+Блок ба үйл явдлын урсгалын жишээ Torii урсгалын төгсгөлийн цэгт тулгуурладаг. Зангилаа ажиллаж байгааг шалгаж, дараа нь хугацааны хязгаартай туршина:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger blocks 1 --timeout 30s
 cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 ```
 
-HTTP интеграцуудын хувьд, таны API төгсгөл цэгийн замыг одоогийн [Torii API төгсгөлийн холбоос](/mn/reference/torii-endpoints.md) -той харьцуулна уу.
+HTTP интеграцын хувьд өөрийн төгсгөлийн цэгийн замыг одоогийн [Torii төгсгөлийн цэгийн лавлахтай](/mn/reference/torii-endpoints.md) харьцуулна.

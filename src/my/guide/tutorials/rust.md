@@ -1,11 +1,10 @@
 ---
 translation_locale: my
 translation_source: /guide/tutorials/rust.md
-translation_source_hash: 98b0c3a193c6dfe8b266bcc498d7016426cf2f838a7bf7ebfbef145ffdcc7944
+translation_source_hash: fbe41bd6e7fa86d06c027724b446016c14246495964ccf521155e4b790d75041
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Rust {#rust}
 
 Rust အကောင်အထည်ဖော်မှုက အဓိက အလုပ်ခွင်မှာ တည်ရှိပြီး Iroha 3 ကုဒ်ဘေ့စ်နဲ့ အလုပ်လုပ်ဖို့ တိုက်ရိုက်ဆုံးနည်းလမ်းဖြစ်နေဆဲပါ။
@@ -20,7 +19,7 @@ Upstream repository မှာ လက်ရှိမှာ ဖော်ပြထ�
 
 ## အကြံပြုချက် {#recommended-starting-point}
 
-ပရိုဂျက်ရဲ့ လက်ရှိအခြေအနေအတွက် CLI ကို ရည်ညွှန်းချက်နဲ့ အလုပ်ခွင်ကို စတင်ပါ။
+ပရောဂျက်၏ လက်ရှိအခြေအနေအတွက် ရည်ညွှန်းအကောင်အထည်ဖော်မှု CLI နှင့် အလုပ်နယ်ပယ်ကိုယ်တိုင်မှ စတင်ပါ။
 
 ```bash
 git clone https://github.com/hyperledger-iroha/iroha.git
@@ -28,10 +27,10 @@ cd iroha
 cargo build --workspace
 ```
 
-Reference client ကို check-in လုပ်ထားတဲ့ default client configuration နဲ့ run လုပ်ပါ။
+သိုလှောင်ရုံတွင် ထည့်ထားသော ပုံမှန် client ပြင်ဆင်သတ်မှတ်မှုဖြင့် အကိုးအကား client ကို လုပ်ဆောင်ပါ။
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
 ## Taira ကို စမ်းကြည့်ပါ။ ဖတ်ရုံပဲ {#try-taira-read-only}
@@ -54,7 +53,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-`taira.client.toml` ကိုဖန်တီးပြီးနောက် တူညီတဲ့ binary က Taira အပေါ် လက်မှတ်ထိုးထားတဲ့ canary commands တွေကို run လုပ်နိုင်ပါတယ်။ testnet မှထောက်ပံ့တဲ့ account နဲ့ live testnet ရရှိနိုင်မှုလိုအပ်တာကြောင့် သာမန် unit testing တွေကနေ သီးခြားထားပါ။
+`taira.client.toml` ကို ဖန်တီးပြီးနောက် တူညီသော ဘိုင်နရီဖြင့် Taira သို့ လက်မှတ်ထိုးထားသော ထိန်းချုပ်စမ်းသပ်ကွန်မန်းများကို လုပ်ဆောင်နိုင်သည်။ ၎င်းတို့အတွက် စမ်းသပ်ရန်ပုံငွေပေးဝန်ဆောင်မှုမှ ငွေဖြည့်ထားသော အကောင့်နှင့် လက်ရှိစမ်းသပ်ကွန်ရက် ရရှိနိုင်မှု လိုအပ်သဖြင့် သာမန်ယူနစ်စမ်းသပ်မှုများနှင့် သီးခြားထားပါ။
 
 ## Rust Client Software Package ကို အသုံးပြုခြင်း {#using-the-rust-client-crate}
 
@@ -65,13 +64,13 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \
 iroha = { git = "https://github.com/hyperledger-iroha/iroha.git", rev = "<IROHA_COMMIT>", package = "iroha" }
 ```
 
-Rust မျက်နှာပြင်တွေကို လက်တွေ့မှာ အသုံးပြုပုံရဲ့ အပြည့်အစုံဆုံး နမူနာတွေ လိုအပ်ရင် စစ်ဆေးပါ-
+Rust အင်တာဖေ့စ်များကို လက်တွေ့အသုံးပြုပုံ၏ အပြည့်စုံဆုံး နမူနာများ လိုအပ်ပါက အောက်ပါတို့ကို စစ်ဆေးပါ။
 
 - `crates/iroha_cli`
 - `crates/iroha/README.md`
 - `crates/iroha_cli/README.md`
 
-blockchain ledger မှစီမံခန့်ခွဲသော escrow အလုပ်ဖြစ်စဉ်များအတွက် [Native Asset Escrow](/my/blockchain/escrow.md#rust-sdk) ကိုကြည့်ပါ။ Rust ဒေတာမော်ဒယ်သည် လက်ရှိတွင်စျေးကွက် escrow၊ ယေဘုယျအရင်းအမြစ် lock များ, အမည်မသိ escrow, မေးမြန်းချက်များနှင့်ဖြစ်ရပ်များအတွက်အပြည့်အဝရိုက်ကူးထားသည့်ကာကွယ်မှုတစ်ခုဖြစ်သည်။
+လယ်ဂျာက စီမံသော အာမခံအပ်နှံမှုလုပ်ငန်းစဉ်များအတွက် [မူရင်းပိုင်ဆိုင်မှုအာမခံအပ်နှံခြင်း](/my/blockchain/escrow.md#rust-sdk) ကို ကြည့်ပါ။ Rust ဒေတာမော်ဒယ်သည် လက်ရှိတွင် ဈေးကွက်အာမခံအပ်နှံမှု၊ ယေဘုယျပိုင်ဆိုင်မှုလော့ခ်၊ အမည်မဖော်သော အာမခံအပ်နှံမှု၊ query များနှင့် ဖြစ်ရပ်များအတွက် အပြည့်စုံဆုံး အမျိုးအစားသတ်မှတ်ပံ့ပိုးမှု ရှိသည်။
 
 ဒေသခံ CLI အကူအညီ point-in-time data view ကို ပြန်လည်ဖန်တီးနိုင်သည်:
 

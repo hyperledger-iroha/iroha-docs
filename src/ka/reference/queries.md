@@ -1,11 +1,10 @@
 ---
 translation_locale: ka
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # კითხვები {#queries}
 
 Iroha შეკითხვები ბლოკჩეინის რეესტრის მდგომარეობას უმოქმედებენ. მიმდინარე მონაცემთა მოდელი გამოყოფს ორ ფართო შეკითხვის ფორმას:
@@ -86,7 +85,7 @@ Iroha შეკითხვები ბლოკჩეინის რეეს
 |`FindProofRecordsByBackend` |ჩამოთვალეთ მტკიცებულების ჩანაწერები მტკიცებულებების უკანასკნელი |
 |`FindProofRecordsByStatus` |ჩამოთვალეთ მტკიცებულებების ჩანაწერები სტატუსის მიხედვით. |
 
-## Nexus, მონაცემთა ხელმისაწვდომობა და პაკეტები {#nexus-data-availability-and-packages}
+## SORA Nexus, მონაცემთა ხელმისაწვდომობა და პაკეტები {#nexus-data-availability-and-packages}
 
 |კითხვა |მიზანი |
 | --- | --- |

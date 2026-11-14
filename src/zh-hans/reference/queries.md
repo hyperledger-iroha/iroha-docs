@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # 查询 {#queries}
 
 Iroha 查询可以读取账本状态而不对其进行更改。当前数据模型公开两种主要查询形式：
@@ -86,7 +85,7 @@ Iroha 查询可以读取账本状态而不对其进行更改。当前数据模�
 | `FindProofRecordsByBackend` | 列出某证明后端的证明记录。 |
 | `FindProofRecordsByStatus` | 按状态列出证明记录。 |
 
-## Nexus、数据可用性与包 {#nexus-data-availability-and-packages}
+## SORA Nexus、数据可用性与包 {#nexus-data-availability-and-packages}
 
 | 查询 | 用途 |
 | --- | --- |

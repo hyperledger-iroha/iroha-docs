@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hant
 translation_source: /reference/peer-config/params.md
-translation_source_hash: 027486a17e7624cc301f939429baf9ea9ed1259564c3b99b8dc63cce17a7b26e
+translation_source_hash: ebc05275774a1a86c81d5c5667613ffc2d9ad115ac19e40ba804daa736ba4084
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 
 outline: [ 2, 3 ]
 ---
@@ -56,9 +56,9 @@ PUBLIC_KEY="ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7
 
 :::
 
-### `private_key` <Badge text="required" /> {#param-private-key}
+### `private_key` {#param-private-key}
 
-同級金鑰:它必須匹配 `public_key`;共識驗證器同級必須使用 BLS-正常金鑰.
+對等節點的私鑰。請在 `private_key` 與 `private_key_file` 之間恰好設定其中一項；後者是僅限擁有者存取之金鑰檔案的路徑。金鑰必須與 `public_key` 相符；參與共識驗證的對等節點使用 BLS-Normal 金鑰。
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
@@ -139,6 +139,8 @@ TRUSTED_PEERS_POP='[
 :::
 
 ## 創世紀 {#genesis}
+
+首次啟動與重新啟動都必須恰好指定一個創世信任根來源：`genesis.expected_hash` 或 `genesis.expected_hash_file`。產生的節點設定使用後者，指向簽署區塊旁的 `genesis.expected_hash`。複製產生的設定檔時，請保留這項綁定。
 
 ### `genesis.file` {#param-genesis-file}
 
@@ -222,7 +224,7 @@ P2P_PUBLIC_ADDRESS=0.0.0.0:5000
 
 ### `network.block_gossip_size` {#param-network-block-gossip-size}
 
-單則同步訊息中可傳送的區塊數量。
+區塊同步訊息傳播的扇出上限，適用於對等節點樣本與區塊同步更新。
 
 <param-table type=number default-value=4 />
 
@@ -430,12 +432,6 @@ LOG_LEVEL=INFO
 
 :::
 
-::: tip 執行階段更新
-
-該引數透過 Torii 操作員端點進行執行階段配置更新.
-
-:::
-
 ### `logger.filter` {#param-logger-filter}
 
 除 [`logger.level`](#param-logger-level) 外，還可設定更精細的日誌過濾器，並按 target 自訂日誌詳細程度。
@@ -475,12 +471,6 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 `logger.filter`與 [`logger.level`](#param-logger-level)一起工作,沒有一個覆蓋另一個.
 
 例如,如果 `logger.level` 設定為 `INFO` 和 `logger.filter` 設定為 `iroha_core=debug`, 產生的過濾器組將是: `info,iroha_core=debug` (也就是說 `info` 對於所有模組, `debug` 對於 `iroha_core`).
-
-:::
-
-::: tip 執行階段更新
-
-該引數透過 Torii 操作員端點進行執行階段配置更新.
 
 :::
 
@@ -547,7 +537,7 @@ Kura 啟動模式. `strict`是正常和預設的模式:它在節點啟用之前�
 
 `fast` 是在完整啟動稽核可能導致停機時，用於恢復操作可見性的緊急降級服務模式。它要求儲存空間先前已由 `strict` 初始化，且目前這一代快照恰好包含五項成品：`snapshot.data`、`snapshot.sha256`、`snapshot.sig`、`snapshot.fast.norito` 和 `snapshot.merkle.json`。採用網域分離的操作員簽章，將宣告的承載摘要與有界資訊清單繫結；資訊清單則繫結承載長度、鏈/網路身分、終端高度/雜湊、SCCP 政策雜湊，以及是否存在引導沿襲。Fast 模式拒絕引導沿襲，並要求持久 Kura 提供完全相同的標記/計數/尖端邊界。首發版本節點只接受這五項成品，任何其他成品數量或檔名集合都會遭到拒絕。
 
-`fast` 會盤點這五個名稱，並透過中繼資料繫結承載檔案與 Merkle 檔案，但不會讀取、雜湊、剖析或解碼其內容。它根據已簽署的資訊清單建立最小 World/Nexus，將精確的 Kura 雜湊字首對映為唯讀，且不開啟快照 World、區塊雜湊陣列、交易歷史記錄、派生索引或持久復原日誌。Merkle 稽核、規範與語意快照稽核、歷史區塊/終局性/SCCP 協調、Sumeragi 活躍高度復原、合併和查詢日誌、泳道資訊清單/合規來源、Kura 支援的 SoraFS 封存、遞迴儲存計量，以及選用服務協調器均繼續延後。本機交易准入、提案、投票、規範寫入和輔助產生器仍保持停用。Kura 本身拒絕啟動寫入器和持久變更；管線和 FASTPQ 持久化佇列會立即拒絕工作，而不會保留或編碼。Kura 讀取 APIs 也會停用修復與永續性同步行為：暫存輔助記錄不會升級、缺少的泳道成品不會釋出、進度屏障也不會 fsync。Sumeragi 和交易 gossip 均不會啟動。Torii 只公開健康、存活、就緒、對等節點和設定操作；API 版本、狀態、指標以及所有一般狀態/歷史記錄路由都不可用。在以 `strict` 重新啟動前，節點始終不會就緒。
+Fast 模式會列出這五個名稱，並以中繼資料綁定負載與 Merkle 檔案，但不會讀取、雜湊、剖析或解碼其內容。它從簽署清單建立最小的 World/SORA Nexus，以唯讀方式映射確切的 Kura 雜湊前綴，並保持快照 World、區塊雜湊陣列、交易歷史、衍生索引及持久復原日誌未開啟。Merkle、標準形式與語意快照稽核，歷史區塊、最終性與 SCCP 對帳，Sumeragi 活動高度復原，合併與查詢日誌，通道清單及合規來源，以 Kura 為後端的 SoraFS 封存，遞迴儲存計量，以及選用服務的對帳程序都仍延後執行。本機交易准入、提議、投票、標準寫入及輔助產生程序維持停用。Kura 本身會拒絕寫入程序啟動與持久修改；處理管線及 FASTPQ 持久化佇列會立即拒絕工作，而不是保留或編碼它。Kura 讀取 APIs 也會停用修復及持久同步行為：暫存附屬檔案不會升格為正式檔案，缺少的通道產物不會發布，進度屏障也不會執行 fsync。Sumeragi 與交易傳播不會啟動。Torii 只提供健康、存活、就緒、對等節點及設定操作；API 版本、狀態、指標，以及所有一般狀態與歷史路由仍不可用。直到以 Strict 模式重新啟動之前，就緒狀態都維持不可用。
 
 僅在事故期間使用 `fast`。服務穩定後，請停止節點、恢復 `strict` 並重新啟動，以便在恢復正式環境之前執行所有延後的檢查和索引重建。Fast 模式不要求存在延後的合併日誌，也不會建立、修復、截斷或匯入規範儲存；它不會讀取或變更未釋出的字尾和待處理的輔助復原階段，而是忽略它們並留待 Strict 模式復原。匯入的僅雜湊快照沿襲仍不可用。缺少或無效的目前快照會立即導致失敗；Fast 模式絕不會回退至空 World 或歷史重播重建。
 
@@ -557,7 +547,7 @@ Kura 啟動模式. `strict`是正常和預設的模式:它在節點啟用之前�
 字串,可能值:
 
 - `strict`:完整驗證和正常生產
-- `fast`：有界的緊急啟動；在以 `strict` 模式重新啟動之前，生產功能保持隔離
+- `fast`：有界的緊急啟動；在以 Strict 模式重新啟動前，生產功能保持隔離
 
 </template>
 </param-table>
@@ -662,30 +652,20 @@ transaction_time_to_live_ms = 43_200_000
 
 ## Sumeragi {#sumeragi}
 
-### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
+`[sumeragi]` 包含節點本機參與設定、簽署材料保管、安全記錄路徑，以及文件允許的逾時與同步覆寫值。共識模式、委員會規模、法定人數、區塊大小及交易限制來自簽署的創世資料與已提交狀態。故障注入屬於確定性模擬器。
 
-僅用於煉的除錯開關 Sumeragi 軟叉處理路徑.將其禁用在控制測試之外;在執行的生產網路上更改可能會導致對等節點對共識行為產生分歧.
+支援的欄位請參閱[設定](/zh-hant/guide/configure/overview.md)，以及固定版本的[設定參考](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/references/configuration.md)。
 
-<param-table type=bool default-value=false />
+## SORA Nexus 原子私密結算 {#nexus-atomic-private-settlement}
 
-::: code-group
+`[nexus.atomic_private_settlement]` 設定單一節點的加密附屬資料保管，恰好包含兩項本機儲存上限：
 
-```toml [Config File]
-[sumeragi.debug]
-force_soft_fork = true
-```
+- `sidecar_max_records`：最多保留多少筆加密結算記錄。
+- `sidecar_max_total_bytes`：最多保留多少標準編碼位元組。
 
-:::
+啟用、證明設定檔、付款限額、到期及稽核者政策，均來自已提交的隱私政策。節點設定不能啟用或變更這些有效性規則。
 
-## Nexus 原子核私人和解 {#nexus-atomic-private-settlement}
-
-`[nexus.atomic_private_settlement]` 管理獨立的 `AtomicPrivateSettlementV1` 路徑。它預設停用。設定 `enabled = true` 還需要 `activation_height`；除非鏈上功能、通知期、固定證明設定檔以及集區/稽核治理均處於作用中狀態，否則准入仍會採用失敗關閉策略。
-
-主要限制是: `max_participants`, `max_expiry_blocks`, `audit_timeout_blocks`, `prepare_timeout_blocks`, `commit_timeout_blocks`, `max_proof_bytes`, `max_capsule_bytes`, `max_carrier_bytes`, `sidecar_retention_blocks`, `sidecar_max_records`, 和 `sidecar_max_total_bytes`. `capsule_padding_classes_bytes` 必須是一個嚴格增長的子集 V1 裝課. `permitted_policy_versions` 僅接受 V1.
-
-`max_capsule_bytes` 衡量完整 `PrivateSettlementAuditCapsuleV1` 的規範 Norito 位元組數，其中包括 AAD、nonce、密文、向量框架和每位稽核員的 wrapped-DEK 列；它不是僅針對密文的限制。每個啟用的填充類別都必須能容納至少 `default_min_auditor_approvals` 位稽核員的保守完整 capsule envelope。此核准設定也是強制下限：Torii 會拒絕 `min_approvals` 較低的新許可政策，也會拒絕任何超出規範位元組上限的實際 capsule。
-
-這些設定沒有生產環境變數啟用繞行.檢視[執行跨資料空間的私密原子結算](/zh-hant/get-started/atomic-private-settlement),瞭解完整的配置示例和操作要求.直到文件化外部釋放門透過,路徑不會獲得生產資格.
+保管設定與操作要求請參閱[執行跨資料空間的原子私密結算](/zh-hant/get-started/atomic-private-settlement.md)。元件已實作並不代表已通過生產環境資格驗證。
 
 ## 快照 {#snapshot}
 
@@ -766,26 +746,7 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 ## 電測儀 {#telemetry}
 
-遠端測量將對等節點診斷輸出到外部遠端測量的收集器.當對等節點報告給收藏器時,設定`telemetry.name` 和 `telemetry.url`;如果不使用遠端測試時,省略該節目.
-
-`name`和 `url`必須配對.
-
-所有 `telemetry` 節目都是可選的.
-
-### `telemetry.name` {#param-telemetry-name}
-
-在遠端測量中顯示節點的名稱.
-
-<param-table type=string />
-
-::: code-group
-
-```toml [Config File]
-[telemetry]
-name = "iroha"
-```
-
-:::
+遙測會將對等節點診斷資料匯出至外部遙測收集器。若對等節點應向收集器回報，請設定 `telemetry.url`；未使用收集器時，請省略此區段。重試時間也在同一選用設定表中設定。
 
 ### `telemetry.url` {#param-telemetry-url}
 

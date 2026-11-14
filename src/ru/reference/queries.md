@@ -1,11 +1,10 @@
 ---
 translation_locale: ru
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Запросы {#queries}
 
 Iroha запросы считывают состояние распределённого реестра блокчейна без его изменения. Текущая модель данных предлагает две основные формы запросов:
@@ -86,7 +85,7 @@ Iroha запросы считывают состояние распределё�
 | `FindProofRecordsByBackend` |Список записей доказательств для подсистемы доказательств.|
 | `FindProofRecordsByStatus` |Список записей доказательств по статусу.|
 
-## Nexus, Доступность данных и пакеты {#nexus-data-availability-and-packages}
+## SORA Nexus, Доступность данных и пакеты {#nexus-data-availability-and-packages}
 
 |Запрос|Цель|
 | --- | --- |

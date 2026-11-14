@@ -1,14 +1,13 @@
 ---
 translation_locale: fr
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Clés pour le déploiement du réseau {#keys-for-network-deployment}
 
-Chaque réseau a besoin de matériel clé distinct pour les clients, les pairs du réseau, la signature de la genèse de la blockchain et, pour les profils NPoS ou Nexus, les identités des validateurs BLS.
+Chaque réseau nécessite des clés distinctes pour les clients, les pairs, la signature de la genèse et, pour les profils NPoS ou SORA Nexus, les identités BLS des validateurs.
 
 ## Où les clés sont utilisées {#where-keys-are-used}
 
@@ -21,7 +20,7 @@ Chaque réseau a besoin de matériel clé distinct pour les clients, les pairs d
 Pour les déploiements locaux ou de test, laissez Kagami générer tous ces fichiers ensemble :
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Pour un réseau ou un profil existant, utilisez le flux guidé :

@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
+translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # פועלים Iroha על מתכת עירומה {#running-iroha-on-bare-metal}
 
 השתמש בזרם העבודה הזה כאשר אתה רוצה להפעיל צמתים ישירות במארחים במקום דרך Docker Compose. עץ המקור הנוכחי מספק Kagami גנרטורים שכתבים תואמת בראשית, קונפיגיות צמתים, הקונפיגית לקלינט, ו- start/stop סקרפטים.
@@ -32,7 +31,7 @@ cargo build --release \
 ליצור רשת מקומית של ארבעה צמתים Iroha 3:
 
 ```bash
-target/release/kagami localnet --peers 4 --out-dir ./localnet
+target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
 קובץ ההוצא מכיל את הקבצים המופעלים `genesis.json`, `genesis.signed.nrt`, קבצים צמתים `config.toml`, `client.toml`, תסריטים עוזרים, ו- `README.md` עם פקודות מדויקות עבור חבורת זו.
@@ -52,7 +51,7 @@ target/release/kagami localnet --peers 4 --out-dir ./localnet
 השתמשו בהגדרת הלקוח המוצא:
 
 ```bash
-target/release/iroha --config ./localnet/client.toml ledger domain list all
+target/release/iroha --config ./localnet/client.toml ledger domain list --all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 

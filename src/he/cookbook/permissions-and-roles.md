@@ -6,16 +6,16 @@ translation_status: machine-validated
 translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
 
-# רשיונות ותפקידים {#permissions-and-roles}
+# הרשאות ותפקידים {#permissions-and-roles}
 
-## התוצאה {#outcome}
+## תוצאה {#outcome}
 
-ליצור תפקיד שמספק לאחת החשבונות אישור לעדכן מטא נתונים על חשבון מסוים, להעניק אותם לנציג, להוכיח את הכתיבה המודלוגתית, ולהראות את ההוראות המתאימות בטייפ Rust.
+צרו תפקיד המעניק לחשבון אחד הרשאה לעדכון מטא־נתונים בחשבון מסוים אחד, הקצו אותו לנציג, הוכיחו שהכתיבה מכוח ההרשאה המואצלת פועלת, והציגו את הוראות Rust המקבילות בעלות הטיפוסים המוגדרים.
 
 ## תנאים מוקדמים {#prerequisites}
 
 - לקוח Taira ממומן מתוך [חיבור ל־Taira](./connect-to-taira.md).
-- `TARGET_ACCOUNT` ו `DELEGATE_ACCOUNT` נקבעו לחשבון הקנוני של I105 IDs.
+- `TARGET_ACCOUNT` ו־`DELEGATE_ACCOUNT` מוגדרים כמזהי חשבון קנוניים מסוג I105.
 - החשבון החותם חייב להחזיק ב־`CanManageRoles` וחייב להיות מסוגל להאציל את ההרשאה המוגבלת להיקף: הוא `TARGET_ACCOUNT` עצמו, או שהוא כבר מחזיק ב־`CanModifyAccountMetadata` עבור אותו חשבון. ב־Taira זוהי פעולה ניהולית שמוגנת בהרשאות. הלקוח של localnet שנוצר אינו מחזיק ב־`CanManageRoles`, ולכן המתכון זקוק לרשת שה־genesis שלה מעניק אותה.
 
 ```bash
@@ -25,15 +25,15 @@ test -n "$TARGET_ACCOUNT"
 test -n "$DELEGATE_ACCOUNT"
 ```
 
-השתמשו בקונפיגורת קלינטה שנייה עבור המשלוח בעת ההוכחה של כתיבה:
+השתמשו בתצורת לקוח שנייה עבור הנציג בעת הוכחת הכתיבה:
 
 ```bash
 DELEGATE_CONFIG=./taira.delegate.toml
 ```
 
-## צעדים {#steps}
+## שלבים {#steps}
 
-### 1. רשום תפקיד ריק {#_1-register-an-empty-role}
+### 1. רשמו תפקיד ריק {#_1-register-an-empty-role}
 
 כל פקודת CLI שמשנה מצב מציינת במפורש את משלם העמלה. ה־CLI מקבל הצעת עמלה מדויקת, בנכס העמלה של Taira, לפני החתימה.
 
@@ -43,9 +43,9 @@ iroha --config "$CONFIG" \
   ledger role register --id "$ROLE_ID"
 ```
 
-### 2. הוספת רשות מוגדרת לחשבון היעד {#_2-add-a-permission-scoped-to-the-target-account}
+### 2. הוסיפו הרשאה המוגבלת לחשבון היעד {#_2-add-a-permission-scoped-to-the-target-account}
 
-סימני אישור נכתבים JSON אובייקטים. שמרו את החשבון בתוך `payload` כ I105 ID; שם כינוי אינו נכון בשדה קפדני זה.
+אסימוני הרשאה הם עצמי JSON בעלי טיפוס מוגדר. שמרו את החשבון בתוך `payload` כמזהה I105; כינוי אינו תקף בשדה מחמיר זה.
 
 ```bash
 jq -cn --arg account "$TARGET_ACCOUNT" \
@@ -55,7 +55,7 @@ jq -cn --arg account "$TARGET_ACCOUNT" \
     ledger role permission grant --id "$ROLE_ID"
 ```
 
-### 3. להעניק את התפקיד לנציג {#_3-assign-the-role-to-the-delegate}
+### 3. הקצו את התפקיד לנציג {#_3-assign-the-role-to-the-delegate}
 
 ```bash
 iroha --config "$CONFIG" \
@@ -65,11 +65,11 @@ iroha --config "$CONFIG" \
   --role "$ROLE_ID"
 ```
 
-התפקידים והתרומות שלהם לא נגמרו. לבטל אותם במפורש כאשר הגישה כבר לא נחוצה.
+תפקידים והענקותיהם אינם פוקעים. בטלו אותם במפורש כשהגישה כבר אינה נחוצה.
 
-### 4. השתמשו באישור המוסמך {#_4-exercise-the-delegated-permission}
+### 4. הפעילו את ההרשאה המואצלת {#_4-exercise-the-delegated-permission}
 
-השתמשו בחתימה של המשלוח ובריבית המחיר עבור הכתיבה. הערכים JSON נלקחים מהכניסות סטנדרטיות.
+השתמשו בחותם של הנציג וביתרתו לתשלום העמלה לצורך הכתיבה. ערכי JSON נקראים מהקלט הסטנדרטי.
 
 ```bash
 printf '"delegated"\n' |
@@ -102,7 +102,7 @@ client.submit_all::<InstructionBox>(
 )?;
 ```
 
-## לאמת {#verify}
+## אימות {#verify}
 
 קראו את ההרשאות האפקטיביות של הנציג, הכוללות הענקות דרך תפקידים, ולאחר מכן קראו את הערך המדויק שהנציג כתב:
 
@@ -123,16 +123,16 @@ iroha --config "$CONFIG" account meta get \
 ## פתרון בעיות {#troubleshooting}
 
 - `Not permitted` בעת רישום, עריכה או הקצאה של התפקיד פירושו שלחותם חסרה הסמכות הנדרשת ב־Taira. אל תחליפו את האסימון המוגבל להיקף באסימון גלובלי; בקשו את ההענקה המדויקת.
-- שגיאה בנתח עומס מועיל בדרך כלל פירושה `account` הוצא לצד `payload`, נקבע כינוי במקום I105 ID, או שהערך של JSON נכתב פעמיים .
+- שגיאה בפענוח המטען נובעת בדרך כלל מהצבת `account` לצד `payload`, מאספקת כינוי במקום מזהה I105, או מהקפת ערך ה־JSON במירכאות פעמיים.
 - דחיית עמלה שייכת לחותם שמגיש את אותו שלב. ממנו את המנהל ואת הנציג בנפרד, בנכס העמלה שמצוין בכל הצעת עמלה.
-- מתן תפקיד מוצלח אינו עיקף את היקף הקודד בתצוגותיו. תפקיד זה יכול לשנות רק את החשבון המזומן במשאב הפועל של הרשאה.
+- הענקת תפקיד מוצלחת אינה עוקפת את ההיקף המקודד באסימונים שלו. תפקיד זה יכול לשנות רק את החשבון ששמו מופיע במטען ההרשאה.
 - לניקוי, הריצו את `account role revoke`, לאחר מכן את `ledger role permission revoke`, ולבסוף את `ledger role unregister`; כל אחת מהן היא פעולת כתיבה נפרדת וחייבת לכלול `--fee-payer authority`.
 
-## מקור ומסמכים קשורים {#source-and-related-docs}
+## מקור ותיעוד קשור {#source-and-related-docs}
 
-- [בדיקות אינטגרציה של תפקידים ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/roles.rs)
-- [בדיקות אינטגרציה של רשיונות במתחם קשור](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/permissions.rs)
-- [מודל נתונים של הרשאות מבוסס ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_executor_data_model/src/permission.rs)
-- [רשיונות ותפקידים ](/he/blockchain/permissions.md)
-- [תיקון רשיונות ](/he/reference/permissions.md)
+- [בדיקות אינטגרציה של תפקידים בקומיט המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/roles.rs)
+- [בדיקות אינטגרציה של הרשאות בקומיט המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/permissions.rs)
+- [מודל הנתונים של ההרשאות המובנות בקומיט המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_executor_data_model/src/permission.rs)
+- [הרשאות ותפקידים](/he/blockchain/permissions.md)
+- [מדריך אסימוני ההרשאה](/he/reference/permissions.md)
 - [מטא-נתונים](./metadata.md)

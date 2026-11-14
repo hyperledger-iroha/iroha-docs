@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /blockchain/ram-lfe.md
-translation_source_hash: 66436bfdcdfea9bcd52834436dc8b6abe9812549583e6bfca06cbe73d5f75d35
+translation_source_hash: a07f2d06180425e4d1c1393810cf679fb88b3e993d49792b2483485cb1cc52fd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # RAM-LFE {#ram-lfe}
 
 RAM-LFE የዘፈቀደ መዳረሻ ማሽን ላኮኒክ ተግባር ግምገማ ማለት ነው።. በ Iroha ውስጥ፣ የህዝብ ፖሊሲያቸው በሰንሰለት ላይ ለሆነ ነገር ግን የገምጋሚው አመክንዮ፣ ሚስጥራዊ ወይም ጥሬ ግብአት ለአለም ሁኔታ መፃፍ ለሌለባቸው ፕሮግራሞች አጠቃላይ የተደበቀ ተግባር ንብርብር ነው።. እንደ የግል ስልክ ወይም ኢሜል ፍለጋ ባሉ SORA Nexus መለያ ፍሰቶች ጥቅም ላይ ይውላል፣ እና እንዲሁም የኖድ መገለጫ መተግበሪያን የሚመለከቱ መንገዶችን ሲያነቃ እንደ አጠቃላይ Torii ፕሮግራም-ማስፈጸሚያ ረዳት ሊጋለጥ ይችላል።
@@ -742,7 +741,7 @@ ActivateIdentifierPolicy(policy_id = "phone#team")
 |`POST /v1/ram-lfe/receipts/verify`|`RamLfeExecutionReceipt`ን ከታተመው ፖሊሲ ጋር ያረጋግጡ እና እንደ አማራጭ `output_hex`ን ከ`output_hash` ጋር ያወዳድሩ።|
 |`GET /v1/identifier-policies`|መለያ ፖሊሲዎችን፣ መደበኛነት ሁነታዎችን፣ የመፍትሄ ቁልፎችን እና የተመሰጠረ-ግቤት ሜታዳታን ይዘርዝሩ።|
 |`POST /v1/accounts/{account_id}/identifiers/claim-receipt`|ተጠቃሚው በ`ClaimIdentifier` ውስጥ ሊክተት የሚችለውን የደረሰኝ ያውጡ።|
-|`POST /v1/identifiers/resolve`|ንቁ የይገባኛል ጥያቄ ሲኖር መደበኛ መለያ ግብዓትን ወደ ታሰረ መለያ ይፍቱ።|
+| `POST /v1/identifiers/resolve` | ንቁ የይገባኛል ጥያቄ ሲኖር ወደ መደበኛ ቅርጽ የተቀየረውን መለያ ግቤት በመጠቀም ከእሱ ጋር የተሳሰረውን መለያ ያግኙ። |
 |`GET /v1/identifiers/receipts/{receipt_hash}`|ለኦዲት እና ለድጋፍ መሳሪያዎች በደረሰኝ የማያቋርጥ መለያ የይገባኛል ጥያቄን ይፈልጉ።|
 
 በእነዚህ መንገዶች ላይ ከመገንባትዎ በፊት ሁል ጊዜ የታለመውን ኖድ `/openapi.json` ሰነድ ያረጋግጡ። ተገኝነት በኖድ ግንባታ እና በአውታረ መረብ መገለጫ ላይ የተመሰረተ ነው.
@@ -764,6 +763,6 @@ Torii በሂደት ላይ ያለው RAM-LFE የሶፍትዌር ማስፈጸሚ�
 
 ## የ ተዛመዱ አርእስቶች {#related-topics}
 
-- [ለግል ዳታ ቦታ የስፖንሰር ክፍያዎች](/am/get-started/private-dataspace-fee-sponsor.md#_4-register-phone-and-email-privately-with-fhe)
+- [ለግል ዳታ ቦታ የስፖንሰር ክፍያዎች](/am/get-started/private-dataspace-fee-sponsor.md)
 - [Torii API የመጨረሻ ነጥቦች](/am/reference/torii-endpoints.md#app-and-sora-route-families)
 - [ስም-አልባ ግብይቶች](/am/blockchain/anonymous-transactions.md)

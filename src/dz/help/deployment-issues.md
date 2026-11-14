@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # ཞབས་ཏོག་གི་དཀའ་ངལ་སེལ་ཐབས་ {#troubleshooting-deployment-issues}
 
@@ -14,7 +14,7 @@ translation_engine: human-reviewed
 ས་གནས་དང་ བརྟག་དཔྱད་ལག་ལེན་ཚུ་གི་དོན་ལུ་ ལག་ཐོག་ལས་བྲིས་མི་ འདྲ་མཉམ་ཡིག་སྣོད་ཚུ་ཚབ་ལུ་ Kagami གིས་ བཟོ་སྐྲུན་འབད་མི་ ཨེ་རེ་ཕ་ཀེཊ་ཚུ་ གདམ་ཁ་རྐྱབ་དགོ།
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 བཟོ་སྐྲུན་འབད་མིའི་ཐོ་ཡིག་ནང་ མཐུད་མཚམས་བཟོ་ཐངས་ཚུ་, འབྱུང་ཁུངས་ཀྱི་དོན་ཆས་, འགོ་འདྲེན་འཐབ་ནིའི་ ཡིག་འབྲུ་ཚུ་ དེ་ལས་ README གི་དོན་ལུ་ Iroha 3 སྒྲིག་འཇུག་གི་ཐོ་བཀོད་ཡོདཔ་ཨིན།
@@ -41,7 +41,7 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 བཟོ་སྐྲུན་འབད་ ད་ལྟོའི་ Kagami ས་གནས་བརྟག་དཔྱད་དྲ་རྒྱ ཐོན་ཐོ་བཀོད་ནང་ལས་ བསྡུ་སྒྲིག་རྐྱབས་ དེ་འབདཝ་ལས་ བཀའ་རྒྱ་གི་གྲལ་རིམ་གྱི་ གྲོས་བསྡུར་དང་ གཞི་སྒྲིག་ཡིག་སྣོད་ཚུ་ ཐོ་བཀོད་འབད་ཚར་མི་ ལས་རིམ་ཨང་རྟགས ལུ་ མཐུན་པ་འོང་།
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```
@@ -66,9 +66,9 @@ docker compose -f ./docker-compose.yml up
 
 གློག་ཐག་ཅིག་ ལོག་སྟེ་ར་འགོ་བཙུགསཔ་ཨིན་པ་ཅིན་ གློག་ཐག་ནང་གི་ སྒྲིག་གཞི་འདི་ ཕབ་ལེན་འབད་ཡོད་པའི་ [`peer.template.toml`](/dz/reference/peer-config/index.md#template)དང་ཕྱདཔ་ད་ ལྟ་རྟོག་འབད་བ་ཅིན་ གློག་ཐག་འདི་གིས་ ཧེ་མ་གི་ Kura ཌེ་ཊའི་ཚུ་ ལོག་སྤྱོད་འབདཝ་ཨིན་ན་མེན་ཟེར་ བལྟ་དགོ།
 
-## Sora གི་ཐོ་ཡིག་ {#sora-profile}
+## SORA Nexus གསལ་སྡུད {#sora-profile}
 
-Nexus, SoraFS ཡང་ན་ ལེན་ལམ་མང་རབས་ཅིག་ལག་ལེན་འཐབ་མི་ སྒེར་གྱི་དང་ཡང་ན་ ས་གནས་ཀྱི་ Iroha 3 ལག་ལེན་གྱིས་ Sora གསལ་ཐོ ཤུགས་ཅན་སྦེ་སྤྱོད་ཐོག་ལས་ རང་བཞིན་གྱི་ ཌེ་མོན འགོ་བཙུགས་དགོ།
+SORA Nexus, SoraFS, ཡང་ན་རྒྱུན་ལམ་མང་པོའི་ལས་རིམ་ལག་ལེན་འཐབ་པའི་ སྒེར་གྱི་ཡང་ན་ཉེ་གནས་ Iroha 3 བཀྲམ་སྤེལ་ཚུ་གིས་ SORA Nexus གསལ་སྡུད་སྤྱོད་བཏུབ་བཟོ་སྟེ་ཚད་ལྡན་རྒྱབ་ལས་གློག་རིམ་འགོ་བཙུགས་དགོ།
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

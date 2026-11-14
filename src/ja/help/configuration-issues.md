@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: ab0496d2cd36056dbc5486cd1ea288606476862290cc544e7afcf63a1641dd6d
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # 設定問題のトラブルシューティング {#troubleshooting-configuration-issues}
 
 このセクションでは、Iroha 3 の設定に関するトラブルシューティングのヒントを提供します。まず [鍵を確認した](./overview.md#check-the-keys) を確認してください。これは Iroha における問題の最も一般的な原因です。
@@ -25,7 +24,7 @@ Iroha の Docker Compose バージョンを使用しているときに、ネッ�
 このような問題をトラブルシューティングする方法は、Iroha の使用に依存します。これは基本的なデモであり、ネットワークピアのデータを保持する必要がない場合、Kagami を使用して、対応する localnet または Docker Compose バンドルを再生成してください：
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
 ```
 

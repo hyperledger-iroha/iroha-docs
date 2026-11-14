@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /guide/security/storing-cryptographic-keys.md
-translation_source_hash: 168ee24e84f9225e81365658018717155476ae1508fefba5e0234e0bf6feefbd
+translation_source_hash: a95fe07f62d51a813a2f9fb02d67521ae421faf8467648e5f215e069c5d68572
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Kryptografik Kalitlarni Saqlash {#storing-cryptographic-keys}
 
 Shaxsiy kalit uning avtorizatsiya qiluvchisi uchun ruxsat berilgan har bir amalni bajarishga vakolat berishi mumkin. Hech qachon shaxsiy kalitni ulashmang. Urug‘lik materiallari, tiklash sirlarini, egasi tokenlarini va eksport qilingan kalit fayllarini bir xil ehtiyotkorlik bilan himoya qiling.
@@ -28,7 +27,7 @@ Mahalliy rivojlanish, nazorat qilinadigan testlar yoki xavfsiz saqlash topshirig
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-Ota papka mavjud bo‘lishi kerak. Maqsad yangi bo‘lishi yoki hozirgi foydalanuvchi tomonidan allaqachon egalik qilinishi kerak, rejim `0700`, simvolik havolalardan xoli va bo‘sh bo‘lishi kerak. Kagami yozadi `public.key` va `private.key` bilan `0600` rejimida; `--pop` shuningdek `pop.hex` yozadi. Bu buyruq Kagami egalik qiluvchi fayl tizimi qoidalarini majburlay olmaydigan platformalarda bajarilmaydi.
+Ota katalog mavjud bo‘lishi kerak. Maqsad hatto bo‘sh katalog sifatida ham mavjud bo‘lmasligi kerak. Kagami uni `0700` rejimida yaratadi, faqat egaga ruxsat beruvchi fayl tizimi tekshiruvlarini majburiy qiladi, ramziy havolalarni rad etadi va `public.key` hamda `private.key`ni `0600` rejimida yozadi; `--pop` `pop.hex`ni ham yozadi. Kagami faqat egaga ruxsat berish qoidalarini majburiy qila olmaydigan platformalarda buyruq bajarilmaydi.
 
 Shaxsiy kalit fayli shifrlanmagan eksport hisoblanadi. Uni manba nazorati, umumiy papkalar, loglar, chiptalar, chat va qurilish artefaktlaridan uzoqda saqlang. Ishlab chiqarish kalitini uning tasdiqlangan saqlash chegarasiga import qiling, so‘ngra eksportni joylashtirish protsedurasiga muvofiq olib tashlang. Ishlab chiqarishda rivojlantirish kalitidan qayta foydalanmang.
 

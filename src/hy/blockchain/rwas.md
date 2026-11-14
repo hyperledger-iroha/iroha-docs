@@ -286,7 +286,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### Հետեւողականության վերանայման ժամանակ սառեցեք {#freeze-during-compliance-review}
 
-Ներկայացրեք `FreezeRwa` այն դեպքում, երբ օֆ-շղթակից վերանայման արդյունքում պետք է արգելափակվի սովորական սեփականատերերի գործունեությունը: ստորագրողը պետք է լինի վերահսկողություն իրականացնող անձը: Խումբը պետք է ունենա `freeze_enabled`.
+Ուղարկեք `FreezeRwa`, երբ արտաշղթայական վերանայումը պետք է արգելափակի սեփականատիրոջ սովորական գործողությունները։ Ստորագրողը պետք է լինի վերահսկիչ։ Ակտիվների խմբաքանակը պետք է ունենա `freeze_enabled`։
 
 ```python
 draft = TransactionDraft(
@@ -453,7 +453,7 @@ Python գործարքի ամբողջական օրինակի համար տես [�
 
 ## Ծանոթացված փաստաթղթեր {#related-docs}
 
-- [Գործիքներ](/hy/blockchain/assets.md)
+- [Ակտիվներ](/hy/blockchain/assets.md)
 - [Մետադատա](/hy/blockchain/metadata.md)
 - [Iroha Հատուկ հրահանգներ](/hy/blockchain/instructions.md)
 - [Հարցումներ](/hy/reference/queries.md#assets-nfts-and-rwas)

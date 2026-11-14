@@ -14,7 +14,7 @@ translation_engine: bing-translator-llm+claude-opus-5-5
 
 ## ቅድመ ሁኔታዎች {#prerequisites}
 
-- የቁጥር ንብረት ፍቺ እና በቂ መጠን ያለው መክፈቻ/ሻጭ።
+- የቁጥር ንብረት ፍቺ እና በቂ መጠን በባለቤትነት የያዘ የኤስክሮው ከፋች/ሻጭ።
 - አንድ እርምጃ ለሚያቀርብ እያንዳንዱ አካል በገንዘብ የተደገፈ፣ ነጠላ-ቁልፍ I105 ደንበኞች። የክፍያ ንብረቱ የአሁኑ የ Taira የቴስትኔት የገንዘብ ድጋፍ አገልግሎት ፖሊሲ ከሚያትመው ጋር የሚዛመድ፣ በፈቃድ ባለቤቱ የሚከፈል የቀጥታ `fee_payment` ዓላማ ይጠቀሙ፤ የንብረት መታወቂያ ከሰነድ ውስጥ አያስገቡ።
 - የአሁኑ Rust ወይም Python SDK ከ Iroha ፕሮቶኮል ማጠናቀቂያ `c8c872461e92f04325c350cdd952f4276e96f9dc`።
 - ለ JavaScript አቀናባሪ ምሳሌ፣ Node.js 24 እና አብሮ የተሰራ ጥቅል በአካባቢው ልማት አካባቢ `@iroha/iroha-js` እና ቤተኛ `iroha_js_host`; [JavaScript SDK ምንጭ-ግንባታ ማዋቀር](/am/guide/tutorials/javascript.md#build-from-source) የሚለውን ይከተሉ። የአሳሽ ግንባታዎች ቤተኛ አስተናጋጁን ከመጫን ይልቅ `compilerUrl` ማቅረብ አለባቸው።

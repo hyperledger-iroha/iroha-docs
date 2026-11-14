@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /reference/binaries.md
-translation_source_hash: c617a21d50b28495c261d05d672e0b7803c282d53da577391dbebbc7f120d045
+translation_source_hash: 75848623e735abc80326f9ebda6f74ab438b67eaeddeacdd4d8c5509856a999e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Iroha بائنریوں کے ساتھ کام کرنا {#working-with-iroha-binaries}
 
 Iroha 3 آپریٹر ورک فلو چار بنیادی بائنریوں کے گرد گھومتا ہے:
@@ -50,7 +49,7 @@ cargo run --bin kagami -- --help
 
 ## Docker تصویر {#docker-image}
 
-اپ اسٹریم کام کی جگہ استعمال کرتا ہے `kagami localnet` اور `kagami docker` پیدا کرنے کے لئے Docker Compose فائلیں جو چیک آؤٹ کوڈ سے ملتی ہیں. `hyperledger/iroha:dev` ان فائلوں کے ساتھ تصویر کا استعمال کیا جا سکتا ہے.
+اصل ورک اسپیس `kagami localnet generate` اور `kagami docker` سے ایسی Docker Compose فائلیں بناتی ہے جو چیک آؤٹ کیے گئے کوڈ سے مطابقت رکھتی ہیں۔ ان تیار کردہ فائلوں کے ساتھ `hyperledger/iroha:dev` امیج استعمال ہو سکتی ہے۔
 
 CLI کو ایک کنٹینر میں چلائیں:
 
@@ -67,7 +66,7 @@ docker run -t hyperledger/iroha:dev kagami --help
 پیئر اسٹارٹ اپ کے لئے، ایک مقامی نیٹ ورک پیدا کریں اور سب سے پہلے فائل کو مرتب کریں:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```

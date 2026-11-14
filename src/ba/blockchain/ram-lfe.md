@@ -1,14 +1,13 @@
 ---
 translation_locale: ba
 translation_source: /blockchain/ram-lfe.md
-translation_source_hash: 66436bfdcdfea9bcd52834436dc8b6abe9812549583e6bfca06cbe73d5f75d35
+translation_source_hash: a07f2d06180425e4d1c1393810cf679fb88b3e993d49792b2483485cb1cc52fd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # RAM-LFE {#ram-lfe}
 
-RAM-LFE — Random-Access Machine Laconic Function Evaluation. Iroha-ла ул public policy-һы сылбырҙа булған, әммә evaluator логикаһы, серҙәре йәки сей input-тары донъя торошона яҙылырға тейеш булмаған программалар өсөн дөйөм йәшерен функциялар ҡатламы. Уны шәхси телефон йәки email эҙләү кеүек SORA Nexus идентификатор ағымдары ҡуллана; node profile ҡушымтаға йүнәлтелгән маршруттарҙы ҡушһа, ул Torii программаһын үтәү өсөн дөйөм ярҙамсы итеп тә асылырға мөмкин.
+RAM-LFE осраҡлы рәүештә хәтергә мөрәжәғәт итеүсе машинала функцияны ҡыҫҡа формала иҫәпләүҙе аңлата. Iroha эсендә ул асыҡ сәйәсәте сылбырҙа һаҡланған, әммә иҫәпләү логикаһы, сере йәки эшкәртелмәгән индереүе донъя торошона яҙылырға тейеш булмаған программалар өсөн дөйөм йәшерен функциялар ҡатламы. Ул телефон йәки электрон почтаны йәшерен эҙләү кеүек SORA Nexus идентификатор эш ағымдарында ҡулланыла. Төйөн профиле ҡушымталар өсөн маршруттарҙы асҡанда, уны Torii программаһын башҡарыу өсөн дөйөм ярҙамсы булараҡ та бирергә мөмкин.
 
 Сылбыр сәйәсәт йөкләмәһе һәм квитанция раҫлау метамәғлүмәттәрен һаҡлай. Резолютор йәки Torii йүгереү ваҡыты йәшерен программаны баһалай, рөхсәт ителгән продукцияны ғына ҡайтарып бирә һәм клиенттарҙың, ярҙам инструменттары йәки бухгалтер инструкциялары теркәлгән сәйәсәткә ҡаршы тикшереп була торған квитанцияны ҡуша.
 
@@ -764,6 +763,6 @@ Torii-ның процесста эшләү ваҡыты RAM-LFE `torii.ram_lfe.p
 
 ## Төрлө темалар {#related-topics}
 
-- [Шәхси мәғлүмәттәр биләмәһе өсөн спонсорлыҡ түләүҙәре](/ba/get-started/private-dataspace-fee-sponsor.md#_4-register-phone-and-email-privately-with-fhe)
+- [Шәхси мәғлүмәттәр биләмәһе өсөн спонсорлыҡ түләүҙәре](/ba/get-started/private-dataspace-fee-sponsor.md)
 - [Torii Оҙаҡҡы һыҙаттар](/ba/reference/torii-endpoints.md#app-and-sora-route-families)
 - [Аноним транзакциялар](/ba/blockchain/anonymous-transactions.md)

@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /guide/best-practices/application-development.md
-translation_source_hash: f95261b0416abfcd87881135ceb9b604a1cdde2dd1afc79fecf9c113a256a8c7
+translation_source_hash: 045e2819368106c5da6ee47610c59a3500db312f4901108c0d9e36a027a50a95
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-source-title-amendment
 ---
-
 # פיתוח יישומים {#application-development}
 
 יישומים Iroha צריכים להפוך את התנהגותו של העסקה לבהיר, לשמור על מצב החתימה מכוסה, ולהשתמש בשאילתות ואירועים בדרכים שאפשר לצפות בקלות בהפעלה.
@@ -23,7 +22,7 @@ translation_engine: nllb-200-ct2
 
 - ככל האפשר, בנו עסקאות מהוראות SDK בעלות טיפוס מוגדר במקום מ־JSON גולמי או ממטענים שהורכבו כמחרוזות.
 - Preflight חשוב כותב עם שאילתות קריאה בלבד: קיומו של חשבון, סולכות נכסים, מצב רשות, זמינות נכס תשלום, ומצבו אובייקט יעד.
-- רשום את האש של העסקה, חשבון הסמכות, סיכום הוראות ושינוי מצב צפוי לפני הגשת.
+- לפני השליחה, תעדו את גיבוב העסקה, חשבון הסמכות, סיכום ההוראות ושינוי המצב הצפוי.
 - מתייחסו `Rejected`, `Expired`, והתוצאות של תשעון זמן שונות. תשעון הזמן אומר שהלקוח לא ציין מצב סופי; זה אינו מוכיח כי הרשת התעלמה מהעסקה.
 - לאחר כתיבה מוצלחת, לאמת את המצב המוצא עם חיפוש או נקודת בדיקת אירוע שמתאימה לפעילות העסק.
 
@@ -45,10 +44,10 @@ translation_engine: nllb-200-ct2
 - אל תדביקו מפתחות פרטיים, חומר לשחזור חשבונות, אסימוני API או כותרות אימות מועברות בהנחיות.
 - דרשו תוכנית עסקה לפני שסוכן כלשהו שולח עסקה ל-testnet חי. התוכנית צריכה לציין את הרשת, ה-authority, ההוראות, נכס העמלה, קריאות מקדימות, התוצאה הצפויה ואופן ההתנהגות בניסיון חוזר.
 
-עבור זרימת העבודה Taira MCP ראה [בניית על SORA 3: Taira ו Minamoto](/he/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents).
+לתהליך העבודה של Taira MCP, ראו [פיתוח על SORA Nexus: Taira ו־Minamoto](/he/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents).
 
 ## SDK היגיינה {#sdk-hygiene}
 
-- קישור SDK וגרסאות בינאריות ביחד תוך שימוש במתרי התאמה [ ](/he/reference/compatibility-matrix.md).
+- קבעו יחד את גרסאות ה־SDK והקבצים הבינריים באמצעות [מטריצת התאימות](/he/reference/compatibility-matrix.md).
 - שמרו על קוד הלקוח, קטעים ודוגמאות שנוצרו מתאימים עם התיקון של חלל העבודה העליון המופרע.
 - הוסף בדיקות יחידות לבניית קוד עסקאות ובדיקות אינטגרציה עבור הדרכים הקטנות ביותר של קריאה וכתבה שבהן תלוי היישום שלך.

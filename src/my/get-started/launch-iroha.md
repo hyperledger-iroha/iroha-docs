@@ -1,24 +1,23 @@
 ---
 translation_locale: my
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 35a4caba21bf1e34cc015f79fa82bfe143b37603eddb5f1eb72513ad83a20f61
+translation_source_hash: 6fe2dd48dc64f896be539af2994fbc0ad3c2c5f7a5a4297cc4ff4b08667f0376
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # လွှတ်တင်ခြင်း Iroha 3 {#launch-iroha-3}
 
 ဤစာမျက်နှာသည် Iroha 3 အတွက် လက်ရှိ ဒေသတွင်းကွန်ရက် စီးဆင်းမှုကို Upstream သိုလှောင်ရုံမှ အလိုအလျောက် workspace အရင်းအမြစ်များကိုအသုံးပြုခြင်းဖြင့် ဖြတ်သန်းသည်။
 
 ## (၁) ဒေသတွင်း အထက်တန်းစား ကွန်ယက်ကို ဖန်တီးခြင်း {#_1-generate-a-local-multi-peer-network}
 
-လက်ရှိ Kagami ကုဒ်မှ ၄- peer localnet ကိုထုတ်လုပ်ပါ
+လက်ရှိ Kagami ကုဒ်မှ peer လေးခုပါ localnet ကို ထုတ်လုပ်ပါ -
 
 ```bash
 cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
-Output directory မှာ Network peer config တွေနဲ့ ကိုက်ညီတဲ့ `genesis.json`, `genesis.signed.nrt`, `client.toml` နဲ့ helper script တွေ ပါပါတယ်။
+အထွက် directory တွင် ကိုက်ညီသော peer ပြင်ဆင်သတ်မှတ်မှုများ၊ `genesis.json`၊ `genesis.signed.nrt`၊ `client.toml` နှင့် အကူ script များ ပါဝင်သည်။
 
 ဒေသတွင်း မီးခိုးစမ်းသပ်မှုအတွက် ဖန်တီးထားတဲ့ ကွန်ရက်တူညီသူတွေကို တိုက်ရိုက်စတင်ပါ။
 
@@ -26,7 +25,7 @@ Output directory မှာ Network peer config တွေနဲ့ ကိုက�
 ./localnet/start.sh
 ```
 
-containerized run အတွက် localnet directory တစ်ခုတည်းမှ Compose ကို ဖန်တီးပါ။
+Container ဖြင့် လုပ်ဆောင်ရန် ထို localnet ဖိုင်တွဲ မှပင် Compose ကို ထုတ်လုပ်ပါ -
 
 ```bash
 cargo run --bin kagami -- docker \
@@ -41,13 +40,13 @@ docker compose -f ./docker-compose.yml up
 
 အလိုအလျောက်ဖန်တီးထားတဲ့ stack က:
 
-- Network peer P2P ports `1337` to `1340` ကို အသုံးပြုရန်
+- Peer များ၏ P2P port `1337` မှ `1340` အထိ
 - Torii HTTP ဆိပ်ကမ်း `8080` သို့ `8083`
-- `./localnet/client.toml` အမည်ဖြင့် အသင့်ရှိသော Client Config
+- `./localnet/client.toml` တွင် အသင့်သုံး client ပြင်ဆင်သတ်မှတ်မှု
 
 ## (၂) ကွန်ရက်ကို ဖွင့်ထားတာကို စစ်ဆေးပါ။ {#_2-verify-that-the-network-is-up}
 
-အဆင့် API အဆုံးမှတ်ကို ပထမဆုံးကွန်ရက် peer မှာစစ်ပါ။
+ပထမ peer ၏ အခြေအနေ endpoint ကို စစ်ဆေးပါ။
 
 ```bash
 curl http://127.0.0.1:8080/status
@@ -59,17 +58,17 @@ curl http://127.0.0.1:8080/status
 curl http://127.0.0.1:8080/status/blocks
 ```
 
-CLI ကို ချက်ချင်း ချိတ်ဆက်ထားတဲ့ Client Config ကို ညွှန်ပြနိုင်ပါတယ်။
+CLI ကို အတူပါလာသော client ပြင်ဆင်သတ်မှတ်မှုသို့ ချက်ချင်း ညွှန်နိုင်သည် -
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list
 ```
 
-## (၃) Nexus Profile {#_3-nexus-profile}
+## 3. SORA Nexus ပရိုဖိုင် {#_3-nexus-profile}
 
-SORA Nexus ကို ဦးတည်တဲ့ config profile တစ်ခုကိုလည်း `defaults/nexus/` အောက်မှာ တင်ပေးပါတယ်။
+Repository တွင် `defaults/nexus/` အောက်၌ SORA Nexus အခြေပြု ပြင်ဆင်သတ်မှတ်မှုပရိုဖိုင်လည်း ပါဝင်သည်။
 
-Nexus profile နဲ့ native network peer ကို run လုပ်ဖို့:
+SORA Nexus ပရိုဖိုင်ဖြင့် မူရင်း peer ကို လုပ်ဆောင်ရန် -
 
 ```bash
 ./target/release/iroha3d --sora --config ./defaults/nexus/config.toml

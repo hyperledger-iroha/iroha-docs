@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/security/storing-cryptographic-keys.md
-translation_source_hash: 168ee24e84f9225e81365658018717155476ae1508fefba5e0234e0bf6feefbd
+translation_source_hash: a95fe07f62d51a813a2f9fb02d67521ae421faf8467648e5f215e069c5d68572
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # 存储加密密钥 {#storing-cryptographic-keys}
 
 私钥可以授权执行其对应权限主体获准的任何操作。绝不能共享私钥。种子材料、恢复秘密、Bearer 令牌和导出的密钥文件都必须受到同等级别的保护。
@@ -28,7 +27,7 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-父目录必须存在。目标目录必须是新目录，或已经由当前用户所有；其模式必须为 `0700`，不得包含符号链接，并且必须为空。Kagami 以 `0600` 模式写入 `public.key` 和 `private.key`；`--pop` 还会写入 `pop.hex`。如果 Kagami 无法强制执行这些仅所有者文件系统规则，该命令会在相应平台上失败。
+父目录必须存在；目标目录必须不存在，即使是空目录也不行。Kagami 以 `0700` 权限创建目标，执行仅允许所有者访问的文件系统检查，拒绝符号链接，并以 `0600` 权限写入 `public.key` 和 `private.key`；指定 `--pop` 还会写入 `pop.hex`。如果 Kagami 在所在平台无法强制执行仅允许所有者访问的文件系统规则，命令会失败。
 
 私钥文件是未加密的导出文件。不得将其放入源代码管理、共享文件夹、日志、工单、聊天或构建制品。应将生产密钥导入获批的保管边界，然后按照部署流程删除导出文件。不得在生产环境中重复使用开发密钥。
 

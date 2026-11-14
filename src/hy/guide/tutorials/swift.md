@@ -1,11 +1,10 @@
 ---
 translation_locale: hy
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
+translation_source_hash: 37e8be9b07a40e5c6b841a47b016320e42079853433fb3e53937e4021dc1304f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Swift եւ iOS {#swift-and-ios}
 
 Swift SDK-ը, որը ուղարկվում է վերածնային աշխատանքային տարածքից, այն է `IrohaSwift` Swift փաթեթը `IrohaSwift/`-ի ներքո: Նրա փաթեթի մանիֆեսը սահմանում է երեք գրադարանային արտադրանքը`IrohaSwift`, `IrohaSwiftMobileTransports` եւ `IrohaSwiftTransferUI`, եւ ուղղված է iOS 15+-ին եւ macOS 12+-ին Swift գործիքների 5.9-ով.
@@ -161,7 +160,7 @@ Swift աղբյուրը ներկայումս ներառում է:
 - Ed25519, secp256k1, ML-DSA, BLS, GOST եւ SM2 ստորագրող մակերեւույթներ, որտեղ անհրաժեշտ է տեղական կամուրջի աջակցություն
 - տեղական հանձնարարականներ շուկայի համար եւ անանուն հանձնարարում
 - Կապակցեք WebSocket, շրջանակ, կրիպտո, նստաշրջան, հերթ, կրկնօրինակում եւ ախտորոշման օգնականներ
-- Kagemusha պատրաստությունը, տիպված լրացում եւ վերադարձ, շահագործման կարգավիճակ, ծանոթագրություն, հանգույցների փաթեթ, ստացուցք եւ QR հոսքի մոդելներ
+- KAGEMUSHA V1 փոխանցման ձևաչափի օգնականներ և iPhone հարթակի ադապտեր՝ անմիջապես հարթակում աշխատող դրամապանակի Advance տրամադրողի, գրանցման, վերականգնման և ընդունված փոխանակման կանչերի համար
 - SoraFS, տվյալների մատչելիության եւ ապացույցների հավելման օգնականներ
 
 ## API Օրինակներ {#api-examples}

@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # የፍቃድ ቶከኖች {#permission-tokens}
 
 ይህ ገጽ አሁን ባለው Iroha አስፈፃሚ የውሂብ ሞዴል የተጋለጡትን ነባሪ የፍቃድ-ቶከን አይነቶችን ይዘረዝራል። ለሚናዎች እና ፈቃዶች ፅንሰ-ሀሳባዊ መመሪያ [ፈቃዶች](/am/blockchain/permissions.md) ይመልከቱ።
@@ -45,7 +44,8 @@ translation_engine: bing-translator-llm
 |`CanModifyTriggerMetadata`|ቀስቅሴ|ቀስቅሴ ሜታዳታን አሻሽል።|
 |`CanUpgradeExecutor`|አስፈፃሚ|የሶፍትዌር ማስፈጸሚያ አካባቢ አስፈፃሚውን ያሻሽሉ።|
 |`CanRegisterSmartContractCode`|ስማርት ውል|ብልጥ የኮንትራት ኮድ ይመዝገቡ።|
-|`CanUseFeeSponsor`|Nexus|ለተወሰነ የስፖንሰር መለያ Nexus ክፍያዎችን ያስከፍሉ።|
+| `CanManageFeeSponsorProgram` | SORA Nexus | የተወሰነው ስፖንሰር መለያ የሚያዝዛቸውን ፕሮግራሞች ማስተዳደር። |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | የአንድ የተወሰነ ስፖንሰር ፕሮግራም ተጠቃሚዎችን ማስተዳደር። |
 
 ## ባለቤትነት {#ownership}
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Joylashtirish muammolarini bartaraf etish {#troubleshooting-deployment-issues}
 
 Ushbu bo‘lim Iroha 3 joylashtirishlari uchun muammo yechish bo‘yicha maslahatlarni taklif qiladi. Agar siz duch kelayotgan muammo bu yerda tasvirlanmagan bo‘lsa, biz bilan [Telegram](https://t.me/hyperledgeriroha) orqali bog‘laning.
@@ -15,7 +14,7 @@ Ushbu bo‘lim Iroha 3 joylashtirishlari uchun muammo yechish bo‘yicha maslaha
 Mahalliy va sinov joylashtirishlarida qo‘lda yozilgan tugun fayllari o‘rniga Kagami yaratgan artefaktlardan foydalaning:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Yaratilgan katalogda tarmoq hamkasblari konfiguratsiyalari, blokcheyn boshlang‘ich materiali, ishga tushirish skriptlari va Iroha 3 qurilish liniyasi uchun README mavjud.
@@ -42,7 +41,7 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 Joriy Kagami localnet chiqishidan Compose yaratish, shunda komandani satr argumentlari va konfiguratsiya fayllari tekshirilgan kodga mos keladi:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
 docker compose -f ./docker-compose.yml up
 ```
@@ -67,9 +66,9 @@ Kubernetes uchun har bir tasdiqlovchini holatli infratuzilma sifatida ko‘ring:
 
 Agar pod takror-takror qayta ishga tushsa, poddagi render qilingan konfiguratsiyani kutilgan bilan solishtiring [`peer.template.toml`](/uz/reference/peer-config/index.md#template) va tarmoq qo‘shnisi eski ma’lumotlarni qayta yuborayotganini tekshiring Kura ma'lumot.
 
-## Sora profili {#sora-profile}
+## SORA Nexus profili {#sora-profile}
 
-Maxfiy yoki mahalliy Iroha 3 joylashtirishlar, Nexus, SoraFS yoki ko‘p yo‘nalishli oqimlardan foydalangan holda, Sora profili yoqilgan holda standart daemonni ishga tushirishi kerak:
+SORA Nexus, SoraFS yoki ko‘p yo‘lakli jarayonlardan foydalanadigan xususiy yoki mahalliy Iroha 3 o‘rnatmalari standart demonni SORA Nexus profili yoqilgan holda ishga tushirishi kerak:
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

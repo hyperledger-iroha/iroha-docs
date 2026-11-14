@@ -1,20 +1,19 @@
 ---
 translation_locale: he
 translation_source: /cookbook/smart-contracts.md
-translation_source_hash: ca6fd12e33df43b73a72dd6327133115aa44256cf579387c11bf0693797bf96e
+translation_source_hash: f1d7f1e54fa01550ad5de65b18a725bc98452dcff8f9c08ebe427fb5ae857968
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+claude-opus-5-5
+translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link
 ---
+# בנייה ופריסה של חוזה חכם {#build-and-deploy-a-smart-contract}
 
-# תבנה ושימשו חוזה חכם {#build-and-deploy-a-smart-contract}
-
-## התוצאה {#outcome}
+## תוצאה {#outcome}
 
 בדקו והדרו חוזה Kotodama V1, הריצו מקומית את פונקציית ה־view הציבורית שלו, פרסו את ארטיפקט ה־IVM המאומת עם עמלות שהסמכות משלמת ושנבחרו במפורש, וקראו את פונקציית ה־view שנפרסה דרך Torii.
 
 ## תנאים מוקדמים {#prerequisites}
 
-- קישוט מקור Iroha ב- commit `c8c872461e92f04325c350cdd952f4276e96f9dc`, Rust ו- Cargo.
+- עותק קוד המקור של Iroha בקומיט `c8c872461e92f04325c350cdd952f4276e96f9dc`, וכן Rust ו־Cargo.
 - ה־CLI הנוכחי `iroha` ו־`musubi` (מורץ כ־`cargo run -p musubi --` בתוך עותק המקור), וכן לקוח Taira ממומן מתוך [חיבור ל־Taira](./connect-to-taira.md).
 - נתיב מוחלט ב־`IROHA_CONFIG`. קישור הרשת של Musubi שומר הפניה לקובץ הלקוח הזה וחותם על הפריסה באמצעות מפתח החשבון שבו.
 - סמכות על הכינוי. ה־executor דורש `CanManageAccountAlias` עבור כינוי החוזה המדויק או עבור ההיקף שמעליו: הדומיין הבעלים עבור `name::domain.dataspace`, או מרחב הנתונים עבור `name::dataspace`. חשבונות רשומים אינם זקוקים להרשאה נפרדת לרישום קוד, ומרחבי שמות מוגנים דורשים גם את תהליך הממשל של הרשת. הדוגמאות משתמשות ב־`cookbook_tuple::universal`; ב־Taira, החליפו אותו בכינוי בדומיין שבבעלותכם, או פרסו ברשת מקומית שנוצרה שה־genesis שלה מעניק את היקף הכינוי.
@@ -25,11 +24,11 @@ IROHA_CONFIG=/absolute/path/to/taira.client.toml
 test -f "$IROHA_CONFIG"
 ```
 
-## צעדים {#steps}
+## שלבים {#steps}
 
-### 1. עותק של חוזה ידוע טוב Kotodama V1 {#_1-copy-a-known-good-kotodama-v1-contract}
+### 1. העתיקו חוזה Kotodama V1 שידוע כתקין {#_1-copy-a-known-good-kotodama-v1-contract}
 
-לעבוד בתוך Iroha צ'אוקוט מחוברת ועתק את דגימת ההחזרה של הקמפיילר כך המקור ואת שרשרת הכלים להישאר על אותו commit.
+עבדו בתוך עותק המקור המקובע של Iroha והעתיקו את דוגמת המהדר המחזירה רשומה סדורה, כדי שהמקור ושרשרת הכלים יישארו באותו קומיט.
 
 ```bash
 cd "$IROHA_SOURCE"
@@ -56,7 +55,7 @@ seiyaku TupleReturnDemo {
 
 Kotodama מיועדת למכונה הווירטואלית של Iroha ול־ABI הנוכחי שלה. היא אינה שפת מקור של WASM או EVM.
 
-### 2. לבדוק, לבנות ולמתקן את האריפקט {#_2-check-build-and-verify-the-artifact}
+### 2. בדקו, בנו ואמתו את הארטיפקט {#_2-check-build-and-verify-the-artifact}
 
 ```bash
 cargo run -p kotodama_toolchain --bin koto -- \
@@ -76,9 +75,9 @@ cargo run -p kotodama_toolchain --bin koto -- \
   ./contracts/tuple_return_demo.ko
 ```
 
-הבניין הראשון מפרסם את הארטפקט וקובצי העזר המאומתים. השני פועל בקריאה בלבד `--verify` מצב וכישלון אם כל יצירה קיימת לא תואמת בדיוק את המקור הנוכחי. `.to` הקובץ והמניפסט שלו כוצאת מבנה בודדת אחת.
+הבנייה הראשונה מפרסמת את הארטיפקט ואת קובצי העזר המאומתים. השנייה פועלת במצב `--verify` לקריאה בלבד ונכשלת אם פלט קיים כלשהו אינו תואם בדיוק לקוד המקור הנוכחי. התייחסו לקובץ `.to` ולמניפסט שלו כתוצר בנייה אחד שנבדק.
 
-### 3. להפעיל את קוד הביט מקומו {#_3-run-the-bytecode-locally}
+### 3. הריצו את קוד הבתים מקומית {#_3-run-the-bytecode-locally}
 
 `compute` היא פונקציית `view fn` ציבורית לקריאה בלבד. הפעילו אותה באמצעות `debug-view`, שמריץ את ה־bytecode המהודר באופן מקומי מול נתוני בדיקה אופציונליים, בלי לשלוח עסקה או לשלם עליה.
 
@@ -151,7 +150,7 @@ jq -e '.ok == true and .result == ["3", "5"]' \
   ./build/deployed-view.json
 ```
 
-## לאמת {#verify}
+## אימות {#verify}
 
 פתרו את הכינוי, אחזרו את המניפסט שעל השרשרת לפי גיבוב הקוד ש־Torii מדווח עבור פונקציית ה־view שנפרסה, והריצו את אותה פונקציית view לפי הכתובת הקנונית:
 
@@ -193,16 +192,16 @@ jq -e '.ok == true and .result == ["3", "5"]' \
 - `deployment authority lacks CanManageAccountAlias`, או השגיאה של ה־executor `authority is not permitted to manage contract alias`, פירושן שהחשבון אינו רשאי לקשור את הכינוי הזה. השתמשו בכינוי בדומיין שבבעלותכם, או קבלו מבעלי ההיקף הזה את ההענקה המדויקת לכינוי או את ההענקה לדומיין או למרחב הנתונים שלו; ב־localnet, העניקו אותה ב־genesis.
 - דחייה של מרחב שמות מוגן פירושה שמרחב השמות של הכינוי נתון לממשל. רשימה של מזהי החשבון של המאשרים אינה ראיה לאישור; השתמשו בתהליך הממשל של הרשת (`iroha app gov deploy propose`) עבור מרחב השמות הזה, או בחרו כינוי מחוצה לו.
 - אי־התאמה במניפסט או ב־ABI פירושה שה־bytecode, המניפסט וסביבת הריצה של הצומת אינם מתארים את אותו ארטיפקט. בנו מחדש ב־commit המקובע, ולאחר מכן הריצו שוב את הבנייה עם `--verify`.
-- `fee quote changed ... gas bound` פירושו את התכוון הנדרש והתמחור חי לא מסכימים. תחזור לדרך במקום לשנות עסקאות חתומות.
+- `fee quote changed ... gas bound` פירושו שכוונת התשלום המבוקשת בעלת הטיפוס המוגדר אינה תואמת להצעת המחיר העדכנית. בצעו מחדש את הבדיקה המקדימה במקום לשנות עסקה חתומה.
 - פריסה שנקטעה שומרת את התוכנית החתומה שלה ביומן. שחזרו אותה באמצעות `musubi deploy --resume <JOURNAL>` במקום לחתום על תוכנית חדשה.
 - `is read-only and cannot be invoked as a transaction` או `is not a kotoage or lifecycle entrypoint` פירושו ש־`compute` נשלחה לפקודת קריאה. הדוגמה הזו מצהירה על `view fn`, ולכן השתמשו ב־`debug-view` באופן מקומי וב־`view` ב־Torii.
-- קריאות חוזה דורשות גבול של גז טופס חיובי. החוזה של קריאת הזמנה לשחרור הראשון מסירב את הנתונים הגזים או המטא-מכסים ברמה העליונה.
+- קריאות לחוזים דורשות מגבלת גז חיובית בעלת טיפוס מוגדר. ממשק הקריאה של המהדורה הראשונה דוחה מטא־נתונים ברמה העליונה של גז או נכס עמלה.
 
-## מקור ומסמכים קשורים {#source-and-related-docs}
+## מקור ותיעוד קשור {#source-and-related-docs}
 
 - [מימוש הפקודה של Kotodama V1 ב־commit המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_toolchain/src/bin/koto.rs)
-- [דגימה של מקור ההחזרת כפולה ב-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
+- [דוגמת מקור להחזרת רשומה סדורה בקומיט המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/tuple_return_demo.ko)
 - [פקודת הפריסה של Musubi](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/musubi/src/command_deploy.rs) ו־[שירות פריסת החוזים המובנה](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_contract_deploy/src/lib.rs) ב־commit המקובע
-- [בדיקות אינטגרציה של החוזה בביצוע commit ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/contracts.rs)
+- [בדיקות אינטגרציה של חוזים בקומיט המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/contracts.rs)
 - [חוזים חכמים](/he/blockchain/smart-contracts.md)
-- [דף CLI ](/he/get-started/operate-iroha-via-cli.md)
+- [מדריך ה־CLI](/he/get-started/operate-iroha-via-cli.md)

@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /guide/best-practices/security-and-access.md
-translation_source_hash: f0163734d618d91337b437da703743014d01c57c4cb603fbc2e66316f3654779
+translation_source_hash: b1cb0cdbeec55f7db03f1c64b6581a21c09fc80a57344cf6e27df1d126c0ec92
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Seguridad y Acceso {#security-and-access}
 
 La práctica de seguridad en Iroha debe basarse en el principio de autorización restringida, custodia controlada de llaves, exposición explícita de la red y cambios auditables.
@@ -23,7 +22,7 @@ Vea [Generando Claves Criptográficas](/es/guide/security/generating-cryptograph
 
 - Concede el token de permiso o rol más pequeño que soporte el flujo de trabajo.
 - Prefiera cuentas técnicas dedicadas para servicios, disparadores, agentes y automatización. Evite ejecutar automatizaciones de larga duración a través de una cuenta de operador personal.
-- Revise los permisos para la gestión de pares de red, la mutación de metadatos, la emisión, la quema, el registro de desencadenantes, los cambios de ejecutor y la gobernanza de SORA/Nexus antes del lanzamiento en producción.
+- Revise los permisos para la gestión de pares de red, la mutación de metadatos, la emisión, la quema, el registro de desencadenantes, los cambios de ejecutor y la gobernanza de SORA Nexus antes del lanzamiento en producción.
 - Revocar los permisos temporales después de la ventana de mantenimiento o la migración que los requirió.
 
 Vea [Permisos](/es/blockchain/permissions.md) y [Tokens de permiso](/es/reference/permissions.md).

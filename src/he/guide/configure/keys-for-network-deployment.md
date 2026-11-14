@@ -1,14 +1,13 @@
 ---
 translation_locale: he
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # מפתחות לשימוש ברשתים {#keys-for-network-deployment}
 
-כל רשת צריכה חומר מפתח נפרד עבור לקוחות, צמתים, חתימת גנזה, ו, עבור פרופילים של NPoS או Nexus, זהויות אישור BLS.
+כל רשת זקוקה לחומר מפתחות נפרד ללקוחות, לעמיתים, לחתימת genesis, ובפרופילי NPoS או SORA Nexus גם לזהויות מאמתים מסוג BLS.
 
 ## היכן משתמשים במפתחות {#where-keys-are-used}
 
@@ -21,7 +20,7 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 עבור השימוש המקומי או במבחן, תן Kagami ליצור את כל הקבצים האלה יחד:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 עבור רשת או פרופיל קיים, השתמשו בזרם המובנה:
@@ -50,7 +49,7 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
 
 ## עקביות בין צמתים {#peer-consistency}
 
-כל המאושרים חייבים להסכים על אותו עסקנת הגנז, טופולוגיה, מפתחות ציבוריים של צמתים מהימנים ו-validator PoPs. מפתח צומת אחד חסר או לא מתאים יכול למנוע את הרשת להתחיל או להגיע להסכמה.
+כל המאמתים חייבים להסכים על אותה עסקת בראשית, אותה טופולוגיה, אותם מפתחות ציבוריים של עמיתים מהימנים ואותן הוכחות החזקה של המאמתים, PoPs. מפתח עמית יחיד שחסר או אינו תואם יכול למנוע מהרשת להתחיל לפעול או להגיע לקונצנזוס.
 
 עבור מינימום הפעלת סובלנות אשמה ביזנטנית, השתמש לפחות בארבעה צמתים. לכל צומת חייב להיות מפתח פרטי משלו, אבל כל קונפיגורציה של צמתים צריכה את אותה קבוצת הצומת שלות אמינה.
 

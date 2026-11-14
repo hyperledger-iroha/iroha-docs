@@ -20,7 +20,7 @@ pageClass: torii-api-console-page
 - נקודת הסיום Torii חייבת לחשוף את `/openapi.json`.
 - בדיקת הדפדפן דורשת CORS כדי לאפשר את מקור המסמכים האלה.
 - הדפדפן חייב להיות מסוגל להגיע לנקודה הסופית ישירות.
-- ייצור קוד דורש Node.js, pnpm, ו- Java runtime עבור OpenAPI Generator.
+- יצירת קוד דורשת Node.js, pnpm וסביבת ריצה של Java עבור מחולל OpenAPI.
 
 הקונסולה מקובלת ל `https://taira.sora.org`. פיתוח מקומי בדרך כלל עובד עם `http://127.0.0.1:8080` כאשר אתה פועל Torii במחשב שלך.
 

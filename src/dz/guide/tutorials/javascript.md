@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
+translation_source_hash: 92389d3ad83ab32e85b4ca83ede9829d1a38afaad6e86da035da2829a3aaedfb
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # JavaScript དང་ TypeScript {#javascript-and-typescript}
 
@@ -98,7 +98,6 @@ SDK གིས་གཙོ་བོར་བཏོན་ཡོད།
 - Ed25519 མིང་རྟགས་དང་ལྡེ་མིག་བཟོ་སྐྲུན།
 - ཤོག་ལེབ་བཟོ་ནི་དང་ ལོག་འབད་ནིའི་གྲོགས་རམ་འབད་མི་ཚུ།
 - བརྡ་འཚོལ་བུཊི་སི་ཊརཔ་གྲོགས་རམ་འབད་མི་ཚུ་མཐུད།
-- ཀ་གེ་མུ་ཤ་གྲ་སྒྲིག་དང་ ཁ་སྐོང་ བསྐྱར་གསོ་ དེ་ལས་ ལག་ལེན་གནས་ཚད་སྐྱེལ་འདྲེན་གྱི་གྲོགས་རམ་འབད་མི་ཚུ་
 
 ## གཙོ་རིམ་གོང་མའི་ཁ་བྱང་ཚུ་ {#upstream-references}
 

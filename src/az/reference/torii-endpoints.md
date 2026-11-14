@@ -1,26 +1,25 @@
 ---
 translation_locale: az
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: 631ec91b5ea398ae17253f0fd6307d76bc3820e2a2b6c8c9f79b30e0188ec170
+translation_source_hash: d85b4d725158e6fcfa70b2bb464efd690307844a5ff0946e51a0da6b75b24a64
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
+# Torii son nöqtələri {#torii-endpoints}
 
-# Torii API son nöqtələr {#torii-endpoints}
-
-Torii Iroha 3 üçün HTTP, SSE və WebSocket qapısıdır. Bu həm APIs blokçeyn dəftəri ilə, həm də API operatoru son nöqtələri ilə qarşılıqlı əlaqə qurmaq üçün xidmət edir.
+Torii Iroha 3 üçün HTTP, SSE və WebSocket keçididir. O, həm reyestrlə işləyən APIs, həm də operator son nöqtələri təqdim edir.
 
 Hazırkı protokol qaydaları bunlardır:
 
 - tək protokol-standart ikili format Norito
-- bir çox API son nöqtələri həmçinin JSON-i dəstəkləyir, khi siz `Accept: application/json` göndərirsiniz
+- `Accept: application/json` göndərdikdə bir çox son nöqtə JSON-u da dəstəkləyir
 - metrikanlar Prometheus formatında göstərilir
 
 Format detalları, məzmun vasitəsi, yerləşdirmə bayraqları, sxema kriptoqrafik xesləri və Norito RPC qaydaları üçün [Norito istinad](/az/reference/norito.md)-a baxın.
 
-## Ümumi API son nöqtələr {#common-endpoints}
+## Ümumi son nöqtələr {#common-endpoints}
 
-| API son nöqtə                         |Format|Məqsəd|
+| Son nöqtə | Format | Məqsəd |
 | -------------------------------- | -------------- | ---------------------------------------------------------------- |
 | `POST /v1/pipeline/transactions` | Norito         |İmzalanmış əməliyyatı göndərin|
 | `POST /v1/query`                 | Norito         |İmzalı sorğunu təqdim edin|
@@ -29,11 +28,11 @@ Format detalları, məzmun vasitəsi, yerləşdirmə bayraqları, sxema kriptoqr
 | `GET /v1/blocks/stream`          | WebSocket      |Axın yekunlaşdırılmış bloklar|
 | `GET /v1/peers`                  | JSON           | Torii tərəfindən aşkar edilmiş şəbəkə həmkarı siyahısı|
 | `GET /livez`                     |Mətn|Yalnız proses canlılığı; bu, protokol hazırlığını ifadə etmir|
-| `GET /readyz`                    | JSON           |Node-un tam hazır olması, daxil olmaqla məcburi oflayn nağd pul yoxlamaları|
-| `GET /health`                    | JSON           |Eyni offlayn-nağd dəyişməzliyi olan hazırlıq probu|
+| `GET /readyz` | Mətn | Konsensus qəbulu, mayak mühafizəsi və tələb olunan davamlı saxlamanın hazırlığı |
+| `GET /health` | Mətn | Torii-nin canlılığı; `Healthy` qaytarır |
 | `GET /v1/api/version`            |Mətn|Cari blok-başlıq versiyası|
 | `GET /status`                    | Norito və ya JSON |Yüksək səviyyəli diaqnostik vəziyyət; sorğu JSON açıq şəkildə|
-| `GET /metrics`                   |Prometey|Prometheus scrape API son nöqtəsi|
+| `GET /metrics` | Prometheus | Prometheus metrik toplama son nöqtəsi |
 | `GET /v1/schema`                 | JSON           |Node tərəfindən aktivləşdirildikdə təqdim olunan məlumat modeli sxemi zaman nöqtəsi məlumat baxışı|
 | `GET /openapi.json`              | JSON           | OpenAPI sənəd aktiv Torii HTTP marşrutlar üçün                |
 | `GET /v1/parameters`             | JSON           |Nod parametr nöqtə-vaxt məlumat görünüşü|
@@ -49,7 +48,7 @@ Accept: text/event-stream, application/json
 
 Torii əvvəlcə sorğu təbəqəsində JSON və ya Norito təmsilçiliyi danışıqlar edir, sonra yerli `text/event-stream` cavabını təsdiqləyir. Yalnız `text/event-stream` göndərilməsi buna görə `406` ilə rədd edilir; [axın-tədbirlər resepti](/az/cookbook/stream-events.md) tam başlığı istifadə edir.
 
-`/openapi.json` sxemada göstərilən marşrutlar üçün yaradılmış müqavilədir, tam işlək-sınaq inventarını deyil. Hal-hazırkı sənəd `/livez` və `/readyz`-ni əhatə etmir və onun `/health` təsviri hazır vəziyyət idarəedicisindən geri qala bilər. Canlı sənəddən marşrut müştəriləri yaradın, amma canlılığı və hazırlığı birbaşa işləyən node və pin edilmiş idarəedicilərə qarşı təsdiqləyin. Dəqiq interfeys hələ də quruluş xüsusiyyətlərindən asılıdır və proqram təminatı icra mühiti konfiqurasiyası. O canlı sənədi yükləmək üçün [Torii API konsol](/az/reference/torii-api-console.md)-dən istifadə edin, JSON marşrutlarını sınayın, curl sorğuları kopyalayın və mövcud sxemadan müştəri kodu yaradın.
+`/openapi.json` sxemdə göstərilən marşrutlar üçün yaradılmış müqavilədir. O, `/livez`, `/health` və `/readyz` yollarını ehtiva edir; məcburi olmayan tətbiq imkanları hazırlıq yoxlamasında iştirak etmir. Marşrut müştərilərini hədəf qovşağın təqdim etdiyi sənəddən yaradın və onun yoxlama son nöqtələrini birbaşa yoxlayın. Dəqiq interfeys yığım funksiyalarından və icra mühiti konfiqurasiyasından asılıdır. Canlı sənədi yükləmək, JSON marşrutlarını sınamaq, curl sorğularını köçürmək və cari sxemdən müştəri kodu yaratmaq üçün [Torii API konsolundan](/az/reference/torii-api-console.md) istifadə edin.
 
 Hər kataloq dəstəklənən OpenAPI əməliyyatında bir `x-iroha-route-auth` obyekti daxil edilir. Kataloq dəstəklənən MCP alətlər eyni müqaviləni `_meta["iroha/routeAuth"]` ilə nümayiş etdirir. Hər iki proyeksiya `schemaVersion`, `stableRouteId`, `authentication` və `admission` daşıyır. Versiya `1` dəqiq bir müqavilə kimi qəbul edin: autentifikasiya və ya qəbul etiketlərinin necə şərh olunacağını təxmin etmək yerinə dəstəklənməyən `schemaVersion`-i rədd edin. Marşrut metadatası sorğu sərhədini təsvir edir; o, həmin sərhəd tərəfindən tələb olunan etimadnamələrin yerini tutmur.
 
@@ -83,19 +82,18 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-Əgər bir ictimai testnet marşrutu `502` qaytarır, vaxt aşımına uğrayır və ya doymuş növbə barədə xəbərdarlıq edir, bunu API son nöqtə mövcudluğu problemi kimi qəbul edin və müştəri kodunuzu düzəltməkdən əvvəl bir daha cəhd edin.
+Açıq testnet marşrutu `502` qaytarırsa, vaxt aşımına uğrayırsa və ya dolmuş növbə bildirirsə, bunu son nöqtənin əlçatanlıq problemi sayın və müştəri kodunda xəta axtarmazdan əvvəl daha sonra yenidən cəhd edin.
 
-## Konsensus və proqram təminatı icra mühiti API nöqtələri {#consensus-and-runtime-endpoints}
+## Konsensus və icra mühiti son nöqtələri {#consensus-and-runtime-endpoints}
 
-Aşağıdakı hər bir Sumeragi marşrut operatorun sorğu imzasını tələb edir. Status, diaqnostika, axın, lider, açar, QC və parametr marşrutları da telemetriya dəstəkləyən bir quruluş tələb edir.
+Aşağıdakı hər Sumeragi marşrutu operator sorğusunun imzasını tələb edir. Vəziyyət, diaqnostika, axın, zolaq, açar və parametr marşrutları həmçinin telemetriyası aktiv yığım tələb edir.
 
-| API son nöqtə                                  |Format|Məqsəd|
+| Son nöqtə | Format | Məqsəd |
 | ----------------------------------------- | -------------- | ------------------------------------------------------- |
 | `GET /v1/sumeragi/status`                 | Norito və ya JSON |Səlahiyyətli azaldıcıya məxsus razılıq statusu|
 | `GET /v1/sumeragi/diagnostics`            | JSON           |Avtoritet olmayan proqram təminatı işləmə iş axını, növbə və icra zolağı diaqnostikası|
 | `GET /v1/sumeragi/status/sse`             | SSE            |Davamlı səlahiyyətli razılıq vəziyyəti axını|
-| `GET /v1/sumeragi/leader`                 | JSON           |Cari lider haqqında məlumat|
-| `GET /v1/sumeragi/qc`                     | Norito və ya JSON |Ən yüksək və kilidli kuorum-sertifikatı zaman nöqtəsi məlumat baxışları|
+| `GET /v1/sumeragi/lanes` | JSON | Zolaq konsensusu diaqnostikası |
 | `GET /v1/sumeragi/consensus-keys`         | JSON           |Aktiv konsensus açarları|
 | `GET /v1/sumeragi/bls-keys`               | JSON           |Aktiv BLS konsensus açarları|
 | `GET /v1/sumeragi/params`                 | JSON           |Cari zəncirdaxili Sumeragi parametrlər|
@@ -106,12 +104,14 @@ Aşağıdakı hər bir Sumeragi marşrut operatorun sorğu imzasını tələb ed
 | `GET /v1/runtime/metrics`                 | JSON           |proqram təminatı icra mühiti metrikləri vaxt nöqtəsinə dair məlumat görünüşü|
 | `GET /v1/runtime/upgrades`                | JSON           |proqram təminatı icra mühiti yeniləmə siyahısı|
 | `POST /v1/runtime/upgrades/propose`       | JSON           |Proqram təminatı icra mühitinin yenilənməsini təklif edin|
-| `POST /v1/runtime/upgrades/activate/{id}` | JSON           |Təklif olunan proqram təminatı icra mühitinin yenilənməsini aktiv edin|
+| `POST /v1/runtime/upgrades/attest/{id}` | JSON | Təklif olunan icra mühiti yenilənməsini attestasiya etmək |
+| `GET /v1/runtime/release` | JSON | Quraşdırılmış yerli icra buraxılışının metaməlumatı |
+| `GET /v1/runtime/containments` | JSON | İcra mühitinin təcridetmə qeydləri |
 | `POST /v1/runtime/upgrades/cancel/{id}` | JSON           |Təklif olunmuş proqram təminatı icra mühitinin yeniləməsini ləğv et|
 
-## Tətbiq və SORA Yol Ailələri {#app-and-sora-route-families}
+## Tətbiq və SORA Nexus marşrut ailələri {#app-and-sora-route-families}
 
-Torii tətbiq qarşılıqlı xüsusiyyət dəsti ilə qurulduqda, tədqiqatçılar, SORA xidmətləri, körpü axınları, sübutlar və yaddaş üçün əlavə JSON ailələrini nümayiş etdirir. Bu ailələrin hamısı hər şəbəkə profilində aktiv deyil.
+Torii tətbiqlərə xidmət edən funksiyalar dəsti ilə yığıldıqda blok tədqiqatçıları, SORA Nexus xidmətləri, körpü axınları, sübutlar və saxlama üçün əlavə JSON ailələri təqdim edir. Bu ailələrin hamısı hər şəbəkə profilində aktiv deyil.
 
 `/openapi.json` yaradılmış app-API kataloqunda qeydiyyata alınmış marşrutları təsvir edir; o, yalnız daxil etdiyi qeydlər üçün səlahiyyətlidir, quraşdırılmış hər marşrut üçün deyil proses üzrə. Xüsusilə, ictimai yerli SoraFS CID və yaxşı tanınmış marşrutlar həmin yaradılmış sənədin xaricində yerləşdirilir və birbaşa yoxlanılmalıdır.
 
@@ -126,17 +126,17 @@ Torii tətbiq qarşılıqlı xüsusiyyət dəsti ilə qurulduqda, tədqiqatçıl
 | `/v1/multisig/*`, `/v1/controls/*`                                        |Çox imzalı təkliflər, təsdiqlər və köçürmə-nəzarət köməkçiləri|
 | `/v1/bridge/*`, `/v1/ledger/*`, `/v1/proofs/*`                            |Finalik, dövlət sübutu, blok sübutu, sübutun saxlanması və sübut sorğusu marşrutları|
 | `/v1/da/*`                                                                |Məlumat-mövcudluğu qəbul edilməsi, texniki manifestlər, sübut siyasətləri, kriptoqrafik öhdəlik dəyərləri və pin niyyətləri|
-| `/v1/zk/*`                                                                | ZK köklər, sübutun yoxlanılması, IVM sübut etmə, səs sayımı, yoxlama açarları, sübut qeydləri və əlavələr|
+| `/v1/zk/*` | ZK kökləri, sübut yoxlaması, səslərin sayılması, yoxlama açarları, sübut qeydləri və əlavələr |
 | `/v1/gov/*`, `/v1/ministry/*`                                             |İdarəetmə təklifləri, səsvermə, şura vəziyyəti, qorunan ad sahələri, gündəlik təklifləri, qanunvericilik və yekunlaşdırma|
-| `/v1/nexus/*`, `/v1/sccp/*`                                               | Nexus icra zolağı, məlumat sahəsi və kros-zəncir sübut köməkçiləri|
+| `/v1/nexus/*`, `/v1/sccp/*` | SORA Nexus məlumat məkanı, zolaq və zəncirlərarası sübut köməkçiləri |
 | `/v1/musubi/*`                                                            | Musubi paket qeydiyyatı oxuyur və təlimat qurucuları|
 | `/v1/subscriptions/*`                                                     |Abunə planları, abunə dövrü, istifadə və ödəniş köməkçiləri|
 | `/v1/sorafs/*`, `/sorafs/*`, `/.well-known/sorafs/*`                      | SoraFS təminatçı kəşfi, tutum sübutları, pinləmə, yaddaş əldə etmələri və publik məzmun xidmətləri|
-| `/v1/soracloud/*`, `/v1/soradns/*`, `/soradns/*`, `/api/*`                | SoraCloud xidmət həyat dövrü, xüsusi hesablama/model axınları, ictimai kəşfiyyat və yerləşdirilmiş tətbiq yönləndirməsi|
+| `/v1/soracloud/*`, `/v1/soradns/*`, `/api/*` | SoraCloud xidmət həyat dövrü, özəl hesablama/model axınları, açıq kəşf və yerləşdirilmiş tətbiqlərin marşrutlaşdırılması |
 | `/v1/connect/*`, `/v1/vpn/*`                                              |Iroha Sessiyaları qoşun, WebSocket nəqliyyat, VPN sessiyalar, profillər və protokol nəticə qeydləri|
 | `/v1/app-api/*`, `/v1/api/*`, `/v1/content/*`                             |Tətbiq API bağlamaları və paket/CID-dəsəkli məzmun yönləndirməsi|
 | `/v1/operator/*`, `/v1/mcp`                                               |Operator autentifikasiyası və yerli MCP JSON-RPC körpü|
-| `/v1/offline/*`, `/v1/repo/*`, `/v1/space-directory/*`, `/v1/ram-lfe/*`   |Offline hazırlıq, depo razılaşmaları, dataspace texniki manifestləri və [RAM-LFE köməkçilər](/az/blockchain/ram-lfe.md#torii-routes)|
+| `/v1/kagemusha/enrollment`, `/v1/repo/*`, `/v1/space-directory/*`, `/v1/ram-lfe/*` | KAGEMUSHA qeydiyyatı, geri satınalma müqavilələri, məlumat məkanı manifestləri və [RAM-LFE köməkçiləri](/az/blockchain/ram-lfe.md#torii-routes) |
 | `/v1/kaigi/*`, `/v1/webhooks/*`, `/v1/notify/*`, `/v1/telemetry/*`        |Əməkdaşlıq, webhook, push bildirişləri və canlı telemetriya inteqrasiyaları|
 
 ## Hesab Doğrulaması, Görünürlük və Explorer Kursorları {#account-authentication-visibility-and-explorer-cursors}
@@ -197,9 +197,9 @@ Yol, sorğu, bədən, zaman möhürü və kriptoqrafik nonce dəyəri qaydaları
 
 Dəqiq sorğu imzası həmişə mütləqdir. `[torii.operator_auth].enabled = true` olduqda, hər adi operator marşrutu da etibarlı `x-iroha-operator-session` tələb edir; `require_mtls = true` olduqda isə əlavə olaraq etibarlı girişdən `x-forwarded-client-cert` tələb olunur. Heç bir amil sorğu imzasının yerinə keçmir.
 
-WebAuthn qeydiyyat və giriş bu dörd JSON API son nöqtədən istifadə edir:
+WebAuthn qeydiyyatı və girişi bu dörd JSON son nöqtəsindən istifadə edir:
 
-|Metod və API son nöqtə|Məqsəd|
+| Metod və son nöqtə | Məqsəd |
 | --------------------------------------------- | ---------------------------------------- |
 | `POST /v1/operator/auth/registration/options` | WebAuthn etimadnamə qeydiyyatına başla|
 | `POST /v1/operator/auth/registration/verify` |Giriş məlumatlarını təsdiqləyin və saxlayın|
@@ -212,23 +212,22 @@ ISO 20022 marşrutları iki müstəqil yoxlamanı tətbiq edir. Sorğu əvvəlc�
 
 ### blokçeyn dəftərçəsi Görünürlüğü və Tədqiqatçı Kursorları {#ledger-visibility-and-explorer-cursors}
 
-Tətbiqə yönəlmiş blokçeyn dəftərxana oxumaları yuxarıdakı könüllü tətbiq hesabı sərhədindən istifadə edir. İmzalanmamış sorğu yalnız ictimai kimi konfiqurasiya edilmiş məlumat sahələrini alır. Etibarlı imzalı sorğu çağıranın cari UAID-inə bağlı dataspaceları əlavə edir, hər bir məhdud dataspacelər dəqiq `CanReadRestrictedDataspace { dataspace }` icazəsi ilə adlandırılır, və ya hesabın `CanReadAllLedgerData` olduğu halda bütün yollar.
+Tətbiqlərə xidmət edən reyestr oxumaları yuxarıdakı məcburi olmayan tətbiq hesabı sərhədindən istifadə edir. İmzasız sorğu yalnız açıq konfiqurasiya edilmiş məlumat məkanlarını alır. Etibarlı imzalanmış sorğu çağıranın cari UAID-sinə bağlı məlumat məkanlarını, dəqiq `CanReadRestrictedDataspace { dataspace }` icazəsində göstərilən hər məhdud məlumat məkanını, yaxud hesabda `CanReadAllLedgerData` olduqda bütün marşrutları əlavə edir.
 
 Çağıranın səlahiyyət əsasına uyğun marşrutu istifadə edin:
 
-|Metod və API son nöqtə|Təsdiqləmə və görünürlük|
+| Metod və son nöqtə | Autentifikasiya və görünmə |
 | ------------------------------------- | --------------------------------------------------------------- |
-| `POST /v1/transactions/visible/query` |tək protokol-standart hesab imzası; çağıranın görünürlüğünü tətbiq edir|
-| `POST /v1/transactions/query`         |Operatorun sorğu imzası; qlobal operator baxışına icazə verir|
+| `POST /v1/transactions/query` | Məcburi olmayan kanonik hesab imzası; çağıranın məlumat məkanı görünməsini tətbiq edir |
 | `GET /v1/triggers/completed`          |Operator sorğu imzası; düyün-yerli tamamlanma qeydlərini oxuyur|
 
-Eyni görünürlük obyekti hesabı, domeni, əmlak-təyinatını, əmlakı, NFT, RWA, sahibini və Explorer oxumalarını filtr edir. Olmayan obyekt və çağıranın görünən yollarının xaricində olan obyekt qəsdən bir-birindən fərqləndirilməzdir. Tamamlanmış əməliyyat və göstəriş tarixi yalnız əməliyyat üçün qeydə alınmış hər bir marşrut maliyyə köçürməsi hissəsi görünəndə göstərilir. Qarışıq məlumat-məkan əməliyyatı bu səbəbdən heç olmasa bir iştirakçının maliyyə köçürməsi hissəsi çağıran şəxsın dairəsindən kənarda olduqda gizlənir; itkin, köhnəlmiş və ya düzgün olmayan yönləndirmə konteksti yalnız qlobal oxucu üçün görünür.
+Eyni görünmə obyekti hesab, domen, aktiv tərifi, aktiv, NFT, RWA, sahib və Explorer oxumalarını süzgəcdən keçirir. Mövcud olmayan obyektlə çağıranın görünən marşrutlarından kənardakı obyekt bilərəkdən fərqləndirilmir. Təsdiqlənmiş əməliyyat və təlimat tarixçəsi yalnız əməliyyat üçün qeydə alınmış bütün marşrut hissələri görünəndə göstərilir. Buna görə bir neçə məlumat məkanını əhatə edən əməliyyatın hətta bir iştirakçı hissəsi çağıranın çərçivəsindən kənardadırsa, əməliyyat gizlədilir; çatışmayan, köhnəlmiş və ya səhv qurulmuş marşrut konteksti yalnız qlobal oxucuya görünür.
 
 Altı dünya tərəfindən dəstəklənən Explorer kolleksiyaları şəffaf olmayan tək protokol-standart base64url açar dəsti kursorlarından istifadə edir. Defolt səhifə limiti 25-dir, maksimum limit 100-dür və bir səhifə ən çox 512 namizəd açarı yoxlayır. Hər kursor öz kolleksiyasına, filtrlərinə, tək protokol-standart son açara və zəng edən tərəfindən görünən marşrut dəsti kriptoqrafik xülasə dəyərinə bağlıdır, buna görə də başqa bir sorğuda və ya zəng edən tərəfindən görünürlük dəyişdikdən sonra təkrar istifadə edilə bilməz.
 
 Blok, əməliyyat, son əməliyyat, təlimat və son təlimat tarixi kursorları əlavə olaraq yekunlaşdırılmış zaman-məqam məlumat baxışı hündürlüyünü və blok kriptoqrafik xəşini pinləyir. Cavablar `pagination.limit`, `pagination.snapshot_height`, `pagination.snapshot_hash`, `pagination.next_cursor` və `pagination.has_more`-ü göstərir. Başqa bir marşrut və ya filtr dəsti üçün kursor, dəyişdirilmiş görünənlik kriptoqrafik xülasə dəyəri və ya node-un artıq doğrulaya bilmədiyi zaman-nöqtəsi məlumat baxışı qapalı vəziyyətdə uğursuz olur. Tarix taraması bloklayan işçi işlədiyi zaman Torii-in sorğu-qəbul icazəsinin içərisində qalır.
 
-Explorer WebSocket axınları süzülmüş xülasələri yayır və blokçeyn dəftər icazələri dəyişdikcə görünürlüğü yenidən hesablayır. Yerli `GET /v1/blocks/stream` marşrut fərqlidir: o, tam imzalı bloklar yayır, əlaqə zamanı `CanReadAllLedgerData` tələb edir və bu icazə sonradan ləğv olunarsa bağlanır. Dataspace-ə məxsus tədqiqatçı üçün yerli axından istifadə etməyin.
+Explorer WebSocket axınları süzgəcdən keçirilmiş xülasələr verir və reyestr icazələri dəyişdikcə görünməni yenidən hesablayır. Protokolun öz `GET /v1/blocks/stream` marşrutu fərqlidir: o, tam imzalanmış blokları ötürür, əl sıxması zamanı `CanReadAllLedgerData` tələb edir və həmin icazə sonradan ləğv olunarsa bağlanır. Məlumat məkanı ilə məhdud tədqiqatçı üçün bu birbaşa axından istifadə etməyin.
 
 ## ISO 20022 Körpü {#iso-20022-bridge}
 
@@ -236,9 +235,9 @@ Torii, tətbiqə yönəlmiş API və körpü proqram təminatı icra mühiti akt
 
 Hər hansı bir təqdimatı qəbul etmədən əvvəl davamlı yerli `torii.iso_bridge.store_dir` qurun. Konfiqurasiya sahəsi yalnız bir node-un yalnız oxumaq üçün və ya diaqnostik istifadə üçün başlaya bilməsi üçün optional (ixtiyari)dir: Hər təsdiqlənmiş ISO təqdimat kataloqu tələb edir və davamlılıq olmadıqda və ya təkrar-mazgal və ya zəngin qeyd yazısı uğursuz olduqda təkrar cəhd edilə bilən `503 Service Unavailable` qaytarır.
 
-### Torii ISO 20022 API son nöqtələr {#torii-iso-20022-endpoints}
+### Torii ISO 20022 son nöqtələri {#torii-iso-20022-endpoints}
 
-|Metod və API son nöqtə|Məqsəd|
+| Metod və son nöqtə | Məqsəd |
 | -------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | `POST /v1/iso20022/pacs008`                  |FI-dən FI-yə müştəri kredit transferi təqdim edin və uyğun Iroha aktiv transferini yaradın|
 | `POST /v1/iso20022/pacs009`                  |PvP və ya qiymətli kağızlarla bağlı nağd maliyyələşdirmə üçün istifadə olunan FI-dən FI-yə kredit köçürməsini təqdim edin|
@@ -261,7 +260,7 @@ Hər hansı bir təqdimatı qəbul etmədən əvvəl davamlı yerli `torii.iso_b
 
 `pacs.009` təqdimatlar biznes mesajının ID-sini, mesaj tərifinin ID-sini, yaradılma vaxtını, banklararası maliyyə əməliyyatının həll miqdarını, valyutanı təmin etməlidir, maliyyə əməliyyatının həlli tarixi, göstəriş verən və göstəriş alan agent BICs, həmçinin debitor və kreditor IBANs. Əgər mesaj `Purp` daxil edirsə, körpü hazırda yalnız qiymətli kağızların məqsədli maliyyələşdirilməsini qəbul edir: `Purp=SECU`.
 
-`pacs.008` və `pacs.009` təqdimat API nöqtələri XML ISO məlumat konteynerlərini və ya körpü testləri tərəfindən istifadə olunan düz sahə formatını qəbul edir. İstəyə bağlı `SplmtryData` sahələr hədəf Iroha blokçeyn dəftərini, mənbə və hədəf hesab ID-lərini və ya ünvanlarını və aktiv tərif ID-sini pinləyə bilər. Cavab `202 Accepted` olacaq və `message_id`, `transaction_hash`, `status`, `pacs002_code` və həll edilmiş dəftər/hesab/aktiv kontekstini ehtiva edəcək.
+`pacs.008` və `pacs.009` göndərmə son nöqtələri XML ISO zərflərini və ya körpü testlərindəki düz sahə formatını qəbul edir. Məcburi olmayan `SplmtryData` sahələri hədəf Iroha reyestrini, mənbə və hədəf hesab ID-lərini və ya ünvanlarını, eləcə də aktiv tərifi ID-sini sabitləyə bilər. Cavab `message_id`, `transaction_hash`, `status`, `pacs002_code` və həll olunmuş reyestr/hesab/aktiv konteksti ilə `202 Accepted` olur.
 
 ### İştirakçı Avtorizasiyası və Həyat Sikli Mülkiyyəti {#participant-authorization-and-lifecycle-ownership}
 
@@ -278,7 +277,7 @@ Həyat dövrü icazəsi çağırış edən tərəfindən seçilən dəyərlərd�
 
 Əsas profil və imza siyasəti bütün həyat dövrü boyunca sabit qalır, buna görə də zəng edən şəxs yeniləmə üçün zəif profil seçə bilməz. `pacs.002` kodu nümayiş etdirir Maliyyə əməliyyatının həlli (`ACSC`, `ACCP`, `SETT` və ya `SETTLED`) yalnız Torii əməliyyat sübutunu yekunlaşdırdıqda ilkin qeydi həll olunmuş kimi dəyişdirir.
 
-Hər iki ilkin tərəf öz mesaj qeydlərini və yaradılmış çıxış qovluq sənədlərini oxuya bilər. Audit API son nöqtəsi yalnız səlahiyyətli iştirakçının başlanğıc tərəf və ya qarşı tərəf olduğu qeydləri qaytarır. Ayrı konfiqurasiya edilmiş audit administratoru qlobal yalnız-oxu audit baxışını alır və mesajları təqdim edə və ya dəyişə bilməz. Naməlum iştirakçılar və əlaqəsiz mesaj identifikatorları açıqlanmır.
+İlkin tərəflərin hər biri öz mesaj qeydini və yaradılmış çıxış sənədlərini oxuya bilər. Audit son nöqtəsi yalnız autentifikasiya edilmiş iştirakçının göndərən və ya qarşı tərəf olduğu qeydləri qaytarır. Ayrıca konfiqurasiya edilmiş audit inzibatçısı qlobal, yalnız oxuma üçün audit görünüşü əldə edir və mesaj göndərə və ya dəyişə bilməz. Naməlum iştirakçılar və əlaqəsiz mesaj identifikatorları açıqlanmır.
 
 ### Davamlı Təkrar Oynatma Şəxsiyyəti və İmzalanmış Çıxış Qutusu Sənədləri {#durable-replay-identity-and-signed-outbox-documents}
 
@@ -339,7 +338,7 @@ Tətbiq API aktiv olmalıdır. Relay xülasəsi və sağlamlıq marşrutları ox
 
 ### CLI Tüstü Testi {#cli-smoke-test}
 
-Bir UI-ə qoşulmadan əvvəl bir Torii API son nöqtəsinin Kaigi əməliyyatları qəbul etdiyini yoxlamaq istədiyiniz zaman `iroha app kaigi` CLI-dən başlayın. Quickstart komandası konfiqurasiya edilmiş API son nöqtəsinə qarşı bir otaq yaradır və onun zəng identifikatorunu və qoşulma metadatasını çap edir:
+UI interfeysini qoşmazdan əvvəl Torii son nöqtəsinin Kaigi əməliyyatlarını qəbul etdiyini yoxlamaq üçün `iroha app kaigi` CLI ilə başlayın. Sürətli başlanğıc əmri konfiqurasiya edilmiş son nöqtədə otaq yaradır, onun zəng identifikatorunu və qoşulma metaməlumatını ekrana çıxarır:
 
 ```bash
 iroha app kaigi quickstart \
@@ -386,16 +385,16 @@ Dəqiq marşrut təsdiqi, dəvət formatı, körpü sərhədi və cari demo test
 
 ## Vəziyyət və Ölçülər {#status-and-metrics}
 
-Status və metrik API son nöqtələri panellərə qoşulacaq ilk şeylərdir:
+Vəziyyət və metrik son nöqtələri idarəetmə panellərinə ilk qoşulmalı mənbələrdir:
 
 - `/status` yüksək səviyyəli şəbəkə bərabəri, blok, növbə və konsensus sahələrini göstərir
 - `/metrics` Prometheus sayğaclarını, göstəricilərini və tarixçilərini nümayiş etdirir
 
-On Nexus-aktiv nodlarda, status çıxışı həmçinin icra xətti və məlumat-məkanına diqqət yetirən bölmələri də əhatə edir. `nexus.enabled = false` olduqda, həmin bölmələr çıxarılır.
+SORA Nexus marşrutlaşdırması məcburidir. Vəziyyət çıxışı konfiqurasiya edilmiş məlumat məkanlarını və zolaqları ehtiva edir; bildirilən topologiyanı onların kataloqları və təsdiqlənmiş marşrut vəziyyəti müəyyən edir.
 
 ## JSON və Norito {#json-vs-norito}
 
-Bir neçə operator API son nöqtəsi standart olaraq Norito qaytarır. API son nöqtəsi JSON-ü dəstəklədikdə, göndərin:
+Bir neçə operator son nöqtəsi standart olaraq Norito qaytarır. Son nöqtə JSON-u dəstəkləyirsə, bunu göndərin:
 
 ```http
 Accept: application/json
@@ -404,13 +403,13 @@ Accept: application/json
 Bu xüsusilə bunlar üçün faydalıdır:
 
 - `/v1/sumeragi/status`
-- `/v1/sumeragi/qc`
+- `/status`
 
-Bir API son nöqtəsi birbaşa olaraq tipləndirilmiş Norito-ü qəbul etdikdə və ya geri qaytardıqda, məzmun növü kimi və ya üstünlük verilən `Accept` dəyəri kimi `application/x-norito`-dən istifadə edin. Nəqliyyat detalları üçün [Norito](/az/reference/norito.md#torii-and-norito-rpc)-yə baxın.
+Son nöqtə birbaşa tipləşdirilmiş Norito qəbul edir və ya qaytarırsa, məzmun növü və ya üstün tutulan `Accept` qiyməti kimi `application/x-norito` istifadə edin. Ötürmə detalları üçün [Norito](/az/reference/norito.md#torii-and-norito-rpc) bölməsinə baxın.
 
 ## Telemetriya Profilləri {#telemetry-profiles}
 
-API son nöqtənin görünürlüğü nodun `telemetry.profile` ayarından asılıdır. Cari konfiqurasiya beş profil səviyyəsini açıq edir:
+Son nöqtələrin görünməsi qovşağın kök səviyyəli `telemetry_profile` parametrindən asılıdır. Hazırkı konfiqurasiya beş profil səviyyəsi təqdim edir:
 
 |Profil| `/status` | `/metrics` |Tərtibatçı marşrutları|
 | ----------- | --------- | ---------- | ---------------- |
@@ -422,7 +421,7 @@ API son nöqtənin görünürlüğü nodun `telemetry.profile` ayarından asıl�
 
 ## CLI Qısayollar {#cli-shortcuts}
 
-`iroha` CLI artıq bu API uç nöqtələrinin çoxunu əhatə edir:
+`iroha` CLI artıq bu son nöqtələrin çoxunu örtük interfeysləri ilə təqdim edir:
 
 ```bash
 export IROHA_OPERATOR_KEY_FILE=/run/secrets/iroha/operator.key

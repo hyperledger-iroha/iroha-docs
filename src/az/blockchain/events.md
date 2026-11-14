@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /blockchain/events.md
-translation_source_hash: 16b8cacc9bdf156d4b1e1a93b720085adcabb0002a34b9dc564a9926f573de63
+translation_source_hash: aad93f1981a5b470966090b5e06ec07178738b15f1d870097947682b19f99595
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Tədbirlər {#events}
 
 Typed event bildirişləri blokzincir daxilində müəyyən hadisələr baş verdikdə göndərilir, məsələn, yeni hesab yaradıldı və ya blok yekunlaşdırıldı. Müxtəlif hadisə növləri vardır:
@@ -45,7 +44,7 @@ curl -fsS -N https://taira.sora.org/v1/events/sse
 
 ## Məlumat Hadisələri {#data-events}
 
-Data hadisələri blokçeyn dəftər məlumatları ilə əlaqəli dəyişiklik olduqda, məsələn, şəbəkə iştirakçıları, domenlər, hesablar, aktivlər, aktiv tərifləri, NFTs, tetikleyicilər ilə əlaqədar olaraq yayımlanır, rollar, zəncirdaxili konfiqurasiya, icraçı vəziyyəti, sübutlar, məxfi aktivlər, körpülər və ya SORA/Nexus-xüsusi obyektlər. Bu tip hadisələr [məlumat hadisəsi filtrləri](./filters.md#data-event-filters)-da istifadə olunur.
+Data hadisələri blokçeyn dəftər məlumatları ilə əlaqəli dəyişiklik olduqda, məsələn, şəbəkə iştirakçıları, domenlər, hesablar, aktivlər, aktiv tərifləri, NFTs, tetikleyicilər ilə əlaqədar olaraq yayımlanır, rollar, zəncirdaxili konfiqurasiya, icraçı vəziyyəti, sübutlar, məxfi aktivlər, körpülər və ya SORA Nexus-xüsusi obyektlər. Bu tip hadisələr [məlumat hadisəsi filtrləri](./filters.md#data-event-filters)-da istifadə olunur.
 
 ## vaxt əsaslı hadisə bildirişləri {#time-events}
 

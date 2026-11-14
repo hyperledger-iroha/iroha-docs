@@ -25,7 +25,7 @@ Heç bir aşpaz kitabı resepti Minamoto ünvanına yazı göndərmir.
 |Resept|Taira giriş|Sən nə ilə bitirirsən|
 | --------------------------------------------------------------------- | ------------ | -------------------------------------------------------------------- |
 | [Taira-ə qoşul](./connect-to-taira.md)                             |Yazmağa hazır|Maliyyələşdirilmiş I105 kriptoqrafik imzalayıcı, canlı ödəniş aktivləri və tətbiq edilmiş kanare əməliyyatı|
-| [Əməliyyatları göndərin və təsdiqləyin](./submit-and-verify-transactions.md) |Yazmağa hazır|Ödəniş qiyməti təxmininə, terminal proqram təminatı işləmə iş axışı nəticəsinə və saxlanmış protokol nəticə qeydinə malik əməliyyat|
+| [Tranzaksiyaları göndərin və yoxlayın](./submit-and-verify-transactions.md) | Yazmağa hazır | Komissiyası hesablanmış tranzaksiya, emal konveyerinin yekun nəticəsi və saxlanmış nəticə qəbzi |
 
 ## blokçeyn dəftər vəziyyəti {#ledger-state}
 

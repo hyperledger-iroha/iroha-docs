@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
+translation_source_hash: b6e3bd79c50ea326930ac978350ea4beac8294b6f045ac0084aada257754ffa1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # 產生密碼金鑰 {#generating-cryptographic-keys}
 
 使用 `kagami keys` 產生 Iroha 3 使用者端、對等節點及驗證者的金鑰材料。
@@ -18,7 +17,7 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-上層目錄必須已存在。目標目錄必須是新目錄或已由目前使用者擁有，許可權模式為 `0700`，不含符號連結且為空。`kagami` 會以 `0600` 模式寫入 `public.key` 和 `private.key`，而且不會印出金鑰材料。使用 `--pop` 時，它也會寫入 `pop.hex`。
+父目錄必須已存在，目標目錄則不得存在：Kagami 連既有的空目錄也會拒絕。它會檢查檔案系統的僅限擁有者存取規則，以 `0700` 模式建立目標，並拒絕符號連結。`kagami` 以 `0600` 模式寫入 `public.key` 和 `private.key`，不會印出金鑰材料。指定 `--pop` 時，也會寫入 `pop.hex`。
 
 如果 Kagami 無法在某個平臺上強制執行這些僅限擁有者存取的檔案系統規則，`--out-dir` 會採安全關閉方式拒絕操作。私密金鑰檔案是未加密的匯出副本，並非硬體簽署器或不可匯出的生產簽署器。請將其匯入核准的託管邊界，並依部署程式刪除該匯出副本。
 

@@ -1,14 +1,13 @@
 ---
 translation_locale: pt
 translation_source: /get-started/atomic-private-settlement.md
-translation_source_hash: d4c2c1a4e29e0352ac20be5320f79a2686527d55a19d65a6154aedcd63fa447e
+translation_source_hash: 22acbd9fdc8f9882f47f1a3d75d408f07b156c1e0240294b9d8a2f6a79195f51
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
+# Executar liquidação privada atômica entre espaços de dados {#run-atomic-private-cross-dataspace-settlement}
 
-# Executar Liquidação Privada Atômica entre Espaços de Dados {#run-atomic-private-cross-dataspace-settlement}
-
-`AtomicPrivateSettlementV1` coordena uma parte de transferência de acordo confidencial em cada um dos 2 a 255 SORA Nexus espaços de dados e finaliza cada etapa em um estado global transação. Um pacote rejeitado, expirado ou abortado não aplica nenhum trecho. Nativo Transparente AMX DvP/PvP permanece como um caminho de protocolo separado.
+`AtomicPrivateSettlementV1` coordena um componente confidencial de liquidação em cada um de 2 a 255 espaços de dados do SORA Nexus e finaliza todos os componentes em uma única transação de estado global. Um pacote rejeitado, expirado ou abortado não aplica nenhum componente. Native AMX DvP/PvP transparente permanece como um caminho de protocolo separado.
 
 ::: warning Status de lançamento
 Este recurso está sujeito à governança, vem desativado por padrão e ainda não está qualificado para produção. Não o ative para valor real de CBDC até que todos os critérios publicados de funcionalidade, privacidade, tolerância a falhas, desempenho, builds reproduzíveis, revisão criptográfica independente e publicação de artefatos tenham sido atendidos para a versão exata.
@@ -21,13 +20,13 @@ Cada etapa utiliza uma prova de nota privada fixa de duas entradas e três saíd
 A transação portadora pública e o recibo revelam deliberadamente:
 
 - os identificadores de rede e pacote
-- rotas de espaço de dados do participante e contagem de participantes
+- rotas dos espaços de dados participantes e número de participantes
 - tempos e alturas de expiração
 - identificadores estáveis e opacos de pool, raízes, anuladores, compromissos e slots fixos de texto cifrado
 - principais de autorização do comitê e disponibilidade exata de 3 de 4, certificados de Preparar e Confirmar
 - patrocinador, taxa de rede pública e status do terminal
 
-Esta é a confidencialidade do conteúdo, não o anonimato do fluxo de tráfego. Tempo, contagem de participantes, identidade do espaço de dados e atividade do pool estável permanecem públicos. Um espaço de dados que hospeda apenas um CBDC também pode tornar o ativo inferível a partir da rota, mesmo que nenhum identificador literal do ativo seja publicado.
+Isso oferece confidencialidade do conteúdo, não anonimato do fluxo de tráfego. Os tempos, o número de participantes, a identidade dos espaços de dados e a atividade dos pools estáveis permanecem públicos. Um espaço de dados que hospeda apenas uma CBDC também pode permitir que o ativo seja inferido pela rota, mesmo sem a publicação de um identificador literal do ativo.
 
 ## Requisitos de implantação {#deployment-requirements}
 
@@ -35,7 +34,7 @@ Antes da ativação, os operadores precisam de todos os seguintes:
 
 1. exatamente quatro validadores para cada espaço de dados participante, com chaves de consenso BLS distintas e provas de posse
 2. obrigatório Sumeragi DA/RBC ativado para cada altura
-3. um pool de liquidação confidencial governado e raiz inicial em cada espaço de dados
+3. um pool governado de liquidação confidencial e uma raiz inicial em cada espaço de dados
 4. uma capacidade de nota privada V1 ativa e o perfil de prova de liquidação separado
 5. pelo menos um `PrivateSettlementAuditPolicyV1` local governado, incluindo assinatura distinta do auditor e chaves de criptografia híbrida, uma época de chave, validade de altura e um limite de aprovação
 6. armazenamento auxiliar privado suficiente para o período de retenção configurado
@@ -43,43 +42,23 @@ Antes da ativação, os operadores precisam de todos os seguintes:
 
 Um auditor também pode operar um validador, mas deve usar chaves separadas de consenso, assinatura de auditor e criptografia do auditor. Mantenha as chaves de criptografia desativadas pelo período de retenção regulamentar, ou governe e teste o reembalamento da cápsula antes de desativá-las.
 
-A autoridade de quatro validadores é ancorada no estado; não é fornecida pelo cliente. No `authority_context_height` do manifesto, cada validador obtém do estado de consenso a lista ordenada exata de vias e espaços de dados e a encarnação ativa da via, exige que a altura obtida corresponda e verifica as quatro chaves BLS e suas provas de posse. O upload, a preparação e a admissão do recibo final usam a mesma autoridade histórica.
+A autoridade dos quatro validadores é ancorada no estado, não fornecida pelo cliente. No `authority_context_height` do manifesto, cada validador obtém do estado de consenso a lista ordenada exata de faixas de execução e espaços de dados e a encarnação ativa da faixa de execução, exige que a altura obtida corresponda e verifica as quatro chaves BLS e suas provas de posse. O upload, Prepare e a admissão do recibo final usam essa mesma autoridade histórica.
 
-## Configurar admissão {#configure-admission}
+## Configurar a custódia dos dados auxiliares {#configure-sidecar-custody}
 
-Todo comportamento de produção vem da configuração do nó. Variáveis de ambiente não podem ativar esse caminho. O padrão fornecido é `enabled = false`; deixar o recurso desativado não requer configuração específica da liquidação.
+A política de privacidade confirmada determina a ativação, os perfis de prova, os limites de participantes, a expiração e os requisitos de auditoria. A capacidade governada, o pool na cadeia e os registros de auditoria devem estar ativos para que a admissão seja bem-sucedida.
 
-Depois que a governança registrar a capacidade necessária e escolher uma altura de ativação com aviso adequado, configure cada nó relevante de forma consistente:
+A configuração do nó controla apenas a capacidade local do armazenamento auxiliar de registros criptografados:
 
 ```toml
 [nexus.atomic_private_settlement]
-enabled = true
-activation_height = 500000
-minimum_activation_notice_blocks = 7200
-proof_profile_version = 1
-max_participants = 255
-max_expiry_blocks = 7200
-audit_timeout_blocks = 1200
-prepare_timeout_blocks = 1200
-commit_timeout_blocks = 1200
-capsule_padding_classes_bytes = [4096, 16384, 65536, 262144]
-max_proof_bytes = 8388608
-max_capsule_bytes = 1048576
-max_carrier_bytes = 4194304
-sidecar_retention_blocks = 1000000
 sidecar_max_records = 256
 sidecar_max_total_bytes = 3221225472
-default_min_auditor_approvals = 1
-permitted_policy_versions = [1]
 ```
 
-O exemplo usa os limites V1 fornecidos, não uma recomendação de desempenho. Meça armazenamento, prova, cápsula, transação do transportador e contêineres de dados de latência em hardware pretendido antes de escolher os limites operacionais. Os três tempos limite de fase devem caber dentro de `max_expiry_blocks`, e a retenção de registros auxiliares deve ser pelo menos igual à janela de expiração.
+Estes são os limites de armazenamento fornecidos. Meça os registros retidos e os bytes canônicos no hardware de destino antes de escolher a capacidade local. A capacidade, por si só, não ativa a liquidação nem altera sua política de validade confirmada.
 
-`max_capsule_bytes` limita a codificação canônica Norito de todo o `PrivateSettlementAuditCapsuleV1`: AAD, valor nonce criptográfico, texto cifrado, estrutura de vetor, identidades de auditores e cada linha DEK envolvida. Não é um limite apenas de texto cifrado. Cada classe de preenchimento configurada deve se ajustar ao contêiner de dados de cápsula inteira conservadora para pelo menos `default_min_auditor_approvals` auditores. Torii também rejeita uma política recém-admitida cujo `min_approvals` está abaixo do limite estabelecido, e rejeita qualquer cápsula real cuja codificação canônica completa seja muito grande.
-
-`max_carrier_bytes` limita a transação canônica completa assinada pelo patrocinador, não apenas o pacote certificado. A contagem inclui a estrutura de instrução registrada, autorização da transação principal e metadados, intenção de taxa e assinatura. Os limites comuns de transação na rede ainda se aplicam como um limite superior independente.
-
-A ativação falha fechada a menos que a capacidade governada esteja ativa, seu estado e alturas de ativação satisfaçam o período de aviso, o perfil de prova compilado corresponda a V1, e os registros de pool e auditoria na cadeia estejam atualizados. Habilitar apenas a bandeira de configuração é insuficiente.
+O limite confirmado da cápsula mede a codificação Norito canônica completa de `PrivateSettlementAuditCapsuleV1`: AAD, nonce, texto cifrado, enquadramento dos vetores, identidades dos auditores e todas as linhas de DEK encapsuladas. O limite confirmado do envelope mede a transação completa assinada pelo patrocinador, incluindo enquadramento das instruções, autoridade, metadados, intenção de taxa e assinatura. Os limites normais de transação da rede também se aplicam.
 
 ## Fluxo de trabalho de liquidação {#settlement-workflow}
 
@@ -118,7 +97,7 @@ Essas rotas usam objetos de requisição e resposta canônicos Norito. Respostas
 |Fase de recuperação QCs| `GET /v1/nexus/private-settlements/legs/{payload_digest}/phase-certificates` |patrocinador técnico de manifesto|
 |Status da etapa| `GET /v1/nexus/private-settlements/legs/{payload_digest}/status`           |assinatura de conta canônica|
 |Prova do comitê| `GET /v1/nexus/private-settlements/legs/{payload_digest}/committee-proof`  |validador de lista exata|
-|Cápsula de auditoria| `GET /v1/nexus/private-settlements/legs/{payload_digest}/audit-capsule`    |auditor governado|
+|Cápsula de auditoria| `POST /v1/nexus/private-settlements/legs/{payload_digest}/audit-capsule`    |auditor governado|
 |Aprovação do auditor| `POST /v1/nexus/private-settlements/legs/{payload_digest}/audit-approvals` |auditor governado|
 |Enviar final/abort| `POST /v1/nexus/private-settlements/bundles`                               |patrocinador técnico de manifesto|
 |Status do pacote| `GET /v1/nexus/private-settlements/bundles/{bundle_id}`                    |público|
@@ -141,12 +120,12 @@ Alertas operacionais devem usar apenas os campos de pacote opaco, rota, fase, va
 Para a construção e configuração exatas que você pretende implantar, arquive evidências que cubram:
 
 - prova adversarial, cápsula, política, rotação de chaves, reembolso e casos de repetição
-- processos reais de quatro validadores para 2, 3, 4, 8 e 16 espaços de dados, incluindo reinicializações de validadores e coordenadores, perda de mensagens autenticada de 5%, 10% e 20%, partições de fase, recuperação e falhas no limite de persistência
+- processos reais de quatro validadores para 2, 3, 4, 8 e 16 espaços de dados, incluindo reinicializações de validadores e coordenadores, perdas autenticadas de mensagens de 5%, 10% e 20%, partições por fase, recuperação e falhas nos limites de persistência
 - análise de vazamento canário e diferencial através de Torii, P2P, blocos, Kura, visualizações de dados em um ponto no tempo, consultas, eventos, registros e telemetria
 - pelo menos cinco aquecimentos e trinta pacotes medidos por contagem de participantes da rede real, com p50, p95, p99, intervalos de confiança, recursos, tráfego, tamanhos de registro de prova e resultado do protocolo, e AMX transparente como o controle
 - testes rigorosos de espaço de trabalho, verificação de lint e formatação, sementes aleatórias, soak, builds reproduzíveis, SBOMs e hashes criptográficos de artefatos assinados
 - ambas as camadas formais: as verificações de simetria de contagem de etapas 3/255 e a configuração precisa do comitê de quatro validadores indexados N=2 focados em validadores mais falhas totalmente limitadas, falha principal de papel N=3, N=4 limpa e N=3 de expiração/replay, com orçamentos de falha independentes por comitê
-- revisão independente da relação de prova, seletores de slot fictício, vinculações de ativos e cápsulas, relação de reembolso, criptografia e máquina de estado de espaço de dados cruzado
+- revisão independente da relação de prova, dos seletores de posições fictícias, dos vínculos de ativos e cápsulas, da relação de reembolso, da criptografia e da máquina de estados entre espaços de dados
 
 Publique as evidências brutas e saneadas, o modelo de ameaças, o argumento do protocolo, as limitações, o ID de commit, a descrição do hardware e os relatórios de auditoria em um artefato imutável respaldado por DOI. Apenas os testes do repositório não transformam o recurso em um sistema de liquidação CBDC qualificado para produção.
 
@@ -162,6 +141,6 @@ O produtor falha em arquivos preparados, não preparados, não rastreados ou nã
 
 O selo de origem é portátil e falha ao fechar: o produtor e o verificador final resolvem todo o grafo de links simbólicos arquivado, então um link que aparece na raiz mas escapa através de outro link, um ciclo, a travessia `.git`, ou um alvo no estilo Windows é rejeitado antes que os links sejam criados. Relatórios estruturados de origem e de gateway são analisados apenas a partir de arquivos estáveis limitados cujo valor de resumo criptográfico e comprimento correspondam ao manifesto técnico de lançamento, e cada tipo de carga útil de origem deve ocorrer exatamente uma vez.
 
-Cada execução de falha bruta e amostra de latência deve vincular o commit completo da versão, o SHA-256 de uma descrição de hardware fixo estruturada, e o SHA-256 de sua configuração de contagem exata de participantes. Arquivar um manifesto técnico de configuração canônica cobrindo N=2,3,4,8,16; cada entrada deve referenciar os bytes de configuração retidos e afirmar exatamente quatro validadores por espaço de dados, um quórum de 3 em 4, e RS16 DA/RBC obrigatórios assinados. O verificador de lançamento rejeita resumos produzidos em uma compilação, perfil de hardware ou configuração de rede diferente. Cada perda individual, corte de fase e linha de falha de persistência deve, adicionalmente, nomear referências de registro exatas JSONL globalmente não reutilizáveis dentro do limite SHA-256 artefatos de controlador autenticado e captura de atomicidade. O verificador de lançamento resolve esses resumos criptográficos e exige que as linhas correspondam à identidade da execução, índice do teste e parâmetros, reconhecimento do controlador ou resultado de recuperação, contagem de verificação contínua, e zero observações de visibilidade parcial e gastabilidade. Comparações p95/p99 de lançamentos posteriores também rejeitam uma linha de base assinada cujo hardware, configurações ou requisitos de medição diferem do candidato. O verificador final regenera todos os percentis relatados, MADs, e intervalos de confiança determinísticos a partir das amostras brutas arquivadas em vez de confiar em um resumo de benchmark separado. Ele também recarrega o manifesto técnico canário e reescaneia independentemente cada superfície de privacidade arquivada, de modo que um relatório não pode suprimir uma detecção secreta plantada após a reatribuição dos resumos criptográficos dos arquivos. Cada execução apenas-para-secretos deve reter seu loopback pcap não filtrado apenas para o proprietário, stderr bruto do tcpdump e estatísticas sem perda, manifesto técnico de porta canônica, arquivo de origem restrita empacotado e observações de atomicidade de todos os pares. O verificador final reroda a divisão de pacotes ligada à porta, as projeções de origem e as verificações de atomicidade de base para terminal a partir desses bytes arquivados, em vez de confiar nos resumos publicados.
+Cada execução bruta de falhas e amostra de latência deve estar vinculada ao commit completo da versão, ao SHA-256 de uma descrição estruturada do hardware fixado e ao SHA-256 da configuração exata do número de participantes. Arquive um manifesto canônico de configuração que cubra N=2,3,4,8,16; cada entrada deve referenciar os bytes de configuração retidos e afirmar exatamente quatro validadores por espaço de dados, quórum de 3 de 4 e RS16 DA/RBC assinados obrigatórios. O verificador de lançamento rejeita resumos produzidos com outra compilação, perfil de hardware ou configuração de rede. Cada linha individual de perda, corte de fase e falha de persistência também deve indicar referências exatas a registros JSONL, globalmente não reutilizáveis, nos artefatos de controlador autenticado e de captura de atomicidade vinculados por SHA-256. O verificador de lançamento resolve esses resumos criptográficos e exige que as linhas correspondam à identidade da execução, ao índice e aos parâmetros da tentativa, à confirmação do controlador ou ao resultado da recuperação, à contagem de verificações contínuas e à ausência de observações de visibilidade parcial ou possibilidade de gasto parcial. Comparações p95/p99 de versões posteriores também rejeitam uma linha de base assinada cujo hardware, configurações ou requisitos de medição difiram dos do candidato. O verificador final recalcula todos os percentis, MADs e intervalos de confiança determinísticos informados a partir das amostras brutas arquivadas, em vez de confiar em um resumo isolado de benchmark. Ele também recarrega o manifesto do canário e examina novamente, de forma independente, todas as superfícies de privacidade arquivadas, impedindo que um relatório oculte a detecção de um segredo inserido após a reassociação dos resumos criptográficos dos arquivos. Cada execução dedicada somente a segredos deve reter a captura pcap de loopback sem filtros, acessível apenas ao proprietário, o stderr bruto do tcpdump e as estatísticas de ausência de perdas, o manifesto canônico de portas, o arquivo empacotado de fontes restritas e as observações de atomicidade de todos os pares. O verificador final refaz a separação de pacotes vinculada às portas, as projeções das fontes e as verificações de atomicidade da linha de base ao estado terminal a partir desses bytes arquivados, em vez de confiar nos resumos publicados.
 
 O arquivo também deve incluir manifestos técnicos canônicos de contagem de tráfego pareado e de pares diferenciais vinculando os caminhos de arquivos esquerdo e direito exatos, tipos, comprimentos em bytes e resumos criptográficos SHA-256 para cada superfície de privacidade necessária. Suas raízes declaradas devem conter exatamente o inventário de arquivos emparelhados. O verificador requer tamanhos de arquivo inteiros iguais e JSON formas públicas para superfícies comuns. A captura bruta de loopback portadora de entropia e o arquivo restrito de origem compactado são exceções de tamanho explícitas; ele compara, em vez disso, o tipo de link do pacote e os comprimentos por pacote, as identidades de origem restrita e os comprimentos de linha de forma fixa. Cada solicitação/resposta Torii, pacote público/restrito P2P, bloco, consulta, evento, registro e contagem de tráfego de telemetria também devem corresponder. Uma mudança na forma do pacote, vazamento estrutural de mesmo tamanho, reivindicação falsa de procedência, ou arquivo não emparelhado não pode ser ocultado reescrevendo o relatório de vazamento e seus hashes criptográficos.

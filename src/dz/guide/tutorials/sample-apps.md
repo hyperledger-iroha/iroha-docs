@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: c1432d8d2483f67b6ab81680f6c5457cab470db7944512626242a1446a7d501f
+translation_source_hash: 0c4f2f3fc4efb9f883f597a3eea49c99431b711a0141eba70ac5a2524990dd73
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-supplemental-naming-link
 ---
 # དཔེ་ཚད་ལག་ལེན་ཚུ་དང་ ལག་ལེན་ལམ་སྟོན་ཚུ་ {#samples-and-recipes}
 
@@ -11,7 +11,7 @@ Iroha འབྱུང་ཁུངས་མཛོད་ཁང་ནང་ SDK བ
 
 ## JavaScript ལག་ལེན་ལམ་སྟོན་ཚུ་ {#javascript-recipes}
 
-[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes) ཌེ་ཊི་མཱནསི་ཊི་གི་ཚོང་འབྲེལ་གྱི་ བཀྲམ་སྤེལ་འབད་ནིའི་དོན་ལས་ དཔེ་སྟོན་ཚུ་བཀོད་ཡོད་པའི་གནས་ཚུལ། Nexus གློག་ཐག་ར་བ་ཚུ་ བསྒྱུར་བཅོས་འབད་བ། NFT རྩིས་ཐོ་ལོག་བཤུད་འབད་ནི་དང་ ISO བྱ་རིམའི་ཐངས་དང་ Torii བཀྲམ་སྤེལ་འབད་ཐངས་: བཀྲམ་སྟོན་ཐངས་རེ་རེ་གིས་ ཡིག་ཆ་འདི་ ཨོ་ཕ་ལཱིན་ལས་འཕར་སོང་རུང་ ཡང་ན་ ཕྲ་འཕྲོས་ཅིག་ དགོཔ་འབད་རུང་ Torii མཐའ་མཇུག་གི་ཐིག་ཁྲ།
+[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes) ཌེ་ཊི་མཱནསི་ཊི་གི་ཚོང་འབྲེལ་གྱི་ བཀྲམ་སྤེལ་འབད་ནིའི་དོན་ལས་ དཔེ་སྟོན་ཚུ་བཀོད་ཡོད་པའི་གནས་ཚུལ། SORA Nexus གློག་ཐག་ར་བ་ཚུ་ བསྒྱུར་བཅོས་འབད་བ། NFT རྩིས་ཐོ་ལོག་བཤུད་འབད་ནི་དང་ ISO བྱ་རིམའི་ཐངས་དང་ Torii བཀྲམ་སྤེལ་འབད་ཐངས་: བཀྲམ་སྟོན་ཐངས་རེ་རེ་གིས་ ཡིག་ཆ་འདི་ ཨོ་ཕ་ལཱིན་ལས་འཕར་སོང་རུང་ ཡང་ན་ ཕྲ་འཕྲོས་ཅིག་ དགོཔ་འབད་རུང་ Torii མཐའ་མཇུག་གི་ཐིག་ཁྲ།
 
 ## Swift དང་ iOS {#swift-and-ios}
 

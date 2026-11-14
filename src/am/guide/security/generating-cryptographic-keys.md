@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
+translation_source_hash: b6e3bd79c50ea326930ac978350ea4beac8294b6f045ac0084aada257754ffa1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # ምስጠራ ቁልፎችን በማመንጨት ላይ {#generating-cryptographic-keys}
 
 ለ`kagami keys` ደንበኛ፣ የአውታረ መረብ አቻ እና አረጋጋጭ ቁልፍ ቁሳቁስ ለማመንጨት Iroha 3 ይጠቀሙ።
@@ -18,7 +17,7 @@ translation_engine: bing-translator-llm
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-የወላጅ ማውጫው አስቀድሞ መኖር አለበት። ዒላማው አዲስ ወይም ቀድሞውኑ አሁን ባለው ተጠቃሚ ባለቤትነት የተያዘ፣ ሁነታ `0700`፣ ከምሳሌያዊ ማገናኛዎች የጸዳ እና ባዶ መሆን አለበት። `kagami` `public.key` እና `private.key` በሞድ `0600` ይጽፋል እና ቁልፍ ቁሳቁሶችን አያትምም። በ`--pop`፣ እንዲሁም `pop.hex` ይጽፋል።
+ወላጅ ማውጫው አስቀድሞ መኖር አለበት። የታለመው ማውጫ መኖር የለበትም፤ Kagami አስቀድሞ ያለ ባዶ ማውጫንም ይከለክላል። ለባለቤቱ ብቻ መዳረሻ የሚሰጡ የፋይል ስርዓት ፍተሻዎችን እያደረገ ዒላማውን በ`0700` ሁነታ ይፈጥራል፣ ተምሳሌታዊ አገናኞችንም ይከለክላል። `kagami`፣ `public.key` እና `private.key`ን በ`0600` ሁነታ ይጽፋል እንጂ የቁልፍ ቁሳቁሶችን አያትምም። ከ`--pop` ጋር `pop.hex`ንም ይጽፋል።
 
 `--out-dir` Kagami እነዚህን የባለቤት-ብቻ የፋይል ስርዓት ህጎች ማስፈጸም በማይችሉባቸው መድረኮች ላይ በአስተማማኝ ሁኔታ ውድቅ ይሆናል። የግል-ቁልፍ ፋይሉ ያልተመሰጠረ ወደ ውጭ መላክ እንጂ ሀ ሃርድዌር ወይም ወደ ውጭ መላክ የማይችል የምርት ምስጠራ ፈራሚ። በተፈቀደው የጥበቃ ወሰን ውስጥ ያስገቡት እና በማሰማራቱ ሂደት መሰረት ወደ ውጭ መላክ ያስወግዱት።
 

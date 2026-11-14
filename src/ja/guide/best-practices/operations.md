@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /guide/best-practices/operations.md
-translation_source_hash: de9e8129467b1111a58cee07acf43382d6cf3c352211a1511659ced422b46778
+translation_source_hash: 44df6cc409b8434e5b45286e02500036bb9eda80251f4b6a50205bf4a3de3968
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-first-release-source-amendment
 ---
-
 # オペレーション {#operations}
 
 運用準備性とは、ネットワークが検証者ホストへの即興的なアクセスに依存することなく、監視、変更、バックアップ、復旧できる状態を意味します。
@@ -38,7 +37,7 @@ translation_engine: bing-translator-llm
 ## チェンジマネジメント {#change-management}
 
 - オンチェーンの構成変更を、レビュー、事前確認、承認、および変更後の検証が必要なトランザクションとして扱う。
-- 互換性計画とロールバックの判断ポイントを伴って、ネットワークピアのバイナリアップグレードを展開する。
+- ピアのリリースをインストールする前に、そのリリースがネットワークの認証済みランタイム選択を実装し、起動チェックポイントより後の履歴を処理できることを確認してください。プロトコル定義の変更には、適格性を検証したうえでガバナンスに基づく選択の遷移が必要です。有効化後の復旧には、互換性のないバイナリへのダウングレードではなく、是正のための遷移を用います。
 - 移行計画で必要とされない限り、同じメンテナンスウィンドウでネットワークピアのトポロジー、コンセンサスのタイミング、およびアプリケーションのワークロードを変更しないでください。
 - 運用変更に関する取引の暗号ハッシュとブロック高を記録してください。
 

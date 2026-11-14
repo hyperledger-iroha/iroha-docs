@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
+translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # སྒྲིག་ཆས་རྐྱང་པ་གུ་ Iroha ལག་ལེན་འཐབ་ནི་ {#running-iroha-on-bare-metal}
 
@@ -31,7 +31,7 @@ cargo build --release \
 ཌའི་ལོག་གི་ས་སྒོ་ནང་ Iroha 3 བཞི་ལྡེ་མིག་ཅིག་བཟོ་ནི།
 
 ```bash
-target/release/kagami localnet --peers 4 --out-dir ./localnet
+target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
 ཐོན་འབྲས་སྣོད་ཐོ་ནང་ བཟོ་བཏོན་འབད་ཡོད་པའི་ `genesis.json`, `genesis.signed.nrt`, མཉམ་རོགས་ `config.toml` ཡིག་སྣོད་ `client.toml`, གྲོགས་རམ་ཡིག་ཆ་ཚུ་ དེ་ལས་ བཱན་ཌལ་བརྡ་བཀོད་དེ་གི་དོན་ལུ་ བཟོ་བཏོན་འབད་ཡོད་པའི་ `README.md` ཚུ་ཡོདཔ་ཨིན།
@@ -51,7 +51,7 @@ target/release/kagami localnet --peers 4 --out-dir ./localnet
 བཟོ་བཏོན་འབད་ཡོད་པའི་ མཁོ་སྤྲོད་རིམ་སྒྲིག་ལག་ལེན་འཐབ།
 
 ```bash
-target/release/iroha --config ./localnet/client.toml ledger domain list all
+target/release/iroha --config ./localnet/client.toml ledger domain list --all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 

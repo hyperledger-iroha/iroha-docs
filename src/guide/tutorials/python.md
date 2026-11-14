@@ -1137,30 +1137,6 @@ client = create_torii_client(
 )
 ```
 
-## Kagemusha Readiness
-
-The Python SDK can query the current JSON readiness route through its
-generic Torii request helper:
-
-```python
-ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
-
-readiness = client.request_json(
-    "GET",
-    "/v1/offline/readiness",
-    params={"asset_definition_id": ASSET_DEFINITION_ID},
-    headers={"Accept": "application/json"},
-    expected_status=(200,),
-)
-print(readiness["ready"])
-print(readiness["blockers"])
-```
-
-Python does not expose typed Kagemusha top-up or redemption archive
-builders. Use a typed Swift or JVM wallet to construct the canonical V4
-archives, then submit and poll them through a supported Kagemusha Torii
-client.
-
 ## Subscriptions
 
 Subscription reads and draft builders are inherited from the shared Torii
@@ -1440,7 +1416,7 @@ if connect_status is not None:
 ## SoraFS, UAID, and Kaigi Helpers
 
 These helpers are available when the target node exposes the corresponding
-Nexus/SORA endpoints. Treat empty lists as a valid response: public Taira
+SORA Nexus endpoints. Treat empty lists as a valid response: public Taira
 may have the route enabled without data for the sample manifest or UAID.
 
 ```python
@@ -1503,8 +1479,7 @@ The Python SDK already includes helpers for:
   workflows
 - live event streams and typed filters; committed block streams provide
   complete history
-- generic Kagemusha readiness access and Torii subscription helpers; typed
-  top-up and redemption builders are not exposed
+- Torii subscription reads and unsigned transaction draft builders
 - account address, all-algorithm signing helpers, multihash round trips,
   SM2, GOST, ML-DSA, BLS, and confidential key handling
 - Connect URIs, sessions, frames, encryption helpers, and registry admin

@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: 9388823f782eef86aedbaf141bd251dae39837957aefd224ed0cc97ba11ad97d
+translation_source_hash: f1f922b9820587cd4b599e7407698a47d468616670fee2922e4028147bc3e9b0
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Kotlin, Android və Java {#kotlin-android-and-java}
 
 Kotlin SDK JVM və Android tətbiqləri üçün standart müştəri yığınıdır. O, Iroha deposunda `kotlin/` altında yerləşir və platformaya görə ayrılıb, beləliklə daşıya bilən kod Android asılılıqlarını əldə etmir.
@@ -73,7 +72,7 @@ Kotlin SDK daxil edir:
 - tək protokol-standart hesab və aktiv ünvanlarının idarə olunması
 - əməliyyatın yaradılması, imzalanması və oflayn məlumat konteynerləri
 - Torii HTTP, WebSocket və SSE müştərilər
-- çox imzalı, abunəlik, SoraFS, Nexus və Connect modelləri
+- çox imzalı, abunəlik, SoraFS, SORA Nexus və Connect modelləri
 - Android keystore və cihaz telemetriya inteqrasiyaları
 - Android oflayn QR, Yaxınlıqda və NFC daşımalar
 

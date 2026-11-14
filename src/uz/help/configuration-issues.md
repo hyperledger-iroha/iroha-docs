@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: ab0496d2cd36056dbc5486cd1ea288606476862290cc544e7afcf63a1641dd6d
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Konfiguratsiya muammolarini bartaraf etish {#troubleshooting-configuration-issues}
 
 Ushbu bo‘lim Iroha 3 konfiguratsiyasi uchun nosozliklarni bartaraf etish bo‘yicha maslahatlarni taqdim etadi. Avvalo [tugmalarni tekshirdi](./overview.md#check-the-keys) qilganingizga ishonch hosil qiling, chunki bu Iroha dagi muammolarning eng keng tarqalgan manbasidir.
@@ -25,7 +24,7 @@ Muammoni quyidagi qadamlar bilan tekshiring:
 Bunday muammoni aniqlash usuli Iroha dan foydalanishga bog‘liq. Agar bu oddiy demo bo‘lsa va siz tarmoq tengdosh ma’lumotlarini saqlashingiz shart bo‘lmasa, mos keluvchi localnet yoki Docker Compose paketini Kagami bilan qayta yarating:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
 ```
 

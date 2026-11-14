@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: 631ec91b5ea398ae17253f0fd6307d76bc3820e2a2b6c8c9f79b30e0188ec170
+translation_source_hash: d85b4d725158e6fcfa70b2bb464efd690307844a5ff0946e51a0da6b75b24a64
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # Torii Oxirgi nuqtalar {#torii-endpoints}
 
@@ -28,8 +28,8 @@ Format tafsilotlari, tarkib muzokaralari, layout bayroqlari, sxema hashlari va N
 |`GET /v1/blocks/stream` |WebSocket |Joʻnatilgan bloklar oqimi |
 |`GET /v1/peers` |JSON |Torii tomonidan aniqlangan tugunlar ro'yxati |
 |`GET /livez` |Matn |Faqatgina jarayonlar bilan ishlash; bu protokolga tayyorlikni anglatmaydi |
-|`GET /readyz` |JSON |To'liq nod tayyorligi, shu jumladan majburiy oflayn naqd pul tekshiruvlari |
-|`GET /health` |JSON |Tayyorlik sondasi xuddi shu oflayn naqdsiz invariant bilan |
+| `GET /readyz` | Matn | Konsensus qabuli, beacon saqlanishi va zarur mustahkam saqlash tayyorligi |
+| `GET /health` | Matn | Torii tirikligi; `Healthy` qaytaradi |
 |`GET /v1/api/version` |Matn |Joriy blok sarlavhasi versiyasi |
 |`GET /status` |Norito yoki JSON |Yuqori darajadagi diagnostika holati; JSON soʻrovini aniqlab oling |
 |`GET /metrics` |Prometheus |Prometheus scraping oxirgi nuqtasi |
@@ -48,7 +48,7 @@ Accept: text/event-stream, application/json
 
 Torii avval so'rov qatlamida JSON yoki Norito ifodalarini muzokara qiladi, so'ngra mahalliy `text/event-stream` javobini tasdiqlaydi. Shuning uchun faqat `text/event-stream` yuborish `406` bilan rad etiladi; [ oqim tadbirlari retseptasi ](/uz/cookbook/stream-events.md) to'liq boshliqdan foydalanadi.
 
-`/openapi.json` sxemada tasvirlangan yo'nalishlar uchun ishlab chiqilgan shartnoma, to'liq operatsion-sonda inventar emas. Hozirgi hujjatda `/livez` va `/readyz` bo'shashtirilmoqda va uning `/health` tavsifi tayyorlik ko'rsatuvchidan ortda qolishi mumkin. Yo'nalish klientlarini jonli hujjatdan yarating, lekin faollik va tayyorlikni to'g'ridan-to'g'ri ishlamoqchi nodga va qo'lga kiritilgan boshqaruvchilariga qarshi tasdiqlang. To'g'rimi yuzasi hali ham qurilish xususiyatlari va ish vaqti konfiguratsiyasidan bog'liq. O'sha jonli hujjatni yuklash, JSON yo'nalishlarini sinovdan o'tkazish, curl so'rovlarini nusxa olish va joriy sxemadan mijoz kodini yaratish uchun [Torii API konsolini ](/uz/reference/torii-api-console.md) ishlating.
+`/openapi.json` — sxemada ifodalangan marshrutlar uchun yaratilgan shartnoma. U `/livez`, `/health` va `/readyz`ni o‘z ichiga oladi; ixtiyoriy ilova imkoniyatlari tayyorlik tekshiruviga kirmaydi. Marshrut mijozlarini maqsad tuguningiz taqdim etgan hujjatdan yarating va uning tekshiruvlarini bevosita sinang. Aniq sirt yig‘ilma imkoniyatlari va bajarish vaqti sozlamasiga bog‘liq. [Torii API konsoli](/uz/reference/torii-api-console.md) bilan joriy hujjatni yuklang, JSON marshrutlarini sinang, curl so‘rovlarini ko‘chiring va joriy sxemadan mijoz kodini yarating.
 
 Har bir katalog qo'llab-quvvatlangan OpenAPI operatsiyasi `x-iroha-route-auth` ob'ektini o'z ichiga oladi. Katalog qo'llab -quvvatlanadigan MCP vositalari `_meta["iroha/routeAuth"]` bilan bir xil kontraktni aks ettiradi. Ikkala proyektsiya ham `schemaVersion`, `stableRouteId`, `authentication` va `admission` ni olib boradi. `1` versiyasini to'g'ri shartnoma sifatida ko'rib chiqing: tasdiqlanmagan `schemaVersion` ni rad eting, balki uning autentifikatsiya yoki qabul etiketalarini qanday talqin qilish kerakligini tasavvur qiling. Yo'nalish metadatalari so'rov chegaraini tasvirlaydi; u ushbu chegara tomonidan talab etiladigan ma'lumotlarni almashtirmaydi.
 
@@ -86,15 +86,14 @@ Agar ommaviy testnet yo'nalishi `502` ni qaytarsa, vaqt o'tib ketsa yoki to'yilg
 
 ## Qoʻshma fikrlar va ish vaqti yakuniy nuqtalari {#consensus-and-runtime-endpoints}
 
-Quyidagi Sumeragi yo'nalishlarining har biri operatorning so'rov imzosini talab qiladi. Status, tashxislar, oqim, rahbar, kalit, QC va parametr yo'nalishlari ham telemetriyani qo'llab-quvvatlovchi qurilishni talab qiladi.
+Quyidagi har bir Sumeragi marshrutiga operator so‘rovi imzosi kerak. Holat, diagnostika, oqim, yo‘lak, kalit va parametr marshrutlariga telemetriya yoqilgan yig‘ilma ham zarur.
 
 |Keyingi nuqta |Format | Maqsad                                                 |
 | ----------------------------------------- | -------------- | ------------------------------------------------------- |
 |`GET /v1/sumeragi/status` |Norito yoki JSON |Avtolatli reduktor egalikidagi konsensus holati |
 |`GET /v1/sumeragi/diagnostics` |JSON |Sotuv, navbat va yo'nalish diagnostikasi uchun ruxsat berilmagan |
 |`GET /v1/sumeragi/status/sse` |SSE |Tinchlik bilan ishonchli konsensus holati oqimi |
-|`GET /v1/sumeragi/leader` |JSON |Hozirgi rahbar maʼlumotlari |
-|`GET /v1/sumeragi/qc` |Norito yoki JSON |Eng yuqori va qulflangan quorum sertifikatlari snapshotlari |
+| `GET /v1/sumeragi/lanes` | JSON | Yo‘lak konsensusi diagnostikasi |
 |`GET /v1/sumeragi/consensus-keys` |JSON |Aktiv konsensus kalitlari |
 |`GET /v1/sumeragi/bls-keys` |JSON |Aktiv BLS konsensus kalitlari |
 |`GET /v1/sumeragi/params` |JSON |Zilziladagi joriy parametrlar Sumeragi |
@@ -105,12 +104,14 @@ Quyidagi Sumeragi yo'nalishlarining har biri operatorning so'rov imzosini talab 
 |`GET /v1/runtime/metrics` |JSON |Ishga tushish vaqti maʼlumotlari |
 |`GET /v1/runtime/upgrades` |JSON |Ish vaqti yangilanish roʻyxati |
 |`POST /v1/runtime/upgrades/propose` |JSON |Ish vaqti yangilanishini taklif qiling |
-|`POST /v1/runtime/upgrades/activate/{id}` |JSON |Tartib qilingan ishga tushirish vaqti yangilanishini faollashtirish |
+| `POST /v1/runtime/upgrades/attest/{id}` | JSON | Taklif qilingan bajarish muhiti yangilanishini attestatsiya qilish |
+| `GET /v1/runtime/release` | JSON | O‘rnatilgan nativ reliz metadatasi |
+| `GET /v1/runtime/containments` | JSON | Bajarish muhitini cheklash yozuvlari |
 |`POST /v1/runtime/upgrades/cancel/{id}` |JSON |Tartib qilingan ish vaqti yangilanishini bekor qilish |
 
-## App va SORA yo'nalishidagi oilalar {#app-and-sora-route-families}
+## Ilova va SORA Nexus marshrut oilalari {#app-and-sora-route-families}
 
-Torii dasturga mos xususiyatlar to'plami bilan qurilganda, u qidiruvchilar uchun qo'shimcha JSON oilalarini, SORA xizmatlarini, ko'prik oqimlarini, dalillarni va saqlashni ochib beradi. Ushbu oilalarning barchasi har bir tarmoq profilida yoqilmaydi.
+Torii ilovaga mo‘ljallangan imkoniyatlar bilan qurilganda explorerlar, SORA Nexus xizmatlari, ko‘prik jarayonlari, isbotlar va saqlash uchun qo‘shimcha JSON oilalarini beradi. Bu oilalarning hammasi har bir tarmoq profilida yoqilmagan.
 
 `/openapi.json` ishlab chiqilgan app-API katalogida ro'yxatdan o'tgan yo'nalishlarni tasvirlaydi; u tarkibida mavjud bo'lgan yo'nalishlar uchun vakolatli, balki har bir yo'nalishga mo'ljallangan emas Xususan, ommaviy mahalliy SoraFS CID va yaxshi ma'lum yo'nalishlar ushbu ishlab chiqarilgan hujjatning tashqarisida o'rnatilgan va to'g'ridan-to'g'ri tekshirilishi kerak.
 
@@ -125,17 +126,17 @@ Torii dasturga mos xususiyatlar to'plami bilan qurilganda, u qidiruvchilar uchun
 |`/v1/multisig/*`, `/v1/controls/*` |Multisig takliflari, ma'qullash va o'tkazib yuborishni nazorat qilishda yordamchilar |
 |`/v1/bridge/*`, `/v1/ledger/*`, `/v1/proofs/*` |So'nggi muddat, holatni tasdiqlash, blokni tasdiqlash, dalillarni saqlash va dalillar so'rovini olish yo'nalishlari |
 |`/v1/da/*` |Ma'lumotlar mavjudligi qabul qilinishi, manifestlar, dalil siyosati, majburiyatlar va aniq maqsadlar |
-|`/v1/zk/*` |ZK ildizlar, dalillarni tekshirish, IVM dalillarini tasdiqlash, ovozlarni hisobga olish, tekshiruv kalitlari, dalillarni qayd etish va qo'shimchalar  |
+| `/v1/zk/*` | ZK ildizlari, isbot tekshiruvi, ovoz sanash, tekshirish kalitlari, isbot yozuvlari va biriktirmalar |
 |`/v1/gov/*`, `/v1/ministry/*` |Boshqaruv takliflari, ovoz berish notasi, kengash holati, himoyalangan nomlar maydonlari, kun tartibidagi takliflar, qonun qabul qilinishi va yakunlanishi |
-|`/v1/nexus/*`, `/v1/sccp/*` |Nexus yo'nalish, ma’lumotlar makoni va to'liq zanjirli sinov yordamchilari |
+| `/v1/nexus/*`, `/v1/sccp/*` | SORA Nexus ma’lumotlar makoni, yo‘lak va zanjirlararo isbot yordamchilari |
 |`/v1/musubi/*` |Musubi paketlar reyestrini oʻqish va koʻrsatmalarni yaratish |
 |`/v1/subscriptions/*` |Obunalik rejalari, obunalik hayot davri, foydalanish va yordamchilarni to'lash |
 |`/v1/sorafs/*`, `/sorafs/*`, `/.well-known/sorafs/*` |SoraFS provayderni kashf etish, quvvatni tasdiqlash, pinning qilish, saqlash va ommaviy tarkibni xizmat ko'rsatish |
-|`/v1/soracloud/*`, `/v1/soradns/*`, `/soradns/*`, `/api/*` |SoraCloud xizmat hayoti davri, xususiy hisoblash/model oqimlari, ommaviy kashfiyot va uyushtirilgan ilovalarni yo'naltirish |
+| `/v1/soracloud/*`, `/v1/soradns/*`, `/api/*` | SoraCloud xizmat hayotiy davri, maxfiy hisoblash/model jarayonlari, ochiq topish va joylashtirilgan ilova marshrutlashi |
 |`/v1/connect/*`, `/v1/vpn/*` |Iroha Qo'shish seanslari, WebSocket transport, VPN uchrashuvlar, profillar va rasmga ega bo'lish |
 |`/v1/app-api/*`, `/v1/api/*`, `/v1/content/*` |App API bog'lanish va paket/CID tomonidan qo'llab-quvvatlanadigan tarkib yo'nalishi |
 |`/v1/operator/*`, `/v1/mcp` |Operatorning tasdiqlanishi va mahalliy MCP JSON-RPC ko'priklari |
-|`/v1/offline/*`, `/v1/repo/*`, `/v1/space-directory/*`, `/v1/ram-lfe/*` |Offline tayyorlik, ombor shartnomalari, ma’lumotlar makonining manifestlari va [RAM-LFE yordamchilar ](/uz/blockchain/ram-lfe.md#torii-routes)  |
+| `/v1/kagemusha/enrollment`, `/v1/repo/*`, `/v1/space-directory/*`, `/v1/ram-lfe/*` | KAGEMUSHA ro‘yxatdan o‘tishi, qayta sotib olish bitimlari, ma’lumotlar makoni manifestlari va [RAM-LFE yordamchilari](/uz/blockchain/ram-lfe.md#torii-routes) |
 |`/v1/kaigi/*`, `/v1/webhooks/*`, `/v1/notify/*`, `/v1/telemetry/*` |Hamkorlik, veb-qo'shish, push xabardorlik va jonli telemetri integratsiyalari |
 
 ## Hisobvaraqlarni tasdiqlash, ko‘rinishi va Explorer kursorlari {#account-authentication-visibility-and-explorer-cursors}
@@ -211,23 +212,22 @@ ISO 20022 yo'nalishlari ikki mustaqil tekshiruvni amalga oshiradi. Talab dastlab
 
 ### Reyestrning ko‘rinishi va Explorer kursorlari {#ledger-visibility-and-explorer-cursors}
 
-App-facing reyestr read-lari yuqoridagi optional application-account boundary-dan foydalanadi. Unsigned request faqat public deb configured qilingan data space-larni oladi. Valid signed request caller-ning joriy UAID-si bilan bog'langan data space-larni, aniq `CanReadRestrictedDataspace { dataspace }` permission-i bilan nomlangan har bir restricted data space-ni yoki account-da `CanReadAllLedgerData` bo'lsa barcha route-larni qo'shadi.
+Ilovaga mo‘ljallangan reyestr o‘qishlari yuqoridagi ixtiyoriy ilova hisobi chegarasidan foydalanadi. Imzolanmagan so‘rov faqat ochiq deb sozlangan ma’lumotlar makonlarini oladi. Yaroqli imzolangan so‘rov chaqiruvchining joriy UAID siga bog‘langan ma’lumotlar makonlarini, aniq `CanReadRestrictedDataspace { dataspace }` ruxsati nomlagan har bir cheklangan ma’lumotlar makonini yoki hisobda `CanReadAllLedgerData` bo‘lsa barcha marshrutlarni qo‘shadi.
 
 Chaqiruvchining vakolatlariga mos keladigan yo'ldan foydalaning:
 
 |usuli va oxirgi nuqtasi |Tasdiqlash va koʻrinishlilik |
 | ------------------------------------- | --------------------------------------------------------------- |
-|`POST /v1/transactions/visible/query` |Kanonik hisob raqami imzosi; chaqiruvchining ko'rinishini ta'minlaydi |
-|`POST /v1/transactions/query` |Operatorning imzosi talab qilinadi; global operator koʻrinishiga ruxsat beradi |
+| `POST /v1/transactions/query` | Ixtiyoriy kanonik hisob imzosi; chaqiruvchining ma’lumotlar makoni ko‘rinishi qo‘llanadi |
 |`GET /v1/triggers/completed` |Operator imzo soʻraydi; nod-lokal toʻliqlash yozuvlarini oʻqiydi |
 
-Bir xil ko'rinish obʼektlari hisob, domen, aktiv-maʼrifi, aktiv, NFT, RWA, egasi va Explorerni oʻqiydi. Yoʻqolgan obyekt va chaqiruvchining ko'rinadigan yo'llaridan tashqarida bo'lgan object niyat bilan ajratib bo'lmaydi. Tasdiqlangan tranzaksiya va ko'rsatmalar tarixi faqat tranzaksiya uchun qayd etilgan har bir yo'nalish bosqichini ko'rishganda ko'rsatiladi . shu sababli, hatto bitta ishtirokchi bosqich qo'ng'iroq qiluvchining qamrovidan tashqarida bo'lganda yashirilgan; yo'qolgan, eskirgan yoki noto'g'ri ko'rsatilgan yo'naltirish konteksti faqat global o'quvchi uchun ko'rinadi.
+Ayni ko‘rinish obyekti hisob, domen, aktiv ta’rifi, aktiv, NFT, RWA, ega va Explorer o‘qishlarini filtrlaydi. Mavjud bo‘lmagan obyekt va chaqiruvchiga ko‘rinadigan marshrutlardan tashqaridagi obyekt ataylab farqlanmaydi. Commit qilingan tranzaksiya va ko‘rsatma tarixi faqat tranzaksiya uchun yozilgan marshrutning barcha qismlari ko‘ringanda ko‘rsatiladi. Shuning uchun bir nechta ma’lumotlar makonidagi tranzaksiya hatto bitta ishtirokchi qismi chaqiruvchi doirasidan tashqarida bo‘lsa ham yashiriladi; yetishmayotgan, eskirgan yoki noto‘g‘ri shakllangan marshrutlash kontekstini faqat global o‘quvchi ko‘ra oladi.
 
 Olti butun dunyo tomonidan qo'llab-quvvatlanadigan Explorer kolleksiyalarida shaffof bo'lmagan kanonik base64url tugmachalar kursorlari ishlatiladi. Standart sahifa chegarasi 25, maksimal 100 va bitta sahifa eng ko'pida 512 nomzod tugmachasini tekshiradi. Har bir kursor o'zining to'plami, filtrlari, kanonik oxirgi kalit va chaqiruvchining ko'rinadigan yo'l-qoidasi bilan bog'liq, shuning uchun uni boshqa so'rovda yoki chaqiruvchining ko'rinishi o'zgarganidan keyin takrorlash mumkin emas.
 
 Blok, operatsiya, so'nggi tranzaksiya, ko'rsatma va so'ngki ko'rsatmalar tarix kursorlari qo'shimcha ravishda tasdiqlangan snapshot balandligi va blok hashini belgilaydi. Javoblar `pagination.limit`, `pagination.snapshot_height`, `pagination.snapshot_hash`, `pagination.next_cursor` va `pagination.has_more` ni aniqlaydi. Boshqa yo'nalish yoki filtrlar to'plami uchun kursor, o'zgartirilgan ko'rinish aniqlanishi yoki nod endi tasdiqlay olmaydigan darhol surat yopiladi. Torii blokiruvchi ishchi ishlayotganda tarixni skanerlash so'rovlarni qabul qilish ruxsatnomasida qoladi.
 
-Eksplorator WebSocket oqimlar filtrlangan qisqartmalarni chiqaradi va ko'rinishni qayta hisoblashda katta ma'lumotlar huquqlarini o'zgartirish. `GET /v1/blocks/stream` yo'nalish boshqacha: u to'liq imzolangan bloklarni chiqaradi, talab qiladi `CanReadAllLedgerData` qo'l urish paytida, agar ruxsatnoma keyinchalik bekor qilinsa, yopiladi. Ma’lumotlar makonini ko'rib chiqayotgan kashfiyotchi uchun mahalliy oqishni ishlatmang.
+Explorer WebSocket oqimlari filtrlangan xulosalarni beradi va reyestr ruxsatlari o‘zgarganda ko‘rinishni qayta hisoblaydi. Nativ `GET /v1/blocks/stream` marshruti boshqacha: u to‘liq imzolangan bloklarni beradi, qo‘l siqish vaqtida `CanReadAllLedgerData` talab qiladi va bu ruxsat keyinchalik bekor qilinsa yopiladi. Ma’lumotlar makoni doirasidagi explorer uchun nativ oqimdan foydalanmang.
 
 ## ISO 20022 ko'prik {#iso-20022-bridge}
 
@@ -390,7 +390,7 @@ Status va oʻlchovlar oxirgi nuqtalari dastlabki ish stoli boʻladi:
 - `/status` yuqori darajadagi tugunlar, bloklar, navbat va konsensus maydonlarini ochadi
 - `/metrics` Prometheus hisoblagichlari, o'lchovchilari va histogrammalarini aniqlaydi.
 
-Nexus qo'llab-quvvatlangan nodlarda holat chiqishi yo'l va ma’lumotlar makonidan xabardor bo'lgan qismlarni ham o'z ichiga oladi. `nexus.enabled = false`da ushbu qismlar qoldiriladi.
+SORA Nexus marshrutlashi majburiy. Holat chiqishi sozlangan ma’lumotlar makonlari va yo‘laklarni o‘z ichiga oladi; ularning kataloglari va commit qilingan marshrutlash holati ko‘rsatiladigan topologiyani belgilaydi.
 
 ## JSON va Norito {#json-vs-norito}
 
@@ -403,13 +403,13 @@ Accept: application/json
 Bu ayniqsa quyidagilar uchun foydali:
 
 - `/v1/sumeragi/status`
-- `/v1/sumeragi/qc`
+- `/status`
 
 Oxirgi nuqta Norito tilida to'g'ridan-to'g'ri qabul qilganda yoki qaytarib berganda, `application/x-norito` ni tarkib turi yoki `Accept` ustun qiymat sifatida ishlating. Transport tafsilotlari uchun [Norito](/uz/reference/norito.md#torii-and-norito-rpc) ko'ring.
 
 ## Telemetriya profillari {#telemetry-profiles}
 
-Oxirgi nuqta ko'rinishi nodning `telemetry.profile` sozlamalariga bog'liq. Joriy konfiguratsiya besh profil darajasini aniqlaydi:
+Endpoint ko‘rinishi tugun sozlamasining ildiz darajasidagi `telemetry_profile` qiymatiga bog‘liq. Joriy sozlama profilning beshta darajasini beradi:
 
 |Profil |`/status` |`/metrics` |Ishlab chiquvchilar yoʻllari |
 | ----------- | --------- | ---------- | ---------------- |

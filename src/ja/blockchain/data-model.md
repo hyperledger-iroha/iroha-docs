@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/data-model.md
-translation_source_hash: 147562d2286bf11e60a941969e6d52bffc1534c3cfc04d440e0bcf78598a1ca7
+translation_source_hash: f90139dee2eff97769cd47188bcaf60b31672f0250505d8afad9c8ee60815ddd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-naming-amendment
 ---
-
 # データモデル {#data-model}
 
 Iroha は `World` にブロックチェーン台帳の状態を保存します。初回リリースのデータモデルでは、以下の標準的な識別子とエンティティを使用します:
@@ -122,7 +121,7 @@ account_rabbit --> asset_rose : may receive balance
 |資産の定義|正規の `AssetDefinitionId` Base58 アドレス| `name#domain.dataspace` または `name#dataspace`            | `AssetDefinitionAlias` 資産定義に紐付けられています |
 |契約|標準的な Bech32m `ContractAddress`| `name::domain.dataspace` または `name::dataspace`          |`ContractAlias` 配備済みコントラクトアドレスにバインド|
 |ドメイン名| `DomainId` を `domain.dataspace` 形式で| `domain.dataspace`                                    | SNS `domain` ネームスペース記録 |
-|データスペース名|アクティブな Nexus カタログからの数値 `DataSpaceId`| `universal`、`paynet`、または`zk`のようなデータスペースエイリアス| SNS `dataspace` 名前空間レコードとアクティブデータスペースカタログ|
+|データスペース名|アクティブな SORA Nexus カタログからの数値 `DataSpaceId`| `universal`、`paynet`、または`zk`のようなデータスペースエイリアス| SNS `dataspace` 名前空間レコードとアクティブデータスペースカタログ|
 
 アカウントのエイリアスは、ユーザーが目にするアカウント名です。エイリアスは、ワールドステートインデックスとアカウント再キー記録を通じてアクティブなアカウントIDを指すため、アカウントの再キー設定後も維持されます。アカウントの主要ラベルには `SetPrimaryAccountAlias` を使用し、追加の非主要エイリアスには `SetAccountAliasBinding` を使用し、読み取りには `FindAccountByAlias` または `FindAliasesByAccountId` を使用します。アカウントエイリアスには通常、`AcquireAccountAliasLease` で取得し、`RenewAccountAliasLease` で更新するアクティブな SNS アカウントエイリアスリースが必要です。
 

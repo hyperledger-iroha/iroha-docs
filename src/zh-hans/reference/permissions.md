@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # 许可证代码 {#permission-tokens}
 
 本页面列出了当前曝光的默认权限符号类型 Iroha 对于角色和权限的概念指南,请见 [许可证](/zh-hans/blockchain/permissions.md).
@@ -45,7 +44,8 @@ translation_engine: nllb-200-ct2
 |`CanModifyTriggerMetadata`|触发器|修改触发器元数据.|
 |`CanUpgradeExecutor`|执行者|升级运行时执行器.|
 |`CanRegisterSmartContractCode`|智能合同|登记智能合同代码.|
-|`CanUseFeeSponsor`|Nexus|征收 Nexus 费用到指定赞助商账户. |
+| `CanManageFeeSponsorProgram` | SORA Nexus | 管理由指定赞助账户拥有的计划。 |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | 管理一个指定赞助计划的受益人。 |
 
 ## 拥有权 {#ownership}
 

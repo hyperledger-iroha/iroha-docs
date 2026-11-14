@@ -1,11 +1,10 @@
 ---
 translation_locale: kk
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: 8e4a70c9baee70b9b4cd6e26602b799a378f7a17f5c896d1ebb04090c4467dee
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Сұраулар {#queries}
 
 Iroha сұраулар блокчейн тіркелімінің күйін өзгеріссіз оқиды. Қазіргі деректер моделі екі негізгі сұрау түрін ұсынады:
@@ -86,7 +85,7 @@ Iroha сұраулар блокчейн тіркелімінің күйін өз
 | `FindProofRecordsByBackend` |Дәлелдің артқы бөлімі үшін дәлел жазбаларын тізімдеңіз.|
 | `FindProofRecordsByStatus` |Көрсетілген мәртебеге қарай дәлел жазбаларын тізімдеңіз.|
 
-## Nexus, Деректердің қолжетімділігі және Пакеттер {#nexus-data-availability-and-packages}
+## SORA Nexus, Деректердің қолжетімділігі және Пакеттер {#nexus-data-availability-and-packages}
 
 |Сұрау|Мақсат|
 | --- | --- |

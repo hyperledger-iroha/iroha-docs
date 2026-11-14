@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: 4c7c62c23166a19ccc3a6a4bb42d808038d755b8c05e87b9e2ce21fbbe31a6ac
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Iroha 3 ҡуйыу {#install-iroha-3}
 
 Был биттәрҙә Iroha 3 инструменттар сылбыры һәм бинарҙар өсөн өҫкө ағымында `hyperledger-iroha/iroha` эш майҙанын ҡулланған ағымдағы монтаж эштәр ағымдары ҡаралған.
@@ -56,7 +55,7 @@ cargo run --bin kagami -- --help
 Дүрт бинар һеҙ ғәҙәттә ҡулланырға:
 
 - `iroha3d` стандарт бер-береһенә тиң булған ендәр өсөн
-- `iroha3d_taira` каноник Taira validator launcher өсөн
+- каноник Taira валидаторын эшләтеү өсөн `iroha3d_taira`
 - `iroha` өсөн CLI доступ к Torii һәм операторҙың һуңғы нөктәләре
 - `kagami` өсөн асҡыстар, генез манифесттары һәм локаль селтәр профилдәре
 
@@ -64,7 +63,8 @@ cargo run --bin kagami -- --help
 
 Әлеге сығанаҡ менән тәьмин ителгән локаль селтәр ағымы Kagami тарафынан барлыҡҡа килә. Ул пир конфигурацияларын, генез артефакттарын, клиент конфигурацияһын, ярҙамсы сценарийҙарын һәм тикшерелгән кодҡа тап килгән вариантлы Композит файлын яҙа:
 
-- `kagami localnet` локаль native пирҙар өсөн сценарийҙар
+- `kagami localnet up` — Kagami эшләткән һәм күҙәткән идара ителеүсе урындағы селтәр өсөн
+- `kagami localnet generate` — урындағы тиңдәштәрҙе натив эшләтеү скрипттары өсөн
 - `kagami docker` өсөн Docker Compose локаль селтәр каталогынан барлыҡҡа килгән
 
 [Отпуск менән дауам итегеҙ Iroha 3](/ba/get-started/launch-iroha.md).

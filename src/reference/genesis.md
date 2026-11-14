@@ -11,11 +11,15 @@ produced by `kagami genesis sign`.
 A genesis manifest can define:
 
 - `chain` for the chain identifier
+- `chain_discriminant` for the I105 network prefix used to encode account
+  literals in the manifest
 - `executor` for an optional executor upgrade bytecode path
 - `ivm_dir` for IVM libraries used by triggers and upgrades
 - `consensus_mode` for the initial mode advertised by the manifest
 - `transactions` for ordered parameter updates, instructions, triggers, and topology
-- `crypto` for the initial crypto snapshot
+- `sumeragi_context` for the signed Sumeragi height-context parameters
+- `crypto_admission_policy` for the exact signing and controller algorithms
+  that the chain admits, listed in `allowed_algorithms`
 
 Within `transactions`, topology entries pair peer ids and PoPs together:
 
@@ -28,16 +32,19 @@ Within `transactions`, topology entries pair peer ids and PoPs together:
 
 ## Generate a Manifest
 
-Use Kagami to generate a template:
+Use Kagami to generate a template. Repeat `--allowed-signing` for every
+admitted algorithm, in ascending canonical order; Kagami does not fill in
+omitted algorithms:
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
   --consensus-mode npos \
   --ivm-dir defaults \
-  --genesis-public-key <PUBLIC_KEY> > genesis.json
+  --genesis-public-key <PUBLIC_KEY> \
+  --allowed-signing ed25519 > genesis.json
 ```
 
-For the public SORA Nexus dataspace, `npos` is the expected consensus mode.
+For the public SORA Nexus data space, `npos` is the expected consensus mode.
 Other Iroha 3 deployments may use permissioned or NPoS depending on the target
 profile.
 
@@ -60,12 +67,15 @@ is the file that peers should reference from their config.
 
 ## Configure `iroha3d`
 
-Point the daemon at the signed genesis block:
+Point the daemon at the signed genesis block and at the file that pins its
+expected hash. `kagami genesis sign --expected-hash-out` writes that file,
+and the node requires it on fresh starts and restarts:
 
 ```toml
 [genesis]
 file = "genesis.signed.nrt"
 public_key = "<PUBLIC_KEY>"
+expected_hash_file = "genesis.expected_hash"
 ```
 
 ## Related Tools
@@ -73,7 +83,7 @@ public_key = "<PUBLIC_KEY>"
 - `kagami genesis validate`
 - `kagami genesis normalize`
 - `kagami genesis embed-pop`
-- `kagami localnet`
+- `kagami localnet generate`
 - `cargo xtask kagami-profiles`
 
 For the generator implementation and command details, see the

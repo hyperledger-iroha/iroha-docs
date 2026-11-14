@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /guide/best-practices/operations.md
-translation_source_hash: de9e8129467b1111a58cee07acf43382d6cf3c352211a1511659ced422b46778
+translation_source_hash: 44df6cc409b8434e5b45286e02500036bb9eda80251f4b6a50205bf4a3de3968
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-first-release-source-amendment
 ---
-
 # Operaciones {#operations}
 
 La preparación operativa significa que la red puede ser observada, modificada, respaldada y recuperada sin depender del acceso improvisado a los hosts validador.
@@ -38,7 +37,7 @@ Ver [Seguridad Operativa](/es/guide/security/operational-security.md).
 ## Gestión del cambio {#change-management}
 
 - Trate los cambios de configuración en la cadena como transacciones que requieren revisión, lecturas preliminares, autorización y verificación posterior al cambio.
-- Desplegar actualizaciones binarias de pares de la red con un plan de compatibilidad y un punto de decisión para revertir.
+- Antes de instalar una versión del software de un par, compruebe que implementa la selección de ejecución autenticada de la red y el historial posterior a su punto de control de inicio. Los cambios en las definiciones del protocolo requieren una transición de selección cualificada y regida por la gobernanza; después de la activación, la recuperación utiliza una transición correctiva en lugar de volver a un binario incompatible.
 - Evite cambiar la topología de los pares de la red, el tiempo de consenso y la carga de trabajo de la aplicación en la misma ventana de mantenimiento a menos que el plan de migración lo requiera.
 - Registra los hashes criptográficos de las transacciones y las alturas de bloque para los cambios operativos.
 

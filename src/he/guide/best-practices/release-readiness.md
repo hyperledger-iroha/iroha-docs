@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /guide/best-practices/release-readiness.md
-translation_source_hash: 984957526424a4e0ec9f29a6da1bb64699245bb135e8157bbe684bc3d87de4cc
+translation_source_hash: 75fccfa00f1582a8081df3e00331eee7ab21c108c8727a9d73129738cc4940cb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-source-title-amendment
 ---
-
 # מוכן לשחרר {#release-readiness}
 
 לפני קידום יישום Iroha או שינוי רשת, להוכיח את ההתנהגות בסביבה הקטנה ביותר שיכולה לחשוף את הסיכון הרלוונטי, ולאחר מכן לעבור באמצעות רשת ניסוי משותפת ושער הייצור במכוון.
@@ -26,7 +25,7 @@ translation_engine: nllb-200-ct2
 - בדוק את מימון המחתם, מטא-נתונים של נכסי העלות, רשיונות הסמכות והמצב הנצפה לפני שישלחו כל עסקאות בדיקת חי.
 - חכו למצב של הטרמינל, ולאחר מכן איבדו את המצב המוצא עם שאילתת קריאה בלבד.
 
-ראו [הבניית על SORA 3: Taira ו Minamoto ](/he/get-started/sora-nexus-dataspaces.md).
+ראו [פיתוח על SORA Nexus: Taira ו־Minamoto](/he/get-started/sora-nexus-dataspaces.md).
 
 ## רשת הראשית או שער הייצור {#mainnet-or-production-gate}
 

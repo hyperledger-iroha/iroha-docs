@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /blockchain/nfts.md
-translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
+translation_source_hash: 216f59f1cebd73001dab75dcf235306082fb1c0759437f65ce34ec9e1ed51d4f
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # NFTs {#nfts}
 
@@ -48,7 +48,7 @@ name$domain
 name$domain.dataspace
 ```
 
-དཔེར་ན་ `badge$docs.universal` ངོས་འཛིན་འབདཝ་ཨིན། `badge` NFT འདི་ནང་ལུ་ `docs.universal` ཌའི་ཊ་ས་པི་ལེནཌ་འདི་སེལ་འཐུ་འབད་མ་བཏུབ་པ་ཅིན་ ད་ལྟོའི་པཱསི་ར་འདི་གིས་ `universal` གནད་སྡུད ས་སྟོང་ཚུ འདི་འབདཝ་ལས་ `badge$docs` གྲོས་ཐག་བཅད་ཡོདཔ་ `badge$docs.universal`.
+དཔེར་ན་ `badge$docs.universal` གིས་ `docs.universal` མངའ་ཁོངས་ནང་གི་ `badge` NFT ངོས་འཛིན་འབདཝ་ཨིན། གནད་སྡུད་ས་སྟོང་མ་བཀོད་ན་ ད་ལྟོའི་དབྱེ་ཞིབ་པ་གིས་ `universal` གནད་སྡུད་ས་སྟོང་ལག་ལེན་འཐབཔ་ལས་ `badge$docs` འདི་ `badge$docs.universal` ལུ་ཐག་བཅདཔ་ཨིན།
 
 NFT IDs ལུ་ གཏན་འཇགས་ཅན་གྱི་མིང་ལག་ལེན་འཐབ། ID འདི་ བཀོད་རྒྱ, འདྲི་དཔྱད, གནང་བ, བྱུང་ལས ཚགས་མ དང་ གློག་རིམ ཟུར་བརྟེན ཚུ་ནང་ལག་ལེན་འཐབ་མི་ དངོས་པོ ངོ་རྟགས ཨིན།
 
@@ -67,17 +67,17 @@ NFT མི་ཚེ་འཁོར་རིམ་བཀོལ་སྤྱོད�
 
 ```bash
 export IROHA_CONFIG=./localnet/client.toml
-export NFT_DOMAIN=wonderland.universal
-export NFT_ID='badge_intro$wonderland.universal'
+export NFT_DOMAIN='<OWNED_DOMAIN>.universal'
+export NFT_ID="badge_intro\$$NFT_DOMAIN"
 ```
 
-བཟོ་སྐྲུན་འབད་ཡོད་པའི་ ས་གནས་བརྟག་དཔྱད་དྲ་རྒྱ འདི་གིས་ `wonderland.universal` དང་ དེའི་ SNS གླ་སྤྱོད ཧེ་མ་ལས་གཞི་སྒྲིག་འབདཝ་ཨིན། མངའ་ཁོངས གཞན་ཅིག་ལག་ལེན་འཐབ་པ་ཅིན་ [ས་ཁོངས་ཚུ་](/dz/blockchain/domains.md#registration) ནང་གསལ་བཤད་འབད་མི་ གསལ་བསྒྲགས་ཅན `app alias setup plan` དང་ `app alias setup apply` ལཱ་རྒྱུན་ཐོག་ལས་ ཧེ་མ་ར་བཟོ་དགོ།
+བཟོ་པའི་ཉེ་གནས་དྲ་ལམ་ཅིག་གིས་ རང་གི་མཁོ་མངགས་པའི་དོན་ལུ་གློག་རིམ་མངའ་ཁོངས་ག་ནི་ཡང་ཐོ་བཀོད་མི་འབད། `NFT_DOMAIN` འདི་ མིང་རྟགས་བཀོད་པའི་རྩིས་ཐོ་གིས་བདག་དབང་འཛིན་པའི་མངའ་ཁོངས་ཅིག་ཡང་ན་ དེ་ལུ་ `CanRegisterNft` གནང་བ་ཡོད་པའི་མངའ་ཁོངས་ཅིག་ལུ་བཀོད། མངའ་ཁོངས་ཅིག་བཟོ་ནི་ལུ་ [མངའ་ཁོངས་ཚུ](/dz/blockchain/domains.md#registration) ནང་བཤད་པའི་ གསལ་བཀོད་ཐོག་གི་ `app alias setup plan` དང་ `app alias setup apply` ལས་རིམ་ལག་ལེན་འཐབ།
 
 ཐོ་བཀོད་འབད་ཐངས་འདི་ NFT ཨིན་ཨིན། ཐོ་བཀོད་ཀྱི་ནང་འཁོད་ནང་ལུ་ འགོ་ཐོག་གི་དོན་གནད་ JSON འདི་ ཨེབ་གཏང་ཐངས་ལས་ལྷག་སྟེ་འདུག
 
 ```bash
 printf '{"kind":"badge","level":"intro","issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft register --id "$NFT_ID"
 ```
 
@@ -88,14 +88,14 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft get --id "$NFT_ID"
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger nft list all --verbose
+  ledger nft list --all
 ```
 
 NFT ལུ་ ཟུར་གནས་གནད་སྡུད ལྡེ་མིག ཅིག་བཙུགས་ཏེ་ སླར་ཡང་ཀློག་:
 
 ```bash
 printf '{"color":"blue","rarity":"tutorial"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta set --id "$NFT_ID" --key traits
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -105,27 +105,27 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 མེ་ཊ་ཌེ་ཊ་ལྡེ་མིག་འདི་བཏོན་གཏང་།
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
-གདམ་ཁ་རྐྱབས་སྦེ་ NFT སྤོ་བཤུད་འབད། ད་ལྟོའི་ཇོ་བདག་དེ་ `owned_by` ལས་ལྷག་སྟེ་བལྟ་ནིའི་དོན་ལུ་ `ledger nft get` ལག་ལེན་འཐབ་དང་ འགྲོ་འགྲུལ་འབད་སའི་རྩིས་ཐོ་ ID འཚོལ་ནིའི་དོན་ལུ་ `ledger account list all` ལག་ལེན་འཐབ་།
+དགོ་ན་ NFT སྤོ་བཤུད་འབད། ད་ལྟོའི་ཇོ་བདག་ `owned_by` ལས་ལྷག་ནི་ལུ་ `ledger nft get` དང་ དམིགས་གཏད་རྩིས་ཐོའི་ངོ་རྟགས་འཚོལ་ནི་ལུ་ `account list --all` ལག་ལེན་འཐབ།
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger account list all
+  account list --all
 
 export CURRENT_OWNER='<account-id-from-owned_by>'
 export NEW_OWNER='<destination-account-id>'
 
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
 དཔེ་འདི་ NFT བཏུབ་ཚར་བའི་ཤུལ་ལས་བཏོན་གཏང་། ཁྱོད་ཀྱིས་དེ་བསྐྱར་སྦེ་སྤོ་བཤུད་འབད་བ་ཅིན་ ཡང་ན་ ད་ལྟོའི་ཇོ་བདག་གི་རྩིས་ཐོ་བཟོ་ཐངས་དང་གཅིག་ཁར་ ཐོ་བཀོད་མ་རྐྱབས་པའི་བཀའ་ཡིག་འདི་བཙུགས་དགོ།
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft unregister --id "$NFT_ID"
 ```
 

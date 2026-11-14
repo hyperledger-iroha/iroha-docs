@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # パフォーマンスと指標 {#performance-and-metrics}
 
 Iroha のパフォーマンスは、ワークロード、バリデータのトポロジー、ネットワーク条件、コンセンサス設定に依存します。したがって、単一の TPS の数値は、固定された構成でのベンチマーク実行に関連付けられている場合にのみ有用です。
@@ -38,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -131,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### 候補およびイングレス境界 {#candidate-and-ingress-bounds}
 
-ノードローカル Sumeragi の境界は、バリデーターが保持できる候補およびリカバリ作業の量を決定します:
+ブロックサイズとトランザクションの上限は、署名済みジェネシスとコミット済みのチェーンパラメーターで決まります。ノードローカルの `[sumeragi]` 設定では、参加時の役割、署名鍵の管理、安全性記録のパス、文書化されたローカルのタイムアウトと同期設定の上書きを扱います。
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` と `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`、`sumeragi.queues.chunks`、および`sumeragi.queues.ready_bodies`
-
-小さすぎる境界はキューやペイロード回復の負荷を生じさせ、過大な境界は保持されるメモリと、悪用するネットワークピアに利用可能な作業量を増加させます。1つの制限を変更する前に、プロセスメモリ、メッセージ処理、欠落ボディのメトリクスと診断データのスナップショットを比較してください。
+ネットワークの受信処理とトランザクションキューの上限は、ローカルに保持する処理量を制御します。運用上の上限を変更する前に、診断スナップショットを、プロセスのメモリ、メッセージ処理、ブロック本体の欠落に関するメトリクスと比較してください。同じネットワークでの実行結果を比較する際には、署名済みのチェーンパラメーターを固定します。
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -244,7 +236,7 @@ iroha --config ./localnet/client.toml \
 - バリデータおよびオブザーバーの数
 - コンセンサスモード、署名付きブロックのケイデンス、そして DA レイアウト
 - 正確な`3f + 1`委員会、定足数、およびオブザーバー名簿
-- `sumeragi.block`、`sumeragi.queues`、`sumeragi.limits`、network-ingress、およびtransaction-queueの境界
+- 署名済みのチェーンパラメーター、ローカルの Sumeragi 設定の上書き、ネットワーク受信処理とトランザクションキューの上限
 - テレメトリープロファイル
 - ハードウェア、ストレージ、そして OS の詳細
 - ネットワーク RTT、ジッター、損失、帯域幅の前提

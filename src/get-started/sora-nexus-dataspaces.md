@@ -1,11 +1,11 @@
-# Build on SORA 3: Taira and Minamoto
+# Build on SORA Nexus: Taira and Minamoto {#build-on-sora-3-taira-and-minamoto}
 
-SORA 3 is the app-facing public deployment track built on Iroha 3 and SORA
-Nexus. Build and rehearse on Taira first, then move the same client shape
+SORA Nexus provides public deployment tracks built on Iroha 3. Build and
+rehearse on Taira first, then move the same client shape
 to Minamoto only when you have separate mainnet keys, real XOR for fees,
 and production approval.
 
-This tutorial shows how to configure an Iroha client for the public SORA 3
+This tutorial shows how to configure an Iroha client for the public SORA Nexus
 networks:
 
 - Taira testnet at `https://taira.sora.org`
@@ -23,14 +23,14 @@ activity. Both networks charge fees in XOR:
 | Step                        | Taira Testnet                                                | Minamoto Mainnet                                   |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
 | Start reading network state | Query `/status` without keys                                 | Query `/status` without keys                       |
-| Pick a dataspace            | Use public `universal` unless your app needs a governed lane | Use the same dataspace only after mainnet approval |
+| Pick a data space            | Use public `universal` unless your app needs a governed lane | Use the same data space only after mainnet approval |
 | Get fee asset               | Use the public Taira faucet                                  | Receive XOR from a funded Minamoto account or approved treasury flow |
 | Test writes                 | Use faucet-funded test XOR                                   | Do not use test tooling; writes spend real XOR     |
 | Promote                     | Keep retry logic, monitoring, and signer handling            | Use separate keys, funding, and release controls   |
 
 The practical flow is:
 
-1. Build the client against Taira and use the public `universal` dataspace.
+1. Build the client against Taira and use the public `universal` data space.
 2. Add a signer and fund it with the Taira faucet.
 3. Exercise your app logic against Taira until failures are boring and
    observable.
@@ -56,26 +56,24 @@ Taira funding or SORA Nexus network context.
 
 ## 1. Understand What You Are Setting Up
 
-In SORA Nexus, a dataspace is part of the network lane and routing catalog.
-A client does not create a new public dataspace just by changing
-`client.toml`. Client setup does two things:
+In SORA Nexus, the data space catalog defines data spaces. The lane catalog defines lanes separately: each lane references one data space, and a data space can have multiple lanes. A client does not create a new public data space just by changing `client.toml`. Client setup does two things:
 
 1. points the client at the right Torii endpoint
-2. selects domain and dataspace routing context for its canonical account
+2. selects the network context and signing key for its canonical account
 
-`AccountId` is always canonical and domainless. The `[account].domain` value in
-`client.toml` supplies routing and alias context; it does not become part of
-the account identity. For most applications, start with the public
-`universal` dataspace. Domain context uses `domain.dataspace` form, for
-example:
+`AccountId` is always canonical and domainless, and `client.toml` has no
+domain setting: `[account].profile` selects only the network's I105
+prefix. Domain context belongs to aliases and domain-owned objects. For
+most applications, start with the public `universal` data space. Domain
+context uses `domain.dataspace` form, for example:
 
 ```text
 wonderland.universal
 ```
 
-If you need a new organizational dataspace, prepare a catalog and routing
+If you need a new organizational data space, prepare a catalog and routing
 proposal instead of trying to register it from an ordinary client account.
-See [Provision a New Dataspace](#_8-provision-a-new-dataspace) below.
+See [Provision a New Data space](#_8-provision-a-new-data-space) below.
 
 ## 2. Check the Public Torii Endpoint
 
@@ -97,7 +95,7 @@ curl -fsS https://minamoto.sora.org/status \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
-Inspect the dataspace and lane view exposed by the node:
+Inspect the data space and lane view exposed by the node:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -121,12 +119,17 @@ Torii client first.
 | Intended use | Taira testnet reads and faucet-funded write rehearsals |
 | Production equivalent | Do not point this entry at Minamoto unless a mainnet MCP endpoint and release controls are explicitly approved |
 
-Check the bridge metadata before adding signing material:
+The bridge accepts only stateless JSON-RPC `POST` requests. Check its
+discovery metadata before adding signing material:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
   -H 'Accept: application/json' \
-  | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
+  -H 'Content-Type: application/json' \
+  -H 'MCP-Protocol-Version: 2026-07-28' \
+  -H 'Mcp-Method: server/discover' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"server/discover","params":{"_meta":{"io.modelcontextprotocol/protocolVersion":"2026-07-28","io.modelcontextprotocol/clientCapabilities":{}}}}' \
+  | jq '{versions: .result.supportedVersions, server: .result._meta["io.modelcontextprotocol/serverInfo"].name, toolset: .result.capabilities.extensions["org.hyperledger.iroha/tools"].toolsetVersion}'
 ```
 
 Configure the URL as a user-local MCP server in the agent runtime. Do not
@@ -265,7 +268,7 @@ for network in taira minamoto; do
 done
 ```
 
-List the public dataspace lanes exposed by Taira:
+List the public data space lanes exposed by Taira:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -327,7 +330,7 @@ Create `taira.client.toml`:
 ```toml
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
 # The exact `network_id` from https://taira.sora.org/v1/accounts/capabilities
-network_id = "<TAIRA_NETWORK_ID>"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 torii_url = "https://taira.sora.org/"
 
 [account]
@@ -341,7 +344,9 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-The top-level `chain` is the exact Taira transaction chain ID. The
+The top-level `chain` is the exact Taira transaction chain ID, and
+`network_id` is the exact network identity that every signature binds.
+Configure exactly one of `network_id` or `network_id_file`. The
 `[account].profile = "taira"` setting independently selects the Taira I105
 chain discriminant. The chain ID does not select the account profile.
 
@@ -358,35 +363,31 @@ iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
 Fund the Taira account through the faucet before you run fee-paying writes.
-The direct faucet flow is in
+The prepared faucet flow is in
 [Get Testnet XOR on Taira](#_4-get-testnet-xor-on-taira).
 
-After the faucet claim is accepted and the account is funded, the Taira
-canary is an optional write smoke test:
+After the account is funded, a signed log instruction is an optional write
+smoke test. Every submitted transaction names its fee payer, and the CLI
+quotes the exact fee before signing:
 
 ```bash
-iroha --config ./taira.client.toml taira write-canary \
-  --public-root https://taira.sora.org \
-  --write-config ./taira.canary.client.toml \
-  --json
+iroha --config ./taira.client.toml --fee-payer authority \
+  tx ping --msg "taira smoke test"
 ```
 
-The canary submits a signed ping, waits for confirmation, and writes the
-runtime signer config when `--write-config` is provided. Taira is a public
-testnet, so queue saturation can make the signed ping fail even when the
-faucet itself works. If `taira doctor` reports a saturated queue or the
-canary returns `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`, wait and retry before
-treating it as a client configuration error.
+The command waits for confirmation. Taira is a public testnet, so queue
+saturation can make the ping fail even when the faucet itself works. If
+`taira doctor` reports a saturated queue or the ping returns
+`PRTRY:NEXUS_FEE_ADMISSION_REJECTED`, wait and retry before treating it as
+a client configuration error.
 
-For unattended smoke tests, wrap the canary in a bounded retry loop:
+For unattended smoke tests, wrap the ping in a bounded retry loop:
 
 ```bash
 ok=false
 for attempt in 1 2 3 4 5; do
-  iroha --config ./taira.client.toml taira write-canary \
-    --public-root https://taira.sora.org \
-    --write-config ./taira.canary.client.toml \
-    --json && ok=true && break
+  iroha --config ./taira.client.toml --fee-payer authority \
+    tx ping --msg "taira smoke test" && ok=true && break
 
   sleep 60
 done
@@ -401,10 +402,9 @@ TLS, or `status = "fail"` diagnostics are not.
 ## Generate a SORA Nexus Account ID
 
 A SORA Nexus account ID is a canonical I105 address derived from the
-account public key and the target network prefix. It is not the
-`[account].domain` value in client TOML. The same public key encodes to
-different IDs on Taira and Minamoto, and production users should generate a
-separate keypair for Minamoto.
+account public key and the target network prefix. The same public key
+encodes to different IDs on Taira and Minamoto, and production users should
+generate a separate keypair for Minamoto.
 
 Generate or load the Ed25519 keypair that will control the account:
 
@@ -424,9 +424,9 @@ Convert a Minamoto public key with the mainnet prefix:
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Use the resulting account ID wherever a Nexus API or CLI command asks for a
-canonical account ID, for example the Taira faucet `account_id`, balance
-queries, strict account fields, or alias bindings. Keep the matching
+Use the resulting account ID wherever a SORA Nexus API or CLI command asks for a
+canonical account ID, for example balance queries, strict account fields,
+or alias bindings. Keep the matching
 private key in your client config, and select the same public network with
 `[account].profile = "taira"` or `[account].profile = "minamoto"`.
 
@@ -465,197 +465,82 @@ and [Password Security](/guide/security/password-security.md).
 
 ## 4. Get Testnet XOR on Taira
 
-Use the public faucet directly. The flow is:
+Claim testnet XOR with the CLI's prepared faucet flow. The faucet funds the
+account configured in `taira.client.toml` and registers it first when it
+does not exist yet. The flow is:
 
-1. Generate or load a signer and compute its canonical Taira account ID.
-2. Fetch the current faucet puzzle.
-3. Solve the puzzle if `difficulty_bits` is greater than `0`.
-4. Submit the faucet claim.
-5. Wait for the account or asset balance to become visible before sending
-   fee-paying writes.
+1. Read the public faucet policy: the faucet authority, fee asset, and
+   amount.
+2. Prepare the claim. The CLI solves the proof of work, verifies the exact
+   transaction that Torii prepares and signs, and saves it in a private
+   journal directory without submitting it.
+3. Submit the saved transaction once.
+4. Wait for the asset balance to become visible before sending fee-paying
+   writes.
 
-Convert a public key into the Taira I105 account ID expected by the faucet:
-
-```bash
-iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
-```
-
-Fetch the puzzle:
+Read the policy:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
   -H 'Accept: application/json' \
+  | tee ./taira-faucet-policy.json \
   | jq .
 ```
-
-The faucet is a public testnet service. If the puzzle or claim endpoint
-returns `502`, a timeout, or another gateway-level error, wait and retry
-before changing your keys or client config.
 
 The response has this shape:
 
 ```json
 {
-  "algorithm": "scrypt-leading-zero-bits-v1",
-  "difficulty_bits": 8,
-  "anchor_height": 741,
-  "anchor_block_hash_hex": "05d2...",
-  "challenge_salt_hex": null,
-  "scrypt_log_n": 13,
-  "scrypt_r": 8,
-  "scrypt_p": 1,
-  "max_anchor_age_blocks": 6
+  "schema_version": 1,
+  "network_id": "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774",
+  "network_prefix": 369,
+  "authority": "<TAIRA_FAUCET_AUTHORITY_I105>",
+  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "amount": "25000"
 }
 ```
 
-When `difficulty_bits` is `0`, submit only the account ID:
+The policy is unsigned discovery data. Automation should pin the authority,
+asset definition, and amount it expects instead of trusting each response.
+`prepare` refuses a prepared transaction that differs from the values you
+pass.
+
+Prepare and submit the claim:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet \
-  -H 'Accept: application/json' \
-  -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
-  | tee ./taira-faucet-response.json \
-  | jq .
+export TAIRA_FEE_ASSET="$(
+  jq -er '.asset_definition_id' ./taira-faucet-policy.json
+)"
+
+iroha --config ./taira.client.toml --fee-payer authority \
+  taira account faucet prepare \
+  --journal ./taira-faucet \
+  --issuer "$(jq -er '.authority' ./taira-faucet-policy.json)" \
+  --asset-definition "$TAIRA_FEE_ASSET" \
+  --amount "$(jq -er '.amount' ./taira-faucet-policy.json)"
+
+iroha --config ./taira.client.toml \
+  taira account faucet submit --journal ./taira-faucet
 ```
 
-When `difficulty_bits` is greater than `0`, solve the puzzle and include
-the anchor height plus nonce:
-
-```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet \
-  -H 'Accept: application/json' \
-  -H 'content-type: application/json' \
-  -d '{
-    "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-    "pow_anchor_height": 741,
-    "pow_nonce_hex": "<NONCE_HEX>"
-  }' \
-  | tee ./taira-faucet-response.json \
-  | jq .
-```
-
-The puzzle algorithm is:
-
-1. Build the challenge as SHA-256 over:
-   - the bytes of `iroha:accounts:faucet:pow:v2`
-   - the UTF-8 account ID
-   - `anchor_height` as big-endian `u64`
-   - `anchor_block_hash_hex` decoded as bytes
-   - `challenge_salt_hex` decoded as bytes, when present
-2. Try `u64` nonces encoded as big-endian 8-byte values.
-3. For each nonce, run scrypt with:
-   - password: the 8-byte nonce
-   - salt: the 32-byte challenge
-   - `N = 2^scrypt_log_n`
-   - `r = scrypt_r`
-   - `p = scrypt_p`
-   - output length: 32 bytes
-4. The winning nonce is the first digest with at least `difficulty_bits`
-   leading zero bits.
-
-The faucet response includes the funded asset and queued transaction hash:
-
-```json
-{
-  "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
-  "asset_id": "...",
-  "amount": "<FUNDED_AMOUNT>",
-  "tx_hash_hex": "...",
-  "status": "QUEUED"
-}
-```
-
-The response is currently returned with HTTP `202 Accepted`. Its
-`asset_definition_id` is the current Taira fee asset funded by the public
-faucet; derive it from the response instead of copying an example ID. The
-faucet has accepted the request when it returns `tx_hash_hex` and
-`status: "QUEUED"`.
+`prepare` creates the journal directory privately and refuses to replace an
+existing one, so use a new directory for each claim. The faucet is a public
+testnet service. If `submit` reports `Pending`, times out, or receives a
+`502`, run `taira account faucet resume` with the same config and journal
+instead of preparing another claim. A stale proof-of-work anchor fails
+`prepare`; prepare again in a new journal directory.
 
 Then poll for the funded asset before submitting your own fee-paying
 transactions:
 
 ```bash
-TAIRA_FEE_ASSET_DEFINITION=$(
-  jq -er '.asset_definition_id' ./taira-faucet-response.json
-)
-
 iroha --config ./taira.client.toml ledger asset get \
-  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
+  --definition "$TAIRA_FEE_ASSET" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
-If the faucet claim was accepted but the account or asset is not visible
-yet, the transaction is still behind public testnet queue processing. Wait
-and retry the read before sending writes.
-
-For a ready-to-run direct API check, save this as `taira_faucet_claim.py`
-and pass the Taira I105 account ID:
-
-```python
-#!/usr/bin/env python3
-import hashlib
-import json
-import sys
-import urllib.request
-
-
-def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
-    full, rem = divmod(bits, 8)
-    if digest[:full] != b"\0" * full:
-        return False
-    return rem == 0 or digest[full] >> (8 - rem) == 0
-
-
-root = "https://taira.sora.org"
-account_id = sys.argv[1]
-
-puzzle_request = urllib.request.Request(
-    f"{root}/v1/accounts/faucet/puzzle",
-    headers={"Accept": "application/json"},
-)
-
-with urllib.request.urlopen(puzzle_request) as res:
-    puzzle = json.load(res)
-
-claim = {"account_id": account_id}
-difficulty = int(puzzle["difficulty_bits"])
-
-if difficulty > 0:
-    challenge = hashlib.sha256()
-    challenge.update(b"iroha:accounts:faucet:pow:v2")
-    challenge.update(account_id.encode())
-    challenge.update(int(puzzle["anchor_height"]).to_bytes(8, "big"))
-    challenge.update(bytes.fromhex(puzzle["anchor_block_hash_hex"]))
-    if puzzle.get("challenge_salt_hex"):
-        challenge.update(bytes.fromhex(puzzle["challenge_salt_hex"]))
-
-    n = 1 << int(puzzle["scrypt_log_n"])
-    r = int(puzzle["scrypt_r"])
-    p = int(puzzle["scrypt_p"])
-    salt = challenge.digest()
-
-    for nonce in range(1_000_000):
-        nonce_bytes = nonce.to_bytes(8, "big")
-        digest = hashlib.scrypt(nonce_bytes, salt=salt, n=n, r=r, p=p, dklen=32)
-        if has_leading_zero_bits(digest, difficulty):
-            claim["pow_anchor_height"] = puzzle["anchor_height"]
-            claim["pow_nonce_hex"] = nonce_bytes.hex()
-            break
-    else:
-        raise SystemExit("faucet nonce not found")
-
-request = urllib.request.Request(
-    f"{root}/v1/accounts/faucet",
-    data=json.dumps(claim).encode(),
-    headers={"Accept": "application/json", "content-type": "application/json"},
-    method="POST",
-)
-
-with urllib.request.urlopen(request) as res:
-    print(json.dumps(json.load(res), indent=2))
-```
+If the claim was applied but the asset is not visible yet, wait and retry
+the read before sending writes.
 
 The faucet is only for Taira testnet funds. Do not use testnet XOR, faucet
 accounts, or Taira canary signers in Minamoto flows.
@@ -668,10 +553,11 @@ Create `minamoto.client.toml`:
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000753"
+# The exact `network_id` from https://minamoto.sora.org/v1/accounts/capabilities
+network_id = "<MINAMOTO_NETWORK_ID>"
 torii_url = "https://minamoto.sora.org/"
 
 [account]
-domain = "wonderland.universal"
 profile = "minamoto"
 public_key = "<ED25519_PUBLIC_KEY_HEX>"
 private_key = "<ED25519_PRIVATE_KEY_HEX>"
@@ -682,7 +568,9 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-The top-level `chain` is the current Nexus mainnet chain ID.
+The top-level `chain` is the current SORA Nexus mainnet chain ID, and
+`network_id` is Minamoto's exact network identity; read it from the
+capabilities route before the first signed operation.
 `[account].profile = "minamoto"` selects the Minamoto I105 chain
 discriminant; the endpoint hostname and chain ID do not select it implicitly.
 
@@ -700,7 +588,7 @@ through the mainnet onboarding or governance flow:
 iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
 ```
 
-Do not run the Taira faucet or write-canary helper against Minamoto.
+Do not run the Taira faucet or smoke-test commands against Minamoto.
 
 ## 6. Fund a Minamoto Account with XOR
 
@@ -717,10 +605,10 @@ assume a mainnet transaction can be reset.
 Taira XOR cannot pay Minamoto fees. Testnet balances and faucet claims do
 not transfer to Minamoto.
 
-## 7. Work Inside an Existing Dataspace
+## 7. Work Inside an Existing Data space
 
 Use fully qualified domain names for ledger objects that live inside a
-dataspace. For example, a project domain in the public dataspace should
+data space. For example, a project domain in the public data space should
 use:
 
 ```text
@@ -736,8 +624,7 @@ iroha --config ./taira.client.toml \
   --intent-file ./taira-apps-domain.intent.json \
   --plan-file ./taira-apps-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-apps-domain.plan.json
 ```
 
@@ -751,11 +638,11 @@ iroha --config ./minamoto.client.toml \
   --intent-file ./minamoto-apps-domain.intent.json \
   --plan-file ./minamoto-apps-domain.plan.json
 
-iroha --config ./minamoto.client.toml \
+iroha --config ./minamoto.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./minamoto-apps-domain.plan.json
 ```
 
-Account aliases use the same dataspace suffix:
+Account aliases use the same data space suffix:
 
 ```text
 alice@apps.universal
@@ -765,11 +652,11 @@ alice@universal
 Strict account fields still use canonical I105 account IDs. Treat aliases
 as human-readable bindings that resolve to canonical account IDs.
 
-## 8. Provision a New Dataspace
+## 8. Provision a New Data space
 
-A new dataspace is an operator and governance change. The public Torii
-endpoint can route traffic to configured dataspaces, but it will reject
-unknown dataspace aliases.
+A new data space is an operator and governance change. The public Torii
+endpoint can route traffic to configured data spaces, but it will reject
+unknown data space aliases.
 
 Before preparing a change, capture the current live catalog:
 
@@ -785,21 +672,21 @@ For an operator account, also check the lane manifest posture:
 iroha --config ./operator.client.toml app nexus lane-report --summary
 ```
 
-Do not promote a new alias unless the lane ID, dataspace ID, validator set,
+Do not promote a new alias unless the lane ID, data space ID, validator set,
 fault tolerance, manifest, routing rules, and operational owner have been
 reviewed together. A normal user account with the required permissions can
-acquire a domain and its SNS lease inside an existing dataspace through the
-alias planner; it cannot safely add a new public dataspace.
+acquire a domain and its SNS lease inside an existing data space through the
+alias planner; it cannot safely add a new public data space.
 
-For a private or organizational dataspace, prepare a catalog change with:
+For a private or organizational data space, prepare a catalog change with:
 
-- a unique dataspace alias and numeric `id`
+- a unique data space alias and numeric `id`
 - a matching lane entry or an existing lane assignment
-- the dataspace `fault_tolerance`
+- the data space `fault_tolerance`
 - routing rules for the instructions or account scopes that should land
   there
 - a Space Directory manifest or equivalent rollout evidence, when the
-  dataspace exposes UAID capabilities
+  data space exposes UAID capabilities
 - governance approval for validator, compliance, settlement, and monitoring
   policy
 
@@ -824,8 +711,8 @@ fault_tolerance = 1
 lane = 5
 dataspace = "payments"
 [nexus.routing_policy.rules.matcher]
-account_prefix = "payments."
-description = "Route payments domains to the payments dataspace"
+instruction = "transfer::asset"
+description = "Route asset transfers to the payments dataspace"
 ```
 
 Operator acceptance should include these gates:
@@ -834,7 +721,7 @@ Operator acceptance should include these gates:
   resolved node configuration
 - the generated or reviewed manifest is archived with hashes and signatures
 - smoke tests pass on Taira before any Minamoto promotion
-- the post-change `/status` catalog shows the intended lane and dataspace
+- the post-change `/status` catalog shows the intended lane and data space
 - `iroha app nexus lane-report --summary` does not report missing required
   manifests
 
@@ -844,13 +731,13 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 
-Promote the same dataspace to Minamoto only after the Taira deployment,
+Promote the same data space to Minamoto only after the Taira deployment,
 smoke tests, monitoring, and governance evidence are complete.
 
 ## Related Pages
 
 - [Install Iroha 3](/get-started/install-iroha.md)
 - [Operate Iroha 3 via CLI](/get-started/operate-iroha-via-cli.md)
-- [Sponsor fees for a private dataspace](/get-started/private-dataspace-fee-sponsor.md)
+- [Sponsor fees for a private data space](/get-started/private-dataspace-fee-sponsor.md)
 - [Torii endpoints](/reference/torii-endpoints.md)
 - [Genesis reference](/reference/genesis.md)

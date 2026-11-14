@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /guide/security/storing-cryptographic-keys.md
-translation_source_hash: 168ee24e84f9225e81365658018717155476ae1508fefba5e0234e0bf6feefbd
+translation_source_hash: a95fe07f62d51a813a2f9fb02d67521ae421faf8467648e5f215e069c5d68572
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Almacenamiento de Claves Criptográficas {#storing-cryptographic-keys}
 
 Una clave privada puede autorizar cada acción permitida a su principal de autorización. Nunca comparta una clave privada. Proteja el material de la semilla, los secretos de recuperación, los tokens de portador y los archivos de claves exportadas con el mismo cuidado.
@@ -28,7 +27,7 @@ Para el desarrollo local, pruebas controladas o una entrega de custodia segura, 
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-El directorio principal debe existir. El destino debe ser nuevo o ya pertenecer al usuario actual, modo `0700`, libre de enlaces simbólicos y vacío. Kagami escribe `public.key` y `private.key` con modo `0600`; `--pop` también escribe `pop.hex`. El comando falla en las plataformas donde Kagami no puede hacer cumplir las reglas del sistema de archivos solo para el propietario.
+El directorio padre debe existir. El destino no debe existir, ni siquiera como directorio vacío. Kagami lo crea con modo `0700`, aplica las comprobaciones de acceso exclusivo del propietario al sistema de archivos, rechaza los enlaces simbólicos y escribe `public.key` y `private.key` con modo `0600`; `--pop` también escribe `pop.hex`. El comando falla en las plataformas donde Kagami no puede imponer esas reglas de acceso exclusivo del propietario.
 
 El archivo de clave privada es una exportación sin cifrar. Manténgalo fuera del control de versiones, carpetas compartidas, registros, tickets, chat y artefactos de compilación. Importe una clave de producción en su límite de custodia aprobado, luego elimine la exportación según el procedimiento de despliegue. No reutilice una clave de desarrollo en producción.
 

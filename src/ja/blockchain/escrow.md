@@ -293,7 +293,7 @@ fn open_anonymous_escrow(
 | --- | --- | --- |
 | [Rust](#rust-sdk) | `iroha::data_model::isi::escrow` |マーケットプレイスのエスクロー、一般的なロック、匿名エスクロー、クエリ、そしてイベント。|
 | [Python](#python-asset-locks) | `Instruction.open_asset_lock`、`TransactionDraft.open_asset_lock`、およびクライアント `*_and_wait` のヘルパー |汎用資産ロック。マーケットプレイスおよび匿名エスクローヘルパーは、まだファーストクラスの Python メソッドではありません。|
-| [JavaScript / TypeScript](#javascript-and-typescript-kotodama) | `compileKotodamaProgram` から `@iroha/iroha-js/kotodama-compiler` |Kotodama コントラクト内のエスクロー ホスト関数の呼び出し。|
+| [JavaScript / TypeScript](#javascript-and-typescript-kotodama) | `@iroha/iroha-js/kotodama-compiler` の `compileKotodamaProgram` | Kotodama コントラクト内のエスクローホスト呼び出し。 |
 | [Kotlin / JVM](#kotlin-and-jvm) |`org.hyperledger.iroha.sdk.core.model.instructions`の`InstructionTemplate`クラス|マーケットプレイスおよび匿名エスクローのカスタム指示テンプレート。|
 | [Swift / iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders` と `IrohaSDK.build*Escrow*` ヘルパー|マーケットプレイスおよび匿名エスクロー Norito JSON 指示ペイロード。|
 

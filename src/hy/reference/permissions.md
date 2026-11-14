@@ -1,11 +1,10 @@
 ---
 translation_locale: hy
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Թույլտվության տոքեր {#permission-tokens}
 
 Այս էջում ցուցակում են ներկայիս Iroha կատարողի տվյալների մոդելի կողմից բացահայտված թույլտվությունների նախնական տոկենների տեսակները: Դասերի եւ թույլտվության հասկացական ուղեցույցի համար դիտեք [Թույլտվություններ](/hy/blockchain/permissions.md).
@@ -24,8 +23,8 @@ translation_engine: nllb-200-ct2
 |`CanRegisterAccount` |Հաշիվ |Գրանցեք հաշիվ:|
 |`CanUnregisterAccount` |Հաշիվ |Անհամապատասխանեք հաշիվը:|
 |`CanModifyAccountMetadata` |Հաշիվ |Փոխել հաշիվի մետադատները: |
-|`CanUnregisterAssetDefinition` |Աշունների սահմանումը|Բաց թողնել ակտիվի սահմանումը: |
-|`CanModifyAssetDefinitionMetadata` |Աշունների սահմանումը|Փոխել ակտիվի սահմանման մետադատները: |
+| `CanUnregisterAssetDefinition` | Ակտիվի սահմանում | Ապագրանցել ակտիվի սահմանումը։ |
+| `CanModifyAssetDefinitionMetadata` | Ակտիվի սահմանում | Փոփոխել ակտիվի սահմանման մետատվյալները։ |
 |`CanMintAssetWithDefinition` |Գույք |Մինետային ակտիվներ՝ հատուկ սահմանման համար: |
 |`CanBurnAssetWithDefinition` |Գույք |Սառել ակտիվները հատուկ սահմանման համար: |
 |`CanTransferAssetWithDefinition` |Գույք |Տրանսֆերային ակտիվներ՝ հատուկ սահմանման համար: |
@@ -45,7 +44,8 @@ translation_engine: nllb-200-ct2
 |`CanModifyTriggerMetadata` |Աջակցող |Փոփոխեք գործարկիչի մետադատները: |
 |`CanUpgradeExecutor` |Կատարող |Բարձրացրեք վազման ժամանակի գործարկիչը: |
 |`CanRegisterSmartContractCode` |Խելացի պայմանագիր |Գրանցեք խելացի պայմանագրի կոդը: |
-|`CanUseFeeSponsor` |Nexus |Հաշվարկել Nexus վճարներ նշված հովանավորի հաշիվին: |
+| `CanManageFeeSponsorProgram` | SORA Nexus | Կառավարել ճշգրիտ հովանավոր հաշվին պատկանող ծրագրերը։ |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | Կառավարել մեկ ճշգրիտ հովանավոր ծրագրի շահառուներին։ |
 
 ## Գույքի սեփականություն {#ownership}
 

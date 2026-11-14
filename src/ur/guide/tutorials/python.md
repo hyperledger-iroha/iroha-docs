@@ -1,9 +1,9 @@
 ---
 translation_locale: ur
 translation_source: /guide/tutorials/python.md
-translation_source_hash: d0ecbade221ceba455730e80c6e12db930c65a4cbcf9e643c1c2d4cba47b0940
+translation_source_hash: bd9ff4a38229cbdabbd77e21fe31a770f9213341d7db73a75ed0bd914c761849
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # Python {#python}
 
@@ -67,7 +67,7 @@ for account in accounts.items:
 
 تبدیل کرنے والے ٹیمپلیٹس کے لئے اس ترتیب کا استعمال کریں۔ ہر جگہ ہولڈر کو اپنی تعیناتی سے پہلے Taira اتھارٹی ، نجی کلید ، ٹوکن ، اور اثاثہ / اکاؤنٹ IDs کے ساتھ تبدیل کریں۔
 
-`authority` وہ اکاؤنٹ ہے جو ٹرانزیکشن پر دستخط کرتا ہے، اور `private_key` کا اس سے مطابقت رکھنا ضروری ہے۔ ٹرانزیکشنز Taira کے عین موجودہ genesis سے اخذ کردہ `NetworkId` سے بندھی ہوتی ہیں۔ chain UUID تعیناتی کا لیبل ہے، ٹرانزیکشن کی شناخت نہیں۔ فیس درخواست metadata سے قطع نظر typed payment intent اور عین live quote استعمال کرتی ہے۔ ذیل کے account اور key placeholders جان بوجھ کر نامعتبر ہیں تاکہ وہ حادثاتی طور پر submit نہ کیے جائیں۔
+`authority` وہ اکاؤنٹ ہے جو معاملے پر دستخط کرتا ہے، اور `private_key` اس سے ملنی چاہیے۔ معاملات، ابتدائی بلاک سے اخذ کردہ Taira کے عین `NetworkId` سے بندھتے ہیں؛ چین کا UUID تعیناتی کا لیبل ہے، معاملے کی شناخت نہیں۔ فیس میں ایپلی کیشن کے میٹا ڈیٹا سے آزاد، ٹائپ شدہ ادائیگی کا ارادہ اور موجودہ عین قیمت استعمال ہوتی ہے۔ ذیل میں اکاؤنٹ اور کلید کے عارضی خانے جان بوجھ کر غلط ہیں تاکہ انہیں حادثاتی طور پر جمع نہ کرایا جائے۔
 
 ذیل میں لفظی طور پر موجودہ منسلک Taira جینس کی شناخت ہے۔ ایک ٹیسٹ نیٹ ری سیٹ اس کو تبدیل کرسکتا ہے ، لہذا اسے دستخط شدہ تعیناتی پروفائل سے تازہ کریں اور اسے کبھی بھی سلسلہ UUID سے اخذ نہ کریں.
 
@@ -1025,29 +1025,9 @@ client = create_torii_client(
 )
 ```
 
-## کگیموشا کی تیاری {#kagemusha-readiness}
-
-Python SDK اس کے عمومی Torii درخواست کی مدد سے موجودہ JSON تیاری کا راستہ پوچھ سکتا ہے:
-
-```python
-ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
-
-readiness = client.request_json(
-    "GET",
-    "/v1/offline/readiness",
-    params={"asset_definition_id": ASSET_DEFINITION_ID},
-    headers={"Accept": "application/json"},
-    expected_status=(200,),
-)
-print(readiness["ready"])
-print(readiness["blockers"])
-```
-
-Python ٹائپ شدہ Kagemusha بھرنے یا بازیابی آرکائیو بلڈرز کو بے نقاب نہیں کرتا ہے۔ کینیکل V4 آرکائیوز کی تعمیر کے لئے ٹائپ کردہ Swift یا JVM پرس کا استعمال کریں ، پھر ایک معاون Kagemusha Torii کلائنٹ کے ذریعہ ان کو جمع کروانا اور سروے کرنا۔
-
 ## رکنیتیں {#subscriptions}
 
-`iroha_python.ToriiClient` کے ذریعہ استعمال کردہ مشترکہ Torii کلائنٹ سے سبسکرائب ریڈ اور ڈرافٹ بلڈر ورثے میں پائے جاتے ہیں۔ ہر تغیر جسم پر پابند کینونیکل اکاؤنٹ کی دستخط کے ساتھ قبول کیا جاتا ہے اور ایک غیر دستخط شدہ ٹرانزیکشن ڈرافٹ واپس کرتا ہے۔ Torii کبھی بھی نجی کلید کو قبول نہیں کرتا اور آپ کے لئے ڈرافٹ پیش نہیں کرتا۔
+سبسکرپشن ریڈز اور ڈرافٹ بلڈرز، `iroha_python.ToriiClient` کے زیرِ استعمال مشترکہ Torii کلائنٹ سے وراثت میں ملتے ہیں۔ ہر تغیر کو درخواست کے متن سے منسلک کینونیکل اکاؤنٹ دستخط کے ساتھ قبول کیا جاتا ہے اور جواب میں ایک غیر دستخط شدہ ٹرانزیکشن ڈرافٹ ملتا ہے۔ Torii کبھی نجی کلید قبول نہیں کرتا اور نہ آپ کی جانب سے ڈرافٹ جمع کراتا ہے۔
 
 ```python
 # The plan defines billing cadence, retry policy, and usage pricing.
@@ -1299,7 +1279,7 @@ if connect_status is not None:
 
 ## SoraFS،UAID، اور Kaigi مدد کرنے والے {#sorafs-uaid-and-kaigi-helpers}
 
-یہ مددگار دستیاب ہیں جب ہدف نوڈ متعلقہ Nexus/SORA اختتامی پوائنٹس کو بے نقاب کرتا ہے۔ خالی فہرستوں کو ایک درست جواب کے طور پر علاج کریں: عوامی Taira میں نمونہ مانیٹر یا UAID کے لئے ڈیٹا کے بغیر روٹ فعال ہوسکتی ہے.
+یہ معاون افعال تب دستیاب ہوتے ہیں جب ہدف نوڈ SORA Nexus کے متعلقہ اینڈ پوائنٹس فراہم کرے۔ خالی فہرستوں کو درست جواب سمجھیں: عوامی Taira میں راستہ فعال ہو سکتا ہے مگر نمونے کے مانیفیسٹ یا UAID کا ڈیٹا موجود نہ ہو۔
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
@@ -1356,10 +1336,10 @@ Python SDK میں پہلے سے ہی اس کے لئے مددگار شامل ہی
 - عام ISI اور ڈومین مخصوص توسیع کے لئے ٹائپ کردہ ہدایات کی تعمیر
 - ٹرانزیکشن کے مسودے، دستاویزات، دستخط اور دستخط شدہ ٹرانزیکشن envelope workflows
 - لائیو ایونٹ سٹریمز اور ٹائپ کردہ فلٹرز۔ مصروف بلاک اسٹریمز مکمل تاریخ فراہم کرتے ہیں۔
-- عام Kagemusha تیاری تک رسائی اور Torii سبسکرائب معاونین؛ ٹائپ اپ اور ریڈیمنٹ بلڈرز کو بے نقاب نہیں کیا جاتا ہے
+- Torii سبسکرپشن پڑھنے کی کارروائیاں اور غیر دستخط شدہ لین دین کے مسودہ ساز
 - اکاؤنٹ ایڈریس، تمام الگورتھم دستخط کرنے کے مددگاروں، کثیر ہیش دورے، SM2, GOST, ML-DSA, BLS, اور خفیہ کلیدی ہینڈلنگ
 - URIs سے رابطہ کریں، سیشنز، فریم، خفیہ کاری کے مددگار اور رجسٹری ایڈمن
-- گورننس، runtime upgrade، Sumeragi، node administration، SoraFS، UAID اور Kaigi کی endpoint software تہیں، جہاں node یہ خصوصیات مہیا کرتا ہو
+- جہاں نوڈ یہ خصوصیات فراہم کرے وہاں حکمرانی، رن ٹائم اپ گریڈ، Sumeragi، نوڈ انتظامیہ، SoraFS، UAID اور Kaigi اینڈ پوائنٹس کے ریپرز
 
 ## اپ اسٹریم ریفرنسز {#upstream-references}
 

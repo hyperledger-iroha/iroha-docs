@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /guide/best-practices/operations.md
-translation_source_hash: de9e8129467b1111a58cee07acf43382d6cf3c352211a1511659ced422b46778
+translation_source_hash: 44df6cc409b8434e5b45286e02500036bb9eda80251f4b6a50205bf4a3de3968
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-first-release-source-amendment
 ---
-
 # ሎጀስቲክስ ኦፕሬሽን {#operations}
 
 የአሠራር ዝግጁነት ማለት አውታረ መረቡን ወደ አረጋጋጭ አስተናጋጆች ጊዜያዊ መዳረሻ ላይ ሳይታመን መከታተል፣ ማሻሻል፣ ምትኬ ማስቀመጥ እና ወደነበረበት መመለስ ይቻላል ማለት ነው።
@@ -38,7 +37,7 @@ translation_engine: bing-translator-llm
 ## ለውጥ አስተዳደር {#change-management}
 
 - በሰንሰለት ላይ ያሉ ውቅር ለውጦችን ግምገማ፣ ቅድመ በረራ ንባብ፣ ፍቃድ እና የድህረ-ለውጥ ማረጋገጫ የሚያስፈልጋቸው ግብይቶችን አድርገው ይያዙ።
-- በተኳኋኝነት እቅድ እና የመመለሻ ውሳኔ ነጥብ የአውታረ መረብ አቻ ሁለትዮሽ ማሻሻያዎችን ያሰራጩ።
+- የአቻ ሶፍትዌር ልቀትን ከመጫንዎ በፊት፣ ትክክለኛነቱ የተረጋገጠውን የአውታረ መረቡን የማስኬጃ ጊዜ ምርጫ እና ከመነሻ ፍተሻ ነጥቡ በኋላ ያለውን ታሪክ መተግበሩን ያረጋግጡ። የፕሮቶኮል ትርጓሜዎችን መለወጥ ብቃቱ የተፈተሸና በአስተዳደር ደንቦች የሚመራ የምርጫ ሽግግር ይፈልጋል፤ ከማንቃት በኋላ መልሶ ማቋቋም ወደ ማይስማማ የቀድሞ ባይነሪ ስሪት በመመለስ ሳይሆን በማስተካከያ ሽግግር ይከናወናል።
 - የፍልሰት እቅዱ ካልፈለገ በስተቀር የአውታረ መረብ አቻ ቶፖሎጂን፣ የጋራ መግባባት ጊዜን እና የመተግበሪያ የስራ ጫናን በተመሳሳይ የጥገና መስኮት ከመቀየር ይቆጠቡ።
 - የግብይቱን ምስጠራ ሃሽ ይመዝግቡ እና ለተግባራዊ ለውጦች ቁመቶችን ያግዱ።
 

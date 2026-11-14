@@ -1,14 +1,13 @@
 ---
 translation_locale: he
 translation_source: /blockchain/accounts.md
-translation_source_hash: 015a85d81c44b7ef7f13cdafb2ed8e493ef512b94dc500939655c70285eac3bd
+translation_source_hash: adc98cbf1fcadae4415d03dcc262eb03f8c95b429527e403d230934ae2f3243c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # חשבונות {#accounts}
 
-חשבון הוא סמכות שיכולה לחתום על עסקאות ולהיות בעלת מצב ספר החשבונות. במודל הנתונים הנוכחי Iroha 3, `AccountId` הוא קנוני ובלתי דומיין: הוא נגזר מהמונהל של החשבון ונקוד בקנוני כ- [I105](/he/reference/i105.md). קונקסט של תחום ומרחב נתונים שניתן לקרוא על ידי בני אדם שייך לקשרים נפרדים בין חשבונות לכינוי.
+חשבון הוא סמכות שיכולה לחתום על עסקאות ולהחזיק במצב בספר החשבונות. במודל הנתונים הנוכחי של Iroha 3, המזהה `AccountId` הוא קנוני ונטול דומיין: הוא נגזר מבקר החשבון ומקודד בצורה קנונית כ־[I105](/he/reference/i105.md). הקשר של דומיין ומרחב נתונים הקריא לבני אדם שייך לקישורי כינויים נפרדים של החשבון.
 
 ## מבנה {#structure}
 
@@ -17,12 +16,12 @@ translation_engine: nllb-200-ct2
 - `id`: הקנוניקה `AccountId`
 - `metadata`: מטא-נתונים של חשבונות שרירותיים
 - `label`: פרופיל קבוע בחירה
-- `uaid`: חשבון אוניברסלי אופציונלי ID המשמש על ידי זרמי Nexus
+- `uaid`: מזהה חשבון אוניברסלי אופציונלי המשמש בתהליכים של SORA Nexus
 - `opaque_ids`: מזהים לא ברורים קשורים ל- UAID של החשבון
 
 מטען הנתונים של העסקה המשמש כדי ליצור חשבון הוא `NewAccount`. הוא נושא את אותם שדות זהות, מטא-מידע, תווית, UAID ו ID שאינם שקופים המשמשים על ידי החשבון המפורסם.
 
-`uaid` משלים את הקאנוניקה `AccountId`; היא לא מחליפה אותה. השתמש בה כאשר שירותי Nexus זקוקים למשתמש או ארגון יציב במרחבי נתונים, רישום שמירה על פרטיות, או חיפוש יכולת שירות. זמן ההפעלה שומר על מדד אחד-ל-אחד UAID לחשבון, דורש מזהים לא ברורים להיות מחוברים באמצעות UAID, ומסרב מזהים לא רורים כפולים או מתנגשים. ראה [FHE ו UAID](/he/blockchain/sora-nexus-services.md#fhe-and-uaid) עבור זרימת שכבת השירות של Nexus .
+`uaid` משלים את `AccountId` הקנוני ואינו מחליף אותו. השתמשו בו כאשר שירותי SORA Nexus זקוקים למזהה יציב של משתמש או ארגון בין מרחבי נתונים, לרישום שומר פרטיות או לחיפוש יכולות שירות. סביבת הריצה שומרת אינדקס חד־חד־ערכי בין UAID לחשבון, מחייבת צירוף של מזהים אטומים באמצעות UAID ודוחה מזהים אטומים כפולים או מתנגשים. ראו [FHE ו־UAID](/he/blockchain/sora-nexus-services.md#fhe-and-uaid) לתהליך בשכבת השירותים של SORA Nexus.
 
 ## מנהלי חשבונות {#account-controllers}
 
@@ -32,8 +31,9 @@ translation_engine: nllb-200-ct2
 
 ```toml
 [account]
+profile = "taira"
 public_key = "ed0120..."
-private_key = { digest_function = "ed25519", payload = "..." }
+private_key_file = "/absolute/path/to/private.key"
 ```
 
 ראו [הסדרת הלקוח ](/he/guide/configure/client-configuration.md) ו[דור המפתח ](/he/guide/security/generating-cryptographic-keys.md) עבור פורמטים המפתחות הנוכחיים.
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-אלה קריאות ציבוריות. יצירה או עדכון של חשבון הם עסקה חתומה ודורשים את הגדרת Taira שמומנה בידי ה-faucet ומתוארת ב-[התחברות ל-SORA Nexus Dataspaces](/he/get-started/sora-nexus-dataspaces.md).
+אלו פעולות קריאה ציבוריות. יצירה או עדכון של חשבון הם עסקה חתומה, ולכן נדרשת הגדרת Taira עם מימון משירות חלוקת כספי הניסוי, כמתואר ב־[התחברות למרחבי הנתונים של SORA Nexus](/he/get-started/sora-nexus-dataspaces.md).
 
 ## רישום והרשיונות {#registration-and-permissions}
 
@@ -80,7 +80,7 @@ PY
 - תחומים משלהם
 - לקבל תפקידים וטוגנים של אישור
 - מאחסן מטא נתונים
-- להשתתף בזרזות מזויפות, רקייי, חיסכון ו Nexus של זהות כאשר תכונות אלה מופעלות
+- להשתתף בתהליכי כינויים, החלפת מפתחות, שחזור וזהות של SORA Nexus כאשר תכונות אלו מופעלות
 
 ## פתרון בעיות זהות {#troubleshooting-identity-issues}
 
@@ -96,4 +96,4 @@ PY
 - [רשיונות](/he/blockchain/permissions.md)
 - [מטא-נתונים](/he/blockchain/metadata.md)
 - [קונפיגורת הלקוח](/he/guide/configure/client-configuration.md)
-- [שדות נתונים SORA Nexus](/he/get-started/sora-nexus-dataspaces.md)
+- [מרחבי הנתונים של SORA Nexus](/he/get-started/sora-nexus-dataspaces.md)

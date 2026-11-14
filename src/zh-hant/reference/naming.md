@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /reference/naming.md
-translation_source_hash: d757024fca471ec55f1fe4857e88e01a9a0a18e0d79e8cb4fdb3da0cb250f4be
+translation_source_hash: 1d4d698597542d9c84284d0b87dae8a1825d3ab39ff38dd32bb204d41291c83d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # 命名會議 {#naming-conventions}
 
 當您為帳戶,域名或資產命名時,請記住 Iroha 中使用的以下規範:

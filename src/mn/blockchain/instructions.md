@@ -1,11 +1,10 @@
 ---
 translation_locale: mn
 translation_source: /blockchain/instructions.md
-translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
+translation_source_hash: ef50253c5478c9d8c3e14529dc4c2f3de67c344901c82c65be77ceb237a29598
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha-гийн тусгай зааврууд {#iroha-special-instructions}
 
 Бид [Iroha хэрхэн ажилладаг](/mn/blockchain/iroha-explained) талаар тайлбарлахдаа дэлхийн төлөвийг зөвхөн Iroha-гийн тусгай заавруудаар өөрчилдөг гэж хэлсэн. Тэгвэл ямар тусгай зааврууд байдаг вэ? Хэрэв та энэ зааврын хэл тус бүрийн гарын авлагыг уншсан бол `Register<Account>` болон `Mint<Numeric>` зэрэг хэд хэдэн заавартай аль хэдийн танилцсан.
@@ -35,7 +34,7 @@ Iroha-гийн тусгай заавруудын бүрэн жагсаалт:
 
 | Заавар | Объектууд | Хүлээн авагч |
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- |
-| [EnsureAlias](#ensurealias) | энгийн домэйн, өгөгдлийн орон зайн alias болон дансны alias тохиргоо | |
+| [EnsureAlias](#ensurealias) | ердийн домэйн, өгөгдлийн орон зайн өөр нэр болон дансны өөр нэрийг тохируулах | |
 | [Бүртгэх/Бүртгэлээс хасах](#un-register) | данс, хөрөнгийн тодорхойлолт, NFTs, үүрэг, триггер, peer-үүд; домэйн устгах | |
 | [Mint/Burn](#mint-burn) | тоон хөрөнгө, триггерийн давталт | данс эсвэл триггер |
 | [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) | [мета мэдээлэл](./metadata.md)–тай объектууд: домэйн, данс, хөрөнгийн тодорхойлолт, NFTs, RWAs, триггерууд |                      |
@@ -47,7 +46,7 @@ Iroha-гийн тусгай заавруудын бүрэн жагсаалт:
 | [ExecuteTrigger](#executetrigger) | триггерүүд | |
 | [Log/Custom/Upgrade](#other-instructions) | логууд, гүйцэтгэгчид зориулсан payload-ууд, гүйцэтгэгчийн шинэчлэлтүүд | |
 
-ISI-г өөрчилдөг леджерийн объектоор нь мөн ангилж болно:
+ISI-г тухайн зааврын харьцдаг бүртгэлийн объектоор нь мөн ангилж болно:
 
 | Объект | Зааврууд |
 | ---------------- | ------------------------------------------------------------------------------------------------------------ |
@@ -69,7 +68,7 @@ ISI-г өөрчилдөг леджерийн объектоор нь мөн ан
 cargo run --bin iroha -- --config ./defaults/client.toml <command>
 ```
 
-Хэрэв та `iroha` бинар файлыг суулгасан бол үүний оронд `iroha --config ./defaults/client.toml` ашиглаарай. Доорх орлуулагчуудыг сүлжээнийхээ утгаар сольж өгнө үү:
+`iroha` гүйцэтгэх файлыг суулгасан бол оронд нь `iroha --config ./defaults/client.toml` ашиглана. Гүйлгээ илгээдэг командууд мөн `--fee-payer authority` дамжуулж, гарын үсэг зурах данснаас шимтгэл авна; CLI гарын үсэг зурахаас өмнө яг шимтгэлийг тооцож харуулна. Доорх орлуулагч утгуудыг өөрийн сүлжээний утгаар солино:
 
 ```bash
 export ALICE="<ALICE_ACCOUNT_I105>"
@@ -79,34 +78,32 @@ export PEER_KEY="<BLS_PUBLIC_KEY_MULTIHASH>"
 export PEER_POP="<PROOF_OF_POSSESSION_HEX>"
 ```
 
-Нийтийн Taira testnet-д холбогдохдоо Taira клиент тохиргоог ашиглана. Төлбөртэй жишээг ажиллуулахын өмнө [Taira дээр testnet XOR авах](/mn/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) хэсгийн faucet туслахыг `taira_faucet_claim.py` нэрээр хадгалаад faucet-аас testnet XOR авна:
+Нийтэд нээлттэй Taira туршилтын сүлжээнд хандахдаа Taira үйлчлүүлэгчийн тохиргоог ашиглаж, [Taira дээр туршилтын XOR авах](/mn/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) хэсгийн урьдчилан бэлтгэдэг хөрөнгө авах урсгалаар дансыг санхүүжүүлнэ. Шимтгэлтэй жишээг ажиллуулахын өмнө шимтгэлийн хөрөнгийн үлдэгдэл харагдаж байгааг шалгана:
 
 ```bash
 export TAIRA_ACCOUNT_ID="<TAIRA_I105_ACCOUNT_ID>"
-export TAIRA_FEE_ASSET="6TEAJqbb8oEPmLncoNiMRbLEK6tw"
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-Тестнет санхүүжүүлсэн хөрөнгө харагдсан даруйд бичих гүйлгээнд шаардлагатай гүйлгээний гүйцэтгэх өртгийн хөрөнгийн метадатаг хавсаргана уу:
+Taira бичих үйлдлүүд ижил `--fee-payer authority` сонголт ашиглаж, CLI шимтгэлийг Taira-гийн шимтгэлийн хөрөнгөөр тооцож харуулна. `gas_asset_id` зэрэг шимтгэлийн түлхүүрийг гүйлгээний метадата болгон бүү нэм; үйлчлүүлэгч тэдгээрийг няцаана:
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 cargo run --bin iroha -- \
   --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+  --fee-payer authority \
   <command>
 ```
 
 ## EnsureAlias {#ensurealias}
 
-`EnsureAlias` бол домэйнууд болон тэдний SNS түрээсүүдийг үүсгэх энгийн анхны гаргах зам юм. Энэ нь яг ямар өгөгдлийн сан, эзэн, түрээсийн хугацааг илэрхийлэх байдлаар холбодог, болон хураамж-үнэ баталгаажуулалтын хамгаалагч, дараа нь шаардлагатай бүх төлөв байдлыг атомын хэмжээнд үүсгэх эсвэл засварлах. Баталгаажсан `POST /v1/aliases/setup/plan` API төгсгөл болон тохирох CLI ажлын урсгалыг ашиглана уу:
+`EnsureAlias` нь эхний хувилбарт домэйн болон түүний SNS түрээсийг үүсгэх ердийн зам юм. Энэ нь яг өгөгдлийн орон зай, эзэмшигч, түрээсийн хугацаа болон үнийн саналын шалгах нөхцөлийг мэдэгдлийн хэлбэрээр холбож, дараа нь шаардлагатай бүх төлөвийг атомик байдлаар үүсгэх эсвэл засна. Баталгаажуулалт шаарддаг `POST /v1/aliases/setup/plan` төгсгөлийн цэг эсвэл тохирох CLI урсгалыг ашиглана:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -114,7 +111,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./domain.intent.json \
   --plan-file ./domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./domain.plan.json
 ```
 
@@ -165,34 +162,34 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./docs-domain.intent.json \
   --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain unregister --id docs.universal
 ```
 
 Бүртгүүлэх ба бүртгэлээс хасах дансууд:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account register --id "$BOB"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account register --id "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account unregister --id "$BOB"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account unregister --id "$BOB"
 ```
 
 Хөрөнгийн тодорхойлолтыг бүртгэх ба бүртгэлээс хасах:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
   --scale 0
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition unregister --id "$ASSET_DEF"
 ```
 
@@ -200,37 +197,37 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ```bash
 printf '{"kind":"badge","level":"intro"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft register --id 'badge$docs.universal'
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft unregister --id 'badge$docs.universal'
 ```
 
 Үүрэг бүртгэх болон бүртгэлийг цуцлах:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role register --id operators
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role unregister --id operators
 ```
 
 Триггерийг бүртгэх ба бүртгэлийг устгах. Триггерийг бүртгэхэд боловсруулсан IVM хоёртын код эсвэл дараалсан зааврын жагсаалт шаардлагатай. Энэ жишээ нь CLI-оор `Log` зааврыг бүтээж, үүнийг триггерийн бүртгэл рүү дамжуулна:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml -o \
-  ledger transaction ping --log-level INFO --msg "hourly cleanup" |
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger register --id hourly_cleanup \
+cargo run --bin iroha -- --config ./defaults/client.toml --emit-instructions \
+  tx ping --log-level INFO --msg "hourly cleanup" |
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger register --id hourly_cleanup \
   --instructions-stdin \
   --filter time \
   --time-start 5m \
   --time-period-ms 3600000
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger unregister --id hourly_cleanup
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger unregister --id hourly_cleanup
 ```
 
 Сүлжээний хамтрагчдыг бүртгэх болон бүртгэл устгах. Хэрэв танд аль хэдийн байхгүй бол BLS түлхүүрийг болон PoP-г `kagami`-той үүсгээрэй:
@@ -241,10 +238,10 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
 PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
 PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer unregister --key "$PEER_KEY"
 ```
 
@@ -270,13 +267,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 тооцооны хөрөнгийг нийтэлж устгах:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset mint \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
   --quantity 100
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset burn \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
@@ -286,11 +283,11 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 сарнин болон идэвхжүүлэх давтамжуудыг устгах:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger mint --id hourly_cleanup --repetitions 5
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger mint --id hourly_cleanup --repetitions 5
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger burn --id hourly_cleanup --repetitions 1
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger burn --id hourly_cleanup --repetitions 1
 ```
 
 ## Шилжүүлэх {#transfer}
@@ -302,7 +299,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 Тоон хөрөнгийг шилжүүлэх:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset transfer \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
@@ -313,13 +310,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 Домэйн, хөрөнгийн тодорхойлолт, болон NFT эзэмшлийг шилжүүлэх:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain transfer --id docs.universal --from "$ALICE" --to "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition transfer --id "$ASSET_DEF" --from "$ALICE" --to "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft transfer --id 'badge$docs.universal' --from "$ALICE" --to "$BOB"
 ```
 
@@ -337,7 +334,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 `RotatePrivateSettlementPoolPolicyV1` нь хувийн нууцын удирдлагад хязгаарлагдана. Энэ нь яг одоогийн удирдлагын криптографийн дижест утгыг шаарддаг, маршрутын, протоколын өгөгдлийн бүлэг, хөрөнгөтэй холбогдсон криптографийн үүрэг амлалтыг хадгалдаг, төлөвийн хил, дахин тоглуулах багцыг, болон эцэслэгдсэн протоколын үр дүнгийн бичлэгүүдийг хадгалдаг, нийгмийн засварыг нэгээр урагшлуулж, шинэ аудиторын түлхүүрийн үеийг ашигладаг. Эргэлт нь оролцсон өндрөөсөө идэвхжиж, нэг зам/сангийн протоколын үр дүнгийн бичлэгтэй тухайн өндрийг хуваалцах боломжгүй. Олон нийтэд үзүүлэх шинэчлэлийн удмын шугам нь эргэлт дахин эхлүүлэхээс өмнөх протоколын үр дүнгийн бүртгэлийг хүчин төгөлдөр, нарийн давтагдах боломжтой байлгадаг; урсгалд байгаа хуучин бодлогын багцууд хаалттайгаар амжилтгүй болдог. Операторууд хадгалагдсан капсулуудын хуучин шифрлэх түлхүүрүүдийг хадгалах эсвэл үүнийг устгахаас өмнө капсулыг дахин боохыг удирдан зохицуулах, турших ёстой.
 
-Энэ зам анхдагчаар идэвхгүй бөгөөд үйлдвэрлэлийн шаардлагад нийцэж байгаа биш юм. Тохиргоо, эрхийн үндсэн, аудит, сэргээх, гаргах шаардлагыг үзэхийн тулд [Атомик хувийн Cross-Dataspace санхүүгийн гүйлгээний тохиролцоог ажиллуулах](/mn/get-started/atomic-private-settlement)-ыг үзнэ үү.
+Энэ зам анхдагчаар идэвхгүй бөгөөд үйлдвэрлэлийн хэрэглээнд бэлэн гэж баталгаажаагүй. Тохиргоо, эрх, аудит, сэргээх болон хувилбар гаргах шаардлагыг [Өгөгдлийн орон зай хоорондын атомик хувийн тооцоо нийлэлтийг ажиллуулах](/mn/get-started/atomic-private-settlement) хэсгээс үзнэ үү.
 
 ## Өгөх/Цуцлах {#grant-revoke}
 
@@ -348,34 +345,34 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 Дансанд үүрэг олгох ба цуцлах:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account role grant --id "$BOB" --role operators
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account role grant --id "$BOB" --role operators
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account role revoke --id "$BOB" --role operators
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account role revoke --id "$BOB" --role operators
 ```
 
 Зөвшөөрлийн токен авах ба цуцлах. Зөвшөөрлийн командууд стандарт орноос зөвшөөрлийн объект уншдаг:
 
 ```bash
 printf '{"name":"CanSetParameters","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account permission grant --id "$BOB"
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account permission grant --id "$BOB"
 
 printf '{"name":"CanSetParameters","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account permission revoke --id "$BOB"
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account permission revoke --id "$BOB"
 ```
 
 Нэг үүрэгт эрх олгох ба цуцлах:
 
 ```bash
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role permission grant --id operators
 
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role permission revoke --id operators
 ```
 
@@ -387,10 +384,10 @@ printf '{"name":"CanRegisterDomain","payload":null}\n' |
 
 ```bash
 printf '"production"\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain meta set --id docs.universal --key environment
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain meta remove --id docs.universal --key environment
 ```
 
@@ -398,20 +395,20 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ```bash
 printf '{"display_name":"Alice"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account meta set --id "$ALICE" --key profile
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account meta set --id "$ALICE" --key profile
 
 printf '{"issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition meta set --id "$ASSET_DEF" --key issuer
 
 printf '{"color":"blue"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft meta set --id 'badge$docs.universal' --key traits
 
 printf '{"owner":"ops"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger meta set --id hourly_cleanup --key owner
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger meta set --id hourly_cleanup --key owner
 ```
 
 ## `SetParameter` {#setparameter}
@@ -422,7 +419,7 @@ printf '{"owner":"ops"}\n' |
 
 ```bash
 printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```
 
@@ -430,15 +427,14 @@ printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
 
 Энэ зааврыг [триггерүүд](./triggers.md)-ийг гүйцэтгэхэд ашигладаг.
 
-CLI нь триггерүүдийг бүртгэх болон триггерийн гүйцэтгэлтэй холбоотой үйл явдлуудад шууд захиалах боломжтой. Энэ нь төрөлжсөн `execute trigger` командыг санал болгодоггүй, тиймээс илгээхийн тулд гарын авлага `ExecuteTrigger` заавар, SDK эсвэл гүйцэтгэгч хэрэгслийг ашиглан дараалсан `InstructionBox` үүсгэж, үүссэн JSON массивыг `ledger transaction stdin` дамжуулна:
+CLI нь анхдагч `execute` шүүлтүүртэй бүртгэсэн өдөөгчид гараар `ExecuteTrigger` заавар илгээж, шаардлагатай бол JSON аргумент нэмэх бөгөөд өдөөгчийн гүйцэтгэлийн үйл явдлыг захиалан хүлээн авч болно:
 
 ```bash
-printf '["<BASE64_EXECUTE_TRIGGER_INSTRUCTION_BOX>"]\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction stdin
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger execute docs_on_call --args-json '{"reason":"manual run"}'
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger events trigger-execute --timeout 30s
+  ledger events --timeout 30s trigger-execute
 ```
 
 ## Өөр зааварчилгаа {#other-instructions}
@@ -452,21 +448,21 @@ Iroha нь бас програм хангамжийн гүйцэтгэх орч�
 Ping туслагчтай `Log` зааврыг илгээнэ үү:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction ping --log-level INFO --msg "hello from docs"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  tx ping --log-level INFO --msg "hello from docs"
 ```
 
 Сериаллагдсан `InstructionBox` хэлбэртэй захиалгат гүйцэтгэгчийн зааврыг илгээнэ үү. Дата хэсгийн бүтэц нь гүйцэтгэгчид онцгой тул нийцсэн SDK эсвэл гүйцэтгэгчийн хэрэгсэл ашиглан зааврыг үүсгээрэй:
 
 ```bash
 printf '["<BASE64_CUSTOM_INSTRUCTION_BOX>"]\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction stdin
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  tx stdin
 ```
 
 Компилидсэн IVM байт кодын файлаас гүйцэтгэгчийг шинэчлэх:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ops executor upgrade --path ./target/ivm/executor.ivm
 ```

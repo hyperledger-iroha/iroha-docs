@@ -1,9 +1,9 @@
 ---
 translation_locale: he
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: 1e87602f4b1529b4c85bf3e6972e691dcd9bcb6f4bf461ab07bf4755feb8a11f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # ביצועים ומטריקות {#performance-and-metrics}
 
@@ -37,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -77,7 +77,7 @@ telemetry_profile = "full"
 
 ## מספר צמתים וקוורום {#node-count-and-quorum}
 
-מספר גדול יותר של validators משפר את העמידות לתקלות, אך מגדיל את עלויות התיאום, החתימות והפצת הרשת. הפרוטוקול של הגרסה הראשונה של Sumeragi דורש:
+מספר גדול יותר של מאמתים משפר את העמידות לתקלות, אך מגדיל את עלויות התיאום, החתימות וההפצה ברשת. הפרוטוקול של הגרסה הראשונה של Sumeragi דורש:
 
 - ועדת הצבעה מדויקת `n = 3f + 1`
 - `4 <= n <= 31`, כך שגודלים תקפים הם 4, 7, 10, וכן הלאה.
@@ -130,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### הגבלות על מועמדות וההכנסות {#candidate-and-ingress-bounds}
 
-הגבולות המקומיים של Sumeragi קובעים כמה עבודה מועמדת ושיקום יכול לאחסן מולידיטור:
+מגבלות גודל הבלוק והעסקאות נובעות מה־genesis החתום ומפרמטרי השרשרת המאושרים. הגדרות `[sumeragi]` המקומיות לצומת כוללות את תפקיד ההשתתפות, משמורת החתימה, נתיבי רשומות הבטיחות והעקיפות המקומיות המתועדות של זמני ההמתנה והסנכרון.
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` ו `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks`, ו `sumeragi.queues.ready_bodies`
-
-גבולות קטנים מדי יוצרים לחץ קו או חיזוק עומס מועיל; גבולות גדולים יותר מגדילים את הזיכרון המאוחסן וכמות העבודה הזמינה לצמתים התעלולים. השוואה את תמונת האבחנה עם זיכרון תהליך, ניהול הודעות, ומטריקים של גוף חסר לפני שינויים בגבול אחד בכל פעם:
+מגבלות הכניסה מהרשת ותור העסקאות שולטות בעבודה הנשמרת מקומית. השוו את תמונת האבחון לזיכרון התהליך, לטיפול בהודעות ולמדדי גופי בלוקים חסרים לפני שינוי מגבלה תפעולית. השאירו את פרמטרי השרשרת החתומים קבועים כשמשווים הרצות של אותה רשת:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -243,7 +236,7 @@ iroha --config ./localnet/client.toml \
 - סכום האישור והצופה
 - מצב הסכמה, קדנציה בלוק חתומה, וארגון DA
 - הוועדה המדויקת `3f + 1`, הקוורום והרשימה של צופים
-- `sumeragi.block`, `sumeragi.queues`, `sumeragi.limits`, גבולות הכניסה לרשת והצורה של עסקאות.
+- פרמטרי שרשרת חתומים, עקיפות מקומיות של Sumeragi, מגבלות הכניסה מהרשת ותור העסקאות
 - פרופיל טלמטריה
 - פרטים על חומרה, אחסון ו OS
 - רשת RTT, הנחות של ג'יטר, אובדן ורחב הקו

@@ -1,18 +1,17 @@
 ---
 translation_locale: fr
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: c1432d8d2483f67b6ab81680f6c5457cab470db7944512626242a1446a7d501f
+translation_source_hash: 0c4f2f3fc4efb9f883f597a3eea49c99431b711a0141eba70ac5a2524990dd73
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Échantillons et Recettes {#samples-and-recipes}
 
 Le dépôt source Iroha contient SDK recettes et ensembles de tests qui suivent la même révision que le nœud.
 
 ## JavaScript Recettes {#javascript-recipes}
 
-[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes) contient des exemples ciblés pour le regroupement déterministe des transactions, Nexus transferts d'applications NFT et itération de compte, ISO flux de ponts, et Torii streaming. Chaque recette indique si elle fonctionne hors ligne ou nécessite une connexion en direct Torii API point de terminaison.
+[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes) contient des exemples ciblés pour le regroupement déterministe des transactions, SORA Nexus transferts d'applications NFT et itération de compte, ISO flux de ponts, et Torii streaming. Chaque recette indique si elle fonctionne hors ligne ou nécessite une connexion en direct Torii API point de terminaison.
 
 ## Swift et iOS {#swift-and-ios}
 

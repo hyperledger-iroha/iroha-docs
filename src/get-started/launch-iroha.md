@@ -1,7 +1,6 @@
 # Launch Iroha 3
 
-This page walks through the current local-network flow for Iroha 3 using the
-default workspace assets from the upstream repository.
+This page walks through the current local-network flow for Iroha 3 using the default workspace assets from the upstream repository.
 
 ## 1. Generate a Local Multi-Peer Network
 
@@ -11,8 +10,7 @@ Generate a four-peer localnet from the current Kagami code:
 cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
-The output directory contains matching peer configs, `genesis.json`,
-`genesis.signed.nrt`, `client.toml`, and helper scripts.
+The output directory contains matching peer configs, `genesis.json`, `genesis.signed.nrt`, `client.toml`, and helper scripts.
 
 For a native local smoke test, start the generated peers directly:
 
@@ -59,12 +57,11 @@ You can immediately point the CLI at the bundled client config:
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list
 ```
 
-## 3. Nexus Profile
+## 3. SORA Nexus Profile {#_3-nexus-profile}
 
-The repository also ships a SORA Nexus-oriented config profile under
-`defaults/nexus/`.
+The repository also ships a SORA Nexus-oriented config profile under `defaults/nexus/`.
 
-To run a native peer with the Nexus profile:
+To run a native peer with the SORA Nexus profile:
 
 ```bash
 ./target/release/iroha3d --sora --config ./defaults/nexus/config.toml
@@ -86,5 +83,4 @@ For the generated Compose stack:
 docker compose -f ./docker-compose.yml down
 ```
 
-After the network is running, continue with
-[Operate Iroha 3 via CLI](/get-started/operate-iroha-via-cli.md).
+After the network is running, continue with [Operate Iroha 3 via CLI](/get-started/operate-iroha-via-cli.md).

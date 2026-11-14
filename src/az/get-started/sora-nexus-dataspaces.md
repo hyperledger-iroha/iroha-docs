@@ -1,16 +1,15 @@
 ---
 translation_locale: az
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 7ebe42f3b220f16a023f1b780c08764a09e520ae7594b8eab9f47765d6020076
+translation_source_hash: 3d2285e5a27819897b6dcc6d165c468baead29d2922420728fcfbe2433d36fdd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
+# SORA Nexus üzərində qurun: Taira və Minamoto {#build-on-sora-3-taira-and-minamoto}
 
-# SORA 3 üzərində qur: Taira və Minamoto {#build-on-sora-3-taira-and-minamoto}
+SORA Nexus Iroha 3 əsasında açıq yerləşdirmə mühitləri təqdim edir. Əvvəlcə Taira üzərində qurun və məşq edin; yalnız ayrıca əsas şəbəkə açarlarınız, haqlar üçün həqiqi XOR və istehsal icazəniz olduqda eyni müştəri quruluşunu Minamoto-ya keçirin.
 
-SORA 3, Iroha 3 və SORA Nexus üzərində qurulan, tətbiqlərə yönəlmiş ictimai yerləşdirmə xəttidir. Əvvəlcə Taira üzərində hazırlayın və məşq edin; yalnız ayrıca mainnet açarları, ödənişlər üçün həqiqi XOR və istehsal təsdiqi olduqda eyni müştəri quruluşunu Minamoto-ya köçürün.
-
-Bu dərslik göstərişləri verir necə Iroha müştərisini ictimai SORA 3 şəbəkələr üçün konfiqurasiya etməyə:
+Bu təlimat açıq SORA Nexus şəbəkələri üçün Iroha müştərisinin necə konfiqurasiya edildiyini göstərir:
 
 - Taira testnet `https://taira.sora.org` ünvanında
 - Minamoto əsas şəbəkə `https://minamoto.sora.org` ünvanında
@@ -25,14 +24,14 @@ Bu dərslik göstərişləri verir necə Iroha müştərisini ictimai SORA 3 ş�
 |Addım| Taira Testnet | Minamoto Əsas şəbəkə |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
 |Şəbəkə vəziyyətini oxumağa başlayın|Açarlar olmadan Sorğu `/status`|Açarlar olmadan Sorğu `/status`|
-|Bir məlumat sahəsi seçin|Tətbiqinizə idarə olunan icra xətti lazım olmadıqca ictimai `universal`-dən istifadə edin|Yalnız əsas şəbəkə təsdiqindən sonra eyni məlumat sahəsindən istifadə edin|
+| Məlumat məkanı seçin | Tətbiqinizə idarə olunan zolaq lazım deyilsə, açıq `universal` istifadə edin | Yalnız əsas şəbəkə icazəsindən sonra eyni məlumat məkanını istifadə edin |
 |Ödəniş aktivini əldə et|İctimai Taira testnet maliyyələşdirmə xidmətindən istifadə edin|Minamoto maliyyələşdirilmiş hesabdan və ya təsdiqlənmiş xəzinədarlıq axınından XOR alın|
 |Test yazır|Testnet-dən maliyyələşdirilmiş testi istifadə edin XOR|Test alətlərindən istifadə etməyin; yazılar həqiqi XOR xərcləyir|
 | İstehsala keçid | Təkrar cəhd məntiqini, monitorinqi və kriptoqrafik imzalayıcı idarəsini saxlayın | Ayrı açarlardan, maliyyələşdirmədən və buraxılış nəzarətlərindən istifadə edin |
 
 Praktik axın belədir:
 
-1. Müştərini Taira əsasında qurun və ictimai `universal` verilənlər məkanından istifadə edin.
+1. Müştərini Taira üçün hazırlayın və açıq `universal` məlumat məkanından istifadə edin.
 2. Kriptoqrafik imzalayıcı əlavə edin və onu Taira testnet maliyyələşdirmə xidməti ilə maliyyələşdirin.
 3. Tətbiq məntiqinizi Taira-a qarşı məşq edin, ta ki uğursuzluqlar darıxdırıcı və müşahidə oluna bilən olana qədər.
 4. Ayrıca Minamoto kriptoqrafik imzalayıcısı yaradın, onu həqiqi XOR ilə maliyyələşdirin və yalnız sınaqdan keçmiş eyni əməliyyatları mainnet-ə köçürün.
@@ -53,22 +52,22 @@ Resept kitabı hər iş axınını mərkəzləşdirilmiş halda saxlayır və Ta
 
 ## 1. Quraşdırdığınız şeyi anlayın {#_1-understand-what-you-are-setting-up}
 
-SORA Nexus-də, məlumat sahəsi şəbəkə icra zolağının və marşrutlaşdırma kataloqunun bir hissəsidir. Müştəri sadəcə `client.toml`-i dəyişməklə yeni ictimai məlumat sahəsi yaratmır. Müştəri quraşdırması iki iş görür:
+SORA Nexus daxilində məlumat məkanı kataloqu məlumat məkanlarını müəyyən edir. Zolaq kataloqu zolaqları ayrıca müəyyən edir: hər zolaq bir məlumat məkanına istinad edir və bir məlumat məkanında bir neçə zolaq ola bilər. Müştəri yalnız `client.toml` dəyişməklə yeni açıq məlumat məkanı yaratmır. Müştəri qurulması iki iş görür:
 
-1. müştərini düzgün Torii API son nöqtəyə yönəldir
-2. özünün tək protokol-standart hesabı üçün domen və məlumat sahəsi marşrutlaşdırma kontekstini seçir
+1. müştərini düzgün Torii son nöqtəsinə yönəldir
+2. kanonik hesabı üçün şəbəkə kontekstini və imzalama açarını seçir
 
-`AccountId` hər zaman tək protokol-standart və domensizdir. `[account].domain` dəyəri `client.toml` içində yönləndirmə və təxəllüs kontekstini təmin edir; o, hesab şəxsiyyətinin bir hissəsi olmur. Əksər tətbiqlər üçün, ictimai `universal` məlumat sahəsindən başlamaq lazımdır. Domen konteksti `domain.dataspace` formasını istifadə edir, məsələn:
+`AccountId` həmişə kanonikdir və domen daşımır; `client.toml` daxilində domen parametri yoxdur: `[account].profile` yalnız şəbəkənin I105 prefiksini seçir. Domen konteksti ləqəblərə və domenin sahib olduğu obyektlərə aiddir. Əksər tətbiqlər üçün açıq `universal` məlumat məkanından başlayın. Domen konteksti `domain.dataspace` formasından istifadə edir, məsələn:
 
 ```text
 wonderland.universal
 ```
 
-Əgər yeni bir təşkilati məlumat sahəsinə ehtiyacınız varsa, onu adi müştəri hesabından qeydiyyatdan keçirməyə çalışmaq əvəzinə, kataloq və yönləndirmə təklifi hazırlayın. Aşağıdakı [Yeni Məlumat Məkanını Təmin Et](#_8-provision-a-new-dataspace)-ə baxın.
+Yeni təşkilati məlumat məkanı lazımdırsa, onu adi müştəri hesabından qeydiyyata almağa çalışmaq əvəzinə kataloq və marşrutlaşdırma təklifi hazırlayın. Aşağıdakı [Yeni məlumat məkanı qurun](#_8-provision-a-new-data-space) bölməsinə baxın.
 
-## 2. İctimai Torii API nöqtəsini yoxlayın {#_2-check-the-public-torii-endpoint}
+## 2. Açıq Torii son nöqtəsini yoxlayın {#_2-check-the-public-torii-endpoint}
 
-Kriptoqrafik imzalayıcıyı konfiqurasiya etməzdən əvvəl təyinat API nöqtəsinin işlək olduğunu yoxlayın.
+İmzalayan hesabı konfiqurasiya etməzdən əvvəl hədəf son nöqtənin işlədiyini yoxlayın.
 
 Taira üçün:
 
@@ -86,7 +85,7 @@ curl -fsS https://minamoto.sora.org/status \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
-Nod tərəfindən təqdim olunan məlumat məkanı və icra zolağı görünüşünü yoxlayın:
+Qovşağın təqdim etdiyi məlumat məkanı və zolaq görünüşünü yoxlayın:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -102,17 +101,21 @@ Taira həmçinin agent proqram təminatı icra mühitləri üçün Torii-yerli M
 
 |Quraşdırma|Dəyər|
 | --- | --- |
-| MCP API son nöqtə | `https://taira.sora.org/v1/mcp` |
+| MCP son nöqtəsi | `https://taira.sora.org/v1/mcp` |
 |Şəbəkə kökü| `https://taira.sora.org` |
 |Niyyət edilən istifadə| Taira testnet oxumaları və testnet tərəfindən maliyyələşdirilən yazı məşqləri|
-|İstehsal ekvivalenti|Bu yazını Minamoto üzərinə yönəltməyin, əgər əsas şəbəkə MCP API son nöqtəsi və buraxılış nəzarətləri açıq şəkildə təsdiqlənməyibsə|
+| İstehsal mühiti qarşılığı | Əsas şəbəkə MCP son nöqtəsi və buraxılış nəzarətləri açıq şəkildə təsdiqlənməyibsə, bu qeydi Minamoto-ya yönəltməyin |
 
-İmzalama materialını əlavə etməzdən əvvəl körpü metadatasını yoxlayın:
+Körpü yalnız vəziyyətsiz JSON-RPC `POST` sorğularını qəbul edir. İmzalama materialı əlavə etməzdən əvvəl onun kəşf metaməlumatını yoxlayın:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
   -H 'Accept: application/json' \
-  | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
+  -H 'Content-Type: application/json' \
+  -H 'MCP-Protocol-Version: 2026-07-28' \
+  -H 'Mcp-Method: server/discover' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"server/discover","params":{"_meta":{"io.modelcontextprotocol/protocolVersion":"2026-07-28","io.modelcontextprotocol/clientCapabilities":{}}}}' \
+  | jq '{versions: .result.supportedVersions, server: .result._meta["io.modelcontextprotocol/serverInfo"].name, toolset: .result.capabilities.extensions["org.hyperledger.iroha/tools"].toolsetVersion}'
 ```
 
 URL agent proqram təminatı icra mühitində istifadəçi-yerli MCP server olaraq konfiqurasiya edin. Agent MCP konfiqurasiyasını, API tokenlərini, ötürülmüş auth header-ları, `authority` və ya `private_key` dəyərlərini bu sənəd repo-suna və ya tətbiq repo-suna saxlamayın.
@@ -133,7 +136,7 @@ Praktik iş axını belədir:
 
 1. Agentdən kod yazmazdan əvvəl müvafiq sənədləri, SDK kodunu, CLI əmri və ya MCP alət sxemini yoxlamağı xahiş edin.
 2. Agentdən xahiş edin ki, ən kiçik müştəri yolunu əvvəl yazsın: vəziyyət yoxlaması, hesab axtarışı, təxəllüs həlli və ya balans yoxlaması.
-3. Yalnız oxumaq üçün API sorğularının Taira qarşı işləməsindən sonra əməliyyat qurma kodunu əlavə edin.
+3. Yalnız oxuma çağırışları Taira üzərində işlədikdən sonra əməliyyat qurma kodunu əlavə edin.
 4. Canlı şəbəkə testlərini könüllü saxlayın, məsələn `TAIRA_LIVE=1` arxasında, belə ki, normal bir vahid test çalışması heç vaxt testnet vəsaitlərini xərcləməsin və ya şəbəkə mövcudluğuna bağlı olmasın.
 5. Hər hansı bir əməliyyatı göndərmədən əvvəl agentdən şəbəkə kökü, zəncir, səlahiyyət verilən əsas hesab, təlimat xülasəsi, ödəniş aktivləri və gözlənilən vəziyyət dəyişikliyi barədə hesabat verməsini tələb edin.
 6. Yaradılmış kodu gizli məlumatların idarəsi, yenidən cəhd davranışı, idempotentlik və rədd etmə idarəsi baxımından nəzərdən keçirin, sonra onu CI və ya əsas şəbəkə iş axınlarına göndərin.
@@ -171,7 +174,7 @@ Göndərdikdən sonra, agentin son vəziyyəti gözləməsini təmin edin, sonra
 - terminal vəziyyəti kimi `Committed`, `Applied`, `Rejected` və ya `Expired`
 - mövcud olduqda blok və ya araşdırıcı detalları
 - təsdiq oxuma nəticələri
-- rədd mesajı və uğursuzluğun icazələr, ödənişlər, doğrulama, köhnəlmiş vəziyyət və ya API son nöqtənin mövcudluğu kimi görünüb-görünmədiyi
+- rədd mesajı və xətanın icazələr, haqlar, validasiya, köhnəlmiş vəziyyət və ya son nöqtənin əlçatanlığı ilə əlaqəli görünüb-görünməməsi
 
 Nümunə qorunan sorğu:
 
@@ -211,7 +214,7 @@ for network in taira minamoto; do
 done
 ```
 
-Taira tərəfindən göstərilən ictimai məlumat sahəsi icra zolaqlarını siyahıya alın:
+Taira-nın təqdim etdiyi açıq məlumat məkanı zolaqlarını sadalayın:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -271,7 +274,7 @@ kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 ```toml
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
 # The exact `network_id` from https://taira.sora.org/v1/accounts/capabilities
-network_id = "<TAIRA_NETWORK_ID>"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 torii_url = "https://taira.sora.org/"
 
 [account]
@@ -285,7 +288,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-Ən yüksək səviyyəli `chain` dəqiq Taira əməliyyat zənciri ID-sidir. `[account].profile = "taira"` parametri müstəqil olaraq Taira I105 zəncir fərqləndiricisindən seçim edir. Zəncir ID-si hesab profilini seçmir.
+Yuxarı səviyyəli `chain` dəqiq Taira əməliyyat zənciri ID-sidir; `network_id` isə hər imzanın bağlandığı dəqiq şəbəkə kimliyidir. `network_id` və ya `network_id_file` seçimlərindən dəqiq birini konfiqurasiya edin. `[account].profile = "taira"` parametri Taira I105 zəncir ayırdedicisini müstəqil seçir. Zəncir ID-si hesab profilini seçmir.
 
 Yalnız oxumaq üçün yoxlamanı işə salın:
 
@@ -299,28 +302,24 @@ Yazma testlərindən əvvəl ictimai Taira diaqnostikalarını işə salın:
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-Xərci ödəyən yazıları işlətmədən əvvəl Taira hesabını testnet maliyyələşdirmə xidməti vasitəsilə maliyyələşdirin. Birbaşa testnet maliyyələşdirmə xidməti axını [Taira üzərində Testnet XOR əldə edin](#_4-get-testnet-xor-on-taira)-dədir.
+Haqq tələb edən yazmalar işlətməzdən əvvəl Taira hesabını test vəsaiti paylama xidməti ilə maliyyələşdirin. Əvvəlcədən hazırlanan vəsait alma axını [Taira üzərində testnet XOR əldə etmək](#_4-get-testnet-xor-on-taira) bölməsindədir.
 
-Testnet maliyyələşdirmə xidməti iddiası qəbul edildikdən və hesab maliyyələşdirildikdən sonra, Taira kanaryası isteğe bağlı yazı tətqiqat testidir:
+Hesab maliyyələşdirildikdən sonra imzalanmış jurnal təlimatı ilə ilkin yazma sınağı keçirmək olar. Hər göndərilən əməliyyat haqq ödəyicisini göstərir və CLI imzalamadan əvvəl dəqiq haqqı hesablayıb göstərir:
 
 ```bash
-iroha --config ./taira.client.toml taira write-canary \
-  --public-root https://taira.sora.org \
-  --write-config ./taira.canary.client.toml \
-  --json
+iroha --config ./taira.client.toml --fee-payer authority \
+  tx ping --msg "taira smoke test"
 ```
 
-Kanarya imzalanmış ping göndərir, təsdiq gözləyir və `--write-config` təqdim olunduqda proqramın icra mühiti kriptoqrafik imzalayıcı konfiqurasiyasını yazır. Taira ictimai testnetdir, ona görə də növbənin dolması imzalanmış ping-in çatışmazlığına səbəb ola bilər, hətta testnet maliyyələşdirmə xidməti işləyərkən belə. Əgər `taira doctor` dolu növbə barədə hesabat verirsə və ya kanar `PRTRY:NEXUS_FEE_ADMISSION_REJECTED` qaytarırsa, bunu müştəri konfiqurasiya səhvi kimi qəbul etməzdən əvvəl gözləyin və yenidən cəhd edin.
+Əmr təsdiqi gözləyir. Taira açıq testnetdir, buna görə vəsait paylama xidməti işləsə belə növbənin dolması ping-in uğursuz olmasına səbəb ola bilər. `taira doctor` dolmuş növbə bildirirsə və ya ping `PRTRY:NEXUS_FEE_ADMISSION_REJECTED` qaytarırsa, bunu müştəri konfiqurasiya xətası saymazdan əvvəl gözləyin və yenidən cəhd edin.
 
-Nəzarətsiz tüstü testləri üçün kanarini məhdud təkrar dövrəsində sarın:
+Nəzarətsiz ilkin işləkliyə dair sınaqlar üçün ping-i cəhd sayı məhdud dövrə daxil edin:
 
 ```bash
 ok=false
 for attempt in 1 2 3 4 5; do
-  iroha --config ./taira.client.toml taira write-canary \
-    --public-root https://taira.sora.org \
-    --write-config ./taira.canary.client.toml \
-    --json && ok=true && break
+  iroha --config ./taira.client.toml --fee-payer authority \
+    tx ping --msg "taira smoke test" && ok=true && break
 
   sleep 60
 done
@@ -332,7 +331,7 @@ test "$ok" = true
 
 ## SORA Nexus Hesab İD-si Yarat {#generate-a-sora-nexus-account-id}
 
-Bir SORA Nexus hesab ID-si, hesabın açıq açarından və hədəf şəbəkə prefiksindən törədilmiş tək bir protokol-standart I105 ünvanıdır. Bu, `[account].domain` dəyər deyil müştəridə TOML. Eyni açıq açar Taira və Minamoto üzərində fərqli ID-lərə kodlanır və istehsal istifadəçiləri Minamoto üçün ayrıca açar cütlüyü yaratmalıdır.
+SORA Nexus hesab ID-si hesabın açıq açarından və hədəf şəbəkə prefiksindən törəyən kanonik I105 ünvanıdır. Eyni açıq açar Taira və Minamoto üzərində fərqli ID-lərə kodlanır; istehsal istifadəçiləri Minamoto üçün ayrıca açar cütü yaratmalıdır.
 
 Hesaba nəzarət edəcək Ed25519 açar cütününü yaradın və ya yükləyin:
 
@@ -352,7 +351,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Alınan hesab ID-sindən hər yerdə istifadə edin, harada ki, Nexus, API və ya CLI əmri tək bir protokol-standart hesab ID-si tələb edir, məsələn, Taira testnet maliyyələşdirmə xidməti `account_id`, balans sorğuları, ciddi hesab sahələri və ya ləqəb bağlamaları. Uyğun olan şəxsi açarı müştəri konfiqurasiyanızda saxlayın və `[account].profile = "taira"` və ya `[account].profile = "minamoto"` ilə eyni ictimai şəbəkəni seçin.
+SORA Nexus API və ya CLI əmri kanonik hesab ID-si tələb etdikdə, məsələn balans sorğularında, ciddi hesab sahələrində və ya ləqəb bağlamalarında, alınmış hesab ID-sini istifadə edin. Uyğun şəxsi açarı müştəri konfiqurasiyasında saxlayın və `[account].profile = "taira"` və ya `[account].profile = "minamoto"` ilə eyni açıq şəbəkəni seçin.
 
 ID yaratmaq özü-özlüyündə maliyyələşdirilmiş zəncir üzərində hesab yaratmır. Taira üzərində testnet maliyyələşdirmə xidməti testnet yazıları üçün hesab yaradıb maliyyələşdirə bilər. Minamoto üzərində isə təsdiqlənmiş mainnet qeydiyyat və ya xəzinə axınından istifadə edin.
 
@@ -373,186 +372,68 @@ Daha ətraflı məlumat üçün [Kriptoqrafik Açarların Saxlanması](/az/guide
 
 ## 4. Taira üzərində XOR Testnet əldə edin {#_4-get-testnet-xor-on-taira}
 
-İctimai testnet maliyyələşdirmə xidmətindən birbaşa istifadə edin. Axın belədir:
+CLI-nin əvvəlcədən hazırlanan vəsait alma axını ilə testnet XOR tələb edin. Xidmət `taira.client.toml` daxilində konfiqurasiya edilmiş hesabı maliyyələşdirir və hesab hələ yoxdursa, əvvəlcə onu qeydiyyatdan keçirir. Axın belədir:
 
-1. Kriptoqrafik imzalayan yaradın və ya yükləyin və onun tək protokol-standart Taira hesab ID-sini hesablayın.
-2. Cari testnet maliyyələşdirmə xidməti tapmacaını gətirin.
-3. Əgər `difficulty_bits` `0`-dən böyükdürsə, tapmacanı həll edin.
-4. Testnet maliyyələşdirmə xidməti iddiasını təqdim edin.
-5. Ödənişli yazıları göndərmədən əvvəl hesabın və ya aktiv balansının görünməsini gözləyin.
+1. Açıq vəsait paylama siyasətini oxuyun: xidmətin səlahiyyət sahibi, haqq aktivi və məbləğ.
+2. Vəsait alma tələbini hazırlayın. CLI iş sübutunu həll edir, Torii-nin hazırlayıb imzaladığı dəqiq əməliyyatı yoxlayır və göndərmədən özəl jurnal qovluğunda saxlayır.
+3. Saxlanılan əməliyyatı bir dəfə göndərin.
+4. Haqq tələb edən yazmalar göndərməzdən əvvəl aktiv balansının görünməsini gözləyin.
 
-Bir ictimai açarı testnet maliyyələşdirmə xidməti tərəfindən gözlənilən Taira I105 hesab identifikatoruna çevirin:
-
-```bash
-iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
-```
-
-Tapmacanı gətir:
+Siyasəti oxuyun:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
   -H 'Accept: application/json' \
+  | tee ./taira-faucet-policy.json \
   | jq .
 ```
-
-Testnet maliyyələşdirmə xidməti ictimai testnet xidmətidir. Əgər puzzle və ya claim API son nöqtəsi `502`, zaman aşımı və ya başqa bir gateway səviyyəli xəta qaytarırsa, açarlarınızı və ya müştəri konfiqurasiyanızı dəyişməzdən əvvəl gözləyin və təkrar cəhd edin.
 
 Cavabın bu şəklidir:
 
 ```json
 {
-  "algorithm": "scrypt-leading-zero-bits-v1",
-  "difficulty_bits": 8,
-  "anchor_height": 741,
-  "anchor_block_hash_hex": "05d2...",
-  "challenge_salt_hex": null,
-  "scrypt_log_n": 13,
-  "scrypt_r": 8,
-  "scrypt_p": 1,
-  "max_anchor_age_blocks": 6
+  "schema_version": 1,
+  "network_id": "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774",
+  "network_prefix": 369,
+  "authority": "<TAIRA_FAUCET_AUTHORITY_I105>",
+  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "amount": "25000"
 }
 ```
 
-`difficulty_bits` `0` olanda yalnız hesab ID-sini təqdim edin:
+Siyasət imzalanmamış kəşf məlumatıdır. Avtomatlaşdırma hər cavaba etibar etmək əvəzinə gözlədiyi səlahiyyət sahibini, aktiv tərifini və məbləği sabitləməlidir. `prepare` ötürdüyünüz qiymətlərdən fərqlənən hazırlanmış əməliyyatı rədd edir.
+
+Vəsait alma tələbini hazırlayın və göndərin:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet \
-  -H 'Accept: application/json' \
-  -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
-  | tee ./taira-faucet-response.json \
-  | jq .
+export TAIRA_FEE_ASSET="$(
+  jq -er '.asset_definition_id' ./taira-faucet-policy.json
+)"
+
+iroha --config ./taira.client.toml --fee-payer authority \
+  taira account faucet prepare \
+  --journal ./taira-faucet \
+  --issuer "$(jq -er '.authority' ./taira-faucet-policy.json)" \
+  --asset-definition "$TAIRA_FEE_ASSET" \
+  --amount "$(jq -er '.amount' ./taira-faucet-policy.json)"
+
+iroha --config ./taira.client.toml \
+  taira account faucet submit --journal ./taira-faucet
 ```
 
-`difficulty_bits` `0`-dən böyük olduqda, tapmacanı həll edin və ankora hündürlüyünü kriptoqrafik nonce dəyəri ilə birlikdə daxil edin:
-
-```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet \
-  -H 'Accept: application/json' \
-  -H 'content-type: application/json' \
-  -d '{
-    "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-    "pow_anchor_height": 741,
-    "pow_nonce_hex": "<NONCE_HEX>"
-  }' \
-  | tee ./taira-faucet-response.json \
-  | jq .
-```
-
-Tapmaca alqoritmi belədir:
-
-1. Çağırışı SHA-256 kimi qurun:
-   - `iroha:accounts:faucet:pow:v2` baytları
-   - UTF-8 hesab ID-si
-   - `anchor_height` böyük-endian kimi `u64`
-   - `anchor_block_hash_hex` bayt kimi deşifr edildi
-   - `challenge_salt_hex` mövcud olduqda baytlar kimi deşifr edildi
-2. Böyük-endian 8 baytlıq dəyərlər kimi kodlanmış `u64` kriptoqrafik nonce dəyərlərini sınayın.
-3. Hər kriptoqrafik nonce dəyəri üçün scrypt-i işlədin:
-   - şifrə: 8 baytlıq kriptoqrafik nonce dəyəri
-   - duz: 32 baytlıq çağırış
-   - `N = 2^scrypt_log_n`
-   - `r = scrypt_r`
-   - `p = scrypt_p`
-   - çıxış uzunluğu: 32 bayt
-4. Qalib kriptoqrafik nonce dəyəri ən azı `difficulty_bits` ön sıfır biti olan ilk kriptoqrafik qarışdırma dəyəridir.
-
-Testnet maliyyələşdirmə xidməti cavabı maliyyələşdirilmiş aktiv və növbəyə alınmış əməliyyatın kriptoqrafik xəşini əhatə edir:
-
-```json
-{
-  "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
-  "asset_id": "...",
-  "amount": "<FUNDED_AMOUNT>",
-  "tx_hash_hex": "...",
-  "status": "QUEUED"
-}
-```
-
-Cavab hazırda HTTP `202 Accepted` ilə qaytarılır. Onun `asset_definition_id`-i ictimai testnet maliyyələşdirmə xidməti tərəfindən təmin edilmiş mövcud Taira ödəniş aktividir; Bunu nümunə ID-ni kopyalamaq əvəzinə cavabdan çıxarın. Testnet maliyyələşdirmə xidməti `tx_hash_hex` və `status: "QUEUED"` cavabını qaytardıqda sorğunu qəbul etmiş olur.
+`prepare` jurnal qovluğunu özəl giriş hüquqları ilə yaradır və mövcud qovluğu əvəz etməkdən imtina edir; buna görə hər tələb üçün yeni qovluq istifadə edin. Vəsait paylama xidməti açıq testnet xidmətidir. `submit` `Pending` bildirirsə, vaxt aşımına uğrayırsa və ya `502` alırsa, başqa tələb hazırlamaq əvəzinə eyni konfiqurasiya və jurnalla `taira account faucet resume` işlədin. Köhnəlmiş iş sübutu dayaq nöqtəsi `prepare` əməliyyatını uğursuz edir; yeni jurnal qovluğunda yenidən hazırlayın.
 
 Sonra öz ödənişli əməliyyatlarınızı təqdim etməzdən əvvəl maliyyələşdirilmiş aktiv üçün sorğu aparın:
 
 ```bash
-TAIRA_FEE_ASSET_DEFINITION=$(
-  jq -er '.asset_definition_id' ./taira-faucet-response.json
-)
-
 iroha --config ./taira.client.toml ledger asset get \
-  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
+  --definition "$TAIRA_FEE_ASSET" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
-Əgər testnet maliyyələşdirmə xidməti iddiası qəbul edilibsə, lakin hesab və ya aktiv hələ görünmürsə, əməliyyat hələ də ictimai testnet növbəsinin emalındadır. Yazıları göndərmədən əvvəl oxumağı gözləyin və yenidən cəhd edin.
+Tələb tətbiq olunub, lakin aktiv hələ görünmürsə, yazma göndərməzdən əvvəl gözləyin və oxumanı yenidən sınayın.
 
-İşə hazır bir birbaşa API yoxlaması üçün bunu `taira_faucet_claim.py` kimi yadda saxlayın və Taira I105 hesab ID-sini göndərin:
-
-```python
-#!/usr/bin/env python3
-import hashlib
-import json
-import sys
-import urllib.request
-
-
-def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
-    full, rem = divmod(bits, 8)
-    if digest[:full] != b"\0" * full:
-        return False
-    return rem == 0 or digest[full] >> (8 - rem) == 0
-
-
-root = "https://taira.sora.org"
-account_id = sys.argv[1]
-
-puzzle_request = urllib.request.Request(
-    f"{root}/v1/accounts/faucet/puzzle",
-    headers={"Accept": "application/json"},
-)
-
-with urllib.request.urlopen(puzzle_request) as res:
-    puzzle = json.load(res)
-
-claim = {"account_id": account_id}
-difficulty = int(puzzle["difficulty_bits"])
-
-if difficulty > 0:
-    challenge = hashlib.sha256()
-    challenge.update(b"iroha:accounts:faucet:pow:v2")
-    challenge.update(account_id.encode())
-    challenge.update(int(puzzle["anchor_height"]).to_bytes(8, "big"))
-    challenge.update(bytes.fromhex(puzzle["anchor_block_hash_hex"]))
-    if puzzle.get("challenge_salt_hex"):
-        challenge.update(bytes.fromhex(puzzle["challenge_salt_hex"]))
-
-    n = 1 << int(puzzle["scrypt_log_n"])
-    r = int(puzzle["scrypt_r"])
-    p = int(puzzle["scrypt_p"])
-    salt = challenge.digest()
-
-    for nonce in range(1_000_000):
-        nonce_bytes = nonce.to_bytes(8, "big")
-        digest = hashlib.scrypt(nonce_bytes, salt=salt, n=n, r=r, p=p, dklen=32)
-        if has_leading_zero_bits(digest, difficulty):
-            claim["pow_anchor_height"] = puzzle["anchor_height"]
-            claim["pow_nonce_hex"] = nonce_bytes.hex()
-            break
-    else:
-        raise SystemExit("faucet nonce not found")
-
-request = urllib.request.Request(
-    f"{root}/v1/accounts/faucet",
-    data=json.dumps(claim).encode(),
-    headers={"Accept": "application/json", "content-type": "application/json"},
-    method="POST",
-)
-
-with urllib.request.urlopen(request) as res:
-    print(json.dumps(json.load(res), indent=2))
-```
-
-Testnet maliyyələşdirmə xidməti yalnız Taira testnet vəsaitləri üçün nəzərdə tutulmuşdur. Testnet XOR, testnet maliyyələşdirmə xidməti hesabları və ya Taira kanarya kriptoqrafik imzalayanları Minamoto axınlarında istifadə etməyin.
+Test vəsaiti paylama xidməti yalnız Taira test şəbəkəsinin vəsaitləri üçündür. Test şəbəkəsi XOR-unu, həmin xidmətin hesablarını və ya Taira yoxlama tranzaksiyalarının imzalayıcılarını Minamoto əməliyyatlarında istifadə etməyin.
 
 ## 5. Minamoto Müştəri Konfiqurasiyasını yaradın {#_5-create-a-minamoto-client-config}
 
@@ -562,10 +443,11 @@ Minamoto üçün ayrı bir açar cütündən istifadə edin. Taira açarlarını
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000753"
+# The exact `network_id` from https://minamoto.sora.org/v1/accounts/capabilities
+network_id = "<MINAMOTO_NETWORK_ID>"
 torii_url = "https://minamoto.sora.org/"
 
 [account]
-domain = "wonderland.universal"
 profile = "minamoto"
 public_key = "<ED25519_PUBLIC_KEY_HEX>"
 private_key = "<ED25519_PRIVATE_KEY_HEX>"
@@ -576,7 +458,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-Ən üst səviyyəli `chain` cari Nexus əsasnet zəncir ID-sidir. `[account].profile = "minamoto"` Minamoto I105 zəncir fərqləndiricisini seçir; API son nöqtə host adı və zəncir ID-si onu dolayı yolla seçmir.
+Yuxarı səviyyəli `chain` cari SORA Nexus əsas şəbəkəsinin zəncir ID-sidir; `network_id` isə Minamoto-nun dəqiq şəbəkə kimliyidir. Onu ilk imzalanmış əməliyyatdan əvvəl imkanlar marşrutundan oxuyun. `[account].profile = "minamoto"` Minamoto I105 zəncir ayırdedicisini seçir; son nöqtənin host adı və zəncir ID-si bunu dolayı yolla seçmir.
 
 Minamoto açıq açarını əsas şəbəkə prefiksi ilə onun tək protokol-standart I105 hesab ID-sinə çevirin:
 
@@ -590,7 +472,7 @@ Hesab əsas şəbəkə qoşulması və ya idarəetmə prosesi vasitəsilə təmi
 iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
 ```
 
-Minamoto-ə qarşı Taira testnet maliyyələşdirmə servisini və ya write-canary köməkçisini işə salmayın.
+Taira vəsait paylama və ya ilkin işləkliyə dair sınaq əmrlərini Minamoto üzərində işlətməyin.
 
 ## 6. XOR ilə Minamoto Hesabına vəsait qoyun {#_6-fund-a-minamoto-account-with-xor}
 
@@ -600,9 +482,9 @@ Yazma əməliyyatını təqdim etməzdən əvvəl oxumaq üçün yoxlamalarla t�
 
 Taira XOR Minamoto ödənişlərini ödəyə bilmir. Testnet balansları və testnet maliyyələşdirmə xidməti tələbləri Minamoto-yə köçürülmür.
 
-## 7. Mövcud Məlumat Sahəsində İşləmək {#_7-work-inside-an-existing-dataspace}
+## 7. Mövcud məlumat məkanı daxilində işləyin {#_7-work-inside-an-existing-data-space}
 
-Məlumat sahəsində yaşayan blokçeyn dəftər obyektləri üçün tam təyin olunmuş domen adlarından istifadə edin. Məsələn, ictimai məlumat sahəsindəki bir layihə domeni aşağıdakı kimi istifadə olunmalıdır:
+Məlumat məkanında yerləşən reyestr obyektləri üçün tam müəyyənləşdirilmiş domen adlarından istifadə edin. Məsələn, açıq məlumat məkanındakı layihə domeni belə olmalıdır:
 
 ```text
 apps.universal
@@ -616,8 +498,7 @@ iroha --config ./taira.client.toml \
   --intent-file ./taira-apps-domain.intent.json \
   --plan-file ./taira-apps-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-apps-domain.plan.json
 ```
 
@@ -629,11 +510,11 @@ iroha --config ./minamoto.client.toml \
   --intent-file ./minamoto-apps-domain.intent.json \
   --plan-file ./minamoto-apps-domain.plan.json
 
-iroha --config ./minamoto.client.toml \
+iroha --config ./minamoto.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./minamoto-apps-domain.plan.json
 ```
 
-Hesab ləqəbləri eyni verilənlər məkanının postfixindən istifadə edir:
+Hesab ləqəbləri eyni məlumat məkanı sonluğundan istifadə edir:
 
 ```text
 alice@apps.universal
@@ -642,9 +523,9 @@ alice@universal
 
 Sərt hesab sahələri hələ də tək protokol-standart I105 hesab identifikatorlarından istifadə edir. Əlavələri tək protokol-standart hesab identifikatorlarına həll edən insan oxunaqlı əlaqələr kimi qəbul edin.
 
-## 8. Yeni Məlumat Məkanının Təmin Edilməsi {#_8-provision-a-new-dataspace}
+## 8. Yeni məlumat məkanı qurun {#_8-provision-a-new-data-space}
 
-Yeni məlumat sahəsi operator və idarəetmə dəyişikliyidir. İctimai Torii API son nöqtəsi trafiki konfiqurasiya edilmiş məlumat sahələrinə yönləndirə bilər, lakin naməlum məlumat sahəsi təxəllüslərini rədd edəcək.
+Yeni məlumat məkanı operator və idarəetmə dəyişikliyidir. Açıq Torii son nöqtəsi trafiki konfiqurasiya edilmiş məlumat məkanlarına yönləndirə bilər, lakin naməlum məlumat məkanı ləqəblərini rədd edəcək.
 
 Dəyişikliyi hazırlamadan əvvəl mövcud canlı kataloqu qeyd edin:
 
@@ -660,15 +541,15 @@ Operator hesabı üçün icra zolağı texniki manifesto vəziyyətini də yoxla
 iroha --config ./operator.client.toml app nexus lane-report --summary
 ```
 
-Yerinə yetirmə xətti ID-si, məlumat məkanı ID-si, doğrulayıcı dəsti, nasazlığa dözümlülük, texniki manifesto, marşrutlaşdırma qaydaları və əməliyyat sahibi birlikdə nəzərdən keçirilmədikcə yeni takma adı təşviq etməyin. Lazımi icazələrə malik normal istifadəçi hesabı, mövcud dataspace daxilində alias planner vasitəsilə bir domen və onun SNS icarəsini əldə edə bilər; təhlükəsiz şəkildə yeni bir ictimai dataspace əlavə edə bilməz.
+Zolaq ID-si, məlumat məkanı ID-si, təsdiqləyicilər dəsti, nasazlığa dözümlülük, manifest, marşrutlaşdırma qaydaları və istismar üzrə məsul tərəf birlikdə nəzərdən keçirilməyibsə, yeni ləqəbi istifadəyə verməyin. Lazımi icazələri olan adi istifadəçi hesabı ləqəb planlayıcısı vasitəsilə mövcud məlumat məkanı daxilində domen və onun SNS icarəsini əldə edə bilər; həmin hesab təhlükəsiz şəkildə yeni açıq məlumat məkanı əlavə edə bilməz.
 
-Şəxsi və ya təşkilati məlumatlar sahəsi üçün aşağıdakılarla kataloq dəyişikliyi hazırlayın:
+Özəl və ya təşkilati məlumat məkanı üçün aşağıdakıları ehtiva edən kataloq dəyişikliyi hazırlayın:
 
-- unikal məlumat sahəsi ləqəbi və ədədi `id`
+- unikal məlumat məkanı ləqəbi və ədədi `id`
 - uyğun icra yol giriş və ya mövcud icra yolu təyini
-- dataspace `fault_tolerance`
+- məlumat məkanının `fault_tolerance` qiyməti
 - orada yerləşməli təlimatlar və ya hesab sahələri üçün yönləndirmə qaydaları
-- məlumat sahəsi UAID imkanlarını ortaya qoyduqda, Kosmik Qovluq texniki manifesti və ya ekvivalent yayım sübutu
+- məlumat məkanı UAID imkanları təqdim edirsə, Məkan Kataloqu manifesti və ya bərabər səviyyəli yerləşdirmə sübutu
 - təsdiqçi üçün idarəetmə təsdiqi, uyğunluq, maliyyə əməliyyatlarının həlli və izləmə siyasəti
 
 İcmal edilə bilən konfiqurasiya fraqmenti belə görünür:
@@ -692,8 +573,8 @@ fault_tolerance = 1
 lane = 5
 dataspace = "payments"
 [nexus.routing_policy.rules.matcher]
-account_prefix = "payments."
-description = "Route payments domains to the payments dataspace"
+instruction = "transfer::asset"
+description = "Route asset transfers to the payments dataspace"
 ```
 
 Operatorun qəbulu bu qapıları əhatə etməlidir:
@@ -701,7 +582,7 @@ Operatorun qəbulu bu qapıları əhatə etməlidir:
 - `iroha3d --sora --config <config.toml> --trace-config` həll edilmiş düyün konfiqurasiyasını ötürür
 - yaradılmış və ya nəzərdən keçirilmiş texniki manifesto kriptoqrafik xəş və imzalar ilə arxivləşdirilir
 - təqdim olunmadan əvvəl Taira-da sınaq yanğınları Minamoto təbliğindən əvvəl uğurla keçdi
-- dəyişiklikdən sonra `/status` kataloqu nəzərdə tutulan icra zolağını və verilənlər məkanını göstərir
+- dəyişiklikdən sonrakı `/status` kataloqu nəzərdə tutulan zolağı və məlumat məkanını göstərir
 - `iroha app nexus lane-report --summary` tələb olunan texniki manifeslərin çatışmadığını bildirmir
 
 ```bash
@@ -710,12 +591,12 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 
-Eyni məlumat sahəsini yalnız Taira yerləşdirməsi, ilkin testlər, monitorinq və idarəetmə sənədləri tamamlandıqdan sonra Minamoto-a təşviq edin.
+Eyni məlumat məkanını Minamoto-ya yalnız Taira yerləşdirməsi, ilkin işləkliyə dair sınaqlar, monitorinq və idarəetmə sübutları tamamlandıqdan sonra keçirin.
 
 ## Əlaqəli Səhifələr {#related-pages}
 
 - [Iroha 3 Quraşdır](/az/get-started/install-iroha.md)
 - [Iroha 3-i CLI vasitəsilə işlədin](/az/get-started/operate-iroha-via-cli.md)
-- [Şəxsi məlumat sahəsi üçün sponsor haqları](/az/get-started/private-dataspace-fee-sponsor.md)
-- [Torii API son nöqtələr](/az/reference/torii-endpoints.md)
+- [Özəl məlumat məkanı üçün haqlara sponsorluq edin](/az/get-started/private-dataspace-fee-sponsor.md)
+- [Torii son nöqtələri](/az/reference/torii-endpoints.md)
 - [blokçeyn başlanğıc istinadı](/az/reference/genesis.md)

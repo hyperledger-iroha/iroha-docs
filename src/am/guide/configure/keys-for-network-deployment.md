@@ -1,14 +1,13 @@
 ---
 translation_locale: am
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: 752799bb0d92c662053e05fd7c3e3750a0b9259687314bf009488eb79d1d6cfa
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # ለአውታረመረብ ማሰማራት ቁልፎች {#keys-for-network-deployment}
 
-እያንዳንዱ አውታረ መረብ ለደንበኞች፣ ለአውታረ መረብ እኩዮች፣ ለብሎክቼይን ጀነሲስ ፊርማ እና ለNPoS ወይም Nexus መገለጫዎች፣ BLS አረጋጋጭ ማንነቶች የተለየ ቁልፍ ቁሳቁስ ያስፈልገዋል።
+እያንዳንዱ አውታረ መረብ ለደንበኞች፣ ለአቻዎች፣ ለgenesis ፊርማ እና በNPoS ወይም SORA Nexus መገለጫዎች ለBLS አረጋጋጭ ማንነቶች የተለያዩ የቁልፍ ቁሳቁሶች ይፈልጋል።
 
 ## ቁልፎች ጥቅም ላይ የሚውሉባቸው ቦታዎች {#where-keys-are-used}
 
@@ -21,7 +20,7 @@ translation_engine: bing-translator-llm
 ለአካባቢያዊ ወይም ለሙከራ ማሰማራት፣ Kagami እነዚህን ሁሉ ፋይሎች አንድ ላይ ያመነጩ -
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 ለነባር አውታረ መረብ ወይም መገለጫ፣ የሚመራውን ፍሰት ይጠቀሙ -

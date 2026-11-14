@@ -1,11 +1,10 @@
 ---
 translation_locale: ru
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 621d1795fd1c3cc62462a9a91af68fe684c0ff5293f5e77801420dc8318bac38
+translation_source_hash: 22d763aadf33d331fb9c16d3927e84e8bdb88829f3d73b974902daa8fde3c1b4
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Musubi Kotodama Пакеты {#musubi-kotodama-packages}
 
 Musubi — это менеджер пакетов первого выпуска для исходных пакетов Kotodama. Он разрешает точную ончейн-зависимость, аутентифицирует SoraFS источники архивов, компилирует и тестирует выбранное рабочее пространство, создает канонические CAR архивы и публикует неизменяемые релизы через Iroha.
@@ -89,9 +88,9 @@ export TAIRA_ROOT=https://taira.sora.org
 curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
 ```
 
-Каталог провайдера предоставляет идентификаторы провайдера и рекламируемые API конечные точки. Получите соответствующее разрешение оператора от выбранного провайдера. Среда выполнения программного обеспечения использует этот ключ для запроса токенов ограниченного потока; токены не являются ни CLI аргументами, ни содержимым lockfile.
+Каталог провайдера предоставляет идентификаторы провайдера и рекламируемые конечные точки. Получите соответствующее разрешение оператора от выбранного провайдера. Среда выполнения программного обеспечения использует этот ключ для запроса токенов ограниченного потока; токены не являются ни CLI аргументами, ни содержимым lockfile.
 
-Не используйте Taira пин-код валидатора URL как `url`. Зарегистрированные валидаторы встроены SoraFS хранение отключено. Их `https://taira-validator-{1,2,3,4}.sora.org` API конечные точки принимают регистрацию PIN-кода, а архивные чтения используют выбранного разрешённого поставщика HTTPS происхождение.
+Не используйте Taira пин-код валидатора URL как `url`. Зарегистрированные валидаторы встроены SoraFS хранение отключено. Их `https://taira-validator-{1,2,3,4}.sora.org` конечные точки принимают регистрацию PIN-кода, а архивные чтения используют выбранного разрешённого поставщика HTTPS происхождение.
 
 ## Локальный рабочий процесс {#local-workflow}
 
@@ -209,4 +208,4 @@ Musubi использует инструкции и запросы первой 
 | `FindMusubiArchiveLocationsV1`                       |Прочитайте окончательные архивные местоположения, поддерживаемые поставщиком.|
 | `FindMusubiAliasV1` / `FindMusubiAliasHistoryV1`     |Прочитайте текущую цель псевдонима или её неизменяемую историю.|
 
-Torii раскрывает семейство маршрутов приложения под `/v1/musubi/*`. Инструменты MCP используют текущие имена `iroha.musubi.queries.*` и `iroha.musubi.instructions.*`. См. [Torii API конечные точки](/ru/reference/torii-endpoints.md) и [ссылка на запрос](/ru/reference/queries.md) для более широкой карты API.
+Torii раскрывает семейство маршрутов приложения под `/v1/musubi/*`. Инструменты MCP используют текущие имена `iroha.musubi.queries.*` и `iroha.musubi.instructions.*`. См. [Torii конечные точки](/ru/reference/torii-endpoints.md) и [ссылка на запрос](/ru/reference/queries.md) для более широкой карты API.

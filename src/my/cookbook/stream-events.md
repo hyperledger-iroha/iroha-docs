@@ -151,7 +151,7 @@ async function follow() {
 await follow()
 ```
 
-Taira တွင် အနည်းဆုံး ငွေပေးချေမှုတစ်ခု `Approved` ကိုရောက်ရှိသည်အထိ ၎င်းကို Run:
+Taira တွင် အနည်းဆုံး transaction တစ်ခု `Approved` သို့ ရောက်သည်အထိ ၎င်းကို လုပ်ဆောင်ပါ။
 
 ```bash
 node ./stream-taira.mjs
@@ -165,7 +165,7 @@ SSE နှလုံးခုန်ချက် မှတ်ချက်တွေ
 
 ## စစ်ဆေးပါ {#verify}
 
-terminal တစ်ခုမှာ JavaScript သုံးစွဲသူကို run လုပ်ပါ။ နောက်တစ်ခုမှာတော့ public transaction point-in-time data view ကို ဖတ်လိုက်ပါ။
+Terminal တစ်ခုတွင် JavaScript လက်ခံသုံးစွဲသူကို လုပ်ဆောင်ပါ။ အခြားတစ်ခုတွင် အများမြင် transaction snapshot ကို ဖတ်ပါ။
 
 ```bash
 curl -fsS \
@@ -182,14 +182,14 @@ curl -fsS \
 - ကုဒ် `invalid_filter` ပါသော `400` ဆိုသည်မှာ `filter` သည် Torii ၏ စာသားသဒ္ဒါနှင့် မကိုက်ညီခြင်း သို့မဟုတ် event stream များက မပံ့ပိုးသော field တစ်ခုကို အမည်ဖော်ထားခြင်းကို ဆိုလိုသည်။ event stream များသည် `tx_status`၊ `tx_hash`၊ `tx_block_height`၊ `tx_lane_id`၊ `tx_dataspace_id`၊ `block_status`၊ `block_height`၊ `proof_backend`၊ `proof_call_hash` နှင့် `proof_envelope_hash` တို့ဖြင့် filter လုပ်သည်။
 - `stream_error` ဖြစ်ရပ်သည် server က နောက်ကျမှု (lag) သို့မဟုတ် အခြား terminal stream အခြေအနေတစ်ခုကို တွေ့ရှိကြောင်း ညွှန်ပြသည်။ Torii သည် ထိုဖြစ်ရပ်ကို တစ်ကြိမ် ပေးပို့ပြီး stream ကို ပိတ်သည်။ အစားထိုး stream တစ်ခုကို ဖွင့်ပြီးနောက် ပြန်လည်ညှိနှိုင်းပါ။
 - Torii မလုပ်တဲ့အခါမှာတောင် Proxy က SSE ကို buffer လုပ်နိုင်တယ်။ Proxy ထဲက တုံ့ပြန်မှု buffering နဲ့ compression တွေကို Disable လုပ်ပြီး `curl -N` ကို diagnostics မှာ ထားပါ။
-- API အဆုံးသတ်မှတ်ချက်မှာ ပြန်လည်ပြသမှု ညွှန်ကြားချက်မရှိဘူး၊ ဒီအစား လက်ရှိ blockchain ledger အခြေအနေကို မေးမြန်းပါ။
+- ဆက်သွယ်မှုပြတ်တောက်မှုကြောင့် ဖြစ်သော ကွာဟချက်ကို နောက်ဖြစ်ရပ်က ယခင်ဖြစ်ရပ်နောက် ချက်ချင်းလိုက်သည်ဟု ယူဆ၍ လုံးဝ မဖြည့်ပါနှင့်။ Endpoint တွင် replay cursor မရှိပါ။ ယင်းအစား လက်ရှိ လယ်ဂျာအခြေအနေကို query လုပ်ပါ။
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
 - [JavaScript ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်ချက်မှာ streaming recipe](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes/streaming.mjs)
 - [SSE ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ် ပြင်ဆင်မှုတွင် ပေါင်းစပ်မှု စမ်းသပ်မှုများ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/events/sse_smoke.rs)
 - [ပုံသေသတ်မှတ်ထားသော commit ရှိ Torii filter စာသားသဒ္ဒါ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/src/list_query/text.rs)
-- [Torii event routing at the pinned source code revision](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/routing.rs)
+- [ပုံသေသတ်မှတ်ထားသော commit ရှိ Torii ဖြစ်ရပ်လမ်းကြောင်း သတ်မှတ်မှု](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/routing.rs)
 - [ဖြစ်ရပ်များ](/my/blockchain/events.md)
 - [Torii API အဆုံးသတ်မှတ်ချက်များ](/my/reference/torii-endpoints.md)
 - [မေးမြန်းချက် blockchain ledger အခြေအနေ](./query-ledger-state.md)

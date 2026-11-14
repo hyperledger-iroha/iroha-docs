@@ -1,11 +1,10 @@
 ---
 translation_locale: ru
 translation_source: /get-started/launch-iroha.md
-translation_source_hash: 35a4caba21bf1e34cc015f79fa82bfe143b37603eddb5f1eb72513ad83a20f61
+translation_source_hash: 6fe2dd48dc64f896be539af2994fbc0ad3c2c5f7a5a4297cc4ff4b08667f0376
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Запуск Iroha 3 {#launch-iroha-3}
 
 На этой странице описан текущий поток локальной сети для Iroha 3 с использованием стандартных ресурсов рабочей области из репозитория вверх по потоку.
@@ -65,11 +64,11 @@ curl http://127.0.0.1:8080/status/blocks
 cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list
 ```
 
-## 3. Nexus Профиль {#_3-nexus-profile}
+## 3. SORA Nexus Профиль {#_3-nexus-profile}
 
 Репозиторий также поставляется с конфигурационным профилем, ориентированным на SORA Nexus, под `defaults/nexus/`.
 
-Чтобы запустить локального сетевого узла с профилем Nexus:
+Чтобы запустить локального сетевого узла с профилем SORA Nexus:
 
 ```bash
 ./target/release/iroha3d --sora --config ./defaults/nexus/config.toml

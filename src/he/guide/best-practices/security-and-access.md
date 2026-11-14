@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /guide/best-practices/security-and-access.md
-translation_source_hash: f0163734d618d91337b437da703743014d01c57c4cb603fbc2e66316f3654779
+translation_source_hash: b1cb0cdbeec55f7db03f1c64b6581a21c09fc80a57344cf6e27df1d126c0ec92
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # אבטחה וגישה {#security-and-access}
 
 שיטות אבטחה ב Iroha צריכות להתבסס על סמכות צר, שומרון מפתח מאובטח, חשיפה ברשת מפורשת ושינויים שניתן לבחון.
@@ -23,7 +22,7 @@ translation_engine: nllb-200-ct2
 
 - תנו את סימן הרשיון הקטן ביותר או תפקיד תומך בתהליך העבודה.
 - מעדיפים חשבונות טכניים מוקדמים עבור שירותים, מפעילים, סוכנים ואוטומציה. להימנע מלהפעיל אוטומציה ארוכה דרך חשבון מפעל אישי.
-- רשיונות ביקורת לניהול צמתים, מוטציה של מטא-מנתונים, הנפקה, שריפה, רשום ההפעלה, שינויים במפעיל, ושלטון SORA/Nexus לפני תחילת הייצור.
+- רשיונות ביקורת לניהול צמתים, מוטציה של מטא-מנתונים, הנפקה, שריפה, רשום ההפעלה, שינויים במפעיל, ושלטון SORA Nexus לפני תחילת הייצור.
 - ביטול רשיונות זמניים לאחר חלון תחזוקה או הגירה שהצריכה אותם.
 
 ראו [רשיונות](/he/blockchain/permissions.md) ו [צבעות רשיונות ](/he/reference/permissions.md)

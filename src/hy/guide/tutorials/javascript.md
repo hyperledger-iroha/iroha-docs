@@ -1,11 +1,10 @@
 ---
 translation_locale: hy
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
+translation_source_hash: 92389d3ad83ab32e85b4ca83ede9829d1a38afaad6e86da035da2829a3aaedfb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # JavaScript եւ TypeScript {#javascript-and-typescript}
 
 Ներկայումս JavaScript SDK-ը `@iroha/iroha-js` փաթեթն է Iroha աղբյուրի ծառում: Այն Node.js-ի առաջին SDK է Torii, Norito շինարարների համար, ստորագրություն, էջավորումը, Connect նախադասությունները եւ Kagemusha հրաման տրանսպորտի համար:
@@ -99,7 +98,6 @@ SDK կենտրոնանում է հետեւյալ վրա.
 - Ed25519 ստորագրում եւ առանցքային սերունդ
 - pagination եւ retry օգնականներ
 - Կապացրեք բրաուզերների bootstrap օգնականները
-- Kagemusha- ի պատրաստակամություն, լրացում, փոխհատուցում եւ շահագործման կարգավիճակի տրանսպորտային օգնականներ
 
 ## Վերածննդային հղումներ {#upstream-references}
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /blockchain/nfts.md
-translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
+translation_source_hash: 216f59f1cebd73001dab75dcf235306082fb1c0759437f65ce34ec9e1ed51d4f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # NFTs {#nfts}
 
 አንድ Iroha NFT አንድ ባለቤት ያለው ልዩ የብሎክቼይን መዝገብ ነገር ነው። አንድ መዝገብ የራሱ ማንነት፣ ሜታዳታ፣ የህይወት ኡደት ክስተቶች እና የባለቤትነት ማስተላለፊያ ትርጓሜዎች ሲፈልግ NFTs ን ይጠቀሙ፣ ነገር ግን የቁጥር ቀሪ ሒሳብ አያስፈልገውም።
@@ -49,7 +48,7 @@ name$domain
 name$domain.dataspace
 ```
 
-ለምሳሌ፣ `badge$docs.universal` በ`docs.universal` ጎራ ውስጥ ያለውን `badge` NFT ይለያል። የውሂብ ክፍተቱ ከተተወ፣ የአሁኑ ተንታኝ የ `universal` ዳታ ቦታን ይጠቀማል፣ ስለዚህ `badge$docs` ወደ `badge$docs.universal` ይፈታል።
+ለምሳሌ `badge$docs.universal` በ`docs.universal` ጎራ ውስጥ ያለውን `badge` NFT ይለያል። የውሂብ ቦታው ካልተጠቀሰ አሁን ያለው ፓርሰር `universal` የውሂብ ቦታን ይጠቀማል፤ ስለዚህ `badge$docs` ወደ `badge$docs.universal` ይፈታል።
 
 ለ NFT መታወቂያዎች የተረጋጋ ስሞችን ተጠቀም። መታወቂያው በመመሪያዎች፣ መጠይቆች፣ ፈቃዶች፣ የክስተት ማጣሪያዎች እና የመተግበሪያ ማጣቀሻዎች ጥቅም ላይ የሚውለው የነገር ማንነት ነው።
 
@@ -68,17 +67,17 @@ NFT የሕይወት ዑደት ክዋኔዎች ይጠቀሙ Iroha የመመሪያ
 
 ```bash
 export IROHA_CONFIG=./localnet/client.toml
-export NFT_DOMAIN=wonderland.universal
-export NFT_ID='badge_intro$wonderland.universal'
+export NFT_DOMAIN='<OWNED_DOMAIN>.universal'
+export NFT_ID="badge_intro\$$NFT_DOMAIN"
 ```
 
-የተፈጠረው አካባቢያዊ መረብ አስቀድሞ `wonderland.universal` እና SNS የሊዝ ውሉን አዘጋጅቷል። የተለየ ጎራ ለመጠቀም በመጀመሪያ በ[ጎራዎች](/am/blockchain/domains.md#registration) ውስጥ በተገለጸው ገላጭ `app alias setup plan` እና `app alias setup apply` የስራ ፍሰት ይፍጠሩት።
+የተፈጠረ አካባቢያዊ አውታረ መረብ ለደንበኛው የመተግበሪያ ጎራ አይመዘግብም። `NFT_DOMAIN`ን ፈራሚው መለያ ባለቤት ወደሆነበት ወይም `CanRegisterNft` ፈቃድ ወዳለው ጎራ ያዘጋጁ። አዲስ ለመፍጠር በ[ጎራዎች](/am/blockchain/domains.md#registration) የተገለጸውን አዋጅ መሰል `app alias setup plan` እና `app alias setup apply` ሂደት ይጠቀሙ።
 
 NFT ይመዝገቡ። ምዝገባ የመጀመሪያውን ይዘት JSON ከመደበኛ ግቤት ያነባል -
 
 ```bash
 printf '{"kind":"badge","level":"intro","issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft register --id "$NFT_ID"
 ```
 
@@ -89,14 +88,14 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft get --id "$NFT_ID"
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger nft list all --verbose
+  ledger nft list --all
 ```
 
 ሜታዳታ ቁልፍ ያክሉ እና NFT ን እንደገና ያንብቡ -
 
 ```bash
 printf '{"color":"blue","rarity":"tutorial"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta set --id "$NFT_ID" --key traits
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -106,27 +105,27 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 የሜታዳታ ቁልፉን ያስወግዱ
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
-እንደ አማራጭ NFT ን ያስተላልፉ። የአሁኑን ባለቤት ከ`owned_by` ለማንበብ `ledger nft get`ን ይጠቀሙ እና የመድረሻ መለያ መታወቂያ ለማግኘት `ledger account list all`ን ይጠቀሙ።
+ከፈለጉ NFTን ያስተላልፉ። የአሁኑን ባለቤት ከ`owned_by` ለማንበብ `ledger nft get`፣ የመዳረሻ መለያ ID ለማግኘትም `account list --all` ይጠቀሙ።
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger account list all
+  account list --all
 
 export CURRENT_OWNER='<account-id-from-owned_by>'
 export NEW_OWNER='<destination-account-id>'
 
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
 መመሪያውን ከጨረሱ በኋላ የምሳሌውን NFT ያስወግዱ። ካስተላለፉት ወደ ነበረበት ይመልሱት ወይም የአሁኑን ባለቤት መለያ ውቅር ተጠቅመው የምዝገባ-ማስወገጃ ትዕዛዙን ያስገቡ።
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft unregister --id "$NFT_ID"
 ```
 

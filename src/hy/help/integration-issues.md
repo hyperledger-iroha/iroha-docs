@@ -1,11 +1,10 @@
 ---
 translation_locale: hy
 translation_source: /help/integration-issues.md
-translation_source_hash: c5f169e423806fa2a9e9d198971588d1aa0b199a28d64e8b089b9f81727550a5
+translation_source_hash: 2146a236adb3a3b3b896a1992daeecf6713988183ca53e4412f9b616ed2e9085
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Ինտեգրացիայի խնդիրների լուծումը {#troubleshooting-integration-issues}
 
 Այս բաժինը առաջարկում է խնդիրների լուծման խորհուրդներ Iroha 3 ինտեգրման համար: Եթե խնդիրը, որը դուք ունեք, չի նկարագրված այստեղ, կապվեք մեզ հետ [Telegram](https://t.me/hyperledgeriroha).
@@ -21,7 +20,7 @@ torii_url = "http://127.0.0.1:8080/"
 CLI ստուգումների համար նույն ֆայլը բացարձակ փոխանցեք.
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 Եթե հանգույցն անցնի Docker կամ Kubernetes, օգտագործեք հյուրընկալող կամ ծառայության հասցեն, որը հասանելի է հաճախորդի գործընթացի. `127.0.0.1` բեռի ներսում գտնվող սարքը հյուրընկալող չէ:
@@ -45,12 +44,12 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
 - Հաճախորդի կարգավորման հաշիվի հանրային բանալին չի համապատասխանում ստորագրության համար օգտագործվող մասնավոր բանալի:
 - հաշիվը գրանցված չէ գեներիզմում կամ նախորդ գործարքի միջոցով
 - հաշիվը բացակայում է վազման ժամանակի հավաստիացնողի կողմից պահանջվող թույլտվության նշան կամ դեր:
-- ID տիրույթը բացակայում է տվյալների տարածքի որակավորման, օրինակ՝ `domain.dataspace`:
+- տիրույթի ID-ում բացակայում է տվյալների տարածքով ամբողջական որոշումը, օրինակ՝ `domain.dataspace`
 
 Օգտագործեք `--output-format text` ՝ շտկելով CLI հրամանները, որպեսզի սխալներն ավելի հեշտ ընթերցվեն.
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ledger transaction ping --msg "hello"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority --output-format text tx ping --msg "hello"
 ```
 
 ## Հարցումները վերադարձնում են դատարկ արդյունքներ {#queries-return-empty-results}
@@ -65,7 +64,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml --output-format text le
 Դոմեյնների ստուգման համար սկսեք ամենամեծ հարցումից.
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 ## Հանդիպման կամ բլոկի հոսքերը վաղ դադարեցնում են {#event-or-block-streams-stop-early}

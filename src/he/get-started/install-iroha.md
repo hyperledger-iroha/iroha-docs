@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: 4c7c62c23166a19ccc3a6a4bb42d808038d755b8c05e87b9e2ce21fbbe31a6ac
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # להתקין Iroha 3 {#install-iroha-3}
 
 דף זה מכסה את זרימת העבודה הנוכחית להתקנה של שרשרת הכלים Iroha 3 והשניות המשתמשות במרחב עבודה `hyperledger-iroha/iroha` מקדימה.
@@ -64,7 +63,8 @@ cargo run --bin kagami -- --help
 
 זרימת ה-localnet הנוכחית בתמיכה במקור נוצרת על ידי Kagami. היא כותבת קונפיג'ים של צמתים, ארטיפקטים של גנזיס, קונפיגור לקלינט, תסריטים של עוזר, וקובץ Compose אופציונלי שמתאים לקוד המוצא:
 
-- `kagami localnet` עבור כתבי צומתי מקומיים native
+- `kagami localnet up` לרשת מקומית מנוהלת ש־Kagami מפעיל ומפקח עליה
+- `kagami localnet generate` לסקריפטים מקומיים להפעלת עמיתים ישירות במערכת
 - `kagami docker` עבור Docker Compose שנוצר מפריט רשת מקומית.
 
 המשך עם [שיגור Iroha 3](/he/get-started/launch-iroha.md).

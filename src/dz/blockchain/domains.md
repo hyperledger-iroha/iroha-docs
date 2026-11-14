@@ -1,25 +1,25 @@
 ---
 translation_locale: dz
 translation_source: /blockchain/domains.md
-translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
+translation_source_hash: 26e8efe6c728d0f819b12e7d8257777d3d4ea272f42fabf8aec727467146500f
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # ས་ཁོངས་ཚུ་ {#domains}
 
-མངའ་ཁོངས ཚུ་ `World` ནང་ཐོ་བཀོད་འབད་ཡོད་པའི་ མིང་ཡོད་པའི་ མིང་ས་ཁོངས ཨིན། ད་ལྟོའི་ Iroha 3 གནད་སྡུད དཔེ་ཚད ནང་ མངའ་ཁོངས འདི་ དེའི་ རྩ་བའི གནད་སྡུད་ས་སྟོང གིས་ཁྱད་ཚད་བཀོདཔ་ལས་ ཚད་ལྡན ངོ་རྟགས འདི་:
+མངའ་ཁོངས་ཚུ་ `World` ནང་ཐོ་བཀོད་འབད་པའི་མིང་ཅན་གྱི་མིང་ས་སྟོང་ཨིན། ད་ལྟོའི་ Iroha 3 གནད་སྡུད་དཔེ་ཚད་ནང་ མངའ་ཁོངས་ཅིག་འདི་དེའི་མ་རྩའི་གནད་སྡུད་ས་སྟོང་གིས་ཁྱད་པར་བཀོདཔ་ལས་ ཚད་ལྡན་ངོ་རྟགས་འདི།
 
 ```text
 domain.dataspace
 ```
 
-དཔེར་ན་ `payments.universal` གིས་ `payments` གནད་སྡུད་ས་སྒོ་ནང་ལུ་ `universal` མངའ་ཁོངས་ལུ་མིང་བཏགསཔ་ཨིན།
+དཔེར་ན་ `payments.universal` གིས་ `universal` གནད་སྡུད་ས་སྟོང་ནང་གི་ `payments` མངའ་ཁོངས་ལུ་མིང་བཏགསཔ་ཨིན།
 
 ## བཟོ་བཀོད་ {#structure}
 
 ཐོ་བཀོད་འབད་ཡོད་པའི་ `Domain` འདི་ནང་:
 
-- `id`: གནད་སྡུད་ས་སྟོང་-ཤེས་ཚད་ཅན་གྱི་ `DomainId` འདི་ཨིན།
+- `id`: གནད་སྡུད་ས་སྟོང་གིས་ཁྱད་པར་བཀོད་པའི་ `DomainId`།
 - `logo`: ཌོ་མེནརྟགས་མཚན་གི་དོན་ལུ་ གདམ་ཁ་རྐྱབ་མི་ `SoraFS` URI
 - `metadata`: གང་བྱུང་ལྡེ་མིག་གནས་གོང་མེ་ཊ་ཌེ་ཊ།
 - `owned_by`: མངའ་ཁོངས་ཀྱི་བདག་དབང་ཡོད་པའི་རྩིས་ཐོ། སྤྱིར་བཏང་ལུ་ཐོ་བཀོད་འབད་མི་རྩིས་ཐོ།
@@ -38,13 +38,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./payments-domain.intent.json \
   --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
-དམིགས་ཡུལ གིས་ `payments.universal`, དེའི ཨང་གྲངས གནད་སྡུད་ས་སྟོང, ཚད་ལྡན I105 ཇོ་བདག་, གླ་ཁར་བཏང་ནི་ ཐོབ་པ་ དུས་ཡུན་ དང་ ད་ལྟོ་ སྲིད་བྱུས/དངུལ༌ཕོགས ལུང༌དྲང༌ སྲུང༌རྒྱབ༌ ཚུ་ངོས་འཛིན་འབདཝ་ཨིན། འཆར་གཞི་བཟོ་མི API མཐའ་མཚམས འདི་ `POST /v1/aliases/setup/plan` ཨིནམ་ད་ ལོག་ཐོབ་མི་ འཆར༌གཞི༌ འདི་ སྡེབ་ཐག, དབང་ཚད, གནས་སྟངས དང་ ཞག་དུས་ ལུ་བཅིངས་ཡོདཔ་ཨིན། མངའ་ཁོངས བཏོན་གཏང་ནི་གིས་ ད་རུང་ [`Unregister`](/dz/blockchain/instructions.md#un-register) ལག་ལེན་འཐབ་ཨིན།
+དམིགས་དོན་གྱིས་ `payments.universal`, དེའི་ཨང་གྲངས་ཅན་གྱི་གནད་སྡུད་ས་སྟོང་ ཚད་ལྡན་ I105 ཇོ་བདག་ གླ་སྤྱོད་ཐོབ་ནིའི་དུས་ཡུན་ དང་ད་ལྟོའི་སྲིད་བྱུས/དངུལ་སྤྲོད་གོང་ཚད་སྲུང་སྐྱོབ་ཚུ་ངོས་འཛིན་འབདཝ་ཨིན། འཆར་གཞི་བཟོ་མིའི་མཐའ་མཚམས་འདི་ `POST /v1/aliases/setup/plan` ཨིན། དེ་ལས་ལོག་ཐོབ་པའི་འཆར་གཞི་འདི་ སྡེབ་ཐག་ དབང་ཚད་ གནས་སྟངས་དང་དུས་ཚད་ལུ་བཅིངས་ཡོད། མངའ་ཁོངས་བཏོན་གཏང་ནི་ལུ་ད་རུང་ [`Unregister`](/dz/blockchain/instructions.md#un-register) ལག་ལེན་འཐབཔ་ཨིན།
 
 མངའ་ཁོངས་ཅིག་གསར་བསྐྲུན་འབད་ནི་ཡང་ན་བཏོན་གཏང་ནི་ལུ་ ཤུགས་ལྡན་མཉེན་ཆས་ལག་བསྟར་མཉེན་ཆས་བདེན་དཔྱད་འབད་མི་འོག་ལུ་ འོས་འབབ་ཅན་གྱི་མངའ་ཁོངས་-འཛིན་སྐྱོང་གནང་བ་དགོཔ་ཨིན། དབང་སྤྲོད་འགོ་དཔོན་ལུ་ མངའ་ཁོངས་དེ་ལེགས་བཅོས་འབད་ནི་གི་གནང་བ་ཡོད་པའི་སྐབས་ མངའ་ཁོངས་མེ་ཊ་ཌེ་ཊ་འདི་ [`SetKeyValue` དང་ `RemoveKeyValue`](/dz/blockchain/instructions.md#setkeyvalue-removekeyvalue) དང་ཅིག་ཁར་དུས་མཐུན་བཟོ་ཚུགས།
 
@@ -57,7 +57,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
   | jq -r '.items[].id'
 ```
 
-མི་མང་ལམ་གྱི་ཐོ་གཞུང་འདི་ གནད་སྡུད་ས་སྟོང་མིང་གཞན་ཚུ་ལུ་ལོག་སབ་ཁྲ་བཟོ།
+མི་མང་གི་རྒྱུན་ལམ་ཐོ་གཞུང་འདི་གནད་སྡུད་ས་སྟོང་མིང་གཞན་ཚུ་དང་ལོག་མཐུན་སྒྲིག་འབད།
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -66,24 +66,17 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
     | @tsv'
 ```
 
-གློག་རིམ་ཅིག་གིས་ མངའ་ཁོངས་ཅིག་ཡོདཔ་ཨིན་ན་མེན་ན་ བརྟག་ཞིབ་འབད་དགོཔ་ད་ བརྡ་བཀོད་དང་པ་འདི་ལག་ལེན་འཐབ། གནད་སྡུད་ས་སྟོང་ཅིག་ མི་མང་དང་ བཀག་ཆ་འབད་ཡོདཔ་ ཡང་ན་ གཞི་རྟེན་ལམ་གྱི་རྒྱབ་ཁར་ ལུས་ཡོདཔ་ཨིན་ན་ ངེས་དཔྱད་འབད་དགོཔ་ད་ ལམ་ཐོ་ཡིག་འདི་ལག་ལེན་འཐབ།
+གློག་རིམ་ཅིག་ལུ་མངའ་ཁོངས་ཡོད་མེད་ཞིབ་དཔྱད་དགོ་པའི་སྐབས་བརྡ་བཀོད་དང་པ་ལག་ལེན་འཐབ། གནད་སྡུད་ས་སྟོང་ཅིག་དང་འབྲེལ་བའི་རྒྱུན་ལམ་ཚུ་བལྟ་ཞིབ་འབད་ནི་ལུ་རྒྱུན་ལམ་ཐོ་གཞུང་ལག་ལེན་འཐབ། དེ་ནང་ རྒྱུན་ལམ་རེའི་མི་མང་ཡང་ན་ཚད་འཛིན་ཅན་གྱི་མཐོང་ཚད་དང་ སྙིང་མའི་རྒྱུན་ལམ་དང་བསྡུར་བའི་མཉམ་འབྱུང་གནས་སྟངས་ཚུདཔ་ཨིན།
 
-མངའ་ཁོངས གཞི་སྒྲིག འདི་ གླ་ཡོན-སྤྲོད་དགོ་པའི འབྲི ཅིག་ཨིན། Taira གུ་བརྟག་དཔྱད་མ་འབད་བའི་ཧེ་མ་ [Taira གུ་ལས་ བརྟག་དཔྱད་དྲ་རྒྱ XOR ལེན་ཐངས་](/dz/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ནང་གི བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག རོགས་ལས་རིམ འདི་ `taira_faucet_claim.py` སྦེ་བསགས་བཞག་སྟེ་ མི་མང བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག ཐོག་ལས མིང་རྟགས་འགོད་མི ལུ་དངུལ་བཙུགས་ དེ་ལས་ གླ་ཡོན ཟུར་གནས་གནད་སྡུད མཐུད།
+མངའ་ཁོངས་གཞི་སྒྲིག་འདི་གླ་ཡོན་སྤྲོད་དགོ་པའི་འབྲི་བཀོད་ཅིག་ཨིན། Taira གུ་འབད་བལྟ་བའི་ཧེ་མ་ [Taira གུ་བརྟག་དཔྱད་དྲ་ལམ་གྱི་ XOR ལེན་ནི](/dz/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ནང་གི་གྲ་སྒྲིག་འབད་པའི་བརྟག་དཔྱད་དངུལ་བྱིན་པའི་ལས་རིམ་ཐོག་ལས་མིང་རྟགས་བཀོད་མི་ལུ་མ་དངུལ་བཙུགས། དེ་ལས་གླ་ཡོན་སྤྲོད་མི་གསལ་ཏོག་ཏོ་བཀོད་དེ་འཆར་གཞི་སྦྱོར། CLI གིས་མིང་རྟགས་མ་བཀོད་པའི་ཧེ་མ་གླ་ཡོན་ཏག་ཏག་སྟོནམ་ཨིན།
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
   app alias setup plan \
   --intent-file ./taira-domain.intent.json \
   --plan-file ./taira-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 

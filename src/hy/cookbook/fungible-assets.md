@@ -1,11 +1,10 @@
 ---
 translation_locale: hy
 translation_source: /cookbook/fungible-assets.md
-translation_source_hash: 3287a6bbaf06ec92ebbe9ac33a8294d4e1d232bc01fd6a5da13ddd166c620965
+translation_source_hash: 8a8fd0d29d4c1c323b457595653077564ad100f397ea2f4b059b35451b76aa44
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+claude-opus-5-5
+translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link
 ---
-
 # Գործունական ակտիվներ {#fungible-assets}
 
 ## Արդյունքը {#outcome}
@@ -163,9 +162,9 @@ iroha --config "$LOCAL_CONFIG" ledger asset definition get \
 
 ## Աղբյուրը եւ դրա հետ կապված փաստաթղթերը {#source-and-related-docs}
 
-- [Աշունների կյանքի շրջանի ինտեգրման փորձարկումները փակված commit վրա ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/asset.rs):
+- [Ակտիվի կյանքի ցիկլի ինտեգրացիոն թեստերը ամրագրված կոմիտում](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/asset.rs)
 - [Rust ակտիվների կառուցման օրինակներ փակված commit դեպքում](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/examples/tutorial.rs)
-- [Գործիքներ](/hy/blockchain/assets.md)
+- [Ակտիվներ](/hy/blockchain/assets.md)
 - [հրահանգներ](/hy/blockchain/instructions.md)
 - [Թույլտվության տոքեր](/hy/reference/permissions.md)
 - [JavaScript եւ TypeScript](/hy/guide/tutorials/javascript.md)

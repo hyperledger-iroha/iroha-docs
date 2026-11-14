@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Tokens de Permiso {#permission-tokens}
 
 Esta página enumera los tipos de token de permisos predeterminados expuestos por el modelo de datos del ejecutor actual Iroha. Para la guía conceptual sobre roles y permisos, consulte [Permisos](/es/blockchain/permissions.md).
@@ -45,7 +44,8 @@ Las comprobaciones de permisos son aplicadas por el validador de tiempo de ejecu
 | `CanModifyTriggerMetadata` |Disparador|Modificar los metadatos del activador.|
 | `CanUpgradeExecutor` |ejecutora|Actualice el ejecutor de tiempo de ejecución del software.|
 | `CanRegisterSmartContractCode` |Contrato inteligente|Registrar código de contrato inteligente.|
-| `CanUseFeeSponsor` | Nexus |Cargar Nexus tarifas a una cuenta de patrocinador especificada.|
+| `CanManageFeeSponsorProgram` | SORA Nexus | Administrar programas pertenecientes a la cuenta exacta del patrocinador. |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | Gestionar los beneficiarios de un programa de patrocinio concreto. |
 
 ## Propiedad {#ownership}
 

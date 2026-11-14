@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /blockchain/assets.md
-translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
+translation_source_hash: 4d0a3f54a0c70d08d11160b9ec66d6538aa2c49c7771a13e4a070b61a9cb3e4b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # اثاثہ جات {#assets}
 
 Iroha اثاثہ ایک اکاؤنٹ کے زیر انتظام عددی بیلنس ہے۔ ہر ٹھوس بیلنس `AssetDefinition` کی طرف اشارہ کرتا ہے ، اور تعریف بیان کرتی ہے کہ اس اثاثے کا نام کس طرح رکھا جاسکتا ہے ، پیسایا جاسکتا ہے، ظاہر کیا جاسکتا ہے اور تقسیم کیا جا سکتا ہے۔
@@ -22,7 +21,7 @@ Iroha اثاثہ ایک اکاؤنٹ کے زیر انتظام عددی بیلن�
 - `mintable`: منتاگیت کی پالیسی
 - `logo`: اختیاری `SoraFS` URI
 - `metadata`: تعمیری کلیدی قدر میٹا ڈیٹا۔
-- `balance_scope_policy`: کیا بیلنس عالمی یا ڈیٹا اسپیس محدود ہیں؟
+- `balance_scope_policy`: آیا بیلنس عالمی ہیں یا کسی ڈیٹا اسپیس تک محدود
 - `owned_by`: وہ اکاؤنٹ جس نے اس تعریف کو رجسٹر کیا یا اس کا مالک ہے۔
 - `total_quantity`: جاری کردہ کل مقدار
 - `confidential_policy`: حفاظتی اثاثوں کے آپریشنز کی پالیسی
@@ -36,7 +35,7 @@ Iroha اثاثہ ایک اکاؤنٹ کے زیر انتظام عددی بیلن�
 - `id`: ایک `AssetId`، جس میں اثاثہ کی تعریف، ہولڈر اکاؤنٹ اور اختیاری بیلنس کے دائرہ کار کو یکجا کیا جاتا ہے۔
 - `value`: ایک `Numeric` بیلنس
 
-ہولڈر اکاؤنٹ کینونیکل اور ڈومینلیس ہے۔ اثاثہ کی تعریف کو ڈیٹا اسپیس کے اہل ڈومین کے تحت پیش کیا جاسکتا ہے ، مثال کے طور پر `payments.universal`۔
+اثاثہ رکھنے والے کا اکاؤنٹ کینونیکل اور ڈومین سے آزاد ہے۔ اثاثے کی تعریف کو ڈیٹا اسپیس سے مکمل طور پر متعین ڈومین، مثلاً `payments.universal`، کے تحت پیش کیا جا سکتا ہے۔
 
 ## مائنٹیبلٹی {#mintability}
 
@@ -56,9 +55,9 @@ Iroha اثاثہ ایک اکاؤنٹ کے زیر انتظام عددی بیلن�
 `balance_scope_policy` کنٹرول کرتا ہے کہ کس طرح بیلنسوں کو بلٹ کیا جاتا ہے:
 
 - `Global`: ہر اکاؤنٹ اور اثاثہ کی تعریف کے مطابق ایک بیلنس بالٹ
-- `DataspaceRestricted`: ڈیٹا اسپیس کے سیاق و سباق کے لحاظ سے بیلنس تقسیم کیے گئے ہیں۔
+- `DataspaceRestricted`: بیلنس ڈیٹا اسپیس کے سیاق کے مطابق الگ حصوں میں تقسیم ہوتے ہیں
 
-ڈیٹا اسپیس محدود بیلنس مفید ہیں جب ایک ہی اثاثہ کی تعریف متعدد Nexus ڈیٹا اسپیس پر استعمال کی جاتی ہے لیکن بیلنس الگ تھلگ رہنا ضروری ہے۔
+ڈیٹا اسپیس تک محدود بیلنس اس وقت مفید ہیں جب اثاثے کی ایک ہی تعریف متعدد SORA Nexus ڈیٹا اسپیسز میں استعمال ہو لیکن بیلنس الگ رہنے چاہییں۔
 
 ## Taira پر آزمائیں {#try-it-on-taira}
 
@@ -89,19 +88,18 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-تینوں مثالیں پڑھنے کے قابل ہیں۔ Taira پر اثاثے بنانے ، جلانے یا منتقل کرنے کے لئے ، فوسیٹ سے فنڈ شدہ اکاؤنٹ اور [ میں محفوظ فلو کا استعمال کریں SORA Nexus ڈیٹا بیس](/ur/get-started/sora-nexus-dataspaces.md) سے رابطہ کریں.
+تینوں مثالیں صرف پڑھنے کی کارروائیاں ہیں۔ Taira پر اثاثے بنانے، جلانے یا منتقل کرنے کے لیے فوسیٹ سے فنڈ شدہ اکاؤنٹ اور [SORA Nexus ڈیٹا اسپیسز سے اتصال](/ur/get-started/sora-nexus-dataspaces.md) میں بیان کردہ حفاظتی جانچ والا عمل استعمال کریں۔
 
-فیس ادا کرنے کے لئے Taira اثاثہ مثال کے طور پر، فوسیٹ کی مدد سے بچانے [ٹیسٹ نیٹ حاصل کریں XOR پر Taira](/ur/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) کے طور `taira_faucet_claim.py`, پھر سب سے پہلے فوسیٹ اثاثہ کا دعوی کریں اور اسے لین دین گیس اثاثہ کے طور پر استعمال کریں:
+Taira پر فیس ادا کرنے والی اثاثے کی مثال کے لیے پہلے [Taira پر ٹیسٹ نیٹ XOR حاصل کریں](/ur/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) میں پیشگی تیاری والے فوسیٹ عمل سے دستخط کنندہ کا اکاؤنٹ فنڈ کریں۔ پھر `ledger asset mint`، `ledger asset burn` اور `ledger asset transfer` کمانڈز میں `--fee-payer authority` دیں؛ CLI دستخط سے پہلے Taira کے فیس والے اثاثے میں درست فیس معلوم کرتا ہے:
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
+iroha --config ./taira.client.toml --fee-payer authority \
+  ledger asset transfer \
+  --definition "<ASSET_DEFINITION_BASE58>" \
+  --account "<TAIRA_I105_ACCOUNT_ID>" \
+  --to "<RECIPIENT_I105_ACCOUNT_ID>" \
+  --quantity 1
 ```
-
-اس کے بعد `ledger asset mint`، `ledger asset burn` اور `ledger asset transfer` کمانڈ پر `--metadata ./taira.tx-metadata.json` شامل کریں.
 
 ## ہدایات {#instructions}
 

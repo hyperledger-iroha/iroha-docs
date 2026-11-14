@@ -131,7 +131,7 @@ fi
 
 ## Сығанаҡ һәм уның менән бәйле документтар {#source-and-related-docs}
 
-- [](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/queries/metadata.rs) ҡуйылған commit-та метафайлдар һорауын интеграциялау һынауҙары.
+- [Беркетелгән коммитта метамәғлүмәтте һоратып алыу интеграция һынауҙары](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/queries/metadata.rs)
 - [Python SDK транзакция төҙөүселәре ҡуйылған commit буйынса](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/README.md)
 - [Метамәғлүмәттәре](/ba/blockchain/metadata.md)
 - [Метамәғлүмәттәрҙе һәм иҫәп-хисап яҙмаһын һаҡлау варианттары](/ba/guide/configure/metadata-and-store-assets.md)

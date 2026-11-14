@@ -1,11 +1,10 @@
 ---
 translation_locale: mn
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
+translation_source_hash: 9b8347284e603e2e1c790a475c8643549ed790c3733af6b074e8607354ff71c0
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Босоо металл дээр Iroha ажиллах {#running-iroha-on-bare-metal}
 
 Сүлжээний хамтрагчдыг Docker Compose-ын дамжуулалгүйгээр шууд хост дээр ажиллуулахыг хүсэж байвал энэ ажлын урсгалыг ашиглана уу. Одоогийн эх сурвалжийн мод нь тохирох блокчэйн genesis, сүлжээний хамтрагчдын тохиргоо, клиент тохиргоо, эхлэх/зогсоох скриптийг бичдэг Kagami генераторуудыг өгдөг.
@@ -32,7 +31,7 @@ cargo build --release \
 Дөрвөн хөрштэй Iroha 3 localnet үүсгээрэй:
 
 ```bash
-target/release/kagami localnet --peers 4 --out-dir ./localnet
+target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Гаралт директор нь үүсгэсэн `genesis.json`, `genesis.signed.nrt`, сүлжээний түнш `config.toml` файлууд, `client.toml`, туслах скриптүүд, болон тухайн багцад зориулсан яг командуудтай үүсгэгдсэн `README.md`-ийг агуулна.
@@ -52,7 +51,7 @@ target/release/kagami localnet --peers 4 --out-dir ./localnet
 Үүсгэсэн клиент тохиргоог ашигла:
 
 ```bash
-target/release/iroha --config ./localnet/client.toml ledger domain list all
+target/release/iroha --config ./localnet/client.toml ledger domain list --all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 

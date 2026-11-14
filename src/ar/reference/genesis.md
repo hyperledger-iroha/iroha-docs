@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /reference/genesis.md
-translation_source_hash: 8215489720e1bc2fc3b7c22c4cb2f8f7b1f0f15d1df4a4f596ee3caa2c6b7829
+translation_source_hash: 340921f59a6f8788f559190d520f046ea2473d65154f57a1c54212840c027bc0
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # مرجع بدء سلسلة الكتل {#genesis-reference}
 
 في سير العمل الحالي Iroha 3، يصف بيان تقني `genesis.json` أولى المعاملات والمعايير التي سيتم تطبيقها عند بدء الشبكة.
@@ -17,11 +16,13 @@ translation_engine: bing-translator-llm
 يمكن لوثيقة البداية التقنية للبلوكشين أن تحدد:
 
 - `chain` لمعرف السلسلة
+- `chain_discriminant` لبادئة شبكة I105 المستخدمة في ترميز القيم الحرفية للحسابات داخل البيان
 - `executor` لمسار بايت كود ترقية منفذ اختياري
 - `ivm_dir` للمكتبات IVM المستخدمة بواسطة المشغلات والترقيات
 - `consensus_mode` للوضع الأولي المعلن عنه بواسطة البيان الفني
 - `transactions` لتحديثات المعلمات المطلوبة، التعليمات، المشغلات، والطوبولوجيا
-- `crypto` لعرض بيانات التشفير الأولية في نقطة زمنية محددة
+- `sumeragi_context` لمعاملات سياق ارتفاع Sumeragi الموقّعة
+- `crypto_admission_policy` لخوارزميات التوقيع والتحكم المحددة التي تقبلها السلسلة والمذكورة في `allowed_algorithms`
 
 داخل `transactions`، تربط مدخلات الطوبولوجيا معرفات أقران الشبكة و PoPs معًا:
 
@@ -34,16 +35,17 @@ translation_engine: bing-translator-llm
 
 ## إنشاء بيان تقني {#generate-a-manifest}
 
-استخدم Kagami لإنشاء قالب:
+استخدم Kagami لتوليد قالب. كرر `--allowed-signing` لكل خوارزمية مقبولة بالترتيب المعياري التصاعدي؛ ولا يضيف Kagami الخوارزميات التي لم تذكرها:
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
   --consensus-mode npos \
   --ivm-dir defaults \
-  --genesis-public-key <PUBLIC_KEY> > genesis.json
+  --genesis-public-key <PUBLIC_KEY> \
+  --allowed-signing ed25519 > genesis.json
 ```
 
-بالنسبة لمساحة البيانات العامة SORA Nexus، `npos` هو وضع الإجماع المتوقع. قد تستخدم منشآت Iroha 3 الأخرى وضع الإذن أو NPoS اعتمادًا على الملف الشخصي المستهدف.
+لمساحة بيانات SORA Nexus العامة، يكون `npos` نمط الإجماع المتوقع. قد تستخدم عمليات نشر Iroha 3 الأخرى النمط المقيّد بالصلاحيات أو NPoS وفقًا لملف الإعداد المستهدف.
 
 ## وقع البيان الفني {#sign-the-manifest}
 
@@ -59,12 +61,13 @@ cargo run -p iroha_kagami -- genesis sign genesis.json \
 
 ## تكوين `iroha3d` {#configure-iroha3d}
 
-وجّه الخدمة الخفية إلى كتلة الجينيسيس الموقعة في البلوكشين:
+وجّه خدمة الخلفية إلى كتلة التكوين الأولي الموقّعة وإلى الملف الذي يثبّت تجزئتها المتوقعة. يكتب `kagami genesis sign --expected-hash-out` هذا الملف، وتطلبه العقدة عند البدء من جديد وعند إعادة التشغيل:
 
 ```toml
 [genesis]
 file = "genesis.signed.nrt"
 public_key = "<PUBLIC_KEY>"
+expected_hash_file = "genesis.expected_hash"
 ```
 
 ## أدوات ذات صلة {#related-tools}
@@ -72,7 +75,7 @@ public_key = "<PUBLIC_KEY>"
 - `kagami genesis validate`
 - `kagami genesis normalize`
 - `kagami genesis embed-pop`
-- `kagami localnet`
+- `kagami localnet generate`
 - `cargo xtask kagami-profiles`
 
 للتنفيذ الخاص بالمولّد وتفاصيل الأوامر، انظر [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami/README.md).

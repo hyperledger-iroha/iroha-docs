@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: ab0496d2cd36056dbc5486cd1ea288606476862290cc544e7afcf63a1641dd6d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # פתרון בעיות בהסדרות {#troubleshooting-configuration-issues}
 
 חלק זה מציע עצות פתרון בעיות עבור הגדרת Iroha 3. ודא שאתה [ בדק את המפתחות](./overview.md#check-the-keys) קודם כל, כי זה מקור הבעיה הנפוץ ביותר ב Iroha.
@@ -25,11 +24,11 @@ translation_engine: nllb-200-ct2
 הדרך לפתור בעיה כזו תלויה בשימוש Iroha. אם זהו דמו בסיסי ואינך צריך לשמור נתוני צמתים, לשחזר רשת מקומית מתאימה או חבילה של Docker Compose עם Kagami:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
 ```
 
-לאחר מכן להסיר את מצב המכולה הישנה ולהתחיל מחדש מהמסמכים `genesis.signed.nrt`, peer `config.toml`, ו `client.toml` המתחדשים.
+לאחר מכן הסירו את המצב הישן של המכולה והפעילו מחדש באמצעות `genesis.signed.nrt`, קובצי `config.toml` של העמיתים ו־`client.toml` שנוצרו מחדש.
 
 אם אתה צריך לשחזר את הנתונים של הדגם Iroha, עשה את הדברים הבאים:
 
@@ -40,7 +39,7 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 
 ::: info
 
-אין נתיב אוטומטי כללי להחלפת Genesis ברשת חיה. התייחסו לכך כהגירה מתואמת: שמרו את המצב הישן, העלו עמיתים תואמים והעבירו validators לתצורה החדשה רק לאחר שהמפעילים מסכימים על תוכנית ההגירה.
+אין נתיב אוטומטי כללי לשכתוב לצורך החלפת בראשית ברשת חיה. התייחסו לכך כהגירה מתואמת: שמרו את המצב הישן, העלו עמיתים תואמים והעבירו מאמתים לתצורה החדשה רק לאחר שהמפעילים מסכימים על תוכנית ההגירה.
 
 :::
 

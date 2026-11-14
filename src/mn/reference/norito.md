@@ -1,9 +1,9 @@
 ---
 translation_locale: mn
 translation_source: /reference/norito.md
-translation_source_hash: 810f4378316f4717dee1be4aeffb07e27e81e47735e8031edff775818a48bf48
+translation_source_hash: 0446444ac147b80efcf1d0d07610ad7c81e6f02fb308fe032b8f213afe15bc74
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-supplemental-naming-link
 ---
 # Norito {#norito}
 
@@ -20,7 +20,7 @@ Norito -ийг ашиглах нь өгөгдлийн нэгдсэн тохир�
 |Torii товчлосон хариулт |Бинэрийн хариуг түрээслэхэд дэмждэг эцсийн цэгүүд `Accept: application/x-norito` ашиглана. |
 |SDKs | Rust, Python, JavaScript, Kotlin/Java, Swift, болон Android үйлчлүүлэгчид ашигладаг Norito гарын үсэгт байтын оронд бүтээн байгуулагч эсвэл холбогч. |
 |Kura хадгалах |Блок нөөцийн ачаалал, сэргээлт дутагдал, жагсаалт, commit тэмдэгүүд Norito -ийн багцтай мэдээллээр хадгалагдаж байна. |
-|Manifest-ууд |Nexus, data availability, SoraFS, streaming болон app-facing manifest-д гарын үсэг зурах эсвэл hash хийх шаардлагатай үед Norito ашиглана. |
+|Manifest-ууд |SORA Nexus, data availability, SoraFS, streaming болон app-facing manifest-д гарын үсэг зурах эсвэл hash хийх шаардлагатай үед Norito ашиглана. |
 |Урсгал |Norito Streaming нь Norito manifest, сегментийн толгой, хяналтын frame болон нийцлийн туршилтын өгөгдлийг ашиглана. |
 
 Norito бол ухаалаг гэрээний хэл биш. Энэ нь гүйлгээ, гэрээний дуудлага, манифест болон API ашиглах ачааллыг дамжуулах тодорхойлогч хуудас ба кодэк юм.

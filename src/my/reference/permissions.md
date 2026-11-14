@@ -1,23 +1,22 @@
 ---
 translation_locale: my
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: a21f947225ff9ac1a353a5a15e8807788e362f3bf0ddb9cb106df83524917532
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # ခွင့်ပြုချက် လက်မှတ်များ {#permission-tokens}
 
 ဤစာမျက်နှာတွင် လက်ရှိ Iroha အကောင်အထည်ဖော်သူ ဒေတာပုံစံမှ ဖော်ပြထားသော အလိုလျောက် ခွင့်ပြုချက် အမှတ်တံဆိပ်အမျိုးအစားများကို စာရင်းပေးထားသည်။ အခန်းကဏ္ဍများနှင့် ခွင့်ပြုချက်တွေဆိုင်ရာ စိတ်ကူး လမ်းညွှန်စာအုပ်အတွက် [ခွင့်ပြုချက်များ](/my/blockchain/permissions.md) ကိုကြည့်ပါ။
 
 ခွင့်ပြုချက် စစ်ဆေးမှုများကို တက်ကြွသော ဆော့ဝဲ အကောင်အထည်ဖော်ရေး ပတ်ဝန်းကျင် အတည်ပြုသူက လုပ်ဆောင်သည်။ အောက်ပါ token အမျိုးအစားအမည်များသည် စံသတ်မှတ်ထားသည့် မူဝါဒမျက်နှာပြင်ကိုဖော်ပြသည်၊ သို့သော် ကွန်ရက်တစ်ခုသည် အကောင်အ ထည်ဖော်သူကို အဆင့်မြှင့်ခြင်းဖြင့် ဆော့ဝိုင်း အကောင်အက်ည်ဖော်ရေးပတ်ဝန်းကျင် အတည်ရှိမှုကို ပြုပြင်နိုင်သည်။
 
-## Default Tokens များ {#default-tokens}
+## ပုံမှန်တိုကင်များ {#default-tokens}
 
 |ခွင့်ပြုချက် လက်မှတ်|ကဏ္ဍ |လုပ်ဆောင်ချက်|
 | --- | --- | --- |
-|`CanManagePeers` |Network peer |Network peers တွေကို မှတ်ပုံတင်၊ မမှတ်ပုံတင် (သို့) အခြားနည်းဖြင့် စီမံခန့်ခွဲပါ။ |
-|`CanManageLaneRelayEmergency` |Network peer |အရေးပေါ်လမ်းကြောင်းဆက်သွယ်မှု ထိန်းချုပ်မှုကို စီမံပါ။ |
+| `CanManagePeers` | နိုဒ် | နိုဒ်များကို မှတ်ပုံတင်ခြင်း၊ မှတ်ပုံတင်ပယ်ဖျက်ခြင်း သို့မဟုတ် အခြားနည်းဖြင့် စီမံခန့်ခွဲခြင်း။ |
+| `CanManageLaneRelayEmergency` | နိုဒ် | လမ်းကြောင်းထပ်ဆင့်ပို့ဆောင်မှုဆိုင်ရာ အရေးပေါ်ထိန်းချုပ်မှုများကို စီမံခြင်း။ |
 |`CanRegisterDomain` |Domain ကို|Domain တစ်ခု မှတ်ပုံတင်ပါ။|
 |`CanUnregisterDomain` |Domain ကို|Domain တစ်ခုကို မှတ်ပုံတင်မထားပါ။ |
 |`CanModifyDomainMetadata` |Domain ကို|Domain metadata ကို ပြင်ဆင်ပါ။ |
@@ -36,20 +35,21 @@ translation_engine: nllb-200-ct2
 |`CanUnregisterNft` |NFT |NFT စာရင်းကို ဖျက်သိမ်းပါ။ |
 |`CanTransferNft` |NFT |NFT ကို လွှဲပြောင်းပါ။ |
 |`CanModifyNftMetadata` |NFT |NFT metadata ကို ပြင်ဆင်ပါ။ |
-|`CanSetParameters` |ပမာဏများ |Chain ပေါ်က Configuration Parameters ကို သတ်မှတ်ပါ။ |
+| `CanSetParameters` | ပါရာမီတာများ | ဘလော့ခ်ချိန်းပေါ်ရှိ ပြင်ဆင်သတ်မှတ်မှုပါရာမီတာများကို သတ်မှတ်ခြင်း။ |
 |`CanManageRoles` |ကဏ္ဍများ |မှတ်ပုံတင်၊ မမှတ်ပုံတင်၊ ပေးအပ်ခြင်း သို့မဟုတ် ရုပ်သိမ်းခြင်း။ |
 |`CanRegisterTrigger` |Trigger ကို|trigger တစ်ခုကို မှတ်တမ်းတင်ပါ။|
 |`CanExecuteTrigger` |Trigger ကို|ထိုးထည့်လိုက်ပါ|
 |`CanUnregisterTrigger` |Trigger ကို|trigger ကို unregister လုပ်ပါ။ |
-|`CanModifyTrigger` |Trigger ကို|Trigger Configuration ကို ပြုပြင်ပါ။|
+| `CanModifyTrigger` | trigger | trigger ပြင်ဆင်သတ်မှတ်မှုကို ပြောင်းလဲခြင်း။ |
 |`CanModifyTriggerMetadata` |Trigger ကို|trigger metadata ကို ပြင်ပါ။ |
 |`CanUpgradeExecutor` |အမိန့်ချမှတ်သူ |ဆော့ဝဲ အကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင် အပြီးသတ်သူကို အဆင့်မြှင့်တင်ပါ။ |
-|`CanRegisterSmartContractCode` |အသိဉာဏ်ရှိတဲ့ စာချုပ်|Smart Contract Code ကို မှတ်ပုံတင်ပါ။|
-|`CanUseFeeSponsor` |Nexus |Nexus အခွန်ကို သတ်မှတ်ထားသော ပံ့ပိုးသူအကောင့်သို့ ချပေးပါ။ |
+| `CanRegisterSmartContractCode` | စမတ်စာချုပ် | စမတ်စာချုပ်ကုဒ်ကို မှတ်ပုံတင်ခြင်း။ |
+| `CanManageFeeSponsorProgram` | SORA Nexus | အတိအကျ သတ်မှတ်ထားသော sponsor အကောင့် ပိုင်ဆိုင်သည့် အစီအစဉ်များကို စီမံခန့်ခွဲသည်။ |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | အတိအကျ သတ်မှတ်ထားသော sponsor အစီအစဉ်တစ်ခု၏ အကျိုးခံစားသူများကို စီမံခန့်ခွဲသည်။ |
 
 ## ပိုင်ဆိုင်မှု {#ownership}
 
-Owner-sensitive permission tokens များသည် လက်ရှိဒေတာမော်ဒယ်တွင်အသုံးပြုသော single protocol-standard object ID များကို ရည်ညွှန်းရန်လိုအပ်သည်။ ဥပမာ, account permissions များသည် single  သို့ ရည်ညွှန်းသည်။ protocol-standard domainless account ID များ၊ domain permissions တွေက `domain.dataspace` domain ID များကို ရည်ညွှန်းပြီး asset permissions တွေဟာ single protocol standard asset definition (သို့) asset ID ကို ရည်ညွှန်းပါတယ်။
+ပိုင်ရှင်အခြေပြု ခွင့်ပြုချက်တိုကင်များသည် လက်ရှိဒေတာမော်ဒယ်၌ အသုံးပြုသော အရာဝတ္ထု၏ စံ ID များကို ရည်ညွှန်းရမည်။ ဥပမာ၊ အကောင့်ခွင့်ပြုချက်များသည် ဒိုမိန်းမပါသော စံအကောင့် ID များကို ရည်ညွှန်းပြီး၊ ဒိုမိန်းခွင့်ပြုချက်များသည် `domain.dataspace` ဒိုမိန်း ID များကို ရည်ညွှန်းကာ၊ ပိုင်ဆိုင်မှုခွင့်ပြုချက်များသည် စံပိုင်ဆိုင်မှုအဓိပ္ပါယ်ဖွင့်ဆိုချက် သို့မဟုတ် ပိုင်ဆိုင်မှု ID များကို ရည်ညွှန်းသည်။
 
 ခွင့်ပြုချက်အမှားနဲ့ ငွေပေးချေမှု ကျရှုံးတဲ့အခါ နှစ်ဖက်စလုံးကို စစ်ဆေးပါ။
 

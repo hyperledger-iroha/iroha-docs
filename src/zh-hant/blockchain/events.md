@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/events.md
-translation_source_hash: 16b8cacc9bdf156d4b1e1a93b720085adcabb0002a34b9dc564a9926f573de63
+translation_source_hash: aad93f1981a5b470966090b5e06ec07178738b15f1d870097947682b19f99595
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # 事件 {#events}
 
 在區塊鏈中發生某些事情時發出事件,例如建立新的帳戶或提交一個區塊. 有不同的型別的事件:
@@ -45,7 +44,7 @@ curl -fsS -N https://taira.sora.org/v1/events/sse
 
 ## 資料事件 {#data-events}
 
-當帳本資料發生相關變更時，系統會發出資料事件，例如對等節點、網域、帳戶、資產、資產定義、NFTs、觸發器、角色、鏈上設定、執行器狀態、證明、機密資產、橋接或 SORA/Nexus 特有物件的變更。這些事件類型用於[資料事件篩選器](./filters.md#data-event-filters)。
+當帳本資料發生相關變更時，系統會發出資料事件，例如對等節點、網域、帳戶、資產、資產定義、NFTs、觸發器、角色、鏈上設定、執行器狀態、證明、機密資產、橋接或 SORA Nexus 特有物件的變更。這些事件類型用於[資料事件篩選器](./filters.md#data-event-filters)。
 
 ## 時間事件 {#time-events}
 

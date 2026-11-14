@@ -1,11 +1,10 @@
 ---
 translation_locale: kk
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: ab0496d2cd36056dbc5486cd1ea288606476862290cc544e7afcf63a1641dd6d
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Конфигурация мәселелерін түзету {#troubleshooting-configuration-issues}
 
 Бұл бөлімде Iroha 3 конфигурациясы үшін ақауды түзету бойынша кеңестер ұсынылған. Алдымен [пернелерді тексерді](./overview.md#check-the-keys) орындағаныңызға көз жеткізіңіз, өйткені бұл Iroha-тегі мәселелердің ең жиі кездесетін себебі болып табылады.
@@ -25,7 +24,7 @@ Iroha бағдарламасының Docker Compose нұсқасын пайда�
 Мұндай мәселені шешу тәсілі Iroha пайдалануына байланысты. Егер бұл негізгі демонстрация болса және сізге желілік әріптес деректерін сақтау қажет болмаса, сәйкес localnet немесе Docker Compose пакетін Kagami арқылы қайта жасау керек:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
 ```
 

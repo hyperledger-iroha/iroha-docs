@@ -8,7 +8,7 @@ translation_engine: nllb-200-ct2
 
 # မီတာဒေတာ {#metadata}
 
-Metadata သည် blockchain ledger အရာဝတ္ထုများနှင့် ချိတ်ဆက်ထားသည့် စစ်ဆေးသော key-value မြေပုံတစ်ခုဖြစ်သည်။ Key များသည် `Name` တန်ဖိုးများဖြစ်ပြီးတန်ဖိုးများသည် JSON (`Json`) အသုံးဝင်ဝန်ဆောင်မှုဖြစ်သည်။
+Metadata သည် လယ်ဂျာအရာဝတ္ထုများနှင့် တွဲထားသော စစ်ဆေးပြီး ကီး-တန်ဖိုး အတွဲများ၏ မြေပုံဖြစ်သည်။ ကီးများသည် `Name` တန်ဖိုးများဖြစ်ပြီး တွဲဖက်တန်ဖိုးများသည် JSON (`Json`) payload များဖြစ်သည်။
 
 အောက်ပါ အရာဝတ္ထုတွေက metadata ကို သယ်ဆောင်နိုင်ပါတယ်
 
@@ -23,7 +23,7 @@ Metadata သည် blockchain ledger အရာဝတ္ထုများနှ�
 
 blockchain ledger state ထဲမှာ ပါဝင်တဲ့ သေးငယ်တဲ့ deskriptive (သို့) indexing field တွေအတွက် metadata ကိုသုံးပါ။ ကြီးမားတဲ့ payloads တွေကို WSV အပြင်မှာ သိမ်းဆည်းထားပြီး cryptographic digest value, URI သို့မဟုတ် SoraFS path ဖြင့် ရည်ညွှန်းသင့်ပါတယ်။
 
-မီတာဒေတာ၊ အရင်းအမြစ်များ NFTs၊ RWAs သို့မဟုတ် ချိတ်ဆက်မှုအပြင် သိုလှောင်ခြင်းများကို ရွေးချယ်ရန် လမ်းညွှန်ချက်များအတွက် [Metadata နှင့် blockchain ledger Storage Choices များ](/my/guide/configure/metadata-and-store-assets.md) ကို ကြည့်ပါ။
+Metadata၊ ပိုင်ဆိုင်မှုများ၊ NFTs၊ RWAs သို့မဟုတ် ချိန်းပြင်ပသိုလှောင်မှုကို ရွေးချယ်ရန် [Metadata နှင့် လယ်ဂျာ သိုလှောင်မှု ရွေးချယ်စရာများ](/my/guide/configure/metadata-and-store-assets.md) ကို ကြည့်ပါ။
 
 ## Taira တွင် ဤအလုပ်ခွင်ကို run လုပ်ပါ။ {#try-it-on-taira}
 
@@ -55,11 +55,11 @@ Metadata ကို Iroha ညွှန်ကြားမှု လုပ်ဆေ
 - [`SetKeyValue`](/my/blockchain/instructions.md#setkeyvalue-removekeyvalue) သော့ကိုထည့်သွင်းခြင်း သို့မဟုတ် အစားထိုးခြင်း
 - [`RemoveKeyValue`](/my/blockchain/instructions.md#setkeyvalue-removekeyvalue) သော့ကို ဖယ်ရှားတယ်။
 
-Transaction ကိုတင်သွင်းတဲ့ Authorization Principal မှာ Active Software Execution Environment validator က တောင်းဆိုထားတဲ့ ခွင့်ပြုချက်ရှိဖို့လိုပါတယ်။ Default permission surface အတွက် [ခွင့်ပြုချက် လက်မှတ်များ](/my/reference/permissions.md) ကို ကြည့်ပါ။
+Transaction တင်သွင်းသည့် authority အကောင့်တွင် လက်ရှိ runtime ၏ စစ်ဆေးသူ က လိုအပ်သည့် ခွင့်ပြုချက် ရှိရမည်။ ပုံမှန်ခွင့်ပြုချက်များကို [ခွင့်ပြုချက် Token များ](/my/reference/permissions.md) တွင် ကြည့်ပါ။
 
 ## ဖြစ်ရပ်များ {#events}
 
-ဒေတာဖြစ်ရပ်များကို metadata ပြောင်းလဲတဲ့အခါ ထုတ်လွှင့်ပါတယ်။ ယေဘုယျဖြစ်ရပ် အကျိုးဆောင်ဝန်ပိုးက `MetadataChanged<Id>`:
+Metadata ပြောင်းလဲသည့်အခါ ဒေတာဖြစ်ရပ်များ ထုတ်ပေးသည်။ အထွေထွေ ဖြစ်ရပ် payload သည် `MetadataChanged<Id>` ဖြစ်သည်။
 
 ```mermaid
 classDiagram
@@ -83,8 +83,8 @@ MetadataChanged --> DomainMetadataChanged
 
 [ဒေတာဖြစ်ရပ် စစ်ဆေးချက်များ](/my/blockchain/filters.md#data-event-filters) ကို အသုံးပြုပြီး ပေါင်းစပ်မှုအတွက် အရေးပါတဲ့ Entity Type သို့မဟုတ် Object ID အတွက် metadata ဖြစ်ရပ်တွေကိုသာ လက်မှတ်ထိုးပါ။
 
-## မေးခွန်းများ {#queries}
+## Query များ {#queries}
 
-metadata ကို query object ရဲ့အစိတ်အပိုင်းအဖြစ်ပြန်ပေးပါတယ်။ ဥပမာ, use [`FindAccountById`](/my/reference/queries.md#accounts-and-permissions), [`FindDomainById`](/my/reference/queries.md#domains-and-peers), ဒါမှမဟုတ် [`FindAssetDefinitionById`](/my/reference/queries.md#assets-nfts-and-rwas). အသုံးပြုခြင်း [`FindNfts`](/my/reference/queries.md#assets-nfts-and-rwas) ဒါမှမဟုတ် [`FindNftsByAccountId`](/my/reference/queries.md#assets-nfts-and-rwas) အတွက် NFTs, နှင့် [`FindRwas`](/my/reference/queries.md#assets-nfts-and-rwas) အတွက် RWA object ရဲ့ metadata field ကို ဖတ်ပါ။ NFT မေးမြန်းချက် တုံ့ပြန်မှုတွေက NFT `content` မြေပုံက မှတ်တမ်း metadata အဖြစ်ပါ။
+Metadata ကို query ဖြင့် ရယူသော အရာဝတ္ထု၏ အစိတ်အပိုင်းအဖြစ် ပြန်ပေးသည်။ ဥပမာ [`FindAccountById`](/my/reference/queries.md#accounts-and-permissions)၊ [`FindDomainById`](/my/reference/queries.md#domains-and-peers) သို့မဟုတ် [`FindAssetDefinitionById`](/my/reference/queries.md#assets-nfts-and-rwas) ကို သုံးပါ။ NFTs များအတွက် [`FindNfts`](/my/reference/queries.md#assets-nfts-and-rwas) သို့မဟုတ် [`FindNftsByAccountId`](/my/reference/queries.md#assets-nfts-and-rwas) ကို သုံးပြီး RWA အစုများအတွက် [`FindRwas`](/my/reference/queries.md#assets-nfts-and-rwas) ကို သုံးပါ။ ထို့နောက် အရာဝတ္ထု၏ metadata field ကို ဖတ်ပါ။ NFT query တုံ့ပြန်ချက်များတွင် NFT ၏ `content` မြေပုံကို မှတ်တမ်း metadata အဖြစ် ဖော်ပြသည်။
 
-Metadata key တွေဟာ blockchain ledger state ရဲ့ အစိတ်အပိုင်းဖြစ်တာကြောင့် ဒါတွေကို တည်ငြိမ်အောင် ထိန်းထားပြီး JSON တန်ဖိုးက ဒီဗားရှင်းကို တိကျစွာ သယ်ဆောင်နိုင်တဲ့အခါ application-specific version ကို encoding လုပ်ခြင်းကနေ key name ထဲသို့ churn ရှောင်ရှားပါ။
+Metadata ကီးများသည် လယ်ဂျာအခြေအနေ၏ အစိတ်အပိုင်း ဖြစ်သောကြောင့် တည်ငြိမ်အောင် ထားပါ။ JSON တန်ဖိုးတွင် ဗားရှင်းကို အတိအလင်း ထည့်နိုင်ပါက အက်ပ်အလိုက် မကြာခဏ ပြောင်းသည့် ဗားရှင်းကို ကီးအမည်ထဲ မထည့်ပါနှင့်။
