@@ -5,7 +5,6 @@ translation_source_hash: 5928eaf7e65023ad1867ca8d125efa61da6d8fe505b91e71b2c2121
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # თავსებადობის მატრიცა {#compatibility-matrix}
 
 თავსებადობის მატრიცის მიხედვით,SDK სცენარების გაფართოება მიმდინარე წლისთვის Iroha 3 დოკუმენტების ნაკრები. ჩვეულებრივ, გვერდი ატვირთავს შეკრული წერტილის დროში მონაცემთა ნახვა გენერირებულია დამაგრებული [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) რევიზია.

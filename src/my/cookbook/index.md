@@ -5,7 +5,6 @@ translation_source_hash: 9e13bcd28ad8ae356314041828f73af0ed25636af82ff4ea2948268
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
-
 # Iroha 3 လျှောက်လွှာစာအုပ် {#iroha-3-application-cookbook}
 
 ဆန့်ကျင်ပြီး တည်ဆောက်ပါ။ Iroha 3 အသေးစား၊ စစ်ဆေးလို့ရတဲ့ ချက်ပြုတ်ချက်တွေနဲ့ Taira testnet နဲ့ keep Minamoto စာဖတ်လို့သာ ရနိုင်တယ်ဆိုတဲ့အချက်အလက်တိုင်းမှာ အများပြည်သူ ဖတ်လို့ရလားဆိုတာ ဖော်ပြထားတယ်။ ပုံမှန် ငွေကြေးထောက်ပံ့ထားတဲ့ အကောင့် စာရင်း (သို့) ခွင့်ပြုချက် ကန့်သတ်ထားတဲ့ လုပ်ဆောင်မှုပါ။ Commands တွေမှာ Current ကိုသုံးပါတယ်။ I105 အကောင့် ID တွေ၊ ရှင်းလင်းတဲ့ အခွန် ရွေးချယ်မှု နဲ့ Iroha ပရိုတိုကောလ် အပြီးသတ်ခြင်း [`c8c872461e92f04325c350cdd952f4276e96f9dc`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc).

@@ -5,7 +5,6 @@ translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Iroha баптау {#configuring-iroha}
 
 Жергілікті желі серіктес параметрлері мына жерде орнатылады TOML файлдар. Бұл тізбелік конфигурация арқылы өзгертілгеннен өзгеше [`SetParameter`](/kk/blockchain/instructions.md#setparameter) нұсқаулар. Өндірістік мінез-құлық конфигурацияда көрсетілуі тиіс файл немесе тізбек параметрі; ортаның айнымалылары функциялық шектеулер емес.

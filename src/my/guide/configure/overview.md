@@ -5,7 +5,6 @@ translation_source_hash: 24eae3295459781d774369521241f1c2da5b24fe51eb8a2b086911b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # ဖွဲ့စည်းခြင်းနှင့် စီမံခန့်ခွဲမှု {#configuration-and-management}
 
 Iroha ဖွဲ့စည်းပုံမှာ ခိုင်မာတဲ့ အလွှာနှစ်ခုရှိပါတယ်။
@@ -21,6 +20,6 @@ Production အပြုအမူသည် ဤပြင်ဆင်သတ်မ�
 
 - [blockchain ပေါ်ထွန်းမှု](/my/guide/configure/genesis.md)
 - [Client ဖွဲ့စည်းမှု](/my/guide/configure/client-configuration.md)
-- [ကွန်ရက်ဖြန့်ချိတပ်ဆင်မှုအတွက် ကီးများ](/my/guide/configure/keys-for-network-deployment.md)
+- [ကွန်ရက် deployment အတွက် ကီးများ](/my/guide/configure/keys-for-network-deployment.md)
 - [ပိုးမွှားနဲ့ ပြေးနေတာပါ။](/my/guide/advanced/running-iroha-on-bare-metal.md)
 - [peer ပြင်ဆင်သတ်မှတ်မှု အကိုးအကား](/my/reference/peer-config/index.md)

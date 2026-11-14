@@ -5,7 +5,6 @@ translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # პრობლემების აღმოფხვრა ინსტალაციის დროს {#troubleshooting-installation-issues}
 
 ამ განყოფილებაში მოცემულია რჩევები Iroha 3 დამონტაჟებისათვის. თუ პრობლემა, რომელიც თქვენ განიცდიათ არ არის აღწერილი აქ, დაგვიკავშირდით [ტელეგრამი](https://t.me/hyperledgeriroha).

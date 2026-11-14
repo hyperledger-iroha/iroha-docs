@@ -5,7 +5,6 @@ translation_source_hash: 48d6670f100c7c6368fa03f163c9ff9e0322d36e51c22f89562b23b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # کوڈ کا ٹکڑا {#code-snippets}
 
 جنریٹڈ ٹکڑے ٹکڑے کو Iroha ترمیم سے مثالیں جو ان کو پیدا کرنے والے کوڈ، ترتیب اور اسکیموں سے منسلک رکھی جاتی ہیں.

@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /reference/binaries.md
-translation_source_hash: 75848623e735abc80326f9ebda6f74ab438b67eaeddeacdd4d8c5509856a999e
+translation_source_hash: 887291d6ef0d9a919b076e4b632ee1cec7a2c289b284b40346ed4b2a0f4a41b3
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -49,27 +49,7 @@ cargo run --bin kagami -- --help
 
 ## Docker ფოტო {#docker-image}
 
-ძირითადი სამუშაო სივრცე იყენებს `kagami localnet generate`-სა და `kagami docker`-ს სამუშაო ასლის კოდთან შესაბამისი Docker Compose ფაილების შესაქმნელად. ამ გენერირებულ ფაილებთან შეიძლება `hyperledger/iroha:dev` იმიჯის გამოყენება.
-
-გაუშვით CLI კონტეინერში:
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-გაშვება Kagami კონტეინერში:
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-ქსელის კვანძის სტარტაპისთვის, შეიქმნას localnet და შეადგინეთ ფაილი ჯერ:
-
-```bash
-cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Docker-ში ერთი და იმავე რევიზიის ბინარული ფაილებით ოთხი ვალიდატორის ასაწყობად და გასაშვებად მიჰყევით სახელმძღვანელოს [გაშვება Iroha 3](/ka/get-started/launch-iroha.md).
 
 ## რომელი ბინარი უნდა გამოვიყენო? {#which-binary-should-i-use}
 

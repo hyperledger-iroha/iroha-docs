@@ -5,7 +5,6 @@ translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # የመጫን ችግሮችን መላ መፈለግ {#troubleshooting-installation-issues}
 
 ይህ ክፍል ለ Iroha 3 ጭነት የመላ መፈለጊያ ምክሮችን ይሰጣል። እያጋጠመዎት ያለው ችግር እዚህ ካልተገለጸ፣ በ[ቴሌግራም](https://t.me/hyperledgeriroha) በኩል ያግኙን።

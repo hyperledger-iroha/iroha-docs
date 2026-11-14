@@ -9,7 +9,7 @@ aside: false
 pageClass: torii-api-console-page
 ---
 
-# Torii API ကွန်ဆိုးလ် {#torii-api-console}
+# Torii API ထိန်းချုပ်မျက်နှာပြင် {#torii-api-console}
 
 လမ်းကြောင်းများကို စစ်ဆေးရန်၊ စမ်းသပ်မှုတောင်းဆိုချက်များ ပို့ရန်၊ curl အမိန့်များကို ကူးယူရန်နှင့် ဖောက်သည်ကုဒ်ကို ထုတ်လုပ်ရန် ပြေးဆွဲနေသော Torii API အဆုံးမှတ်မှ တိုက်ရိုက် OpenAPI စာရွက်စာတမ်းကို အသုံးပြုပါ။
 

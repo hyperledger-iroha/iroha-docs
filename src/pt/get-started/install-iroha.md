@@ -1,13 +1,15 @@
 ---
 translation_locale: pt
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 4c7c62c23166a19ccc3a6a4bb42d808038d755b8c05e87b9e2ce21fbbe31a6ac
+translation_source_hash: cef11a7036dcb5257647edf0c48ea1b9c144822e029df936b422998f46187b41
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
 # Instalar Iroha 3 {#install-iroha-3}
 
 Esta página aborda o fluxo de instalação atual para o toolchain e binários Iroha 3 usando o espaço de trabalho upstream `hyperledger-iroha/iroha`.
+
+Para uma instalação nativa, siga as instruções de Rust abaixo. Para executar quatro validadores com Docker, comece pelo guia [Iniciar o Iroha 3](/pt/get-started/launch-iroha.md).
 
 ## 1. Pré-requisitos {#_1-prerequisites}
 

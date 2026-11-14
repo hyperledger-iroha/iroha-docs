@@ -5,7 +5,6 @@ translation_source_hash: 2a9211efa691d8be17d1cdd99082d11c62389da846fb29ee2d2acb8
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Dəstək qəbul et {#receive-support}
 
 Zaman-zaman, başqaları ilə ətraflı müzakirə etmək istədiyiniz Iroha haqqında suallarınız ola bilər. İcma ilə tez əlaqə saxlamağın üç yolu var: Telegram, Discord və GitHub.

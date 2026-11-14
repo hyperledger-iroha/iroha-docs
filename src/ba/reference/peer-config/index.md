@@ -5,7 +5,6 @@ translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Iroha конфигурацияһы {#configuring-iroha}
 
 TOML файлдарҙа урындағы пир конфигурацияһы ҡуйылған. Был [`SetParameter`](/ba/blockchain/instructions.md#setparameter) күрһәтмәләре буйынса үҙгәртелгән сылбыр конфигурацияһынан айырыла. Производство тәртибе конфигурация файлында йәки сылбыр буйынса параметрҙа күрһәтергә тейеш; Тирә-яҡ мөхиттең үҙгәреүсәндәре функциялар ҡапҡалары түгел.

@@ -5,7 +5,6 @@ translation_source_hash: 5ea24369e85692bd9069e446d1e50612efade2d83e4ddf73a498058
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # מדריך {#guide}
 
 השתמש בחלק זה כאשר אתה בונה, מפעיל או משולב עם Iroha. תתחיל עם הדרגונים של SDK עבור לקוח ראשון, ואז לעבור למנהלים הטובים ביותר והמועדות של המפעיל לפני הפעלת נגד רשת משותפת.

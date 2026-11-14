@@ -5,7 +5,6 @@ translation_source_hash: 20139011c663a0bca6f9e486ef81f698370c34f8f02319317805b0d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
-
 # 安全原則 {#security-principles}
 
 Iroha 分類帳會驗證已簽署的指令並套用許可權。它不會保護私鑰、主機、應用程式、操作員工作站或治理程式；部署方必須保護這些系統。

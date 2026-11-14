@@ -5,7 +5,6 @@ translation_source_hash: 5928eaf7e65023ad1867ca8d125efa61da6d8fe505b91e71b2c2121
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Тохиромжийн Матриц {#compatibility-matrix}
 
 Тохирох чадлын матриц нь хөндлөнг харуулдаг SDK одоогийн нөхцөл байдлын хамрах хүрээ Iroha 3 баримт бичиг тохируулагдсан. Анхны байдлаар хуудас нь наалттайгаас үүссэн багцалсан цаг үеийн өгөгдөл үзэлтийг ачаалдаг [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) засвар

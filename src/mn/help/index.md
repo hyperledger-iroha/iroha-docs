@@ -5,7 +5,6 @@ translation_source_hash: 2a9211efa691d8be17d1cdd99082d11c62389da846fb29ee2d2acb8
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Дэмжлэг авах {#receive-support}
 
 Цаг үе өнгөрөх тусам та Iroha-ын талаар бусадтай дэлгэрэнгүй хэлэлцэхийг хүссэн асуултууд гарч ирж магадгүй. Манай нийгэмлэгтэй хурдан холбогдох гурван арга байна: Telegram, Discord, болон GitHub.

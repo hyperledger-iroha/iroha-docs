@@ -5,7 +5,6 @@ translation_source_hash: 5ea24369e85692bd9069e446d1e50612efade2d83e4ddf73a498058
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # دليل {#guide}
 
 استخدم هذا القسم عندما تقوم بالبناء أو التشغيل أو التكامل مع Iroha. ابدأ بالدروس التعليمية SDK لإنشاء العميل الأول، ثم انتقل إلى أفضل الممارسات ومرجع المشغل قبل النشر على شبكة مشتركة.

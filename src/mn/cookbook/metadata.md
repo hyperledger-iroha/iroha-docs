@@ -5,7 +5,6 @@ translation_source_hash: 88298912f083d79a9fdfe5e8d0a89d49acb97d814d3871db0c874cb
 translation_status: machine-validated
 translation_engine: bing-translator-llm+claude-opus-5-5
 ---
-
 # Метадата {#metadata}
 
 ## Үр дүн {#outcome}

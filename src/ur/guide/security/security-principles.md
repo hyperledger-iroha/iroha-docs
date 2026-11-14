@@ -5,7 +5,6 @@ translation_source_hash: 20139011c663a0bca6f9e486ef81f698370c34f8f02319317805b0d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
-
 # حفاظتی اصول {#security-principles}
 
 ایک Iroha لیجر دستخط شدہ ہدایات کی تصدیق کرتا ہے اور اجازتوں کو لاگو کرتا ہے۔ یہ نجی چابیاں ، میزبان ، ایپلی کیشنز ، آپریٹر ورک اسٹیشنز یا گورننس کے طریقہ کار کو محفوظ نہیں کرتا ہے۔ تعیناتی کو ان نظاموں کی حفاظت کرنا ہوگی۔

@@ -5,7 +5,6 @@ translation_source_hash: ec7fc2f950b007f52d837473ad7021565923e537df1d18b86055fb4
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Xavfsizlik {#security}
 
 Maxfiy ma’lumotlar va qiymatni boshqaradigan har qanday tizim kabi Iroha joylashtirishni xavfsiz qilishingiz kerak. Imzolash kalitlarini, tarmoqga kirishni, tugun operatsiyalarini, monitoringni va hodisalarga javob berishni himoya qiling. Blokcheyn rejistri bu nazoratlarni talab qilmasligini anglatmaydi.

@@ -5,7 +5,6 @@ translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # ቤተኛ ንብረት Escrow {#native-asset-escrow}
 
 ቤተኛ escrow በብሎክቼይን መዝገብ ለሚተዳደሩ የቁጥር ንብረቶች የጥበቃ ዘዴ ነው። ንብረቶችን ወደ መተግበሪያው ባለቤትነት የተያዘ መለያ ከመላክ እና በ ላይ ከመተማመን ይልቅ ያንን መለያ ለመጠበቅ የመተግበሪያ ኮድ፣ escrow ISIs እሴትን ወደ ዲተርሚኒስቲክ የፕሮቶኮል ጥበቃ መለያ ያንቀሳቅሱ እና በአለም ሁኔታ ውስጥ ያለውን የ escrow የሕይወት ዑደት ይመዝግቡ።

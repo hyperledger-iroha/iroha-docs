@@ -40,7 +40,7 @@ CHAIN="00000000-0000-0000-0000-000000000000"
 
 ### `public_key` <Badge text="required" /> {#param-public-key}
 
-နိုဒ်၏ အများသုံးသော့ဖြစ်သည်။ သဘောတူညီမှုတွင် ပါဝင်သော အတည်ပြုနိုဒ်များသည် BLS-Normal သော့များကို အသုံးပြုရမည်။
+peer ၏ အများသုံးကီးဖြစ်သည်။ သဘောတူညီမှု validator peer များသည် BLS-Normal ကီးများကို အသုံးပြုရမည်။
 
 <param-table type="public-key" env="PUBLIC_KEY" />
 
@@ -78,12 +78,12 @@ PRIVATE_KEY="8926201CA347641228C3B79AA43839DEDC85FA51C0E8B9B6A00F6B0D6B0423E9029
 
 ကြိုတင်သတ်မှတ်ထားသော ယုံကြည်ရသည့် peer စာရင်းဖြစ်သည်။
 
-သဘောတူညီမှုအတည်ပြုနိုဒ်များသည် BLS-Normal နိုဒ်သော့များကို အသုံးပြုရမည်။ အတည်ပြုနိုဒ်တစ်ခုချင်းစီအတွက် ကိုက်ညီသော [`trusted_peers_pop`](#param-trusted-peers-pop) မှတ်တမ်းကိုလည်း ပေးပါ။
+သဘောတူညီမှု validator များသည် BLS-Normal သုံး peer ကီးများကို အသုံးပြုရမည်။ validator တစ်ခုချင်းစီအတွက် ကိုက်ညီသော [`trusted_peers_pop`](#param-trusted-peers-pop) မှတ်တမ်းကိုလည်း ပေးပါ။
 
 <param-table env="TRUSTED_PEERS">
 <template #type>
 
-နိုဒ်စာသားတန်းများ၏ အစုဖြစ်သည်။ P2P လိပ်စာကို သိလျှင် `PUBLIC_KEY@ADDRESS` ကို အသုံးပြုပါ။ `PUBLIC_KEY` တစ်ခုတည်းကိုလည်း လက်ခံပြီး အချင်းချင်းသတင်းဖြန့်ဝေမှုမှ နိုဒ်လိပ်စာကို ရှာဖွေနိုင်စေသည်။
+peer စာသားတန်းများ၏ အစုဖြစ်သည်။ P2P လိပ်စာကို သိလျှင် `PUBLIC_KEY@ADDRESS` ကို အသုံးပြုပါ။ `PUBLIC_KEY` တစ်ခုတည်းကိုလည်း လက်ခံပြီး ဖြန့်ဝေဆက်သွယ်မှုမှ peer လိပ်စာကို ရှာဖွေခွင့်ပြုသည်။
 
 </template>
 </param-table>
@@ -109,7 +109,7 @@ TRUSTED_PEERS='[
 
 ### `trusted_peers_pop` {#param-trusted-peers-pop}
 
-အတည်ပြုနိုဒ်ဖြစ်သော ယုံကြည်ရသည့်နိုဒ်များအတွက် BLS သော့ပိုင်ဆိုင်ကြောင်းအထောက်အထား မှတ်တမ်းများဖြစ်သည်။
+validator ဖြစ်သော ယုံကြည်ရသည့် peer များအတွက် BLS ကီးပိုင်ဆိုင်ကြောင်းအထောက်အထား မှတ်တမ်းများဖြစ်သည်။
 
 <param-table env="TRUSTED_PEERS_POP">
 <template #type>

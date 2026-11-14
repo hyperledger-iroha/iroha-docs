@@ -5,7 +5,6 @@ translation_source_hash: b42e035ea1056c07dd9c8e2f651e362c7f4b759a345508d2f099ad1
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Incorporar Kaigi em um App JavaScript {#embed-kaigi-in-a-javascript-app}
 
 Kaigi registra o ciclo de vida de uma reunião em Iroha enquanto o navegador transmite áudio e vídeo via WebRTC. O livro razão da blockchain armazena a chamada, alterações na lista de participantes, metadados de sinalização criptografados e o status final; não é um relé de mídia.

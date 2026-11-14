@@ -5,7 +5,6 @@ translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # O'rnatish muammolarini bartaraf etish {#troubleshooting-installation-issues}
 
 Ushbu bo‘lim Iroha 3 o‘rnatishda muammolarni hal qilish bo‘yicha maslahatlarni taklif qiladi. Agar siz duch kelayotgan muammo bu yerda tasvirlanmagan bo‘lsa, biz bilan [Telegram](https://t.me/hyperledgeriroha) orqali bog‘laning.

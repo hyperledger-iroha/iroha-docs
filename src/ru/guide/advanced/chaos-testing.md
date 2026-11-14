@@ -5,7 +5,6 @@ translation_source_hash: 5ceee448217a42e4f8bbae9595486b79019e7a880dfd0f2c71bf580
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Тестирование хаоса с Izanami {#chaos-testing-with-izanami}
 
 Идзанами — это оркестратор chaosnet в upstream Iroha рабочем пространстве. Он запускает одноразовый локальный кластер Iroha, отправляет настраиваемую нагрузку и внедряет сбои в выбранные сетевые узлы, чтобы операторы могли проверить, продолжает ли сеть успешно функционировать при контролируемых сбоях.

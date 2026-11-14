@@ -5,7 +5,6 @@ translation_source_hash: 20139011c663a0bca6f9e486ef81f698370c34f8f02319317805b0d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
-
 # עקרונות אבטחה {#security-principles}
 
 ספר החשבונות של Iroha מאמת הוראות חתומות ומחיל הרשאות. הוא אינו מאבטח מפתחות פרטיים, מארחים, יישומים, תחנות עבודה של מפעילים או נהלי ממשל. הפריסה חייבת להגן על מערכות אלה.

@@ -5,7 +5,6 @@ translation_source_hash: 9443b139623544fd3c54b324e54b7e06f57820c70ffd0856f05aaca
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 触发器 {#triggers}
 
 触发器将事件过滤器绑定到可执行的操作. 当事件与触发器的过滤器匹配时, Iroha 将触发器操作作为区块执行的一部分进行评估.

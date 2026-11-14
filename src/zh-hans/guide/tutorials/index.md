@@ -5,7 +5,6 @@ translation_source_hash: 4fee7425a237d2781745025c9cd240fbc9df84f07f7427ff19c4bd8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # SDK 教程 {#sdk-tutorials}
 
 这些页面总结了从主工作空间发送的 Iroha 3 客户端入口点,包括规范包名,安装路径和最小的起始点.

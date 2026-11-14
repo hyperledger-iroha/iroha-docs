@@ -5,7 +5,6 @@ translation_source_hash: c5f10d1395e0b7704d29f4a535dd317b2cabe9c838208f76b7b776d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # ስም-አልባ ግብይቶች {#anonymous-transactions}
 
 በ Iroha ውስጥ ማንነታቸው ያልታወቁ ግብይቶች የሚገነቡት ከሚስጥር የንብረት ስራዎች ነው። የኪስ ቦርሳ ከህዝብ ወደ መለያ የሚደረጉ ዝውውሮችን በህዝብ መጠን ከመመዝገብ ይልቅ ዋጋውን ወደ የተከለለ የብሎክቼይን መዝገብ ያስተላልፋል እና ከዚያም ዜሮ የእውቀት ማረጋገጫዎችን በመጠቀም ግልጽ ያልሆኑ ማስታወሻዎችን ያጠፋል።

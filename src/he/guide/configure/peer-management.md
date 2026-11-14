@@ -5,7 +5,6 @@ translation_source_hash: f085fa1587595414f95705bbe2cd285752b0fe12cffb9ef29a33399
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # ניהול צמתים {#peer-management}
 
 אם עקבתם אחרי כל מדריך שפה ספציפי, עכשיו יש לכם רשת פועלת היטב שאנשים ירצו להצטרף אליהן.
@@ -34,7 +33,7 @@ translation_engine: nllb-200-ct2
 
 :::
 
-אנו דנים בהרשאות ובתפקידים ביתר פירוט ב[פרק נפרד](/he/blockchain/permissions.md).
+ראו את [הפרק על הרשאות ותפקידים](/he/blockchain/permissions.md) להסבר מפורט.
 
 #### 2. קבעו צמתים {#_2-set-up-a-peer}
 

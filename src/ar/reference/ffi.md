@@ -5,7 +5,6 @@ translation_source_hash: 2df23722cea2f918874f0109b31b24bb3d8dbd7f95c00d1d6d1568c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # واجهات الوظائف الأجنبية (FFI) {#foreign-function-interfaces-ffi}
 
 يوفر حزمة البرمجيات `iroha_ffi` وحدات ماكرو وسمات لإنشاء روابط C ABI من Rust APIs. يتم استخدامها عندما تحتاج أنواع Iroha إلى عبور حدود FFI، على سبيل المثال بواسطة روابط SDK أو تكاملات المضيف.

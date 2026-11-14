@@ -5,7 +5,6 @@ translation_source_hash: 9e13bcd28ad8ae356314041828f73af0ed25636af82ff4ea2948268
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
-
 # Iroha 3 ایپلی کیشنز کا کتابچہ {#iroha-3-application-cookbook}
 
 Iroha 3 کے خلاف تعمیر کریں چھوٹے ، قابل تصدیق نسخوں کے ساتھ جو Taira ٹیسٹ نیٹ پر شروع ہوتے ہیں اور صرف پڑھنے کے لئے Minamoto مین نیٹ کو برقرار رکھتے ہیں۔ ہر نسخے میں بتایا گیا ہے کہ آیا یہ عوامی پڑھنا ہے ، ایک عام فنڈ اکاؤنٹ لکھنا ہے ، یا اجازت سے بند عمل۔ کمانڈ موجودہ I105 اکاؤنٹ IDs ، واضح فیس کا انتخاب، اور Iroha پر چیک ان کیا رویہ استعمال کرتے ہیں [`c8c872461e92f04325c350cdd952f4276e96f9dc`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc).

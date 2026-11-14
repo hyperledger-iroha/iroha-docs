@@ -5,7 +5,6 @@ translation_source_hash: 20e78492bf757147f2c9afed2d3b51639bc79913d3d8e4351193b60
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # မီတာဒေတာ {#metadata}
 
 Metadata သည် လယ်ဂျာအရာဝတ္ထုများနှင့် တွဲထားသော စစ်ဆေးပြီး ကီး-တန်ဖိုး အတွဲများ၏ မြေပုံဖြစ်သည်။ ကီးများသည် `Name` တန်ဖိုးများဖြစ်ပြီး တွဲဖက်တန်ဖိုးများသည် JSON (`Json`) payload များဖြစ်သည်။

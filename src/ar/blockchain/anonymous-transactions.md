@@ -5,7 +5,6 @@ translation_source_hash: c5f10d1395e0b7704d29f4a535dd317b2cabe9c838208f76b7b776d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # المعاملات المجهولة {#anonymous-transactions}
 
 المعاملات المجهولة في Iroha مبنية على عمليات الأصول السرية. بدلاً من كتابة تحويلات الحساب إلى الحساب العامة بالمبالغ العامة، يقوم المحفظة بتحريك القيمة إلى دفتر الأستاذ المحمي على البلوكشين ثم ينفق الملاحظات الغامضة مع إثباتات المعرفة الصفرية.

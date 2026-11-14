@@ -5,7 +5,6 @@ translation_source_hash: 9e13bcd28ad8ae356314041828f73af0ed25636af82ff4ea2948268
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
-
 # Iroha 3 应用程序操作指南 {#iroha-3-application-cookbook}
 
 使用从 Taira 测试网开始的小型、可验证操作指南来构建 Iroha 3 应用，并保持 Minamoto 主网只读。每个操作指南都会注明它属于公开读取、普通的已注资账户写入，还是权限受限操作。命令使用当前 I105 账户 IDs、明确的费用选择，以及 Iroha 提交 [`c8c872461e92f04325c350cdd952f4276e96f9dc`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc) 中已检验的行为。

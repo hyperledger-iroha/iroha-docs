@@ -18,7 +18,7 @@ translation_engine: nllb-200-ct2+reviewed-source-naming-amendment
 - סימני רשות לכל החשבונות
 - [שרשרת מבקרי תקופת הפעולה ](/he/blockchain/permissions.md#runtime-validators)
 
-בעת רישום דומיינים, עמיתים או תפקידים, או ביטול רישומם, `World` הוא היעד של [הוראת](/he/blockchain/instructions.md) הרישום או ביטול הרישום.
+כאשר רושמים או מסירים רישום של תחומים, צמתים או תפקידים, `World` הוא היעד של [הוראת הרישום או ביטול הרישום](/he/blockchain/instructions.md).
 
 ## תצוגת מצב העולם (WSV) {#world-state-view-wsv}
 

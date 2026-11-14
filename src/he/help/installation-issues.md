@@ -5,7 +5,6 @@ translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # פתרון בעיות ההתקנה {#troubleshooting-installation-issues}
 
 חלק זה מציע עצות פתרון בעיות להתקנת Iroha 3. אם הבעיה שאתה חווה אינה מתוארת כאן, צור איתנו קשר באמצעות [טלגרם](https://t.me/hyperledgeriroha).

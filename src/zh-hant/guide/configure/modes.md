@@ -5,7 +5,6 @@ translation_source_hash: 3f6c2d84c7b6d325d76fb1b1a3ec0efb75381521f7fc69e7924a965
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
-
 # 公有與私有區塊鏈 {#public-and-private-blockchains}
 
 Iroha 可採用多種設定執行。身為自有網路的管理員，您可以決定由哪個執行器與許可權政策判定是否接受交易。

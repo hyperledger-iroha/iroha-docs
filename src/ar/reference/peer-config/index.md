@@ -5,7 +5,6 @@ translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # تكوين Iroha {#configuring-iroha}
 
 يتم إعداد تكوين النظير في الشبكة المحلية في TOML الملفات. هذا يختلف عن التكوين على السلسلة الذي تم تغييره من خلال [`SetParameter`](/ar/blockchain/instructions.md#setparameter) التعليمات. يجب تمثيل سلوك الإنتاج في تكوين ملف أو معلمة على السلسلة؛ متغيرات البيئة ليست بوابات ميزات.

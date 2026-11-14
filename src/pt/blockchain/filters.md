@@ -5,7 +5,6 @@ translation_source_hash: 36c99c1db78e357ea9fe0ca8ab9b79c9e2b20da08d329c563f1f33f
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Filtros {#filters}
 
 Filtros restringem fluxos de eventos e acionam condições. O filtro de eventos de nível superior atual é `EventFilterBox`, que pode corresponder a estas famílias de eventos:

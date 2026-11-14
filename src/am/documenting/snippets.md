@@ -5,7 +5,6 @@ translation_source_hash: 48d6670f100c7c6368fa03f163c9ff9e0322d36e51c22f89562b23b
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # የኮድ ቅንጥቦች {#code-snippets}
 
 የመነጩ ቅንጥቦች ምሳሌዎችን ካመነጫቸው የ Iroha ክለሳ ኮድ፣ ውቅር እና ስኪማዎች ጋር እንደተያያዙ ያቆያሉ።

@@ -5,7 +5,6 @@ translation_source_hash: de608ef52ad3a999c0e253e6683e454f8f66f399a690dce4c2185c7
 translation_status: machine-validated
 translation_engine: bing-translator-llm+claude-opus-5-5
 ---
-
 # Enviar e Verificar Transações {#submit-and-verify-transactions}
 
 ## Resultado {#outcome}

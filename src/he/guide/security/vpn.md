@@ -5,7 +5,6 @@ translation_source_hash: 020591f0d7c5560dfb2e9f3f4537f429cbeba864c3eb022856d42ad
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # רשתות פרטיות וירטואליות {#virtual-private-networks}
 
 <abbr title="Virtual Private Network">VPN</abbr> הוא פיקוח רשת שמגביל את מי יכול להגיע לשירותים של Iroha. הוא מועיל ביותר לשימוש פרטי ושל קונסורציום, שבו מבקרי אישור, מאחורות יישומים ומפעילים צריכים לתקשר באמצעות כתובות פרטיות במקום דרכים אינטרנט פתוחות.

@@ -5,7 +5,6 @@ translation_source_hash: b42e035ea1056c07dd9c8e2f651e362c7f4b759a345508d2f099ad1
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Kaigi-ді JavaScript қолданбасына кірістіру {#embed-kaigi-in-a-javascript-app}
 
 Kaigi Iroha уақытында кездесудің өмірлік циклін тіркейді, ал браузер аудио мен видеоны WebRTC арқылы таратады. Блокчейн тізілімі қоңырауды, қатысушылар тізіміндегі өзгерістерді, шифрланған сигнализация метадеректерін және соңғы күйді сақтайды; ол медиа арқылы жіберуші емес.

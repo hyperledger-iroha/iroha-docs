@@ -5,7 +5,6 @@ translation_source_hash: 020591f0d7c5560dfb2e9f3f4537f429cbeba864c3eb022856d42ad
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 虛擬私人網路 {#virtual-private-networks}
 
 一個 <abbr title="Virtual Private Network">VPN</abbr>是一個網路控制系統,它限制了誰可以訪問 Iroha 服務. 它最適用於私人和聯盟部署,驗證器,應用程式後臺和運營商應該透過私人地址而不是開放的網際網路路線進行通訊.

@@ -5,7 +5,6 @@ translation_source_hash: 5ceee448217a42e4f8bbae9595486b79019e7a880dfd0f2c71bf580
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Izanami နဲ့ ဆူညံနေတဲ့ စမ်းသပ်မှု {#chaos-testing-with-izanami}
 
 Izanami သည် upstream Iroha လုပ်ငန်းခွင်တွင် chaosnet orchestrator ဖြစ်ပါသည်။ ၎င်းသည် တစ်ခါသုံး ဒေသခံ Iroha အုပ်စုကိုစတင်ပြီး သတ်မှတ်နိုင်သော အလုပ်အကိုင်ဝန်ဆောင်မှုကို တင်သွင်းကာ ရွေးချယ်ထားသောကွန်ရက်တူညီသူများသို့အမှားများကိုထိုးပေးသည်။ ထို့ကြောင့် operator များသည်ထိန်းချုပ်သောအမှားအတွင်းကကွန်ရက်တိုးတက်မှုရှိမရှိ စစ်ဆေးနိုင်သည်။

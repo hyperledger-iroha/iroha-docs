@@ -5,7 +5,6 @@ translation_source_hash: 2a9211efa691d8be17d1cdd99082d11c62389da846fb29ee2d2acb8
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Қолдау алу {#receive-support}
 
 Уақыт өте келе, сізде Iroha туралы басқа адамдармен егжей-тегжейлі талқылағыңыз келетін сұрақтар туындауы мүмкін. Біздің қауымдастықпен тез байланысуға үш жол бар: Telegram, Discord және GitHub.

@@ -1,15 +1,15 @@
 ---
 translation_locale: ur
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 3d2285e5a27819897b6dcc6d165c468baead29d2922420728fcfbe2433d36fdd
+translation_source_hash: 98c351372551b08bda4911f52bfb3cc70c53b6125d8045c17abb205b27960f6d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
-# SORA Nexus پر تعمیر کریں: Taira اور Minamoto {#build-on-sora-3-taira-and-minamoto}
+# Taira اور Minamoto کے ساتھ SORA Nexus پر ایپلیکیشن تیار کرنا {#build-on-sora-3-taira-and-minamoto}
 
-SORA Nexus، Iroha 3 پر مبنی عوامی تنصیب کے راستے فراہم کرتا ہے۔ پہلے Taira پر بنائیں اور مشق کریں، پھر کلائنٹ کی وہی ساخت Minamoto پر صرف تب منتقل کریں جب آپ کے پاس الگ مین نیٹ کلیدیں، فیس کے لیے حقیقی XOR اور صنعتی استعمال کی منظوری ہو۔
+SORA Nexus کی بنیاد Iroha 3 ہے۔ اپنی ایپلیکیشن پہلے Taira پر تیار کریں اور آزمائیں۔ یہی کلائنٹ ترتیب Minamoto پر تبھی منتقل کریں جب آپ کے پاس مین نیٹ کے لیے الگ کلیدیں، فیس کے لیے حقیقی XOR اور عملی استعمال کی منظوری ہو۔
 
-یہ رہنما دکھاتا ہے کہ عوامی SORA Nexus نیٹ ورکس کے لیے Iroha کلائنٹ کیسے ترتیب دیں:
+یہ رہنما SORA Nexus کے دونوں عوامی نیٹ ورکس کے لیے Iroha کلائنٹ کی ترتیب کا طریقہ بتاتا ہے۔
 
 - Taira ٹیسٹ نیٹ at `https://taira.sora.org`
 - Minamoto مین نیٹ پر `https://minamoto.sora.org`
@@ -23,8 +23,8 @@ SORA Nexus، Iroha 3 پر مبنی عوامی تنصیب کے راستے فرا�
 
 |مرحلہ |Taira ٹیسٹ نیٹ |Minamoto مین نیٹ |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|نیٹ ورک کی حالت پڑھنا شروع کریں |کلیدوں کے بغیر `/status` کا استفسار کریں |کلیدوں کے بغیر `/status` کا استفسار کریں |
-| ڈیٹا اسپیس منتخب کریں | عوامی `universal` استعمال کریں، جب تک ایپ کو گورننس کے زیرِ انتظام لین درکار نہ ہو | مین نیٹ کی منظوری کے بعد ہی وہی ڈیٹا اسپیس استعمال کریں |
+|نیٹ ورک کی حالت پڑھنا شروع کریں |کلیدوں کے بغیر `/status` کا استفسار کریں | پہلے سروس کے پتے اور اس کے TLS سرٹیفکیٹ کی تصدیق کریں |
+|ڈیٹا اسپیس منتخب کریں |عوامی استعمال کریں `universal` جب تک کہ آپ کی ایپ کو ایک منظم لین کی ضرورت نہ ہو |صرف مین نیٹ کی منظوری کے بعد ایک ہی ڈیٹا اسپیس کا استعمال کریں |
 |فیس کا اثاثہ حاصل کریں |عوامی Taira faucet استعمال کریں |فنڈ شدہ Minamoto اکاؤنٹ یا منظور شدہ خزانے کے بہاؤ سے XOR حاصل کریں |
 |تحریری کارروائیوں کی جانچ کریں |فوسیٹ سے حاصل کردہ ٹیسٹ XOR استعمال کریں |ٹیسٹ ٹولنگ استعمال نہ کریں؛ تحریری کارروائیوں میں حقیقی XOR خرچ ہوتا ہے |
 |پروڈکشن میں منتقل کریں |دوبارہ کوشش کی منطق، نگرانی اور دستخط کنندہ کے انتظام کی مشق کریں |الگ کلیدیں، فنڈنگ اور ریلیز کنٹرول استعمال کریں |
@@ -67,20 +67,10 @@ wonderland.universal
 
 ## پبلک Torii اختتامی نقطہ چیک کریں۔ {#_2-check-the-public-torii-endpoint}
 
-دستخط کرنے سے پہلے چیک کریں کہ ہدف کے اختتامی نقطہ زندہ ہے.
-
-Taira کے لئے:
+`curl` اور `jq` کے ذریعے Taira ٹیسٹ نیٹ کی حالت دیکھیں۔ اس جانچ کے لیے نہ کلیدیں درکار ہیں نہ مقامی نوڈ۔
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-Minamoto کے لئے:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -93,7 +83,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-مین نیٹ کے لئے `https://minamoto.sora.org/status` کے ساتھ ایک ہی کمانڈ کا استعمال کریں۔
+Minamoto استعمال کرنے سے پہلے آپریٹر سے مین نیٹ سروس کے پتے کی تصدیق کریں اور دیکھیں کہ TLS سرٹیفکیٹ میزبان کے نام سے مطابقت رکھتا ہے۔
 
 ## ایجنٹوں کے لیے Taira MCP {#taira-mcp-for-agents}
 
@@ -118,7 +108,7 @@ curl -fsS https://taira.sora.org/v1/mcp \
   | jq '{versions: .result.supportedVersions, server: .result._meta["io.modelcontextprotocol/serverInfo"].name, toolset: .result.capabilities.extensions["org.hyperledger.iroha/tools"].toolsetVersion}'
 ```
 
-ایجنٹ کے رن ٹائم میں URL کو صارف کے مقامی MCP سرور کے طور پر ترتیب دیں۔ ایجنٹ کی MCP ترتیب، API ٹوکنز، آگے بھیجے گئے توثیقی ہیڈرز، `authority` یا `private_key` کی قدریں اس دستاویزی ریپوزٹری یا کسی ایپلی کیشن ریپوزٹری میں کمٹ نہ کریں۔
+ایجنٹ کے رن ٹائم میں URL کو صارف کی مقامی MCP سروس کے طور پر ترتیب دیں۔ ایجنٹ کی MCP ترتیب، API ٹوکن، آگے بھیجے گئے تصدیقی ہیڈر، اور `authority` یا `private_key` کی قدریں اس دستاویزی مخزن یا ایپلیکیشن کے مخزن میں کمٹ نہ کریں۔
 
 ایجنٹ فوری قواعد جو Taira کے ساتھ اچھی طرح کام کرتے ہیں:
 
@@ -130,7 +120,7 @@ curl -fsS https://taira.sora.org/v1/mcp \
 
 ### ایجنٹوں کے ساتھ ترقیاتی کام کا بہاؤ {#development-workflow-with-agents}
 
-ایجنٹس کو Iroha کلائنٹس، معاملہ بنانے والے ٹولز، تشخیصی اسکرپٹس اور ٹیسٹ نیٹ کے عملی دستور بنانے میں معاون کے طور پر استعمال کریں۔ ایجنٹ کا اختیار محدود رکھیں: وہ کوڈ کا معائنہ، Taira کی حالت پڑھنے، تبدیلیاں تجویز کرنے اور مقامی ٹیسٹ چلانے کا کام کر سکتا ہے، لیکن جب تک کوئی انسان عین کارروائی کی منظوری نہ دے، اسے فعال نیٹ ورک میں تبدیلی نہیں کرنی چاہیے۔
+Iroha کلائنٹس، ٹرانزیکشن تیار کرنے والے ٹولز، تشخیصی اسکرپٹس اور ٹیسٹ نیٹ کی عملی ہدایات پر کام کرنے کے لیے ایجنٹوں سے مدد لیں۔ ایجنٹ کے اختیارات محدود رکھیں: وہ کوڈ دیکھ سکتا ہے، Taira کی موجودہ حالت پڑھ سکتا ہے، تبدیلیاں تجویز کر سکتا ہے اور مقامی ٹیسٹ چلا سکتا ہے۔ کسی انسان کی جانب سے عین اسی کارروائی کی منظوری ملنے تک وہ فعال نیٹ ورک میں تبدیلی نہ کرے۔
 
 ایک عملی کام کا بہاؤ یہ ہے:
 
@@ -156,7 +146,7 @@ MCP پل ایک دستخط شدہ Iroha ٹرانزیکشن جمع کروا سک�
 
 خام کے لئے Iroha ٹرانزیکشنز، تعمیر اور ایک کے ساتھ ٹرانزیکشن envelope دستخط SDK یا CLI سب سے پہلے، پھر ایجنٹ کو صرف canonical دستخط شدہ ٹرانزیکشن بائٹس کوڈ کے طور پر دیں `body_base64`. ایجنٹ کو لفافہ جمع کروا سکتے ہیں `iroha.transactions.submit_and_wait`, یا جمع کروائیں `iroha.transactions.submit` اور سروے `iroha.transactions.wait`.
 
-ایجنٹ کے پرامپٹ میں نجی کلیدیں نہ چسپاں کریں۔ اگر ایجنٹ کو معاملہ بنانا ہو تو اسے مقامی کوڈ کی طرف رہنمائی دیں جو صارف کے رن ٹائم ماحول، کی چین، ہارڈویئر دستخط کنندہ یا نظر انداز کردہ ٹیسٹ نیٹ ترتیب فائل سے راز لوڈ کرتا ہو۔ ایجنٹ کو کلید کا مواد کبھی Markdown، ٹیسٹ ڈیٹا، لاگز یا کمٹس میں نہیں لکھنا چاہیے۔
+نجی کلیدیں ایجنٹ کے پرامپٹ میں نہ چسپاں کریں۔ ٹرانزیکشن بنانے کے لیے ایجنٹ کو ایسا مقامی کوڈ استعمال کرنے کی ہدایت دیں جو راز صارف کے رن ٹائم ماحول، کی چین، ہارڈویئر دستخط کنندہ یا ورژن کنٹرول سے خارج ٹیسٹ نیٹ کی ترتیباتی فائل سے لوڈ کرتا ہو۔ ایجنٹ کو کلید سے متعلق مواد کبھی Markdown، آزمائشی ڈیٹا، لاگز یا کمٹس میں نہیں لکھنا چاہیے۔
 
 ٹرانزیکشن جمع کروانے سے پہلے، ایجنٹ کو ایک مختصر ٹرانزیکشن پلان تیار کرنے کے لئے کہیں:
 
@@ -200,19 +190,7 @@ Taira MCP کو عوامی ٹیسٹ نیٹ ورک کنٹرول سطح کے طور
 
 ## کھلونے کی مثالیں جنہیں آپ اب آزما سکتے ہیں {#toy-examples-you-can-try-now}
 
-یہ مثالیں صرف پڑھنے کے قابل ہیں جب تک کہ ذکر نہ کیا جائے۔ وہ آپ کی چابیاں پیدا کرنے سے پہلے کام کرتی ہیں۔ اور دونوں عوامی نیٹ ورکس پر چلنے میں محفوظ ہیں۔
-
-Taira ٹیسٹ نیٹ اور Minamoto مین نیٹ کی صحت کا موازنہ کریں:
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+یہ مثالیں اکاؤنٹ کی کلیدوں کے بغیر Taira سے صرف ڈیٹا پڑھتی ہیں۔
 
 Taira کی فراہم کردہ عوامی ڈیٹا اسپیس لینز کی فہرست دیکھیں:
 
@@ -220,16 +198,7 @@ Taira کی فراہم کردہ عوامی ڈیٹا اسپیس لینز کی فہ
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-Minamoto کے خلاف ایک ہی کمانڈ چلائیں جب آپ کو مین نیٹ ویو کی ضرورت ہو:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -238,24 +207,16 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -437,6 +398,8 @@ iroha --config ./taira.client.toml ledger asset get \
 
 ## ایک Minamoto کلائنٹ ترتیب بنائیں. {#_5-create-a-minamoto-client-config}
 
+Minamoto استعمال کرنے سے پہلے آپریٹر سے مین نیٹ سروس کے پتے کی تصدیق کریں اور دیکھیں کہ TLS سرٹیفکیٹ میزبان کے نام سے مطابقت رکھتا ہے۔
+
 Minamoto کے لئے علیحدہ کلیدی جوڑی کا استعمال کریں۔ مین نیٹ ورک کے لیے Taira کیلیوں کو دوبارہ استعمال نہ کریں.
 
 `minamoto.client.toml` بنائیں:
@@ -502,7 +465,7 @@ iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-apps-domain.plan.json
 ```
 
-Minamoto کے لیے الگ مین نیٹ ارادہ اور منصوبہ بنائیں اور منظور کریں۔ منصوبے اپنی چین، مجاز اکاؤنٹ، موجودہ حالت کے لنگر اور آخری وقت سے بندھے ہوتے ہیں، اس لیے Taira کا منصوبہ وہاں منتقل یا دوبارہ چلایا نہیں جا سکتا:
+Minamoto کے لیے مین نیٹ کی الگ درخواست اور منصوبہ تیار کر کے منظور کریں۔ ہر منصوبہ اپنی زنجیر، مجاز اکاؤنٹ، لیجر کی موجودہ حالت کے حوالے اور آخری وقت سے منسلک ہوتا ہے، اس لیے Taira کا منصوبہ مین نیٹ پر منتقل یا دوبارہ نافذ نہیں کیا جا سکتا:
 
 ```bash
 iroha --config ./minamoto.client.toml \

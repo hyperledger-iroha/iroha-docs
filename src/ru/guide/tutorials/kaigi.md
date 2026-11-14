@@ -5,7 +5,6 @@ translation_source_hash: b42e035ea1056c07dd9c8e2f651e362c7f4b759a345508d2f099ad1
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Встроить Kaigi в приложение JavaScript {#embed-kaigi-in-a-javascript-app}
 
 Kaigi записывает жизненный цикл встречи на Iroha, в то время как браузер передает аудио и видео через WebRTC. Распределенный реестр блокчейна хранит звонок, изменения в списке участников, зашифрованные сигнальные метаданные и окончательный статус; он не является медиапосредником.

@@ -5,7 +5,6 @@ translation_source_hash: 3f6c2d84c7b6d325d76fb1b1a3ec0efb75381521f7fc69e7924a965
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # سلاسل الكتل العامة والخاصة {#public-and-private-blockchains}
 
 Iroha يمكن أن يعمل في مجموعة متنوعة من التكوينات. بصفتك مسؤولًا عن شبكتك الخاصة، فإنك تقرر أي منفذ وتنفيذ سياسة الأذونات التي تحدد ما إذا كانت المعاملة مقبولة.

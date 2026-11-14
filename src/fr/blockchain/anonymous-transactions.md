@@ -5,7 +5,6 @@ translation_source_hash: c5f10d1395e0b7704d29f4a535dd317b2cabe9c838208f76b7b776d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Transactions anonymes {#anonymous-transactions}
 
 Les transactions anonymes dans Iroha sont construites à partir d'opérations d'actifs confidentielles. Au lieu d'écrire des transferts publics de compte à compte avec des montants publics, un portefeuille déplace la valeur dans un grand livre blockchain protégé, puis dépense des notes opaques avec des preuves à divulgation nulle de connaissance.

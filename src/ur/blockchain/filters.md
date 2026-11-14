@@ -5,7 +5,6 @@ translation_source_hash: 36c99c1db78e357ea9fe0ca8ab9b79c9e2b20da08d329c563f1f33f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # فلٹرز {#filters}
 
 واقعات کے تنگ سلسلے اور ٹرگر کی شرائط کو فلٹر کرتا ہے۔ موجودہ سب سے اوپر سطح پر واقعہ فلٹر `EventFilterBox` ہے ، جو ان واقعات کے خاندانوں سے مل سکتا ہے۔

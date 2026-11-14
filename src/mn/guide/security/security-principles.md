@@ -5,7 +5,6 @@ translation_source_hash: 20139011c663a0bca6f9e486ef81f698370c34f8f02319317805b0d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
-
 # Аюулгүй байдлын зарчим {#security-principles}
 
 Iroha бүртгэл нь гарын үсэг зурсан зааврыг баталгаажуулж, зөвшөөрлүүдийг хэрэгжүүлдэг. Энэ нь хувийн түлхүүр, хост, аппликейшн, операторын ажлын станц эсвэл засаглалын журмыг хамгаалдаггүй. Байршуулалт эдгээр системийг хамгаалах ёстой.

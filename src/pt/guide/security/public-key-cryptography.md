@@ -5,7 +5,6 @@ translation_source_hash: 3d317c00e75525d70f6cb9ef7f8eeec6911e2f124af8052cd2fc719
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Criptografia de Chave Pública {#public-key-cryptography}
 
 A criptografia de chave pública utiliza uma chave pública e uma chave privada relacionadas. A chave pública pode ser compartilhada. A chave privada deve permanecer sob o controle do principal autorizado. A segurança depende do uso de um algoritmo suportado, da geração de chaves com aleatoriedade segura e da proteção da chave privada.

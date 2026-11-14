@@ -5,7 +5,6 @@ translation_source_hash: 234c831c97bb93996e6cf51505921ff509e233408cf2faf6a9b2364
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 <script setup>
 import WarningFatQuery from './WarningFatQuery.vue'
 </script>
@@ -86,4 +85,4 @@ Iroha יכול לסדר פריטים עם [מטא-נתונים](/he/blockchain/m
 
 ## תיקון {#reference}
 
-עיינו ב[רשימת השאילתות הקיימות](/he/reference/queries.md) לקבלת מידע מפורט עליהן.
+ראו את [רשימת השאילתות הקיימות](/he/reference/queries.md) לפרטים על כל שאילתה.

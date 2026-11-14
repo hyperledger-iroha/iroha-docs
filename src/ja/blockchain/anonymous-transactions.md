@@ -5,7 +5,6 @@ translation_source_hash: c5f10d1395e0b7704d29f4a535dd317b2cabe9c838208f76b7b776d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # 匿名取引 {#anonymous-transactions}
 
 Iroha における匿名取引は、機密資産操作から構築されます。公開された金額でのアカウント間転送を記録する代わりに、ウォレットは価値をシールドされたブロックチェーン台帳に移動し、その後、ゼロ知識証明を用いて不透明なノートを使用して支払います。

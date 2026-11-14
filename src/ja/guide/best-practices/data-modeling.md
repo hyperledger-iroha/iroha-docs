@@ -5,7 +5,6 @@ translation_source_hash: 423f8c17d5d7072d1733ccac2337d70243f6e725f7786e9f2fc7052
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # データモデリング {#data-modeling}
 
 ブロックチェーン台帳データは、所有権、移転の挙動、許可の境界、およびクエリパターンを中心にモデル化する必要があります。監査可能性と決定論的実行をサポートできる最小のオンチェーン表現を選択してください。

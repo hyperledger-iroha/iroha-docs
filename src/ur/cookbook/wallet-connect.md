@@ -5,7 +5,6 @@ translation_source_hash: 6bcb87693d4a4cdf45662029dd455c15d3a7a1d4a1e1586e92317ca
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
-
 # Wallet Connect: اثاثہ جات کی منتقلی کو منظور کریں {#wallet-connect-approve-an-asset-transfer}
 
 ## نتیجہ {#outcome}

@@ -5,7 +5,6 @@ translation_source_hash: 3f6c2d84c7b6d325d76fb1b1a3ec0efb75381521f7fc69e7924a965
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # အများပြည်သူနှင့် ပုဂ္ဂလိက ဘလော့ခ်ချိုင်းများ {#public-and-private-blockchains}
 
 Iroha ကို ပြင်ဆင်သတ်မှတ်မှုပုံစံ အမျိုးမျိုးဖြင့် လည်ပတ်နိုင်သည်။ မိမိကွန်ရက်၏ စီမံခန့်ခွဲသူအဖြစ် transaction တစ်ခုကို လက်ခံမလားဟု ဆုံးဖြတ်ပေးမည့် executor နှင့် ခွင့်ပြုချက်မူဝါဒကို သင်ရွေးချယ်သည်။

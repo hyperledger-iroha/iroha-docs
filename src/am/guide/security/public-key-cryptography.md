@@ -5,7 +5,6 @@ translation_source_hash: 3d317c00e75525d70f6cb9ef7f8eeec6911e2f124af8052cd2fc719
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # የህዝብ ቁልፍ ክሪፕቶግራፊ {#public-key-cryptography}
 
 የህዝብ ቁልፍ ክሪፕቶግራፊ ተጓዳኝ የህዝብ ቁልፍ እና የግል ቁልፍ ይጠቀማል። የህዝብ ቁልፉ ሊጋራ ይችላል። የግል ቁልፉ በተፈቀደለት ባለቤት ቁጥጥር ስር መቆየት አለበት። ደህንነት የሚደገፈውን ስልተ ቀመር በመጠቀም፣ ደህንነቱ በተጠበቀ የዘፈቀደ ቁልፎችን በማመንጨት እና የግል ቁልፉን በመጠበቅ ላይ የተመሰረተ ነው።

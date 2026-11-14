@@ -5,7 +5,6 @@ translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Настройка Iroha {#configuring-iroha}
 
 Настройка узла локальной сети задана в TOML файлы. Это отличается от изменения конфигурации в цепочке через [`SetParameter`](/ru/blockchain/instructions.md#setparameter) инструкции. Поведение производства должно быть представлено в конфигурации файл или параметр в цепочке; переменные окружения не являются функциональными переключателями.

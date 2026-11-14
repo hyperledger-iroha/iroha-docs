@@ -32,7 +32,7 @@ private_key = "802620..."
 
 - `chain` בוחר את שרשרת העסקאות המוצעות אליהן.
 - `network_id` הוא זהות הרשת הנגזרת מה־genesis, שאליה נקשרת כל בקשה חתומה. הגדירו בדיוק אחד מבין `network_id` ו־`network_id_file`; צומת מפרסם את הערך ב־`GET /v1/accounts/capabilities`.
-- `torii_url` מצביע על API ה־HTTP של Torii בעמית.
+- `torii_url` מצביע על ה־API של Torii בצומת, הזמין דרך HTTP.
 - `[account].chain_discriminant` בוחר את קידומת חשבונות I105 של הרשת. ברשתות הציבוריות אפשר להשתמש במקום זאת ב־`[account].profile = "taira"` או ב־`"minamoto"`. אחד מהשניים נדרש, וה־`AccountId` הקנוני עצמו נטול דומיין.
 - `[account].public_key` ו־`[account].private_key` משמשים לחתימה על עסקאות; `private_key_file` יכול להחליף את `private_key`.
 

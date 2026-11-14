@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /help/configuration-issues.md
-translation_source_hash: ab0496d2cd36056dbc5486cd1ea288606476862290cc544e7afcf63a1641dd6d
+translation_source_hash: 9d153d9cb8ce0341b35ba5a7e3823198e58464768e2a9a92ff8a5723f85e9351
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -15,27 +15,9 @@ translation_engine: nllb-200-ct2+reviewed-delta
 
 Iroha ၏ Docker Compose ဗားရှင်းကို အသုံးပြုနေစဉ် အဆင့်တူနိုဒ် ကွန်တိန်နာတစ်ခုက `Failed to deserialize raw genesis block` အမှားဖြင့် မအောင်မြင်ခြင်းကို တွေ့နိုင်သည်။ ပုံမှန်အားဖြင့် ၎င်းသည် အဆင့်တူနိုဒ်၊ လက်မှတ်ထိုးထားသော ကနဦးထရန်ဇက်ရှင်နှင့် ဖန်တီးထားသော ပြင်ဆင်သတ်မှတ်ချက်တို့ကို မတူညီသော Iroha ရင်းမြစ်ဗားရှင်းများ သို့မဟုတ် ပရိုဖိုင်များဖြင့် ထုတ်လုပ်ထားခြင်းဟု ဆိုလိုသည်။
 
-ဤအဆင့်များဖြင့် ပျက်ကွက်မှုကို စစ်ဆေးပါ-
+အတည်ပြုသူများ၏ မှတ်တမ်းကို ကြည့်ရန် ကိရိယာအစု၏ ဒိုင်ရက်ထရီတွင် `python3 poc.py logs` ကို လုပ်ဆောင်ပါ။ တူညီသော ရင်းမြစ်ဗားရှင်းမှ ဘိုင်နရီဖိုင်များကို တည်ဆောက်ပြီး Docker တွင် အတည်ပြုသူ လေးခုကို စတင်ရန် [လွှတ်တင်ခြင်း Iroha 3](/my/get-started/launch-iroha.md) လမ်းညွှန်ကို လိုက်နာပါ။
 
-1. လက်ရှိကွန်တိန်နာများကို စစ်ဆေးရန် `docker ps` ကို အသုံးပြုပါ။ ဖန်တီးထားသော ပရိုဖိုင်အပေါ် မူတည်၍ များသောအားဖြင့် `hyperledger/iroha:dev` ကွန်တိန်နာများကို တွေ့ရမည်။ ပုံမှန် Docker Compose ပရိုဖိုင်တွင် အဆင့်တူနိုဒ် ကွန်တိန်နာလေးခု ပါဝင်သော်လည်း သင့်ဖန်တီးထားသော `docker-compose.yml` သည် ကွဲပြားနိုင်သည်။
-
-2. log များကို စစ်ဆေးပြီး `Failed to deserialize raw genesis block` အမှားကိုရှာပါ။ သင်သည် Iroha ကို daemon mode တွင် `docker compose up -d` ဖြင့်စတင်ခဲ့ပါက `docker compose logs` command ကိုအသုံးပြုပါ။
-
-Iroha ကို အသုံးပြုခြင်းဖြင့် ဤကဲ့သို့သော ပြဿနာကို ဖြေရှင်းရန် နည်းလမ်းသည် မူလ demo တစ်ခုဖြစ်ပါက Kagami နှင့် လိုက်ဖက်သော localnet သို့မဟုတ် Docker Compose ဘန်ဒယ်ကို ပြန်လည်ပြုပြင်ပါ။
-
-```bash
-cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
-```
-
-ထို့နောက် ကွန်တိန်နာ၏ အခြေအနေဟောင်းကို ဖယ်ရှားပြီး ပြန်လည်ဖန်တီးထားသော `genesis.signed.nrt`၊ အဆင့်တူနိုဒ်၏ `config.toml` ဖိုင်များနှင့် `client.toml` ကို အသုံးပြုကာ ပြန်စပါ။
-
-Iroha instance data ကို ပြန်လည်ထူထောင်ရန် လိုအပ်ပါက အောက်ပါအတိုင်း လုပ်ပါ။
-
-1. ပထမ မအောင်မြင်သော နိုဒ်မှ ဒေတာကို ကူးယူမည့် ဒုတိယ Iroha အဆင့်တူနိုဒ်ကို ချိတ်ဆက်ပါ။
-2. နိုဒ်အသစ်က ပထမအဆင့်တူနိုဒ်နှင့် ဒေတာကို တစ်ပြေးညီဖြစ်အောင် ပြုလုပ်ပြီးသည်အထိ စောင့်ပါ။
-3. အဆင့်တူနိုဒ်အသစ်ကို ဆက်လက်လည်ပတ်နေစေပါ။
-4. ပထမအဆင့်တူနိုဒ်၏ ကနဦးဘလောက်နှင့် ပြင်ဆင်သတ်မှတ်ချက်ဖိုင်များကို ညှိနှိုင်းထားသော ရွှေ့ပြောင်းမှု၏ အစိတ်အပိုင်းအဖြစ်သာ မွမ်းမံပါ။
+တူညီသော ကွန်ရက်ကို ပြန်စရန် `python3 poc.py down` နှင့် `python3 poc.py up` ကို အစဉ်လိုက် လုပ်ဆောင်ပါ။ `state/` ကို ၎င်း၏ Docker သိုလှောင်မှုအတွဲ လေးခုနှင့်အတူ သိမ်းထားပါ။
 
 ::: info
 

@@ -1,13 +1,15 @@
 ---
 translation_locale: my
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 4c7c62c23166a19ccc3a6a4bb42d808038d755b8c05e87b9e2ce21fbbe31a6ac
+translation_source_hash: cef11a7036dcb5257647edf0c48ea1b9c144822e029df936b422998f46187b41
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # Iroha 3 ကို တပ်ဆင်ပါ။ {#install-iroha-3}
 
 ဤစာမျက်နှာသည် Iroha 3 toolchain နှင့် upstream `hyperledger-iroha/iroha` workspace ကိုအသုံးပြုသော binaries များအတွက်လက်ရှိ install workflow ကိုဖော်ပြသည်။
+
+စက်ပေါ်တွင် တိုက်ရိုက်ထည့်သွင်းရန် အောက်ပါ Rust လမ်းညွှန်အတိုင်း လုပ်ဆောင်ပါ။ Docker ဖြင့် အတည်ပြုနိုဒ်လေးခုကို လုပ်ဆောင်လိုပါက [Iroha 3 ကို စတင်ခြင်း](/my/get-started/launch-iroha.md) လမ်းညွှန်မှ စတင်ပါ။
 
 ## (၁) ကြိုတင်လိုအပ်ချက်များ {#_1-prerequisites}
 
@@ -32,7 +34,7 @@ cd iroha
 cargo build --workspace
 ```
 
-အော်ပရေတာအတွက် ဦးစားပေးထားသော ပိုသေးငယ်သည့် build ရရန် အဓိက binary များကိုသာ compile လုပ်ပါ။
+စနစ်စီမံသူများအတွက် လိုအပ်သည့် အဓိကပရိုဂရမ်များကိုသာ စက်ကုဒ်အဖြစ် ပြောင်းလိုပါက အောက်ပါအတိုင်း လုပ်ဆောင်ပါ။
 
 ```bash
 cargo build --release \
@@ -56,8 +58,8 @@ cargo run --bin kagami -- --help
 
 - ပုံမှန် peer နောက်ခံပရိုဂရမ် အတွက် `iroha3d`
 - စံ Taira ၏ validator စတင်ပေးသည့် ပရိုဂရမ်အတွက် `iroha3d_taira`
-- `iroha` အတွက် CLI ရယူခွင့် Torii လုပ်ငန်းရှင်များ API အဆုံးသတ်မှတ်ချက်များ
-- `kagami` ခလုတ်များအတွက်၊ ဘလော့ကချ်ဗီဇ နည်းပညာထုတ်ပြန်ချက်များအတွက်နှင့် localnet profile များအတွက်
+- Torii နှင့် စီမံခန့်ခွဲသူသုံး လိပ်စာများကို CLI မှ ဆက်သွယ်ရန် `iroha`
+- သော့များ၊ ပထမဘလောက် ဖော်ပြချက်များနှင့် စက်တွင်းစမ်းသပ်ကွန်ရက် ဆက်တင်များအတွက် `kagami`
 
 ## 5. Localnet နှင့် Docker Path ကို ရွေးချယ်ပါ။ {#_5-optional-localnet-and-docker-path}
 

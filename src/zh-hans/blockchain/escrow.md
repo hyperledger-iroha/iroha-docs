@@ -5,7 +5,6 @@ translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 产业资产保证 {#native-asset-escrow}
 
 本地保证是对数值资产进行账本管理的保管机制.而不是将资产发送到应用程序拥有的帐户,并依赖应用程序代码来保护该帐户,托管 ISIs 将价值转移到确定性协议保管账户中,并记录托管的生命周期在世界状态.

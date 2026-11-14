@@ -5,7 +5,6 @@ translation_source_hash: 20139011c663a0bca6f9e486ef81f698370c34f8f02319317805b0d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Təhlükəsizlik Prinsipləri {#security-principles}
 
 Bir Iroha blokçeyn dəftəri imzalanmış təlimatları təsdiqləyir və icazələri tətbiq edir. Bu, şəxsi açarları, hostları, tətbiqləri, operator iş stansiyalarını və idarəetmə prosedurlarını qorumur. Yerləşdirmə bu sistemləri qorumağı təmin etməlidir.

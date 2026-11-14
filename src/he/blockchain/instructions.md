@@ -17,12 +17,12 @@ translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 | [Mint/Burn](#mint-burn) | הנפקה או שרפה של נכסים מספריים, או הוספה או גריעה של חזרות טריגר. |
 | [SetKeyValue/RemoveKeyValue ](#setkeyvalue-removekeyvalue) |עדכון מטא-נתונים של אובייקטים בלשנה. |
 | [SetParameter](#setparameter) |להגדיר פרמטר רחב שרשרת. |
-| [Grant/Revoke](#grant-revoke) | הענקה או הסרה של הרשאות ותפקידים. |
+| [Grant/Revoke](#grant-revoke) |להעניק או להסיר הרשאות ותפקידים. |
 | [העברת ](#transfer) |העברה בעלות או ערך נכס. |
 | [אבטחה מקומית ומנעול נכסים ](#native-escrow-and-asset-locks) |סגור נכסים מספרים בפיקוח פרוטוקול. |
 | [סליקה פרטית אטומית](#atomic-private-settlement) | מנהלת מאגרים חסויים וחבילות אטומיות. |
 | [ExecuteTrigger](#executetrigger) |הפעלת טריגרים.|
-| [Log/Custom/Upgrade](#other-instructions) | רישום ביומן, הרחבה או שדרוג של התנהגות סביבת הריצה. |
+| [Log/Custom/Upgrade](#other-instructions) |רשום, להרחיב או לשפר את ההתנהגות של זמן ההפעלה. |
 
 בואו נתחיל עם סיכום של Iroha הוראות מיוחדות; אילו אובייקטים כל הוראה יכולה להתקשר אליהם ומה הוראות זמינות עבור כל אובייקט.
 

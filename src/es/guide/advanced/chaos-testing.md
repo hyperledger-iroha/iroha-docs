@@ -5,7 +5,6 @@ translation_source_hash: 5ceee448217a42e4f8bbae9595486b79019e7a880dfd0f2c71bf580
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Pruebas de Caos con Izanami {#chaos-testing-with-izanami}
 
 Izanami es el orquestador de la red de caos del espacio de trabajo de Iroha de origen. Inicia un clúster desechable de Iroha en local, envía una carga de trabajo configurable e inyecta fallos en los pares de red seleccionados para que los operadores puedan comprobar si la red sigue avanzando ante fallos controlados.

@@ -5,7 +5,6 @@ translation_source_hash: d399284a2baec507e4c979c762d6e216d8c3fbc5b4b4fe221b6bbb0
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
-
 # 產業資產保證 {#native-asset-escrow}
 
 ## 結果 {#outcome}

@@ -21,7 +21,7 @@ npm run build:native
 npm run build:dist
 ```
 
-စက်ပေါ်တိုက်ရိုက်လည်ပတ်မည့် အစိတ်အပိုင်းတည်ဆောက်မှုသည် `cargo build -p iroha_js_host` ကို ခေါ်ယူပြီး SDK စတင်ချိန်တွင် အသုံးပြုသော ပလက်ဖောင်းအလိုက် စစ်ဆေးကိန်းကို မှတ်တမ်းတင်သည်။ ရင်းမြစ်မှ တည်ဆောက်ရာတွင် စစ်ဆေးပြီးသော လက်ခံအစိတ်အပိုင်းကို `native/` တွင် ထားသည်။ သီးခြားတည်ဆောက်ပြီး စစ်ဆေးကိန်းဖြင့် အတည်ပြုထားသော လက်ခံအစိတ်အပိုင်းကို ရည်ရွယ်ချက်ရှိရှိ ပံ့ပိုးသည့်အခါမှသာ `IROHA_JS_NATIVE_DIR` ကို သတ်မှတ်ပါ။ ဤပက်ကေ့ချ်သည် ESM ကိုသာ ပံ့ပိုးသည်။ CommonJS မှ အသုံးပြုလျှင် လည်ပတ်ချိန်ခေါ်ယူသော `import()` ကို သုံးပါ။
+မူရင်းစက်ပေါ် build လုပ်ငန်းစဉ်သည် `cargo build -p iroha_js_host` ကို ထုပ်ပိုးခေါ်ယူပြီး SDK စတင်ချိန် အသုံးပြုသည့် ပလက်ဖောင်းအလိုက် checksum ကို မှတ်တမ်းတင်သည်။ ရင်းမြစ်မှ build လုပ်ရာတွင် စစ်ဆေးပြီးသော host ကို `native/` တွင် ထားသည်။ သီးခြားတည်ဆောက်ထားပြီး checksum စစ်ဆေးထားသော host ကို ရည်ရွယ်ချက်ရှိရှိ ပံ့ပိုးသည့်အခါမှသာ `IROHA_JS_NATIVE_DIR` ကို သတ်မှတ်ပါ။ ဤပက်ကေ့ချ်သည် ESM ကိုသာ ပံ့ပိုးသည်။ CommonJS မှ အသုံးပြုလျှင် dynamic `import()` ကို သုံးပါ။
 
 ## အမြန်စတင်ခြင်း {#quickstart}
 
@@ -84,9 +84,9 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 ဘရောက်ဇာသီးသန့် Connect စတင်ချိတ်ဆက်မှုအတွက် Node ကို ဦးစားပေးထားသော `ToriiClient` လုပ်ဆောင်ချက်များကို import လုပ်မည့်အစား `@iroha/iroha-js/connect-browser` ကို အသုံးပြုပါ။
 
-## မူရင်းအာမခံအပ်နှံမှု {#native-escrow}
+## စံညွှန်ကြားချက်ဖြင့် ကြားခံထိန်းသိမ်းခြင်း {#native-escrow}
 
-JavaScript နှင့် TypeScript အက်ပ်များသည် Kotodama စာချုပ်များမှတစ်ဆင့် မူရင်းအာမခံအပ်နှံမှုကို အသုံးပြုနိုင်သည်။ အာမခံအပ်နှံမှု host ခေါ်ယူချက်များကို `@iroha/iroha-js/kotodama-compiler` ဖြင့် compile လုပ်ပါ။ JavaScript SDK တွင် မူရင်းအာမခံအပ်နှံမှု transaction တည်ဆောက်ကိရိယာများကို တိုက်ရိုက် မပံ့ပိုးသေးပါ။ host ခေါ်ယူမှုနမူနာအတွက် [မူရင်းပိုင်ဆိုင်မှုအာမခံအပ်နှံခြင်း](/my/blockchain/escrow.md#javascript-and-typescript-kotodama) ကို ကြည့်ပါ။
+JavaScript နှင့် TypeScript Applications များသည် native escrow ကိုအသုံးပြုနိုင်သည်။ Kotodama စာချုပ်များ - အီလက်ထရောနစ် `@iroha/iroha-js/kotodama-compiler`; Direct native escrow transaction builders တွေကို လက်ရှိမှာ JavaScript SDK. ကြည့်ပါ။ [ပိုင်ဆိုင်မှုများကို စံညွှန်ကြားချက်ဖြင့် ကြားခံထိန်းသိမ်းခြင်း](/my/blockchain/escrow.md#javascript-and-typescript-kotodama) အငှားလက်ခံနည်းပညာခေါ်ဆိုမှုဥပမာအတွက်။
 
 ## လက်ရှိအကာအကွယ် {#current-coverage}
 

@@ -5,7 +5,6 @@ translation_source_hash: 9e13bcd28ad8ae356314041828f73af0ed25636af82ff4ea2948268
 translation_status: machine-validated
 translation_engine: bing-translator-llm+claude-opus-5-5
 ---
-
 # Iroha 3 كتاب وصفات التطبيق {#iroha-3-application-cookbook}
 
 ابن ضد Iroha 3 مع وصفات صغيرة يمكن التحقق منها تبدأ على Taira شبكة الاختبار واستمر Minamoto الشبكة الرئيسية للقراءة فقط. يوضح كل وصف ما إذا كان عامًا للقراءة، كتابة بحساب ممول عادي، أو عملية محمية بالأذونات. تستخدم الأوامر الحالية I105 معرّفات الحسابات، اختيار الرسوم الصريح، والسلوك الذي تم التحقق منه عند Iroha التزم [`c8c872461e92f04325c350cdd952f4276e96f9dc`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc).

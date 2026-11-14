@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /help/deployment-issues.md
-translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
+translation_source_hash: 44460ce5888ad3939f2b7d5dbec01d9d5b1ecf22c502dadb6c6f2b9da280e747
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -38,13 +38,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker وتأليف {#docker-and-compose}
 
-قم بإنشاء Compose من ناتج localnet الحالي Kagami بحيث تتطابق وسائط سطر الأوامر وملفات التكوين مع الكود الذي تم التحقق منه:
+اتبع دليل [إطلاق Iroha 3](/ar/get-started/launch-iroha.md) لبناء أربع عقد تحقق وتشغيلها في Docker باستخدام ملفات تنفيذية من المراجعة نفسها.
 
-```bash
-cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+من دليل الحزمة، شغّل `python3 poc.py logs` لعرض سجلات عقد التحقق.
 
 إذا بدأت عملية نشر مكون ثم توقفت، فافحص سجلات الخادم لهذه الأسباب:
 
@@ -53,7 +49,7 @@ docker compose -f ./docker-compose.yml up
 - العناوين المعلَن عنها P2P التي تعمل فقط داخل شبكة الحاوية
 - إعادة استخدام الحجم المحلي بعد إعادة توليد أصل سلسلة الكتل
 
-عند اختبار بلوكشين جديدة من البداية، يجب إزالة وحدات Kura القديمة قبل إعادة تشغيل النظام. الاحتفاظ بتخزين الكتل القديم مع بلوكشين جديدة سيؤدي إلى فشل إعادة التشغيل.
+يتطلب إنشاء كتلة تأسيس جديدة أن تكون مساحة تخزين العقدة فارغة. لإعادة تشغيل الشبكة نفسها، استخدم `python3 poc.py down` ثم `python3 poc.py up`. احتفظ بالدليل `state/` مع وحدات تخزين Docker الأربع الخاصة بالشبكة.
 
 ## كوبرنتيس {#kubernetes}
 
@@ -66,9 +62,9 @@ docker compose -f ./docker-compose.yml up
 
 إذا أعيد تشغيل البود بشكل متكرر، قارن التكوين المعروض في البود مع المتوقع [`peer.template.toml`](/ar/reference/peer-config/index.md#template) وتحقق مما إذا كان نظير الشبكة يعيد تشغيل القديم Kura بيانات.
 
-## ملف SORA Nexus {#sora-profile}
+## ملف تعريف SORA Nexus {#sora-profile}
 
-ينبغي لعمليات نشر Iroha 3 الخاصة أو المحلية التي تستخدم SORA Nexus أو SoraFS أو تدفقات متعددة مسارات التنفيذ أن تبدأ خدمة الخلفية القياسية مع تفعيل ملف SORA Nexus:
+عند نشر Iroha 3 في بيئة خاصة أو محلية تستخدم SORA Nexus أو SoraFS أو مسارات متعددة، شغّل الخدمة القياسية مع تفعيل ملف التعريف هذا.
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

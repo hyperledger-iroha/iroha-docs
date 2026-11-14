@@ -5,7 +5,6 @@ translation_source_hash: 020591f0d7c5560dfb2e9f3f4537f429cbeba864c3eb022856d42ad
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Virtual Shaxsiy Tarmoqlar {#virtual-private-networks}
 
 <abbr title="Virtual Private Network">VPN</abbr> — bu tarmoq nazorati bo‘lib, kim Iroha xizmatlariga kira olishini cheklaydi. Bu xususiy va konsortsium joylashtirishlarida eng foydali bo‘lib, ular validatorlar, ilova backendlari va operatorlar ochiq internet yo‘llari o‘rniga xususiy manzillar orqali muloqot qilishlari kerak bo‘lgan holatlarda ishlatiladi.

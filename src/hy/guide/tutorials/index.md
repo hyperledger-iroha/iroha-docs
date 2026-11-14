@@ -5,7 +5,6 @@ translation_source_hash: 4fee7425a237d2781745025c9cd240fbc9df84f07f7427ff19c4bd8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # SDK Դասընթացներ {#sdk-tutorials}
 
 Այս էջերը ամփոփում են հիմնական աշխատանքային տարածքից ուղարկված Iroha 3 հաճախորդի մուտքի կետերը, ներառյալ կանոնիկ փաթեթների անունները, տեղադրման ուղիները եւ նվազագույն սկիզբը:

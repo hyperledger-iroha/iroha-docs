@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/best-practices/network-deployment.md
-translation_source_hash: 7839268b8c1f6700b0c26652e3308fa4e8acef4717d8527c609b6f30fb8c84ab
+translation_source_hash: 489b174b9bdd21a4c4c2c896911686a6020e2833c8808304cfd37a5bf31c7780
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -24,6 +24,8 @@ translation_engine: nllb-200-ct2
 - 用至少四個驗證器來實現最小的拜占庭錯誤耐受性部署.
 - 在能力規劃中,與觀察者分別進行驗證. 觀察者不會投票,提出或收集資訊,但它們仍然消耗儲存,區塊同步和網路頻寬.
 - 把創世,執行器和拓變化視為協調的遷移而不是單對等節點編輯.
+
+請依照[四個驗證節點的啟動指南](/zh-hant/get-started/launch-iroha.md)，用 Docker 啟動網路，並測試停止一個驗證節點後的復原流程。
 
 參見 [Genesis](/zh-hant/reference/genesis.md), [對等節點管理](/zh-hant/guide/configure/peer-management.md)和 [績效和指標](/zh-hant/guide/advanced/metrics.md#node-count-and-quorum).
 

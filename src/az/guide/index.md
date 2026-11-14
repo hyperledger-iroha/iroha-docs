@@ -5,7 +5,6 @@ translation_source_hash: 5ea24369e85692bd9069e446d1e50612efade2d83e4ddf73a498058
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Bələdçi {#guide}
 
 Bu bölmədən Iroha ilə qurduğunuzda, işlədiyinizdə və ya inteqrasiya edərkən istifadə edin. İlk müştəri üçün SDK dərslikləri ilə başlayın, sonra paylaşılan şəbəkədə yerləşdirmədən əvvəl ən yaxşı təcrübələrə və operator istinadlarına keçin.

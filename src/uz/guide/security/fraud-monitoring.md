@@ -5,7 +5,6 @@ translation_source_hash: 4739a0bfe80f14545a51c804abbe6a2dfa5497d546192f76096f938
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Firibgarlikni nazorat qilish {#fraud-monitoring}
 
 Iroha joylashtirilishida firibgarlikni kuzatish — reyestr hodisalari, so‘rovlar, ruxsatlar va ilova kontekstiga tayangan operatsion nazoratdir. Iroha nimalar yuborilgani, qabul qilingani, rad etilgani va yakuniy ravishda yozilganini qayd etadi. Kuzatuv tizimingiz biznes jarayoningiz uchun qaysi andozalar shubhali ekanini belgilaydi va bunday holatlarni tekshiruvchilarga yoki avtomatik javob nazoratlariga yo‘naltiradi.

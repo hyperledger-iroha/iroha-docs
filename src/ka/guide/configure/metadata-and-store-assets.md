@@ -5,7 +5,6 @@ translation_source_hash: b538b2cad11d4fd3b2b7d201a20882389049d3e4453f11baa6f8548
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # მეტამონაცემები და ბლოკჩეინების რეესტრი შენახვის არჩევანი {#metadata-and-ledger-storage-choices}
 
 Iroha 3 მონაცემთა მოდელს არ აქვს ცალკე `Store` აქტივის ტიპი კვანძური მნიშვნელობის მონაცემებისთვის. გამოიყენეთ შემდეგი შენახვის არჩევანი.

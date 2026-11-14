@@ -5,7 +5,6 @@ translation_source_hash: 3d317c00e75525d70f6cb9ef7f8eeec6911e2f124af8052cd2fc719
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # 公開鍵暗号 {#public-key-cryptography}
 
 公開鍵暗号は関連する公開鍵と秘密鍵を使用します。公開鍵は共有できます。秘密鍵は権限者の管理下に置く必要があります。セキュリティは、サポートされているアルゴリズムを使用し、鍵を安全な乱数で生成し、秘密鍵を保護することに依存します。

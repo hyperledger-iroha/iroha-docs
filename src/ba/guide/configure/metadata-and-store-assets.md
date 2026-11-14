@@ -5,7 +5,6 @@ translation_source_hash: b538b2cad11d4fd3b2b7d201a20882389049d3e4453f11baa6f8548
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Метамәғлүмәттәрҙе һәм иҫәп-хисап һандарын һаҡлау варианттары {#metadata-and-ledger-storage-choices}
 
 Iroha 3 мәғлүмәт моделендә ирекле төп-ҡиммәт мәғлүмәттәр өсөн айырым `Store` актив тибы юҡ.
@@ -23,7 +22,7 @@ Iroha 3 мәғлүмәт моделендә ирекле төп-ҡиммәт м�
 
 ## Санлы активтар һәм NFTs {#numeric-assets-and-nfts}
 
-Торош ҡиммәт йөрөткәндә [активтар](/ba/blockchain/assets.md) һәм [NFTs](/ba/blockchain/nfts.md) ҡулланығыҙ:
+Ҡиммәт сағылдырған хәл өсөн [активтар](/ba/blockchain/assets.md) һәм [NFTs](/ba/blockchain/nfts.md) ҡулланығыҙ:
 
 - Күсемле баланстар өсөн һанлы активтар
 - NFTs берҙән-бер милектәге яҙмалар өсөн

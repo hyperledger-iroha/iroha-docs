@@ -5,7 +5,6 @@ translation_source_hash: f085fa1587595414f95705bbe2cd285752b0fe12cffb9ef29a33399
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # şəbəkə tərəfdaşının idarə edilməsi {#peer-management}
 
 Əgər siz hər hansı bir dilə xas təlimatı izləmisinizsə, indi insanların qoşulmaq istədiyi yaxşı işləyən bir şəbəkəniz var.

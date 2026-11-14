@@ -5,7 +5,6 @@ translation_source_hash: d40a0298466fdcbd30a9fdff979887b033e069646fcf3e437527d4d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # דוגמא לעורר אירוע {#event-trigger-example}
 
 דוגמא זו משתמשת בחשבון קנוני ללא תחום IDs ובגדרות נכסים מתוכנן במודל הנתונים Iroha 3.

@@ -5,7 +5,6 @@ translation_source_hash: d0e20c3784c9456f74a68821530920043b0ed5d65890e97d488be30
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # استكشاف الأخطاء وإصلاحها {#troubleshooting}
 
 هذا القسم مخصص للمساعدة إذا واجهت مشاكل أثناء العمل مع Iroha. إذا حدث خطأ ما، يرجى [تحقق من المفاتيح](#check-the-keys) أولاً. إذا لم يساعد ذلك، تحقق من تعليمات استكشاف الأخطاء لكل مرحلة:

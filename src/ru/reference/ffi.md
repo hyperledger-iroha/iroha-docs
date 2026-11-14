@@ -5,7 +5,6 @@ translation_source_hash: 2df23722cea2f918874f0109b31b24bb3d8dbd7f95c00d1d6d1568c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Интерфейсы внешних функций (FFI) {#foreign-function-interfaces-ffi}
 
 Пакет программного обеспечения `iroha_ffi` предоставляет макросы и трейты для генерации C ABI привязок из Rust APIs. Он используется там, где типы Iroha должны пересекать границу FFI, например, с помощью SDK привязок или интеграций с хостом.

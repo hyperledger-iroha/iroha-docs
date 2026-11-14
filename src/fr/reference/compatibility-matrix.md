@@ -5,7 +5,6 @@ translation_source_hash: 5928eaf7e65023ad1867ca8d125efa61da6d8fe505b91e71b2c2121
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Matrice de compatibilité {#compatibility-matrix}
 
 La matrice de compatibilité montre la croisée SDK couverture des scénarios pour le courant Iroha 3 docs configurés. Par défaut, la page charge la vue de données ponctuelle groupée générée à partir des éléments épinglés [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) révision.

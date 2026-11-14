@@ -5,7 +5,6 @@ translation_source_hash: 423f8c17d5d7072d1733ccac2337d70243f6e725f7786e9f2fc7052
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # نمذجة البيانات {#data-modeling}
 
 ينبغي نمذجة بيانات دفتر الأستاذ في سلسلة الكتل حول الملكية وسلوك التحويل وحدود الإذن وأنماط الاستعلام. اختر أصغر تمثيل على السلسلة يمكنه دعم القابلية للتدقيق والتنفيذ الحتمي.

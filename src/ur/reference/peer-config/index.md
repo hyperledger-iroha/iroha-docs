@@ -5,7 +5,6 @@ translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Iroha ترتیب دینا {#configuring-iroha}
 
 مقامی نیٹ ورک نوڈ ترتیب TOML فائلوں میں مقرر کی جاتی ہے۔ یہ [`SetParameter`](/ur/blockchain/instructions.md#setparameter) ہدایات کے ذریعہ تبدیل کردہ آن لائن ترتیب سے مختلف ہے۔ پیداوار کا رویہ تشکیل فائل یا آن لائن پیرامیٹر میں نمائندگی کیا جانا چاہئے۔ ماحول متغیرات فیچر گیٹس نہیں ہیں۔

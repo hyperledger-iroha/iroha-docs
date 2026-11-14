@@ -5,7 +5,6 @@ translation_source_hash: 9e13bcd28ad8ae356314041828f73af0ed25636af82ff4ea2948268
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
-
 # Iroha 3 აპლიკაციის სახელმძღვანელო {#iroha-3-application-cookbook}
 
 ააშენეთ წინააღმდეგ Iroha 3 პატარა, შემოწმებადი რეცეპტებით, რომლებიც იწყება Taira ტესტის ქსელი და შენახვა Minamoto ყველა რეცეპტი აცხადებს, არის თუ არა ეს საჯარო წაკითხვა. ჩვეულებრივი დაფინანსებული ანგარიშის წერა, ან ნებართვის გათვალისწინებით ოპერაცია. ბრძანებები იყენებენ მიმდინარე I105 ანგარიშის ID-ები, მკაფიო საფასურის შერჩევა და ქცევა შემოწმებული Iroha პროტოკოლის განხორციელება [`c8c872461e92f04325c350cdd952f4276e96f9dc`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc).

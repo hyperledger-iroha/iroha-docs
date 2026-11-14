@@ -5,7 +5,6 @@ translation_source_hash: 2df23722cea2f918874f0109b31b24bb3d8dbd7f95c00d1d6d1568c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # უცხოური ფუნქციების ინტერფეისები (FFI) {#foreign-function-interfaces-ffi}
 
 სააგენტო `iroha_ffi` პროგრამული უზრუნველყოფის პაკეტი უზრუნველყოფს C-გენერაციის მაკროებსა და თვისებებს. ABI ვალდებულებები Rust APIs. გამოიყენება: Iroha ტიპები უნდა გადაკვეთოს a FFI საზღვარი, მაგალითად: SDK დამაკავშირებელი ან ჰოსტი ინტეგრაციები.

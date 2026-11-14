@@ -5,7 +5,6 @@ translation_source_hash: 8d64a9a17c93f60306c279e8656e6edde8ce5dd024e742218bfb957
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # 実物資産 {#real-world-assets}
 
 実世界の資産（RWAs）は、その所有権または管理がオンチェーンで追跡されるオフチェーン資産をモデル化します。Iroha では、RWA は、生成された識別子、所有者アカウント、数量、ビジネスメタデータ、出所、そして任意のライフサイクル制御を持つ登録されたブロックチェーン台帳ロットです。

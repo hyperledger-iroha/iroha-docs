@@ -5,7 +5,6 @@ translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Iroha կազմավորումը {#configuring-iroha}
 
 Տեղական հանգույցային կոֆիգուրացիան սահմանվում է TOML ֆայլերում: Սա տարբերվում է շղթայի վրա փոփոխված կոնֆիգորացիայից, որը փոխվում է [`SetParameter`](/hy/blockchain/instructions.md#setparameter) հրահանգների միջոցով: Արտադրման վարքագիծը պետք է ներկայացվի կազմավորման ֆայլում կամ շղթայի մեջ պարամետրով. Շրջակա միջավայրի փոփոխվողները չեն առանձնահատկությունների դարպասներ.

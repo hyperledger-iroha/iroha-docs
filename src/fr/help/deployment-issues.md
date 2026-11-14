@@ -1,7 +1,7 @@
 ---
 translation_locale: fr
 translation_source: /help/deployment-issues.md
-translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
+translation_source_hash: 44460ce5888ad3939f2b7d5dbec01d9d5b1ecf22c502dadb6c6f2b9da280e747
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta+reviewed-source-amendment
 ---
@@ -38,13 +38,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker et Docker Compose {#docker-and-compose}
 
-Générez Compose à partir de la sortie localnet actuelle Kagami afin que les arguments de la ligne de commande et les fichiers de configuration correspondent au code extrait :
+Suivez le guide [Lancer Iroha 3](/fr/get-started/launch-iroha.md) pour compiler et lancer quatre validateurs dans Docker avec des binaires issus de la même révision.
 
-```bash
-cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Depuis le répertoire du kit, exécutez `python3 poc.py logs` pour consulter les journaux des validateurs.
 
 Si un déploiement Compose démarre puis se bloque, inspectez les journaux du démon pour :
 
@@ -53,7 +49,7 @@ Si un déploiement Compose démarre puis se bloque, inspectez les journaux du d�
 - adresses P2P annoncées qui ne fonctionnent que dans le réseau du conteneur
 - réutilisation du volume local après la régénération du genesis de la blockchain
 
-Lors du test d'une nouvelle genèse de blockchain, supprimez les anciens volumes Kura avant de redémarrer la pile. Conserver l'ancien stockage de blocs avec une nouvelle genèse de blockchain fera échouer la relecture.
+Un nouveau bloc de genèse nécessite un espace de stockage vide sur chaque pair. Utilisez `python3 poc.py down` et `python3 poc.py up` pour redémarrer le même réseau. Conservez `state/` avec ses quatre volumes Docker.
 
 ## Kubernetes {#kubernetes}
 
@@ -68,7 +64,7 @@ Si un pod redémarre sans cesse, comparez sa configuration générée avec celle
 
 ## Profil SORA Nexus {#sora-profile}
 
-Les déploiements privés ou locaux d’Iroha 3 utilisant SORA Nexus, SoraFS ou des opérations sur plusieurs voies doivent démarrer le daemon standard avec le profil SORA Nexus activé :
+Pour un déploiement Iroha 3 privé ou local utilisant SORA Nexus, SoraFS ou plusieurs voies, démarrez le service standard en activant ce profil.
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

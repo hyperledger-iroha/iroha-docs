@@ -5,7 +5,6 @@ translation_source_hash: 4fee7425a237d2781745025c9cd240fbc9df84f07f7427ff19c4bd8
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # SDK Tutoriales {#sdk-tutorials}
 
 Estas páginas resumen los puntos de entrada del cliente Iroha 3 enviados desde el espacio de trabajo principal, incluidos los nombres canónicos de los paquetes, las rutas de instalación y los puntos de inicio mínimos.

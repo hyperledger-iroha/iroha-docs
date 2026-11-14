@@ -5,7 +5,6 @@ translation_source_hash: 3d317c00e75525d70f6cb9ef7f8eeec6911e2f124af8052cd2fc719
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
-
 # 公钥密码学 {#public-key-cryptography}
 
 公钥密码学使用相互关联的公钥和私钥。公钥可以共享；私钥必须始终由相应权限主体控制。安全性取决于使用受支持的算法、通过安全随机源生成密钥以及妥善保护私钥。

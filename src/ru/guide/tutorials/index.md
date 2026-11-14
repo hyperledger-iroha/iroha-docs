@@ -5,7 +5,6 @@ translation_source_hash: 4fee7425a237d2781745025c9cd240fbc9df84f07f7427ff19c4bd8
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # SDK Учебные пособия {#sdk-tutorials}
 
 Эти страницы суммируют точки входа клиента Iroha 3, поставляемые из основной рабочей области, включая канонические имена пакетов, пути установки и минимальные стартовые точки.

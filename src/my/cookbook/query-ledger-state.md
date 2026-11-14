@@ -5,7 +5,6 @@ translation_source_hash: 866b7d3ca37be67878f6f319ce0b0e27eac52c581decad1f46096ef
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
-
 # လယ်ဂျာအခြေအနေကို Query လုပ်ခြင်း {#query-ledger-state}
 
 ## ရလဒ် {#outcome}

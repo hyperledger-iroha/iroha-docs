@@ -5,7 +5,6 @@ translation_source_hash: 40fe8b19344d8eff66b178dc8576e2e049fef50bd3212fbddc5c0d5
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
-
 # ခွင့်ပြုချက်များနှင့် အခန်းကဏ္ဍ {#permissions-and-roles}
 
 ## ရလဒ် {#outcome}

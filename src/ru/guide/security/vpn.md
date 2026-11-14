@@ -5,7 +5,6 @@ translation_source_hash: 020591f0d7c5560dfb2e9f3f4537f429cbeba864c3eb022856d42ad
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Виртуальные частные сети {#virtual-private-networks}
 
 Сетевой контроль <abbr title="Virtual Private Network">VPN</abbr> — это механизм, который ограничивает, кто может обращаться к сервисам Iroha. Он наиболее полезен для частных и консорциумных развертываний, где валидаторы, серверная часть приложений и операторы должны общаться через приватные адреса вместо открытых интернет-маршрутов.

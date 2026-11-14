@@ -5,7 +5,6 @@ translation_source_hash: c5f10d1395e0b7704d29f4a535dd317b2cabe9c838208f76b7b776d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Нэргүй гүйлгээ {#anonymous-transactions}
 
 Iroha дахь нэргүй гүйлгээ нь нууцлаг хөрөнгө оруулалтын үйлдлүүдээс бүрддэг. Нийтлэг дүн бүхий нээлттэй данс хоорондын шилжүүлгийг бичихийн оронд, түрийвч нь утгыг хамгаалагдсан блокчэйн бүртгэл рүү шилжүүлж, дараа нь нууц нотолгоотой харанхуй тэмдэгтийг зарцуулдаг.

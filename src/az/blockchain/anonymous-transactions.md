@@ -5,7 +5,6 @@ translation_source_hash: c5f10d1395e0b7704d29f4a535dd317b2cabe9c838208f76b7b776d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Anonim Əməliyyatlar {#anonymous-transactions}
 
 Iroha-də anonim əməliyyatlar məxfi aktiv əməliyyatlarından ibarətdir. İctimai məbləğlərlə açıq hesabdan-hesaba köçürmələr yazmaq əvəzinə, bir cüzdan dəyəri qorunan blokçeyn dəftərinə köçürür və sonra sıfır-bilik sübutları ilə qeyri-şəffaf qeydləri xərcləyir.

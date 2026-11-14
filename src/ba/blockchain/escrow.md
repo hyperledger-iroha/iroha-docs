@@ -5,7 +5,6 @@ translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Протоколға индерелгән актив эскроуы {#native-asset-escrow}
 
 Native escrow — һанлы активтар өсөн ledger идара иткән һаҡлау механизмы. Активтарҙы ҡушымтаға ҡараған иҫәпкә ебәреп, уны һаҡлау өсөн ҡушымта кодына таяныу урынына, escrow ISIs ҡиммәтте детерминистик протокол һаҡлау иҫәбенә күсерә һәм escrow-ҙың йәшәү циклын донъя торошонда теркәй.

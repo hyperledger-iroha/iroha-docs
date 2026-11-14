@@ -5,7 +5,6 @@ translation_source_hash: 5928eaf7e65023ad1867ca8d125efa61da6d8fe505b91e71b2c2121
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Сәйкестік матрицасы {#compatibility-matrix}
 
 Сәйкестік матрицасы өзара SDK ағымдағы сценарийді қамту Iroha 3 құжаттар орнатылды. Әдепкі бойынша, бет бекітілген деректерден жасалған жинақталған нүкте уақыты көрінісін жүктейді [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) қайта қарау.

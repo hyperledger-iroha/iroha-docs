@@ -5,7 +5,6 @@ translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # مقامی اثاثہ جات کا حصول {#native-asset-escrow}
 
 Native escrow اعداد و شمار کے اثاثوں کے لئے ایک لیجر کے زیر انتظام ذخیرہ کرنے کا طریقہ کار ہے۔ درخواست کے مالک اکاؤنٹ میں اثاثے بھیجنے اور اس اکاؤنٹ کی حفاظت کے ل application درخواست کوڈ پر انحصار کرنے کے بجائے ، ایسکرو ISIs قدر کو ایک تعیناتی پروٹوکول کی نگہداشت کے اکاؤنٹ میں منتقل کریں اور عالمی حالت میں ایسکرو زندگی کا دور ریکارڈ کریں۔

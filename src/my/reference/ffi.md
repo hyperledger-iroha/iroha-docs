@@ -5,7 +5,6 @@ translation_source_hash: 2df23722cea2f918874f0109b31b24bb3d8dbd7f95c00d1d6d1568c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # နိုင်ငံခြား Function Interfaces များ (FFI) {#foreign-function-interfaces-ffi}
 
 နိုင်ငံတကာ `iroha_ffi` C ကို ထုတ်လုပ်ရန်အတွက် မက်ကရိုများနှင့် အရည်အသွေးများကို ထောက်ပံ့ပေးသည်။ ABI ကန့်သတ်ချက်များ Rust APIs. ၎င်းကို အသုံးပြုရာတွင် Iroha အမျိုးအစားတစ်ခုဖြတ်ဖို့လိုအပ်ပါတယ် FFI နယ်နိမိတ်ကို ဥပမာအားဖြင့် SDK ချည်နှောင်ခြင်း (သို့) အိမ်ရှင်ပေါင်းစပ်ခြင်း။

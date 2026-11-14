@@ -1,13 +1,15 @@
 ---
 translation_locale: ka
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 4c7c62c23166a19ccc3a6a4bb42d808038d755b8c05e87b9e2ce21fbbe31a6ac
+translation_source_hash: cef11a7036dcb5257647edf0c48ea1b9c144822e029df936b422998f46187b41
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # დამონტაჟება Iroha 3 {#install-iroha-3}
 
 აღნიშნული გვერდი მოიცავს Iroha 3 ინსტრუმენტების ჯაჭვისა და ბინარების ამჟამინდელი დამონტაჟების სამუშაო პროცესს, რომლებიც იყენებენ `hyperledger-iroha/iroha` სამუშაო სივრცეს ზემოთ.
+
+პირდაპირ ჰოსტზე დასაყენებლად მიჰყევით ქვემოთ მოცემულ Rust-ის ინსტრუქციას. Docker-ის საშუალებით ოთხი ვალიდატორის გასაშვებად დაიწყეთ სახელმძღვანელოთი [Iroha 3-ის გაშვება](/ka/get-started/launch-iroha.md).
 
 ## 1. წინასწარი პირობები {#_1-prerequisites}
 

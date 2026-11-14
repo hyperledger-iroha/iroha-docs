@@ -1,7 +1,7 @@
 ---
 translation_locale: my
 translation_source: /reference/binaries.md
-translation_source_hash: 75848623e735abc80326f9ebda6f74ab438b67eaeddeacdd4d8c5509856a999e
+translation_source_hash: 887291d6ef0d9a919b076e4b632ee1cec7a2c289b284b40346ed4b2a0f4a41b3
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -10,7 +10,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 Iroha 3 အော်ပရေတာရဲ့ အလုပ်ခွင်ဟာ အဓိက ဘိုင်နရီ လေးခုကို လှည့်ပတ်ပါတယ်။
 
 - အဆင့်တူနိုဒ် နောက်ခံဝန်ဆောင်မှုကို လည်ပတ်ရန် [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/irohad)
-- Taira အတည်ပြုသူအတွက် စံသတ်မှတ် စတင်ကိရိယာဖြစ်သော `iroha3d_taira`
+- စံသတ်မှတ် Taira ၏ validator စတင်ကိရိယာအတွက် `iroha3d_taira`
 - [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli) အတွက် CLI operator command တွေနဲ့
 - [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami) Key များ၊ blockchain genesis များ၊ localnets များနှင့် profile များအတွက်
 
@@ -49,31 +49,11 @@ cargo run --bin kagami -- --help
 
 ## Docker ဓာတ်ပုံ {#docker-image}
 
-မူရင်းလုပ်ငန်းခွင်ရှိ ရင်းမြစ်ကုဒ်နှင့် ကိုက်ညီသော Docker Compose ဖိုင်များ ထုတ်လုပ်ရန် `kagami localnet generate` နှင့် `kagami docker` ကို အသုံးပြုသည်။ ထုတ်လုပ်ထားသော ထိုဖိုင်များနှင့် `hyperledger/iroha:dev` အဆင်သင့်ဆော့ဖ်ဝဲပုံရိပ်ကို တွဲသုံးနိုင်သည်။
-
-CLI ကို container တစ်ခုထဲ ထည့်ပေးပါ။
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-Kagami ကို container တစ်ခုထဲထည့်ပါ။
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-နိုဒ်ကို စတင်ရန် ဒေသတွင်းကွန်ရက်နှင့် Compose ဖိုင်ကို ဦးစွာ ဖန်တီးပါ။
-
-```bash
-cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+တူညီသော ရင်းမြစ်ဗားရှင်းမှ ဘိုင်နရီဖိုင်များကို တည်ဆောက်ပြီး Docker တွင် အတည်ပြုသူ လေးခုကို စတင်ရန် [လွှတ်တင်ခြင်း Iroha 3](/my/get-started/launch-iroha.md) လမ်းညွှန်ကို လိုက်နာပါ။
 
 ## ဘယ် Binary ကို သုံးရမလဲ။ {#which-binary-should-i-use}
 
-- အများသုံး Taira အတည်ပြုနိုဒ် ထုတ်ဝေမှုအပြင်ဘက်တွင် နိုဒ်များကို စတင်ခြင်း သို့မဟုတ် လည်ပတ်ခြင်းအတွက် `iroha3d` ကို အသုံးပြုပါ။
-- စံသတ်မှတ် Taira အတည်ပြုနိုဒ် ဖြန့်ချိတပ်ဆင်မှုအတွက်သာ `iroha3d_taira --sora` ကို အသုံးပြုပါ။ ၎င်းသည် Taira ၏ ဘလော့ခ်ချိန်း၊ သိုလှောင်မှုနှင့် လည်ပတ်ချိန်လက်မှတ်ထိုးသူ ပရိုဖိုင်တို့ကို မဖြစ်မနေလိုက်နာစေသည်။
+- အများသုံး Taira ၏ validator ထုတ်ဝေမှုအပြင်ဘက်ရှိ peer များကို စတင် သို့မဟုတ် လည်ပတ်လျှင် `iroha3d` ကို အသုံးပြုပါ။
+- စံသတ်မှတ် Taira ၏ validator ဖြန့်ချိတပ်ဆင်မှု အတွက်သာ `iroha3d_taira --sora` ကို အသုံးပြုပါ။ ၎င်းသည် Taira ၏ chain၊ သိုလှောင်မှုနှင့် လည်ပတ်ချိန်လက်မှတ်ထိုးသူ ပရိုဖိုင်တို့ကို လိုက်နာစေသည်။
 - `iroha` ကို အသုံးပြုပြီး blockchain ledger ကို မေးမြန်းရန်၊ ငွေပေးချေမှု တင်ပြရန် သို့မဟုတ် operator API အဆုံးမှတ်များကို စစ်ဆေးရန် လိုအပ်ပါက။
 - ကီးများ၊ genesis manifest များ၊ ပရိုဖိုင်အစုများ သို့မဟုတ် localnet ဒေတာများ လိုအပ်လျှင် `kagami` ကို အသုံးပြုပါ။

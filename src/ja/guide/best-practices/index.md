@@ -5,7 +5,6 @@ translation_source_hash: c463a3ca8fdef5c852746a7fdcfd6a1f7be5f95f88a5cf443c989ec
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # ベストプラクティス {#best-practices}
 
 このセクションでは、Iroha アプリケーションおよびネットワークの運用指向のガイダンスをまとめています。これは、実装する機能ではなく、あなたが下す必要のある意思決定ごとに整理されています。

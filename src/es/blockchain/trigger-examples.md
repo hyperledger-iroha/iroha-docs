@@ -5,7 +5,6 @@ translation_source_hash: d40a0298466fdcbd30a9fdff979887b033e069646fcf3e437527d4d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Ejemplo de activador de evento {#event-trigger-example}
 
 Este ejemplo utiliza identificadores de cuenta canónicos sin dominio y definiciones de activos proyectadas en el modelo de datos Iroha 3.

@@ -5,7 +5,6 @@ translation_source_hash: b42e035ea1056c07dd9c8e2f651e362c7f4b759a345508d2f099ad1
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Kaigi を JavaScript アプリに埋め込む {#embed-kaigi-in-a-javascript-app}
 
 Kaigi は Iroha 上で会議のライフサイクルを記録し、ブラウザは WebRTC を通じてオーディオとビデオを伝送します。ブロックチェーン台帳は通話、参加者リストの変更、暗号化されたシグナリングメタデータ、および最終ステータスを保存します。メディア中継ではありません。

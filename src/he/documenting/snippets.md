@@ -5,7 +5,6 @@ translation_source_hash: 48d6670f100c7c6368fa03f163c9ff9e0322d36e51c22f89562b23b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # חתיכות קוד {#code-snippets}
 
 קטעים שנוצרו מחזיקים דוגמאות קשורות לקוד, להגדרת, ומערכות מההפכה Iroha שהייתה יוצרת אותם.

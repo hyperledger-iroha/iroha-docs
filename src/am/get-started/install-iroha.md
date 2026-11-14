@@ -1,13 +1,15 @@
 ---
 translation_locale: am
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 4c7c62c23166a19ccc3a6a4bb42d808038d755b8c05e87b9e2ce21fbbe31a6ac
+translation_source_hash: cef11a7036dcb5257647edf0c48ea1b9c144822e029df936b422998f46187b41
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
 # Iroha 3 ን ጫን {#install-iroha-3}
 
 ይህ ገጽ የአሁኑን የመጫኛ የስራ ሂደት ለ Iroha 3 የመሳሪያ ሰንሰለት እና ሁለትዮሽ የላይኛውን `hyperledger-iroha/iroha` የስራ ቦታ ይሸፍናል።
+
+በአገልጋዩ ላይ በቀጥታ ለመጫን ከዚህ በታች ያሉትን የRust መመሪያዎች ይከተሉ። አራት አረጋጋጮችን በDocker ለማስኬድ ከ[Iroha 3 ን ማስኬድ](/am/get-started/launch-iroha.md) መመሪያ ይጀምሩ።
 
 ## 1. ቅድመ ሁኔታዎች {#_1-prerequisites}
 

@@ -5,7 +5,6 @@ translation_source_hash: 042673aca63962b4b3f91e59c29bc5030ada7d63f08299189995130
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # ተግባራዊ ደህንነት {#operational-security}
 
 የአሠራር ደህንነት በ Iroha ማሰማራት ዙሪያ ያሉትን ሰዎች፣ አስተናጋጆች፣ ምስክርነቶች እና ሂደቶችን ይጠብቃል። የብሎክቼይን መዝገብ ተቀባይነት ያለው የስቴት ለውጦችን ይመዘግባል። ኦፕሬተሮች የስራ ቦታዎቻቸውን፣ የፊርማ ቁልፎቻቸውን እና የክስተት ምላሽ ሂደታቸውን በተናጠል መጠበቅ አለባቸው።

@@ -5,7 +5,6 @@ translation_source_hash: 20139011c663a0bca6f9e486ef81f698370c34f8f02319317805b0d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
-
 # 安全原则 {#security-principles}
 
 Iroha 账本验证已签名的指令并应用权限规则，但它不会保护私钥、主机、应用、运营人员工作站或治理流程。这些系统必须由部署方保护。

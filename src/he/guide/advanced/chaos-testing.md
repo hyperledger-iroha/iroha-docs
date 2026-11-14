@@ -5,7 +5,6 @@ translation_source_hash: 5ceee448217a42e4f8bbae9595486b79019e7a880dfd0f2c71bf580
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # בדיקת כאוס עם Izanami {#chaos-testing-with-izanami}
 
 Izanami הוא ארכיסטרטור הרדמה במרחב העבודה Iroha העליון. הוא מתחיל קלאסטר מקומי חד פעמי Iroha, שולח עומס עבודה מותאם ומכניס פגמים לצמתים נבחרים כדי שהפעילים יוכלו לבדוק אם הרשת ממשיכה להתקדם תחת כישלון מנוהל.

@@ -1,13 +1,13 @@
 ---
 translation_locale: ru
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: d4fd88de377b9c88e0293ed07f307ad38c3f8b05ed898fd051c5bfb738d66681
+translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
 # Горячая перезагрузка Iroha в контейнере Docker {#hot-reload-iroha-in-a-docker-container}
 
-Используйте горячую перезагрузку только для локальной отладки. Для обычной локальной разработки предпочтительнее пересобирать образ или перезапускать сгенерированный стек Docker Compose из свежего набора Kagami.
+Используйте горячую перезагрузку только для локальной отладки. В руководстве [Запуск Iroha 3](/ru/get-started/launch-iroha.md) описано, как собрать и запустить четыре валидатора в Docker, используя двоичные файлы одной ревизии.
 
 ## Заменить сетевого узла Binary {#replace-the-peer-binary}
 
@@ -24,20 +24,11 @@ docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/loca
 docker restart <container>
 ```
 
-Используйте `docker ps`, чтобы подтвердить имя контейнера. В сгенерированном стеке контейнеры сетевых пиров определяются с помощью `./docker-compose.yml`.
+Найдите контейнер с помощью `docker ps`. Перед заменой демона проверьте путь к нему в вашем образе.
 
 ## Повторно зафиксировать генезис блокчейна в одноразовой сети {#recommit-genesis-in-a-disposable-network}
 
-Сетевой узел завершает генезис блокчейна только тогда, когда его хранилище пусто. Для одноразовой сети Docker остановите стек, удалите сгенерированное состояние, регенерируйте или замените подписанный пакет генезиса блокчейна и запустите снова:
-
-```bash
-docker compose -f ./docker-compose.yml down
-cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
-
-Не заменяйте генезис блокчейна в сети, состояние которой должно быть сохранено.
+Для нового генезис-блока требуется пустое хранилище узла. Чтобы перезапустить ту же сеть, выполните `python3 poc.py down` и `python3 poc.py up`. Храните `state/` вместе с четырьмя томами Docker этой сети.
 
 ## Использовать пользовательскую конфигурацию {#use-custom-configuration}
 

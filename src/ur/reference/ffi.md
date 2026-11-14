@@ -5,7 +5,6 @@ translation_source_hash: 2df23722cea2f918874f0109b31b24bb3d8dbd7f95c00d1d6d1568c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # غیر ملکی فنکشن انٹرفیس (FFI) {#foreign-function-interfaces-ffi}
 
 انگریزی میں `iroha_ffi` خانہ سی پیدا کرنے کے لئے میکرو اور خصوصیات فراہم کرتا ہے ABI سے پابندیاں Rust APIs. اس کا استعمال جہاں Iroha اقسام کو ایک پار کرنے کی ضرورت ہے FFI حد، مثال کے طور پر SDK پابندیاں یا میزبان انضمام.

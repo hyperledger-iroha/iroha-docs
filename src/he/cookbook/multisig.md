@@ -5,7 +5,6 @@ translation_source_hash: 7fca7feca0c27d41a14d1c38497c23aa9f1afe37c5ac19cd8e79c48
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
-
 # ריבוי חתימות משוקלל {#weighted-multisig}
 
 ## תוצאה {#outcome}

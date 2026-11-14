@@ -5,7 +5,6 @@ translation_source_hash: 2df23722cea2f918874f0109b31b24bb3d8dbd7f95c00d1d6d1568c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # የውጭ ተግባር በይነገጾች (FFI) {#foreign-function-interfaces-ffi}
 
 የ`iroha_ffi` የሶፍትዌር ፓኬጅ ከ Rust APIs የC ABI ማሰሪያዎችን ለማመንጨት ማክሮዎችን እና ባህሪያትን ያቀርባል። የ Iroha ዓይነቶች የ FFI ድንበር ማቋረጥ በሚፈልጉበት ቦታ ጥቅም ላይ ይውላል፣ ለምሳሌ በ SDK ማሰሪያዎች ወይም አስተናጋጅ ውህደቶች።

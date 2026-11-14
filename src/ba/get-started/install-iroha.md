@@ -1,13 +1,15 @@
 ---
 translation_locale: ba
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 4c7c62c23166a19ccc3a6a4bb42d808038d755b8c05e87b9e2ce21fbbe31a6ac
+translation_source_hash: cef11a7036dcb5257647edf0c48ea1b9c144822e029df936b422998f46187b41
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # Iroha 3 ҡуйыу {#install-iroha-3}
 
 Был биттәрҙә Iroha 3 инструменттар сылбыры һәм бинарҙар өсөн өҫкө ағымында `hyperledger-iroha/iroha` эш майҙанын ҡулланған ағымдағы монтаж эштәр ағымдары ҡаралған.
+
+Хостҡа туранан-тура ҡуйыу өсөн түбәндәге Rust күрһәтмәләренә эйәрегеҙ. Docker ярҙамында дүрт валидаторҙы эшләтеп ебәреү өсөн [Iroha 3-те эшләтеп ебәреү](/ba/get-started/launch-iroha.md) ҡулланмаһынан башлағыҙ.
 
 ## 1. Кәрәкле шарттар {#_1-prerequisites}
 
@@ -55,7 +57,7 @@ cargo run --bin kagami -- --help
 Дүрт бинар һеҙ ғәҙәттә ҡулланырға:
 
 - `iroha3d` стандарт бер-береһенә тиң булған ендәр өсөн
-- каноник Taira валидаторын эшләтеү өсөн `iroha3d_taira`
+- `iroha3d_taira` — Taira валидаторын эшләтеп ебәреү өсөн стандарт ҡорал
 - `iroha` өсөн CLI доступ к Torii һәм операторҙың һуңғы нөктәләре
 - `kagami` өсөн асҡыстар, генез манифесттары һәм локаль селтәр профилдәре
 

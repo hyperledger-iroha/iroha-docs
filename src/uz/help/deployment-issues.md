@@ -1,7 +1,7 @@
 ---
 translation_locale: uz
 translation_source: /help/deployment-issues.md
-translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
+translation_source_hash: 44460ce5888ad3939f2b7d5dbec01d9d5b1ecf22c502dadb6c6f2b9da280e747
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -38,13 +38,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker va Tahrirlash {#docker-and-compose}
 
-Joriy Kagami localnet chiqishidan Compose yaratish, shunda komandani satr argumentlari va konfiguratsiya fayllari tekshirilgan kodga mos keladi:
+Docker’da bir xil manba versiyasidan yigʻilgan bajariladigan fayllar bilan toʻrtta validatorni ishga tushirish uchun [Ishga tushurish Iroha 3](/uz/get-started/launch-iroha.md) qoʻllanmasiga amal qiling.
 
-```bash
-cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Validator jurnallarini koʻrish uchun toʻplam katalogida `python3 poc.py logs` buyrugʻini bajaring.
 
 Agar compose joylashtirish boshlansa va keyin to'xtab qolsa, daemon jurnallarini tekshiring:
 
@@ -53,7 +49,7 @@ Agar compose joylashtirish boshlansa va keyin to'xtab qolsa, daemon jurnallarini
 - reklama qilingan P2P manzillar faqat konteyner tarmog‘i ichida ishlaydi
 - blokcheyn boshlang'ichini qayta yaratgandan keyin mahalliy hajmni qayta ishlatish
 
-Yangi blockchain genesisini sinovdan o'tkazganda, stekni qayta ishga tushirishdan oldin eski Kura hajmlarini olib tashlang. Eski blok saqlashni yangi blockchain genesis bilan saqlash replayning muvaffaqiyatsiz bo‘lishiga olib keladi.
+Yangi genezis bloki uchun tugun ombori boʻsh boʻlishi kerak. Oʻsha tarmoqni qayta ishga tushirish uchun avval `python3 poc.py down`, keyin `python3 poc.py up` buyrugʻini bajaring. `state/` katalogini tarmoqning toʻrtta Docker jildi bilan birga saqlang.
 
 ## Kubernetes {#kubernetes}
 
@@ -68,7 +64,7 @@ Agar pod takror-takror qayta ishga tushsa, poddagi render qilingan konfiguratsiy
 
 ## SORA Nexus profili {#sora-profile}
 
-SORA Nexus, SoraFS yoki ko‘p yo‘lakli jarayonlardan foydalanadigan xususiy yoki mahalliy Iroha 3 o‘rnatmalari standart demonni SORA Nexus profili yoqilgan holda ishga tushirishi kerak:
+SORA Nexus, SoraFS yoki bir nechta yo‘lakdan foydalanadigan xususiy yoki mahalliy Iroha 3 muhitida standart fon xizmatini ushbu profil yoqilgan holda ishga tushiring.
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

@@ -5,7 +5,6 @@ translation_source_hash: ec7fc2f950b007f52d837473ad7021565923e537df1d18b86055fb4
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Seguridad {#security}
 
 Asegure un despliegue de Iroha como lo haría con cualquier sistema que maneje datos y valores sensibles. Proteja las claves de firma, el acceso a la red, las operaciones de los nodos, la supervisión y la respuesta a incidentes. Un libro mayor de blockchain no elimina la necesidad de estos controles.

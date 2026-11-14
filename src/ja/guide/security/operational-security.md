@@ -5,7 +5,6 @@ translation_source_hash: 042673aca63962b4b3f91e59c29bc5030ada7d63f08299189995130
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # 作戦上の安全保障 {#operational-security}
 
 運用セキュリティは、Iroha の展開に関連する人員、ホスト、認証情報、および手順を保護します。ブロックチェーン台帳は、受け入れられた状態の変更を記録します。運用者は、自身のワークステーション、署名鍵、およびインシデント対応プロセスを別個に保護する必要があります。

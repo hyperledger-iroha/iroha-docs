@@ -5,7 +5,6 @@ translation_source_hash: f085fa1587595414f95705bbe2cd285752b0fe12cffb9ef29a33399
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # پیئر مینجمنٹ {#peer-management}
 
 اگر آپ نے زبان کے مخصوص رہنماؤں میں سے کسی ایک کی پیروی کی تو اب آپ کے پاس ایک اچھی طرح کام کرنے والا نیٹ ورک ہے جس میں لوگ شامل ہونا چاہتے ہیں۔

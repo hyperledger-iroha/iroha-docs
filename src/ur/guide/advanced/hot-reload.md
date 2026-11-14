@@ -1,13 +1,13 @@
 ---
 translation_locale: ur
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: d4fd88de377b9c88e0293ed07f307ad38c3f8b05ed898fd051c5bfb738d66681
+translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # ایک Docker کنٹینر میں گرم ری لوڈ Iroha {#hot-reload-iroha-in-a-docker-container}
 
-hot reload صرف مقامی debugging کے لیے استعمال کریں۔ عام مقامی development میں image دوبارہ build کرنے یا تازہ Kagami bundle سے بنے Docker Compose stack کو restart کرنے کو ترجیح دیں۔
+ہاٹ ری لوڈ صرف مقامی ڈیبگنگ کے لیے استعمال کریں۔ ایک ہی نظرثانی سے بنی بائنری فائلوں کے ساتھ Docker میں چار توثیقی نوڈ بنانے اور چلانے کے لیے [لانچ Iroha 3](/ur/get-started/launch-iroha.md) کی ہدایات پر عمل کریں۔
 
 ## نیٹ ورک نوڈ بائنری کو تبدیل کریں {#replace-the-peer-binary}
 
@@ -24,20 +24,11 @@ docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/loca
 docker restart <container>
 ```
 
-کنٹینر کے نام کی تصدیق کرنے کے لئے `docker ps` کا استعمال کریں۔ پیدا ہونے والے اسٹیک میں نیٹ ورک نوڈ کنٹینرز کو `./docker-compose.yml` سے بیان کیا گیا ہے.
+کنٹینر تلاش کرنے کے لیے `docker ps` استعمال کریں۔ ڈیمن کو تبدیل کرنے سے پہلے امیج میں اس کا راستہ دیکھیں۔
 
 ## ایک ڈسپوزایبل نیٹ ورک میں جینیس کو دوبارہ شروع کریں {#recommit-genesis-in-a-disposable-network}
 
-ہم مرتبہ نوڈ ابتدائی حالت صرف تب درج کرتا ہے جب اس کا ذخیرہ خالی ہو۔ عارضی Docker نیٹ ورک کے لیے خدمات کا مجموعہ روکیں، بنائی گئی حالت ہٹائیں، دستخط شدہ ابتدائی حالت کا مجموعہ دوبارہ بنائیں یا بدلیں، اور پھر سے شروع کریں:
-
-```bash
-docker compose -f ./docker-compose.yml down
-cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
-
-کسی ایسے نیٹ ورک پر پیدائش کی جگہ نہ لیں جس کی حالت کو برقرار رکھنا ضروری ہو۔
+نئے جینیسس بلاک کے لیے نوڈ کا ذخیرہ خالی ہونا چاہیے۔ اسی نیٹ ورک کو دوبارہ شروع کرنے کے لیے پہلے `python3 poc.py down` اور پھر `python3 poc.py up` چلائیں۔ `state/` کو اس کے چاروں Docker والیومز کے ساتھ محفوظ رکھیں۔
 
 ## اپنی مرضی کے مطابق ترتیب کا استعمال کریں {#use-custom-configuration}
 

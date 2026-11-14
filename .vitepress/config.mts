@@ -8,6 +8,7 @@ import ViteSvgLoader from 'vite-svg-loader'
 import ViteUnoCSS from 'unocss/vite'
 import { mermaid } from './md-mermaid'
 import { generatedReferences } from './md-generated-references'
+import { staticCodeFences } from './md-static-code'
 import { katex } from '@mdit/plugin-katex'
 import kotodamaGrammar from '../src/snippets/kotodama.tmLanguage.json'
 import { readEmbeddedReference } from '../etc/generated-references'
@@ -784,6 +785,7 @@ export default defineConfig({
         //   https://github.com/vuejs/vitepress/pull/2977
         // Although KaTeX is more efficient, we might consider removing it in the future.
         .use(katex)
+        .use(staticCodeFences)
     },
   },
 

@@ -5,7 +5,6 @@ translation_source_hash: d0e20c3784c9456f74a68821530920043b0ed5d65890e97d488be30
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Ақауларды жою {#troubleshooting}
 
 Бұл бөлім Iroha-пен жұмыс істегенде мәселелер туындаса көмектесу үшін арналған. Егер бірдеңе дұрыс болмай қалса, алдымен [түймелерді тексеріңіз](#check-the-keys) жасаңыз. Егер бұл көмектеспесе, әр кезеңге арналған ақаулықтарды жою нұсқауларын тексеріңіз:

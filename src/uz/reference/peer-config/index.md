@@ -5,7 +5,6 @@ translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Iroha ni sozlash {#configuring-iroha}
 
 Mahalliy tarmoq tengdosh konfiguratsiyasi quyida o‘rnatilgan TOML fayllar. Bu zanjir ustida o‘zgartirilgan konfiguratsiyadan farq qiladi [`SetParameter`](/uz/blockchain/instructions.md#setparameter) ko'rsatmalar. Ishlab chiqarish xatti-harakati konfiguratsiyada ifodalanishi kerak fayl yoki on-chain parametr; muhit o'zgaruvchilari xususiyat eshiklari emas.

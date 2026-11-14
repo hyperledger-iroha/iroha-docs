@@ -1,7 +1,7 @@
 ---
 translation_locale: am
 translation_source: /help/deployment-issues.md
-translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
+translation_source_hash: 44460ce5888ad3939f2b7d5dbec01d9d5b1ecf22c502dadb6c6f2b9da280e747
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -38,13 +38,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker እና ያፃፉ {#docker-and-compose}
 
-የትእዛዝ መስመር ክርክሮች እና አዋቅር ፋይሎች ከተፈተሸው ኮድ ጋር እንዲዛመዱ ከአሁኑ Kagami localnet ውፅዓት ያቅርቡ
+ከአንድ የምንጭ ኮድ ስሪት በተገነቡ ሁለትዮሽ ፋይሎች አራት አረጋጋጭ አንጓዎችን በDocker ለማስኬድ የ[አስጀምር Iroha 3](/am/get-started/launch-iroha.md) መመሪያን ይከተሉ።
 
-```bash
-cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+የአረጋጋጮቹን መዝገቦች ለማየት ከመሣሪያው ማውጫ `python3 poc.py logs` ያሂዱ።
 
 የቅንብር ማሰማራት ከጀመረ እና ከቆመ፣ የዴሞን ምዝግብ ማስታወሻዎችን ለሚከተሉት ይፈትሹ -
 
@@ -53,7 +49,7 @@ docker compose -f ./docker-compose.yml up
 - በኮንቴይነር አውታረመረብ ውስጥ ብቻ የሚሰሩ የማስታወቂያ P2P አድራሻዎች
 - የብሎክቼይን ጀነሲስን እንደገና ካዳበረ በኋላ የአካባቢ መጠን እንደገና ጥቅም ላይ ይውላል
 
-አዲስ የብሎክቼይን ጀነሲስ ሲሞክሩ ቁልሉን እንደገና ከመጀመርዎ በፊት የድሮውን Kura ጥራዞች ያስወግዱ። የድሮውን የብሎክ ማከማቻ በአዲስ blockchain ጀነሲስ ማቆየት እንደገና ማጫወት እንዲሳካ ያደርገዋል።
+ለአዲስ የመነሻ ብሎክ የአንጓው ማከማቻ ባዶ መሆን አለበት። ተመሳሳዩን አውታረ መረብ እንደገና ለማስኬድ `python3 poc.py down` እና ከዚያ `python3 poc.py up` ያሂዱ። `state/` ከአራቱ የDocker ማከማቻ ጥራዞች ጋር ያስቀምጡ።
 
 ## ኩበርኔትስ {#kubernetes}
 
@@ -66,9 +62,9 @@ docker compose -f ./docker-compose.yml up
 
 አንድ ፖድ በተደጋጋሚ እንደገና ከጀመረ፣ በፖድ ውስጥ የተሰራውን ውቅር ከተጠበቀው ጋር ያወዳድሩ [`peer.template.toml`](/am/reference/peer-config/index.md#template) እና የአውታረ መረብ አቻው ያረጀውን እየተጫወተ መሆኑን ያረጋግጡ Kura ውሂብ.
 
-## SORA Nexus መገለጫ {#sora-profile}
+## የSORA Nexus መገለጫ {#sora-profile}
 
-SORA Nexus፣ SoraFS ወይም ብዙ መስመር ያላቸው ሂደቶችን የሚጠቀሙ የግል ወይም አካባቢያዊ Iroha 3 ጭነቶች መደበኛውን ዴሞን የSORA Nexus መገለጫ ነቅቶ ማስጀመር አለባቸው:
+SORA Nexus፣ SoraFS ወይም በርካታ መስመሮችን በሚጠቀም የግል ወይም አካባቢያዊ የIroha 3 ዝርጋታ ላይ፣ ይህን መገለጫ አንቅተው መደበኛውን የበስተጀርባ አገልግሎት ያስጀምሩ።
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

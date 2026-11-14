@@ -5,7 +5,6 @@ translation_source_hash: b538b2cad11d4fd3b2b7d201a20882389049d3e4453f11baa6f8548
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Metadata နှင့် လယ်ဂျာသိမ်းဆည်းမှုပုံစံ ရွေးချယ်ခြင်း {#metadata-and-ledger-storage-choices}
 
 Iroha 3 ဒေတာမော်ဒယ်မှာ အလိုလို key-value ဒေတာအတွက် သီးခြား `Store` အရင်းအမြစ်အမျိုးအစားမရှိပါ။ အောက်ပါ သိုလှောင်မှု ရွေးချယ်မှုကို အသုံးပြုပါ။

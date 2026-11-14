@@ -5,7 +5,6 @@ translation_source_hash: d0e20c3784c9456f74a68821530920043b0ed5d65890e97d488be30
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # መላ ፍለጋ {#troubleshooting}
 
 ይህ ክፍል ከ Iroha ጋር በሚሰሩበት ጊዜ ችግሮች ካጋጠሙዎት ለመርዳት የታሰበ ነው። የሆነ ችግር ከተፈጠረ፣ እባክዎን መጀመሪያ [ቁልፎቹን ያረጋግጡ](#check-the-keys)። ያ ካልረዳ፣ ለእያንዳንዱ የመላ መፈለጊያ መመሪያዎችን ያረጋግጡ -

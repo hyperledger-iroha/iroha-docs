@@ -5,7 +5,6 @@ translation_source_hash: 48d6670f100c7c6368fa03f163c9ff9e0322d36e51c22f89562b23b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 代码片段 {#code-snippets}
 
 生成的切片将从产生它们的 Iroha 修改中与代码,配置和方案相关的示例保持.

@@ -5,7 +5,6 @@ translation_source_hash: 866b7d3ca37be67878f6f319ce0b0e27eac52c581decad1f46096ef
 translation_status: machine-validated
 translation_engine: bing-translator-llm+claude-opus-5-5
 ---
-
 # Consultar o estado do livro-razão da blockchain {#query-ledger-state}
 
 ## Resultado {#outcome}

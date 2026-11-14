@@ -5,7 +5,6 @@ translation_source_hash: 020591f0d7c5560dfb2e9f3f4537f429cbeba864c3eb022856d42ad
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Виртуаль хувийн сүлжээ {#virtual-private-networks}
 
 <abbr title="Virtual Private Network">VPN</abbr> нь хэнд Iroha үйлчилгээнд нэвтрэхийг хязгаарладаг сүлжээний хяналт юм. Энэ нь голчлон хувийн болон консорциумын байршуулалтыг ашиглахад тохиромжтой бөгөөд зөвшөөрөгдсөн баталгаажуулагчид, програмын серверүүд, операторууд нь нээлттэй интернет маршрутаар биш, хувийн хаягаар харилцаж байх ёстой.

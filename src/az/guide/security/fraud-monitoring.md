@@ -5,7 +5,6 @@ translation_source_hash: 4739a0bfe80f14545a51c804abbe6a2dfa5497d546192f76096f938
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Fırıldaqçılığın Monitorinqi {#fraud-monitoring}
 
 Bir Iroha yerləşdirilməsi üçün saxtakarlığın monitorinqi blokçeyn qeyd dəftəri hadisələri, sorğular, icazələr və tətbiq konteksti ətrafında qurulmuş əməliyyat nəzarətidir. Iroha nə təqdim edildiyini, qəbul edildiyini, rədd edildiyini və tamamlandığını qeyd edir. Sizin izləmə sisteminiz biznes prosesiniz üçün hansı nümunələrin şübhəli olduğunu müəyyən edir və həmin halları nəzərdən keçirənlərə və ya avtomatlaşdırılmış cavab nəzarətlərinə yönləndirir.

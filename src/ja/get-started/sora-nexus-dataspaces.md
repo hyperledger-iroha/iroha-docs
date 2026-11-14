@@ -1,15 +1,15 @@
 ---
 translation_locale: ja
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 3d2285e5a27819897b6dcc6d165c468baead29d2922420728fcfbe2433d36fdd
+translation_source_hash: 98c351372551b08bda4911f52bfb3cc70c53b6125d8045c17abb205b27960f6d
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
-# SORA Nexus 上で開発する: Taira と Minamoto {#build-on-sora-3-taira-and-minamoto}
+# Taira と Minamoto で SORA Nexus 向けアプリケーションを開発する {#build-on-sora-3-taira-and-minamoto}
 
-SORA Nexus は、Iroha 3 を基盤とする公開のデプロイ環境を提供します。まず Taira で開発とリハーサルを行い、別のメインネット用の鍵、手数料用の実際の XOR、本番環境の承認がそろってから、同じ構成のクライアントを Minamoto に移してください。
+SORA Nexus は Iroha 3 を基盤としています。まず Taira でアプリケーションを開発・テストします。同じクライアント設定を Minamoto に移すのは、メインネット専用の鍵、手数料に使う実際の XOR、本番運用の承認がそろってからにしてください。
 
-このチュートリアルでは、公開 SORA Nexus ネットワーク向けに Iroha クライアントを設定する方法を説明します。
+このガイドでは、SORA Nexus の 2 つの公開ネットワークに接続する Iroha クライアントの設定方法を説明します。
 
 - Taira のテストネットは `https://taira.sora.org` にあります
 - Minamoto メインネットは `https://minamoto.sora.org` にて
@@ -23,8 +23,8 @@ SORA Nexus は、Iroha 3 を基盤とする公開のデプロイ環境を提供�
 
 |ステップ| Taira テストネット| Minamoto メインネット |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|ネットワーク状態の読み取りを開始|キーなしのクエリ `/status`|キーなしのクエリ `/status`|
-| データスペースを選ぶ | アプリにガバナンスで管理されるレーンが必要でなければ、公開の `universal` を使う | メインネットの承認を得てから、同じデータスペースを使う |
+|ネットワーク状態の読み取りを開始|キーなしのクエリ `/status`| 先にエンドポイントと TLS 証明書を確認する |
+|データスペースを選択してください|アプリが管理された実行レーンを必要としない限り、パブリック`universal`を使用してください|メインネットの承認後にのみ同じデータスペースを使用してください|
 | 手数料資産を取得 | 公開 Taira の faucet を使用 | 資金提供済みの Minamoto アカウントまたは承認済みのトレジャリー経路から XOR を受け取る |
 | 書き込みをテスト | faucet で取得した testnet XOR を使用 | テスト用ツールを使わない。書き込みでは実際の XOR を消費する |
 |促進する|リトライロジック、監視、および暗号署名処理を維持する|別々の鍵、資金、リリース管理を使用してください|
@@ -67,20 +67,10 @@ wonderland.universal
 
 ## 2. 公開 Torii エンドポイントを確認する {#_2-check-the-public-torii-endpoint}
 
-署名者を設定する前に、対象のエンドポイントが稼働していることを確認してください。
-
-〜のために Taira:
+`curl` と `jq` を使って Taira テストネットの状態を確認します。鍵やローカルノードは不要です。
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-Minamoto の場合：
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -93,7 +83,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-メインネットの場合は、同じコマンドを `https://minamoto.sora.org/status` と一緒に使用してください。
+Minamoto を利用する前に、運用担当者にメインネットのエンドポイントを確認し、TLS 証明書がホスト名と一致することを確かめてください。
 
 ## Taira MCP エージェント用 {#taira-mcp-for-agents}
 
@@ -200,19 +190,7 @@ Taira MCP をパブリックテストネットのコントロールサーフェ�
 
 ## 今すぐ試せるおもちゃの例 {#toy-examples-you-can-try-now}
 
-これらの例は、注記がない限り読み取り専用です。キーを生成する前でも動作し、公開ネットワークに対して実行しても安全です。
-
-Taira テストネットと Minamoto メインネットのヘルスを比較：
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+以下の例では、アカウントの鍵を使わずに Taira のデータを読み取ります。
 
 Taira が公開する、公開データスペースのレーンを一覧表示します。
 
@@ -220,16 +198,7 @@ Taira が公開する、公開データスペースのレーンを一覧表示�
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-メインネットのビューが必要な場合は、同じコマンドを Minamoto に対して実行してください。
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -238,24 +207,16 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -436,6 +397,8 @@ iroha --config ./taira.client.toml ledger asset get \
 テストネット資金提供サービスは、Taira のテストネット資金専用です。テストネット XOR、テストネット資金提供サービスのアカウント、または Taira のカナリー暗号署名者を Minamoto のフローで使用しないでください。
 
 ## 5. Minamoto クライアント設定を作成する {#_5-create-a-minamoto-client-config}
+
+Minamoto を利用する前に、運用担当者にメインネットのエンドポイントを確認し、TLS 証明書がホスト名と一致することを確かめてください。
 
 Minamoto には別のキーペアを使用してください。Taira のキーをメインネットで再利用しないでください。
 

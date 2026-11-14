@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /help/deployment-issues.md
-translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
+translation_source_hash: 44460ce5888ad3939f2b7d5dbec01d9d5b1ecf22c502dadb6c6f2b9da280e747
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -38,13 +38,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker ба Бүрдүүлэх {#docker-and-compose}
 
-Одоогийн Kagami localnet гаралтаас Compose үүсгээрэй, ингэснээр командын мөрийн аргументууд ба тохиргооны файлууд шалгагдсан кодтой таарч байна:
+Нэг эх кодын хувилбараас бүтээсэн хоёртын файлуудаар Docker дээр дөрвөн баталгаажуулагч ажиллуулахдаа [Эхлүүлэх Iroha 3](/mn/get-started/launch-iroha.md) зааврыг дагана уу.
 
-```bash
-cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Баталгаажуулагчдын бүртгэлийг харахын тулд багцын лавлахаас `python3 poc.py logs` командыг ажиллуулна уу.
 
 Compose байршуулалт эхлээд дараа нь саатвал daemon логт дараах зүйлийг шалгана:
 
@@ -53,7 +49,7 @@ Compose байршуулалт эхлээд дараа нь саатвал daemo
 - контейнерийн сүлжээний дотор л ажилладаг сурталчилсан P2P хаягууд
 - blockchain-ийн эх үүсвэрийг дахин үүсгэсний дараа локаль хэмжээ дахин ашиглах
 
-Шинэ блокчэйн генесисийг туршихдаа стекээ дахин эхлүүлэхээс өмнө хуучин Kura багцуудыг устга. Шинэ блокчэйн генесистэйгээр хуучин блок хадгалыг хадгалах нь давталт бүтэлгүйтэхэд хүргэнэ.
+Шинэ эхлэлийн блок ашиглахын тулд зангилааны хадгалах сан хоосон байх ёстой. Ижил сүлжээг дахин эхлүүлэхдээ эхлээд `python3 poc.py down`, дараа нь `python3 poc.py up` командыг ажиллуулна уу. `state/` лавлахыг сүлжээний дөрвөн Docker ботьтой хамт хадгална уу.
 
 ## Кубернетес {#kubernetes}
 
@@ -68,7 +64,7 @@ Kubernetes-ийн хувьд, бүх нэгж баталгаажуулагчий
 
 ## SORA Nexus профайл {#sora-profile}
 
-SORA Nexus, SoraFS эсвэл олон эгнээний урсгал ашигладаг хувийн эсвэл дотоод Iroha 3 байршуулалт стандарт үйлчилгээг SORA Nexus профайлыг идэвхжүүлэн эхлүүлэх ёстой:
+SORA Nexus, SoraFS эсвэл олон зурвас ашигладаг хувийн болон дотоод Iroha 3 орчинд энэ профайлыг идэвхжүүлж стандарт суурь үйлчилгээг эхлүүлнэ.
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

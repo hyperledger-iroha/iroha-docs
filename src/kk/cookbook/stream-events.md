@@ -5,7 +5,6 @@ translation_source_hash: d6202b208288688cdfd927491d6670f094f631ccaecd7ff62858a94
 translation_status: machine-validated
 translation_engine: bing-translator-llm+claude-opus-5-5
 ---
-
 # Оқиғаларды жіберу {#stream-events}
 
 ## Нәтиже {#outcome}

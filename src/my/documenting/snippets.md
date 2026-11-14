@@ -5,7 +5,6 @@ translation_source_hash: 48d6670f100c7c6368fa03f163c9ff9e0322d36e51c22f89562b23b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # ကုဒ်အပိုင်းအစများ {#code-snippets}
 
 ထုတ်လုပ်ထားသော ကုဒ်အပိုင်းအစများကြောင့် ဥပမာများသည် ၎င်းတို့ကို ထုတ်လုပ်ပေးသော Iroha revision ၏ ကုဒ်၊ ပြင်ဆင်သတ်မှတ်မှုနှင့် schema များနှင့် ချိတ်ဆက်နေသည်။

@@ -5,7 +5,6 @@ translation_source_hash: 9e13bcd28ad8ae356314041828f73af0ed25636af82ff4ea2948268
 translation_status: machine-validated
 translation_engine: bing-translator-llm+claude-opus-5-5
 ---
-
 # Iroha 3 Кулинарная книга приложений {#iroha-3-application-cookbook}
 
 Строить против Iroha 3 с маленькими, проверяемыми рецептами, которые начинаются с Taira тестовая сеть и держать Minamoto только для чтения в основной сети. В каждом рецепте указано, является ли он общедоступным для чтения, обычное письмо с финансируемым счетом или операция с ограничением по разрешениям. Команды используют текущие I105 идентификаторы аккаунтов, явный выбор комиссии и проверенное поведение в Iroha окончательная версия протокола [`c8c872461e92f04325c350cdd952f4276e96f9dc`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc).

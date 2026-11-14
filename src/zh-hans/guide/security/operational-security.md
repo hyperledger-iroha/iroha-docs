@@ -5,7 +5,6 @@ translation_source_hash: 042673aca63962b4b3f91e59c29bc5030ada7d63f08299189995130
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
-
 # 运营安全 {#operational-security}
 
 运营安全保护 Iroha 部署周边的人员、主机、凭据和流程。账本只记录已接受的状态变更；运营方还必须另行保护工作站、签名密钥和事件响应流程。

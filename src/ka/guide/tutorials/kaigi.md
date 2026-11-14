@@ -5,7 +5,6 @@ translation_source_hash: b42e035ea1056c07dd9c8e2f651e362c7f4b759a345508d2f099ad1
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # შეყვანილი Kaigi JavaScript აპლიკაციაში {#embed-kaigi-in-a-javascript-app}
 
 Kaigi აღწერს შეხვედრის სიცოცხლის ციკლს Iroha-ზე, ხოლო ბრაუზერი ატარებს აუდიო და ვიდეოს WebRTC-ზე. ბლოკჩეინის რეესტრი ინახავს ზარს, სიაში მუტაციებს, კოდირებულ სიგნალების მეტამონაცემებს და საბოლოო სტატუსს; ეს არ არის მედიის რელიე.

@@ -1,7 +1,7 @@
 ---
 translation_locale: ja
 translation_source: /help/deployment-issues.md
-translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
+translation_source_hash: 44460ce5888ad3939f2b7d5dbec01d9d5b1ecf22c502dadb6c6f2b9da280e747
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta+reviewed-source-amendment
 ---
@@ -38,13 +38,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker と作成 {#docker-and-compose}
 
-現在の Kagami ローカルネット出力から Compose を生成し、コマンドライン引数と設定ファイルがチェックアウトされたコードと一致するようにしてください:
+同じリビジョンのバイナリをビルドして Docker で 4 台のバリデータを起動する手順は、[Iroha 3 を起動](/ja/get-started/launch-iroha.md) を参照してください。
 
-```bash
-cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+キットのディレクトリで `python3 poc.py logs` を実行すると、バリデータのログを確認できます。
 
 もし Compose デプロイメントが開始してから停止した場合、デーモンのログを次の点について確認してください:
 
@@ -53,7 +49,7 @@ docker compose -f ./docker-compose.yml up
 - コンテナネットワーク内でのみ機能する広告された P2P アドレス
 - ブロックチェーンのジェネシスを再生成した後のローカルボリュームの再利用
 
-新しいブロックチェーンのジェネシスをテストする場合、スタックを再起動する前に古い Kura ボリュームを削除してください。古いブロックストレージを新しいブロックチェーンのジェネシスと一緒に保持すると、リプレイが失敗します。
+新しいジェネシスブロックを使用するには、ピアのストレージが空である必要があります。 同じネットワークを再起動するには、`python3 poc.py down`、`python3 poc.py up` の順に実行します。`state/` は 4 つの Docker ボリュームと一緒に保管してください。
 
 ## クバネティス {#kubernetes}
 
@@ -68,7 +64,7 @@ Kubernetesの場合、各バリデーターをステートフルなインフラ�
 
 ## SORA Nexus プロファイル {#sora-profile}
 
-SORA Nexus、SoraFS、複数レーンの処理を利用するプライベートまたはローカルの Iroha 3 環境では、SORA Nexus プロファイルを有効にして標準デーモンを起動してください。
+プライベートまたはローカルの Iroha 3 環境で SORA Nexus、SoraFS、複数のレーンのいずれかを利用する場合は、このプロファイルを有効にして標準デーモンを起動します。
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

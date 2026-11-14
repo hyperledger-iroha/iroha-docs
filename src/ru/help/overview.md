@@ -5,7 +5,6 @@ translation_source_hash: d0e20c3784c9456f74a68821530920043b0ed5d65890e97d488be30
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Устранение неполадок {#troubleshooting}
 
 Этот раздел предназначен, чтобы помочь, если вы столкнулись с проблемами при работе с Iroha. Если что-то пошло не так, пожалуйста, сначала [проверьте ключи](#check-the-keys). Если это не поможет, проверьте инструкции по устранению неполадок для каждого этапа:

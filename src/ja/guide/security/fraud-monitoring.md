@@ -5,7 +5,6 @@ translation_source_hash: 4739a0bfe80f14545a51c804abbe6a2dfa5497d546192f76096f938
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # 不正監視 {#fraud-monitoring}
 
 Iroha 展開の不正監視は、ブロックチェーン台帳のイベント、クエリ、権限、およびアプリケーションコンテキストを中心に構築された運用管理です。Iroha は、提出されたもの、受理されたもの、拒否されたもの、および確定されたものを記録します。あなたの監視システムは、どのパターンがあなたのビジネスプロセスにとって疑わしいかを判断し、それらのケースをレビュアーや自動応答制御にルーティングします。

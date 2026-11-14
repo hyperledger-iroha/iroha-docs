@@ -55,7 +55,7 @@ translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 
 ### רשום תפקיד חדש {#register-a-new-role}
 
-נרשום תפקיד חדש, שהענקתו תאפשר לחשבון אחר לגשת ל[מטא־נתונים](/he/blockchain/metadata.md) בחשבון של Mouse:
+נרשום תפקיד חדש. הענקתו לחשבון אחר תיתן לאותו חשבון גישה ל[מטא־נתונים](/he/blockchain/metadata.md) בחשבון של Mouse.
 
 ```rust
 let role_id = RoleId::from_str("ACCESS_TO_MOUSE_METADATA")?;

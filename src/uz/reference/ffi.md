@@ -5,7 +5,6 @@ translation_source_hash: 2df23722cea2f918874f0109b31b24bb3d8dbd7f95c00d1d6d1568c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Chet funktsiya interfeyslari (FFI) {#foreign-function-interfaces-ffi}
 
 `iroha_ffi` dasturiy ta'minot paketi Rust APIs dan C ABI bog‘lamalarini yaratish uchun makrolar va xususiyatlarni taqdim etadi. U Iroha turlari FFI chegarasidan o‘tishi kerak bo‘lgan joylarda ishlatiladi, masalan, SDK bog‘lamalari yoki mezbon integratsiyalari orqali.

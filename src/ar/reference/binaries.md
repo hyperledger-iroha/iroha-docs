@@ -1,7 +1,7 @@
 ---
 translation_locale: ar
 translation_source: /reference/binaries.md
-translation_source_hash: 75848623e735abc80326f9ebda6f74ab438b67eaeddeacdd4d8c5509856a999e
+translation_source_hash: 887291d6ef0d9a919b076e4b632ee1cec7a2c289b284b40346ed4b2a0f4a41b3
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -49,27 +49,7 @@ cargo run --bin kagami -- --help
 
 ## Docker صورة {#docker-image}
 
-تستخدم مساحة العمل الأصلية `kagami localnet generate` و`kagami docker` لتوليد ملفات Docker Compose المطابقة للكود الموجود في نسخة العمل. يمكن استخدام الصورة `hyperledger/iroha:dev` مع تلك الملفات المولّدة.
-
-شغّل CLI في حاوية:
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-شغّل Kagami في حاوية:
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-لبدء تشغيل نظير الشبكة، قم أولاً بإنشاء شبكة محلية وملف Compose:
-
-```bash
-cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+اتبع دليل [إطلاق Iroha 3](/ar/get-started/launch-iroha.md) لبناء أربع عقد تحقق وتشغيلها في Docker باستخدام ملفات تنفيذية من المراجعة نفسها.
 
 ## أي النسخ الثنائية يجب أن أستخدم؟ {#which-binary-should-i-use}
 

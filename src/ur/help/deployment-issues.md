@@ -1,7 +1,7 @@
 ---
 translation_locale: ur
 translation_source: /help/deployment-issues.md
-translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
+translation_source_hash: 44460ce5888ad3939f2b7d5dbec01d9d5b1ecf22c502dadb6c6f2b9da280e747
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -38,13 +38,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker اور کمپوز {#docker-and-compose}
 
-تخلیق کریں موجودہ Kagami لوکل نیٹ آؤٹ پٹ سے تحریر کریں تاکہ کمانڈ لائن کی دلیلیں اور ترتیب فائلیں چیک آؤٹ کوڈ سے ملیں:
+ایک ہی نظرثانی سے بنی بائنری فائلوں کے ساتھ Docker میں چار توثیقی نوڈ بنانے اور چلانے کے لیے [لانچ Iroha 3](/ur/get-started/launch-iroha.md) کی ہدایات پر عمل کریں۔
 
-```bash
-cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+کٹ کی ڈائریکٹری میں `python3 poc.py logs` چلائیں تاکہ توثیقی نوڈز کے لاگ دیکھ سکیں۔
 
 اگر کمپوز کی تعیناتی شروع ہوتی ہے اور پھر اسٹال ہوجاتی ہے تو ، ڈیمون لاگس کو چیک کریں تاکہ:
 
@@ -53,7 +49,7 @@ docker compose -f ./docker-compose.yml up
 - P2P ایڈریسز جو صرف کنٹینر نیٹ ورک کے اندر کام کرتی ہیں۔
 - regenerating genesis کے بعد مقامی حجم کا دوبارہ استعمال
 
-ایک نئی جینیس کی جانچ کرتے وقت ، اسٹیک کو دوبارہ شروع کرنے سے پہلے پرانے Kura حجم کو ہٹا دیں۔ نئے جینیس کے ساتھ پرانے بلاک اسٹوریج رکھنے سے دوبارہ پلے ناکام ہوجائے گا۔
+نئے جینیسس بلاک کے لیے نوڈ کا ذخیرہ خالی ہونا چاہیے۔ اسی نیٹ ورک کو دوبارہ شروع کرنے کے لیے پہلے `python3 poc.py down` اور پھر `python3 poc.py up` چلائیں۔ `state/` کو اس کے چاروں Docker والیومز کے ساتھ محفوظ رکھیں۔
 
 ## کوبرنیٹس {#kubernetes}
 
@@ -68,7 +64,7 @@ Kubernetes کے لیے، ہر توثیق کنندہ کو حالت برقرار �
 
 ## SORA Nexus پروفائل {#sora-profile}
 
-نجی یا مقامی Iroha 3 تنصیبات جو SORA Nexus، SoraFS یا متعدد لینز کے عمل استعمال کرتی ہیں، انہیں SORA Nexus پروفائل فعال کر کے معیاری ڈیمَن شروع کرنا چاہیے:
+اگر Iroha 3 کی نجی یا مقامی تنصیب میں SORA Nexus، SoraFS یا متعدد لین استعمال ہوتی ہیں تو معیاری پس منظر سروس کو اس پروفائل کے ساتھ چلائیں۔
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

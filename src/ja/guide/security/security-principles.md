@@ -5,7 +5,6 @@ translation_source_hash: 20139011c663a0bca6f9e486ef81f698370c34f8f02319317805b0d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # セキュリティの原則 {#security-principles}
 
 An Iroha ブロックチェーン台帳は、署名された指示を検証し、権限を適用します。それは、秘密鍵、ホスト、アプリケーション、オペレーターのワークステーション、またはガバナンス手続きを保護するものではありません。展開はそれらのシステムを保護する必要があります。

@@ -5,7 +5,6 @@ translation_source_hash: 3d317c00e75525d70f6cb9ef7f8eeec6911e2f124af8052cd2fc719
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Ommaviy Kalitli Kriptografiya {#public-key-cryptography}
 
 Ommaviy kalitli kriptografiya bog'langan ommaviy kalit va shaxsiy kalitdan foydalanadi. Ommaviy kalitni bo'lishish mumkin. Shaxsiy kalit esa vakolatli shaxsning nazoratida qolishi kerak. Xavfsizlik qo'llab-quvvatlangan algoritmdan foydalanish, kalitlarni xavfsiz tasodifiylik bilan yaratish va shaxsiy kalitni himoya qilishga bog'liq.

@@ -5,7 +5,6 @@ translation_source_hash: 20139011c663a0bca6f9e486ef81f698370c34f8f02319317805b0d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
-
 # Хәүефһеҙлек принциптары {#security-principles}
 
 Iroha реестры ҡул ҡуйылған күрһәтмәләрҙе тикшерә һәм рөхсәттәрҙе ҡуллана. Ул шәхси асҡыстарҙы, хостарҙы, ҡушымталарҙы, оператор эш станцияларын йәки идара итеү процедураларын һаҡламай. Урынлаштырыу был системаларҙы һаҡларға тейеш.

@@ -5,7 +5,6 @@ translation_source_hash: 4739a0bfe80f14545a51c804abbe6a2dfa5497d546192f76096f938
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Surveillance de la fraude {#fraud-monitoring}
 
 La surveillance de la fraude pour un déploiement Iroha est un contrôle opérationnel construit autour des événements du registre blockchain, des requêtes, des permissions et du contexte de l'application. Iroha enregistre ce qui a été soumis, accepté, rejeté et validé. Votre système de surveillance décide quels modèles sont suspects pour votre processus métier et dirige ces cas vers des réviseurs ou des contrôles automatiques de réponse.

@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /help/deployment-issues.md
-translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
+translation_source_hash: 44460ce5888ad3939f2b7d5dbec01d9d5b1ecf22c502dadb6c6f2b9da280e747
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -38,13 +38,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker ו- Compose {#docker-and-compose}
 
-יצר תור על פי ההוצאת של הרשת המקומית הנוכחית Kagami כך שתדברי קו הפקודה וקובצי הקונפיגציה יתאימו לקוד הנמלא:
+במדריך [השקה Iroha 3](/he/get-started/launch-iroha.md) מוסבר כיצד לבנות ולהפעיל ארבעה מאמתים ב־Docker באמצעות קבצים בינאריים מאותה גרסת מקור.
 
-```bash
-cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+מתיקיית הערכה, הריצו `python3 poc.py logs` כדי לעיין ביומני המאמתים.
 
 אם הפעלת Compose מתחילה ולאחר מכן מפסיקה, בדוק את תיעודי הדיימון עבור:
 
@@ -53,7 +49,7 @@ docker compose -f ./docker-compose.yml up
 - כתובות מפורסמות P2P שעובדות רק בתוך רשת המכולות
 - שימוש חוזר בקנה מידה מקומי לאחר הגנזציה.
 
-בעת בדיקת גנזה חדשה, הורידו את הקבוצות הישנות Kura לפני שתתחילו מחדש. שמירה על אחסון של בלוקים ישנים עם גנזה החדשה תגרום לכישלון בתשליפות.
+בלוק בראשית חדש מחייב אחסון ריק בצומת. כדי להפעיל מחדש את אותה רשת, הריצו `python3 poc.py down` ואז `python3 poc.py up`. שמרו את `state/` יחד עם ארבעת כרכי האחסון של Docker.
 
 ## קובורנטיס {#kubernetes}
 
@@ -68,7 +64,7 @@ docker compose -f ./docker-compose.yml up
 
 ## פרופיל SORA Nexus {#sora-profile}
 
-פריסות פרטיות או מקומיות של Iroha 3 המשתמשות ב־SORA Nexus, ב־SoraFS או בתהליכים מרובי נתיבים צריכות להפעיל את הדמון הרגיל כשפרופיל SORA Nexus פעיל:
+בפריסה פרטית או מקומית של Iroha 3 שמשתמשת ב־SORA Nexus, ב־SoraFS או במספר נתיבים, הפעילו את שירות הרקע הרגיל עם פרופיל זה.
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

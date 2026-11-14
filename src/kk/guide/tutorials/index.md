@@ -5,7 +5,6 @@ translation_source_hash: 4fee7425a237d2781745025c9cd240fbc9df84f07f7427ff19c4bd8
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # SDK Оқулықтар {#sdk-tutorials}
 
 Бұл беттер негізгі жұмыс кеңістігінен жіберілген Iroha 3 клиенттің кіру нүктелерін, соның ішінде бір протокол-стандартты пакет атауларын, орнату жолдарын және минималды бастау нүктелерін қысқаша сипаттайды.

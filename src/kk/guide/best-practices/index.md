@@ -5,7 +5,6 @@ translation_source_hash: c463a3ca8fdef5c852746a7fdcfd6a1f7be5f95f88a5cf443c989ec
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Үздік тәжірибелер {#best-practices}
 
 Бұл бөлім Iroha қосымшалары мен желілері үшін өндіріске бағытталған нұсқаулықтарды жинайды. Ол оны жүзеге асыратын ерекшеліктен емес, сіз қабылдауыңыз керек шешім бойынша ұйымдастырылған.

@@ -5,7 +5,6 @@ translation_source_hash: 423f8c17d5d7072d1733ccac2337d70243f6e725f7786e9f2fc7052
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Modélisation des données {#data-modeling}
 
 Les données du grand livre blockchain doivent être modélisées autour de la propriété, du comportement de transfert, des limites de permission et des modèles de requête. Choisissez la représentation sur chaîne la plus petite qui peut supporter l’auditabilité et l’exécution déterministe.

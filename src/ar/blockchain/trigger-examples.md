@@ -5,7 +5,6 @@ translation_source_hash: d40a0298466fdcbd30a9fdff979887b033e069646fcf3e437527d4d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # مثال على تشغيل الحدث {#event-trigger-example}
 
 يستخدم هذا المثال معرفات الحساب بدون نطاق قياسية وتعريفات الأصول المتوقعة في نموذج البيانات Iroha 3.

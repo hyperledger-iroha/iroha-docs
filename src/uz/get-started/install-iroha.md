@@ -1,13 +1,15 @@
 ---
 translation_locale: uz
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 4c7c62c23166a19ccc3a6a4bb42d808038d755b8c05e87b9e2ce21fbbe31a6ac
+translation_source_hash: cef11a7036dcb5257647edf0c48ea1b9c144822e029df936b422998f46187b41
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
 # Iroha 3 ni o'rnatish {#install-iroha-3}
 
 Ushbu sahifa Iroha 3 asboblar toʻplami va baytlar fayllarini yuqori darajadagi `hyperledger-iroha/iroha` ish maydoni orqali hozirgi oʻrnatish ish jarayonini qamrab oladi.
+
+Bevosita xostga o‘rnatish uchun quyidagi Rust ko‘rsatmalariga amal qiling. Docker bilan to‘rtta validatorni ishga tushirish uchun [Iroha 3 ni ishga tushirish](/uz/get-started/launch-iroha.md) qo‘llanmasidan boshlang.
 
 ## 1. Oldindan talablar {#_1-prerequisites}
 

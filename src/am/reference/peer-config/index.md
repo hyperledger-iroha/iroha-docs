@@ -5,7 +5,6 @@ translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # በማዋቀር ላይ Iroha {#configuring-iroha}
 
 የአካባቢ አውታረ መረብ አቻ ውቅር ተቀናብሯል TOML ፋይሎች. ይህ በሰንሰለት ላይ ከተቀየረ ውቅር የተለየ ነው [`SetParameter`](/am/blockchain/instructions.md#setparameter) መመሪያዎች. የምርት ባህሪ በውቅር ውስጥ መወከል አለበት ፋይል ወይም በሰንሰለት ላይ ያለው መለኪያ; የአካባቢ ተለዋዋጮች የባህሪ በሮች አይደሉም።

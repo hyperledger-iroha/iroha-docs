@@ -5,7 +5,6 @@ translation_source_hash: 9e13bcd28ad8ae356314041828f73af0ed25636af82ff4ea2948268
 translation_status: machine-validated
 translation_engine: bing-translator-llm+claude-opus-5-5
 ---
-
 # Iroha 3 Tətbiq Resept Kitabı {#iroha-3-application-cookbook}
 
 Əleyhinə qurmaq Iroha 3 kiçik, təsdiqlənə bilən reseptlərlə başlayır Taira testnet və saxlamaq Minamoto əsas şəbəkə yalnız-oxu. Hər bir resept onun ictimai oxu olub-olmadığını bildirir, normal maliyyələşdirilmiş hesab yazısı və ya icazə ilə məhdudlaşdırılmış əməliyyat. Əmrlər cari vəziyyəti istifadə edir I105 hesab identifikatorları, açıq rüsum seçimi və daxil edilmiş davranış Iroha protokolun yekunlaşdırılması [`c8c872461e92f04325c350cdd952f4276e96f9dc`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc).

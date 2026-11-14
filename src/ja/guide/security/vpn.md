@@ -5,7 +5,6 @@ translation_source_hash: 020591f0d7c5560dfb2e9f3f4537f429cbeba864c3eb022856d42ad
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # 仮想プライベートネットワーク {#virtual-private-networks}
 
 A <abbr title="Virtual Private Network">VPN</abbr>は、誰が Iroha サービスにアクセスできるかを制限するネットワーク制御です。これは、バリデータ、アプリケーションバックエンド、およびオペレーターが公開されたインターネット経路ではなくプライベートアドレスを通じて通信すべきプライベートおよびコンソーシアム展開に最も役立ちます。

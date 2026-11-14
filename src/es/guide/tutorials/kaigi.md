@@ -5,7 +5,6 @@ translation_source_hash: b42e035ea1056c07dd9c8e2f651e362c7f4b759a345508d2f099ad1
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Incrustar Kaigi en una aplicación JavaScript {#embed-kaigi-in-a-javascript-app}
 
 Kaigi registra el ciclo de vida de una reunión en Iroha mientras el navegador transmite audio y video a través de WebRTC. El libro mayor de la cadena de bloques almacena la llamada, las mutaciones de la lista de participantes, los metadatos de señalización encriptados y el estado final; no es un relé de medios.

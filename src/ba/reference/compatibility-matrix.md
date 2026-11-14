@@ -5,7 +5,6 @@ translation_source_hash: 5928eaf7e65023ad1867ca8d125efa61da6d8fe505b91e71b2c2121
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Тейешлелек матрицаһы {#compatibility-matrix}
 
 Совместимость матрицаһы сағылдыра SDK ағымдағы сценарийҙар өсөн ҡаплау Iroha 3 Документтар йыйылмаһы. По умолчанию, биттәрҙе загружает тупланма снайп-шоты булдырылған pinned [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) ревизия.

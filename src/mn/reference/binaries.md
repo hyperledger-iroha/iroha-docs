@@ -1,7 +1,7 @@
 ---
 translation_locale: mn
 translation_source: /reference/binaries.md
-translation_source_hash: 75848623e735abc80326f9ebda6f74ab438b67eaeddeacdd4d8c5509856a999e
+translation_source_hash: 887291d6ef0d9a919b076e4b632ee1cec7a2c289b284b40346ed4b2a0f4a41b3
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -49,27 +49,7 @@ cargo run --bin kagami -- --help
 
 ## Docker Зураг {#docker-image}
 
-Үндсэн эх кодын ажлын орчин сонгосон кодтой тохирох Docker Compose файлууд үүсгэхдээ `kagami localnet generate` болон `kagami docker` ашигладаг. `hyperledger/iroha:dev` контейнерийн дүрсийг эдгээр үүсгэсэн файлтай ашиглаж болно.
-
-Контейнер дотор CLI-ийг ажиллуулна уу:
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-Контейнерт Kagami-г ажиллуулна:
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-Сүлжээний ижил зэрэглэлийн системийг эхлүүлэхийн тулд эхлээд localnet ба Compose файлыг үүсгээрэй:
-
-```bash
-cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Нэг эх кодын хувилбараас бүтээсэн хоёртын файлуудаар Docker дээр дөрвөн баталгаажуулагч ажиллуулахдаа [Эхлүүлэх Iroha 3](/mn/get-started/launch-iroha.md) зааврыг дагана уу.
 
 ## Али binary-г ашиглах ёстой вэ? {#which-binary-should-i-use}
 

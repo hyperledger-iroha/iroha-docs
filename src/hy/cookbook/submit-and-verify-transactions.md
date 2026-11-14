@@ -5,7 +5,6 @@ translation_source_hash: de608ef52ad3a999c0e253e6683e454f8f66f399a690dce4c2185c7
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
-
 # Գործարքների ներկայացում եւ ստուգում {#submit-and-verify-transactions}
 
 ## Արդյունքը {#outcome}

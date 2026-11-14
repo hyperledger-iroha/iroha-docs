@@ -5,7 +5,6 @@ translation_source_hash: ec7fc2f950b007f52d837473ad7021565923e537df1d18b86055fb4
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # セキュリティ {#security}
 
 機密データや価値を扱うシステムと同様に、Iroha の展開を安全に確保してください。署名鍵、ネットワークアクセス、ノードの操作、監視、およびインシデント対応を保護してください。ブロックチェーン台帳は、これらの管理が不要になることを意味するものではありません。

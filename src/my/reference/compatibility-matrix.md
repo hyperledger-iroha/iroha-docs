@@ -5,7 +5,6 @@ translation_source_hash: 5928eaf7e65023ad1867ca8d125efa61da6d8fe505b91e71b2c2121
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # ကိုက်ညီမှု Matrix {#compatibility-matrix}
 
 ကိုက်ညီမှုဇယားသည် လက်ရှိ Iroha 3 စာတမ်းအစုအတွက် SDK များအကြား စမ်းသပ်အခြေအနေများ၏ လွှမ်းခြုံမှုကို ပြသည်။ မူလသတ်မှတ်ချက်အရ စာမျက်နှာသည် သတ်မှတ်ထားသော [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) ရင်းမြစ်ဗားရှင်းမှ ထုတ်လုပ်ပြီး အတူထည့်ပေးထားသည့် အခြေအနေမိတ္တူကို ဖွင့်တင်သည်။

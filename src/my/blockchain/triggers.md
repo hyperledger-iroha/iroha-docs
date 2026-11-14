@@ -5,7 +5,6 @@ translation_source_hash: 9443b139623544fd3c54b324e54b7e06f57820c70ffd0856f05aaca
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # နှိုးစက်များ {#triggers}
 
 trigger တွေက event filter ကို executable action နဲ့ ချိတ်ဆက်ပေးပါတယ်။ event တစ်ခုဟာ trigger ရဲ့ filter နဲ့ ကိုက်ညီတဲ့အခါ Iroha က block execution အစိတ်အပိုင်းအဖြစ် trigger လုပ်ရပ်ကို အကဲဖြတ်တယ်။

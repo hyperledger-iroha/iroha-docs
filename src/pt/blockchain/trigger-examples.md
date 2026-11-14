@@ -5,7 +5,6 @@ translation_source_hash: d40a0298466fdcbd30a9fdff979887b033e069646fcf3e437527d4d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Exemplo de Gatilho de Evento {#event-trigger-example}
 
 Este exemplo usa IDs de conta sem domínio canônicos e definições de ativos projetadas no modelo de dados Iroha 3.

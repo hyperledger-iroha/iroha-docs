@@ -5,7 +5,6 @@ translation_source_hash: b42e035ea1056c07dd9c8e2f651e362c7f4b759a345508d2f099ad1
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Kaigi ን በ JavaScript መተግበሪያ ውስጥ መክተት {#embed-kaigi-in-a-javascript-app}
 
 Kaigi አሳሹ ኦዲዮ እና ቪዲዮን በ WebRTC ሲያስተላልፍ የስብሰባውን የህይወት ኡደት በ Iroha ይመዘግባል። የብሎክቼይን መዝገብ ጥሪውን፣ በስም ዝርዝር ላይ የተደረጉ ለውጦችን፣ የተመሰጠረ የምልክት ሜታዳታ እና የመጨረሻ ሁኔታን ያከማቻል። የሚዲያ ቅብብል አይደለም።

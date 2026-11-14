@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hans
 translation_source: /reference/binaries.md
-translation_source_hash: 75848623e735abc80326f9ebda6f74ab438b67eaeddeacdd4d8c5509856a999e
+translation_source_hash: 887291d6ef0d9a919b076e4b632ee1cec7a2c289b284b40346ed4b2a0f4a41b3
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -49,27 +49,7 @@ cargo run --bin kagami -- --help
 
 ## Docker 图像 {#docker-image}
 
-上游工作区使用 `kagami localnet generate` 和 `kagami docker` 生成与当前检出代码匹配的 Docker Compose 文件。这些生成文件可搭配 `hyperledger/iroha:dev` 镜像使用。
-
-运行 CLI 在一个容器中:
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-在容器中运行 Kagami:
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-为对等节点启动,先生成一个本地网,然后编写文件:
-
-```bash
-cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+请参阅 [启动 Iroha 3](/zh-hans/get-started/launch-iroha.md)，使用同一版本的可执行文件，在 Docker 中构建并启动四个验证节点。
 
 ## 我应该使用哪个二进制程序？ {#which-binary-should-i-use}
 

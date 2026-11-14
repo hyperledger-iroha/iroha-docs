@@ -5,7 +5,6 @@ translation_source_hash: 2a9211efa691d8be17d1cdd99082d11c62389da846fb29ee2d2acb8
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Recevoir de l'aide {#receive-support}
 
 De temps en temps, vous pouvez avoir des questions sur Iroha que vous souhaiteriez discuter en détail avec d'autres. Il existe trois façons de contacter rapidement notre communauté : Telegram, Discord et GitHub.

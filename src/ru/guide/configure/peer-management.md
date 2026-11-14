@@ -5,7 +5,6 @@ translation_source_hash: f085fa1587595414f95705bbe2cd285752b0fe12cffb9ef29a33399
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # управление сетевыми узлами {#peer-management}
 
 Если вы следовали любому из руководств для конкретного языка, теперь у вас есть хорошо функционирующая сеть, к которой люди захотят присоединиться.

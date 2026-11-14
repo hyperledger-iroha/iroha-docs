@@ -5,7 +5,6 @@ translation_source_hash: 20e78492bf757147f2c9afed2d3b51639bc79913d3d8e4351193b60
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 後設資料 {#metadata}
 
 後設資料是附加到帳本物件上的、經過檢查的鍵值映射。鍵是 `Name` 值，值是 JSON（`Json`）承載資料。

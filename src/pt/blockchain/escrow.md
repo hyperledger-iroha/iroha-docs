@@ -5,7 +5,6 @@ translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Escrow de Ativo Nativo {#native-asset-escrow}
 
 Escrow nativo é um mecanismo de custódia gerenciado por um livro-razão para ativos numéricos. Em vez de enviar ativos para uma conta de propriedade do aplicativo e depender do código do aplicativo para proteger essa conta, escrow ISIs mover valor para uma conta de custódia de protocolo determinística e registrar o ciclo de vida do escrow no estado mundial.

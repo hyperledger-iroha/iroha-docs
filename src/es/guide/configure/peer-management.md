@@ -5,7 +5,6 @@ translation_source_hash: f085fa1587595414f95705bbe2cd285752b0fe12cffb9ef29a33399
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Gestión de pares de red {#peer-management}
 
 Si seguiste alguna de las guías específicas de cada idioma, ahora tienes una red bien funcional a la que la gente querrá unirse.

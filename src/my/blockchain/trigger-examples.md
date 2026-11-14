@@ -5,7 +5,6 @@ translation_source_hash: d40a0298466fdcbd30a9fdff979887b033e069646fcf3e437527d4d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # အဖြစ်အပျက် trigger နမူနာ {#event-trigger-example}
 
 ဤဥပမာသည် Iroha 3 ဒေတာမော်ဒယ်တွင် single protocol-standard domainless account ID များနှင့် projected asset definitions များကို အသုံးပြုသည်။

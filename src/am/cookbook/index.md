@@ -5,7 +5,6 @@ translation_source_hash: 9e13bcd28ad8ae356314041828f73af0ed25636af82ff4ea2948268
 translation_status: machine-validated
 translation_engine: bing-translator-llm+claude-opus-5-5
 ---
-
 # Iroha 3 መተግበሪያ የተግባር መመሪያ ስብስብ {#iroha-3-application-cookbook}
 
 ላይ ይገንቡ Iroha 3 በ ላይ የሚጀምሩ ትናንሽ እና ሊረጋገጡ ከሚችሉ የተግባር መመሪያዎች ጋር Taira Testnet እና አቆይ Minamoto Mainnet ተነባቢ ብቻ። እያንዳንዱ የተግባር መመሪያ ይፋዊ ንባብ መሆኑን ይገልጻል ፣ መደበኛ የገንዘብ ድጋፍ የተደረገለት መለያ መፃፍ፣ ወይም በፍቃድ የተዘጋ ክዋኔ። ትዕዛዞች የአሁኑን ይጠቀማሉ I105 የመለያ መታወቂያዎች፣ ግልጽ የክፍያ ምርጫ እና የተፈተሸው ባህሪ በ Iroha ፕሮቶኮል ማጠናቀቂያ [`c8c872461e92f04325c350cdd952f4276e96f9dc`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc).

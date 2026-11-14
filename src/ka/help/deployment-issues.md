@@ -1,7 +1,7 @@
 ---
 translation_locale: ka
 translation_source: /help/deployment-issues.md
-translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
+translation_source_hash: 44460ce5888ad3939f2b7d5dbec01d9d5b1ecf22c502dadb6c6f2b9da280e747
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -38,13 +38,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker და კომპოზიტი {#docker-and-compose}
 
-გენერირება შეადგინეთ მიმდინარე Kagami ადგილობრივი ქსელის გამოშვებიდან, ასე რომ ბრძანების ხაზის არგუმენტები და კონფიგურაციის ფაილები შეესაბამებიან ამოღებულ კოდს:
+Docker-ში ერთი და იმავე რევიზიის ბინარული ფაილებით ოთხი ვალიდატორის ასაწყობად და გასაშვებად მიჰყევით სახელმძღვანელოს [გაშვება Iroha 3](/ka/get-started/launch-iroha.md).
 
-```bash
-cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+ვალიდატორების ჟურნალების სანახავად ნაკრების საქაღალდიდან გაუშვით `python3 poc.py logs`.
 
 თუ კომპოზიციის განთავსება იწყება და შემდეგ ჩერდება, შეამოწმეთ დეიმონების ლოგები:
 
@@ -53,7 +49,7 @@ docker compose -f ./docker-compose.yml up
 - რეკლამირებული P2P მისამართები, რომლებიც მუშაობს მხოლოდ კონტეინერების ქსელში
 - ადგილობრივი მოცულობის განმეორებითი გამოყენება ბლოკჩეინის გენეზისი რეგენერაციის შემდეგ
 
-ახალი ბლოკჩეინის გენეზის ტესტირებისას, ამოიღეთ ძველი Kura მოცულობები სტაკის განახლების წინ. ძველი ბლოკის შენახვა ახალი ბლოკის გენეზიით შეინარჩუნებს რეპლეი-ს წარუმატებლობას.
+ახალი გენეზისის ბლოკისთვის კვანძის საცავი ცარიელი უნდა იყოს. იმავე ქსელის ხელახლა გასაშვებად გამოიყენეთ `python3 poc.py down` და შემდეგ `python3 poc.py up`. შეინახეთ `state/` მის ოთხ Docker ტომთან ერთად.
 
 ## კუბერნეტები {#kubernetes}
 
@@ -66,9 +62,9 @@ Kubernetes- ისთვის, თითოეული ვალიდატ�
 
 თუ კადრი განმეორებით იწყება, შეადარეთ კადრში წარმოდგენილი კონფიგურაცია მოსალოდნელით [`peer.template.toml`](/ka/reference/peer-config/index.md#template) და შეამოწმეთ, თუ არა ქსელის კვანძები ძველი თამაშობს Kura მონაცემები.
 
-## SORA Nexus პროფილი {#sora-profile}
+## SORA Nexus-ის პროფილი {#sora-profile}
 
-კერძო ან ლოკალური Iroha 3 განთავსებები, რომლებიც SORA Nexus-ს, SoraFS-ს ან მრავალარხიან პროცესებს იყენებს, სტანდარტულ დემონს ჩართული SORA Nexus პროფილით უნდა უშვებდეს:
+თუ კერძო ან ადგილობრივ Iroha 3 გარემოში იყენებთ SORA Nexus-ს, SoraFS-ს ან რამდენიმე არხს, ჩართეთ ეს პროფილი და გაუშვით სტანდარტული ფონური სერვისი.
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

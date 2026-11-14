@@ -5,7 +5,6 @@ translation_source_hash: 0c6392deb9ddca84e262c699c777276b3a6ca731154b66e7a8418f3
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
-
 # ჭკვიანი ხელშეკრულებები {#smart-contracts}
 
 Iroha ტრანზაქციები ახორციელებს `Executable` დატვირთვებს. მიმდინარე მონაცემთა მოდელი მხარს უჭერს:

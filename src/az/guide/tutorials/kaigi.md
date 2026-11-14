@@ -5,7 +5,6 @@ translation_source_hash: b42e035ea1056c07dd9c8e2f651e362c7f4b759a345508d2f099ad1
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Kaigi JavaScript Tətbiqində yerləşdirin {#embed-kaigi-in-a-javascript-app}
 
 Kaigi Iroha üzərində bir iclasın həyat dövrünü qeyd edir, eyni zamanda brauzer WebRTC üzərindən audio və video göndərir. Blokçeyn dəftəri zəngi, iştirakçı siyahısındakı dəyişiklikləri, şifrələnmiş siqnalizasiya metadata-sını və yekun vəziyyəti saxlayır; bu, media ötürücüsü deyil.

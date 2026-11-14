@@ -5,7 +5,6 @@ translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # ネイティブ資産エスクロー {#native-asset-escrow}
 
 ネイティブエスクローは、数値資産のためのブロックチェーン台帳による管理されたカストディ機構です。資産をアプリケーション所有のアカウントに送信し、依存する代わりにそのアカウントを保護するためのアプリケーションコード、エスクロー ISIs の値を決定論的プロトコル管理アカウントに移動し、エスクローのライフサイクルをワールドステートに記録します。

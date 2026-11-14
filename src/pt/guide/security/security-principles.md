@@ -5,7 +5,6 @@ translation_source_hash: 20139011c663a0bca6f9e486ef81f698370c34f8f02319317805b0d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Princípios de Segurança {#security-principles}
 
 Um livro-razão blockchain Iroha verifica instruções assinadas e aplica permissões. Ele não protege chaves privadas, hosts, aplicativos, estações de trabalho do operador ou procedimentos de governança. A implementação deve proteger esses sistemas.

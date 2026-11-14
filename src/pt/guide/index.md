@@ -5,7 +5,6 @@ translation_source_hash: 5ea24369e85692bd9069e446d1e50612efade2d83e4ddf73a498058
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Guia {#guide}
 
 Use esta seção quando você estiver construindo, operando ou integrando com Iroha. Comece com os tutoriais SDK para o primeiro cliente e, em seguida, passe para as melhores práticas e referências do operador antes de implantar em uma rede compartilhada.

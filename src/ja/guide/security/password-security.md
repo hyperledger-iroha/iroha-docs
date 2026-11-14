@@ -5,7 +5,6 @@ translation_source_hash: 093be5b91700b9a6f85b45dc873c8c29d90397d5c9e3c842a77bfb0
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # パスワードのセキュリティ {#password-security}
 
 パスワードは、オペレーターコンソール、秘密のストア、バックアップ、およびローカルキー・ファイルを保護できます。パスワードは単なる一つの管理手段に過ぎません。利用可能な場合は、セキュアなキー管理、アクセス制御、多要素認証と併用してください。

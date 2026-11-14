@@ -5,7 +5,6 @@ translation_source_hash: d0e20c3784c9456f74a68821530920043b0ed5d65890e97d488be30
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Алдааг олох болон засах {#troubleshooting}
 
 Энэ хэсэг нь та Iroha-тай ажиллаж байхдаа асуудалтай тулгарвал туслахад зориулагдсан болно. Юу нэгэн зүйл буруу болсон тохиолдолд эхлээд [түлхүүрүүдийг шалга](#check-the-keys) хийнэ үү. Хэрэв энэ тус болохгүй бол, шат шатны асуудлыг шийдвэрлэх зааврыг шалгана уу:

@@ -1,15 +1,15 @@
 ---
 translation_locale: ru
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 3d2285e5a27819897b6dcc6d165c468baead29d2922420728fcfbe2433d36fdd
+translation_source_hash: 98c351372551b08bda4911f52bfb3cc70c53b6125d8045c17abb205b27960f6d
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
-# Разработка на SORA Nexus: Taira и Minamoto {#build-on-sora-3-taira-and-minamoto}
+# Разработка на SORA Nexus с использованием Taira и Minamoto {#build-on-sora-3-taira-and-minamoto}
 
-SORA Nexus предоставляет публичные варианты развёртывания на основе Iroha 3. Сначала разрабатывайте и проверяйте приложение в Taira, затем переносите ту же конфигурацию клиента в Minamoto только при наличии отдельных ключей основной сети, настоящих XOR для комиссий и разрешения на промышленное использование.
+SORA Nexus работает на базе Iroha 3. Сначала разработайте и протестируйте приложение в сети Taira. Переносите конфигурацию клиента в Minamoto, только когда у вас есть отдельные ключи основной сети, реальные XOR для оплаты комиссий и разрешение на работу в промышленной среде.
 
-Это руководство показывает, как настроить клиент Iroha для публичных сетей SORA Nexus:
+В этом руководстве описана настройка клиента Iroha для двух публичных сетей SORA Nexus.
 
 - Taira тестовая сеть на `https://taira.sora.org`
 - Minamoto основная сеть на `https://minamoto.sora.org`
@@ -23,8 +23,8 @@ SORA Nexus предоставляет публичные варианты раз
 
 |Шаг| Taira Тестовая сеть                                                | Minamoto Основная сеть                                   |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|Начать чтение состояния сети|Запрос `/status` без ключей|Запрос `/status` без ключей|
-| Выбор пространства данных | Используйте публичное `universal`, если приложению не нужна управляемая линия | Используйте то же пространство данных только после одобрения для основной сети |
+|Начать чтение состояния сети|Запрос `/status` без ключей| Сначала проверьте адрес сервиса и его сертификат TLS |
+|Выберите пространство данных|Используйте публичный `universal`, если вашему приложению не нужна управляемая полоса выполнения|Используйте одно и то же пространство данных только после одобрения основной сети|
 |Получить актив для оплаты комиссии|Используйте публичный сервис финансирования тестовой сети Taira|Получить XOR с финансируемого аккаунта Minamoto или утвержденного казначейского потока|
 |Тест пишет|Используйте финансируемый тестнетом тест XOR|Не используйте тестовые инструменты; реальные XOR тратятся|
 |Продвигать|Сохраняйте логику повторных попыток, мониторинг и обработку криптографических подписей|Используйте отдельные ключи, финансирование и контроль выпуска|
@@ -67,20 +67,10 @@ wonderland.universal
 
 ## 2. Проверьте публичную конечную точку Torii {#_2-check-the-public-torii-endpoint}
 
-Перед настройкой подписанта проверьте доступность целевой конечной точки.
-
-Для Taira:
+Проверьте состояние тестовой сети Taira с помощью `curl` и `jq`. Для этой проверки не нужны ключи или локальный узел.
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-Для Minamoto:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -93,7 +83,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-Используйте ту же команду с `https://minamoto.sora.org/status` для основной сети.
+Перед использованием Minamoto уточните у оператора адрес сервиса основной сети и убедитесь, что его сертификат TLS соответствует имени хоста.
 
 ## Taira MCP для агентов {#taira-mcp-for-agents}
 
@@ -200,19 +190,7 @@ verification result.
 
 ## Примеры игрушек, которые вы можете попробовать прямо сейчас {#toy-examples-you-can-try-now}
 
-Эти примеры доступны только для чтения, если не указано иное. Они работают до того, как вы сгенерируете ключи, и безопасны для использования в публичных сетях.
-
-Сравните состояние testnet Taira и mainnet Minamoto:
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+Эти примеры запрашивают данные Taira в режиме чтения без ключей учётной записи.
 
 Выведите линии публичных пространств данных, предоставляемые Taira:
 
@@ -220,16 +198,7 @@ done
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-Запустите ту же команду для Minamoto, когда вам нужен обзор основной сети:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -238,24 +207,16 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -436,6 +397,8 @@ iroha --config ./taira.client.toml ledger asset get \
 Кран выдаёт средства только для тестовой сети Taira. Не используйте тестовые XOR, учётные записи крана или подписантов контрольных транзакций Taira в операциях Minamoto.
 
 ## 5. Создайте конфигурацию клиента Minamoto {#_5-create-a-minamoto-client-config}
+
+Перед использованием Minamoto уточните у оператора адрес сервиса основной сети и убедитесь, что его сертификат TLS соответствует имени хоста.
 
 Используйте отдельную пару ключей для Minamoto. Не используйте ключи Taira повторно для основной сети.
 

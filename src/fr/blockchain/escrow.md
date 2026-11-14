@@ -5,7 +5,6 @@ translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Compte séquestre d'actif natif {#native-asset-escrow}
 
 Le séquestre natif est un mécanisme de garde géré par un grand livre pour les actifs numériques. Au lieu d'envoyer des actifs à un compte détenu par l'application et de compter sur le code de l'application pour protéger ce compte, mise sous séquestre ISIs transférer la valeur dans un compte de garde de protocole déterministe et enregistrer le cycle de vie du séquestre dans l'état mondial.

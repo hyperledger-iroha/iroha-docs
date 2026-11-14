@@ -24,7 +24,7 @@ blockchain genesis နည်းပညာ manifesto တစ်ခုက ဒီလ�
 - လက်မှတ်ထိုးထားသော Sumeragi အမြင့် context parameter များအတွက် `sumeragi_context`
 - ချိန်းက လက်ခံသော လက်မှတ်ထိုးခြင်းနှင့် controller algorithm အတိအကျများအတွက် `crypto_admission_policy`၊ ၎င်းတို့ကို `allowed_algorithms` တွင် စာရင်းပြုထားသည်
 
-`transactions` အတွင်းရှိ ချိတ်ဆက်ဖွဲ့စည်းပုံမှတ်တမ်းများသည် နိုဒ်အမှတ်အသားများနှင့် PoPs တို့ကို တွဲထားသည်။
+`transactions` အတွင်းရှိ ချိတ်ဆက်ဖွဲ့စည်းပုံမှတ်တမ်းများသည် peer အမှတ်အသားများနှင့် PoPs တို့ကို တွဲထားသည်။
 
 ```json
 {

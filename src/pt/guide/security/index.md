@@ -5,7 +5,6 @@ translation_source_hash: ec7fc2f950b007f52d837473ad7021565923e537df1d18b86055fb4
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Segurança {#security}
 
 Assegure uma implantação Iroha como faria com qualquer sistema que manipula dados e valores sensíveis. Proteja as chaves de assinatura, o acesso à rede, as operações de nó, o monitoramento e a resposta a incidentes. Um livro-razão blockchain não elimina a necessidade desses controles.

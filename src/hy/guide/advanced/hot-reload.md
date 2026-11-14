@@ -1,13 +1,13 @@
 ---
 translation_locale: hy
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: d4fd88de377b9c88e0293ed07f307ad38c3f8b05ed898fd051c5bfb738d66681
+translation_source_hash: 8cdae05a133736fe528bf9d7e709af5c704e85e5f7dee09e0aa762f3214efd2d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # Iroha տաք վերբեռնվածություն Docker պահոցում {#hot-reload-iroha-in-a-docker-container}
 
-Օգտագործեք սառը վերբեռնում միայն տեղական թերագրման համար: Բնականոն տեղական զարգացման համար նախընտրեք վերակառուցել նկարը կամ վերսկսել ստեղծված Docker Compose փաթեթը նոր Kagami փաթեթի միջոցով:
+Թեժ վերաբեռնումը կիրառեք միայն տեղային վրիպազերծման համար։ Docker-ում նույն վերանայման գործարկվող ֆայլերով չորս վավերացնող հանգույց կառուցելու և գործարկելու համար հետևեք [Լանչում Iroha 3](/hy/get-started/launch-iroha.md) ուղեցույցին։
 
 ## Փոխարինեք հանգույցի գործարկվող ֆայլը {#replace-the-peer-binary}
 
@@ -24,20 +24,11 @@ docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/loca
 docker restart <container>
 ```
 
-Օգտագործեք `docker ps` կոնտեյների անվանումը հաստատելու համար: Ստեղծված փաթեթում հանգույցային կոնտեյները սահմանվում են `./docker-compose.yml`.
+Կոնտեյները գտնելու համար օգտագործեք `docker ps`։ Նախքան ծառայության գործարկվող ֆայլը փոխարինելը՝ ստուգեք դրա ուղին պատկերի մեջ։
 
 ## Գինեզիսը վերակառուցել մեկ անգամ օգտագործվող ցանցում {#recommit-genesis-in-a-disposable-network}
 
-Պերը կատարում է գեներեզը միայն այն ժամանակ, երբ դրա պահեստը դատարկ է: Մեկ անգամ օգտագործվող Docker ցանցի համար դադարեցրեք փաթեթը, հեռացրեք ստեղծված վիճակը, վերածեք կամ փոխարինեք ստորագրված գեներիզային փաթեթի եւ սկսեք նորից.
-
-```bash
-docker compose -f ./docker-compose.yml down
-cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
-
-Մի փոխարինեք գենեզը ցանցի վրա, որի վիճակը պետք է պահպանվի:
+Նոր սկզբնաբլոկի համար հանգույցի պահոցը պետք է դատարկ լինի։ Նույն ցանցը վերագործարկելու համար գործարկեք `python3 poc.py down` և ապա `python3 poc.py up`։ `state/` գրացուցակը պահեք իր չորս Docker հատորների հետ միասին։
 
 ## Օգտագործեք հարմարվողական կազմաձեւում {#use-custom-configuration}
 

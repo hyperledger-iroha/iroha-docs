@@ -5,7 +5,6 @@ translation_source_hash: 9e13bcd28ad8ae356314041828f73af0ed25636af82ff4ea2948268
 translation_status: machine-validated
 translation_engine: bing-translator-llm+claude-opus-5-5
 ---
-
 # Iroha 3 Livre de recettes de l'application {#iroha-3-application-cookbook}
 
 Construire contre Iroha 3 avec de petites recettes vérifiables qui commencent sur le Taira réseau de test et conserver Minamoto lecture seule du réseau principal. Chaque recette indique si elle est une lecture publique, une écriture de compte financé normale, ou une opération avec autorisation restreinte. Les commandes utilisent le courant I105 identifiants de compte, sélection explicite des frais et le comportement vérifié lors de l'enregistrement Iroha commettre [`c8c872461e92f04325c350cdd952f4276e96f9dc`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc).

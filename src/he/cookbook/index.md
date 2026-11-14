@@ -5,7 +5,6 @@ translation_source_hash: 9e13bcd28ad8ae356314041828f73af0ed25636af82ff4ea2948268
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
-
 # מתכוני פיתוח יישומים ב־Iroha 3 {#iroha-3-application-cookbook}
 
 פתחו עבור Iroha 3 באמצעות מתכונים קטנים שניתן לאמת, המתחילים ברשת הבדיקה Taira ומשאירים את הרשת הראשית Minamoto לקריאה בלבד. כל מתכון מציין אם מדובר בקריאה ציבורית, בכתיבה רגילה מחשבון ממומן, או בפעולה המחייבת הרשאה. הפקודות משתמשות במזהי החשבון הנוכחיים מסוג I105, בבחירת עמלה מפורשת ובהתנהגות השמורה בקומיט Iroha [`c8c872461e92f04325c350cdd952f4276e96f9dc`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc).

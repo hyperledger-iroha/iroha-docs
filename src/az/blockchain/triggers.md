@@ -5,7 +5,6 @@ translation_source_hash: 9443b139623544fd3c54b324e54b7e06f57820c70ffd0856f05aaca
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Tətikləyicilər {#triggers}
 
 Triglər bir hadisə filtrini icra olunan hərəkətə bağlayır. Bir hadisə trigərin filtrinə uyğundursa, Iroha blok icrasının bir hissəsi kimi trigər hərəkətini qiymətləndirir.

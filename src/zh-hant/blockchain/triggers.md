@@ -5,7 +5,6 @@ translation_source_hash: 9443b139623544fd3c54b324e54b7e06f57820c70ffd0856f05aaca
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 觸發器 {#triggers}
 
 觸發器將事件過濾器繫結到可執行的操作. 當事件與觸發器的過濾器匹配時, Iroha 將觸發器操作作為區塊執行的一部分進行評估.

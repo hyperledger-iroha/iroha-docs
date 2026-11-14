@@ -5,7 +5,6 @@ translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 產業資產保證 {#native-asset-escrow}
 
 本地保證是對數值資產進行賬本管理的保管機制.而不是將資產傳送到應用程式擁有的帳戶,並依賴應用程式程式碼來保護該帳戶,託管 ISIs 將價值轉移到確定性協議保管帳戶中,並記錄託管的生命週期在世界狀態.

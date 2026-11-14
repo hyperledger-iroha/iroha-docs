@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /reference/binaries.md
-translation_source_hash: 75848623e735abc80326f9ebda6f74ab438b67eaeddeacdd4d8c5509856a999e
+translation_source_hash: 887291d6ef0d9a919b076e4b632ee1cec7a2c289b284b40346ed4b2a0f4a41b3
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -49,27 +49,7 @@ cargo run --bin kagami -- --help
 
 ## Docker Պատկերը {#docker-image}
 
-Հիմնական աղբյուրի աշխատանքային տարածքը օգտագործում է `kagami localnet generate` և `kagami docker`՝ ընտրված կոդին համապատասխան Docker Compose ֆայլեր ստեղծելու համար։ `hyperledger/iroha:dev` կոնտեյների պատկերը կարող է օգտագործվել այդ ստեղծված ֆայլերի հետ։
-
-Գործարկեք CLI կոնտեյներում.
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-Գործարկել Kagami կոնտեյներում.
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-Համանախագահների մեկնարկի համար առաջադրեք localnet եւ նախ կազմեք ֆայլը.
-
-```bash
-cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Docker-ում նույն վերանայման գործարկվող ֆայլերով չորս վավերացնող հանգույց կառուցելու և գործարկելու համար հետևեք [Լանչում Iroha 3](/hy/get-started/launch-iroha.md) ուղեցույցին։
 
 ## Ո՞ր երկկողմը պետք է օգտագործեմ: {#which-binary-should-i-use}
 

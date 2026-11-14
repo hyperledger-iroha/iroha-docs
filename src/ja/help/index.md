@@ -5,7 +5,6 @@ translation_source_hash: 2a9211efa691d8be17d1cdd99082d11c62389da846fb29ee2d2acb8
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # サポートを受ける {#receive-support}
 
 時々、Iroha について詳しく他の人と話し合いたいと思うことがあるかもしれません。私たちのコミュニティとすぐに連絡を取る方法は、Telegram、Discord、そして GitHub の3つあります。

@@ -5,7 +5,6 @@ translation_source_hash: ec7fc2f950b007f52d837473ad7021565923e537df1d18b86055fb4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 安全 {#security}
 
 确保一个 Iroha 的部署,就像处理敏感数据和价值的任何系统一样.保护签名密钥,网络访问,节点操作,监测和事件响应. 一份账本并不能消除这些控制的必要性.

@@ -197,12 +197,12 @@ export function clarifyTechnicalTranslationSource(source: string): string {
     .replace(/\btime events\b/giu, 'time-based event notifications')
     .replace(/\bEvents are emitted\b/gu, 'Typed event notifications are emitted')
     .replace(
-      /(?<!service )(?<![\p{L}\p{N}_/.`<>-])endpoints(?![\p{L}\p{N}_/`<>-]|\.[\p{L}\p{N}])/giu,
-      'service endpoints',
+      /(?<!network )(?<!API )(?<![\p{L}\p{N}_/.`<>-])endpoints(?![\p{L}\p{N}_/`<>-]|\.[\p{L}\p{N}])/giu,
+      'network endpoints',
     )
     .replace(
-      /(?<!service )(?<![\p{L}\p{N}_/.`<>-])endpoint(?![\p{L}\p{N}_/`<>-]|\.[\p{L}\p{N}])/giu,
-      'service endpoint',
+      /(?<!network )(?<!API )(?<![\p{L}\p{N}_/.`<>-])endpoint(?![\p{L}\p{N}_/`<>-]|\.[\p{L}\p{N}])/giu,
+      'network endpoint',
     )
     .replace(
       /(?<!software )(?<![\p{L}\p{N}_/.`<>-])runtimes(?![\p{L}\p{N}_/`<>-]|\.[\p{L}\p{N}])/giu,
@@ -460,10 +460,14 @@ export function clarifyTechnicalTranslationSource(source: string): string {
       .replace(/\bcall\b/giu, 'technical invocation')
   }
 
-  // Clarification must not introduce protected identifiers such as `API`:
-  // the source and translated document retain the same identifier inventory.
+  // `API` is deliberately protected as a technical acronym, so its marker
+  // hides the prefix from the endpoint lookbehind above. Preserve an explicit
+  // API endpoint exactly after restoring literals.
   return protectedSource
     .restore(clarified)
+    .replace(/\bAPI network endpoints\b/gu, 'API endpoints')
+    .replace(/\bAPI network endpoint\b/gu, 'API endpoint')
+    .replace(/\b(An|an) network endpoint\b/gu, (_match, article: string) => `${article[0]} network endpoint`)
     .replace(/\bsoftware execution environment environment\b/giu, 'software execution environment')
     .replace(/\bconsensus finalization consensus quorum\b/giu, 'consensus finalization quorum')
     .replace(/\bcryptographic commitment value cryptographic hash\b/giu, 'cryptographic hash of the binding value')
@@ -630,6 +634,7 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'የንብረት ፍቺው አሁንም ካኖኒካል እና ግልጽ ያልሆነ አድራሻ አለው። ከምዝገባ በኋላ ያንን አድራሻ ያከማቹ ወይም ይጠይቁ እና በቀስቅሴው እርምጃ ውስጥ ይጠቀሙበት።',
     "Set the trigger's technical account to a dedicated account when possible. A dedicated account makes it clear which permissions are required for trigger execution and avoids coupling the trigger to an operator's personal signing key.":
       'በሚቻልበት ጊዜ የቀስቅሴውን ቴክኒካዊ መለያ ወደ ተለየ መለያ ያዘጋጁ። ተለየ መለያ ለቀስቅሴ አፈጻጸም የሚያስፈልጉትን ፈቃዶች ግልጽ ያደርጋል እና ቀስቅሴውን ከኦፕሬተር የግል ፊርማ ቁልፍ ጋር ከማጣመር ይከላከላል።',
+    'Register the sponsor account through your private onboarding flow:': 'የስፖንሰር መለያውን በግል የመመዝገቢያ ፍሰትዎ በኩል ይመዝግቡ፦',
     'Production equivalent': 'የምርት አካባቢ አቻ',
     'The MCP bridge can submit a signed Iroha transaction, but it does not remove the normal transaction requirements. A transaction still needs a correct authority, permissions, fee funding, chain ID, metadata, and signature.':
       'የ MCP ድልድይ የተፈረመ የ Iroha ግብይት ማስገባት ይችላል፣ ነገር ግን መደበኛውን የግብይት መስፈርቶች አያስወግድም። ግብይት አሁንም ትክክለኛ የፈቃድ ባለቤት፣ ፈቃዶች፣ የክፍያ ገንዘብ፣ የሰንሰለት ID፣ ሜታዳታ እና ፊርማ ያስፈልገዋል።',
@@ -876,6 +881,9 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'Һайланған башҡарыусы ниндәй рөхсәт тикшереүҙәре ҡулланылыуын билдәләй. Ябыҡ, администратор идара иткән селтәрҙе йәки асығыраҡ селтәрҙе формалаштырыу өсөн genesis-та ғәҙәти [рөхсәт токендарын](/ba/blockchain/permissions.md) бирә алаһығыҙ. Был рөхсәттәр әүҙемләшкәс, иҫәп яҙмаларын теркәү тәртибе үҙгәрә.',
     '6. **Build the manifest.** `DaManifestV1` records the lane, epoch, blob class, codec, payload digest, chunk root, chunk size, erasure profile, retention policy, rent quote, chunk commitments, optional IPA commitment, metadata, and issue time. The storage ticket is deterministic: the node first hashes a manifest template with an empty ticket, then writes that fingerprint back as the final `storage_ticket`.':
       '6. **Манифест төҙөгөҙ.** `DaManifestV1` башҡарыу һыҙатын, дәүерҙе, блоб класын, кодекты, файҙалы йөкләмә дайджестын, фрагменттар тамырын, фрагмент күләмен, юғалтыуҙы тергеҙеү профилен, һаҡлау сәйәсәтен, ҡуртым хаҡы тәҡдимен, фрагменттарҙың криптографик коммитменттарын, өҫтәмә IPA коммитментын, метамәғлүмәттәрҙе һәм сығарылған ваҡытты теркәй. Һаҡлау билеты детерминистик: төйөн тәүҙә билет урыны буш булған манифест ҡалыбының хэшын иҫәпләй, шунан был бармаҡ эҙен һуңғы `storage_ticket` итеп яҙа.',
+    'A SORA Nexus account ID is a canonical I105 address derived from the account public key and the target network prefix. It is not the `[account].domain` value in client TOML. The same public key encodes to different IDs on Taira and Minamoto, and production users should generate a separate keypair for Minamoto.':
+      'SORA Nexus иҫәбе ID-һы — иҫәптең асыҡ асҡысынан һәм маҡсатлы селтәр префиксынан сығарылған каноник I105 адресы. Ул клиенттың TOML файлындағы `[account].domain` ҡиммәте түгел. Бер үк асыҡ асҡыс Taira һәм Minamoto өсөн төрлө IDs итеп кодлана; производство мөхитен ҡулланыусылар Minamoto өсөн айырым асҡыстар пары булдырырға тейеш.',
+    '- the sponsor account exists': '- спонсор иҫәбе бар',
     '### 1. Inspect canonical accounts on Taira': '### 1. Taira-ла каноник иҫәп яҙмаларын тикшерегеҙ',
     'Grant and revoke instructions are used for account [permissions and roles](permissions.md).':
       'Рөхсәт биреү һәм кире алыу күрһәтмәләре иҫәп яҙмаһының [рөхсәттәре һәм ролдәре](permissions.md) өсөн ҡулланыла.',
@@ -1074,6 +1082,18 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'ב־Taira, השתמשו ב־`--fee-payer authority` בכל פעולת כתיבה; ה־CLI מקבל הצעת עמלה מדויקת, בנכס העמלה של Taira, לפני החתימה. רישום דורש בעלות על ה־`--domain` של ההגדרה, וכינוי דורש גם את `CanManageAssetDefinitionAlias`. הנפקה דורשת בעלות על ההגדרה או החזקה ב־`CanMintAssetWithDefinition` או ב־`CanMintAssetToAccount`; העברה ושריפה דורשות סמכות על יתרת המקור. חשבון שמומן דרך ה־faucet אינו הופך אוטומטית למנפיק.',
     '- runtime configuration snapshots needed for deterministic block execution, such as cryptography, governance, pipeline, content, settlement, and SORA Nexus settings':
       '- תמונות מצב של תצורת סביבת הריצה הנדרשות לביצוע דטרמיניסטי של בלוקים, כגון הגדרות קריפטוגרפיה, ממשל, שרשרת עיבוד, תוכן, סליקה ו־SORA Nexus',
+    '# Run Atomic Private Cross-Dataspace Settlement {#run-atomic-private-cross-dataspace-settlement}':
+      '# הרצת סליקה פרטית אטומית בין מרחבי נתונים {#run-atomic-private-cross-dataspace-settlement}',
+    'Use DA when an application or Nexus lane needs a ledger-visible promise that off-chain data remains retrievable. Common examples include lane payload commitments for settlement flows, SoraFS pin intents for published content, proof bundles that must be retained for later verification, and application artifacts whose public state should be a digest rather than the full payload.':
+      'השתמשו ב-DA כאשר יישום או מסלול Nexus זקוקים להבטחה גלויה בפנקס שהנתונים שמחוץ לשרשרת יישארו ניתנים לאחזור. דוגמאות נפוצות כוללות התחייבויות למטעני מסלול עבור תהליכי סליקה, כוונות הצמדה של SoraFS לתוכן שפורסם, חבילות הוכחה שיש לשמור לצורך אימות מאוחר יותר, ופריטי יישום שמצבם הציבורי צריך להיות תקציר ולא המטען המלא.',
+    '4. The resolved route is checked against both catalogs. Unknown lanes, unknown dataspaces, and lane/dataspace mismatches are deterministic routing errors. If a transaction writes to two different dataspace targets, it is rejected as a conflicting route; cross-dataspace DVP/PVP settlement is routed through the universal coordinator lane.':
+      '4. הנתיב שנפתר נבדק מול שני הקטלוגים. מסלולים לא מוכרים, מרחבי נתונים לא מוכרים ואי־התאמות בין מסלול למרחב נתונים הם שגיאות ניתוב דטרמיניסטיות. אם עסקה כותבת לשני יעדים שונים של מרחבי נתונים, היא נדחית עקב נתיב סותר; סליקת DVP/PVP חוצת־מרחבי־נתונים מנותבת דרך מסלול המתאם האוניברסלי.',
+    "On Taira, attach the faucet-derived `taira.tx-metadata.json` and use `--fee-payer authority` for every write. Registration and minting require the active validator's permissions; transfer and burn require authority over the source balance. A faucet-funded account is not automatically an issuer.":
+      'ב-Taira, צרפו את `taira.tx-metadata.json` שהתקבל משירות המימון והשתמשו ב-`--fee-payer authority` בכל כתיבה. רישום והנפקה דורשים את ההרשאות של המאמת הפעיל; העברה ושרפה דורשות סמכות על יתרת המקור. חשבון שמומן בשירות המימון אינו הופך אוטומטית למנפיק.',
+    '- runtime configuration snapshots needed for deterministic block execution, such as cryptography, governance, pipeline, content, settlement, and Nexus settings':
+      '- תמונות מצב של תצורת סביבת הריצה הנדרשות לביצוע דטרמיניסטי של בלוקים, כגון הגדרות קריפטוגרפיה, ממשל, שרשרת עיבוד, תוכן, סליקה ו־Nexus',
+    'During candidate preparation, Sumeragi aggregates the proposed payload by lane and dataspace and derives the lane-local data-availability identities. The recorded totals include transaction count, chunks, payload bytes, and TEU. After commit, those totals become the lane and dataspace commitment snapshots exposed through authenticated Sumeragi diagnostics. If a block contains lane settlement receipts, block processing also creates lane settlement commitments and relay envelopes that bind the block header, commit certificate, data-availability commitment hash, settlement proof, and lane payload size.':
+      'במהלך הכנת הבלוק המועמד, Sumeragi מצרף את המטען המוצע לפי נתיב ומרחב נתונים וגוזר את מזהי זמינות הנתונים המקומיים לכל נתיב. הסכומים הרשומים כוללים את מספר העסקאות, המקטעים, הבתים של המטען ו-TEU. לאחר commit הקונצנזוס, סכומים אלה הופכים לתמונות מצב של התחייבויות הנתיב ומרחב הנתונים, הנחשפות באמצעות אבחון Sumeragi מאומת. אם בלוק מכיל קבלות הסדרה של נתיב, עיבוד הבלוק יוצר גם התחייבויות הסדרה של הנתיב ומעטפות ממסר שקושרות את כותרת הבלוק, תעודת ה-commit, גיבוב התחייבות זמינות הנתונים, הוכחת ההסדרה וגודל המטען של הנתיב.',
     '4. Trigger-produced effects are handled in the block execution pipeline without allowing unbounded recursive trigger execution.':
       '4. האפקטים שהטריגר יוצר מטופלים בתהליך ביצוע הבלוק, בלי לאפשר הפעלה רקורסיבית בלתי מוגבלת של טריגרים.',
     'Use a language-specific guide to register blockchain objects:':
@@ -1310,10 +1330,16 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'მიიღეთ Taira-ს დამუშავების ნაკადის ცოცხალი მოვლენები სერვერის მიერ გამოგზავნილი მოვლენების (SSE) საშუალებით, კავშირი შეზღუდული მზარდი დაყოვნებით აღადგინეთ და შემცვლელი ნაკადის გახსნის შემდეგ მდგრადი მდგომარეობა განაახლეთ. რადგან საბოლოო წერტილს განმეორებითი დაკვრის კურსორი არ აქვს, მოვლენები სრულ ისტორიად კი არა, შეტყობინებებად განიხილეთ.',
     'This is content confidentiality, not traffic-flow anonymity. Timing, participant count, data space identity, and stable-pool activity remain public. A data space that hosts only one CBDC may also make the asset inferable from the route even though no literal asset identifier is published.':
       'ეს არის შინაარსის კონფიდენციალურობა და არა ტრაფიკის ნაკადის ანონიმურობა. დრო, მონაწილეთა რაოდენობა, მონაცემთა სივრცის იდენტობა და სტაბილური პულის აქტივობა საჯარო რჩება. მონაცემთა სივრცემ, რომელშიც მხოლოდ ერთი CBDC არის განთავსებული, შეიძლება აქტივი მარშრუტიდან გამოსაცნობიც გახადოს, მიუხედავად იმისა, რომ აქტივის პირდაპირი იდენტიფიკატორი არ ქვეყნდება.',
+    'All production behavior comes from the node configuration. Environment variables cannot activate this path. The shipped default is `enabled = false`; leaving the feature disabled requires no settlement-specific configuration.':
+      'საწარმოო გარემოში მთელი ქცევა კვანძის კონფიგურაციიდან მოდის. გარემოს ცვლადები ამ გზას ვერ ააქტიურებს. მიწოდებული ნაგულისხმევი მნიშვნელობაა `enabled = false`; ფუნქციის გამორთულად დატოვება ანგარიშსწორებისთვის სპეციფიკურ კონფიგურაციას არ მოითხოვს.',
     "Use the privacy-governance-authorized `RotatePrivateSettlementPoolPolicyV1` instruction. It must name the exact current governance digest, keep the same route, pool, and asset-binding commitment, advance the governance revision by one, use a strictly newer key epoch and different policy/governance digests, and activate at the block that contains the rotation. The pool frontier, roots, nullifiers, outputs, replay sets, and finalized receipts are preserved. Do not include a receipt touching that same route/pool at the rotation's activation height; the instruction rejects that boundary.":
       'გამოიყენეთ კონფიდენციალურობის მმართველობის მიერ ავტორიზებული `RotatePrivateSettlementPoolPolicyV1` ინსტრუქცია. მან ზუსტად უნდა მიუთითოს მმართველობის მიმდინარე დაიჯესტი, შეინარჩუნოს იგივე მარშრუტი, პული და აქტივთან დამაკავშირებელი ვალდებულება, მმართველობის რევიზია ერთით გაზარდოს, გამოიყენოს მკაცრად უფრო ახალი გასაღების ეპოქა და განსხვავებული პოლიტიკისა და მმართველობის დაიჯესტები და გააქტიურდეს როტაციის შემცველ ბლოკში. პულის საზღვარი, ფესვები, ნულიფიკატორები, შედეგები, განმეორებითი დაკვრის ნაკრებები და საბოლოო ქვითრები უცვლელად რჩება. როტაციის აქტივაციის სიმაღლეზე იმავე მარშრუტს ან პულს არ უნდა ეხებოდეს არცერთი ქვითარი; ინსტრუქცია ასეთ საზღვარს უარყოფს.',
     '- both formal layers: the 3/255-leg count-symmetry checks and the exact four-validator committee-indexed N=2 validator-focused plus full bounded- fault, paper-primary N=3 fault, N=4 clean, and N=3 expiry/replay configurations, with fault budgets independent per committee':
       '- ორივე ფორმალური ფენა: 3/255 ნაწილის რაოდენობის სიმეტრიის შემოწმებები და ზუსტად ოთხი ვალიდატორისგან შემდგარი, კომიტეტის ინდექსით განსაზღვრული N=2 ვალიდატორზე ორიენტირებული და სრულად შეზღუდული ხარვეზის, ნაშრომის ძირითადი N=3 ხარვეზის, N=4 სუფთა და N=3 ვადის გასვლის/განმეორებითი დაკვრის კონფიგურაციები; ხარვეზის ბიუჯეტი თითოეული კომიტეტისთვის დამოუკიდებელია',
+    'Do not use `gas_asset_id` for the "local-token fee" pattern unless you want the sponsor to be charged in that gas asset too. In the current runtime, `fee_sponsor` also makes the sponsor the payer for configured pipeline-gas asset debits. For local-token user fees, collect the token explicitly with a transfer or contract rule.':
+      'არ გამოიყენოთ `gas_asset_id` „ლოკალური ტოკენის საფასურის“ ნიმუშისთვის, თუ არ გსურთ, რომ სპონსორს ამ გაზის აქტივშიც დაეკისროს საფასური. მიმდინარე შესრულების გარემოში `fee_sponsor` სპონსორს კონფიგურირებული დამუშავების ნაკადის გაზის აქტივიდან ჩამოჭრის გადამხდელადაც აქცევს. ლოკალური ტოკენით მომხმარებლის საფასურის მისაღებად ტოკენი პირდაპირ, გადარიცხვით ან კონტრაქტის წესით შეაგროვეთ.',
+    'The top-level `chain` is the current SORA Nexus mainnet chain ID. `[account].profile = "minamoto"` selects the Minamoto I105 chain discriminant; the endpoint hostname and chain ID do not select it implicitly.':
+      'ზედა დონის `chain` არის SORA Nexus-ის მიმდინარე ძირითადი ქსელის ჯაჭვის ID. `[account].profile = "minamoto"` ირჩევს Minamoto I105-ის ჯაჭვის დისკრიმინანტს; API-ის საბოლოო წერტილის ჰოსტის სახელი და ჯაჭვის ID მას ავტომატურად არ ირჩევს.',
     'Use `--seed-hex` only with an exact 32-byte hexadecimal secret for reproducible development fixtures. For production deployment, omit it so Kagami uses operating-system randomness, then move the unencrypted private-key export into the approved custody boundary. The command never prints private keys.':
       'გამოიყენეთ `--seed-hex` მხოლოდ ზუსტად 32-ბაიტიან თექვსმეტობით საიდუმლოსთან ერთად, განმეორებადი განვითარების სატესტო მონაცემებისთვის. საწარმოო განთავსებისას გამოტოვეთ იგი, რათა Kagami-მ ოპერაციული სისტემის შემთხვევითობის წყარო გამოიყენოს, შემდეგ კი დაშიფვრის გარეშე ექსპორტირებული პირადი გასაღები დამტკიცებულ დაცულ საზღვარში გადაიტანეთ. ბრძანება პირად გასაღებებს არასოდეს ბეჭდავს.',
     'The current JavaScript SDK is the `@iroha/iroha-js` package in the Iroha source tree. It is the Node.js-first SDK for Torii, Norito builders, signing, pagination, Connect previews, and Kagemusha command transport.':
@@ -1777,7 +1803,7 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
     'Use the compact form when the raw public-key payload is at most 255 bytes:':
       'အများသုံးကီး payload အကြမ်းသည် အများဆုံး ၂၅၅ ဘိုက်ရှိလျှင် ကျစ်လျစ်သောပုံစံကို အသုံးပြုပါ။',
     '| `public_key` | `key_len` bytes | Raw public-key payload   |':
-      '| `public_key` | `key_len` ဘိုက် | အများသုံးကီး payload အကြမ်း |',
+      '| `public_key` | `key_len` ဘိုက် | အများသုံးသော့၏ မူလဘိုက်ဒေတာ |',
     'Keys longer than 255 bytes use the extended form:':
       '255 ဘိုက်ထက်ရှည်သော key များသည် extended form ကို အသုံးပြုသည်:',
     'An extended encoding is not canonical for a key that fits the compact form.':
@@ -2549,7 +2575,14 @@ function protectMachineTranslationLiterals(content: string): { masked: string; r
     return marker
   }
 
-  let masked = content.replace(/^ {0,3}(`{3,}|~{3,})[^\n]*\n[\s\S]*?^ {0,3}\1[^\n]*(?:\n|$)/gmu, protect)
+  // Protect full technical link labels before clarifying words such as "crate".
+  let masked = content
+  for (const link of directMarkdownLinks(content).reverse()) {
+    if (isPreservedTechnicalLinkLabel(link.label.trim())) {
+      masked = masked.slice(0, link.labelStart) + protect(link.label) + masked.slice(link.labelEnd)
+    }
+  }
+  masked = masked.replace(/^ {0,3}(`{3,}|~{3,})[^\n]*\n[\s\S]*?^ {0,3}\1[^\n]*(?:\n|$)/gmu, protect)
   masked = masked.replace(/(`+)([\s\S]*?)\1/gu, protect)
   masked = masked.replace(/\$\$[\s\S]*?\$\$/gu, protect)
   masked = masked.replace(/\\\[[\s\S]*?\\\]/gu, protect)
@@ -3714,10 +3747,13 @@ function sha256(content: string): string {
 
 /** Return exact technical tokens whose spelling translations must preserve. */
 export function technicalIdentifiers(source: string): Map<string, number> {
-  // Markdown emphasis and soft wrapping may change during translation while
-  // the technical name itself must remain intact. Literal/code checks remain
-  // byte-exact in assertGeneratedMarkdownStructure.
-  source = removeTranslatableEmphasis(source).replace(/\s+/gu, ' ')
+  // Translation joins soft-wrapped prose and may omit emphasis delimiters.
+  // Count identifiers in the same visible prose on both sides; keep code literal.
+  const text = markdownTranslationUnits(source)
+    .map((unit) =>
+      unit.translate && unit.content.includes('_') ? removeTranslatableEmphasis(unit.content) : unit.content,
+    )
+    .join('')
   const counts = new Map<string, number>()
   for (const pattern of [
     TECHNICAL_TERM_PATTERN,
@@ -3725,16 +3761,16 @@ export function technicalIdentifiers(source: string): Map<string, number> {
     UPPERCASE_IDENTIFIER_PATTERN,
     DOMAIN_NAME_PATTERN,
   ]) {
-    for (const match of source.matchAll(pattern)) {
+    for (const match of text.matchAll(pattern)) {
       if (pattern === UPPERCASE_IDENTIFIER_PATTERN && !shouldProtectUppercaseIdentifier(match[0])) continue
       counts.set(match[0], (counts.get(match[0]) ?? 0) + 1)
     }
   }
-  const irohaVersionMatches = source.match(/\bIroha 3\b/gu) ?? []
+  const irohaVersionMatches = text.match(/\bIroha 3\b/gu) ?? []
   if (irohaVersionMatches.length > 0) {
     counts.set('Iroha', (counts.get('Iroha') ?? 0) + irohaVersionMatches.length)
   }
-  const nexusMatches = source.match(/\bNexus\b/gu) ?? []
+  const nexusMatches = text.match(/\bNexus\b/gu) ?? []
   if (nexusMatches.length > 0) counts.set('Nexus', nexusMatches.length)
   return counts
 }

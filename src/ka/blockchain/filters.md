@@ -5,7 +5,6 @@ translation_source_hash: 36c99c1db78e357ea9fe0ca8ab9b79c9e2b20da08d329c563f1f33f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # ფილტრები {#filters}
 
 ფილტრები ვიწრო მოვლენების ნაკადები და ტრიგერი პირობები. ამჟამინდელი უმაღლესი დონეზე მოვლენების ფილტრი არის `EventFilterBox`, რომელიც შეიძლება შეესაბამებოდეს შემდეგ მოვლენათა ოჯახებს:

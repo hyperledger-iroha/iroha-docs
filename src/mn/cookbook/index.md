@@ -5,7 +5,6 @@ translation_source_hash: 9e13bcd28ad8ae356314041828f73af0ed25636af82ff4ea2948268
 translation_status: machine-validated
 translation_engine: bing-translator-llm+claude-opus-5-5
 ---
-
 # Iroha 3 Программын жор {#iroha-3-application-cookbook}
 
 эсрэг барих Iroha 3 жижиг, баталгаажиж болох жоруудтай, эхэлж байгаа Taira тестнет ба хадгалах Minamoto гол сүлжээ зөвхөн уншихад зориулсан. Тус бүрийн жор нь олон нийтэд зориулсан уншлага эсэхийг заана, ердийн санхүүжилттэй дансны бичлэг, эсвэл зөвшөөрөл шаардсан үйлдэл. Коммандууд нь одоогийн I105 дансны ID-ууд, тодорхой шимтгэлийн сонголт, ба бүртгэгдсэн зан чанар Iroha протоколын эцсийн хэлэлцүүлэг [`c8c872461e92f04325c350cdd952f4276e96f9dc`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc).

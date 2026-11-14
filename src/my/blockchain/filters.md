@@ -5,7 +5,6 @@ translation_source_hash: 36c99c1db78e357ea9fe0ca8ab9b79c9e2b20da08d329c563f1f33f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Filters များ {#filters}
 
 event streams တွေကို ကျဉ်းမြောင်းစေပြီး trigger အခြေအနေတွေကို filter လုပ်ပေးပါတယ်။ လက်ရှိထိပ်ဆုံးအဆင့်ဖြစ်စဉ် filter က `EventFilterBox` ဖြစ်ပြီး ဒီဖြစ်ရပ်မိသားစုတွေနဲ့ ကိုက်ညီနိုင်ပါတယ်။
@@ -75,7 +74,7 @@ Query Filters သည် Event Filter များနှင့် သီးခြ
 နောက်တစ်ချက်ကြည့်ပါ-
 
 - [ဖြစ်ရပ်များ](/my/blockchain/events.md)
-- [မူရင်းပံ့ပိုးထားသော ပိုင်ဆိုင်မှု အာမခံအပ်နှံခြင်း](/my/blockchain/escrow.md#queries-and-events)
+- [ပိုင်ဆိုင်မှုများကို စံညွှန်ကြားချက်ဖြင့် ကြားခံထိန်းသိမ်းခြင်း](/my/blockchain/escrow.md#queries-and-events)
 - [နှိုးစက်များ](/my/blockchain/triggers.md)
 - [Query များ](/my/blockchain/queries.md)
 - [မေးမြန်းချက် အကိုးအကား](/my/reference/queries.md)

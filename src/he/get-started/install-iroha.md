@@ -1,13 +1,15 @@
 ---
 translation_locale: he
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 4c7c62c23166a19ccc3a6a4bb42d808038d755b8c05e87b9e2ce21fbbe31a6ac
+translation_source_hash: cef11a7036dcb5257647edf0c48ea1b9c144822e029df936b422998f46187b41
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # להתקין Iroha 3 {#install-iroha-3}
 
 דף זה מכסה את זרימת העבודה הנוכחית להתקנה של שרשרת הכלים Iroha 3 והשניות המשתמשות במרחב עבודה `hyperledger-iroha/iroha` מקדימה.
+
+להתקנה ישירות על המארח, פעלו לפי הוראות Rust שבהמשך. להפעלת ארבעה מאמתים באמצעות Docker, התחילו במדריך [הפעלת Iroha 3](/he/get-started/launch-iroha.md).
 
 ## 1. תנאים מוקדמים {#_1-prerequisites}
 

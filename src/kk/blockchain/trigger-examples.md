@@ -5,7 +5,6 @@ translation_source_hash: d40a0298466fdcbd30a9fdff979887b033e069646fcf3e437527d4d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Оқиғаны іске қосу мысалы {#event-trigger-example}
 
 Бұл мысал Iroha 3 деректер моделінде бір протокол-стандартты доменсіз есептік жазба идентификаторларын және жобаланған актив анықтамаларын қолданады.

@@ -240,7 +240,7 @@ describe('Markdown translation protection', () => {
         'The runtime sends peers through one lane to the ledger endpoint after genesis, charges gas, advances the pacemaker, and stores a quorum certificate plus a commit certificate. Keep `runtime`, /peer, and LaneId unchanged.',
       ),
     ).toBe(
-      'The software execution environment sends network peers through one execution lane to the blockchain ledger service endpoint after blockchain genesis, charges transaction execution cost, advances the consensus pacemaker, and stores a consensus quorum certificate plus a consensus finalization certificate. Keep `runtime`, /peer, and LaneId unchanged.',
+      'The software execution environment sends network peers through one execution lane to the blockchain ledger network endpoint after blockchain genesis, charges transaction execution cost, advances the consensus pacemaker, and stores a consensus quorum certificate plus a consensus finalization certificate. Keep `runtime`, /peer, and LaneId unchanged.',
     )
   })
 
@@ -299,6 +299,19 @@ describe('Markdown translation protection', () => {
 
     expect(clarifyTechnicalTranslationSource(source)).toBe(source)
     expect(clarifyTechnicalTranslationSource(clarifyTechnicalTranslationSource(source))).toBe(source)
+  })
+
+  test('preserves technical link labels and the number of API identifiers during clarification', () => {
+    const source = '[Norito crate README](/reference/norito.md) lists an endpoint and an API endpoint.'
+    const clarified = clarifyTechnicalTranslationSource(source)
+    expect(clarified).toBe('[Norito crate README](/reference/norito.md) lists a network endpoint and an API endpoint.')
+    expect(technicalIdentifiers(clarified).get('API')).toBe(technicalIdentifiers(source).get('API'))
+  })
+
+  test('counts emphasized and soft-wrapped technical names in prose', () => {
+    expect(technicalIdentifiers('_Kura_ on SORA\nNexus').get('Kura')).toBe(1)
+    expect(technicalIdentifiers('_Kura_ on SORA\nNexus').get('SORA Nexus')).toBe(1)
+    expect(technicalIdentifiers('`internal_Kura_count`').has('Kura')).toBe(false)
   })
 
   test('does not disambiguate technical words inside fenced code', async () => {
@@ -1453,7 +1466,7 @@ describe('Markdown translation protection', () => {
     const clarified = clarifyTechnicalTranslationSource(source)
 
     expect(clarified).toBe(
-      'Use the API endpoint and another service endpoint for read-only service requests and service requests. See [Norito crate README](/reference/norito.md) and [Norito crate README][norito].',
+      'Use the API endpoint and another network endpoint for read-only service requests and service requests. See [Norito crate README](/reference/norito.md) and [Norito crate README][norito].',
     )
     expect(technicalIdentifiers(clarified)).toEqual(technicalIdentifiers(source))
     expect(clarifyTechnicalTranslationSource(clarified)).toBe(clarified)

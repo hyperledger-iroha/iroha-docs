@@ -5,7 +5,6 @@ translation_source_hash: 423f8c17d5d7072d1733ccac2337d70243f6e725f7786e9f2fc7052
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Modelagem de Dados {#data-modeling}
 
 Os dados do livro-razão da blockchain devem ser modelados em torno da propriedade, comportamento de transferência, limites de permissão e padrões de consulta. Escolha a menor representação on-chain que possa suportar auditabilidade e execução determinística.

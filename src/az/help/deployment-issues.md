@@ -1,7 +1,7 @@
 ---
 translation_locale: az
 translation_source: /help/deployment-issues.md
-translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
+translation_source_hash: 44460ce5888ad3939f2b7d5dbec01d9d5b1ecf22c502dadb6c6f2b9da280e747
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
@@ -38,13 +38,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker və Yarat {#docker-and-compose}
 
-Cari Kagami localnet çıxışından Compose yaradın ki, əmr sətiri arqumentləri və konfiqurasiya faylları çıxarılmış kod ilə uyğun olsun:
+Docker-də eyni reviziyadan yığılmış icra faylları ilə dörd təsdiqləyici qovşaq qurub işə salmaq üçün [Iroha 3-i işə sal](/az/get-started/launch-iroha.md) təlimatına əməl edin.
 
-```bash
-cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Təsdiqləyici qovşaqların jurnallarına baxmaq üçün dəstin qovluğunda `python3 poc.py logs` əmrini işlədin.
 
 Əgər bir compose yerləşdirilməsi başlayır və sonra dayanırsa, daemon qeydlərini yoxlayın:
 
@@ -53,7 +49,7 @@ docker compose -f ./docker-compose.yml up
 - reklamı verilmiş P2P ünvanlar yalnız konteyner şəbəkəsi daxilində işləyir
 - blokçeyn başlanğıcını yenidən yaratdıqdan sonra yerli həcm təkrar istifadəsi
 
-Yeni bir blockchain genesisini sınaqdan keçirərkən, yığın yenidən başlamazdan əvvəl köhnə Kura həcmləri silin. Köhnə blok saxlamağı yeni blockchain genesis ilə saxlamaq təkrar oynatma uğursuz olacaq.
+Yeni genezis bloku üçün qovşağın yaddaşı boş olmalıdır. Eyni şəbəkəni yenidən işə salmaq üçün əvvəl `python3 poc.py down`, sonra `python3 poc.py up` əmrlərini işlədin. `state/` qovluğunu şəbəkənin dörd Docker yaddaş bölməsi ilə birlikdə saxlayın.
 
 ## Kubernetes {#kubernetes}
 
@@ -68,7 +64,7 @@ Kubernetes üçün hər bir doğrulayıcıya vəziyyətli infrastruktur kimi yan
 
 ## SORA Nexus profili {#sora-profile}
 
-SORA Nexus, SoraFS və ya çoxzolaqlı axınlardan istifadə edən özəl və ya yerli Iroha 3 quruluşlarında standart xidmət prosesi SORA Nexus profili aktivləşdirilərək başladılmalıdır:
+SORA Nexus, SoraFS və ya bir neçə zolaqdan istifadə edən özəl və ya lokal Iroha 3 yerləşdirməsində standart fon xidmətini bu profil aktiv olmaqla başladın.
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

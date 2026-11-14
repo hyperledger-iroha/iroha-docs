@@ -5,7 +5,6 @@ translation_source_hash: 4fee7425a237d2781745025c9cd240fbc9df84f07f7427ff19c4bd8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # SDK הדרכים {#sdk-tutorials}
 
 דפים אלה מתארים את נקודות הכניסה של הלקוח Iroha 3 שנשלחו ממרחב העבודה הראשי, כולל שמות חבילות קנוניים, דרכים התקנת ומנקודות התחלה מינימליות.
@@ -20,7 +19,7 @@ translation_engine: nllb-200-ct2
    - [JavaScript / TypeScript ](/he/guide/tutorials/javascript.md)
    - [Kotlin, Android, ו- Java](/he/guide/tutorials/kotlin-java.md)
    - [Swift ו-iOS](/he/guide/tutorials/swift.md)
-4. עיינו ב[יישומים לדוגמה](/he/guide/tutorials/sample-apps.md) כשאתם זקוקים לדוגמה מלאה של יישום לקוח.
+4. עיינו ב[יישומים לדוגמה](/he/guide/tutorials/sample-apps.md) כדי לראות תהליך שלם של יישום לקוח.
 5. השתמש [הטמעת Kaigi](/he/guide/tutorials/kaigi.md) כאשר אתה רוצה להוסיף פגישות אוודיו / וידאו תומכות בארנק שלך אפליקציה משלך.
 6. השתמשו בקבוצות [Musubi ](/he/guide/tutorials/musubi.md) כאשר אתם צריכים ספריות מקורות Kotodama שניתן להשתמש בהן שוב עם תלונות רישום על שרשרת.
 

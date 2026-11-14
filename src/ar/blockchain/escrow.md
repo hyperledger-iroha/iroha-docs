@@ -5,7 +5,6 @@ translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # ضمان الأصل الأصلي {#native-asset-escrow}
 
 الضمان الأصلي هو آلية حفظ تدار بواسطة دفتر حسابات البلوك تشين للأصول الرقمية. بدلاً من إرسال الأصول إلى حساب مملوك للتطبيق والاعتماد على كود التطبيق لحماية ذلك الحساب، حساب الضمان ISIs لنقل القيمة إلى حساب وصاية بروتوكول حتمي وتسجيل دورة حياة الضمان في الحالة العالمية.

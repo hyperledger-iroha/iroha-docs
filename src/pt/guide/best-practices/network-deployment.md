@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /guide/best-practices/network-deployment.md
-translation_source_hash: 7839268b8c1f6700b0c26652e3308fa4e8acef4717d8527c609b6f30fb8c84ab
+translation_source_hash: 489b174b9bdd21a4c4c2c896911686a6020e2833c8808304cfd37a5bf31c7780
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Implantação de Rede {#network-deployment}
 
 Trate uma rede Iroha como um sistema coordenado. Os validadores devem concordar com o gênesis da blockchain, topologia, pares de rede confiáveis e configuração relevante para o consenso antes que a rede possa iniciar e continuar finalizando blocos.
@@ -25,6 +24,8 @@ Veja [Chaves para Implantação de Rede](/pt/guide/configure/keys-for-network-de
 - Use pelo menos quatro validadores para uma implantação mínima tolerante a falhas bizantinas.
 - Separe os validadores dos observadores no planejamento de capacidade. Observadores não votam, propõem ou coletam, mas ainda assim consomem armazenamento, sincronização de blocos e largura de banda da rede.
 - Trate as alterações de gênese, executor e topologia da blockchain como migrações coordenadas, em vez de edições de um único nodo.
+
+Siga o [guia de inicialização com quatro validadores](/pt/get-started/launch-iroha.md) para iniciar a rede com Docker e testar a recuperação depois de parar um validador.
 
 Veja [gênese da blockchain](/pt/reference/genesis.md), [Gerenciamento de pares de rede](/pt/guide/configure/peer-management.md) e [Desempenho e Métricas](/pt/guide/advanced/metrics.md#node-count-and-quorum).
 

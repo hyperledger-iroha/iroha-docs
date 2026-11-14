@@ -1,15 +1,15 @@
 ---
 translation_locale: dz
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 3d2285e5a27819897b6dcc6d165c468baead29d2922420728fcfbe2433d36fdd
+translation_source_hash: 98c351372551b08bda4911f52bfb3cc70c53b6125d8045c17abb205b27960f6d
 translation_status: machine-validated
 translation_engine: human-reviewed+reviewed-delta
 ---
-# SORA Nexus གུ་བཟོ་བསྐྲུན་འབད། Taira དང་ Minamoto {#build-on-sora-3-taira-and-minamoto}
+# Taira དང་ Minamoto ལག་ལེན་འཐབ་སྟེ་ SORA Nexus གུ་བཟོ་སྐྲུན་འབད་ནི {#build-on-sora-3-taira-and-minamoto}
 
-SORA Nexus གིས་ Iroha 3 གུ་བཟོ་བསྐྲུན་འབད་ཡོད་པའི་མི་མང་བཀྲམ་སྤེལ་ལམ་རིམ་ཚུ་བྱིནམ་ཨིན། དང་པ་ Taira གུ་བཟོ་བསྐྲུན་དང་སྦྱོང་བརྡར་འབད། དེ་ལས་ mainnet དོན་ལུ་ལྡེ་མིག་སོ་སོ། གླ་ཡོན་དོན་ལུ་ XOR ངོ་མ། དང་དངོས་སྤྱོད་གནང་བ་ཡོདཔ་ད་ དེ་གཅིག་གི་མཁོ་མཁན་བཀོད་པ་ Minamoto ལུ་སྤོ།
+SORA Nexus འདི་ Iroha 3 གུ་གཡོག་བཀོལཝ་ཨིན། ཁྱོད་རའི་གློག་རིམ་འདི་ དང་པ་ Taira གུ་བཟོ་ཞིནམ་ལས་བརྟག་དཔྱད་འབད། ཡོངས་འབྲེལ་གཙོ་བོའི་དོན་ལུ་ལྡེ་མིག་སོ་སོ་ འཐུས་སྤྲོད་ནིའི་དོན་ལུ་ XOR ངོ་མ་ དེ་ལས་ངོ་མ་སྦེ་གཡོག་བཀོལ་ནིའི་གནང་བ་ཚུ་ཐོབ་པའི་ཤུལ་ལས་རྐྱངམ་ཅིག་ མཁོ་སྤྲོད་པའི་རིམ་སྒྲིག་གཅིག་པ་འདི་ Minamoto ལུ་སྤོ།
 
-འ་ནི་སློབ་ཚན་གྱིས་ མི་མང་ SORA Nexus དྲ་ཚོགས་ཚུ་གི་དོན་ལུ་ Iroha མཁོ་མཁན་རིམ་ལུགས་ག་དེ་སྦེ་རིམ་སྒྲིག་འབད་ནི་ཨིན་ན་སྟོནམ་ཨིན།
+ལམ་སྟོན་འདི་གིས་ SORA Nexus གི་མི་མང་ཡོངས་འབྲེལ་གཉིས་ཀྱི་དོན་ལུ་ Iroha མཁོ་སྤྲོད་པ་ཅིག་རིམ་སྒྲིག་འབད་ཐངས་སྟོནམ་ཨིན།
 
 - Taira བརྟག་དཔྱད་འབད་ཐངས་འདི་ `https://taira.sora.org`
 - Minamoto མང་སྡེ་ཁ་ལུ་ `https://minamoto.sora.org`
@@ -23,8 +23,8 @@ SORA Nexus གིས་ Iroha 3 གུ་བཟོ་བསྐྲུན་འབ
 
 |ཐབས་ལམ་ |Taira བརྟག་དཔྱད་འབད་ཐངས་ |Minamoto དྲ་རྒྱ་གཙོ་བོ |
 | ------------------------- | | |
-| ཡོངས་འབྲེལ་གནས་སྟངས་ལྷག་ནི་འགོ་བཙུགས། | ལྡེ་མིག་མེད་པར་འདྲི་དཔྱད་ `/status` | ལྡེ་མིག་མེད་པར་འདྲི་དཔྱད་ `/status` |
-| གནད་སྡུད་ས་སྟོང་གདམ་ཁ་རྐྱབས | གློག་རིམ་ལུ་གཞུང་སྐྱོང་གིས་སྐྱོང་བའི་རྒྱུན་ལམ་མ་དགོ་པ་ཅིན་ མི་མང་ `universal` ལག་ལེན་འཐབ | mainnet གནང་བ་ཐོབ་པའི་ཤུལ་ལུ་རྐྱངམ་ཅིག་ གནད་སྡུད་ས་སྟོང་དེ་གཅིག་ལག་ལེན་འཐབ |
+| ཡོངས་འབྲེལ་གནས་སྟངས་ལྷག་ནི་འགོ་བཙུགས། | ལྡེ་མིག་མེད་པར་འདྲི་དཔྱད་ `/status` | ཧེ་མ་ཞབས་ཏོག་ཁ་བྱང་དང་ TLS ལག་ཁྱེར་ཞིབ་དཔྱད་འབད |
+| གནད་སྡུད་ས་སྟོང་ཅིག་འདམ་ཁ་རྐྱབས། | ཁྱོད་ཀྱི་གློག་རིམ་ལུ་ གཞུང་སྐྱོང་ལམ་དགོཔ་མ་གཏོགས་ མི་མང་ `universal` ལག་ལེན་འཐབ། | གནད་སྡུད་ས་སྟོང་གཅིགཔོ་འདི་ མེན་ནེཊི་ཆ་འཇོག་འབད་བའི་ཤུལ་ལས་རྐྱངམ་ཅིག་ལག་ལེན་འཐབ། |
 |དངུལ་ཕོགས་ཐོབ་ཐབས།|མི་མང་གི་ Taira བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག ལག་ལེན་འཐབ་། |XOR ལས་དངུལ་རྒྱབ་སྐྱོར་འབད་ཡོད་པའི་ Minamoto རྩིས་ཐོ་ ཡང་ན་ ངོས་འཛིན་ཅན་གྱི་ དངུལ་རྩིས་ཐོན་སྐྱེད་ནང་ལས་ཐོབ་ཐབས། |
 | བརྟག་དཔྱད་འབྲི། | ཆུ་རགས་མ་དངུལ་བཏང་བའི་བརྟག་དཔྱད་ XOR ལག་ལེན་འཐབ། | བརྟག་དཔྱད་ལག་ཆས་ལག་ལེན་མ་འཐབ། འབྲི་ལེན ཟད་འགྲོ་ངོ་མ་ XOR |
 | ཁྱབ་སྤེལ་འབད། | གཏན་ཚིག་དང་ ལྟ་རྟོག་ དེ་ལས་ མིང་རྟགས་བཀོད་མི་འཛིན་སྐྱོང་ཚུ་ ལོག་སྟེ་འབད་རྩོལ་བསྐྱེད་བཞག | ལྡེ་མིག་སོ་སོ་དང་མ་དངུལ་ དེ་ལས་ བཏོན་གཏང་ཚད་འཛིན་ཚུ་ལག་ལེན་འཐབ། |
@@ -67,20 +67,10 @@ wonderland.universal
 
 ## 2. མི་མང་གི་མཐའ་མ་ Torii བརྟག་དཔྱད་འབད་ {#_2-check-the-public-torii-endpoint}
 
-མིང་རྟགས་བཀོད་མི་ཅིག་རིམ་སྒྲིག་མ་འབད་བའི་ཧེ་མ་ དམིགས་གཏད་མཇུག་སྣོད་འདི་ གསོན་པོ་ཨིན་ན་མེན་ན་ ཞིབ་དཔྱད་འབད།
-
-Taira གི་དོན་ལུ་:
+`curl` དང་ `jq` ལག་ལེན་འཐབ་སྟེ་ Taira བརྟག་དཔྱད་ཡོངས་འབྲེལ་གྱི་གནས་སྟངས་ཞིབ་དཔྱད་འབད། ཞིབ་དཔྱད་འདི་ལུ་ ལྡེ་མིག་དང་ས་གནས་ཀྱི་མཐུད་མཚམས་མི་དགོ།
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-Minamoto གི་དོན་ལུ་:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -93,7 +83,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-མེན་ནེཊི་གི་དོན་ལུ་ `https://minamoto.sora.org/status` དང་ཅིག་ཁར་ བརྡ་བཀོད་གཅིག་པ་ལག་ལེན་འཐབ།
+Minamoto ལག་ལེན་མ་འཐབ་པའི་ཧེ་མ་ ཡོངས་འབྲེལ་གཙོ་བོའི་ཞབས་ཏོག་ཁ་བྱང་འདི་བཀོལ་སྐྱོང་པ་དང་གཅིག་ཁར་ངེས་གཏན་བཟོ། TLS ལག་ཁྱེར་འདི་ཧོསཊི་མིང་དང་མཐུནམ་ཡོད་ག་ཞིབ་དཔྱད་འབད།
 
 ## Taira MCP ཕྱིར་འཐེན་འབད་མི་ཚུ་གི་དོན་ལུ་ {#taira-mcp-for-agents}
 
@@ -200,19 +190,7 @@ Taira MCP འདི་ མི་མང བརྟག་དཔྱད་དྲ་�
 
 ## ད་ཁྱོད་ཀྱིས་རྩེད་རིགས་ཀྱི་དཔེ་ཚུ་ བརྟག་དཔྱད་འབད་ཚུགས་ {#toy-examples-you-can-try-now}
 
-དཔེ་འདི་ཚུ་ བརྡ་སྟོན་མ་འབད་བ་ཅིན་ ལྷག་ཚུགསཔ་ཨིན། ཁྱོད་ཀྱིས་ལྡེ་མིག་ཚུ་བཟོ་བཏོན་མ་འབད་བའི་ཧེ་མ་ལཱ་འབདཝ་ཨིནམ་དང་ མི་མང་ཡོངས་འབྲེལ་གཉིས་ཆ་རའི་རྒྱབ་འགལ་ལུ་གཡོག་བཀོལ་ནི་ལུ་ཉེན་སྲུང་ཡོདཔ་ཨིན།
-
-Taira བརྟག་དཔྱད་ཐིག་དང་ Minamoto ཚད་འཛིན་ཐིག་ཚུ་བསྡུར་འབད་:
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+དཔེ་འདི་ཚུ་གིས་ རྩིས་ཐོའི་ལྡེ་མིག་མ་ལག་ལེན་པར་ Taira ལས་གནས་སྡུད་ལྷགཔ་ཨིན།
 
 Taira གིས་སྟོན་པའི་མི་མང་གནད་སྡུད་ས་སྟོང་ཀྱི་རྒྱུན་ལམ་ཚུ་ཐོ་བཀོད་འབད།
 
@@ -220,16 +198,7 @@ Taira གིས་སྟོན་པའི་མི་མང་གནད་ས�
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-འདི་བཟུམ་སྦེ་ Minamoto གི་རྒྱབ་འགལ་ལུ་ བཀའ་རྒྱ་འདི་ལག་ལེན་འཐབ་ད་ ཁྱོད་ཀྱིས་ དྲ་རྒྱ་གཙོ་བོ མཐོང་སྣང་ དགོཔ་ཨིན།
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -238,24 +207,16 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -436,6 +397,8 @@ iroha --config ./taira.client.toml ledger asset get \
 བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག་འདི་ Taira བརྟག་ཞིབ་འབད་ཐངས་ཀྱི་དོན་ལུ་རྐྱངམ་གཅིག་ཨིན། ཁྱོད་ཀྱིས་ XOR བརྟག་དཔྱད་འབད་ཐངས་, བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག་རྩིས་ཐོ་, ཡང་ན་ Taira ཀན་རི་རྟགས་མ་ཚུ་ Minamoto གི་ནང་ལག་ལེན་འཐབ་ནི་མི་འོང་།
 
 ## 5. Minamoto མགྲོན་པོའི་རིམ་སྒྲིག་བཟོ་ནི་ {#_5-create-a-minamoto-client-config}
+
+Minamoto ལག་ལེན་མ་འཐབ་པའི་ཧེ་མ་ ཡོངས་འབྲེལ་གཙོ་བོའི་ཞབས་ཏོག་ཁ་བྱང་འདི་བཀོལ་སྐྱོང་པ་དང་གཅིག་ཁར་ངེས་གཏན་བཟོ། TLS ལག་ཁྱེར་འདི་ཧོསཊི་མིང་དང་མཐུནམ་ཡོད་ག་ཞིབ་དཔྱད་འབད།
 
 Minamoto གི་དོན་ལུ་ ཁྱད་པར་ཅན་ལྡེ་མིག་གཉིས་ལག་ལེན་འཐབ་ འབྲེལ་མཐུད་ཀྱི་དོན་ལུ་ Taira ལྡེ་མིག་ཚུ་ ལོག་མ་ལག་ལེན་འཐབ་།
 

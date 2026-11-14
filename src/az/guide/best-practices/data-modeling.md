@@ -5,7 +5,6 @@ translation_source_hash: 423f8c17d5d7072d1733ccac2337d70243f6e725f7786e9f2fc7052
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Məlumatların Modellaşdırılması {#data-modeling}
 
 Blockchain dəftər məlumatları mülkiyyət, köçürmə davranışı, icazə sərhədləri və sorğu naxışları ətrafında modelləşdirilməlidir. Auditi dəstəkləyən və deterministik icrasını təmin edən ən kiçik zəncirdaxili nümayəndəliyi seçin.

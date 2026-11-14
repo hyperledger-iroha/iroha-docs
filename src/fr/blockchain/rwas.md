@@ -5,7 +5,6 @@ translation_source_hash: 8d64a9a17c93f60306c279e8656e6edde8ce5dd024e742218bfb957
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Actifs du monde réel {#real-world-assets}
 
 Les actifs du monde réel (RWAs) modélisent des actifs hors chaîne dont la propriété ou le contrôle est suivi sur chaîne. Dans Iroha, un RWA est un lot de registre blockchain enregistré avec un identifiant généré, un compte propriétaire, une quantité, des métadonnées commerciales, la provenance et des contrôles de cycle de vie optionnels.

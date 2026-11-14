@@ -1,13 +1,15 @@
 ---
 translation_locale: ur
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 4c7c62c23166a19ccc3a6a4bb42d808038d755b8c05e87b9e2ce21fbbe31a6ac
+translation_source_hash: cef11a7036dcb5257647edf0c48ea1b9c144822e029df936b422998f46187b41
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # Iroha 3 انسٹال کریں {#install-iroha-3}
 
 اس صفحے میں Iroha 3 ٹول چین اور بائنری کے لئے موجودہ تنصیب ورک فلو کا احاطہ کیا گیا ہے جو `hyperledger-iroha/iroha` اپ اسٹریم ورک اسپیس کا استعمال کرتے ہوئے ہے۔
+
+میزبان پر براہ راست تنصیب کے لیے نیچے دی گئی Rust کی ہدایات پر عمل کریں۔ Docker کے ذریعے چار توثیقی نوڈ چلانے کے لیے [Iroha 3 چلانے کی ہدایات](/ur/get-started/launch-iroha.md) سے شروع کریں۔
 
 ## 1۔ ضروریات {#_1-prerequisites}
 

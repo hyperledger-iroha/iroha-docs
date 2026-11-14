@@ -23,7 +23,7 @@ translation_engine: nllb-200-ct2+reviewed-delta
 |`CanRegisterAccount` |Հաշիվ |Գրանցեք հաշիվ:|
 |`CanUnregisterAccount` |Հաշիվ |Անհամապատասխանեք հաշիվը:|
 |`CanModifyAccountMetadata` |Հաշիվ |Փոխել հաշիվի մետադատները: |
-| `CanUnregisterAssetDefinition` | Ակտիվի սահմանում | Ապագրանցել ակտիվի սահմանումը։ |
+| `CanUnregisterAssetDefinition` | Ակտիվի սահմանում | Հանել ակտիվի սահմանումը գրանցումից։ |
 | `CanModifyAssetDefinitionMetadata` | Ակտիվի սահմանում | Փոփոխել ակտիվի սահմանման մետատվյալները։ |
 |`CanMintAssetWithDefinition` |Գույք |Մինետային ակտիվներ՝ հատուկ սահմանման համար: |
 |`CanBurnAssetWithDefinition` |Գույք |Սառել ակտիվները հատուկ սահմանման համար: |

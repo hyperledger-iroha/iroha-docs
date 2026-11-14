@@ -1,13 +1,15 @@
 ---
 translation_locale: ru
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 4c7c62c23166a19ccc3a6a4bb42d808038d755b8c05e87b9e2ce21fbbe31a6ac
+translation_source_hash: cef11a7036dcb5257647edf0c48ea1b9c144822e029df936b422998f46187b41
 translation_status: machine-validated
 translation_engine: bing-translator-llm+reviewed-delta
 ---
 # Установите Iroha 3 {#install-iroha-3}
 
 На этой странице рассматривается текущий процесс установки инструментальной цепочки и бинарных файлов Iroha 3 с использованием исходного рабочего пространства `hyperledger-iroha/iroha`.
+
+Для установки непосредственно на хост следуйте приведённым ниже инструкциям по Rust. Чтобы запустить четыре валидатора с помощью Docker, начните с раздела [Запуск Iroha 3](/ru/get-started/launch-iroha.md).
 
 ## 1. Требования {#_1-prerequisites}
 

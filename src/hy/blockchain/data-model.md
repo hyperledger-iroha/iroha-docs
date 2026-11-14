@@ -118,7 +118,7 @@ account_rabbit --> asset_rose : may receive balance
 |Նպատակ |Քանոնիկ թիրախ |Ալիեւ բառացի |Աջակցող մոդել |
 | -------------- | --------------------------------------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------- |
 |Օգտագործողի հաշիվ |առանց տիրույթի `AccountId` կոդավորված՝ որպես I105 հասցե |`name@domain.dataspace` կամ `name@dataspace` |`AccountAlias`; առաջնային կեղծանունը `Account.label` է, լրացուցիչ կեղծանվանները պարտադիր են: |
-| Ակտիվի սահմանում | կանոնական `AssetDefinitionId` Base58 հասցե | `name#domain.dataspace` կամ `name#dataspace` | ակտիվի սահմանման հետ կապված `AssetDefinitionAlias` |
+| Ակտիվի սահմանում | կանոնական `AssetDefinitionId` Base58 հասցե | `name#domain.dataspace` կամ `name#dataspace` | ակտիվի սահմանմանը կապված `AssetDefinitionAlias` |
 |Պայմանագիր |Canonical Bech32m `ContractAddress` |`name::domain.dataspace` կամ `name::dataspace` |`ContractAlias` կապված տեղակայված պայմանագրի հասցեի հետ |
 |Դոմեյնային անուն |`DomainId` ձեւով `domain.dataspace` |`domain.dataspace` |SNS `domain` անունների տարածության գրանցում |
 | Տվյալների տարածքի անուն | թվային `DataSpaceId`՝ SORA Nexus-ի ակտիվ կատալոգից | տվյալների տարածքի այլանուն, օրինակ՝ `universal`, `paynet` կամ `zk` | SNS-ի `dataspace` անվանատարածքի գրառում և տվյալների տարածքների ակտիվ կատալոգ |

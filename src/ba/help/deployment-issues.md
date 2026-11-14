@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /help/deployment-issues.md
-translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
+translation_source_hash: 44460ce5888ad3939f2b7d5dbec01d9d5b1ecf22c502dadb6c6f2b9da280e747
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -38,13 +38,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker һәм Композиция {#docker-and-compose}
 
-Генерациялау Хәҙерге Kagami локаль селтәр сығымынан яҙыу, шуға күрә команда һыҙығы аргументтары һәм конфигурация файлдар иҫкәртелгән кодҡа тап килә:
+Docker мөхитендә бер үк версиянан йыйылған башҡарылма файлдар менән дүрт валидатор төҙөү һәм эшләтеп ебәреү өсөн [Башлау Iroha 3](/ba/get-started/launch-iroha.md) ҡулланмаһын ҡарағыҙ.
 
-```bash
-cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Валидаторҙарҙың журналдарын ҡарау өсөн йыйылма каталогында `python3 poc.py logs` командаһын башҡарығыҙ.
 
 Әгәр комплектты урынлаштырыу башлана һәм һуңынан туҡтап ҡалһа, демондар журналдарын тикшереп ҡарағыҙ:
 
@@ -53,7 +49,7 @@ docker compose -f ./docker-compose.yml up
 - P2P адрестары рекламалана, улар контейнерҙар селтәрендә генә эшләй
 - урындағы күләмде регенерацияланған генездан һуң ҡабаттан ҡулланыу
 
-Яңы генезисты һынағанда, стаканды яңынан башлар алдынан иҫке Kura күләмдәрҙе алып ташларға кәрәк. Иҫке блоктарҙы яңы генез менән һаҡлап ҡалыу реплейды уңышһыҙ итер.
+Яңы генезис блогы өсөн төйөндөң һаҡлағысы буш булырға тейеш. Шул уҡ селтәрҙе ҡабат эшләтеп ебәреү өсөн тәүҙә `python3 poc.py down`, унан `python3 poc.py up` командаларын башҡарығыҙ. `state/` каталогын селтәрҙең дүрт Docker томы менән бергә һаҡлағыҙ.
 
 ## Кубернеттар {#kubernetes}
 
@@ -68,7 +64,7 @@ Pod ҡат-ҡат яңынан эшләһә, уның эсендә булдыр�
 
 ## SORA Nexus профиле {#sora-profile}
 
-SORA Nexus, SoraFS йә күп һыҙатлы ағымдар ҡулланған шәхси йәки урындағы Iroha 3 урынлаштырыуҙары стандарт демонды SORA Nexus профиле әүҙем булғанда эшләтергә тейеш:
+Ябыҡ йәки урындағы Iroha 3 мөхитендә SORA Nexus, SoraFS йәки бер нисә юл ҡулланылһа, ошо профилде ҡабыҙып, стандарт фон хеҙмәтен эшләтеп ебәрегеҙ.
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

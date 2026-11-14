@@ -5,7 +5,6 @@ translation_source_hash: c463a3ca8fdef5c852746a7fdcfd6a1f7be5f95f88a5cf443c989ec
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # အကောင်းဆုံး ကျင့်ဝတ်များ {#best-practices}
 
 Iroha အက်ပ်များနှင့် ကွန်ရက်များအတွက် ထုတ်လုပ်မှု ဦးစားပေး လမ်းညွှန်ချက်များကို ဤအခန်းတွင် စုစည်းထားသည်။ ၎င်းကို အကောင်အထည်ဖော်ရန် ဖြစ်ပေါ်သော လက္ခဏာမဟုတ်ဘဲ သင်လုပ်ရမည့် ဆုံးဖြတ်ချက်ဖြင့် စီစဉ်ထားပါသည်။

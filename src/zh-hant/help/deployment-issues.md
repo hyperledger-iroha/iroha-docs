@@ -1,7 +1,7 @@
 ---
 translation_locale: zh-hant
 translation_source: /help/deployment-issues.md
-translation_source_hash: 9056df3644597447da669f4c403620c377f3dc2532e317e6de17085f78a8901a
+translation_source_hash: 44460ce5888ad3939f2b7d5dbec01d9d5b1ecf22c502dadb6c6f2b9da280e747
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
@@ -38,13 +38,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker 和複合 {#docker-and-compose}
 
-生成 從當前的 Kagami localnet輸出中編寫,以便命令列引數和配置檔案與已檢查出來的程式碼匹配:
+請參閱 [啟動 Iroha 3](/zh-hant/get-started/launch-iroha.md)，使用同一版本的執行檔，在 Docker 中建置並啟動四個驗證節點。
 
-```bash
-cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+在套件目錄中執行 `python3 poc.py logs`，即可查看驗證節點的日誌。
 
 如果構建部署開始,然後停下來,請檢查 daemon日誌:
 
@@ -53,7 +49,7 @@ docker compose -f ./docker-compose.yml up
 - 廣告的 P2P 地址,僅在集裝箱網路內工作
 - 在再生產後的本地體積重複使用
 
-在測試新創世時,在重新啟動堆之前刪除舊的 Kura 卷.將舊塊儲存到新的創世中會導致重播失敗.
+使用新的創世區塊時，節點的儲存空間必須是空的。 依序執行 `python3 poc.py down` 和 `python3 poc.py up` 以重新啟動同一個網路。請將 `state/` 與其四個 Docker 儲存卷一併保留。
 
 ## 科伯尼特 {#kubernetes}
 
@@ -66,9 +62,9 @@ docker compose -f ./docker-compose.yml up
 
 如果一個模組重啟一次,請將模組中的轉載配置與預期的 [`peer.template.toml`](/zh-hant/reference/peer-config/index.md#template)進行比較,並檢查對等節點是否正在播放舊的 Kura 資料.
 
-## SORA Nexus 設定檔 {#sora-profile}
+## SORA Nexus 設定模式 {#sora-profile}
 
-使用 SORA Nexus、SoraFS 或多通道流程的私有或本機 Iroha 3 部署，應啟用 SORA Nexus 設定檔來啟動標準常駐程式：
+如果私有或本機 Iroha 3 部署使用 SORA Nexus、SoraFS 或多個通道，請啟用此設定模式並啟動標準背景服務。
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

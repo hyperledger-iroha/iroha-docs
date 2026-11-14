@@ -5,7 +5,6 @@ translation_source_hash: 020591f0d7c5560dfb2e9f3f4537f429cbeba864c3eb022856d42ad
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Réseaux privés virtuels {#virtual-private-networks}
 
 Un <abbr title="Virtual Private Network">VPN</abbr> est un contrôle de réseau qui limite qui peut accéder aux services Iroha. Il est le plus utile pour les déploiements privés et en consortium où les validateurs, les serveurs d'applications et les opérateurs devraient communiquer via des adresses privées plutôt que par des routes Internet ouvertes.

@@ -5,7 +5,6 @@ translation_source_hash: f085fa1587595414f95705bbe2cd285752b0fe12cffb9ef29a33399
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # tarmoq tengdoshlarini boshqarish {#peer-management}
 
 Agar siz tilga xos qo'llanmalardan birortasini kuzatgan bo'lsangiz, endi odamlar qo'shilmoqchi bo'ladigan yaxshi ishlaydigan tarmog'ingiz bor.

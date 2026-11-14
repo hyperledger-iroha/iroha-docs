@@ -5,7 +5,6 @@ translation_source_hash: 234c831c97bb93996e6cf51505921ff509e233408cf2faf6a9b2364
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 <script setup>
 import WarningFatQuery from './WarningFatQuery.vue'
 </script>

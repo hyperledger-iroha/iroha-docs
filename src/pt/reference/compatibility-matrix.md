@@ -5,7 +5,6 @@ translation_source_hash: 5928eaf7e65023ad1867ca8d125efa61da6d8fe505b91e71b2c2121
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Matriz de Compatibilidade {#compatibility-matrix}
 
 A matriz de compatibilidade mostra cruzamento SDK cobertura de cenário para o atual Iroha 3 conjunto de documentos. Por padrão, a página carrega a visualização de dados de ponto no tempo agrupada, gerada a partir do fixado [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) revisão.

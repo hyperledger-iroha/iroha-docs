@@ -1,13 +1,15 @@
 ---
 translation_locale: zh-hant
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 4c7c62c23166a19ccc3a6a4bb42d808038d755b8c05e87b9e2ce21fbbe31a6ac
+translation_source_hash: cef11a7036dcb5257647edf0c48ea1b9c144822e029df936b422998f46187b41
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # 安裝 Iroha 3 {#install-iroha-3}
 
 本頁面涵蓋了使用上游 `hyperledger-iroha/iroha` 工作空間的 Iroha 3 工具鏈和二進位制器的當前安裝工作流.
+
+若要直接安裝在主機上，請依照下方的 Rust 步驟操作。若要透過 Docker 執行四個驗證節點，請先參閱[啟動 Iroha 3](/zh-hant/get-started/launch-iroha.md)。
 
 ## 1.先決條件 {#_1-prerequisites}
 

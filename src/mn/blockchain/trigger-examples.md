@@ -5,7 +5,6 @@ translation_source_hash: d40a0298466fdcbd30a9fdff979887b033e069646fcf3e437527d4d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Үйл явдлын триггерийн жишээ {#event-trigger-example}
 
 Энэ жишээ нь нэг протокол-стандартад нийцсэн домэйнгүй дансны ID болон Iroha 3 өгөгдлийн загвар дахь төсөөлсөн хөрөнгө тодорхойлолтыг ашигладаг.

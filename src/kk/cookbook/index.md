@@ -5,7 +5,6 @@ translation_source_hash: 9e13bcd28ad8ae356314041828f73af0ed25636af82ff4ea2948268
 translation_status: machine-validated
 translation_engine: bing-translator-llm+claude-opus-5-5
 ---
-
 # Iroha 3 Қолданба аспаздығы кітабы {#iroha-3-application-cookbook}
 
 Қарсы құрылыс Iroha 3 кішігірім, тексерілетін рецептілермен, олар басталады Taira тест желісі және сақтау Minamoto негізгі желі тек оқу режимінде. Әрбір рецепт оның жария оқу екенін көрсетеді, қалыпты қаржыландырылған есепшот жазу, немесе рұқсатпен шектелген операция. Командалар ағымдағыны пайдаланады I105 шот идентификаторлары, нақты төлемді таңдау және тіркелген кездегі әрекет Iroha протоколды аяқтау [`c8c872461e92f04325c350cdd952f4276e96f9dc`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc).

@@ -5,7 +5,6 @@ translation_source_hash: 5ea24369e85692bd9069e446d1e50612efade2d83e4ddf73a498058
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 指南 {#guide}
 
 在構建,運營或與 Iroha 整合時使用此節目.開始為第一個客戶端使用 SDK 教程,然後在與共享網路部署之前轉向最佳實踐和操作員參考.

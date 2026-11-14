@@ -5,7 +5,6 @@ translation_source_hash: 31555f0c56bddb8892d09af250cef732a2dfdd39564c83de8b34420
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
-
 # გაერთიანება Taira {#connect-to-taira}
 
 ## შედეგები {#outcome}

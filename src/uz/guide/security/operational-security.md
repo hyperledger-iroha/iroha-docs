@@ -5,7 +5,6 @@ translation_source_hash: 042673aca63962b4b3f91e59c29bc5030ada7d63f08299189995130
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Operatsion xavfsizlik {#operational-security}
 
 Operatsion xavfsizlik odamlarni, mezbonlarni, login ma'lumotlarini va Iroha joylashtirilishi atrofidagi protseduralarni himoya qiladi. Reyestrda qabul qilingan holat o'zgarishlari qayd etiladi. Operatorlar o'z ish stantsiyalari, imzo kalitlari va hodisaga javob berish jarayonini alohida himoya qilishi kerak.

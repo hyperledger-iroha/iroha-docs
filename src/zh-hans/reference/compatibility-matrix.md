@@ -5,7 +5,6 @@ translation_source_hash: 5928eaf7e65023ad1867ca8d125efa61da6d8fe505b91e71b2c2121
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 兼容性矩阵 {#compatibility-matrix}
 
 兼容性矩阵显示了当前 Iroha 3 文档集的跨 SDK 场景覆盖.默认情况下,该页面将从注入的 [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha)修订中生成的捆绑快照加载.

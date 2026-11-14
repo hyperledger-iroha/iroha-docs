@@ -5,7 +5,6 @@ translation_source_hash: 2a9211efa691d8be17d1cdd99082d11c62389da846fb29ee2d2acb8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Яҡлау алығыҙ {#receive-support}
 
 Ваҡыт-ваҡыт һеҙҙә Iroha тураһында башҡалар менән ентекләп һөйләшергә теләгән һорауҙар булырға мөмкин. Беҙҙең йәмғиәт менән тиҙ арала бәйләнешкә сығыу өсөн өс ысул бар: Telegram, Discord һәм GitHub.

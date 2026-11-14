@@ -1,15 +1,15 @@
 ---
 translation_locale: my
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 3d2285e5a27819897b6dcc6d165c468baead29d2922420728fcfbe2433d36fdd
+translation_source_hash: 98c351372551b08bda4911f52bfb3cc70c53b6125d8045c17abb205b27960f6d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
-# SORA Nexus ပေါ်တွင် တည်ဆောက်ခြင်း: Taira နှင့် Minamoto {#build-on-sora-3-taira-and-minamoto}
+# Taira နှင့် Minamoto ကို အသုံးပြု၍ SORA Nexus ပေါ်တွင် တည်ဆောက်ခြင်း {#build-on-sora-3-taira-and-minamoto}
 
-SORA Nexus သည် Iroha 3 ပေါ်တွင် တည်ဆောက်ထားသော အများသုံး ဖြန့်ချိတပ်ဆင်ရေး လမ်းကြောင်းများကို ပေးသည်။ Taira ပေါ်တွင် ဦးစွာတည်ဆောက်၍ အစမ်းလေ့ကျင့်ပြီး သီးခြား mainnet ကီးများ၊ အခကြေးငွေအတွက် အမှန်တကယ် XOR နှင့် ထုတ်လုပ်ရေးခွင့်ပြုချက် ရှိမှသာ တူညီသော client ပုံစံကို Minamoto သို့ ပြောင်းပါ။
+SORA Nexus သည် Iroha 3 ပေါ်တွင် အလုပ်လုပ်သည်။ အက်ပ်ကို Taira ပေါ်တွင် ဦးစွာ တည်ဆောက်၍ စမ်းသပ်ပါ။ ပင်မကွန်ရက်အတွက် သီးခြားသော့များ၊ ဝန်ဆောင်ခပေးရန် XOR အစစ်နှင့် လက်တွေ့အသုံးပြုခွင့် အတည်ပြုချက် ရရှိပြီးမှ ထိုကလိုင်းယင့်ဆက်တင်များကို Minamoto သို့ ပြောင်းသုံးပါ။
 
-ဤသင်ခန်းစာသည် အများသုံး SORA Nexus ကွန်ရက်များအတွက် Iroha client ကို ပြင်ဆင်သတ်မှတ်ပုံ ပြသည်:
+ဤလမ်းညွှန်တွင် SORA Nexus ၏ အများသုံးကွန်ရက်နှစ်ခုအတွက် Iroha ကလိုင်းယင့်ကို မည်သို့ သတ်မှတ်ရမည်ကို ရှင်းပြထားသည်။
 
 - Taira testnet ကို `https://taira.sora.org` တွင်
 - Minamoto အဓိကရထား `https://minamoto.sora.org`
@@ -23,8 +23,8 @@ Taira ကို ပေါင်းစပ်မှု စမ်းသပ်ချ
 
 |အဆင့် |Taira Testnet |Minamoto Mainnet |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-| ကွန်ရက်အခြေအနေကို စတင်ဖတ်ရှုခြင်း | ကီးများမလိုဘဲ `/status` ကို query လုပ်ပါ | ကီးများမလိုဘဲ `/status` ကို query လုပ်ပါ |
-| Data space ရွေးချယ်ခြင်း | သင့်အက်ပ်က အုပ်ချုပ်မှုအောက်ရှိ lane ကို မလိုအပ်ပါက အများသုံး `universal` ကို သုံးပါ | Mainnet ခွင့်ပြုချက်ရပြီးမှသာ တူညီသော data space ကို သုံးပါ |
+| ကွန်ရက်အခြေအနေကို စစ်ဆေးခြင်း | သော့မသုံးဘဲ `/status` မှ ဒေတာကို ရယူပါ | ဝန်ဆောင်မှုလိပ်စာနှင့် TLS လက်မှတ်ကို ဦးစွာ အတည်ပြုပါ |
+|ဒေတာနေရာကို ရွေးချယ်ပါ။|အများသုံး `universal` ကို သုံးပါ၊ သင့်ရဲ့ app မှာ စီမံခန့်ခွဲထားတဲ့ အကောင်အထည်ဖော်ရေး လမ်းကြောင်း မလိုဘူးဆိုရင်|အလားတူ ဒေတာနေရာကို အဓိကကွန်ရက် အတည်ပြုပြီးနောက်သာ သုံးပါ။ |
 |အခွန်အရင်းအမြစ်ရယူပါ။|အများပြည်သူ Taira testnet ထောက်ပံ့မှု ဝန်ဆောင်မှုကို အသုံးပြုပါ။ |ငွေကြေးထောက်ပံ့ထားတဲ့ Minamoto အကောင့်မှ (သို့) ခွင့်ပြုထားသော ဘဏ္ဍာငွေစီးဆင်းမှုမှ XOR ကိုရယူခြင်း |
 |Test က ရေးထားတယ်|testnet မှ ရင်းနှီးမြှုပ်နှံသည့် စမ်းသပ်မှု XOR ကို အသုံးပြုပါ။ |စမ်းသပ်မှု tooling ကိုမသုံးပါနဲ့; စာရင်းအင်းစရိတ်စစ်မှန် XOR |
 | နောက်အဆင့်သို့ ပြောင်းသုံးခြင်း | ပြန်ကြိုးပမ်းမှု logic၊ စောင့်ကြည့်မှုနှင့် လက်မှတ်ထိုးသူ ကိုင်တွယ်မှုကို ထိန်းသိမ်းပါ | သီးခြားကီးများ၊ ငွေဖြည့်မှုနှင့် ထုတ်ဝေမှုထိန်းချုပ်ချက်များကို သုံးပါ |
@@ -67,20 +67,10 @@ wonderland.universal
 
 ## 2. အများသုံး Torii ၏ Endpoint ကို စစ်ဆေးခြင်း {#_2-check-the-public-torii-endpoint}
 
-လက်မှတ်ထိုးသူကို မပြင်ဆင်သတ်မှတ်မီ ပစ်မှတ် endpoint အသက်ဝင်နေကြောင်း စစ်ဆေးပါ။
-
-Taira အတွက်:
+`curl` နှင့် `jq` ကို သုံးပြီး Taira စမ်းသပ်ကွန်ရက်၏ အခြေအနေကို စစ်ဆေးပါ။ ဤစစ်ဆေးမှုအတွက် သော့ သို့မဟုတ် ကိုယ်ပိုင်ကွန်ရက်ဆုံမှတ် မလိုပါ။
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-Minamoto အတွက်:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -93,7 +83,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-`https://minamoto.sora.org/status` နဲ့ အတူတူ command ကို mainnet အတွက် သုံးပါ။
+Minamoto ကို အသုံးမပြုမီ ပင်မကွန်ရက်ဝန်ဆောင်မှု၏ လိပ်စာကို ကွန်ရက်စီမံသူထံမှ အတည်ပြုပြီး TLS လက်မှတ်သည် ဆာဗာ၏ အမည်နှင့် ကိုက်ညီကြောင်း စစ်ဆေးပါ။
 
 ## Taira MCP Agents များအတွက် {#taira-mcp-for-agents}
 
@@ -200,19 +190,7 @@ Taira MCP ကို အများသုံး testnet ထိန်းချု
 
 ## ယခုစမ်းသပ်နိုင်သော ကစားစရာများ {#toy-examples-you-can-try-now}
 
-ဒီဥပမာတွေဟာ မှတ်သားမထားဘူးဆိုရင် ဖတ်လို့ ရနိုင်တာပါ၊ သော့တွေ မထုတ်ခင် အလုပ်ဖြစ်ပြီး အများသုံးကွန်ရက် နှစ်ခုစလုံးကို တိုက်ခိုက်ဖို့ ဘေးကင်းပါတယ်။
-
-Taira testnet နှင့် Minamoto mainnet ကျန်းမာရေးကို နှိုင်းယှဉ်ကြည့်ပါ-
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+ဤဥပမာများသည် အကောင့်သော့များမသုံးဘဲ Taira မှ အချက်အလက်များကို ဖတ်ရှုပါသည်။
 
 Taira က ဖော်ပြသော အများသုံး data space lane များကို စာရင်းပြုပါ:
 
@@ -220,16 +198,7 @@ Taira က ဖော်ပြသော အများသုံး data space lan
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-Mainnet အခြေအနေကို ကြည့်ရန် လိုအပ်သောအခါ တူညီသော command ကို Minamoto အတွက် လုပ်ဆောင်ပါ။
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -238,24 +207,16 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -436,6 +397,8 @@ iroha --config ./taira.client.toml ledger asset get \
 Faucet သည် Taira testnet ငွေအတွက်သာ ဖြစ်သည်။ Minamoto လုပ်ငန်းစဉ်များတွင် testnet XOR၊ faucet အကောင့်များ သို့မဟုတ် Taira canary လက်မှတ်ထိုးသူများကို မသုံးပါနှင့်။
 
 ## 5. Minamoto client ပြင်ဆင်သတ်မှတ်ချက် ဖန်တီးခြင်း {#_5-create-a-minamoto-client-config}
+
+Minamoto ကို အသုံးမပြုမီ ပင်မကွန်ရက်ဝန်ဆောင်မှု၏ လိပ်စာကို ကွန်ရက်စီမံသူထံမှ အတည်ပြုပြီး TLS လက်မှတ်သည် ဆာဗာ၏ အမည်နှင့် ကိုက်ညီကြောင်း စစ်ဆေးပါ။
 
 Minamoto အတွက် သီးခြားသော့စုံကို အသုံးပြုပါ။ အဓိကကွန်ရက်အတွက် Taira သော့တွေကို ပြန်မသုံးပါနဲ့။
 

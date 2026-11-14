@@ -5,7 +5,6 @@ translation_source_hash: 3d317c00e75525d70f6cb9ef7f8eeec6911e2f124af8052cd2fc719
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # التشفير بالمفتاح العام {#public-key-cryptography}
 
 تستخدم التشفير بالمفتاح العام مفتاحًا عامًا ومفتاحًا خاصًا مرتبطين ببعضهما البعض. يمكن مشاركة المفتاح العام. يجب أن يبقى المفتاح الخاص تحت سيطرة الشخص المخول. تعتمد الأمان على استخدام خوارزمية مدعومة، وتوليد المفاتيح بعشوائية آمنة، وحماية المفتاح الخاص.

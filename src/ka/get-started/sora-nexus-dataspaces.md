@@ -1,15 +1,15 @@
 ---
 translation_locale: ka
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: 3d2285e5a27819897b6dcc6d165c468baead29d2922420728fcfbe2433d36fdd
+translation_source_hash: 98c351372551b08bda4911f52bfb3cc70c53b6125d8045c17abb205b27960f6d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
-# განვითარება SORA Nexus-ზე: Taira და Minamoto {#build-on-sora-3-taira-and-minamoto}
+# SORA Nexus-ზე შემუშავება Taira-სა და Minamoto-ს გამოყენებით {#build-on-sora-3-taira-and-minamoto}
 
-SORA Nexus გთავაზობთ Iroha 3-ზე დაფუძნებულ საჯარო განთავსების გარემოებს. ჯერ შექმენით და გამოსცადეთ Taira-ზე, შემდეგ კი იგივე კლიენტის სტრუქტურა Minamoto-ზე გადაიტანეთ მხოლოდ მაშინ, როცა გექნებათ ძირითადი ქსელის ცალკე გასაღებები, საკომისიოსთვის რეალური XOR და საწარმოო ნებართვა.
+SORA Nexus მუშაობს Iroha 3-ის ბაზაზე. აპლიკაცია ჯერ Taira-ზე შეიმუშავეთ და გამოსცადეთ. იმავე კლიენტის კონფიგურაცია Minamoto-ზე გადაიტანეთ მხოლოდ მას შემდეგ, რაც გექნებათ მთავარი ქსელისთვის ცალკე გასაღებები, საკომისიოსთვის ნამდვილი XOR და საწარმოო გარემოში მუშაობის ნებართვა.
 
-ეს სახელმძღვანელო აჩვენებს, როგორ დააკონფიგურიროთ Iroha კლიენტი საჯარო SORA Nexus ქსელებისთვის:
+ეს სახელმძღვანელო აღწერს Iroha კლიენტის გამართვას SORA Nexus-ის ორი საჯარო ქსელისთვის.
 
 - Taira საგამოცდო ქსელი `https://taira.sora.org`
 - Minamoto ძირითადი ქსელი: `https://minamoto.sora.org`
@@ -23,8 +23,8 @@ SORA Nexus გთავაზობთ Iroha 3-ზე დაფუძნებ�
 
 |ნაბიჯი |Taira ტესტის ქსელი |Minamoto მაინეთ |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|დაიწყეთ წაკითხვა ქსელის მდგომარეობა |მოთხოვნა `/status` გარეშე გასაღები |მოთხოვნა `/status` გარეშე გასაღები |
-| მონაცემთა სივრცის არჩევა | გამოიყენეთ საჯარო `universal`, თუ აპლიკაციას მართვადი არხი არ სჭირდება | იგივე მონაცემთა სივრცე გამოიყენეთ მხოლოდ ძირითადი ქსელის ნებართვის შემდეგ |
+|დაიწყეთ წაკითხვა ქსელის მდგომარეობა |მოთხოვნა `/status` გარეშე გასაღები | ჯერ გადაამოწმეთ სერვისის მისამართი და მისი TLS სერტიფიკატი |
+|აირჩიეთ მონაცემთა სივრცე |გამოიყენეთ საჯარო `universal` თუ თქვენს აპლიკაციას არ სჭირდება მართული აღსრულების ზოლი |გამოიყენეთ იგივე მონაცემთა სივრცე მხოლოდ მას შემდეგ, რაც მთავარმა ქსელმა დაამტკიცა|
 |მიიღეთ საფასური აქტივი.|გამოიყენეთ საჯარო Taira სატესტო ქსელი-ის დაფინანსების სერვისი |მიიღეთ XOR დაფინანსებული Minamoto ანგარიშიდან ან დამტკიცებული სახაზინო ნაკადისგან |
 |ტესტი წერს |გამოყენება ტესტის ქსელის მიერ დაფინანსებული ტესტი XOR |არ გამოიყენოთ ტესტი ინსტრუმენტები; წერა ხარჯავს რეალური XOR |
 |გააქტიურეთ |კვლავ შეეცადეთ ლოგიკა, მონიტორინგი და კრიპტოგრაფიული ხელმოწერა |გამოიყენეთ ცალკე გასაღები, დაფინანსება და გათავისუფლების კონტროლი |
@@ -67,20 +67,10 @@ wonderland.universal
 
 ## 2. საჯარო Torii ბოლო წერტილის შემოწმება {#_2-check-the-public-torii-endpoint}
 
-ხელმომწერის კონფიგურაციამდე შეამოწმეთ, რომ სამიზნე ბოლო წერტილი მუშაობს.
-
-Taira:
+`curl`-ისა და `jq`-ის გამოყენებით შეამოწმეთ Taira-ს სატესტო ქსელის მდგომარეობა. ამისთვის არც გასაღებები გჭირდებათ და არც ლოკალური კვანძი.
 
 ```bash
 curl -fsS https://taira.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-Minamoto:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
   -H 'Accept: application/json' \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
@@ -93,7 +83,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-გამოიყენეთ იგივე ბრძანება `https://minamoto.sora.org/status` ძირითადი ქსელისათვის.
+Minamoto-ს გამოყენებამდე ოპერატორთან დააზუსტეთ ძირითადი ქსელის სერვისის მისამართი და შეამოწმეთ, რომ TLS სერტიფიკატი ჰოსტის სახელს შეესაბამება.
 
 ## Taira MCP აგენტებისთვის {#taira-mcp-for-agents}
 
@@ -200,19 +190,7 @@ Taira MCP საჯარო ტესტნეტის მართვის �
 
 ## სათამაშოების მაგალითები, რომელთა გამოცდა შეგიძლიათ ახლა {#toy-examples-you-can-try-now}
 
-ეს მაგალითები არის მხოლოდ წაკითხვა, თუ არ აღინიშნება. ისინი მუშაობენ სანამ თქვენ გენერირებთ გასაღებს და უსაფრთხოა ორივე საჯარო ქსელის წინააღმდეგ.
-
-შედარება Taira სატესტო ქსელისა და Minamoto ძირითადი ქსელის ჯანმრთელობის შესახებ:
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
+ამ მაგალითებში Taira-ს მონაცემებს ანგარიშის გასაღებების გარეშე კითხულობთ.
 
 ჩამოთვალეთ Taira-ს მიერ წარმოდგენილი საჯარო მონაცემთა სივრცეების არხები:
 
@@ -220,16 +198,7 @@ done
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-განახორციელეთ იგივე ბრძანება Minamoto -ის წინააღმდეგ, როდესაც საჭიროა ძირითადი ქსელის ხედი:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -238,24 +207,16 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -436,6 +397,8 @@ iroha --config ./taira.client.toml ledger asset get \
 გამცემი მხოლოდ Taira-ს სატესტო ქსელის სახსრებისთვისაა განკუთვნილი. Minamoto-ს ნაკადებში არ გამოიყენოთ სატესტო ქსელის XOR, გამცემის ანგარიშები ან Taira-ს საკონტროლო ხელმომწერები.
 
 ## 5. შექმნათ Minamoto კლიენტის კონფიგურაცია. {#_5-create-a-minamoto-client-config}
+
+Minamoto-ს გამოყენებამდე ოპერატორთან დააზუსტეთ ძირითადი ქსელის სერვისის მისამართი და შეამოწმეთ, რომ TLS სერტიფიკატი ჰოსტის სახელს შეესაბამება.
 
 გამოიყენეთ ცალკე საკვანძო წყვილი Minamoto. არ გამოვიყენოთ Taira საკვები ძირითადი ქსელისათვის.
 

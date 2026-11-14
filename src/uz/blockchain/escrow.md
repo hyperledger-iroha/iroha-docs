@@ -5,7 +5,6 @@ translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Mahalliy aktiv eskrousi {#native-asset-escrow}
 
 Mahalliy eskrou — raqamli aktivlar uchun reyestr boshqaradigan saqlov mexanizmi. Aktivlarni ilovaga tegishli hisobga yuborib, shu hisobni himoyalash mantiqini ilova kodida yuritish o‘rniga, eskrou ISIs qiymatni deterministik protokol saqlov hisobiga o‘tkazadi va eskrouning hayot siklini global holatda qayd etadi.

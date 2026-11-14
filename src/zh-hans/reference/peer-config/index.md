@@ -5,7 +5,6 @@ translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 配置 Iroha {#configuring-iroha}
 
 当地对等节点配置设置在 TOML 文件中.这与通过[`SetParameter`](/zh-hans/blockchain/instructions.md#setparameter)指令改变的链上配置不同.生产行为必须在一个配置文件或链上参数中表示;环境变量不是特征门

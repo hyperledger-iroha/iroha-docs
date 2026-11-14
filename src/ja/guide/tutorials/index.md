@@ -5,7 +5,6 @@ translation_source_hash: 4fee7425a237d2781745025c9cd240fbc9df84f07f7427ff19c4bd8
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # SDK チュートリアル {#sdk-tutorials}
 
 これらのページは、主要なワークスペースから出荷された Iroha 3 クライアントのエントリーポイントを要約しており、標準的なパッケージ名、インストールパス、最小の開始ポイントを含みます。

@@ -5,7 +5,6 @@ translation_source_hash: 9e13bcd28ad8ae356314041828f73af0ed25636af82ff4ea2948268
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
-
 # Iroha 3 ilovalari uchun amaliy qo‘llanma {#iroha-3-application-cookbook}
 
 Iroha 3 bilan ishlashni Taira sinov tarmog‘idan boshlanadigan, tekshirish mumkin bo‘lgan ixcham retseptlar orqali o‘rganing; Minamoto asosiy tarmog‘ida esa faqat o‘qish amallarini bajaring. Har bir retsept amal ochiq o‘qish, moliyalashtirilgan hisobning odatiy yozuvi yoki ruxsat talab qiladigan operatsiya ekanini ko‘rsatadi. Buyruqlar joriy I105 hisob IDs, aniq to‘lov tanlovi va Iroha-ning [`c8c872461e92f04325c350cdd952f4276e96f9dc`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc) commitida tekshirilgan xatti-harakatdan foydalanadi.

@@ -48,7 +48,7 @@ curl -fsS -N https://taira.sora.org/v1/events/sse
 
 ## אירועים בזמן {#time-events}
 
-אירועי זמן נפלטים כאשר תצוגת מצב העולם מוכנה לטפל ב[טריגרים מבוססי זמן](./triggers.md#time-triggers).
+אירועי זמן נפלטים כאשר תצוגת מצב המערכת מוכנה לטפל ב[טריגרים מבוססי זמן](./triggers.md#time-triggers).
 
 ## אירועים להוציא לפועל {#trigger-execution-events}
 

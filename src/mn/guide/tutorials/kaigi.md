@@ -5,7 +5,6 @@ translation_source_hash: b42e035ea1056c07dd9c8e2f651e362c7f4b759a345508d2f099ad1
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Эмбед Kaigi-ийг JavaScript апп-д оруулах {#embed-kaigi-in-a-javascript-app}
 
 Kaigi нь уулзалтын амьдралын мөчийг Iroha дээр бичиж авадаг бөгөөд хөтчөр нь WebRTC дээр аудио ба видео дамжуулдаг. Блокчейн тэмдэглэл нь дуудлага, оролцогчдын жагсаалтын өөрчлөлтүүд, шифрлэгдсэн дохионы мета өгөгдөл, эцсийн статустыг хадгалдаг; энэ нь медиа дамжуулах суварга биш юм.

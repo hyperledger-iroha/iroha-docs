@@ -245,7 +245,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer unregister --key "$PEER_KEY"
 ```
 
-## ထုတ်ပေးခြင်း/ဖျက်သိမ်းခြင်း {#mint-burn}
+## ပိုင်ဆိုင်မှု ထပ်မံထုတ်ဝေခြင်းနှင့် ဖျက်သိမ်းခြင်း {#mint-burn}
 
 ထုတ်ဝေခြင်းနှင့် ဖျက်ဆီးခြင်းသည် ကိန်းဂဏန်းအရင်းအမြစ်များကို ရည်ညွှန်းနိုင်ပြီး အကြိမ်ကြိမ်ပြုလုပ်မှု အနည်းအကျဉ်းရှိသည့် trigger များဖြစ်သည်။ asset တစ်ချို့ကို non-mintable အဖြစ်ကြေညာနိုင်သည်မှာ မှတ်ပုံတင်ပြီးနောက်တစ်ကြိမ်သာ ထုတ်ပြန်နိုင်ခြင်းဖြစ်သည်။
 
@@ -326,7 +326,7 @@ Native escrow ညွှန်ကြားချက်များသည် block
 
 စျေးကွက်အမှတ်တံဆိပ်သုံးစွဲမှု `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, နှင့် `ResolveEscrowDispute`. ယေဘုယျ အရင်းအမြစ်ပိတ်ခြင်း အသုံးပြုမှု `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, နှင့် `ExpireAssetLock`. Anonymous escrow ဟာ စျေးကွက်ရဲ့ သက်တမ်း စက်ဝန်းကို ပုံဖော်ပါတယ်။ `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, နှင့် `ResolveAnonymousEscrowDispute`.
 
-ဤ ISIs များအတွက် သီးသန့် CLI command များ လက်ရှိ မရှိသေးပါ။ အမျိုးအစားသတ်မှတ်ထားသော SDK builder များ သို့မဟုတ် serialize လုပ်ထားသည့် ညွှန်ကြားချက် payload များကို သုံးပါ။ သက်တမ်းစက်ဝန်း အသေးစိတ်၊ ခွင့်ပြုချက်များ၊ query များ၊ ဖြစ်ရပ်များနှင့် Rust ဥပမာများအတွက် [မူရင်းပိုင်ဆိုင်မှု အာမခံအပ်နှံမှု](/my/blockchain/escrow.md) ကို ကြည့်ပါ။
+ဤ ISIs များမှာ လက်ရှိတွင်ပထမတန်းစား CLI commands မရှိပါ။ ရိုက်နှိပ်ထားသော SDK builders သို့မဟုတ် serialized instruction payloads ကိုအသုံးပြုပြီး ဘဝပတ်လည် အသေးစိတ်၊ ခွင့်ပြုချက်များ၊ မေးမြန်းမှုများ၊ အဖြစ်အပျက်များနှင့် Rust နမူနာများအတွက် [ပိုင်ဆိုင်မှုများကို စံညွှန်ကြားချက်ဖြင့် ကြားခံထိန်းသိမ်းခြင်း](/my/blockchain/escrow.md) ကိုကြည့်ပါ။
 
 ## Atomic ပုဂ္ဂလိက ဘဏ္ဍာရေး ငွေပေးချေမှု ဖြေရှင်းခြင်း {#atomic-private-settlement}
 

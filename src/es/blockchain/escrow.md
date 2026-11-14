@@ -5,7 +5,6 @@ translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Custodia de Activos Nativos {#native-asset-escrow}
 
 El depósito en garantía nativo es un mecanismo de custodia gestionado por un libro mayor para activos numéricos. En lugar de enviar activos a una cuenta propiedad de la aplicación y depender del código de la aplicación para proteger esa cuenta, depósito en garantía ISIs mover el valor a una cuenta de custodia de protocolo determinista y registrar el ciclo de vida del depósito en garantía en el estado mundial.

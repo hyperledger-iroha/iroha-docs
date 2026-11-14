@@ -5,7 +5,6 @@ translation_source_hash: 9e13bcd28ad8ae356314041828f73af0ed25636af82ff4ea2948268
 translation_status: machine-validated
 translation_engine: bing-translator-llm+claude-opus-5-5
 ---
-
 # Iroha 3 Manual de Aplicação {#iroha-3-application-cookbook}
 
 Construir contra Iroha 3 com receitas pequenas e verificáveis que começam no Taira testnet e manter Minamoto mainnet somente leitura. Cada receita indica se é uma leitura pública, uma escrita de conta financiada normal, ou uma operação com permissão restrita. Os comandos usam o atual I105 IDs de conta, seleção explícita de taxa e o comportamento verificado em Iroha comprometer [`c8c872461e92f04325c350cdd952f4276e96f9dc`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc).

@@ -5,7 +5,6 @@ translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Solução de Problemas na Instalação {#troubleshooting-installation-issues}
 
 Esta seção oferece dicas de solução de problemas para a instalação de Iroha 3. Se o problema que você está enfrentando não estiver descrito aqui, entre em contato conosco via [Telegram](https://t.me/hyperledgeriroha).

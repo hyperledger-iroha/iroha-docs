@@ -5,7 +5,6 @@ translation_source_hash: 9e13bcd28ad8ae356314041828f73af0ed25636af82ff4ea2948268
 translation_status: machine-validated
 translation_engine: bing-translator-llm+claude-opus-5-5
 ---
-
 # Iroha 3 アプリケーションクックブック {#iroha-3-application-cookbook}
 
 対して構築する Iroha 3 小さく、検証可能なレシピで始まる Taira テストネットと保持 Minamoto メインネットの読み取り専用。各レシピには、それが公開読み取りかどうかが記載されています。 通常の資金提供されたアカウントの書き込み、または許可で制御された操作。コマンドは現在のものを使用します I105 アカウントID、明示的な料金選択、およびチェックイン時に確認された動作 Iroha プロトコルの最終化 [`c8c872461e92f04325c350cdd952f4276e96f9dc`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc).

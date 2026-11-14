@@ -28,7 +28,7 @@ iroha3d_taira --sora \
 - סוג: מסלול הקובץ
 - פרופיל: `-c`
 
-נתיב ל[תצורת העמית](/he/reference/peer-config/index.md).
+הנתיב ל[קובץ התצורה של הצומת](/he/reference/peer-config/index.md).
 
 ## `--genesis-manifest-json` {#arg-genesis-manifest-json}
 

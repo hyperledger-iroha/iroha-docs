@@ -5,7 +5,6 @@ translation_source_hash: 020591f0d7c5560dfb2e9f3f4537f429cbeba864c3eb022856d42ad
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Виртуалды Жеке Желілер {#virtual-private-networks}
 
 <abbr title="Virtual Private Network">VPN</abbr> — бұл Iroha қызметтеріне кім кіре алатынын шектейтін желіні басқару құралы. Ол ең тиімді жеке және консорциумдық орналастыруларда, онда валидациялаушылар, қолданба серверлері және операторлар ашық интернет маршруттары арқылы емес, жеке мекенжайлар арқылы байланысуы қажет.

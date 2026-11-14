@@ -5,7 +5,6 @@ translation_source_hash: 5ceee448217a42e4f8bbae9595486b79019e7a880dfd0f2c71bf580
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # イザナミによるカオステスト {#chaos-testing-with-izanami}
 
 イザナミは、上流の Iroha ワークスペースにおけるカオスネットオーケストレーターです。使い捨てのローカル Iroha クラスターを起動し、設定可能なワークロードを送信し、選択されたネットワークピアに障害を注入することで、オペレーターは制御された障害下でネットワークが進行し続けるかどうかを確認できます。

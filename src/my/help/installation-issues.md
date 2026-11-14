@@ -5,7 +5,6 @@ translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # တပ်ဆင်မှု ပြဿနာများ ဖြေရှင်းခြင်း {#troubleshooting-installation-issues}
 
 ဤအခန်းတွင် Iroha 3 တပ်ဆင်မှုအတွက်ပြဿနာဖြေရှင်းရေး အကြံပေးချက်များကို ဖော်ပြထားပါသည်။ သင်တွေ့ရှိနေသည့် ပြဿနာကို ဒီမှာဖော်ပြခြင်းမရှိပါက [အွန်လိုင်း](https://t.me/hyperledgeriroha) မှတစ်ဆင့် ဆက်သွယ်ပါ။
@@ -30,7 +29,7 @@ cargo metadata --no-deps
 
 `cargo metadata` ပျက်ကွက်ပါက `pnpm refresh:iroha --source /path/to/iroha` ကိုမဖွင့်ခင် ဒေသတွင်း toolchain ကိုပြင်ဆင်ပါ။ အကြောင်းက update က လက်ရှိ data-model schema ကိုဖန်တီးဖို့ Kagami ကိုခေါ်ဆောင်နိုင်လို့ပါ။
 
-## Rust ကိရိယာအစု ပြဿနာဖြေရှင်းခြင်း {#troubleshooting-rust-toolchain}
+## Rust ကိရိယာအစု၏ ပြဿနာများကို ဖြေရှင်းခြင်း {#troubleshooting-rust-toolchain}
 
 တစ်ခါတစ်လေမှာ စီစဉ်ထားတဲ့အတိုင်း မဖြစ်တတ်ဘူး။ အထူးသဖြင့် သင်လုပ်ခဲ့ရင် `rust` သင့်ရဲ့စနစ်မှာ ခဏလောက်ရှိပေမဲ့ မတိုးတက်ခဲ့ဘူး။ အလားတူပြဿနာတစ်ခုက Python: XKCD ဒါက ဘယ်လိုပုံပေါက်မလဲဆိုတဲ့ နာမည်ကျော် နမူနာတစ်ခုရှိတယ်။
 

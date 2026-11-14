@@ -5,7 +5,6 @@ translation_source_hash: 5ea24369e85692bd9069e446d1e50612efade2d83e4ddf73a498058
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # መመሪያ {#guide}
 
 ከ Iroha ጋር ሲገነቡ፣ ሲሰሩ ወይም ሲዋሃዱ ይህንን ክፍል ይጠቀሙ። ለመጀመሪያው ደንበኛ በ SDK አጋዥ ስልጠናዎች ይጀምሩ፣ ከዚያ በጋራ አውታረ መረብ ላይ ከማሰማራትዎ በፊት ወደ ምርጥ ልምዶች እና ኦፕሬተር ማጣቀሻዎች ይሂዱ።

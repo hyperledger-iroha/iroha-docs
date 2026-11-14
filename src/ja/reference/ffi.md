@@ -5,7 +5,6 @@ translation_source_hash: 2df23722cea2f918874f0109b31b24bb3d8dbd7f95c00d1d6d1568c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # 外国関数インターフェース（FFI） {#foreign-function-interfaces-ffi}
 
 `iroha_ffi` ソフトウェアパッケージは、Rust APIs から C ABI バインディングを生成するためのマクロとトレイトを提供します。これは、Iroha 型が FFI 境界を越える必要がある場合に使用されます。例えば、SDK バインディングやホスト統合によってです。

@@ -5,7 +5,6 @@ translation_source_hash: 20139011c663a0bca6f9e486ef81f698370c34f8f02319317805b0d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # مبادئ الأمن {#security-principles}
 
 يُحقق دفتر سجلات البلوكشين Iroha التعليمات الموقعة ويطبق الأذونات. إنه لا يؤمن المفاتيح الخاصة أو الخوادم أو التطبيقات أو محطات عمل المشغلين أو إجراءات الحوكمة. يجب أن تحمي عملية النشر تلك الأنظمة.

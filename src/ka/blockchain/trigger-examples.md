@@ -5,7 +5,6 @@ translation_source_hash: d40a0298466fdcbd30a9fdff979887b033e069646fcf3e437527d4d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # ღონისძიების ტრიგერი მაგალითი {#event-trigger-example}
 
 აღნიშნული მაგალითი იყენებს Iroha 3 მონაცემთა მოდელის კანონიკურ დომენების გარეშე ანგარიშის ID-ებს და პროგნოზირებულ აქტივების განსაზღვრას.

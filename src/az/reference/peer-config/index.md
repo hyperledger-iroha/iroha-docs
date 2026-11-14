@@ -5,7 +5,6 @@ translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Iroha Konfiqurasiya olunur {#configuring-iroha}
 
 Yerel şəbəkə əlaqə nöqtəsinin konfiqurasiyası təyin olunur TOML fayllar. Bu, zəncirdə konfiqurasiyanın dəyişdirilməsi ilə fərqlidir [`SetParameter`](/az/blockchain/instructions.md#setparameter) təlimatlar. İstehsal davranışı konfiqurasiyada əks etdirilməlidir fayl və ya zəncirdəki parametr; mühit dəyişənləri xüsusiyyət qapıları deyildir.

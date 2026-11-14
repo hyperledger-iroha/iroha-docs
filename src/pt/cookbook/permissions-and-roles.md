@@ -5,7 +5,6 @@ translation_source_hash: 40fe8b19344d8eff66b178dc8576e2e049fef50bd3212fbddc5c0d5
 translation_status: machine-validated
 translation_engine: bing-translator-llm+claude-opus-5-5
 ---
-
 # Permissões e Funções {#permissions-and-roles}
 
 ## Resultado {#outcome}

@@ -5,7 +5,6 @@ translation_source_hash: b42e035ea1056c07dd9c8e2f651e362c7f4b759a345508d2f099ad1
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Intégrer Kaigi dans une application JavaScript {#embed-kaigi-in-a-javascript-app}
 
 Kaigi enregistre le cycle de vie d'une réunion sur Iroha tandis que le navigateur transporte l'audio et la vidéo via WebRTC. Le registre blockchain stocke l'appel, les mutations de la liste des participants, les métadonnées de signalisation chiffrées et le statut final ; ce n'est pas un relais média.

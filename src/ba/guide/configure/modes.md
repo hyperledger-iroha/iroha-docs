@@ -5,7 +5,6 @@ translation_source_hash: 3f6c2d84c7b6d325d76fb1b1a3ec0efb75381521f7fc69e7924a965
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
-
 # Йәмәғәт һәм шәхси блокчейндар {#public-and-private-blockchains}
 
 Iroha төрлө конфигурацияларҙа эшләй ала. үҙ селтәренең администраторы булараҡ, һеҙ ниндәй башҡарыусы һәм рөхсәт сәйәсәте транзакция ҡабул ителәме икәнен билдәләргә ҡарар итәһегеҙ.

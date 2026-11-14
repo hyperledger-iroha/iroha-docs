@@ -5,7 +5,6 @@ translation_source_hash: c463a3ca8fdef5c852746a7fdcfd6a1f7be5f95f88a5cf443c989ec
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Лучшие практики {#best-practices}
 
 Этот раздел собирает рекомендации, ориентированные на производство, для приложений и сетей Iroha. Он организован в соответствии с принимаемым вами решением, а не по функции, которая его реализует.

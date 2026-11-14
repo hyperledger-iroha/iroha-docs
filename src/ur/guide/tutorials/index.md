@@ -5,7 +5,6 @@ translation_source_hash: 4fee7425a237d2781745025c9cd240fbc9df84f07f7427ff19c4bd8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # SDK سبق {#sdk-tutorials}
 
 ان صفحات میں مرکزی کام کی جگہ سے بھیجے گئے Iroha 3 کلائنٹ داخلہ پوائنٹس کا خلاصہ کیا گیا ہے، بشمول کینیکل پیکجوں کے نام، تنصیب کے راستے، اور کم از کم شروعاتی مقامات شامل ہیں.
