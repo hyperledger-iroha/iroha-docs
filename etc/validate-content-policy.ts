@@ -165,9 +165,7 @@ const TAIRA_SORAFS_REQUIRED_TOKENS = [
   '[sorafs.storage]\nenabled = false',
   'max_capacity_bytes = 13743895347',
   '[sorafs.discovery]\ndiscovery_enabled = true',
-  '[sorafs.discovery.admission]\nenvelopes_dir = "configs/soranexus/taira/sorafs_admission"',
-  'trusted_council_keys = ["REPLACE_WITH_TAIRA_SORAFS_COUNCIL_PUBLIC_KEY"]',
-  'signature_threshold = "REPLACE_WITH_TAIRA_SORAFS_COUNCIL_SIGNATURE_THRESHOLD"',
+  '[sorafs.discovery.admission]\nenabled = true',
   '[sorafs.gateway]\nrequire_manifest_envelope = true',
   'enforce_admission = true',
   'enforce_capabilities = true',
@@ -250,6 +248,15 @@ export async function validateContentPolicy(repositoryRoot: string): Promise<str
       const missing = TAIRA_SORAFS_REQUIRED_TOKENS.filter((token) => !content.includes(token))
       if (missing.length > 0)
         errors.push(`${relative}: incomplete canonical Taira SoraFS profile (${missing.join(', ')})`)
+      for (const section of content.matchAll(
+        /^\[sorafs\.discovery\.admission\][ \t]*\r?\n([\s\S]*?)(?=^\[|^```|(?![\s\S]))/gmu,
+      )) {
+        for (const field of section[1].matchAll(
+          /^[ \t]*(envelopes_dir|trusted_council_keys|signature_threshold)[ \t]*=/gmu,
+        )) {
+          errors.push(`${relative}: retired local SoraFS admission authority setting ${field[1]}`)
+        }
+      }
       if (content.includes('https://{cid}.sorafs.sora.org')) {
         errors.push(`${relative}: production SoraFS content origin used for Taira`)
       }
